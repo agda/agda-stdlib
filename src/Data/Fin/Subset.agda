@@ -7,8 +7,8 @@
 module Data.Fin.Subset where
 
 open import Algebra
-import Algebra.Props.BooleanAlgebra as BoolAlgProp
-import Algebra.Props.BooleanAlgebra.Expression as BAExpr
+import Algebra.Properties.BooleanAlgebra as BoolAlgProp
+import Algebra.Properties.BooleanAlgebra.Expression as BAExpr
 import Data.Bool.Properties as BoolProp
 open import Data.Fin
 open import Data.List as List using (List)
@@ -25,7 +25,7 @@ infix 4 _∈_ _∉_ _⊆_ _⊈_
 
 -- Sides.
 
-open import Data.Bool public
+open import Data.Bool.Minimal public
   using () renaming (Bool to Side; true to inside; false to outside)
 
 -- Partitions a finite set into two parts, the inside and the outside.

@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Category.Monad.Identity</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- The identity monad</a
+      ><a name="127"
+      >
+</a
+      ><a name="128" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="200"
+      >
+
+</a
+      ><a name="202" class="Keyword"
+      >module</a
+      ><a name="208"
+      > </a
+      ><a name="209" href="Category.Monad.Identity.html#1" class="Module"
+      >Category.Monad.Identity</a
+      ><a name="232"
+      > </a
+      ><a name="233" class="Keyword"
+      >where</a
+      ><a name="238"
+      >
+
+</a
+      ><a name="240" class="Keyword"
+      >open</a
+      ><a name="244"
+      > </a
+      ><a name="245" class="Keyword"
+      >import</a
+      ><a name="251"
+      > </a
+      ><a name="252" href="Category.Monad.html#1" class="Module"
+      >Category.Monad</a
+      ><a name="266"
+      >
+
+</a
+      ><a name="268" href="Category.Monad.Identity.html#268" class="Function"
+      >Identity</a
+      ><a name="276"
+      > </a
+      ><a name="277" class="Symbol"
+      >:</a
+      ><a name="278"
+      > </a
+      ><a name="279" class="Symbol"
+      >&#8704;</a
+      ><a name="280"
+      > </a
+      ><a name="281" class="Symbol"
+      >{</a
+      ><a name="282" href="Category.Monad.Identity.html#282" class="Bound"
+      >f</a
+      ><a name="283" class="Symbol"
+      >}</a
+      ><a name="284"
+      > </a
+      ><a name="285" class="Symbol"
+      >&#8594;</a
+      ><a name="286"
+      > </a
+      ><a name="287" class="PrimitiveType"
+      >Set</a
+      ><a name="290"
+      > </a
+      ><a name="291" href="Category.Monad.Identity.html#282" class="Bound"
+      >f</a
+      ><a name="292"
+      > </a
+      ><a name="293" class="Symbol"
+      >&#8594;</a
+      ><a name="294"
+      > </a
+      ><a name="295" class="PrimitiveType"
+      >Set</a
+      ><a name="298"
+      > </a
+      ><a name="299" href="Category.Monad.Identity.html#282" class="Bound"
+      >f</a
+      ><a name="300"
+      >
+</a
+      ><a name="301" href="Category.Monad.Identity.html#268" class="Function"
+      >Identity</a
+      ><a name="309"
+      > </a
+      ><a name="310" href="Category.Monad.Identity.html#310" class="Bound"
+      >A</a
+      ><a name="311"
+      > </a
+      ><a name="312" class="Symbol"
+      >=</a
+      ><a name="313"
+      > </a
+      ><a name="314" href="Category.Monad.Identity.html#310" class="Bound"
+      >A</a
+      ><a name="315"
+      >
+
+</a
+      ><a name="317" href="Category.Monad.Identity.html#317" class="Function"
+      >IdentityMonad</a
+      ><a name="330"
+      > </a
+      ><a name="331" class="Symbol"
+      >:</a
+      ><a name="332"
+      > </a
+      ><a name="333" class="Symbol"
+      >&#8704;</a
+      ><a name="334"
+      > </a
+      ><a name="335" class="Symbol"
+      >{</a
+      ><a name="336" href="Category.Monad.Identity.html#336" class="Bound"
+      >f</a
+      ><a name="337" class="Symbol"
+      >}</a
+      ><a name="338"
+      > </a
+      ><a name="339" class="Symbol"
+      >&#8594;</a
+      ><a name="340"
+      > </a
+      ><a name="341" href="Category.Monad.html#360" class="Function"
+      >RawMonad</a
+      ><a name="349"
+      > </a
+      ><a name="350" class="Symbol"
+      >(</a
+      ><a name="351" href="Category.Monad.Identity.html#268" class="Function"
+      >Identity</a
+      ><a name="359"
+      > </a
+      ><a name="360" class="Symbol"
+      >{</a
+      ><a name="361" href="Category.Monad.Identity.html#336" class="Bound"
+      >f</a
+      ><a name="362" class="Symbol"
+      >})</a
+      ><a name="364"
+      >
+</a
+      ><a name="365" href="Category.Monad.Identity.html#317" class="Function"
+      >IdentityMonad</a
+      ><a name="378"
+      > </a
+      ><a name="379" class="Symbol"
+      >=</a
+      ><a name="380"
+      > </a
+      ><a name="381" class="Keyword"
+      >record</a
+      ><a name="387"
+      >
+  </a
+      ><a name="390" class="Symbol"
+      >{</a
+      ><a name="391"
+      > </a
+      ><a name="392" class="Field"
+      >return</a
+      ><a name="398"
+      > </a
+      ><a name="399" class="Symbol"
+      >=</a
+      ><a name="400"
+      > </a
+      ><a name="401" class="Symbol"
+      >&#955;</a
+      ><a name="402"
+      > </a
+      ><a name="403" href="Category.Monad.Identity.html#403" class="Bound"
+      >x</a
+      ><a name="404"
+      > </a
+      ><a name="405" class="Symbol"
+      >&#8594;</a
+      ><a name="406"
+      > </a
+      ><a name="407" href="Category.Monad.Identity.html#403" class="Bound"
+      >x</a
+      ><a name="408"
+      >
+  </a
+      ><a name="411" class="Symbol"
+      >;</a
+      ><a name="412"
+      > </a
+      ><a name="413" class="Field Operator"
+      >_&gt;&gt;=_</a
+      ><a name="418"
+      >  </a
+      ><a name="420" class="Symbol"
+      >=</a
+      ><a name="421"
+      > </a
+      ><a name="422" class="Symbol"
+      >&#955;</a
+      ><a name="423"
+      > </a
+      ><a name="424" href="Category.Monad.Identity.html#424" class="Bound"
+      >x</a
+      ><a name="425"
+      > </a
+      ><a name="426" href="Category.Monad.Identity.html#426" class="Bound"
+      >f</a
+      ><a name="427"
+      > </a
+      ><a name="428" class="Symbol"
+      >&#8594;</a
+      ><a name="429"
+      > </a
+      ><a name="430" href="Category.Monad.Identity.html#426" class="Bound"
+      >f</a
+      ><a name="431"
+      > </a
+      ><a name="432" href="Category.Monad.Identity.html#424" class="Bound"
+      >x</a
+      ><a name="433"
+      >
+  </a
+      ><a name="436" class="Symbol"
+      >}</a
+      ><a name="437"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

@@ -1,0 +1,467 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Float</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Floats</a
+      ><a name="115"
+      >
+</a
+      ><a name="116" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="188"
+      >
+
+</a
+      ><a name="190" class="Keyword"
+      >module</a
+      ><a name="196"
+      > </a
+      ><a name="197" href="Data.Float.html#1" class="Module"
+      >Data.Float</a
+      ><a name="207"
+      > </a
+      ><a name="208" class="Keyword"
+      >where</a
+      ><a name="213"
+      >
+
+</a
+      ><a name="215" class="Keyword"
+      >open</a
+      ><a name="219"
+      > </a
+      ><a name="220" class="Keyword"
+      >import</a
+      ><a name="226"
+      > </a
+      ><a name="227" href="Data.Bool.Base.html#1" class="Module"
+      >Data.Bool.Base</a
+      ><a name="241"
+      > </a
+      ><a name="242" class="Keyword"
+      >using</a
+      ><a name="247"
+      > </a
+      ><a name="248" class="Symbol"
+      >(</a
+      ><a name="249"
+      >Bool</a
+      ><a name="253" class="Symbol"
+      >;</a
+      ><a name="254"
+      > false</a
+      ><a name="260" class="Symbol"
+      >;</a
+      ><a name="261"
+      > true</a
+      ><a name="266" class="Symbol"
+      >)</a
+      ><a name="267"
+      >
+</a
+      ><a name="268" class="Keyword"
+      >open</a
+      ><a name="272"
+      > </a
+      ><a name="273" class="Keyword"
+      >import</a
+      ><a name="279"
+      > </a
+      ><a name="280" href="Relation.Nullary.Decidable.html#1" class="Module"
+      >Relation.Nullary.Decidable</a
+      ><a name="306"
+      >
+</a
+      ><a name="307" class="Keyword"
+      >open</a
+      ><a name="311"
+      > </a
+      ><a name="312" class="Keyword"
+      >import</a
+      ><a name="318"
+      > </a
+      ><a name="319" href="Relation.Nullary.html#1" class="Module"
+      >Relation.Nullary</a
+      ><a name="335"
+      >
+</a
+      ><a name="336" class="Keyword"
+      >open</a
+      ><a name="340"
+      > </a
+      ><a name="341" class="Keyword"
+      >import</a
+      ><a name="347"
+      > </a
+      ><a name="348" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="385"
+      > </a
+      ><a name="386" class="Symbol"
+      >as</a
+      ><a name="388"
+      > </a
+      ><a name="389" class="Module"
+      >PropEq</a
+      ><a name="395"
+      > </a
+      ><a name="396" class="Keyword"
+      >using</a
+      ><a name="401"
+      > </a
+      ><a name="402" class="Symbol"
+      >(</a
+      ><a name="403"
+      >_&#8801;_</a
+      ><a name="406" class="Symbol"
+      >)</a
+      ><a name="407"
+      >
+</a
+      ><a name="408" class="Keyword"
+      >open</a
+      ><a name="412"
+      > </a
+      ><a name="413" class="Keyword"
+      >import</a
+      ><a name="419"
+      > </a
+      ><a name="420" href="Relation.Binary.PropositionalEquality.TrustMe.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality.TrustMe</a
+      ><a name="465"
+      >
+</a
+      ><a name="466" class="Keyword"
+      >open</a
+      ><a name="470"
+      > </a
+      ><a name="471" class="Keyword"
+      >import</a
+      ><a name="477"
+      > </a
+      ><a name="478" href="Data.String.html#1" class="Module"
+      >Data.String</a
+      ><a name="489"
+      > </a
+      ><a name="490" class="Keyword"
+      >using</a
+      ><a name="495"
+      > </a
+      ><a name="496" class="Symbol"
+      >(</a
+      ><a name="497"
+      >String</a
+      ><a name="503" class="Symbol"
+      >)</a
+      ><a name="504"
+      >
+
+</a
+      ><a name="506" class="Keyword"
+      >postulate</a
+      ><a name="515"
+      >
+  </a
+      ><a name="518" href="Data.Float.html#518" class="Postulate"
+      >Float</a
+      ><a name="523"
+      > </a
+      ><a name="524" class="Symbol"
+      >:</a
+      ><a name="525"
+      > </a
+      ><a name="526" class="PrimitiveType"
+      >Set</a
+      ><a name="529"
+      >
+
+</a
+      ><a name="531" class="Symbol"
+      >{-#</a
+      ><a name="534"
+      > </a
+      ><a name="535" class="Keyword"
+      >BUILTIN</a
+      ><a name="542"
+      > FLOAT </a
+      ><a name="549" href="Data.Float.html#518" class="Postulate"
+      >Float</a
+      ><a name="554"
+      > </a
+      ><a name="555" class="Symbol"
+      >#-}</a
+      ><a name="558"
+      >
+
+</a
+      ><a name="560" class="Keyword"
+      >primitive</a
+      ><a name="569"
+      >
+  </a
+      ><a name="572" href="Data.Float.html#572" class="Primitive"
+      >primFloatEquality</a
+      ><a name="589"
+      > </a
+      ><a name="590" class="Symbol"
+      >:</a
+      ><a name="591"
+      > </a
+      ><a name="592" href="Data.Float.html#518" class="Postulate"
+      >Float</a
+      ><a name="597"
+      > </a
+      ><a name="598" class="Symbol"
+      >&#8594;</a
+      ><a name="599"
+      > </a
+      ><a name="600" href="Data.Float.html#518" class="Postulate"
+      >Float</a
+      ><a name="605"
+      > </a
+      ><a name="606" class="Symbol"
+      >&#8594;</a
+      ><a name="607"
+      > </a
+      ><a name="608" href="Data.Bool.Base.html#469" class="Datatype"
+      >Bool</a
+      ><a name="612"
+      >
+  </a
+      ><a name="615" href="Data.Float.html#615" class="Primitive"
+      >primShowFloat</a
+      ><a name="628"
+      >     </a
+      ><a name="633" class="Symbol"
+      >:</a
+      ><a name="634"
+      > </a
+      ><a name="635" href="Data.Float.html#518" class="Postulate"
+      >Float</a
+      ><a name="640"
+      > </a
+      ><a name="641" class="Symbol"
+      >&#8594;</a
+      ><a name="642"
+      > </a
+      ><a name="643" href="Data.String.Core.html#457" class="Postulate"
+      >String</a
+      ><a name="649"
+      >
+
+</a
+      ><a name="651" href="Data.Float.html#651" class="Function"
+      >show</a
+      ><a name="655"
+      > </a
+      ><a name="656" class="Symbol"
+      >:</a
+      ><a name="657"
+      > </a
+      ><a name="658" href="Data.Float.html#518" class="Postulate"
+      >Float</a
+      ><a name="663"
+      > </a
+      ><a name="664" class="Symbol"
+      >&#8594;</a
+      ><a name="665"
+      > </a
+      ><a name="666" href="Data.String.Core.html#457" class="Postulate"
+      >String</a
+      ><a name="672"
+      >
+</a
+      ><a name="673" href="Data.Float.html#651" class="Function"
+      >show</a
+      ><a name="677"
+      > </a
+      ><a name="678" class="Symbol"
+      >=</a
+      ><a name="679"
+      > </a
+      ><a name="680" href="Data.Float.html#615" class="Primitive"
+      >primShowFloat</a
+      ><a name="693"
+      >
+
+</a
+      ><a name="695" href="Data.Float.html#695" class="Function Operator"
+      >_&#8799;_</a
+      ><a name="698"
+      > </a
+      ><a name="699" class="Symbol"
+      >:</a
+      ><a name="700"
+      > </a
+      ><a name="701" class="Symbol"
+      >(</a
+      ><a name="702" href="Data.Float.html#702" class="Bound"
+      >x</a
+      ><a name="703"
+      > </a
+      ><a name="704" href="Data.Float.html#704" class="Bound"
+      >y</a
+      ><a name="705"
+      > </a
+      ><a name="706" class="Symbol"
+      >:</a
+      ><a name="707"
+      > </a
+      ><a name="708" href="Data.Float.html#518" class="Postulate"
+      >Float</a
+      ><a name="713" class="Symbol"
+      >)</a
+      ><a name="714"
+      > </a
+      ><a name="715" class="Symbol"
+      >&#8594;</a
+      ><a name="716"
+      > </a
+      ><a name="717" href="Relation.Nullary.Core.html#468" class="Datatype"
+      >Dec</a
+      ><a name="720"
+      > </a
+      ><a name="721" class="Symbol"
+      >(</a
+      ><a name="722" href="Data.Float.html#702" class="Bound"
+      >x</a
+      ><a name="723"
+      > </a
+      ><a name="724" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="725"
+      > </a
+      ><a name="726" href="Data.Float.html#704" class="Bound"
+      >y</a
+      ><a name="727" class="Symbol"
+      >)</a
+      ><a name="728"
+      >
+</a
+      ><a name="729" href="Data.Float.html#729" class="Bound"
+      >x</a
+      ><a name="730"
+      > </a
+      ><a name="731" href="Data.Float.html#695" class="Function Operator"
+      >&#8799;</a
+      ><a name="732"
+      > </a
+      ><a name="733" href="Data.Float.html#733" class="Bound"
+      >y</a
+      ><a name="734"
+      > </a
+      ><a name="735" class="Keyword"
+      >with</a
+      ><a name="739"
+      > </a
+      ><a name="740" href="Data.Float.html#572" class="Primitive"
+      >primFloatEquality</a
+      ><a name="757"
+      > </a
+      ><a name="758" href="Data.Float.html#729" class="Bound"
+      >x</a
+      ><a name="759"
+      > </a
+      ><a name="760" href="Data.Float.html#733" class="Bound"
+      >y</a
+      ><a name="761"
+      >
+</a
+      ><a name="762" class="Symbol"
+      >...</a
+      ><a name="765"
+      > </a
+      ><a name="766" class="Symbol"
+      >|</a
+      ><a name="767"
+      > </a
+      ><a name="768" href="Data.Bool.Base.html#488" class="InductiveConstructor"
+      >true</a
+      ><a name="772"
+      >  </a
+      ><a name="774" class="Symbol"
+      >=</a
+      ><a name="775"
+      > </a
+      ><a name="776" href="Relation.Nullary.Core.html#504" class="InductiveConstructor"
+      >yes</a
+      ><a name="779"
+      > </a
+      ><a name="780" href="Relation.Binary.PropositionalEquality.TrustMe.html#556" class="Function"
+      >trustMe</a
+      ><a name="787"
+      >
+</a
+      ><a name="788" class="Symbol"
+      >...</a
+      ><a name="791"
+      > </a
+      ><a name="792" class="Symbol"
+      >|</a
+      ><a name="793"
+      > </a
+      ><a name="794" href="Data.Bool.Base.html#503" class="InductiveConstructor"
+      >false</a
+      ><a name="799"
+      > </a
+      ><a name="800" class="Symbol"
+      >=</a
+      ><a name="801"
+      > </a
+      ><a name="802" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="804"
+      > </a
+      ><a name="805" href="Data.Float.html#832" class="Postulate"
+      >whatever</a
+      ><a name="813"
+      >
+  </a
+      ><a name="816" class="Keyword"
+      >where</a
+      ><a name="821"
+      > </a
+      ><a name="822" class="Keyword"
+      >postulate</a
+      ><a name="831"
+      > </a
+      ><a name="832" href="Data.Float.html#832" class="Postulate"
+      >whatever</a
+      ><a name="840"
+      > </a
+      ><a name="841" class="Symbol"
+      >:</a
+      ><a name="842"
+      > </a
+      ><a name="843" class="Symbol"
+      >_</a
+      ><a name="844"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

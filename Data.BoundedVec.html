@@ -1,0 +1,1562 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.BoundedVec</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Bounded vectors</a
+      ><a name="124"
+      >
+</a
+      ><a name="125" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="197"
+      >
+
+</a
+      ><a name="199" class="Comment"
+      >-- Vectors of a specified maximum length.</a
+      ><a name="240"
+      >
+
+</a
+      ><a name="242" class="Keyword"
+      >module</a
+      ><a name="248"
+      > </a
+      ><a name="249" href="Data.BoundedVec.html#1" class="Module"
+      >Data.BoundedVec</a
+      ><a name="264"
+      > </a
+      ><a name="265" class="Keyword"
+      >where</a
+      ><a name="270"
+      >
+
+</a
+      ><a name="272" class="Keyword"
+      >open</a
+      ><a name="276"
+      > </a
+      ><a name="277" class="Keyword"
+      >import</a
+      ><a name="283"
+      > </a
+      ><a name="284" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="292"
+      >
+</a
+      ><a name="293" class="Keyword"
+      >open</a
+      ><a name="297"
+      > </a
+      ><a name="298" class="Keyword"
+      >import</a
+      ><a name="304"
+      > </a
+      ><a name="305" href="Data.List.html#1" class="Module"
+      >Data.List</a
+      ><a name="314"
+      > </a
+      ><a name="315" class="Symbol"
+      >as</a
+      ><a name="317"
+      > </a
+      ><a name="318" class="Module"
+      >List</a
+      ><a name="322"
+      > </a
+      ><a name="323" class="Keyword"
+      >using</a
+      ><a name="328"
+      > </a
+      ><a name="329" class="Symbol"
+      >(</a
+      ><a name="330"
+      >List</a
+      ><a name="334" class="Symbol"
+      >)</a
+      ><a name="335"
+      >
+</a
+      ><a name="336" class="Keyword"
+      >open</a
+      ><a name="340"
+      > </a
+      ><a name="341" class="Keyword"
+      >import</a
+      ><a name="347"
+      > </a
+      ><a name="348" href="Data.Vec.html#1" class="Module"
+      >Data.Vec</a
+      ><a name="356"
+      > </a
+      ><a name="357" class="Symbol"
+      >as</a
+      ><a name="359"
+      > </a
+      ><a name="360" class="Module"
+      >Vec</a
+      ><a name="363"
+      > </a
+      ><a name="364" class="Keyword"
+      >using</a
+      ><a name="369"
+      > </a
+      ><a name="370" class="Symbol"
+      >(</a
+      ><a name="371"
+      >Vec</a
+      ><a name="374" class="Symbol"
+      >)</a
+      ><a name="375"
+      >
+</a
+      ><a name="376" class="Keyword"
+      >open</a
+      ><a name="380"
+      > </a
+      ><a name="381" class="Keyword"
+      >import</a
+      ><a name="387"
+      > </a
+      ><a name="388" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="425"
+      >
+</a
+      ><a name="426" class="Keyword"
+      >open</a
+      ><a name="430"
+      > </a
+      ><a name="431" class="Keyword"
+      >import</a
+      ><a name="437"
+      > </a
+      ><a name="438" href="Data.Nat.Properties.html#1" class="Module"
+      >Data.Nat.Properties</a
+      ><a name="457"
+      >
+</a
+      ><a name="458" class="Keyword"
+      >open</a
+      ><a name="462"
+      > </a
+      ><a name="463" href="Data.Nat.Properties.html#2085" class="Module"
+      >SemiringSolver</a
+      ><a name="477"
+      >
+
+</a
+      ><a name="479" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="551"
+      >
+</a
+      ><a name="552" class="Comment"
+      >-- The type</a
+      ><a name="563"
+      >
+
+</a
+      ><a name="565" class="Keyword"
+      >abstract</a
+      ><a name="573"
+      >
+
+  </a
+      ><a name="577" class="Keyword"
+      >data</a
+      ><a name="581"
+      > </a
+      ><a name="582" href="Data.BoundedVec.html#582" class="Datatype"
+      >BoundedVec</a
+      ><a name="592"
+      > </a
+      ><a name="593" class="Symbol"
+      >(</a
+      ><a name="594" href="Data.BoundedVec.html#594" class="Bound"
+      >a</a
+      ><a name="595"
+      > </a
+      ><a name="596" class="Symbol"
+      >:</a
+      ><a name="597"
+      > </a
+      ><a name="598" class="PrimitiveType"
+      >Set</a
+      ><a name="601" class="Symbol"
+      >)</a
+      ><a name="602"
+      > </a
+      ><a name="603" class="Symbol"
+      >:</a
+      ><a name="604"
+      > </a
+      ><a name="605" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="606"
+      > </a
+      ><a name="607" class="Symbol"
+      >&#8594;</a
+      ><a name="608"
+      > </a
+      ><a name="609" class="PrimitiveType"
+      >Set</a
+      ><a name="612"
+      > </a
+      ><a name="613" class="Keyword"
+      >where</a
+      ><a name="618"
+      >
+    </a
+      ><a name="623" href="Data.BoundedVec.html#623" class="InductiveConstructor"
+      >bVec</a
+      ><a name="627"
+      > </a
+      ><a name="628" class="Symbol"
+      >:</a
+      ><a name="629"
+      > </a
+      ><a name="630" class="Symbol"
+      >&#8704;</a
+      ><a name="631"
+      > </a
+      ><a name="632" class="Symbol"
+      >{</a
+      ><a name="633" href="Data.BoundedVec.html#633" class="Bound"
+      >m</a
+      ><a name="634"
+      > </a
+      ><a name="635" href="Data.BoundedVec.html#635" class="Bound"
+      >n</a
+      ><a name="636" class="Symbol"
+      >}</a
+      ><a name="637"
+      > </a
+      ><a name="638" class="Symbol"
+      >(</a
+      ><a name="639" href="Data.BoundedVec.html#639" class="Bound"
+      >xs</a
+      ><a name="641"
+      > </a
+      ><a name="642" class="Symbol"
+      >:</a
+      ><a name="643"
+      > </a
+      ><a name="644" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="647"
+      > </a
+      ><a name="648" href="Data.BoundedVec.html#594" class="Bound"
+      >a</a
+      ><a name="649"
+      > </a
+      ><a name="650" href="Data.BoundedVec.html#635" class="Bound"
+      >n</a
+      ><a name="651" class="Symbol"
+      >)</a
+      ><a name="652"
+      > </a
+      ><a name="653" class="Symbol"
+      >&#8594;</a
+      ><a name="654"
+      > </a
+      ><a name="655" href="Data.BoundedVec.html#582" class="Datatype"
+      >BoundedVec</a
+      ><a name="665"
+      > </a
+      ><a name="666" href="Data.BoundedVec.html#594" class="Bound"
+      >a</a
+      ><a name="667"
+      > </a
+      ><a name="668" class="Symbol"
+      >(</a
+      ><a name="669" href="Data.BoundedVec.html#635" class="Bound"
+      >n</a
+      ><a name="670"
+      > </a
+      ><a name="671" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="672"
+      > </a
+      ><a name="673" href="Data.BoundedVec.html#633" class="Bound"
+      >m</a
+      ><a name="674" class="Symbol"
+      >)</a
+      ><a name="675"
+      >
+
+  </a
+      ><a name="679" href="Data.BoundedVec.html#679" class="Function"
+      >[]</a
+      ><a name="681"
+      > </a
+      ><a name="682" class="Symbol"
+      >:</a
+      ><a name="683"
+      > </a
+      ><a name="684" class="Symbol"
+      >&#8704;</a
+      ><a name="685"
+      > </a
+      ><a name="686" class="Symbol"
+      >{</a
+      ><a name="687" href="Data.BoundedVec.html#687" class="Bound"
+      >a</a
+      ><a name="688"
+      > </a
+      ><a name="689" href="Data.BoundedVec.html#689" class="Bound"
+      >n</a
+      ><a name="690" class="Symbol"
+      >}</a
+      ><a name="691"
+      > </a
+      ><a name="692" class="Symbol"
+      >&#8594;</a
+      ><a name="693"
+      > </a
+      ><a name="694" href="Data.BoundedVec.html#582" class="Datatype"
+      >BoundedVec</a
+      ><a name="704"
+      > </a
+      ><a name="705" href="Data.BoundedVec.html#687" class="Bound"
+      >a</a
+      ><a name="706"
+      > </a
+      ><a name="707" href="Data.BoundedVec.html#689" class="Bound"
+      >n</a
+      ><a name="708"
+      >
+  </a
+      ><a name="711" href="Data.BoundedVec.html#679" class="Function"
+      >[]</a
+      ><a name="713"
+      > </a
+      ><a name="714" class="Symbol"
+      >=</a
+      ><a name="715"
+      > </a
+      ><a name="716" href="Data.BoundedVec.html#623" class="InductiveConstructor"
+      >bVec</a
+      ><a name="720"
+      > </a
+      ><a name="721" href="Data.Vec.html#644" class="InductiveConstructor"
+      >Vec.[]</a
+      ><a name="727"
+      >
+
+  </a
+      ><a name="731" class="Keyword"
+      >infixr</a
+      ><a name="737"
+      > </a
+      ><a name="738" class="Number"
+      >5</a
+      ><a name="739"
+      > _&#8759;_
+
+  </a
+      ><a name="747" href="Data.BoundedVec.html#747" class="Function Operator"
+      >_&#8759;_</a
+      ><a name="750"
+      > </a
+      ><a name="751" class="Symbol"
+      >:</a
+      ><a name="752"
+      > </a
+      ><a name="753" class="Symbol"
+      >&#8704;</a
+      ><a name="754"
+      > </a
+      ><a name="755" class="Symbol"
+      >{</a
+      ><a name="756" href="Data.BoundedVec.html#756" class="Bound"
+      >a</a
+      ><a name="757"
+      > </a
+      ><a name="758" href="Data.BoundedVec.html#758" class="Bound"
+      >n</a
+      ><a name="759" class="Symbol"
+      >}</a
+      ><a name="760"
+      > </a
+      ><a name="761" class="Symbol"
+      >&#8594;</a
+      ><a name="762"
+      > </a
+      ><a name="763" href="Data.BoundedVec.html#756" class="Bound"
+      >a</a
+      ><a name="764"
+      > </a
+      ><a name="765" class="Symbol"
+      >&#8594;</a
+      ><a name="766"
+      > </a
+      ><a name="767" href="Data.BoundedVec.html#582" class="Datatype"
+      >BoundedVec</a
+      ><a name="777"
+      > </a
+      ><a name="778" href="Data.BoundedVec.html#756" class="Bound"
+      >a</a
+      ><a name="779"
+      > </a
+      ><a name="780" href="Data.BoundedVec.html#758" class="Bound"
+      >n</a
+      ><a name="781"
+      > </a
+      ><a name="782" class="Symbol"
+      >&#8594;</a
+      ><a name="783"
+      > </a
+      ><a name="784" href="Data.BoundedVec.html#582" class="Datatype"
+      >BoundedVec</a
+      ><a name="794"
+      > </a
+      ><a name="795" href="Data.BoundedVec.html#756" class="Bound"
+      >a</a
+      ><a name="796"
+      > </a
+      ><a name="797" class="Symbol"
+      >(</a
+      ><a name="798" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="801"
+      > </a
+      ><a name="802" href="Data.BoundedVec.html#758" class="Bound"
+      >n</a
+      ><a name="803" class="Symbol"
+      >)</a
+      ><a name="804"
+      >
+  </a
+      ><a name="807" href="Data.BoundedVec.html#807" class="Bound"
+      >x</a
+      ><a name="808"
+      > </a
+      ><a name="809" href="Data.BoundedVec.html#747" class="Function Operator"
+      >&#8759;</a
+      ><a name="810"
+      > </a
+      ><a name="811" href="Data.BoundedVec.html#623" class="InductiveConstructor"
+      >bVec</a
+      ><a name="815"
+      > </a
+      ><a name="816" href="Data.BoundedVec.html#816" class="Bound"
+      >xs</a
+      ><a name="818"
+      > </a
+      ><a name="819" class="Symbol"
+      >=</a
+      ><a name="820"
+      > </a
+      ><a name="821" href="Data.BoundedVec.html#623" class="InductiveConstructor"
+      >bVec</a
+      ><a name="825"
+      > </a
+      ><a name="826" class="Symbol"
+      >(</a
+      ><a name="827" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >Vec._&#8759;_</a
+      ><a name="834"
+      > </a
+      ><a name="835" href="Data.BoundedVec.html#807" class="Bound"
+      >x</a
+      ><a name="836"
+      > </a
+      ><a name="837" href="Data.BoundedVec.html#816" class="Bound"
+      >xs</a
+      ><a name="839" class="Symbol"
+      >)</a
+      ><a name="840"
+      >
+
+</a
+      ><a name="842" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="914"
+      >
+</a
+      ><a name="915" class="Comment"
+      >-- Pattern matching</a
+      ><a name="934"
+      >
+
+</a
+      ><a name="936" class="Keyword"
+      >infixr</a
+      ><a name="942"
+      > </a
+      ><a name="943" class="Number"
+      >5</a
+      ><a name="944"
+      > _&#8759;v_
+
+</a
+      ><a name="951" class="Keyword"
+      >data</a
+      ><a name="955"
+      > </a
+      ><a name="956" href="Data.BoundedVec.html#956" class="Datatype"
+      >View</a
+      ><a name="960"
+      > </a
+      ><a name="961" class="Symbol"
+      >(</a
+      ><a name="962" href="Data.BoundedVec.html#962" class="Bound"
+      >a</a
+      ><a name="963"
+      > </a
+      ><a name="964" class="Symbol"
+      >:</a
+      ><a name="965"
+      > </a
+      ><a name="966" class="PrimitiveType"
+      >Set</a
+      ><a name="969" class="Symbol"
+      >)</a
+      ><a name="970"
+      > </a
+      ><a name="971" class="Symbol"
+      >:</a
+      ><a name="972"
+      > </a
+      ><a name="973" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="974"
+      > </a
+      ><a name="975" class="Symbol"
+      >&#8594;</a
+      ><a name="976"
+      > </a
+      ><a name="977" class="PrimitiveType"
+      >Set</a
+      ><a name="980"
+      > </a
+      ><a name="981" class="Keyword"
+      >where</a
+      ><a name="986"
+      >
+  </a
+      ><a name="989" href="Data.BoundedVec.html#989" class="InductiveConstructor"
+      >[]v</a
+      ><a name="992"
+      >  </a
+      ><a name="994" class="Symbol"
+      >:</a
+      ><a name="995"
+      > </a
+      ><a name="996" class="Symbol"
+      >&#8704;</a
+      ><a name="997"
+      > </a
+      ><a name="998" class="Symbol"
+      >{</a
+      ><a name="999" href="Data.BoundedVec.html#999" class="Bound"
+      >n</a
+      ><a name="1000" class="Symbol"
+      >}</a
+      ><a name="1001"
+      > </a
+      ><a name="1002" class="Symbol"
+      >&#8594;</a
+      ><a name="1003"
+      > </a
+      ><a name="1004" href="Data.BoundedVec.html#956" class="Datatype"
+      >View</a
+      ><a name="1008"
+      > </a
+      ><a name="1009" href="Data.BoundedVec.html#962" class="Bound"
+      >a</a
+      ><a name="1010"
+      > </a
+      ><a name="1011" href="Data.BoundedVec.html#999" class="Bound"
+      >n</a
+      ><a name="1012"
+      >
+  </a
+      ><a name="1015" href="Data.BoundedVec.html#1015" class="InductiveConstructor Operator"
+      >_&#8759;v_</a
+      ><a name="1019"
+      > </a
+      ><a name="1020" class="Symbol"
+      >:</a
+      ><a name="1021"
+      > </a
+      ><a name="1022" class="Symbol"
+      >&#8704;</a
+      ><a name="1023"
+      > </a
+      ><a name="1024" class="Symbol"
+      >{</a
+      ><a name="1025" href="Data.BoundedVec.html#1025" class="Bound"
+      >n</a
+      ><a name="1026" class="Symbol"
+      >}</a
+      ><a name="1027"
+      > </a
+      ><a name="1028" class="Symbol"
+      >(</a
+      ><a name="1029" href="Data.BoundedVec.html#1029" class="Bound"
+      >x</a
+      ><a name="1030"
+      > </a
+      ><a name="1031" class="Symbol"
+      >:</a
+      ><a name="1032"
+      > </a
+      ><a name="1033" href="Data.BoundedVec.html#962" class="Bound"
+      >a</a
+      ><a name="1034" class="Symbol"
+      >)</a
+      ><a name="1035"
+      > </a
+      ><a name="1036" class="Symbol"
+      >(</a
+      ><a name="1037" href="Data.BoundedVec.html#1037" class="Bound"
+      >xs</a
+      ><a name="1039"
+      > </a
+      ><a name="1040" class="Symbol"
+      >:</a
+      ><a name="1041"
+      > </a
+      ><a name="1042" href="Data.BoundedVec.html#582" class="Datatype"
+      >BoundedVec</a
+      ><a name="1052"
+      > </a
+      ><a name="1053" href="Data.BoundedVec.html#962" class="Bound"
+      >a</a
+      ><a name="1054"
+      > </a
+      ><a name="1055" href="Data.BoundedVec.html#1025" class="Bound"
+      >n</a
+      ><a name="1056" class="Symbol"
+      >)</a
+      ><a name="1057"
+      > </a
+      ><a name="1058" class="Symbol"
+      >&#8594;</a
+      ><a name="1059"
+      > </a
+      ><a name="1060" href="Data.BoundedVec.html#956" class="Datatype"
+      >View</a
+      ><a name="1064"
+      > </a
+      ><a name="1065" href="Data.BoundedVec.html#962" class="Bound"
+      >a</a
+      ><a name="1066"
+      > </a
+      ><a name="1067" class="Symbol"
+      >(</a
+      ><a name="1068" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1071"
+      > </a
+      ><a name="1072" href="Data.BoundedVec.html#1025" class="Bound"
+      >n</a
+      ><a name="1073" class="Symbol"
+      >)</a
+      ><a name="1074"
+      >
+
+</a
+      ><a name="1076" class="Keyword"
+      >abstract</a
+      ><a name="1084"
+      >
+
+  </a
+      ><a name="1088" href="Data.BoundedVec.html#1088" class="Function"
+      >view</a
+      ><a name="1092"
+      > </a
+      ><a name="1093" class="Symbol"
+      >:</a
+      ><a name="1094"
+      > </a
+      ><a name="1095" class="Symbol"
+      >&#8704;</a
+      ><a name="1096"
+      > </a
+      ><a name="1097" class="Symbol"
+      >{</a
+      ><a name="1098" href="Data.BoundedVec.html#1098" class="Bound"
+      >a</a
+      ><a name="1099"
+      > </a
+      ><a name="1100" href="Data.BoundedVec.html#1100" class="Bound"
+      >n</a
+      ><a name="1101" class="Symbol"
+      >}</a
+      ><a name="1102"
+      > </a
+      ><a name="1103" class="Symbol"
+      >&#8594;</a
+      ><a name="1104"
+      > </a
+      ><a name="1105" href="Data.BoundedVec.html#582" class="Datatype"
+      >BoundedVec</a
+      ><a name="1115"
+      > </a
+      ><a name="1116" href="Data.BoundedVec.html#1098" class="Bound"
+      >a</a
+      ><a name="1117"
+      > </a
+      ><a name="1118" href="Data.BoundedVec.html#1100" class="Bound"
+      >n</a
+      ><a name="1119"
+      > </a
+      ><a name="1120" class="Symbol"
+      >&#8594;</a
+      ><a name="1121"
+      > </a
+      ><a name="1122" href="Data.BoundedVec.html#956" class="Datatype"
+      >View</a
+      ><a name="1126"
+      > </a
+      ><a name="1127" href="Data.BoundedVec.html#1098" class="Bound"
+      >a</a
+      ><a name="1128"
+      > </a
+      ><a name="1129" href="Data.BoundedVec.html#1100" class="Bound"
+      >n</a
+      ><a name="1130"
+      >
+  </a
+      ><a name="1133" href="Data.BoundedVec.html#1088" class="Function"
+      >view</a
+      ><a name="1137"
+      > </a
+      ><a name="1138" class="Symbol"
+      >(</a
+      ><a name="1139" href="Data.BoundedVec.html#623" class="InductiveConstructor"
+      >bVec</a
+      ><a name="1143"
+      > </a
+      ><a name="1144" href="Data.Vec.html#644" class="InductiveConstructor"
+      >Vec.[]</a
+      ><a name="1150" class="Symbol"
+      >)</a
+      ><a name="1151"
+      >         </a
+      ><a name="1160" class="Symbol"
+      >=</a
+      ><a name="1161"
+      > </a
+      ><a name="1162" href="Data.BoundedVec.html#989" class="InductiveConstructor"
+      >[]v</a
+      ><a name="1165"
+      >
+  </a
+      ><a name="1168" href="Data.BoundedVec.html#1088" class="Function"
+      >view</a
+      ><a name="1172"
+      > </a
+      ><a name="1173" class="Symbol"
+      >(</a
+      ><a name="1174" href="Data.BoundedVec.html#623" class="InductiveConstructor"
+      >bVec</a
+      ><a name="1178"
+      > </a
+      ><a name="1179" class="Symbol"
+      >(</a
+      ><a name="1180" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >Vec._&#8759;_</a
+      ><a name="1187"
+      > </a
+      ><a name="1188" href="Data.BoundedVec.html#1188" class="Bound"
+      >x</a
+      ><a name="1189"
+      > </a
+      ><a name="1190" href="Data.BoundedVec.html#1190" class="Bound"
+      >xs</a
+      ><a name="1192" class="Symbol"
+      >))</a
+      ><a name="1194"
+      > </a
+      ><a name="1195" class="Symbol"
+      >=</a
+      ><a name="1196"
+      > </a
+      ><a name="1197" href="Data.BoundedVec.html#1188" class="Bound"
+      >x</a
+      ><a name="1198"
+      > </a
+      ><a name="1199" href="Data.BoundedVec.html#1015" class="InductiveConstructor Operator"
+      >&#8759;v</a
+      ><a name="1201"
+      > </a
+      ><a name="1202" href="Data.BoundedVec.html#623" class="InductiveConstructor"
+      >bVec</a
+      ><a name="1206"
+      > </a
+      ><a name="1207" href="Data.BoundedVec.html#1190" class="Bound"
+      >xs</a
+      ><a name="1209"
+      >
+
+</a
+      ><a name="1211" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="1283"
+      >
+</a
+      ><a name="1284" class="Comment"
+      >-- Increasing the bound</a
+      ><a name="1307"
+      >
+
+</a
+      ><a name="1309" class="Keyword"
+      >abstract</a
+      ><a name="1317"
+      >
+
+  </a
+      ><a name="1321" href="Data.BoundedVec.html#1321" class="Function"
+      >&#8593;</a
+      ><a name="1322"
+      > </a
+      ><a name="1323" class="Symbol"
+      >:</a
+      ><a name="1324"
+      > </a
+      ><a name="1325" class="Symbol"
+      >&#8704;</a
+      ><a name="1326"
+      > </a
+      ><a name="1327" class="Symbol"
+      >{</a
+      ><a name="1328" href="Data.BoundedVec.html#1328" class="Bound"
+      >a</a
+      ><a name="1329"
+      > </a
+      ><a name="1330" href="Data.BoundedVec.html#1330" class="Bound"
+      >n</a
+      ><a name="1331" class="Symbol"
+      >}</a
+      ><a name="1332"
+      > </a
+      ><a name="1333" class="Symbol"
+      >&#8594;</a
+      ><a name="1334"
+      > </a
+      ><a name="1335" href="Data.BoundedVec.html#582" class="Datatype"
+      >BoundedVec</a
+      ><a name="1345"
+      > </a
+      ><a name="1346" href="Data.BoundedVec.html#1328" class="Bound"
+      >a</a
+      ><a name="1347"
+      > </a
+      ><a name="1348" href="Data.BoundedVec.html#1330" class="Bound"
+      >n</a
+      ><a name="1349"
+      > </a
+      ><a name="1350" class="Symbol"
+      >&#8594;</a
+      ><a name="1351"
+      > </a
+      ><a name="1352" href="Data.BoundedVec.html#582" class="Datatype"
+      >BoundedVec</a
+      ><a name="1362"
+      > </a
+      ><a name="1363" href="Data.BoundedVec.html#1328" class="Bound"
+      >a</a
+      ><a name="1364"
+      > </a
+      ><a name="1365" class="Symbol"
+      >(</a
+      ><a name="1366" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1369"
+      > </a
+      ><a name="1370" href="Data.BoundedVec.html#1330" class="Bound"
+      >n</a
+      ><a name="1371" class="Symbol"
+      >)</a
+      ><a name="1372"
+      >
+  </a
+      ><a name="1375" href="Data.BoundedVec.html#1321" class="Function"
+      >&#8593;</a
+      ><a name="1376"
+      > </a
+      ><a name="1377" class="Symbol"
+      >{</a
+      ><a name="1378" class="Argument"
+      >a</a
+      ><a name="1379"
+      > </a
+      ><a name="1380" class="Symbol"
+      >=</a
+      ><a name="1381"
+      > </a
+      ><a name="1382" href="Data.BoundedVec.html#1382" class="Bound"
+      >a</a
+      ><a name="1383" class="Symbol"
+      >}</a
+      ><a name="1384"
+      > </a
+      ><a name="1385" class="Symbol"
+      >(</a
+      ><a name="1386" href="Data.BoundedVec.html#623" class="InductiveConstructor"
+      >bVec</a
+      ><a name="1390"
+      > </a
+      ><a name="1391" class="Symbol"
+      >{</a
+      ><a name="1392" class="Argument"
+      >m</a
+      ><a name="1393"
+      > </a
+      ><a name="1394" class="Symbol"
+      >=</a
+      ><a name="1395"
+      > </a
+      ><a name="1396" href="Data.BoundedVec.html#1396" class="Bound"
+      >m</a
+      ><a name="1397" class="Symbol"
+      >}</a
+      ><a name="1398"
+      > </a
+      ><a name="1399" class="Symbol"
+      >{</a
+      ><a name="1400" class="Argument"
+      >n</a
+      ><a name="1401"
+      > </a
+      ><a name="1402" class="Symbol"
+      >=</a
+      ><a name="1403"
+      > </a
+      ><a name="1404" href="Data.BoundedVec.html#1404" class="Bound"
+      >n</a
+      ><a name="1405" class="Symbol"
+      >}</a
+      ><a name="1406"
+      > </a
+      ><a name="1407" href="Data.BoundedVec.html#1407" class="Bound"
+      >xs</a
+      ><a name="1409" class="Symbol"
+      >)</a
+      ><a name="1410"
+      > </a
+      ><a name="1411" class="Symbol"
+      >=</a
+      ><a name="1412"
+      >
+    </a
+      ><a name="1417" href="Relation.Binary.PropositionalEquality.Core.html#705" class="Function"
+      >subst</a
+      ><a name="1422"
+      > </a
+      ><a name="1423" class="Symbol"
+      >(</a
+      ><a name="1424" href="Data.BoundedVec.html#582" class="Datatype"
+      >BoundedVec</a
+      ><a name="1434"
+      > </a
+      ><a name="1435" href="Data.BoundedVec.html#1382" class="Bound"
+      >a</a
+      ><a name="1436" class="Symbol"
+      >)</a
+      ><a name="1437"
+      > </a
+      ><a name="1438" href="Data.BoundedVec.html#1492" class="Function"
+      >lemma</a
+      ><a name="1443"
+      >
+            </a
+      ><a name="1456" class="Symbol"
+      >(</a
+      ><a name="1457" href="Data.BoundedVec.html#623" class="InductiveConstructor"
+      >bVec</a
+      ><a name="1461"
+      > </a
+      ><a name="1462" class="Symbol"
+      >{</a
+      ><a name="1463" class="Argument"
+      >m</a
+      ><a name="1464"
+      > </a
+      ><a name="1465" class="Symbol"
+      >=</a
+      ><a name="1466"
+      > </a
+      ><a name="1467" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1470"
+      > </a
+      ><a name="1471" href="Data.BoundedVec.html#1396" class="Bound"
+      >m</a
+      ><a name="1472" class="Symbol"
+      >}</a
+      ><a name="1473"
+      > </a
+      ><a name="1474" href="Data.BoundedVec.html#1407" class="Bound"
+      >xs</a
+      ><a name="1476" class="Symbol"
+      >)</a
+      ><a name="1477"
+      >
+    </a
+      ><a name="1482" class="Keyword"
+      >where</a
+      ><a name="1487"
+      >
+    </a
+      ><a name="1492" href="Data.BoundedVec.html#1492" class="Function"
+      >lemma</a
+      ><a name="1497"
+      > </a
+      ><a name="1498" class="Symbol"
+      >:</a
+      ><a name="1499"
+      > </a
+      ><a name="1500" href="Data.BoundedVec.html#1404" class="Bound"
+      >n</a
+      ><a name="1501"
+      > </a
+      ><a name="1502" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="1503"
+      > </a
+      ><a name="1504" class="Symbol"
+      >(</a
+      ><a name="1505" class="Number"
+      >1</a
+      ><a name="1506"
+      > </a
+      ><a name="1507" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="1508"
+      > </a
+      ><a name="1509" href="Data.BoundedVec.html#1396" class="Bound"
+      >m</a
+      ><a name="1510" class="Symbol"
+      >)</a
+      ><a name="1511"
+      > </a
+      ><a name="1512" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1513"
+      > </a
+      ><a name="1514" class="Number"
+      >1</a
+      ><a name="1515"
+      > </a
+      ><a name="1516" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="1517"
+      > </a
+      ><a name="1518" class="Symbol"
+      >(</a
+      ><a name="1519" href="Data.BoundedVec.html#1404" class="Bound"
+      >n</a
+      ><a name="1520"
+      > </a
+      ><a name="1521" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="1522"
+      > </a
+      ><a name="1523" href="Data.BoundedVec.html#1396" class="Bound"
+      >m</a
+      ><a name="1524" class="Symbol"
+      >)</a
+      ><a name="1525"
+      >
+    </a
+      ><a name="1530" href="Data.BoundedVec.html#1492" class="Function"
+      >lemma</a
+      ><a name="1535"
+      > </a
+      ><a name="1536" class="Symbol"
+      >=</a
+      ><a name="1537"
+      > </a
+      ><a name="1538" href="Relation.Binary.Reflection.html#2382" class="Function"
+      >solve</a
+      ><a name="1543"
+      > </a
+      ><a name="1544" class="Number"
+      >2</a
+      ><a name="1545"
+      > </a
+      ><a name="1546" class="Symbol"
+      >(&#955;</a
+      ><a name="1548"
+      > </a
+      ><a name="1549" href="Data.BoundedVec.html#1549" class="Bound"
+      >m</a
+      ><a name="1550"
+      > </a
+      ><a name="1551" href="Data.BoundedVec.html#1551" class="Bound"
+      >n</a
+      ><a name="1552"
+      > </a
+      ><a name="1553" class="Symbol"
+      >&#8594;</a
+      ><a name="1554"
+      > </a
+      ><a name="1555" href="Data.BoundedVec.html#1551" class="Bound"
+      >n</a
+      ><a name="1556"
+      > </a
+      ><a name="1557" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      >:+</a
+      ><a name="1559"
+      > </a
+      ><a name="1560" class="Symbol"
+      >(</a
+      ><a name="1561" href="Algebra.RingSolver.html#2104" class="InductiveConstructor"
+      >con</a
+      ><a name="1564"
+      > </a
+      ><a name="1565" class="Number"
+      >1</a
+      ><a name="1566"
+      > </a
+      ><a name="1567" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      >:+</a
+      ><a name="1569"
+      > </a
+      ><a name="1570" href="Data.BoundedVec.html#1549" class="Bound"
+      >m</a
+      ><a name="1571" class="Symbol"
+      >)</a
+      ><a name="1572"
+      >  </a
+      ><a name="1574" href="Relation.Binary.Reflection.html#3491" class="Function Operator"
+      >:=</a
+      ><a name="1576"
+      >  </a
+      ><a name="1578" href="Algebra.RingSolver.html#2104" class="InductiveConstructor"
+      >con</a
+      ><a name="1581"
+      > </a
+      ><a name="1582" class="Number"
+      >1</a
+      ><a name="1583"
+      > </a
+      ><a name="1584" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      >:+</a
+      ><a name="1586"
+      > </a
+      ><a name="1587" class="Symbol"
+      >(</a
+      ><a name="1588" href="Data.BoundedVec.html#1551" class="Bound"
+      >n</a
+      ><a name="1589"
+      > </a
+      ><a name="1590" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      >:+</a
+      ><a name="1592"
+      > </a
+      ><a name="1593" href="Data.BoundedVec.html#1549" class="Bound"
+      >m</a
+      ><a name="1594" class="Symbol"
+      >))</a
+      ><a name="1596"
+      >
+                    </a
+      ><a name="1617" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1621"
+      > </a
+      ><a name="1622" href="Data.BoundedVec.html#1396" class="Bound"
+      >m</a
+      ><a name="1623"
+      > </a
+      ><a name="1624" href="Data.BoundedVec.html#1404" class="Bound"
+      >n</a
+      ><a name="1625"
+      >
+
+</a
+      ><a name="1627" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="1699"
+      >
+</a
+      ><a name="1700" class="Comment"
+      >-- Conversions</a
+      ><a name="1714"
+      >
+
+</a
+      ><a name="1716" class="Keyword"
+      >abstract</a
+      ><a name="1724"
+      >
+
+  </a
+      ><a name="1728" href="Data.BoundedVec.html#1728" class="Function"
+      >fromList</a
+      ><a name="1736"
+      > </a
+      ><a name="1737" class="Symbol"
+      >:</a
+      ><a name="1738"
+      > </a
+      ><a name="1739" class="Symbol"
+      >&#8704;</a
+      ><a name="1740"
+      > </a
+      ><a name="1741" class="Symbol"
+      >{</a
+      ><a name="1742" href="Data.BoundedVec.html#1742" class="Bound"
+      >a</a
+      ><a name="1743" class="Symbol"
+      >}</a
+      ><a name="1744"
+      > </a
+      ><a name="1745" class="Symbol"
+      >&#8594;</a
+      ><a name="1746"
+      > </a
+      ><a name="1747" class="Symbol"
+      >(</a
+      ><a name="1748" href="Data.BoundedVec.html#1748" class="Bound"
+      >xs</a
+      ><a name="1750"
+      > </a
+      ><a name="1751" class="Symbol"
+      >:</a
+      ><a name="1752"
+      > </a
+      ><a name="1753" href="Data.List.html#725" class="Datatype"
+      >List</a
+      ><a name="1757"
+      > </a
+      ><a name="1758" href="Data.BoundedVec.html#1742" class="Bound"
+      >a</a
+      ><a name="1759" class="Symbol"
+      >)</a
+      ><a name="1760"
+      > </a
+      ><a name="1761" class="Symbol"
+      >&#8594;</a
+      ><a name="1762"
+      > </a
+      ><a name="1763" href="Data.BoundedVec.html#582" class="Datatype"
+      >BoundedVec</a
+      ><a name="1773"
+      > </a
+      ><a name="1774" href="Data.BoundedVec.html#1742" class="Bound"
+      >a</a
+      ><a name="1775"
+      > </a
+      ><a name="1776" class="Symbol"
+      >(</a
+      ><a name="1777" href="Data.List.html#2989" class="Function"
+      >List.length</a
+      ><a name="1788"
+      > </a
+      ><a name="1789" href="Data.BoundedVec.html#1748" class="Bound"
+      >xs</a
+      ><a name="1791" class="Symbol"
+      >)</a
+      ><a name="1792"
+      >
+  </a
+      ><a name="1795" href="Data.BoundedVec.html#1728" class="Function"
+      >fromList</a
+      ><a name="1803"
+      > </a
+      ><a name="1804" class="Symbol"
+      >{</a
+      ><a name="1805" class="Argument"
+      >a</a
+      ><a name="1806"
+      > </a
+      ><a name="1807" class="Symbol"
+      >=</a
+      ><a name="1808"
+      > </a
+      ><a name="1809" href="Data.BoundedVec.html#1809" class="Bound"
+      >a</a
+      ><a name="1810" class="Symbol"
+      >}</a
+      ><a name="1811"
+      > </a
+      ><a name="1812" href="Data.BoundedVec.html#1812" class="Bound"
+      >xs</a
+      ><a name="1814"
+      > </a
+      ><a name="1815" class="Symbol"
+      >=</a
+      ><a name="1816"
+      >
+    </a
+      ><a name="1821" href="Relation.Binary.PropositionalEquality.Core.html#705" class="Function"
+      >subst</a
+      ><a name="1826"
+      > </a
+      ><a name="1827" class="Symbol"
+      >(</a
+      ><a name="1828" href="Data.BoundedVec.html#582" class="Datatype"
+      >BoundedVec</a
+      ><a name="1838"
+      > </a
+      ><a name="1839" href="Data.BoundedVec.html#1809" class="Bound"
+      >a</a
+      ><a name="1840" class="Symbol"
+      >)</a
+      ><a name="1841"
+      > </a
+      ><a name="1842" href="Data.BoundedVec.html#1910" class="Function"
+      >lemma</a
+      ><a name="1847"
+      >
+            </a
+      ><a name="1860" class="Symbol"
+      >(</a
+      ><a name="1861" href="Data.BoundedVec.html#623" class="InductiveConstructor"
+      >bVec</a
+      ><a name="1865"
+      > </a
+      ><a name="1866" class="Symbol"
+      >{</a
+      ><a name="1867" class="Argument"
+      >m</a
+      ><a name="1868"
+      > </a
+      ><a name="1869" class="Symbol"
+      >=</a
+      ><a name="1870"
+      > </a
+      ><a name="1871" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="1875" class="Symbol"
+      >}</a
+      ><a name="1876"
+      > </a
+      ><a name="1877" class="Symbol"
+      >(</a
+      ><a name="1878" href="Data.Vec.html#4828" class="Function"
+      >Vec.fromList</a
+      ><a name="1890"
+      > </a
+      ><a name="1891" href="Data.BoundedVec.html#1812" class="Bound"
+      >xs</a
+      ><a name="1893" class="Symbol"
+      >))</a
+      ><a name="1895"
+      >
+    </a
+      ><a name="1900" class="Keyword"
+      >where</a
+      ><a name="1905"
+      >
+    </a
+      ><a name="1910" href="Data.BoundedVec.html#1910" class="Function"
+      >lemma</a
+      ><a name="1915"
+      > </a
+      ><a name="1916" class="Symbol"
+      >:</a
+      ><a name="1917"
+      > </a
+      ><a name="1918" href="Data.List.html#2989" class="Function"
+      >List.length</a
+      ><a name="1929"
+      > </a
+      ><a name="1930" href="Data.BoundedVec.html#1812" class="Bound"
+      >xs</a
+      ><a name="1932"
+      > </a
+      ><a name="1933" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="1934"
+      > </a
+      ><a name="1935" class="Number"
+      >0</a
+      ><a name="1936"
+      > </a
+      ><a name="1937" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1938"
+      > </a
+      ><a name="1939" href="Data.List.html#2989" class="Function"
+      >List.length</a
+      ><a name="1950"
+      > </a
+      ><a name="1951" href="Data.BoundedVec.html#1812" class="Bound"
+      >xs</a
+      ><a name="1953"
+      >
+    </a
+      ><a name="1958" href="Data.BoundedVec.html#1910" class="Function"
+      >lemma</a
+      ><a name="1963"
+      > </a
+      ><a name="1964" class="Symbol"
+      >=</a
+      ><a name="1965"
+      > </a
+      ><a name="1966" href="Relation.Binary.Reflection.html#2382" class="Function"
+      >solve</a
+      ><a name="1971"
+      > </a
+      ><a name="1972" class="Number"
+      >1</a
+      ><a name="1973"
+      > </a
+      ><a name="1974" class="Symbol"
+      >(&#955;</a
+      ><a name="1976"
+      > </a
+      ><a name="1977" href="Data.BoundedVec.html#1977" class="Bound"
+      >m</a
+      ><a name="1978"
+      > </a
+      ><a name="1979" class="Symbol"
+      >&#8594;</a
+      ><a name="1980"
+      > </a
+      ><a name="1981" href="Data.BoundedVec.html#1977" class="Bound"
+      >m</a
+      ><a name="1982"
+      > </a
+      ><a name="1983" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      >:+</a
+      ><a name="1985"
+      > </a
+      ><a name="1986" href="Algebra.RingSolver.html#2104" class="InductiveConstructor"
+      >con</a
+      ><a name="1989"
+      > </a
+      ><a name="1990" class="Number"
+      >0</a
+      ><a name="1991"
+      >  </a
+      ><a name="1993" href="Relation.Binary.Reflection.html#3491" class="Function Operator"
+      >:=</a
+      ><a name="1995"
+      >  </a
+      ><a name="1997" href="Data.BoundedVec.html#1977" class="Bound"
+      >m</a
+      ><a name="1998" class="Symbol"
+      >)</a
+      ><a name="1999"
+      > </a
+      ><a name="2000" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2004"
+      > </a
+      ><a name="2005" class="Symbol"
+      >_</a
+      ><a name="2006"
+      >
+
+  </a
+      ><a name="2010" href="Data.BoundedVec.html#2010" class="Function"
+      >toList</a
+      ><a name="2016"
+      > </a
+      ><a name="2017" class="Symbol"
+      >:</a
+      ><a name="2018"
+      > </a
+      ><a name="2019" class="Symbol"
+      >&#8704;</a
+      ><a name="2020"
+      > </a
+      ><a name="2021" class="Symbol"
+      >{</a
+      ><a name="2022" href="Data.BoundedVec.html#2022" class="Bound"
+      >a</a
+      ><a name="2023"
+      > </a
+      ><a name="2024" href="Data.BoundedVec.html#2024" class="Bound"
+      >n</a
+      ><a name="2025" class="Symbol"
+      >}</a
+      ><a name="2026"
+      > </a
+      ><a name="2027" class="Symbol"
+      >&#8594;</a
+      ><a name="2028"
+      > </a
+      ><a name="2029" href="Data.BoundedVec.html#582" class="Datatype"
+      >BoundedVec</a
+      ><a name="2039"
+      > </a
+      ><a name="2040" href="Data.BoundedVec.html#2022" class="Bound"
+      >a</a
+      ><a name="2041"
+      > </a
+      ><a name="2042" href="Data.BoundedVec.html#2024" class="Bound"
+      >n</a
+      ><a name="2043"
+      > </a
+      ><a name="2044" class="Symbol"
+      >&#8594;</a
+      ><a name="2045"
+      > </a
+      ><a name="2046" href="Data.List.html#725" class="Datatype"
+      >List</a
+      ><a name="2050"
+      > </a
+      ><a name="2051" href="Data.BoundedVec.html#2022" class="Bound"
+      >a</a
+      ><a name="2052"
+      >
+  </a
+      ><a name="2055" href="Data.BoundedVec.html#2010" class="Function"
+      >toList</a
+      ><a name="2061"
+      > </a
+      ><a name="2062" class="Symbol"
+      >(</a
+      ><a name="2063" href="Data.BoundedVec.html#623" class="InductiveConstructor"
+      >bVec</a
+      ><a name="2067"
+      > </a
+      ><a name="2068" href="Data.BoundedVec.html#2068" class="Bound"
+      >xs</a
+      ><a name="2070" class="Symbol"
+      >)</a
+      ><a name="2071"
+      > </a
+      ><a name="2072" class="Symbol"
+      >=</a
+      ><a name="2073"
+      > </a
+      ><a name="2074" href="Data.Vec.html#4712" class="Function"
+      >Vec.toList</a
+      ><a name="2084"
+      > </a
+      ><a name="2085" href="Data.BoundedVec.html#2068" class="Bound"
+      >xs</a
+      ><a name="2087"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

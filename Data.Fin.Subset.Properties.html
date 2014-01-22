@@ -1,0 +1,4301 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Fin.Subset.Properties</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Some properties about subsets</a
+      ><a name="138"
+      >
+</a
+      ><a name="139" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="211"
+      >
+
+</a
+      ><a name="213" class="Keyword"
+      >module</a
+      ><a name="219"
+      > </a
+      ><a name="220" href="Data.Fin.Subset.Properties.html#1" class="Module"
+      >Data.Fin.Subset.Properties</a
+      ><a name="246"
+      > </a
+      ><a name="247" class="Keyword"
+      >where</a
+      ><a name="252"
+      >
+
+</a
+      ><a name="254" class="Keyword"
+      >open</a
+      ><a name="258"
+      > </a
+      ><a name="259" class="Keyword"
+      >import</a
+      ><a name="265"
+      > </a
+      ><a name="266" href="Algebra.html#1" class="Module"
+      >Algebra</a
+      ><a name="273"
+      >
+</a
+      ><a name="274" class="Keyword"
+      >import</a
+      ><a name="280"
+      > </a
+      ><a name="281" href="Algebra.Properties.BooleanAlgebra.html#1" class="Module"
+      >Algebra.Properties.BooleanAlgebra</a
+      ><a name="314"
+      > </a
+      ><a name="315" class="Symbol"
+      >as</a
+      ><a name="317"
+      > </a
+      ><a name="318" class="Module"
+      >BoolProp</a
+      ><a name="326"
+      >
+</a
+      ><a name="327" class="Keyword"
+      >open</a
+      ><a name="331"
+      > </a
+      ><a name="332" class="Keyword"
+      >import</a
+      ><a name="338"
+      > </a
+      ><a name="339" href="Data.Empty.html#1" class="Module"
+      >Data.Empty</a
+      ><a name="349"
+      > </a
+      ><a name="350" class="Keyword"
+      >using</a
+      ><a name="355"
+      > </a
+      ><a name="356" class="Symbol"
+      >(</a
+      ><a name="357"
+      >&#8869;-elim</a
+      ><a name="363" class="Symbol"
+      >)</a
+      ><a name="364"
+      >
+</a
+      ><a name="365" class="Keyword"
+      >open</a
+      ><a name="369"
+      > </a
+      ><a name="370" class="Keyword"
+      >import</a
+      ><a name="376"
+      > </a
+      ><a name="377" href="Data.Fin.html#1" class="Module"
+      >Data.Fin</a
+      ><a name="385"
+      > </a
+      ><a name="386" class="Keyword"
+      >using</a
+      ><a name="391"
+      > </a
+      ><a name="392" class="Symbol"
+      >(</a
+      ><a name="393"
+      >Fin</a
+      ><a name="396" class="Symbol"
+      >);</a
+      ><a name="398"
+      > </a
+      ><a name="399" class="Keyword"
+      >open</a
+      ><a name="403"
+      > </a
+      ><a name="404" href="Data.Fin.html#366" class="Module"
+      >Data.</a
+      ><a name="409" href="Data.Fin.html#371" class="Module"
+      >Fin.</a
+      ><a name="413" href="Data.Fin.html#775" class="Module"
+      >Fin</a
+      ><a name="416"
+      >
+</a
+      ><a name="417" class="Keyword"
+      >open</a
+      ><a name="421"
+      > </a
+      ><a name="422" class="Keyword"
+      >import</a
+      ><a name="428"
+      > </a
+      ><a name="429" href="Data.Fin.Subset.html#1" class="Module"
+      >Data.Fin.Subset</a
+      ><a name="444"
+      >
+</a
+      ><a name="445" class="Keyword"
+      >open</a
+      ><a name="449"
+      > </a
+      ><a name="450" class="Keyword"
+      >import</a
+      ><a name="456"
+      > </a
+      ><a name="457" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="465"
+      > </a
+      ><a name="466" class="Keyword"
+      >using</a
+      ><a name="471"
+      > </a
+      ><a name="472" class="Symbol"
+      >(</a
+      ><a name="473"
+      >&#8469;</a
+      ><a name="474" class="Symbol"
+      >)</a
+      ><a name="475"
+      >
+</a
+      ><a name="476" class="Keyword"
+      >open</a
+      ><a name="480"
+      > </a
+      ><a name="481" class="Keyword"
+      >import</a
+      ><a name="487"
+      > </a
+      ><a name="488" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="500"
+      >
+</a
+      ><a name="501" class="Keyword"
+      >open</a
+      ><a name="505"
+      > </a
+      ><a name="506" class="Keyword"
+      >import</a
+      ><a name="512"
+      > </a
+      ><a name="513" href="Data.Sum.html#1" class="Module"
+      >Data.Sum</a
+      ><a name="521"
+      > </a
+      ><a name="522" class="Symbol"
+      >as</a
+      ><a name="524"
+      > </a
+      ><a name="525" class="Module"
+      >Sum</a
+      ><a name="528"
+      >
+</a
+      ><a name="529" class="Keyword"
+      >open</a
+      ><a name="533"
+      > </a
+      ><a name="534" class="Keyword"
+      >import</a
+      ><a name="540"
+      > </a
+      ><a name="541" href="Data.Vec.html#1" class="Module"
+      >Data.Vec</a
+      ><a name="549"
+      > </a
+      ><a name="550" class="Keyword"
+      >hiding</a
+      ><a name="556"
+      > </a
+      ><a name="557" class="Symbol"
+      >(</a
+      ><a name="558"
+      >_&#8712;_</a
+      ><a name="561" class="Symbol"
+      >)</a
+      ><a name="562"
+      >
+</a
+      ><a name="563" class="Keyword"
+      >open</a
+      ><a name="567"
+      > </a
+      ><a name="568" class="Keyword"
+      >import</a
+      ><a name="574"
+      > </a
+      ><a name="575" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="583"
+      >
+</a
+      ><a name="584" class="Keyword"
+      >open</a
+      ><a name="588"
+      > </a
+      ><a name="589" class="Keyword"
+      >import</a
+      ><a name="595"
+      > </a
+      ><a name="596" href="Function.Equality.html#1" class="Module"
+      >Function.Equality</a
+      ><a name="613"
+      > </a
+      ><a name="614" class="Keyword"
+      >using</a
+      ><a name="619"
+      > </a
+      ><a name="620" class="Symbol"
+      >(</a
+      ><a name="621"
+      >_&#10216;$&#10217;_</a
+      ><a name="626" class="Symbol"
+      >)</a
+      ><a name="627"
+      >
+</a
+      ><a name="628" class="Keyword"
+      >open</a
+      ><a name="632"
+      > </a
+      ><a name="633" class="Keyword"
+      >import</a
+      ><a name="639"
+      > </a
+      ><a name="640" href="Function.Equivalence.html#1" class="Module"
+      >Function.Equivalence</a
+      ><a name="660"
+      >
+  </a
+      ><a name="663" class="Keyword"
+      >using</a
+      ><a name="668"
+      > </a
+      ><a name="669" class="Symbol"
+      >(</a
+      ><a name="670"
+      >_&#8660;_</a
+      ><a name="673" class="Symbol"
+      >;</a
+      ><a name="674"
+      > equivalence</a
+      ><a name="686" class="Symbol"
+      >;</a
+      ><a name="687"
+      > </a
+      ><a name="688" class="Keyword"
+      >module</a
+      ><a name="694"
+      > Equivalence</a
+      ><a name="706" class="Symbol"
+      >)</a
+      ><a name="707"
+      >
+</a
+      ><a name="708" class="Keyword"
+      >open</a
+      ><a name="712"
+      > </a
+      ><a name="713" class="Keyword"
+      >import</a
+      ><a name="719"
+      > </a
+      ><a name="720" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="735"
+      >
+</a
+      ><a name="736" class="Keyword"
+      >open</a
+      ><a name="740"
+      > </a
+      ><a name="741" class="Keyword"
+      >import</a
+      ><a name="747"
+      > </a
+      ><a name="748" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="785"
+      > </a
+      ><a name="786" class="Symbol"
+      >as</a
+      ><a name="788"
+      > </a
+      ><a name="789" class="Module"
+      >P</a
+      ><a name="790"
+      > </a
+      ><a name="791" class="Keyword"
+      >using</a
+      ><a name="796"
+      > </a
+      ><a name="797" class="Symbol"
+      >(</a
+      ><a name="798"
+      >_&#8801;_</a
+      ><a name="801" class="Symbol"
+      >)</a
+      ><a name="802"
+      >
+
+</a
+      ><a name="804" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="876"
+      >
+</a
+      ><a name="877" class="Comment"
+      >-- Constructor mangling</a
+      ><a name="900"
+      >
+
+</a
+      ><a name="902" href="Data.Fin.Subset.Properties.html#902" class="Function"
+      >drop-there</a
+      ><a name="912"
+      > </a
+      ><a name="913" class="Symbol"
+      >:</a
+      ><a name="914"
+      > </a
+      ><a name="915" class="Symbol"
+      >&#8704;</a
+      ><a name="916"
+      > </a
+      ><a name="917" class="Symbol"
+      >{</a
+      ><a name="918" href="Data.Fin.Subset.Properties.html#918" class="Bound"
+      >s</a
+      ><a name="919"
+      > </a
+      ><a name="920" href="Data.Fin.Subset.Properties.html#920" class="Bound"
+      >n</a
+      ><a name="921"
+      > </a
+      ><a name="922" href="Data.Fin.Subset.Properties.html#922" class="Bound"
+      >x</a
+      ><a name="923" class="Symbol"
+      >}</a
+      ><a name="924"
+      > </a
+      ><a name="925" class="Symbol"
+      >{</a
+      ><a name="926" href="Data.Fin.Subset.Properties.html#926" class="Bound"
+      >p</a
+      ><a name="927"
+      > </a
+      ><a name="928" class="Symbol"
+      >:</a
+      ><a name="929"
+      > </a
+      ><a name="930" href="Data.Fin.Subset.html#951" class="Function"
+      >Subset</a
+      ><a name="936"
+      > </a
+      ><a name="937" href="Data.Fin.Subset.Properties.html#920" class="Bound"
+      >n</a
+      ><a name="938" class="Symbol"
+      >}</a
+      ><a name="939"
+      > </a
+      ><a name="940" class="Symbol"
+      >&#8594;</a
+      ><a name="941"
+      > </a
+      ><a name="942" href="Data.Fin.html#828" class="InductiveConstructor"
+      >suc</a
+      ><a name="945"
+      > </a
+      ><a name="946" href="Data.Fin.Subset.Properties.html#922" class="Bound"
+      >x</a
+      ><a name="947"
+      > </a
+      ><a name="948" href="Data.Fin.Subset.html#1097" class="Function Operator"
+      >&#8712;</a
+      ><a name="949"
+      > </a
+      ><a name="950" href="Data.Fin.Subset.Properties.html#918" class="Bound"
+      >s</a
+      ><a name="951"
+      > </a
+      ><a name="952" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="953"
+      > </a
+      ><a name="954" href="Data.Fin.Subset.Properties.html#926" class="Bound"
+      >p</a
+      ><a name="955"
+      > </a
+      ><a name="956" class="Symbol"
+      >&#8594;</a
+      ><a name="957"
+      > </a
+      ><a name="958" href="Data.Fin.Subset.Properties.html#922" class="Bound"
+      >x</a
+      ><a name="959"
+      > </a
+      ><a name="960" href="Data.Fin.Subset.html#1097" class="Function Operator"
+      >&#8712;</a
+      ><a name="961"
+      > </a
+      ><a name="962" href="Data.Fin.Subset.Properties.html#926" class="Bound"
+      >p</a
+      ><a name="963"
+      >
+</a
+      ><a name="964" href="Data.Fin.Subset.Properties.html#902" class="Function"
+      >drop-there</a
+      ><a name="974"
+      > </a
+      ><a name="975" class="Symbol"
+      >(</a
+      ><a name="976" href="Data.Vec.html#1074" class="InductiveConstructor"
+      >there</a
+      ><a name="981"
+      > </a
+      ><a name="982" href="Data.Fin.Subset.Properties.html#982" class="Bound"
+      >x&#8712;p</a
+      ><a name="985" class="Symbol"
+      >)</a
+      ><a name="986"
+      > </a
+      ><a name="987" class="Symbol"
+      >=</a
+      ><a name="988"
+      > </a
+      ><a name="989" href="Data.Fin.Subset.Properties.html#982" class="Bound"
+      >x&#8712;p</a
+      ><a name="992"
+      >
+
+</a
+      ><a name="994" href="Data.Fin.Subset.Properties.html#994" class="Function"
+      >drop-&#8759;-&#8838;</a
+      ><a name="1002"
+      > </a
+      ><a name="1003" class="Symbol"
+      >:</a
+      ><a name="1004"
+      > </a
+      ><a name="1005" class="Symbol"
+      >&#8704;</a
+      ><a name="1006"
+      > </a
+      ><a name="1007" class="Symbol"
+      >{</a
+      ><a name="1008" href="Data.Fin.Subset.Properties.html#1008" class="Bound"
+      >n</a
+      ><a name="1009"
+      > </a
+      ><a name="1010" href="Data.Fin.Subset.Properties.html#1010" class="Bound"
+      >s&#8321;</a
+      ><a name="1012"
+      > </a
+      ><a name="1013" href="Data.Fin.Subset.Properties.html#1013" class="Bound"
+      >s&#8322;</a
+      ><a name="1015" class="Symbol"
+      >}</a
+      ><a name="1016"
+      > </a
+      ><a name="1017" class="Symbol"
+      >{</a
+      ><a name="1018" href="Data.Fin.Subset.Properties.html#1018" class="Bound"
+      >p&#8321;</a
+      ><a name="1020"
+      > </a
+      ><a name="1021" href="Data.Fin.Subset.Properties.html#1021" class="Bound"
+      >p&#8322;</a
+      ><a name="1023"
+      > </a
+      ><a name="1024" class="Symbol"
+      >:</a
+      ><a name="1025"
+      > </a
+      ><a name="1026" href="Data.Fin.Subset.html#951" class="Function"
+      >Subset</a
+      ><a name="1032"
+      > </a
+      ><a name="1033" href="Data.Fin.Subset.Properties.html#1008" class="Bound"
+      >n</a
+      ><a name="1034" class="Symbol"
+      >}</a
+      ><a name="1035"
+      > </a
+      ><a name="1036" class="Symbol"
+      >&#8594;</a
+      ><a name="1037"
+      > </a
+      ><a name="1038" href="Data.Fin.Subset.Properties.html#1010" class="Bound"
+      >s&#8321;</a
+      ><a name="1040"
+      > </a
+      ><a name="1041" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1042"
+      > </a
+      ><a name="1043" href="Data.Fin.Subset.Properties.html#1018" class="Bound"
+      >p&#8321;</a
+      ><a name="1045"
+      > </a
+      ><a name="1046" href="Data.Fin.Subset.html#1215" class="Function Operator"
+      >&#8838;</a
+      ><a name="1047"
+      > </a
+      ><a name="1048" href="Data.Fin.Subset.Properties.html#1013" class="Bound"
+      >s&#8322;</a
+      ><a name="1050"
+      > </a
+      ><a name="1051" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1052"
+      > </a
+      ><a name="1053" href="Data.Fin.Subset.Properties.html#1021" class="Bound"
+      >p&#8322;</a
+      ><a name="1055"
+      > </a
+      ><a name="1056" class="Symbol"
+      >&#8594;</a
+      ><a name="1057"
+      > </a
+      ><a name="1058" href="Data.Fin.Subset.Properties.html#1018" class="Bound"
+      >p&#8321;</a
+      ><a name="1060"
+      > </a
+      ><a name="1061" href="Data.Fin.Subset.html#1215" class="Function Operator"
+      >&#8838;</a
+      ><a name="1062"
+      > </a
+      ><a name="1063" href="Data.Fin.Subset.Properties.html#1021" class="Bound"
+      >p&#8322;</a
+      ><a name="1065"
+      >
+</a
+      ><a name="1066" href="Data.Fin.Subset.Properties.html#994" class="Function"
+      >drop-&#8759;-&#8838;</a
+      ><a name="1074"
+      > </a
+      ><a name="1075" href="Data.Fin.Subset.Properties.html#1075" class="Bound"
+      >p&#8321;s&#8321;&#8838;p&#8322;s&#8322;</a
+      ><a name="1084"
+      > </a
+      ><a name="1085" href="Data.Fin.Subset.Properties.html#1085" class="Bound"
+      >x&#8712;p&#8321;</a
+      ><a name="1089"
+      > </a
+      ><a name="1090" class="Symbol"
+      >=</a
+      ><a name="1091"
+      > </a
+      ><a name="1092" href="Data.Fin.Subset.Properties.html#902" class="Function"
+      >drop-there</a
+      ><a name="1102"
+      > </a
+      ><a name="1103" href="Function.html#1835" class="Function Operator"
+      >$</a
+      ><a name="1104"
+      > </a
+      ><a name="1105" href="Data.Fin.Subset.Properties.html#1075" class="Bound"
+      >p&#8321;s&#8321;&#8838;p&#8322;s&#8322;</a
+      ><a name="1114"
+      > </a
+      ><a name="1115" class="Symbol"
+      >(</a
+      ><a name="1116" href="Data.Vec.html#1074" class="InductiveConstructor"
+      >there</a
+      ><a name="1121"
+      > </a
+      ><a name="1122" href="Data.Fin.Subset.Properties.html#1085" class="Bound"
+      >x&#8712;p&#8321;</a
+      ><a name="1126" class="Symbol"
+      >)</a
+      ><a name="1127"
+      >
+
+</a
+      ><a name="1129" href="Data.Fin.Subset.Properties.html#1129" class="Function"
+      >drop-&#8759;-Empty</a
+      ><a name="1141"
+      > </a
+      ><a name="1142" class="Symbol"
+      >:</a
+      ><a name="1143"
+      > </a
+      ><a name="1144" class="Symbol"
+      >&#8704;</a
+      ><a name="1145"
+      > </a
+      ><a name="1146" class="Symbol"
+      >{</a
+      ><a name="1147" href="Data.Fin.Subset.Properties.html#1147" class="Bound"
+      >n</a
+      ><a name="1148"
+      > </a
+      ><a name="1149" href="Data.Fin.Subset.Properties.html#1149" class="Bound"
+      >s</a
+      ><a name="1150" class="Symbol"
+      >}</a
+      ><a name="1151"
+      > </a
+      ><a name="1152" class="Symbol"
+      >{</a
+      ><a name="1153" href="Data.Fin.Subset.Properties.html#1153" class="Bound"
+      >p</a
+      ><a name="1154"
+      > </a
+      ><a name="1155" class="Symbol"
+      >:</a
+      ><a name="1156"
+      > </a
+      ><a name="1157" href="Data.Fin.Subset.html#951" class="Function"
+      >Subset</a
+      ><a name="1163"
+      > </a
+      ><a name="1164" href="Data.Fin.Subset.Properties.html#1147" class="Bound"
+      >n</a
+      ><a name="1165" class="Symbol"
+      >}</a
+      ><a name="1166"
+      > </a
+      ><a name="1167" class="Symbol"
+      >&#8594;</a
+      ><a name="1168"
+      > </a
+      ><a name="1169" href="Data.Fin.Subset.html#2575" class="Function"
+      >Empty</a
+      ><a name="1174"
+      > </a
+      ><a name="1175" class="Symbol"
+      >(</a
+      ><a name="1176" href="Data.Fin.Subset.Properties.html#1149" class="Bound"
+      >s</a
+      ><a name="1177"
+      > </a
+      ><a name="1178" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1179"
+      > </a
+      ><a name="1180" href="Data.Fin.Subset.Properties.html#1153" class="Bound"
+      >p</a
+      ><a name="1181" class="Symbol"
+      >)</a
+      ><a name="1182"
+      > </a
+      ><a name="1183" class="Symbol"
+      >&#8594;</a
+      ><a name="1184"
+      > </a
+      ><a name="1185" href="Data.Fin.Subset.html#2575" class="Function"
+      >Empty</a
+      ><a name="1190"
+      > </a
+      ><a name="1191" href="Data.Fin.Subset.Properties.html#1153" class="Bound"
+      >p</a
+      ><a name="1192"
+      >
+</a
+      ><a name="1193" href="Data.Fin.Subset.Properties.html#1129" class="Function"
+      >drop-&#8759;-Empty</a
+      ><a name="1205"
+      > </a
+      ><a name="1206" href="Data.Fin.Subset.Properties.html#1206" class="Bound"
+      >&#172;&#8707;&#8712;</a
+      ><a name="1209"
+      > </a
+      ><a name="1210" class="Symbol"
+      >(</a
+      ><a name="1211" href="Data.Fin.Subset.Properties.html#1211" class="Bound"
+      >x</a
+      ><a name="1212"
+      > </a
+      ><a name="1213" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1214"
+      > </a
+      ><a name="1215" href="Data.Fin.Subset.Properties.html#1215" class="Bound"
+      >x&#8712;p</a
+      ><a name="1218" class="Symbol"
+      >)</a
+      ><a name="1219"
+      > </a
+      ><a name="1220" class="Symbol"
+      >=</a
+      ><a name="1221"
+      > </a
+      ><a name="1222" href="Data.Fin.Subset.Properties.html#1206" class="Bound"
+      >&#172;&#8707;&#8712;</a
+      ><a name="1225"
+      > </a
+      ><a name="1226" class="Symbol"
+      >(</a
+      ><a name="1227" href="Data.Fin.html#828" class="InductiveConstructor"
+      >suc</a
+      ><a name="1230"
+      > </a
+      ><a name="1231" href="Data.Fin.Subset.Properties.html#1211" class="Bound"
+      >x</a
+      ><a name="1232"
+      > </a
+      ><a name="1233" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1234"
+      > </a
+      ><a name="1235" href="Data.Vec.html#1074" class="InductiveConstructor"
+      >there</a
+      ><a name="1240"
+      > </a
+      ><a name="1241" href="Data.Fin.Subset.Properties.html#1215" class="Bound"
+      >x&#8712;p</a
+      ><a name="1244" class="Symbol"
+      >)</a
+      ><a name="1245"
+      >
+
+</a
+      ><a name="1247" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="1319"
+      >
+</a
+      ><a name="1320" class="Comment"
+      >-- Properties involving &#8869;</a
+      ><a name="1345"
+      >
+
+</a
+      ><a name="1347" href="Data.Fin.Subset.Properties.html#1347" class="Function"
+      >&#8713;&#8869;</a
+      ><a name="1349"
+      > </a
+      ><a name="1350" class="Symbol"
+      >:</a
+      ><a name="1351"
+      > </a
+      ><a name="1352" class="Symbol"
+      >&#8704;</a
+      ><a name="1353"
+      > </a
+      ><a name="1354" class="Symbol"
+      >{</a
+      ><a name="1355" href="Data.Fin.Subset.Properties.html#1355" class="Bound"
+      >n</a
+      ><a name="1356" class="Symbol"
+      >}</a
+      ><a name="1357"
+      > </a
+      ><a name="1358" class="Symbol"
+      >{</a
+      ><a name="1359" href="Data.Fin.Subset.Properties.html#1359" class="Bound"
+      >x</a
+      ><a name="1360"
+      > </a
+      ><a name="1361" class="Symbol"
+      >:</a
+      ><a name="1362"
+      > </a
+      ><a name="1363" href="Data.Fin.html#775" class="Datatype"
+      >Fin</a
+      ><a name="1366"
+      > </a
+      ><a name="1367" href="Data.Fin.Subset.Properties.html#1355" class="Bound"
+      >n</a
+      ><a name="1368" class="Symbol"
+      >}</a
+      ><a name="1369"
+      > </a
+      ><a name="1370" class="Symbol"
+      >&#8594;</a
+      ><a name="1371"
+      > </a
+      ><a name="1372" href="Data.Fin.Subset.Properties.html#1359" class="Bound"
+      >x</a
+      ><a name="1373"
+      > </a
+      ><a name="1374" href="Data.Fin.Subset.html#1159" class="Function Operator"
+      >&#8713;</a
+      ><a name="1375"
+      > </a
+      ><a name="1376" href="Algebra.html#12888" class="Function"
+      >&#8869;</a
+      ><a name="1377"
+      >
+</a
+      ><a name="1378" href="Data.Fin.Subset.Properties.html#1347" class="Function"
+      >&#8713;&#8869;</a
+      ><a name="1380"
+      > </a
+      ><a name="1381" class="Symbol"
+      >(</a
+      ><a name="1382" href="Data.Vec.html#1074" class="InductiveConstructor"
+      >there</a
+      ><a name="1387"
+      > </a
+      ><a name="1388" href="Data.Fin.Subset.Properties.html#1388" class="Bound"
+      >p</a
+      ><a name="1389" class="Symbol"
+      >)</a
+      ><a name="1390"
+      > </a
+      ><a name="1391" class="Symbol"
+      >=</a
+      ><a name="1392"
+      > </a
+      ><a name="1393" href="Data.Fin.Subset.Properties.html#1347" class="Function"
+      >&#8713;&#8869;</a
+      ><a name="1395"
+      > </a
+      ><a name="1396" href="Data.Fin.Subset.Properties.html#1388" class="Bound"
+      >p</a
+      ><a name="1397"
+      >
+
+</a
+      ><a name="1399" href="Data.Fin.Subset.Properties.html#1399" class="Function"
+      >&#8869;&#8838;</a
+      ><a name="1401"
+      > </a
+      ><a name="1402" class="Symbol"
+      >:</a
+      ><a name="1403"
+      > </a
+      ><a name="1404" class="Symbol"
+      >&#8704;</a
+      ><a name="1405"
+      > </a
+      ><a name="1406" class="Symbol"
+      >{</a
+      ><a name="1407" href="Data.Fin.Subset.Properties.html#1407" class="Bound"
+      >n</a
+      ><a name="1408" class="Symbol"
+      >}</a
+      ><a name="1409"
+      > </a
+      ><a name="1410" class="Symbol"
+      >{</a
+      ><a name="1411" href="Data.Fin.Subset.Properties.html#1411" class="Bound"
+      >p</a
+      ><a name="1412"
+      > </a
+      ><a name="1413" class="Symbol"
+      >:</a
+      ><a name="1414"
+      > </a
+      ><a name="1415" href="Data.Fin.Subset.html#951" class="Function"
+      >Subset</a
+      ><a name="1421"
+      > </a
+      ><a name="1422" href="Data.Fin.Subset.Properties.html#1407" class="Bound"
+      >n</a
+      ><a name="1423" class="Symbol"
+      >}</a
+      ><a name="1424"
+      > </a
+      ><a name="1425" class="Symbol"
+      >&#8594;</a
+      ><a name="1426"
+      > </a
+      ><a name="1427" href="Algebra.html#12888" class="Function"
+      >&#8869;</a
+      ><a name="1428"
+      > </a
+      ><a name="1429" href="Data.Fin.Subset.html#1215" class="Function Operator"
+      >&#8838;</a
+      ><a name="1430"
+      > </a
+      ><a name="1431" href="Data.Fin.Subset.Properties.html#1411" class="Bound"
+      >p</a
+      ><a name="1432"
+      >
+</a
+      ><a name="1433" href="Data.Fin.Subset.Properties.html#1399" class="Function"
+      >&#8869;&#8838;</a
+      ><a name="1435"
+      > </a
+      ><a name="1436" href="Data.Fin.Subset.Properties.html#1436" class="Bound"
+      >x&#8712;&#8869;</a
+      ><a name="1439"
+      > </a
+      ><a name="1440" class="Keyword"
+      >with</a
+      ><a name="1444"
+      > </a
+      ><a name="1445" href="Data.Fin.Subset.Properties.html#1347" class="Function"
+      >&#8713;&#8869;</a
+      ><a name="1447"
+      > </a
+      ><a name="1448" href="Data.Fin.Subset.Properties.html#1436" class="Bound"
+      >x&#8712;&#8869;</a
+      ><a name="1451"
+      >
+</a
+      ><a name="1452" class="Symbol"
+      >...</a
+      ><a name="1455"
+      > </a
+      ><a name="1456" class="Symbol"
+      >|</a
+      ><a name="1457"
+      > </a
+      ><a name="1458" class="Symbol"
+      >()</a
+      ><a name="1460"
+      >
+
+</a
+      ><a name="1462" href="Data.Fin.Subset.Properties.html#1462" class="Function"
+      >Empty-unique</a
+      ><a name="1474"
+      > </a
+      ><a name="1475" class="Symbol"
+      >:</a
+      ><a name="1476"
+      > </a
+      ><a name="1477" class="Symbol"
+      >&#8704;</a
+      ><a name="1478"
+      > </a
+      ><a name="1479" class="Symbol"
+      >{</a
+      ><a name="1480" href="Data.Fin.Subset.Properties.html#1480" class="Bound"
+      >n</a
+      ><a name="1481" class="Symbol"
+      >}</a
+      ><a name="1482"
+      > </a
+      ><a name="1483" class="Symbol"
+      >{</a
+      ><a name="1484" href="Data.Fin.Subset.Properties.html#1484" class="Bound"
+      >p</a
+      ><a name="1485"
+      > </a
+      ><a name="1486" class="Symbol"
+      >:</a
+      ><a name="1487"
+      > </a
+      ><a name="1488" href="Data.Fin.Subset.html#951" class="Function"
+      >Subset</a
+      ><a name="1494"
+      > </a
+      ><a name="1495" href="Data.Fin.Subset.Properties.html#1480" class="Bound"
+      >n</a
+      ><a name="1496" class="Symbol"
+      >}</a
+      ><a name="1497"
+      > </a
+      ><a name="1498" class="Symbol"
+      >&#8594;</a
+      ><a name="1499"
+      >
+               </a
+      ><a name="1515" href="Data.Fin.Subset.html#2575" class="Function"
+      >Empty</a
+      ><a name="1520"
+      > </a
+      ><a name="1521" href="Data.Fin.Subset.Properties.html#1484" class="Bound"
+      >p</a
+      ><a name="1522"
+      > </a
+      ><a name="1523" class="Symbol"
+      >&#8594;</a
+      ><a name="1524"
+      > </a
+      ><a name="1525" href="Data.Fin.Subset.Properties.html#1484" class="Bound"
+      >p</a
+      ><a name="1526"
+      > </a
+      ><a name="1527" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1528"
+      > </a
+      ><a name="1529" href="Algebra.html#12888" class="Function"
+      >&#8869;</a
+      ><a name="1530"
+      >
+</a
+      ><a name="1531" href="Data.Fin.Subset.Properties.html#1462" class="Function"
+      >Empty-unique</a
+      ><a name="1543"
+      > </a
+      ><a name="1544" class="Symbol"
+      >{</a
+      ><a name="1545" class="Argument"
+      >p</a
+      ><a name="1546"
+      > </a
+      ><a name="1547" class="Symbol"
+      >=</a
+      ><a name="1548"
+      > </a
+      ><a name="1549" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="1551" class="Symbol"
+      >}</a
+      ><a name="1552"
+      >           </a
+      ><a name="1563" href="Data.Fin.Subset.Properties.html#1563" class="Bound"
+      >&#172;&#8707;&#8712;</a
+      ><a name="1566"
+      > </a
+      ><a name="1567" class="Symbol"
+      >=</a
+      ><a name="1568"
+      > </a
+      ><a name="1569" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >P.refl</a
+      ><a name="1575"
+      >
+</a
+      ><a name="1576" href="Data.Fin.Subset.Properties.html#1462" class="Function"
+      >Empty-unique</a
+      ><a name="1588"
+      > </a
+      ><a name="1589" class="Symbol"
+      >{</a
+      ><a name="1590" class="Argument"
+      >p</a
+      ><a name="1591"
+      > </a
+      ><a name="1592" class="Symbol"
+      >=</a
+      ><a name="1593"
+      > </a
+      ><a name="1594" href="Data.Fin.Subset.Properties.html#1594" class="Bound"
+      >s</a
+      ><a name="1595"
+      > </a
+      ><a name="1596" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1597"
+      > </a
+      ><a name="1598" href="Data.Fin.Subset.Properties.html#1598" class="Bound"
+      >p</a
+      ><a name="1599" class="Symbol"
+      >}</a
+      ><a name="1600"
+      >        </a
+      ><a name="1608" href="Data.Fin.Subset.Properties.html#1608" class="Bound"
+      >&#172;&#8707;&#8712;</a
+      ><a name="1611"
+      > </a
+      ><a name="1612" class="Keyword"
+      >with</a
+      ><a name="1616"
+      > </a
+      ><a name="1617" href="Data.Fin.Subset.Properties.html#1462" class="Function"
+      >Empty-unique</a
+      ><a name="1629"
+      > </a
+      ><a name="1630" class="Symbol"
+      >(</a
+      ><a name="1631" href="Data.Fin.Subset.Properties.html#1129" class="Function"
+      >drop-&#8759;-Empty</a
+      ><a name="1643"
+      > </a
+      ><a name="1644" href="Data.Fin.Subset.Properties.html#1608" class="Bound"
+      >&#172;&#8707;&#8712;</a
+      ><a name="1647" class="Symbol"
+      >)</a
+      ><a name="1648"
+      >
+</a
+      ><a name="1649" href="Data.Fin.Subset.Properties.html#1462" class="Function"
+      >Empty-unique</a
+      ><a name="1661"
+      > </a
+      ><a name="1662" class="Symbol"
+      >{</a
+      ><a name="1663" class="Argument"
+      >p</a
+      ><a name="1664"
+      > </a
+      ><a name="1665" class="Symbol"
+      >=</a
+      ><a name="1666"
+      > </a
+      ><a name="1667" href="Data.Bool.Base.html#503" class="InductiveConstructor"
+      >outside</a
+      ><a name="1674"
+      > </a
+      ><a name="1675" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1676"
+      > </a
+      ><a name="1677" class="DottedPattern Symbol"
+      >.</a
+      ><a name="1678" href="Algebra.html#12888" class="DottedPattern Function"
+      >&#8869;</a
+      ><a name="1679" class="Symbol"
+      >}</a
+      ><a name="1680"
+      > </a
+      ><a name="1681" href="Data.Fin.Subset.Properties.html#1681" class="Bound"
+      >&#172;&#8707;&#8712;</a
+      ><a name="1684"
+      > </a
+      ><a name="1685" class="Symbol"
+      >|</a
+      ><a name="1686"
+      > </a
+      ><a name="1687" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >P.refl</a
+      ><a name="1693"
+      > </a
+      ><a name="1694" class="Symbol"
+      >=</a
+      ><a name="1695"
+      > </a
+      ><a name="1696" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >P.refl</a
+      ><a name="1702"
+      >
+</a
+      ><a name="1703" href="Data.Fin.Subset.Properties.html#1462" class="Function"
+      >Empty-unique</a
+      ><a name="1715"
+      > </a
+      ><a name="1716" class="Symbol"
+      >{</a
+      ><a name="1717" class="Argument"
+      >p</a
+      ><a name="1718"
+      > </a
+      ><a name="1719" class="Symbol"
+      >=</a
+      ><a name="1720"
+      > </a
+      ><a name="1721" href="Data.Bool.Base.html#488" class="InductiveConstructor"
+      >inside</a
+      ><a name="1727"
+      >  </a
+      ><a name="1729" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1730"
+      > </a
+      ><a name="1731" class="DottedPattern Symbol"
+      >.</a
+      ><a name="1732" href="Algebra.html#12888" class="DottedPattern Function"
+      >&#8869;</a
+      ><a name="1733" class="Symbol"
+      >}</a
+      ><a name="1734"
+      > </a
+      ><a name="1735" href="Data.Fin.Subset.Properties.html#1735" class="Bound"
+      >&#172;&#8707;&#8712;</a
+      ><a name="1738"
+      > </a
+      ><a name="1739" class="Symbol"
+      >|</a
+      ><a name="1740"
+      > </a
+      ><a name="1741" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >P.refl</a
+      ><a name="1747"
+      > </a
+      ><a name="1748" class="Symbol"
+      >=</a
+      ><a name="1749"
+      >
+  </a
+      ><a name="1752" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="1758"
+      > </a
+      ><a name="1759" class="Symbol"
+      >(</a
+      ><a name="1760" href="Data.Fin.Subset.Properties.html#1735" class="Bound"
+      >&#172;&#8707;&#8712;</a
+      ><a name="1763"
+      > </a
+      ><a name="1764" class="Symbol"
+      >(</a
+      ><a name="1765" href="Data.Fin.html#797" class="InductiveConstructor"
+      >zero</a
+      ><a name="1769"
+      > </a
+      ><a name="1770" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1771"
+      > </a
+      ><a name="1772" href="Data.Vec.html#1012" class="InductiveConstructor"
+      >here</a
+      ><a name="1776" class="Symbol"
+      >))</a
+      ><a name="1778"
+      >
+
+</a
+      ><a name="1780" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="1852"
+      >
+</a
+      ><a name="1853" class="Comment"
+      >-- Properties involving &#8868;</a
+      ><a name="1878"
+      >
+
+</a
+      ><a name="1880" href="Data.Fin.Subset.Properties.html#1880" class="Function"
+      >&#8712;&#8868;</a
+      ><a name="1882"
+      > </a
+      ><a name="1883" class="Symbol"
+      >:</a
+      ><a name="1884"
+      > </a
+      ><a name="1885" class="Symbol"
+      >&#8704;</a
+      ><a name="1886"
+      > </a
+      ><a name="1887" class="Symbol"
+      >{</a
+      ><a name="1888" href="Data.Fin.Subset.Properties.html#1888" class="Bound"
+      >n</a
+      ><a name="1889" class="Symbol"
+      >}</a
+      ><a name="1890"
+      > </a
+      ><a name="1891" class="Symbol"
+      >{</a
+      ><a name="1892" href="Data.Fin.Subset.Properties.html#1892" class="Bound"
+      >x</a
+      ><a name="1893"
+      > </a
+      ><a name="1894" class="Symbol"
+      >:</a
+      ><a name="1895"
+      > </a
+      ><a name="1896" href="Data.Fin.html#775" class="Datatype"
+      >Fin</a
+      ><a name="1899"
+      > </a
+      ><a name="1900" href="Data.Fin.Subset.Properties.html#1888" class="Bound"
+      >n</a
+      ><a name="1901" class="Symbol"
+      >}</a
+      ><a name="1902"
+      > </a
+      ><a name="1903" class="Symbol"
+      >&#8594;</a
+      ><a name="1904"
+      > </a
+      ><a name="1905" href="Data.Fin.Subset.Properties.html#1892" class="Bound"
+      >x</a
+      ><a name="1906"
+      > </a
+      ><a name="1907" href="Data.Fin.Subset.html#1097" class="Function Operator"
+      >&#8712;</a
+      ><a name="1908"
+      > </a
+      ><a name="1909" href="Algebra.html#12857" class="Function"
+      >&#8868;</a
+      ><a name="1910"
+      >
+</a
+      ><a name="1911" href="Data.Fin.Subset.Properties.html#1880" class="Function"
+      >&#8712;&#8868;</a
+      ><a name="1913"
+      > </a
+      ><a name="1914" class="Symbol"
+      >{</a
+      ><a name="1915" class="Argument"
+      >x</a
+      ><a name="1916"
+      > </a
+      ><a name="1917" class="Symbol"
+      >=</a
+      ><a name="1918"
+      > </a
+      ><a name="1919" href="Data.Fin.html#797" class="InductiveConstructor"
+      >zero</a
+      ><a name="1923" class="Symbol"
+      >}</a
+      ><a name="1924"
+      >  </a
+      ><a name="1926" class="Symbol"
+      >=</a
+      ><a name="1927"
+      > </a
+      ><a name="1928" href="Data.Vec.html#1012" class="InductiveConstructor"
+      >here</a
+      ><a name="1932"
+      >
+</a
+      ><a name="1933" href="Data.Fin.Subset.Properties.html#1880" class="Function"
+      >&#8712;&#8868;</a
+      ><a name="1935"
+      > </a
+      ><a name="1936" class="Symbol"
+      >{</a
+      ><a name="1937" class="Argument"
+      >x</a
+      ><a name="1938"
+      > </a
+      ><a name="1939" class="Symbol"
+      >=</a
+      ><a name="1940"
+      > </a
+      ><a name="1941" href="Data.Fin.html#828" class="InductiveConstructor"
+      >suc</a
+      ><a name="1944"
+      > </a
+      ><a name="1945" href="Data.Fin.Subset.Properties.html#1945" class="Bound"
+      >x</a
+      ><a name="1946" class="Symbol"
+      >}</a
+      ><a name="1947"
+      > </a
+      ><a name="1948" class="Symbol"
+      >=</a
+      ><a name="1949"
+      > </a
+      ><a name="1950" href="Data.Vec.html#1074" class="InductiveConstructor"
+      >there</a
+      ><a name="1955"
+      > </a
+      ><a name="1956" href="Data.Fin.Subset.Properties.html#1880" class="Function"
+      >&#8712;&#8868;</a
+      ><a name="1958"
+      >
+
+</a
+      ><a name="1960" href="Data.Fin.Subset.Properties.html#1960" class="Function"
+      >&#8838;&#8868;</a
+      ><a name="1962"
+      > </a
+      ><a name="1963" class="Symbol"
+      >:</a
+      ><a name="1964"
+      > </a
+      ><a name="1965" class="Symbol"
+      >&#8704;</a
+      ><a name="1966"
+      > </a
+      ><a name="1967" class="Symbol"
+      >{</a
+      ><a name="1968" href="Data.Fin.Subset.Properties.html#1968" class="Bound"
+      >n</a
+      ><a name="1969" class="Symbol"
+      >}</a
+      ><a name="1970"
+      > </a
+      ><a name="1971" class="Symbol"
+      >{</a
+      ><a name="1972" href="Data.Fin.Subset.Properties.html#1972" class="Bound"
+      >p</a
+      ><a name="1973"
+      > </a
+      ><a name="1974" class="Symbol"
+      >:</a
+      ><a name="1975"
+      > </a
+      ><a name="1976" href="Data.Fin.Subset.html#951" class="Function"
+      >Subset</a
+      ><a name="1982"
+      > </a
+      ><a name="1983" href="Data.Fin.Subset.Properties.html#1968" class="Bound"
+      >n</a
+      ><a name="1984" class="Symbol"
+      >}</a
+      ><a name="1985"
+      > </a
+      ><a name="1986" class="Symbol"
+      >&#8594;</a
+      ><a name="1987"
+      > </a
+      ><a name="1988" href="Data.Fin.Subset.Properties.html#1972" class="Bound"
+      >p</a
+      ><a name="1989"
+      > </a
+      ><a name="1990" href="Data.Fin.Subset.html#1215" class="Function Operator"
+      >&#8838;</a
+      ><a name="1991"
+      > </a
+      ><a name="1992" href="Algebra.html#12857" class="Function"
+      >&#8868;</a
+      ><a name="1993"
+      >
+</a
+      ><a name="1994" href="Data.Fin.Subset.Properties.html#1960" class="Function"
+      >&#8838;&#8868;</a
+      ><a name="1996"
+      > </a
+      ><a name="1997" class="Symbol"
+      >=</a
+      ><a name="1998"
+      > </a
+      ><a name="1999" href="Function.html#1053" class="Function"
+      >const</a
+      ><a name="2004"
+      > </a
+      ><a name="2005" href="Data.Fin.Subset.Properties.html#1880" class="Function"
+      >&#8712;&#8868;</a
+      ><a name="2007"
+      >
+
+</a
+      ><a name="2009" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="2081"
+      >
+</a
+      ><a name="2082" class="Comment"
+      >-- A property involving &#8261;_&#8262;</a
+      ><a name="2109"
+      >
+
+</a
+      ><a name="2111" href="Data.Fin.Subset.Properties.html#2111" class="Function"
+      >x&#8712;&#8261;y&#8262;&#8660;x&#8801;y</a
+      ><a name="2120"
+      > </a
+      ><a name="2121" class="Symbol"
+      >:</a
+      ><a name="2122"
+      > </a
+      ><a name="2123" class="Symbol"
+      >&#8704;</a
+      ><a name="2124"
+      > </a
+      ><a name="2125" class="Symbol"
+      >{</a
+      ><a name="2126" href="Data.Fin.Subset.Properties.html#2126" class="Bound"
+      >n</a
+      ><a name="2127" class="Symbol"
+      >}</a
+      ><a name="2128"
+      > </a
+      ><a name="2129" class="Symbol"
+      >{</a
+      ><a name="2130" href="Data.Fin.Subset.Properties.html#2130" class="Bound"
+      >x</a
+      ><a name="2131"
+      > </a
+      ><a name="2132" href="Data.Fin.Subset.Properties.html#2132" class="Bound"
+      >y</a
+      ><a name="2133"
+      > </a
+      ><a name="2134" class="Symbol"
+      >:</a
+      ><a name="2135"
+      > </a
+      ><a name="2136" href="Data.Fin.html#775" class="Datatype"
+      >Fin</a
+      ><a name="2139"
+      > </a
+      ><a name="2140" href="Data.Fin.Subset.Properties.html#2126" class="Bound"
+      >n</a
+      ><a name="2141" class="Symbol"
+      >}</a
+      ><a name="2142"
+      > </a
+      ><a name="2143" class="Symbol"
+      >&#8594;</a
+      ><a name="2144"
+      > </a
+      ><a name="2145" href="Data.Fin.Subset.Properties.html#2130" class="Bound"
+      >x</a
+      ><a name="2146"
+      > </a
+      ><a name="2147" href="Data.Fin.Subset.html#1097" class="Function Operator"
+      >&#8712;</a
+      ><a name="2148"
+      > </a
+      ><a name="2149" href="Data.Fin.Subset.html#2174" class="Function Operator"
+      >&#8261;</a
+      ><a name="2150"
+      > </a
+      ><a name="2151" href="Data.Fin.Subset.Properties.html#2132" class="Bound"
+      >y</a
+      ><a name="2152"
+      > </a
+      ><a name="2153" href="Data.Fin.Subset.html#2174" class="Function Operator"
+      >&#8262;</a
+      ><a name="2154"
+      > </a
+      ><a name="2155" href="Function.Equivalence.html#711" class="Function Operator"
+      >&#8660;</a
+      ><a name="2156"
+      > </a
+      ><a name="2157" href="Data.Fin.Subset.Properties.html#2130" class="Bound"
+      >x</a
+      ><a name="2158"
+      > </a
+      ><a name="2159" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2160"
+      > </a
+      ><a name="2161" href="Data.Fin.Subset.Properties.html#2132" class="Bound"
+      >y</a
+      ><a name="2162"
+      >
+</a
+      ><a name="2163" href="Data.Fin.Subset.Properties.html#2111" class="Function"
+      >x&#8712;&#8261;y&#8262;&#8660;x&#8801;y</a
+      ><a name="2172"
+      > </a
+      ><a name="2173" class="Symbol"
+      >{</a
+      ><a name="2174" class="Argument"
+      >x</a
+      ><a name="2175"
+      > </a
+      ><a name="2176" class="Symbol"
+      >=</a
+      ><a name="2177"
+      > </a
+      ><a name="2178" href="Data.Fin.Subset.Properties.html#2178" class="Bound"
+      >x</a
+      ><a name="2179" class="Symbol"
+      >}</a
+      ><a name="2180"
+      > </a
+      ><a name="2181" class="Symbol"
+      >{</a
+      ><a name="2182" href="Data.Fin.Subset.Properties.html#2182" class="Bound"
+      >y</a
+      ><a name="2183" class="Symbol"
+      >}</a
+      ><a name="2184"
+      > </a
+      ><a name="2185" class="Symbol"
+      >=</a
+      ><a name="2186"
+      >
+  </a
+      ><a name="2189" href="Function.Equivalence.html#804" class="Function"
+      >equivalence</a
+      ><a name="2200"
+      > </a
+      ><a name="2201" class="Symbol"
+      >(</a
+      ><a name="2202" href="Data.Fin.Subset.Properties.html#2269" class="Function"
+      >to</a
+      ><a name="2204"
+      > </a
+      ><a name="2205" href="Data.Fin.Subset.Properties.html#2182" class="Bound"
+      >y</a
+      ><a name="2206" class="Symbol"
+      >)</a
+      ><a name="2207"
+      > </a
+      ><a name="2208" class="Symbol"
+      >(&#955;</a
+      ><a name="2210"
+      > </a
+      ><a name="2211" href="Data.Fin.Subset.Properties.html#2211" class="Bound"
+      >x&#8801;y</a
+      ><a name="2214"
+      > </a
+      ><a name="2215" class="Symbol"
+      >&#8594;</a
+      ><a name="2216"
+      > </a
+      ><a name="2217" href="Relation.Binary.PropositionalEquality.Core.html#705" class="Function"
+      >P.subst</a
+      ><a name="2224"
+      > </a
+      ><a name="2225" class="Symbol"
+      >(&#955;</a
+      ><a name="2227"
+      > </a
+      ><a name="2228" href="Data.Fin.Subset.Properties.html#2228" class="Bound"
+      >y</a
+      ><a name="2229"
+      > </a
+      ><a name="2230" class="Symbol"
+      >&#8594;</a
+      ><a name="2231"
+      > </a
+      ><a name="2232" href="Data.Fin.Subset.Properties.html#2178" class="Bound"
+      >x</a
+      ><a name="2233"
+      > </a
+      ><a name="2234" href="Data.Fin.Subset.html#1097" class="Function Operator"
+      >&#8712;</a
+      ><a name="2235"
+      > </a
+      ><a name="2236" href="Data.Fin.Subset.html#2174" class="Function Operator"
+      >&#8261;</a
+      ><a name="2237"
+      > </a
+      ><a name="2238" href="Data.Fin.Subset.Properties.html#2228" class="Bound"
+      >y</a
+      ><a name="2239"
+      > </a
+      ><a name="2240" href="Data.Fin.Subset.html#2174" class="Function Operator"
+      >&#8262;</a
+      ><a name="2241" class="Symbol"
+      >)</a
+      ><a name="2242"
+      > </a
+      ><a name="2243" href="Data.Fin.Subset.Properties.html#2211" class="Bound"
+      >x&#8801;y</a
+      ><a name="2246"
+      > </a
+      ><a name="2247" class="Symbol"
+      >(</a
+      ><a name="2248" href="Data.Fin.Subset.Properties.html#2438" class="Function"
+      >x&#8712;&#8261;x&#8262;</a
+      ><a name="2253"
+      > </a
+      ><a name="2254" href="Data.Fin.Subset.Properties.html#2178" class="Bound"
+      >x</a
+      ><a name="2255" class="Symbol"
+      >))</a
+      ><a name="2257"
+      >
+  </a
+      ><a name="2260" class="Keyword"
+      >where</a
+      ><a name="2265"
+      >
+
+  </a
+      ><a name="2269" href="Data.Fin.Subset.Properties.html#2269" class="Function"
+      >to</a
+      ><a name="2271"
+      > </a
+      ><a name="2272" class="Symbol"
+      >:</a
+      ><a name="2273"
+      > </a
+      ><a name="2274" class="Symbol"
+      >&#8704;</a
+      ><a name="2275"
+      > </a
+      ><a name="2276" class="Symbol"
+      >{</a
+      ><a name="2277" href="Data.Fin.Subset.Properties.html#2277" class="Bound"
+      >n</a
+      ><a name="2278"
+      > </a
+      ><a name="2279" href="Data.Fin.Subset.Properties.html#2279" class="Bound"
+      >x</a
+      ><a name="2280" class="Symbol"
+      >}</a
+      ><a name="2281"
+      > </a
+      ><a name="2282" class="Symbol"
+      >(</a
+      ><a name="2283" href="Data.Fin.Subset.Properties.html#2283" class="Bound"
+      >y</a
+      ><a name="2284"
+      > </a
+      ><a name="2285" class="Symbol"
+      >:</a
+      ><a name="2286"
+      > </a
+      ><a name="2287" href="Data.Fin.html#775" class="Datatype"
+      >Fin</a
+      ><a name="2290"
+      > </a
+      ><a name="2291" href="Data.Fin.Subset.Properties.html#2277" class="Bound"
+      >n</a
+      ><a name="2292" class="Symbol"
+      >)</a
+      ><a name="2293"
+      > </a
+      ><a name="2294" class="Symbol"
+      >&#8594;</a
+      ><a name="2295"
+      > </a
+      ><a name="2296" href="Data.Fin.Subset.Properties.html#2279" class="Bound"
+      >x</a
+      ><a name="2297"
+      > </a
+      ><a name="2298" href="Data.Fin.Subset.html#1097" class="Function Operator"
+      >&#8712;</a
+      ><a name="2299"
+      > </a
+      ><a name="2300" href="Data.Fin.Subset.html#2174" class="Function Operator"
+      >&#8261;</a
+      ><a name="2301"
+      > </a
+      ><a name="2302" href="Data.Fin.Subset.Properties.html#2283" class="Bound"
+      >y</a
+      ><a name="2303"
+      > </a
+      ><a name="2304" href="Data.Fin.Subset.html#2174" class="Function Operator"
+      >&#8262;</a
+      ><a name="2305"
+      > </a
+      ><a name="2306" class="Symbol"
+      >&#8594;</a
+      ><a name="2307"
+      > </a
+      ><a name="2308" href="Data.Fin.Subset.Properties.html#2279" class="Bound"
+      >x</a
+      ><a name="2309"
+      > </a
+      ><a name="2310" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2311"
+      > </a
+      ><a name="2312" href="Data.Fin.Subset.Properties.html#2283" class="Bound"
+      >y</a
+      ><a name="2313"
+      >
+  </a
+      ><a name="2316" href="Data.Fin.Subset.Properties.html#2269" class="Function"
+      >to</a
+      ><a name="2318"
+      > </a
+      ><a name="2319" class="Symbol"
+      >(</a
+      ><a name="2320" href="Data.Fin.html#828" class="InductiveConstructor"
+      >suc</a
+      ><a name="2323"
+      > </a
+      ><a name="2324" href="Data.Fin.Subset.Properties.html#2324" class="Bound"
+      >y</a
+      ><a name="2325" class="Symbol"
+      >)</a
+      ><a name="2326"
+      > </a
+      ><a name="2327" class="Symbol"
+      >(</a
+      ><a name="2328" href="Data.Vec.html#1074" class="InductiveConstructor"
+      >there</a
+      ><a name="2333"
+      > </a
+      ><a name="2334" href="Data.Fin.Subset.Properties.html#2334" class="Bound"
+      >p</a
+      ><a name="2335" class="Symbol"
+      >)</a
+      ><a name="2336"
+      > </a
+      ><a name="2337" class="Symbol"
+      >=</a
+      ><a name="2338"
+      > </a
+      ><a name="2339" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >P.cong</a
+      ><a name="2345"
+      > </a
+      ><a name="2346" href="Data.Fin.html#828" class="InductiveConstructor"
+      >suc</a
+      ><a name="2349"
+      > </a
+      ><a name="2350" class="Symbol"
+      >(</a
+      ><a name="2351" href="Data.Fin.Subset.Properties.html#2269" class="Function"
+      >to</a
+      ><a name="2353"
+      > </a
+      ><a name="2354" href="Data.Fin.Subset.Properties.html#2324" class="Bound"
+      >y</a
+      ><a name="2355"
+      > </a
+      ><a name="2356" href="Data.Fin.Subset.Properties.html#2334" class="Bound"
+      >p</a
+      ><a name="2357" class="Symbol"
+      >)</a
+      ><a name="2358"
+      >
+  </a
+      ><a name="2361" href="Data.Fin.Subset.Properties.html#2269" class="Function"
+      >to</a
+      ><a name="2363"
+      > </a
+      ><a name="2364" href="Data.Fin.html#797" class="InductiveConstructor"
+      >zero</a
+      ><a name="2368"
+      >    </a
+      ><a name="2372" href="Data.Vec.html#1012" class="InductiveConstructor"
+      >here</a
+      ><a name="2376"
+      >      </a
+      ><a name="2382" class="Symbol"
+      >=</a
+      ><a name="2383"
+      > </a
+      ><a name="2384" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >P.refl</a
+      ><a name="2390"
+      >
+  </a
+      ><a name="2393" href="Data.Fin.Subset.Properties.html#2269" class="Function"
+      >to</a
+      ><a name="2395"
+      > </a
+      ><a name="2396" href="Data.Fin.html#797" class="InductiveConstructor"
+      >zero</a
+      ><a name="2400"
+      >    </a
+      ><a name="2404" class="Symbol"
+      >(</a
+      ><a name="2405" href="Data.Vec.html#1074" class="InductiveConstructor"
+      >there</a
+      ><a name="2410"
+      > </a
+      ><a name="2411" href="Data.Fin.Subset.Properties.html#2411" class="Bound"
+      >p</a
+      ><a name="2412" class="Symbol"
+      >)</a
+      ><a name="2413"
+      > </a
+      ><a name="2414" class="Keyword"
+      >with</a
+      ><a name="2418"
+      > </a
+      ><a name="2419" href="Data.Fin.Subset.Properties.html#1347" class="Function"
+      >&#8713;&#8869;</a
+      ><a name="2421"
+      > </a
+      ><a name="2422" href="Data.Fin.Subset.Properties.html#2411" class="Bound"
+      >p</a
+      ><a name="2423"
+      >
+  </a
+      ><a name="2426" class="Symbol"
+      >...</a
+      ><a name="2429"
+      > </a
+      ><a name="2430" class="Symbol"
+      >|</a
+      ><a name="2431"
+      > </a
+      ><a name="2432" class="Symbol"
+      >()</a
+      ><a name="2434"
+      >
+
+  </a
+      ><a name="2438" href="Data.Fin.Subset.Properties.html#2438" class="Function"
+      >x&#8712;&#8261;x&#8262;</a
+      ><a name="2443"
+      > </a
+      ><a name="2444" class="Symbol"
+      >:</a
+      ><a name="2445"
+      > </a
+      ><a name="2446" class="Symbol"
+      >&#8704;</a
+      ><a name="2447"
+      > </a
+      ><a name="2448" class="Symbol"
+      >{</a
+      ><a name="2449" href="Data.Fin.Subset.Properties.html#2449" class="Bound"
+      >n</a
+      ><a name="2450" class="Symbol"
+      >}</a
+      ><a name="2451"
+      > </a
+      ><a name="2452" class="Symbol"
+      >(</a
+      ><a name="2453" href="Data.Fin.Subset.Properties.html#2453" class="Bound"
+      >x</a
+      ><a name="2454"
+      > </a
+      ><a name="2455" class="Symbol"
+      >:</a
+      ><a name="2456"
+      > </a
+      ><a name="2457" href="Data.Fin.html#775" class="Datatype"
+      >Fin</a
+      ><a name="2460"
+      > </a
+      ><a name="2461" href="Data.Fin.Subset.Properties.html#2449" class="Bound"
+      >n</a
+      ><a name="2462" class="Symbol"
+      >)</a
+      ><a name="2463"
+      > </a
+      ><a name="2464" class="Symbol"
+      >&#8594;</a
+      ><a name="2465"
+      > </a
+      ><a name="2466" href="Data.Fin.Subset.Properties.html#2453" class="Bound"
+      >x</a
+      ><a name="2467"
+      > </a
+      ><a name="2468" href="Data.Fin.Subset.html#1097" class="Function Operator"
+      >&#8712;</a
+      ><a name="2469"
+      > </a
+      ><a name="2470" href="Data.Fin.Subset.html#2174" class="Function Operator"
+      >&#8261;</a
+      ><a name="2471"
+      > </a
+      ><a name="2472" href="Data.Fin.Subset.Properties.html#2453" class="Bound"
+      >x</a
+      ><a name="2473"
+      > </a
+      ><a name="2474" href="Data.Fin.Subset.html#2174" class="Function Operator"
+      >&#8262;</a
+      ><a name="2475"
+      >
+  </a
+      ><a name="2478" href="Data.Fin.Subset.Properties.html#2438" class="Function"
+      >x&#8712;&#8261;x&#8262;</a
+      ><a name="2483"
+      > </a
+      ><a name="2484" href="Data.Fin.html#797" class="InductiveConstructor"
+      >zero</a
+      ><a name="2488"
+      >    </a
+      ><a name="2492" class="Symbol"
+      >=</a
+      ><a name="2493"
+      > </a
+      ><a name="2494" href="Data.Vec.html#1012" class="InductiveConstructor"
+      >here</a
+      ><a name="2498"
+      >
+  </a
+      ><a name="2501" href="Data.Fin.Subset.Properties.html#2438" class="Function"
+      >x&#8712;&#8261;x&#8262;</a
+      ><a name="2506"
+      > </a
+      ><a name="2507" class="Symbol"
+      >(</a
+      ><a name="2508" href="Data.Fin.html#828" class="InductiveConstructor"
+      >suc</a
+      ><a name="2511"
+      > </a
+      ><a name="2512" href="Data.Fin.Subset.Properties.html#2512" class="Bound"
+      >x</a
+      ><a name="2513" class="Symbol"
+      >)</a
+      ><a name="2514"
+      > </a
+      ><a name="2515" class="Symbol"
+      >=</a
+      ><a name="2516"
+      > </a
+      ><a name="2517" href="Data.Vec.html#1074" class="InductiveConstructor"
+      >there</a
+      ><a name="2522"
+      > </a
+      ><a name="2523" class="Symbol"
+      >(</a
+      ><a name="2524" href="Data.Fin.Subset.Properties.html#2438" class="Function"
+      >x&#8712;&#8261;x&#8262;</a
+      ><a name="2529"
+      > </a
+      ><a name="2530" href="Data.Fin.Subset.Properties.html#2512" class="Bound"
+      >x</a
+      ><a name="2531" class="Symbol"
+      >)</a
+      ><a name="2532"
+      >
+
+</a
+      ><a name="2534" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="2606"
+      >
+</a
+      ><a name="2607" class="Comment"
+      >-- A property involving _&#8746;_</a
+      ><a name="2634"
+      >
+
+</a
+      ><a name="2636" href="Data.Fin.Subset.Properties.html#2636" class="Function"
+      >&#8746;&#8660;&#8846;</a
+      ><a name="2639"
+      > </a
+      ><a name="2640" class="Symbol"
+      >:</a
+      ><a name="2641"
+      > </a
+      ><a name="2642" class="Symbol"
+      >&#8704;</a
+      ><a name="2643"
+      > </a
+      ><a name="2644" class="Symbol"
+      >{</a
+      ><a name="2645" href="Data.Fin.Subset.Properties.html#2645" class="Bound"
+      >n</a
+      ><a name="2646" class="Symbol"
+      >}</a
+      ><a name="2647"
+      > </a
+      ><a name="2648" class="Symbol"
+      >{</a
+      ><a name="2649" href="Data.Fin.Subset.Properties.html#2649" class="Bound"
+      >p&#8321;</a
+      ><a name="2651"
+      > </a
+      ><a name="2652" href="Data.Fin.Subset.Properties.html#2652" class="Bound"
+      >p&#8322;</a
+      ><a name="2654"
+      > </a
+      ><a name="2655" class="Symbol"
+      >:</a
+      ><a name="2656"
+      > </a
+      ><a name="2657" href="Data.Fin.Subset.html#951" class="Function"
+      >Subset</a
+      ><a name="2663"
+      > </a
+      ><a name="2664" href="Data.Fin.Subset.Properties.html#2645" class="Bound"
+      >n</a
+      ><a name="2665" class="Symbol"
+      >}</a
+      ><a name="2666"
+      > </a
+      ><a name="2667" class="Symbol"
+      >{</a
+      ><a name="2668" href="Data.Fin.Subset.Properties.html#2668" class="Bound"
+      >x</a
+      ><a name="2669" class="Symbol"
+      >}</a
+      ><a name="2670"
+      > </a
+      ><a name="2671" class="Symbol"
+      >&#8594;</a
+      ><a name="2672"
+      > </a
+      ><a name="2673" href="Data.Fin.Subset.Properties.html#2668" class="Bound"
+      >x</a
+      ><a name="2674"
+      > </a
+      ><a name="2675" href="Data.Fin.Subset.html#1097" class="Function Operator"
+      >&#8712;</a
+      ><a name="2676"
+      > </a
+      ><a name="2677" href="Data.Fin.Subset.Properties.html#2649" class="Bound"
+      >p&#8321;</a
+      ><a name="2679"
+      > </a
+      ><a name="2680" href="Algebra.html#12752" class="Function Operator"
+      >&#8746;</a
+      ><a name="2681"
+      > </a
+      ><a name="2682" href="Data.Fin.Subset.Properties.html#2652" class="Bound"
+      >p&#8322;</a
+      ><a name="2684"
+      > </a
+      ><a name="2685" href="Function.Equivalence.html#711" class="Function Operator"
+      >&#8660;</a
+      ><a name="2686"
+      > </a
+      ><a name="2687" class="Symbol"
+      >(</a
+      ><a name="2688" href="Data.Fin.Subset.Properties.html#2668" class="Bound"
+      >x</a
+      ><a name="2689"
+      > </a
+      ><a name="2690" href="Data.Fin.Subset.html#1097" class="Function Operator"
+      >&#8712;</a
+      ><a name="2691"
+      > </a
+      ><a name="2692" href="Data.Fin.Subset.Properties.html#2649" class="Bound"
+      >p&#8321;</a
+      ><a name="2694"
+      > </a
+      ><a name="2695" href="Data.Sum.html#433" class="Datatype Operator"
+      >&#8846;</a
+      ><a name="2696"
+      > </a
+      ><a name="2697" href="Data.Fin.Subset.Properties.html#2668" class="Bound"
+      >x</a
+      ><a name="2698"
+      > </a
+      ><a name="2699" href="Data.Fin.Subset.html#1097" class="Function Operator"
+      >&#8712;</a
+      ><a name="2700"
+      > </a
+      ><a name="2701" href="Data.Fin.Subset.Properties.html#2652" class="Bound"
+      >p&#8322;</a
+      ><a name="2703" class="Symbol"
+      >)</a
+      ><a name="2704"
+      >
+</a
+      ><a name="2705" href="Data.Fin.Subset.Properties.html#2636" class="Function"
+      >&#8746;&#8660;&#8846;</a
+      ><a name="2708"
+      > </a
+      ><a name="2709" class="Symbol"
+      >=</a
+      ><a name="2710"
+      > </a
+      ><a name="2711" href="Function.Equivalence.html#804" class="Function"
+      >equivalence</a
+      ><a name="2722"
+      > </a
+      ><a name="2723" class="Symbol"
+      >(</a
+      ><a name="2724" href="Data.Fin.Subset.Properties.html#2747" class="Function"
+      >to</a
+      ><a name="2726"
+      > </a
+      ><a name="2727" class="Symbol"
+      >_</a
+      ><a name="2728"
+      > </a
+      ><a name="2729" class="Symbol"
+      >_)</a
+      ><a name="2731"
+      > </a
+      ><a name="2732" href="Data.Fin.Subset.Properties.html#3357" class="Function"
+      >from</a
+      ><a name="2736"
+      >
+  </a
+      ><a name="2739" class="Keyword"
+      >where</a
+      ><a name="2744"
+      >
+  </a
+      ><a name="2747" href="Data.Fin.Subset.Properties.html#2747" class="Function"
+      >to</a
+      ><a name="2749"
+      > </a
+      ><a name="2750" class="Symbol"
+      >:</a
+      ><a name="2751"
+      > </a
+      ><a name="2752" class="Symbol"
+      >&#8704;</a
+      ><a name="2753"
+      > </a
+      ><a name="2754" class="Symbol"
+      >{</a
+      ><a name="2755" href="Data.Fin.Subset.Properties.html#2755" class="Bound"
+      >n</a
+      ><a name="2756" class="Symbol"
+      >}</a
+      ><a name="2757"
+      > </a
+      ><a name="2758" class="Symbol"
+      >(</a
+      ><a name="2759" href="Data.Fin.Subset.Properties.html#2759" class="Bound"
+      >p&#8321;</a
+      ><a name="2761"
+      > </a
+      ><a name="2762" href="Data.Fin.Subset.Properties.html#2762" class="Bound"
+      >p&#8322;</a
+      ><a name="2764"
+      > </a
+      ><a name="2765" class="Symbol"
+      >:</a
+      ><a name="2766"
+      > </a
+      ><a name="2767" href="Data.Fin.Subset.html#951" class="Function"
+      >Subset</a
+      ><a name="2773"
+      > </a
+      ><a name="2774" href="Data.Fin.Subset.Properties.html#2755" class="Bound"
+      >n</a
+      ><a name="2775" class="Symbol"
+      >)</a
+      ><a name="2776"
+      > </a
+      ><a name="2777" class="Symbol"
+      >{</a
+      ><a name="2778" href="Data.Fin.Subset.Properties.html#2778" class="Bound"
+      >x</a
+      ><a name="2779" class="Symbol"
+      >}</a
+      ><a name="2780"
+      > </a
+      ><a name="2781" class="Symbol"
+      >&#8594;</a
+      ><a name="2782"
+      > </a
+      ><a name="2783" href="Data.Fin.Subset.Properties.html#2778" class="Bound"
+      >x</a
+      ><a name="2784"
+      > </a
+      ><a name="2785" href="Data.Fin.Subset.html#1097" class="Function Operator"
+      >&#8712;</a
+      ><a name="2786"
+      > </a
+      ><a name="2787" href="Data.Fin.Subset.Properties.html#2759" class="Bound"
+      >p&#8321;</a
+      ><a name="2789"
+      > </a
+      ><a name="2790" href="Algebra.html#12752" class="Function Operator"
+      >&#8746;</a
+      ><a name="2791"
+      > </a
+      ><a name="2792" href="Data.Fin.Subset.Properties.html#2762" class="Bound"
+      >p&#8322;</a
+      ><a name="2794"
+      > </a
+      ><a name="2795" class="Symbol"
+      >&#8594;</a
+      ><a name="2796"
+      > </a
+      ><a name="2797" href="Data.Fin.Subset.Properties.html#2778" class="Bound"
+      >x</a
+      ><a name="2798"
+      > </a
+      ><a name="2799" href="Data.Fin.Subset.html#1097" class="Function Operator"
+      >&#8712;</a
+      ><a name="2800"
+      > </a
+      ><a name="2801" href="Data.Fin.Subset.Properties.html#2759" class="Bound"
+      >p&#8321;</a
+      ><a name="2803"
+      > </a
+      ><a name="2804" href="Data.Sum.html#433" class="Datatype Operator"
+      >&#8846;</a
+      ><a name="2805"
+      > </a
+      ><a name="2806" href="Data.Fin.Subset.Properties.html#2778" class="Bound"
+      >x</a
+      ><a name="2807"
+      > </a
+      ><a name="2808" href="Data.Fin.Subset.html#1097" class="Function Operator"
+      >&#8712;</a
+      ><a name="2809"
+      > </a
+      ><a name="2810" href="Data.Fin.Subset.Properties.html#2762" class="Bound"
+      >p&#8322;</a
+      ><a name="2812"
+      >
+  </a
+      ><a name="2815" href="Data.Fin.Subset.Properties.html#2747" class="Function"
+      >to</a
+      ><a name="2817"
+      > </a
+      ><a name="2818" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="2820"
+      >             </a
+      ><a name="2833" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="2835"
+      >             </a
+      ><a name="2848" class="Symbol"
+      >()</a
+      ><a name="2850"
+      >
+  </a
+      ><a name="2853" href="Data.Fin.Subset.Properties.html#2747" class="Function"
+      >to</a
+      ><a name="2855"
+      > </a
+      ><a name="2856" class="Symbol"
+      >(</a
+      ><a name="2857" href="Data.Bool.Base.html#488" class="InductiveConstructor"
+      >inside</a
+      ><a name="2863"
+      >  </a
+      ><a name="2865" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="2866"
+      > </a
+      ><a name="2867" href="Data.Fin.Subset.Properties.html#2867" class="Bound"
+      >p&#8321;</a
+      ><a name="2869" class="Symbol"
+      >)</a
+      ><a name="2870"
+      > </a
+      ><a name="2871" class="Symbol"
+      >(</a
+      ><a name="2872" href="Data.Fin.Subset.Properties.html#2872" class="Bound"
+      >s&#8322;</a
+      ><a name="2874"
+      >      </a
+      ><a name="2880" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="2881"
+      > </a
+      ><a name="2882" href="Data.Fin.Subset.Properties.html#2882" class="Bound"
+      >p&#8322;</a
+      ><a name="2884" class="Symbol"
+      >)</a
+      ><a name="2885"
+      > </a
+      ><a name="2886" href="Data.Vec.html#1012" class="InductiveConstructor"
+      >here</a
+      ><a name="2890"
+      >            </a
+      ><a name="2902" class="Symbol"
+      >=</a
+      ><a name="2903"
+      > </a
+      ><a name="2904" href="Data.Sum.html#489" class="InductiveConstructor"
+      >inj&#8321;</a
+      ><a name="2908"
+      > </a
+      ><a name="2909" href="Data.Vec.html#1012" class="InductiveConstructor"
+      >here</a
+      ><a name="2913"
+      >
+  </a
+      ><a name="2916" href="Data.Fin.Subset.Properties.html#2747" class="Function"
+      >to</a
+      ><a name="2918"
+      > </a
+      ><a name="2919" class="Symbol"
+      >(</a
+      ><a name="2920" href="Data.Bool.Base.html#503" class="InductiveConstructor"
+      >outside</a
+      ><a name="2927"
+      > </a
+      ><a name="2928" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="2929"
+      > </a
+      ><a name="2930" href="Data.Fin.Subset.Properties.html#2930" class="Bound"
+      >p&#8321;</a
+      ><a name="2932" class="Symbol"
+      >)</a
+      ><a name="2933"
+      > </a
+      ><a name="2934" class="Symbol"
+      >(</a
+      ><a name="2935" href="Data.Bool.Base.html#488" class="InductiveConstructor"
+      >inside</a
+      ><a name="2941"
+      >  </a
+      ><a name="2943" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="2944"
+      > </a
+      ><a name="2945" href="Data.Fin.Subset.Properties.html#2945" class="Bound"
+      >p&#8322;</a
+      ><a name="2947" class="Symbol"
+      >)</a
+      ><a name="2948"
+      > </a
+      ><a name="2949" href="Data.Vec.html#1012" class="InductiveConstructor"
+      >here</a
+      ><a name="2953"
+      >            </a
+      ><a name="2965" class="Symbol"
+      >=</a
+      ><a name="2966"
+      > </a
+      ><a name="2967" href="Data.Sum.html#514" class="InductiveConstructor"
+      >inj&#8322;</a
+      ><a name="2971"
+      > </a
+      ><a name="2972" href="Data.Vec.html#1012" class="InductiveConstructor"
+      >here</a
+      ><a name="2976"
+      >
+  </a
+      ><a name="2979" href="Data.Fin.Subset.Properties.html#2747" class="Function"
+      >to</a
+      ><a name="2981"
+      > </a
+      ><a name="2982" class="Symbol"
+      >(</a
+      ><a name="2983" href="Data.Fin.Subset.Properties.html#2983" class="Bound"
+      >s&#8321;</a
+      ><a name="2985"
+      >      </a
+      ><a name="2991" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="2992"
+      > </a
+      ><a name="2993" href="Data.Fin.Subset.Properties.html#2993" class="Bound"
+      >p&#8321;</a
+      ><a name="2995" class="Symbol"
+      >)</a
+      ><a name="2996"
+      > </a
+      ><a name="2997" class="Symbol"
+      >(</a
+      ><a name="2998" href="Data.Fin.Subset.Properties.html#2998" class="Bound"
+      >s&#8322;</a
+      ><a name="3000"
+      >      </a
+      ><a name="3006" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3007"
+      > </a
+      ><a name="3008" href="Data.Fin.Subset.Properties.html#3008" class="Bound"
+      >p&#8322;</a
+      ><a name="3010" class="Symbol"
+      >)</a
+      ><a name="3011"
+      > </a
+      ><a name="3012" class="Symbol"
+      >(</a
+      ><a name="3013" href="Data.Vec.html#1074" class="InductiveConstructor"
+      >there</a
+      ><a name="3018"
+      > </a
+      ><a name="3019" href="Data.Fin.Subset.Properties.html#3019" class="Bound"
+      >x&#8712;p&#8321;&#8746;p&#8322;</a
+      ><a name="3026" class="Symbol"
+      >)</a
+      ><a name="3027"
+      > </a
+      ><a name="3028" class="Symbol"
+      >=</a
+      ><a name="3029"
+      >
+    </a
+      ><a name="3034" href="Data.Sum.html#1022" class="Function"
+      >Sum.map</a
+      ><a name="3041"
+      > </a
+      ><a name="3042" href="Data.Vec.html#1074" class="InductiveConstructor"
+      >there</a
+      ><a name="3047"
+      > </a
+      ><a name="3048" href="Data.Vec.html#1074" class="InductiveConstructor"
+      >there</a
+      ><a name="3053"
+      > </a
+      ><a name="3054" class="Symbol"
+      >(</a
+      ><a name="3055" href="Data.Fin.Subset.Properties.html#2747" class="Function"
+      >to</a
+      ><a name="3057"
+      > </a
+      ><a name="3058" href="Data.Fin.Subset.Properties.html#2993" class="Bound"
+      >p&#8321;</a
+      ><a name="3060"
+      > </a
+      ><a name="3061" href="Data.Fin.Subset.Properties.html#3008" class="Bound"
+      >p&#8322;</a
+      ><a name="3063"
+      > </a
+      ><a name="3064" href="Data.Fin.Subset.Properties.html#3019" class="Bound"
+      >x&#8712;p&#8321;&#8746;p&#8322;</a
+      ><a name="3071" class="Symbol"
+      >)</a
+      ><a name="3072"
+      >
+
+  </a
+      ><a name="3076" href="Data.Fin.Subset.Properties.html#3076" class="Function"
+      >&#8838;&#8746;&#737;</a
+      ><a name="3079"
+      > </a
+      ><a name="3080" class="Symbol"
+      >:</a
+      ><a name="3081"
+      > </a
+      ><a name="3082" class="Symbol"
+      >&#8704;</a
+      ><a name="3083"
+      > </a
+      ><a name="3084" class="Symbol"
+      >{</a
+      ><a name="3085" href="Data.Fin.Subset.Properties.html#3085" class="Bound"
+      >n</a
+      ><a name="3086"
+      > </a
+      ><a name="3087" href="Data.Fin.Subset.Properties.html#3087" class="Bound"
+      >p&#8321;</a
+      ><a name="3089" class="Symbol"
+      >}</a
+      ><a name="3090"
+      > </a
+      ><a name="3091" class="Symbol"
+      >(</a
+      ><a name="3092" href="Data.Fin.Subset.Properties.html#3092" class="Bound"
+      >p&#8322;</a
+      ><a name="3094"
+      > </a
+      ><a name="3095" class="Symbol"
+      >:</a
+      ><a name="3096"
+      > </a
+      ><a name="3097" href="Data.Fin.Subset.html#951" class="Function"
+      >Subset</a
+      ><a name="3103"
+      > </a
+      ><a name="3104" href="Data.Fin.Subset.Properties.html#3085" class="Bound"
+      >n</a
+      ><a name="3105" class="Symbol"
+      >)</a
+      ><a name="3106"
+      > </a
+      ><a name="3107" class="Symbol"
+      >&#8594;</a
+      ><a name="3108"
+      > </a
+      ><a name="3109" href="Data.Fin.Subset.Properties.html#3087" class="Bound"
+      >p&#8321;</a
+      ><a name="3111"
+      > </a
+      ><a name="3112" href="Data.Fin.Subset.html#1215" class="Function Operator"
+      >&#8838;</a
+      ><a name="3113"
+      > </a
+      ><a name="3114" href="Data.Fin.Subset.Properties.html#3087" class="Bound"
+      >p&#8321;</a
+      ><a name="3116"
+      > </a
+      ><a name="3117" href="Algebra.html#12752" class="Function Operator"
+      >&#8746;</a
+      ><a name="3118"
+      > </a
+      ><a name="3119" href="Data.Fin.Subset.Properties.html#3092" class="Bound"
+      >p&#8322;</a
+      ><a name="3121"
+      >
+  </a
+      ><a name="3124" href="Data.Fin.Subset.Properties.html#3076" class="Function"
+      >&#8838;&#8746;&#737;</a
+      ><a name="3127"
+      > </a
+      ><a name="3128" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="3130"
+      >       </a
+      ><a name="3137" class="Symbol"
+      >()</a
+      ><a name="3139"
+      >
+  </a
+      ><a name="3142" href="Data.Fin.Subset.Properties.html#3076" class="Function"
+      >&#8838;&#8746;&#737;</a
+      ><a name="3145"
+      > </a
+      ><a name="3146" class="Symbol"
+      >(</a
+      ><a name="3147" href="Data.Fin.Subset.Properties.html#3147" class="Bound"
+      >s</a
+      ><a name="3148"
+      > </a
+      ><a name="3149" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3150"
+      > </a
+      ><a name="3151" href="Data.Fin.Subset.Properties.html#3151" class="Bound"
+      >p&#8322;</a
+      ><a name="3153" class="Symbol"
+      >)</a
+      ><a name="3154"
+      > </a
+      ><a name="3155" href="Data.Vec.html#1012" class="InductiveConstructor"
+      >here</a
+      ><a name="3159"
+      >         </a
+      ><a name="3168" class="Symbol"
+      >=</a
+      ><a name="3169"
+      > </a
+      ><a name="3170" href="Data.Vec.html#1012" class="InductiveConstructor"
+      >here</a
+      ><a name="3174"
+      >
+  </a
+      ><a name="3177" href="Data.Fin.Subset.Properties.html#3076" class="Function"
+      >&#8838;&#8746;&#737;</a
+      ><a name="3180"
+      > </a
+      ><a name="3181" class="Symbol"
+      >(</a
+      ><a name="3182" href="Data.Fin.Subset.Properties.html#3182" class="Bound"
+      >s</a
+      ><a name="3183"
+      > </a
+      ><a name="3184" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3185"
+      > </a
+      ><a name="3186" href="Data.Fin.Subset.Properties.html#3186" class="Bound"
+      >p&#8322;</a
+      ><a name="3188" class="Symbol"
+      >)</a
+      ><a name="3189"
+      > </a
+      ><a name="3190" class="Symbol"
+      >(</a
+      ><a name="3191" href="Data.Vec.html#1074" class="InductiveConstructor"
+      >there</a
+      ><a name="3196"
+      > </a
+      ><a name="3197" href="Data.Fin.Subset.Properties.html#3197" class="Bound"
+      >x&#8712;p&#8321;</a
+      ><a name="3201" class="Symbol"
+      >)</a
+      ><a name="3202"
+      > </a
+      ><a name="3203" class="Symbol"
+      >=</a
+      ><a name="3204"
+      > </a
+      ><a name="3205" href="Data.Vec.html#1074" class="InductiveConstructor"
+      >there</a
+      ><a name="3210"
+      > </a
+      ><a name="3211" class="Symbol"
+      >(</a
+      ><a name="3212" href="Data.Fin.Subset.Properties.html#3076" class="Function"
+      >&#8838;&#8746;&#737;</a
+      ><a name="3215"
+      > </a
+      ><a name="3216" href="Data.Fin.Subset.Properties.html#3186" class="Bound"
+      >p&#8322;</a
+      ><a name="3218"
+      > </a
+      ><a name="3219" href="Data.Fin.Subset.Properties.html#3197" class="Bound"
+      >x&#8712;p&#8321;</a
+      ><a name="3223" class="Symbol"
+      >)</a
+      ><a name="3224"
+      >
+
+  </a
+      ><a name="3228" href="Data.Fin.Subset.Properties.html#3228" class="Function"
+      >&#8838;&#8746;&#691;</a
+      ><a name="3231"
+      > </a
+      ><a name="3232" class="Symbol"
+      >:</a
+      ><a name="3233"
+      > </a
+      ><a name="3234" class="Symbol"
+      >&#8704;</a
+      ><a name="3235"
+      > </a
+      ><a name="3236" class="Symbol"
+      >{</a
+      ><a name="3237" href="Data.Fin.Subset.Properties.html#3237" class="Bound"
+      >n</a
+      ><a name="3238" class="Symbol"
+      >}</a
+      ><a name="3239"
+      > </a
+      ><a name="3240" class="Symbol"
+      >(</a
+      ><a name="3241" href="Data.Fin.Subset.Properties.html#3241" class="Bound"
+      >p&#8321;</a
+      ><a name="3243"
+      > </a
+      ><a name="3244" href="Data.Fin.Subset.Properties.html#3244" class="Bound"
+      >p&#8322;</a
+      ><a name="3246"
+      > </a
+      ><a name="3247" class="Symbol"
+      >:</a
+      ><a name="3248"
+      > </a
+      ><a name="3249" href="Data.Fin.Subset.html#951" class="Function"
+      >Subset</a
+      ><a name="3255"
+      > </a
+      ><a name="3256" href="Data.Fin.Subset.Properties.html#3237" class="Bound"
+      >n</a
+      ><a name="3257" class="Symbol"
+      >)</a
+      ><a name="3258"
+      > </a
+      ><a name="3259" class="Symbol"
+      >&#8594;</a
+      ><a name="3260"
+      > </a
+      ><a name="3261" href="Data.Fin.Subset.Properties.html#3244" class="Bound"
+      >p&#8322;</a
+      ><a name="3263"
+      > </a
+      ><a name="3264" href="Data.Fin.Subset.html#1215" class="Function Operator"
+      >&#8838;</a
+      ><a name="3265"
+      > </a
+      ><a name="3266" href="Data.Fin.Subset.Properties.html#3241" class="Bound"
+      >p&#8321;</a
+      ><a name="3268"
+      > </a
+      ><a name="3269" href="Algebra.html#12752" class="Function Operator"
+      >&#8746;</a
+      ><a name="3270"
+      > </a
+      ><a name="3271" href="Data.Fin.Subset.Properties.html#3244" class="Bound"
+      >p&#8322;</a
+      ><a name="3273"
+      >
+  </a
+      ><a name="3276" href="Data.Fin.Subset.Properties.html#3228" class="Function"
+      >&#8838;&#8746;&#691;</a
+      ><a name="3279"
+      > </a
+      ><a name="3280" href="Data.Fin.Subset.Properties.html#3280" class="Bound"
+      >p&#8321;</a
+      ><a name="3282"
+      > </a
+      ><a name="3283" href="Data.Fin.Subset.Properties.html#3283" class="Bound"
+      >p&#8322;</a
+      ><a name="3285"
+      > </a
+      ><a name="3286" class="Keyword"
+      >rewrite</a
+      ><a name="3293"
+      > </a
+      ><a name="3294" href="Algebra.Structures.html#12608" class="Function"
+      >BooleanAlgebra.&#8744;-comm</a
+      ><a name="3315"
+      > </a
+      ><a name="3316" class="Symbol"
+      >(</a
+      ><a name="3317" href="Data.Fin.Subset.html#1644" class="Function"
+      >booleanAlgebra</a
+      ><a name="3331"
+      > </a
+      ><a name="3332" class="Symbol"
+      >_)</a
+      ><a name="3334"
+      > </a
+      ><a name="3335" href="Data.Fin.Subset.Properties.html#3280" class="Bound"
+      >p&#8321;</a
+      ><a name="3337"
+      > </a
+      ><a name="3338" href="Data.Fin.Subset.Properties.html#3283" class="Bound"
+      >p&#8322;</a
+      ><a name="3340"
+      >
+    </a
+      ><a name="3345" class="Symbol"
+      >=</a
+      ><a name="3346"
+      > </a
+      ><a name="3347" href="Data.Fin.Subset.Properties.html#3076" class="Function"
+      >&#8838;&#8746;&#737;</a
+      ><a name="3350"
+      > </a
+      ><a name="3351" href="Data.Fin.Subset.Properties.html#3280" class="Bound"
+      >p&#8321;</a
+      ><a name="3353"
+      >
+
+  </a
+      ><a name="3357" href="Data.Fin.Subset.Properties.html#3357" class="Function"
+      >from</a
+      ><a name="3361"
+      > </a
+      ><a name="3362" class="Symbol"
+      >:</a
+      ><a name="3363"
+      > </a
+      ><a name="3364" class="Symbol"
+      >&#8704;</a
+      ><a name="3365"
+      > </a
+      ><a name="3366" class="Symbol"
+      >{</a
+      ><a name="3367" href="Data.Fin.Subset.Properties.html#3367" class="Bound"
+      >n</a
+      ><a name="3368" class="Symbol"
+      >}</a
+      ><a name="3369"
+      > </a
+      ><a name="3370" class="Symbol"
+      >{</a
+      ><a name="3371" href="Data.Fin.Subset.Properties.html#3371" class="Bound"
+      >p&#8321;</a
+      ><a name="3373"
+      > </a
+      ><a name="3374" href="Data.Fin.Subset.Properties.html#3374" class="Bound"
+      >p&#8322;</a
+      ><a name="3376"
+      > </a
+      ><a name="3377" class="Symbol"
+      >:</a
+      ><a name="3378"
+      > </a
+      ><a name="3379" href="Data.Fin.Subset.html#951" class="Function"
+      >Subset</a
+      ><a name="3385"
+      > </a
+      ><a name="3386" href="Data.Fin.Subset.Properties.html#3367" class="Bound"
+      >n</a
+      ><a name="3387" class="Symbol"
+      >}</a
+      ><a name="3388"
+      > </a
+      ><a name="3389" class="Symbol"
+      >{</a
+      ><a name="3390" href="Data.Fin.Subset.Properties.html#3390" class="Bound"
+      >x</a
+      ><a name="3391" class="Symbol"
+      >}</a
+      ><a name="3392"
+      > </a
+      ><a name="3393" class="Symbol"
+      >&#8594;</a
+      ><a name="3394"
+      > </a
+      ><a name="3395" href="Data.Fin.Subset.Properties.html#3390" class="Bound"
+      >x</a
+      ><a name="3396"
+      > </a
+      ><a name="3397" href="Data.Fin.Subset.html#1097" class="Function Operator"
+      >&#8712;</a
+      ><a name="3398"
+      > </a
+      ><a name="3399" href="Data.Fin.Subset.Properties.html#3371" class="Bound"
+      >p&#8321;</a
+      ><a name="3401"
+      > </a
+      ><a name="3402" href="Data.Sum.html#433" class="Datatype Operator"
+      >&#8846;</a
+      ><a name="3403"
+      > </a
+      ><a name="3404" href="Data.Fin.Subset.Properties.html#3390" class="Bound"
+      >x</a
+      ><a name="3405"
+      > </a
+      ><a name="3406" href="Data.Fin.Subset.html#1097" class="Function Operator"
+      >&#8712;</a
+      ><a name="3407"
+      > </a
+      ><a name="3408" href="Data.Fin.Subset.Properties.html#3374" class="Bound"
+      >p&#8322;</a
+      ><a name="3410"
+      > </a
+      ><a name="3411" class="Symbol"
+      >&#8594;</a
+      ><a name="3412"
+      > </a
+      ><a name="3413" href="Data.Fin.Subset.Properties.html#3390" class="Bound"
+      >x</a
+      ><a name="3414"
+      > </a
+      ><a name="3415" href="Data.Fin.Subset.html#1097" class="Function Operator"
+      >&#8712;</a
+      ><a name="3416"
+      > </a
+      ><a name="3417" href="Data.Fin.Subset.Properties.html#3371" class="Bound"
+      >p&#8321;</a
+      ><a name="3419"
+      > </a
+      ><a name="3420" href="Algebra.html#12752" class="Function Operator"
+      >&#8746;</a
+      ><a name="3421"
+      > </a
+      ><a name="3422" href="Data.Fin.Subset.Properties.html#3374" class="Bound"
+      >p&#8322;</a
+      ><a name="3424"
+      >
+  </a
+      ><a name="3427" href="Data.Fin.Subset.Properties.html#3357" class="Function"
+      >from</a
+      ><a name="3431"
+      > </a
+      ><a name="3432" class="Symbol"
+      >(</a
+      ><a name="3433" href="Data.Sum.html#489" class="InductiveConstructor"
+      >inj&#8321;</a
+      ><a name="3437"
+      > </a
+      ><a name="3438" href="Data.Fin.Subset.Properties.html#3438" class="Bound"
+      >x&#8712;p&#8321;</a
+      ><a name="3442" class="Symbol"
+      >)</a
+      ><a name="3443"
+      > </a
+      ><a name="3444" class="Symbol"
+      >=</a
+      ><a name="3445"
+      > </a
+      ><a name="3446" href="Data.Fin.Subset.Properties.html#3076" class="Function"
+      >&#8838;&#8746;&#737;</a
+      ><a name="3449"
+      > </a
+      ><a name="3450" class="Symbol"
+      >_</a
+      ><a name="3451"
+      >   </a
+      ><a name="3454" href="Data.Fin.Subset.Properties.html#3438" class="Bound"
+      >x&#8712;p&#8321;</a
+      ><a name="3458"
+      >
+  </a
+      ><a name="3461" href="Data.Fin.Subset.Properties.html#3357" class="Function"
+      >from</a
+      ><a name="3465"
+      > </a
+      ><a name="3466" class="Symbol"
+      >(</a
+      ><a name="3467" href="Data.Sum.html#514" class="InductiveConstructor"
+      >inj&#8322;</a
+      ><a name="3471"
+      > </a
+      ><a name="3472" href="Data.Fin.Subset.Properties.html#3472" class="Bound"
+      >x&#8712;p&#8322;</a
+      ><a name="3476" class="Symbol"
+      >)</a
+      ><a name="3477"
+      > </a
+      ><a name="3478" class="Symbol"
+      >=</a
+      ><a name="3479"
+      > </a
+      ><a name="3480" href="Data.Fin.Subset.Properties.html#3228" class="Function"
+      >&#8838;&#8746;&#691;</a
+      ><a name="3483"
+      > </a
+      ><a name="3484" class="Symbol"
+      >_</a
+      ><a name="3485"
+      > </a
+      ><a name="3486" class="Symbol"
+      >_</a
+      ><a name="3487"
+      > </a
+      ><a name="3488" href="Data.Fin.Subset.Properties.html#3472" class="Bound"
+      >x&#8712;p&#8322;</a
+      ><a name="3492"
+      >
+
+</a
+      ><a name="3494" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="3566"
+      >
+</a
+      ><a name="3567" class="Comment"
+      >-- _&#8838;_ is a partial order</a
+      ><a name="3592"
+      >
+
+</a
+      ><a name="3594" class="Comment"
+      >-- The &quot;natural poset&quot; associated with the boolean algebra.</a
+      ><a name="3653"
+      >
+
+</a
+      ><a name="3655" class="Keyword"
+      >module</a
+      ><a name="3661"
+      > </a
+      ><a name="3662" href="Data.Fin.Subset.Properties.html#3662" class="Module"
+      >NaturalPoset</a
+      ><a name="3674"
+      > </a
+      ><a name="3675" class="Keyword"
+      >where</a
+      ><a name="3680"
+      >
+  </a
+      ><a name="3683" class="Keyword"
+      >private</a
+      ><a name="3690"
+      >
+    </a
+      ><a name="3695" class="Keyword"
+      >open</a
+      ><a name="3699"
+      > </a
+      ><a name="3700" class="Keyword"
+      >module</a
+      ><a name="3706"
+      > </a
+      ><a name="3707" href="Data.Fin.Subset.Properties.html#3707" class="Module"
+      >BA</a
+      ><a name="3709"
+      > </a
+      ><a name="3710" class="Symbol"
+      >{</a
+      ><a name="3711" href="Data.Fin.Subset.Properties.html#3711" class="Bound"
+      >n</a
+      ><a name="3712" class="Symbol"
+      >}</a
+      ><a name="3713"
+      > </a
+      ><a name="3714" class="Symbol"
+      >=</a
+      ><a name="3715"
+      > </a
+      ><a name="3716" href="Algebra.Properties.BooleanAlgebra.html#1" class="Module"
+      >BoolProp</a
+      ><a name="3724"
+      > </a
+      ><a name="3725" class="Symbol"
+      >(</a
+      ><a name="3726" href="Data.Fin.Subset.html#1644" class="Function"
+      >booleanAlgebra</a
+      ><a name="3740"
+      > </a
+      ><a name="3741" href="Data.Fin.Subset.Properties.html#3711" class="Bound"
+      >n</a
+      ><a name="3742" class="Symbol"
+      >)</a
+      ><a name="3743"
+      > </a
+      ><a name="3744" class="Keyword"
+      >public</a
+      ><a name="3750"
+      >
+      </a
+      ><a name="3757" class="Keyword"
+      >using</a
+      ><a name="3762"
+      > </a
+      ><a name="3763" class="Symbol"
+      >(</a
+      ><a name="3764"
+      >poset</a
+      ><a name="3769" class="Symbol"
+      >)</a
+      ><a name="3770"
+      >
+    </a
+      ><a name="3775" class="Keyword"
+      >open</a
+      ><a name="3779"
+      > </a
+      ><a name="3780" class="Keyword"
+      >module</a
+      ><a name="3786"
+      > </a
+      ><a name="3787" href="Data.Fin.Subset.Properties.html#3787" class="Module"
+      >Po</a
+      ><a name="3789"
+      > </a
+      ><a name="3790" class="Symbol"
+      >{</a
+      ><a name="3791" href="Data.Fin.Subset.Properties.html#3791" class="Bound"
+      >n</a
+      ><a name="3792" class="Symbol"
+      >}</a
+      ><a name="3793"
+      > </a
+      ><a name="3794" class="Symbol"
+      >=</a
+      ><a name="3795"
+      > </a
+      ><a name="3796" href="Relation.Binary.html#3673" class="Module"
+      >Poset</a
+      ><a name="3801"
+      > </a
+      ><a name="3802" class="Symbol"
+      >(</a
+      ><a name="3803" href="Algebra.Properties.Lattice.html#1502" class="Function"
+      >poset</a
+      ><a name="3808"
+      > </a
+      ><a name="3809" class="Symbol"
+      >{</a
+      ><a name="3810" class="Argument"
+      >n</a
+      ><a name="3811"
+      > </a
+      ><a name="3812" class="Symbol"
+      >=</a
+      ><a name="3813"
+      > </a
+      ><a name="3814" href="Data.Fin.Subset.Properties.html#3791" class="Bound"
+      >n</a
+      ><a name="3815" class="Symbol"
+      >})</a
+      ><a name="3817"
+      > </a
+      ><a name="3818" class="Keyword"
+      >public</a
+      ><a name="3824"
+      >
+
+  </a
+      ><a name="3828" class="Comment"
+      >-- _&#8838;_ is equivalent to the natural lattice order.</a
+      ><a name="3878"
+      >
+
+  </a
+      ><a name="3882" href="Data.Fin.Subset.Properties.html#3882" class="Function"
+      >orders-equivalent</a
+      ><a name="3899"
+      > </a
+      ><a name="3900" class="Symbol"
+      >:</a
+      ><a name="3901"
+      > </a
+      ><a name="3902" class="Symbol"
+      >&#8704;</a
+      ><a name="3903"
+      > </a
+      ><a name="3904" class="Symbol"
+      >{</a
+      ><a name="3905" href="Data.Fin.Subset.Properties.html#3905" class="Bound"
+      >n</a
+      ><a name="3906" class="Symbol"
+      >}</a
+      ><a name="3907"
+      > </a
+      ><a name="3908" class="Symbol"
+      >{</a
+      ><a name="3909" href="Data.Fin.Subset.Properties.html#3909" class="Bound"
+      >p&#8321;</a
+      ><a name="3911"
+      > </a
+      ><a name="3912" href="Data.Fin.Subset.Properties.html#3912" class="Bound"
+      >p&#8322;</a
+      ><a name="3914"
+      > </a
+      ><a name="3915" class="Symbol"
+      >:</a
+      ><a name="3916"
+      > </a
+      ><a name="3917" href="Data.Fin.Subset.html#951" class="Function"
+      >Subset</a
+      ><a name="3923"
+      > </a
+      ><a name="3924" href="Data.Fin.Subset.Properties.html#3905" class="Bound"
+      >n</a
+      ><a name="3925" class="Symbol"
+      >}</a
+      ><a name="3926"
+      > </a
+      ><a name="3927" class="Symbol"
+      >&#8594;</a
+      ><a name="3928"
+      > </a
+      ><a name="3929" href="Data.Fin.Subset.Properties.html#3909" class="Bound"
+      >p&#8321;</a
+      ><a name="3931"
+      > </a
+      ><a name="3932" href="Data.Fin.Subset.html#1215" class="Function Operator"
+      >&#8838;</a
+      ><a name="3933"
+      > </a
+      ><a name="3934" href="Data.Fin.Subset.Properties.html#3912" class="Bound"
+      >p&#8322;</a
+      ><a name="3936"
+      > </a
+      ><a name="3937" href="Function.Equivalence.html#711" class="Function Operator"
+      >&#8660;</a
+      ><a name="3938"
+      > </a
+      ><a name="3939" href="Data.Fin.Subset.Properties.html#3909" class="Bound"
+      >p&#8321;</a
+      ><a name="3941"
+      > </a
+      ><a name="3942" href="Relation.Binary.html#3812" class="Function Operator"
+      >&#8804;</a
+      ><a name="3943"
+      > </a
+      ><a name="3944" href="Data.Fin.Subset.Properties.html#3912" class="Bound"
+      >p&#8322;</a
+      ><a name="3946"
+      >
+  </a
+      ><a name="3949" href="Data.Fin.Subset.Properties.html#3882" class="Function"
+      >orders-equivalent</a
+      ><a name="3966"
+      > </a
+      ><a name="3967" class="Symbol"
+      >=</a
+      ><a name="3968"
+      > </a
+      ><a name="3969" href="Function.Equivalence.html#804" class="Function"
+      >equivalence</a
+      ><a name="3980"
+      > </a
+      ><a name="3981" class="Symbol"
+      >(</a
+      ><a name="3982" href="Data.Fin.Subset.Properties.html#4015" class="Function"
+      >to</a
+      ><a name="3984"
+      > </a
+      ><a name="3985" class="Symbol"
+      >_</a
+      ><a name="3986"
+      > </a
+      ><a name="3987" class="Symbol"
+      >_)</a
+      ><a name="3989"
+      > </a
+      ><a name="3990" class="Symbol"
+      >(</a
+      ><a name="3991" href="Data.Fin.Subset.Properties.html#4383" class="Function"
+      >from</a
+      ><a name="3995"
+      > </a
+      ><a name="3996" class="Symbol"
+      >_</a
+      ><a name="3997"
+      > </a
+      ><a name="3998" class="Symbol"
+      >_)</a
+      ><a name="4000"
+      >
+    </a
+      ><a name="4005" class="Keyword"
+      >where</a
+      ><a name="4010"
+      >
+    </a
+      ><a name="4015" href="Data.Fin.Subset.Properties.html#4015" class="Function"
+      >to</a
+      ><a name="4017"
+      > </a
+      ><a name="4018" class="Symbol"
+      >:</a
+      ><a name="4019"
+      > </a
+      ><a name="4020" class="Symbol"
+      >&#8704;</a
+      ><a name="4021"
+      > </a
+      ><a name="4022" class="Symbol"
+      >{</a
+      ><a name="4023" href="Data.Fin.Subset.Properties.html#4023" class="Bound"
+      >n</a
+      ><a name="4024" class="Symbol"
+      >}</a
+      ><a name="4025"
+      > </a
+      ><a name="4026" class="Symbol"
+      >(</a
+      ><a name="4027" href="Data.Fin.Subset.Properties.html#4027" class="Bound"
+      >p&#8321;</a
+      ><a name="4029"
+      > </a
+      ><a name="4030" href="Data.Fin.Subset.Properties.html#4030" class="Bound"
+      >p&#8322;</a
+      ><a name="4032"
+      > </a
+      ><a name="4033" class="Symbol"
+      >:</a
+      ><a name="4034"
+      > </a
+      ><a name="4035" href="Data.Fin.Subset.html#951" class="Function"
+      >Subset</a
+      ><a name="4041"
+      > </a
+      ><a name="4042" href="Data.Fin.Subset.Properties.html#4023" class="Bound"
+      >n</a
+      ><a name="4043" class="Symbol"
+      >)</a
+      ><a name="4044"
+      > </a
+      ><a name="4045" class="Symbol"
+      >&#8594;</a
+      ><a name="4046"
+      > </a
+      ><a name="4047" href="Data.Fin.Subset.Properties.html#4027" class="Bound"
+      >p&#8321;</a
+      ><a name="4049"
+      > </a
+      ><a name="4050" href="Data.Fin.Subset.html#1215" class="Function Operator"
+      >&#8838;</a
+      ><a name="4051"
+      > </a
+      ><a name="4052" href="Data.Fin.Subset.Properties.html#4030" class="Bound"
+      >p&#8322;</a
+      ><a name="4054"
+      > </a
+      ><a name="4055" class="Symbol"
+      >&#8594;</a
+      ><a name="4056"
+      > </a
+      ><a name="4057" href="Data.Fin.Subset.Properties.html#4027" class="Bound"
+      >p&#8321;</a
+      ><a name="4059"
+      > </a
+      ><a name="4060" href="Relation.Binary.html#3812" class="Function Operator"
+      >&#8804;</a
+      ><a name="4061"
+      > </a
+      ><a name="4062" href="Data.Fin.Subset.Properties.html#4030" class="Bound"
+      >p&#8322;</a
+      ><a name="4064"
+      >
+    </a
+      ><a name="4069" href="Data.Fin.Subset.Properties.html#4015" class="Function"
+      >to</a
+      ><a name="4071"
+      > </a
+      ><a name="4072" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="4074"
+      >             </a
+      ><a name="4087" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="4089"
+      >             </a
+      ><a name="4102" href="Data.Fin.Subset.Properties.html#4102" class="Bound"
+      >p&#8321;&#8838;p&#8322;</a
+      ><a name="4107"
+      > </a
+      ><a name="4108" class="Symbol"
+      >=</a
+      ><a name="4109"
+      > </a
+      ><a name="4110" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >P.refl</a
+      ><a name="4116"
+      >
+    </a
+      ><a name="4121" href="Data.Fin.Subset.Properties.html#4015" class="Function"
+      >to</a
+      ><a name="4123"
+      > </a
+      ><a name="4124" class="Symbol"
+      >(</a
+      ><a name="4125" href="Data.Bool.Base.html#488" class="InductiveConstructor"
+      >inside</a
+      ><a name="4131"
+      >  </a
+      ><a name="4133" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4134"
+      > </a
+      ><a name="4135" href="Data.Fin.Subset.Properties.html#4135" class="Bound"
+      >p&#8321;</a
+      ><a name="4137" class="Symbol"
+      >)</a
+      ><a name="4138"
+      > </a
+      ><a name="4139" class="Symbol"
+      >(_</a
+      ><a name="4141"
+      >       </a
+      ><a name="4148" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4149"
+      > </a
+      ><a name="4150" href="Data.Fin.Subset.Properties.html#4150" class="Bound"
+      >p&#8322;</a
+      ><a name="4152" class="Symbol"
+      >)</a
+      ><a name="4153"
+      > </a
+      ><a name="4154" href="Data.Fin.Subset.Properties.html#4154" class="Bound"
+      >p&#8321;&#8838;p&#8322;</a
+      ><a name="4159"
+      > </a
+      ><a name="4160" class="Keyword"
+      >with</a
+      ><a name="4164"
+      > </a
+      ><a name="4165" href="Data.Fin.Subset.Properties.html#4154" class="Bound"
+      >p&#8321;&#8838;p&#8322;</a
+      ><a name="4170"
+      > </a
+      ><a name="4171" href="Data.Vec.html#1012" class="InductiveConstructor"
+      >here</a
+      ><a name="4175"
+      >
+    </a
+      ><a name="4180" href="Data.Fin.Subset.Properties.html#4015" class="Function"
+      >to</a
+      ><a name="4182"
+      > </a
+      ><a name="4183" class="Symbol"
+      >(</a
+      ><a name="4184" href="Data.Bool.Base.html#488" class="InductiveConstructor"
+      >inside</a
+      ><a name="4190"
+      >  </a
+      ><a name="4192" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4193"
+      > </a
+      ><a name="4194" href="Data.Fin.Subset.Properties.html#4194" class="Bound"
+      >p&#8321;</a
+      ><a name="4196" class="Symbol"
+      >)</a
+      ><a name="4197"
+      > </a
+      ><a name="4198" class="Symbol"
+      >(</a
+      ><a name="4199" class="DottedPattern Symbol"
+      >.</a
+      ><a name="4200" href="Data.Bool.Base.html#488" class="DottedPattern InductiveConstructor"
+      >inside</a
+      ><a name="4206"
+      > </a
+      ><a name="4207" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4208"
+      > </a
+      ><a name="4209" href="Data.Fin.Subset.Properties.html#4209" class="Bound"
+      >p&#8322;</a
+      ><a name="4211" class="Symbol"
+      >)</a
+      ><a name="4212"
+      > </a
+      ><a name="4213" href="Data.Fin.Subset.Properties.html#4213" class="Bound"
+      >p&#8321;&#8838;p&#8322;</a
+      ><a name="4218"
+      > </a
+      ><a name="4219" class="Symbol"
+      >|</a
+      ><a name="4220"
+      > </a
+      ><a name="4221" href="Data.Vec.html#1012" class="InductiveConstructor"
+      >here</a
+      ><a name="4225"
+      > </a
+      ><a name="4226" class="Symbol"
+      >=</a
+      ><a name="4227"
+      > </a
+      ><a name="4228" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >P.cong</a
+      ><a name="4234"
+      > </a
+      ><a name="4235" class="Symbol"
+      >(</a
+      ><a name="4236" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="4239"
+      > </a
+      ><a name="4240" href="Data.Bool.Base.html#488" class="InductiveConstructor"
+      >inside</a
+      ><a name="4246" class="Symbol"
+      >)</a
+      ><a name="4247"
+      >  </a
+      ><a name="4249" class="Symbol"
+      >(</a
+      ><a name="4250" href="Data.Fin.Subset.Properties.html#4015" class="Function"
+      >to</a
+      ><a name="4252"
+      > </a
+      ><a name="4253" href="Data.Fin.Subset.Properties.html#4194" class="Bound"
+      >p&#8321;</a
+      ><a name="4255"
+      > </a
+      ><a name="4256" href="Data.Fin.Subset.Properties.html#4209" class="Bound"
+      >p&#8322;</a
+      ><a name="4258"
+      > </a
+      ><a name="4259" class="Symbol"
+      >(</a
+      ><a name="4260" href="Data.Fin.Subset.Properties.html#994" class="Function"
+      >drop-&#8759;-&#8838;</a
+      ><a name="4268"
+      > </a
+      ><a name="4269" href="Data.Fin.Subset.Properties.html#4213" class="Bound"
+      >p&#8321;&#8838;p&#8322;</a
+      ><a name="4274" class="Symbol"
+      >))</a
+      ><a name="4276"
+      >
+    </a
+      ><a name="4281" href="Data.Fin.Subset.Properties.html#4015" class="Function"
+      >to</a
+      ><a name="4283"
+      > </a
+      ><a name="4284" class="Symbol"
+      >(</a
+      ><a name="4285" href="Data.Bool.Base.html#503" class="InductiveConstructor"
+      >outside</a
+      ><a name="4292"
+      > </a
+      ><a name="4293" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4294"
+      > </a
+      ><a name="4295" href="Data.Fin.Subset.Properties.html#4295" class="Bound"
+      >p&#8321;</a
+      ><a name="4297" class="Symbol"
+      >)</a
+      ><a name="4298"
+      > </a
+      ><a name="4299" class="Symbol"
+      >(_</a
+      ><a name="4301"
+      >       </a
+      ><a name="4308" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4309"
+      > </a
+      ><a name="4310" href="Data.Fin.Subset.Properties.html#4310" class="Bound"
+      >p&#8322;</a
+      ><a name="4312" class="Symbol"
+      >)</a
+      ><a name="4313"
+      > </a
+      ><a name="4314" href="Data.Fin.Subset.Properties.html#4314" class="Bound"
+      >p&#8321;&#8838;p&#8322;</a
+      ><a name="4319"
+      >        </a
+      ><a name="4327" class="Symbol"
+      >=</a
+      ><a name="4328"
+      > </a
+      ><a name="4329" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >P.cong</a
+      ><a name="4335"
+      > </a
+      ><a name="4336" class="Symbol"
+      >(</a
+      ><a name="4337" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="4340"
+      > </a
+      ><a name="4341" href="Data.Bool.Base.html#503" class="InductiveConstructor"
+      >outside</a
+      ><a name="4348" class="Symbol"
+      >)</a
+      ><a name="4349"
+      > </a
+      ><a name="4350" class="Symbol"
+      >(</a
+      ><a name="4351" href="Data.Fin.Subset.Properties.html#4015" class="Function"
+      >to</a
+      ><a name="4353"
+      > </a
+      ><a name="4354" href="Data.Fin.Subset.Properties.html#4295" class="Bound"
+      >p&#8321;</a
+      ><a name="4356"
+      > </a
+      ><a name="4357" href="Data.Fin.Subset.Properties.html#4310" class="Bound"
+      >p&#8322;</a
+      ><a name="4359"
+      > </a
+      ><a name="4360" class="Symbol"
+      >(</a
+      ><a name="4361" href="Data.Fin.Subset.Properties.html#994" class="Function"
+      >drop-&#8759;-&#8838;</a
+      ><a name="4369"
+      > </a
+      ><a name="4370" href="Data.Fin.Subset.Properties.html#4314" class="Bound"
+      >p&#8321;&#8838;p&#8322;</a
+      ><a name="4375" class="Symbol"
+      >))</a
+      ><a name="4377"
+      >
+
+    </a
+      ><a name="4383" href="Data.Fin.Subset.Properties.html#4383" class="Function"
+      >from</a
+      ><a name="4387"
+      > </a
+      ><a name="4388" class="Symbol"
+      >:</a
+      ><a name="4389"
+      > </a
+      ><a name="4390" class="Symbol"
+      >&#8704;</a
+      ><a name="4391"
+      > </a
+      ><a name="4392" class="Symbol"
+      >{</a
+      ><a name="4393" href="Data.Fin.Subset.Properties.html#4393" class="Bound"
+      >n</a
+      ><a name="4394" class="Symbol"
+      >}</a
+      ><a name="4395"
+      > </a
+      ><a name="4396" class="Symbol"
+      >(</a
+      ><a name="4397" href="Data.Fin.Subset.Properties.html#4397" class="Bound"
+      >p&#8321;</a
+      ><a name="4399"
+      > </a
+      ><a name="4400" href="Data.Fin.Subset.Properties.html#4400" class="Bound"
+      >p&#8322;</a
+      ><a name="4402"
+      > </a
+      ><a name="4403" class="Symbol"
+      >:</a
+      ><a name="4404"
+      > </a
+      ><a name="4405" href="Data.Fin.Subset.html#951" class="Function"
+      >Subset</a
+      ><a name="4411"
+      > </a
+      ><a name="4412" href="Data.Fin.Subset.Properties.html#4393" class="Bound"
+      >n</a
+      ><a name="4413" class="Symbol"
+      >)</a
+      ><a name="4414"
+      > </a
+      ><a name="4415" class="Symbol"
+      >&#8594;</a
+      ><a name="4416"
+      > </a
+      ><a name="4417" href="Data.Fin.Subset.Properties.html#4397" class="Bound"
+      >p&#8321;</a
+      ><a name="4419"
+      > </a
+      ><a name="4420" href="Relation.Binary.html#3812" class="Function Operator"
+      >&#8804;</a
+      ><a name="4421"
+      > </a
+      ><a name="4422" href="Data.Fin.Subset.Properties.html#4400" class="Bound"
+      >p&#8322;</a
+      ><a name="4424"
+      > </a
+      ><a name="4425" class="Symbol"
+      >&#8594;</a
+      ><a name="4426"
+      > </a
+      ><a name="4427" href="Data.Fin.Subset.Properties.html#4397" class="Bound"
+      >p&#8321;</a
+      ><a name="4429"
+      > </a
+      ><a name="4430" href="Data.Fin.Subset.html#1215" class="Function Operator"
+      >&#8838;</a
+      ><a name="4431"
+      > </a
+      ><a name="4432" href="Data.Fin.Subset.Properties.html#4400" class="Bound"
+      >p&#8322;</a
+      ><a name="4434"
+      >
+    </a
+      ><a name="4439" href="Data.Fin.Subset.Properties.html#4383" class="Function"
+      >from</a
+      ><a name="4443"
+      > </a
+      ><a name="4444" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="4446"
+      >             </a
+      ><a name="4459" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="4461"
+      >       </a
+      ><a name="4468" href="Data.Fin.Subset.Properties.html#4468" class="Bound"
+      >p&#8321;&#8804;p&#8322;</a
+      ><a name="4473"
+      > </a
+      ><a name="4474" href="Data.Fin.Subset.Properties.html#4474" class="Bound"
+      >x</a
+      ><a name="4475"
+      >               </a
+      ><a name="4490" class="Symbol"
+      >=</a
+      ><a name="4491"
+      > </a
+      ><a name="4492" href="Data.Fin.Subset.Properties.html#4474" class="Bound"
+      >x</a
+      ><a name="4493"
+      >
+    </a
+      ><a name="4498" href="Data.Fin.Subset.Properties.html#4383" class="Function"
+      >from</a
+      ><a name="4502"
+      > </a
+      ><a name="4503" class="Symbol"
+      >(</a
+      ><a name="4504" class="DottedPattern Symbol"
+      >.</a
+      ><a name="4505" href="Data.Bool.Base.html#488" class="DottedPattern InductiveConstructor"
+      >inside</a
+      ><a name="4511"
+      > </a
+      ><a name="4512" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4513"
+      > </a
+      ><a name="4514" class="Symbol"
+      >_)</a
+      ><a name="4516"
+      >  </a
+      ><a name="4518" class="Symbol"
+      >(_</a
+      ><a name="4520"
+      > </a
+      ><a name="4521" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4522"
+      > </a
+      ><a name="4523" class="Symbol"
+      >_)</a
+      ><a name="4525"
+      >  </a
+      ><a name="4527" href="Data.Fin.Subset.Properties.html#4527" class="Bound"
+      >p&#8321;&#8804;p&#8322;</a
+      ><a name="4532"
+      > </a
+      ><a name="4533" href="Data.Vec.html#1012" class="InductiveConstructor"
+      >here</a
+      ><a name="4537"
+      >            </a
+      ><a name="4549" class="Keyword"
+      >rewrite</a
+      ><a name="4556"
+      > </a
+      ><a name="4557" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >P.cong</a
+      ><a name="4563"
+      > </a
+      ><a name="4564" href="Data.Vec.html#1263" class="Function"
+      >head</a
+      ><a name="4568"
+      > </a
+      ><a name="4569" href="Data.Fin.Subset.Properties.html#4527" class="Bound"
+      >p&#8321;&#8804;p&#8322;</a
+      ><a name="4574"
+      > </a
+      ><a name="4575" class="Symbol"
+      >=</a
+      ><a name="4576"
+      > </a
+      ><a name="4577" href="Data.Vec.html#1012" class="InductiveConstructor"
+      >here</a
+      ><a name="4581"
+      >
+    </a
+      ><a name="4586" href="Data.Fin.Subset.Properties.html#4383" class="Function"
+      >from</a
+      ><a name="4590"
+      > </a
+      ><a name="4591" class="Symbol"
+      >(_</a
+      ><a name="4593"
+      >       </a
+      ><a name="4600" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4601"
+      > </a
+      ><a name="4602" href="Data.Fin.Subset.Properties.html#4602" class="Bound"
+      >p&#8321;</a
+      ><a name="4604" class="Symbol"
+      >)</a
+      ><a name="4605"
+      > </a
+      ><a name="4606" class="Symbol"
+      >(_</a
+      ><a name="4608"
+      > </a
+      ><a name="4609" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4610"
+      > </a
+      ><a name="4611" href="Data.Fin.Subset.Properties.html#4611" class="Bound"
+      >p&#8322;</a
+      ><a name="4613" class="Symbol"
+      >)</a
+      ><a name="4614"
+      > </a
+      ><a name="4615" href="Data.Fin.Subset.Properties.html#4615" class="Bound"
+      >p&#8321;&#8804;p&#8322;</a
+      ><a name="4620"
+      > </a
+      ><a name="4621" class="Symbol"
+      >(</a
+      ><a name="4622" href="Data.Vec.html#1074" class="InductiveConstructor"
+      >there</a
+      ><a name="4627"
+      > </a
+      ><a name="4628" href="Data.Fin.Subset.Properties.html#4628" class="Bound"
+      >xs[i]=x</a
+      ><a name="4635" class="Symbol"
+      >)</a
+      ><a name="4636"
+      > </a
+      ><a name="4637" class="Symbol"
+      >=</a
+      ><a name="4638"
+      >
+      </a
+      ><a name="4645" href="Data.Vec.html#1074" class="InductiveConstructor"
+      >there</a
+      ><a name="4650"
+      > </a
+      ><a name="4651" class="Symbol"
+      >(</a
+      ><a name="4652" href="Data.Fin.Subset.Properties.html#4383" class="Function"
+      >from</a
+      ><a name="4656"
+      > </a
+      ><a name="4657" href="Data.Fin.Subset.Properties.html#4602" class="Bound"
+      >p&#8321;</a
+      ><a name="4659"
+      > </a
+      ><a name="4660" href="Data.Fin.Subset.Properties.html#4611" class="Bound"
+      >p&#8322;</a
+      ><a name="4662"
+      > </a
+      ><a name="4663" class="Symbol"
+      >(</a
+      ><a name="4664" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >P.cong</a
+      ><a name="4670"
+      > </a
+      ><a name="4671" href="Data.Vec.html#1329" class="Function"
+      >tail</a
+      ><a name="4675"
+      > </a
+      ><a name="4676" href="Data.Fin.Subset.Properties.html#4615" class="Bound"
+      >p&#8321;&#8804;p&#8322;</a
+      ><a name="4681" class="Symbol"
+      >)</a
+      ><a name="4682"
+      > </a
+      ><a name="4683" href="Data.Fin.Subset.Properties.html#4628" class="Bound"
+      >xs[i]=x</a
+      ><a name="4690" class="Symbol"
+      >)</a
+      ><a name="4691"
+      >
+
+</a
+      ><a name="4693" class="Comment"
+      >-- _&#8838;_ is a partial order.</a
+      ><a name="4719"
+      >
+
+</a
+      ><a name="4721" href="Data.Fin.Subset.Properties.html#4721" class="Function"
+      >poset</a
+      ><a name="4726"
+      > </a
+      ><a name="4727" class="Symbol"
+      >:</a
+      ><a name="4728"
+      > </a
+      ><a name="4729" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="4730"
+      > </a
+      ><a name="4731" class="Symbol"
+      >&#8594;</a
+      ><a name="4732"
+      > </a
+      ><a name="4733" href="Relation.Binary.html#3673" class="Record"
+      >Poset</a
+      ><a name="4738"
+      > </a
+      ><a name="4739" class="Symbol"
+      >_</a
+      ><a name="4740"
+      > </a
+      ><a name="4741" class="Symbol"
+      >_</a
+      ><a name="4742"
+      > </a
+      ><a name="4743" class="Symbol"
+      >_</a
+      ><a name="4744"
+      >
+</a
+      ><a name="4745" href="Data.Fin.Subset.Properties.html#4721" class="Function"
+      >poset</a
+      ><a name="4750"
+      > </a
+      ><a name="4751" href="Data.Fin.Subset.Properties.html#4751" class="Bound"
+      >n</a
+      ><a name="4752"
+      > </a
+      ><a name="4753" class="Symbol"
+      >=</a
+      ><a name="4754"
+      > </a
+      ><a name="4755" class="Keyword"
+      >record</a
+      ><a name="4761"
+      >
+  </a
+      ><a name="4764" class="Symbol"
+      >{</a
+      ><a name="4765"
+      > </a
+      ><a name="4766" class="Field"
+      >Carrier</a
+      ><a name="4773"
+      >        </a
+      ><a name="4781" class="Symbol"
+      >=</a
+      ><a name="4782"
+      > </a
+      ><a name="4783" href="Data.Fin.Subset.html#951" class="Function"
+      >Subset</a
+      ><a name="4789"
+      > </a
+      ><a name="4790" href="Data.Fin.Subset.Properties.html#4751" class="Bound"
+      >n</a
+      ><a name="4791"
+      >
+  </a
+      ><a name="4794" class="Symbol"
+      >;</a
+      ><a name="4795"
+      > </a
+      ><a name="4796" class="Field Operator"
+      >_&#8776;_</a
+      ><a name="4799"
+      >            </a
+      ><a name="4811" class="Symbol"
+      >=</a
+      ><a name="4812"
+      > </a
+      ><a name="4813" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="4816"
+      >
+  </a
+      ><a name="4819" class="Symbol"
+      >;</a
+      ><a name="4820"
+      > </a
+      ><a name="4821" class="Field Operator"
+      >_&#8804;_</a
+      ><a name="4824"
+      >            </a
+      ><a name="4836" class="Symbol"
+      >=</a
+      ><a name="4837"
+      > </a
+      ><a name="4838" href="Data.Fin.Subset.html#1215" class="Function Operator"
+      >_&#8838;_</a
+      ><a name="4841"
+      >
+  </a
+      ><a name="4844" class="Symbol"
+      >;</a
+      ><a name="4845"
+      > </a
+      ><a name="4846" class="Field"
+      >isPartialOrder</a
+      ><a name="4860"
+      > </a
+      ><a name="4861" class="Symbol"
+      >=</a
+      ><a name="4862"
+      > </a
+      ><a name="4863" class="Keyword"
+      >record</a
+      ><a name="4869"
+      >
+    </a
+      ><a name="4874" class="Symbol"
+      >{</a
+      ><a name="4875"
+      > </a
+      ><a name="4876" class="Field"
+      >isPreorder</a
+      ><a name="4886"
+      > </a
+      ><a name="4887" class="Symbol"
+      >=</a
+      ><a name="4888"
+      > </a
+      ><a name="4889" class="Keyword"
+      >record</a
+      ><a name="4895"
+      >
+      </a
+      ><a name="4902" class="Symbol"
+      >{</a
+      ><a name="4903"
+      > </a
+      ><a name="4904" class="Field"
+      >isEquivalence</a
+      ><a name="4917"
+      > </a
+      ><a name="4918" class="Symbol"
+      >=</a
+      ><a name="4919"
+      > </a
+      ><a name="4920" href="Relation.Binary.PropositionalEquality.Core.html#879" class="Function"
+      >P.isEquivalence</a
+      ><a name="4935"
+      >
+      </a
+      ><a name="4942" class="Symbol"
+      >;</a
+      ><a name="4943"
+      > </a
+      ><a name="4944" class="Field"
+      >reflexive</a
+      ><a name="4953"
+      >     </a
+      ><a name="4958" class="Symbol"
+      >=</a
+      ><a name="4959"
+      > </a
+      ><a name="4960" class="Symbol"
+      >&#955;</a
+      ><a name="4961"
+      > </a
+      ><a name="4962" href="Data.Fin.Subset.Properties.html#4962" class="Bound"
+      >i&#8801;j</a
+      ><a name="4965"
+      > </a
+      ><a name="4966" class="Symbol"
+      >&#8594;</a
+      ><a name="4967"
+      > </a
+      ><a name="4968" href="Function.Equivalence.html#659" class="Function"
+      >from</a
+      ><a name="4972"
+      > </a
+      ><a name="4973" href="Function.Equality.html#699" class="Field Operator"
+      >&#10216;$&#10217;</a
+      ><a name="4976"
+      > </a
+      ><a name="4977" href="Relation.Binary.html#1104" class="Function"
+      >reflexive</a
+      ><a name="4986"
+      > </a
+      ><a name="4987" href="Data.Fin.Subset.Properties.html#4962" class="Bound"
+      >i&#8801;j</a
+      ><a name="4990"
+      >
+      </a
+      ><a name="4997" class="Symbol"
+      >;</a
+      ><a name="4998"
+      > </a
+      ><a name="4999" class="Field"
+      >trans</a
+      ><a name="5004"
+      >         </a
+      ><a name="5013" class="Symbol"
+      >=</a
+      ><a name="5014"
+      > </a
+      ><a name="5015" class="Symbol"
+      >&#955;</a
+      ><a name="5016"
+      > </a
+      ><a name="5017" href="Data.Fin.Subset.Properties.html#5017" class="Bound"
+      >x&#8838;y</a
+      ><a name="5020"
+      > </a
+      ><a name="5021" href="Data.Fin.Subset.Properties.html#5021" class="Bound"
+      >y&#8838;z</a
+      ><a name="5024"
+      > </a
+      ><a name="5025" class="Symbol"
+      >&#8594;</a
+      ><a name="5026"
+      > </a
+      ><a name="5027" href="Function.Equivalence.html#659" class="Function"
+      >from</a
+      ><a name="5031"
+      > </a
+      ><a name="5032" href="Function.Equality.html#699" class="Field Operator"
+      >&#10216;$&#10217;</a
+      ><a name="5035"
+      > </a
+      ><a name="5036" href="Relation.Binary.html#1134" class="Function"
+      >trans</a
+      ><a name="5041"
+      > </a
+      ><a name="5042" class="Symbol"
+      >(</a
+      ><a name="5043" href="Function.Equivalence.html#638" class="Function"
+      >to</a
+      ><a name="5045"
+      > </a
+      ><a name="5046" href="Function.Equality.html#699" class="Field Operator"
+      >&#10216;$&#10217;</a
+      ><a name="5049"
+      > </a
+      ><a name="5050" href="Data.Fin.Subset.Properties.html#5017" class="Bound"
+      >x&#8838;y</a
+      ><a name="5053" class="Symbol"
+      >)</a
+      ><a name="5054"
+      > </a
+      ><a name="5055" class="Symbol"
+      >(</a
+      ><a name="5056" href="Function.Equivalence.html#638" class="Function"
+      >to</a
+      ><a name="5058"
+      > </a
+      ><a name="5059" href="Function.Equality.html#699" class="Field Operator"
+      >&#10216;$&#10217;</a
+      ><a name="5062"
+      > </a
+      ><a name="5063" href="Data.Fin.Subset.Properties.html#5021" class="Bound"
+      >y&#8838;z</a
+      ><a name="5066" class="Symbol"
+      >)</a
+      ><a name="5067"
+      >
+      </a
+      ><a name="5074" class="Symbol"
+      >}</a
+      ><a name="5075"
+      >
+    </a
+      ><a name="5080" class="Symbol"
+      >;</a
+      ><a name="5081"
+      > </a
+      ><a name="5082" class="Field"
+      >antisym</a
+      ><a name="5089"
+      > </a
+      ><a name="5090" class="Symbol"
+      >=</a
+      ><a name="5091"
+      > </a
+      ><a name="5092" class="Symbol"
+      >&#955;</a
+      ><a name="5093"
+      > </a
+      ><a name="5094" href="Data.Fin.Subset.Properties.html#5094" class="Bound"
+      >x&#8838;y</a
+      ><a name="5097"
+      > </a
+      ><a name="5098" href="Data.Fin.Subset.Properties.html#5098" class="Bound"
+      >y&#8838;x</a
+      ><a name="5101"
+      > </a
+      ><a name="5102" class="Symbol"
+      >&#8594;</a
+      ><a name="5103"
+      > </a
+      ><a name="5104" href="Relation.Binary.html#3552" class="Function"
+      >antisym</a
+      ><a name="5111"
+      > </a
+      ><a name="5112" class="Symbol"
+      >(</a
+      ><a name="5113" href="Function.Equivalence.html#638" class="Function"
+      >to</a
+      ><a name="5115"
+      > </a
+      ><a name="5116" href="Function.Equality.html#699" class="Field Operator"
+      >&#10216;$&#10217;</a
+      ><a name="5119"
+      > </a
+      ><a name="5120" href="Data.Fin.Subset.Properties.html#5094" class="Bound"
+      >x&#8838;y</a
+      ><a name="5123" class="Symbol"
+      >)</a
+      ><a name="5124"
+      > </a
+      ><a name="5125" class="Symbol"
+      >(</a
+      ><a name="5126" href="Function.Equivalence.html#638" class="Function"
+      >to</a
+      ><a name="5128"
+      > </a
+      ><a name="5129" href="Function.Equality.html#699" class="Field Operator"
+      >&#10216;$&#10217;</a
+      ><a name="5132"
+      > </a
+      ><a name="5133" href="Data.Fin.Subset.Properties.html#5098" class="Bound"
+      >y&#8838;x</a
+      ><a name="5136" class="Symbol"
+      >)</a
+      ><a name="5137"
+      >
+    </a
+      ><a name="5142" class="Symbol"
+      >}</a
+      ><a name="5143"
+      >
+  </a
+      ><a name="5146" class="Symbol"
+      >}</a
+      ><a name="5147"
+      >
+  </a
+      ><a name="5150" class="Keyword"
+      >where</a
+      ><a name="5155"
+      >
+  </a
+      ><a name="5158" class="Keyword"
+      >open</a
+      ><a name="5162"
+      > </a
+      ><a name="5163" href="Data.Fin.Subset.Properties.html#3662" class="Module"
+      >NaturalPoset</a
+      ><a name="5175"
+      >
+  </a
+      ><a name="5178" class="Keyword"
+      >open</a
+      ><a name="5182"
+      > </a
+      ><a name="5183" class="Keyword"
+      >module</a
+      ><a name="5189"
+      > </a
+      ><a name="5190" href="Data.Fin.Subset.Properties.html#5190" class="Module"
+      >E</a
+      ><a name="5191"
+      > </a
+      ><a name="5192" class="Symbol"
+      >{</a
+      ><a name="5193" href="Data.Fin.Subset.Properties.html#5193" class="Bound"
+      >p&#8321;</a
+      ><a name="5195"
+      > </a
+      ><a name="5196" href="Data.Fin.Subset.Properties.html#5196" class="Bound"
+      >p&#8322;</a
+      ><a name="5198" class="Symbol"
+      >}</a
+      ><a name="5199"
+      > </a
+      ><a name="5200" class="Symbol"
+      >=</a
+      ><a name="5201"
+      >
+    </a
+      ><a name="5206" href="Function.Equivalence.html#488" class="Module"
+      >Equivalence</a
+      ><a name="5217"
+      > </a
+      ><a name="5218" class="Symbol"
+      >(</a
+      ><a name="5219" href="Data.Fin.Subset.Properties.html#3882" class="Function"
+      >orders-equivalent</a
+      ><a name="5236"
+      > </a
+      ><a name="5237" class="Symbol"
+      >{</a
+      ><a name="5238" class="Argument"
+      >n</a
+      ><a name="5239"
+      > </a
+      ><a name="5240" class="Symbol"
+      >=</a
+      ><a name="5241"
+      > </a
+      ><a name="5242" href="Data.Fin.Subset.Properties.html#4751" class="Bound"
+      >n</a
+      ><a name="5243" class="Symbol"
+      >}</a
+      ><a name="5244"
+      > </a
+      ><a name="5245" class="Symbol"
+      >{</a
+      ><a name="5246" class="Argument"
+      >p&#8321;</a
+      ><a name="5248"
+      > </a
+      ><a name="5249" class="Symbol"
+      >=</a
+      ><a name="5250"
+      > </a
+      ><a name="5251" href="Data.Fin.Subset.Properties.html#5193" class="Bound"
+      >p&#8321;</a
+      ><a name="5253" class="Symbol"
+      >}</a
+      ><a name="5254"
+      > </a
+      ><a name="5255" class="Symbol"
+      >{</a
+      ><a name="5256" class="Argument"
+      >p&#8322;</a
+      ><a name="5258"
+      > </a
+      ><a name="5259" class="Symbol"
+      >=</a
+      ><a name="5260"
+      > </a
+      ><a name="5261" href="Data.Fin.Subset.Properties.html#5196" class="Bound"
+      >p&#8322;</a
+      ><a name="5263" class="Symbol"
+      >})</a
+      ><a name="5265"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

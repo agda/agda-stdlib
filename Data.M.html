@@ -1,0 +1,586 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.M</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- M-types (the dual of W-types)</a
+      ><a name="138"
+      >
+</a
+      ><a name="139" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="211"
+      >
+
+</a
+      ><a name="213" class="Keyword"
+      >module</a
+      ><a name="219"
+      > </a
+      ><a name="220" href="Data.M.html#1" class="Module"
+      >Data.M</a
+      ><a name="226"
+      > </a
+      ><a name="227" class="Keyword"
+      >where</a
+      ><a name="232"
+      >
+
+</a
+      ><a name="234" class="Keyword"
+      >open</a
+      ><a name="238"
+      > </a
+      ><a name="239" class="Keyword"
+      >import</a
+      ><a name="245"
+      > </a
+      ><a name="246" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="251"
+      >
+</a
+      ><a name="252" class="Keyword"
+      >open</a
+      ><a name="256"
+      > </a
+      ><a name="257" class="Keyword"
+      >import</a
+      ><a name="263"
+      > </a
+      ><a name="264" href="Coinduction.html#1" class="Module"
+      >Coinduction</a
+      ><a name="275"
+      >
+
+</a
+      ><a name="277" class="Comment"
+      >-- The family of M-types.</a
+      ><a name="302"
+      >
+
+</a
+      ><a name="304" class="Keyword"
+      >data</a
+      ><a name="308"
+      > </a
+      ><a name="309" href="Data.M.html#309" class="Datatype"
+      >M</a
+      ><a name="310"
+      > </a
+      ><a name="311" class="Symbol"
+      >{</a
+      ><a name="312" href="Data.M.html#312" class="Bound"
+      >a</a
+      ><a name="313"
+      > </a
+      ><a name="314" href="Data.M.html#314" class="Bound"
+      >b</a
+      ><a name="315" class="Symbol"
+      >}</a
+      ><a name="316"
+      > </a
+      ><a name="317" class="Symbol"
+      >(</a
+      ><a name="318" href="Data.M.html#318" class="Bound"
+      >A</a
+      ><a name="319"
+      > </a
+      ><a name="320" class="Symbol"
+      >:</a
+      ><a name="321"
+      > </a
+      ><a name="322" class="PrimitiveType"
+      >Set</a
+      ><a name="325"
+      > </a
+      ><a name="326" href="Data.M.html#312" class="Bound"
+      >a</a
+      ><a name="327" class="Symbol"
+      >)</a
+      ><a name="328"
+      > </a
+      ><a name="329" class="Symbol"
+      >(</a
+      ><a name="330" href="Data.M.html#330" class="Bound"
+      >B</a
+      ><a name="331"
+      > </a
+      ><a name="332" class="Symbol"
+      >:</a
+      ><a name="333"
+      > </a
+      ><a name="334" href="Data.M.html#318" class="Bound"
+      >A</a
+      ><a name="335"
+      > </a
+      ><a name="336" class="Symbol"
+      >&#8594;</a
+      ><a name="337"
+      > </a
+      ><a name="338" class="PrimitiveType"
+      >Set</a
+      ><a name="341"
+      > </a
+      ><a name="342" href="Data.M.html#314" class="Bound"
+      >b</a
+      ><a name="343" class="Symbol"
+      >)</a
+      ><a name="344"
+      > </a
+      ><a name="345" class="Symbol"
+      >:</a
+      ><a name="346"
+      > </a
+      ><a name="347" class="PrimitiveType"
+      >Set</a
+      ><a name="350"
+      > </a
+      ><a name="351" class="Symbol"
+      >(</a
+      ><a name="352" href="Data.M.html#312" class="Bound"
+      >a</a
+      ><a name="353"
+      > </a
+      ><a name="354" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="355"
+      > </a
+      ><a name="356" href="Data.M.html#314" class="Bound"
+      >b</a
+      ><a name="357" class="Symbol"
+      >)</a
+      ><a name="358"
+      > </a
+      ><a name="359" class="Keyword"
+      >where</a
+      ><a name="364"
+      >
+  </a
+      ><a name="367" href="Data.M.html#367" class="InductiveConstructor"
+      >inf</a
+      ><a name="370"
+      > </a
+      ><a name="371" class="Symbol"
+      >:</a
+      ><a name="372"
+      > </a
+      ><a name="373" class="Symbol"
+      >(</a
+      ><a name="374" href="Data.M.html#374" class="Bound"
+      >x</a
+      ><a name="375"
+      > </a
+      ><a name="376" class="Symbol"
+      >:</a
+      ><a name="377"
+      > </a
+      ><a name="378" href="Data.M.html#318" class="Bound"
+      >A</a
+      ><a name="379" class="Symbol"
+      >)</a
+      ><a name="380"
+      > </a
+      ><a name="381" class="Symbol"
+      >(</a
+      ><a name="382" href="Data.M.html#382" class="Bound"
+      >f</a
+      ><a name="383"
+      > </a
+      ><a name="384" class="Symbol"
+      >:</a
+      ><a name="385"
+      > </a
+      ><a name="386" href="Data.M.html#330" class="Bound"
+      >B</a
+      ><a name="387"
+      > </a
+      ><a name="388" href="Data.M.html#374" class="Bound"
+      >x</a
+      ><a name="389"
+      > </a
+      ><a name="390" class="Symbol"
+      >&#8594;</a
+      ><a name="391"
+      > </a
+      ><a name="392" href="Coinduction.html#414" class="Datatype"
+      >&#8734;</a
+      ><a name="393"
+      > </a
+      ><a name="394" class="Symbol"
+      >(</a
+      ><a name="395" href="Data.M.html#309" class="Datatype"
+      >M</a
+      ><a name="396"
+      > </a
+      ><a name="397" href="Data.M.html#318" class="Bound"
+      >A</a
+      ><a name="398"
+      > </a
+      ><a name="399" href="Data.M.html#330" class="Bound"
+      >B</a
+      ><a name="400" class="Symbol"
+      >))</a
+      ><a name="402"
+      > </a
+      ><a name="403" class="Symbol"
+      >&#8594;</a
+      ><a name="404"
+      > </a
+      ><a name="405" href="Data.M.html#309" class="Datatype"
+      >M</a
+      ><a name="406"
+      > </a
+      ><a name="407" href="Data.M.html#318" class="Bound"
+      >A</a
+      ><a name="408"
+      > </a
+      ><a name="409" href="Data.M.html#330" class="Bound"
+      >B</a
+      ><a name="410"
+      >
+
+</a
+      ><a name="412" class="Comment"
+      >-- Projections.</a
+      ><a name="427"
+      >
+
+</a
+      ><a name="429" href="Data.M.html#429" class="Function"
+      >head</a
+      ><a name="433"
+      > </a
+      ><a name="434" class="Symbol"
+      >:</a
+      ><a name="435"
+      > </a
+      ><a name="436" class="Symbol"
+      >&#8704;</a
+      ><a name="437"
+      > </a
+      ><a name="438" class="Symbol"
+      >{</a
+      ><a name="439" href="Data.M.html#439" class="Bound"
+      >a</a
+      ><a name="440"
+      > </a
+      ><a name="441" href="Data.M.html#441" class="Bound"
+      >b</a
+      ><a name="442" class="Symbol"
+      >}</a
+      ><a name="443"
+      > </a
+      ><a name="444" class="Symbol"
+      >{</a
+      ><a name="445" href="Data.M.html#445" class="Bound"
+      >A</a
+      ><a name="446"
+      > </a
+      ><a name="447" class="Symbol"
+      >:</a
+      ><a name="448"
+      > </a
+      ><a name="449" class="PrimitiveType"
+      >Set</a
+      ><a name="452"
+      > </a
+      ><a name="453" href="Data.M.html#439" class="Bound"
+      >a</a
+      ><a name="454" class="Symbol"
+      >}</a
+      ><a name="455"
+      > </a
+      ><a name="456" class="Symbol"
+      >{</a
+      ><a name="457" href="Data.M.html#457" class="Bound"
+      >B</a
+      ><a name="458"
+      > </a
+      ><a name="459" class="Symbol"
+      >:</a
+      ><a name="460"
+      > </a
+      ><a name="461" href="Data.M.html#445" class="Bound"
+      >A</a
+      ><a name="462"
+      > </a
+      ><a name="463" class="Symbol"
+      >&#8594;</a
+      ><a name="464"
+      > </a
+      ><a name="465" class="PrimitiveType"
+      >Set</a
+      ><a name="468"
+      > </a
+      ><a name="469" href="Data.M.html#441" class="Bound"
+      >b</a
+      ><a name="470" class="Symbol"
+      >}</a
+      ><a name="471"
+      > </a
+      ><a name="472" class="Symbol"
+      >&#8594;</a
+      ><a name="473"
+      >
+       </a
+      ><a name="481" href="Data.M.html#309" class="Datatype"
+      >M</a
+      ><a name="482"
+      > </a
+      ><a name="483" href="Data.M.html#445" class="Bound"
+      >A</a
+      ><a name="484"
+      > </a
+      ><a name="485" href="Data.M.html#457" class="Bound"
+      >B</a
+      ><a name="486"
+      > </a
+      ><a name="487" class="Symbol"
+      >&#8594;</a
+      ><a name="488"
+      > </a
+      ><a name="489" href="Data.M.html#445" class="Bound"
+      >A</a
+      ><a name="490"
+      >
+</a
+      ><a name="491" href="Data.M.html#429" class="Function"
+      >head</a
+      ><a name="495"
+      > </a
+      ><a name="496" class="Symbol"
+      >(</a
+      ><a name="497" href="Data.M.html#367" class="InductiveConstructor"
+      >inf</a
+      ><a name="500"
+      > </a
+      ><a name="501" href="Data.M.html#501" class="Bound"
+      >x</a
+      ><a name="502"
+      > </a
+      ><a name="503" href="Data.M.html#503" class="Bound"
+      >f</a
+      ><a name="504" class="Symbol"
+      >)</a
+      ><a name="505"
+      > </a
+      ><a name="506" class="Symbol"
+      >=</a
+      ><a name="507"
+      > </a
+      ><a name="508" href="Data.M.html#501" class="Bound"
+      >x</a
+      ><a name="509"
+      >
+
+</a
+      ><a name="511" href="Data.M.html#511" class="Function"
+      >tail</a
+      ><a name="515"
+      > </a
+      ><a name="516" class="Symbol"
+      >:</a
+      ><a name="517"
+      > </a
+      ><a name="518" class="Symbol"
+      >&#8704;</a
+      ><a name="519"
+      > </a
+      ><a name="520" class="Symbol"
+      >{</a
+      ><a name="521" href="Data.M.html#521" class="Bound"
+      >a</a
+      ><a name="522"
+      > </a
+      ><a name="523" href="Data.M.html#523" class="Bound"
+      >b</a
+      ><a name="524" class="Symbol"
+      >}</a
+      ><a name="525"
+      > </a
+      ><a name="526" class="Symbol"
+      >{</a
+      ><a name="527" href="Data.M.html#527" class="Bound"
+      >A</a
+      ><a name="528"
+      > </a
+      ><a name="529" class="Symbol"
+      >:</a
+      ><a name="530"
+      > </a
+      ><a name="531" class="PrimitiveType"
+      >Set</a
+      ><a name="534"
+      > </a
+      ><a name="535" href="Data.M.html#521" class="Bound"
+      >a</a
+      ><a name="536" class="Symbol"
+      >}</a
+      ><a name="537"
+      > </a
+      ><a name="538" class="Symbol"
+      >{</a
+      ><a name="539" href="Data.M.html#539" class="Bound"
+      >B</a
+      ><a name="540"
+      > </a
+      ><a name="541" class="Symbol"
+      >:</a
+      ><a name="542"
+      > </a
+      ><a name="543" href="Data.M.html#527" class="Bound"
+      >A</a
+      ><a name="544"
+      > </a
+      ><a name="545" class="Symbol"
+      >&#8594;</a
+      ><a name="546"
+      > </a
+      ><a name="547" class="PrimitiveType"
+      >Set</a
+      ><a name="550"
+      > </a
+      ><a name="551" href="Data.M.html#523" class="Bound"
+      >b</a
+      ><a name="552" class="Symbol"
+      >}</a
+      ><a name="553"
+      > </a
+      ><a name="554" class="Symbol"
+      >&#8594;</a
+      ><a name="555"
+      >
+       </a
+      ><a name="563" class="Symbol"
+      >(</a
+      ><a name="564" href="Data.M.html#564" class="Bound"
+      >x</a
+      ><a name="565"
+      > </a
+      ><a name="566" class="Symbol"
+      >:</a
+      ><a name="567"
+      > </a
+      ><a name="568" href="Data.M.html#309" class="Datatype"
+      >M</a
+      ><a name="569"
+      > </a
+      ><a name="570" href="Data.M.html#527" class="Bound"
+      >A</a
+      ><a name="571"
+      > </a
+      ><a name="572" href="Data.M.html#539" class="Bound"
+      >B</a
+      ><a name="573" class="Symbol"
+      >)</a
+      ><a name="574"
+      > </a
+      ><a name="575" class="Symbol"
+      >&#8594;</a
+      ><a name="576"
+      > </a
+      ><a name="577" href="Data.M.html#539" class="Bound"
+      >B</a
+      ><a name="578"
+      > </a
+      ><a name="579" class="Symbol"
+      >(</a
+      ><a name="580" href="Data.M.html#429" class="Function"
+      >head</a
+      ><a name="584"
+      > </a
+      ><a name="585" href="Data.M.html#564" class="Bound"
+      >x</a
+      ><a name="586" class="Symbol"
+      >)</a
+      ><a name="587"
+      > </a
+      ><a name="588" class="Symbol"
+      >&#8594;</a
+      ><a name="589"
+      > </a
+      ><a name="590" href="Data.M.html#309" class="Datatype"
+      >M</a
+      ><a name="591"
+      > </a
+      ><a name="592" href="Data.M.html#527" class="Bound"
+      >A</a
+      ><a name="593"
+      > </a
+      ><a name="594" href="Data.M.html#539" class="Bound"
+      >B</a
+      ><a name="595"
+      >
+</a
+      ><a name="596" href="Data.M.html#511" class="Function"
+      >tail</a
+      ><a name="600"
+      > </a
+      ><a name="601" class="Symbol"
+      >(</a
+      ><a name="602" href="Data.M.html#367" class="InductiveConstructor"
+      >inf</a
+      ><a name="605"
+      > </a
+      ><a name="606" href="Data.M.html#606" class="Bound"
+      >x</a
+      ><a name="607"
+      > </a
+      ><a name="608" href="Data.M.html#608" class="Bound"
+      >f</a
+      ><a name="609" class="Symbol"
+      >)</a
+      ><a name="610"
+      > </a
+      ><a name="611" href="Data.M.html#611" class="Bound"
+      >b</a
+      ><a name="612"
+      > </a
+      ><a name="613" class="Symbol"
+      >=</a
+      ><a name="614"
+      > </a
+      ><a name="615" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="616"
+      > </a
+      ><a name="617" class="Symbol"
+      >(</a
+      ><a name="618" href="Data.M.html#608" class="Bound"
+      >f</a
+      ><a name="619"
+      > </a
+      ><a name="620" href="Data.M.html#611" class="Bound"
+      >b</a
+      ><a name="621" class="Symbol"
+      >)</a
+      ><a name="622"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

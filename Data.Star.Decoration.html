@@ -1,0 +1,2796 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Star.Decoration</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Decorated star-lists</a
+      ><a name="129"
+      >
+</a
+      ><a name="130" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="202"
+      >
+
+</a
+      ><a name="204" class="Keyword"
+      >module</a
+      ><a name="210"
+      > </a
+      ><a name="211" href="Data.Star.Decoration.html#1" class="Module"
+      >Data.Star.Decoration</a
+      ><a name="231"
+      > </a
+      ><a name="232" class="Keyword"
+      >where</a
+      ><a name="237"
+      >
+
+</a
+      ><a name="239" class="Keyword"
+      >open</a
+      ><a name="243"
+      > </a
+      ><a name="244" class="Keyword"
+      >import</a
+      ><a name="250"
+      > </a
+      ><a name="251" href="Data.Star.html#1" class="Module"
+      >Data.Star</a
+      ><a name="260"
+      >
+</a
+      ><a name="261" class="Keyword"
+      >open</a
+      ><a name="265"
+      > </a
+      ><a name="266" class="Keyword"
+      >import</a
+      ><a name="272"
+      > </a
+      ><a name="273" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="288"
+      >
+</a
+      ><a name="289" class="Keyword"
+      >open</a
+      ><a name="293"
+      > </a
+      ><a name="294" class="Keyword"
+      >import</a
+      ><a name="300"
+      > </a
+      ><a name="301" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="309"
+      >
+</a
+      ><a name="310" class="Keyword"
+      >open</a
+      ><a name="314"
+      > </a
+      ><a name="315" class="Keyword"
+      >import</a
+      ><a name="321"
+      > </a
+      ><a name="322" href="Data.Unit.html#1" class="Module"
+      >Data.Unit</a
+      ><a name="331"
+      >
+</a
+      ><a name="332" class="Keyword"
+      >open</a
+      ><a name="336"
+      > </a
+      ><a name="337" class="Keyword"
+      >import</a
+      ><a name="343"
+      > </a
+      ><a name="344" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="349"
+      >
+
+</a
+      ><a name="351" class="Comment"
+      >-- A predicate on relation &quot;edges&quot; (think of the relation as a graph).</a
+      ><a name="421"
+      >
+
+</a
+      ><a name="423" href="Data.Star.Decoration.html#423" class="Function"
+      >EdgePred</a
+      ><a name="431"
+      > </a
+      ><a name="432" class="Symbol"
+      >:</a
+      ><a name="433"
+      > </a
+      ><a name="434" class="Symbol"
+      >{</a
+      ><a name="435" href="Data.Star.Decoration.html#435" class="Bound"
+      >I</a
+      ><a name="436"
+      > </a
+      ><a name="437" class="Symbol"
+      >:</a
+      ><a name="438"
+      > </a
+      ><a name="439" class="PrimitiveType"
+      >Set</a
+      ><a name="442" class="Symbol"
+      >}</a
+      ><a name="443"
+      > </a
+      ><a name="444" class="Symbol"
+      >&#8594;</a
+      ><a name="445"
+      > </a
+      ><a name="446" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="449"
+      > </a
+      ><a name="450" href="Data.Star.Decoration.html#435" class="Bound"
+      >I</a
+      ><a name="451"
+      > </a
+      ><a name="452" href="Agda.Primitive.html#580" class="Primitive"
+      >zero</a
+      ><a name="456"
+      > </a
+      ><a name="457" class="Symbol"
+      >&#8594;</a
+      ><a name="458"
+      > </a
+      ><a name="459" class="PrimitiveType"
+      >Set&#8321;</a
+      ><a name="463"
+      >
+</a
+      ><a name="464" href="Data.Star.Decoration.html#423" class="Function"
+      >EdgePred</a
+      ><a name="472"
+      > </a
+      ><a name="473" href="Data.Star.Decoration.html#473" class="Bound"
+      >T</a
+      ><a name="474"
+      > </a
+      ><a name="475" class="Symbol"
+      >=</a
+      ><a name="476"
+      > </a
+      ><a name="477" class="Symbol"
+      >&#8704;</a
+      ><a name="478"
+      > </a
+      ><a name="479" class="Symbol"
+      >{</a
+      ><a name="480" href="Data.Star.Decoration.html#480" class="Bound"
+      >i</a
+      ><a name="481"
+      > </a
+      ><a name="482" href="Data.Star.Decoration.html#482" class="Bound"
+      >j</a
+      ><a name="483" class="Symbol"
+      >}</a
+      ><a name="484"
+      > </a
+      ><a name="485" class="Symbol"
+      >&#8594;</a
+      ><a name="486"
+      > </a
+      ><a name="487" href="Data.Star.Decoration.html#473" class="Bound"
+      >T</a
+      ><a name="488"
+      > </a
+      ><a name="489" href="Data.Star.Decoration.html#480" class="Bound"
+      >i</a
+      ><a name="490"
+      > </a
+      ><a name="491" href="Data.Star.Decoration.html#482" class="Bound"
+      >j</a
+      ><a name="492"
+      > </a
+      ><a name="493" class="Symbol"
+      >&#8594;</a
+      ><a name="494"
+      > </a
+      ><a name="495" class="PrimitiveType"
+      >Set</a
+      ><a name="498"
+      >
+
+</a
+      ><a name="500" class="Keyword"
+      >data</a
+      ><a name="504"
+      > </a
+      ><a name="505" href="Data.Star.Decoration.html#505" class="Datatype"
+      >NonEmptyEdgePred</a
+      ><a name="521"
+      > </a
+      ><a name="522" class="Symbol"
+      >{</a
+      ><a name="523" href="Data.Star.Decoration.html#523" class="Bound"
+      >I</a
+      ><a name="524"
+      > </a
+      ><a name="525" class="Symbol"
+      >:</a
+      ><a name="526"
+      > </a
+      ><a name="527" class="PrimitiveType"
+      >Set</a
+      ><a name="530" class="Symbol"
+      >}</a
+      ><a name="531"
+      >
+                      </a
+      ><a name="554" class="Symbol"
+      >(</a
+      ><a name="555" href="Data.Star.Decoration.html#555" class="Bound"
+      >T</a
+      ><a name="556"
+      > </a
+      ><a name="557" class="Symbol"
+      >:</a
+      ><a name="558"
+      > </a
+      ><a name="559" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="562"
+      > </a
+      ><a name="563" href="Data.Star.Decoration.html#523" class="Bound"
+      >I</a
+      ><a name="564"
+      > </a
+      ><a name="565" href="Agda.Primitive.html#580" class="Primitive"
+      >zero</a
+      ><a name="569" class="Symbol"
+      >)</a
+      ><a name="570"
+      > </a
+      ><a name="571" class="Symbol"
+      >(</a
+      ><a name="572" href="Data.Star.Decoration.html#572" class="Bound"
+      >P</a
+      ><a name="573"
+      > </a
+      ><a name="574" class="Symbol"
+      >:</a
+      ><a name="575"
+      > </a
+      ><a name="576" href="Data.Star.Decoration.html#423" class="Function"
+      >EdgePred</a
+      ><a name="584"
+      > </a
+      ><a name="585" href="Data.Star.Decoration.html#555" class="Bound"
+      >T</a
+      ><a name="586" class="Symbol"
+      >)</a
+      ><a name="587"
+      > </a
+      ><a name="588" class="Symbol"
+      >:</a
+      ><a name="589"
+      > </a
+      ><a name="590" class="PrimitiveType"
+      >Set</a
+      ><a name="593"
+      > </a
+      ><a name="594" class="Keyword"
+      >where</a
+      ><a name="599"
+      >
+  </a
+      ><a name="602" href="Data.Star.Decoration.html#602" class="InductiveConstructor"
+      >nonEmptyEdgePred</a
+      ><a name="618"
+      > </a
+      ><a name="619" class="Symbol"
+      >:</a
+      ><a name="620"
+      > </a
+      ><a name="621" class="Symbol"
+      >&#8704;</a
+      ><a name="622"
+      > </a
+      ><a name="623" class="Symbol"
+      >{</a
+      ><a name="624" href="Data.Star.Decoration.html#624" class="Bound"
+      >i</a
+      ><a name="625"
+      > </a
+      ><a name="626" href="Data.Star.Decoration.html#626" class="Bound"
+      >j</a
+      ><a name="627" class="Symbol"
+      >}</a
+      ><a name="628"
+      > </a
+      ><a name="629" class="Symbol"
+      >{</a
+      ><a name="630" href="Data.Star.Decoration.html#630" class="Bound"
+      >x</a
+      ><a name="631"
+      > </a
+      ><a name="632" class="Symbol"
+      >:</a
+      ><a name="633"
+      > </a
+      ><a name="634" href="Data.Star.Decoration.html#555" class="Bound"
+      >T</a
+      ><a name="635"
+      > </a
+      ><a name="636" href="Data.Star.Decoration.html#624" class="Bound"
+      >i</a
+      ><a name="637"
+      > </a
+      ><a name="638" href="Data.Star.Decoration.html#626" class="Bound"
+      >j</a
+      ><a name="639" class="Symbol"
+      >}</a
+      ><a name="640"
+      >
+                     </a
+      ><a name="662" class="Symbol"
+      >(</a
+      ><a name="663" href="Data.Star.Decoration.html#663" class="Bound"
+      >p</a
+      ><a name="664"
+      > </a
+      ><a name="665" class="Symbol"
+      >:</a
+      ><a name="666"
+      > </a
+      ><a name="667" href="Data.Star.Decoration.html#572" class="Bound"
+      >P</a
+      ><a name="668"
+      > </a
+      ><a name="669" href="Data.Star.Decoration.html#630" class="Bound"
+      >x</a
+      ><a name="670" class="Symbol"
+      >)</a
+      ><a name="671"
+      > </a
+      ><a name="672" class="Symbol"
+      >&#8594;</a
+      ><a name="673"
+      > </a
+      ><a name="674" href="Data.Star.Decoration.html#505" class="Datatype"
+      >NonEmptyEdgePred</a
+      ><a name="690"
+      > </a
+      ><a name="691" href="Data.Star.Decoration.html#555" class="Bound"
+      >T</a
+      ><a name="692"
+      > </a
+      ><a name="693" href="Data.Star.Decoration.html#572" class="Bound"
+      >P</a
+      ><a name="694"
+      >
+
+</a
+      ><a name="696" class="Comment"
+      >-- Decorating an edge with more information.</a
+      ><a name="740"
+      >
+
+</a
+      ><a name="742" class="Keyword"
+      >data</a
+      ><a name="746"
+      > </a
+      ><a name="747" href="Data.Star.Decoration.html#747" class="Datatype"
+      >DecoratedWith</a
+      ><a name="760"
+      > </a
+      ><a name="761" class="Symbol"
+      >{</a
+      ><a name="762" href="Data.Star.Decoration.html#762" class="Bound"
+      >I</a
+      ><a name="763"
+      > </a
+      ><a name="764" class="Symbol"
+      >:</a
+      ><a name="765"
+      > </a
+      ><a name="766" class="PrimitiveType"
+      >Set</a
+      ><a name="769" class="Symbol"
+      >}</a
+      ><a name="770"
+      > </a
+      ><a name="771" class="Symbol"
+      >{</a
+      ><a name="772" href="Data.Star.Decoration.html#772" class="Bound"
+      >T</a
+      ><a name="773"
+      > </a
+      ><a name="774" class="Symbol"
+      >:</a
+      ><a name="775"
+      > </a
+      ><a name="776" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="779"
+      > </a
+      ><a name="780" href="Data.Star.Decoration.html#762" class="Bound"
+      >I</a
+      ><a name="781"
+      > </a
+      ><a name="782" href="Agda.Primitive.html#580" class="Primitive"
+      >zero</a
+      ><a name="786" class="Symbol"
+      >}</a
+      ><a name="787"
+      > </a
+      ><a name="788" class="Symbol"
+      >(</a
+      ><a name="789" href="Data.Star.Decoration.html#789" class="Bound"
+      >P</a
+      ><a name="790"
+      > </a
+      ><a name="791" class="Symbol"
+      >:</a
+      ><a name="792"
+      > </a
+      ><a name="793" href="Data.Star.Decoration.html#423" class="Function"
+      >EdgePred</a
+      ><a name="801"
+      > </a
+      ><a name="802" href="Data.Star.Decoration.html#772" class="Bound"
+      >T</a
+      ><a name="803" class="Symbol"
+      >)</a
+      ><a name="804"
+      >
+       </a
+      ><a name="812" class="Symbol"
+      >:</a
+      ><a name="813"
+      > </a
+      ><a name="814" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="817"
+      > </a
+      ><a name="818" class="Symbol"
+      >(</a
+      ><a name="819" href="Relation.Binary.Core.html#4107" class="Record"
+      >NonEmpty</a
+      ><a name="827"
+      > </a
+      ><a name="828" class="Symbol"
+      >(</a
+      ><a name="829" href="Data.Star.html#553" class="Datatype"
+      >Star</a
+      ><a name="833"
+      > </a
+      ><a name="834" href="Data.Star.Decoration.html#772" class="Bound"
+      >T</a
+      ><a name="835" class="Symbol"
+      >))</a
+      ><a name="837"
+      > </a
+      ><a name="838" href="Agda.Primitive.html#580" class="Primitive"
+      >zero</a
+      ><a name="842"
+      > </a
+      ><a name="843" class="Keyword"
+      >where</a
+      ><a name="848"
+      >
+  </a
+      ><a name="851" href="Data.Star.Decoration.html#851" class="InductiveConstructor"
+      >&#8614;</a
+      ><a name="852"
+      > </a
+      ><a name="853" class="Symbol"
+      >:</a
+      ><a name="854"
+      > </a
+      ><a name="855" class="Symbol"
+      >&#8704;</a
+      ><a name="856"
+      > </a
+      ><a name="857" class="Symbol"
+      >{</a
+      ><a name="858" href="Data.Star.Decoration.html#858" class="Bound"
+      >i</a
+      ><a name="859"
+      > </a
+      ><a name="860" href="Data.Star.Decoration.html#860" class="Bound"
+      >j</a
+      ><a name="861"
+      > </a
+      ><a name="862" href="Data.Star.Decoration.html#862" class="Bound"
+      >k</a
+      ><a name="863" class="Symbol"
+      >}</a
+      ><a name="864"
+      > </a
+      ><a name="865" class="Symbol"
+      >{</a
+      ><a name="866" href="Data.Star.Decoration.html#866" class="Bound"
+      >x</a
+      ><a name="867"
+      > </a
+      ><a name="868" class="Symbol"
+      >:</a
+      ><a name="869"
+      > </a
+      ><a name="870" href="Data.Star.Decoration.html#772" class="Bound"
+      >T</a
+      ><a name="871"
+      > </a
+      ><a name="872" href="Data.Star.Decoration.html#858" class="Bound"
+      >i</a
+      ><a name="873"
+      > </a
+      ><a name="874" href="Data.Star.Decoration.html#860" class="Bound"
+      >j</a
+      ><a name="875" class="Symbol"
+      >}</a
+      ><a name="876"
+      > </a
+      ><a name="877" class="Symbol"
+      >{</a
+      ><a name="878" href="Data.Star.Decoration.html#878" class="Bound"
+      >xs</a
+      ><a name="880"
+      > </a
+      ><a name="881" class="Symbol"
+      >:</a
+      ><a name="882"
+      > </a
+      ><a name="883" href="Data.Star.html#553" class="Datatype"
+      >Star</a
+      ><a name="887"
+      > </a
+      ><a name="888" href="Data.Star.Decoration.html#772" class="Bound"
+      >T</a
+      ><a name="889"
+      > </a
+      ><a name="890" href="Data.Star.Decoration.html#860" class="Bound"
+      >j</a
+      ><a name="891"
+      > </a
+      ><a name="892" href="Data.Star.Decoration.html#862" class="Bound"
+      >k</a
+      ><a name="893" class="Symbol"
+      >}</a
+      ><a name="894"
+      >
+      </a
+      ><a name="901" class="Symbol"
+      >(</a
+      ><a name="902" href="Data.Star.Decoration.html#902" class="Bound"
+      >p</a
+      ><a name="903"
+      > </a
+      ><a name="904" class="Symbol"
+      >:</a
+      ><a name="905"
+      > </a
+      ><a name="906" href="Data.Star.Decoration.html#789" class="Bound"
+      >P</a
+      ><a name="907"
+      > </a
+      ><a name="908" href="Data.Star.Decoration.html#866" class="Bound"
+      >x</a
+      ><a name="909" class="Symbol"
+      >)</a
+      ><a name="910"
+      > </a
+      ><a name="911" class="Symbol"
+      >&#8594;</a
+      ><a name="912"
+      > </a
+      ><a name="913" href="Data.Star.Decoration.html#747" class="Datatype"
+      >DecoratedWith</a
+      ><a name="926"
+      > </a
+      ><a name="927" href="Data.Star.Decoration.html#789" class="Bound"
+      >P</a
+      ><a name="928"
+      > </a
+      ><a name="929" class="Symbol"
+      >(</a
+      ><a name="930" href="Relation.Binary.Core.html#4218" class="InductiveConstructor"
+      >nonEmpty</a
+      ><a name="938"
+      > </a
+      ><a name="939" class="Symbol"
+      >(</a
+      ><a name="940" href="Data.Star.Decoration.html#866" class="Bound"
+      >x</a
+      ><a name="941"
+      > </a
+      ><a name="942" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      >&#9669;</a
+      ><a name="943"
+      > </a
+      ><a name="944" href="Data.Star.Decoration.html#878" class="Bound"
+      >xs</a
+      ><a name="946" class="Symbol"
+      >))</a
+      ><a name="948"
+      > </a
+      ><a name="949" class="Symbol"
+      >(</a
+      ><a name="950" href="Relation.Binary.Core.html#4218" class="InductiveConstructor"
+      >nonEmpty</a
+      ><a name="958"
+      > </a
+      ><a name="959" href="Data.Star.Decoration.html#878" class="Bound"
+      >xs</a
+      ><a name="961" class="Symbol"
+      >)</a
+      ><a name="962"
+      >
+
+</a
+      ><a name="964" href="Data.Star.Decoration.html#964" class="Function"
+      >edge</a
+      ><a name="968"
+      > </a
+      ><a name="969" class="Symbol"
+      >:</a
+      ><a name="970"
+      > </a
+      ><a name="971" class="Symbol"
+      >&#8704;</a
+      ><a name="972"
+      > </a
+      ><a name="973" class="Symbol"
+      >{</a
+      ><a name="974" href="Data.Star.Decoration.html#974" class="Bound"
+      >I</a
+      ><a name="975" class="Symbol"
+      >}</a
+      ><a name="976"
+      > </a
+      ><a name="977" class="Symbol"
+      >{</a
+      ><a name="978" href="Data.Star.Decoration.html#978" class="Bound"
+      >T</a
+      ><a name="979"
+      > </a
+      ><a name="980" class="Symbol"
+      >:</a
+      ><a name="981"
+      > </a
+      ><a name="982" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="985"
+      > </a
+      ><a name="986" href="Data.Star.Decoration.html#974" class="Bound"
+      >I</a
+      ><a name="987"
+      > </a
+      ><a name="988" href="Agda.Primitive.html#580" class="Primitive"
+      >zero</a
+      ><a name="992" class="Symbol"
+      >}</a
+      ><a name="993"
+      > </a
+      ><a name="994" class="Symbol"
+      >{</a
+      ><a name="995" href="Data.Star.Decoration.html#995" class="Bound"
+      >P</a
+      ><a name="996"
+      > </a
+      ><a name="997" class="Symbol"
+      >:</a
+      ><a name="998"
+      > </a
+      ><a name="999" href="Data.Star.Decoration.html#423" class="Function"
+      >EdgePred</a
+      ><a name="1007"
+      > </a
+      ><a name="1008" href="Data.Star.Decoration.html#978" class="Bound"
+      >T</a
+      ><a name="1009" class="Symbol"
+      >}</a
+      ><a name="1010"
+      > </a
+      ><a name="1011" class="Symbol"
+      >{</a
+      ><a name="1012" href="Data.Star.Decoration.html#1012" class="Bound"
+      >i</a
+      ><a name="1013"
+      > </a
+      ><a name="1014" href="Data.Star.Decoration.html#1014" class="Bound"
+      >j</a
+      ><a name="1015" class="Symbol"
+      >}</a
+      ><a name="1016"
+      > </a
+      ><a name="1017" class="Symbol"
+      >&#8594;</a
+      ><a name="1018"
+      >
+       </a
+      ><a name="1026" href="Data.Star.Decoration.html#747" class="Datatype"
+      >DecoratedWith</a
+      ><a name="1039"
+      > </a
+      ><a name="1040" class="Symbol"
+      >{</a
+      ><a name="1041" class="Argument"
+      >T</a
+      ><a name="1042"
+      > </a
+      ><a name="1043" class="Symbol"
+      >=</a
+      ><a name="1044"
+      > </a
+      ><a name="1045" href="Data.Star.Decoration.html#978" class="Bound"
+      >T</a
+      ><a name="1046" class="Symbol"
+      >}</a
+      ><a name="1047"
+      > </a
+      ><a name="1048" href="Data.Star.Decoration.html#995" class="Bound"
+      >P</a
+      ><a name="1049"
+      > </a
+      ><a name="1050" href="Data.Star.Decoration.html#1012" class="Bound"
+      >i</a
+      ><a name="1051"
+      > </a
+      ><a name="1052" href="Data.Star.Decoration.html#1014" class="Bound"
+      >j</a
+      ><a name="1053"
+      > </a
+      ><a name="1054" class="Symbol"
+      >&#8594;</a
+      ><a name="1055"
+      > </a
+      ><a name="1056" href="Relation.Binary.Core.html#4107" class="Record"
+      >NonEmpty</a
+      ><a name="1064"
+      > </a
+      ><a name="1065" href="Data.Star.Decoration.html#978" class="Bound"
+      >T</a
+      ><a name="1066"
+      >
+</a
+      ><a name="1067" href="Data.Star.Decoration.html#964" class="Function"
+      >edge</a
+      ><a name="1071"
+      > </a
+      ><a name="1072" class="Symbol"
+      >(</a
+      ><a name="1073" href="Data.Star.Decoration.html#851" class="InductiveConstructor"
+      >&#8614;</a
+      ><a name="1074"
+      > </a
+      ><a name="1075" class="Symbol"
+      >{</a
+      ><a name="1076" class="Argument"
+      >x</a
+      ><a name="1077"
+      > </a
+      ><a name="1078" class="Symbol"
+      >=</a
+      ><a name="1079"
+      > </a
+      ><a name="1080" href="Data.Star.Decoration.html#1080" class="Bound"
+      >x</a
+      ><a name="1081" class="Symbol"
+      >}</a
+      ><a name="1082"
+      > </a
+      ><a name="1083" href="Data.Star.Decoration.html#1083" class="Bound"
+      >p</a
+      ><a name="1084" class="Symbol"
+      >)</a
+      ><a name="1085"
+      > </a
+      ><a name="1086" class="Symbol"
+      >=</a
+      ><a name="1087"
+      > </a
+      ><a name="1088" href="Relation.Binary.Core.html#4218" class="InductiveConstructor"
+      >nonEmpty</a
+      ><a name="1096"
+      > </a
+      ><a name="1097" href="Data.Star.Decoration.html#1080" class="Bound"
+      >x</a
+      ><a name="1098"
+      >
+
+</a
+      ><a name="1100" href="Data.Star.Decoration.html#1100" class="Function"
+      >decoration</a
+      ><a name="1110"
+      > </a
+      ><a name="1111" class="Symbol"
+      >:</a
+      ><a name="1112"
+      > </a
+      ><a name="1113" class="Symbol"
+      >&#8704;</a
+      ><a name="1114"
+      > </a
+      ><a name="1115" class="Symbol"
+      >{</a
+      ><a name="1116" href="Data.Star.Decoration.html#1116" class="Bound"
+      >I</a
+      ><a name="1117" class="Symbol"
+      >}</a
+      ><a name="1118"
+      > </a
+      ><a name="1119" class="Symbol"
+      >{</a
+      ><a name="1120" href="Data.Star.Decoration.html#1120" class="Bound"
+      >T</a
+      ><a name="1121"
+      > </a
+      ><a name="1122" class="Symbol"
+      >:</a
+      ><a name="1123"
+      > </a
+      ><a name="1124" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="1127"
+      > </a
+      ><a name="1128" href="Data.Star.Decoration.html#1116" class="Bound"
+      >I</a
+      ><a name="1129"
+      > </a
+      ><a name="1130" href="Agda.Primitive.html#580" class="Primitive"
+      >zero</a
+      ><a name="1134" class="Symbol"
+      >}</a
+      ><a name="1135"
+      > </a
+      ><a name="1136" class="Symbol"
+      >{</a
+      ><a name="1137" href="Data.Star.Decoration.html#1137" class="Bound"
+      >P</a
+      ><a name="1138"
+      > </a
+      ><a name="1139" class="Symbol"
+      >:</a
+      ><a name="1140"
+      > </a
+      ><a name="1141" href="Data.Star.Decoration.html#423" class="Function"
+      >EdgePred</a
+      ><a name="1149"
+      > </a
+      ><a name="1150" href="Data.Star.Decoration.html#1120" class="Bound"
+      >T</a
+      ><a name="1151" class="Symbol"
+      >}</a
+      ><a name="1152"
+      > </a
+      ><a name="1153" class="Symbol"
+      >{</a
+      ><a name="1154" href="Data.Star.Decoration.html#1154" class="Bound"
+      >i</a
+      ><a name="1155"
+      > </a
+      ><a name="1156" href="Data.Star.Decoration.html#1156" class="Bound"
+      >j</a
+      ><a name="1157" class="Symbol"
+      >}</a
+      ><a name="1158"
+      > </a
+      ><a name="1159" class="Symbol"
+      >&#8594;</a
+      ><a name="1160"
+      >
+             </a
+      ><a name="1174" class="Symbol"
+      >(</a
+      ><a name="1175" href="Data.Star.Decoration.html#1175" class="Bound"
+      >d</a
+      ><a name="1176"
+      > </a
+      ><a name="1177" class="Symbol"
+      >:</a
+      ><a name="1178"
+      > </a
+      ><a name="1179" href="Data.Star.Decoration.html#747" class="Datatype"
+      >DecoratedWith</a
+      ><a name="1192"
+      > </a
+      ><a name="1193" class="Symbol"
+      >{</a
+      ><a name="1194" class="Argument"
+      >T</a
+      ><a name="1195"
+      > </a
+      ><a name="1196" class="Symbol"
+      >=</a
+      ><a name="1197"
+      > </a
+      ><a name="1198" href="Data.Star.Decoration.html#1120" class="Bound"
+      >T</a
+      ><a name="1199" class="Symbol"
+      >}</a
+      ><a name="1200"
+      > </a
+      ><a name="1201" href="Data.Star.Decoration.html#1137" class="Bound"
+      >P</a
+      ><a name="1202"
+      > </a
+      ><a name="1203" href="Data.Star.Decoration.html#1154" class="Bound"
+      >i</a
+      ><a name="1204"
+      > </a
+      ><a name="1205" href="Data.Star.Decoration.html#1156" class="Bound"
+      >j</a
+      ><a name="1206" class="Symbol"
+      >)</a
+      ><a name="1207"
+      > </a
+      ><a name="1208" class="Symbol"
+      >&#8594;</a
+      ><a name="1209"
+      >
+             </a
+      ><a name="1223" href="Data.Star.Decoration.html#1137" class="Bound"
+      >P</a
+      ><a name="1224"
+      > </a
+      ><a name="1225" class="Symbol"
+      >(</a
+      ><a name="1226" href="Relation.Binary.Core.html#4267" class="Field"
+      >NonEmpty.proof</a
+      ><a name="1240"
+      > </a
+      ><a name="1241" class="Symbol"
+      >(</a
+      ><a name="1242" href="Data.Star.Decoration.html#964" class="Function"
+      >edge</a
+      ><a name="1246"
+      > </a
+      ><a name="1247" href="Data.Star.Decoration.html#1175" class="Bound"
+      >d</a
+      ><a name="1248" class="Symbol"
+      >))</a
+      ><a name="1250"
+      >
+</a
+      ><a name="1251" href="Data.Star.Decoration.html#1100" class="Function"
+      >decoration</a
+      ><a name="1261"
+      > </a
+      ><a name="1262" class="Symbol"
+      >(</a
+      ><a name="1263" href="Data.Star.Decoration.html#851" class="InductiveConstructor"
+      >&#8614;</a
+      ><a name="1264"
+      > </a
+      ><a name="1265" href="Data.Star.Decoration.html#1265" class="Bound"
+      >p</a
+      ><a name="1266" class="Symbol"
+      >)</a
+      ><a name="1267"
+      > </a
+      ><a name="1268" class="Symbol"
+      >=</a
+      ><a name="1269"
+      > </a
+      ><a name="1270" href="Data.Star.Decoration.html#1265" class="Bound"
+      >p</a
+      ><a name="1271"
+      >
+
+</a
+      ><a name="1273" class="Comment"
+      >-- Star-lists decorated with extra information. All P xs means that</a
+      ><a name="1340"
+      >
+</a
+      ><a name="1341" class="Comment"
+      >-- all edges in xs satisfy P.</a
+      ><a name="1370"
+      >
+
+</a
+      ><a name="1372" href="Data.Star.Decoration.html#1372" class="Function"
+      >All</a
+      ><a name="1375"
+      > </a
+      ><a name="1376" class="Symbol"
+      >:</a
+      ><a name="1377"
+      > </a
+      ><a name="1378" class="Symbol"
+      >&#8704;</a
+      ><a name="1379"
+      > </a
+      ><a name="1380" class="Symbol"
+      >{</a
+      ><a name="1381" href="Data.Star.Decoration.html#1381" class="Bound"
+      >I</a
+      ><a name="1382" class="Symbol"
+      >}</a
+      ><a name="1383"
+      > </a
+      ><a name="1384" class="Symbol"
+      >{</a
+      ><a name="1385" href="Data.Star.Decoration.html#1385" class="Bound"
+      >T</a
+      ><a name="1386"
+      > </a
+      ><a name="1387" class="Symbol"
+      >:</a
+      ><a name="1388"
+      > </a
+      ><a name="1389" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="1392"
+      > </a
+      ><a name="1393" href="Data.Star.Decoration.html#1381" class="Bound"
+      >I</a
+      ><a name="1394"
+      > </a
+      ><a name="1395" href="Agda.Primitive.html#580" class="Primitive"
+      >zero</a
+      ><a name="1399" class="Symbol"
+      >}</a
+      ><a name="1400"
+      > </a
+      ><a name="1401" class="Symbol"
+      >&#8594;</a
+      ><a name="1402"
+      > </a
+      ><a name="1403" href="Data.Star.Decoration.html#423" class="Function"
+      >EdgePred</a
+      ><a name="1411"
+      > </a
+      ><a name="1412" href="Data.Star.Decoration.html#1385" class="Bound"
+      >T</a
+      ><a name="1413"
+      > </a
+      ><a name="1414" class="Symbol"
+      >&#8594;</a
+      ><a name="1415"
+      > </a
+      ><a name="1416" href="Data.Star.Decoration.html#423" class="Function"
+      >EdgePred</a
+      ><a name="1424"
+      > </a
+      ><a name="1425" class="Symbol"
+      >(</a
+      ><a name="1426" href="Data.Star.html#553" class="Datatype"
+      >Star</a
+      ><a name="1430"
+      > </a
+      ><a name="1431" href="Data.Star.Decoration.html#1385" class="Bound"
+      >T</a
+      ><a name="1432" class="Symbol"
+      >)</a
+      ><a name="1433"
+      >
+</a
+      ><a name="1434" href="Data.Star.Decoration.html#1372" class="Function"
+      >All</a
+      ><a name="1437"
+      > </a
+      ><a name="1438" href="Data.Star.Decoration.html#1438" class="Bound"
+      >P</a
+      ><a name="1439"
+      > </a
+      ><a name="1440" class="Symbol"
+      >{</a
+      ><a name="1441" class="Argument"
+      >j</a
+      ><a name="1442"
+      > </a
+      ><a name="1443" class="Symbol"
+      >=</a
+      ><a name="1444"
+      > </a
+      ><a name="1445" href="Data.Star.Decoration.html#1445" class="Bound"
+      >j</a
+      ><a name="1446" class="Symbol"
+      >}</a
+      ><a name="1447"
+      > </a
+      ><a name="1448" href="Data.Star.Decoration.html#1448" class="Bound"
+      >xs</a
+      ><a name="1450"
+      > </a
+      ><a name="1451" class="Symbol"
+      >=</a
+      ><a name="1452"
+      >
+  </a
+      ><a name="1455" href="Data.Star.html#553" class="Datatype"
+      >Star</a
+      ><a name="1459"
+      > </a
+      ><a name="1460" class="Symbol"
+      >(</a
+      ><a name="1461" href="Data.Star.Decoration.html#747" class="Datatype"
+      >DecoratedWith</a
+      ><a name="1474"
+      > </a
+      ><a name="1475" href="Data.Star.Decoration.html#1438" class="Bound"
+      >P</a
+      ><a name="1476" class="Symbol"
+      >)</a
+      ><a name="1477"
+      > </a
+      ><a name="1478" class="Symbol"
+      >(</a
+      ><a name="1479" href="Relation.Binary.Core.html#4218" class="InductiveConstructor"
+      >nonEmpty</a
+      ><a name="1487"
+      > </a
+      ><a name="1488" href="Data.Star.Decoration.html#1448" class="Bound"
+      >xs</a
+      ><a name="1490" class="Symbol"
+      >)</a
+      ><a name="1491"
+      > </a
+      ><a name="1492" class="Symbol"
+      >(</a
+      ><a name="1493" href="Relation.Binary.Core.html#4218" class="InductiveConstructor"
+      >nonEmpty</a
+      ><a name="1501"
+      > </a
+      ><a name="1502" class="Symbol"
+      >{</a
+      ><a name="1503" class="Argument"
+      >y</a
+      ><a name="1504"
+      > </a
+      ><a name="1505" class="Symbol"
+      >=</a
+      ><a name="1506"
+      > </a
+      ><a name="1507" href="Data.Star.Decoration.html#1445" class="Bound"
+      >j</a
+      ><a name="1508" class="Symbol"
+      >}</a
+      ><a name="1509"
+      > </a
+      ><a name="1510" href="Data.Star.html#614" class="InductiveConstructor"
+      >&#949;</a
+      ><a name="1511" class="Symbol"
+      >)</a
+      ><a name="1512"
+      >
+
+</a
+      ><a name="1514" class="Comment"
+      >-- We can map over decorated vectors.</a
+      ><a name="1551"
+      >
+
+</a
+      ><a name="1553" href="Data.Star.Decoration.html#1553" class="Function"
+      >gmapAll</a
+      ><a name="1560"
+      > </a
+      ><a name="1561" class="Symbol"
+      >:</a
+      ><a name="1562"
+      > </a
+      ><a name="1563" class="Symbol"
+      >&#8704;</a
+      ><a name="1564"
+      > </a
+      ><a name="1565" class="Symbol"
+      >{</a
+      ><a name="1566" href="Data.Star.Decoration.html#1566" class="Bound"
+      >I</a
+      ><a name="1567" class="Symbol"
+      >}</a
+      ><a name="1568"
+      > </a
+      ><a name="1569" class="Symbol"
+      >{</a
+      ><a name="1570" href="Data.Star.Decoration.html#1570" class="Bound"
+      >T</a
+      ><a name="1571"
+      > </a
+      ><a name="1572" class="Symbol"
+      >:</a
+      ><a name="1573"
+      > </a
+      ><a name="1574" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="1577"
+      > </a
+      ><a name="1578" href="Data.Star.Decoration.html#1566" class="Bound"
+      >I</a
+      ><a name="1579"
+      > </a
+      ><a name="1580" href="Agda.Primitive.html#580" class="Primitive"
+      >zero</a
+      ><a name="1584" class="Symbol"
+      >}</a
+      ><a name="1585"
+      > </a
+      ><a name="1586" class="Symbol"
+      >{</a
+      ><a name="1587" href="Data.Star.Decoration.html#1587" class="Bound"
+      >P</a
+      ><a name="1588"
+      > </a
+      ><a name="1589" class="Symbol"
+      >:</a
+      ><a name="1590"
+      > </a
+      ><a name="1591" href="Data.Star.Decoration.html#423" class="Function"
+      >EdgePred</a
+      ><a name="1599"
+      > </a
+      ><a name="1600" href="Data.Star.Decoration.html#1570" class="Bound"
+      >T</a
+      ><a name="1601" class="Symbol"
+      >}</a
+      ><a name="1602"
+      >
+                </a
+      ><a name="1619" class="Symbol"
+      >{</a
+      ><a name="1620" href="Data.Star.Decoration.html#1620" class="Bound"
+      >J</a
+      ><a name="1621" class="Symbol"
+      >}</a
+      ><a name="1622"
+      > </a
+      ><a name="1623" class="Symbol"
+      >{</a
+      ><a name="1624" href="Data.Star.Decoration.html#1624" class="Bound"
+      >U</a
+      ><a name="1625"
+      > </a
+      ><a name="1626" class="Symbol"
+      >:</a
+      ><a name="1627"
+      > </a
+      ><a name="1628" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="1631"
+      > </a
+      ><a name="1632" href="Data.Star.Decoration.html#1620" class="Bound"
+      >J</a
+      ><a name="1633"
+      > </a
+      ><a name="1634" href="Agda.Primitive.html#580" class="Primitive"
+      >zero</a
+      ><a name="1638" class="Symbol"
+      >}</a
+      ><a name="1639"
+      > </a
+      ><a name="1640" class="Symbol"
+      >{</a
+      ><a name="1641" href="Data.Star.Decoration.html#1641" class="Bound"
+      >Q</a
+      ><a name="1642"
+      > </a
+      ><a name="1643" class="Symbol"
+      >:</a
+      ><a name="1644"
+      > </a
+      ><a name="1645" href="Data.Star.Decoration.html#423" class="Function"
+      >EdgePred</a
+      ><a name="1653"
+      > </a
+      ><a name="1654" href="Data.Star.Decoration.html#1624" class="Bound"
+      >U</a
+      ><a name="1655" class="Symbol"
+      >}</a
+      ><a name="1656"
+      >
+                </a
+      ><a name="1673" class="Symbol"
+      >{</a
+      ><a name="1674" href="Data.Star.Decoration.html#1674" class="Bound"
+      >i</a
+      ><a name="1675"
+      > </a
+      ><a name="1676" href="Data.Star.Decoration.html#1676" class="Bound"
+      >j</a
+      ><a name="1677" class="Symbol"
+      >}</a
+      ><a name="1678"
+      > </a
+      ><a name="1679" class="Symbol"
+      >{</a
+      ><a name="1680" href="Data.Star.Decoration.html#1680" class="Bound"
+      >xs</a
+      ><a name="1682"
+      > </a
+      ><a name="1683" class="Symbol"
+      >:</a
+      ><a name="1684"
+      > </a
+      ><a name="1685" href="Data.Star.html#553" class="Datatype"
+      >Star</a
+      ><a name="1689"
+      > </a
+      ><a name="1690" href="Data.Star.Decoration.html#1570" class="Bound"
+      >T</a
+      ><a name="1691"
+      > </a
+      ><a name="1692" href="Data.Star.Decoration.html#1674" class="Bound"
+      >i</a
+      ><a name="1693"
+      > </a
+      ><a name="1694" href="Data.Star.Decoration.html#1676" class="Bound"
+      >j</a
+      ><a name="1695" class="Symbol"
+      >}</a
+      ><a name="1696"
+      >
+          </a
+      ><a name="1707" class="Symbol"
+      >(</a
+      ><a name="1708" href="Data.Star.Decoration.html#1708" class="Bound"
+      >f</a
+      ><a name="1709"
+      > </a
+      ><a name="1710" class="Symbol"
+      >:</a
+      ><a name="1711"
+      > </a
+      ><a name="1712" href="Data.Star.Decoration.html#1566" class="Bound"
+      >I</a
+      ><a name="1713"
+      > </a
+      ><a name="1714" class="Symbol"
+      >&#8594;</a
+      ><a name="1715"
+      > </a
+      ><a name="1716" href="Data.Star.Decoration.html#1620" class="Bound"
+      >J</a
+      ><a name="1717" class="Symbol"
+      >)</a
+      ><a name="1718"
+      > </a
+      ><a name="1719" class="Symbol"
+      >(</a
+      ><a name="1720" href="Data.Star.Decoration.html#1720" class="Bound"
+      >g</a
+      ><a name="1721"
+      > </a
+      ><a name="1722" class="Symbol"
+      >:</a
+      ><a name="1723"
+      > </a
+      ><a name="1724" href="Data.Star.Decoration.html#1570" class="Bound"
+      >T</a
+      ><a name="1725"
+      > </a
+      ><a name="1726" href="Relation.Binary.Core.html#1218" class="Function Operator"
+      >=[</a
+      ><a name="1728"
+      > </a
+      ><a name="1729" href="Data.Star.Decoration.html#1708" class="Bound"
+      >f</a
+      ><a name="1730"
+      > </a
+      ><a name="1731" href="Relation.Binary.Core.html#1218" class="Function Operator"
+      >]&#8658;</a
+      ><a name="1733"
+      > </a
+      ><a name="1734" href="Data.Star.Decoration.html#1624" class="Bound"
+      >U</a
+      ><a name="1735" class="Symbol"
+      >)</a
+      ><a name="1736"
+      > </a
+      ><a name="1737" class="Symbol"
+      >&#8594;</a
+      ><a name="1738"
+      >
+          </a
+      ><a name="1749" class="Symbol"
+      >(&#8704;</a
+      ><a name="1751"
+      > </a
+      ><a name="1752" class="Symbol"
+      >{</a
+      ><a name="1753" href="Data.Star.Decoration.html#1753" class="Bound"
+      >i</a
+      ><a name="1754"
+      > </a
+      ><a name="1755" href="Data.Star.Decoration.html#1755" class="Bound"
+      >j</a
+      ><a name="1756" class="Symbol"
+      >}</a
+      ><a name="1757"
+      > </a
+      ><a name="1758" class="Symbol"
+      >{</a
+      ><a name="1759" href="Data.Star.Decoration.html#1759" class="Bound"
+      >x</a
+      ><a name="1760"
+      > </a
+      ><a name="1761" class="Symbol"
+      >:</a
+      ><a name="1762"
+      > </a
+      ><a name="1763" href="Data.Star.Decoration.html#1570" class="Bound"
+      >T</a
+      ><a name="1764"
+      > </a
+      ><a name="1765" href="Data.Star.Decoration.html#1753" class="Bound"
+      >i</a
+      ><a name="1766"
+      > </a
+      ><a name="1767" href="Data.Star.Decoration.html#1755" class="Bound"
+      >j</a
+      ><a name="1768" class="Symbol"
+      >}</a
+      ><a name="1769"
+      > </a
+      ><a name="1770" class="Symbol"
+      >&#8594;</a
+      ><a name="1771"
+      > </a
+      ><a name="1772" href="Data.Star.Decoration.html#1587" class="Bound"
+      >P</a
+      ><a name="1773"
+      > </a
+      ><a name="1774" href="Data.Star.Decoration.html#1759" class="Bound"
+      >x</a
+      ><a name="1775"
+      > </a
+      ><a name="1776" class="Symbol"
+      >&#8594;</a
+      ><a name="1777"
+      > </a
+      ><a name="1778" href="Data.Star.Decoration.html#1641" class="Bound"
+      >Q</a
+      ><a name="1779"
+      > </a
+      ><a name="1780" class="Symbol"
+      >(</a
+      ><a name="1781" href="Data.Star.Decoration.html#1720" class="Bound"
+      >g</a
+      ><a name="1782"
+      > </a
+      ><a name="1783" href="Data.Star.Decoration.html#1759" class="Bound"
+      >x</a
+      ><a name="1784" class="Symbol"
+      >))</a
+      ><a name="1786"
+      > </a
+      ><a name="1787" class="Symbol"
+      >&#8594;</a
+      ><a name="1788"
+      >
+          </a
+      ><a name="1799" href="Data.Star.Decoration.html#1372" class="Function"
+      >All</a
+      ><a name="1802"
+      > </a
+      ><a name="1803" href="Data.Star.Decoration.html#1587" class="Bound"
+      >P</a
+      ><a name="1804"
+      > </a
+      ><a name="1805" href="Data.Star.Decoration.html#1680" class="Bound"
+      >xs</a
+      ><a name="1807"
+      > </a
+      ><a name="1808" class="Symbol"
+      >&#8594;</a
+      ><a name="1809"
+      > </a
+      ><a name="1810" href="Data.Star.Decoration.html#1372" class="Function"
+      >All</a
+      ><a name="1813"
+      > </a
+      ><a name="1814" class="Symbol"
+      >{</a
+      ><a name="1815" class="Argument"
+      >T</a
+      ><a name="1816"
+      > </a
+      ><a name="1817" class="Symbol"
+      >=</a
+      ><a name="1818"
+      > </a
+      ><a name="1819" href="Data.Star.Decoration.html#1624" class="Bound"
+      >U</a
+      ><a name="1820" class="Symbol"
+      >}</a
+      ><a name="1821"
+      > </a
+      ><a name="1822" href="Data.Star.Decoration.html#1641" class="Bound"
+      >Q</a
+      ><a name="1823"
+      > </a
+      ><a name="1824" class="Symbol"
+      >(</a
+      ><a name="1825" href="Data.Star.html#1592" class="Function"
+      >gmap</a
+      ><a name="1829"
+      > </a
+      ><a name="1830" href="Data.Star.Decoration.html#1708" class="Bound"
+      >f</a
+      ><a name="1831"
+      > </a
+      ><a name="1832" href="Data.Star.Decoration.html#1720" class="Bound"
+      >g</a
+      ><a name="1833"
+      > </a
+      ><a name="1834" href="Data.Star.Decoration.html#1680" class="Bound"
+      >xs</a
+      ><a name="1836" class="Symbol"
+      >)</a
+      ><a name="1837"
+      >
+</a
+      ><a name="1838" href="Data.Star.Decoration.html#1553" class="Function"
+      >gmapAll</a
+      ><a name="1845"
+      > </a
+      ><a name="1846" href="Data.Star.Decoration.html#1846" class="Bound"
+      >f</a
+      ><a name="1847"
+      > </a
+      ><a name="1848" href="Data.Star.Decoration.html#1848" class="Bound"
+      >g</a
+      ><a name="1849"
+      > </a
+      ><a name="1850" href="Data.Star.Decoration.html#1850" class="Bound"
+      >h</a
+      ><a name="1851"
+      > </a
+      ><a name="1852" href="Data.Star.html#614" class="InductiveConstructor"
+      >&#949;</a
+      ><a name="1853"
+      >          </a
+      ><a name="1863" class="Symbol"
+      >=</a
+      ><a name="1864"
+      > </a
+      ><a name="1865" href="Data.Star.html#614" class="InductiveConstructor"
+      >&#949;</a
+      ><a name="1866"
+      >
+</a
+      ><a name="1867" href="Data.Star.Decoration.html#1553" class="Function"
+      >gmapAll</a
+      ><a name="1874"
+      > </a
+      ><a name="1875" href="Data.Star.Decoration.html#1875" class="Bound"
+      >f</a
+      ><a name="1876"
+      > </a
+      ><a name="1877" href="Data.Star.Decoration.html#1877" class="Bound"
+      >g</a
+      ><a name="1878"
+      > </a
+      ><a name="1879" href="Data.Star.Decoration.html#1879" class="Bound"
+      >h</a
+      ><a name="1880"
+      > </a
+      ><a name="1881" class="Symbol"
+      >(</a
+      ><a name="1882" href="Data.Star.Decoration.html#851" class="InductiveConstructor"
+      >&#8614;</a
+      ><a name="1883"
+      > </a
+      ><a name="1884" href="Data.Star.Decoration.html#1884" class="Bound"
+      >x</a
+      ><a name="1885"
+      > </a
+      ><a name="1886" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      >&#9669;</a
+      ><a name="1887"
+      > </a
+      ><a name="1888" href="Data.Star.Decoration.html#1888" class="Bound"
+      >xs</a
+      ><a name="1890" class="Symbol"
+      >)</a
+      ><a name="1891"
+      > </a
+      ><a name="1892" class="Symbol"
+      >=</a
+      ><a name="1893"
+      > </a
+      ><a name="1894" href="Data.Star.Decoration.html#851" class="InductiveConstructor"
+      >&#8614;</a
+      ><a name="1895"
+      > </a
+      ><a name="1896" class="Symbol"
+      >(</a
+      ><a name="1897" href="Data.Star.Decoration.html#1879" class="Bound"
+      >h</a
+      ><a name="1898"
+      > </a
+      ><a name="1899" href="Data.Star.Decoration.html#1884" class="Bound"
+      >x</a
+      ><a name="1900" class="Symbol"
+      >)</a
+      ><a name="1901"
+      > </a
+      ><a name="1902" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      >&#9669;</a
+      ><a name="1903"
+      > </a
+      ><a name="1904" href="Data.Star.Decoration.html#1553" class="Function"
+      >gmapAll</a
+      ><a name="1911"
+      > </a
+      ><a name="1912" href="Data.Star.Decoration.html#1875" class="Bound"
+      >f</a
+      ><a name="1913"
+      > </a
+      ><a name="1914" href="Data.Star.Decoration.html#1877" class="Bound"
+      >g</a
+      ><a name="1915"
+      > </a
+      ><a name="1916" href="Data.Star.Decoration.html#1879" class="Bound"
+      >h</a
+      ><a name="1917"
+      > </a
+      ><a name="1918" href="Data.Star.Decoration.html#1888" class="Bound"
+      >xs</a
+      ><a name="1920"
+      >
+
+</a
+      ><a name="1922" class="Comment"
+      >-- Since we don't automatically have gmap id id xs &#8801; xs it is easier</a
+      ><a name="1990"
+      >
+</a
+      ><a name="1991" class="Comment"
+      >-- to implement mapAll in terms of map than in terms of gmapAll.</a
+      ><a name="2055"
+      >
+
+</a
+      ><a name="2057" href="Data.Star.Decoration.html#2057" class="Function"
+      >mapAll</a
+      ><a name="2063"
+      > </a
+      ><a name="2064" class="Symbol"
+      >:</a
+      ><a name="2065"
+      > </a
+      ><a name="2066" class="Symbol"
+      >&#8704;</a
+      ><a name="2067"
+      > </a
+      ><a name="2068" class="Symbol"
+      >{</a
+      ><a name="2069" href="Data.Star.Decoration.html#2069" class="Bound"
+      >I</a
+      ><a name="2070" class="Symbol"
+      >}</a
+      ><a name="2071"
+      > </a
+      ><a name="2072" class="Symbol"
+      >{</a
+      ><a name="2073" href="Data.Star.Decoration.html#2073" class="Bound"
+      >T</a
+      ><a name="2074"
+      > </a
+      ><a name="2075" class="Symbol"
+      >:</a
+      ><a name="2076"
+      > </a
+      ><a name="2077" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="2080"
+      > </a
+      ><a name="2081" href="Data.Star.Decoration.html#2069" class="Bound"
+      >I</a
+      ><a name="2082"
+      > </a
+      ><a name="2083" href="Agda.Primitive.html#580" class="Primitive"
+      >zero</a
+      ><a name="2087" class="Symbol"
+      >}</a
+      ><a name="2088"
+      > </a
+      ><a name="2089" class="Symbol"
+      >{</a
+      ><a name="2090" href="Data.Star.Decoration.html#2090" class="Bound"
+      >P</a
+      ><a name="2091"
+      > </a
+      ><a name="2092" href="Data.Star.Decoration.html#2092" class="Bound"
+      >Q</a
+      ><a name="2093"
+      > </a
+      ><a name="2094" class="Symbol"
+      >:</a
+      ><a name="2095"
+      > </a
+      ><a name="2096" href="Data.Star.Decoration.html#423" class="Function"
+      >EdgePred</a
+      ><a name="2104"
+      > </a
+      ><a name="2105" href="Data.Star.Decoration.html#2073" class="Bound"
+      >T</a
+      ><a name="2106" class="Symbol"
+      >}</a
+      ><a name="2107"
+      > </a
+      ><a name="2108" class="Symbol"
+      >{</a
+      ><a name="2109" href="Data.Star.Decoration.html#2109" class="Bound"
+      >i</a
+      ><a name="2110"
+      > </a
+      ><a name="2111" href="Data.Star.Decoration.html#2111" class="Bound"
+      >j</a
+      ><a name="2112" class="Symbol"
+      >}</a
+      ><a name="2113"
+      > </a
+      ><a name="2114" class="Symbol"
+      >{</a
+      ><a name="2115" href="Data.Star.Decoration.html#2115" class="Bound"
+      >xs</a
+      ><a name="2117"
+      > </a
+      ><a name="2118" class="Symbol"
+      >:</a
+      ><a name="2119"
+      > </a
+      ><a name="2120" href="Data.Star.html#553" class="Datatype"
+      >Star</a
+      ><a name="2124"
+      > </a
+      ><a name="2125" href="Data.Star.Decoration.html#2073" class="Bound"
+      >T</a
+      ><a name="2126"
+      > </a
+      ><a name="2127" href="Data.Star.Decoration.html#2109" class="Bound"
+      >i</a
+      ><a name="2128"
+      > </a
+      ><a name="2129" href="Data.Star.Decoration.html#2111" class="Bound"
+      >j</a
+      ><a name="2130" class="Symbol"
+      >}</a
+      ><a name="2131"
+      > </a
+      ><a name="2132" class="Symbol"
+      >&#8594;</a
+      ><a name="2133"
+      >
+         </a
+      ><a name="2143" class="Symbol"
+      >(&#8704;</a
+      ><a name="2145"
+      > </a
+      ><a name="2146" class="Symbol"
+      >{</a
+      ><a name="2147" href="Data.Star.Decoration.html#2147" class="Bound"
+      >i</a
+      ><a name="2148"
+      > </a
+      ><a name="2149" href="Data.Star.Decoration.html#2149" class="Bound"
+      >j</a
+      ><a name="2150" class="Symbol"
+      >}</a
+      ><a name="2151"
+      > </a
+      ><a name="2152" class="Symbol"
+      >{</a
+      ><a name="2153" href="Data.Star.Decoration.html#2153" class="Bound"
+      >x</a
+      ><a name="2154"
+      > </a
+      ><a name="2155" class="Symbol"
+      >:</a
+      ><a name="2156"
+      > </a
+      ><a name="2157" href="Data.Star.Decoration.html#2073" class="Bound"
+      >T</a
+      ><a name="2158"
+      > </a
+      ><a name="2159" href="Data.Star.Decoration.html#2147" class="Bound"
+      >i</a
+      ><a name="2160"
+      > </a
+      ><a name="2161" href="Data.Star.Decoration.html#2149" class="Bound"
+      >j</a
+      ><a name="2162" class="Symbol"
+      >}</a
+      ><a name="2163"
+      > </a
+      ><a name="2164" class="Symbol"
+      >&#8594;</a
+      ><a name="2165"
+      > </a
+      ><a name="2166" href="Data.Star.Decoration.html#2090" class="Bound"
+      >P</a
+      ><a name="2167"
+      > </a
+      ><a name="2168" href="Data.Star.Decoration.html#2153" class="Bound"
+      >x</a
+      ><a name="2169"
+      > </a
+      ><a name="2170" class="Symbol"
+      >&#8594;</a
+      ><a name="2171"
+      > </a
+      ><a name="2172" href="Data.Star.Decoration.html#2092" class="Bound"
+      >Q</a
+      ><a name="2173"
+      > </a
+      ><a name="2174" href="Data.Star.Decoration.html#2153" class="Bound"
+      >x</a
+      ><a name="2175" class="Symbol"
+      >)</a
+      ><a name="2176"
+      > </a
+      ><a name="2177" class="Symbol"
+      >&#8594;</a
+      ><a name="2178"
+      >
+         </a
+      ><a name="2188" href="Data.Star.Decoration.html#1372" class="Function"
+      >All</a
+      ><a name="2191"
+      > </a
+      ><a name="2192" href="Data.Star.Decoration.html#2090" class="Bound"
+      >P</a
+      ><a name="2193"
+      > </a
+      ><a name="2194" href="Data.Star.Decoration.html#2115" class="Bound"
+      >xs</a
+      ><a name="2196"
+      > </a
+      ><a name="2197" class="Symbol"
+      >&#8594;</a
+      ><a name="2198"
+      > </a
+      ><a name="2199" href="Data.Star.Decoration.html#1372" class="Function"
+      >All</a
+      ><a name="2202"
+      > </a
+      ><a name="2203" href="Data.Star.Decoration.html#2092" class="Bound"
+      >Q</a
+      ><a name="2204"
+      > </a
+      ><a name="2205" href="Data.Star.Decoration.html#2115" class="Bound"
+      >xs</a
+      ><a name="2207"
+      >
+</a
+      ><a name="2208" href="Data.Star.Decoration.html#2057" class="Function"
+      >mapAll</a
+      ><a name="2214"
+      > </a
+      ><a name="2215" class="Symbol"
+      >{</a
+      ><a name="2216" class="Argument"
+      >P</a
+      ><a name="2217"
+      > </a
+      ><a name="2218" class="Symbol"
+      >=</a
+      ><a name="2219"
+      > </a
+      ><a name="2220" href="Data.Star.Decoration.html#2220" class="Bound"
+      >P</a
+      ><a name="2221" class="Symbol"
+      >}</a
+      ><a name="2222"
+      > </a
+      ><a name="2223" class="Symbol"
+      >{</a
+      ><a name="2224" href="Data.Star.Decoration.html#2224" class="Bound"
+      >Q</a
+      ><a name="2225" class="Symbol"
+      >}</a
+      ><a name="2226"
+      > </a
+      ><a name="2227" href="Data.Star.Decoration.html#2227" class="Bound"
+      >f</a
+      ><a name="2228"
+      > </a
+      ><a name="2229" href="Data.Star.Decoration.html#2229" class="Bound"
+      >ps</a
+      ><a name="2231"
+      > </a
+      ><a name="2232" class="Symbol"
+      >=</a
+      ><a name="2233"
+      > </a
+      ><a name="2234" href="Data.Star.html#1783" class="Function"
+      >map</a
+      ><a name="2237"
+      > </a
+      ><a name="2238" href="Data.Star.Decoration.html#2253" class="Function"
+      >F</a
+      ><a name="2239"
+      > </a
+      ><a name="2240" href="Data.Star.Decoration.html#2229" class="Bound"
+      >ps</a
+      ><a name="2242"
+      >
+  </a
+      ><a name="2245" class="Keyword"
+      >where</a
+      ><a name="2250"
+      >
+  </a
+      ><a name="2253" href="Data.Star.Decoration.html#2253" class="Function"
+      >F</a
+      ><a name="2254"
+      > </a
+      ><a name="2255" class="Symbol"
+      >:</a
+      ><a name="2256"
+      > </a
+      ><a name="2257" href="Data.Star.Decoration.html#747" class="Datatype"
+      >DecoratedWith</a
+      ><a name="2270"
+      > </a
+      ><a name="2271" href="Data.Star.Decoration.html#2220" class="Bound"
+      >P</a
+      ><a name="2272"
+      > </a
+      ><a name="2273" href="Relation.Binary.Core.html#1025" class="Function Operator"
+      >&#8658;</a
+      ><a name="2274"
+      > </a
+      ><a name="2275" href="Data.Star.Decoration.html#747" class="Datatype"
+      >DecoratedWith</a
+      ><a name="2288"
+      > </a
+      ><a name="2289" href="Data.Star.Decoration.html#2224" class="Bound"
+      >Q</a
+      ><a name="2290"
+      >
+  </a
+      ><a name="2293" href="Data.Star.Decoration.html#2253" class="Function"
+      >F</a
+      ><a name="2294"
+      > </a
+      ><a name="2295" class="Symbol"
+      >(</a
+      ><a name="2296" href="Data.Star.Decoration.html#851" class="InductiveConstructor"
+      >&#8614;</a
+      ><a name="2297"
+      > </a
+      ><a name="2298" href="Data.Star.Decoration.html#2298" class="Bound"
+      >x</a
+      ><a name="2299" class="Symbol"
+      >)</a
+      ><a name="2300"
+      > </a
+      ><a name="2301" class="Symbol"
+      >=</a
+      ><a name="2302"
+      > </a
+      ><a name="2303" href="Data.Star.Decoration.html#851" class="InductiveConstructor"
+      >&#8614;</a
+      ><a name="2304"
+      > </a
+      ><a name="2305" class="Symbol"
+      >(</a
+      ><a name="2306" href="Data.Star.Decoration.html#2227" class="Bound"
+      >f</a
+      ><a name="2307"
+      > </a
+      ><a name="2308" href="Data.Star.Decoration.html#2298" class="Bound"
+      >x</a
+      ><a name="2309" class="Symbol"
+      >)</a
+      ><a name="2310"
+      >
+
+</a
+      ><a name="2312" class="Comment"
+      >-- We can decorate star-lists with universally true predicates.</a
+      ><a name="2375"
+      >
+
+</a
+      ><a name="2377" href="Data.Star.Decoration.html#2377" class="Function"
+      >decorate</a
+      ><a name="2385"
+      > </a
+      ><a name="2386" class="Symbol"
+      >:</a
+      ><a name="2387"
+      > </a
+      ><a name="2388" class="Symbol"
+      >&#8704;</a
+      ><a name="2389"
+      > </a
+      ><a name="2390" class="Symbol"
+      >{</a
+      ><a name="2391" href="Data.Star.Decoration.html#2391" class="Bound"
+      >I</a
+      ><a name="2392" class="Symbol"
+      >}</a
+      ><a name="2393"
+      > </a
+      ><a name="2394" class="Symbol"
+      >{</a
+      ><a name="2395" href="Data.Star.Decoration.html#2395" class="Bound"
+      >T</a
+      ><a name="2396"
+      > </a
+      ><a name="2397" class="Symbol"
+      >:</a
+      ><a name="2398"
+      > </a
+      ><a name="2399" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="2402"
+      > </a
+      ><a name="2403" href="Data.Star.Decoration.html#2391" class="Bound"
+      >I</a
+      ><a name="2404"
+      > </a
+      ><a name="2405" href="Agda.Primitive.html#580" class="Primitive"
+      >zero</a
+      ><a name="2409" class="Symbol"
+      >}</a
+      ><a name="2410"
+      > </a
+      ><a name="2411" class="Symbol"
+      >{</a
+      ><a name="2412" href="Data.Star.Decoration.html#2412" class="Bound"
+      >P</a
+      ><a name="2413"
+      > </a
+      ><a name="2414" class="Symbol"
+      >:</a
+      ><a name="2415"
+      > </a
+      ><a name="2416" href="Data.Star.Decoration.html#423" class="Function"
+      >EdgePred</a
+      ><a name="2424"
+      > </a
+      ><a name="2425" href="Data.Star.Decoration.html#2395" class="Bound"
+      >T</a
+      ><a name="2426" class="Symbol"
+      >}</a
+      ><a name="2427"
+      > </a
+      ><a name="2428" class="Symbol"
+      >{</a
+      ><a name="2429" href="Data.Star.Decoration.html#2429" class="Bound"
+      >i</a
+      ><a name="2430"
+      > </a
+      ><a name="2431" href="Data.Star.Decoration.html#2431" class="Bound"
+      >j</a
+      ><a name="2432" class="Symbol"
+      >}</a
+      ><a name="2433"
+      > </a
+      ><a name="2434" class="Symbol"
+      >&#8594;</a
+      ><a name="2435"
+      >
+           </a
+      ><a name="2447" class="Symbol"
+      >(&#8704;</a
+      ><a name="2449"
+      > </a
+      ><a name="2450" class="Symbol"
+      >{</a
+      ><a name="2451" href="Data.Star.Decoration.html#2451" class="Bound"
+      >i</a
+      ><a name="2452"
+      > </a
+      ><a name="2453" href="Data.Star.Decoration.html#2453" class="Bound"
+      >j</a
+      ><a name="2454" class="Symbol"
+      >}</a
+      ><a name="2455"
+      > </a
+      ><a name="2456" class="Symbol"
+      >(</a
+      ><a name="2457" href="Data.Star.Decoration.html#2457" class="Bound"
+      >x</a
+      ><a name="2458"
+      > </a
+      ><a name="2459" class="Symbol"
+      >:</a
+      ><a name="2460"
+      > </a
+      ><a name="2461" href="Data.Star.Decoration.html#2395" class="Bound"
+      >T</a
+      ><a name="2462"
+      > </a
+      ><a name="2463" href="Data.Star.Decoration.html#2451" class="Bound"
+      >i</a
+      ><a name="2464"
+      > </a
+      ><a name="2465" href="Data.Star.Decoration.html#2453" class="Bound"
+      >j</a
+      ><a name="2466" class="Symbol"
+      >)</a
+      ><a name="2467"
+      > </a
+      ><a name="2468" class="Symbol"
+      >&#8594;</a
+      ><a name="2469"
+      > </a
+      ><a name="2470" href="Data.Star.Decoration.html#2412" class="Bound"
+      >P</a
+      ><a name="2471"
+      > </a
+      ><a name="2472" href="Data.Star.Decoration.html#2457" class="Bound"
+      >x</a
+      ><a name="2473" class="Symbol"
+      >)</a
+      ><a name="2474"
+      > </a
+      ><a name="2475" class="Symbol"
+      >&#8594;</a
+      ><a name="2476"
+      >
+           </a
+      ><a name="2488" class="Symbol"
+      >(</a
+      ><a name="2489" href="Data.Star.Decoration.html#2489" class="Bound"
+      >xs</a
+      ><a name="2491"
+      > </a
+      ><a name="2492" class="Symbol"
+      >:</a
+      ><a name="2493"
+      > </a
+      ><a name="2494" href="Data.Star.html#553" class="Datatype"
+      >Star</a
+      ><a name="2498"
+      > </a
+      ><a name="2499" href="Data.Star.Decoration.html#2395" class="Bound"
+      >T</a
+      ><a name="2500"
+      > </a
+      ><a name="2501" href="Data.Star.Decoration.html#2429" class="Bound"
+      >i</a
+      ><a name="2502"
+      > </a
+      ><a name="2503" href="Data.Star.Decoration.html#2431" class="Bound"
+      >j</a
+      ><a name="2504" class="Symbol"
+      >)</a
+      ><a name="2505"
+      > </a
+      ><a name="2506" class="Symbol"
+      >&#8594;</a
+      ><a name="2507"
+      > </a
+      ><a name="2508" href="Data.Star.Decoration.html#1372" class="Function"
+      >All</a
+      ><a name="2511"
+      > </a
+      ><a name="2512" href="Data.Star.Decoration.html#2412" class="Bound"
+      >P</a
+      ><a name="2513"
+      > </a
+      ><a name="2514" href="Data.Star.Decoration.html#2489" class="Bound"
+      >xs</a
+      ><a name="2516"
+      >
+</a
+      ><a name="2517" href="Data.Star.Decoration.html#2377" class="Function"
+      >decorate</a
+      ><a name="2525"
+      > </a
+      ><a name="2526" href="Data.Star.Decoration.html#2526" class="Bound"
+      >f</a
+      ><a name="2527"
+      > </a
+      ><a name="2528" href="Data.Star.html#614" class="InductiveConstructor"
+      >&#949;</a
+      ><a name="2529"
+      >        </a
+      ><a name="2537" class="Symbol"
+      >=</a
+      ><a name="2538"
+      > </a
+      ><a name="2539" href="Data.Star.html#614" class="InductiveConstructor"
+      >&#949;</a
+      ><a name="2540"
+      >
+</a
+      ><a name="2541" href="Data.Star.Decoration.html#2377" class="Function"
+      >decorate</a
+      ><a name="2549"
+      > </a
+      ><a name="2550" href="Data.Star.Decoration.html#2550" class="Bound"
+      >f</a
+      ><a name="2551"
+      > </a
+      ><a name="2552" class="Symbol"
+      >(</a
+      ><a name="2553" href="Data.Star.Decoration.html#2553" class="Bound"
+      >x</a
+      ><a name="2554"
+      > </a
+      ><a name="2555" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      >&#9669;</a
+      ><a name="2556"
+      > </a
+      ><a name="2557" href="Data.Star.Decoration.html#2557" class="Bound"
+      >xs</a
+      ><a name="2559" class="Symbol"
+      >)</a
+      ><a name="2560"
+      > </a
+      ><a name="2561" class="Symbol"
+      >=</a
+      ><a name="2562"
+      > </a
+      ><a name="2563" href="Data.Star.Decoration.html#851" class="InductiveConstructor"
+      >&#8614;</a
+      ><a name="2564"
+      > </a
+      ><a name="2565" class="Symbol"
+      >(</a
+      ><a name="2566" href="Data.Star.Decoration.html#2550" class="Bound"
+      >f</a
+      ><a name="2567"
+      > </a
+      ><a name="2568" href="Data.Star.Decoration.html#2553" class="Bound"
+      >x</a
+      ><a name="2569" class="Symbol"
+      >)</a
+      ><a name="2570"
+      > </a
+      ><a name="2571" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      >&#9669;</a
+      ><a name="2572"
+      > </a
+      ><a name="2573" href="Data.Star.Decoration.html#2377" class="Function"
+      >decorate</a
+      ><a name="2581"
+      > </a
+      ><a name="2582" href="Data.Star.Decoration.html#2550" class="Bound"
+      >f</a
+      ><a name="2583"
+      > </a
+      ><a name="2584" href="Data.Star.Decoration.html#2557" class="Bound"
+      >xs</a
+      ><a name="2586"
+      >
+
+</a
+      ><a name="2588" class="Comment"
+      >-- We can append Alls. Unfortunately _&#9669;&#9669;_ does not quite work.</a
+      ><a name="2650"
+      >
+
+</a
+      ><a name="2652" class="Keyword"
+      >infixr</a
+      ><a name="2658"
+      > </a
+      ><a name="2659" class="Number"
+      >5</a
+      ><a name="2660"
+      > _&#9669;&#9669;&#9669;_ _&#9659;&#9659;&#9659;_
+
+</a
+      ><a name="2674" href="Data.Star.Decoration.html#2674" class="Function Operator"
+      >_&#9669;&#9669;&#9669;_</a
+      ><a name="2679"
+      > </a
+      ><a name="2680" class="Symbol"
+      >:</a
+      ><a name="2681"
+      > </a
+      ><a name="2682" class="Symbol"
+      >&#8704;</a
+      ><a name="2683"
+      > </a
+      ><a name="2684" class="Symbol"
+      >{</a
+      ><a name="2685" href="Data.Star.Decoration.html#2685" class="Bound"
+      >I</a
+      ><a name="2686" class="Symbol"
+      >}</a
+      ><a name="2687"
+      > </a
+      ><a name="2688" class="Symbol"
+      >{</a
+      ><a name="2689" href="Data.Star.Decoration.html#2689" class="Bound"
+      >T</a
+      ><a name="2690"
+      > </a
+      ><a name="2691" class="Symbol"
+      >:</a
+      ><a name="2692"
+      > </a
+      ><a name="2693" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="2696"
+      > </a
+      ><a name="2697" href="Data.Star.Decoration.html#2685" class="Bound"
+      >I</a
+      ><a name="2698"
+      > </a
+      ><a name="2699" href="Agda.Primitive.html#580" class="Primitive"
+      >zero</a
+      ><a name="2703" class="Symbol"
+      >}</a
+      ><a name="2704"
+      > </a
+      ><a name="2705" class="Symbol"
+      >{</a
+      ><a name="2706" href="Data.Star.Decoration.html#2706" class="Bound"
+      >P</a
+      ><a name="2707"
+      > </a
+      ><a name="2708" class="Symbol"
+      >:</a
+      ><a name="2709"
+      > </a
+      ><a name="2710" href="Data.Star.Decoration.html#423" class="Function"
+      >EdgePred</a
+      ><a name="2718"
+      > </a
+      ><a name="2719" href="Data.Star.Decoration.html#2689" class="Bound"
+      >T</a
+      ><a name="2720" class="Symbol"
+      >}</a
+      ><a name="2721"
+      >
+              </a
+      ><a name="2736" class="Symbol"
+      >{</a
+      ><a name="2737" href="Data.Star.Decoration.html#2737" class="Bound"
+      >i</a
+      ><a name="2738"
+      > </a
+      ><a name="2739" href="Data.Star.Decoration.html#2739" class="Bound"
+      >j</a
+      ><a name="2740"
+      > </a
+      ><a name="2741" href="Data.Star.Decoration.html#2741" class="Bound"
+      >k</a
+      ><a name="2742" class="Symbol"
+      >}</a
+      ><a name="2743"
+      > </a
+      ><a name="2744" class="Symbol"
+      >{</a
+      ><a name="2745" href="Data.Star.Decoration.html#2745" class="Bound"
+      >xs</a
+      ><a name="2747"
+      > </a
+      ><a name="2748" class="Symbol"
+      >:</a
+      ><a name="2749"
+      > </a
+      ><a name="2750" href="Data.Star.html#553" class="Datatype"
+      >Star</a
+      ><a name="2754"
+      > </a
+      ><a name="2755" href="Data.Star.Decoration.html#2689" class="Bound"
+      >T</a
+      ><a name="2756"
+      > </a
+      ><a name="2757" href="Data.Star.Decoration.html#2737" class="Bound"
+      >i</a
+      ><a name="2758"
+      > </a
+      ><a name="2759" href="Data.Star.Decoration.html#2739" class="Bound"
+      >j</a
+      ><a name="2760" class="Symbol"
+      >}</a
+      ><a name="2761"
+      > </a
+      ><a name="2762" class="Symbol"
+      >{</a
+      ><a name="2763" href="Data.Star.Decoration.html#2763" class="Bound"
+      >ys</a
+      ><a name="2765"
+      > </a
+      ><a name="2766" class="Symbol"
+      >:</a
+      ><a name="2767"
+      > </a
+      ><a name="2768" href="Data.Star.html#553" class="Datatype"
+      >Star</a
+      ><a name="2772"
+      > </a
+      ><a name="2773" href="Data.Star.Decoration.html#2689" class="Bound"
+      >T</a
+      ><a name="2774"
+      > </a
+      ><a name="2775" href="Data.Star.Decoration.html#2739" class="Bound"
+      >j</a
+      ><a name="2776"
+      > </a
+      ><a name="2777" href="Data.Star.Decoration.html#2741" class="Bound"
+      >k</a
+      ><a name="2778" class="Symbol"
+      >}</a
+      ><a name="2779"
+      > </a
+      ><a name="2780" class="Symbol"
+      >&#8594;</a
+      ><a name="2781"
+      >
+        </a
+      ><a name="2790" href="Data.Star.Decoration.html#1372" class="Function"
+      >All</a
+      ><a name="2793"
+      > </a
+      ><a name="2794" href="Data.Star.Decoration.html#2706" class="Bound"
+      >P</a
+      ><a name="2795"
+      > </a
+      ><a name="2796" href="Data.Star.Decoration.html#2745" class="Bound"
+      >xs</a
+      ><a name="2798"
+      > </a
+      ><a name="2799" class="Symbol"
+      >&#8594;</a
+      ><a name="2800"
+      > </a
+      ><a name="2801" href="Data.Star.Decoration.html#1372" class="Function"
+      >All</a
+      ><a name="2804"
+      > </a
+      ><a name="2805" href="Data.Star.Decoration.html#2706" class="Bound"
+      >P</a
+      ><a name="2806"
+      > </a
+      ><a name="2807" href="Data.Star.Decoration.html#2763" class="Bound"
+      >ys</a
+      ><a name="2809"
+      > </a
+      ><a name="2810" class="Symbol"
+      >&#8594;</a
+      ><a name="2811"
+      > </a
+      ><a name="2812" href="Data.Star.Decoration.html#1372" class="Function"
+      >All</a
+      ><a name="2815"
+      > </a
+      ><a name="2816" href="Data.Star.Decoration.html#2706" class="Bound"
+      >P</a
+      ><a name="2817"
+      > </a
+      ><a name="2818" class="Symbol"
+      >(</a
+      ><a name="2819" href="Data.Star.Decoration.html#2745" class="Bound"
+      >xs</a
+      ><a name="2821"
+      > </a
+      ><a name="2822" href="Data.Star.html#900" class="Function Operator"
+      >&#9669;&#9669;</a
+      ><a name="2824"
+      > </a
+      ><a name="2825" href="Data.Star.Decoration.html#2763" class="Bound"
+      >ys</a
+      ><a name="2827" class="Symbol"
+      >)</a
+      ><a name="2828"
+      >
+</a
+      ><a name="2829" href="Data.Star.html#614" class="InductiveConstructor"
+      >&#949;</a
+      ><a name="2830"
+      >          </a
+      ><a name="2840" href="Data.Star.Decoration.html#2674" class="Function Operator"
+      >&#9669;&#9669;&#9669;</a
+      ><a name="2843"
+      > </a
+      ><a name="2844" href="Data.Star.Decoration.html#2844" class="Bound"
+      >ys</a
+      ><a name="2846"
+      > </a
+      ><a name="2847" class="Symbol"
+      >=</a
+      ><a name="2848"
+      > </a
+      ><a name="2849" href="Data.Star.Decoration.html#2844" class="Bound"
+      >ys</a
+      ><a name="2851"
+      >
+</a
+      ><a name="2852" class="Symbol"
+      >(</a
+      ><a name="2853" href="Data.Star.Decoration.html#851" class="InductiveConstructor"
+      >&#8614;</a
+      ><a name="2854"
+      > </a
+      ><a name="2855" href="Data.Star.Decoration.html#2855" class="Bound"
+      >x</a
+      ><a name="2856"
+      > </a
+      ><a name="2857" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      >&#9669;</a
+      ><a name="2858"
+      > </a
+      ><a name="2859" href="Data.Star.Decoration.html#2859" class="Bound"
+      >xs</a
+      ><a name="2861" class="Symbol"
+      >)</a
+      ><a name="2862"
+      > </a
+      ><a name="2863" href="Data.Star.Decoration.html#2674" class="Function Operator"
+      >&#9669;&#9669;&#9669;</a
+      ><a name="2866"
+      > </a
+      ><a name="2867" href="Data.Star.Decoration.html#2867" class="Bound"
+      >ys</a
+      ><a name="2869"
+      > </a
+      ><a name="2870" class="Symbol"
+      >=</a
+      ><a name="2871"
+      > </a
+      ><a name="2872" href="Data.Star.Decoration.html#851" class="InductiveConstructor"
+      >&#8614;</a
+      ><a name="2873"
+      > </a
+      ><a name="2874" href="Data.Star.Decoration.html#2855" class="Bound"
+      >x</a
+      ><a name="2875"
+      > </a
+      ><a name="2876" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      >&#9669;</a
+      ><a name="2877"
+      > </a
+      ><a name="2878" href="Data.Star.Decoration.html#2859" class="Bound"
+      >xs</a
+      ><a name="2880"
+      > </a
+      ><a name="2881" href="Data.Star.Decoration.html#2674" class="Function Operator"
+      >&#9669;&#9669;&#9669;</a
+      ><a name="2884"
+      > </a
+      ><a name="2885" href="Data.Star.Decoration.html#2867" class="Bound"
+      >ys</a
+      ><a name="2887"
+      >
+
+</a
+      ><a name="2889" href="Data.Star.Decoration.html#2889" class="Function Operator"
+      >_&#9659;&#9659;&#9659;_</a
+      ><a name="2894"
+      > </a
+      ><a name="2895" class="Symbol"
+      >:</a
+      ><a name="2896"
+      > </a
+      ><a name="2897" class="Symbol"
+      >&#8704;</a
+      ><a name="2898"
+      > </a
+      ><a name="2899" class="Symbol"
+      >{</a
+      ><a name="2900" href="Data.Star.Decoration.html#2900" class="Bound"
+      >I</a
+      ><a name="2901" class="Symbol"
+      >}</a
+      ><a name="2902"
+      > </a
+      ><a name="2903" class="Symbol"
+      >{</a
+      ><a name="2904" href="Data.Star.Decoration.html#2904" class="Bound"
+      >T</a
+      ><a name="2905"
+      > </a
+      ><a name="2906" class="Symbol"
+      >:</a
+      ><a name="2907"
+      > </a
+      ><a name="2908" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="2911"
+      > </a
+      ><a name="2912" href="Data.Star.Decoration.html#2900" class="Bound"
+      >I</a
+      ><a name="2913"
+      > </a
+      ><a name="2914" href="Agda.Primitive.html#580" class="Primitive"
+      >zero</a
+      ><a name="2918" class="Symbol"
+      >}</a
+      ><a name="2919"
+      > </a
+      ><a name="2920" class="Symbol"
+      >{</a
+      ><a name="2921" href="Data.Star.Decoration.html#2921" class="Bound"
+      >P</a
+      ><a name="2922"
+      > </a
+      ><a name="2923" class="Symbol"
+      >:</a
+      ><a name="2924"
+      > </a
+      ><a name="2925" href="Data.Star.Decoration.html#423" class="Function"
+      >EdgePred</a
+      ><a name="2933"
+      > </a
+      ><a name="2934" href="Data.Star.Decoration.html#2904" class="Bound"
+      >T</a
+      ><a name="2935" class="Symbol"
+      >}</a
+      ><a name="2936"
+      >
+              </a
+      ><a name="2951" class="Symbol"
+      >{</a
+      ><a name="2952" href="Data.Star.Decoration.html#2952" class="Bound"
+      >i</a
+      ><a name="2953"
+      > </a
+      ><a name="2954" href="Data.Star.Decoration.html#2954" class="Bound"
+      >j</a
+      ><a name="2955"
+      > </a
+      ><a name="2956" href="Data.Star.Decoration.html#2956" class="Bound"
+      >k</a
+      ><a name="2957" class="Symbol"
+      >}</a
+      ><a name="2958"
+      > </a
+      ><a name="2959" class="Symbol"
+      >{</a
+      ><a name="2960" href="Data.Star.Decoration.html#2960" class="Bound"
+      >xs</a
+      ><a name="2962"
+      > </a
+      ><a name="2963" class="Symbol"
+      >:</a
+      ><a name="2964"
+      > </a
+      ><a name="2965" href="Data.Star.html#553" class="Datatype"
+      >Star</a
+      ><a name="2969"
+      > </a
+      ><a name="2970" href="Data.Star.Decoration.html#2904" class="Bound"
+      >T</a
+      ><a name="2971"
+      > </a
+      ><a name="2972" href="Data.Star.Decoration.html#2954" class="Bound"
+      >j</a
+      ><a name="2973"
+      > </a
+      ><a name="2974" href="Data.Star.Decoration.html#2956" class="Bound"
+      >k</a
+      ><a name="2975" class="Symbol"
+      >}</a
+      ><a name="2976"
+      > </a
+      ><a name="2977" class="Symbol"
+      >{</a
+      ><a name="2978" href="Data.Star.Decoration.html#2978" class="Bound"
+      >ys</a
+      ><a name="2980"
+      > </a
+      ><a name="2981" class="Symbol"
+      >:</a
+      ><a name="2982"
+      > </a
+      ><a name="2983" href="Data.Star.html#553" class="Datatype"
+      >Star</a
+      ><a name="2987"
+      > </a
+      ><a name="2988" href="Data.Star.Decoration.html#2904" class="Bound"
+      >T</a
+      ><a name="2989"
+      > </a
+      ><a name="2990" href="Data.Star.Decoration.html#2952" class="Bound"
+      >i</a
+      ><a name="2991"
+      > </a
+      ><a name="2992" href="Data.Star.Decoration.html#2954" class="Bound"
+      >j</a
+      ><a name="2993" class="Symbol"
+      >}</a
+      ><a name="2994"
+      > </a
+      ><a name="2995" class="Symbol"
+      >&#8594;</a
+      ><a name="2996"
+      >
+        </a
+      ><a name="3005" href="Data.Star.Decoration.html#1372" class="Function"
+      >All</a
+      ><a name="3008"
+      > </a
+      ><a name="3009" href="Data.Star.Decoration.html#2921" class="Bound"
+      >P</a
+      ><a name="3010"
+      > </a
+      ><a name="3011" href="Data.Star.Decoration.html#2960" class="Bound"
+      >xs</a
+      ><a name="3013"
+      > </a
+      ><a name="3014" class="Symbol"
+      >&#8594;</a
+      ><a name="3015"
+      > </a
+      ><a name="3016" href="Data.Star.Decoration.html#1372" class="Function"
+      >All</a
+      ><a name="3019"
+      > </a
+      ><a name="3020" href="Data.Star.Decoration.html#2921" class="Bound"
+      >P</a
+      ><a name="3021"
+      > </a
+      ><a name="3022" href="Data.Star.Decoration.html#2978" class="Bound"
+      >ys</a
+      ><a name="3024"
+      > </a
+      ><a name="3025" class="Symbol"
+      >&#8594;</a
+      ><a name="3026"
+      > </a
+      ><a name="3027" href="Data.Star.Decoration.html#1372" class="Function"
+      >All</a
+      ><a name="3030"
+      > </a
+      ><a name="3031" href="Data.Star.Decoration.html#2921" class="Bound"
+      >P</a
+      ><a name="3032"
+      > </a
+      ><a name="3033" class="Symbol"
+      >(</a
+      ><a name="3034" href="Data.Star.Decoration.html#2960" class="Bound"
+      >xs</a
+      ><a name="3036"
+      > </a
+      ><a name="3037" href="Data.Star.html#1407" class="Function Operator"
+      >&#9659;&#9659;</a
+      ><a name="3039"
+      > </a
+      ><a name="3040" href="Data.Star.Decoration.html#2978" class="Bound"
+      >ys</a
+      ><a name="3042" class="Symbol"
+      >)</a
+      ><a name="3043"
+      >
+</a
+      ><a name="3044" href="Data.Star.Decoration.html#2889" class="Function Operator"
+      >_&#9659;&#9659;&#9659;_</a
+      ><a name="3049"
+      > </a
+      ><a name="3050" class="Symbol"
+      >=</a
+      ><a name="3051"
+      > </a
+      ><a name="3052" href="Function.html#1480" class="Function"
+      >flip</a
+      ><a name="3056"
+      > </a
+      ><a name="3057" href="Data.Star.Decoration.html#2674" class="Function Operator"
+      >_&#9669;&#9669;&#9669;_</a
+      ><a name="3062"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

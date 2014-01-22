@@ -1,5 +1,4 @@
 dist
-html
 Everything.agda
 *.agdai
 *.agda.el

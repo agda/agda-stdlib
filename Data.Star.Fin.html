@@ -1,0 +1,340 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Star.Fin</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Finite sets defined in terms of Data.Star</a
+      ><a name="150"
+      >
+</a
+      ><a name="151" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="223"
+      >
+
+</a
+      ><a name="225" class="Keyword"
+      >module</a
+      ><a name="231"
+      > </a
+      ><a name="232" href="Data.Star.Fin.html#1" class="Module"
+      >Data.Star.Fin</a
+      ><a name="245"
+      > </a
+      ><a name="246" class="Keyword"
+      >where</a
+      ><a name="251"
+      >
+
+</a
+      ><a name="253" class="Keyword"
+      >open</a
+      ><a name="257"
+      > </a
+      ><a name="258" class="Keyword"
+      >import</a
+      ><a name="264"
+      > </a
+      ><a name="265" href="Data.Star.html#1" class="Module"
+      >Data.Star</a
+      ><a name="274"
+      >
+</a
+      ><a name="275" class="Keyword"
+      >open</a
+      ><a name="279"
+      > </a
+      ><a name="280" class="Keyword"
+      >import</a
+      ><a name="286"
+      > </a
+      ><a name="287" href="Data.Star.Nat.html#1" class="Module"
+      >Data.Star.Nat</a
+      ><a name="300"
+      > </a
+      ><a name="301" class="Symbol"
+      >as</a
+      ><a name="303"
+      > </a
+      ><a name="304" class="Module"
+      >&#8469;</a
+      ><a name="305"
+      > </a
+      ><a name="306" class="Keyword"
+      >using</a
+      ><a name="311"
+      > </a
+      ><a name="312" class="Symbol"
+      >(</a
+      ><a name="313"
+      >&#8469;</a
+      ><a name="314" class="Symbol"
+      >)</a
+      ><a name="315"
+      >
+</a
+      ><a name="316" class="Keyword"
+      >open</a
+      ><a name="320"
+      > </a
+      ><a name="321" class="Keyword"
+      >import</a
+      ><a name="327"
+      > </a
+      ><a name="328" href="Data.Star.Pointer.html#1" class="Module"
+      >Data.Star.Pointer</a
+      ><a name="345"
+      >
+</a
+      ><a name="346" class="Keyword"
+      >open</a
+      ><a name="350"
+      > </a
+      ><a name="351" class="Keyword"
+      >import</a
+      ><a name="357"
+      > </a
+      ><a name="358" href="Data.Unit.html#1" class="Module"
+      >Data.Unit</a
+      ><a name="367"
+      >
+
+</a
+      ><a name="369" class="Comment"
+      >-- Finite sets are undecorated pointers into natural numbers.</a
+      ><a name="430"
+      >
+
+</a
+      ><a name="432" href="Data.Star.Fin.html#432" class="Function"
+      >Fin</a
+      ><a name="435"
+      > </a
+      ><a name="436" class="Symbol"
+      >:</a
+      ><a name="437"
+      > </a
+      ><a name="438" href="Data.Star.Nat.html#407" class="Function"
+      >&#8469;</a
+      ><a name="439"
+      > </a
+      ><a name="440" class="Symbol"
+      >&#8594;</a
+      ><a name="441"
+      > </a
+      ><a name="442" class="PrimitiveType"
+      >Set</a
+      ><a name="445"
+      >
+</a
+      ><a name="446" href="Data.Star.Fin.html#432" class="Function"
+      >Fin</a
+      ><a name="449"
+      > </a
+      ><a name="450" class="Symbol"
+      >=</a
+      ><a name="451"
+      > </a
+      ><a name="452" href="Data.Star.Pointer.html#1183" class="Function"
+      >Any</a
+      ><a name="455"
+      > </a
+      ><a name="456" class="Symbol"
+      >(&#955;</a
+      ><a name="458"
+      > </a
+      ><a name="459" href="Data.Star.Fin.html#459" class="Bound"
+      >_</a
+      ><a name="460"
+      > </a
+      ><a name="461" class="Symbol"
+      >&#8594;</a
+      ><a name="462"
+      > </a
+      ><a name="463" href="Data.Unit.Base.html#431" class="Record"
+      >&#8868;</a
+      ><a name="464" class="Symbol"
+      >)</a
+      ><a name="465"
+      > </a
+      ><a name="466" class="Symbol"
+      >(&#955;</a
+      ><a name="468"
+      > </a
+      ><a name="469" href="Data.Star.Fin.html#469" class="Bound"
+      >_</a
+      ><a name="470"
+      > </a
+      ><a name="471" class="Symbol"
+      >&#8594;</a
+      ><a name="472"
+      > </a
+      ><a name="473" href="Data.Unit.Base.html#431" class="Record"
+      >&#8868;</a
+      ><a name="474" class="Symbol"
+      >)</a
+      ><a name="475"
+      >
+
+</a
+      ><a name="477" class="Comment"
+      >-- &quot;Constructors&quot;.</a
+      ><a name="495"
+      >
+
+</a
+      ><a name="497" href="Data.Star.Fin.html#497" class="Function"
+      >zero</a
+      ><a name="501"
+      > </a
+      ><a name="502" class="Symbol"
+      >:</a
+      ><a name="503"
+      > </a
+      ><a name="504" class="Symbol"
+      >&#8704;</a
+      ><a name="505"
+      > </a
+      ><a name="506" class="Symbol"
+      >{</a
+      ><a name="507" href="Data.Star.Fin.html#507" class="Bound"
+      >n</a
+      ><a name="508" class="Symbol"
+      >}</a
+      ><a name="509"
+      > </a
+      ><a name="510" class="Symbol"
+      >&#8594;</a
+      ><a name="511"
+      > </a
+      ><a name="512" href="Data.Star.Fin.html#432" class="Function"
+      >Fin</a
+      ><a name="515"
+      > </a
+      ><a name="516" class="Symbol"
+      >(</a
+      ><a name="517" href="Data.Star.Nat.html#481" class="Function"
+      >&#8469;.suc</a
+      ><a name="522"
+      > </a
+      ><a name="523" href="Data.Star.Fin.html#507" class="Bound"
+      >n</a
+      ><a name="524" class="Symbol"
+      >)</a
+      ><a name="525"
+      >
+</a
+      ><a name="526" href="Data.Star.Fin.html#497" class="Function"
+      >zero</a
+      ><a name="530"
+      > </a
+      ><a name="531" class="Symbol"
+      >=</a
+      ><a name="532"
+      > </a
+      ><a name="533" href="Data.Star.Pointer.html#1313" class="Function"
+      >this</a
+      ><a name="537"
+      > </a
+      ><a name="538" href="Data.Unit.Base.html#459" class="InductiveConstructor"
+      >tt</a
+      ><a name="540"
+      >
+
+</a
+      ><a name="542" href="Data.Star.Fin.html#542" class="Function"
+      >suc</a
+      ><a name="545"
+      > </a
+      ><a name="546" class="Symbol"
+      >:</a
+      ><a name="547"
+      > </a
+      ><a name="548" class="Symbol"
+      >&#8704;</a
+      ><a name="549"
+      > </a
+      ><a name="550" class="Symbol"
+      >{</a
+      ><a name="551" href="Data.Star.Fin.html#551" class="Bound"
+      >n</a
+      ><a name="552" class="Symbol"
+      >}</a
+      ><a name="553"
+      > </a
+      ><a name="554" class="Symbol"
+      >&#8594;</a
+      ><a name="555"
+      > </a
+      ><a name="556" href="Data.Star.Fin.html#432" class="Function"
+      >Fin</a
+      ><a name="559"
+      > </a
+      ><a name="560" href="Data.Star.Fin.html#551" class="Bound"
+      >n</a
+      ><a name="561"
+      > </a
+      ><a name="562" class="Symbol"
+      >&#8594;</a
+      ><a name="563"
+      > </a
+      ><a name="564" href="Data.Star.Fin.html#432" class="Function"
+      >Fin</a
+      ><a name="567"
+      > </a
+      ><a name="568" class="Symbol"
+      >(</a
+      ><a name="569" href="Data.Star.Nat.html#481" class="Function"
+      >&#8469;.suc</a
+      ><a name="574"
+      > </a
+      ><a name="575" href="Data.Star.Fin.html#551" class="Bound"
+      >n</a
+      ><a name="576" class="Symbol"
+      >)</a
+      ><a name="577"
+      >
+</a
+      ><a name="578" href="Data.Star.Fin.html#542" class="Function"
+      >suc</a
+      ><a name="581"
+      > </a
+      ><a name="582" class="Symbol"
+      >=</a
+      ><a name="583"
+      > </a
+      ><a name="584" href="Data.Star.Pointer.html#1466" class="Function"
+      >that</a
+      ><a name="588"
+      > </a
+      ><a name="589" href="Data.Unit.Base.html#459" class="InductiveConstructor"
+      >tt</a
+      ><a name="591"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

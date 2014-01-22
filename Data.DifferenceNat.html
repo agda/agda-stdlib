@@ -1,0 +1,475 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.DifferenceNat</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Natural numbers with fast addition (for use together with</a
+      ><a name="166"
+      >
+</a
+      ><a name="167" class="Comment"
+      >-- DifferenceVec)</a
+      ><a name="184"
+      >
+</a
+      ><a name="185" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="257"
+      >
+
+</a
+      ><a name="259" class="Keyword"
+      >module</a
+      ><a name="265"
+      > </a
+      ><a name="266" href="Data.DifferenceNat.html#1" class="Module"
+      >Data.DifferenceNat</a
+      ><a name="284"
+      > </a
+      ><a name="285" class="Keyword"
+      >where</a
+      ><a name="290"
+      >
+
+</a
+      ><a name="292" class="Keyword"
+      >open</a
+      ><a name="296"
+      > </a
+      ><a name="297" class="Keyword"
+      >import</a
+      ><a name="303"
+      > </a
+      ><a name="304" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="312"
+      > </a
+      ><a name="313" class="Symbol"
+      >as</a
+      ><a name="315"
+      > </a
+      ><a name="316" class="Module"
+      >N</a
+      ><a name="317"
+      > </a
+      ><a name="318" class="Keyword"
+      >using</a
+      ><a name="323"
+      > </a
+      ><a name="324" class="Symbol"
+      >(</a
+      ><a name="325"
+      >&#8469;</a
+      ><a name="326" class="Symbol"
+      >)</a
+      ><a name="327"
+      >
+</a
+      ><a name="328" class="Keyword"
+      >open</a
+      ><a name="332"
+      > </a
+      ><a name="333" class="Keyword"
+      >import</a
+      ><a name="339"
+      > </a
+      ><a name="340" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="348"
+      >
+
+</a
+      ><a name="350" class="Keyword"
+      >infixl</a
+      ><a name="356"
+      > </a
+      ><a name="357" class="Number"
+      >6</a
+      ><a name="358"
+      > _+_
+
+</a
+      ><a name="364" href="Data.DifferenceNat.html#364" class="Function"
+      >Diff&#8469;</a
+      ><a name="369"
+      > </a
+      ><a name="370" class="Symbol"
+      >:</a
+      ><a name="371"
+      > </a
+      ><a name="372" class="PrimitiveType"
+      >Set</a
+      ><a name="375"
+      >
+</a
+      ><a name="376" href="Data.DifferenceNat.html#364" class="Function"
+      >Diff&#8469;</a
+      ><a name="381"
+      > </a
+      ><a name="382" class="Symbol"
+      >=</a
+      ><a name="383"
+      > </a
+      ><a name="384" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="385"
+      > </a
+      ><a name="386" class="Symbol"
+      >&#8594;</a
+      ><a name="387"
+      > </a
+      ><a name="388" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="389"
+      >
+
+</a
+      ><a name="391" href="Data.DifferenceNat.html#391" class="Function"
+      >0#</a
+      ><a name="393"
+      > </a
+      ><a name="394" class="Symbol"
+      >:</a
+      ><a name="395"
+      > </a
+      ><a name="396" href="Data.DifferenceNat.html#364" class="Function"
+      >Diff&#8469;</a
+      ><a name="401"
+      >
+</a
+      ><a name="402" href="Data.DifferenceNat.html#391" class="Function"
+      >0#</a
+      ><a name="404"
+      > </a
+      ><a name="405" class="Symbol"
+      >=</a
+      ><a name="406"
+      > </a
+      ><a name="407" class="Symbol"
+      >&#955;</a
+      ><a name="408"
+      > </a
+      ><a name="409" href="Data.DifferenceNat.html#409" class="Bound"
+      >k</a
+      ><a name="410"
+      > </a
+      ><a name="411" class="Symbol"
+      >&#8594;</a
+      ><a name="412"
+      > </a
+      ><a name="413" href="Data.DifferenceNat.html#409" class="Bound"
+      >k</a
+      ><a name="414"
+      >
+
+</a
+      ><a name="416" href="Data.DifferenceNat.html#416" class="Function"
+      >suc</a
+      ><a name="419"
+      > </a
+      ><a name="420" class="Symbol"
+      >:</a
+      ><a name="421"
+      > </a
+      ><a name="422" href="Data.DifferenceNat.html#364" class="Function"
+      >Diff&#8469;</a
+      ><a name="427"
+      > </a
+      ><a name="428" class="Symbol"
+      >&#8594;</a
+      ><a name="429"
+      > </a
+      ><a name="430" href="Data.DifferenceNat.html#364" class="Function"
+      >Diff&#8469;</a
+      ><a name="435"
+      >
+</a
+      ><a name="436" href="Data.DifferenceNat.html#416" class="Function"
+      >suc</a
+      ><a name="439"
+      > </a
+      ><a name="440" href="Data.DifferenceNat.html#440" class="Bound"
+      >n</a
+      ><a name="441"
+      > </a
+      ><a name="442" class="Symbol"
+      >=</a
+      ><a name="443"
+      > </a
+      ><a name="444" class="Symbol"
+      >&#955;</a
+      ><a name="445"
+      > </a
+      ><a name="446" href="Data.DifferenceNat.html#446" class="Bound"
+      >k</a
+      ><a name="447"
+      > </a
+      ><a name="448" class="Symbol"
+      >&#8594;</a
+      ><a name="449"
+      > </a
+      ><a name="450" href="Data.Nat.html#690" class="InductiveConstructor"
+      >N.suc</a
+      ><a name="455"
+      > </a
+      ><a name="456" class="Symbol"
+      >(</a
+      ><a name="457" href="Data.DifferenceNat.html#440" class="Bound"
+      >n</a
+      ><a name="458"
+      > </a
+      ><a name="459" href="Data.DifferenceNat.html#446" class="Bound"
+      >k</a
+      ><a name="460" class="Symbol"
+      >)</a
+      ><a name="461"
+      >
+
+</a
+      ><a name="463" href="Data.DifferenceNat.html#463" class="Function"
+      >1#</a
+      ><a name="465"
+      > </a
+      ><a name="466" class="Symbol"
+      >:</a
+      ><a name="467"
+      > </a
+      ><a name="468" href="Data.DifferenceNat.html#364" class="Function"
+      >Diff&#8469;</a
+      ><a name="473"
+      >
+</a
+      ><a name="474" href="Data.DifferenceNat.html#463" class="Function"
+      >1#</a
+      ><a name="476"
+      > </a
+      ><a name="477" class="Symbol"
+      >=</a
+      ><a name="478"
+      > </a
+      ><a name="479" href="Data.DifferenceNat.html#416" class="Function"
+      >suc</a
+      ><a name="482"
+      > </a
+      ><a name="483" href="Data.DifferenceNat.html#391" class="Function"
+      >0#</a
+      ><a name="485"
+      >
+
+</a
+      ><a name="487" href="Data.DifferenceNat.html#487" class="Function Operator"
+      >_+_</a
+      ><a name="490"
+      > </a
+      ><a name="491" class="Symbol"
+      >:</a
+      ><a name="492"
+      > </a
+      ><a name="493" href="Data.DifferenceNat.html#364" class="Function"
+      >Diff&#8469;</a
+      ><a name="498"
+      > </a
+      ><a name="499" class="Symbol"
+      >&#8594;</a
+      ><a name="500"
+      > </a
+      ><a name="501" href="Data.DifferenceNat.html#364" class="Function"
+      >Diff&#8469;</a
+      ><a name="506"
+      > </a
+      ><a name="507" class="Symbol"
+      >&#8594;</a
+      ><a name="508"
+      > </a
+      ><a name="509" href="Data.DifferenceNat.html#364" class="Function"
+      >Diff&#8469;</a
+      ><a name="514"
+      >
+</a
+      ><a name="515" href="Data.DifferenceNat.html#515" class="Bound"
+      >m</a
+      ><a name="516"
+      > </a
+      ><a name="517" href="Data.DifferenceNat.html#487" class="Function Operator"
+      >+</a
+      ><a name="518"
+      > </a
+      ><a name="519" href="Data.DifferenceNat.html#519" class="Bound"
+      >n</a
+      ><a name="520"
+      > </a
+      ><a name="521" class="Symbol"
+      >=</a
+      ><a name="522"
+      > </a
+      ><a name="523" class="Symbol"
+      >&#955;</a
+      ><a name="524"
+      > </a
+      ><a name="525" href="Data.DifferenceNat.html#525" class="Bound"
+      >k</a
+      ><a name="526"
+      > </a
+      ><a name="527" class="Symbol"
+      >&#8594;</a
+      ><a name="528"
+      > </a
+      ><a name="529" href="Data.DifferenceNat.html#515" class="Bound"
+      >m</a
+      ><a name="530"
+      > </a
+      ><a name="531" class="Symbol"
+      >(</a
+      ><a name="532" href="Data.DifferenceNat.html#519" class="Bound"
+      >n</a
+      ><a name="533"
+      > </a
+      ><a name="534" href="Data.DifferenceNat.html#525" class="Bound"
+      >k</a
+      ><a name="535" class="Symbol"
+      >)</a
+      ><a name="536"
+      >
+
+</a
+      ><a name="538" href="Data.DifferenceNat.html#538" class="Function"
+      >to&#8469;</a
+      ><a name="541"
+      > </a
+      ><a name="542" class="Symbol"
+      >:</a
+      ><a name="543"
+      > </a
+      ><a name="544" href="Data.DifferenceNat.html#364" class="Function"
+      >Diff&#8469;</a
+      ><a name="549"
+      > </a
+      ><a name="550" class="Symbol"
+      >&#8594;</a
+      ><a name="551"
+      > </a
+      ><a name="552" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="553"
+      >
+</a
+      ><a name="554" href="Data.DifferenceNat.html#538" class="Function"
+      >to&#8469;</a
+      ><a name="557"
+      > </a
+      ><a name="558" href="Data.DifferenceNat.html#558" class="Bound"
+      >n</a
+      ><a name="559"
+      > </a
+      ><a name="560" class="Symbol"
+      >=</a
+      ><a name="561"
+      > </a
+      ><a name="562" href="Data.DifferenceNat.html#558" class="Bound"
+      >n</a
+      ><a name="563"
+      > </a
+      ><a name="564" class="Number"
+      >0</a
+      ><a name="565"
+      >
+
+</a
+      ><a name="567" class="Comment"
+      >-- from&#8469; n is linear in the size of n.</a
+      ><a name="605"
+      >
+
+</a
+      ><a name="607" href="Data.DifferenceNat.html#607" class="Function"
+      >from&#8469;</a
+      ><a name="612"
+      > </a
+      ><a name="613" class="Symbol"
+      >:</a
+      ><a name="614"
+      > </a
+      ><a name="615" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="616"
+      > </a
+      ><a name="617" class="Symbol"
+      >&#8594;</a
+      ><a name="618"
+      > </a
+      ><a name="619" href="Data.DifferenceNat.html#364" class="Function"
+      >Diff&#8469;</a
+      ><a name="624"
+      >
+</a
+      ><a name="625" href="Data.DifferenceNat.html#607" class="Function"
+      >from&#8469;</a
+      ><a name="630"
+      > </a
+      ><a name="631" href="Data.DifferenceNat.html#631" class="Bound"
+      >n</a
+      ><a name="632"
+      > </a
+      ><a name="633" class="Symbol"
+      >=</a
+      ><a name="634"
+      > </a
+      ><a name="635" class="Symbol"
+      >&#955;</a
+      ><a name="636"
+      > </a
+      ><a name="637" href="Data.DifferenceNat.html#637" class="Bound"
+      >k</a
+      ><a name="638"
+      > </a
+      ><a name="639" class="Symbol"
+      >&#8594;</a
+      ><a name="640"
+      > </a
+      ><a name="641" href="Data.DifferenceNat.html#631" class="Bound"
+      >n</a
+      ><a name="642"
+      > </a
+      ><a name="643" href="Function.html#1932" class="Function Operator"
+      >&#10216;</a
+      ><a name="644"
+      > </a
+      ><a name="645" href="Data.Nat.html#2168" class="Primitive Operator"
+      >N._+_</a
+      ><a name="650"
+      > </a
+      ><a name="651" href="Function.html#1932" class="Function Operator"
+      >&#10217;</a
+      ><a name="652"
+      > </a
+      ><a name="653" href="Data.DifferenceNat.html#637" class="Bound"
+      >k</a
+      ><a name="654"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

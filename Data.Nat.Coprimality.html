@@ -1,0 +1,4322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Nat.Coprimality</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Coprimality</a
+      ><a name="120"
+      >
+</a
+      ><a name="121" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="193"
+      >
+
+</a
+      ><a name="195" class="Keyword"
+      >module</a
+      ><a name="201"
+      > </a
+      ><a name="202" href="Data.Nat.Coprimality.html#1" class="Module"
+      >Data.Nat.Coprimality</a
+      ><a name="222"
+      > </a
+      ><a name="223" class="Keyword"
+      >where</a
+      ><a name="228"
+      >
+
+</a
+      ><a name="230" class="Keyword"
+      >open</a
+      ><a name="234"
+      > </a
+      ><a name="235" class="Keyword"
+      >import</a
+      ><a name="241"
+      > </a
+      ><a name="242" href="Data.Empty.html#1" class="Module"
+      >Data.Empty</a
+      ><a name="252"
+      >
+</a
+      ><a name="253" class="Keyword"
+      >open</a
+      ><a name="257"
+      > </a
+      ><a name="258" class="Keyword"
+      >import</a
+      ><a name="264"
+      > </a
+      ><a name="265" href="Data.Fin.html#1" class="Module"
+      >Data.Fin</a
+      ><a name="273"
+      > </a
+      ><a name="274" class="Keyword"
+      >using</a
+      ><a name="279"
+      > </a
+      ><a name="280" class="Symbol"
+      >(</a
+      ><a name="281"
+      >to&#8469;</a
+      ><a name="284" class="Symbol"
+      >;</a
+      ><a name="285"
+      > from&#8469;&#8804;</a
+      ><a name="292" class="Symbol"
+      >)</a
+      ><a name="293"
+      >
+</a
+      ><a name="294" class="Keyword"
+      >open</a
+      ><a name="298"
+      > </a
+      ><a name="299" class="Keyword"
+      >import</a
+      ><a name="305"
+      > </a
+      ><a name="306" href="Data.Fin.Properties.html#1" class="Module"
+      >Data.Fin.Properties</a
+      ><a name="325"
+      > </a
+      ><a name="326" class="Symbol"
+      >as</a
+      ><a name="328"
+      > </a
+      ><a name="329" class="Module"
+      >FinProp</a
+      ><a name="336"
+      >
+</a
+      ><a name="337" class="Keyword"
+      >open</a
+      ><a name="341"
+      > </a
+      ><a name="342" class="Keyword"
+      >import</a
+      ><a name="348"
+      > </a
+      ><a name="349" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="357"
+      >
+</a
+      ><a name="358" class="Keyword"
+      >open</a
+      ><a name="362"
+      > </a
+      ><a name="363" class="Keyword"
+      >import</a
+      ><a name="369"
+      > </a
+      ><a name="370" href="Data.Nat.Primality.html#1" class="Module"
+      >Data.Nat.Primality</a
+      ><a name="388"
+      >
+</a
+      ><a name="389" class="Keyword"
+      >import</a
+      ><a name="395"
+      > </a
+      ><a name="396" href="Data.Nat.Properties.html#1" class="Module"
+      >Data.Nat.Properties</a
+      ><a name="415"
+      > </a
+      ><a name="416" class="Symbol"
+      >as</a
+      ><a name="418"
+      > </a
+      ><a name="419" class="Module"
+      >NatProp</a
+      ><a name="426"
+      >
+</a
+      ><a name="427" class="Keyword"
+      >open</a
+      ><a name="431"
+      > </a
+      ><a name="432" class="Keyword"
+      >import</a
+      ><a name="438"
+      > </a
+      ><a name="439" href="Data.Nat.Divisibility.html#1" class="Module"
+      >Data.Nat.Divisibility</a
+      ><a name="460"
+      > </a
+      ><a name="461" class="Symbol"
+      >as</a
+      ><a name="463"
+      > </a
+      ><a name="464" class="Module"
+      >Div</a
+      ><a name="467"
+      >
+</a
+      ><a name="468" class="Keyword"
+      >open</a
+      ><a name="472"
+      > </a
+      ><a name="473" class="Keyword"
+      >import</a
+      ><a name="479"
+      > </a
+      ><a name="480" href="Data.Nat.GCD.html#1" class="Module"
+      >Data.Nat.GCD</a
+      ><a name="492"
+      >
+</a
+      ><a name="493" class="Keyword"
+      >open</a
+      ><a name="497"
+      > </a
+      ><a name="498" class="Keyword"
+      >import</a
+      ><a name="504"
+      > </a
+      ><a name="505" href="Data.Nat.GCD.Lemmas.html#1" class="Module"
+      >Data.Nat.GCD.Lemmas</a
+      ><a name="524"
+      >
+</a
+      ><a name="525" class="Keyword"
+      >open</a
+      ><a name="529"
+      > </a
+      ><a name="530" class="Keyword"
+      >import</a
+      ><a name="536"
+      > </a
+      ><a name="537" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="549"
+      > </a
+      ><a name="550" class="Symbol"
+      >as</a
+      ><a name="552"
+      > </a
+      ><a name="553" class="Module"
+      >Prod</a
+      ><a name="557"
+      >
+</a
+      ><a name="558" class="Keyword"
+      >open</a
+      ><a name="562"
+      > </a
+      ><a name="563" class="Keyword"
+      >import</a
+      ><a name="569"
+      > </a
+      ><a name="570" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="578"
+      >
+</a
+      ><a name="579" class="Keyword"
+      >open</a
+      ><a name="583"
+      > </a
+      ><a name="584" class="Keyword"
+      >import</a
+      ><a name="590"
+      > </a
+      ><a name="591" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="628"
+      > </a
+      ><a name="629" class="Symbol"
+      >as</a
+      ><a name="631"
+      > </a
+      ><a name="632" class="Module"
+      >PropEq</a
+      ><a name="638"
+      >
+  </a
+      ><a name="641" class="Keyword"
+      >using</a
+      ><a name="646"
+      > </a
+      ><a name="647" class="Symbol"
+      >(</a
+      ><a name="648"
+      >_&#8801;_</a
+      ><a name="651" class="Symbol"
+      >;</a
+      ><a name="652"
+      > _&#8802;_</a
+      ><a name="656" class="Symbol"
+      >;</a
+      ><a name="657"
+      > refl</a
+      ><a name="662" class="Symbol"
+      >)</a
+      ><a name="663"
+      >
+</a
+      ><a name="664" class="Keyword"
+      >open</a
+      ><a name="668"
+      > </a
+      ><a name="669" class="Keyword"
+      >import</a
+      ><a name="675"
+      > </a
+      ><a name="676" href="Relation.Nullary.html#1" class="Module"
+      >Relation.Nullary</a
+      ><a name="692"
+      >
+</a
+      ><a name="693" class="Keyword"
+      >open</a
+      ><a name="697"
+      > </a
+      ><a name="698" class="Keyword"
+      >import</a
+      ><a name="704"
+      > </a
+      ><a name="705" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="720"
+      >
+</a
+      ><a name="721" class="Keyword"
+      >open</a
+      ><a name="725"
+      > </a
+      ><a name="726" class="Keyword"
+      >import</a
+      ><a name="732"
+      > </a
+      ><a name="733" href="Algebra.html#1" class="Module"
+      >Algebra</a
+      ><a name="740"
+      >
+</a
+      ><a name="741" class="Keyword"
+      >private</a
+      ><a name="748"
+      >
+  </a
+      ><a name="751" class="Keyword"
+      >module</a
+      ><a name="757"
+      > </a
+      ><a name="758" href="Data.Nat.Coprimality.html#758" class="Module"
+      >P</a
+      ><a name="759"
+      >  </a
+      ><a name="761" class="Symbol"
+      >=</a
+      ><a name="762"
+      > </a
+      ><a name="763" href="Relation.Binary.html#3673" class="Module"
+      >Poset</a
+      ><a name="768"
+      > </a
+      ><a name="769" href="Data.Nat.Divisibility.html#1599" class="Function"
+      >Div.poset</a
+      ><a name="778"
+      >
+  </a
+      ><a name="781" class="Keyword"
+      >module</a
+      ><a name="787"
+      > </a
+      ><a name="788" href="Data.Nat.Coprimality.html#788" class="Module"
+      >CS</a
+      ><a name="790"
+      > </a
+      ><a name="791" class="Symbol"
+      >=</a
+      ><a name="792"
+      > </a
+      ><a name="793" href="Algebra.html#7862" class="Module"
+      >CommutativeSemiring</a
+      ><a name="812"
+      > </a
+      ><a name="813" href="Data.Nat.Properties.html#1726" class="Function"
+      >NatProp.commutativeSemiring</a
+      ><a name="840"
+      >
+
+</a
+      ><a name="842" class="Comment"
+      >-- Coprime m n is inhabited iff m and n are coprime (relatively</a
+      ><a name="905"
+      >
+</a
+      ><a name="906" class="Comment"
+      >-- prime), i.e. if their only common divisor is 1.</a
+      ><a name="956"
+      >
+
+</a
+      ><a name="958" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="965"
+      > </a
+      ><a name="966" class="Symbol"
+      >:</a
+      ><a name="967"
+      > </a
+      ><a name="968" class="Symbol"
+      >(</a
+      ><a name="969" href="Data.Nat.Coprimality.html#969" class="Bound"
+      >m</a
+      ><a name="970"
+      > </a
+      ><a name="971" href="Data.Nat.Coprimality.html#971" class="Bound"
+      >n</a
+      ><a name="972"
+      > </a
+      ><a name="973" class="Symbol"
+      >:</a
+      ><a name="974"
+      > </a
+      ><a name="975" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="976" class="Symbol"
+      >)</a
+      ><a name="977"
+      > </a
+      ><a name="978" class="Symbol"
+      >&#8594;</a
+      ><a name="979"
+      > </a
+      ><a name="980" class="PrimitiveType"
+      >Set</a
+      ><a name="983"
+      >
+</a
+      ><a name="984" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="991"
+      > </a
+      ><a name="992" href="Data.Nat.Coprimality.html#992" class="Bound"
+      >m</a
+      ><a name="993"
+      > </a
+      ><a name="994" href="Data.Nat.Coprimality.html#994" class="Bound"
+      >n</a
+      ><a name="995"
+      > </a
+      ><a name="996" class="Symbol"
+      >=</a
+      ><a name="997"
+      > </a
+      ><a name="998" class="Symbol"
+      >&#8704;</a
+      ><a name="999"
+      > </a
+      ><a name="1000" class="Symbol"
+      >{</a
+      ><a name="1001" href="Data.Nat.Coprimality.html#1001" class="Bound"
+      >i</a
+      ><a name="1002" class="Symbol"
+      >}</a
+      ><a name="1003"
+      > </a
+      ><a name="1004" class="Symbol"
+      >&#8594;</a
+      ><a name="1005"
+      > </a
+      ><a name="1006" href="Data.Nat.Coprimality.html#1001" class="Bound"
+      >i</a
+      ><a name="1007"
+      > </a
+      ><a name="1008" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="1009"
+      > </a
+      ><a name="1010" href="Data.Nat.Coprimality.html#992" class="Bound"
+      >m</a
+      ><a name="1011"
+      > </a
+      ><a name="1012" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="1013"
+      > </a
+      ><a name="1014" href="Data.Nat.Coprimality.html#1001" class="Bound"
+      >i</a
+      ><a name="1015"
+      > </a
+      ><a name="1016" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="1017"
+      > </a
+      ><a name="1018" href="Data.Nat.Coprimality.html#994" class="Bound"
+      >n</a
+      ><a name="1019"
+      > </a
+      ><a name="1020" class="Symbol"
+      >&#8594;</a
+      ><a name="1021"
+      > </a
+      ><a name="1022" href="Data.Nat.Coprimality.html#1001" class="Bound"
+      >i</a
+      ><a name="1023"
+      > </a
+      ><a name="1024" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1025"
+      > </a
+      ><a name="1026" class="Number"
+      >1</a
+      ><a name="1027"
+      >
+
+</a
+      ><a name="1029" class="Comment"
+      >-- Coprime numbers have 1 as their gcd.</a
+      ><a name="1068"
+      >
+
+</a
+      ><a name="1070" href="Data.Nat.Coprimality.html#1070" class="Function"
+      >coprime-gcd</a
+      ><a name="1081"
+      > </a
+      ><a name="1082" class="Symbol"
+      >:</a
+      ><a name="1083"
+      > </a
+      ><a name="1084" class="Symbol"
+      >&#8704;</a
+      ><a name="1085"
+      > </a
+      ><a name="1086" class="Symbol"
+      >{</a
+      ><a name="1087" href="Data.Nat.Coprimality.html#1087" class="Bound"
+      >m</a
+      ><a name="1088"
+      > </a
+      ><a name="1089" href="Data.Nat.Coprimality.html#1089" class="Bound"
+      >n</a
+      ><a name="1090" class="Symbol"
+      >}</a
+      ><a name="1091"
+      > </a
+      ><a name="1092" class="Symbol"
+      >&#8594;</a
+      ><a name="1093"
+      > </a
+      ><a name="1094" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="1101"
+      > </a
+      ><a name="1102" href="Data.Nat.Coprimality.html#1087" class="Bound"
+      >m</a
+      ><a name="1103"
+      > </a
+      ><a name="1104" href="Data.Nat.Coprimality.html#1089" class="Bound"
+      >n</a
+      ><a name="1105"
+      > </a
+      ><a name="1106" class="Symbol"
+      >&#8594;</a
+      ><a name="1107"
+      > </a
+      ><a name="1108" href="Data.Nat.GCD.html#808" class="Record"
+      >GCD</a
+      ><a name="1111"
+      > </a
+      ><a name="1112" href="Data.Nat.Coprimality.html#1087" class="Bound"
+      >m</a
+      ><a name="1113"
+      > </a
+      ><a name="1114" href="Data.Nat.Coprimality.html#1089" class="Bound"
+      >n</a
+      ><a name="1115"
+      > </a
+      ><a name="1116" class="Number"
+      >1</a
+      ><a name="1117"
+      >
+</a
+      ><a name="1118" href="Data.Nat.Coprimality.html#1070" class="Function"
+      >coprime-gcd</a
+      ><a name="1129"
+      > </a
+      ><a name="1130" class="Symbol"
+      >{</a
+      ><a name="1131" href="Data.Nat.Coprimality.html#1131" class="Bound"
+      >m</a
+      ><a name="1132" class="Symbol"
+      >}</a
+      ><a name="1133"
+      > </a
+      ><a name="1134" class="Symbol"
+      >{</a
+      ><a name="1135" href="Data.Nat.Coprimality.html#1135" class="Bound"
+      >n</a
+      ><a name="1136" class="Symbol"
+      >}</a
+      ><a name="1137"
+      > </a
+      ><a name="1138" href="Data.Nat.Coprimality.html#1138" class="Bound"
+      >c</a
+      ><a name="1139"
+      > </a
+      ><a name="1140" class="Symbol"
+      >=</a
+      ><a name="1141"
+      > </a
+      ><a name="1142" href="Data.Nat.GCD.html#854" class="InductiveConstructor"
+      >GCD.is</a
+      ><a name="1148"
+      > </a
+      ><a name="1149" class="Symbol"
+      >(</a
+      ><a name="1150" href="Data.Nat.Divisibility.html#2810" class="Function Operator"
+      >1&#8739;</a
+      ><a name="1152"
+      > </a
+      ><a name="1153" href="Data.Nat.Coprimality.html#1131" class="Bound"
+      >m</a
+      ><a name="1154"
+      > </a
+      ><a name="1155" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1156"
+      > </a
+      ><a name="1157" href="Data.Nat.Divisibility.html#2810" class="Function Operator"
+      >1&#8739;</a
+      ><a name="1159"
+      > </a
+      ><a name="1160" href="Data.Nat.Coprimality.html#1135" class="Bound"
+      >n</a
+      ><a name="1161" class="Symbol"
+      >)</a
+      ><a name="1162"
+      > </a
+      ><a name="1163" href="Data.Nat.Coprimality.html#1182" class="Function"
+      >greatest</a
+      ><a name="1171"
+      >
+  </a
+      ><a name="1174" class="Keyword"
+      >where</a
+      ><a name="1179"
+      >
+  </a
+      ><a name="1182" href="Data.Nat.Coprimality.html#1182" class="Function"
+      >greatest</a
+      ><a name="1190"
+      > </a
+      ><a name="1191" class="Symbol"
+      >:</a
+      ><a name="1192"
+      > </a
+      ><a name="1193" class="Symbol"
+      >&#8704;</a
+      ><a name="1194"
+      > </a
+      ><a name="1195" class="Symbol"
+      >{</a
+      ><a name="1196" href="Data.Nat.Coprimality.html#1196" class="Bound"
+      >d</a
+      ><a name="1197" class="Symbol"
+      >}</a
+      ><a name="1198"
+      > </a
+      ><a name="1199" class="Symbol"
+      >&#8594;</a
+      ><a name="1200"
+      > </a
+      ><a name="1201" href="Data.Nat.Coprimality.html#1196" class="Bound"
+      >d</a
+      ><a name="1202"
+      > </a
+      ><a name="1203" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="1204"
+      > </a
+      ><a name="1205" href="Data.Nat.Coprimality.html#1131" class="Bound"
+      >m</a
+      ><a name="1206"
+      > </a
+      ><a name="1207" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="1208"
+      > </a
+      ><a name="1209" href="Data.Nat.Coprimality.html#1196" class="Bound"
+      >d</a
+      ><a name="1210"
+      > </a
+      ><a name="1211" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="1212"
+      > </a
+      ><a name="1213" href="Data.Nat.Coprimality.html#1135" class="Bound"
+      >n</a
+      ><a name="1214"
+      > </a
+      ><a name="1215" class="Symbol"
+      >&#8594;</a
+      ><a name="1216"
+      > </a
+      ><a name="1217" href="Data.Nat.Coprimality.html#1196" class="Bound"
+      >d</a
+      ><a name="1218"
+      > </a
+      ><a name="1219" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="1220"
+      > </a
+      ><a name="1221" class="Number"
+      >1</a
+      ><a name="1222"
+      >
+  </a
+      ><a name="1225" href="Data.Nat.Coprimality.html#1182" class="Function"
+      >greatest</a
+      ><a name="1233"
+      >      </a
+      ><a name="1239" href="Data.Nat.Coprimality.html#1239" class="Bound"
+      >cd</a
+      ><a name="1241"
+      > </a
+      ><a name="1242" class="Keyword"
+      >with</a
+      ><a name="1246"
+      > </a
+      ><a name="1247" href="Data.Nat.Coprimality.html#1138" class="Bound"
+      >c</a
+      ><a name="1248"
+      > </a
+      ><a name="1249" href="Data.Nat.Coprimality.html#1239" class="Bound"
+      >cd</a
+      ><a name="1251"
+      >
+  </a
+      ><a name="1254" href="Data.Nat.Coprimality.html#1182" class="Function"
+      >greatest</a
+      ><a name="1262"
+      > </a
+      ><a name="1263" class="DottedPattern Symbol"
+      >.{</a
+      ><a name="1265" class="DottedPattern Number"
+      >1</a
+      ><a name="1266" class="DottedPattern Symbol"
+      >}</a
+      ><a name="1267"
+      > </a
+      ><a name="1268" href="Data.Nat.Coprimality.html#1268" class="Bound"
+      >cd</a
+      ><a name="1270"
+      > </a
+      ><a name="1271" class="Symbol"
+      >|</a
+      ><a name="1272"
+      > </a
+      ><a name="1273" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1277"
+      > </a
+      ><a name="1278" class="Symbol"
+      >=</a
+      ><a name="1279"
+      > </a
+      ><a name="1280" href="Data.Nat.Divisibility.html#2810" class="Function Operator"
+      >1&#8739;</a
+      ><a name="1282"
+      > </a
+      ><a name="1283" class="Number"
+      >1</a
+      ><a name="1284"
+      >
+
+</a
+      ><a name="1286" class="Comment"
+      >-- If two numbers have 1 as their gcd, then they are coprime.</a
+      ><a name="1347"
+      >
+
+</a
+      ><a name="1349" href="Data.Nat.Coprimality.html#1349" class="Function"
+      >gcd-coprime</a
+      ><a name="1360"
+      > </a
+      ><a name="1361" class="Symbol"
+      >:</a
+      ><a name="1362"
+      > </a
+      ><a name="1363" class="Symbol"
+      >&#8704;</a
+      ><a name="1364"
+      > </a
+      ><a name="1365" class="Symbol"
+      >{</a
+      ><a name="1366" href="Data.Nat.Coprimality.html#1366" class="Bound"
+      >m</a
+      ><a name="1367"
+      > </a
+      ><a name="1368" href="Data.Nat.Coprimality.html#1368" class="Bound"
+      >n</a
+      ><a name="1369" class="Symbol"
+      >}</a
+      ><a name="1370"
+      > </a
+      ><a name="1371" class="Symbol"
+      >&#8594;</a
+      ><a name="1372"
+      > </a
+      ><a name="1373" href="Data.Nat.GCD.html#808" class="Record"
+      >GCD</a
+      ><a name="1376"
+      > </a
+      ><a name="1377" href="Data.Nat.Coprimality.html#1366" class="Bound"
+      >m</a
+      ><a name="1378"
+      > </a
+      ><a name="1379" href="Data.Nat.Coprimality.html#1368" class="Bound"
+      >n</a
+      ><a name="1380"
+      > </a
+      ><a name="1381" class="Number"
+      >1</a
+      ><a name="1382"
+      > </a
+      ><a name="1383" class="Symbol"
+      >&#8594;</a
+      ><a name="1384"
+      > </a
+      ><a name="1385" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="1392"
+      > </a
+      ><a name="1393" href="Data.Nat.Coprimality.html#1366" class="Bound"
+      >m</a
+      ><a name="1394"
+      > </a
+      ><a name="1395" href="Data.Nat.Coprimality.html#1368" class="Bound"
+      >n</a
+      ><a name="1396"
+      >
+</a
+      ><a name="1397" href="Data.Nat.Coprimality.html#1349" class="Function"
+      >gcd-coprime</a
+      ><a name="1408"
+      > </a
+      ><a name="1409" href="Data.Nat.Coprimality.html#1409" class="Bound"
+      >g</a
+      ><a name="1410"
+      > </a
+      ><a name="1411" href="Data.Nat.Coprimality.html#1411" class="Bound"
+      >cd</a
+      ><a name="1413"
+      > </a
+      ><a name="1414" class="Keyword"
+      >with</a
+      ><a name="1418"
+      > </a
+      ><a name="1419" href="Data.Nat.GCD.html#1086" class="Field"
+      >GCD.greatest</a
+      ><a name="1431"
+      > </a
+      ><a name="1432" href="Data.Nat.Coprimality.html#1409" class="Bound"
+      >g</a
+      ><a name="1433"
+      > </a
+      ><a name="1434" href="Data.Nat.Coprimality.html#1411" class="Bound"
+      >cd</a
+      ><a name="1436"
+      >
+</a
+      ><a name="1437" href="Data.Nat.Coprimality.html#1349" class="Function"
+      >gcd-coprime</a
+      ><a name="1448"
+      > </a
+      ><a name="1449" href="Data.Nat.Coprimality.html#1449" class="Bound"
+      >g</a
+      ><a name="1450"
+      > </a
+      ><a name="1451" href="Data.Nat.Coprimality.html#1451" class="Bound"
+      >cd</a
+      ><a name="1453"
+      > </a
+      ><a name="1454" class="Symbol"
+      >|</a
+      ><a name="1455"
+      > </a
+      ><a name="1456" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="1463"
+      > </a
+      ><a name="1464" href="Data.Nat.Coprimality.html#1464" class="Bound"
+      >q</a
+      ><a name="1465"
+      > </a
+      ><a name="1466" href="Data.Nat.Coprimality.html#1466" class="Bound"
+      >eq</a
+      ><a name="1468"
+      > </a
+      ><a name="1469" class="Symbol"
+      >=</a
+      ><a name="1470"
+      >
+  </a
+      ><a name="1473" href="Data.Nat.Properties.html#13864" class="Function"
+      >NatProp.i*j&#8801;1&#8658;j&#8801;1</a
+      ><a name="1490"
+      > </a
+      ><a name="1491" href="Data.Nat.Coprimality.html#1464" class="Bound"
+      >q</a
+      ><a name="1492"
+      > </a
+      ><a name="1493" class="Symbol"
+      >_</a
+      ><a name="1494"
+      > </a
+      ><a name="1495" class="Symbol"
+      >(</a
+      ><a name="1496" href="Relation.Binary.PropositionalEquality.Core.html#565" class="Function"
+      >PropEq.sym</a
+      ><a name="1506"
+      > </a
+      ><a name="1507" href="Data.Nat.Coprimality.html#1466" class="Bound"
+      >eq</a
+      ><a name="1509" class="Symbol"
+      >)</a
+      ><a name="1510"
+      >
+
+</a
+      ><a name="1512" class="Comment"
+      >-- Coprime is decidable.</a
+      ><a name="1536"
+      >
+
+</a
+      ><a name="1538" class="Keyword"
+      >private</a
+      ><a name="1545"
+      >
+  </a
+      ><a name="1548" href="Data.Nat.Coprimality.html#1548" class="Function"
+      >0&#8802;1</a
+      ><a name="1551"
+      > </a
+      ><a name="1552" class="Symbol"
+      >:</a
+      ><a name="1553"
+      > </a
+      ><a name="1554" class="Number"
+      >0</a
+      ><a name="1555"
+      > </a
+      ><a name="1556" href="Relation.Binary.Core.html#4748" class="Function Operator"
+      >&#8802;</a
+      ><a name="1557"
+      > </a
+      ><a name="1558" class="Number"
+      >1</a
+      ><a name="1559"
+      >
+  </a
+      ><a name="1562" href="Data.Nat.Coprimality.html#1548" class="Function"
+      >0&#8802;1</a
+      ><a name="1565"
+      > </a
+      ><a name="1566" class="Symbol"
+      >()</a
+      ><a name="1568"
+      >
+
+  </a
+      ><a name="1572" href="Data.Nat.Coprimality.html#1572" class="Function"
+      >2+&#8802;1</a
+      ><a name="1576"
+      > </a
+      ><a name="1577" class="Symbol"
+      >:</a
+      ><a name="1578"
+      > </a
+      ><a name="1579" class="Symbol"
+      >&#8704;</a
+      ><a name="1580"
+      > </a
+      ><a name="1581" class="Symbol"
+      >{</a
+      ><a name="1582" href="Data.Nat.Coprimality.html#1582" class="Bound"
+      >n</a
+      ><a name="1583" class="Symbol"
+      >}</a
+      ><a name="1584"
+      > </a
+      ><a name="1585" class="Symbol"
+      >&#8594;</a
+      ><a name="1586"
+      > </a
+      ><a name="1587" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1590"
+      > </a
+      ><a name="1591" class="Symbol"
+      >(</a
+      ><a name="1592" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1595"
+      > </a
+      ><a name="1596" href="Data.Nat.Coprimality.html#1582" class="Bound"
+      >n</a
+      ><a name="1597" class="Symbol"
+      >)</a
+      ><a name="1598"
+      > </a
+      ><a name="1599" href="Relation.Binary.Core.html#4748" class="Function Operator"
+      >&#8802;</a
+      ><a name="1600"
+      > </a
+      ><a name="1601" class="Number"
+      >1</a
+      ><a name="1602"
+      >
+  </a
+      ><a name="1605" href="Data.Nat.Coprimality.html#1572" class="Function"
+      >2+&#8802;1</a
+      ><a name="1609"
+      > </a
+      ><a name="1610" class="Symbol"
+      >()</a
+      ><a name="1612"
+      >
+
+</a
+      ><a name="1614" href="Data.Nat.Coprimality.html#1614" class="Function"
+      >coprime?</a
+      ><a name="1622"
+      > </a
+      ><a name="1623" class="Symbol"
+      >:</a
+      ><a name="1624"
+      > </a
+      ><a name="1625" href="Relation.Binary.Core.html#3511" class="Function"
+      >Decidable</a
+      ><a name="1634"
+      > </a
+      ><a name="1635" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="1642"
+      >
+</a
+      ><a name="1643" href="Data.Nat.Coprimality.html#1614" class="Function"
+      >coprime?</a
+      ><a name="1651"
+      > </a
+      ><a name="1652" href="Data.Nat.Coprimality.html#1652" class="Bound"
+      >i</a
+      ><a name="1653"
+      > </a
+      ><a name="1654" href="Data.Nat.Coprimality.html#1654" class="Bound"
+      >j</a
+      ><a name="1655"
+      > </a
+      ><a name="1656" class="Keyword"
+      >with</a
+      ><a name="1660"
+      > </a
+      ><a name="1661" href="Data.Nat.GCD.html#5932" class="Function"
+      >gcd</a
+      ><a name="1664"
+      > </a
+      ><a name="1665" href="Data.Nat.Coprimality.html#1652" class="Bound"
+      >i</a
+      ><a name="1666"
+      > </a
+      ><a name="1667" href="Data.Nat.Coprimality.html#1654" class="Bound"
+      >j</a
+      ><a name="1668"
+      >
+</a
+      ><a name="1669" class="Symbol"
+      >...</a
+      ><a name="1672"
+      > </a
+      ><a name="1673" class="Symbol"
+      >|</a
+      ><a name="1674"
+      > </a
+      ><a name="1675" class="Symbol"
+      >(</a
+      ><a name="1676" class="Number"
+      >0</a
+      ><a name="1677"
+      >           </a
+      ><a name="1688" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1689"
+      > </a
+      ><a name="1690" href="Data.Nat.Coprimality.html#1690" class="Bound"
+      >g</a
+      ><a name="1691" class="Symbol"
+      >)</a
+      ><a name="1692"
+      > </a
+      ><a name="1693" class="Symbol"
+      >=</a
+      ><a name="1694"
+      > </a
+      ><a name="1695" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="1697"
+      >  </a
+      ><a name="1699" class="Symbol"
+      >(</a
+      ><a name="1700" href="Data.Nat.Coprimality.html#1548" class="Function"
+      >0&#8802;1</a
+      ><a name="1703"
+      >  </a
+      ><a name="1705" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="1706"
+      > </a
+      ><a name="1707" href="Data.Nat.GCD.html#1176" class="Function"
+      >GCD.unique</a
+      ><a name="1717"
+      > </a
+      ><a name="1718" href="Data.Nat.Coprimality.html#1690" class="Bound"
+      >g</a
+      ><a name="1719"
+      > </a
+      ><a name="1720" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="1721"
+      > </a
+      ><a name="1722" href="Data.Nat.Coprimality.html#1070" class="Function"
+      >coprime-gcd</a
+      ><a name="1733" class="Symbol"
+      >)</a
+      ><a name="1734"
+      >
+</a
+      ><a name="1735" class="Symbol"
+      >...</a
+      ><a name="1738"
+      > </a
+      ><a name="1739" class="Symbol"
+      >|</a
+      ><a name="1740"
+      > </a
+      ><a name="1741" class="Symbol"
+      >(</a
+      ><a name="1742" class="Number"
+      >1</a
+      ><a name="1743"
+      >           </a
+      ><a name="1754" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1755"
+      > </a
+      ><a name="1756" href="Data.Nat.Coprimality.html#1756" class="Bound"
+      >g</a
+      ><a name="1757" class="Symbol"
+      >)</a
+      ><a name="1758"
+      > </a
+      ><a name="1759" class="Symbol"
+      >=</a
+      ><a name="1760"
+      > </a
+      ><a name="1761" href="Relation.Nullary.Core.html#504" class="InductiveConstructor"
+      >yes</a
+      ><a name="1764"
+      > </a
+      ><a name="1765" class="Symbol"
+      >(&#955;</a
+      ><a name="1767"
+      > </a
+      ><a name="1768" class="Symbol"
+      >{</a
+      ><a name="1769" href="Data.Nat.Coprimality.html#1769" class="Bound"
+      >i</a
+      ><a name="1770" class="Symbol"
+      >}</a
+      ><a name="1771"
+      > </a
+      ><a name="1772" class="Symbol"
+      >&#8594;</a
+      ><a name="1773"
+      > </a
+      ><a name="1774" href="Data.Nat.Coprimality.html#1349" class="Function"
+      >gcd-coprime</a
+      ><a name="1785"
+      > </a
+      ><a name="1786" href="Data.Nat.Coprimality.html#1756" class="Bound"
+      >g</a
+      ><a name="1787"
+      > </a
+      ><a name="1788" class="Symbol"
+      >{</a
+      ><a name="1789" href="Data.Nat.Coprimality.html#1769" class="Bound"
+      >i</a
+      ><a name="1790" class="Symbol"
+      >})</a
+      ><a name="1792"
+      >
+</a
+      ><a name="1793" class="Symbol"
+      >...</a
+      ><a name="1796"
+      > </a
+      ><a name="1797" class="Symbol"
+      >|</a
+      ><a name="1798"
+      > </a
+      ><a name="1799" class="Symbol"
+      >(</a
+      ><a name="1800" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1803"
+      > </a
+      ><a name="1804" class="Symbol"
+      >(</a
+      ><a name="1805" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1808"
+      > </a
+      ><a name="1809" href="Data.Nat.Coprimality.html#1809" class="Bound"
+      >d</a
+      ><a name="1810" class="Symbol"
+      >)</a
+      ><a name="1811"
+      > </a
+      ><a name="1812" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1813"
+      > </a
+      ><a name="1814" href="Data.Nat.Coprimality.html#1814" class="Bound"
+      >g</a
+      ><a name="1815" class="Symbol"
+      >)</a
+      ><a name="1816"
+      > </a
+      ><a name="1817" class="Symbol"
+      >=</a
+      ><a name="1818"
+      > </a
+      ><a name="1819" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="1821"
+      >  </a
+      ><a name="1823" class="Symbol"
+      >(</a
+      ><a name="1824" href="Data.Nat.Coprimality.html#1572" class="Function"
+      >2+&#8802;1</a
+      ><a name="1828"
+      > </a
+      ><a name="1829" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="1830"
+      > </a
+      ><a name="1831" href="Data.Nat.GCD.html#1176" class="Function"
+      >GCD.unique</a
+      ><a name="1841"
+      > </a
+      ><a name="1842" href="Data.Nat.Coprimality.html#1814" class="Bound"
+      >g</a
+      ><a name="1843"
+      > </a
+      ><a name="1844" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="1845"
+      > </a
+      ><a name="1846" href="Data.Nat.Coprimality.html#1070" class="Function"
+      >coprime-gcd</a
+      ><a name="1857" class="Symbol"
+      >)</a
+      ><a name="1858"
+      >
+
+</a
+      ><a name="1860" class="Comment"
+      >-- The coprimality relation is symmetric.</a
+      ><a name="1901"
+      >
+
+</a
+      ><a name="1903" href="Data.Nat.Coprimality.html#1903" class="Function"
+      >sym</a
+      ><a name="1906"
+      > </a
+      ><a name="1907" class="Symbol"
+      >:</a
+      ><a name="1908"
+      > </a
+      ><a name="1909" class="Symbol"
+      >&#8704;</a
+      ><a name="1910"
+      > </a
+      ><a name="1911" class="Symbol"
+      >{</a
+      ><a name="1912" href="Data.Nat.Coprimality.html#1912" class="Bound"
+      >m</a
+      ><a name="1913"
+      > </a
+      ><a name="1914" href="Data.Nat.Coprimality.html#1914" class="Bound"
+      >n</a
+      ><a name="1915" class="Symbol"
+      >}</a
+      ><a name="1916"
+      > </a
+      ><a name="1917" class="Symbol"
+      >&#8594;</a
+      ><a name="1918"
+      > </a
+      ><a name="1919" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="1926"
+      > </a
+      ><a name="1927" href="Data.Nat.Coprimality.html#1912" class="Bound"
+      >m</a
+      ><a name="1928"
+      > </a
+      ><a name="1929" href="Data.Nat.Coprimality.html#1914" class="Bound"
+      >n</a
+      ><a name="1930"
+      > </a
+      ><a name="1931" class="Symbol"
+      >&#8594;</a
+      ><a name="1932"
+      > </a
+      ><a name="1933" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="1940"
+      > </a
+      ><a name="1941" href="Data.Nat.Coprimality.html#1914" class="Bound"
+      >n</a
+      ><a name="1942"
+      > </a
+      ><a name="1943" href="Data.Nat.Coprimality.html#1912" class="Bound"
+      >m</a
+      ><a name="1944"
+      >
+</a
+      ><a name="1945" href="Data.Nat.Coprimality.html#1903" class="Function"
+      >sym</a
+      ><a name="1948"
+      > </a
+      ><a name="1949" href="Data.Nat.Coprimality.html#1949" class="Bound"
+      >c</a
+      ><a name="1950"
+      > </a
+      ><a name="1951" class="Symbol"
+      >=</a
+      ><a name="1952"
+      > </a
+      ><a name="1953" href="Data.Nat.Coprimality.html#1949" class="Bound"
+      >c</a
+      ><a name="1954"
+      > </a
+      ><a name="1955" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="1956"
+      > </a
+      ><a name="1957" href="Data.Product.html#2302" class="Function"
+      >swap</a
+      ><a name="1961"
+      >
+
+</a
+      ><a name="1963" class="Comment"
+      >-- Everything is coprime to 1.</a
+      ><a name="1993"
+      >
+
+</a
+      ><a name="1995" href="Data.Nat.Coprimality.html#1995" class="Function"
+      >1-coprimeTo</a
+      ><a name="2006"
+      > </a
+      ><a name="2007" class="Symbol"
+      >:</a
+      ><a name="2008"
+      > </a
+      ><a name="2009" class="Symbol"
+      >&#8704;</a
+      ><a name="2010"
+      > </a
+      ><a name="2011" href="Data.Nat.Coprimality.html#2011" class="Bound"
+      >m</a
+      ><a name="2012"
+      > </a
+      ><a name="2013" class="Symbol"
+      >&#8594;</a
+      ><a name="2014"
+      > </a
+      ><a name="2015" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="2022"
+      > </a
+      ><a name="2023" class="Number"
+      >1</a
+      ><a name="2024"
+      > </a
+      ><a name="2025" href="Data.Nat.Coprimality.html#2011" class="Bound"
+      >m</a
+      ><a name="2026"
+      >
+</a
+      ><a name="2027" href="Data.Nat.Coprimality.html#1995" class="Function"
+      >1-coprimeTo</a
+      ><a name="2038"
+      > </a
+      ><a name="2039" href="Data.Nat.Coprimality.html#2039" class="Bound"
+      >m</a
+      ><a name="2040"
+      > </a
+      ><a name="2041" class="Symbol"
+      >=</a
+      ><a name="2042"
+      > </a
+      ><a name="2043" href="Data.Nat.Divisibility.html#3055" class="Function"
+      >&#8739;1&#8658;&#8801;1</a
+      ><a name="2048"
+      > </a
+      ><a name="2049" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="2050"
+      > </a
+      ><a name="2051" href="Data.Product.html#525" class="Field"
+      >proj&#8321;</a
+      ><a name="2056"
+      >
+
+</a
+      ><a name="2058" class="Comment"
+      >-- Nothing except for 1 is coprime to 0.</a
+      ><a name="2098"
+      >
+
+</a
+      ><a name="2100" href="Data.Nat.Coprimality.html#2100" class="Function"
+      >0-coprimeTo-1</a
+      ><a name="2113"
+      > </a
+      ><a name="2114" class="Symbol"
+      >:</a
+      ><a name="2115"
+      > </a
+      ><a name="2116" class="Symbol"
+      >&#8704;</a
+      ><a name="2117"
+      > </a
+      ><a name="2118" class="Symbol"
+      >{</a
+      ><a name="2119" href="Data.Nat.Coprimality.html#2119" class="Bound"
+      >m</a
+      ><a name="2120" class="Symbol"
+      >}</a
+      ><a name="2121"
+      > </a
+      ><a name="2122" class="Symbol"
+      >&#8594;</a
+      ><a name="2123"
+      > </a
+      ><a name="2124" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="2131"
+      > </a
+      ><a name="2132" class="Number"
+      >0</a
+      ><a name="2133"
+      > </a
+      ><a name="2134" href="Data.Nat.Coprimality.html#2119" class="Bound"
+      >m</a
+      ><a name="2135"
+      > </a
+      ><a name="2136" class="Symbol"
+      >&#8594;</a
+      ><a name="2137"
+      > </a
+      ><a name="2138" href="Data.Nat.Coprimality.html#2119" class="Bound"
+      >m</a
+      ><a name="2139"
+      > </a
+      ><a name="2140" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2141"
+      > </a
+      ><a name="2142" class="Number"
+      >1</a
+      ><a name="2143"
+      >
+</a
+      ><a name="2144" href="Data.Nat.Coprimality.html#2100" class="Function"
+      >0-coprimeTo-1</a
+      ><a name="2157"
+      > </a
+      ><a name="2158" class="Symbol"
+      >{</a
+      ><a name="2159" href="Data.Nat.Coprimality.html#2159" class="Bound"
+      >m</a
+      ><a name="2160" class="Symbol"
+      >}</a
+      ><a name="2161"
+      > </a
+      ><a name="2162" href="Data.Nat.Coprimality.html#2162" class="Bound"
+      >c</a
+      ><a name="2163"
+      > </a
+      ><a name="2164" class="Symbol"
+      >=</a
+      ><a name="2165"
+      > </a
+      ><a name="2166" href="Data.Nat.Coprimality.html#2162" class="Bound"
+      >c</a
+      ><a name="2167"
+      > </a
+      ><a name="2168" class="Symbol"
+      >(</a
+      ><a name="2169" href="Data.Nat.Coprimality.html#2159" class="Bound"
+      >m</a
+      ><a name="2170"
+      > </a
+      ><a name="2171" href="Data.Nat.Divisibility.html#2902" class="Function Operator"
+      >&#8739;0</a
+      ><a name="2173"
+      > </a
+      ><a name="2174" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2175"
+      > </a
+      ><a name="2176" href="Relation.Binary.html#1211" class="Function"
+      >P.refl</a
+      ><a name="2182" class="Symbol"
+      >)</a
+      ><a name="2183"
+      >
+
+</a
+      ><a name="2185" class="Comment"
+      >-- If m and n are coprime, then n + m and n are also coprime.</a
+      ><a name="2246"
+      >
+
+</a
+      ><a name="2248" href="Data.Nat.Coprimality.html#2248" class="Function"
+      >coprime-+</a
+      ><a name="2257"
+      > </a
+      ><a name="2258" class="Symbol"
+      >:</a
+      ><a name="2259"
+      > </a
+      ><a name="2260" class="Symbol"
+      >&#8704;</a
+      ><a name="2261"
+      > </a
+      ><a name="2262" class="Symbol"
+      >{</a
+      ><a name="2263" href="Data.Nat.Coprimality.html#2263" class="Bound"
+      >m</a
+      ><a name="2264"
+      > </a
+      ><a name="2265" href="Data.Nat.Coprimality.html#2265" class="Bound"
+      >n</a
+      ><a name="2266" class="Symbol"
+      >}</a
+      ><a name="2267"
+      > </a
+      ><a name="2268" class="Symbol"
+      >&#8594;</a
+      ><a name="2269"
+      > </a
+      ><a name="2270" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="2277"
+      > </a
+      ><a name="2278" href="Data.Nat.Coprimality.html#2263" class="Bound"
+      >m</a
+      ><a name="2279"
+      > </a
+      ><a name="2280" href="Data.Nat.Coprimality.html#2265" class="Bound"
+      >n</a
+      ><a name="2281"
+      > </a
+      ><a name="2282" class="Symbol"
+      >&#8594;</a
+      ><a name="2283"
+      > </a
+      ><a name="2284" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="2291"
+      > </a
+      ><a name="2292" class="Symbol"
+      >(</a
+      ><a name="2293" href="Data.Nat.Coprimality.html#2265" class="Bound"
+      >n</a
+      ><a name="2294"
+      > </a
+      ><a name="2295" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="2296"
+      > </a
+      ><a name="2297" href="Data.Nat.Coprimality.html#2263" class="Bound"
+      >m</a
+      ><a name="2298" class="Symbol"
+      >)</a
+      ><a name="2299"
+      > </a
+      ><a name="2300" href="Data.Nat.Coprimality.html#2265" class="Bound"
+      >n</a
+      ><a name="2301"
+      >
+</a
+      ><a name="2302" href="Data.Nat.Coprimality.html#2248" class="Function"
+      >coprime-+</a
+      ><a name="2311"
+      > </a
+      ><a name="2312" href="Data.Nat.Coprimality.html#2312" class="Bound"
+      >c</a
+      ><a name="2313"
+      > </a
+      ><a name="2314" class="Symbol"
+      >(</a
+      ><a name="2315" href="Data.Nat.Coprimality.html#2315" class="Bound"
+      >d&#8321;</a
+      ><a name="2317"
+      > </a
+      ><a name="2318" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2319"
+      > </a
+      ><a name="2320" href="Data.Nat.Coprimality.html#2320" class="Bound"
+      >d&#8322;</a
+      ><a name="2322" class="Symbol"
+      >)</a
+      ><a name="2323"
+      > </a
+      ><a name="2324" class="Symbol"
+      >=</a
+      ><a name="2325"
+      > </a
+      ><a name="2326" href="Data.Nat.Coprimality.html#2312" class="Bound"
+      >c</a
+      ><a name="2327"
+      > </a
+      ><a name="2328" class="Symbol"
+      >(</a
+      ><a name="2329" href="Data.Nat.Divisibility.html#3379" class="Function"
+      >&#8739;-&#8760;</a
+      ><a name="2332"
+      > </a
+      ><a name="2333" href="Data.Nat.Coprimality.html#2315" class="Bound"
+      >d&#8321;</a
+      ><a name="2335"
+      > </a
+      ><a name="2336" href="Data.Nat.Coprimality.html#2320" class="Bound"
+      >d&#8322;</a
+      ><a name="2338"
+      > </a
+      ><a name="2339" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2340"
+      > </a
+      ><a name="2341" href="Data.Nat.Coprimality.html#2320" class="Bound"
+      >d&#8322;</a
+      ><a name="2343" class="Symbol"
+      >)</a
+      ><a name="2344"
+      >
+
+</a
+      ><a name="2346" class="Comment"
+      >-- If the &quot;gcd&quot; in B&#233;zout's identity is non-zero, then the &quot;other&quot;</a
+      ><a name="2412"
+      >
+</a
+      ><a name="2413" class="Comment"
+      >-- divisors are coprime.</a
+      ><a name="2437"
+      >
+
+</a
+      ><a name="2439" href="Data.Nat.Coprimality.html#2439" class="Function"
+      >B&#233;zout-coprime</a
+      ><a name="2453"
+      > </a
+      ><a name="2454" class="Symbol"
+      >:</a
+      ><a name="2455"
+      > </a
+      ><a name="2456" class="Symbol"
+      >&#8704;</a
+      ><a name="2457"
+      > </a
+      ><a name="2458" class="Symbol"
+      >{</a
+      ><a name="2459" href="Data.Nat.Coprimality.html#2459" class="Bound"
+      >i</a
+      ><a name="2460"
+      > </a
+      ><a name="2461" href="Data.Nat.Coprimality.html#2461" class="Bound"
+      >j</a
+      ><a name="2462"
+      > </a
+      ><a name="2463" href="Data.Nat.Coprimality.html#2463" class="Bound"
+      >d</a
+      ><a name="2464" class="Symbol"
+      >}</a
+      ><a name="2465"
+      > </a
+      ><a name="2466" class="Symbol"
+      >&#8594;</a
+      ><a name="2467"
+      >
+                 </a
+      ><a name="2485" href="Data.Nat.GCD.html#2637" class="Datatype"
+      >B&#233;zout.Identity</a
+      ><a name="2500"
+      > </a
+      ><a name="2501" class="Symbol"
+      >(</a
+      ><a name="2502" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2505"
+      > </a
+      ><a name="2506" href="Data.Nat.Coprimality.html#2463" class="Bound"
+      >d</a
+      ><a name="2507" class="Symbol"
+      >)</a
+      ><a name="2508"
+      > </a
+      ><a name="2509" class="Symbol"
+      >(</a
+      ><a name="2510" href="Data.Nat.Coprimality.html#2459" class="Bound"
+      >i</a
+      ><a name="2511"
+      > </a
+      ><a name="2512" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="2513"
+      > </a
+      ><a name="2514" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2517"
+      > </a
+      ><a name="2518" href="Data.Nat.Coprimality.html#2463" class="Bound"
+      >d</a
+      ><a name="2519" class="Symbol"
+      >)</a
+      ><a name="2520"
+      > </a
+      ><a name="2521" class="Symbol"
+      >(</a
+      ><a name="2522" href="Data.Nat.Coprimality.html#2461" class="Bound"
+      >j</a
+      ><a name="2523"
+      > </a
+      ><a name="2524" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="2525"
+      > </a
+      ><a name="2526" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2529"
+      > </a
+      ><a name="2530" href="Data.Nat.Coprimality.html#2463" class="Bound"
+      >d</a
+      ><a name="2531" class="Symbol"
+      >)</a
+      ><a name="2532"
+      > </a
+      ><a name="2533" class="Symbol"
+      >&#8594;</a
+      ><a name="2534"
+      >
+                 </a
+      ><a name="2552" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="2559"
+      > </a
+      ><a name="2560" href="Data.Nat.Coprimality.html#2459" class="Bound"
+      >i</a
+      ><a name="2561"
+      > </a
+      ><a name="2562" href="Data.Nat.Coprimality.html#2461" class="Bound"
+      >j</a
+      ><a name="2563"
+      >
+</a
+      ><a name="2564" href="Data.Nat.Coprimality.html#2439" class="Function"
+      >B&#233;zout-coprime</a
+      ><a name="2578"
+      > </a
+      ><a name="2579" class="Symbol"
+      >(</a
+      ><a name="2580" href="Data.Nat.GCD.html#2676" class="InductiveConstructor"
+      >B&#233;zout.+-</a
+      ><a name="2589"
+      > </a
+      ><a name="2590" href="Data.Nat.Coprimality.html#2590" class="Bound"
+      >x</a
+      ><a name="2591"
+      > </a
+      ><a name="2592" href="Data.Nat.Coprimality.html#2592" class="Bound"
+      >y</a
+      ><a name="2593"
+      > </a
+      ><a name="2594" href="Data.Nat.Coprimality.html#2594" class="Bound"
+      >eq</a
+      ><a name="2596" class="Symbol"
+      >)</a
+      ><a name="2597"
+      > </a
+      ><a name="2598" class="Symbol"
+      >(</a
+      ><a name="2599" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="2606"
+      > </a
+      ><a name="2607" href="Data.Nat.Coprimality.html#2607" class="Bound"
+      >q&#8321;</a
+      ><a name="2609"
+      > </a
+      ><a name="2610" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2614"
+      > </a
+      ><a name="2615" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2616"
+      > </a
+      ><a name="2617" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="2624"
+      > </a
+      ><a name="2625" href="Data.Nat.Coprimality.html#2625" class="Bound"
+      >q&#8322;</a
+      ><a name="2627"
+      > </a
+      ><a name="2628" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2632" class="Symbol"
+      >)</a
+      ><a name="2633"
+      > </a
+      ><a name="2634" class="Symbol"
+      >=</a
+      ><a name="2635"
+      >
+  </a
+      ><a name="2638" href="Data.Nat.GCD.Lemmas.html#5449" class="Function"
+      >lem&#8321;&#8320;</a
+      ><a name="2643"
+      > </a
+      ><a name="2644" href="Data.Nat.Coprimality.html#2592" class="Bound"
+      >y</a
+      ><a name="2645"
+      > </a
+      ><a name="2646" href="Data.Nat.Coprimality.html#2625" class="Bound"
+      >q&#8322;</a
+      ><a name="2648"
+      > </a
+      ><a name="2649" href="Data.Nat.Coprimality.html#2590" class="Bound"
+      >x</a
+      ><a name="2650"
+      > </a
+      ><a name="2651" href="Data.Nat.Coprimality.html#2607" class="Bound"
+      >q&#8321;</a
+      ><a name="2653"
+      > </a
+      ><a name="2654" href="Data.Nat.Coprimality.html#2594" class="Bound"
+      >eq</a
+      ><a name="2656"
+      >
+</a
+      ><a name="2657" href="Data.Nat.Coprimality.html#2439" class="Function"
+      >B&#233;zout-coprime</a
+      ><a name="2671"
+      > </a
+      ><a name="2672" class="Symbol"
+      >(</a
+      ><a name="2673" href="Data.Nat.GCD.html#2739" class="InductiveConstructor"
+      >B&#233;zout.-+</a
+      ><a name="2682"
+      > </a
+      ><a name="2683" href="Data.Nat.Coprimality.html#2683" class="Bound"
+      >x</a
+      ><a name="2684"
+      > </a
+      ><a name="2685" href="Data.Nat.Coprimality.html#2685" class="Bound"
+      >y</a
+      ><a name="2686"
+      > </a
+      ><a name="2687" href="Data.Nat.Coprimality.html#2687" class="Bound"
+      >eq</a
+      ><a name="2689" class="Symbol"
+      >)</a
+      ><a name="2690"
+      > </a
+      ><a name="2691" class="Symbol"
+      >(</a
+      ><a name="2692" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="2699"
+      > </a
+      ><a name="2700" href="Data.Nat.Coprimality.html#2700" class="Bound"
+      >q&#8321;</a
+      ><a name="2702"
+      > </a
+      ><a name="2703" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2707"
+      > </a
+      ><a name="2708" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2709"
+      > </a
+      ><a name="2710" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="2717"
+      > </a
+      ><a name="2718" href="Data.Nat.Coprimality.html#2718" class="Bound"
+      >q&#8322;</a
+      ><a name="2720"
+      > </a
+      ><a name="2721" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2725" class="Symbol"
+      >)</a
+      ><a name="2726"
+      > </a
+      ><a name="2727" class="Symbol"
+      >=</a
+      ><a name="2728"
+      >
+  </a
+      ><a name="2731" href="Data.Nat.GCD.Lemmas.html#5449" class="Function"
+      >lem&#8321;&#8320;</a
+      ><a name="2736"
+      > </a
+      ><a name="2737" href="Data.Nat.Coprimality.html#2683" class="Bound"
+      >x</a
+      ><a name="2738"
+      > </a
+      ><a name="2739" href="Data.Nat.Coprimality.html#2700" class="Bound"
+      >q&#8321;</a
+      ><a name="2741"
+      > </a
+      ><a name="2742" href="Data.Nat.Coprimality.html#2685" class="Bound"
+      >y</a
+      ><a name="2743"
+      > </a
+      ><a name="2744" href="Data.Nat.Coprimality.html#2718" class="Bound"
+      >q&#8322;</a
+      ><a name="2746"
+      > </a
+      ><a name="2747" href="Data.Nat.Coprimality.html#2687" class="Bound"
+      >eq</a
+      ><a name="2749"
+      >
+
+</a
+      ><a name="2751" class="Comment"
+      >-- Coprime numbers satisfy B&#233;zout's identity.</a
+      ><a name="2796"
+      >
+
+</a
+      ><a name="2798" href="Data.Nat.Coprimality.html#2798" class="Function"
+      >coprime-B&#233;zout</a
+      ><a name="2812"
+      > </a
+      ><a name="2813" class="Symbol"
+      >:</a
+      ><a name="2814"
+      > </a
+      ><a name="2815" class="Symbol"
+      >&#8704;</a
+      ><a name="2816"
+      > </a
+      ><a name="2817" class="Symbol"
+      >{</a
+      ><a name="2818" href="Data.Nat.Coprimality.html#2818" class="Bound"
+      >i</a
+      ><a name="2819"
+      > </a
+      ><a name="2820" href="Data.Nat.Coprimality.html#2820" class="Bound"
+      >j</a
+      ><a name="2821" class="Symbol"
+      >}</a
+      ><a name="2822"
+      > </a
+      ><a name="2823" class="Symbol"
+      >&#8594;</a
+      ><a name="2824"
+      > </a
+      ><a name="2825" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="2832"
+      > </a
+      ><a name="2833" href="Data.Nat.Coprimality.html#2818" class="Bound"
+      >i</a
+      ><a name="2834"
+      > </a
+      ><a name="2835" href="Data.Nat.Coprimality.html#2820" class="Bound"
+      >j</a
+      ><a name="2836"
+      > </a
+      ><a name="2837" class="Symbol"
+      >&#8594;</a
+      ><a name="2838"
+      > </a
+      ><a name="2839" href="Data.Nat.GCD.html#2637" class="Datatype"
+      >B&#233;zout.Identity</a
+      ><a name="2854"
+      > </a
+      ><a name="2855" class="Number"
+      >1</a
+      ><a name="2856"
+      > </a
+      ><a name="2857" href="Data.Nat.Coprimality.html#2818" class="Bound"
+      >i</a
+      ><a name="2858"
+      > </a
+      ><a name="2859" href="Data.Nat.Coprimality.html#2820" class="Bound"
+      >j</a
+      ><a name="2860"
+      >
+</a
+      ><a name="2861" href="Data.Nat.Coprimality.html#2798" class="Function"
+      >coprime-B&#233;zout</a
+      ><a name="2875"
+      > </a
+      ><a name="2876" class="Symbol"
+      >=</a
+      ><a name="2877"
+      > </a
+      ><a name="2878" href="Data.Nat.GCD.html#5707" class="Function"
+      >B&#233;zout.identity</a
+      ><a name="2893"
+      > </a
+      ><a name="2894" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="2895"
+      > </a
+      ><a name="2896" href="Data.Nat.Coprimality.html#1070" class="Function"
+      >coprime-gcd</a
+      ><a name="2907"
+      >
+
+</a
+      ><a name="2909" class="Comment"
+      >-- If i divides jk and is coprime to j, then it divides k.</a
+      ><a name="2967"
+      >
+
+</a
+      ><a name="2969" href="Data.Nat.Coprimality.html#2969" class="Function"
+      >coprime-divisor</a
+      ><a name="2984"
+      > </a
+      ><a name="2985" class="Symbol"
+      >:</a
+      ><a name="2986"
+      > </a
+      ><a name="2987" class="Symbol"
+      >&#8704;</a
+      ><a name="2988"
+      > </a
+      ><a name="2989" class="Symbol"
+      >{</a
+      ><a name="2990" href="Data.Nat.Coprimality.html#2990" class="Bound"
+      >k</a
+      ><a name="2991"
+      > </a
+      ><a name="2992" href="Data.Nat.Coprimality.html#2992" class="Bound"
+      >i</a
+      ><a name="2993"
+      > </a
+      ><a name="2994" href="Data.Nat.Coprimality.html#2994" class="Bound"
+      >j</a
+      ><a name="2995" class="Symbol"
+      >}</a
+      ><a name="2996"
+      > </a
+      ><a name="2997" class="Symbol"
+      >&#8594;</a
+      ><a name="2998"
+      > </a
+      ><a name="2999" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="3006"
+      > </a
+      ><a name="3007" href="Data.Nat.Coprimality.html#2992" class="Bound"
+      >i</a
+      ><a name="3008"
+      > </a
+      ><a name="3009" href="Data.Nat.Coprimality.html#2994" class="Bound"
+      >j</a
+      ><a name="3010"
+      > </a
+      ><a name="3011" class="Symbol"
+      >&#8594;</a
+      ><a name="3012"
+      > </a
+      ><a name="3013" href="Data.Nat.Coprimality.html#2992" class="Bound"
+      >i</a
+      ><a name="3014"
+      > </a
+      ><a name="3015" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="3016"
+      > </a
+      ><a name="3017" href="Data.Nat.Coprimality.html#2994" class="Bound"
+      >j</a
+      ><a name="3018"
+      > </a
+      ><a name="3019" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3020"
+      > </a
+      ><a name="3021" href="Data.Nat.Coprimality.html#2990" class="Bound"
+      >k</a
+      ><a name="3022"
+      > </a
+      ><a name="3023" class="Symbol"
+      >&#8594;</a
+      ><a name="3024"
+      > </a
+      ><a name="3025" href="Data.Nat.Coprimality.html#2992" class="Bound"
+      >i</a
+      ><a name="3026"
+      > </a
+      ><a name="3027" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="3028"
+      > </a
+      ><a name="3029" href="Data.Nat.Coprimality.html#2990" class="Bound"
+      >k</a
+      ><a name="3030"
+      >
+</a
+      ><a name="3031" href="Data.Nat.Coprimality.html#2969" class="Function"
+      >coprime-divisor</a
+      ><a name="3046"
+      > </a
+      ><a name="3047" class="Symbol"
+      >{</a
+      ><a name="3048" href="Data.Nat.Coprimality.html#3048" class="Bound"
+      >k</a
+      ><a name="3049" class="Symbol"
+      >}</a
+      ><a name="3050"
+      > </a
+      ><a name="3051" href="Data.Nat.Coprimality.html#3051" class="Bound"
+      >c</a
+      ><a name="3052"
+      > </a
+      ><a name="3053" class="Symbol"
+      >(</a
+      ><a name="3054" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="3061"
+      > </a
+      ><a name="3062" href="Data.Nat.Coprimality.html#3062" class="Bound"
+      >q</a
+      ><a name="3063"
+      > </a
+      ><a name="3064" href="Data.Nat.Coprimality.html#3064" class="Bound"
+      >eq&#8242;</a
+      ><a name="3067" class="Symbol"
+      >)</a
+      ><a name="3068"
+      > </a
+      ><a name="3069" class="Keyword"
+      >with</a
+      ><a name="3073"
+      > </a
+      ><a name="3074" href="Data.Nat.Coprimality.html#2798" class="Function"
+      >coprime-B&#233;zout</a
+      ><a name="3088"
+      > </a
+      ><a name="3089" href="Data.Nat.Coprimality.html#3051" class="Bound"
+      >c</a
+      ><a name="3090"
+      >
+</a
+      ><a name="3091" class="Symbol"
+      >...</a
+      ><a name="3094"
+      > </a
+      ><a name="3095" class="Symbol"
+      >|</a
+      ><a name="3096"
+      > </a
+      ><a name="3097" href="Data.Nat.GCD.html#2676" class="InductiveConstructor"
+      >B&#233;zout.+-</a
+      ><a name="3106"
+      > </a
+      ><a name="3107" href="Data.Nat.Coprimality.html#3107" class="Bound"
+      >x</a
+      ><a name="3108"
+      > </a
+      ><a name="3109" href="Data.Nat.Coprimality.html#3109" class="Bound"
+      >y</a
+      ><a name="3110"
+      > </a
+      ><a name="3111" href="Data.Nat.Coprimality.html#3111" class="Bound"
+      >eq</a
+      ><a name="3113"
+      > </a
+      ><a name="3114" class="Symbol"
+      >=</a
+      ><a name="3115"
+      > </a
+      ><a name="3116" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="3123"
+      > </a
+      ><a name="3124" class="Symbol"
+      >(</a
+      ><a name="3125" href="Data.Nat.Coprimality.html#3107" class="Bound"
+      >x</a
+      ><a name="3126"
+      > </a
+      ><a name="3127" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3128"
+      > </a
+      ><a name="3129" href="Data.Nat.Coprimality.html#3048" class="Bound"
+      >k</a
+      ><a name="3130"
+      > </a
+      ><a name="3131" href="Data.Nat.html#2365" class="Primitive Operator"
+      >&#8760;</a
+      ><a name="3132"
+      > </a
+      ><a name="3133" href="Data.Nat.Coprimality.html#3109" class="Bound"
+      >y</a
+      ><a name="3134"
+      > </a
+      ><a name="3135" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3136"
+      > </a
+      ><a name="3137" href="Data.Nat.Coprimality.html#3062" class="Bound"
+      >q</a
+      ><a name="3138" class="Symbol"
+      >)</a
+      ><a name="3139"
+      > </a
+      ><a name="3140" class="Symbol"
+      >(</a
+      ><a name="3141" href="Data.Nat.GCD.Lemmas.html#3933" class="Function"
+      >lem&#8328;</a
+      ><a name="3145"
+      > </a
+      ><a name="3146" href="Data.Nat.Coprimality.html#3107" class="Bound"
+      >x</a
+      ><a name="3147"
+      > </a
+      ><a name="3148" href="Data.Nat.Coprimality.html#3109" class="Bound"
+      >y</a
+      ><a name="3149"
+      > </a
+      ><a name="3150" href="Data.Nat.Coprimality.html#3111" class="Bound"
+      >eq</a
+      ><a name="3152"
+      > </a
+      ><a name="3153" href="Data.Nat.Coprimality.html#3064" class="Bound"
+      >eq&#8242;</a
+      ><a name="3156" class="Symbol"
+      >)</a
+      ><a name="3157"
+      >
+</a
+      ><a name="3158" class="Symbol"
+      >...</a
+      ><a name="3161"
+      > </a
+      ><a name="3162" class="Symbol"
+      >|</a
+      ><a name="3163"
+      > </a
+      ><a name="3164" href="Data.Nat.GCD.html#2739" class="InductiveConstructor"
+      >B&#233;zout.-+</a
+      ><a name="3173"
+      > </a
+      ><a name="3174" href="Data.Nat.Coprimality.html#3174" class="Bound"
+      >x</a
+      ><a name="3175"
+      > </a
+      ><a name="3176" href="Data.Nat.Coprimality.html#3176" class="Bound"
+      >y</a
+      ><a name="3177"
+      > </a
+      ><a name="3178" href="Data.Nat.Coprimality.html#3178" class="Bound"
+      >eq</a
+      ><a name="3180"
+      > </a
+      ><a name="3181" class="Symbol"
+      >=</a
+      ><a name="3182"
+      > </a
+      ><a name="3183" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="3190"
+      > </a
+      ><a name="3191" class="Symbol"
+      >(</a
+      ><a name="3192" href="Data.Nat.Coprimality.html#3176" class="Bound"
+      >y</a
+      ><a name="3193"
+      > </a
+      ><a name="3194" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3195"
+      > </a
+      ><a name="3196" href="Data.Nat.Coprimality.html#3062" class="Bound"
+      >q</a
+      ><a name="3197"
+      > </a
+      ><a name="3198" href="Data.Nat.html#2365" class="Primitive Operator"
+      >&#8760;</a
+      ><a name="3199"
+      > </a
+      ><a name="3200" href="Data.Nat.Coprimality.html#3174" class="Bound"
+      >x</a
+      ><a name="3201"
+      > </a
+      ><a name="3202" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3203"
+      > </a
+      ><a name="3204" href="Data.Nat.Coprimality.html#3048" class="Bound"
+      >k</a
+      ><a name="3205" class="Symbol"
+      >)</a
+      ><a name="3206"
+      > </a
+      ><a name="3207" class="Symbol"
+      >(</a
+      ><a name="3208" href="Data.Nat.GCD.Lemmas.html#4786" class="Function"
+      >lem&#8329;</a
+      ><a name="3212"
+      > </a
+      ><a name="3213" href="Data.Nat.Coprimality.html#3174" class="Bound"
+      >x</a
+      ><a name="3214"
+      > </a
+      ><a name="3215" href="Data.Nat.Coprimality.html#3176" class="Bound"
+      >y</a
+      ><a name="3216"
+      > </a
+      ><a name="3217" href="Data.Nat.Coprimality.html#3178" class="Bound"
+      >eq</a
+      ><a name="3219"
+      > </a
+      ><a name="3220" href="Data.Nat.Coprimality.html#3064" class="Bound"
+      >eq&#8242;</a
+      ><a name="3223" class="Symbol"
+      >)</a
+      ><a name="3224"
+      >
+
+</a
+      ><a name="3226" class="Comment"
+      >-- If d is a common divisor of mk and nk, and m and n are coprime,</a
+      ><a name="3292"
+      >
+</a
+      ><a name="3293" class="Comment"
+      >-- then d divides k.</a
+      ><a name="3313"
+      >
+
+</a
+      ><a name="3315" href="Data.Nat.Coprimality.html#3315" class="Function"
+      >coprime-factors</a
+      ><a name="3330"
+      > </a
+      ><a name="3331" class="Symbol"
+      >:</a
+      ><a name="3332"
+      > </a
+      ><a name="3333" class="Symbol"
+      >&#8704;</a
+      ><a name="3334"
+      > </a
+      ><a name="3335" class="Symbol"
+      >{</a
+      ><a name="3336" href="Data.Nat.Coprimality.html#3336" class="Bound"
+      >d</a
+      ><a name="3337"
+      > </a
+      ><a name="3338" href="Data.Nat.Coprimality.html#3338" class="Bound"
+      >m</a
+      ><a name="3339"
+      > </a
+      ><a name="3340" href="Data.Nat.Coprimality.html#3340" class="Bound"
+      >n</a
+      ><a name="3341"
+      > </a
+      ><a name="3342" href="Data.Nat.Coprimality.html#3342" class="Bound"
+      >k</a
+      ><a name="3343" class="Symbol"
+      >}</a
+      ><a name="3344"
+      > </a
+      ><a name="3345" class="Symbol"
+      >&#8594;</a
+      ><a name="3346"
+      >
+                  </a
+      ><a name="3365" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="3372"
+      > </a
+      ><a name="3373" href="Data.Nat.Coprimality.html#3338" class="Bound"
+      >m</a
+      ><a name="3374"
+      > </a
+      ><a name="3375" href="Data.Nat.Coprimality.html#3340" class="Bound"
+      >n</a
+      ><a name="3376"
+      > </a
+      ><a name="3377" class="Symbol"
+      >&#8594;</a
+      ><a name="3378"
+      > </a
+      ><a name="3379" href="Data.Nat.Coprimality.html#3336" class="Bound"
+      >d</a
+      ><a name="3380"
+      > </a
+      ><a name="3381" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="3382"
+      > </a
+      ><a name="3383" href="Data.Nat.Coprimality.html#3338" class="Bound"
+      >m</a
+      ><a name="3384"
+      > </a
+      ><a name="3385" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3386"
+      > </a
+      ><a name="3387" href="Data.Nat.Coprimality.html#3342" class="Bound"
+      >k</a
+      ><a name="3388"
+      > </a
+      ><a name="3389" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="3390"
+      > </a
+      ><a name="3391" href="Data.Nat.Coprimality.html#3336" class="Bound"
+      >d</a
+      ><a name="3392"
+      > </a
+      ><a name="3393" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="3394"
+      > </a
+      ><a name="3395" href="Data.Nat.Coprimality.html#3340" class="Bound"
+      >n</a
+      ><a name="3396"
+      > </a
+      ><a name="3397" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3398"
+      > </a
+      ><a name="3399" href="Data.Nat.Coprimality.html#3342" class="Bound"
+      >k</a
+      ><a name="3400"
+      > </a
+      ><a name="3401" class="Symbol"
+      >&#8594;</a
+      ><a name="3402"
+      > </a
+      ><a name="3403" href="Data.Nat.Coprimality.html#3336" class="Bound"
+      >d</a
+      ><a name="3404"
+      > </a
+      ><a name="3405" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="3406"
+      > </a
+      ><a name="3407" href="Data.Nat.Coprimality.html#3342" class="Bound"
+      >k</a
+      ><a name="3408"
+      >
+</a
+      ><a name="3409" href="Data.Nat.Coprimality.html#3315" class="Function"
+      >coprime-factors</a
+      ><a name="3424"
+      > </a
+      ><a name="3425" href="Data.Nat.Coprimality.html#3425" class="Bound"
+      >c</a
+      ><a name="3426"
+      > </a
+      ><a name="3427" class="Symbol"
+      >(</a
+      ><a name="3428" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="3435"
+      > </a
+      ><a name="3436" href="Data.Nat.Coprimality.html#3436" class="Bound"
+      >q&#8321;</a
+      ><a name="3438"
+      > </a
+      ><a name="3439" href="Data.Nat.Coprimality.html#3439" class="Bound"
+      >eq&#8321;</a
+      ><a name="3442"
+      > </a
+      ><a name="3443" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3444"
+      > </a
+      ><a name="3445" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="3452"
+      > </a
+      ><a name="3453" href="Data.Nat.Coprimality.html#3453" class="Bound"
+      >q&#8322;</a
+      ><a name="3455"
+      > </a
+      ><a name="3456" href="Data.Nat.Coprimality.html#3456" class="Bound"
+      >eq&#8322;</a
+      ><a name="3459" class="Symbol"
+      >)</a
+      ><a name="3460"
+      > </a
+      ><a name="3461" class="Keyword"
+      >with</a
+      ><a name="3465"
+      > </a
+      ><a name="3466" href="Data.Nat.Coprimality.html#2798" class="Function"
+      >coprime-B&#233;zout</a
+      ><a name="3480"
+      > </a
+      ><a name="3481" href="Data.Nat.Coprimality.html#3425" class="Bound"
+      >c</a
+      ><a name="3482"
+      >
+</a
+      ><a name="3483" class="Symbol"
+      >...</a
+      ><a name="3486"
+      > </a
+      ><a name="3487" class="Symbol"
+      >|</a
+      ><a name="3488"
+      > </a
+      ><a name="3489" href="Data.Nat.GCD.html#2676" class="InductiveConstructor"
+      >B&#233;zout.+-</a
+      ><a name="3498"
+      > </a
+      ><a name="3499" href="Data.Nat.Coprimality.html#3499" class="Bound"
+      >x</a
+      ><a name="3500"
+      > </a
+      ><a name="3501" href="Data.Nat.Coprimality.html#3501" class="Bound"
+      >y</a
+      ><a name="3502"
+      > </a
+      ><a name="3503" href="Data.Nat.Coprimality.html#3503" class="Bound"
+      >eq</a
+      ><a name="3505"
+      > </a
+      ><a name="3506" class="Symbol"
+      >=</a
+      ><a name="3507"
+      > </a
+      ><a name="3508" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="3515"
+      > </a
+      ><a name="3516" class="Symbol"
+      >(</a
+      ><a name="3517" href="Data.Nat.Coprimality.html#3499" class="Bound"
+      >x</a
+      ><a name="3518"
+      > </a
+      ><a name="3519" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3520"
+      > </a
+      ><a name="3521" href="Data.Nat.Coprimality.html#3436" class="Bound"
+      >q&#8321;</a
+      ><a name="3523"
+      > </a
+      ><a name="3524" href="Data.Nat.html#2365" class="Primitive Operator"
+      >&#8760;</a
+      ><a name="3525"
+      > </a
+      ><a name="3526" href="Data.Nat.Coprimality.html#3501" class="Bound"
+      >y</a
+      ><a name="3527"
+      > </a
+      ><a name="3528" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3529"
+      > </a
+      ><a name="3530" href="Data.Nat.Coprimality.html#3453" class="Bound"
+      >q&#8322;</a
+      ><a name="3532" class="Symbol"
+      >)</a
+      ><a name="3533"
+      > </a
+      ><a name="3534" class="Symbol"
+      >(</a
+      ><a name="3535" href="Data.Nat.GCD.Lemmas.html#6263" class="Function"
+      >lem&#8321;&#8321;</a
+      ><a name="3540"
+      > </a
+      ><a name="3541" href="Data.Nat.Coprimality.html#3499" class="Bound"
+      >x</a
+      ><a name="3542"
+      > </a
+      ><a name="3543" href="Data.Nat.Coprimality.html#3501" class="Bound"
+      >y</a
+      ><a name="3544"
+      > </a
+      ><a name="3545" href="Data.Nat.Coprimality.html#3503" class="Bound"
+      >eq</a
+      ><a name="3547"
+      > </a
+      ><a name="3548" href="Data.Nat.Coprimality.html#3439" class="Bound"
+      >eq&#8321;</a
+      ><a name="3551"
+      > </a
+      ><a name="3552" href="Data.Nat.Coprimality.html#3456" class="Bound"
+      >eq&#8322;</a
+      ><a name="3555" class="Symbol"
+      >)</a
+      ><a name="3556"
+      >
+</a
+      ><a name="3557" class="Symbol"
+      >...</a
+      ><a name="3560"
+      > </a
+      ><a name="3561" class="Symbol"
+      >|</a
+      ><a name="3562"
+      > </a
+      ><a name="3563" href="Data.Nat.GCD.html#2739" class="InductiveConstructor"
+      >B&#233;zout.-+</a
+      ><a name="3572"
+      > </a
+      ><a name="3573" href="Data.Nat.Coprimality.html#3573" class="Bound"
+      >x</a
+      ><a name="3574"
+      > </a
+      ><a name="3575" href="Data.Nat.Coprimality.html#3575" class="Bound"
+      >y</a
+      ><a name="3576"
+      > </a
+      ><a name="3577" href="Data.Nat.Coprimality.html#3577" class="Bound"
+      >eq</a
+      ><a name="3579"
+      > </a
+      ><a name="3580" class="Symbol"
+      >=</a
+      ><a name="3581"
+      > </a
+      ><a name="3582" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="3589"
+      > </a
+      ><a name="3590" class="Symbol"
+      >(</a
+      ><a name="3591" href="Data.Nat.Coprimality.html#3575" class="Bound"
+      >y</a
+      ><a name="3592"
+      > </a
+      ><a name="3593" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3594"
+      > </a
+      ><a name="3595" href="Data.Nat.Coprimality.html#3453" class="Bound"
+      >q&#8322;</a
+      ><a name="3597"
+      > </a
+      ><a name="3598" href="Data.Nat.html#2365" class="Primitive Operator"
+      >&#8760;</a
+      ><a name="3599"
+      > </a
+      ><a name="3600" href="Data.Nat.Coprimality.html#3573" class="Bound"
+      >x</a
+      ><a name="3601"
+      > </a
+      ><a name="3602" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3603"
+      > </a
+      ><a name="3604" href="Data.Nat.Coprimality.html#3436" class="Bound"
+      >q&#8321;</a
+      ><a name="3606" class="Symbol"
+      >)</a
+      ><a name="3607"
+      > </a
+      ><a name="3608" class="Symbol"
+      >(</a
+      ><a name="3609" href="Data.Nat.GCD.Lemmas.html#6263" class="Function"
+      >lem&#8321;&#8321;</a
+      ><a name="3614"
+      > </a
+      ><a name="3615" href="Data.Nat.Coprimality.html#3575" class="Bound"
+      >y</a
+      ><a name="3616"
+      > </a
+      ><a name="3617" href="Data.Nat.Coprimality.html#3573" class="Bound"
+      >x</a
+      ><a name="3618"
+      > </a
+      ><a name="3619" href="Data.Nat.Coprimality.html#3577" class="Bound"
+      >eq</a
+      ><a name="3621"
+      > </a
+      ><a name="3622" href="Data.Nat.Coprimality.html#3456" class="Bound"
+      >eq&#8322;</a
+      ><a name="3625"
+      > </a
+      ><a name="3626" href="Data.Nat.Coprimality.html#3439" class="Bound"
+      >eq&#8321;</a
+      ><a name="3629" class="Symbol"
+      >)</a
+      ><a name="3630"
+      >
+
+</a
+      ><a name="3632" class="Comment"
+      >-- A variant of GCD.</a
+      ><a name="3652"
+      >
+
+</a
+      ><a name="3654" class="Keyword"
+      >data</a
+      ><a name="3658"
+      > </a
+      ><a name="3659" href="Data.Nat.Coprimality.html#3659" class="Datatype"
+      >GCD&#8242;</a
+      ><a name="3663"
+      > </a
+      ><a name="3664" class="Symbol"
+      >:</a
+      ><a name="3665"
+      > </a
+      ><a name="3666" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="3667"
+      > </a
+      ><a name="3668" class="Symbol"
+      >&#8594;</a
+      ><a name="3669"
+      > </a
+      ><a name="3670" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="3671"
+      > </a
+      ><a name="3672" class="Symbol"
+      >&#8594;</a
+      ><a name="3673"
+      > </a
+      ><a name="3674" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="3675"
+      > </a
+      ><a name="3676" class="Symbol"
+      >&#8594;</a
+      ><a name="3677"
+      > </a
+      ><a name="3678" class="PrimitiveType"
+      >Set</a
+      ><a name="3681"
+      > </a
+      ><a name="3682" class="Keyword"
+      >where</a
+      ><a name="3687"
+      >
+  </a
+      ><a name="3690" href="Data.Nat.Coprimality.html#3690" class="InductiveConstructor"
+      >gcd-*</a
+      ><a name="3695"
+      > </a
+      ><a name="3696" class="Symbol"
+      >:</a
+      ><a name="3697"
+      > </a
+      ><a name="3698" class="Symbol"
+      >&#8704;</a
+      ><a name="3699"
+      > </a
+      ><a name="3700" class="Symbol"
+      >{</a
+      ><a name="3701" href="Data.Nat.Coprimality.html#3701" class="Bound"
+      >d</a
+      ><a name="3702" class="Symbol"
+      >}</a
+      ><a name="3703"
+      > </a
+      ><a name="3704" href="Data.Nat.Coprimality.html#3704" class="Bound"
+      >q&#8321;</a
+      ><a name="3706"
+      > </a
+      ><a name="3707" href="Data.Nat.Coprimality.html#3707" class="Bound"
+      >q&#8322;</a
+      ><a name="3709"
+      > </a
+      ><a name="3710" class="Symbol"
+      >(</a
+      ><a name="3711" href="Data.Nat.Coprimality.html#3711" class="Bound"
+      >c</a
+      ><a name="3712"
+      > </a
+      ><a name="3713" class="Symbol"
+      >:</a
+      ><a name="3714"
+      > </a
+      ><a name="3715" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="3722"
+      > </a
+      ><a name="3723" href="Data.Nat.Coprimality.html#3704" class="Bound"
+      >q&#8321;</a
+      ><a name="3725"
+      > </a
+      ><a name="3726" href="Data.Nat.Coprimality.html#3707" class="Bound"
+      >q&#8322;</a
+      ><a name="3728" class="Symbol"
+      >)</a
+      ><a name="3729"
+      > </a
+      ><a name="3730" class="Symbol"
+      >&#8594;</a
+      ><a name="3731"
+      >
+          </a
+      ><a name="3742" href="Data.Nat.Coprimality.html#3659" class="Datatype"
+      >GCD&#8242;</a
+      ><a name="3746"
+      > </a
+      ><a name="3747" class="Symbol"
+      >(</a
+      ><a name="3748" href="Data.Nat.Coprimality.html#3704" class="Bound"
+      >q&#8321;</a
+      ><a name="3750"
+      > </a
+      ><a name="3751" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3752"
+      > </a
+      ><a name="3753" href="Data.Nat.Coprimality.html#3701" class="Bound"
+      >d</a
+      ><a name="3754" class="Symbol"
+      >)</a
+      ><a name="3755"
+      > </a
+      ><a name="3756" class="Symbol"
+      >(</a
+      ><a name="3757" href="Data.Nat.Coprimality.html#3707" class="Bound"
+      >q&#8322;</a
+      ><a name="3759"
+      > </a
+      ><a name="3760" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3761"
+      > </a
+      ><a name="3762" href="Data.Nat.Coprimality.html#3701" class="Bound"
+      >d</a
+      ><a name="3763" class="Symbol"
+      >)</a
+      ><a name="3764"
+      > </a
+      ><a name="3765" href="Data.Nat.Coprimality.html#3701" class="Bound"
+      >d</a
+      ><a name="3766"
+      >
+
+</a
+      ><a name="3768" class="Comment"
+      >-- The two definitions are equivalent.</a
+      ><a name="3806"
+      >
+
+</a
+      ><a name="3808" href="Data.Nat.Coprimality.html#3808" class="Function"
+      >gcd-gcd&#8242;</a
+      ><a name="3816"
+      > </a
+      ><a name="3817" class="Symbol"
+      >:</a
+      ><a name="3818"
+      > </a
+      ><a name="3819" class="Symbol"
+      >&#8704;</a
+      ><a name="3820"
+      > </a
+      ><a name="3821" class="Symbol"
+      >{</a
+      ><a name="3822" href="Data.Nat.Coprimality.html#3822" class="Bound"
+      >d</a
+      ><a name="3823"
+      > </a
+      ><a name="3824" href="Data.Nat.Coprimality.html#3824" class="Bound"
+      >m</a
+      ><a name="3825"
+      > </a
+      ><a name="3826" href="Data.Nat.Coprimality.html#3826" class="Bound"
+      >n</a
+      ><a name="3827" class="Symbol"
+      >}</a
+      ><a name="3828"
+      > </a
+      ><a name="3829" class="Symbol"
+      >&#8594;</a
+      ><a name="3830"
+      > </a
+      ><a name="3831" href="Data.Nat.GCD.html#808" class="Record"
+      >GCD</a
+      ><a name="3834"
+      > </a
+      ><a name="3835" href="Data.Nat.Coprimality.html#3824" class="Bound"
+      >m</a
+      ><a name="3836"
+      > </a
+      ><a name="3837" href="Data.Nat.Coprimality.html#3826" class="Bound"
+      >n</a
+      ><a name="3838"
+      > </a
+      ><a name="3839" href="Data.Nat.Coprimality.html#3822" class="Bound"
+      >d</a
+      ><a name="3840"
+      > </a
+      ><a name="3841" class="Symbol"
+      >&#8594;</a
+      ><a name="3842"
+      > </a
+      ><a name="3843" href="Data.Nat.Coprimality.html#3659" class="Datatype"
+      >GCD&#8242;</a
+      ><a name="3847"
+      > </a
+      ><a name="3848" href="Data.Nat.Coprimality.html#3824" class="Bound"
+      >m</a
+      ><a name="3849"
+      > </a
+      ><a name="3850" href="Data.Nat.Coprimality.html#3826" class="Bound"
+      >n</a
+      ><a name="3851"
+      > </a
+      ><a name="3852" href="Data.Nat.Coprimality.html#3822" class="Bound"
+      >d</a
+      ><a name="3853"
+      >
+</a
+      ><a name="3854" href="Data.Nat.Coprimality.html#3808" class="Function"
+      >gcd-gcd&#8242;</a
+      ><a name="3862"
+      >         </a
+      ><a name="3871" href="Data.Nat.Coprimality.html#3871" class="Bound"
+      >g</a
+      ><a name="3872"
+      > </a
+      ><a name="3873" class="Keyword"
+      >with</a
+      ><a name="3877"
+      > </a
+      ><a name="3878" href="Data.Nat.GCD.html#911" class="Field"
+      >GCD.commonDivisor</a
+      ><a name="3895"
+      > </a
+      ><a name="3896" href="Data.Nat.Coprimality.html#3871" class="Bound"
+      >g</a
+      ><a name="3897"
+      >
+</a
+      ><a name="3898" href="Data.Nat.Coprimality.html#3808" class="Function"
+      >gcd-gcd&#8242;</a
+      ><a name="3906"
+      > </a
+      ><a name="3907" class="Symbol"
+      >{</a
+      ><a name="3908" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="3912" class="Symbol"
+      >}</a
+      ><a name="3913"
+      >  </a
+      ><a name="3915" href="Data.Nat.Coprimality.html#3915" class="Bound"
+      >g</a
+      ><a name="3916"
+      > </a
+      ><a name="3917" class="Symbol"
+      >|</a
+      ><a name="3918"
+      > </a
+      ><a name="3919" class="Symbol"
+      >(</a
+      ><a name="3920" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="3927"
+      > </a
+      ><a name="3928" href="Data.Nat.Coprimality.html#3928" class="Bound"
+      >q&#8321;</a
+      ><a name="3930"
+      > </a
+      ><a name="3931" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3935"
+      > </a
+      ><a name="3936" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3937"
+      > </a
+      ><a name="3938" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="3945"
+      > </a
+      ><a name="3946" href="Data.Nat.Coprimality.html#3946" class="Bound"
+      >q&#8322;</a
+      ><a name="3948"
+      > </a
+      ><a name="3949" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3953" class="Symbol"
+      >)</a
+      ><a name="3954"
+      >
+                     </a
+      ><a name="3976" class="Keyword"
+      >with</a
+      ><a name="3980"
+      > </a
+      ><a name="3981" href="Data.Nat.Coprimality.html#3928" class="Bound"
+      >q&#8321;</a
+      ><a name="3983"
+      > </a
+      ><a name="3984" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3985"
+      > </a
+      ><a name="3986" class="Number"
+      >0</a
+      ><a name="3987"
+      > </a
+      ><a name="3988" class="Symbol"
+      >|</a
+      ><a name="3989"
+      > </a
+      ><a name="3990" href="Algebra.Structures.html#1414" class="Function"
+      >CS.*-comm</a
+      ><a name="3999"
+      > </a
+      ><a name="4000" class="Number"
+      >0</a
+      ><a name="4001"
+      > </a
+      ><a name="4002" href="Data.Nat.Coprimality.html#3928" class="Bound"
+      >q&#8321;</a
+      ><a name="4004"
+      >
+                        </a
+      ><a name="4029" class="Symbol"
+      >|</a
+      ><a name="4030"
+      > </a
+      ><a name="4031" href="Data.Nat.Coprimality.html#3946" class="Bound"
+      >q&#8322;</a
+      ><a name="4033"
+      > </a
+      ><a name="4034" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="4035"
+      > </a
+      ><a name="4036" class="Number"
+      >0</a
+      ><a name="4037"
+      > </a
+      ><a name="4038" class="Symbol"
+      >|</a
+      ><a name="4039"
+      > </a
+      ><a name="4040" href="Algebra.Structures.html#1414" class="Function"
+      >CS.*-comm</a
+      ><a name="4049"
+      > </a
+      ><a name="4050" class="Number"
+      >0</a
+      ><a name="4051"
+      > </a
+      ><a name="4052" href="Data.Nat.Coprimality.html#3946" class="Bound"
+      >q&#8322;</a
+      ><a name="4054"
+      >
+</a
+      ><a name="4055" class="Symbol"
+      >...</a
+      ><a name="4058"
+      >                  </a
+      ><a name="4076" class="Symbol"
+      >|</a
+      ><a name="4077"
+      > </a
+      ><a name="4078" class="DottedPattern Symbol"
+      >.</a
+      ><a name="4079" class="DottedPattern Number"
+      >0</a
+      ><a name="4080"
+      > </a
+      ><a name="4081" class="Symbol"
+      >|</a
+      ><a name="4082"
+      > </a
+      ><a name="4083" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="4087"
+      > </a
+      ><a name="4088" class="Symbol"
+      >|</a
+      ><a name="4089"
+      > </a
+      ><a name="4090" class="DottedPattern Symbol"
+      >.</a
+      ><a name="4091" class="DottedPattern Number"
+      >0</a
+      ><a name="4092"
+      > </a
+      ><a name="4093" class="Symbol"
+      >|</a
+      ><a name="4094"
+      > </a
+      ><a name="4095" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="4099"
+      > </a
+      ><a name="4100" class="Symbol"
+      >=</a
+      ><a name="4101"
+      > </a
+      ><a name="4102" href="Data.Nat.Coprimality.html#3690" class="InductiveConstructor"
+      >gcd-*</a
+      ><a name="4107"
+      > </a
+      ><a name="4108" class="Number"
+      >1</a
+      ><a name="4109"
+      > </a
+      ><a name="4110" class="Number"
+      >1</a
+      ><a name="4111"
+      > </a
+      ><a name="4112" class="Symbol"
+      >(</a
+      ><a name="4113" href="Data.Nat.Coprimality.html#1995" class="Function"
+      >1-coprimeTo</a
+      ><a name="4124"
+      > </a
+      ><a name="4125" class="Number"
+      >1</a
+      ><a name="4126" class="Symbol"
+      >)</a
+      ><a name="4127"
+      >
+</a
+      ><a name="4128" href="Data.Nat.Coprimality.html#3808" class="Function"
+      >gcd-gcd&#8242;</a
+      ><a name="4136"
+      > </a
+      ><a name="4137" class="Symbol"
+      >{</a
+      ><a name="4138" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="4141"
+      > </a
+      ><a name="4142" href="Data.Nat.Coprimality.html#4142" class="Bound"
+      >d</a
+      ><a name="4143" class="Symbol"
+      >}</a
+      ><a name="4144"
+      > </a
+      ><a name="4145" href="Data.Nat.Coprimality.html#4145" class="Bound"
+      >g</a
+      ><a name="4146"
+      > </a
+      ><a name="4147" class="Symbol"
+      >|</a
+      ><a name="4148"
+      > </a
+      ><a name="4149" class="Symbol"
+      >(</a
+      ><a name="4150" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="4157"
+      > </a
+      ><a name="4158" href="Data.Nat.Coprimality.html#4158" class="Bound"
+      >q&#8321;</a
+      ><a name="4160"
+      > </a
+      ><a name="4161" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="4165"
+      > </a
+      ><a name="4166" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4167"
+      > </a
+      ><a name="4168" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="4175"
+      > </a
+      ><a name="4176" href="Data.Nat.Coprimality.html#4176" class="Bound"
+      >q&#8322;</a
+      ><a name="4178"
+      > </a
+      ><a name="4179" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="4183" class="Symbol"
+      >)</a
+      ><a name="4184"
+      > </a
+      ><a name="4185" class="Symbol"
+      >=</a
+      ><a name="4186"
+      >
+  </a
+      ><a name="4189" href="Data.Nat.Coprimality.html#3690" class="InductiveConstructor"
+      >gcd-*</a
+      ><a name="4194"
+      > </a
+      ><a name="4195" href="Data.Nat.Coprimality.html#4158" class="Bound"
+      >q&#8321;</a
+      ><a name="4197"
+      > </a
+      ><a name="4198" href="Data.Nat.Coprimality.html#4176" class="Bound"
+      >q&#8322;</a
+      ><a name="4200"
+      > </a
+      ><a name="4201" class="Symbol"
+      >(</a
+      ><a name="4202" href="Data.Nat.Coprimality.html#2439" class="Function"
+      >B&#233;zout-coprime</a
+      ><a name="4216"
+      > </a
+      ><a name="4217" class="Symbol"
+      >(</a
+      ><a name="4218" href="Data.Nat.GCD.html#5707" class="Function"
+      >B&#233;zout.identity</a
+      ><a name="4233"
+      > </a
+      ><a name="4234" href="Data.Nat.Coprimality.html#4145" class="Bound"
+      >g</a
+      ><a name="4235" class="Symbol"
+      >))</a
+      ><a name="4237"
+      >
+
+</a
+      ><a name="4239" href="Data.Nat.Coprimality.html#4239" class="Function"
+      >gcd&#8242;-gcd</a
+      ><a name="4247"
+      > </a
+      ><a name="4248" class="Symbol"
+      >:</a
+      ><a name="4249"
+      > </a
+      ><a name="4250" class="Symbol"
+      >&#8704;</a
+      ><a name="4251"
+      > </a
+      ><a name="4252" class="Symbol"
+      >{</a
+      ><a name="4253" href="Data.Nat.Coprimality.html#4253" class="Bound"
+      >m</a
+      ><a name="4254"
+      > </a
+      ><a name="4255" href="Data.Nat.Coprimality.html#4255" class="Bound"
+      >n</a
+      ><a name="4256"
+      > </a
+      ><a name="4257" href="Data.Nat.Coprimality.html#4257" class="Bound"
+      >d</a
+      ><a name="4258" class="Symbol"
+      >}</a
+      ><a name="4259"
+      > </a
+      ><a name="4260" class="Symbol"
+      >&#8594;</a
+      ><a name="4261"
+      > </a
+      ><a name="4262" href="Data.Nat.Coprimality.html#3659" class="Datatype"
+      >GCD&#8242;</a
+      ><a name="4266"
+      > </a
+      ><a name="4267" href="Data.Nat.Coprimality.html#4253" class="Bound"
+      >m</a
+      ><a name="4268"
+      > </a
+      ><a name="4269" href="Data.Nat.Coprimality.html#4255" class="Bound"
+      >n</a
+      ><a name="4270"
+      > </a
+      ><a name="4271" href="Data.Nat.Coprimality.html#4257" class="Bound"
+      >d</a
+      ><a name="4272"
+      > </a
+      ><a name="4273" class="Symbol"
+      >&#8594;</a
+      ><a name="4274"
+      > </a
+      ><a name="4275" href="Data.Nat.GCD.html#808" class="Record"
+      >GCD</a
+      ><a name="4278"
+      > </a
+      ><a name="4279" href="Data.Nat.Coprimality.html#4253" class="Bound"
+      >m</a
+      ><a name="4280"
+      > </a
+      ><a name="4281" href="Data.Nat.Coprimality.html#4255" class="Bound"
+      >n</a
+      ><a name="4282"
+      > </a
+      ><a name="4283" href="Data.Nat.Coprimality.html#4257" class="Bound"
+      >d</a
+      ><a name="4284"
+      >
+</a
+      ><a name="4285" href="Data.Nat.Coprimality.html#4239" class="Function"
+      >gcd&#8242;-gcd</a
+      ><a name="4293"
+      > </a
+      ><a name="4294" class="Symbol"
+      >(</a
+      ><a name="4295" href="Data.Nat.Coprimality.html#3690" class="InductiveConstructor"
+      >gcd-*</a
+      ><a name="4300"
+      > </a
+      ><a name="4301" href="Data.Nat.Coprimality.html#4301" class="Bound"
+      >q&#8321;</a
+      ><a name="4303"
+      > </a
+      ><a name="4304" href="Data.Nat.Coprimality.html#4304" class="Bound"
+      >q&#8322;</a
+      ><a name="4306"
+      > </a
+      ><a name="4307" href="Data.Nat.Coprimality.html#4307" class="Bound"
+      >c</a
+      ><a name="4308" class="Symbol"
+      >)</a
+      ><a name="4309"
+      > </a
+      ><a name="4310" class="Symbol"
+      >=</a
+      ><a name="4311"
+      > </a
+      ><a name="4312" href="Data.Nat.GCD.html#854" class="InductiveConstructor"
+      >GCD.is</a
+      ><a name="4318"
+      > </a
+      ><a name="4319" class="Symbol"
+      >(</a
+      ><a name="4320" href="Data.Nat.Divisibility.html#3585" class="Function"
+      >&#8739;-*</a
+      ><a name="4323"
+      > </a
+      ><a name="4324" href="Data.Nat.Coprimality.html#4301" class="Bound"
+      >q&#8321;</a
+      ><a name="4326"
+      > </a
+      ><a name="4327" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4328"
+      > </a
+      ><a name="4329" href="Data.Nat.Divisibility.html#3585" class="Function"
+      >&#8739;-*</a
+      ><a name="4332"
+      > </a
+      ><a name="4333" href="Data.Nat.Coprimality.html#4304" class="Bound"
+      >q&#8322;</a
+      ><a name="4335" class="Symbol"
+      >)</a
+      ><a name="4336"
+      > </a
+      ><a name="4337" class="Symbol"
+      >(</a
+      ><a name="4338" href="Data.Nat.Coprimality.html#3315" class="Function"
+      >coprime-factors</a
+      ><a name="4353"
+      > </a
+      ><a name="4354" href="Data.Nat.Coprimality.html#4307" class="Bound"
+      >c</a
+      ><a name="4355" class="Symbol"
+      >)</a
+      ><a name="4356"
+      >
+
+</a
+      ><a name="4358" class="Comment"
+      >-- Calculates (the alternative representation of) the gcd of the</a
+      ><a name="4422"
+      >
+</a
+      ><a name="4423" class="Comment"
+      >-- arguments.</a
+      ><a name="4436"
+      >
+
+</a
+      ><a name="4438" href="Data.Nat.Coprimality.html#4438" class="Function"
+      >gcd&#8242;</a
+      ><a name="4442"
+      > </a
+      ><a name="4443" class="Symbol"
+      >:</a
+      ><a name="4444"
+      > </a
+      ><a name="4445" class="Symbol"
+      >&#8704;</a
+      ><a name="4446"
+      > </a
+      ><a name="4447" href="Data.Nat.Coprimality.html#4447" class="Bound"
+      >m</a
+      ><a name="4448"
+      > </a
+      ><a name="4449" href="Data.Nat.Coprimality.html#4449" class="Bound"
+      >n</a
+      ><a name="4450"
+      > </a
+      ><a name="4451" class="Symbol"
+      >&#8594;</a
+      ><a name="4452"
+      > </a
+      ><a name="4453" href="Data.Product.html#805" class="Function"
+      >&#8707;</a
+      ><a name="4454"
+      > </a
+      ><a name="4455" class="Symbol"
+      >&#955;</a
+      ><a name="4456"
+      > </a
+      ><a name="4457" href="Data.Nat.Coprimality.html#4457" class="Bound"
+      >d</a
+      ><a name="4458"
+      > </a
+      ><a name="4459" class="Symbol"
+      >&#8594;</a
+      ><a name="4460"
+      > </a
+      ><a name="4461" href="Data.Nat.Coprimality.html#3659" class="Datatype"
+      >GCD&#8242;</a
+      ><a name="4465"
+      > </a
+      ><a name="4466" href="Data.Nat.Coprimality.html#4447" class="Bound"
+      >m</a
+      ><a name="4467"
+      > </a
+      ><a name="4468" href="Data.Nat.Coprimality.html#4449" class="Bound"
+      >n</a
+      ><a name="4469"
+      > </a
+      ><a name="4470" href="Data.Nat.Coprimality.html#4457" class="Bound"
+      >d</a
+      ><a name="4471"
+      >
+</a
+      ><a name="4472" href="Data.Nat.Coprimality.html#4438" class="Function"
+      >gcd&#8242;</a
+      ><a name="4476"
+      > </a
+      ><a name="4477" href="Data.Nat.Coprimality.html#4477" class="Bound"
+      >m</a
+      ><a name="4478"
+      > </a
+      ><a name="4479" href="Data.Nat.Coprimality.html#4479" class="Bound"
+      >n</a
+      ><a name="4480"
+      > </a
+      ><a name="4481" class="Symbol"
+      >=</a
+      ><a name="4482"
+      > </a
+      ><a name="4483" href="Data.Product.html#1854" class="Function"
+      >Prod.map</a
+      ><a name="4491"
+      > </a
+      ><a name="4492" href="Function.html#1012" class="Function"
+      >id</a
+      ><a name="4494"
+      > </a
+      ><a name="4495" href="Data.Nat.Coprimality.html#3808" class="Function"
+      >gcd-gcd&#8242;</a
+      ><a name="4503"
+      > </a
+      ><a name="4504" class="Symbol"
+      >(</a
+      ><a name="4505" href="Data.Nat.GCD.html#5932" class="Function"
+      >gcd</a
+      ><a name="4508"
+      > </a
+      ><a name="4509" href="Data.Nat.Coprimality.html#4477" class="Bound"
+      >m</a
+      ><a name="4510"
+      > </a
+      ><a name="4511" href="Data.Nat.Coprimality.html#4479" class="Bound"
+      >n</a
+      ><a name="4512" class="Symbol"
+      >)</a
+      ><a name="4513"
+      >
+
+</a
+      ><a name="4515" class="Comment"
+      >-- Primality implies coprimality.</a
+      ><a name="4548"
+      >
+
+</a
+      ><a name="4550" href="Data.Nat.Coprimality.html#4550" class="Function"
+      >prime&#8658;coprime</a
+      ><a name="4563"
+      > </a
+      ><a name="4564" class="Symbol"
+      >:</a
+      ><a name="4565"
+      > </a
+      ><a name="4566" class="Symbol"
+      >&#8704;</a
+      ><a name="4567"
+      > </a
+      ><a name="4568" href="Data.Nat.Coprimality.html#4568" class="Bound"
+      >m</a
+      ><a name="4569"
+      > </a
+      ><a name="4570" class="Symbol"
+      >&#8594;</a
+      ><a name="4571"
+      > </a
+      ><a name="4572" href="Data.Nat.Primality.html#533" class="Function"
+      >Prime</a
+      ><a name="4577"
+      > </a
+      ><a name="4578" href="Data.Nat.Coprimality.html#4568" class="Bound"
+      >m</a
+      ><a name="4579"
+      > </a
+      ><a name="4580" class="Symbol"
+      >&#8594;</a
+      ><a name="4581"
+      >
+                </a
+      ><a name="4598" class="Symbol"
+      >&#8704;</a
+      ><a name="4599"
+      > </a
+      ><a name="4600" href="Data.Nat.Coprimality.html#4600" class="Bound"
+      >n</a
+      ><a name="4601"
+      > </a
+      ><a name="4602" class="Symbol"
+      >&#8594;</a
+      ><a name="4603"
+      > </a
+      ><a name="4604" class="Number"
+      >0</a
+      ><a name="4605"
+      > </a
+      ><a name="4606" href="Data.Nat.html#901" class="Function Operator"
+      >&lt;</a
+      ><a name="4607"
+      > </a
+      ><a name="4608" href="Data.Nat.Coprimality.html#4600" class="Bound"
+      >n</a
+      ><a name="4609"
+      > </a
+      ><a name="4610" class="Symbol"
+      >&#8594;</a
+      ><a name="4611"
+      > </a
+      ><a name="4612" href="Data.Nat.Coprimality.html#4600" class="Bound"
+      >n</a
+      ><a name="4613"
+      > </a
+      ><a name="4614" href="Data.Nat.html#901" class="Function Operator"
+      >&lt;</a
+      ><a name="4615"
+      > </a
+      ><a name="4616" href="Data.Nat.Coprimality.html#4568" class="Bound"
+      >m</a
+      ><a name="4617"
+      > </a
+      ><a name="4618" class="Symbol"
+      >&#8594;</a
+      ><a name="4619"
+      > </a
+      ><a name="4620" href="Data.Nat.Coprimality.html#958" class="Function"
+      >Coprime</a
+      ><a name="4627"
+      > </a
+      ><a name="4628" href="Data.Nat.Coprimality.html#4568" class="Bound"
+      >m</a
+      ><a name="4629"
+      > </a
+      ><a name="4630" href="Data.Nat.Coprimality.html#4600" class="Bound"
+      >n</a
+      ><a name="4631"
+      >
+</a
+      ><a name="4632" href="Data.Nat.Coprimality.html#4550" class="Function"
+      >prime&#8658;coprime</a
+      ><a name="4645"
+      > </a
+      ><a name="4646" class="Number"
+      >0</a
+      ><a name="4647"
+      >             </a
+      ><a name="4660" class="Symbol"
+      >()</a
+      ><a name="4662"
+      > </a
+      ><a name="4663" class="Symbol"
+      >_</a
+      ><a name="4664"
+      > </a
+      ><a name="4665" class="Symbol"
+      >_</a
+      ><a name="4666"
+      >  </a
+      ><a name="4668" class="Symbol"
+      >_</a
+      ><a name="4669"
+      >     </a
+      ><a name="4674" class="Symbol"
+      >_</a
+      ><a name="4675"
+      >
+</a
+      ><a name="4676" href="Data.Nat.Coprimality.html#4550" class="Function"
+      >prime&#8658;coprime</a
+      ><a name="4689"
+      > </a
+      ><a name="4690" class="Number"
+      >1</a
+      ><a name="4691"
+      >             </a
+      ><a name="4704" class="Symbol"
+      >()</a
+      ><a name="4706"
+      > </a
+      ><a name="4707" class="Symbol"
+      >_</a
+      ><a name="4708"
+      > </a
+      ><a name="4709" class="Symbol"
+      >_</a
+      ><a name="4710"
+      >  </a
+      ><a name="4712" class="Symbol"
+      >_</a
+      ><a name="4713"
+      >     </a
+      ><a name="4718" class="Symbol"
+      >_</a
+      ><a name="4719"
+      >
+</a
+      ><a name="4720" href="Data.Nat.Coprimality.html#4550" class="Function"
+      >prime&#8658;coprime</a
+      ><a name="4733"
+      > </a
+      ><a name="4734" class="Symbol"
+      >(</a
+      ><a name="4735" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="4738"
+      > </a
+      ><a name="4739" class="Symbol"
+      >(</a
+      ><a name="4740" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="4743"
+      > </a
+      ><a name="4744" href="Data.Nat.Coprimality.html#4744" class="Bound"
+      >m</a
+      ><a name="4745" class="Symbol"
+      >))</a
+      ><a name="4747"
+      > </a
+      ><a name="4748" class="Symbol"
+      >_</a
+      ><a name="4749"
+      >  </a
+      ><a name="4751" class="Number"
+      >0</a
+      ><a name="4752"
+      > </a
+      ><a name="4753" class="Symbol"
+      >()</a
+      ><a name="4755"
+      > </a
+      ><a name="4756" class="Symbol"
+      >_</a
+      ><a name="4757"
+      >     </a
+      ><a name="4762" class="Symbol"
+      >_</a
+      ><a name="4763"
+      >
+</a
+      ><a name="4764" href="Data.Nat.Coprimality.html#4550" class="Function"
+      >prime&#8658;coprime</a
+      ><a name="4777"
+      > </a
+      ><a name="4778" class="Symbol"
+      >(</a
+      ><a name="4779" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="4782"
+      > </a
+      ><a name="4783" class="Symbol"
+      >(</a
+      ><a name="4784" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="4787"
+      > </a
+      ><a name="4788" href="Data.Nat.Coprimality.html#4788" class="Bound"
+      >m</a
+      ><a name="4789" class="Symbol"
+      >))</a
+      ><a name="4791"
+      > </a
+      ><a name="4792" class="Symbol"
+      >_</a
+      ><a name="4793"
+      >  </a
+      ><a name="4795" class="Symbol"
+      >_</a
+      ><a name="4796"
+      > </a
+      ><a name="4797" class="Symbol"
+      >_</a
+      ><a name="4798"
+      >  </a
+      ><a name="4800" class="Symbol"
+      >_</a
+      ><a name="4801"
+      > </a
+      ><a name="4802" class="Symbol"
+      >{</a
+      ><a name="4803" class="Number"
+      >1</a
+      ><a name="4804" class="Symbol"
+      >}</a
+      ><a name="4805"
+      > </a
+      ><a name="4806" class="Symbol"
+      >_</a
+      ><a name="4807"
+      >                       </a
+      ><a name="4830" class="Symbol"
+      >=</a
+      ><a name="4831"
+      > </a
+      ><a name="4832" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="4836"
+      >
+</a
+      ><a name="4837" href="Data.Nat.Coprimality.html#4550" class="Function"
+      >prime&#8658;coprime</a
+      ><a name="4850"
+      > </a
+      ><a name="4851" class="Symbol"
+      >(</a
+      ><a name="4852" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="4855"
+      > </a
+      ><a name="4856" class="Symbol"
+      >(</a
+      ><a name="4857" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="4860"
+      > </a
+      ><a name="4861" href="Data.Nat.Coprimality.html#4861" class="Bound"
+      >m</a
+      ><a name="4862" class="Symbol"
+      >))</a
+      ><a name="4864"
+      > </a
+      ><a name="4865" href="Data.Nat.Coprimality.html#4865" class="Bound"
+      >p</a
+      ><a name="4866"
+      >  </a
+      ><a name="4868" class="Symbol"
+      >_</a
+      ><a name="4869"
+      > </a
+      ><a name="4870" class="Symbol"
+      >_</a
+      ><a name="4871"
+      >  </a
+      ><a name="4873" class="Symbol"
+      >_</a
+      ><a name="4874"
+      > </a
+      ><a name="4875" class="Symbol"
+      >{</a
+      ><a name="4876" class="Number"
+      >0</a
+      ><a name="4877" class="Symbol"
+      >}</a
+      ><a name="4878"
+      > </a
+      ><a name="4879" class="Symbol"
+      >(</a
+      ><a name="4880" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >divides</a
+      ><a name="4887"
+      > </a
+      ><a name="4888" href="Data.Nat.Coprimality.html#4888" class="Bound"
+      >q</a
+      ><a name="4889"
+      > </a
+      ><a name="4890" href="Data.Nat.Coprimality.html#4890" class="Bound"
+      >2+m&#8801;q*0</a
+      ><a name="4897"
+      > </a
+      ><a name="4898" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4899"
+      > </a
+      ><a name="4900" class="Symbol"
+      >_)</a
+      ><a name="4902"
+      > </a
+      ><a name="4903" class="Symbol"
+      >=</a
+      ><a name="4904"
+      >
+  </a
+      ><a name="4907" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="4913"
+      > </a
+      ><a name="4914" href="Function.html#1835" class="Function Operator"
+      >$</a
+      ><a name="4915"
+      > </a
+      ><a name="4916" href="Data.Nat.Properties.html#15579" class="Function"
+      >NatProp.i+1+j&#8802;i</a
+      ><a name="4931"
+      > </a
+      ><a name="4932" class="Number"
+      >0</a
+      ><a name="4933"
+      > </a
+      ><a name="4934" class="Symbol"
+      >(</a
+      ><a name="4935" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      >begin</a
+      ><a name="4940"
+      >
+    </a
+      ><a name="4945" class="Number"
+      >2</a
+      ><a name="4946"
+      > </a
+      ><a name="4947" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="4948"
+      > </a
+      ><a name="4949" href="Data.Nat.Coprimality.html#4861" class="Bound"
+      >m</a
+      ><a name="4950"
+      >  </a
+      ><a name="4952" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="4954"
+      > </a
+      ><a name="4955" href="Data.Nat.Coprimality.html#4890" class="Bound"
+      >2+m&#8801;q*0</a
+      ><a name="4962"
+      > </a
+      ><a name="4963" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="4964"
+      >
+    </a
+      ><a name="4969" href="Data.Nat.Coprimality.html#4888" class="Bound"
+      >q</a
+      ><a name="4970"
+      > </a
+      ><a name="4971" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="4972"
+      > </a
+      ><a name="4973" class="Number"
+      >0</a
+      ><a name="4974"
+      >  </a
+      ><a name="4976" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="4978"
+      > </a
+      ><a name="4979" href="Data.Product.html#539" class="Field"
+      >proj&#8322;</a
+      ><a name="4984"
+      > </a
+      ><a name="4985" href="Algebra.Structures.html#7647" class="Function"
+      >CS.zero</a
+      ><a name="4992"
+      > </a
+      ><a name="4993" href="Data.Nat.Coprimality.html#4888" class="Bound"
+      >q</a
+      ><a name="4994"
+      > </a
+      ><a name="4995" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="4996"
+      >
+    </a
+      ><a name="5001" class="Number"
+      >0</a
+      ><a name="5002"
+      >      </a
+      ><a name="5008" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >&#8718;</a
+      ><a name="5009" class="Symbol"
+      >)</a
+      ><a name="5010"
+      >
+  </a
+      ><a name="5013" class="Keyword"
+      >where</a
+      ><a name="5018"
+      > </a
+      ><a name="5019" class="Keyword"
+      >open</a
+      ><a name="5023"
+      > </a
+      ><a name="5024" href="Relation.Binary.PropositionalEquality.html#243" class="Module"
+      >PropEq.</a
+      ><a name="5031" href="Relation.Binary.PropositionalEquality.html#5746" class="Module"
+      >&#8801;-Reasoning</a
+      ><a name="5042"
+      >
+</a
+      ><a name="5043" href="Data.Nat.Coprimality.html#4550" class="Function"
+      >prime&#8658;coprime</a
+      ><a name="5056"
+      > </a
+      ><a name="5057" class="Symbol"
+      >(</a
+      ><a name="5058" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5061"
+      > </a
+      ><a name="5062" class="Symbol"
+      >(</a
+      ><a name="5063" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5066"
+      > </a
+      ><a name="5067" href="Data.Nat.Coprimality.html#5067" class="Bound"
+      >m</a
+      ><a name="5068" class="Symbol"
+      >))</a
+      ><a name="5070"
+      > </a
+      ><a name="5071" href="Data.Nat.Coprimality.html#5071" class="Bound"
+      >p</a
+      ><a name="5072"
+      > </a
+      ><a name="5073" class="Symbol"
+      >(</a
+      ><a name="5074" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5077"
+      > </a
+      ><a name="5078" href="Data.Nat.Coprimality.html#5078" class="Bound"
+      >n</a
+      ><a name="5079" class="Symbol"
+      >)</a
+      ><a name="5080"
+      > </a
+      ><a name="5081" class="Symbol"
+      >_</a
+      ><a name="5082"
+      > </a
+      ><a name="5083" href="Data.Nat.Coprimality.html#5083" class="Bound"
+      >1+n&lt;2+m</a
+      ><a name="5090"
+      > </a
+      ><a name="5091" class="Symbol"
+      >{</a
+      ><a name="5092" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5095"
+      > </a
+      ><a name="5096" class="Symbol"
+      >(</a
+      ><a name="5097" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5100"
+      > </a
+      ><a name="5101" href="Data.Nat.Coprimality.html#5101" class="Bound"
+      >i</a
+      ><a name="5102" class="Symbol"
+      >)}</a
+      ><a name="5104"
+      >
+              </a
+      ><a name="5119" class="Symbol"
+      >(</a
+      ><a name="5120" href="Data.Nat.Coprimality.html#5120" class="Bound"
+      >2+i&#8739;2+m</a
+      ><a name="5127"
+      > </a
+      ><a name="5128" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="5129"
+      > </a
+      ><a name="5130" href="Data.Nat.Coprimality.html#5130" class="Bound"
+      >2+i&#8739;1+n</a
+      ><a name="5137" class="Symbol"
+      >)</a
+      ><a name="5138"
+      > </a
+      ><a name="5139" class="Symbol"
+      >=</a
+      ><a name="5140"
+      >
+  </a
+      ><a name="5143" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="5149"
+      > </a
+      ><a name="5150" class="Symbol"
+      >(</a
+      ><a name="5151" href="Data.Nat.Coprimality.html#5071" class="Bound"
+      >p</a
+      ><a name="5152"
+      > </a
+      ><a name="5153" class="Symbol"
+      >_</a
+      ><a name="5154"
+      > </a
+      ><a name="5155" href="Data.Nat.Coprimality.html#5320" class="Function"
+      >2+i&#8242;&#8739;2+m</a
+      ><a name="5163" class="Symbol"
+      >)</a
+      ><a name="5164"
+      >
+  </a
+      ><a name="5167" class="Keyword"
+      >where</a
+      ><a name="5172"
+      >
+  </a
+      ><a name="5175" href="Data.Nat.Coprimality.html#5175" class="Function"
+      >i&lt;m</a
+      ><a name="5178"
+      > </a
+      ><a name="5179" class="Symbol"
+      >:</a
+      ><a name="5180"
+      > </a
+      ><a name="5181" href="Data.Nat.Coprimality.html#5101" class="Bound"
+      >i</a
+      ><a name="5182"
+      > </a
+      ><a name="5183" href="Data.Nat.html#901" class="Function Operator"
+      >&lt;</a
+      ><a name="5184"
+      > </a
+      ><a name="5185" href="Data.Nat.Coprimality.html#5067" class="Bound"
+      >m</a
+      ><a name="5186"
+      >
+  </a
+      ><a name="5189" href="Data.Nat.Coprimality.html#5175" class="Function"
+      >i&lt;m</a
+      ><a name="5192"
+      > </a
+      ><a name="5193" class="Symbol"
+      >=</a
+      ><a name="5194"
+      > </a
+      ><a name="5195" href="Data.Nat.html#3271" class="Function"
+      >&#8804;-pred</a
+      ><a name="5201"
+      > </a
+      ><a name="5202" href="Function.html#1835" class="Function Operator"
+      >$</a
+      ><a name="5203"
+      > </a
+      ><a name="5204" href="Data.Nat.html#3271" class="Function"
+      >&#8804;-pred</a
+      ><a name="5210"
+      > </a
+      ><a name="5211" class="Symbol"
+      >(</a
+      ><a name="5212" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      >begin</a
+      ><a name="5217"
+      >
+    </a
+      ><a name="5222" class="Number"
+      >3</a
+      ><a name="5223"
+      > </a
+      ><a name="5224" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="5225"
+      > </a
+      ><a name="5226" href="Data.Nat.Coprimality.html#5101" class="Bound"
+      >i</a
+      ><a name="5227"
+      >  </a
+      ><a name="5229" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8804;&#10216;</a
+      ><a name="5231"
+      > </a
+      ><a name="5232" href="Data.Nat.html#856" class="InductiveConstructor"
+      >s&#8804;s</a
+      ><a name="5235"
+      > </a
+      ><a name="5236" class="Symbol"
+      >(</a
+      ><a name="5237" href="Data.Nat.Divisibility.html#1351" class="Function"
+      >&#8739;&#8658;&#8804;</a
+      ><a name="5240"
+      > </a
+      ><a name="5241" href="Data.Nat.Coprimality.html#5130" class="Bound"
+      >2+i&#8739;1+n</a
+      ><a name="5248" class="Symbol"
+      >)</a
+      ><a name="5249"
+      > </a
+      ><a name="5250" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="5251"
+      >
+    </a
+      ><a name="5256" class="Number"
+      >2</a
+      ><a name="5257"
+      > </a
+      ><a name="5258" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="5259"
+      > </a
+      ><a name="5260" href="Data.Nat.Coprimality.html#5078" class="Bound"
+      >n</a
+      ><a name="5261"
+      >  </a
+      ><a name="5263" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8804;&#10216;</a
+      ><a name="5265"
+      > </a
+      ><a name="5266" href="Data.Nat.Coprimality.html#5083" class="Bound"
+      >1+n&lt;2+m</a
+      ><a name="5273"
+      > </a
+      ><a name="5274" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="5275"
+      >
+    </a
+      ><a name="5280" class="Number"
+      >2</a
+      ><a name="5281"
+      > </a
+      ><a name="5282" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="5283"
+      > </a
+      ><a name="5284" href="Data.Nat.Coprimality.html#5067" class="Bound"
+      >m</a
+      ><a name="5285"
+      >  </a
+      ><a name="5287" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >&#8718;</a
+      ><a name="5288" class="Symbol"
+      >)</a
+      ><a name="5289"
+      >
+    </a
+      ><a name="5294" class="Keyword"
+      >where</a
+      ><a name="5299"
+      > </a
+      ><a name="5300" class="Keyword"
+      >open</a
+      ><a name="5304"
+      > </a
+      ><a name="5305" href="Data.Nat.html#5720" class="Module"
+      >&#8804;-Reasoning</a
+      ><a name="5316"
+      >
+
+  </a
+      ><a name="5320" href="Data.Nat.Coprimality.html#5320" class="Function"
+      >2+i&#8242;&#8739;2+m</a
+      ><a name="5328"
+      > </a
+      ><a name="5329" class="Symbol"
+      >:</a
+      ><a name="5330"
+      > </a
+      ><a name="5331" class="Number"
+      >2</a
+      ><a name="5332"
+      > </a
+      ><a name="5333" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="5334"
+      > </a
+      ><a name="5335" href="Data.Fin.html#901" class="Function"
+      >to&#8469;</a
+      ><a name="5338"
+      > </a
+      ><a name="5339" class="Symbol"
+      >(</a
+      ><a name="5340" href="Data.Fin.html#1291" class="Function"
+      >from&#8469;&#8804;</a
+      ><a name="5346"
+      > </a
+      ><a name="5347" href="Data.Nat.Coprimality.html#5175" class="Function"
+      >i&lt;m</a
+      ><a name="5350" class="Symbol"
+      >)</a
+      ><a name="5351"
+      > </a
+      ><a name="5352" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="5353"
+      > </a
+      ><a name="5354" class="Number"
+      >2</a
+      ><a name="5355"
+      > </a
+      ><a name="5356" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="5357"
+      > </a
+      ><a name="5358" href="Data.Nat.Coprimality.html#5067" class="Bound"
+      >m</a
+      ><a name="5359"
+      >
+  </a
+      ><a name="5362" href="Data.Nat.Coprimality.html#5320" class="Function"
+      >2+i&#8242;&#8739;2+m</a
+      ><a name="5370"
+      > </a
+      ><a name="5371" class="Symbol"
+      >=</a
+      ><a name="5372"
+      > </a
+      ><a name="5373" href="Relation.Binary.PropositionalEquality.Core.html#705" class="Function"
+      >PropEq.subst</a
+      ><a name="5385"
+      >
+    </a
+      ><a name="5390" class="Symbol"
+      >(&#955;</a
+      ><a name="5392"
+      > </a
+      ><a name="5393" href="Data.Nat.Coprimality.html#5393" class="Bound"
+      >j</a
+      ><a name="5394"
+      > </a
+      ><a name="5395" class="Symbol"
+      >&#8594;</a
+      ><a name="5396"
+      > </a
+      ><a name="5397" href="Data.Nat.Coprimality.html#5393" class="Bound"
+      >j</a
+      ><a name="5398"
+      > </a
+      ><a name="5399" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="5400"
+      > </a
+      ><a name="5401" class="Number"
+      >2</a
+      ><a name="5402"
+      > </a
+      ><a name="5403" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="5404"
+      > </a
+      ><a name="5405" href="Data.Nat.Coprimality.html#5067" class="Bound"
+      >m</a
+      ><a name="5406" class="Symbol"
+      >)</a
+      ><a name="5407"
+      >
+    </a
+      ><a name="5412" class="Symbol"
+      >(</a
+      ><a name="5413" href="Relation.Binary.PropositionalEquality.Core.html#565" class="Function"
+      >PropEq.sym</a
+      ><a name="5423"
+      > </a
+      ><a name="5424" class="Symbol"
+      >(</a
+      ><a name="5425" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >PropEq.cong</a
+      ><a name="5436"
+      > </a
+      ><a name="5437" class="Symbol"
+      >(</a
+      ><a name="5438" href="Data.Nat.html#2168" class="Primitive Operator"
+      >_+_</a
+      ><a name="5441"
+      > </a
+      ><a name="5442" class="Number"
+      >2</a
+      ><a name="5443" class="Symbol"
+      >)</a
+      ><a name="5444"
+      > </a
+      ><a name="5445" class="Symbol"
+      >(</a
+      ><a name="5446" href="Data.Fin.Properties.html#4558" class="Function"
+      >FinProp.to&#8469;-from&#8469;&#8804;</a
+      ><a name="5464"
+      > </a
+      ><a name="5465" href="Data.Nat.Coprimality.html#5175" class="Function"
+      >i&lt;m</a
+      ><a name="5468" class="Symbol"
+      >)))</a
+      ><a name="5471"
+      >
+    </a
+      ><a name="5476" href="Data.Nat.Coprimality.html#5120" class="Bound"
+      >2+i&#8739;2+m</a
+      ><a name="5483"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

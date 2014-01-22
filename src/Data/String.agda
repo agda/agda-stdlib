@@ -10,7 +10,7 @@ open import Data.List as List using (_∷_; []; List)
 open import Data.Vec as Vec using (Vec)
 open import Data.Colist as Colist using (Colist)
 open import Data.Char as Char using (Char)
-open import Data.Bool using (Bool; true; false)
+open import Data.Bool.Minimal using (Bool; true; false)
 open import Function
 open import Relation.Nullary
 open import Relation.Nullary.Decidable
@@ -20,16 +20,9 @@ import Relation.Binary.On as On
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_)
 open import Relation.Binary.PropositionalEquality.TrustMe
 
-------------------------------------------------------------------------
--- Types
-
--- Finite strings.
-
-postulate
-  String : Set
-
-{-# BUILTIN STRING String #-}
-{-# COMPILED_TYPE String String #-}
+import Data.String.Core as Core
+open Core public using (String)
+open Core
 
 -- Possibly infinite strings.
 
@@ -38,13 +31,6 @@ Costring = Colist Char
 
 ------------------------------------------------------------------------
 -- Operations
-
-private
- primitive
-  primStringAppend   : String → String → String
-  primStringToList   : String → List Char
-  primStringFromList : List Char → String
-  primStringEquality : String → String → Bool
 
 infixr 5 _++_
 
@@ -72,6 +58,9 @@ toCostring = Colist.fromList ∘ toList
 unlines : List String → String
 unlines []       = ""
 unlines (x ∷ xs) = x ++ "\n" ++ unlines xs
+
+show : String → String
+show = primShowString
 
 -- Informative equality test.
 

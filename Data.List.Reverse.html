@@ -1,0 +1,1054 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.List.Reverse</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Reverse view</a
+      ><a name="121"
+      >
+</a
+      ><a name="122" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="194"
+      >
+
+</a
+      ><a name="196" class="Keyword"
+      >module</a
+      ><a name="202"
+      > </a
+      ><a name="203" href="Data.List.Reverse.html#1" class="Module"
+      >Data.List.Reverse</a
+      ><a name="220"
+      > </a
+      ><a name="221" class="Keyword"
+      >where</a
+      ><a name="226"
+      >
+
+</a
+      ><a name="228" class="Keyword"
+      >open</a
+      ><a name="232"
+      > </a
+      ><a name="233" class="Keyword"
+      >import</a
+      ><a name="239"
+      > </a
+      ><a name="240" href="Data.List.html#1" class="Module"
+      >Data.List</a
+      ><a name="249"
+      >
+</a
+      ><a name="250" class="Keyword"
+      >open</a
+      ><a name="254"
+      > </a
+      ><a name="255" class="Keyword"
+      >import</a
+      ><a name="261"
+      > </a
+      ><a name="262" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="270"
+      >
+</a
+      ><a name="271" class="Keyword"
+      >import</a
+      ><a name="277"
+      > </a
+      ><a name="278" href="Data.Nat.Properties.html#1" class="Module"
+      >Data.Nat.Properties</a
+      ><a name="297"
+      > </a
+      ><a name="298" class="Symbol"
+      >as</a
+      ><a name="300"
+      > </a
+      ><a name="301" class="Module"
+      >Nat</a
+      ><a name="304"
+      >
+</a
+      ><a name="305" class="Keyword"
+      >open</a
+      ><a name="309"
+      > </a
+      ><a name="310" class="Keyword"
+      >import</a
+      ><a name="316"
+      > </a
+      ><a name="317" href="Induction.Nat.html#1" class="Module"
+      >Induction.Nat</a
+      ><a name="330"
+      >
+</a
+      ><a name="331" class="Keyword"
+      >open</a
+      ><a name="335"
+      > </a
+      ><a name="336" class="Keyword"
+      >import</a
+      ><a name="342"
+      > </a
+      ><a name="343" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="380"
+      >
+
+</a
+      ><a name="382" class="Comment"
+      >-- If you want to traverse a list from the end, then you can use the</a
+      ><a name="450"
+      >
+</a
+      ><a name="451" class="Comment"
+      >-- reverse view of it.</a
+      ><a name="473"
+      >
+
+</a
+      ><a name="475" class="Keyword"
+      >infixl</a
+      ><a name="481"
+      > </a
+      ><a name="482" class="Number"
+      >5</a
+      ><a name="483"
+      > _&#8758;_&#8758;&#691;_
+
+</a
+      ><a name="492" class="Keyword"
+      >data</a
+      ><a name="496"
+      > </a
+      ><a name="497" href="Data.List.Reverse.html#497" class="Datatype"
+      >Reverse</a
+      ><a name="504"
+      > </a
+      ><a name="505" class="Symbol"
+      >{</a
+      ><a name="506" href="Data.List.Reverse.html#506" class="Bound"
+      >A</a
+      ><a name="507"
+      > </a
+      ><a name="508" class="Symbol"
+      >:</a
+      ><a name="509"
+      > </a
+      ><a name="510" class="PrimitiveType"
+      >Set</a
+      ><a name="513" class="Symbol"
+      >}</a
+      ><a name="514"
+      > </a
+      ><a name="515" class="Symbol"
+      >:</a
+      ><a name="516"
+      > </a
+      ><a name="517" href="Data.List.html#725" class="Datatype"
+      >List</a
+      ><a name="521"
+      > </a
+      ><a name="522" href="Data.List.Reverse.html#506" class="Bound"
+      >A</a
+      ><a name="523"
+      > </a
+      ><a name="524" class="Symbol"
+      >&#8594;</a
+      ><a name="525"
+      > </a
+      ><a name="526" class="PrimitiveType"
+      >Set</a
+      ><a name="529"
+      > </a
+      ><a name="530" class="Keyword"
+      >where</a
+      ><a name="535"
+      >
+  </a
+      ><a name="538" href="Data.List.Reverse.html#538" class="InductiveConstructor"
+      >[]</a
+      ><a name="540"
+      >     </a
+      ><a name="545" class="Symbol"
+      >:</a
+      ><a name="546"
+      > </a
+      ><a name="547" href="Data.List.Reverse.html#497" class="Datatype"
+      >Reverse</a
+      ><a name="554"
+      > </a
+      ><a name="555" href="Data.List.html#762" class="InductiveConstructor"
+      >[]</a
+      ><a name="557"
+      >
+  </a
+      ><a name="560" href="Data.List.Reverse.html#560" class="InductiveConstructor Operator"
+      >_&#8758;_&#8758;&#691;_</a
+      ><a name="566"
+      > </a
+      ><a name="567" class="Symbol"
+      >:</a
+      ><a name="568"
+      > </a
+      ><a name="569" class="Symbol"
+      >&#8704;</a
+      ><a name="570"
+      > </a
+      ><a name="571" href="Data.List.Reverse.html#571" class="Bound"
+      >xs</a
+      ><a name="573"
+      > </a
+      ><a name="574" class="Symbol"
+      >(</a
+      ><a name="575" href="Data.List.Reverse.html#575" class="Bound"
+      >rs</a
+      ><a name="577"
+      > </a
+      ><a name="578" class="Symbol"
+      >:</a
+      ><a name="579"
+      > </a
+      ><a name="580" href="Data.List.Reverse.html#497" class="Datatype"
+      >Reverse</a
+      ><a name="587"
+      > </a
+      ><a name="588" href="Data.List.Reverse.html#571" class="Bound"
+      >xs</a
+      ><a name="590" class="Symbol"
+      >)</a
+      ><a name="591"
+      > </a
+      ><a name="592" class="Symbol"
+      >(</a
+      ><a name="593" href="Data.List.Reverse.html#593" class="Bound"
+      >x</a
+      ><a name="594"
+      > </a
+      ><a name="595" class="Symbol"
+      >:</a
+      ><a name="596"
+      > </a
+      ><a name="597" href="Data.List.Reverse.html#506" class="Bound"
+      >A</a
+      ><a name="598" class="Symbol"
+      >)</a
+      ><a name="599"
+      > </a
+      ><a name="600" class="Symbol"
+      >&#8594;</a
+      ><a name="601"
+      > </a
+      ><a name="602" href="Data.List.Reverse.html#497" class="Datatype"
+      >Reverse</a
+      ><a name="609"
+      > </a
+      ><a name="610" class="Symbol"
+      >(</a
+      ><a name="611" href="Data.List.Reverse.html#571" class="Bound"
+      >xs</a
+      ><a name="613"
+      > </a
+      ><a name="614" href="Data.List.html#1269" class="Function Operator"
+      >&#8759;&#691;</a
+      ><a name="616"
+      > </a
+      ><a name="617" href="Data.List.Reverse.html#593" class="Bound"
+      >x</a
+      ><a name="618" class="Symbol"
+      >)</a
+      ><a name="619"
+      >
+
+</a
+      ><a name="621" href="Data.List.Reverse.html#621" class="Function"
+      >reverseView</a
+      ><a name="632"
+      > </a
+      ><a name="633" class="Symbol"
+      >:</a
+      ><a name="634"
+      > </a
+      ><a name="635" class="Symbol"
+      >&#8704;</a
+      ><a name="636"
+      > </a
+      ><a name="637" class="Symbol"
+      >{</a
+      ><a name="638" href="Data.List.Reverse.html#638" class="Bound"
+      >A</a
+      ><a name="639" class="Symbol"
+      >}</a
+      ><a name="640"
+      > </a
+      ><a name="641" class="Symbol"
+      >(</a
+      ><a name="642" href="Data.List.Reverse.html#642" class="Bound"
+      >xs</a
+      ><a name="644"
+      > </a
+      ><a name="645" class="Symbol"
+      >:</a
+      ><a name="646"
+      > </a
+      ><a name="647" href="Data.List.html#725" class="Datatype"
+      >List</a
+      ><a name="651"
+      > </a
+      ><a name="652" href="Data.List.Reverse.html#638" class="Bound"
+      >A</a
+      ><a name="653" class="Symbol"
+      >)</a
+      ><a name="654"
+      > </a
+      ><a name="655" class="Symbol"
+      >&#8594;</a
+      ><a name="656"
+      > </a
+      ><a name="657" href="Data.List.Reverse.html#497" class="Datatype"
+      >Reverse</a
+      ><a name="664"
+      > </a
+      ><a name="665" href="Data.List.Reverse.html#642" class="Bound"
+      >xs</a
+      ><a name="667"
+      >
+</a
+      ><a name="668" href="Data.List.Reverse.html#621" class="Function"
+      >reverseView</a
+      ><a name="679"
+      > </a
+      ><a name="680" class="Symbol"
+      >{</a
+      ><a name="681" href="Data.List.Reverse.html#681" class="Bound"
+      >A</a
+      ><a name="682" class="Symbol"
+      >}</a
+      ><a name="683"
+      > </a
+      ><a name="684" href="Data.List.Reverse.html#684" class="Bound"
+      >xs</a
+      ><a name="686"
+      > </a
+      ><a name="687" class="Symbol"
+      >=</a
+      ><a name="688"
+      > </a
+      ><a name="689" href="Induction.WellFounded.html#1751" class="Function"
+      >&lt;-rec</a
+      ><a name="694"
+      > </a
+      ><a name="695" href="Data.List.Reverse.html#734" class="Function"
+      >Pred</a
+      ><a name="699"
+      > </a
+      ><a name="700" href="Data.List.Reverse.html#920" class="Function"
+      >rev</a
+      ><a name="703"
+      > </a
+      ><a name="704" class="Symbol"
+      >(</a
+      ><a name="705" href="Data.List.html#2989" class="Function"
+      >length</a
+      ><a name="711"
+      > </a
+      ><a name="712" href="Data.List.Reverse.html#684" class="Bound"
+      >xs</a
+      ><a name="714" class="Symbol"
+      >)</a
+      ><a name="715"
+      > </a
+      ><a name="716" href="Data.List.Reverse.html#684" class="Bound"
+      >xs</a
+      ><a name="718"
+      > </a
+      ><a name="719" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="723"
+      >
+  </a
+      ><a name="726" class="Keyword"
+      >where</a
+      ><a name="731"
+      >
+  </a
+      ><a name="734" href="Data.List.Reverse.html#734" class="Function"
+      >Pred</a
+      ><a name="738"
+      > </a
+      ><a name="739" class="Symbol"
+      >:</a
+      ><a name="740"
+      > </a
+      ><a name="741" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="742"
+      > </a
+      ><a name="743" class="Symbol"
+      >&#8594;</a
+      ><a name="744"
+      > </a
+      ><a name="745" class="PrimitiveType"
+      >Set</a
+      ><a name="748"
+      >
+  </a
+      ><a name="751" href="Data.List.Reverse.html#734" class="Function"
+      >Pred</a
+      ><a name="755"
+      > </a
+      ><a name="756" href="Data.List.Reverse.html#756" class="Bound"
+      >n</a
+      ><a name="757"
+      > </a
+      ><a name="758" class="Symbol"
+      >=</a
+      ><a name="759"
+      > </a
+      ><a name="760" class="Symbol"
+      >(</a
+      ><a name="761" href="Data.List.Reverse.html#761" class="Bound"
+      >xs</a
+      ><a name="763"
+      > </a
+      ><a name="764" class="Symbol"
+      >:</a
+      ><a name="765"
+      > </a
+      ><a name="766" href="Data.List.html#725" class="Datatype"
+      >List</a
+      ><a name="770"
+      > </a
+      ><a name="771" href="Data.List.Reverse.html#681" class="Bound"
+      >A</a
+      ><a name="772" class="Symbol"
+      >)</a
+      ><a name="773"
+      > </a
+      ><a name="774" class="Symbol"
+      >&#8594;</a
+      ><a name="775"
+      > </a
+      ><a name="776" href="Data.List.html#2989" class="Function"
+      >length</a
+      ><a name="782"
+      > </a
+      ><a name="783" href="Data.List.Reverse.html#761" class="Bound"
+      >xs</a
+      ><a name="785"
+      > </a
+      ><a name="786" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="787"
+      > </a
+      ><a name="788" href="Data.List.Reverse.html#756" class="Bound"
+      >n</a
+      ><a name="789"
+      > </a
+      ><a name="790" class="Symbol"
+      >&#8594;</a
+      ><a name="791"
+      > </a
+      ><a name="792" href="Data.List.Reverse.html#497" class="Datatype"
+      >Reverse</a
+      ><a name="799"
+      > </a
+      ><a name="800" href="Data.List.Reverse.html#761" class="Bound"
+      >xs</a
+      ><a name="802"
+      >
+
+  </a
+      ><a name="806" href="Data.List.Reverse.html#806" class="Function"
+      >lem</a
+      ><a name="809"
+      > </a
+      ><a name="810" class="Symbol"
+      >:</a
+      ><a name="811"
+      > </a
+      ><a name="812" class="Symbol"
+      >&#8704;</a
+      ><a name="813"
+      > </a
+      ><a name="814" href="Data.List.Reverse.html#814" class="Bound"
+      >xs</a
+      ><a name="816"
+      > </a
+      ><a name="817" class="Symbol"
+      >{</a
+      ><a name="818" href="Data.List.Reverse.html#818" class="Bound"
+      >x</a
+      ><a name="819"
+      > </a
+      ><a name="820" class="Symbol"
+      >:</a
+      ><a name="821"
+      > </a
+      ><a name="822" href="Data.List.Reverse.html#681" class="Bound"
+      >A</a
+      ><a name="823" class="Symbol"
+      >}</a
+      ><a name="824"
+      > </a
+      ><a name="825" class="Symbol"
+      >&#8594;</a
+      ><a name="826"
+      > </a
+      ><a name="827" href="Data.List.html#2989" class="Function"
+      >length</a
+      ><a name="833"
+      > </a
+      ><a name="834" href="Data.List.Reverse.html#814" class="Bound"
+      >xs</a
+      ><a name="836"
+      > </a
+      ><a name="837" href="Data.Nat.html#1450" class="Function Operator"
+      >&lt;&#8242;</a
+      ><a name="839"
+      > </a
+      ><a name="840" href="Data.List.html#2989" class="Function"
+      >length</a
+      ><a name="846"
+      > </a
+      ><a name="847" class="Symbol"
+      >(</a
+      ><a name="848" href="Data.List.Reverse.html#814" class="Bound"
+      >xs</a
+      ><a name="850"
+      > </a
+      ><a name="851" href="Data.List.html#1269" class="Function Operator"
+      >&#8759;&#691;</a
+      ><a name="853"
+      > </a
+      ><a name="854" href="Data.List.Reverse.html#818" class="Bound"
+      >x</a
+      ><a name="855" class="Symbol"
+      >)</a
+      ><a name="856"
+      >
+  </a
+      ><a name="859" href="Data.List.Reverse.html#806" class="Function"
+      >lem</a
+      ><a name="862"
+      > </a
+      ><a name="863" href="Data.List.html#762" class="InductiveConstructor"
+      >[]</a
+      ><a name="865"
+      >       </a
+      ><a name="872" class="Symbol"
+      >=</a
+      ><a name="873"
+      > </a
+      ><a name="874" href="Data.Nat.html#1361" class="InductiveConstructor"
+      >&#8804;&#8242;-refl</a
+      ><a name="881"
+      >
+  </a
+      ><a name="884" href="Data.List.Reverse.html#806" class="Function"
+      >lem</a
+      ><a name="887"
+      > </a
+      ><a name="888" class="Symbol"
+      >(</a
+      ><a name="889" href="Data.List.Reverse.html#889" class="Bound"
+      >x</a
+      ><a name="890"
+      > </a
+      ><a name="891" href="Data.List.html#777" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="892"
+      > </a
+      ><a name="893" href="Data.List.Reverse.html#893" class="Bound"
+      >xs</a
+      ><a name="895" class="Symbol"
+      >)</a
+      ><a name="896"
+      > </a
+      ><a name="897" class="Symbol"
+      >=</a
+      ><a name="898"
+      > </a
+      ><a name="899" href="Data.Nat.Properties.html#7068" class="Function"
+      >Nat.s&#8804;&#8242;s</a
+      ><a name="907"
+      > </a
+      ><a name="908" class="Symbol"
+      >(</a
+      ><a name="909" href="Data.List.Reverse.html#806" class="Function"
+      >lem</a
+      ><a name="912"
+      > </a
+      ><a name="913" href="Data.List.Reverse.html#893" class="Bound"
+      >xs</a
+      ><a name="915" class="Symbol"
+      >)</a
+      ><a name="916"
+      >
+
+  </a
+      ><a name="920" href="Data.List.Reverse.html#920" class="Function"
+      >rev</a
+      ><a name="923"
+      > </a
+      ><a name="924" class="Symbol"
+      >:</a
+      ><a name="925"
+      > </a
+      ><a name="926" class="Symbol"
+      >(</a
+      ><a name="927" href="Data.List.Reverse.html#927" class="Bound"
+      >n</a
+      ><a name="928"
+      > </a
+      ><a name="929" class="Symbol"
+      >:</a
+      ><a name="930"
+      > </a
+      ><a name="931" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="932" class="Symbol"
+      >)</a
+      ><a name="933"
+      > </a
+      ><a name="934" class="Symbol"
+      >&#8594;</a
+      ><a name="935"
+      > </a
+      ><a name="936" href="Induction.Nat.html#1443" class="Function"
+      >&lt;-Rec</a
+      ><a name="941"
+      > </a
+      ><a name="942" href="Data.List.Reverse.html#734" class="Function"
+      >Pred</a
+      ><a name="946"
+      > </a
+      ><a name="947" href="Data.List.Reverse.html#927" class="Bound"
+      >n</a
+      ><a name="948"
+      > </a
+      ><a name="949" class="Symbol"
+      >&#8594;</a
+      ><a name="950"
+      > </a
+      ><a name="951" href="Data.List.Reverse.html#734" class="Function"
+      >Pred</a
+      ><a name="955"
+      > </a
+      ><a name="956" href="Data.List.Reverse.html#927" class="Bound"
+      >n</a
+      ><a name="957"
+      >
+  </a
+      ><a name="960" href="Data.List.Reverse.html#920" class="Function"
+      >rev</a
+      ><a name="963"
+      > </a
+      ><a name="964" href="Data.List.Reverse.html#964" class="Bound"
+      >n</a
+      ><a name="965"
+      >                   </a
+      ><a name="984" href="Data.List.Reverse.html#984" class="Bound"
+      >rec</a
+      ><a name="987"
+      > </a
+      ><a name="988" href="Data.List.Reverse.html#988" class="Bound"
+      >xs</a
+      ><a name="990"
+      >         </a
+      ><a name="999" href="Data.List.Reverse.html#999" class="Bound"
+      >eq</a
+      ><a name="1001"
+      >   </a
+      ><a name="1004" class="Keyword"
+      >with</a
+      ><a name="1008"
+      > </a
+      ><a name="1009" href="Data.List.html#5837" class="Function"
+      >initLast</a
+      ><a name="1017"
+      > </a
+      ><a name="1018" href="Data.List.Reverse.html#988" class="Bound"
+      >xs</a
+      ><a name="1020"
+      >
+  </a
+      ><a name="1023" href="Data.List.Reverse.html#920" class="Function"
+      >rev</a
+      ><a name="1026"
+      > </a
+      ><a name="1027" href="Data.List.Reverse.html#1027" class="Bound"
+      >n</a
+      ><a name="1028"
+      >                   </a
+      ><a name="1047" href="Data.List.Reverse.html#1047" class="Bound"
+      >rec</a
+      ><a name="1050"
+      > </a
+      ><a name="1051" class="DottedPattern Symbol"
+      >.</a
+      ><a name="1052" href="Data.List.html#762" class="DottedPattern InductiveConstructor"
+      >[]</a
+      ><a name="1054"
+      >        </a
+      ><a name="1062" href="Data.List.Reverse.html#1062" class="Bound"
+      >eq</a
+      ><a name="1064"
+      >   </a
+      ><a name="1067" class="Symbol"
+      >|</a
+      ><a name="1068"
+      > </a
+      ><a name="1069" href="Data.List.html#5763" class="InductiveConstructor"
+      >[]</a
+      ><a name="1071"
+      >       </a
+      ><a name="1078" class="Symbol"
+      >=</a
+      ><a name="1079"
+      > </a
+      ><a name="1080" href="Data.List.Reverse.html#538" class="InductiveConstructor"
+      >[]</a
+      ><a name="1082"
+      >
+  </a
+      ><a name="1085" href="Data.List.Reverse.html#920" class="Function"
+      >rev</a
+      ><a name="1088"
+      > </a
+      ><a name="1089" class="DottedPattern Symbol"
+      >.(</a
+      ><a name="1091" href="Data.List.html#2989" class="DottedPattern Function"
+      >length</a
+      ><a name="1097"
+      > </a
+      ><a name="1098" class="DottedPattern Symbol"
+      >(</a
+      ><a name="1099" href="Data.List.Reverse.html#1131" class="DottedPattern Bound"
+      >xs</a
+      ><a name="1101"
+      > </a
+      ><a name="1102" href="Data.List.html#1269" class="DottedPattern Function Operator"
+      >&#8759;&#691;</a
+      ><a name="1104"
+      > </a
+      ><a name="1105" href="Data.List.Reverse.html#1138" class="DottedPattern Bound"
+      >x</a
+      ><a name="1106" class="DottedPattern Symbol"
+      >))</a
+      ><a name="1108"
+      > </a
+      ><a name="1109" href="Data.List.Reverse.html#1109" class="Bound"
+      >rec</a
+      ><a name="1112"
+      > </a
+      ><a name="1113" class="DottedPattern Symbol"
+      >.(</a
+      ><a name="1115" href="Data.List.Reverse.html#1131" class="DottedPattern Bound"
+      >xs</a
+      ><a name="1117"
+      > </a
+      ><a name="1118" href="Data.List.html#1269" class="DottedPattern Function Operator"
+      >&#8759;&#691;</a
+      ><a name="1120"
+      > </a
+      ><a name="1121" href="Data.List.Reverse.html#1138" class="DottedPattern Bound"
+      >x</a
+      ><a name="1122" class="DottedPattern Symbol"
+      >)</a
+      ><a name="1123"
+      > </a
+      ><a name="1124" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1128"
+      > </a
+      ><a name="1129" class="Symbol"
+      >|</a
+      ><a name="1130"
+      > </a
+      ><a name="1131" href="Data.List.Reverse.html#1131" class="Bound"
+      >xs</a
+      ><a name="1133"
+      > </a
+      ><a name="1134" href="Data.List.html#5785" class="InductiveConstructor Operator"
+      >&#8759;&#691;'</a
+      ><a name="1137"
+      > </a
+      ><a name="1138" href="Data.List.Reverse.html#1138" class="Bound"
+      >x</a
+      ><a name="1139"
+      >
+    </a
+      ><a name="1144" class="Keyword"
+      >with</a
+      ><a name="1148"
+      > </a
+      ><a name="1149" href="Data.List.Reverse.html#1109" class="Bound"
+      >rec</a
+      ><a name="1152"
+      > </a
+      ><a name="1153" class="Symbol"
+      >(</a
+      ><a name="1154" href="Data.List.html#2989" class="Function"
+      >length</a
+      ><a name="1160"
+      > </a
+      ><a name="1161" href="Data.List.Reverse.html#1131" class="Bound"
+      >xs</a
+      ><a name="1163" class="Symbol"
+      >)</a
+      ><a name="1164"
+      > </a
+      ><a name="1165" class="Symbol"
+      >(</a
+      ><a name="1166" href="Data.List.Reverse.html#806" class="Function"
+      >lem</a
+      ><a name="1169"
+      > </a
+      ><a name="1170" href="Data.List.Reverse.html#1131" class="Bound"
+      >xs</a
+      ><a name="1172" class="Symbol"
+      >)</a
+      ><a name="1173"
+      > </a
+      ><a name="1174" href="Data.List.Reverse.html#1131" class="Bound"
+      >xs</a
+      ><a name="1176"
+      > </a
+      ><a name="1177" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1181"
+      >
+  </a
+      ><a name="1184" href="Data.List.Reverse.html#920" class="Function"
+      >rev</a
+      ><a name="1187"
+      > </a
+      ><a name="1188" class="DottedPattern Symbol"
+      >._</a
+      ><a name="1190"
+      > </a
+      ><a name="1191" href="Data.List.Reverse.html#1191" class="Bound"
+      >rec</a
+      ><a name="1194"
+      > </a
+      ><a name="1195" class="DottedPattern Symbol"
+      >.(</a
+      ><a name="1197" class="DottedPattern InductiveConstructor"
+      >[]</a
+      ><a name="1199"
+      >      </a
+      ><a name="1205" href="Data.List.html#1269" class="DottedPattern Function Operator"
+      >&#8759;&#691;</a
+      ><a name="1207"
+      > </a
+      ><a name="1208" href="Data.List.Reverse.html#1225" class="DottedPattern Bound"
+      >x</a
+      ><a name="1209" class="DottedPattern Symbol"
+      >)</a
+      ><a name="1210"
+      > </a
+      ><a name="1211" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1215"
+      > </a
+      ><a name="1216" class="Symbol"
+      >|</a
+      ><a name="1217"
+      > </a
+      ><a name="1218" class="DottedPattern Symbol"
+      >._</a
+      ><a name="1220"
+      > </a
+      ><a name="1221" href="Data.List.html#5785" class="InductiveConstructor Operator"
+      >&#8759;&#691;'</a
+      ><a name="1224"
+      > </a
+      ><a name="1225" href="Data.List.Reverse.html#1225" class="Bound"
+      >x</a
+      ><a name="1226"
+      > </a
+      ><a name="1227" class="Symbol"
+      >|</a
+      ><a name="1228"
+      > </a
+      ><a name="1229" href="Data.List.Reverse.html#538" class="InductiveConstructor"
+      >[]</a
+      ><a name="1231"
+      > </a
+      ><a name="1232" class="Symbol"
+      >=</a
+      ><a name="1233"
+      > </a
+      ><a name="1234" class="Symbol"
+      >_</a
+      ><a name="1235"
+      > </a
+      ><a name="1236" href="Data.List.Reverse.html#560" class="InductiveConstructor Operator"
+      >&#8758;</a
+      ><a name="1237"
+      > </a
+      ><a name="1238" href="Data.List.Reverse.html#538" class="InductiveConstructor"
+      >[]</a
+      ><a name="1240"
+      > </a
+      ><a name="1241" href="Data.List.Reverse.html#560" class="InductiveConstructor Operator"
+      >&#8758;&#691;</a
+      ><a name="1243"
+      > </a
+      ><a name="1244" href="Data.List.Reverse.html#1225" class="Bound"
+      >x</a
+      ><a name="1245"
+      >
+  </a
+      ><a name="1248" href="Data.List.Reverse.html#920" class="Function"
+      >rev</a
+      ><a name="1251"
+      > </a
+      ><a name="1252" class="DottedPattern Symbol"
+      >._</a
+      ><a name="1254"
+      > </a
+      ><a name="1255" href="Data.List.Reverse.html#1255" class="Bound"
+      >rec</a
+      ><a name="1258"
+      > </a
+      ><a name="1259" class="DottedPattern Symbol"
+      >.(</a
+      ><a name="1261" href="Data.List.Reverse.html#1293" class="DottedPattern Bound"
+      >ys</a
+      ><a name="1263"
+      > </a
+      ><a name="1264" href="Data.List.html#1269" class="DottedPattern Function Operator"
+      >&#8759;&#691;</a
+      ><a name="1266"
+      > </a
+      ><a name="1267" href="Data.List.Reverse.html#1304" class="DottedPattern Bound"
+      >y</a
+      ><a name="1268"
+      > </a
+      ><a name="1269" href="Data.List.html#1269" class="DottedPattern Function Operator"
+      >&#8759;&#691;</a
+      ><a name="1271"
+      > </a
+      ><a name="1272" href="Data.List.Reverse.html#1289" class="DottedPattern Bound"
+      >x</a
+      ><a name="1273" class="DottedPattern Symbol"
+      >)</a
+      ><a name="1274"
+      > </a
+      ><a name="1275" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1279"
+      > </a
+      ><a name="1280" class="Symbol"
+      >|</a
+      ><a name="1281"
+      > </a
+      ><a name="1282" class="DottedPattern Symbol"
+      >._</a
+      ><a name="1284"
+      > </a
+      ><a name="1285" href="Data.List.html#5785" class="InductiveConstructor Operator"
+      >&#8759;&#691;'</a
+      ><a name="1288"
+      > </a
+      ><a name="1289" href="Data.List.Reverse.html#1289" class="Bound"
+      >x</a
+      ><a name="1290"
+      > </a
+      ><a name="1291" class="Symbol"
+      >|</a
+      ><a name="1292"
+      > </a
+      ><a name="1293" href="Data.List.Reverse.html#1293" class="Bound"
+      >ys</a
+      ><a name="1295"
+      > </a
+      ><a name="1296" href="Data.List.Reverse.html#560" class="InductiveConstructor Operator"
+      >&#8758;</a
+      ><a name="1297"
+      > </a
+      ><a name="1298" href="Data.List.Reverse.html#1298" class="Bound"
+      >rs</a
+      ><a name="1300"
+      > </a
+      ><a name="1301" href="Data.List.Reverse.html#560" class="InductiveConstructor Operator"
+      >&#8758;&#691;</a
+      ><a name="1303"
+      > </a
+      ><a name="1304" href="Data.List.Reverse.html#1304" class="Bound"
+      >y</a
+      ><a name="1305"
+      > </a
+      ><a name="1306" class="Symbol"
+      >=</a
+      ><a name="1307"
+      >
+    </a
+      ><a name="1312" class="Symbol"
+      >_</a
+      ><a name="1313"
+      > </a
+      ><a name="1314" href="Data.List.Reverse.html#560" class="InductiveConstructor Operator"
+      >&#8758;</a
+      ><a name="1315"
+      > </a
+      ><a name="1316" class="Symbol"
+      >(_</a
+      ><a name="1318"
+      > </a
+      ><a name="1319" href="Data.List.Reverse.html#560" class="InductiveConstructor Operator"
+      >&#8758;</a
+      ><a name="1320"
+      > </a
+      ><a name="1321" href="Data.List.Reverse.html#1298" class="Bound"
+      >rs</a
+      ><a name="1323"
+      > </a
+      ><a name="1324" href="Data.List.Reverse.html#560" class="InductiveConstructor Operator"
+      >&#8758;&#691;</a
+      ><a name="1326"
+      > </a
+      ><a name="1327" href="Data.List.Reverse.html#1304" class="Bound"
+      >y</a
+      ><a name="1328" class="Symbol"
+      >)</a
+      ><a name="1329"
+      > </a
+      ><a name="1330" href="Data.List.Reverse.html#560" class="InductiveConstructor Operator"
+      >&#8758;&#691;</a
+      ><a name="1332"
+      > </a
+      ><a name="1333" href="Data.List.Reverse.html#1289" class="Bound"
+      >x</a
+      ><a name="1334"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

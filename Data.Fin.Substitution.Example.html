@@ -1,0 +1,2485 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Fin.Substitution.Example</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- An example of how Data.Fin.Substitution can be used: a definition</a
+      ><a name="174"
+      >
+</a
+      ><a name="175" class="Comment"
+      >-- of substitution for the untyped &#955;-calculus, along with some lemmas</a
+      ><a name="244"
+      >
+</a
+      ><a name="245" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="317"
+      >
+
+</a
+      ><a name="319" class="Keyword"
+      >module</a
+      ><a name="325"
+      > </a
+      ><a name="326" href="Data.Fin.Substitution.Example.html#1" class="Module"
+      >Data.Fin.Substitution.Example</a
+      ><a name="355"
+      > </a
+      ><a name="356" class="Keyword"
+      >where</a
+      ><a name="361"
+      >
+
+</a
+      ><a name="363" class="Keyword"
+      >open</a
+      ><a name="367"
+      > </a
+      ><a name="368" class="Keyword"
+      >import</a
+      ><a name="374"
+      > </a
+      ><a name="375" href="Data.Fin.Substitution.html#1" class="Module"
+      >Data.Fin.Substitution</a
+      ><a name="396"
+      >
+</a
+      ><a name="397" class="Keyword"
+      >open</a
+      ><a name="401"
+      > </a
+      ><a name="402" class="Keyword"
+      >import</a
+      ><a name="408"
+      > </a
+      ><a name="409" href="Data.Fin.Substitution.Lemmas.html#1" class="Module"
+      >Data.Fin.Substitution.Lemmas</a
+      ><a name="437"
+      >
+</a
+      ><a name="438" class="Keyword"
+      >open</a
+      ><a name="442"
+      > </a
+      ><a name="443" class="Keyword"
+      >import</a
+      ><a name="449"
+      > </a
+      ><a name="450" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="458"
+      >
+</a
+      ><a name="459" class="Keyword"
+      >open</a
+      ><a name="463"
+      > </a
+      ><a name="464" class="Keyword"
+      >import</a
+      ><a name="470"
+      > </a
+      ><a name="471" href="Data.Fin.html#1" class="Module"
+      >Data.Fin</a
+      ><a name="479"
+      > </a
+      ><a name="480" class="Keyword"
+      >using</a
+      ><a name="485"
+      > </a
+      ><a name="486" class="Symbol"
+      >(</a
+      ><a name="487"
+      >Fin</a
+      ><a name="490" class="Symbol"
+      >)</a
+      ><a name="491"
+      >
+</a
+      ><a name="492" class="Keyword"
+      >open</a
+      ><a name="496"
+      > </a
+      ><a name="497" class="Keyword"
+      >import</a
+      ><a name="503"
+      > </a
+      ><a name="504" href="Data.Vec.html#1" class="Module"
+      >Data.Vec</a
+      ><a name="512"
+      >
+</a
+      ><a name="513" class="Keyword"
+      >open</a
+      ><a name="517"
+      > </a
+      ><a name="518" class="Keyword"
+      >import</a
+      ><a name="524"
+      > </a
+      ><a name="525" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="562"
+      > </a
+      ><a name="563" class="Symbol"
+      >as</a
+      ><a name="565"
+      > </a
+      ><a name="566" class="Module"
+      >PropEq</a
+      ><a name="572"
+      >
+  </a
+      ><a name="575" class="Keyword"
+      >using</a
+      ><a name="580"
+      > </a
+      ><a name="581" class="Symbol"
+      >(</a
+      ><a name="582"
+      >_&#8801;_</a
+      ><a name="585" class="Symbol"
+      >;</a
+      ><a name="586"
+      > refl</a
+      ><a name="591" class="Symbol"
+      >;</a
+      ><a name="592"
+      > sym</a
+      ><a name="596" class="Symbol"
+      >;</a
+      ><a name="597"
+      > cong</a
+      ><a name="602" class="Symbol"
+      >;</a
+      ><a name="603"
+      > cong&#8322;</a
+      ><a name="609" class="Symbol"
+      >)</a
+      ><a name="610"
+      >
+</a
+      ><a name="611" class="Keyword"
+      >open</a
+      ><a name="615"
+      > </a
+      ><a name="616" href="Relation.Binary.PropositionalEquality.html#243" class="Module"
+      >PropEq.</a
+      ><a name="623" href="Relation.Binary.PropositionalEquality.html#5746" class="Module"
+      >&#8801;-Reasoning</a
+      ><a name="634"
+      >
+</a
+      ><a name="635" class="Keyword"
+      >open</a
+      ><a name="639"
+      > </a
+      ><a name="640" class="Keyword"
+      >import</a
+      ><a name="646"
+      > </a
+      ><a name="647" href="Data.Star.html#1" class="Module"
+      >Data.Star</a
+      ><a name="656"
+      > </a
+      ><a name="657" class="Keyword"
+      >using</a
+      ><a name="662"
+      > </a
+      ><a name="663" class="Symbol"
+      >(</a
+      ><a name="664"
+      >Star</a
+      ><a name="668" class="Symbol"
+      >;</a
+      ><a name="669"
+      > &#949;</a
+      ><a name="671" class="Symbol"
+      >;</a
+      ><a name="672"
+      > _&#9669;_</a
+      ><a name="676" class="Symbol"
+      >)</a
+      ><a name="677"
+      >
+
+</a
+      ><a name="679" class="Comment"
+      >-- A representation of the untyped &#955;-calculus. Uses de&#160;Bruijn indices.</a
+      ><a name="749"
+      >
+
+</a
+      ><a name="751" class="Keyword"
+      >infixl</a
+      ><a name="757"
+      > </a
+      ><a name="758" class="Number"
+      >9</a
+      ><a name="759"
+      > _&#183;_
+
+</a
+      ><a name="765" class="Keyword"
+      >data</a
+      ><a name="769"
+      > </a
+      ><a name="770" href="Data.Fin.Substitution.Example.html#770" class="Datatype"
+      >Tm</a
+      ><a name="772"
+      > </a
+      ><a name="773" class="Symbol"
+      >(</a
+      ><a name="774" href="Data.Fin.Substitution.Example.html#774" class="Bound"
+      >n</a
+      ><a name="775"
+      > </a
+      ><a name="776" class="Symbol"
+      >:</a
+      ><a name="777"
+      > </a
+      ><a name="778" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="779" class="Symbol"
+      >)</a
+      ><a name="780"
+      > </a
+      ><a name="781" class="Symbol"
+      >:</a
+      ><a name="782"
+      > </a
+      ><a name="783" class="PrimitiveType"
+      >Set</a
+      ><a name="786"
+      > </a
+      ><a name="787" class="Keyword"
+      >where</a
+      ><a name="792"
+      >
+  </a
+      ><a name="795" href="Data.Fin.Substitution.Example.html#795" class="InductiveConstructor"
+      >var</a
+      ><a name="798"
+      > </a
+      ><a name="799" class="Symbol"
+      >:</a
+      ><a name="800"
+      > </a
+      ><a name="801" class="Symbol"
+      >(</a
+      ><a name="802" href="Data.Fin.Substitution.Example.html#802" class="Bound"
+      >x</a
+      ><a name="803"
+      > </a
+      ><a name="804" class="Symbol"
+      >:</a
+      ><a name="805"
+      > </a
+      ><a name="806" href="Data.Fin.html#775" class="Datatype"
+      >Fin</a
+      ><a name="809"
+      > </a
+      ><a name="810" href="Data.Fin.Substitution.Example.html#774" class="Bound"
+      >n</a
+      ><a name="811" class="Symbol"
+      >)</a
+      ><a name="812"
+      > </a
+      ><a name="813" class="Symbol"
+      >&#8594;</a
+      ><a name="814"
+      > </a
+      ><a name="815" href="Data.Fin.Substitution.Example.html#770" class="Datatype"
+      >Tm</a
+      ><a name="817"
+      > </a
+      ><a name="818" href="Data.Fin.Substitution.Example.html#774" class="Bound"
+      >n</a
+      ><a name="819"
+      >
+  </a
+      ><a name="822" href="Data.Fin.Substitution.Example.html#822" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="823"
+      >   </a
+      ><a name="826" class="Symbol"
+      >:</a
+      ><a name="827"
+      > </a
+      ><a name="828" class="Symbol"
+      >(</a
+      ><a name="829" href="Data.Fin.Substitution.Example.html#829" class="Bound"
+      >t</a
+      ><a name="830"
+      > </a
+      ><a name="831" class="Symbol"
+      >:</a
+      ><a name="832"
+      > </a
+      ><a name="833" href="Data.Fin.Substitution.Example.html#770" class="Datatype"
+      >Tm</a
+      ><a name="835"
+      > </a
+      ><a name="836" class="Symbol"
+      >(</a
+      ><a name="837" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="840"
+      > </a
+      ><a name="841" href="Data.Fin.Substitution.Example.html#774" class="Bound"
+      >n</a
+      ><a name="842" class="Symbol"
+      >))</a
+      ><a name="844"
+      > </a
+      ><a name="845" class="Symbol"
+      >&#8594;</a
+      ><a name="846"
+      > </a
+      ><a name="847" href="Data.Fin.Substitution.Example.html#770" class="Datatype"
+      >Tm</a
+      ><a name="849"
+      > </a
+      ><a name="850" href="Data.Fin.Substitution.Example.html#774" class="Bound"
+      >n</a
+      ><a name="851"
+      >
+  </a
+      ><a name="854" href="Data.Fin.Substitution.Example.html#854" class="InductiveConstructor Operator"
+      >_&#183;_</a
+      ><a name="857"
+      > </a
+      ><a name="858" class="Symbol"
+      >:</a
+      ><a name="859"
+      > </a
+      ><a name="860" class="Symbol"
+      >(</a
+      ><a name="861" href="Data.Fin.Substitution.Example.html#861" class="Bound"
+      >t&#8321;</a
+      ><a name="863"
+      > </a
+      ><a name="864" href="Data.Fin.Substitution.Example.html#864" class="Bound"
+      >t&#8322;</a
+      ><a name="866"
+      > </a
+      ><a name="867" class="Symbol"
+      >:</a
+      ><a name="868"
+      > </a
+      ><a name="869" href="Data.Fin.Substitution.Example.html#770" class="Datatype"
+      >Tm</a
+      ><a name="871"
+      > </a
+      ><a name="872" href="Data.Fin.Substitution.Example.html#774" class="Bound"
+      >n</a
+      ><a name="873" class="Symbol"
+      >)</a
+      ><a name="874"
+      > </a
+      ><a name="875" class="Symbol"
+      >&#8594;</a
+      ><a name="876"
+      > </a
+      ><a name="877" href="Data.Fin.Substitution.Example.html#770" class="Datatype"
+      >Tm</a
+      ><a name="879"
+      > </a
+      ><a name="880" href="Data.Fin.Substitution.Example.html#774" class="Bound"
+      >n</a
+      ><a name="881"
+      >
+
+</a
+      ><a name="883" class="Comment"
+      >-- Code for applying substitutions.</a
+      ><a name="918"
+      >
+
+</a
+      ><a name="920" class="Keyword"
+      >module</a
+      ><a name="926"
+      > </a
+      ><a name="927" href="Data.Fin.Substitution.Example.html#927" class="Module"
+      >TmApp</a
+      ><a name="932"
+      > </a
+      ><a name="933" class="Symbol"
+      >{</a
+      ><a name="934" href="Data.Fin.Substitution.Example.html#934" class="Bound"
+      >T</a
+      ><a name="935" class="Symbol"
+      >}</a
+      ><a name="936"
+      > </a
+      ><a name="937" class="Symbol"
+      >(</a
+      ><a name="938" href="Data.Fin.Substitution.Example.html#938" class="Bound"
+      >l</a
+      ><a name="939"
+      > </a
+      ><a name="940" class="Symbol"
+      >:</a
+      ><a name="941"
+      > </a
+      ><a name="942" href="Data.Fin.Substitution.html#3103" class="Record"
+      >Lift</a
+      ><a name="946"
+      > </a
+      ><a name="947" href="Data.Fin.Substitution.Example.html#934" class="Bound"
+      >T</a
+      ><a name="948"
+      > </a
+      ><a name="949" href="Data.Fin.Substitution.Example.html#770" class="Datatype"
+      >Tm</a
+      ><a name="951" class="Symbol"
+      >)</a
+      ><a name="952"
+      > </a
+      ><a name="953" class="Keyword"
+      >where</a
+      ><a name="958"
+      >
+  </a
+      ><a name="961" class="Keyword"
+      >open</a
+      ><a name="965"
+      > </a
+      ><a name="966" href="Data.Fin.Substitution.html#3103" class="Module"
+      >Lift</a
+      ><a name="970"
+      > </a
+      ><a name="971" href="Data.Fin.Substitution.Example.html#938" class="Bound"
+      >l</a
+      ><a name="972"
+      > </a
+      ><a name="973" class="Keyword"
+      >hiding</a
+      ><a name="979"
+      > </a
+      ><a name="980" class="Symbol"
+      >(</a
+      ><a name="981"
+      >var</a
+      ><a name="984" class="Symbol"
+      >)</a
+      ><a name="985"
+      >
+
+  </a
+      ><a name="989" class="Comment"
+      >-- Applies a substitution to a term.</a
+      ><a name="1025"
+      >
+
+  </a
+      ><a name="1029" class="Keyword"
+      >infix</a
+      ><a name="1034"
+      > </a
+      ><a name="1035" class="Number"
+      >8</a
+      ><a name="1036"
+      > _/_
+
+  </a
+      ><a name="1044" href="Data.Fin.Substitution.Example.html#1044" class="Function Operator"
+      >_/_</a
+      ><a name="1047"
+      > </a
+      ><a name="1048" class="Symbol"
+      >:</a
+      ><a name="1049"
+      > </a
+      ><a name="1050" class="Symbol"
+      >&#8704;</a
+      ><a name="1051"
+      > </a
+      ><a name="1052" class="Symbol"
+      >{</a
+      ><a name="1053" href="Data.Fin.Substitution.Example.html#1053" class="Bound"
+      >m</a
+      ><a name="1054"
+      > </a
+      ><a name="1055" href="Data.Fin.Substitution.Example.html#1055" class="Bound"
+      >n</a
+      ><a name="1056" class="Symbol"
+      >}</a
+      ><a name="1057"
+      > </a
+      ><a name="1058" class="Symbol"
+      >&#8594;</a
+      ><a name="1059"
+      > </a
+      ><a name="1060" href="Data.Fin.Substitution.Example.html#770" class="Datatype"
+      >Tm</a
+      ><a name="1062"
+      > </a
+      ><a name="1063" href="Data.Fin.Substitution.Example.html#1053" class="Bound"
+      >m</a
+      ><a name="1064"
+      > </a
+      ><a name="1065" class="Symbol"
+      >&#8594;</a
+      ><a name="1066"
+      > </a
+      ><a name="1067" href="Data.Fin.Substitution.html#899" class="Function"
+      >Sub</a
+      ><a name="1070"
+      > </a
+      ><a name="1071" href="Data.Fin.Substitution.Example.html#934" class="Bound"
+      >T</a
+      ><a name="1072"
+      > </a
+      ><a name="1073" href="Data.Fin.Substitution.Example.html#1053" class="Bound"
+      >m</a
+      ><a name="1074"
+      > </a
+      ><a name="1075" href="Data.Fin.Substitution.Example.html#1055" class="Bound"
+      >n</a
+      ><a name="1076"
+      > </a
+      ><a name="1077" class="Symbol"
+      >&#8594;</a
+      ><a name="1078"
+      > </a
+      ><a name="1079" href="Data.Fin.Substitution.Example.html#770" class="Datatype"
+      >Tm</a
+      ><a name="1081"
+      > </a
+      ><a name="1082" href="Data.Fin.Substitution.Example.html#1055" class="Bound"
+      >n</a
+      ><a name="1083"
+      >
+  </a
+      ><a name="1086" href="Data.Fin.Substitution.Example.html#795" class="InductiveConstructor"
+      >var</a
+      ><a name="1089"
+      > </a
+      ><a name="1090" href="Data.Fin.Substitution.Example.html#1090" class="Bound"
+      >x</a
+      ><a name="1091"
+      >   </a
+      ><a name="1094" href="Data.Fin.Substitution.Example.html#1044" class="Function Operator"
+      >/</a
+      ><a name="1095"
+      > </a
+      ><a name="1096" href="Data.Fin.Substitution.Example.html#1096" class="Bound"
+      >&#961;</a
+      ><a name="1097"
+      > </a
+      ><a name="1098" class="Symbol"
+      >=</a
+      ><a name="1099"
+      > </a
+      ><a name="1100" href="Data.Fin.Substitution.html#3173" class="Function"
+      >lift</a
+      ><a name="1104"
+      > </a
+      ><a name="1105" class="Symbol"
+      >(</a
+      ><a name="1106" href="Data.Vec.html#6126" class="Function"
+      >lookup</a
+      ><a name="1112"
+      > </a
+      ><a name="1113" href="Data.Fin.Substitution.Example.html#1090" class="Bound"
+      >x</a
+      ><a name="1114"
+      > </a
+      ><a name="1115" href="Data.Fin.Substitution.Example.html#1096" class="Bound"
+      >&#961;</a
+      ><a name="1116" class="Symbol"
+      >)</a
+      ><a name="1117"
+      >
+  </a
+      ><a name="1120" href="Data.Fin.Substitution.Example.html#822" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="1121"
+      > </a
+      ><a name="1122" href="Data.Fin.Substitution.Example.html#1122" class="Bound"
+      >t</a
+      ><a name="1123"
+      >     </a
+      ><a name="1128" href="Data.Fin.Substitution.Example.html#1044" class="Function Operator"
+      >/</a
+      ><a name="1129"
+      > </a
+      ><a name="1130" href="Data.Fin.Substitution.Example.html#1130" class="Bound"
+      >&#961;</a
+      ><a name="1131"
+      > </a
+      ><a name="1132" class="Symbol"
+      >=</a
+      ><a name="1133"
+      > </a
+      ><a name="1134" href="Data.Fin.Substitution.Example.html#822" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="1135"
+      > </a
+      ><a name="1136" class="Symbol"
+      >(</a
+      ><a name="1137" href="Data.Fin.Substitution.Example.html#1122" class="Bound"
+      >t</a
+      ><a name="1138"
+      > </a
+      ><a name="1139" href="Data.Fin.Substitution.Example.html#1044" class="Function Operator"
+      >/</a
+      ><a name="1140"
+      > </a
+      ><a name="1141" href="Data.Fin.Substitution.Example.html#1130" class="Bound"
+      >&#961;</a
+      ><a name="1142"
+      > </a
+      ><a name="1143" href="Data.Fin.Substitution.html#1327" class="Function Operator"
+      >&#8593;</a
+      ><a name="1144" class="Symbol"
+      >)</a
+      ><a name="1145"
+      >
+  </a
+      ><a name="1148" href="Data.Fin.Substitution.Example.html#1148" class="Bound"
+      >t&#8321;</a
+      ><a name="1150"
+      > </a
+      ><a name="1151" href="Data.Fin.Substitution.Example.html#854" class="InductiveConstructor Operator"
+      >&#183;</a
+      ><a name="1152"
+      > </a
+      ><a name="1153" href="Data.Fin.Substitution.Example.html#1153" class="Bound"
+      >t&#8322;</a
+      ><a name="1155"
+      > </a
+      ><a name="1156" href="Data.Fin.Substitution.Example.html#1044" class="Function Operator"
+      >/</a
+      ><a name="1157"
+      > </a
+      ><a name="1158" href="Data.Fin.Substitution.Example.html#1158" class="Bound"
+      >&#961;</a
+      ><a name="1159"
+      > </a
+      ><a name="1160" class="Symbol"
+      >=</a
+      ><a name="1161"
+      > </a
+      ><a name="1162" class="Symbol"
+      >(</a
+      ><a name="1163" href="Data.Fin.Substitution.Example.html#1148" class="Bound"
+      >t&#8321;</a
+      ><a name="1165"
+      > </a
+      ><a name="1166" href="Data.Fin.Substitution.Example.html#1044" class="Function Operator"
+      >/</a
+      ><a name="1167"
+      > </a
+      ><a name="1168" href="Data.Fin.Substitution.Example.html#1158" class="Bound"
+      >&#961;</a
+      ><a name="1169" class="Symbol"
+      >)</a
+      ><a name="1170"
+      > </a
+      ><a name="1171" href="Data.Fin.Substitution.Example.html#854" class="InductiveConstructor Operator"
+      >&#183;</a
+      ><a name="1172"
+      > </a
+      ><a name="1173" class="Symbol"
+      >(</a
+      ><a name="1174" href="Data.Fin.Substitution.Example.html#1153" class="Bound"
+      >t&#8322;</a
+      ><a name="1176"
+      > </a
+      ><a name="1177" href="Data.Fin.Substitution.Example.html#1044" class="Function Operator"
+      >/</a
+      ><a name="1178"
+      > </a
+      ><a name="1179" href="Data.Fin.Substitution.Example.html#1158" class="Bound"
+      >&#961;</a
+      ><a name="1180" class="Symbol"
+      >)</a
+      ><a name="1181"
+      >
+
+  </a
+      ><a name="1185" class="Keyword"
+      >open</a
+      ><a name="1189"
+      > </a
+      ><a name="1190" href="Data.Fin.Substitution.html#2028" class="Module"
+      >Application</a
+      ><a name="1201"
+      > </a
+      ><a name="1202" class="Symbol"
+      >(</a
+      ><a name="1203" class="Keyword"
+      >record</a
+      ><a name="1209"
+      > </a
+      ><a name="1210" class="Symbol"
+      >{</a
+      ><a name="1211"
+      > </a
+      ><a name="1212" class="Field Operator"
+      >_/_</a
+      ><a name="1215"
+      > </a
+      ><a name="1216" class="Symbol"
+      >=</a
+      ><a name="1217"
+      > </a
+      ><a name="1218" href="Data.Fin.Substitution.Example.html#1044" class="Function Operator"
+      >_/_</a
+      ><a name="1221"
+      > </a
+      ><a name="1222" class="Symbol"
+      >})</a
+      ><a name="1224"
+      > </a
+      ><a name="1225" class="Keyword"
+      >using</a
+      ><a name="1230"
+      > </a
+      ><a name="1231" class="Symbol"
+      >(</a
+      ><a name="1232"
+      >_/&#10038;_</a
+      ><a name="1236" class="Symbol"
+      >)</a
+      ><a name="1237"
+      >
+
+  </a
+      ><a name="1241" class="Comment"
+      >-- Some lemmas about _/_.</a
+      ><a name="1266"
+      >
+
+  </a
+      ><a name="1270" href="Data.Fin.Substitution.Example.html#1270" class="Function"
+      >&#411;-/&#10038;-&#8593;&#10038;</a
+      ><a name="1277"
+      > </a
+      ><a name="1278" class="Symbol"
+      >:</a
+      ><a name="1279"
+      > </a
+      ><a name="1280" class="Symbol"
+      >&#8704;</a
+      ><a name="1281"
+      > </a
+      ><a name="1282" href="Data.Fin.Substitution.Example.html#1282" class="Bound"
+      >k</a
+      ><a name="1283"
+      > </a
+      ><a name="1284" class="Symbol"
+      >{</a
+      ><a name="1285" href="Data.Fin.Substitution.Example.html#1285" class="Bound"
+      >m</a
+      ><a name="1286"
+      > </a
+      ><a name="1287" href="Data.Fin.Substitution.Example.html#1287" class="Bound"
+      >n</a
+      ><a name="1288"
+      > </a
+      ><a name="1289" href="Data.Fin.Substitution.Example.html#1289" class="Bound"
+      >t</a
+      ><a name="1290" class="Symbol"
+      >}</a
+      ><a name="1291"
+      > </a
+      ><a name="1292" class="Symbol"
+      >(</a
+      ><a name="1293" href="Data.Fin.Substitution.Example.html#1293" class="Bound"
+      >&#961;s</a
+      ><a name="1295"
+      > </a
+      ><a name="1296" class="Symbol"
+      >:</a
+      ><a name="1297"
+      > </a
+      ><a name="1298" href="Data.Fin.Substitution.html#1007" class="Function"
+      >Subs</a
+      ><a name="1302"
+      > </a
+      ><a name="1303" href="Data.Fin.Substitution.Example.html#934" class="Bound"
+      >T</a
+      ><a name="1304"
+      > </a
+      ><a name="1305" href="Data.Fin.Substitution.Example.html#1285" class="Bound"
+      >m</a
+      ><a name="1306"
+      > </a
+      ><a name="1307" href="Data.Fin.Substitution.Example.html#1287" class="Bound"
+      >n</a
+      ><a name="1308" class="Symbol"
+      >)</a
+      ><a name="1309"
+      > </a
+      ><a name="1310" class="Symbol"
+      >&#8594;</a
+      ><a name="1311"
+      >
+            </a
+      ><a name="1324" href="Data.Fin.Substitution.Example.html#822" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="1325"
+      > </a
+      ><a name="1326" href="Data.Fin.Substitution.Example.html#1289" class="Bound"
+      >t</a
+      ><a name="1327"
+      > </a
+      ><a name="1328" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;</a
+      ><a name="1330"
+      > </a
+      ><a name="1331" href="Data.Fin.Substitution.Example.html#1293" class="Bound"
+      >&#961;s</a
+      ><a name="1333"
+      > </a
+      ><a name="1334" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;</a
+      ><a name="1336"
+      > </a
+      ><a name="1337" href="Data.Fin.Substitution.Example.html#1282" class="Bound"
+      >k</a
+      ><a name="1338"
+      > </a
+      ><a name="1339" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1340"
+      > </a
+      ><a name="1341" href="Data.Fin.Substitution.Example.html#822" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="1342"
+      > </a
+      ><a name="1343" class="Symbol"
+      >(</a
+      ><a name="1344" href="Data.Fin.Substitution.Example.html#1289" class="Bound"
+      >t</a
+      ><a name="1345"
+      > </a
+      ><a name="1346" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;</a
+      ><a name="1348"
+      > </a
+      ><a name="1349" href="Data.Fin.Substitution.Example.html#1293" class="Bound"
+      >&#961;s</a
+      ><a name="1351"
+      > </a
+      ><a name="1352" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;</a
+      ><a name="1354"
+      > </a
+      ><a name="1355" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1358"
+      > </a
+      ><a name="1359" href="Data.Fin.Substitution.Example.html#1282" class="Bound"
+      >k</a
+      ><a name="1360" class="Symbol"
+      >)</a
+      ><a name="1361"
+      >
+  </a
+      ><a name="1364" href="Data.Fin.Substitution.Example.html#1270" class="Function"
+      >&#411;-/&#10038;-&#8593;&#10038;</a
+      ><a name="1371"
+      > </a
+      ><a name="1372" href="Data.Fin.Substitution.Example.html#1372" class="Bound"
+      >k</a
+      ><a name="1373"
+      > </a
+      ><a name="1374" href="Data.Star.html#614" class="InductiveConstructor"
+      >&#949;</a
+      ><a name="1375"
+      >        </a
+      ><a name="1383" class="Symbol"
+      >=</a
+      ><a name="1384"
+      > </a
+      ><a name="1385" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1389"
+      >
+  </a
+      ><a name="1392" href="Data.Fin.Substitution.Example.html#1270" class="Function"
+      >&#411;-/&#10038;-&#8593;&#10038;</a
+      ><a name="1399"
+      > </a
+      ><a name="1400" href="Data.Fin.Substitution.Example.html#1400" class="Bound"
+      >k</a
+      ><a name="1401"
+      > </a
+      ><a name="1402" class="Symbol"
+      >(</a
+      ><a name="1403" href="Data.Fin.Substitution.Example.html#1403" class="Bound"
+      >&#961;</a
+      ><a name="1404"
+      > </a
+      ><a name="1405" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      >&#9669;</a
+      ><a name="1406"
+      > </a
+      ><a name="1407" href="Data.Fin.Substitution.Example.html#1407" class="Bound"
+      >&#961;s</a
+      ><a name="1409" class="Symbol"
+      >)</a
+      ><a name="1410"
+      > </a
+      ><a name="1411" class="Symbol"
+      >=</a
+      ><a name="1412"
+      > </a
+      ><a name="1413" href="Relation.Binary.PropositionalEquality.html#1274" class="Function"
+      >cong&#8322;</a
+      ><a name="1418"
+      > </a
+      ><a name="1419" href="Data.Fin.Substitution.Example.html#1044" class="Function Operator"
+      >_/_</a
+      ><a name="1422"
+      > </a
+      ><a name="1423" class="Symbol"
+      >(</a
+      ><a name="1424" href="Data.Fin.Substitution.Example.html#1270" class="Function"
+      >&#411;-/&#10038;-&#8593;&#10038;</a
+      ><a name="1431"
+      > </a
+      ><a name="1432" href="Data.Fin.Substitution.Example.html#1400" class="Bound"
+      >k</a
+      ><a name="1433"
+      > </a
+      ><a name="1434" href="Data.Fin.Substitution.Example.html#1407" class="Bound"
+      >&#961;s</a
+      ><a name="1436" class="Symbol"
+      >)</a
+      ><a name="1437"
+      > </a
+      ><a name="1438" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1442"
+      >
+
+  </a
+      ><a name="1446" href="Data.Fin.Substitution.Example.html#1446" class="Function"
+      >&#183;-/&#10038;-&#8593;&#10038;</a
+      ><a name="1453"
+      > </a
+      ><a name="1454" class="Symbol"
+      >:</a
+      ><a name="1455"
+      > </a
+      ><a name="1456" class="Symbol"
+      >&#8704;</a
+      ><a name="1457"
+      > </a
+      ><a name="1458" href="Data.Fin.Substitution.Example.html#1458" class="Bound"
+      >k</a
+      ><a name="1459"
+      > </a
+      ><a name="1460" class="Symbol"
+      >{</a
+      ><a name="1461" href="Data.Fin.Substitution.Example.html#1461" class="Bound"
+      >m</a
+      ><a name="1462"
+      > </a
+      ><a name="1463" href="Data.Fin.Substitution.Example.html#1463" class="Bound"
+      >n</a
+      ><a name="1464"
+      > </a
+      ><a name="1465" href="Data.Fin.Substitution.Example.html#1465" class="Bound"
+      >t&#8321;</a
+      ><a name="1467"
+      > </a
+      ><a name="1468" href="Data.Fin.Substitution.Example.html#1468" class="Bound"
+      >t&#8322;</a
+      ><a name="1470" class="Symbol"
+      >}</a
+      ><a name="1471"
+      > </a
+      ><a name="1472" class="Symbol"
+      >(</a
+      ><a name="1473" href="Data.Fin.Substitution.Example.html#1473" class="Bound"
+      >&#961;s</a
+      ><a name="1475"
+      > </a
+      ><a name="1476" class="Symbol"
+      >:</a
+      ><a name="1477"
+      > </a
+      ><a name="1478" href="Data.Fin.Substitution.html#1007" class="Function"
+      >Subs</a
+      ><a name="1482"
+      > </a
+      ><a name="1483" href="Data.Fin.Substitution.Example.html#934" class="Bound"
+      >T</a
+      ><a name="1484"
+      > </a
+      ><a name="1485" href="Data.Fin.Substitution.Example.html#1461" class="Bound"
+      >m</a
+      ><a name="1486"
+      > </a
+      ><a name="1487" href="Data.Fin.Substitution.Example.html#1463" class="Bound"
+      >n</a
+      ><a name="1488" class="Symbol"
+      >)</a
+      ><a name="1489"
+      > </a
+      ><a name="1490" class="Symbol"
+      >&#8594;</a
+      ><a name="1491"
+      >
+            </a
+      ><a name="1504" href="Data.Fin.Substitution.Example.html#1465" class="Bound"
+      >t&#8321;</a
+      ><a name="1506"
+      > </a
+      ><a name="1507" href="Data.Fin.Substitution.Example.html#854" class="InductiveConstructor Operator"
+      >&#183;</a
+      ><a name="1508"
+      > </a
+      ><a name="1509" href="Data.Fin.Substitution.Example.html#1468" class="Bound"
+      >t&#8322;</a
+      ><a name="1511"
+      > </a
+      ><a name="1512" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;</a
+      ><a name="1514"
+      > </a
+      ><a name="1515" href="Data.Fin.Substitution.Example.html#1473" class="Bound"
+      >&#961;s</a
+      ><a name="1517"
+      > </a
+      ><a name="1518" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;</a
+      ><a name="1520"
+      > </a
+      ><a name="1521" href="Data.Fin.Substitution.Example.html#1458" class="Bound"
+      >k</a
+      ><a name="1522"
+      > </a
+      ><a name="1523" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1524"
+      > </a
+      ><a name="1525" class="Symbol"
+      >(</a
+      ><a name="1526" href="Data.Fin.Substitution.Example.html#1465" class="Bound"
+      >t&#8321;</a
+      ><a name="1528"
+      > </a
+      ><a name="1529" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;</a
+      ><a name="1531"
+      > </a
+      ><a name="1532" href="Data.Fin.Substitution.Example.html#1473" class="Bound"
+      >&#961;s</a
+      ><a name="1534"
+      > </a
+      ><a name="1535" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;</a
+      ><a name="1537"
+      > </a
+      ><a name="1538" href="Data.Fin.Substitution.Example.html#1458" class="Bound"
+      >k</a
+      ><a name="1539" class="Symbol"
+      >)</a
+      ><a name="1540"
+      > </a
+      ><a name="1541" href="Data.Fin.Substitution.Example.html#854" class="InductiveConstructor Operator"
+      >&#183;</a
+      ><a name="1542"
+      > </a
+      ><a name="1543" class="Symbol"
+      >(</a
+      ><a name="1544" href="Data.Fin.Substitution.Example.html#1468" class="Bound"
+      >t&#8322;</a
+      ><a name="1546"
+      > </a
+      ><a name="1547" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;</a
+      ><a name="1549"
+      > </a
+      ><a name="1550" href="Data.Fin.Substitution.Example.html#1473" class="Bound"
+      >&#961;s</a
+      ><a name="1552"
+      > </a
+      ><a name="1553" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;</a
+      ><a name="1555"
+      > </a
+      ><a name="1556" href="Data.Fin.Substitution.Example.html#1458" class="Bound"
+      >k</a
+      ><a name="1557" class="Symbol"
+      >)</a
+      ><a name="1558"
+      >
+  </a
+      ><a name="1561" href="Data.Fin.Substitution.Example.html#1446" class="Function"
+      >&#183;-/&#10038;-&#8593;&#10038;</a
+      ><a name="1568"
+      > </a
+      ><a name="1569" href="Data.Fin.Substitution.Example.html#1569" class="Bound"
+      >k</a
+      ><a name="1570"
+      > </a
+      ><a name="1571" href="Data.Star.html#614" class="InductiveConstructor"
+      >&#949;</a
+      ><a name="1572"
+      >        </a
+      ><a name="1580" class="Symbol"
+      >=</a
+      ><a name="1581"
+      > </a
+      ><a name="1582" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1586"
+      >
+  </a
+      ><a name="1589" href="Data.Fin.Substitution.Example.html#1446" class="Function"
+      >&#183;-/&#10038;-&#8593;&#10038;</a
+      ><a name="1596"
+      > </a
+      ><a name="1597" href="Data.Fin.Substitution.Example.html#1597" class="Bound"
+      >k</a
+      ><a name="1598"
+      > </a
+      ><a name="1599" class="Symbol"
+      >(</a
+      ><a name="1600" href="Data.Fin.Substitution.Example.html#1600" class="Bound"
+      >&#961;</a
+      ><a name="1601"
+      > </a
+      ><a name="1602" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      >&#9669;</a
+      ><a name="1603"
+      > </a
+      ><a name="1604" href="Data.Fin.Substitution.Example.html#1604" class="Bound"
+      >&#961;s</a
+      ><a name="1606" class="Symbol"
+      >)</a
+      ><a name="1607"
+      > </a
+      ><a name="1608" class="Symbol"
+      >=</a
+      ><a name="1609"
+      > </a
+      ><a name="1610" href="Relation.Binary.PropositionalEquality.html#1274" class="Function"
+      >cong&#8322;</a
+      ><a name="1615"
+      > </a
+      ><a name="1616" href="Data.Fin.Substitution.Example.html#1044" class="Function Operator"
+      >_/_</a
+      ><a name="1619"
+      > </a
+      ><a name="1620" class="Symbol"
+      >(</a
+      ><a name="1621" href="Data.Fin.Substitution.Example.html#1446" class="Function"
+      >&#183;-/&#10038;-&#8593;&#10038;</a
+      ><a name="1628"
+      > </a
+      ><a name="1629" href="Data.Fin.Substitution.Example.html#1597" class="Bound"
+      >k</a
+      ><a name="1630"
+      > </a
+      ><a name="1631" href="Data.Fin.Substitution.Example.html#1604" class="Bound"
+      >&#961;s</a
+      ><a name="1633" class="Symbol"
+      >)</a
+      ><a name="1634"
+      > </a
+      ><a name="1635" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1639"
+      >
+
+</a
+      ><a name="1641" href="Data.Fin.Substitution.Example.html#1641" class="Function"
+      >tmSubst</a
+      ><a name="1648"
+      > </a
+      ><a name="1649" class="Symbol"
+      >:</a
+      ><a name="1650"
+      > </a
+      ><a name="1651" href="Data.Fin.Substitution.html#3501" class="Record"
+      >TermSubst</a
+      ><a name="1660"
+      > </a
+      ><a name="1661" href="Data.Fin.Substitution.Example.html#770" class="Datatype"
+      >Tm</a
+      ><a name="1663"
+      >
+</a
+      ><a name="1664" href="Data.Fin.Substitution.Example.html#1641" class="Function"
+      >tmSubst</a
+      ><a name="1671"
+      > </a
+      ><a name="1672" class="Symbol"
+      >=</a
+      ><a name="1673"
+      > </a
+      ><a name="1674" class="Keyword"
+      >record</a
+      ><a name="1680"
+      > </a
+      ><a name="1681" class="Symbol"
+      >{</a
+      ><a name="1682"
+      > </a
+      ><a name="1683" class="Field"
+      >var</a
+      ><a name="1686"
+      > </a
+      ><a name="1687" class="Symbol"
+      >=</a
+      ><a name="1688"
+      > </a
+      ><a name="1689" href="Data.Fin.Substitution.Example.html#795" class="InductiveConstructor"
+      >var</a
+      ><a name="1692" class="Symbol"
+      >;</a
+      ><a name="1693"
+      > </a
+      ><a name="1694" class="Field"
+      >app</a
+      ><a name="1697"
+      > </a
+      ><a name="1698" class="Symbol"
+      >=</a
+      ><a name="1699"
+      > </a
+      ><a name="1700" href="Data.Fin.Substitution.Example.html#1044" class="Function Operator"
+      >TmApp._/_</a
+      ><a name="1709"
+      > </a
+      ><a name="1710" class="Symbol"
+      >}</a
+      ><a name="1711"
+      >
+
+</a
+      ><a name="1713" class="Keyword"
+      >open</a
+      ><a name="1717"
+      > </a
+      ><a name="1718" href="Data.Fin.Substitution.html#3501" class="Module"
+      >TermSubst</a
+      ><a name="1727"
+      > </a
+      ><a name="1728" href="Data.Fin.Substitution.Example.html#1641" class="Function"
+      >tmSubst</a
+      ><a name="1735"
+      > </a
+      ><a name="1736" class="Keyword"
+      >hiding</a
+      ><a name="1742"
+      > </a
+      ><a name="1743" class="Symbol"
+      >(</a
+      ><a name="1744"
+      >var</a
+      ><a name="1747" class="Symbol"
+      >)</a
+      ><a name="1748"
+      >
+
+</a
+      ><a name="1750" class="Comment"
+      >-- Substitution lemmas.</a
+      ><a name="1773"
+      >
+
+</a
+      ><a name="1775" href="Data.Fin.Substitution.Example.html#1775" class="Function"
+      >tmLemmas</a
+      ><a name="1783"
+      > </a
+      ><a name="1784" class="Symbol"
+      >:</a
+      ><a name="1785"
+      > </a
+      ><a name="1786" href="Data.Fin.Substitution.Lemmas.html#16884" class="Record"
+      >TermLemmas</a
+      ><a name="1796"
+      > </a
+      ><a name="1797" href="Data.Fin.Substitution.Example.html#770" class="Datatype"
+      >Tm</a
+      ><a name="1799"
+      >
+</a
+      ><a name="1800" href="Data.Fin.Substitution.Example.html#1775" class="Function"
+      >tmLemmas</a
+      ><a name="1808"
+      > </a
+      ><a name="1809" class="Symbol"
+      >=</a
+      ><a name="1810"
+      > </a
+      ><a name="1811" class="Keyword"
+      >record</a
+      ><a name="1817"
+      >
+  </a
+      ><a name="1820" class="Symbol"
+      >{</a
+      ><a name="1821"
+      > </a
+      ><a name="1822" class="Field"
+      >termSubst</a
+      ><a name="1831"
+      > </a
+      ><a name="1832" class="Symbol"
+      >=</a
+      ><a name="1833"
+      > </a
+      ><a name="1834" href="Data.Fin.Substitution.Example.html#1641" class="Function"
+      >tmSubst</a
+      ><a name="1841"
+      >
+  </a
+      ><a name="1844" class="Symbol"
+      >;</a
+      ><a name="1845"
+      > </a
+      ><a name="1846" class="Field"
+      >app-var</a
+      ><a name="1853"
+      >   </a
+      ><a name="1856" class="Symbol"
+      >=</a
+      ><a name="1857"
+      > </a
+      ><a name="1858" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1862"
+      >
+  </a
+      ><a name="1865" class="Symbol"
+      >;</a
+      ><a name="1866"
+      > </a
+      ><a name="1867" class="Field"
+      >/&#10038;-&#8593;&#10038;</a
+      ><a name="1872"
+      >     </a
+      ><a name="1877" class="Symbol"
+      >=</a
+      ><a name="1878"
+      > </a
+      ><a name="1879" href="Data.Fin.Substitution.Example.html#2122" class="Function"
+      >Lemma./&#10038;-&#8593;&#10038;</a
+      ><a name="1890"
+      >
+  </a
+      ><a name="1893" class="Symbol"
+      >}</a
+      ><a name="1894"
+      >
+  </a
+      ><a name="1897" class="Keyword"
+      >where</a
+      ><a name="1902"
+      >
+  </a
+      ><a name="1905" class="Keyword"
+      >module</a
+      ><a name="1911"
+      > </a
+      ><a name="1912" href="Data.Fin.Substitution.Example.html#1912" class="Module"
+      >Lemma</a
+      ><a name="1917"
+      > </a
+      ><a name="1918" class="Symbol"
+      >{</a
+      ><a name="1919" href="Data.Fin.Substitution.Example.html#1919" class="Bound"
+      >T&#8321;</a
+      ><a name="1921"
+      > </a
+      ><a name="1922" href="Data.Fin.Substitution.Example.html#1922" class="Bound"
+      >T&#8322;</a
+      ><a name="1924" class="Symbol"
+      >}</a
+      ><a name="1925"
+      > </a
+      ><a name="1926" class="Symbol"
+      >{</a
+      ><a name="1927" href="Data.Fin.Substitution.Example.html#1927" class="Bound"
+      >lift&#8321;</a
+      ><a name="1932"
+      > </a
+      ><a name="1933" class="Symbol"
+      >:</a
+      ><a name="1934"
+      > </a
+      ><a name="1935" href="Data.Fin.Substitution.html#3103" class="Record"
+      >Lift</a
+      ><a name="1939"
+      > </a
+      ><a name="1940" href="Data.Fin.Substitution.Example.html#1919" class="Bound"
+      >T&#8321;</a
+      ><a name="1942"
+      > </a
+      ><a name="1943" href="Data.Fin.Substitution.Example.html#770" class="Datatype"
+      >Tm</a
+      ><a name="1945" class="Symbol"
+      >}</a
+      ><a name="1946"
+      > </a
+      ><a name="1947" class="Symbol"
+      >{</a
+      ><a name="1948" href="Data.Fin.Substitution.Example.html#1948" class="Bound"
+      >lift&#8322;</a
+      ><a name="1953"
+      > </a
+      ><a name="1954" class="Symbol"
+      >:</a
+      ><a name="1955"
+      > </a
+      ><a name="1956" href="Data.Fin.Substitution.html#3103" class="Record"
+      >Lift</a
+      ><a name="1960"
+      > </a
+      ><a name="1961" href="Data.Fin.Substitution.Example.html#1922" class="Bound"
+      >T&#8322;</a
+      ><a name="1963"
+      > </a
+      ><a name="1964" href="Data.Fin.Substitution.Example.html#770" class="Datatype"
+      >Tm</a
+      ><a name="1966" class="Symbol"
+      >}</a
+      ><a name="1967"
+      > </a
+      ><a name="1968" class="Keyword"
+      >where</a
+      ><a name="1973"
+      >
+
+    </a
+      ><a name="1979" class="Keyword"
+      >open</a
+      ><a name="1983"
+      > </a
+      ><a name="1984" href="Data.Fin.Substitution.html#3650" class="Module"
+      >Lifted</a
+      ><a name="1990"
+      > </a
+      ><a name="1991" href="Data.Fin.Substitution.Example.html#1927" class="Bound"
+      >lift&#8321;</a
+      ><a name="1996"
+      > </a
+      ><a name="1997" class="Keyword"
+      >using</a
+      ><a name="2002"
+      > </a
+      ><a name="2003" class="Symbol"
+      >()</a
+      ><a name="2005"
+      > </a
+      ><a name="2006" class="Keyword"
+      >renaming</a
+      ><a name="2014"
+      > </a
+      ><a name="2015" class="Symbol"
+      >(</a
+      ><a name="2016"
+      >_&#8593;&#10038;_ </a
+      ><a name="2021" class="Symbol"
+      >to</a
+      ><a name="2023"
+      > _&#8593;&#10038;&#8321;_</a
+      ><a name="2029" class="Symbol"
+      >;</a
+      ><a name="2030"
+      > _/&#10038;_ </a
+      ><a name="2036" class="Symbol"
+      >to</a
+      ><a name="2038"
+      > _/&#10038;&#8321;_</a
+      ><a name="2044" class="Symbol"
+      >)</a
+      ><a name="2045"
+      >
+    </a
+      ><a name="2050" class="Keyword"
+      >open</a
+      ><a name="2054"
+      > </a
+      ><a name="2055" href="Data.Fin.Substitution.html#3650" class="Module"
+      >Lifted</a
+      ><a name="2061"
+      > </a
+      ><a name="2062" href="Data.Fin.Substitution.Example.html#1948" class="Bound"
+      >lift&#8322;</a
+      ><a name="2067"
+      > </a
+      ><a name="2068" class="Keyword"
+      >using</a
+      ><a name="2073"
+      > </a
+      ><a name="2074" class="Symbol"
+      >()</a
+      ><a name="2076"
+      > </a
+      ><a name="2077" class="Keyword"
+      >renaming</a
+      ><a name="2085"
+      > </a
+      ><a name="2086" class="Symbol"
+      >(</a
+      ><a name="2087"
+      >_&#8593;&#10038;_ </a
+      ><a name="2092" class="Symbol"
+      >to</a
+      ><a name="2094"
+      > _&#8593;&#10038;&#8322;_</a
+      ><a name="2100" class="Symbol"
+      >;</a
+      ><a name="2101"
+      > _/&#10038;_ </a
+      ><a name="2107" class="Symbol"
+      >to</a
+      ><a name="2109"
+      > _/&#10038;&#8322;_</a
+      ><a name="2115" class="Symbol"
+      >)</a
+      ><a name="2116"
+      >
+
+    </a
+      ><a name="2122" href="Data.Fin.Substitution.Example.html#2122" class="Function"
+      >/&#10038;-&#8593;&#10038;</a
+      ><a name="2127"
+      > </a
+      ><a name="2128" class="Symbol"
+      >:</a
+      ><a name="2129"
+      > </a
+      ><a name="2130" class="Symbol"
+      >&#8704;</a
+      ><a name="2131"
+      > </a
+      ><a name="2132" class="Symbol"
+      >{</a
+      ><a name="2133" href="Data.Fin.Substitution.Example.html#2133" class="Bound"
+      >m</a
+      ><a name="2134"
+      > </a
+      ><a name="2135" href="Data.Fin.Substitution.Example.html#2135" class="Bound"
+      >n</a
+      ><a name="2136" class="Symbol"
+      >}</a
+      ><a name="2137"
+      > </a
+      ><a name="2138" class="Symbol"
+      >(</a
+      ><a name="2139" href="Data.Fin.Substitution.Example.html#2139" class="Bound"
+      >&#961;s&#8321;</a
+      ><a name="2142"
+      > </a
+      ><a name="2143" class="Symbol"
+      >:</a
+      ><a name="2144"
+      > </a
+      ><a name="2145" href="Data.Fin.Substitution.html#1007" class="Function"
+      >Subs</a
+      ><a name="2149"
+      > </a
+      ><a name="2150" href="Data.Fin.Substitution.Example.html#1919" class="Bound"
+      >T&#8321;</a
+      ><a name="2152"
+      > </a
+      ><a name="2153" href="Data.Fin.Substitution.Example.html#2133" class="Bound"
+      >m</a
+      ><a name="2154"
+      > </a
+      ><a name="2155" href="Data.Fin.Substitution.Example.html#2135" class="Bound"
+      >n</a
+      ><a name="2156" class="Symbol"
+      >)</a
+      ><a name="2157"
+      > </a
+      ><a name="2158" class="Symbol"
+      >(</a
+      ><a name="2159" href="Data.Fin.Substitution.Example.html#2159" class="Bound"
+      >&#961;s&#8322;</a
+      ><a name="2162"
+      > </a
+      ><a name="2163" class="Symbol"
+      >:</a
+      ><a name="2164"
+      > </a
+      ><a name="2165" href="Data.Fin.Substitution.html#1007" class="Function"
+      >Subs</a
+      ><a name="2169"
+      > </a
+      ><a name="2170" href="Data.Fin.Substitution.Example.html#1922" class="Bound"
+      >T&#8322;</a
+      ><a name="2172"
+      > </a
+      ><a name="2173" href="Data.Fin.Substitution.Example.html#2133" class="Bound"
+      >m</a
+      ><a name="2174"
+      > </a
+      ><a name="2175" href="Data.Fin.Substitution.Example.html#2135" class="Bound"
+      >n</a
+      ><a name="2176" class="Symbol"
+      >)</a
+      ><a name="2177"
+      > </a
+      ><a name="2178" class="Symbol"
+      >&#8594;</a
+      ><a name="2179"
+      >
+            </a
+      ><a name="2192" class="Symbol"
+      >(&#8704;</a
+      ><a name="2194"
+      > </a
+      ><a name="2195" href="Data.Fin.Substitution.Example.html#2195" class="Bound"
+      >k</a
+      ><a name="2196"
+      > </a
+      ><a name="2197" href="Data.Fin.Substitution.Example.html#2197" class="Bound"
+      >x</a
+      ><a name="2198"
+      > </a
+      ><a name="2199" class="Symbol"
+      >&#8594;</a
+      ><a name="2200"
+      > </a
+      ><a name="2201" href="Data.Fin.Substitution.Example.html#795" class="InductiveConstructor"
+      >var</a
+      ><a name="2204"
+      > </a
+      ><a name="2205" href="Data.Fin.Substitution.Example.html#2197" class="Bound"
+      >x</a
+      ><a name="2206"
+      > </a
+      ><a name="2207" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;&#8321;</a
+      ><a name="2210"
+      > </a
+      ><a name="2211" href="Data.Fin.Substitution.Example.html#2139" class="Bound"
+      >&#961;s&#8321;</a
+      ><a name="2214"
+      > </a
+      ><a name="2215" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;&#8321;</a
+      ><a name="2218"
+      > </a
+      ><a name="2219" href="Data.Fin.Substitution.Example.html#2195" class="Bound"
+      >k</a
+      ><a name="2220"
+      > </a
+      ><a name="2221" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2222"
+      > </a
+      ><a name="2223" href="Data.Fin.Substitution.Example.html#795" class="InductiveConstructor"
+      >var</a
+      ><a name="2226"
+      > </a
+      ><a name="2227" href="Data.Fin.Substitution.Example.html#2197" class="Bound"
+      >x</a
+      ><a name="2228"
+      > </a
+      ><a name="2229" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;&#8322;</a
+      ><a name="2232"
+      > </a
+      ><a name="2233" href="Data.Fin.Substitution.Example.html#2159" class="Bound"
+      >&#961;s&#8322;</a
+      ><a name="2236"
+      > </a
+      ><a name="2237" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;&#8322;</a
+      ><a name="2240"
+      > </a
+      ><a name="2241" href="Data.Fin.Substitution.Example.html#2195" class="Bound"
+      >k</a
+      ><a name="2242" class="Symbol"
+      >)</a
+      ><a name="2243"
+      > </a
+      ><a name="2244" class="Symbol"
+      >&#8594;</a
+      ><a name="2245"
+      >
+             </a
+      ><a name="2259" class="Symbol"
+      >&#8704;</a
+      ><a name="2260"
+      > </a
+      ><a name="2261" href="Data.Fin.Substitution.Example.html#2261" class="Bound"
+      >k</a
+      ><a name="2262"
+      > </a
+      ><a name="2263" href="Data.Fin.Substitution.Example.html#2263" class="Bound"
+      >t</a
+      ><a name="2264"
+      > </a
+      ><a name="2265" class="Symbol"
+      >&#8594;</a
+      ><a name="2266"
+      > </a
+      ><a name="2267" href="Data.Fin.Substitution.Example.html#2263" class="Bound"
+      >t</a
+      ><a name="2268"
+      >     </a
+      ><a name="2273" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;&#8321;</a
+      ><a name="2276"
+      > </a
+      ><a name="2277" href="Data.Fin.Substitution.Example.html#2139" class="Bound"
+      >&#961;s&#8321;</a
+      ><a name="2280"
+      > </a
+      ><a name="2281" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;&#8321;</a
+      ><a name="2284"
+      > </a
+      ><a name="2285" href="Data.Fin.Substitution.Example.html#2261" class="Bound"
+      >k</a
+      ><a name="2286"
+      > </a
+      ><a name="2287" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2288"
+      > </a
+      ><a name="2289" href="Data.Fin.Substitution.Example.html#2263" class="Bound"
+      >t</a
+      ><a name="2290"
+      >     </a
+      ><a name="2295" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;&#8322;</a
+      ><a name="2298"
+      > </a
+      ><a name="2299" href="Data.Fin.Substitution.Example.html#2159" class="Bound"
+      >&#961;s&#8322;</a
+      ><a name="2302"
+      > </a
+      ><a name="2303" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;&#8322;</a
+      ><a name="2306"
+      > </a
+      ><a name="2307" href="Data.Fin.Substitution.Example.html#2261" class="Bound"
+      >k</a
+      ><a name="2308"
+      >
+    </a
+      ><a name="2313" href="Data.Fin.Substitution.Example.html#2122" class="Function"
+      >/&#10038;-&#8593;&#10038;</a
+      ><a name="2318"
+      > </a
+      ><a name="2319" href="Data.Fin.Substitution.Example.html#2319" class="Bound"
+      >&#961;s&#8321;</a
+      ><a name="2322"
+      > </a
+      ><a name="2323" href="Data.Fin.Substitution.Example.html#2323" class="Bound"
+      >&#961;s&#8322;</a
+      ><a name="2326"
+      > </a
+      ><a name="2327" href="Data.Fin.Substitution.Example.html#2327" class="Bound"
+      >hyp</a
+      ><a name="2330"
+      > </a
+      ><a name="2331" href="Data.Fin.Substitution.Example.html#2331" class="Bound"
+      >k</a
+      ><a name="2332"
+      > </a
+      ><a name="2333" class="Symbol"
+      >(</a
+      ><a name="2334" href="Data.Fin.Substitution.Example.html#795" class="InductiveConstructor"
+      >var</a
+      ><a name="2337"
+      > </a
+      ><a name="2338" href="Data.Fin.Substitution.Example.html#2338" class="Bound"
+      >x</a
+      ><a name="2339" class="Symbol"
+      >)</a
+      ><a name="2340"
+      > </a
+      ><a name="2341" class="Symbol"
+      >=</a
+      ><a name="2342"
+      > </a
+      ><a name="2343" href="Data.Fin.Substitution.Example.html#2327" class="Bound"
+      >hyp</a
+      ><a name="2346"
+      > </a
+      ><a name="2347" href="Data.Fin.Substitution.Example.html#2331" class="Bound"
+      >k</a
+      ><a name="2348"
+      > </a
+      ><a name="2349" href="Data.Fin.Substitution.Example.html#2338" class="Bound"
+      >x</a
+      ><a name="2350"
+      >
+    </a
+      ><a name="2355" href="Data.Fin.Substitution.Example.html#2122" class="Function"
+      >/&#10038;-&#8593;&#10038;</a
+      ><a name="2360"
+      > </a
+      ><a name="2361" href="Data.Fin.Substitution.Example.html#2361" class="Bound"
+      >&#961;s&#8321;</a
+      ><a name="2364"
+      > </a
+      ><a name="2365" href="Data.Fin.Substitution.Example.html#2365" class="Bound"
+      >&#961;s&#8322;</a
+      ><a name="2368"
+      > </a
+      ><a name="2369" href="Data.Fin.Substitution.Example.html#2369" class="Bound"
+      >hyp</a
+      ><a name="2372"
+      > </a
+      ><a name="2373" href="Data.Fin.Substitution.Example.html#2373" class="Bound"
+      >k</a
+      ><a name="2374"
+      > </a
+      ><a name="2375" class="Symbol"
+      >(</a
+      ><a name="2376" href="Data.Fin.Substitution.Example.html#822" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="2377"
+      > </a
+      ><a name="2378" href="Data.Fin.Substitution.Example.html#2378" class="Bound"
+      >t</a
+      ><a name="2379" class="Symbol"
+      >)</a
+      ><a name="2380"
+      >   </a
+      ><a name="2383" class="Symbol"
+      >=</a
+      ><a name="2384"
+      > </a
+      ><a name="2385" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      >begin</a
+      ><a name="2390"
+      >
+      </a
+      ><a name="2397" href="Data.Fin.Substitution.Example.html#822" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="2398"
+      > </a
+      ><a name="2399" href="Data.Fin.Substitution.Example.html#2378" class="Bound"
+      >t</a
+      ><a name="2400"
+      > </a
+      ><a name="2401" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;&#8321;</a
+      ><a name="2404"
+      > </a
+      ><a name="2405" href="Data.Fin.Substitution.Example.html#2361" class="Bound"
+      >&#961;s&#8321;</a
+      ><a name="2408"
+      > </a
+      ><a name="2409" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;&#8321;</a
+      ><a name="2412"
+      > </a
+      ><a name="2413" href="Data.Fin.Substitution.Example.html#2373" class="Bound"
+      >k</a
+      ><a name="2414"
+      >        </a
+      ><a name="2422" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="2424"
+      > </a
+      ><a name="2425" href="Data.Fin.Substitution.Example.html#1270" class="Function"
+      >TmApp.&#411;-/&#10038;-&#8593;&#10038;</a
+      ><a name="2438"
+      > </a
+      ><a name="2439" class="Symbol"
+      >_</a
+      ><a name="2440"
+      > </a
+      ><a name="2441" href="Data.Fin.Substitution.Example.html#2373" class="Bound"
+      >k</a
+      ><a name="2442"
+      > </a
+      ><a name="2443" href="Data.Fin.Substitution.Example.html#2361" class="Bound"
+      >&#961;s&#8321;</a
+      ><a name="2446"
+      > </a
+      ><a name="2447" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="2448"
+      >
+      </a
+      ><a name="2455" href="Data.Fin.Substitution.Example.html#822" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="2456"
+      > </a
+      ><a name="2457" class="Symbol"
+      >(</a
+      ><a name="2458" href="Data.Fin.Substitution.Example.html#2378" class="Bound"
+      >t</a
+      ><a name="2459"
+      > </a
+      ><a name="2460" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;&#8321;</a
+      ><a name="2463"
+      > </a
+      ><a name="2464" href="Data.Fin.Substitution.Example.html#2361" class="Bound"
+      >&#961;s&#8321;</a
+      ><a name="2467"
+      > </a
+      ><a name="2468" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;&#8321;</a
+      ><a name="2471"
+      > </a
+      ><a name="2472" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2475"
+      > </a
+      ><a name="2476" href="Data.Fin.Substitution.Example.html#2373" class="Bound"
+      >k</a
+      ><a name="2477" class="Symbol"
+      >)</a
+      ><a name="2478"
+      >  </a
+      ><a name="2480" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="2482"
+      > </a
+      ><a name="2483" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >cong</a
+      ><a name="2487"
+      > </a
+      ><a name="2488" href="Data.Fin.Substitution.Example.html#822" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="2489"
+      > </a
+      ><a name="2490" class="Symbol"
+      >(</a
+      ><a name="2491" href="Data.Fin.Substitution.Example.html#2122" class="Function"
+      >/&#10038;-&#8593;&#10038;</a
+      ><a name="2496"
+      > </a
+      ><a name="2497" href="Data.Fin.Substitution.Example.html#2361" class="Bound"
+      >&#961;s&#8321;</a
+      ><a name="2500"
+      > </a
+      ><a name="2501" href="Data.Fin.Substitution.Example.html#2365" class="Bound"
+      >&#961;s&#8322;</a
+      ><a name="2504"
+      > </a
+      ><a name="2505" href="Data.Fin.Substitution.Example.html#2369" class="Bound"
+      >hyp</a
+      ><a name="2508"
+      > </a
+      ><a name="2509" class="Symbol"
+      >(</a
+      ><a name="2510" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2513"
+      > </a
+      ><a name="2514" href="Data.Fin.Substitution.Example.html#2373" class="Bound"
+      >k</a
+      ><a name="2515" class="Symbol"
+      >)</a
+      ><a name="2516"
+      > </a
+      ><a name="2517" href="Data.Fin.Substitution.Example.html#2378" class="Bound"
+      >t</a
+      ><a name="2518" class="Symbol"
+      >)</a
+      ><a name="2519"
+      > </a
+      ><a name="2520" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="2521"
+      >
+      </a
+      ><a name="2528" href="Data.Fin.Substitution.Example.html#822" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="2529"
+      > </a
+      ><a name="2530" class="Symbol"
+      >(</a
+      ><a name="2531" href="Data.Fin.Substitution.Example.html#2378" class="Bound"
+      >t</a
+      ><a name="2532"
+      > </a
+      ><a name="2533" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;&#8322;</a
+      ><a name="2536"
+      > </a
+      ><a name="2537" href="Data.Fin.Substitution.Example.html#2365" class="Bound"
+      >&#961;s&#8322;</a
+      ><a name="2540"
+      > </a
+      ><a name="2541" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;&#8322;</a
+      ><a name="2544"
+      > </a
+      ><a name="2545" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2548"
+      > </a
+      ><a name="2549" href="Data.Fin.Substitution.Example.html#2373" class="Bound"
+      >k</a
+      ><a name="2550" class="Symbol"
+      >)</a
+      ><a name="2551"
+      >  </a
+      ><a name="2553" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="2555"
+      > </a
+      ><a name="2556" href="Relation.Binary.PropositionalEquality.Core.html#565" class="Function"
+      >sym</a
+      ><a name="2559"
+      > </a
+      ><a name="2560" class="Symbol"
+      >(</a
+      ><a name="2561" href="Data.Fin.Substitution.Example.html#1270" class="Function"
+      >TmApp.&#411;-/&#10038;-&#8593;&#10038;</a
+      ><a name="2574"
+      > </a
+      ><a name="2575" class="Symbol"
+      >_</a
+      ><a name="2576"
+      > </a
+      ><a name="2577" href="Data.Fin.Substitution.Example.html#2373" class="Bound"
+      >k</a
+      ><a name="2578"
+      > </a
+      ><a name="2579" href="Data.Fin.Substitution.Example.html#2365" class="Bound"
+      >&#961;s&#8322;</a
+      ><a name="2582" class="Symbol"
+      >)</a
+      ><a name="2583"
+      > </a
+      ><a name="2584" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="2585"
+      >
+      </a
+      ><a name="2592" href="Data.Fin.Substitution.Example.html#822" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="2593"
+      > </a
+      ><a name="2594" href="Data.Fin.Substitution.Example.html#2378" class="Bound"
+      >t</a
+      ><a name="2595"
+      > </a
+      ><a name="2596" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;&#8322;</a
+      ><a name="2599"
+      > </a
+      ><a name="2600" href="Data.Fin.Substitution.Example.html#2365" class="Bound"
+      >&#961;s&#8322;</a
+      ><a name="2603"
+      > </a
+      ><a name="2604" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;&#8322;</a
+      ><a name="2607"
+      > </a
+      ><a name="2608" href="Data.Fin.Substitution.Example.html#2373" class="Bound"
+      >k</a
+      ><a name="2609"
+      >        </a
+      ><a name="2617" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >&#8718;</a
+      ><a name="2618"
+      >
+    </a
+      ><a name="2623" href="Data.Fin.Substitution.Example.html#2122" class="Function"
+      >/&#10038;-&#8593;&#10038;</a
+      ><a name="2628"
+      > </a
+      ><a name="2629" href="Data.Fin.Substitution.Example.html#2629" class="Bound"
+      >&#961;s&#8321;</a
+      ><a name="2632"
+      > </a
+      ><a name="2633" href="Data.Fin.Substitution.Example.html#2633" class="Bound"
+      >&#961;s&#8322;</a
+      ><a name="2636"
+      > </a
+      ><a name="2637" href="Data.Fin.Substitution.Example.html#2637" class="Bound"
+      >hyp</a
+      ><a name="2640"
+      > </a
+      ><a name="2641" href="Data.Fin.Substitution.Example.html#2641" class="Bound"
+      >k</a
+      ><a name="2642"
+      > </a
+      ><a name="2643" class="Symbol"
+      >(</a
+      ><a name="2644" href="Data.Fin.Substitution.Example.html#2644" class="Bound"
+      >t&#8321;</a
+      ><a name="2646"
+      > </a
+      ><a name="2647" href="Data.Fin.Substitution.Example.html#854" class="InductiveConstructor Operator"
+      >&#183;</a
+      ><a name="2648"
+      > </a
+      ><a name="2649" href="Data.Fin.Substitution.Example.html#2649" class="Bound"
+      >t&#8322;</a
+      ><a name="2651" class="Symbol"
+      >)</a
+      ><a name="2652"
+      > </a
+      ><a name="2653" class="Symbol"
+      >=</a
+      ><a name="2654"
+      > </a
+      ><a name="2655" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      >begin</a
+      ><a name="2660"
+      >
+      </a
+      ><a name="2667" href="Data.Fin.Substitution.Example.html#2644" class="Bound"
+      >t&#8321;</a
+      ><a name="2669"
+      > </a
+      ><a name="2670" href="Data.Fin.Substitution.Example.html#854" class="InductiveConstructor Operator"
+      >&#183;</a
+      ><a name="2671"
+      > </a
+      ><a name="2672" href="Data.Fin.Substitution.Example.html#2649" class="Bound"
+      >t&#8322;</a
+      ><a name="2674"
+      > </a
+      ><a name="2675" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;&#8321;</a
+      ><a name="2678"
+      > </a
+      ><a name="2679" href="Data.Fin.Substitution.Example.html#2629" class="Bound"
+      >&#961;s&#8321;</a
+      ><a name="2682"
+      > </a
+      ><a name="2683" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;&#8321;</a
+      ><a name="2686"
+      > </a
+      ><a name="2687" href="Data.Fin.Substitution.Example.html#2641" class="Bound"
+      >k</a
+      ><a name="2688"
+      >                    </a
+      ><a name="2708" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="2710"
+      > </a
+      ><a name="2711" href="Data.Fin.Substitution.Example.html#1446" class="Function"
+      >TmApp.&#183;-/&#10038;-&#8593;&#10038;</a
+      ><a name="2724"
+      > </a
+      ><a name="2725" class="Symbol"
+      >_</a
+      ><a name="2726"
+      > </a
+      ><a name="2727" href="Data.Fin.Substitution.Example.html#2641" class="Bound"
+      >k</a
+      ><a name="2728"
+      > </a
+      ><a name="2729" href="Data.Fin.Substitution.Example.html#2629" class="Bound"
+      >&#961;s&#8321;</a
+      ><a name="2732"
+      > </a
+      ><a name="2733" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="2734"
+      >
+      </a
+      ><a name="2741" class="Symbol"
+      >(</a
+      ><a name="2742" href="Data.Fin.Substitution.Example.html#2644" class="Bound"
+      >t&#8321;</a
+      ><a name="2744"
+      > </a
+      ><a name="2745" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;&#8321;</a
+      ><a name="2748"
+      > </a
+      ><a name="2749" href="Data.Fin.Substitution.Example.html#2629" class="Bound"
+      >&#961;s&#8321;</a
+      ><a name="2752"
+      > </a
+      ><a name="2753" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;&#8321;</a
+      ><a name="2756"
+      > </a
+      ><a name="2757" href="Data.Fin.Substitution.Example.html#2641" class="Bound"
+      >k</a
+      ><a name="2758" class="Symbol"
+      >)</a
+      ><a name="2759"
+      > </a
+      ><a name="2760" href="Data.Fin.Substitution.Example.html#854" class="InductiveConstructor Operator"
+      >&#183;</a
+      ><a name="2761"
+      > </a
+      ><a name="2762" class="Symbol"
+      >(</a
+      ><a name="2763" href="Data.Fin.Substitution.Example.html#2649" class="Bound"
+      >t&#8322;</a
+      ><a name="2765"
+      > </a
+      ><a name="2766" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;&#8321;</a
+      ><a name="2769"
+      > </a
+      ><a name="2770" href="Data.Fin.Substitution.Example.html#2629" class="Bound"
+      >&#961;s&#8321;</a
+      ><a name="2773"
+      > </a
+      ><a name="2774" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;&#8321;</a
+      ><a name="2777"
+      > </a
+      ><a name="2778" href="Data.Fin.Substitution.Example.html#2641" class="Bound"
+      >k</a
+      ><a name="2779" class="Symbol"
+      >)</a
+      ><a name="2780"
+      >  </a
+      ><a name="2782" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="2784"
+      > </a
+      ><a name="2785" href="Relation.Binary.PropositionalEquality.html#1274" class="Function"
+      >cong&#8322;</a
+      ><a name="2790"
+      > </a
+      ><a name="2791" href="Data.Fin.Substitution.Example.html#854" class="InductiveConstructor Operator"
+      >_&#183;_</a
+      ><a name="2794"
+      > </a
+      ><a name="2795" class="Symbol"
+      >(</a
+      ><a name="2796" href="Data.Fin.Substitution.Example.html#2122" class="Function"
+      >/&#10038;-&#8593;&#10038;</a
+      ><a name="2801"
+      > </a
+      ><a name="2802" href="Data.Fin.Substitution.Example.html#2629" class="Bound"
+      >&#961;s&#8321;</a
+      ><a name="2805"
+      > </a
+      ><a name="2806" href="Data.Fin.Substitution.Example.html#2633" class="Bound"
+      >&#961;s&#8322;</a
+      ><a name="2809"
+      > </a
+      ><a name="2810" href="Data.Fin.Substitution.Example.html#2637" class="Bound"
+      >hyp</a
+      ><a name="2813"
+      > </a
+      ><a name="2814" href="Data.Fin.Substitution.Example.html#2641" class="Bound"
+      >k</a
+      ><a name="2815"
+      > </a
+      ><a name="2816" href="Data.Fin.Substitution.Example.html#2644" class="Bound"
+      >t&#8321;</a
+      ><a name="2818" class="Symbol"
+      >)</a
+      ><a name="2819"
+      >
+                                                            </a
+      ><a name="2880" class="Symbol"
+      >(</a
+      ><a name="2881" href="Data.Fin.Substitution.Example.html#2122" class="Function"
+      >/&#10038;-&#8593;&#10038;</a
+      ><a name="2886"
+      > </a
+      ><a name="2887" href="Data.Fin.Substitution.Example.html#2629" class="Bound"
+      >&#961;s&#8321;</a
+      ><a name="2890"
+      > </a
+      ><a name="2891" href="Data.Fin.Substitution.Example.html#2633" class="Bound"
+      >&#961;s&#8322;</a
+      ><a name="2894"
+      > </a
+      ><a name="2895" href="Data.Fin.Substitution.Example.html#2637" class="Bound"
+      >hyp</a
+      ><a name="2898"
+      > </a
+      ><a name="2899" href="Data.Fin.Substitution.Example.html#2641" class="Bound"
+      >k</a
+      ><a name="2900"
+      > </a
+      ><a name="2901" href="Data.Fin.Substitution.Example.html#2649" class="Bound"
+      >t&#8322;</a
+      ><a name="2903" class="Symbol"
+      >)</a
+      ><a name="2904"
+      > </a
+      ><a name="2905" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="2906"
+      >
+      </a
+      ><a name="2913" class="Symbol"
+      >(</a
+      ><a name="2914" href="Data.Fin.Substitution.Example.html#2644" class="Bound"
+      >t&#8321;</a
+      ><a name="2916"
+      > </a
+      ><a name="2917" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;&#8322;</a
+      ><a name="2920"
+      > </a
+      ><a name="2921" href="Data.Fin.Substitution.Example.html#2633" class="Bound"
+      >&#961;s&#8322;</a
+      ><a name="2924"
+      > </a
+      ><a name="2925" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;&#8322;</a
+      ><a name="2928"
+      > </a
+      ><a name="2929" href="Data.Fin.Substitution.Example.html#2641" class="Bound"
+      >k</a
+      ><a name="2930" class="Symbol"
+      >)</a
+      ><a name="2931"
+      > </a
+      ><a name="2932" href="Data.Fin.Substitution.Example.html#854" class="InductiveConstructor Operator"
+      >&#183;</a
+      ><a name="2933"
+      > </a
+      ><a name="2934" class="Symbol"
+      >(</a
+      ><a name="2935" href="Data.Fin.Substitution.Example.html#2649" class="Bound"
+      >t&#8322;</a
+      ><a name="2937"
+      > </a
+      ><a name="2938" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;&#8322;</a
+      ><a name="2941"
+      > </a
+      ><a name="2942" href="Data.Fin.Substitution.Example.html#2633" class="Bound"
+      >&#961;s&#8322;</a
+      ><a name="2945"
+      > </a
+      ><a name="2946" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;&#8322;</a
+      ><a name="2949"
+      > </a
+      ><a name="2950" href="Data.Fin.Substitution.Example.html#2641" class="Bound"
+      >k</a
+      ><a name="2951" class="Symbol"
+      >)</a
+      ><a name="2952"
+      >  </a
+      ><a name="2954" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="2956"
+      > </a
+      ><a name="2957" href="Relation.Binary.PropositionalEquality.Core.html#565" class="Function"
+      >sym</a
+      ><a name="2960"
+      > </a
+      ><a name="2961" class="Symbol"
+      >(</a
+      ><a name="2962" href="Data.Fin.Substitution.Example.html#1446" class="Function"
+      >TmApp.&#183;-/&#10038;-&#8593;&#10038;</a
+      ><a name="2975"
+      > </a
+      ><a name="2976" class="Symbol"
+      >_</a
+      ><a name="2977"
+      > </a
+      ><a name="2978" href="Data.Fin.Substitution.Example.html#2641" class="Bound"
+      >k</a
+      ><a name="2979"
+      > </a
+      ><a name="2980" href="Data.Fin.Substitution.Example.html#2633" class="Bound"
+      >&#961;s&#8322;</a
+      ><a name="2983" class="Symbol"
+      >)</a
+      ><a name="2984"
+      > </a
+      ><a name="2985" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="2986"
+      >
+      </a
+      ><a name="2993" href="Data.Fin.Substitution.Example.html#2644" class="Bound"
+      >t&#8321;</a
+      ><a name="2995"
+      > </a
+      ><a name="2996" href="Data.Fin.Substitution.Example.html#854" class="InductiveConstructor Operator"
+      >&#183;</a
+      ><a name="2997"
+      > </a
+      ><a name="2998" href="Data.Fin.Substitution.Example.html#2649" class="Bound"
+      >t&#8322;</a
+      ><a name="3000"
+      > </a
+      ><a name="3001" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+      >/&#10038;&#8322;</a
+      ><a name="3004"
+      > </a
+      ><a name="3005" href="Data.Fin.Substitution.Example.html#2633" class="Bound"
+      >&#961;s&#8322;</a
+      ><a name="3008"
+      > </a
+      ><a name="3009" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      >&#8593;&#10038;&#8322;</a
+      ><a name="3012"
+      > </a
+      ><a name="3013" href="Data.Fin.Substitution.Example.html#2641" class="Bound"
+      >k</a
+      ><a name="3014"
+      >                    </a
+      ><a name="3034" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >&#8718;</a
+      ><a name="3035"
+      >
+
+</a
+      ><a name="3037" class="Keyword"
+      >open</a
+      ><a name="3041"
+      > </a
+      ><a name="3042" href="Data.Fin.Substitution.Lemmas.html#16884" class="Module"
+      >TermLemmas</a
+      ><a name="3052"
+      > </a
+      ><a name="3053" href="Data.Fin.Substitution.Example.html#1775" class="Function"
+      >tmLemmas</a
+      ><a name="3061"
+      > </a
+      ><a name="3062" class="Keyword"
+      >public</a
+      ><a name="3068"
+      > </a
+      ><a name="3069" class="Keyword"
+      >hiding</a
+      ><a name="3075"
+      > </a
+      ><a name="3076" class="Symbol"
+      >(</a
+      ><a name="3077"
+      >var</a
+      ><a name="3080" class="Symbol"
+      >)</a
+      ><a name="3081"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

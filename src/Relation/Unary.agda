@@ -8,12 +8,13 @@ module Relation.Unary where
 
 open import Data.Empty
 open import Function
-open import Data.Unit hiding (setoid)
+open import Data.Unit.Minimal using (⊤)
 open import Data.Product
 open import Data.Sum
 open import Level
 open import Relation.Nullary
 open import Relation.Binary using (Setoid; IsEquivalence)
+open import Relation.Binary.PropositionalEquality using (_≡_)
 
 ------------------------------------------------------------------------
 -- Unary relations
@@ -51,6 +52,10 @@ module _ {a} {A : Set a} -- The universe of discourse.
 
   ∅-Empty : Empty ∅
   ∅-Empty x ()
+
+  -- The singleton set.
+  ｛_｝ : A → Pred A a
+  ｛ x ｝ = _≡_ x
 
   -- The universe, i.e. the subset containing all elements in A.
 
@@ -107,14 +112,14 @@ module _ {a} {A : Set a} -- The universe of discourse.
 
   -- Set union.
 
-  infixl 6 _∪_
+  infixr 6 _∪_
 
   _∪_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
   P ∪ Q = λ x → x ∈ P ⊎ x ∈ Q
 
   -- Set intersection.
 
-  infixl 7 _∩_
+  infixr 7 _∩_
 
   _∩_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
   P ∩ Q = λ x → x ∈ P × x ∈ Q

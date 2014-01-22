@@ -1,0 +1,1768 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Container.Indexed.FreeMonad</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- The free monad construction on indexed containers</a
+      ><a name="158"
+      >
+</a
+      ><a name="159" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="231"
+      >
+
+</a
+      ><a name="233" class="Keyword"
+      >module</a
+      ><a name="239"
+      > </a
+      ><a name="240" href="Data.Container.Indexed.FreeMonad.html#1" class="Module"
+      >Data.Container.Indexed.FreeMonad</a
+      ><a name="272"
+      > </a
+      ><a name="273" class="Keyword"
+      >where</a
+      ><a name="278"
+      >
+
+</a
+      ><a name="280" class="Keyword"
+      >open</a
+      ><a name="284"
+      > </a
+      ><a name="285" class="Keyword"
+      >import</a
+      ><a name="291"
+      > </a
+      ><a name="292" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="297"
+      >
+</a
+      ><a name="298" class="Keyword"
+      >open</a
+      ><a name="302"
+      > </a
+      ><a name="303" class="Keyword"
+      >import</a
+      ><a name="309"
+      > </a
+      ><a name="310" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="318"
+      > </a
+      ><a name="319" class="Keyword"
+      >hiding</a
+      ><a name="325"
+      > </a
+      ><a name="326" class="Symbol"
+      >(</a
+      ><a name="327"
+      >const</a
+      ><a name="332" class="Symbol"
+      >)</a
+      ><a name="333"
+      >
+</a
+      ><a name="334" class="Keyword"
+      >open</a
+      ><a name="338"
+      > </a
+      ><a name="339" class="Keyword"
+      >import</a
+      ><a name="345"
+      > </a
+      ><a name="346" href="Category.Monad.Predicate.html#1" class="Module"
+      >Category.Monad.Predicate</a
+      ><a name="370"
+      >
+</a
+      ><a name="371" class="Keyword"
+      >open</a
+      ><a name="375"
+      > </a
+      ><a name="376" class="Keyword"
+      >import</a
+      ><a name="382"
+      > </a
+      ><a name="383" href="Data.Container.Indexed.html#1" class="Module"
+      >Data.Container.Indexed</a
+      ><a name="405"
+      > </a
+      ><a name="406" class="Keyword"
+      >hiding</a
+      ><a name="412"
+      > </a
+      ><a name="413" class="Symbol"
+      >(</a
+      ><a name="414"
+      >_&#8712;_</a
+      ><a name="417" class="Symbol"
+      >)</a
+      ><a name="418"
+      >
+</a
+      ><a name="419" class="Keyword"
+      >open</a
+      ><a name="423"
+      > </a
+      ><a name="424" class="Keyword"
+      >import</a
+      ><a name="430"
+      > </a
+      ><a name="431" href="Data.Container.Indexed.Combinator.html#1" class="Module"
+      >Data.Container.Indexed.Combinator</a
+      ><a name="464"
+      > </a
+      ><a name="465" class="Keyword"
+      >hiding</a
+      ><a name="471"
+      > </a
+      ><a name="472" class="Symbol"
+      >(</a
+      ><a name="473"
+      >id</a
+      ><a name="475" class="Symbol"
+      >;</a
+      ><a name="476"
+      > _&#8728;_</a
+      ><a name="480" class="Symbol"
+      >)</a
+      ><a name="481"
+      >
+</a
+      ><a name="482" class="Keyword"
+      >open</a
+      ><a name="486"
+      > </a
+      ><a name="487" class="Keyword"
+      >import</a
+      ><a name="493"
+      > </a
+      ><a name="494" href="Data.Empty.html#1" class="Module"
+      >Data.Empty</a
+      ><a name="504"
+      >
+</a
+      ><a name="505" class="Keyword"
+      >open</a
+      ><a name="509"
+      > </a
+      ><a name="510" class="Keyword"
+      >import</a
+      ><a name="516"
+      > </a
+      ><a name="517" href="Data.Sum.html#1" class="Module"
+      >Data.Sum</a
+      ><a name="525"
+      > </a
+      ><a name="526" class="Keyword"
+      >using</a
+      ><a name="531"
+      > </a
+      ><a name="532" class="Symbol"
+      >(</a
+      ><a name="533"
+      >inj&#8321;</a
+      ><a name="537" class="Symbol"
+      >;</a
+      ><a name="538"
+      > inj&#8322;</a
+      ><a name="543" class="Symbol"
+      >)</a
+      ><a name="544"
+      >
+</a
+      ><a name="545" class="Keyword"
+      >open</a
+      ><a name="549"
+      > </a
+      ><a name="550" class="Keyword"
+      >import</a
+      ><a name="556"
+      > </a
+      ><a name="557" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="569"
+      >
+</a
+      ><a name="570" class="Keyword"
+      >open</a
+      ><a name="574"
+      > </a
+      ><a name="575" class="Keyword"
+      >import</a
+      ><a name="581"
+      > </a
+      ><a name="582" href="Data.W.Indexed.html#1" class="Module"
+      >Data.W.Indexed</a
+      ><a name="596"
+      >
+</a
+      ><a name="597" class="Keyword"
+      >open</a
+      ><a name="601"
+      > </a
+      ><a name="602" class="Keyword"
+      >import</a
+      ><a name="608"
+      > </a
+      ><a name="609" href="Relation.Unary.html#1" class="Module"
+      >Relation.Unary</a
+      ><a name="623"
+      >
+</a
+      ><a name="624" class="Keyword"
+      >open</a
+      ><a name="628"
+      > </a
+      ><a name="629" class="Keyword"
+      >import</a
+      ><a name="635"
+      > </a
+      ><a name="636" href="Relation.Unary.PredicateTransformer.html#1" class="Module"
+      >Relation.Unary.PredicateTransformer</a
+      ><a name="671"
+      >
+</a
+      ><a name="672" class="Keyword"
+      >open</a
+      ><a name="676"
+      > </a
+      ><a name="677" class="Keyword"
+      >import</a
+      ><a name="683"
+      > </a
+      ><a name="684" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="721"
+      >
+
+</a
+      ><a name="723" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="795"
+      >
+
+</a
+      ><a name="797" class="Keyword"
+      >infixl</a
+      ><a name="803"
+      > </a
+      ><a name="804" class="Number"
+      >9</a
+      ><a name="805"
+      > _&#8902;C_
+</a
+      ><a name="811" class="Keyword"
+      >infix</a
+      ><a name="816"
+      >  </a
+      ><a name="818" class="Number"
+      >9</a
+      ><a name="819"
+      > _&#8902;_
+
+</a
+      ><a name="825" href="Data.Container.Indexed.FreeMonad.html#825" class="Function Operator"
+      >_&#8902;C_</a
+      ><a name="829"
+      > </a
+      ><a name="830" class="Symbol"
+      >:</a
+      ><a name="831"
+      > </a
+      ><a name="832" class="Symbol"
+      >&#8704;</a
+      ><a name="833"
+      > </a
+      ><a name="834" class="Symbol"
+      >{</a
+      ><a name="835" href="Data.Container.Indexed.FreeMonad.html#835" class="Bound"
+      >i</a
+      ><a name="836"
+      > </a
+      ><a name="837" href="Data.Container.Indexed.FreeMonad.html#837" class="Bound"
+      >o</a
+      ><a name="838"
+      > </a
+      ><a name="839" href="Data.Container.Indexed.FreeMonad.html#839" class="Bound"
+      >c</a
+      ><a name="840"
+      > </a
+      ><a name="841" href="Data.Container.Indexed.FreeMonad.html#841" class="Bound"
+      >r</a
+      ><a name="842" class="Symbol"
+      >}</a
+      ><a name="843"
+      > </a
+      ><a name="844" class="Symbol"
+      >{</a
+      ><a name="845" href="Data.Container.Indexed.FreeMonad.html#845" class="Bound"
+      >I</a
+      ><a name="846"
+      > </a
+      ><a name="847" class="Symbol"
+      >:</a
+      ><a name="848"
+      > </a
+      ><a name="849" class="PrimitiveType"
+      >Set</a
+      ><a name="852"
+      > </a
+      ><a name="853" href="Data.Container.Indexed.FreeMonad.html#835" class="Bound"
+      >i</a
+      ><a name="854" class="Symbol"
+      >}</a
+      ><a name="855"
+      > </a
+      ><a name="856" class="Symbol"
+      >{</a
+      ><a name="857" href="Data.Container.Indexed.FreeMonad.html#857" class="Bound"
+      >O</a
+      ><a name="858"
+      > </a
+      ><a name="859" class="Symbol"
+      >:</a
+      ><a name="860"
+      > </a
+      ><a name="861" class="PrimitiveType"
+      >Set</a
+      ><a name="864"
+      > </a
+      ><a name="865" href="Data.Container.Indexed.FreeMonad.html#837" class="Bound"
+      >o</a
+      ><a name="866" class="Symbol"
+      >}</a
+      ><a name="867"
+      > </a
+      ><a name="868" class="Symbol"
+      >&#8594;</a
+      ><a name="869"
+      >
+       </a
+      ><a name="877" href="Data.Container.Indexed.Core.html#342" class="Record"
+      >Container</a
+      ><a name="886"
+      > </a
+      ><a name="887" href="Data.Container.Indexed.FreeMonad.html#845" class="Bound"
+      >I</a
+      ><a name="888"
+      > </a
+      ><a name="889" href="Data.Container.Indexed.FreeMonad.html#857" class="Bound"
+      >O</a
+      ><a name="890"
+      > </a
+      ><a name="891" href="Data.Container.Indexed.FreeMonad.html#839" class="Bound"
+      >c</a
+      ><a name="892"
+      > </a
+      ><a name="893" href="Data.Container.Indexed.FreeMonad.html#841" class="Bound"
+      >r</a
+      ><a name="894"
+      > </a
+      ><a name="895" class="Symbol"
+      >&#8594;</a
+      ><a name="896"
+      > </a
+      ><a name="897" href="Relation.Unary.html#616" class="Function"
+      >Pred</a
+      ><a name="901"
+      > </a
+      ><a name="902" href="Data.Container.Indexed.FreeMonad.html#857" class="Bound"
+      >O</a
+      ><a name="903"
+      > </a
+      ><a name="904" href="Data.Container.Indexed.FreeMonad.html#839" class="Bound"
+      >c</a
+      ><a name="905"
+      > </a
+      ><a name="906" class="Symbol"
+      >&#8594;</a
+      ><a name="907"
+      > </a
+      ><a name="908" href="Data.Container.Indexed.Core.html#342" class="Record"
+      >Container</a
+      ><a name="917"
+      > </a
+      ><a name="918" href="Data.Container.Indexed.FreeMonad.html#845" class="Bound"
+      >I</a
+      ><a name="919"
+      > </a
+      ><a name="920" href="Data.Container.Indexed.FreeMonad.html#857" class="Bound"
+      >O</a
+      ><a name="921"
+      > </a
+      ><a name="922" class="Symbol"
+      >_</a
+      ><a name="923"
+      > </a
+      ><a name="924" class="Symbol"
+      >_</a
+      ><a name="925"
+      >
+</a
+      ><a name="926" href="Data.Container.Indexed.FreeMonad.html#926" class="Bound"
+      >C</a
+      ><a name="927"
+      > </a
+      ><a name="928" href="Data.Container.Indexed.FreeMonad.html#825" class="Function Operator"
+      >&#8902;C</a
+      ><a name="930"
+      > </a
+      ><a name="931" href="Data.Container.Indexed.FreeMonad.html#931" class="Bound"
+      >X</a
+      ><a name="932"
+      > </a
+      ><a name="933" class="Symbol"
+      >=</a
+      ><a name="934"
+      > </a
+      ><a name="935" href="Data.Container.Indexed.Combinator.html#1036" class="Function"
+      >const</a
+      ><a name="940"
+      > </a
+      ><a name="941" href="Data.Container.Indexed.FreeMonad.html#931" class="Bound"
+      >X</a
+      ><a name="942"
+      > </a
+      ><a name="943" href="Data.Container.Indexed.Combinator.html#3007" class="Function Operator"
+      >&#8846;</a
+      ><a name="944"
+      > </a
+      ><a name="945" href="Data.Container.Indexed.FreeMonad.html#926" class="Bound"
+      >C</a
+      ><a name="946"
+      >
+
+</a
+      ><a name="948" href="Data.Container.Indexed.FreeMonad.html#948" class="Function Operator"
+      >_&#8902;_</a
+      ><a name="951"
+      > </a
+      ><a name="952" class="Symbol"
+      >:</a
+      ><a name="953"
+      > </a
+      ><a name="954" class="Symbol"
+      >&#8704;</a
+      ><a name="955"
+      > </a
+      ><a name="956" class="Symbol"
+      >{</a
+      ><a name="957" href="Data.Container.Indexed.FreeMonad.html#957" class="Bound"
+      >&#8467;</a
+      ><a name="958" class="Symbol"
+      >}</a
+      ><a name="959"
+      > </a
+      ><a name="960" class="Symbol"
+      >{</a
+      ><a name="961" href="Data.Container.Indexed.FreeMonad.html#961" class="Bound"
+      >O</a
+      ><a name="962"
+      > </a
+      ><a name="963" class="Symbol"
+      >:</a
+      ><a name="964"
+      > </a
+      ><a name="965" class="PrimitiveType"
+      >Set</a
+      ><a name="968"
+      > </a
+      ><a name="969" href="Data.Container.Indexed.FreeMonad.html#957" class="Bound"
+      >&#8467;</a
+      ><a name="970" class="Symbol"
+      >}</a
+      ><a name="971"
+      > </a
+      ><a name="972" class="Symbol"
+      >&#8594;</a
+      ><a name="973"
+      > </a
+      ><a name="974" href="Data.Container.Indexed.Core.html#342" class="Record"
+      >Container</a
+      ><a name="983"
+      > </a
+      ><a name="984" href="Data.Container.Indexed.FreeMonad.html#961" class="Bound"
+      >O</a
+      ><a name="985"
+      > </a
+      ><a name="986" href="Data.Container.Indexed.FreeMonad.html#961" class="Bound"
+      >O</a
+      ><a name="987"
+      > </a
+      ><a name="988" href="Data.Container.Indexed.FreeMonad.html#957" class="Bound"
+      >&#8467;</a
+      ><a name="989"
+      > </a
+      ><a name="990" href="Data.Container.Indexed.FreeMonad.html#957" class="Bound"
+      >&#8467;</a
+      ><a name="991"
+      > </a
+      ><a name="992" class="Symbol"
+      >&#8594;</a
+      ><a name="993"
+      > </a
+      ><a name="994" href="Relation.Unary.PredicateTransformer.html#654" class="Function"
+      >Pt</a
+      ><a name="996"
+      > </a
+      ><a name="997" href="Data.Container.Indexed.FreeMonad.html#961" class="Bound"
+      >O</a
+      ><a name="998"
+      > </a
+      ><a name="999" href="Data.Container.Indexed.FreeMonad.html#957" class="Bound"
+      >&#8467;</a
+      ><a name="1000"
+      >
+</a
+      ><a name="1001" href="Data.Container.Indexed.FreeMonad.html#1001" class="Bound"
+      >C</a
+      ><a name="1002"
+      > </a
+      ><a name="1003" href="Data.Container.Indexed.FreeMonad.html#948" class="Function Operator"
+      >&#8902;</a
+      ><a name="1004"
+      > </a
+      ><a name="1005" href="Data.Container.Indexed.FreeMonad.html#1005" class="Bound"
+      >X</a
+      ><a name="1006"
+      > </a
+      ><a name="1007" class="Symbol"
+      >=</a
+      ><a name="1008"
+      > </a
+      ><a name="1009" href="Data.Container.Indexed.html#1380" class="Function"
+      >&#956;</a
+      ><a name="1010"
+      > </a
+      ><a name="1011" class="Symbol"
+      >(</a
+      ><a name="1012" href="Data.Container.Indexed.FreeMonad.html#1001" class="Bound"
+      >C</a
+      ><a name="1013"
+      > </a
+      ><a name="1014" href="Data.Container.Indexed.FreeMonad.html#825" class="Function Operator"
+      >&#8902;C</a
+      ><a name="1016"
+      > </a
+      ><a name="1017" href="Data.Container.Indexed.FreeMonad.html#1005" class="Bound"
+      >X</a
+      ><a name="1018" class="Symbol"
+      >)</a
+      ><a name="1019"
+      >
+
+</a
+      ><a name="1021" class="Keyword"
+      >pattern</a
+      ><a name="1028"
+      > </a
+      ><a name="1029" href="Data.Container.Indexed.FreeMonad.html#1029" class="InductiveConstructor"
+      >returnP</a
+      ><a name="1036"
+      > </a
+      ><a name="1037" href="Data.Container.Indexed.FreeMonad.html#1047" class="Bound"
+      >x</a
+      ><a name="1038"
+      > </a
+      ><a name="1039" class="Symbol"
+      >=</a
+      ><a name="1040"
+      > </a
+      ><a name="1041" class="Symbol"
+      >(</a
+      ><a name="1042" href="Data.Sum.html#489" class="InductiveConstructor"
+      >inj&#8321;</a
+      ><a name="1046"
+      > </a
+      ><a name="1047" href="Data.Container.Indexed.FreeMonad.html#1047" class="Bound"
+      >x</a
+      ><a name="1048"
+      > </a
+      ><a name="1049" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1050"
+      > </a
+      ><a name="1051" class="Symbol"
+      >_)</a
+      ><a name="1053"
+      >
+</a
+      ><a name="1054" class="Keyword"
+      >pattern</a
+      ><a name="1061"
+      > </a
+      ><a name="1062" href="Data.Container.Indexed.FreeMonad.html#1062" class="InductiveConstructor"
+      >doP</a
+      ><a name="1065"
+      > </a
+      ><a name="1066" href="Data.Container.Indexed.FreeMonad.html#1080" class="Bound"
+      >c</a
+      ><a name="1067"
+      > </a
+      ><a name="1068" href="Data.Container.Indexed.FreeMonad.html#1084" class="Bound"
+      >k</a
+      ><a name="1069"
+      >   </a
+      ><a name="1072" class="Symbol"
+      >=</a
+      ><a name="1073"
+      > </a
+      ><a name="1074" class="Symbol"
+      >(</a
+      ><a name="1075" href="Data.Sum.html#514" class="InductiveConstructor"
+      >inj&#8322;</a
+      ><a name="1079"
+      > </a
+      ><a name="1080" href="Data.Container.Indexed.FreeMonad.html#1080" class="Bound"
+      >c</a
+      ><a name="1081"
+      > </a
+      ><a name="1082" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1083"
+      > </a
+      ><a name="1084" href="Data.Container.Indexed.FreeMonad.html#1084" class="Bound"
+      >k</a
+      ><a name="1085" class="Symbol"
+      >)</a
+      ><a name="1086"
+      >
+
+</a
+      ><a name="1088" href="Data.Container.Indexed.FreeMonad.html#1088" class="Function"
+      >do</a
+      ><a name="1090"
+      > </a
+      ><a name="1091" class="Symbol"
+      >:</a
+      ><a name="1092"
+      > </a
+      ><a name="1093" class="Symbol"
+      >&#8704;</a
+      ><a name="1094"
+      > </a
+      ><a name="1095" class="Symbol"
+      >{</a
+      ><a name="1096" href="Data.Container.Indexed.FreeMonad.html#1096" class="Bound"
+      >&#8467;</a
+      ><a name="1097" class="Symbol"
+      >}</a
+      ><a name="1098"
+      > </a
+      ><a name="1099" class="Symbol"
+      >{</a
+      ><a name="1100" href="Data.Container.Indexed.FreeMonad.html#1100" class="Bound"
+      >O</a
+      ><a name="1101"
+      > </a
+      ><a name="1102" class="Symbol"
+      >:</a
+      ><a name="1103"
+      > </a
+      ><a name="1104" class="PrimitiveType"
+      >Set</a
+      ><a name="1107"
+      > </a
+      ><a name="1108" href="Data.Container.Indexed.FreeMonad.html#1096" class="Bound"
+      >&#8467;</a
+      ><a name="1109" class="Symbol"
+      >}</a
+      ><a name="1110"
+      > </a
+      ><a name="1111" class="Symbol"
+      >{</a
+      ><a name="1112" href="Data.Container.Indexed.FreeMonad.html#1112" class="Bound"
+      >C</a
+      ><a name="1113"
+      > </a
+      ><a name="1114" class="Symbol"
+      >:</a
+      ><a name="1115"
+      > </a
+      ><a name="1116" href="Data.Container.Indexed.Core.html#342" class="Record"
+      >Container</a
+      ><a name="1125"
+      > </a
+      ><a name="1126" href="Data.Container.Indexed.FreeMonad.html#1100" class="Bound"
+      >O</a
+      ><a name="1127"
+      > </a
+      ><a name="1128" href="Data.Container.Indexed.FreeMonad.html#1100" class="Bound"
+      >O</a
+      ><a name="1129"
+      > </a
+      ><a name="1130" href="Data.Container.Indexed.FreeMonad.html#1096" class="Bound"
+      >&#8467;</a
+      ><a name="1131"
+      > </a
+      ><a name="1132" href="Data.Container.Indexed.FreeMonad.html#1096" class="Bound"
+      >&#8467;</a
+      ><a name="1133" class="Symbol"
+      >}</a
+      ><a name="1134"
+      > </a
+      ><a name="1135" class="Symbol"
+      >{</a
+      ><a name="1136" href="Data.Container.Indexed.FreeMonad.html#1136" class="Bound"
+      >X</a
+      ><a name="1137" class="Symbol"
+      >}</a
+      ><a name="1138"
+      > </a
+      ><a name="1139" class="Symbol"
+      >&#8594;</a
+      ><a name="1140"
+      >
+     </a
+      ><a name="1146" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+      >&#10214;</a
+      ><a name="1147"
+      > </a
+      ><a name="1148" href="Data.Container.Indexed.FreeMonad.html#1112" class="Bound"
+      >C</a
+      ><a name="1149"
+      > </a
+      ><a name="1150" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+      >&#10215;</a
+      ><a name="1151"
+      > </a
+      ><a name="1152" class="Symbol"
+      >(</a
+      ><a name="1153" href="Data.Container.Indexed.FreeMonad.html#1112" class="Bound"
+      >C</a
+      ><a name="1154"
+      > </a
+      ><a name="1155" href="Data.Container.Indexed.FreeMonad.html#948" class="Function Operator"
+      >&#8902;</a
+      ><a name="1156"
+      > </a
+      ><a name="1157" href="Data.Container.Indexed.FreeMonad.html#1136" class="Bound"
+      >X</a
+      ><a name="1158" class="Symbol"
+      >)</a
+      ><a name="1159"
+      > </a
+      ><a name="1160" href="Relation.Unary.html#1897" class="Function Operator"
+      >&#8838;</a
+      ><a name="1161"
+      > </a
+      ><a name="1162" href="Data.Container.Indexed.FreeMonad.html#1112" class="Bound"
+      >C</a
+      ><a name="1163"
+      > </a
+      ><a name="1164" href="Data.Container.Indexed.FreeMonad.html#948" class="Function Operator"
+      >&#8902;</a
+      ><a name="1165"
+      > </a
+      ><a name="1166" href="Data.Container.Indexed.FreeMonad.html#1136" class="Bound"
+      >X</a
+      ><a name="1167"
+      >
+</a
+      ><a name="1168" href="Data.Container.Indexed.FreeMonad.html#1088" class="Function"
+      >do</a
+      ><a name="1170"
+      > </a
+      ><a name="1171" class="Symbol"
+      >(</a
+      ><a name="1172" href="Data.Container.Indexed.FreeMonad.html#1172" class="Bound"
+      >c</a
+      ><a name="1173"
+      > </a
+      ><a name="1174" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1175"
+      > </a
+      ><a name="1176" href="Data.Container.Indexed.FreeMonad.html#1176" class="Bound"
+      >k</a
+      ><a name="1177" class="Symbol"
+      >)</a
+      ><a name="1178"
+      > </a
+      ><a name="1179" class="Symbol"
+      >=</a
+      ><a name="1180"
+      > </a
+      ><a name="1181" href="Data.W.Indexed.html#525" class="InductiveConstructor"
+      >sup</a
+      ><a name="1184"
+      > </a
+      ><a name="1185" class="Symbol"
+      >(</a
+      ><a name="1186" href="Data.Container.Indexed.FreeMonad.html#1062" class="InductiveConstructor"
+      >doP</a
+      ><a name="1189"
+      > </a
+      ><a name="1190" href="Data.Container.Indexed.FreeMonad.html#1172" class="Bound"
+      >c</a
+      ><a name="1191"
+      > </a
+      ><a name="1192" href="Data.Container.Indexed.FreeMonad.html#1176" class="Bound"
+      >k</a
+      ><a name="1193" class="Symbol"
+      >)</a
+      ><a name="1194"
+      >
+
+</a
+      ><a name="1196" href="Data.Container.Indexed.FreeMonad.html#1196" class="Function"
+      >rawPMonad</a
+      ><a name="1205"
+      > </a
+      ><a name="1206" class="Symbol"
+      >:</a
+      ><a name="1207"
+      > </a
+      ><a name="1208" class="Symbol"
+      >&#8704;</a
+      ><a name="1209"
+      > </a
+      ><a name="1210" class="Symbol"
+      >{</a
+      ><a name="1211" href="Data.Container.Indexed.FreeMonad.html#1211" class="Bound"
+      >&#8467;</a
+      ><a name="1212" class="Symbol"
+      >}</a
+      ><a name="1213"
+      > </a
+      ><a name="1214" class="Symbol"
+      >{</a
+      ><a name="1215" href="Data.Container.Indexed.FreeMonad.html#1215" class="Bound"
+      >O</a
+      ><a name="1216"
+      > </a
+      ><a name="1217" class="Symbol"
+      >:</a
+      ><a name="1218"
+      > </a
+      ><a name="1219" class="PrimitiveType"
+      >Set</a
+      ><a name="1222"
+      > </a
+      ><a name="1223" href="Data.Container.Indexed.FreeMonad.html#1211" class="Bound"
+      >&#8467;</a
+      ><a name="1224" class="Symbol"
+      >}</a
+      ><a name="1225"
+      > </a
+      ><a name="1226" class="Symbol"
+      >{</a
+      ><a name="1227" href="Data.Container.Indexed.FreeMonad.html#1227" class="Bound"
+      >C</a
+      ><a name="1228"
+      > </a
+      ><a name="1229" class="Symbol"
+      >:</a
+      ><a name="1230"
+      > </a
+      ><a name="1231" href="Data.Container.Indexed.Core.html#342" class="Record"
+      >Container</a
+      ><a name="1240"
+      > </a
+      ><a name="1241" href="Data.Container.Indexed.FreeMonad.html#1215" class="Bound"
+      >O</a
+      ><a name="1242"
+      > </a
+      ><a name="1243" href="Data.Container.Indexed.FreeMonad.html#1215" class="Bound"
+      >O</a
+      ><a name="1244"
+      > </a
+      ><a name="1245" href="Data.Container.Indexed.FreeMonad.html#1211" class="Bound"
+      >&#8467;</a
+      ><a name="1246"
+      > </a
+      ><a name="1247" href="Data.Container.Indexed.FreeMonad.html#1211" class="Bound"
+      >&#8467;</a
+      ><a name="1248" class="Symbol"
+      >}</a
+      ><a name="1249"
+      > </a
+      ><a name="1250" class="Symbol"
+      >&#8594;</a
+      ><a name="1251"
+      >
+            </a
+      ><a name="1264" href="Category.Monad.Predicate.html#727" class="Record"
+      >RawPMonad</a
+      ><a name="1273"
+      > </a
+      ><a name="1274" class="Symbol"
+      >{</a
+      ><a name="1275" class="Argument"
+      >&#8467;</a
+      ><a name="1276"
+      > </a
+      ><a name="1277" class="Symbol"
+      >=</a
+      ><a name="1278"
+      > </a
+      ><a name="1279" href="Data.Container.Indexed.FreeMonad.html#1211" class="Bound"
+      >&#8467;</a
+      ><a name="1280" class="Symbol"
+      >}</a
+      ><a name="1281"
+      > </a
+      ><a name="1282" class="Symbol"
+      >(</a
+      ><a name="1283" href="Data.Container.Indexed.FreeMonad.html#948" class="Function Operator"
+      >_&#8902;_</a
+      ><a name="1286"
+      > </a
+      ><a name="1287" href="Data.Container.Indexed.FreeMonad.html#1227" class="Bound"
+      >C</a
+      ><a name="1288" class="Symbol"
+      >)</a
+      ><a name="1289"
+      >
+</a
+      ><a name="1290" href="Data.Container.Indexed.FreeMonad.html#1196" class="Function"
+      >rawPMonad</a
+      ><a name="1299"
+      > </a
+      ><a name="1300" class="Symbol"
+      >{</a
+      ><a name="1301" class="Argument"
+      >C</a
+      ><a name="1302"
+      > </a
+      ><a name="1303" class="Symbol"
+      >=</a
+      ><a name="1304"
+      > </a
+      ><a name="1305" href="Data.Container.Indexed.FreeMonad.html#1305" class="Bound"
+      >C</a
+      ><a name="1306" class="Symbol"
+      >}</a
+      ><a name="1307"
+      > </a
+      ><a name="1308" class="Symbol"
+      >=</a
+      ><a name="1309"
+      > </a
+      ><a name="1310" class="Keyword"
+      >record</a
+      ><a name="1316"
+      >
+  </a
+      ><a name="1319" class="Symbol"
+      >{</a
+      ><a name="1320"
+      > </a
+      ><a name="1321" class="Field"
+      >return?</a
+      ><a name="1328"
+      > </a
+      ><a name="1329" class="Symbol"
+      >=</a
+      ><a name="1330"
+      > </a
+      ><a name="1331" href="Data.Container.Indexed.FreeMonad.html#1371" class="Function"
+      >return</a
+      ><a name="1337"
+      >
+  </a
+      ><a name="1340" class="Symbol"
+      >;</a
+      ><a name="1341"
+      > </a
+      ><a name="1342" class="Field Operator"
+      >_=&lt;?_</a
+      ><a name="1347"
+      >  </a
+      ><a name="1349" class="Symbol"
+      >=</a
+      ><a name="1350"
+      > </a
+      ><a name="1351" href="Data.Container.Indexed.FreeMonad.html#1444" class="Function Operator"
+      >_=&lt;&lt;_</a
+      ><a name="1356"
+      >
+  </a
+      ><a name="1359" class="Symbol"
+      >}</a
+      ><a name="1360"
+      >
+  </a
+      ><a name="1363" class="Keyword"
+      >where</a
+      ><a name="1368"
+      >
+  </a
+      ><a name="1371" href="Data.Container.Indexed.FreeMonad.html#1371" class="Function"
+      >return</a
+      ><a name="1377"
+      > </a
+      ><a name="1378" class="Symbol"
+      >:</a
+      ><a name="1379"
+      > </a
+      ><a name="1380" class="Symbol"
+      >&#8704;</a
+      ><a name="1381"
+      > </a
+      ><a name="1382" class="Symbol"
+      >{</a
+      ><a name="1383" href="Data.Container.Indexed.FreeMonad.html#1383" class="Bound"
+      >X</a
+      ><a name="1384" class="Symbol"
+      >}</a
+      ><a name="1385"
+      > </a
+      ><a name="1386" class="Symbol"
+      >&#8594;</a
+      ><a name="1387"
+      > </a
+      ><a name="1388" href="Data.Container.Indexed.FreeMonad.html#1383" class="Bound"
+      >X</a
+      ><a name="1389"
+      > </a
+      ><a name="1390" href="Relation.Unary.html#1897" class="Function Operator"
+      >&#8838;</a
+      ><a name="1391"
+      > </a
+      ><a name="1392" href="Data.Container.Indexed.FreeMonad.html#1305" class="Bound"
+      >C</a
+      ><a name="1393"
+      > </a
+      ><a name="1394" href="Data.Container.Indexed.FreeMonad.html#948" class="Function Operator"
+      >&#8902;</a
+      ><a name="1395"
+      > </a
+      ><a name="1396" href="Data.Container.Indexed.FreeMonad.html#1383" class="Bound"
+      >X</a
+      ><a name="1397"
+      >
+  </a
+      ><a name="1400" href="Data.Container.Indexed.FreeMonad.html#1371" class="Function"
+      >return</a
+      ><a name="1406"
+      > </a
+      ><a name="1407" href="Data.Container.Indexed.FreeMonad.html#1407" class="Bound"
+      >x</a
+      ><a name="1408"
+      > </a
+      ><a name="1409" class="Symbol"
+      >=</a
+      ><a name="1410"
+      > </a
+      ><a name="1411" href="Data.W.Indexed.html#525" class="InductiveConstructor"
+      >sup</a
+      ><a name="1414"
+      > </a
+      ><a name="1415" class="Symbol"
+      >(</a
+      ><a name="1416" href="Data.Sum.html#489" class="InductiveConstructor"
+      >inj&#8321;</a
+      ><a name="1420"
+      > </a
+      ><a name="1421" href="Data.Container.Indexed.FreeMonad.html#1407" class="Bound"
+      >x</a
+      ><a name="1422"
+      > </a
+      ><a name="1423" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1424"
+      > </a
+      ><a name="1425" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="1431"
+      > </a
+      ><a name="1432" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="1433"
+      > </a
+      ><a name="1434" href="Level.html#420" class="Field"
+      >lower</a
+      ><a name="1439" class="Symbol"
+      >)</a
+      ><a name="1440"
+      >
+
+  </a
+      ><a name="1444" href="Data.Container.Indexed.FreeMonad.html#1444" class="Function Operator"
+      >_=&lt;&lt;_</a
+      ><a name="1449"
+      > </a
+      ><a name="1450" class="Symbol"
+      >:</a
+      ><a name="1451"
+      > </a
+      ><a name="1452" class="Symbol"
+      >&#8704;</a
+      ><a name="1453"
+      > </a
+      ><a name="1454" class="Symbol"
+      >{</a
+      ><a name="1455" href="Data.Container.Indexed.FreeMonad.html#1455" class="Bound"
+      >X</a
+      ><a name="1456"
+      > </a
+      ><a name="1457" href="Data.Container.Indexed.FreeMonad.html#1457" class="Bound"
+      >Y</a
+      ><a name="1458" class="Symbol"
+      >}</a
+      ><a name="1459"
+      > </a
+      ><a name="1460" class="Symbol"
+      >&#8594;</a
+      ><a name="1461"
+      > </a
+      ><a name="1462" href="Data.Container.Indexed.FreeMonad.html#1455" class="Bound"
+      >X</a
+      ><a name="1463"
+      > </a
+      ><a name="1464" href="Relation.Unary.html#1897" class="Function Operator"
+      >&#8838;</a
+      ><a name="1465"
+      > </a
+      ><a name="1466" href="Data.Container.Indexed.FreeMonad.html#1305" class="Bound"
+      >C</a
+      ><a name="1467"
+      > </a
+      ><a name="1468" href="Data.Container.Indexed.FreeMonad.html#948" class="Function Operator"
+      >&#8902;</a
+      ><a name="1469"
+      > </a
+      ><a name="1470" href="Data.Container.Indexed.FreeMonad.html#1457" class="Bound"
+      >Y</a
+      ><a name="1471"
+      > </a
+      ><a name="1472" class="Symbol"
+      >&#8594;</a
+      ><a name="1473"
+      > </a
+      ><a name="1474" href="Data.Container.Indexed.FreeMonad.html#1305" class="Bound"
+      >C</a
+      ><a name="1475"
+      > </a
+      ><a name="1476" href="Data.Container.Indexed.FreeMonad.html#948" class="Function Operator"
+      >&#8902;</a
+      ><a name="1477"
+      > </a
+      ><a name="1478" href="Data.Container.Indexed.FreeMonad.html#1455" class="Bound"
+      >X</a
+      ><a name="1479"
+      > </a
+      ><a name="1480" href="Relation.Unary.html#1897" class="Function Operator"
+      >&#8838;</a
+      ><a name="1481"
+      > </a
+      ><a name="1482" href="Data.Container.Indexed.FreeMonad.html#1305" class="Bound"
+      >C</a
+      ><a name="1483"
+      > </a
+      ><a name="1484" href="Data.Container.Indexed.FreeMonad.html#948" class="Function Operator"
+      >&#8902;</a
+      ><a name="1485"
+      > </a
+      ><a name="1486" href="Data.Container.Indexed.FreeMonad.html#1457" class="Bound"
+      >Y</a
+      ><a name="1487"
+      >
+  </a
+      ><a name="1490" href="Data.Container.Indexed.FreeMonad.html#1490" class="Bound"
+      >f</a
+      ><a name="1491"
+      > </a
+      ><a name="1492" href="Data.Container.Indexed.FreeMonad.html#1444" class="Function Operator"
+      >=&lt;&lt;</a
+      ><a name="1495"
+      > </a
+      ><a name="1496" href="Data.W.Indexed.html#525" class="InductiveConstructor"
+      >sup</a
+      ><a name="1499"
+      > </a
+      ><a name="1500" class="Symbol"
+      >(</a
+      ><a name="1501" href="Data.Container.Indexed.FreeMonad.html#1029" class="InductiveConstructor"
+      >returnP</a
+      ><a name="1508"
+      > </a
+      ><a name="1509" href="Data.Container.Indexed.FreeMonad.html#1509" class="Bound"
+      >x</a
+      ><a name="1510" class="Symbol"
+      >)</a
+      ><a name="1511"
+      > </a
+      ><a name="1512" class="Symbol"
+      >=</a
+      ><a name="1513"
+      > </a
+      ><a name="1514" href="Data.Container.Indexed.FreeMonad.html#1490" class="Bound"
+      >f</a
+      ><a name="1515"
+      > </a
+      ><a name="1516" href="Data.Container.Indexed.FreeMonad.html#1509" class="Bound"
+      >x</a
+      ><a name="1517"
+      >
+  </a
+      ><a name="1520" href="Data.Container.Indexed.FreeMonad.html#1520" class="Bound"
+      >f</a
+      ><a name="1521"
+      > </a
+      ><a name="1522" href="Data.Container.Indexed.FreeMonad.html#1444" class="Function Operator"
+      >=&lt;&lt;</a
+      ><a name="1525"
+      > </a
+      ><a name="1526" href="Data.W.Indexed.html#525" class="InductiveConstructor"
+      >sup</a
+      ><a name="1529"
+      > </a
+      ><a name="1530" class="Symbol"
+      >(</a
+      ><a name="1531" href="Data.Container.Indexed.FreeMonad.html#1062" class="InductiveConstructor"
+      >doP</a
+      ><a name="1534"
+      > </a
+      ><a name="1535" href="Data.Container.Indexed.FreeMonad.html#1535" class="Bound"
+      >c</a
+      ><a name="1536"
+      > </a
+      ><a name="1537" href="Data.Container.Indexed.FreeMonad.html#1537" class="Bound"
+      >k</a
+      ><a name="1538" class="Symbol"
+      >)</a
+      ><a name="1539"
+      >   </a
+      ><a name="1542" class="Symbol"
+      >=</a
+      ><a name="1543"
+      > </a
+      ><a name="1544" href="Data.Container.Indexed.FreeMonad.html#1088" class="Function"
+      >do</a
+      ><a name="1546"
+      > </a
+      ><a name="1547" class="Symbol"
+      >(</a
+      ><a name="1548" href="Data.Container.Indexed.FreeMonad.html#1535" class="Bound"
+      >c</a
+      ><a name="1549"
+      > </a
+      ><a name="1550" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1551"
+      > </a
+      ><a name="1552" class="Symbol"
+      >&#955;</a
+      ><a name="1553"
+      > </a
+      ><a name="1554" href="Data.Container.Indexed.FreeMonad.html#1554" class="Bound"
+      >r</a
+      ><a name="1555"
+      > </a
+      ><a name="1556" class="Symbol"
+      >&#8594;</a
+      ><a name="1557"
+      > </a
+      ><a name="1558" href="Data.Container.Indexed.FreeMonad.html#1520" class="Bound"
+      >f</a
+      ><a name="1559"
+      > </a
+      ><a name="1560" href="Data.Container.Indexed.FreeMonad.html#1444" class="Function Operator"
+      >=&lt;&lt;</a
+      ><a name="1563"
+      > </a
+      ><a name="1564" href="Data.Container.Indexed.FreeMonad.html#1537" class="Bound"
+      >k</a
+      ><a name="1565"
+      > </a
+      ><a name="1566" href="Data.Container.Indexed.FreeMonad.html#1554" class="Bound"
+      >r</a
+      ><a name="1567" class="Symbol"
+      >)</a
+      ><a name="1568"
+      >
+
+</a
+      ><a name="1570" href="Data.Container.Indexed.FreeMonad.html#1570" class="Function"
+      >leaf</a
+      ><a name="1574"
+      > </a
+      ><a name="1575" class="Symbol"
+      >:</a
+      ><a name="1576"
+      > </a
+      ><a name="1577" class="Symbol"
+      >&#8704;</a
+      ><a name="1578"
+      > </a
+      ><a name="1579" class="Symbol"
+      >{</a
+      ><a name="1580" href="Data.Container.Indexed.FreeMonad.html#1580" class="Bound"
+      >&#8467;</a
+      ><a name="1581" class="Symbol"
+      >}</a
+      ><a name="1582"
+      > </a
+      ><a name="1583" class="Symbol"
+      >{</a
+      ><a name="1584" href="Data.Container.Indexed.FreeMonad.html#1584" class="Bound"
+      >O</a
+      ><a name="1585"
+      > </a
+      ><a name="1586" class="Symbol"
+      >:</a
+      ><a name="1587"
+      > </a
+      ><a name="1588" class="PrimitiveType"
+      >Set</a
+      ><a name="1591"
+      > </a
+      ><a name="1592" href="Data.Container.Indexed.FreeMonad.html#1580" class="Bound"
+      >&#8467;</a
+      ><a name="1593" class="Symbol"
+      >}</a
+      ><a name="1594"
+      > </a
+      ><a name="1595" class="Symbol"
+      >{</a
+      ><a name="1596" href="Data.Container.Indexed.FreeMonad.html#1596" class="Bound"
+      >C</a
+      ><a name="1597"
+      > </a
+      ><a name="1598" class="Symbol"
+      >:</a
+      ><a name="1599"
+      > </a
+      ><a name="1600" href="Data.Container.Indexed.Core.html#342" class="Record"
+      >Container</a
+      ><a name="1609"
+      > </a
+      ><a name="1610" href="Data.Container.Indexed.FreeMonad.html#1584" class="Bound"
+      >O</a
+      ><a name="1611"
+      > </a
+      ><a name="1612" href="Data.Container.Indexed.FreeMonad.html#1584" class="Bound"
+      >O</a
+      ><a name="1613"
+      > </a
+      ><a name="1614" href="Data.Container.Indexed.FreeMonad.html#1580" class="Bound"
+      >&#8467;</a
+      ><a name="1615"
+      > </a
+      ><a name="1616" href="Data.Container.Indexed.FreeMonad.html#1580" class="Bound"
+      >&#8467;</a
+      ><a name="1617" class="Symbol"
+      >}</a
+      ><a name="1618"
+      > </a
+      ><a name="1619" class="Symbol"
+      >{</a
+      ><a name="1620" href="Data.Container.Indexed.FreeMonad.html#1620" class="Bound"
+      >X</a
+      ><a name="1621"
+      > </a
+      ><a name="1622" class="Symbol"
+      >:</a
+      ><a name="1623"
+      > </a
+      ><a name="1624" href="Relation.Unary.html#616" class="Function"
+      >Pred</a
+      ><a name="1628"
+      > </a
+      ><a name="1629" href="Data.Container.Indexed.FreeMonad.html#1584" class="Bound"
+      >O</a
+      ><a name="1630"
+      > </a
+      ><a name="1631" href="Data.Container.Indexed.FreeMonad.html#1580" class="Bound"
+      >&#8467;</a
+      ><a name="1632" class="Symbol"
+      >}</a
+      ><a name="1633"
+      > </a
+      ><a name="1634" class="Symbol"
+      >&#8594;</a
+      ><a name="1635"
+      >
+       </a
+      ><a name="1643" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+      >&#10214;</a
+      ><a name="1644"
+      > </a
+      ><a name="1645" href="Data.Container.Indexed.FreeMonad.html#1596" class="Bound"
+      >C</a
+      ><a name="1646"
+      > </a
+      ><a name="1647" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+      >&#10215;</a
+      ><a name="1648"
+      > </a
+      ><a name="1649" href="Data.Container.Indexed.FreeMonad.html#1620" class="Bound"
+      >X</a
+      ><a name="1650"
+      > </a
+      ><a name="1651" href="Relation.Unary.html#1897" class="Function Operator"
+      >&#8838;</a
+      ><a name="1652"
+      > </a
+      ><a name="1653" href="Data.Container.Indexed.FreeMonad.html#1596" class="Bound"
+      >C</a
+      ><a name="1654"
+      > </a
+      ><a name="1655" href="Data.Container.Indexed.FreeMonad.html#948" class="Function Operator"
+      >&#8902;</a
+      ><a name="1656"
+      > </a
+      ><a name="1657" href="Data.Container.Indexed.FreeMonad.html#1620" class="Bound"
+      >X</a
+      ><a name="1658"
+      >
+</a
+      ><a name="1659" href="Data.Container.Indexed.FreeMonad.html#1570" class="Function"
+      >leaf</a
+      ><a name="1663"
+      > </a
+      ><a name="1664" class="Symbol"
+      >(</a
+      ><a name="1665" href="Data.Container.Indexed.FreeMonad.html#1665" class="Bound"
+      >c</a
+      ><a name="1666"
+      > </a
+      ><a name="1667" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1668"
+      > </a
+      ><a name="1669" href="Data.Container.Indexed.FreeMonad.html#1669" class="Bound"
+      >k</a
+      ><a name="1670" class="Symbol"
+      >)</a
+      ><a name="1671"
+      > </a
+      ><a name="1672" class="Symbol"
+      >=</a
+      ><a name="1673"
+      > </a
+      ><a name="1674" href="Data.Container.Indexed.FreeMonad.html#1088" class="Function"
+      >do</a
+      ><a name="1676"
+      > </a
+      ><a name="1677" class="Symbol"
+      >(</a
+      ><a name="1678" href="Data.Container.Indexed.FreeMonad.html#1665" class="Bound"
+      >c</a
+      ><a name="1679"
+      > </a
+      ><a name="1680" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1681"
+      > </a
+      ><a name="1682" href="Category.Monad.Predicate.html#947" class="Function"
+      >return?</a
+      ><a name="1689"
+      > </a
+      ><a name="1690" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="1691"
+      > </a
+      ><a name="1692" href="Data.Container.Indexed.FreeMonad.html#1669" class="Bound"
+      >k</a
+      ><a name="1693" class="Symbol"
+      >)</a
+      ><a name="1694"
+      >
+  </a
+      ><a name="1697" class="Keyword"
+      >where</a
+      ><a name="1702"
+      >
+  </a
+      ><a name="1705" class="Keyword"
+      >open</a
+      ><a name="1709"
+      > </a
+      ><a name="1710" href="Category.Monad.Predicate.html#727" class="Module"
+      >RawPMonad</a
+      ><a name="1719"
+      > </a
+      ><a name="1720" href="Data.Container.Indexed.FreeMonad.html#1196" class="Function"
+      >rawPMonad</a
+      ><a name="1729"
+      >
+
+</a
+      ><a name="1731" href="Data.Container.Indexed.FreeMonad.html#1731" class="Function"
+      >generic</a
+      ><a name="1738"
+      > </a
+      ><a name="1739" class="Symbol"
+      >:</a
+      ><a name="1740"
+      > </a
+      ><a name="1741" class="Symbol"
+      >&#8704;</a
+      ><a name="1742"
+      > </a
+      ><a name="1743" class="Symbol"
+      >{</a
+      ><a name="1744" href="Data.Container.Indexed.FreeMonad.html#1744" class="Bound"
+      >&#8467;</a
+      ><a name="1745" class="Symbol"
+      >}</a
+      ><a name="1746"
+      > </a
+      ><a name="1747" class="Symbol"
+      >{</a
+      ><a name="1748" href="Data.Container.Indexed.FreeMonad.html#1748" class="Bound"
+      >O</a
+      ><a name="1749"
+      > </a
+      ><a name="1750" class="Symbol"
+      >:</a
+      ><a name="1751"
+      > </a
+      ><a name="1752" class="PrimitiveType"
+      >Set</a
+      ><a name="1755"
+      > </a
+      ><a name="1756" href="Data.Container.Indexed.FreeMonad.html#1744" class="Bound"
+      >&#8467;</a
+      ><a name="1757" class="Symbol"
+      >}</a
+      ><a name="1758"
+      > </a
+      ><a name="1759" class="Symbol"
+      >{</a
+      ><a name="1760" href="Data.Container.Indexed.FreeMonad.html#1760" class="Bound"
+      >C</a
+      ><a name="1761"
+      > </a
+      ><a name="1762" class="Symbol"
+      >:</a
+      ><a name="1763"
+      > </a
+      ><a name="1764" href="Data.Container.Indexed.Core.html#342" class="Record"
+      >Container</a
+      ><a name="1773"
+      > </a
+      ><a name="1774" href="Data.Container.Indexed.FreeMonad.html#1748" class="Bound"
+      >O</a
+      ><a name="1775"
+      > </a
+      ><a name="1776" href="Data.Container.Indexed.FreeMonad.html#1748" class="Bound"
+      >O</a
+      ><a name="1777"
+      > </a
+      ><a name="1778" href="Data.Container.Indexed.FreeMonad.html#1744" class="Bound"
+      >&#8467;</a
+      ><a name="1779"
+      > </a
+      ><a name="1780" href="Data.Container.Indexed.FreeMonad.html#1744" class="Bound"
+      >&#8467;</a
+      ><a name="1781" class="Symbol"
+      >}</a
+      ><a name="1782"
+      > </a
+      ><a name="1783" class="Symbol"
+      >{</a
+      ><a name="1784" href="Data.Container.Indexed.FreeMonad.html#1784" class="Bound"
+      >o</a
+      ><a name="1785" class="Symbol"
+      >}</a
+      ><a name="1786"
+      >
+          </a
+      ><a name="1797" class="Symbol"
+      >(</a
+      ><a name="1798" href="Data.Container.Indexed.FreeMonad.html#1798" class="Bound"
+      >c</a
+      ><a name="1799"
+      > </a
+      ><a name="1800" class="Symbol"
+      >:</a
+      ><a name="1801"
+      > </a
+      ><a name="1802" href="Data.Container.Indexed.Core.html#481" class="Field"
+      >Command</a
+      ><a name="1809"
+      > </a
+      ><a name="1810" href="Data.Container.Indexed.FreeMonad.html#1760" class="Bound"
+      >C</a
+      ><a name="1811"
+      > </a
+      ><a name="1812" href="Data.Container.Indexed.FreeMonad.html#1784" class="Bound"
+      >o</a
+      ><a name="1813" class="Symbol"
+      >)</a
+      ><a name="1814"
+      > </a
+      ><a name="1815" class="Symbol"
+      >&#8594;</a
+      ><a name="1816"
+      > </a
+      ><a name="1817" href="Data.Container.Indexed.FreeMonad.html#1784" class="Bound"
+      >o</a
+      ><a name="1818"
+      > </a
+      ><a name="1819" href="Relation.Unary.html#986" class="Function Operator"
+      >&#8712;</a
+      ><a name="1820"
+      > </a
+      ><a name="1821" href="Data.Container.Indexed.FreeMonad.html#1760" class="Bound"
+      >C</a
+      ><a name="1822"
+      > </a
+      ><a name="1823" href="Data.Container.Indexed.FreeMonad.html#948" class="Function Operator"
+      >&#8902;</a
+      ><a name="1824"
+      > </a
+      ><a name="1825" href="Relation.Unary.html#2882" class="Function"
+      >&#8899;[</a
+      ><a name="1827"
+      > </a
+      ><a name="1828" href="Data.Container.Indexed.FreeMonad.html#1828" class="Bound"
+      >r</a
+      ><a name="1829"
+      > </a
+      ><a name="1830" href="Relation.Unary.html#2882" class="Function"
+      >&#8758;</a
+      ><a name="1831"
+      > </a
+      ><a name="1832" href="Data.Container.Indexed.Core.html#512" class="Field"
+      >Response</a
+      ><a name="1840"
+      > </a
+      ><a name="1841" href="Data.Container.Indexed.FreeMonad.html#1760" class="Bound"
+      >C</a
+      ><a name="1842"
+      > </a
+      ><a name="1843" href="Data.Container.Indexed.FreeMonad.html#1798" class="Bound"
+      >c</a
+      ><a name="1844"
+      > </a
+      ><a name="1845" href="Relation.Unary.html#2882" class="Function"
+      >]</a
+      ><a name="1846"
+      > </a
+      ><a name="1847" href="Relation.Unary.html#1303" class="Function Operator"
+      >&#65371;</a
+      ><a name="1848"
+      > </a
+      ><a name="1849" href="Data.Container.Indexed.Core.html#553" class="Field"
+      >next</a
+      ><a name="1853"
+      > </a
+      ><a name="1854" href="Data.Container.Indexed.FreeMonad.html#1760" class="Bound"
+      >C</a
+      ><a name="1855"
+      > </a
+      ><a name="1856" href="Data.Container.Indexed.FreeMonad.html#1798" class="Bound"
+      >c</a
+      ><a name="1857"
+      > </a
+      ><a name="1858" href="Data.Container.Indexed.FreeMonad.html#1828" class="Bound"
+      >r</a
+      ><a name="1859"
+      > </a
+      ><a name="1860" href="Relation.Unary.html#1303" class="Function Operator"
+      >&#65373;</a
+      ><a name="1861"
+      >
+</a
+      ><a name="1862" href="Data.Container.Indexed.FreeMonad.html#1731" class="Function"
+      >generic</a
+      ><a name="1869"
+      > </a
+      ><a name="1870" href="Data.Container.Indexed.FreeMonad.html#1870" class="Bound"
+      >c</a
+      ><a name="1871"
+      > </a
+      ><a name="1872" class="Symbol"
+      >=</a
+      ><a name="1873"
+      > </a
+      ><a name="1874" href="Data.Container.Indexed.FreeMonad.html#1088" class="Function"
+      >do</a
+      ><a name="1876"
+      > </a
+      ><a name="1877" class="Symbol"
+      >(</a
+      ><a name="1878" href="Data.Container.Indexed.FreeMonad.html#1870" class="Bound"
+      >c</a
+      ><a name="1879"
+      > </a
+      ><a name="1880" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1881"
+      > </a
+      ><a name="1882" class="Symbol"
+      >&#955;</a
+      ><a name="1883"
+      > </a
+      ><a name="1884" href="Data.Container.Indexed.FreeMonad.html#1884" class="Bound"
+      >r</a
+      ><a name="1885"
+      > </a
+      ><a name="1886" class="Symbol"
+      >&#8594;</a
+      ><a name="1887"
+      > </a
+      ><a name="1888" href="Category.Monad.Predicate.html#947" class="Function"
+      >return?</a
+      ><a name="1895"
+      > </a
+      ><a name="1896" class="Symbol"
+      >(</a
+      ><a name="1897" href="Data.Container.Indexed.FreeMonad.html#1884" class="Bound"
+      >r</a
+      ><a name="1898"
+      > </a
+      ><a name="1899" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1900"
+      > </a
+      ><a name="1901" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1905" class="Symbol"
+      >))</a
+      ><a name="1907"
+      >
+  </a
+      ><a name="1910" class="Keyword"
+      >where</a
+      ><a name="1915"
+      >
+  </a
+      ><a name="1918" class="Keyword"
+      >open</a
+      ><a name="1922"
+      > </a
+      ><a name="1923" href="Category.Monad.Predicate.html#727" class="Module"
+      >RawPMonad</a
+      ><a name="1932"
+      > </a
+      ><a name="1933" href="Data.Container.Indexed.FreeMonad.html#1196" class="Function"
+      >rawPMonad</a
+      ><a name="1942"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

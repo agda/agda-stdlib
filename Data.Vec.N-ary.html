@@ -1,0 +1,6240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Vec.N-ary</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Code for converting Vec&#160;A&#160;n&#160;&#8594;&#160;B to and from n-ary functions</a
+      ><a name="168"
+      >
+</a
+      ><a name="169" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="241"
+      >
+
+</a
+      ><a name="243" class="Keyword"
+      >module</a
+      ><a name="249"
+      > </a
+      ><a name="250" href="Data.Vec.N-ary.html#1" class="Module"
+      >Data.Vec.N-ary</a
+      ><a name="264"
+      > </a
+      ><a name="265" class="Keyword"
+      >where</a
+      ><a name="270"
+      >
+
+</a
+      ><a name="272" class="Keyword"
+      >open</a
+      ><a name="276"
+      > </a
+      ><a name="277" class="Keyword"
+      >import</a
+      ><a name="283"
+      > </a
+      ><a name="284" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="292"
+      > </a
+      ><a name="293" class="Keyword"
+      >hiding</a
+      ><a name="299"
+      > </a
+      ><a name="300" class="Symbol"
+      >(</a
+      ><a name="301"
+      >_&#8852;_</a
+      ><a name="304" class="Symbol"
+      >)</a
+      ><a name="305"
+      >
+</a
+      ><a name="306" class="Keyword"
+      >open</a
+      ><a name="310"
+      > </a
+      ><a name="311" class="Keyword"
+      >import</a
+      ><a name="317"
+      > </a
+      ><a name="318" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="330"
+      > </a
+      ><a name="331" class="Symbol"
+      >as</a
+      ><a name="333"
+      > </a
+      ><a name="334" class="Module"
+      >Prod</a
+      ><a name="338"
+      >
+</a
+      ><a name="339" class="Keyword"
+      >open</a
+      ><a name="343"
+      > </a
+      ><a name="344" class="Keyword"
+      >import</a
+      ><a name="350"
+      > </a
+      ><a name="351" href="Data.Vec.html#1" class="Module"
+      >Data.Vec</a
+      ><a name="359"
+      >
+</a
+      ><a name="360" class="Keyword"
+      >open</a
+      ><a name="364"
+      > </a
+      ><a name="365" class="Keyword"
+      >import</a
+      ><a name="371"
+      > </a
+      ><a name="372" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="380"
+      >
+</a
+      ><a name="381" class="Keyword"
+      >open</a
+      ><a name="385"
+      > </a
+      ><a name="386" class="Keyword"
+      >import</a
+      ><a name="392"
+      > </a
+      ><a name="393" href="Function.Equivalence.html#1" class="Module"
+      >Function.Equivalence</a
+      ><a name="413"
+      > </a
+      ><a name="414" class="Keyword"
+      >using</a
+      ><a name="419"
+      > </a
+      ><a name="420" class="Symbol"
+      >(</a
+      ><a name="421"
+      >_&#8660;_</a
+      ><a name="424" class="Symbol"
+      >;</a
+      ><a name="425"
+      > equivalence</a
+      ><a name="437" class="Symbol"
+      >)</a
+      ><a name="438"
+      >
+</a
+      ><a name="439" class="Keyword"
+      >open</a
+      ><a name="443"
+      > </a
+      ><a name="444" class="Keyword"
+      >import</a
+      ><a name="450"
+      > </a
+      ><a name="451" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="456"
+      > </a
+      ><a name="457" class="Keyword"
+      >using</a
+      ><a name="462"
+      > </a
+      ><a name="463" class="Symbol"
+      >(</a
+      ><a name="464"
+      >Level</a
+      ><a name="469" class="Symbol"
+      >;</a
+      ><a name="470"
+      > _&#8852;_</a
+      ><a name="474" class="Symbol"
+      >)</a
+      ><a name="475"
+      >
+</a
+      ><a name="476" class="Keyword"
+      >open</a
+      ><a name="480"
+      > </a
+      ><a name="481" class="Keyword"
+      >import</a
+      ><a name="487"
+      > </a
+      ><a name="488" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="503"
+      >
+</a
+      ><a name="504" class="Keyword"
+      >open</a
+      ><a name="508"
+      > </a
+      ><a name="509" class="Keyword"
+      >import</a
+      ><a name="515"
+      > </a
+      ><a name="516" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="553"
+      >
+</a
+      ><a name="554" class="Keyword"
+      >open</a
+      ><a name="558"
+      > </a
+      ><a name="559" class="Keyword"
+      >import</a
+      ><a name="565"
+      > </a
+      ><a name="566" href="Relation.Nullary.Decidable.html#1" class="Module"
+      >Relation.Nullary.Decidable</a
+      ><a name="592"
+      >
+
+</a
+      ><a name="594" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="666"
+      >
+</a
+      ><a name="667" class="Comment"
+      >-- N-ary functions</a
+      ><a name="685"
+      >
+
+</a
+      ><a name="687" href="Data.Vec.N-ary.html#687" class="Function"
+      >N-ary-level</a
+      ><a name="698"
+      > </a
+      ><a name="699" class="Symbol"
+      >:</a
+      ><a name="700"
+      > </a
+      ><a name="701" href="Agda.Primitive.html#379" class="Postulate"
+      >Level</a
+      ><a name="706"
+      > </a
+      ><a name="707" class="Symbol"
+      >&#8594;</a
+      ><a name="708"
+      > </a
+      ><a name="709" href="Agda.Primitive.html#379" class="Postulate"
+      >Level</a
+      ><a name="714"
+      > </a
+      ><a name="715" class="Symbol"
+      >&#8594;</a
+      ><a name="716"
+      > </a
+      ><a name="717" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="718"
+      > </a
+      ><a name="719" class="Symbol"
+      >&#8594;</a
+      ><a name="720"
+      > </a
+      ><a name="721" href="Agda.Primitive.html#379" class="Postulate"
+      >Level</a
+      ><a name="726"
+      >
+</a
+      ><a name="727" href="Data.Vec.N-ary.html#687" class="Function"
+      >N-ary-level</a
+      ><a name="738"
+      > </a
+      ><a name="739" href="Data.Vec.N-ary.html#739" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="741"
+      > </a
+      ><a name="742" href="Data.Vec.N-ary.html#742" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="744"
+      > </a
+      ><a name="745" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="749"
+      >    </a
+      ><a name="753" class="Symbol"
+      >=</a
+      ><a name="754"
+      > </a
+      ><a name="755" href="Data.Vec.N-ary.html#742" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="757"
+      >
+</a
+      ><a name="758" href="Data.Vec.N-ary.html#687" class="Function"
+      >N-ary-level</a
+      ><a name="769"
+      > </a
+      ><a name="770" href="Data.Vec.N-ary.html#770" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="772"
+      > </a
+      ><a name="773" href="Data.Vec.N-ary.html#773" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="775"
+      > </a
+      ><a name="776" class="Symbol"
+      >(</a
+      ><a name="777" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="780"
+      > </a
+      ><a name="781" href="Data.Vec.N-ary.html#781" class="Bound"
+      >n</a
+      ><a name="782" class="Symbol"
+      >)</a
+      ><a name="783"
+      > </a
+      ><a name="784" class="Symbol"
+      >=</a
+      ><a name="785"
+      > </a
+      ><a name="786" href="Data.Vec.N-ary.html#770" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="788"
+      > </a
+      ><a name="789" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="790"
+      > </a
+      ><a name="791" href="Data.Vec.N-ary.html#687" class="Function"
+      >N-ary-level</a
+      ><a name="802"
+      > </a
+      ><a name="803" href="Data.Vec.N-ary.html#770" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="805"
+      > </a
+      ><a name="806" href="Data.Vec.N-ary.html#773" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="808"
+      > </a
+      ><a name="809" href="Data.Vec.N-ary.html#781" class="Bound"
+      >n</a
+      ><a name="810"
+      >
+
+</a
+      ><a name="812" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="817"
+      > </a
+      ><a name="818" class="Symbol"
+      >:</a
+      ><a name="819"
+      > </a
+      ><a name="820" class="Symbol"
+      >&#8704;</a
+      ><a name="821"
+      > </a
+      ><a name="822" class="Symbol"
+      >{</a
+      ><a name="823" href="Data.Vec.N-ary.html#823" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="825"
+      > </a
+      ><a name="826" href="Data.Vec.N-ary.html#826" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="828" class="Symbol"
+      >}</a
+      ><a name="829"
+      > </a
+      ><a name="830" class="Symbol"
+      >(</a
+      ><a name="831" href="Data.Vec.N-ary.html#831" class="Bound"
+      >n</a
+      ><a name="832"
+      > </a
+      ><a name="833" class="Symbol"
+      >:</a
+      ><a name="834"
+      > </a
+      ><a name="835" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="836" class="Symbol"
+      >)</a
+      ><a name="837"
+      > </a
+      ><a name="838" class="Symbol"
+      >&#8594;</a
+      ><a name="839"
+      > </a
+      ><a name="840" class="PrimitiveType"
+      >Set</a
+      ><a name="843"
+      > </a
+      ><a name="844" href="Data.Vec.N-ary.html#823" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="846"
+      > </a
+      ><a name="847" class="Symbol"
+      >&#8594;</a
+      ><a name="848"
+      > </a
+      ><a name="849" class="PrimitiveType"
+      >Set</a
+      ><a name="852"
+      > </a
+      ><a name="853" href="Data.Vec.N-ary.html#826" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="855"
+      > </a
+      ><a name="856" class="Symbol"
+      >&#8594;</a
+      ><a name="857"
+      > </a
+      ><a name="858" class="PrimitiveType"
+      >Set</a
+      ><a name="861"
+      > </a
+      ><a name="862" class="Symbol"
+      >(</a
+      ><a name="863" href="Data.Vec.N-ary.html#687" class="Function"
+      >N-ary-level</a
+      ><a name="874"
+      > </a
+      ><a name="875" href="Data.Vec.N-ary.html#823" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="877"
+      > </a
+      ><a name="878" href="Data.Vec.N-ary.html#826" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="880"
+      > </a
+      ><a name="881" href="Data.Vec.N-ary.html#831" class="Bound"
+      >n</a
+      ><a name="882" class="Symbol"
+      >)</a
+      ><a name="883"
+      >
+</a
+      ><a name="884" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="889"
+      > </a
+      ><a name="890" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="894"
+      >    </a
+      ><a name="898" href="Data.Vec.N-ary.html#898" class="Bound"
+      >A</a
+      ><a name="899"
+      > </a
+      ><a name="900" href="Data.Vec.N-ary.html#900" class="Bound"
+      >B</a
+      ><a name="901"
+      > </a
+      ><a name="902" class="Symbol"
+      >=</a
+      ><a name="903"
+      > </a
+      ><a name="904" href="Data.Vec.N-ary.html#900" class="Bound"
+      >B</a
+      ><a name="905"
+      >
+</a
+      ><a name="906" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="911"
+      > </a
+      ><a name="912" class="Symbol"
+      >(</a
+      ><a name="913" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="916"
+      > </a
+      ><a name="917" href="Data.Vec.N-ary.html#917" class="Bound"
+      >n</a
+      ><a name="918" class="Symbol"
+      >)</a
+      ><a name="919"
+      > </a
+      ><a name="920" href="Data.Vec.N-ary.html#920" class="Bound"
+      >A</a
+      ><a name="921"
+      > </a
+      ><a name="922" href="Data.Vec.N-ary.html#922" class="Bound"
+      >B</a
+      ><a name="923"
+      > </a
+      ><a name="924" class="Symbol"
+      >=</a
+      ><a name="925"
+      > </a
+      ><a name="926" href="Data.Vec.N-ary.html#920" class="Bound"
+      >A</a
+      ><a name="927"
+      > </a
+      ><a name="928" class="Symbol"
+      >&#8594;</a
+      ><a name="929"
+      > </a
+      ><a name="930" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="935"
+      > </a
+      ><a name="936" href="Data.Vec.N-ary.html#917" class="Bound"
+      >n</a
+      ><a name="937"
+      > </a
+      ><a name="938" href="Data.Vec.N-ary.html#920" class="Bound"
+      >A</a
+      ><a name="939"
+      > </a
+      ><a name="940" href="Data.Vec.N-ary.html#922" class="Bound"
+      >B</a
+      ><a name="941"
+      >
+
+</a
+      ><a name="943" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="1015"
+      >
+</a
+      ><a name="1016" class="Comment"
+      >-- Conversion</a
+      ><a name="1029"
+      >
+
+</a
+      ><a name="1031" href="Data.Vec.N-ary.html#1031" class="Function"
+      >curry&#8319;</a
+      ><a name="1037"
+      > </a
+      ><a name="1038" class="Symbol"
+      >:</a
+      ><a name="1039"
+      > </a
+      ><a name="1040" class="Symbol"
+      >&#8704;</a
+      ><a name="1041"
+      > </a
+      ><a name="1042" class="Symbol"
+      >{</a
+      ><a name="1043" href="Data.Vec.N-ary.html#1043" class="Bound"
+      >n</a
+      ><a name="1044"
+      > </a
+      ><a name="1045" href="Data.Vec.N-ary.html#1045" class="Bound"
+      >a</a
+      ><a name="1046"
+      > </a
+      ><a name="1047" href="Data.Vec.N-ary.html#1047" class="Bound"
+      >b</a
+      ><a name="1048" class="Symbol"
+      >}</a
+      ><a name="1049"
+      > </a
+      ><a name="1050" class="Symbol"
+      >{</a
+      ><a name="1051" href="Data.Vec.N-ary.html#1051" class="Bound"
+      >A</a
+      ><a name="1052"
+      > </a
+      ><a name="1053" class="Symbol"
+      >:</a
+      ><a name="1054"
+      > </a
+      ><a name="1055" class="PrimitiveType"
+      >Set</a
+      ><a name="1058"
+      > </a
+      ><a name="1059" href="Data.Vec.N-ary.html#1045" class="Bound"
+      >a</a
+      ><a name="1060" class="Symbol"
+      >}</a
+      ><a name="1061"
+      > </a
+      ><a name="1062" class="Symbol"
+      >{</a
+      ><a name="1063" href="Data.Vec.N-ary.html#1063" class="Bound"
+      >B</a
+      ><a name="1064"
+      > </a
+      ><a name="1065" class="Symbol"
+      >:</a
+      ><a name="1066"
+      > </a
+      ><a name="1067" class="PrimitiveType"
+      >Set</a
+      ><a name="1070"
+      > </a
+      ><a name="1071" href="Data.Vec.N-ary.html#1047" class="Bound"
+      >b</a
+      ><a name="1072" class="Symbol"
+      >}</a
+      ><a name="1073"
+      > </a
+      ><a name="1074" class="Symbol"
+      >&#8594;</a
+      ><a name="1075"
+      >
+         </a
+      ><a name="1085" class="Symbol"
+      >(</a
+      ><a name="1086" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="1089"
+      > </a
+      ><a name="1090" href="Data.Vec.N-ary.html#1051" class="Bound"
+      >A</a
+      ><a name="1091"
+      > </a
+      ><a name="1092" href="Data.Vec.N-ary.html#1043" class="Bound"
+      >n</a
+      ><a name="1093"
+      > </a
+      ><a name="1094" class="Symbol"
+      >&#8594;</a
+      ><a name="1095"
+      > </a
+      ><a name="1096" href="Data.Vec.N-ary.html#1063" class="Bound"
+      >B</a
+      ><a name="1097" class="Symbol"
+      >)</a
+      ><a name="1098"
+      > </a
+      ><a name="1099" class="Symbol"
+      >&#8594;</a
+      ><a name="1100"
+      > </a
+      ><a name="1101" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="1106"
+      > </a
+      ><a name="1107" href="Data.Vec.N-ary.html#1043" class="Bound"
+      >n</a
+      ><a name="1108"
+      > </a
+      ><a name="1109" href="Data.Vec.N-ary.html#1051" class="Bound"
+      >A</a
+      ><a name="1110"
+      > </a
+      ><a name="1111" href="Data.Vec.N-ary.html#1063" class="Bound"
+      >B</a
+      ><a name="1112"
+      >
+</a
+      ><a name="1113" href="Data.Vec.N-ary.html#1031" class="Function"
+      >curry&#8319;</a
+      ><a name="1119"
+      > </a
+      ><a name="1120" class="Symbol"
+      >{</a
+      ><a name="1121" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="1125" class="Symbol"
+      >}</a
+      ><a name="1126"
+      >  </a
+      ><a name="1128" href="Data.Vec.N-ary.html#1128" class="Bound"
+      >f</a
+      ><a name="1129"
+      > </a
+      ><a name="1130" class="Symbol"
+      >=</a
+      ><a name="1131"
+      > </a
+      ><a name="1132" href="Data.Vec.N-ary.html#1128" class="Bound"
+      >f</a
+      ><a name="1133"
+      > </a
+      ><a name="1134" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="1136"
+      >
+</a
+      ><a name="1137" href="Data.Vec.N-ary.html#1031" class="Function"
+      >curry&#8319;</a
+      ><a name="1143"
+      > </a
+      ><a name="1144" class="Symbol"
+      >{</a
+      ><a name="1145" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1148"
+      > </a
+      ><a name="1149" href="Data.Vec.N-ary.html#1149" class="Bound"
+      >n</a
+      ><a name="1150" class="Symbol"
+      >}</a
+      ><a name="1151"
+      > </a
+      ><a name="1152" href="Data.Vec.N-ary.html#1152" class="Bound"
+      >f</a
+      ><a name="1153"
+      > </a
+      ><a name="1154" class="Symbol"
+      >=</a
+      ><a name="1155"
+      > </a
+      ><a name="1156" class="Symbol"
+      >&#955;</a
+      ><a name="1157"
+      > </a
+      ><a name="1158" href="Data.Vec.N-ary.html#1158" class="Bound"
+      >x</a
+      ><a name="1159"
+      > </a
+      ><a name="1160" class="Symbol"
+      >&#8594;</a
+      ><a name="1161"
+      > </a
+      ><a name="1162" href="Data.Vec.N-ary.html#1031" class="Function"
+      >curry&#8319;</a
+      ><a name="1168"
+      > </a
+      ><a name="1169" class="Symbol"
+      >(</a
+      ><a name="1170" href="Data.Vec.N-ary.html#1152" class="Bound"
+      >f</a
+      ><a name="1171"
+      > </a
+      ><a name="1172" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="1173"
+      > </a
+      ><a name="1174" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="1177"
+      > </a
+      ><a name="1178" href="Data.Vec.N-ary.html#1158" class="Bound"
+      >x</a
+      ><a name="1179" class="Symbol"
+      >)</a
+      ><a name="1180"
+      >
+
+</a
+      ><a name="1182" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >_$&#8319;_</a
+      ><a name="1186"
+      > </a
+      ><a name="1187" class="Symbol"
+      >:</a
+      ><a name="1188"
+      > </a
+      ><a name="1189" class="Symbol"
+      >&#8704;</a
+      ><a name="1190"
+      > </a
+      ><a name="1191" class="Symbol"
+      >{</a
+      ><a name="1192" href="Data.Vec.N-ary.html#1192" class="Bound"
+      >n</a
+      ><a name="1193"
+      > </a
+      ><a name="1194" href="Data.Vec.N-ary.html#1194" class="Bound"
+      >a</a
+      ><a name="1195"
+      > </a
+      ><a name="1196" href="Data.Vec.N-ary.html#1196" class="Bound"
+      >b</a
+      ><a name="1197" class="Symbol"
+      >}</a
+      ><a name="1198"
+      > </a
+      ><a name="1199" class="Symbol"
+      >{</a
+      ><a name="1200" href="Data.Vec.N-ary.html#1200" class="Bound"
+      >A</a
+      ><a name="1201"
+      > </a
+      ><a name="1202" class="Symbol"
+      >:</a
+      ><a name="1203"
+      > </a
+      ><a name="1204" class="PrimitiveType"
+      >Set</a
+      ><a name="1207"
+      > </a
+      ><a name="1208" href="Data.Vec.N-ary.html#1194" class="Bound"
+      >a</a
+      ><a name="1209" class="Symbol"
+      >}</a
+      ><a name="1210"
+      > </a
+      ><a name="1211" class="Symbol"
+      >{</a
+      ><a name="1212" href="Data.Vec.N-ary.html#1212" class="Bound"
+      >B</a
+      ><a name="1213"
+      > </a
+      ><a name="1214" class="Symbol"
+      >:</a
+      ><a name="1215"
+      > </a
+      ><a name="1216" class="PrimitiveType"
+      >Set</a
+      ><a name="1219"
+      > </a
+      ><a name="1220" href="Data.Vec.N-ary.html#1196" class="Bound"
+      >b</a
+      ><a name="1221" class="Symbol"
+      >}</a
+      ><a name="1222"
+      > </a
+      ><a name="1223" class="Symbol"
+      >&#8594;</a
+      ><a name="1224"
+      > </a
+      ><a name="1225" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="1230"
+      > </a
+      ><a name="1231" href="Data.Vec.N-ary.html#1192" class="Bound"
+      >n</a
+      ><a name="1232"
+      > </a
+      ><a name="1233" href="Data.Vec.N-ary.html#1200" class="Bound"
+      >A</a
+      ><a name="1234"
+      > </a
+      ><a name="1235" href="Data.Vec.N-ary.html#1212" class="Bound"
+      >B</a
+      ><a name="1236"
+      > </a
+      ><a name="1237" class="Symbol"
+      >&#8594;</a
+      ><a name="1238"
+      > </a
+      ><a name="1239" class="Symbol"
+      >(</a
+      ><a name="1240" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="1243"
+      > </a
+      ><a name="1244" href="Data.Vec.N-ary.html#1200" class="Bound"
+      >A</a
+      ><a name="1245"
+      > </a
+      ><a name="1246" href="Data.Vec.N-ary.html#1192" class="Bound"
+      >n</a
+      ><a name="1247"
+      > </a
+      ><a name="1248" class="Symbol"
+      >&#8594;</a
+      ><a name="1249"
+      > </a
+      ><a name="1250" href="Data.Vec.N-ary.html#1212" class="Bound"
+      >B</a
+      ><a name="1251" class="Symbol"
+      >)</a
+      ><a name="1252"
+      >
+</a
+      ><a name="1253" href="Data.Vec.N-ary.html#1253" class="Bound"
+      >f</a
+      ><a name="1254"
+      > </a
+      ><a name="1255" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="1257"
+      > </a
+      ><a name="1258" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="1260"
+      >       </a
+      ><a name="1267" class="Symbol"
+      >=</a
+      ><a name="1268"
+      > </a
+      ><a name="1269" href="Data.Vec.N-ary.html#1253" class="Bound"
+      >f</a
+      ><a name="1270"
+      >
+</a
+      ><a name="1271" href="Data.Vec.N-ary.html#1271" class="Bound"
+      >f</a
+      ><a name="1272"
+      > </a
+      ><a name="1273" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="1275"
+      > </a
+      ><a name="1276" class="Symbol"
+      >(</a
+      ><a name="1277" href="Data.Vec.N-ary.html#1277" class="Bound"
+      >x</a
+      ><a name="1278"
+      > </a
+      ><a name="1279" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1280"
+      > </a
+      ><a name="1281" href="Data.Vec.N-ary.html#1281" class="Bound"
+      >xs</a
+      ><a name="1283" class="Symbol"
+      >)</a
+      ><a name="1284"
+      > </a
+      ><a name="1285" class="Symbol"
+      >=</a
+      ><a name="1286"
+      > </a
+      ><a name="1287" href="Data.Vec.N-ary.html#1271" class="Bound"
+      >f</a
+      ><a name="1288"
+      > </a
+      ><a name="1289" href="Data.Vec.N-ary.html#1277" class="Bound"
+      >x</a
+      ><a name="1290"
+      > </a
+      ><a name="1291" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="1293"
+      > </a
+      ><a name="1294" href="Data.Vec.N-ary.html#1281" class="Bound"
+      >xs</a
+      ><a name="1296"
+      >
+
+</a
+      ><a name="1298" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="1370"
+      >
+</a
+      ><a name="1371" class="Comment"
+      >-- Quantifiers</a
+      ><a name="1385"
+      >
+
+</a
+      ><a name="1387" class="Comment"
+      >-- Universal quantifier.</a
+      ><a name="1411"
+      >
+
+</a
+      ><a name="1413" href="Data.Vec.N-ary.html#1413" class="Function"
+      >&#8704;&#8319;</a
+      ><a name="1415"
+      > </a
+      ><a name="1416" class="Symbol"
+      >:</a
+      ><a name="1417"
+      > </a
+      ><a name="1418" class="Symbol"
+      >&#8704;</a
+      ><a name="1419"
+      > </a
+      ><a name="1420" href="Data.Vec.N-ary.html#1420" class="Bound"
+      >n</a
+      ><a name="1421"
+      > </a
+      ><a name="1422" class="Symbol"
+      >{</a
+      ><a name="1423" href="Data.Vec.N-ary.html#1423" class="Bound"
+      >a</a
+      ><a name="1424"
+      > </a
+      ><a name="1425" href="Data.Vec.N-ary.html#1425" class="Bound"
+      >&#8467;</a
+      ><a name="1426" class="Symbol"
+      >}</a
+      ><a name="1427"
+      > </a
+      ><a name="1428" class="Symbol"
+      >{</a
+      ><a name="1429" href="Data.Vec.N-ary.html#1429" class="Bound"
+      >A</a
+      ><a name="1430"
+      > </a
+      ><a name="1431" class="Symbol"
+      >:</a
+      ><a name="1432"
+      > </a
+      ><a name="1433" class="PrimitiveType"
+      >Set</a
+      ><a name="1436"
+      > </a
+      ><a name="1437" href="Data.Vec.N-ary.html#1423" class="Bound"
+      >a</a
+      ><a name="1438" class="Symbol"
+      >}</a
+      ><a name="1439"
+      > </a
+      ><a name="1440" class="Symbol"
+      >&#8594;</a
+      ><a name="1441"
+      >
+     </a
+      ><a name="1447" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="1452"
+      > </a
+      ><a name="1453" href="Data.Vec.N-ary.html#1420" class="Bound"
+      >n</a
+      ><a name="1454"
+      > </a
+      ><a name="1455" href="Data.Vec.N-ary.html#1429" class="Bound"
+      >A</a
+      ><a name="1456"
+      > </a
+      ><a name="1457" class="Symbol"
+      >(</a
+      ><a name="1458" class="PrimitiveType"
+      >Set</a
+      ><a name="1461"
+      > </a
+      ><a name="1462" href="Data.Vec.N-ary.html#1425" class="Bound"
+      >&#8467;</a
+      ><a name="1463" class="Symbol"
+      >)</a
+      ><a name="1464"
+      > </a
+      ><a name="1465" class="Symbol"
+      >&#8594;</a
+      ><a name="1466"
+      > </a
+      ><a name="1467" class="PrimitiveType"
+      >Set</a
+      ><a name="1470"
+      > </a
+      ><a name="1471" class="Symbol"
+      >(</a
+      ><a name="1472" href="Data.Vec.N-ary.html#687" class="Function"
+      >N-ary-level</a
+      ><a name="1483"
+      > </a
+      ><a name="1484" href="Data.Vec.N-ary.html#1423" class="Bound"
+      >a</a
+      ><a name="1485"
+      > </a
+      ><a name="1486" href="Data.Vec.N-ary.html#1425" class="Bound"
+      >&#8467;</a
+      ><a name="1487"
+      > </a
+      ><a name="1488" href="Data.Vec.N-ary.html#1420" class="Bound"
+      >n</a
+      ><a name="1489" class="Symbol"
+      >)</a
+      ><a name="1490"
+      >
+</a
+      ><a name="1491" href="Data.Vec.N-ary.html#1413" class="Function"
+      >&#8704;&#8319;</a
+      ><a name="1493"
+      > </a
+      ><a name="1494" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="1498"
+      >    </a
+      ><a name="1502" href="Data.Vec.N-ary.html#1502" class="Bound"
+      >P</a
+      ><a name="1503"
+      > </a
+      ><a name="1504" class="Symbol"
+      >=</a
+      ><a name="1505"
+      > </a
+      ><a name="1506" href="Data.Vec.N-ary.html#1502" class="Bound"
+      >P</a
+      ><a name="1507"
+      >
+</a
+      ><a name="1508" href="Data.Vec.N-ary.html#1413" class="Function"
+      >&#8704;&#8319;</a
+      ><a name="1510"
+      > </a
+      ><a name="1511" class="Symbol"
+      >(</a
+      ><a name="1512" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1515"
+      > </a
+      ><a name="1516" href="Data.Vec.N-ary.html#1516" class="Bound"
+      >n</a
+      ><a name="1517" class="Symbol"
+      >)</a
+      ><a name="1518"
+      > </a
+      ><a name="1519" href="Data.Vec.N-ary.html#1519" class="Bound"
+      >P</a
+      ><a name="1520"
+      > </a
+      ><a name="1521" class="Symbol"
+      >=</a
+      ><a name="1522"
+      > </a
+      ><a name="1523" class="Symbol"
+      >&#8704;</a
+      ><a name="1524"
+      > </a
+      ><a name="1525" href="Data.Vec.N-ary.html#1525" class="Bound"
+      >x</a
+      ><a name="1526"
+      > </a
+      ><a name="1527" class="Symbol"
+      >&#8594;</a
+      ><a name="1528"
+      > </a
+      ><a name="1529" href="Data.Vec.N-ary.html#1413" class="Function"
+      >&#8704;&#8319;</a
+      ><a name="1531"
+      > </a
+      ><a name="1532" href="Data.Vec.N-ary.html#1516" class="Bound"
+      >n</a
+      ><a name="1533"
+      > </a
+      ><a name="1534" class="Symbol"
+      >(</a
+      ><a name="1535" href="Data.Vec.N-ary.html#1519" class="Bound"
+      >P</a
+      ><a name="1536"
+      > </a
+      ><a name="1537" href="Data.Vec.N-ary.html#1525" class="Bound"
+      >x</a
+      ><a name="1538" class="Symbol"
+      >)</a
+      ><a name="1539"
+      >
+
+</a
+      ><a name="1541" class="Comment"
+      >-- Universal quantifier with implicit (hidden) arguments.</a
+      ><a name="1598"
+      >
+
+</a
+      ><a name="1600" href="Data.Vec.N-ary.html#1600" class="Function"
+      >&#8704;&#8319;&#688;</a
+      ><a name="1603"
+      > </a
+      ><a name="1604" class="Symbol"
+      >:</a
+      ><a name="1605"
+      > </a
+      ><a name="1606" class="Symbol"
+      >&#8704;</a
+      ><a name="1607"
+      > </a
+      ><a name="1608" href="Data.Vec.N-ary.html#1608" class="Bound"
+      >n</a
+      ><a name="1609"
+      > </a
+      ><a name="1610" class="Symbol"
+      >{</a
+      ><a name="1611" href="Data.Vec.N-ary.html#1611" class="Bound"
+      >a</a
+      ><a name="1612"
+      > </a
+      ><a name="1613" href="Data.Vec.N-ary.html#1613" class="Bound"
+      >&#8467;</a
+      ><a name="1614" class="Symbol"
+      >}</a
+      ><a name="1615"
+      > </a
+      ><a name="1616" class="Symbol"
+      >{</a
+      ><a name="1617" href="Data.Vec.N-ary.html#1617" class="Bound"
+      >A</a
+      ><a name="1618"
+      > </a
+      ><a name="1619" class="Symbol"
+      >:</a
+      ><a name="1620"
+      > </a
+      ><a name="1621" class="PrimitiveType"
+      >Set</a
+      ><a name="1624"
+      > </a
+      ><a name="1625" href="Data.Vec.N-ary.html#1611" class="Bound"
+      >a</a
+      ><a name="1626" class="Symbol"
+      >}</a
+      ><a name="1627"
+      > </a
+      ><a name="1628" class="Symbol"
+      >&#8594;</a
+      ><a name="1629"
+      >
+     </a
+      ><a name="1635" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="1640"
+      > </a
+      ><a name="1641" href="Data.Vec.N-ary.html#1608" class="Bound"
+      >n</a
+      ><a name="1642"
+      > </a
+      ><a name="1643" href="Data.Vec.N-ary.html#1617" class="Bound"
+      >A</a
+      ><a name="1644"
+      > </a
+      ><a name="1645" class="Symbol"
+      >(</a
+      ><a name="1646" class="PrimitiveType"
+      >Set</a
+      ><a name="1649"
+      > </a
+      ><a name="1650" href="Data.Vec.N-ary.html#1613" class="Bound"
+      >&#8467;</a
+      ><a name="1651" class="Symbol"
+      >)</a
+      ><a name="1652"
+      > </a
+      ><a name="1653" class="Symbol"
+      >&#8594;</a
+      ><a name="1654"
+      > </a
+      ><a name="1655" class="PrimitiveType"
+      >Set</a
+      ><a name="1658"
+      > </a
+      ><a name="1659" class="Symbol"
+      >(</a
+      ><a name="1660" href="Data.Vec.N-ary.html#687" class="Function"
+      >N-ary-level</a
+      ><a name="1671"
+      > </a
+      ><a name="1672" href="Data.Vec.N-ary.html#1611" class="Bound"
+      >a</a
+      ><a name="1673"
+      > </a
+      ><a name="1674" href="Data.Vec.N-ary.html#1613" class="Bound"
+      >&#8467;</a
+      ><a name="1675"
+      > </a
+      ><a name="1676" href="Data.Vec.N-ary.html#1608" class="Bound"
+      >n</a
+      ><a name="1677" class="Symbol"
+      >)</a
+      ><a name="1678"
+      >
+</a
+      ><a name="1679" href="Data.Vec.N-ary.html#1600" class="Function"
+      >&#8704;&#8319;&#688;</a
+      ><a name="1682"
+      > </a
+      ><a name="1683" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="1687"
+      >    </a
+      ><a name="1691" href="Data.Vec.N-ary.html#1691" class="Bound"
+      >P</a
+      ><a name="1692"
+      > </a
+      ><a name="1693" class="Symbol"
+      >=</a
+      ><a name="1694"
+      > </a
+      ><a name="1695" href="Data.Vec.N-ary.html#1691" class="Bound"
+      >P</a
+      ><a name="1696"
+      >
+</a
+      ><a name="1697" href="Data.Vec.N-ary.html#1600" class="Function"
+      >&#8704;&#8319;&#688;</a
+      ><a name="1700"
+      > </a
+      ><a name="1701" class="Symbol"
+      >(</a
+      ><a name="1702" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1705"
+      > </a
+      ><a name="1706" href="Data.Vec.N-ary.html#1706" class="Bound"
+      >n</a
+      ><a name="1707" class="Symbol"
+      >)</a
+      ><a name="1708"
+      > </a
+      ><a name="1709" href="Data.Vec.N-ary.html#1709" class="Bound"
+      >P</a
+      ><a name="1710"
+      > </a
+      ><a name="1711" class="Symbol"
+      >=</a
+      ><a name="1712"
+      > </a
+      ><a name="1713" class="Symbol"
+      >&#8704;</a
+      ><a name="1714"
+      > </a
+      ><a name="1715" class="Symbol"
+      >{</a
+      ><a name="1716" href="Data.Vec.N-ary.html#1716" class="Bound"
+      >x</a
+      ><a name="1717" class="Symbol"
+      >}</a
+      ><a name="1718"
+      > </a
+      ><a name="1719" class="Symbol"
+      >&#8594;</a
+      ><a name="1720"
+      > </a
+      ><a name="1721" href="Data.Vec.N-ary.html#1600" class="Function"
+      >&#8704;&#8319;&#688;</a
+      ><a name="1724"
+      > </a
+      ><a name="1725" href="Data.Vec.N-ary.html#1706" class="Bound"
+      >n</a
+      ><a name="1726"
+      > </a
+      ><a name="1727" class="Symbol"
+      >(</a
+      ><a name="1728" href="Data.Vec.N-ary.html#1709" class="Bound"
+      >P</a
+      ><a name="1729"
+      > </a
+      ><a name="1730" href="Data.Vec.N-ary.html#1716" class="Bound"
+      >x</a
+      ><a name="1731" class="Symbol"
+      >)</a
+      ><a name="1732"
+      >
+
+</a
+      ><a name="1734" class="Comment"
+      >-- Existential quantifier.</a
+      ><a name="1760"
+      >
+
+</a
+      ><a name="1762" href="Data.Vec.N-ary.html#1762" class="Function"
+      >&#8707;&#8319;</a
+      ><a name="1764"
+      > </a
+      ><a name="1765" class="Symbol"
+      >:</a
+      ><a name="1766"
+      > </a
+      ><a name="1767" class="Symbol"
+      >&#8704;</a
+      ><a name="1768"
+      > </a
+      ><a name="1769" href="Data.Vec.N-ary.html#1769" class="Bound"
+      >n</a
+      ><a name="1770"
+      > </a
+      ><a name="1771" class="Symbol"
+      >{</a
+      ><a name="1772" href="Data.Vec.N-ary.html#1772" class="Bound"
+      >a</a
+      ><a name="1773"
+      > </a
+      ><a name="1774" href="Data.Vec.N-ary.html#1774" class="Bound"
+      >&#8467;</a
+      ><a name="1775" class="Symbol"
+      >}</a
+      ><a name="1776"
+      > </a
+      ><a name="1777" class="Symbol"
+      >{</a
+      ><a name="1778" href="Data.Vec.N-ary.html#1778" class="Bound"
+      >A</a
+      ><a name="1779"
+      > </a
+      ><a name="1780" class="Symbol"
+      >:</a
+      ><a name="1781"
+      > </a
+      ><a name="1782" class="PrimitiveType"
+      >Set</a
+      ><a name="1785"
+      > </a
+      ><a name="1786" href="Data.Vec.N-ary.html#1772" class="Bound"
+      >a</a
+      ><a name="1787" class="Symbol"
+      >}</a
+      ><a name="1788"
+      > </a
+      ><a name="1789" class="Symbol"
+      >&#8594;</a
+      ><a name="1790"
+      >
+     </a
+      ><a name="1796" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="1801"
+      > </a
+      ><a name="1802" href="Data.Vec.N-ary.html#1769" class="Bound"
+      >n</a
+      ><a name="1803"
+      > </a
+      ><a name="1804" href="Data.Vec.N-ary.html#1778" class="Bound"
+      >A</a
+      ><a name="1805"
+      > </a
+      ><a name="1806" class="Symbol"
+      >(</a
+      ><a name="1807" class="PrimitiveType"
+      >Set</a
+      ><a name="1810"
+      > </a
+      ><a name="1811" href="Data.Vec.N-ary.html#1774" class="Bound"
+      >&#8467;</a
+      ><a name="1812" class="Symbol"
+      >)</a
+      ><a name="1813"
+      > </a
+      ><a name="1814" class="Symbol"
+      >&#8594;</a
+      ><a name="1815"
+      > </a
+      ><a name="1816" class="PrimitiveType"
+      >Set</a
+      ><a name="1819"
+      > </a
+      ><a name="1820" class="Symbol"
+      >(</a
+      ><a name="1821" href="Data.Vec.N-ary.html#687" class="Function"
+      >N-ary-level</a
+      ><a name="1832"
+      > </a
+      ><a name="1833" href="Data.Vec.N-ary.html#1772" class="Bound"
+      >a</a
+      ><a name="1834"
+      > </a
+      ><a name="1835" href="Data.Vec.N-ary.html#1774" class="Bound"
+      >&#8467;</a
+      ><a name="1836"
+      > </a
+      ><a name="1837" href="Data.Vec.N-ary.html#1769" class="Bound"
+      >n</a
+      ><a name="1838" class="Symbol"
+      >)</a
+      ><a name="1839"
+      >
+</a
+      ><a name="1840" href="Data.Vec.N-ary.html#1762" class="Function"
+      >&#8707;&#8319;</a
+      ><a name="1842"
+      > </a
+      ><a name="1843" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="1847"
+      >    </a
+      ><a name="1851" href="Data.Vec.N-ary.html#1851" class="Bound"
+      >P</a
+      ><a name="1852"
+      > </a
+      ><a name="1853" class="Symbol"
+      >=</a
+      ><a name="1854"
+      > </a
+      ><a name="1855" href="Data.Vec.N-ary.html#1851" class="Bound"
+      >P</a
+      ><a name="1856"
+      >
+</a
+      ><a name="1857" href="Data.Vec.N-ary.html#1762" class="Function"
+      >&#8707;&#8319;</a
+      ><a name="1859"
+      > </a
+      ><a name="1860" class="Symbol"
+      >(</a
+      ><a name="1861" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1864"
+      > </a
+      ><a name="1865" href="Data.Vec.N-ary.html#1865" class="Bound"
+      >n</a
+      ><a name="1866" class="Symbol"
+      >)</a
+      ><a name="1867"
+      > </a
+      ><a name="1868" href="Data.Vec.N-ary.html#1868" class="Bound"
+      >P</a
+      ><a name="1869"
+      > </a
+      ><a name="1870" class="Symbol"
+      >=</a
+      ><a name="1871"
+      > </a
+      ><a name="1872" href="Data.Product.html#805" class="Function"
+      >&#8707;</a
+      ><a name="1873"
+      > </a
+      ><a name="1874" class="Symbol"
+      >&#955;</a
+      ><a name="1875"
+      > </a
+      ><a name="1876" href="Data.Vec.N-ary.html#1876" class="Bound"
+      >x</a
+      ><a name="1877"
+      > </a
+      ><a name="1878" class="Symbol"
+      >&#8594;</a
+      ><a name="1879"
+      > </a
+      ><a name="1880" href="Data.Vec.N-ary.html#1762" class="Function"
+      >&#8707;&#8319;</a
+      ><a name="1882"
+      > </a
+      ><a name="1883" href="Data.Vec.N-ary.html#1865" class="Bound"
+      >n</a
+      ><a name="1884"
+      > </a
+      ><a name="1885" class="Symbol"
+      >(</a
+      ><a name="1886" href="Data.Vec.N-ary.html#1868" class="Bound"
+      >P</a
+      ><a name="1887"
+      > </a
+      ><a name="1888" href="Data.Vec.N-ary.html#1876" class="Bound"
+      >x</a
+      ><a name="1889" class="Symbol"
+      >)</a
+      ><a name="1890"
+      >
+
+</a
+      ><a name="1892" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="1964"
+      >
+</a
+      ><a name="1965" class="Comment"
+      >-- N-ary function equality</a
+      ><a name="1991"
+      >
+
+</a
+      ><a name="1993" href="Data.Vec.N-ary.html#1993" class="Function"
+      >Eq</a
+      ><a name="1995"
+      > </a
+      ><a name="1996" class="Symbol"
+      >:</a
+      ><a name="1997"
+      > </a
+      ><a name="1998" class="Symbol"
+      >&#8704;</a
+      ><a name="1999"
+      > </a
+      ><a name="2000" class="Symbol"
+      >{</a
+      ><a name="2001" href="Data.Vec.N-ary.html#2001" class="Bound"
+      >a</a
+      ><a name="2002"
+      > </a
+      ><a name="2003" href="Data.Vec.N-ary.html#2003" class="Bound"
+      >b</a
+      ><a name="2004"
+      > </a
+      ><a name="2005" href="Data.Vec.N-ary.html#2005" class="Bound"
+      >c</a
+      ><a name="2006"
+      > </a
+      ><a name="2007" href="Data.Vec.N-ary.html#2007" class="Bound"
+      >&#8467;</a
+      ><a name="2008" class="Symbol"
+      >}</a
+      ><a name="2009"
+      > </a
+      ><a name="2010" class="Symbol"
+      >{</a
+      ><a name="2011" href="Data.Vec.N-ary.html#2011" class="Bound"
+      >A</a
+      ><a name="2012"
+      > </a
+      ><a name="2013" class="Symbol"
+      >:</a
+      ><a name="2014"
+      > </a
+      ><a name="2015" class="PrimitiveType"
+      >Set</a
+      ><a name="2018"
+      > </a
+      ><a name="2019" href="Data.Vec.N-ary.html#2001" class="Bound"
+      >a</a
+      ><a name="2020" class="Symbol"
+      >}</a
+      ><a name="2021"
+      > </a
+      ><a name="2022" class="Symbol"
+      >{</a
+      ><a name="2023" href="Data.Vec.N-ary.html#2023" class="Bound"
+      >B</a
+      ><a name="2024"
+      > </a
+      ><a name="2025" class="Symbol"
+      >:</a
+      ><a name="2026"
+      > </a
+      ><a name="2027" class="PrimitiveType"
+      >Set</a
+      ><a name="2030"
+      > </a
+      ><a name="2031" href="Data.Vec.N-ary.html#2003" class="Bound"
+      >b</a
+      ><a name="2032" class="Symbol"
+      >}</a
+      ><a name="2033"
+      > </a
+      ><a name="2034" class="Symbol"
+      >{</a
+      ><a name="2035" href="Data.Vec.N-ary.html#2035" class="Bound"
+      >C</a
+      ><a name="2036"
+      > </a
+      ><a name="2037" class="Symbol"
+      >:</a
+      ><a name="2038"
+      > </a
+      ><a name="2039" class="PrimitiveType"
+      >Set</a
+      ><a name="2042"
+      > </a
+      ><a name="2043" href="Data.Vec.N-ary.html#2005" class="Bound"
+      >c</a
+      ><a name="2044" class="Symbol"
+      >}</a
+      ><a name="2045"
+      > </a
+      ><a name="2046" href="Data.Vec.N-ary.html#2046" class="Bound"
+      >n</a
+      ><a name="2047"
+      > </a
+      ><a name="2048" class="Symbol"
+      >&#8594;</a
+      ><a name="2049"
+      >
+     </a
+      ><a name="2055" href="Relation.Binary.Core.html#635" class="Function"
+      >REL</a
+      ><a name="2058"
+      > </a
+      ><a name="2059" href="Data.Vec.N-ary.html#2023" class="Bound"
+      >B</a
+      ><a name="2060"
+      > </a
+      ><a name="2061" href="Data.Vec.N-ary.html#2035" class="Bound"
+      >C</a
+      ><a name="2062"
+      > </a
+      ><a name="2063" href="Data.Vec.N-ary.html#2007" class="Bound"
+      >&#8467;</a
+      ><a name="2064"
+      > </a
+      ><a name="2065" class="Symbol"
+      >&#8594;</a
+      ><a name="2066"
+      > </a
+      ><a name="2067" href="Relation.Binary.Core.html#635" class="Function"
+      >REL</a
+      ><a name="2070"
+      > </a
+      ><a name="2071" class="Symbol"
+      >(</a
+      ><a name="2072" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="2077"
+      > </a
+      ><a name="2078" href="Data.Vec.N-ary.html#2046" class="Bound"
+      >n</a
+      ><a name="2079"
+      > </a
+      ><a name="2080" href="Data.Vec.N-ary.html#2011" class="Bound"
+      >A</a
+      ><a name="2081"
+      > </a
+      ><a name="2082" href="Data.Vec.N-ary.html#2023" class="Bound"
+      >B</a
+      ><a name="2083" class="Symbol"
+      >)</a
+      ><a name="2084"
+      > </a
+      ><a name="2085" class="Symbol"
+      >(</a
+      ><a name="2086" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="2091"
+      > </a
+      ><a name="2092" href="Data.Vec.N-ary.html#2046" class="Bound"
+      >n</a
+      ><a name="2093"
+      > </a
+      ><a name="2094" href="Data.Vec.N-ary.html#2011" class="Bound"
+      >A</a
+      ><a name="2095"
+      > </a
+      ><a name="2096" href="Data.Vec.N-ary.html#2035" class="Bound"
+      >C</a
+      ><a name="2097" class="Symbol"
+      >)</a
+      ><a name="2098"
+      > </a
+      ><a name="2099" class="Symbol"
+      >(</a
+      ><a name="2100" href="Data.Vec.N-ary.html#687" class="Function"
+      >N-ary-level</a
+      ><a name="2111"
+      > </a
+      ><a name="2112" href="Data.Vec.N-ary.html#2001" class="Bound"
+      >a</a
+      ><a name="2113"
+      > </a
+      ><a name="2114" href="Data.Vec.N-ary.html#2007" class="Bound"
+      >&#8467;</a
+      ><a name="2115"
+      > </a
+      ><a name="2116" href="Data.Vec.N-ary.html#2046" class="Bound"
+      >n</a
+      ><a name="2117" class="Symbol"
+      >)</a
+      ><a name="2118"
+      >
+</a
+      ><a name="2119" href="Data.Vec.N-ary.html#1993" class="Function"
+      >Eq</a
+      ><a name="2121"
+      > </a
+      ><a name="2122" href="Data.Vec.N-ary.html#2122" class="Bound"
+      >n</a
+      ><a name="2123"
+      > </a
+      ><a name="2124" href="Data.Vec.N-ary.html#2124" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="2127"
+      > </a
+      ><a name="2128" href="Data.Vec.N-ary.html#2128" class="Bound"
+      >f</a
+      ><a name="2129"
+      > </a
+      ><a name="2130" href="Data.Vec.N-ary.html#2130" class="Bound"
+      >g</a
+      ><a name="2131"
+      > </a
+      ><a name="2132" class="Symbol"
+      >=</a
+      ><a name="2133"
+      > </a
+      ><a name="2134" href="Data.Vec.N-ary.html#1413" class="Function"
+      >&#8704;&#8319;</a
+      ><a name="2136"
+      > </a
+      ><a name="2137" href="Data.Vec.N-ary.html#2122" class="Bound"
+      >n</a
+      ><a name="2138"
+      > </a
+      ><a name="2139" class="Symbol"
+      >(</a
+      ><a name="2140" href="Data.Vec.N-ary.html#1031" class="Function"
+      >curry&#8319;</a
+      ><a name="2146"
+      > </a
+      ><a name="2147" class="Symbol"
+      >{</a
+      ><a name="2148" class="Argument"
+      >n</a
+      ><a name="2149"
+      > </a
+      ><a name="2150" class="Symbol"
+      >=</a
+      ><a name="2151"
+      > </a
+      ><a name="2152" href="Data.Vec.N-ary.html#2122" class="Bound"
+      >n</a
+      ><a name="2153" class="Symbol"
+      >}</a
+      ><a name="2154"
+      > </a
+      ><a name="2155" class="Symbol"
+      >&#955;</a
+      ><a name="2156"
+      > </a
+      ><a name="2157" href="Data.Vec.N-ary.html#2157" class="Bound"
+      >xs</a
+      ><a name="2159"
+      > </a
+      ><a name="2160" class="Symbol"
+      >&#8594;</a
+      ><a name="2161"
+      > </a
+      ><a name="2162" class="Symbol"
+      >(</a
+      ><a name="2163" href="Data.Vec.N-ary.html#2128" class="Bound"
+      >f</a
+      ><a name="2164"
+      > </a
+      ><a name="2165" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="2167"
+      > </a
+      ><a name="2168" href="Data.Vec.N-ary.html#2157" class="Bound"
+      >xs</a
+      ><a name="2170" class="Symbol"
+      >)</a
+      ><a name="2171"
+      > </a
+      ><a name="2172" href="Data.Vec.N-ary.html#2124" class="Bound Operator"
+      >&#8764;</a
+      ><a name="2173"
+      > </a
+      ><a name="2174" class="Symbol"
+      >(</a
+      ><a name="2175" href="Data.Vec.N-ary.html#2130" class="Bound"
+      >g</a
+      ><a name="2176"
+      > </a
+      ><a name="2177" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="2179"
+      > </a
+      ><a name="2180" href="Data.Vec.N-ary.html#2157" class="Bound"
+      >xs</a
+      ><a name="2182" class="Symbol"
+      >))</a
+      ><a name="2184"
+      >
+
+</a
+      ><a name="2186" class="Comment"
+      >-- A variant where all the arguments are implicit (hidden).</a
+      ><a name="2245"
+      >
+
+</a
+      ><a name="2247" href="Data.Vec.N-ary.html#2247" class="Function"
+      >Eq&#688;</a
+      ><a name="2250"
+      > </a
+      ><a name="2251" class="Symbol"
+      >:</a
+      ><a name="2252"
+      > </a
+      ><a name="2253" class="Symbol"
+      >&#8704;</a
+      ><a name="2254"
+      > </a
+      ><a name="2255" class="Symbol"
+      >{</a
+      ><a name="2256" href="Data.Vec.N-ary.html#2256" class="Bound"
+      >a</a
+      ><a name="2257"
+      > </a
+      ><a name="2258" href="Data.Vec.N-ary.html#2258" class="Bound"
+      >b</a
+      ><a name="2259"
+      > </a
+      ><a name="2260" href="Data.Vec.N-ary.html#2260" class="Bound"
+      >c</a
+      ><a name="2261"
+      > </a
+      ><a name="2262" href="Data.Vec.N-ary.html#2262" class="Bound"
+      >&#8467;</a
+      ><a name="2263" class="Symbol"
+      >}</a
+      ><a name="2264"
+      > </a
+      ><a name="2265" class="Symbol"
+      >{</a
+      ><a name="2266" href="Data.Vec.N-ary.html#2266" class="Bound"
+      >A</a
+      ><a name="2267"
+      > </a
+      ><a name="2268" class="Symbol"
+      >:</a
+      ><a name="2269"
+      > </a
+      ><a name="2270" class="PrimitiveType"
+      >Set</a
+      ><a name="2273"
+      > </a
+      ><a name="2274" href="Data.Vec.N-ary.html#2256" class="Bound"
+      >a</a
+      ><a name="2275" class="Symbol"
+      >}</a
+      ><a name="2276"
+      > </a
+      ><a name="2277" class="Symbol"
+      >{</a
+      ><a name="2278" href="Data.Vec.N-ary.html#2278" class="Bound"
+      >B</a
+      ><a name="2279"
+      > </a
+      ><a name="2280" class="Symbol"
+      >:</a
+      ><a name="2281"
+      > </a
+      ><a name="2282" class="PrimitiveType"
+      >Set</a
+      ><a name="2285"
+      > </a
+      ><a name="2286" href="Data.Vec.N-ary.html#2258" class="Bound"
+      >b</a
+      ><a name="2287" class="Symbol"
+      >}</a
+      ><a name="2288"
+      > </a
+      ><a name="2289" class="Symbol"
+      >{</a
+      ><a name="2290" href="Data.Vec.N-ary.html#2290" class="Bound"
+      >C</a
+      ><a name="2291"
+      > </a
+      ><a name="2292" class="Symbol"
+      >:</a
+      ><a name="2293"
+      > </a
+      ><a name="2294" class="PrimitiveType"
+      >Set</a
+      ><a name="2297"
+      > </a
+      ><a name="2298" href="Data.Vec.N-ary.html#2260" class="Bound"
+      >c</a
+      ><a name="2299" class="Symbol"
+      >}</a
+      ><a name="2300"
+      > </a
+      ><a name="2301" href="Data.Vec.N-ary.html#2301" class="Bound"
+      >n</a
+      ><a name="2302"
+      > </a
+      ><a name="2303" class="Symbol"
+      >&#8594;</a
+      ><a name="2304"
+      >
+      </a
+      ><a name="2311" href="Relation.Binary.Core.html#635" class="Function"
+      >REL</a
+      ><a name="2314"
+      > </a
+      ><a name="2315" href="Data.Vec.N-ary.html#2278" class="Bound"
+      >B</a
+      ><a name="2316"
+      > </a
+      ><a name="2317" href="Data.Vec.N-ary.html#2290" class="Bound"
+      >C</a
+      ><a name="2318"
+      > </a
+      ><a name="2319" href="Data.Vec.N-ary.html#2262" class="Bound"
+      >&#8467;</a
+      ><a name="2320"
+      > </a
+      ><a name="2321" class="Symbol"
+      >&#8594;</a
+      ><a name="2322"
+      > </a
+      ><a name="2323" href="Relation.Binary.Core.html#635" class="Function"
+      >REL</a
+      ><a name="2326"
+      > </a
+      ><a name="2327" class="Symbol"
+      >(</a
+      ><a name="2328" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="2333"
+      > </a
+      ><a name="2334" href="Data.Vec.N-ary.html#2301" class="Bound"
+      >n</a
+      ><a name="2335"
+      > </a
+      ><a name="2336" href="Data.Vec.N-ary.html#2266" class="Bound"
+      >A</a
+      ><a name="2337"
+      > </a
+      ><a name="2338" href="Data.Vec.N-ary.html#2278" class="Bound"
+      >B</a
+      ><a name="2339" class="Symbol"
+      >)</a
+      ><a name="2340"
+      > </a
+      ><a name="2341" class="Symbol"
+      >(</a
+      ><a name="2342" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="2347"
+      > </a
+      ><a name="2348" href="Data.Vec.N-ary.html#2301" class="Bound"
+      >n</a
+      ><a name="2349"
+      > </a
+      ><a name="2350" href="Data.Vec.N-ary.html#2266" class="Bound"
+      >A</a
+      ><a name="2351"
+      > </a
+      ><a name="2352" href="Data.Vec.N-ary.html#2290" class="Bound"
+      >C</a
+      ><a name="2353" class="Symbol"
+      >)</a
+      ><a name="2354"
+      > </a
+      ><a name="2355" class="Symbol"
+      >(</a
+      ><a name="2356" href="Data.Vec.N-ary.html#687" class="Function"
+      >N-ary-level</a
+      ><a name="2367"
+      > </a
+      ><a name="2368" href="Data.Vec.N-ary.html#2256" class="Bound"
+      >a</a
+      ><a name="2369"
+      > </a
+      ><a name="2370" href="Data.Vec.N-ary.html#2262" class="Bound"
+      >&#8467;</a
+      ><a name="2371"
+      > </a
+      ><a name="2372" href="Data.Vec.N-ary.html#2301" class="Bound"
+      >n</a
+      ><a name="2373" class="Symbol"
+      >)</a
+      ><a name="2374"
+      >
+</a
+      ><a name="2375" href="Data.Vec.N-ary.html#2247" class="Function"
+      >Eq&#688;</a
+      ><a name="2378"
+      > </a
+      ><a name="2379" href="Data.Vec.N-ary.html#2379" class="Bound"
+      >n</a
+      ><a name="2380"
+      > </a
+      ><a name="2381" href="Data.Vec.N-ary.html#2381" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="2384"
+      > </a
+      ><a name="2385" href="Data.Vec.N-ary.html#2385" class="Bound"
+      >f</a
+      ><a name="2386"
+      > </a
+      ><a name="2387" href="Data.Vec.N-ary.html#2387" class="Bound"
+      >g</a
+      ><a name="2388"
+      > </a
+      ><a name="2389" class="Symbol"
+      >=</a
+      ><a name="2390"
+      > </a
+      ><a name="2391" href="Data.Vec.N-ary.html#1600" class="Function"
+      >&#8704;&#8319;&#688;</a
+      ><a name="2394"
+      > </a
+      ><a name="2395" href="Data.Vec.N-ary.html#2379" class="Bound"
+      >n</a
+      ><a name="2396"
+      > </a
+      ><a name="2397" class="Symbol"
+      >(</a
+      ><a name="2398" href="Data.Vec.N-ary.html#1031" class="Function"
+      >curry&#8319;</a
+      ><a name="2404"
+      > </a
+      ><a name="2405" class="Symbol"
+      >{</a
+      ><a name="2406" class="Argument"
+      >n</a
+      ><a name="2407"
+      > </a
+      ><a name="2408" class="Symbol"
+      >=</a
+      ><a name="2409"
+      > </a
+      ><a name="2410" href="Data.Vec.N-ary.html#2379" class="Bound"
+      >n</a
+      ><a name="2411" class="Symbol"
+      >}</a
+      ><a name="2412"
+      > </a
+      ><a name="2413" class="Symbol"
+      >&#955;</a
+      ><a name="2414"
+      > </a
+      ><a name="2415" href="Data.Vec.N-ary.html#2415" class="Bound"
+      >xs</a
+      ><a name="2417"
+      > </a
+      ><a name="2418" class="Symbol"
+      >&#8594;</a
+      ><a name="2419"
+      > </a
+      ><a name="2420" class="Symbol"
+      >(</a
+      ><a name="2421" href="Data.Vec.N-ary.html#2385" class="Bound"
+      >f</a
+      ><a name="2422"
+      > </a
+      ><a name="2423" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="2425"
+      > </a
+      ><a name="2426" href="Data.Vec.N-ary.html#2415" class="Bound"
+      >xs</a
+      ><a name="2428" class="Symbol"
+      >)</a
+      ><a name="2429"
+      > </a
+      ><a name="2430" href="Data.Vec.N-ary.html#2381" class="Bound Operator"
+      >&#8764;</a
+      ><a name="2431"
+      > </a
+      ><a name="2432" class="Symbol"
+      >(</a
+      ><a name="2433" href="Data.Vec.N-ary.html#2387" class="Bound"
+      >g</a
+      ><a name="2434"
+      > </a
+      ><a name="2435" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="2437"
+      > </a
+      ><a name="2438" href="Data.Vec.N-ary.html#2415" class="Bound"
+      >xs</a
+      ><a name="2440" class="Symbol"
+      >))</a
+      ><a name="2442"
+      >
+
+</a
+      ><a name="2444" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="2516"
+      >
+</a
+      ><a name="2517" class="Comment"
+      >-- Some lemmas</a
+      ><a name="2531"
+      >
+
+</a
+      ><a name="2533" class="Comment"
+      >-- The functions curry&#8319; and _$&#8319;_ are inverses.</a
+      ><a name="2579"
+      >
+
+</a
+      ><a name="2581" href="Data.Vec.N-ary.html#2581" class="Function"
+      >left-inverse</a
+      ><a name="2593"
+      > </a
+      ><a name="2594" class="Symbol"
+      >:</a
+      ><a name="2595"
+      > </a
+      ><a name="2596" class="Symbol"
+      >&#8704;</a
+      ><a name="2597"
+      > </a
+      ><a name="2598" class="Symbol"
+      >{</a
+      ><a name="2599" href="Data.Vec.N-ary.html#2599" class="Bound"
+      >n</a
+      ><a name="2600"
+      > </a
+      ><a name="2601" href="Data.Vec.N-ary.html#2601" class="Bound"
+      >a</a
+      ><a name="2602"
+      > </a
+      ><a name="2603" href="Data.Vec.N-ary.html#2603" class="Bound"
+      >b</a
+      ><a name="2604" class="Symbol"
+      >}</a
+      ><a name="2605"
+      > </a
+      ><a name="2606" class="Symbol"
+      >{</a
+      ><a name="2607" href="Data.Vec.N-ary.html#2607" class="Bound"
+      >A</a
+      ><a name="2608"
+      > </a
+      ><a name="2609" class="Symbol"
+      >:</a
+      ><a name="2610"
+      > </a
+      ><a name="2611" class="PrimitiveType"
+      >Set</a
+      ><a name="2614"
+      > </a
+      ><a name="2615" href="Data.Vec.N-ary.html#2601" class="Bound"
+      >a</a
+      ><a name="2616" class="Symbol"
+      >}</a
+      ><a name="2617"
+      > </a
+      ><a name="2618" class="Symbol"
+      >{</a
+      ><a name="2619" href="Data.Vec.N-ary.html#2619" class="Bound"
+      >B</a
+      ><a name="2620"
+      > </a
+      ><a name="2621" class="Symbol"
+      >:</a
+      ><a name="2622"
+      > </a
+      ><a name="2623" class="PrimitiveType"
+      >Set</a
+      ><a name="2626"
+      > </a
+      ><a name="2627" href="Data.Vec.N-ary.html#2603" class="Bound"
+      >b</a
+      ><a name="2628" class="Symbol"
+      >}</a
+      ><a name="2629"
+      > </a
+      ><a name="2630" class="Symbol"
+      >(</a
+      ><a name="2631" href="Data.Vec.N-ary.html#2631" class="Bound"
+      >f</a
+      ><a name="2632"
+      > </a
+      ><a name="2633" class="Symbol"
+      >:</a
+      ><a name="2634"
+      > </a
+      ><a name="2635" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="2638"
+      > </a
+      ><a name="2639" href="Data.Vec.N-ary.html#2607" class="Bound"
+      >A</a
+      ><a name="2640"
+      > </a
+      ><a name="2641" href="Data.Vec.N-ary.html#2599" class="Bound"
+      >n</a
+      ><a name="2642"
+      > </a
+      ><a name="2643" class="Symbol"
+      >&#8594;</a
+      ><a name="2644"
+      > </a
+      ><a name="2645" href="Data.Vec.N-ary.html#2619" class="Bound"
+      >B</a
+      ><a name="2646" class="Symbol"
+      >)</a
+      ><a name="2647"
+      > </a
+      ><a name="2648" class="Symbol"
+      >&#8594;</a
+      ><a name="2649"
+      >
+               </a
+      ><a name="2665" class="Symbol"
+      >&#8704;</a
+      ><a name="2666"
+      > </a
+      ><a name="2667" href="Data.Vec.N-ary.html#2667" class="Bound"
+      >xs</a
+      ><a name="2669"
+      > </a
+      ><a name="2670" class="Symbol"
+      >&#8594;</a
+      ><a name="2671"
+      > </a
+      ><a name="2672" href="Data.Vec.N-ary.html#1031" class="Function"
+      >curry&#8319;</a
+      ><a name="2678"
+      > </a
+      ><a name="2679" href="Data.Vec.N-ary.html#2631" class="Bound"
+      >f</a
+      ><a name="2680"
+      > </a
+      ><a name="2681" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="2683"
+      > </a
+      ><a name="2684" href="Data.Vec.N-ary.html#2667" class="Bound"
+      >xs</a
+      ><a name="2686"
+      > </a
+      ><a name="2687" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2688"
+      > </a
+      ><a name="2689" href="Data.Vec.N-ary.html#2631" class="Bound"
+      >f</a
+      ><a name="2690"
+      > </a
+      ><a name="2691" href="Data.Vec.N-ary.html#2667" class="Bound"
+      >xs</a
+      ><a name="2693"
+      >
+</a
+      ><a name="2694" href="Data.Vec.N-ary.html#2581" class="Function"
+      >left-inverse</a
+      ><a name="2706"
+      > </a
+      ><a name="2707" href="Data.Vec.N-ary.html#2707" class="Bound"
+      >f</a
+      ><a name="2708"
+      > </a
+      ><a name="2709" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="2711"
+      >       </a
+      ><a name="2718" class="Symbol"
+      >=</a
+      ><a name="2719"
+      > </a
+      ><a name="2720" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2724"
+      >
+</a
+      ><a name="2725" href="Data.Vec.N-ary.html#2581" class="Function"
+      >left-inverse</a
+      ><a name="2737"
+      > </a
+      ><a name="2738" href="Data.Vec.N-ary.html#2738" class="Bound"
+      >f</a
+      ><a name="2739"
+      > </a
+      ><a name="2740" class="Symbol"
+      >(</a
+      ><a name="2741" href="Data.Vec.N-ary.html#2741" class="Bound"
+      >x</a
+      ><a name="2742"
+      > </a
+      ><a name="2743" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="2744"
+      > </a
+      ><a name="2745" href="Data.Vec.N-ary.html#2745" class="Bound"
+      >xs</a
+      ><a name="2747" class="Symbol"
+      >)</a
+      ><a name="2748"
+      > </a
+      ><a name="2749" class="Symbol"
+      >=</a
+      ><a name="2750"
+      > </a
+      ><a name="2751" href="Data.Vec.N-ary.html#2581" class="Function"
+      >left-inverse</a
+      ><a name="2763"
+      > </a
+      ><a name="2764" class="Symbol"
+      >(</a
+      ><a name="2765" href="Data.Vec.N-ary.html#2738" class="Bound"
+      >f</a
+      ><a name="2766"
+      > </a
+      ><a name="2767" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="2768"
+      > </a
+      ><a name="2769" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="2772"
+      > </a
+      ><a name="2773" href="Data.Vec.N-ary.html#2741" class="Bound"
+      >x</a
+      ><a name="2774" class="Symbol"
+      >)</a
+      ><a name="2775"
+      > </a
+      ><a name="2776" href="Data.Vec.N-ary.html#2745" class="Bound"
+      >xs</a
+      ><a name="2778"
+      >
+
+</a
+      ><a name="2780" href="Data.Vec.N-ary.html#2780" class="Function"
+      >right-inverse</a
+      ><a name="2793"
+      > </a
+      ><a name="2794" class="Symbol"
+      >:</a
+      ><a name="2795"
+      > </a
+      ><a name="2796" class="Symbol"
+      >&#8704;</a
+      ><a name="2797"
+      > </a
+      ><a name="2798" class="Symbol"
+      >{</a
+      ><a name="2799" href="Data.Vec.N-ary.html#2799" class="Bound"
+      >a</a
+      ><a name="2800"
+      > </a
+      ><a name="2801" href="Data.Vec.N-ary.html#2801" class="Bound"
+      >b</a
+      ><a name="2802" class="Symbol"
+      >}</a
+      ><a name="2803"
+      > </a
+      ><a name="2804" class="Symbol"
+      >{</a
+      ><a name="2805" href="Data.Vec.N-ary.html#2805" class="Bound"
+      >A</a
+      ><a name="2806"
+      > </a
+      ><a name="2807" class="Symbol"
+      >:</a
+      ><a name="2808"
+      > </a
+      ><a name="2809" class="PrimitiveType"
+      >Set</a
+      ><a name="2812"
+      > </a
+      ><a name="2813" href="Data.Vec.N-ary.html#2799" class="Bound"
+      >a</a
+      ><a name="2814" class="Symbol"
+      >}</a
+      ><a name="2815"
+      > </a
+      ><a name="2816" class="Symbol"
+      >{</a
+      ><a name="2817" href="Data.Vec.N-ary.html#2817" class="Bound"
+      >B</a
+      ><a name="2818"
+      > </a
+      ><a name="2819" class="Symbol"
+      >:</a
+      ><a name="2820"
+      > </a
+      ><a name="2821" class="PrimitiveType"
+      >Set</a
+      ><a name="2824"
+      > </a
+      ><a name="2825" href="Data.Vec.N-ary.html#2801" class="Bound"
+      >b</a
+      ><a name="2826" class="Symbol"
+      >}</a
+      ><a name="2827"
+      > </a
+      ><a name="2828" href="Data.Vec.N-ary.html#2828" class="Bound"
+      >n</a
+      ><a name="2829"
+      > </a
+      ><a name="2830" class="Symbol"
+      >(</a
+      ><a name="2831" href="Data.Vec.N-ary.html#2831" class="Bound"
+      >f</a
+      ><a name="2832"
+      > </a
+      ><a name="2833" class="Symbol"
+      >:</a
+      ><a name="2834"
+      > </a
+      ><a name="2835" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="2840"
+      > </a
+      ><a name="2841" href="Data.Vec.N-ary.html#2828" class="Bound"
+      >n</a
+      ><a name="2842"
+      > </a
+      ><a name="2843" href="Data.Vec.N-ary.html#2805" class="Bound"
+      >A</a
+      ><a name="2844"
+      > </a
+      ><a name="2845" href="Data.Vec.N-ary.html#2817" class="Bound"
+      >B</a
+      ><a name="2846" class="Symbol"
+      >)</a
+      ><a name="2847"
+      > </a
+      ><a name="2848" class="Symbol"
+      >&#8594;</a
+      ><a name="2849"
+      >
+                </a
+      ><a name="2866" href="Data.Vec.N-ary.html#1993" class="Function"
+      >Eq</a
+      ><a name="2868"
+      > </a
+      ><a name="2869" href="Data.Vec.N-ary.html#2828" class="Bound"
+      >n</a
+      ><a name="2870"
+      > </a
+      ><a name="2871" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="2874"
+      > </a
+      ><a name="2875" class="Symbol"
+      >(</a
+      ><a name="2876" href="Data.Vec.N-ary.html#1031" class="Function"
+      >curry&#8319;</a
+      ><a name="2882"
+      > </a
+      ><a name="2883" class="Symbol"
+      >(</a
+      ><a name="2884" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >_$&#8319;_</a
+      ><a name="2888"
+      > </a
+      ><a name="2889" class="Symbol"
+      >{</a
+      ><a name="2890" href="Data.Vec.N-ary.html#2828" class="Bound"
+      >n</a
+      ><a name="2891" class="Symbol"
+      >}</a
+      ><a name="2892"
+      > </a
+      ><a name="2893" href="Data.Vec.N-ary.html#2831" class="Bound"
+      >f</a
+      ><a name="2894" class="Symbol"
+      >))</a
+      ><a name="2896"
+      > </a
+      ><a name="2897" href="Data.Vec.N-ary.html#2831" class="Bound"
+      >f</a
+      ><a name="2898"
+      >
+</a
+      ><a name="2899" href="Data.Vec.N-ary.html#2780" class="Function"
+      >right-inverse</a
+      ><a name="2912"
+      > </a
+      ><a name="2913" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="2917"
+      >    </a
+      ><a name="2921" href="Data.Vec.N-ary.html#2921" class="Bound"
+      >f</a
+      ><a name="2922"
+      > </a
+      ><a name="2923" class="Symbol"
+      >=</a
+      ><a name="2924"
+      > </a
+      ><a name="2925" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2929"
+      >
+</a
+      ><a name="2930" href="Data.Vec.N-ary.html#2780" class="Function"
+      >right-inverse</a
+      ><a name="2943"
+      > </a
+      ><a name="2944" class="Symbol"
+      >(</a
+      ><a name="2945" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2948"
+      > </a
+      ><a name="2949" href="Data.Vec.N-ary.html#2949" class="Bound"
+      >n</a
+      ><a name="2950" class="Symbol"
+      >)</a
+      ><a name="2951"
+      > </a
+      ><a name="2952" href="Data.Vec.N-ary.html#2952" class="Bound"
+      >f</a
+      ><a name="2953"
+      > </a
+      ><a name="2954" class="Symbol"
+      >=</a
+      ><a name="2955"
+      > </a
+      ><a name="2956" class="Symbol"
+      >&#955;</a
+      ><a name="2957"
+      > </a
+      ><a name="2958" href="Data.Vec.N-ary.html#2958" class="Bound"
+      >x</a
+      ><a name="2959"
+      > </a
+      ><a name="2960" class="Symbol"
+      >&#8594;</a
+      ><a name="2961"
+      > </a
+      ><a name="2962" href="Data.Vec.N-ary.html#2780" class="Function"
+      >right-inverse</a
+      ><a name="2975"
+      > </a
+      ><a name="2976" href="Data.Vec.N-ary.html#2949" class="Bound"
+      >n</a
+      ><a name="2977"
+      > </a
+      ><a name="2978" class="Symbol"
+      >(</a
+      ><a name="2979" href="Data.Vec.N-ary.html#2952" class="Bound"
+      >f</a
+      ><a name="2980"
+      > </a
+      ><a name="2981" href="Data.Vec.N-ary.html#2958" class="Bound"
+      >x</a
+      ><a name="2982" class="Symbol"
+      >)</a
+      ><a name="2983"
+      >
+
+</a
+      ><a name="2985" class="Comment"
+      >-- &#8704;&#8319; can be expressed in an &quot;uncurried&quot; way.</a
+      ><a name="3030"
+      >
+
+</a
+      ><a name="3032" href="Data.Vec.N-ary.html#3032" class="Function"
+      >uncurry-&#8704;&#8319;</a
+      ><a name="3042"
+      > </a
+      ><a name="3043" class="Symbol"
+      >:</a
+      ><a name="3044"
+      > </a
+      ><a name="3045" class="Symbol"
+      >&#8704;</a
+      ><a name="3046"
+      > </a
+      ><a name="3047" href="Data.Vec.N-ary.html#3047" class="Bound"
+      >n</a
+      ><a name="3048"
+      > </a
+      ><a name="3049" class="Symbol"
+      >{</a
+      ><a name="3050" href="Data.Vec.N-ary.html#3050" class="Bound"
+      >a</a
+      ><a name="3051"
+      > </a
+      ><a name="3052" href="Data.Vec.N-ary.html#3052" class="Bound"
+      >&#8467;</a
+      ><a name="3053" class="Symbol"
+      >}</a
+      ><a name="3054"
+      > </a
+      ><a name="3055" class="Symbol"
+      >{</a
+      ><a name="3056" href="Data.Vec.N-ary.html#3056" class="Bound"
+      >A</a
+      ><a name="3057"
+      > </a
+      ><a name="3058" class="Symbol"
+      >:</a
+      ><a name="3059"
+      > </a
+      ><a name="3060" class="PrimitiveType"
+      >Set</a
+      ><a name="3063"
+      > </a
+      ><a name="3064" href="Data.Vec.N-ary.html#3050" class="Bound"
+      >a</a
+      ><a name="3065" class="Symbol"
+      >}</a
+      ><a name="3066"
+      > </a
+      ><a name="3067" class="Symbol"
+      >{</a
+      ><a name="3068" href="Data.Vec.N-ary.html#3068" class="Bound"
+      >P</a
+      ><a name="3069"
+      > </a
+      ><a name="3070" class="Symbol"
+      >:</a
+      ><a name="3071"
+      > </a
+      ><a name="3072" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="3077"
+      > </a
+      ><a name="3078" href="Data.Vec.N-ary.html#3047" class="Bound"
+      >n</a
+      ><a name="3079"
+      > </a
+      ><a name="3080" href="Data.Vec.N-ary.html#3056" class="Bound"
+      >A</a
+      ><a name="3081"
+      > </a
+      ><a name="3082" class="Symbol"
+      >(</a
+      ><a name="3083" class="PrimitiveType"
+      >Set</a
+      ><a name="3086"
+      > </a
+      ><a name="3087" href="Data.Vec.N-ary.html#3052" class="Bound"
+      >&#8467;</a
+      ><a name="3088" class="Symbol"
+      >)}</a
+      ><a name="3090"
+      > </a
+      ><a name="3091" class="Symbol"
+      >&#8594;</a
+      ><a name="3092"
+      >
+             </a
+      ><a name="3106" href="Data.Vec.N-ary.html#1413" class="Function"
+      >&#8704;&#8319;</a
+      ><a name="3108"
+      > </a
+      ><a name="3109" href="Data.Vec.N-ary.html#3047" class="Bound"
+      >n</a
+      ><a name="3110"
+      > </a
+      ><a name="3111" href="Data.Vec.N-ary.html#3068" class="Bound"
+      >P</a
+      ><a name="3112"
+      > </a
+      ><a name="3113" href="Function.Equivalence.html#711" class="Function Operator"
+      >&#8660;</a
+      ><a name="3114"
+      > </a
+      ><a name="3115" class="Symbol"
+      >(&#8704;</a
+      ><a name="3117"
+      > </a
+      ><a name="3118" class="Symbol"
+      >(</a
+      ><a name="3119" href="Data.Vec.N-ary.html#3119" class="Bound"
+      >xs</a
+      ><a name="3121"
+      > </a
+      ><a name="3122" class="Symbol"
+      >:</a
+      ><a name="3123"
+      > </a
+      ><a name="3124" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="3127"
+      > </a
+      ><a name="3128" href="Data.Vec.N-ary.html#3056" class="Bound"
+      >A</a
+      ><a name="3129"
+      > </a
+      ><a name="3130" href="Data.Vec.N-ary.html#3047" class="Bound"
+      >n</a
+      ><a name="3131" class="Symbol"
+      >)</a
+      ><a name="3132"
+      > </a
+      ><a name="3133" class="Symbol"
+      >&#8594;</a
+      ><a name="3134"
+      > </a
+      ><a name="3135" href="Data.Vec.N-ary.html#3068" class="Bound"
+      >P</a
+      ><a name="3136"
+      > </a
+      ><a name="3137" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="3139"
+      > </a
+      ><a name="3140" href="Data.Vec.N-ary.html#3119" class="Bound"
+      >xs</a
+      ><a name="3142" class="Symbol"
+      >)</a
+      ><a name="3143"
+      >
+</a
+      ><a name="3144" href="Data.Vec.N-ary.html#3032" class="Function"
+      >uncurry-&#8704;&#8319;</a
+      ><a name="3154"
+      > </a
+      ><a name="3155" href="Data.Vec.N-ary.html#3155" class="Bound"
+      >n</a
+      ><a name="3156"
+      > </a
+      ><a name="3157" class="Symbol"
+      >{</a
+      ><a name="3158" href="Data.Vec.N-ary.html#3158" class="Bound"
+      >a</a
+      ><a name="3159" class="Symbol"
+      >}</a
+      ><a name="3160"
+      > </a
+      ><a name="3161" class="Symbol"
+      >{</a
+      ><a name="3162" href="Data.Vec.N-ary.html#3162" class="Bound"
+      >&#8467;</a
+      ><a name="3163" class="Symbol"
+      >}</a
+      ><a name="3164"
+      > </a
+      ><a name="3165" class="Symbol"
+      >{</a
+      ><a name="3166" href="Data.Vec.N-ary.html#3166" class="Bound"
+      >A</a
+      ><a name="3167" class="Symbol"
+      >}</a
+      ><a name="3168"
+      > </a
+      ><a name="3169" class="Symbol"
+      >=</a
+      ><a name="3170"
+      > </a
+      ><a name="3171" href="Function.Equivalence.html#804" class="Function"
+      >equivalence</a
+      ><a name="3182"
+      > </a
+      ><a name="3183" class="Symbol"
+      >(</a
+      ><a name="3184" href="Data.Vec.N-ary.html#3205" class="Function"
+      >&#8658;</a
+      ><a name="3185"
+      > </a
+      ><a name="3186" href="Data.Vec.N-ary.html#3155" class="Bound"
+      >n</a
+      ><a name="3187" class="Symbol"
+      >)</a
+      ><a name="3188"
+      > </a
+      ><a name="3189" class="Symbol"
+      >(</a
+      ><a name="3190" href="Data.Vec.N-ary.html#3351" class="Function"
+      >&#8656;</a
+      ><a name="3191"
+      > </a
+      ><a name="3192" href="Data.Vec.N-ary.html#3155" class="Bound"
+      >n</a
+      ><a name="3193" class="Symbol"
+      >)</a
+      ><a name="3194"
+      >
+  </a
+      ><a name="3197" class="Keyword"
+      >where</a
+      ><a name="3202"
+      >
+  </a
+      ><a name="3205" href="Data.Vec.N-ary.html#3205" class="Function"
+      >&#8658;</a
+      ><a name="3206"
+      > </a
+      ><a name="3207" class="Symbol"
+      >:</a
+      ><a name="3208"
+      > </a
+      ><a name="3209" class="Symbol"
+      >&#8704;</a
+      ><a name="3210"
+      > </a
+      ><a name="3211" href="Data.Vec.N-ary.html#3211" class="Bound"
+      >n</a
+      ><a name="3212"
+      > </a
+      ><a name="3213" class="Symbol"
+      >{</a
+      ><a name="3214" href="Data.Vec.N-ary.html#3214" class="Bound"
+      >P</a
+      ><a name="3215"
+      > </a
+      ><a name="3216" class="Symbol"
+      >:</a
+      ><a name="3217"
+      > </a
+      ><a name="3218" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="3223"
+      > </a
+      ><a name="3224" href="Data.Vec.N-ary.html#3211" class="Bound"
+      >n</a
+      ><a name="3225"
+      > </a
+      ><a name="3226" href="Data.Vec.N-ary.html#3166" class="Bound"
+      >A</a
+      ><a name="3227"
+      > </a
+      ><a name="3228" class="Symbol"
+      >(</a
+      ><a name="3229" class="PrimitiveType"
+      >Set</a
+      ><a name="3232"
+      > </a
+      ><a name="3233" href="Data.Vec.N-ary.html#3162" class="Bound"
+      >&#8467;</a
+      ><a name="3234" class="Symbol"
+      >)}</a
+      ><a name="3236"
+      > </a
+      ><a name="3237" class="Symbol"
+      >&#8594;</a
+      ><a name="3238"
+      >
+      </a
+      ><a name="3245" href="Data.Vec.N-ary.html#1413" class="Function"
+      >&#8704;&#8319;</a
+      ><a name="3247"
+      > </a
+      ><a name="3248" href="Data.Vec.N-ary.html#3211" class="Bound"
+      >n</a
+      ><a name="3249"
+      > </a
+      ><a name="3250" href="Data.Vec.N-ary.html#3214" class="Bound"
+      >P</a
+      ><a name="3251"
+      > </a
+      ><a name="3252" class="Symbol"
+      >&#8594;</a
+      ><a name="3253"
+      > </a
+      ><a name="3254" class="Symbol"
+      >(&#8704;</a
+      ><a name="3256"
+      > </a
+      ><a name="3257" class="Symbol"
+      >(</a
+      ><a name="3258" href="Data.Vec.N-ary.html#3258" class="Bound"
+      >xs</a
+      ><a name="3260"
+      > </a
+      ><a name="3261" class="Symbol"
+      >:</a
+      ><a name="3262"
+      > </a
+      ><a name="3263" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="3266"
+      > </a
+      ><a name="3267" href="Data.Vec.N-ary.html#3166" class="Bound"
+      >A</a
+      ><a name="3268"
+      > </a
+      ><a name="3269" href="Data.Vec.N-ary.html#3211" class="Bound"
+      >n</a
+      ><a name="3270" class="Symbol"
+      >)</a
+      ><a name="3271"
+      > </a
+      ><a name="3272" class="Symbol"
+      >&#8594;</a
+      ><a name="3273"
+      > </a
+      ><a name="3274" href="Data.Vec.N-ary.html#3214" class="Bound"
+      >P</a
+      ><a name="3275"
+      > </a
+      ><a name="3276" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="3278"
+      > </a
+      ><a name="3279" href="Data.Vec.N-ary.html#3258" class="Bound"
+      >xs</a
+      ><a name="3281" class="Symbol"
+      >)</a
+      ><a name="3282"
+      >
+  </a
+      ><a name="3285" href="Data.Vec.N-ary.html#3205" class="Function"
+      >&#8658;</a
+      ><a name="3286"
+      > </a
+      ><a name="3287" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="3291"
+      >    </a
+      ><a name="3295" href="Data.Vec.N-ary.html#3295" class="Bound"
+      >p</a
+      ><a name="3296"
+      > </a
+      ><a name="3297" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="3299"
+      >       </a
+      ><a name="3306" class="Symbol"
+      >=</a
+      ><a name="3307"
+      > </a
+      ><a name="3308" href="Data.Vec.N-ary.html#3295" class="Bound"
+      >p</a
+      ><a name="3309"
+      >
+  </a
+      ><a name="3312" href="Data.Vec.N-ary.html#3205" class="Function"
+      >&#8658;</a
+      ><a name="3313"
+      > </a
+      ><a name="3314" class="Symbol"
+      >(</a
+      ><a name="3315" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3318"
+      > </a
+      ><a name="3319" href="Data.Vec.N-ary.html#3319" class="Bound"
+      >n</a
+      ><a name="3320" class="Symbol"
+      >)</a
+      ><a name="3321"
+      > </a
+      ><a name="3322" href="Data.Vec.N-ary.html#3322" class="Bound"
+      >p</a
+      ><a name="3323"
+      > </a
+      ><a name="3324" class="Symbol"
+      >(</a
+      ><a name="3325" href="Data.Vec.N-ary.html#3325" class="Bound"
+      >x</a
+      ><a name="3326"
+      > </a
+      ><a name="3327" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3328"
+      > </a
+      ><a name="3329" href="Data.Vec.N-ary.html#3329" class="Bound"
+      >xs</a
+      ><a name="3331" class="Symbol"
+      >)</a
+      ><a name="3332"
+      > </a
+      ><a name="3333" class="Symbol"
+      >=</a
+      ><a name="3334"
+      > </a
+      ><a name="3335" href="Data.Vec.N-ary.html#3205" class="Function"
+      >&#8658;</a
+      ><a name="3336"
+      > </a
+      ><a name="3337" href="Data.Vec.N-ary.html#3319" class="Bound"
+      >n</a
+      ><a name="3338"
+      > </a
+      ><a name="3339" class="Symbol"
+      >(</a
+      ><a name="3340" href="Data.Vec.N-ary.html#3322" class="Bound"
+      >p</a
+      ><a name="3341"
+      > </a
+      ><a name="3342" href="Data.Vec.N-ary.html#3325" class="Bound"
+      >x</a
+      ><a name="3343" class="Symbol"
+      >)</a
+      ><a name="3344"
+      > </a
+      ><a name="3345" href="Data.Vec.N-ary.html#3329" class="Bound"
+      >xs</a
+      ><a name="3347"
+      >
+
+  </a
+      ><a name="3351" href="Data.Vec.N-ary.html#3351" class="Function"
+      >&#8656;</a
+      ><a name="3352"
+      > </a
+      ><a name="3353" class="Symbol"
+      >:</a
+      ><a name="3354"
+      > </a
+      ><a name="3355" class="Symbol"
+      >&#8704;</a
+      ><a name="3356"
+      > </a
+      ><a name="3357" href="Data.Vec.N-ary.html#3357" class="Bound"
+      >n</a
+      ><a name="3358"
+      > </a
+      ><a name="3359" class="Symbol"
+      >{</a
+      ><a name="3360" href="Data.Vec.N-ary.html#3360" class="Bound"
+      >P</a
+      ><a name="3361"
+      > </a
+      ><a name="3362" class="Symbol"
+      >:</a
+      ><a name="3363"
+      > </a
+      ><a name="3364" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="3369"
+      > </a
+      ><a name="3370" href="Data.Vec.N-ary.html#3357" class="Bound"
+      >n</a
+      ><a name="3371"
+      > </a
+      ><a name="3372" href="Data.Vec.N-ary.html#3166" class="Bound"
+      >A</a
+      ><a name="3373"
+      > </a
+      ><a name="3374" class="Symbol"
+      >(</a
+      ><a name="3375" class="PrimitiveType"
+      >Set</a
+      ><a name="3378"
+      > </a
+      ><a name="3379" href="Data.Vec.N-ary.html#3162" class="Bound"
+      >&#8467;</a
+      ><a name="3380" class="Symbol"
+      >)}</a
+      ><a name="3382"
+      > </a
+      ><a name="3383" class="Symbol"
+      >&#8594;</a
+      ><a name="3384"
+      >
+      </a
+      ><a name="3391" class="Symbol"
+      >(&#8704;</a
+      ><a name="3393"
+      > </a
+      ><a name="3394" class="Symbol"
+      >(</a
+      ><a name="3395" href="Data.Vec.N-ary.html#3395" class="Bound"
+      >xs</a
+      ><a name="3397"
+      > </a
+      ><a name="3398" class="Symbol"
+      >:</a
+      ><a name="3399"
+      > </a
+      ><a name="3400" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="3403"
+      > </a
+      ><a name="3404" href="Data.Vec.N-ary.html#3166" class="Bound"
+      >A</a
+      ><a name="3405"
+      > </a
+      ><a name="3406" href="Data.Vec.N-ary.html#3357" class="Bound"
+      >n</a
+      ><a name="3407" class="Symbol"
+      >)</a
+      ><a name="3408"
+      > </a
+      ><a name="3409" class="Symbol"
+      >&#8594;</a
+      ><a name="3410"
+      > </a
+      ><a name="3411" href="Data.Vec.N-ary.html#3360" class="Bound"
+      >P</a
+      ><a name="3412"
+      > </a
+      ><a name="3413" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="3415"
+      > </a
+      ><a name="3416" href="Data.Vec.N-ary.html#3395" class="Bound"
+      >xs</a
+      ><a name="3418" class="Symbol"
+      >)</a
+      ><a name="3419"
+      > </a
+      ><a name="3420" class="Symbol"
+      >&#8594;</a
+      ><a name="3421"
+      > </a
+      ><a name="3422" href="Data.Vec.N-ary.html#1413" class="Function"
+      >&#8704;&#8319;</a
+      ><a name="3424"
+      > </a
+      ><a name="3425" href="Data.Vec.N-ary.html#3357" class="Bound"
+      >n</a
+      ><a name="3426"
+      > </a
+      ><a name="3427" href="Data.Vec.N-ary.html#3360" class="Bound"
+      >P</a
+      ><a name="3428"
+      >
+  </a
+      ><a name="3431" href="Data.Vec.N-ary.html#3351" class="Function"
+      >&#8656;</a
+      ><a name="3432"
+      > </a
+      ><a name="3433" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="3437"
+      >    </a
+      ><a name="3441" href="Data.Vec.N-ary.html#3441" class="Bound"
+      >p</a
+      ><a name="3442"
+      > </a
+      ><a name="3443" class="Symbol"
+      >=</a
+      ><a name="3444"
+      > </a
+      ><a name="3445" href="Data.Vec.N-ary.html#3441" class="Bound"
+      >p</a
+      ><a name="3446"
+      > </a
+      ><a name="3447" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="3449"
+      >
+  </a
+      ><a name="3452" href="Data.Vec.N-ary.html#3351" class="Function"
+      >&#8656;</a
+      ><a name="3453"
+      > </a
+      ><a name="3454" class="Symbol"
+      >(</a
+      ><a name="3455" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3458"
+      > </a
+      ><a name="3459" href="Data.Vec.N-ary.html#3459" class="Bound"
+      >n</a
+      ><a name="3460" class="Symbol"
+      >)</a
+      ><a name="3461"
+      > </a
+      ><a name="3462" href="Data.Vec.N-ary.html#3462" class="Bound"
+      >p</a
+      ><a name="3463"
+      > </a
+      ><a name="3464" class="Symbol"
+      >=</a
+      ><a name="3465"
+      > </a
+      ><a name="3466" class="Symbol"
+      >&#955;</a
+      ><a name="3467"
+      > </a
+      ><a name="3468" href="Data.Vec.N-ary.html#3468" class="Bound"
+      >x</a
+      ><a name="3469"
+      > </a
+      ><a name="3470" class="Symbol"
+      >&#8594;</a
+      ><a name="3471"
+      > </a
+      ><a name="3472" href="Data.Vec.N-ary.html#3351" class="Function"
+      >&#8656;</a
+      ><a name="3473"
+      > </a
+      ><a name="3474" href="Data.Vec.N-ary.html#3459" class="Bound"
+      >n</a
+      ><a name="3475"
+      > </a
+      ><a name="3476" class="Symbol"
+      >(</a
+      ><a name="3477" href="Data.Vec.N-ary.html#3462" class="Bound"
+      >p</a
+      ><a name="3478"
+      > </a
+      ><a name="3479" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="3480"
+      > </a
+      ><a name="3481" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="3484"
+      > </a
+      ><a name="3485" href="Data.Vec.N-ary.html#3468" class="Bound"
+      >x</a
+      ><a name="3486" class="Symbol"
+      >)</a
+      ><a name="3487"
+      >
+
+</a
+      ><a name="3489" class="Comment"
+      >-- &#8707;&#8319; can be expressed in an &quot;uncurried&quot; way.</a
+      ><a name="3534"
+      >
+
+</a
+      ><a name="3536" href="Data.Vec.N-ary.html#3536" class="Function"
+      >uncurry-&#8707;&#8319;</a
+      ><a name="3546"
+      > </a
+      ><a name="3547" class="Symbol"
+      >:</a
+      ><a name="3548"
+      > </a
+      ><a name="3549" class="Symbol"
+      >&#8704;</a
+      ><a name="3550"
+      > </a
+      ><a name="3551" href="Data.Vec.N-ary.html#3551" class="Bound"
+      >n</a
+      ><a name="3552"
+      > </a
+      ><a name="3553" class="Symbol"
+      >{</a
+      ><a name="3554" href="Data.Vec.N-ary.html#3554" class="Bound"
+      >a</a
+      ><a name="3555"
+      > </a
+      ><a name="3556" href="Data.Vec.N-ary.html#3556" class="Bound"
+      >&#8467;</a
+      ><a name="3557" class="Symbol"
+      >}</a
+      ><a name="3558"
+      > </a
+      ><a name="3559" class="Symbol"
+      >{</a
+      ><a name="3560" href="Data.Vec.N-ary.html#3560" class="Bound"
+      >A</a
+      ><a name="3561"
+      > </a
+      ><a name="3562" class="Symbol"
+      >:</a
+      ><a name="3563"
+      > </a
+      ><a name="3564" class="PrimitiveType"
+      >Set</a
+      ><a name="3567"
+      > </a
+      ><a name="3568" href="Data.Vec.N-ary.html#3554" class="Bound"
+      >a</a
+      ><a name="3569" class="Symbol"
+      >}</a
+      ><a name="3570"
+      > </a
+      ><a name="3571" class="Symbol"
+      >{</a
+      ><a name="3572" href="Data.Vec.N-ary.html#3572" class="Bound"
+      >P</a
+      ><a name="3573"
+      > </a
+      ><a name="3574" class="Symbol"
+      >:</a
+      ><a name="3575"
+      > </a
+      ><a name="3576" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="3581"
+      > </a
+      ><a name="3582" href="Data.Vec.N-ary.html#3551" class="Bound"
+      >n</a
+      ><a name="3583"
+      > </a
+      ><a name="3584" href="Data.Vec.N-ary.html#3560" class="Bound"
+      >A</a
+      ><a name="3585"
+      > </a
+      ><a name="3586" class="Symbol"
+      >(</a
+      ><a name="3587" class="PrimitiveType"
+      >Set</a
+      ><a name="3590"
+      > </a
+      ><a name="3591" href="Data.Vec.N-ary.html#3556" class="Bound"
+      >&#8467;</a
+      ><a name="3592" class="Symbol"
+      >)}</a
+      ><a name="3594"
+      > </a
+      ><a name="3595" class="Symbol"
+      >&#8594;</a
+      ><a name="3596"
+      >
+             </a
+      ><a name="3610" href="Data.Vec.N-ary.html#1762" class="Function"
+      >&#8707;&#8319;</a
+      ><a name="3612"
+      > </a
+      ><a name="3613" href="Data.Vec.N-ary.html#3551" class="Bound"
+      >n</a
+      ><a name="3614"
+      > </a
+      ><a name="3615" href="Data.Vec.N-ary.html#3572" class="Bound"
+      >P</a
+      ><a name="3616"
+      > </a
+      ><a name="3617" href="Function.Equivalence.html#711" class="Function Operator"
+      >&#8660;</a
+      ><a name="3618"
+      > </a
+      ><a name="3619" class="Symbol"
+      >(</a
+      ><a name="3620" href="Data.Product.html#805" class="Function"
+      >&#8707;</a
+      ><a name="3621"
+      > </a
+      ><a name="3622" class="Symbol"
+      >&#955;</a
+      ><a name="3623"
+      > </a
+      ><a name="3624" class="Symbol"
+      >(</a
+      ><a name="3625" href="Data.Vec.N-ary.html#3625" class="Bound"
+      >xs</a
+      ><a name="3627"
+      > </a
+      ><a name="3628" class="Symbol"
+      >:</a
+      ><a name="3629"
+      > </a
+      ><a name="3630" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="3633"
+      > </a
+      ><a name="3634" href="Data.Vec.N-ary.html#3560" class="Bound"
+      >A</a
+      ><a name="3635"
+      > </a
+      ><a name="3636" href="Data.Vec.N-ary.html#3551" class="Bound"
+      >n</a
+      ><a name="3637" class="Symbol"
+      >)</a
+      ><a name="3638"
+      > </a
+      ><a name="3639" class="Symbol"
+      >&#8594;</a
+      ><a name="3640"
+      > </a
+      ><a name="3641" href="Data.Vec.N-ary.html#3572" class="Bound"
+      >P</a
+      ><a name="3642"
+      > </a
+      ><a name="3643" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="3645"
+      > </a
+      ><a name="3646" href="Data.Vec.N-ary.html#3625" class="Bound"
+      >xs</a
+      ><a name="3648" class="Symbol"
+      >)</a
+      ><a name="3649"
+      >
+</a
+      ><a name="3650" href="Data.Vec.N-ary.html#3536" class="Function"
+      >uncurry-&#8707;&#8319;</a
+      ><a name="3660"
+      > </a
+      ><a name="3661" href="Data.Vec.N-ary.html#3661" class="Bound"
+      >n</a
+      ><a name="3662"
+      > </a
+      ><a name="3663" class="Symbol"
+      >{</a
+      ><a name="3664" href="Data.Vec.N-ary.html#3664" class="Bound"
+      >a</a
+      ><a name="3665" class="Symbol"
+      >}</a
+      ><a name="3666"
+      > </a
+      ><a name="3667" class="Symbol"
+      >{</a
+      ><a name="3668" href="Data.Vec.N-ary.html#3668" class="Bound"
+      >&#8467;</a
+      ><a name="3669" class="Symbol"
+      >}</a
+      ><a name="3670"
+      > </a
+      ><a name="3671" class="Symbol"
+      >{</a
+      ><a name="3672" href="Data.Vec.N-ary.html#3672" class="Bound"
+      >A</a
+      ><a name="3673" class="Symbol"
+      >}</a
+      ><a name="3674"
+      > </a
+      ><a name="3675" class="Symbol"
+      >=</a
+      ><a name="3676"
+      > </a
+      ><a name="3677" href="Function.Equivalence.html#804" class="Function"
+      >equivalence</a
+      ><a name="3688"
+      > </a
+      ><a name="3689" class="Symbol"
+      >(</a
+      ><a name="3690" href="Data.Vec.N-ary.html#3711" class="Function"
+      >&#8658;</a
+      ><a name="3691"
+      > </a
+      ><a name="3692" href="Data.Vec.N-ary.html#3661" class="Bound"
+      >n</a
+      ><a name="3693" class="Symbol"
+      >)</a
+      ><a name="3694"
+      > </a
+      ><a name="3695" class="Symbol"
+      >(</a
+      ><a name="3696" href="Data.Vec.N-ary.html#3875" class="Function"
+      >&#8656;</a
+      ><a name="3697"
+      > </a
+      ><a name="3698" href="Data.Vec.N-ary.html#3661" class="Bound"
+      >n</a
+      ><a name="3699" class="Symbol"
+      >)</a
+      ><a name="3700"
+      >
+  </a
+      ><a name="3703" class="Keyword"
+      >where</a
+      ><a name="3708"
+      >
+  </a
+      ><a name="3711" href="Data.Vec.N-ary.html#3711" class="Function"
+      >&#8658;</a
+      ><a name="3712"
+      > </a
+      ><a name="3713" class="Symbol"
+      >:</a
+      ><a name="3714"
+      > </a
+      ><a name="3715" class="Symbol"
+      >&#8704;</a
+      ><a name="3716"
+      > </a
+      ><a name="3717" href="Data.Vec.N-ary.html#3717" class="Bound"
+      >n</a
+      ><a name="3718"
+      > </a
+      ><a name="3719" class="Symbol"
+      >{</a
+      ><a name="3720" href="Data.Vec.N-ary.html#3720" class="Bound"
+      >P</a
+      ><a name="3721"
+      > </a
+      ><a name="3722" class="Symbol"
+      >:</a
+      ><a name="3723"
+      > </a
+      ><a name="3724" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="3729"
+      > </a
+      ><a name="3730" href="Data.Vec.N-ary.html#3717" class="Bound"
+      >n</a
+      ><a name="3731"
+      > </a
+      ><a name="3732" href="Data.Vec.N-ary.html#3672" class="Bound"
+      >A</a
+      ><a name="3733"
+      > </a
+      ><a name="3734" class="Symbol"
+      >(</a
+      ><a name="3735" class="PrimitiveType"
+      >Set</a
+      ><a name="3738"
+      > </a
+      ><a name="3739" href="Data.Vec.N-ary.html#3668" class="Bound"
+      >&#8467;</a
+      ><a name="3740" class="Symbol"
+      >)}</a
+      ><a name="3742"
+      > </a
+      ><a name="3743" class="Symbol"
+      >&#8594;</a
+      ><a name="3744"
+      >
+      </a
+      ><a name="3751" href="Data.Vec.N-ary.html#1762" class="Function"
+      >&#8707;&#8319;</a
+      ><a name="3753"
+      > </a
+      ><a name="3754" href="Data.Vec.N-ary.html#3717" class="Bound"
+      >n</a
+      ><a name="3755"
+      > </a
+      ><a name="3756" href="Data.Vec.N-ary.html#3720" class="Bound"
+      >P</a
+      ><a name="3757"
+      > </a
+      ><a name="3758" class="Symbol"
+      >&#8594;</a
+      ><a name="3759"
+      > </a
+      ><a name="3760" class="Symbol"
+      >(</a
+      ><a name="3761" href="Data.Product.html#805" class="Function"
+      >&#8707;</a
+      ><a name="3762"
+      > </a
+      ><a name="3763" class="Symbol"
+      >&#955;</a
+      ><a name="3764"
+      > </a
+      ><a name="3765" class="Symbol"
+      >(</a
+      ><a name="3766" href="Data.Vec.N-ary.html#3766" class="Bound"
+      >xs</a
+      ><a name="3768"
+      > </a
+      ><a name="3769" class="Symbol"
+      >:</a
+      ><a name="3770"
+      > </a
+      ><a name="3771" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="3774"
+      > </a
+      ><a name="3775" href="Data.Vec.N-ary.html#3672" class="Bound"
+      >A</a
+      ><a name="3776"
+      > </a
+      ><a name="3777" href="Data.Vec.N-ary.html#3717" class="Bound"
+      >n</a
+      ><a name="3778" class="Symbol"
+      >)</a
+      ><a name="3779"
+      > </a
+      ><a name="3780" class="Symbol"
+      >&#8594;</a
+      ><a name="3781"
+      > </a
+      ><a name="3782" href="Data.Vec.N-ary.html#3720" class="Bound"
+      >P</a
+      ><a name="3783"
+      > </a
+      ><a name="3784" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="3786"
+      > </a
+      ><a name="3787" href="Data.Vec.N-ary.html#3766" class="Bound"
+      >xs</a
+      ><a name="3789" class="Symbol"
+      >)</a
+      ><a name="3790"
+      >
+  </a
+      ><a name="3793" href="Data.Vec.N-ary.html#3711" class="Function"
+      >&#8658;</a
+      ><a name="3794"
+      > </a
+      ><a name="3795" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="3799"
+      >    </a
+      ><a name="3803" href="Data.Vec.N-ary.html#3803" class="Bound"
+      >p</a
+      ><a name="3804"
+      >       </a
+      ><a name="3811" class="Symbol"
+      >=</a
+      ><a name="3812"
+      > </a
+      ><a name="3813" class="Symbol"
+      >(</a
+      ><a name="3814" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="3816"
+      > </a
+      ><a name="3817" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3818"
+      > </a
+      ><a name="3819" href="Data.Vec.N-ary.html#3803" class="Bound"
+      >p</a
+      ><a name="3820" class="Symbol"
+      >)</a
+      ><a name="3821"
+      >
+  </a
+      ><a name="3824" href="Data.Vec.N-ary.html#3711" class="Function"
+      >&#8658;</a
+      ><a name="3825"
+      > </a
+      ><a name="3826" class="Symbol"
+      >(</a
+      ><a name="3827" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3830"
+      > </a
+      ><a name="3831" href="Data.Vec.N-ary.html#3831" class="Bound"
+      >n</a
+      ><a name="3832" class="Symbol"
+      >)</a
+      ><a name="3833"
+      > </a
+      ><a name="3834" class="Symbol"
+      >(</a
+      ><a name="3835" href="Data.Vec.N-ary.html#3835" class="Bound"
+      >x</a
+      ><a name="3836"
+      > </a
+      ><a name="3837" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3838"
+      > </a
+      ><a name="3839" href="Data.Vec.N-ary.html#3839" class="Bound"
+      >p</a
+      ><a name="3840" class="Symbol"
+      >)</a
+      ><a name="3841"
+      > </a
+      ><a name="3842" class="Symbol"
+      >=</a
+      ><a name="3843"
+      > </a
+      ><a name="3844" href="Data.Product.html#1854" class="Function"
+      >Prod.map</a
+      ><a name="3852"
+      > </a
+      ><a name="3853" class="Symbol"
+      >(</a
+      ><a name="3854" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="3857"
+      > </a
+      ><a name="3858" href="Data.Vec.N-ary.html#3835" class="Bound"
+      >x</a
+      ><a name="3859" class="Symbol"
+      >)</a
+      ><a name="3860"
+      > </a
+      ><a name="3861" href="Function.html#1012" class="Function"
+      >id</a
+      ><a name="3863"
+      > </a
+      ><a name="3864" class="Symbol"
+      >(</a
+      ><a name="3865" href="Data.Vec.N-ary.html#3711" class="Function"
+      >&#8658;</a
+      ><a name="3866"
+      > </a
+      ><a name="3867" href="Data.Vec.N-ary.html#3831" class="Bound"
+      >n</a
+      ><a name="3868"
+      > </a
+      ><a name="3869" href="Data.Vec.N-ary.html#3839" class="Bound"
+      >p</a
+      ><a name="3870" class="Symbol"
+      >)</a
+      ><a name="3871"
+      >
+
+  </a
+      ><a name="3875" href="Data.Vec.N-ary.html#3875" class="Function"
+      >&#8656;</a
+      ><a name="3876"
+      > </a
+      ><a name="3877" class="Symbol"
+      >:</a
+      ><a name="3878"
+      > </a
+      ><a name="3879" class="Symbol"
+      >&#8704;</a
+      ><a name="3880"
+      > </a
+      ><a name="3881" href="Data.Vec.N-ary.html#3881" class="Bound"
+      >n</a
+      ><a name="3882"
+      > </a
+      ><a name="3883" class="Symbol"
+      >{</a
+      ><a name="3884" href="Data.Vec.N-ary.html#3884" class="Bound"
+      >P</a
+      ><a name="3885"
+      > </a
+      ><a name="3886" class="Symbol"
+      >:</a
+      ><a name="3887"
+      > </a
+      ><a name="3888" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="3893"
+      > </a
+      ><a name="3894" href="Data.Vec.N-ary.html#3881" class="Bound"
+      >n</a
+      ><a name="3895"
+      > </a
+      ><a name="3896" href="Data.Vec.N-ary.html#3672" class="Bound"
+      >A</a
+      ><a name="3897"
+      > </a
+      ><a name="3898" class="Symbol"
+      >(</a
+      ><a name="3899" class="PrimitiveType"
+      >Set</a
+      ><a name="3902"
+      > </a
+      ><a name="3903" href="Data.Vec.N-ary.html#3668" class="Bound"
+      >&#8467;</a
+      ><a name="3904" class="Symbol"
+      >)}</a
+      ><a name="3906"
+      > </a
+      ><a name="3907" class="Symbol"
+      >&#8594;</a
+      ><a name="3908"
+      >
+      </a
+      ><a name="3915" class="Symbol"
+      >(</a
+      ><a name="3916" href="Data.Product.html#805" class="Function"
+      >&#8707;</a
+      ><a name="3917"
+      > </a
+      ><a name="3918" class="Symbol"
+      >&#955;</a
+      ><a name="3919"
+      > </a
+      ><a name="3920" class="Symbol"
+      >(</a
+      ><a name="3921" href="Data.Vec.N-ary.html#3921" class="Bound"
+      >xs</a
+      ><a name="3923"
+      > </a
+      ><a name="3924" class="Symbol"
+      >:</a
+      ><a name="3925"
+      > </a
+      ><a name="3926" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="3929"
+      > </a
+      ><a name="3930" href="Data.Vec.N-ary.html#3672" class="Bound"
+      >A</a
+      ><a name="3931"
+      > </a
+      ><a name="3932" href="Data.Vec.N-ary.html#3881" class="Bound"
+      >n</a
+      ><a name="3933" class="Symbol"
+      >)</a
+      ><a name="3934"
+      > </a
+      ><a name="3935" class="Symbol"
+      >&#8594;</a
+      ><a name="3936"
+      > </a
+      ><a name="3937" href="Data.Vec.N-ary.html#3884" class="Bound"
+      >P</a
+      ><a name="3938"
+      > </a
+      ><a name="3939" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="3941"
+      > </a
+      ><a name="3942" href="Data.Vec.N-ary.html#3921" class="Bound"
+      >xs</a
+      ><a name="3944" class="Symbol"
+      >)</a
+      ><a name="3945"
+      > </a
+      ><a name="3946" class="Symbol"
+      >&#8594;</a
+      ><a name="3947"
+      > </a
+      ><a name="3948" href="Data.Vec.N-ary.html#1762" class="Function"
+      >&#8707;&#8319;</a
+      ><a name="3950"
+      > </a
+      ><a name="3951" href="Data.Vec.N-ary.html#3881" class="Bound"
+      >n</a
+      ><a name="3952"
+      > </a
+      ><a name="3953" href="Data.Vec.N-ary.html#3884" class="Bound"
+      >P</a
+      ><a name="3954"
+      >
+  </a
+      ><a name="3957" href="Data.Vec.N-ary.html#3875" class="Function"
+      >&#8656;</a
+      ><a name="3958"
+      > </a
+      ><a name="3959" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="3963"
+      >    </a
+      ><a name="3967" class="Symbol"
+      >(</a
+      ><a name="3968" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="3970"
+      > </a
+      ><a name="3971" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3972"
+      > </a
+      ><a name="3973" href="Data.Vec.N-ary.html#3973" class="Bound"
+      >p</a
+      ><a name="3974" class="Symbol"
+      >)</a
+      ><a name="3975"
+      >     </a
+      ><a name="3980" class="Symbol"
+      >=</a
+      ><a name="3981"
+      > </a
+      ><a name="3982" href="Data.Vec.N-ary.html#3973" class="Bound"
+      >p</a
+      ><a name="3983"
+      >
+  </a
+      ><a name="3986" href="Data.Vec.N-ary.html#3875" class="Function"
+      >&#8656;</a
+      ><a name="3987"
+      > </a
+      ><a name="3988" class="Symbol"
+      >(</a
+      ><a name="3989" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3992"
+      > </a
+      ><a name="3993" href="Data.Vec.N-ary.html#3993" class="Bound"
+      >n</a
+      ><a name="3994" class="Symbol"
+      >)</a
+      ><a name="3995"
+      > </a
+      ><a name="3996" class="Symbol"
+      >(</a
+      ><a name="3997" href="Data.Vec.N-ary.html#3997" class="Bound"
+      >x</a
+      ><a name="3998"
+      > </a
+      ><a name="3999" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4000"
+      > </a
+      ><a name="4001" href="Data.Vec.N-ary.html#4001" class="Bound"
+      >xs</a
+      ><a name="4003"
+      > </a
+      ><a name="4004" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4005"
+      > </a
+      ><a name="4006" href="Data.Vec.N-ary.html#4006" class="Bound"
+      >p</a
+      ><a name="4007" class="Symbol"
+      >)</a
+      ><a name="4008"
+      > </a
+      ><a name="4009" class="Symbol"
+      >=</a
+      ><a name="4010"
+      > </a
+      ><a name="4011" class="Symbol"
+      >(</a
+      ><a name="4012" href="Data.Vec.N-ary.html#3997" class="Bound"
+      >x</a
+      ><a name="4013"
+      > </a
+      ><a name="4014" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4015"
+      > </a
+      ><a name="4016" href="Data.Vec.N-ary.html#3875" class="Function"
+      >&#8656;</a
+      ><a name="4017"
+      > </a
+      ><a name="4018" href="Data.Vec.N-ary.html#3993" class="Bound"
+      >n</a
+      ><a name="4019"
+      > </a
+      ><a name="4020" class="Symbol"
+      >(</a
+      ><a name="4021" href="Data.Vec.N-ary.html#4001" class="Bound"
+      >xs</a
+      ><a name="4023"
+      > </a
+      ><a name="4024" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4025"
+      > </a
+      ><a name="4026" href="Data.Vec.N-ary.html#4006" class="Bound"
+      >p</a
+      ><a name="4027" class="Symbol"
+      >))</a
+      ><a name="4029"
+      >
+
+</a
+      ><a name="4031" class="Comment"
+      >-- Conversion preserves equality.</a
+      ><a name="4064"
+      >
+
+</a
+      ><a name="4066" href="Data.Vec.N-ary.html#4066" class="Function"
+      >curry&#8319;-cong</a
+      ><a name="4077"
+      > </a
+      ><a name="4078" class="Symbol"
+      >:</a
+      ><a name="4079"
+      > </a
+      ><a name="4080" class="Symbol"
+      >&#8704;</a
+      ><a name="4081"
+      > </a
+      ><a name="4082" class="Symbol"
+      >{</a
+      ><a name="4083" href="Data.Vec.N-ary.html#4083" class="Bound"
+      >n</a
+      ><a name="4084"
+      > </a
+      ><a name="4085" href="Data.Vec.N-ary.html#4085" class="Bound"
+      >a</a
+      ><a name="4086"
+      > </a
+      ><a name="4087" href="Data.Vec.N-ary.html#4087" class="Bound"
+      >b</a
+      ><a name="4088"
+      > </a
+      ><a name="4089" href="Data.Vec.N-ary.html#4089" class="Bound"
+      >c</a
+      ><a name="4090"
+      > </a
+      ><a name="4091" href="Data.Vec.N-ary.html#4091" class="Bound"
+      >&#8467;</a
+      ><a name="4092" class="Symbol"
+      >}</a
+      ><a name="4093"
+      > </a
+      ><a name="4094" class="Symbol"
+      >{</a
+      ><a name="4095" href="Data.Vec.N-ary.html#4095" class="Bound"
+      >A</a
+      ><a name="4096"
+      > </a
+      ><a name="4097" class="Symbol"
+      >:</a
+      ><a name="4098"
+      > </a
+      ><a name="4099" class="PrimitiveType"
+      >Set</a
+      ><a name="4102"
+      > </a
+      ><a name="4103" href="Data.Vec.N-ary.html#4085" class="Bound"
+      >a</a
+      ><a name="4104" class="Symbol"
+      >}</a
+      ><a name="4105"
+      > </a
+      ><a name="4106" class="Symbol"
+      >{</a
+      ><a name="4107" href="Data.Vec.N-ary.html#4107" class="Bound"
+      >B</a
+      ><a name="4108"
+      > </a
+      ><a name="4109" class="Symbol"
+      >:</a
+      ><a name="4110"
+      > </a
+      ><a name="4111" class="PrimitiveType"
+      >Set</a
+      ><a name="4114"
+      > </a
+      ><a name="4115" href="Data.Vec.N-ary.html#4087" class="Bound"
+      >b</a
+      ><a name="4116" class="Symbol"
+      >}</a
+      ><a name="4117"
+      > </a
+      ><a name="4118" class="Symbol"
+      >{</a
+      ><a name="4119" href="Data.Vec.N-ary.html#4119" class="Bound"
+      >C</a
+      ><a name="4120"
+      > </a
+      ><a name="4121" class="Symbol"
+      >:</a
+      ><a name="4122"
+      > </a
+      ><a name="4123" class="PrimitiveType"
+      >Set</a
+      ><a name="4126"
+      > </a
+      ><a name="4127" href="Data.Vec.N-ary.html#4089" class="Bound"
+      >c</a
+      ><a name="4128" class="Symbol"
+      >}</a
+      ><a name="4129"
+      >
+              </a
+      ><a name="4144" class="Symbol"
+      >(</a
+      ><a name="4145" href="Data.Vec.N-ary.html#4145" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="4148"
+      > </a
+      ><a name="4149" class="Symbol"
+      >:</a
+      ><a name="4150"
+      > </a
+      ><a name="4151" href="Relation.Binary.Core.html#635" class="Function"
+      >REL</a
+      ><a name="4154"
+      > </a
+      ><a name="4155" href="Data.Vec.N-ary.html#4107" class="Bound"
+      >B</a
+      ><a name="4156"
+      > </a
+      ><a name="4157" href="Data.Vec.N-ary.html#4119" class="Bound"
+      >C</a
+      ><a name="4158"
+      > </a
+      ><a name="4159" href="Data.Vec.N-ary.html#4091" class="Bound"
+      >&#8467;</a
+      ><a name="4160" class="Symbol"
+      >)</a
+      ><a name="4161"
+      > </a
+      ><a name="4162" class="Symbol"
+      >(</a
+      ><a name="4163" href="Data.Vec.N-ary.html#4163" class="Bound"
+      >f</a
+      ><a name="4164"
+      > </a
+      ><a name="4165" class="Symbol"
+      >:</a
+      ><a name="4166"
+      > </a
+      ><a name="4167" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="4170"
+      > </a
+      ><a name="4171" href="Data.Vec.N-ary.html#4095" class="Bound"
+      >A</a
+      ><a name="4172"
+      > </a
+      ><a name="4173" href="Data.Vec.N-ary.html#4083" class="Bound"
+      >n</a
+      ><a name="4174"
+      > </a
+      ><a name="4175" class="Symbol"
+      >&#8594;</a
+      ><a name="4176"
+      > </a
+      ><a name="4177" href="Data.Vec.N-ary.html#4107" class="Bound"
+      >B</a
+      ><a name="4178" class="Symbol"
+      >)</a
+      ><a name="4179"
+      > </a
+      ><a name="4180" class="Symbol"
+      >(</a
+      ><a name="4181" href="Data.Vec.N-ary.html#4181" class="Bound"
+      >g</a
+      ><a name="4182"
+      > </a
+      ><a name="4183" class="Symbol"
+      >:</a
+      ><a name="4184"
+      > </a
+      ><a name="4185" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="4188"
+      > </a
+      ><a name="4189" href="Data.Vec.N-ary.html#4095" class="Bound"
+      >A</a
+      ><a name="4190"
+      > </a
+      ><a name="4191" href="Data.Vec.N-ary.html#4083" class="Bound"
+      >n</a
+      ><a name="4192"
+      > </a
+      ><a name="4193" class="Symbol"
+      >&#8594;</a
+      ><a name="4194"
+      > </a
+      ><a name="4195" href="Data.Vec.N-ary.html#4119" class="Bound"
+      >C</a
+      ><a name="4196" class="Symbol"
+      >)</a
+      ><a name="4197"
+      > </a
+      ><a name="4198" class="Symbol"
+      >&#8594;</a
+      ><a name="4199"
+      >
+              </a
+      ><a name="4214" class="Symbol"
+      >(&#8704;</a
+      ><a name="4216"
+      > </a
+      ><a name="4217" href="Data.Vec.N-ary.html#4217" class="Bound"
+      >xs</a
+      ><a name="4219"
+      > </a
+      ><a name="4220" class="Symbol"
+      >&#8594;</a
+      ><a name="4221"
+      > </a
+      ><a name="4222" href="Data.Vec.N-ary.html#4163" class="Bound"
+      >f</a
+      ><a name="4223"
+      > </a
+      ><a name="4224" href="Data.Vec.N-ary.html#4217" class="Bound"
+      >xs</a
+      ><a name="4226"
+      > </a
+      ><a name="4227" href="Data.Vec.N-ary.html#4145" class="Bound Operator"
+      >&#8764;</a
+      ><a name="4228"
+      > </a
+      ><a name="4229" href="Data.Vec.N-ary.html#4181" class="Bound"
+      >g</a
+      ><a name="4230"
+      > </a
+      ><a name="4231" href="Data.Vec.N-ary.html#4217" class="Bound"
+      >xs</a
+      ><a name="4233" class="Symbol"
+      >)</a
+      ><a name="4234"
+      > </a
+      ><a name="4235" class="Symbol"
+      >&#8594;</a
+      ><a name="4236"
+      >
+              </a
+      ><a name="4251" href="Data.Vec.N-ary.html#1993" class="Function"
+      >Eq</a
+      ><a name="4253"
+      > </a
+      ><a name="4254" href="Data.Vec.N-ary.html#4083" class="Bound"
+      >n</a
+      ><a name="4255"
+      > </a
+      ><a name="4256" href="Data.Vec.N-ary.html#4145" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="4259"
+      > </a
+      ><a name="4260" class="Symbol"
+      >(</a
+      ><a name="4261" href="Data.Vec.N-ary.html#1031" class="Function"
+      >curry&#8319;</a
+      ><a name="4267"
+      > </a
+      ><a name="4268" href="Data.Vec.N-ary.html#4163" class="Bound"
+      >f</a
+      ><a name="4269" class="Symbol"
+      >)</a
+      ><a name="4270"
+      > </a
+      ><a name="4271" class="Symbol"
+      >(</a
+      ><a name="4272" href="Data.Vec.N-ary.html#1031" class="Function"
+      >curry&#8319;</a
+      ><a name="4278"
+      > </a
+      ><a name="4279" href="Data.Vec.N-ary.html#4181" class="Bound"
+      >g</a
+      ><a name="4280" class="Symbol"
+      >)</a
+      ><a name="4281"
+      >
+</a
+      ><a name="4282" href="Data.Vec.N-ary.html#4066" class="Function"
+      >curry&#8319;-cong</a
+      ><a name="4293"
+      > </a
+      ><a name="4294" class="Symbol"
+      >{</a
+      ><a name="4295" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="4299" class="Symbol"
+      >}</a
+      ><a name="4300"
+      >  </a
+      ><a name="4302" href="Data.Vec.N-ary.html#4302" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="4305"
+      > </a
+      ><a name="4306" href="Data.Vec.N-ary.html#4306" class="Bound"
+      >f</a
+      ><a name="4307"
+      > </a
+      ><a name="4308" href="Data.Vec.N-ary.html#4308" class="Bound"
+      >g</a
+      ><a name="4309"
+      > </a
+      ><a name="4310" href="Data.Vec.N-ary.html#4310" class="Bound"
+      >hyp</a
+      ><a name="4313"
+      > </a
+      ><a name="4314" class="Symbol"
+      >=</a
+      ><a name="4315"
+      > </a
+      ><a name="4316" href="Data.Vec.N-ary.html#4310" class="Bound"
+      >hyp</a
+      ><a name="4319"
+      > </a
+      ><a name="4320" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="4322"
+      >
+</a
+      ><a name="4323" href="Data.Vec.N-ary.html#4066" class="Function"
+      >curry&#8319;-cong</a
+      ><a name="4334"
+      > </a
+      ><a name="4335" class="Symbol"
+      >{</a
+      ><a name="4336" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="4339"
+      > </a
+      ><a name="4340" href="Data.Vec.N-ary.html#4340" class="Bound"
+      >n</a
+      ><a name="4341" class="Symbol"
+      >}</a
+      ><a name="4342"
+      > </a
+      ><a name="4343" href="Data.Vec.N-ary.html#4343" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="4346"
+      > </a
+      ><a name="4347" href="Data.Vec.N-ary.html#4347" class="Bound"
+      >f</a
+      ><a name="4348"
+      > </a
+      ><a name="4349" href="Data.Vec.N-ary.html#4349" class="Bound"
+      >g</a
+      ><a name="4350"
+      > </a
+      ><a name="4351" href="Data.Vec.N-ary.html#4351" class="Bound"
+      >hyp</a
+      ><a name="4354"
+      > </a
+      ><a name="4355" class="Symbol"
+      >=</a
+      ><a name="4356"
+      > </a
+      ><a name="4357" class="Symbol"
+      >&#955;</a
+      ><a name="4358"
+      > </a
+      ><a name="4359" href="Data.Vec.N-ary.html#4359" class="Bound"
+      >x</a
+      ><a name="4360"
+      > </a
+      ><a name="4361" class="Symbol"
+      >&#8594;</a
+      ><a name="4362"
+      >
+  </a
+      ><a name="4365" href="Data.Vec.N-ary.html#4066" class="Function"
+      >curry&#8319;-cong</a
+      ><a name="4376"
+      > </a
+      ><a name="4377" href="Data.Vec.N-ary.html#4343" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="4380"
+      > </a
+      ><a name="4381" class="Symbol"
+      >(</a
+      ><a name="4382" href="Data.Vec.N-ary.html#4347" class="Bound"
+      >f</a
+      ><a name="4383"
+      > </a
+      ><a name="4384" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="4385"
+      > </a
+      ><a name="4386" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="4389"
+      > </a
+      ><a name="4390" href="Data.Vec.N-ary.html#4359" class="Bound"
+      >x</a
+      ><a name="4391" class="Symbol"
+      >)</a
+      ><a name="4392"
+      > </a
+      ><a name="4393" class="Symbol"
+      >(</a
+      ><a name="4394" href="Data.Vec.N-ary.html#4349" class="Bound"
+      >g</a
+      ><a name="4395"
+      > </a
+      ><a name="4396" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="4397"
+      > </a
+      ><a name="4398" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="4401"
+      > </a
+      ><a name="4402" href="Data.Vec.N-ary.html#4359" class="Bound"
+      >x</a
+      ><a name="4403" class="Symbol"
+      >)</a
+      ><a name="4404"
+      > </a
+      ><a name="4405" class="Symbol"
+      >(&#955;</a
+      ><a name="4407"
+      > </a
+      ><a name="4408" href="Data.Vec.N-ary.html#4408" class="Bound"
+      >xs</a
+      ><a name="4410"
+      > </a
+      ><a name="4411" class="Symbol"
+      >&#8594;</a
+      ><a name="4412"
+      > </a
+      ><a name="4413" href="Data.Vec.N-ary.html#4351" class="Bound"
+      >hyp</a
+      ><a name="4416"
+      > </a
+      ><a name="4417" class="Symbol"
+      >(</a
+      ><a name="4418" href="Data.Vec.N-ary.html#4359" class="Bound"
+      >x</a
+      ><a name="4419"
+      > </a
+      ><a name="4420" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4421"
+      > </a
+      ><a name="4422" href="Data.Vec.N-ary.html#4408" class="Bound"
+      >xs</a
+      ><a name="4424" class="Symbol"
+      >))</a
+      ><a name="4426"
+      >
+
+</a
+      ><a name="4428" href="Data.Vec.N-ary.html#4428" class="Function"
+      >curry&#8319;-cong&#8315;&#185;</a
+      ><a name="4441"
+      > </a
+      ><a name="4442" class="Symbol"
+      >:</a
+      ><a name="4443"
+      > </a
+      ><a name="4444" class="Symbol"
+      >&#8704;</a
+      ><a name="4445"
+      > </a
+      ><a name="4446" class="Symbol"
+      >{</a
+      ><a name="4447" href="Data.Vec.N-ary.html#4447" class="Bound"
+      >n</a
+      ><a name="4448"
+      > </a
+      ><a name="4449" href="Data.Vec.N-ary.html#4449" class="Bound"
+      >a</a
+      ><a name="4450"
+      > </a
+      ><a name="4451" href="Data.Vec.N-ary.html#4451" class="Bound"
+      >b</a
+      ><a name="4452"
+      > </a
+      ><a name="4453" href="Data.Vec.N-ary.html#4453" class="Bound"
+      >c</a
+      ><a name="4454"
+      > </a
+      ><a name="4455" href="Data.Vec.N-ary.html#4455" class="Bound"
+      >&#8467;</a
+      ><a name="4456" class="Symbol"
+      >}</a
+      ><a name="4457"
+      > </a
+      ><a name="4458" class="Symbol"
+      >{</a
+      ><a name="4459" href="Data.Vec.N-ary.html#4459" class="Bound"
+      >A</a
+      ><a name="4460"
+      > </a
+      ><a name="4461" class="Symbol"
+      >:</a
+      ><a name="4462"
+      > </a
+      ><a name="4463" class="PrimitiveType"
+      >Set</a
+      ><a name="4466"
+      > </a
+      ><a name="4467" href="Data.Vec.N-ary.html#4449" class="Bound"
+      >a</a
+      ><a name="4468" class="Symbol"
+      >}</a
+      ><a name="4469"
+      > </a
+      ><a name="4470" class="Symbol"
+      >{</a
+      ><a name="4471" href="Data.Vec.N-ary.html#4471" class="Bound"
+      >B</a
+      ><a name="4472"
+      > </a
+      ><a name="4473" class="Symbol"
+      >:</a
+      ><a name="4474"
+      > </a
+      ><a name="4475" class="PrimitiveType"
+      >Set</a
+      ><a name="4478"
+      > </a
+      ><a name="4479" href="Data.Vec.N-ary.html#4451" class="Bound"
+      >b</a
+      ><a name="4480" class="Symbol"
+      >}</a
+      ><a name="4481"
+      > </a
+      ><a name="4482" class="Symbol"
+      >{</a
+      ><a name="4483" href="Data.Vec.N-ary.html#4483" class="Bound"
+      >C</a
+      ><a name="4484"
+      > </a
+      ><a name="4485" class="Symbol"
+      >:</a
+      ><a name="4486"
+      > </a
+      ><a name="4487" class="PrimitiveType"
+      >Set</a
+      ><a name="4490"
+      > </a
+      ><a name="4491" href="Data.Vec.N-ary.html#4453" class="Bound"
+      >c</a
+      ><a name="4492" class="Symbol"
+      >}</a
+      ><a name="4493"
+      >
+                </a
+      ><a name="4510" class="Symbol"
+      >(</a
+      ><a name="4511" href="Data.Vec.N-ary.html#4511" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="4514"
+      > </a
+      ><a name="4515" class="Symbol"
+      >:</a
+      ><a name="4516"
+      > </a
+      ><a name="4517" href="Relation.Binary.Core.html#635" class="Function"
+      >REL</a
+      ><a name="4520"
+      > </a
+      ><a name="4521" href="Data.Vec.N-ary.html#4471" class="Bound"
+      >B</a
+      ><a name="4522"
+      > </a
+      ><a name="4523" href="Data.Vec.N-ary.html#4483" class="Bound"
+      >C</a
+      ><a name="4524"
+      > </a
+      ><a name="4525" href="Data.Vec.N-ary.html#4455" class="Bound"
+      >&#8467;</a
+      ><a name="4526" class="Symbol"
+      >)</a
+      ><a name="4527"
+      > </a
+      ><a name="4528" class="Symbol"
+      >(</a
+      ><a name="4529" href="Data.Vec.N-ary.html#4529" class="Bound"
+      >f</a
+      ><a name="4530"
+      > </a
+      ><a name="4531" class="Symbol"
+      >:</a
+      ><a name="4532"
+      > </a
+      ><a name="4533" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="4536"
+      > </a
+      ><a name="4537" href="Data.Vec.N-ary.html#4459" class="Bound"
+      >A</a
+      ><a name="4538"
+      > </a
+      ><a name="4539" href="Data.Vec.N-ary.html#4447" class="Bound"
+      >n</a
+      ><a name="4540"
+      > </a
+      ><a name="4541" class="Symbol"
+      >&#8594;</a
+      ><a name="4542"
+      > </a
+      ><a name="4543" href="Data.Vec.N-ary.html#4471" class="Bound"
+      >B</a
+      ><a name="4544" class="Symbol"
+      >)</a
+      ><a name="4545"
+      > </a
+      ><a name="4546" class="Symbol"
+      >(</a
+      ><a name="4547" href="Data.Vec.N-ary.html#4547" class="Bound"
+      >g</a
+      ><a name="4548"
+      > </a
+      ><a name="4549" class="Symbol"
+      >:</a
+      ><a name="4550"
+      > </a
+      ><a name="4551" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="4554"
+      > </a
+      ><a name="4555" href="Data.Vec.N-ary.html#4459" class="Bound"
+      >A</a
+      ><a name="4556"
+      > </a
+      ><a name="4557" href="Data.Vec.N-ary.html#4447" class="Bound"
+      >n</a
+      ><a name="4558"
+      > </a
+      ><a name="4559" class="Symbol"
+      >&#8594;</a
+      ><a name="4560"
+      > </a
+      ><a name="4561" href="Data.Vec.N-ary.html#4483" class="Bound"
+      >C</a
+      ><a name="4562" class="Symbol"
+      >)</a
+      ><a name="4563"
+      > </a
+      ><a name="4564" class="Symbol"
+      >&#8594;</a
+      ><a name="4565"
+      >
+                </a
+      ><a name="4582" href="Data.Vec.N-ary.html#1993" class="Function"
+      >Eq</a
+      ><a name="4584"
+      > </a
+      ><a name="4585" href="Data.Vec.N-ary.html#4447" class="Bound"
+      >n</a
+      ><a name="4586"
+      > </a
+      ><a name="4587" href="Data.Vec.N-ary.html#4511" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="4590"
+      > </a
+      ><a name="4591" class="Symbol"
+      >(</a
+      ><a name="4592" href="Data.Vec.N-ary.html#1031" class="Function"
+      >curry&#8319;</a
+      ><a name="4598"
+      > </a
+      ><a name="4599" href="Data.Vec.N-ary.html#4529" class="Bound"
+      >f</a
+      ><a name="4600" class="Symbol"
+      >)</a
+      ><a name="4601"
+      > </a
+      ><a name="4602" class="Symbol"
+      >(</a
+      ><a name="4603" href="Data.Vec.N-ary.html#1031" class="Function"
+      >curry&#8319;</a
+      ><a name="4609"
+      > </a
+      ><a name="4610" href="Data.Vec.N-ary.html#4547" class="Bound"
+      >g</a
+      ><a name="4611" class="Symbol"
+      >)</a
+      ><a name="4612"
+      > </a
+      ><a name="4613" class="Symbol"
+      >&#8594;</a
+      ><a name="4614"
+      >
+                </a
+      ><a name="4631" class="Symbol"
+      >&#8704;</a
+      ><a name="4632"
+      > </a
+      ><a name="4633" href="Data.Vec.N-ary.html#4633" class="Bound"
+      >xs</a
+      ><a name="4635"
+      > </a
+      ><a name="4636" class="Symbol"
+      >&#8594;</a
+      ><a name="4637"
+      > </a
+      ><a name="4638" href="Data.Vec.N-ary.html#4529" class="Bound"
+      >f</a
+      ><a name="4639"
+      > </a
+      ><a name="4640" href="Data.Vec.N-ary.html#4633" class="Bound"
+      >xs</a
+      ><a name="4642"
+      > </a
+      ><a name="4643" href="Data.Vec.N-ary.html#4511" class="Bound Operator"
+      >&#8764;</a
+      ><a name="4644"
+      > </a
+      ><a name="4645" href="Data.Vec.N-ary.html#4547" class="Bound"
+      >g</a
+      ><a name="4646"
+      > </a
+      ><a name="4647" href="Data.Vec.N-ary.html#4633" class="Bound"
+      >xs</a
+      ><a name="4649"
+      >
+</a
+      ><a name="4650" href="Data.Vec.N-ary.html#4428" class="Function"
+      >curry&#8319;-cong&#8315;&#185;</a
+      ><a name="4663"
+      > </a
+      ><a name="4664" href="Data.Vec.N-ary.html#4664" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="4667"
+      > </a
+      ><a name="4668" href="Data.Vec.N-ary.html#4668" class="Bound"
+      >f</a
+      ><a name="4669"
+      > </a
+      ><a name="4670" href="Data.Vec.N-ary.html#4670" class="Bound"
+      >g</a
+      ><a name="4671"
+      > </a
+      ><a name="4672" href="Data.Vec.N-ary.html#4672" class="Bound"
+      >hyp</a
+      ><a name="4675"
+      > </a
+      ><a name="4676" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="4678"
+      >       </a
+      ><a name="4685" class="Symbol"
+      >=</a
+      ><a name="4686"
+      > </a
+      ><a name="4687" href="Data.Vec.N-ary.html#4672" class="Bound"
+      >hyp</a
+      ><a name="4690"
+      >
+</a
+      ><a name="4691" href="Data.Vec.N-ary.html#4428" class="Function"
+      >curry&#8319;-cong&#8315;&#185;</a
+      ><a name="4704"
+      > </a
+      ><a name="4705" href="Data.Vec.N-ary.html#4705" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="4708"
+      > </a
+      ><a name="4709" href="Data.Vec.N-ary.html#4709" class="Bound"
+      >f</a
+      ><a name="4710"
+      > </a
+      ><a name="4711" href="Data.Vec.N-ary.html#4711" class="Bound"
+      >g</a
+      ><a name="4712"
+      > </a
+      ><a name="4713" href="Data.Vec.N-ary.html#4713" class="Bound"
+      >hyp</a
+      ><a name="4716"
+      > </a
+      ><a name="4717" class="Symbol"
+      >(</a
+      ><a name="4718" href="Data.Vec.N-ary.html#4718" class="Bound"
+      >x</a
+      ><a name="4719"
+      > </a
+      ><a name="4720" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4721"
+      > </a
+      ><a name="4722" href="Data.Vec.N-ary.html#4722" class="Bound"
+      >xs</a
+      ><a name="4724" class="Symbol"
+      >)</a
+      ><a name="4725"
+      > </a
+      ><a name="4726" class="Symbol"
+      >=</a
+      ><a name="4727"
+      >
+  </a
+      ><a name="4730" href="Data.Vec.N-ary.html#4428" class="Function"
+      >curry&#8319;-cong&#8315;&#185;</a
+      ><a name="4743"
+      > </a
+      ><a name="4744" href="Data.Vec.N-ary.html#4705" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="4747"
+      > </a
+      ><a name="4748" class="Symbol"
+      >(</a
+      ><a name="4749" href="Data.Vec.N-ary.html#4709" class="Bound"
+      >f</a
+      ><a name="4750"
+      > </a
+      ><a name="4751" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="4752"
+      > </a
+      ><a name="4753" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="4756"
+      > </a
+      ><a name="4757" href="Data.Vec.N-ary.html#4718" class="Bound"
+      >x</a
+      ><a name="4758" class="Symbol"
+      >)</a
+      ><a name="4759"
+      > </a
+      ><a name="4760" class="Symbol"
+      >(</a
+      ><a name="4761" href="Data.Vec.N-ary.html#4711" class="Bound"
+      >g</a
+      ><a name="4762"
+      > </a
+      ><a name="4763" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="4764"
+      > </a
+      ><a name="4765" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="4768"
+      > </a
+      ><a name="4769" href="Data.Vec.N-ary.html#4718" class="Bound"
+      >x</a
+      ><a name="4770" class="Symbol"
+      >)</a
+      ><a name="4771"
+      > </a
+      ><a name="4772" class="Symbol"
+      >(</a
+      ><a name="4773" href="Data.Vec.N-ary.html#4713" class="Bound"
+      >hyp</a
+      ><a name="4776"
+      > </a
+      ><a name="4777" href="Data.Vec.N-ary.html#4718" class="Bound"
+      >x</a
+      ><a name="4778" class="Symbol"
+      >)</a
+      ><a name="4779"
+      > </a
+      ><a name="4780" href="Data.Vec.N-ary.html#4722" class="Bound"
+      >xs</a
+      ><a name="4782"
+      >
+
+</a
+      ><a name="4784" href="Data.Vec.N-ary.html#4784" class="Function"
+      >app&#8319;-cong</a
+      ><a name="4793"
+      > </a
+      ><a name="4794" class="Symbol"
+      >:</a
+      ><a name="4795"
+      > </a
+      ><a name="4796" class="Symbol"
+      >&#8704;</a
+      ><a name="4797"
+      > </a
+      ><a name="4798" class="Symbol"
+      >{</a
+      ><a name="4799" href="Data.Vec.N-ary.html#4799" class="Bound"
+      >n</a
+      ><a name="4800"
+      > </a
+      ><a name="4801" href="Data.Vec.N-ary.html#4801" class="Bound"
+      >a</a
+      ><a name="4802"
+      > </a
+      ><a name="4803" href="Data.Vec.N-ary.html#4803" class="Bound"
+      >b</a
+      ><a name="4804"
+      > </a
+      ><a name="4805" href="Data.Vec.N-ary.html#4805" class="Bound"
+      >c</a
+      ><a name="4806"
+      > </a
+      ><a name="4807" href="Data.Vec.N-ary.html#4807" class="Bound"
+      >&#8467;</a
+      ><a name="4808" class="Symbol"
+      >}</a
+      ><a name="4809"
+      > </a
+      ><a name="4810" class="Symbol"
+      >{</a
+      ><a name="4811" href="Data.Vec.N-ary.html#4811" class="Bound"
+      >A</a
+      ><a name="4812"
+      > </a
+      ><a name="4813" class="Symbol"
+      >:</a
+      ><a name="4814"
+      > </a
+      ><a name="4815" class="PrimitiveType"
+      >Set</a
+      ><a name="4818"
+      > </a
+      ><a name="4819" href="Data.Vec.N-ary.html#4801" class="Bound"
+      >a</a
+      ><a name="4820" class="Symbol"
+      >}</a
+      ><a name="4821"
+      > </a
+      ><a name="4822" class="Symbol"
+      >{</a
+      ><a name="4823" href="Data.Vec.N-ary.html#4823" class="Bound"
+      >B</a
+      ><a name="4824"
+      > </a
+      ><a name="4825" class="Symbol"
+      >:</a
+      ><a name="4826"
+      > </a
+      ><a name="4827" class="PrimitiveType"
+      >Set</a
+      ><a name="4830"
+      > </a
+      ><a name="4831" href="Data.Vec.N-ary.html#4803" class="Bound"
+      >b</a
+      ><a name="4832" class="Symbol"
+      >}</a
+      ><a name="4833"
+      > </a
+      ><a name="4834" class="Symbol"
+      >{</a
+      ><a name="4835" href="Data.Vec.N-ary.html#4835" class="Bound"
+      >C</a
+      ><a name="4836"
+      > </a
+      ><a name="4837" class="Symbol"
+      >:</a
+      ><a name="4838"
+      > </a
+      ><a name="4839" class="PrimitiveType"
+      >Set</a
+      ><a name="4842"
+      > </a
+      ><a name="4843" href="Data.Vec.N-ary.html#4805" class="Bound"
+      >c</a
+      ><a name="4844" class="Symbol"
+      >}</a
+      ><a name="4845"
+      >
+            </a
+      ><a name="4858" class="Symbol"
+      >(</a
+      ><a name="4859" href="Data.Vec.N-ary.html#4859" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="4862"
+      > </a
+      ><a name="4863" class="Symbol"
+      >:</a
+      ><a name="4864"
+      > </a
+      ><a name="4865" href="Relation.Binary.Core.html#635" class="Function"
+      >REL</a
+      ><a name="4868"
+      > </a
+      ><a name="4869" href="Data.Vec.N-ary.html#4823" class="Bound"
+      >B</a
+      ><a name="4870"
+      > </a
+      ><a name="4871" href="Data.Vec.N-ary.html#4835" class="Bound"
+      >C</a
+      ><a name="4872"
+      > </a
+      ><a name="4873" href="Data.Vec.N-ary.html#4807" class="Bound"
+      >&#8467;</a
+      ><a name="4874" class="Symbol"
+      >)</a
+      ><a name="4875"
+      > </a
+      ><a name="4876" class="Symbol"
+      >(</a
+      ><a name="4877" href="Data.Vec.N-ary.html#4877" class="Bound"
+      >f</a
+      ><a name="4878"
+      > </a
+      ><a name="4879" class="Symbol"
+      >:</a
+      ><a name="4880"
+      > </a
+      ><a name="4881" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="4886"
+      > </a
+      ><a name="4887" href="Data.Vec.N-ary.html#4799" class="Bound"
+      >n</a
+      ><a name="4888"
+      > </a
+      ><a name="4889" href="Data.Vec.N-ary.html#4811" class="Bound"
+      >A</a
+      ><a name="4890"
+      > </a
+      ><a name="4891" href="Data.Vec.N-ary.html#4823" class="Bound"
+      >B</a
+      ><a name="4892" class="Symbol"
+      >)</a
+      ><a name="4893"
+      > </a
+      ><a name="4894" class="Symbol"
+      >(</a
+      ><a name="4895" href="Data.Vec.N-ary.html#4895" class="Bound"
+      >g</a
+      ><a name="4896"
+      > </a
+      ><a name="4897" class="Symbol"
+      >:</a
+      ><a name="4898"
+      > </a
+      ><a name="4899" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="4904"
+      > </a
+      ><a name="4905" href="Data.Vec.N-ary.html#4799" class="Bound"
+      >n</a
+      ><a name="4906"
+      > </a
+      ><a name="4907" href="Data.Vec.N-ary.html#4811" class="Bound"
+      >A</a
+      ><a name="4908"
+      > </a
+      ><a name="4909" href="Data.Vec.N-ary.html#4835" class="Bound"
+      >C</a
+      ><a name="4910" class="Symbol"
+      >)</a
+      ><a name="4911"
+      > </a
+      ><a name="4912" class="Symbol"
+      >&#8594;</a
+      ><a name="4913"
+      >
+            </a
+      ><a name="4926" href="Data.Vec.N-ary.html#1993" class="Function"
+      >Eq</a
+      ><a name="4928"
+      > </a
+      ><a name="4929" href="Data.Vec.N-ary.html#4799" class="Bound"
+      >n</a
+      ><a name="4930"
+      > </a
+      ><a name="4931" href="Data.Vec.N-ary.html#4859" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="4934"
+      > </a
+      ><a name="4935" href="Data.Vec.N-ary.html#4877" class="Bound"
+      >f</a
+      ><a name="4936"
+      > </a
+      ><a name="4937" href="Data.Vec.N-ary.html#4895" class="Bound"
+      >g</a
+      ><a name="4938"
+      > </a
+      ><a name="4939" class="Symbol"
+      >&#8594;</a
+      ><a name="4940"
+      >
+            </a
+      ><a name="4953" class="Symbol"
+      >(</a
+      ><a name="4954" href="Data.Vec.N-ary.html#4954" class="Bound"
+      >xs</a
+      ><a name="4956"
+      > </a
+      ><a name="4957" class="Symbol"
+      >:</a
+      ><a name="4958"
+      > </a
+      ><a name="4959" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="4962"
+      > </a
+      ><a name="4963" href="Data.Vec.N-ary.html#4811" class="Bound"
+      >A</a
+      ><a name="4964"
+      > </a
+      ><a name="4965" href="Data.Vec.N-ary.html#4799" class="Bound"
+      >n</a
+      ><a name="4966" class="Symbol"
+      >)</a
+      ><a name="4967"
+      > </a
+      ><a name="4968" class="Symbol"
+      >&#8594;</a
+      ><a name="4969"
+      > </a
+      ><a name="4970" class="Symbol"
+      >(</a
+      ><a name="4971" href="Data.Vec.N-ary.html#4877" class="Bound"
+      >f</a
+      ><a name="4972"
+      > </a
+      ><a name="4973" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="4975"
+      > </a
+      ><a name="4976" href="Data.Vec.N-ary.html#4954" class="Bound"
+      >xs</a
+      ><a name="4978" class="Symbol"
+      >)</a
+      ><a name="4979"
+      > </a
+      ><a name="4980" href="Data.Vec.N-ary.html#4859" class="Bound Operator"
+      >&#8764;</a
+      ><a name="4981"
+      > </a
+      ><a name="4982" class="Symbol"
+      >(</a
+      ><a name="4983" href="Data.Vec.N-ary.html#4895" class="Bound"
+      >g</a
+      ><a name="4984"
+      > </a
+      ><a name="4985" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="4987"
+      > </a
+      ><a name="4988" href="Data.Vec.N-ary.html#4954" class="Bound"
+      >xs</a
+      ><a name="4990" class="Symbol"
+      >)</a
+      ><a name="4991"
+      >
+</a
+      ><a name="4992" href="Data.Vec.N-ary.html#4784" class="Function"
+      >app&#8319;-cong</a
+      ><a name="5001"
+      > </a
+      ><a name="5002" href="Data.Vec.N-ary.html#5002" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5005"
+      > </a
+      ><a name="5006" href="Data.Vec.N-ary.html#5006" class="Bound"
+      >f</a
+      ><a name="5007"
+      > </a
+      ><a name="5008" href="Data.Vec.N-ary.html#5008" class="Bound"
+      >g</a
+      ><a name="5009"
+      > </a
+      ><a name="5010" href="Data.Vec.N-ary.html#5010" class="Bound"
+      >hyp</a
+      ><a name="5013"
+      > </a
+      ><a name="5014" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="5016"
+      >       </a
+      ><a name="5023" class="Symbol"
+      >=</a
+      ><a name="5024"
+      > </a
+      ><a name="5025" href="Data.Vec.N-ary.html#5010" class="Bound"
+      >hyp</a
+      ><a name="5028"
+      >
+</a
+      ><a name="5029" href="Data.Vec.N-ary.html#4784" class="Function"
+      >app&#8319;-cong</a
+      ><a name="5038"
+      > </a
+      ><a name="5039" href="Data.Vec.N-ary.html#5039" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5042"
+      > </a
+      ><a name="5043" href="Data.Vec.N-ary.html#5043" class="Bound"
+      >f</a
+      ><a name="5044"
+      > </a
+      ><a name="5045" href="Data.Vec.N-ary.html#5045" class="Bound"
+      >g</a
+      ><a name="5046"
+      > </a
+      ><a name="5047" href="Data.Vec.N-ary.html#5047" class="Bound"
+      >hyp</a
+      ><a name="5050"
+      > </a
+      ><a name="5051" class="Symbol"
+      >(</a
+      ><a name="5052" href="Data.Vec.N-ary.html#5052" class="Bound"
+      >x</a
+      ><a name="5053"
+      > </a
+      ><a name="5054" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="5055"
+      > </a
+      ><a name="5056" href="Data.Vec.N-ary.html#5056" class="Bound"
+      >xs</a
+      ><a name="5058" class="Symbol"
+      >)</a
+      ><a name="5059"
+      > </a
+      ><a name="5060" class="Symbol"
+      >=</a
+      ><a name="5061"
+      > </a
+      ><a name="5062" href="Data.Vec.N-ary.html#4784" class="Function"
+      >app&#8319;-cong</a
+      ><a name="5071"
+      > </a
+      ><a name="5072" href="Data.Vec.N-ary.html#5039" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5075"
+      > </a
+      ><a name="5076" class="Symbol"
+      >(</a
+      ><a name="5077" href="Data.Vec.N-ary.html#5043" class="Bound"
+      >f</a
+      ><a name="5078"
+      > </a
+      ><a name="5079" href="Data.Vec.N-ary.html#5052" class="Bound"
+      >x</a
+      ><a name="5080" class="Symbol"
+      >)</a
+      ><a name="5081"
+      > </a
+      ><a name="5082" class="Symbol"
+      >(</a
+      ><a name="5083" href="Data.Vec.N-ary.html#5045" class="Bound"
+      >g</a
+      ><a name="5084"
+      > </a
+      ><a name="5085" href="Data.Vec.N-ary.html#5052" class="Bound"
+      >x</a
+      ><a name="5086" class="Symbol"
+      >)</a
+      ><a name="5087"
+      > </a
+      ><a name="5088" class="Symbol"
+      >(</a
+      ><a name="5089" href="Data.Vec.N-ary.html#5047" class="Bound"
+      >hyp</a
+      ><a name="5092"
+      > </a
+      ><a name="5093" href="Data.Vec.N-ary.html#5052" class="Bound"
+      >x</a
+      ><a name="5094" class="Symbol"
+      >)</a
+      ><a name="5095"
+      > </a
+      ><a name="5096" href="Data.Vec.N-ary.html#5056" class="Bound"
+      >xs</a
+      ><a name="5098"
+      >
+
+</a
+      ><a name="5100" href="Data.Vec.N-ary.html#5100" class="Function"
+      >app&#8319;-cong&#8315;&#185;</a
+      ><a name="5111"
+      > </a
+      ><a name="5112" class="Symbol"
+      >:</a
+      ><a name="5113"
+      > </a
+      ><a name="5114" class="Symbol"
+      >&#8704;</a
+      ><a name="5115"
+      > </a
+      ><a name="5116" class="Symbol"
+      >{</a
+      ><a name="5117" href="Data.Vec.N-ary.html#5117" class="Bound"
+      >n</a
+      ><a name="5118"
+      > </a
+      ><a name="5119" href="Data.Vec.N-ary.html#5119" class="Bound"
+      >a</a
+      ><a name="5120"
+      > </a
+      ><a name="5121" href="Data.Vec.N-ary.html#5121" class="Bound"
+      >b</a
+      ><a name="5122"
+      > </a
+      ><a name="5123" href="Data.Vec.N-ary.html#5123" class="Bound"
+      >c</a
+      ><a name="5124"
+      > </a
+      ><a name="5125" href="Data.Vec.N-ary.html#5125" class="Bound"
+      >&#8467;</a
+      ><a name="5126" class="Symbol"
+      >}</a
+      ><a name="5127"
+      > </a
+      ><a name="5128" class="Symbol"
+      >{</a
+      ><a name="5129" href="Data.Vec.N-ary.html#5129" class="Bound"
+      >A</a
+      ><a name="5130"
+      > </a
+      ><a name="5131" class="Symbol"
+      >:</a
+      ><a name="5132"
+      > </a
+      ><a name="5133" class="PrimitiveType"
+      >Set</a
+      ><a name="5136"
+      > </a
+      ><a name="5137" href="Data.Vec.N-ary.html#5119" class="Bound"
+      >a</a
+      ><a name="5138" class="Symbol"
+      >}</a
+      ><a name="5139"
+      > </a
+      ><a name="5140" class="Symbol"
+      >{</a
+      ><a name="5141" href="Data.Vec.N-ary.html#5141" class="Bound"
+      >B</a
+      ><a name="5142"
+      > </a
+      ><a name="5143" class="Symbol"
+      >:</a
+      ><a name="5144"
+      > </a
+      ><a name="5145" class="PrimitiveType"
+      >Set</a
+      ><a name="5148"
+      > </a
+      ><a name="5149" href="Data.Vec.N-ary.html#5121" class="Bound"
+      >b</a
+      ><a name="5150" class="Symbol"
+      >}</a
+      ><a name="5151"
+      > </a
+      ><a name="5152" class="Symbol"
+      >{</a
+      ><a name="5153" href="Data.Vec.N-ary.html#5153" class="Bound"
+      >C</a
+      ><a name="5154"
+      > </a
+      ><a name="5155" class="Symbol"
+      >:</a
+      ><a name="5156"
+      > </a
+      ><a name="5157" class="PrimitiveType"
+      >Set</a
+      ><a name="5160"
+      > </a
+      ><a name="5161" href="Data.Vec.N-ary.html#5123" class="Bound"
+      >c</a
+      ><a name="5162" class="Symbol"
+      >}</a
+      ><a name="5163"
+      >
+              </a
+      ><a name="5178" class="Symbol"
+      >(</a
+      ><a name="5179" href="Data.Vec.N-ary.html#5179" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5182"
+      > </a
+      ><a name="5183" class="Symbol"
+      >:</a
+      ><a name="5184"
+      > </a
+      ><a name="5185" href="Relation.Binary.Core.html#635" class="Function"
+      >REL</a
+      ><a name="5188"
+      > </a
+      ><a name="5189" href="Data.Vec.N-ary.html#5141" class="Bound"
+      >B</a
+      ><a name="5190"
+      > </a
+      ><a name="5191" href="Data.Vec.N-ary.html#5153" class="Bound"
+      >C</a
+      ><a name="5192"
+      > </a
+      ><a name="5193" href="Data.Vec.N-ary.html#5125" class="Bound"
+      >&#8467;</a
+      ><a name="5194" class="Symbol"
+      >)</a
+      ><a name="5195"
+      > </a
+      ><a name="5196" class="Symbol"
+      >(</a
+      ><a name="5197" href="Data.Vec.N-ary.html#5197" class="Bound"
+      >f</a
+      ><a name="5198"
+      > </a
+      ><a name="5199" class="Symbol"
+      >:</a
+      ><a name="5200"
+      > </a
+      ><a name="5201" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="5206"
+      > </a
+      ><a name="5207" href="Data.Vec.N-ary.html#5117" class="Bound"
+      >n</a
+      ><a name="5208"
+      > </a
+      ><a name="5209" href="Data.Vec.N-ary.html#5129" class="Bound"
+      >A</a
+      ><a name="5210"
+      > </a
+      ><a name="5211" href="Data.Vec.N-ary.html#5141" class="Bound"
+      >B</a
+      ><a name="5212" class="Symbol"
+      >)</a
+      ><a name="5213"
+      > </a
+      ><a name="5214" class="Symbol"
+      >(</a
+      ><a name="5215" href="Data.Vec.N-ary.html#5215" class="Bound"
+      >g</a
+      ><a name="5216"
+      > </a
+      ><a name="5217" class="Symbol"
+      >:</a
+      ><a name="5218"
+      > </a
+      ><a name="5219" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="5224"
+      > </a
+      ><a name="5225" href="Data.Vec.N-ary.html#5117" class="Bound"
+      >n</a
+      ><a name="5226"
+      > </a
+      ><a name="5227" href="Data.Vec.N-ary.html#5129" class="Bound"
+      >A</a
+      ><a name="5228"
+      > </a
+      ><a name="5229" href="Data.Vec.N-ary.html#5153" class="Bound"
+      >C</a
+      ><a name="5230" class="Symbol"
+      >)</a
+      ><a name="5231"
+      > </a
+      ><a name="5232" class="Symbol"
+      >&#8594;</a
+      ><a name="5233"
+      >
+              </a
+      ><a name="5248" class="Symbol"
+      >((</a
+      ><a name="5250" href="Data.Vec.N-ary.html#5250" class="Bound"
+      >xs</a
+      ><a name="5252"
+      > </a
+      ><a name="5253" class="Symbol"
+      >:</a
+      ><a name="5254"
+      > </a
+      ><a name="5255" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="5258"
+      > </a
+      ><a name="5259" href="Data.Vec.N-ary.html#5129" class="Bound"
+      >A</a
+      ><a name="5260"
+      > </a
+      ><a name="5261" href="Data.Vec.N-ary.html#5117" class="Bound"
+      >n</a
+      ><a name="5262" class="Symbol"
+      >)</a
+      ><a name="5263"
+      > </a
+      ><a name="5264" class="Symbol"
+      >&#8594;</a
+      ><a name="5265"
+      > </a
+      ><a name="5266" class="Symbol"
+      >(</a
+      ><a name="5267" href="Data.Vec.N-ary.html#5197" class="Bound"
+      >f</a
+      ><a name="5268"
+      > </a
+      ><a name="5269" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="5271"
+      > </a
+      ><a name="5272" href="Data.Vec.N-ary.html#5250" class="Bound"
+      >xs</a
+      ><a name="5274" class="Symbol"
+      >)</a
+      ><a name="5275"
+      > </a
+      ><a name="5276" href="Data.Vec.N-ary.html#5179" class="Bound Operator"
+      >&#8764;</a
+      ><a name="5277"
+      > </a
+      ><a name="5278" class="Symbol"
+      >(</a
+      ><a name="5279" href="Data.Vec.N-ary.html#5215" class="Bound"
+      >g</a
+      ><a name="5280"
+      > </a
+      ><a name="5281" href="Data.Vec.N-ary.html#1182" class="Function Operator"
+      >$&#8319;</a
+      ><a name="5283"
+      > </a
+      ><a name="5284" href="Data.Vec.N-ary.html#5250" class="Bound"
+      >xs</a
+      ><a name="5286" class="Symbol"
+      >))</a
+      ><a name="5288"
+      > </a
+      ><a name="5289" class="Symbol"
+      >&#8594;</a
+      ><a name="5290"
+      >
+              </a
+      ><a name="5305" href="Data.Vec.N-ary.html#1993" class="Function"
+      >Eq</a
+      ><a name="5307"
+      > </a
+      ><a name="5308" href="Data.Vec.N-ary.html#5117" class="Bound"
+      >n</a
+      ><a name="5309"
+      > </a
+      ><a name="5310" href="Data.Vec.N-ary.html#5179" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5313"
+      > </a
+      ><a name="5314" href="Data.Vec.N-ary.html#5197" class="Bound"
+      >f</a
+      ><a name="5315"
+      > </a
+      ><a name="5316" href="Data.Vec.N-ary.html#5215" class="Bound"
+      >g</a
+      ><a name="5317"
+      >
+</a
+      ><a name="5318" href="Data.Vec.N-ary.html#5100" class="Function"
+      >app&#8319;-cong&#8315;&#185;</a
+      ><a name="5329"
+      > </a
+      ><a name="5330" class="Symbol"
+      >{</a
+      ><a name="5331" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="5335" class="Symbol"
+      >}</a
+      ><a name="5336"
+      >  </a
+      ><a name="5338" href="Data.Vec.N-ary.html#5338" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5341"
+      > </a
+      ><a name="5342" href="Data.Vec.N-ary.html#5342" class="Bound"
+      >f</a
+      ><a name="5343"
+      > </a
+      ><a name="5344" href="Data.Vec.N-ary.html#5344" class="Bound"
+      >g</a
+      ><a name="5345"
+      > </a
+      ><a name="5346" href="Data.Vec.N-ary.html#5346" class="Bound"
+      >hyp</a
+      ><a name="5349"
+      > </a
+      ><a name="5350" class="Symbol"
+      >=</a
+      ><a name="5351"
+      > </a
+      ><a name="5352" href="Data.Vec.N-ary.html#5346" class="Bound"
+      >hyp</a
+      ><a name="5355"
+      > </a
+      ><a name="5356" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="5358"
+      >
+</a
+      ><a name="5359" href="Data.Vec.N-ary.html#5100" class="Function"
+      >app&#8319;-cong&#8315;&#185;</a
+      ><a name="5370"
+      > </a
+      ><a name="5371" class="Symbol"
+      >{</a
+      ><a name="5372" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5375"
+      > </a
+      ><a name="5376" href="Data.Vec.N-ary.html#5376" class="Bound"
+      >n</a
+      ><a name="5377" class="Symbol"
+      >}</a
+      ><a name="5378"
+      > </a
+      ><a name="5379" href="Data.Vec.N-ary.html#5379" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5382"
+      > </a
+      ><a name="5383" href="Data.Vec.N-ary.html#5383" class="Bound"
+      >f</a
+      ><a name="5384"
+      > </a
+      ><a name="5385" href="Data.Vec.N-ary.html#5385" class="Bound"
+      >g</a
+      ><a name="5386"
+      > </a
+      ><a name="5387" href="Data.Vec.N-ary.html#5387" class="Bound"
+      >hyp</a
+      ><a name="5390"
+      > </a
+      ><a name="5391" class="Symbol"
+      >=</a
+      ><a name="5392"
+      > </a
+      ><a name="5393" class="Symbol"
+      >&#955;</a
+      ><a name="5394"
+      > </a
+      ><a name="5395" href="Data.Vec.N-ary.html#5395" class="Bound"
+      >x</a
+      ><a name="5396"
+      > </a
+      ><a name="5397" class="Symbol"
+      >&#8594;</a
+      ><a name="5398"
+      >
+  </a
+      ><a name="5401" href="Data.Vec.N-ary.html#5100" class="Function"
+      >app&#8319;-cong&#8315;&#185;</a
+      ><a name="5412"
+      > </a
+      ><a name="5413" href="Data.Vec.N-ary.html#5379" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5416"
+      > </a
+      ><a name="5417" class="Symbol"
+      >(</a
+      ><a name="5418" href="Data.Vec.N-ary.html#5383" class="Bound"
+      >f</a
+      ><a name="5419"
+      > </a
+      ><a name="5420" href="Data.Vec.N-ary.html#5395" class="Bound"
+      >x</a
+      ><a name="5421" class="Symbol"
+      >)</a
+      ><a name="5422"
+      > </a
+      ><a name="5423" class="Symbol"
+      >(</a
+      ><a name="5424" href="Data.Vec.N-ary.html#5385" class="Bound"
+      >g</a
+      ><a name="5425"
+      > </a
+      ><a name="5426" href="Data.Vec.N-ary.html#5395" class="Bound"
+      >x</a
+      ><a name="5427" class="Symbol"
+      >)</a
+      ><a name="5428"
+      > </a
+      ><a name="5429" class="Symbol"
+      >(&#955;</a
+      ><a name="5431"
+      > </a
+      ><a name="5432" href="Data.Vec.N-ary.html#5432" class="Bound"
+      >xs</a
+      ><a name="5434"
+      > </a
+      ><a name="5435" class="Symbol"
+      >&#8594;</a
+      ><a name="5436"
+      > </a
+      ><a name="5437" href="Data.Vec.N-ary.html#5387" class="Bound"
+      >hyp</a
+      ><a name="5440"
+      > </a
+      ><a name="5441" class="Symbol"
+      >(</a
+      ><a name="5442" href="Data.Vec.N-ary.html#5395" class="Bound"
+      >x</a
+      ><a name="5443"
+      > </a
+      ><a name="5444" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="5445"
+      > </a
+      ><a name="5446" href="Data.Vec.N-ary.html#5432" class="Bound"
+      >xs</a
+      ><a name="5448" class="Symbol"
+      >))</a
+      ><a name="5450"
+      >
+
+</a
+      ><a name="5452" class="Comment"
+      >-- Eq and Eq&#688; are equivalent.</a
+      ><a name="5481"
+      >
+
+</a
+      ><a name="5483" href="Data.Vec.N-ary.html#5483" class="Function"
+      >Eq-to-Eq&#688;</a
+      ><a name="5492"
+      > </a
+      ><a name="5493" class="Symbol"
+      >:</a
+      ><a name="5494"
+      > </a
+      ><a name="5495" class="Symbol"
+      >&#8704;</a
+      ><a name="5496"
+      > </a
+      ><a name="5497" class="Symbol"
+      >{</a
+      ><a name="5498" href="Data.Vec.N-ary.html#5498" class="Bound"
+      >a</a
+      ><a name="5499"
+      > </a
+      ><a name="5500" href="Data.Vec.N-ary.html#5500" class="Bound"
+      >b</a
+      ><a name="5501"
+      > </a
+      ><a name="5502" href="Data.Vec.N-ary.html#5502" class="Bound"
+      >c</a
+      ><a name="5503"
+      > </a
+      ><a name="5504" href="Data.Vec.N-ary.html#5504" class="Bound"
+      >&#8467;</a
+      ><a name="5505" class="Symbol"
+      >}</a
+      ><a name="5506"
+      > </a
+      ><a name="5507" class="Symbol"
+      >{</a
+      ><a name="5508" href="Data.Vec.N-ary.html#5508" class="Bound"
+      >A</a
+      ><a name="5509"
+      > </a
+      ><a name="5510" class="Symbol"
+      >:</a
+      ><a name="5511"
+      > </a
+      ><a name="5512" class="PrimitiveType"
+      >Set</a
+      ><a name="5515"
+      > </a
+      ><a name="5516" href="Data.Vec.N-ary.html#5498" class="Bound"
+      >a</a
+      ><a name="5517" class="Symbol"
+      >}</a
+      ><a name="5518"
+      > </a
+      ><a name="5519" class="Symbol"
+      >{</a
+      ><a name="5520" href="Data.Vec.N-ary.html#5520" class="Bound"
+      >B</a
+      ><a name="5521"
+      > </a
+      ><a name="5522" class="Symbol"
+      >:</a
+      ><a name="5523"
+      > </a
+      ><a name="5524" class="PrimitiveType"
+      >Set</a
+      ><a name="5527"
+      > </a
+      ><a name="5528" href="Data.Vec.N-ary.html#5500" class="Bound"
+      >b</a
+      ><a name="5529" class="Symbol"
+      >}</a
+      ><a name="5530"
+      > </a
+      ><a name="5531" class="Symbol"
+      >{</a
+      ><a name="5532" href="Data.Vec.N-ary.html#5532" class="Bound"
+      >C</a
+      ><a name="5533"
+      > </a
+      ><a name="5534" class="Symbol"
+      >:</a
+      ><a name="5535"
+      > </a
+      ><a name="5536" class="PrimitiveType"
+      >Set</a
+      ><a name="5539"
+      > </a
+      ><a name="5540" href="Data.Vec.N-ary.html#5502" class="Bound"
+      >c</a
+      ><a name="5541" class="Symbol"
+      >}</a
+      ><a name="5542"
+      >
+            </a
+      ><a name="5555" href="Data.Vec.N-ary.html#5555" class="Bound"
+      >n</a
+      ><a name="5556"
+      > </a
+      ><a name="5557" class="Symbol"
+      >(</a
+      ><a name="5558" href="Data.Vec.N-ary.html#5558" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5561"
+      > </a
+      ><a name="5562" class="Symbol"
+      >:</a
+      ><a name="5563"
+      > </a
+      ><a name="5564" href="Relation.Binary.Core.html#635" class="Function"
+      >REL</a
+      ><a name="5567"
+      > </a
+      ><a name="5568" href="Data.Vec.N-ary.html#5520" class="Bound"
+      >B</a
+      ><a name="5569"
+      > </a
+      ><a name="5570" href="Data.Vec.N-ary.html#5532" class="Bound"
+      >C</a
+      ><a name="5571"
+      > </a
+      ><a name="5572" href="Data.Vec.N-ary.html#5504" class="Bound"
+      >&#8467;</a
+      ><a name="5573" class="Symbol"
+      >)</a
+      ><a name="5574"
+      > </a
+      ><a name="5575" class="Symbol"
+      >{</a
+      ><a name="5576" href="Data.Vec.N-ary.html#5576" class="Bound"
+      >f</a
+      ><a name="5577"
+      > </a
+      ><a name="5578" class="Symbol"
+      >:</a
+      ><a name="5579"
+      > </a
+      ><a name="5580" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="5585"
+      > </a
+      ><a name="5586" href="Data.Vec.N-ary.html#5555" class="Bound"
+      >n</a
+      ><a name="5587"
+      > </a
+      ><a name="5588" href="Data.Vec.N-ary.html#5508" class="Bound"
+      >A</a
+      ><a name="5589"
+      > </a
+      ><a name="5590" href="Data.Vec.N-ary.html#5520" class="Bound"
+      >B</a
+      ><a name="5591" class="Symbol"
+      >}</a
+      ><a name="5592"
+      > </a
+      ><a name="5593" class="Symbol"
+      >{</a
+      ><a name="5594" href="Data.Vec.N-ary.html#5594" class="Bound"
+      >g</a
+      ><a name="5595"
+      > </a
+      ><a name="5596" class="Symbol"
+      >:</a
+      ><a name="5597"
+      > </a
+      ><a name="5598" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="5603"
+      > </a
+      ><a name="5604" href="Data.Vec.N-ary.html#5555" class="Bound"
+      >n</a
+      ><a name="5605"
+      > </a
+      ><a name="5606" href="Data.Vec.N-ary.html#5508" class="Bound"
+      >A</a
+      ><a name="5607"
+      > </a
+      ><a name="5608" href="Data.Vec.N-ary.html#5532" class="Bound"
+      >C</a
+      ><a name="5609" class="Symbol"
+      >}</a
+      ><a name="5610"
+      > </a
+      ><a name="5611" class="Symbol"
+      >&#8594;</a
+      ><a name="5612"
+      >
+            </a
+      ><a name="5625" href="Data.Vec.N-ary.html#1993" class="Function"
+      >Eq</a
+      ><a name="5627"
+      > </a
+      ><a name="5628" href="Data.Vec.N-ary.html#5555" class="Bound"
+      >n</a
+      ><a name="5629"
+      > </a
+      ><a name="5630" href="Data.Vec.N-ary.html#5558" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5633"
+      > </a
+      ><a name="5634" href="Data.Vec.N-ary.html#5576" class="Bound"
+      >f</a
+      ><a name="5635"
+      > </a
+      ><a name="5636" href="Data.Vec.N-ary.html#5594" class="Bound"
+      >g</a
+      ><a name="5637"
+      > </a
+      ><a name="5638" class="Symbol"
+      >&#8594;</a
+      ><a name="5639"
+      > </a
+      ><a name="5640" href="Data.Vec.N-ary.html#2247" class="Function"
+      >Eq&#688;</a
+      ><a name="5643"
+      > </a
+      ><a name="5644" href="Data.Vec.N-ary.html#5555" class="Bound"
+      >n</a
+      ><a name="5645"
+      > </a
+      ><a name="5646" href="Data.Vec.N-ary.html#5558" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5649"
+      > </a
+      ><a name="5650" href="Data.Vec.N-ary.html#5576" class="Bound"
+      >f</a
+      ><a name="5651"
+      > </a
+      ><a name="5652" href="Data.Vec.N-ary.html#5594" class="Bound"
+      >g</a
+      ><a name="5653"
+      >
+</a
+      ><a name="5654" href="Data.Vec.N-ary.html#5483" class="Function"
+      >Eq-to-Eq&#688;</a
+      ><a name="5663"
+      > </a
+      ><a name="5664" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="5668"
+      >    </a
+      ><a name="5672" href="Data.Vec.N-ary.html#5672" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5675"
+      > </a
+      ><a name="5676" href="Data.Vec.N-ary.html#5676" class="Bound"
+      >eq</a
+      ><a name="5678"
+      > </a
+      ><a name="5679" class="Symbol"
+      >=</a
+      ><a name="5680"
+      > </a
+      ><a name="5681" href="Data.Vec.N-ary.html#5676" class="Bound"
+      >eq</a
+      ><a name="5683"
+      >
+</a
+      ><a name="5684" href="Data.Vec.N-ary.html#5483" class="Function"
+      >Eq-to-Eq&#688;</a
+      ><a name="5693"
+      > </a
+      ><a name="5694" class="Symbol"
+      >(</a
+      ><a name="5695" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5698"
+      > </a
+      ><a name="5699" href="Data.Vec.N-ary.html#5699" class="Bound"
+      >n</a
+      ><a name="5700" class="Symbol"
+      >)</a
+      ><a name="5701"
+      > </a
+      ><a name="5702" href="Data.Vec.N-ary.html#5702" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5705"
+      > </a
+      ><a name="5706" href="Data.Vec.N-ary.html#5706" class="Bound"
+      >eq</a
+      ><a name="5708"
+      > </a
+      ><a name="5709" class="Symbol"
+      >=</a
+      ><a name="5710"
+      > </a
+      ><a name="5711" href="Data.Vec.N-ary.html#5483" class="Function"
+      >Eq-to-Eq&#688;</a
+      ><a name="5720"
+      > </a
+      ><a name="5721" href="Data.Vec.N-ary.html#5699" class="Bound"
+      >n</a
+      ><a name="5722"
+      > </a
+      ><a name="5723" href="Data.Vec.N-ary.html#5702" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5726"
+      > </a
+      ><a name="5727" class="Symbol"
+      >(</a
+      ><a name="5728" href="Data.Vec.N-ary.html#5706" class="Bound"
+      >eq</a
+      ><a name="5730"
+      > </a
+      ><a name="5731" class="Symbol"
+      >_)</a
+      ><a name="5733"
+      >
+
+</a
+      ><a name="5735" href="Data.Vec.N-ary.html#5735" class="Function"
+      >Eq&#688;-to-Eq</a
+      ><a name="5744"
+      > </a
+      ><a name="5745" class="Symbol"
+      >:</a
+      ><a name="5746"
+      > </a
+      ><a name="5747" class="Symbol"
+      >&#8704;</a
+      ><a name="5748"
+      > </a
+      ><a name="5749" class="Symbol"
+      >{</a
+      ><a name="5750" href="Data.Vec.N-ary.html#5750" class="Bound"
+      >a</a
+      ><a name="5751"
+      > </a
+      ><a name="5752" href="Data.Vec.N-ary.html#5752" class="Bound"
+      >b</a
+      ><a name="5753"
+      > </a
+      ><a name="5754" href="Data.Vec.N-ary.html#5754" class="Bound"
+      >c</a
+      ><a name="5755"
+      > </a
+      ><a name="5756" href="Data.Vec.N-ary.html#5756" class="Bound"
+      >&#8467;</a
+      ><a name="5757" class="Symbol"
+      >}</a
+      ><a name="5758"
+      > </a
+      ><a name="5759" class="Symbol"
+      >{</a
+      ><a name="5760" href="Data.Vec.N-ary.html#5760" class="Bound"
+      >A</a
+      ><a name="5761"
+      > </a
+      ><a name="5762" class="Symbol"
+      >:</a
+      ><a name="5763"
+      > </a
+      ><a name="5764" class="PrimitiveType"
+      >Set</a
+      ><a name="5767"
+      > </a
+      ><a name="5768" href="Data.Vec.N-ary.html#5750" class="Bound"
+      >a</a
+      ><a name="5769" class="Symbol"
+      >}</a
+      ><a name="5770"
+      > </a
+      ><a name="5771" class="Symbol"
+      >{</a
+      ><a name="5772" href="Data.Vec.N-ary.html#5772" class="Bound"
+      >B</a
+      ><a name="5773"
+      > </a
+      ><a name="5774" class="Symbol"
+      >:</a
+      ><a name="5775"
+      > </a
+      ><a name="5776" class="PrimitiveType"
+      >Set</a
+      ><a name="5779"
+      > </a
+      ><a name="5780" href="Data.Vec.N-ary.html#5752" class="Bound"
+      >b</a
+      ><a name="5781" class="Symbol"
+      >}</a
+      ><a name="5782"
+      > </a
+      ><a name="5783" class="Symbol"
+      >{</a
+      ><a name="5784" href="Data.Vec.N-ary.html#5784" class="Bound"
+      >C</a
+      ><a name="5785"
+      > </a
+      ><a name="5786" class="Symbol"
+      >:</a
+      ><a name="5787"
+      > </a
+      ><a name="5788" class="PrimitiveType"
+      >Set</a
+      ><a name="5791"
+      > </a
+      ><a name="5792" href="Data.Vec.N-ary.html#5754" class="Bound"
+      >c</a
+      ><a name="5793" class="Symbol"
+      >}</a
+      ><a name="5794"
+      >
+            </a
+      ><a name="5807" href="Data.Vec.N-ary.html#5807" class="Bound"
+      >n</a
+      ><a name="5808"
+      > </a
+      ><a name="5809" class="Symbol"
+      >(</a
+      ><a name="5810" href="Data.Vec.N-ary.html#5810" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5813"
+      > </a
+      ><a name="5814" class="Symbol"
+      >:</a
+      ><a name="5815"
+      > </a
+      ><a name="5816" href="Relation.Binary.Core.html#635" class="Function"
+      >REL</a
+      ><a name="5819"
+      > </a
+      ><a name="5820" href="Data.Vec.N-ary.html#5772" class="Bound"
+      >B</a
+      ><a name="5821"
+      > </a
+      ><a name="5822" href="Data.Vec.N-ary.html#5784" class="Bound"
+      >C</a
+      ><a name="5823"
+      > </a
+      ><a name="5824" href="Data.Vec.N-ary.html#5756" class="Bound"
+      >&#8467;</a
+      ><a name="5825" class="Symbol"
+      >)</a
+      ><a name="5826"
+      > </a
+      ><a name="5827" class="Symbol"
+      >{</a
+      ><a name="5828" href="Data.Vec.N-ary.html#5828" class="Bound"
+      >f</a
+      ><a name="5829"
+      > </a
+      ><a name="5830" class="Symbol"
+      >:</a
+      ><a name="5831"
+      > </a
+      ><a name="5832" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="5837"
+      > </a
+      ><a name="5838" href="Data.Vec.N-ary.html#5807" class="Bound"
+      >n</a
+      ><a name="5839"
+      > </a
+      ><a name="5840" href="Data.Vec.N-ary.html#5760" class="Bound"
+      >A</a
+      ><a name="5841"
+      > </a
+      ><a name="5842" href="Data.Vec.N-ary.html#5772" class="Bound"
+      >B</a
+      ><a name="5843" class="Symbol"
+      >}</a
+      ><a name="5844"
+      > </a
+      ><a name="5845" class="Symbol"
+      >{</a
+      ><a name="5846" href="Data.Vec.N-ary.html#5846" class="Bound"
+      >g</a
+      ><a name="5847"
+      > </a
+      ><a name="5848" class="Symbol"
+      >:</a
+      ><a name="5849"
+      > </a
+      ><a name="5850" href="Data.Vec.N-ary.html#812" class="Function"
+      >N-ary</a
+      ><a name="5855"
+      > </a
+      ><a name="5856" href="Data.Vec.N-ary.html#5807" class="Bound"
+      >n</a
+      ><a name="5857"
+      > </a
+      ><a name="5858" href="Data.Vec.N-ary.html#5760" class="Bound"
+      >A</a
+      ><a name="5859"
+      > </a
+      ><a name="5860" href="Data.Vec.N-ary.html#5784" class="Bound"
+      >C</a
+      ><a name="5861" class="Symbol"
+      >}</a
+      ><a name="5862"
+      > </a
+      ><a name="5863" class="Symbol"
+      >&#8594;</a
+      ><a name="5864"
+      >
+            </a
+      ><a name="5877" href="Data.Vec.N-ary.html#2247" class="Function"
+      >Eq&#688;</a
+      ><a name="5880"
+      > </a
+      ><a name="5881" href="Data.Vec.N-ary.html#5807" class="Bound"
+      >n</a
+      ><a name="5882"
+      > </a
+      ><a name="5883" href="Data.Vec.N-ary.html#5810" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5886"
+      > </a
+      ><a name="5887" href="Data.Vec.N-ary.html#5828" class="Bound"
+      >f</a
+      ><a name="5888"
+      > </a
+      ><a name="5889" href="Data.Vec.N-ary.html#5846" class="Bound"
+      >g</a
+      ><a name="5890"
+      > </a
+      ><a name="5891" class="Symbol"
+      >&#8594;</a
+      ><a name="5892"
+      > </a
+      ><a name="5893" href="Data.Vec.N-ary.html#1993" class="Function"
+      >Eq</a
+      ><a name="5895"
+      > </a
+      ><a name="5896" href="Data.Vec.N-ary.html#5807" class="Bound"
+      >n</a
+      ><a name="5897"
+      > </a
+      ><a name="5898" href="Data.Vec.N-ary.html#5810" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5901"
+      > </a
+      ><a name="5902" href="Data.Vec.N-ary.html#5828" class="Bound"
+      >f</a
+      ><a name="5903"
+      > </a
+      ><a name="5904" href="Data.Vec.N-ary.html#5846" class="Bound"
+      >g</a
+      ><a name="5905"
+      >
+</a
+      ><a name="5906" href="Data.Vec.N-ary.html#5735" class="Function"
+      >Eq&#688;-to-Eq</a
+      ><a name="5915"
+      > </a
+      ><a name="5916" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="5920"
+      >    </a
+      ><a name="5924" href="Data.Vec.N-ary.html#5924" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5927"
+      > </a
+      ><a name="5928" href="Data.Vec.N-ary.html#5928" class="Bound"
+      >eq</a
+      ><a name="5930"
+      > </a
+      ><a name="5931" class="Symbol"
+      >=</a
+      ><a name="5932"
+      > </a
+      ><a name="5933" href="Data.Vec.N-ary.html#5928" class="Bound"
+      >eq</a
+      ><a name="5935"
+      >
+</a
+      ><a name="5936" href="Data.Vec.N-ary.html#5735" class="Function"
+      >Eq&#688;-to-Eq</a
+      ><a name="5945"
+      > </a
+      ><a name="5946" class="Symbol"
+      >(</a
+      ><a name="5947" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5950"
+      > </a
+      ><a name="5951" href="Data.Vec.N-ary.html#5951" class="Bound"
+      >n</a
+      ><a name="5952" class="Symbol"
+      >)</a
+      ><a name="5953"
+      > </a
+      ><a name="5954" href="Data.Vec.N-ary.html#5954" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5957"
+      > </a
+      ><a name="5958" href="Data.Vec.N-ary.html#5958" class="Bound"
+      >eq</a
+      ><a name="5960"
+      > </a
+      ><a name="5961" class="Symbol"
+      >=</a
+      ><a name="5962"
+      > </a
+      ><a name="5963" class="Symbol"
+      >&#955;</a
+      ><a name="5964"
+      > </a
+      ><a name="5965" href="Data.Vec.N-ary.html#5965" class="Bound"
+      >_</a
+      ><a name="5966"
+      > </a
+      ><a name="5967" class="Symbol"
+      >&#8594;</a
+      ><a name="5968"
+      > </a
+      ><a name="5969" href="Data.Vec.N-ary.html#5735" class="Function"
+      >Eq&#688;-to-Eq</a
+      ><a name="5978"
+      > </a
+      ><a name="5979" href="Data.Vec.N-ary.html#5951" class="Bound"
+      >n</a
+      ><a name="5980"
+      > </a
+      ><a name="5981" href="Data.Vec.N-ary.html#5954" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="5984"
+      > </a
+      ><a name="5985" href="Data.Vec.N-ary.html#5958" class="Bound"
+      >eq</a
+      ><a name="5987"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

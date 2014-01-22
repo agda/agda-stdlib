@@ -1,0 +1,4210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Rational</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Rational numbers</a
+      ><a name="125"
+      >
+</a
+      ><a name="126" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="198"
+      >
+
+</a
+      ><a name="200" class="Keyword"
+      >module</a
+      ><a name="206"
+      > </a
+      ><a name="207" href="Data.Rational.html#1" class="Module"
+      >Data.Rational</a
+      ><a name="220"
+      > </a
+      ><a name="221" class="Keyword"
+      >where</a
+      ><a name="226"
+      >
+
+</a
+      ><a name="228" class="Keyword"
+      >import</a
+      ><a name="234"
+      > </a
+      ><a name="235" href="Algebra.html#1" class="Module"
+      >Algebra</a
+      ><a name="242"
+      >
+</a
+      ><a name="243" class="Keyword"
+      >import</a
+      ><a name="249"
+      > </a
+      ><a name="250" href="Data.Bool.Properties.html#1" class="Module"
+      >Data.Bool.Properties</a
+      ><a name="270"
+      > </a
+      ><a name="271" class="Symbol"
+      >as</a
+      ><a name="273"
+      > </a
+      ><a name="274" class="Module"
+      >Bool</a
+      ><a name="278"
+      >
+</a
+      ><a name="279" class="Keyword"
+      >open</a
+      ><a name="283"
+      > </a
+      ><a name="284" class="Keyword"
+      >import</a
+      ><a name="290"
+      > </a
+      ><a name="291" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="299"
+      >
+</a
+      ><a name="300" class="Keyword"
+      >open</a
+      ><a name="304"
+      > </a
+      ><a name="305" class="Keyword"
+      >import</a
+      ><a name="311"
+      > </a
+      ><a name="312" href="Data.Integer.html#1" class="Module"
+      >Data.Integer</a
+      ><a name="324"
+      > </a
+      ><a name="325" class="Symbol"
+      >as</a
+      ><a name="327"
+      > </a
+      ><a name="328" class="Module"
+      >&#8484;</a
+      ><a name="329"
+      > </a
+      ><a name="330" class="Keyword"
+      >using</a
+      ><a name="335"
+      > </a
+      ><a name="336" class="Symbol"
+      >(</a
+      ><a name="337"
+      >&#8484;</a
+      ><a name="338" class="Symbol"
+      >;</a
+      ><a name="339"
+      > &#8739;_&#8739;</a
+      ><a name="343" class="Symbol"
+      >;</a
+      ><a name="344"
+      > +_</a
+      ><a name="347" class="Symbol"
+      >;</a
+      ><a name="348"
+      > -_</a
+      ><a name="351" class="Symbol"
+      >)</a
+      ><a name="352"
+      >
+</a
+      ><a name="353" class="Keyword"
+      >open</a
+      ><a name="357"
+      > </a
+      ><a name="358" class="Keyword"
+      >import</a
+      ><a name="364"
+      > </a
+      ><a name="365" href="Data.Integer.Divisibility.html#1" class="Module"
+      >Data.Integer.Divisibility</a
+      ><a name="390"
+      > </a
+      ><a name="391" class="Symbol"
+      >as</a
+      ><a name="393"
+      > </a
+      ><a name="394" class="Module"
+      >&#8484;Div</a
+      ><a name="398"
+      > </a
+      ><a name="399" class="Keyword"
+      >using</a
+      ><a name="404"
+      > </a
+      ><a name="405" class="Symbol"
+      >(</a
+      ><a name="406"
+      >Coprime</a
+      ><a name="413" class="Symbol"
+      >)</a
+      ><a name="414"
+      >
+</a
+      ><a name="415" class="Keyword"
+      >import</a
+      ><a name="421"
+      > </a
+      ><a name="422" href="Data.Integer.Properties.html#1" class="Module"
+      >Data.Integer.Properties</a
+      ><a name="445"
+      > </a
+      ><a name="446" class="Symbol"
+      >as</a
+      ><a name="448"
+      > </a
+      ><a name="449" class="Module"
+      >&#8484;</a
+      ><a name="450"
+      >
+</a
+      ><a name="451" class="Keyword"
+      >open</a
+      ><a name="455"
+      > </a
+      ><a name="456" class="Keyword"
+      >import</a
+      ><a name="462"
+      > </a
+      ><a name="463" href="Data.Nat.Divisibility.html#1" class="Module"
+      >Data.Nat.Divisibility</a
+      ><a name="484"
+      > </a
+      ><a name="485" class="Symbol"
+      >as</a
+      ><a name="487"
+      > </a
+      ><a name="488" class="Module"
+      >&#8469;Div</a
+      ><a name="492"
+      > </a
+      ><a name="493" class="Keyword"
+      >using</a
+      ><a name="498"
+      > </a
+      ><a name="499" class="Symbol"
+      >(</a
+      ><a name="500"
+      >_&#8739;_</a
+      ><a name="503" class="Symbol"
+      >)</a
+      ><a name="504"
+      >
+</a
+      ><a name="505" class="Keyword"
+      >import</a
+      ><a name="511"
+      > </a
+      ><a name="512" href="Data.Nat.Coprimality.html#1" class="Module"
+      >Data.Nat.Coprimality</a
+      ><a name="532"
+      > </a
+      ><a name="533" class="Symbol"
+      >as</a
+      ><a name="535"
+      > </a
+      ><a name="536" class="Module"
+      >C</a
+      ><a name="537"
+      >
+</a
+      ><a name="538" class="Keyword"
+      >open</a
+      ><a name="542"
+      > </a
+      ><a name="543" class="Keyword"
+      >import</a
+      ><a name="549"
+      > </a
+      ><a name="550" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="558"
+      > </a
+      ><a name="559" class="Symbol"
+      >as</a
+      ><a name="561"
+      > </a
+      ><a name="562" class="Module"
+      >&#8469;</a
+      ><a name="563"
+      > </a
+      ><a name="564" class="Keyword"
+      >using</a
+      ><a name="569"
+      > </a
+      ><a name="570" class="Symbol"
+      >(</a
+      ><a name="571"
+      >&#8469;</a
+      ><a name="572" class="Symbol"
+      >;</a
+      ><a name="573"
+      > zero</a
+      ><a name="578" class="Symbol"
+      >;</a
+      ><a name="579"
+      > suc</a
+      ><a name="583" class="Symbol"
+      >)</a
+      ><a name="584"
+      >
+</a
+      ><a name="585" class="Keyword"
+      >open</a
+      ><a name="589"
+      > </a
+      ><a name="590" class="Keyword"
+      >import</a
+      ><a name="596"
+      > </a
+      ><a name="597" href="Data.Sum.html#1" class="Module"
+      >Data.Sum</a
+      ><a name="605"
+      >
+</a
+      ><a name="606" class="Keyword"
+      >import</a
+      ><a name="612"
+      > </a
+      ><a name="613" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="618"
+      >
+</a
+      ><a name="619" class="Keyword"
+      >open</a
+      ><a name="623"
+      > </a
+      ><a name="624" class="Keyword"
+      >import</a
+      ><a name="630"
+      > </a
+      ><a name="631" href="Relation.Nullary.Decidable.html#1" class="Module"
+      >Relation.Nullary.Decidable</a
+      ><a name="657"
+      >
+</a
+      ><a name="658" class="Keyword"
+      >open</a
+      ><a name="662"
+      > </a
+      ><a name="663" class="Keyword"
+      >import</a
+      ><a name="669"
+      > </a
+      ><a name="670" href="Relation.Nullary.html#1" class="Module"
+      >Relation.Nullary</a
+      ><a name="686"
+      >
+</a
+      ><a name="687" class="Keyword"
+      >open</a
+      ><a name="691"
+      > </a
+      ><a name="692" class="Keyword"
+      >import</a
+      ><a name="698"
+      > </a
+      ><a name="699" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="714"
+      >
+</a
+      ><a name="715" class="Keyword"
+      >open</a
+      ><a name="719"
+      > </a
+      ><a name="720" class="Keyword"
+      >import</a
+      ><a name="726"
+      > </a
+      ><a name="727" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="764"
+      > </a
+      ><a name="765" class="Symbol"
+      >as</a
+      ><a name="767"
+      > </a
+      ><a name="768" class="Module"
+      >P</a
+      ><a name="769"
+      >
+  </a
+      ><a name="772" class="Keyword"
+      >using</a
+      ><a name="777"
+      > </a
+      ><a name="778" class="Symbol"
+      >(</a
+      ><a name="779"
+      >_&#8801;_</a
+      ><a name="782" class="Symbol"
+      >;</a
+      ><a name="783"
+      > refl</a
+      ><a name="788" class="Symbol"
+      >;</a
+      ><a name="789"
+      > cong</a
+      ><a name="794" class="Symbol"
+      >;</a
+      ><a name="795"
+      > cong&#8322;</a
+      ><a name="801" class="Symbol"
+      >)</a
+      ><a name="802"
+      >
+</a
+      ><a name="803" class="Keyword"
+      >open</a
+      ><a name="807"
+      > </a
+      ><a name="808" href="Relation.Binary.PropositionalEquality.html#243" class="Module"
+      >P.</a
+      ><a name="810" href="Relation.Binary.PropositionalEquality.html#5746" class="Module"
+      >&#8801;-Reasoning</a
+      ><a name="821"
+      >
+
+</a
+      ><a name="823" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="895"
+      >
+</a
+      ><a name="896" class="Comment"
+      >-- The definition</a
+      ><a name="913"
+      >
+
+</a
+      ><a name="915" class="Comment"
+      >-- Rational numbers in reduced form. Note that there is exactly one</a
+      ><a name="982"
+      >
+</a
+      ><a name="983" class="Comment"
+      >-- representative for every rational number. (This is the reason for</a
+      ><a name="1051"
+      >
+</a
+      ><a name="1052" class="Comment"
+      >-- using &quot;True&quot; below. If Agda had proof irrelevance, then it would</a
+      ><a name="1119"
+      >
+</a
+      ><a name="1120" class="Comment"
+      >-- suffice to use &quot;isCoprime : Coprime numerator denominator&quot;.)</a
+      ><a name="1183"
+      >
+
+</a
+      ><a name="1185" class="Keyword"
+      >record</a
+      ><a name="1191"
+      > </a
+      ><a name="1192" href="Data.Rational.html#1192" class="Record"
+      >&#8474;</a
+      ><a name="1193"
+      > </a
+      ><a name="1194" class="Symbol"
+      >:</a
+      ><a name="1195"
+      > </a
+      ><a name="1196" class="PrimitiveType"
+      >Set</a
+      ><a name="1199"
+      > </a
+      ><a name="1200" class="Keyword"
+      >where</a
+      ><a name="1205"
+      >
+  </a
+      ><a name="1208" class="Keyword"
+      >field</a
+      ><a name="1213"
+      >
+    </a
+      ><a name="1218" href="Data.Rational.html#1218" class="Field"
+      >numerator</a
+      ><a name="1227"
+      >     </a
+      ><a name="1232" class="Symbol"
+      >:</a
+      ><a name="1233"
+      > </a
+      ><a name="1234" href="Data.Integer.html#915" class="Datatype"
+      >&#8484;</a
+      ><a name="1235"
+      >
+    </a
+      ><a name="1240" href="Data.Rational.html#1240" class="Field"
+      >denominator-1</a
+      ><a name="1253"
+      > </a
+      ><a name="1254" class="Symbol"
+      >:</a
+      ><a name="1255"
+      > </a
+      ><a name="1256" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="1257"
+      >
+    </a
+      ><a name="1262" href="Data.Rational.html#1262" class="Field"
+      >isCoprime</a
+      ><a name="1271"
+      >     </a
+      ><a name="1276" class="Symbol"
+      >:</a
+      ><a name="1277"
+      > </a
+      ><a name="1278" href="Relation.Nullary.Decidable.html#897" class="Function"
+      >True</a
+      ><a name="1282"
+      > </a
+      ><a name="1283" class="Symbol"
+      >(</a
+      ><a name="1284" href="Data.Nat.Coprimality.html#1614" class="Function"
+      >C.coprime?</a
+      ><a name="1294"
+      > </a
+      ><a name="1295" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="1296"
+      > </a
+      ><a name="1297" href="Data.Rational.html#1218" class="Bound"
+      >numerator</a
+      ><a name="1306"
+      > </a
+      ><a name="1307" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="1308"
+      > </a
+      ><a name="1309" class="Symbol"
+      >(</a
+      ><a name="1310" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1313"
+      > </a
+      ><a name="1314" href="Data.Rational.html#1240" class="Bound"
+      >denominator-1</a
+      ><a name="1327" class="Symbol"
+      >))</a
+      ><a name="1329"
+      >
+
+  </a
+      ><a name="1333" href="Data.Rational.html#1333" class="Function"
+      >denominator</a
+      ><a name="1344"
+      > </a
+      ><a name="1345" class="Symbol"
+      >:</a
+      ><a name="1346"
+      > </a
+      ><a name="1347" href="Data.Integer.html#915" class="Datatype"
+      >&#8484;</a
+      ><a name="1348"
+      >
+  </a
+      ><a name="1351" href="Data.Rational.html#1333" class="Function"
+      >denominator</a
+      ><a name="1362"
+      > </a
+      ><a name="1363" class="Symbol"
+      >=</a
+      ><a name="1364"
+      > </a
+      ><a name="1365" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1366"
+      > </a
+      ><a name="1367" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1370"
+      > </a
+      ><a name="1371" href="Data.Rational.html#1240" class="Field"
+      >denominator-1</a
+      ><a name="1384"
+      >
+
+  </a
+      ><a name="1388" href="Data.Rational.html#1388" class="Function"
+      >coprime</a
+      ><a name="1395"
+      > </a
+      ><a name="1396" class="Symbol"
+      >:</a
+      ><a name="1397"
+      > </a
+      ><a name="1398" href="Data.Integer.Divisibility.html#583" class="Function"
+      >Coprime</a
+      ><a name="1405"
+      > </a
+      ><a name="1406" href="Data.Rational.html#1218" class="Field"
+      >numerator</a
+      ><a name="1415"
+      > </a
+      ><a name="1416" href="Data.Rational.html#1333" class="Function"
+      >denominator</a
+      ><a name="1427"
+      >
+  </a
+      ><a name="1430" href="Data.Rational.html#1388" class="Function"
+      >coprime</a
+      ><a name="1437"
+      > </a
+      ><a name="1438" class="Symbol"
+      >=</a
+      ><a name="1439"
+      > </a
+      ><a name="1440" href="Relation.Nullary.Decidable.html#1055" class="Function"
+      >toWitness</a
+      ><a name="1449"
+      > </a
+      ><a name="1450" href="Data.Rational.html#1262" class="Field"
+      >isCoprime</a
+      ><a name="1459"
+      >
+
+</a
+      ><a name="1461" class="Comment"
+      >-- Constructs rational numbers. The arguments have to be in reduced</a
+      ><a name="1528"
+      >
+</a
+      ><a name="1529" class="Comment"
+      >-- form.</a
+      ><a name="1537"
+      >
+
+</a
+      ><a name="1539" class="Keyword"
+      >infixl</a
+      ><a name="1545"
+      > </a
+      ><a name="1546" class="Number"
+      >7</a
+      ><a name="1547"
+      > _&#247;_
+
+</a
+      ><a name="1553" href="Data.Rational.html#1553" class="Function Operator"
+      >_&#247;_</a
+      ><a name="1556"
+      > </a
+      ><a name="1557" class="Symbol"
+      >:</a
+      ><a name="1558"
+      > </a
+      ><a name="1559" class="Symbol"
+      >(</a
+      ><a name="1560" href="Data.Rational.html#1560" class="Bound"
+      >numerator</a
+      ><a name="1569"
+      > </a
+      ><a name="1570" class="Symbol"
+      >:</a
+      ><a name="1571"
+      > </a
+      ><a name="1572" href="Data.Integer.html#915" class="Datatype"
+      >&#8484;</a
+      ><a name="1573" class="Symbol"
+      >)</a
+      ><a name="1574"
+      > </a
+      ><a name="1575" class="Symbol"
+      >(</a
+      ><a name="1576" href="Data.Rational.html#1576" class="Bound"
+      >denominator</a
+      ><a name="1587"
+      > </a
+      ><a name="1588" class="Symbol"
+      >:</a
+      ><a name="1589"
+      > </a
+      ><a name="1590" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="1591" class="Symbol"
+      >)</a
+      ><a name="1592"
+      >
+      </a
+      ><a name="1599" class="Symbol"
+      >{</a
+      ><a name="1600" href="Data.Rational.html#1600" class="Bound"
+      >coprime</a
+      ><a name="1607"
+      > </a
+      ><a name="1608" class="Symbol"
+      >:</a
+      ><a name="1609"
+      > </a
+      ><a name="1610" href="Relation.Nullary.Decidable.html#897" class="Function"
+      >True</a
+      ><a name="1614"
+      > </a
+      ><a name="1615" class="Symbol"
+      >(</a
+      ><a name="1616" href="Data.Nat.Coprimality.html#1614" class="Function"
+      >C.coprime?</a
+      ><a name="1626"
+      > </a
+      ><a name="1627" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="1628"
+      > </a
+      ><a name="1629" href="Data.Rational.html#1560" class="Bound"
+      >numerator</a
+      ><a name="1638"
+      > </a
+      ><a name="1639" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="1640"
+      > </a
+      ><a name="1641" href="Data.Rational.html#1576" class="Bound"
+      >denominator</a
+      ><a name="1652" class="Symbol"
+      >)}</a
+      ><a name="1654"
+      >
+      </a
+      ><a name="1661" class="Symbol"
+      >{</a
+      ><a name="1662" href="Data.Rational.html#1662" class="Bound"
+      >&#8802;0</a
+      ><a name="1664"
+      > </a
+      ><a name="1665" class="Symbol"
+      >:</a
+      ><a name="1666"
+      > </a
+      ><a name="1667" href="Relation.Nullary.Decidable.html#954" class="Function"
+      >False</a
+      ><a name="1672"
+      > </a
+      ><a name="1673" class="Symbol"
+      >(</a
+      ><a name="1674" href="Data.Nat.html#3049" class="Function Operator"
+      >&#8469;._&#8799;_</a
+      ><a name="1679"
+      > </a
+      ><a name="1680" href="Data.Rational.html#1576" class="Bound"
+      >denominator</a
+      ><a name="1691"
+      > </a
+      ><a name="1692" class="Number"
+      >0</a
+      ><a name="1693" class="Symbol"
+      >)}</a
+      ><a name="1695"
+      > </a
+      ><a name="1696" class="Symbol"
+      >&#8594;</a
+      ><a name="1697"
+      >
+      </a
+      ><a name="1704" href="Data.Rational.html#1192" class="Record"
+      >&#8474;</a
+      ><a name="1705"
+      >
+</a
+      ><a name="1706" class="Symbol"
+      >(</a
+      ><a name="1707" href="Data.Rational.html#1707" class="Bound"
+      >n</a
+      ><a name="1708"
+      > </a
+      ><a name="1709" href="Data.Rational.html#1553" class="Function Operator"
+      >&#247;</a
+      ><a name="1710"
+      > </a
+      ><a name="1711" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="1715" class="Symbol"
+      >)</a
+      ><a name="1716"
+      > </a
+      ><a name="1717" class="Symbol"
+      >{</a
+      ><a name="1718" class="Argument"
+      >&#8802;0</a
+      ><a name="1720"
+      > </a
+      ><a name="1721" class="Symbol"
+      >=</a
+      ><a name="1722"
+      > </a
+      ><a name="1723" class="Symbol"
+      >()}</a
+      ><a name="1726"
+      >
+</a
+      ><a name="1727" class="Symbol"
+      >(</a
+      ><a name="1728" href="Data.Rational.html#1728" class="Bound"
+      >n</a
+      ><a name="1729"
+      > </a
+      ><a name="1730" href="Data.Rational.html#1553" class="Function Operator"
+      >&#247;</a
+      ><a name="1731"
+      > </a
+      ><a name="1732" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1735"
+      > </a
+      ><a name="1736" href="Data.Rational.html#1736" class="Bound"
+      >d</a
+      ><a name="1737" class="Symbol"
+      >)</a
+      ><a name="1738"
+      > </a
+      ><a name="1739" class="Symbol"
+      >{</a
+      ><a name="1740" href="Data.Rational.html#1740" class="Bound"
+      >c</a
+      ><a name="1741" class="Symbol"
+      >}</a
+      ><a name="1742"
+      > </a
+      ><a name="1743" class="Symbol"
+      >=</a
+      ><a name="1744"
+      >
+  </a
+      ><a name="1747" class="Keyword"
+      >record</a
+      ><a name="1753"
+      > </a
+      ><a name="1754" class="Symbol"
+      >{</a
+      ><a name="1755"
+      > </a
+      ><a name="1756" class="Field"
+      >numerator</a
+      ><a name="1765"
+      > </a
+      ><a name="1766" class="Symbol"
+      >=</a
+      ><a name="1767"
+      > </a
+      ><a name="1768" href="Data.Rational.html#1728" class="Bound"
+      >n</a
+      ><a name="1769" class="Symbol"
+      >;</a
+      ><a name="1770"
+      > </a
+      ><a name="1771" class="Field"
+      >denominator-1</a
+      ><a name="1784"
+      > </a
+      ><a name="1785" class="Symbol"
+      >=</a
+      ><a name="1786"
+      > </a
+      ><a name="1787" href="Data.Rational.html#1736" class="Bound"
+      >d</a
+      ><a name="1788" class="Symbol"
+      >;</a
+      ><a name="1789"
+      > </a
+      ><a name="1790" class="Field"
+      >isCoprime</a
+      ><a name="1799"
+      > </a
+      ><a name="1800" class="Symbol"
+      >=</a
+      ><a name="1801"
+      > </a
+      ><a name="1802" href="Data.Rational.html#1740" class="Bound"
+      >c</a
+      ><a name="1803"
+      > </a
+      ><a name="1804" class="Symbol"
+      >}</a
+      ><a name="1805"
+      >
+
+</a
+      ><a name="1807" class="Keyword"
+      >private</a
+      ><a name="1814"
+      >
+
+  </a
+      ><a name="1818" class="Comment"
+      >-- Note that the implicit arguments do not need to be given for</a
+      ><a name="1881"
+      >
+  </a
+      ><a name="1884" class="Comment"
+      >-- concrete inputs:</a
+      ><a name="1903"
+      >
+
+  </a
+      ><a name="1907" href="Data.Rational.html#1907" class="Function"
+      >0/1</a
+      ><a name="1910"
+      > </a
+      ><a name="1911" class="Symbol"
+      >:</a
+      ><a name="1912"
+      > </a
+      ><a name="1913" href="Data.Rational.html#1192" class="Record"
+      >&#8474;</a
+      ><a name="1914"
+      >
+  </a
+      ><a name="1917" href="Data.Rational.html#1907" class="Function"
+      >0/1</a
+      ><a name="1920"
+      > </a
+      ><a name="1921" class="Symbol"
+      >=</a
+      ><a name="1922"
+      > </a
+      ><a name="1923" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1924"
+      > </a
+      ><a name="1925" class="Number"
+      >0</a
+      ><a name="1926"
+      > </a
+      ><a name="1927" href="Data.Rational.html#1553" class="Function Operator"
+      >&#247;</a
+      ><a name="1928"
+      > </a
+      ><a name="1929" class="Number"
+      >1</a
+      ><a name="1930"
+      >
+
+  </a
+      ><a name="1934" href="Data.Rational.html#1934" class="Function"
+      >-&#189;</a
+      ><a name="1936"
+      > </a
+      ><a name="1937" class="Symbol"
+      >:</a
+      ><a name="1938"
+      > </a
+      ><a name="1939" href="Data.Rational.html#1192" class="Record"
+      >&#8474;</a
+      ><a name="1940"
+      >
+  </a
+      ><a name="1943" href="Data.Rational.html#1934" class="Function"
+      >-&#189;</a
+      ><a name="1945"
+      > </a
+      ><a name="1946" class="Symbol"
+      >=</a
+      ><a name="1947"
+      > </a
+      ><a name="1948" href="Data.Integer.html#2854" class="Function Operator"
+      >-</a
+      ><a name="1949"
+      > </a
+      ><a name="1950" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1951"
+      > </a
+      ><a name="1952" class="Number"
+      >1</a
+      ><a name="1953"
+      > </a
+      ><a name="1954" href="Data.Rational.html#1553" class="Function Operator"
+      >&#247;</a
+      ><a name="1955"
+      > </a
+      ><a name="1956" class="Number"
+      >2</a
+      ><a name="1957"
+      >
+
+</a
+      ><a name="1959" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="2031"
+      >
+</a
+      ><a name="2032" class="Comment"
+      >-- Equality</a
+      ><a name="2043"
+      >
+
+</a
+      ><a name="2045" class="Comment"
+      >-- Equality of rational numbers.</a
+      ><a name="2077"
+      >
+
+</a
+      ><a name="2079" class="Keyword"
+      >infix</a
+      ><a name="2084"
+      > </a
+      ><a name="2085" class="Number"
+      >4</a
+      ><a name="2086"
+      > _&#8771;_
+
+</a
+      ><a name="2092" href="Data.Rational.html#2092" class="Function Operator"
+      >_&#8771;_</a
+      ><a name="2095"
+      > </a
+      ><a name="2096" class="Symbol"
+      >:</a
+      ><a name="2097"
+      > </a
+      ><a name="2098" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="2101"
+      > </a
+      ><a name="2102" href="Data.Rational.html#1192" class="Record"
+      >&#8474;</a
+      ><a name="2103"
+      > </a
+      ><a name="2104" href="Agda.Primitive.html#580" class="Primitive"
+      >Level.zero</a
+      ><a name="2114"
+      >
+</a
+      ><a name="2115" href="Data.Rational.html#2115" class="Bound"
+      >p</a
+      ><a name="2116"
+      > </a
+      ><a name="2117" href="Data.Rational.html#2092" class="Function Operator"
+      >&#8771;</a
+      ><a name="2118"
+      > </a
+      ><a name="2119" href="Data.Rational.html#2119" class="Bound"
+      >q</a
+      ><a name="2120"
+      > </a
+      ><a name="2121" class="Symbol"
+      >=</a
+      ><a name="2122"
+      > </a
+      ><a name="2123" href="Data.Rational.html#1218" class="Field"
+      >numerator</a
+      ><a name="2132"
+      > </a
+      ><a name="2133" href="Data.Rational.html#2115" class="Bound"
+      >p</a
+      ><a name="2134"
+      > </a
+      ><a name="2135" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="2138"
+      > </a
+      ><a name="2139" href="Data.Rational.html#1333" class="Function"
+      >denominator</a
+      ><a name="2150"
+      > </a
+      ><a name="2151" href="Data.Rational.html#2119" class="Bound"
+      >q</a
+      ><a name="2152"
+      > </a
+      ><a name="2153" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2154"
+      >
+        </a
+      ><a name="2163" href="Data.Rational.html#1218" class="Field"
+      >numerator</a
+      ><a name="2172"
+      > </a
+      ><a name="2173" href="Data.Rational.html#2119" class="Bound"
+      >q</a
+      ><a name="2174"
+      > </a
+      ><a name="2175" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="2178"
+      > </a
+      ><a name="2179" href="Data.Rational.html#1333" class="Function"
+      >denominator</a
+      ><a name="2190"
+      > </a
+      ><a name="2191" href="Data.Rational.html#2115" class="Bound"
+      >p</a
+      ><a name="2192"
+      >
+  </a
+      ><a name="2195" class="Keyword"
+      >where</a
+      ><a name="2200"
+      > </a
+      ><a name="2201" class="Keyword"
+      >open</a
+      ><a name="2205"
+      > </a
+      ><a name="2206" href="Data.Rational.html#1192" class="Module"
+      >&#8474;</a
+      ><a name="2207"
+      >
+
+</a
+      ><a name="2209" class="Comment"
+      >-- _&#8771;_ coincides with propositional equality.</a
+      ><a name="2254"
+      >
+
+</a
+      ><a name="2256" href="Data.Rational.html#2256" class="Function"
+      >&#8801;&#8658;&#8771;</a
+      ><a name="2259"
+      > </a
+      ><a name="2260" class="Symbol"
+      >:</a
+      ><a name="2261"
+      > </a
+      ><a name="2262" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="2265"
+      > </a
+      ><a name="2266" href="Relation.Binary.Core.html#1025" class="Function Operator"
+      >&#8658;</a
+      ><a name="2267"
+      > </a
+      ><a name="2268" href="Data.Rational.html#2092" class="Function Operator"
+      >_&#8771;_</a
+      ><a name="2271"
+      >
+</a
+      ><a name="2272" href="Data.Rational.html#2256" class="Function"
+      >&#8801;&#8658;&#8771;</a
+      ><a name="2275"
+      > </a
+      ><a name="2276" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2280"
+      > </a
+      ><a name="2281" class="Symbol"
+      >=</a
+      ><a name="2282"
+      > </a
+      ><a name="2283" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2287"
+      >
+
+</a
+      ><a name="2289" href="Data.Rational.html#2289" class="Function"
+      >&#8771;&#8658;&#8801;</a
+      ><a name="2292"
+      > </a
+      ><a name="2293" class="Symbol"
+      >:</a
+      ><a name="2294"
+      > </a
+      ><a name="2295" href="Data.Rational.html#2092" class="Function Operator"
+      >_&#8771;_</a
+      ><a name="2298"
+      > </a
+      ><a name="2299" href="Relation.Binary.Core.html#1025" class="Function Operator"
+      >&#8658;</a
+      ><a name="2300"
+      > </a
+      ><a name="2301" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="2304"
+      >
+</a
+      ><a name="2305" href="Data.Rational.html#2289" class="Function"
+      >&#8771;&#8658;&#8801;</a
+      ><a name="2308"
+      > </a
+      ><a name="2309" class="Symbol"
+      >{</a
+      ><a name="2310" class="Argument"
+      >i</a
+      ><a name="2311"
+      > </a
+      ><a name="2312" class="Symbol"
+      >=</a
+      ><a name="2313"
+      > </a
+      ><a name="2314" href="Data.Rational.html#2314" class="Bound"
+      >p</a
+      ><a name="2315" class="Symbol"
+      >}</a
+      ><a name="2316"
+      > </a
+      ><a name="2317" class="Symbol"
+      >{</a
+      ><a name="2318" class="Argument"
+      >j</a
+      ><a name="2319"
+      > </a
+      ><a name="2320" class="Symbol"
+      >=</a
+      ><a name="2321"
+      > </a
+      ><a name="2322" href="Data.Rational.html#2322" class="Bound"
+      >q</a
+      ><a name="2323" class="Symbol"
+      >}</a
+      ><a name="2324"
+      > </a
+      ><a name="2325" class="Symbol"
+      >=</a
+      ><a name="2326"
+      >
+  </a
+      ><a name="2329" href="Data.Rational.html#2457" class="Function"
+      >helper</a
+      ><a name="2335"
+      > </a
+      ><a name="2336" class="Symbol"
+      >(</a
+      ><a name="2337" href="Data.Rational.html#1218" class="Field"
+      >numerator</a
+      ><a name="2346"
+      > </a
+      ><a name="2347" href="Data.Rational.html#2314" class="Bound"
+      >p</a
+      ><a name="2348" class="Symbol"
+      >)</a
+      ><a name="2349"
+      > </a
+      ><a name="2350" class="Symbol"
+      >(</a
+      ><a name="2351" href="Data.Rational.html#1240" class="Field"
+      >denominator-1</a
+      ><a name="2364"
+      > </a
+      ><a name="2365" href="Data.Rational.html#2314" class="Bound"
+      >p</a
+      ><a name="2366" class="Symbol"
+      >)</a
+      ><a name="2367"
+      > </a
+      ><a name="2368" class="Symbol"
+      >(</a
+      ><a name="2369" href="Data.Rational.html#1262" class="Field"
+      >isCoprime</a
+      ><a name="2378"
+      > </a
+      ><a name="2379" href="Data.Rational.html#2314" class="Bound"
+      >p</a
+      ><a name="2380" class="Symbol"
+      >)</a
+      ><a name="2381"
+      >
+         </a
+      ><a name="2391" class="Symbol"
+      >(</a
+      ><a name="2392" href="Data.Rational.html#1218" class="Field"
+      >numerator</a
+      ><a name="2401"
+      > </a
+      ><a name="2402" href="Data.Rational.html#2322" class="Bound"
+      >q</a
+      ><a name="2403" class="Symbol"
+      >)</a
+      ><a name="2404"
+      > </a
+      ><a name="2405" class="Symbol"
+      >(</a
+      ><a name="2406" href="Data.Rational.html#1240" class="Field"
+      >denominator-1</a
+      ><a name="2419"
+      > </a
+      ><a name="2420" href="Data.Rational.html#2322" class="Bound"
+      >q</a
+      ><a name="2421" class="Symbol"
+      >)</a
+      ><a name="2422"
+      > </a
+      ><a name="2423" class="Symbol"
+      >(</a
+      ><a name="2424" href="Data.Rational.html#1262" class="Field"
+      >isCoprime</a
+      ><a name="2433"
+      > </a
+      ><a name="2434" href="Data.Rational.html#2322" class="Bound"
+      >q</a
+      ><a name="2435" class="Symbol"
+      >)</a
+      ><a name="2436"
+      >
+  </a
+      ><a name="2439" class="Keyword"
+      >where</a
+      ><a name="2444"
+      >
+  </a
+      ><a name="2447" class="Keyword"
+      >open</a
+      ><a name="2451"
+      > </a
+      ><a name="2452" href="Data.Rational.html#1192" class="Module"
+      >&#8474;</a
+      ><a name="2453"
+      >
+
+  </a
+      ><a name="2457" href="Data.Rational.html#2457" class="Function"
+      >helper</a
+      ><a name="2463"
+      > </a
+      ><a name="2464" class="Symbol"
+      >:</a
+      ><a name="2465"
+      > </a
+      ><a name="2466" class="Symbol"
+      >&#8704;</a
+      ><a name="2467"
+      > </a
+      ><a name="2468" href="Data.Rational.html#2468" class="Bound"
+      >n&#8321;</a
+      ><a name="2470"
+      > </a
+      ><a name="2471" href="Data.Rational.html#2471" class="Bound"
+      >d&#8321;</a
+      ><a name="2473"
+      > </a
+      ><a name="2474" href="Data.Rational.html#2474" class="Bound"
+      >c&#8321;</a
+      ><a name="2476"
+      > </a
+      ><a name="2477" href="Data.Rational.html#2477" class="Bound"
+      >n&#8322;</a
+      ><a name="2479"
+      > </a
+      ><a name="2480" href="Data.Rational.html#2480" class="Bound"
+      >d&#8322;</a
+      ><a name="2482"
+      > </a
+      ><a name="2483" href="Data.Rational.html#2483" class="Bound"
+      >c&#8322;</a
+      ><a name="2485"
+      > </a
+      ><a name="2486" class="Symbol"
+      >&#8594;</a
+      ><a name="2487"
+      >
+           </a
+      ><a name="2499" href="Data.Rational.html#2468" class="Bound"
+      >n&#8321;</a
+      ><a name="2501"
+      > </a
+      ><a name="2502" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="2505"
+      > </a
+      ><a name="2506" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2507"
+      > </a
+      ><a name="2508" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2511"
+      > </a
+      ><a name="2512" href="Data.Rational.html#2480" class="Bound"
+      >d&#8322;</a
+      ><a name="2514"
+      > </a
+      ><a name="2515" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2516"
+      > </a
+      ><a name="2517" href="Data.Rational.html#2477" class="Bound"
+      >n&#8322;</a
+      ><a name="2519"
+      > </a
+      ><a name="2520" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="2523"
+      > </a
+      ><a name="2524" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2525"
+      > </a
+      ><a name="2526" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2529"
+      > </a
+      ><a name="2530" href="Data.Rational.html#2471" class="Bound"
+      >d&#8321;</a
+      ><a name="2532"
+      > </a
+      ><a name="2533" class="Symbol"
+      >&#8594;</a
+      ><a name="2534"
+      >
+           </a
+      ><a name="2546" class="Symbol"
+      >(</a
+      ><a name="2547" href="Data.Rational.html#2468" class="Bound"
+      >n&#8321;</a
+      ><a name="2549"
+      > </a
+      ><a name="2550" href="Data.Rational.html#1553" class="Function Operator"
+      >&#247;</a
+      ><a name="2551"
+      > </a
+      ><a name="2552" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2555"
+      > </a
+      ><a name="2556" href="Data.Rational.html#2471" class="Bound"
+      >d&#8321;</a
+      ><a name="2558" class="Symbol"
+      >)</a
+      ><a name="2559"
+      > </a
+      ><a name="2560" class="Symbol"
+      >{</a
+      ><a name="2561" href="Data.Rational.html#2474" class="Bound"
+      >c&#8321;</a
+      ><a name="2563" class="Symbol"
+      >}</a
+      ><a name="2564"
+      > </a
+      ><a name="2565" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2566"
+      > </a
+      ><a name="2567" class="Symbol"
+      >(</a
+      ><a name="2568" href="Data.Rational.html#2477" class="Bound"
+      >n&#8322;</a
+      ><a name="2570"
+      > </a
+      ><a name="2571" href="Data.Rational.html#1553" class="Function Operator"
+      >&#247;</a
+      ><a name="2572"
+      > </a
+      ><a name="2573" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2576"
+      > </a
+      ><a name="2577" href="Data.Rational.html#2480" class="Bound"
+      >d&#8322;</a
+      ><a name="2579" class="Symbol"
+      >)</a
+      ><a name="2580"
+      > </a
+      ><a name="2581" class="Symbol"
+      >{</a
+      ><a name="2582" href="Data.Rational.html#2483" class="Bound"
+      >c&#8322;</a
+      ><a name="2584" class="Symbol"
+      >}</a
+      ><a name="2585"
+      >
+  </a
+      ><a name="2588" href="Data.Rational.html#2457" class="Function"
+      >helper</a
+      ><a name="2594"
+      > </a
+      ><a name="2595" href="Data.Rational.html#2595" class="Bound"
+      >n&#8321;</a
+      ><a name="2597"
+      > </a
+      ><a name="2598" href="Data.Rational.html#2598" class="Bound"
+      >d&#8321;</a
+      ><a name="2600"
+      > </a
+      ><a name="2601" href="Data.Rational.html#2601" class="Bound"
+      >c&#8321;</a
+      ><a name="2603"
+      > </a
+      ><a name="2604" href="Data.Rational.html#2604" class="Bound"
+      >n&#8322;</a
+      ><a name="2606"
+      > </a
+      ><a name="2607" href="Data.Rational.html#2607" class="Bound"
+      >d&#8322;</a
+      ><a name="2609"
+      > </a
+      ><a name="2610" href="Data.Rational.html#2610" class="Bound"
+      >c&#8322;</a
+      ><a name="2612"
+      > </a
+      ><a name="2613" href="Data.Rational.html#2613" class="Bound"
+      >eq</a
+      ><a name="2615"
+      >
+    </a
+      ><a name="2620" class="Keyword"
+      >with</a
+      ><a name="2624"
+      > </a
+      ><a name="2625" href="Relation.Binary.html#3552" class="Function"
+      >Poset.antisym</a
+      ><a name="2638"
+      > </a
+      ><a name="2639" href="Data.Nat.Divisibility.html#1599" class="Function"
+      >&#8469;Div.poset</a
+      ><a name="2649"
+      > </a
+      ><a name="2650" href="Data.Rational.html#2684" class="Function"
+      >1+d&#8321;&#8739;1+d&#8322;</a
+      ><a name="2659"
+      > </a
+      ><a name="2660" href="Data.Rational.html#3045" class="Function"
+      >1+d&#8322;&#8739;1+d&#8321;</a
+      ><a name="2669"
+      >
+    </a
+      ><a name="2674" class="Keyword"
+      >where</a
+      ><a name="2679"
+      >
+    </a
+      ><a name="2684" href="Data.Rational.html#2684" class="Function"
+      >1+d&#8321;&#8739;1+d&#8322;</a
+      ><a name="2693"
+      > </a
+      ><a name="2694" class="Symbol"
+      >:</a
+      ><a name="2695"
+      > </a
+      ><a name="2696" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2699"
+      > </a
+      ><a name="2700" href="Data.Rational.html#2598" class="Bound"
+      >d&#8321;</a
+      ><a name="2702"
+      > </a
+      ><a name="2703" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="2704"
+      > </a
+      ><a name="2705" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2708"
+      > </a
+      ><a name="2709" href="Data.Rational.html#2607" class="Bound"
+      >d&#8322;</a
+      ><a name="2711"
+      >
+    </a
+      ><a name="2716" href="Data.Rational.html#2684" class="Function"
+      >1+d&#8321;&#8739;1+d&#8322;</a
+      ><a name="2725"
+      > </a
+      ><a name="2726" class="Symbol"
+      >=</a
+      ><a name="2727"
+      > </a
+      ><a name="2728" href="Data.Integer.Divisibility.html#692" class="Function"
+      >&#8484;Div.coprime-divisor</a
+      ><a name="2748"
+      > </a
+      ><a name="2749" class="Symbol"
+      >(</a
+      ><a name="2750" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2751"
+      > </a
+      ><a name="2752" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2755"
+      > </a
+      ><a name="2756" href="Data.Rational.html#2598" class="Bound"
+      >d&#8321;</a
+      ><a name="2758" class="Symbol"
+      >)</a
+      ><a name="2759"
+      > </a
+      ><a name="2760" href="Data.Rational.html#2595" class="Bound"
+      >n&#8321;</a
+      ><a name="2762"
+      > </a
+      ><a name="2763" class="Symbol"
+      >(</a
+      ><a name="2764" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2765"
+      > </a
+      ><a name="2766" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2769"
+      > </a
+      ><a name="2770" href="Data.Rational.html#2607" class="Bound"
+      >d&#8322;</a
+      ><a name="2772" class="Symbol"
+      >)</a
+      ><a name="2773"
+      >
+                  </a
+      ><a name="2792" class="Symbol"
+      >(</a
+      ><a name="2793" href="Data.Nat.Coprimality.html#1903" class="Function"
+      >C.sym</a
+      ><a name="2798"
+      > </a
+      ><a name="2799" href="Function.html#1835" class="Function Operator"
+      >$</a
+      ><a name="2800"
+      > </a
+      ><a name="2801" href="Relation.Nullary.Decidable.html#1055" class="Function"
+      >toWitness</a
+      ><a name="2810"
+      > </a
+      ><a name="2811" href="Data.Rational.html#2601" class="Bound"
+      >c&#8321;</a
+      ><a name="2813" class="Symbol"
+      >)</a
+      ><a name="2814"
+      > </a
+      ><a name="2815" href="Function.html#1835" class="Function Operator"
+      >$</a
+      ><a name="2816"
+      >
+                  </a
+      ><a name="2835" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >&#8469;Div.divides</a
+      ><a name="2847"
+      > </a
+      ><a name="2848" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2849"
+      > </a
+      ><a name="2850" href="Data.Rational.html#2604" class="Bound"
+      >n&#8322;</a
+      ><a name="2852"
+      > </a
+      ><a name="2853" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2854"
+      > </a
+      ><a name="2855" class="Symbol"
+      >(</a
+      ><a name="2856" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      >begin</a
+      ><a name="2861"
+      >
+                    </a
+      ><a name="2882" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2883"
+      > </a
+      ><a name="2884" href="Data.Rational.html#2595" class="Bound"
+      >n&#8321;</a
+      ><a name="2886"
+      > </a
+      ><a name="2887" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="2890"
+      > </a
+      ><a name="2891" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2892"
+      > </a
+      ><a name="2893" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2896"
+      > </a
+      ><a name="2897" href="Data.Rational.html#2607" class="Bound"
+      >d&#8322;</a
+      ><a name="2899"
+      > </a
+      ><a name="2900" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2901"
+      >  </a
+      ><a name="2903" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="2905"
+      > </a
+      ><a name="2906" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >cong</a
+      ><a name="2910"
+      > </a
+      ><a name="2911" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;_&#8739;</a
+      ><a name="2914"
+      > </a
+      ><a name="2915" href="Data.Rational.html#2613" class="Bound"
+      >eq</a
+      ><a name="2917"
+      > </a
+      ><a name="2918" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="2919"
+      >
+                    </a
+      ><a name="2940" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2941"
+      > </a
+      ><a name="2942" href="Data.Rational.html#2604" class="Bound"
+      >n&#8322;</a
+      ><a name="2944"
+      > </a
+      ><a name="2945" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="2948"
+      > </a
+      ><a name="2949" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2950"
+      > </a
+      ><a name="2951" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2954"
+      > </a
+      ><a name="2955" href="Data.Rational.html#2598" class="Bound"
+      >d&#8321;</a
+      ><a name="2957"
+      > </a
+      ><a name="2958" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2959"
+      >  </a
+      ><a name="2961" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="2963"
+      > </a
+      ><a name="2964" href="Data.Integer.Properties.html#2770" class="Function"
+      >&#8484;.abs-*-commute</a
+      ><a name="2979"
+      > </a
+      ><a name="2980" href="Data.Rational.html#2604" class="Bound"
+      >n&#8322;</a
+      ><a name="2982"
+      > </a
+      ><a name="2983" class="Symbol"
+      >(</a
+      ><a name="2984" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2985"
+      > </a
+      ><a name="2986" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2989"
+      > </a
+      ><a name="2990" href="Data.Rational.html#2598" class="Bound"
+      >d&#8321;</a
+      ><a name="2992" class="Symbol"
+      >)</a
+      ><a name="2993"
+      > </a
+      ><a name="2994" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="2995"
+      >
+                    </a
+      ><a name="3016" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="3017"
+      > </a
+      ><a name="3018" href="Data.Rational.html#2604" class="Bound"
+      >n&#8322;</a
+      ><a name="3020"
+      > </a
+      ><a name="3021" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="3022"
+      > </a
+      ><a name="3023" href="Data.Nat.html#2473" class="Primitive Operator"
+      >&#8469;.*</a
+      ><a name="3026"
+      > </a
+      ><a name="3027" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3030"
+      > </a
+      ><a name="3031" href="Data.Rational.html#2598" class="Bound"
+      >d&#8321;</a
+      ><a name="3033"
+      >    </a
+      ><a name="3037" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >&#8718;</a
+      ><a name="3038" class="Symbol"
+      >)</a
+      ><a name="3039"
+      >
+
+    </a
+      ><a name="3045" href="Data.Rational.html#3045" class="Function"
+      >1+d&#8322;&#8739;1+d&#8321;</a
+      ><a name="3054"
+      > </a
+      ><a name="3055" class="Symbol"
+      >:</a
+      ><a name="3056"
+      > </a
+      ><a name="3057" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3060"
+      > </a
+      ><a name="3061" href="Data.Rational.html#2607" class="Bound"
+      >d&#8322;</a
+      ><a name="3063"
+      > </a
+      ><a name="3064" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="3065"
+      > </a
+      ><a name="3066" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3069"
+      > </a
+      ><a name="3070" href="Data.Rational.html#2598" class="Bound"
+      >d&#8321;</a
+      ><a name="3072"
+      >
+    </a
+      ><a name="3077" href="Data.Rational.html#3045" class="Function"
+      >1+d&#8322;&#8739;1+d&#8321;</a
+      ><a name="3086"
+      > </a
+      ><a name="3087" class="Symbol"
+      >=</a
+      ><a name="3088"
+      > </a
+      ><a name="3089" href="Data.Integer.Divisibility.html#692" class="Function"
+      >&#8484;Div.coprime-divisor</a
+      ><a name="3109"
+      > </a
+      ><a name="3110" class="Symbol"
+      >(</a
+      ><a name="3111" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3112"
+      > </a
+      ><a name="3113" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3116"
+      > </a
+      ><a name="3117" href="Data.Rational.html#2607" class="Bound"
+      >d&#8322;</a
+      ><a name="3119" class="Symbol"
+      >)</a
+      ><a name="3120"
+      > </a
+      ><a name="3121" href="Data.Rational.html#2604" class="Bound"
+      >n&#8322;</a
+      ><a name="3123"
+      > </a
+      ><a name="3124" class="Symbol"
+      >(</a
+      ><a name="3125" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3126"
+      > </a
+      ><a name="3127" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3130"
+      > </a
+      ><a name="3131" href="Data.Rational.html#2598" class="Bound"
+      >d&#8321;</a
+      ><a name="3133" class="Symbol"
+      >)</a
+      ><a name="3134"
+      >
+                  </a
+      ><a name="3153" class="Symbol"
+      >(</a
+      ><a name="3154" href="Data.Nat.Coprimality.html#1903" class="Function"
+      >C.sym</a
+      ><a name="3159"
+      > </a
+      ><a name="3160" href="Function.html#1835" class="Function Operator"
+      >$</a
+      ><a name="3161"
+      > </a
+      ><a name="3162" href="Relation.Nullary.Decidable.html#1055" class="Function"
+      >toWitness</a
+      ><a name="3171"
+      > </a
+      ><a name="3172" href="Data.Rational.html#2610" class="Bound"
+      >c&#8322;</a
+      ><a name="3174" class="Symbol"
+      >)</a
+      ><a name="3175"
+      > </a
+      ><a name="3176" href="Function.html#1835" class="Function Operator"
+      >$</a
+      ><a name="3177"
+      >
+                  </a
+      ><a name="3196" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      >&#8469;Div.divides</a
+      ><a name="3208"
+      > </a
+      ><a name="3209" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="3210"
+      > </a
+      ><a name="3211" href="Data.Rational.html#2595" class="Bound"
+      >n&#8321;</a
+      ><a name="3213"
+      > </a
+      ><a name="3214" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="3215"
+      > </a
+      ><a name="3216" class="Symbol"
+      >(</a
+      ><a name="3217" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      >begin</a
+      ><a name="3222"
+      >
+                    </a
+      ><a name="3243" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="3244"
+      > </a
+      ><a name="3245" href="Data.Rational.html#2604" class="Bound"
+      >n&#8322;</a
+      ><a name="3247"
+      > </a
+      ><a name="3248" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="3251"
+      > </a
+      ><a name="3252" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3253"
+      > </a
+      ><a name="3254" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3257"
+      > </a
+      ><a name="3258" href="Data.Rational.html#2598" class="Bound"
+      >d&#8321;</a
+      ><a name="3260"
+      > </a
+      ><a name="3261" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="3262"
+      >  </a
+      ><a name="3264" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="3266"
+      > </a
+      ><a name="3267" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >cong</a
+      ><a name="3271"
+      > </a
+      ><a name="3272" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;_&#8739;</a
+      ><a name="3275"
+      > </a
+      ><a name="3276" class="Symbol"
+      >(</a
+      ><a name="3277" href="Relation.Binary.PropositionalEquality.Core.html#565" class="Function"
+      >P.sym</a
+      ><a name="3282"
+      > </a
+      ><a name="3283" href="Data.Rational.html#2613" class="Bound"
+      >eq</a
+      ><a name="3285" class="Symbol"
+      >)</a
+      ><a name="3286"
+      > </a
+      ><a name="3287" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="3288"
+      >
+                    </a
+      ><a name="3309" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="3310"
+      > </a
+      ><a name="3311" href="Data.Rational.html#2595" class="Bound"
+      >n&#8321;</a
+      ><a name="3313"
+      > </a
+      ><a name="3314" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="3317"
+      > </a
+      ><a name="3318" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3319"
+      > </a
+      ><a name="3320" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3323"
+      > </a
+      ><a name="3324" href="Data.Rational.html#2607" class="Bound"
+      >d&#8322;</a
+      ><a name="3326"
+      > </a
+      ><a name="3327" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="3328"
+      >  </a
+      ><a name="3330" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="3332"
+      > </a
+      ><a name="3333" href="Data.Integer.Properties.html#2770" class="Function"
+      >&#8484;.abs-*-commute</a
+      ><a name="3348"
+      > </a
+      ><a name="3349" href="Data.Rational.html#2595" class="Bound"
+      >n&#8321;</a
+      ><a name="3351"
+      > </a
+      ><a name="3352" class="Symbol"
+      >(</a
+      ><a name="3353" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3354"
+      > </a
+      ><a name="3355" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3358"
+      > </a
+      ><a name="3359" href="Data.Rational.html#2607" class="Bound"
+      >d&#8322;</a
+      ><a name="3361" class="Symbol"
+      >)</a
+      ><a name="3362"
+      > </a
+      ><a name="3363" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="3364"
+      >
+                    </a
+      ><a name="3385" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="3386"
+      > </a
+      ><a name="3387" href="Data.Rational.html#2595" class="Bound"
+      >n&#8321;</a
+      ><a name="3389"
+      > </a
+      ><a name="3390" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="3391"
+      > </a
+      ><a name="3392" href="Data.Nat.html#2473" class="Primitive Operator"
+      >&#8469;.*</a
+      ><a name="3395"
+      > </a
+      ><a name="3396" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3399"
+      > </a
+      ><a name="3400" href="Data.Rational.html#2607" class="Bound"
+      >d&#8322;</a
+      ><a name="3402"
+      >    </a
+      ><a name="3406" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >&#8718;</a
+      ><a name="3407" class="Symbol"
+      >)</a
+      ><a name="3408"
+      >
+
+  </a
+      ><a name="3412" href="Data.Rational.html#2457" class="Function"
+      >helper</a
+      ><a name="3418"
+      > </a
+      ><a name="3419" href="Data.Rational.html#3419" class="Bound"
+      >n&#8321;</a
+      ><a name="3421"
+      > </a
+      ><a name="3422" href="Data.Rational.html#3422" class="Bound"
+      >d</a
+      ><a name="3423"
+      > </a
+      ><a name="3424" href="Data.Rational.html#3424" class="Bound"
+      >c&#8321;</a
+      ><a name="3426"
+      > </a
+      ><a name="3427" href="Data.Rational.html#3427" class="Bound"
+      >n&#8322;</a
+      ><a name="3429"
+      > </a
+      ><a name="3430" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3431" href="Data.Rational.html#3422" class="DottedPattern Bound"
+      >d</a
+      ><a name="3432"
+      > </a
+      ><a name="3433" href="Data.Rational.html#3433" class="Bound"
+      >c&#8322;</a
+      ><a name="3435"
+      > </a
+      ><a name="3436" href="Data.Rational.html#3436" class="Bound"
+      >eq</a
+      ><a name="3438"
+      > </a
+      ><a name="3439" class="Symbol"
+      >|</a
+      ><a name="3440"
+      > </a
+      ><a name="3441" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3445"
+      > </a
+      ><a name="3446" class="Keyword"
+      >with</a
+      ><a name="3450"
+      > </a
+      ><a name="3451" href="Data.Integer.Properties.html#9884" class="Function"
+      >&#8484;.cancel-*-right</a
+      ><a name="3467"
+      >
+                                           </a
+      ><a name="3511" href="Data.Rational.html#3419" class="Bound"
+      >n&#8321;</a
+      ><a name="3513"
+      > </a
+      ><a name="3514" href="Data.Rational.html#3427" class="Bound"
+      >n&#8322;</a
+      ><a name="3516"
+      > </a
+      ><a name="3517" class="Symbol"
+      >(</a
+      ><a name="3518" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3519"
+      > </a
+      ><a name="3520" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3523"
+      > </a
+      ><a name="3524" href="Data.Rational.html#3422" class="Bound"
+      >d</a
+      ><a name="3525" class="Symbol"
+      >)</a
+      ><a name="3526"
+      > </a
+      ><a name="3527" class="Symbol"
+      >(&#955;</a
+      ><a name="3529"
+      > </a
+      ><a name="3530" class="Symbol"
+      >())</a
+      ><a name="3533"
+      > </a
+      ><a name="3534" href="Data.Rational.html#3436" class="Bound"
+      >eq</a
+      ><a name="3536"
+      >
+  </a
+      ><a name="3539" href="Data.Rational.html#2457" class="Function"
+      >helper</a
+      ><a name="3545"
+      > </a
+      ><a name="3546" href="Data.Rational.html#3546" class="Bound"
+      >n</a
+      ><a name="3547"
+      >  </a
+      ><a name="3549" href="Data.Rational.html#3549" class="Bound"
+      >d</a
+      ><a name="3550"
+      > </a
+      ><a name="3551" href="Data.Rational.html#3551" class="Bound"
+      >c&#8321;</a
+      ><a name="3553"
+      > </a
+      ><a name="3554" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3555" href="Data.Rational.html#3546" class="DottedPattern Bound"
+      >n</a
+      ><a name="3556"
+      > </a
+      ><a name="3557" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3558" href="Data.Rational.html#3549" class="DottedPattern Bound"
+      >d</a
+      ><a name="3559"
+      > </a
+      ><a name="3560" href="Data.Rational.html#3560" class="Bound"
+      >c&#8322;</a
+      ><a name="3562"
+      > </a
+      ><a name="3563" href="Data.Rational.html#3563" class="Bound"
+      >eq</a
+      ><a name="3565"
+      > </a
+      ><a name="3566" class="Symbol"
+      >|</a
+      ><a name="3567"
+      > </a
+      ><a name="3568" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3572"
+      > </a
+      ><a name="3573" class="Symbol"
+      >|</a
+      ><a name="3574"
+      > </a
+      ><a name="3575" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3579"
+      > </a
+      ><a name="3580" class="Keyword"
+      >with</a
+      ><a name="3584"
+      > </a
+      ><a name="3585" href="Data.Bool.Properties.html#8540" class="Function"
+      >Bool.proof-irrelevance</a
+      ><a name="3607"
+      > </a
+      ><a name="3608" href="Data.Rational.html#3551" class="Bound"
+      >c&#8321;</a
+      ><a name="3610"
+      > </a
+      ><a name="3611" href="Data.Rational.html#3560" class="Bound"
+      >c&#8322;</a
+      ><a name="3613"
+      >
+  </a
+      ><a name="3616" href="Data.Rational.html#2457" class="Function"
+      >helper</a
+      ><a name="3622"
+      > </a
+      ><a name="3623" href="Data.Rational.html#3623" class="Bound"
+      >n</a
+      ><a name="3624"
+      >  </a
+      ><a name="3626" href="Data.Rational.html#3626" class="Bound"
+      >d</a
+      ><a name="3627"
+      > </a
+      ><a name="3628" href="Data.Rational.html#3628" class="Bound"
+      >c</a
+      ><a name="3629"
+      >  </a
+      ><a name="3631" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3632" href="Data.Rational.html#3623" class="DottedPattern Bound"
+      >n</a
+      ><a name="3633"
+      > </a
+      ><a name="3634" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3635" href="Data.Rational.html#3626" class="DottedPattern Bound"
+      >d</a
+      ><a name="3636"
+      > </a
+      ><a name="3637" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3638" href="Data.Rational.html#3628" class="DottedPattern Bound"
+      >c</a
+      ><a name="3639"
+      > </a
+      ><a name="3640" href="Data.Rational.html#3640" class="Bound"
+      >eq</a
+      ><a name="3642"
+      > </a
+      ><a name="3643" class="Symbol"
+      >|</a
+      ><a name="3644"
+      > </a
+      ><a name="3645" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3649"
+      > </a
+      ><a name="3650" class="Symbol"
+      >|</a
+      ><a name="3651"
+      > </a
+      ><a name="3652" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3656"
+      > </a
+      ><a name="3657" class="Symbol"
+      >|</a
+      ><a name="3658"
+      > </a
+      ><a name="3659" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3663"
+      > </a
+      ><a name="3664" class="Symbol"
+      >=</a
+      ><a name="3665"
+      > </a
+      ><a name="3666" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3670"
+      >
+
+</a
+      ><a name="3672" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="3744"
+      >
+</a
+      ><a name="3745" class="Comment"
+      >-- Equality is decidable</a
+      ><a name="3769"
+      >
+
+</a
+      ><a name="3771" class="Keyword"
+      >infix</a
+      ><a name="3776"
+      > </a
+      ><a name="3777" class="Number"
+      >4</a
+      ><a name="3778"
+      > _&#8799;_
+
+</a
+      ><a name="3784" href="Data.Rational.html#3784" class="Function Operator"
+      >_&#8799;_</a
+      ><a name="3787"
+      > </a
+      ><a name="3788" class="Symbol"
+      >:</a
+      ><a name="3789"
+      > </a
+      ><a name="3790" href="Relation.Binary.Core.html#3511" class="Function"
+      >Decidable</a
+      ><a name="3799"
+      > </a
+      ><a name="3800" class="Symbol"
+      >{</a
+      ><a name="3801" class="Argument"
+      >A</a
+      ><a name="3802"
+      > </a
+      ><a name="3803" class="Symbol"
+      >=</a
+      ><a name="3804"
+      > </a
+      ><a name="3805" href="Data.Rational.html#1192" class="Record"
+      >&#8474;</a
+      ><a name="3806" class="Symbol"
+      >}</a
+      ><a name="3807"
+      > </a
+      ><a name="3808" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="3811"
+      >
+</a
+      ><a name="3812" href="Data.Rational.html#3812" class="Bound"
+      >p</a
+      ><a name="3813"
+      > </a
+      ><a name="3814" href="Data.Rational.html#3784" class="Function Operator"
+      >&#8799;</a
+      ><a name="3815"
+      > </a
+      ><a name="3816" href="Data.Rational.html#3816" class="Bound"
+      >q</a
+      ><a name="3817"
+      > </a
+      ><a name="3818" class="Keyword"
+      >with</a
+      ><a name="3822"
+      > </a
+      ><a name="3823" href="Data.Rational.html#1218" class="Field"
+      >&#8474;.numerator</a
+      ><a name="3834"
+      > </a
+      ><a name="3835" href="Data.Rational.html#3812" class="Bound"
+      >p</a
+      ><a name="3836"
+      > </a
+      ><a name="3837" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="3840"
+      > </a
+      ><a name="3841" href="Data.Rational.html#1333" class="Function"
+      >&#8474;.denominator</a
+      ><a name="3854"
+      > </a
+      ><a name="3855" href="Data.Rational.html#3816" class="Bound"
+      >q</a
+      ><a name="3856"
+      > </a
+      ><a name="3857" href="Data.Integer.html#2433" class="Function Operator"
+      >&#8484;.&#8799;</a
+      ><a name="3860"
+      >
+           </a
+      ><a name="3872" href="Data.Rational.html#1218" class="Field"
+      >&#8474;.numerator</a
+      ><a name="3883"
+      > </a
+      ><a name="3884" href="Data.Rational.html#3816" class="Bound"
+      >q</a
+      ><a name="3885"
+      > </a
+      ><a name="3886" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="3889"
+      > </a
+      ><a name="3890" href="Data.Rational.html#1333" class="Function"
+      >&#8474;.denominator</a
+      ><a name="3903"
+      > </a
+      ><a name="3904" href="Data.Rational.html#3812" class="Bound"
+      >p</a
+      ><a name="3905"
+      >
+</a
+      ><a name="3906" href="Data.Rational.html#3906" class="Bound"
+      >p</a
+      ><a name="3907"
+      > </a
+      ><a name="3908" href="Data.Rational.html#3784" class="Function Operator"
+      >&#8799;</a
+      ><a name="3909"
+      > </a
+      ><a name="3910" href="Data.Rational.html#3910" class="Bound"
+      >q</a
+      ><a name="3911"
+      > </a
+      ><a name="3912" class="Symbol"
+      >|</a
+      ><a name="3913"
+      > </a
+      ><a name="3914" href="Relation.Nullary.Core.html#504" class="InductiveConstructor"
+      >yes</a
+      ><a name="3917"
+      > </a
+      ><a name="3918" href="Data.Rational.html#3918" class="Bound"
+      >pq&#8771;qp</a
+      ><a name="3923"
+      > </a
+      ><a name="3924" class="Symbol"
+      >=</a
+      ><a name="3925"
+      > </a
+      ><a name="3926" href="Relation.Nullary.Core.html#504" class="InductiveConstructor"
+      >yes</a
+      ><a name="3929"
+      > </a
+      ><a name="3930" class="Symbol"
+      >(</a
+      ><a name="3931" href="Data.Rational.html#2289" class="Function"
+      >&#8771;&#8658;&#8801;</a
+      ><a name="3934"
+      > </a
+      ><a name="3935" href="Data.Rational.html#3918" class="Bound"
+      >pq&#8771;qp</a
+      ><a name="3940" class="Symbol"
+      >)</a
+      ><a name="3941"
+      >
+</a
+      ><a name="3942" href="Data.Rational.html#3942" class="Bound"
+      >p</a
+      ><a name="3943"
+      > </a
+      ><a name="3944" href="Data.Rational.html#3784" class="Function Operator"
+      >&#8799;</a
+      ><a name="3945"
+      > </a
+      ><a name="3946" href="Data.Rational.html#3946" class="Bound"
+      >q</a
+      ><a name="3947"
+      > </a
+      ><a name="3948" class="Symbol"
+      >|</a
+      ><a name="3949"
+      > </a
+      ><a name="3950" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="3952"
+      > </a
+      ><a name="3953" href="Data.Rational.html#3953" class="Bound"
+      >&#172;pq&#8771;qp</a
+      ><a name="3959"
+      > </a
+      ><a name="3960" class="Symbol"
+      >=</a
+      ><a name="3961"
+      > </a
+      ><a name="3962" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="3964"
+      > </a
+      ><a name="3965" class="Symbol"
+      >(</a
+      ><a name="3966" href="Data.Rational.html#3953" class="Bound"
+      >&#172;pq&#8771;qp</a
+      ><a name="3972"
+      > </a
+      ><a name="3973" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="3974"
+      > </a
+      ><a name="3975" href="Data.Rational.html#2256" class="Function"
+      >&#8801;&#8658;&#8771;</a
+      ><a name="3978" class="Symbol"
+      >)</a
+      ><a name="3979"
+      >
+
+</a
+      ><a name="3981" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="4053"
+      >
+</a
+      ><a name="4054" class="Comment"
+      >-- Ordering</a
+      ><a name="4065"
+      >
+
+</a
+      ><a name="4067" class="Keyword"
+      >infix</a
+      ><a name="4072"
+      > </a
+      ><a name="4073" class="Number"
+      >4</a
+      ><a name="4074"
+      > _&#8804;_ _&#8804;?_
+
+</a
+      ><a name="4085" class="Keyword"
+      >data</a
+      ><a name="4089"
+      > </a
+      ><a name="4090" href="Data.Rational.html#4090" class="Datatype Operator"
+      >_&#8804;_</a
+      ><a name="4093"
+      > </a
+      ><a name="4094" class="Symbol"
+      >:</a
+      ><a name="4095"
+      > </a
+      ><a name="4096" href="Data.Rational.html#1192" class="Record"
+      >&#8474;</a
+      ><a name="4097"
+      > </a
+      ><a name="4098" class="Symbol"
+      >&#8594;</a
+      ><a name="4099"
+      > </a
+      ><a name="4100" href="Data.Rational.html#1192" class="Record"
+      >&#8474;</a
+      ><a name="4101"
+      > </a
+      ><a name="4102" class="Symbol"
+      >&#8594;</a
+      ><a name="4103"
+      > </a
+      ><a name="4104" class="PrimitiveType"
+      >Set</a
+      ><a name="4107"
+      > </a
+      ><a name="4108" class="Keyword"
+      >where</a
+      ><a name="4113"
+      >
+  </a
+      ><a name="4116" href="Data.Rational.html#4116" class="InductiveConstructor"
+      >*&#8804;*</a
+      ><a name="4119"
+      > </a
+      ><a name="4120" class="Symbol"
+      >:</a
+      ><a name="4121"
+      > </a
+      ><a name="4122" class="Symbol"
+      >&#8704;</a
+      ><a name="4123"
+      > </a
+      ><a name="4124" class="Symbol"
+      >{</a
+      ><a name="4125" href="Data.Rational.html#4125" class="Bound"
+      >p</a
+      ><a name="4126"
+      > </a
+      ><a name="4127" href="Data.Rational.html#4127" class="Bound"
+      >q</a
+      ><a name="4128" class="Symbol"
+      >}</a
+      ><a name="4129"
+      > </a
+      ><a name="4130" class="Symbol"
+      >&#8594;</a
+      ><a name="4131"
+      >
+        </a
+      ><a name="4140" href="Data.Rational.html#1218" class="Field"
+      >&#8474;.numerator</a
+      ><a name="4151"
+      > </a
+      ><a name="4152" href="Data.Rational.html#4125" class="Bound"
+      >p</a
+      ><a name="4153"
+      > </a
+      ><a name="4154" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="4157"
+      > </a
+      ><a name="4158" href="Data.Rational.html#1333" class="Function"
+      >&#8474;.denominator</a
+      ><a name="4171"
+      > </a
+      ><a name="4172" href="Data.Rational.html#4127" class="Bound"
+      >q</a
+      ><a name="4173"
+      > </a
+      ><a name="4174" href="Data.Integer.html#4208" class="Datatype Operator"
+      >&#8484;.&#8804;</a
+      ><a name="4177"
+      >
+        </a
+      ><a name="4186" href="Data.Rational.html#1218" class="Field"
+      >&#8474;.numerator</a
+      ><a name="4197"
+      > </a
+      ><a name="4198" href="Data.Rational.html#4127" class="Bound"
+      >q</a
+      ><a name="4199"
+      > </a
+      ><a name="4200" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="4203"
+      > </a
+      ><a name="4204" href="Data.Rational.html#1333" class="Function"
+      >&#8474;.denominator</a
+      ><a name="4217"
+      > </a
+      ><a name="4218" href="Data.Rational.html#4125" class="Bound"
+      >p</a
+      ><a name="4219"
+      > </a
+      ><a name="4220" class="Symbol"
+      >&#8594;</a
+      ><a name="4221"
+      >
+        </a
+      ><a name="4230" href="Data.Rational.html#4125" class="Bound"
+      >p</a
+      ><a name="4231"
+      > </a
+      ><a name="4232" href="Data.Rational.html#4090" class="Datatype Operator"
+      >&#8804;</a
+      ><a name="4233"
+      > </a
+      ><a name="4234" href="Data.Rational.html#4127" class="Bound"
+      >q</a
+      ><a name="4235"
+      >
+
+</a
+      ><a name="4237" href="Data.Rational.html#4237" class="Function"
+      >drop-*&#8804;*</a
+      ><a name="4245"
+      > </a
+      ><a name="4246" class="Symbol"
+      >:</a
+      ><a name="4247"
+      > </a
+      ><a name="4248" class="Symbol"
+      >&#8704;</a
+      ><a name="4249"
+      > </a
+      ><a name="4250" class="Symbol"
+      >{</a
+      ><a name="4251" href="Data.Rational.html#4251" class="Bound"
+      >p</a
+      ><a name="4252"
+      > </a
+      ><a name="4253" href="Data.Rational.html#4253" class="Bound"
+      >q</a
+      ><a name="4254" class="Symbol"
+      >}</a
+      ><a name="4255"
+      > </a
+      ><a name="4256" class="Symbol"
+      >&#8594;</a
+      ><a name="4257"
+      > </a
+      ><a name="4258" href="Data.Rational.html#4251" class="Bound"
+      >p</a
+      ><a name="4259"
+      > </a
+      ><a name="4260" href="Data.Rational.html#4090" class="Datatype Operator"
+      >&#8804;</a
+      ><a name="4261"
+      > </a
+      ><a name="4262" href="Data.Rational.html#4253" class="Bound"
+      >q</a
+      ><a name="4263"
+      > </a
+      ><a name="4264" class="Symbol"
+      >&#8594;</a
+      ><a name="4265"
+      >
+           </a
+      ><a name="4277" href="Data.Rational.html#1218" class="Field"
+      >&#8474;.numerator</a
+      ><a name="4288"
+      > </a
+      ><a name="4289" href="Data.Rational.html#4251" class="Bound"
+      >p</a
+      ><a name="4290"
+      > </a
+      ><a name="4291" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="4294"
+      > </a
+      ><a name="4295" href="Data.Rational.html#1333" class="Function"
+      >&#8474;.denominator</a
+      ><a name="4308"
+      > </a
+      ><a name="4309" href="Data.Rational.html#4253" class="Bound"
+      >q</a
+      ><a name="4310"
+      > </a
+      ><a name="4311" href="Data.Integer.html#4208" class="Datatype Operator"
+      >&#8484;.&#8804;</a
+      ><a name="4314"
+      >
+           </a
+      ><a name="4326" href="Data.Rational.html#1218" class="Field"
+      >&#8474;.numerator</a
+      ><a name="4337"
+      > </a
+      ><a name="4338" href="Data.Rational.html#4253" class="Bound"
+      >q</a
+      ><a name="4339"
+      > </a
+      ><a name="4340" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="4343"
+      > </a
+      ><a name="4344" href="Data.Rational.html#1333" class="Function"
+      >&#8474;.denominator</a
+      ><a name="4357"
+      > </a
+      ><a name="4358" href="Data.Rational.html#4251" class="Bound"
+      >p</a
+      ><a name="4359"
+      >
+</a
+      ><a name="4360" href="Data.Rational.html#4237" class="Function"
+      >drop-*&#8804;*</a
+      ><a name="4368"
+      > </a
+      ><a name="4369" class="Symbol"
+      >(</a
+      ><a name="4370" href="Data.Rational.html#4116" class="InductiveConstructor"
+      >*&#8804;*</a
+      ><a name="4373"
+      > </a
+      ><a name="4374" href="Data.Rational.html#4374" class="Bound"
+      >pq&#8804;qp</a
+      ><a name="4379" class="Symbol"
+      >)</a
+      ><a name="4380"
+      > </a
+      ><a name="4381" class="Symbol"
+      >=</a
+      ><a name="4382"
+      > </a
+      ><a name="4383" href="Data.Rational.html#4374" class="Bound"
+      >pq&#8804;qp</a
+      ><a name="4388"
+      >
+
+</a
+      ><a name="4390" href="Data.Rational.html#4390" class="Function Operator"
+      >_&#8804;?_</a
+      ><a name="4394"
+      > </a
+      ><a name="4395" class="Symbol"
+      >:</a
+      ><a name="4396"
+      > </a
+      ><a name="4397" href="Relation.Binary.Core.html#3511" class="Function"
+      >Decidable</a
+      ><a name="4406"
+      > </a
+      ><a name="4407" href="Data.Rational.html#4090" class="Datatype Operator"
+      >_&#8804;_</a
+      ><a name="4410"
+      >
+</a
+      ><a name="4411" href="Data.Rational.html#4411" class="Bound"
+      >p</a
+      ><a name="4412"
+      > </a
+      ><a name="4413" href="Data.Rational.html#4390" class="Function Operator"
+      >&#8804;?</a
+      ><a name="4415"
+      > </a
+      ><a name="4416" href="Data.Rational.html#4416" class="Bound"
+      >q</a
+      ><a name="4417"
+      > </a
+      ><a name="4418" class="Keyword"
+      >with</a
+      ><a name="4422"
+      > </a
+      ><a name="4423" href="Data.Rational.html#1218" class="Field"
+      >&#8474;.numerator</a
+      ><a name="4434"
+      > </a
+      ><a name="4435" href="Data.Rational.html#4411" class="Bound"
+      >p</a
+      ><a name="4436"
+      > </a
+      ><a name="4437" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="4440"
+      > </a
+      ><a name="4441" href="Data.Rational.html#1333" class="Function"
+      >&#8474;.denominator</a
+      ><a name="4454"
+      > </a
+      ><a name="4455" href="Data.Rational.html#4416" class="Bound"
+      >q</a
+      ><a name="4456"
+      > </a
+      ><a name="4457" href="Data.Integer.html#4520" class="Function Operator"
+      >&#8484;.&#8804;?</a
+      ><a name="4461"
+      >
+            </a
+      ><a name="4474" href="Data.Rational.html#1218" class="Field"
+      >&#8474;.numerator</a
+      ><a name="4485"
+      > </a
+      ><a name="4486" href="Data.Rational.html#4416" class="Bound"
+      >q</a
+      ><a name="4487"
+      > </a
+      ><a name="4488" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="4491"
+      > </a
+      ><a name="4492" href="Data.Rational.html#1333" class="Function"
+      >&#8474;.denominator</a
+      ><a name="4505"
+      > </a
+      ><a name="4506" href="Data.Rational.html#4411" class="Bound"
+      >p</a
+      ><a name="4507"
+      >
+</a
+      ><a name="4508" href="Data.Rational.html#4508" class="Bound"
+      >p</a
+      ><a name="4509"
+      > </a
+      ><a name="4510" href="Data.Rational.html#4390" class="Function Operator"
+      >&#8804;?</a
+      ><a name="4512"
+      > </a
+      ><a name="4513" href="Data.Rational.html#4513" class="Bound"
+      >q</a
+      ><a name="4514"
+      > </a
+      ><a name="4515" class="Symbol"
+      >|</a
+      ><a name="4516"
+      > </a
+      ><a name="4517" href="Relation.Nullary.Core.html#504" class="InductiveConstructor"
+      >yes</a
+      ><a name="4520"
+      > </a
+      ><a name="4521" href="Data.Rational.html#4521" class="Bound"
+      >pq&#8804;qp</a
+      ><a name="4526"
+      > </a
+      ><a name="4527" class="Symbol"
+      >=</a
+      ><a name="4528"
+      > </a
+      ><a name="4529" href="Relation.Nullary.Core.html#504" class="InductiveConstructor"
+      >yes</a
+      ><a name="4532"
+      > </a
+      ><a name="4533" class="Symbol"
+      >(</a
+      ><a name="4534" href="Data.Rational.html#4116" class="InductiveConstructor"
+      >*&#8804;*</a
+      ><a name="4537"
+      > </a
+      ><a name="4538" href="Data.Rational.html#4521" class="Bound"
+      >pq&#8804;qp</a
+      ><a name="4543" class="Symbol"
+      >)</a
+      ><a name="4544"
+      >
+</a
+      ><a name="4545" href="Data.Rational.html#4545" class="Bound"
+      >p</a
+      ><a name="4546"
+      > </a
+      ><a name="4547" href="Data.Rational.html#4390" class="Function Operator"
+      >&#8804;?</a
+      ><a name="4549"
+      > </a
+      ><a name="4550" href="Data.Rational.html#4550" class="Bound"
+      >q</a
+      ><a name="4551"
+      > </a
+      ><a name="4552" class="Symbol"
+      >|</a
+      ><a name="4553"
+      > </a
+      ><a name="4554" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="4556"
+      > </a
+      ><a name="4557" href="Data.Rational.html#4557" class="Bound"
+      >&#172;pq&#8804;qp</a
+      ><a name="4563"
+      > </a
+      ><a name="4564" class="Symbol"
+      >=</a
+      ><a name="4565"
+      > </a
+      ><a name="4566" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="4568"
+      > </a
+      ><a name="4569" class="Symbol"
+      >(&#955;</a
+      ><a name="4571"
+      > </a
+      ><a name="4572" class="Symbol"
+      >{</a
+      ><a name="4573"
+      > </a
+      ><a name="4574" class="Symbol"
+      >(</a
+      ><a name="4575" href="Data.Rational.html#4116" class="InductiveConstructor"
+      >*&#8804;*</a
+      ><a name="4578"
+      > </a
+      ><a name="4579" href="Data.Rational.html#4579" class="Bound"
+      >pq&#8804;qp</a
+      ><a name="4584" class="Symbol"
+      >)</a
+      ><a name="4585"
+      > </a
+      ><a name="4586" class="Symbol"
+      >&#8594;</a
+      ><a name="4587"
+      > </a
+      ><a name="4588" href="Data.Rational.html#4557" class="Bound"
+      >&#172;pq&#8804;qp</a
+      ><a name="4594"
+      > </a
+      ><a name="4595" href="Data.Rational.html#4579" class="Bound"
+      >pq&#8804;qp</a
+      ><a name="4600"
+      > </a
+      ><a name="4601" class="Symbol"
+      >})</a
+      ><a name="4603"
+      >
+
+</a
+      ><a name="4605" href="Data.Rational.html#4605" class="Function"
+      >decTotalOrder</a
+      ><a name="4618"
+      > </a
+      ><a name="4619" class="Symbol"
+      >:</a
+      ><a name="4620"
+      > </a
+      ><a name="4621" href="Relation.Binary.html#9168" class="Record"
+      >DecTotalOrder</a
+      ><a name="4634"
+      > </a
+      ><a name="4635" class="Symbol"
+      >_</a
+      ><a name="4636"
+      > </a
+      ><a name="4637" class="Symbol"
+      >_</a
+      ><a name="4638"
+      > </a
+      ><a name="4639" class="Symbol"
+      >_</a
+      ><a name="4640"
+      >
+</a
+      ><a name="4641" href="Data.Rational.html#4605" class="Function"
+      >decTotalOrder</a
+      ><a name="4654"
+      > </a
+      ><a name="4655" class="Symbol"
+      >=</a
+      ><a name="4656"
+      > </a
+      ><a name="4657" class="Keyword"
+      >record</a
+      ><a name="4663"
+      >
+  </a
+      ><a name="4666" class="Symbol"
+      >{</a
+      ><a name="4667"
+      > </a
+      ><a name="4668" class="Field"
+      >Carrier</a
+      ><a name="4675"
+      >         </a
+      ><a name="4684" class="Symbol"
+      >=</a
+      ><a name="4685"
+      > </a
+      ><a name="4686" href="Data.Rational.html#1192" class="Record"
+      >&#8474;</a
+      ><a name="4687"
+      >
+  </a
+      ><a name="4690" class="Symbol"
+      >;</a
+      ><a name="4691"
+      > </a
+      ><a name="4692" class="Field Operator"
+      >_&#8776;_</a
+      ><a name="4695"
+      >             </a
+      ><a name="4708" class="Symbol"
+      >=</a
+      ><a name="4709"
+      > </a
+      ><a name="4710" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="4713"
+      >
+  </a
+      ><a name="4716" class="Symbol"
+      >;</a
+      ><a name="4717"
+      > </a
+      ><a name="4718" class="Field Operator"
+      >_&#8804;_</a
+      ><a name="4721"
+      >             </a
+      ><a name="4734" class="Symbol"
+      >=</a
+      ><a name="4735"
+      > </a
+      ><a name="4736" href="Data.Rational.html#4090" class="Datatype Operator"
+      >_&#8804;_</a
+      ><a name="4739"
+      >
+  </a
+      ><a name="4742" class="Symbol"
+      >;</a
+      ><a name="4743"
+      > </a
+      ><a name="4744" class="Field"
+      >isDecTotalOrder</a
+      ><a name="4759"
+      > </a
+      ><a name="4760" class="Symbol"
+      >=</a
+      ><a name="4761"
+      > </a
+      ><a name="4762" class="Keyword"
+      >record</a
+      ><a name="4768"
+      >
+      </a
+      ><a name="4775" class="Symbol"
+      >{</a
+      ><a name="4776"
+      > </a
+      ><a name="4777" class="Field"
+      >isTotalOrder</a
+      ><a name="4789"
+      > </a
+      ><a name="4790" class="Symbol"
+      >=</a
+      ><a name="4791"
+      > </a
+      ><a name="4792" class="Keyword"
+      >record</a
+      ><a name="4798"
+      >
+          </a
+      ><a name="4809" class="Symbol"
+      >{</a
+      ><a name="4810"
+      > </a
+      ><a name="4811" class="Field"
+      >isPartialOrder</a
+      ><a name="4825"
+      > </a
+      ><a name="4826" class="Symbol"
+      >=</a
+      ><a name="4827"
+      > </a
+      ><a name="4828" class="Keyword"
+      >record</a
+      ><a name="4834"
+      >
+              </a
+      ><a name="4849" class="Symbol"
+      >{</a
+      ><a name="4850"
+      > </a
+      ><a name="4851" class="Field"
+      >isPreorder</a
+      ><a name="4861"
+      > </a
+      ><a name="4862" class="Symbol"
+      >=</a
+      ><a name="4863"
+      > </a
+      ><a name="4864" class="Keyword"
+      >record</a
+      ><a name="4870"
+      >
+                  </a
+      ><a name="4889" class="Symbol"
+      >{</a
+      ><a name="4890"
+      > </a
+      ><a name="4891" class="Field"
+      >isEquivalence</a
+      ><a name="4904"
+      > </a
+      ><a name="4905" class="Symbol"
+      >=</a
+      ><a name="4906"
+      > </a
+      ><a name="4907" href="Relation.Binary.PropositionalEquality.Core.html#879" class="Function"
+      >P.isEquivalence</a
+      ><a name="4922"
+      >
+                  </a
+      ><a name="4941" class="Symbol"
+      >;</a
+      ><a name="4942"
+      > </a
+      ><a name="4943" class="Field"
+      >reflexive</a
+      ><a name="4952"
+      >     </a
+      ><a name="4957" class="Symbol"
+      >=</a
+      ><a name="4958"
+      > </a
+      ><a name="4959" href="Data.Rational.html#5223" class="Function"
+      >refl&#8242;</a
+      ><a name="4964"
+      >
+                  </a
+      ><a name="4983" class="Symbol"
+      >;</a
+      ><a name="4984"
+      > </a
+      ><a name="4985" class="Field"
+      >trans</a
+      ><a name="4990"
+      >         </a
+      ><a name="4999" class="Symbol"
+      >=</a
+      ><a name="5000"
+      > </a
+      ><a name="5001" href="Data.Rational.html#5271" class="Function"
+      >trans</a
+      ><a name="5006"
+      >
+                  </a
+      ><a name="5025" class="Symbol"
+      >}</a
+      ><a name="5026"
+      >
+                </a
+      ><a name="5043" class="Symbol"
+      >;</a
+      ><a name="5044"
+      > </a
+      ><a name="5045" class="Field"
+      >antisym</a
+      ><a name="5052"
+      > </a
+      ><a name="5053" class="Symbol"
+      >=</a
+      ><a name="5054"
+      > </a
+      ><a name="5055" href="Data.Rational.html#6252" class="Function"
+      >antisym</a
+      ><a name="5062"
+      >
+              </a
+      ><a name="5077" class="Symbol"
+      >}</a
+      ><a name="5078"
+      >
+          </a
+      ><a name="5089" class="Symbol"
+      >;</a
+      ><a name="5090"
+      > </a
+      ><a name="5091" class="Field"
+      >total</a
+      ><a name="5096"
+      > </a
+      ><a name="5097" class="Symbol"
+      >=</a
+      ><a name="5098"
+      > </a
+      ><a name="5099" href="Data.Rational.html#6344" class="Function"
+      >total</a
+      ><a name="5104"
+      >
+          </a
+      ><a name="5115" class="Symbol"
+      >}</a
+      ><a name="5116"
+      >
+      </a
+      ><a name="5123" class="Symbol"
+      >;</a
+      ><a name="5124"
+      > </a
+      ><a name="5125" class="Field Operator"
+      >_&#8799;_</a
+      ><a name="5128"
+      >  </a
+      ><a name="5130" class="Symbol"
+      >=</a
+      ><a name="5131"
+      > </a
+      ><a name="5132" href="Data.Rational.html#3784" class="Function Operator"
+      >_&#8799;_</a
+      ><a name="5135"
+      >
+      </a
+      ><a name="5142" class="Symbol"
+      >;</a
+      ><a name="5143"
+      > </a
+      ><a name="5144" class="Field Operator"
+      >_&#8804;?_</a
+      ><a name="5148"
+      > </a
+      ><a name="5149" class="Symbol"
+      >=</a
+      ><a name="5150"
+      > </a
+      ><a name="5151" href="Data.Rational.html#4390" class="Function Operator"
+      >_&#8804;?_</a
+      ><a name="5155"
+      >
+      </a
+      ><a name="5162" class="Symbol"
+      >}</a
+      ><a name="5163"
+      >
+  </a
+      ><a name="5166" class="Symbol"
+      >}</a
+      ><a name="5167"
+      >
+  </a
+      ><a name="5170" class="Keyword"
+      >where</a
+      ><a name="5175"
+      >
+  </a
+      ><a name="5178" class="Keyword"
+      >module</a
+      ><a name="5184"
+      > </a
+      ><a name="5185" href="Data.Rational.html#5185" class="Module"
+      >&#8484;O</a
+      ><a name="5187"
+      > </a
+      ><a name="5188" class="Symbol"
+      >=</a
+      ><a name="5189"
+      > </a
+      ><a name="5190" href="Relation.Binary.html#9168" class="Module"
+      >DecTotalOrder</a
+      ><a name="5203"
+      > </a
+      ><a name="5204" href="Data.Integer.html#4720" class="Function"
+      >&#8484;.decTotalOrder</a
+      ><a name="5219"
+      >
+
+  </a
+      ><a name="5223" href="Data.Rational.html#5223" class="Function"
+      >refl&#8242;</a
+      ><a name="5228"
+      > </a
+      ><a name="5229" class="Symbol"
+      >:</a
+      ><a name="5230"
+      > </a
+      ><a name="5231" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="5234"
+      > </a
+      ><a name="5235" href="Relation.Binary.Core.html#1025" class="Function Operator"
+      >&#8658;</a
+      ><a name="5236"
+      > </a
+      ><a name="5237" href="Data.Rational.html#4090" class="Datatype Operator"
+      >_&#8804;_</a
+      ><a name="5240"
+      >
+  </a
+      ><a name="5243" href="Data.Rational.html#5223" class="Function"
+      >refl&#8242;</a
+      ><a name="5248"
+      > </a
+      ><a name="5249" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="5253"
+      > </a
+      ><a name="5254" class="Symbol"
+      >=</a
+      ><a name="5255"
+      > </a
+      ><a name="5256" href="Data.Rational.html#4116" class="InductiveConstructor"
+      >*&#8804;*</a
+      ><a name="5259"
+      > </a
+      ><a name="5260" href="Relation.Binary.html#1211" class="Function"
+      >&#8484;O.refl</a
+      ><a name="5267"
+      >
+
+  </a
+      ><a name="5271" href="Data.Rational.html#5271" class="Function"
+      >trans</a
+      ><a name="5276"
+      > </a
+      ><a name="5277" class="Symbol"
+      >:</a
+      ><a name="5278"
+      > </a
+      ><a name="5279" href="Relation.Binary.Core.html#2793" class="Function"
+      >Transitive</a
+      ><a name="5289"
+      > </a
+      ><a name="5290" href="Data.Rational.html#4090" class="Datatype Operator"
+      >_&#8804;_</a
+      ><a name="5293"
+      >
+  </a
+      ><a name="5296" href="Data.Rational.html#5271" class="Function"
+      >trans</a
+      ><a name="5301"
+      > </a
+      ><a name="5302" class="Symbol"
+      >{</a
+      ><a name="5303" class="Argument"
+      >i</a
+      ><a name="5304"
+      > </a
+      ><a name="5305" class="Symbol"
+      >=</a
+      ><a name="5306"
+      > </a
+      ><a name="5307" href="Data.Rational.html#5307" class="Bound"
+      >p</a
+      ><a name="5308" class="Symbol"
+      >}</a
+      ><a name="5309"
+      > </a
+      ><a name="5310" class="Symbol"
+      >{</a
+      ><a name="5311" class="Argument"
+      >j</a
+      ><a name="5312"
+      > </a
+      ><a name="5313" class="Symbol"
+      >=</a
+      ><a name="5314"
+      > </a
+      ><a name="5315" href="Data.Rational.html#5315" class="Bound"
+      >q</a
+      ><a name="5316" class="Symbol"
+      >}</a
+      ><a name="5317"
+      > </a
+      ><a name="5318" class="Symbol"
+      >{</a
+      ><a name="5319" class="Argument"
+      >k</a
+      ><a name="5320"
+      > </a
+      ><a name="5321" class="Symbol"
+      >=</a
+      ><a name="5322"
+      > </a
+      ><a name="5323" href="Data.Rational.html#5323" class="Bound"
+      >r</a
+      ><a name="5324" class="Symbol"
+      >}</a
+      ><a name="5325"
+      > </a
+      ><a name="5326" class="Symbol"
+      >(</a
+      ><a name="5327" href="Data.Rational.html#4116" class="InductiveConstructor"
+      >*&#8804;*</a
+      ><a name="5330"
+      > </a
+      ><a name="5331" href="Data.Rational.html#5331" class="Bound"
+      >le&#8321;</a
+      ><a name="5334" class="Symbol"
+      >)</a
+      ><a name="5335"
+      > </a
+      ><a name="5336" class="Symbol"
+      >(</a
+      ><a name="5337" href="Data.Rational.html#4116" class="InductiveConstructor"
+      >*&#8804;*</a
+      ><a name="5340"
+      > </a
+      ><a name="5341" href="Data.Rational.html#5341" class="Bound"
+      >le&#8322;</a
+      ><a name="5344" class="Symbol"
+      >)</a
+      ><a name="5345"
+      >
+    </a
+      ><a name="5350" class="Symbol"
+      >=</a
+      ><a name="5351"
+      > </a
+      ><a name="5352" href="Data.Rational.html#4116" class="InductiveConstructor"
+      >*&#8804;*</a
+      ><a name="5355"
+      > </a
+      ><a name="5356" class="Symbol"
+      >(</a
+      ><a name="5357" href="Data.Integer.Properties.html#11606" class="Function"
+      >&#8484;.cancel-*-+-right-&#8804;</a
+      ><a name="5377"
+      > </a
+      ><a name="5378" class="Symbol"
+      >_</a
+      ><a name="5379"
+      > </a
+      ><a name="5380" class="Symbol"
+      >_</a
+      ><a name="5381"
+      > </a
+      ><a name="5382" class="Symbol"
+      >_</a
+      ><a name="5383"
+      >
+            </a
+      ><a name="5396" class="Symbol"
+      >(</a
+      ><a name="5397" href="Data.Rational.html#5729" class="Function"
+      >lemma</a
+      ><a name="5402"
+      >
+              </a
+      ><a name="5417" class="Symbol"
+      >(</a
+      ><a name="5418" href="Data.Rational.html#1218" class="Field"
+      >&#8474;.numerator</a
+      ><a name="5429"
+      > </a
+      ><a name="5430" href="Data.Rational.html#5307" class="Bound"
+      >p</a
+      ><a name="5431" class="Symbol"
+      >)</a
+      ><a name="5432"
+      > </a
+      ><a name="5433" class="Symbol"
+      >(</a
+      ><a name="5434" href="Data.Rational.html#1333" class="Function"
+      >&#8474;.denominator</a
+      ><a name="5447"
+      > </a
+      ><a name="5448" href="Data.Rational.html#5307" class="Bound"
+      >p</a
+      ><a name="5449" class="Symbol"
+      >)</a
+      ><a name="5450"
+      >
+              </a
+      ><a name="5465" class="Symbol"
+      >(</a
+      ><a name="5466" href="Data.Rational.html#1218" class="Field"
+      >&#8474;.numerator</a
+      ><a name="5477"
+      > </a
+      ><a name="5478" href="Data.Rational.html#5315" class="Bound"
+      >q</a
+      ><a name="5479" class="Symbol"
+      >)</a
+      ><a name="5480"
+      > </a
+      ><a name="5481" class="Symbol"
+      >(</a
+      ><a name="5482" href="Data.Rational.html#1333" class="Function"
+      >&#8474;.denominator</a
+      ><a name="5495"
+      > </a
+      ><a name="5496" href="Data.Rational.html#5315" class="Bound"
+      >q</a
+      ><a name="5497" class="Symbol"
+      >)</a
+      ><a name="5498"
+      >
+              </a
+      ><a name="5513" class="Symbol"
+      >(</a
+      ><a name="5514" href="Data.Rational.html#1218" class="Field"
+      >&#8474;.numerator</a
+      ><a name="5525"
+      > </a
+      ><a name="5526" href="Data.Rational.html#5323" class="Bound"
+      >r</a
+      ><a name="5527" class="Symbol"
+      >)</a
+      ><a name="5528"
+      > </a
+      ><a name="5529" class="Symbol"
+      >(</a
+      ><a name="5530" href="Data.Rational.html#1333" class="Function"
+      >&#8474;.denominator</a
+      ><a name="5543"
+      > </a
+      ><a name="5544" href="Data.Rational.html#5323" class="Bound"
+      >r</a
+      ><a name="5545" class="Symbol"
+      >)</a
+      ><a name="5546"
+      >
+              </a
+      ><a name="5561" class="Symbol"
+      >(</a
+      ><a name="5562" href="Data.Integer.Properties.html#12279" class="Function"
+      >&#8484;.*-+-right-mono</a
+      ><a name="5578"
+      > </a
+      ><a name="5579" class="Symbol"
+      >(</a
+      ><a name="5580" href="Data.Rational.html#1240" class="Field"
+      >&#8474;.denominator-1</a
+      ><a name="5595"
+      > </a
+      ><a name="5596" href="Data.Rational.html#5323" class="Bound"
+      >r</a
+      ><a name="5597" class="Symbol"
+      >)</a
+      ><a name="5598"
+      > </a
+      ><a name="5599" href="Data.Rational.html#5331" class="Bound"
+      >le&#8321;</a
+      ><a name="5602" class="Symbol"
+      >)</a
+      ><a name="5603"
+      >
+              </a
+      ><a name="5618" class="Symbol"
+      >(</a
+      ><a name="5619" href="Data.Integer.Properties.html#12279" class="Function"
+      >&#8484;.*-+-right-mono</a
+      ><a name="5635"
+      > </a
+      ><a name="5636" class="Symbol"
+      >(</a
+      ><a name="5637" href="Data.Rational.html#1240" class="Field"
+      >&#8474;.denominator-1</a
+      ><a name="5652"
+      > </a
+      ><a name="5653" href="Data.Rational.html#5307" class="Bound"
+      >p</a
+      ><a name="5654" class="Symbol"
+      >)</a
+      ><a name="5655"
+      > </a
+      ><a name="5656" href="Data.Rational.html#5341" class="Bound"
+      >le&#8322;</a
+      ><a name="5659" class="Symbol"
+      >)))</a
+      ><a name="5662"
+      >
+    </a
+      ><a name="5667" class="Keyword"
+      >where</a
+      ><a name="5672"
+      >
+    </a
+      ><a name="5677" class="Keyword"
+      >open</a
+      ><a name="5681"
+      > </a
+      ><a name="5682" href="Algebra.html#309" class="Module"
+      >Algebra.</a
+      ><a name="5690" href="Algebra.html#10462" class="Module"
+      >CommutativeRing</a
+      ><a name="5705"
+      > </a
+      ><a name="5706" href="Data.Integer.Properties.html#9013" class="Function"
+      >&#8484;.commutativeRing</a
+      ><a name="5723"
+      >
+
+    </a
+      ><a name="5729" href="Data.Rational.html#5729" class="Function"
+      >lemma</a
+      ><a name="5734"
+      > </a
+      ><a name="5735" class="Symbol"
+      >:</a
+      ><a name="5736"
+      > </a
+      ><a name="5737" class="Symbol"
+      >&#8704;</a
+      ><a name="5738"
+      > </a
+      ><a name="5739" href="Data.Rational.html#5739" class="Bound"
+      >n&#8321;</a
+      ><a name="5741"
+      > </a
+      ><a name="5742" href="Data.Rational.html#5742" class="Bound"
+      >d&#8321;</a
+      ><a name="5744"
+      > </a
+      ><a name="5745" href="Data.Rational.html#5745" class="Bound"
+      >n&#8322;</a
+      ><a name="5747"
+      > </a
+      ><a name="5748" href="Data.Rational.html#5748" class="Bound"
+      >d&#8322;</a
+      ><a name="5750"
+      > </a
+      ><a name="5751" href="Data.Rational.html#5751" class="Bound"
+      >n&#8323;</a
+      ><a name="5753"
+      > </a
+      ><a name="5754" href="Data.Rational.html#5754" class="Bound"
+      >d&#8323;</a
+      ><a name="5756"
+      > </a
+      ><a name="5757" class="Symbol"
+      >&#8594;</a
+      ><a name="5758"
+      >
+            </a
+      ><a name="5771" href="Data.Rational.html#5739" class="Bound"
+      >n&#8321;</a
+      ><a name="5773"
+      > </a
+      ><a name="5774" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="5777"
+      > </a
+      ><a name="5778" href="Data.Rational.html#5748" class="Bound"
+      >d&#8322;</a
+      ><a name="5780"
+      > </a
+      ><a name="5781" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="5784"
+      > </a
+      ><a name="5785" href="Data.Rational.html#5754" class="Bound"
+      >d&#8323;</a
+      ><a name="5787"
+      > </a
+      ><a name="5788" href="Data.Integer.html#4208" class="Datatype Operator"
+      >&#8484;.&#8804;</a
+      ><a name="5791"
+      > </a
+      ><a name="5792" href="Data.Rational.html#5745" class="Bound"
+      >n&#8322;</a
+      ><a name="5794"
+      > </a
+      ><a name="5795" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="5798"
+      > </a
+      ><a name="5799" href="Data.Rational.html#5742" class="Bound"
+      >d&#8321;</a
+      ><a name="5801"
+      > </a
+      ><a name="5802" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="5805"
+      > </a
+      ><a name="5806" href="Data.Rational.html#5754" class="Bound"
+      >d&#8323;</a
+      ><a name="5808"
+      > </a
+      ><a name="5809" class="Symbol"
+      >&#8594;</a
+      ><a name="5810"
+      >
+            </a
+      ><a name="5823" href="Data.Rational.html#5745" class="Bound"
+      >n&#8322;</a
+      ><a name="5825"
+      > </a
+      ><a name="5826" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="5829"
+      > </a
+      ><a name="5830" href="Data.Rational.html#5754" class="Bound"
+      >d&#8323;</a
+      ><a name="5832"
+      > </a
+      ><a name="5833" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="5836"
+      > </a
+      ><a name="5837" href="Data.Rational.html#5742" class="Bound"
+      >d&#8321;</a
+      ><a name="5839"
+      > </a
+      ><a name="5840" href="Data.Integer.html#4208" class="Datatype Operator"
+      >&#8484;.&#8804;</a
+      ><a name="5843"
+      > </a
+      ><a name="5844" href="Data.Rational.html#5751" class="Bound"
+      >n&#8323;</a
+      ><a name="5846"
+      > </a
+      ><a name="5847" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="5850"
+      > </a
+      ><a name="5851" href="Data.Rational.html#5748" class="Bound"
+      >d&#8322;</a
+      ><a name="5853"
+      > </a
+      ><a name="5854" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="5857"
+      > </a
+      ><a name="5858" href="Data.Rational.html#5742" class="Bound"
+      >d&#8321;</a
+      ><a name="5860"
+      > </a
+      ><a name="5861" class="Symbol"
+      >&#8594;</a
+      ><a name="5862"
+      >
+            </a
+      ><a name="5875" href="Data.Rational.html#5739" class="Bound"
+      >n&#8321;</a
+      ><a name="5877"
+      > </a
+      ><a name="5878" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="5881"
+      > </a
+      ><a name="5882" href="Data.Rational.html#5754" class="Bound"
+      >d&#8323;</a
+      ><a name="5884"
+      > </a
+      ><a name="5885" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="5888"
+      > </a
+      ><a name="5889" href="Data.Rational.html#5748" class="Bound"
+      >d&#8322;</a
+      ><a name="5891"
+      > </a
+      ><a name="5892" href="Data.Integer.html#4208" class="Datatype Operator"
+      >&#8484;.&#8804;</a
+      ><a name="5895"
+      > </a
+      ><a name="5896" href="Data.Rational.html#5751" class="Bound"
+      >n&#8323;</a
+      ><a name="5898"
+      > </a
+      ><a name="5899" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="5902"
+      > </a
+      ><a name="5903" href="Data.Rational.html#5742" class="Bound"
+      >d&#8321;</a
+      ><a name="5905"
+      > </a
+      ><a name="5906" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="5909"
+      > </a
+      ><a name="5910" href="Data.Rational.html#5748" class="Bound"
+      >d&#8322;</a
+      ><a name="5912"
+      >
+    </a
+      ><a name="5917" href="Data.Rational.html#5729" class="Function"
+      >lemma</a
+      ><a name="5922"
+      > </a
+      ><a name="5923" href="Data.Rational.html#5923" class="Bound"
+      >n&#8321;</a
+      ><a name="5925"
+      > </a
+      ><a name="5926" href="Data.Rational.html#5926" class="Bound"
+      >d&#8321;</a
+      ><a name="5928"
+      > </a
+      ><a name="5929" href="Data.Rational.html#5929" class="Bound"
+      >n&#8322;</a
+      ><a name="5931"
+      > </a
+      ><a name="5932" href="Data.Rational.html#5932" class="Bound"
+      >d&#8322;</a
+      ><a name="5934"
+      > </a
+      ><a name="5935" href="Data.Rational.html#5935" class="Bound"
+      >n&#8323;</a
+      ><a name="5937"
+      > </a
+      ><a name="5938" href="Data.Rational.html#5938" class="Bound"
+      >d&#8323;</a
+      ><a name="5940"
+      >
+      </a
+      ><a name="5947" class="Keyword"
+      >rewrite</a
+      ><a name="5954"
+      > </a
+      ><a name="5955" href="Algebra.Structures.html#811" class="Function"
+      >*-assoc</a
+      ><a name="5962"
+      > </a
+      ><a name="5963" href="Data.Rational.html#5923" class="Bound"
+      >n&#8321;</a
+      ><a name="5965"
+      > </a
+      ><a name="5966" href="Data.Rational.html#5932" class="Bound"
+      >d&#8322;</a
+      ><a name="5968"
+      > </a
+      ><a name="5969" href="Data.Rational.html#5938" class="Bound"
+      >d&#8323;</a
+      ><a name="5971"
+      >
+            </a
+      ><a name="5984" class="Symbol"
+      >|</a
+      ><a name="5985"
+      > </a
+      ><a name="5986" href="Algebra.Structures.html#11829" class="Function"
+      >*-comm</a
+      ><a name="5992"
+      > </a
+      ><a name="5993" href="Data.Rational.html#5932" class="Bound"
+      >d&#8322;</a
+      ><a name="5995"
+      > </a
+      ><a name="5996" href="Data.Rational.html#5938" class="Bound"
+      >d&#8323;</a
+      ><a name="5998"
+      >
+            </a
+      ><a name="6011" class="Symbol"
+      >|</a
+      ><a name="6012"
+      > </a
+      ><a name="6013" href="Relation.Binary.Core.html#5211" class="Function"
+      >sym</a
+      ><a name="6016"
+      > </a
+      ><a name="6017" class="Symbol"
+      >(</a
+      ><a name="6018" href="Algebra.Structures.html#811" class="Function"
+      >*-assoc</a
+      ><a name="6025"
+      > </a
+      ><a name="6026" href="Data.Rational.html#5923" class="Bound"
+      >n&#8321;</a
+      ><a name="6028"
+      > </a
+      ><a name="6029" href="Data.Rational.html#5938" class="Bound"
+      >d&#8323;</a
+      ><a name="6031"
+      > </a
+      ><a name="6032" href="Data.Rational.html#5932" class="Bound"
+      >d&#8322;</a
+      ><a name="6034" class="Symbol"
+      >)</a
+      ><a name="6035"
+      >
+            </a
+      ><a name="6048" class="Symbol"
+      >|</a
+      ><a name="6049"
+      > </a
+      ><a name="6050" href="Algebra.Structures.html#811" class="Function"
+      >*-assoc</a
+      ><a name="6057"
+      > </a
+      ><a name="6058" href="Data.Rational.html#5935" class="Bound"
+      >n&#8323;</a
+      ><a name="6060"
+      > </a
+      ><a name="6061" href="Data.Rational.html#5932" class="Bound"
+      >d&#8322;</a
+      ><a name="6063"
+      > </a
+      ><a name="6064" href="Data.Rational.html#5926" class="Bound"
+      >d&#8321;</a
+      ><a name="6066"
+      >
+            </a
+      ><a name="6079" class="Symbol"
+      >|</a
+      ><a name="6080"
+      > </a
+      ><a name="6081" href="Algebra.Structures.html#11829" class="Function"
+      >*-comm</a
+      ><a name="6087"
+      > </a
+      ><a name="6088" href="Data.Rational.html#5932" class="Bound"
+      >d&#8322;</a
+      ><a name="6090"
+      > </a
+      ><a name="6091" href="Data.Rational.html#5926" class="Bound"
+      >d&#8321;</a
+      ><a name="6093"
+      >
+            </a
+      ><a name="6106" class="Symbol"
+      >|</a
+      ><a name="6107"
+      > </a
+      ><a name="6108" href="Relation.Binary.Core.html#5211" class="Function"
+      >sym</a
+      ><a name="6111"
+      > </a
+      ><a name="6112" class="Symbol"
+      >(</a
+      ><a name="6113" href="Algebra.Structures.html#811" class="Function"
+      >*-assoc</a
+      ><a name="6120"
+      > </a
+      ><a name="6121" href="Data.Rational.html#5935" class="Bound"
+      >n&#8323;</a
+      ><a name="6123"
+      > </a
+      ><a name="6124" href="Data.Rational.html#5926" class="Bound"
+      >d&#8321;</a
+      ><a name="6126"
+      > </a
+      ><a name="6127" href="Data.Rational.html#5932" class="Bound"
+      >d&#8322;</a
+      ><a name="6129" class="Symbol"
+      >)</a
+      ><a name="6130"
+      >
+            </a
+      ><a name="6143" class="Symbol"
+      >|</a
+      ><a name="6144"
+      > </a
+      ><a name="6145" href="Algebra.Structures.html#811" class="Function"
+      >*-assoc</a
+      ><a name="6152"
+      > </a
+      ><a name="6153" href="Data.Rational.html#5929" class="Bound"
+      >n&#8322;</a
+      ><a name="6155"
+      > </a
+      ><a name="6156" href="Data.Rational.html#5926" class="Bound"
+      >d&#8321;</a
+      ><a name="6158"
+      > </a
+      ><a name="6159" href="Data.Rational.html#5938" class="Bound"
+      >d&#8323;</a
+      ><a name="6161"
+      >
+            </a
+      ><a name="6174" class="Symbol"
+      >|</a
+      ><a name="6175"
+      > </a
+      ><a name="6176" href="Algebra.Structures.html#11829" class="Function"
+      >*-comm</a
+      ><a name="6182"
+      > </a
+      ><a name="6183" href="Data.Rational.html#5926" class="Bound"
+      >d&#8321;</a
+      ><a name="6185"
+      > </a
+      ><a name="6186" href="Data.Rational.html#5938" class="Bound"
+      >d&#8323;</a
+      ><a name="6188"
+      >
+            </a
+      ><a name="6201" class="Symbol"
+      >|</a
+      ><a name="6202"
+      > </a
+      ><a name="6203" href="Relation.Binary.Core.html#5211" class="Function"
+      >sym</a
+      ><a name="6206"
+      > </a
+      ><a name="6207" class="Symbol"
+      >(</a
+      ><a name="6208" href="Algebra.Structures.html#811" class="Function"
+      >*-assoc</a
+      ><a name="6215"
+      > </a
+      ><a name="6216" href="Data.Rational.html#5929" class="Bound"
+      >n&#8322;</a
+      ><a name="6218"
+      > </a
+      ><a name="6219" href="Data.Rational.html#5938" class="Bound"
+      >d&#8323;</a
+      ><a name="6221"
+      > </a
+      ><a name="6222" href="Data.Rational.html#5926" class="Bound"
+      >d&#8321;</a
+      ><a name="6224" class="Symbol"
+      >)</a
+      ><a name="6225"
+      >
+            </a
+      ><a name="6238" class="Symbol"
+      >=</a
+      ><a name="6239"
+      > </a
+      ><a name="6240" href="Relation.Binary.html#1134" class="Function"
+      >&#8484;O.trans</a
+      ><a name="6248"
+      >
+
+  </a
+      ><a name="6252" href="Data.Rational.html#6252" class="Function"
+      >antisym</a
+      ><a name="6259"
+      > </a
+      ><a name="6260" class="Symbol"
+      >:</a
+      ><a name="6261"
+      > </a
+      ><a name="6262" href="Relation.Binary.Core.html#2880" class="Function"
+      >Antisymmetric</a
+      ><a name="6275"
+      > </a
+      ><a name="6276" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="6279"
+      > </a
+      ><a name="6280" href="Data.Rational.html#4090" class="Datatype Operator"
+      >_&#8804;_</a
+      ><a name="6283"
+      >
+  </a
+      ><a name="6286" href="Data.Rational.html#6252" class="Function"
+      >antisym</a
+      ><a name="6293"
+      > </a
+      ><a name="6294" class="Symbol"
+      >(</a
+      ><a name="6295" href="Data.Rational.html#4116" class="InductiveConstructor"
+      >*&#8804;*</a
+      ><a name="6298"
+      > </a
+      ><a name="6299" href="Data.Rational.html#6299" class="Bound"
+      >le&#8321;</a
+      ><a name="6302" class="Symbol"
+      >)</a
+      ><a name="6303"
+      > </a
+      ><a name="6304" class="Symbol"
+      >(</a
+      ><a name="6305" href="Data.Rational.html#4116" class="InductiveConstructor"
+      >*&#8804;*</a
+      ><a name="6308"
+      > </a
+      ><a name="6309" href="Data.Rational.html#6309" class="Bound"
+      >le&#8322;</a
+      ><a name="6312" class="Symbol"
+      >)</a
+      ><a name="6313"
+      > </a
+      ><a name="6314" class="Symbol"
+      >=</a
+      ><a name="6315"
+      > </a
+      ><a name="6316" href="Data.Rational.html#2289" class="Function"
+      >&#8771;&#8658;&#8801;</a
+      ><a name="6319"
+      > </a
+      ><a name="6320" class="Symbol"
+      >(</a
+      ><a name="6321" href="Relation.Binary.html#3552" class="Function"
+      >&#8484;O.antisym</a
+      ><a name="6331"
+      > </a
+      ><a name="6332" href="Data.Rational.html#6299" class="Bound"
+      >le&#8321;</a
+      ><a name="6335"
+      > </a
+      ><a name="6336" href="Data.Rational.html#6309" class="Bound"
+      >le&#8322;</a
+      ><a name="6339" class="Symbol"
+      >)</a
+      ><a name="6340"
+      >
+
+  </a
+      ><a name="6344" href="Data.Rational.html#6344" class="Function"
+      >total</a
+      ><a name="6349"
+      > </a
+      ><a name="6350" class="Symbol"
+      >:</a
+      ><a name="6351"
+      > </a
+      ><a name="6352" href="Relation.Binary.Core.html#3614" class="Function"
+      >Total</a
+      ><a name="6357"
+      > </a
+      ><a name="6358" href="Data.Rational.html#4090" class="Datatype Operator"
+      >_&#8804;_</a
+      ><a name="6361"
+      >
+  </a
+      ><a name="6364" href="Data.Rational.html#6344" class="Function"
+      >total</a
+      ><a name="6369"
+      > </a
+      ><a name="6370" href="Data.Rational.html#6370" class="Bound"
+      >p</a
+      ><a name="6371"
+      > </a
+      ><a name="6372" href="Data.Rational.html#6372" class="Bound"
+      >q</a
+      ><a name="6373"
+      > </a
+      ><a name="6374" class="Symbol"
+      >=</a
+      ><a name="6375"
+      >
+    </a
+      ><a name="6380" href="Data.Sum.html#908" class="Function Operator"
+      >[</a
+      ><a name="6381"
+      > </a
+      ><a name="6382" href="Data.Sum.html#489" class="InductiveConstructor"
+      >inj&#8321;</a
+      ><a name="6386"
+      > </a
+      ><a name="6387" href="Function.html#902" class="Function Operator"
+      >&#8728;&#8242;</a
+      ><a name="6389"
+      > </a
+      ><a name="6390" href="Data.Rational.html#4116" class="InductiveConstructor"
+      >*&#8804;*</a
+      ><a name="6393"
+      > </a
+      ><a name="6394" href="Data.Sum.html#908" class="Function Operator"
+      >,</a
+      ><a name="6395"
+      > </a
+      ><a name="6396" href="Data.Sum.html#514" class="InductiveConstructor"
+      >inj&#8322;</a
+      ><a name="6400"
+      > </a
+      ><a name="6401" href="Function.html#902" class="Function Operator"
+      >&#8728;&#8242;</a
+      ><a name="6403"
+      > </a
+      ><a name="6404" href="Data.Rational.html#4116" class="InductiveConstructor"
+      >*&#8804;*</a
+      ><a name="6407"
+      > </a
+      ><a name="6408" href="Data.Sum.html#908" class="Function Operator"
+      >]&#8242;</a
+      ><a name="6410"
+      >
+      </a
+      ><a name="6417" class="Symbol"
+      >(</a
+      ><a name="6418" href="Relation.Binary.html#8011" class="Function"
+      >&#8484;O.total</a
+      ><a name="6426"
+      > </a
+      ><a name="6427" class="Symbol"
+      >(</a
+      ><a name="6428" href="Data.Rational.html#1218" class="Field"
+      >&#8474;.numerator</a
+      ><a name="6439"
+      > </a
+      ><a name="6440" href="Data.Rational.html#6370" class="Bound"
+      >p</a
+      ><a name="6441"
+      > </a
+      ><a name="6442" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="6445"
+      > </a
+      ><a name="6446" href="Data.Rational.html#1333" class="Function"
+      >&#8474;.denominator</a
+      ><a name="6459"
+      > </a
+      ><a name="6460" href="Data.Rational.html#6372" class="Bound"
+      >q</a
+      ><a name="6461" class="Symbol"
+      >)</a
+      ><a name="6462"
+      >
+                </a
+      ><a name="6479" class="Symbol"
+      >(</a
+      ><a name="6480" href="Data.Rational.html#1218" class="Field"
+      >&#8474;.numerator</a
+      ><a name="6491"
+      > </a
+      ><a name="6492" href="Data.Rational.html#6372" class="Bound"
+      >q</a
+      ><a name="6493"
+      > </a
+      ><a name="6494" href="Data.Integer.html#3734" class="Function Operator"
+      >&#8484;.*</a
+      ><a name="6497"
+      > </a
+      ><a name="6498" href="Data.Rational.html#1333" class="Function"
+      >&#8474;.denominator</a
+      ><a name="6511"
+      > </a
+      ><a name="6512" href="Data.Rational.html#6370" class="Bound"
+      >p</a
+      ><a name="6513" class="Symbol"
+      >))</a
+      ><a name="6515"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

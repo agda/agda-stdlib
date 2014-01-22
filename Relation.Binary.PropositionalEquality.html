@@ -1,0 +1,4863 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Relation.Binary.PropositionalEquality</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Propositional (intensional) equality</a
+      ><a name="145"
+      >
+</a
+      ><a name="146" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="218"
+      >
+
+</a
+      ><a name="220" class="Keyword"
+      >module</a
+      ><a name="226"
+      > </a
+      ><a name="227" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="264"
+      > </a
+      ><a name="265" class="Keyword"
+      >where</a
+      ><a name="270"
+      >
+
+</a
+      ><a name="272" class="Keyword"
+      >open</a
+      ><a name="276"
+      > </a
+      ><a name="277" class="Keyword"
+      >import</a
+      ><a name="283"
+      > </a
+      ><a name="284" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="292"
+      >
+</a
+      ><a name="293" class="Keyword"
+      >open</a
+      ><a name="297"
+      > </a
+      ><a name="298" class="Keyword"
+      >import</a
+      ><a name="304"
+      > </a
+      ><a name="305" href="Function.Equality.html#1" class="Module"
+      >Function.Equality</a
+      ><a name="322"
+      > </a
+      ><a name="323" class="Keyword"
+      >using</a
+      ><a name="328"
+      > </a
+      ><a name="329" class="Symbol"
+      >(</a
+      ><a name="330"
+      >&#928;</a
+      ><a name="331" class="Symbol"
+      >;</a
+      ><a name="332"
+      > _&#10230;_</a
+      ><a name="336" class="Symbol"
+      >;</a
+      ><a name="337"
+      > &#8801;-setoid</a
+      ><a name="346" class="Symbol"
+      >)</a
+      ><a name="347"
+      >
+</a
+      ><a name="348" class="Keyword"
+      >open</a
+      ><a name="352"
+      > </a
+      ><a name="353" class="Keyword"
+      >import</a
+      ><a name="359"
+      > </a
+      ><a name="360" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="372"
+      >
+</a
+      ><a name="373" class="Keyword"
+      >open</a
+      ><a name="377"
+      > </a
+      ><a name="378" class="Keyword"
+      >import</a
+      ><a name="384"
+      > </a
+      ><a name="385" href="Data.Unit.NonEta.html#1" class="Module"
+      >Data.Unit.NonEta</a
+      ><a name="401"
+      >
+</a
+      ><a name="402" class="Keyword"
+      >open</a
+      ><a name="406"
+      > </a
+      ><a name="407" class="Keyword"
+      >import</a
+      ><a name="413"
+      > </a
+      ><a name="414" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="419"
+      >
+</a
+      ><a name="420" class="Keyword"
+      >open</a
+      ><a name="424"
+      > </a
+      ><a name="425" class="Keyword"
+      >import</a
+      ><a name="431"
+      > </a
+      ><a name="432" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="447"
+      >
+</a
+      ><a name="448" class="Keyword"
+      >import</a
+      ><a name="454"
+      > </a
+      ><a name="455" href="Relation.Binary.Indexed.html#1" class="Module"
+      >Relation.Binary.Indexed</a
+      ><a name="478"
+      > </a
+      ><a name="479" class="Symbol"
+      >as</a
+      ><a name="481"
+      > </a
+      ><a name="482" class="Module"
+      >I</a
+      ><a name="483"
+      >
+</a
+      ><a name="484" class="Keyword"
+      >open</a
+      ><a name="488"
+      > </a
+      ><a name="489" class="Keyword"
+      >import</a
+      ><a name="495"
+      > </a
+      ><a name="496" href="Relation.Binary.Consequences.html#1" class="Module"
+      >Relation.Binary.Consequences</a
+      ><a name="524"
+      >
+</a
+      ><a name="525" class="Keyword"
+      >open</a
+      ><a name="529"
+      > </a
+      ><a name="530" class="Keyword"
+      >import</a
+      ><a name="536"
+      > </a
+      ><a name="537" href="Relation.Binary.HeterogeneousEquality.Core.html#1" class="Module"
+      >Relation.Binary.HeterogeneousEquality.Core</a
+      ><a name="579"
+      > </a
+      ><a name="580" class="Symbol"
+      >as</a
+      ><a name="582"
+      > </a
+      ><a name="583" class="Module"
+      >H</a
+      ><a name="584"
+      > </a
+      ><a name="585" class="Keyword"
+      >using</a
+      ><a name="590"
+      > </a
+      ><a name="591" class="Symbol"
+      >(</a
+      ><a name="592"
+      >_&#8773;_</a
+      ><a name="595" class="Symbol"
+      >)</a
+      ><a name="596"
+      >
+
+</a
+      ><a name="598" class="Comment"
+      >-- Some of the definitions can be found in the following modules:</a
+      ><a name="663"
+      >
+
+</a
+      ><a name="665" class="Keyword"
+      >open</a
+      ><a name="669"
+      > </a
+      ><a name="670" class="Keyword"
+      >import</a
+      ><a name="676"
+      > </a
+      ><a name="677" href="Relation.Binary.Core.html#1" class="Module"
+      >Relation.Binary.Core</a
+      ><a name="697"
+      > </a
+      ><a name="698" class="Keyword"
+      >public</a
+      ><a name="704"
+      > </a
+      ><a name="705" class="Keyword"
+      >using</a
+      ><a name="710"
+      > </a
+      ><a name="711" class="Symbol"
+      >(</a
+      ><a name="712"
+      >_&#8801;_</a
+      ><a name="715" class="Symbol"
+      >;</a
+      ><a name="716"
+      > refl</a
+      ><a name="721" class="Symbol"
+      >;</a
+      ><a name="722"
+      > _&#8802;_</a
+      ><a name="726" class="Symbol"
+      >)</a
+      ><a name="727"
+      >
+</a
+      ><a name="728" class="Keyword"
+      >open</a
+      ><a name="732"
+      > </a
+      ><a name="733" class="Keyword"
+      >import</a
+      ><a name="739"
+      > </a
+      ><a name="740" href="Relation.Binary.PropositionalEquality.Core.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality.Core</a
+      ><a name="782"
+      > </a
+      ><a name="783" class="Keyword"
+      >public</a
+      ><a name="789"
+      >
+
+</a
+      ><a name="791" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="863"
+      >
+</a
+      ><a name="864" class="Comment"
+      >-- Some properties</a
+      ><a name="882"
+      >
+
+</a
+      ><a name="884" href="Relation.Binary.PropositionalEquality.html#884" class="Function"
+      >subst&#8322;</a
+      ><a name="890"
+      > </a
+      ><a name="891" class="Symbol"
+      >:</a
+      ><a name="892"
+      > </a
+      ><a name="893" class="Symbol"
+      >&#8704;</a
+      ><a name="894"
+      > </a
+      ><a name="895" class="Symbol"
+      >{</a
+      ><a name="896" href="Relation.Binary.PropositionalEquality.html#896" class="Bound"
+      >a</a
+      ><a name="897"
+      > </a
+      ><a name="898" href="Relation.Binary.PropositionalEquality.html#898" class="Bound"
+      >b</a
+      ><a name="899"
+      > </a
+      ><a name="900" href="Relation.Binary.PropositionalEquality.html#900" class="Bound"
+      >p</a
+      ><a name="901" class="Symbol"
+      >}</a
+      ><a name="902"
+      > </a
+      ><a name="903" class="Symbol"
+      >{</a
+      ><a name="904" href="Relation.Binary.PropositionalEquality.html#904" class="Bound"
+      >A</a
+      ><a name="905"
+      > </a
+      ><a name="906" class="Symbol"
+      >:</a
+      ><a name="907"
+      > </a
+      ><a name="908" class="PrimitiveType"
+      >Set</a
+      ><a name="911"
+      > </a
+      ><a name="912" href="Relation.Binary.PropositionalEquality.html#896" class="Bound"
+      >a</a
+      ><a name="913" class="Symbol"
+      >}</a
+      ><a name="914"
+      > </a
+      ><a name="915" class="Symbol"
+      >{</a
+      ><a name="916" href="Relation.Binary.PropositionalEquality.html#916" class="Bound"
+      >B</a
+      ><a name="917"
+      > </a
+      ><a name="918" class="Symbol"
+      >:</a
+      ><a name="919"
+      > </a
+      ><a name="920" class="PrimitiveType"
+      >Set</a
+      ><a name="923"
+      > </a
+      ><a name="924" href="Relation.Binary.PropositionalEquality.html#898" class="Bound"
+      >b</a
+      ><a name="925" class="Symbol"
+      >}</a
+      ><a name="926"
+      > </a
+      ><a name="927" class="Symbol"
+      >(</a
+      ><a name="928" href="Relation.Binary.PropositionalEquality.html#928" class="Bound"
+      >P</a
+      ><a name="929"
+      > </a
+      ><a name="930" class="Symbol"
+      >:</a
+      ><a name="931"
+      > </a
+      ><a name="932" href="Relation.Binary.PropositionalEquality.html#904" class="Bound"
+      >A</a
+      ><a name="933"
+      > </a
+      ><a name="934" class="Symbol"
+      >&#8594;</a
+      ><a name="935"
+      > </a
+      ><a name="936" href="Relation.Binary.PropositionalEquality.html#916" class="Bound"
+      >B</a
+      ><a name="937"
+      > </a
+      ><a name="938" class="Symbol"
+      >&#8594;</a
+      ><a name="939"
+      > </a
+      ><a name="940" class="PrimitiveType"
+      >Set</a
+      ><a name="943"
+      > </a
+      ><a name="944" href="Relation.Binary.PropositionalEquality.html#900" class="Bound"
+      >p</a
+      ><a name="945" class="Symbol"
+      >)</a
+      ><a name="946"
+      >
+         </a
+      ><a name="956" class="Symbol"
+      >{</a
+      ><a name="957" href="Relation.Binary.PropositionalEquality.html#957" class="Bound"
+      >x&#8321;</a
+      ><a name="959"
+      > </a
+      ><a name="960" href="Relation.Binary.PropositionalEquality.html#960" class="Bound"
+      >x&#8322;</a
+      ><a name="962"
+      > </a
+      ><a name="963" href="Relation.Binary.PropositionalEquality.html#963" class="Bound"
+      >y&#8321;</a
+      ><a name="965"
+      > </a
+      ><a name="966" href="Relation.Binary.PropositionalEquality.html#966" class="Bound"
+      >y&#8322;</a
+      ><a name="968" class="Symbol"
+      >}</a
+      ><a name="969"
+      > </a
+      ><a name="970" class="Symbol"
+      >&#8594;</a
+      ><a name="971"
+      > </a
+      ><a name="972" href="Relation.Binary.PropositionalEquality.html#957" class="Bound"
+      >x&#8321;</a
+      ><a name="974"
+      > </a
+      ><a name="975" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="976"
+      > </a
+      ><a name="977" href="Relation.Binary.PropositionalEquality.html#960" class="Bound"
+      >x&#8322;</a
+      ><a name="979"
+      > </a
+      ><a name="980" class="Symbol"
+      >&#8594;</a
+      ><a name="981"
+      > </a
+      ><a name="982" href="Relation.Binary.PropositionalEquality.html#963" class="Bound"
+      >y&#8321;</a
+      ><a name="984"
+      > </a
+      ><a name="985" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="986"
+      > </a
+      ><a name="987" href="Relation.Binary.PropositionalEquality.html#966" class="Bound"
+      >y&#8322;</a
+      ><a name="989"
+      > </a
+      ><a name="990" class="Symbol"
+      >&#8594;</a
+      ><a name="991"
+      > </a
+      ><a name="992" href="Relation.Binary.PropositionalEquality.html#928" class="Bound"
+      >P</a
+      ><a name="993"
+      > </a
+      ><a name="994" href="Relation.Binary.PropositionalEquality.html#957" class="Bound"
+      >x&#8321;</a
+      ><a name="996"
+      > </a
+      ><a name="997" href="Relation.Binary.PropositionalEquality.html#963" class="Bound"
+      >y&#8321;</a
+      ><a name="999"
+      > </a
+      ><a name="1000" class="Symbol"
+      >&#8594;</a
+      ><a name="1001"
+      > </a
+      ><a name="1002" href="Relation.Binary.PropositionalEquality.html#928" class="Bound"
+      >P</a
+      ><a name="1003"
+      > </a
+      ><a name="1004" href="Relation.Binary.PropositionalEquality.html#960" class="Bound"
+      >x&#8322;</a
+      ><a name="1006"
+      > </a
+      ><a name="1007" href="Relation.Binary.PropositionalEquality.html#966" class="Bound"
+      >y&#8322;</a
+      ><a name="1009"
+      >
+</a
+      ><a name="1010" href="Relation.Binary.PropositionalEquality.html#884" class="Function"
+      >subst&#8322;</a
+      ><a name="1016"
+      > </a
+      ><a name="1017" href="Relation.Binary.PropositionalEquality.html#1017" class="Bound"
+      >P</a
+      ><a name="1018"
+      > </a
+      ><a name="1019" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1023"
+      > </a
+      ><a name="1024" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1028"
+      > </a
+      ><a name="1029" href="Relation.Binary.PropositionalEquality.html#1029" class="Bound"
+      >p</a
+      ><a name="1030"
+      > </a
+      ><a name="1031" class="Symbol"
+      >=</a
+      ><a name="1032"
+      > </a
+      ><a name="1033" href="Relation.Binary.PropositionalEquality.html#1029" class="Bound"
+      >p</a
+      ><a name="1034"
+      >
+
+</a
+      ><a name="1036" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >cong</a
+      ><a name="1040"
+      > </a
+      ><a name="1041" class="Symbol"
+      >:</a
+      ><a name="1042"
+      > </a
+      ><a name="1043" class="Symbol"
+      >&#8704;</a
+      ><a name="1044"
+      > </a
+      ><a name="1045" class="Symbol"
+      >{</a
+      ><a name="1046" href="Relation.Binary.PropositionalEquality.html#1046" class="Bound"
+      >a</a
+      ><a name="1047"
+      > </a
+      ><a name="1048" href="Relation.Binary.PropositionalEquality.html#1048" class="Bound"
+      >b</a
+      ><a name="1049" class="Symbol"
+      >}</a
+      ><a name="1050"
+      > </a
+      ><a name="1051" class="Symbol"
+      >{</a
+      ><a name="1052" href="Relation.Binary.PropositionalEquality.html#1052" class="Bound"
+      >A</a
+      ><a name="1053"
+      > </a
+      ><a name="1054" class="Symbol"
+      >:</a
+      ><a name="1055"
+      > </a
+      ><a name="1056" class="PrimitiveType"
+      >Set</a
+      ><a name="1059"
+      > </a
+      ><a name="1060" href="Relation.Binary.PropositionalEquality.html#1046" class="Bound"
+      >a</a
+      ><a name="1061" class="Symbol"
+      >}</a
+      ><a name="1062"
+      > </a
+      ><a name="1063" class="Symbol"
+      >{</a
+      ><a name="1064" href="Relation.Binary.PropositionalEquality.html#1064" class="Bound"
+      >B</a
+      ><a name="1065"
+      > </a
+      ><a name="1066" class="Symbol"
+      >:</a
+      ><a name="1067"
+      > </a
+      ><a name="1068" class="PrimitiveType"
+      >Set</a
+      ><a name="1071"
+      > </a
+      ><a name="1072" href="Relation.Binary.PropositionalEquality.html#1048" class="Bound"
+      >b</a
+      ><a name="1073" class="Symbol"
+      >}</a
+      ><a name="1074"
+      >
+       </a
+      ><a name="1082" class="Symbol"
+      >(</a
+      ><a name="1083" href="Relation.Binary.PropositionalEquality.html#1083" class="Bound"
+      >f</a
+      ><a name="1084"
+      > </a
+      ><a name="1085" class="Symbol"
+      >:</a
+      ><a name="1086"
+      > </a
+      ><a name="1087" href="Relation.Binary.PropositionalEquality.html#1052" class="Bound"
+      >A</a
+      ><a name="1088"
+      > </a
+      ><a name="1089" class="Symbol"
+      >&#8594;</a
+      ><a name="1090"
+      > </a
+      ><a name="1091" href="Relation.Binary.PropositionalEquality.html#1064" class="Bound"
+      >B</a
+      ><a name="1092" class="Symbol"
+      >)</a
+      ><a name="1093"
+      > </a
+      ><a name="1094" class="Symbol"
+      >{</a
+      ><a name="1095" href="Relation.Binary.PropositionalEquality.html#1095" class="Bound"
+      >x</a
+      ><a name="1096"
+      > </a
+      ><a name="1097" href="Relation.Binary.PropositionalEquality.html#1097" class="Bound"
+      >y</a
+      ><a name="1098" class="Symbol"
+      >}</a
+      ><a name="1099"
+      > </a
+      ><a name="1100" class="Symbol"
+      >&#8594;</a
+      ><a name="1101"
+      > </a
+      ><a name="1102" href="Relation.Binary.PropositionalEquality.html#1095" class="Bound"
+      >x</a
+      ><a name="1103"
+      > </a
+      ><a name="1104" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1105"
+      > </a
+      ><a name="1106" href="Relation.Binary.PropositionalEquality.html#1097" class="Bound"
+      >y</a
+      ><a name="1107"
+      > </a
+      ><a name="1108" class="Symbol"
+      >&#8594;</a
+      ><a name="1109"
+      > </a
+      ><a name="1110" href="Relation.Binary.PropositionalEquality.html#1083" class="Bound"
+      >f</a
+      ><a name="1111"
+      > </a
+      ><a name="1112" href="Relation.Binary.PropositionalEquality.html#1095" class="Bound"
+      >x</a
+      ><a name="1113"
+      > </a
+      ><a name="1114" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1115"
+      > </a
+      ><a name="1116" href="Relation.Binary.PropositionalEquality.html#1083" class="Bound"
+      >f</a
+      ><a name="1117"
+      > </a
+      ><a name="1118" href="Relation.Binary.PropositionalEquality.html#1097" class="Bound"
+      >y</a
+      ><a name="1119"
+      >
+</a
+      ><a name="1120" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >cong</a
+      ><a name="1124"
+      > </a
+      ><a name="1125" href="Relation.Binary.PropositionalEquality.html#1125" class="Bound"
+      >f</a
+      ><a name="1126"
+      > </a
+      ><a name="1127" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1131"
+      > </a
+      ><a name="1132" class="Symbol"
+      >=</a
+      ><a name="1133"
+      > </a
+      ><a name="1134" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1138"
+      >
+
+</a
+      ><a name="1140" href="Relation.Binary.PropositionalEquality.html#1140" class="Function"
+      >cong-app</a
+      ><a name="1148"
+      > </a
+      ><a name="1149" class="Symbol"
+      >:</a
+      ><a name="1150"
+      > </a
+      ><a name="1151" class="Symbol"
+      >&#8704;</a
+      ><a name="1152"
+      > </a
+      ><a name="1153" class="Symbol"
+      >{</a
+      ><a name="1154" href="Relation.Binary.PropositionalEquality.html#1154" class="Bound"
+      >a</a
+      ><a name="1155"
+      > </a
+      ><a name="1156" href="Relation.Binary.PropositionalEquality.html#1156" class="Bound"
+      >b</a
+      ><a name="1157" class="Symbol"
+      >}</a
+      ><a name="1158"
+      > </a
+      ><a name="1159" class="Symbol"
+      >{</a
+      ><a name="1160" href="Relation.Binary.PropositionalEquality.html#1160" class="Bound"
+      >A</a
+      ><a name="1161"
+      > </a
+      ><a name="1162" class="Symbol"
+      >:</a
+      ><a name="1163"
+      > </a
+      ><a name="1164" class="PrimitiveType"
+      >Set</a
+      ><a name="1167"
+      > </a
+      ><a name="1168" href="Relation.Binary.PropositionalEquality.html#1154" class="Bound"
+      >a</a
+      ><a name="1169" class="Symbol"
+      >}</a
+      ><a name="1170"
+      > </a
+      ><a name="1171" class="Symbol"
+      >{</a
+      ><a name="1172" href="Relation.Binary.PropositionalEquality.html#1172" class="Bound"
+      >B</a
+      ><a name="1173"
+      > </a
+      ><a name="1174" class="Symbol"
+      >:</a
+      ><a name="1175"
+      > </a
+      ><a name="1176" href="Relation.Binary.PropositionalEquality.html#1160" class="Bound"
+      >A</a
+      ><a name="1177"
+      > </a
+      ><a name="1178" class="Symbol"
+      >&#8594;</a
+      ><a name="1179"
+      > </a
+      ><a name="1180" class="PrimitiveType"
+      >Set</a
+      ><a name="1183"
+      > </a
+      ><a name="1184" href="Relation.Binary.PropositionalEquality.html#1156" class="Bound"
+      >b</a
+      ><a name="1185" class="Symbol"
+      >}</a
+      ><a name="1186"
+      > </a
+      ><a name="1187" class="Symbol"
+      >{</a
+      ><a name="1188" href="Relation.Binary.PropositionalEquality.html#1188" class="Bound"
+      >f</a
+      ><a name="1189"
+      > </a
+      ><a name="1190" href="Relation.Binary.PropositionalEquality.html#1190" class="Bound"
+      >g</a
+      ><a name="1191"
+      > </a
+      ><a name="1192" class="Symbol"
+      >:</a
+      ><a name="1193"
+      > </a
+      ><a name="1194" class="Symbol"
+      >(</a
+      ><a name="1195" href="Relation.Binary.PropositionalEquality.html#1195" class="Bound"
+      >x</a
+      ><a name="1196"
+      > </a
+      ><a name="1197" class="Symbol"
+      >:</a
+      ><a name="1198"
+      > </a
+      ><a name="1199" href="Relation.Binary.PropositionalEquality.html#1160" class="Bound"
+      >A</a
+      ><a name="1200" class="Symbol"
+      >)</a
+      ><a name="1201"
+      > </a
+      ><a name="1202" class="Symbol"
+      >&#8594;</a
+      ><a name="1203"
+      > </a
+      ><a name="1204" href="Relation.Binary.PropositionalEquality.html#1172" class="Bound"
+      >B</a
+      ><a name="1205"
+      > </a
+      ><a name="1206" href="Relation.Binary.PropositionalEquality.html#1195" class="Bound"
+      >x</a
+      ><a name="1207" class="Symbol"
+      >}</a
+      ><a name="1208"
+      > </a
+      ><a name="1209" class="Symbol"
+      >&#8594;</a
+      ><a name="1210"
+      >
+           </a
+      ><a name="1222" href="Relation.Binary.PropositionalEquality.html#1188" class="Bound"
+      >f</a
+      ><a name="1223"
+      > </a
+      ><a name="1224" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1225"
+      > </a
+      ><a name="1226" href="Relation.Binary.PropositionalEquality.html#1190" class="Bound"
+      >g</a
+      ><a name="1227"
+      > </a
+      ><a name="1228" class="Symbol"
+      >&#8594;</a
+      ><a name="1229"
+      > </a
+      ><a name="1230" class="Symbol"
+      >(</a
+      ><a name="1231" href="Relation.Binary.PropositionalEquality.html#1231" class="Bound"
+      >x</a
+      ><a name="1232"
+      > </a
+      ><a name="1233" class="Symbol"
+      >:</a
+      ><a name="1234"
+      > </a
+      ><a name="1235" href="Relation.Binary.PropositionalEquality.html#1160" class="Bound"
+      >A</a
+      ><a name="1236" class="Symbol"
+      >)</a
+      ><a name="1237"
+      > </a
+      ><a name="1238" class="Symbol"
+      >&#8594;</a
+      ><a name="1239"
+      > </a
+      ><a name="1240" href="Relation.Binary.PropositionalEquality.html#1188" class="Bound"
+      >f</a
+      ><a name="1241"
+      > </a
+      ><a name="1242" href="Relation.Binary.PropositionalEquality.html#1231" class="Bound"
+      >x</a
+      ><a name="1243"
+      > </a
+      ><a name="1244" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1245"
+      > </a
+      ><a name="1246" href="Relation.Binary.PropositionalEquality.html#1190" class="Bound"
+      >g</a
+      ><a name="1247"
+      > </a
+      ><a name="1248" href="Relation.Binary.PropositionalEquality.html#1231" class="Bound"
+      >x</a
+      ><a name="1249"
+      >
+</a
+      ><a name="1250" href="Relation.Binary.PropositionalEquality.html#1140" class="Function"
+      >cong-app</a
+      ><a name="1258"
+      > </a
+      ><a name="1259" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1263"
+      > </a
+      ><a name="1264" href="Relation.Binary.PropositionalEquality.html#1264" class="Bound"
+      >x</a
+      ><a name="1265"
+      > </a
+      ><a name="1266" class="Symbol"
+      >=</a
+      ><a name="1267"
+      > </a
+      ><a name="1268" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1272"
+      >
+
+</a
+      ><a name="1274" href="Relation.Binary.PropositionalEquality.html#1274" class="Function"
+      >cong&#8322;</a
+      ><a name="1279"
+      > </a
+      ><a name="1280" class="Symbol"
+      >:</a
+      ><a name="1281"
+      > </a
+      ><a name="1282" class="Symbol"
+      >&#8704;</a
+      ><a name="1283"
+      > </a
+      ><a name="1284" class="Symbol"
+      >{</a
+      ><a name="1285" href="Relation.Binary.PropositionalEquality.html#1285" class="Bound"
+      >a</a
+      ><a name="1286"
+      > </a
+      ><a name="1287" href="Relation.Binary.PropositionalEquality.html#1287" class="Bound"
+      >b</a
+      ><a name="1288"
+      > </a
+      ><a name="1289" href="Relation.Binary.PropositionalEquality.html#1289" class="Bound"
+      >c</a
+      ><a name="1290" class="Symbol"
+      >}</a
+      ><a name="1291"
+      > </a
+      ><a name="1292" class="Symbol"
+      >{</a
+      ><a name="1293" href="Relation.Binary.PropositionalEquality.html#1293" class="Bound"
+      >A</a
+      ><a name="1294"
+      > </a
+      ><a name="1295" class="Symbol"
+      >:</a
+      ><a name="1296"
+      > </a
+      ><a name="1297" class="PrimitiveType"
+      >Set</a
+      ><a name="1300"
+      > </a
+      ><a name="1301" href="Relation.Binary.PropositionalEquality.html#1285" class="Bound"
+      >a</a
+      ><a name="1302" class="Symbol"
+      >}</a
+      ><a name="1303"
+      > </a
+      ><a name="1304" class="Symbol"
+      >{</a
+      ><a name="1305" href="Relation.Binary.PropositionalEquality.html#1305" class="Bound"
+      >B</a
+      ><a name="1306"
+      > </a
+      ><a name="1307" class="Symbol"
+      >:</a
+      ><a name="1308"
+      > </a
+      ><a name="1309" class="PrimitiveType"
+      >Set</a
+      ><a name="1312"
+      > </a
+      ><a name="1313" href="Relation.Binary.PropositionalEquality.html#1287" class="Bound"
+      >b</a
+      ><a name="1314" class="Symbol"
+      >}</a
+      ><a name="1315"
+      > </a
+      ><a name="1316" class="Symbol"
+      >{</a
+      ><a name="1317" href="Relation.Binary.PropositionalEquality.html#1317" class="Bound"
+      >C</a
+      ><a name="1318"
+      > </a
+      ><a name="1319" class="Symbol"
+      >:</a
+      ><a name="1320"
+      > </a
+      ><a name="1321" class="PrimitiveType"
+      >Set</a
+      ><a name="1324"
+      > </a
+      ><a name="1325" href="Relation.Binary.PropositionalEquality.html#1289" class="Bound"
+      >c</a
+      ><a name="1326" class="Symbol"
+      >}</a
+      ><a name="1327"
+      >
+        </a
+      ><a name="1336" class="Symbol"
+      >(</a
+      ><a name="1337" href="Relation.Binary.PropositionalEquality.html#1337" class="Bound"
+      >f</a
+      ><a name="1338"
+      > </a
+      ><a name="1339" class="Symbol"
+      >:</a
+      ><a name="1340"
+      > </a
+      ><a name="1341" href="Relation.Binary.PropositionalEquality.html#1293" class="Bound"
+      >A</a
+      ><a name="1342"
+      > </a
+      ><a name="1343" class="Symbol"
+      >&#8594;</a
+      ><a name="1344"
+      > </a
+      ><a name="1345" href="Relation.Binary.PropositionalEquality.html#1305" class="Bound"
+      >B</a
+      ><a name="1346"
+      > </a
+      ><a name="1347" class="Symbol"
+      >&#8594;</a
+      ><a name="1348"
+      > </a
+      ><a name="1349" href="Relation.Binary.PropositionalEquality.html#1317" class="Bound"
+      >C</a
+      ><a name="1350" class="Symbol"
+      >)</a
+      ><a name="1351"
+      > </a
+      ><a name="1352" class="Symbol"
+      >{</a
+      ><a name="1353" href="Relation.Binary.PropositionalEquality.html#1353" class="Bound"
+      >x</a
+      ><a name="1354"
+      > </a
+      ><a name="1355" href="Relation.Binary.PropositionalEquality.html#1355" class="Bound"
+      >y</a
+      ><a name="1356"
+      > </a
+      ><a name="1357" href="Relation.Binary.PropositionalEquality.html#1357" class="Bound"
+      >u</a
+      ><a name="1358"
+      > </a
+      ><a name="1359" href="Relation.Binary.PropositionalEquality.html#1359" class="Bound"
+      >v</a
+      ><a name="1360" class="Symbol"
+      >}</a
+      ><a name="1361"
+      > </a
+      ><a name="1362" class="Symbol"
+      >&#8594;</a
+      ><a name="1363"
+      > </a
+      ><a name="1364" href="Relation.Binary.PropositionalEquality.html#1353" class="Bound"
+      >x</a
+      ><a name="1365"
+      > </a
+      ><a name="1366" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1367"
+      > </a
+      ><a name="1368" href="Relation.Binary.PropositionalEquality.html#1355" class="Bound"
+      >y</a
+      ><a name="1369"
+      > </a
+      ><a name="1370" class="Symbol"
+      >&#8594;</a
+      ><a name="1371"
+      > </a
+      ><a name="1372" href="Relation.Binary.PropositionalEquality.html#1357" class="Bound"
+      >u</a
+      ><a name="1373"
+      > </a
+      ><a name="1374" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1375"
+      > </a
+      ><a name="1376" href="Relation.Binary.PropositionalEquality.html#1359" class="Bound"
+      >v</a
+      ><a name="1377"
+      > </a
+      ><a name="1378" class="Symbol"
+      >&#8594;</a
+      ><a name="1379"
+      > </a
+      ><a name="1380" href="Relation.Binary.PropositionalEquality.html#1337" class="Bound"
+      >f</a
+      ><a name="1381"
+      > </a
+      ><a name="1382" href="Relation.Binary.PropositionalEquality.html#1353" class="Bound"
+      >x</a
+      ><a name="1383"
+      > </a
+      ><a name="1384" href="Relation.Binary.PropositionalEquality.html#1357" class="Bound"
+      >u</a
+      ><a name="1385"
+      > </a
+      ><a name="1386" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1387"
+      > </a
+      ><a name="1388" href="Relation.Binary.PropositionalEquality.html#1337" class="Bound"
+      >f</a
+      ><a name="1389"
+      > </a
+      ><a name="1390" href="Relation.Binary.PropositionalEquality.html#1355" class="Bound"
+      >y</a
+      ><a name="1391"
+      > </a
+      ><a name="1392" href="Relation.Binary.PropositionalEquality.html#1359" class="Bound"
+      >v</a
+      ><a name="1393"
+      >
+</a
+      ><a name="1394" href="Relation.Binary.PropositionalEquality.html#1274" class="Function"
+      >cong&#8322;</a
+      ><a name="1399"
+      > </a
+      ><a name="1400" href="Relation.Binary.PropositionalEquality.html#1400" class="Bound"
+      >f</a
+      ><a name="1401"
+      > </a
+      ><a name="1402" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1406"
+      > </a
+      ><a name="1407" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1411"
+      > </a
+      ><a name="1412" class="Symbol"
+      >=</a
+      ><a name="1413"
+      > </a
+      ><a name="1414" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1418"
+      >
+
+</a
+      ><a name="1420" href="Relation.Binary.PropositionalEquality.html#1420" class="Function"
+      >proof-irrelevance</a
+      ><a name="1437"
+      > </a
+      ><a name="1438" class="Symbol"
+      >:</a
+      ><a name="1439"
+      > </a
+      ><a name="1440" class="Symbol"
+      >&#8704;</a
+      ><a name="1441"
+      > </a
+      ><a name="1442" class="Symbol"
+      >{</a
+      ><a name="1443" href="Relation.Binary.PropositionalEquality.html#1443" class="Bound"
+      >a</a
+      ><a name="1444" class="Symbol"
+      >}</a
+      ><a name="1445"
+      > </a
+      ><a name="1446" class="Symbol"
+      >{</a
+      ><a name="1447" href="Relation.Binary.PropositionalEquality.html#1447" class="Bound"
+      >A</a
+      ><a name="1448"
+      > </a
+      ><a name="1449" class="Symbol"
+      >:</a
+      ><a name="1450"
+      > </a
+      ><a name="1451" class="PrimitiveType"
+      >Set</a
+      ><a name="1454"
+      > </a
+      ><a name="1455" href="Relation.Binary.PropositionalEquality.html#1443" class="Bound"
+      >a</a
+      ><a name="1456" class="Symbol"
+      >}</a
+      ><a name="1457"
+      > </a
+      ><a name="1458" class="Symbol"
+      >{</a
+      ><a name="1459" href="Relation.Binary.PropositionalEquality.html#1459" class="Bound"
+      >x</a
+      ><a name="1460"
+      > </a
+      ><a name="1461" href="Relation.Binary.PropositionalEquality.html#1461" class="Bound"
+      >y</a
+      ><a name="1462"
+      > </a
+      ><a name="1463" class="Symbol"
+      >:</a
+      ><a name="1464"
+      > </a
+      ><a name="1465" href="Relation.Binary.PropositionalEquality.html#1447" class="Bound"
+      >A</a
+      ><a name="1466" class="Symbol"
+      >}</a
+      ><a name="1467"
+      > </a
+      ><a name="1468" class="Symbol"
+      >(</a
+      ><a name="1469" href="Relation.Binary.PropositionalEquality.html#1469" class="Bound"
+      >p</a
+      ><a name="1470"
+      > </a
+      ><a name="1471" href="Relation.Binary.PropositionalEquality.html#1471" class="Bound"
+      >q</a
+      ><a name="1472"
+      > </a
+      ><a name="1473" class="Symbol"
+      >:</a
+      ><a name="1474"
+      > </a
+      ><a name="1475" href="Relation.Binary.PropositionalEquality.html#1459" class="Bound"
+      >x</a
+      ><a name="1476"
+      > </a
+      ><a name="1477" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1478"
+      > </a
+      ><a name="1479" href="Relation.Binary.PropositionalEquality.html#1461" class="Bound"
+      >y</a
+      ><a name="1480" class="Symbol"
+      >)</a
+      ><a name="1481"
+      > </a
+      ><a name="1482" class="Symbol"
+      >&#8594;</a
+      ><a name="1483"
+      > </a
+      ><a name="1484" href="Relation.Binary.PropositionalEquality.html#1469" class="Bound"
+      >p</a
+      ><a name="1485"
+      > </a
+      ><a name="1486" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1487"
+      > </a
+      ><a name="1488" href="Relation.Binary.PropositionalEquality.html#1471" class="Bound"
+      >q</a
+      ><a name="1489"
+      >
+</a
+      ><a name="1490" href="Relation.Binary.PropositionalEquality.html#1420" class="Function"
+      >proof-irrelevance</a
+      ><a name="1507"
+      > </a
+      ><a name="1508" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1512"
+      > </a
+      ><a name="1513" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1517"
+      > </a
+      ><a name="1518" class="Symbol"
+      >=</a
+      ><a name="1519"
+      > </a
+      ><a name="1520" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1524"
+      >
+
+</a
+      ><a name="1526" href="Relation.Binary.PropositionalEquality.html#1526" class="Function"
+      >setoid</a
+      ><a name="1532"
+      > </a
+      ><a name="1533" class="Symbol"
+      >:</a
+      ><a name="1534"
+      > </a
+      ><a name="1535" class="Symbol"
+      >&#8704;</a
+      ><a name="1536"
+      > </a
+      ><a name="1537" class="Symbol"
+      >{</a
+      ><a name="1538" href="Relation.Binary.PropositionalEquality.html#1538" class="Bound"
+      >a</a
+      ><a name="1539" class="Symbol"
+      >}</a
+      ><a name="1540"
+      > </a
+      ><a name="1541" class="Symbol"
+      >&#8594;</a
+      ><a name="1542"
+      > </a
+      ><a name="1543" class="PrimitiveType"
+      >Set</a
+      ><a name="1546"
+      > </a
+      ><a name="1547" href="Relation.Binary.PropositionalEquality.html#1538" class="Bound"
+      >a</a
+      ><a name="1548"
+      > </a
+      ><a name="1549" class="Symbol"
+      >&#8594;</a
+      ><a name="1550"
+      > </a
+      ><a name="1551" href="Relation.Binary.html#1852" class="Record"
+      >Setoid</a
+      ><a name="1557"
+      > </a
+      ><a name="1558" class="Symbol"
+      >_</a
+      ><a name="1559"
+      > </a
+      ><a name="1560" class="Symbol"
+      >_</a
+      ><a name="1561"
+      >
+</a
+      ><a name="1562" href="Relation.Binary.PropositionalEquality.html#1526" class="Function"
+      >setoid</a
+      ><a name="1568"
+      > </a
+      ><a name="1569" href="Relation.Binary.PropositionalEquality.html#1569" class="Bound"
+      >A</a
+      ><a name="1570"
+      > </a
+      ><a name="1571" class="Symbol"
+      >=</a
+      ><a name="1572"
+      > </a
+      ><a name="1573" class="Keyword"
+      >record</a
+      ><a name="1579"
+      >
+  </a
+      ><a name="1582" class="Symbol"
+      >{</a
+      ><a name="1583"
+      > </a
+      ><a name="1584" class="Field"
+      >Carrier</a
+      ><a name="1591"
+      >       </a
+      ><a name="1598" class="Symbol"
+      >=</a
+      ><a name="1599"
+      > </a
+      ><a name="1600" href="Relation.Binary.PropositionalEquality.html#1569" class="Bound"
+      >A</a
+      ><a name="1601"
+      >
+  </a
+      ><a name="1604" class="Symbol"
+      >;</a
+      ><a name="1605"
+      > </a
+      ><a name="1606" class="Field Operator"
+      >_&#8776;_</a
+      ><a name="1609"
+      >           </a
+      ><a name="1620" class="Symbol"
+      >=</a
+      ><a name="1621"
+      > </a
+      ><a name="1622" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="1625"
+      >
+  </a
+      ><a name="1628" class="Symbol"
+      >;</a
+      ><a name="1629"
+      > </a
+      ><a name="1630" class="Field"
+      >isEquivalence</a
+      ><a name="1643"
+      > </a
+      ><a name="1644" class="Symbol"
+      >=</a
+      ><a name="1645"
+      > </a
+      ><a name="1646" href="Relation.Binary.PropositionalEquality.Core.html#879" class="Function"
+      >isEquivalence</a
+      ><a name="1659"
+      >
+  </a
+      ><a name="1662" class="Symbol"
+      >}</a
+      ><a name="1663"
+      >
+
+</a
+      ><a name="1665" href="Relation.Binary.PropositionalEquality.html#1665" class="Function"
+      >decSetoid</a
+      ><a name="1674"
+      > </a
+      ><a name="1675" class="Symbol"
+      >:</a
+      ><a name="1676"
+      > </a
+      ><a name="1677" class="Symbol"
+      >&#8704;</a
+      ><a name="1678"
+      > </a
+      ><a name="1679" class="Symbol"
+      >{</a
+      ><a name="1680" href="Relation.Binary.PropositionalEquality.html#1680" class="Bound"
+      >a</a
+      ><a name="1681" class="Symbol"
+      >}</a
+      ><a name="1682"
+      > </a
+      ><a name="1683" class="Symbol"
+      >{</a
+      ><a name="1684" href="Relation.Binary.PropositionalEquality.html#1684" class="Bound"
+      >A</a
+      ><a name="1685"
+      > </a
+      ><a name="1686" class="Symbol"
+      >:</a
+      ><a name="1687"
+      > </a
+      ><a name="1688" class="PrimitiveType"
+      >Set</a
+      ><a name="1691"
+      > </a
+      ><a name="1692" href="Relation.Binary.PropositionalEquality.html#1680" class="Bound"
+      >a</a
+      ><a name="1693" class="Symbol"
+      >}</a
+      ><a name="1694"
+      > </a
+      ><a name="1695" class="Symbol"
+      >&#8594;</a
+      ><a name="1696"
+      > </a
+      ><a name="1697" href="Relation.Binary.Core.html#3511" class="Function"
+      >Decidable</a
+      ><a name="1706"
+      > </a
+      ><a name="1707" class="Symbol"
+      >(</a
+      ><a name="1708" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="1711"
+      > </a
+      ><a name="1712" class="Symbol"
+      >{</a
+      ><a name="1713" class="Argument"
+      >A</a
+      ><a name="1714"
+      > </a
+      ><a name="1715" class="Symbol"
+      >=</a
+      ><a name="1716"
+      > </a
+      ><a name="1717" href="Relation.Binary.PropositionalEquality.html#1684" class="Bound"
+      >A</a
+      ><a name="1718" class="Symbol"
+      >})</a
+      ><a name="1720"
+      > </a
+      ><a name="1721" class="Symbol"
+      >&#8594;</a
+      ><a name="1722"
+      > </a
+      ><a name="1723" href="Relation.Binary.html#2921" class="Record"
+      >DecSetoid</a
+      ><a name="1732"
+      > </a
+      ><a name="1733" class="Symbol"
+      >_</a
+      ><a name="1734"
+      > </a
+      ><a name="1735" class="Symbol"
+      >_</a
+      ><a name="1736"
+      >
+</a
+      ><a name="1737" href="Relation.Binary.PropositionalEquality.html#1665" class="Function"
+      >decSetoid</a
+      ><a name="1746"
+      > </a
+      ><a name="1747" href="Relation.Binary.PropositionalEquality.html#1747" class="Bound"
+      >dec</a
+      ><a name="1750"
+      > </a
+      ><a name="1751" class="Symbol"
+      >=</a
+      ><a name="1752"
+      > </a
+      ><a name="1753" class="Keyword"
+      >record</a
+      ><a name="1759"
+      >
+  </a
+      ><a name="1762" class="Symbol"
+      >{</a
+      ><a name="1763"
+      > </a
+      ><a name="1764" class="Field Operator"
+      >_&#8776;_</a
+      ><a name="1767"
+      >              </a
+      ><a name="1781" class="Symbol"
+      >=</a
+      ><a name="1782"
+      > </a
+      ><a name="1783" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="1786"
+      >
+  </a
+      ><a name="1789" class="Symbol"
+      >;</a
+      ><a name="1790"
+      > </a
+      ><a name="1791" class="Field"
+      >isDecEquivalence</a
+      ><a name="1807"
+      > </a
+      ><a name="1808" class="Symbol"
+      >=</a
+      ><a name="1809"
+      > </a
+      ><a name="1810" class="Keyword"
+      >record</a
+      ><a name="1816"
+      >
+      </a
+      ><a name="1823" class="Symbol"
+      >{</a
+      ><a name="1824"
+      > </a
+      ><a name="1825" class="Field"
+      >isEquivalence</a
+      ><a name="1838"
+      > </a
+      ><a name="1839" class="Symbol"
+      >=</a
+      ><a name="1840"
+      > </a
+      ><a name="1841" href="Relation.Binary.PropositionalEquality.Core.html#879" class="Function"
+      >isEquivalence</a
+      ><a name="1854"
+      >
+      </a
+      ><a name="1861" class="Symbol"
+      >;</a
+      ><a name="1862"
+      > </a
+      ><a name="1863" class="Field Operator"
+      >_&#8799;_</a
+      ><a name="1866"
+      >           </a
+      ><a name="1877" class="Symbol"
+      >=</a
+      ><a name="1878"
+      > </a
+      ><a name="1879" href="Relation.Binary.PropositionalEquality.html#1747" class="Bound"
+      >dec</a
+      ><a name="1882"
+      >
+      </a
+      ><a name="1889" class="Symbol"
+      >}</a
+      ><a name="1890"
+      >
+  </a
+      ><a name="1893" class="Symbol"
+      >}</a
+      ><a name="1894"
+      >
+
+</a
+      ><a name="1896" href="Relation.Binary.PropositionalEquality.html#1896" class="Function"
+      >isPreorder</a
+      ><a name="1906"
+      > </a
+      ><a name="1907" class="Symbol"
+      >:</a
+      ><a name="1908"
+      > </a
+      ><a name="1909" class="Symbol"
+      >&#8704;</a
+      ><a name="1910"
+      > </a
+      ><a name="1911" class="Symbol"
+      >{</a
+      ><a name="1912" href="Relation.Binary.PropositionalEquality.html#1912" class="Bound"
+      >a</a
+      ><a name="1913" class="Symbol"
+      >}</a
+      ><a name="1914"
+      > </a
+      ><a name="1915" class="Symbol"
+      >{</a
+      ><a name="1916" href="Relation.Binary.PropositionalEquality.html#1916" class="Bound"
+      >A</a
+      ><a name="1917"
+      > </a
+      ><a name="1918" class="Symbol"
+      >:</a
+      ><a name="1919"
+      > </a
+      ><a name="1920" class="PrimitiveType"
+      >Set</a
+      ><a name="1923"
+      > </a
+      ><a name="1924" href="Relation.Binary.PropositionalEquality.html#1912" class="Bound"
+      >a</a
+      ><a name="1925" class="Symbol"
+      >}</a
+      ><a name="1926"
+      > </a
+      ><a name="1927" class="Symbol"
+      >&#8594;</a
+      ><a name="1928"
+      > </a
+      ><a name="1929" href="Relation.Binary.html#794" class="Record"
+      >IsPreorder</a
+      ><a name="1939"
+      > </a
+      ><a name="1940" class="Symbol"
+      >{</a
+      ><a name="1941" class="Argument"
+      >A</a
+      ><a name="1942"
+      > </a
+      ><a name="1943" class="Symbol"
+      >=</a
+      ><a name="1944"
+      > </a
+      ><a name="1945" href="Relation.Binary.PropositionalEquality.html#1916" class="Bound"
+      >A</a
+      ><a name="1946" class="Symbol"
+      >}</a
+      ><a name="1947"
+      > </a
+      ><a name="1948" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="1951"
+      > </a
+      ><a name="1952" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="1955"
+      >
+</a
+      ><a name="1956" href="Relation.Binary.PropositionalEquality.html#1896" class="Function"
+      >isPreorder</a
+      ><a name="1966"
+      > </a
+      ><a name="1967" class="Symbol"
+      >=</a
+      ><a name="1968"
+      > </a
+      ><a name="1969" class="Keyword"
+      >record</a
+      ><a name="1975"
+      >
+  </a
+      ><a name="1978" class="Symbol"
+      >{</a
+      ><a name="1979"
+      > </a
+      ><a name="1980" class="Field"
+      >isEquivalence</a
+      ><a name="1993"
+      > </a
+      ><a name="1994" class="Symbol"
+      >=</a
+      ><a name="1995"
+      > </a
+      ><a name="1996" href="Relation.Binary.PropositionalEquality.Core.html#879" class="Function"
+      >isEquivalence</a
+      ><a name="2009"
+      >
+  </a
+      ><a name="2012" class="Symbol"
+      >;</a
+      ><a name="2013"
+      > </a
+      ><a name="2014" class="Field"
+      >reflexive</a
+      ><a name="2023"
+      >     </a
+      ><a name="2028" class="Symbol"
+      >=</a
+      ><a name="2029"
+      > </a
+      ><a name="2030" href="Function.html#1012" class="Function"
+      >id</a
+      ><a name="2032"
+      >
+  </a
+      ><a name="2035" class="Symbol"
+      >;</a
+      ><a name="2036"
+      > </a
+      ><a name="2037" class="Field"
+      >trans</a
+      ><a name="2042"
+      >         </a
+      ><a name="2051" class="Symbol"
+      >=</a
+      ><a name="2052"
+      > </a
+      ><a name="2053" href="Relation.Binary.PropositionalEquality.Core.html#632" class="Function"
+      >trans</a
+      ><a name="2058"
+      >
+  </a
+      ><a name="2061" class="Symbol"
+      >}</a
+      ><a name="2062"
+      >
+
+</a
+      ><a name="2064" href="Relation.Binary.PropositionalEquality.html#2064" class="Function"
+      >preorder</a
+      ><a name="2072"
+      > </a
+      ><a name="2073" class="Symbol"
+      >:</a
+      ><a name="2074"
+      > </a
+      ><a name="2075" class="Symbol"
+      >&#8704;</a
+      ><a name="2076"
+      > </a
+      ><a name="2077" class="Symbol"
+      >{</a
+      ><a name="2078" href="Relation.Binary.PropositionalEquality.html#2078" class="Bound"
+      >a</a
+      ><a name="2079" class="Symbol"
+      >}</a
+      ><a name="2080"
+      > </a
+      ><a name="2081" class="Symbol"
+      >&#8594;</a
+      ><a name="2082"
+      > </a
+      ><a name="2083" class="PrimitiveType"
+      >Set</a
+      ><a name="2086"
+      > </a
+      ><a name="2087" href="Relation.Binary.PropositionalEquality.html#2078" class="Bound"
+      >a</a
+      ><a name="2088"
+      > </a
+      ><a name="2089" class="Symbol"
+      >&#8594;</a
+      ><a name="2090"
+      > </a
+      ><a name="2091" href="Relation.Binary.html#1414" class="Record"
+      >Preorder</a
+      ><a name="2099"
+      > </a
+      ><a name="2100" class="Symbol"
+      >_</a
+      ><a name="2101"
+      > </a
+      ><a name="2102" class="Symbol"
+      >_</a
+      ><a name="2103"
+      > </a
+      ><a name="2104" class="Symbol"
+      >_</a
+      ><a name="2105"
+      >
+</a
+      ><a name="2106" href="Relation.Binary.PropositionalEquality.html#2064" class="Function"
+      >preorder</a
+      ><a name="2114"
+      > </a
+      ><a name="2115" href="Relation.Binary.PropositionalEquality.html#2115" class="Bound"
+      >A</a
+      ><a name="2116"
+      > </a
+      ><a name="2117" class="Symbol"
+      >=</a
+      ><a name="2118"
+      > </a
+      ><a name="2119" class="Keyword"
+      >record</a
+      ><a name="2125"
+      >
+  </a
+      ><a name="2128" class="Symbol"
+      >{</a
+      ><a name="2129"
+      > </a
+      ><a name="2130" class="Field"
+      >Carrier</a
+      ><a name="2137"
+      >    </a
+      ><a name="2141" class="Symbol"
+      >=</a
+      ><a name="2142"
+      > </a
+      ><a name="2143" href="Relation.Binary.PropositionalEquality.html#2115" class="Bound"
+      >A</a
+      ><a name="2144"
+      >
+  </a
+      ><a name="2147" class="Symbol"
+      >;</a
+      ><a name="2148"
+      > </a
+      ><a name="2149" class="Field Operator"
+      >_&#8776;_</a
+      ><a name="2152"
+      >        </a
+      ><a name="2160" class="Symbol"
+      >=</a
+      ><a name="2161"
+      > </a
+      ><a name="2162" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="2165"
+      >
+  </a
+      ><a name="2168" class="Symbol"
+      >;</a
+      ><a name="2169"
+      > </a
+      ><a name="2170" class="Field Operator"
+      >_&#8764;_</a
+      ><a name="2173"
+      >        </a
+      ><a name="2181" class="Symbol"
+      >=</a
+      ><a name="2182"
+      > </a
+      ><a name="2183" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="2186"
+      >
+  </a
+      ><a name="2189" class="Symbol"
+      >;</a
+      ><a name="2190"
+      > </a
+      ><a name="2191" class="Field"
+      >isPreorder</a
+      ><a name="2201"
+      > </a
+      ><a name="2202" class="Symbol"
+      >=</a
+      ><a name="2203"
+      > </a
+      ><a name="2204" href="Relation.Binary.PropositionalEquality.html#1896" class="Function"
+      >isPreorder</a
+      ><a name="2214"
+      >
+  </a
+      ><a name="2217" class="Symbol"
+      >}</a
+      ><a name="2218"
+      >
+
+</a
+      ><a name="2220" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="2292"
+      >
+</a
+      ><a name="2293" class="Comment"
+      >-- Pointwise equality</a
+      ><a name="2314"
+      >
+
+</a
+      ><a name="2316" class="Keyword"
+      >infix</a
+      ><a name="2321"
+      > </a
+      ><a name="2322" class="Number"
+      >4</a
+      ><a name="2323"
+      > _&#8791;_
+
+</a
+      ><a name="2329" href="Relation.Binary.PropositionalEquality.html#2329" class="Function Operator"
+      >_&#8594;-setoid_</a
+      ><a name="2339"
+      > </a
+      ><a name="2340" class="Symbol"
+      >:</a
+      ><a name="2341"
+      > </a
+      ><a name="2342" class="Symbol"
+      >&#8704;</a
+      ><a name="2343"
+      > </a
+      ><a name="2344" class="Symbol"
+      >{</a
+      ><a name="2345" href="Relation.Binary.PropositionalEquality.html#2345" class="Bound"
+      >a</a
+      ><a name="2346"
+      > </a
+      ><a name="2347" href="Relation.Binary.PropositionalEquality.html#2347" class="Bound"
+      >b</a
+      ><a name="2348" class="Symbol"
+      >}</a
+      ><a name="2349"
+      > </a
+      ><a name="2350" class="Symbol"
+      >(</a
+      ><a name="2351" href="Relation.Binary.PropositionalEquality.html#2351" class="Bound"
+      >A</a
+      ><a name="2352"
+      > </a
+      ><a name="2353" class="Symbol"
+      >:</a
+      ><a name="2354"
+      > </a
+      ><a name="2355" class="PrimitiveType"
+      >Set</a
+      ><a name="2358"
+      > </a
+      ><a name="2359" href="Relation.Binary.PropositionalEquality.html#2345" class="Bound"
+      >a</a
+      ><a name="2360" class="Symbol"
+      >)</a
+      ><a name="2361"
+      > </a
+      ><a name="2362" class="Symbol"
+      >(</a
+      ><a name="2363" href="Relation.Binary.PropositionalEquality.html#2363" class="Bound"
+      >B</a
+      ><a name="2364"
+      > </a
+      ><a name="2365" class="Symbol"
+      >:</a
+      ><a name="2366"
+      > </a
+      ><a name="2367" class="PrimitiveType"
+      >Set</a
+      ><a name="2370"
+      > </a
+      ><a name="2371" href="Relation.Binary.PropositionalEquality.html#2347" class="Bound"
+      >b</a
+      ><a name="2372" class="Symbol"
+      >)</a
+      ><a name="2373"
+      > </a
+      ><a name="2374" class="Symbol"
+      >&#8594;</a
+      ><a name="2375"
+      > </a
+      ><a name="2376" href="Relation.Binary.html#1852" class="Record"
+      >Setoid</a
+      ><a name="2382"
+      > </a
+      ><a name="2383" class="Symbol"
+      >_</a
+      ><a name="2384"
+      > </a
+      ><a name="2385" class="Symbol"
+      >_</a
+      ><a name="2386"
+      >
+</a
+      ><a name="2387" href="Relation.Binary.PropositionalEquality.html#2387" class="Bound"
+      >A</a
+      ><a name="2388"
+      > </a
+      ><a name="2389" href="Relation.Binary.PropositionalEquality.html#2329" class="Function Operator"
+      >&#8594;-setoid</a
+      ><a name="2397"
+      > </a
+      ><a name="2398" href="Relation.Binary.PropositionalEquality.html#2398" class="Bound"
+      >B</a
+      ><a name="2399"
+      > </a
+      ><a name="2400" class="Symbol"
+      >=</a
+      ><a name="2401"
+      > </a
+      ><a name="2402" href="Function.Equality.html#2560" class="Function"
+      >&#8801;-setoid</a
+      ><a name="2410"
+      > </a
+      ><a name="2411" href="Relation.Binary.PropositionalEquality.html#2387" class="Bound"
+      >A</a
+      ><a name="2412"
+      > </a
+      ><a name="2413" class="Symbol"
+      >(</a
+      ><a name="2414" href="Relation.Binary.html#2332" class="Function"
+      >Setoid.indexedSetoid</a
+      ><a name="2434"
+      > </a
+      ><a name="2435" class="Symbol"
+      >(</a
+      ><a name="2436" href="Relation.Binary.PropositionalEquality.html#1526" class="Function"
+      >setoid</a
+      ><a name="2442"
+      > </a
+      ><a name="2443" href="Relation.Binary.PropositionalEquality.html#2398" class="Bound"
+      >B</a
+      ><a name="2444" class="Symbol"
+      >))</a
+      ><a name="2446"
+      >
+
+</a
+      ><a name="2448" href="Relation.Binary.PropositionalEquality.html#2448" class="Function Operator"
+      >_&#8791;_</a
+      ><a name="2451"
+      > </a
+      ><a name="2452" class="Symbol"
+      >:</a
+      ><a name="2453"
+      > </a
+      ><a name="2454" class="Symbol"
+      >&#8704;</a
+      ><a name="2455"
+      > </a
+      ><a name="2456" class="Symbol"
+      >{</a
+      ><a name="2457" href="Relation.Binary.PropositionalEquality.html#2457" class="Bound"
+      >a</a
+      ><a name="2458"
+      > </a
+      ><a name="2459" href="Relation.Binary.PropositionalEquality.html#2459" class="Bound"
+      >b</a
+      ><a name="2460" class="Symbol"
+      >}</a
+      ><a name="2461"
+      > </a
+      ><a name="2462" class="Symbol"
+      >{</a
+      ><a name="2463" href="Relation.Binary.PropositionalEquality.html#2463" class="Bound"
+      >A</a
+      ><a name="2464"
+      > </a
+      ><a name="2465" class="Symbol"
+      >:</a
+      ><a name="2466"
+      > </a
+      ><a name="2467" class="PrimitiveType"
+      >Set</a
+      ><a name="2470"
+      > </a
+      ><a name="2471" href="Relation.Binary.PropositionalEquality.html#2457" class="Bound"
+      >a</a
+      ><a name="2472" class="Symbol"
+      >}</a
+      ><a name="2473"
+      > </a
+      ><a name="2474" class="Symbol"
+      >{</a
+      ><a name="2475" href="Relation.Binary.PropositionalEquality.html#2475" class="Bound"
+      >B</a
+      ><a name="2476"
+      > </a
+      ><a name="2477" class="Symbol"
+      >:</a
+      ><a name="2478"
+      > </a
+      ><a name="2479" class="PrimitiveType"
+      >Set</a
+      ><a name="2482"
+      > </a
+      ><a name="2483" href="Relation.Binary.PropositionalEquality.html#2459" class="Bound"
+      >b</a
+      ><a name="2484" class="Symbol"
+      >}</a
+      ><a name="2485"
+      > </a
+      ><a name="2486" class="Symbol"
+      >(</a
+      ><a name="2487" href="Relation.Binary.PropositionalEquality.html#2487" class="Bound"
+      >f</a
+      ><a name="2488"
+      > </a
+      ><a name="2489" href="Relation.Binary.PropositionalEquality.html#2489" class="Bound"
+      >g</a
+      ><a name="2490"
+      > </a
+      ><a name="2491" class="Symbol"
+      >:</a
+      ><a name="2492"
+      > </a
+      ><a name="2493" href="Relation.Binary.PropositionalEquality.html#2463" class="Bound"
+      >A</a
+      ><a name="2494"
+      > </a
+      ><a name="2495" class="Symbol"
+      >&#8594;</a
+      ><a name="2496"
+      > </a
+      ><a name="2497" href="Relation.Binary.PropositionalEquality.html#2475" class="Bound"
+      >B</a
+      ><a name="2498" class="Symbol"
+      >)</a
+      ><a name="2499"
+      > </a
+      ><a name="2500" class="Symbol"
+      >&#8594;</a
+      ><a name="2501"
+      > </a
+      ><a name="2502" class="PrimitiveType"
+      >Set</a
+      ><a name="2505"
+      > </a
+      ><a name="2506" class="Symbol"
+      >_</a
+      ><a name="2507"
+      >
+</a
+      ><a name="2508" href="Relation.Binary.PropositionalEquality.html#2448" class="Function Operator"
+      >_&#8791;_</a
+      ><a name="2511"
+      > </a
+      ><a name="2512" class="Symbol"
+      >{</a
+      ><a name="2513" class="Argument"
+      >A</a
+      ><a name="2514"
+      > </a
+      ><a name="2515" class="Symbol"
+      >=</a
+      ><a name="2516"
+      > </a
+      ><a name="2517" href="Relation.Binary.PropositionalEquality.html#2517" class="Bound"
+      >A</a
+      ><a name="2518" class="Symbol"
+      >}</a
+      ><a name="2519"
+      > </a
+      ><a name="2520" class="Symbol"
+      >{</a
+      ><a name="2521" href="Relation.Binary.PropositionalEquality.html#2521" class="Bound"
+      >B</a
+      ><a name="2522" class="Symbol"
+      >}</a
+      ><a name="2523"
+      > </a
+      ><a name="2524" class="Symbol"
+      >=</a
+      ><a name="2525"
+      > </a
+      ><a name="2526" href="Relation.Binary.html#1941" class="Field Operator"
+      >Setoid._&#8776;_</a
+      ><a name="2536"
+      > </a
+      ><a name="2537" class="Symbol"
+      >(</a
+      ><a name="2538" href="Relation.Binary.PropositionalEquality.html#2517" class="Bound"
+      >A</a
+      ><a name="2539"
+      > </a
+      ><a name="2540" href="Relation.Binary.PropositionalEquality.html#2329" class="Function Operator"
+      >&#8594;-setoid</a
+      ><a name="2548"
+      > </a
+      ><a name="2549" href="Relation.Binary.PropositionalEquality.html#2521" class="Bound"
+      >B</a
+      ><a name="2550" class="Symbol"
+      >)</a
+      ><a name="2551"
+      >
+
+</a
+      ><a name="2553" href="Relation.Binary.PropositionalEquality.html#2553" class="Function"
+      >:&#8594;-to-&#928;</a
+      ><a name="2560"
+      > </a
+      ><a name="2561" class="Symbol"
+      >:</a
+      ><a name="2562"
+      > </a
+      ><a name="2563" class="Symbol"
+      >&#8704;</a
+      ><a name="2564"
+      > </a
+      ><a name="2565" class="Symbol"
+      >{</a
+      ><a name="2566" href="Relation.Binary.PropositionalEquality.html#2566" class="Bound"
+      >a</a
+      ><a name="2567"
+      > </a
+      ><a name="2568" href="Relation.Binary.PropositionalEquality.html#2568" class="Bound"
+      >b&#8321;</a
+      ><a name="2570"
+      > </a
+      ><a name="2571" href="Relation.Binary.PropositionalEquality.html#2571" class="Bound"
+      >b&#8322;</a
+      ><a name="2573" class="Symbol"
+      >}</a
+      ><a name="2574"
+      > </a
+      ><a name="2575" class="Symbol"
+      >{</a
+      ><a name="2576" href="Relation.Binary.PropositionalEquality.html#2576" class="Bound"
+      >A</a
+      ><a name="2577"
+      > </a
+      ><a name="2578" class="Symbol"
+      >:</a
+      ><a name="2579"
+      > </a
+      ><a name="2580" class="PrimitiveType"
+      >Set</a
+      ><a name="2583"
+      > </a
+      ><a name="2584" href="Relation.Binary.PropositionalEquality.html#2566" class="Bound"
+      >a</a
+      ><a name="2585" class="Symbol"
+      >}</a
+      ><a name="2586"
+      > </a
+      ><a name="2587" class="Symbol"
+      >{</a
+      ><a name="2588" href="Relation.Binary.PropositionalEquality.html#2588" class="Bound"
+      >B</a
+      ><a name="2589"
+      > </a
+      ><a name="2590" class="Symbol"
+      >:</a
+      ><a name="2591"
+      > </a
+      ><a name="2592" href="Relation.Binary.Indexed.Core.html#1758" class="Record"
+      >I.Setoid</a
+      ><a name="2600"
+      > </a
+      ><a name="2601" class="Symbol"
+      >_</a
+      ><a name="2602"
+      > </a
+      ><a name="2603" href="Relation.Binary.PropositionalEquality.html#2568" class="Bound"
+      >b&#8321;</a
+      ><a name="2605"
+      > </a
+      ><a name="2606" href="Relation.Binary.PropositionalEquality.html#2571" class="Bound"
+      >b&#8322;</a
+      ><a name="2608" class="Symbol"
+      >}</a
+      ><a name="2609"
+      > </a
+      ><a name="2610" class="Symbol"
+      >&#8594;</a
+      ><a name="2611"
+      >
+          </a
+      ><a name="2622" class="Symbol"
+      >((</a
+      ><a name="2624" href="Relation.Binary.PropositionalEquality.html#2624" class="Bound"
+      >x</a
+      ><a name="2625"
+      > </a
+      ><a name="2626" class="Symbol"
+      >:</a
+      ><a name="2627"
+      > </a
+      ><a name="2628" href="Relation.Binary.PropositionalEquality.html#2576" class="Bound"
+      >A</a
+      ><a name="2629" class="Symbol"
+      >)</a
+      ><a name="2630"
+      > </a
+      ><a name="2631" class="Symbol"
+      >&#8594;</a
+      ><a name="2632"
+      > </a
+      ><a name="2633" href="Relation.Binary.Indexed.Core.html#1841" class="Field"
+      >I.Setoid.Carrier</a
+      ><a name="2649"
+      > </a
+      ><a name="2650" href="Relation.Binary.PropositionalEquality.html#2588" class="Bound"
+      >B</a
+      ><a name="2651"
+      > </a
+      ><a name="2652" href="Relation.Binary.PropositionalEquality.html#2624" class="Bound"
+      >x</a
+      ><a name="2653" class="Symbol"
+      >)</a
+      ><a name="2654"
+      > </a
+      ><a name="2655" class="Symbol"
+      >&#8594;</a
+      ><a name="2656"
+      > </a
+      ><a name="2657" href="Function.Equality.html#500" class="Record"
+      >&#928;</a
+      ><a name="2658"
+      > </a
+      ><a name="2659" class="Symbol"
+      >(</a
+      ><a name="2660" href="Relation.Binary.PropositionalEquality.html#1526" class="Function"
+      >setoid</a
+      ><a name="2666"
+      > </a
+      ><a name="2667" href="Relation.Binary.PropositionalEquality.html#2576" class="Bound"
+      >A</a
+      ><a name="2668" class="Symbol"
+      >)</a
+      ><a name="2669"
+      > </a
+      ><a name="2670" href="Relation.Binary.PropositionalEquality.html#2588" class="Bound"
+      >B</a
+      ><a name="2671"
+      >
+</a
+      ><a name="2672" href="Relation.Binary.PropositionalEquality.html#2553" class="Function"
+      >:&#8594;-to-&#928;</a
+      ><a name="2679"
+      > </a
+      ><a name="2680" class="Symbol"
+      >{</a
+      ><a name="2681" class="Argument"
+      >B</a
+      ><a name="2682"
+      > </a
+      ><a name="2683" class="Symbol"
+      >=</a
+      ><a name="2684"
+      > </a
+      ><a name="2685" href="Relation.Binary.PropositionalEquality.html#2685" class="Bound"
+      >B</a
+      ><a name="2686" class="Symbol"
+      >}</a
+      ><a name="2687"
+      > </a
+      ><a name="2688" href="Relation.Binary.PropositionalEquality.html#2688" class="Bound"
+      >f</a
+      ><a name="2689"
+      > </a
+      ><a name="2690" class="Symbol"
+      >=</a
+      ><a name="2691"
+      > </a
+      ><a name="2692" class="Keyword"
+      >record</a
+      ><a name="2698"
+      > </a
+      ><a name="2699" class="Symbol"
+      >{</a
+      ><a name="2700"
+      > </a
+      ><a name="2701" class="Field Operator"
+      >_&#10216;$&#10217;_</a
+      ><a name="2706"
+      > </a
+      ><a name="2707" class="Symbol"
+      >=</a
+      ><a name="2708"
+      > </a
+      ><a name="2709" href="Relation.Binary.PropositionalEquality.html#2688" class="Bound"
+      >f</a
+      ><a name="2710" class="Symbol"
+      >;</a
+      ><a name="2711"
+      > </a
+      ><a name="2712" class="Field"
+      >cong</a
+      ><a name="2716"
+      > </a
+      ><a name="2717" class="Symbol"
+      >=</a
+      ><a name="2718"
+      > </a
+      ><a name="2719" href="Relation.Binary.PropositionalEquality.html#2768" class="Function"
+      >cong&#8242;</a
+      ><a name="2724"
+      > </a
+      ><a name="2725" class="Symbol"
+      >}</a
+      ><a name="2726"
+      >
+  </a
+      ><a name="2729" class="Keyword"
+      >where</a
+      ><a name="2734"
+      >
+  </a
+      ><a name="2737" class="Keyword"
+      >open</a
+      ><a name="2741"
+      > </a
+      ><a name="2742" href="Relation.Binary.Indexed.Core.html#336" class="Module"
+      >I.</a
+      ><a name="2744" href="Relation.Binary.Indexed.Core.html#1758" class="Module"
+      >Setoid</a
+      ><a name="2750"
+      > </a
+      ><a name="2751" href="Relation.Binary.PropositionalEquality.html#2685" class="Bound"
+      >B</a
+      ><a name="2752"
+      > </a
+      ><a name="2753" class="Keyword"
+      >using</a
+      ><a name="2758"
+      > </a
+      ><a name="2759" class="Symbol"
+      >(</a
+      ><a name="2760"
+      >_&#8776;_</a
+      ><a name="2763" class="Symbol"
+      >)</a
+      ><a name="2764"
+      >
+
+  </a
+      ><a name="2768" href="Relation.Binary.PropositionalEquality.html#2768" class="Function"
+      >cong&#8242;</a
+      ><a name="2773"
+      > </a
+      ><a name="2774" class="Symbol"
+      >:</a
+      ><a name="2775"
+      > </a
+      ><a name="2776" class="Symbol"
+      >&#8704;</a
+      ><a name="2777"
+      > </a
+      ><a name="2778" class="Symbol"
+      >{</a
+      ><a name="2779" href="Relation.Binary.PropositionalEquality.html#2779" class="Bound"
+      >x</a
+      ><a name="2780"
+      > </a
+      ><a name="2781" href="Relation.Binary.PropositionalEquality.html#2781" class="Bound"
+      >y</a
+      ><a name="2782" class="Symbol"
+      >}</a
+      ><a name="2783"
+      > </a
+      ><a name="2784" class="Symbol"
+      >&#8594;</a
+      ><a name="2785"
+      > </a
+      ><a name="2786" href="Relation.Binary.PropositionalEquality.html#2779" class="Bound"
+      >x</a
+      ><a name="2787"
+      > </a
+      ><a name="2788" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2789"
+      > </a
+      ><a name="2790" href="Relation.Binary.PropositionalEquality.html#2781" class="Bound"
+      >y</a
+      ><a name="2791"
+      > </a
+      ><a name="2792" class="Symbol"
+      >&#8594;</a
+      ><a name="2793"
+      > </a
+      ><a name="2794" href="Relation.Binary.PropositionalEquality.html#2688" class="Bound"
+      >f</a
+      ><a name="2795"
+      > </a
+      ><a name="2796" href="Relation.Binary.PropositionalEquality.html#2779" class="Bound"
+      >x</a
+      ><a name="2797"
+      > </a
+      ><a name="2798" href="Relation.Binary.Indexed.Core.html#1871" class="Function Operator"
+      >&#8776;</a
+      ><a name="2799"
+      > </a
+      ><a name="2800" href="Relation.Binary.PropositionalEquality.html#2688" class="Bound"
+      >f</a
+      ><a name="2801"
+      > </a
+      ><a name="2802" href="Relation.Binary.PropositionalEquality.html#2781" class="Bound"
+      >y</a
+      ><a name="2803"
+      >
+  </a
+      ><a name="2806" href="Relation.Binary.PropositionalEquality.html#2768" class="Function"
+      >cong&#8242;</a
+      ><a name="2811"
+      > </a
+      ><a name="2812" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2816"
+      > </a
+      ><a name="2817" class="Symbol"
+      >=</a
+      ><a name="2818"
+      > </a
+      ><a name="2819" href="Relation.Binary.Indexed.Core.html#1596" class="Function"
+      >I.Setoid.refl</a
+      ><a name="2832"
+      > </a
+      ><a name="2833" href="Relation.Binary.PropositionalEquality.html#2685" class="Bound"
+      >B</a
+      ><a name="2834"
+      >
+
+</a
+      ><a name="2836" href="Relation.Binary.PropositionalEquality.html#2836" class="Function"
+      >&#8594;-to-&#10230;</a
+      ><a name="2842"
+      > </a
+      ><a name="2843" class="Symbol"
+      >:</a
+      ><a name="2844"
+      > </a
+      ><a name="2845" class="Symbol"
+      >&#8704;</a
+      ><a name="2846"
+      > </a
+      ><a name="2847" class="Symbol"
+      >{</a
+      ><a name="2848" href="Relation.Binary.PropositionalEquality.html#2848" class="Bound"
+      >a</a
+      ><a name="2849"
+      > </a
+      ><a name="2850" href="Relation.Binary.PropositionalEquality.html#2850" class="Bound"
+      >b&#8321;</a
+      ><a name="2852"
+      > </a
+      ><a name="2853" href="Relation.Binary.PropositionalEquality.html#2853" class="Bound"
+      >b&#8322;</a
+      ><a name="2855" class="Symbol"
+      >}</a
+      ><a name="2856"
+      > </a
+      ><a name="2857" class="Symbol"
+      >{</a
+      ><a name="2858" href="Relation.Binary.PropositionalEquality.html#2858" class="Bound"
+      >A</a
+      ><a name="2859"
+      > </a
+      ><a name="2860" class="Symbol"
+      >:</a
+      ><a name="2861"
+      > </a
+      ><a name="2862" class="PrimitiveType"
+      >Set</a
+      ><a name="2865"
+      > </a
+      ><a name="2866" href="Relation.Binary.PropositionalEquality.html#2848" class="Bound"
+      >a</a
+      ><a name="2867" class="Symbol"
+      >}</a
+      ><a name="2868"
+      > </a
+      ><a name="2869" class="Symbol"
+      >{</a
+      ><a name="2870" href="Relation.Binary.PropositionalEquality.html#2870" class="Bound"
+      >B</a
+      ><a name="2871"
+      > </a
+      ><a name="2872" class="Symbol"
+      >:</a
+      ><a name="2873"
+      > </a
+      ><a name="2874" href="Relation.Binary.html#1852" class="Record"
+      >Setoid</a
+      ><a name="2880"
+      > </a
+      ><a name="2881" href="Relation.Binary.PropositionalEquality.html#2850" class="Bound"
+      >b&#8321;</a
+      ><a name="2883"
+      > </a
+      ><a name="2884" href="Relation.Binary.PropositionalEquality.html#2853" class="Bound"
+      >b&#8322;</a
+      ><a name="2886" class="Symbol"
+      >}</a
+      ><a name="2887"
+      > </a
+      ><a name="2888" class="Symbol"
+      >&#8594;</a
+      ><a name="2889"
+      >
+         </a
+      ><a name="2899" class="Symbol"
+      >(</a
+      ><a name="2900" href="Relation.Binary.PropositionalEquality.html#2858" class="Bound"
+      >A</a
+      ><a name="2901"
+      > </a
+      ><a name="2902" class="Symbol"
+      >&#8594;</a
+      ><a name="2903"
+      > </a
+      ><a name="2904" href="Relation.Binary.html#1915" class="Field"
+      >Setoid.Carrier</a
+      ><a name="2918"
+      > </a
+      ><a name="2919" href="Relation.Binary.PropositionalEquality.html#2870" class="Bound"
+      >B</a
+      ><a name="2920" class="Symbol"
+      >)</a
+      ><a name="2921"
+      > </a
+      ><a name="2922" class="Symbol"
+      >&#8594;</a
+      ><a name="2923"
+      > </a
+      ><a name="2924" href="Relation.Binary.PropositionalEquality.html#1526" class="Function"
+      >setoid</a
+      ><a name="2930"
+      > </a
+      ><a name="2931" href="Relation.Binary.PropositionalEquality.html#2858" class="Bound"
+      >A</a
+      ><a name="2932"
+      > </a
+      ><a name="2933" href="Function.Equality.html#847" class="Function Operator"
+      >&#10230;</a
+      ><a name="2934"
+      > </a
+      ><a name="2935" href="Relation.Binary.PropositionalEquality.html#2870" class="Bound"
+      >B</a
+      ><a name="2936"
+      >
+</a
+      ><a name="2937" href="Relation.Binary.PropositionalEquality.html#2836" class="Function"
+      >&#8594;-to-&#10230;</a
+      ><a name="2943"
+      > </a
+      ><a name="2944" class="Symbol"
+      >=</a
+      ><a name="2945"
+      > </a
+      ><a name="2946" href="Relation.Binary.PropositionalEquality.html#2553" class="Function"
+      >:&#8594;-to-&#928;</a
+      ><a name="2953"
+      >
+
+</a
+      ><a name="2955" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="3027"
+      >
+</a
+      ><a name="3028" class="Comment"
+      >-- The old inspect idiom</a
+      ><a name="3052"
+      >
+
+</a
+      ><a name="3054" class="Comment"
+      >-- The old inspect idiom has been deprecated, and may be removed in</a
+      ><a name="3121"
+      >
+</a
+      ><a name="3122" class="Comment"
+      >-- the future. Use inspect on steroids instead.</a
+      ><a name="3169"
+      >
+
+</a
+      ><a name="3171" class="Keyword"
+      >module</a
+      ><a name="3177"
+      > </a
+      ><a name="3178" href="Relation.Binary.PropositionalEquality.html#3178" class="Module"
+      >Deprecated-inspect</a
+      ><a name="3196"
+      > </a
+      ><a name="3197" class="Keyword"
+      >where</a
+      ><a name="3202"
+      >
+
+  </a
+      ><a name="3206" class="Comment"
+      >-- The inspect idiom can be used when you want to pattern match on</a
+      ><a name="3272"
+      >
+  </a
+      ><a name="3275" class="Comment"
+      >-- the result r of some expression e, and you also need to</a
+      ><a name="3333"
+      >
+  </a
+      ><a name="3336" class="Comment"
+      >-- &quot;remember&quot; that r&#160;&#8801;&#160;e.</a
+      ><a name="3361"
+      >
+
+  </a
+      ><a name="3365" class="Comment"
+      >-- The inspect idiom has a problem: sometimes you can only pattern</a
+      ><a name="3431"
+      >
+  </a
+      ><a name="3434" class="Comment"
+      >-- match on the p part of p&#160;with-&#8801;&#160;eq if you also pattern match on</a
+      ><a name="3500"
+      >
+  </a
+      ><a name="3503" class="Comment"
+      >-- the eq part, and then you no longer have access to the equality.</a
+      ><a name="3570"
+      >
+  </a
+      ><a name="3573" class="Comment"
+      >-- Inspect on steroids solves this problem.</a
+      ><a name="3616"
+      >
+
+  </a
+      ><a name="3620" class="Keyword"
+      >data</a
+      ><a name="3624"
+      > </a
+      ><a name="3625" href="Relation.Binary.PropositionalEquality.html#3625" class="Datatype"
+      >Inspect</a
+      ><a name="3632"
+      > </a
+      ><a name="3633" class="Symbol"
+      >{</a
+      ><a name="3634" href="Relation.Binary.PropositionalEquality.html#3634" class="Bound"
+      >a</a
+      ><a name="3635" class="Symbol"
+      >}</a
+      ><a name="3636"
+      > </a
+      ><a name="3637" class="Symbol"
+      >{</a
+      ><a name="3638" href="Relation.Binary.PropositionalEquality.html#3638" class="Bound"
+      >A</a
+      ><a name="3639"
+      > </a
+      ><a name="3640" class="Symbol"
+      >:</a
+      ><a name="3641"
+      > </a
+      ><a name="3642" class="PrimitiveType"
+      >Set</a
+      ><a name="3645"
+      > </a
+      ><a name="3646" href="Relation.Binary.PropositionalEquality.html#3634" class="Bound"
+      >a</a
+      ><a name="3647" class="Symbol"
+      >}</a
+      ><a name="3648"
+      > </a
+      ><a name="3649" class="Symbol"
+      >(</a
+      ><a name="3650" href="Relation.Binary.PropositionalEquality.html#3650" class="Bound"
+      >x</a
+      ><a name="3651"
+      > </a
+      ><a name="3652" class="Symbol"
+      >:</a
+      ><a name="3653"
+      > </a
+      ><a name="3654" href="Relation.Binary.PropositionalEquality.html#3638" class="Bound"
+      >A</a
+      ><a name="3655" class="Symbol"
+      >)</a
+      ><a name="3656"
+      > </a
+      ><a name="3657" class="Symbol"
+      >:</a
+      ><a name="3658"
+      > </a
+      ><a name="3659" class="PrimitiveType"
+      >Set</a
+      ><a name="3662"
+      > </a
+      ><a name="3663" href="Relation.Binary.PropositionalEquality.html#3634" class="Bound"
+      >a</a
+      ><a name="3664"
+      > </a
+      ><a name="3665" class="Keyword"
+      >where</a
+      ><a name="3670"
+      >
+    </a
+      ><a name="3675" href="Relation.Binary.PropositionalEquality.html#3675" class="InductiveConstructor Operator"
+      >_with-&#8801;_</a
+      ><a name="3683"
+      > </a
+      ><a name="3684" class="Symbol"
+      >:</a
+      ><a name="3685"
+      > </a
+      ><a name="3686" class="Symbol"
+      >(</a
+      ><a name="3687" href="Relation.Binary.PropositionalEquality.html#3687" class="Bound"
+      >y</a
+      ><a name="3688"
+      > </a
+      ><a name="3689" class="Symbol"
+      >:</a
+      ><a name="3690"
+      > </a
+      ><a name="3691" href="Relation.Binary.PropositionalEquality.html#3638" class="Bound"
+      >A</a
+      ><a name="3692" class="Symbol"
+      >)</a
+      ><a name="3693"
+      > </a
+      ><a name="3694" class="Symbol"
+      >(</a
+      ><a name="3695" href="Relation.Binary.PropositionalEquality.html#3695" class="Bound"
+      >eq</a
+      ><a name="3697"
+      > </a
+      ><a name="3698" class="Symbol"
+      >:</a
+      ><a name="3699"
+      > </a
+      ><a name="3700" href="Relation.Binary.PropositionalEquality.html#3650" class="Bound"
+      >x</a
+      ><a name="3701"
+      > </a
+      ><a name="3702" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="3703"
+      > </a
+      ><a name="3704" href="Relation.Binary.PropositionalEquality.html#3687" class="Bound"
+      >y</a
+      ><a name="3705" class="Symbol"
+      >)</a
+      ><a name="3706"
+      > </a
+      ><a name="3707" class="Symbol"
+      >&#8594;</a
+      ><a name="3708"
+      > </a
+      ><a name="3709" href="Relation.Binary.PropositionalEquality.html#3625" class="Datatype"
+      >Inspect</a
+      ><a name="3716"
+      > </a
+      ><a name="3717" href="Relation.Binary.PropositionalEquality.html#3650" class="Bound"
+      >x</a
+      ><a name="3718"
+      >
+
+  </a
+      ><a name="3722" href="Relation.Binary.PropositionalEquality.html#3722" class="Function"
+      >inspect</a
+      ><a name="3729"
+      > </a
+      ><a name="3730" class="Symbol"
+      >:</a
+      ><a name="3731"
+      > </a
+      ><a name="3732" class="Symbol"
+      >&#8704;</a
+      ><a name="3733"
+      > </a
+      ><a name="3734" class="Symbol"
+      >{</a
+      ><a name="3735" href="Relation.Binary.PropositionalEquality.html#3735" class="Bound"
+      >a</a
+      ><a name="3736" class="Symbol"
+      >}</a
+      ><a name="3737"
+      > </a
+      ><a name="3738" class="Symbol"
+      >{</a
+      ><a name="3739" href="Relation.Binary.PropositionalEquality.html#3739" class="Bound"
+      >A</a
+      ><a name="3740"
+      > </a
+      ><a name="3741" class="Symbol"
+      >:</a
+      ><a name="3742"
+      > </a
+      ><a name="3743" class="PrimitiveType"
+      >Set</a
+      ><a name="3746"
+      > </a
+      ><a name="3747" href="Relation.Binary.PropositionalEquality.html#3735" class="Bound"
+      >a</a
+      ><a name="3748" class="Symbol"
+      >}</a
+      ><a name="3749"
+      > </a
+      ><a name="3750" class="Symbol"
+      >(</a
+      ><a name="3751" href="Relation.Binary.PropositionalEquality.html#3751" class="Bound"
+      >x</a
+      ><a name="3752"
+      > </a
+      ><a name="3753" class="Symbol"
+      >:</a
+      ><a name="3754"
+      > </a
+      ><a name="3755" href="Relation.Binary.PropositionalEquality.html#3739" class="Bound"
+      >A</a
+      ><a name="3756" class="Symbol"
+      >)</a
+      ><a name="3757"
+      > </a
+      ><a name="3758" class="Symbol"
+      >&#8594;</a
+      ><a name="3759"
+      > </a
+      ><a name="3760" href="Relation.Binary.PropositionalEquality.html#3625" class="Datatype"
+      >Inspect</a
+      ><a name="3767"
+      > </a
+      ><a name="3768" href="Relation.Binary.PropositionalEquality.html#3751" class="Bound"
+      >x</a
+      ><a name="3769"
+      >
+  </a
+      ><a name="3772" href="Relation.Binary.PropositionalEquality.html#3722" class="Function"
+      >inspect</a
+      ><a name="3779"
+      > </a
+      ><a name="3780" href="Relation.Binary.PropositionalEquality.html#3780" class="Bound"
+      >x</a
+      ><a name="3781"
+      > </a
+      ><a name="3782" class="Symbol"
+      >=</a
+      ><a name="3783"
+      > </a
+      ><a name="3784" href="Relation.Binary.PropositionalEquality.html#3780" class="Bound"
+      >x</a
+      ><a name="3785"
+      > </a
+      ><a name="3786" href="Relation.Binary.PropositionalEquality.html#3675" class="InductiveConstructor Operator"
+      >with-&#8801;</a
+      ><a name="3792"
+      > </a
+      ><a name="3793" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3797"
+      >
+
+  </a
+      ><a name="3801" class="Comment"
+      >-- Example usage:</a
+      ><a name="3818"
+      >
+
+  </a
+      ><a name="3822" class="Comment"
+      >-- f x y with inspect (g x)</a
+      ><a name="3849"
+      >
+  </a
+      ><a name="3852" class="Comment"
+      >-- f x y | c z with-&#8801; eq = ...</a
+      ><a name="3882"
+      >
+
+</a
+      ><a name="3884" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="3956"
+      >
+</a
+      ><a name="3957" class="Comment"
+      >-- The old inspect on steroids</a
+      ><a name="3987"
+      >
+
+</a
+      ><a name="3989" class="Comment"
+      >-- The old inspect on steroids idiom has been deprecated, and may be</a
+      ><a name="4057"
+      >
+</a
+      ><a name="4058" class="Comment"
+      >-- removed in the future. Use simplified inspect on steroids instead.</a
+      ><a name="4127"
+      >
+
+</a
+      ><a name="4129" class="Keyword"
+      >module</a
+      ><a name="4135"
+      > </a
+      ><a name="4136" href="Relation.Binary.PropositionalEquality.html#4136" class="Module"
+      >Deprecated-inspect-on-steroids</a
+      ><a name="4166"
+      > </a
+      ><a name="4167" class="Keyword"
+      >where</a
+      ><a name="4172"
+      >
+
+  </a
+      ><a name="4176" class="Comment"
+      >-- Inspect on steroids can be used when you want to pattern match on</a
+      ><a name="4244"
+      >
+  </a
+      ><a name="4247" class="Comment"
+      >-- the result r of some expression e, and you also need to &quot;remember&quot;</a
+      ><a name="4316"
+      >
+  </a
+      ><a name="4319" class="Comment"
+      >-- that r&#160;&#8801;&#160;e.</a
+      ><a name="4333"
+      >
+
+  </a
+      ><a name="4337" class="Keyword"
+      >data</a
+      ><a name="4341"
+      > </a
+      ><a name="4342" href="Relation.Binary.PropositionalEquality.html#4342" class="Datatype Operator"
+      >Reveal_is_</a
+      ><a name="4352"
+      > </a
+      ><a name="4353" class="Symbol"
+      >{</a
+      ><a name="4354" href="Relation.Binary.PropositionalEquality.html#4354" class="Bound"
+      >a</a
+      ><a name="4355" class="Symbol"
+      >}</a
+      ><a name="4356"
+      > </a
+      ><a name="4357" class="Symbol"
+      >{</a
+      ><a name="4358" href="Relation.Binary.PropositionalEquality.html#4358" class="Bound"
+      >A</a
+      ><a name="4359"
+      > </a
+      ><a name="4360" class="Symbol"
+      >:</a
+      ><a name="4361"
+      > </a
+      ><a name="4362" class="PrimitiveType"
+      >Set</a
+      ><a name="4365"
+      > </a
+      ><a name="4366" href="Relation.Binary.PropositionalEquality.html#4354" class="Bound"
+      >a</a
+      ><a name="4367" class="Symbol"
+      >}</a
+      ><a name="4368"
+      > </a
+      ><a name="4369" class="Symbol"
+      >(</a
+      ><a name="4370" href="Relation.Binary.PropositionalEquality.html#4370" class="Bound"
+      >x</a
+      ><a name="4371"
+      > </a
+      ><a name="4372" class="Symbol"
+      >:</a
+      ><a name="4373"
+      > </a
+      ><a name="4374" href="Data.Unit.NonEta.html#686" class="Function"
+      >Hidden</a
+      ><a name="4380"
+      > </a
+      ><a name="4381" href="Relation.Binary.PropositionalEquality.html#4358" class="Bound"
+      >A</a
+      ><a name="4382" class="Symbol"
+      >)</a
+      ><a name="4383"
+      > </a
+      ><a name="4384" class="Symbol"
+      >(</a
+      ><a name="4385" href="Relation.Binary.PropositionalEquality.html#4385" class="Bound"
+      >y</a
+      ><a name="4386"
+      > </a
+      ><a name="4387" class="Symbol"
+      >:</a
+      ><a name="4388"
+      > </a
+      ><a name="4389" href="Relation.Binary.PropositionalEquality.html#4358" class="Bound"
+      >A</a
+      ><a name="4390" class="Symbol"
+      >)</a
+      ><a name="4391"
+      > </a
+      ><a name="4392" class="Symbol"
+      >:</a
+      ><a name="4393"
+      > </a
+      ><a name="4394" class="PrimitiveType"
+      >Set</a
+      ><a name="4397"
+      > </a
+      ><a name="4398" href="Relation.Binary.PropositionalEquality.html#4354" class="Bound"
+      >a</a
+      ><a name="4399"
+      > </a
+      ><a name="4400" class="Keyword"
+      >where</a
+      ><a name="4405"
+      >
+    </a
+      ><a name="4410" href="Relation.Binary.PropositionalEquality.html#4410" class="InductiveConstructor Operator"
+      >[_]</a
+      ><a name="4413"
+      > </a
+      ><a name="4414" class="Symbol"
+      >:</a
+      ><a name="4415"
+      > </a
+      ><a name="4416" class="Symbol"
+      >(</a
+      ><a name="4417" href="Relation.Binary.PropositionalEquality.html#4417" class="Bound"
+      >eq</a
+      ><a name="4419"
+      > </a
+      ><a name="4420" class="Symbol"
+      >:</a
+      ><a name="4421"
+      > </a
+      ><a name="4422" href="Data.Unit.NonEta.html#1040" class="Function"
+      >reveal</a
+      ><a name="4428"
+      > </a
+      ><a name="4429" href="Relation.Binary.PropositionalEquality.html#4370" class="Bound"
+      >x</a
+      ><a name="4430"
+      > </a
+      ><a name="4431" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="4432"
+      > </a
+      ><a name="4433" href="Relation.Binary.PropositionalEquality.html#4385" class="Bound"
+      >y</a
+      ><a name="4434" class="Symbol"
+      >)</a
+      ><a name="4435"
+      > </a
+      ><a name="4436" class="Symbol"
+      >&#8594;</a
+      ><a name="4437"
+      > </a
+      ><a name="4438" href="Relation.Binary.PropositionalEquality.html#4342" class="Datatype Operator"
+      >Reveal</a
+      ><a name="4444"
+      > </a
+      ><a name="4445" href="Relation.Binary.PropositionalEquality.html#4370" class="Bound"
+      >x</a
+      ><a name="4446"
+      > </a
+      ><a name="4447" href="Relation.Binary.PropositionalEquality.html#4342" class="Datatype Operator"
+      >is</a
+      ><a name="4449"
+      > </a
+      ><a name="4450" href="Relation.Binary.PropositionalEquality.html#4385" class="Bound"
+      >y</a
+      ><a name="4451"
+      >
+
+  </a
+      ><a name="4455" href="Relation.Binary.PropositionalEquality.html#4455" class="Function"
+      >inspect</a
+      ><a name="4462"
+      > </a
+      ><a name="4463" class="Symbol"
+      >:</a
+      ><a name="4464"
+      > </a
+      ><a name="4465" class="Symbol"
+      >&#8704;</a
+      ><a name="4466"
+      > </a
+      ><a name="4467" class="Symbol"
+      >{</a
+      ><a name="4468" href="Relation.Binary.PropositionalEquality.html#4468" class="Bound"
+      >a</a
+      ><a name="4469"
+      > </a
+      ><a name="4470" href="Relation.Binary.PropositionalEquality.html#4470" class="Bound"
+      >b</a
+      ><a name="4471" class="Symbol"
+      >}</a
+      ><a name="4472"
+      > </a
+      ><a name="4473" class="Symbol"
+      >{</a
+      ><a name="4474" href="Relation.Binary.PropositionalEquality.html#4474" class="Bound"
+      >A</a
+      ><a name="4475"
+      > </a
+      ><a name="4476" class="Symbol"
+      >:</a
+      ><a name="4477"
+      > </a
+      ><a name="4478" class="PrimitiveType"
+      >Set</a
+      ><a name="4481"
+      > </a
+      ><a name="4482" href="Relation.Binary.PropositionalEquality.html#4468" class="Bound"
+      >a</a
+      ><a name="4483" class="Symbol"
+      >}</a
+      ><a name="4484"
+      > </a
+      ><a name="4485" class="Symbol"
+      >{</a
+      ><a name="4486" href="Relation.Binary.PropositionalEquality.html#4486" class="Bound"
+      >B</a
+      ><a name="4487"
+      > </a
+      ><a name="4488" class="Symbol"
+      >:</a
+      ><a name="4489"
+      > </a
+      ><a name="4490" href="Relation.Binary.PropositionalEquality.html#4474" class="Bound"
+      >A</a
+      ><a name="4491"
+      > </a
+      ><a name="4492" class="Symbol"
+      >&#8594;</a
+      ><a name="4493"
+      > </a
+      ><a name="4494" class="PrimitiveType"
+      >Set</a
+      ><a name="4497"
+      > </a
+      ><a name="4498" href="Relation.Binary.PropositionalEquality.html#4470" class="Bound"
+      >b</a
+      ><a name="4499" class="Symbol"
+      >}</a
+      ><a name="4500"
+      >
+            </a
+      ><a name="4513" class="Symbol"
+      >(</a
+      ><a name="4514" href="Relation.Binary.PropositionalEquality.html#4514" class="Bound"
+      >f</a
+      ><a name="4515"
+      > </a
+      ><a name="4516" class="Symbol"
+      >:</a
+      ><a name="4517"
+      > </a
+      ><a name="4518" class="Symbol"
+      >(</a
+      ><a name="4519" href="Relation.Binary.PropositionalEquality.html#4519" class="Bound"
+      >x</a
+      ><a name="4520"
+      > </a
+      ><a name="4521" class="Symbol"
+      >:</a
+      ><a name="4522"
+      > </a
+      ><a name="4523" href="Relation.Binary.PropositionalEquality.html#4474" class="Bound"
+      >A</a
+      ><a name="4524" class="Symbol"
+      >)</a
+      ><a name="4525"
+      > </a
+      ><a name="4526" class="Symbol"
+      >&#8594;</a
+      ><a name="4527"
+      > </a
+      ><a name="4528" href="Relation.Binary.PropositionalEquality.html#4486" class="Bound"
+      >B</a
+      ><a name="4529"
+      > </a
+      ><a name="4530" href="Relation.Binary.PropositionalEquality.html#4519" class="Bound"
+      >x</a
+      ><a name="4531" class="Symbol"
+      >)</a
+      ><a name="4532"
+      > </a
+      ><a name="4533" class="Symbol"
+      >(</a
+      ><a name="4534" href="Relation.Binary.PropositionalEquality.html#4534" class="Bound"
+      >x</a
+      ><a name="4535"
+      > </a
+      ><a name="4536" class="Symbol"
+      >:</a
+      ><a name="4537"
+      > </a
+      ><a name="4538" href="Relation.Binary.PropositionalEquality.html#4474" class="Bound"
+      >A</a
+      ><a name="4539" class="Symbol"
+      >)</a
+      ><a name="4540"
+      > </a
+      ><a name="4541" class="Symbol"
+      >&#8594;</a
+      ><a name="4542"
+      > </a
+      ><a name="4543" href="Relation.Binary.PropositionalEquality.html#4342" class="Datatype Operator"
+      >Reveal</a
+      ><a name="4549"
+      > </a
+      ><a name="4550" class="Symbol"
+      >(</a
+      ><a name="4551" href="Data.Unit.NonEta.html#896" class="Function"
+      >hide</a
+      ><a name="4555"
+      > </a
+      ><a name="4556" href="Relation.Binary.PropositionalEquality.html#4514" class="Bound"
+      >f</a
+      ><a name="4557"
+      > </a
+      ><a name="4558" href="Relation.Binary.PropositionalEquality.html#4534" class="Bound"
+      >x</a
+      ><a name="4559" class="Symbol"
+      >)</a
+      ><a name="4560"
+      > </a
+      ><a name="4561" href="Relation.Binary.PropositionalEquality.html#4342" class="Datatype Operator"
+      >is</a
+      ><a name="4563"
+      > </a
+      ><a name="4564" class="Symbol"
+      >(</a
+      ><a name="4565" href="Relation.Binary.PropositionalEquality.html#4514" class="Bound"
+      >f</a
+      ><a name="4566"
+      > </a
+      ><a name="4567" href="Relation.Binary.PropositionalEquality.html#4534" class="Bound"
+      >x</a
+      ><a name="4568" class="Symbol"
+      >)</a
+      ><a name="4569"
+      >
+  </a
+      ><a name="4572" href="Relation.Binary.PropositionalEquality.html#4455" class="Function"
+      >inspect</a
+      ><a name="4579"
+      > </a
+      ><a name="4580" href="Relation.Binary.PropositionalEquality.html#4580" class="Bound"
+      >f</a
+      ><a name="4581"
+      > </a
+      ><a name="4582" href="Relation.Binary.PropositionalEquality.html#4582" class="Bound"
+      >x</a
+      ><a name="4583"
+      > </a
+      ><a name="4584" class="Symbol"
+      >=</a
+      ><a name="4585"
+      > </a
+      ><a name="4586" href="Relation.Binary.PropositionalEquality.html#4410" class="InductiveConstructor Operator"
+      >[</a
+      ><a name="4587"
+      > </a
+      ><a name="4588" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="4592"
+      > </a
+      ><a name="4593" href="Relation.Binary.PropositionalEquality.html#4410" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="4594"
+      >
+
+  </a
+      ><a name="4598" class="Comment"
+      >-- Example usage:</a
+      ><a name="4615"
+      >
+
+  </a
+      ><a name="4619" class="Comment"
+      >-- f x y with g x | inspect g x</a
+      ><a name="4650"
+      >
+  </a
+      ><a name="4653" class="Comment"
+      >-- f x y | c z | [ eq ] = ...</a
+      ><a name="4682"
+      >
+
+</a
+      ><a name="4684" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="4756"
+      >
+</a
+      ><a name="4757" class="Comment"
+      >-- Simplified inspect on steroids</a
+      ><a name="4790"
+      >
+
+</a
+      ><a name="4792" class="Comment"
+      >-- Simplified inspect on steroids can be used when you want to pattern</a
+      ><a name="4862"
+      >
+</a
+      ><a name="4863" class="Comment"
+      >-- match on the result r of some expression e, and you also need to</a
+      ><a name="4930"
+      >
+</a
+      ><a name="4931" class="Comment"
+      >-- &quot;remember&quot; that r&#160;&#8801;&#160;e.</a
+      ><a name="4956"
+      >
+
+</a
+      ><a name="4958" class="Keyword"
+      >record</a
+      ><a name="4964"
+      > </a
+      ><a name="4965" href="Relation.Binary.PropositionalEquality.html#4965" class="Record Operator"
+      >Reveal_&#183;_is_</a
+      ><a name="4977"
+      > </a
+      ><a name="4978" class="Symbol"
+      >{</a
+      ><a name="4979" href="Relation.Binary.PropositionalEquality.html#4979" class="Bound"
+      >a</a
+      ><a name="4980"
+      > </a
+      ><a name="4981" href="Relation.Binary.PropositionalEquality.html#4981" class="Bound"
+      >b</a
+      ><a name="4982" class="Symbol"
+      >}</a
+      ><a name="4983"
+      > </a
+      ><a name="4984" class="Symbol"
+      >{</a
+      ><a name="4985" href="Relation.Binary.PropositionalEquality.html#4985" class="Bound"
+      >A</a
+      ><a name="4986"
+      > </a
+      ><a name="4987" class="Symbol"
+      >:</a
+      ><a name="4988"
+      > </a
+      ><a name="4989" class="PrimitiveType"
+      >Set</a
+      ><a name="4992"
+      > </a
+      ><a name="4993" href="Relation.Binary.PropositionalEquality.html#4979" class="Bound"
+      >a</a
+      ><a name="4994" class="Symbol"
+      >}</a
+      ><a name="4995"
+      > </a
+      ><a name="4996" class="Symbol"
+      >{</a
+      ><a name="4997" href="Relation.Binary.PropositionalEquality.html#4997" class="Bound"
+      >B</a
+      ><a name="4998"
+      > </a
+      ><a name="4999" class="Symbol"
+      >:</a
+      ><a name="5000"
+      > </a
+      ><a name="5001" href="Relation.Binary.PropositionalEquality.html#4985" class="Bound"
+      >A</a
+      ><a name="5002"
+      > </a
+      ><a name="5003" class="Symbol"
+      >&#8594;</a
+      ><a name="5004"
+      > </a
+      ><a name="5005" class="PrimitiveType"
+      >Set</a
+      ><a name="5008"
+      > </a
+      ><a name="5009" href="Relation.Binary.PropositionalEquality.html#4981" class="Bound"
+      >b</a
+      ><a name="5010" class="Symbol"
+      >}</a
+      ><a name="5011"
+      >
+                    </a
+      ><a name="5032" class="Symbol"
+      >(</a
+      ><a name="5033" href="Relation.Binary.PropositionalEquality.html#5033" class="Bound"
+      >f</a
+      ><a name="5034"
+      > </a
+      ><a name="5035" class="Symbol"
+      >:</a
+      ><a name="5036"
+      > </a
+      ><a name="5037" class="Symbol"
+      >(</a
+      ><a name="5038" href="Relation.Binary.PropositionalEquality.html#5038" class="Bound"
+      >x</a
+      ><a name="5039"
+      > </a
+      ><a name="5040" class="Symbol"
+      >:</a
+      ><a name="5041"
+      > </a
+      ><a name="5042" href="Relation.Binary.PropositionalEquality.html#4985" class="Bound"
+      >A</a
+      ><a name="5043" class="Symbol"
+      >)</a
+      ><a name="5044"
+      > </a
+      ><a name="5045" class="Symbol"
+      >&#8594;</a
+      ><a name="5046"
+      > </a
+      ><a name="5047" href="Relation.Binary.PropositionalEquality.html#4997" class="Bound"
+      >B</a
+      ><a name="5048"
+      > </a
+      ><a name="5049" href="Relation.Binary.PropositionalEquality.html#5038" class="Bound"
+      >x</a
+      ><a name="5050" class="Symbol"
+      >)</a
+      ><a name="5051"
+      > </a
+      ><a name="5052" class="Symbol"
+      >(</a
+      ><a name="5053" href="Relation.Binary.PropositionalEquality.html#5053" class="Bound"
+      >x</a
+      ><a name="5054"
+      > </a
+      ><a name="5055" class="Symbol"
+      >:</a
+      ><a name="5056"
+      > </a
+      ><a name="5057" href="Relation.Binary.PropositionalEquality.html#4985" class="Bound"
+      >A</a
+      ><a name="5058" class="Symbol"
+      >)</a
+      ><a name="5059"
+      > </a
+      ><a name="5060" class="Symbol"
+      >(</a
+      ><a name="5061" href="Relation.Binary.PropositionalEquality.html#5061" class="Bound"
+      >y</a
+      ><a name="5062"
+      > </a
+      ><a name="5063" class="Symbol"
+      >:</a
+      ><a name="5064"
+      > </a
+      ><a name="5065" href="Relation.Binary.PropositionalEquality.html#4997" class="Bound"
+      >B</a
+      ><a name="5066"
+      > </a
+      ><a name="5067" href="Relation.Binary.PropositionalEquality.html#5053" class="Bound"
+      >x</a
+      ><a name="5068" class="Symbol"
+      >)</a
+      ><a name="5069"
+      > </a
+      ><a name="5070" class="Symbol"
+      >:</a
+      ><a name="5071"
+      >
+                    </a
+      ><a name="5092" class="PrimitiveType"
+      >Set</a
+      ><a name="5095"
+      > </a
+      ><a name="5096" class="Symbol"
+      >(</a
+      ><a name="5097" href="Relation.Binary.PropositionalEquality.html#4979" class="Bound"
+      >a</a
+      ><a name="5098"
+      > </a
+      ><a name="5099" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="5100"
+      > </a
+      ><a name="5101" href="Relation.Binary.PropositionalEquality.html#4981" class="Bound"
+      >b</a
+      ><a name="5102" class="Symbol"
+      >)</a
+      ><a name="5103"
+      > </a
+      ><a name="5104" class="Keyword"
+      >where</a
+      ><a name="5109"
+      >
+  </a
+      ><a name="5112" class="Keyword"
+      >constructor</a
+      ><a name="5123"
+      > </a
+      ><a name="5124" href="Relation.Binary.PropositionalEquality.html#5124" class="InductiveConstructor Operator"
+      >[_]</a
+      ><a name="5127"
+      >
+  </a
+      ><a name="5130" class="Keyword"
+      >field</a
+      ><a name="5135"
+      > </a
+      ><a name="5136" href="Relation.Binary.PropositionalEquality.html#5136" class="Field"
+      >eq</a
+      ><a name="5138"
+      > </a
+      ><a name="5139" class="Symbol"
+      >:</a
+      ><a name="5140"
+      > </a
+      ><a name="5141" href="Relation.Binary.PropositionalEquality.html#5033" class="Bound"
+      >f</a
+      ><a name="5142"
+      > </a
+      ><a name="5143" href="Relation.Binary.PropositionalEquality.html#5053" class="Bound"
+      >x</a
+      ><a name="5144"
+      > </a
+      ><a name="5145" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="5146"
+      > </a
+      ><a name="5147" href="Relation.Binary.PropositionalEquality.html#5061" class="Bound"
+      >y</a
+      ><a name="5148"
+      >
+
+</a
+      ><a name="5150" href="Relation.Binary.PropositionalEquality.html#5150" class="Function"
+      >inspect</a
+      ><a name="5157"
+      > </a
+      ><a name="5158" class="Symbol"
+      >:</a
+      ><a name="5159"
+      > </a
+      ><a name="5160" class="Symbol"
+      >&#8704;</a
+      ><a name="5161"
+      > </a
+      ><a name="5162" class="Symbol"
+      >{</a
+      ><a name="5163" href="Relation.Binary.PropositionalEquality.html#5163" class="Bound"
+      >a</a
+      ><a name="5164"
+      > </a
+      ><a name="5165" href="Relation.Binary.PropositionalEquality.html#5165" class="Bound"
+      >b</a
+      ><a name="5166" class="Symbol"
+      >}</a
+      ><a name="5167"
+      > </a
+      ><a name="5168" class="Symbol"
+      >{</a
+      ><a name="5169" href="Relation.Binary.PropositionalEquality.html#5169" class="Bound"
+      >A</a
+      ><a name="5170"
+      > </a
+      ><a name="5171" class="Symbol"
+      >:</a
+      ><a name="5172"
+      > </a
+      ><a name="5173" class="PrimitiveType"
+      >Set</a
+      ><a name="5176"
+      > </a
+      ><a name="5177" href="Relation.Binary.PropositionalEquality.html#5163" class="Bound"
+      >a</a
+      ><a name="5178" class="Symbol"
+      >}</a
+      ><a name="5179"
+      > </a
+      ><a name="5180" class="Symbol"
+      >{</a
+      ><a name="5181" href="Relation.Binary.PropositionalEquality.html#5181" class="Bound"
+      >B</a
+      ><a name="5182"
+      > </a
+      ><a name="5183" class="Symbol"
+      >:</a
+      ><a name="5184"
+      > </a
+      ><a name="5185" href="Relation.Binary.PropositionalEquality.html#5169" class="Bound"
+      >A</a
+      ><a name="5186"
+      > </a
+      ><a name="5187" class="Symbol"
+      >&#8594;</a
+      ><a name="5188"
+      > </a
+      ><a name="5189" class="PrimitiveType"
+      >Set</a
+      ><a name="5192"
+      > </a
+      ><a name="5193" href="Relation.Binary.PropositionalEquality.html#5165" class="Bound"
+      >b</a
+      ><a name="5194" class="Symbol"
+      >}</a
+      ><a name="5195"
+      >
+          </a
+      ><a name="5206" class="Symbol"
+      >(</a
+      ><a name="5207" href="Relation.Binary.PropositionalEquality.html#5207" class="Bound"
+      >f</a
+      ><a name="5208"
+      > </a
+      ><a name="5209" class="Symbol"
+      >:</a
+      ><a name="5210"
+      > </a
+      ><a name="5211" class="Symbol"
+      >(</a
+      ><a name="5212" href="Relation.Binary.PropositionalEquality.html#5212" class="Bound"
+      >x</a
+      ><a name="5213"
+      > </a
+      ><a name="5214" class="Symbol"
+      >:</a
+      ><a name="5215"
+      > </a
+      ><a name="5216" href="Relation.Binary.PropositionalEquality.html#5169" class="Bound"
+      >A</a
+      ><a name="5217" class="Symbol"
+      >)</a
+      ><a name="5218"
+      > </a
+      ><a name="5219" class="Symbol"
+      >&#8594;</a
+      ><a name="5220"
+      > </a
+      ><a name="5221" href="Relation.Binary.PropositionalEquality.html#5181" class="Bound"
+      >B</a
+      ><a name="5222"
+      > </a
+      ><a name="5223" href="Relation.Binary.PropositionalEquality.html#5212" class="Bound"
+      >x</a
+      ><a name="5224" class="Symbol"
+      >)</a
+      ><a name="5225"
+      > </a
+      ><a name="5226" class="Symbol"
+      >(</a
+      ><a name="5227" href="Relation.Binary.PropositionalEquality.html#5227" class="Bound"
+      >x</a
+      ><a name="5228"
+      > </a
+      ><a name="5229" class="Symbol"
+      >:</a
+      ><a name="5230"
+      > </a
+      ><a name="5231" href="Relation.Binary.PropositionalEquality.html#5169" class="Bound"
+      >A</a
+      ><a name="5232" class="Symbol"
+      >)</a
+      ><a name="5233"
+      > </a
+      ><a name="5234" class="Symbol"
+      >&#8594;</a
+      ><a name="5235"
+      > </a
+      ><a name="5236" href="Relation.Binary.PropositionalEquality.html#4965" class="Record Operator"
+      >Reveal</a
+      ><a name="5242"
+      > </a
+      ><a name="5243" href="Relation.Binary.PropositionalEquality.html#5207" class="Bound"
+      >f</a
+      ><a name="5244"
+      > </a
+      ><a name="5245" href="Relation.Binary.PropositionalEquality.html#4965" class="Record Operator"
+      >&#183;</a
+      ><a name="5246"
+      > </a
+      ><a name="5247" href="Relation.Binary.PropositionalEquality.html#5227" class="Bound"
+      >x</a
+      ><a name="5248"
+      > </a
+      ><a name="5249" href="Relation.Binary.PropositionalEquality.html#4965" class="Record Operator"
+      >is</a
+      ><a name="5251"
+      > </a
+      ><a name="5252" href="Relation.Binary.PropositionalEquality.html#5207" class="Bound"
+      >f</a
+      ><a name="5253"
+      > </a
+      ><a name="5254" href="Relation.Binary.PropositionalEquality.html#5227" class="Bound"
+      >x</a
+      ><a name="5255"
+      >
+</a
+      ><a name="5256" href="Relation.Binary.PropositionalEquality.html#5150" class="Function"
+      >inspect</a
+      ><a name="5263"
+      > </a
+      ><a name="5264" href="Relation.Binary.PropositionalEquality.html#5264" class="Bound"
+      >f</a
+      ><a name="5265"
+      > </a
+      ><a name="5266" href="Relation.Binary.PropositionalEquality.html#5266" class="Bound"
+      >x</a
+      ><a name="5267"
+      > </a
+      ><a name="5268" class="Symbol"
+      >=</a
+      ><a name="5269"
+      > </a
+      ><a name="5270" href="Relation.Binary.PropositionalEquality.html#5124" class="InductiveConstructor Operator"
+      >[</a
+      ><a name="5271"
+      > </a
+      ><a name="5272" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="5276"
+      > </a
+      ><a name="5277" href="Relation.Binary.PropositionalEquality.html#5124" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="5278"
+      >
+
+</a
+      ><a name="5280" class="Comment"
+      >-- Example usage:</a
+      ><a name="5297"
+      >
+
+</a
+      ><a name="5299" class="Comment"
+      >-- f x y with g x | inspect g x</a
+      ><a name="5330"
+      >
+</a
+      ><a name="5331" class="Comment"
+      >-- f x y | c z | [ eq ] = ...</a
+      ><a name="5360"
+      >
+
+</a
+      ><a name="5362" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="5434"
+      >
+</a
+      ><a name="5435" class="Comment"
+      >-- Convenient syntax for equational reasoning</a
+      ><a name="5480"
+      >
+
+</a
+      ><a name="5482" class="Keyword"
+      >import</a
+      ><a name="5488"
+      > </a
+      ><a name="5489" href="Relation.Binary.EqReasoning.html#1" class="Module"
+      >Relation.Binary.EqReasoning</a
+      ><a name="5516"
+      > </a
+      ><a name="5517" class="Symbol"
+      >as</a
+      ><a name="5519"
+      > </a
+      ><a name="5520" class="Module"
+      >EqR</a
+      ><a name="5523"
+      >
+
+</a
+      ><a name="5525" class="Comment"
+      >-- Relation.Binary.EqReasoning is more convenient to use with _&#8801;_ if</a
+      ><a name="5593"
+      >
+</a
+      ><a name="5594" class="Comment"
+      >-- the combinators take the type argument (a) as a hidden argument,</a
+      ><a name="5661"
+      >
+</a
+      ><a name="5662" class="Comment"
+      >-- instead of being locked to a fixed type at module instantiation</a
+      ><a name="5728"
+      >
+</a
+      ><a name="5729" class="Comment"
+      >-- time.</a
+      ><a name="5737"
+      >
+
+</a
+      ><a name="5739" class="Keyword"
+      >module</a
+      ><a name="5745"
+      > </a
+      ><a name="5746" href="Relation.Binary.PropositionalEquality.html#5746" class="Module"
+      >&#8801;-Reasoning</a
+      ><a name="5757"
+      > </a
+      ><a name="5758" class="Keyword"
+      >where</a
+      ><a name="5763"
+      >
+  </a
+      ><a name="5766" class="Keyword"
+      >module</a
+      ><a name="5772"
+      > </a
+      ><a name="5773" href="Relation.Binary.PropositionalEquality.html#5773" class="Module"
+      >_</a
+      ><a name="5774"
+      > </a
+      ><a name="5775" class="Symbol"
+      >{</a
+      ><a name="5776" href="Relation.Binary.PropositionalEquality.html#5776" class="Bound"
+      >a</a
+      ><a name="5777" class="Symbol"
+      >}</a
+      ><a name="5778"
+      > </a
+      ><a name="5779" class="Symbol"
+      >{</a
+      ><a name="5780" href="Relation.Binary.PropositionalEquality.html#5780" class="Bound"
+      >A</a
+      ><a name="5781"
+      > </a
+      ><a name="5782" class="Symbol"
+      >:</a
+      ><a name="5783"
+      > </a
+      ><a name="5784" class="PrimitiveType"
+      >Set</a
+      ><a name="5787"
+      > </a
+      ><a name="5788" href="Relation.Binary.PropositionalEquality.html#5776" class="Bound"
+      >a</a
+      ><a name="5789" class="Symbol"
+      >}</a
+      ><a name="5790"
+      > </a
+      ><a name="5791" class="Keyword"
+      >where</a
+      ><a name="5796"
+      >
+    </a
+      ><a name="5801" class="Keyword"
+      >open</a
+      ><a name="5805"
+      > </a
+      ><a name="5806" href="Relation.Binary.EqReasoning.html#1" class="Module"
+      >EqR</a
+      ><a name="5809"
+      > </a
+      ><a name="5810" class="Symbol"
+      >(</a
+      ><a name="5811" href="Relation.Binary.PropositionalEquality.html#1526" class="Function"
+      >setoid</a
+      ><a name="5817"
+      > </a
+      ><a name="5818" href="Relation.Binary.PropositionalEquality.html#5780" class="Bound"
+      >A</a
+      ><a name="5819" class="Symbol"
+      >)</a
+      ><a name="5820"
+      > </a
+      ><a name="5821" class="Keyword"
+      >public</a
+      ><a name="5827"
+      >
+      </a
+      ><a name="5834" class="Keyword"
+      >hiding</a
+      ><a name="5840"
+      > </a
+      ><a name="5841" class="Symbol"
+      >(</a
+      ><a name="5842"
+      >_&#8801;&#10216;_&#10217;_</a
+      ><a name="5848" class="Symbol"
+      >)</a
+      ><a name="5849"
+      > </a
+      ><a name="5850" class="Keyword"
+      >renaming</a
+      ><a name="5858"
+      > </a
+      ><a name="5859" class="Symbol"
+      >(</a
+      ><a name="5860"
+      >_&#8776;&#10216;_&#10217;_ </a
+      ><a name="5867" class="Symbol"
+      >to</a
+      ><a name="5869"
+      > _&#8801;&#10216;_&#10217;_</a
+      ><a name="5876" class="Symbol"
+      >)</a
+      ><a name="5877"
+      >
+
+  </a
+      ><a name="5881" class="Keyword"
+      >infixr</a
+      ><a name="5887"
+      > </a
+      ><a name="5888" class="Number"
+      >2</a
+      ><a name="5889"
+      > _&#8773;&#10216;_&#10217;_
+
+  </a
+      ><a name="5900" href="Relation.Binary.PropositionalEquality.html#5900" class="Function Operator"
+      >_&#8773;&#10216;_&#10217;_</a
+      ><a name="5906"
+      > </a
+      ><a name="5907" class="Symbol"
+      >:</a
+      ><a name="5908"
+      > </a
+      ><a name="5909" class="Symbol"
+      >&#8704;</a
+      ><a name="5910"
+      > </a
+      ><a name="5911" class="Symbol"
+      >{</a
+      ><a name="5912" href="Relation.Binary.PropositionalEquality.html#5912" class="Bound"
+      >a</a
+      ><a name="5913" class="Symbol"
+      >}</a
+      ><a name="5914"
+      > </a
+      ><a name="5915" class="Symbol"
+      >{</a
+      ><a name="5916" href="Relation.Binary.PropositionalEquality.html#5916" class="Bound"
+      >A</a
+      ><a name="5917"
+      > </a
+      ><a name="5918" class="Symbol"
+      >:</a
+      ><a name="5919"
+      > </a
+      ><a name="5920" class="PrimitiveType"
+      >Set</a
+      ><a name="5923"
+      > </a
+      ><a name="5924" href="Relation.Binary.PropositionalEquality.html#5912" class="Bound"
+      >a</a
+      ><a name="5925" class="Symbol"
+      >}</a
+      ><a name="5926"
+      > </a
+      ><a name="5927" class="Symbol"
+      >(</a
+      ><a name="5928" href="Relation.Binary.PropositionalEquality.html#5928" class="Bound"
+      >x</a
+      ><a name="5929"
+      > </a
+      ><a name="5930" class="Symbol"
+      >:</a
+      ><a name="5931"
+      > </a
+      ><a name="5932" href="Relation.Binary.PropositionalEquality.html#5916" class="Bound"
+      >A</a
+      ><a name="5933" class="Symbol"
+      >)</a
+      ><a name="5934"
+      > </a
+      ><a name="5935" class="Symbol"
+      >{</a
+      ><a name="5936" href="Relation.Binary.PropositionalEquality.html#5936" class="Bound"
+      >y</a
+      ><a name="5937"
+      > </a
+      ><a name="5938" href="Relation.Binary.PropositionalEquality.html#5938" class="Bound"
+      >z</a
+      ><a name="5939"
+      > </a
+      ><a name="5940" class="Symbol"
+      >:</a
+      ><a name="5941"
+      > </a
+      ><a name="5942" href="Relation.Binary.PropositionalEquality.html#5916" class="Bound"
+      >A</a
+      ><a name="5943" class="Symbol"
+      >}</a
+      ><a name="5944"
+      > </a
+      ><a name="5945" class="Symbol"
+      >&#8594;</a
+      ><a name="5946"
+      >
+           </a
+      ><a name="5958" href="Relation.Binary.PropositionalEquality.html#5928" class="Bound"
+      >x</a
+      ><a name="5959"
+      > </a
+      ><a name="5960" href="Relation.Binary.HeterogeneousEquality.Core.html#544" class="Datatype Operator"
+      >&#8773;</a
+      ><a name="5961"
+      > </a
+      ><a name="5962" href="Relation.Binary.PropositionalEquality.html#5936" class="Bound"
+      >y</a
+      ><a name="5963"
+      > </a
+      ><a name="5964" class="Symbol"
+      >&#8594;</a
+      ><a name="5965"
+      > </a
+      ><a name="5966" href="Relation.Binary.PropositionalEquality.html#5936" class="Bound"
+      >y</a
+      ><a name="5967"
+      > </a
+      ><a name="5968" href="Relation.Binary.PreorderReasoning.html#1066" class="Datatype Operator"
+      >IsRelatedTo</a
+      ><a name="5979"
+      > </a
+      ><a name="5980" href="Relation.Binary.PropositionalEquality.html#5938" class="Bound"
+      >z</a
+      ><a name="5981"
+      > </a
+      ><a name="5982" class="Symbol"
+      >&#8594;</a
+      ><a name="5983"
+      > </a
+      ><a name="5984" href="Relation.Binary.PropositionalEquality.html#5928" class="Bound"
+      >x</a
+      ><a name="5985"
+      > </a
+      ><a name="5986" href="Relation.Binary.PreorderReasoning.html#1066" class="Datatype Operator"
+      >IsRelatedTo</a
+      ><a name="5997"
+      > </a
+      ><a name="5998" href="Relation.Binary.PropositionalEquality.html#5938" class="Bound"
+      >z</a
+      ><a name="5999"
+      >
+  </a
+      ><a name="6002" class="Symbol"
+      >_</a
+      ><a name="6003"
+      > </a
+      ><a name="6004" href="Relation.Binary.PropositionalEquality.html#5900" class="Function Operator"
+      >&#8773;&#10216;</a
+      ><a name="6006"
+      > </a
+      ><a name="6007" href="Relation.Binary.PropositionalEquality.html#6007" class="Bound"
+      >x&#8773;y</a
+      ><a name="6010"
+      > </a
+      ><a name="6011" href="Relation.Binary.PropositionalEquality.html#5900" class="Function Operator"
+      >&#10217;</a
+      ><a name="6012"
+      > </a
+      ><a name="6013" href="Relation.Binary.PropositionalEquality.html#6013" class="Bound"
+      >y&#8801;z</a
+      ><a name="6016"
+      > </a
+      ><a name="6017" class="Symbol"
+      >=</a
+      ><a name="6018"
+      > </a
+      ><a name="6019" class="Symbol"
+      >_</a
+      ><a name="6020"
+      > </a
+      ><a name="6021" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="6023"
+      > </a
+      ><a name="6024" href="Relation.Binary.HeterogeneousEquality.Core.html#709" class="Function"
+      >H.&#8773;-to-&#8801;</a
+      ><a name="6032"
+      > </a
+      ><a name="6033" href="Relation.Binary.PropositionalEquality.html#6007" class="Bound"
+      >x&#8773;y</a
+      ><a name="6036"
+      > </a
+      ><a name="6037" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="6038"
+      > </a
+      ><a name="6039" href="Relation.Binary.PropositionalEquality.html#6013" class="Bound"
+      >y&#8801;z</a
+      ><a name="6042"
+      >
+
+</a
+      ><a name="6044" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="6116"
+      >
+</a
+      ><a name="6117" class="Comment"
+      >-- Functional extensionality</a
+      ><a name="6145"
+      >
+
+</a
+      ><a name="6147" class="Comment"
+      >-- If _&#8801;_ were extensional, then the following statement could be</a
+      ><a name="6212"
+      >
+</a
+      ><a name="6213" class="Comment"
+      >-- proved.</a
+      ><a name="6223"
+      >
+
+</a
+      ><a name="6225" href="Relation.Binary.PropositionalEquality.html#6225" class="Function"
+      >Extensionality</a
+      ><a name="6239"
+      > </a
+      ><a name="6240" class="Symbol"
+      >:</a
+      ><a name="6241"
+      > </a
+      ><a name="6242" class="Symbol"
+      >(</a
+      ><a name="6243" href="Relation.Binary.PropositionalEquality.html#6243" class="Bound"
+      >a</a
+      ><a name="6244"
+      > </a
+      ><a name="6245" href="Relation.Binary.PropositionalEquality.html#6245" class="Bound"
+      >b</a
+      ><a name="6246"
+      > </a
+      ><a name="6247" class="Symbol"
+      >:</a
+      ><a name="6248"
+      > </a
+      ><a name="6249" href="Agda.Primitive.html#379" class="Postulate"
+      >Level</a
+      ><a name="6254" class="Symbol"
+      >)</a
+      ><a name="6255"
+      > </a
+      ><a name="6256" class="Symbol"
+      >&#8594;</a
+      ><a name="6257"
+      > </a
+      ><a name="6258" class="PrimitiveType"
+      >Set</a
+      ><a name="6261"
+      > </a
+      ><a name="6262" class="Symbol"
+      >_</a
+      ><a name="6263"
+      >
+</a
+      ><a name="6264" href="Relation.Binary.PropositionalEquality.html#6225" class="Function"
+      >Extensionality</a
+      ><a name="6278"
+      > </a
+      ><a name="6279" href="Relation.Binary.PropositionalEquality.html#6279" class="Bound"
+      >a</a
+      ><a name="6280"
+      > </a
+      ><a name="6281" href="Relation.Binary.PropositionalEquality.html#6281" class="Bound"
+      >b</a
+      ><a name="6282"
+      > </a
+      ><a name="6283" class="Symbol"
+      >=</a
+      ><a name="6284"
+      >
+  </a
+      ><a name="6287" class="Symbol"
+      >{</a
+      ><a name="6288" href="Relation.Binary.PropositionalEquality.html#6288" class="Bound"
+      >A</a
+      ><a name="6289"
+      > </a
+      ><a name="6290" class="Symbol"
+      >:</a
+      ><a name="6291"
+      > </a
+      ><a name="6292" class="PrimitiveType"
+      >Set</a
+      ><a name="6295"
+      > </a
+      ><a name="6296" href="Relation.Binary.PropositionalEquality.html#6279" class="Bound"
+      >a</a
+      ><a name="6297" class="Symbol"
+      >}</a
+      ><a name="6298"
+      > </a
+      ><a name="6299" class="Symbol"
+      >{</a
+      ><a name="6300" href="Relation.Binary.PropositionalEquality.html#6300" class="Bound"
+      >B</a
+      ><a name="6301"
+      > </a
+      ><a name="6302" class="Symbol"
+      >:</a
+      ><a name="6303"
+      > </a
+      ><a name="6304" href="Relation.Binary.PropositionalEquality.html#6288" class="Bound"
+      >A</a
+      ><a name="6305"
+      > </a
+      ><a name="6306" class="Symbol"
+      >&#8594;</a
+      ><a name="6307"
+      > </a
+      ><a name="6308" class="PrimitiveType"
+      >Set</a
+      ><a name="6311"
+      > </a
+      ><a name="6312" href="Relation.Binary.PropositionalEquality.html#6281" class="Bound"
+      >b</a
+      ><a name="6313" class="Symbol"
+      >}</a
+      ><a name="6314"
+      > </a
+      ><a name="6315" class="Symbol"
+      >{</a
+      ><a name="6316" href="Relation.Binary.PropositionalEquality.html#6316" class="Bound"
+      >f</a
+      ><a name="6317"
+      > </a
+      ><a name="6318" href="Relation.Binary.PropositionalEquality.html#6318" class="Bound"
+      >g</a
+      ><a name="6319"
+      > </a
+      ><a name="6320" class="Symbol"
+      >:</a
+      ><a name="6321"
+      > </a
+      ><a name="6322" class="Symbol"
+      >(</a
+      ><a name="6323" href="Relation.Binary.PropositionalEquality.html#6323" class="Bound"
+      >x</a
+      ><a name="6324"
+      > </a
+      ><a name="6325" class="Symbol"
+      >:</a
+      ><a name="6326"
+      > </a
+      ><a name="6327" href="Relation.Binary.PropositionalEquality.html#6288" class="Bound"
+      >A</a
+      ><a name="6328" class="Symbol"
+      >)</a
+      ><a name="6329"
+      > </a
+      ><a name="6330" class="Symbol"
+      >&#8594;</a
+      ><a name="6331"
+      > </a
+      ><a name="6332" href="Relation.Binary.PropositionalEquality.html#6300" class="Bound"
+      >B</a
+      ><a name="6333"
+      > </a
+      ><a name="6334" href="Relation.Binary.PropositionalEquality.html#6323" class="Bound"
+      >x</a
+      ><a name="6335" class="Symbol"
+      >}</a
+      ><a name="6336"
+      > </a
+      ><a name="6337" class="Symbol"
+      >&#8594;</a
+      ><a name="6338"
+      >
+  </a
+      ><a name="6341" class="Symbol"
+      >(&#8704;</a
+      ><a name="6343"
+      > </a
+      ><a name="6344" href="Relation.Binary.PropositionalEquality.html#6344" class="Bound"
+      >x</a
+      ><a name="6345"
+      > </a
+      ><a name="6346" class="Symbol"
+      >&#8594;</a
+      ><a name="6347"
+      > </a
+      ><a name="6348" href="Relation.Binary.PropositionalEquality.html#6316" class="Bound"
+      >f</a
+      ><a name="6349"
+      > </a
+      ><a name="6350" href="Relation.Binary.PropositionalEquality.html#6344" class="Bound"
+      >x</a
+      ><a name="6351"
+      > </a
+      ><a name="6352" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="6353"
+      > </a
+      ><a name="6354" href="Relation.Binary.PropositionalEquality.html#6318" class="Bound"
+      >g</a
+      ><a name="6355"
+      > </a
+      ><a name="6356" href="Relation.Binary.PropositionalEquality.html#6344" class="Bound"
+      >x</a
+      ><a name="6357" class="Symbol"
+      >)</a
+      ><a name="6358"
+      > </a
+      ><a name="6359" class="Symbol"
+      >&#8594;</a
+      ><a name="6360"
+      > </a
+      ><a name="6361" href="Relation.Binary.PropositionalEquality.html#6316" class="Bound"
+      >f</a
+      ><a name="6362"
+      > </a
+      ><a name="6363" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="6364"
+      > </a
+      ><a name="6365" href="Relation.Binary.PropositionalEquality.html#6318" class="Bound"
+      >g</a
+      ><a name="6366"
+      >
+
+</a
+      ><a name="6368" class="Comment"
+      >-- If extensionality holds for a given universe level, then it also</a
+      ><a name="6435"
+      >
+</a
+      ><a name="6436" class="Comment"
+      >-- holds for lower ones.</a
+      ><a name="6460"
+      >
+
+</a
+      ><a name="6462" href="Relation.Binary.PropositionalEquality.html#6462" class="Function"
+      >extensionality-for-lower-levels</a
+      ><a name="6493"
+      > </a
+      ><a name="6494" class="Symbol"
+      >:</a
+      ><a name="6495"
+      >
+  </a
+      ><a name="6498" class="Symbol"
+      >&#8704;</a
+      ><a name="6499"
+      > </a
+      ><a name="6500" class="Symbol"
+      >{</a
+      ><a name="6501" href="Relation.Binary.PropositionalEquality.html#6501" class="Bound"
+      >a&#8321;</a
+      ><a name="6503"
+      > </a
+      ><a name="6504" href="Relation.Binary.PropositionalEquality.html#6504" class="Bound"
+      >b&#8321;</a
+      ><a name="6506" class="Symbol"
+      >}</a
+      ><a name="6507"
+      > </a
+      ><a name="6508" href="Relation.Binary.PropositionalEquality.html#6508" class="Bound"
+      >a&#8322;</a
+      ><a name="6510"
+      > </a
+      ><a name="6511" href="Relation.Binary.PropositionalEquality.html#6511" class="Bound"
+      >b&#8322;</a
+      ><a name="6513"
+      > </a
+      ><a name="6514" class="Symbol"
+      >&#8594;</a
+      ><a name="6515"
+      >
+  </a
+      ><a name="6518" href="Relation.Binary.PropositionalEquality.html#6225" class="Function"
+      >Extensionality</a
+      ><a name="6532"
+      > </a
+      ><a name="6533" class="Symbol"
+      >(</a
+      ><a name="6534" href="Relation.Binary.PropositionalEquality.html#6501" class="Bound"
+      >a&#8321;</a
+      ><a name="6536"
+      > </a
+      ><a name="6537" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="6538"
+      > </a
+      ><a name="6539" href="Relation.Binary.PropositionalEquality.html#6508" class="Bound"
+      >a&#8322;</a
+      ><a name="6541" class="Symbol"
+      >)</a
+      ><a name="6542"
+      > </a
+      ><a name="6543" class="Symbol"
+      >(</a
+      ><a name="6544" href="Relation.Binary.PropositionalEquality.html#6504" class="Bound"
+      >b&#8321;</a
+      ><a name="6546"
+      > </a
+      ><a name="6547" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="6548"
+      > </a
+      ><a name="6549" href="Relation.Binary.PropositionalEquality.html#6511" class="Bound"
+      >b&#8322;</a
+      ><a name="6551" class="Symbol"
+      >)</a
+      ><a name="6552"
+      > </a
+      ><a name="6553" class="Symbol"
+      >&#8594;</a
+      ><a name="6554"
+      > </a
+      ><a name="6555" href="Relation.Binary.PropositionalEquality.html#6225" class="Function"
+      >Extensionality</a
+      ><a name="6569"
+      > </a
+      ><a name="6570" href="Relation.Binary.PropositionalEquality.html#6501" class="Bound"
+      >a&#8321;</a
+      ><a name="6572"
+      > </a
+      ><a name="6573" href="Relation.Binary.PropositionalEquality.html#6504" class="Bound"
+      >b&#8321;</a
+      ><a name="6575"
+      >
+</a
+      ><a name="6576" href="Relation.Binary.PropositionalEquality.html#6462" class="Function"
+      >extensionality-for-lower-levels</a
+      ><a name="6607"
+      > </a
+      ><a name="6608" href="Relation.Binary.PropositionalEquality.html#6608" class="Bound"
+      >a&#8322;</a
+      ><a name="6610"
+      > </a
+      ><a name="6611" href="Relation.Binary.PropositionalEquality.html#6611" class="Bound"
+      >b&#8322;</a
+      ><a name="6613"
+      > </a
+      ><a name="6614" href="Relation.Binary.PropositionalEquality.html#6614" class="Bound"
+      >ext</a
+      ><a name="6617"
+      > </a
+      ><a name="6618" href="Relation.Binary.PropositionalEquality.html#6618" class="Bound"
+      >f&#8801;g</a
+      ><a name="6621"
+      > </a
+      ><a name="6622" class="Symbol"
+      >=</a
+      ><a name="6623"
+      >
+  </a
+      ><a name="6626" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >cong</a
+      ><a name="6630"
+      > </a
+      ><a name="6631" class="Symbol"
+      >(&#955;</a
+      ><a name="6633"
+      > </a
+      ><a name="6634" href="Relation.Binary.PropositionalEquality.html#6634" class="Bound"
+      >h</a
+      ><a name="6635"
+      > </a
+      ><a name="6636" class="Symbol"
+      >&#8594;</a
+      ><a name="6637"
+      > </a
+      ><a name="6638" href="Level.html#420" class="Field"
+      >lower</a
+      ><a name="6643"
+      > </a
+      ><a name="6644" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="6645"
+      > </a
+      ><a name="6646" href="Relation.Binary.PropositionalEquality.html#6634" class="Bound"
+      >h</a
+      ><a name="6647"
+      > </a
+      ><a name="6648" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="6649"
+      > </a
+      ><a name="6650" href="Level.html#407" class="InductiveConstructor"
+      >lift</a
+      ><a name="6654" class="Symbol"
+      >)</a
+      ><a name="6655"
+      > </a
+      ><a name="6656" href="Function.html#1835" class="Function Operator"
+      >$</a
+      ><a name="6657"
+      >
+    </a
+      ><a name="6662" href="Relation.Binary.PropositionalEquality.html#6614" class="Bound"
+      >ext</a
+      ><a name="6665"
+      > </a
+      ><a name="6666" class="Symbol"
+      >(</a
+      ><a name="6667" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >cong</a
+      ><a name="6671"
+      > </a
+      ><a name="6672" class="Symbol"
+      >(</a
+      ><a name="6673" href="Level.html#407" class="InductiveConstructor"
+      >lift</a
+      ><a name="6677"
+      > </a
+      ><a name="6678" class="Symbol"
+      >{</a
+      ><a name="6679" class="Argument"
+      >&#8467;</a
+      ><a name="6680"
+      > </a
+      ><a name="6681" class="Symbol"
+      >=</a
+      ><a name="6682"
+      > </a
+      ><a name="6683" href="Relation.Binary.PropositionalEquality.html#6611" class="Bound"
+      >b&#8322;</a
+      ><a name="6685" class="Symbol"
+      >})</a
+      ><a name="6687"
+      > </a
+      ><a name="6688" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="6689"
+      > </a
+      ><a name="6690" href="Relation.Binary.PropositionalEquality.html#6618" class="Bound"
+      >f&#8801;g</a
+      ><a name="6693"
+      > </a
+      ><a name="6694" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="6695"
+      > </a
+      ><a name="6696" href="Level.html#420" class="Field"
+      >lower</a
+      ><a name="6701"
+      > </a
+      ><a name="6702" class="Symbol"
+      >{</a
+      ><a name="6703" class="Argument"
+      >&#8467;</a
+      ><a name="6704"
+      > </a
+      ><a name="6705" class="Symbol"
+      >=</a
+      ><a name="6706"
+      > </a
+      ><a name="6707" href="Relation.Binary.PropositionalEquality.html#6608" class="Bound"
+      >a&#8322;</a
+      ><a name="6709" class="Symbol"
+      >})</a
+      ><a name="6711"
+      >
+
+</a
+      ><a name="6713" class="Comment"
+      >-- Functional extensionality implies a form of extensionality for</a
+      ><a name="6778"
+      >
+</a
+      ><a name="6779" class="Comment"
+      >-- &#928;-types.</a
+      ><a name="6790"
+      >
+
+</a
+      ><a name="6792" href="Relation.Binary.PropositionalEquality.html#6792" class="Function"
+      >&#8704;-extensionality</a
+      ><a name="6808"
+      > </a
+      ><a name="6809" class="Symbol"
+      >:</a
+      ><a name="6810"
+      >
+  </a
+      ><a name="6813" class="Symbol"
+      >&#8704;</a
+      ><a name="6814"
+      > </a
+      ><a name="6815" class="Symbol"
+      >{</a
+      ><a name="6816" href="Relation.Binary.PropositionalEquality.html#6816" class="Bound"
+      >a</a
+      ><a name="6817"
+      > </a
+      ><a name="6818" href="Relation.Binary.PropositionalEquality.html#6818" class="Bound"
+      >b</a
+      ><a name="6819" class="Symbol"
+      >}</a
+      ><a name="6820"
+      > </a
+      ><a name="6821" class="Symbol"
+      >&#8594;</a
+      ><a name="6822"
+      >
+  </a
+      ><a name="6825" href="Relation.Binary.PropositionalEquality.html#6225" class="Function"
+      >Extensionality</a
+      ><a name="6839"
+      > </a
+      ><a name="6840" href="Relation.Binary.PropositionalEquality.html#6816" class="Bound"
+      >a</a
+      ><a name="6841"
+      > </a
+      ><a name="6842" class="Symbol"
+      >(</a
+      ><a name="6843" href="Agda.Primitive.html#596" class="Primitive"
+      >suc</a
+      ><a name="6846"
+      > </a
+      ><a name="6847" href="Relation.Binary.PropositionalEquality.html#6818" class="Bound"
+      >b</a
+      ><a name="6848" class="Symbol"
+      >)</a
+      ><a name="6849"
+      > </a
+      ><a name="6850" class="Symbol"
+      >&#8594;</a
+      ><a name="6851"
+      >
+  </a
+      ><a name="6854" class="Symbol"
+      >{</a
+      ><a name="6855" href="Relation.Binary.PropositionalEquality.html#6855" class="Bound"
+      >A</a
+      ><a name="6856"
+      > </a
+      ><a name="6857" class="Symbol"
+      >:</a
+      ><a name="6858"
+      > </a
+      ><a name="6859" class="PrimitiveType"
+      >Set</a
+      ><a name="6862"
+      > </a
+      ><a name="6863" href="Relation.Binary.PropositionalEquality.html#6816" class="Bound"
+      >a</a
+      ><a name="6864" class="Symbol"
+      >}</a
+      ><a name="6865"
+      > </a
+      ><a name="6866" class="Symbol"
+      >(</a
+      ><a name="6867" href="Relation.Binary.PropositionalEquality.html#6867" class="Bound"
+      >B&#8321;</a
+      ><a name="6869"
+      > </a
+      ><a name="6870" href="Relation.Binary.PropositionalEquality.html#6870" class="Bound"
+      >B&#8322;</a
+      ><a name="6872"
+      > </a
+      ><a name="6873" class="Symbol"
+      >:</a
+      ><a name="6874"
+      > </a
+      ><a name="6875" href="Relation.Binary.PropositionalEquality.html#6855" class="Bound"
+      >A</a
+      ><a name="6876"
+      > </a
+      ><a name="6877" class="Symbol"
+      >&#8594;</a
+      ><a name="6878"
+      > </a
+      ><a name="6879" class="PrimitiveType"
+      >Set</a
+      ><a name="6882"
+      > </a
+      ><a name="6883" href="Relation.Binary.PropositionalEquality.html#6818" class="Bound"
+      >b</a
+      ><a name="6884" class="Symbol"
+      >)</a
+      ><a name="6885"
+      > </a
+      ><a name="6886" class="Symbol"
+      >&#8594;</a
+      ><a name="6887"
+      >
+  </a
+      ><a name="6890" class="Symbol"
+      >(&#8704;</a
+      ><a name="6892"
+      > </a
+      ><a name="6893" href="Relation.Binary.PropositionalEquality.html#6893" class="Bound"
+      >x</a
+      ><a name="6894"
+      > </a
+      ><a name="6895" class="Symbol"
+      >&#8594;</a
+      ><a name="6896"
+      > </a
+      ><a name="6897" href="Relation.Binary.PropositionalEquality.html#6867" class="Bound"
+      >B&#8321;</a
+      ><a name="6899"
+      > </a
+      ><a name="6900" href="Relation.Binary.PropositionalEquality.html#6893" class="Bound"
+      >x</a
+      ><a name="6901"
+      > </a
+      ><a name="6902" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="6903"
+      > </a
+      ><a name="6904" href="Relation.Binary.PropositionalEquality.html#6870" class="Bound"
+      >B&#8322;</a
+      ><a name="6906"
+      > </a
+      ><a name="6907" href="Relation.Binary.PropositionalEquality.html#6893" class="Bound"
+      >x</a
+      ><a name="6908" class="Symbol"
+      >)</a
+      ><a name="6909"
+      > </a
+      ><a name="6910" class="Symbol"
+      >&#8594;</a
+      ><a name="6911"
+      > </a
+      ><a name="6912" class="Symbol"
+      >(&#8704;</a
+      ><a name="6914"
+      > </a
+      ><a name="6915" href="Relation.Binary.PropositionalEquality.html#6915" class="Bound"
+      >x</a
+      ><a name="6916"
+      > </a
+      ><a name="6917" class="Symbol"
+      >&#8594;</a
+      ><a name="6918"
+      > </a
+      ><a name="6919" href="Relation.Binary.PropositionalEquality.html#6867" class="Bound"
+      >B&#8321;</a
+      ><a name="6921"
+      > </a
+      ><a name="6922" href="Relation.Binary.PropositionalEquality.html#6915" class="Bound"
+      >x</a
+      ><a name="6923" class="Symbol"
+      >)</a
+      ><a name="6924"
+      > </a
+      ><a name="6925" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="6926"
+      > </a
+      ><a name="6927" class="Symbol"
+      >(&#8704;</a
+      ><a name="6929"
+      > </a
+      ><a name="6930" href="Relation.Binary.PropositionalEquality.html#6930" class="Bound"
+      >x</a
+      ><a name="6931"
+      > </a
+      ><a name="6932" class="Symbol"
+      >&#8594;</a
+      ><a name="6933"
+      > </a
+      ><a name="6934" href="Relation.Binary.PropositionalEquality.html#6870" class="Bound"
+      >B&#8322;</a
+      ><a name="6936"
+      > </a
+      ><a name="6937" href="Relation.Binary.PropositionalEquality.html#6930" class="Bound"
+      >x</a
+      ><a name="6938" class="Symbol"
+      >)</a
+      ><a name="6939"
+      >
+</a
+      ><a name="6940" href="Relation.Binary.PropositionalEquality.html#6792" class="Function"
+      >&#8704;-extensionality</a
+      ><a name="6956"
+      > </a
+      ><a name="6957" href="Relation.Binary.PropositionalEquality.html#6957" class="Bound"
+      >ext</a
+      ><a name="6960"
+      > </a
+      ><a name="6961" href="Relation.Binary.PropositionalEquality.html#6961" class="Bound"
+      >B&#8321;</a
+      ><a name="6963"
+      > </a
+      ><a name="6964" href="Relation.Binary.PropositionalEquality.html#6964" class="Bound"
+      >B&#8322;</a
+      ><a name="6966"
+      > </a
+      ><a name="6967" href="Relation.Binary.PropositionalEquality.html#6967" class="Bound"
+      >B&#8321;&#8801;B&#8322;</a
+      ><a name="6972"
+      > </a
+      ><a name="6973" class="Keyword"
+      >with</a
+      ><a name="6977"
+      > </a
+      ><a name="6978" href="Relation.Binary.PropositionalEquality.html#6957" class="Bound"
+      >ext</a
+      ><a name="6981"
+      > </a
+      ><a name="6982" href="Relation.Binary.PropositionalEquality.html#6967" class="Bound"
+      >B&#8321;&#8801;B&#8322;</a
+      ><a name="6987"
+      >
+</a
+      ><a name="6988" href="Relation.Binary.PropositionalEquality.html#6792" class="Function"
+      >&#8704;-extensionality</a
+      ><a name="7004"
+      > </a
+      ><a name="7005" href="Relation.Binary.PropositionalEquality.html#7005" class="Bound"
+      >ext</a
+      ><a name="7008"
+      > </a
+      ><a name="7009" href="Relation.Binary.PropositionalEquality.html#7009" class="Bound"
+      >B</a
+      ><a name="7010"
+      > </a
+      ><a name="7011" class="DottedPattern Symbol"
+      >.</a
+      ><a name="7012" href="Relation.Binary.PropositionalEquality.html#7009" class="DottedPattern Bound"
+      >B</a
+      ><a name="7013"
+      >  </a
+      ><a name="7015" href="Relation.Binary.PropositionalEquality.html#7015" class="Bound"
+      >B&#8321;&#8801;B&#8322;</a
+      ><a name="7020"
+      > </a
+      ><a name="7021" class="Symbol"
+      >|</a
+      ><a name="7022"
+      > </a
+      ><a name="7023" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="7027"
+      > </a
+      ><a name="7028" class="Symbol"
+      >=</a
+      ><a name="7029"
+      > </a
+      ><a name="7030" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="7034"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

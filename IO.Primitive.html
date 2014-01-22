@@ -1,0 +1,798 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >IO.Primitive</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Primitive IO: simple bindings to Haskell types and functions</a
+      ><a name="169"
+      >
+</a
+      ><a name="170" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="242"
+      >
+
+</a
+      ><a name="244" class="Keyword"
+      >module</a
+      ><a name="250"
+      > </a
+      ><a name="251" href="IO.Primitive.html#1" class="Module"
+      >IO.Primitive</a
+      ><a name="263"
+      > </a
+      ><a name="264" class="Keyword"
+      >where</a
+      ><a name="269"
+      >
+
+</a
+      ><a name="271" class="Keyword"
+      >open</a
+      ><a name="275"
+      > </a
+      ><a name="276" class="Keyword"
+      >import</a
+      ><a name="282"
+      > </a
+      ><a name="283" href="Data.Char.html#1" class="Module"
+      >Data.Char</a
+      ><a name="292"
+      >
+</a
+      ><a name="293" class="Keyword"
+      >open</a
+      ><a name="297"
+      > </a
+      ><a name="298" class="Keyword"
+      >import</a
+      ><a name="304"
+      > </a
+      ><a name="305" href="Data.String.html#1" class="Module"
+      >Data.String</a
+      ><a name="316"
+      >
+</a
+      ><a name="317" class="Keyword"
+      >open</a
+      ><a name="321"
+      > </a
+      ><a name="322" class="Keyword"
+      >import</a
+      ><a name="328"
+      > </a
+      ><a name="329" href="Foreign.Haskell.html#1" class="Module"
+      >Foreign.Haskell</a
+      ><a name="344"
+      >
+
+</a
+      ><a name="346" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="418"
+      >
+</a
+      ><a name="419" class="Comment"
+      >-- The IO monad</a
+      ><a name="434"
+      >
+
+</a
+      ><a name="436" class="Keyword"
+      >postulate</a
+      ><a name="445"
+      >
+  </a
+      ><a name="448" href="IO.Primitive.html#448" class="Postulate"
+      >IO</a
+      ><a name="450"
+      > </a
+      ><a name="451" class="Symbol"
+      >:</a
+      ><a name="452"
+      > </a
+      ><a name="453" class="Symbol"
+      >&#8704;</a
+      ><a name="454"
+      > </a
+      ><a name="455" class="Symbol"
+      >{</a
+      ><a name="456" href="IO.Primitive.html#456" class="Bound"
+      >&#8467;</a
+      ><a name="457" class="Symbol"
+      >}</a
+      ><a name="458"
+      > </a
+      ><a name="459" class="Symbol"
+      >&#8594;</a
+      ><a name="460"
+      > </a
+      ><a name="461" class="PrimitiveType"
+      >Set</a
+      ><a name="464"
+      > </a
+      ><a name="465" href="IO.Primitive.html#456" class="Bound"
+      >&#8467;</a
+      ><a name="466"
+      > </a
+      ><a name="467" class="Symbol"
+      >&#8594;</a
+      ><a name="468"
+      > </a
+      ><a name="469" class="PrimitiveType"
+      >Set</a
+      ><a name="472"
+      > </a
+      ><a name="473" href="IO.Primitive.html#456" class="Bound"
+      >&#8467;</a
+      ><a name="474"
+      >
+
+</a
+      ><a name="476" class="Symbol"
+      >{-#</a
+      ><a name="479"
+      > </a
+      ><a name="480" class="Keyword"
+      >IMPORT</a
+      ><a name="486"
+      > IO.FFI </a
+      ><a name="494" class="Symbol"
+      >#-}</a
+      ><a name="497"
+      >
+</a
+      ><a name="498" class="Symbol"
+      >{-#</a
+      ><a name="501"
+      > </a
+      ><a name="502" class="Keyword"
+      >COMPILED_TYPE</a
+      ><a name="515"
+      > </a
+      ><a name="516" href="IO.Primitive.html#448" class="Postulate"
+      >IO</a
+      ><a name="518"
+      > IO.FFI.AgdaIO </a
+      ><a name="533" class="Symbol"
+      >#-}</a
+      ><a name="536"
+      >
+</a
+      ><a name="537" class="Symbol"
+      >{-#</a
+      ><a name="540"
+      > </a
+      ><a name="541" class="Keyword"
+      >BUILTIN</a
+      ><a name="548"
+      > IO </a
+      ><a name="552" href="IO.Primitive.html#448" class="Postulate"
+      >IO</a
+      ><a name="554"
+      > </a
+      ><a name="555" class="Symbol"
+      >#-}</a
+      ><a name="558"
+      >
+
+</a
+      ><a name="560" class="Keyword"
+      >infixl</a
+      ><a name="566"
+      > </a
+      ><a name="567" class="Number"
+      >1</a
+      ><a name="568"
+      > _&gt;&gt;=_
+
+</a
+      ><a name="576" class="Keyword"
+      >postulate</a
+      ><a name="585"
+      >
+  </a
+      ><a name="588" href="IO.Primitive.html#588" class="Postulate"
+      >return</a
+      ><a name="594"
+      > </a
+      ><a name="595" class="Symbol"
+      >:</a
+      ><a name="596"
+      > </a
+      ><a name="597" class="Symbol"
+      >&#8704;</a
+      ><a name="598"
+      > </a
+      ><a name="599" class="Symbol"
+      >{</a
+      ><a name="600" href="IO.Primitive.html#600" class="Bound"
+      >a</a
+      ><a name="601" class="Symbol"
+      >}</a
+      ><a name="602"
+      > </a
+      ><a name="603" class="Symbol"
+      >{</a
+      ><a name="604" href="IO.Primitive.html#604" class="Bound"
+      >A</a
+      ><a name="605"
+      > </a
+      ><a name="606" class="Symbol"
+      >:</a
+      ><a name="607"
+      > </a
+      ><a name="608" class="PrimitiveType"
+      >Set</a
+      ><a name="611"
+      > </a
+      ><a name="612" href="IO.Primitive.html#600" class="Bound"
+      >a</a
+      ><a name="613" class="Symbol"
+      >}</a
+      ><a name="614"
+      > </a
+      ><a name="615" class="Symbol"
+      >&#8594;</a
+      ><a name="616"
+      > </a
+      ><a name="617" href="IO.Primitive.html#604" class="Bound"
+      >A</a
+      ><a name="618"
+      > </a
+      ><a name="619" class="Symbol"
+      >&#8594;</a
+      ><a name="620"
+      > </a
+      ><a name="621" href="IO.Primitive.html#448" class="Postulate"
+      >IO</a
+      ><a name="623"
+      > </a
+      ><a name="624" href="IO.Primitive.html#604" class="Bound"
+      >A</a
+      ><a name="625"
+      >
+  </a
+      ><a name="628" href="IO.Primitive.html#628" class="Postulate Operator"
+      >_&gt;&gt;=_</a
+      ><a name="633"
+      >  </a
+      ><a name="635" class="Symbol"
+      >:</a
+      ><a name="636"
+      > </a
+      ><a name="637" class="Symbol"
+      >&#8704;</a
+      ><a name="638"
+      > </a
+      ><a name="639" class="Symbol"
+      >{</a
+      ><a name="640" href="IO.Primitive.html#640" class="Bound"
+      >a</a
+      ><a name="641"
+      > </a
+      ><a name="642" href="IO.Primitive.html#642" class="Bound"
+      >b</a
+      ><a name="643" class="Symbol"
+      >}</a
+      ><a name="644"
+      > </a
+      ><a name="645" class="Symbol"
+      >{</a
+      ><a name="646" href="IO.Primitive.html#646" class="Bound"
+      >A</a
+      ><a name="647"
+      > </a
+      ><a name="648" class="Symbol"
+      >:</a
+      ><a name="649"
+      > </a
+      ><a name="650" class="PrimitiveType"
+      >Set</a
+      ><a name="653"
+      > </a
+      ><a name="654" href="IO.Primitive.html#640" class="Bound"
+      >a</a
+      ><a name="655" class="Symbol"
+      >}</a
+      ><a name="656"
+      > </a
+      ><a name="657" class="Symbol"
+      >{</a
+      ><a name="658" href="IO.Primitive.html#658" class="Bound"
+      >B</a
+      ><a name="659"
+      > </a
+      ><a name="660" class="Symbol"
+      >:</a
+      ><a name="661"
+      > </a
+      ><a name="662" class="PrimitiveType"
+      >Set</a
+      ><a name="665"
+      > </a
+      ><a name="666" href="IO.Primitive.html#642" class="Bound"
+      >b</a
+      ><a name="667" class="Symbol"
+      >}</a
+      ><a name="668"
+      > </a
+      ><a name="669" class="Symbol"
+      >&#8594;</a
+      ><a name="670"
+      > </a
+      ><a name="671" href="IO.Primitive.html#448" class="Postulate"
+      >IO</a
+      ><a name="673"
+      > </a
+      ><a name="674" href="IO.Primitive.html#646" class="Bound"
+      >A</a
+      ><a name="675"
+      > </a
+      ><a name="676" class="Symbol"
+      >&#8594;</a
+      ><a name="677"
+      > </a
+      ><a name="678" class="Symbol"
+      >(</a
+      ><a name="679" href="IO.Primitive.html#646" class="Bound"
+      >A</a
+      ><a name="680"
+      > </a
+      ><a name="681" class="Symbol"
+      >&#8594;</a
+      ><a name="682"
+      > </a
+      ><a name="683" href="IO.Primitive.html#448" class="Postulate"
+      >IO</a
+      ><a name="685"
+      > </a
+      ><a name="686" href="IO.Primitive.html#658" class="Bound"
+      >B</a
+      ><a name="687" class="Symbol"
+      >)</a
+      ><a name="688"
+      > </a
+      ><a name="689" class="Symbol"
+      >&#8594;</a
+      ><a name="690"
+      > </a
+      ><a name="691" href="IO.Primitive.html#448" class="Postulate"
+      >IO</a
+      ><a name="693"
+      > </a
+      ><a name="694" href="IO.Primitive.html#658" class="Bound"
+      >B</a
+      ><a name="695"
+      >
+
+</a
+      ><a name="697" class="Symbol"
+      >{-#</a
+      ><a name="700"
+      > </a
+      ><a name="701" class="Keyword"
+      >COMPILED</a
+      ><a name="709"
+      > </a
+      ><a name="710" href="IO.Primitive.html#588" class="Postulate"
+      >return</a
+      ><a name="716"
+      > (\_ _ -&gt; return)    </a
+      ><a name="737" class="Symbol"
+      >#-}</a
+      ><a name="740"
+      >
+</a
+      ><a name="741" class="Symbol"
+      >{-#</a
+      ><a name="744"
+      > </a
+      ><a name="745" class="Keyword"
+      >COMPILED</a
+      ><a name="753"
+      > </a
+      ><a name="754" href="IO.Primitive.html#628" class="Postulate Operator"
+      >_&gt;&gt;=_</a
+      ><a name="759"
+      >  (\_ _ _ _ -&gt; (&gt;&gt;=)) </a
+      ><a name="781" class="Symbol"
+      >#-}</a
+      ><a name="784"
+      >
+
+</a
+      ><a name="786" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="858"
+      >
+</a
+      ><a name="859" class="Comment"
+      >-- Simple lazy IO</a
+      ><a name="876"
+      >
+
+</a
+      ><a name="878" class="Comment"
+      >-- Note that the functions below produce commands which, when</a
+      ><a name="939"
+      >
+</a
+      ><a name="940" class="Comment"
+      >-- executed, may raise exceptions.</a
+      ><a name="974"
+      >
+
+</a
+      ><a name="976" class="Comment"
+      >-- Note also that the semantics of these functions depends on the</a
+      ><a name="1041"
+      >
+</a
+      ><a name="1042" class="Comment"
+      >-- version of the Haskell base library. If the version is 4.2.0.0 (or</a
+      ><a name="1111"
+      >
+</a
+      ><a name="1112" class="Comment"
+      >-- later?), then the functions use the character encoding specified by</a
+      ><a name="1182"
+      >
+</a
+      ><a name="1183" class="Comment"
+      >-- the locale. For older versions of the library (going back to at</a
+      ><a name="1249"
+      >
+</a
+      ><a name="1250" class="Comment"
+      >-- least version 3) the functions use ISO-8859-1.</a
+      ><a name="1299"
+      >
+
+</a
+      ><a name="1301" class="Keyword"
+      >postulate</a
+      ><a name="1310"
+      >
+  </a
+      ><a name="1313" href="IO.Primitive.html#1313" class="Postulate"
+      >getContents</a
+      ><a name="1324"
+      > </a
+      ><a name="1325" class="Symbol"
+      >:</a
+      ><a name="1326"
+      > </a
+      ><a name="1327" href="IO.Primitive.html#448" class="Postulate"
+      >IO</a
+      ><a name="1329"
+      > </a
+      ><a name="1330" href="Data.String.html#896" class="Function"
+      >Costring</a
+      ><a name="1338"
+      >
+  </a
+      ><a name="1341" href="IO.Primitive.html#1341" class="Postulate"
+      >readFile</a
+      ><a name="1349"
+      >    </a
+      ><a name="1353" class="Symbol"
+      >:</a
+      ><a name="1354"
+      > </a
+      ><a name="1355" href="Data.String.Core.html#457" class="Postulate"
+      >String</a
+      ><a name="1361"
+      > </a
+      ><a name="1362" class="Symbol"
+      >&#8594;</a
+      ><a name="1363"
+      > </a
+      ><a name="1364" href="IO.Primitive.html#448" class="Postulate"
+      >IO</a
+      ><a name="1366"
+      > </a
+      ><a name="1367" href="Data.String.html#896" class="Function"
+      >Costring</a
+      ><a name="1375"
+      >
+  </a
+      ><a name="1378" href="IO.Primitive.html#1378" class="Postulate"
+      >writeFile</a
+      ><a name="1387"
+      >   </a
+      ><a name="1390" class="Symbol"
+      >:</a
+      ><a name="1391"
+      > </a
+      ><a name="1392" href="Data.String.Core.html#457" class="Postulate"
+      >String</a
+      ><a name="1398"
+      > </a
+      ><a name="1399" class="Symbol"
+      >&#8594;</a
+      ><a name="1400"
+      > </a
+      ><a name="1401" href="Data.String.html#896" class="Function"
+      >Costring</a
+      ><a name="1409"
+      > </a
+      ><a name="1410" class="Symbol"
+      >&#8594;</a
+      ><a name="1411"
+      > </a
+      ><a name="1412" href="IO.Primitive.html#448" class="Postulate"
+      >IO</a
+      ><a name="1414"
+      > </a
+      ><a name="1415" href="Foreign.Haskell.html#295" class="Datatype"
+      >Unit</a
+      ><a name="1419"
+      >
+  </a
+      ><a name="1422" href="IO.Primitive.html#1422" class="Postulate"
+      >appendFile</a
+      ><a name="1432"
+      >  </a
+      ><a name="1434" class="Symbol"
+      >:</a
+      ><a name="1435"
+      > </a
+      ><a name="1436" href="Data.String.Core.html#457" class="Postulate"
+      >String</a
+      ><a name="1442"
+      > </a
+      ><a name="1443" class="Symbol"
+      >&#8594;</a
+      ><a name="1444"
+      > </a
+      ><a name="1445" href="Data.String.html#896" class="Function"
+      >Costring</a
+      ><a name="1453"
+      > </a
+      ><a name="1454" class="Symbol"
+      >&#8594;</a
+      ><a name="1455"
+      > </a
+      ><a name="1456" href="IO.Primitive.html#448" class="Postulate"
+      >IO</a
+      ><a name="1458"
+      > </a
+      ><a name="1459" href="Foreign.Haskell.html#295" class="Datatype"
+      >Unit</a
+      ><a name="1463"
+      >
+  </a
+      ><a name="1466" href="IO.Primitive.html#1466" class="Postulate"
+      >putStr</a
+      ><a name="1472"
+      >      </a
+      ><a name="1478" class="Symbol"
+      >:</a
+      ><a name="1479"
+      > </a
+      ><a name="1480" href="Data.String.html#896" class="Function"
+      >Costring</a
+      ><a name="1488"
+      > </a
+      ><a name="1489" class="Symbol"
+      >&#8594;</a
+      ><a name="1490"
+      > </a
+      ><a name="1491" href="IO.Primitive.html#448" class="Postulate"
+      >IO</a
+      ><a name="1493"
+      > </a
+      ><a name="1494" href="Foreign.Haskell.html#295" class="Datatype"
+      >Unit</a
+      ><a name="1498"
+      >
+  </a
+      ><a name="1501" href="IO.Primitive.html#1501" class="Postulate"
+      >putStrLn</a
+      ><a name="1509"
+      >    </a
+      ><a name="1513" class="Symbol"
+      >:</a
+      ><a name="1514"
+      > </a
+      ><a name="1515" href="Data.String.html#896" class="Function"
+      >Costring</a
+      ><a name="1523"
+      > </a
+      ><a name="1524" class="Symbol"
+      >&#8594;</a
+      ><a name="1525"
+      > </a
+      ><a name="1526" href="IO.Primitive.html#448" class="Postulate"
+      >IO</a
+      ><a name="1528"
+      > </a
+      ><a name="1529" href="Foreign.Haskell.html#295" class="Datatype"
+      >Unit</a
+      ><a name="1533"
+      >
+
+  </a
+      ><a name="1537" class="Comment"
+      >-- Reads a finite file. Raises an exception if the file path refers</a
+      ><a name="1604"
+      >
+  </a
+      ><a name="1607" class="Comment"
+      >-- to a non-physical file (like &quot;/dev/zero&quot;).</a
+      ><a name="1652"
+      >
+
+  </a
+      ><a name="1656" href="IO.Primitive.html#1656" class="Postulate"
+      >readFiniteFile</a
+      ><a name="1670"
+      > </a
+      ><a name="1671" class="Symbol"
+      >:</a
+      ><a name="1672"
+      > </a
+      ><a name="1673" href="Data.String.Core.html#457" class="Postulate"
+      >String</a
+      ><a name="1679"
+      > </a
+      ><a name="1680" class="Symbol"
+      >&#8594;</a
+      ><a name="1681"
+      > </a
+      ><a name="1682" href="IO.Primitive.html#448" class="Postulate"
+      >IO</a
+      ><a name="1684"
+      > </a
+      ><a name="1685" href="Data.String.Core.html#457" class="Postulate"
+      >String</a
+      ><a name="1691"
+      >
+
+</a
+      ><a name="1693" class="Symbol"
+      >{-#</a
+      ><a name="1696"
+      > </a
+      ><a name="1697" class="Keyword"
+      >COMPILED</a
+      ><a name="1705"
+      > </a
+      ><a name="1706" href="IO.Primitive.html#1313" class="Postulate"
+      >getContents</a
+      ><a name="1717"
+      >    getContents           </a
+      ><a name="1743" class="Symbol"
+      >#-}</a
+      ><a name="1746"
+      >
+</a
+      ><a name="1747" class="Symbol"
+      >{-#</a
+      ><a name="1750"
+      > </a
+      ><a name="1751" class="Keyword"
+      >COMPILED</a
+      ><a name="1759"
+      > </a
+      ><a name="1760" href="IO.Primitive.html#1341" class="Postulate"
+      >readFile</a
+      ><a name="1768"
+      >       readFile              </a
+      ><a name="1797" class="Symbol"
+      >#-}</a
+      ><a name="1800"
+      >
+</a
+      ><a name="1801" class="Symbol"
+      >{-#</a
+      ><a name="1804"
+      > </a
+      ><a name="1805" class="Keyword"
+      >COMPILED</a
+      ><a name="1813"
+      > </a
+      ><a name="1814" href="IO.Primitive.html#1378" class="Postulate"
+      >writeFile</a
+      ><a name="1823"
+      >      writeFile             </a
+      ><a name="1851" class="Symbol"
+      >#-}</a
+      ><a name="1854"
+      >
+</a
+      ><a name="1855" class="Symbol"
+      >{-#</a
+      ><a name="1858"
+      > </a
+      ><a name="1859" class="Keyword"
+      >COMPILED</a
+      ><a name="1867"
+      > </a
+      ><a name="1868" href="IO.Primitive.html#1422" class="Postulate"
+      >appendFile</a
+      ><a name="1878"
+      >     appendFile            </a
+      ><a name="1905" class="Symbol"
+      >#-}</a
+      ><a name="1908"
+      >
+</a
+      ><a name="1909" class="Symbol"
+      >{-#</a
+      ><a name="1912"
+      > </a
+      ><a name="1913" class="Keyword"
+      >COMPILED</a
+      ><a name="1921"
+      > </a
+      ><a name="1922" href="IO.Primitive.html#1466" class="Postulate"
+      >putStr</a
+      ><a name="1928"
+      >         putStr                </a
+      ><a name="1959" class="Symbol"
+      >#-}</a
+      ><a name="1962"
+      >
+</a
+      ><a name="1963" class="Symbol"
+      >{-#</a
+      ><a name="1966"
+      > </a
+      ><a name="1967" class="Keyword"
+      >COMPILED</a
+      ><a name="1975"
+      > </a
+      ><a name="1976" href="IO.Primitive.html#1501" class="Postulate"
+      >putStrLn</a
+      ><a name="1984"
+      >       putStrLn              </a
+      ><a name="2013" class="Symbol"
+      >#-}</a
+      ><a name="2016"
+      >
+</a
+      ><a name="2017" class="Symbol"
+      >{-#</a
+      ><a name="2020"
+      > </a
+      ><a name="2021" class="Keyword"
+      >COMPILED</a
+      ><a name="2029"
+      > </a
+      ><a name="2030" href="IO.Primitive.html#1656" class="Postulate"
+      >readFiniteFile</a
+      ><a name="2044"
+      > IO.FFI.readFiniteFile </a
+      ><a name="2067" class="Symbol"
+      >#-}</a
+      ><a name="2070"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

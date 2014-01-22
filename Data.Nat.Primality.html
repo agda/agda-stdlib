@@ -1,0 +1,525 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Nat.Primality</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Primality</a
+      ><a name="118"
+      >
+</a
+      ><a name="119" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="191"
+      >
+
+</a
+      ><a name="193" class="Keyword"
+      >module</a
+      ><a name="199"
+      > </a
+      ><a name="200" href="Data.Nat.Primality.html#1" class="Module"
+      >Data.Nat.Primality</a
+      ><a name="218"
+      > </a
+      ><a name="219" class="Keyword"
+      >where</a
+      ><a name="224"
+      >
+
+</a
+      ><a name="226" class="Keyword"
+      >open</a
+      ><a name="230"
+      > </a
+      ><a name="231" class="Keyword"
+      >import</a
+      ><a name="237"
+      > </a
+      ><a name="238" href="Data.Empty.html#1" class="Module"
+      >Data.Empty</a
+      ><a name="248"
+      >
+</a
+      ><a name="249" class="Keyword"
+      >open</a
+      ><a name="253"
+      > </a
+      ><a name="254" class="Keyword"
+      >import</a
+      ><a name="260"
+      > </a
+      ><a name="261" href="Data.Fin.html#1" class="Module"
+      >Data.Fin</a
+      ><a name="269"
+      > </a
+      ><a name="270" class="Symbol"
+      >as</a
+      ><a name="272"
+      > </a
+      ><a name="273" class="Module"
+      >Fin</a
+      ><a name="276"
+      > </a
+      ><a name="277" class="Keyword"
+      >hiding</a
+      ><a name="283"
+      > </a
+      ><a name="284" class="Symbol"
+      >(</a
+      ><a name="285"
+      >_+_</a
+      ><a name="288" class="Symbol"
+      >)</a
+      ><a name="289"
+      >
+</a
+      ><a name="290" class="Keyword"
+      >open</a
+      ><a name="294"
+      > </a
+      ><a name="295" class="Keyword"
+      >import</a
+      ><a name="301"
+      > </a
+      ><a name="302" href="Data.Fin.Dec.html#1" class="Module"
+      >Data.Fin.Dec</a
+      ><a name="314"
+      >
+</a
+      ><a name="315" class="Keyword"
+      >open</a
+      ><a name="319"
+      > </a
+      ><a name="320" class="Keyword"
+      >import</a
+      ><a name="326"
+      > </a
+      ><a name="327" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="335"
+      >
+</a
+      ><a name="336" class="Keyword"
+      >open</a
+      ><a name="340"
+      > </a
+      ><a name="341" class="Keyword"
+      >import</a
+      ><a name="347"
+      > </a
+      ><a name="348" href="Data.Nat.Divisibility.html#1" class="Module"
+      >Data.Nat.Divisibility</a
+      ><a name="369"
+      >
+</a
+      ><a name="370" class="Keyword"
+      >open</a
+      ><a name="374"
+      > </a
+      ><a name="375" class="Keyword"
+      >import</a
+      ><a name="381"
+      > </a
+      ><a name="382" href="Relation.Nullary.html#1" class="Module"
+      >Relation.Nullary</a
+      ><a name="398"
+      >
+</a
+      ><a name="399" class="Keyword"
+      >open</a
+      ><a name="403"
+      > </a
+      ><a name="404" class="Keyword"
+      >import</a
+      ><a name="410"
+      > </a
+      ><a name="411" href="Relation.Nullary.Decidable.html#1" class="Module"
+      >Relation.Nullary.Decidable</a
+      ><a name="437"
+      >
+</a
+      ><a name="438" class="Keyword"
+      >open</a
+      ><a name="442"
+      > </a
+      ><a name="443" class="Keyword"
+      >import</a
+      ><a name="449"
+      > </a
+      ><a name="450" href="Relation.Nullary.Negation.html#1" class="Module"
+      >Relation.Nullary.Negation</a
+      ><a name="475"
+      >
+</a
+      ><a name="476" class="Keyword"
+      >open</a
+      ><a name="480"
+      > </a
+      ><a name="481" class="Keyword"
+      >import</a
+      ><a name="487"
+      > </a
+      ><a name="488" href="Relation.Unary.html#1" class="Module"
+      >Relation.Unary</a
+      ><a name="502"
+      >
+
+</a
+      ><a name="504" class="Comment"
+      >-- Definition of primality.</a
+      ><a name="531"
+      >
+
+</a
+      ><a name="533" href="Data.Nat.Primality.html#533" class="Function"
+      >Prime</a
+      ><a name="538"
+      > </a
+      ><a name="539" class="Symbol"
+      >:</a
+      ><a name="540"
+      > </a
+      ><a name="541" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="542"
+      > </a
+      ><a name="543" class="Symbol"
+      >&#8594;</a
+      ><a name="544"
+      > </a
+      ><a name="545" class="PrimitiveType"
+      >Set</a
+      ><a name="548"
+      >
+</a
+      ><a name="549" href="Data.Nat.Primality.html#533" class="Function"
+      >Prime</a
+      ><a name="554"
+      > </a
+      ><a name="555" class="Number"
+      >0</a
+      ><a name="556"
+      >             </a
+      ><a name="569" class="Symbol"
+      >=</a
+      ><a name="570"
+      > </a
+      ><a name="571" href="Data.Empty.html#243" class="Datatype"
+      >&#8869;</a
+      ><a name="572"
+      >
+</a
+      ><a name="573" href="Data.Nat.Primality.html#533" class="Function"
+      >Prime</a
+      ><a name="578"
+      > </a
+      ><a name="579" class="Number"
+      >1</a
+      ><a name="580"
+      >             </a
+      ><a name="593" class="Symbol"
+      >=</a
+      ><a name="594"
+      > </a
+      ><a name="595" href="Data.Empty.html#243" class="Datatype"
+      >&#8869;</a
+      ><a name="596"
+      >
+</a
+      ><a name="597" href="Data.Nat.Primality.html#533" class="Function"
+      >Prime</a
+      ><a name="602"
+      > </a
+      ><a name="603" class="Symbol"
+      >(</a
+      ><a name="604" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="607"
+      > </a
+      ><a name="608" class="Symbol"
+      >(</a
+      ><a name="609" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="612"
+      > </a
+      ><a name="613" href="Data.Nat.Primality.html#613" class="Bound"
+      >n</a
+      ><a name="614" class="Symbol"
+      >))</a
+      ><a name="616"
+      > </a
+      ><a name="617" class="Symbol"
+      >=</a
+      ><a name="618"
+      > </a
+      ><a name="619" class="Symbol"
+      >(</a
+      ><a name="620" href="Data.Nat.Primality.html#620" class="Bound"
+      >i</a
+      ><a name="621"
+      > </a
+      ><a name="622" class="Symbol"
+      >:</a
+      ><a name="623"
+      > </a
+      ><a name="624" href="Data.Fin.html#775" class="Datatype"
+      >Fin</a
+      ><a name="627"
+      > </a
+      ><a name="628" href="Data.Nat.Primality.html#613" class="Bound"
+      >n</a
+      ><a name="629" class="Symbol"
+      >)</a
+      ><a name="630"
+      > </a
+      ><a name="631" class="Symbol"
+      >&#8594;</a
+      ><a name="632"
+      > </a
+      ><a name="633" href="Relation.Nullary.Core.html#398" class="Function Operator"
+      >&#172;</a
+      ><a name="634"
+      > </a
+      ><a name="635" class="Symbol"
+      >(</a
+      ><a name="636" class="Number"
+      >2</a
+      ><a name="637"
+      > </a
+      ><a name="638" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="639"
+      > </a
+      ><a name="640" href="Data.Fin.html#901" class="Function"
+      >Fin.to&#8469;</a
+      ><a name="647"
+      > </a
+      ><a name="648" href="Data.Nat.Primality.html#620" class="Bound"
+      >i</a
+      ><a name="649"
+      > </a
+      ><a name="650" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="651"
+      > </a
+      ><a name="652" class="Number"
+      >2</a
+      ><a name="653"
+      > </a
+      ><a name="654" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="655"
+      > </a
+      ><a name="656" href="Data.Nat.Primality.html#613" class="Bound"
+      >n</a
+      ><a name="657" class="Symbol"
+      >)</a
+      ><a name="658"
+      >
+
+</a
+      ><a name="660" class="Comment"
+      >-- Decision procedure for primality.</a
+      ><a name="696"
+      >
+
+</a
+      ><a name="698" href="Data.Nat.Primality.html#698" class="Function"
+      >prime?</a
+      ><a name="704"
+      > </a
+      ><a name="705" class="Symbol"
+      >:</a
+      ><a name="706"
+      > </a
+      ><a name="707" href="Relation.Unary.html#4741" class="Function"
+      >Decidable</a
+      ><a name="716"
+      > </a
+      ><a name="717" href="Data.Nat.Primality.html#533" class="Function"
+      >Prime</a
+      ><a name="722"
+      >
+</a
+      ><a name="723" href="Data.Nat.Primality.html#698" class="Function"
+      >prime?</a
+      ><a name="729"
+      > </a
+      ><a name="730" class="Number"
+      >0</a
+      ><a name="731"
+      >             </a
+      ><a name="744" class="Symbol"
+      >=</a
+      ><a name="745"
+      > </a
+      ><a name="746" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="748"
+      > </a
+      ><a name="749" class="Symbol"
+      >&#955;()</a
+      ><a name="752"
+      >
+</a
+      ><a name="753" href="Data.Nat.Primality.html#698" class="Function"
+      >prime?</a
+      ><a name="759"
+      > </a
+      ><a name="760" class="Number"
+      >1</a
+      ><a name="761"
+      >             </a
+      ><a name="774" class="Symbol"
+      >=</a
+      ><a name="775"
+      > </a
+      ><a name="776" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="778"
+      > </a
+      ><a name="779" class="Symbol"
+      >&#955;()</a
+      ><a name="782"
+      >
+</a
+      ><a name="783" href="Data.Nat.Primality.html#698" class="Function"
+      >prime?</a
+      ><a name="789"
+      > </a
+      ><a name="790" class="Symbol"
+      >(</a
+      ><a name="791" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="794"
+      > </a
+      ><a name="795" class="Symbol"
+      >(</a
+      ><a name="796" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="799"
+      > </a
+      ><a name="800" href="Data.Nat.Primality.html#800" class="Bound"
+      >n</a
+      ><a name="801" class="Symbol"
+      >))</a
+      ><a name="803"
+      > </a
+      ><a name="804" class="Symbol"
+      >=</a
+      ><a name="805"
+      > </a
+      ><a name="806" href="Data.Fin.Dec.html#3222" class="Function"
+      >all?</a
+      ><a name="810"
+      > </a
+      ><a name="811" class="Symbol"
+      >&#955;</a
+      ><a name="812"
+      > </a
+      ><a name="813" href="Data.Nat.Primality.html#813" class="Bound"
+      >_</a
+      ><a name="814"
+      > </a
+      ><a name="815" class="Symbol"
+      >&#8594;</a
+      ><a name="816"
+      > </a
+      ><a name="817" href="Relation.Nullary.Negation.html#1044" class="Function"
+      >&#172;?</a
+      ><a name="819"
+      > </a
+      ><a name="820" class="Symbol"
+      >(_</a
+      ><a name="822"
+      > </a
+      ><a name="823" href="Data.Nat.Divisibility.html#5624" class="Function Operator"
+      >&#8739;?</a
+      ><a name="825"
+      > </a
+      ><a name="826" class="Symbol"
+      >_)</a
+      ><a name="828"
+      >
+
+</a
+      ><a name="830" class="Keyword"
+      >private</a
+      ><a name="837"
+      >
+
+  </a
+      ><a name="841" class="Comment"
+      >-- Example: 2 is prime.</a
+      ><a name="864"
+      >
+
+  </a
+      ><a name="868" href="Data.Nat.Primality.html#868" class="Function"
+      >2-is-prime</a
+      ><a name="878"
+      > </a
+      ><a name="879" class="Symbol"
+      >:</a
+      ><a name="880"
+      > </a
+      ><a name="881" href="Data.Nat.Primality.html#533" class="Function"
+      >Prime</a
+      ><a name="886"
+      > </a
+      ><a name="887" class="Number"
+      >2</a
+      ><a name="888"
+      >
+  </a
+      ><a name="891" href="Data.Nat.Primality.html#868" class="Function"
+      >2-is-prime</a
+      ><a name="901"
+      > </a
+      ><a name="902" class="Symbol"
+      >=</a
+      ><a name="903"
+      > </a
+      ><a name="904" href="Relation.Nullary.Decidable.html#2754" class="Function"
+      >from-yes</a
+      ><a name="912"
+      > </a
+      ><a name="913" class="Symbol"
+      >(</a
+      ><a name="914" href="Data.Nat.Primality.html#698" class="Function"
+      >prime?</a
+      ><a name="920"
+      > </a
+      ><a name="921" class="Number"
+      >2</a
+      ><a name="922" class="Symbol"
+      >)</a
+      ><a name="923"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

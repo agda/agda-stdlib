@@ -1,0 +1,4714 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Nat.GCD</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Greatest common divisor</a
+      ><a name="132"
+      >
+</a
+      ><a name="133" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="205"
+      >
+
+</a
+      ><a name="207" class="Keyword"
+      >module</a
+      ><a name="213"
+      > </a
+      ><a name="214" href="Data.Nat.GCD.html#1" class="Module"
+      >Data.Nat.GCD</a
+      ><a name="226"
+      > </a
+      ><a name="227" class="Keyword"
+      >where</a
+      ><a name="232"
+      >
+
+</a
+      ><a name="234" class="Keyword"
+      >open</a
+      ><a name="238"
+      > </a
+      ><a name="239" class="Keyword"
+      >import</a
+      ><a name="245"
+      > </a
+      ><a name="246" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="254"
+      >
+</a
+      ><a name="255" class="Keyword"
+      >open</a
+      ><a name="259"
+      > </a
+      ><a name="260" class="Keyword"
+      >import</a
+      ><a name="266"
+      > </a
+      ><a name="267" href="Data.Nat.Divisibility.html#1" class="Module"
+      >Data.Nat.Divisibility</a
+      ><a name="288"
+      > </a
+      ><a name="289" class="Symbol"
+      >as</a
+      ><a name="291"
+      > </a
+      ><a name="292" class="Module"
+      >Div</a
+      ><a name="295"
+      >
+</a
+      ><a name="296" class="Keyword"
+      >open</a
+      ><a name="300"
+      > </a
+      ><a name="301" class="Keyword"
+      >import</a
+      ><a name="307"
+      > </a
+      ><a name="308" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="323"
+      >
+</a
+      ><a name="324" class="Keyword"
+      >private</a
+      ><a name="331"
+      > </a
+      ><a name="332" class="Keyword"
+      >module</a
+      ><a name="338"
+      > </a
+      ><a name="339" href="Data.Nat.GCD.html#339" class="Module"
+      >P</a
+      ><a name="340"
+      > </a
+      ><a name="341" class="Symbol"
+      >=</a
+      ><a name="342"
+      > </a
+      ><a name="343" href="Relation.Binary.html#3673" class="Module"
+      >Poset</a
+      ><a name="348"
+      > </a
+      ><a name="349" href="Data.Nat.Divisibility.html#1599" class="Function"
+      >Div.poset</a
+      ><a name="358"
+      >
+</a
+      ><a name="359" class="Keyword"
+      >open</a
+      ><a name="363"
+      > </a
+      ><a name="364" class="Keyword"
+      >import</a
+      ><a name="370"
+      > </a
+      ><a name="371" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="383"
+      >
+</a
+      ><a name="384" class="Keyword"
+      >open</a
+      ><a name="388"
+      > </a
+      ><a name="389" class="Keyword"
+      >import</a
+      ><a name="395"
+      > </a
+      ><a name="396" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="433"
+      > </a
+      ><a name="434" class="Symbol"
+      >as</a
+      ><a name="436"
+      > </a
+      ><a name="437" class="Module"
+      >PropEq</a
+      ><a name="443"
+      > </a
+      ><a name="444" class="Keyword"
+      >using</a
+      ><a name="449"
+      > </a
+      ><a name="450" class="Symbol"
+      >(</a
+      ><a name="451"
+      >_&#8801;_</a
+      ><a name="454" class="Symbol"
+      >)</a
+      ><a name="455"
+      >
+</a
+      ><a name="456" class="Keyword"
+      >open</a
+      ><a name="460"
+      > </a
+      ><a name="461" class="Keyword"
+      >import</a
+      ><a name="467"
+      > </a
+      ><a name="468" href="Induction.html#1" class="Module"
+      >Induction</a
+      ><a name="477"
+      >
+</a
+      ><a name="478" class="Keyword"
+      >open</a
+      ><a name="482"
+      > </a
+      ><a name="483" class="Keyword"
+      >import</a
+      ><a name="489"
+      > </a
+      ><a name="490" href="Induction.Nat.html#1" class="Module"
+      >Induction.Nat</a
+      ><a name="503"
+      >
+</a
+      ><a name="504" class="Keyword"
+      >open</a
+      ><a name="508"
+      > </a
+      ><a name="509" class="Keyword"
+      >import</a
+      ><a name="515"
+      > </a
+      ><a name="516" href="Induction.Lexicographic.html#1" class="Module"
+      >Induction.Lexicographic</a
+      ><a name="539"
+      >
+</a
+      ><a name="540" class="Keyword"
+      >open</a
+      ><a name="544"
+      > </a
+      ><a name="545" class="Keyword"
+      >import</a
+      ><a name="551"
+      > </a
+      ><a name="552" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="560"
+      >
+</a
+      ><a name="561" class="Keyword"
+      >open</a
+      ><a name="565"
+      > </a
+      ><a name="566" class="Keyword"
+      >import</a
+      ><a name="572"
+      > </a
+      ><a name="573" href="Data.Nat.GCD.Lemmas.html#1" class="Module"
+      >Data.Nat.GCD.Lemmas</a
+      ><a name="592"
+      >
+
+</a
+      ><a name="594" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="666"
+      >
+</a
+      ><a name="667" class="Comment"
+      >-- Greatest common divisor</a
+      ><a name="693"
+      >
+
+</a
+      ><a name="695" class="Keyword"
+      >module</a
+      ><a name="701"
+      > </a
+      ><a name="702" href="Data.Nat.GCD.html#702" class="Module"
+      >GCD</a
+      ><a name="705"
+      > </a
+      ><a name="706" class="Keyword"
+      >where</a
+      ><a name="711"
+      >
+
+  </a
+      ><a name="715" class="Comment"
+      >-- Specification of the greatest common divisor (gcd) of two natural</a
+      ><a name="783"
+      >
+  </a
+      ><a name="786" class="Comment"
+      >-- numbers.</a
+      ><a name="797"
+      >
+
+  </a
+      ><a name="801" class="Keyword"
+      >record</a
+      ><a name="807"
+      > </a
+      ><a name="808" href="Data.Nat.GCD.html#808" class="Record"
+      >GCD</a
+      ><a name="811"
+      > </a
+      ><a name="812" class="Symbol"
+      >(</a
+      ><a name="813" href="Data.Nat.GCD.html#813" class="Bound"
+      >m</a
+      ><a name="814"
+      > </a
+      ><a name="815" href="Data.Nat.GCD.html#815" class="Bound"
+      >n</a
+      ><a name="816"
+      > </a
+      ><a name="817" href="Data.Nat.GCD.html#817" class="Bound"
+      >gcd</a
+      ><a name="820"
+      > </a
+      ><a name="821" class="Symbol"
+      >:</a
+      ><a name="822"
+      > </a
+      ><a name="823" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="824" class="Symbol"
+      >)</a
+      ><a name="825"
+      > </a
+      ><a name="826" class="Symbol"
+      >:</a
+      ><a name="827"
+      > </a
+      ><a name="828" class="PrimitiveType"
+      >Set</a
+      ><a name="831"
+      > </a
+      ><a name="832" class="Keyword"
+      >where</a
+      ><a name="837"
+      >
+    </a
+      ><a name="842" class="Keyword"
+      >constructor</a
+      ><a name="853"
+      > </a
+      ><a name="854" href="Data.Nat.GCD.html#854" class="InductiveConstructor"
+      >is</a
+      ><a name="856"
+      >
+    </a
+      ><a name="861" class="Keyword"
+      >field</a
+      ><a name="866"
+      >
+      </a
+      ><a name="873" class="Comment"
+      >-- The gcd is a common divisor.</a
+      ><a name="904"
+      >
+      </a
+      ><a name="911" href="Data.Nat.GCD.html#911" class="Field"
+      >commonDivisor</a
+      ><a name="924"
+      > </a
+      ><a name="925" class="Symbol"
+      >:</a
+      ><a name="926"
+      > </a
+      ><a name="927" href="Data.Nat.GCD.html#817" class="Bound"
+      >gcd</a
+      ><a name="930"
+      > </a
+      ><a name="931" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="932"
+      > </a
+      ><a name="933" href="Data.Nat.GCD.html#813" class="Bound"
+      >m</a
+      ><a name="934"
+      > </a
+      ><a name="935" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="936"
+      > </a
+      ><a name="937" href="Data.Nat.GCD.html#817" class="Bound"
+      >gcd</a
+      ><a name="940"
+      > </a
+      ><a name="941" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="942"
+      > </a
+      ><a name="943" href="Data.Nat.GCD.html#815" class="Bound"
+      >n</a
+      ><a name="944"
+      >
+
+      </a
+      ><a name="952" class="Comment"
+      >-- All common divisors divide the gcd, i.e. the gcd is the</a
+      ><a name="1010"
+      >
+      </a
+      ><a name="1017" class="Comment"
+      >-- greatest common divisor according to the partial order _&#8739;_.</a
+      ><a name="1079"
+      >
+      </a
+      ><a name="1086" href="Data.Nat.GCD.html#1086" class="Field"
+      >greatest</a
+      ><a name="1094"
+      > </a
+      ><a name="1095" class="Symbol"
+      >:</a
+      ><a name="1096"
+      > </a
+      ><a name="1097" class="Symbol"
+      >&#8704;</a
+      ><a name="1098"
+      > </a
+      ><a name="1099" class="Symbol"
+      >{</a
+      ><a name="1100" href="Data.Nat.GCD.html#1100" class="Bound"
+      >d</a
+      ><a name="1101" class="Symbol"
+      >}</a
+      ><a name="1102"
+      > </a
+      ><a name="1103" class="Symbol"
+      >&#8594;</a
+      ><a name="1104"
+      > </a
+      ><a name="1105" href="Data.Nat.GCD.html#1100" class="Bound"
+      >d</a
+      ><a name="1106"
+      > </a
+      ><a name="1107" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="1108"
+      > </a
+      ><a name="1109" href="Data.Nat.GCD.html#813" class="Bound"
+      >m</a
+      ><a name="1110"
+      > </a
+      ><a name="1111" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="1112"
+      > </a
+      ><a name="1113" href="Data.Nat.GCD.html#1100" class="Bound"
+      >d</a
+      ><a name="1114"
+      > </a
+      ><a name="1115" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="1116"
+      > </a
+      ><a name="1117" href="Data.Nat.GCD.html#815" class="Bound"
+      >n</a
+      ><a name="1118"
+      > </a
+      ><a name="1119" class="Symbol"
+      >&#8594;</a
+      ><a name="1120"
+      > </a
+      ><a name="1121" href="Data.Nat.GCD.html#1100" class="Bound"
+      >d</a
+      ><a name="1122"
+      > </a
+      ><a name="1123" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="1124"
+      > </a
+      ><a name="1125" href="Data.Nat.GCD.html#817" class="Bound"
+      >gcd</a
+      ><a name="1128"
+      >
+
+  </a
+      ><a name="1132" class="Keyword"
+      >open</a
+      ><a name="1136"
+      > </a
+      ><a name="1137" href="Data.Nat.GCD.html#808" class="Module"
+      >GCD</a
+      ><a name="1140"
+      > </a
+      ><a name="1141" class="Keyword"
+      >public</a
+      ><a name="1147"
+      >
+
+  </a
+      ><a name="1151" class="Comment"
+      >-- The gcd is unique.</a
+      ><a name="1172"
+      >
+
+  </a
+      ><a name="1176" href="Data.Nat.GCD.html#1176" class="Function"
+      >unique</a
+      ><a name="1182"
+      > </a
+      ><a name="1183" class="Symbol"
+      >:</a
+      ><a name="1184"
+      > </a
+      ><a name="1185" class="Symbol"
+      >&#8704;</a
+      ><a name="1186"
+      > </a
+      ><a name="1187" class="Symbol"
+      >{</a
+      ><a name="1188" href="Data.Nat.GCD.html#1188" class="Bound"
+      >d&#8321;</a
+      ><a name="1190"
+      > </a
+      ><a name="1191" href="Data.Nat.GCD.html#1191" class="Bound"
+      >d&#8322;</a
+      ><a name="1193"
+      > </a
+      ><a name="1194" href="Data.Nat.GCD.html#1194" class="Bound"
+      >m</a
+      ><a name="1195"
+      > </a
+      ><a name="1196" href="Data.Nat.GCD.html#1196" class="Bound"
+      >n</a
+      ><a name="1197" class="Symbol"
+      >}</a
+      ><a name="1198"
+      > </a
+      ><a name="1199" class="Symbol"
+      >&#8594;</a
+      ><a name="1200"
+      > </a
+      ><a name="1201" href="Data.Nat.GCD.html#808" class="Record"
+      >GCD</a
+      ><a name="1204"
+      > </a
+      ><a name="1205" href="Data.Nat.GCD.html#1194" class="Bound"
+      >m</a
+      ><a name="1206"
+      > </a
+      ><a name="1207" href="Data.Nat.GCD.html#1196" class="Bound"
+      >n</a
+      ><a name="1208"
+      > </a
+      ><a name="1209" href="Data.Nat.GCD.html#1188" class="Bound"
+      >d&#8321;</a
+      ><a name="1211"
+      > </a
+      ><a name="1212" class="Symbol"
+      >&#8594;</a
+      ><a name="1213"
+      > </a
+      ><a name="1214" href="Data.Nat.GCD.html#808" class="Record"
+      >GCD</a
+      ><a name="1217"
+      > </a
+      ><a name="1218" href="Data.Nat.GCD.html#1194" class="Bound"
+      >m</a
+      ><a name="1219"
+      > </a
+      ><a name="1220" href="Data.Nat.GCD.html#1196" class="Bound"
+      >n</a
+      ><a name="1221"
+      > </a
+      ><a name="1222" href="Data.Nat.GCD.html#1191" class="Bound"
+      >d&#8322;</a
+      ><a name="1224"
+      > </a
+      ><a name="1225" class="Symbol"
+      >&#8594;</a
+      ><a name="1226"
+      > </a
+      ><a name="1227" href="Data.Nat.GCD.html#1188" class="Bound"
+      >d&#8321;</a
+      ><a name="1229"
+      > </a
+      ><a name="1230" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1231"
+      > </a
+      ><a name="1232" href="Data.Nat.GCD.html#1191" class="Bound"
+      >d&#8322;</a
+      ><a name="1234"
+      >
+  </a
+      ><a name="1237" href="Data.Nat.GCD.html#1176" class="Function"
+      >unique</a
+      ><a name="1243"
+      > </a
+      ><a name="1244" href="Data.Nat.GCD.html#1244" class="Bound"
+      >d&#8321;</a
+      ><a name="1246"
+      > </a
+      ><a name="1247" href="Data.Nat.GCD.html#1247" class="Bound"
+      >d&#8322;</a
+      ><a name="1249"
+      > </a
+      ><a name="1250" class="Symbol"
+      >=</a
+      ><a name="1251"
+      > </a
+      ><a name="1252" href="Relation.Binary.html#3552" class="Function"
+      >P.antisym</a
+      ><a name="1261"
+      > </a
+      ><a name="1262" class="Symbol"
+      >(</a
+      ><a name="1263" href="Data.Nat.GCD.html#1086" class="Field"
+      >GCD.greatest</a
+      ><a name="1275"
+      > </a
+      ><a name="1276" href="Data.Nat.GCD.html#1247" class="Bound"
+      >d&#8322;</a
+      ><a name="1278"
+      > </a
+      ><a name="1279" class="Symbol"
+      >(</a
+      ><a name="1280" href="Data.Nat.GCD.html#911" class="Field"
+      >GCD.commonDivisor</a
+      ><a name="1297"
+      > </a
+      ><a name="1298" href="Data.Nat.GCD.html#1244" class="Bound"
+      >d&#8321;</a
+      ><a name="1300" class="Symbol"
+      >))</a
+      ><a name="1302"
+      >
+                           </a
+      ><a name="1330" class="Symbol"
+      >(</a
+      ><a name="1331" href="Data.Nat.GCD.html#1086" class="Field"
+      >GCD.greatest</a
+      ><a name="1343"
+      > </a
+      ><a name="1344" href="Data.Nat.GCD.html#1244" class="Bound"
+      >d&#8321;</a
+      ><a name="1346"
+      > </a
+      ><a name="1347" class="Symbol"
+      >(</a
+      ><a name="1348" href="Data.Nat.GCD.html#911" class="Field"
+      >GCD.commonDivisor</a
+      ><a name="1365"
+      > </a
+      ><a name="1366" href="Data.Nat.GCD.html#1247" class="Bound"
+      >d&#8322;</a
+      ><a name="1368" class="Symbol"
+      >))</a
+      ><a name="1370"
+      >
+
+  </a
+      ><a name="1374" class="Comment"
+      >-- The gcd relation is &quot;symmetric&quot;.</a
+      ><a name="1409"
+      >
+
+  </a
+      ><a name="1413" href="Data.Nat.GCD.html#1413" class="Function"
+      >sym</a
+      ><a name="1416"
+      > </a
+      ><a name="1417" class="Symbol"
+      >:</a
+      ><a name="1418"
+      > </a
+      ><a name="1419" class="Symbol"
+      >&#8704;</a
+      ><a name="1420"
+      > </a
+      ><a name="1421" class="Symbol"
+      >{</a
+      ><a name="1422" href="Data.Nat.GCD.html#1422" class="Bound"
+      >d</a
+      ><a name="1423"
+      > </a
+      ><a name="1424" href="Data.Nat.GCD.html#1424" class="Bound"
+      >m</a
+      ><a name="1425"
+      > </a
+      ><a name="1426" href="Data.Nat.GCD.html#1426" class="Bound"
+      >n</a
+      ><a name="1427" class="Symbol"
+      >}</a
+      ><a name="1428"
+      > </a
+      ><a name="1429" class="Symbol"
+      >&#8594;</a
+      ><a name="1430"
+      > </a
+      ><a name="1431" href="Data.Nat.GCD.html#808" class="Record"
+      >GCD</a
+      ><a name="1434"
+      > </a
+      ><a name="1435" href="Data.Nat.GCD.html#1424" class="Bound"
+      >m</a
+      ><a name="1436"
+      > </a
+      ><a name="1437" href="Data.Nat.GCD.html#1426" class="Bound"
+      >n</a
+      ><a name="1438"
+      > </a
+      ><a name="1439" href="Data.Nat.GCD.html#1422" class="Bound"
+      >d</a
+      ><a name="1440"
+      > </a
+      ><a name="1441" class="Symbol"
+      >&#8594;</a
+      ><a name="1442"
+      > </a
+      ><a name="1443" href="Data.Nat.GCD.html#808" class="Record"
+      >GCD</a
+      ><a name="1446"
+      > </a
+      ><a name="1447" href="Data.Nat.GCD.html#1426" class="Bound"
+      >n</a
+      ><a name="1448"
+      > </a
+      ><a name="1449" href="Data.Nat.GCD.html#1424" class="Bound"
+      >m</a
+      ><a name="1450"
+      > </a
+      ><a name="1451" href="Data.Nat.GCD.html#1422" class="Bound"
+      >d</a
+      ><a name="1452"
+      >
+  </a
+      ><a name="1455" href="Data.Nat.GCD.html#1413" class="Function"
+      >sym</a
+      ><a name="1458"
+      > </a
+      ><a name="1459" href="Data.Nat.GCD.html#1459" class="Bound"
+      >g</a
+      ><a name="1460"
+      > </a
+      ><a name="1461" class="Symbol"
+      >=</a
+      ><a name="1462"
+      > </a
+      ><a name="1463" href="Data.Nat.GCD.html#854" class="InductiveConstructor"
+      >is</a
+      ><a name="1465"
+      > </a
+      ><a name="1466" class="Symbol"
+      >(</a
+      ><a name="1467" href="Data.Product.html#2302" class="Function"
+      >swap</a
+      ><a name="1471"
+      > </a
+      ><a name="1472" href="Function.html#1835" class="Function Operator"
+      >$</a
+      ><a name="1473"
+      > </a
+      ><a name="1474" href="Data.Nat.GCD.html#911" class="Field"
+      >GCD.commonDivisor</a
+      ><a name="1491"
+      > </a
+      ><a name="1492" href="Data.Nat.GCD.html#1459" class="Bound"
+      >g</a
+      ><a name="1493" class="Symbol"
+      >)</a
+      ><a name="1494"
+      > </a
+      ><a name="1495" class="Symbol"
+      >(</a
+      ><a name="1496" href="Data.Nat.GCD.html#1086" class="Field"
+      >GCD.greatest</a
+      ><a name="1508"
+      > </a
+      ><a name="1509" href="Data.Nat.GCD.html#1459" class="Bound"
+      >g</a
+      ><a name="1510"
+      > </a
+      ><a name="1511" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="1512"
+      > </a
+      ><a name="1513" href="Data.Product.html#2302" class="Function"
+      >swap</a
+      ><a name="1517" class="Symbol"
+      >)</a
+      ><a name="1518"
+      >
+
+  </a
+      ><a name="1522" class="Comment"
+      >-- The gcd relation is &quot;reflexive&quot;.</a
+      ><a name="1557"
+      >
+
+  </a
+      ><a name="1561" href="Data.Nat.GCD.html#1561" class="Function"
+      >refl</a
+      ><a name="1565"
+      > </a
+      ><a name="1566" class="Symbol"
+      >:</a
+      ><a name="1567"
+      > </a
+      ><a name="1568" class="Symbol"
+      >&#8704;</a
+      ><a name="1569"
+      > </a
+      ><a name="1570" class="Symbol"
+      >{</a
+      ><a name="1571" href="Data.Nat.GCD.html#1571" class="Bound"
+      >n</a
+      ><a name="1572" class="Symbol"
+      >}</a
+      ><a name="1573"
+      > </a
+      ><a name="1574" class="Symbol"
+      >&#8594;</a
+      ><a name="1575"
+      > </a
+      ><a name="1576" href="Data.Nat.GCD.html#808" class="Record"
+      >GCD</a
+      ><a name="1579"
+      > </a
+      ><a name="1580" href="Data.Nat.GCD.html#1571" class="Bound"
+      >n</a
+      ><a name="1581"
+      > </a
+      ><a name="1582" href="Data.Nat.GCD.html#1571" class="Bound"
+      >n</a
+      ><a name="1583"
+      > </a
+      ><a name="1584" href="Data.Nat.GCD.html#1571" class="Bound"
+      >n</a
+      ><a name="1585"
+      >
+  </a
+      ><a name="1588" href="Data.Nat.GCD.html#1561" class="Function"
+      >refl</a
+      ><a name="1592"
+      > </a
+      ><a name="1593" class="Symbol"
+      >=</a
+      ><a name="1594"
+      > </a
+      ><a name="1595" href="Data.Nat.GCD.html#854" class="InductiveConstructor"
+      >is</a
+      ><a name="1597"
+      > </a
+      ><a name="1598" class="Symbol"
+      >(</a
+      ><a name="1599" href="Relation.Binary.html#1211" class="Function"
+      >P.refl</a
+      ><a name="1605"
+      > </a
+      ><a name="1606" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1607"
+      > </a
+      ><a name="1608" href="Relation.Binary.html#1211" class="Function"
+      >P.refl</a
+      ><a name="1614" class="Symbol"
+      >)</a
+      ><a name="1615"
+      > </a
+      ><a name="1616" href="Data.Product.html#525" class="Field"
+      >proj&#8321;</a
+      ><a name="1621"
+      >
+
+  </a
+      ><a name="1625" class="Comment"
+      >-- The GCD of 0 and n is n.</a
+      ><a name="1652"
+      >
+
+  </a
+      ><a name="1656" href="Data.Nat.GCD.html#1656" class="Function"
+      >base</a
+      ><a name="1660"
+      > </a
+      ><a name="1661" class="Symbol"
+      >:</a
+      ><a name="1662"
+      > </a
+      ><a name="1663" class="Symbol"
+      >&#8704;</a
+      ><a name="1664"
+      > </a
+      ><a name="1665" class="Symbol"
+      >{</a
+      ><a name="1666" href="Data.Nat.GCD.html#1666" class="Bound"
+      >n</a
+      ><a name="1667" class="Symbol"
+      >}</a
+      ><a name="1668"
+      > </a
+      ><a name="1669" class="Symbol"
+      >&#8594;</a
+      ><a name="1670"
+      > </a
+      ><a name="1671" href="Data.Nat.GCD.html#808" class="Record"
+      >GCD</a
+      ><a name="1674"
+      > </a
+      ><a name="1675" class="Number"
+      >0</a
+      ><a name="1676"
+      > </a
+      ><a name="1677" href="Data.Nat.GCD.html#1666" class="Bound"
+      >n</a
+      ><a name="1678"
+      > </a
+      ><a name="1679" href="Data.Nat.GCD.html#1666" class="Bound"
+      >n</a
+      ><a name="1680"
+      >
+  </a
+      ><a name="1683" href="Data.Nat.GCD.html#1656" class="Function"
+      >base</a
+      ><a name="1687"
+      > </a
+      ><a name="1688" class="Symbol"
+      >{</a
+      ><a name="1689" href="Data.Nat.GCD.html#1689" class="Bound"
+      >n</a
+      ><a name="1690" class="Symbol"
+      >}</a
+      ><a name="1691"
+      > </a
+      ><a name="1692" class="Symbol"
+      >=</a
+      ><a name="1693"
+      > </a
+      ><a name="1694" href="Data.Nat.GCD.html#854" class="InductiveConstructor"
+      >is</a
+      ><a name="1696"
+      > </a
+      ><a name="1697" class="Symbol"
+      >(</a
+      ><a name="1698" href="Data.Nat.GCD.html#1689" class="Bound"
+      >n</a
+      ><a name="1699"
+      > </a
+      ><a name="1700" href="Data.Nat.Divisibility.html#2902" class="Function Operator"
+      >&#8739;0</a
+      ><a name="1702"
+      > </a
+      ><a name="1703" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1704"
+      > </a
+      ><a name="1705" href="Relation.Binary.html#1211" class="Function"
+      >P.refl</a
+      ><a name="1711" class="Symbol"
+      >)</a
+      ><a name="1712"
+      > </a
+      ><a name="1713" href="Data.Product.html#539" class="Field"
+      >proj&#8322;</a
+      ><a name="1718"
+      >
+
+  </a
+      ><a name="1722" class="Comment"
+      >-- If d is the gcd of n and k, then it is also the gcd of n and</a
+      ><a name="1785"
+      >
+  </a
+      ><a name="1788" class="Comment"
+      >-- n&#160;+&#160;k.</a
+      ><a name="1797"
+      >
+
+  </a
+      ><a name="1801" href="Data.Nat.GCD.html#1801" class="Function"
+      >step</a
+      ><a name="1805"
+      > </a
+      ><a name="1806" class="Symbol"
+      >:</a
+      ><a name="1807"
+      > </a
+      ><a name="1808" class="Symbol"
+      >&#8704;</a
+      ><a name="1809"
+      > </a
+      ><a name="1810" class="Symbol"
+      >{</a
+      ><a name="1811" href="Data.Nat.GCD.html#1811" class="Bound"
+      >n</a
+      ><a name="1812"
+      > </a
+      ><a name="1813" href="Data.Nat.GCD.html#1813" class="Bound"
+      >k</a
+      ><a name="1814"
+      > </a
+      ><a name="1815" href="Data.Nat.GCD.html#1815" class="Bound"
+      >d</a
+      ><a name="1816" class="Symbol"
+      >}</a
+      ><a name="1817"
+      > </a
+      ><a name="1818" class="Symbol"
+      >&#8594;</a
+      ><a name="1819"
+      > </a
+      ><a name="1820" href="Data.Nat.GCD.html#808" class="Record"
+      >GCD</a
+      ><a name="1823"
+      > </a
+      ><a name="1824" href="Data.Nat.GCD.html#1811" class="Bound"
+      >n</a
+      ><a name="1825"
+      > </a
+      ><a name="1826" href="Data.Nat.GCD.html#1813" class="Bound"
+      >k</a
+      ><a name="1827"
+      > </a
+      ><a name="1828" href="Data.Nat.GCD.html#1815" class="Bound"
+      >d</a
+      ><a name="1829"
+      > </a
+      ><a name="1830" class="Symbol"
+      >&#8594;</a
+      ><a name="1831"
+      > </a
+      ><a name="1832" href="Data.Nat.GCD.html#808" class="Record"
+      >GCD</a
+      ><a name="1835"
+      > </a
+      ><a name="1836" href="Data.Nat.GCD.html#1811" class="Bound"
+      >n</a
+      ><a name="1837"
+      > </a
+      ><a name="1838" class="Symbol"
+      >(</a
+      ><a name="1839" href="Data.Nat.GCD.html#1811" class="Bound"
+      >n</a
+      ><a name="1840"
+      > </a
+      ><a name="1841" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="1842"
+      > </a
+      ><a name="1843" href="Data.Nat.GCD.html#1813" class="Bound"
+      >k</a
+      ><a name="1844" class="Symbol"
+      >)</a
+      ><a name="1845"
+      > </a
+      ><a name="1846" href="Data.Nat.GCD.html#1815" class="Bound"
+      >d</a
+      ><a name="1847"
+      >
+  </a
+      ><a name="1850" href="Data.Nat.GCD.html#1801" class="Function"
+      >step</a
+      ><a name="1854"
+      > </a
+      ><a name="1855" href="Data.Nat.GCD.html#1855" class="Bound"
+      >g</a
+      ><a name="1856"
+      > </a
+      ><a name="1857" class="Keyword"
+      >with</a
+      ><a name="1861"
+      > </a
+      ><a name="1862" href="Data.Nat.GCD.html#911" class="Field"
+      >GCD.commonDivisor</a
+      ><a name="1879"
+      > </a
+      ><a name="1880" href="Data.Nat.GCD.html#1855" class="Bound"
+      >g</a
+      ><a name="1881"
+      >
+  </a
+      ><a name="1884" href="Data.Nat.GCD.html#1801" class="Function"
+      >step</a
+      ><a name="1888"
+      > </a
+      ><a name="1889" class="Symbol"
+      >{</a
+      ><a name="1890" href="Data.Nat.GCD.html#1890" class="Bound"
+      >n</a
+      ><a name="1891" class="Symbol"
+      >}</a
+      ><a name="1892"
+      > </a
+      ><a name="1893" class="Symbol"
+      >{</a
+      ><a name="1894" href="Data.Nat.GCD.html#1894" class="Bound"
+      >k</a
+      ><a name="1895" class="Symbol"
+      >}</a
+      ><a name="1896"
+      > </a
+      ><a name="1897" class="Symbol"
+      >{</a
+      ><a name="1898" href="Data.Nat.GCD.html#1898" class="Bound"
+      >d</a
+      ><a name="1899" class="Symbol"
+      >}</a
+      ><a name="1900"
+      > </a
+      ><a name="1901" href="Data.Nat.GCD.html#1901" class="Bound"
+      >g</a
+      ><a name="1902"
+      > </a
+      ><a name="1903" class="Symbol"
+      >|</a
+      ><a name="1904"
+      > </a
+      ><a name="1905" class="Symbol"
+      >(</a
+      ><a name="1906" href="Data.Nat.GCD.html#1906" class="Bound"
+      >d&#8321;</a
+      ><a name="1908"
+      > </a
+      ><a name="1909" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1910"
+      > </a
+      ><a name="1911" href="Data.Nat.GCD.html#1911" class="Bound"
+      >d&#8322;</a
+      ><a name="1913" class="Symbol"
+      >)</a
+      ><a name="1914"
+      > </a
+      ><a name="1915" class="Symbol"
+      >=</a
+      ><a name="1916"
+      > </a
+      ><a name="1917" href="Data.Nat.GCD.html#854" class="InductiveConstructor"
+      >is</a
+      ><a name="1919"
+      > </a
+      ><a name="1920" class="Symbol"
+      >(</a
+      ><a name="1921" href="Data.Nat.GCD.html#1906" class="Bound"
+      >d&#8321;</a
+      ><a name="1923"
+      > </a
+      ><a name="1924" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1925"
+      > </a
+      ><a name="1926" href="Data.Nat.Divisibility.html#3175" class="Function"
+      >&#8739;-+</a
+      ><a name="1929"
+      > </a
+      ><a name="1930" href="Data.Nat.GCD.html#1906" class="Bound"
+      >d&#8321;</a
+      ><a name="1932"
+      > </a
+      ><a name="1933" href="Data.Nat.GCD.html#1911" class="Bound"
+      >d&#8322;</a
+      ><a name="1935" class="Symbol"
+      >)</a
+      ><a name="1936"
+      > </a
+      ><a name="1937" href="Data.Nat.GCD.html#1961" class="Function"
+      >greatest&#8242;</a
+      ><a name="1946"
+      >
+    </a
+      ><a name="1951" class="Keyword"
+      >where</a
+      ><a name="1956"
+      >
+    </a
+      ><a name="1961" href="Data.Nat.GCD.html#1961" class="Function"
+      >greatest&#8242;</a
+      ><a name="1970"
+      > </a
+      ><a name="1971" class="Symbol"
+      >:</a
+      ><a name="1972"
+      > </a
+      ><a name="1973" class="Symbol"
+      >&#8704;</a
+      ><a name="1974"
+      > </a
+      ><a name="1975" class="Symbol"
+      >{</a
+      ><a name="1976" href="Data.Nat.GCD.html#1976" class="Bound"
+      >d&#8242;</a
+      ><a name="1978" class="Symbol"
+      >}</a
+      ><a name="1979"
+      > </a
+      ><a name="1980" class="Symbol"
+      >&#8594;</a
+      ><a name="1981"
+      > </a
+      ><a name="1982" href="Data.Nat.GCD.html#1976" class="Bound"
+      >d&#8242;</a
+      ><a name="1984"
+      > </a
+      ><a name="1985" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="1986"
+      > </a
+      ><a name="1987" href="Data.Nat.GCD.html#1890" class="Bound"
+      >n</a
+      ><a name="1988"
+      > </a
+      ><a name="1989" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="1990"
+      > </a
+      ><a name="1991" href="Data.Nat.GCD.html#1976" class="Bound"
+      >d&#8242;</a
+      ><a name="1993"
+      > </a
+      ><a name="1994" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="1995"
+      > </a
+      ><a name="1996" href="Data.Nat.GCD.html#1890" class="Bound"
+      >n</a
+      ><a name="1997"
+      > </a
+      ><a name="1998" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="1999"
+      > </a
+      ><a name="2000" href="Data.Nat.GCD.html#1894" class="Bound"
+      >k</a
+      ><a name="2001"
+      > </a
+      ><a name="2002" class="Symbol"
+      >&#8594;</a
+      ><a name="2003"
+      > </a
+      ><a name="2004" href="Data.Nat.GCD.html#1976" class="Bound"
+      >d&#8242;</a
+      ><a name="2006"
+      > </a
+      ><a name="2007" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8739;</a
+      ><a name="2008"
+      > </a
+      ><a name="2009" href="Data.Nat.GCD.html#1898" class="Bound"
+      >d</a
+      ><a name="2010"
+      >
+    </a
+      ><a name="2015" href="Data.Nat.GCD.html#1961" class="Function"
+      >greatest&#8242;</a
+      ><a name="2024"
+      > </a
+      ><a name="2025" class="Symbol"
+      >(</a
+      ><a name="2026" href="Data.Nat.GCD.html#2026" class="Bound"
+      >d&#8321;</a
+      ><a name="2028"
+      > </a
+      ><a name="2029" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2030"
+      > </a
+      ><a name="2031" href="Data.Nat.GCD.html#2031" class="Bound"
+      >d&#8322;</a
+      ><a name="2033" class="Symbol"
+      >)</a
+      ><a name="2034"
+      > </a
+      ><a name="2035" class="Symbol"
+      >=</a
+      ><a name="2036"
+      > </a
+      ><a name="2037" href="Data.Nat.GCD.html#1086" class="Field"
+      >GCD.greatest</a
+      ><a name="2049"
+      > </a
+      ><a name="2050" href="Data.Nat.GCD.html#1901" class="Bound"
+      >g</a
+      ><a name="2051"
+      > </a
+      ><a name="2052" class="Symbol"
+      >(</a
+      ><a name="2053" href="Data.Nat.GCD.html#2026" class="Bound"
+      >d&#8321;</a
+      ><a name="2055"
+      > </a
+      ><a name="2056" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2057"
+      > </a
+      ><a name="2058" href="Data.Nat.Divisibility.html#3379" class="Function"
+      >&#8739;-&#8760;</a
+      ><a name="2061"
+      > </a
+      ><a name="2062" href="Data.Nat.GCD.html#2031" class="Bound"
+      >d&#8322;</a
+      ><a name="2064"
+      > </a
+      ><a name="2065" href="Data.Nat.GCD.html#2026" class="Bound"
+      >d&#8321;</a
+      ><a name="2067" class="Symbol"
+      >)</a
+      ><a name="2068"
+      >
+
+</a
+      ><a name="2070" class="Keyword"
+      >open</a
+      ><a name="2074"
+      > </a
+      ><a name="2075" href="Data.Nat.GCD.html#702" class="Module"
+      >GCD</a
+      ><a name="2078"
+      > </a
+      ><a name="2079" class="Keyword"
+      >public</a
+      ><a name="2085"
+      > </a
+      ><a name="2086" class="Keyword"
+      >using</a
+      ><a name="2091"
+      > </a
+      ><a name="2092" class="Symbol"
+      >(</a
+      ><a name="2093"
+      >GCD</a
+      ><a name="2096" class="Symbol"
+      >)</a
+      ><a name="2097"
+      >
+
+</a
+      ><a name="2099" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="2171"
+      >
+</a
+      ><a name="2172" class="Comment"
+      >-- Calculating the gcd</a
+      ><a name="2194"
+      >
+
+</a
+      ><a name="2196" class="Comment"
+      >-- The calculation also proves B&#233;zout's lemma.</a
+      ><a name="2242"
+      >
+
+</a
+      ><a name="2244" class="Keyword"
+      >module</a
+      ><a name="2250"
+      > </a
+      ><a name="2251" href="Data.Nat.GCD.html#2251" class="Module"
+      >B&#233;zout</a
+      ><a name="2257"
+      > </a
+      ><a name="2258" class="Keyword"
+      >where</a
+      ><a name="2263"
+      >
+
+  </a
+      ><a name="2267" class="Keyword"
+      >module</a
+      ><a name="2273"
+      > </a
+      ><a name="2274" href="Data.Nat.GCD.html#2274" class="Module"
+      >Identity</a
+      ><a name="2282"
+      > </a
+      ><a name="2283" class="Keyword"
+      >where</a
+      ><a name="2288"
+      >
+
+    </a
+      ><a name="2294" class="Comment"
+      >-- If m and n have greatest common divisor d, then one of the</a
+      ><a name="2355"
+      >
+    </a
+      ><a name="2360" class="Comment"
+      >-- following two equations is satisfied, for some numbers x and y.</a
+      ><a name="2426"
+      >
+    </a
+      ><a name="2431" class="Comment"
+      >-- The proof is &quot;lemma&quot; below (B&#233;zout's lemma).</a
+      ><a name="2478"
+      >
+    </a
+      ><a name="2483" class="Comment"
+      >--</a
+      ><a name="2485"
+      >
+    </a
+      ><a name="2490" class="Comment"
+      >-- (If this identity was stated using integers instead of natural</a
+      ><a name="2555"
+      >
+    </a
+      ><a name="2560" class="Comment"
+      >-- numbers, then it would not be necessary to have two equations.)</a
+      ><a name="2626"
+      >
+
+    </a
+      ><a name="2632" class="Keyword"
+      >data</a
+      ><a name="2636"
+      > </a
+      ><a name="2637" href="Data.Nat.GCD.html#2637" class="Datatype"
+      >Identity</a
+      ><a name="2645"
+      > </a
+      ><a name="2646" class="Symbol"
+      >(</a
+      ><a name="2647" href="Data.Nat.GCD.html#2647" class="Bound"
+      >d</a
+      ><a name="2648"
+      > </a
+      ><a name="2649" href="Data.Nat.GCD.html#2649" class="Bound"
+      >m</a
+      ><a name="2650"
+      > </a
+      ><a name="2651" href="Data.Nat.GCD.html#2651" class="Bound"
+      >n</a
+      ><a name="2652"
+      > </a
+      ><a name="2653" class="Symbol"
+      >:</a
+      ><a name="2654"
+      > </a
+      ><a name="2655" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="2656" class="Symbol"
+      >)</a
+      ><a name="2657"
+      > </a
+      ><a name="2658" class="Symbol"
+      >:</a
+      ><a name="2659"
+      > </a
+      ><a name="2660" class="PrimitiveType"
+      >Set</a
+      ><a name="2663"
+      > </a
+      ><a name="2664" class="Keyword"
+      >where</a
+      ><a name="2669"
+      >
+      </a
+      ><a name="2676" href="Data.Nat.GCD.html#2676" class="InductiveConstructor"
+      >+-</a
+      ><a name="2678"
+      > </a
+      ><a name="2679" class="Symbol"
+      >:</a
+      ><a name="2680"
+      > </a
+      ><a name="2681" class="Symbol"
+      >(</a
+      ><a name="2682" href="Data.Nat.GCD.html#2682" class="Bound"
+      >x</a
+      ><a name="2683"
+      > </a
+      ><a name="2684" href="Data.Nat.GCD.html#2684" class="Bound"
+      >y</a
+      ><a name="2685"
+      > </a
+      ><a name="2686" class="Symbol"
+      >:</a
+      ><a name="2687"
+      > </a
+      ><a name="2688" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="2689" class="Symbol"
+      >)</a
+      ><a name="2690"
+      > </a
+      ><a name="2691" class="Symbol"
+      >(</a
+      ><a name="2692" href="Data.Nat.GCD.html#2692" class="Bound"
+      >eq</a
+      ><a name="2694"
+      > </a
+      ><a name="2695" class="Symbol"
+      >:</a
+      ><a name="2696"
+      > </a
+      ><a name="2697" href="Data.Nat.GCD.html#2647" class="Bound"
+      >d</a
+      ><a name="2698"
+      > </a
+      ><a name="2699" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="2700"
+      > </a
+      ><a name="2701" href="Data.Nat.GCD.html#2684" class="Bound"
+      >y</a
+      ><a name="2702"
+      > </a
+      ><a name="2703" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="2704"
+      > </a
+      ><a name="2705" href="Data.Nat.GCD.html#2651" class="Bound"
+      >n</a
+      ><a name="2706"
+      > </a
+      ><a name="2707" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2708"
+      > </a
+      ><a name="2709" href="Data.Nat.GCD.html#2682" class="Bound"
+      >x</a
+      ><a name="2710"
+      > </a
+      ><a name="2711" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="2712"
+      > </a
+      ><a name="2713" href="Data.Nat.GCD.html#2649" class="Bound"
+      >m</a
+      ><a name="2714" class="Symbol"
+      >)</a
+      ><a name="2715"
+      > </a
+      ><a name="2716" class="Symbol"
+      >&#8594;</a
+      ><a name="2717"
+      > </a
+      ><a name="2718" href="Data.Nat.GCD.html#2637" class="Datatype"
+      >Identity</a
+      ><a name="2726"
+      > </a
+      ><a name="2727" href="Data.Nat.GCD.html#2647" class="Bound"
+      >d</a
+      ><a name="2728"
+      > </a
+      ><a name="2729" href="Data.Nat.GCD.html#2649" class="Bound"
+      >m</a
+      ><a name="2730"
+      > </a
+      ><a name="2731" href="Data.Nat.GCD.html#2651" class="Bound"
+      >n</a
+      ><a name="2732"
+      >
+      </a
+      ><a name="2739" href="Data.Nat.GCD.html#2739" class="InductiveConstructor"
+      >-+</a
+      ><a name="2741"
+      > </a
+      ><a name="2742" class="Symbol"
+      >:</a
+      ><a name="2743"
+      > </a
+      ><a name="2744" class="Symbol"
+      >(</a
+      ><a name="2745" href="Data.Nat.GCD.html#2745" class="Bound"
+      >x</a
+      ><a name="2746"
+      > </a
+      ><a name="2747" href="Data.Nat.GCD.html#2747" class="Bound"
+      >y</a
+      ><a name="2748"
+      > </a
+      ><a name="2749" class="Symbol"
+      >:</a
+      ><a name="2750"
+      > </a
+      ><a name="2751" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="2752" class="Symbol"
+      >)</a
+      ><a name="2753"
+      > </a
+      ><a name="2754" class="Symbol"
+      >(</a
+      ><a name="2755" href="Data.Nat.GCD.html#2755" class="Bound"
+      >eq</a
+      ><a name="2757"
+      > </a
+      ><a name="2758" class="Symbol"
+      >:</a
+      ><a name="2759"
+      > </a
+      ><a name="2760" href="Data.Nat.GCD.html#2647" class="Bound"
+      >d</a
+      ><a name="2761"
+      > </a
+      ><a name="2762" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="2763"
+      > </a
+      ><a name="2764" href="Data.Nat.GCD.html#2745" class="Bound"
+      >x</a
+      ><a name="2765"
+      > </a
+      ><a name="2766" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="2767"
+      > </a
+      ><a name="2768" href="Data.Nat.GCD.html#2649" class="Bound"
+      >m</a
+      ><a name="2769"
+      > </a
+      ><a name="2770" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2771"
+      > </a
+      ><a name="2772" href="Data.Nat.GCD.html#2747" class="Bound"
+      >y</a
+      ><a name="2773"
+      > </a
+      ><a name="2774" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="2775"
+      > </a
+      ><a name="2776" href="Data.Nat.GCD.html#2651" class="Bound"
+      >n</a
+      ><a name="2777" class="Symbol"
+      >)</a
+      ><a name="2778"
+      > </a
+      ><a name="2779" class="Symbol"
+      >&#8594;</a
+      ><a name="2780"
+      > </a
+      ><a name="2781" href="Data.Nat.GCD.html#2637" class="Datatype"
+      >Identity</a
+      ><a name="2789"
+      > </a
+      ><a name="2790" href="Data.Nat.GCD.html#2647" class="Bound"
+      >d</a
+      ><a name="2791"
+      > </a
+      ><a name="2792" href="Data.Nat.GCD.html#2649" class="Bound"
+      >m</a
+      ><a name="2793"
+      > </a
+      ><a name="2794" href="Data.Nat.GCD.html#2651" class="Bound"
+      >n</a
+      ><a name="2795"
+      >
+
+    </a
+      ><a name="2801" class="Comment"
+      >-- Various properties about Identity.</a
+      ><a name="2838"
+      >
+
+    </a
+      ><a name="2844" href="Data.Nat.GCD.html#2844" class="Function"
+      >sym</a
+      ><a name="2847"
+      > </a
+      ><a name="2848" class="Symbol"
+      >:</a
+      ><a name="2849"
+      > </a
+      ><a name="2850" class="Symbol"
+      >&#8704;</a
+      ><a name="2851"
+      > </a
+      ><a name="2852" class="Symbol"
+      >{</a
+      ><a name="2853" href="Data.Nat.GCD.html#2853" class="Bound"
+      >d</a
+      ><a name="2854" class="Symbol"
+      >}</a
+      ><a name="2855"
+      > </a
+      ><a name="2856" class="Symbol"
+      >&#8594;</a
+      ><a name="2857"
+      > </a
+      ><a name="2858" href="Relation.Binary.Core.html#2314" class="Function"
+      >Symmetric</a
+      ><a name="2867"
+      > </a
+      ><a name="2868" class="Symbol"
+      >(</a
+      ><a name="2869" href="Data.Nat.GCD.html#2637" class="Datatype"
+      >Identity</a
+      ><a name="2877"
+      > </a
+      ><a name="2878" href="Data.Nat.GCD.html#2853" class="Bound"
+      >d</a
+      ><a name="2879" class="Symbol"
+      >)</a
+      ><a name="2880"
+      >
+    </a
+      ><a name="2885" href="Data.Nat.GCD.html#2844" class="Function"
+      >sym</a
+      ><a name="2888"
+      > </a
+      ><a name="2889" class="Symbol"
+      >(</a
+      ><a name="2890" href="Data.Nat.GCD.html#2676" class="InductiveConstructor"
+      >+-</a
+      ><a name="2892"
+      > </a
+      ><a name="2893" href="Data.Nat.GCD.html#2893" class="Bound"
+      >x</a
+      ><a name="2894"
+      > </a
+      ><a name="2895" href="Data.Nat.GCD.html#2895" class="Bound"
+      >y</a
+      ><a name="2896"
+      > </a
+      ><a name="2897" href="Data.Nat.GCD.html#2897" class="Bound"
+      >eq</a
+      ><a name="2899" class="Symbol"
+      >)</a
+      ><a name="2900"
+      > </a
+      ><a name="2901" class="Symbol"
+      >=</a
+      ><a name="2902"
+      > </a
+      ><a name="2903" href="Data.Nat.GCD.html#2739" class="InductiveConstructor"
+      >-+</a
+      ><a name="2905"
+      > </a
+      ><a name="2906" href="Data.Nat.GCD.html#2895" class="Bound"
+      >y</a
+      ><a name="2907"
+      > </a
+      ><a name="2908" href="Data.Nat.GCD.html#2893" class="Bound"
+      >x</a
+      ><a name="2909"
+      > </a
+      ><a name="2910" href="Data.Nat.GCD.html#2897" class="Bound"
+      >eq</a
+      ><a name="2912"
+      >
+    </a
+      ><a name="2917" href="Data.Nat.GCD.html#2844" class="Function"
+      >sym</a
+      ><a name="2920"
+      > </a
+      ><a name="2921" class="Symbol"
+      >(</a
+      ><a name="2922" href="Data.Nat.GCD.html#2739" class="InductiveConstructor"
+      >-+</a
+      ><a name="2924"
+      > </a
+      ><a name="2925" href="Data.Nat.GCD.html#2925" class="Bound"
+      >x</a
+      ><a name="2926"
+      > </a
+      ><a name="2927" href="Data.Nat.GCD.html#2927" class="Bound"
+      >y</a
+      ><a name="2928"
+      > </a
+      ><a name="2929" href="Data.Nat.GCD.html#2929" class="Bound"
+      >eq</a
+      ><a name="2931" class="Symbol"
+      >)</a
+      ><a name="2932"
+      > </a
+      ><a name="2933" class="Symbol"
+      >=</a
+      ><a name="2934"
+      > </a
+      ><a name="2935" href="Data.Nat.GCD.html#2676" class="InductiveConstructor"
+      >+-</a
+      ><a name="2937"
+      > </a
+      ><a name="2938" href="Data.Nat.GCD.html#2927" class="Bound"
+      >y</a
+      ><a name="2939"
+      > </a
+      ><a name="2940" href="Data.Nat.GCD.html#2925" class="Bound"
+      >x</a
+      ><a name="2941"
+      > </a
+      ><a name="2942" href="Data.Nat.GCD.html#2929" class="Bound"
+      >eq</a
+      ><a name="2944"
+      >
+
+    </a
+      ><a name="2950" href="Data.Nat.GCD.html#2950" class="Function"
+      >refl</a
+      ><a name="2954"
+      > </a
+      ><a name="2955" class="Symbol"
+      >:</a
+      ><a name="2956"
+      > </a
+      ><a name="2957" class="Symbol"
+      >&#8704;</a
+      ><a name="2958"
+      > </a
+      ><a name="2959" class="Symbol"
+      >{</a
+      ><a name="2960" href="Data.Nat.GCD.html#2960" class="Bound"
+      >d</a
+      ><a name="2961" class="Symbol"
+      >}</a
+      ><a name="2962"
+      > </a
+      ><a name="2963" class="Symbol"
+      >&#8594;</a
+      ><a name="2964"
+      > </a
+      ><a name="2965" href="Data.Nat.GCD.html#2637" class="Datatype"
+      >Identity</a
+      ><a name="2973"
+      > </a
+      ><a name="2974" href="Data.Nat.GCD.html#2960" class="Bound"
+      >d</a
+      ><a name="2975"
+      > </a
+      ><a name="2976" href="Data.Nat.GCD.html#2960" class="Bound"
+      >d</a
+      ><a name="2977"
+      > </a
+      ><a name="2978" href="Data.Nat.GCD.html#2960" class="Bound"
+      >d</a
+      ><a name="2979"
+      >
+    </a
+      ><a name="2984" href="Data.Nat.GCD.html#2950" class="Function"
+      >refl</a
+      ><a name="2988"
+      > </a
+      ><a name="2989" class="Symbol"
+      >=</a
+      ><a name="2990"
+      > </a
+      ><a name="2991" href="Data.Nat.GCD.html#2739" class="InductiveConstructor"
+      >-+</a
+      ><a name="2993"
+      > </a
+      ><a name="2994" class="Number"
+      >0</a
+      ><a name="2995"
+      > </a
+      ><a name="2996" class="Number"
+      >1</a
+      ><a name="2997"
+      > </a
+      ><a name="2998" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >PropEq.refl</a
+      ><a name="3009"
+      >
+
+    </a
+      ><a name="3015" href="Data.Nat.GCD.html#3015" class="Function"
+      >base</a
+      ><a name="3019"
+      > </a
+      ><a name="3020" class="Symbol"
+      >:</a
+      ><a name="3021"
+      > </a
+      ><a name="3022" class="Symbol"
+      >&#8704;</a
+      ><a name="3023"
+      > </a
+      ><a name="3024" class="Symbol"
+      >{</a
+      ><a name="3025" href="Data.Nat.GCD.html#3025" class="Bound"
+      >d</a
+      ><a name="3026" class="Symbol"
+      >}</a
+      ><a name="3027"
+      > </a
+      ><a name="3028" class="Symbol"
+      >&#8594;</a
+      ><a name="3029"
+      > </a
+      ><a name="3030" href="Data.Nat.GCD.html#2637" class="Datatype"
+      >Identity</a
+      ><a name="3038"
+      > </a
+      ><a name="3039" href="Data.Nat.GCD.html#3025" class="Bound"
+      >d</a
+      ><a name="3040"
+      > </a
+      ><a name="3041" class="Number"
+      >0</a
+      ><a name="3042"
+      > </a
+      ><a name="3043" href="Data.Nat.GCD.html#3025" class="Bound"
+      >d</a
+      ><a name="3044"
+      >
+    </a
+      ><a name="3049" href="Data.Nat.GCD.html#3015" class="Function"
+      >base</a
+      ><a name="3053"
+      > </a
+      ><a name="3054" class="Symbol"
+      >=</a
+      ><a name="3055"
+      > </a
+      ><a name="3056" href="Data.Nat.GCD.html#2739" class="InductiveConstructor"
+      >-+</a
+      ><a name="3058"
+      > </a
+      ><a name="3059" class="Number"
+      >0</a
+      ><a name="3060"
+      > </a
+      ><a name="3061" class="Number"
+      >1</a
+      ><a name="3062"
+      > </a
+      ><a name="3063" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >PropEq.refl</a
+      ><a name="3074"
+      >
+
+    </a
+      ><a name="3080" class="Keyword"
+      >private</a
+      ><a name="3087"
+      >
+      </a
+      ><a name="3094" class="Keyword"
+      >infixl</a
+      ><a name="3100"
+      > </a
+      ><a name="3101" class="Number"
+      >7</a
+      ><a name="3102"
+      > _&#8853;_
+
+      </a
+      ><a name="3114" href="Data.Nat.GCD.html#3114" class="Function Operator"
+      >_&#8853;_</a
+      ><a name="3117"
+      > </a
+      ><a name="3118" class="Symbol"
+      >:</a
+      ><a name="3119"
+      > </a
+      ><a name="3120" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="3121"
+      > </a
+      ><a name="3122" class="Symbol"
+      >&#8594;</a
+      ><a name="3123"
+      > </a
+      ><a name="3124" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="3125"
+      > </a
+      ><a name="3126" class="Symbol"
+      >&#8594;</a
+      ><a name="3127"
+      > </a
+      ><a name="3128" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="3129"
+      >
+      </a
+      ><a name="3136" href="Data.Nat.GCD.html#3136" class="Bound"
+      >m</a
+      ><a name="3137"
+      > </a
+      ><a name="3138" href="Data.Nat.GCD.html#3114" class="Function Operator"
+      >&#8853;</a
+      ><a name="3139"
+      > </a
+      ><a name="3140" href="Data.Nat.GCD.html#3140" class="Bound"
+      >n</a
+      ><a name="3141"
+      > </a
+      ><a name="3142" class="Symbol"
+      >=</a
+      ><a name="3143"
+      > </a
+      ><a name="3144" class="Number"
+      >1</a
+      ><a name="3145"
+      > </a
+      ><a name="3146" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="3147"
+      > </a
+      ><a name="3148" href="Data.Nat.GCD.html#3136" class="Bound"
+      >m</a
+      ><a name="3149"
+      > </a
+      ><a name="3150" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="3151"
+      > </a
+      ><a name="3152" href="Data.Nat.GCD.html#3140" class="Bound"
+      >n</a
+      ><a name="3153"
+      >
+
+    </a
+      ><a name="3159" href="Data.Nat.GCD.html#3159" class="Function"
+      >step</a
+      ><a name="3163"
+      > </a
+      ><a name="3164" class="Symbol"
+      >:</a
+      ><a name="3165"
+      > </a
+      ><a name="3166" class="Symbol"
+      >&#8704;</a
+      ><a name="3167"
+      > </a
+      ><a name="3168" class="Symbol"
+      >{</a
+      ><a name="3169" href="Data.Nat.GCD.html#3169" class="Bound"
+      >d</a
+      ><a name="3170"
+      > </a
+      ><a name="3171" href="Data.Nat.GCD.html#3171" class="Bound"
+      >n</a
+      ><a name="3172"
+      > </a
+      ><a name="3173" href="Data.Nat.GCD.html#3173" class="Bound"
+      >k</a
+      ><a name="3174" class="Symbol"
+      >}</a
+      ><a name="3175"
+      > </a
+      ><a name="3176" class="Symbol"
+      >&#8594;</a
+      ><a name="3177"
+      > </a
+      ><a name="3178" href="Data.Nat.GCD.html#2637" class="Datatype"
+      >Identity</a
+      ><a name="3186"
+      > </a
+      ><a name="3187" href="Data.Nat.GCD.html#3169" class="Bound"
+      >d</a
+      ><a name="3188"
+      > </a
+      ><a name="3189" href="Data.Nat.GCD.html#3171" class="Bound"
+      >n</a
+      ><a name="3190"
+      > </a
+      ><a name="3191" href="Data.Nat.GCD.html#3173" class="Bound"
+      >k</a
+      ><a name="3192"
+      > </a
+      ><a name="3193" class="Symbol"
+      >&#8594;</a
+      ><a name="3194"
+      > </a
+      ><a name="3195" href="Data.Nat.GCD.html#2637" class="Datatype"
+      >Identity</a
+      ><a name="3203"
+      > </a
+      ><a name="3204" href="Data.Nat.GCD.html#3169" class="Bound"
+      >d</a
+      ><a name="3205"
+      > </a
+      ><a name="3206" href="Data.Nat.GCD.html#3171" class="Bound"
+      >n</a
+      ><a name="3207"
+      > </a
+      ><a name="3208" class="Symbol"
+      >(</a
+      ><a name="3209" href="Data.Nat.GCD.html#3171" class="Bound"
+      >n</a
+      ><a name="3210"
+      > </a
+      ><a name="3211" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="3212"
+      > </a
+      ><a name="3213" href="Data.Nat.GCD.html#3173" class="Bound"
+      >k</a
+      ><a name="3214" class="Symbol"
+      >)</a
+      ><a name="3215"
+      >
+    </a
+      ><a name="3220" href="Data.Nat.GCD.html#3159" class="Function"
+      >step</a
+      ><a name="3224"
+      > </a
+      ><a name="3225" class="Symbol"
+      >{</a
+      ><a name="3226" href="Data.Nat.GCD.html#3226" class="Bound"
+      >d</a
+      ><a name="3227" class="Symbol"
+      >}</a
+      ><a name="3228"
+      >     </a
+      ><a name="3233" class="Symbol"
+      >(</a
+      ><a name="3234" href="Data.Nat.GCD.html#2676" class="InductiveConstructor"
+      >+-</a
+      ><a name="3236"
+      >  </a
+      ><a name="3238" href="Data.Nat.GCD.html#3238" class="Bound"
+      >x</a
+      ><a name="3239"
+      >  </a
+      ><a name="3241" href="Data.Nat.GCD.html#3241" class="Bound"
+      >y</a
+      ><a name="3242"
+      >       </a
+      ><a name="3249" href="Data.Nat.GCD.html#3249" class="Bound"
+      >eq</a
+      ><a name="3251" class="Symbol"
+      >)</a
+      ><a name="3252"
+      > </a
+      ><a name="3253" class="Keyword"
+      >with</a
+      ><a name="3257"
+      > </a
+      ><a name="3258" href="Data.Nat.html#3781" class="Function"
+      >compare</a
+      ><a name="3265"
+      > </a
+      ><a name="3266" href="Data.Nat.GCD.html#3238" class="Bound"
+      >x</a
+      ><a name="3267"
+      > </a
+      ><a name="3268" href="Data.Nat.GCD.html#3241" class="Bound"
+      >y</a
+      ><a name="3269"
+      >
+    </a
+      ><a name="3274" href="Data.Nat.GCD.html#3159" class="Function"
+      >step</a
+      ><a name="3278"
+      > </a
+      ><a name="3279" class="Symbol"
+      >{</a
+      ><a name="3280" href="Data.Nat.GCD.html#3280" class="Bound"
+      >d</a
+      ><a name="3281" class="Symbol"
+      >}</a
+      ><a name="3282"
+      >     </a
+      ><a name="3287" class="Symbol"
+      >(</a
+      ><a name="3288" href="Data.Nat.GCD.html#2676" class="InductiveConstructor"
+      >+-</a
+      ><a name="3290"
+      > </a
+      ><a name="3291" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3292" href="Data.Nat.GCD.html#3315" class="DottedPattern Bound"
+      >x</a
+      ><a name="3293"
+      > </a
+      ><a name="3294" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3295" href="Data.Nat.GCD.html#3315" class="DottedPattern Bound"
+      >x</a
+      ><a name="3296"
+      >       </a
+      ><a name="3303" href="Data.Nat.GCD.html#3303" class="Bound"
+      >eq</a
+      ><a name="3305" class="Symbol"
+      >)</a
+      ><a name="3306"
+      > </a
+      ><a name="3307" class="Symbol"
+      >|</a
+      ><a name="3308"
+      > </a
+      ><a name="3309" href="Data.Nat.html#3704" class="InductiveConstructor"
+      >equal</a
+      ><a name="3314"
+      > </a
+      ><a name="3315" href="Data.Nat.GCD.html#3315" class="Bound"
+      >x</a
+      ><a name="3316"
+      >     </a
+      ><a name="3321" class="Symbol"
+      >=</a
+      ><a name="3322"
+      > </a
+      ><a name="3323" href="Data.Nat.GCD.html#2676" class="InductiveConstructor"
+      >+-</a
+      ><a name="3325"
+      > </a
+      ><a name="3326" class="Symbol"
+      >(</a
+      ><a name="3327" class="Number"
+      >2</a
+      ><a name="3328"
+      > </a
+      ><a name="3329" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3330"
+      > </a
+      ><a name="3331" href="Data.Nat.GCD.html#3315" class="Bound"
+      >x</a
+      ><a name="3332" class="Symbol"
+      >)</a
+      ><a name="3333"
+      >     </a
+      ><a name="3338" href="Data.Nat.GCD.html#3315" class="Bound"
+      >x</a
+      ><a name="3339"
+      >       </a
+      ><a name="3346" class="Symbol"
+      >(</a
+      ><a name="3347" href="Data.Nat.GCD.Lemmas.html#614" class="Function"
+      >lem&#8322;</a
+      ><a name="3351"
+      > </a
+      ><a name="3352" href="Data.Nat.GCD.html#3280" class="Bound"
+      >d</a
+      ><a name="3353"
+      > </a
+      ><a name="3354" href="Data.Nat.GCD.html#3315" class="Bound"
+      >x</a
+      ><a name="3355"
+      >   </a
+      ><a name="3358" href="Data.Nat.GCD.html#3303" class="Bound"
+      >eq</a
+      ><a name="3360" class="Symbol"
+      >)</a
+      ><a name="3361"
+      >
+    </a
+      ><a name="3366" href="Data.Nat.GCD.html#3159" class="Function"
+      >step</a
+      ><a name="3370"
+      > </a
+      ><a name="3371" class="Symbol"
+      >{</a
+      ><a name="3372" href="Data.Nat.GCD.html#3372" class="Bound"
+      >d</a
+      ><a name="3373" class="Symbol"
+      >}</a
+      ><a name="3374"
+      >     </a
+      ><a name="3379" class="Symbol"
+      >(</a
+      ><a name="3380" href="Data.Nat.GCD.html#2676" class="InductiveConstructor"
+      >+-</a
+      ><a name="3382"
+      > </a
+      ><a name="3383" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3384" href="Data.Nat.GCD.html#3406" class="DottedPattern Bound"
+      >x</a
+      ><a name="3385"
+      > </a
+      ><a name="3386" class="DottedPattern Symbol"
+      >.(</a
+      ><a name="3388" href="Data.Nat.GCD.html#3406" class="DottedPattern Bound"
+      >x</a
+      ><a name="3389"
+      > </a
+      ><a name="3390" href="Data.Nat.GCD.html#3114" class="DottedPattern Function Operator"
+      >&#8853;</a
+      ><a name="3391"
+      > </a
+      ><a name="3392" href="Data.Nat.GCD.html#3408" class="DottedPattern Bound"
+      >i</a
+      ><a name="3393" class="DottedPattern Symbol"
+      >)</a
+      ><a name="3394"
+      > </a
+      ><a name="3395" href="Data.Nat.GCD.html#3395" class="Bound"
+      >eq</a
+      ><a name="3397" class="Symbol"
+      >)</a
+      ><a name="3398"
+      > </a
+      ><a name="3399" class="Symbol"
+      >|</a
+      ><a name="3400"
+      > </a
+      ><a name="3401" href="Data.Nat.html#3659" class="InductiveConstructor"
+      >less</a
+      ><a name="3405"
+      > </a
+      ><a name="3406" href="Data.Nat.GCD.html#3406" class="Bound"
+      >x</a
+      ><a name="3407"
+      > </a
+      ><a name="3408" href="Data.Nat.GCD.html#3408" class="Bound"
+      >i</a
+      ><a name="3409"
+      >    </a
+      ><a name="3413" class="Symbol"
+      >=</a
+      ><a name="3414"
+      > </a
+      ><a name="3415" href="Data.Nat.GCD.html#2676" class="InductiveConstructor"
+      >+-</a
+      ><a name="3417"
+      > </a
+      ><a name="3418" class="Symbol"
+      >(</a
+      ><a name="3419" class="Number"
+      >2</a
+      ><a name="3420"
+      > </a
+      ><a name="3421" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3422"
+      > </a
+      ><a name="3423" href="Data.Nat.GCD.html#3406" class="Bound"
+      >x</a
+      ><a name="3424"
+      > </a
+      ><a name="3425" href="Data.Nat.GCD.html#3114" class="Function Operator"
+      >&#8853;</a
+      ><a name="3426"
+      > </a
+      ><a name="3427" href="Data.Nat.GCD.html#3408" class="Bound"
+      >i</a
+      ><a name="3428" class="Symbol"
+      >)</a
+      ><a name="3429"
+      > </a
+      ><a name="3430" class="Symbol"
+      >(</a
+      ><a name="3431" href="Data.Nat.GCD.html#3406" class="Bound"
+      >x</a
+      ><a name="3432"
+      > </a
+      ><a name="3433" href="Data.Nat.GCD.html#3114" class="Function Operator"
+      >&#8853;</a
+      ><a name="3434"
+      > </a
+      ><a name="3435" href="Data.Nat.GCD.html#3408" class="Bound"
+      >i</a
+      ><a name="3436" class="Symbol"
+      >)</a
+      ><a name="3437"
+      > </a
+      ><a name="3438" class="Symbol"
+      >(</a
+      ><a name="3439" href="Data.Nat.GCD.Lemmas.html#1131" class="Function"
+      >lem&#8323;</a
+      ><a name="3443"
+      > </a
+      ><a name="3444" href="Data.Nat.GCD.html#3372" class="Bound"
+      >d</a
+      ><a name="3445"
+      > </a
+      ><a name="3446" href="Data.Nat.GCD.html#3406" class="Bound"
+      >x</a
+      ><a name="3447"
+      >   </a
+      ><a name="3450" href="Data.Nat.GCD.html#3395" class="Bound"
+      >eq</a
+      ><a name="3452" class="Symbol"
+      >)</a
+      ><a name="3453"
+      >
+    </a
+      ><a name="3458" href="Data.Nat.GCD.html#3159" class="Function"
+      >step</a
+      ><a name="3462"
+      > </a
+      ><a name="3463" class="Symbol"
+      >{</a
+      ><a name="3464" href="Data.Nat.GCD.html#3464" class="Bound"
+      >d</a
+      ><a name="3465" class="Symbol"
+      >}</a
+      ><a name="3466"
+      > </a
+      ><a name="3467" class="Symbol"
+      >{</a
+      ><a name="3468" href="Data.Nat.GCD.html#3468" class="Bound"
+      >n</a
+      ><a name="3469" class="Symbol"
+      >}</a
+      ><a name="3470"
+      > </a
+      ><a name="3471" class="Symbol"
+      >(</a
+      ><a name="3472" href="Data.Nat.GCD.html#2676" class="InductiveConstructor"
+      >+-</a
+      ><a name="3474"
+      > </a
+      ><a name="3475" class="DottedPattern Symbol"
+      >.(</a
+      ><a name="3477" href="Data.Nat.GCD.html#3501" class="DottedPattern Bound"
+      >y</a
+      ><a name="3478"
+      > </a
+      ><a name="3479" href="Data.Nat.GCD.html#3114" class="DottedPattern Function Operator"
+      >&#8853;</a
+      ><a name="3480"
+      > </a
+      ><a name="3481" href="Data.Nat.GCD.html#3503" class="DottedPattern Bound"
+      >i</a
+      ><a name="3482" class="DottedPattern Symbol"
+      >)</a
+      ><a name="3483"
+      > </a
+      ><a name="3484" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3485" href="Data.Nat.GCD.html#3501" class="DottedPattern Bound"
+      >y</a
+      ><a name="3486"
+      > </a
+      ><a name="3487" href="Data.Nat.GCD.html#3487" class="Bound"
+      >eq</a
+      ><a name="3489" class="Symbol"
+      >)</a
+      ><a name="3490"
+      > </a
+      ><a name="3491" class="Symbol"
+      >|</a
+      ><a name="3492"
+      > </a
+      ><a name="3493" href="Data.Nat.html#3737" class="InductiveConstructor"
+      >greater</a
+      ><a name="3500"
+      > </a
+      ><a name="3501" href="Data.Nat.GCD.html#3501" class="Bound"
+      >y</a
+      ><a name="3502"
+      > </a
+      ><a name="3503" href="Data.Nat.GCD.html#3503" class="Bound"
+      >i</a
+      ><a name="3504"
+      > </a
+      ><a name="3505" class="Symbol"
+      >=</a
+      ><a name="3506"
+      > </a
+      ><a name="3507" href="Data.Nat.GCD.html#2676" class="InductiveConstructor"
+      >+-</a
+      ><a name="3509"
+      > </a
+      ><a name="3510" class="Symbol"
+      >(</a
+      ><a name="3511" class="Number"
+      >2</a
+      ><a name="3512"
+      > </a
+      ><a name="3513" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3514"
+      > </a
+      ><a name="3515" href="Data.Nat.GCD.html#3501" class="Bound"
+      >y</a
+      ><a name="3516"
+      > </a
+      ><a name="3517" href="Data.Nat.GCD.html#3114" class="Function Operator"
+      >&#8853;</a
+      ><a name="3518"
+      > </a
+      ><a name="3519" href="Data.Nat.GCD.html#3503" class="Bound"
+      >i</a
+      ><a name="3520" class="Symbol"
+      >)</a
+      ><a name="3521"
+      > </a
+      ><a name="3522" href="Data.Nat.GCD.html#3501" class="Bound"
+      >y</a
+      ><a name="3523"
+      >       </a
+      ><a name="3530" class="Symbol"
+      >(</a
+      ><a name="3531" href="Data.Nat.GCD.Lemmas.html#1762" class="Function"
+      >lem&#8324;</a
+      ><a name="3535"
+      > </a
+      ><a name="3536" href="Data.Nat.GCD.html#3464" class="Bound"
+      >d</a
+      ><a name="3537"
+      > </a
+      ><a name="3538" href="Data.Nat.GCD.html#3501" class="Bound"
+      >y</a
+      ><a name="3539"
+      > </a
+      ><a name="3540" href="Data.Nat.GCD.html#3468" class="Bound"
+      >n</a
+      ><a name="3541"
+      > </a
+      ><a name="3542" href="Data.Nat.GCD.html#3487" class="Bound"
+      >eq</a
+      ><a name="3544" class="Symbol"
+      >)</a
+      ><a name="3545"
+      >
+    </a
+      ><a name="3550" href="Data.Nat.GCD.html#3159" class="Function"
+      >step</a
+      ><a name="3554"
+      > </a
+      ><a name="3555" class="Symbol"
+      >{</a
+      ><a name="3556" href="Data.Nat.GCD.html#3556" class="Bound"
+      >d</a
+      ><a name="3557" class="Symbol"
+      >}</a
+      ><a name="3558"
+      >     </a
+      ><a name="3563" class="Symbol"
+      >(</a
+      ><a name="3564" href="Data.Nat.GCD.html#2739" class="InductiveConstructor"
+      >-+</a
+      ><a name="3566"
+      >  </a
+      ><a name="3568" href="Data.Nat.GCD.html#3568" class="Bound"
+      >x</a
+      ><a name="3569"
+      >  </a
+      ><a name="3571" href="Data.Nat.GCD.html#3571" class="Bound"
+      >y</a
+      ><a name="3572"
+      >       </a
+      ><a name="3579" href="Data.Nat.GCD.html#3579" class="Bound"
+      >eq</a
+      ><a name="3581" class="Symbol"
+      >)</a
+      ><a name="3582"
+      > </a
+      ><a name="3583" class="Keyword"
+      >with</a
+      ><a name="3587"
+      > </a
+      ><a name="3588" href="Data.Nat.html#3781" class="Function"
+      >compare</a
+      ><a name="3595"
+      > </a
+      ><a name="3596" href="Data.Nat.GCD.html#3568" class="Bound"
+      >x</a
+      ><a name="3597"
+      > </a
+      ><a name="3598" href="Data.Nat.GCD.html#3571" class="Bound"
+      >y</a
+      ><a name="3599"
+      >
+    </a
+      ><a name="3604" href="Data.Nat.GCD.html#3159" class="Function"
+      >step</a
+      ><a name="3608"
+      > </a
+      ><a name="3609" class="Symbol"
+      >{</a
+      ><a name="3610" href="Data.Nat.GCD.html#3610" class="Bound"
+      >d</a
+      ><a name="3611" class="Symbol"
+      >}</a
+      ><a name="3612"
+      >     </a
+      ><a name="3617" class="Symbol"
+      >(</a
+      ><a name="3618" href="Data.Nat.GCD.html#2739" class="InductiveConstructor"
+      >-+</a
+      ><a name="3620"
+      > </a
+      ><a name="3621" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3622" href="Data.Nat.GCD.html#3645" class="DottedPattern Bound"
+      >x</a
+      ><a name="3623"
+      > </a
+      ><a name="3624" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3625" href="Data.Nat.GCD.html#3645" class="DottedPattern Bound"
+      >x</a
+      ><a name="3626"
+      >       </a
+      ><a name="3633" href="Data.Nat.GCD.html#3633" class="Bound"
+      >eq</a
+      ><a name="3635" class="Symbol"
+      >)</a
+      ><a name="3636"
+      > </a
+      ><a name="3637" class="Symbol"
+      >|</a
+      ><a name="3638"
+      > </a
+      ><a name="3639" href="Data.Nat.html#3704" class="InductiveConstructor"
+      >equal</a
+      ><a name="3644"
+      > </a
+      ><a name="3645" href="Data.Nat.GCD.html#3645" class="Bound"
+      >x</a
+      ><a name="3646"
+      >     </a
+      ><a name="3651" class="Symbol"
+      >=</a
+      ><a name="3652"
+      > </a
+      ><a name="3653" href="Data.Nat.GCD.html#2739" class="InductiveConstructor"
+      >-+</a
+      ><a name="3655"
+      > </a
+      ><a name="3656" class="Symbol"
+      >(</a
+      ><a name="3657" class="Number"
+      >2</a
+      ><a name="3658"
+      > </a
+      ><a name="3659" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3660"
+      > </a
+      ><a name="3661" href="Data.Nat.GCD.html#3645" class="Bound"
+      >x</a
+      ><a name="3662" class="Symbol"
+      >)</a
+      ><a name="3663"
+      >     </a
+      ><a name="3668" href="Data.Nat.GCD.html#3645" class="Bound"
+      >x</a
+      ><a name="3669"
+      >       </a
+      ><a name="3676" class="Symbol"
+      >(</a
+      ><a name="3677" href="Data.Nat.GCD.Lemmas.html#2480" class="Function"
+      >lem&#8325;</a
+      ><a name="3681"
+      > </a
+      ><a name="3682" href="Data.Nat.GCD.html#3610" class="Bound"
+      >d</a
+      ><a name="3683"
+      > </a
+      ><a name="3684" href="Data.Nat.GCD.html#3645" class="Bound"
+      >x</a
+      ><a name="3685"
+      >   </a
+      ><a name="3688" href="Data.Nat.GCD.html#3633" class="Bound"
+      >eq</a
+      ><a name="3690" class="Symbol"
+      >)</a
+      ><a name="3691"
+      >
+    </a
+      ><a name="3696" href="Data.Nat.GCD.html#3159" class="Function"
+      >step</a
+      ><a name="3700"
+      > </a
+      ><a name="3701" class="Symbol"
+      >{</a
+      ><a name="3702" href="Data.Nat.GCD.html#3702" class="Bound"
+      >d</a
+      ><a name="3703" class="Symbol"
+      >}</a
+      ><a name="3704"
+      >     </a
+      ><a name="3709" class="Symbol"
+      >(</a
+      ><a name="3710" href="Data.Nat.GCD.html#2739" class="InductiveConstructor"
+      >-+</a
+      ><a name="3712"
+      > </a
+      ><a name="3713" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3714" href="Data.Nat.GCD.html#3736" class="DottedPattern Bound"
+      >x</a
+      ><a name="3715"
+      > </a
+      ><a name="3716" class="DottedPattern Symbol"
+      >.(</a
+      ><a name="3718" href="Data.Nat.GCD.html#3736" class="DottedPattern Bound"
+      >x</a
+      ><a name="3719"
+      > </a
+      ><a name="3720" href="Data.Nat.GCD.html#3114" class="DottedPattern Function Operator"
+      >&#8853;</a
+      ><a name="3721"
+      > </a
+      ><a name="3722" href="Data.Nat.GCD.html#3738" class="DottedPattern Bound"
+      >i</a
+      ><a name="3723" class="DottedPattern Symbol"
+      >)</a
+      ><a name="3724"
+      > </a
+      ><a name="3725" href="Data.Nat.GCD.html#3725" class="Bound"
+      >eq</a
+      ><a name="3727" class="Symbol"
+      >)</a
+      ><a name="3728"
+      > </a
+      ><a name="3729" class="Symbol"
+      >|</a
+      ><a name="3730"
+      > </a
+      ><a name="3731" href="Data.Nat.html#3659" class="InductiveConstructor"
+      >less</a
+      ><a name="3735"
+      > </a
+      ><a name="3736" href="Data.Nat.GCD.html#3736" class="Bound"
+      >x</a
+      ><a name="3737"
+      > </a
+      ><a name="3738" href="Data.Nat.GCD.html#3738" class="Bound"
+      >i</a
+      ><a name="3739"
+      >    </a
+      ><a name="3743" class="Symbol"
+      >=</a
+      ><a name="3744"
+      > </a
+      ><a name="3745" href="Data.Nat.GCD.html#2739" class="InductiveConstructor"
+      >-+</a
+      ><a name="3747"
+      > </a
+      ><a name="3748" class="Symbol"
+      >(</a
+      ><a name="3749" class="Number"
+      >2</a
+      ><a name="3750"
+      > </a
+      ><a name="3751" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3752"
+      > </a
+      ><a name="3753" href="Data.Nat.GCD.html#3736" class="Bound"
+      >x</a
+      ><a name="3754"
+      > </a
+      ><a name="3755" href="Data.Nat.GCD.html#3114" class="Function Operator"
+      >&#8853;</a
+      ><a name="3756"
+      > </a
+      ><a name="3757" href="Data.Nat.GCD.html#3738" class="Bound"
+      >i</a
+      ><a name="3758" class="Symbol"
+      >)</a
+      ><a name="3759"
+      > </a
+      ><a name="3760" class="Symbol"
+      >(</a
+      ><a name="3761" href="Data.Nat.GCD.html#3736" class="Bound"
+      >x</a
+      ><a name="3762"
+      > </a
+      ><a name="3763" href="Data.Nat.GCD.html#3114" class="Function Operator"
+      >&#8853;</a
+      ><a name="3764"
+      > </a
+      ><a name="3765" href="Data.Nat.GCD.html#3738" class="Bound"
+      >i</a
+      ><a name="3766" class="Symbol"
+      >)</a
+      ><a name="3767"
+      > </a
+      ><a name="3768" class="Symbol"
+      >(</a
+      ><a name="3769" href="Data.Nat.GCD.Lemmas.html#2879" class="Function"
+      >lem&#8326;</a
+      ><a name="3773"
+      > </a
+      ><a name="3774" href="Data.Nat.GCD.html#3702" class="Bound"
+      >d</a
+      ><a name="3775"
+      > </a
+      ><a name="3776" href="Data.Nat.GCD.html#3736" class="Bound"
+      >x</a
+      ><a name="3777"
+      >   </a
+      ><a name="3780" href="Data.Nat.GCD.html#3725" class="Bound"
+      >eq</a
+      ><a name="3782" class="Symbol"
+      >)</a
+      ><a name="3783"
+      >
+    </a
+      ><a name="3788" href="Data.Nat.GCD.html#3159" class="Function"
+      >step</a
+      ><a name="3792"
+      > </a
+      ><a name="3793" class="Symbol"
+      >{</a
+      ><a name="3794" href="Data.Nat.GCD.html#3794" class="Bound"
+      >d</a
+      ><a name="3795" class="Symbol"
+      >}</a
+      ><a name="3796"
+      > </a
+      ><a name="3797" class="Symbol"
+      >{</a
+      ><a name="3798" href="Data.Nat.GCD.html#3798" class="Bound"
+      >n</a
+      ><a name="3799" class="Symbol"
+      >}</a
+      ><a name="3800"
+      > </a
+      ><a name="3801" class="Symbol"
+      >(</a
+      ><a name="3802" href="Data.Nat.GCD.html#2739" class="InductiveConstructor"
+      >-+</a
+      ><a name="3804"
+      > </a
+      ><a name="3805" class="DottedPattern Symbol"
+      >.(</a
+      ><a name="3807" href="Data.Nat.GCD.html#3831" class="DottedPattern Bound"
+      >y</a
+      ><a name="3808"
+      > </a
+      ><a name="3809" href="Data.Nat.GCD.html#3114" class="DottedPattern Function Operator"
+      >&#8853;</a
+      ><a name="3810"
+      > </a
+      ><a name="3811" href="Data.Nat.GCD.html#3833" class="DottedPattern Bound"
+      >i</a
+      ><a name="3812" class="DottedPattern Symbol"
+      >)</a
+      ><a name="3813"
+      > </a
+      ><a name="3814" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3815" href="Data.Nat.GCD.html#3831" class="DottedPattern Bound"
+      >y</a
+      ><a name="3816"
+      > </a
+      ><a name="3817" href="Data.Nat.GCD.html#3817" class="Bound"
+      >eq</a
+      ><a name="3819" class="Symbol"
+      >)</a
+      ><a name="3820"
+      > </a
+      ><a name="3821" class="Symbol"
+      >|</a
+      ><a name="3822"
+      > </a
+      ><a name="3823" href="Data.Nat.html#3737" class="InductiveConstructor"
+      >greater</a
+      ><a name="3830"
+      > </a
+      ><a name="3831" href="Data.Nat.GCD.html#3831" class="Bound"
+      >y</a
+      ><a name="3832"
+      > </a
+      ><a name="3833" href="Data.Nat.GCD.html#3833" class="Bound"
+      >i</a
+      ><a name="3834"
+      > </a
+      ><a name="3835" class="Symbol"
+      >=</a
+      ><a name="3836"
+      > </a
+      ><a name="3837" href="Data.Nat.GCD.html#2739" class="InductiveConstructor"
+      >-+</a
+      ><a name="3839"
+      > </a
+      ><a name="3840" class="Symbol"
+      >(</a
+      ><a name="3841" class="Number"
+      >2</a
+      ><a name="3842"
+      > </a
+      ><a name="3843" href="Data.Nat.html#2473" class="Primitive Operator"
+      >*</a
+      ><a name="3844"
+      > </a
+      ><a name="3845" href="Data.Nat.GCD.html#3831" class="Bound"
+      >y</a
+      ><a name="3846"
+      > </a
+      ><a name="3847" href="Data.Nat.GCD.html#3114" class="Function Operator"
+      >&#8853;</a
+      ><a name="3848"
+      > </a
+      ><a name="3849" href="Data.Nat.GCD.html#3833" class="Bound"
+      >i</a
+      ><a name="3850" class="Symbol"
+      >)</a
+      ><a name="3851"
+      > </a
+      ><a name="3852" href="Data.Nat.GCD.html#3831" class="Bound"
+      >y</a
+      ><a name="3853"
+      >       </a
+      ><a name="3860" class="Symbol"
+      >(</a
+      ><a name="3861" href="Data.Nat.GCD.Lemmas.html#3410" class="Function"
+      >lem&#8327;</a
+      ><a name="3865"
+      > </a
+      ><a name="3866" href="Data.Nat.GCD.html#3794" class="Bound"
+      >d</a
+      ><a name="3867"
+      > </a
+      ><a name="3868" href="Data.Nat.GCD.html#3831" class="Bound"
+      >y</a
+      ><a name="3869"
+      > </a
+      ><a name="3870" href="Data.Nat.GCD.html#3798" class="Bound"
+      >n</a
+      ><a name="3871"
+      > </a
+      ><a name="3872" href="Data.Nat.GCD.html#3817" class="Bound"
+      >eq</a
+      ><a name="3874" class="Symbol"
+      >)</a
+      ><a name="3875"
+      >
+
+  </a
+      ><a name="3879" class="Keyword"
+      >open</a
+      ><a name="3883"
+      > </a
+      ><a name="3884" href="Data.Nat.GCD.html#2274" class="Module"
+      >Identity</a
+      ><a name="3892"
+      > </a
+      ><a name="3893" class="Keyword"
+      >public</a
+      ><a name="3899"
+      > </a
+      ><a name="3900" class="Keyword"
+      >using</a
+      ><a name="3905"
+      > </a
+      ><a name="3906" class="Symbol"
+      >(</a
+      ><a name="3907"
+      >Identity</a
+      ><a name="3915" class="Symbol"
+      >;</a
+      ><a name="3916"
+      > +-</a
+      ><a name="3919" class="Symbol"
+      >;</a
+      ><a name="3920"
+      > -+</a
+      ><a name="3923" class="Symbol"
+      >)</a
+      ><a name="3924"
+      >
+
+  </a
+      ><a name="3928" class="Keyword"
+      >module</a
+      ><a name="3934"
+      > </a
+      ><a name="3935" href="Data.Nat.GCD.html#3935" class="Module"
+      >Lemma</a
+      ><a name="3940"
+      > </a
+      ><a name="3941" class="Keyword"
+      >where</a
+      ><a name="3946"
+      >
+
+    </a
+      ><a name="3952" class="Comment"
+      >-- This type packs up the gcd, the proof that it is a gcd, and the</a
+      ><a name="4018"
+      >
+    </a
+      ><a name="4023" class="Comment"
+      >-- proof that it satisfies B&#233;zout's identity.</a
+      ><a name="4068"
+      >
+
+    </a
+      ><a name="4074" class="Keyword"
+      >data</a
+      ><a name="4078"
+      > </a
+      ><a name="4079" href="Data.Nat.GCD.html#4079" class="Datatype"
+      >Lemma</a
+      ><a name="4084"
+      > </a
+      ><a name="4085" class="Symbol"
+      >(</a
+      ><a name="4086" href="Data.Nat.GCD.html#4086" class="Bound"
+      >m</a
+      ><a name="4087"
+      > </a
+      ><a name="4088" href="Data.Nat.GCD.html#4088" class="Bound"
+      >n</a
+      ><a name="4089"
+      > </a
+      ><a name="4090" class="Symbol"
+      >:</a
+      ><a name="4091"
+      > </a
+      ><a name="4092" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="4093" class="Symbol"
+      >)</a
+      ><a name="4094"
+      > </a
+      ><a name="4095" class="Symbol"
+      >:</a
+      ><a name="4096"
+      > </a
+      ><a name="4097" class="PrimitiveType"
+      >Set</a
+      ><a name="4100"
+      > </a
+      ><a name="4101" class="Keyword"
+      >where</a
+      ><a name="4106"
+      >
+      </a
+      ><a name="4113" href="Data.Nat.GCD.html#4113" class="InductiveConstructor"
+      >result</a
+      ><a name="4119"
+      > </a
+      ><a name="4120" class="Symbol"
+      >:</a
+      ><a name="4121"
+      > </a
+      ><a name="4122" class="Symbol"
+      >(</a
+      ><a name="4123" href="Data.Nat.GCD.html#4123" class="Bound"
+      >d</a
+      ><a name="4124"
+      > </a
+      ><a name="4125" class="Symbol"
+      >:</a
+      ><a name="4126"
+      > </a
+      ><a name="4127" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="4128" class="Symbol"
+      >)</a
+      ><a name="4129"
+      > </a
+      ><a name="4130" class="Symbol"
+      >(</a
+      ><a name="4131" href="Data.Nat.GCD.html#4131" class="Bound"
+      >g</a
+      ><a name="4132"
+      > </a
+      ><a name="4133" class="Symbol"
+      >:</a
+      ><a name="4134"
+      > </a
+      ><a name="4135" href="Data.Nat.GCD.html#808" class="Record"
+      >GCD</a
+      ><a name="4138"
+      > </a
+      ><a name="4139" href="Data.Nat.GCD.html#4086" class="Bound"
+      >m</a
+      ><a name="4140"
+      > </a
+      ><a name="4141" href="Data.Nat.GCD.html#4088" class="Bound"
+      >n</a
+      ><a name="4142"
+      > </a
+      ><a name="4143" href="Data.Nat.GCD.html#4123" class="Bound"
+      >d</a
+      ><a name="4144" class="Symbol"
+      >)</a
+      ><a name="4145"
+      > </a
+      ><a name="4146" class="Symbol"
+      >(</a
+      ><a name="4147" href="Data.Nat.GCD.html#4147" class="Bound"
+      >b</a
+      ><a name="4148"
+      > </a
+      ><a name="4149" class="Symbol"
+      >:</a
+      ><a name="4150"
+      > </a
+      ><a name="4151" href="Data.Nat.GCD.html#2637" class="Datatype"
+      >Identity</a
+      ><a name="4159"
+      > </a
+      ><a name="4160" href="Data.Nat.GCD.html#4123" class="Bound"
+      >d</a
+      ><a name="4161"
+      > </a
+      ><a name="4162" href="Data.Nat.GCD.html#4086" class="Bound"
+      >m</a
+      ><a name="4163"
+      > </a
+      ><a name="4164" href="Data.Nat.GCD.html#4088" class="Bound"
+      >n</a
+      ><a name="4165" class="Symbol"
+      >)</a
+      ><a name="4166"
+      > </a
+      ><a name="4167" class="Symbol"
+      >&#8594;</a
+      ><a name="4168"
+      > </a
+      ><a name="4169" href="Data.Nat.GCD.html#4079" class="Datatype"
+      >Lemma</a
+      ><a name="4174"
+      > </a
+      ><a name="4175" href="Data.Nat.GCD.html#4086" class="Bound"
+      >m</a
+      ><a name="4176"
+      > </a
+      ><a name="4177" href="Data.Nat.GCD.html#4088" class="Bound"
+      >n</a
+      ><a name="4178"
+      >
+
+    </a
+      ><a name="4184" class="Comment"
+      >-- Various properties about Lemma.</a
+      ><a name="4218"
+      >
+
+    </a
+      ><a name="4224" href="Data.Nat.GCD.html#4224" class="Function"
+      >sym</a
+      ><a name="4227"
+      > </a
+      ><a name="4228" class="Symbol"
+      >:</a
+      ><a name="4229"
+      > </a
+      ><a name="4230" href="Relation.Binary.Core.html#2314" class="Function"
+      >Symmetric</a
+      ><a name="4239"
+      > </a
+      ><a name="4240" href="Data.Nat.GCD.html#4079" class="Datatype"
+      >Lemma</a
+      ><a name="4245"
+      >
+    </a
+      ><a name="4250" href="Data.Nat.GCD.html#4224" class="Function"
+      >sym</a
+      ><a name="4253"
+      > </a
+      ><a name="4254" class="Symbol"
+      >(</a
+      ><a name="4255" href="Data.Nat.GCD.html#4113" class="InductiveConstructor"
+      >result</a
+      ><a name="4261"
+      > </a
+      ><a name="4262" href="Data.Nat.GCD.html#4262" class="Bound"
+      >d</a
+      ><a name="4263"
+      > </a
+      ><a name="4264" href="Data.Nat.GCD.html#4264" class="Bound"
+      >g</a
+      ><a name="4265"
+      > </a
+      ><a name="4266" href="Data.Nat.GCD.html#4266" class="Bound"
+      >b</a
+      ><a name="4267" class="Symbol"
+      >)</a
+      ><a name="4268"
+      > </a
+      ><a name="4269" class="Symbol"
+      >=</a
+      ><a name="4270"
+      > </a
+      ><a name="4271" href="Data.Nat.GCD.html#4113" class="InductiveConstructor"
+      >result</a
+      ><a name="4277"
+      > </a
+      ><a name="4278" href="Data.Nat.GCD.html#4262" class="Bound"
+      >d</a
+      ><a name="4279"
+      > </a
+      ><a name="4280" class="Symbol"
+      >(</a
+      ><a name="4281" href="Data.Nat.GCD.html#1413" class="Function"
+      >GCD.sym</a
+      ><a name="4288"
+      > </a
+      ><a name="4289" href="Data.Nat.GCD.html#4264" class="Bound"
+      >g</a
+      ><a name="4290" class="Symbol"
+      >)</a
+      ><a name="4291"
+      > </a
+      ><a name="4292" class="Symbol"
+      >(</a
+      ><a name="4293" href="Data.Nat.GCD.html#2844" class="Function"
+      >Identity.sym</a
+      ><a name="4305"
+      > </a
+      ><a name="4306" href="Data.Nat.GCD.html#4266" class="Bound"
+      >b</a
+      ><a name="4307" class="Symbol"
+      >)</a
+      ><a name="4308"
+      >
+
+    </a
+      ><a name="4314" href="Data.Nat.GCD.html#4314" class="Function"
+      >base</a
+      ><a name="4318"
+      > </a
+      ><a name="4319" class="Symbol"
+      >:</a
+      ><a name="4320"
+      > </a
+      ><a name="4321" class="Symbol"
+      >&#8704;</a
+      ><a name="4322"
+      > </a
+      ><a name="4323" href="Data.Nat.GCD.html#4323" class="Bound"
+      >d</a
+      ><a name="4324"
+      > </a
+      ><a name="4325" class="Symbol"
+      >&#8594;</a
+      ><a name="4326"
+      > </a
+      ><a name="4327" href="Data.Nat.GCD.html#4079" class="Datatype"
+      >Lemma</a
+      ><a name="4332"
+      > </a
+      ><a name="4333" class="Number"
+      >0</a
+      ><a name="4334"
+      > </a
+      ><a name="4335" href="Data.Nat.GCD.html#4323" class="Bound"
+      >d</a
+      ><a name="4336"
+      >
+    </a
+      ><a name="4341" href="Data.Nat.GCD.html#4314" class="Function"
+      >base</a
+      ><a name="4345"
+      > </a
+      ><a name="4346" href="Data.Nat.GCD.html#4346" class="Bound"
+      >d</a
+      ><a name="4347"
+      > </a
+      ><a name="4348" class="Symbol"
+      >=</a
+      ><a name="4349"
+      > </a
+      ><a name="4350" href="Data.Nat.GCD.html#4113" class="InductiveConstructor"
+      >result</a
+      ><a name="4356"
+      > </a
+      ><a name="4357" href="Data.Nat.GCD.html#4346" class="Bound"
+      >d</a
+      ><a name="4358"
+      > </a
+      ><a name="4359" href="Data.Nat.GCD.html#1656" class="Function"
+      >GCD.base</a
+      ><a name="4367"
+      > </a
+      ><a name="4368" href="Data.Nat.GCD.html#3015" class="Function"
+      >Identity.base</a
+      ><a name="4381"
+      >
+
+    </a
+      ><a name="4387" href="Data.Nat.GCD.html#4387" class="Function"
+      >refl</a
+      ><a name="4391"
+      > </a
+      ><a name="4392" class="Symbol"
+      >:</a
+      ><a name="4393"
+      > </a
+      ><a name="4394" class="Symbol"
+      >&#8704;</a
+      ><a name="4395"
+      > </a
+      ><a name="4396" href="Data.Nat.GCD.html#4396" class="Bound"
+      >d</a
+      ><a name="4397"
+      > </a
+      ><a name="4398" class="Symbol"
+      >&#8594;</a
+      ><a name="4399"
+      > </a
+      ><a name="4400" href="Data.Nat.GCD.html#4079" class="Datatype"
+      >Lemma</a
+      ><a name="4405"
+      > </a
+      ><a name="4406" href="Data.Nat.GCD.html#4396" class="Bound"
+      >d</a
+      ><a name="4407"
+      > </a
+      ><a name="4408" href="Data.Nat.GCD.html#4396" class="Bound"
+      >d</a
+      ><a name="4409"
+      >
+    </a
+      ><a name="4414" href="Data.Nat.GCD.html#4387" class="Function"
+      >refl</a
+      ><a name="4418"
+      > </a
+      ><a name="4419" href="Data.Nat.GCD.html#4419" class="Bound"
+      >d</a
+      ><a name="4420"
+      > </a
+      ><a name="4421" class="Symbol"
+      >=</a
+      ><a name="4422"
+      > </a
+      ><a name="4423" href="Data.Nat.GCD.html#4113" class="InductiveConstructor"
+      >result</a
+      ><a name="4429"
+      > </a
+      ><a name="4430" href="Data.Nat.GCD.html#4419" class="Bound"
+      >d</a
+      ><a name="4431"
+      > </a
+      ><a name="4432" href="Data.Nat.GCD.html#1561" class="Function"
+      >GCD.refl</a
+      ><a name="4440"
+      > </a
+      ><a name="4441" href="Data.Nat.GCD.html#2950" class="Function"
+      >Identity.refl</a
+      ><a name="4454"
+      >
+
+    </a
+      ><a name="4460" href="Data.Nat.GCD.html#4460" class="Function"
+      >step&#737;</a
+      ><a name="4465"
+      > </a
+      ><a name="4466" class="Symbol"
+      >:</a
+      ><a name="4467"
+      > </a
+      ><a name="4468" class="Symbol"
+      >&#8704;</a
+      ><a name="4469"
+      > </a
+      ><a name="4470" class="Symbol"
+      >{</a
+      ><a name="4471" href="Data.Nat.GCD.html#4471" class="Bound"
+      >n</a
+      ><a name="4472"
+      > </a
+      ><a name="4473" href="Data.Nat.GCD.html#4473" class="Bound"
+      >k</a
+      ><a name="4474" class="Symbol"
+      >}</a
+      ><a name="4475"
+      > </a
+      ><a name="4476" class="Symbol"
+      >&#8594;</a
+      ><a name="4477"
+      > </a
+      ><a name="4478" href="Data.Nat.GCD.html#4079" class="Datatype"
+      >Lemma</a
+      ><a name="4483"
+      > </a
+      ><a name="4484" href="Data.Nat.GCD.html#4471" class="Bound"
+      >n</a
+      ><a name="4485"
+      > </a
+      ><a name="4486" class="Symbol"
+      >(</a
+      ><a name="4487" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="4490"
+      > </a
+      ><a name="4491" href="Data.Nat.GCD.html#4473" class="Bound"
+      >k</a
+      ><a name="4492" class="Symbol"
+      >)</a
+      ><a name="4493"
+      > </a
+      ><a name="4494" class="Symbol"
+      >&#8594;</a
+      ><a name="4495"
+      > </a
+      ><a name="4496" href="Data.Nat.GCD.html#4079" class="Datatype"
+      >Lemma</a
+      ><a name="4501"
+      > </a
+      ><a name="4502" href="Data.Nat.GCD.html#4471" class="Bound"
+      >n</a
+      ><a name="4503"
+      > </a
+      ><a name="4504" class="Symbol"
+      >(</a
+      ><a name="4505" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="4508"
+      > </a
+      ><a name="4509" class="Symbol"
+      >(</a
+      ><a name="4510" href="Data.Nat.GCD.html#4471" class="Bound"
+      >n</a
+      ><a name="4511"
+      > </a
+      ><a name="4512" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="4513"
+      > </a
+      ><a name="4514" href="Data.Nat.GCD.html#4473" class="Bound"
+      >k</a
+      ><a name="4515" class="Symbol"
+      >))</a
+      ><a name="4517"
+      >
+    </a
+      ><a name="4522" href="Data.Nat.GCD.html#4460" class="Function"
+      >step&#737;</a
+      ><a name="4527"
+      > </a
+      ><a name="4528" class="Symbol"
+      >{</a
+      ><a name="4529" href="Data.Nat.GCD.html#4529" class="Bound"
+      >n</a
+      ><a name="4530" class="Symbol"
+      >}</a
+      ><a name="4531"
+      > </a
+      ><a name="4532" class="Symbol"
+      >{</a
+      ><a name="4533" href="Data.Nat.GCD.html#4533" class="Bound"
+      >k</a
+      ><a name="4534" class="Symbol"
+      >}</a
+      ><a name="4535"
+      > </a
+      ><a name="4536" class="Symbol"
+      >(</a
+      ><a name="4537" href="Data.Nat.GCD.html#4113" class="InductiveConstructor"
+      >result</a
+      ><a name="4543"
+      > </a
+      ><a name="4544" href="Data.Nat.GCD.html#4544" class="Bound"
+      >d</a
+      ><a name="4545"
+      > </a
+      ><a name="4546" href="Data.Nat.GCD.html#4546" class="Bound"
+      >g</a
+      ><a name="4547"
+      > </a
+      ><a name="4548" href="Data.Nat.GCD.html#4548" class="Bound"
+      >b</a
+      ><a name="4549" class="Symbol"
+      >)</a
+      ><a name="4550"
+      > </a
+      ><a name="4551" class="Symbol"
+      >=</a
+      ><a name="4552"
+      >
+      </a
+      ><a name="4559" href="Relation.Binary.PropositionalEquality.Core.html#705" class="Function"
+      >PropEq.subst</a
+      ><a name="4571"
+      > </a
+      ><a name="4572" class="Symbol"
+      >(</a
+      ><a name="4573" href="Data.Nat.GCD.html#4079" class="Datatype"
+      >Lemma</a
+      ><a name="4578"
+      > </a
+      ><a name="4579" href="Data.Nat.GCD.html#4529" class="Bound"
+      >n</a
+      ><a name="4580" class="Symbol"
+      >)</a
+      ><a name="4581"
+      > </a
+      ><a name="4582" class="Symbol"
+      >(</a
+      ><a name="4583" href="Data.Nat.GCD.Lemmas.html#453" class="Function"
+      >lem&#8320;</a
+      ><a name="4587"
+      > </a
+      ><a name="4588" href="Data.Nat.GCD.html#4529" class="Bound"
+      >n</a
+      ><a name="4589"
+      > </a
+      ><a name="4590" href="Data.Nat.GCD.html#4533" class="Bound"
+      >k</a
+      ><a name="4591" class="Symbol"
+      >)</a
+      ><a name="4592"
+      > </a
+      ><a name="4593" href="Function.html#1835" class="Function Operator"
+      >$</a
+      ><a name="4594"
+      >
+        </a
+      ><a name="4603" href="Data.Nat.GCD.html#4113" class="InductiveConstructor"
+      >result</a
+      ><a name="4609"
+      > </a
+      ><a name="4610" href="Data.Nat.GCD.html#4544" class="Bound"
+      >d</a
+      ><a name="4611"
+      > </a
+      ><a name="4612" class="Symbol"
+      >(</a
+      ><a name="4613" href="Data.Nat.GCD.html#1801" class="Function"
+      >GCD.step</a
+      ><a name="4621"
+      > </a
+      ><a name="4622" href="Data.Nat.GCD.html#4546" class="Bound"
+      >g</a
+      ><a name="4623" class="Symbol"
+      >)</a
+      ><a name="4624"
+      > </a
+      ><a name="4625" class="Symbol"
+      >(</a
+      ><a name="4626" href="Data.Nat.GCD.html#3159" class="Function"
+      >Identity.step</a
+      ><a name="4639"
+      > </a
+      ><a name="4640" href="Data.Nat.GCD.html#4548" class="Bound"
+      >b</a
+      ><a name="4641" class="Symbol"
+      >)</a
+      ><a name="4642"
+      >
+
+    </a
+      ><a name="4648" href="Data.Nat.GCD.html#4648" class="Function"
+      >step&#691;</a
+      ><a name="4653"
+      > </a
+      ><a name="4654" class="Symbol"
+      >:</a
+      ><a name="4655"
+      > </a
+      ><a name="4656" class="Symbol"
+      >&#8704;</a
+      ><a name="4657"
+      > </a
+      ><a name="4658" class="Symbol"
+      >{</a
+      ><a name="4659" href="Data.Nat.GCD.html#4659" class="Bound"
+      >n</a
+      ><a name="4660"
+      > </a
+      ><a name="4661" href="Data.Nat.GCD.html#4661" class="Bound"
+      >k</a
+      ><a name="4662" class="Symbol"
+      >}</a
+      ><a name="4663"
+      > </a
+      ><a name="4664" class="Symbol"
+      >&#8594;</a
+      ><a name="4665"
+      > </a
+      ><a name="4666" href="Data.Nat.GCD.html#4079" class="Datatype"
+      >Lemma</a
+      ><a name="4671"
+      > </a
+      ><a name="4672" class="Symbol"
+      >(</a
+      ><a name="4673" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="4676"
+      > </a
+      ><a name="4677" href="Data.Nat.GCD.html#4661" class="Bound"
+      >k</a
+      ><a name="4678" class="Symbol"
+      >)</a
+      ><a name="4679"
+      > </a
+      ><a name="4680" href="Data.Nat.GCD.html#4659" class="Bound"
+      >n</a
+      ><a name="4681"
+      > </a
+      ><a name="4682" class="Symbol"
+      >&#8594;</a
+      ><a name="4683"
+      > </a
+      ><a name="4684" href="Data.Nat.GCD.html#4079" class="Datatype"
+      >Lemma</a
+      ><a name="4689"
+      > </a
+      ><a name="4690" class="Symbol"
+      >(</a
+      ><a name="4691" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="4694"
+      > </a
+      ><a name="4695" class="Symbol"
+      >(</a
+      ><a name="4696" href="Data.Nat.GCD.html#4659" class="Bound"
+      >n</a
+      ><a name="4697"
+      > </a
+      ><a name="4698" href="Data.Nat.html#2168" class="Primitive Operator"
+      >+</a
+      ><a name="4699"
+      > </a
+      ><a name="4700" href="Data.Nat.GCD.html#4661" class="Bound"
+      >k</a
+      ><a name="4701" class="Symbol"
+      >))</a
+      ><a name="4703"
+      > </a
+      ><a name="4704" href="Data.Nat.GCD.html#4659" class="Bound"
+      >n</a
+      ><a name="4705"
+      >
+    </a
+      ><a name="4710" href="Data.Nat.GCD.html#4648" class="Function"
+      >step&#691;</a
+      ><a name="4715"
+      > </a
+      ><a name="4716" class="Symbol"
+      >=</a
+      ><a name="4717"
+      > </a
+      ><a name="4718" href="Data.Nat.GCD.html#4224" class="Function"
+      >sym</a
+      ><a name="4721"
+      > </a
+      ><a name="4722" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="4723"
+      > </a
+      ><a name="4724" href="Data.Nat.GCD.html#4460" class="Function"
+      >step&#737;</a
+      ><a name="4729"
+      > </a
+      ><a name="4730" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="4731"
+      > </a
+      ><a name="4732" href="Data.Nat.GCD.html#4224" class="Function"
+      >sym</a
+      ><a name="4735"
+      >
+
+  </a
+      ><a name="4739" class="Keyword"
+      >open</a
+      ><a name="4743"
+      > </a
+      ><a name="4744" href="Data.Nat.GCD.html#3935" class="Module"
+      >Lemma</a
+      ><a name="4749"
+      > </a
+      ><a name="4750" class="Keyword"
+      >public</a
+      ><a name="4756"
+      > </a
+      ><a name="4757" class="Keyword"
+      >using</a
+      ><a name="4762"
+      > </a
+      ><a name="4763" class="Symbol"
+      >(</a
+      ><a name="4764"
+      >Lemma</a
+      ><a name="4769" class="Symbol"
+      >;</a
+      ><a name="4770"
+      > result</a
+      ><a name="4777" class="Symbol"
+      >)</a
+      ><a name="4778"
+      >
+
+  </a
+      ><a name="4782" class="Comment"
+      >-- B&#233;zout's lemma proved using some variant of the extended</a
+      ><a name="4841"
+      >
+  </a
+      ><a name="4844" class="Comment"
+      >-- Euclidean algorithm.</a
+      ><a name="4867"
+      >
+
+  </a
+      ><a name="4871" href="Data.Nat.GCD.html#4871" class="Function"
+      >lemma</a
+      ><a name="4876"
+      > </a
+      ><a name="4877" class="Symbol"
+      >:</a
+      ><a name="4878"
+      > </a
+      ><a name="4879" class="Symbol"
+      >(</a
+      ><a name="4880" href="Data.Nat.GCD.html#4880" class="Bound"
+      >m</a
+      ><a name="4881"
+      > </a
+      ><a name="4882" href="Data.Nat.GCD.html#4882" class="Bound"
+      >n</a
+      ><a name="4883"
+      > </a
+      ><a name="4884" class="Symbol"
+      >:</a
+      ><a name="4885"
+      > </a
+      ><a name="4886" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="4887" class="Symbol"
+      >)</a
+      ><a name="4888"
+      > </a
+      ><a name="4889" class="Symbol"
+      >&#8594;</a
+      ><a name="4890"
+      > </a
+      ><a name="4891" href="Data.Nat.GCD.html#4079" class="Datatype"
+      >Lemma</a
+      ><a name="4896"
+      > </a
+      ><a name="4897" href="Data.Nat.GCD.html#4880" class="Bound"
+      >m</a
+      ><a name="4898"
+      > </a
+      ><a name="4899" href="Data.Nat.GCD.html#4882" class="Bound"
+      >n</a
+      ><a name="4900"
+      >
+  </a
+      ><a name="4903" href="Data.Nat.GCD.html#4871" class="Function"
+      >lemma</a
+      ><a name="4908"
+      > </a
+      ><a name="4909" href="Data.Nat.GCD.html#4909" class="Bound"
+      >m</a
+      ><a name="4910"
+      > </a
+      ><a name="4911" href="Data.Nat.GCD.html#4911" class="Bound"
+      >n</a
+      ><a name="4912"
+      > </a
+      ><a name="4913" class="Symbol"
+      >=</a
+      ><a name="4914"
+      > </a
+      ><a name="4915" href="Induction.html#1284" class="Function"
+      >build</a
+      ><a name="4920"
+      > </a
+      ><a name="4921" href="Induction.Lexicographic.html#1680" class="Function Operator"
+      >[</a
+      ><a name="4922"
+      > </a
+      ><a name="4923" href="Induction.WellFounded.html#1640" class="Function"
+      >&lt;-rec-builder</a
+      ><a name="4936"
+      > </a
+      ><a name="4937" href="Induction.Lexicographic.html#1680" class="Function Operator"
+      >&#8855;</a
+      ><a name="4938"
+      > </a
+      ><a name="4939" href="Induction.WellFounded.html#1640" class="Function"
+      >&lt;-rec-builder</a
+      ><a name="4952"
+      > </a
+      ><a name="4953" href="Induction.Lexicographic.html#1680" class="Function Operator"
+      >]</a
+      ><a name="4954"
+      > </a
+      ><a name="4955" href="Data.Nat.GCD.html#4983" class="Function"
+      >P</a
+      ><a name="4956"
+      > </a
+      ><a name="4957" href="Data.Nat.GCD.html#5030" class="Function"
+      >gcd</a
+      ><a name="4960"
+      > </a
+      ><a name="4961" class="Symbol"
+      >(</a
+      ><a name="4962" href="Data.Nat.GCD.html#4909" class="Bound"
+      >m</a
+      ><a name="4963"
+      > </a
+      ><a name="4964" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4965"
+      > </a
+      ><a name="4966" href="Data.Nat.GCD.html#4911" class="Bound"
+      >n</a
+      ><a name="4967" class="Symbol"
+      >)</a
+      ><a name="4968"
+      >
+    </a
+      ><a name="4973" class="Keyword"
+      >where</a
+      ><a name="4978"
+      >
+    </a
+      ><a name="4983" href="Data.Nat.GCD.html#4983" class="Function"
+      >P</a
+      ><a name="4984"
+      > </a
+      ><a name="4985" class="Symbol"
+      >:</a
+      ><a name="4986"
+      > </a
+      ><a name="4987" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="4988"
+      > </a
+      ><a name="4989" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="4990"
+      > </a
+      ><a name="4991" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="4992"
+      > </a
+      ><a name="4993" class="Symbol"
+      >&#8594;</a
+      ><a name="4994"
+      > </a
+      ><a name="4995" class="PrimitiveType"
+      >Set</a
+      ><a name="4998"
+      >
+    </a
+      ><a name="5003" href="Data.Nat.GCD.html#4983" class="Function"
+      >P</a
+      ><a name="5004"
+      > </a
+      ><a name="5005" class="Symbol"
+      >(</a
+      ><a name="5006" href="Data.Nat.GCD.html#5006" class="Bound"
+      >m</a
+      ><a name="5007"
+      > </a
+      ><a name="5008" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="5009"
+      > </a
+      ><a name="5010" href="Data.Nat.GCD.html#5010" class="Bound"
+      >n</a
+      ><a name="5011" class="Symbol"
+      >)</a
+      ><a name="5012"
+      > </a
+      ><a name="5013" class="Symbol"
+      >=</a
+      ><a name="5014"
+      > </a
+      ><a name="5015" href="Data.Nat.GCD.html#4079" class="Datatype"
+      >Lemma</a
+      ><a name="5020"
+      > </a
+      ><a name="5021" href="Data.Nat.GCD.html#5006" class="Bound"
+      >m</a
+      ><a name="5022"
+      > </a
+      ><a name="5023" href="Data.Nat.GCD.html#5010" class="Bound"
+      >n</a
+      ><a name="5024"
+      >
+
+    </a
+      ><a name="5030" href="Data.Nat.GCD.html#5030" class="Function"
+      >gcd</a
+      ><a name="5033"
+      > </a
+      ><a name="5034" class="Symbol"
+      >:</a
+      ><a name="5035"
+      > </a
+      ><a name="5036" class="Symbol"
+      >&#8704;</a
+      ><a name="5037"
+      > </a
+      ><a name="5038" href="Data.Nat.GCD.html#5038" class="Bound"
+      >p</a
+      ><a name="5039"
+      > </a
+      ><a name="5040" class="Symbol"
+      >&#8594;</a
+      ><a name="5041"
+      > </a
+      ><a name="5042" class="Symbol"
+      >(</a
+      ><a name="5043" href="Induction.Nat.html#1443" class="Function"
+      >&lt;-Rec</a
+      ><a name="5048"
+      > </a
+      ><a name="5049" href="Induction.Lexicographic.html#707" class="Function Operator"
+      >&#8855;</a
+      ><a name="5050"
+      > </a
+      ><a name="5051" href="Induction.Nat.html#1443" class="Function"
+      >&lt;-Rec</a
+      ><a name="5056" class="Symbol"
+      >)</a
+      ><a name="5057"
+      > </a
+      ><a name="5058" href="Data.Nat.GCD.html#4983" class="Function"
+      >P</a
+      ><a name="5059"
+      > </a
+      ><a name="5060" href="Data.Nat.GCD.html#5038" class="Bound"
+      >p</a
+      ><a name="5061"
+      > </a
+      ><a name="5062" class="Symbol"
+      >&#8594;</a
+      ><a name="5063"
+      > </a
+      ><a name="5064" href="Data.Nat.GCD.html#4983" class="Function"
+      >P</a
+      ><a name="5065"
+      > </a
+      ><a name="5066" href="Data.Nat.GCD.html#5038" class="Bound"
+      >p</a
+      ><a name="5067"
+      >
+    </a
+      ><a name="5072" href="Data.Nat.GCD.html#5030" class="Function"
+      >gcd</a
+      ><a name="5075"
+      > </a
+      ><a name="5076" class="Symbol"
+      >(</a
+      ><a name="5077" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="5081"
+      >  </a
+      ><a name="5083" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="5084"
+      > </a
+      ><a name="5085" href="Data.Nat.GCD.html#5085" class="Bound"
+      >n</a
+      ><a name="5086"
+      >                 </a
+      ><a name="5103" class="Symbol"
+      >)</a
+      ><a name="5104"
+      > </a
+      ><a name="5105" href="Data.Nat.GCD.html#5105" class="Bound"
+      >rec</a
+      ><a name="5108"
+      > </a
+      ><a name="5109" class="Symbol"
+      >=</a
+      ><a name="5110"
+      > </a
+      ><a name="5111" href="Data.Nat.GCD.html#4314" class="Function"
+      >Lemma.base</a
+      ><a name="5121"
+      > </a
+      ><a name="5122" href="Data.Nat.GCD.html#5085" class="Bound"
+      >n</a
+      ><a name="5123"
+      >
+    </a
+      ><a name="5128" href="Data.Nat.GCD.html#5030" class="Function"
+      >gcd</a
+      ><a name="5131"
+      > </a
+      ><a name="5132" class="Symbol"
+      >(</a
+      ><a name="5133" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5136"
+      > </a
+      ><a name="5137" href="Data.Nat.GCD.html#5137" class="Bound"
+      >m</a
+      ><a name="5138"
+      > </a
+      ><a name="5139" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="5140"
+      > </a
+      ><a name="5141" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="5145"
+      >              </a
+      ><a name="5159" class="Symbol"
+      >)</a
+      ><a name="5160"
+      > </a
+      ><a name="5161" href="Data.Nat.GCD.html#5161" class="Bound"
+      >rec</a
+      ><a name="5164"
+      > </a
+      ><a name="5165" class="Symbol"
+      >=</a
+      ><a name="5166"
+      > </a
+      ><a name="5167" href="Data.Nat.GCD.html#4224" class="Function"
+      >Lemma.sym</a
+      ><a name="5176"
+      > </a
+      ><a name="5177" class="Symbol"
+      >(</a
+      ><a name="5178" href="Data.Nat.GCD.html#4314" class="Function"
+      >Lemma.base</a
+      ><a name="5188"
+      > </a
+      ><a name="5189" class="Symbol"
+      >(</a
+      ><a name="5190" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5193"
+      > </a
+      ><a name="5194" href="Data.Nat.GCD.html#5137" class="Bound"
+      >m</a
+      ><a name="5195" class="Symbol"
+      >))</a
+      ><a name="5197"
+      >
+    </a
+      ><a name="5202" href="Data.Nat.GCD.html#5030" class="Function"
+      >gcd</a
+      ><a name="5205"
+      > </a
+      ><a name="5206" class="Symbol"
+      >(</a
+      ><a name="5207" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5210"
+      > </a
+      ><a name="5211" href="Data.Nat.GCD.html#5211" class="Bound"
+      >m</a
+      ><a name="5212"
+      > </a
+      ><a name="5213" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="5214"
+      > </a
+      ><a name="5215" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5218"
+      > </a
+      ><a name="5219" href="Data.Nat.GCD.html#5219" class="Bound"
+      >n</a
+      ><a name="5220"
+      >             </a
+      ><a name="5233" class="Symbol"
+      >)</a
+      ><a name="5234"
+      > </a
+      ><a name="5235" href="Data.Nat.GCD.html#5235" class="Bound"
+      >rec</a
+      ><a name="5238"
+      > </a
+      ><a name="5239" class="Keyword"
+      >with</a
+      ><a name="5243"
+      > </a
+      ><a name="5244" href="Data.Nat.html#3781" class="Function"
+      >compare</a
+      ><a name="5251"
+      > </a
+      ><a name="5252" href="Data.Nat.GCD.html#5211" class="Bound"
+      >m</a
+      ><a name="5253"
+      > </a
+      ><a name="5254" href="Data.Nat.GCD.html#5219" class="Bound"
+      >n</a
+      ><a name="5255"
+      >
+    </a
+      ><a name="5260" href="Data.Nat.GCD.html#5030" class="Function"
+      >gcd</a
+      ><a name="5263"
+      > </a
+      ><a name="5264" class="Symbol"
+      >(</a
+      ><a name="5265" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5268"
+      > </a
+      ><a name="5269" href="Data.Nat.GCD.html#5269" class="Bound"
+      >m</a
+      ><a name="5270"
+      > </a
+      ><a name="5271" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="5272"
+      > </a
+      ><a name="5273" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5276"
+      > </a
+      ><a name="5277" class="DottedPattern Symbol"
+      >.</a
+      ><a name="5278" href="Data.Nat.GCD.html#5269" class="DottedPattern Bound"
+      >m</a
+      ><a name="5279"
+      >            </a
+      ><a name="5291" class="Symbol"
+      >)</a
+      ><a name="5292"
+      > </a
+      ><a name="5293" href="Data.Nat.GCD.html#5293" class="Bound"
+      >rec</a
+      ><a name="5296"
+      > </a
+      ><a name="5297" class="Symbol"
+      >|</a
+      ><a name="5298"
+      > </a
+      ><a name="5299" href="Data.Nat.html#3704" class="InductiveConstructor"
+      >equal</a
+      ><a name="5304"
+      > </a
+      ><a name="5305" class="DottedPattern Symbol"
+      >.</a
+      ><a name="5306" href="Data.Nat.GCD.html#5269" class="DottedPattern Bound"
+      >m</a
+      ><a name="5307"
+      >     </a
+      ><a name="5312" class="Symbol"
+      >=</a
+      ><a name="5313"
+      > </a
+      ><a name="5314" href="Data.Nat.GCD.html#4387" class="Function"
+      >Lemma.refl</a
+      ><a name="5324"
+      > </a
+      ><a name="5325" class="Symbol"
+      >(</a
+      ><a name="5326" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5329"
+      > </a
+      ><a name="5330" href="Data.Nat.GCD.html#5269" class="Bound"
+      >m</a
+      ><a name="5331" class="Symbol"
+      >)</a
+      ><a name="5332"
+      >
+    </a
+      ><a name="5337" href="Data.Nat.GCD.html#5030" class="Function"
+      >gcd</a
+      ><a name="5340"
+      > </a
+      ><a name="5341" class="Symbol"
+      >(</a
+      ><a name="5342" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5345"
+      > </a
+      ><a name="5346" href="Data.Nat.GCD.html#5346" class="Bound"
+      >m</a
+      ><a name="5347"
+      > </a
+      ><a name="5348" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="5349"
+      > </a
+      ><a name="5350" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5353"
+      > </a
+      ><a name="5354" class="DottedPattern Symbol"
+      >.(</a
+      ><a name="5356" href="Data.Nat.html#690" class="DottedPattern InductiveConstructor"
+      >suc</a
+      ><a name="5359"
+      > </a
+      ><a name="5360" class="DottedPattern Symbol"
+      >(</a
+      ><a name="5361" href="Data.Nat.GCD.html#5346" class="DottedPattern Bound"
+      >m</a
+      ><a name="5362"
+      > </a
+      ><a name="5363" href="Data.Nat.html#2168" class="DottedPattern Primitive Operator"
+      >+</a
+      ><a name="5364"
+      > </a
+      ><a name="5365" href="Data.Nat.GCD.html#5384" class="DottedPattern Bound"
+      >k</a
+      ><a name="5366" class="DottedPattern Symbol"
+      >))</a
+      ><a name="5368" class="Symbol"
+      >)</a
+      ><a name="5369"
+      > </a
+      ><a name="5370" href="Data.Nat.GCD.html#5370" class="Bound"
+      >rec</a
+      ><a name="5373"
+      > </a
+      ><a name="5374" class="Symbol"
+      >|</a
+      ><a name="5375"
+      > </a
+      ><a name="5376" href="Data.Nat.html#3659" class="InductiveConstructor"
+      >less</a
+      ><a name="5380"
+      > </a
+      ><a name="5381" class="DottedPattern Symbol"
+      >.</a
+      ><a name="5382" href="Data.Nat.GCD.html#5346" class="DottedPattern Bound"
+      >m</a
+      ><a name="5383"
+      > </a
+      ><a name="5384" href="Data.Nat.GCD.html#5384" class="Bound"
+      >k</a
+      ><a name="5385"
+      >    </a
+      ><a name="5389" class="Symbol"
+      >=</a
+      ><a name="5390"
+      >
+                      </a
+      ><a name="5413" class="Comment"
+      >-- &quot;gcd (suc m) (suc k)&quot;</a
+      ><a name="5437"
+      >
+      </a
+      ><a name="5444" href="Data.Nat.GCD.html#4460" class="Function"
+      >Lemma.step&#737;</a
+      ><a name="5455"
+      > </a
+      ><a name="5456" href="Function.html#1835" class="Function Operator"
+      >$</a
+      ><a name="5457"
+      > </a
+      ><a name="5458" href="Data.Product.html#525" class="Field"
+      >proj&#8321;</a
+      ><a name="5463"
+      > </a
+      ><a name="5464" href="Data.Nat.GCD.html#5370" class="Bound"
+      >rec</a
+      ><a name="5467"
+      > </a
+      ><a name="5468" class="Symbol"
+      >(</a
+      ><a name="5469" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5472"
+      > </a
+      ><a name="5473" href="Data.Nat.GCD.html#5384" class="Bound"
+      >k</a
+      ><a name="5474" class="Symbol"
+      >)</a
+      ><a name="5475"
+      > </a
+      ><a name="5476" class="Symbol"
+      >(</a
+      ><a name="5477" href="Data.Nat.GCD.Lemmas.html#523" class="Function"
+      >lem&#8321;</a
+      ><a name="5481"
+      > </a
+      ><a name="5482" href="Data.Nat.GCD.html#5384" class="Bound"
+      >k</a
+      ><a name="5483"
+      > </a
+      ><a name="5484" href="Data.Nat.GCD.html#5346" class="Bound"
+      >m</a
+      ><a name="5485" class="Symbol"
+      >)</a
+      ><a name="5486"
+      >
+    </a
+      ><a name="5491" href="Data.Nat.GCD.html#5030" class="Function"
+      >gcd</a
+      ><a name="5494"
+      > </a
+      ><a name="5495" class="Symbol"
+      >(</a
+      ><a name="5496" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5499"
+      > </a
+      ><a name="5500" class="DottedPattern Symbol"
+      >.(</a
+      ><a name="5502" href="Data.Nat.html#690" class="DottedPattern InductiveConstructor"
+      >suc</a
+      ><a name="5505"
+      > </a
+      ><a name="5506" class="DottedPattern Symbol"
+      >(</a
+      ><a name="5507" href="Data.Nat.GCD.html#5521" class="DottedPattern Bound"
+      >n</a
+      ><a name="5508"
+      > </a
+      ><a name="5509" href="Data.Nat.html#2168" class="DottedPattern Primitive Operator"
+      >+</a
+      ><a name="5510"
+      > </a
+      ><a name="5511" href="Data.Nat.GCD.html#5541" class="DottedPattern Bound"
+      >k</a
+      ><a name="5512" class="DottedPattern Symbol"
+      >))</a
+      ><a name="5514"
+      > </a
+      ><a name="5515" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="5516"
+      > </a
+      ><a name="5517" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5520"
+      > </a
+      ><a name="5521" href="Data.Nat.GCD.html#5521" class="Bound"
+      >n</a
+      ><a name="5522" class="Symbol"
+      >)</a
+      ><a name="5523"
+      > </a
+      ><a name="5524" href="Data.Nat.GCD.html#5524" class="Bound"
+      >rec</a
+      ><a name="5527"
+      > </a
+      ><a name="5528" class="Symbol"
+      >|</a
+      ><a name="5529"
+      > </a
+      ><a name="5530" href="Data.Nat.html#3737" class="InductiveConstructor"
+      >greater</a
+      ><a name="5537"
+      > </a
+      ><a name="5538" class="DottedPattern Symbol"
+      >.</a
+      ><a name="5539" href="Data.Nat.GCD.html#5521" class="DottedPattern Bound"
+      >n</a
+      ><a name="5540"
+      > </a
+      ><a name="5541" href="Data.Nat.GCD.html#5541" class="Bound"
+      >k</a
+      ><a name="5542"
+      > </a
+      ><a name="5543" class="Symbol"
+      >=</a
+      ><a name="5544"
+      >
+                      </a
+      ><a name="5567" class="Comment"
+      >-- &quot;gcd (suc k) (suc n)&quot;</a
+      ><a name="5591"
+      >
+      </a
+      ><a name="5598" href="Data.Nat.GCD.html#4648" class="Function"
+      >Lemma.step&#691;</a
+      ><a name="5609"
+      > </a
+      ><a name="5610" href="Function.html#1835" class="Function Operator"
+      >$</a
+      ><a name="5611"
+      > </a
+      ><a name="5612" href="Data.Product.html#539" class="Field"
+      >proj&#8322;</a
+      ><a name="5617"
+      > </a
+      ><a name="5618" href="Data.Nat.GCD.html#5524" class="Bound"
+      >rec</a
+      ><a name="5621"
+      > </a
+      ><a name="5622" class="Symbol"
+      >(</a
+      ><a name="5623" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5626"
+      > </a
+      ><a name="5627" href="Data.Nat.GCD.html#5541" class="Bound"
+      >k</a
+      ><a name="5628" class="Symbol"
+      >)</a
+      ><a name="5629"
+      > </a
+      ><a name="5630" class="Symbol"
+      >(</a
+      ><a name="5631" href="Data.Nat.GCD.Lemmas.html#523" class="Function"
+      >lem&#8321;</a
+      ><a name="5635"
+      > </a
+      ><a name="5636" href="Data.Nat.GCD.html#5541" class="Bound"
+      >k</a
+      ><a name="5637"
+      > </a
+      ><a name="5638" href="Data.Nat.GCD.html#5521" class="Bound"
+      >n</a
+      ><a name="5639" class="Symbol"
+      >)</a
+      ><a name="5640"
+      > </a
+      ><a name="5641" class="Symbol"
+      >(</a
+      ><a name="5642" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="5645"
+      > </a
+      ><a name="5646" href="Data.Nat.GCD.html#5521" class="Bound"
+      >n</a
+      ><a name="5647" class="Symbol"
+      >)</a
+      ><a name="5648"
+      >
+
+  </a
+      ><a name="5652" class="Comment"
+      >-- B&#233;zout's identity can be recovered from the GCD.</a
+      ><a name="5703"
+      >
+
+  </a
+      ><a name="5707" href="Data.Nat.GCD.html#5707" class="Function"
+      >identity</a
+      ><a name="5715"
+      > </a
+      ><a name="5716" class="Symbol"
+      >:</a
+      ><a name="5717"
+      > </a
+      ><a name="5718" class="Symbol"
+      >&#8704;</a
+      ><a name="5719"
+      > </a
+      ><a name="5720" class="Symbol"
+      >{</a
+      ><a name="5721" href="Data.Nat.GCD.html#5721" class="Bound"
+      >m</a
+      ><a name="5722"
+      > </a
+      ><a name="5723" href="Data.Nat.GCD.html#5723" class="Bound"
+      >n</a
+      ><a name="5724"
+      > </a
+      ><a name="5725" href="Data.Nat.GCD.html#5725" class="Bound"
+      >d</a
+      ><a name="5726" class="Symbol"
+      >}</a
+      ><a name="5727"
+      > </a
+      ><a name="5728" class="Symbol"
+      >&#8594;</a
+      ><a name="5729"
+      > </a
+      ><a name="5730" href="Data.Nat.GCD.html#808" class="Record"
+      >GCD</a
+      ><a name="5733"
+      > </a
+      ><a name="5734" href="Data.Nat.GCD.html#5721" class="Bound"
+      >m</a
+      ><a name="5735"
+      > </a
+      ><a name="5736" href="Data.Nat.GCD.html#5723" class="Bound"
+      >n</a
+      ><a name="5737"
+      > </a
+      ><a name="5738" href="Data.Nat.GCD.html#5725" class="Bound"
+      >d</a
+      ><a name="5739"
+      > </a
+      ><a name="5740" class="Symbol"
+      >&#8594;</a
+      ><a name="5741"
+      > </a
+      ><a name="5742" href="Data.Nat.GCD.html#2637" class="Datatype"
+      >Identity</a
+      ><a name="5750"
+      > </a
+      ><a name="5751" href="Data.Nat.GCD.html#5725" class="Bound"
+      >d</a
+      ><a name="5752"
+      > </a
+      ><a name="5753" href="Data.Nat.GCD.html#5721" class="Bound"
+      >m</a
+      ><a name="5754"
+      > </a
+      ><a name="5755" href="Data.Nat.GCD.html#5723" class="Bound"
+      >n</a
+      ><a name="5756"
+      >
+  </a
+      ><a name="5759" href="Data.Nat.GCD.html#5707" class="Function"
+      >identity</a
+      ><a name="5767"
+      > </a
+      ><a name="5768" class="Symbol"
+      >{</a
+      ><a name="5769" href="Data.Nat.GCD.html#5769" class="Bound"
+      >m</a
+      ><a name="5770" class="Symbol"
+      >}</a
+      ><a name="5771"
+      > </a
+      ><a name="5772" class="Symbol"
+      >{</a
+      ><a name="5773" href="Data.Nat.GCD.html#5773" class="Bound"
+      >n</a
+      ><a name="5774" class="Symbol"
+      >}</a
+      ><a name="5775"
+      > </a
+      ><a name="5776" href="Data.Nat.GCD.html#5776" class="Bound"
+      >g</a
+      ><a name="5777"
+      > </a
+      ><a name="5778" class="Keyword"
+      >with</a
+      ><a name="5782"
+      > </a
+      ><a name="5783" href="Data.Nat.GCD.html#4871" class="Function"
+      >lemma</a
+      ><a name="5788"
+      > </a
+      ><a name="5789" href="Data.Nat.GCD.html#5769" class="Bound"
+      >m</a
+      ><a name="5790"
+      > </a
+      ><a name="5791" href="Data.Nat.GCD.html#5773" class="Bound"
+      >n</a
+      ><a name="5792"
+      >
+  </a
+      ><a name="5795" href="Data.Nat.GCD.html#5707" class="Function"
+      >identity</a
+      ><a name="5803"
+      > </a
+      ><a name="5804" href="Data.Nat.GCD.html#5804" class="Bound"
+      >g</a
+      ><a name="5805"
+      > </a
+      ><a name="5806" class="Symbol"
+      >|</a
+      ><a name="5807"
+      > </a
+      ><a name="5808" href="Data.Nat.GCD.html#4113" class="InductiveConstructor"
+      >result</a
+      ><a name="5814"
+      > </a
+      ><a name="5815" href="Data.Nat.GCD.html#5815" class="Bound"
+      >d</a
+      ><a name="5816"
+      > </a
+      ><a name="5817" href="Data.Nat.GCD.html#5817" class="Bound"
+      >g&#8242;</a
+      ><a name="5819"
+      > </a
+      ><a name="5820" href="Data.Nat.GCD.html#5820" class="Bound"
+      >b</a
+      ><a name="5821"
+      > </a
+      ><a name="5822" class="Keyword"
+      >with</a
+      ><a name="5826"
+      > </a
+      ><a name="5827" href="Data.Nat.GCD.html#1176" class="Function"
+      >GCD.unique</a
+      ><a name="5837"
+      > </a
+      ><a name="5838" href="Data.Nat.GCD.html#5804" class="Bound"
+      >g</a
+      ><a name="5839"
+      > </a
+      ><a name="5840" href="Data.Nat.GCD.html#5817" class="Bound"
+      >g&#8242;</a
+      ><a name="5842"
+      >
+  </a
+      ><a name="5845" href="Data.Nat.GCD.html#5707" class="Function"
+      >identity</a
+      ><a name="5853"
+      > </a
+      ><a name="5854" href="Data.Nat.GCD.html#5854" class="Bound"
+      >g</a
+      ><a name="5855"
+      > </a
+      ><a name="5856" class="Symbol"
+      >|</a
+      ><a name="5857"
+      > </a
+      ><a name="5858" href="Data.Nat.GCD.html#4113" class="InductiveConstructor"
+      >result</a
+      ><a name="5864"
+      > </a
+      ><a name="5865" href="Data.Nat.GCD.html#5865" class="Bound"
+      >d</a
+      ><a name="5866"
+      > </a
+      ><a name="5867" href="Data.Nat.GCD.html#5867" class="Bound"
+      >g&#8242;</a
+      ><a name="5869"
+      > </a
+      ><a name="5870" href="Data.Nat.GCD.html#5870" class="Bound"
+      >b</a
+      ><a name="5871"
+      > </a
+      ><a name="5872" class="Symbol"
+      >|</a
+      ><a name="5873"
+      > </a
+      ><a name="5874" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >PropEq.refl</a
+      ><a name="5885"
+      > </a
+      ><a name="5886" class="Symbol"
+      >=</a
+      ><a name="5887"
+      > </a
+      ><a name="5888" href="Data.Nat.GCD.html#5870" class="Bound"
+      >b</a
+      ><a name="5889"
+      >
+
+</a
+      ><a name="5891" class="Comment"
+      >-- Calculates the gcd of the arguments.</a
+      ><a name="5930"
+      >
+
+</a
+      ><a name="5932" href="Data.Nat.GCD.html#5932" class="Function"
+      >gcd</a
+      ><a name="5935"
+      > </a
+      ><a name="5936" class="Symbol"
+      >:</a
+      ><a name="5937"
+      > </a
+      ><a name="5938" class="Symbol"
+      >(</a
+      ><a name="5939" href="Data.Nat.GCD.html#5939" class="Bound"
+      >m</a
+      ><a name="5940"
+      > </a
+      ><a name="5941" href="Data.Nat.GCD.html#5941" class="Bound"
+      >n</a
+      ><a name="5942"
+      > </a
+      ><a name="5943" class="Symbol"
+      >:</a
+      ><a name="5944"
+      > </a
+      ><a name="5945" href="Data.Nat.html#663" class="Datatype"
+      >&#8469;</a
+      ><a name="5946" class="Symbol"
+      >)</a
+      ><a name="5947"
+      > </a
+      ><a name="5948" class="Symbol"
+      >&#8594;</a
+      ><a name="5949"
+      > </a
+      ><a name="5950" href="Data.Product.html#805" class="Function"
+      >&#8707;</a
+      ><a name="5951"
+      > </a
+      ><a name="5952" class="Symbol"
+      >&#955;</a
+      ><a name="5953"
+      > </a
+      ><a name="5954" href="Data.Nat.GCD.html#5954" class="Bound"
+      >d</a
+      ><a name="5955"
+      > </a
+      ><a name="5956" class="Symbol"
+      >&#8594;</a
+      ><a name="5957"
+      > </a
+      ><a name="5958" href="Data.Nat.GCD.html#808" class="Record"
+      >GCD</a
+      ><a name="5961"
+      > </a
+      ><a name="5962" href="Data.Nat.GCD.html#5939" class="Bound"
+      >m</a
+      ><a name="5963"
+      > </a
+      ><a name="5964" href="Data.Nat.GCD.html#5941" class="Bound"
+      >n</a
+      ><a name="5965"
+      > </a
+      ><a name="5966" href="Data.Nat.GCD.html#5954" class="Bound"
+      >d</a
+      ><a name="5967"
+      >
+</a
+      ><a name="5968" href="Data.Nat.GCD.html#5932" class="Function"
+      >gcd</a
+      ><a name="5971"
+      > </a
+      ><a name="5972" href="Data.Nat.GCD.html#5972" class="Bound"
+      >m</a
+      ><a name="5973"
+      > </a
+      ><a name="5974" href="Data.Nat.GCD.html#5974" class="Bound"
+      >n</a
+      ><a name="5975"
+      > </a
+      ><a name="5976" class="Keyword"
+      >with</a
+      ><a name="5980"
+      > </a
+      ><a name="5981" href="Data.Nat.GCD.html#4871" class="Function"
+      >B&#233;zout.lemma</a
+      ><a name="5993"
+      > </a
+      ><a name="5994" href="Data.Nat.GCD.html#5972" class="Bound"
+      >m</a
+      ><a name="5995"
+      > </a
+      ><a name="5996" href="Data.Nat.GCD.html#5974" class="Bound"
+      >n</a
+      ><a name="5997"
+      >
+</a
+      ><a name="5998" href="Data.Nat.GCD.html#5932" class="Function"
+      >gcd</a
+      ><a name="6001"
+      > </a
+      ><a name="6002" href="Data.Nat.GCD.html#6002" class="Bound"
+      >m</a
+      ><a name="6003"
+      > </a
+      ><a name="6004" href="Data.Nat.GCD.html#6004" class="Bound"
+      >n</a
+      ><a name="6005"
+      > </a
+      ><a name="6006" class="Symbol"
+      >|</a
+      ><a name="6007"
+      > </a
+      ><a name="6008" href="Data.Nat.GCD.html#4113" class="InductiveConstructor"
+      >B&#233;zout.result</a
+      ><a name="6021"
+      > </a
+      ><a name="6022" href="Data.Nat.GCD.html#6022" class="Bound"
+      >d</a
+      ><a name="6023"
+      > </a
+      ><a name="6024" href="Data.Nat.GCD.html#6024" class="Bound"
+      >g</a
+      ><a name="6025"
+      > </a
+      ><a name="6026" class="Symbol"
+      >_</a
+      ><a name="6027"
+      > </a
+      ><a name="6028" class="Symbol"
+      >=</a
+      ><a name="6029"
+      > </a
+      ><a name="6030" class="Symbol"
+      >(</a
+      ><a name="6031" href="Data.Nat.GCD.html#6022" class="Bound"
+      >d</a
+      ><a name="6032"
+      > </a
+      ><a name="6033" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="6034"
+      > </a
+      ><a name="6035" href="Data.Nat.GCD.html#6024" class="Bound"
+      >g</a
+      ><a name="6036" class="Symbol"
+      >)</a
+      ><a name="6037"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

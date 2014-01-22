@@ -1,0 +1,393 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Relation.Binary.Properties.StrictTotalOrder</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Properties satisfied by strict partial orders</a
+      ><a name="154"
+      >
+</a
+      ><a name="155" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="227"
+      >
+
+</a
+      ><a name="229" class="Keyword"
+      >open</a
+      ><a name="233"
+      > </a
+      ><a name="234" class="Keyword"
+      >import</a
+      ><a name="240"
+      > </a
+      ><a name="241" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="256"
+      >
+
+</a
+      ><a name="258" class="Keyword"
+      >module</a
+      ><a name="264"
+      > </a
+      ><a name="265" href="Relation.Binary.Properties.StrictTotalOrder.html#1" class="Module"
+      >Relation.Binary.Properties.StrictTotalOrder</a
+      ><a name="308"
+      >
+       </a
+      ><a name="316" class="Symbol"
+      >{</a
+      ><a name="317" href="Relation.Binary.Properties.StrictTotalOrder.html#317" class="Bound"
+      >s&#8321;</a
+      ><a name="319"
+      > </a
+      ><a name="320" href="Relation.Binary.Properties.StrictTotalOrder.html#320" class="Bound"
+      >s&#8322;</a
+      ><a name="322"
+      > </a
+      ><a name="323" href="Relation.Binary.Properties.StrictTotalOrder.html#323" class="Bound"
+      >s&#8323;</a
+      ><a name="325" class="Symbol"
+      >}</a
+      ><a name="326"
+      > </a
+      ><a name="327" class="Symbol"
+      >(</a
+      ><a name="328" href="Relation.Binary.Properties.StrictTotalOrder.html#328" class="Bound"
+      >STO</a
+      ><a name="331"
+      > </a
+      ><a name="332" class="Symbol"
+      >:</a
+      ><a name="333"
+      > </a
+      ><a name="334" href="Relation.Binary.html#10903" class="Record"
+      >StrictTotalOrder</a
+      ><a name="350"
+      > </a
+      ><a name="351" href="Relation.Binary.Properties.StrictTotalOrder.html#317" class="Bound"
+      >s&#8321;</a
+      ><a name="353"
+      > </a
+      ><a name="354" href="Relation.Binary.Properties.StrictTotalOrder.html#320" class="Bound"
+      >s&#8322;</a
+      ><a name="356"
+      > </a
+      ><a name="357" href="Relation.Binary.Properties.StrictTotalOrder.html#323" class="Bound"
+      >s&#8323;</a
+      ><a name="359" class="Symbol"
+      >)</a
+      ><a name="360"
+      >
+       </a
+      ><a name="368" class="Keyword"
+      >where</a
+      ><a name="373"
+      >
+
+</a
+      ><a name="375" class="Keyword"
+      >open</a
+      ><a name="379"
+      > </a
+      ><a name="380" href="Relation.Binary.html#233" class="Module"
+      >Relation.</a
+      ><a name="389" href="Relation.Binary.html#242" class="Module"
+      >Binary.</a
+      ><a name="396" href="Relation.Binary.html#10903" class="Module"
+      >StrictTotalOrder</a
+      ><a name="412"
+      > </a
+      ><a name="413" href="Relation.Binary.Properties.StrictTotalOrder.html#328" class="Bound"
+      >STO</a
+      ><a name="416"
+      >
+</a
+      ><a name="417" class="Keyword"
+      >import</a
+      ><a name="423"
+      > </a
+      ><a name="424" href="Relation.Binary.StrictToNonStrict.html#1" class="Module"
+      >Relation.Binary.StrictToNonStrict</a
+      ><a name="457"
+      > </a
+      ><a name="458" class="Symbol"
+      >as</a
+      ><a name="460"
+      > </a
+      ><a name="461" class="Module"
+      >Conv</a
+      ><a name="465"
+      >
+</a
+      ><a name="466" class="Keyword"
+      >open</a
+      ><a name="470"
+      > </a
+      ><a name="471" href="Relation.Binary.StrictToNonStrict.html#1" class="Module"
+      >Conv</a
+      ><a name="475"
+      > </a
+      ><a name="476" href="Relation.Binary.html#11021" class="Function Operator"
+      >_&#8776;_</a
+      ><a name="479"
+      > </a
+      ><a name="480" href="Relation.Binary.html#11061" class="Function Operator"
+      >_&lt;_</a
+      ><a name="483"
+      >
+</a
+      ><a name="484" class="Keyword"
+      >import</a
+      ><a name="490"
+      > </a
+      ><a name="491" href="Relation.Binary.Properties.StrictPartialOrder.html#1" class="Module"
+      >Relation.Binary.Properties.StrictPartialOrder</a
+      ><a name="536"
+      > </a
+      ><a name="537" class="Symbol"
+      >as</a
+      ><a name="539"
+      > </a
+      ><a name="540" class="Module"
+      >SPO</a
+      ><a name="543"
+      >
+</a
+      ><a name="544" class="Keyword"
+      >open</a
+      ><a name="548"
+      > </a
+      ><a name="549" class="Keyword"
+      >import</a
+      ><a name="555"
+      > </a
+      ><a name="556" href="Relation.Binary.Consequences.html#1" class="Module"
+      >Relation.Binary.Consequences</a
+      ><a name="584"
+      >
+
+</a
+      ><a name="586" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="658"
+      >
+</a
+      ><a name="659" class="Comment"
+      >-- Strict total orders can be converted to decidable total orders</a
+      ><a name="724"
+      >
+
+</a
+      ><a name="726" href="Relation.Binary.Properties.StrictTotalOrder.html#726" class="Function"
+      >decTotalOrder</a
+      ><a name="739"
+      > </a
+      ><a name="740" class="Symbol"
+      >:</a
+      ><a name="741"
+      > </a
+      ><a name="742" href="Relation.Binary.html#9168" class="Record"
+      >DecTotalOrder</a
+      ><a name="755"
+      > </a
+      ><a name="756" class="Symbol"
+      >_</a
+      ><a name="757"
+      > </a
+      ><a name="758" class="Symbol"
+      >_</a
+      ><a name="759"
+      > </a
+      ><a name="760" class="Symbol"
+      >_</a
+      ><a name="761"
+      >
+</a
+      ><a name="762" href="Relation.Binary.Properties.StrictTotalOrder.html#726" class="Function"
+      >decTotalOrder</a
+      ><a name="775"
+      > </a
+      ><a name="776" class="Symbol"
+      >=</a
+      ><a name="777"
+      > </a
+      ><a name="778" class="Keyword"
+      >record</a
+      ><a name="784"
+      >
+  </a
+      ><a name="787" class="Symbol"
+      >{</a
+      ><a name="788"
+      > </a
+      ><a name="789" class="Field"
+      >isDecTotalOrder</a
+      ><a name="804"
+      > </a
+      ><a name="805" class="Symbol"
+      >=</a
+      ><a name="806"
+      > </a
+      ><a name="807" class="Keyword"
+      >record</a
+      ><a name="813"
+      >
+    </a
+      ><a name="818" class="Symbol"
+      >{</a
+      ><a name="819"
+      > </a
+      ><a name="820" class="Field"
+      >isTotalOrder</a
+      ><a name="832"
+      > </a
+      ><a name="833" class="Symbol"
+      >=</a
+      ><a name="834"
+      > </a
+      ><a name="835" class="Keyword"
+      >record</a
+      ><a name="841"
+      >
+      </a
+      ><a name="848" class="Symbol"
+      >{</a
+      ><a name="849"
+      > </a
+      ><a name="850" class="Field"
+      >isPartialOrder</a
+      ><a name="864"
+      > </a
+      ><a name="865" class="Symbol"
+      >=</a
+      ><a name="866"
+      > </a
+      ><a name="867" href="Relation.Binary.html#3848" class="Function"
+      >SPO.isPartialOrder</a
+      ><a name="885"
+      > </a
+      ><a name="886" href="Relation.Binary.html#11228" class="Function"
+      >strictPartialOrder</a
+      ><a name="904"
+      >
+      </a
+      ><a name="911" class="Symbol"
+      >;</a
+      ><a name="912"
+      > </a
+      ><a name="913" class="Field"
+      >total</a
+      ><a name="918"
+      >          </a
+      ><a name="928" class="Symbol"
+      >=</a
+      ><a name="929"
+      > </a
+      ><a name="930" href="Relation.Binary.StrictToNonStrict.html#2410" class="Function"
+      >total</a
+      ><a name="935"
+      > </a
+      ><a name="936" href="Relation.Binary.html#10200" class="Function"
+      >compare</a
+      ><a name="943"
+      >
+      </a
+      ><a name="950" class="Symbol"
+      >}</a
+      ><a name="951"
+      >
+    </a
+      ><a name="956" class="Symbol"
+      >;</a
+      ><a name="957"
+      > </a
+      ><a name="958" class="Field Operator"
+      >_&#8799;_</a
+      ><a name="961"
+      >  </a
+      ><a name="963" class="Symbol"
+      >=</a
+      ><a name="964"
+      > </a
+      ><a name="965" href="Relation.Binary.html#10298" class="Function Operator"
+      >_&#8799;_</a
+      ><a name="968"
+      >
+    </a
+      ><a name="973" class="Symbol"
+      >;</a
+      ><a name="974"
+      > </a
+      ><a name="975" class="Field Operator"
+      >_&#8804;?_</a
+      ><a name="979"
+      > </a
+      ><a name="980" class="Symbol"
+      >=</a
+      ><a name="981"
+      > </a
+      ><a name="982" href="Relation.Binary.StrictToNonStrict.html#2925" class="Function"
+      >decidable'</a
+      ><a name="992"
+      > </a
+      ><a name="993" href="Relation.Binary.html#10200" class="Function"
+      >compare</a
+      ><a name="1000"
+      >
+    </a
+      ><a name="1005" class="Symbol"
+      >}</a
+      ><a name="1006"
+      >
+  </a
+      ><a name="1009" class="Symbol"
+      >}</a
+      ><a name="1010"
+      >
+
+</a
+      ><a name="1012" class="Keyword"
+      >open</a
+      ><a name="1016"
+      > </a
+      ><a name="1017" href="Relation.Binary.html#9168" class="Module"
+      >DecTotalOrder</a
+      ><a name="1030"
+      > </a
+      ><a name="1031" href="Relation.Binary.Properties.StrictTotalOrder.html#726" class="Function"
+      >decTotalOrder</a
+      ><a name="1044"
+      > </a
+      ><a name="1045" class="Keyword"
+      >public</a
+      ><a name="1051"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

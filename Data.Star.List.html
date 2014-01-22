@@ -1,0 +1,367 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Star.List</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Lists defined in terms of Data.Star</a
+      ><a name="144"
+      >
+</a
+      ><a name="145" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="217"
+      >
+
+</a
+      ><a name="219" class="Keyword"
+      >module</a
+      ><a name="225"
+      > </a
+      ><a name="226" href="Data.Star.List.html#1" class="Module"
+      >Data.Star.List</a
+      ><a name="240"
+      > </a
+      ><a name="241" class="Keyword"
+      >where</a
+      ><a name="246"
+      >
+
+</a
+      ><a name="248" class="Keyword"
+      >open</a
+      ><a name="252"
+      > </a
+      ><a name="253" class="Keyword"
+      >import</a
+      ><a name="259"
+      > </a
+      ><a name="260" href="Data.Star.html#1" class="Module"
+      >Data.Star</a
+      ><a name="269"
+      >
+</a
+      ><a name="270" class="Keyword"
+      >open</a
+      ><a name="274"
+      > </a
+      ><a name="275" class="Keyword"
+      >import</a
+      ><a name="281"
+      > </a
+      ><a name="282" href="Data.Unit.html#1" class="Module"
+      >Data.Unit</a
+      ><a name="291"
+      >
+</a
+      ><a name="292" class="Keyword"
+      >open</a
+      ><a name="296"
+      > </a
+      ><a name="297" class="Keyword"
+      >import</a
+      ><a name="303"
+      > </a
+      ><a name="304" href="Relation.Binary.Simple.html#1" class="Module"
+      >Relation.Binary.Simple</a
+      ><a name="326"
+      >
+</a
+      ><a name="327" class="Keyword"
+      >open</a
+      ><a name="331"
+      > </a
+      ><a name="332" class="Keyword"
+      >import</a
+      ><a name="338"
+      > </a
+      ><a name="339" href="Data.Star.Nat.html#1" class="Module"
+      >Data.Star.Nat</a
+      ><a name="352"
+      >
+
+</a
+      ><a name="354" class="Comment"
+      >-- Lists.</a
+      ><a name="363"
+      >
+
+</a
+      ><a name="365" href="Data.Star.List.html#365" class="Function"
+      >List</a
+      ><a name="369"
+      > </a
+      ><a name="370" class="Symbol"
+      >:</a
+      ><a name="371"
+      > </a
+      ><a name="372" class="PrimitiveType"
+      >Set</a
+      ><a name="375"
+      > </a
+      ><a name="376" class="Symbol"
+      >&#8594;</a
+      ><a name="377"
+      > </a
+      ><a name="378" class="PrimitiveType"
+      >Set</a
+      ><a name="381"
+      >
+</a
+      ><a name="382" href="Data.Star.List.html#365" class="Function"
+      >List</a
+      ><a name="386"
+      > </a
+      ><a name="387" href="Data.Star.List.html#387" class="Bound"
+      >a</a
+      ><a name="388"
+      > </a
+      ><a name="389" class="Symbol"
+      >=</a
+      ><a name="390"
+      > </a
+      ><a name="391" href="Data.Star.html#553" class="Datatype"
+      >Star</a
+      ><a name="395"
+      > </a
+      ><a name="396" class="Symbol"
+      >(</a
+      ><a name="397" href="Relation.Binary.Simple.html#365" class="Function"
+      >Const</a
+      ><a name="402"
+      > </a
+      ><a name="403" href="Data.Star.List.html#387" class="Bound"
+      >a</a
+      ><a name="404" class="Symbol"
+      >)</a
+      ><a name="405"
+      > </a
+      ><a name="406" href="Data.Unit.Base.html#459" class="InductiveConstructor"
+      >tt</a
+      ><a name="408"
+      > </a
+      ><a name="409" href="Data.Unit.Base.html#459" class="InductiveConstructor"
+      >tt</a
+      ><a name="411"
+      >
+
+</a
+      ><a name="413" class="Comment"
+      >-- Nil and cons.</a
+      ><a name="429"
+      >
+
+</a
+      ><a name="431" href="Data.Star.List.html#431" class="Function"
+      >[]</a
+      ><a name="433"
+      > </a
+      ><a name="434" class="Symbol"
+      >:</a
+      ><a name="435"
+      > </a
+      ><a name="436" class="Symbol"
+      >&#8704;</a
+      ><a name="437"
+      > </a
+      ><a name="438" class="Symbol"
+      >{</a
+      ><a name="439" href="Data.Star.List.html#439" class="Bound"
+      >a</a
+      ><a name="440" class="Symbol"
+      >}</a
+      ><a name="441"
+      > </a
+      ><a name="442" class="Symbol"
+      >&#8594;</a
+      ><a name="443"
+      > </a
+      ><a name="444" href="Data.Star.List.html#365" class="Function"
+      >List</a
+      ><a name="448"
+      > </a
+      ><a name="449" href="Data.Star.List.html#439" class="Bound"
+      >a</a
+      ><a name="450"
+      >
+</a
+      ><a name="451" href="Data.Star.List.html#431" class="Function"
+      >[]</a
+      ><a name="453"
+      > </a
+      ><a name="454" class="Symbol"
+      >=</a
+      ><a name="455"
+      > </a
+      ><a name="456" href="Data.Star.html#614" class="InductiveConstructor"
+      >&#949;</a
+      ><a name="457"
+      >
+
+</a
+      ><a name="459" class="Keyword"
+      >infixr</a
+      ><a name="465"
+      > </a
+      ><a name="466" class="Number"
+      >5</a
+      ><a name="467"
+      > _&#8759;_
+
+</a
+      ><a name="473" href="Data.Star.List.html#473" class="Function Operator"
+      >_&#8759;_</a
+      ><a name="476"
+      > </a
+      ><a name="477" class="Symbol"
+      >:</a
+      ><a name="478"
+      > </a
+      ><a name="479" class="Symbol"
+      >&#8704;</a
+      ><a name="480"
+      > </a
+      ><a name="481" class="Symbol"
+      >{</a
+      ><a name="482" href="Data.Star.List.html#482" class="Bound"
+      >a</a
+      ><a name="483" class="Symbol"
+      >}</a
+      ><a name="484"
+      > </a
+      ><a name="485" class="Symbol"
+      >&#8594;</a
+      ><a name="486"
+      > </a
+      ><a name="487" href="Data.Star.List.html#482" class="Bound"
+      >a</a
+      ><a name="488"
+      > </a
+      ><a name="489" class="Symbol"
+      >&#8594;</a
+      ><a name="490"
+      > </a
+      ><a name="491" href="Data.Star.List.html#365" class="Function"
+      >List</a
+      ><a name="495"
+      > </a
+      ><a name="496" href="Data.Star.List.html#482" class="Bound"
+      >a</a
+      ><a name="497"
+      > </a
+      ><a name="498" class="Symbol"
+      >&#8594;</a
+      ><a name="499"
+      > </a
+      ><a name="500" href="Data.Star.List.html#365" class="Function"
+      >List</a
+      ><a name="504"
+      > </a
+      ><a name="505" href="Data.Star.List.html#482" class="Bound"
+      >a</a
+      ><a name="506"
+      >
+</a
+      ><a name="507" href="Data.Star.List.html#473" class="Function Operator"
+      >_&#8759;_</a
+      ><a name="510"
+      > </a
+      ><a name="511" class="Symbol"
+      >=</a
+      ><a name="512"
+      > </a
+      ><a name="513" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      >_&#9669;_</a
+      ><a name="516"
+      >
+
+</a
+      ><a name="518" class="Comment"
+      >-- The sum of the elements in a list containing natural numbers.</a
+      ><a name="582"
+      >
+
+</a
+      ><a name="584" href="Data.Star.List.html#584" class="Function"
+      >sum</a
+      ><a name="587"
+      > </a
+      ><a name="588" class="Symbol"
+      >:</a
+      ><a name="589"
+      > </a
+      ><a name="590" href="Data.Star.List.html#365" class="Function"
+      >List</a
+      ><a name="594"
+      > </a
+      ><a name="595" href="Data.Star.Nat.html#407" class="Function"
+      >&#8469;</a
+      ><a name="596"
+      > </a
+      ><a name="597" class="Symbol"
+      >&#8594;</a
+      ><a name="598"
+      > </a
+      ><a name="599" href="Data.Star.Nat.html#407" class="Function"
+      >&#8469;</a
+      ><a name="600"
+      >
+</a
+      ><a name="601" href="Data.Star.List.html#584" class="Function"
+      >sum</a
+      ><a name="604"
+      > </a
+      ><a name="605" class="Symbol"
+      >=</a
+      ><a name="606"
+      > </a
+      ><a name="607" href="Data.Star.html#2187" class="Function"
+      >fold</a
+      ><a name="611"
+      > </a
+      ><a name="612" class="Symbol"
+      >(</a
+      ><a name="613" href="Data.Star.html#553" class="Datatype"
+      >Star</a
+      ><a name="617"
+      > </a
+      ><a name="618" href="Relation.Binary.Simple.html#483" class="Function"
+      >Always</a
+      ><a name="624" class="Symbol"
+      >)</a
+      ><a name="625"
+      > </a
+      ><a name="626" href="Data.Star.Nat.html#685" class="Function Operator"
+      >_+_</a
+      ><a name="629"
+      > </a
+      ><a name="630" href="Data.Star.Nat.html#462" class="Function"
+      >zero</a
+      ><a name="634"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

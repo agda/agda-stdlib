@@ -1,0 +1,991 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.ReflexiveClosure</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Reflexive closures</a
+      ><a name="127"
+      >
+</a
+      ><a name="128" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="200"
+      >
+
+</a
+      ><a name="202" class="Keyword"
+      >module</a
+      ><a name="208"
+      > </a
+      ><a name="209" href="Data.ReflexiveClosure.html#1" class="Module"
+      >Data.ReflexiveClosure</a
+      ><a name="230"
+      > </a
+      ><a name="231" class="Keyword"
+      >where</a
+      ><a name="236"
+      >
+
+</a
+      ><a name="238" class="Keyword"
+      >open</a
+      ><a name="242"
+      > </a
+      ><a name="243" class="Keyword"
+      >import</a
+      ><a name="249"
+      > </a
+      ><a name="250" href="Data.Unit.html#1" class="Module"
+      >Data.Unit</a
+      ><a name="259"
+      >
+</a
+      ><a name="260" class="Keyword"
+      >open</a
+      ><a name="264"
+      > </a
+      ><a name="265" class="Keyword"
+      >import</a
+      ><a name="271"
+      > </a
+      ><a name="272" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="277"
+      >
+</a
+      ><a name="278" class="Keyword"
+      >open</a
+      ><a name="282"
+      > </a
+      ><a name="283" class="Keyword"
+      >import</a
+      ><a name="289"
+      > </a
+      ><a name="290" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="305"
+      >
+</a
+      ><a name="306" class="Keyword"
+      >open</a
+      ><a name="310"
+      > </a
+      ><a name="311" class="Keyword"
+      >import</a
+      ><a name="317"
+      > </a
+      ><a name="318" href="Relation.Binary.Simple.html#1" class="Module"
+      >Relation.Binary.Simple</a
+      ><a name="340"
+      >
+
+</a
+      ><a name="342" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="414"
+      >
+</a
+      ><a name="415" class="Comment"
+      >-- Reflexive closure</a
+      ><a name="435"
+      >
+
+</a
+      ><a name="437" class="Keyword"
+      >data</a
+      ><a name="441"
+      > </a
+      ><a name="442" href="Data.ReflexiveClosure.html#442" class="Datatype"
+      >Refl</a
+      ><a name="446"
+      > </a
+      ><a name="447" class="Symbol"
+      >{</a
+      ><a name="448" href="Data.ReflexiveClosure.html#448" class="Bound"
+      >a</a
+      ><a name="449"
+      > </a
+      ><a name="450" href="Data.ReflexiveClosure.html#450" class="Bound"
+      >&#8467;</a
+      ><a name="451" class="Symbol"
+      >}</a
+      ><a name="452"
+      > </a
+      ><a name="453" class="Symbol"
+      >{</a
+      ><a name="454" href="Data.ReflexiveClosure.html#454" class="Bound"
+      >A</a
+      ><a name="455"
+      > </a
+      ><a name="456" class="Symbol"
+      >:</a
+      ><a name="457"
+      > </a
+      ><a name="458" class="PrimitiveType"
+      >Set</a
+      ><a name="461"
+      > </a
+      ><a name="462" href="Data.ReflexiveClosure.html#448" class="Bound"
+      >a</a
+      ><a name="463" class="Symbol"
+      >}</a
+      ><a name="464"
+      > </a
+      ><a name="465" class="Symbol"
+      >(</a
+      ><a name="466" href="Data.ReflexiveClosure.html#466" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="469"
+      > </a
+      ><a name="470" class="Symbol"
+      >:</a
+      ><a name="471"
+      > </a
+      ><a name="472" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="475"
+      > </a
+      ><a name="476" href="Data.ReflexiveClosure.html#454" class="Bound"
+      >A</a
+      ><a name="477"
+      > </a
+      ><a name="478" href="Data.ReflexiveClosure.html#450" class="Bound"
+      >&#8467;</a
+      ><a name="479" class="Symbol"
+      >)</a
+      ><a name="480"
+      > </a
+      ><a name="481" class="Symbol"
+      >:</a
+      ><a name="482"
+      > </a
+      ><a name="483" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="486"
+      > </a
+      ><a name="487" href="Data.ReflexiveClosure.html#454" class="Bound"
+      >A</a
+      ><a name="488"
+      > </a
+      ><a name="489" class="Symbol"
+      >(</a
+      ><a name="490" href="Data.ReflexiveClosure.html#448" class="Bound"
+      >a</a
+      ><a name="491"
+      > </a
+      ><a name="492" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="493"
+      > </a
+      ><a name="494" href="Data.ReflexiveClosure.html#450" class="Bound"
+      >&#8467;</a
+      ><a name="495" class="Symbol"
+      >)</a
+      ><a name="496"
+      > </a
+      ><a name="497" class="Keyword"
+      >where</a
+      ><a name="502"
+      >
+  </a
+      ><a name="505" href="Data.ReflexiveClosure.html#505" class="InductiveConstructor Operator"
+      >[_]</a
+      ><a name="508"
+      >  </a
+      ><a name="510" class="Symbol"
+      >:</a
+      ><a name="511"
+      > </a
+      ><a name="512" class="Symbol"
+      >&#8704;</a
+      ><a name="513"
+      > </a
+      ><a name="514" class="Symbol"
+      >{</a
+      ><a name="515" href="Data.ReflexiveClosure.html#515" class="Bound"
+      >x</a
+      ><a name="516"
+      > </a
+      ><a name="517" href="Data.ReflexiveClosure.html#517" class="Bound"
+      >y</a
+      ><a name="518" class="Symbol"
+      >}</a
+      ><a name="519"
+      > </a
+      ><a name="520" class="Symbol"
+      >(</a
+      ><a name="521" href="Data.ReflexiveClosure.html#521" class="Bound"
+      >x&#8764;y</a
+      ><a name="524"
+      > </a
+      ><a name="525" class="Symbol"
+      >:</a
+      ><a name="526"
+      > </a
+      ><a name="527" href="Data.ReflexiveClosure.html#515" class="Bound"
+      >x</a
+      ><a name="528"
+      > </a
+      ><a name="529" href="Data.ReflexiveClosure.html#466" class="Bound Operator"
+      >&#8764;</a
+      ><a name="530"
+      > </a
+      ><a name="531" href="Data.ReflexiveClosure.html#517" class="Bound"
+      >y</a
+      ><a name="532" class="Symbol"
+      >)</a
+      ><a name="533"
+      > </a
+      ><a name="534" class="Symbol"
+      >&#8594;</a
+      ><a name="535"
+      > </a
+      ><a name="536" href="Data.ReflexiveClosure.html#442" class="Datatype"
+      >Refl</a
+      ><a name="540"
+      > </a
+      ><a name="541" href="Data.ReflexiveClosure.html#466" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="544"
+      > </a
+      ><a name="545" href="Data.ReflexiveClosure.html#515" class="Bound"
+      >x</a
+      ><a name="546"
+      > </a
+      ><a name="547" href="Data.ReflexiveClosure.html#517" class="Bound"
+      >y</a
+      ><a name="548"
+      >
+  </a
+      ><a name="551" href="Data.ReflexiveClosure.html#551" class="InductiveConstructor"
+      >refl</a
+      ><a name="555"
+      > </a
+      ><a name="556" class="Symbol"
+      >:</a
+      ><a name="557"
+      > </a
+      ><a name="558" href="Relation.Binary.Core.html#1891" class="Function"
+      >Reflexive</a
+      ><a name="567"
+      > </a
+      ><a name="568" class="Symbol"
+      >(</a
+      ><a name="569" href="Data.ReflexiveClosure.html#442" class="Datatype"
+      >Refl</a
+      ><a name="573"
+      > </a
+      ><a name="574" href="Data.ReflexiveClosure.html#466" class="Bound Operator"
+      >_&#8764;_</a
+      ><a name="577" class="Symbol"
+      >)</a
+      ><a name="578"
+      >
+
+</a
+      ><a name="580" class="Comment"
+      >-- Map.</a
+      ><a name="587"
+      >
+
+</a
+      ><a name="589" href="Data.ReflexiveClosure.html#589" class="Function"
+      >map</a
+      ><a name="592"
+      > </a
+      ><a name="593" class="Symbol"
+      >:</a
+      ><a name="594"
+      > </a
+      ><a name="595" class="Symbol"
+      >&#8704;</a
+      ><a name="596"
+      > </a
+      ><a name="597" class="Symbol"
+      >{</a
+      ><a name="598" href="Data.ReflexiveClosure.html#598" class="Bound"
+      >a</a
+      ><a name="599"
+      > </a
+      ><a name="600" href="Data.ReflexiveClosure.html#600" class="Bound"
+      >a&#8242;</a
+      ><a name="602"
+      > </a
+      ><a name="603" href="Data.ReflexiveClosure.html#603" class="Bound"
+      >&#8467;</a
+      ><a name="604"
+      > </a
+      ><a name="605" href="Data.ReflexiveClosure.html#605" class="Bound"
+      >&#8467;&#8242;</a
+      ><a name="607" class="Symbol"
+      >}</a
+      ><a name="608"
+      > </a
+      ><a name="609" class="Symbol"
+      >{</a
+      ><a name="610" href="Data.ReflexiveClosure.html#610" class="Bound"
+      >A</a
+      ><a name="611"
+      > </a
+      ><a name="612" class="Symbol"
+      >:</a
+      ><a name="613"
+      > </a
+      ><a name="614" class="PrimitiveType"
+      >Set</a
+      ><a name="617"
+      > </a
+      ><a name="618" href="Data.ReflexiveClosure.html#598" class="Bound"
+      >a</a
+      ><a name="619" class="Symbol"
+      >}</a
+      ><a name="620"
+      > </a
+      ><a name="621" class="Symbol"
+      >{</a
+      ><a name="622" href="Data.ReflexiveClosure.html#622" class="Bound"
+      >A&#8242;</a
+      ><a name="624"
+      > </a
+      ><a name="625" class="Symbol"
+      >:</a
+      ><a name="626"
+      > </a
+      ><a name="627" class="PrimitiveType"
+      >Set</a
+      ><a name="630"
+      > </a
+      ><a name="631" href="Data.ReflexiveClosure.html#600" class="Bound"
+      >a&#8242;</a
+      ><a name="633" class="Symbol"
+      >}</a
+      ><a name="634"
+      >
+        </a
+      ><a name="643" class="Symbol"
+      >{</a
+      ><a name="644" href="Data.ReflexiveClosure.html#644" class="Bound Operator"
+      >_R_</a
+      ><a name="647"
+      > </a
+      ><a name="648" class="Symbol"
+      >:</a
+      ><a name="649"
+      > </a
+      ><a name="650" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="653"
+      > </a
+      ><a name="654" href="Data.ReflexiveClosure.html#610" class="Bound"
+      >A</a
+      ><a name="655"
+      > </a
+      ><a name="656" href="Data.ReflexiveClosure.html#603" class="Bound"
+      >&#8467;</a
+      ><a name="657" class="Symbol"
+      >}</a
+      ><a name="658"
+      > </a
+      ><a name="659" class="Symbol"
+      >{</a
+      ><a name="660" href="Data.ReflexiveClosure.html#660" class="Bound Operator"
+      >_R&#8242;_</a
+      ><a name="664"
+      > </a
+      ><a name="665" class="Symbol"
+      >:</a
+      ><a name="666"
+      > </a
+      ><a name="667" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="670"
+      > </a
+      ><a name="671" href="Data.ReflexiveClosure.html#622" class="Bound"
+      >A&#8242;</a
+      ><a name="673"
+      > </a
+      ><a name="674" href="Data.ReflexiveClosure.html#605" class="Bound"
+      >&#8467;&#8242;</a
+      ><a name="676" class="Symbol"
+      >}</a
+      ><a name="677"
+      > </a
+      ><a name="678" class="Symbol"
+      >{</a
+      ><a name="679" href="Data.ReflexiveClosure.html#679" class="Bound"
+      >f</a
+      ><a name="680"
+      > </a
+      ><a name="681" class="Symbol"
+      >:</a
+      ><a name="682"
+      > </a
+      ><a name="683" href="Data.ReflexiveClosure.html#610" class="Bound"
+      >A</a
+      ><a name="684"
+      > </a
+      ><a name="685" class="Symbol"
+      >&#8594;</a
+      ><a name="686"
+      > </a
+      ><a name="687" href="Data.ReflexiveClosure.html#622" class="Bound"
+      >A&#8242;</a
+      ><a name="689" class="Symbol"
+      >}</a
+      ><a name="690"
+      > </a
+      ><a name="691" class="Symbol"
+      >&#8594;</a
+      ><a name="692"
+      >
+      </a
+      ><a name="699" href="Data.ReflexiveClosure.html#644" class="Bound Operator"
+      >_R_</a
+      ><a name="702"
+      > </a
+      ><a name="703" href="Relation.Binary.Core.html#1218" class="Function Operator"
+      >=[</a
+      ><a name="705"
+      > </a
+      ><a name="706" href="Data.ReflexiveClosure.html#679" class="Bound"
+      >f</a
+      ><a name="707"
+      > </a
+      ><a name="708" href="Relation.Binary.Core.html#1218" class="Function Operator"
+      >]&#8658;</a
+      ><a name="710"
+      > </a
+      ><a name="711" href="Data.ReflexiveClosure.html#660" class="Bound Operator"
+      >_R&#8242;_</a
+      ><a name="715"
+      > </a
+      ><a name="716" class="Symbol"
+      >&#8594;</a
+      ><a name="717"
+      > </a
+      ><a name="718" href="Data.ReflexiveClosure.html#442" class="Datatype"
+      >Refl</a
+      ><a name="722"
+      > </a
+      ><a name="723" href="Data.ReflexiveClosure.html#644" class="Bound Operator"
+      >_R_</a
+      ><a name="726"
+      > </a
+      ><a name="727" href="Relation.Binary.Core.html#1218" class="Function Operator"
+      >=[</a
+      ><a name="729"
+      > </a
+      ><a name="730" href="Data.ReflexiveClosure.html#679" class="Bound"
+      >f</a
+      ><a name="731"
+      > </a
+      ><a name="732" href="Relation.Binary.Core.html#1218" class="Function Operator"
+      >]&#8658;</a
+      ><a name="734"
+      > </a
+      ><a name="735" href="Data.ReflexiveClosure.html#442" class="Datatype"
+      >Refl</a
+      ><a name="739"
+      > </a
+      ><a name="740" href="Data.ReflexiveClosure.html#660" class="Bound Operator"
+      >_R&#8242;_</a
+      ><a name="744"
+      >
+</a
+      ><a name="745" href="Data.ReflexiveClosure.html#589" class="Function"
+      >map</a
+      ><a name="748"
+      > </a
+      ><a name="749" href="Data.ReflexiveClosure.html#749" class="Bound"
+      >R&#8658;R&#8242;</a
+      ><a name="753"
+      > </a
+      ><a name="754" href="Data.ReflexiveClosure.html#505" class="InductiveConstructor Operator"
+      >[</a
+      ><a name="755"
+      > </a
+      ><a name="756" href="Data.ReflexiveClosure.html#756" class="Bound"
+      >xRy</a
+      ><a name="759"
+      > </a
+      ><a name="760" href="Data.ReflexiveClosure.html#505" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="761"
+      > </a
+      ><a name="762" class="Symbol"
+      >=</a
+      ><a name="763"
+      > </a
+      ><a name="764" href="Data.ReflexiveClosure.html#505" class="InductiveConstructor Operator"
+      >[</a
+      ><a name="765"
+      > </a
+      ><a name="766" href="Data.ReflexiveClosure.html#749" class="Bound"
+      >R&#8658;R&#8242;</a
+      ><a name="770"
+      > </a
+      ><a name="771" href="Data.ReflexiveClosure.html#756" class="Bound"
+      >xRy</a
+      ><a name="774"
+      > </a
+      ><a name="775" href="Data.ReflexiveClosure.html#505" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="776"
+      >
+</a
+      ><a name="777" href="Data.ReflexiveClosure.html#589" class="Function"
+      >map</a
+      ><a name="780"
+      > </a
+      ><a name="781" href="Data.ReflexiveClosure.html#781" class="Bound"
+      >R&#8658;R&#8242;</a
+      ><a name="785"
+      > </a
+      ><a name="786" href="Data.ReflexiveClosure.html#551" class="InductiveConstructor"
+      >refl</a
+      ><a name="790"
+      >    </a
+      ><a name="794" class="Symbol"
+      >=</a
+      ><a name="795"
+      > </a
+      ><a name="796" href="Data.ReflexiveClosure.html#551" class="InductiveConstructor"
+      >refl</a
+      ><a name="800"
+      >
+
+</a
+      ><a name="802" class="Comment"
+      >-- The reflexive closure has no effect on reflexive relations.</a
+      ><a name="864"
+      >
+
+</a
+      ><a name="866" href="Data.ReflexiveClosure.html#866" class="Function"
+      >drop-refl</a
+      ><a name="875"
+      > </a
+      ><a name="876" class="Symbol"
+      >:</a
+      ><a name="877"
+      > </a
+      ><a name="878" class="Symbol"
+      >&#8704;</a
+      ><a name="879"
+      > </a
+      ><a name="880" class="Symbol"
+      >{</a
+      ><a name="881" href="Data.ReflexiveClosure.html#881" class="Bound"
+      >a</a
+      ><a name="882"
+      > </a
+      ><a name="883" href="Data.ReflexiveClosure.html#883" class="Bound"
+      >&#8467;</a
+      ><a name="884" class="Symbol"
+      >}</a
+      ><a name="885"
+      > </a
+      ><a name="886" class="Symbol"
+      >{</a
+      ><a name="887" href="Data.ReflexiveClosure.html#887" class="Bound"
+      >A</a
+      ><a name="888"
+      > </a
+      ><a name="889" class="Symbol"
+      >:</a
+      ><a name="890"
+      > </a
+      ><a name="891" class="PrimitiveType"
+      >Set</a
+      ><a name="894"
+      > </a
+      ><a name="895" href="Data.ReflexiveClosure.html#881" class="Bound"
+      >a</a
+      ><a name="896" class="Symbol"
+      >}</a
+      ><a name="897"
+      > </a
+      ><a name="898" class="Symbol"
+      >{</a
+      ><a name="899" href="Data.ReflexiveClosure.html#899" class="Bound Operator"
+      >_R_</a
+      ><a name="902"
+      > </a
+      ><a name="903" class="Symbol"
+      >:</a
+      ><a name="904"
+      > </a
+      ><a name="905" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="908"
+      > </a
+      ><a name="909" href="Data.ReflexiveClosure.html#887" class="Bound"
+      >A</a
+      ><a name="910"
+      > </a
+      ><a name="911" href="Data.ReflexiveClosure.html#883" class="Bound"
+      >&#8467;</a
+      ><a name="912" class="Symbol"
+      >}</a
+      ><a name="913"
+      > </a
+      ><a name="914" class="Symbol"
+      >&#8594;</a
+      ><a name="915"
+      >
+            </a
+      ><a name="928" href="Relation.Binary.Core.html#1891" class="Function"
+      >Reflexive</a
+      ><a name="937"
+      > </a
+      ><a name="938" href="Data.ReflexiveClosure.html#899" class="Bound Operator"
+      >_R_</a
+      ><a name="941"
+      > </a
+      ><a name="942" class="Symbol"
+      >&#8594;</a
+      ><a name="943"
+      > </a
+      ><a name="944" href="Data.ReflexiveClosure.html#442" class="Datatype"
+      >Refl</a
+      ><a name="948"
+      > </a
+      ><a name="949" href="Data.ReflexiveClosure.html#899" class="Bound Operator"
+      >_R_</a
+      ><a name="952"
+      > </a
+      ><a name="953" href="Relation.Binary.Core.html#1025" class="Function Operator"
+      >&#8658;</a
+      ><a name="954"
+      > </a
+      ><a name="955" href="Data.ReflexiveClosure.html#899" class="Bound Operator"
+      >_R_</a
+      ><a name="958"
+      >
+</a
+      ><a name="959" href="Data.ReflexiveClosure.html#866" class="Function"
+      >drop-refl</a
+      ><a name="968"
+      > </a
+      ><a name="969" href="Data.ReflexiveClosure.html#969" class="Bound"
+      >rfl</a
+      ><a name="972"
+      > </a
+      ><a name="973" href="Data.ReflexiveClosure.html#505" class="InductiveConstructor Operator"
+      >[</a
+      ><a name="974"
+      > </a
+      ><a name="975" href="Data.ReflexiveClosure.html#975" class="Bound"
+      >x&#8764;y</a
+      ><a name="978"
+      > </a
+      ><a name="979" href="Data.ReflexiveClosure.html#505" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="980"
+      > </a
+      ><a name="981" class="Symbol"
+      >=</a
+      ><a name="982"
+      > </a
+      ><a name="983" href="Data.ReflexiveClosure.html#975" class="Bound"
+      >x&#8764;y</a
+      ><a name="986"
+      >
+</a
+      ><a name="987" href="Data.ReflexiveClosure.html#866" class="Function"
+      >drop-refl</a
+      ><a name="996"
+      > </a
+      ><a name="997" href="Data.ReflexiveClosure.html#997" class="Bound"
+      >rfl</a
+      ><a name="1000"
+      > </a
+      ><a name="1001" href="Data.ReflexiveClosure.html#551" class="InductiveConstructor"
+      >refl</a
+      ><a name="1005"
+      >    </a
+      ><a name="1009" class="Symbol"
+      >=</a
+      ><a name="1010"
+      > </a
+      ><a name="1011" href="Data.ReflexiveClosure.html#997" class="Bound"
+      >rfl</a
+      ><a name="1014"
+      >
+
+</a
+      ><a name="1016" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="1088"
+      >
+</a
+      ><a name="1089" class="Comment"
+      >-- Example: Maybe</a
+      ><a name="1106"
+      >
+
+</a
+      ><a name="1108" class="Keyword"
+      >module</a
+      ><a name="1114"
+      > </a
+      ><a name="1115" href="Data.ReflexiveClosure.html#1115" class="Module"
+      >Maybe</a
+      ><a name="1120"
+      > </a
+      ><a name="1121" class="Keyword"
+      >where</a
+      ><a name="1126"
+      >
+
+  </a
+      ><a name="1130" href="Data.ReflexiveClosure.html#1130" class="Function"
+      >Maybe</a
+      ><a name="1135"
+      > </a
+      ><a name="1136" class="Symbol"
+      >:</a
+      ><a name="1137"
+      > </a
+      ><a name="1138" class="Symbol"
+      >&#8704;</a
+      ><a name="1139"
+      > </a
+      ><a name="1140" class="Symbol"
+      >{</a
+      ><a name="1141" href="Data.ReflexiveClosure.html#1141" class="Bound"
+      >&#8467;</a
+      ><a name="1142" class="Symbol"
+      >}</a
+      ><a name="1143"
+      > </a
+      ><a name="1144" class="Symbol"
+      >&#8594;</a
+      ><a name="1145"
+      > </a
+      ><a name="1146" class="PrimitiveType"
+      >Set</a
+      ><a name="1149"
+      > </a
+      ><a name="1150" href="Data.ReflexiveClosure.html#1141" class="Bound"
+      >&#8467;</a
+      ><a name="1151"
+      > </a
+      ><a name="1152" class="Symbol"
+      >&#8594;</a
+      ><a name="1153"
+      > </a
+      ><a name="1154" class="PrimitiveType"
+      >Set</a
+      ><a name="1157"
+      > </a
+      ><a name="1158" href="Data.ReflexiveClosure.html#1141" class="Bound"
+      >&#8467;</a
+      ><a name="1159"
+      >
+  </a
+      ><a name="1162" href="Data.ReflexiveClosure.html#1130" class="Function"
+      >Maybe</a
+      ><a name="1167"
+      > </a
+      ><a name="1168" href="Data.ReflexiveClosure.html#1168" class="Bound"
+      >A</a
+      ><a name="1169"
+      > </a
+      ><a name="1170" class="Symbol"
+      >=</a
+      ><a name="1171"
+      > </a
+      ><a name="1172" href="Data.ReflexiveClosure.html#442" class="Datatype"
+      >Refl</a
+      ><a name="1176"
+      > </a
+      ><a name="1177" class="Symbol"
+      >(</a
+      ><a name="1178" href="Relation.Binary.Simple.html#365" class="Function"
+      >Const</a
+      ><a name="1183"
+      > </a
+      ><a name="1184" href="Data.ReflexiveClosure.html#1168" class="Bound"
+      >A</a
+      ><a name="1185" class="Symbol"
+      >)</a
+      ><a name="1186"
+      > </a
+      ><a name="1187" href="Data.Unit.Base.html#459" class="InductiveConstructor"
+      >tt</a
+      ><a name="1189"
+      > </a
+      ><a name="1190" href="Data.Unit.Base.html#459" class="InductiveConstructor"
+      >tt</a
+      ><a name="1192"
+      >
+
+  </a
+      ><a name="1196" href="Data.ReflexiveClosure.html#1196" class="Function"
+      >nothing</a
+      ><a name="1203"
+      > </a
+      ><a name="1204" class="Symbol"
+      >:</a
+      ><a name="1205"
+      > </a
+      ><a name="1206" class="Symbol"
+      >&#8704;</a
+      ><a name="1207"
+      > </a
+      ><a name="1208" class="Symbol"
+      >{</a
+      ><a name="1209" href="Data.ReflexiveClosure.html#1209" class="Bound"
+      >a</a
+      ><a name="1210" class="Symbol"
+      >}</a
+      ><a name="1211"
+      > </a
+      ><a name="1212" class="Symbol"
+      >{</a
+      ><a name="1213" href="Data.ReflexiveClosure.html#1213" class="Bound"
+      >A</a
+      ><a name="1214"
+      > </a
+      ><a name="1215" class="Symbol"
+      >:</a
+      ><a name="1216"
+      > </a
+      ><a name="1217" class="PrimitiveType"
+      >Set</a
+      ><a name="1220"
+      > </a
+      ><a name="1221" href="Data.ReflexiveClosure.html#1209" class="Bound"
+      >a</a
+      ><a name="1222" class="Symbol"
+      >}</a
+      ><a name="1223"
+      > </a
+      ><a name="1224" class="Symbol"
+      >&#8594;</a
+      ><a name="1225"
+      > </a
+      ><a name="1226" href="Data.ReflexiveClosure.html#1130" class="Function"
+      >Maybe</a
+      ><a name="1231"
+      > </a
+      ><a name="1232" href="Data.ReflexiveClosure.html#1213" class="Bound"
+      >A</a
+      ><a name="1233"
+      >
+  </a
+      ><a name="1236" href="Data.ReflexiveClosure.html#1196" class="Function"
+      >nothing</a
+      ><a name="1243"
+      > </a
+      ><a name="1244" class="Symbol"
+      >=</a
+      ><a name="1245"
+      > </a
+      ><a name="1246" href="Data.ReflexiveClosure.html#551" class="InductiveConstructor"
+      >refl</a
+      ><a name="1250"
+      >
+
+  </a
+      ><a name="1254" href="Data.ReflexiveClosure.html#1254" class="Function"
+      >just</a
+      ><a name="1258"
+      > </a
+      ><a name="1259" class="Symbol"
+      >:</a
+      ><a name="1260"
+      > </a
+      ><a name="1261" class="Symbol"
+      >&#8704;</a
+      ><a name="1262"
+      > </a
+      ><a name="1263" class="Symbol"
+      >{</a
+      ><a name="1264" href="Data.ReflexiveClosure.html#1264" class="Bound"
+      >a</a
+      ><a name="1265" class="Symbol"
+      >}</a
+      ><a name="1266"
+      > </a
+      ><a name="1267" class="Symbol"
+      >{</a
+      ><a name="1268" href="Data.ReflexiveClosure.html#1268" class="Bound"
+      >A</a
+      ><a name="1269"
+      > </a
+      ><a name="1270" class="Symbol"
+      >:</a
+      ><a name="1271"
+      > </a
+      ><a name="1272" class="PrimitiveType"
+      >Set</a
+      ><a name="1275"
+      > </a
+      ><a name="1276" href="Data.ReflexiveClosure.html#1264" class="Bound"
+      >a</a
+      ><a name="1277" class="Symbol"
+      >}</a
+      ><a name="1278"
+      > </a
+      ><a name="1279" class="Symbol"
+      >&#8594;</a
+      ><a name="1280"
+      > </a
+      ><a name="1281" href="Data.ReflexiveClosure.html#1268" class="Bound"
+      >A</a
+      ><a name="1282"
+      > </a
+      ><a name="1283" class="Symbol"
+      >&#8594;</a
+      ><a name="1284"
+      > </a
+      ><a name="1285" href="Data.ReflexiveClosure.html#1130" class="Function"
+      >Maybe</a
+      ><a name="1290"
+      > </a
+      ><a name="1291" href="Data.ReflexiveClosure.html#1268" class="Bound"
+      >A</a
+      ><a name="1292"
+      >
+  </a
+      ><a name="1295" href="Data.ReflexiveClosure.html#1254" class="Function"
+      >just</a
+      ><a name="1299"
+      > </a
+      ><a name="1300" class="Symbol"
+      >=</a
+      ><a name="1301"
+      > </a
+      ><a name="1302" href="Data.ReflexiveClosure.html#505" class="InductiveConstructor Operator"
+      >[_]</a
+      ><a name="1305"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

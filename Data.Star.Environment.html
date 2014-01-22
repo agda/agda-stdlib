@@ -1,0 +1,696 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Star.Environment</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Environments (heterogeneous collections)</a
+      ><a name="149"
+      >
+</a
+      ><a name="150" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="222"
+      >
+
+</a
+      ><a name="224" class="Keyword"
+      >module</a
+      ><a name="230"
+      > </a
+      ><a name="231" href="Data.Star.Environment.html#1" class="Module"
+      >Data.Star.Environment</a
+      ><a name="252"
+      > </a
+      ><a name="253" class="Symbol"
+      >(</a
+      ><a name="254" href="Data.Star.Environment.html#254" class="Bound"
+      >Ty</a
+      ><a name="256"
+      > </a
+      ><a name="257" class="Symbol"
+      >:</a
+      ><a name="258"
+      > </a
+      ><a name="259" class="PrimitiveType"
+      >Set</a
+      ><a name="262" class="Symbol"
+      >)</a
+      ><a name="263"
+      > </a
+      ><a name="264" class="Keyword"
+      >where</a
+      ><a name="269"
+      >
+
+</a
+      ><a name="271" class="Keyword"
+      >open</a
+      ><a name="275"
+      > </a
+      ><a name="276" class="Keyword"
+      >import</a
+      ><a name="282"
+      > </a
+      ><a name="283" href="Data.Star.html#1" class="Module"
+      >Data.Star</a
+      ><a name="292"
+      >
+</a
+      ><a name="293" class="Keyword"
+      >open</a
+      ><a name="297"
+      > </a
+      ><a name="298" class="Keyword"
+      >import</a
+      ><a name="304"
+      > </a
+      ><a name="305" href="Data.Star.List.html#1" class="Module"
+      >Data.Star.List</a
+      ><a name="319"
+      >
+</a
+      ><a name="320" class="Keyword"
+      >open</a
+      ><a name="324"
+      > </a
+      ><a name="325" class="Keyword"
+      >import</a
+      ><a name="331"
+      > </a
+      ><a name="332" href="Data.Star.Decoration.html#1" class="Module"
+      >Data.Star.Decoration</a
+      ><a name="352"
+      >
+</a
+      ><a name="353" class="Keyword"
+      >open</a
+      ><a name="357"
+      > </a
+      ><a name="358" class="Keyword"
+      >import</a
+      ><a name="364"
+      > </a
+      ><a name="365" href="Data.Star.Pointer.html#1" class="Module"
+      >Data.Star.Pointer</a
+      ><a name="382"
+      > </a
+      ><a name="383" class="Symbol"
+      >as</a
+      ><a name="385"
+      > </a
+      ><a name="386" class="Module"
+      >Pointer</a
+      ><a name="393"
+      > </a
+      ><a name="394" class="Keyword"
+      >hiding</a
+      ><a name="400"
+      > </a
+      ><a name="401" class="Symbol"
+      >(</a
+      ><a name="402"
+      >lookup</a
+      ><a name="408" class="Symbol"
+      >)</a
+      ><a name="409"
+      >
+</a
+      ><a name="410" class="Keyword"
+      >open</a
+      ><a name="414"
+      > </a
+      ><a name="415" class="Keyword"
+      >import</a
+      ><a name="421"
+      > </a
+      ><a name="422" href="Data.Unit.html#1" class="Module"
+      >Data.Unit</a
+      ><a name="431"
+      >
+</a
+      ><a name="432" class="Keyword"
+      >open</a
+      ><a name="436"
+      > </a
+      ><a name="437" class="Keyword"
+      >import</a
+      ><a name="443"
+      > </a
+      ><a name="444" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="481"
+      >
+
+</a
+      ><a name="483" class="Comment"
+      >-- Contexts, listing the types of all the elements in an environment.</a
+      ><a name="552"
+      >
+
+</a
+      ><a name="554" href="Data.Star.Environment.html#554" class="Function"
+      >Ctxt</a
+      ><a name="558"
+      > </a
+      ><a name="559" class="Symbol"
+      >:</a
+      ><a name="560"
+      > </a
+      ><a name="561" class="PrimitiveType"
+      >Set</a
+      ><a name="564"
+      >
+</a
+      ><a name="565" href="Data.Star.Environment.html#554" class="Function"
+      >Ctxt</a
+      ><a name="569"
+      > </a
+      ><a name="570" class="Symbol"
+      >=</a
+      ><a name="571"
+      > </a
+      ><a name="572" href="Data.Star.List.html#365" class="Function"
+      >List</a
+      ><a name="576"
+      > </a
+      ><a name="577" href="Data.Star.Environment.html#254" class="Bound"
+      >Ty</a
+      ><a name="579"
+      >
+
+</a
+      ><a name="581" class="Comment"
+      >-- Variables (de&#160;Bruijn indices); pointers into environments.</a
+      ><a name="642"
+      >
+
+</a
+      ><a name="644" class="Keyword"
+      >infix</a
+      ><a name="649"
+      > </a
+      ><a name="650" class="Number"
+      >4</a
+      ><a name="651"
+      > _&#8715;_
+
+</a
+      ><a name="657" href="Data.Star.Environment.html#657" class="Function Operator"
+      >_&#8715;_</a
+      ><a name="660"
+      > </a
+      ><a name="661" class="Symbol"
+      >:</a
+      ><a name="662"
+      > </a
+      ><a name="663" href="Data.Star.Environment.html#554" class="Function"
+      >Ctxt</a
+      ><a name="667"
+      > </a
+      ><a name="668" class="Symbol"
+      >&#8594;</a
+      ><a name="669"
+      > </a
+      ><a name="670" href="Data.Star.Environment.html#254" class="Bound"
+      >Ty</a
+      ><a name="672"
+      > </a
+      ><a name="673" class="Symbol"
+      >&#8594;</a
+      ><a name="674"
+      > </a
+      ><a name="675" class="PrimitiveType"
+      >Set</a
+      ><a name="678"
+      >
+</a
+      ><a name="679" href="Data.Star.Environment.html#679" class="Bound"
+      >&#915;</a
+      ><a name="680"
+      > </a
+      ><a name="681" href="Data.Star.Environment.html#657" class="Function Operator"
+      >&#8715;</a
+      ><a name="682"
+      > </a
+      ><a name="683" href="Data.Star.Environment.html#683" class="Bound"
+      >&#963;</a
+      ><a name="684"
+      > </a
+      ><a name="685" class="Symbol"
+      >=</a
+      ><a name="686"
+      > </a
+      ><a name="687" href="Data.Star.Pointer.html#1183" class="Function"
+      >Any</a
+      ><a name="690"
+      > </a
+      ><a name="691" class="Symbol"
+      >(&#955;</a
+      ><a name="693"
+      > </a
+      ><a name="694" href="Data.Star.Environment.html#694" class="Bound"
+      >_</a
+      ><a name="695"
+      > </a
+      ><a name="696" class="Symbol"
+      >&#8594;</a
+      ><a name="697"
+      > </a
+      ><a name="698" href="Data.Unit.Base.html#431" class="Record"
+      >&#8868;</a
+      ><a name="699" class="Symbol"
+      >)</a
+      ><a name="700"
+      > </a
+      ><a name="701" class="Symbol"
+      >(</a
+      ><a name="702" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="705"
+      > </a
+      ><a name="706" href="Data.Star.Environment.html#683" class="Bound"
+      >&#963;</a
+      ><a name="707" class="Symbol"
+      >)</a
+      ><a name="708"
+      > </a
+      ><a name="709" href="Data.Star.Environment.html#679" class="Bound"
+      >&#915;</a
+      ><a name="710"
+      >
+
+</a
+      ><a name="712" href="Data.Star.Environment.html#712" class="Function"
+      >vz</a
+      ><a name="714"
+      > </a
+      ><a name="715" class="Symbol"
+      >:</a
+      ><a name="716"
+      > </a
+      ><a name="717" class="Symbol"
+      >&#8704;</a
+      ><a name="718"
+      > </a
+      ><a name="719" class="Symbol"
+      >{</a
+      ><a name="720" href="Data.Star.Environment.html#720" class="Bound"
+      >&#915;</a
+      ><a name="721"
+      > </a
+      ><a name="722" href="Data.Star.Environment.html#722" class="Bound"
+      >&#963;</a
+      ><a name="723" class="Symbol"
+      >}</a
+      ><a name="724"
+      > </a
+      ><a name="725" class="Symbol"
+      >&#8594;</a
+      ><a name="726"
+      > </a
+      ><a name="727" href="Data.Star.Environment.html#720" class="Bound"
+      >&#915;</a
+      ><a name="728"
+      > </a
+      ><a name="729" href="Data.Star.html#1249" class="Function Operator"
+      >&#9659;</a
+      ><a name="730"
+      > </a
+      ><a name="731" href="Data.Star.Environment.html#722" class="Bound"
+      >&#963;</a
+      ><a name="732"
+      > </a
+      ><a name="733" href="Data.Star.Environment.html#657" class="Function Operator"
+      >&#8715;</a
+      ><a name="734"
+      > </a
+      ><a name="735" href="Data.Star.Environment.html#722" class="Bound"
+      >&#963;</a
+      ><a name="736"
+      >
+</a
+      ><a name="737" href="Data.Star.Environment.html#712" class="Function"
+      >vz</a
+      ><a name="739"
+      > </a
+      ><a name="740" class="Symbol"
+      >=</a
+      ><a name="741"
+      > </a
+      ><a name="742" href="Data.Star.Pointer.html#1313" class="Function"
+      >this</a
+      ><a name="746"
+      > </a
+      ><a name="747" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="751"
+      >
+
+</a
+      ><a name="753" href="Data.Star.Environment.html#753" class="Function"
+      >vs</a
+      ><a name="755"
+      > </a
+      ><a name="756" class="Symbol"
+      >:</a
+      ><a name="757"
+      > </a
+      ><a name="758" class="Symbol"
+      >&#8704;</a
+      ><a name="759"
+      > </a
+      ><a name="760" class="Symbol"
+      >{</a
+      ><a name="761" href="Data.Star.Environment.html#761" class="Bound"
+      >&#915;</a
+      ><a name="762"
+      > </a
+      ><a name="763" href="Data.Star.Environment.html#763" class="Bound"
+      >&#963;</a
+      ><a name="764"
+      > </a
+      ><a name="765" href="Data.Star.Environment.html#765" class="Bound"
+      >&#964;</a
+      ><a name="766" class="Symbol"
+      >}</a
+      ><a name="767"
+      > </a
+      ><a name="768" class="Symbol"
+      >&#8594;</a
+      ><a name="769"
+      > </a
+      ><a name="770" href="Data.Star.Environment.html#761" class="Bound"
+      >&#915;</a
+      ><a name="771"
+      > </a
+      ><a name="772" href="Data.Star.Environment.html#657" class="Function Operator"
+      >&#8715;</a
+      ><a name="773"
+      > </a
+      ><a name="774" href="Data.Star.Environment.html#765" class="Bound"
+      >&#964;</a
+      ><a name="775"
+      > </a
+      ><a name="776" class="Symbol"
+      >&#8594;</a
+      ><a name="777"
+      > </a
+      ><a name="778" href="Data.Star.Environment.html#761" class="Bound"
+      >&#915;</a
+      ><a name="779"
+      > </a
+      ><a name="780" href="Data.Star.html#1249" class="Function Operator"
+      >&#9659;</a
+      ><a name="781"
+      > </a
+      ><a name="782" href="Data.Star.Environment.html#763" class="Bound"
+      >&#963;</a
+      ><a name="783"
+      > </a
+      ><a name="784" href="Data.Star.Environment.html#657" class="Function Operator"
+      >&#8715;</a
+      ><a name="785"
+      > </a
+      ><a name="786" href="Data.Star.Environment.html#765" class="Bound"
+      >&#964;</a
+      ><a name="787"
+      >
+</a
+      ><a name="788" href="Data.Star.Environment.html#753" class="Function"
+      >vs</a
+      ><a name="790"
+      > </a
+      ><a name="791" class="Symbol"
+      >=</a
+      ><a name="792"
+      > </a
+      ><a name="793" href="Data.Star.Pointer.html#1466" class="Function"
+      >that</a
+      ><a name="797"
+      > </a
+      ><a name="798" href="Data.Unit.Base.html#459" class="InductiveConstructor"
+      >tt</a
+      ><a name="800"
+      >
+
+</a
+      ><a name="802" class="Comment"
+      >-- Environments. The T function maps types to element types.</a
+      ><a name="862"
+      >
+
+</a
+      ><a name="864" href="Data.Star.Environment.html#864" class="Function"
+      >Env</a
+      ><a name="867"
+      > </a
+      ><a name="868" class="Symbol"
+      >:</a
+      ><a name="869"
+      > </a
+      ><a name="870" class="Symbol"
+      >(</a
+      ><a name="871" href="Data.Star.Environment.html#254" class="Bound"
+      >Ty</a
+      ><a name="873"
+      > </a
+      ><a name="874" class="Symbol"
+      >&#8594;</a
+      ><a name="875"
+      > </a
+      ><a name="876" class="PrimitiveType"
+      >Set</a
+      ><a name="879" class="Symbol"
+      >)</a
+      ><a name="880"
+      > </a
+      ><a name="881" class="Symbol"
+      >&#8594;</a
+      ><a name="882"
+      > </a
+      ><a name="883" href="Data.Star.Environment.html#554" class="Function"
+      >Ctxt</a
+      ><a name="887"
+      > </a
+      ><a name="888" class="Symbol"
+      >&#8594;</a
+      ><a name="889"
+      > </a
+      ><a name="890" class="PrimitiveType"
+      >Set</a
+      ><a name="893"
+      >
+</a
+      ><a name="894" href="Data.Star.Environment.html#864" class="Function"
+      >Env</a
+      ><a name="897"
+      > </a
+      ><a name="898" href="Data.Star.Environment.html#898" class="Bound"
+      >T</a
+      ><a name="899"
+      > </a
+      ><a name="900" href="Data.Star.Environment.html#900" class="Bound"
+      >&#915;</a
+      ><a name="901"
+      > </a
+      ><a name="902" class="Symbol"
+      >=</a
+      ><a name="903"
+      > </a
+      ><a name="904" href="Data.Star.Decoration.html#1372" class="Function"
+      >All</a
+      ><a name="907"
+      > </a
+      ><a name="908" href="Data.Star.Environment.html#898" class="Bound"
+      >T</a
+      ><a name="909"
+      > </a
+      ><a name="910" href="Data.Star.Environment.html#900" class="Bound"
+      >&#915;</a
+      ><a name="911"
+      >
+
+</a
+      ><a name="913" class="Comment"
+      >-- A safe lookup function for environments.</a
+      ><a name="956"
+      >
+
+</a
+      ><a name="958" href="Data.Star.Environment.html#958" class="Function"
+      >lookup</a
+      ><a name="964"
+      > </a
+      ><a name="965" class="Symbol"
+      >:</a
+      ><a name="966"
+      > </a
+      ><a name="967" class="Symbol"
+      >&#8704;</a
+      ><a name="968"
+      > </a
+      ><a name="969" class="Symbol"
+      >{</a
+      ><a name="970" href="Data.Star.Environment.html#970" class="Bound"
+      >&#915;</a
+      ><a name="971"
+      > </a
+      ><a name="972" href="Data.Star.Environment.html#972" class="Bound"
+      >&#963;</a
+      ><a name="973" class="Symbol"
+      >}</a
+      ><a name="974"
+      > </a
+      ><a name="975" class="Symbol"
+      >{</a
+      ><a name="976" href="Data.Star.Environment.html#976" class="Bound"
+      >T</a
+      ><a name="977"
+      > </a
+      ><a name="978" class="Symbol"
+      >:</a
+      ><a name="979"
+      > </a
+      ><a name="980" href="Data.Star.Environment.html#254" class="Bound"
+      >Ty</a
+      ><a name="982"
+      > </a
+      ><a name="983" class="Symbol"
+      >&#8594;</a
+      ><a name="984"
+      > </a
+      ><a name="985" class="PrimitiveType"
+      >Set</a
+      ><a name="988" class="Symbol"
+      >}</a
+      ><a name="989"
+      > </a
+      ><a name="990" class="Symbol"
+      >&#8594;</a
+      ><a name="991"
+      > </a
+      ><a name="992" href="Data.Star.Environment.html#970" class="Bound"
+      >&#915;</a
+      ><a name="993"
+      > </a
+      ><a name="994" href="Data.Star.Environment.html#657" class="Function Operator"
+      >&#8715;</a
+      ><a name="995"
+      > </a
+      ><a name="996" href="Data.Star.Environment.html#972" class="Bound"
+      >&#963;</a
+      ><a name="997"
+      > </a
+      ><a name="998" class="Symbol"
+      >&#8594;</a
+      ><a name="999"
+      > </a
+      ><a name="1000" href="Data.Star.Environment.html#864" class="Function"
+      >Env</a
+      ><a name="1003"
+      > </a
+      ><a name="1004" href="Data.Star.Environment.html#976" class="Bound"
+      >T</a
+      ><a name="1005"
+      > </a
+      ><a name="1006" href="Data.Star.Environment.html#970" class="Bound"
+      >&#915;</a
+      ><a name="1007"
+      > </a
+      ><a name="1008" class="Symbol"
+      >&#8594;</a
+      ><a name="1009"
+      > </a
+      ><a name="1010" href="Data.Star.Environment.html#976" class="Bound"
+      >T</a
+      ><a name="1011"
+      > </a
+      ><a name="1012" href="Data.Star.Environment.html#972" class="Bound"
+      >&#963;</a
+      ><a name="1013"
+      >
+</a
+      ><a name="1014" href="Data.Star.Environment.html#958" class="Function"
+      >lookup</a
+      ><a name="1020"
+      > </a
+      ><a name="1021" href="Data.Star.Environment.html#1021" class="Bound"
+      >i</a
+      ><a name="1022"
+      > </a
+      ><a name="1023" href="Data.Star.Environment.html#1023" class="Bound"
+      >&#961;</a
+      ><a name="1024"
+      > </a
+      ><a name="1025" class="Keyword"
+      >with</a
+      ><a name="1029"
+      > </a
+      ><a name="1030" href="Data.Star.Pointer.html#1923" class="Function"
+      >Pointer.lookup</a
+      ><a name="1044"
+      > </a
+      ><a name="1045" href="Data.Star.Environment.html#1021" class="Bound"
+      >i</a
+      ><a name="1046"
+      > </a
+      ><a name="1047" href="Data.Star.Environment.html#1023" class="Bound"
+      >&#961;</a
+      ><a name="1048"
+      >
+</a
+      ><a name="1049" class="Symbol"
+      >...</a
+      ><a name="1052"
+      > </a
+      ><a name="1053" class="Symbol"
+      >|</a
+      ><a name="1054"
+      > </a
+      ><a name="1055" href="Data.Star.Pointer.html#1717" class="InductiveConstructor"
+      >result</a
+      ><a name="1061"
+      > </a
+      ><a name="1062" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1066"
+      > </a
+      ><a name="1067" href="Data.Star.Environment.html#1067" class="Bound"
+      >x</a
+      ><a name="1068"
+      > </a
+      ><a name="1069" class="Symbol"
+      >=</a
+      ><a name="1070"
+      > </a
+      ><a name="1071" href="Data.Star.Environment.html#1067" class="Bound"
+      >x</a
+      ><a name="1072"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

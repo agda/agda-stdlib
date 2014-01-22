@@ -1,0 +1,2552 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Integer.Multiplication.Properties</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Properties related to multiplication of integers</a
+      ><a name="157"
+      >
+</a
+      ><a name="158" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="230"
+      >
+
+</a
+      ><a name="232" class="Keyword"
+      >module</a
+      ><a name="238"
+      > </a
+      ><a name="239" href="Data.Integer.Multiplication.Properties.html#1" class="Module"
+      >Data.Integer.Multiplication.Properties</a
+      ><a name="277"
+      > </a
+      ><a name="278" class="Keyword"
+      >where</a
+      ><a name="283"
+      >
+
+</a
+      ><a name="285" class="Keyword"
+      >open</a
+      ><a name="289"
+      > </a
+      ><a name="290" class="Keyword"
+      >import</a
+      ><a name="296"
+      > </a
+      ><a name="297" href="Algebra.html#1" class="Module"
+      >Algebra</a
+      ><a name="304"
+      >
+  </a
+      ><a name="307" class="Keyword"
+      >using</a
+      ><a name="312"
+      > </a
+      ><a name="313" class="Symbol"
+      >(</a
+      ><a name="314" class="Keyword"
+      >module</a
+      ><a name="320"
+      > CommutativeSemiring</a
+      ><a name="340" class="Symbol"
+      >;</a
+      ><a name="341"
+      > CommutativeMonoid</a
+      ><a name="359" class="Symbol"
+      >)</a
+      ><a name="360"
+      >
+</a
+      ><a name="361" class="Keyword"
+      >import</a
+      ><a name="367"
+      > </a
+      ><a name="368" href="Algebra.FunctionProperties.html#1" class="Module"
+      >Algebra.FunctionProperties</a
+      ><a name="394"
+      >
+</a
+      ><a name="395" class="Keyword"
+      >open</a
+      ><a name="399"
+      > </a
+      ><a name="400" class="Keyword"
+      >import</a
+      ><a name="406"
+      > </a
+      ><a name="407" href="Algebra.Structures.html#1" class="Module"
+      >Algebra.Structures</a
+      ><a name="425"
+      > </a
+      ><a name="426" class="Keyword"
+      >using</a
+      ><a name="431"
+      > </a
+      ><a name="432" class="Symbol"
+      >(</a
+      ><a name="433"
+      >IsSemigroup</a
+      ><a name="444" class="Symbol"
+      >;</a
+      ><a name="445"
+      > IsCommutativeMonoid</a
+      ><a name="465" class="Symbol"
+      >)</a
+      ><a name="466"
+      >
+</a
+      ><a name="467" class="Keyword"
+      >open</a
+      ><a name="471"
+      > </a
+      ><a name="472" class="Keyword"
+      >import</a
+      ><a name="478"
+      > </a
+      ><a name="479" href="Data.Integer.html#1" class="Module"
+      >Data.Integer</a
+      ><a name="491"
+      >
+   </a
+      ><a name="495" class="Keyword"
+      >using</a
+      ><a name="500"
+      > </a
+      ><a name="501" class="Symbol"
+      >(</a
+      ><a name="502"
+      >&#8484;</a
+      ><a name="503" class="Symbol"
+      >;</a
+      ><a name="504"
+      > -[1+_]</a
+      ><a name="511" class="Symbol"
+      >;</a
+      ><a name="512"
+      > +_</a
+      ><a name="515" class="Symbol"
+      >;</a
+      ><a name="516"
+      > &#8739;_&#8739;</a
+      ><a name="520" class="Symbol"
+      >;</a
+      ><a name="521"
+      > sign</a
+      ><a name="526" class="Symbol"
+      >;</a
+      ><a name="527"
+      > _&#9667;_</a
+      ><a name="531" class="Symbol"
+      >)</a
+      ><a name="532"
+      > </a
+      ><a name="533" class="Keyword"
+      >renaming</a
+      ><a name="541"
+      > </a
+      ><a name="542" class="Symbol"
+      >(</a
+      ><a name="543"
+      >_*_ </a
+      ><a name="547" class="Symbol"
+      >to</a
+      ><a name="549"
+      > &#8484;*</a
+      ><a name="552" class="Symbol"
+      >)</a
+      ><a name="553"
+      >
+</a
+      ><a name="554" class="Keyword"
+      >open</a
+      ><a name="558"
+      > </a
+      ><a name="559" class="Keyword"
+      >import</a
+      ><a name="565"
+      > </a
+      ><a name="566" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="574"
+      >
+  </a
+      ><a name="577" class="Keyword"
+      >using</a
+      ><a name="582"
+      > </a
+      ><a name="583" class="Symbol"
+      >(</a
+      ><a name="584"
+      >suc</a
+      ><a name="587" class="Symbol"
+      >;</a
+      ><a name="588"
+      > zero</a
+      ><a name="593" class="Symbol"
+      >)</a
+      ><a name="594"
+      > </a
+      ><a name="595" class="Keyword"
+      >renaming</a
+      ><a name="603"
+      > </a
+      ><a name="604" class="Symbol"
+      >(</a
+      ><a name="605"
+      >_+_ </a
+      ><a name="609" class="Symbol"
+      >to</a
+      ><a name="611"
+      > _&#8469;+_</a
+      ><a name="616" class="Symbol"
+      >;</a
+      ><a name="617"
+      > _*_ </a
+      ><a name="622" class="Symbol"
+      >to</a
+      ><a name="624"
+      > _&#8469;*_</a
+      ><a name="629" class="Symbol"
+      >)</a
+      ><a name="630"
+      >
+</a
+      ><a name="631" class="Keyword"
+      >open</a
+      ><a name="635"
+      > </a
+      ><a name="636" class="Keyword"
+      >import</a
+      ><a name="642"
+      > </a
+      ><a name="643" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="655"
+      > </a
+      ><a name="656" class="Keyword"
+      >using</a
+      ><a name="661"
+      > </a
+      ><a name="662" class="Symbol"
+      >(</a
+      ><a name="663"
+      >proj&#8322;</a
+      ><a name="668" class="Symbol"
+      >)</a
+      ><a name="669"
+      >
+</a
+      ><a name="670" class="Keyword"
+      >import</a
+      ><a name="676"
+      > </a
+      ><a name="677" href="Data.Nat.Properties.html#1" class="Module"
+      >Data.Nat.Properties</a
+      ><a name="696"
+      > </a
+      ><a name="697" class="Symbol"
+      >as</a
+      ><a name="699"
+      > </a
+      ><a name="700" class="Module"
+      >&#8469;</a
+      ><a name="701"
+      >
+</a
+      ><a name="702" class="Keyword"
+      >open</a
+      ><a name="706"
+      > </a
+      ><a name="707" class="Keyword"
+      >import</a
+      ><a name="713"
+      > </a
+      ><a name="714" href="Data.Sign.html#1" class="Module"
+      >Data.Sign</a
+      ><a name="723"
+      > </a
+      ><a name="724" class="Keyword"
+      >using</a
+      ><a name="729"
+      > </a
+      ><a name="730" class="Symbol"
+      >()</a
+      ><a name="732"
+      > </a
+      ><a name="733" class="Keyword"
+      >renaming</a
+      ><a name="741"
+      > </a
+      ><a name="742" class="Symbol"
+      >(</a
+      ><a name="743"
+      >_*_ </a
+      ><a name="747" class="Symbol"
+      >to</a
+      ><a name="749"
+      > _S*_</a
+      ><a name="754" class="Symbol"
+      >)</a
+      ><a name="755"
+      >
+</a
+      ><a name="756" class="Keyword"
+      >open</a
+      ><a name="760"
+      > </a
+      ><a name="761" class="Keyword"
+      >import</a
+      ><a name="767"
+      > </a
+      ><a name="768" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="776"
+      > </a
+      ><a name="777" class="Keyword"
+      >using</a
+      ><a name="782"
+      > </a
+      ><a name="783" class="Symbol"
+      >(</a
+      ><a name="784"
+      >_&#8728;_</a
+      ><a name="787" class="Symbol"
+      >)</a
+      ><a name="788"
+      >
+</a
+      ><a name="789" class="Keyword"
+      >open</a
+      ><a name="793"
+      > </a
+      ><a name="794" class="Keyword"
+      >import</a
+      ><a name="800"
+      > </a
+      ><a name="801" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="838"
+      >
+   </a
+      ><a name="842" class="Keyword"
+      >using</a
+      ><a name="847"
+      > </a
+      ><a name="848" class="Symbol"
+      >(</a
+      ><a name="849"
+      >_&#8801;_</a
+      ><a name="852" class="Symbol"
+      >;</a
+      ><a name="853"
+      > refl</a
+      ><a name="858" class="Symbol"
+      >;</a
+      ><a name="859"
+      > cong</a
+      ><a name="864" class="Symbol"
+      >;</a
+      ><a name="865"
+      > cong&#8322;</a
+      ><a name="871" class="Symbol"
+      >;</a
+      ><a name="872"
+      > isEquivalence</a
+      ><a name="886" class="Symbol"
+      >)</a
+      ><a name="887"
+      >
+
+</a
+      ><a name="889" class="Keyword"
+      >open</a
+      ><a name="893"
+      > </a
+      ><a name="894" href="Algebra.FunctionProperties.html#1" class="Module"
+      >Algebra.FunctionProperties</a
+      ><a name="920"
+      > </a
+      ><a name="921" class="Symbol"
+      >(</a
+      ><a name="922" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="925"
+      > </a
+      ><a name="926" class="Symbol"
+      >{</a
+      ><a name="927" class="Argument"
+      >A</a
+      ><a name="928"
+      > </a
+      ><a name="929" class="Symbol"
+      >=</a
+      ><a name="930"
+      > </a
+      ><a name="931" href="Data.Integer.html#915" class="Datatype"
+      >&#8484;</a
+      ><a name="932" class="Symbol"
+      >})</a
+      ><a name="934"
+      >
+</a
+      ><a name="935" class="Keyword"
+      >open</a
+      ><a name="939"
+      > </a
+      ><a name="940" href="Algebra.html#7862" class="Module"
+      >CommutativeSemiring</a
+      ><a name="959"
+      > </a
+      ><a name="960" href="Data.Nat.Properties.html#1726" class="Function"
+      >&#8469;.commutativeSemiring</a
+      ><a name="981"
+      >
+  </a
+      ><a name="984" class="Keyword"
+      >using</a
+      ><a name="989"
+      > </a
+      ><a name="990" class="Symbol"
+      >(</a
+      ><a name="991"
+      >+-identity</a
+      ><a name="1001" class="Symbol"
+      >;</a
+      ><a name="1002"
+      > *-comm</a
+      ><a name="1009" class="Symbol"
+      >)</a
+      ><a name="1010"
+      > </a
+      ><a name="1011" class="Keyword"
+      >renaming</a
+      ><a name="1019"
+      > </a
+      ><a name="1020" class="Symbol"
+      >(</a
+      ><a name="1021"
+      >zero </a
+      ><a name="1026" class="Symbol"
+      >to</a
+      ><a name="1028"
+      > *-zero</a
+      ><a name="1035" class="Symbol"
+      >)</a
+      ><a name="1036"
+      >
+
+</a
+      ><a name="1038" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="1110"
+      >
+</a
+      ><a name="1111" class="Comment"
+      >-- Multiplication and one form a commutative monoid</a
+      ><a name="1162"
+      >
+
+</a
+      ><a name="1164" class="Keyword"
+      >private</a
+      ><a name="1171"
+      >
+
+  </a
+      ><a name="1175" href="Data.Integer.Multiplication.Properties.html#1175" class="Function"
+      >identity&#737;</a
+      ><a name="1184"
+      > </a
+      ><a name="1185" class="Symbol"
+      >:</a
+      ><a name="1186"
+      > </a
+      ><a name="1187" href="Algebra.FunctionProperties.html#987" class="Function"
+      >LeftIdentity</a
+      ><a name="1199"
+      > </a
+      ><a name="1200" class="Symbol"
+      >(</a
+      ><a name="1201" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1202"
+      > </a
+      ><a name="1203" class="Number"
+      >1</a
+      ><a name="1204" class="Symbol"
+      >)</a
+      ><a name="1205"
+      > </a
+      ><a name="1206" href="Data.Integer.html#3734" class="Function"
+      >&#8484;*</a
+      ><a name="1208"
+      >
+  </a
+      ><a name="1211" href="Data.Integer.Multiplication.Properties.html#1175" class="Function"
+      >identity&#737;</a
+      ><a name="1220"
+      > </a
+      ><a name="1221" class="Symbol"
+      >(</a
+      ><a name="1222" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1223"
+      > </a
+      ><a name="1224" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="1228"
+      > </a
+      ><a name="1229" class="Symbol"
+      >)</a
+      ><a name="1230"
+      > </a
+      ><a name="1231" class="Symbol"
+      >=</a
+      ><a name="1232"
+      > </a
+      ><a name="1233" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1237"
+      >
+  </a
+      ><a name="1240" href="Data.Integer.Multiplication.Properties.html#1175" class="Function"
+      >identity&#737;</a
+      ><a name="1249"
+      > </a
+      ><a name="1250" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1254"
+      >  </a
+      ><a name="1256" href="Data.Integer.Multiplication.Properties.html#1256" class="Bound"
+      >n</a
+      ><a name="1257"
+      > </a
+      ><a name="1258" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1259"
+      > </a
+      ><a name="1260" class="Keyword"
+      >rewrite</a
+      ><a name="1267"
+      > </a
+      ><a name="1268" href="Data.Product.html#539" class="Field"
+      >proj&#8322;</a
+      ><a name="1273"
+      > </a
+      ><a name="1274" href="Algebra.Structures.html#1486" class="Function"
+      >+-identity</a
+      ><a name="1284"
+      > </a
+      ><a name="1285" href="Data.Integer.Multiplication.Properties.html#1256" class="Bound"
+      >n</a
+      ><a name="1286"
+      > </a
+      ><a name="1287" class="Symbol"
+      >=</a
+      ><a name="1288"
+      > </a
+      ><a name="1289" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1293"
+      >
+  </a
+      ><a name="1296" href="Data.Integer.Multiplication.Properties.html#1175" class="Function"
+      >identity&#737;</a
+      ><a name="1305"
+      > </a
+      ><a name="1306" class="Symbol"
+      >(</a
+      ><a name="1307" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1308"
+      > </a
+      ><a name="1309" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1312"
+      > </a
+      ><a name="1313" href="Data.Integer.Multiplication.Properties.html#1313" class="Bound"
+      >n</a
+      ><a name="1314" class="Symbol"
+      >)</a
+      ><a name="1315"
+      > </a
+      ><a name="1316" class="Keyword"
+      >rewrite</a
+      ><a name="1323"
+      > </a
+      ><a name="1324" href="Data.Product.html#539" class="Field"
+      >proj&#8322;</a
+      ><a name="1329"
+      > </a
+      ><a name="1330" href="Algebra.Structures.html#1486" class="Function"
+      >+-identity</a
+      ><a name="1340"
+      > </a
+      ><a name="1341" href="Data.Integer.Multiplication.Properties.html#1313" class="Bound"
+      >n</a
+      ><a name="1342"
+      > </a
+      ><a name="1343" class="Symbol"
+      >=</a
+      ><a name="1344"
+      > </a
+      ><a name="1345" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1349"
+      >
+
+  </a
+      ><a name="1353" href="Data.Integer.Multiplication.Properties.html#1353" class="Function"
+      >comm</a
+      ><a name="1357"
+      > </a
+      ><a name="1358" class="Symbol"
+      >:</a
+      ><a name="1359"
+      > </a
+      ><a name="1360" href="Algebra.FunctionProperties.html#914" class="Function"
+      >Commutative</a
+      ><a name="1371"
+      > </a
+      ><a name="1372" href="Data.Integer.html#3734" class="Function"
+      >&#8484;*</a
+      ><a name="1374"
+      >
+  </a
+      ><a name="1377" href="Data.Integer.Multiplication.Properties.html#1353" class="Function"
+      >comm</a
+      ><a name="1381"
+      > </a
+      ><a name="1382" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1386"
+      > </a
+      ><a name="1387" href="Data.Integer.Multiplication.Properties.html#1387" class="Bound"
+      >a</a
+      ><a name="1388"
+      > </a
+      ><a name="1389" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1390"
+      > </a
+      ><a name="1391" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1395"
+      > </a
+      ><a name="1396" href="Data.Integer.Multiplication.Properties.html#1396" class="Bound"
+      >b</a
+      ><a name="1397"
+      > </a
+      ><a name="1398" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1399"
+      > </a
+      ><a name="1400" class="Keyword"
+      >rewrite</a
+      ><a name="1407"
+      > </a
+      ><a name="1408" href="Algebra.Structures.html#1414" class="Function"
+      >*-comm</a
+      ><a name="1414"
+      > </a
+      ><a name="1415" class="Symbol"
+      >(</a
+      ><a name="1416" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1419"
+      > </a
+      ><a name="1420" href="Data.Integer.Multiplication.Properties.html#1387" class="Bound"
+      >a</a
+      ><a name="1421" class="Symbol"
+      >)</a
+      ><a name="1422"
+      > </a
+      ><a name="1423" class="Symbol"
+      >(</a
+      ><a name="1424" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1427"
+      > </a
+      ><a name="1428" href="Data.Integer.Multiplication.Properties.html#1396" class="Bound"
+      >b</a
+      ><a name="1429" class="Symbol"
+      >)</a
+      ><a name="1430"
+      > </a
+      ><a name="1431" class="Symbol"
+      >=</a
+      ><a name="1432"
+      > </a
+      ><a name="1433" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1437"
+      >
+  </a
+      ><a name="1440" href="Data.Integer.Multiplication.Properties.html#1353" class="Function"
+      >comm</a
+      ><a name="1444"
+      > </a
+      ><a name="1445" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1449"
+      > </a
+      ><a name="1450" href="Data.Integer.Multiplication.Properties.html#1450" class="Bound"
+      >a</a
+      ><a name="1451"
+      > </a
+      ><a name="1452" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1453"
+      > </a
+      ><a name="1454" class="Symbol"
+      >(</a
+      ><a name="1455" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1456"
+      >   </a
+      ><a name="1459" href="Data.Integer.Multiplication.Properties.html#1459" class="Bound"
+      >b</a
+      ><a name="1460"
+      > </a
+      ><a name="1461" class="Symbol"
+      >)</a
+      ><a name="1462"
+      > </a
+      ><a name="1463" class="Keyword"
+      >rewrite</a
+      ><a name="1470"
+      > </a
+      ><a name="1471" href="Algebra.Structures.html#1414" class="Function"
+      >*-comm</a
+      ><a name="1477"
+      > </a
+      ><a name="1478" class="Symbol"
+      >(</a
+      ><a name="1479" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1482"
+      > </a
+      ><a name="1483" href="Data.Integer.Multiplication.Properties.html#1450" class="Bound"
+      >a</a
+      ><a name="1484" class="Symbol"
+      >)</a
+      ><a name="1485"
+      > </a
+      ><a name="1486" href="Data.Integer.Multiplication.Properties.html#1459" class="Bound"
+      >b</a
+      ><a name="1487"
+      >       </a
+      ><a name="1494" class="Symbol"
+      >=</a
+      ><a name="1495"
+      > </a
+      ><a name="1496" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1500"
+      >
+  </a
+      ><a name="1503" href="Data.Integer.Multiplication.Properties.html#1353" class="Function"
+      >comm</a
+      ><a name="1507"
+      > </a
+      ><a name="1508" class="Symbol"
+      >(</a
+      ><a name="1509" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1510"
+      >   </a
+      ><a name="1513" href="Data.Integer.Multiplication.Properties.html#1513" class="Bound"
+      >a</a
+      ><a name="1514"
+      > </a
+      ><a name="1515" class="Symbol"
+      >)</a
+      ><a name="1516"
+      > </a
+      ><a name="1517" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1521"
+      > </a
+      ><a name="1522" href="Data.Integer.Multiplication.Properties.html#1522" class="Bound"
+      >b</a
+      ><a name="1523"
+      > </a
+      ><a name="1524" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1525"
+      > </a
+      ><a name="1526" class="Keyword"
+      >rewrite</a
+      ><a name="1533"
+      > </a
+      ><a name="1534" href="Algebra.Structures.html#1414" class="Function"
+      >*-comm</a
+      ><a name="1540"
+      > </a
+      ><a name="1541" href="Data.Integer.Multiplication.Properties.html#1513" class="Bound"
+      >a</a
+      ><a name="1542"
+      >       </a
+      ><a name="1549" class="Symbol"
+      >(</a
+      ><a name="1550" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1553"
+      > </a
+      ><a name="1554" href="Data.Integer.Multiplication.Properties.html#1522" class="Bound"
+      >b</a
+      ><a name="1555" class="Symbol"
+      >)</a
+      ><a name="1556"
+      > </a
+      ><a name="1557" class="Symbol"
+      >=</a
+      ><a name="1558"
+      > </a
+      ><a name="1559" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1563"
+      >
+  </a
+      ><a name="1566" href="Data.Integer.Multiplication.Properties.html#1353" class="Function"
+      >comm</a
+      ><a name="1570"
+      > </a
+      ><a name="1571" class="Symbol"
+      >(</a
+      ><a name="1572" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1573"
+      >   </a
+      ><a name="1576" href="Data.Integer.Multiplication.Properties.html#1576" class="Bound"
+      >a</a
+      ><a name="1577"
+      > </a
+      ><a name="1578" class="Symbol"
+      >)</a
+      ><a name="1579"
+      > </a
+      ><a name="1580" class="Symbol"
+      >(</a
+      ><a name="1581" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1582"
+      >   </a
+      ><a name="1585" href="Data.Integer.Multiplication.Properties.html#1585" class="Bound"
+      >b</a
+      ><a name="1586"
+      > </a
+      ><a name="1587" class="Symbol"
+      >)</a
+      ><a name="1588"
+      > </a
+      ><a name="1589" class="Keyword"
+      >rewrite</a
+      ><a name="1596"
+      > </a
+      ><a name="1597" href="Algebra.Structures.html#1414" class="Function"
+      >*-comm</a
+      ><a name="1603"
+      > </a
+      ><a name="1604" href="Data.Integer.Multiplication.Properties.html#1576" class="Bound"
+      >a</a
+      ><a name="1605"
+      >       </a
+      ><a name="1612" href="Data.Integer.Multiplication.Properties.html#1585" class="Bound"
+      >b</a
+      ><a name="1613"
+      >       </a
+      ><a name="1620" class="Symbol"
+      >=</a
+      ><a name="1621"
+      > </a
+      ><a name="1622" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1626"
+      >
+
+  </a
+      ><a name="1630" href="Data.Integer.Multiplication.Properties.html#1630" class="Function"
+      >lemma</a
+      ><a name="1635"
+      > </a
+      ><a name="1636" class="Symbol"
+      >:</a
+      ><a name="1637"
+      > </a
+      ><a name="1638" class="Symbol"
+      >&#8704;</a
+      ><a name="1639"
+      > </a
+      ><a name="1640" href="Data.Integer.Multiplication.Properties.html#1640" class="Bound"
+      >a</a
+      ><a name="1641"
+      > </a
+      ><a name="1642" href="Data.Integer.Multiplication.Properties.html#1642" class="Bound"
+      >b</a
+      ><a name="1643"
+      > </a
+      ><a name="1644" href="Data.Integer.Multiplication.Properties.html#1644" class="Bound"
+      >c</a
+      ><a name="1645"
+      > </a
+      ><a name="1646" class="Symbol"
+      >&#8594;</a
+      ><a name="1647"
+      > </a
+      ><a name="1648" href="Data.Integer.Multiplication.Properties.html#1644" class="Bound"
+      >c</a
+      ><a name="1649"
+      > </a
+      ><a name="1650" href="Data.Nat.html#2168" class="Primitive Operator"
+      >&#8469;+</a
+      ><a name="1652"
+      > </a
+      ><a name="1653" class="Symbol"
+      >(</a
+      ><a name="1654" href="Data.Integer.Multiplication.Properties.html#1642" class="Bound"
+      >b</a
+      ><a name="1655"
+      > </a
+      ><a name="1656" href="Data.Nat.html#2168" class="Primitive Operator"
+      >&#8469;+</a
+      ><a name="1658"
+      > </a
+      ><a name="1659" href="Data.Integer.Multiplication.Properties.html#1640" class="Bound"
+      >a</a
+      ><a name="1660"
+      > </a
+      ><a name="1661" href="Data.Nat.html#2473" class="Primitive Operator"
+      >&#8469;*</a
+      ><a name="1663"
+      > </a
+      ><a name="1664" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1667"
+      > </a
+      ><a name="1668" href="Data.Integer.Multiplication.Properties.html#1642" class="Bound"
+      >b</a
+      ><a name="1669" class="Symbol"
+      >)</a
+      ><a name="1670"
+      > </a
+      ><a name="1671" href="Data.Nat.html#2473" class="Primitive Operator"
+      >&#8469;*</a
+      ><a name="1673"
+      > </a
+      ><a name="1674" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1677"
+      > </a
+      ><a name="1678" href="Data.Integer.Multiplication.Properties.html#1644" class="Bound"
+      >c</a
+      ><a name="1679"
+      >
+                  </a
+      ><a name="1698" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1699"
+      > </a
+      ><a name="1700" href="Data.Integer.Multiplication.Properties.html#1644" class="Bound"
+      >c</a
+      ><a name="1701"
+      > </a
+      ><a name="1702" href="Data.Nat.html#2168" class="Primitive Operator"
+      >&#8469;+</a
+      ><a name="1704"
+      > </a
+      ><a name="1705" href="Data.Integer.Multiplication.Properties.html#1642" class="Bound"
+      >b</a
+      ><a name="1706"
+      > </a
+      ><a name="1707" href="Data.Nat.html#2473" class="Primitive Operator"
+      >&#8469;*</a
+      ><a name="1709"
+      > </a
+      ><a name="1710" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1713"
+      > </a
+      ><a name="1714" href="Data.Integer.Multiplication.Properties.html#1644" class="Bound"
+      >c</a
+      ><a name="1715"
+      > </a
+      ><a name="1716" href="Data.Nat.html#2168" class="Primitive Operator"
+      >&#8469;+</a
+      ><a name="1718"
+      > </a
+      ><a name="1719" href="Data.Integer.Multiplication.Properties.html#1640" class="Bound"
+      >a</a
+      ><a name="1720"
+      > </a
+      ><a name="1721" href="Data.Nat.html#2473" class="Primitive Operator"
+      >&#8469;*</a
+      ><a name="1723"
+      > </a
+      ><a name="1724" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1727"
+      > </a
+      ><a name="1728" class="Symbol"
+      >(</a
+      ><a name="1729" href="Data.Integer.Multiplication.Properties.html#1644" class="Bound"
+      >c</a
+      ><a name="1730"
+      > </a
+      ><a name="1731" href="Data.Nat.html#2168" class="Primitive Operator"
+      >&#8469;+</a
+      ><a name="1733"
+      > </a
+      ><a name="1734" href="Data.Integer.Multiplication.Properties.html#1642" class="Bound"
+      >b</a
+      ><a name="1735"
+      > </a
+      ><a name="1736" href="Data.Nat.html#2473" class="Primitive Operator"
+      >&#8469;*</a
+      ><a name="1738"
+      > </a
+      ><a name="1739" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1742"
+      > </a
+      ><a name="1743" href="Data.Integer.Multiplication.Properties.html#1644" class="Bound"
+      >c</a
+      ><a name="1744" class="Symbol"
+      >)</a
+      ><a name="1745"
+      >
+  </a
+      ><a name="1748" href="Data.Integer.Multiplication.Properties.html#1630" class="Function"
+      >lemma</a
+      ><a name="1753"
+      > </a
+      ><a name="1754" class="Symbol"
+      >=</a
+      ><a name="1755"
+      >
+    </a
+      ><a name="1760" href="Relation.Binary.Reflection.html#2382" class="Function"
+      >solve</a
+      ><a name="1765"
+      > </a
+      ><a name="1766" class="Number"
+      >3</a
+      ><a name="1767"
+      > </a
+      ><a name="1768" class="Symbol"
+      >(&#955;</a
+      ><a name="1770"
+      > </a
+      ><a name="1771" href="Data.Integer.Multiplication.Properties.html#1771" class="Bound"
+      >a</a
+      ><a name="1772"
+      > </a
+      ><a name="1773" href="Data.Integer.Multiplication.Properties.html#1773" class="Bound"
+      >b</a
+      ><a name="1774"
+      > </a
+      ><a name="1775" href="Data.Integer.Multiplication.Properties.html#1775" class="Bound"
+      >c</a
+      ><a name="1776"
+      > </a
+      ><a name="1777" class="Symbol"
+      >&#8594;</a
+      ><a name="1778"
+      > </a
+      ><a name="1779" href="Data.Integer.Multiplication.Properties.html#1775" class="Bound"
+      >c</a
+      ><a name="1780"
+      > </a
+      ><a name="1781" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      >:+</a
+      ><a name="1783"
+      > </a
+      ><a name="1784" class="Symbol"
+      >(</a
+      ><a name="1785" href="Data.Integer.Multiplication.Properties.html#1773" class="Bound"
+      >b</a
+      ><a name="1786"
+      > </a
+      ><a name="1787" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      >:+</a
+      ><a name="1789"
+      > </a
+      ><a name="1790" href="Data.Integer.Multiplication.Properties.html#1771" class="Bound"
+      >a</a
+      ><a name="1791"
+      > </a
+      ><a name="1792" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      >:*</a
+      ><a name="1794"
+      > </a
+      ><a name="1795" class="Symbol"
+      >(</a
+      ><a name="1796" href="Algebra.RingSolver.html#2104" class="InductiveConstructor"
+      >con</a
+      ><a name="1799"
+      > </a
+      ><a name="1800" class="Number"
+      >1</a
+      ><a name="1801"
+      > </a
+      ><a name="1802" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      >:+</a
+      ><a name="1804"
+      > </a
+      ><a name="1805" href="Data.Integer.Multiplication.Properties.html#1773" class="Bound"
+      >b</a
+      ><a name="1806" class="Symbol"
+      >))</a
+      ><a name="1808"
+      > </a
+      ><a name="1809" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      >:*</a
+      ><a name="1811"
+      > </a
+      ><a name="1812" class="Symbol"
+      >(</a
+      ><a name="1813" href="Algebra.RingSolver.html#2104" class="InductiveConstructor"
+      >con</a
+      ><a name="1816"
+      > </a
+      ><a name="1817" class="Number"
+      >1</a
+      ><a name="1818"
+      > </a
+      ><a name="1819" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      >:+</a
+      ><a name="1821"
+      > </a
+      ><a name="1822" href="Data.Integer.Multiplication.Properties.html#1775" class="Bound"
+      >c</a
+      ><a name="1823" class="Symbol"
+      >)</a
+      ><a name="1824"
+      >
+                    </a
+      ><a name="1845" href="Relation.Binary.Reflection.html#3491" class="Function Operator"
+      >:=</a
+      ><a name="1847"
+      > </a
+      ><a name="1848" href="Data.Integer.Multiplication.Properties.html#1775" class="Bound"
+      >c</a
+      ><a name="1849"
+      > </a
+      ><a name="1850" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      >:+</a
+      ><a name="1852"
+      > </a
+      ><a name="1853" href="Data.Integer.Multiplication.Properties.html#1773" class="Bound"
+      >b</a
+      ><a name="1854"
+      > </a
+      ><a name="1855" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      >:*</a
+      ><a name="1857"
+      > </a
+      ><a name="1858" class="Symbol"
+      >(</a
+      ><a name="1859" href="Algebra.RingSolver.html#2104" class="InductiveConstructor"
+      >con</a
+      ><a name="1862"
+      > </a
+      ><a name="1863" class="Number"
+      >1</a
+      ><a name="1864"
+      > </a
+      ><a name="1865" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      >:+</a
+      ><a name="1867"
+      > </a
+      ><a name="1868" href="Data.Integer.Multiplication.Properties.html#1775" class="Bound"
+      >c</a
+      ><a name="1869" class="Symbol"
+      >)</a
+      ><a name="1870"
+      > </a
+      ><a name="1871" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      >:+</a
+      ><a name="1873"
+      >
+                       </a
+      ><a name="1897" href="Data.Integer.Multiplication.Properties.html#1771" class="Bound"
+      >a</a
+      ><a name="1898"
+      > </a
+      ><a name="1899" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      >:*</a
+      ><a name="1901"
+      > </a
+      ><a name="1902" class="Symbol"
+      >(</a
+      ><a name="1903" href="Algebra.RingSolver.html#2104" class="InductiveConstructor"
+      >con</a
+      ><a name="1906"
+      > </a
+      ><a name="1907" class="Number"
+      >1</a
+      ><a name="1908"
+      > </a
+      ><a name="1909" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      >:+</a
+      ><a name="1911"
+      > </a
+      ><a name="1912" class="Symbol"
+      >(</a
+      ><a name="1913" href="Data.Integer.Multiplication.Properties.html#1775" class="Bound"
+      >c</a
+      ><a name="1914"
+      > </a
+      ><a name="1915" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      >:+</a
+      ><a name="1917"
+      > </a
+      ><a name="1918" href="Data.Integer.Multiplication.Properties.html#1773" class="Bound"
+      >b</a
+      ><a name="1919"
+      > </a
+      ><a name="1920" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      >:*</a
+      ><a name="1922"
+      > </a
+      ><a name="1923" class="Symbol"
+      >(</a
+      ><a name="1924" href="Algebra.RingSolver.html#2104" class="InductiveConstructor"
+      >con</a
+      ><a name="1927"
+      > </a
+      ><a name="1928" class="Number"
+      >1</a
+      ><a name="1929"
+      > </a
+      ><a name="1930" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      >:+</a
+      ><a name="1932"
+      > </a
+      ><a name="1933" href="Data.Integer.Multiplication.Properties.html#1775" class="Bound"
+      >c</a
+      ><a name="1934" class="Symbol"
+      >))))</a
+      ><a name="1938"
+      >
+            </a
+      ><a name="1951" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1955"
+      >
+    </a
+      ><a name="1960" class="Keyword"
+      >where</a
+      ><a name="1965"
+      > </a
+      ><a name="1966" class="Keyword"
+      >open</a
+      ><a name="1970"
+      > </a
+      ><a name="1971" href="Data.Nat.Properties.html#330" class="Module"
+      >&#8469;.</a
+      ><a name="1973" href="Data.Nat.Properties.html#2085" class="Module"
+      >SemiringSolver</a
+      ><a name="1987"
+      >
+
+  </a
+      ><a name="1991" href="Data.Integer.Multiplication.Properties.html#1991" class="Function"
+      >assoc</a
+      ><a name="1996"
+      > </a
+      ><a name="1997" class="Symbol"
+      >:</a
+      ><a name="1998"
+      > </a
+      ><a name="1999" href="Algebra.FunctionProperties.html#827" class="Function"
+      >Associative</a
+      ><a name="2010"
+      > </a
+      ><a name="2011" href="Data.Integer.html#3734" class="Function"
+      >&#8484;*</a
+      ><a name="2013"
+      >
+  </a
+      ><a name="2016" href="Data.Integer.Multiplication.Properties.html#1991" class="Function"
+      >assoc</a
+      ><a name="2021"
+      > </a
+      ><a name="2022" class="Symbol"
+      >(</a
+      ><a name="2023" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2024"
+      > </a
+      ><a name="2025" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="2029" class="Symbol"
+      >)</a
+      ><a name="2030"
+      > </a
+      ><a name="2031" class="Symbol"
+      >_</a
+      ><a name="2032"
+      > </a
+      ><a name="2033" class="Symbol"
+      >_</a
+      ><a name="2034"
+      > </a
+      ><a name="2035" class="Symbol"
+      >=</a
+      ><a name="2036"
+      > </a
+      ><a name="2037" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2041"
+      >
+  </a
+      ><a name="2044" href="Data.Integer.Multiplication.Properties.html#1991" class="Function"
+      >assoc</a
+      ><a name="2049"
+      > </a
+      ><a name="2050" href="Data.Integer.Multiplication.Properties.html#2050" class="Bound"
+      >x</a
+      ><a name="2051"
+      > </a
+      ><a name="2052" class="Symbol"
+      >(</a
+      ><a name="2053" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2054"
+      > </a
+      ><a name="2055" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="2059" class="Symbol"
+      >)</a
+      ><a name="2060"
+      > </a
+      ><a name="2061" class="Symbol"
+      >_</a
+      ><a name="2062"
+      > </a
+      ><a name="2063" class="Keyword"
+      >rewrite</a
+      ><a name="2070"
+      > </a
+      ><a name="2071" href="Data.Product.html#539" class="Field"
+      >proj&#8322;</a
+      ><a name="2076"
+      > </a
+      ><a name="2077" href="Algebra.Structures.html#7647" class="Function"
+      >*-zero</a
+      ><a name="2083"
+      > </a
+      ><a name="2084" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2085"
+      > </a
+      ><a name="2086" href="Data.Integer.Multiplication.Properties.html#2050" class="Bound"
+      >x</a
+      ><a name="2087"
+      > </a
+      ><a name="2088" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2089"
+      > </a
+      ><a name="2090" class="Symbol"
+      >=</a
+      ><a name="2091"
+      > </a
+      ><a name="2092" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2096"
+      >
+  </a
+      ><a name="2099" href="Data.Integer.Multiplication.Properties.html#1991" class="Function"
+      >assoc</a
+      ><a name="2104"
+      > </a
+      ><a name="2105" href="Data.Integer.Multiplication.Properties.html#2105" class="Bound"
+      >x</a
+      ><a name="2106"
+      > </a
+      ><a name="2107" href="Data.Integer.Multiplication.Properties.html#2107" class="Bound"
+      >y</a
+      ><a name="2108"
+      > </a
+      ><a name="2109" class="Symbol"
+      >(</a
+      ><a name="2110" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2111"
+      > </a
+      ><a name="2112" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="2116" class="Symbol"
+      >)</a
+      ><a name="2117"
+      > </a
+      ><a name="2118" class="Keyword"
+      >rewrite</a
+      ><a name="2125"
+      >
+      </a
+      ><a name="2132" href="Data.Product.html#539" class="Field"
+      >proj&#8322;</a
+      ><a name="2137"
+      > </a
+      ><a name="2138" href="Algebra.Structures.html#7647" class="Function"
+      >*-zero</a
+      ><a name="2144"
+      > </a
+      ><a name="2145" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2146"
+      > </a
+      ><a name="2147" href="Data.Integer.Multiplication.Properties.html#2107" class="Bound"
+      >y</a
+      ><a name="2148"
+      > </a
+      ><a name="2149" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2150"
+      >
+    </a
+      ><a name="2155" class="Symbol"
+      >|</a
+      ><a name="2156"
+      > </a
+      ><a name="2157" href="Data.Product.html#539" class="Field"
+      >proj&#8322;</a
+      ><a name="2162"
+      > </a
+      ><a name="2163" href="Algebra.Structures.html#7647" class="Function"
+      >*-zero</a
+      ><a name="2169"
+      > </a
+      ><a name="2170" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2171"
+      > </a
+      ><a name="2172" href="Data.Integer.Multiplication.Properties.html#2105" class="Bound"
+      >x</a
+      ><a name="2173"
+      > </a
+      ><a name="2174" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2175"
+      >
+    </a
+      ><a name="2180" class="Symbol"
+      >|</a
+      ><a name="2181"
+      > </a
+      ><a name="2182" href="Data.Product.html#539" class="Field"
+      >proj&#8322;</a
+      ><a name="2187"
+      > </a
+      ><a name="2188" href="Algebra.Structures.html#7647" class="Function"
+      >*-zero</a
+      ><a name="2194"
+      > </a
+      ><a name="2195" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2196"
+      > </a
+      ><a name="2197" href="Data.Integer.html#1264" class="Function"
+      >sign</a
+      ><a name="2201"
+      > </a
+      ><a name="2202" href="Data.Integer.Multiplication.Properties.html#2105" class="Bound"
+      >x</a
+      ><a name="2203"
+      > </a
+      ><a name="2204" href="Data.Sign.html#610" class="Function Operator"
+      >S*</a
+      ><a name="2206"
+      > </a
+      ><a name="2207" href="Data.Integer.html#1264" class="Function"
+      >sign</a
+      ><a name="2211"
+      > </a
+      ><a name="2212" href="Data.Integer.Multiplication.Properties.html#2107" class="Bound"
+      >y</a
+      ><a name="2213"
+      > </a
+      ><a name="2214" href="Data.Integer.html#1644" class="Function Operator"
+      >&#9667;</a
+      ><a name="2215"
+      > </a
+      ><a name="2216" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2217"
+      > </a
+      ><a name="2218" href="Data.Integer.Multiplication.Properties.html#2105" class="Bound"
+      >x</a
+      ><a name="2219"
+      > </a
+      ><a name="2220" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2221"
+      > </a
+      ><a name="2222" href="Data.Nat.html#2473" class="Primitive Operator"
+      >&#8469;*</a
+      ><a name="2224"
+      > </a
+      ><a name="2225" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2226"
+      > </a
+      ><a name="2227" href="Data.Integer.Multiplication.Properties.html#2107" class="Bound"
+      >y</a
+      ><a name="2228"
+      > </a
+      ><a name="2229" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2230"
+      > </a
+      ><a name="2231" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="2232"
+      >
+    </a
+      ><a name="2237" class="Symbol"
+      >=</a
+      ><a name="2238"
+      > </a
+      ><a name="2239" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2243"
+      >
+  </a
+      ><a name="2246" href="Data.Integer.Multiplication.Properties.html#1991" class="Function"
+      >assoc</a
+      ><a name="2251"
+      > </a
+      ><a name="2252" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2256"
+      > </a
+      ><a name="2257" href="Data.Integer.Multiplication.Properties.html#2257" class="Bound"
+      >a</a
+      ><a name="2258"
+      >  </a
+      ><a name="2260" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2261"
+      > </a
+      ><a name="2262" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2266"
+      > </a
+      ><a name="2267" href="Data.Integer.Multiplication.Properties.html#2267" class="Bound"
+      >b</a
+      ><a name="2268"
+      >  </a
+      ><a name="2270" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2271"
+      > </a
+      ><a name="2272" class="Symbol"
+      >(</a
+      ><a name="2273" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2274"
+      > </a
+      ><a name="2275" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2278"
+      > </a
+      ><a name="2279" href="Data.Integer.Multiplication.Properties.html#2279" class="Bound"
+      >c</a
+      ><a name="2280" class="Symbol"
+      >)</a
+      ><a name="2281"
+      > </a
+      ><a name="2282" class="Symbol"
+      >=</a
+      ><a name="2283"
+      > </a
+      ><a name="2284" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >cong</a
+      ><a name="2288"
+      > </a
+      ><a name="2289" class="Symbol"
+      >(</a
+      ><a name="2290" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+_</a
+      ><a name="2292"
+      > </a
+      ><a name="2293" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="2294"
+      > </a
+      ><a name="2295" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2298" class="Symbol"
+      >)</a
+      ><a name="2299"
+      > </a
+      ><a name="2300" class="Symbol"
+      >(</a
+      ><a name="2301" href="Data.Integer.Multiplication.Properties.html#1630" class="Function"
+      >lemma</a
+      ><a name="2306"
+      > </a
+      ><a name="2307" href="Data.Integer.Multiplication.Properties.html#2257" class="Bound"
+      >a</a
+      ><a name="2308"
+      > </a
+      ><a name="2309" href="Data.Integer.Multiplication.Properties.html#2267" class="Bound"
+      >b</a
+      ><a name="2310"
+      > </a
+      ><a name="2311" href="Data.Integer.Multiplication.Properties.html#2279" class="Bound"
+      >c</a
+      ><a name="2312" class="Symbol"
+      >)</a
+      ><a name="2313"
+      >
+  </a
+      ><a name="2316" href="Data.Integer.Multiplication.Properties.html#1991" class="Function"
+      >assoc</a
+      ><a name="2321"
+      > </a
+      ><a name="2322" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2326"
+      > </a
+      ><a name="2327" href="Data.Integer.Multiplication.Properties.html#2327" class="Bound"
+      >a</a
+      ><a name="2328"
+      >  </a
+      ><a name="2330" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2331"
+      > </a
+      ><a name="2332" class="Symbol"
+      >(</a
+      ><a name="2333" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2334"
+      > </a
+      ><a name="2335" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2338"
+      > </a
+      ><a name="2339" href="Data.Integer.Multiplication.Properties.html#2339" class="Bound"
+      >b</a
+      ><a name="2340" class="Symbol"
+      >)</a
+      ><a name="2341"
+      > </a
+      ><a name="2342" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2346"
+      > </a
+      ><a name="2347" href="Data.Integer.Multiplication.Properties.html#2347" class="Bound"
+      >c</a
+      ><a name="2348"
+      >  </a
+      ><a name="2350" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2351"
+      > </a
+      ><a name="2352" class="Symbol"
+      >=</a
+      ><a name="2353"
+      > </a
+      ><a name="2354" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >cong</a
+      ><a name="2358"
+      > </a
+      ><a name="2359" class="Symbol"
+      >(</a
+      ><a name="2360" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+_</a
+      ><a name="2362"
+      > </a
+      ><a name="2363" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="2364"
+      > </a
+      ><a name="2365" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2368" class="Symbol"
+      >)</a
+      ><a name="2369"
+      > </a
+      ><a name="2370" class="Symbol"
+      >(</a
+      ><a name="2371" href="Data.Integer.Multiplication.Properties.html#1630" class="Function"
+      >lemma</a
+      ><a name="2376"
+      > </a
+      ><a name="2377" href="Data.Integer.Multiplication.Properties.html#2327" class="Bound"
+      >a</a
+      ><a name="2378"
+      > </a
+      ><a name="2379" href="Data.Integer.Multiplication.Properties.html#2339" class="Bound"
+      >b</a
+      ><a name="2380"
+      > </a
+      ><a name="2381" href="Data.Integer.Multiplication.Properties.html#2347" class="Bound"
+      >c</a
+      ><a name="2382" class="Symbol"
+      >)</a
+      ><a name="2383"
+      >
+  </a
+      ><a name="2386" href="Data.Integer.Multiplication.Properties.html#1991" class="Function"
+      >assoc</a
+      ><a name="2391"
+      > </a
+      ><a name="2392" class="Symbol"
+      >(</a
+      ><a name="2393" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2394"
+      > </a
+      ><a name="2395" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2398"
+      > </a
+      ><a name="2399" href="Data.Integer.Multiplication.Properties.html#2399" class="Bound"
+      >a</a
+      ><a name="2400" class="Symbol"
+      >)</a
+      ><a name="2401"
+      > </a
+      ><a name="2402" class="Symbol"
+      >(</a
+      ><a name="2403" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2404"
+      > </a
+      ><a name="2405" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2408"
+      > </a
+      ><a name="2409" href="Data.Integer.Multiplication.Properties.html#2409" class="Bound"
+      >b</a
+      ><a name="2410" class="Symbol"
+      >)</a
+      ><a name="2411"
+      > </a
+      ><a name="2412" class="Symbol"
+      >(</a
+      ><a name="2413" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2414"
+      > </a
+      ><a name="2415" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2418"
+      > </a
+      ><a name="2419" href="Data.Integer.Multiplication.Properties.html#2419" class="Bound"
+      >c</a
+      ><a name="2420" class="Symbol"
+      >)</a
+      ><a name="2421"
+      > </a
+      ><a name="2422" class="Symbol"
+      >=</a
+      ><a name="2423"
+      > </a
+      ><a name="2424" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >cong</a
+      ><a name="2428"
+      > </a
+      ><a name="2429" class="Symbol"
+      >(</a
+      ><a name="2430" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+_</a
+      ><a name="2432"
+      > </a
+      ><a name="2433" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="2434"
+      > </a
+      ><a name="2435" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2438" class="Symbol"
+      >)</a
+      ><a name="2439"
+      > </a
+      ><a name="2440" class="Symbol"
+      >(</a
+      ><a name="2441" href="Data.Integer.Multiplication.Properties.html#1630" class="Function"
+      >lemma</a
+      ><a name="2446"
+      > </a
+      ><a name="2447" href="Data.Integer.Multiplication.Properties.html#2399" class="Bound"
+      >a</a
+      ><a name="2448"
+      > </a
+      ><a name="2449" href="Data.Integer.Multiplication.Properties.html#2409" class="Bound"
+      >b</a
+      ><a name="2450"
+      > </a
+      ><a name="2451" href="Data.Integer.Multiplication.Properties.html#2419" class="Bound"
+      >c</a
+      ><a name="2452" class="Symbol"
+      >)</a
+      ><a name="2453"
+      >
+  </a
+      ><a name="2456" href="Data.Integer.Multiplication.Properties.html#1991" class="Function"
+      >assoc</a
+      ><a name="2461"
+      > </a
+      ><a name="2462" class="Symbol"
+      >(</a
+      ><a name="2463" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2464"
+      > </a
+      ><a name="2465" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2468"
+      > </a
+      ><a name="2469" href="Data.Integer.Multiplication.Properties.html#2469" class="Bound"
+      >a</a
+      ><a name="2470" class="Symbol"
+      >)</a
+      ><a name="2471"
+      > </a
+      ><a name="2472" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2476"
+      > </a
+      ><a name="2477" href="Data.Integer.Multiplication.Properties.html#2477" class="Bound"
+      >b</a
+      ><a name="2478"
+      >  </a
+      ><a name="2480" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2481"
+      > </a
+      ><a name="2482" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2486"
+      > </a
+      ><a name="2487" href="Data.Integer.Multiplication.Properties.html#2487" class="Bound"
+      >c</a
+      ><a name="2488"
+      >  </a
+      ><a name="2490" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2491"
+      > </a
+      ><a name="2492" class="Symbol"
+      >=</a
+      ><a name="2493"
+      > </a
+      ><a name="2494" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >cong</a
+      ><a name="2498"
+      > </a
+      ><a name="2499" class="Symbol"
+      >(</a
+      ><a name="2500" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+_</a
+      ><a name="2502"
+      > </a
+      ><a name="2503" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="2504"
+      > </a
+      ><a name="2505" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2508" class="Symbol"
+      >)</a
+      ><a name="2509"
+      > </a
+      ><a name="2510" class="Symbol"
+      >(</a
+      ><a name="2511" href="Data.Integer.Multiplication.Properties.html#1630" class="Function"
+      >lemma</a
+      ><a name="2516"
+      > </a
+      ><a name="2517" href="Data.Integer.Multiplication.Properties.html#2469" class="Bound"
+      >a</a
+      ><a name="2518"
+      > </a
+      ><a name="2519" href="Data.Integer.Multiplication.Properties.html#2477" class="Bound"
+      >b</a
+      ><a name="2520"
+      > </a
+      ><a name="2521" href="Data.Integer.Multiplication.Properties.html#2487" class="Bound"
+      >c</a
+      ><a name="2522" class="Symbol"
+      >)</a
+      ><a name="2523"
+      >
+  </a
+      ><a name="2526" href="Data.Integer.Multiplication.Properties.html#1991" class="Function"
+      >assoc</a
+      ><a name="2531"
+      > </a
+      ><a name="2532" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2536"
+      > </a
+      ><a name="2537" href="Data.Integer.Multiplication.Properties.html#2537" class="Bound"
+      >a</a
+      ><a name="2538"
+      >  </a
+      ><a name="2540" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2541"
+      > </a
+      ><a name="2542" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2546"
+      > </a
+      ><a name="2547" href="Data.Integer.Multiplication.Properties.html#2547" class="Bound"
+      >b</a
+      ><a name="2548"
+      >  </a
+      ><a name="2550" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2551"
+      > </a
+      ><a name="2552" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2556"
+      > </a
+      ><a name="2557" href="Data.Integer.Multiplication.Properties.html#2557" class="Bound"
+      >c</a
+      ><a name="2558"
+      >  </a
+      ><a name="2560" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2561"
+      > </a
+      ><a name="2562" class="Symbol"
+      >=</a
+      ><a name="2563"
+      > </a
+      ><a name="2564" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >cong</a
+      ><a name="2568"
+      > </a
+      ><a name="2569" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+_]</a
+      ><a name="2575"
+      >     </a
+      ><a name="2580" class="Symbol"
+      >(</a
+      ><a name="2581" href="Data.Integer.Multiplication.Properties.html#1630" class="Function"
+      >lemma</a
+      ><a name="2586"
+      > </a
+      ><a name="2587" href="Data.Integer.Multiplication.Properties.html#2537" class="Bound"
+      >a</a
+      ><a name="2588"
+      > </a
+      ><a name="2589" href="Data.Integer.Multiplication.Properties.html#2547" class="Bound"
+      >b</a
+      ><a name="2590"
+      > </a
+      ><a name="2591" href="Data.Integer.Multiplication.Properties.html#2557" class="Bound"
+      >c</a
+      ><a name="2592" class="Symbol"
+      >)</a
+      ><a name="2593"
+      >
+  </a
+      ><a name="2596" href="Data.Integer.Multiplication.Properties.html#1991" class="Function"
+      >assoc</a
+      ><a name="2601"
+      > </a
+      ><a name="2602" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2606"
+      > </a
+      ><a name="2607" href="Data.Integer.Multiplication.Properties.html#2607" class="Bound"
+      >a</a
+      ><a name="2608"
+      >  </a
+      ><a name="2610" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2611"
+      > </a
+      ><a name="2612" class="Symbol"
+      >(</a
+      ><a name="2613" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2614"
+      > </a
+      ><a name="2615" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2618"
+      > </a
+      ><a name="2619" href="Data.Integer.Multiplication.Properties.html#2619" class="Bound"
+      >b</a
+      ><a name="2620" class="Symbol"
+      >)</a
+      ><a name="2621"
+      > </a
+      ><a name="2622" class="Symbol"
+      >(</a
+      ><a name="2623" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2624"
+      > </a
+      ><a name="2625" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2628"
+      > </a
+      ><a name="2629" href="Data.Integer.Multiplication.Properties.html#2629" class="Bound"
+      >c</a
+      ><a name="2630" class="Symbol"
+      >)</a
+      ><a name="2631"
+      > </a
+      ><a name="2632" class="Symbol"
+      >=</a
+      ><a name="2633"
+      > </a
+      ><a name="2634" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >cong</a
+      ><a name="2638"
+      > </a
+      ><a name="2639" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+_]</a
+      ><a name="2645"
+      >     </a
+      ><a name="2650" class="Symbol"
+      >(</a
+      ><a name="2651" href="Data.Integer.Multiplication.Properties.html#1630" class="Function"
+      >lemma</a
+      ><a name="2656"
+      > </a
+      ><a name="2657" href="Data.Integer.Multiplication.Properties.html#2607" class="Bound"
+      >a</a
+      ><a name="2658"
+      > </a
+      ><a name="2659" href="Data.Integer.Multiplication.Properties.html#2619" class="Bound"
+      >b</a
+      ><a name="2660"
+      > </a
+      ><a name="2661" href="Data.Integer.Multiplication.Properties.html#2629" class="Bound"
+      >c</a
+      ><a name="2662" class="Symbol"
+      >)</a
+      ><a name="2663"
+      >
+  </a
+      ><a name="2666" href="Data.Integer.Multiplication.Properties.html#1991" class="Function"
+      >assoc</a
+      ><a name="2671"
+      > </a
+      ><a name="2672" class="Symbol"
+      >(</a
+      ><a name="2673" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2674"
+      > </a
+      ><a name="2675" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2678"
+      > </a
+      ><a name="2679" href="Data.Integer.Multiplication.Properties.html#2679" class="Bound"
+      >a</a
+      ><a name="2680" class="Symbol"
+      >)</a
+      ><a name="2681"
+      > </a
+      ><a name="2682" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2686"
+      > </a
+      ><a name="2687" href="Data.Integer.Multiplication.Properties.html#2687" class="Bound"
+      >b</a
+      ><a name="2688"
+      >  </a
+      ><a name="2690" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2691"
+      > </a
+      ><a name="2692" class="Symbol"
+      >(</a
+      ><a name="2693" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2694"
+      > </a
+      ><a name="2695" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2698"
+      > </a
+      ><a name="2699" href="Data.Integer.Multiplication.Properties.html#2699" class="Bound"
+      >c</a
+      ><a name="2700" class="Symbol"
+      >)</a
+      ><a name="2701"
+      > </a
+      ><a name="2702" class="Symbol"
+      >=</a
+      ><a name="2703"
+      > </a
+      ><a name="2704" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >cong</a
+      ><a name="2708"
+      > </a
+      ><a name="2709" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+_]</a
+      ><a name="2715"
+      >     </a
+      ><a name="2720" class="Symbol"
+      >(</a
+      ><a name="2721" href="Data.Integer.Multiplication.Properties.html#1630" class="Function"
+      >lemma</a
+      ><a name="2726"
+      > </a
+      ><a name="2727" href="Data.Integer.Multiplication.Properties.html#2679" class="Bound"
+      >a</a
+      ><a name="2728"
+      > </a
+      ><a name="2729" href="Data.Integer.Multiplication.Properties.html#2687" class="Bound"
+      >b</a
+      ><a name="2730"
+      > </a
+      ><a name="2731" href="Data.Integer.Multiplication.Properties.html#2699" class="Bound"
+      >c</a
+      ><a name="2732" class="Symbol"
+      >)</a
+      ><a name="2733"
+      >
+  </a
+      ><a name="2736" href="Data.Integer.Multiplication.Properties.html#1991" class="Function"
+      >assoc</a
+      ><a name="2741"
+      > </a
+      ><a name="2742" class="Symbol"
+      >(</a
+      ><a name="2743" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2744"
+      > </a
+      ><a name="2745" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2748"
+      > </a
+      ><a name="2749" href="Data.Integer.Multiplication.Properties.html#2749" class="Bound"
+      >a</a
+      ><a name="2750" class="Symbol"
+      >)</a
+      ><a name="2751"
+      > </a
+      ><a name="2752" class="Symbol"
+      >(</a
+      ><a name="2753" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2754"
+      > </a
+      ><a name="2755" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2758"
+      > </a
+      ><a name="2759" href="Data.Integer.Multiplication.Properties.html#2759" class="Bound"
+      >b</a
+      ><a name="2760" class="Symbol"
+      >)</a
+      ><a name="2761"
+      > </a
+      ><a name="2762" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2766"
+      > </a
+      ><a name="2767" href="Data.Integer.Multiplication.Properties.html#2767" class="Bound"
+      >c</a
+      ><a name="2768"
+      >  </a
+      ><a name="2770" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2771"
+      > </a
+      ><a name="2772" class="Symbol"
+      >=</a
+      ><a name="2773"
+      > </a
+      ><a name="2774" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >cong</a
+      ><a name="2778"
+      > </a
+      ><a name="2779" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+_]</a
+      ><a name="2785"
+      >     </a
+      ><a name="2790" class="Symbol"
+      >(</a
+      ><a name="2791" href="Data.Integer.Multiplication.Properties.html#1630" class="Function"
+      >lemma</a
+      ><a name="2796"
+      > </a
+      ><a name="2797" href="Data.Integer.Multiplication.Properties.html#2749" class="Bound"
+      >a</a
+      ><a name="2798"
+      > </a
+      ><a name="2799" href="Data.Integer.Multiplication.Properties.html#2759" class="Bound"
+      >b</a
+      ><a name="2800"
+      > </a
+      ><a name="2801" href="Data.Integer.Multiplication.Properties.html#2767" class="Bound"
+      >c</a
+      ><a name="2802" class="Symbol"
+      >)</a
+      ><a name="2803"
+      >
+
+  </a
+      ><a name="2807" href="Data.Integer.Multiplication.Properties.html#2807" class="Function"
+      >isSemigroup</a
+      ><a name="2818"
+      > </a
+      ><a name="2819" class="Symbol"
+      >:</a
+      ><a name="2820"
+      > </a
+      ><a name="2821" href="Algebra.Structures.html#640" class="Record"
+      >IsSemigroup</a
+      ><a name="2832"
+      > </a
+      ><a name="2833" class="Symbol"
+      >_</a
+      ><a name="2834"
+      > </a
+      ><a name="2835" class="Symbol"
+      >_</a
+      ><a name="2836"
+      >
+  </a
+      ><a name="2839" href="Data.Integer.Multiplication.Properties.html#2807" class="Function"
+      >isSemigroup</a
+      ><a name="2850"
+      > </a
+      ><a name="2851" class="Symbol"
+      >=</a
+      ><a name="2852"
+      > </a
+      ><a name="2853" class="Keyword"
+      >record</a
+      ><a name="2859"
+      >
+    </a
+      ><a name="2864" class="Symbol"
+      >{</a
+      ><a name="2865"
+      > </a
+      ><a name="2866" class="Field"
+      >isEquivalence</a
+      ><a name="2879"
+      > </a
+      ><a name="2880" class="Symbol"
+      >=</a
+      ><a name="2881"
+      > </a
+      ><a name="2882" href="Relation.Binary.PropositionalEquality.Core.html#879" class="Function"
+      >isEquivalence</a
+      ><a name="2895"
+      >
+    </a
+      ><a name="2900" class="Symbol"
+      >;</a
+      ><a name="2901"
+      > </a
+      ><a name="2902" class="Field"
+      >assoc</a
+      ><a name="2907"
+      >         </a
+      ><a name="2916" class="Symbol"
+      >=</a
+      ><a name="2917"
+      > </a
+      ><a name="2918" href="Data.Integer.Multiplication.Properties.html#1991" class="Function"
+      >assoc</a
+      ><a name="2923"
+      >
+    </a
+      ><a name="2928" class="Symbol"
+      >;</a
+      ><a name="2929"
+      > </a
+      ><a name="2930" class="Field"
+      >&#8729;-cong</a
+      ><a name="2936"
+      >        </a
+      ><a name="2944" class="Symbol"
+      >=</a
+      ><a name="2945"
+      > </a
+      ><a name="2946" href="Relation.Binary.PropositionalEquality.html#1274" class="Function"
+      >cong&#8322;</a
+      ><a name="2951"
+      > </a
+      ><a name="2952" href="Data.Integer.html#3734" class="Function"
+      >&#8484;*</a
+      ><a name="2954"
+      >
+    </a
+      ><a name="2959" class="Symbol"
+      >}</a
+      ><a name="2960"
+      >
+
+  </a
+      ><a name="2964" href="Data.Integer.Multiplication.Properties.html#2964" class="Function"
+      >isCommutativeMonoid</a
+      ><a name="2983"
+      > </a
+      ><a name="2984" class="Symbol"
+      >:</a
+      ><a name="2985"
+      > </a
+      ><a name="2986" href="Algebra.Structures.html#1180" class="Record"
+      >IsCommutativeMonoid</a
+      ><a name="3005"
+      > </a
+      ><a name="3006" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="3009"
+      > </a
+      ><a name="3010" href="Data.Integer.html#3734" class="Function"
+      >&#8484;*</a
+      ><a name="3012"
+      > </a
+      ><a name="3013" class="Symbol"
+      >(</a
+      ><a name="3014" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3015"
+      > </a
+      ><a name="3016" class="Number"
+      >1</a
+      ><a name="3017" class="Symbol"
+      >)</a
+      ><a name="3018"
+      >
+  </a
+      ><a name="3021" href="Data.Integer.Multiplication.Properties.html#2964" class="Function"
+      >isCommutativeMonoid</a
+      ><a name="3040"
+      > </a
+      ><a name="3041" class="Symbol"
+      >=</a
+      ><a name="3042"
+      > </a
+      ><a name="3043" class="Keyword"
+      >record</a
+      ><a name="3049"
+      >
+    </a
+      ><a name="3054" class="Symbol"
+      >{</a
+      ><a name="3055"
+      > </a
+      ><a name="3056" class="Field"
+      >isSemigroup</a
+      ><a name="3067"
+      > </a
+      ><a name="3068" class="Symbol"
+      >=</a
+      ><a name="3069"
+      > </a
+      ><a name="3070" href="Data.Integer.Multiplication.Properties.html#2807" class="Function"
+      >isSemigroup</a
+      ><a name="3081"
+      >
+    </a
+      ><a name="3086" class="Symbol"
+      >;</a
+      ><a name="3087"
+      > </a
+      ><a name="3088" class="Field"
+      >identity&#737;</a
+      ><a name="3097"
+      >   </a
+      ><a name="3100" class="Symbol"
+      >=</a
+      ><a name="3101"
+      > </a
+      ><a name="3102" href="Data.Integer.Multiplication.Properties.html#1175" class="Function"
+      >identity&#737;</a
+      ><a name="3111"
+      >
+    </a
+      ><a name="3116" class="Symbol"
+      >;</a
+      ><a name="3117"
+      > </a
+      ><a name="3118" class="Field"
+      >comm</a
+      ><a name="3122"
+      >        </a
+      ><a name="3130" class="Symbol"
+      >=</a
+      ><a name="3131"
+      > </a
+      ><a name="3132" href="Data.Integer.Multiplication.Properties.html#1353" class="Function"
+      >comm</a
+      ><a name="3136"
+      >
+    </a
+      ><a name="3141" class="Symbol"
+      >}</a
+      ><a name="3142"
+      >
+
+</a
+      ><a name="3144" href="Data.Integer.Multiplication.Properties.html#3144" class="Function"
+      >commutativeMonoid</a
+      ><a name="3161"
+      > </a
+      ><a name="3162" class="Symbol"
+      >:</a
+      ><a name="3163"
+      > </a
+      ><a name="3164" href="Algebra.html#1636" class="Record"
+      >CommutativeMonoid</a
+      ><a name="3181"
+      > </a
+      ><a name="3182" class="Symbol"
+      >_</a
+      ><a name="3183"
+      > </a
+      ><a name="3184" class="Symbol"
+      >_</a
+      ><a name="3185"
+      >
+</a
+      ><a name="3186" href="Data.Integer.Multiplication.Properties.html#3144" class="Function"
+      >commutativeMonoid</a
+      ><a name="3203"
+      > </a
+      ><a name="3204" class="Symbol"
+      >=</a
+      ><a name="3205"
+      > </a
+      ><a name="3206" class="Keyword"
+      >record</a
+      ><a name="3212"
+      >
+  </a
+      ><a name="3215" class="Symbol"
+      >{</a
+      ><a name="3216"
+      > </a
+      ><a name="3217" class="Field"
+      >Carrier</a
+      ><a name="3224"
+      >             </a
+      ><a name="3237" class="Symbol"
+      >=</a
+      ><a name="3238"
+      > </a
+      ><a name="3239" href="Data.Integer.html#915" class="Datatype"
+      >&#8484;</a
+      ><a name="3240"
+      >
+  </a
+      ><a name="3243" class="Symbol"
+      >;</a
+      ><a name="3244"
+      > </a
+      ><a name="3245" class="Field Operator"
+      >_&#8776;_</a
+      ><a name="3248"
+      >                 </a
+      ><a name="3265" class="Symbol"
+      >=</a
+      ><a name="3266"
+      > </a
+      ><a name="3267" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="3270"
+      >
+  </a
+      ><a name="3273" class="Symbol"
+      >;</a
+      ><a name="3274"
+      > </a
+      ><a name="3275" class="Field Operator"
+      >_&#8729;_</a
+      ><a name="3278"
+      >                 </a
+      ><a name="3295" class="Symbol"
+      >=</a
+      ><a name="3296"
+      > </a
+      ><a name="3297" href="Data.Integer.html#3734" class="Function"
+      >&#8484;*</a
+      ><a name="3299"
+      >
+  </a
+      ><a name="3302" class="Symbol"
+      >;</a
+      ><a name="3303"
+      > </a
+      ><a name="3304" class="Field"
+      >&#949;</a
+      ><a name="3305"
+      >                   </a
+      ><a name="3324" class="Symbol"
+      >=</a
+      ><a name="3325"
+      > </a
+      ><a name="3326" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3327"
+      > </a
+      ><a name="3328" class="Number"
+      >1</a
+      ><a name="3329"
+      >
+  </a
+      ><a name="3332" class="Symbol"
+      >;</a
+      ><a name="3333"
+      > </a
+      ><a name="3334" class="Field"
+      >isCommutativeMonoid</a
+      ><a name="3353"
+      > </a
+      ><a name="3354" class="Symbol"
+      >=</a
+      ><a name="3355"
+      > </a
+      ><a name="3356" href="Data.Integer.Multiplication.Properties.html#2964" class="Function"
+      >isCommutativeMonoid</a
+      ><a name="3375"
+      >
+  </a
+      ><a name="3378" class="Symbol"
+      >}</a
+      ><a name="3379"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

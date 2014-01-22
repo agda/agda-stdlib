@@ -1,9 +1,0 @@
-------------------------------------------------------------------------
--- The Agda standard library
---
--- All library modules, along with short descriptions
-------------------------------------------------------------------------
-
--- Note that core modules are not included.
-
-module Everything where

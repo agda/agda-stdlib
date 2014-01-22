@@ -1,0 +1,2635 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Function.Equality</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Function setoids and related constructions</a
+      ><a name="151"
+      >
+</a
+      ><a name="152" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="224"
+      >
+
+</a
+      ><a name="226" class="Keyword"
+      >module</a
+      ><a name="232"
+      > </a
+      ><a name="233" href="Function.Equality.html#1" class="Module"
+      >Function.Equality</a
+      ><a name="250"
+      > </a
+      ><a name="251" class="Keyword"
+      >where</a
+      ><a name="256"
+      >
+
+</a
+      ><a name="258" class="Keyword"
+      >open</a
+      ><a name="262"
+      > </a
+      ><a name="263" class="Keyword"
+      >import</a
+      ><a name="269"
+      > </a
+      ><a name="270" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="278"
+      > </a
+      ><a name="279" class="Symbol"
+      >as</a
+      ><a name="281"
+      > </a
+      ><a name="282" class="Module"
+      >Fun</a
+      ><a name="285"
+      > </a
+      ><a name="286" class="Keyword"
+      >using</a
+      ><a name="291"
+      > </a
+      ><a name="292" class="Symbol"
+      >(</a
+      ><a name="293"
+      >_on_</a
+      ><a name="297" class="Symbol"
+      >)</a
+      ><a name="298"
+      >
+</a
+      ><a name="299" class="Keyword"
+      >open</a
+      ><a name="303"
+      > </a
+      ><a name="304" class="Keyword"
+      >import</a
+      ><a name="310"
+      > </a
+      ><a name="311" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="316"
+      >
+</a
+      ><a name="317" class="Keyword"
+      >import</a
+      ><a name="323"
+      > </a
+      ><a name="324" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="339"
+      > </a
+      ><a name="340" class="Symbol"
+      >as</a
+      ><a name="342"
+      > </a
+      ><a name="343" class="Module"
+      >B</a
+      ><a name="344"
+      >
+</a
+      ><a name="345" class="Keyword"
+      >import</a
+      ><a name="351"
+      > </a
+      ><a name="352" href="Relation.Binary.Indexed.html#1" class="Module"
+      >Relation.Binary.Indexed</a
+      ><a name="375"
+      > </a
+      ><a name="376" class="Symbol"
+      >as</a
+      ><a name="378"
+      > </a
+      ><a name="379" class="Module"
+      >I</a
+      ><a name="380"
+      >
+
+</a
+      ><a name="382" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="454"
+      >
+</a
+      ><a name="455" class="Comment"
+      >-- Functions which preserve equality</a
+      ><a name="491"
+      >
+
+</a
+      ><a name="493" class="Keyword"
+      >record</a
+      ><a name="499"
+      > </a
+      ><a name="500" href="Function.Equality.html#500" class="Record"
+      >&#928;</a
+      ><a name="501"
+      > </a
+      ><a name="502" class="Symbol"
+      >{</a
+      ><a name="503" href="Function.Equality.html#503" class="Bound"
+      >f&#8321;</a
+      ><a name="505"
+      > </a
+      ><a name="506" href="Function.Equality.html#506" class="Bound"
+      >f&#8322;</a
+      ><a name="508"
+      > </a
+      ><a name="509" href="Function.Equality.html#509" class="Bound"
+      >t&#8321;</a
+      ><a name="511"
+      > </a
+      ><a name="512" href="Function.Equality.html#512" class="Bound"
+      >t&#8322;</a
+      ><a name="514" class="Symbol"
+      >}</a
+      ><a name="515"
+      >
+         </a
+      ><a name="525" class="Symbol"
+      >(</a
+      ><a name="526" href="Function.Equality.html#526" class="Bound"
+      >From</a
+      ><a name="530"
+      > </a
+      ><a name="531" class="Symbol"
+      >:</a
+      ><a name="532"
+      > </a
+      ><a name="533" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="541"
+      > </a
+      ><a name="542" href="Function.Equality.html#503" class="Bound"
+      >f&#8321;</a
+      ><a name="544"
+      > </a
+      ><a name="545" href="Function.Equality.html#506" class="Bound"
+      >f&#8322;</a
+      ><a name="547" class="Symbol"
+      >)</a
+      ><a name="548"
+      >
+         </a
+      ><a name="558" class="Symbol"
+      >(</a
+      ><a name="559" href="Function.Equality.html#559" class="Bound"
+      >To</a
+      ><a name="561"
+      > </a
+      ><a name="562" class="Symbol"
+      >:</a
+      ><a name="563"
+      > </a
+      ><a name="564" href="Relation.Binary.Indexed.Core.html#1758" class="Record"
+      >I.Setoid</a
+      ><a name="572"
+      > </a
+      ><a name="573" class="Symbol"
+      >(</a
+      ><a name="574" href="Relation.Binary.html#1915" class="Field"
+      >B.Setoid.Carrier</a
+      ><a name="590"
+      > </a
+      ><a name="591" href="Function.Equality.html#526" class="Bound"
+      >From</a
+      ><a name="595" class="Symbol"
+      >)</a
+      ><a name="596"
+      > </a
+      ><a name="597" href="Function.Equality.html#509" class="Bound"
+      >t&#8321;</a
+      ><a name="599"
+      > </a
+      ><a name="600" href="Function.Equality.html#512" class="Bound"
+      >t&#8322;</a
+      ><a name="602" class="Symbol"
+      >)</a
+      ><a name="603"
+      > </a
+      ><a name="604" class="Symbol"
+      >:</a
+      ><a name="605"
+      >
+         </a
+      ><a name="615" class="PrimitiveType"
+      >Set</a
+      ><a name="618"
+      > </a
+      ><a name="619" class="Symbol"
+      >(</a
+      ><a name="620" href="Function.Equality.html#503" class="Bound"
+      >f&#8321;</a
+      ><a name="622"
+      > </a
+      ><a name="623" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="624"
+      > </a
+      ><a name="625" href="Function.Equality.html#506" class="Bound"
+      >f&#8322;</a
+      ><a name="627"
+      > </a
+      ><a name="628" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="629"
+      > </a
+      ><a name="630" href="Function.Equality.html#509" class="Bound"
+      >t&#8321;</a
+      ><a name="632"
+      > </a
+      ><a name="633" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="634"
+      > </a
+      ><a name="635" href="Function.Equality.html#512" class="Bound"
+      >t&#8322;</a
+      ><a name="637" class="Symbol"
+      >)</a
+      ><a name="638"
+      > </a
+      ><a name="639" class="Keyword"
+      >where</a
+      ><a name="644"
+      >
+  </a
+      ><a name="647" class="Keyword"
+      >open</a
+      ><a name="651"
+      > </a
+      ><a name="652" href="Relation.Binary.Indexed.html#1" class="Module"
+      >I</a
+      ><a name="653"
+      > </a
+      ><a name="654" class="Keyword"
+      >using</a
+      ><a name="659"
+      > </a
+      ><a name="660" class="Symbol"
+      >(</a
+      ><a name="661"
+      >_=[_]&#8658;_</a
+      ><a name="668" class="Symbol"
+      >)</a
+      ><a name="669"
+      >
+  </a
+      ><a name="672" class="Keyword"
+      >infixl</a
+      ><a name="678"
+      > </a
+      ><a name="679" class="Number"
+      >5</a
+      ><a name="680"
+      > _&#10216;$&#10217;_
+  </a
+      ><a name="689" class="Keyword"
+      >field</a
+      ><a name="694"
+      >
+    </a
+      ><a name="699" href="Function.Equality.html#699" class="Field Operator"
+      >_&#10216;$&#10217;_</a
+      ><a name="704"
+      > </a
+      ><a name="705" class="Symbol"
+      >:</a
+      ><a name="706"
+      > </a
+      ><a name="707" class="Symbol"
+      >(</a
+      ><a name="708" href="Function.Equality.html#708" class="Bound"
+      >x</a
+      ><a name="709"
+      > </a
+      ><a name="710" class="Symbol"
+      >:</a
+      ><a name="711"
+      > </a
+      ><a name="712" href="Relation.Binary.html#1915" class="Field"
+      >B.Setoid.Carrier</a
+      ><a name="728"
+      > </a
+      ><a name="729" href="Function.Equality.html#526" class="Bound"
+      >From</a
+      ><a name="733" class="Symbol"
+      >)</a
+      ><a name="734"
+      > </a
+      ><a name="735" class="Symbol"
+      >&#8594;</a
+      ><a name="736"
+      > </a
+      ><a name="737" href="Relation.Binary.Indexed.Core.html#1841" class="Field"
+      >I.Setoid.Carrier</a
+      ><a name="753"
+      > </a
+      ><a name="754" href="Function.Equality.html#559" class="Bound"
+      >To</a
+      ><a name="756"
+      > </a
+      ><a name="757" href="Function.Equality.html#708" class="Bound"
+      >x</a
+      ><a name="758"
+      >
+    </a
+      ><a name="763" href="Function.Equality.html#763" class="Field"
+      >cong</a
+      ><a name="767"
+      >  </a
+      ><a name="769" class="Symbol"
+      >:</a
+      ><a name="770"
+      > </a
+      ><a name="771" href="Relation.Binary.html#1941" class="Field Operator"
+      >B.Setoid._&#8776;_</a
+      ><a name="783"
+      > </a
+      ><a name="784" href="Function.Equality.html#526" class="Bound"
+      >From</a
+      ><a name="788"
+      > </a
+      ><a name="789" href="Relation.Binary.Indexed.html#832" class="Function Operator"
+      >=[</a
+      ><a name="791"
+      > </a
+      ><a name="792" href="Function.Equality.html#699" class="Bound Operator"
+      >_&#10216;$&#10217;_</a
+      ><a name="797"
+      > </a
+      ><a name="798" href="Relation.Binary.Indexed.html#832" class="Function Operator"
+      >]&#8658;</a
+      ><a name="800"
+      > </a
+      ><a name="801" href="Relation.Binary.Indexed.Core.html#1871" class="Field Operator"
+      >I.Setoid._&#8776;_</a
+      ><a name="813"
+      > </a
+      ><a name="814" href="Function.Equality.html#559" class="Bound"
+      >To</a
+      ><a name="816"
+      >
+
+</a
+      ><a name="818" class="Keyword"
+      >open</a
+      ><a name="822"
+      > </a
+      ><a name="823" href="Function.Equality.html#500" class="Module"
+      >&#928;</a
+      ><a name="824"
+      > </a
+      ><a name="825" class="Keyword"
+      >public</a
+      ><a name="831"
+      >
+
+</a
+      ><a name="833" class="Keyword"
+      >infixr</a
+      ><a name="839"
+      > </a
+      ><a name="840" class="Number"
+      >0</a
+      ><a name="841"
+      > _&#10230;_
+
+</a
+      ><a name="847" href="Function.Equality.html#847" class="Function Operator"
+      >_&#10230;_</a
+      ><a name="850"
+      > </a
+      ><a name="851" class="Symbol"
+      >:</a
+      ><a name="852"
+      > </a
+      ><a name="853" class="Symbol"
+      >&#8704;</a
+      ><a name="854"
+      > </a
+      ><a name="855" class="Symbol"
+      >{</a
+      ><a name="856" href="Function.Equality.html#856" class="Bound"
+      >f&#8321;</a
+      ><a name="858"
+      > </a
+      ><a name="859" href="Function.Equality.html#859" class="Bound"
+      >f&#8322;</a
+      ><a name="861"
+      > </a
+      ><a name="862" href="Function.Equality.html#862" class="Bound"
+      >t&#8321;</a
+      ><a name="864"
+      > </a
+      ><a name="865" href="Function.Equality.html#865" class="Bound"
+      >t&#8322;</a
+      ><a name="867" class="Symbol"
+      >}</a
+      ><a name="868"
+      > </a
+      ><a name="869" class="Symbol"
+      >&#8594;</a
+      ><a name="870"
+      > </a
+      ><a name="871" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="879"
+      > </a
+      ><a name="880" href="Function.Equality.html#856" class="Bound"
+      >f&#8321;</a
+      ><a name="882"
+      > </a
+      ><a name="883" href="Function.Equality.html#859" class="Bound"
+      >f&#8322;</a
+      ><a name="885"
+      > </a
+      ><a name="886" class="Symbol"
+      >&#8594;</a
+      ><a name="887"
+      > </a
+      ><a name="888" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="896"
+      > </a
+      ><a name="897" href="Function.Equality.html#862" class="Bound"
+      >t&#8321;</a
+      ><a name="899"
+      > </a
+      ><a name="900" href="Function.Equality.html#865" class="Bound"
+      >t&#8322;</a
+      ><a name="902"
+      > </a
+      ><a name="903" class="Symbol"
+      >&#8594;</a
+      ><a name="904"
+      > </a
+      ><a name="905" class="PrimitiveType"
+      >Set</a
+      ><a name="908"
+      > </a
+      ><a name="909" class="Symbol"
+      >_</a
+      ><a name="910"
+      >
+</a
+      ><a name="911" href="Function.Equality.html#911" class="Bound"
+      >From</a
+      ><a name="915"
+      > </a
+      ><a name="916" href="Function.Equality.html#847" class="Function Operator"
+      >&#10230;</a
+      ><a name="917"
+      > </a
+      ><a name="918" href="Function.Equality.html#918" class="Bound"
+      >To</a
+      ><a name="920"
+      > </a
+      ><a name="921" class="Symbol"
+      >=</a
+      ><a name="922"
+      > </a
+      ><a name="923" href="Function.Equality.html#500" class="Record"
+      >&#928;</a
+      ><a name="924"
+      > </a
+      ><a name="925" href="Function.Equality.html#911" class="Bound"
+      >From</a
+      ><a name="929"
+      > </a
+      ><a name="930" class="Symbol"
+      >(</a
+      ><a name="931" href="Relation.Binary.html#2332" class="Function"
+      >B.Setoid.indexedSetoid</a
+      ><a name="953"
+      > </a
+      ><a name="954" href="Function.Equality.html#918" class="Bound"
+      >To</a
+      ><a name="956" class="Symbol"
+      >)</a
+      ><a name="957"
+      >
+
+</a
+      ><a name="959" class="Comment"
+      >-- Identity and composition.</a
+      ><a name="987"
+      >
+
+</a
+      ><a name="989" href="Function.Equality.html#989" class="Function"
+      >id</a
+      ><a name="991"
+      > </a
+      ><a name="992" class="Symbol"
+      >:</a
+      ><a name="993"
+      > </a
+      ><a name="994" class="Symbol"
+      >&#8704;</a
+      ><a name="995"
+      > </a
+      ><a name="996" class="Symbol"
+      >{</a
+      ><a name="997" href="Function.Equality.html#997" class="Bound"
+      >a&#8321;</a
+      ><a name="999"
+      > </a
+      ><a name="1000" href="Function.Equality.html#1000" class="Bound"
+      >a&#8322;</a
+      ><a name="1002" class="Symbol"
+      >}</a
+      ><a name="1003"
+      > </a
+      ><a name="1004" class="Symbol"
+      >{</a
+      ><a name="1005" href="Function.Equality.html#1005" class="Bound"
+      >A</a
+      ><a name="1006"
+      > </a
+      ><a name="1007" class="Symbol"
+      >:</a
+      ><a name="1008"
+      > </a
+      ><a name="1009" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="1017"
+      > </a
+      ><a name="1018" href="Function.Equality.html#997" class="Bound"
+      >a&#8321;</a
+      ><a name="1020"
+      > </a
+      ><a name="1021" href="Function.Equality.html#1000" class="Bound"
+      >a&#8322;</a
+      ><a name="1023" class="Symbol"
+      >}</a
+      ><a name="1024"
+      > </a
+      ><a name="1025" class="Symbol"
+      >&#8594;</a
+      ><a name="1026"
+      > </a
+      ><a name="1027" href="Function.Equality.html#1005" class="Bound"
+      >A</a
+      ><a name="1028"
+      > </a
+      ><a name="1029" href="Function.Equality.html#847" class="Function Operator"
+      >&#10230;</a
+      ><a name="1030"
+      > </a
+      ><a name="1031" href="Function.Equality.html#1005" class="Bound"
+      >A</a
+      ><a name="1032"
+      >
+</a
+      ><a name="1033" href="Function.Equality.html#989" class="Function"
+      >id</a
+      ><a name="1035"
+      > </a
+      ><a name="1036" class="Symbol"
+      >=</a
+      ><a name="1037"
+      > </a
+      ><a name="1038" class="Keyword"
+      >record</a
+      ><a name="1044"
+      > </a
+      ><a name="1045" class="Symbol"
+      >{</a
+      ><a name="1046"
+      > </a
+      ><a name="1047" class="Field Operator"
+      >_&#10216;$&#10217;_</a
+      ><a name="1052"
+      > </a
+      ><a name="1053" class="Symbol"
+      >=</a
+      ><a name="1054"
+      > </a
+      ><a name="1055" href="Function.html#1012" class="Function"
+      >Fun.id</a
+      ><a name="1061" class="Symbol"
+      >;</a
+      ><a name="1062"
+      > </a
+      ><a name="1063" class="Field"
+      >cong</a
+      ><a name="1067"
+      > </a
+      ><a name="1068" class="Symbol"
+      >=</a
+      ><a name="1069"
+      > </a
+      ><a name="1070" href="Function.html#1012" class="Function"
+      >Fun.id</a
+      ><a name="1076"
+      > </a
+      ><a name="1077" class="Symbol"
+      >}</a
+      ><a name="1078"
+      >
+
+</a
+      ><a name="1080" class="Keyword"
+      >infixr</a
+      ><a name="1086"
+      > </a
+      ><a name="1087" class="Number"
+      >9</a
+      ><a name="1088"
+      > _&#8728;_
+
+</a
+      ><a name="1094" href="Function.Equality.html#1094" class="Function Operator"
+      >_&#8728;_</a
+      ><a name="1097"
+      > </a
+      ><a name="1098" class="Symbol"
+      >:</a
+      ><a name="1099"
+      > </a
+      ><a name="1100" class="Symbol"
+      >&#8704;</a
+      ><a name="1101"
+      > </a
+      ><a name="1102" class="Symbol"
+      >{</a
+      ><a name="1103" href="Function.Equality.html#1103" class="Bound"
+      >a&#8321;</a
+      ><a name="1105"
+      > </a
+      ><a name="1106" href="Function.Equality.html#1106" class="Bound"
+      >a&#8322;</a
+      ><a name="1108" class="Symbol"
+      >}</a
+      ><a name="1109"
+      > </a
+      ><a name="1110" class="Symbol"
+      >{</a
+      ><a name="1111" href="Function.Equality.html#1111" class="Bound"
+      >A</a
+      ><a name="1112"
+      > </a
+      ><a name="1113" class="Symbol"
+      >:</a
+      ><a name="1114"
+      > </a
+      ><a name="1115" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="1123"
+      > </a
+      ><a name="1124" href="Function.Equality.html#1103" class="Bound"
+      >a&#8321;</a
+      ><a name="1126"
+      > </a
+      ><a name="1127" href="Function.Equality.html#1106" class="Bound"
+      >a&#8322;</a
+      ><a name="1129" class="Symbol"
+      >}</a
+      ><a name="1130"
+      >
+        </a
+      ><a name="1139" class="Symbol"
+      >{</a
+      ><a name="1140" href="Function.Equality.html#1140" class="Bound"
+      >b&#8321;</a
+      ><a name="1142"
+      > </a
+      ><a name="1143" href="Function.Equality.html#1143" class="Bound"
+      >b&#8322;</a
+      ><a name="1145" class="Symbol"
+      >}</a
+      ><a name="1146"
+      > </a
+      ><a name="1147" class="Symbol"
+      >{</a
+      ><a name="1148" href="Function.Equality.html#1148" class="Bound"
+      >B</a
+      ><a name="1149"
+      > </a
+      ><a name="1150" class="Symbol"
+      >:</a
+      ><a name="1151"
+      > </a
+      ><a name="1152" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="1160"
+      > </a
+      ><a name="1161" href="Function.Equality.html#1140" class="Bound"
+      >b&#8321;</a
+      ><a name="1163"
+      > </a
+      ><a name="1164" href="Function.Equality.html#1143" class="Bound"
+      >b&#8322;</a
+      ><a name="1166" class="Symbol"
+      >}</a
+      ><a name="1167"
+      >
+        </a
+      ><a name="1176" class="Symbol"
+      >{</a
+      ><a name="1177" href="Function.Equality.html#1177" class="Bound"
+      >c&#8321;</a
+      ><a name="1179"
+      > </a
+      ><a name="1180" href="Function.Equality.html#1180" class="Bound"
+      >c&#8322;</a
+      ><a name="1182" class="Symbol"
+      >}</a
+      ><a name="1183"
+      > </a
+      ><a name="1184" class="Symbol"
+      >{</a
+      ><a name="1185" href="Function.Equality.html#1185" class="Bound"
+      >C</a
+      ><a name="1186"
+      > </a
+      ><a name="1187" class="Symbol"
+      >:</a
+      ><a name="1188"
+      > </a
+      ><a name="1189" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="1197"
+      > </a
+      ><a name="1198" href="Function.Equality.html#1177" class="Bound"
+      >c&#8321;</a
+      ><a name="1200"
+      > </a
+      ><a name="1201" href="Function.Equality.html#1180" class="Bound"
+      >c&#8322;</a
+      ><a name="1203" class="Symbol"
+      >}</a
+      ><a name="1204"
+      > </a
+      ><a name="1205" class="Symbol"
+      >&#8594;</a
+      ><a name="1206"
+      >
+      </a
+      ><a name="1213" href="Function.Equality.html#1148" class="Bound"
+      >B</a
+      ><a name="1214"
+      > </a
+      ><a name="1215" href="Function.Equality.html#847" class="Function Operator"
+      >&#10230;</a
+      ><a name="1216"
+      > </a
+      ><a name="1217" href="Function.Equality.html#1185" class="Bound"
+      >C</a
+      ><a name="1218"
+      > </a
+      ><a name="1219" class="Symbol"
+      >&#8594;</a
+      ><a name="1220"
+      > </a
+      ><a name="1221" href="Function.Equality.html#1111" class="Bound"
+      >A</a
+      ><a name="1222"
+      > </a
+      ><a name="1223" href="Function.Equality.html#847" class="Function Operator"
+      >&#10230;</a
+      ><a name="1224"
+      > </a
+      ><a name="1225" href="Function.Equality.html#1148" class="Bound"
+      >B</a
+      ><a name="1226"
+      > </a
+      ><a name="1227" class="Symbol"
+      >&#8594;</a
+      ><a name="1228"
+      > </a
+      ><a name="1229" href="Function.Equality.html#1111" class="Bound"
+      >A</a
+      ><a name="1230"
+      > </a
+      ><a name="1231" href="Function.Equality.html#847" class="Function Operator"
+      >&#10230;</a
+      ><a name="1232"
+      > </a
+      ><a name="1233" href="Function.Equality.html#1185" class="Bound"
+      >C</a
+      ><a name="1234"
+      >
+</a
+      ><a name="1235" href="Function.Equality.html#1235" class="Bound"
+      >f</a
+      ><a name="1236"
+      > </a
+      ><a name="1237" href="Function.Equality.html#1094" class="Function Operator"
+      >&#8728;</a
+      ><a name="1238"
+      > </a
+      ><a name="1239" href="Function.Equality.html#1239" class="Bound"
+      >g</a
+      ><a name="1240"
+      > </a
+      ><a name="1241" class="Symbol"
+      >=</a
+      ><a name="1242"
+      > </a
+      ><a name="1243" class="Keyword"
+      >record</a
+      ><a name="1249"
+      >
+  </a
+      ><a name="1252" class="Symbol"
+      >{</a
+      ><a name="1253"
+      > </a
+      ><a name="1254" class="Field Operator"
+      >_&#10216;$&#10217;_</a
+      ><a name="1259"
+      > </a
+      ><a name="1260" class="Symbol"
+      >=</a
+      ><a name="1261"
+      > </a
+      ><a name="1262" href="Function.html#713" class="Function Operator"
+      >Fun._&#8728;_</a
+      ><a name="1269"
+      > </a
+      ><a name="1270" class="Symbol"
+      >(</a
+      ><a name="1271" href="Function.Equality.html#699" class="Field Operator"
+      >_&#10216;$&#10217;_</a
+      ><a name="1276"
+      > </a
+      ><a name="1277" href="Function.Equality.html#1235" class="Bound"
+      >f</a
+      ><a name="1278" class="Symbol"
+      >)</a
+      ><a name="1279"
+      > </a
+      ><a name="1280" class="Symbol"
+      >(</a
+      ><a name="1281" href="Function.Equality.html#699" class="Field Operator"
+      >_&#10216;$&#10217;_</a
+      ><a name="1286"
+      > </a
+      ><a name="1287" href="Function.Equality.html#1239" class="Bound"
+      >g</a
+      ><a name="1288" class="Symbol"
+      >)</a
+      ><a name="1289"
+      >
+  </a
+      ><a name="1292" class="Symbol"
+      >;</a
+      ><a name="1293"
+      > </a
+      ><a name="1294" class="Field"
+      >cong</a
+      ><a name="1298"
+      >  </a
+      ><a name="1300" class="Symbol"
+      >=</a
+      ><a name="1301"
+      > </a
+      ><a name="1302" href="Function.html#713" class="Function Operator"
+      >Fun._&#8728;_</a
+      ><a name="1309"
+      > </a
+      ><a name="1310" class="Symbol"
+      >(</a
+      ><a name="1311" href="Function.Equality.html#763" class="Field"
+      >cong</a
+      ><a name="1315"
+      >  </a
+      ><a name="1317" href="Function.Equality.html#1235" class="Bound"
+      >f</a
+      ><a name="1318" class="Symbol"
+      >)</a
+      ><a name="1319"
+      > </a
+      ><a name="1320" class="Symbol"
+      >(</a
+      ><a name="1321" href="Function.Equality.html#763" class="Field"
+      >cong</a
+      ><a name="1325"
+      >  </a
+      ><a name="1327" href="Function.Equality.html#1239" class="Bound"
+      >g</a
+      ><a name="1328" class="Symbol"
+      >)</a
+      ><a name="1329"
+      >
+  </a
+      ><a name="1332" class="Symbol"
+      >}</a
+      ><a name="1333"
+      >
+
+</a
+      ><a name="1335" class="Comment"
+      >-- Constant equality-preserving function.</a
+      ><a name="1376"
+      >
+
+</a
+      ><a name="1378" href="Function.Equality.html#1378" class="Function"
+      >const</a
+      ><a name="1383"
+      > </a
+      ><a name="1384" class="Symbol"
+      >:</a
+      ><a name="1385"
+      > </a
+      ><a name="1386" class="Symbol"
+      >&#8704;</a
+      ><a name="1387"
+      > </a
+      ><a name="1388" class="Symbol"
+      >{</a
+      ><a name="1389" href="Function.Equality.html#1389" class="Bound"
+      >a&#8321;</a
+      ><a name="1391"
+      > </a
+      ><a name="1392" href="Function.Equality.html#1392" class="Bound"
+      >a&#8322;</a
+      ><a name="1394" class="Symbol"
+      >}</a
+      ><a name="1395"
+      > </a
+      ><a name="1396" class="Symbol"
+      >{</a
+      ><a name="1397" href="Function.Equality.html#1397" class="Bound"
+      >A</a
+      ><a name="1398"
+      > </a
+      ><a name="1399" class="Symbol"
+      >:</a
+      ><a name="1400"
+      > </a
+      ><a name="1401" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="1409"
+      > </a
+      ><a name="1410" href="Function.Equality.html#1389" class="Bound"
+      >a&#8321;</a
+      ><a name="1412"
+      > </a
+      ><a name="1413" href="Function.Equality.html#1392" class="Bound"
+      >a&#8322;</a
+      ><a name="1415" class="Symbol"
+      >}</a
+      ><a name="1416"
+      >
+          </a
+      ><a name="1427" class="Symbol"
+      >{</a
+      ><a name="1428" href="Function.Equality.html#1428" class="Bound"
+      >b&#8321;</a
+      ><a name="1430"
+      > </a
+      ><a name="1431" href="Function.Equality.html#1431" class="Bound"
+      >b&#8322;</a
+      ><a name="1433" class="Symbol"
+      >}</a
+      ><a name="1434"
+      > </a
+      ><a name="1435" class="Symbol"
+      >{</a
+      ><a name="1436" href="Function.Equality.html#1436" class="Bound"
+      >B</a
+      ><a name="1437"
+      > </a
+      ><a name="1438" class="Symbol"
+      >:</a
+      ><a name="1439"
+      > </a
+      ><a name="1440" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="1448"
+      > </a
+      ><a name="1449" href="Function.Equality.html#1428" class="Bound"
+      >b&#8321;</a
+      ><a name="1451"
+      > </a
+      ><a name="1452" href="Function.Equality.html#1431" class="Bound"
+      >b&#8322;</a
+      ><a name="1454" class="Symbol"
+      >}</a
+      ><a name="1455"
+      > </a
+      ><a name="1456" class="Symbol"
+      >&#8594;</a
+      ><a name="1457"
+      >
+        </a
+      ><a name="1466" href="Relation.Binary.html#1915" class="Field"
+      >B.Setoid.Carrier</a
+      ><a name="1482"
+      > </a
+      ><a name="1483" href="Function.Equality.html#1436" class="Bound"
+      >B</a
+      ><a name="1484"
+      > </a
+      ><a name="1485" class="Symbol"
+      >&#8594;</a
+      ><a name="1486"
+      > </a
+      ><a name="1487" href="Function.Equality.html#1397" class="Bound"
+      >A</a
+      ><a name="1488"
+      > </a
+      ><a name="1489" href="Function.Equality.html#847" class="Function Operator"
+      >&#10230;</a
+      ><a name="1490"
+      > </a
+      ><a name="1491" href="Function.Equality.html#1436" class="Bound"
+      >B</a
+      ><a name="1492"
+      >
+</a
+      ><a name="1493" href="Function.Equality.html#1378" class="Function"
+      >const</a
+      ><a name="1498"
+      > </a
+      ><a name="1499" class="Symbol"
+      >{</a
+      ><a name="1500" class="Argument"
+      >B</a
+      ><a name="1501"
+      > </a
+      ><a name="1502" class="Symbol"
+      >=</a
+      ><a name="1503"
+      > </a
+      ><a name="1504" href="Function.Equality.html#1504" class="Bound"
+      >B</a
+      ><a name="1505" class="Symbol"
+      >}</a
+      ><a name="1506"
+      > </a
+      ><a name="1507" href="Function.Equality.html#1507" class="Bound"
+      >b</a
+      ><a name="1508"
+      > </a
+      ><a name="1509" class="Symbol"
+      >=</a
+      ><a name="1510"
+      > </a
+      ><a name="1511" class="Keyword"
+      >record</a
+      ><a name="1517"
+      >
+  </a
+      ><a name="1520" class="Symbol"
+      >{</a
+      ><a name="1521"
+      > </a
+      ><a name="1522" class="Field Operator"
+      >_&#10216;$&#10217;_</a
+      ><a name="1527"
+      > </a
+      ><a name="1528" class="Symbol"
+      >=</a
+      ><a name="1529"
+      > </a
+      ><a name="1530" href="Function.html#1053" class="Function"
+      >Fun.const</a
+      ><a name="1539"
+      > </a
+      ><a name="1540" href="Function.Equality.html#1507" class="Bound"
+      >b</a
+      ><a name="1541"
+      >
+  </a
+      ><a name="1544" class="Symbol"
+      >;</a
+      ><a name="1545"
+      > </a
+      ><a name="1546" class="Field"
+      >cong</a
+      ><a name="1550"
+      >  </a
+      ><a name="1552" class="Symbol"
+      >=</a
+      ><a name="1553"
+      > </a
+      ><a name="1554" href="Function.html#1053" class="Function"
+      >Fun.const</a
+      ><a name="1563"
+      > </a
+      ><a name="1564" class="Symbol"
+      >(</a
+      ><a name="1565" href="Relation.Binary.Core.html#5185" class="Function"
+      >B.Setoid.refl</a
+      ><a name="1578"
+      > </a
+      ><a name="1579" href="Function.Equality.html#1504" class="Bound"
+      >B</a
+      ><a name="1580" class="Symbol"
+      >)</a
+      ><a name="1581"
+      >
+  </a
+      ><a name="1584" class="Symbol"
+      >}</a
+      ><a name="1585"
+      >
+
+</a
+      ><a name="1587" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="1659"
+      >
+</a
+      ><a name="1660" class="Comment"
+      >-- Function setoids</a
+      ><a name="1679"
+      >
+
+</a
+      ><a name="1681" class="Comment"
+      >-- Dependent.</a
+      ><a name="1694"
+      >
+
+</a
+      ><a name="1696" href="Function.Equality.html#1696" class="Function"
+      >setoid</a
+      ><a name="1702"
+      > </a
+      ><a name="1703" class="Symbol"
+      >:</a
+      ><a name="1704"
+      > </a
+      ><a name="1705" class="Symbol"
+      >&#8704;</a
+      ><a name="1706"
+      > </a
+      ><a name="1707" class="Symbol"
+      >{</a
+      ><a name="1708" href="Function.Equality.html#1708" class="Bound"
+      >f&#8321;</a
+      ><a name="1710"
+      > </a
+      ><a name="1711" href="Function.Equality.html#1711" class="Bound"
+      >f&#8322;</a
+      ><a name="1713"
+      > </a
+      ><a name="1714" href="Function.Equality.html#1714" class="Bound"
+      >t&#8321;</a
+      ><a name="1716"
+      > </a
+      ><a name="1717" href="Function.Equality.html#1717" class="Bound"
+      >t&#8322;</a
+      ><a name="1719" class="Symbol"
+      >}</a
+      ><a name="1720"
+      >
+         </a
+      ><a name="1730" class="Symbol"
+      >(</a
+      ><a name="1731" href="Function.Equality.html#1731" class="Bound"
+      >From</a
+      ><a name="1735"
+      > </a
+      ><a name="1736" class="Symbol"
+      >:</a
+      ><a name="1737"
+      > </a
+      ><a name="1738" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="1746"
+      > </a
+      ><a name="1747" href="Function.Equality.html#1708" class="Bound"
+      >f&#8321;</a
+      ><a name="1749"
+      > </a
+      ><a name="1750" href="Function.Equality.html#1711" class="Bound"
+      >f&#8322;</a
+      ><a name="1752" class="Symbol"
+      >)</a
+      ><a name="1753"
+      > </a
+      ><a name="1754" class="Symbol"
+      >&#8594;</a
+      ><a name="1755"
+      >
+         </a
+      ><a name="1765" href="Relation.Binary.Indexed.Core.html#1758" class="Record"
+      >I.Setoid</a
+      ><a name="1773"
+      > </a
+      ><a name="1774" class="Symbol"
+      >(</a
+      ><a name="1775" href="Relation.Binary.html#1915" class="Field"
+      >B.Setoid.Carrier</a
+      ><a name="1791"
+      > </a
+      ><a name="1792" href="Function.Equality.html#1731" class="Bound"
+      >From</a
+      ><a name="1796" class="Symbol"
+      >)</a
+      ><a name="1797"
+      > </a
+      ><a name="1798" href="Function.Equality.html#1714" class="Bound"
+      >t&#8321;</a
+      ><a name="1800"
+      > </a
+      ><a name="1801" href="Function.Equality.html#1717" class="Bound"
+      >t&#8322;</a
+      ><a name="1803"
+      > </a
+      ><a name="1804" class="Symbol"
+      >&#8594;</a
+      ><a name="1805"
+      >
+         </a
+      ><a name="1815" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="1823"
+      > </a
+      ><a name="1824" class="Symbol"
+      >_</a
+      ><a name="1825"
+      > </a
+      ><a name="1826" class="Symbol"
+      >_</a
+      ><a name="1827"
+      >
+</a
+      ><a name="1828" href="Function.Equality.html#1696" class="Function"
+      >setoid</a
+      ><a name="1834"
+      > </a
+      ><a name="1835" href="Function.Equality.html#1835" class="Bound"
+      >From</a
+      ><a name="1839"
+      > </a
+      ><a name="1840" href="Function.Equality.html#1840" class="Bound"
+      >To</a
+      ><a name="1842"
+      > </a
+      ><a name="1843" class="Symbol"
+      >=</a
+      ><a name="1844"
+      > </a
+      ><a name="1845" class="Keyword"
+      >record</a
+      ><a name="1851"
+      >
+  </a
+      ><a name="1854" class="Symbol"
+      >{</a
+      ><a name="1855"
+      > </a
+      ><a name="1856" class="Field"
+      >Carrier</a
+      ><a name="1863"
+      >       </a
+      ><a name="1870" class="Symbol"
+      >=</a
+      ><a name="1871"
+      > </a
+      ><a name="1872" href="Function.Equality.html#500" class="Record"
+      >&#928;</a
+      ><a name="1873"
+      > </a
+      ><a name="1874" href="Function.Equality.html#1835" class="Bound"
+      >From</a
+      ><a name="1878"
+      > </a
+      ><a name="1879" href="Function.Equality.html#1840" class="Bound"
+      >To</a
+      ><a name="1881"
+      >
+  </a
+      ><a name="1884" class="Symbol"
+      >;</a
+      ><a name="1885"
+      > </a
+      ><a name="1886" class="Field Operator"
+      >_&#8776;_</a
+      ><a name="1889"
+      >           </a
+      ><a name="1900" class="Symbol"
+      >=</a
+      ><a name="1901"
+      > </a
+      ><a name="1902" class="Symbol"
+      >&#955;</a
+      ><a name="1903"
+      > </a
+      ><a name="1904" href="Function.Equality.html#1904" class="Bound"
+      >f</a
+      ><a name="1905"
+      > </a
+      ><a name="1906" href="Function.Equality.html#1906" class="Bound"
+      >g</a
+      ><a name="1907"
+      > </a
+      ><a name="1908" class="Symbol"
+      >&#8594;</a
+      ><a name="1909"
+      > </a
+      ><a name="1910" class="Symbol"
+      >&#8704;</a
+      ><a name="1911"
+      > </a
+      ><a name="1912" class="Symbol"
+      >{</a
+      ><a name="1913" href="Function.Equality.html#1913" class="Bound"
+      >x</a
+      ><a name="1914"
+      > </a
+      ><a name="1915" href="Function.Equality.html#1915" class="Bound"
+      >y</a
+      ><a name="1916" class="Symbol"
+      >}</a
+      ><a name="1917"
+      > </a
+      ><a name="1918" class="Symbol"
+      >&#8594;</a
+      ><a name="1919"
+      > </a
+      ><a name="1920" href="Function.Equality.html#1913" class="Bound"
+      >x</a
+      ><a name="1921"
+      > </a
+      ><a name="1922" href="Relation.Binary.html#1941" class="Function Operator"
+      >&#8776;&#8321;</a
+      ><a name="1924"
+      > </a
+      ><a name="1925" href="Function.Equality.html#1915" class="Bound"
+      >y</a
+      ><a name="1926"
+      > </a
+      ><a name="1927" class="Symbol"
+      >&#8594;</a
+      ><a name="1928"
+      > </a
+      ><a name="1929" href="Function.Equality.html#1904" class="Bound"
+      >f</a
+      ><a name="1930"
+      > </a
+      ><a name="1931" href="Function.Equality.html#699" class="Field Operator"
+      >&#10216;$&#10217;</a
+      ><a name="1934"
+      > </a
+      ><a name="1935" href="Function.Equality.html#1913" class="Bound"
+      >x</a
+      ><a name="1936"
+      > </a
+      ><a name="1937" href="Relation.Binary.Indexed.Core.html#1871" class="Function Operator"
+      >&#8776;&#8322;</a
+      ><a name="1939"
+      > </a
+      ><a name="1940" href="Function.Equality.html#1906" class="Bound"
+      >g</a
+      ><a name="1941"
+      > </a
+      ><a name="1942" href="Function.Equality.html#699" class="Field Operator"
+      >&#10216;$&#10217;</a
+      ><a name="1945"
+      > </a
+      ><a name="1946" href="Function.Equality.html#1915" class="Bound"
+      >y</a
+      ><a name="1947"
+      >
+  </a
+      ><a name="1950" class="Symbol"
+      >;</a
+      ><a name="1951"
+      > </a
+      ><a name="1952" class="Field"
+      >isEquivalence</a
+      ><a name="1965"
+      > </a
+      ><a name="1966" class="Symbol"
+      >=</a
+      ><a name="1967"
+      > </a
+      ><a name="1968" class="Keyword"
+      >record</a
+      ><a name="1974"
+      >
+    </a
+      ><a name="1979" class="Symbol"
+      >{</a
+      ><a name="1980"
+      > </a
+      ><a name="1981" class="Field"
+      >refl</a
+      ><a name="1985"
+      >  </a
+      ><a name="1987" class="Symbol"
+      >=</a
+      ><a name="1988"
+      > </a
+      ><a name="1989" class="Symbol"
+      >&#955;</a
+      ><a name="1990"
+      > </a
+      ><a name="1991" class="Symbol"
+      >{</a
+      ><a name="1992" href="Function.Equality.html#1992" class="Bound"
+      >f</a
+      ><a name="1993" class="Symbol"
+      >}</a
+      ><a name="1994"
+      > </a
+      ><a name="1995" class="Symbol"
+      >&#8594;</a
+      ><a name="1996"
+      > </a
+      ><a name="1997" href="Function.Equality.html#763" class="Field"
+      >cong</a
+      ><a name="2001"
+      > </a
+      ><a name="2002" href="Function.Equality.html#1992" class="Bound"
+      >f</a
+      ><a name="2003"
+      >
+    </a
+      ><a name="2008" class="Symbol"
+      >;</a
+      ><a name="2009"
+      > </a
+      ><a name="2010" class="Field"
+      >sym</a
+      ><a name="2013"
+      >   </a
+      ><a name="2016" class="Symbol"
+      >=</a
+      ><a name="2017"
+      > </a
+      ><a name="2018" class="Symbol"
+      >&#955;</a
+      ><a name="2019"
+      > </a
+      ><a name="2020" href="Function.Equality.html#2020" class="Bound"
+      >f&#8764;g</a
+      ><a name="2023"
+      > </a
+      ><a name="2024" href="Function.Equality.html#2024" class="Bound"
+      >x&#8764;y</a
+      ><a name="2027"
+      > </a
+      ><a name="2028" class="Symbol"
+      >&#8594;</a
+      ><a name="2029"
+      > </a
+      ><a name="2030" href="Relation.Binary.Indexed.Core.html#1624" class="Function"
+      >To.sym</a
+      ><a name="2036"
+      > </a
+      ><a name="2037" class="Symbol"
+      >(</a
+      ><a name="2038" href="Function.Equality.html#2020" class="Bound"
+      >f&#8764;g</a
+      ><a name="2041"
+      > </a
+      ><a name="2042" class="Symbol"
+      >(</a
+      ><a name="2043" href="Relation.Binary.Core.html#5211" class="Function"
+      >From.sym</a
+      ><a name="2051"
+      > </a
+      ><a name="2052" href="Function.Equality.html#2024" class="Bound"
+      >x&#8764;y</a
+      ><a name="2055" class="Symbol"
+      >))</a
+      ><a name="2057"
+      >
+    </a
+      ><a name="2062" class="Symbol"
+      >;</a
+      ><a name="2063"
+      > </a
+      ><a name="2064" class="Field"
+      >trans</a
+      ><a name="2069"
+      > </a
+      ><a name="2070" class="Symbol"
+      >=</a
+      ><a name="2071"
+      > </a
+      ><a name="2072" class="Symbol"
+      >&#955;</a
+      ><a name="2073"
+      > </a
+      ><a name="2074" href="Function.Equality.html#2074" class="Bound"
+      >f&#8764;g</a
+      ><a name="2077"
+      > </a
+      ><a name="2078" href="Function.Equality.html#2078" class="Bound"
+      >g&#8764;h</a
+      ><a name="2081"
+      > </a
+      ><a name="2082" href="Function.Equality.html#2082" class="Bound"
+      >x&#8764;y</a
+      ><a name="2085"
+      > </a
+      ><a name="2086" class="Symbol"
+      >&#8594;</a
+      ><a name="2087"
+      > </a
+      ><a name="2088" href="Relation.Binary.Indexed.Core.html#1652" class="Function"
+      >To.trans</a
+      ><a name="2096"
+      > </a
+      ><a name="2097" class="Symbol"
+      >(</a
+      ><a name="2098" href="Function.Equality.html#2074" class="Bound"
+      >f&#8764;g</a
+      ><a name="2101"
+      > </a
+      ><a name="2102" href="Relation.Binary.Core.html#5185" class="Function"
+      >From.refl</a
+      ><a name="2111" class="Symbol"
+      >)</a
+      ><a name="2112"
+      > </a
+      ><a name="2113" class="Symbol"
+      >(</a
+      ><a name="2114" href="Function.Equality.html#2078" class="Bound"
+      >g&#8764;h</a
+      ><a name="2117"
+      > </a
+      ><a name="2118" href="Function.Equality.html#2082" class="Bound"
+      >x&#8764;y</a
+      ><a name="2121" class="Symbol"
+      >)</a
+      ><a name="2122"
+      >
+    </a
+      ><a name="2127" class="Symbol"
+      >}</a
+      ><a name="2128"
+      >
+  </a
+      ><a name="2131" class="Symbol"
+      >}</a
+      ><a name="2132"
+      >
+  </a
+      ><a name="2135" class="Keyword"
+      >where</a
+      ><a name="2140"
+      >
+  </a
+      ><a name="2143" class="Keyword"
+      >open</a
+      ><a name="2147"
+      > </a
+      ><a name="2148" class="Keyword"
+      >module</a
+      ><a name="2154"
+      > </a
+      ><a name="2155" href="Function.Equality.html#2155" class="Module"
+      >From</a
+      ><a name="2159"
+      > </a
+      ><a name="2160" class="Symbol"
+      >=</a
+      ><a name="2161"
+      > </a
+      ><a name="2162" href="Relation.Binary.html#242" class="Module"
+      >B.</a
+      ><a name="2164" href="Relation.Binary.html#1852" class="Module"
+      >Setoid</a
+      ><a name="2170"
+      > </a
+      ><a name="2171" href="Function.Equality.html#1835" class="Bound"
+      >From</a
+      ><a name="2175"
+      > </a
+      ><a name="2176" class="Keyword"
+      >using</a
+      ><a name="2181"
+      > </a
+      ><a name="2182" class="Symbol"
+      >()</a
+      ><a name="2184"
+      > </a
+      ><a name="2185" class="Keyword"
+      >renaming</a
+      ><a name="2193"
+      > </a
+      ><a name="2194" class="Symbol"
+      >(</a
+      ><a name="2195"
+      >_&#8776;_ </a
+      ><a name="2199" class="Symbol"
+      >to</a
+      ><a name="2201"
+      > _&#8776;&#8321;_</a
+      ><a name="2206" class="Symbol"
+      >)</a
+      ><a name="2207"
+      >
+  </a
+      ><a name="2210" class="Keyword"
+      >open</a
+      ><a name="2214"
+      > </a
+      ><a name="2215" class="Keyword"
+      >module</a
+      ><a name="2221"
+      > </a
+      ><a name="2222" href="Function.Equality.html#2222" class="Module"
+      >To</a
+      ><a name="2224"
+      > </a
+      ><a name="2225" class="Symbol"
+      >=</a
+      ><a name="2226"
+      > </a
+      ><a name="2227" href="Relation.Binary.Indexed.Core.html#336" class="Module"
+      >I.</a
+      ><a name="2229" href="Relation.Binary.Indexed.Core.html#1758" class="Module"
+      >Setoid</a
+      ><a name="2235"
+      > </a
+      ><a name="2236" href="Function.Equality.html#1840" class="Bound"
+      >To</a
+      ><a name="2238"
+      >   </a
+      ><a name="2241" class="Keyword"
+      >using</a
+      ><a name="2246"
+      > </a
+      ><a name="2247" class="Symbol"
+      >()</a
+      ><a name="2249"
+      > </a
+      ><a name="2250" class="Keyword"
+      >renaming</a
+      ><a name="2258"
+      > </a
+      ><a name="2259" class="Symbol"
+      >(</a
+      ><a name="2260"
+      >_&#8776;_ </a
+      ><a name="2264" class="Symbol"
+      >to</a
+      ><a name="2266"
+      > _&#8776;&#8322;_</a
+      ><a name="2271" class="Symbol"
+      >)</a
+      ><a name="2272"
+      >
+
+</a
+      ><a name="2274" class="Comment"
+      >-- Non-dependent.</a
+      ><a name="2291"
+      >
+
+</a
+      ><a name="2293" class="Keyword"
+      >infixr</a
+      ><a name="2299"
+      > </a
+      ><a name="2300" class="Number"
+      >0</a
+      ><a name="2301"
+      > _&#8680;_
+
+</a
+      ><a name="2307" href="Function.Equality.html#2307" class="Function Operator"
+      >_&#8680;_</a
+      ><a name="2310"
+      > </a
+      ><a name="2311" class="Symbol"
+      >:</a
+      ><a name="2312"
+      > </a
+      ><a name="2313" class="Symbol"
+      >&#8704;</a
+      ><a name="2314"
+      > </a
+      ><a name="2315" class="Symbol"
+      >{</a
+      ><a name="2316" href="Function.Equality.html#2316" class="Bound"
+      >f&#8321;</a
+      ><a name="2318"
+      > </a
+      ><a name="2319" href="Function.Equality.html#2319" class="Bound"
+      >f&#8322;</a
+      ><a name="2321"
+      > </a
+      ><a name="2322" href="Function.Equality.html#2322" class="Bound"
+      >t&#8321;</a
+      ><a name="2324"
+      > </a
+      ><a name="2325" href="Function.Equality.html#2325" class="Bound"
+      >t&#8322;</a
+      ><a name="2327" class="Symbol"
+      >}</a
+      ><a name="2328"
+      > </a
+      ><a name="2329" class="Symbol"
+      >&#8594;</a
+      ><a name="2330"
+      > </a
+      ><a name="2331" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="2339"
+      > </a
+      ><a name="2340" href="Function.Equality.html#2316" class="Bound"
+      >f&#8321;</a
+      ><a name="2342"
+      > </a
+      ><a name="2343" href="Function.Equality.html#2319" class="Bound"
+      >f&#8322;</a
+      ><a name="2345"
+      > </a
+      ><a name="2346" class="Symbol"
+      >&#8594;</a
+      ><a name="2347"
+      > </a
+      ><a name="2348" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="2356"
+      > </a
+      ><a name="2357" href="Function.Equality.html#2322" class="Bound"
+      >t&#8321;</a
+      ><a name="2359"
+      > </a
+      ><a name="2360" href="Function.Equality.html#2325" class="Bound"
+      >t&#8322;</a
+      ><a name="2362"
+      > </a
+      ><a name="2363" class="Symbol"
+      >&#8594;</a
+      ><a name="2364"
+      > </a
+      ><a name="2365" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="2373"
+      > </a
+      ><a name="2374" class="Symbol"
+      >_</a
+      ><a name="2375"
+      > </a
+      ><a name="2376" class="Symbol"
+      >_</a
+      ><a name="2377"
+      >
+</a
+      ><a name="2378" href="Function.Equality.html#2378" class="Bound"
+      >From</a
+      ><a name="2382"
+      > </a
+      ><a name="2383" href="Function.Equality.html#2307" class="Function Operator"
+      >&#8680;</a
+      ><a name="2384"
+      > </a
+      ><a name="2385" href="Function.Equality.html#2385" class="Bound"
+      >To</a
+      ><a name="2387"
+      > </a
+      ><a name="2388" class="Symbol"
+      >=</a
+      ><a name="2389"
+      > </a
+      ><a name="2390" href="Function.Equality.html#1696" class="Function"
+      >setoid</a
+      ><a name="2396"
+      > </a
+      ><a name="2397" href="Function.Equality.html#2378" class="Bound"
+      >From</a
+      ><a name="2401"
+      > </a
+      ><a name="2402" class="Symbol"
+      >(</a
+      ><a name="2403" href="Relation.Binary.html#2332" class="Function"
+      >B.Setoid.indexedSetoid</a
+      ><a name="2425"
+      > </a
+      ><a name="2426" href="Function.Equality.html#2385" class="Bound"
+      >To</a
+      ><a name="2428" class="Symbol"
+      >)</a
+      ><a name="2429"
+      >
+
+</a
+      ><a name="2431" class="Comment"
+      >-- A variant of setoid which uses the propositional equality setoid</a
+      ><a name="2498"
+      >
+</a
+      ><a name="2499" class="Comment"
+      >-- for the domain, and a more convenient definition of _&#8776;_.</a
+      ><a name="2558"
+      >
+
+</a
+      ><a name="2560" href="Function.Equality.html#2560" class="Function"
+      >&#8801;-setoid</a
+      ><a name="2568"
+      > </a
+      ><a name="2569" class="Symbol"
+      >:</a
+      ><a name="2570"
+      > </a
+      ><a name="2571" class="Symbol"
+      >&#8704;</a
+      ><a name="2572"
+      > </a
+      ><a name="2573" class="Symbol"
+      >{</a
+      ><a name="2574" href="Function.Equality.html#2574" class="Bound"
+      >f</a
+      ><a name="2575"
+      > </a
+      ><a name="2576" href="Function.Equality.html#2576" class="Bound"
+      >t&#8321;</a
+      ><a name="2578"
+      > </a
+      ><a name="2579" href="Function.Equality.html#2579" class="Bound"
+      >t&#8322;</a
+      ><a name="2581" class="Symbol"
+      >}</a
+      ><a name="2582"
+      > </a
+      ><a name="2583" class="Symbol"
+      >(</a
+      ><a name="2584" href="Function.Equality.html#2584" class="Bound"
+      >From</a
+      ><a name="2588"
+      > </a
+      ><a name="2589" class="Symbol"
+      >:</a
+      ><a name="2590"
+      > </a
+      ><a name="2591" class="PrimitiveType"
+      >Set</a
+      ><a name="2594"
+      > </a
+      ><a name="2595" href="Function.Equality.html#2574" class="Bound"
+      >f</a
+      ><a name="2596" class="Symbol"
+      >)</a
+      ><a name="2597"
+      > </a
+      ><a name="2598" class="Symbol"
+      >&#8594;</a
+      ><a name="2599"
+      > </a
+      ><a name="2600" href="Relation.Binary.Indexed.Core.html#1758" class="Record"
+      >I.Setoid</a
+      ><a name="2608"
+      > </a
+      ><a name="2609" href="Function.Equality.html#2584" class="Bound"
+      >From</a
+      ><a name="2613"
+      > </a
+      ><a name="2614" href="Function.Equality.html#2576" class="Bound"
+      >t&#8321;</a
+      ><a name="2616"
+      > </a
+      ><a name="2617" href="Function.Equality.html#2579" class="Bound"
+      >t&#8322;</a
+      ><a name="2619"
+      > </a
+      ><a name="2620" class="Symbol"
+      >&#8594;</a
+      ><a name="2621"
+      > </a
+      ><a name="2622" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="2630"
+      > </a
+      ><a name="2631" class="Symbol"
+      >_</a
+      ><a name="2632"
+      > </a
+      ><a name="2633" class="Symbol"
+      >_</a
+      ><a name="2634"
+      >
+</a
+      ><a name="2635" href="Function.Equality.html#2560" class="Function"
+      >&#8801;-setoid</a
+      ><a name="2643"
+      > </a
+      ><a name="2644" href="Function.Equality.html#2644" class="Bound"
+      >From</a
+      ><a name="2648"
+      > </a
+      ><a name="2649" href="Function.Equality.html#2649" class="Bound"
+      >To</a
+      ><a name="2651"
+      > </a
+      ><a name="2652" class="Symbol"
+      >=</a
+      ><a name="2653"
+      > </a
+      ><a name="2654" class="Keyword"
+      >record</a
+      ><a name="2660"
+      >
+  </a
+      ><a name="2663" class="Symbol"
+      >{</a
+      ><a name="2664"
+      > </a
+      ><a name="2665" class="Field"
+      >Carrier</a
+      ><a name="2672"
+      >       </a
+      ><a name="2679" class="Symbol"
+      >=</a
+      ><a name="2680"
+      > </a
+      ><a name="2681" class="Symbol"
+      >(</a
+      ><a name="2682" href="Function.Equality.html#2682" class="Bound"
+      >x</a
+      ><a name="2683"
+      > </a
+      ><a name="2684" class="Symbol"
+      >:</a
+      ><a name="2685"
+      > </a
+      ><a name="2686" href="Function.Equality.html#2644" class="Bound"
+      >From</a
+      ><a name="2690" class="Symbol"
+      >)</a
+      ><a name="2691"
+      > </a
+      ><a name="2692" class="Symbol"
+      >&#8594;</a
+      ><a name="2693"
+      > </a
+      ><a name="2694" href="Relation.Binary.Indexed.Core.html#1841" class="Function"
+      >Carrier</a
+      ><a name="2701"
+      > </a
+      ><a name="2702" href="Function.Equality.html#2682" class="Bound"
+      >x</a
+      ><a name="2703"
+      >
+  </a
+      ><a name="2706" class="Symbol"
+      >;</a
+      ><a name="2707"
+      > </a
+      ><a name="2708" class="Field Operator"
+      >_&#8776;_</a
+      ><a name="2711"
+      >           </a
+      ><a name="2722" class="Symbol"
+      >=</a
+      ><a name="2723"
+      > </a
+      ><a name="2724" class="Symbol"
+      >&#955;</a
+      ><a name="2725"
+      > </a
+      ><a name="2726" href="Function.Equality.html#2726" class="Bound"
+      >f</a
+      ><a name="2727"
+      > </a
+      ><a name="2728" href="Function.Equality.html#2728" class="Bound"
+      >g</a
+      ><a name="2729"
+      > </a
+      ><a name="2730" class="Symbol"
+      >&#8594;</a
+      ><a name="2731"
+      > </a
+      ><a name="2732" class="Symbol"
+      >&#8704;</a
+      ><a name="2733"
+      > </a
+      ><a name="2734" href="Function.Equality.html#2734" class="Bound"
+      >x</a
+      ><a name="2735"
+      > </a
+      ><a name="2736" class="Symbol"
+      >&#8594;</a
+      ><a name="2737"
+      > </a
+      ><a name="2738" href="Function.Equality.html#2726" class="Bound"
+      >f</a
+      ><a name="2739"
+      > </a
+      ><a name="2740" href="Function.Equality.html#2734" class="Bound"
+      >x</a
+      ><a name="2741"
+      > </a
+      ><a name="2742" href="Relation.Binary.Indexed.Core.html#1871" class="Function Operator"
+      >&#8776;</a
+      ><a name="2743"
+      > </a
+      ><a name="2744" href="Function.Equality.html#2728" class="Bound"
+      >g</a
+      ><a name="2745"
+      > </a
+      ><a name="2746" href="Function.Equality.html#2734" class="Bound"
+      >x</a
+      ><a name="2747"
+      >
+  </a
+      ><a name="2750" class="Symbol"
+      >;</a
+      ><a name="2751"
+      > </a
+      ><a name="2752" class="Field"
+      >isEquivalence</a
+      ><a name="2765"
+      > </a
+      ><a name="2766" class="Symbol"
+      >=</a
+      ><a name="2767"
+      > </a
+      ><a name="2768" class="Keyword"
+      >record</a
+      ><a name="2774"
+      >
+    </a
+      ><a name="2779" class="Symbol"
+      >{</a
+      ><a name="2780"
+      > </a
+      ><a name="2781" class="Field"
+      >refl</a
+      ><a name="2785"
+      >  </a
+      ><a name="2787" class="Symbol"
+      >=</a
+      ><a name="2788"
+      > </a
+      ><a name="2789" class="Symbol"
+      >&#955;</a
+      ><a name="2790"
+      > </a
+      ><a name="2791" class="Symbol"
+      >{</a
+      ><a name="2792" href="Function.Equality.html#2792" class="Bound"
+      >f</a
+      ><a name="2793" class="Symbol"
+      >}</a
+      ><a name="2794"
+      > </a
+      ><a name="2795" href="Function.Equality.html#2795" class="Bound"
+      >x</a
+      ><a name="2796"
+      > </a
+      ><a name="2797" class="Symbol"
+      >&#8594;</a
+      ><a name="2798"
+      > </a
+      ><a name="2799" href="Relation.Binary.Indexed.Core.html#1596" class="Function"
+      >refl</a
+      ><a name="2803"
+      >
+    </a
+      ><a name="2808" class="Symbol"
+      >;</a
+      ><a name="2809"
+      > </a
+      ><a name="2810" class="Field"
+      >sym</a
+      ><a name="2813"
+      >   </a
+      ><a name="2816" class="Symbol"
+      >=</a
+      ><a name="2817"
+      > </a
+      ><a name="2818" class="Symbol"
+      >&#955;</a
+      ><a name="2819"
+      > </a
+      ><a name="2820" href="Function.Equality.html#2820" class="Bound"
+      >f&#8764;g</a
+      ><a name="2823"
+      > </a
+      ><a name="2824" href="Function.Equality.html#2824" class="Bound"
+      >x</a
+      ><a name="2825"
+      > </a
+      ><a name="2826" class="Symbol"
+      >&#8594;</a
+      ><a name="2827"
+      > </a
+      ><a name="2828" href="Relation.Binary.Indexed.Core.html#1624" class="Function"
+      >sym</a
+      ><a name="2831"
+      > </a
+      ><a name="2832" class="Symbol"
+      >(</a
+      ><a name="2833" href="Function.Equality.html#2820" class="Bound"
+      >f&#8764;g</a
+      ><a name="2836"
+      > </a
+      ><a name="2837" href="Function.Equality.html#2824" class="Bound"
+      >x</a
+      ><a name="2838" class="Symbol"
+      >)</a
+      ><a name="2839"
+      >
+    </a
+      ><a name="2844" class="Symbol"
+      >;</a
+      ><a name="2845"
+      > </a
+      ><a name="2846" class="Field"
+      >trans</a
+      ><a name="2851"
+      > </a
+      ><a name="2852" class="Symbol"
+      >=</a
+      ><a name="2853"
+      > </a
+      ><a name="2854" class="Symbol"
+      >&#955;</a
+      ><a name="2855"
+      > </a
+      ><a name="2856" href="Function.Equality.html#2856" class="Bound"
+      >f&#8764;g</a
+      ><a name="2859"
+      > </a
+      ><a name="2860" href="Function.Equality.html#2860" class="Bound"
+      >g&#8764;h</a
+      ><a name="2863"
+      > </a
+      ><a name="2864" href="Function.Equality.html#2864" class="Bound"
+      >x</a
+      ><a name="2865"
+      > </a
+      ><a name="2866" class="Symbol"
+      >&#8594;</a
+      ><a name="2867"
+      > </a
+      ><a name="2868" href="Relation.Binary.Indexed.Core.html#1652" class="Function"
+      >trans</a
+      ><a name="2873"
+      > </a
+      ><a name="2874" class="Symbol"
+      >(</a
+      ><a name="2875" href="Function.Equality.html#2856" class="Bound"
+      >f&#8764;g</a
+      ><a name="2878"
+      > </a
+      ><a name="2879" href="Function.Equality.html#2864" class="Bound"
+      >x</a
+      ><a name="2880" class="Symbol"
+      >)</a
+      ><a name="2881"
+      > </a
+      ><a name="2882" class="Symbol"
+      >(</a
+      ><a name="2883" href="Function.Equality.html#2860" class="Bound"
+      >g&#8764;h</a
+      ><a name="2886"
+      > </a
+      ><a name="2887" href="Function.Equality.html#2864" class="Bound"
+      >x</a
+      ><a name="2888" class="Symbol"
+      >)</a
+      ><a name="2889"
+      >
+    </a
+      ><a name="2894" class="Symbol"
+      >}</a
+      ><a name="2895"
+      >
+  </a
+      ><a name="2898" class="Symbol"
+      >}</a
+      ><a name="2899"
+      > </a
+      ><a name="2900" class="Keyword"
+      >where</a
+      ><a name="2905"
+      > </a
+      ><a name="2906" class="Keyword"
+      >open</a
+      ><a name="2910"
+      > </a
+      ><a name="2911" href="Relation.Binary.Indexed.Core.html#336" class="Module"
+      >I.</a
+      ><a name="2913" href="Relation.Binary.Indexed.Core.html#1758" class="Module"
+      >Setoid</a
+      ><a name="2919"
+      > </a
+      ><a name="2920" href="Function.Equality.html#2649" class="Bound"
+      >To</a
+      ><a name="2922"
+      >
+
+</a
+      ><a name="2924" class="Comment"
+      >-- Parameter swapping function.</a
+      ><a name="2955"
+      >
+
+</a
+      ><a name="2957" href="Function.Equality.html#2957" class="Function"
+      >flip</a
+      ><a name="2961"
+      > </a
+      ><a name="2962" class="Symbol"
+      >:</a
+      ><a name="2963"
+      > </a
+      ><a name="2964" class="Symbol"
+      >&#8704;</a
+      ><a name="2965"
+      > </a
+      ><a name="2966" class="Symbol"
+      >{</a
+      ><a name="2967" href="Function.Equality.html#2967" class="Bound"
+      >a&#8321;</a
+      ><a name="2969"
+      > </a
+      ><a name="2970" href="Function.Equality.html#2970" class="Bound"
+      >a&#8322;</a
+      ><a name="2972" class="Symbol"
+      >}</a
+      ><a name="2973"
+      > </a
+      ><a name="2974" class="Symbol"
+      >{</a
+      ><a name="2975" href="Function.Equality.html#2975" class="Bound"
+      >A</a
+      ><a name="2976"
+      > </a
+      ><a name="2977" class="Symbol"
+      >:</a
+      ><a name="2978"
+      > </a
+      ><a name="2979" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="2987"
+      > </a
+      ><a name="2988" href="Function.Equality.html#2967" class="Bound"
+      >a&#8321;</a
+      ><a name="2990"
+      > </a
+      ><a name="2991" href="Function.Equality.html#2970" class="Bound"
+      >a&#8322;</a
+      ><a name="2993" class="Symbol"
+      >}</a
+      ><a name="2994"
+      >
+         </a
+      ><a name="3004" class="Symbol"
+      >{</a
+      ><a name="3005" href="Function.Equality.html#3005" class="Bound"
+      >b&#8321;</a
+      ><a name="3007"
+      > </a
+      ><a name="3008" href="Function.Equality.html#3008" class="Bound"
+      >b&#8322;</a
+      ><a name="3010" class="Symbol"
+      >}</a
+      ><a name="3011"
+      > </a
+      ><a name="3012" class="Symbol"
+      >{</a
+      ><a name="3013" href="Function.Equality.html#3013" class="Bound"
+      >B</a
+      ><a name="3014"
+      > </a
+      ><a name="3015" class="Symbol"
+      >:</a
+      ><a name="3016"
+      > </a
+      ><a name="3017" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="3025"
+      > </a
+      ><a name="3026" href="Function.Equality.html#3005" class="Bound"
+      >b&#8321;</a
+      ><a name="3028"
+      > </a
+      ><a name="3029" href="Function.Equality.html#3008" class="Bound"
+      >b&#8322;</a
+      ><a name="3031" class="Symbol"
+      >}</a
+      ><a name="3032"
+      >
+         </a
+      ><a name="3042" class="Symbol"
+      >{</a
+      ><a name="3043" href="Function.Equality.html#3043" class="Bound"
+      >c&#8321;</a
+      ><a name="3045"
+      > </a
+      ><a name="3046" href="Function.Equality.html#3046" class="Bound"
+      >c&#8322;</a
+      ><a name="3048" class="Symbol"
+      >}</a
+      ><a name="3049"
+      > </a
+      ><a name="3050" class="Symbol"
+      >{</a
+      ><a name="3051" href="Function.Equality.html#3051" class="Bound"
+      >C</a
+      ><a name="3052"
+      > </a
+      ><a name="3053" class="Symbol"
+      >:</a
+      ><a name="3054"
+      > </a
+      ><a name="3055" href="Relation.Binary.html#1852" class="Record"
+      >B.Setoid</a
+      ><a name="3063"
+      > </a
+      ><a name="3064" href="Function.Equality.html#3043" class="Bound"
+      >c&#8321;</a
+      ><a name="3066"
+      > </a
+      ><a name="3067" href="Function.Equality.html#3046" class="Bound"
+      >c&#8322;</a
+      ><a name="3069" class="Symbol"
+      >}</a
+      ><a name="3070"
+      > </a
+      ><a name="3071" class="Symbol"
+      >&#8594;</a
+      ><a name="3072"
+      >
+       </a
+      ><a name="3080" href="Function.Equality.html#2975" class="Bound"
+      >A</a
+      ><a name="3081"
+      > </a
+      ><a name="3082" href="Function.Equality.html#847" class="Function Operator"
+      >&#10230;</a
+      ><a name="3083"
+      > </a
+      ><a name="3084" href="Function.Equality.html#3013" class="Bound"
+      >B</a
+      ><a name="3085"
+      > </a
+      ><a name="3086" href="Function.Equality.html#2307" class="Function Operator"
+      >&#8680;</a
+      ><a name="3087"
+      > </a
+      ><a name="3088" href="Function.Equality.html#3051" class="Bound"
+      >C</a
+      ><a name="3089"
+      > </a
+      ><a name="3090" class="Symbol"
+      >&#8594;</a
+      ><a name="3091"
+      > </a
+      ><a name="3092" href="Function.Equality.html#3013" class="Bound"
+      >B</a
+      ><a name="3093"
+      > </a
+      ><a name="3094" href="Function.Equality.html#847" class="Function Operator"
+      >&#10230;</a
+      ><a name="3095"
+      > </a
+      ><a name="3096" href="Function.Equality.html#2975" class="Bound"
+      >A</a
+      ><a name="3097"
+      > </a
+      ><a name="3098" href="Function.Equality.html#2307" class="Function Operator"
+      >&#8680;</a
+      ><a name="3099"
+      > </a
+      ><a name="3100" href="Function.Equality.html#3051" class="Bound"
+      >C</a
+      ><a name="3101"
+      >
+</a
+      ><a name="3102" href="Function.Equality.html#2957" class="Function"
+      >flip</a
+      ><a name="3106"
+      > </a
+      ><a name="3107" class="Symbol"
+      >{</a
+      ><a name="3108" class="Argument"
+      >B</a
+      ><a name="3109"
+      > </a
+      ><a name="3110" class="Symbol"
+      >=</a
+      ><a name="3111"
+      > </a
+      ><a name="3112" href="Function.Equality.html#3112" class="Bound"
+      >B</a
+      ><a name="3113" class="Symbol"
+      >}</a
+      ><a name="3114"
+      > </a
+      ><a name="3115" href="Function.Equality.html#3115" class="Bound"
+      >f</a
+      ><a name="3116"
+      > </a
+      ><a name="3117" class="Symbol"
+      >=</a
+      ><a name="3118"
+      > </a
+      ><a name="3119" class="Keyword"
+      >record</a
+      ><a name="3125"
+      >
+  </a
+      ><a name="3128" class="Symbol"
+      >{</a
+      ><a name="3129"
+      > </a
+      ><a name="3130" class="Field Operator"
+      >_&#10216;$&#10217;_</a
+      ><a name="3135"
+      > </a
+      ><a name="3136" class="Symbol"
+      >=</a
+      ><a name="3137"
+      > </a
+      ><a name="3138" class="Symbol"
+      >&#955;</a
+      ><a name="3139"
+      > </a
+      ><a name="3140" href="Function.Equality.html#3140" class="Bound"
+      >b</a
+      ><a name="3141"
+      > </a
+      ><a name="3142" class="Symbol"
+      >&#8594;</a
+      ><a name="3143"
+      > </a
+      ><a name="3144" class="Keyword"
+      >record</a
+      ><a name="3150"
+      >
+    </a
+      ><a name="3155" class="Symbol"
+      >{</a
+      ><a name="3156"
+      > </a
+      ><a name="3157" class="Field Operator"
+      >_&#10216;$&#10217;_</a
+      ><a name="3162"
+      > </a
+      ><a name="3163" class="Symbol"
+      >=</a
+      ><a name="3164"
+      > </a
+      ><a name="3165" class="Symbol"
+      >&#955;</a
+      ><a name="3166"
+      > </a
+      ><a name="3167" href="Function.Equality.html#3167" class="Bound"
+      >a</a
+      ><a name="3168"
+      > </a
+      ><a name="3169" class="Symbol"
+      >&#8594;</a
+      ><a name="3170"
+      > </a
+      ><a name="3171" href="Function.Equality.html#3115" class="Bound"
+      >f</a
+      ><a name="3172"
+      > </a
+      ><a name="3173" href="Function.Equality.html#699" class="Field Operator"
+      >&#10216;$&#10217;</a
+      ><a name="3176"
+      > </a
+      ><a name="3177" href="Function.Equality.html#3167" class="Bound"
+      >a</a
+      ><a name="3178"
+      > </a
+      ><a name="3179" href="Function.Equality.html#699" class="Field Operator"
+      >&#10216;$&#10217;</a
+      ><a name="3182"
+      > </a
+      ><a name="3183" href="Function.Equality.html#3140" class="Bound"
+      >b</a
+      ><a name="3184"
+      >
+    </a
+      ><a name="3189" class="Symbol"
+      >;</a
+      ><a name="3190"
+      > </a
+      ><a name="3191" class="Field"
+      >cong</a
+      ><a name="3195"
+      >  </a
+      ><a name="3197" class="Symbol"
+      >=</a
+      ><a name="3198"
+      > </a
+      ><a name="3199" class="Symbol"
+      >&#955;</a
+      ><a name="3200"
+      > </a
+      ><a name="3201" href="Function.Equality.html#3201" class="Bound"
+      >a&#8321;&#8776;a&#8322;</a
+      ><a name="3206"
+      > </a
+      ><a name="3207" class="Symbol"
+      >&#8594;</a
+      ><a name="3208"
+      > </a
+      ><a name="3209" href="Function.Equality.html#763" class="Field"
+      >cong</a
+      ><a name="3213"
+      > </a
+      ><a name="3214" href="Function.Equality.html#3115" class="Bound"
+      >f</a
+      ><a name="3215"
+      > </a
+      ><a name="3216" href="Function.Equality.html#3201" class="Bound"
+      >a&#8321;&#8776;a&#8322;</a
+      ><a name="3221"
+      > </a
+      ><a name="3222" class="Symbol"
+      >(</a
+      ><a name="3223" href="Relation.Binary.Core.html#5185" class="Function"
+      >B.Setoid.refl</a
+      ><a name="3236"
+      > </a
+      ><a name="3237" href="Function.Equality.html#3112" class="Bound"
+      >B</a
+      ><a name="3238" class="Symbol"
+      >)</a
+      ><a name="3239"
+      > </a
+      ><a name="3240" class="Symbol"
+      >}</a
+      ><a name="3241"
+      >
+  </a
+      ><a name="3244" class="Symbol"
+      >;</a
+      ><a name="3245"
+      > </a
+      ><a name="3246" class="Field"
+      >cong</a
+      ><a name="3250"
+      >  </a
+      ><a name="3252" class="Symbol"
+      >=</a
+      ><a name="3253"
+      > </a
+      ><a name="3254" class="Symbol"
+      >&#955;</a
+      ><a name="3255"
+      > </a
+      ><a name="3256" href="Function.Equality.html#3256" class="Bound"
+      >b&#8321;&#8776;b&#8322;</a
+      ><a name="3261"
+      > </a
+      ><a name="3262" href="Function.Equality.html#3262" class="Bound"
+      >a&#8321;&#8776;a&#8322;</a
+      ><a name="3267"
+      > </a
+      ><a name="3268" class="Symbol"
+      >&#8594;</a
+      ><a name="3269"
+      > </a
+      ><a name="3270" href="Function.Equality.html#763" class="Field"
+      >cong</a
+      ><a name="3274"
+      > </a
+      ><a name="3275" href="Function.Equality.html#3115" class="Bound"
+      >f</a
+      ><a name="3276"
+      > </a
+      ><a name="3277" href="Function.Equality.html#3262" class="Bound"
+      >a&#8321;&#8776;a&#8322;</a
+      ><a name="3282"
+      > </a
+      ><a name="3283" href="Function.Equality.html#3256" class="Bound"
+      >b&#8321;&#8776;b&#8322;</a
+      ><a name="3288"
+      >
+  </a
+      ><a name="3291" class="Symbol"
+      >}</a
+      ><a name="3292"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

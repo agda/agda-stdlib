@@ -1,0 +1,4360 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Covec</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Coinductive vectors</a
+      ><a name="128"
+      >
+</a
+      ><a name="129" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="201"
+      >
+
+</a
+      ><a name="203" class="Keyword"
+      >module</a
+      ><a name="209"
+      > </a
+      ><a name="210" href="Data.Covec.html#1" class="Module"
+      >Data.Covec</a
+      ><a name="220"
+      > </a
+      ><a name="221" class="Keyword"
+      >where</a
+      ><a name="226"
+      >
+
+</a
+      ><a name="228" class="Keyword"
+      >open</a
+      ><a name="232"
+      > </a
+      ><a name="233" class="Keyword"
+      >import</a
+      ><a name="239"
+      > </a
+      ><a name="240" href="Coinduction.html#1" class="Module"
+      >Coinduction</a
+      ><a name="251"
+      >
+</a
+      ><a name="252" class="Keyword"
+      >open</a
+      ><a name="256"
+      > </a
+      ><a name="257" class="Keyword"
+      >import</a
+      ><a name="263"
+      > </a
+      ><a name="264" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="272"
+      > </a
+      ><a name="273" class="Keyword"
+      >using</a
+      ><a name="278"
+      > </a
+      ><a name="279" class="Symbol"
+      >(</a
+      ><a name="280"
+      >&#8469;</a
+      ><a name="281" class="Symbol"
+      >;</a
+      ><a name="282"
+      > zero</a
+      ><a name="287" class="Symbol"
+      >;</a
+      ><a name="288"
+      > suc</a
+      ><a name="292" class="Symbol"
+      >)</a
+      ><a name="293"
+      >
+</a
+      ><a name="294" class="Keyword"
+      >open</a
+      ><a name="298"
+      > </a
+      ><a name="299" class="Keyword"
+      >import</a
+      ><a name="305"
+      > </a
+      ><a name="306" href="Data.Conat.html#1" class="Module"
+      >Data.Conat</a
+      ><a name="316"
+      > </a
+      ><a name="317" class="Symbol"
+      >as</a
+      ><a name="319"
+      > </a
+      ><a name="320" class="Module"
+      >Co&#8469;</a
+      ><a name="323"
+      > </a
+      ><a name="324" class="Keyword"
+      >using</a
+      ><a name="329"
+      > </a
+      ><a name="330" class="Symbol"
+      >(</a
+      ><a name="331"
+      >Co&#8469;</a
+      ><a name="334" class="Symbol"
+      >;</a
+      ><a name="335"
+      > zero</a
+      ><a name="340" class="Symbol"
+      >;</a
+      ><a name="341"
+      > suc</a
+      ><a name="345" class="Symbol"
+      >;</a
+      ><a name="346"
+      > _+_</a
+      ><a name="350" class="Symbol"
+      >)</a
+      ><a name="351"
+      >
+</a
+      ><a name="352" class="Keyword"
+      >open</a
+      ><a name="356"
+      > </a
+      ><a name="357" class="Keyword"
+      >import</a
+      ><a name="363"
+      > </a
+      ><a name="364" href="Data.Cofin.html#1" class="Module"
+      >Data.Cofin</a
+      ><a name="374"
+      > </a
+      ><a name="375" class="Keyword"
+      >using</a
+      ><a name="380"
+      > </a
+      ><a name="381" class="Symbol"
+      >(</a
+      ><a name="382"
+      >Cofin</a
+      ><a name="387" class="Symbol"
+      >;</a
+      ><a name="388"
+      > zero</a
+      ><a name="393" class="Symbol"
+      >;</a
+      ><a name="394"
+      > suc</a
+      ><a name="398" class="Symbol"
+      >)</a
+      ><a name="399"
+      >
+</a
+      ><a name="400" class="Keyword"
+      >open</a
+      ><a name="404"
+      > </a
+      ><a name="405" class="Keyword"
+      >import</a
+      ><a name="411"
+      > </a
+      ><a name="412" href="Data.Vec.html#1" class="Module"
+      >Data.Vec</a
+      ><a name="420"
+      > </a
+      ><a name="421" class="Keyword"
+      >using</a
+      ><a name="426"
+      > </a
+      ><a name="427" class="Symbol"
+      >(</a
+      ><a name="428"
+      >Vec</a
+      ><a name="431" class="Symbol"
+      >;</a
+      ><a name="432"
+      > []</a
+      ><a name="435" class="Symbol"
+      >;</a
+      ><a name="436"
+      > _&#8759;_</a
+      ><a name="440" class="Symbol"
+      >)</a
+      ><a name="441"
+      >
+</a
+      ><a name="442" class="Keyword"
+      >open</a
+      ><a name="446"
+      > </a
+      ><a name="447" class="Keyword"
+      >import</a
+      ><a name="453"
+      > </a
+      ><a name="454" href="Data.Colist.html#1" class="Module"
+      >Data.Colist</a
+      ><a name="465"
+      > </a
+      ><a name="466" class="Symbol"
+      >as</a
+      ><a name="468"
+      > </a
+      ><a name="469" class="Module"
+      >Colist</a
+      ><a name="475"
+      > </a
+      ><a name="476" class="Keyword"
+      >using</a
+      ><a name="481"
+      > </a
+      ><a name="482" class="Symbol"
+      >(</a
+      ><a name="483"
+      >Colist</a
+      ><a name="489" class="Symbol"
+      >;</a
+      ><a name="490"
+      > []</a
+      ><a name="493" class="Symbol"
+      >;</a
+      ><a name="494"
+      > _&#8759;_</a
+      ><a name="498" class="Symbol"
+      >)</a
+      ><a name="499"
+      >
+</a
+      ><a name="500" class="Keyword"
+      >open</a
+      ><a name="504"
+      > </a
+      ><a name="505" class="Keyword"
+      >import</a
+      ><a name="511"
+      > </a
+      ><a name="512" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="524"
+      > </a
+      ><a name="525" class="Keyword"
+      >using</a
+      ><a name="530"
+      > </a
+      ><a name="531" class="Symbol"
+      >(</a
+      ><a name="532"
+      >_,_</a
+      ><a name="535" class="Symbol"
+      >)</a
+      ><a name="536"
+      >
+</a
+      ><a name="537" class="Keyword"
+      >open</a
+      ><a name="541"
+      > </a
+      ><a name="542" class="Keyword"
+      >import</a
+      ><a name="548"
+      > </a
+      ><a name="549" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="564"
+      >
+
+</a
+      ><a name="566" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="638"
+      >
+</a
+      ><a name="639" class="Comment"
+      >-- The type</a
+      ><a name="650"
+      >
+
+</a
+      ><a name="652" class="Keyword"
+      >infixr</a
+      ><a name="658"
+      > </a
+      ><a name="659" class="Number"
+      >5</a
+      ><a name="660"
+      > _&#8759;_
+
+</a
+      ><a name="666" class="Keyword"
+      >data</a
+      ><a name="670"
+      > </a
+      ><a name="671" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="676"
+      > </a
+      ><a name="677" class="Symbol"
+      >(</a
+      ><a name="678" href="Data.Covec.html#678" class="Bound"
+      >A</a
+      ><a name="679"
+      > </a
+      ><a name="680" class="Symbol"
+      >:</a
+      ><a name="681"
+      > </a
+      ><a name="682" class="PrimitiveType"
+      >Set</a
+      ><a name="685" class="Symbol"
+      >)</a
+      ><a name="686"
+      > </a
+      ><a name="687" class="Symbol"
+      >:</a
+      ><a name="688"
+      > </a
+      ><a name="689" href="Data.Conat.html#424" class="Datatype"
+      >Co&#8469;</a
+      ><a name="692"
+      > </a
+      ><a name="693" class="Symbol"
+      >&#8594;</a
+      ><a name="694"
+      > </a
+      ><a name="695" class="PrimitiveType"
+      >Set</a
+      ><a name="698"
+      > </a
+      ><a name="699" class="Keyword"
+      >where</a
+      ><a name="704"
+      >
+  </a
+      ><a name="707" href="Data.Covec.html#707" class="InductiveConstructor"
+      >[]</a
+      ><a name="709"
+      >  </a
+      ><a name="711" class="Symbol"
+      >:</a
+      ><a name="712"
+      > </a
+      ><a name="713" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="718"
+      > </a
+      ><a name="719" href="Data.Covec.html#678" class="Bound"
+      >A</a
+      ><a name="720"
+      > </a
+      ><a name="721" href="Data.Conat.html#442" class="InductiveConstructor"
+      >zero</a
+      ><a name="725"
+      >
+  </a
+      ><a name="728" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="731"
+      > </a
+      ><a name="732" class="Symbol"
+      >:</a
+      ><a name="733"
+      > </a
+      ><a name="734" class="Symbol"
+      >&#8704;</a
+      ><a name="735"
+      > </a
+      ><a name="736" class="Symbol"
+      >{</a
+      ><a name="737" href="Data.Covec.html#737" class="Bound"
+      >n</a
+      ><a name="738" class="Symbol"
+      >}</a
+      ><a name="739"
+      > </a
+      ><a name="740" class="Symbol"
+      >(</a
+      ><a name="741" href="Data.Covec.html#741" class="Bound"
+      >x</a
+      ><a name="742"
+      > </a
+      ><a name="743" class="Symbol"
+      >:</a
+      ><a name="744"
+      > </a
+      ><a name="745" href="Data.Covec.html#678" class="Bound"
+      >A</a
+      ><a name="746" class="Symbol"
+      >)</a
+      ><a name="747"
+      > </a
+      ><a name="748" class="Symbol"
+      >(</a
+      ><a name="749" href="Data.Covec.html#749" class="Bound"
+      >xs</a
+      ><a name="751"
+      > </a
+      ><a name="752" class="Symbol"
+      >:</a
+      ><a name="753"
+      > </a
+      ><a name="754" href="Coinduction.html#414" class="Datatype"
+      >&#8734;</a
+      ><a name="755"
+      > </a
+      ><a name="756" class="Symbol"
+      >(</a
+      ><a name="757" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="762"
+      > </a
+      ><a name="763" href="Data.Covec.html#678" class="Bound"
+      >A</a
+      ><a name="764"
+      > </a
+      ><a name="765" class="Symbol"
+      >(</a
+      ><a name="766" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="767"
+      > </a
+      ><a name="768" href="Data.Covec.html#737" class="Bound"
+      >n</a
+      ><a name="769" class="Symbol"
+      >)))</a
+      ><a name="772"
+      > </a
+      ><a name="773" class="Symbol"
+      >&#8594;</a
+      ><a name="774"
+      > </a
+      ><a name="775" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="780"
+      > </a
+      ><a name="781" href="Data.Covec.html#678" class="Bound"
+      >A</a
+      ><a name="782"
+      > </a
+      ><a name="783" class="Symbol"
+      >(</a
+      ><a name="784" href="Data.Conat.html#455" class="InductiveConstructor"
+      >suc</a
+      ><a name="787"
+      > </a
+      ><a name="788" href="Data.Covec.html#737" class="Bound"
+      >n</a
+      ><a name="789" class="Symbol"
+      >)</a
+      ><a name="790"
+      >
+
+</a
+      ><a name="792" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="864"
+      >
+</a
+      ><a name="865" class="Comment"
+      >-- Some operations</a
+      ><a name="883"
+      >
+
+</a
+      ><a name="885" href="Data.Covec.html#885" class="Function"
+      >map</a
+      ><a name="888"
+      > </a
+      ><a name="889" class="Symbol"
+      >:</a
+      ><a name="890"
+      > </a
+      ><a name="891" class="Symbol"
+      >&#8704;</a
+      ><a name="892"
+      > </a
+      ><a name="893" class="Symbol"
+      >{</a
+      ><a name="894" href="Data.Covec.html#894" class="Bound"
+      >A</a
+      ><a name="895"
+      > </a
+      ><a name="896" href="Data.Covec.html#896" class="Bound"
+      >B</a
+      ><a name="897"
+      > </a
+      ><a name="898" href="Data.Covec.html#898" class="Bound"
+      >n</a
+      ><a name="899" class="Symbol"
+      >}</a
+      ><a name="900"
+      > </a
+      ><a name="901" class="Symbol"
+      >&#8594;</a
+      ><a name="902"
+      > </a
+      ><a name="903" class="Symbol"
+      >(</a
+      ><a name="904" href="Data.Covec.html#894" class="Bound"
+      >A</a
+      ><a name="905"
+      > </a
+      ><a name="906" class="Symbol"
+      >&#8594;</a
+      ><a name="907"
+      > </a
+      ><a name="908" href="Data.Covec.html#896" class="Bound"
+      >B</a
+      ><a name="909" class="Symbol"
+      >)</a
+      ><a name="910"
+      > </a
+      ><a name="911" class="Symbol"
+      >&#8594;</a
+      ><a name="912"
+      > </a
+      ><a name="913" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="918"
+      > </a
+      ><a name="919" href="Data.Covec.html#894" class="Bound"
+      >A</a
+      ><a name="920"
+      > </a
+      ><a name="921" href="Data.Covec.html#898" class="Bound"
+      >n</a
+      ><a name="922"
+      > </a
+      ><a name="923" class="Symbol"
+      >&#8594;</a
+      ><a name="924"
+      > </a
+      ><a name="925" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="930"
+      > </a
+      ><a name="931" href="Data.Covec.html#896" class="Bound"
+      >B</a
+      ><a name="932"
+      > </a
+      ><a name="933" href="Data.Covec.html#898" class="Bound"
+      >n</a
+      ><a name="934"
+      >
+</a
+      ><a name="935" href="Data.Covec.html#885" class="Function"
+      >map</a
+      ><a name="938"
+      > </a
+      ><a name="939" href="Data.Covec.html#939" class="Bound"
+      >f</a
+      ><a name="940"
+      > </a
+      ><a name="941" href="Data.Covec.html#707" class="InductiveConstructor"
+      >[]</a
+      ><a name="943"
+      >       </a
+      ><a name="950" class="Symbol"
+      >=</a
+      ><a name="951"
+      > </a
+      ><a name="952" href="Data.Covec.html#707" class="InductiveConstructor"
+      >[]</a
+      ><a name="954"
+      >
+</a
+      ><a name="955" href="Data.Covec.html#885" class="Function"
+      >map</a
+      ><a name="958"
+      > </a
+      ><a name="959" href="Data.Covec.html#959" class="Bound"
+      >f</a
+      ><a name="960"
+      > </a
+      ><a name="961" class="Symbol"
+      >(</a
+      ><a name="962" href="Data.Covec.html#962" class="Bound"
+      >x</a
+      ><a name="963"
+      > </a
+      ><a name="964" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="965"
+      > </a
+      ><a name="966" href="Data.Covec.html#966" class="Bound"
+      >xs</a
+      ><a name="968" class="Symbol"
+      >)</a
+      ><a name="969"
+      > </a
+      ><a name="970" class="Symbol"
+      >=</a
+      ><a name="971"
+      > </a
+      ><a name="972" href="Data.Covec.html#959" class="Bound"
+      >f</a
+      ><a name="973"
+      > </a
+      ><a name="974" href="Data.Covec.html#962" class="Bound"
+      >x</a
+      ><a name="975"
+      > </a
+      ><a name="976" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="977"
+      > </a
+      ><a name="978" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="979"
+      > </a
+      ><a name="980" href="Data.Covec.html#885" class="Function"
+      >map</a
+      ><a name="983"
+      > </a
+      ><a name="984" href="Data.Covec.html#959" class="Bound"
+      >f</a
+      ><a name="985"
+      > </a
+      ><a name="986" class="Symbol"
+      >(</a
+      ><a name="987" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="988"
+      > </a
+      ><a name="989" href="Data.Covec.html#966" class="Bound"
+      >xs</a
+      ><a name="991" class="Symbol"
+      >)</a
+      ><a name="992"
+      >
+
+</a
+      ><a name="994" href="Data.Covec.html#994" class="Function"
+      >fromVec</a
+      ><a name="1001"
+      > </a
+      ><a name="1002" class="Symbol"
+      >:</a
+      ><a name="1003"
+      > </a
+      ><a name="1004" class="Symbol"
+      >&#8704;</a
+      ><a name="1005"
+      > </a
+      ><a name="1006" class="Symbol"
+      >{</a
+      ><a name="1007" href="Data.Covec.html#1007" class="Bound"
+      >A</a
+      ><a name="1008"
+      > </a
+      ><a name="1009" href="Data.Covec.html#1009" class="Bound"
+      >n</a
+      ><a name="1010" class="Symbol"
+      >}</a
+      ><a name="1011"
+      > </a
+      ><a name="1012" class="Symbol"
+      >&#8594;</a
+      ><a name="1013"
+      > </a
+      ><a name="1014" href="Data.Vec.html#604" class="Datatype"
+      >Vec</a
+      ><a name="1017"
+      > </a
+      ><a name="1018" href="Data.Covec.html#1007" class="Bound"
+      >A</a
+      ><a name="1019"
+      > </a
+      ><a name="1020" href="Data.Covec.html#1009" class="Bound"
+      >n</a
+      ><a name="1021"
+      > </a
+      ><a name="1022" class="Symbol"
+      >&#8594;</a
+      ><a name="1023"
+      > </a
+      ><a name="1024" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="1029"
+      > </a
+      ><a name="1030" href="Data.Covec.html#1007" class="Bound"
+      >A</a
+      ><a name="1031"
+      > </a
+      ><a name="1032" class="Symbol"
+      >(</a
+      ><a name="1033" href="Data.Conat.html#574" class="Function"
+      >Co&#8469;.from&#8469;</a
+      ><a name="1042"
+      > </a
+      ><a name="1043" href="Data.Covec.html#1009" class="Bound"
+      >n</a
+      ><a name="1044" class="Symbol"
+      >)</a
+      ><a name="1045"
+      >
+</a
+      ><a name="1046" href="Data.Covec.html#994" class="Function"
+      >fromVec</a
+      ><a name="1053"
+      > </a
+      ><a name="1054" href="Data.Vec.html#644" class="InductiveConstructor"
+      >[]</a
+      ><a name="1056"
+      >       </a
+      ><a name="1063" class="Symbol"
+      >=</a
+      ><a name="1064"
+      > </a
+      ><a name="1065" href="Data.Covec.html#707" class="InductiveConstructor"
+      >[]</a
+      ><a name="1067"
+      >
+</a
+      ><a name="1068" href="Data.Covec.html#994" class="Function"
+      >fromVec</a
+      ><a name="1075"
+      > </a
+      ><a name="1076" class="Symbol"
+      >(</a
+      ><a name="1077" href="Data.Covec.html#1077" class="Bound"
+      >x</a
+      ><a name="1078"
+      > </a
+      ><a name="1079" href="Data.Vec.html#663" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1080"
+      > </a
+      ><a name="1081" href="Data.Covec.html#1081" class="Bound"
+      >xs</a
+      ><a name="1083" class="Symbol"
+      >)</a
+      ><a name="1084"
+      > </a
+      ><a name="1085" class="Symbol"
+      >=</a
+      ><a name="1086"
+      > </a
+      ><a name="1087" href="Data.Covec.html#1077" class="Bound"
+      >x</a
+      ><a name="1088"
+      > </a
+      ><a name="1089" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1090"
+      > </a
+      ><a name="1091" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="1092"
+      > </a
+      ><a name="1093" href="Data.Covec.html#994" class="Function"
+      >fromVec</a
+      ><a name="1100"
+      > </a
+      ><a name="1101" href="Data.Covec.html#1081" class="Bound"
+      >xs</a
+      ><a name="1103"
+      >
+
+</a
+      ><a name="1105" href="Data.Covec.html#1105" class="Function"
+      >fromColist</a
+      ><a name="1115"
+      > </a
+      ><a name="1116" class="Symbol"
+      >:</a
+      ><a name="1117"
+      > </a
+      ><a name="1118" class="Symbol"
+      >&#8704;</a
+      ><a name="1119"
+      > </a
+      ><a name="1120" class="Symbol"
+      >{</a
+      ><a name="1121" href="Data.Covec.html#1121" class="Bound"
+      >A</a
+      ><a name="1122" class="Symbol"
+      >}</a
+      ><a name="1123"
+      > </a
+      ><a name="1124" class="Symbol"
+      >(</a
+      ><a name="1125" href="Data.Covec.html#1125" class="Bound"
+      >xs</a
+      ><a name="1127"
+      > </a
+      ><a name="1128" class="Symbol"
+      >:</a
+      ><a name="1129"
+      > </a
+      ><a name="1130" href="Data.Colist.html#1484" class="Datatype"
+      >Colist</a
+      ><a name="1136"
+      > </a
+      ><a name="1137" href="Data.Covec.html#1121" class="Bound"
+      >A</a
+      ><a name="1138" class="Symbol"
+      >)</a
+      ><a name="1139"
+      > </a
+      ><a name="1140" class="Symbol"
+      >&#8594;</a
+      ><a name="1141"
+      > </a
+      ><a name="1142" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="1147"
+      > </a
+      ><a name="1148" href="Data.Covec.html#1121" class="Bound"
+      >A</a
+      ><a name="1149"
+      > </a
+      ><a name="1150" class="Symbol"
+      >(</a
+      ><a name="1151" href="Data.Colist.html#2212" class="Function"
+      >Colist.length</a
+      ><a name="1164"
+      > </a
+      ><a name="1165" href="Data.Covec.html#1125" class="Bound"
+      >xs</a
+      ><a name="1167" class="Symbol"
+      >)</a
+      ><a name="1168"
+      >
+</a
+      ><a name="1169" href="Data.Covec.html#1105" class="Function"
+      >fromColist</a
+      ><a name="1179"
+      > </a
+      ><a name="1180" href="Data.Colist.html#1523" class="InductiveConstructor"
+      >[]</a
+      ><a name="1182"
+      >       </a
+      ><a name="1189" class="Symbol"
+      >=</a
+      ><a name="1190"
+      > </a
+      ><a name="1191" href="Data.Covec.html#707" class="InductiveConstructor"
+      >[]</a
+      ><a name="1193"
+      >
+</a
+      ><a name="1194" href="Data.Covec.html#1105" class="Function"
+      >fromColist</a
+      ><a name="1204"
+      > </a
+      ><a name="1205" class="Symbol"
+      >(</a
+      ><a name="1206" href="Data.Covec.html#1206" class="Bound"
+      >x</a
+      ><a name="1207"
+      > </a
+      ><a name="1208" href="Data.Colist.html#1540" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1209"
+      > </a
+      ><a name="1210" href="Data.Covec.html#1210" class="Bound"
+      >xs</a
+      ><a name="1212" class="Symbol"
+      >)</a
+      ><a name="1213"
+      > </a
+      ><a name="1214" class="Symbol"
+      >=</a
+      ><a name="1215"
+      > </a
+      ><a name="1216" href="Data.Covec.html#1206" class="Bound"
+      >x</a
+      ><a name="1217"
+      > </a
+      ><a name="1218" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1219"
+      > </a
+      ><a name="1220" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="1221"
+      > </a
+      ><a name="1222" href="Data.Covec.html#1105" class="Function"
+      >fromColist</a
+      ><a name="1232"
+      > </a
+      ><a name="1233" class="Symbol"
+      >(</a
+      ><a name="1234" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="1235"
+      > </a
+      ><a name="1236" href="Data.Covec.html#1210" class="Bound"
+      >xs</a
+      ><a name="1238" class="Symbol"
+      >)</a
+      ><a name="1239"
+      >
+
+</a
+      ><a name="1241" href="Data.Covec.html#1241" class="Function"
+      >take</a
+      ><a name="1245"
+      > </a
+      ><a name="1246" class="Symbol"
+      >:</a
+      ><a name="1247"
+      > </a
+      ><a name="1248" class="Symbol"
+      >&#8704;</a
+      ><a name="1249"
+      > </a
+      ><a name="1250" class="Symbol"
+      >{</a
+      ><a name="1251" href="Data.Covec.html#1251" class="Bound"
+      >A</a
+      ><a name="1252" class="Symbol"
+      >}</a
+      ><a name="1253"
+      > </a
+      ><a name="1254" href="Data.Covec.html#1254" class="Bound"
+      >m</a
+      ><a name="1255"
+      > </a
+      ><a name="1256" class="Symbol"
+      >{</a
+      ><a name="1257" href="Data.Covec.html#1257" class="Bound"
+      >n</a
+      ><a name="1258" class="Symbol"
+      >}</a
+      ><a name="1259"
+      > </a
+      ><a name="1260" class="Symbol"
+      >&#8594;</a
+      ><a name="1261"
+      > </a
+      ><a name="1262" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="1267"
+      > </a
+      ><a name="1268" href="Data.Covec.html#1251" class="Bound"
+      >A</a
+      ><a name="1269"
+      > </a
+      ><a name="1270" class="Symbol"
+      >(</a
+      ><a name="1271" href="Data.Covec.html#1254" class="Bound"
+      >m</a
+      ><a name="1272"
+      > </a
+      ><a name="1273" href="Data.Conat.html#684" class="Function Operator"
+      >+</a
+      ><a name="1274"
+      > </a
+      ><a name="1275" href="Data.Covec.html#1257" class="Bound"
+      >n</a
+      ><a name="1276" class="Symbol"
+      >)</a
+      ><a name="1277"
+      > </a
+      ><a name="1278" class="Symbol"
+      >&#8594;</a
+      ><a name="1279"
+      > </a
+      ><a name="1280" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="1285"
+      > </a
+      ><a name="1286" href="Data.Covec.html#1251" class="Bound"
+      >A</a
+      ><a name="1287"
+      > </a
+      ><a name="1288" href="Data.Covec.html#1254" class="Bound"
+      >m</a
+      ><a name="1289"
+      >
+</a
+      ><a name="1290" href="Data.Covec.html#1241" class="Function"
+      >take</a
+      ><a name="1294"
+      > </a
+      ><a name="1295" href="Data.Conat.html#442" class="InductiveConstructor"
+      >zero</a
+      ><a name="1299"
+      >    </a
+      ><a name="1303" href="Data.Covec.html#1303" class="Bound"
+      >xs</a
+      ><a name="1305"
+      >       </a
+      ><a name="1312" class="Symbol"
+      >=</a
+      ><a name="1313"
+      > </a
+      ><a name="1314" href="Data.Covec.html#707" class="InductiveConstructor"
+      >[]</a
+      ><a name="1316"
+      >
+</a
+      ><a name="1317" href="Data.Covec.html#1241" class="Function"
+      >take</a
+      ><a name="1321"
+      > </a
+      ><a name="1322" class="Symbol"
+      >(</a
+      ><a name="1323" href="Data.Conat.html#455" class="InductiveConstructor"
+      >suc</a
+      ><a name="1326"
+      > </a
+      ><a name="1327" href="Data.Covec.html#1327" class="Bound"
+      >n</a
+      ><a name="1328" class="Symbol"
+      >)</a
+      ><a name="1329"
+      > </a
+      ><a name="1330" class="Symbol"
+      >(</a
+      ><a name="1331" href="Data.Covec.html#1331" class="Bound"
+      >x</a
+      ><a name="1332"
+      > </a
+      ><a name="1333" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1334"
+      > </a
+      ><a name="1335" href="Data.Covec.html#1335" class="Bound"
+      >xs</a
+      ><a name="1337" class="Symbol"
+      >)</a
+      ><a name="1338"
+      > </a
+      ><a name="1339" class="Symbol"
+      >=</a
+      ><a name="1340"
+      > </a
+      ><a name="1341" href="Data.Covec.html#1331" class="Bound"
+      >x</a
+      ><a name="1342"
+      > </a
+      ><a name="1343" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1344"
+      > </a
+      ><a name="1345" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="1346"
+      > </a
+      ><a name="1347" href="Data.Covec.html#1241" class="Function"
+      >take</a
+      ><a name="1351"
+      > </a
+      ><a name="1352" class="Symbol"
+      >(</a
+      ><a name="1353" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="1354"
+      > </a
+      ><a name="1355" href="Data.Covec.html#1327" class="Bound"
+      >n</a
+      ><a name="1356" class="Symbol"
+      >)</a
+      ><a name="1357"
+      > </a
+      ><a name="1358" class="Symbol"
+      >(</a
+      ><a name="1359" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="1360"
+      > </a
+      ><a name="1361" href="Data.Covec.html#1335" class="Bound"
+      >xs</a
+      ><a name="1363" class="Symbol"
+      >)</a
+      ><a name="1364"
+      >
+
+</a
+      ><a name="1366" href="Data.Covec.html#1366" class="Function"
+      >drop</a
+      ><a name="1370"
+      > </a
+      ><a name="1371" class="Symbol"
+      >:</a
+      ><a name="1372"
+      > </a
+      ><a name="1373" class="Symbol"
+      >&#8704;</a
+      ><a name="1374"
+      > </a
+      ><a name="1375" class="Symbol"
+      >{</a
+      ><a name="1376" href="Data.Covec.html#1376" class="Bound"
+      >A</a
+      ><a name="1377" class="Symbol"
+      >}</a
+      ><a name="1378"
+      > </a
+      ><a name="1379" href="Data.Covec.html#1379" class="Bound"
+      >m</a
+      ><a name="1380"
+      > </a
+      ><a name="1381" class="Symbol"
+      >{</a
+      ><a name="1382" href="Data.Covec.html#1382" class="Bound"
+      >n</a
+      ><a name="1383" class="Symbol"
+      >}</a
+      ><a name="1384"
+      > </a
+      ><a name="1385" class="Symbol"
+      >&#8594;</a
+      ><a name="1386"
+      > </a
+      ><a name="1387" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="1392"
+      > </a
+      ><a name="1393" href="Data.Covec.html#1376" class="Bound"
+      >A</a
+      ><a name="1394"
+      > </a
+      ><a name="1395" class="Symbol"
+      >(</a
+      ><a name="1396" href="Data.Conat.html#574" class="Function"
+      >Co&#8469;.from&#8469;</a
+      ><a name="1405"
+      > </a
+      ><a name="1406" href="Data.Covec.html#1379" class="Bound"
+      >m</a
+      ><a name="1407"
+      > </a
+      ><a name="1408" href="Data.Conat.html#684" class="Function Operator"
+      >+</a
+      ><a name="1409"
+      > </a
+      ><a name="1410" href="Data.Covec.html#1382" class="Bound"
+      >n</a
+      ><a name="1411" class="Symbol"
+      >)</a
+      ><a name="1412"
+      > </a
+      ><a name="1413" class="Symbol"
+      >&#8594;</a
+      ><a name="1414"
+      > </a
+      ><a name="1415" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="1420"
+      > </a
+      ><a name="1421" href="Data.Covec.html#1376" class="Bound"
+      >A</a
+      ><a name="1422"
+      > </a
+      ><a name="1423" href="Data.Covec.html#1382" class="Bound"
+      >n</a
+      ><a name="1424"
+      >
+</a
+      ><a name="1425" href="Data.Covec.html#1366" class="Function"
+      >drop</a
+      ><a name="1429"
+      > </a
+      ><a name="1430" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="1434"
+      >    </a
+      ><a name="1438" href="Data.Covec.html#1438" class="Bound"
+      >xs</a
+      ><a name="1440"
+      >       </a
+      ><a name="1447" class="Symbol"
+      >=</a
+      ><a name="1448"
+      > </a
+      ><a name="1449" href="Data.Covec.html#1438" class="Bound"
+      >xs</a
+      ><a name="1451"
+      >
+</a
+      ><a name="1452" href="Data.Covec.html#1366" class="Function"
+      >drop</a
+      ><a name="1456"
+      > </a
+      ><a name="1457" class="Symbol"
+      >(</a
+      ><a name="1458" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1461"
+      > </a
+      ><a name="1462" href="Data.Covec.html#1462" class="Bound"
+      >n</a
+      ><a name="1463" class="Symbol"
+      >)</a
+      ><a name="1464"
+      > </a
+      ><a name="1465" class="Symbol"
+      >(</a
+      ><a name="1466" href="Data.Covec.html#1466" class="Bound"
+      >x</a
+      ><a name="1467"
+      > </a
+      ><a name="1468" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1469"
+      > </a
+      ><a name="1470" href="Data.Covec.html#1470" class="Bound"
+      >xs</a
+      ><a name="1472" class="Symbol"
+      >)</a
+      ><a name="1473"
+      > </a
+      ><a name="1474" class="Symbol"
+      >=</a
+      ><a name="1475"
+      > </a
+      ><a name="1476" href="Data.Covec.html#1366" class="Function"
+      >drop</a
+      ><a name="1480"
+      > </a
+      ><a name="1481" href="Data.Covec.html#1462" class="Bound"
+      >n</a
+      ><a name="1482"
+      > </a
+      ><a name="1483" class="Symbol"
+      >(</a
+      ><a name="1484" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="1485"
+      > </a
+      ><a name="1486" href="Data.Covec.html#1470" class="Bound"
+      >xs</a
+      ><a name="1488" class="Symbol"
+      >)</a
+      ><a name="1489"
+      >
+
+</a
+      ><a name="1491" href="Data.Covec.html#1491" class="Function"
+      >replicate</a
+      ><a name="1500"
+      > </a
+      ><a name="1501" class="Symbol"
+      >:</a
+      ><a name="1502"
+      > </a
+      ><a name="1503" class="Symbol"
+      >&#8704;</a
+      ><a name="1504"
+      > </a
+      ><a name="1505" class="Symbol"
+      >{</a
+      ><a name="1506" href="Data.Covec.html#1506" class="Bound"
+      >A</a
+      ><a name="1507" class="Symbol"
+      >}</a
+      ><a name="1508"
+      > </a
+      ><a name="1509" href="Data.Covec.html#1509" class="Bound"
+      >n</a
+      ><a name="1510"
+      > </a
+      ><a name="1511" class="Symbol"
+      >&#8594;</a
+      ><a name="1512"
+      > </a
+      ><a name="1513" href="Data.Covec.html#1506" class="Bound"
+      >A</a
+      ><a name="1514"
+      > </a
+      ><a name="1515" class="Symbol"
+      >&#8594;</a
+      ><a name="1516"
+      > </a
+      ><a name="1517" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="1522"
+      > </a
+      ><a name="1523" href="Data.Covec.html#1506" class="Bound"
+      >A</a
+      ><a name="1524"
+      > </a
+      ><a name="1525" href="Data.Covec.html#1509" class="Bound"
+      >n</a
+      ><a name="1526"
+      >
+</a
+      ><a name="1527" href="Data.Covec.html#1491" class="Function"
+      >replicate</a
+      ><a name="1536"
+      > </a
+      ><a name="1537" href="Data.Conat.html#442" class="InductiveConstructor"
+      >zero</a
+      ><a name="1541"
+      >    </a
+      ><a name="1545" href="Data.Covec.html#1545" class="Bound"
+      >x</a
+      ><a name="1546"
+      > </a
+      ><a name="1547" class="Symbol"
+      >=</a
+      ><a name="1548"
+      > </a
+      ><a name="1549" href="Data.Covec.html#707" class="InductiveConstructor"
+      >[]</a
+      ><a name="1551"
+      >
+</a
+      ><a name="1552" href="Data.Covec.html#1491" class="Function"
+      >replicate</a
+      ><a name="1561"
+      > </a
+      ><a name="1562" class="Symbol"
+      >(</a
+      ><a name="1563" href="Data.Conat.html#455" class="InductiveConstructor"
+      >suc</a
+      ><a name="1566"
+      > </a
+      ><a name="1567" href="Data.Covec.html#1567" class="Bound"
+      >n</a
+      ><a name="1568" class="Symbol"
+      >)</a
+      ><a name="1569"
+      > </a
+      ><a name="1570" href="Data.Covec.html#1570" class="Bound"
+      >x</a
+      ><a name="1571"
+      > </a
+      ><a name="1572" class="Symbol"
+      >=</a
+      ><a name="1573"
+      > </a
+      ><a name="1574" href="Data.Covec.html#1570" class="Bound"
+      >x</a
+      ><a name="1575"
+      > </a
+      ><a name="1576" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1577"
+      > </a
+      ><a name="1578" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="1579"
+      > </a
+      ><a name="1580" href="Data.Covec.html#1491" class="Function"
+      >replicate</a
+      ><a name="1589"
+      > </a
+      ><a name="1590" class="Symbol"
+      >(</a
+      ><a name="1591" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="1592"
+      > </a
+      ><a name="1593" href="Data.Covec.html#1567" class="Bound"
+      >n</a
+      ><a name="1594" class="Symbol"
+      >)</a
+      ><a name="1595"
+      > </a
+      ><a name="1596" href="Data.Covec.html#1570" class="Bound"
+      >x</a
+      ><a name="1597"
+      >
+
+</a
+      ><a name="1599" href="Data.Covec.html#1599" class="Function"
+      >lookup</a
+      ><a name="1605"
+      > </a
+      ><a name="1606" class="Symbol"
+      >:</a
+      ><a name="1607"
+      > </a
+      ><a name="1608" class="Symbol"
+      >&#8704;</a
+      ><a name="1609"
+      > </a
+      ><a name="1610" class="Symbol"
+      >{</a
+      ><a name="1611" href="Data.Covec.html#1611" class="Bound"
+      >A</a
+      ><a name="1612"
+      > </a
+      ><a name="1613" href="Data.Covec.html#1613" class="Bound"
+      >n</a
+      ><a name="1614" class="Symbol"
+      >}</a
+      ><a name="1615"
+      > </a
+      ><a name="1616" class="Symbol"
+      >&#8594;</a
+      ><a name="1617"
+      > </a
+      ><a name="1618" href="Data.Cofin.html#649" class="Datatype"
+      >Cofin</a
+      ><a name="1623"
+      > </a
+      ><a name="1624" href="Data.Covec.html#1613" class="Bound"
+      >n</a
+      ><a name="1625"
+      > </a
+      ><a name="1626" class="Symbol"
+      >&#8594;</a
+      ><a name="1627"
+      > </a
+      ><a name="1628" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="1633"
+      > </a
+      ><a name="1634" href="Data.Covec.html#1611" class="Bound"
+      >A</a
+      ><a name="1635"
+      > </a
+      ><a name="1636" href="Data.Covec.html#1613" class="Bound"
+      >n</a
+      ><a name="1637"
+      > </a
+      ><a name="1638" class="Symbol"
+      >&#8594;</a
+      ><a name="1639"
+      > </a
+      ><a name="1640" href="Data.Covec.html#1611" class="Bound"
+      >A</a
+      ><a name="1641"
+      >
+</a
+      ><a name="1642" href="Data.Covec.html#1599" class="Function"
+      >lookup</a
+      ><a name="1648"
+      > </a
+      ><a name="1649" href="Data.Cofin.html#675" class="InductiveConstructor"
+      >zero</a
+      ><a name="1653"
+      >    </a
+      ><a name="1657" class="Symbol"
+      >(</a
+      ><a name="1658" href="Data.Covec.html#1658" class="Bound"
+      >x</a
+      ><a name="1659"
+      > </a
+      ><a name="1660" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1661"
+      > </a
+      ><a name="1662" href="Data.Covec.html#1662" class="Bound"
+      >xs</a
+      ><a name="1664" class="Symbol"
+      >)</a
+      ><a name="1665"
+      > </a
+      ><a name="1666" class="Symbol"
+      >=</a
+      ><a name="1667"
+      > </a
+      ><a name="1668" href="Data.Covec.html#1658" class="Bound"
+      >x</a
+      ><a name="1669"
+      >
+</a
+      ><a name="1670" href="Data.Covec.html#1599" class="Function"
+      >lookup</a
+      ><a name="1676"
+      > </a
+      ><a name="1677" class="Symbol"
+      >(</a
+      ><a name="1678" href="Data.Cofin.html#706" class="InductiveConstructor"
+      >suc</a
+      ><a name="1681"
+      > </a
+      ><a name="1682" href="Data.Covec.html#1682" class="Bound"
+      >n</a
+      ><a name="1683" class="Symbol"
+      >)</a
+      ><a name="1684"
+      > </a
+      ><a name="1685" class="Symbol"
+      >(</a
+      ><a name="1686" href="Data.Covec.html#1686" class="Bound"
+      >x</a
+      ><a name="1687"
+      > </a
+      ><a name="1688" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1689"
+      > </a
+      ><a name="1690" href="Data.Covec.html#1690" class="Bound"
+      >xs</a
+      ><a name="1692" class="Symbol"
+      >)</a
+      ><a name="1693"
+      > </a
+      ><a name="1694" class="Symbol"
+      >=</a
+      ><a name="1695"
+      > </a
+      ><a name="1696" href="Data.Covec.html#1599" class="Function"
+      >lookup</a
+      ><a name="1702"
+      > </a
+      ><a name="1703" href="Data.Covec.html#1682" class="Bound"
+      >n</a
+      ><a name="1704"
+      > </a
+      ><a name="1705" class="Symbol"
+      >(</a
+      ><a name="1706" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="1707"
+      > </a
+      ><a name="1708" href="Data.Covec.html#1690" class="Bound"
+      >xs</a
+      ><a name="1710" class="Symbol"
+      >)</a
+      ><a name="1711"
+      >
+
+</a
+      ><a name="1713" class="Keyword"
+      >infixr</a
+      ><a name="1719"
+      > </a
+      ><a name="1720" class="Number"
+      >5</a
+      ><a name="1721"
+      > _++_
+
+</a
+      ><a name="1728" href="Data.Covec.html#1728" class="Function Operator"
+      >_++_</a
+      ><a name="1732"
+      > </a
+      ><a name="1733" class="Symbol"
+      >:</a
+      ><a name="1734"
+      > </a
+      ><a name="1735" class="Symbol"
+      >&#8704;</a
+      ><a name="1736"
+      > </a
+      ><a name="1737" class="Symbol"
+      >{</a
+      ><a name="1738" href="Data.Covec.html#1738" class="Bound"
+      >A</a
+      ><a name="1739"
+      > </a
+      ><a name="1740" href="Data.Covec.html#1740" class="Bound"
+      >m</a
+      ><a name="1741"
+      > </a
+      ><a name="1742" href="Data.Covec.html#1742" class="Bound"
+      >n</a
+      ><a name="1743" class="Symbol"
+      >}</a
+      ><a name="1744"
+      > </a
+      ><a name="1745" class="Symbol"
+      >&#8594;</a
+      ><a name="1746"
+      > </a
+      ><a name="1747" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="1752"
+      > </a
+      ><a name="1753" href="Data.Covec.html#1738" class="Bound"
+      >A</a
+      ><a name="1754"
+      > </a
+      ><a name="1755" href="Data.Covec.html#1740" class="Bound"
+      >m</a
+      ><a name="1756"
+      > </a
+      ><a name="1757" class="Symbol"
+      >&#8594;</a
+      ><a name="1758"
+      > </a
+      ><a name="1759" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="1764"
+      > </a
+      ><a name="1765" href="Data.Covec.html#1738" class="Bound"
+      >A</a
+      ><a name="1766"
+      > </a
+      ><a name="1767" href="Data.Covec.html#1742" class="Bound"
+      >n</a
+      ><a name="1768"
+      > </a
+      ><a name="1769" class="Symbol"
+      >&#8594;</a
+      ><a name="1770"
+      > </a
+      ><a name="1771" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="1776"
+      > </a
+      ><a name="1777" href="Data.Covec.html#1738" class="Bound"
+      >A</a
+      ><a name="1778"
+      > </a
+      ><a name="1779" class="Symbol"
+      >(</a
+      ><a name="1780" href="Data.Covec.html#1740" class="Bound"
+      >m</a
+      ><a name="1781"
+      > </a
+      ><a name="1782" href="Data.Conat.html#684" class="Function Operator"
+      >+</a
+      ><a name="1783"
+      > </a
+      ><a name="1784" href="Data.Covec.html#1742" class="Bound"
+      >n</a
+      ><a name="1785" class="Symbol"
+      >)</a
+      ><a name="1786"
+      >
+</a
+      ><a name="1787" href="Data.Covec.html#707" class="InductiveConstructor"
+      >[]</a
+      ><a name="1789"
+      >       </a
+      ><a name="1796" href="Data.Covec.html#1728" class="Function Operator"
+      >++</a
+      ><a name="1798"
+      > </a
+      ><a name="1799" href="Data.Covec.html#1799" class="Bound"
+      >ys</a
+      ><a name="1801"
+      > </a
+      ><a name="1802" class="Symbol"
+      >=</a
+      ><a name="1803"
+      > </a
+      ><a name="1804" href="Data.Covec.html#1799" class="Bound"
+      >ys</a
+      ><a name="1806"
+      >
+</a
+      ><a name="1807" class="Symbol"
+      >(</a
+      ><a name="1808" href="Data.Covec.html#1808" class="Bound"
+      >x</a
+      ><a name="1809"
+      > </a
+      ><a name="1810" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1811"
+      > </a
+      ><a name="1812" href="Data.Covec.html#1812" class="Bound"
+      >xs</a
+      ><a name="1814" class="Symbol"
+      >)</a
+      ><a name="1815"
+      > </a
+      ><a name="1816" href="Data.Covec.html#1728" class="Function Operator"
+      >++</a
+      ><a name="1818"
+      > </a
+      ><a name="1819" href="Data.Covec.html#1819" class="Bound"
+      >ys</a
+      ><a name="1821"
+      > </a
+      ><a name="1822" class="Symbol"
+      >=</a
+      ><a name="1823"
+      > </a
+      ><a name="1824" href="Data.Covec.html#1808" class="Bound"
+      >x</a
+      ><a name="1825"
+      > </a
+      ><a name="1826" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1827"
+      > </a
+      ><a name="1828" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="1829"
+      > </a
+      ><a name="1830" class="Symbol"
+      >(</a
+      ><a name="1831" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="1832"
+      > </a
+      ><a name="1833" href="Data.Covec.html#1812" class="Bound"
+      >xs</a
+      ><a name="1835"
+      > </a
+      ><a name="1836" href="Data.Covec.html#1728" class="Function Operator"
+      >++</a
+      ><a name="1838"
+      > </a
+      ><a name="1839" href="Data.Covec.html#1819" class="Bound"
+      >ys</a
+      ><a name="1841" class="Symbol"
+      >)</a
+      ><a name="1842"
+      >
+
+</a
+      ><a name="1844" href="Data.Covec.html#1844" class="Function Operator"
+      >[_]</a
+      ><a name="1847"
+      > </a
+      ><a name="1848" class="Symbol"
+      >:</a
+      ><a name="1849"
+      > </a
+      ><a name="1850" class="Symbol"
+      >&#8704;</a
+      ><a name="1851"
+      > </a
+      ><a name="1852" class="Symbol"
+      >{</a
+      ><a name="1853" href="Data.Covec.html#1853" class="Bound"
+      >A</a
+      ><a name="1854" class="Symbol"
+      >}</a
+      ><a name="1855"
+      > </a
+      ><a name="1856" class="Symbol"
+      >&#8594;</a
+      ><a name="1857"
+      > </a
+      ><a name="1858" href="Data.Covec.html#1853" class="Bound"
+      >A</a
+      ><a name="1859"
+      > </a
+      ><a name="1860" class="Symbol"
+      >&#8594;</a
+      ><a name="1861"
+      > </a
+      ><a name="1862" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="1867"
+      > </a
+      ><a name="1868" href="Data.Covec.html#1853" class="Bound"
+      >A</a
+      ><a name="1869"
+      > </a
+      ><a name="1870" class="Symbol"
+      >(</a
+      ><a name="1871" href="Data.Conat.html#455" class="InductiveConstructor"
+      >suc</a
+      ><a name="1874"
+      > </a
+      ><a name="1875" class="Symbol"
+      >(</a
+      ><a name="1876" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="1877"
+      > </a
+      ><a name="1878" href="Data.Conat.html#442" class="InductiveConstructor"
+      >zero</a
+      ><a name="1882" class="Symbol"
+      >))</a
+      ><a name="1884"
+      >
+</a
+      ><a name="1885" href="Data.Covec.html#1844" class="Function Operator"
+      >[</a
+      ><a name="1886"
+      > </a
+      ><a name="1887" href="Data.Covec.html#1887" class="Bound"
+      >x</a
+      ><a name="1888"
+      > </a
+      ><a name="1889" href="Data.Covec.html#1844" class="Function Operator"
+      >]</a
+      ><a name="1890"
+      > </a
+      ><a name="1891" class="Symbol"
+      >=</a
+      ><a name="1892"
+      > </a
+      ><a name="1893" href="Data.Covec.html#1887" class="Bound"
+      >x</a
+      ><a name="1894"
+      > </a
+      ><a name="1895" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1896"
+      > </a
+      ><a name="1897" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="1898"
+      > </a
+      ><a name="1899" href="Data.Covec.html#707" class="InductiveConstructor"
+      >[]</a
+      ><a name="1901"
+      >
+
+</a
+      ><a name="1903" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="1975"
+      >
+</a
+      ><a name="1976" class="Comment"
+      >-- Equality and other relations</a
+      ><a name="2007"
+      >
+
+</a
+      ><a name="2009" class="Comment"
+      >-- xs &#8776; ys means that xs and ys are equal.</a
+      ><a name="2051"
+      >
+
+</a
+      ><a name="2053" class="Keyword"
+      >infix</a
+      ><a name="2058"
+      > </a
+      ><a name="2059" class="Number"
+      >4</a
+      ><a name="2060"
+      > _&#8776;_
+
+</a
+      ><a name="2066" class="Keyword"
+      >data</a
+      ><a name="2070"
+      > </a
+      ><a name="2071" href="Data.Covec.html#2071" class="Datatype Operator"
+      >_&#8776;_</a
+      ><a name="2074"
+      > </a
+      ><a name="2075" class="Symbol"
+      >{</a
+      ><a name="2076" href="Data.Covec.html#2076" class="Bound"
+      >A</a
+      ><a name="2077" class="Symbol"
+      >}</a
+      ><a name="2078"
+      > </a
+      ><a name="2079" class="Symbol"
+      >:</a
+      ><a name="2080"
+      > </a
+      ><a name="2081" class="Symbol"
+      >&#8704;</a
+      ><a name="2082"
+      > </a
+      ><a name="2083" class="Symbol"
+      >{</a
+      ><a name="2084" href="Data.Covec.html#2084" class="Bound"
+      >n</a
+      ><a name="2085" class="Symbol"
+      >}</a
+      ><a name="2086"
+      > </a
+      ><a name="2087" class="Symbol"
+      >(</a
+      ><a name="2088" href="Data.Covec.html#2088" class="Bound"
+      >xs</a
+      ><a name="2090"
+      > </a
+      ><a name="2091" href="Data.Covec.html#2091" class="Bound"
+      >ys</a
+      ><a name="2093"
+      > </a
+      ><a name="2094" class="Symbol"
+      >:</a
+      ><a name="2095"
+      > </a
+      ><a name="2096" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="2101"
+      > </a
+      ><a name="2102" href="Data.Covec.html#2076" class="Bound"
+      >A</a
+      ><a name="2103"
+      > </a
+      ><a name="2104" href="Data.Covec.html#2084" class="Bound"
+      >n</a
+      ><a name="2105" class="Symbol"
+      >)</a
+      ><a name="2106"
+      > </a
+      ><a name="2107" class="Symbol"
+      >&#8594;</a
+      ><a name="2108"
+      > </a
+      ><a name="2109" class="PrimitiveType"
+      >Set</a
+      ><a name="2112"
+      > </a
+      ><a name="2113" class="Keyword"
+      >where</a
+      ><a name="2118"
+      >
+  </a
+      ><a name="2121" href="Data.Covec.html#2121" class="InductiveConstructor"
+      >[]</a
+      ><a name="2123"
+      >  </a
+      ><a name="2125" class="Symbol"
+      >:</a
+      ><a name="2126"
+      > </a
+      ><a name="2127" href="Data.Covec.html#707" class="InductiveConstructor"
+      >[]</a
+      ><a name="2129"
+      > </a
+      ><a name="2130" href="Data.Covec.html#2071" class="Datatype Operator"
+      >&#8776;</a
+      ><a name="2131"
+      > </a
+      ><a name="2132" href="Data.Covec.html#707" class="InductiveConstructor"
+      >[]</a
+      ><a name="2134"
+      >
+  </a
+      ><a name="2137" href="Data.Covec.html#2137" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="2140"
+      > </a
+      ><a name="2141" class="Symbol"
+      >:</a
+      ><a name="2142"
+      > </a
+      ><a name="2143" class="Symbol"
+      >&#8704;</a
+      ><a name="2144"
+      > </a
+      ><a name="2145" class="Symbol"
+      >{</a
+      ><a name="2146" href="Data.Covec.html#2146" class="Bound"
+      >n</a
+      ><a name="2147" class="Symbol"
+      >}</a
+      ><a name="2148"
+      > </a
+      ><a name="2149" href="Data.Covec.html#2149" class="Bound"
+      >x</a
+      ><a name="2150"
+      > </a
+      ><a name="2151" class="Symbol"
+      >{</a
+      ><a name="2152" href="Data.Covec.html#2152" class="Bound"
+      >xs</a
+      ><a name="2154"
+      > </a
+      ><a name="2155" href="Data.Covec.html#2155" class="Bound"
+      >ys</a
+      ><a name="2157" class="Symbol"
+      >}</a
+      ><a name="2158"
+      >
+        </a
+      ><a name="2167" class="Symbol"
+      >(</a
+      ><a name="2168" href="Data.Covec.html#2168" class="Bound"
+      >xs&#8776;</a
+      ><a name="2171"
+      > </a
+      ><a name="2172" class="Symbol"
+      >:</a
+      ><a name="2173"
+      > </a
+      ><a name="2174" href="Coinduction.html#414" class="Datatype"
+      >&#8734;</a
+      ><a name="2175"
+      > </a
+      ><a name="2176" class="Symbol"
+      >(</a
+      ><a name="2177" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="2178"
+      > </a
+      ><a name="2179" href="Data.Covec.html#2152" class="Bound"
+      >xs</a
+      ><a name="2181"
+      > </a
+      ><a name="2182" href="Data.Covec.html#2071" class="Datatype Operator"
+      >&#8776;</a
+      ><a name="2183"
+      > </a
+      ><a name="2184" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="2185"
+      > </a
+      ><a name="2186" href="Data.Covec.html#2155" class="Bound"
+      >ys</a
+      ><a name="2188" class="Symbol"
+      >))</a
+      ><a name="2190"
+      > </a
+      ><a name="2191" class="Symbol"
+      >&#8594;</a
+      ><a name="2192"
+      > </a
+      ><a name="2193" href="Data.Covec.html#2071" class="Datatype Operator"
+      >_&#8776;_</a
+      ><a name="2196"
+      > </a
+      ><a name="2197" class="Symbol"
+      >{</a
+      ><a name="2198" class="Argument"
+      >n</a
+      ><a name="2199"
+      > </a
+      ><a name="2200" class="Symbol"
+      >=</a
+      ><a name="2201"
+      > </a
+      ><a name="2202" href="Data.Conat.html#455" class="InductiveConstructor"
+      >suc</a
+      ><a name="2205"
+      > </a
+      ><a name="2206" href="Data.Covec.html#2146" class="Bound"
+      >n</a
+      ><a name="2207" class="Symbol"
+      >}</a
+      ><a name="2208"
+      > </a
+      ><a name="2209" class="Symbol"
+      >(</a
+      ><a name="2210" href="Data.Covec.html#2149" class="Bound"
+      >x</a
+      ><a name="2211"
+      > </a
+      ><a name="2212" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="2213"
+      > </a
+      ><a name="2214" href="Data.Covec.html#2152" class="Bound"
+      >xs</a
+      ><a name="2216" class="Symbol"
+      >)</a
+      ><a name="2217"
+      > </a
+      ><a name="2218" class="Symbol"
+      >(</a
+      ><a name="2219" href="Data.Covec.html#2149" class="Bound"
+      >x</a
+      ><a name="2220"
+      > </a
+      ><a name="2221" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="2222"
+      > </a
+      ><a name="2223" href="Data.Covec.html#2155" class="Bound"
+      >ys</a
+      ><a name="2225" class="Symbol"
+      >)</a
+      ><a name="2226"
+      >
+
+</a
+      ><a name="2228" class="Comment"
+      >-- x &#8712; xs means that x is a member of xs.</a
+      ><a name="2269"
+      >
+
+</a
+      ><a name="2271" class="Keyword"
+      >infix</a
+      ><a name="2276"
+      > </a
+      ><a name="2277" class="Number"
+      >4</a
+      ><a name="2278"
+      > _&#8712;_
+
+</a
+      ><a name="2284" class="Keyword"
+      >data</a
+      ><a name="2288"
+      > </a
+      ><a name="2289" href="Data.Covec.html#2289" class="Datatype Operator"
+      >_&#8712;_</a
+      ><a name="2292"
+      > </a
+      ><a name="2293" class="Symbol"
+      >{</a
+      ><a name="2294" href="Data.Covec.html#2294" class="Bound"
+      >A</a
+      ><a name="2295" class="Symbol"
+      >}</a
+      ><a name="2296"
+      > </a
+      ><a name="2297" class="Symbol"
+      >:</a
+      ><a name="2298"
+      > </a
+      ><a name="2299" class="Symbol"
+      >&#8704;</a
+      ><a name="2300"
+      > </a
+      ><a name="2301" class="Symbol"
+      >{</a
+      ><a name="2302" href="Data.Covec.html#2302" class="Bound"
+      >n</a
+      ><a name="2303" class="Symbol"
+      >}</a
+      ><a name="2304"
+      > </a
+      ><a name="2305" class="Symbol"
+      >&#8594;</a
+      ><a name="2306"
+      > </a
+      ><a name="2307" href="Data.Covec.html#2294" class="Bound"
+      >A</a
+      ><a name="2308"
+      > </a
+      ><a name="2309" class="Symbol"
+      >&#8594;</a
+      ><a name="2310"
+      > </a
+      ><a name="2311" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="2316"
+      > </a
+      ><a name="2317" href="Data.Covec.html#2294" class="Bound"
+      >A</a
+      ><a name="2318"
+      > </a
+      ><a name="2319" href="Data.Covec.html#2302" class="Bound"
+      >n</a
+      ><a name="2320"
+      > </a
+      ><a name="2321" class="Symbol"
+      >&#8594;</a
+      ><a name="2322"
+      > </a
+      ><a name="2323" class="PrimitiveType"
+      >Set</a
+      ><a name="2326"
+      > </a
+      ><a name="2327" class="Keyword"
+      >where</a
+      ><a name="2332"
+      >
+  </a
+      ><a name="2335" href="Data.Covec.html#2335" class="InductiveConstructor"
+      >here</a
+      ><a name="2339"
+      >  </a
+      ><a name="2341" class="Symbol"
+      >:</a
+      ><a name="2342"
+      > </a
+      ><a name="2343" class="Symbol"
+      >&#8704;</a
+      ><a name="2344"
+      > </a
+      ><a name="2345" class="Symbol"
+      >{</a
+      ><a name="2346" href="Data.Covec.html#2346" class="Bound"
+      >n</a
+      ><a name="2347"
+      > </a
+      ><a name="2348" href="Data.Covec.html#2348" class="Bound"
+      >x</a
+      ><a name="2349"
+      >  </a
+      ><a name="2351" class="Symbol"
+      >}</a
+      ><a name="2352"
+      > </a
+      ><a name="2353" class="Symbol"
+      >{</a
+      ><a name="2354" href="Data.Covec.html#2354" class="Bound"
+      >xs</a
+      ><a name="2356" class="Symbol"
+      >}</a
+      ><a name="2357"
+      >                   </a
+      ><a name="2376" class="Symbol"
+      >&#8594;</a
+      ><a name="2377"
+      > </a
+      ><a name="2378" href="Data.Covec.html#2289" class="Datatype Operator"
+      >_&#8712;_</a
+      ><a name="2381"
+      > </a
+      ><a name="2382" class="Symbol"
+      >{</a
+      ><a name="2383" class="Argument"
+      >n</a
+      ><a name="2384"
+      > </a
+      ><a name="2385" class="Symbol"
+      >=</a
+      ><a name="2386"
+      > </a
+      ><a name="2387" href="Data.Conat.html#455" class="InductiveConstructor"
+      >suc</a
+      ><a name="2390"
+      > </a
+      ><a name="2391" href="Data.Covec.html#2346" class="Bound"
+      >n</a
+      ><a name="2392" class="Symbol"
+      >}</a
+      ><a name="2393"
+      > </a
+      ><a name="2394" href="Data.Covec.html#2348" class="Bound"
+      >x</a
+      ><a name="2395"
+      > </a
+      ><a name="2396" class="Symbol"
+      >(</a
+      ><a name="2397" href="Data.Covec.html#2348" class="Bound"
+      >x</a
+      ><a name="2398"
+      > </a
+      ><a name="2399" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="2400"
+      > </a
+      ><a name="2401" href="Data.Covec.html#2354" class="Bound"
+      >xs</a
+      ><a name="2403" class="Symbol"
+      >)</a
+      ><a name="2404"
+      >
+  </a
+      ><a name="2407" href="Data.Covec.html#2407" class="InductiveConstructor"
+      >there</a
+      ><a name="2412"
+      > </a
+      ><a name="2413" class="Symbol"
+      >:</a
+      ><a name="2414"
+      > </a
+      ><a name="2415" class="Symbol"
+      >&#8704;</a
+      ><a name="2416"
+      > </a
+      ><a name="2417" class="Symbol"
+      >{</a
+      ><a name="2418" href="Data.Covec.html#2418" class="Bound"
+      >n</a
+      ><a name="2419"
+      > </a
+      ><a name="2420" href="Data.Covec.html#2420" class="Bound"
+      >x</a
+      ><a name="2421"
+      > </a
+      ><a name="2422" href="Data.Covec.html#2422" class="Bound"
+      >y</a
+      ><a name="2423" class="Symbol"
+      >}</a
+      ><a name="2424"
+      > </a
+      ><a name="2425" class="Symbol"
+      >{</a
+      ><a name="2426" href="Data.Covec.html#2426" class="Bound"
+      >xs</a
+      ><a name="2428" class="Symbol"
+      >}</a
+      ><a name="2429"
+      > </a
+      ><a name="2430" class="Symbol"
+      >(</a
+      ><a name="2431" href="Data.Covec.html#2431" class="Bound"
+      >x&#8712;xs</a
+      ><a name="2435"
+      > </a
+      ><a name="2436" class="Symbol"
+      >:</a
+      ><a name="2437"
+      > </a
+      ><a name="2438" href="Data.Covec.html#2420" class="Bound"
+      >x</a
+      ><a name="2439"
+      > </a
+      ><a name="2440" href="Data.Covec.html#2289" class="Datatype Operator"
+      >&#8712;</a
+      ><a name="2441"
+      > </a
+      ><a name="2442" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="2443"
+      > </a
+      ><a name="2444" href="Data.Covec.html#2426" class="Bound"
+      >xs</a
+      ><a name="2446" class="Symbol"
+      >)</a
+      ><a name="2447"
+      > </a
+      ><a name="2448" class="Symbol"
+      >&#8594;</a
+      ><a name="2449"
+      > </a
+      ><a name="2450" href="Data.Covec.html#2289" class="Datatype Operator"
+      >_&#8712;_</a
+      ><a name="2453"
+      > </a
+      ><a name="2454" class="Symbol"
+      >{</a
+      ><a name="2455" class="Argument"
+      >n</a
+      ><a name="2456"
+      > </a
+      ><a name="2457" class="Symbol"
+      >=</a
+      ><a name="2458"
+      > </a
+      ><a name="2459" href="Data.Conat.html#455" class="InductiveConstructor"
+      >suc</a
+      ><a name="2462"
+      > </a
+      ><a name="2463" href="Data.Covec.html#2418" class="Bound"
+      >n</a
+      ><a name="2464" class="Symbol"
+      >}</a
+      ><a name="2465"
+      > </a
+      ><a name="2466" href="Data.Covec.html#2420" class="Bound"
+      >x</a
+      ><a name="2467"
+      > </a
+      ><a name="2468" class="Symbol"
+      >(</a
+      ><a name="2469" href="Data.Covec.html#2422" class="Bound"
+      >y</a
+      ><a name="2470"
+      > </a
+      ><a name="2471" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="2472"
+      > </a
+      ><a name="2473" href="Data.Covec.html#2426" class="Bound"
+      >xs</a
+      ><a name="2475" class="Symbol"
+      >)</a
+      ><a name="2476"
+      >
+
+</a
+      ><a name="2478" class="Comment"
+      >-- xs &#8849; ys means that xs is a prefix of ys.</a
+      ><a name="2521"
+      >
+
+</a
+      ><a name="2523" class="Keyword"
+      >infix</a
+      ><a name="2528"
+      > </a
+      ><a name="2529" class="Number"
+      >4</a
+      ><a name="2530"
+      > _&#8849;_
+
+</a
+      ><a name="2536" class="Keyword"
+      >data</a
+      ><a name="2540"
+      > </a
+      ><a name="2541" href="Data.Covec.html#2541" class="Datatype Operator"
+      >_&#8849;_</a
+      ><a name="2544"
+      > </a
+      ><a name="2545" class="Symbol"
+      >{</a
+      ><a name="2546" href="Data.Covec.html#2546" class="Bound"
+      >A</a
+      ><a name="2547" class="Symbol"
+      >}</a
+      ><a name="2548"
+      > </a
+      ><a name="2549" class="Symbol"
+      >:</a
+      ><a name="2550"
+      > </a
+      ><a name="2551" class="Symbol"
+      >&#8704;</a
+      ><a name="2552"
+      > </a
+      ><a name="2553" class="Symbol"
+      >{</a
+      ><a name="2554" href="Data.Covec.html#2554" class="Bound"
+      >m</a
+      ><a name="2555"
+      > </a
+      ><a name="2556" href="Data.Covec.html#2556" class="Bound"
+      >n</a
+      ><a name="2557" class="Symbol"
+      >}</a
+      ><a name="2558"
+      > </a
+      ><a name="2559" class="Symbol"
+      >&#8594;</a
+      ><a name="2560"
+      > </a
+      ><a name="2561" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="2566"
+      > </a
+      ><a name="2567" href="Data.Covec.html#2546" class="Bound"
+      >A</a
+      ><a name="2568"
+      > </a
+      ><a name="2569" href="Data.Covec.html#2554" class="Bound"
+      >m</a
+      ><a name="2570"
+      > </a
+      ><a name="2571" class="Symbol"
+      >&#8594;</a
+      ><a name="2572"
+      > </a
+      ><a name="2573" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="2578"
+      > </a
+      ><a name="2579" href="Data.Covec.html#2546" class="Bound"
+      >A</a
+      ><a name="2580"
+      > </a
+      ><a name="2581" href="Data.Covec.html#2556" class="Bound"
+      >n</a
+      ><a name="2582"
+      > </a
+      ><a name="2583" class="Symbol"
+      >&#8594;</a
+      ><a name="2584"
+      > </a
+      ><a name="2585" class="PrimitiveType"
+      >Set</a
+      ><a name="2588"
+      > </a
+      ><a name="2589" class="Keyword"
+      >where</a
+      ><a name="2594"
+      >
+  </a
+      ><a name="2597" href="Data.Covec.html#2597" class="InductiveConstructor"
+      >[]</a
+      ><a name="2599"
+      >  </a
+      ><a name="2601" class="Symbol"
+      >:</a
+      ><a name="2602"
+      > </a
+      ><a name="2603" class="Symbol"
+      >&#8704;</a
+      ><a name="2604"
+      > </a
+      ><a name="2605" class="Symbol"
+      >{</a
+      ><a name="2606" href="Data.Covec.html#2606" class="Bound"
+      >n</a
+      ><a name="2607" class="Symbol"
+      >}</a
+      ><a name="2608"
+      > </a
+      ><a name="2609" class="Symbol"
+      >{</a
+      ><a name="2610" href="Data.Covec.html#2610" class="Bound"
+      >ys</a
+      ><a name="2612"
+      > </a
+      ><a name="2613" class="Symbol"
+      >:</a
+      ><a name="2614"
+      > </a
+      ><a name="2615" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="2620"
+      > </a
+      ><a name="2621" href="Data.Covec.html#2546" class="Bound"
+      >A</a
+      ><a name="2622"
+      > </a
+      ><a name="2623" href="Data.Covec.html#2606" class="Bound"
+      >n</a
+      ><a name="2624" class="Symbol"
+      >}</a
+      ><a name="2625"
+      > </a
+      ><a name="2626" class="Symbol"
+      >&#8594;</a
+      ><a name="2627"
+      > </a
+      ><a name="2628" href="Data.Covec.html#707" class="InductiveConstructor"
+      >[]</a
+      ><a name="2630"
+      > </a
+      ><a name="2631" href="Data.Covec.html#2541" class="Datatype Operator"
+      >&#8849;</a
+      ><a name="2632"
+      > </a
+      ><a name="2633" href="Data.Covec.html#2610" class="Bound"
+      >ys</a
+      ><a name="2635"
+      >
+  </a
+      ><a name="2638" href="Data.Covec.html#2638" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="2641"
+      > </a
+      ><a name="2642" class="Symbol"
+      >:</a
+      ><a name="2643"
+      > </a
+      ><a name="2644" class="Symbol"
+      >&#8704;</a
+      ><a name="2645"
+      > </a
+      ><a name="2646" class="Symbol"
+      >{</a
+      ><a name="2647" href="Data.Covec.html#2647" class="Bound"
+      >m</a
+      ><a name="2648"
+      > </a
+      ><a name="2649" href="Data.Covec.html#2649" class="Bound"
+      >n</a
+      ><a name="2650" class="Symbol"
+      >}</a
+      ><a name="2651"
+      > </a
+      ><a name="2652" href="Data.Covec.html#2652" class="Bound"
+      >x</a
+      ><a name="2653"
+      > </a
+      ><a name="2654" class="Symbol"
+      >{</a
+      ><a name="2655" href="Data.Covec.html#2655" class="Bound"
+      >xs</a
+      ><a name="2657"
+      > </a
+      ><a name="2658" href="Data.Covec.html#2658" class="Bound"
+      >ys</a
+      ><a name="2660" class="Symbol"
+      >}</a
+      ><a name="2661"
+      > </a
+      ><a name="2662" class="Symbol"
+      >(</a
+      ><a name="2663" href="Data.Covec.html#2663" class="Bound"
+      >p</a
+      ><a name="2664"
+      > </a
+      ><a name="2665" class="Symbol"
+      >:</a
+      ><a name="2666"
+      > </a
+      ><a name="2667" href="Coinduction.html#414" class="Datatype"
+      >&#8734;</a
+      ><a name="2668"
+      > </a
+      ><a name="2669" class="Symbol"
+      >(</a
+      ><a name="2670" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="2671"
+      > </a
+      ><a name="2672" href="Data.Covec.html#2655" class="Bound"
+      >xs</a
+      ><a name="2674"
+      > </a
+      ><a name="2675" href="Data.Covec.html#2541" class="Datatype Operator"
+      >&#8849;</a
+      ><a name="2676"
+      > </a
+      ><a name="2677" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="2678"
+      > </a
+      ><a name="2679" href="Data.Covec.html#2658" class="Bound"
+      >ys</a
+      ><a name="2681" class="Symbol"
+      >))</a
+      ><a name="2683"
+      > </a
+      ><a name="2684" class="Symbol"
+      >&#8594;</a
+      ><a name="2685"
+      >
+        </a
+      ><a name="2694" href="Data.Covec.html#2541" class="Datatype Operator"
+      >_&#8849;_</a
+      ><a name="2697"
+      > </a
+      ><a name="2698" class="Symbol"
+      >{</a
+      ><a name="2699" class="Argument"
+      >m</a
+      ><a name="2700"
+      > </a
+      ><a name="2701" class="Symbol"
+      >=</a
+      ><a name="2702"
+      > </a
+      ><a name="2703" href="Data.Conat.html#455" class="InductiveConstructor"
+      >suc</a
+      ><a name="2706"
+      > </a
+      ><a name="2707" href="Data.Covec.html#2647" class="Bound"
+      >m</a
+      ><a name="2708" class="Symbol"
+      >}</a
+      ><a name="2709"
+      > </a
+      ><a name="2710" class="Symbol"
+      >{</a
+      ><a name="2711" href="Data.Conat.html#455" class="InductiveConstructor"
+      >suc</a
+      ><a name="2714"
+      > </a
+      ><a name="2715" href="Data.Covec.html#2649" class="Bound"
+      >n</a
+      ><a name="2716" class="Symbol"
+      >}</a
+      ><a name="2717"
+      > </a
+      ><a name="2718" class="Symbol"
+      >(</a
+      ><a name="2719" href="Data.Covec.html#2652" class="Bound"
+      >x</a
+      ><a name="2720"
+      > </a
+      ><a name="2721" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="2722"
+      > </a
+      ><a name="2723" href="Data.Covec.html#2655" class="Bound"
+      >xs</a
+      ><a name="2725" class="Symbol"
+      >)</a
+      ><a name="2726"
+      > </a
+      ><a name="2727" class="Symbol"
+      >(</a
+      ><a name="2728" href="Data.Covec.html#2652" class="Bound"
+      >x</a
+      ><a name="2729"
+      > </a
+      ><a name="2730" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="2731"
+      > </a
+      ><a name="2732" href="Data.Covec.html#2658" class="Bound"
+      >ys</a
+      ><a name="2734" class="Symbol"
+      >)</a
+      ><a name="2735"
+      >
+
+</a
+      ><a name="2737" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="2809"
+      >
+</a
+      ><a name="2810" class="Comment"
+      >-- Some proofs</a
+      ><a name="2824"
+      >
+
+</a
+      ><a name="2826" href="Data.Covec.html#2826" class="Function"
+      >setoid</a
+      ><a name="2832"
+      > </a
+      ><a name="2833" class="Symbol"
+      >:</a
+      ><a name="2834"
+      > </a
+      ><a name="2835" class="PrimitiveType"
+      >Set</a
+      ><a name="2838"
+      > </a
+      ><a name="2839" class="Symbol"
+      >&#8594;</a
+      ><a name="2840"
+      > </a
+      ><a name="2841" href="Data.Conat.html#424" class="Datatype"
+      >Co&#8469;</a
+      ><a name="2844"
+      > </a
+      ><a name="2845" class="Symbol"
+      >&#8594;</a
+      ><a name="2846"
+      > </a
+      ><a name="2847" href="Relation.Binary.html#1852" class="Record"
+      >Setoid</a
+      ><a name="2853"
+      > </a
+      ><a name="2854" class="Symbol"
+      >_</a
+      ><a name="2855"
+      > </a
+      ><a name="2856" class="Symbol"
+      >_</a
+      ><a name="2857"
+      >
+</a
+      ><a name="2858" href="Data.Covec.html#2826" class="Function"
+      >setoid</a
+      ><a name="2864"
+      > </a
+      ><a name="2865" href="Data.Covec.html#2865" class="Bound"
+      >A</a
+      ><a name="2866"
+      > </a
+      ><a name="2867" href="Data.Covec.html#2867" class="Bound"
+      >n</a
+      ><a name="2868"
+      > </a
+      ><a name="2869" class="Symbol"
+      >=</a
+      ><a name="2870"
+      > </a
+      ><a name="2871" class="Keyword"
+      >record</a
+      ><a name="2877"
+      >
+  </a
+      ><a name="2880" class="Symbol"
+      >{</a
+      ><a name="2881"
+      > </a
+      ><a name="2882" class="Field"
+      >Carrier</a
+      ><a name="2889"
+      >       </a
+      ><a name="2896" class="Symbol"
+      >=</a
+      ><a name="2897"
+      > </a
+      ><a name="2898" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="2903"
+      > </a
+      ><a name="2904" href="Data.Covec.html#2865" class="Bound"
+      >A</a
+      ><a name="2905"
+      > </a
+      ><a name="2906" href="Data.Covec.html#2867" class="Bound"
+      >n</a
+      ><a name="2907"
+      >
+  </a
+      ><a name="2910" class="Symbol"
+      >;</a
+      ><a name="2911"
+      > </a
+      ><a name="2912" class="Field Operator"
+      >_&#8776;_</a
+      ><a name="2915"
+      >           </a
+      ><a name="2926" class="Symbol"
+      >=</a
+      ><a name="2927"
+      > </a
+      ><a name="2928" href="Data.Covec.html#2071" class="Datatype Operator"
+      >_&#8776;_</a
+      ><a name="2931"
+      >
+  </a
+      ><a name="2934" class="Symbol"
+      >;</a
+      ><a name="2935"
+      > </a
+      ><a name="2936" class="Field"
+      >isEquivalence</a
+      ><a name="2949"
+      > </a
+      ><a name="2950" class="Symbol"
+      >=</a
+      ><a name="2951"
+      > </a
+      ><a name="2952" class="Keyword"
+      >record</a
+      ><a name="2958"
+      >
+    </a
+      ><a name="2963" class="Symbol"
+      >{</a
+      ><a name="2964"
+      > </a
+      ><a name="2965" class="Field"
+      >refl</a
+      ><a name="2969"
+      >  </a
+      ><a name="2971" class="Symbol"
+      >=</a
+      ><a name="2972"
+      > </a
+      ><a name="2973" href="Data.Covec.html#3036" class="Function"
+      >refl</a
+      ><a name="2977"
+      >
+    </a
+      ><a name="2982" class="Symbol"
+      >;</a
+      ><a name="2983"
+      > </a
+      ><a name="2984" class="Field"
+      >sym</a
+      ><a name="2987"
+      >   </a
+      ><a name="2990" class="Symbol"
+      >=</a
+      ><a name="2991"
+      > </a
+      ><a name="2992" href="Data.Covec.html#3138" class="Function"
+      >sym</a
+      ><a name="2995"
+      >
+    </a
+      ><a name="3000" class="Symbol"
+      >;</a
+      ><a name="3001"
+      > </a
+      ><a name="3002" class="Field"
+      >trans</a
+      ><a name="3007"
+      > </a
+      ><a name="3008" class="Symbol"
+      >=</a
+      ><a name="3009"
+      > </a
+      ><a name="3010" href="Data.Covec.html#3238" class="Function"
+      >trans</a
+      ><a name="3015"
+      >
+    </a
+      ><a name="3020" class="Symbol"
+      >}</a
+      ><a name="3021"
+      >
+  </a
+      ><a name="3024" class="Symbol"
+      >}</a
+      ><a name="3025"
+      >
+  </a
+      ><a name="3028" class="Keyword"
+      >where</a
+      ><a name="3033"
+      >
+  </a
+      ><a name="3036" href="Data.Covec.html#3036" class="Function"
+      >refl</a
+      ><a name="3040"
+      > </a
+      ><a name="3041" class="Symbol"
+      >:</a
+      ><a name="3042"
+      > </a
+      ><a name="3043" class="Symbol"
+      >&#8704;</a
+      ><a name="3044"
+      > </a
+      ><a name="3045" class="Symbol"
+      >{</a
+      ><a name="3046" href="Data.Covec.html#3046" class="Bound"
+      >A</a
+      ><a name="3047"
+      > </a
+      ><a name="3048" href="Data.Covec.html#3048" class="Bound"
+      >n</a
+      ><a name="3049" class="Symbol"
+      >}</a
+      ><a name="3050"
+      > </a
+      ><a name="3051" class="Symbol"
+      >&#8594;</a
+      ><a name="3052"
+      > </a
+      ><a name="3053" href="Relation.Binary.Core.html#1891" class="Function"
+      >Reflexive</a
+      ><a name="3062"
+      > </a
+      ><a name="3063" class="Symbol"
+      >(</a
+      ><a name="3064" href="Data.Covec.html#2071" class="Datatype Operator"
+      >_&#8776;_</a
+      ><a name="3067"
+      > </a
+      ><a name="3068" class="Symbol"
+      >{</a
+      ><a name="3069" href="Data.Covec.html#3046" class="Bound"
+      >A</a
+      ><a name="3070" class="Symbol"
+      >}</a
+      ><a name="3071"
+      > </a
+      ><a name="3072" class="Symbol"
+      >{</a
+      ><a name="3073" href="Data.Covec.html#3048" class="Bound"
+      >n</a
+      ><a name="3074" class="Symbol"
+      >})</a
+      ><a name="3076"
+      >
+  </a
+      ><a name="3079" href="Data.Covec.html#3036" class="Function"
+      >refl</a
+      ><a name="3083"
+      > </a
+      ><a name="3084" class="Symbol"
+      >{</a
+      ><a name="3085" class="Argument"
+      >x</a
+      ><a name="3086"
+      > </a
+      ><a name="3087" class="Symbol"
+      >=</a
+      ><a name="3088"
+      > </a
+      ><a name="3089" href="Data.Covec.html#707" class="InductiveConstructor"
+      >[]</a
+      ><a name="3091" class="Symbol"
+      >}</a
+      ><a name="3092"
+      >     </a
+      ><a name="3097" class="Symbol"
+      >=</a
+      ><a name="3098"
+      > </a
+      ><a name="3099" href="Data.Covec.html#2121" class="InductiveConstructor"
+      >[]</a
+      ><a name="3101"
+      >
+  </a
+      ><a name="3104" href="Data.Covec.html#3036" class="Function"
+      >refl</a
+      ><a name="3108"
+      > </a
+      ><a name="3109" class="Symbol"
+      >{</a
+      ><a name="3110" class="Argument"
+      >x</a
+      ><a name="3111"
+      > </a
+      ><a name="3112" class="Symbol"
+      >=</a
+      ><a name="3113"
+      > </a
+      ><a name="3114" href="Data.Covec.html#3114" class="Bound"
+      >x</a
+      ><a name="3115"
+      > </a
+      ><a name="3116" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3117"
+      > </a
+      ><a name="3118" href="Data.Covec.html#3118" class="Bound"
+      >xs</a
+      ><a name="3120" class="Symbol"
+      >}</a
+      ><a name="3121"
+      > </a
+      ><a name="3122" class="Symbol"
+      >=</a
+      ><a name="3123"
+      > </a
+      ><a name="3124" href="Data.Covec.html#3114" class="Bound"
+      >x</a
+      ><a name="3125"
+      > </a
+      ><a name="3126" href="Data.Covec.html#2137" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3127"
+      > </a
+      ><a name="3128" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="3129"
+      > </a
+      ><a name="3130" href="Data.Covec.html#3036" class="Function"
+      >refl</a
+      ><a name="3134"
+      >
+
+  </a
+      ><a name="3138" href="Data.Covec.html#3138" class="Function"
+      >sym</a
+      ><a name="3141"
+      > </a
+      ><a name="3142" class="Symbol"
+      >:</a
+      ><a name="3143"
+      > </a
+      ><a name="3144" class="Symbol"
+      >&#8704;</a
+      ><a name="3145"
+      > </a
+      ><a name="3146" class="Symbol"
+      >{</a
+      ><a name="3147" href="Data.Covec.html#3147" class="Bound"
+      >A</a
+      ><a name="3148"
+      > </a
+      ><a name="3149" href="Data.Covec.html#3149" class="Bound"
+      >n</a
+      ><a name="3150" class="Symbol"
+      >}</a
+      ><a name="3151"
+      > </a
+      ><a name="3152" class="Symbol"
+      >&#8594;</a
+      ><a name="3153"
+      > </a
+      ><a name="3154" href="Relation.Binary.Core.html#2314" class="Function"
+      >Symmetric</a
+      ><a name="3163"
+      > </a
+      ><a name="3164" class="Symbol"
+      >(</a
+      ><a name="3165" href="Data.Covec.html#2071" class="Datatype Operator"
+      >_&#8776;_</a
+      ><a name="3168"
+      > </a
+      ><a name="3169" class="Symbol"
+      >{</a
+      ><a name="3170" href="Data.Covec.html#3147" class="Bound"
+      >A</a
+      ><a name="3171" class="Symbol"
+      >}</a
+      ><a name="3172"
+      > </a
+      ><a name="3173" class="Symbol"
+      >{</a
+      ><a name="3174" href="Data.Covec.html#3149" class="Bound"
+      >n</a
+      ><a name="3175" class="Symbol"
+      >})</a
+      ><a name="3177"
+      >
+  </a
+      ><a name="3180" href="Data.Covec.html#3138" class="Function"
+      >sym</a
+      ><a name="3183"
+      > </a
+      ><a name="3184" href="Data.Covec.html#2121" class="InductiveConstructor"
+      >[]</a
+      ><a name="3186"
+      >        </a
+      ><a name="3194" class="Symbol"
+      >=</a
+      ><a name="3195"
+      > </a
+      ><a name="3196" href="Data.Covec.html#2121" class="InductiveConstructor"
+      >[]</a
+      ><a name="3198"
+      >
+  </a
+      ><a name="3201" href="Data.Covec.html#3138" class="Function"
+      >sym</a
+      ><a name="3204"
+      > </a
+      ><a name="3205" class="Symbol"
+      >(</a
+      ><a name="3206" href="Data.Covec.html#3206" class="Bound"
+      >x</a
+      ><a name="3207"
+      > </a
+      ><a name="3208" href="Data.Covec.html#2137" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3209"
+      > </a
+      ><a name="3210" href="Data.Covec.html#3210" class="Bound"
+      >xs&#8776;</a
+      ><a name="3213" class="Symbol"
+      >)</a
+      ><a name="3214"
+      > </a
+      ><a name="3215" class="Symbol"
+      >=</a
+      ><a name="3216"
+      > </a
+      ><a name="3217" href="Data.Covec.html#3206" class="Bound"
+      >x</a
+      ><a name="3218"
+      > </a
+      ><a name="3219" href="Data.Covec.html#2137" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3220"
+      > </a
+      ><a name="3221" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="3222"
+      > </a
+      ><a name="3223" href="Data.Covec.html#3138" class="Function"
+      >sym</a
+      ><a name="3226"
+      > </a
+      ><a name="3227" class="Symbol"
+      >(</a
+      ><a name="3228" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="3229"
+      > </a
+      ><a name="3230" href="Data.Covec.html#3210" class="Bound"
+      >xs&#8776;</a
+      ><a name="3233" class="Symbol"
+      >)</a
+      ><a name="3234"
+      >
+
+  </a
+      ><a name="3238" href="Data.Covec.html#3238" class="Function"
+      >trans</a
+      ><a name="3243"
+      > </a
+      ><a name="3244" class="Symbol"
+      >:</a
+      ><a name="3245"
+      > </a
+      ><a name="3246" class="Symbol"
+      >&#8704;</a
+      ><a name="3247"
+      > </a
+      ><a name="3248" class="Symbol"
+      >{</a
+      ><a name="3249" href="Data.Covec.html#3249" class="Bound"
+      >A</a
+      ><a name="3250"
+      > </a
+      ><a name="3251" href="Data.Covec.html#3251" class="Bound"
+      >n</a
+      ><a name="3252" class="Symbol"
+      >}</a
+      ><a name="3253"
+      > </a
+      ><a name="3254" class="Symbol"
+      >&#8594;</a
+      ><a name="3255"
+      > </a
+      ><a name="3256" href="Relation.Binary.Core.html#2793" class="Function"
+      >Transitive</a
+      ><a name="3266"
+      > </a
+      ><a name="3267" class="Symbol"
+      >(</a
+      ><a name="3268" href="Data.Covec.html#2071" class="Datatype Operator"
+      >_&#8776;_</a
+      ><a name="3271"
+      > </a
+      ><a name="3272" class="Symbol"
+      >{</a
+      ><a name="3273" href="Data.Covec.html#3249" class="Bound"
+      >A</a
+      ><a name="3274" class="Symbol"
+      >}</a
+      ><a name="3275"
+      > </a
+      ><a name="3276" class="Symbol"
+      >{</a
+      ><a name="3277" href="Data.Covec.html#3251" class="Bound"
+      >n</a
+      ><a name="3278" class="Symbol"
+      >})</a
+      ><a name="3280"
+      >
+  </a
+      ><a name="3283" href="Data.Covec.html#3238" class="Function"
+      >trans</a
+      ><a name="3288"
+      > </a
+      ><a name="3289" href="Data.Covec.html#2121" class="InductiveConstructor"
+      >[]</a
+      ><a name="3291"
+      >        </a
+      ><a name="3299" href="Data.Covec.html#2121" class="InductiveConstructor"
+      >[]</a
+      ><a name="3301"
+      >         </a
+      ><a name="3310" class="Symbol"
+      >=</a
+      ><a name="3311"
+      > </a
+      ><a name="3312" href="Data.Covec.html#2121" class="InductiveConstructor"
+      >[]</a
+      ><a name="3314"
+      >
+  </a
+      ><a name="3317" href="Data.Covec.html#3238" class="Function"
+      >trans</a
+      ><a name="3322"
+      > </a
+      ><a name="3323" class="Symbol"
+      >(</a
+      ><a name="3324" href="Data.Covec.html#3324" class="Bound"
+      >x</a
+      ><a name="3325"
+      > </a
+      ><a name="3326" href="Data.Covec.html#2137" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3327"
+      > </a
+      ><a name="3328" href="Data.Covec.html#3328" class="Bound"
+      >xs&#8776;</a
+      ><a name="3331" class="Symbol"
+      >)</a
+      ><a name="3332"
+      > </a
+      ><a name="3333" class="Symbol"
+      >(</a
+      ><a name="3334" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3335" href="Data.Covec.html#3324" class="DottedPattern Bound"
+      >x</a
+      ><a name="3336"
+      > </a
+      ><a name="3337" href="Data.Covec.html#2137" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3338"
+      > </a
+      ><a name="3339" href="Data.Covec.html#3339" class="Bound"
+      >ys&#8776;</a
+      ><a name="3342" class="Symbol"
+      >)</a
+      ><a name="3343"
+      > </a
+      ><a name="3344" class="Symbol"
+      >=</a
+      ><a name="3345"
+      > </a
+      ><a name="3346" href="Data.Covec.html#3324" class="Bound"
+      >x</a
+      ><a name="3347"
+      > </a
+      ><a name="3348" href="Data.Covec.html#2137" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3349"
+      > </a
+      ><a name="3350" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="3351"
+      > </a
+      ><a name="3352" href="Data.Covec.html#3238" class="Function"
+      >trans</a
+      ><a name="3357"
+      > </a
+      ><a name="3358" class="Symbol"
+      >(</a
+      ><a name="3359" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="3360"
+      > </a
+      ><a name="3361" href="Data.Covec.html#3328" class="Bound"
+      >xs&#8776;</a
+      ><a name="3364" class="Symbol"
+      >)</a
+      ><a name="3365"
+      > </a
+      ><a name="3366" class="Symbol"
+      >(</a
+      ><a name="3367" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="3368"
+      > </a
+      ><a name="3369" href="Data.Covec.html#3339" class="Bound"
+      >ys&#8776;</a
+      ><a name="3372" class="Symbol"
+      >)</a
+      ><a name="3373"
+      >
+
+</a
+      ><a name="3375" href="Data.Covec.html#3375" class="Function"
+      >poset</a
+      ><a name="3380"
+      > </a
+      ><a name="3381" class="Symbol"
+      >:</a
+      ><a name="3382"
+      > </a
+      ><a name="3383" class="PrimitiveType"
+      >Set</a
+      ><a name="3386"
+      > </a
+      ><a name="3387" class="Symbol"
+      >&#8594;</a
+      ><a name="3388"
+      > </a
+      ><a name="3389" href="Data.Conat.html#424" class="Datatype"
+      >Co&#8469;</a
+      ><a name="3392"
+      > </a
+      ><a name="3393" class="Symbol"
+      >&#8594;</a
+      ><a name="3394"
+      > </a
+      ><a name="3395" href="Relation.Binary.html#3673" class="Record"
+      >Poset</a
+      ><a name="3400"
+      > </a
+      ><a name="3401" class="Symbol"
+      >_</a
+      ><a name="3402"
+      > </a
+      ><a name="3403" class="Symbol"
+      >_</a
+      ><a name="3404"
+      > </a
+      ><a name="3405" class="Symbol"
+      >_</a
+      ><a name="3406"
+      >
+</a
+      ><a name="3407" href="Data.Covec.html#3375" class="Function"
+      >poset</a
+      ><a name="3412"
+      > </a
+      ><a name="3413" href="Data.Covec.html#3413" class="Bound"
+      >A</a
+      ><a name="3414"
+      > </a
+      ><a name="3415" href="Data.Covec.html#3415" class="Bound"
+      >n</a
+      ><a name="3416"
+      > </a
+      ><a name="3417" class="Symbol"
+      >=</a
+      ><a name="3418"
+      > </a
+      ><a name="3419" class="Keyword"
+      >record</a
+      ><a name="3425"
+      >
+  </a
+      ><a name="3428" class="Symbol"
+      >{</a
+      ><a name="3429"
+      > </a
+      ><a name="3430" class="Field"
+      >Carrier</a
+      ><a name="3437"
+      >        </a
+      ><a name="3445" class="Symbol"
+      >=</a
+      ><a name="3446"
+      > </a
+      ><a name="3447" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="3452"
+      > </a
+      ><a name="3453" href="Data.Covec.html#3413" class="Bound"
+      >A</a
+      ><a name="3454"
+      > </a
+      ><a name="3455" href="Data.Covec.html#3415" class="Bound"
+      >n</a
+      ><a name="3456"
+      >
+  </a
+      ><a name="3459" class="Symbol"
+      >;</a
+      ><a name="3460"
+      > </a
+      ><a name="3461" class="Field Operator"
+      >_&#8776;_</a
+      ><a name="3464"
+      >            </a
+      ><a name="3476" class="Symbol"
+      >=</a
+      ><a name="3477"
+      > </a
+      ><a name="3478" href="Data.Covec.html#2071" class="Datatype Operator"
+      >_&#8776;_</a
+      ><a name="3481"
+      >
+  </a
+      ><a name="3484" class="Symbol"
+      >;</a
+      ><a name="3485"
+      > </a
+      ><a name="3486" class="Field Operator"
+      >_&#8804;_</a
+      ><a name="3489"
+      >            </a
+      ><a name="3501" class="Symbol"
+      >=</a
+      ><a name="3502"
+      > </a
+      ><a name="3503" href="Data.Covec.html#2541" class="Datatype Operator"
+      >_&#8849;_</a
+      ><a name="3506"
+      >
+  </a
+      ><a name="3509" class="Symbol"
+      >;</a
+      ><a name="3510"
+      > </a
+      ><a name="3511" class="Field"
+      >isPartialOrder</a
+      ><a name="3525"
+      > </a
+      ><a name="3526" class="Symbol"
+      >=</a
+      ><a name="3527"
+      > </a
+      ><a name="3528" class="Keyword"
+      >record</a
+      ><a name="3534"
+      >
+    </a
+      ><a name="3539" class="Symbol"
+      >{</a
+      ><a name="3540"
+      > </a
+      ><a name="3541" class="Field"
+      >isPreorder</a
+      ><a name="3551"
+      > </a
+      ><a name="3552" class="Symbol"
+      >=</a
+      ><a name="3553"
+      > </a
+      ><a name="3554" class="Keyword"
+      >record</a
+      ><a name="3560"
+      >
+      </a
+      ><a name="3567" class="Symbol"
+      >{</a
+      ><a name="3568"
+      > </a
+      ><a name="3569" class="Field"
+      >isEquivalence</a
+      ><a name="3582"
+      > </a
+      ><a name="3583" class="Symbol"
+      >=</a
+      ><a name="3584"
+      > </a
+      ><a name="3585" href="Relation.Binary.html#1975" class="Field"
+      >Setoid.isEquivalence</a
+      ><a name="3605"
+      > </a
+      ><a name="3606" class="Symbol"
+      >(</a
+      ><a name="3607" href="Data.Covec.html#2826" class="Function"
+      >setoid</a
+      ><a name="3613"
+      > </a
+      ><a name="3614" href="Data.Covec.html#3413" class="Bound"
+      >A</a
+      ><a name="3615"
+      > </a
+      ><a name="3616" href="Data.Covec.html#3415" class="Bound"
+      >n</a
+      ><a name="3617" class="Symbol"
+      >)</a
+      ><a name="3618"
+      >
+      </a
+      ><a name="3625" class="Symbol"
+      >;</a
+      ><a name="3626"
+      > </a
+      ><a name="3627" class="Field"
+      >reflexive</a
+      ><a name="3636"
+      >     </a
+      ><a name="3641" class="Symbol"
+      >=</a
+      ><a name="3642"
+      > </a
+      ><a name="3643" href="Data.Covec.html#3736" class="Function"
+      >reflexive</a
+      ><a name="3652"
+      >
+      </a
+      ><a name="3659" class="Symbol"
+      >;</a
+      ><a name="3660"
+      > </a
+      ><a name="3661" class="Field"
+      >trans</a
+      ><a name="3666"
+      >         </a
+      ><a name="3675" class="Symbol"
+      >=</a
+      ><a name="3676"
+      > </a
+      ><a name="3677" href="Data.Covec.html#3854" class="Function"
+      >trans</a
+      ><a name="3682"
+      >
+      </a
+      ><a name="3689" class="Symbol"
+      >}</a
+      ><a name="3690"
+      >
+    </a
+      ><a name="3695" class="Symbol"
+      >;</a
+      ><a name="3696"
+      > </a
+      ><a name="3697" class="Field"
+      >antisym</a
+      ><a name="3704"
+      >  </a
+      ><a name="3706" class="Symbol"
+      >=</a
+      ><a name="3707"
+      > </a
+      ><a name="3708" href="Data.Covec.html#3993" class="Function"
+      >antisym</a
+      ><a name="3715"
+      >
+    </a
+      ><a name="3720" class="Symbol"
+      >}</a
+      ><a name="3721"
+      >
+  </a
+      ><a name="3724" class="Symbol"
+      >}</a
+      ><a name="3725"
+      >
+  </a
+      ><a name="3728" class="Keyword"
+      >where</a
+      ><a name="3733"
+      >
+  </a
+      ><a name="3736" href="Data.Covec.html#3736" class="Function"
+      >reflexive</a
+      ><a name="3745"
+      > </a
+      ><a name="3746" class="Symbol"
+      >:</a
+      ><a name="3747"
+      > </a
+      ><a name="3748" class="Symbol"
+      >&#8704;</a
+      ><a name="3749"
+      > </a
+      ><a name="3750" class="Symbol"
+      >{</a
+      ><a name="3751" href="Data.Covec.html#3751" class="Bound"
+      >A</a
+      ><a name="3752"
+      > </a
+      ><a name="3753" href="Data.Covec.html#3753" class="Bound"
+      >n</a
+      ><a name="3754" class="Symbol"
+      >}</a
+      ><a name="3755"
+      > </a
+      ><a name="3756" class="Symbol"
+      >&#8594;</a
+      ><a name="3757"
+      > </a
+      ><a name="3758" href="Data.Covec.html#2071" class="Datatype Operator"
+      >_&#8776;_</a
+      ><a name="3761"
+      > </a
+      ><a name="3762" class="Symbol"
+      >{</a
+      ><a name="3763" href="Data.Covec.html#3751" class="Bound"
+      >A</a
+      ><a name="3764" class="Symbol"
+      >}</a
+      ><a name="3765"
+      > </a
+      ><a name="3766" class="Symbol"
+      >{</a
+      ><a name="3767" href="Data.Covec.html#3753" class="Bound"
+      >n</a
+      ><a name="3768" class="Symbol"
+      >}</a
+      ><a name="3769"
+      > </a
+      ><a name="3770" href="Relation.Binary.Core.html#1025" class="Function Operator"
+      >&#8658;</a
+      ><a name="3771"
+      > </a
+      ><a name="3772" href="Data.Covec.html#2541" class="Datatype Operator"
+      >_&#8849;_</a
+      ><a name="3775"
+      >
+  </a
+      ><a name="3778" href="Data.Covec.html#3736" class="Function"
+      >reflexive</a
+      ><a name="3787"
+      > </a
+      ><a name="3788" href="Data.Covec.html#2121" class="InductiveConstructor"
+      >[]</a
+      ><a name="3790"
+      >        </a
+      ><a name="3798" class="Symbol"
+      >=</a
+      ><a name="3799"
+      > </a
+      ><a name="3800" href="Data.Covec.html#2597" class="InductiveConstructor"
+      >[]</a
+      ><a name="3802"
+      >
+  </a
+      ><a name="3805" href="Data.Covec.html#3736" class="Function"
+      >reflexive</a
+      ><a name="3814"
+      > </a
+      ><a name="3815" class="Symbol"
+      >(</a
+      ><a name="3816" href="Data.Covec.html#3816" class="Bound"
+      >x</a
+      ><a name="3817"
+      > </a
+      ><a name="3818" href="Data.Covec.html#2137" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3819"
+      > </a
+      ><a name="3820" href="Data.Covec.html#3820" class="Bound"
+      >xs&#8776;</a
+      ><a name="3823" class="Symbol"
+      >)</a
+      ><a name="3824"
+      > </a
+      ><a name="3825" class="Symbol"
+      >=</a
+      ><a name="3826"
+      > </a
+      ><a name="3827" href="Data.Covec.html#3816" class="Bound"
+      >x</a
+      ><a name="3828"
+      > </a
+      ><a name="3829" href="Data.Covec.html#2638" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3830"
+      > </a
+      ><a name="3831" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="3832"
+      > </a
+      ><a name="3833" href="Data.Covec.html#3736" class="Function"
+      >reflexive</a
+      ><a name="3842"
+      > </a
+      ><a name="3843" class="Symbol"
+      >(</a
+      ><a name="3844" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="3845"
+      > </a
+      ><a name="3846" href="Data.Covec.html#3820" class="Bound"
+      >xs&#8776;</a
+      ><a name="3849" class="Symbol"
+      >)</a
+      ><a name="3850"
+      >
+
+  </a
+      ><a name="3854" href="Data.Covec.html#3854" class="Function"
+      >trans</a
+      ><a name="3859"
+      > </a
+      ><a name="3860" class="Symbol"
+      >:</a
+      ><a name="3861"
+      > </a
+      ><a name="3862" class="Symbol"
+      >&#8704;</a
+      ><a name="3863"
+      > </a
+      ><a name="3864" class="Symbol"
+      >{</a
+      ><a name="3865" href="Data.Covec.html#3865" class="Bound"
+      >A</a
+      ><a name="3866"
+      > </a
+      ><a name="3867" href="Data.Covec.html#3867" class="Bound"
+      >n</a
+      ><a name="3868" class="Symbol"
+      >}</a
+      ><a name="3869"
+      > </a
+      ><a name="3870" class="Symbol"
+      >&#8594;</a
+      ><a name="3871"
+      > </a
+      ><a name="3872" href="Relation.Binary.Core.html#2793" class="Function"
+      >Transitive</a
+      ><a name="3882"
+      > </a
+      ><a name="3883" class="Symbol"
+      >(</a
+      ><a name="3884" href="Data.Covec.html#2541" class="Datatype Operator"
+      >_&#8849;_</a
+      ><a name="3887"
+      > </a
+      ><a name="3888" class="Symbol"
+      >{</a
+      ><a name="3889" href="Data.Covec.html#3865" class="Bound"
+      >A</a
+      ><a name="3890" class="Symbol"
+      >}</a
+      ><a name="3891"
+      > </a
+      ><a name="3892" class="Symbol"
+      >{</a
+      ><a name="3893" href="Data.Covec.html#3867" class="Bound"
+      >n</a
+      ><a name="3894" class="Symbol"
+      >})</a
+      ><a name="3896"
+      >
+  </a
+      ><a name="3899" href="Data.Covec.html#3854" class="Function"
+      >trans</a
+      ><a name="3904"
+      > </a
+      ><a name="3905" href="Data.Covec.html#2597" class="InductiveConstructor"
+      >[]</a
+      ><a name="3907"
+      >        </a
+      ><a name="3915" class="Symbol"
+      >_</a
+      ><a name="3916"
+      >          </a
+      ><a name="3926" class="Symbol"
+      >=</a
+      ><a name="3927"
+      > </a
+      ><a name="3928" href="Data.Covec.html#2597" class="InductiveConstructor"
+      >[]</a
+      ><a name="3930"
+      >
+  </a
+      ><a name="3933" href="Data.Covec.html#3854" class="Function"
+      >trans</a
+      ><a name="3938"
+      > </a
+      ><a name="3939" class="Symbol"
+      >(</a
+      ><a name="3940" href="Data.Covec.html#3940" class="Bound"
+      >x</a
+      ><a name="3941"
+      > </a
+      ><a name="3942" href="Data.Covec.html#2638" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3943"
+      > </a
+      ><a name="3944" href="Data.Covec.html#3944" class="Bound"
+      >xs&#8776;</a
+      ><a name="3947" class="Symbol"
+      >)</a
+      ><a name="3948"
+      > </a
+      ><a name="3949" class="Symbol"
+      >(</a
+      ><a name="3950" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3951" href="Data.Covec.html#3940" class="DottedPattern Bound"
+      >x</a
+      ><a name="3952"
+      > </a
+      ><a name="3953" href="Data.Covec.html#2638" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3954"
+      > </a
+      ><a name="3955" href="Data.Covec.html#3955" class="Bound"
+      >ys&#8776;</a
+      ><a name="3958" class="Symbol"
+      >)</a
+      ><a name="3959"
+      > </a
+      ><a name="3960" class="Symbol"
+      >=</a
+      ><a name="3961"
+      > </a
+      ><a name="3962" href="Data.Covec.html#3940" class="Bound"
+      >x</a
+      ><a name="3963"
+      > </a
+      ><a name="3964" href="Data.Covec.html#2638" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3965"
+      > </a
+      ><a name="3966" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="3967"
+      > </a
+      ><a name="3968" href="Data.Covec.html#3854" class="Function"
+      >trans</a
+      ><a name="3973"
+      > </a
+      ><a name="3974" class="Symbol"
+      >(</a
+      ><a name="3975" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="3976"
+      > </a
+      ><a name="3977" href="Data.Covec.html#3944" class="Bound"
+      >xs&#8776;</a
+      ><a name="3980" class="Symbol"
+      >)</a
+      ><a name="3981"
+      > </a
+      ><a name="3982" class="Symbol"
+      >(</a
+      ><a name="3983" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="3984"
+      > </a
+      ><a name="3985" href="Data.Covec.html#3955" class="Bound"
+      >ys&#8776;</a
+      ><a name="3988" class="Symbol"
+      >)</a
+      ><a name="3989"
+      >
+
+  </a
+      ><a name="3993" href="Data.Covec.html#3993" class="Function"
+      >antisym</a
+      ><a name="4000"
+      > </a
+      ><a name="4001" class="Symbol"
+      >:</a
+      ><a name="4002"
+      > </a
+      ><a name="4003" class="Symbol"
+      >&#8704;</a
+      ><a name="4004"
+      > </a
+      ><a name="4005" class="Symbol"
+      >{</a
+      ><a name="4006" href="Data.Covec.html#4006" class="Bound"
+      >A</a
+      ><a name="4007"
+      > </a
+      ><a name="4008" href="Data.Covec.html#4008" class="Bound"
+      >n</a
+      ><a name="4009" class="Symbol"
+      >}</a
+      ><a name="4010"
+      > </a
+      ><a name="4011" class="Symbol"
+      >&#8594;</a
+      ><a name="4012"
+      > </a
+      ><a name="4013" href="Relation.Binary.Core.html#2880" class="Function"
+      >Antisymmetric</a
+      ><a name="4026"
+      > </a
+      ><a name="4027" class="Symbol"
+      >(</a
+      ><a name="4028" href="Data.Covec.html#2071" class="Datatype Operator"
+      >_&#8776;_</a
+      ><a name="4031"
+      > </a
+      ><a name="4032" class="Symbol"
+      >{</a
+      ><a name="4033" href="Data.Covec.html#4006" class="Bound"
+      >A</a
+      ><a name="4034" class="Symbol"
+      >}</a
+      ><a name="4035"
+      > </a
+      ><a name="4036" class="Symbol"
+      >{</a
+      ><a name="4037" href="Data.Covec.html#4008" class="Bound"
+      >n</a
+      ><a name="4038" class="Symbol"
+      >})</a
+      ><a name="4040"
+      > </a
+      ><a name="4041" href="Data.Covec.html#2541" class="Datatype Operator"
+      >_&#8849;_</a
+      ><a name="4044"
+      >
+  </a
+      ><a name="4047" href="Data.Covec.html#3993" class="Function"
+      >antisym</a
+      ><a name="4054"
+      > </a
+      ><a name="4055" href="Data.Covec.html#2597" class="InductiveConstructor"
+      >[]</a
+      ><a name="4057"
+      >       </a
+      ><a name="4064" href="Data.Covec.html#2597" class="InductiveConstructor"
+      >[]</a
+      ><a name="4066"
+      >        </a
+      ><a name="4074" class="Symbol"
+      >=</a
+      ><a name="4075"
+      > </a
+      ><a name="4076" href="Data.Covec.html#2121" class="InductiveConstructor"
+      >[]</a
+      ><a name="4078"
+      >
+  </a
+      ><a name="4081" href="Data.Covec.html#3993" class="Function"
+      >antisym</a
+      ><a name="4088"
+      > </a
+      ><a name="4089" class="Symbol"
+      >(</a
+      ><a name="4090" href="Data.Covec.html#4090" class="Bound"
+      >x</a
+      ><a name="4091"
+      > </a
+      ><a name="4092" href="Data.Covec.html#2638" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4093"
+      > </a
+      ><a name="4094" href="Data.Covec.html#4094" class="Bound"
+      >p&#8321;</a
+      ><a name="4096" class="Symbol"
+      >)</a
+      ><a name="4097"
+      > </a
+      ><a name="4098" class="Symbol"
+      >(</a
+      ><a name="4099" class="DottedPattern Symbol"
+      >.</a
+      ><a name="4100" href="Data.Covec.html#4090" class="DottedPattern Bound"
+      >x</a
+      ><a name="4101"
+      > </a
+      ><a name="4102" href="Data.Covec.html#2638" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4103"
+      > </a
+      ><a name="4104" href="Data.Covec.html#4104" class="Bound"
+      >p&#8322;</a
+      ><a name="4106" class="Symbol"
+      >)</a
+      ><a name="4107"
+      > </a
+      ><a name="4108" class="Symbol"
+      >=</a
+      ><a name="4109"
+      > </a
+      ><a name="4110" href="Data.Covec.html#4090" class="Bound"
+      >x</a
+      ><a name="4111"
+      > </a
+      ><a name="4112" href="Data.Covec.html#2137" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4113"
+      > </a
+      ><a name="4114" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="4115"
+      > </a
+      ><a name="4116" href="Data.Covec.html#3993" class="Function"
+      >antisym</a
+      ><a name="4123"
+      > </a
+      ><a name="4124" class="Symbol"
+      >(</a
+      ><a name="4125" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="4126"
+      > </a
+      ><a name="4127" href="Data.Covec.html#4094" class="Bound"
+      >p&#8321;</a
+      ><a name="4129" class="Symbol"
+      >)</a
+      ><a name="4130"
+      > </a
+      ><a name="4131" class="Symbol"
+      >(</a
+      ><a name="4132" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="4133"
+      > </a
+      ><a name="4134" href="Data.Covec.html#4104" class="Bound"
+      >p&#8322;</a
+      ><a name="4136" class="Symbol"
+      >)</a
+      ><a name="4137"
+      >
+
+</a
+      ><a name="4139" href="Data.Covec.html#4139" class="Function"
+      >map-cong</a
+      ><a name="4147"
+      > </a
+      ><a name="4148" class="Symbol"
+      >:</a
+      ><a name="4149"
+      > </a
+      ><a name="4150" class="Symbol"
+      >&#8704;</a
+      ><a name="4151"
+      > </a
+      ><a name="4152" class="Symbol"
+      >{</a
+      ><a name="4153" href="Data.Covec.html#4153" class="Bound"
+      >A</a
+      ><a name="4154"
+      > </a
+      ><a name="4155" href="Data.Covec.html#4155" class="Bound"
+      >B</a
+      ><a name="4156"
+      > </a
+      ><a name="4157" href="Data.Covec.html#4157" class="Bound"
+      >n</a
+      ><a name="4158" class="Symbol"
+      >}</a
+      ><a name="4159"
+      > </a
+      ><a name="4160" class="Symbol"
+      >(</a
+      ><a name="4161" href="Data.Covec.html#4161" class="Bound"
+      >f</a
+      ><a name="4162"
+      > </a
+      ><a name="4163" class="Symbol"
+      >:</a
+      ><a name="4164"
+      > </a
+      ><a name="4165" href="Data.Covec.html#4153" class="Bound"
+      >A</a
+      ><a name="4166"
+      > </a
+      ><a name="4167" class="Symbol"
+      >&#8594;</a
+      ><a name="4168"
+      > </a
+      ><a name="4169" href="Data.Covec.html#4155" class="Bound"
+      >B</a
+      ><a name="4170" class="Symbol"
+      >)</a
+      ><a name="4171"
+      > </a
+      ><a name="4172" class="Symbol"
+      >&#8594;</a
+      ><a name="4173"
+      > </a
+      ><a name="4174" href="Data.Covec.html#2071" class="Datatype Operator"
+      >_&#8776;_</a
+      ><a name="4177"
+      > </a
+      ><a name="4178" class="Symbol"
+      >{</a
+      ><a name="4179" class="Argument"
+      >n</a
+      ><a name="4180"
+      > </a
+      ><a name="4181" class="Symbol"
+      >=</a
+      ><a name="4182"
+      > </a
+      ><a name="4183" href="Data.Covec.html#4157" class="Bound"
+      >n</a
+      ><a name="4184" class="Symbol"
+      >}</a
+      ><a name="4185"
+      > </a
+      ><a name="4186" href="Relation.Binary.Core.html#1218" class="Function Operator"
+      >=[</a
+      ><a name="4188"
+      > </a
+      ><a name="4189" href="Data.Covec.html#885" class="Function"
+      >map</a
+      ><a name="4192"
+      > </a
+      ><a name="4193" href="Data.Covec.html#4161" class="Bound"
+      >f</a
+      ><a name="4194"
+      > </a
+      ><a name="4195" href="Relation.Binary.Core.html#1218" class="Function Operator"
+      >]&#8658;</a
+      ><a name="4197"
+      > </a
+      ><a name="4198" href="Data.Covec.html#2071" class="Datatype Operator"
+      >_&#8776;_</a
+      ><a name="4201"
+      >
+</a
+      ><a name="4202" href="Data.Covec.html#4139" class="Function"
+      >map-cong</a
+      ><a name="4210"
+      > </a
+      ><a name="4211" href="Data.Covec.html#4211" class="Bound"
+      >f</a
+      ><a name="4212"
+      > </a
+      ><a name="4213" href="Data.Covec.html#2121" class="InductiveConstructor"
+      >[]</a
+      ><a name="4215"
+      >        </a
+      ><a name="4223" class="Symbol"
+      >=</a
+      ><a name="4224"
+      > </a
+      ><a name="4225" href="Data.Covec.html#2121" class="InductiveConstructor"
+      >[]</a
+      ><a name="4227"
+      >
+</a
+      ><a name="4228" href="Data.Covec.html#4139" class="Function"
+      >map-cong</a
+      ><a name="4236"
+      > </a
+      ><a name="4237" href="Data.Covec.html#4237" class="Bound"
+      >f</a
+      ><a name="4238"
+      > </a
+      ><a name="4239" class="Symbol"
+      >(</a
+      ><a name="4240" href="Data.Covec.html#4240" class="Bound"
+      >x</a
+      ><a name="4241"
+      > </a
+      ><a name="4242" href="Data.Covec.html#2137" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4243"
+      > </a
+      ><a name="4244" href="Data.Covec.html#4244" class="Bound"
+      >xs&#8776;</a
+      ><a name="4247" class="Symbol"
+      >)</a
+      ><a name="4248"
+      > </a
+      ><a name="4249" class="Symbol"
+      >=</a
+      ><a name="4250"
+      > </a
+      ><a name="4251" href="Data.Covec.html#4237" class="Bound"
+      >f</a
+      ><a name="4252"
+      > </a
+      ><a name="4253" href="Data.Covec.html#4240" class="Bound"
+      >x</a
+      ><a name="4254"
+      > </a
+      ><a name="4255" href="Data.Covec.html#2137" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4256"
+      > </a
+      ><a name="4257" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="4258"
+      > </a
+      ><a name="4259" href="Data.Covec.html#4139" class="Function"
+      >map-cong</a
+      ><a name="4267"
+      > </a
+      ><a name="4268" href="Data.Covec.html#4237" class="Bound"
+      >f</a
+      ><a name="4269"
+      > </a
+      ><a name="4270" class="Symbol"
+      >(</a
+      ><a name="4271" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="4272"
+      > </a
+      ><a name="4273" href="Data.Covec.html#4244" class="Bound"
+      >xs&#8776;</a
+      ><a name="4276" class="Symbol"
+      >)</a
+      ><a name="4277"
+      >
+
+</a
+      ><a name="4279" href="Data.Covec.html#4279" class="Function"
+      >take-&#8849;</a
+      ><a name="4285"
+      > </a
+      ><a name="4286" class="Symbol"
+      >:</a
+      ><a name="4287"
+      > </a
+      ><a name="4288" class="Symbol"
+      >&#8704;</a
+      ><a name="4289"
+      > </a
+      ><a name="4290" class="Symbol"
+      >{</a
+      ><a name="4291" href="Data.Covec.html#4291" class="Bound"
+      >A</a
+      ><a name="4292" class="Symbol"
+      >}</a
+      ><a name="4293"
+      > </a
+      ><a name="4294" href="Data.Covec.html#4294" class="Bound"
+      >m</a
+      ><a name="4295"
+      > </a
+      ><a name="4296" class="Symbol"
+      >{</a
+      ><a name="4297" href="Data.Covec.html#4297" class="Bound"
+      >n</a
+      ><a name="4298" class="Symbol"
+      >}</a
+      ><a name="4299"
+      > </a
+      ><a name="4300" class="Symbol"
+      >(</a
+      ><a name="4301" href="Data.Covec.html#4301" class="Bound"
+      >xs</a
+      ><a name="4303"
+      > </a
+      ><a name="4304" class="Symbol"
+      >:</a
+      ><a name="4305"
+      > </a
+      ><a name="4306" href="Data.Covec.html#671" class="Datatype"
+      >Covec</a
+      ><a name="4311"
+      > </a
+      ><a name="4312" href="Data.Covec.html#4291" class="Bound"
+      >A</a
+      ><a name="4313"
+      > </a
+      ><a name="4314" class="Symbol"
+      >(</a
+      ><a name="4315" href="Data.Covec.html#4294" class="Bound"
+      >m</a
+      ><a name="4316"
+      > </a
+      ><a name="4317" href="Data.Conat.html#684" class="Function Operator"
+      >+</a
+      ><a name="4318"
+      > </a
+      ><a name="4319" href="Data.Covec.html#4297" class="Bound"
+      >n</a
+      ><a name="4320" class="Symbol"
+      >))</a
+      ><a name="4322"
+      > </a
+      ><a name="4323" class="Symbol"
+      >&#8594;</a
+      ><a name="4324"
+      > </a
+      ><a name="4325" href="Data.Covec.html#1241" class="Function"
+      >take</a
+      ><a name="4329"
+      > </a
+      ><a name="4330" href="Data.Covec.html#4294" class="Bound"
+      >m</a
+      ><a name="4331"
+      > </a
+      ><a name="4332" href="Data.Covec.html#4301" class="Bound"
+      >xs</a
+      ><a name="4334"
+      > </a
+      ><a name="4335" href="Data.Covec.html#2541" class="Datatype Operator"
+      >&#8849;</a
+      ><a name="4336"
+      > </a
+      ><a name="4337" href="Data.Covec.html#4301" class="Bound"
+      >xs</a
+      ><a name="4339"
+      >
+</a
+      ><a name="4340" href="Data.Covec.html#4279" class="Function"
+      >take-&#8849;</a
+      ><a name="4346"
+      > </a
+      ><a name="4347" href="Data.Conat.html#442" class="InductiveConstructor"
+      >zero</a
+      ><a name="4351"
+      >    </a
+      ><a name="4355" href="Data.Covec.html#4355" class="Bound"
+      >xs</a
+      ><a name="4357"
+      >       </a
+      ><a name="4364" class="Symbol"
+      >=</a
+      ><a name="4365"
+      > </a
+      ><a name="4366" href="Data.Covec.html#2597" class="InductiveConstructor"
+      >[]</a
+      ><a name="4368"
+      >
+</a
+      ><a name="4369" href="Data.Covec.html#4279" class="Function"
+      >take-&#8849;</a
+      ><a name="4375"
+      > </a
+      ><a name="4376" class="Symbol"
+      >(</a
+      ><a name="4377" href="Data.Conat.html#455" class="InductiveConstructor"
+      >suc</a
+      ><a name="4380"
+      > </a
+      ><a name="4381" href="Data.Covec.html#4381" class="Bound"
+      >n</a
+      ><a name="4382" class="Symbol"
+      >)</a
+      ><a name="4383"
+      > </a
+      ><a name="4384" class="Symbol"
+      >(</a
+      ><a name="4385" href="Data.Covec.html#4385" class="Bound"
+      >x</a
+      ><a name="4386"
+      > </a
+      ><a name="4387" href="Data.Covec.html#728" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4388"
+      > </a
+      ><a name="4389" href="Data.Covec.html#4389" class="Bound"
+      >xs</a
+      ><a name="4391" class="Symbol"
+      >)</a
+      ><a name="4392"
+      > </a
+      ><a name="4393" class="Symbol"
+      >=</a
+      ><a name="4394"
+      > </a
+      ><a name="4395" href="Data.Covec.html#4385" class="Bound"
+      >x</a
+      ><a name="4396"
+      > </a
+      ><a name="4397" href="Data.Covec.html#2638" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="4398"
+      > </a
+      ><a name="4399" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="4400"
+      > </a
+      ><a name="4401" href="Data.Covec.html#4279" class="Function"
+      >take-&#8849;</a
+      ><a name="4407"
+      > </a
+      ><a name="4408" class="Symbol"
+      >(</a
+      ><a name="4409" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="4410"
+      > </a
+      ><a name="4411" href="Data.Covec.html#4381" class="Bound"
+      >n</a
+      ><a name="4412" class="Symbol"
+      >)</a
+      ><a name="4413"
+      > </a
+      ><a name="4414" class="Symbol"
+      >(</a
+      ><a name="4415" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="4416"
+      > </a
+      ><a name="4417" href="Data.Covec.html#4389" class="Bound"
+      >xs</a
+      ><a name="4419" class="Symbol"
+      >)</a
+      ><a name="4420"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

@@ -1,0 +1,474 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Category.Functor.Predicate</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Functors on indexed sets (predicates)</a
+      ><a name="146"
+      >
+</a
+      ><a name="147" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="219"
+      >
+
+</a
+      ><a name="221" class="Comment"
+      >-- Note that currently the functor laws are not included here.</a
+      ><a name="283"
+      >
+
+</a
+      ><a name="285" class="Keyword"
+      >module</a
+      ><a name="291"
+      > </a
+      ><a name="292" href="Category.Functor.Predicate.html#1" class="Module"
+      >Category.Functor.Predicate</a
+      ><a name="318"
+      > </a
+      ><a name="319" class="Keyword"
+      >where</a
+      ><a name="324"
+      >
+
+</a
+      ><a name="326" class="Keyword"
+      >open</a
+      ><a name="330"
+      > </a
+      ><a name="331" class="Keyword"
+      >import</a
+      ><a name="337"
+      > </a
+      ><a name="338" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="346"
+      >
+</a
+      ><a name="347" class="Keyword"
+      >open</a
+      ><a name="351"
+      > </a
+      ><a name="352" class="Keyword"
+      >import</a
+      ><a name="358"
+      > </a
+      ><a name="359" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="364"
+      >
+</a
+      ><a name="365" class="Keyword"
+      >open</a
+      ><a name="369"
+      > </a
+      ><a name="370" class="Keyword"
+      >import</a
+      ><a name="376"
+      > </a
+      ><a name="377" href="Relation.Unary.html#1" class="Module"
+      >Relation.Unary</a
+      ><a name="391"
+      >
+</a
+      ><a name="392" class="Keyword"
+      >open</a
+      ><a name="396"
+      > </a
+      ><a name="397" class="Keyword"
+      >import</a
+      ><a name="403"
+      > </a
+      ><a name="404" href="Relation.Unary.PredicateTransformer.html#1" class="Module"
+      >Relation.Unary.PredicateTransformer</a
+      ><a name="439"
+      > </a
+      ><a name="440" class="Keyword"
+      >using</a
+      ><a name="445"
+      > </a
+      ><a name="446" class="Symbol"
+      >(</a
+      ><a name="447"
+      >PT</a
+      ><a name="449" class="Symbol"
+      >)</a
+      ><a name="450"
+      >
+
+</a
+      ><a name="452" class="Keyword"
+      >record</a
+      ><a name="458"
+      > </a
+      ><a name="459" href="Category.Functor.Predicate.html#459" class="Record"
+      >RawPFunctor</a
+      ><a name="470"
+      > </a
+      ><a name="471" class="Symbol"
+      >{</a
+      ><a name="472" href="Category.Functor.Predicate.html#472" class="Bound"
+      >i</a
+      ><a name="473"
+      > </a
+      ><a name="474" href="Category.Functor.Predicate.html#474" class="Bound"
+      >j</a
+      ><a name="475"
+      > </a
+      ><a name="476" href="Category.Functor.Predicate.html#476" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="478"
+      > </a
+      ><a name="479" href="Category.Functor.Predicate.html#479" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="481" class="Symbol"
+      >}</a
+      ><a name="482"
+      > </a
+      ><a name="483" class="Symbol"
+      >{</a
+      ><a name="484" href="Category.Functor.Predicate.html#484" class="Bound"
+      >I</a
+      ><a name="485"
+      > </a
+      ><a name="486" class="Symbol"
+      >:</a
+      ><a name="487"
+      > </a
+      ><a name="488" class="PrimitiveType"
+      >Set</a
+      ><a name="491"
+      > </a
+      ><a name="492" href="Category.Functor.Predicate.html#472" class="Bound"
+      >i</a
+      ><a name="493" class="Symbol"
+      >}</a
+      ><a name="494"
+      > </a
+      ><a name="495" class="Symbol"
+      >{</a
+      ><a name="496" href="Category.Functor.Predicate.html#496" class="Bound"
+      >J</a
+      ><a name="497"
+      > </a
+      ><a name="498" class="Symbol"
+      >:</a
+      ><a name="499"
+      > </a
+      ><a name="500" class="PrimitiveType"
+      >Set</a
+      ><a name="503"
+      > </a
+      ><a name="504" href="Category.Functor.Predicate.html#474" class="Bound"
+      >j</a
+      ><a name="505" class="Symbol"
+      >}</a
+      ><a name="506"
+      >
+                   </a
+      ><a name="526" class="Symbol"
+      >(</a
+      ><a name="527" href="Category.Functor.Predicate.html#527" class="Bound"
+      >F</a
+      ><a name="528"
+      > </a
+      ><a name="529" class="Symbol"
+      >:</a
+      ><a name="530"
+      > </a
+      ><a name="531" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      >PT</a
+      ><a name="533"
+      > </a
+      ><a name="534" href="Category.Functor.Predicate.html#484" class="Bound"
+      >I</a
+      ><a name="535"
+      > </a
+      ><a name="536" href="Category.Functor.Predicate.html#496" class="Bound"
+      >J</a
+      ><a name="537"
+      > </a
+      ><a name="538" href="Category.Functor.Predicate.html#476" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="540"
+      > </a
+      ><a name="541" href="Category.Functor.Predicate.html#479" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="543" class="Symbol"
+      >)</a
+      ><a name="544"
+      > </a
+      ><a name="545" class="Symbol"
+      >:</a
+      ><a name="546"
+      > </a
+      ><a name="547" class="PrimitiveType"
+      >Set</a
+      ><a name="550"
+      > </a
+      ><a name="551" class="Symbol"
+      >(</a
+      ><a name="552" href="Category.Functor.Predicate.html#472" class="Bound"
+      >i</a
+      ><a name="553"
+      > </a
+      ><a name="554" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="555"
+      > </a
+      ><a name="556" href="Category.Functor.Predicate.html#474" class="Bound"
+      >j</a
+      ><a name="557"
+      > </a
+      ><a name="558" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="559"
+      > </a
+      ><a name="560" href="Agda.Primitive.html#596" class="Primitive"
+      >suc</a
+      ><a name="563"
+      > </a
+      ><a name="564" href="Category.Functor.Predicate.html#476" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="566"
+      > </a
+      ><a name="567" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="568"
+      > </a
+      ><a name="569" href="Agda.Primitive.html#596" class="Primitive"
+      >suc</a
+      ><a name="572"
+      > </a
+      ><a name="573" href="Category.Functor.Predicate.html#479" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="575" class="Symbol"
+      >)</a
+      ><a name="576"
+      >
+                   </a
+      ><a name="596" class="Keyword"
+      >where</a
+      ><a name="601"
+      >
+  </a
+      ><a name="604" class="Keyword"
+      >infixl</a
+      ><a name="610"
+      > </a
+      ><a name="611" class="Number"
+      >4</a
+      ><a name="612"
+      > _&lt;$&gt;_ _&lt;$_
+
+  </a
+      ><a name="627" class="Keyword"
+      >field</a
+      ><a name="632"
+      >
+    </a
+      ><a name="637" href="Category.Functor.Predicate.html#637" class="Field Operator"
+      >_&lt;$&gt;_</a
+      ><a name="642"
+      > </a
+      ><a name="643" class="Symbol"
+      >:</a
+      ><a name="644"
+      > </a
+      ><a name="645" class="Symbol"
+      >&#8704;</a
+      ><a name="646"
+      > </a
+      ><a name="647" class="Symbol"
+      >{</a
+      ><a name="648" href="Category.Functor.Predicate.html#648" class="Bound"
+      >P</a
+      ><a name="649"
+      > </a
+      ><a name="650" href="Category.Functor.Predicate.html#650" class="Bound"
+      >Q</a
+      ><a name="651" class="Symbol"
+      >}</a
+      ><a name="652"
+      > </a
+      ><a name="653" class="Symbol"
+      >&#8594;</a
+      ><a name="654"
+      > </a
+      ><a name="655" href="Category.Functor.Predicate.html#648" class="Bound"
+      >P</a
+      ><a name="656"
+      > </a
+      ><a name="657" href="Relation.Unary.html#1897" class="Function Operator"
+      >&#8838;</a
+      ><a name="658"
+      > </a
+      ><a name="659" href="Category.Functor.Predicate.html#650" class="Bound"
+      >Q</a
+      ><a name="660"
+      > </a
+      ><a name="661" class="Symbol"
+      >&#8594;</a
+      ><a name="662"
+      > </a
+      ><a name="663" href="Category.Functor.Predicate.html#527" class="Bound"
+      >F</a
+      ><a name="664"
+      > </a
+      ><a name="665" href="Category.Functor.Predicate.html#648" class="Bound"
+      >P</a
+      ><a name="666"
+      > </a
+      ><a name="667" href="Relation.Unary.html#1897" class="Function Operator"
+      >&#8838;</a
+      ><a name="668"
+      > </a
+      ><a name="669" href="Category.Functor.Predicate.html#527" class="Bound"
+      >F</a
+      ><a name="670"
+      > </a
+      ><a name="671" href="Category.Functor.Predicate.html#650" class="Bound"
+      >Q</a
+      ><a name="672"
+      >
+
+  </a
+      ><a name="676" href="Category.Functor.Predicate.html#676" class="Function Operator"
+      >_&lt;$_</a
+      ><a name="680"
+      > </a
+      ><a name="681" class="Symbol"
+      >:</a
+      ><a name="682"
+      > </a
+      ><a name="683" class="Symbol"
+      >&#8704;</a
+      ><a name="684"
+      > </a
+      ><a name="685" class="Symbol"
+      >{</a
+      ><a name="686" href="Category.Functor.Predicate.html#686" class="Bound"
+      >P</a
+      ><a name="687"
+      > </a
+      ><a name="688" href="Category.Functor.Predicate.html#688" class="Bound"
+      >Q</a
+      ><a name="689" class="Symbol"
+      >}</a
+      ><a name="690"
+      > </a
+      ><a name="691" class="Symbol"
+      >&#8594;</a
+      ><a name="692"
+      > </a
+      ><a name="693" class="Symbol"
+      >(&#8704;</a
+      ><a name="695"
+      > </a
+      ><a name="696" class="Symbol"
+      >{</a
+      ><a name="697" href="Category.Functor.Predicate.html#697" class="Bound"
+      >i</a
+      ><a name="698" class="Symbol"
+      >}</a
+      ><a name="699"
+      > </a
+      ><a name="700" class="Symbol"
+      >&#8594;</a
+      ><a name="701"
+      > </a
+      ><a name="702" href="Category.Functor.Predicate.html#686" class="Bound"
+      >P</a
+      ><a name="703"
+      > </a
+      ><a name="704" href="Category.Functor.Predicate.html#697" class="Bound"
+      >i</a
+      ><a name="705" class="Symbol"
+      >)</a
+      ><a name="706"
+      > </a
+      ><a name="707" class="Symbol"
+      >&#8594;</a
+      ><a name="708"
+      > </a
+      ><a name="709" href="Category.Functor.Predicate.html#527" class="Bound"
+      >F</a
+      ><a name="710"
+      > </a
+      ><a name="711" href="Category.Functor.Predicate.html#688" class="Bound"
+      >Q</a
+      ><a name="712"
+      > </a
+      ><a name="713" href="Relation.Unary.html#1897" class="Function Operator"
+      >&#8838;</a
+      ><a name="714"
+      > </a
+      ><a name="715" href="Category.Functor.Predicate.html#527" class="Bound"
+      >F</a
+      ><a name="716"
+      > </a
+      ><a name="717" href="Category.Functor.Predicate.html#686" class="Bound"
+      >P</a
+      ><a name="718"
+      >
+  </a
+      ><a name="721" href="Category.Functor.Predicate.html#721" class="Bound"
+      >x</a
+      ><a name="722"
+      > </a
+      ><a name="723" href="Category.Functor.Predicate.html#676" class="Function Operator"
+      >&lt;$</a
+      ><a name="725"
+      > </a
+      ><a name="726" href="Category.Functor.Predicate.html#726" class="Bound"
+      >y</a
+      ><a name="727"
+      > </a
+      ><a name="728" class="Symbol"
+      >=</a
+      ><a name="729"
+      > </a
+      ><a name="730" href="Function.html#1053" class="Function"
+      >const</a
+      ><a name="735"
+      > </a
+      ><a name="736" href="Category.Functor.Predicate.html#721" class="Bound"
+      >x</a
+      ><a name="737"
+      > </a
+      ><a name="738" href="Category.Functor.Predicate.html#637" class="Field Operator"
+      >&lt;$&gt;</a
+      ><a name="741"
+      > </a
+      ><a name="742" href="Category.Functor.Predicate.html#726" class="Bound"
+      >y</a
+      ><a name="743"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

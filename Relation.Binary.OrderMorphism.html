@@ -1,0 +1,1115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Relation.Binary.OrderMorphism</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Order morphisms</a
+      ><a name="124"
+      >
+</a
+      ><a name="125" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="197"
+      >
+
+</a
+      ><a name="199" class="Keyword"
+      >module</a
+      ><a name="205"
+      > </a
+      ><a name="206" href="Relation.Binary.OrderMorphism.html#1" class="Module"
+      >Relation.Binary.OrderMorphism</a
+      ><a name="235"
+      > </a
+      ><a name="236" class="Keyword"
+      >where</a
+      ><a name="241"
+      >
+
+</a
+      ><a name="243" class="Keyword"
+      >open</a
+      ><a name="247"
+      > </a
+      ><a name="248" class="Keyword"
+      >import</a
+      ><a name="254"
+      > </a
+      ><a name="255" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="270"
+      >
+</a
+      ><a name="271" class="Keyword"
+      >open</a
+      ><a name="275"
+      > </a
+      ><a name="276" href="Relation.Binary.html#3673" class="Module"
+      >Poset</a
+      ><a name="281"
+      >
+</a
+      ><a name="282" class="Keyword"
+      >import</a
+      ><a name="288"
+      > </a
+      ><a name="289" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="297"
+      > </a
+      ><a name="298" class="Symbol"
+      >as</a
+      ><a name="300"
+      > </a
+      ><a name="301" class="Module"
+      >F</a
+      ><a name="302"
+      >
+</a
+      ><a name="303" class="Keyword"
+      >open</a
+      ><a name="307"
+      > </a
+      ><a name="308" class="Keyword"
+      >import</a
+      ><a name="314"
+      > </a
+      ><a name="315" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="320"
+      >
+
+</a
+      ><a name="322" class="Keyword"
+      >record</a
+      ><a name="328"
+      > </a
+      ><a name="329" href="Relation.Binary.OrderMorphism.html#329" class="Record Operator"
+      >_&#8658;-Poset_</a
+      ><a name="338"
+      > </a
+      ><a name="339" class="Symbol"
+      >{</a
+      ><a name="340" href="Relation.Binary.OrderMorphism.html#340" class="Bound"
+      >p&#8321;</a
+      ><a name="342"
+      > </a
+      ><a name="343" href="Relation.Binary.OrderMorphism.html#343" class="Bound"
+      >p&#8322;</a
+      ><a name="345"
+      > </a
+      ><a name="346" href="Relation.Binary.OrderMorphism.html#346" class="Bound"
+      >p&#8323;</a
+      ><a name="348"
+      > </a
+      ><a name="349" href="Relation.Binary.OrderMorphism.html#349" class="Bound"
+      >p&#8324;</a
+      ><a name="351"
+      > </a
+      ><a name="352" href="Relation.Binary.OrderMorphism.html#352" class="Bound"
+      >p&#8325;</a
+      ><a name="354"
+      > </a
+      ><a name="355" href="Relation.Binary.OrderMorphism.html#355" class="Bound"
+      >p&#8326;</a
+      ><a name="357" class="Symbol"
+      >}</a
+      ><a name="358"
+      >
+                 </a
+      ><a name="376" class="Symbol"
+      >(</a
+      ><a name="377" href="Relation.Binary.OrderMorphism.html#377" class="Bound"
+      >P&#8321;</a
+      ><a name="379"
+      > </a
+      ><a name="380" class="Symbol"
+      >:</a
+      ><a name="381"
+      > </a
+      ><a name="382" href="Relation.Binary.html#3673" class="Record"
+      >Poset</a
+      ><a name="387"
+      > </a
+      ><a name="388" href="Relation.Binary.OrderMorphism.html#340" class="Bound"
+      >p&#8321;</a
+      ><a name="390"
+      > </a
+      ><a name="391" href="Relation.Binary.OrderMorphism.html#343" class="Bound"
+      >p&#8322;</a
+      ><a name="393"
+      > </a
+      ><a name="394" href="Relation.Binary.OrderMorphism.html#346" class="Bound"
+      >p&#8323;</a
+      ><a name="396" class="Symbol"
+      >)</a
+      ><a name="397"
+      >
+                 </a
+      ><a name="415" class="Symbol"
+      >(</a
+      ><a name="416" href="Relation.Binary.OrderMorphism.html#416" class="Bound"
+      >P&#8322;</a
+      ><a name="418"
+      > </a
+      ><a name="419" class="Symbol"
+      >:</a
+      ><a name="420"
+      > </a
+      ><a name="421" href="Relation.Binary.html#3673" class="Record"
+      >Poset</a
+      ><a name="426"
+      > </a
+      ><a name="427" href="Relation.Binary.OrderMorphism.html#349" class="Bound"
+      >p&#8324;</a
+      ><a name="429"
+      > </a
+      ><a name="430" href="Relation.Binary.OrderMorphism.html#352" class="Bound"
+      >p&#8325;</a
+      ><a name="432"
+      > </a
+      ><a name="433" href="Relation.Binary.OrderMorphism.html#355" class="Bound"
+      >p&#8326;</a
+      ><a name="435" class="Symbol"
+      >)</a
+      ><a name="436"
+      > </a
+      ><a name="437" class="Symbol"
+      >:</a
+      ><a name="438"
+      > </a
+      ><a name="439" class="PrimitiveType"
+      >Set</a
+      ><a name="442"
+      > </a
+      ><a name="443" class="Symbol"
+      >(</a
+      ><a name="444" href="Relation.Binary.OrderMorphism.html#340" class="Bound"
+      >p&#8321;</a
+      ><a name="446"
+      > </a
+      ><a name="447" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="448"
+      > </a
+      ><a name="449" href="Relation.Binary.OrderMorphism.html#346" class="Bound"
+      >p&#8323;</a
+      ><a name="451"
+      > </a
+      ><a name="452" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="453"
+      > </a
+      ><a name="454" href="Relation.Binary.OrderMorphism.html#349" class="Bound"
+      >p&#8324;</a
+      ><a name="456"
+      > </a
+      ><a name="457" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="458"
+      > </a
+      ><a name="459" href="Relation.Binary.OrderMorphism.html#355" class="Bound"
+      >p&#8326;</a
+      ><a name="461" class="Symbol"
+      >)</a
+      ><a name="462"
+      > </a
+      ><a name="463" class="Keyword"
+      >where</a
+      ><a name="468"
+      >
+  </a
+      ><a name="471" class="Keyword"
+      >field</a
+      ><a name="476"
+      >
+    </a
+      ><a name="481" href="Relation.Binary.OrderMorphism.html#481" class="Field"
+      >fun</a
+      ><a name="484"
+      >      </a
+      ><a name="490" class="Symbol"
+      >:</a
+      ><a name="491"
+      > </a
+      ><a name="492" href="Relation.Binary.html#3749" class="Field"
+      >Carrier</a
+      ><a name="499"
+      > </a
+      ><a name="500" href="Relation.Binary.OrderMorphism.html#377" class="Bound"
+      >P&#8321;</a
+      ><a name="502"
+      > </a
+      ><a name="503" class="Symbol"
+      >&#8594;</a
+      ><a name="504"
+      > </a
+      ><a name="505" href="Relation.Binary.html#3749" class="Field"
+      >Carrier</a
+      ><a name="512"
+      > </a
+      ><a name="513" href="Relation.Binary.OrderMorphism.html#416" class="Bound"
+      >P&#8322;</a
+      ><a name="515"
+      >
+    </a
+      ><a name="520" href="Relation.Binary.OrderMorphism.html#520" class="Field"
+      >monotone</a
+      ><a name="528"
+      > </a
+      ><a name="529" class="Symbol"
+      >:</a
+      ><a name="530"
+      > </a
+      ><a name="531" href="Relation.Binary.html#3812" class="Field Operator"
+      >_&#8804;_</a
+      ><a name="534"
+      > </a
+      ><a name="535" href="Relation.Binary.OrderMorphism.html#377" class="Bound"
+      >P&#8321;</a
+      ><a name="537"
+      > </a
+      ><a name="538" href="Relation.Binary.Core.html#1218" class="Function Operator"
+      >=[</a
+      ><a name="540"
+      > </a
+      ><a name="541" href="Relation.Binary.OrderMorphism.html#481" class="Bound"
+      >fun</a
+      ><a name="544"
+      > </a
+      ><a name="545" href="Relation.Binary.Core.html#1218" class="Function Operator"
+      >]&#8658;</a
+      ><a name="547"
+      > </a
+      ><a name="548" href="Relation.Binary.html#3812" class="Field Operator"
+      >_&#8804;_</a
+      ><a name="551"
+      > </a
+      ><a name="552" href="Relation.Binary.OrderMorphism.html#416" class="Bound"
+      >P&#8322;</a
+      ><a name="554"
+      >
+
+</a
+      ><a name="556" href="Relation.Binary.OrderMorphism.html#556" class="Function Operator"
+      >_&#8658;-DTO_</a
+      ><a name="563"
+      > </a
+      ><a name="564" class="Symbol"
+      >:</a
+      ><a name="565"
+      > </a
+      ><a name="566" class="Symbol"
+      >&#8704;</a
+      ><a name="567"
+      > </a
+      ><a name="568" class="Symbol"
+      >{</a
+      ><a name="569" href="Relation.Binary.OrderMorphism.html#569" class="Bound"
+      >p&#8321;</a
+      ><a name="571"
+      > </a
+      ><a name="572" href="Relation.Binary.OrderMorphism.html#572" class="Bound"
+      >p&#8322;</a
+      ><a name="574"
+      > </a
+      ><a name="575" href="Relation.Binary.OrderMorphism.html#575" class="Bound"
+      >p&#8323;</a
+      ><a name="577"
+      > </a
+      ><a name="578" href="Relation.Binary.OrderMorphism.html#578" class="Bound"
+      >p&#8324;</a
+      ><a name="580"
+      > </a
+      ><a name="581" href="Relation.Binary.OrderMorphism.html#581" class="Bound"
+      >p&#8325;</a
+      ><a name="583"
+      > </a
+      ><a name="584" href="Relation.Binary.OrderMorphism.html#584" class="Bound"
+      >p&#8326;</a
+      ><a name="586" class="Symbol"
+      >}</a
+      ><a name="587"
+      > </a
+      ><a name="588" class="Symbol"
+      >&#8594;</a
+      ><a name="589"
+      >
+          </a
+      ><a name="600" href="Relation.Binary.html#9168" class="Record"
+      >DecTotalOrder</a
+      ><a name="613"
+      > </a
+      ><a name="614" href="Relation.Binary.OrderMorphism.html#569" class="Bound"
+      >p&#8321;</a
+      ><a name="616"
+      > </a
+      ><a name="617" href="Relation.Binary.OrderMorphism.html#572" class="Bound"
+      >p&#8322;</a
+      ><a name="619"
+      > </a
+      ><a name="620" href="Relation.Binary.OrderMorphism.html#575" class="Bound"
+      >p&#8323;</a
+      ><a name="622"
+      > </a
+      ><a name="623" class="Symbol"
+      >&#8594;</a
+      ><a name="624"
+      >
+          </a
+      ><a name="635" href="Relation.Binary.html#9168" class="Record"
+      >DecTotalOrder</a
+      ><a name="648"
+      > </a
+      ><a name="649" href="Relation.Binary.OrderMorphism.html#578" class="Bound"
+      >p&#8324;</a
+      ><a name="651"
+      > </a
+      ><a name="652" href="Relation.Binary.OrderMorphism.html#581" class="Bound"
+      >p&#8325;</a
+      ><a name="654"
+      > </a
+      ><a name="655" href="Relation.Binary.OrderMorphism.html#584" class="Bound"
+      >p&#8326;</a
+      ><a name="657"
+      > </a
+      ><a name="658" class="Symbol"
+      >&#8594;</a
+      ><a name="659"
+      > </a
+      ><a name="660" class="PrimitiveType"
+      >Set</a
+      ><a name="663"
+      > </a
+      ><a name="664" class="Symbol"
+      >_</a
+      ><a name="665"
+      >
+</a
+      ><a name="666" href="Relation.Binary.OrderMorphism.html#666" class="Bound"
+      >DTO&#8321;</a
+      ><a name="670"
+      > </a
+      ><a name="671" href="Relation.Binary.OrderMorphism.html#556" class="Function Operator"
+      >&#8658;-DTO</a
+      ><a name="676"
+      > </a
+      ><a name="677" href="Relation.Binary.OrderMorphism.html#677" class="Bound"
+      >DTO&#8322;</a
+      ><a name="681"
+      > </a
+      ><a name="682" class="Symbol"
+      >=</a
+      ><a name="683"
+      > </a
+      ><a name="684" href="Relation.Binary.html#8345" class="Function"
+      >poset</a
+      ><a name="689"
+      > </a
+      ><a name="690" href="Relation.Binary.OrderMorphism.html#666" class="Bound"
+      >DTO&#8321;</a
+      ><a name="694"
+      > </a
+      ><a name="695" href="Relation.Binary.OrderMorphism.html#329" class="Record Operator"
+      >&#8658;-Poset</a
+      ><a name="702"
+      > </a
+      ><a name="703" href="Relation.Binary.html#8345" class="Function"
+      >poset</a
+      ><a name="708"
+      > </a
+      ><a name="709" href="Relation.Binary.OrderMorphism.html#677" class="Bound"
+      >DTO&#8322;</a
+      ><a name="713"
+      >
+  </a
+      ><a name="716" class="Keyword"
+      >where</a
+      ><a name="721"
+      > </a
+      ><a name="722" class="Keyword"
+      >open</a
+      ><a name="726"
+      > </a
+      ><a name="727" href="Relation.Binary.html#9168" class="Module"
+      >DecTotalOrder</a
+      ><a name="740"
+      >
+
+</a
+      ><a name="742" class="Keyword"
+      >open</a
+      ><a name="746"
+      > </a
+      ><a name="747" href="Relation.Binary.OrderMorphism.html#329" class="Module Operator"
+      >_&#8658;-Poset_</a
+      ><a name="756"
+      >
+
+</a
+      ><a name="758" href="Relation.Binary.OrderMorphism.html#758" class="Function"
+      >id</a
+      ><a name="760"
+      > </a
+      ><a name="761" class="Symbol"
+      >:</a
+      ><a name="762"
+      > </a
+      ><a name="763" class="Symbol"
+      >&#8704;</a
+      ><a name="764"
+      > </a
+      ><a name="765" class="Symbol"
+      >{</a
+      ><a name="766" href="Relation.Binary.OrderMorphism.html#766" class="Bound"
+      >p&#8321;</a
+      ><a name="768"
+      > </a
+      ><a name="769" href="Relation.Binary.OrderMorphism.html#769" class="Bound"
+      >p&#8322;</a
+      ><a name="771"
+      > </a
+      ><a name="772" href="Relation.Binary.OrderMorphism.html#772" class="Bound"
+      >p&#8323;</a
+      ><a name="774" class="Symbol"
+      >}</a
+      ><a name="775"
+      > </a
+      ><a name="776" class="Symbol"
+      >{</a
+      ><a name="777" href="Relation.Binary.OrderMorphism.html#777" class="Bound"
+      >P</a
+      ><a name="778"
+      > </a
+      ><a name="779" class="Symbol"
+      >:</a
+      ><a name="780"
+      > </a
+      ><a name="781" href="Relation.Binary.html#3673" class="Record"
+      >Poset</a
+      ><a name="786"
+      > </a
+      ><a name="787" href="Relation.Binary.OrderMorphism.html#766" class="Bound"
+      >p&#8321;</a
+      ><a name="789"
+      > </a
+      ><a name="790" href="Relation.Binary.OrderMorphism.html#769" class="Bound"
+      >p&#8322;</a
+      ><a name="792"
+      > </a
+      ><a name="793" href="Relation.Binary.OrderMorphism.html#772" class="Bound"
+      >p&#8323;</a
+      ><a name="795" class="Symbol"
+      >}</a
+      ><a name="796"
+      > </a
+      ><a name="797" class="Symbol"
+      >&#8594;</a
+      ><a name="798"
+      > </a
+      ><a name="799" href="Relation.Binary.OrderMorphism.html#777" class="Bound"
+      >P</a
+      ><a name="800"
+      > </a
+      ><a name="801" href="Relation.Binary.OrderMorphism.html#329" class="Record Operator"
+      >&#8658;-Poset</a
+      ><a name="808"
+      > </a
+      ><a name="809" href="Relation.Binary.OrderMorphism.html#777" class="Bound"
+      >P</a
+      ><a name="810"
+      >
+</a
+      ><a name="811" href="Relation.Binary.OrderMorphism.html#758" class="Function"
+      >id</a
+      ><a name="813"
+      > </a
+      ><a name="814" class="Symbol"
+      >=</a
+      ><a name="815"
+      > </a
+      ><a name="816" class="Keyword"
+      >record</a
+      ><a name="822"
+      >
+  </a
+      ><a name="825" class="Symbol"
+      >{</a
+      ><a name="826"
+      > </a
+      ><a name="827" class="Field"
+      >fun</a
+      ><a name="830"
+      >      </a
+      ><a name="836" class="Symbol"
+      >=</a
+      ><a name="837"
+      > </a
+      ><a name="838" href="Function.html#1012" class="Function"
+      >F.id</a
+      ><a name="842"
+      >
+  </a
+      ><a name="845" class="Symbol"
+      >;</a
+      ><a name="846"
+      > </a
+      ><a name="847" class="Field"
+      >monotone</a
+      ><a name="855"
+      > </a
+      ><a name="856" class="Symbol"
+      >=</a
+      ><a name="857"
+      > </a
+      ><a name="858" href="Function.html#1012" class="Function"
+      >F.id</a
+      ><a name="862"
+      >
+  </a
+      ><a name="865" class="Symbol"
+      >}</a
+      ><a name="866"
+      >
+
+</a
+      ><a name="868" href="Relation.Binary.OrderMorphism.html#868" class="Function Operator"
+      >_&#8728;_</a
+      ><a name="871"
+      > </a
+      ><a name="872" class="Symbol"
+      >:</a
+      ><a name="873"
+      > </a
+      ><a name="874" class="Symbol"
+      >&#8704;</a
+      ><a name="875"
+      > </a
+      ><a name="876" class="Symbol"
+      >{</a
+      ><a name="877" href="Relation.Binary.OrderMorphism.html#877" class="Bound"
+      >p&#8321;</a
+      ><a name="879"
+      > </a
+      ><a name="880" href="Relation.Binary.OrderMorphism.html#880" class="Bound"
+      >p&#8322;</a
+      ><a name="882"
+      > </a
+      ><a name="883" href="Relation.Binary.OrderMorphism.html#883" class="Bound"
+      >p&#8323;</a
+      ><a name="885"
+      > </a
+      ><a name="886" href="Relation.Binary.OrderMorphism.html#886" class="Bound"
+      >p&#8324;</a
+      ><a name="888"
+      > </a
+      ><a name="889" href="Relation.Binary.OrderMorphism.html#889" class="Bound"
+      >p&#8325;</a
+      ><a name="891"
+      > </a
+      ><a name="892" href="Relation.Binary.OrderMorphism.html#892" class="Bound"
+      >p&#8326;</a
+      ><a name="894"
+      > </a
+      ><a name="895" href="Relation.Binary.OrderMorphism.html#895" class="Bound"
+      >p&#8327;</a
+      ><a name="897"
+      > </a
+      ><a name="898" href="Relation.Binary.OrderMorphism.html#898" class="Bound"
+      >p&#8328;</a
+      ><a name="900"
+      > </a
+      ><a name="901" href="Relation.Binary.OrderMorphism.html#901" class="Bound"
+      >p&#8329;</a
+      ><a name="903" class="Symbol"
+      >}</a
+      ><a name="904"
+      >
+        </a
+      ><a name="913" class="Symbol"
+      >{</a
+      ><a name="914" href="Relation.Binary.OrderMorphism.html#914" class="Bound"
+      >P&#8321;</a
+      ><a name="916"
+      > </a
+      ><a name="917" class="Symbol"
+      >:</a
+      ><a name="918"
+      > </a
+      ><a name="919" href="Relation.Binary.html#3673" class="Record"
+      >Poset</a
+      ><a name="924"
+      > </a
+      ><a name="925" href="Relation.Binary.OrderMorphism.html#877" class="Bound"
+      >p&#8321;</a
+      ><a name="927"
+      > </a
+      ><a name="928" href="Relation.Binary.OrderMorphism.html#880" class="Bound"
+      >p&#8322;</a
+      ><a name="930"
+      > </a
+      ><a name="931" href="Relation.Binary.OrderMorphism.html#883" class="Bound"
+      >p&#8323;</a
+      ><a name="933" class="Symbol"
+      >}</a
+      ><a name="934"
+      >
+        </a
+      ><a name="943" class="Symbol"
+      >{</a
+      ><a name="944" href="Relation.Binary.OrderMorphism.html#944" class="Bound"
+      >P&#8322;</a
+      ><a name="946"
+      > </a
+      ><a name="947" class="Symbol"
+      >:</a
+      ><a name="948"
+      > </a
+      ><a name="949" href="Relation.Binary.html#3673" class="Record"
+      >Poset</a
+      ><a name="954"
+      > </a
+      ><a name="955" href="Relation.Binary.OrderMorphism.html#886" class="Bound"
+      >p&#8324;</a
+      ><a name="957"
+      > </a
+      ><a name="958" href="Relation.Binary.OrderMorphism.html#889" class="Bound"
+      >p&#8325;</a
+      ><a name="960"
+      > </a
+      ><a name="961" href="Relation.Binary.OrderMorphism.html#892" class="Bound"
+      >p&#8326;</a
+      ><a name="963" class="Symbol"
+      >}</a
+      ><a name="964"
+      >
+        </a
+      ><a name="973" class="Symbol"
+      >{</a
+      ><a name="974" href="Relation.Binary.OrderMorphism.html#974" class="Bound"
+      >P&#8323;</a
+      ><a name="976"
+      > </a
+      ><a name="977" class="Symbol"
+      >:</a
+      ><a name="978"
+      > </a
+      ><a name="979" href="Relation.Binary.html#3673" class="Record"
+      >Poset</a
+      ><a name="984"
+      > </a
+      ><a name="985" href="Relation.Binary.OrderMorphism.html#895" class="Bound"
+      >p&#8327;</a
+      ><a name="987"
+      > </a
+      ><a name="988" href="Relation.Binary.OrderMorphism.html#898" class="Bound"
+      >p&#8328;</a
+      ><a name="990"
+      > </a
+      ><a name="991" href="Relation.Binary.OrderMorphism.html#901" class="Bound"
+      >p&#8329;</a
+      ><a name="993" class="Symbol"
+      >}</a
+      ><a name="994"
+      > </a
+      ><a name="995" class="Symbol"
+      >&#8594;</a
+      ><a name="996"
+      >
+      </a
+      ><a name="1003" href="Relation.Binary.OrderMorphism.html#944" class="Bound"
+      >P&#8322;</a
+      ><a name="1005"
+      > </a
+      ><a name="1006" href="Relation.Binary.OrderMorphism.html#329" class="Record Operator"
+      >&#8658;-Poset</a
+      ><a name="1013"
+      > </a
+      ><a name="1014" href="Relation.Binary.OrderMorphism.html#974" class="Bound"
+      >P&#8323;</a
+      ><a name="1016"
+      > </a
+      ><a name="1017" class="Symbol"
+      >&#8594;</a
+      ><a name="1018"
+      > </a
+      ><a name="1019" href="Relation.Binary.OrderMorphism.html#914" class="Bound"
+      >P&#8321;</a
+      ><a name="1021"
+      > </a
+      ><a name="1022" href="Relation.Binary.OrderMorphism.html#329" class="Record Operator"
+      >&#8658;-Poset</a
+      ><a name="1029"
+      > </a
+      ><a name="1030" href="Relation.Binary.OrderMorphism.html#944" class="Bound"
+      >P&#8322;</a
+      ><a name="1032"
+      > </a
+      ><a name="1033" class="Symbol"
+      >&#8594;</a
+      ><a name="1034"
+      > </a
+      ><a name="1035" href="Relation.Binary.OrderMorphism.html#914" class="Bound"
+      >P&#8321;</a
+      ><a name="1037"
+      > </a
+      ><a name="1038" href="Relation.Binary.OrderMorphism.html#329" class="Record Operator"
+      >&#8658;-Poset</a
+      ><a name="1045"
+      > </a
+      ><a name="1046" href="Relation.Binary.OrderMorphism.html#974" class="Bound"
+      >P&#8323;</a
+      ><a name="1048"
+      >
+</a
+      ><a name="1049" href="Relation.Binary.OrderMorphism.html#1049" class="Bound"
+      >f</a
+      ><a name="1050"
+      > </a
+      ><a name="1051" href="Relation.Binary.OrderMorphism.html#868" class="Function Operator"
+      >&#8728;</a
+      ><a name="1052"
+      > </a
+      ><a name="1053" href="Relation.Binary.OrderMorphism.html#1053" class="Bound"
+      >g</a
+      ><a name="1054"
+      > </a
+      ><a name="1055" class="Symbol"
+      >=</a
+      ><a name="1056"
+      > </a
+      ><a name="1057" class="Keyword"
+      >record</a
+      ><a name="1063"
+      >
+  </a
+      ><a name="1066" class="Symbol"
+      >{</a
+      ><a name="1067"
+      > </a
+      ><a name="1068" class="Field"
+      >fun</a
+      ><a name="1071"
+      >      </a
+      ><a name="1077" class="Symbol"
+      >=</a
+      ><a name="1078"
+      > </a
+      ><a name="1079" href="Function.html#713" class="Function Operator"
+      >F._&#8728;_</a
+      ><a name="1084"
+      > </a
+      ><a name="1085" class="Symbol"
+      >(</a
+      ><a name="1086" href="Relation.Binary.OrderMorphism.html#481" class="Field"
+      >fun</a
+      ><a name="1089"
+      > </a
+      ><a name="1090" href="Relation.Binary.OrderMorphism.html#1049" class="Bound"
+      >f</a
+      ><a name="1091" class="Symbol"
+      >)</a
+      ><a name="1092"
+      >      </a
+      ><a name="1098" class="Symbol"
+      >(</a
+      ><a name="1099" href="Relation.Binary.OrderMorphism.html#481" class="Field"
+      >fun</a
+      ><a name="1102"
+      > </a
+      ><a name="1103" href="Relation.Binary.OrderMorphism.html#1053" class="Bound"
+      >g</a
+      ><a name="1104" class="Symbol"
+      >)</a
+      ><a name="1105"
+      >
+  </a
+      ><a name="1108" class="Symbol"
+      >;</a
+      ><a name="1109"
+      > </a
+      ><a name="1110" class="Field"
+      >monotone</a
+      ><a name="1118"
+      > </a
+      ><a name="1119" class="Symbol"
+      >=</a
+      ><a name="1120"
+      > </a
+      ><a name="1121" href="Function.html#713" class="Function Operator"
+      >F._&#8728;_</a
+      ><a name="1126"
+      > </a
+      ><a name="1127" class="Symbol"
+      >(</a
+      ><a name="1128" href="Relation.Binary.OrderMorphism.html#520" class="Field"
+      >monotone</a
+      ><a name="1136"
+      > </a
+      ><a name="1137" href="Relation.Binary.OrderMorphism.html#1049" class="Bound"
+      >f</a
+      ><a name="1138" class="Symbol"
+      >)</a
+      ><a name="1139"
+      > </a
+      ><a name="1140" class="Symbol"
+      >(</a
+      ><a name="1141" href="Relation.Binary.OrderMorphism.html#520" class="Field"
+      >monotone</a
+      ><a name="1149"
+      > </a
+      ><a name="1150" href="Relation.Binary.OrderMorphism.html#1053" class="Bound"
+      >g</a
+      ><a name="1151" class="Symbol"
+      >)</a
+      ><a name="1152"
+      >
+  </a
+      ><a name="1155" class="Symbol"
+      >}</a
+      ><a name="1156"
+      >
+
+</a
+      ><a name="1158" href="Relation.Binary.OrderMorphism.html#1158" class="Function"
+      >const</a
+      ><a name="1163"
+      > </a
+      ><a name="1164" class="Symbol"
+      >:</a
+      ><a name="1165"
+      > </a
+      ><a name="1166" class="Symbol"
+      >&#8704;</a
+      ><a name="1167"
+      > </a
+      ><a name="1168" class="Symbol"
+      >{</a
+      ><a name="1169" href="Relation.Binary.OrderMorphism.html#1169" class="Bound"
+      >p&#8321;</a
+      ><a name="1171"
+      > </a
+      ><a name="1172" href="Relation.Binary.OrderMorphism.html#1172" class="Bound"
+      >p&#8322;</a
+      ><a name="1174"
+      > </a
+      ><a name="1175" href="Relation.Binary.OrderMorphism.html#1175" class="Bound"
+      >p&#8323;</a
+      ><a name="1177"
+      > </a
+      ><a name="1178" href="Relation.Binary.OrderMorphism.html#1178" class="Bound"
+      >p&#8324;</a
+      ><a name="1180"
+      > </a
+      ><a name="1181" href="Relation.Binary.OrderMorphism.html#1181" class="Bound"
+      >p&#8325;</a
+      ><a name="1183"
+      > </a
+      ><a name="1184" href="Relation.Binary.OrderMorphism.html#1184" class="Bound"
+      >p&#8326;</a
+      ><a name="1186" class="Symbol"
+      >}</a
+      ><a name="1187"
+      >
+          </a
+      ><a name="1198" class="Symbol"
+      >{</a
+      ><a name="1199" href="Relation.Binary.OrderMorphism.html#1199" class="Bound"
+      >P&#8321;</a
+      ><a name="1201"
+      > </a
+      ><a name="1202" class="Symbol"
+      >:</a
+      ><a name="1203"
+      > </a
+      ><a name="1204" href="Relation.Binary.html#3673" class="Record"
+      >Poset</a
+      ><a name="1209"
+      > </a
+      ><a name="1210" href="Relation.Binary.OrderMorphism.html#1169" class="Bound"
+      >p&#8321;</a
+      ><a name="1212"
+      > </a
+      ><a name="1213" href="Relation.Binary.OrderMorphism.html#1172" class="Bound"
+      >p&#8322;</a
+      ><a name="1215"
+      > </a
+      ><a name="1216" href="Relation.Binary.OrderMorphism.html#1175" class="Bound"
+      >p&#8323;</a
+      ><a name="1218" class="Symbol"
+      >}</a
+      ><a name="1219"
+      >
+          </a
+      ><a name="1230" class="Symbol"
+      >{</a
+      ><a name="1231" href="Relation.Binary.OrderMorphism.html#1231" class="Bound"
+      >P&#8322;</a
+      ><a name="1233"
+      > </a
+      ><a name="1234" class="Symbol"
+      >:</a
+      ><a name="1235"
+      > </a
+      ><a name="1236" href="Relation.Binary.html#3673" class="Record"
+      >Poset</a
+      ><a name="1241"
+      > </a
+      ><a name="1242" href="Relation.Binary.OrderMorphism.html#1178" class="Bound"
+      >p&#8324;</a
+      ><a name="1244"
+      > </a
+      ><a name="1245" href="Relation.Binary.OrderMorphism.html#1181" class="Bound"
+      >p&#8325;</a
+      ><a name="1247"
+      > </a
+      ><a name="1248" href="Relation.Binary.OrderMorphism.html#1184" class="Bound"
+      >p&#8326;</a
+      ><a name="1250" class="Symbol"
+      >}</a
+      ><a name="1251"
+      > </a
+      ><a name="1252" class="Symbol"
+      >&#8594;</a
+      ><a name="1253"
+      >
+        </a
+      ><a name="1262" href="Relation.Binary.html#3749" class="Field"
+      >Carrier</a
+      ><a name="1269"
+      > </a
+      ><a name="1270" href="Relation.Binary.OrderMorphism.html#1231" class="Bound"
+      >P&#8322;</a
+      ><a name="1272"
+      > </a
+      ><a name="1273" class="Symbol"
+      >&#8594;</a
+      ><a name="1274"
+      > </a
+      ><a name="1275" href="Relation.Binary.OrderMorphism.html#1199" class="Bound"
+      >P&#8321;</a
+      ><a name="1277"
+      > </a
+      ><a name="1278" href="Relation.Binary.OrderMorphism.html#329" class="Record Operator"
+      >&#8658;-Poset</a
+      ><a name="1285"
+      > </a
+      ><a name="1286" href="Relation.Binary.OrderMorphism.html#1231" class="Bound"
+      >P&#8322;</a
+      ><a name="1288"
+      >
+</a
+      ><a name="1289" href="Relation.Binary.OrderMorphism.html#1158" class="Function"
+      >const</a
+      ><a name="1294"
+      > </a
+      ><a name="1295" class="Symbol"
+      >{</a
+      ><a name="1296" class="Argument"
+      >P&#8322;</a
+      ><a name="1298"
+      > </a
+      ><a name="1299" class="Symbol"
+      >=</a
+      ><a name="1300"
+      > </a
+      ><a name="1301" href="Relation.Binary.OrderMorphism.html#1301" class="Bound"
+      >P&#8322;</a
+      ><a name="1303" class="Symbol"
+      >}</a
+      ><a name="1304"
+      > </a
+      ><a name="1305" href="Relation.Binary.OrderMorphism.html#1305" class="Bound"
+      >x</a
+      ><a name="1306"
+      > </a
+      ><a name="1307" class="Symbol"
+      >=</a
+      ><a name="1308"
+      > </a
+      ><a name="1309" class="Keyword"
+      >record</a
+      ><a name="1315"
+      >
+  </a
+      ><a name="1318" class="Symbol"
+      >{</a
+      ><a name="1319"
+      > </a
+      ><a name="1320" class="Field"
+      >fun</a
+      ><a name="1323"
+      >      </a
+      ><a name="1329" class="Symbol"
+      >=</a
+      ><a name="1330"
+      > </a
+      ><a name="1331" href="Function.html#1053" class="Function"
+      >F.const</a
+      ><a name="1338"
+      > </a
+      ><a name="1339" href="Relation.Binary.OrderMorphism.html#1305" class="Bound"
+      >x</a
+      ><a name="1340"
+      >
+  </a
+      ><a name="1343" class="Symbol"
+      >;</a
+      ><a name="1344"
+      > </a
+      ><a name="1345" class="Field"
+      >monotone</a
+      ><a name="1353"
+      > </a
+      ><a name="1354" class="Symbol"
+      >=</a
+      ><a name="1355"
+      > </a
+      ><a name="1356" href="Function.html#1053" class="Function"
+      >F.const</a
+      ><a name="1363"
+      > </a
+      ><a name="1364" class="Symbol"
+      >(</a
+      ><a name="1365" href="Relation.Binary.html#1211" class="Function"
+      >refl</a
+      ><a name="1369"
+      > </a
+      ><a name="1370" href="Relation.Binary.OrderMorphism.html#1301" class="Bound"
+      >P&#8322;</a
+      ><a name="1372" class="Symbol"
+      >)</a
+      ><a name="1373"
+      >
+  </a
+      ><a name="1376" class="Symbol"
+      >}</a
+      ><a name="1377"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

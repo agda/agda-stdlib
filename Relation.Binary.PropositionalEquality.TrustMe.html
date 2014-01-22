@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Relation.Binary.PropositionalEquality.TrustMe</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- An equality postulate which evaluates</a
+      ><a name="146"
+      >
+</a
+      ><a name="147" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="219"
+      >
+
+</a
+      ><a name="221" class="Keyword"
+      >module</a
+      ><a name="227"
+      > </a
+      ><a name="228" href="Relation.Binary.PropositionalEquality.TrustMe.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality.TrustMe</a
+      ><a name="273"
+      > </a
+      ><a name="274" class="Keyword"
+      >where</a
+      ><a name="279"
+      >
+
+</a
+      ><a name="281" class="Keyword"
+      >open</a
+      ><a name="285"
+      > </a
+      ><a name="286" class="Keyword"
+      >import</a
+      ><a name="292"
+      > </a
+      ><a name="293" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="330"
+      >
+
+</a
+      ><a name="332" class="Keyword"
+      >private</a
+      ><a name="339"
+      >
+ </a
+      ><a name="341" class="Keyword"
+      >primitive</a
+      ><a name="350"
+      >
+   </a
+      ><a name="354" href="Relation.Binary.PropositionalEquality.TrustMe.html#354" class="Primitive"
+      >primTrustMe</a
+      ><a name="365"
+      > </a
+      ><a name="366" class="Symbol"
+      >:</a
+      ><a name="367"
+      > </a
+      ><a name="368" class="Symbol"
+      >&#8704;</a
+      ><a name="369"
+      > </a
+      ><a name="370" class="Symbol"
+      >{</a
+      ><a name="371" href="Relation.Binary.PropositionalEquality.TrustMe.html#371" class="Bound"
+      >a</a
+      ><a name="372" class="Symbol"
+      >}</a
+      ><a name="373"
+      > </a
+      ><a name="374" class="Symbol"
+      >{</a
+      ><a name="375" href="Relation.Binary.PropositionalEquality.TrustMe.html#375" class="Bound"
+      >A</a
+      ><a name="376"
+      > </a
+      ><a name="377" class="Symbol"
+      >:</a
+      ><a name="378"
+      > </a
+      ><a name="379" class="PrimitiveType"
+      >Set</a
+      ><a name="382"
+      > </a
+      ><a name="383" href="Relation.Binary.PropositionalEquality.TrustMe.html#371" class="Bound"
+      >a</a
+      ><a name="384" class="Symbol"
+      >}</a
+      ><a name="385"
+      > </a
+      ><a name="386" class="Symbol"
+      >{</a
+      ><a name="387" href="Relation.Binary.PropositionalEquality.TrustMe.html#387" class="Bound"
+      >x</a
+      ><a name="388"
+      > </a
+      ><a name="389" href="Relation.Binary.PropositionalEquality.TrustMe.html#389" class="Bound"
+      >y</a
+      ><a name="390"
+      > </a
+      ><a name="391" class="Symbol"
+      >:</a
+      ><a name="392"
+      > </a
+      ><a name="393" href="Relation.Binary.PropositionalEquality.TrustMe.html#375" class="Bound"
+      >A</a
+      ><a name="394" class="Symbol"
+      >}</a
+      ><a name="395"
+      > </a
+      ><a name="396" class="Symbol"
+      >&#8594;</a
+      ><a name="397"
+      > </a
+      ><a name="398" href="Relation.Binary.PropositionalEquality.TrustMe.html#387" class="Bound"
+      >x</a
+      ><a name="399"
+      > </a
+      ><a name="400" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="401"
+      > </a
+      ><a name="402" href="Relation.Binary.PropositionalEquality.TrustMe.html#389" class="Bound"
+      >y</a
+      ><a name="403"
+      >
+
+</a
+      ><a name="405" class="Comment"
+      >-- trustMe {x = x} {y = y} evaluates to refl if x and y are</a
+      ><a name="464"
+      >
+</a
+      ><a name="465" class="Comment"
+      >-- definitionally equal.</a
+      ><a name="489"
+      >
+</a
+      ><a name="490" class="Comment"
+      >--</a
+      ><a name="492"
+      >
+</a
+      ><a name="493" class="Comment"
+      >-- For an example of the use of trustMe, see Data.String._&#8799;_.</a
+      ><a name="554"
+      >
+
+</a
+      ><a name="556" href="Relation.Binary.PropositionalEquality.TrustMe.html#556" class="Function"
+      >trustMe</a
+      ><a name="563"
+      > </a
+      ><a name="564" class="Symbol"
+      >:</a
+      ><a name="565"
+      > </a
+      ><a name="566" class="Symbol"
+      >&#8704;</a
+      ><a name="567"
+      > </a
+      ><a name="568" class="Symbol"
+      >{</a
+      ><a name="569" href="Relation.Binary.PropositionalEquality.TrustMe.html#569" class="Bound"
+      >a</a
+      ><a name="570" class="Symbol"
+      >}</a
+      ><a name="571"
+      > </a
+      ><a name="572" class="Symbol"
+      >{</a
+      ><a name="573" href="Relation.Binary.PropositionalEquality.TrustMe.html#573" class="Bound"
+      >A</a
+      ><a name="574"
+      > </a
+      ><a name="575" class="Symbol"
+      >:</a
+      ><a name="576"
+      > </a
+      ><a name="577" class="PrimitiveType"
+      >Set</a
+      ><a name="580"
+      > </a
+      ><a name="581" href="Relation.Binary.PropositionalEquality.TrustMe.html#569" class="Bound"
+      >a</a
+      ><a name="582" class="Symbol"
+      >}</a
+      ><a name="583"
+      > </a
+      ><a name="584" class="Symbol"
+      >{</a
+      ><a name="585" href="Relation.Binary.PropositionalEquality.TrustMe.html#585" class="Bound"
+      >x</a
+      ><a name="586"
+      > </a
+      ><a name="587" href="Relation.Binary.PropositionalEquality.TrustMe.html#587" class="Bound"
+      >y</a
+      ><a name="588"
+      > </a
+      ><a name="589" class="Symbol"
+      >:</a
+      ><a name="590"
+      > </a
+      ><a name="591" href="Relation.Binary.PropositionalEquality.TrustMe.html#573" class="Bound"
+      >A</a
+      ><a name="592" class="Symbol"
+      >}</a
+      ><a name="593"
+      > </a
+      ><a name="594" class="Symbol"
+      >&#8594;</a
+      ><a name="595"
+      > </a
+      ><a name="596" href="Relation.Binary.PropositionalEquality.TrustMe.html#585" class="Bound"
+      >x</a
+      ><a name="597"
+      > </a
+      ><a name="598" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="599"
+      > </a
+      ><a name="600" href="Relation.Binary.PropositionalEquality.TrustMe.html#587" class="Bound"
+      >y</a
+      ><a name="601"
+      >
+</a
+      ><a name="602" href="Relation.Binary.PropositionalEquality.TrustMe.html#556" class="Function"
+      >trustMe</a
+      ><a name="609"
+      > </a
+      ><a name="610" class="Symbol"
+      >=</a
+      ><a name="611"
+      > </a
+      ><a name="612" href="Relation.Binary.PropositionalEquality.TrustMe.html#354" class="Primitive"
+      >primTrustMe</a
+      ><a name="623"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

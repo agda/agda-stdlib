@@ -1,0 +1,2193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Category.Applicative.Indexed</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Indexed applicative functors</a
+      ><a name="137"
+      >
+</a
+      ><a name="138" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="210"
+      >
+
+</a
+      ><a name="212" class="Comment"
+      >-- Note that currently the applicative functor laws are not included</a
+      ><a name="280"
+      >
+</a
+      ><a name="281" class="Comment"
+      >-- here.</a
+      ><a name="289"
+      >
+
+</a
+      ><a name="291" class="Keyword"
+      >module</a
+      ><a name="297"
+      > </a
+      ><a name="298" href="Category.Applicative.Indexed.html#1" class="Module"
+      >Category.Applicative.Indexed</a
+      ><a name="326"
+      > </a
+      ><a name="327" class="Keyword"
+      >where</a
+      ><a name="332"
+      >
+
+</a
+      ><a name="334" class="Keyword"
+      >open</a
+      ><a name="338"
+      > </a
+      ><a name="339" class="Keyword"
+      >import</a
+      ><a name="345"
+      > </a
+      ><a name="346" href="Category.Functor.html#1" class="Module"
+      >Category.Functor</a
+      ><a name="362"
+      >
+</a
+      ><a name="363" class="Keyword"
+      >open</a
+      ><a name="367"
+      > </a
+      ><a name="368" class="Keyword"
+      >import</a
+      ><a name="374"
+      > </a
+      ><a name="375" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="387"
+      >
+</a
+      ><a name="388" class="Keyword"
+      >open</a
+      ><a name="392"
+      > </a
+      ><a name="393" class="Keyword"
+      >import</a
+      ><a name="399"
+      > </a
+      ><a name="400" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="408"
+      >
+</a
+      ><a name="409" class="Keyword"
+      >open</a
+      ><a name="413"
+      > </a
+      ><a name="414" class="Keyword"
+      >import</a
+      ><a name="420"
+      > </a
+      ><a name="421" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="426"
+      >
+</a
+      ><a name="427" class="Keyword"
+      >open</a
+      ><a name="431"
+      > </a
+      ><a name="432" class="Keyword"
+      >import</a
+      ><a name="438"
+      > </a
+      ><a name="439" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="476"
+      > </a
+      ><a name="477" class="Symbol"
+      >as</a
+      ><a name="479"
+      > </a
+      ><a name="480" class="Module"
+      >P</a
+      ><a name="481"
+      > </a
+      ><a name="482" class="Keyword"
+      >using</a
+      ><a name="487"
+      > </a
+      ><a name="488" class="Symbol"
+      >(</a
+      ><a name="489"
+      >_&#8801;_</a
+      ><a name="492" class="Symbol"
+      >)</a
+      ><a name="493"
+      >
+
+</a
+      ><a name="495" href="Category.Applicative.Indexed.html#495" class="Function"
+      >IFun</a
+      ><a name="499"
+      > </a
+      ><a name="500" class="Symbol"
+      >:</a
+      ><a name="501"
+      > </a
+      ><a name="502" class="Symbol"
+      >&#8704;</a
+      ><a name="503"
+      > </a
+      ><a name="504" class="Symbol"
+      >{</a
+      ><a name="505" href="Category.Applicative.Indexed.html#505" class="Bound"
+      >i</a
+      ><a name="506" class="Symbol"
+      >}</a
+      ><a name="507"
+      > </a
+      ><a name="508" class="Symbol"
+      >&#8594;</a
+      ><a name="509"
+      > </a
+      ><a name="510" class="PrimitiveType"
+      >Set</a
+      ><a name="513"
+      > </a
+      ><a name="514" href="Category.Applicative.Indexed.html#505" class="Bound"
+      >i</a
+      ><a name="515"
+      > </a
+      ><a name="516" class="Symbol"
+      >&#8594;</a
+      ><a name="517"
+      > </a
+      ><a name="518" class="Symbol"
+      >(</a
+      ><a name="519" href="Category.Applicative.Indexed.html#519" class="Bound"
+      >&#8467;</a
+      ><a name="520"
+      > </a
+      ><a name="521" class="Symbol"
+      >:</a
+      ><a name="522"
+      > </a
+      ><a name="523" href="Agda.Primitive.html#379" class="Postulate"
+      >Level</a
+      ><a name="528" class="Symbol"
+      >)</a
+      ><a name="529"
+      > </a
+      ><a name="530" class="Symbol"
+      >&#8594;</a
+      ><a name="531"
+      > </a
+      ><a name="532" class="PrimitiveType"
+      >Set</a
+      ><a name="535"
+      > </a
+      ><a name="536" class="Symbol"
+      >_</a
+      ><a name="537"
+      >
+</a
+      ><a name="538" href="Category.Applicative.Indexed.html#495" class="Function"
+      >IFun</a
+      ><a name="542"
+      > </a
+      ><a name="543" href="Category.Applicative.Indexed.html#543" class="Bound"
+      >I</a
+      ><a name="544"
+      > </a
+      ><a name="545" href="Category.Applicative.Indexed.html#545" class="Bound"
+      >&#8467;</a
+      ><a name="546"
+      > </a
+      ><a name="547" class="Symbol"
+      >=</a
+      ><a name="548"
+      > </a
+      ><a name="549" href="Category.Applicative.Indexed.html#543" class="Bound"
+      >I</a
+      ><a name="550"
+      > </a
+      ><a name="551" class="Symbol"
+      >&#8594;</a
+      ><a name="552"
+      > </a
+      ><a name="553" href="Category.Applicative.Indexed.html#543" class="Bound"
+      >I</a
+      ><a name="554"
+      > </a
+      ><a name="555" class="Symbol"
+      >&#8594;</a
+      ><a name="556"
+      > </a
+      ><a name="557" class="PrimitiveType"
+      >Set</a
+      ><a name="560"
+      > </a
+      ><a name="561" href="Category.Applicative.Indexed.html#545" class="Bound"
+      >&#8467;</a
+      ><a name="562"
+      > </a
+      ><a name="563" class="Symbol"
+      >&#8594;</a
+      ><a name="564"
+      > </a
+      ><a name="565" class="PrimitiveType"
+      >Set</a
+      ><a name="568"
+      > </a
+      ><a name="569" href="Category.Applicative.Indexed.html#545" class="Bound"
+      >&#8467;</a
+      ><a name="570"
+      >
+
+</a
+      ><a name="572" class="Keyword"
+      >record</a
+      ><a name="578"
+      > </a
+      ><a name="579" href="Category.Applicative.Indexed.html#579" class="Record"
+      >RawIApplicative</a
+      ><a name="594"
+      > </a
+      ><a name="595" class="Symbol"
+      >{</a
+      ><a name="596" href="Category.Applicative.Indexed.html#596" class="Bound"
+      >i</a
+      ><a name="597"
+      > </a
+      ><a name="598" href="Category.Applicative.Indexed.html#598" class="Bound"
+      >f</a
+      ><a name="599" class="Symbol"
+      >}</a
+      ><a name="600"
+      > </a
+      ><a name="601" class="Symbol"
+      >{</a
+      ><a name="602" href="Category.Applicative.Indexed.html#602" class="Bound"
+      >I</a
+      ><a name="603"
+      > </a
+      ><a name="604" class="Symbol"
+      >:</a
+      ><a name="605"
+      > </a
+      ><a name="606" class="PrimitiveType"
+      >Set</a
+      ><a name="609"
+      > </a
+      ><a name="610" href="Category.Applicative.Indexed.html#596" class="Bound"
+      >i</a
+      ><a name="611" class="Symbol"
+      >}</a
+      ><a name="612"
+      > </a
+      ><a name="613" class="Symbol"
+      >(</a
+      ><a name="614" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="615"
+      > </a
+      ><a name="616" class="Symbol"
+      >:</a
+      ><a name="617"
+      > </a
+      ><a name="618" href="Category.Applicative.Indexed.html#495" class="Function"
+      >IFun</a
+      ><a name="622"
+      > </a
+      ><a name="623" href="Category.Applicative.Indexed.html#602" class="Bound"
+      >I</a
+      ><a name="624"
+      > </a
+      ><a name="625" href="Category.Applicative.Indexed.html#598" class="Bound"
+      >f</a
+      ><a name="626" class="Symbol"
+      >)</a
+      ><a name="627"
+      > </a
+      ><a name="628" class="Symbol"
+      >:</a
+      ><a name="629"
+      >
+                       </a
+      ><a name="653" class="PrimitiveType"
+      >Set</a
+      ><a name="656"
+      > </a
+      ><a name="657" class="Symbol"
+      >(</a
+      ><a name="658" href="Category.Applicative.Indexed.html#596" class="Bound"
+      >i</a
+      ><a name="659"
+      > </a
+      ><a name="660" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="661"
+      > </a
+      ><a name="662" href="Agda.Primitive.html#596" class="Primitive"
+      >suc</a
+      ><a name="665"
+      > </a
+      ><a name="666" href="Category.Applicative.Indexed.html#598" class="Bound"
+      >f</a
+      ><a name="667" class="Symbol"
+      >)</a
+      ><a name="668"
+      > </a
+      ><a name="669" class="Keyword"
+      >where</a
+      ><a name="674"
+      >
+  </a
+      ><a name="677" class="Keyword"
+      >infixl</a
+      ><a name="683"
+      > </a
+      ><a name="684" class="Number"
+      >4</a
+      ><a name="685"
+      > _&#8859;_ _&lt;&#8859;_ _&#8859;&gt;_
+  </a
+      ><a name="702" class="Keyword"
+      >infix</a
+      ><a name="707"
+      >  </a
+      ><a name="709" class="Number"
+      >4</a
+      ><a name="710"
+      > _&#8855;_
+
+  </a
+      ><a name="718" class="Keyword"
+      >field</a
+      ><a name="723"
+      >
+    </a
+      ><a name="728" href="Category.Applicative.Indexed.html#728" class="Field"
+      >pure</a
+      ><a name="732"
+      > </a
+      ><a name="733" class="Symbol"
+      >:</a
+      ><a name="734"
+      > </a
+      ><a name="735" class="Symbol"
+      >&#8704;</a
+      ><a name="736"
+      > </a
+      ><a name="737" class="Symbol"
+      >{</a
+      ><a name="738" href="Category.Applicative.Indexed.html#738" class="Bound"
+      >i</a
+      ><a name="739"
+      > </a
+      ><a name="740" href="Category.Applicative.Indexed.html#740" class="Bound"
+      >A</a
+      ><a name="741" class="Symbol"
+      >}</a
+      ><a name="742"
+      > </a
+      ><a name="743" class="Symbol"
+      >&#8594;</a
+      ><a name="744"
+      > </a
+      ><a name="745" href="Category.Applicative.Indexed.html#740" class="Bound"
+      >A</a
+      ><a name="746"
+      > </a
+      ><a name="747" class="Symbol"
+      >&#8594;</a
+      ><a name="748"
+      > </a
+      ><a name="749" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="750"
+      > </a
+      ><a name="751" href="Category.Applicative.Indexed.html#738" class="Bound"
+      >i</a
+      ><a name="752"
+      > </a
+      ><a name="753" href="Category.Applicative.Indexed.html#738" class="Bound"
+      >i</a
+      ><a name="754"
+      > </a
+      ><a name="755" href="Category.Applicative.Indexed.html#740" class="Bound"
+      >A</a
+      ><a name="756"
+      >
+    </a
+      ><a name="761" href="Category.Applicative.Indexed.html#761" class="Field Operator"
+      >_&#8859;_</a
+      ><a name="764"
+      >  </a
+      ><a name="766" class="Symbol"
+      >:</a
+      ><a name="767"
+      > </a
+      ><a name="768" class="Symbol"
+      >&#8704;</a
+      ><a name="769"
+      > </a
+      ><a name="770" class="Symbol"
+      >{</a
+      ><a name="771" href="Category.Applicative.Indexed.html#771" class="Bound"
+      >i</a
+      ><a name="772"
+      > </a
+      ><a name="773" href="Category.Applicative.Indexed.html#773" class="Bound"
+      >j</a
+      ><a name="774"
+      > </a
+      ><a name="775" href="Category.Applicative.Indexed.html#775" class="Bound"
+      >k</a
+      ><a name="776"
+      > </a
+      ><a name="777" href="Category.Applicative.Indexed.html#777" class="Bound"
+      >A</a
+      ><a name="778"
+      > </a
+      ><a name="779" href="Category.Applicative.Indexed.html#779" class="Bound"
+      >B</a
+      ><a name="780" class="Symbol"
+      >}</a
+      ><a name="781"
+      > </a
+      ><a name="782" class="Symbol"
+      >&#8594;</a
+      ><a name="783"
+      > </a
+      ><a name="784" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="785"
+      > </a
+      ><a name="786" href="Category.Applicative.Indexed.html#771" class="Bound"
+      >i</a
+      ><a name="787"
+      > </a
+      ><a name="788" href="Category.Applicative.Indexed.html#773" class="Bound"
+      >j</a
+      ><a name="789"
+      > </a
+      ><a name="790" class="Symbol"
+      >(</a
+      ><a name="791" href="Category.Applicative.Indexed.html#777" class="Bound"
+      >A</a
+      ><a name="792"
+      > </a
+      ><a name="793" class="Symbol"
+      >&#8594;</a
+      ><a name="794"
+      > </a
+      ><a name="795" href="Category.Applicative.Indexed.html#779" class="Bound"
+      >B</a
+      ><a name="796" class="Symbol"
+      >)</a
+      ><a name="797"
+      > </a
+      ><a name="798" class="Symbol"
+      >&#8594;</a
+      ><a name="799"
+      > </a
+      ><a name="800" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="801"
+      > </a
+      ><a name="802" href="Category.Applicative.Indexed.html#773" class="Bound"
+      >j</a
+      ><a name="803"
+      > </a
+      ><a name="804" href="Category.Applicative.Indexed.html#775" class="Bound"
+      >k</a
+      ><a name="805"
+      > </a
+      ><a name="806" href="Category.Applicative.Indexed.html#777" class="Bound"
+      >A</a
+      ><a name="807"
+      > </a
+      ><a name="808" class="Symbol"
+      >&#8594;</a
+      ><a name="809"
+      > </a
+      ><a name="810" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="811"
+      > </a
+      ><a name="812" href="Category.Applicative.Indexed.html#771" class="Bound"
+      >i</a
+      ><a name="813"
+      > </a
+      ><a name="814" href="Category.Applicative.Indexed.html#775" class="Bound"
+      >k</a
+      ><a name="815"
+      > </a
+      ><a name="816" href="Category.Applicative.Indexed.html#779" class="Bound"
+      >B</a
+      ><a name="817"
+      >
+
+  </a
+      ><a name="821" href="Category.Applicative.Indexed.html#821" class="Function"
+      >rawFunctor</a
+      ><a name="831"
+      > </a
+      ><a name="832" class="Symbol"
+      >:</a
+      ><a name="833"
+      > </a
+      ><a name="834" class="Symbol"
+      >&#8704;</a
+      ><a name="835"
+      > </a
+      ><a name="836" class="Symbol"
+      >{</a
+      ><a name="837" href="Category.Applicative.Indexed.html#837" class="Bound"
+      >i</a
+      ><a name="838"
+      > </a
+      ><a name="839" href="Category.Applicative.Indexed.html#839" class="Bound"
+      >j</a
+      ><a name="840" class="Symbol"
+      >}</a
+      ><a name="841"
+      > </a
+      ><a name="842" class="Symbol"
+      >&#8594;</a
+      ><a name="843"
+      > </a
+      ><a name="844" href="Category.Functor.html#334" class="Record"
+      >RawFunctor</a
+      ><a name="854"
+      > </a
+      ><a name="855" class="Symbol"
+      >(</a
+      ><a name="856" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="857"
+      > </a
+      ><a name="858" href="Category.Applicative.Indexed.html#837" class="Bound"
+      >i</a
+      ><a name="859"
+      > </a
+      ><a name="860" href="Category.Applicative.Indexed.html#839" class="Bound"
+      >j</a
+      ><a name="861" class="Symbol"
+      >)</a
+      ><a name="862"
+      >
+  </a
+      ><a name="865" href="Category.Applicative.Indexed.html#821" class="Function"
+      >rawFunctor</a
+      ><a name="875"
+      > </a
+      ><a name="876" class="Symbol"
+      >=</a
+      ><a name="877"
+      > </a
+      ><a name="878" class="Keyword"
+      >record</a
+      ><a name="884"
+      >
+    </a
+      ><a name="889" class="Symbol"
+      >{</a
+      ><a name="890"
+      > </a
+      ><a name="891" class="Field Operator"
+      >_&lt;$&gt;_</a
+      ><a name="896"
+      > </a
+      ><a name="897" class="Symbol"
+      >=</a
+      ><a name="898"
+      > </a
+      ><a name="899" class="Symbol"
+      >&#955;</a
+      ><a name="900"
+      > </a
+      ><a name="901" href="Category.Applicative.Indexed.html#901" class="Bound"
+      >g</a
+      ><a name="902"
+      > </a
+      ><a name="903" href="Category.Applicative.Indexed.html#903" class="Bound"
+      >x</a
+      ><a name="904"
+      > </a
+      ><a name="905" class="Symbol"
+      >&#8594;</a
+      ><a name="906"
+      > </a
+      ><a name="907" href="Category.Applicative.Indexed.html#728" class="Field"
+      >pure</a
+      ><a name="911"
+      > </a
+      ><a name="912" href="Category.Applicative.Indexed.html#901" class="Bound"
+      >g</a
+      ><a name="913"
+      > </a
+      ><a name="914" href="Category.Applicative.Indexed.html#761" class="Field Operator"
+      >&#8859;</a
+      ><a name="915"
+      > </a
+      ><a name="916" href="Category.Applicative.Indexed.html#903" class="Bound"
+      >x</a
+      ><a name="917"
+      >
+    </a
+      ><a name="922" class="Symbol"
+      >}</a
+      ><a name="923"
+      >
+
+  </a
+      ><a name="927" class="Keyword"
+      >private</a
+      ><a name="934"
+      >
+    </a
+      ><a name="939" class="Keyword"
+      >open</a
+      ><a name="943"
+      > </a
+      ><a name="944" class="Keyword"
+      >module</a
+      ><a name="950"
+      > </a
+      ><a name="951" href="Category.Applicative.Indexed.html#951" class="Module"
+      >RF</a
+      ><a name="953"
+      > </a
+      ><a name="954" class="Symbol"
+      >{</a
+      ><a name="955" href="Category.Applicative.Indexed.html#955" class="Bound"
+      >i</a
+      ><a name="956"
+      > </a
+      ><a name="957" href="Category.Applicative.Indexed.html#957" class="Bound"
+      >j</a
+      ><a name="958"
+      > </a
+      ><a name="959" class="Symbol"
+      >:</a
+      ><a name="960"
+      > </a
+      ><a name="961" href="Category.Applicative.Indexed.html#602" class="Bound"
+      >I</a
+      ><a name="962" class="Symbol"
+      >}</a
+      ><a name="963"
+      > </a
+      ><a name="964" class="Symbol"
+      >=</a
+      ><a name="965"
+      >
+           </a
+      ><a name="977" href="Category.Functor.html#334" class="Module"
+      >RawFunctor</a
+      ><a name="987"
+      > </a
+      ><a name="988" class="Symbol"
+      >(</a
+      ><a name="989" href="Category.Applicative.Indexed.html#821" class="Function"
+      >rawFunctor</a
+      ><a name="999"
+      > </a
+      ><a name="1000" class="Symbol"
+      >{</a
+      ><a name="1001" class="Argument"
+      >i</a
+      ><a name="1002"
+      > </a
+      ><a name="1003" class="Symbol"
+      >=</a
+      ><a name="1004"
+      > </a
+      ><a name="1005" href="Category.Applicative.Indexed.html#955" class="Bound"
+      >i</a
+      ><a name="1006" class="Symbol"
+      >}</a
+      ><a name="1007"
+      > </a
+      ><a name="1008" class="Symbol"
+      >{</a
+      ><a name="1009" class="Argument"
+      >j</a
+      ><a name="1010"
+      > </a
+      ><a name="1011" class="Symbol"
+      >=</a
+      ><a name="1012"
+      > </a
+      ><a name="1013" href="Category.Applicative.Indexed.html#957" class="Bound"
+      >j</a
+      ><a name="1014" class="Symbol"
+      >})</a
+      ><a name="1016"
+      >
+           </a
+      ><a name="1028" class="Keyword"
+      >public</a
+      ><a name="1034"
+      >
+
+  </a
+      ><a name="1038" href="Category.Applicative.Indexed.html#1038" class="Function Operator"
+      >_&lt;&#8859;_</a
+      ><a name="1042"
+      > </a
+      ><a name="1043" class="Symbol"
+      >:</a
+      ><a name="1044"
+      > </a
+      ><a name="1045" class="Symbol"
+      >&#8704;</a
+      ><a name="1046"
+      > </a
+      ><a name="1047" class="Symbol"
+      >{</a
+      ><a name="1048" href="Category.Applicative.Indexed.html#1048" class="Bound"
+      >i</a
+      ><a name="1049"
+      > </a
+      ><a name="1050" href="Category.Applicative.Indexed.html#1050" class="Bound"
+      >j</a
+      ><a name="1051"
+      > </a
+      ><a name="1052" href="Category.Applicative.Indexed.html#1052" class="Bound"
+      >k</a
+      ><a name="1053"
+      > </a
+      ><a name="1054" href="Category.Applicative.Indexed.html#1054" class="Bound"
+      >A</a
+      ><a name="1055"
+      > </a
+      ><a name="1056" href="Category.Applicative.Indexed.html#1056" class="Bound"
+      >B</a
+      ><a name="1057" class="Symbol"
+      >}</a
+      ><a name="1058"
+      > </a
+      ><a name="1059" class="Symbol"
+      >&#8594;</a
+      ><a name="1060"
+      > </a
+      ><a name="1061" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="1062"
+      > </a
+      ><a name="1063" href="Category.Applicative.Indexed.html#1048" class="Bound"
+      >i</a
+      ><a name="1064"
+      > </a
+      ><a name="1065" href="Category.Applicative.Indexed.html#1050" class="Bound"
+      >j</a
+      ><a name="1066"
+      > </a
+      ><a name="1067" href="Category.Applicative.Indexed.html#1054" class="Bound"
+      >A</a
+      ><a name="1068"
+      > </a
+      ><a name="1069" class="Symbol"
+      >&#8594;</a
+      ><a name="1070"
+      > </a
+      ><a name="1071" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="1072"
+      > </a
+      ><a name="1073" href="Category.Applicative.Indexed.html#1050" class="Bound"
+      >j</a
+      ><a name="1074"
+      > </a
+      ><a name="1075" href="Category.Applicative.Indexed.html#1052" class="Bound"
+      >k</a
+      ><a name="1076"
+      > </a
+      ><a name="1077" href="Category.Applicative.Indexed.html#1056" class="Bound"
+      >B</a
+      ><a name="1078"
+      > </a
+      ><a name="1079" class="Symbol"
+      >&#8594;</a
+      ><a name="1080"
+      > </a
+      ><a name="1081" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="1082"
+      > </a
+      ><a name="1083" href="Category.Applicative.Indexed.html#1048" class="Bound"
+      >i</a
+      ><a name="1084"
+      > </a
+      ><a name="1085" href="Category.Applicative.Indexed.html#1052" class="Bound"
+      >k</a
+      ><a name="1086"
+      > </a
+      ><a name="1087" href="Category.Applicative.Indexed.html#1054" class="Bound"
+      >A</a
+      ><a name="1088"
+      >
+  </a
+      ><a name="1091" href="Category.Applicative.Indexed.html#1091" class="Bound"
+      >x</a
+      ><a name="1092"
+      > </a
+      ><a name="1093" href="Category.Applicative.Indexed.html#1038" class="Function Operator"
+      >&lt;&#8859;</a
+      ><a name="1095"
+      > </a
+      ><a name="1096" href="Category.Applicative.Indexed.html#1096" class="Bound"
+      >y</a
+      ><a name="1097"
+      > </a
+      ><a name="1098" class="Symbol"
+      >=</a
+      ><a name="1099"
+      > </a
+      ><a name="1100" href="Function.html#1053" class="Function"
+      >const</a
+      ><a name="1105"
+      > </a
+      ><a name="1106" href="Category.Functor.html#424" class="Function Operator"
+      >&lt;$&gt;</a
+      ><a name="1109"
+      > </a
+      ><a name="1110" href="Category.Applicative.Indexed.html#1091" class="Bound"
+      >x</a
+      ><a name="1111"
+      > </a
+      ><a name="1112" href="Category.Applicative.Indexed.html#761" class="Field Operator"
+      >&#8859;</a
+      ><a name="1113"
+      > </a
+      ><a name="1114" href="Category.Applicative.Indexed.html#1096" class="Bound"
+      >y</a
+      ><a name="1115"
+      >
+
+  </a
+      ><a name="1119" href="Category.Applicative.Indexed.html#1119" class="Function Operator"
+      >_&#8859;&gt;_</a
+      ><a name="1123"
+      > </a
+      ><a name="1124" class="Symbol"
+      >:</a
+      ><a name="1125"
+      > </a
+      ><a name="1126" class="Symbol"
+      >&#8704;</a
+      ><a name="1127"
+      > </a
+      ><a name="1128" class="Symbol"
+      >{</a
+      ><a name="1129" href="Category.Applicative.Indexed.html#1129" class="Bound"
+      >i</a
+      ><a name="1130"
+      > </a
+      ><a name="1131" href="Category.Applicative.Indexed.html#1131" class="Bound"
+      >j</a
+      ><a name="1132"
+      > </a
+      ><a name="1133" href="Category.Applicative.Indexed.html#1133" class="Bound"
+      >k</a
+      ><a name="1134"
+      > </a
+      ><a name="1135" href="Category.Applicative.Indexed.html#1135" class="Bound"
+      >A</a
+      ><a name="1136"
+      > </a
+      ><a name="1137" href="Category.Applicative.Indexed.html#1137" class="Bound"
+      >B</a
+      ><a name="1138" class="Symbol"
+      >}</a
+      ><a name="1139"
+      > </a
+      ><a name="1140" class="Symbol"
+      >&#8594;</a
+      ><a name="1141"
+      > </a
+      ><a name="1142" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="1143"
+      > </a
+      ><a name="1144" href="Category.Applicative.Indexed.html#1129" class="Bound"
+      >i</a
+      ><a name="1145"
+      > </a
+      ><a name="1146" href="Category.Applicative.Indexed.html#1131" class="Bound"
+      >j</a
+      ><a name="1147"
+      > </a
+      ><a name="1148" href="Category.Applicative.Indexed.html#1135" class="Bound"
+      >A</a
+      ><a name="1149"
+      > </a
+      ><a name="1150" class="Symbol"
+      >&#8594;</a
+      ><a name="1151"
+      > </a
+      ><a name="1152" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="1153"
+      > </a
+      ><a name="1154" href="Category.Applicative.Indexed.html#1131" class="Bound"
+      >j</a
+      ><a name="1155"
+      > </a
+      ><a name="1156" href="Category.Applicative.Indexed.html#1133" class="Bound"
+      >k</a
+      ><a name="1157"
+      > </a
+      ><a name="1158" href="Category.Applicative.Indexed.html#1137" class="Bound"
+      >B</a
+      ><a name="1159"
+      > </a
+      ><a name="1160" class="Symbol"
+      >&#8594;</a
+      ><a name="1161"
+      > </a
+      ><a name="1162" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="1163"
+      > </a
+      ><a name="1164" href="Category.Applicative.Indexed.html#1129" class="Bound"
+      >i</a
+      ><a name="1165"
+      > </a
+      ><a name="1166" href="Category.Applicative.Indexed.html#1133" class="Bound"
+      >k</a
+      ><a name="1167"
+      > </a
+      ><a name="1168" href="Category.Applicative.Indexed.html#1137" class="Bound"
+      >B</a
+      ><a name="1169"
+      >
+  </a
+      ><a name="1172" href="Category.Applicative.Indexed.html#1172" class="Bound"
+      >x</a
+      ><a name="1173"
+      > </a
+      ><a name="1174" href="Category.Applicative.Indexed.html#1119" class="Function Operator"
+      >&#8859;&gt;</a
+      ><a name="1176"
+      > </a
+      ><a name="1177" href="Category.Applicative.Indexed.html#1177" class="Bound"
+      >y</a
+      ><a name="1178"
+      > </a
+      ><a name="1179" class="Symbol"
+      >=</a
+      ><a name="1180"
+      > </a
+      ><a name="1181" href="Function.html#1480" class="Function"
+      >flip</a
+      ><a name="1185"
+      > </a
+      ><a name="1186" href="Function.html#1053" class="Function"
+      >const</a
+      ><a name="1191"
+      > </a
+      ><a name="1192" href="Category.Functor.html#424" class="Function Operator"
+      >&lt;$&gt;</a
+      ><a name="1195"
+      > </a
+      ><a name="1196" href="Category.Applicative.Indexed.html#1172" class="Bound"
+      >x</a
+      ><a name="1197"
+      > </a
+      ><a name="1198" href="Category.Applicative.Indexed.html#761" class="Field Operator"
+      >&#8859;</a
+      ><a name="1199"
+      > </a
+      ><a name="1200" href="Category.Applicative.Indexed.html#1177" class="Bound"
+      >y</a
+      ><a name="1201"
+      >
+
+  </a
+      ><a name="1205" href="Category.Applicative.Indexed.html#1205" class="Function Operator"
+      >_&#8855;_</a
+      ><a name="1208"
+      > </a
+      ><a name="1209" class="Symbol"
+      >:</a
+      ><a name="1210"
+      > </a
+      ><a name="1211" class="Symbol"
+      >&#8704;</a
+      ><a name="1212"
+      > </a
+      ><a name="1213" class="Symbol"
+      >{</a
+      ><a name="1214" href="Category.Applicative.Indexed.html#1214" class="Bound"
+      >i</a
+      ><a name="1215"
+      > </a
+      ><a name="1216" href="Category.Applicative.Indexed.html#1216" class="Bound"
+      >j</a
+      ><a name="1217"
+      > </a
+      ><a name="1218" href="Category.Applicative.Indexed.html#1218" class="Bound"
+      >k</a
+      ><a name="1219"
+      > </a
+      ><a name="1220" href="Category.Applicative.Indexed.html#1220" class="Bound"
+      >A</a
+      ><a name="1221"
+      > </a
+      ><a name="1222" href="Category.Applicative.Indexed.html#1222" class="Bound"
+      >B</a
+      ><a name="1223" class="Symbol"
+      >}</a
+      ><a name="1224"
+      > </a
+      ><a name="1225" class="Symbol"
+      >&#8594;</a
+      ><a name="1226"
+      > </a
+      ><a name="1227" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="1228"
+      > </a
+      ><a name="1229" href="Category.Applicative.Indexed.html#1214" class="Bound"
+      >i</a
+      ><a name="1230"
+      > </a
+      ><a name="1231" href="Category.Applicative.Indexed.html#1216" class="Bound"
+      >j</a
+      ><a name="1232"
+      > </a
+      ><a name="1233" href="Category.Applicative.Indexed.html#1220" class="Bound"
+      >A</a
+      ><a name="1234"
+      > </a
+      ><a name="1235" class="Symbol"
+      >&#8594;</a
+      ><a name="1236"
+      > </a
+      ><a name="1237" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="1238"
+      > </a
+      ><a name="1239" href="Category.Applicative.Indexed.html#1216" class="Bound"
+      >j</a
+      ><a name="1240"
+      > </a
+      ><a name="1241" href="Category.Applicative.Indexed.html#1218" class="Bound"
+      >k</a
+      ><a name="1242"
+      > </a
+      ><a name="1243" href="Category.Applicative.Indexed.html#1222" class="Bound"
+      >B</a
+      ><a name="1244"
+      > </a
+      ><a name="1245" class="Symbol"
+      >&#8594;</a
+      ><a name="1246"
+      > </a
+      ><a name="1247" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="1248"
+      > </a
+      ><a name="1249" href="Category.Applicative.Indexed.html#1214" class="Bound"
+      >i</a
+      ><a name="1250"
+      > </a
+      ><a name="1251" href="Category.Applicative.Indexed.html#1218" class="Bound"
+      >k</a
+      ><a name="1252"
+      > </a
+      ><a name="1253" class="Symbol"
+      >(</a
+      ><a name="1254" href="Category.Applicative.Indexed.html#1220" class="Bound"
+      >A</a
+      ><a name="1255"
+      > </a
+      ><a name="1256" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="1257"
+      > </a
+      ><a name="1258" href="Category.Applicative.Indexed.html#1222" class="Bound"
+      >B</a
+      ><a name="1259" class="Symbol"
+      >)</a
+      ><a name="1260"
+      >
+  </a
+      ><a name="1263" href="Category.Applicative.Indexed.html#1263" class="Bound"
+      >x</a
+      ><a name="1264"
+      > </a
+      ><a name="1265" href="Category.Applicative.Indexed.html#1205" class="Function Operator"
+      >&#8855;</a
+      ><a name="1266"
+      > </a
+      ><a name="1267" href="Category.Applicative.Indexed.html#1267" class="Bound"
+      >y</a
+      ><a name="1268"
+      > </a
+      ><a name="1269" class="Symbol"
+      >=</a
+      ><a name="1270"
+      > </a
+      ><a name="1271" class="Symbol"
+      >(</a
+      ><a name="1272" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >_,_</a
+      ><a name="1275" class="Symbol"
+      >)</a
+      ><a name="1276"
+      > </a
+      ><a name="1277" href="Category.Functor.html#424" class="Function Operator"
+      >&lt;$&gt;</a
+      ><a name="1280"
+      > </a
+      ><a name="1281" href="Category.Applicative.Indexed.html#1263" class="Bound"
+      >x</a
+      ><a name="1282"
+      > </a
+      ><a name="1283" href="Category.Applicative.Indexed.html#761" class="Field Operator"
+      >&#8859;</a
+      ><a name="1284"
+      > </a
+      ><a name="1285" href="Category.Applicative.Indexed.html#1267" class="Bound"
+      >y</a
+      ><a name="1286"
+      >
+
+  </a
+      ><a name="1290" href="Category.Applicative.Indexed.html#1290" class="Function"
+      >zipWith</a
+      ><a name="1297"
+      > </a
+      ><a name="1298" class="Symbol"
+      >:</a
+      ><a name="1299"
+      > </a
+      ><a name="1300" class="Symbol"
+      >&#8704;</a
+      ><a name="1301"
+      > </a
+      ><a name="1302" class="Symbol"
+      >{</a
+      ><a name="1303" href="Category.Applicative.Indexed.html#1303" class="Bound"
+      >i</a
+      ><a name="1304"
+      > </a
+      ><a name="1305" href="Category.Applicative.Indexed.html#1305" class="Bound"
+      >j</a
+      ><a name="1306"
+      > </a
+      ><a name="1307" href="Category.Applicative.Indexed.html#1307" class="Bound"
+      >k</a
+      ><a name="1308"
+      > </a
+      ><a name="1309" href="Category.Applicative.Indexed.html#1309" class="Bound"
+      >A</a
+      ><a name="1310"
+      > </a
+      ><a name="1311" href="Category.Applicative.Indexed.html#1311" class="Bound"
+      >B</a
+      ><a name="1312"
+      > </a
+      ><a name="1313" href="Category.Applicative.Indexed.html#1313" class="Bound"
+      >C</a
+      ><a name="1314" class="Symbol"
+      >}</a
+      ><a name="1315"
+      > </a
+      ><a name="1316" class="Symbol"
+      >&#8594;</a
+      ><a name="1317"
+      > </a
+      ><a name="1318" class="Symbol"
+      >(</a
+      ><a name="1319" href="Category.Applicative.Indexed.html#1309" class="Bound"
+      >A</a
+      ><a name="1320"
+      > </a
+      ><a name="1321" class="Symbol"
+      >&#8594;</a
+      ><a name="1322"
+      > </a
+      ><a name="1323" href="Category.Applicative.Indexed.html#1311" class="Bound"
+      >B</a
+      ><a name="1324"
+      > </a
+      ><a name="1325" class="Symbol"
+      >&#8594;</a
+      ><a name="1326"
+      > </a
+      ><a name="1327" href="Category.Applicative.Indexed.html#1313" class="Bound"
+      >C</a
+      ><a name="1328" class="Symbol"
+      >)</a
+      ><a name="1329"
+      > </a
+      ><a name="1330" class="Symbol"
+      >&#8594;</a
+      ><a name="1331"
+      > </a
+      ><a name="1332" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="1333"
+      > </a
+      ><a name="1334" href="Category.Applicative.Indexed.html#1303" class="Bound"
+      >i</a
+      ><a name="1335"
+      > </a
+      ><a name="1336" href="Category.Applicative.Indexed.html#1305" class="Bound"
+      >j</a
+      ><a name="1337"
+      > </a
+      ><a name="1338" href="Category.Applicative.Indexed.html#1309" class="Bound"
+      >A</a
+      ><a name="1339"
+      > </a
+      ><a name="1340" class="Symbol"
+      >&#8594;</a
+      ><a name="1341"
+      > </a
+      ><a name="1342" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="1343"
+      > </a
+      ><a name="1344" href="Category.Applicative.Indexed.html#1305" class="Bound"
+      >j</a
+      ><a name="1345"
+      > </a
+      ><a name="1346" href="Category.Applicative.Indexed.html#1307" class="Bound"
+      >k</a
+      ><a name="1347"
+      > </a
+      ><a name="1348" href="Category.Applicative.Indexed.html#1311" class="Bound"
+      >B</a
+      ><a name="1349"
+      > </a
+      ><a name="1350" class="Symbol"
+      >&#8594;</a
+      ><a name="1351"
+      > </a
+      ><a name="1352" href="Category.Applicative.Indexed.html#614" class="Bound"
+      >F</a
+      ><a name="1353"
+      > </a
+      ><a name="1354" href="Category.Applicative.Indexed.html#1303" class="Bound"
+      >i</a
+      ><a name="1355"
+      > </a
+      ><a name="1356" href="Category.Applicative.Indexed.html#1307" class="Bound"
+      >k</a
+      ><a name="1357"
+      > </a
+      ><a name="1358" href="Category.Applicative.Indexed.html#1313" class="Bound"
+      >C</a
+      ><a name="1359"
+      >
+  </a
+      ><a name="1362" href="Category.Applicative.Indexed.html#1290" class="Function"
+      >zipWith</a
+      ><a name="1369"
+      > </a
+      ><a name="1370" href="Category.Applicative.Indexed.html#1370" class="Bound"
+      >f</a
+      ><a name="1371"
+      > </a
+      ><a name="1372" href="Category.Applicative.Indexed.html#1372" class="Bound"
+      >x</a
+      ><a name="1373"
+      > </a
+      ><a name="1374" href="Category.Applicative.Indexed.html#1374" class="Bound"
+      >y</a
+      ><a name="1375"
+      > </a
+      ><a name="1376" class="Symbol"
+      >=</a
+      ><a name="1377"
+      > </a
+      ><a name="1378" href="Category.Applicative.Indexed.html#1370" class="Bound"
+      >f</a
+      ><a name="1379"
+      > </a
+      ><a name="1380" href="Category.Functor.html#424" class="Function Operator"
+      >&lt;$&gt;</a
+      ><a name="1383"
+      > </a
+      ><a name="1384" href="Category.Applicative.Indexed.html#1372" class="Bound"
+      >x</a
+      ><a name="1385"
+      > </a
+      ><a name="1386" href="Category.Applicative.Indexed.html#761" class="Field Operator"
+      >&#8859;</a
+      ><a name="1387"
+      > </a
+      ><a name="1388" href="Category.Applicative.Indexed.html#1374" class="Bound"
+      >y</a
+      ><a name="1389"
+      >
+
+</a
+      ><a name="1391" class="Comment"
+      >-- Applicative functor morphisms, specialised to propositional</a
+      ><a name="1453"
+      >
+</a
+      ><a name="1454" class="Comment"
+      >-- equality.</a
+      ><a name="1466"
+      >
+
+</a
+      ><a name="1468" class="Keyword"
+      >record</a
+      ><a name="1474"
+      > </a
+      ><a name="1475" href="Category.Applicative.Indexed.html#1475" class="Record"
+      >Morphism</a
+      ><a name="1483"
+      > </a
+      ><a name="1484" class="Symbol"
+      >{</a
+      ><a name="1485" href="Category.Applicative.Indexed.html#1485" class="Bound"
+      >i</a
+      ><a name="1486"
+      > </a
+      ><a name="1487" href="Category.Applicative.Indexed.html#1487" class="Bound"
+      >f</a
+      ><a name="1488" class="Symbol"
+      >}</a
+      ><a name="1489"
+      > </a
+      ><a name="1490" class="Symbol"
+      >{</a
+      ><a name="1491" href="Category.Applicative.Indexed.html#1491" class="Bound"
+      >I</a
+      ><a name="1492"
+      > </a
+      ><a name="1493" class="Symbol"
+      >:</a
+      ><a name="1494"
+      > </a
+      ><a name="1495" class="PrimitiveType"
+      >Set</a
+      ><a name="1498"
+      > </a
+      ><a name="1499" href="Category.Applicative.Indexed.html#1485" class="Bound"
+      >i</a
+      ><a name="1500" class="Symbol"
+      >}</a
+      ><a name="1501"
+      > </a
+      ><a name="1502" class="Symbol"
+      >{</a
+      ><a name="1503" href="Category.Applicative.Indexed.html#1503" class="Bound"
+      >F&#8321;</a
+      ><a name="1505"
+      > </a
+      ><a name="1506" href="Category.Applicative.Indexed.html#1506" class="Bound"
+      >F&#8322;</a
+      ><a name="1508"
+      > </a
+      ><a name="1509" class="Symbol"
+      >:</a
+      ><a name="1510"
+      > </a
+      ><a name="1511" href="Category.Applicative.Indexed.html#495" class="Function"
+      >IFun</a
+      ><a name="1515"
+      > </a
+      ><a name="1516" href="Category.Applicative.Indexed.html#1491" class="Bound"
+      >I</a
+      ><a name="1517"
+      > </a
+      ><a name="1518" href="Category.Applicative.Indexed.html#1487" class="Bound"
+      >f</a
+      ><a name="1519" class="Symbol"
+      >}</a
+      ><a name="1520"
+      >
+                </a
+      ><a name="1537" class="Symbol"
+      >(</a
+      ><a name="1538" href="Category.Applicative.Indexed.html#1538" class="Bound"
+      >A&#8321;</a
+      ><a name="1540"
+      > </a
+      ><a name="1541" class="Symbol"
+      >:</a
+      ><a name="1542"
+      > </a
+      ><a name="1543" href="Category.Applicative.Indexed.html#579" class="Record"
+      >RawIApplicative</a
+      ><a name="1558"
+      > </a
+      ><a name="1559" href="Category.Applicative.Indexed.html#1503" class="Bound"
+      >F&#8321;</a
+      ><a name="1561" class="Symbol"
+      >)</a
+      ><a name="1562"
+      >
+                </a
+      ><a name="1579" class="Symbol"
+      >(</a
+      ><a name="1580" href="Category.Applicative.Indexed.html#1580" class="Bound"
+      >A&#8322;</a
+      ><a name="1582"
+      > </a
+      ><a name="1583" class="Symbol"
+      >:</a
+      ><a name="1584"
+      > </a
+      ><a name="1585" href="Category.Applicative.Indexed.html#579" class="Record"
+      >RawIApplicative</a
+      ><a name="1600"
+      > </a
+      ><a name="1601" href="Category.Applicative.Indexed.html#1506" class="Bound"
+      >F&#8322;</a
+      ><a name="1603" class="Symbol"
+      >)</a
+      ><a name="1604"
+      > </a
+      ><a name="1605" class="Symbol"
+      >:</a
+      ><a name="1606"
+      > </a
+      ><a name="1607" class="PrimitiveType"
+      >Set</a
+      ><a name="1610"
+      > </a
+      ><a name="1611" class="Symbol"
+      >(</a
+      ><a name="1612" href="Category.Applicative.Indexed.html#1485" class="Bound"
+      >i</a
+      ><a name="1613"
+      > </a
+      ><a name="1614" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="1615"
+      > </a
+      ><a name="1616" href="Agda.Primitive.html#596" class="Primitive"
+      >suc</a
+      ><a name="1619"
+      > </a
+      ><a name="1620" href="Category.Applicative.Indexed.html#1487" class="Bound"
+      >f</a
+      ><a name="1621" class="Symbol"
+      >)</a
+      ><a name="1622"
+      > </a
+      ><a name="1623" class="Keyword"
+      >where</a
+      ><a name="1628"
+      >
+  </a
+      ><a name="1631" class="Keyword"
+      >module</a
+      ><a name="1637"
+      > </a
+      ><a name="1638" href="Category.Applicative.Indexed.html#1638" class="Module"
+      >A&#8321;</a
+      ><a name="1640"
+      > </a
+      ><a name="1641" class="Symbol"
+      >=</a
+      ><a name="1642"
+      > </a
+      ><a name="1643" href="Category.Applicative.Indexed.html#579" class="Module"
+      >RawIApplicative</a
+      ><a name="1658"
+      > </a
+      ><a name="1659" href="Category.Applicative.Indexed.html#1538" class="Bound"
+      >A&#8321;</a
+      ><a name="1661"
+      >
+  </a
+      ><a name="1664" class="Keyword"
+      >module</a
+      ><a name="1670"
+      > </a
+      ><a name="1671" href="Category.Applicative.Indexed.html#1671" class="Module"
+      >A&#8322;</a
+      ><a name="1673"
+      > </a
+      ><a name="1674" class="Symbol"
+      >=</a
+      ><a name="1675"
+      > </a
+      ><a name="1676" href="Category.Applicative.Indexed.html#579" class="Module"
+      >RawIApplicative</a
+      ><a name="1691"
+      > </a
+      ><a name="1692" href="Category.Applicative.Indexed.html#1580" class="Bound"
+      >A&#8322;</a
+      ><a name="1694"
+      >
+  </a
+      ><a name="1697" class="Keyword"
+      >field</a
+      ><a name="1702"
+      >
+    </a
+      ><a name="1707" href="Category.Applicative.Indexed.html#1707" class="Field"
+      >op</a
+      ><a name="1709"
+      >      </a
+      ><a name="1715" class="Symbol"
+      >:</a
+      ><a name="1716"
+      > </a
+      ><a name="1717" class="Symbol"
+      >&#8704;</a
+      ><a name="1718"
+      > </a
+      ><a name="1719" class="Symbol"
+      >{</a
+      ><a name="1720" href="Category.Applicative.Indexed.html#1720" class="Bound"
+      >i</a
+      ><a name="1721"
+      > </a
+      ><a name="1722" href="Category.Applicative.Indexed.html#1722" class="Bound"
+      >j</a
+      ><a name="1723"
+      > </a
+      ><a name="1724" href="Category.Applicative.Indexed.html#1724" class="Bound"
+      >X</a
+      ><a name="1725" class="Symbol"
+      >}</a
+      ><a name="1726"
+      > </a
+      ><a name="1727" class="Symbol"
+      >&#8594;</a
+      ><a name="1728"
+      > </a
+      ><a name="1729" href="Category.Applicative.Indexed.html#1503" class="Bound"
+      >F&#8321;</a
+      ><a name="1731"
+      > </a
+      ><a name="1732" href="Category.Applicative.Indexed.html#1720" class="Bound"
+      >i</a
+      ><a name="1733"
+      > </a
+      ><a name="1734" href="Category.Applicative.Indexed.html#1722" class="Bound"
+      >j</a
+      ><a name="1735"
+      > </a
+      ><a name="1736" href="Category.Applicative.Indexed.html#1724" class="Bound"
+      >X</a
+      ><a name="1737"
+      > </a
+      ><a name="1738" class="Symbol"
+      >&#8594;</a
+      ><a name="1739"
+      > </a
+      ><a name="1740" href="Category.Applicative.Indexed.html#1506" class="Bound"
+      >F&#8322;</a
+      ><a name="1742"
+      > </a
+      ><a name="1743" href="Category.Applicative.Indexed.html#1720" class="Bound"
+      >i</a
+      ><a name="1744"
+      > </a
+      ><a name="1745" href="Category.Applicative.Indexed.html#1722" class="Bound"
+      >j</a
+      ><a name="1746"
+      > </a
+      ><a name="1747" href="Category.Applicative.Indexed.html#1724" class="Bound"
+      >X</a
+      ><a name="1748"
+      >
+    </a
+      ><a name="1753" href="Category.Applicative.Indexed.html#1753" class="Field"
+      >op-pure</a
+      ><a name="1760"
+      > </a
+      ><a name="1761" class="Symbol"
+      >:</a
+      ><a name="1762"
+      > </a
+      ><a name="1763" class="Symbol"
+      >&#8704;</a
+      ><a name="1764"
+      > </a
+      ><a name="1765" class="Symbol"
+      >{</a
+      ><a name="1766" href="Category.Applicative.Indexed.html#1766" class="Bound"
+      >i</a
+      ><a name="1767"
+      > </a
+      ><a name="1768" href="Category.Applicative.Indexed.html#1768" class="Bound"
+      >X</a
+      ><a name="1769" class="Symbol"
+      >}</a
+      ><a name="1770"
+      > </a
+      ><a name="1771" class="Symbol"
+      >(</a
+      ><a name="1772" href="Category.Applicative.Indexed.html#1772" class="Bound"
+      >x</a
+      ><a name="1773"
+      > </a
+      ><a name="1774" class="Symbol"
+      >:</a
+      ><a name="1775"
+      > </a
+      ><a name="1776" href="Category.Applicative.Indexed.html#1768" class="Bound"
+      >X</a
+      ><a name="1777" class="Symbol"
+      >)</a
+      ><a name="1778"
+      > </a
+      ><a name="1779" class="Symbol"
+      >&#8594;</a
+      ><a name="1780"
+      > </a
+      ><a name="1781" href="Category.Applicative.Indexed.html#1707" class="Bound"
+      >op</a
+      ><a name="1783"
+      > </a
+      ><a name="1784" class="Symbol"
+      >(</a
+      ><a name="1785" href="Category.Applicative.Indexed.html#728" class="Function"
+      >A&#8321;.pure</a
+      ><a name="1792"
+      > </a
+      ><a name="1793" class="Symbol"
+      >{</a
+      ><a name="1794" class="Argument"
+      >i</a
+      ><a name="1795"
+      > </a
+      ><a name="1796" class="Symbol"
+      >=</a
+      ><a name="1797"
+      > </a
+      ><a name="1798" href="Category.Applicative.Indexed.html#1766" class="Bound"
+      >i</a
+      ><a name="1799" class="Symbol"
+      >}</a
+      ><a name="1800"
+      > </a
+      ><a name="1801" href="Category.Applicative.Indexed.html#1772" class="Bound"
+      >x</a
+      ><a name="1802" class="Symbol"
+      >)</a
+      ><a name="1803"
+      > </a
+      ><a name="1804" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1805"
+      > </a
+      ><a name="1806" href="Category.Applicative.Indexed.html#728" class="Function"
+      >A&#8322;.pure</a
+      ><a name="1813"
+      > </a
+      ><a name="1814" href="Category.Applicative.Indexed.html#1772" class="Bound"
+      >x</a
+      ><a name="1815"
+      >
+    </a
+      ><a name="1820" href="Category.Applicative.Indexed.html#1820" class="Field"
+      >op-&#8859;</a
+      ><a name="1824"
+      >    </a
+      ><a name="1828" class="Symbol"
+      >:</a
+      ><a name="1829"
+      > </a
+      ><a name="1830" class="Symbol"
+      >&#8704;</a
+      ><a name="1831"
+      > </a
+      ><a name="1832" class="Symbol"
+      >{</a
+      ><a name="1833" href="Category.Applicative.Indexed.html#1833" class="Bound"
+      >i</a
+      ><a name="1834"
+      > </a
+      ><a name="1835" href="Category.Applicative.Indexed.html#1835" class="Bound"
+      >j</a
+      ><a name="1836"
+      > </a
+      ><a name="1837" href="Category.Applicative.Indexed.html#1837" class="Bound"
+      >k</a
+      ><a name="1838"
+      > </a
+      ><a name="1839" href="Category.Applicative.Indexed.html#1839" class="Bound"
+      >X</a
+      ><a name="1840"
+      > </a
+      ><a name="1841" href="Category.Applicative.Indexed.html#1841" class="Bound"
+      >Y</a
+      ><a name="1842" class="Symbol"
+      >}</a
+      ><a name="1843"
+      > </a
+      ><a name="1844" class="Symbol"
+      >(</a
+      ><a name="1845" href="Category.Applicative.Indexed.html#1845" class="Bound"
+      >f</a
+      ><a name="1846"
+      > </a
+      ><a name="1847" class="Symbol"
+      >:</a
+      ><a name="1848"
+      > </a
+      ><a name="1849" href="Category.Applicative.Indexed.html#1503" class="Bound"
+      >F&#8321;</a
+      ><a name="1851"
+      > </a
+      ><a name="1852" href="Category.Applicative.Indexed.html#1833" class="Bound"
+      >i</a
+      ><a name="1853"
+      > </a
+      ><a name="1854" href="Category.Applicative.Indexed.html#1835" class="Bound"
+      >j</a
+      ><a name="1855"
+      > </a
+      ><a name="1856" class="Symbol"
+      >(</a
+      ><a name="1857" href="Category.Applicative.Indexed.html#1839" class="Bound"
+      >X</a
+      ><a name="1858"
+      > </a
+      ><a name="1859" class="Symbol"
+      >&#8594;</a
+      ><a name="1860"
+      > </a
+      ><a name="1861" href="Category.Applicative.Indexed.html#1841" class="Bound"
+      >Y</a
+      ><a name="1862" class="Symbol"
+      >))</a
+      ><a name="1864"
+      > </a
+      ><a name="1865" class="Symbol"
+      >(</a
+      ><a name="1866" href="Category.Applicative.Indexed.html#1866" class="Bound"
+      >x</a
+      ><a name="1867"
+      > </a
+      ><a name="1868" class="Symbol"
+      >:</a
+      ><a name="1869"
+      > </a
+      ><a name="1870" href="Category.Applicative.Indexed.html#1503" class="Bound"
+      >F&#8321;</a
+      ><a name="1872"
+      > </a
+      ><a name="1873" href="Category.Applicative.Indexed.html#1835" class="Bound"
+      >j</a
+      ><a name="1874"
+      > </a
+      ><a name="1875" href="Category.Applicative.Indexed.html#1837" class="Bound"
+      >k</a
+      ><a name="1876"
+      > </a
+      ><a name="1877" href="Category.Applicative.Indexed.html#1839" class="Bound"
+      >X</a
+      ><a name="1878" class="Symbol"
+      >)</a
+      ><a name="1879"
+      > </a
+      ><a name="1880" class="Symbol"
+      >&#8594;</a
+      ><a name="1881"
+      >
+              </a
+      ><a name="1896" href="Category.Applicative.Indexed.html#1707" class="Bound"
+      >op</a
+      ><a name="1898"
+      > </a
+      ><a name="1899" class="Symbol"
+      >(</a
+      ><a name="1900" href="Category.Applicative.Indexed.html#761" class="Function Operator"
+      >A&#8321;._&#8859;_</a
+      ><a name="1906"
+      > </a
+      ><a name="1907" href="Category.Applicative.Indexed.html#1845" class="Bound"
+      >f</a
+      ><a name="1908"
+      > </a
+      ><a name="1909" href="Category.Applicative.Indexed.html#1866" class="Bound"
+      >x</a
+      ><a name="1910" class="Symbol"
+      >)</a
+      ><a name="1911"
+      > </a
+      ><a name="1912" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1913"
+      > </a
+      ><a name="1914" href="Category.Applicative.Indexed.html#761" class="Function Operator"
+      >A&#8322;._&#8859;_</a
+      ><a name="1920"
+      > </a
+      ><a name="1921" class="Symbol"
+      >(</a
+      ><a name="1922" href="Category.Applicative.Indexed.html#1707" class="Bound"
+      >op</a
+      ><a name="1924"
+      > </a
+      ><a name="1925" href="Category.Applicative.Indexed.html#1845" class="Bound"
+      >f</a
+      ><a name="1926" class="Symbol"
+      >)</a
+      ><a name="1927"
+      > </a
+      ><a name="1928" class="Symbol"
+      >(</a
+      ><a name="1929" href="Category.Applicative.Indexed.html#1707" class="Bound"
+      >op</a
+      ><a name="1931"
+      > </a
+      ><a name="1932" href="Category.Applicative.Indexed.html#1866" class="Bound"
+      >x</a
+      ><a name="1933" class="Symbol"
+      >)</a
+      ><a name="1934"
+      >
+
+  </a
+      ><a name="1938" href="Category.Applicative.Indexed.html#1938" class="Function"
+      >op-&lt;$&gt;</a
+      ><a name="1944"
+      > </a
+      ><a name="1945" class="Symbol"
+      >:</a
+      ><a name="1946"
+      > </a
+      ><a name="1947" class="Symbol"
+      >&#8704;</a
+      ><a name="1948"
+      > </a
+      ><a name="1949" class="Symbol"
+      >{</a
+      ><a name="1950" href="Category.Applicative.Indexed.html#1950" class="Bound"
+      >i</a
+      ><a name="1951"
+      > </a
+      ><a name="1952" href="Category.Applicative.Indexed.html#1952" class="Bound"
+      >j</a
+      ><a name="1953"
+      > </a
+      ><a name="1954" href="Category.Applicative.Indexed.html#1954" class="Bound"
+      >X</a
+      ><a name="1955"
+      > </a
+      ><a name="1956" href="Category.Applicative.Indexed.html#1956" class="Bound"
+      >Y</a
+      ><a name="1957" class="Symbol"
+      >}</a
+      ><a name="1958"
+      > </a
+      ><a name="1959" class="Symbol"
+      >(</a
+      ><a name="1960" href="Category.Applicative.Indexed.html#1960" class="Bound"
+      >f</a
+      ><a name="1961"
+      > </a
+      ><a name="1962" class="Symbol"
+      >:</a
+      ><a name="1963"
+      > </a
+      ><a name="1964" href="Category.Applicative.Indexed.html#1954" class="Bound"
+      >X</a
+      ><a name="1965"
+      > </a
+      ><a name="1966" class="Symbol"
+      >&#8594;</a
+      ><a name="1967"
+      > </a
+      ><a name="1968" href="Category.Applicative.Indexed.html#1956" class="Bound"
+      >Y</a
+      ><a name="1969" class="Symbol"
+      >)</a
+      ><a name="1970"
+      > </a
+      ><a name="1971" class="Symbol"
+      >(</a
+      ><a name="1972" href="Category.Applicative.Indexed.html#1972" class="Bound"
+      >x</a
+      ><a name="1973"
+      > </a
+      ><a name="1974" class="Symbol"
+      >:</a
+      ><a name="1975"
+      > </a
+      ><a name="1976" href="Category.Applicative.Indexed.html#1503" class="Bound"
+      >F&#8321;</a
+      ><a name="1978"
+      > </a
+      ><a name="1979" href="Category.Applicative.Indexed.html#1950" class="Bound"
+      >i</a
+      ><a name="1980"
+      > </a
+      ><a name="1981" href="Category.Applicative.Indexed.html#1952" class="Bound"
+      >j</a
+      ><a name="1982"
+      > </a
+      ><a name="1983" href="Category.Applicative.Indexed.html#1954" class="Bound"
+      >X</a
+      ><a name="1984" class="Symbol"
+      >)</a
+      ><a name="1985"
+      > </a
+      ><a name="1986" class="Symbol"
+      >&#8594;</a
+      ><a name="1987"
+      >
+           </a
+      ><a name="1999" href="Category.Applicative.Indexed.html#1707" class="Field"
+      >op</a
+      ><a name="2001"
+      > </a
+      ><a name="2002" class="Symbol"
+      >(</a
+      ><a name="2003" href="Category.Functor.html#424" class="Function Operator"
+      >A&#8321;._&lt;$&gt;_</a
+      ><a name="2011"
+      > </a
+      ><a name="2012" href="Category.Applicative.Indexed.html#1960" class="Bound"
+      >f</a
+      ><a name="2013"
+      > </a
+      ><a name="2014" href="Category.Applicative.Indexed.html#1972" class="Bound"
+      >x</a
+      ><a name="2015" class="Symbol"
+      >)</a
+      ><a name="2016"
+      > </a
+      ><a name="2017" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2018"
+      > </a
+      ><a name="2019" href="Category.Functor.html#424" class="Function Operator"
+      >A&#8322;._&lt;$&gt;_</a
+      ><a name="2027"
+      > </a
+      ><a name="2028" href="Category.Applicative.Indexed.html#1960" class="Bound"
+      >f</a
+      ><a name="2029"
+      > </a
+      ><a name="2030" class="Symbol"
+      >(</a
+      ><a name="2031" href="Category.Applicative.Indexed.html#1707" class="Field"
+      >op</a
+      ><a name="2033"
+      > </a
+      ><a name="2034" href="Category.Applicative.Indexed.html#1972" class="Bound"
+      >x</a
+      ><a name="2035" class="Symbol"
+      >)</a
+      ><a name="2036"
+      >
+  </a
+      ><a name="2039" href="Category.Applicative.Indexed.html#1938" class="Function"
+      >op-&lt;$&gt;</a
+      ><a name="2045"
+      > </a
+      ><a name="2046" href="Category.Applicative.Indexed.html#2046" class="Bound"
+      >f</a
+      ><a name="2047"
+      > </a
+      ><a name="2048" href="Category.Applicative.Indexed.html#2048" class="Bound"
+      >x</a
+      ><a name="2049"
+      > </a
+      ><a name="2050" class="Symbol"
+      >=</a
+      ><a name="2051"
+      > </a
+      ><a name="2052" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      >begin</a
+      ><a name="2057"
+      >
+    </a
+      ><a name="2062" href="Category.Applicative.Indexed.html#1707" class="Field"
+      >op</a
+      ><a name="2064"
+      > </a
+      ><a name="2065" class="Symbol"
+      >(</a
+      ><a name="2066" href="Category.Applicative.Indexed.html#761" class="Function Operator"
+      >A&#8321;._&#8859;_</a
+      ><a name="2072"
+      > </a
+      ><a name="2073" class="Symbol"
+      >(</a
+      ><a name="2074" href="Category.Applicative.Indexed.html#728" class="Function"
+      >A&#8321;.pure</a
+      ><a name="2081"
+      > </a
+      ><a name="2082" href="Category.Applicative.Indexed.html#2046" class="Bound"
+      >f</a
+      ><a name="2083" class="Symbol"
+      >)</a
+      ><a name="2084"
+      > </a
+      ><a name="2085" href="Category.Applicative.Indexed.html#2048" class="Bound"
+      >x</a
+      ><a name="2086" class="Symbol"
+      >)</a
+      ><a name="2087"
+      >       </a
+      ><a name="2094" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="2096"
+      > </a
+      ><a name="2097" href="Category.Applicative.Indexed.html#1820" class="Field"
+      >op-&#8859;</a
+      ><a name="2101"
+      > </a
+      ><a name="2102" class="Symbol"
+      >_</a
+      ><a name="2103"
+      > </a
+      ><a name="2104" class="Symbol"
+      >_</a
+      ><a name="2105"
+      > </a
+      ><a name="2106" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="2107"
+      >
+    </a
+      ><a name="2112" href="Category.Applicative.Indexed.html#761" class="Function Operator"
+      >A&#8322;._&#8859;_</a
+      ><a name="2118"
+      > </a
+      ><a name="2119" class="Symbol"
+      >(</a
+      ><a name="2120" href="Category.Applicative.Indexed.html#1707" class="Field"
+      >op</a
+      ><a name="2122"
+      > </a
+      ><a name="2123" class="Symbol"
+      >(</a
+      ><a name="2124" href="Category.Applicative.Indexed.html#728" class="Function"
+      >A&#8321;.pure</a
+      ><a name="2131"
+      > </a
+      ><a name="2132" href="Category.Applicative.Indexed.html#2046" class="Bound"
+      >f</a
+      ><a name="2133" class="Symbol"
+      >))</a
+      ><a name="2135"
+      > </a
+      ><a name="2136" class="Symbol"
+      >(</a
+      ><a name="2137" href="Category.Applicative.Indexed.html#1707" class="Field"
+      >op</a
+      ><a name="2139"
+      > </a
+      ><a name="2140" href="Category.Applicative.Indexed.html#2048" class="Bound"
+      >x</a
+      ><a name="2141" class="Symbol"
+      >)</a
+      ><a name="2142"
+      >  </a
+      ><a name="2144" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="2146"
+      > </a
+      ><a name="2147" href="Relation.Binary.PropositionalEquality.html#1274" class="Function"
+      >P.cong&#8322;</a
+      ><a name="2154"
+      > </a
+      ><a name="2155" href="Category.Applicative.Indexed.html#761" class="Function Operator"
+      >A&#8322;._&#8859;_</a
+      ><a name="2161"
+      > </a
+      ><a name="2162" class="Symbol"
+      >(</a
+      ><a name="2163" href="Category.Applicative.Indexed.html#1753" class="Field"
+      >op-pure</a
+      ><a name="2170"
+      > </a
+      ><a name="2171" class="Symbol"
+      >_)</a
+      ><a name="2173"
+      > </a
+      ><a name="2174" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >P.refl</a
+      ><a name="2180"
+      > </a
+      ><a name="2181" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="2182"
+      >
+    </a
+      ><a name="2187" href="Category.Applicative.Indexed.html#761" class="Function Operator"
+      >A&#8322;._&#8859;_</a
+      ><a name="2193"
+      > </a
+      ><a name="2194" class="Symbol"
+      >(</a
+      ><a name="2195" href="Category.Applicative.Indexed.html#728" class="Function"
+      >A&#8322;.pure</a
+      ><a name="2202"
+      > </a
+      ><a name="2203" href="Category.Applicative.Indexed.html#2046" class="Bound"
+      >f</a
+      ><a name="2204" class="Symbol"
+      >)</a
+      ><a name="2205"
+      > </a
+      ><a name="2206" class="Symbol"
+      >(</a
+      ><a name="2207" href="Category.Applicative.Indexed.html#1707" class="Field"
+      >op</a
+      ><a name="2209"
+      > </a
+      ><a name="2210" href="Category.Applicative.Indexed.html#2048" class="Bound"
+      >x</a
+      ><a name="2211" class="Symbol"
+      >)</a
+      ><a name="2212"
+      >       </a
+      ><a name="2219" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >&#8718;</a
+      ><a name="2220"
+      >
+    </a
+      ><a name="2225" class="Keyword"
+      >where</a
+      ><a name="2230"
+      > </a
+      ><a name="2231" class="Keyword"
+      >open</a
+      ><a name="2235"
+      > </a
+      ><a name="2236" href="Relation.Binary.PropositionalEquality.html#243" class="Module"
+      >P.</a
+      ><a name="2238" href="Relation.Binary.PropositionalEquality.html#5746" class="Module"
+      >&#8801;-Reasoning</a
+      ><a name="2249"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

@@ -1,0 +1,401 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Sign.Properties</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Some properties about signs</a
+      ><a name="136"
+      >
+</a
+      ><a name="137" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="209"
+      >
+
+</a
+      ><a name="211" class="Keyword"
+      >module</a
+      ><a name="217"
+      > </a
+      ><a name="218" href="Data.Sign.Properties.html#1" class="Module"
+      >Data.Sign.Properties</a
+      ><a name="238"
+      > </a
+      ><a name="239" class="Keyword"
+      >where</a
+      ><a name="244"
+      >
+
+</a
+      ><a name="246" class="Keyword"
+      >open</a
+      ><a name="250"
+      > </a
+      ><a name="251" class="Keyword"
+      >import</a
+      ><a name="257"
+      > </a
+      ><a name="258" href="Data.Empty.html#1" class="Module"
+      >Data.Empty</a
+      ><a name="268"
+      >
+</a
+      ><a name="269" class="Keyword"
+      >open</a
+      ><a name="273"
+      > </a
+      ><a name="274" class="Keyword"
+      >import</a
+      ><a name="280"
+      > </a
+      ><a name="281" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="289"
+      >
+</a
+      ><a name="290" class="Keyword"
+      >open</a
+      ><a name="294"
+      > </a
+      ><a name="295" class="Keyword"
+      >import</a
+      ><a name="301"
+      > </a
+      ><a name="302" href="Data.Sign.html#1" class="Module"
+      >Data.Sign</a
+      ><a name="311"
+      >
+</a
+      ><a name="312" class="Keyword"
+      >open</a
+      ><a name="316"
+      > </a
+      ><a name="317" class="Keyword"
+      >import</a
+      ><a name="323"
+      > </a
+      ><a name="324" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="361"
+      >
+
+</a
+      ><a name="363" class="Comment"
+      >-- The opposite of a sign is not equal to the sign.</a
+      ><a name="414"
+      >
+
+</a
+      ><a name="416" href="Data.Sign.Properties.html#416" class="Function"
+      >opposite-not-equal</a
+      ><a name="434"
+      > </a
+      ><a name="435" class="Symbol"
+      >:</a
+      ><a name="436"
+      > </a
+      ><a name="437" class="Symbol"
+      >&#8704;</a
+      ><a name="438"
+      > </a
+      ><a name="439" href="Data.Sign.Properties.html#439" class="Bound"
+      >s</a
+      ><a name="440"
+      > </a
+      ><a name="441" class="Symbol"
+      >&#8594;</a
+      ><a name="442"
+      > </a
+      ><a name="443" href="Data.Sign.Properties.html#439" class="Bound"
+      >s</a
+      ><a name="444"
+      > </a
+      ><a name="445" href="Relation.Binary.Core.html#4748" class="Function Operator"
+      >&#8802;</a
+      ><a name="446"
+      > </a
+      ><a name="447" href="Data.Sign.html#520" class="Function"
+      >opposite</a
+      ><a name="455"
+      > </a
+      ><a name="456" href="Data.Sign.Properties.html#439" class="Bound"
+      >s</a
+      ><a name="457"
+      >
+</a
+      ><a name="458" href="Data.Sign.Properties.html#416" class="Function"
+      >opposite-not-equal</a
+      ><a name="476"
+      > </a
+      ><a name="477" href="Data.Sign.html#356" class="InductiveConstructor"
+      >-</a
+      ><a name="478"
+      > </a
+      ><a name="479" class="Symbol"
+      >()</a
+      ><a name="481"
+      >
+</a
+      ><a name="482" href="Data.Sign.Properties.html#416" class="Function"
+      >opposite-not-equal</a
+      ><a name="500"
+      > </a
+      ><a name="501" href="Data.Sign.html#367" class="InductiveConstructor"
+      >+</a
+      ><a name="502"
+      > </a
+      ><a name="503" class="Symbol"
+      >()</a
+      ><a name="505"
+      >
+
+</a
+      ><a name="507" class="Comment"
+      >-- Sign multiplication is right cancellative.</a
+      ><a name="552"
+      >
+
+</a
+      ><a name="554" href="Data.Sign.Properties.html#554" class="Function"
+      >cancel-*-right</a
+      ><a name="568"
+      > </a
+      ><a name="569" class="Symbol"
+      >:</a
+      ><a name="570"
+      > </a
+      ><a name="571" class="Symbol"
+      >&#8704;</a
+      ><a name="572"
+      > </a
+      ><a name="573" href="Data.Sign.Properties.html#573" class="Bound"
+      >s&#8321;</a
+      ><a name="575"
+      > </a
+      ><a name="576" href="Data.Sign.Properties.html#576" class="Bound"
+      >s&#8322;</a
+      ><a name="578"
+      > </a
+      ><a name="579" class="Symbol"
+      >{</a
+      ><a name="580" href="Data.Sign.Properties.html#580" class="Bound"
+      >s</a
+      ><a name="581" class="Symbol"
+      >}</a
+      ><a name="582"
+      > </a
+      ><a name="583" class="Symbol"
+      >&#8594;</a
+      ><a name="584"
+      > </a
+      ><a name="585" href="Data.Sign.Properties.html#573" class="Bound"
+      >s&#8321;</a
+      ><a name="587"
+      > </a
+      ><a name="588" href="Data.Sign.html#610" class="Function Operator"
+      >*</a
+      ><a name="589"
+      > </a
+      ><a name="590" href="Data.Sign.Properties.html#580" class="Bound"
+      >s</a
+      ><a name="591"
+      > </a
+      ><a name="592" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="593"
+      > </a
+      ><a name="594" href="Data.Sign.Properties.html#576" class="Bound"
+      >s&#8322;</a
+      ><a name="596"
+      > </a
+      ><a name="597" href="Data.Sign.html#610" class="Function Operator"
+      >*</a
+      ><a name="598"
+      > </a
+      ><a name="599" href="Data.Sign.Properties.html#580" class="Bound"
+      >s</a
+      ><a name="600"
+      > </a
+      ><a name="601" class="Symbol"
+      >&#8594;</a
+      ><a name="602"
+      > </a
+      ><a name="603" href="Data.Sign.Properties.html#573" class="Bound"
+      >s&#8321;</a
+      ><a name="605"
+      > </a
+      ><a name="606" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="607"
+      > </a
+      ><a name="608" href="Data.Sign.Properties.html#576" class="Bound"
+      >s&#8322;</a
+      ><a name="610"
+      >
+</a
+      ><a name="611" href="Data.Sign.Properties.html#554" class="Function"
+      >cancel-*-right</a
+      ><a name="625"
+      > </a
+      ><a name="626" href="Data.Sign.html#356" class="InductiveConstructor"
+      >-</a
+      ><a name="627"
+      > </a
+      ><a name="628" href="Data.Sign.html#356" class="InductiveConstructor"
+      >-</a
+      ><a name="629"
+      > </a
+      ><a name="630" class="Symbol"
+      >_</a
+      ><a name="631"
+      >  </a
+      ><a name="633" class="Symbol"
+      >=</a
+      ><a name="634"
+      > </a
+      ><a name="635" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="639"
+      >
+</a
+      ><a name="640" href="Data.Sign.Properties.html#554" class="Function"
+      >cancel-*-right</a
+      ><a name="654"
+      > </a
+      ><a name="655" href="Data.Sign.html#356" class="InductiveConstructor"
+      >-</a
+      ><a name="656"
+      > </a
+      ><a name="657" href="Data.Sign.html#367" class="InductiveConstructor"
+      >+</a
+      ><a name="658"
+      > </a
+      ><a name="659" href="Data.Sign.Properties.html#659" class="Bound"
+      >eq</a
+      ><a name="661"
+      > </a
+      ><a name="662" class="Symbol"
+      >=</a
+      ><a name="663"
+      > </a
+      ><a name="664" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="670"
+      > </a
+      ><a name="671" class="Symbol"
+      >(</a
+      ><a name="672" href="Data.Sign.Properties.html#416" class="Function"
+      >opposite-not-equal</a
+      ><a name="690"
+      > </a
+      ><a name="691" class="Symbol"
+      >_</a
+      ><a name="692"
+      > </a
+      ><a name="693" href="Function.html#1835" class="Function Operator"
+      >$</a
+      ><a name="694"
+      > </a
+      ><a name="695" href="Relation.Binary.PropositionalEquality.Core.html#565" class="Function"
+      >sym</a
+      ><a name="698"
+      > </a
+      ><a name="699" href="Data.Sign.Properties.html#659" class="Bound"
+      >eq</a
+      ><a name="701" class="Symbol"
+      >)</a
+      ><a name="702"
+      >
+</a
+      ><a name="703" href="Data.Sign.Properties.html#554" class="Function"
+      >cancel-*-right</a
+      ><a name="717"
+      > </a
+      ><a name="718" href="Data.Sign.html#367" class="InductiveConstructor"
+      >+</a
+      ><a name="719"
+      > </a
+      ><a name="720" href="Data.Sign.html#356" class="InductiveConstructor"
+      >-</a
+      ><a name="721"
+      > </a
+      ><a name="722" href="Data.Sign.Properties.html#722" class="Bound"
+      >eq</a
+      ><a name="724"
+      > </a
+      ><a name="725" class="Symbol"
+      >=</a
+      ><a name="726"
+      > </a
+      ><a name="727" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="733"
+      > </a
+      ><a name="734" class="Symbol"
+      >(</a
+      ><a name="735" href="Data.Sign.Properties.html#416" class="Function"
+      >opposite-not-equal</a
+      ><a name="753"
+      > </a
+      ><a name="754" class="Symbol"
+      >_</a
+      ><a name="755"
+      > </a
+      ><a name="756" href="Data.Sign.Properties.html#722" class="Bound"
+      >eq</a
+      ><a name="758" class="Symbol"
+      >)</a
+      ><a name="759"
+      >
+</a
+      ><a name="760" href="Data.Sign.Properties.html#554" class="Function"
+      >cancel-*-right</a
+      ><a name="774"
+      > </a
+      ><a name="775" href="Data.Sign.html#367" class="InductiveConstructor"
+      >+</a
+      ><a name="776"
+      > </a
+      ><a name="777" href="Data.Sign.html#367" class="InductiveConstructor"
+      >+</a
+      ><a name="778"
+      > </a
+      ><a name="779" class="Symbol"
+      >_</a
+      ><a name="780"
+      >  </a
+      ><a name="782" class="Symbol"
+      >=</a
+      ><a name="783"
+      > </a
+      ><a name="784" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="788"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

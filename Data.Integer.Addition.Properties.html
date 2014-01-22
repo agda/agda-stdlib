@@ -1,0 +1,2842 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Integer.Addition.Properties</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Properties related to addition of integers</a
+      ><a name="151"
+      >
+</a
+      ><a name="152" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="224"
+      >
+
+</a
+      ><a name="226" class="Keyword"
+      >module</a
+      ><a name="232"
+      > </a
+      ><a name="233" href="Data.Integer.Addition.Properties.html#1" class="Module"
+      >Data.Integer.Addition.Properties</a
+      ><a name="265"
+      > </a
+      ><a name="266" class="Keyword"
+      >where</a
+      ><a name="271"
+      >
+
+</a
+      ><a name="273" class="Keyword"
+      >open</a
+      ><a name="277"
+      > </a
+      ><a name="278" class="Keyword"
+      >import</a
+      ><a name="284"
+      > </a
+      ><a name="285" href="Algebra.html#1" class="Module"
+      >Algebra</a
+      ><a name="292"
+      >
+</a
+      ><a name="293" class="Keyword"
+      >import</a
+      ><a name="299"
+      > </a
+      ><a name="300" href="Algebra.FunctionProperties.html#1" class="Module"
+      >Algebra.FunctionProperties</a
+      ><a name="326"
+      >
+</a
+      ><a name="327" class="Keyword"
+      >open</a
+      ><a name="331"
+      > </a
+      ><a name="332" class="Keyword"
+      >import</a
+      ><a name="338"
+      > </a
+      ><a name="339" href="Algebra.Structures.html#1" class="Module"
+      >Algebra.Structures</a
+      ><a name="357"
+      >
+</a
+      ><a name="358" class="Keyword"
+      >open</a
+      ><a name="362"
+      > </a
+      ><a name="363" class="Keyword"
+      >import</a
+      ><a name="369"
+      > </a
+      ><a name="370" href="Data.Integer.html#1" class="Module"
+      >Data.Integer</a
+      ><a name="382"
+      > </a
+      ><a name="383" class="Keyword"
+      >hiding</a
+      ><a name="389"
+      > </a
+      ><a name="390" class="Symbol"
+      >(</a
+      ><a name="391"
+      >suc</a
+      ><a name="394" class="Symbol"
+      >)</a
+      ><a name="395"
+      >
+</a
+      ><a name="396" class="Keyword"
+      >open</a
+      ><a name="400"
+      > </a
+      ><a name="401" class="Keyword"
+      >import</a
+      ><a name="407"
+      > </a
+      ><a name="408" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="416"
+      > </a
+      ><a name="417" class="Keyword"
+      >using</a
+      ><a name="422"
+      > </a
+      ><a name="423" class="Symbol"
+      >(</a
+      ><a name="424"
+      >suc</a
+      ><a name="427" class="Symbol"
+      >;</a
+      ><a name="428"
+      > zero</a
+      ><a name="433" class="Symbol"
+      >)</a
+      ><a name="434"
+      > </a
+      ><a name="435" class="Keyword"
+      >renaming</a
+      ><a name="443"
+      > </a
+      ><a name="444" class="Symbol"
+      >(</a
+      ><a name="445"
+      >_+_ </a
+      ><a name="449" class="Symbol"
+      >to</a
+      ><a name="451"
+      > _&#8469;+_</a
+      ><a name="456" class="Symbol"
+      >)</a
+      ><a name="457"
+      >
+</a
+      ><a name="458" class="Keyword"
+      >import</a
+      ><a name="464"
+      > </a
+      ><a name="465" href="Data.Nat.Properties.html#1" class="Module"
+      >Data.Nat.Properties</a
+      ><a name="484"
+      > </a
+      ><a name="485" class="Symbol"
+      >as</a
+      ><a name="487"
+      > </a
+      ><a name="488" class="Module"
+      >&#8469;</a
+      ><a name="489"
+      >
+</a
+      ><a name="490" class="Keyword"
+      >open</a
+      ><a name="494"
+      > </a
+      ><a name="495" class="Keyword"
+      >import</a
+      ><a name="501"
+      > </a
+      ><a name="502" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="539"
+      >
+
+</a
+      ><a name="541" class="Keyword"
+      >open</a
+      ><a name="545"
+      > </a
+      ><a name="546" href="Algebra.FunctionProperties.html#1" class="Module"
+      >Algebra.FunctionProperties</a
+      ><a name="572"
+      > </a
+      ><a name="573" class="Symbol"
+      >(</a
+      ><a name="574" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="577"
+      > </a
+      ><a name="578" class="Symbol"
+      >{</a
+      ><a name="579" class="Argument"
+      >A</a
+      ><a name="580"
+      > </a
+      ><a name="581" class="Symbol"
+      >=</a
+      ><a name="582"
+      > </a
+      ><a name="583" href="Data.Integer.html#915" class="Datatype"
+      >&#8484;</a
+      ><a name="584" class="Symbol"
+      >})</a
+      ><a name="586"
+      >
+</a
+      ><a name="587" class="Keyword"
+      >open</a
+      ><a name="591"
+      > </a
+      ><a name="592" href="Algebra.html#7862" class="Module"
+      >CommutativeSemiring</a
+      ><a name="611"
+      > </a
+      ><a name="612" href="Data.Nat.Properties.html#1726" class="Function"
+      >&#8469;.commutativeSemiring</a
+      ><a name="633"
+      >
+  </a
+      ><a name="636" class="Keyword"
+      >using</a
+      ><a name="641"
+      > </a
+      ><a name="642" class="Symbol"
+      >(</a
+      ><a name="643"
+      >+-comm</a
+      ><a name="649" class="Symbol"
+      >;</a
+      ><a name="650"
+      > +-assoc</a
+      ><a name="658" class="Symbol"
+      >;</a
+      ><a name="659"
+      > +-identity</a
+      ><a name="670" class="Symbol"
+      >)</a
+      ><a name="671"
+      >
+
+</a
+      ><a name="673" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="745"
+      >
+</a
+      ><a name="746" class="Comment"
+      >-- Addition and zero form a commutative monoid</a
+      ><a name="792"
+      >
+
+</a
+      ><a name="794" class="Keyword"
+      >private</a
+      ><a name="801"
+      >
+
+  </a
+      ><a name="805" href="Data.Integer.Addition.Properties.html#805" class="Function"
+      >comm</a
+      ><a name="809"
+      > </a
+      ><a name="810" class="Symbol"
+      >:</a
+      ><a name="811"
+      > </a
+      ><a name="812" href="Algebra.FunctionProperties.html#914" class="Function"
+      >Commutative</a
+      ><a name="823"
+      > </a
+      ><a name="824" href="Data.Integer.html#3088" class="Function Operator"
+      >_+_</a
+      ><a name="827"
+      >
+  </a
+      ><a name="830" href="Data.Integer.Addition.Properties.html#805" class="Function"
+      >comm</a
+      ><a name="834"
+      > </a
+      ><a name="835" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="839"
+      > </a
+      ><a name="840" href="Data.Integer.Addition.Properties.html#840" class="Bound"
+      >a</a
+      ><a name="841"
+      > </a
+      ><a name="842" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="843"
+      > </a
+      ><a name="844" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="848"
+      > </a
+      ><a name="849" href="Data.Integer.Addition.Properties.html#849" class="Bound"
+      >b</a
+      ><a name="850"
+      > </a
+      ><a name="851" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="852"
+      > </a
+      ><a name="853" class="Keyword"
+      >rewrite</a
+      ><a name="860"
+      > </a
+      ><a name="861" href="Algebra.Structures.html#1414" class="Function"
+      >+-comm</a
+      ><a name="867"
+      > </a
+      ><a name="868" href="Data.Integer.Addition.Properties.html#840" class="Bound"
+      >a</a
+      ><a name="869"
+      > </a
+      ><a name="870" href="Data.Integer.Addition.Properties.html#849" class="Bound"
+      >b</a
+      ><a name="871"
+      > </a
+      ><a name="872" class="Symbol"
+      >=</a
+      ><a name="873"
+      > </a
+      ><a name="874" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="878"
+      >
+  </a
+      ><a name="881" href="Data.Integer.Addition.Properties.html#805" class="Function"
+      >comm</a
+      ><a name="885"
+      > </a
+      ><a name="886" class="Symbol"
+      >(</a
+      ><a name="887" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="888"
+      >   </a
+      ><a name="891" href="Data.Integer.Addition.Properties.html#891" class="Bound"
+      >a</a
+      ><a name="892"
+      > </a
+      ><a name="893" class="Symbol"
+      >)</a
+      ><a name="894"
+      > </a
+      ><a name="895" class="Symbol"
+      >(</a
+      ><a name="896" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="897"
+      >   </a
+      ><a name="900" href="Data.Integer.Addition.Properties.html#900" class="Bound"
+      >b</a
+      ><a name="901"
+      > </a
+      ><a name="902" class="Symbol"
+      >)</a
+      ><a name="903"
+      > </a
+      ><a name="904" class="Keyword"
+      >rewrite</a
+      ><a name="911"
+      > </a
+      ><a name="912" href="Algebra.Structures.html#1414" class="Function"
+      >+-comm</a
+      ><a name="918"
+      > </a
+      ><a name="919" href="Data.Integer.Addition.Properties.html#891" class="Bound"
+      >a</a
+      ><a name="920"
+      > </a
+      ><a name="921" href="Data.Integer.Addition.Properties.html#900" class="Bound"
+      >b</a
+      ><a name="922"
+      > </a
+      ><a name="923" class="Symbol"
+      >=</a
+      ><a name="924"
+      > </a
+      ><a name="925" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="929"
+      >
+  </a
+      ><a name="932" href="Data.Integer.Addition.Properties.html#805" class="Function"
+      >comm</a
+      ><a name="936"
+      > </a
+      ><a name="937" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="941"
+      > </a
+      ><a name="942" class="Symbol"
+      >_</a
+      ><a name="943"
+      > </a
+      ><a name="944" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="945"
+      > </a
+      ><a name="946" class="Symbol"
+      >(</a
+      ><a name="947" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="948"
+      >   </a
+      ><a name="951" class="Symbol"
+      >_</a
+      ><a name="952"
+      > </a
+      ><a name="953" class="Symbol"
+      >)</a
+      ><a name="954"
+      > </a
+      ><a name="955" class="Symbol"
+      >=</a
+      ><a name="956"
+      > </a
+      ><a name="957" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="961"
+      >
+  </a
+      ><a name="964" href="Data.Integer.Addition.Properties.html#805" class="Function"
+      >comm</a
+      ><a name="968"
+      > </a
+      ><a name="969" class="Symbol"
+      >(</a
+      ><a name="970" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="971"
+      >   </a
+      ><a name="974" class="Symbol"
+      >_</a
+      ><a name="975"
+      > </a
+      ><a name="976" class="Symbol"
+      >)</a
+      ><a name="977"
+      > </a
+      ><a name="978" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="982"
+      > </a
+      ><a name="983" class="Symbol"
+      >_</a
+      ><a name="984"
+      > </a
+      ><a name="985" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="986"
+      > </a
+      ><a name="987" class="Symbol"
+      >=</a
+      ><a name="988"
+      > </a
+      ><a name="989" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="993"
+      >
+
+  </a
+      ><a name="997" href="Data.Integer.Addition.Properties.html#997" class="Function"
+      >identity&#737;</a
+      ><a name="1006"
+      > </a
+      ><a name="1007" class="Symbol"
+      >:</a
+      ><a name="1008"
+      > </a
+      ><a name="1009" href="Algebra.FunctionProperties.html#987" class="Function"
+      >LeftIdentity</a
+      ><a name="1021"
+      > </a
+      ><a name="1022" class="Symbol"
+      >(</a
+      ><a name="1023" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1024"
+      > </a
+      ><a name="1025" class="Number"
+      >0</a
+      ><a name="1026" class="Symbol"
+      >)</a
+      ><a name="1027"
+      > </a
+      ><a name="1028" href="Data.Integer.html#3088" class="Function Operator"
+      >_+_</a
+      ><a name="1031"
+      >
+  </a
+      ><a name="1034" href="Data.Integer.Addition.Properties.html#997" class="Function"
+      >identity&#737;</a
+      ><a name="1043"
+      > </a
+      ><a name="1044" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1048"
+      > </a
+      ><a name="1049" class="Symbol"
+      >_</a
+      ><a name="1050"
+      > </a
+      ><a name="1051" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1052"
+      > </a
+      ><a name="1053" class="Symbol"
+      >=</a
+      ><a name="1054"
+      > </a
+      ><a name="1055" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1059"
+      >
+  </a
+      ><a name="1062" href="Data.Integer.Addition.Properties.html#997" class="Function"
+      >identity&#737;</a
+      ><a name="1071"
+      > </a
+      ><a name="1072" class="Symbol"
+      >(</a
+      ><a name="1073" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1074"
+      >   </a
+      ><a name="1077" class="Symbol"
+      >_</a
+      ><a name="1078"
+      > </a
+      ><a name="1079" class="Symbol"
+      >)</a
+      ><a name="1080"
+      > </a
+      ><a name="1081" class="Symbol"
+      >=</a
+      ><a name="1082"
+      > </a
+      ><a name="1083" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1087"
+      >
+
+  </a
+      ><a name="1091" href="Data.Integer.Addition.Properties.html#1091" class="Function"
+      >identity&#691;</a
+      ><a name="1100"
+      > </a
+      ><a name="1101" class="Symbol"
+      >:</a
+      ><a name="1102"
+      > </a
+      ><a name="1103" href="Algebra.FunctionProperties.html#1060" class="Function"
+      >RightIdentity</a
+      ><a name="1116"
+      > </a
+      ><a name="1117" class="Symbol"
+      >(</a
+      ><a name="1118" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1119"
+      > </a
+      ><a name="1120" class="Number"
+      >0</a
+      ><a name="1121" class="Symbol"
+      >)</a
+      ><a name="1122"
+      > </a
+      ><a name="1123" href="Data.Integer.html#3088" class="Function Operator"
+      >_+_</a
+      ><a name="1126"
+      >
+  </a
+      ><a name="1129" href="Data.Integer.Addition.Properties.html#1091" class="Function"
+      >identity&#691;</a
+      ><a name="1138"
+      > </a
+      ><a name="1139" href="Data.Integer.Addition.Properties.html#1139" class="Bound"
+      >x</a
+      ><a name="1140"
+      > </a
+      ><a name="1141" class="Keyword"
+      >rewrite</a
+      ><a name="1148"
+      > </a
+      ><a name="1149" href="Data.Integer.Addition.Properties.html#805" class="Function"
+      >comm</a
+      ><a name="1153"
+      > </a
+      ><a name="1154" href="Data.Integer.Addition.Properties.html#1139" class="Bound"
+      >x</a
+      ><a name="1155"
+      > </a
+      ><a name="1156" class="Symbol"
+      >(</a
+      ><a name="1157" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1158"
+      > </a
+      ><a name="1159" class="Number"
+      >0</a
+      ><a name="1160" class="Symbol"
+      >)</a
+      ><a name="1161"
+      > </a
+      ><a name="1162" class="Symbol"
+      >=</a
+      ><a name="1163"
+      > </a
+      ><a name="1164" href="Data.Integer.Addition.Properties.html#997" class="Function"
+      >identity&#737;</a
+      ><a name="1173"
+      > </a
+      ><a name="1174" href="Data.Integer.Addition.Properties.html#1139" class="Bound"
+      >x</a
+      ><a name="1175"
+      >
+
+  </a
+      ><a name="1179" href="Data.Integer.Addition.Properties.html#1179" class="Function"
+      >distrib&#737;-&#8854;-+-neg</a
+      ><a name="1195"
+      > </a
+      ><a name="1196" class="Symbol"
+      >:</a
+      ><a name="1197"
+      > </a
+      ><a name="1198" class="Symbol"
+      >&#8704;</a
+      ><a name="1199"
+      > </a
+      ><a name="1200" href="Data.Integer.Addition.Properties.html#1200" class="Bound"
+      >a</a
+      ><a name="1201"
+      > </a
+      ><a name="1202" href="Data.Integer.Addition.Properties.html#1202" class="Bound"
+      >b</a
+      ><a name="1203"
+      > </a
+      ><a name="1204" href="Data.Integer.Addition.Properties.html#1204" class="Bound"
+      >c</a
+      ><a name="1205"
+      > </a
+      ><a name="1206" class="Symbol"
+      >&#8594;</a
+      ><a name="1207"
+      > </a
+      ><a name="1208" href="Data.Integer.Addition.Properties.html#1202" class="Bound"
+      >b</a
+      ><a name="1209"
+      > </a
+      ><a name="1210" href="Data.Integer.html#2978" class="Function Operator"
+      >&#8854;</a
+      ><a name="1211"
+      > </a
+      ><a name="1212" href="Data.Integer.Addition.Properties.html#1204" class="Bound"
+      >c</a
+      ><a name="1213"
+      > </a
+      ><a name="1214" href="Data.Integer.html#3088" class="Function Operator"
+      >+</a
+      ><a name="1215"
+      > </a
+      ><a name="1216" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1220"
+      > </a
+      ><a name="1221" href="Data.Integer.Addition.Properties.html#1200" class="Bound"
+      >a</a
+      ><a name="1222"
+      > </a
+      ><a name="1223" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1224"
+      > </a
+      ><a name="1225" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1226"
+      > </a
+      ><a name="1227" href="Data.Integer.Addition.Properties.html#1202" class="Bound"
+      >b</a
+      ><a name="1228"
+      > </a
+      ><a name="1229" href="Data.Integer.html#2978" class="Function Operator"
+      >&#8854;</a
+      ><a name="1230"
+      > </a
+      ><a name="1231" class="Symbol"
+      >(</a
+      ><a name="1232" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1235"
+      > </a
+      ><a name="1236" href="Data.Integer.Addition.Properties.html#1204" class="Bound"
+      >c</a
+      ><a name="1237"
+      > </a
+      ><a name="1238" href="Data.Nat.html#2168" class="Primitive Operator"
+      >&#8469;+</a
+      ><a name="1240"
+      > </a
+      ><a name="1241" href="Data.Integer.Addition.Properties.html#1200" class="Bound"
+      >a</a
+      ><a name="1242" class="Symbol"
+      >)</a
+      ><a name="1243"
+      >
+  </a
+      ><a name="1246" href="Data.Integer.Addition.Properties.html#1179" class="Function"
+      >distrib&#737;-&#8854;-+-neg</a
+      ><a name="1262"
+      > </a
+      ><a name="1263" class="Symbol"
+      >_</a
+      ><a name="1264"
+      > </a
+      ><a name="1265" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="1269"
+      >    </a
+      ><a name="1273" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="1277"
+      >    </a
+      ><a name="1281" class="Symbol"
+      >=</a
+      ><a name="1282"
+      > </a
+      ><a name="1283" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1287"
+      >
+  </a
+      ><a name="1290" href="Data.Integer.Addition.Properties.html#1179" class="Function"
+      >distrib&#737;-&#8854;-+-neg</a
+      ><a name="1306"
+      > </a
+      ><a name="1307" class="Symbol"
+      >_</a
+      ><a name="1308"
+      > </a
+      ><a name="1309" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="1313"
+      >    </a
+      ><a name="1317" class="Symbol"
+      >(</a
+      ><a name="1318" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1321"
+      > </a
+      ><a name="1322" class="Symbol"
+      >_)</a
+      ><a name="1324"
+      > </a
+      ><a name="1325" class="Symbol"
+      >=</a
+      ><a name="1326"
+      > </a
+      ><a name="1327" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1331"
+      >
+  </a
+      ><a name="1334" href="Data.Integer.Addition.Properties.html#1179" class="Function"
+      >distrib&#737;-&#8854;-+-neg</a
+      ><a name="1350"
+      > </a
+      ><a name="1351" class="Symbol"
+      >_</a
+      ><a name="1352"
+      > </a
+      ><a name="1353" class="Symbol"
+      >(</a
+      ><a name="1354" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1357"
+      > </a
+      ><a name="1358" class="Symbol"
+      >_)</a
+      ><a name="1360"
+      > </a
+      ><a name="1361" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="1365"
+      >    </a
+      ><a name="1369" class="Symbol"
+      >=</a
+      ><a name="1370"
+      > </a
+      ><a name="1371" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1375"
+      >
+  </a
+      ><a name="1378" href="Data.Integer.Addition.Properties.html#1179" class="Function"
+      >distrib&#737;-&#8854;-+-neg</a
+      ><a name="1394"
+      > </a
+      ><a name="1395" href="Data.Integer.Addition.Properties.html#1395" class="Bound"
+      >a</a
+      ><a name="1396"
+      > </a
+      ><a name="1397" class="Symbol"
+      >(</a
+      ><a name="1398" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1401"
+      > </a
+      ><a name="1402" href="Data.Integer.Addition.Properties.html#1402" class="Bound"
+      >b</a
+      ><a name="1403" class="Symbol"
+      >)</a
+      ><a name="1404"
+      > </a
+      ><a name="1405" class="Symbol"
+      >(</a
+      ><a name="1406" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1409"
+      > </a
+      ><a name="1410" href="Data.Integer.Addition.Properties.html#1410" class="Bound"
+      >c</a
+      ><a name="1411" class="Symbol"
+      >)</a
+      ><a name="1412"
+      > </a
+      ><a name="1413" class="Symbol"
+      >=</a
+      ><a name="1414"
+      > </a
+      ><a name="1415" href="Data.Integer.Addition.Properties.html#1179" class="Function"
+      >distrib&#737;-&#8854;-+-neg</a
+      ><a name="1431"
+      > </a
+      ><a name="1432" href="Data.Integer.Addition.Properties.html#1395" class="Bound"
+      >a</a
+      ><a name="1433"
+      > </a
+      ><a name="1434" href="Data.Integer.Addition.Properties.html#1402" class="Bound"
+      >b</a
+      ><a name="1435"
+      > </a
+      ><a name="1436" href="Data.Integer.Addition.Properties.html#1410" class="Bound"
+      >c</a
+      ><a name="1437"
+      >
+
+  </a
+      ><a name="1441" href="Data.Integer.Addition.Properties.html#1441" class="Function"
+      >distrib&#691;-&#8854;-+-neg</a
+      ><a name="1457"
+      > </a
+      ><a name="1458" class="Symbol"
+      >:</a
+      ><a name="1459"
+      > </a
+      ><a name="1460" class="Symbol"
+      >&#8704;</a
+      ><a name="1461"
+      > </a
+      ><a name="1462" href="Data.Integer.Addition.Properties.html#1462" class="Bound"
+      >a</a
+      ><a name="1463"
+      > </a
+      ><a name="1464" href="Data.Integer.Addition.Properties.html#1464" class="Bound"
+      >b</a
+      ><a name="1465"
+      > </a
+      ><a name="1466" href="Data.Integer.Addition.Properties.html#1466" class="Bound"
+      >c</a
+      ><a name="1467"
+      > </a
+      ><a name="1468" class="Symbol"
+      >&#8594;</a
+      ><a name="1469"
+      > </a
+      ><a name="1470" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1474"
+      > </a
+      ><a name="1475" href="Data.Integer.Addition.Properties.html#1462" class="Bound"
+      >a</a
+      ><a name="1476"
+      > </a
+      ><a name="1477" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1478"
+      > </a
+      ><a name="1479" href="Data.Integer.html#3088" class="Function Operator"
+      >+</a
+      ><a name="1480"
+      > </a
+      ><a name="1481" class="Symbol"
+      >(</a
+      ><a name="1482" href="Data.Integer.Addition.Properties.html#1464" class="Bound"
+      >b</a
+      ><a name="1483"
+      > </a
+      ><a name="1484" href="Data.Integer.html#2978" class="Function Operator"
+      >&#8854;</a
+      ><a name="1485"
+      > </a
+      ><a name="1486" href="Data.Integer.Addition.Properties.html#1466" class="Bound"
+      >c</a
+      ><a name="1487" class="Symbol"
+      >)</a
+      ><a name="1488"
+      > </a
+      ><a name="1489" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1490"
+      > </a
+      ><a name="1491" href="Data.Integer.Addition.Properties.html#1464" class="Bound"
+      >b</a
+      ><a name="1492"
+      > </a
+      ><a name="1493" href="Data.Integer.html#2978" class="Function Operator"
+      >&#8854;</a
+      ><a name="1494"
+      > </a
+      ><a name="1495" class="Symbol"
+      >(</a
+      ><a name="1496" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1499"
+      > </a
+      ><a name="1500" href="Data.Integer.Addition.Properties.html#1462" class="Bound"
+      >a</a
+      ><a name="1501"
+      > </a
+      ><a name="1502" href="Data.Nat.html#2168" class="Primitive Operator"
+      >&#8469;+</a
+      ><a name="1504"
+      > </a
+      ><a name="1505" href="Data.Integer.Addition.Properties.html#1466" class="Bound"
+      >c</a
+      ><a name="1506" class="Symbol"
+      >)</a
+      ><a name="1507"
+      >
+  </a
+      ><a name="1510" href="Data.Integer.Addition.Properties.html#1441" class="Function"
+      >distrib&#691;-&#8854;-+-neg</a
+      ><a name="1526"
+      > </a
+      ><a name="1527" href="Data.Integer.Addition.Properties.html#1527" class="Bound"
+      >a</a
+      ><a name="1528"
+      > </a
+      ><a name="1529" href="Data.Integer.Addition.Properties.html#1529" class="Bound"
+      >b</a
+      ><a name="1530"
+      > </a
+      ><a name="1531" href="Data.Integer.Addition.Properties.html#1531" class="Bound"
+      >c</a
+      ><a name="1532"
+      >
+    </a
+      ><a name="1537" class="Keyword"
+      >rewrite</a
+      ><a name="1544"
+      > </a
+      ><a name="1545" href="Data.Integer.Addition.Properties.html#805" class="Function"
+      >comm</a
+      ><a name="1549"
+      > </a
+      ><a name="1550" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1554"
+      > </a
+      ><a name="1555" href="Data.Integer.Addition.Properties.html#1527" class="Bound"
+      >a</a
+      ><a name="1556"
+      > </a
+      ><a name="1557" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1558"
+      > </a
+      ><a name="1559" class="Symbol"
+      >(</a
+      ><a name="1560" href="Data.Integer.Addition.Properties.html#1529" class="Bound"
+      >b</a
+      ><a name="1561"
+      > </a
+      ><a name="1562" href="Data.Integer.html#2978" class="Function Operator"
+      >&#8854;</a
+      ><a name="1563"
+      > </a
+      ><a name="1564" href="Data.Integer.Addition.Properties.html#1531" class="Bound"
+      >c</a
+      ><a name="1565" class="Symbol"
+      >)</a
+      ><a name="1566"
+      >
+          </a
+      ><a name="1577" class="Symbol"
+      >|</a
+      ><a name="1578"
+      > </a
+      ><a name="1579" href="Data.Integer.Addition.Properties.html#1179" class="Function"
+      >distrib&#737;-&#8854;-+-neg</a
+      ><a name="1595"
+      > </a
+      ><a name="1596" href="Data.Integer.Addition.Properties.html#1527" class="Bound"
+      >a</a
+      ><a name="1597"
+      > </a
+      ><a name="1598" href="Data.Integer.Addition.Properties.html#1529" class="Bound"
+      >b</a
+      ><a name="1599"
+      > </a
+      ><a name="1600" href="Data.Integer.Addition.Properties.html#1531" class="Bound"
+      >c</a
+      ><a name="1601"
+      >
+          </a
+      ><a name="1612" class="Symbol"
+      >|</a
+      ><a name="1613"
+      > </a
+      ><a name="1614" href="Algebra.Structures.html#1414" class="Function"
+      >+-comm</a
+      ><a name="1620"
+      > </a
+      ><a name="1621" href="Data.Integer.Addition.Properties.html#1527" class="Bound"
+      >a</a
+      ><a name="1622"
+      > </a
+      ><a name="1623" href="Data.Integer.Addition.Properties.html#1531" class="Bound"
+      >c</a
+      ><a name="1624"
+      >
+          </a
+      ><a name="1635" class="Symbol"
+      >=</a
+      ><a name="1636"
+      > </a
+      ><a name="1637" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1641"
+      >
+
+  </a
+      ><a name="1645" href="Data.Integer.Addition.Properties.html#1645" class="Function"
+      >distrib&#737;-&#8854;-+-pos</a
+      ><a name="1661"
+      > </a
+      ><a name="1662" class="Symbol"
+      >:</a
+      ><a name="1663"
+      > </a
+      ><a name="1664" class="Symbol"
+      >&#8704;</a
+      ><a name="1665"
+      > </a
+      ><a name="1666" href="Data.Integer.Addition.Properties.html#1666" class="Bound"
+      >a</a
+      ><a name="1667"
+      > </a
+      ><a name="1668" href="Data.Integer.Addition.Properties.html#1668" class="Bound"
+      >b</a
+      ><a name="1669"
+      > </a
+      ><a name="1670" href="Data.Integer.Addition.Properties.html#1670" class="Bound"
+      >c</a
+      ><a name="1671"
+      > </a
+      ><a name="1672" class="Symbol"
+      >&#8594;</a
+      ><a name="1673"
+      > </a
+      ><a name="1674" href="Data.Integer.Addition.Properties.html#1668" class="Bound"
+      >b</a
+      ><a name="1675"
+      > </a
+      ><a name="1676" href="Data.Integer.html#2978" class="Function Operator"
+      >&#8854;</a
+      ><a name="1677"
+      > </a
+      ><a name="1678" href="Data.Integer.Addition.Properties.html#1670" class="Bound"
+      >c</a
+      ><a name="1679"
+      > </a
+      ><a name="1680" href="Data.Integer.html#3088" class="Function Operator"
+      >+</a
+      ><a name="1681"
+      > </a
+      ><a name="1682" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1683"
+      > </a
+      ><a name="1684" href="Data.Integer.Addition.Properties.html#1666" class="Bound"
+      >a</a
+      ><a name="1685"
+      > </a
+      ><a name="1686" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1687"
+      > </a
+      ><a name="1688" href="Data.Integer.Addition.Properties.html#1668" class="Bound"
+      >b</a
+      ><a name="1689"
+      > </a
+      ><a name="1690" href="Data.Nat.html#2168" class="Primitive Operator"
+      >&#8469;+</a
+      ><a name="1692"
+      > </a
+      ><a name="1693" href="Data.Integer.Addition.Properties.html#1666" class="Bound"
+      >a</a
+      ><a name="1694"
+      > </a
+      ><a name="1695" href="Data.Integer.html#2978" class="Function Operator"
+      >&#8854;</a
+      ><a name="1696"
+      > </a
+      ><a name="1697" href="Data.Integer.Addition.Properties.html#1670" class="Bound"
+      >c</a
+      ><a name="1698"
+      >
+  </a
+      ><a name="1701" href="Data.Integer.Addition.Properties.html#1645" class="Function"
+      >distrib&#737;-&#8854;-+-pos</a
+      ><a name="1717"
+      > </a
+      ><a name="1718" class="Symbol"
+      >_</a
+      ><a name="1719"
+      > </a
+      ><a name="1720" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="1724"
+      >    </a
+      ><a name="1728" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="1732"
+      >    </a
+      ><a name="1736" class="Symbol"
+      >=</a
+      ><a name="1737"
+      > </a
+      ><a name="1738" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1742"
+      >
+  </a
+      ><a name="1745" href="Data.Integer.Addition.Properties.html#1645" class="Function"
+      >distrib&#737;-&#8854;-+-pos</a
+      ><a name="1761"
+      > </a
+      ><a name="1762" class="Symbol"
+      >_</a
+      ><a name="1763"
+      > </a
+      ><a name="1764" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="1768"
+      >    </a
+      ><a name="1772" class="Symbol"
+      >(</a
+      ><a name="1773" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1776"
+      > </a
+      ><a name="1777" class="Symbol"
+      >_)</a
+      ><a name="1779"
+      > </a
+      ><a name="1780" class="Symbol"
+      >=</a
+      ><a name="1781"
+      > </a
+      ><a name="1782" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1786"
+      >
+  </a
+      ><a name="1789" href="Data.Integer.Addition.Properties.html#1645" class="Function"
+      >distrib&#737;-&#8854;-+-pos</a
+      ><a name="1805"
+      > </a
+      ><a name="1806" class="Symbol"
+      >_</a
+      ><a name="1807"
+      > </a
+      ><a name="1808" class="Symbol"
+      >(</a
+      ><a name="1809" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1812"
+      > </a
+      ><a name="1813" class="Symbol"
+      >_)</a
+      ><a name="1815"
+      > </a
+      ><a name="1816" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="1820"
+      >    </a
+      ><a name="1824" class="Symbol"
+      >=</a
+      ><a name="1825"
+      > </a
+      ><a name="1826" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1830"
+      >
+  </a
+      ><a name="1833" href="Data.Integer.Addition.Properties.html#1645" class="Function"
+      >distrib&#737;-&#8854;-+-pos</a
+      ><a name="1849"
+      > </a
+      ><a name="1850" href="Data.Integer.Addition.Properties.html#1850" class="Bound"
+      >a</a
+      ><a name="1851"
+      > </a
+      ><a name="1852" class="Symbol"
+      >(</a
+      ><a name="1853" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1856"
+      > </a
+      ><a name="1857" href="Data.Integer.Addition.Properties.html#1857" class="Bound"
+      >b</a
+      ><a name="1858" class="Symbol"
+      >)</a
+      ><a name="1859"
+      > </a
+      ><a name="1860" class="Symbol"
+      >(</a
+      ><a name="1861" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="1864"
+      > </a
+      ><a name="1865" href="Data.Integer.Addition.Properties.html#1865" class="Bound"
+      >c</a
+      ><a name="1866" class="Symbol"
+      >)</a
+      ><a name="1867"
+      > </a
+      ><a name="1868" class="Symbol"
+      >=</a
+      ><a name="1869"
+      > </a
+      ><a name="1870" href="Data.Integer.Addition.Properties.html#1645" class="Function"
+      >distrib&#737;-&#8854;-+-pos</a
+      ><a name="1886"
+      > </a
+      ><a name="1887" href="Data.Integer.Addition.Properties.html#1850" class="Bound"
+      >a</a
+      ><a name="1888"
+      > </a
+      ><a name="1889" href="Data.Integer.Addition.Properties.html#1857" class="Bound"
+      >b</a
+      ><a name="1890"
+      > </a
+      ><a name="1891" href="Data.Integer.Addition.Properties.html#1865" class="Bound"
+      >c</a
+      ><a name="1892"
+      >
+
+  </a
+      ><a name="1896" href="Data.Integer.Addition.Properties.html#1896" class="Function"
+      >distrib&#691;-&#8854;-+-pos</a
+      ><a name="1912"
+      > </a
+      ><a name="1913" class="Symbol"
+      >:</a
+      ><a name="1914"
+      > </a
+      ><a name="1915" class="Symbol"
+      >&#8704;</a
+      ><a name="1916"
+      > </a
+      ><a name="1917" href="Data.Integer.Addition.Properties.html#1917" class="Bound"
+      >a</a
+      ><a name="1918"
+      > </a
+      ><a name="1919" href="Data.Integer.Addition.Properties.html#1919" class="Bound"
+      >b</a
+      ><a name="1920"
+      > </a
+      ><a name="1921" href="Data.Integer.Addition.Properties.html#1921" class="Bound"
+      >c</a
+      ><a name="1922"
+      > </a
+      ><a name="1923" class="Symbol"
+      >&#8594;</a
+      ><a name="1924"
+      > </a
+      ><a name="1925" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1926"
+      > </a
+      ><a name="1927" href="Data.Integer.Addition.Properties.html#1917" class="Bound"
+      >a</a
+      ><a name="1928"
+      > </a
+      ><a name="1929" href="Data.Integer.html#3088" class="Function Operator"
+      >+</a
+      ><a name="1930"
+      > </a
+      ><a name="1931" class="Symbol"
+      >(</a
+      ><a name="1932" href="Data.Integer.Addition.Properties.html#1919" class="Bound"
+      >b</a
+      ><a name="1933"
+      > </a
+      ><a name="1934" href="Data.Integer.html#2978" class="Function Operator"
+      >&#8854;</a
+      ><a name="1935"
+      > </a
+      ><a name="1936" href="Data.Integer.Addition.Properties.html#1921" class="Bound"
+      >c</a
+      ><a name="1937" class="Symbol"
+      >)</a
+      ><a name="1938"
+      > </a
+      ><a name="1939" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1940"
+      > </a
+      ><a name="1941" href="Data.Integer.Addition.Properties.html#1917" class="Bound"
+      >a</a
+      ><a name="1942"
+      > </a
+      ><a name="1943" href="Data.Nat.html#2168" class="Primitive Operator"
+      >&#8469;+</a
+      ><a name="1945"
+      > </a
+      ><a name="1946" href="Data.Integer.Addition.Properties.html#1919" class="Bound"
+      >b</a
+      ><a name="1947"
+      > </a
+      ><a name="1948" href="Data.Integer.html#2978" class="Function Operator"
+      >&#8854;</a
+      ><a name="1949"
+      > </a
+      ><a name="1950" href="Data.Integer.Addition.Properties.html#1921" class="Bound"
+      >c</a
+      ><a name="1951"
+      >
+  </a
+      ><a name="1954" href="Data.Integer.Addition.Properties.html#1896" class="Function"
+      >distrib&#691;-&#8854;-+-pos</a
+      ><a name="1970"
+      > </a
+      ><a name="1971" href="Data.Integer.Addition.Properties.html#1971" class="Bound"
+      >a</a
+      ><a name="1972"
+      > </a
+      ><a name="1973" href="Data.Integer.Addition.Properties.html#1973" class="Bound"
+      >b</a
+      ><a name="1974"
+      > </a
+      ><a name="1975" href="Data.Integer.Addition.Properties.html#1975" class="Bound"
+      >c</a
+      ><a name="1976"
+      >
+    </a
+      ><a name="1981" class="Keyword"
+      >rewrite</a
+      ><a name="1988"
+      > </a
+      ><a name="1989" href="Data.Integer.Addition.Properties.html#805" class="Function"
+      >comm</a
+      ><a name="1993"
+      > </a
+      ><a name="1994" class="Symbol"
+      >(</a
+      ><a name="1995" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1996"
+      > </a
+      ><a name="1997" href="Data.Integer.Addition.Properties.html#1971" class="Bound"
+      >a</a
+      ><a name="1998" class="Symbol"
+      >)</a
+      ><a name="1999"
+      > </a
+      ><a name="2000" class="Symbol"
+      >(</a
+      ><a name="2001" href="Data.Integer.Addition.Properties.html#1973" class="Bound"
+      >b</a
+      ><a name="2002"
+      > </a
+      ><a name="2003" href="Data.Integer.html#2978" class="Function Operator"
+      >&#8854;</a
+      ><a name="2004"
+      > </a
+      ><a name="2005" href="Data.Integer.Addition.Properties.html#1975" class="Bound"
+      >c</a
+      ><a name="2006" class="Symbol"
+      >)</a
+      ><a name="2007"
+      >
+          </a
+      ><a name="2018" class="Symbol"
+      >|</a
+      ><a name="2019"
+      > </a
+      ><a name="2020" href="Data.Integer.Addition.Properties.html#1645" class="Function"
+      >distrib&#737;-&#8854;-+-pos</a
+      ><a name="2036"
+      > </a
+      ><a name="2037" href="Data.Integer.Addition.Properties.html#1971" class="Bound"
+      >a</a
+      ><a name="2038"
+      > </a
+      ><a name="2039" href="Data.Integer.Addition.Properties.html#1973" class="Bound"
+      >b</a
+      ><a name="2040"
+      > </a
+      ><a name="2041" href="Data.Integer.Addition.Properties.html#1975" class="Bound"
+      >c</a
+      ><a name="2042"
+      >
+          </a
+      ><a name="2053" class="Symbol"
+      >|</a
+      ><a name="2054"
+      > </a
+      ><a name="2055" href="Algebra.Structures.html#1414" class="Function"
+      >+-comm</a
+      ><a name="2061"
+      > </a
+      ><a name="2062" href="Data.Integer.Addition.Properties.html#1971" class="Bound"
+      >a</a
+      ><a name="2063"
+      > </a
+      ><a name="2064" href="Data.Integer.Addition.Properties.html#1973" class="Bound"
+      >b</a
+      ><a name="2065"
+      >
+          </a
+      ><a name="2076" class="Symbol"
+      >=</a
+      ><a name="2077"
+      > </a
+      ><a name="2078" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2082"
+      >
+
+  </a
+      ><a name="2086" href="Data.Integer.Addition.Properties.html#2086" class="Function"
+      >assoc</a
+      ><a name="2091"
+      > </a
+      ><a name="2092" class="Symbol"
+      >:</a
+      ><a name="2093"
+      > </a
+      ><a name="2094" href="Algebra.FunctionProperties.html#827" class="Function"
+      >Associative</a
+      ><a name="2105"
+      > </a
+      ><a name="2106" href="Data.Integer.html#3088" class="Function Operator"
+      >_+_</a
+      ><a name="2109"
+      >
+  </a
+      ><a name="2112" href="Data.Integer.Addition.Properties.html#2086" class="Function"
+      >assoc</a
+      ><a name="2117"
+      > </a
+      ><a name="2118" class="Symbol"
+      >(</a
+      ><a name="2119" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2120"
+      > </a
+      ><a name="2121" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="2125" class="Symbol"
+      >)</a
+      ><a name="2126"
+      > </a
+      ><a name="2127" href="Data.Integer.Addition.Properties.html#2127" class="Bound"
+      >y</a
+      ><a name="2128"
+      > </a
+      ><a name="2129" href="Data.Integer.Addition.Properties.html#2129" class="Bound"
+      >z</a
+      ><a name="2130"
+      > </a
+      ><a name="2131" class="Keyword"
+      >rewrite</a
+      ><a name="2138"
+      > </a
+      ><a name="2139" href="Data.Integer.Addition.Properties.html#997" class="Function"
+      >identity&#737;</a
+      ><a name="2148"
+      >      </a
+      ><a name="2154" href="Data.Integer.Addition.Properties.html#2127" class="Bound"
+      >y</a
+      ><a name="2155"
+      >  </a
+      ><a name="2157" class="Symbol"
+      >|</a
+      ><a name="2158"
+      > </a
+      ><a name="2159" href="Data.Integer.Addition.Properties.html#997" class="Function"
+      >identity&#737;</a
+      ><a name="2168"
+      > </a
+      ><a name="2169" class="Symbol"
+      >(</a
+      ><a name="2170" href="Data.Integer.Addition.Properties.html#2127" class="Bound"
+      >y</a
+      ><a name="2171"
+      > </a
+      ><a name="2172" href="Data.Integer.html#3088" class="Function Operator"
+      >+</a
+      ><a name="2173"
+      > </a
+      ><a name="2174" href="Data.Integer.Addition.Properties.html#2129" class="Bound"
+      >z</a
+      ><a name="2175" class="Symbol"
+      >)</a
+      ><a name="2176"
+      > </a
+      ><a name="2177" class="Symbol"
+      >=</a
+      ><a name="2178"
+      > </a
+      ><a name="2179" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2183"
+      >
+  </a
+      ><a name="2186" href="Data.Integer.Addition.Properties.html#2086" class="Function"
+      >assoc</a
+      ><a name="2191"
+      > </a
+      ><a name="2192" href="Data.Integer.Addition.Properties.html#2192" class="Bound"
+      >x</a
+      ><a name="2193"
+      > </a
+      ><a name="2194" class="Symbol"
+      >(</a
+      ><a name="2195" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2196"
+      > </a
+      ><a name="2197" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="2201" class="Symbol"
+      >)</a
+      ><a name="2202"
+      > </a
+      ><a name="2203" href="Data.Integer.Addition.Properties.html#2203" class="Bound"
+      >z</a
+      ><a name="2204"
+      > </a
+      ><a name="2205" class="Keyword"
+      >rewrite</a
+      ><a name="2212"
+      > </a
+      ><a name="2213" href="Data.Integer.Addition.Properties.html#1091" class="Function"
+      >identity&#691;</a
+      ><a name="2222"
+      >  </a
+      ><a name="2224" href="Data.Integer.Addition.Properties.html#2192" class="Bound"
+      >x</a
+      ><a name="2225"
+      >      </a
+      ><a name="2231" class="Symbol"
+      >|</a
+      ><a name="2232"
+      > </a
+      ><a name="2233" href="Data.Integer.Addition.Properties.html#997" class="Function"
+      >identity&#737;</a
+      ><a name="2242"
+      >      </a
+      ><a name="2248" href="Data.Integer.Addition.Properties.html#2203" class="Bound"
+      >z</a
+      ><a name="2249"
+      >  </a
+      ><a name="2251" class="Symbol"
+      >=</a
+      ><a name="2252"
+      > </a
+      ><a name="2253" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2257"
+      >
+  </a
+      ><a name="2260" href="Data.Integer.Addition.Properties.html#2086" class="Function"
+      >assoc</a
+      ><a name="2265"
+      > </a
+      ><a name="2266" href="Data.Integer.Addition.Properties.html#2266" class="Bound"
+      >x</a
+      ><a name="2267"
+      > </a
+      ><a name="2268" href="Data.Integer.Addition.Properties.html#2268" class="Bound"
+      >y</a
+      ><a name="2269"
+      > </a
+      ><a name="2270" class="Symbol"
+      >(</a
+      ><a name="2271" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2272"
+      > </a
+      ><a name="2273" href="Data.Nat.html#679" class="InductiveConstructor"
+      >zero</a
+      ><a name="2277" class="Symbol"
+      >)</a
+      ><a name="2278"
+      > </a
+      ><a name="2279" class="Keyword"
+      >rewrite</a
+      ><a name="2286"
+      > </a
+      ><a name="2287" href="Data.Integer.Addition.Properties.html#1091" class="Function"
+      >identity&#691;</a
+      ><a name="2296"
+      > </a
+      ><a name="2297" class="Symbol"
+      >(</a
+      ><a name="2298" href="Data.Integer.Addition.Properties.html#2266" class="Bound"
+      >x</a
+      ><a name="2299"
+      > </a
+      ><a name="2300" href="Data.Integer.html#3088" class="Function Operator"
+      >+</a
+      ><a name="2301"
+      > </a
+      ><a name="2302" href="Data.Integer.Addition.Properties.html#2268" class="Bound"
+      >y</a
+      ><a name="2303" class="Symbol"
+      >)</a
+      ><a name="2304"
+      > </a
+      ><a name="2305" class="Symbol"
+      >|</a
+      ><a name="2306"
+      > </a
+      ><a name="2307" href="Data.Integer.Addition.Properties.html#1091" class="Function"
+      >identity&#691;</a
+      ><a name="2316"
+      >  </a
+      ><a name="2318" href="Data.Integer.Addition.Properties.html#2268" class="Bound"
+      >y</a
+      ><a name="2319"
+      >      </a
+      ><a name="2325" class="Symbol"
+      >=</a
+      ><a name="2326"
+      > </a
+      ><a name="2327" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2331"
+      >
+  </a
+      ><a name="2334" href="Data.Integer.Addition.Properties.html#2086" class="Function"
+      >assoc</a
+      ><a name="2339"
+      > </a
+      ><a name="2340" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2344"
+      > </a
+      ><a name="2345" href="Data.Integer.Addition.Properties.html#2345" class="Bound"
+      >a</a
+      ><a name="2346"
+      > </a
+      ><a name="2347" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2348"
+      >  </a
+      ><a name="2350" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2354"
+      > </a
+      ><a name="2355" href="Data.Integer.Addition.Properties.html#2355" class="Bound"
+      >b</a
+      ><a name="2356"
+      > </a
+      ><a name="2357" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2358"
+      >  </a
+      ><a name="2360" class="Symbol"
+      >(</a
+      ><a name="2361" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2362"
+      > </a
+      ><a name="2363" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2366"
+      > </a
+      ><a name="2367" href="Data.Integer.Addition.Properties.html#2367" class="Bound"
+      >c</a
+      ><a name="2368" class="Symbol"
+      >)</a
+      ><a name="2369"
+      > </a
+      ><a name="2370" class="Symbol"
+      >=</a
+      ><a name="2371"
+      > </a
+      ><a name="2372" href="Relation.Binary.PropositionalEquality.Core.html#565" class="Function"
+      >sym</a
+      ><a name="2375"
+      > </a
+      ><a name="2376" class="Symbol"
+      >(</a
+      ><a name="2377" href="Data.Integer.Addition.Properties.html#1441" class="Function"
+      >distrib&#691;-&#8854;-+-neg</a
+      ><a name="2393"
+      > </a
+      ><a name="2394" href="Data.Integer.Addition.Properties.html#2345" class="Bound"
+      >a</a
+      ><a name="2395"
+      > </a
+      ><a name="2396" href="Data.Integer.Addition.Properties.html#2367" class="Bound"
+      >c</a
+      ><a name="2397"
+      > </a
+      ><a name="2398" href="Data.Integer.Addition.Properties.html#2355" class="Bound"
+      >b</a
+      ><a name="2399" class="Symbol"
+      >)</a
+      ><a name="2400"
+      >
+  </a
+      ><a name="2403" href="Data.Integer.Addition.Properties.html#2086" class="Function"
+      >assoc</a
+      ><a name="2408"
+      > </a
+      ><a name="2409" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2413"
+      > </a
+      ><a name="2414" href="Data.Integer.Addition.Properties.html#2414" class="Bound"
+      >a</a
+      ><a name="2415"
+      > </a
+      ><a name="2416" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2417"
+      >  </a
+      ><a name="2419" class="Symbol"
+      >(</a
+      ><a name="2420" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2421"
+      > </a
+      ><a name="2422" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2425"
+      > </a
+      ><a name="2426" href="Data.Integer.Addition.Properties.html#2426" class="Bound"
+      >b</a
+      ><a name="2427" class="Symbol"
+      >)</a
+      ><a name="2428"
+      > </a
+      ><a name="2429" class="Symbol"
+      >(</a
+      ><a name="2430" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2431"
+      > </a
+      ><a name="2432" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2435"
+      > </a
+      ><a name="2436" href="Data.Integer.Addition.Properties.html#2436" class="Bound"
+      >c</a
+      ><a name="2437" class="Symbol"
+      >)</a
+      ><a name="2438"
+      > </a
+      ><a name="2439" class="Symbol"
+      >=</a
+      ><a name="2440"
+      > </a
+      ><a name="2441" href="Data.Integer.Addition.Properties.html#1645" class="Function"
+      >distrib&#737;-&#8854;-+-pos</a
+      ><a name="2457"
+      > </a
+      ><a name="2458" class="Symbol"
+      >(</a
+      ><a name="2459" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2462"
+      > </a
+      ><a name="2463" href="Data.Integer.Addition.Properties.html#2436" class="Bound"
+      >c</a
+      ><a name="2464" class="Symbol"
+      >)</a
+      ><a name="2465"
+      > </a
+      ><a name="2466" href="Data.Integer.Addition.Properties.html#2426" class="Bound"
+      >b</a
+      ><a name="2467"
+      > </a
+      ><a name="2468" href="Data.Integer.Addition.Properties.html#2414" class="Bound"
+      >a</a
+      ><a name="2469"
+      >
+  </a
+      ><a name="2472" href="Data.Integer.Addition.Properties.html#2086" class="Function"
+      >assoc</a
+      ><a name="2477"
+      > </a
+      ><a name="2478" class="Symbol"
+      >(</a
+      ><a name="2479" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2480"
+      > </a
+      ><a name="2481" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2484"
+      > </a
+      ><a name="2485" href="Data.Integer.Addition.Properties.html#2485" class="Bound"
+      >a</a
+      ><a name="2486" class="Symbol"
+      >)</a
+      ><a name="2487"
+      > </a
+      ><a name="2488" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2492"
+      > </a
+      ><a name="2493" href="Data.Integer.Addition.Properties.html#2493" class="Bound"
+      >b</a
+      ><a name="2494"
+      > </a
+      ><a name="2495" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2496"
+      >  </a
+      ><a name="2498" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2502"
+      > </a
+      ><a name="2503" href="Data.Integer.Addition.Properties.html#2503" class="Bound"
+      >c</a
+      ><a name="2504"
+      > </a
+      ><a name="2505" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2506"
+      >  </a
+      ><a name="2508" class="Symbol"
+      >=</a
+      ><a name="2509"
+      > </a
+      ><a name="2510" href="Data.Integer.Addition.Properties.html#1179" class="Function"
+      >distrib&#737;-&#8854;-+-neg</a
+      ><a name="2526"
+      > </a
+      ><a name="2527" href="Data.Integer.Addition.Properties.html#2503" class="Bound"
+      >c</a
+      ><a name="2528"
+      > </a
+      ><a name="2529" href="Data.Integer.Addition.Properties.html#2485" class="Bound"
+      >a</a
+      ><a name="2530"
+      > </a
+      ><a name="2531" href="Data.Integer.Addition.Properties.html#2493" class="Bound"
+      >b</a
+      ><a name="2532"
+      >
+  </a
+      ><a name="2535" href="Data.Integer.Addition.Properties.html#2086" class="Function"
+      >assoc</a
+      ><a name="2540"
+      > </a
+      ><a name="2541" class="Symbol"
+      >(</a
+      ><a name="2542" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2543"
+      > </a
+      ><a name="2544" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2547"
+      > </a
+      ><a name="2548" href="Data.Integer.Addition.Properties.html#2548" class="Bound"
+      >a</a
+      ><a name="2549" class="Symbol"
+      >)</a
+      ><a name="2550"
+      > </a
+      ><a name="2551" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2555"
+      > </a
+      ><a name="2556" href="Data.Integer.Addition.Properties.html#2556" class="Bound"
+      >b</a
+      ><a name="2557"
+      > </a
+      ><a name="2558" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2559"
+      > </a
+      ><a name="2560" class="Symbol"
+      >(</a
+      ><a name="2561" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2562"
+      > </a
+      ><a name="2563" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2566"
+      > </a
+      ><a name="2567" href="Data.Integer.Addition.Properties.html#2567" class="Bound"
+      >c</a
+      ><a name="2568" class="Symbol"
+      >)</a
+      ><a name="2569"
+      >
+    </a
+      ><a name="2574" class="Keyword"
+      >rewrite</a
+      ><a name="2581"
+      > </a
+      ><a name="2582" href="Data.Integer.Addition.Properties.html#1645" class="Function"
+      >distrib&#737;-&#8854;-+-pos</a
+      ><a name="2598"
+      > </a
+      ><a name="2599" class="Symbol"
+      >(</a
+      ><a name="2600" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2603"
+      > </a
+      ><a name="2604" href="Data.Integer.Addition.Properties.html#2567" class="Bound"
+      >c</a
+      ><a name="2605" class="Symbol"
+      >)</a
+      ><a name="2606"
+      > </a
+      ><a name="2607" href="Data.Integer.Addition.Properties.html#2548" class="Bound"
+      >a</a
+      ><a name="2608"
+      > </a
+      ><a name="2609" href="Data.Integer.Addition.Properties.html#2556" class="Bound"
+      >b</a
+      ><a name="2610"
+      >
+          </a
+      ><a name="2621" class="Symbol"
+      >|</a
+      ><a name="2622"
+      > </a
+      ><a name="2623" href="Data.Integer.Addition.Properties.html#1896" class="Function"
+      >distrib&#691;-&#8854;-+-pos</a
+      ><a name="2639"
+      > </a
+      ><a name="2640" class="Symbol"
+      >(</a
+      ><a name="2641" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2644"
+      > </a
+      ><a name="2645" href="Data.Integer.Addition.Properties.html#2548" class="Bound"
+      >a</a
+      ><a name="2646" class="Symbol"
+      >)</a
+      ><a name="2647"
+      > </a
+      ><a name="2648" href="Data.Integer.Addition.Properties.html#2567" class="Bound"
+      >c</a
+      ><a name="2649"
+      > </a
+      ><a name="2650" href="Data.Integer.Addition.Properties.html#2556" class="Bound"
+      >b</a
+      ><a name="2651"
+      >
+          </a
+      ><a name="2662" class="Symbol"
+      >|</a
+      ><a name="2663"
+      > </a
+      ><a name="2664" href="Relation.Binary.PropositionalEquality.Core.html#565" class="Function"
+      >sym</a
+      ><a name="2667"
+      > </a
+      ><a name="2668" class="Symbol"
+      >(</a
+      ><a name="2669" href="Algebra.Structures.html#811" class="Function"
+      >+-assoc</a
+      ><a name="2676"
+      > </a
+      ><a name="2677" href="Data.Integer.Addition.Properties.html#2548" class="Bound"
+      >a</a
+      ><a name="2678"
+      > </a
+      ><a name="2679" class="Number"
+      >1</a
+      ><a name="2680"
+      > </a
+      ><a name="2681" href="Data.Integer.Addition.Properties.html#2567" class="Bound"
+      >c</a
+      ><a name="2682" class="Symbol"
+      >)</a
+      ><a name="2683"
+      >
+          </a
+      ><a name="2694" class="Symbol"
+      >|</a
+      ><a name="2695"
+      > </a
+      ><a name="2696" href="Algebra.Structures.html#1414" class="Function"
+      >+-comm</a
+      ><a name="2702"
+      > </a
+      ><a name="2703" href="Data.Integer.Addition.Properties.html#2548" class="Bound"
+      >a</a
+      ><a name="2704"
+      > </a
+      ><a name="2705" class="Number"
+      >1</a
+      ><a name="2706"
+      >
+          </a
+      ><a name="2717" class="Symbol"
+      >=</a
+      ><a name="2718"
+      > </a
+      ><a name="2719" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2723"
+      >
+  </a
+      ><a name="2726" href="Data.Integer.Addition.Properties.html#2086" class="Function"
+      >assoc</a
+      ><a name="2731"
+      > </a
+      ><a name="2732" class="Symbol"
+      >(</a
+      ><a name="2733" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2734"
+      > </a
+      ><a name="2735" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2738"
+      > </a
+      ><a name="2739" href="Data.Integer.Addition.Properties.html#2739" class="Bound"
+      >a</a
+      ><a name="2740" class="Symbol"
+      >)</a
+      ><a name="2741"
+      > </a
+      ><a name="2742" class="Symbol"
+      >(</a
+      ><a name="2743" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2744"
+      > </a
+      ><a name="2745" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2748"
+      > </a
+      ><a name="2749" href="Data.Integer.Addition.Properties.html#2749" class="Bound"
+      >b</a
+      ><a name="2750" class="Symbol"
+      >)</a
+      ><a name="2751"
+      > </a
+      ><a name="2752" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2756"
+      > </a
+      ><a name="2757" href="Data.Integer.Addition.Properties.html#2757" class="Bound"
+      >c</a
+      ><a name="2758"
+      > </a
+      ><a name="2759" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2760"
+      >
+    </a
+      ><a name="2765" class="Keyword"
+      >rewrite</a
+      ><a name="2772"
+      > </a
+      ><a name="2773" href="Data.Integer.Addition.Properties.html#1896" class="Function"
+      >distrib&#691;-&#8854;-+-pos</a
+      ><a name="2789"
+      > </a
+      ><a name="2790" class="Symbol"
+      >(</a
+      ><a name="2791" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="2794"
+      > </a
+      ><a name="2795" href="Data.Integer.Addition.Properties.html#2739" class="Bound"
+      >a</a
+      ><a name="2796" class="Symbol"
+      >)</a
+      ><a name="2797"
+      > </a
+      ><a name="2798" href="Data.Integer.Addition.Properties.html#2749" class="Bound"
+      >b</a
+      ><a name="2799"
+      > </a
+      ><a name="2800" href="Data.Integer.Addition.Properties.html#2757" class="Bound"
+      >c</a
+      ><a name="2801"
+      >
+          </a
+      ><a name="2812" class="Symbol"
+      >|</a
+      ><a name="2813"
+      > </a
+      ><a name="2814" href="Relation.Binary.PropositionalEquality.Core.html#565" class="Function"
+      >sym</a
+      ><a name="2817"
+      > </a
+      ><a name="2818" class="Symbol"
+      >(</a
+      ><a name="2819" href="Algebra.Structures.html#811" class="Function"
+      >+-assoc</a
+      ><a name="2826"
+      > </a
+      ><a name="2827" href="Data.Integer.Addition.Properties.html#2739" class="Bound"
+      >a</a
+      ><a name="2828"
+      > </a
+      ><a name="2829" class="Number"
+      >1</a
+      ><a name="2830"
+      > </a
+      ><a name="2831" href="Data.Integer.Addition.Properties.html#2749" class="Bound"
+      >b</a
+      ><a name="2832" class="Symbol"
+      >)</a
+      ><a name="2833"
+      >
+          </a
+      ><a name="2844" class="Symbol"
+      >|</a
+      ><a name="2845"
+      > </a
+      ><a name="2846" href="Algebra.Structures.html#1414" class="Function"
+      >+-comm</a
+      ><a name="2852"
+      > </a
+      ><a name="2853" href="Data.Integer.Addition.Properties.html#2739" class="Bound"
+      >a</a
+      ><a name="2854"
+      > </a
+      ><a name="2855" class="Number"
+      >1</a
+      ><a name="2856"
+      >
+          </a
+      ><a name="2867" class="Symbol"
+      >=</a
+      ><a name="2868"
+      > </a
+      ><a name="2869" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2873"
+      >
+  </a
+      ><a name="2876" href="Data.Integer.Addition.Properties.html#2086" class="Function"
+      >assoc</a
+      ><a name="2881"
+      > </a
+      ><a name="2882" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2886"
+      > </a
+      ><a name="2887" href="Data.Integer.Addition.Properties.html#2887" class="Bound"
+      >a</a
+      ><a name="2888"
+      > </a
+      ><a name="2889" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2890"
+      > </a
+      ><a name="2891" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2895"
+      > </a
+      ><a name="2896" href="Data.Integer.Addition.Properties.html#2896" class="Bound"
+      >b</a
+      ><a name="2897"
+      > </a
+      ><a name="2898" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2899"
+      > </a
+      ><a name="2900" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2904"
+      > </a
+      ><a name="2905" href="Data.Integer.Addition.Properties.html#2905" class="Bound"
+      >c</a
+      ><a name="2906"
+      > </a
+      ><a name="2907" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2908"
+      >
+    </a
+      ><a name="2913" class="Keyword"
+      >rewrite</a
+      ><a name="2920"
+      > </a
+      ><a name="2921" href="Relation.Binary.PropositionalEquality.Core.html#565" class="Function"
+      >sym</a
+      ><a name="2924"
+      > </a
+      ><a name="2925" class="Symbol"
+      >(</a
+      ><a name="2926" href="Algebra.Structures.html#811" class="Function"
+      >+-assoc</a
+      ><a name="2933"
+      > </a
+      ><a name="2934" href="Data.Integer.Addition.Properties.html#2887" class="Bound"
+      >a</a
+      ><a name="2935"
+      > </a
+      ><a name="2936" class="Number"
+      >1</a
+      ><a name="2937"
+      > </a
+      ><a name="2938" class="Symbol"
+      >(</a
+      ><a name="2939" href="Data.Integer.Addition.Properties.html#2896" class="Bound"
+      >b</a
+      ><a name="2940"
+      > </a
+      ><a name="2941" href="Data.Nat.html#2168" class="Primitive Operator"
+      >&#8469;+</a
+      ><a name="2943"
+      > </a
+      ><a name="2944" href="Data.Integer.Addition.Properties.html#2905" class="Bound"
+      >c</a
+      ><a name="2945" class="Symbol"
+      >))</a
+      ><a name="2947"
+      >
+          </a
+      ><a name="2958" class="Symbol"
+      >|</a
+      ><a name="2959"
+      > </a
+      ><a name="2960" href="Algebra.Structures.html#1414" class="Function"
+      >+-comm</a
+      ><a name="2966"
+      > </a
+      ><a name="2967" href="Data.Integer.Addition.Properties.html#2887" class="Bound"
+      >a</a
+      ><a name="2968"
+      > </a
+      ><a name="2969" class="Number"
+      >1</a
+      ><a name="2970"
+      >
+          </a
+      ><a name="2981" class="Symbol"
+      >|</a
+      ><a name="2982"
+      > </a
+      ><a name="2983" href="Algebra.Structures.html#811" class="Function"
+      >+-assoc</a
+      ><a name="2990"
+      > </a
+      ><a name="2991" href="Data.Integer.Addition.Properties.html#2887" class="Bound"
+      >a</a
+      ><a name="2992"
+      > </a
+      ><a name="2993" href="Data.Integer.Addition.Properties.html#2896" class="Bound"
+      >b</a
+      ><a name="2994"
+      > </a
+      ><a name="2995" href="Data.Integer.Addition.Properties.html#2905" class="Bound"
+      >c</a
+      ><a name="2996"
+      >
+          </a
+      ><a name="3007" class="Symbol"
+      >=</a
+      ><a name="3008"
+      > </a
+      ><a name="3009" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3013"
+      >
+  </a
+      ><a name="3016" href="Data.Integer.Addition.Properties.html#2086" class="Function"
+      >assoc</a
+      ><a name="3021"
+      > </a
+      ><a name="3022" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="3026"
+      > </a
+      ><a name="3027" href="Data.Integer.Addition.Properties.html#3027" class="Bound"
+      >a</a
+      ><a name="3028"
+      > </a
+      ><a name="3029" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="3030"
+      > </a
+      ><a name="3031" class="Symbol"
+      >(</a
+      ><a name="3032" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3033"
+      > </a
+      ><a name="3034" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3037"
+      > </a
+      ><a name="3038" href="Data.Integer.Addition.Properties.html#3038" class="Bound"
+      >b</a
+      ><a name="3039" class="Symbol"
+      >)</a
+      ><a name="3040"
+      > </a
+      ><a name="3041" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="3045"
+      > </a
+      ><a name="3046" href="Data.Integer.Addition.Properties.html#3046" class="Bound"
+      >c</a
+      ><a name="3047"
+      > </a
+      ><a name="3048" href="Data.Integer.html#931" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="3049"
+      >
+    </a
+      ><a name="3054" class="Keyword"
+      >rewrite</a
+      ><a name="3061"
+      > </a
+      ><a name="3062" href="Data.Integer.Addition.Properties.html#1441" class="Function"
+      >distrib&#691;-&#8854;-+-neg</a
+      ><a name="3078"
+      > </a
+      ><a name="3079" href="Data.Integer.Addition.Properties.html#3027" class="Bound"
+      >a</a
+      ><a name="3080"
+      > </a
+      ><a name="3081" href="Data.Integer.Addition.Properties.html#3038" class="Bound"
+      >b</a
+      ><a name="3082"
+      > </a
+      ><a name="3083" href="Data.Integer.Addition.Properties.html#3046" class="Bound"
+      >c</a
+      ><a name="3084"
+      >
+          </a
+      ><a name="3095" class="Symbol"
+      >|</a
+      ><a name="3096"
+      > </a
+      ><a name="3097" href="Data.Integer.Addition.Properties.html#1179" class="Function"
+      >distrib&#737;-&#8854;-+-neg</a
+      ><a name="3113"
+      > </a
+      ><a name="3114" href="Data.Integer.Addition.Properties.html#3046" class="Bound"
+      >c</a
+      ><a name="3115"
+      > </a
+      ><a name="3116" href="Data.Integer.Addition.Properties.html#3038" class="Bound"
+      >b</a
+      ><a name="3117"
+      > </a
+      ><a name="3118" href="Data.Integer.Addition.Properties.html#3027" class="Bound"
+      >a</a
+      ><a name="3119"
+      >
+          </a
+      ><a name="3130" class="Symbol"
+      >=</a
+      ><a name="3131"
+      > </a
+      ><a name="3132" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3136"
+      >
+  </a
+      ><a name="3139" href="Data.Integer.Addition.Properties.html#2086" class="Function"
+      >assoc</a
+      ><a name="3144"
+      > </a
+      ><a name="3145" class="Symbol"
+      >(</a
+      ><a name="3146" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3147"
+      > </a
+      ><a name="3148" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3151"
+      > </a
+      ><a name="3152" href="Data.Integer.Addition.Properties.html#3152" class="Bound"
+      >a</a
+      ><a name="3153" class="Symbol"
+      >)</a
+      ><a name="3154"
+      > </a
+      ><a name="3155" class="Symbol"
+      >(</a
+      ><a name="3156" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3157"
+      > </a
+      ><a name="3158" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3161"
+      > </a
+      ><a name="3162" href="Data.Integer.Addition.Properties.html#3162" class="Bound"
+      >b</a
+      ><a name="3163" class="Symbol"
+      >)</a
+      ><a name="3164"
+      > </a
+      ><a name="3165" class="Symbol"
+      >(</a
+      ><a name="3166" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3167"
+      > </a
+      ><a name="3168" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3171"
+      > </a
+      ><a name="3172" href="Data.Integer.Addition.Properties.html#3172" class="Bound"
+      >c</a
+      ><a name="3173" class="Symbol"
+      >)</a
+      ><a name="3174"
+      >
+    </a
+      ><a name="3179" class="Keyword"
+      >rewrite</a
+      ><a name="3186"
+      > </a
+      ><a name="3187" href="Algebra.Structures.html#811" class="Function"
+      >+-assoc</a
+      ><a name="3194"
+      > </a
+      ><a name="3195" class="Symbol"
+      >(</a
+      ><a name="3196" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3199"
+      > </a
+      ><a name="3200" href="Data.Integer.Addition.Properties.html#3152" class="Bound"
+      >a</a
+      ><a name="3201" class="Symbol"
+      >)</a
+      ><a name="3202"
+      > </a
+      ><a name="3203" class="Symbol"
+      >(</a
+      ><a name="3204" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3207"
+      > </a
+      ><a name="3208" href="Data.Integer.Addition.Properties.html#3162" class="Bound"
+      >b</a
+      ><a name="3209" class="Symbol"
+      >)</a
+      ><a name="3210"
+      > </a
+      ><a name="3211" class="Symbol"
+      >(</a
+      ><a name="3212" href="Data.Nat.html#690" class="InductiveConstructor"
+      >suc</a
+      ><a name="3215"
+      > </a
+      ><a name="3216" href="Data.Integer.Addition.Properties.html#3172" class="Bound"
+      >c</a
+      ><a name="3217" class="Symbol"
+      >)</a
+      ><a name="3218"
+      >
+          </a
+      ><a name="3229" class="Symbol"
+      >=</a
+      ><a name="3230"
+      > </a
+      ><a name="3231" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3235"
+      >
+
+  </a
+      ><a name="3239" href="Data.Integer.Addition.Properties.html#3239" class="Function"
+      >isSemigroup</a
+      ><a name="3250"
+      > </a
+      ><a name="3251" class="Symbol"
+      >:</a
+      ><a name="3252"
+      > </a
+      ><a name="3253" href="Algebra.Structures.html#640" class="Record"
+      >IsSemigroup</a
+      ><a name="3264"
+      > </a
+      ><a name="3265" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="3268"
+      > </a
+      ><a name="3269" href="Data.Integer.html#3088" class="Function Operator"
+      >_+_</a
+      ><a name="3272"
+      >
+  </a
+      ><a name="3275" href="Data.Integer.Addition.Properties.html#3239" class="Function"
+      >isSemigroup</a
+      ><a name="3286"
+      > </a
+      ><a name="3287" class="Symbol"
+      >=</a
+      ><a name="3288"
+      > </a
+      ><a name="3289" class="Keyword"
+      >record</a
+      ><a name="3295"
+      >
+    </a
+      ><a name="3300" class="Symbol"
+      >{</a
+      ><a name="3301"
+      > </a
+      ><a name="3302" class="Field"
+      >isEquivalence</a
+      ><a name="3315"
+      > </a
+      ><a name="3316" class="Symbol"
+      >=</a
+      ><a name="3317"
+      > </a
+      ><a name="3318" href="Relation.Binary.PropositionalEquality.Core.html#879" class="Function"
+      >isEquivalence</a
+      ><a name="3331"
+      >
+    </a
+      ><a name="3336" class="Symbol"
+      >;</a
+      ><a name="3337"
+      > </a
+      ><a name="3338" class="Field"
+      >assoc</a
+      ><a name="3343"
+      >         </a
+      ><a name="3352" class="Symbol"
+      >=</a
+      ><a name="3353"
+      > </a
+      ><a name="3354" href="Data.Integer.Addition.Properties.html#2086" class="Function"
+      >assoc</a
+      ><a name="3359"
+      >
+    </a
+      ><a name="3364" class="Symbol"
+      >;</a
+      ><a name="3365"
+      > </a
+      ><a name="3366" class="Field"
+      >&#8729;-cong</a
+      ><a name="3372"
+      >        </a
+      ><a name="3380" class="Symbol"
+      >=</a
+      ><a name="3381"
+      > </a
+      ><a name="3382" href="Relation.Binary.PropositionalEquality.html#1274" class="Function"
+      >cong&#8322;</a
+      ><a name="3387"
+      > </a
+      ><a name="3388" href="Data.Integer.html#3088" class="Function Operator"
+      >_+_</a
+      ><a name="3391"
+      >
+    </a
+      ><a name="3396" class="Symbol"
+      >}</a
+      ><a name="3397"
+      >
+
+  </a
+      ><a name="3401" href="Data.Integer.Addition.Properties.html#3401" class="Function"
+      >isCommutativeMonoid</a
+      ><a name="3420"
+      > </a
+      ><a name="3421" class="Symbol"
+      >:</a
+      ><a name="3422"
+      > </a
+      ><a name="3423" href="Algebra.Structures.html#1180" class="Record"
+      >IsCommutativeMonoid</a
+      ><a name="3442"
+      > </a
+      ><a name="3443" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="3446"
+      > </a
+      ><a name="3447" href="Data.Integer.html#3088" class="Function Operator"
+      >_+_</a
+      ><a name="3450"
+      > </a
+      ><a name="3451" class="Symbol"
+      >(</a
+      ><a name="3452" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3453"
+      > </a
+      ><a name="3454" class="Number"
+      >0</a
+      ><a name="3455" class="Symbol"
+      >)</a
+      ><a name="3456"
+      >
+  </a
+      ><a name="3459" href="Data.Integer.Addition.Properties.html#3401" class="Function"
+      >isCommutativeMonoid</a
+      ><a name="3478"
+      > </a
+      ><a name="3479" class="Symbol"
+      >=</a
+      ><a name="3480"
+      > </a
+      ><a name="3481" class="Keyword"
+      >record</a
+      ><a name="3487"
+      >
+    </a
+      ><a name="3492" class="Symbol"
+      >{</a
+      ><a name="3493"
+      > </a
+      ><a name="3494" class="Field"
+      >isSemigroup</a
+      ><a name="3505"
+      > </a
+      ><a name="3506" class="Symbol"
+      >=</a
+      ><a name="3507"
+      > </a
+      ><a name="3508" href="Data.Integer.Addition.Properties.html#3239" class="Function"
+      >isSemigroup</a
+      ><a name="3519"
+      >
+    </a
+      ><a name="3524" class="Symbol"
+      >;</a
+      ><a name="3525"
+      > </a
+      ><a name="3526" class="Field"
+      >identity&#737;</a
+      ><a name="3535"
+      >   </a
+      ><a name="3538" class="Symbol"
+      >=</a
+      ><a name="3539"
+      > </a
+      ><a name="3540" href="Data.Integer.Addition.Properties.html#997" class="Function"
+      >identity&#737;</a
+      ><a name="3549"
+      >
+    </a
+      ><a name="3554" class="Symbol"
+      >;</a
+      ><a name="3555"
+      > </a
+      ><a name="3556" class="Field"
+      >comm</a
+      ><a name="3560"
+      >        </a
+      ><a name="3568" class="Symbol"
+      >=</a
+      ><a name="3569"
+      > </a
+      ><a name="3570" href="Data.Integer.Addition.Properties.html#805" class="Function"
+      >comm</a
+      ><a name="3574"
+      >
+    </a
+      ><a name="3579" class="Symbol"
+      >}</a
+      ><a name="3580"
+      >
+
+</a
+      ><a name="3582" href="Data.Integer.Addition.Properties.html#3582" class="Function"
+      >commutativeMonoid</a
+      ><a name="3599"
+      > </a
+      ><a name="3600" class="Symbol"
+      >:</a
+      ><a name="3601"
+      > </a
+      ><a name="3602" href="Algebra.html#1636" class="Record"
+      >CommutativeMonoid</a
+      ><a name="3619"
+      > </a
+      ><a name="3620" class="Symbol"
+      >_</a
+      ><a name="3621"
+      > </a
+      ><a name="3622" class="Symbol"
+      >_</a
+      ><a name="3623"
+      >
+</a
+      ><a name="3624" href="Data.Integer.Addition.Properties.html#3582" class="Function"
+      >commutativeMonoid</a
+      ><a name="3641"
+      > </a
+      ><a name="3642" class="Symbol"
+      >=</a
+      ><a name="3643"
+      > </a
+      ><a name="3644" class="Keyword"
+      >record</a
+      ><a name="3650"
+      >
+  </a
+      ><a name="3653" class="Symbol"
+      >{</a
+      ><a name="3654"
+      > </a
+      ><a name="3655" class="Field"
+      >Carrier</a
+      ><a name="3662"
+      >             </a
+      ><a name="3675" class="Symbol"
+      >=</a
+      ><a name="3676"
+      > </a
+      ><a name="3677" href="Data.Integer.html#915" class="Datatype"
+      >&#8484;</a
+      ><a name="3678"
+      >
+  </a
+      ><a name="3681" class="Symbol"
+      >;</a
+      ><a name="3682"
+      > </a
+      ><a name="3683" class="Field Operator"
+      >_&#8776;_</a
+      ><a name="3686"
+      >                 </a
+      ><a name="3703" class="Symbol"
+      >=</a
+      ><a name="3704"
+      > </a
+      ><a name="3705" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="3708"
+      >
+  </a
+      ><a name="3711" class="Symbol"
+      >;</a
+      ><a name="3712"
+      > </a
+      ><a name="3713" class="Field Operator"
+      >_&#8729;_</a
+      ><a name="3716"
+      >                 </a
+      ><a name="3733" class="Symbol"
+      >=</a
+      ><a name="3734"
+      > </a
+      ><a name="3735" href="Data.Integer.html#3088" class="Function Operator"
+      >_+_</a
+      ><a name="3738"
+      >
+  </a
+      ><a name="3741" class="Symbol"
+      >;</a
+      ><a name="3742"
+      > </a
+      ><a name="3743" class="Field"
+      >&#949;</a
+      ><a name="3744"
+      >                   </a
+      ><a name="3763" class="Symbol"
+      >=</a
+      ><a name="3764"
+      > </a
+      ><a name="3765" href="Data.Integer.html#989" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3766"
+      > </a
+      ><a name="3767" class="Number"
+      >0</a
+      ><a name="3768"
+      >
+  </a
+      ><a name="3771" class="Symbol"
+      >;</a
+      ><a name="3772"
+      > </a
+      ><a name="3773" class="Field"
+      >isCommutativeMonoid</a
+      ><a name="3792"
+      > </a
+      ><a name="3793" class="Symbol"
+      >=</a
+      ><a name="3794"
+      > </a
+      ><a name="3795" href="Data.Integer.Addition.Properties.html#3401" class="Function"
+      >isCommutativeMonoid</a
+      ><a name="3814"
+      >
+  </a
+      ><a name="3817" class="Symbol"
+      >}</a
+      ><a name="3818"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

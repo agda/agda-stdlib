@@ -8,7 +8,7 @@ module Data.Char where
 
 open import Data.Nat using (ℕ)
 import Data.Nat.Properties as NatProp
-open import Data.Bool using (Bool; true; false)
+open import Data.Bool.Minimal using (Bool; true; false)
 open import Relation.Nullary
 open import Relation.Nullary.Decidable
 open import Relation.Binary
@@ -16,22 +16,13 @@ import Relation.Binary.On as On
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_)
 open import Relation.Binary.PropositionalEquality.TrustMe
 
-------------------------------------------------------------------------
--- The type
+open import Data.String.Core using (String; primShowChar)
+import Data.Char.Core as Core
+open Core public using (Char)
+open Core
 
-postulate
-  Char : Set
-
-{-# BUILTIN CHAR Char #-}
-{-# COMPILED_TYPE Char Char #-}
-
-------------------------------------------------------------------------
--- Operations
-
-private
- primitive
-  primCharToNat    : Char → ℕ
-  primCharEquality : Char → Char → Bool
+show : Char → String
+show = primShowChar
 
 toNat : Char → ℕ
 toNat = primCharToNat

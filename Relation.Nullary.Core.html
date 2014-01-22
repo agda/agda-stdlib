@@ -1,0 +1,314 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Relation.Nullary.Core</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Nullary relations (some core definitions)</a
+      ><a name="150"
+      >
+</a
+      ><a name="151" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="223"
+      >
+
+</a
+      ><a name="225" class="Comment"
+      >-- The definitions in this file are reexported by Relation.Nullary.</a
+      ><a name="292"
+      >
+
+</a
+      ><a name="294" class="Keyword"
+      >module</a
+      ><a name="300"
+      > </a
+      ><a name="301" href="Relation.Nullary.Core.html#1" class="Module"
+      >Relation.Nullary.Core</a
+      ><a name="322"
+      > </a
+      ><a name="323" class="Keyword"
+      >where</a
+      ><a name="328"
+      >
+
+</a
+      ><a name="330" class="Keyword"
+      >open</a
+      ><a name="334"
+      > </a
+      ><a name="335" class="Keyword"
+      >import</a
+      ><a name="341"
+      > </a
+      ><a name="342" href="Data.Empty.html#1" class="Module"
+      >Data.Empty</a
+      ><a name="352"
+      >
+</a
+      ><a name="353" class="Keyword"
+      >open</a
+      ><a name="357"
+      > </a
+      ><a name="358" class="Keyword"
+      >import</a
+      ><a name="364"
+      > </a
+      ><a name="365" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="370"
+      >
+
+</a
+      ><a name="372" class="Comment"
+      >-- Negation.</a
+      ><a name="384"
+      >
+
+</a
+      ><a name="386" class="Keyword"
+      >infix</a
+      ><a name="391"
+      > </a
+      ><a name="392" class="Number"
+      >3</a
+      ><a name="393"
+      > &#172;_
+
+</a
+      ><a name="398" href="Relation.Nullary.Core.html#398" class="Function Operator"
+      >&#172;_</a
+      ><a name="400"
+      > </a
+      ><a name="401" class="Symbol"
+      >:</a
+      ><a name="402"
+      > </a
+      ><a name="403" class="Symbol"
+      >&#8704;</a
+      ><a name="404"
+      > </a
+      ><a name="405" class="Symbol"
+      >{</a
+      ><a name="406" href="Relation.Nullary.Core.html#406" class="Bound"
+      >&#8467;</a
+      ><a name="407" class="Symbol"
+      >}</a
+      ><a name="408"
+      > </a
+      ><a name="409" class="Symbol"
+      >&#8594;</a
+      ><a name="410"
+      > </a
+      ><a name="411" class="PrimitiveType"
+      >Set</a
+      ><a name="414"
+      > </a
+      ><a name="415" href="Relation.Nullary.Core.html#406" class="Bound"
+      >&#8467;</a
+      ><a name="416"
+      > </a
+      ><a name="417" class="Symbol"
+      >&#8594;</a
+      ><a name="418"
+      > </a
+      ><a name="419" class="PrimitiveType"
+      >Set</a
+      ><a name="422"
+      > </a
+      ><a name="423" href="Relation.Nullary.Core.html#406" class="Bound"
+      >&#8467;</a
+      ><a name="424"
+      >
+</a
+      ><a name="425" href="Relation.Nullary.Core.html#398" class="Function Operator"
+      >&#172;</a
+      ><a name="426"
+      > </a
+      ><a name="427" href="Relation.Nullary.Core.html#427" class="Bound"
+      >P</a
+      ><a name="428"
+      > </a
+      ><a name="429" class="Symbol"
+      >=</a
+      ><a name="430"
+      > </a
+      ><a name="431" href="Relation.Nullary.Core.html#427" class="Bound"
+      >P</a
+      ><a name="432"
+      > </a
+      ><a name="433" class="Symbol"
+      >&#8594;</a
+      ><a name="434"
+      > </a
+      ><a name="435" href="Data.Empty.html#243" class="Datatype"
+      >&#8869;</a
+      ><a name="436"
+      >
+
+</a
+      ><a name="438" class="Comment"
+      >-- Decidable relations.</a
+      ><a name="461"
+      >
+
+</a
+      ><a name="463" class="Keyword"
+      >data</a
+      ><a name="467"
+      > </a
+      ><a name="468" href="Relation.Nullary.Core.html#468" class="Datatype"
+      >Dec</a
+      ><a name="471"
+      > </a
+      ><a name="472" class="Symbol"
+      >{</a
+      ><a name="473" href="Relation.Nullary.Core.html#473" class="Bound"
+      >p</a
+      ><a name="474" class="Symbol"
+      >}</a
+      ><a name="475"
+      > </a
+      ><a name="476" class="Symbol"
+      >(</a
+      ><a name="477" href="Relation.Nullary.Core.html#477" class="Bound"
+      >P</a
+      ><a name="478"
+      > </a
+      ><a name="479" class="Symbol"
+      >:</a
+      ><a name="480"
+      > </a
+      ><a name="481" class="PrimitiveType"
+      >Set</a
+      ><a name="484"
+      > </a
+      ><a name="485" href="Relation.Nullary.Core.html#473" class="Bound"
+      >p</a
+      ><a name="486" class="Symbol"
+      >)</a
+      ><a name="487"
+      > </a
+      ><a name="488" class="Symbol"
+      >:</a
+      ><a name="489"
+      > </a
+      ><a name="490" class="PrimitiveType"
+      >Set</a
+      ><a name="493"
+      > </a
+      ><a name="494" href="Relation.Nullary.Core.html#473" class="Bound"
+      >p</a
+      ><a name="495"
+      > </a
+      ><a name="496" class="Keyword"
+      >where</a
+      ><a name="501"
+      >
+  </a
+      ><a name="504" href="Relation.Nullary.Core.html#504" class="InductiveConstructor"
+      >yes</a
+      ><a name="507"
+      > </a
+      ><a name="508" class="Symbol"
+      >:</a
+      ><a name="509"
+      > </a
+      ><a name="510" class="Symbol"
+      >(</a
+      ><a name="511"
+      > </a
+      ><a name="512" href="Relation.Nullary.Core.html#512" class="Bound"
+      >p</a
+      ><a name="513"
+      > </a
+      ><a name="514" class="Symbol"
+      >:</a
+      ><a name="515"
+      >   </a
+      ><a name="518" href="Relation.Nullary.Core.html#477" class="Bound"
+      >P</a
+      ><a name="519" class="Symbol"
+      >)</a
+      ><a name="520"
+      > </a
+      ><a name="521" class="Symbol"
+      >&#8594;</a
+      ><a name="522"
+      > </a
+      ><a name="523" href="Relation.Nullary.Core.html#468" class="Datatype"
+      >Dec</a
+      ><a name="526"
+      > </a
+      ><a name="527" href="Relation.Nullary.Core.html#477" class="Bound"
+      >P</a
+      ><a name="528"
+      >
+  </a
+      ><a name="531" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="533"
+      >  </a
+      ><a name="535" class="Symbol"
+      >:</a
+      ><a name="536"
+      > </a
+      ><a name="537" class="Symbol"
+      >(</a
+      ><a name="538" href="Relation.Nullary.Core.html#538" class="Bound"
+      >&#172;p</a
+      ><a name="540"
+      > </a
+      ><a name="541" class="Symbol"
+      >:</a
+      ><a name="542"
+      > </a
+      ><a name="543" href="Relation.Nullary.Core.html#398" class="Function Operator"
+      >&#172;</a
+      ><a name="544"
+      > </a
+      ><a name="545" href="Relation.Nullary.Core.html#477" class="Bound"
+      >P</a
+      ><a name="546" class="Symbol"
+      >)</a
+      ><a name="547"
+      > </a
+      ><a name="548" class="Symbol"
+      >&#8594;</a
+      ><a name="549"
+      > </a
+      ><a name="550" href="Relation.Nullary.Core.html#468" class="Datatype"
+      >Dec</a
+      ><a name="553"
+      > </a
+      ><a name="554" href="Relation.Nullary.Core.html#477" class="Bound"
+      >P</a
+      ><a name="555"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

@@ -1,0 +1,859 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.M.Indexed</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Indexed M-types (the dual of indexed W-types aka Petersson-Synek</a
+      ><a name="173"
+      >
+</a
+      ><a name="174" class="Comment"
+      >-- trees).</a
+      ><a name="184"
+      >
+</a
+      ><a name="185" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="257"
+      >
+
+</a
+      ><a name="259" class="Keyword"
+      >module</a
+      ><a name="265"
+      > </a
+      ><a name="266" href="Data.M.Indexed.html#1" class="Module"
+      >Data.M.Indexed</a
+      ><a name="280"
+      > </a
+      ><a name="281" class="Keyword"
+      >where</a
+      ><a name="286"
+      >
+
+</a
+      ><a name="288" class="Keyword"
+      >open</a
+      ><a name="292"
+      > </a
+      ><a name="293" class="Keyword"
+      >import</a
+      ><a name="299"
+      > </a
+      ><a name="300" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="305"
+      >
+</a
+      ><a name="306" class="Keyword"
+      >open</a
+      ><a name="310"
+      > </a
+      ><a name="311" class="Keyword"
+      >import</a
+      ><a name="317"
+      > </a
+      ><a name="318" href="Coinduction.html#1" class="Module"
+      >Coinduction</a
+      ><a name="329"
+      >
+</a
+      ><a name="330" class="Keyword"
+      >open</a
+      ><a name="334"
+      > </a
+      ><a name="335" class="Keyword"
+      >import</a
+      ><a name="341"
+      > </a
+      ><a name="342" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="354"
+      >
+</a
+      ><a name="355" class="Keyword"
+      >open</a
+      ><a name="359"
+      > </a
+      ><a name="360" class="Keyword"
+      >import</a
+      ><a name="366"
+      > </a
+      ><a name="367" href="Data.Container.Indexed.Core.html#1" class="Module"
+      >Data.Container.Indexed.Core</a
+      ><a name="394"
+      >
+</a
+      ><a name="395" class="Keyword"
+      >open</a
+      ><a name="399"
+      > </a
+      ><a name="400" class="Keyword"
+      >import</a
+      ><a name="406"
+      > </a
+      ><a name="407" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="415"
+      >
+</a
+      ><a name="416" class="Keyword"
+      >open</a
+      ><a name="420"
+      > </a
+      ><a name="421" class="Keyword"
+      >import</a
+      ><a name="427"
+      > </a
+      ><a name="428" href="Relation.Unary.html#1" class="Module"
+      >Relation.Unary</a
+      ><a name="442"
+      >
+
+</a
+      ><a name="444" class="Comment"
+      >-- The family of indexed M-types.</a
+      ><a name="477"
+      >
+
+</a
+      ><a name="479" class="Keyword"
+      >module</a
+      ><a name="485"
+      > </a
+      ><a name="486" href="Data.M.Indexed.html#486" class="Module"
+      >_</a
+      ><a name="487"
+      > </a
+      ><a name="488" class="Symbol"
+      >{</a
+      ><a name="489" href="Data.M.Indexed.html#489" class="Bound"
+      >&#8467;</a
+      ><a name="490"
+      > </a
+      ><a name="491" href="Data.M.Indexed.html#491" class="Bound"
+      >c</a
+      ><a name="492"
+      > </a
+      ><a name="493" href="Data.M.Indexed.html#493" class="Bound"
+      >r</a
+      ><a name="494" class="Symbol"
+      >}</a
+      ><a name="495"
+      > </a
+      ><a name="496" class="Symbol"
+      >{</a
+      ><a name="497" href="Data.M.Indexed.html#497" class="Bound"
+      >O</a
+      ><a name="498"
+      > </a
+      ><a name="499" class="Symbol"
+      >:</a
+      ><a name="500"
+      > </a
+      ><a name="501" class="PrimitiveType"
+      >Set</a
+      ><a name="504"
+      > </a
+      ><a name="505" href="Data.M.Indexed.html#489" class="Bound"
+      >&#8467;</a
+      ><a name="506" class="Symbol"
+      >}</a
+      ><a name="507"
+      > </a
+      ><a name="508" class="Symbol"
+      >(</a
+      ><a name="509" href="Data.M.Indexed.html#509" class="Bound"
+      >C</a
+      ><a name="510"
+      > </a
+      ><a name="511" class="Symbol"
+      >:</a
+      ><a name="512"
+      > </a
+      ><a name="513" href="Data.Container.Indexed.Core.html#342" class="Record"
+      >Container</a
+      ><a name="522"
+      > </a
+      ><a name="523" href="Data.M.Indexed.html#497" class="Bound"
+      >O</a
+      ><a name="524"
+      > </a
+      ><a name="525" href="Data.M.Indexed.html#497" class="Bound"
+      >O</a
+      ><a name="526"
+      > </a
+      ><a name="527" href="Data.M.Indexed.html#491" class="Bound"
+      >c</a
+      ><a name="528"
+      > </a
+      ><a name="529" href="Data.M.Indexed.html#493" class="Bound"
+      >r</a
+      ><a name="530" class="Symbol"
+      >)</a
+      ><a name="531"
+      > </a
+      ><a name="532" class="Keyword"
+      >where</a
+      ><a name="537"
+      >
+
+  </a
+      ><a name="541" class="Keyword"
+      >data</a
+      ><a name="545"
+      > </a
+      ><a name="546" href="Data.M.Indexed.html#546" class="Datatype"
+      >M</a
+      ><a name="547"
+      > </a
+      ><a name="548" class="Symbol"
+      >(</a
+      ><a name="549" href="Data.M.Indexed.html#549" class="Bound"
+      >o</a
+      ><a name="550"
+      > </a
+      ><a name="551" class="Symbol"
+      >:</a
+      ><a name="552"
+      > </a
+      ><a name="553" href="Data.M.Indexed.html#497" class="Bound"
+      >O</a
+      ><a name="554" class="Symbol"
+      >)</a
+      ><a name="555"
+      > </a
+      ><a name="556" class="Symbol"
+      >:</a
+      ><a name="557"
+      > </a
+      ><a name="558" class="PrimitiveType"
+      >Set</a
+      ><a name="561"
+      > </a
+      ><a name="562" class="Symbol"
+      >(</a
+      ><a name="563" href="Data.M.Indexed.html#489" class="Bound"
+      >&#8467;</a
+      ><a name="564"
+      > </a
+      ><a name="565" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="566"
+      > </a
+      ><a name="567" href="Data.M.Indexed.html#491" class="Bound"
+      >c</a
+      ><a name="568"
+      > </a
+      ><a name="569" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="570"
+      > </a
+      ><a name="571" href="Data.M.Indexed.html#493" class="Bound"
+      >r</a
+      ><a name="572" class="Symbol"
+      >)</a
+      ><a name="573"
+      > </a
+      ><a name="574" class="Keyword"
+      >where</a
+      ><a name="579"
+      >
+    </a
+      ><a name="584" href="Data.M.Indexed.html#584" class="InductiveConstructor"
+      >inf</a
+      ><a name="587"
+      > </a
+      ><a name="588" class="Symbol"
+      >:</a
+      ><a name="589"
+      > </a
+      ><a name="590" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+      >&#10214;</a
+      ><a name="591"
+      > </a
+      ><a name="592" href="Data.M.Indexed.html#509" class="Bound"
+      >C</a
+      ><a name="593"
+      > </a
+      ><a name="594" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+      >&#10215;</a
+      ><a name="595"
+      > </a
+      ><a name="596" class="Symbol"
+      >(</a
+      ><a name="597" href="Coinduction.html#414" class="Datatype"
+      >&#8734;</a
+      ><a name="598"
+      > </a
+      ><a name="599" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="600"
+      > </a
+      ><a name="601" href="Data.M.Indexed.html#546" class="Datatype"
+      >M</a
+      ><a name="602" class="Symbol"
+      >)</a
+      ><a name="603"
+      > </a
+      ><a name="604" href="Data.M.Indexed.html#549" class="Bound"
+      >o</a
+      ><a name="605"
+      > </a
+      ><a name="606" class="Symbol"
+      >&#8594;</a
+      ><a name="607"
+      > </a
+      ><a name="608" href="Data.M.Indexed.html#546" class="Datatype"
+      >M</a
+      ><a name="609"
+      > </a
+      ><a name="610" href="Data.M.Indexed.html#549" class="Bound"
+      >o</a
+      ><a name="611"
+      >
+
+  </a
+      ><a name="615" class="Keyword"
+      >open</a
+      ><a name="619"
+      > </a
+      ><a name="620" href="Data.Container.Indexed.Core.html#342" class="Module"
+      >Container</a
+      ><a name="629"
+      > </a
+      ><a name="630" href="Data.M.Indexed.html#509" class="Bound"
+      >C</a
+      ><a name="631"
+      >
+
+  </a
+      ><a name="635" class="Comment"
+      >-- Projections.</a
+      ><a name="650"
+      >
+
+  </a
+      ><a name="654" href="Data.M.Indexed.html#654" class="Function"
+      >head</a
+      ><a name="658"
+      > </a
+      ><a name="659" class="Symbol"
+      >:</a
+      ><a name="660"
+      > </a
+      ><a name="661" href="Data.M.Indexed.html#546" class="Datatype"
+      >M</a
+      ><a name="662"
+      > </a
+      ><a name="663" href="Relation.Unary.html#1897" class="Function Operator"
+      >&#8838;</a
+      ><a name="664"
+      > </a
+      ><a name="665" href="Data.Container.Indexed.Core.html#481" class="Function"
+      >Command</a
+      ><a name="672"
+      >
+  </a
+      ><a name="675" href="Data.M.Indexed.html#654" class="Function"
+      >head</a
+      ><a name="679"
+      > </a
+      ><a name="680" class="Symbol"
+      >(</a
+      ><a name="681" href="Data.M.Indexed.html#584" class="InductiveConstructor"
+      >inf</a
+      ><a name="684"
+      > </a
+      ><a name="685" class="Symbol"
+      >(</a
+      ><a name="686" href="Data.M.Indexed.html#686" class="Bound"
+      >c</a
+      ><a name="687"
+      > </a
+      ><a name="688" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="689"
+      > </a
+      ><a name="690" class="Symbol"
+      >_))</a
+      ><a name="693"
+      > </a
+      ><a name="694" class="Symbol"
+      >=</a
+      ><a name="695"
+      > </a
+      ><a name="696" href="Data.M.Indexed.html#686" class="Bound"
+      >c</a
+      ><a name="697"
+      >
+
+  </a
+      ><a name="701" href="Data.M.Indexed.html#701" class="Function"
+      >tail</a
+      ><a name="705"
+      > </a
+      ><a name="706" class="Symbol"
+      >:</a
+      ><a name="707"
+      > </a
+      ><a name="708" class="Symbol"
+      >&#8704;</a
+      ><a name="709"
+      > </a
+      ><a name="710" class="Symbol"
+      >{</a
+      ><a name="711" href="Data.M.Indexed.html#711" class="Bound"
+      >o</a
+      ><a name="712" class="Symbol"
+      >}</a
+      ><a name="713"
+      > </a
+      ><a name="714" class="Symbol"
+      >(</a
+      ><a name="715" href="Data.M.Indexed.html#715" class="Bound"
+      >m</a
+      ><a name="716"
+      > </a
+      ><a name="717" class="Symbol"
+      >:</a
+      ><a name="718"
+      > </a
+      ><a name="719" href="Data.M.Indexed.html#546" class="Datatype"
+      >M</a
+      ><a name="720"
+      > </a
+      ><a name="721" href="Data.M.Indexed.html#711" class="Bound"
+      >o</a
+      ><a name="722" class="Symbol"
+      >)</a
+      ><a name="723"
+      > </a
+      ><a name="724" class="Symbol"
+      >(</a
+      ><a name="725" href="Data.M.Indexed.html#725" class="Bound"
+      >r</a
+      ><a name="726"
+      > </a
+      ><a name="727" class="Symbol"
+      >:</a
+      ><a name="728"
+      > </a
+      ><a name="729" href="Data.Container.Indexed.Core.html#512" class="Function"
+      >Response</a
+      ><a name="737"
+      > </a
+      ><a name="738" class="Symbol"
+      >(</a
+      ><a name="739" href="Data.M.Indexed.html#654" class="Function"
+      >head</a
+      ><a name="743"
+      > </a
+      ><a name="744" href="Data.M.Indexed.html#715" class="Bound"
+      >m</a
+      ><a name="745" class="Symbol"
+      >))</a
+      ><a name="747"
+      > </a
+      ><a name="748" class="Symbol"
+      >&#8594;</a
+      ><a name="749"
+      > </a
+      ><a name="750" href="Data.M.Indexed.html#546" class="Datatype"
+      >M</a
+      ><a name="751"
+      > </a
+      ><a name="752" class="Symbol"
+      >(</a
+      ><a name="753" href="Data.Container.Indexed.Core.html#553" class="Function"
+      >next</a
+      ><a name="757"
+      > </a
+      ><a name="758" class="Symbol"
+      >(</a
+      ><a name="759" href="Data.M.Indexed.html#654" class="Function"
+      >head</a
+      ><a name="763"
+      > </a
+      ><a name="764" href="Data.M.Indexed.html#715" class="Bound"
+      >m</a
+      ><a name="765" class="Symbol"
+      >)</a
+      ><a name="766"
+      > </a
+      ><a name="767" href="Data.M.Indexed.html#725" class="Bound"
+      >r</a
+      ><a name="768" class="Symbol"
+      >)</a
+      ><a name="769"
+      >
+  </a
+      ><a name="772" href="Data.M.Indexed.html#701" class="Function"
+      >tail</a
+      ><a name="776"
+      > </a
+      ><a name="777" class="Symbol"
+      >(</a
+      ><a name="778" href="Data.M.Indexed.html#584" class="InductiveConstructor"
+      >inf</a
+      ><a name="781"
+      > </a
+      ><a name="782" class="Symbol"
+      >(_</a
+      ><a name="784"
+      > </a
+      ><a name="785" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="786"
+      > </a
+      ><a name="787" href="Data.M.Indexed.html#787" class="Bound"
+      >k</a
+      ><a name="788" class="Symbol"
+      >))</a
+      ><a name="790"
+      > </a
+      ><a name="791" href="Data.M.Indexed.html#791" class="Bound"
+      >r</a
+      ><a name="792"
+      > </a
+      ><a name="793" class="Symbol"
+      >=</a
+      ><a name="794"
+      > </a
+      ><a name="795" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="796"
+      > </a
+      ><a name="797" class="Symbol"
+      >(</a
+      ><a name="798" href="Data.M.Indexed.html#787" class="Bound"
+      >k</a
+      ><a name="799"
+      > </a
+      ><a name="800" href="Data.M.Indexed.html#791" class="Bound"
+      >r</a
+      ><a name="801" class="Symbol"
+      >)</a
+      ><a name="802"
+      >
+
+  </a
+      ><a name="806" href="Data.M.Indexed.html#806" class="Function"
+      >force</a
+      ><a name="811"
+      > </a
+      ><a name="812" class="Symbol"
+      >:</a
+      ><a name="813"
+      > </a
+      ><a name="814" href="Data.M.Indexed.html#546" class="Datatype"
+      >M</a
+      ><a name="815"
+      > </a
+      ><a name="816" href="Relation.Unary.html#1897" class="Function Operator"
+      >&#8838;</a
+      ><a name="817"
+      > </a
+      ><a name="818" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+      >&#10214;</a
+      ><a name="819"
+      > </a
+      ><a name="820" href="Data.M.Indexed.html#509" class="Bound"
+      >C</a
+      ><a name="821"
+      > </a
+      ><a name="822" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+      >&#10215;</a
+      ><a name="823"
+      > </a
+      ><a name="824" href="Data.M.Indexed.html#546" class="Datatype"
+      >M</a
+      ><a name="825"
+      >
+  </a
+      ><a name="828" href="Data.M.Indexed.html#806" class="Function"
+      >force</a
+      ><a name="833"
+      > </a
+      ><a name="834" class="Symbol"
+      >(</a
+      ><a name="835" href="Data.M.Indexed.html#584" class="InductiveConstructor"
+      >inf</a
+      ><a name="838"
+      > </a
+      ><a name="839" class="Symbol"
+      >(</a
+      ><a name="840" href="Data.M.Indexed.html#840" class="Bound"
+      >c</a
+      ><a name="841"
+      > </a
+      ><a name="842" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="843"
+      > </a
+      ><a name="844" href="Data.M.Indexed.html#844" class="Bound"
+      >k</a
+      ><a name="845" class="Symbol"
+      >))</a
+      ><a name="847"
+      > </a
+      ><a name="848" class="Symbol"
+      >=</a
+      ><a name="849"
+      > </a
+      ><a name="850" href="Data.M.Indexed.html#840" class="Bound"
+      >c</a
+      ><a name="851"
+      > </a
+      ><a name="852" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="853"
+      > </a
+      ><a name="854" class="Symbol"
+      >&#955;</a
+      ><a name="855"
+      > </a
+      ><a name="856" href="Data.M.Indexed.html#856" class="Bound"
+      >r</a
+      ><a name="857"
+      > </a
+      ><a name="858" class="Symbol"
+      >&#8594;</a
+      ><a name="859"
+      > </a
+      ><a name="860" href="Coinduction.html#482" class="Function"
+      >&#9837;</a
+      ><a name="861"
+      > </a
+      ><a name="862" class="Symbol"
+      >(</a
+      ><a name="863" href="Data.M.Indexed.html#844" class="Bound"
+      >k</a
+      ><a name="864"
+      > </a
+      ><a name="865" href="Data.M.Indexed.html#856" class="Bound"
+      >r</a
+      ><a name="866" class="Symbol"
+      >)</a
+      ><a name="867"
+      >
+
+  </a
+      ><a name="871" class="Comment"
+      >-- Coiteration.</a
+      ><a name="886"
+      >
+
+  </a
+      ><a name="890" href="Data.M.Indexed.html#890" class="Function"
+      >coit</a
+      ><a name="894"
+      > </a
+      ><a name="895" class="Symbol"
+      >:</a
+      ><a name="896"
+      > </a
+      ><a name="897" class="Symbol"
+      >&#8704;</a
+      ><a name="898"
+      > </a
+      ><a name="899" class="Symbol"
+      >{</a
+      ><a name="900" href="Data.M.Indexed.html#900" class="Bound"
+      >&#8467;</a
+      ><a name="901" class="Symbol"
+      >}</a
+      ><a name="902"
+      > </a
+      ><a name="903" class="Symbol"
+      >{</a
+      ><a name="904" href="Data.M.Indexed.html#904" class="Bound"
+      >X</a
+      ><a name="905"
+      > </a
+      ><a name="906" class="Symbol"
+      >:</a
+      ><a name="907"
+      > </a
+      ><a name="908" href="Relation.Unary.html#616" class="Function"
+      >Pred</a
+      ><a name="912"
+      > </a
+      ><a name="913" href="Data.M.Indexed.html#497" class="Bound"
+      >O</a
+      ><a name="914"
+      > </a
+      ><a name="915" href="Data.M.Indexed.html#900" class="Bound"
+      >&#8467;</a
+      ><a name="916" class="Symbol"
+      >}</a
+      ><a name="917"
+      > </a
+      ><a name="918" class="Symbol"
+      >&#8594;</a
+      ><a name="919"
+      > </a
+      ><a name="920" href="Data.M.Indexed.html#904" class="Bound"
+      >X</a
+      ><a name="921"
+      > </a
+      ><a name="922" href="Relation.Unary.html#1897" class="Function Operator"
+      >&#8838;</a
+      ><a name="923"
+      > </a
+      ><a name="924" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+      >&#10214;</a
+      ><a name="925"
+      > </a
+      ><a name="926" href="Data.M.Indexed.html#509" class="Bound"
+      >C</a
+      ><a name="927"
+      > </a
+      ><a name="928" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+      >&#10215;</a
+      ><a name="929"
+      > </a
+      ><a name="930" href="Data.M.Indexed.html#904" class="Bound"
+      >X</a
+      ><a name="931"
+      > </a
+      ><a name="932" class="Symbol"
+      >&#8594;</a
+      ><a name="933"
+      > </a
+      ><a name="934" href="Data.M.Indexed.html#904" class="Bound"
+      >X</a
+      ><a name="935"
+      > </a
+      ><a name="936" href="Relation.Unary.html#1897" class="Function Operator"
+      >&#8838;</a
+      ><a name="937"
+      > </a
+      ><a name="938" href="Data.M.Indexed.html#546" class="Datatype"
+      >M</a
+      ><a name="939"
+      >
+  </a
+      ><a name="942" href="Data.M.Indexed.html#890" class="Function"
+      >coit</a
+      ><a name="946"
+      > </a
+      ><a name="947" href="Data.M.Indexed.html#947" class="Bound"
+      >&#968;</a
+      ><a name="948"
+      > </a
+      ><a name="949" href="Data.M.Indexed.html#949" class="Bound"
+      >x</a
+      ><a name="950"
+      > </a
+      ><a name="951" class="Symbol"
+      >=</a
+      ><a name="952"
+      > </a
+      ><a name="953" href="Data.M.Indexed.html#584" class="InductiveConstructor"
+      >inf</a
+      ><a name="956"
+      > </a
+      ><a name="957" class="Symbol"
+      >(</a
+      ><a name="958" href="Data.Product.html#525" class="Field"
+      >proj&#8321;</a
+      ><a name="963"
+      > </a
+      ><a name="964" href="Data.M.Indexed.html#1012" class="Function"
+      >cs</a
+      ><a name="966"
+      > </a
+      ><a name="967" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="968"
+      > </a
+      ><a name="969" class="Symbol"
+      >&#955;</a
+      ><a name="970"
+      > </a
+      ><a name="971" href="Data.M.Indexed.html#971" class="Bound"
+      >r</a
+      ><a name="972"
+      > </a
+      ><a name="973" class="Symbol"
+      >&#8594;</a
+      ><a name="974"
+      > </a
+      ><a name="975" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      ><a name="976"
+      > </a
+      ><a name="977" href="Data.M.Indexed.html#890" class="Function"
+      >coit</a
+      ><a name="981"
+      > </a
+      ><a name="982" href="Data.M.Indexed.html#947" class="Bound"
+      >&#968;</a
+      ><a name="983"
+      > </a
+      ><a name="984" class="Symbol"
+      >(</a
+      ><a name="985" href="Data.Product.html#539" class="Field"
+      >proj&#8322;</a
+      ><a name="990"
+      > </a
+      ><a name="991" href="Data.M.Indexed.html#1012" class="Function"
+      >cs</a
+      ><a name="993"
+      > </a
+      ><a name="994" href="Data.M.Indexed.html#971" class="Bound"
+      >r</a
+      ><a name="995" class="Symbol"
+      >))</a
+      ><a name="997"
+      >
+    </a
+      ><a name="1002" class="Keyword"
+      >where</a
+      ><a name="1007"
+      >
+    </a
+      ><a name="1012" href="Data.M.Indexed.html#1012" class="Function"
+      >cs</a
+      ><a name="1014"
+      > </a
+      ><a name="1015" class="Symbol"
+      >=</a
+      ><a name="1016"
+      > </a
+      ><a name="1017" href="Data.M.Indexed.html#947" class="Bound"
+      >&#968;</a
+      ><a name="1018"
+      > </a
+      ><a name="1019" href="Data.M.Indexed.html#949" class="Bound"
+      >x</a
+      ><a name="1020"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

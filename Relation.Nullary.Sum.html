@@ -1,0 +1,634 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Relation.Nullary.Sum</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Sums of nullary relations</a
+      ><a name="134"
+      >
+</a
+      ><a name="135" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="207"
+      >
+
+</a
+      ><a name="209" class="Keyword"
+      >module</a
+      ><a name="215"
+      > </a
+      ><a name="216" href="Relation.Nullary.Sum.html#1" class="Module"
+      >Relation.Nullary.Sum</a
+      ><a name="236"
+      > </a
+      ><a name="237" class="Keyword"
+      >where</a
+      ><a name="242"
+      >
+
+</a
+      ><a name="244" class="Keyword"
+      >open</a
+      ><a name="248"
+      > </a
+      ><a name="249" class="Keyword"
+      >import</a
+      ><a name="255"
+      > </a
+      ><a name="256" href="Data.Sum.html#1" class="Module"
+      >Data.Sum</a
+      ><a name="264"
+      >
+</a
+      ><a name="265" class="Keyword"
+      >open</a
+      ><a name="269"
+      > </a
+      ><a name="270" class="Keyword"
+      >import</a
+      ><a name="276"
+      > </a
+      ><a name="277" href="Data.Empty.html#1" class="Module"
+      >Data.Empty</a
+      ><a name="287"
+      >
+</a
+      ><a name="288" class="Keyword"
+      >open</a
+      ><a name="292"
+      > </a
+      ><a name="293" class="Keyword"
+      >import</a
+      ><a name="299"
+      > </a
+      ><a name="300" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="305"
+      >
+</a
+      ><a name="306" class="Keyword"
+      >open</a
+      ><a name="310"
+      > </a
+      ><a name="311" class="Keyword"
+      >import</a
+      ><a name="317"
+      > </a
+      ><a name="318" href="Relation.Nullary.html#1" class="Module"
+      >Relation.Nullary</a
+      ><a name="334"
+      >
+
+</a
+      ><a name="336" class="Comment"
+      >-- Some properties which are preserved by _&#8846;_.</a
+      ><a name="382"
+      >
+
+</a
+      ><a name="384" class="Keyword"
+      >infixr</a
+      ><a name="390"
+      > </a
+      ><a name="391" class="Number"
+      >1</a
+      ><a name="392"
+      > _&#172;-&#8846;_ _&#8846;-dec_
+
+</a
+      ><a name="408" href="Relation.Nullary.Sum.html#408" class="Function Operator"
+      >_&#172;-&#8846;_</a
+      ><a name="413"
+      > </a
+      ><a name="414" class="Symbol"
+      >:</a
+      ><a name="415"
+      > </a
+      ><a name="416" class="Symbol"
+      >&#8704;</a
+      ><a name="417"
+      > </a
+      ><a name="418" class="Symbol"
+      >{</a
+      ><a name="419" href="Relation.Nullary.Sum.html#419" class="Bound"
+      >p</a
+      ><a name="420"
+      > </a
+      ><a name="421" href="Relation.Nullary.Sum.html#421" class="Bound"
+      >q</a
+      ><a name="422" class="Symbol"
+      >}</a
+      ><a name="423"
+      > </a
+      ><a name="424" class="Symbol"
+      >{</a
+      ><a name="425" href="Relation.Nullary.Sum.html#425" class="Bound"
+      >P</a
+      ><a name="426"
+      > </a
+      ><a name="427" class="Symbol"
+      >:</a
+      ><a name="428"
+      > </a
+      ><a name="429" class="PrimitiveType"
+      >Set</a
+      ><a name="432"
+      > </a
+      ><a name="433" href="Relation.Nullary.Sum.html#419" class="Bound"
+      >p</a
+      ><a name="434" class="Symbol"
+      >}</a
+      ><a name="435"
+      > </a
+      ><a name="436" class="Symbol"
+      >{</a
+      ><a name="437" href="Relation.Nullary.Sum.html#437" class="Bound"
+      >Q</a
+      ><a name="438"
+      > </a
+      ><a name="439" class="Symbol"
+      >:</a
+      ><a name="440"
+      > </a
+      ><a name="441" class="PrimitiveType"
+      >Set</a
+      ><a name="444"
+      > </a
+      ><a name="445" href="Relation.Nullary.Sum.html#421" class="Bound"
+      >q</a
+      ><a name="446" class="Symbol"
+      >}</a
+      ><a name="447"
+      > </a
+      ><a name="448" class="Symbol"
+      >&#8594;</a
+      ><a name="449"
+      >
+        </a
+      ><a name="458" href="Relation.Nullary.Core.html#398" class="Function Operator"
+      >&#172;</a
+      ><a name="459"
+      > </a
+      ><a name="460" href="Relation.Nullary.Sum.html#425" class="Bound"
+      >P</a
+      ><a name="461"
+      > </a
+      ><a name="462" class="Symbol"
+      >&#8594;</a
+      ><a name="463"
+      > </a
+      ><a name="464" href="Relation.Nullary.Core.html#398" class="Function Operator"
+      >&#172;</a
+      ><a name="465"
+      > </a
+      ><a name="466" href="Relation.Nullary.Sum.html#437" class="Bound"
+      >Q</a
+      ><a name="467"
+      > </a
+      ><a name="468" class="Symbol"
+      >&#8594;</a
+      ><a name="469"
+      > </a
+      ><a name="470" href="Relation.Nullary.Core.html#398" class="Function Operator"
+      >&#172;</a
+      ><a name="471"
+      > </a
+      ><a name="472" class="Symbol"
+      >(</a
+      ><a name="473" href="Relation.Nullary.Sum.html#425" class="Bound"
+      >P</a
+      ><a name="474"
+      > </a
+      ><a name="475" href="Data.Sum.html#433" class="Datatype Operator"
+      >&#8846;</a
+      ><a name="476"
+      > </a
+      ><a name="477" href="Relation.Nullary.Sum.html#437" class="Bound"
+      >Q</a
+      ><a name="478" class="Symbol"
+      >)</a
+      ><a name="479"
+      >
+</a
+      ><a name="480" class="Symbol"
+      >(</a
+      ><a name="481" href="Relation.Nullary.Sum.html#481" class="Bound"
+      >&#172;p</a
+      ><a name="483"
+      > </a
+      ><a name="484" href="Relation.Nullary.Sum.html#408" class="Function Operator"
+      >&#172;-&#8846;</a
+      ><a name="487"
+      > </a
+      ><a name="488" href="Relation.Nullary.Sum.html#488" class="Bound"
+      >&#172;q</a
+      ><a name="490" class="Symbol"
+      >)</a
+      ><a name="491"
+      > </a
+      ><a name="492" class="Symbol"
+      >(</a
+      ><a name="493" href="Data.Sum.html#489" class="InductiveConstructor"
+      >inj&#8321;</a
+      ><a name="497"
+      > </a
+      ><a name="498" href="Relation.Nullary.Sum.html#498" class="Bound"
+      >p</a
+      ><a name="499" class="Symbol"
+      >)</a
+      ><a name="500"
+      > </a
+      ><a name="501" class="Symbol"
+      >=</a
+      ><a name="502"
+      > </a
+      ><a name="503" href="Relation.Nullary.Sum.html#481" class="Bound"
+      >&#172;p</a
+      ><a name="505"
+      > </a
+      ><a name="506" href="Relation.Nullary.Sum.html#498" class="Bound"
+      >p</a
+      ><a name="507"
+      >
+</a
+      ><a name="508" class="Symbol"
+      >(</a
+      ><a name="509" href="Relation.Nullary.Sum.html#509" class="Bound"
+      >&#172;p</a
+      ><a name="511"
+      > </a
+      ><a name="512" href="Relation.Nullary.Sum.html#408" class="Function Operator"
+      >&#172;-&#8846;</a
+      ><a name="515"
+      > </a
+      ><a name="516" href="Relation.Nullary.Sum.html#516" class="Bound"
+      >&#172;q</a
+      ><a name="518" class="Symbol"
+      >)</a
+      ><a name="519"
+      > </a
+      ><a name="520" class="Symbol"
+      >(</a
+      ><a name="521" href="Data.Sum.html#514" class="InductiveConstructor"
+      >inj&#8322;</a
+      ><a name="525"
+      > </a
+      ><a name="526" href="Relation.Nullary.Sum.html#526" class="Bound"
+      >q</a
+      ><a name="527" class="Symbol"
+      >)</a
+      ><a name="528"
+      > </a
+      ><a name="529" class="Symbol"
+      >=</a
+      ><a name="530"
+      > </a
+      ><a name="531" href="Relation.Nullary.Sum.html#516" class="Bound"
+      >&#172;q</a
+      ><a name="533"
+      > </a
+      ><a name="534" href="Relation.Nullary.Sum.html#526" class="Bound"
+      >q</a
+      ><a name="535"
+      >
+
+</a
+      ><a name="537" href="Relation.Nullary.Sum.html#537" class="Function Operator"
+      >_&#8846;-dec_</a
+      ><a name="544"
+      > </a
+      ><a name="545" class="Symbol"
+      >:</a
+      ><a name="546"
+      > </a
+      ><a name="547" class="Symbol"
+      >&#8704;</a
+      ><a name="548"
+      > </a
+      ><a name="549" class="Symbol"
+      >{</a
+      ><a name="550" href="Relation.Nullary.Sum.html#550" class="Bound"
+      >p</a
+      ><a name="551"
+      > </a
+      ><a name="552" href="Relation.Nullary.Sum.html#552" class="Bound"
+      >q</a
+      ><a name="553" class="Symbol"
+      >}</a
+      ><a name="554"
+      > </a
+      ><a name="555" class="Symbol"
+      >{</a
+      ><a name="556" href="Relation.Nullary.Sum.html#556" class="Bound"
+      >P</a
+      ><a name="557"
+      > </a
+      ><a name="558" class="Symbol"
+      >:</a
+      ><a name="559"
+      > </a
+      ><a name="560" class="PrimitiveType"
+      >Set</a
+      ><a name="563"
+      > </a
+      ><a name="564" href="Relation.Nullary.Sum.html#550" class="Bound"
+      >p</a
+      ><a name="565" class="Symbol"
+      >}</a
+      ><a name="566"
+      > </a
+      ><a name="567" class="Symbol"
+      >{</a
+      ><a name="568" href="Relation.Nullary.Sum.html#568" class="Bound"
+      >Q</a
+      ><a name="569"
+      > </a
+      ><a name="570" class="Symbol"
+      >:</a
+      ><a name="571"
+      > </a
+      ><a name="572" class="PrimitiveType"
+      >Set</a
+      ><a name="575"
+      > </a
+      ><a name="576" href="Relation.Nullary.Sum.html#552" class="Bound"
+      >q</a
+      ><a name="577" class="Symbol"
+      >}</a
+      ><a name="578"
+      > </a
+      ><a name="579" class="Symbol"
+      >&#8594;</a
+      ><a name="580"
+      >
+          </a
+      ><a name="591" href="Relation.Nullary.Core.html#468" class="Datatype"
+      >Dec</a
+      ><a name="594"
+      > </a
+      ><a name="595" href="Relation.Nullary.Sum.html#556" class="Bound"
+      >P</a
+      ><a name="596"
+      > </a
+      ><a name="597" class="Symbol"
+      >&#8594;</a
+      ><a name="598"
+      > </a
+      ><a name="599" href="Relation.Nullary.Core.html#468" class="Datatype"
+      >Dec</a
+      ><a name="602"
+      > </a
+      ><a name="603" href="Relation.Nullary.Sum.html#568" class="Bound"
+      >Q</a
+      ><a name="604"
+      > </a
+      ><a name="605" class="Symbol"
+      >&#8594;</a
+      ><a name="606"
+      > </a
+      ><a name="607" href="Relation.Nullary.Core.html#468" class="Datatype"
+      >Dec</a
+      ><a name="610"
+      > </a
+      ><a name="611" class="Symbol"
+      >(</a
+      ><a name="612" href="Relation.Nullary.Sum.html#556" class="Bound"
+      >P</a
+      ><a name="613"
+      > </a
+      ><a name="614" href="Data.Sum.html#433" class="Datatype Operator"
+      >&#8846;</a
+      ><a name="615"
+      > </a
+      ><a name="616" href="Relation.Nullary.Sum.html#568" class="Bound"
+      >Q</a
+      ><a name="617" class="Symbol"
+      >)</a
+      ><a name="618"
+      >
+</a
+      ><a name="619" href="Relation.Nullary.Core.html#504" class="InductiveConstructor"
+      >yes</a
+      ><a name="622"
+      > </a
+      ><a name="623" href="Relation.Nullary.Sum.html#623" class="Bound"
+      >p</a
+      ><a name="624"
+      > </a
+      ><a name="625" href="Relation.Nullary.Sum.html#537" class="Function Operator"
+      >&#8846;-dec</a
+      ><a name="630"
+      > </a
+      ><a name="631" class="Symbol"
+      >_</a
+      ><a name="632"
+      >     </a
+      ><a name="637" class="Symbol"
+      >=</a
+      ><a name="638"
+      > </a
+      ><a name="639" href="Relation.Nullary.Core.html#504" class="InductiveConstructor"
+      >yes</a
+      ><a name="642"
+      > </a
+      ><a name="643" class="Symbol"
+      >(</a
+      ><a name="644" href="Data.Sum.html#489" class="InductiveConstructor"
+      >inj&#8321;</a
+      ><a name="648"
+      > </a
+      ><a name="649" href="Relation.Nullary.Sum.html#623" class="Bound"
+      >p</a
+      ><a name="650" class="Symbol"
+      >)</a
+      ><a name="651"
+      >
+</a
+      ><a name="652" class="Symbol"
+      >_</a
+      ><a name="653"
+      >     </a
+      ><a name="658" href="Relation.Nullary.Sum.html#537" class="Function Operator"
+      >&#8846;-dec</a
+      ><a name="663"
+      > </a
+      ><a name="664" href="Relation.Nullary.Core.html#504" class="InductiveConstructor"
+      >yes</a
+      ><a name="667"
+      > </a
+      ><a name="668" href="Relation.Nullary.Sum.html#668" class="Bound"
+      >q</a
+      ><a name="669"
+      > </a
+      ><a name="670" class="Symbol"
+      >=</a
+      ><a name="671"
+      > </a
+      ><a name="672" href="Relation.Nullary.Core.html#504" class="InductiveConstructor"
+      >yes</a
+      ><a name="675"
+      > </a
+      ><a name="676" class="Symbol"
+      >(</a
+      ><a name="677" href="Data.Sum.html#514" class="InductiveConstructor"
+      >inj&#8322;</a
+      ><a name="681"
+      > </a
+      ><a name="682" href="Relation.Nullary.Sum.html#668" class="Bound"
+      >q</a
+      ><a name="683" class="Symbol"
+      >)</a
+      ><a name="684"
+      >
+</a
+      ><a name="685" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="687"
+      > </a
+      ><a name="688" href="Relation.Nullary.Sum.html#688" class="Bound"
+      >&#172;p</a
+      ><a name="690"
+      > </a
+      ><a name="691" href="Relation.Nullary.Sum.html#537" class="Function Operator"
+      >&#8846;-dec</a
+      ><a name="696"
+      > </a
+      ><a name="697" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="699"
+      > </a
+      ><a name="700" href="Relation.Nullary.Sum.html#700" class="Bound"
+      >&#172;q</a
+      ><a name="702"
+      > </a
+      ><a name="703" class="Symbol"
+      >=</a
+      ><a name="704"
+      > </a
+      ><a name="705" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="707"
+      > </a
+      ><a name="708" href="Relation.Nullary.Sum.html#725" class="Function"
+      >helper</a
+      ><a name="714"
+      >
+  </a
+      ><a name="717" class="Keyword"
+      >where</a
+      ><a name="722"
+      >
+  </a
+      ><a name="725" href="Relation.Nullary.Sum.html#725" class="Function"
+      >helper</a
+      ><a name="731"
+      > </a
+      ><a name="732" class="Symbol"
+      >:</a
+      ><a name="733"
+      > </a
+      ><a name="734" class="Symbol"
+      >_</a
+      ><a name="735"
+      > </a
+      ><a name="736" href="Data.Sum.html#433" class="Datatype Operator"
+      >&#8846;</a
+      ><a name="737"
+      > </a
+      ><a name="738" class="Symbol"
+      >_</a
+      ><a name="739"
+      > </a
+      ><a name="740" class="Symbol"
+      >&#8594;</a
+      ><a name="741"
+      > </a
+      ><a name="742" href="Data.Empty.html#243" class="Datatype"
+      >&#8869;</a
+      ><a name="743"
+      >
+  </a
+      ><a name="746" href="Relation.Nullary.Sum.html#725" class="Function"
+      >helper</a
+      ><a name="752"
+      > </a
+      ><a name="753" class="Symbol"
+      >(</a
+      ><a name="754" href="Data.Sum.html#489" class="InductiveConstructor"
+      >inj&#8321;</a
+      ><a name="758"
+      > </a
+      ><a name="759" href="Relation.Nullary.Sum.html#759" class="Bound"
+      >p</a
+      ><a name="760" class="Symbol"
+      >)</a
+      ><a name="761"
+      > </a
+      ><a name="762" class="Symbol"
+      >=</a
+      ><a name="763"
+      > </a
+      ><a name="764" href="Relation.Nullary.Sum.html#688" class="Bound"
+      >&#172;p</a
+      ><a name="766"
+      > </a
+      ><a name="767" href="Relation.Nullary.Sum.html#759" class="Bound"
+      >p</a
+      ><a name="768"
+      >
+  </a
+      ><a name="771" href="Relation.Nullary.Sum.html#725" class="Function"
+      >helper</a
+      ><a name="777"
+      > </a
+      ><a name="778" class="Symbol"
+      >(</a
+      ><a name="779" href="Data.Sum.html#514" class="InductiveConstructor"
+      >inj&#8322;</a
+      ><a name="783"
+      > </a
+      ><a name="784" href="Relation.Nullary.Sum.html#784" class="Bound"
+      >q</a
+      ><a name="785" class="Symbol"
+      >)</a
+      ><a name="786"
+      > </a
+      ><a name="787" class="Symbol"
+      >=</a
+      ><a name="788"
+      > </a
+      ><a name="789" href="Relation.Nullary.Sum.html#700" class="Bound"
+      >&#172;q</a
+      ><a name="791"
+      > </a
+      ><a name="792" href="Relation.Nullary.Sum.html#784" class="Bound"
+      >q</a
+      ><a name="793"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

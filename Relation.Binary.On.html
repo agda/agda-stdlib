@@ -1,0 +1,5938 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Relation.Binary.On</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Many properties which hold for _&#8764;_ also hold for _&#8764;_ on f</a
+      ><a name="166"
+      >
+</a
+      ><a name="167" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="239"
+      >
+
+</a
+      ><a name="241" class="Keyword"
+      >open</a
+      ><a name="245"
+      > </a
+      ><a name="246" class="Keyword"
+      >import</a
+      ><a name="252"
+      > </a
+      ><a name="253" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="268"
+      >
+
+</a
+      ><a name="270" class="Keyword"
+      >module</a
+      ><a name="276"
+      > </a
+      ><a name="277" href="Relation.Binary.On.html#1" class="Module"
+      >Relation.Binary.On</a
+      ><a name="295"
+      > </a
+      ><a name="296" class="Keyword"
+      >where</a
+      ><a name="301"
+      >
+
+</a
+      ><a name="303" class="Keyword"
+      >open</a
+      ><a name="307"
+      > </a
+      ><a name="308" class="Keyword"
+      >import</a
+      ><a name="314"
+      > </a
+      ><a name="315" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="323"
+      >
+</a
+      ><a name="324" class="Keyword"
+      >open</a
+      ><a name="328"
+      > </a
+      ><a name="329" class="Keyword"
+      >import</a
+      ><a name="335"
+      > </a
+      ><a name="336" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="348"
+      >
+
+</a
+      ><a name="350" class="Keyword"
+      >module</a
+      ><a name="356"
+      > </a
+      ><a name="357" href="Relation.Binary.On.html#357" class="Module"
+      >_</a
+      ><a name="358"
+      > </a
+      ><a name="359" class="Symbol"
+      >{</a
+      ><a name="360" href="Relation.Binary.On.html#360" class="Bound"
+      >a</a
+      ><a name="361"
+      > </a
+      ><a name="362" href="Relation.Binary.On.html#362" class="Bound"
+      >b</a
+      ><a name="363" class="Symbol"
+      >}</a
+      ><a name="364"
+      > </a
+      ><a name="365" class="Symbol"
+      >{</a
+      ><a name="366" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="367"
+      > </a
+      ><a name="368" class="Symbol"
+      >:</a
+      ><a name="369"
+      > </a
+      ><a name="370" class="PrimitiveType"
+      >Set</a
+      ><a name="373"
+      > </a
+      ><a name="374" href="Relation.Binary.On.html#360" class="Bound"
+      >a</a
+      ><a name="375" class="Symbol"
+      >}</a
+      ><a name="376"
+      > </a
+      ><a name="377" class="Symbol"
+      >{</a
+      ><a name="378" href="Relation.Binary.On.html#378" class="Bound"
+      >B</a
+      ><a name="379"
+      > </a
+      ><a name="380" class="Symbol"
+      >:</a
+      ><a name="381"
+      > </a
+      ><a name="382" class="PrimitiveType"
+      >Set</a
+      ><a name="385"
+      > </a
+      ><a name="386" href="Relation.Binary.On.html#362" class="Bound"
+      >b</a
+      ><a name="387" class="Symbol"
+      >}</a
+      ><a name="388"
+      > </a
+      ><a name="389" class="Symbol"
+      >(</a
+      ><a name="390" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="391"
+      > </a
+      ><a name="392" class="Symbol"
+      >:</a
+      ><a name="393"
+      > </a
+      ><a name="394" href="Relation.Binary.On.html#378" class="Bound"
+      >B</a
+      ><a name="395"
+      > </a
+      ><a name="396" class="Symbol"
+      >&#8594;</a
+      ><a name="397"
+      > </a
+      ><a name="398" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="399" class="Symbol"
+      >)</a
+      ><a name="400"
+      > </a
+      ><a name="401" class="Keyword"
+      >where</a
+      ><a name="406"
+      >
+
+  </a
+      ><a name="410" href="Relation.Binary.On.html#410" class="Function"
+      >implies</a
+      ><a name="417"
+      > </a
+      ><a name="418" class="Symbol"
+      >:</a
+      ><a name="419"
+      > </a
+      ><a name="420" class="Symbol"
+      >&#8704;</a
+      ><a name="421"
+      > </a
+      ><a name="422" class="Symbol"
+      >{</a
+      ><a name="423" href="Relation.Binary.On.html#423" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="425"
+      > </a
+      ><a name="426" href="Relation.Binary.On.html#426" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="428" class="Symbol"
+      >}</a
+      ><a name="429"
+      > </a
+      ><a name="430" class="Symbol"
+      >(</a
+      ><a name="431" href="Relation.Binary.On.html#431" class="Bound"
+      >&#8776;</a
+      ><a name="432"
+      > </a
+      ><a name="433" class="Symbol"
+      >:</a
+      ><a name="434"
+      > </a
+      ><a name="435" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="438"
+      > </a
+      ><a name="439" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="440"
+      > </a
+      ><a name="441" href="Relation.Binary.On.html#423" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="443" class="Symbol"
+      >)</a
+      ><a name="444"
+      > </a
+      ><a name="445" class="Symbol"
+      >(</a
+      ><a name="446" href="Relation.Binary.On.html#446" class="Bound"
+      >&#8764;</a
+      ><a name="447"
+      > </a
+      ><a name="448" class="Symbol"
+      >:</a
+      ><a name="449"
+      > </a
+      ><a name="450" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="453"
+      > </a
+      ><a name="454" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="455"
+      > </a
+      ><a name="456" href="Relation.Binary.On.html#426" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="458" class="Symbol"
+      >)</a
+      ><a name="459"
+      > </a
+      ><a name="460" class="Symbol"
+      >&#8594;</a
+      ><a name="461"
+      >
+            </a
+      ><a name="474" href="Relation.Binary.On.html#431" class="Bound"
+      >&#8776;</a
+      ><a name="475"
+      > </a
+      ><a name="476" href="Relation.Binary.Core.html#1025" class="Function Operator"
+      >&#8658;</a
+      ><a name="477"
+      > </a
+      ><a name="478" href="Relation.Binary.On.html#446" class="Bound"
+      >&#8764;</a
+      ><a name="479"
+      > </a
+      ><a name="480" class="Symbol"
+      >&#8594;</a
+      ><a name="481"
+      > </a
+      ><a name="482" class="Symbol"
+      >(</a
+      ><a name="483" href="Relation.Binary.On.html#431" class="Bound"
+      >&#8776;</a
+      ><a name="484"
+      > </a
+      ><a name="485" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="487"
+      > </a
+      ><a name="488" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="489" class="Symbol"
+      >)</a
+      ><a name="490"
+      > </a
+      ><a name="491" href="Relation.Binary.Core.html#1025" class="Function Operator"
+      >&#8658;</a
+      ><a name="492"
+      > </a
+      ><a name="493" class="Symbol"
+      >(</a
+      ><a name="494" href="Relation.Binary.On.html#446" class="Bound"
+      >&#8764;</a
+      ><a name="495"
+      > </a
+      ><a name="496" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="498"
+      > </a
+      ><a name="499" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="500" class="Symbol"
+      >)</a
+      ><a name="501"
+      >
+  </a
+      ><a name="504" href="Relation.Binary.On.html#410" class="Function"
+      >implies</a
+      ><a name="511"
+      > </a
+      ><a name="512" class="Symbol"
+      >_</a
+      ><a name="513"
+      > </a
+      ><a name="514" class="Symbol"
+      >_</a
+      ><a name="515"
+      > </a
+      ><a name="516" href="Relation.Binary.On.html#516" class="Bound"
+      >impl</a
+      ><a name="520"
+      > </a
+      ><a name="521" class="Symbol"
+      >=</a
+      ><a name="522"
+      > </a
+      ><a name="523" href="Relation.Binary.On.html#516" class="Bound"
+      >impl</a
+      ><a name="527"
+      >
+
+  </a
+      ><a name="531" href="Relation.Binary.On.html#531" class="Function"
+      >reflexive</a
+      ><a name="540"
+      > </a
+      ><a name="541" class="Symbol"
+      >:</a
+      ><a name="542"
+      > </a
+      ><a name="543" class="Symbol"
+      >&#8704;</a
+      ><a name="544"
+      > </a
+      ><a name="545" class="Symbol"
+      >{</a
+      ><a name="546" href="Relation.Binary.On.html#546" class="Bound"
+      >&#8467;</a
+      ><a name="547" class="Symbol"
+      >}</a
+      ><a name="548"
+      > </a
+      ><a name="549" class="Symbol"
+      >(</a
+      ><a name="550" href="Relation.Binary.On.html#550" class="Bound"
+      >&#8764;</a
+      ><a name="551"
+      > </a
+      ><a name="552" class="Symbol"
+      >:</a
+      ><a name="553"
+      > </a
+      ><a name="554" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="557"
+      > </a
+      ><a name="558" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="559"
+      > </a
+      ><a name="560" href="Relation.Binary.On.html#546" class="Bound"
+      >&#8467;</a
+      ><a name="561" class="Symbol"
+      >)</a
+      ><a name="562"
+      > </a
+      ><a name="563" class="Symbol"
+      >&#8594;</a
+      ><a name="564"
+      > </a
+      ><a name="565" href="Relation.Binary.Core.html#1891" class="Function"
+      >Reflexive</a
+      ><a name="574"
+      > </a
+      ><a name="575" href="Relation.Binary.On.html#550" class="Bound"
+      >&#8764;</a
+      ><a name="576"
+      > </a
+      ><a name="577" class="Symbol"
+      >&#8594;</a
+      ><a name="578"
+      > </a
+      ><a name="579" href="Relation.Binary.Core.html#1891" class="Function"
+      >Reflexive</a
+      ><a name="588"
+      > </a
+      ><a name="589" class="Symbol"
+      >(</a
+      ><a name="590" href="Relation.Binary.On.html#550" class="Bound"
+      >&#8764;</a
+      ><a name="591"
+      > </a
+      ><a name="592" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="594"
+      > </a
+      ><a name="595" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="596" class="Symbol"
+      >)</a
+      ><a name="597"
+      >
+  </a
+      ><a name="600" href="Relation.Binary.On.html#531" class="Function"
+      >reflexive</a
+      ><a name="609"
+      > </a
+      ><a name="610" class="Symbol"
+      >_</a
+      ><a name="611"
+      > </a
+      ><a name="612" href="Relation.Binary.On.html#612" class="Bound"
+      >refl</a
+      ><a name="616"
+      > </a
+      ><a name="617" class="Symbol"
+      >=</a
+      ><a name="618"
+      > </a
+      ><a name="619" href="Relation.Binary.On.html#612" class="Bound"
+      >refl</a
+      ><a name="623"
+      >
+
+  </a
+      ><a name="627" href="Relation.Binary.On.html#627" class="Function"
+      >irreflexive</a
+      ><a name="638"
+      > </a
+      ><a name="639" class="Symbol"
+      >:</a
+      ><a name="640"
+      > </a
+      ><a name="641" class="Symbol"
+      >&#8704;</a
+      ><a name="642"
+      > </a
+      ><a name="643" class="Symbol"
+      >{</a
+      ><a name="644" href="Relation.Binary.On.html#644" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="646"
+      > </a
+      ><a name="647" href="Relation.Binary.On.html#647" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="649" class="Symbol"
+      >}</a
+      ><a name="650"
+      > </a
+      ><a name="651" class="Symbol"
+      >(</a
+      ><a name="652" href="Relation.Binary.On.html#652" class="Bound"
+      >&#8776;</a
+      ><a name="653"
+      > </a
+      ><a name="654" class="Symbol"
+      >:</a
+      ><a name="655"
+      > </a
+      ><a name="656" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="659"
+      > </a
+      ><a name="660" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="661"
+      > </a
+      ><a name="662" href="Relation.Binary.On.html#644" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="664" class="Symbol"
+      >)</a
+      ><a name="665"
+      > </a
+      ><a name="666" class="Symbol"
+      >(</a
+      ><a name="667" href="Relation.Binary.On.html#667" class="Bound"
+      >&#8764;</a
+      ><a name="668"
+      > </a
+      ><a name="669" class="Symbol"
+      >:</a
+      ><a name="670"
+      > </a
+      ><a name="671" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="674"
+      > </a
+      ><a name="675" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="676"
+      > </a
+      ><a name="677" href="Relation.Binary.On.html#647" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="679" class="Symbol"
+      >)</a
+      ><a name="680"
+      > </a
+      ><a name="681" class="Symbol"
+      >&#8594;</a
+      ><a name="682"
+      >
+                </a
+      ><a name="699" href="Relation.Binary.Core.html#2031" class="Function"
+      >Irreflexive</a
+      ><a name="710"
+      > </a
+      ><a name="711" href="Relation.Binary.On.html#652" class="Bound"
+      >&#8776;</a
+      ><a name="712"
+      > </a
+      ><a name="713" href="Relation.Binary.On.html#667" class="Bound"
+      >&#8764;</a
+      ><a name="714"
+      > </a
+      ><a name="715" class="Symbol"
+      >&#8594;</a
+      ><a name="716"
+      > </a
+      ><a name="717" href="Relation.Binary.Core.html#2031" class="Function"
+      >Irreflexive</a
+      ><a name="728"
+      > </a
+      ><a name="729" class="Symbol"
+      >(</a
+      ><a name="730" href="Relation.Binary.On.html#652" class="Bound"
+      >&#8776;</a
+      ><a name="731"
+      > </a
+      ><a name="732" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="734"
+      > </a
+      ><a name="735" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="736" class="Symbol"
+      >)</a
+      ><a name="737"
+      > </a
+      ><a name="738" class="Symbol"
+      >(</a
+      ><a name="739" href="Relation.Binary.On.html#667" class="Bound"
+      >&#8764;</a
+      ><a name="740"
+      > </a
+      ><a name="741" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="743"
+      > </a
+      ><a name="744" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="745" class="Symbol"
+      >)</a
+      ><a name="746"
+      >
+  </a
+      ><a name="749" href="Relation.Binary.On.html#627" class="Function"
+      >irreflexive</a
+      ><a name="760"
+      > </a
+      ><a name="761" class="Symbol"
+      >_</a
+      ><a name="762"
+      > </a
+      ><a name="763" class="Symbol"
+      >_</a
+      ><a name="764"
+      > </a
+      ><a name="765" href="Relation.Binary.On.html#765" class="Bound"
+      >irrefl</a
+      ><a name="771"
+      > </a
+      ><a name="772" class="Symbol"
+      >=</a
+      ><a name="773"
+      > </a
+      ><a name="774" href="Relation.Binary.On.html#765" class="Bound"
+      >irrefl</a
+      ><a name="780"
+      >
+
+  </a
+      ><a name="784" href="Relation.Binary.On.html#784" class="Function"
+      >symmetric</a
+      ><a name="793"
+      > </a
+      ><a name="794" class="Symbol"
+      >:</a
+      ><a name="795"
+      > </a
+      ><a name="796" class="Symbol"
+      >&#8704;</a
+      ><a name="797"
+      > </a
+      ><a name="798" class="Symbol"
+      >{</a
+      ><a name="799" href="Relation.Binary.On.html#799" class="Bound"
+      >&#8467;</a
+      ><a name="800" class="Symbol"
+      >}</a
+      ><a name="801"
+      > </a
+      ><a name="802" class="Symbol"
+      >(</a
+      ><a name="803" href="Relation.Binary.On.html#803" class="Bound"
+      >&#8764;</a
+      ><a name="804"
+      > </a
+      ><a name="805" class="Symbol"
+      >:</a
+      ><a name="806"
+      > </a
+      ><a name="807" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="810"
+      > </a
+      ><a name="811" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="812"
+      > </a
+      ><a name="813" href="Relation.Binary.On.html#799" class="Bound"
+      >&#8467;</a
+      ><a name="814" class="Symbol"
+      >)</a
+      ><a name="815"
+      > </a
+      ><a name="816" class="Symbol"
+      >&#8594;</a
+      ><a name="817"
+      > </a
+      ><a name="818" href="Relation.Binary.Core.html#2314" class="Function"
+      >Symmetric</a
+      ><a name="827"
+      > </a
+      ><a name="828" href="Relation.Binary.On.html#803" class="Bound"
+      >&#8764;</a
+      ><a name="829"
+      > </a
+      ><a name="830" class="Symbol"
+      >&#8594;</a
+      ><a name="831"
+      > </a
+      ><a name="832" href="Relation.Binary.Core.html#2314" class="Function"
+      >Symmetric</a
+      ><a name="841"
+      > </a
+      ><a name="842" class="Symbol"
+      >(</a
+      ><a name="843" href="Relation.Binary.On.html#803" class="Bound"
+      >&#8764;</a
+      ><a name="844"
+      > </a
+      ><a name="845" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="847"
+      > </a
+      ><a name="848" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="849" class="Symbol"
+      >)</a
+      ><a name="850"
+      >
+  </a
+      ><a name="853" href="Relation.Binary.On.html#784" class="Function"
+      >symmetric</a
+      ><a name="862"
+      > </a
+      ><a name="863" class="Symbol"
+      >_</a
+      ><a name="864"
+      > </a
+      ><a name="865" href="Relation.Binary.On.html#865" class="Bound"
+      >sym</a
+      ><a name="868"
+      > </a
+      ><a name="869" class="Symbol"
+      >=</a
+      ><a name="870"
+      > </a
+      ><a name="871" href="Relation.Binary.On.html#865" class="Bound"
+      >sym</a
+      ><a name="874"
+      >
+
+  </a
+      ><a name="878" href="Relation.Binary.On.html#878" class="Function"
+      >transitive</a
+      ><a name="888"
+      > </a
+      ><a name="889" class="Symbol"
+      >:</a
+      ><a name="890"
+      > </a
+      ><a name="891" class="Symbol"
+      >&#8704;</a
+      ><a name="892"
+      > </a
+      ><a name="893" class="Symbol"
+      >{</a
+      ><a name="894" href="Relation.Binary.On.html#894" class="Bound"
+      >&#8467;</a
+      ><a name="895" class="Symbol"
+      >}</a
+      ><a name="896"
+      > </a
+      ><a name="897" class="Symbol"
+      >(</a
+      ><a name="898" href="Relation.Binary.On.html#898" class="Bound"
+      >&#8764;</a
+      ><a name="899"
+      > </a
+      ><a name="900" class="Symbol"
+      >:</a
+      ><a name="901"
+      > </a
+      ><a name="902" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="905"
+      > </a
+      ><a name="906" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="907"
+      > </a
+      ><a name="908" href="Relation.Binary.On.html#894" class="Bound"
+      >&#8467;</a
+      ><a name="909" class="Symbol"
+      >)</a
+      ><a name="910"
+      > </a
+      ><a name="911" class="Symbol"
+      >&#8594;</a
+      ><a name="912"
+      > </a
+      ><a name="913" href="Relation.Binary.Core.html#2793" class="Function"
+      >Transitive</a
+      ><a name="923"
+      > </a
+      ><a name="924" href="Relation.Binary.On.html#898" class="Bound"
+      >&#8764;</a
+      ><a name="925"
+      > </a
+      ><a name="926" class="Symbol"
+      >&#8594;</a
+      ><a name="927"
+      > </a
+      ><a name="928" href="Relation.Binary.Core.html#2793" class="Function"
+      >Transitive</a
+      ><a name="938"
+      > </a
+      ><a name="939" class="Symbol"
+      >(</a
+      ><a name="940" href="Relation.Binary.On.html#898" class="Bound"
+      >&#8764;</a
+      ><a name="941"
+      > </a
+      ><a name="942" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="944"
+      > </a
+      ><a name="945" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="946" class="Symbol"
+      >)</a
+      ><a name="947"
+      >
+  </a
+      ><a name="950" href="Relation.Binary.On.html#878" class="Function"
+      >transitive</a
+      ><a name="960"
+      > </a
+      ><a name="961" class="Symbol"
+      >_</a
+      ><a name="962"
+      > </a
+      ><a name="963" href="Relation.Binary.On.html#963" class="Bound"
+      >trans</a
+      ><a name="968"
+      > </a
+      ><a name="969" class="Symbol"
+      >=</a
+      ><a name="970"
+      > </a
+      ><a name="971" href="Relation.Binary.On.html#963" class="Bound"
+      >trans</a
+      ><a name="976"
+      >
+
+  </a
+      ><a name="980" href="Relation.Binary.On.html#980" class="Function"
+      >antisymmetric</a
+      ><a name="993"
+      > </a
+      ><a name="994" class="Symbol"
+      >:</a
+      ><a name="995"
+      > </a
+      ><a name="996" class="Symbol"
+      >&#8704;</a
+      ><a name="997"
+      > </a
+      ><a name="998" class="Symbol"
+      >{</a
+      ><a name="999" href="Relation.Binary.On.html#999" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="1001"
+      > </a
+      ><a name="1002" href="Relation.Binary.On.html#1002" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="1004" class="Symbol"
+      >}</a
+      ><a name="1005"
+      > </a
+      ><a name="1006" class="Symbol"
+      >(</a
+      ><a name="1007" href="Relation.Binary.On.html#1007" class="Bound"
+      >&#8776;</a
+      ><a name="1008"
+      > </a
+      ><a name="1009" class="Symbol"
+      >:</a
+      ><a name="1010"
+      > </a
+      ><a name="1011" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="1014"
+      > </a
+      ><a name="1015" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="1016"
+      > </a
+      ><a name="1017" href="Relation.Binary.On.html#999" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="1019" class="Symbol"
+      >)</a
+      ><a name="1020"
+      > </a
+      ><a name="1021" class="Symbol"
+      >(</a
+      ><a name="1022" href="Relation.Binary.On.html#1022" class="Bound"
+      >&#8804;</a
+      ><a name="1023"
+      > </a
+      ><a name="1024" class="Symbol"
+      >:</a
+      ><a name="1025"
+      > </a
+      ><a name="1026" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="1029"
+      > </a
+      ><a name="1030" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="1031"
+      > </a
+      ><a name="1032" href="Relation.Binary.On.html#1002" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="1034" class="Symbol"
+      >)</a
+      ><a name="1035"
+      > </a
+      ><a name="1036" class="Symbol"
+      >&#8594;</a
+      ><a name="1037"
+      >
+                  </a
+      ><a name="1056" href="Relation.Binary.Core.html#2880" class="Function"
+      >Antisymmetric</a
+      ><a name="1069"
+      > </a
+      ><a name="1070" href="Relation.Binary.On.html#1007" class="Bound"
+      >&#8776;</a
+      ><a name="1071"
+      > </a
+      ><a name="1072" href="Relation.Binary.On.html#1022" class="Bound"
+      >&#8804;</a
+      ><a name="1073"
+      > </a
+      ><a name="1074" class="Symbol"
+      >&#8594;</a
+      ><a name="1075"
+      > </a
+      ><a name="1076" href="Relation.Binary.Core.html#2880" class="Function"
+      >Antisymmetric</a
+      ><a name="1089"
+      > </a
+      ><a name="1090" class="Symbol"
+      >(</a
+      ><a name="1091" href="Relation.Binary.On.html#1007" class="Bound"
+      >&#8776;</a
+      ><a name="1092"
+      > </a
+      ><a name="1093" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="1095"
+      > </a
+      ><a name="1096" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1097" class="Symbol"
+      >)</a
+      ><a name="1098"
+      > </a
+      ><a name="1099" class="Symbol"
+      >(</a
+      ><a name="1100" href="Relation.Binary.On.html#1022" class="Bound"
+      >&#8804;</a
+      ><a name="1101"
+      > </a
+      ><a name="1102" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="1104"
+      > </a
+      ><a name="1105" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1106" class="Symbol"
+      >)</a
+      ><a name="1107"
+      >
+  </a
+      ><a name="1110" href="Relation.Binary.On.html#980" class="Function"
+      >antisymmetric</a
+      ><a name="1123"
+      > </a
+      ><a name="1124" class="Symbol"
+      >_</a
+      ><a name="1125"
+      > </a
+      ><a name="1126" class="Symbol"
+      >_</a
+      ><a name="1127"
+      > </a
+      ><a name="1128" href="Relation.Binary.On.html#1128" class="Bound"
+      >antisym</a
+      ><a name="1135"
+      > </a
+      ><a name="1136" class="Symbol"
+      >=</a
+      ><a name="1137"
+      > </a
+      ><a name="1138" href="Relation.Binary.On.html#1128" class="Bound"
+      >antisym</a
+      ><a name="1145"
+      >
+
+  </a
+      ><a name="1149" href="Relation.Binary.On.html#1149" class="Function"
+      >asymmetric</a
+      ><a name="1159"
+      > </a
+      ><a name="1160" class="Symbol"
+      >:</a
+      ><a name="1161"
+      > </a
+      ><a name="1162" class="Symbol"
+      >&#8704;</a
+      ><a name="1163"
+      > </a
+      ><a name="1164" class="Symbol"
+      >{</a
+      ><a name="1165" href="Relation.Binary.On.html#1165" class="Bound"
+      >&#8467;</a
+      ><a name="1166" class="Symbol"
+      >}</a
+      ><a name="1167"
+      > </a
+      ><a name="1168" class="Symbol"
+      >(</a
+      ><a name="1169" href="Relation.Binary.On.html#1169" class="Bound"
+      >&lt;</a
+      ><a name="1170"
+      > </a
+      ><a name="1171" class="Symbol"
+      >:</a
+      ><a name="1172"
+      > </a
+      ><a name="1173" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="1176"
+      > </a
+      ><a name="1177" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="1178"
+      > </a
+      ><a name="1179" href="Relation.Binary.On.html#1165" class="Bound"
+      >&#8467;</a
+      ><a name="1180" class="Symbol"
+      >)</a
+      ><a name="1181"
+      > </a
+      ><a name="1182" class="Symbol"
+      >&#8594;</a
+      ><a name="1183"
+      > </a
+      ><a name="1184" href="Relation.Binary.Core.html#3007" class="Function"
+      >Asymmetric</a
+      ><a name="1194"
+      > </a
+      ><a name="1195" href="Relation.Binary.On.html#1169" class="Bound"
+      >&lt;</a
+      ><a name="1196"
+      > </a
+      ><a name="1197" class="Symbol"
+      >&#8594;</a
+      ><a name="1198"
+      > </a
+      ><a name="1199" href="Relation.Binary.Core.html#3007" class="Function"
+      >Asymmetric</a
+      ><a name="1209"
+      > </a
+      ><a name="1210" class="Symbol"
+      >(</a
+      ><a name="1211" href="Relation.Binary.On.html#1169" class="Bound"
+      >&lt;</a
+      ><a name="1212"
+      > </a
+      ><a name="1213" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="1215"
+      > </a
+      ><a name="1216" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1217" class="Symbol"
+      >)</a
+      ><a name="1218"
+      >
+  </a
+      ><a name="1221" href="Relation.Binary.On.html#1149" class="Function"
+      >asymmetric</a
+      ><a name="1231"
+      > </a
+      ><a name="1232" class="Symbol"
+      >_</a
+      ><a name="1233"
+      > </a
+      ><a name="1234" href="Relation.Binary.On.html#1234" class="Bound"
+      >asym</a
+      ><a name="1238"
+      > </a
+      ><a name="1239" class="Symbol"
+      >=</a
+      ><a name="1240"
+      > </a
+      ><a name="1241" href="Relation.Binary.On.html#1234" class="Bound"
+      >asym</a
+      ><a name="1245"
+      >
+
+  </a
+      ><a name="1249" href="Relation.Binary.On.html#1249" class="Function"
+      >respects</a
+      ><a name="1257"
+      > </a
+      ><a name="1258" class="Symbol"
+      >:</a
+      ><a name="1259"
+      > </a
+      ><a name="1260" class="Symbol"
+      >&#8704;</a
+      ><a name="1261"
+      > </a
+      ><a name="1262" class="Symbol"
+      >{</a
+      ><a name="1263" href="Relation.Binary.On.html#1263" class="Bound"
+      >&#8467;</a
+      ><a name="1264"
+      > </a
+      ><a name="1265" href="Relation.Binary.On.html#1265" class="Bound"
+      >p</a
+      ><a name="1266" class="Symbol"
+      >}</a
+      ><a name="1267"
+      > </a
+      ><a name="1268" class="Symbol"
+      >(</a
+      ><a name="1269" href="Relation.Binary.On.html#1269" class="Bound"
+      >&#8764;</a
+      ><a name="1270"
+      > </a
+      ><a name="1271" class="Symbol"
+      >:</a
+      ><a name="1272"
+      > </a
+      ><a name="1273" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="1276"
+      > </a
+      ><a name="1277" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="1278"
+      > </a
+      ><a name="1279" href="Relation.Binary.On.html#1263" class="Bound"
+      >&#8467;</a
+      ><a name="1280" class="Symbol"
+      >)</a
+      ><a name="1281"
+      > </a
+      ><a name="1282" class="Symbol"
+      >(</a
+      ><a name="1283" href="Relation.Binary.On.html#1283" class="Bound"
+      >P</a
+      ><a name="1284"
+      > </a
+      ><a name="1285" class="Symbol"
+      >:</a
+      ><a name="1286"
+      > </a
+      ><a name="1287" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="1288"
+      > </a
+      ><a name="1289" class="Symbol"
+      >&#8594;</a
+      ><a name="1290"
+      > </a
+      ><a name="1291" class="PrimitiveType"
+      >Set</a
+      ><a name="1294"
+      > </a
+      ><a name="1295" href="Relation.Binary.On.html#1265" class="Bound"
+      >p</a
+      ><a name="1296" class="Symbol"
+      >)</a
+      ><a name="1297"
+      > </a
+      ><a name="1298" class="Symbol"
+      >&#8594;</a
+      ><a name="1299"
+      >
+             </a
+      ><a name="1313" href="Relation.Binary.On.html#1283" class="Bound"
+      >P</a
+      ><a name="1314"
+      > </a
+      ><a name="1315" href="Relation.Binary.Core.html#3104" class="Function Operator"
+      >Respects</a
+      ><a name="1323"
+      > </a
+      ><a name="1324" href="Relation.Binary.On.html#1269" class="Bound"
+      >&#8764;</a
+      ><a name="1325"
+      > </a
+      ><a name="1326" class="Symbol"
+      >&#8594;</a
+      ><a name="1327"
+      > </a
+      ><a name="1328" class="Symbol"
+      >(</a
+      ><a name="1329" href="Relation.Binary.On.html#1283" class="Bound"
+      >P</a
+      ><a name="1330"
+      > </a
+      ><a name="1331" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="1332"
+      > </a
+      ><a name="1333" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1334" class="Symbol"
+      >)</a
+      ><a name="1335"
+      > </a
+      ><a name="1336" href="Relation.Binary.Core.html#3104" class="Function Operator"
+      >Respects</a
+      ><a name="1344"
+      > </a
+      ><a name="1345" class="Symbol"
+      >(</a
+      ><a name="1346" href="Relation.Binary.On.html#1269" class="Bound"
+      >&#8764;</a
+      ><a name="1347"
+      > </a
+      ><a name="1348" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="1350"
+      > </a
+      ><a name="1351" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1352" class="Symbol"
+      >)</a
+      ><a name="1353"
+      >
+  </a
+      ><a name="1356" href="Relation.Binary.On.html#1249" class="Function"
+      >respects</a
+      ><a name="1364"
+      > </a
+      ><a name="1365" class="Symbol"
+      >_</a
+      ><a name="1366"
+      > </a
+      ><a name="1367" class="Symbol"
+      >_</a
+      ><a name="1368"
+      > </a
+      ><a name="1369" href="Relation.Binary.On.html#1369" class="Bound"
+      >resp</a
+      ><a name="1373"
+      > </a
+      ><a name="1374" class="Symbol"
+      >=</a
+      ><a name="1375"
+      > </a
+      ><a name="1376" href="Relation.Binary.On.html#1369" class="Bound"
+      >resp</a
+      ><a name="1380"
+      >
+
+  </a
+      ><a name="1384" href="Relation.Binary.On.html#1384" class="Function"
+      >respects&#8322;</a
+      ><a name="1393"
+      > </a
+      ><a name="1394" class="Symbol"
+      >:</a
+      ><a name="1395"
+      > </a
+      ><a name="1396" class="Symbol"
+      >&#8704;</a
+      ><a name="1397"
+      > </a
+      ><a name="1398" class="Symbol"
+      >{</a
+      ><a name="1399" href="Relation.Binary.On.html#1399" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="1401"
+      > </a
+      ><a name="1402" href="Relation.Binary.On.html#1402" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="1404" class="Symbol"
+      >}</a
+      ><a name="1405"
+      > </a
+      ><a name="1406" class="Symbol"
+      >(</a
+      ><a name="1407" href="Relation.Binary.On.html#1407" class="Bound"
+      >&#8764;&#8321;</a
+      ><a name="1409"
+      > </a
+      ><a name="1410" class="Symbol"
+      >:</a
+      ><a name="1411"
+      > </a
+      ><a name="1412" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="1415"
+      > </a
+      ><a name="1416" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="1417"
+      > </a
+      ><a name="1418" href="Relation.Binary.On.html#1399" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="1420" class="Symbol"
+      >)</a
+      ><a name="1421"
+      > </a
+      ><a name="1422" class="Symbol"
+      >(</a
+      ><a name="1423" href="Relation.Binary.On.html#1423" class="Bound"
+      >&#8764;&#8322;</a
+      ><a name="1425"
+      > </a
+      ><a name="1426" class="Symbol"
+      >:</a
+      ><a name="1427"
+      > </a
+      ><a name="1428" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="1431"
+      > </a
+      ><a name="1432" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="1433"
+      > </a
+      ><a name="1434" href="Relation.Binary.On.html#1402" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="1436" class="Symbol"
+      >)</a
+      ><a name="1437"
+      > </a
+      ><a name="1438" class="Symbol"
+      >&#8594;</a
+      ><a name="1439"
+      >
+              </a
+      ><a name="1454" href="Relation.Binary.On.html#1407" class="Bound"
+      >&#8764;&#8321;</a
+      ><a name="1456"
+      > </a
+      ><a name="1457" href="Relation.Binary.Core.html#3221" class="Function Operator"
+      >Respects&#8322;</a
+      ><a name="1466"
+      > </a
+      ><a name="1467" href="Relation.Binary.On.html#1423" class="Bound"
+      >&#8764;&#8322;</a
+      ><a name="1469"
+      > </a
+      ><a name="1470" class="Symbol"
+      >&#8594;</a
+      ><a name="1471"
+      > </a
+      ><a name="1472" class="Symbol"
+      >(</a
+      ><a name="1473" href="Relation.Binary.On.html#1407" class="Bound"
+      >&#8764;&#8321;</a
+      ><a name="1475"
+      > </a
+      ><a name="1476" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="1478"
+      > </a
+      ><a name="1479" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1480" class="Symbol"
+      >)</a
+      ><a name="1481"
+      > </a
+      ><a name="1482" href="Relation.Binary.Core.html#3221" class="Function Operator"
+      >Respects&#8322;</a
+      ><a name="1491"
+      > </a
+      ><a name="1492" class="Symbol"
+      >(</a
+      ><a name="1493" href="Relation.Binary.On.html#1423" class="Bound"
+      >&#8764;&#8322;</a
+      ><a name="1495"
+      > </a
+      ><a name="1496" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="1498"
+      > </a
+      ><a name="1499" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1500" class="Symbol"
+      >)</a
+      ><a name="1501"
+      >
+  </a
+      ><a name="1504" href="Relation.Binary.On.html#1384" class="Function"
+      >respects&#8322;</a
+      ><a name="1513"
+      > </a
+      ><a name="1514" class="Symbol"
+      >_</a
+      ><a name="1515"
+      > </a
+      ><a name="1516" class="Symbol"
+      >_</a
+      ><a name="1517"
+      > </a
+      ><a name="1518" class="Symbol"
+      >(</a
+      ><a name="1519" href="Relation.Binary.On.html#1519" class="Bound"
+      >resp&#8321;</a
+      ><a name="1524"
+      > </a
+      ><a name="1525" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1526"
+      > </a
+      ><a name="1527" href="Relation.Binary.On.html#1527" class="Bound"
+      >resp&#8322;</a
+      ><a name="1532" class="Symbol"
+      >)</a
+      ><a name="1533"
+      > </a
+      ><a name="1534" class="Symbol"
+      >=</a
+      ><a name="1535"
+      >
+    </a
+      ><a name="1540" class="Symbol"
+      >((&#955;</a
+      ><a name="1543"
+      > </a
+      ><a name="1544" class="Symbol"
+      >{</a
+      ><a name="1545" href="Relation.Binary.On.html#1545" class="Bound"
+      >_</a
+      ><a name="1546" class="Symbol"
+      >}</a
+      ><a name="1547"
+      > </a
+      ><a name="1548" class="Symbol"
+      >{</a
+      ><a name="1549" href="Relation.Binary.On.html#1549" class="Bound"
+      >_</a
+      ><a name="1550" class="Symbol"
+      >}</a
+      ><a name="1551"
+      > </a
+      ><a name="1552" class="Symbol"
+      >{</a
+      ><a name="1553" href="Relation.Binary.On.html#1553" class="Bound"
+      >_</a
+      ><a name="1554" class="Symbol"
+      >}</a
+      ><a name="1555"
+      > </a
+      ><a name="1556" class="Symbol"
+      >&#8594;</a
+      ><a name="1557"
+      > </a
+      ><a name="1558" href="Relation.Binary.On.html#1519" class="Bound"
+      >resp&#8321;</a
+      ><a name="1563" class="Symbol"
+      >)</a
+      ><a name="1564"
+      > </a
+      ><a name="1565" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1566"
+      > </a
+      ><a name="1567" class="Symbol"
+      >&#955;</a
+      ><a name="1568"
+      > </a
+      ><a name="1569" class="Symbol"
+      >{</a
+      ><a name="1570" href="Relation.Binary.On.html#1570" class="Bound"
+      >_</a
+      ><a name="1571" class="Symbol"
+      >}</a
+      ><a name="1572"
+      > </a
+      ><a name="1573" class="Symbol"
+      >{</a
+      ><a name="1574" href="Relation.Binary.On.html#1574" class="Bound"
+      >_</a
+      ><a name="1575" class="Symbol"
+      >}</a
+      ><a name="1576"
+      > </a
+      ><a name="1577" class="Symbol"
+      >{</a
+      ><a name="1578" href="Relation.Binary.On.html#1578" class="Bound"
+      >_</a
+      ><a name="1579" class="Symbol"
+      >}</a
+      ><a name="1580"
+      > </a
+      ><a name="1581" class="Symbol"
+      >&#8594;</a
+      ><a name="1582"
+      > </a
+      ><a name="1583" href="Relation.Binary.On.html#1527" class="Bound"
+      >resp&#8322;</a
+      ><a name="1588" class="Symbol"
+      >)</a
+      ><a name="1589"
+      >
+
+  </a
+      ><a name="1593" href="Relation.Binary.On.html#1593" class="Function"
+      >decidable</a
+      ><a name="1602"
+      > </a
+      ><a name="1603" class="Symbol"
+      >:</a
+      ><a name="1604"
+      > </a
+      ><a name="1605" class="Symbol"
+      >&#8704;</a
+      ><a name="1606"
+      > </a
+      ><a name="1607" class="Symbol"
+      >{</a
+      ><a name="1608" href="Relation.Binary.On.html#1608" class="Bound"
+      >&#8467;</a
+      ><a name="1609" class="Symbol"
+      >}</a
+      ><a name="1610"
+      > </a
+      ><a name="1611" class="Symbol"
+      >(</a
+      ><a name="1612" href="Relation.Binary.On.html#1612" class="Bound"
+      >&#8764;</a
+      ><a name="1613"
+      > </a
+      ><a name="1614" class="Symbol"
+      >:</a
+      ><a name="1615"
+      > </a
+      ><a name="1616" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="1619"
+      > </a
+      ><a name="1620" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="1621"
+      > </a
+      ><a name="1622" href="Relation.Binary.On.html#1608" class="Bound"
+      >&#8467;</a
+      ><a name="1623" class="Symbol"
+      >)</a
+      ><a name="1624"
+      > </a
+      ><a name="1625" class="Symbol"
+      >&#8594;</a
+      ><a name="1626"
+      > </a
+      ><a name="1627" href="Relation.Binary.Core.html#3511" class="Function"
+      >Decidable</a
+      ><a name="1636"
+      > </a
+      ><a name="1637" href="Relation.Binary.On.html#1612" class="Bound"
+      >&#8764;</a
+      ><a name="1638"
+      > </a
+      ><a name="1639" class="Symbol"
+      >&#8594;</a
+      ><a name="1640"
+      > </a
+      ><a name="1641" href="Relation.Binary.Core.html#3511" class="Function"
+      >Decidable</a
+      ><a name="1650"
+      > </a
+      ><a name="1651" class="Symbol"
+      >(</a
+      ><a name="1652" href="Relation.Binary.On.html#1612" class="Bound"
+      >&#8764;</a
+      ><a name="1653"
+      > </a
+      ><a name="1654" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="1656"
+      > </a
+      ><a name="1657" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1658" class="Symbol"
+      >)</a
+      ><a name="1659"
+      >
+  </a
+      ><a name="1662" href="Relation.Binary.On.html#1593" class="Function"
+      >decidable</a
+      ><a name="1671"
+      > </a
+      ><a name="1672" class="Symbol"
+      >_</a
+      ><a name="1673"
+      > </a
+      ><a name="1674" href="Relation.Binary.On.html#1674" class="Bound"
+      >dec</a
+      ><a name="1677"
+      > </a
+      ><a name="1678" class="Symbol"
+      >=</a
+      ><a name="1679"
+      > </a
+      ><a name="1680" class="Symbol"
+      >&#955;</a
+      ><a name="1681"
+      > </a
+      ><a name="1682" href="Relation.Binary.On.html#1682" class="Bound"
+      >x</a
+      ><a name="1683"
+      > </a
+      ><a name="1684" href="Relation.Binary.On.html#1684" class="Bound"
+      >y</a
+      ><a name="1685"
+      > </a
+      ><a name="1686" class="Symbol"
+      >&#8594;</a
+      ><a name="1687"
+      > </a
+      ><a name="1688" href="Relation.Binary.On.html#1674" class="Bound"
+      >dec</a
+      ><a name="1691"
+      > </a
+      ><a name="1692" class="Symbol"
+      >(</a
+      ><a name="1693" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1694"
+      > </a
+      ><a name="1695" href="Relation.Binary.On.html#1682" class="Bound"
+      >x</a
+      ><a name="1696" class="Symbol"
+      >)</a
+      ><a name="1697"
+      > </a
+      ><a name="1698" class="Symbol"
+      >(</a
+      ><a name="1699" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1700"
+      > </a
+      ><a name="1701" href="Relation.Binary.On.html#1684" class="Bound"
+      >y</a
+      ><a name="1702" class="Symbol"
+      >)</a
+      ><a name="1703"
+      >
+
+  </a
+      ><a name="1707" href="Relation.Binary.On.html#1707" class="Function"
+      >total</a
+      ><a name="1712"
+      > </a
+      ><a name="1713" class="Symbol"
+      >:</a
+      ><a name="1714"
+      > </a
+      ><a name="1715" class="Symbol"
+      >&#8704;</a
+      ><a name="1716"
+      > </a
+      ><a name="1717" class="Symbol"
+      >{</a
+      ><a name="1718" href="Relation.Binary.On.html#1718" class="Bound"
+      >&#8467;</a
+      ><a name="1719" class="Symbol"
+      >}</a
+      ><a name="1720"
+      > </a
+      ><a name="1721" class="Symbol"
+      >(</a
+      ><a name="1722" href="Relation.Binary.On.html#1722" class="Bound"
+      >&#8764;</a
+      ><a name="1723"
+      > </a
+      ><a name="1724" class="Symbol"
+      >:</a
+      ><a name="1725"
+      > </a
+      ><a name="1726" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="1729"
+      > </a
+      ><a name="1730" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="1731"
+      > </a
+      ><a name="1732" href="Relation.Binary.On.html#1718" class="Bound"
+      >&#8467;</a
+      ><a name="1733" class="Symbol"
+      >)</a
+      ><a name="1734"
+      > </a
+      ><a name="1735" class="Symbol"
+      >&#8594;</a
+      ><a name="1736"
+      > </a
+      ><a name="1737" href="Relation.Binary.Core.html#3614" class="Function"
+      >Total</a
+      ><a name="1742"
+      > </a
+      ><a name="1743" href="Relation.Binary.On.html#1722" class="Bound"
+      >&#8764;</a
+      ><a name="1744"
+      > </a
+      ><a name="1745" class="Symbol"
+      >&#8594;</a
+      ><a name="1746"
+      > </a
+      ><a name="1747" href="Relation.Binary.Core.html#3614" class="Function"
+      >Total</a
+      ><a name="1752"
+      > </a
+      ><a name="1753" class="Symbol"
+      >(</a
+      ><a name="1754" href="Relation.Binary.On.html#1722" class="Bound"
+      >&#8764;</a
+      ><a name="1755"
+      > </a
+      ><a name="1756" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="1758"
+      > </a
+      ><a name="1759" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1760" class="Symbol"
+      >)</a
+      ><a name="1761"
+      >
+  </a
+      ><a name="1764" href="Relation.Binary.On.html#1707" class="Function"
+      >total</a
+      ><a name="1769"
+      > </a
+      ><a name="1770" class="Symbol"
+      >_</a
+      ><a name="1771"
+      > </a
+      ><a name="1772" href="Relation.Binary.On.html#1772" class="Bound"
+      >tot</a
+      ><a name="1775"
+      > </a
+      ><a name="1776" class="Symbol"
+      >=</a
+      ><a name="1777"
+      > </a
+      ><a name="1778" class="Symbol"
+      >&#955;</a
+      ><a name="1779"
+      > </a
+      ><a name="1780" href="Relation.Binary.On.html#1780" class="Bound"
+      >x</a
+      ><a name="1781"
+      > </a
+      ><a name="1782" href="Relation.Binary.On.html#1782" class="Bound"
+      >y</a
+      ><a name="1783"
+      > </a
+      ><a name="1784" class="Symbol"
+      >&#8594;</a
+      ><a name="1785"
+      > </a
+      ><a name="1786" href="Relation.Binary.On.html#1772" class="Bound"
+      >tot</a
+      ><a name="1789"
+      > </a
+      ><a name="1790" class="Symbol"
+      >(</a
+      ><a name="1791" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1792"
+      > </a
+      ><a name="1793" href="Relation.Binary.On.html#1780" class="Bound"
+      >x</a
+      ><a name="1794" class="Symbol"
+      >)</a
+      ><a name="1795"
+      > </a
+      ><a name="1796" class="Symbol"
+      >(</a
+      ><a name="1797" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1798"
+      > </a
+      ><a name="1799" href="Relation.Binary.On.html#1782" class="Bound"
+      >y</a
+      ><a name="1800" class="Symbol"
+      >)</a
+      ><a name="1801"
+      >
+
+  </a
+      ><a name="1805" href="Relation.Binary.On.html#1805" class="Function"
+      >trichotomous</a
+      ><a name="1817"
+      > </a
+      ><a name="1818" class="Symbol"
+      >:</a
+      ><a name="1819"
+      > </a
+      ><a name="1820" class="Symbol"
+      >&#8704;</a
+      ><a name="1821"
+      > </a
+      ><a name="1822" class="Symbol"
+      >{</a
+      ><a name="1823" href="Relation.Binary.On.html#1823" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="1825"
+      > </a
+      ><a name="1826" href="Relation.Binary.On.html#1826" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="1828" class="Symbol"
+      >}</a
+      ><a name="1829"
+      > </a
+      ><a name="1830" class="Symbol"
+      >(</a
+      ><a name="1831" href="Relation.Binary.On.html#1831" class="Bound"
+      >&#8776;</a
+      ><a name="1832"
+      > </a
+      ><a name="1833" class="Symbol"
+      >:</a
+      ><a name="1834"
+      > </a
+      ><a name="1835" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="1838"
+      > </a
+      ><a name="1839" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="1840"
+      > </a
+      ><a name="1841" href="Relation.Binary.On.html#1823" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="1843" class="Symbol"
+      >)</a
+      ><a name="1844"
+      > </a
+      ><a name="1845" class="Symbol"
+      >(</a
+      ><a name="1846" href="Relation.Binary.On.html#1846" class="Bound"
+      >&lt;</a
+      ><a name="1847"
+      > </a
+      ><a name="1848" class="Symbol"
+      >:</a
+      ><a name="1849"
+      > </a
+      ><a name="1850" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="1853"
+      > </a
+      ><a name="1854" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="1855"
+      > </a
+      ><a name="1856" href="Relation.Binary.On.html#1826" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="1858" class="Symbol"
+      >)</a
+      ><a name="1859"
+      > </a
+      ><a name="1860" class="Symbol"
+      >&#8594;</a
+      ><a name="1861"
+      >
+                 </a
+      ><a name="1879" href="Relation.Binary.Core.html#3948" class="Function"
+      >Trichotomous</a
+      ><a name="1891"
+      > </a
+      ><a name="1892" href="Relation.Binary.On.html#1831" class="Bound"
+      >&#8776;</a
+      ><a name="1893"
+      > </a
+      ><a name="1894" href="Relation.Binary.On.html#1846" class="Bound"
+      >&lt;</a
+      ><a name="1895"
+      > </a
+      ><a name="1896" class="Symbol"
+      >&#8594;</a
+      ><a name="1897"
+      > </a
+      ><a name="1898" href="Relation.Binary.Core.html#3948" class="Function"
+      >Trichotomous</a
+      ><a name="1910"
+      > </a
+      ><a name="1911" class="Symbol"
+      >(</a
+      ><a name="1912" href="Relation.Binary.On.html#1831" class="Bound"
+      >&#8776;</a
+      ><a name="1913"
+      > </a
+      ><a name="1914" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="1916"
+      > </a
+      ><a name="1917" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1918" class="Symbol"
+      >)</a
+      ><a name="1919"
+      > </a
+      ><a name="1920" class="Symbol"
+      >(</a
+      ><a name="1921" href="Relation.Binary.On.html#1846" class="Bound"
+      >&lt;</a
+      ><a name="1922"
+      > </a
+      ><a name="1923" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="1925"
+      > </a
+      ><a name="1926" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1927" class="Symbol"
+      >)</a
+      ><a name="1928"
+      >
+  </a
+      ><a name="1931" href="Relation.Binary.On.html#1805" class="Function"
+      >trichotomous</a
+      ><a name="1943"
+      > </a
+      ><a name="1944" class="Symbol"
+      >_</a
+      ><a name="1945"
+      > </a
+      ><a name="1946" class="Symbol"
+      >_</a
+      ><a name="1947"
+      > </a
+      ><a name="1948" href="Relation.Binary.On.html#1948" class="Bound"
+      >compare</a
+      ><a name="1955"
+      > </a
+      ><a name="1956" class="Symbol"
+      >=</a
+      ><a name="1957"
+      > </a
+      ><a name="1958" class="Symbol"
+      >&#955;</a
+      ><a name="1959"
+      > </a
+      ><a name="1960" href="Relation.Binary.On.html#1960" class="Bound"
+      >x</a
+      ><a name="1961"
+      > </a
+      ><a name="1962" href="Relation.Binary.On.html#1962" class="Bound"
+      >y</a
+      ><a name="1963"
+      > </a
+      ><a name="1964" class="Symbol"
+      >&#8594;</a
+      ><a name="1965"
+      > </a
+      ><a name="1966" href="Relation.Binary.On.html#1948" class="Bound"
+      >compare</a
+      ><a name="1973"
+      > </a
+      ><a name="1974" class="Symbol"
+      >(</a
+      ><a name="1975" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1976"
+      > </a
+      ><a name="1977" href="Relation.Binary.On.html#1960" class="Bound"
+      >x</a
+      ><a name="1978" class="Symbol"
+      >)</a
+      ><a name="1979"
+      > </a
+      ><a name="1980" class="Symbol"
+      >(</a
+      ><a name="1981" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="1982"
+      > </a
+      ><a name="1983" href="Relation.Binary.On.html#1962" class="Bound"
+      >y</a
+      ><a name="1984" class="Symbol"
+      >)</a
+      ><a name="1985"
+      >
+
+  </a
+      ><a name="1989" href="Relation.Binary.On.html#1989" class="Function"
+      >isEquivalence</a
+      ><a name="2002"
+      > </a
+      ><a name="2003" class="Symbol"
+      >:</a
+      ><a name="2004"
+      > </a
+      ><a name="2005" class="Symbol"
+      >&#8704;</a
+      ><a name="2006"
+      > </a
+      ><a name="2007" class="Symbol"
+      >{</a
+      ><a name="2008" href="Relation.Binary.On.html#2008" class="Bound"
+      >&#8467;</a
+      ><a name="2009" class="Symbol"
+      >}</a
+      ><a name="2010"
+      > </a
+      ><a name="2011" class="Symbol"
+      >{</a
+      ><a name="2012" href="Relation.Binary.On.html#2012" class="Bound"
+      >&#8776;</a
+      ><a name="2013"
+      > </a
+      ><a name="2014" class="Symbol"
+      >:</a
+      ><a name="2015"
+      > </a
+      ><a name="2016" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="2019"
+      > </a
+      ><a name="2020" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="2021"
+      > </a
+      ><a name="2022" href="Relation.Binary.On.html#2008" class="Bound"
+      >&#8467;</a
+      ><a name="2023" class="Symbol"
+      >}</a
+      ><a name="2024"
+      > </a
+      ><a name="2025" class="Symbol"
+      >&#8594;</a
+      ><a name="2026"
+      >
+                  </a
+      ><a name="2045" href="Relation.Binary.Core.html#5084" class="Record"
+      >IsEquivalence</a
+      ><a name="2058"
+      > </a
+      ><a name="2059" href="Relation.Binary.On.html#2012" class="Bound"
+      >&#8776;</a
+      ><a name="2060"
+      > </a
+      ><a name="2061" class="Symbol"
+      >&#8594;</a
+      ><a name="2062"
+      > </a
+      ><a name="2063" href="Relation.Binary.Core.html#5084" class="Record"
+      >IsEquivalence</a
+      ><a name="2076"
+      > </a
+      ><a name="2077" class="Symbol"
+      >(</a
+      ><a name="2078" href="Relation.Binary.On.html#2012" class="Bound"
+      >&#8776;</a
+      ><a name="2079"
+      > </a
+      ><a name="2080" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="2082"
+      > </a
+      ><a name="2083" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="2084" class="Symbol"
+      >)</a
+      ><a name="2085"
+      >
+  </a
+      ><a name="2088" href="Relation.Binary.On.html#1989" class="Function"
+      >isEquivalence</a
+      ><a name="2101"
+      > </a
+      ><a name="2102" class="Symbol"
+      >{</a
+      ><a name="2103" class="Argument"
+      >&#8776;</a
+      ><a name="2104"
+      > </a
+      ><a name="2105" class="Symbol"
+      >=</a
+      ><a name="2106"
+      > </a
+      ><a name="2107" href="Relation.Binary.On.html#2107" class="Bound"
+      >&#8776;</a
+      ><a name="2108" class="Symbol"
+      >}</a
+      ><a name="2109"
+      > </a
+      ><a name="2110" href="Relation.Binary.On.html#2110" class="Bound"
+      >eq</a
+      ><a name="2112"
+      > </a
+      ><a name="2113" class="Symbol"
+      >=</a
+      ><a name="2114"
+      > </a
+      ><a name="2115" class="Keyword"
+      >record</a
+      ><a name="2121"
+      >
+    </a
+      ><a name="2126" class="Symbol"
+      >{</a
+      ><a name="2127"
+      > </a
+      ><a name="2128" class="Field"
+      >refl</a
+      ><a name="2132"
+      >  </a
+      ><a name="2134" class="Symbol"
+      >=</a
+      ><a name="2135"
+      > </a
+      ><a name="2136" href="Relation.Binary.On.html#531" class="Function"
+      >reflexive</a
+      ><a name="2145"
+      >  </a
+      ><a name="2147" href="Relation.Binary.On.html#2107" class="Bound"
+      >&#8776;</a
+      ><a name="2148"
+      > </a
+      ><a name="2149" href="Relation.Binary.Core.html#5185" class="Function"
+      >Eq.refl</a
+      ><a name="2156"
+      >
+    </a
+      ><a name="2161" class="Symbol"
+      >;</a
+      ><a name="2162"
+      > </a
+      ><a name="2163" class="Field"
+      >sym</a
+      ><a name="2166"
+      >   </a
+      ><a name="2169" class="Symbol"
+      >=</a
+      ><a name="2170"
+      > </a
+      ><a name="2171" href="Relation.Binary.On.html#784" class="Function"
+      >symmetric</a
+      ><a name="2180"
+      >  </a
+      ><a name="2182" href="Relation.Binary.On.html#2107" class="Bound"
+      >&#8776;</a
+      ><a name="2183"
+      > </a
+      ><a name="2184" href="Relation.Binary.Core.html#5211" class="Function"
+      >Eq.sym</a
+      ><a name="2190"
+      >
+    </a
+      ><a name="2195" class="Symbol"
+      >;</a
+      ><a name="2196"
+      > </a
+      ><a name="2197" class="Field"
+      >trans</a
+      ><a name="2202"
+      > </a
+      ><a name="2203" class="Symbol"
+      >=</a
+      ><a name="2204"
+      > </a
+      ><a name="2205" href="Relation.Binary.On.html#878" class="Function"
+      >transitive</a
+      ><a name="2215"
+      > </a
+      ><a name="2216" href="Relation.Binary.On.html#2107" class="Bound"
+      >&#8776;</a
+      ><a name="2217"
+      > </a
+      ><a name="2218" href="Relation.Binary.Core.html#5237" class="Function"
+      >Eq.trans</a
+      ><a name="2226"
+      >
+    </a
+      ><a name="2231" class="Symbol"
+      >}</a
+      ><a name="2232"
+      >
+    </a
+      ><a name="2237" class="Keyword"
+      >where</a
+      ><a name="2242"
+      > </a
+      ><a name="2243" class="Keyword"
+      >module</a
+      ><a name="2249"
+      > </a
+      ><a name="2250" href="Relation.Binary.On.html#2250" class="Module"
+      >Eq</a
+      ><a name="2252"
+      > </a
+      ><a name="2253" class="Symbol"
+      >=</a
+      ><a name="2254"
+      > </a
+      ><a name="2255" href="Relation.Binary.Core.html#5084" class="Module"
+      >IsEquivalence</a
+      ><a name="2268"
+      > </a
+      ><a name="2269" href="Relation.Binary.On.html#2110" class="Bound"
+      >eq</a
+      ><a name="2271"
+      >
+
+  </a
+      ><a name="2275" href="Relation.Binary.On.html#2275" class="Function"
+      >isPreorder</a
+      ><a name="2285"
+      > </a
+      ><a name="2286" class="Symbol"
+      >:</a
+      ><a name="2287"
+      > </a
+      ><a name="2288" class="Symbol"
+      >&#8704;</a
+      ><a name="2289"
+      > </a
+      ><a name="2290" class="Symbol"
+      >{</a
+      ><a name="2291" href="Relation.Binary.On.html#2291" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="2293"
+      > </a
+      ><a name="2294" href="Relation.Binary.On.html#2294" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="2296" class="Symbol"
+      >}</a
+      ><a name="2297"
+      > </a
+      ><a name="2298" class="Symbol"
+      >{</a
+      ><a name="2299" href="Relation.Binary.On.html#2299" class="Bound"
+      >&#8776;</a
+      ><a name="2300"
+      > </a
+      ><a name="2301" class="Symbol"
+      >:</a
+      ><a name="2302"
+      > </a
+      ><a name="2303" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="2306"
+      > </a
+      ><a name="2307" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="2308"
+      > </a
+      ><a name="2309" href="Relation.Binary.On.html#2291" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="2311" class="Symbol"
+      >}</a
+      ><a name="2312"
+      > </a
+      ><a name="2313" class="Symbol"
+      >{</a
+      ><a name="2314" href="Relation.Binary.On.html#2314" class="Bound"
+      >&#8764;</a
+      ><a name="2315"
+      > </a
+      ><a name="2316" class="Symbol"
+      >:</a
+      ><a name="2317"
+      > </a
+      ><a name="2318" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="2321"
+      > </a
+      ><a name="2322" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="2323"
+      > </a
+      ><a name="2324" href="Relation.Binary.On.html#2294" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="2326" class="Symbol"
+      >}</a
+      ><a name="2327"
+      > </a
+      ><a name="2328" class="Symbol"
+      >&#8594;</a
+      ><a name="2329"
+      >
+               </a
+      ><a name="2345" href="Relation.Binary.html#794" class="Record"
+      >IsPreorder</a
+      ><a name="2355"
+      > </a
+      ><a name="2356" href="Relation.Binary.On.html#2299" class="Bound"
+      >&#8776;</a
+      ><a name="2357"
+      > </a
+      ><a name="2358" href="Relation.Binary.On.html#2314" class="Bound"
+      >&#8764;</a
+      ><a name="2359"
+      > </a
+      ><a name="2360" class="Symbol"
+      >&#8594;</a
+      ><a name="2361"
+      > </a
+      ><a name="2362" href="Relation.Binary.html#794" class="Record"
+      >IsPreorder</a
+      ><a name="2372"
+      > </a
+      ><a name="2373" class="Symbol"
+      >(</a
+      ><a name="2374" href="Relation.Binary.On.html#2299" class="Bound"
+      >&#8776;</a
+      ><a name="2375"
+      > </a
+      ><a name="2376" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="2378"
+      > </a
+      ><a name="2379" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="2380" class="Symbol"
+      >)</a
+      ><a name="2381"
+      > </a
+      ><a name="2382" class="Symbol"
+      >(</a
+      ><a name="2383" href="Relation.Binary.On.html#2314" class="Bound"
+      >&#8764;</a
+      ><a name="2384"
+      > </a
+      ><a name="2385" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="2387"
+      > </a
+      ><a name="2388" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="2389" class="Symbol"
+      >)</a
+      ><a name="2390"
+      >
+  </a
+      ><a name="2393" href="Relation.Binary.On.html#2275" class="Function"
+      >isPreorder</a
+      ><a name="2403"
+      > </a
+      ><a name="2404" class="Symbol"
+      >{</a
+      ><a name="2405" class="Argument"
+      >&#8776;</a
+      ><a name="2406"
+      > </a
+      ><a name="2407" class="Symbol"
+      >=</a
+      ><a name="2408"
+      > </a
+      ><a name="2409" href="Relation.Binary.On.html#2409" class="Bound"
+      >&#8776;</a
+      ><a name="2410" class="Symbol"
+      >}</a
+      ><a name="2411"
+      > </a
+      ><a name="2412" class="Symbol"
+      >{</a
+      ><a name="2413" href="Relation.Binary.On.html#2413" class="Bound"
+      >&#8764;</a
+      ><a name="2414" class="Symbol"
+      >}</a
+      ><a name="2415"
+      > </a
+      ><a name="2416" href="Relation.Binary.On.html#2416" class="Bound"
+      >pre</a
+      ><a name="2419"
+      > </a
+      ><a name="2420" class="Symbol"
+      >=</a
+      ><a name="2421"
+      > </a
+      ><a name="2422" class="Keyword"
+      >record</a
+      ><a name="2428"
+      >
+    </a
+      ><a name="2433" class="Symbol"
+      >{</a
+      ><a name="2434"
+      > </a
+      ><a name="2435" class="Field"
+      >isEquivalence</a
+      ><a name="2448"
+      > </a
+      ><a name="2449" class="Symbol"
+      >=</a
+      ><a name="2450"
+      > </a
+      ><a name="2451" href="Relation.Binary.On.html#1989" class="Function"
+      >isEquivalence</a
+      ><a name="2464"
+      > </a
+      ><a name="2465" href="Relation.Binary.html#998" class="Function"
+      >Pre.isEquivalence</a
+      ><a name="2482"
+      >
+    </a
+      ><a name="2487" class="Symbol"
+      >;</a
+      ><a name="2488"
+      > </a
+      ><a name="2489" class="Field"
+      >reflexive</a
+      ><a name="2498"
+      >     </a
+      ><a name="2503" class="Symbol"
+      >=</a
+      ><a name="2504"
+      > </a
+      ><a name="2505" href="Relation.Binary.On.html#410" class="Function"
+      >implies</a
+      ><a name="2512"
+      > </a
+      ><a name="2513" href="Relation.Binary.On.html#2409" class="Bound"
+      >&#8776;</a
+      ><a name="2514"
+      > </a
+      ><a name="2515" href="Relation.Binary.On.html#2413" class="Bound"
+      >&#8764;</a
+      ><a name="2516"
+      > </a
+      ><a name="2517" href="Relation.Binary.html#1104" class="Function"
+      >Pre.reflexive</a
+      ><a name="2530"
+      >
+    </a
+      ><a name="2535" class="Symbol"
+      >;</a
+      ><a name="2536"
+      > </a
+      ><a name="2537" class="Field"
+      >trans</a
+      ><a name="2542"
+      >         </a
+      ><a name="2551" class="Symbol"
+      >=</a
+      ><a name="2552"
+      > </a
+      ><a name="2553" href="Relation.Binary.On.html#878" class="Function"
+      >transitive</a
+      ><a name="2563"
+      > </a
+      ><a name="2564" href="Relation.Binary.On.html#2413" class="Bound"
+      >&#8764;</a
+      ><a name="2565"
+      > </a
+      ><a name="2566" href="Relation.Binary.html#1134" class="Function"
+      >Pre.trans</a
+      ><a name="2575"
+      >
+    </a
+      ><a name="2580" class="Symbol"
+      >}</a
+      ><a name="2581"
+      >
+    </a
+      ><a name="2586" class="Keyword"
+      >where</a
+      ><a name="2591"
+      > </a
+      ><a name="2592" class="Keyword"
+      >module</a
+      ><a name="2598"
+      > </a
+      ><a name="2599" href="Relation.Binary.On.html#2599" class="Module"
+      >Pre</a
+      ><a name="2602"
+      > </a
+      ><a name="2603" class="Symbol"
+      >=</a
+      ><a name="2604"
+      > </a
+      ><a name="2605" href="Relation.Binary.html#794" class="Module"
+      >IsPreorder</a
+      ><a name="2615"
+      > </a
+      ><a name="2616" href="Relation.Binary.On.html#2416" class="Bound"
+      >pre</a
+      ><a name="2619"
+      >
+
+  </a
+      ><a name="2623" href="Relation.Binary.On.html#2623" class="Function"
+      >isDecEquivalence</a
+      ><a name="2639"
+      > </a
+      ><a name="2640" class="Symbol"
+      >:</a
+      ><a name="2641"
+      > </a
+      ><a name="2642" class="Symbol"
+      >&#8704;</a
+      ><a name="2643"
+      > </a
+      ><a name="2644" class="Symbol"
+      >{</a
+      ><a name="2645" href="Relation.Binary.On.html#2645" class="Bound"
+      >&#8467;</a
+      ><a name="2646" class="Symbol"
+      >}</a
+      ><a name="2647"
+      > </a
+      ><a name="2648" class="Symbol"
+      >{</a
+      ><a name="2649" href="Relation.Binary.On.html#2649" class="Bound"
+      >&#8776;</a
+      ><a name="2650"
+      > </a
+      ><a name="2651" class="Symbol"
+      >:</a
+      ><a name="2652"
+      > </a
+      ><a name="2653" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="2656"
+      > </a
+      ><a name="2657" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="2658"
+      > </a
+      ><a name="2659" href="Relation.Binary.On.html#2645" class="Bound"
+      >&#8467;</a
+      ><a name="2660" class="Symbol"
+      >}</a
+      ><a name="2661"
+      > </a
+      ><a name="2662" class="Symbol"
+      >&#8594;</a
+      ><a name="2663"
+      >
+                     </a
+      ><a name="2685" href="Relation.Binary.html#2681" class="Record"
+      >IsDecEquivalence</a
+      ><a name="2701"
+      > </a
+      ><a name="2702" href="Relation.Binary.On.html#2649" class="Bound"
+      >&#8776;</a
+      ><a name="2703"
+      > </a
+      ><a name="2704" class="Symbol"
+      >&#8594;</a
+      ><a name="2705"
+      > </a
+      ><a name="2706" href="Relation.Binary.html#2681" class="Record"
+      >IsDecEquivalence</a
+      ><a name="2722"
+      > </a
+      ><a name="2723" class="Symbol"
+      >(</a
+      ><a name="2724" href="Relation.Binary.On.html#2649" class="Bound"
+      >&#8776;</a
+      ><a name="2725"
+      > </a
+      ><a name="2726" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="2728"
+      > </a
+      ><a name="2729" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="2730" class="Symbol"
+      >)</a
+      ><a name="2731"
+      >
+  </a
+      ><a name="2734" href="Relation.Binary.On.html#2623" class="Function"
+      >isDecEquivalence</a
+      ><a name="2750"
+      > </a
+      ><a name="2751" class="Symbol"
+      >{</a
+      ><a name="2752" class="Argument"
+      >&#8776;</a
+      ><a name="2753"
+      > </a
+      ><a name="2754" class="Symbol"
+      >=</a
+      ><a name="2755"
+      > </a
+      ><a name="2756" href="Relation.Binary.On.html#2756" class="Bound"
+      >&#8776;</a
+      ><a name="2757" class="Symbol"
+      >}</a
+      ><a name="2758"
+      > </a
+      ><a name="2759" href="Relation.Binary.On.html#2759" class="Bound"
+      >dec</a
+      ><a name="2762"
+      > </a
+      ><a name="2763" class="Symbol"
+      >=</a
+      ><a name="2764"
+      > </a
+      ><a name="2765" class="Keyword"
+      >record</a
+      ><a name="2771"
+      >
+    </a
+      ><a name="2776" class="Symbol"
+      >{</a
+      ><a name="2777"
+      > </a
+      ><a name="2778" class="Field"
+      >isEquivalence</a
+      ><a name="2791"
+      > </a
+      ><a name="2792" class="Symbol"
+      >=</a
+      ><a name="2793"
+      > </a
+      ><a name="2794" href="Relation.Binary.On.html#1989" class="Function"
+      >isEquivalence</a
+      ><a name="2807"
+      > </a
+      ><a name="2808" href="Relation.Binary.html#2802" class="Function"
+      >Dec.isEquivalence</a
+      ><a name="2825"
+      >
+    </a
+      ><a name="2830" class="Symbol"
+      >;</a
+      ><a name="2831"
+      > </a
+      ><a name="2832" class="Field Operator"
+      >_&#8799;_</a
+      ><a name="2835"
+      >           </a
+      ><a name="2846" class="Symbol"
+      >=</a
+      ><a name="2847"
+      > </a
+      ><a name="2848" href="Relation.Binary.On.html#1593" class="Function"
+      >decidable</a
+      ><a name="2857"
+      > </a
+      ><a name="2858" href="Relation.Binary.On.html#2756" class="Bound"
+      >&#8776;</a
+      ><a name="2859"
+      > </a
+      ><a name="2860" href="Relation.Binary.html#2840" class="Function Operator"
+      >Dec._&#8799;_</a
+      ><a name="2867"
+      >
+    </a
+      ><a name="2872" class="Symbol"
+      >}</a
+      ><a name="2873"
+      >
+    </a
+      ><a name="2878" class="Keyword"
+      >where</a
+      ><a name="2883"
+      > </a
+      ><a name="2884" class="Keyword"
+      >module</a
+      ><a name="2890"
+      > </a
+      ><a name="2891" href="Relation.Binary.On.html#2891" class="Module"
+      >Dec</a
+      ><a name="2894"
+      > </a
+      ><a name="2895" class="Symbol"
+      >=</a
+      ><a name="2896"
+      > </a
+      ><a name="2897" href="Relation.Binary.html#2681" class="Module"
+      >IsDecEquivalence</a
+      ><a name="2913"
+      > </a
+      ><a name="2914" href="Relation.Binary.On.html#2759" class="Bound"
+      >dec</a
+      ><a name="2917"
+      >
+
+  </a
+      ><a name="2921" href="Relation.Binary.On.html#2921" class="Function"
+      >isPartialOrder</a
+      ><a name="2935"
+      > </a
+      ><a name="2936" class="Symbol"
+      >:</a
+      ><a name="2937"
+      > </a
+      ><a name="2938" class="Symbol"
+      >&#8704;</a
+      ><a name="2939"
+      > </a
+      ><a name="2940" class="Symbol"
+      >{</a
+      ><a name="2941" href="Relation.Binary.On.html#2941" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="2943"
+      > </a
+      ><a name="2944" href="Relation.Binary.On.html#2944" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="2946" class="Symbol"
+      >}</a
+      ><a name="2947"
+      > </a
+      ><a name="2948" class="Symbol"
+      >{</a
+      ><a name="2949" href="Relation.Binary.On.html#2949" class="Bound"
+      >&#8776;</a
+      ><a name="2950"
+      > </a
+      ><a name="2951" class="Symbol"
+      >:</a
+      ><a name="2952"
+      > </a
+      ><a name="2953" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="2956"
+      > </a
+      ><a name="2957" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="2958"
+      > </a
+      ><a name="2959" href="Relation.Binary.On.html#2941" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="2961" class="Symbol"
+      >}</a
+      ><a name="2962"
+      > </a
+      ><a name="2963" class="Symbol"
+      >{</a
+      ><a name="2964" href="Relation.Binary.On.html#2964" class="Bound"
+      >&#8804;</a
+      ><a name="2965"
+      > </a
+      ><a name="2966" class="Symbol"
+      >:</a
+      ><a name="2967"
+      > </a
+      ><a name="2968" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="2971"
+      > </a
+      ><a name="2972" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="2973"
+      > </a
+      ><a name="2974" href="Relation.Binary.On.html#2944" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="2976" class="Symbol"
+      >}</a
+      ><a name="2977"
+      > </a
+      ><a name="2978" class="Symbol"
+      >&#8594;</a
+      ><a name="2979"
+      >
+                   </a
+      ><a name="2999" href="Relation.Binary.html#3363" class="Record"
+      >IsPartialOrder</a
+      ><a name="3013"
+      > </a
+      ><a name="3014" href="Relation.Binary.On.html#2949" class="Bound"
+      >&#8776;</a
+      ><a name="3015"
+      > </a
+      ><a name="3016" href="Relation.Binary.On.html#2964" class="Bound"
+      >&#8804;</a
+      ><a name="3017"
+      > </a
+      ><a name="3018" class="Symbol"
+      >&#8594;</a
+      ><a name="3019"
+      >
+                   </a
+      ><a name="3039" href="Relation.Binary.html#3363" class="Record"
+      >IsPartialOrder</a
+      ><a name="3053"
+      > </a
+      ><a name="3054" class="Symbol"
+      >(</a
+      ><a name="3055" href="Relation.Binary.On.html#2949" class="Bound"
+      >&#8776;</a
+      ><a name="3056"
+      > </a
+      ><a name="3057" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="3059"
+      > </a
+      ><a name="3060" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="3061" class="Symbol"
+      >)</a
+      ><a name="3062"
+      > </a
+      ><a name="3063" class="Symbol"
+      >(</a
+      ><a name="3064" href="Relation.Binary.On.html#2964" class="Bound"
+      >&#8804;</a
+      ><a name="3065"
+      > </a
+      ><a name="3066" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="3068"
+      > </a
+      ><a name="3069" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="3070" class="Symbol"
+      >)</a
+      ><a name="3071"
+      >
+  </a
+      ><a name="3074" href="Relation.Binary.On.html#2921" class="Function"
+      >isPartialOrder</a
+      ><a name="3088"
+      > </a
+      ><a name="3089" class="Symbol"
+      >{</a
+      ><a name="3090" class="Argument"
+      >&#8776;</a
+      ><a name="3091"
+      > </a
+      ><a name="3092" class="Symbol"
+      >=</a
+      ><a name="3093"
+      > </a
+      ><a name="3094" href="Relation.Binary.On.html#3094" class="Bound"
+      >&#8776;</a
+      ><a name="3095" class="Symbol"
+      >}</a
+      ><a name="3096"
+      > </a
+      ><a name="3097" class="Symbol"
+      >{</a
+      ><a name="3098" href="Relation.Binary.On.html#3098" class="Bound"
+      >&#8804;</a
+      ><a name="3099" class="Symbol"
+      >}</a
+      ><a name="3100"
+      > </a
+      ><a name="3101" href="Relation.Binary.On.html#3101" class="Bound"
+      >po</a
+      ><a name="3103"
+      > </a
+      ><a name="3104" class="Symbol"
+      >=</a
+      ><a name="3105"
+      > </a
+      ><a name="3106" class="Keyword"
+      >record</a
+      ><a name="3112"
+      >
+    </a
+      ><a name="3117" class="Symbol"
+      >{</a
+      ><a name="3118"
+      > </a
+      ><a name="3119" class="Field"
+      >isPreorder</a
+      ><a name="3129"
+      > </a
+      ><a name="3130" class="Symbol"
+      >=</a
+      ><a name="3131"
+      > </a
+      ><a name="3132" href="Relation.Binary.On.html#2275" class="Function"
+      >isPreorder</a
+      ><a name="3142"
+      > </a
+      ><a name="3143" href="Relation.Binary.html#3516" class="Function"
+      >Po.isPreorder</a
+      ><a name="3156"
+      >
+    </a
+      ><a name="3161" class="Symbol"
+      >;</a
+      ><a name="3162"
+      > </a
+      ><a name="3163" class="Field"
+      >antisym</a
+      ><a name="3170"
+      >    </a
+      ><a name="3174" class="Symbol"
+      >=</a
+      ><a name="3175"
+      > </a
+      ><a name="3176" href="Relation.Binary.On.html#980" class="Function"
+      >antisymmetric</a
+      ><a name="3189"
+      > </a
+      ><a name="3190" href="Relation.Binary.On.html#3094" class="Bound"
+      >&#8776;</a
+      ><a name="3191"
+      > </a
+      ><a name="3192" href="Relation.Binary.On.html#3098" class="Bound"
+      >&#8804;</a
+      ><a name="3193"
+      > </a
+      ><a name="3194" href="Relation.Binary.html#3552" class="Function"
+      >Po.antisym</a
+      ><a name="3204"
+      >
+    </a
+      ><a name="3209" class="Symbol"
+      >}</a
+      ><a name="3210"
+      >
+    </a
+      ><a name="3215" class="Keyword"
+      >where</a
+      ><a name="3220"
+      > </a
+      ><a name="3221" class="Keyword"
+      >module</a
+      ><a name="3227"
+      > </a
+      ><a name="3228" href="Relation.Binary.On.html#3228" class="Module"
+      >Po</a
+      ><a name="3230"
+      > </a
+      ><a name="3231" class="Symbol"
+      >=</a
+      ><a name="3232"
+      > </a
+      ><a name="3233" href="Relation.Binary.html#3363" class="Module"
+      >IsPartialOrder</a
+      ><a name="3247"
+      > </a
+      ><a name="3248" href="Relation.Binary.On.html#3101" class="Bound"
+      >po</a
+      ><a name="3250"
+      >
+
+  </a
+      ><a name="3254" href="Relation.Binary.On.html#3254" class="Function"
+      >isDecPartialOrder</a
+      ><a name="3271"
+      > </a
+      ><a name="3272" class="Symbol"
+      >:</a
+      ><a name="3273"
+      > </a
+      ><a name="3274" class="Symbol"
+      >&#8704;</a
+      ><a name="3275"
+      > </a
+      ><a name="3276" class="Symbol"
+      >{</a
+      ><a name="3277" href="Relation.Binary.On.html#3277" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="3279"
+      > </a
+      ><a name="3280" href="Relation.Binary.On.html#3280" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="3282" class="Symbol"
+      >}</a
+      ><a name="3283"
+      > </a
+      ><a name="3284" class="Symbol"
+      >{</a
+      ><a name="3285" href="Relation.Binary.On.html#3285" class="Bound"
+      >&#8776;</a
+      ><a name="3286"
+      > </a
+      ><a name="3287" class="Symbol"
+      >:</a
+      ><a name="3288"
+      > </a
+      ><a name="3289" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="3292"
+      > </a
+      ><a name="3293" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="3294"
+      > </a
+      ><a name="3295" href="Relation.Binary.On.html#3277" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="3297" class="Symbol"
+      >}</a
+      ><a name="3298"
+      > </a
+      ><a name="3299" class="Symbol"
+      >{</a
+      ><a name="3300" href="Relation.Binary.On.html#3300" class="Bound"
+      >&#8804;</a
+      ><a name="3301"
+      > </a
+      ><a name="3302" class="Symbol"
+      >:</a
+      ><a name="3303"
+      > </a
+      ><a name="3304" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="3307"
+      > </a
+      ><a name="3308" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="3309"
+      > </a
+      ><a name="3310" href="Relation.Binary.On.html#3280" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="3312" class="Symbol"
+      >}</a
+      ><a name="3313"
+      > </a
+      ><a name="3314" class="Symbol"
+      >&#8594;</a
+      ><a name="3315"
+      >
+                      </a
+      ><a name="3338" href="Relation.Binary.html#4122" class="Record"
+      >IsDecPartialOrder</a
+      ><a name="3355"
+      > </a
+      ><a name="3356" href="Relation.Binary.On.html#3285" class="Bound"
+      >&#8776;</a
+      ><a name="3357"
+      > </a
+      ><a name="3358" href="Relation.Binary.On.html#3300" class="Bound"
+      >&#8804;</a
+      ><a name="3359"
+      > </a
+      ><a name="3360" class="Symbol"
+      >&#8594;</a
+      ><a name="3361"
+      >
+                      </a
+      ><a name="3384" href="Relation.Binary.html#4122" class="Record"
+      >IsDecPartialOrder</a
+      ><a name="3401"
+      > </a
+      ><a name="3402" class="Symbol"
+      >(</a
+      ><a name="3403" href="Relation.Binary.On.html#3285" class="Bound"
+      >&#8776;</a
+      ><a name="3404"
+      > </a
+      ><a name="3405" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="3407"
+      > </a
+      ><a name="3408" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="3409" class="Symbol"
+      >)</a
+      ><a name="3410"
+      > </a
+      ><a name="3411" class="Symbol"
+      >(</a
+      ><a name="3412" href="Relation.Binary.On.html#3300" class="Bound"
+      >&#8804;</a
+      ><a name="3413"
+      > </a
+      ><a name="3414" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="3416"
+      > </a
+      ><a name="3417" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="3418" class="Symbol"
+      >)</a
+      ><a name="3419"
+      >
+  </a
+      ><a name="3422" href="Relation.Binary.On.html#3254" class="Function"
+      >isDecPartialOrder</a
+      ><a name="3439"
+      > </a
+      ><a name="3440" href="Relation.Binary.On.html#3440" class="Bound"
+      >dpo</a
+      ><a name="3443"
+      > </a
+      ><a name="3444" class="Symbol"
+      >=</a
+      ><a name="3445"
+      > </a
+      ><a name="3446" class="Keyword"
+      >record</a
+      ><a name="3452"
+      >
+    </a
+      ><a name="3457" class="Symbol"
+      >{</a
+      ><a name="3458"
+      > </a
+      ><a name="3459" class="Field"
+      >isPartialOrder</a
+      ><a name="3473"
+      > </a
+      ><a name="3474" class="Symbol"
+      >=</a
+      ><a name="3475"
+      > </a
+      ><a name="3476" href="Relation.Binary.On.html#2921" class="Function"
+      >isPartialOrder</a
+      ><a name="3490"
+      > </a
+      ><a name="3491" href="Relation.Binary.html#4303" class="Function"
+      >DPO.isPartialOrder</a
+      ><a name="3509"
+      >
+    </a
+      ><a name="3514" class="Symbol"
+      >;</a
+      ><a name="3515"
+      > </a
+      ><a name="3516" class="Field Operator"
+      >_&#8799;_</a
+      ><a name="3519"
+      >            </a
+      ><a name="3531" class="Symbol"
+      >=</a
+      ><a name="3532"
+      > </a
+      ><a name="3533" href="Relation.Binary.On.html#1593" class="Function"
+      >decidable</a
+      ><a name="3542"
+      > </a
+      ><a name="3543" class="Symbol"
+      >_</a
+      ><a name="3544"
+      > </a
+      ><a name="3545" href="Relation.Binary.html#4347" class="Function Operator"
+      >DPO._&#8799;_</a
+      ><a name="3552"
+      >
+    </a
+      ><a name="3557" class="Symbol"
+      >;</a
+      ><a name="3558"
+      > </a
+      ><a name="3559" class="Field Operator"
+      >_&#8804;?_</a
+      ><a name="3563"
+      >           </a
+      ><a name="3574" class="Symbol"
+      >=</a
+      ><a name="3575"
+      > </a
+      ><a name="3576" href="Relation.Binary.On.html#1593" class="Function"
+      >decidable</a
+      ><a name="3585"
+      > </a
+      ><a name="3586" class="Symbol"
+      >_</a
+      ><a name="3587"
+      > </a
+      ><a name="3588" href="Relation.Binary.html#4382" class="Function Operator"
+      >DPO._&#8804;?_</a
+      ><a name="3596"
+      >
+    </a
+      ><a name="3601" class="Symbol"
+      >}</a
+      ><a name="3602"
+      >
+    </a
+      ><a name="3607" class="Keyword"
+      >where</a
+      ><a name="3612"
+      > </a
+      ><a name="3613" class="Keyword"
+      >module</a
+      ><a name="3619"
+      > </a
+      ><a name="3620" href="Relation.Binary.On.html#3620" class="Module"
+      >DPO</a
+      ><a name="3623"
+      > </a
+      ><a name="3624" class="Symbol"
+      >=</a
+      ><a name="3625"
+      > </a
+      ><a name="3626" href="Relation.Binary.html#4122" class="Module"
+      >IsDecPartialOrder</a
+      ><a name="3643"
+      > </a
+      ><a name="3644" href="Relation.Binary.On.html#3440" class="Bound"
+      >dpo</a
+      ><a name="3647"
+      >
+
+  </a
+      ><a name="3651" href="Relation.Binary.On.html#3651" class="Function"
+      >isStrictPartialOrder</a
+      ><a name="3671"
+      > </a
+      ><a name="3672" class="Symbol"
+      >:</a
+      ><a name="3673"
+      > </a
+      ><a name="3674" class="Symbol"
+      >&#8704;</a
+      ><a name="3675"
+      > </a
+      ><a name="3676" class="Symbol"
+      >{</a
+      ><a name="3677" href="Relation.Binary.On.html#3677" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="3679"
+      > </a
+      ><a name="3680" href="Relation.Binary.On.html#3680" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="3682" class="Symbol"
+      >}</a
+      ><a name="3683"
+      > </a
+      ><a name="3684" class="Symbol"
+      >{</a
+      ><a name="3685" href="Relation.Binary.On.html#3685" class="Bound"
+      >&#8776;</a
+      ><a name="3686"
+      > </a
+      ><a name="3687" class="Symbol"
+      >:</a
+      ><a name="3688"
+      > </a
+      ><a name="3689" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="3692"
+      > </a
+      ><a name="3693" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="3694"
+      > </a
+      ><a name="3695" href="Relation.Binary.On.html#3677" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="3697" class="Symbol"
+      >}</a
+      ><a name="3698"
+      > </a
+      ><a name="3699" class="Symbol"
+      >{</a
+      ><a name="3700" href="Relation.Binary.On.html#3700" class="Bound"
+      >&lt;</a
+      ><a name="3701"
+      > </a
+      ><a name="3702" class="Symbol"
+      >:</a
+      ><a name="3703"
+      > </a
+      ><a name="3704" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="3707"
+      > </a
+      ><a name="3708" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="3709"
+      > </a
+      ><a name="3710" href="Relation.Binary.On.html#3680" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="3712" class="Symbol"
+      >}</a
+      ><a name="3713"
+      > </a
+      ><a name="3714" class="Symbol"
+      >&#8594;</a
+      ><a name="3715"
+      >
+                         </a
+      ><a name="3741" href="Relation.Binary.html#5457" class="Record"
+      >IsStrictPartialOrder</a
+      ><a name="3761"
+      > </a
+      ><a name="3762" href="Relation.Binary.On.html#3685" class="Bound"
+      >&#8776;</a
+      ><a name="3763"
+      > </a
+      ><a name="3764" href="Relation.Binary.On.html#3700" class="Bound"
+      >&lt;</a
+      ><a name="3765"
+      > </a
+      ><a name="3766" class="Symbol"
+      >&#8594;</a
+      ><a name="3767"
+      >
+                         </a
+      ><a name="3793" href="Relation.Binary.html#5457" class="Record"
+      >IsStrictPartialOrder</a
+      ><a name="3813"
+      > </a
+      ><a name="3814" class="Symbol"
+      >(</a
+      ><a name="3815" href="Relation.Binary.On.html#3685" class="Bound"
+      >&#8776;</a
+      ><a name="3816"
+      > </a
+      ><a name="3817" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="3819"
+      > </a
+      ><a name="3820" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="3821" class="Symbol"
+      >)</a
+      ><a name="3822"
+      > </a
+      ><a name="3823" class="Symbol"
+      >(</a
+      ><a name="3824" href="Relation.Binary.On.html#3700" class="Bound"
+      >&lt;</a
+      ><a name="3825"
+      > </a
+      ><a name="3826" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="3828"
+      > </a
+      ><a name="3829" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="3830" class="Symbol"
+      >)</a
+      ><a name="3831"
+      >
+  </a
+      ><a name="3834" href="Relation.Binary.On.html#3651" class="Function"
+      >isStrictPartialOrder</a
+      ><a name="3854"
+      > </a
+      ><a name="3855" class="Symbol"
+      >{</a
+      ><a name="3856" class="Argument"
+      >&#8776;</a
+      ><a name="3857"
+      > </a
+      ><a name="3858" class="Symbol"
+      >=</a
+      ><a name="3859"
+      > </a
+      ><a name="3860" href="Relation.Binary.On.html#3860" class="Bound"
+      >&#8776;</a
+      ><a name="3861" class="Symbol"
+      >}</a
+      ><a name="3862"
+      > </a
+      ><a name="3863" class="Symbol"
+      >{</a
+      ><a name="3864" href="Relation.Binary.On.html#3864" class="Bound"
+      >&lt;</a
+      ><a name="3865" class="Symbol"
+      >}</a
+      ><a name="3866"
+      > </a
+      ><a name="3867" href="Relation.Binary.On.html#3867" class="Bound"
+      >spo</a
+      ><a name="3870"
+      > </a
+      ><a name="3871" class="Symbol"
+      >=</a
+      ><a name="3872"
+      > </a
+      ><a name="3873" class="Keyword"
+      >record</a
+      ><a name="3879"
+      >
+    </a
+      ><a name="3884" class="Symbol"
+      >{</a
+      ><a name="3885"
+      > </a
+      ><a name="3886" class="Field"
+      >isEquivalence</a
+      ><a name="3899"
+      > </a
+      ><a name="3900" class="Symbol"
+      >=</a
+      ><a name="3901"
+      > </a
+      ><a name="3902" href="Relation.Binary.On.html#1989" class="Function"
+      >isEquivalence</a
+      ><a name="3915"
+      > </a
+      ><a name="3916" href="Relation.Binary.html#5628" class="Function"
+      >Spo.isEquivalence</a
+      ><a name="3933"
+      >
+    </a
+      ><a name="3938" class="Symbol"
+      >;</a
+      ><a name="3939"
+      > </a
+      ><a name="3940" class="Field"
+      >irrefl</a
+      ><a name="3946"
+      >        </a
+      ><a name="3954" class="Symbol"
+      >=</a
+      ><a name="3955"
+      > </a
+      ><a name="3956" href="Relation.Binary.On.html#627" class="Function"
+      >irreflexive</a
+      ><a name="3967"
+      > </a
+      ><a name="3968" href="Relation.Binary.On.html#3860" class="Bound"
+      >&#8776;</a
+      ><a name="3969"
+      > </a
+      ><a name="3970" href="Relation.Binary.On.html#3864" class="Bound"
+      >&lt;</a
+      ><a name="3971"
+      > </a
+      ><a name="3972" href="Relation.Binary.html#5666" class="Function"
+      >Spo.irrefl</a
+      ><a name="3982"
+      >
+    </a
+      ><a name="3987" class="Symbol"
+      >;</a
+      ><a name="3988"
+      > </a
+      ><a name="3989" class="Field"
+      >trans</a
+      ><a name="3994"
+      >         </a
+      ><a name="4003" class="Symbol"
+      >=</a
+      ><a name="4004"
+      > </a
+      ><a name="4005" href="Relation.Binary.On.html#878" class="Function"
+      >transitive</a
+      ><a name="4015"
+      > </a
+      ><a name="4016" href="Relation.Binary.On.html#3864" class="Bound"
+      >&lt;</a
+      ><a name="4017"
+      > </a
+      ><a name="4018" href="Relation.Binary.html#5706" class="Function"
+      >Spo.trans</a
+      ><a name="4027"
+      >
+    </a
+      ><a name="4032" class="Symbol"
+      >;</a
+      ><a name="4033"
+      > </a
+      ><a name="4034" class="Field"
+      >&lt;-resp-&#8776;</a
+      ><a name="4042"
+      >      </a
+      ><a name="4048" class="Symbol"
+      >=</a
+      ><a name="4049"
+      > </a
+      ><a name="4050" href="Relation.Binary.On.html#1384" class="Function"
+      >respects&#8322;</a
+      ><a name="4059"
+      > </a
+      ><a name="4060" href="Relation.Binary.On.html#3864" class="Bound"
+      >&lt;</a
+      ><a name="4061"
+      > </a
+      ><a name="4062" href="Relation.Binary.On.html#3860" class="Bound"
+      >&#8776;</a
+      ><a name="4063"
+      > </a
+      ><a name="4064" href="Relation.Binary.html#5741" class="Function"
+      >Spo.&lt;-resp-&#8776;</a
+      ><a name="4076"
+      >
+    </a
+      ><a name="4081" class="Symbol"
+      >}</a
+      ><a name="4082"
+      >
+    </a
+      ><a name="4087" class="Keyword"
+      >where</a
+      ><a name="4092"
+      > </a
+      ><a name="4093" class="Keyword"
+      >module</a
+      ><a name="4099"
+      > </a
+      ><a name="4100" href="Relation.Binary.On.html#4100" class="Module"
+      >Spo</a
+      ><a name="4103"
+      > </a
+      ><a name="4104" class="Symbol"
+      >=</a
+      ><a name="4105"
+      > </a
+      ><a name="4106" href="Relation.Binary.html#5457" class="Module"
+      >IsStrictPartialOrder</a
+      ><a name="4126"
+      > </a
+      ><a name="4127" href="Relation.Binary.On.html#3867" class="Bound"
+      >spo</a
+      ><a name="4130"
+      >
+
+  </a
+      ><a name="4134" href="Relation.Binary.On.html#4134" class="Function"
+      >isTotalOrder</a
+      ><a name="4146"
+      > </a
+      ><a name="4147" class="Symbol"
+      >:</a
+      ><a name="4148"
+      > </a
+      ><a name="4149" class="Symbol"
+      >&#8704;</a
+      ><a name="4150"
+      > </a
+      ><a name="4151" class="Symbol"
+      >{</a
+      ><a name="4152" href="Relation.Binary.On.html#4152" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="4154"
+      > </a
+      ><a name="4155" href="Relation.Binary.On.html#4155" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="4157" class="Symbol"
+      >}</a
+      ><a name="4158"
+      > </a
+      ><a name="4159" class="Symbol"
+      >{</a
+      ><a name="4160" href="Relation.Binary.On.html#4160" class="Bound"
+      >&#8776;</a
+      ><a name="4161"
+      > </a
+      ><a name="4162" class="Symbol"
+      >:</a
+      ><a name="4163"
+      > </a
+      ><a name="4164" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="4167"
+      > </a
+      ><a name="4168" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="4169"
+      > </a
+      ><a name="4170" href="Relation.Binary.On.html#4152" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="4172" class="Symbol"
+      >}</a
+      ><a name="4173"
+      > </a
+      ><a name="4174" class="Symbol"
+      >{</a
+      ><a name="4175" href="Relation.Binary.On.html#4175" class="Bound"
+      >&#8804;</a
+      ><a name="4176"
+      > </a
+      ><a name="4177" class="Symbol"
+      >:</a
+      ><a name="4178"
+      > </a
+      ><a name="4179" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="4182"
+      > </a
+      ><a name="4183" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="4184"
+      > </a
+      ><a name="4185" href="Relation.Binary.On.html#4155" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="4187" class="Symbol"
+      >}</a
+      ><a name="4188"
+      > </a
+      ><a name="4189" class="Symbol"
+      >&#8594;</a
+      ><a name="4190"
+      >
+                 </a
+      ><a name="4208" href="Relation.Binary.html#7820" class="Record"
+      >IsTotalOrder</a
+      ><a name="4220"
+      > </a
+      ><a name="4221" href="Relation.Binary.On.html#4160" class="Bound"
+      >&#8776;</a
+      ><a name="4222"
+      > </a
+      ><a name="4223" href="Relation.Binary.On.html#4175" class="Bound"
+      >&#8804;</a
+      ><a name="4224"
+      > </a
+      ><a name="4225" class="Symbol"
+      >&#8594;</a
+      ><a name="4226"
+      >
+                 </a
+      ><a name="4244" href="Relation.Binary.html#7820" class="Record"
+      >IsTotalOrder</a
+      ><a name="4256"
+      > </a
+      ><a name="4257" class="Symbol"
+      >(</a
+      ><a name="4258" href="Relation.Binary.On.html#4160" class="Bound"
+      >&#8776;</a
+      ><a name="4259"
+      > </a
+      ><a name="4260" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="4262"
+      > </a
+      ><a name="4263" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="4264" class="Symbol"
+      >)</a
+      ><a name="4265"
+      > </a
+      ><a name="4266" class="Symbol"
+      >(</a
+      ><a name="4267" href="Relation.Binary.On.html#4175" class="Bound"
+      >&#8804;</a
+      ><a name="4268"
+      > </a
+      ><a name="4269" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="4271"
+      > </a
+      ><a name="4272" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="4273" class="Symbol"
+      >)</a
+      ><a name="4274"
+      >
+  </a
+      ><a name="4277" href="Relation.Binary.On.html#4134" class="Function"
+      >isTotalOrder</a
+      ><a name="4289"
+      > </a
+      ><a name="4290" class="Symbol"
+      >{</a
+      ><a name="4291" class="Argument"
+      >&#8776;</a
+      ><a name="4292"
+      > </a
+      ><a name="4293" class="Symbol"
+      >=</a
+      ><a name="4294"
+      > </a
+      ><a name="4295" href="Relation.Binary.On.html#4295" class="Bound"
+      >&#8776;</a
+      ><a name="4296" class="Symbol"
+      >}</a
+      ><a name="4297"
+      > </a
+      ><a name="4298" class="Symbol"
+      >{</a
+      ><a name="4299" href="Relation.Binary.On.html#4299" class="Bound"
+      >&#8804;</a
+      ><a name="4300" class="Symbol"
+      >}</a
+      ><a name="4301"
+      > </a
+      ><a name="4302" href="Relation.Binary.On.html#4302" class="Bound"
+      >to</a
+      ><a name="4304"
+      > </a
+      ><a name="4305" class="Symbol"
+      >=</a
+      ><a name="4306"
+      > </a
+      ><a name="4307" class="Keyword"
+      >record</a
+      ><a name="4313"
+      >
+    </a
+      ><a name="4318" class="Symbol"
+      >{</a
+      ><a name="4319"
+      > </a
+      ><a name="4320" class="Field"
+      >isPartialOrder</a
+      ><a name="4334"
+      > </a
+      ><a name="4335" class="Symbol"
+      >=</a
+      ><a name="4336"
+      > </a
+      ><a name="4337" href="Relation.Binary.On.html#2921" class="Function"
+      >isPartialOrder</a
+      ><a name="4351"
+      > </a
+      ><a name="4352" href="Relation.Binary.html#7967" class="Function"
+      >To.isPartialOrder</a
+      ><a name="4369"
+      >
+    </a
+      ><a name="4374" class="Symbol"
+      >;</a
+      ><a name="4375"
+      > </a
+      ><a name="4376" class="Field"
+      >total</a
+      ><a name="4381"
+      >          </a
+      ><a name="4391" class="Symbol"
+      >=</a
+      ><a name="4392"
+      > </a
+      ><a name="4393" href="Relation.Binary.On.html#1707" class="Function"
+      >total</a
+      ><a name="4398"
+      > </a
+      ><a name="4399" href="Relation.Binary.On.html#4299" class="Bound"
+      >&#8804;</a
+      ><a name="4400"
+      > </a
+      ><a name="4401" href="Relation.Binary.html#8011" class="Function"
+      >To.total</a
+      ><a name="4409"
+      >
+    </a
+      ><a name="4414" class="Symbol"
+      >}</a
+      ><a name="4415"
+      >
+    </a
+      ><a name="4420" class="Keyword"
+      >where</a
+      ><a name="4425"
+      > </a
+      ><a name="4426" class="Keyword"
+      >module</a
+      ><a name="4432"
+      > </a
+      ><a name="4433" href="Relation.Binary.On.html#4433" class="Module"
+      >To</a
+      ><a name="4435"
+      > </a
+      ><a name="4436" class="Symbol"
+      >=</a
+      ><a name="4437"
+      > </a
+      ><a name="4438" href="Relation.Binary.html#7820" class="Module"
+      >IsTotalOrder</a
+      ><a name="4450"
+      > </a
+      ><a name="4451" href="Relation.Binary.On.html#4302" class="Bound"
+      >to</a
+      ><a name="4453"
+      >
+
+  </a
+      ><a name="4457" href="Relation.Binary.On.html#4457" class="Function"
+      >isDecTotalOrder</a
+      ><a name="4472"
+      > </a
+      ><a name="4473" class="Symbol"
+      >:</a
+      ><a name="4474"
+      > </a
+      ><a name="4475" class="Symbol"
+      >&#8704;</a
+      ><a name="4476"
+      > </a
+      ><a name="4477" class="Symbol"
+      >{</a
+      ><a name="4478" href="Relation.Binary.On.html#4478" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="4480"
+      > </a
+      ><a name="4481" href="Relation.Binary.On.html#4481" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="4483" class="Symbol"
+      >}</a
+      ><a name="4484"
+      > </a
+      ><a name="4485" class="Symbol"
+      >{</a
+      ><a name="4486" href="Relation.Binary.On.html#4486" class="Bound"
+      >&#8776;</a
+      ><a name="4487"
+      > </a
+      ><a name="4488" class="Symbol"
+      >:</a
+      ><a name="4489"
+      > </a
+      ><a name="4490" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="4493"
+      > </a
+      ><a name="4494" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="4495"
+      > </a
+      ><a name="4496" href="Relation.Binary.On.html#4478" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="4498" class="Symbol"
+      >}</a
+      ><a name="4499"
+      > </a
+      ><a name="4500" class="Symbol"
+      >{</a
+      ><a name="4501" href="Relation.Binary.On.html#4501" class="Bound"
+      >&#8804;</a
+      ><a name="4502"
+      > </a
+      ><a name="4503" class="Symbol"
+      >:</a
+      ><a name="4504"
+      > </a
+      ><a name="4505" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="4508"
+      > </a
+      ><a name="4509" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="4510"
+      > </a
+      ><a name="4511" href="Relation.Binary.On.html#4481" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="4513" class="Symbol"
+      >}</a
+      ><a name="4514"
+      > </a
+      ><a name="4515" class="Symbol"
+      >&#8594;</a
+      ><a name="4516"
+      >
+                    </a
+      ><a name="4537" href="Relation.Binary.html#8572" class="Record"
+      >IsDecTotalOrder</a
+      ><a name="4552"
+      > </a
+      ><a name="4553" href="Relation.Binary.On.html#4486" class="Bound"
+      >&#8776;</a
+      ><a name="4554"
+      > </a
+      ><a name="4555" href="Relation.Binary.On.html#4501" class="Bound"
+      >&#8804;</a
+      ><a name="4556"
+      > </a
+      ><a name="4557" class="Symbol"
+      >&#8594;</a
+      ><a name="4558"
+      >
+                    </a
+      ><a name="4579" href="Relation.Binary.html#8572" class="Record"
+      >IsDecTotalOrder</a
+      ><a name="4594"
+      > </a
+      ><a name="4595" class="Symbol"
+      >(</a
+      ><a name="4596" href="Relation.Binary.On.html#4486" class="Bound"
+      >&#8776;</a
+      ><a name="4597"
+      > </a
+      ><a name="4598" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="4600"
+      > </a
+      ><a name="4601" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="4602" class="Symbol"
+      >)</a
+      ><a name="4603"
+      > </a
+      ><a name="4604" class="Symbol"
+      >(</a
+      ><a name="4605" href="Relation.Binary.On.html#4501" class="Bound"
+      >&#8804;</a
+      ><a name="4606"
+      > </a
+      ><a name="4607" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="4609"
+      > </a
+      ><a name="4610" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="4611" class="Symbol"
+      >)</a
+      ><a name="4612"
+      >
+  </a
+      ><a name="4615" href="Relation.Binary.On.html#4457" class="Function"
+      >isDecTotalOrder</a
+      ><a name="4630"
+      > </a
+      ><a name="4631" class="Symbol"
+      >{</a
+      ><a name="4632" class="Argument"
+      >&#8776;</a
+      ><a name="4633"
+      > </a
+      ><a name="4634" class="Symbol"
+      >=</a
+      ><a name="4635"
+      > </a
+      ><a name="4636" href="Relation.Binary.On.html#4636" class="Bound"
+      >&#8776;</a
+      ><a name="4637" class="Symbol"
+      >}</a
+      ><a name="4638"
+      > </a
+      ><a name="4639" class="Symbol"
+      >{</a
+      ><a name="4640" href="Relation.Binary.On.html#4640" class="Bound"
+      >&#8804;</a
+      ><a name="4641" class="Symbol"
+      >}</a
+      ><a name="4642"
+      > </a
+      ><a name="4643" href="Relation.Binary.On.html#4643" class="Bound"
+      >dec</a
+      ><a name="4646"
+      > </a
+      ><a name="4647" class="Symbol"
+      >=</a
+      ><a name="4648"
+      > </a
+      ><a name="4649" class="Keyword"
+      >record</a
+      ><a name="4655"
+      >
+    </a
+      ><a name="4660" class="Symbol"
+      >{</a
+      ><a name="4661"
+      > </a
+      ><a name="4662" class="Field"
+      >isTotalOrder</a
+      ><a name="4674"
+      > </a
+      ><a name="4675" class="Symbol"
+      >=</a
+      ><a name="4676"
+      > </a
+      ><a name="4677" href="Relation.Binary.On.html#4134" class="Function"
+      >isTotalOrder</a
+      ><a name="4689"
+      > </a
+      ><a name="4690" href="Relation.Binary.html#8747" class="Function"
+      >Dec.isTotalOrder</a
+      ><a name="4706"
+      >
+    </a
+      ><a name="4711" class="Symbol"
+      >;</a
+      ><a name="4712"
+      > </a
+      ><a name="4713" class="Field Operator"
+      >_&#8799;_</a
+      ><a name="4716"
+      >          </a
+      ><a name="4726" class="Symbol"
+      >=</a
+      ><a name="4727"
+      > </a
+      ><a name="4728" href="Relation.Binary.On.html#1593" class="Function"
+      >decidable</a
+      ><a name="4737"
+      > </a
+      ><a name="4738" href="Relation.Binary.On.html#4636" class="Bound"
+      >&#8776;</a
+      ><a name="4739"
+      > </a
+      ><a name="4740" href="Relation.Binary.html#8787" class="Function Operator"
+      >Dec._&#8799;_</a
+      ><a name="4747"
+      >
+    </a
+      ><a name="4752" class="Symbol"
+      >;</a
+      ><a name="4753"
+      > </a
+      ><a name="4754" class="Field Operator"
+      >_&#8804;?_</a
+      ><a name="4758"
+      >         </a
+      ><a name="4767" class="Symbol"
+      >=</a
+      ><a name="4768"
+      > </a
+      ><a name="4769" href="Relation.Binary.On.html#1593" class="Function"
+      >decidable</a
+      ><a name="4778"
+      > </a
+      ><a name="4779" href="Relation.Binary.On.html#4640" class="Bound"
+      >&#8804;</a
+      ><a name="4780"
+      > </a
+      ><a name="4781" href="Relation.Binary.html#8820" class="Function Operator"
+      >Dec._&#8804;?_</a
+      ><a name="4789"
+      >
+    </a
+      ><a name="4794" class="Symbol"
+      >}</a
+      ><a name="4795"
+      >
+    </a
+      ><a name="4800" class="Keyword"
+      >where</a
+      ><a name="4805"
+      > </a
+      ><a name="4806" class="Keyword"
+      >module</a
+      ><a name="4812"
+      > </a
+      ><a name="4813" href="Relation.Binary.On.html#4813" class="Module"
+      >Dec</a
+      ><a name="4816"
+      > </a
+      ><a name="4817" class="Symbol"
+      >=</a
+      ><a name="4818"
+      > </a
+      ><a name="4819" href="Relation.Binary.html#8572" class="Module"
+      >IsDecTotalOrder</a
+      ><a name="4834"
+      > </a
+      ><a name="4835" href="Relation.Binary.On.html#4643" class="Bound"
+      >dec</a
+      ><a name="4838"
+      >
+
+  </a
+      ><a name="4842" href="Relation.Binary.On.html#4842" class="Function"
+      >isStrictTotalOrder</a
+      ><a name="4860"
+      > </a
+      ><a name="4861" class="Symbol"
+      >:</a
+      ><a name="4862"
+      > </a
+      ><a name="4863" class="Symbol"
+      >&#8704;</a
+      ><a name="4864"
+      > </a
+      ><a name="4865" class="Symbol"
+      >{</a
+      ><a name="4866" href="Relation.Binary.On.html#4866" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="4868"
+      > </a
+      ><a name="4869" href="Relation.Binary.On.html#4869" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="4871" class="Symbol"
+      >}</a
+      ><a name="4872"
+      > </a
+      ><a name="4873" class="Symbol"
+      >{</a
+      ><a name="4874" href="Relation.Binary.On.html#4874" class="Bound"
+      >&#8776;</a
+      ><a name="4875"
+      > </a
+      ><a name="4876" class="Symbol"
+      >:</a
+      ><a name="4877"
+      > </a
+      ><a name="4878" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="4881"
+      > </a
+      ><a name="4882" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="4883"
+      > </a
+      ><a name="4884" href="Relation.Binary.On.html#4866" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="4886" class="Symbol"
+      >}</a
+      ><a name="4887"
+      > </a
+      ><a name="4888" class="Symbol"
+      >{</a
+      ><a name="4889" href="Relation.Binary.On.html#4889" class="Bound"
+      >&lt;</a
+      ><a name="4890"
+      > </a
+      ><a name="4891" class="Symbol"
+      >:</a
+      ><a name="4892"
+      > </a
+      ><a name="4893" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="4896"
+      > </a
+      ><a name="4897" href="Relation.Binary.On.html#366" class="Bound"
+      >A</a
+      ><a name="4898"
+      > </a
+      ><a name="4899" href="Relation.Binary.On.html#4869" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="4901" class="Symbol"
+      >}</a
+      ><a name="4902"
+      > </a
+      ><a name="4903" class="Symbol"
+      >&#8594;</a
+      ><a name="4904"
+      >
+                       </a
+      ><a name="4928" href="Relation.Binary.html#9962" class="Record"
+      >IsStrictTotalOrder</a
+      ><a name="4946"
+      > </a
+      ><a name="4947" href="Relation.Binary.On.html#4874" class="Bound"
+      >&#8776;</a
+      ><a name="4948"
+      > </a
+      ><a name="4949" href="Relation.Binary.On.html#4889" class="Bound"
+      >&lt;</a
+      ><a name="4950"
+      > </a
+      ><a name="4951" class="Symbol"
+      >&#8594;</a
+      ><a name="4952"
+      >
+                       </a
+      ><a name="4976" href="Relation.Binary.html#9962" class="Record"
+      >IsStrictTotalOrder</a
+      ><a name="4994"
+      > </a
+      ><a name="4995" class="Symbol"
+      >(</a
+      ><a name="4996" href="Relation.Binary.On.html#4874" class="Bound"
+      >&#8776;</a
+      ><a name="4997"
+      > </a
+      ><a name="4998" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="5000"
+      > </a
+      ><a name="5001" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="5002" class="Symbol"
+      >)</a
+      ><a name="5003"
+      > </a
+      ><a name="5004" class="Symbol"
+      >(</a
+      ><a name="5005" href="Relation.Binary.On.html#4889" class="Bound"
+      >&lt;</a
+      ><a name="5006"
+      > </a
+      ><a name="5007" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="5009"
+      > </a
+      ><a name="5010" href="Relation.Binary.On.html#390" class="Bound"
+      >f</a
+      ><a name="5011" class="Symbol"
+      >)</a
+      ><a name="5012"
+      >
+  </a
+      ><a name="5015" href="Relation.Binary.On.html#4842" class="Function"
+      >isStrictTotalOrder</a
+      ><a name="5033"
+      > </a
+      ><a name="5034" class="Symbol"
+      >{</a
+      ><a name="5035" class="Argument"
+      >&#8776;</a
+      ><a name="5036"
+      > </a
+      ><a name="5037" class="Symbol"
+      >=</a
+      ><a name="5038"
+      > </a
+      ><a name="5039" href="Relation.Binary.On.html#5039" class="Bound"
+      >&#8776;</a
+      ><a name="5040" class="Symbol"
+      >}</a
+      ><a name="5041"
+      > </a
+      ><a name="5042" class="Symbol"
+      >{</a
+      ><a name="5043" href="Relation.Binary.On.html#5043" class="Bound"
+      >&lt;</a
+      ><a name="5044" class="Symbol"
+      >}</a
+      ><a name="5045"
+      > </a
+      ><a name="5046" href="Relation.Binary.On.html#5046" class="Bound"
+      >sto</a
+      ><a name="5049"
+      > </a
+      ><a name="5050" class="Symbol"
+      >=</a
+      ><a name="5051"
+      > </a
+      ><a name="5052" class="Keyword"
+      >record</a
+      ><a name="5058"
+      >
+    </a
+      ><a name="5063" class="Symbol"
+      >{</a
+      ><a name="5064"
+      > </a
+      ><a name="5065" class="Field"
+      >isEquivalence</a
+      ><a name="5078"
+      > </a
+      ><a name="5079" class="Symbol"
+      >=</a
+      ><a name="5080"
+      > </a
+      ><a name="5081" href="Relation.Binary.On.html#1989" class="Function"
+      >isEquivalence</a
+      ><a name="5094"
+      > </a
+      ><a name="5095" href="Relation.Binary.html#10127" class="Function"
+      >Sto.isEquivalence</a
+      ><a name="5112"
+      >
+    </a
+      ><a name="5117" class="Symbol"
+      >;</a
+      ><a name="5118"
+      > </a
+      ><a name="5119" class="Field"
+      >trans</a
+      ><a name="5124"
+      >         </a
+      ><a name="5133" class="Symbol"
+      >=</a
+      ><a name="5134"
+      > </a
+      ><a name="5135" href="Relation.Binary.On.html#878" class="Function"
+      >transitive</a
+      ><a name="5145"
+      > </a
+      ><a name="5146" href="Relation.Binary.On.html#5043" class="Bound"
+      >&lt;</a
+      ><a name="5147"
+      > </a
+      ><a name="5148" href="Relation.Binary.html#10165" class="Function"
+      >Sto.trans</a
+      ><a name="5157"
+      >
+    </a
+      ><a name="5162" class="Symbol"
+      >;</a
+      ><a name="5163"
+      > </a
+      ><a name="5164" class="Field"
+      >compare</a
+      ><a name="5171"
+      >       </a
+      ><a name="5178" class="Symbol"
+      >=</a
+      ><a name="5179"
+      > </a
+      ><a name="5180" href="Relation.Binary.On.html#1805" class="Function"
+      >trichotomous</a
+      ><a name="5192"
+      > </a
+      ><a name="5193" href="Relation.Binary.On.html#5039" class="Bound"
+      >&#8776;</a
+      ><a name="5194"
+      > </a
+      ><a name="5195" href="Relation.Binary.On.html#5043" class="Bound"
+      >&lt;</a
+      ><a name="5196"
+      > </a
+      ><a name="5197" href="Relation.Binary.html#10200" class="Function"
+      >Sto.compare</a
+      ><a name="5208"
+      >
+    </a
+      ><a name="5213" class="Symbol"
+      >;</a
+      ><a name="5214"
+      > </a
+      ><a name="5215" class="Field"
+      >&lt;-resp-&#8776;</a
+      ><a name="5223"
+      >      </a
+      ><a name="5229" class="Symbol"
+      >=</a
+      ><a name="5230"
+      > </a
+      ><a name="5231" href="Relation.Binary.On.html#1384" class="Function"
+      >respects&#8322;</a
+      ><a name="5240"
+      > </a
+      ><a name="5241" href="Relation.Binary.On.html#5043" class="Bound"
+      >&lt;</a
+      ><a name="5242"
+      > </a
+      ><a name="5243" href="Relation.Binary.On.html#5039" class="Bound"
+      >&#8776;</a
+      ><a name="5244"
+      > </a
+      ><a name="5245" href="Relation.Binary.html#10241" class="Function"
+      >Sto.&lt;-resp-&#8776;</a
+      ><a name="5257"
+      >
+    </a
+      ><a name="5262" class="Symbol"
+      >}</a
+      ><a name="5263"
+      >
+    </a
+      ><a name="5268" class="Keyword"
+      >where</a
+      ><a name="5273"
+      > </a
+      ><a name="5274" class="Keyword"
+      >module</a
+      ><a name="5280"
+      > </a
+      ><a name="5281" href="Relation.Binary.On.html#5281" class="Module"
+      >Sto</a
+      ><a name="5284"
+      > </a
+      ><a name="5285" class="Symbol"
+      >=</a
+      ><a name="5286"
+      > </a
+      ><a name="5287" href="Relation.Binary.html#9962" class="Module"
+      >IsStrictTotalOrder</a
+      ><a name="5305"
+      > </a
+      ><a name="5306" href="Relation.Binary.On.html#5046" class="Bound"
+      >sto</a
+      ><a name="5309"
+      >
+
+</a
+      ><a name="5311" href="Relation.Binary.On.html#5311" class="Function"
+      >preorder</a
+      ><a name="5319"
+      > </a
+      ><a name="5320" class="Symbol"
+      >:</a
+      ><a name="5321"
+      > </a
+      ><a name="5322" class="Symbol"
+      >&#8704;</a
+      ><a name="5323"
+      > </a
+      ><a name="5324" class="Symbol"
+      >{</a
+      ><a name="5325" href="Relation.Binary.On.html#5325" class="Bound"
+      >p&#8321;</a
+      ><a name="5327"
+      > </a
+      ><a name="5328" href="Relation.Binary.On.html#5328" class="Bound"
+      >p&#8322;</a
+      ><a name="5330"
+      > </a
+      ><a name="5331" href="Relation.Binary.On.html#5331" class="Bound"
+      >p&#8323;</a
+      ><a name="5333"
+      > </a
+      ><a name="5334" href="Relation.Binary.On.html#5334" class="Bound"
+      >b</a
+      ><a name="5335" class="Symbol"
+      >}</a
+      ><a name="5336"
+      > </a
+      ><a name="5337" class="Symbol"
+      >{</a
+      ><a name="5338" href="Relation.Binary.On.html#5338" class="Bound"
+      >B</a
+      ><a name="5339"
+      > </a
+      ><a name="5340" class="Symbol"
+      >:</a
+      ><a name="5341"
+      > </a
+      ><a name="5342" class="PrimitiveType"
+      >Set</a
+      ><a name="5345"
+      > </a
+      ><a name="5346" href="Relation.Binary.On.html#5334" class="Bound"
+      >b</a
+      ><a name="5347" class="Symbol"
+      >}</a
+      ><a name="5348"
+      > </a
+      ><a name="5349" class="Symbol"
+      >(</a
+      ><a name="5350" href="Relation.Binary.On.html#5350" class="Bound"
+      >P</a
+      ><a name="5351"
+      > </a
+      ><a name="5352" class="Symbol"
+      >:</a
+      ><a name="5353"
+      > </a
+      ><a name="5354" href="Relation.Binary.html#1414" class="Record"
+      >Preorder</a
+      ><a name="5362"
+      > </a
+      ><a name="5363" href="Relation.Binary.On.html#5325" class="Bound"
+      >p&#8321;</a
+      ><a name="5365"
+      > </a
+      ><a name="5366" href="Relation.Binary.On.html#5328" class="Bound"
+      >p&#8322;</a
+      ><a name="5368"
+      > </a
+      ><a name="5369" href="Relation.Binary.On.html#5331" class="Bound"
+      >p&#8323;</a
+      ><a name="5371" class="Symbol"
+      >)</a
+      ><a name="5372"
+      > </a
+      ><a name="5373" class="Symbol"
+      >&#8594;</a
+      ><a name="5374"
+      >
+           </a
+      ><a name="5386" class="Symbol"
+      >(</a
+      ><a name="5387" href="Relation.Binary.On.html#5338" class="Bound"
+      >B</a
+      ><a name="5388"
+      > </a
+      ><a name="5389" class="Symbol"
+      >&#8594;</a
+      ><a name="5390"
+      > </a
+      ><a name="5391" href="Relation.Binary.html#1493" class="Field"
+      >Preorder.Carrier</a
+      ><a name="5407"
+      > </a
+      ><a name="5408" href="Relation.Binary.On.html#5350" class="Bound"
+      >P</a
+      ><a name="5409" class="Symbol"
+      >)</a
+      ><a name="5410"
+      > </a
+      ><a name="5411" class="Symbol"
+      >&#8594;</a
+      ><a name="5412"
+      > </a
+      ><a name="5413" href="Relation.Binary.html#1414" class="Record"
+      >Preorder</a
+      ><a name="5421"
+      > </a
+      ><a name="5422" class="Symbol"
+      >_</a
+      ><a name="5423"
+      > </a
+      ><a name="5424" class="Symbol"
+      >_</a
+      ><a name="5425"
+      > </a
+      ><a name="5426" class="Symbol"
+      >_</a
+      ><a name="5427"
+      >
+</a
+      ><a name="5428" href="Relation.Binary.On.html#5311" class="Function"
+      >preorder</a
+      ><a name="5436"
+      > </a
+      ><a name="5437" href="Relation.Binary.On.html#5437" class="Bound"
+      >P</a
+      ><a name="5438"
+      > </a
+      ><a name="5439" href="Relation.Binary.On.html#5439" class="Bound"
+      >f</a
+      ><a name="5440"
+      > </a
+      ><a name="5441" class="Symbol"
+      >=</a
+      ><a name="5442"
+      > </a
+      ><a name="5443" class="Keyword"
+      >record</a
+      ><a name="5449"
+      >
+  </a
+      ><a name="5452" class="Symbol"
+      >{</a
+      ><a name="5453"
+      > </a
+      ><a name="5454" class="Field"
+      >isPreorder</a
+      ><a name="5464"
+      > </a
+      ><a name="5465" class="Symbol"
+      >=</a
+      ><a name="5466"
+      > </a
+      ><a name="5467" href="Relation.Binary.On.html#2275" class="Function"
+      >isPreorder</a
+      ><a name="5477"
+      > </a
+      ><a name="5478" href="Relation.Binary.On.html#5439" class="Bound"
+      >f</a
+      ><a name="5479"
+      > </a
+      ><a name="5480" class="Symbol"
+      >(</a
+      ><a name="5481" href="Relation.Binary.html#1627" class="Field"
+      >Preorder.isPreorder</a
+      ><a name="5500"
+      > </a
+      ><a name="5501" href="Relation.Binary.On.html#5437" class="Bound"
+      >P</a
+      ><a name="5502" class="Symbol"
+      >)</a
+      ><a name="5503"
+      >
+  </a
+      ><a name="5506" class="Symbol"
+      >}</a
+      ><a name="5507"
+      >
+
+</a
+      ><a name="5509" href="Relation.Binary.On.html#5509" class="Function"
+      >setoid</a
+      ><a name="5515"
+      > </a
+      ><a name="5516" class="Symbol"
+      >:</a
+      ><a name="5517"
+      > </a
+      ><a name="5518" class="Symbol"
+      >&#8704;</a
+      ><a name="5519"
+      > </a
+      ><a name="5520" class="Symbol"
+      >{</a
+      ><a name="5521" href="Relation.Binary.On.html#5521" class="Bound"
+      >s&#8321;</a
+      ><a name="5523"
+      > </a
+      ><a name="5524" href="Relation.Binary.On.html#5524" class="Bound"
+      >s&#8322;</a
+      ><a name="5526"
+      > </a
+      ><a name="5527" href="Relation.Binary.On.html#5527" class="Bound"
+      >b</a
+      ><a name="5528" class="Symbol"
+      >}</a
+      ><a name="5529"
+      > </a
+      ><a name="5530" class="Symbol"
+      >{</a
+      ><a name="5531" href="Relation.Binary.On.html#5531" class="Bound"
+      >B</a
+      ><a name="5532"
+      > </a
+      ><a name="5533" class="Symbol"
+      >:</a
+      ><a name="5534"
+      > </a
+      ><a name="5535" class="PrimitiveType"
+      >Set</a
+      ><a name="5538"
+      > </a
+      ><a name="5539" href="Relation.Binary.On.html#5527" class="Bound"
+      >b</a
+      ><a name="5540" class="Symbol"
+      >}</a
+      ><a name="5541"
+      > </a
+      ><a name="5542" class="Symbol"
+      >(</a
+      ><a name="5543" href="Relation.Binary.On.html#5543" class="Bound"
+      >S</a
+      ><a name="5544"
+      > </a
+      ><a name="5545" class="Symbol"
+      >:</a
+      ><a name="5546"
+      > </a
+      ><a name="5547" href="Relation.Binary.html#1852" class="Record"
+      >Setoid</a
+      ><a name="5553"
+      > </a
+      ><a name="5554" href="Relation.Binary.On.html#5521" class="Bound"
+      >s&#8321;</a
+      ><a name="5556"
+      > </a
+      ><a name="5557" href="Relation.Binary.On.html#5524" class="Bound"
+      >s&#8322;</a
+      ><a name="5559" class="Symbol"
+      >)</a
+      ><a name="5560"
+      > </a
+      ><a name="5561" class="Symbol"
+      >&#8594;</a
+      ><a name="5562"
+      >
+         </a
+      ><a name="5572" class="Symbol"
+      >(</a
+      ><a name="5573" href="Relation.Binary.On.html#5531" class="Bound"
+      >B</a
+      ><a name="5574"
+      > </a
+      ><a name="5575" class="Symbol"
+      >&#8594;</a
+      ><a name="5576"
+      > </a
+      ><a name="5577" href="Relation.Binary.html#1915" class="Field"
+      >Setoid.Carrier</a
+      ><a name="5591"
+      > </a
+      ><a name="5592" href="Relation.Binary.On.html#5543" class="Bound"
+      >S</a
+      ><a name="5593" class="Symbol"
+      >)</a
+      ><a name="5594"
+      > </a
+      ><a name="5595" class="Symbol"
+      >&#8594;</a
+      ><a name="5596"
+      > </a
+      ><a name="5597" href="Relation.Binary.html#1852" class="Record"
+      >Setoid</a
+      ><a name="5603"
+      > </a
+      ><a name="5604" class="Symbol"
+      >_</a
+      ><a name="5605"
+      > </a
+      ><a name="5606" class="Symbol"
+      >_</a
+      ><a name="5607"
+      >
+</a
+      ><a name="5608" href="Relation.Binary.On.html#5509" class="Function"
+      >setoid</a
+      ><a name="5614"
+      > </a
+      ><a name="5615" href="Relation.Binary.On.html#5615" class="Bound"
+      >S</a
+      ><a name="5616"
+      > </a
+      ><a name="5617" href="Relation.Binary.On.html#5617" class="Bound"
+      >f</a
+      ><a name="5618"
+      > </a
+      ><a name="5619" class="Symbol"
+      >=</a
+      ><a name="5620"
+      > </a
+      ><a name="5621" class="Keyword"
+      >record</a
+      ><a name="5627"
+      >
+  </a
+      ><a name="5630" class="Symbol"
+      >{</a
+      ><a name="5631"
+      > </a
+      ><a name="5632" class="Field"
+      >isEquivalence</a
+      ><a name="5645"
+      > </a
+      ><a name="5646" class="Symbol"
+      >=</a
+      ><a name="5647"
+      > </a
+      ><a name="5648" href="Relation.Binary.On.html#1989" class="Function"
+      >isEquivalence</a
+      ><a name="5661"
+      > </a
+      ><a name="5662" href="Relation.Binary.On.html#5617" class="Bound"
+      >f</a
+      ><a name="5663"
+      > </a
+      ><a name="5664" class="Symbol"
+      >(</a
+      ><a name="5665" href="Relation.Binary.html#1975" class="Field"
+      >Setoid.isEquivalence</a
+      ><a name="5685"
+      > </a
+      ><a name="5686" href="Relation.Binary.On.html#5615" class="Bound"
+      >S</a
+      ><a name="5687" class="Symbol"
+      >)</a
+      ><a name="5688"
+      >
+  </a
+      ><a name="5691" class="Symbol"
+      >}</a
+      ><a name="5692"
+      >
+
+</a
+      ><a name="5694" href="Relation.Binary.On.html#5694" class="Function"
+      >decSetoid</a
+      ><a name="5703"
+      > </a
+      ><a name="5704" class="Symbol"
+      >:</a
+      ><a name="5705"
+      > </a
+      ><a name="5706" class="Symbol"
+      >&#8704;</a
+      ><a name="5707"
+      > </a
+      ><a name="5708" class="Symbol"
+      >{</a
+      ><a name="5709" href="Relation.Binary.On.html#5709" class="Bound"
+      >d&#8321;</a
+      ><a name="5711"
+      > </a
+      ><a name="5712" href="Relation.Binary.On.html#5712" class="Bound"
+      >d&#8322;</a
+      ><a name="5714"
+      > </a
+      ><a name="5715" href="Relation.Binary.On.html#5715" class="Bound"
+      >b</a
+      ><a name="5716" class="Symbol"
+      >}</a
+      ><a name="5717"
+      > </a
+      ><a name="5718" class="Symbol"
+      >{</a
+      ><a name="5719" href="Relation.Binary.On.html#5719" class="Bound"
+      >B</a
+      ><a name="5720"
+      > </a
+      ><a name="5721" class="Symbol"
+      >:</a
+      ><a name="5722"
+      > </a
+      ><a name="5723" class="PrimitiveType"
+      >Set</a
+      ><a name="5726"
+      > </a
+      ><a name="5727" href="Relation.Binary.On.html#5715" class="Bound"
+      >b</a
+      ><a name="5728" class="Symbol"
+      >}</a
+      ><a name="5729"
+      > </a
+      ><a name="5730" class="Symbol"
+      >(</a
+      ><a name="5731" href="Relation.Binary.On.html#5731" class="Bound"
+      >D</a
+      ><a name="5732"
+      > </a
+      ><a name="5733" class="Symbol"
+      >:</a
+      ><a name="5734"
+      > </a
+      ><a name="5735" href="Relation.Binary.html#2921" class="Record"
+      >DecSetoid</a
+      ><a name="5744"
+      > </a
+      ><a name="5745" href="Relation.Binary.On.html#5709" class="Bound"
+      >d&#8321;</a
+      ><a name="5747"
+      > </a
+      ><a name="5748" href="Relation.Binary.On.html#5712" class="Bound"
+      >d&#8322;</a
+      ><a name="5750" class="Symbol"
+      >)</a
+      ><a name="5751"
+      > </a
+      ><a name="5752" class="Symbol"
+      >&#8594;</a
+      ><a name="5753"
+      >
+            </a
+      ><a name="5766" class="Symbol"
+      >(</a
+      ><a name="5767" href="Relation.Binary.On.html#5719" class="Bound"
+      >B</a
+      ><a name="5768"
+      > </a
+      ><a name="5769" class="Symbol"
+      >&#8594;</a
+      ><a name="5770"
+      > </a
+      ><a name="5771" href="Relation.Binary.html#2987" class="Field"
+      >DecSetoid.Carrier</a
+      ><a name="5788"
+      > </a
+      ><a name="5789" href="Relation.Binary.On.html#5731" class="Bound"
+      >D</a
+      ><a name="5790" class="Symbol"
+      >)</a
+      ><a name="5791"
+      > </a
+      ><a name="5792" class="Symbol"
+      >&#8594;</a
+      ><a name="5793"
+      > </a
+      ><a name="5794" href="Relation.Binary.html#2921" class="Record"
+      >DecSetoid</a
+      ><a name="5803"
+      > </a
+      ><a name="5804" class="Symbol"
+      >_</a
+      ><a name="5805"
+      > </a
+      ><a name="5806" class="Symbol"
+      >_</a
+      ><a name="5807"
+      >
+</a
+      ><a name="5808" href="Relation.Binary.On.html#5694" class="Function"
+      >decSetoid</a
+      ><a name="5817"
+      > </a
+      ><a name="5818" href="Relation.Binary.On.html#5818" class="Bound"
+      >D</a
+      ><a name="5819"
+      > </a
+      ><a name="5820" href="Relation.Binary.On.html#5820" class="Bound"
+      >f</a
+      ><a name="5821"
+      > </a
+      ><a name="5822" class="Symbol"
+      >=</a
+      ><a name="5823"
+      > </a
+      ><a name="5824" class="Keyword"
+      >record</a
+      ><a name="5830"
+      >
+  </a
+      ><a name="5833" class="Symbol"
+      >{</a
+      ><a name="5834"
+      > </a
+      ><a name="5835" class="Field"
+      >isDecEquivalence</a
+      ><a name="5851"
+      > </a
+      ><a name="5852" class="Symbol"
+      >=</a
+      ><a name="5853"
+      > </a
+      ><a name="5854" href="Relation.Binary.On.html#2623" class="Function"
+      >isDecEquivalence</a
+      ><a name="5870"
+      > </a
+      ><a name="5871" href="Relation.Binary.On.html#5820" class="Bound"
+      >f</a
+      ><a name="5872"
+      > </a
+      ><a name="5873" class="Symbol"
+      >(</a
+      ><a name="5874" href="Relation.Binary.html#3053" class="Field"
+      >DecSetoid.isDecEquivalence</a
+      ><a name="5900"
+      > </a
+      ><a name="5901" href="Relation.Binary.On.html#5818" class="Bound"
+      >D</a
+      ><a name="5902" class="Symbol"
+      >)</a
+      ><a name="5903"
+      >
+  </a
+      ><a name="5906" class="Symbol"
+      >}</a
+      ><a name="5907"
+      >
+
+</a
+      ><a name="5909" href="Relation.Binary.On.html#5909" class="Function"
+      >poset</a
+      ><a name="5914"
+      > </a
+      ><a name="5915" class="Symbol"
+      >:</a
+      ><a name="5916"
+      > </a
+      ><a name="5917" class="Symbol"
+      >&#8704;</a
+      ><a name="5918"
+      > </a
+      ><a name="5919" class="Symbol"
+      >{</a
+      ><a name="5920" href="Relation.Binary.On.html#5920" class="Bound"
+      >p&#8321;</a
+      ><a name="5922"
+      > </a
+      ><a name="5923" href="Relation.Binary.On.html#5923" class="Bound"
+      >p&#8322;</a
+      ><a name="5925"
+      > </a
+      ><a name="5926" href="Relation.Binary.On.html#5926" class="Bound"
+      >p&#8323;</a
+      ><a name="5928"
+      > </a
+      ><a name="5929" href="Relation.Binary.On.html#5929" class="Bound"
+      >b</a
+      ><a name="5930" class="Symbol"
+      >}</a
+      ><a name="5931"
+      > </a
+      ><a name="5932" class="Symbol"
+      >{</a
+      ><a name="5933" href="Relation.Binary.On.html#5933" class="Bound"
+      >B</a
+      ><a name="5934"
+      > </a
+      ><a name="5935" class="Symbol"
+      >:</a
+      ><a name="5936"
+      > </a
+      ><a name="5937" class="PrimitiveType"
+      >Set</a
+      ><a name="5940"
+      > </a
+      ><a name="5941" href="Relation.Binary.On.html#5929" class="Bound"
+      >b</a
+      ><a name="5942" class="Symbol"
+      >}</a
+      ><a name="5943"
+      > </a
+      ><a name="5944" class="Symbol"
+      >(</a
+      ><a name="5945" href="Relation.Binary.On.html#5945" class="Bound"
+      >P</a
+      ><a name="5946"
+      > </a
+      ><a name="5947" class="Symbol"
+      >:</a
+      ><a name="5948"
+      > </a
+      ><a name="5949" href="Relation.Binary.html#3673" class="Record"
+      >Poset</a
+      ><a name="5954"
+      > </a
+      ><a name="5955" href="Relation.Binary.On.html#5920" class="Bound"
+      >p&#8321;</a
+      ><a name="5957"
+      > </a
+      ><a name="5958" href="Relation.Binary.On.html#5923" class="Bound"
+      >p&#8322;</a
+      ><a name="5960"
+      > </a
+      ><a name="5961" href="Relation.Binary.On.html#5926" class="Bound"
+      >p&#8323;</a
+      ><a name="5963" class="Symbol"
+      >)</a
+      ><a name="5964"
+      > </a
+      ><a name="5965" class="Symbol"
+      >&#8594;</a
+      ><a name="5966"
+      >
+        </a
+      ><a name="5975" class="Symbol"
+      >(</a
+      ><a name="5976" href="Relation.Binary.On.html#5933" class="Bound"
+      >B</a
+      ><a name="5977"
+      > </a
+      ><a name="5978" class="Symbol"
+      >&#8594;</a
+      ><a name="5979"
+      > </a
+      ><a name="5980" href="Relation.Binary.html#3749" class="Field"
+      >Poset.Carrier</a
+      ><a name="5993"
+      > </a
+      ><a name="5994" href="Relation.Binary.On.html#5945" class="Bound"
+      >P</a
+      ><a name="5995" class="Symbol"
+      >)</a
+      ><a name="5996"
+      > </a
+      ><a name="5997" class="Symbol"
+      >&#8594;</a
+      ><a name="5998"
+      > </a
+      ><a name="5999" href="Relation.Binary.html#3673" class="Record"
+      >Poset</a
+      ><a name="6004"
+      > </a
+      ><a name="6005" class="Symbol"
+      >_</a
+      ><a name="6006"
+      > </a
+      ><a name="6007" class="Symbol"
+      >_</a
+      ><a name="6008"
+      > </a
+      ><a name="6009" class="Symbol"
+      >_</a
+      ><a name="6010"
+      >
+</a
+      ><a name="6011" href="Relation.Binary.On.html#5909" class="Function"
+      >poset</a
+      ><a name="6016"
+      > </a
+      ><a name="6017" href="Relation.Binary.On.html#6017" class="Bound"
+      >P</a
+      ><a name="6018"
+      > </a
+      ><a name="6019" href="Relation.Binary.On.html#6019" class="Bound"
+      >f</a
+      ><a name="6020"
+      > </a
+      ><a name="6021" class="Symbol"
+      >=</a
+      ><a name="6022"
+      > </a
+      ><a name="6023" class="Keyword"
+      >record</a
+      ><a name="6029"
+      >
+  </a
+      ><a name="6032" class="Symbol"
+      >{</a
+      ><a name="6033"
+      > </a
+      ><a name="6034" class="Field"
+      >isPartialOrder</a
+      ><a name="6048"
+      > </a
+      ><a name="6049" class="Symbol"
+      >=</a
+      ><a name="6050"
+      > </a
+      ><a name="6051" href="Relation.Binary.On.html#2921" class="Function"
+      >isPartialOrder</a
+      ><a name="6065"
+      > </a
+      ><a name="6066" href="Relation.Binary.On.html#6019" class="Bound"
+      >f</a
+      ><a name="6067"
+      > </a
+      ><a name="6068" class="Symbol"
+      >(</a
+      ><a name="6069" href="Relation.Binary.html#3848" class="Field"
+      >Poset.isPartialOrder</a
+      ><a name="6089"
+      > </a
+      ><a name="6090" href="Relation.Binary.On.html#6017" class="Bound"
+      >P</a
+      ><a name="6091" class="Symbol"
+      >)</a
+      ><a name="6092"
+      >
+  </a
+      ><a name="6095" class="Symbol"
+      >}</a
+      ><a name="6096"
+      >
+
+</a
+      ><a name="6098" href="Relation.Binary.On.html#6098" class="Function"
+      >decPoset</a
+      ><a name="6106"
+      > </a
+      ><a name="6107" class="Symbol"
+      >:</a
+      ><a name="6108"
+      > </a
+      ><a name="6109" class="Symbol"
+      >&#8704;</a
+      ><a name="6110"
+      > </a
+      ><a name="6111" class="Symbol"
+      >{</a
+      ><a name="6112" href="Relation.Binary.On.html#6112" class="Bound"
+      >d&#8321;</a
+      ><a name="6114"
+      > </a
+      ><a name="6115" href="Relation.Binary.On.html#6115" class="Bound"
+      >d&#8322;</a
+      ><a name="6117"
+      > </a
+      ><a name="6118" href="Relation.Binary.On.html#6118" class="Bound"
+      >d&#8323;</a
+      ><a name="6120"
+      > </a
+      ><a name="6121" href="Relation.Binary.On.html#6121" class="Bound"
+      >b</a
+      ><a name="6122" class="Symbol"
+      >}</a
+      ><a name="6123"
+      > </a
+      ><a name="6124" class="Symbol"
+      >{</a
+      ><a name="6125" href="Relation.Binary.On.html#6125" class="Bound"
+      >B</a
+      ><a name="6126"
+      > </a
+      ><a name="6127" class="Symbol"
+      >:</a
+      ><a name="6128"
+      > </a
+      ><a name="6129" class="PrimitiveType"
+      >Set</a
+      ><a name="6132"
+      > </a
+      ><a name="6133" href="Relation.Binary.On.html#6121" class="Bound"
+      >b</a
+      ><a name="6134" class="Symbol"
+      >}</a
+      ><a name="6135"
+      > </a
+      ><a name="6136" class="Symbol"
+      >(</a
+      ><a name="6137" href="Relation.Binary.On.html#6137" class="Bound"
+      >D</a
+      ><a name="6138"
+      > </a
+      ><a name="6139" class="Symbol"
+      >:</a
+      ><a name="6140"
+      > </a
+      ><a name="6141" href="Relation.Binary.html#4736" class="Record"
+      >DecPoset</a
+      ><a name="6149"
+      > </a
+      ><a name="6150" href="Relation.Binary.On.html#6112" class="Bound"
+      >d&#8321;</a
+      ><a name="6152"
+      > </a
+      ><a name="6153" href="Relation.Binary.On.html#6115" class="Bound"
+      >d&#8322;</a
+      ><a name="6155"
+      > </a
+      ><a name="6156" href="Relation.Binary.On.html#6118" class="Bound"
+      >d&#8323;</a
+      ><a name="6158" class="Symbol"
+      >)</a
+      ><a name="6159"
+      > </a
+      ><a name="6160" class="Symbol"
+      >&#8594;</a
+      ><a name="6161"
+      >
+           </a
+      ><a name="6173" class="Symbol"
+      >(</a
+      ><a name="6174" href="Relation.Binary.On.html#6125" class="Bound"
+      >B</a
+      ><a name="6175"
+      > </a
+      ><a name="6176" class="Symbol"
+      >&#8594;</a
+      ><a name="6177"
+      > </a
+      ><a name="6178" href="Relation.Binary.html#4815" class="Field"
+      >DecPoset.Carrier</a
+      ><a name="6194"
+      > </a
+      ><a name="6195" href="Relation.Binary.On.html#6137" class="Bound"
+      >D</a
+      ><a name="6196" class="Symbol"
+      >)</a
+      ><a name="6197"
+      > </a
+      ><a name="6198" class="Symbol"
+      >&#8594;</a
+      ><a name="6199"
+      > </a
+      ><a name="6200" href="Relation.Binary.html#4736" class="Record"
+      >DecPoset</a
+      ><a name="6208"
+      > </a
+      ><a name="6209" class="Symbol"
+      >_</a
+      ><a name="6210"
+      > </a
+      ><a name="6211" class="Symbol"
+      >_</a
+      ><a name="6212"
+      > </a
+      ><a name="6213" class="Symbol"
+      >_</a
+      ><a name="6214"
+      >
+</a
+      ><a name="6215" href="Relation.Binary.On.html#6098" class="Function"
+      >decPoset</a
+      ><a name="6223"
+      > </a
+      ><a name="6224" href="Relation.Binary.On.html#6224" class="Bound"
+      >D</a
+      ><a name="6225"
+      > </a
+      ><a name="6226" href="Relation.Binary.On.html#6226" class="Bound"
+      >f</a
+      ><a name="6227"
+      > </a
+      ><a name="6228" class="Symbol"
+      >=</a
+      ><a name="6229"
+      > </a
+      ><a name="6230" class="Keyword"
+      >record</a
+      ><a name="6236"
+      >
+  </a
+      ><a name="6239" class="Symbol"
+      >{</a
+      ><a name="6240"
+      > </a
+      ><a name="6241" class="Field"
+      >isDecPartialOrder</a
+      ><a name="6258"
+      > </a
+      ><a name="6259" class="Symbol"
+      >=</a
+      ><a name="6260"
+      >
+      </a
+      ><a name="6267" href="Relation.Binary.On.html#3254" class="Function"
+      >isDecPartialOrder</a
+      ><a name="6284"
+      > </a
+      ><a name="6285" href="Relation.Binary.On.html#6226" class="Bound"
+      >f</a
+      ><a name="6286"
+      > </a
+      ><a name="6287" class="Symbol"
+      >(</a
+      ><a name="6288" href="Relation.Binary.html#4923" class="Field"
+      >DecPoset.isDecPartialOrder</a
+      ><a name="6314"
+      > </a
+      ><a name="6315" href="Relation.Binary.On.html#6224" class="Bound"
+      >D</a
+      ><a name="6316" class="Symbol"
+      >)</a
+      ><a name="6317"
+      >
+  </a
+      ><a name="6320" class="Symbol"
+      >}</a
+      ><a name="6321"
+      >
+
+</a
+      ><a name="6323" href="Relation.Binary.On.html#6323" class="Function"
+      >strictPartialOrder</a
+      ><a name="6341"
+      > </a
+      ><a name="6342" class="Symbol"
+      >:</a
+      ><a name="6343"
+      >
+  </a
+      ><a name="6346" class="Symbol"
+      >&#8704;</a
+      ><a name="6347"
+      > </a
+      ><a name="6348" class="Symbol"
+      >{</a
+      ><a name="6349" href="Relation.Binary.On.html#6349" class="Bound"
+      >s&#8321;</a
+      ><a name="6351"
+      > </a
+      ><a name="6352" href="Relation.Binary.On.html#6352" class="Bound"
+      >s&#8322;</a
+      ><a name="6354"
+      > </a
+      ><a name="6355" href="Relation.Binary.On.html#6355" class="Bound"
+      >s&#8323;</a
+      ><a name="6357"
+      > </a
+      ><a name="6358" href="Relation.Binary.On.html#6358" class="Bound"
+      >b</a
+      ><a name="6359" class="Symbol"
+      >}</a
+      ><a name="6360"
+      > </a
+      ><a name="6361" class="Symbol"
+      >{</a
+      ><a name="6362" href="Relation.Binary.On.html#6362" class="Bound"
+      >B</a
+      ><a name="6363"
+      > </a
+      ><a name="6364" class="Symbol"
+      >:</a
+      ><a name="6365"
+      > </a
+      ><a name="6366" class="PrimitiveType"
+      >Set</a
+      ><a name="6369"
+      > </a
+      ><a name="6370" href="Relation.Binary.On.html#6358" class="Bound"
+      >b</a
+      ><a name="6371" class="Symbol"
+      >}</a
+      ><a name="6372"
+      > </a
+      ><a name="6373" class="Symbol"
+      >(</a
+      ><a name="6374" href="Relation.Binary.On.html#6374" class="Bound"
+      >S</a
+      ><a name="6375"
+      > </a
+      ><a name="6376" class="Symbol"
+      >:</a
+      ><a name="6377"
+      > </a
+      ><a name="6378" href="Relation.Binary.html#5826" class="Record"
+      >StrictPartialOrder</a
+      ><a name="6396"
+      > </a
+      ><a name="6397" href="Relation.Binary.On.html#6349" class="Bound"
+      >s&#8321;</a
+      ><a name="6399"
+      > </a
+      ><a name="6400" href="Relation.Binary.On.html#6352" class="Bound"
+      >s&#8322;</a
+      ><a name="6402"
+      > </a
+      ><a name="6403" href="Relation.Binary.On.html#6355" class="Bound"
+      >s&#8323;</a
+      ><a name="6405" class="Symbol"
+      >)</a
+      ><a name="6406"
+      > </a
+      ><a name="6407" class="Symbol"
+      >&#8594;</a
+      ><a name="6408"
+      >
+  </a
+      ><a name="6411" class="Symbol"
+      >(</a
+      ><a name="6412" href="Relation.Binary.On.html#6362" class="Bound"
+      >B</a
+      ><a name="6413"
+      > </a
+      ><a name="6414" class="Symbol"
+      >&#8594;</a
+      ><a name="6415"
+      > </a
+      ><a name="6416" href="Relation.Binary.html#5915" class="Field"
+      >StrictPartialOrder.Carrier</a
+      ><a name="6442"
+      > </a
+      ><a name="6443" href="Relation.Binary.On.html#6374" class="Bound"
+      >S</a
+      ><a name="6444" class="Symbol"
+      >)</a
+      ><a name="6445"
+      > </a
+      ><a name="6446" class="Symbol"
+      >&#8594;</a
+      ><a name="6447"
+      > </a
+      ><a name="6448" href="Relation.Binary.html#5826" class="Record"
+      >StrictPartialOrder</a
+      ><a name="6466"
+      > </a
+      ><a name="6467" class="Symbol"
+      >_</a
+      ><a name="6468"
+      > </a
+      ><a name="6469" class="Symbol"
+      >_</a
+      ><a name="6470"
+      > </a
+      ><a name="6471" class="Symbol"
+      >_</a
+      ><a name="6472"
+      >
+</a
+      ><a name="6473" href="Relation.Binary.On.html#6323" class="Function"
+      >strictPartialOrder</a
+      ><a name="6491"
+      > </a
+      ><a name="6492" href="Relation.Binary.On.html#6492" class="Bound"
+      >S</a
+      ><a name="6493"
+      > </a
+      ><a name="6494" href="Relation.Binary.On.html#6494" class="Bound"
+      >f</a
+      ><a name="6495"
+      > </a
+      ><a name="6496" class="Symbol"
+      >=</a
+      ><a name="6497"
+      > </a
+      ><a name="6498" class="Keyword"
+      >record</a
+      ><a name="6504"
+      >
+  </a
+      ><a name="6507" class="Symbol"
+      >{</a
+      ><a name="6508"
+      > </a
+      ><a name="6509" class="Field"
+      >isStrictPartialOrder</a
+      ><a name="6529"
+      > </a
+      ><a name="6530" class="Symbol"
+      >=</a
+      ><a name="6531"
+      >
+      </a
+      ><a name="6538" href="Relation.Binary.On.html#3651" class="Function"
+      >isStrictPartialOrder</a
+      ><a name="6558"
+      > </a
+      ><a name="6559" href="Relation.Binary.On.html#6494" class="Bound"
+      >f</a
+      ><a name="6560"
+      > </a
+      ><a name="6561" class="Symbol"
+      >(</a
+      ><a name="6562" href="Relation.Binary.html#6032" class="Field"
+      >StrictPartialOrder.isStrictPartialOrder</a
+      ><a name="6601"
+      > </a
+      ><a name="6602" href="Relation.Binary.On.html#6492" class="Bound"
+      >S</a
+      ><a name="6603" class="Symbol"
+      >)</a
+      ><a name="6604"
+      >
+  </a
+      ><a name="6607" class="Symbol"
+      >}</a
+      ><a name="6608"
+      >
+
+</a
+      ><a name="6610" href="Relation.Binary.On.html#6610" class="Function"
+      >totalOrder</a
+      ><a name="6620"
+      > </a
+      ><a name="6621" class="Symbol"
+      >:</a
+      ><a name="6622"
+      > </a
+      ><a name="6623" class="Symbol"
+      >&#8704;</a
+      ><a name="6624"
+      > </a
+      ><a name="6625" class="Symbol"
+      >{</a
+      ><a name="6626" href="Relation.Binary.On.html#6626" class="Bound"
+      >t&#8321;</a
+      ><a name="6628"
+      > </a
+      ><a name="6629" href="Relation.Binary.On.html#6629" class="Bound"
+      >t&#8322;</a
+      ><a name="6631"
+      > </a
+      ><a name="6632" href="Relation.Binary.On.html#6632" class="Bound"
+      >t&#8323;</a
+      ><a name="6634"
+      > </a
+      ><a name="6635" href="Relation.Binary.On.html#6635" class="Bound"
+      >b</a
+      ><a name="6636" class="Symbol"
+      >}</a
+      ><a name="6637"
+      > </a
+      ><a name="6638" class="Symbol"
+      >{</a
+      ><a name="6639" href="Relation.Binary.On.html#6639" class="Bound"
+      >B</a
+      ><a name="6640"
+      > </a
+      ><a name="6641" class="Symbol"
+      >:</a
+      ><a name="6642"
+      > </a
+      ><a name="6643" class="PrimitiveType"
+      >Set</a
+      ><a name="6646"
+      > </a
+      ><a name="6647" href="Relation.Binary.On.html#6635" class="Bound"
+      >b</a
+      ><a name="6648" class="Symbol"
+      >}</a
+      ><a name="6649"
+      > </a
+      ><a name="6650" class="Symbol"
+      >(</a
+      ><a name="6651" href="Relation.Binary.On.html#6651" class="Bound"
+      >T</a
+      ><a name="6652"
+      > </a
+      ><a name="6653" class="Symbol"
+      >:</a
+      ><a name="6654"
+      > </a
+      ><a name="6655" href="Relation.Binary.html#8091" class="Record"
+      >TotalOrder</a
+      ><a name="6665"
+      > </a
+      ><a name="6666" href="Relation.Binary.On.html#6626" class="Bound"
+      >t&#8321;</a
+      ><a name="6668"
+      > </a
+      ><a name="6669" href="Relation.Binary.On.html#6629" class="Bound"
+      >t&#8322;</a
+      ><a name="6671"
+      > </a
+      ><a name="6672" href="Relation.Binary.On.html#6632" class="Bound"
+      >t&#8323;</a
+      ><a name="6674" class="Symbol"
+      >)</a
+      ><a name="6675"
+      > </a
+      ><a name="6676" class="Symbol"
+      >&#8594;</a
+      ><a name="6677"
+      >
+             </a
+      ><a name="6691" class="Symbol"
+      >(</a
+      ><a name="6692" href="Relation.Binary.On.html#6639" class="Bound"
+      >B</a
+      ><a name="6693"
+      > </a
+      ><a name="6694" class="Symbol"
+      >&#8594;</a
+      ><a name="6695"
+      > </a
+      ><a name="6696" href="Relation.Binary.html#8172" class="Field"
+      >TotalOrder.Carrier</a
+      ><a name="6714"
+      > </a
+      ><a name="6715" href="Relation.Binary.On.html#6651" class="Bound"
+      >T</a
+      ><a name="6716" class="Symbol"
+      >)</a
+      ><a name="6717"
+      > </a
+      ><a name="6718" class="Symbol"
+      >&#8594;</a
+      ><a name="6719"
+      > </a
+      ><a name="6720" href="Relation.Binary.html#8091" class="Record"
+      >TotalOrder</a
+      ><a name="6730"
+      > </a
+      ><a name="6731" class="Symbol"
+      >_</a
+      ><a name="6732"
+      > </a
+      ><a name="6733" class="Symbol"
+      >_</a
+      ><a name="6734"
+      > </a
+      ><a name="6735" class="Symbol"
+      >_</a
+      ><a name="6736"
+      >
+</a
+      ><a name="6737" href="Relation.Binary.On.html#6610" class="Function"
+      >totalOrder</a
+      ><a name="6747"
+      > </a
+      ><a name="6748" href="Relation.Binary.On.html#6748" class="Bound"
+      >T</a
+      ><a name="6749"
+      > </a
+      ><a name="6750" href="Relation.Binary.On.html#6750" class="Bound"
+      >f</a
+      ><a name="6751"
+      > </a
+      ><a name="6752" class="Symbol"
+      >=</a
+      ><a name="6753"
+      > </a
+      ><a name="6754" class="Keyword"
+      >record</a
+      ><a name="6760"
+      >
+  </a
+      ><a name="6763" class="Symbol"
+      >{</a
+      ><a name="6764"
+      > </a
+      ><a name="6765" class="Field"
+      >isTotalOrder</a
+      ><a name="6777"
+      > </a
+      ><a name="6778" class="Symbol"
+      >=</a
+      ><a name="6779"
+      > </a
+      ><a name="6780" href="Relation.Binary.On.html#4134" class="Function"
+      >isTotalOrder</a
+      ><a name="6792"
+      > </a
+      ><a name="6793" href="Relation.Binary.On.html#6750" class="Bound"
+      >f</a
+      ><a name="6794"
+      > </a
+      ><a name="6795" class="Symbol"
+      >(</a
+      ><a name="6796" href="Relation.Binary.html#8265" class="Field"
+      >TotalOrder.isTotalOrder</a
+      ><a name="6819"
+      > </a
+      ><a name="6820" href="Relation.Binary.On.html#6748" class="Bound"
+      >T</a
+      ><a name="6821" class="Symbol"
+      >)</a
+      ><a name="6822"
+      >
+  </a
+      ><a name="6825" class="Symbol"
+      >}</a
+      ><a name="6826"
+      >
+
+</a
+      ><a name="6828" href="Relation.Binary.On.html#6828" class="Function"
+      >decTotalOrder</a
+      ><a name="6841"
+      > </a
+      ><a name="6842" class="Symbol"
+      >:</a
+      ><a name="6843"
+      >
+  </a
+      ><a name="6846" class="Symbol"
+      >&#8704;</a
+      ><a name="6847"
+      > </a
+      ><a name="6848" class="Symbol"
+      >{</a
+      ><a name="6849" href="Relation.Binary.On.html#6849" class="Bound"
+      >d&#8321;</a
+      ><a name="6851"
+      > </a
+      ><a name="6852" href="Relation.Binary.On.html#6852" class="Bound"
+      >d&#8322;</a
+      ><a name="6854"
+      > </a
+      ><a name="6855" href="Relation.Binary.On.html#6855" class="Bound"
+      >d&#8323;</a
+      ><a name="6857"
+      > </a
+      ><a name="6858" href="Relation.Binary.On.html#6858" class="Bound"
+      >b</a
+      ><a name="6859" class="Symbol"
+      >}</a
+      ><a name="6860"
+      > </a
+      ><a name="6861" class="Symbol"
+      >{</a
+      ><a name="6862" href="Relation.Binary.On.html#6862" class="Bound"
+      >B</a
+      ><a name="6863"
+      > </a
+      ><a name="6864" class="Symbol"
+      >:</a
+      ><a name="6865"
+      > </a
+      ><a name="6866" class="PrimitiveType"
+      >Set</a
+      ><a name="6869"
+      > </a
+      ><a name="6870" href="Relation.Binary.On.html#6858" class="Bound"
+      >b</a
+      ><a name="6871" class="Symbol"
+      >}</a
+      ><a name="6872"
+      > </a
+      ><a name="6873" class="Symbol"
+      >(</a
+      ><a name="6874" href="Relation.Binary.On.html#6874" class="Bound"
+      >D</a
+      ><a name="6875"
+      > </a
+      ><a name="6876" class="Symbol"
+      >:</a
+      ><a name="6877"
+      > </a
+      ><a name="6878" href="Relation.Binary.html#9168" class="Record"
+      >DecTotalOrder</a
+      ><a name="6891"
+      > </a
+      ><a name="6892" href="Relation.Binary.On.html#6849" class="Bound"
+      >d&#8321;</a
+      ><a name="6894"
+      > </a
+      ><a name="6895" href="Relation.Binary.On.html#6852" class="Bound"
+      >d&#8322;</a
+      ><a name="6897"
+      > </a
+      ><a name="6898" href="Relation.Binary.On.html#6855" class="Bound"
+      >d&#8323;</a
+      ><a name="6900" class="Symbol"
+      >)</a
+      ><a name="6901"
+      > </a
+      ><a name="6902" class="Symbol"
+      >&#8594;</a
+      ><a name="6903"
+      >
+  </a
+      ><a name="6906" class="Symbol"
+      >(</a
+      ><a name="6907" href="Relation.Binary.On.html#6862" class="Bound"
+      >B</a
+      ><a name="6908"
+      > </a
+      ><a name="6909" class="Symbol"
+      >&#8594;</a
+      ><a name="6910"
+      > </a
+      ><a name="6911" href="Relation.Binary.html#9252" class="Field"
+      >DecTotalOrder.Carrier</a
+      ><a name="6932"
+      > </a
+      ><a name="6933" href="Relation.Binary.On.html#6874" class="Bound"
+      >D</a
+      ><a name="6934" class="Symbol"
+      >)</a
+      ><a name="6935"
+      > </a
+      ><a name="6936" class="Symbol"
+      >&#8594;</a
+      ><a name="6937"
+      > </a
+      ><a name="6938" href="Relation.Binary.html#9168" class="Record"
+      >DecTotalOrder</a
+      ><a name="6951"
+      > </a
+      ><a name="6952" class="Symbol"
+      >_</a
+      ><a name="6953"
+      > </a
+      ><a name="6954" class="Symbol"
+      >_</a
+      ><a name="6955"
+      > </a
+      ><a name="6956" class="Symbol"
+      >_</a
+      ><a name="6957"
+      >
+</a
+      ><a name="6958" href="Relation.Binary.On.html#6828" class="Function"
+      >decTotalOrder</a
+      ><a name="6971"
+      > </a
+      ><a name="6972" href="Relation.Binary.On.html#6972" class="Bound"
+      >D</a
+      ><a name="6973"
+      > </a
+      ><a name="6974" href="Relation.Binary.On.html#6974" class="Bound"
+      >f</a
+      ><a name="6975"
+      > </a
+      ><a name="6976" class="Symbol"
+      >=</a
+      ><a name="6977"
+      > </a
+      ><a name="6978" class="Keyword"
+      >record</a
+      ><a name="6984"
+      >
+  </a
+      ><a name="6987" class="Symbol"
+      >{</a
+      ><a name="6988"
+      > </a
+      ><a name="6989" class="Field"
+      >isDecTotalOrder</a
+      ><a name="7004"
+      > </a
+      ><a name="7005" class="Symbol"
+      >=</a
+      ><a name="7006"
+      > </a
+      ><a name="7007" href="Relation.Binary.On.html#4457" class="Function"
+      >isDecTotalOrder</a
+      ><a name="7022"
+      > </a
+      ><a name="7023" href="Relation.Binary.On.html#6974" class="Bound"
+      >f</a
+      ><a name="7024"
+      > </a
+      ><a name="7025" class="Symbol"
+      >(</a
+      ><a name="7026" href="Relation.Binary.html#9354" class="Field"
+      >DecTotalOrder.isDecTotalOrder</a
+      ><a name="7055"
+      > </a
+      ><a name="7056" href="Relation.Binary.On.html#6972" class="Bound"
+      >D</a
+      ><a name="7057" class="Symbol"
+      >)</a
+      ><a name="7058"
+      >
+  </a
+      ><a name="7061" class="Symbol"
+      >}</a
+      ><a name="7062"
+      >
+
+</a
+      ><a name="7064" href="Relation.Binary.On.html#7064" class="Function"
+      >strictTotalOrder</a
+      ><a name="7080"
+      > </a
+      ><a name="7081" class="Symbol"
+      >:</a
+      ><a name="7082"
+      >
+  </a
+      ><a name="7085" class="Symbol"
+      >&#8704;</a
+      ><a name="7086"
+      > </a
+      ><a name="7087" class="Symbol"
+      >{</a
+      ><a name="7088" href="Relation.Binary.On.html#7088" class="Bound"
+      >s&#8321;</a
+      ><a name="7090"
+      > </a
+      ><a name="7091" href="Relation.Binary.On.html#7091" class="Bound"
+      >s&#8322;</a
+      ><a name="7093"
+      > </a
+      ><a name="7094" href="Relation.Binary.On.html#7094" class="Bound"
+      >s&#8323;</a
+      ><a name="7096"
+      > </a
+      ><a name="7097" href="Relation.Binary.On.html#7097" class="Bound"
+      >b</a
+      ><a name="7098" class="Symbol"
+      >}</a
+      ><a name="7099"
+      > </a
+      ><a name="7100" class="Symbol"
+      >{</a
+      ><a name="7101" href="Relation.Binary.On.html#7101" class="Bound"
+      >B</a
+      ><a name="7102"
+      > </a
+      ><a name="7103" class="Symbol"
+      >:</a
+      ><a name="7104"
+      > </a
+      ><a name="7105" class="PrimitiveType"
+      >Set</a
+      ><a name="7108"
+      > </a
+      ><a name="7109" href="Relation.Binary.On.html#7097" class="Bound"
+      >b</a
+      ><a name="7110" class="Symbol"
+      >}</a
+      ><a name="7111"
+      > </a
+      ><a name="7112" class="Symbol"
+      >(</a
+      ><a name="7113" href="Relation.Binary.On.html#7113" class="Bound"
+      >S</a
+      ><a name="7114"
+      > </a
+      ><a name="7115" class="Symbol"
+      >:</a
+      ><a name="7116"
+      > </a
+      ><a name="7117" href="Relation.Binary.html#10903" class="Record"
+      >StrictTotalOrder</a
+      ><a name="7133"
+      > </a
+      ><a name="7134" href="Relation.Binary.On.html#7088" class="Bound"
+      >s&#8321;</a
+      ><a name="7136"
+      > </a
+      ><a name="7137" href="Relation.Binary.On.html#7091" class="Bound"
+      >s&#8322;</a
+      ><a name="7139"
+      > </a
+      ><a name="7140" href="Relation.Binary.On.html#7094" class="Bound"
+      >s&#8323;</a
+      ><a name="7142" class="Symbol"
+      >)</a
+      ><a name="7143"
+      > </a
+      ><a name="7144" class="Symbol"
+      >&#8594;</a
+      ><a name="7145"
+      >
+  </a
+      ><a name="7148" class="Symbol"
+      >(</a
+      ><a name="7149" href="Relation.Binary.On.html#7101" class="Bound"
+      >B</a
+      ><a name="7150"
+      > </a
+      ><a name="7151" class="Symbol"
+      >&#8594;</a
+      ><a name="7152"
+      > </a
+      ><a name="7153" href="Relation.Binary.html#10990" class="Field"
+      >StrictTotalOrder.Carrier</a
+      ><a name="7177"
+      > </a
+      ><a name="7178" href="Relation.Binary.On.html#7113" class="Bound"
+      >S</a
+      ><a name="7179" class="Symbol"
+      >)</a
+      ><a name="7180"
+      > </a
+      ><a name="7181" class="Symbol"
+      >&#8594;</a
+      ><a name="7182"
+      > </a
+      ><a name="7183" href="Relation.Binary.html#10903" class="Record"
+      >StrictTotalOrder</a
+      ><a name="7199"
+      > </a
+      ><a name="7200" class="Symbol"
+      >_</a
+      ><a name="7201"
+      > </a
+      ><a name="7202" class="Symbol"
+      >_</a
+      ><a name="7203"
+      > </a
+      ><a name="7204" class="Symbol"
+      >_</a
+      ><a name="7205"
+      >
+</a
+      ><a name="7206" href="Relation.Binary.On.html#7064" class="Function"
+      >strictTotalOrder</a
+      ><a name="7222"
+      > </a
+      ><a name="7223" href="Relation.Binary.On.html#7223" class="Bound"
+      >S</a
+      ><a name="7224"
+      > </a
+      ><a name="7225" href="Relation.Binary.On.html#7225" class="Bound"
+      >f</a
+      ><a name="7226"
+      > </a
+      ><a name="7227" class="Symbol"
+      >=</a
+      ><a name="7228"
+      > </a
+      ><a name="7229" class="Keyword"
+      >record</a
+      ><a name="7235"
+      >
+  </a
+      ><a name="7238" class="Symbol"
+      >{</a
+      ><a name="7239"
+      > </a
+      ><a name="7240" class="Field"
+      >isStrictTotalOrder</a
+      ><a name="7258"
+      > </a
+      ><a name="7259" class="Symbol"
+      >=</a
+      ><a name="7260"
+      >
+      </a
+      ><a name="7267" href="Relation.Binary.On.html#4842" class="Function"
+      >isStrictTotalOrder</a
+      ><a name="7285"
+      > </a
+      ><a name="7286" href="Relation.Binary.On.html#7225" class="Bound"
+      >f</a
+      ><a name="7287"
+      > </a
+      ><a name="7288" class="Symbol"
+      >(</a
+      ><a name="7289" href="Relation.Binary.html#11101" class="Field"
+      >StrictTotalOrder.isStrictTotalOrder</a
+      ><a name="7324"
+      > </a
+      ><a name="7325" href="Relation.Binary.On.html#7223" class="Bound"
+      >S</a
+      ><a name="7326" class="Symbol"
+      >)</a
+      ><a name="7327"
+      >
+  </a
+      ><a name="7330" class="Symbol"
+      >}</a
+      ><a name="7331"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

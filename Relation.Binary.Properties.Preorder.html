@@ -1,0 +1,375 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Relation.Binary.Properties.Preorder</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Properties satisfied by preorders</a
+      ><a name="142"
+      >
+</a
+      ><a name="143" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="215"
+      >
+
+</a
+      ><a name="217" class="Keyword"
+      >open</a
+      ><a name="221"
+      > </a
+      ><a name="222" class="Keyword"
+      >import</a
+      ><a name="228"
+      > </a
+      ><a name="229" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="244"
+      >
+
+</a
+      ><a name="246" class="Keyword"
+      >module</a
+      ><a name="252"
+      > </a
+      ><a name="253" href="Relation.Binary.Properties.Preorder.html#1" class="Module"
+      >Relation.Binary.Properties.Preorder</a
+      ><a name="288"
+      >
+         </a
+      ><a name="298" class="Symbol"
+      >{</a
+      ><a name="299" href="Relation.Binary.Properties.Preorder.html#299" class="Bound"
+      >p&#8321;</a
+      ><a name="301"
+      > </a
+      ><a name="302" href="Relation.Binary.Properties.Preorder.html#302" class="Bound"
+      >p&#8322;</a
+      ><a name="304"
+      > </a
+      ><a name="305" href="Relation.Binary.Properties.Preorder.html#305" class="Bound"
+      >p&#8323;</a
+      ><a name="307" class="Symbol"
+      >}</a
+      ><a name="308"
+      > </a
+      ><a name="309" class="Symbol"
+      >(</a
+      ><a name="310" href="Relation.Binary.Properties.Preorder.html#310" class="Bound"
+      >P</a
+      ><a name="311"
+      > </a
+      ><a name="312" class="Symbol"
+      >:</a
+      ><a name="313"
+      > </a
+      ><a name="314" href="Relation.Binary.html#1414" class="Record"
+      >Preorder</a
+      ><a name="322"
+      > </a
+      ><a name="323" href="Relation.Binary.Properties.Preorder.html#299" class="Bound"
+      >p&#8321;</a
+      ><a name="325"
+      > </a
+      ><a name="326" href="Relation.Binary.Properties.Preorder.html#302" class="Bound"
+      >p&#8322;</a
+      ><a name="328"
+      > </a
+      ><a name="329" href="Relation.Binary.Properties.Preorder.html#305" class="Bound"
+      >p&#8323;</a
+      ><a name="331" class="Symbol"
+      >)</a
+      ><a name="332"
+      > </a
+      ><a name="333" class="Keyword"
+      >where</a
+      ><a name="338"
+      >
+
+</a
+      ><a name="340" class="Keyword"
+      >open</a
+      ><a name="344"
+      > </a
+      ><a name="345" class="Keyword"
+      >import</a
+      ><a name="351"
+      > </a
+      ><a name="352" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="360"
+      >
+</a
+      ><a name="361" class="Keyword"
+      >open</a
+      ><a name="365"
+      > </a
+      ><a name="366" class="Keyword"
+      >import</a
+      ><a name="372"
+      > </a
+      ><a name="373" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="385"
+      > </a
+      ><a name="386" class="Symbol"
+      >as</a
+      ><a name="388"
+      > </a
+      ><a name="389" class="Module"
+      >Prod</a
+      ><a name="393"
+      >
+
+</a
+      ><a name="395" class="Keyword"
+      >open</a
+      ><a name="399"
+      > </a
+      ><a name="400" href="Relation.Binary.html#233" class="Module"
+      >Relation.</a
+      ><a name="409" href="Relation.Binary.html#242" class="Module"
+      >Binary.</a
+      ><a name="416" href="Relation.Binary.html#1414" class="Module"
+      >Preorder</a
+      ><a name="424"
+      > </a
+      ><a name="425" href="Relation.Binary.Properties.Preorder.html#310" class="Bound"
+      >P</a
+      ><a name="426"
+      >
+
+</a
+      ><a name="428" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="500"
+      >
+</a
+      ><a name="501" class="Comment"
+      >-- For every preorder there is an induced equivalence</a
+      ><a name="554"
+      >
+
+</a
+      ><a name="556" href="Relation.Binary.Properties.Preorder.html#556" class="Function"
+      >InducedEquivalence</a
+      ><a name="574"
+      > </a
+      ><a name="575" class="Symbol"
+      >:</a
+      ><a name="576"
+      > </a
+      ><a name="577" href="Relation.Binary.html#1852" class="Record"
+      >Setoid</a
+      ><a name="583"
+      > </a
+      ><a name="584" class="Symbol"
+      >_</a
+      ><a name="585"
+      > </a
+      ><a name="586" class="Symbol"
+      >_</a
+      ><a name="587"
+      >
+</a
+      ><a name="588" href="Relation.Binary.Properties.Preorder.html#556" class="Function"
+      >InducedEquivalence</a
+      ><a name="606"
+      > </a
+      ><a name="607" class="Symbol"
+      >=</a
+      ><a name="608"
+      > </a
+      ><a name="609" class="Keyword"
+      >record</a
+      ><a name="615"
+      >
+  </a
+      ><a name="618" class="Symbol"
+      >{</a
+      ><a name="619"
+      > </a
+      ><a name="620" class="Field Operator"
+      >_&#8776;_</a
+      ><a name="623"
+      >           </a
+      ><a name="634" class="Symbol"
+      >=</a
+      ><a name="635"
+      > </a
+      ><a name="636" class="Symbol"
+      >&#955;</a
+      ><a name="637"
+      > </a
+      ><a name="638" href="Relation.Binary.Properties.Preorder.html#638" class="Bound"
+      >x</a
+      ><a name="639"
+      > </a
+      ><a name="640" href="Relation.Binary.Properties.Preorder.html#640" class="Bound"
+      >y</a
+      ><a name="641"
+      > </a
+      ><a name="642" class="Symbol"
+      >&#8594;</a
+      ><a name="643"
+      > </a
+      ><a name="644" href="Relation.Binary.Properties.Preorder.html#638" class="Bound"
+      >x</a
+      ><a name="645"
+      > </a
+      ><a name="646" href="Relation.Binary.html#1577" class="Function Operator"
+      >&#8764;</a
+      ><a name="647"
+      > </a
+      ><a name="648" href="Relation.Binary.Properties.Preorder.html#640" class="Bound"
+      >y</a
+      ><a name="649"
+      > </a
+      ><a name="650" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="651"
+      > </a
+      ><a name="652" href="Relation.Binary.Properties.Preorder.html#640" class="Bound"
+      >y</a
+      ><a name="653"
+      > </a
+      ><a name="654" href="Relation.Binary.html#1577" class="Function Operator"
+      >&#8764;</a
+      ><a name="655"
+      > </a
+      ><a name="656" href="Relation.Binary.Properties.Preorder.html#638" class="Bound"
+      >x</a
+      ><a name="657"
+      >
+  </a
+      ><a name="660" class="Symbol"
+      >;</a
+      ><a name="661"
+      > </a
+      ><a name="662" class="Field"
+      >isEquivalence</a
+      ><a name="675"
+      > </a
+      ><a name="676" class="Symbol"
+      >=</a
+      ><a name="677"
+      > </a
+      ><a name="678" class="Keyword"
+      >record</a
+      ><a name="684"
+      >
+    </a
+      ><a name="689" class="Symbol"
+      >{</a
+      ><a name="690"
+      > </a
+      ><a name="691" class="Field"
+      >refl</a
+      ><a name="695"
+      >  </a
+      ><a name="697" class="Symbol"
+      >=</a
+      ><a name="698"
+      > </a
+      ><a name="699" class="Symbol"
+      >(</a
+      ><a name="700" href="Relation.Binary.html#1211" class="Function"
+      >refl</a
+      ><a name="704"
+      > </a
+      ><a name="705" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="706"
+      > </a
+      ><a name="707" href="Relation.Binary.html#1211" class="Function"
+      >refl</a
+      ><a name="711" class="Symbol"
+      >)</a
+      ><a name="712"
+      >
+    </a
+      ><a name="717" class="Symbol"
+      >;</a
+      ><a name="718"
+      > </a
+      ><a name="719" class="Field"
+      >sym</a
+      ><a name="722"
+      >   </a
+      ><a name="725" class="Symbol"
+      >=</a
+      ><a name="726"
+      > </a
+      ><a name="727" href="Data.Product.html#2302" class="Function"
+      >swap</a
+      ><a name="731"
+      >
+    </a
+      ><a name="736" class="Symbol"
+      >;</a
+      ><a name="737"
+      > </a
+      ><a name="738" class="Field"
+      >trans</a
+      ><a name="743"
+      > </a
+      ><a name="744" class="Symbol"
+      >=</a
+      ><a name="745"
+      > </a
+      ><a name="746" href="Data.Product.html#2035" class="Function"
+      >Prod.zip</a
+      ><a name="754"
+      > </a
+      ><a name="755" href="Relation.Binary.html#1134" class="Function"
+      >trans</a
+      ><a name="760"
+      > </a
+      ><a name="761" class="Symbol"
+      >(</a
+      ><a name="762" href="Function.html#1480" class="Function"
+      >flip</a
+      ><a name="766"
+      > </a
+      ><a name="767" href="Relation.Binary.html#1134" class="Function"
+      >trans</a
+      ><a name="772" class="Symbol"
+      >)</a
+      ><a name="773"
+      >
+    </a
+      ><a name="778" class="Symbol"
+      >}</a
+      ><a name="779"
+      >
+  </a
+      ><a name="782" class="Symbol"
+      >}</a
+      ><a name="783"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

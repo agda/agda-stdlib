@@ -1,0 +1,449 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Integer.Divisibility</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Divisibility and coprimality</a
+      ><a name="137"
+      >
+</a
+      ><a name="138" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="210"
+      >
+
+</a
+      ><a name="212" class="Keyword"
+      >module</a
+      ><a name="218"
+      > </a
+      ><a name="219" href="Data.Integer.Divisibility.html#1" class="Module"
+      >Data.Integer.Divisibility</a
+      ><a name="244"
+      > </a
+      ><a name="245" class="Keyword"
+      >where</a
+      ><a name="250"
+      >
+
+</a
+      ><a name="252" class="Keyword"
+      >open</a
+      ><a name="256"
+      > </a
+      ><a name="257" class="Keyword"
+      >import</a
+      ><a name="263"
+      > </a
+      ><a name="264" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="272"
+      >
+</a
+      ><a name="273" class="Keyword"
+      >open</a
+      ><a name="277"
+      > </a
+      ><a name="278" class="Keyword"
+      >import</a
+      ><a name="284"
+      > </a
+      ><a name="285" href="Data.Integer.html#1" class="Module"
+      >Data.Integer</a
+      ><a name="297"
+      >
+</a
+      ><a name="298" class="Keyword"
+      >open</a
+      ><a name="302"
+      > </a
+      ><a name="303" class="Keyword"
+      >import</a
+      ><a name="309"
+      > </a
+      ><a name="310" href="Data.Integer.Properties.html#1" class="Module"
+      >Data.Integer.Properties</a
+      ><a name="333"
+      >
+</a
+      ><a name="334" class="Keyword"
+      >import</a
+      ><a name="340"
+      > </a
+      ><a name="341" href="Data.Nat.Divisibility.html#1" class="Module"
+      >Data.Nat.Divisibility</a
+      ><a name="362"
+      > </a
+      ><a name="363" class="Symbol"
+      >as</a
+      ><a name="365"
+      > </a
+      ><a name="366" class="Module"
+      >&#8469;</a
+      ><a name="367"
+      >
+</a
+      ><a name="368" class="Keyword"
+      >import</a
+      ><a name="374"
+      > </a
+      ><a name="375" href="Data.Nat.Coprimality.html#1" class="Module"
+      >Data.Nat.Coprimality</a
+      ><a name="395"
+      > </a
+      ><a name="396" class="Symbol"
+      >as</a
+      ><a name="398"
+      > </a
+      ><a name="399" class="Module"
+      >&#8469;</a
+      ><a name="400"
+      >
+</a
+      ><a name="401" class="Keyword"
+      >open</a
+      ><a name="405"
+      > </a
+      ><a name="406" class="Keyword"
+      >import</a
+      ><a name="412"
+      > </a
+      ><a name="413" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="418"
+      >
+</a
+      ><a name="419" class="Keyword"
+      >open</a
+      ><a name="423"
+      > </a
+      ><a name="424" class="Keyword"
+      >import</a
+      ><a name="430"
+      > </a
+      ><a name="431" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="446"
+      >
+</a
+      ><a name="447" class="Keyword"
+      >open</a
+      ><a name="451"
+      > </a
+      ><a name="452" class="Keyword"
+      >import</a
+      ><a name="458"
+      > </a
+      ><a name="459" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="496"
+      >
+
+</a
+      ><a name="498" class="Comment"
+      >-- Divisibility.</a
+      ><a name="514"
+      >
+
+</a
+      ><a name="516" class="Keyword"
+      >infix</a
+      ><a name="521"
+      > </a
+      ><a name="522" class="Number"
+      >4</a
+      ><a name="523"
+      > _&#8739;_
+
+</a
+      ><a name="529" href="Data.Integer.Divisibility.html#529" class="Function Operator"
+      >_&#8739;_</a
+      ><a name="532"
+      > </a
+      ><a name="533" class="Symbol"
+      >:</a
+      ><a name="534"
+      > </a
+      ><a name="535" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="538"
+      > </a
+      ><a name="539" href="Data.Integer.html#915" class="Datatype"
+      >&#8484;</a
+      ><a name="540"
+      > </a
+      ><a name="541" href="Agda.Primitive.html#580" class="Primitive"
+      >zero</a
+      ><a name="545"
+      >
+</a
+      ><a name="546" href="Data.Integer.Divisibility.html#529" class="Function Operator"
+      >_&#8739;_</a
+      ><a name="549"
+      > </a
+      ><a name="550" class="Symbol"
+      >=</a
+      ><a name="551"
+      > </a
+      ><a name="552" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8469;._&#8739;_</a
+      ><a name="557"
+      > </a
+      ><a name="558" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="560"
+      > </a
+      ><a name="561" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;_&#8739;</a
+      ><a name="564"
+      >
+
+</a
+      ><a name="566" class="Comment"
+      >-- Coprimality.</a
+      ><a name="581"
+      >
+
+</a
+      ><a name="583" href="Data.Integer.Divisibility.html#583" class="Function"
+      >Coprime</a
+      ><a name="590"
+      > </a
+      ><a name="591" class="Symbol"
+      >:</a
+      ><a name="592"
+      > </a
+      ><a name="593" href="Relation.Binary.Core.html#761" class="Function"
+      >Rel</a
+      ><a name="596"
+      > </a
+      ><a name="597" href="Data.Integer.html#915" class="Datatype"
+      >&#8484;</a
+      ><a name="598"
+      > </a
+      ><a name="599" href="Agda.Primitive.html#580" class="Primitive"
+      >zero</a
+      ><a name="603"
+      >
+</a
+      ><a name="604" href="Data.Integer.Divisibility.html#583" class="Function"
+      >Coprime</a
+      ><a name="611"
+      > </a
+      ><a name="612" class="Symbol"
+      >=</a
+      ><a name="613"
+      > </a
+      ><a name="614" href="Data.Nat.Coprimality.html#958" class="Function"
+      >&#8469;.Coprime</a
+      ><a name="623"
+      > </a
+      ><a name="624" href="Function.html#2039" class="Function Operator"
+      >on</a
+      ><a name="626"
+      > </a
+      ><a name="627" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;_&#8739;</a
+      ><a name="630"
+      >
+
+</a
+      ><a name="632" class="Comment"
+      >-- If i divides jk and is coprime to j, then it divides k.</a
+      ><a name="690"
+      >
+
+</a
+      ><a name="692" href="Data.Integer.Divisibility.html#692" class="Function"
+      >coprime-divisor</a
+      ><a name="707"
+      > </a
+      ><a name="708" class="Symbol"
+      >:</a
+      ><a name="709"
+      > </a
+      ><a name="710" class="Symbol"
+      >&#8704;</a
+      ><a name="711"
+      > </a
+      ><a name="712" href="Data.Integer.Divisibility.html#712" class="Bound"
+      >i</a
+      ><a name="713"
+      > </a
+      ><a name="714" href="Data.Integer.Divisibility.html#714" class="Bound"
+      >j</a
+      ><a name="715"
+      > </a
+      ><a name="716" href="Data.Integer.Divisibility.html#716" class="Bound"
+      >k</a
+      ><a name="717"
+      > </a
+      ><a name="718" class="Symbol"
+      >&#8594;</a
+      ><a name="719"
+      > </a
+      ><a name="720" href="Data.Integer.Divisibility.html#583" class="Function"
+      >Coprime</a
+      ><a name="727"
+      > </a
+      ><a name="728" href="Data.Integer.Divisibility.html#712" class="Bound"
+      >i</a
+      ><a name="729"
+      > </a
+      ><a name="730" href="Data.Integer.Divisibility.html#714" class="Bound"
+      >j</a
+      ><a name="731"
+      > </a
+      ><a name="732" class="Symbol"
+      >&#8594;</a
+      ><a name="733"
+      > </a
+      ><a name="734" href="Data.Integer.Divisibility.html#712" class="Bound"
+      >i</a
+      ><a name="735"
+      > </a
+      ><a name="736" href="Data.Integer.Divisibility.html#529" class="Function Operator"
+      >&#8739;</a
+      ><a name="737"
+      > </a
+      ><a name="738" href="Data.Integer.Divisibility.html#714" class="Bound"
+      >j</a
+      ><a name="739"
+      > </a
+      ><a name="740" href="Data.Integer.html#3734" class="Function Operator"
+      >*</a
+      ><a name="741"
+      > </a
+      ><a name="742" href="Data.Integer.Divisibility.html#716" class="Bound"
+      >k</a
+      ><a name="743"
+      > </a
+      ><a name="744" class="Symbol"
+      >&#8594;</a
+      ><a name="745"
+      > </a
+      ><a name="746" href="Data.Integer.Divisibility.html#712" class="Bound"
+      >i</a
+      ><a name="747"
+      > </a
+      ><a name="748" href="Data.Integer.Divisibility.html#529" class="Function Operator"
+      >&#8739;</a
+      ><a name="749"
+      > </a
+      ><a name="750" href="Data.Integer.Divisibility.html#716" class="Bound"
+      >k</a
+      ><a name="751"
+      >
+</a
+      ><a name="752" href="Data.Integer.Divisibility.html#692" class="Function"
+      >coprime-divisor</a
+      ><a name="767"
+      > </a
+      ><a name="768" href="Data.Integer.Divisibility.html#768" class="Bound"
+      >i</a
+      ><a name="769"
+      > </a
+      ><a name="770" href="Data.Integer.Divisibility.html#770" class="Bound"
+      >j</a
+      ><a name="771"
+      > </a
+      ><a name="772" href="Data.Integer.Divisibility.html#772" class="Bound"
+      >k</a
+      ><a name="773"
+      > </a
+      ><a name="774" href="Data.Integer.Divisibility.html#774" class="Bound"
+      >c</a
+      ><a name="775"
+      > </a
+      ><a name="776" href="Data.Integer.Divisibility.html#776" class="Bound"
+      >eq</a
+      ><a name="778"
+      > </a
+      ><a name="779" class="Symbol"
+      >=</a
+      ><a name="780"
+      >
+  </a
+      ><a name="783" href="Data.Nat.Coprimality.html#2969" class="Function"
+      >&#8469;.coprime-divisor</a
+      ><a name="800"
+      > </a
+      ><a name="801" href="Data.Integer.Divisibility.html#774" class="Bound"
+      >c</a
+      ><a name="802"
+      > </a
+      ><a name="803" class="Symbol"
+      >(</a
+      ><a name="804" href="Relation.Binary.PropositionalEquality.Core.html#705" class="Function"
+      >subst</a
+      ><a name="809"
+      > </a
+      ><a name="810" class="Symbol"
+      >(</a
+      ><a name="811" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      >&#8469;._&#8739;_</a
+      ><a name="816"
+      > </a
+      ><a name="817" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="818"
+      > </a
+      ><a name="819" href="Data.Integer.Divisibility.html#768" class="Bound"
+      >i</a
+      ><a name="820"
+      > </a
+      ><a name="821" href="Data.Integer.html#1142" class="Function Operator"
+      >&#8739;</a
+      ><a name="822" class="Symbol"
+      >)</a
+      ><a name="823"
+      > </a
+      ><a name="824" class="Symbol"
+      >(</a
+      ><a name="825" href="Data.Integer.Properties.html#2770" class="Function"
+      >abs-*-commute</a
+      ><a name="838"
+      > </a
+      ><a name="839" href="Data.Integer.Divisibility.html#770" class="Bound"
+      >j</a
+      ><a name="840"
+      > </a
+      ><a name="841" href="Data.Integer.Divisibility.html#772" class="Bound"
+      >k</a
+      ><a name="842" class="Symbol"
+      >)</a
+      ><a name="843"
+      > </a
+      ><a name="844" href="Data.Integer.Divisibility.html#776" class="Bound"
+      >eq</a
+      ><a name="846" class="Symbol"
+      >)</a
+      ><a name="847"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

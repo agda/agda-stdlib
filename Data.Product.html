@@ -1,0 +1,3824 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Product</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Products</a
+      ><a name="117"
+      >
+</a
+      ><a name="118" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="190"
+      >
+
+</a
+      ><a name="192" class="Keyword"
+      >module</a
+      ><a name="198"
+      > </a
+      ><a name="199" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="211"
+      > </a
+      ><a name="212" class="Keyword"
+      >where</a
+      ><a name="217"
+      >
+
+</a
+      ><a name="219" class="Keyword"
+      >open</a
+      ><a name="223"
+      > </a
+      ><a name="224" class="Keyword"
+      >import</a
+      ><a name="230"
+      > </a
+      ><a name="231" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="239"
+      >
+</a
+      ><a name="240" class="Keyword"
+      >open</a
+      ><a name="244"
+      > </a
+      ><a name="245" class="Keyword"
+      >import</a
+      ><a name="251"
+      > </a
+      ><a name="252" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="257"
+      >
+</a
+      ><a name="258" class="Keyword"
+      >open</a
+      ><a name="262"
+      > </a
+      ><a name="263" class="Keyword"
+      >import</a
+      ><a name="269"
+      > </a
+      ><a name="270" href="Relation.Nullary.html#1" class="Module"
+      >Relation.Nullary</a
+      ><a name="286"
+      >
+
+</a
+      ><a name="288" class="Keyword"
+      >infixr</a
+      ><a name="294"
+      > </a
+      ><a name="295" class="Number"
+      >4</a
+      ><a name="296"
+      > _,_ _,&#8242;_
+</a
+      ><a name="306" class="Keyword"
+      >infix</a
+      ><a name="311"
+      >  </a
+      ><a name="313" class="Number"
+      >4</a
+      ><a name="314"
+      > ,_
+</a
+      ><a name="318" class="Keyword"
+      >infixr</a
+      ><a name="324"
+      > </a
+      ><a name="325" class="Number"
+      >2</a
+      ><a name="326"
+      > _&#215;_ _-&#215;-_ _-,-_
+
+</a
+      ><a name="344" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="416"
+      >
+</a
+      ><a name="417" class="Comment"
+      >-- Definition</a
+      ><a name="430"
+      >
+
+</a
+      ><a name="432" class="Keyword"
+      >record</a
+      ><a name="438"
+      > </a
+      ><a name="439" href="Data.Product.html#439" class="Record"
+      >&#931;</a
+      ><a name="440"
+      > </a
+      ><a name="441" class="Symbol"
+      >{</a
+      ><a name="442" href="Data.Product.html#442" class="Bound"
+      >a</a
+      ><a name="443"
+      > </a
+      ><a name="444" href="Data.Product.html#444" class="Bound"
+      >b</a
+      ><a name="445" class="Symbol"
+      >}</a
+      ><a name="446"
+      > </a
+      ><a name="447" class="Symbol"
+      >(</a
+      ><a name="448" href="Data.Product.html#448" class="Bound"
+      >A</a
+      ><a name="449"
+      > </a
+      ><a name="450" class="Symbol"
+      >:</a
+      ><a name="451"
+      > </a
+      ><a name="452" class="PrimitiveType"
+      >Set</a
+      ><a name="455"
+      > </a
+      ><a name="456" href="Data.Product.html#442" class="Bound"
+      >a</a
+      ><a name="457" class="Symbol"
+      >)</a
+      ><a name="458"
+      > </a
+      ><a name="459" class="Symbol"
+      >(</a
+      ><a name="460" href="Data.Product.html#460" class="Bound"
+      >B</a
+      ><a name="461"
+      > </a
+      ><a name="462" class="Symbol"
+      >:</a
+      ><a name="463"
+      > </a
+      ><a name="464" href="Data.Product.html#448" class="Bound"
+      >A</a
+      ><a name="465"
+      > </a
+      ><a name="466" class="Symbol"
+      >&#8594;</a
+      ><a name="467"
+      > </a
+      ><a name="468" class="PrimitiveType"
+      >Set</a
+      ><a name="471"
+      > </a
+      ><a name="472" href="Data.Product.html#444" class="Bound"
+      >b</a
+      ><a name="473" class="Symbol"
+      >)</a
+      ><a name="474"
+      > </a
+      ><a name="475" class="Symbol"
+      >:</a
+      ><a name="476"
+      > </a
+      ><a name="477" class="PrimitiveType"
+      >Set</a
+      ><a name="480"
+      > </a
+      ><a name="481" class="Symbol"
+      >(</a
+      ><a name="482" href="Data.Product.html#442" class="Bound"
+      >a</a
+      ><a name="483"
+      > </a
+      ><a name="484" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="485"
+      > </a
+      ><a name="486" href="Data.Product.html#444" class="Bound"
+      >b</a
+      ><a name="487" class="Symbol"
+      >)</a
+      ><a name="488"
+      > </a
+      ><a name="489" class="Keyword"
+      >where</a
+      ><a name="494"
+      >
+  </a
+      ><a name="497" class="Keyword"
+      >constructor</a
+      ><a name="508"
+      > </a
+      ><a name="509" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >_,_</a
+      ><a name="512"
+      >
+  </a
+      ><a name="515" class="Keyword"
+      >field</a
+      ><a name="520"
+      >
+    </a
+      ><a name="525" href="Data.Product.html#525" class="Field"
+      >proj&#8321;</a
+      ><a name="530"
+      > </a
+      ><a name="531" class="Symbol"
+      >:</a
+      ><a name="532"
+      > </a
+      ><a name="533" href="Data.Product.html#448" class="Bound"
+      >A</a
+      ><a name="534"
+      >
+    </a
+      ><a name="539" href="Data.Product.html#539" class="Field"
+      >proj&#8322;</a
+      ><a name="544"
+      > </a
+      ><a name="545" class="Symbol"
+      >:</a
+      ><a name="546"
+      > </a
+      ><a name="547" href="Data.Product.html#460" class="Bound"
+      >B</a
+      ><a name="548"
+      > </a
+      ><a name="549" href="Data.Product.html#525" class="Bound"
+      >proj&#8321;</a
+      ><a name="554"
+      >
+
+</a
+      ><a name="556" class="Keyword"
+      >open</a
+      ><a name="560"
+      > </a
+      ><a name="561" href="Data.Product.html#439" class="Module"
+      >&#931;</a
+      ><a name="562"
+      > </a
+      ><a name="563" class="Keyword"
+      >public</a
+      ><a name="569"
+      >
+
+</a
+      ><a name="571" class="Comment"
+      >-- The syntax declaration below is attached to &#931;-syntax, to make it</a
+      ><a name="638"
+      >
+</a
+      ><a name="639" class="Comment"
+      >-- easy to import &#931; without the special syntax.</a
+      ><a name="686"
+      >
+
+</a
+      ><a name="688" href="Data.Product.html#688" class="Function"
+      >&#931;-syntax</a
+      ><a name="696"
+      > </a
+      ><a name="697" class="Symbol"
+      >:</a
+      ><a name="698"
+      > </a
+      ><a name="699" class="Symbol"
+      >&#8704;</a
+      ><a name="700"
+      > </a
+      ><a name="701" class="Symbol"
+      >{</a
+      ><a name="702" href="Data.Product.html#702" class="Bound"
+      >a</a
+      ><a name="703"
+      > </a
+      ><a name="704" href="Data.Product.html#704" class="Bound"
+      >b</a
+      ><a name="705" class="Symbol"
+      >}</a
+      ><a name="706"
+      > </a
+      ><a name="707" class="Symbol"
+      >(</a
+      ><a name="708" href="Data.Product.html#708" class="Bound"
+      >A</a
+      ><a name="709"
+      > </a
+      ><a name="710" class="Symbol"
+      >:</a
+      ><a name="711"
+      > </a
+      ><a name="712" class="PrimitiveType"
+      >Set</a
+      ><a name="715"
+      > </a
+      ><a name="716" href="Data.Product.html#702" class="Bound"
+      >a</a
+      ><a name="717" class="Symbol"
+      >)</a
+      ><a name="718"
+      > </a
+      ><a name="719" class="Symbol"
+      >&#8594;</a
+      ><a name="720"
+      > </a
+      ><a name="721" class="Symbol"
+      >(</a
+      ><a name="722" href="Data.Product.html#708" class="Bound"
+      >A</a
+      ><a name="723"
+      > </a
+      ><a name="724" class="Symbol"
+      >&#8594;</a
+      ><a name="725"
+      > </a
+      ><a name="726" class="PrimitiveType"
+      >Set</a
+      ><a name="729"
+      > </a
+      ><a name="730" href="Data.Product.html#704" class="Bound"
+      >b</a
+      ><a name="731" class="Symbol"
+      >)</a
+      ><a name="732"
+      > </a
+      ><a name="733" class="Symbol"
+      >&#8594;</a
+      ><a name="734"
+      > </a
+      ><a name="735" class="PrimitiveType"
+      >Set</a
+      ><a name="738"
+      > </a
+      ><a name="739" class="Symbol"
+      >(</a
+      ><a name="740" href="Data.Product.html#702" class="Bound"
+      >a</a
+      ><a name="741"
+      > </a
+      ><a name="742" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="743"
+      > </a
+      ><a name="744" href="Data.Product.html#704" class="Bound"
+      >b</a
+      ><a name="745" class="Symbol"
+      >)</a
+      ><a name="746"
+      >
+</a
+      ><a name="747" href="Data.Product.html#688" class="Function"
+      >&#931;-syntax</a
+      ><a name="755"
+      > </a
+      ><a name="756" class="Symbol"
+      >=</a
+      ><a name="757"
+      > </a
+      ><a name="758" href="Data.Product.html#439" class="Record"
+      >&#931;</a
+      ><a name="759"
+      >
+
+</a
+      ><a name="761" class="Keyword"
+      >syntax</a
+      ><a name="767"
+      > &#931;-syntax A </a
+      ><a name="779" class="Symbol"
+      >(&#955;</a
+      ><a name="781"
+      > x </a
+      ><a name="784" class="Symbol"
+      >&#8594;</a
+      ><a name="785"
+      > B</a
+      ><a name="787" class="Symbol"
+      >)</a
+      ><a name="788"
+      > </a
+      ><a name="789" class="Symbol"
+      >=</a
+      ><a name="790"
+      > &#931;[ x &#8712; A ] B
+
+</a
+      ><a name="805" href="Data.Product.html#805" class="Function"
+      >&#8707;</a
+      ><a name="806"
+      > </a
+      ><a name="807" class="Symbol"
+      >:</a
+      ><a name="808"
+      > </a
+      ><a name="809" class="Symbol"
+      >&#8704;</a
+      ><a name="810"
+      > </a
+      ><a name="811" class="Symbol"
+      >{</a
+      ><a name="812" href="Data.Product.html#812" class="Bound"
+      >a</a
+      ><a name="813"
+      > </a
+      ><a name="814" href="Data.Product.html#814" class="Bound"
+      >b</a
+      ><a name="815" class="Symbol"
+      >}</a
+      ><a name="816"
+      > </a
+      ><a name="817" class="Symbol"
+      >{</a
+      ><a name="818" href="Data.Product.html#818" class="Bound"
+      >A</a
+      ><a name="819"
+      > </a
+      ><a name="820" class="Symbol"
+      >:</a
+      ><a name="821"
+      > </a
+      ><a name="822" class="PrimitiveType"
+      >Set</a
+      ><a name="825"
+      > </a
+      ><a name="826" href="Data.Product.html#812" class="Bound"
+      >a</a
+      ><a name="827" class="Symbol"
+      >}</a
+      ><a name="828"
+      > </a
+      ><a name="829" class="Symbol"
+      >&#8594;</a
+      ><a name="830"
+      > </a
+      ><a name="831" class="Symbol"
+      >(</a
+      ><a name="832" href="Data.Product.html#818" class="Bound"
+      >A</a
+      ><a name="833"
+      > </a
+      ><a name="834" class="Symbol"
+      >&#8594;</a
+      ><a name="835"
+      > </a
+      ><a name="836" class="PrimitiveType"
+      >Set</a
+      ><a name="839"
+      > </a
+      ><a name="840" href="Data.Product.html#814" class="Bound"
+      >b</a
+      ><a name="841" class="Symbol"
+      >)</a
+      ><a name="842"
+      > </a
+      ><a name="843" class="Symbol"
+      >&#8594;</a
+      ><a name="844"
+      > </a
+      ><a name="845" class="PrimitiveType"
+      >Set</a
+      ><a name="848"
+      > </a
+      ><a name="849" class="Symbol"
+      >(</a
+      ><a name="850" href="Data.Product.html#812" class="Bound"
+      >a</a
+      ><a name="851"
+      > </a
+      ><a name="852" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="853"
+      > </a
+      ><a name="854" href="Data.Product.html#814" class="Bound"
+      >b</a
+      ><a name="855" class="Symbol"
+      >)</a
+      ><a name="856"
+      >
+</a
+      ><a name="857" href="Data.Product.html#805" class="Function"
+      >&#8707;</a
+      ><a name="858"
+      > </a
+      ><a name="859" class="Symbol"
+      >=</a
+      ><a name="860"
+      > </a
+      ><a name="861" href="Data.Product.html#439" class="Record"
+      >&#931;</a
+      ><a name="862"
+      > </a
+      ><a name="863" class="Symbol"
+      >_</a
+      ><a name="864"
+      >
+
+</a
+      ><a name="866" href="Data.Product.html#866" class="Function"
+      >&#8708;</a
+      ><a name="867"
+      > </a
+      ><a name="868" class="Symbol"
+      >:</a
+      ><a name="869"
+      > </a
+      ><a name="870" class="Symbol"
+      >&#8704;</a
+      ><a name="871"
+      > </a
+      ><a name="872" class="Symbol"
+      >{</a
+      ><a name="873" href="Data.Product.html#873" class="Bound"
+      >a</a
+      ><a name="874"
+      > </a
+      ><a name="875" href="Data.Product.html#875" class="Bound"
+      >b</a
+      ><a name="876" class="Symbol"
+      >}</a
+      ><a name="877"
+      > </a
+      ><a name="878" class="Symbol"
+      >{</a
+      ><a name="879" href="Data.Product.html#879" class="Bound"
+      >A</a
+      ><a name="880"
+      > </a
+      ><a name="881" class="Symbol"
+      >:</a
+      ><a name="882"
+      > </a
+      ><a name="883" class="PrimitiveType"
+      >Set</a
+      ><a name="886"
+      > </a
+      ><a name="887" href="Data.Product.html#873" class="Bound"
+      >a</a
+      ><a name="888" class="Symbol"
+      >}</a
+      ><a name="889"
+      > </a
+      ><a name="890" class="Symbol"
+      >&#8594;</a
+      ><a name="891"
+      > </a
+      ><a name="892" class="Symbol"
+      >(</a
+      ><a name="893" href="Data.Product.html#879" class="Bound"
+      >A</a
+      ><a name="894"
+      > </a
+      ><a name="895" class="Symbol"
+      >&#8594;</a
+      ><a name="896"
+      > </a
+      ><a name="897" class="PrimitiveType"
+      >Set</a
+      ><a name="900"
+      > </a
+      ><a name="901" href="Data.Product.html#875" class="Bound"
+      >b</a
+      ><a name="902" class="Symbol"
+      >)</a
+      ><a name="903"
+      > </a
+      ><a name="904" class="Symbol"
+      >&#8594;</a
+      ><a name="905"
+      > </a
+      ><a name="906" class="PrimitiveType"
+      >Set</a
+      ><a name="909"
+      > </a
+      ><a name="910" class="Symbol"
+      >(</a
+      ><a name="911" href="Data.Product.html#873" class="Bound"
+      >a</a
+      ><a name="912"
+      > </a
+      ><a name="913" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="914"
+      > </a
+      ><a name="915" href="Data.Product.html#875" class="Bound"
+      >b</a
+      ><a name="916" class="Symbol"
+      >)</a
+      ><a name="917"
+      >
+</a
+      ><a name="918" href="Data.Product.html#866" class="Function"
+      >&#8708;</a
+      ><a name="919"
+      > </a
+      ><a name="920" href="Data.Product.html#920" class="Bound"
+      >P</a
+      ><a name="921"
+      > </a
+      ><a name="922" class="Symbol"
+      >=</a
+      ><a name="923"
+      > </a
+      ><a name="924" href="Relation.Nullary.Core.html#398" class="Function Operator"
+      >&#172;</a
+      ><a name="925"
+      > </a
+      ><a name="926" href="Data.Product.html#805" class="Function"
+      >&#8707;</a
+      ><a name="927"
+      > </a
+      ><a name="928" href="Data.Product.html#920" class="Bound"
+      >P</a
+      ><a name="929"
+      >
+
+</a
+      ><a name="931" href="Data.Product.html#931" class="Function"
+      >&#8707;&#8322;</a
+      ><a name="933"
+      > </a
+      ><a name="934" class="Symbol"
+      >:</a
+      ><a name="935"
+      > </a
+      ><a name="936" class="Symbol"
+      >&#8704;</a
+      ><a name="937"
+      > </a
+      ><a name="938" class="Symbol"
+      >{</a
+      ><a name="939" href="Data.Product.html#939" class="Bound"
+      >a</a
+      ><a name="940"
+      > </a
+      ><a name="941" href="Data.Product.html#941" class="Bound"
+      >b</a
+      ><a name="942"
+      > </a
+      ><a name="943" href="Data.Product.html#943" class="Bound"
+      >c</a
+      ><a name="944" class="Symbol"
+      >}</a
+      ><a name="945"
+      > </a
+      ><a name="946" class="Symbol"
+      >{</a
+      ><a name="947" href="Data.Product.html#947" class="Bound"
+      >A</a
+      ><a name="948"
+      > </a
+      ><a name="949" class="Symbol"
+      >:</a
+      ><a name="950"
+      > </a
+      ><a name="951" class="PrimitiveType"
+      >Set</a
+      ><a name="954"
+      > </a
+      ><a name="955" href="Data.Product.html#939" class="Bound"
+      >a</a
+      ><a name="956" class="Symbol"
+      >}</a
+      ><a name="957"
+      > </a
+      ><a name="958" class="Symbol"
+      >{</a
+      ><a name="959" href="Data.Product.html#959" class="Bound"
+      >B</a
+      ><a name="960"
+      > </a
+      ><a name="961" class="Symbol"
+      >:</a
+      ><a name="962"
+      > </a
+      ><a name="963" href="Data.Product.html#947" class="Bound"
+      >A</a
+      ><a name="964"
+      > </a
+      ><a name="965" class="Symbol"
+      >&#8594;</a
+      ><a name="966"
+      > </a
+      ><a name="967" class="PrimitiveType"
+      >Set</a
+      ><a name="970"
+      > </a
+      ><a name="971" href="Data.Product.html#941" class="Bound"
+      >b</a
+      ><a name="972" class="Symbol"
+      >}</a
+      ><a name="973"
+      >
+     </a
+      ><a name="979" class="Symbol"
+      >(</a
+      ><a name="980" href="Data.Product.html#980" class="Bound"
+      >C</a
+      ><a name="981"
+      > </a
+      ><a name="982" class="Symbol"
+      >:</a
+      ><a name="983"
+      > </a
+      ><a name="984" class="Symbol"
+      >(</a
+      ><a name="985" href="Data.Product.html#985" class="Bound"
+      >x</a
+      ><a name="986"
+      > </a
+      ><a name="987" class="Symbol"
+      >:</a
+      ><a name="988"
+      > </a
+      ><a name="989" href="Data.Product.html#947" class="Bound"
+      >A</a
+      ><a name="990" class="Symbol"
+      >)</a
+      ><a name="991"
+      > </a
+      ><a name="992" class="Symbol"
+      >&#8594;</a
+      ><a name="993"
+      > </a
+      ><a name="994" href="Data.Product.html#959" class="Bound"
+      >B</a
+      ><a name="995"
+      > </a
+      ><a name="996" href="Data.Product.html#985" class="Bound"
+      >x</a
+      ><a name="997"
+      > </a
+      ><a name="998" class="Symbol"
+      >&#8594;</a
+      ><a name="999"
+      > </a
+      ><a name="1000" class="PrimitiveType"
+      >Set</a
+      ><a name="1003"
+      > </a
+      ><a name="1004" href="Data.Product.html#943" class="Bound"
+      >c</a
+      ><a name="1005" class="Symbol"
+      >)</a
+      ><a name="1006"
+      > </a
+      ><a name="1007" class="Symbol"
+      >&#8594;</a
+      ><a name="1008"
+      > </a
+      ><a name="1009" class="PrimitiveType"
+      >Set</a
+      ><a name="1012"
+      > </a
+      ><a name="1013" class="Symbol"
+      >(</a
+      ><a name="1014" href="Data.Product.html#939" class="Bound"
+      >a</a
+      ><a name="1015"
+      > </a
+      ><a name="1016" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="1017"
+      > </a
+      ><a name="1018" href="Data.Product.html#941" class="Bound"
+      >b</a
+      ><a name="1019"
+      > </a
+      ><a name="1020" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="1021"
+      > </a
+      ><a name="1022" href="Data.Product.html#943" class="Bound"
+      >c</a
+      ><a name="1023" class="Symbol"
+      >)</a
+      ><a name="1024"
+      >
+</a
+      ><a name="1025" href="Data.Product.html#931" class="Function"
+      >&#8707;&#8322;</a
+      ><a name="1027"
+      > </a
+      ><a name="1028" href="Data.Product.html#1028" class="Bound"
+      >C</a
+      ><a name="1029"
+      > </a
+      ><a name="1030" class="Symbol"
+      >=</a
+      ><a name="1031"
+      > </a
+      ><a name="1032" href="Data.Product.html#805" class="Function"
+      >&#8707;</a
+      ><a name="1033"
+      > </a
+      ><a name="1034" class="Symbol"
+      >&#955;</a
+      ><a name="1035"
+      > </a
+      ><a name="1036" href="Data.Product.html#1036" class="Bound"
+      >a</a
+      ><a name="1037"
+      > </a
+      ><a name="1038" class="Symbol"
+      >&#8594;</a
+      ><a name="1039"
+      > </a
+      ><a name="1040" href="Data.Product.html#805" class="Function"
+      >&#8707;</a
+      ><a name="1041"
+      > </a
+      ><a name="1042" class="Symbol"
+      >&#955;</a
+      ><a name="1043"
+      > </a
+      ><a name="1044" href="Data.Product.html#1044" class="Bound"
+      >b</a
+      ><a name="1045"
+      > </a
+      ><a name="1046" class="Symbol"
+      >&#8594;</a
+      ><a name="1047"
+      > </a
+      ><a name="1048" href="Data.Product.html#1028" class="Bound"
+      >C</a
+      ><a name="1049"
+      > </a
+      ><a name="1050" href="Data.Product.html#1036" class="Bound"
+      >a</a
+      ><a name="1051"
+      > </a
+      ><a name="1052" href="Data.Product.html#1044" class="Bound"
+      >b</a
+      ><a name="1053"
+      >
+
+</a
+      ><a name="1055" href="Data.Product.html#1055" class="Function Operator"
+      >_&#215;_</a
+      ><a name="1058"
+      > </a
+      ><a name="1059" class="Symbol"
+      >:</a
+      ><a name="1060"
+      > </a
+      ><a name="1061" class="Symbol"
+      >&#8704;</a
+      ><a name="1062"
+      > </a
+      ><a name="1063" class="Symbol"
+      >{</a
+      ><a name="1064" href="Data.Product.html#1064" class="Bound"
+      >a</a
+      ><a name="1065"
+      > </a
+      ><a name="1066" href="Data.Product.html#1066" class="Bound"
+      >b</a
+      ><a name="1067" class="Symbol"
+      >}</a
+      ><a name="1068"
+      > </a
+      ><a name="1069" class="Symbol"
+      >(</a
+      ><a name="1070" href="Data.Product.html#1070" class="Bound"
+      >A</a
+      ><a name="1071"
+      > </a
+      ><a name="1072" class="Symbol"
+      >:</a
+      ><a name="1073"
+      > </a
+      ><a name="1074" class="PrimitiveType"
+      >Set</a
+      ><a name="1077"
+      > </a
+      ><a name="1078" href="Data.Product.html#1064" class="Bound"
+      >a</a
+      ><a name="1079" class="Symbol"
+      >)</a
+      ><a name="1080"
+      > </a
+      ><a name="1081" class="Symbol"
+      >(</a
+      ><a name="1082" href="Data.Product.html#1082" class="Bound"
+      >B</a
+      ><a name="1083"
+      > </a
+      ><a name="1084" class="Symbol"
+      >:</a
+      ><a name="1085"
+      > </a
+      ><a name="1086" class="PrimitiveType"
+      >Set</a
+      ><a name="1089"
+      > </a
+      ><a name="1090" href="Data.Product.html#1066" class="Bound"
+      >b</a
+      ><a name="1091" class="Symbol"
+      >)</a
+      ><a name="1092"
+      > </a
+      ><a name="1093" class="Symbol"
+      >&#8594;</a
+      ><a name="1094"
+      > </a
+      ><a name="1095" class="PrimitiveType"
+      >Set</a
+      ><a name="1098"
+      > </a
+      ><a name="1099" class="Symbol"
+      >(</a
+      ><a name="1100" href="Data.Product.html#1064" class="Bound"
+      >a</a
+      ><a name="1101"
+      > </a
+      ><a name="1102" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="1103"
+      > </a
+      ><a name="1104" href="Data.Product.html#1066" class="Bound"
+      >b</a
+      ><a name="1105" class="Symbol"
+      >)</a
+      ><a name="1106"
+      >
+</a
+      ><a name="1107" href="Data.Product.html#1107" class="Bound"
+      >A</a
+      ><a name="1108"
+      > </a
+      ><a name="1109" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="1110"
+      > </a
+      ><a name="1111" href="Data.Product.html#1111" class="Bound"
+      >B</a
+      ><a name="1112"
+      > </a
+      ><a name="1113" class="Symbol"
+      >=</a
+      ><a name="1114"
+      > </a
+      ><a name="1115" href="Data.Product.html#688" class="Function"
+      >&#931;[</a
+      ><a name="1117"
+      > </a
+      ><a name="1118" href="Data.Product.html#1118" class="Bound"
+      >x</a
+      ><a name="1119"
+      > </a
+      ><a name="1120" href="Data.Product.html#688" class="Function"
+      >&#8712;</a
+      ><a name="1121"
+      > </a
+      ><a name="1122" href="Data.Product.html#1107" class="Bound"
+      >A</a
+      ><a name="1123"
+      > </a
+      ><a name="1124" href="Data.Product.html#688" class="Function"
+      >]</a
+      ><a name="1125"
+      > </a
+      ><a name="1126" href="Data.Product.html#1111" class="Bound"
+      >B</a
+      ><a name="1127"
+      >
+
+</a
+      ><a name="1129" href="Data.Product.html#1129" class="Function Operator"
+      >_,&#8242;_</a
+      ><a name="1133"
+      > </a
+      ><a name="1134" class="Symbol"
+      >:</a
+      ><a name="1135"
+      > </a
+      ><a name="1136" class="Symbol"
+      >&#8704;</a
+      ><a name="1137"
+      > </a
+      ><a name="1138" class="Symbol"
+      >{</a
+      ><a name="1139" href="Data.Product.html#1139" class="Bound"
+      >a</a
+      ><a name="1140"
+      > </a
+      ><a name="1141" href="Data.Product.html#1141" class="Bound"
+      >b</a
+      ><a name="1142" class="Symbol"
+      >}</a
+      ><a name="1143"
+      > </a
+      ><a name="1144" class="Symbol"
+      >{</a
+      ><a name="1145" href="Data.Product.html#1145" class="Bound"
+      >A</a
+      ><a name="1146"
+      > </a
+      ><a name="1147" class="Symbol"
+      >:</a
+      ><a name="1148"
+      > </a
+      ><a name="1149" class="PrimitiveType"
+      >Set</a
+      ><a name="1152"
+      > </a
+      ><a name="1153" href="Data.Product.html#1139" class="Bound"
+      >a</a
+      ><a name="1154" class="Symbol"
+      >}</a
+      ><a name="1155"
+      > </a
+      ><a name="1156" class="Symbol"
+      >{</a
+      ><a name="1157" href="Data.Product.html#1157" class="Bound"
+      >B</a
+      ><a name="1158"
+      > </a
+      ><a name="1159" class="Symbol"
+      >:</a
+      ><a name="1160"
+      > </a
+      ><a name="1161" class="PrimitiveType"
+      >Set</a
+      ><a name="1164"
+      > </a
+      ><a name="1165" href="Data.Product.html#1141" class="Bound"
+      >b</a
+      ><a name="1166" class="Symbol"
+      >}</a
+      ><a name="1167"
+      > </a
+      ><a name="1168" class="Symbol"
+      >&#8594;</a
+      ><a name="1169"
+      > </a
+      ><a name="1170" href="Data.Product.html#1145" class="Bound"
+      >A</a
+      ><a name="1171"
+      > </a
+      ><a name="1172" class="Symbol"
+      >&#8594;</a
+      ><a name="1173"
+      > </a
+      ><a name="1174" href="Data.Product.html#1157" class="Bound"
+      >B</a
+      ><a name="1175"
+      > </a
+      ><a name="1176" class="Symbol"
+      >&#8594;</a
+      ><a name="1177"
+      > </a
+      ><a name="1178" href="Data.Product.html#1145" class="Bound"
+      >A</a
+      ><a name="1179"
+      > </a
+      ><a name="1180" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="1181"
+      > </a
+      ><a name="1182" href="Data.Product.html#1157" class="Bound"
+      >B</a
+      ><a name="1183"
+      >
+</a
+      ><a name="1184" href="Data.Product.html#1129" class="Function Operator"
+      >_,&#8242;_</a
+      ><a name="1188"
+      > </a
+      ><a name="1189" class="Symbol"
+      >=</a
+      ><a name="1190"
+      > </a
+      ><a name="1191" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >_,_</a
+      ><a name="1194"
+      >
+
+</a
+      ><a name="1196" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="1268"
+      >
+</a
+      ><a name="1269" class="Comment"
+      >-- Unique existence</a
+      ><a name="1288"
+      >
+
+</a
+      ><a name="1290" class="Comment"
+      >-- Parametrised on the underlying equality.</a
+      ><a name="1333"
+      >
+
+</a
+      ><a name="1335" href="Data.Product.html#1335" class="Function"
+      >&#8707;!</a
+      ><a name="1337"
+      > </a
+      ><a name="1338" class="Symbol"
+      >:</a
+      ><a name="1339"
+      > </a
+      ><a name="1340" class="Symbol"
+      >&#8704;</a
+      ><a name="1341"
+      > </a
+      ><a name="1342" class="Symbol"
+      >{</a
+      ><a name="1343" href="Data.Product.html#1343" class="Bound"
+      >a</a
+      ><a name="1344"
+      > </a
+      ><a name="1345" href="Data.Product.html#1345" class="Bound"
+      >b</a
+      ><a name="1346"
+      > </a
+      ><a name="1347" href="Data.Product.html#1347" class="Bound"
+      >&#8467;</a
+      ><a name="1348" class="Symbol"
+      >}</a
+      ><a name="1349"
+      > </a
+      ><a name="1350" class="Symbol"
+      >{</a
+      ><a name="1351" href="Data.Product.html#1351" class="Bound"
+      >A</a
+      ><a name="1352"
+      > </a
+      ><a name="1353" class="Symbol"
+      >:</a
+      ><a name="1354"
+      > </a
+      ><a name="1355" class="PrimitiveType"
+      >Set</a
+      ><a name="1358"
+      > </a
+      ><a name="1359" href="Data.Product.html#1343" class="Bound"
+      >a</a
+      ><a name="1360" class="Symbol"
+      >}</a
+      ><a name="1361"
+      > </a
+      ><a name="1362" class="Symbol"
+      >&#8594;</a
+      ><a name="1363"
+      >
+     </a
+      ><a name="1369" class="Symbol"
+      >(</a
+      ><a name="1370" href="Data.Product.html#1351" class="Bound"
+      >A</a
+      ><a name="1371"
+      > </a
+      ><a name="1372" class="Symbol"
+      >&#8594;</a
+      ><a name="1373"
+      > </a
+      ><a name="1374" href="Data.Product.html#1351" class="Bound"
+      >A</a
+      ><a name="1375"
+      > </a
+      ><a name="1376" class="Symbol"
+      >&#8594;</a
+      ><a name="1377"
+      > </a
+      ><a name="1378" class="PrimitiveType"
+      >Set</a
+      ><a name="1381"
+      > </a
+      ><a name="1382" href="Data.Product.html#1347" class="Bound"
+      >&#8467;</a
+      ><a name="1383" class="Symbol"
+      >)</a
+      ><a name="1384"
+      > </a
+      ><a name="1385" class="Symbol"
+      >&#8594;</a
+      ><a name="1386"
+      > </a
+      ><a name="1387" class="Symbol"
+      >(</a
+      ><a name="1388" href="Data.Product.html#1351" class="Bound"
+      >A</a
+      ><a name="1389"
+      > </a
+      ><a name="1390" class="Symbol"
+      >&#8594;</a
+      ><a name="1391"
+      > </a
+      ><a name="1392" class="PrimitiveType"
+      >Set</a
+      ><a name="1395"
+      > </a
+      ><a name="1396" href="Data.Product.html#1345" class="Bound"
+      >b</a
+      ><a name="1397" class="Symbol"
+      >)</a
+      ><a name="1398"
+      > </a
+      ><a name="1399" class="Symbol"
+      >&#8594;</a
+      ><a name="1400"
+      > </a
+      ><a name="1401" class="PrimitiveType"
+      >Set</a
+      ><a name="1404"
+      > </a
+      ><a name="1405" class="Symbol"
+      >(</a
+      ><a name="1406" href="Data.Product.html#1343" class="Bound"
+      >a</a
+      ><a name="1407"
+      > </a
+      ><a name="1408" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="1409"
+      > </a
+      ><a name="1410" href="Data.Product.html#1345" class="Bound"
+      >b</a
+      ><a name="1411"
+      > </a
+      ><a name="1412" href="Agda.Primitive.html#626" class="Primitive Operator"
+      >&#8852;</a
+      ><a name="1413"
+      > </a
+      ><a name="1414" href="Data.Product.html#1347" class="Bound"
+      >&#8467;</a
+      ><a name="1415" class="Symbol"
+      >)</a
+      ><a name="1416"
+      >
+</a
+      ><a name="1417" href="Data.Product.html#1335" class="Function"
+      >&#8707;!</a
+      ><a name="1419"
+      > </a
+      ><a name="1420" href="Data.Product.html#1420" class="Bound Operator"
+      >_&#8776;_</a
+      ><a name="1423"
+      > </a
+      ><a name="1424" href="Data.Product.html#1424" class="Bound"
+      >B</a
+      ><a name="1425"
+      > </a
+      ><a name="1426" class="Symbol"
+      >=</a
+      ><a name="1427"
+      > </a
+      ><a name="1428" href="Data.Product.html#805" class="Function"
+      >&#8707;</a
+      ><a name="1429"
+      > </a
+      ><a name="1430" class="Symbol"
+      >&#955;</a
+      ><a name="1431"
+      > </a
+      ><a name="1432" href="Data.Product.html#1432" class="Bound"
+      >x</a
+      ><a name="1433"
+      > </a
+      ><a name="1434" class="Symbol"
+      >&#8594;</a
+      ><a name="1435"
+      > </a
+      ><a name="1436" href="Data.Product.html#1424" class="Bound"
+      >B</a
+      ><a name="1437"
+      > </a
+      ><a name="1438" href="Data.Product.html#1432" class="Bound"
+      >x</a
+      ><a name="1439"
+      > </a
+      ><a name="1440" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="1441"
+      > </a
+      ><a name="1442" class="Symbol"
+      >(&#8704;</a
+      ><a name="1444"
+      > </a
+      ><a name="1445" class="Symbol"
+      >{</a
+      ><a name="1446" href="Data.Product.html#1446" class="Bound"
+      >y</a
+      ><a name="1447" class="Symbol"
+      >}</a
+      ><a name="1448"
+      > </a
+      ><a name="1449" class="Symbol"
+      >&#8594;</a
+      ><a name="1450"
+      > </a
+      ><a name="1451" href="Data.Product.html#1424" class="Bound"
+      >B</a
+      ><a name="1452"
+      > </a
+      ><a name="1453" href="Data.Product.html#1446" class="Bound"
+      >y</a
+      ><a name="1454"
+      > </a
+      ><a name="1455" class="Symbol"
+      >&#8594;</a
+      ><a name="1456"
+      > </a
+      ><a name="1457" href="Data.Product.html#1432" class="Bound"
+      >x</a
+      ><a name="1458"
+      > </a
+      ><a name="1459" href="Data.Product.html#1420" class="Bound Operator"
+      >&#8776;</a
+      ><a name="1460"
+      > </a
+      ><a name="1461" href="Data.Product.html#1446" class="Bound"
+      >y</a
+      ><a name="1462" class="Symbol"
+      >)</a
+      ><a name="1463"
+      >
+
+</a
+      ><a name="1465" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="1537"
+      >
+</a
+      ><a name="1538" class="Comment"
+      >-- Functions</a
+      ><a name="1550"
+      >
+
+</a
+      ><a name="1552" class="Comment"
+      >-- Sometimes the first component can be inferred.</a
+      ><a name="1601"
+      >
+
+</a
+      ><a name="1603" href="Data.Product.html#1603" class="Function Operator"
+      >,_</a
+      ><a name="1605"
+      > </a
+      ><a name="1606" class="Symbol"
+      >:</a
+      ><a name="1607"
+      > </a
+      ><a name="1608" class="Symbol"
+      >&#8704;</a
+      ><a name="1609"
+      > </a
+      ><a name="1610" class="Symbol"
+      >{</a
+      ><a name="1611" href="Data.Product.html#1611" class="Bound"
+      >a</a
+      ><a name="1612"
+      > </a
+      ><a name="1613" href="Data.Product.html#1613" class="Bound"
+      >b</a
+      ><a name="1614" class="Symbol"
+      >}</a
+      ><a name="1615"
+      > </a
+      ><a name="1616" class="Symbol"
+      >{</a
+      ><a name="1617" href="Data.Product.html#1617" class="Bound"
+      >A</a
+      ><a name="1618"
+      > </a
+      ><a name="1619" class="Symbol"
+      >:</a
+      ><a name="1620"
+      > </a
+      ><a name="1621" class="PrimitiveType"
+      >Set</a
+      ><a name="1624"
+      > </a
+      ><a name="1625" href="Data.Product.html#1611" class="Bound"
+      >a</a
+      ><a name="1626" class="Symbol"
+      >}</a
+      ><a name="1627"
+      > </a
+      ><a name="1628" class="Symbol"
+      >{</a
+      ><a name="1629" href="Data.Product.html#1629" class="Bound"
+      >B</a
+      ><a name="1630"
+      > </a
+      ><a name="1631" class="Symbol"
+      >:</a
+      ><a name="1632"
+      > </a
+      ><a name="1633" href="Data.Product.html#1617" class="Bound"
+      >A</a
+      ><a name="1634"
+      > </a
+      ><a name="1635" class="Symbol"
+      >&#8594;</a
+      ><a name="1636"
+      > </a
+      ><a name="1637" class="PrimitiveType"
+      >Set</a
+      ><a name="1640"
+      > </a
+      ><a name="1641" href="Data.Product.html#1613" class="Bound"
+      >b</a
+      ><a name="1642" class="Symbol"
+      >}</a
+      ><a name="1643"
+      > </a
+      ><a name="1644" class="Symbol"
+      >{</a
+      ><a name="1645" href="Data.Product.html#1645" class="Bound"
+      >x</a
+      ><a name="1646" class="Symbol"
+      >}</a
+      ><a name="1647"
+      > </a
+      ><a name="1648" class="Symbol"
+      >&#8594;</a
+      ><a name="1649"
+      > </a
+      ><a name="1650" href="Data.Product.html#1629" class="Bound"
+      >B</a
+      ><a name="1651"
+      > </a
+      ><a name="1652" href="Data.Product.html#1645" class="Bound"
+      >x</a
+      ><a name="1653"
+      > </a
+      ><a name="1654" class="Symbol"
+      >&#8594;</a
+      ><a name="1655"
+      > </a
+      ><a name="1656" href="Data.Product.html#805" class="Function"
+      >&#8707;</a
+      ><a name="1657"
+      > </a
+      ><a name="1658" href="Data.Product.html#1629" class="Bound"
+      >B</a
+      ><a name="1659"
+      >
+</a
+      ><a name="1660" href="Data.Product.html#1603" class="Function Operator"
+      >,</a
+      ><a name="1661"
+      > </a
+      ><a name="1662" href="Data.Product.html#1662" class="Bound"
+      >y</a
+      ><a name="1663"
+      > </a
+      ><a name="1664" class="Symbol"
+      >=</a
+      ><a name="1665"
+      > </a
+      ><a name="1666" class="Symbol"
+      >_</a
+      ><a name="1667"
+      > </a
+      ><a name="1668" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1669"
+      > </a
+      ><a name="1670" href="Data.Product.html#1662" class="Bound"
+      >y</a
+      ><a name="1671"
+      >
+
+</a
+      ><a name="1673" href="Data.Product.html#1673" class="Function Operator"
+      >&lt;_,_&gt;</a
+      ><a name="1678"
+      > </a
+      ><a name="1679" class="Symbol"
+      >:</a
+      ><a name="1680"
+      > </a
+      ><a name="1681" class="Symbol"
+      >&#8704;</a
+      ><a name="1682"
+      > </a
+      ><a name="1683" class="Symbol"
+      >{</a
+      ><a name="1684" href="Data.Product.html#1684" class="Bound"
+      >a</a
+      ><a name="1685"
+      > </a
+      ><a name="1686" href="Data.Product.html#1686" class="Bound"
+      >b</a
+      ><a name="1687"
+      > </a
+      ><a name="1688" href="Data.Product.html#1688" class="Bound"
+      >c</a
+      ><a name="1689" class="Symbol"
+      >}</a
+      ><a name="1690"
+      > </a
+      ><a name="1691" class="Symbol"
+      >{</a
+      ><a name="1692" href="Data.Product.html#1692" class="Bound"
+      >A</a
+      ><a name="1693"
+      > </a
+      ><a name="1694" class="Symbol"
+      >:</a
+      ><a name="1695"
+      > </a
+      ><a name="1696" class="PrimitiveType"
+      >Set</a
+      ><a name="1699"
+      > </a
+      ><a name="1700" href="Data.Product.html#1684" class="Bound"
+      >a</a
+      ><a name="1701" class="Symbol"
+      >}</a
+      ><a name="1702"
+      > </a
+      ><a name="1703" class="Symbol"
+      >{</a
+      ><a name="1704" href="Data.Product.html#1704" class="Bound"
+      >B</a
+      ><a name="1705"
+      > </a
+      ><a name="1706" class="Symbol"
+      >:</a
+      ><a name="1707"
+      > </a
+      ><a name="1708" href="Data.Product.html#1692" class="Bound"
+      >A</a
+      ><a name="1709"
+      > </a
+      ><a name="1710" class="Symbol"
+      >&#8594;</a
+      ><a name="1711"
+      > </a
+      ><a name="1712" class="PrimitiveType"
+      >Set</a
+      ><a name="1715"
+      > </a
+      ><a name="1716" href="Data.Product.html#1686" class="Bound"
+      >b</a
+      ><a name="1717" class="Symbol"
+      >}</a
+      ><a name="1718"
+      > </a
+      ><a name="1719" class="Symbol"
+      >{</a
+      ><a name="1720" href="Data.Product.html#1720" class="Bound"
+      >C</a
+      ><a name="1721"
+      > </a
+      ><a name="1722" class="Symbol"
+      >:</a
+      ><a name="1723"
+      > </a
+      ><a name="1724" class="Symbol"
+      >&#8704;</a
+      ><a name="1725"
+      > </a
+      ><a name="1726" class="Symbol"
+      >{</a
+      ><a name="1727" href="Data.Product.html#1727" class="Bound"
+      >x</a
+      ><a name="1728" class="Symbol"
+      >}</a
+      ><a name="1729"
+      > </a
+      ><a name="1730" class="Symbol"
+      >&#8594;</a
+      ><a name="1731"
+      > </a
+      ><a name="1732" href="Data.Product.html#1704" class="Bound"
+      >B</a
+      ><a name="1733"
+      > </a
+      ><a name="1734" href="Data.Product.html#1727" class="Bound"
+      >x</a
+      ><a name="1735"
+      > </a
+      ><a name="1736" class="Symbol"
+      >&#8594;</a
+      ><a name="1737"
+      > </a
+      ><a name="1738" class="PrimitiveType"
+      >Set</a
+      ><a name="1741"
+      > </a
+      ><a name="1742" href="Data.Product.html#1688" class="Bound"
+      >c</a
+      ><a name="1743" class="Symbol"
+      >}</a
+      ><a name="1744"
+      >
+        </a
+      ><a name="1753" class="Symbol"
+      >(</a
+      ><a name="1754" href="Data.Product.html#1754" class="Bound"
+      >f</a
+      ><a name="1755"
+      > </a
+      ><a name="1756" class="Symbol"
+      >:</a
+      ><a name="1757"
+      > </a
+      ><a name="1758" class="Symbol"
+      >(</a
+      ><a name="1759" href="Data.Product.html#1759" class="Bound"
+      >x</a
+      ><a name="1760"
+      > </a
+      ><a name="1761" class="Symbol"
+      >:</a
+      ><a name="1762"
+      > </a
+      ><a name="1763" href="Data.Product.html#1692" class="Bound"
+      >A</a
+      ><a name="1764" class="Symbol"
+      >)</a
+      ><a name="1765"
+      > </a
+      ><a name="1766" class="Symbol"
+      >&#8594;</a
+      ><a name="1767"
+      > </a
+      ><a name="1768" href="Data.Product.html#1704" class="Bound"
+      >B</a
+      ><a name="1769"
+      > </a
+      ><a name="1770" href="Data.Product.html#1759" class="Bound"
+      >x</a
+      ><a name="1771" class="Symbol"
+      >)</a
+      ><a name="1772"
+      > </a
+      ><a name="1773" class="Symbol"
+      >&#8594;</a
+      ><a name="1774"
+      > </a
+      ><a name="1775" class="Symbol"
+      >((</a
+      ><a name="1777" href="Data.Product.html#1777" class="Bound"
+      >x</a
+      ><a name="1778"
+      > </a
+      ><a name="1779" class="Symbol"
+      >:</a
+      ><a name="1780"
+      > </a
+      ><a name="1781" href="Data.Product.html#1692" class="Bound"
+      >A</a
+      ><a name="1782" class="Symbol"
+      >)</a
+      ><a name="1783"
+      > </a
+      ><a name="1784" class="Symbol"
+      >&#8594;</a
+      ><a name="1785"
+      > </a
+      ><a name="1786" href="Data.Product.html#1720" class="Bound"
+      >C</a
+      ><a name="1787"
+      > </a
+      ><a name="1788" class="Symbol"
+      >(</a
+      ><a name="1789" href="Data.Product.html#1754" class="Bound"
+      >f</a
+      ><a name="1790"
+      > </a
+      ><a name="1791" href="Data.Product.html#1777" class="Bound"
+      >x</a
+      ><a name="1792" class="Symbol"
+      >))</a
+      ><a name="1794"
+      > </a
+      ><a name="1795" class="Symbol"
+      >&#8594;</a
+      ><a name="1796"
+      >
+        </a
+      ><a name="1805" class="Symbol"
+      >((</a
+      ><a name="1807" href="Data.Product.html#1807" class="Bound"
+      >x</a
+      ><a name="1808"
+      > </a
+      ><a name="1809" class="Symbol"
+      >:</a
+      ><a name="1810"
+      > </a
+      ><a name="1811" href="Data.Product.html#1692" class="Bound"
+      >A</a
+      ><a name="1812" class="Symbol"
+      >)</a
+      ><a name="1813"
+      > </a
+      ><a name="1814" class="Symbol"
+      >&#8594;</a
+      ><a name="1815"
+      > </a
+      ><a name="1816" href="Data.Product.html#439" class="Record"
+      >&#931;</a
+      ><a name="1817"
+      > </a
+      ><a name="1818" class="Symbol"
+      >(</a
+      ><a name="1819" href="Data.Product.html#1704" class="Bound"
+      >B</a
+      ><a name="1820"
+      > </a
+      ><a name="1821" href="Data.Product.html#1807" class="Bound"
+      >x</a
+      ><a name="1822" class="Symbol"
+      >)</a
+      ><a name="1823"
+      > </a
+      ><a name="1824" href="Data.Product.html#1720" class="Bound"
+      >C</a
+      ><a name="1825" class="Symbol"
+      >)</a
+      ><a name="1826"
+      >
+</a
+      ><a name="1827" href="Data.Product.html#1673" class="Function Operator"
+      >&lt;</a
+      ><a name="1828"
+      > </a
+      ><a name="1829" href="Data.Product.html#1829" class="Bound"
+      >f</a
+      ><a name="1830"
+      > </a
+      ><a name="1831" href="Data.Product.html#1673" class="Function Operator"
+      >,</a
+      ><a name="1832"
+      > </a
+      ><a name="1833" href="Data.Product.html#1833" class="Bound"
+      >g</a
+      ><a name="1834"
+      > </a
+      ><a name="1835" href="Data.Product.html#1673" class="Function Operator"
+      >&gt;</a
+      ><a name="1836"
+      > </a
+      ><a name="1837" href="Data.Product.html#1837" class="Bound"
+      >x</a
+      ><a name="1838"
+      > </a
+      ><a name="1839" class="Symbol"
+      >=</a
+      ><a name="1840"
+      > </a
+      ><a name="1841" class="Symbol"
+      >(</a
+      ><a name="1842" href="Data.Product.html#1829" class="Bound"
+      >f</a
+      ><a name="1843"
+      > </a
+      ><a name="1844" href="Data.Product.html#1837" class="Bound"
+      >x</a
+      ><a name="1845"
+      > </a
+      ><a name="1846" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1847"
+      > </a
+      ><a name="1848" href="Data.Product.html#1833" class="Bound"
+      >g</a
+      ><a name="1849"
+      > </a
+      ><a name="1850" href="Data.Product.html#1837" class="Bound"
+      >x</a
+      ><a name="1851" class="Symbol"
+      >)</a
+      ><a name="1852"
+      >
+
+</a
+      ><a name="1854" href="Data.Product.html#1854" class="Function"
+      >map</a
+      ><a name="1857"
+      > </a
+      ><a name="1858" class="Symbol"
+      >:</a
+      ><a name="1859"
+      > </a
+      ><a name="1860" class="Symbol"
+      >&#8704;</a
+      ><a name="1861"
+      > </a
+      ><a name="1862" class="Symbol"
+      >{</a
+      ><a name="1863" href="Data.Product.html#1863" class="Bound"
+      >a</a
+      ><a name="1864"
+      > </a
+      ><a name="1865" href="Data.Product.html#1865" class="Bound"
+      >b</a
+      ><a name="1866"
+      > </a
+      ><a name="1867" href="Data.Product.html#1867" class="Bound"
+      >p</a
+      ><a name="1868"
+      > </a
+      ><a name="1869" href="Data.Product.html#1869" class="Bound"
+      >q</a
+      ><a name="1870" class="Symbol"
+      >}</a
+      ><a name="1871"
+      >
+        </a
+      ><a name="1880" class="Symbol"
+      >{</a
+      ><a name="1881" href="Data.Product.html#1881" class="Bound"
+      >A</a
+      ><a name="1882"
+      > </a
+      ><a name="1883" class="Symbol"
+      >:</a
+      ><a name="1884"
+      > </a
+      ><a name="1885" class="PrimitiveType"
+      >Set</a
+      ><a name="1888"
+      > </a
+      ><a name="1889" href="Data.Product.html#1863" class="Bound"
+      >a</a
+      ><a name="1890" class="Symbol"
+      >}</a
+      ><a name="1891"
+      > </a
+      ><a name="1892" class="Symbol"
+      >{</a
+      ><a name="1893" href="Data.Product.html#1893" class="Bound"
+      >B</a
+      ><a name="1894"
+      > </a
+      ><a name="1895" class="Symbol"
+      >:</a
+      ><a name="1896"
+      > </a
+      ><a name="1897" class="PrimitiveType"
+      >Set</a
+      ><a name="1900"
+      > </a
+      ><a name="1901" href="Data.Product.html#1865" class="Bound"
+      >b</a
+      ><a name="1902" class="Symbol"
+      >}</a
+      ><a name="1903"
+      > </a
+      ><a name="1904" class="Symbol"
+      >{</a
+      ><a name="1905" href="Data.Product.html#1905" class="Bound"
+      >P</a
+      ><a name="1906"
+      > </a
+      ><a name="1907" class="Symbol"
+      >:</a
+      ><a name="1908"
+      > </a
+      ><a name="1909" href="Data.Product.html#1881" class="Bound"
+      >A</a
+      ><a name="1910"
+      > </a
+      ><a name="1911" class="Symbol"
+      >&#8594;</a
+      ><a name="1912"
+      > </a
+      ><a name="1913" class="PrimitiveType"
+      >Set</a
+      ><a name="1916"
+      > </a
+      ><a name="1917" href="Data.Product.html#1867" class="Bound"
+      >p</a
+      ><a name="1918" class="Symbol"
+      >}</a
+      ><a name="1919"
+      > </a
+      ><a name="1920" class="Symbol"
+      >{</a
+      ><a name="1921" href="Data.Product.html#1921" class="Bound"
+      >Q</a
+      ><a name="1922"
+      > </a
+      ><a name="1923" class="Symbol"
+      >:</a
+      ><a name="1924"
+      > </a
+      ><a name="1925" href="Data.Product.html#1893" class="Bound"
+      >B</a
+      ><a name="1926"
+      > </a
+      ><a name="1927" class="Symbol"
+      >&#8594;</a
+      ><a name="1928"
+      > </a
+      ><a name="1929" class="PrimitiveType"
+      >Set</a
+      ><a name="1932"
+      > </a
+      ><a name="1933" href="Data.Product.html#1869" class="Bound"
+      >q</a
+      ><a name="1934" class="Symbol"
+      >}</a
+      ><a name="1935"
+      > </a
+      ><a name="1936" class="Symbol"
+      >&#8594;</a
+      ><a name="1937"
+      >
+      </a
+      ><a name="1944" class="Symbol"
+      >(</a
+      ><a name="1945" href="Data.Product.html#1945" class="Bound"
+      >f</a
+      ><a name="1946"
+      > </a
+      ><a name="1947" class="Symbol"
+      >:</a
+      ><a name="1948"
+      > </a
+      ><a name="1949" href="Data.Product.html#1881" class="Bound"
+      >A</a
+      ><a name="1950"
+      > </a
+      ><a name="1951" class="Symbol"
+      >&#8594;</a
+      ><a name="1952"
+      > </a
+      ><a name="1953" href="Data.Product.html#1893" class="Bound"
+      >B</a
+      ><a name="1954" class="Symbol"
+      >)</a
+      ><a name="1955"
+      > </a
+      ><a name="1956" class="Symbol"
+      >&#8594;</a
+      ><a name="1957"
+      > </a
+      ><a name="1958" class="Symbol"
+      >(&#8704;</a
+      ><a name="1960"
+      > </a
+      ><a name="1961" class="Symbol"
+      >{</a
+      ><a name="1962" href="Data.Product.html#1962" class="Bound"
+      >x</a
+      ><a name="1963" class="Symbol"
+      >}</a
+      ><a name="1964"
+      > </a
+      ><a name="1965" class="Symbol"
+      >&#8594;</a
+      ><a name="1966"
+      > </a
+      ><a name="1967" href="Data.Product.html#1905" class="Bound"
+      >P</a
+      ><a name="1968"
+      > </a
+      ><a name="1969" href="Data.Product.html#1962" class="Bound"
+      >x</a
+      ><a name="1970"
+      > </a
+      ><a name="1971" class="Symbol"
+      >&#8594;</a
+      ><a name="1972"
+      > </a
+      ><a name="1973" href="Data.Product.html#1921" class="Bound"
+      >Q</a
+      ><a name="1974"
+      > </a
+      ><a name="1975" class="Symbol"
+      >(</a
+      ><a name="1976" href="Data.Product.html#1945" class="Bound"
+      >f</a
+      ><a name="1977"
+      > </a
+      ><a name="1978" href="Data.Product.html#1962" class="Bound"
+      >x</a
+      ><a name="1979" class="Symbol"
+      >))</a
+      ><a name="1981"
+      > </a
+      ><a name="1982" class="Symbol"
+      >&#8594;</a
+      ><a name="1983"
+      >
+      </a
+      ><a name="1990" href="Data.Product.html#439" class="Record"
+      >&#931;</a
+      ><a name="1991"
+      > </a
+      ><a name="1992" href="Data.Product.html#1881" class="Bound"
+      >A</a
+      ><a name="1993"
+      > </a
+      ><a name="1994" href="Data.Product.html#1905" class="Bound"
+      >P</a
+      ><a name="1995"
+      > </a
+      ><a name="1996" class="Symbol"
+      >&#8594;</a
+      ><a name="1997"
+      > </a
+      ><a name="1998" href="Data.Product.html#439" class="Record"
+      >&#931;</a
+      ><a name="1999"
+      > </a
+      ><a name="2000" href="Data.Product.html#1893" class="Bound"
+      >B</a
+      ><a name="2001"
+      > </a
+      ><a name="2002" href="Data.Product.html#1921" class="Bound"
+      >Q</a
+      ><a name="2003"
+      >
+</a
+      ><a name="2004" href="Data.Product.html#1854" class="Function"
+      >map</a
+      ><a name="2007"
+      > </a
+      ><a name="2008" href="Data.Product.html#2008" class="Bound"
+      >f</a
+      ><a name="2009"
+      > </a
+      ><a name="2010" href="Data.Product.html#2010" class="Bound"
+      >g</a
+      ><a name="2011"
+      > </a
+      ><a name="2012" class="Symbol"
+      >(</a
+      ><a name="2013" href="Data.Product.html#2013" class="Bound"
+      >x</a
+      ><a name="2014"
+      > </a
+      ><a name="2015" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2016"
+      > </a
+      ><a name="2017" href="Data.Product.html#2017" class="Bound"
+      >y</a
+      ><a name="2018" class="Symbol"
+      >)</a
+      ><a name="2019"
+      > </a
+      ><a name="2020" class="Symbol"
+      >=</a
+      ><a name="2021"
+      > </a
+      ><a name="2022" class="Symbol"
+      >(</a
+      ><a name="2023" href="Data.Product.html#2008" class="Bound"
+      >f</a
+      ><a name="2024"
+      > </a
+      ><a name="2025" href="Data.Product.html#2013" class="Bound"
+      >x</a
+      ><a name="2026"
+      > </a
+      ><a name="2027" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2028"
+      > </a
+      ><a name="2029" href="Data.Product.html#2010" class="Bound"
+      >g</a
+      ><a name="2030"
+      > </a
+      ><a name="2031" href="Data.Product.html#2017" class="Bound"
+      >y</a
+      ><a name="2032" class="Symbol"
+      >)</a
+      ><a name="2033"
+      >
+
+</a
+      ><a name="2035" href="Data.Product.html#2035" class="Function"
+      >zip</a
+      ><a name="2038"
+      > </a
+      ><a name="2039" class="Symbol"
+      >:</a
+      ><a name="2040"
+      > </a
+      ><a name="2041" class="Symbol"
+      >&#8704;</a
+      ><a name="2042"
+      > </a
+      ><a name="2043" class="Symbol"
+      >{</a
+      ><a name="2044" href="Data.Product.html#2044" class="Bound"
+      >a</a
+      ><a name="2045"
+      > </a
+      ><a name="2046" href="Data.Product.html#2046" class="Bound"
+      >b</a
+      ><a name="2047"
+      > </a
+      ><a name="2048" href="Data.Product.html#2048" class="Bound"
+      >c</a
+      ><a name="2049"
+      > </a
+      ><a name="2050" href="Data.Product.html#2050" class="Bound"
+      >p</a
+      ><a name="2051"
+      > </a
+      ><a name="2052" href="Data.Product.html#2052" class="Bound"
+      >q</a
+      ><a name="2053"
+      > </a
+      ><a name="2054" href="Data.Product.html#2054" class="Bound"
+      >r</a
+      ><a name="2055" class="Symbol"
+      >}</a
+      ><a name="2056"
+      >
+        </a
+      ><a name="2065" class="Symbol"
+      >{</a
+      ><a name="2066" href="Data.Product.html#2066" class="Bound"
+      >A</a
+      ><a name="2067"
+      > </a
+      ><a name="2068" class="Symbol"
+      >:</a
+      ><a name="2069"
+      > </a
+      ><a name="2070" class="PrimitiveType"
+      >Set</a
+      ><a name="2073"
+      > </a
+      ><a name="2074" href="Data.Product.html#2044" class="Bound"
+      >a</a
+      ><a name="2075" class="Symbol"
+      >}</a
+      ><a name="2076"
+      > </a
+      ><a name="2077" class="Symbol"
+      >{</a
+      ><a name="2078" href="Data.Product.html#2078" class="Bound"
+      >B</a
+      ><a name="2079"
+      > </a
+      ><a name="2080" class="Symbol"
+      >:</a
+      ><a name="2081"
+      > </a
+      ><a name="2082" class="PrimitiveType"
+      >Set</a
+      ><a name="2085"
+      > </a
+      ><a name="2086" href="Data.Product.html#2046" class="Bound"
+      >b</a
+      ><a name="2087" class="Symbol"
+      >}</a
+      ><a name="2088"
+      > </a
+      ><a name="2089" class="Symbol"
+      >{</a
+      ><a name="2090" href="Data.Product.html#2090" class="Bound"
+      >C</a
+      ><a name="2091"
+      > </a
+      ><a name="2092" class="Symbol"
+      >:</a
+      ><a name="2093"
+      > </a
+      ><a name="2094" class="PrimitiveType"
+      >Set</a
+      ><a name="2097"
+      > </a
+      ><a name="2098" href="Data.Product.html#2048" class="Bound"
+      >c</a
+      ><a name="2099" class="Symbol"
+      >}</a
+      ><a name="2100"
+      >
+        </a
+      ><a name="2109" class="Symbol"
+      >{</a
+      ><a name="2110" href="Data.Product.html#2110" class="Bound"
+      >P</a
+      ><a name="2111"
+      > </a
+      ><a name="2112" class="Symbol"
+      >:</a
+      ><a name="2113"
+      > </a
+      ><a name="2114" href="Data.Product.html#2066" class="Bound"
+      >A</a
+      ><a name="2115"
+      > </a
+      ><a name="2116" class="Symbol"
+      >&#8594;</a
+      ><a name="2117"
+      > </a
+      ><a name="2118" class="PrimitiveType"
+      >Set</a
+      ><a name="2121"
+      > </a
+      ><a name="2122" href="Data.Product.html#2050" class="Bound"
+      >p</a
+      ><a name="2123" class="Symbol"
+      >}</a
+      ><a name="2124"
+      > </a
+      ><a name="2125" class="Symbol"
+      >{</a
+      ><a name="2126" href="Data.Product.html#2126" class="Bound"
+      >Q</a
+      ><a name="2127"
+      > </a
+      ><a name="2128" class="Symbol"
+      >:</a
+      ><a name="2129"
+      > </a
+      ><a name="2130" href="Data.Product.html#2078" class="Bound"
+      >B</a
+      ><a name="2131"
+      > </a
+      ><a name="2132" class="Symbol"
+      >&#8594;</a
+      ><a name="2133"
+      > </a
+      ><a name="2134" class="PrimitiveType"
+      >Set</a
+      ><a name="2137"
+      > </a
+      ><a name="2138" href="Data.Product.html#2052" class="Bound"
+      >q</a
+      ><a name="2139" class="Symbol"
+      >}</a
+      ><a name="2140"
+      > </a
+      ><a name="2141" class="Symbol"
+      >{</a
+      ><a name="2142" href="Data.Product.html#2142" class="Bound"
+      >R</a
+      ><a name="2143"
+      > </a
+      ><a name="2144" class="Symbol"
+      >:</a
+      ><a name="2145"
+      > </a
+      ><a name="2146" href="Data.Product.html#2090" class="Bound"
+      >C</a
+      ><a name="2147"
+      > </a
+      ><a name="2148" class="Symbol"
+      >&#8594;</a
+      ><a name="2149"
+      > </a
+      ><a name="2150" class="PrimitiveType"
+      >Set</a
+      ><a name="2153"
+      > </a
+      ><a name="2154" href="Data.Product.html#2054" class="Bound"
+      >r</a
+      ><a name="2155" class="Symbol"
+      >}</a
+      ><a name="2156"
+      > </a
+      ><a name="2157" class="Symbol"
+      >&#8594;</a
+      ><a name="2158"
+      >
+      </a
+      ><a name="2165" class="Symbol"
+      >(</a
+      ><a name="2166" href="Data.Product.html#2166" class="Bound Operator"
+      >_&#8729;_</a
+      ><a name="2169"
+      > </a
+      ><a name="2170" class="Symbol"
+      >:</a
+      ><a name="2171"
+      > </a
+      ><a name="2172" href="Data.Product.html#2066" class="Bound"
+      >A</a
+      ><a name="2173"
+      > </a
+      ><a name="2174" class="Symbol"
+      >&#8594;</a
+      ><a name="2175"
+      > </a
+      ><a name="2176" href="Data.Product.html#2078" class="Bound"
+      >B</a
+      ><a name="2177"
+      > </a
+      ><a name="2178" class="Symbol"
+      >&#8594;</a
+      ><a name="2179"
+      > </a
+      ><a name="2180" href="Data.Product.html#2090" class="Bound"
+      >C</a
+      ><a name="2181" class="Symbol"
+      >)</a
+      ><a name="2182"
+      > </a
+      ><a name="2183" class="Symbol"
+      >&#8594;</a
+      ><a name="2184"
+      >
+      </a
+      ><a name="2191" class="Symbol"
+      >(&#8704;</a
+      ><a name="2193"
+      > </a
+      ><a name="2194" class="Symbol"
+      >{</a
+      ><a name="2195" href="Data.Product.html#2195" class="Bound"
+      >x</a
+      ><a name="2196"
+      > </a
+      ><a name="2197" href="Data.Product.html#2197" class="Bound"
+      >y</a
+      ><a name="2198" class="Symbol"
+      >}</a
+      ><a name="2199"
+      > </a
+      ><a name="2200" class="Symbol"
+      >&#8594;</a
+      ><a name="2201"
+      > </a
+      ><a name="2202" href="Data.Product.html#2110" class="Bound"
+      >P</a
+      ><a name="2203"
+      > </a
+      ><a name="2204" href="Data.Product.html#2195" class="Bound"
+      >x</a
+      ><a name="2205"
+      > </a
+      ><a name="2206" class="Symbol"
+      >&#8594;</a
+      ><a name="2207"
+      > </a
+      ><a name="2208" href="Data.Product.html#2126" class="Bound"
+      >Q</a
+      ><a name="2209"
+      > </a
+      ><a name="2210" href="Data.Product.html#2197" class="Bound"
+      >y</a
+      ><a name="2211"
+      > </a
+      ><a name="2212" class="Symbol"
+      >&#8594;</a
+      ><a name="2213"
+      > </a
+      ><a name="2214" href="Data.Product.html#2142" class="Bound"
+      >R</a
+      ><a name="2215"
+      > </a
+      ><a name="2216" class="Symbol"
+      >(</a
+      ><a name="2217" href="Data.Product.html#2195" class="Bound"
+      >x</a
+      ><a name="2218"
+      > </a
+      ><a name="2219" href="Data.Product.html#2166" class="Bound Operator"
+      >&#8729;</a
+      ><a name="2220"
+      > </a
+      ><a name="2221" href="Data.Product.html#2197" class="Bound"
+      >y</a
+      ><a name="2222" class="Symbol"
+      >))</a
+      ><a name="2224"
+      > </a
+      ><a name="2225" class="Symbol"
+      >&#8594;</a
+      ><a name="2226"
+      >
+      </a
+      ><a name="2233" href="Data.Product.html#439" class="Record"
+      >&#931;</a
+      ><a name="2234"
+      > </a
+      ><a name="2235" href="Data.Product.html#2066" class="Bound"
+      >A</a
+      ><a name="2236"
+      > </a
+      ><a name="2237" href="Data.Product.html#2110" class="Bound"
+      >P</a
+      ><a name="2238"
+      > </a
+      ><a name="2239" class="Symbol"
+      >&#8594;</a
+      ><a name="2240"
+      > </a
+      ><a name="2241" href="Data.Product.html#439" class="Record"
+      >&#931;</a
+      ><a name="2242"
+      > </a
+      ><a name="2243" href="Data.Product.html#2078" class="Bound"
+      >B</a
+      ><a name="2244"
+      > </a
+      ><a name="2245" href="Data.Product.html#2126" class="Bound"
+      >Q</a
+      ><a name="2246"
+      > </a
+      ><a name="2247" class="Symbol"
+      >&#8594;</a
+      ><a name="2248"
+      > </a
+      ><a name="2249" href="Data.Product.html#439" class="Record"
+      >&#931;</a
+      ><a name="2250"
+      > </a
+      ><a name="2251" href="Data.Product.html#2090" class="Bound"
+      >C</a
+      ><a name="2252"
+      > </a
+      ><a name="2253" href="Data.Product.html#2142" class="Bound"
+      >R</a
+      ><a name="2254"
+      >
+</a
+      ><a name="2255" href="Data.Product.html#2035" class="Function"
+      >zip</a
+      ><a name="2258"
+      > </a
+      ><a name="2259" href="Data.Product.html#2259" class="Bound Operator"
+      >_&#8729;_</a
+      ><a name="2262"
+      > </a
+      ><a name="2263" href="Data.Product.html#2263" class="Bound Operator"
+      >_&#8728;_</a
+      ><a name="2266"
+      > </a
+      ><a name="2267" class="Symbol"
+      >(</a
+      ><a name="2268" href="Data.Product.html#2268" class="Bound"
+      >a</a
+      ><a name="2269"
+      > </a
+      ><a name="2270" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2271"
+      > </a
+      ><a name="2272" href="Data.Product.html#2272" class="Bound"
+      >p</a
+      ><a name="2273" class="Symbol"
+      >)</a
+      ><a name="2274"
+      > </a
+      ><a name="2275" class="Symbol"
+      >(</a
+      ><a name="2276" href="Data.Product.html#2276" class="Bound"
+      >b</a
+      ><a name="2277"
+      > </a
+      ><a name="2278" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2279"
+      > </a
+      ><a name="2280" href="Data.Product.html#2280" class="Bound"
+      >q</a
+      ><a name="2281" class="Symbol"
+      >)</a
+      ><a name="2282"
+      > </a
+      ><a name="2283" class="Symbol"
+      >=</a
+      ><a name="2284"
+      > </a
+      ><a name="2285" class="Symbol"
+      >(</a
+      ><a name="2286" href="Data.Product.html#2268" class="Bound"
+      >a</a
+      ><a name="2287"
+      > </a
+      ><a name="2288" href="Data.Product.html#2259" class="Bound Operator"
+      >&#8729;</a
+      ><a name="2289"
+      > </a
+      ><a name="2290" href="Data.Product.html#2276" class="Bound"
+      >b</a
+      ><a name="2291"
+      > </a
+      ><a name="2292" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2293"
+      > </a
+      ><a name="2294" href="Data.Product.html#2272" class="Bound"
+      >p</a
+      ><a name="2295"
+      > </a
+      ><a name="2296" href="Data.Product.html#2263" class="Bound Operator"
+      >&#8728;</a
+      ><a name="2297"
+      > </a
+      ><a name="2298" href="Data.Product.html#2280" class="Bound"
+      >q</a
+      ><a name="2299" class="Symbol"
+      >)</a
+      ><a name="2300"
+      >
+
+</a
+      ><a name="2302" href="Data.Product.html#2302" class="Function"
+      >swap</a
+      ><a name="2306"
+      > </a
+      ><a name="2307" class="Symbol"
+      >:</a
+      ><a name="2308"
+      > </a
+      ><a name="2309" class="Symbol"
+      >&#8704;</a
+      ><a name="2310"
+      > </a
+      ><a name="2311" class="Symbol"
+      >{</a
+      ><a name="2312" href="Data.Product.html#2312" class="Bound"
+      >a</a
+      ><a name="2313"
+      > </a
+      ><a name="2314" href="Data.Product.html#2314" class="Bound"
+      >b</a
+      ><a name="2315" class="Symbol"
+      >}</a
+      ><a name="2316"
+      > </a
+      ><a name="2317" class="Symbol"
+      >{</a
+      ><a name="2318" href="Data.Product.html#2318" class="Bound"
+      >A</a
+      ><a name="2319"
+      > </a
+      ><a name="2320" class="Symbol"
+      >:</a
+      ><a name="2321"
+      > </a
+      ><a name="2322" class="PrimitiveType"
+      >Set</a
+      ><a name="2325"
+      > </a
+      ><a name="2326" href="Data.Product.html#2312" class="Bound"
+      >a</a
+      ><a name="2327" class="Symbol"
+      >}</a
+      ><a name="2328"
+      > </a
+      ><a name="2329" class="Symbol"
+      >{</a
+      ><a name="2330" href="Data.Product.html#2330" class="Bound"
+      >B</a
+      ><a name="2331"
+      > </a
+      ><a name="2332" class="Symbol"
+      >:</a
+      ><a name="2333"
+      > </a
+      ><a name="2334" class="PrimitiveType"
+      >Set</a
+      ><a name="2337"
+      > </a
+      ><a name="2338" href="Data.Product.html#2314" class="Bound"
+      >b</a
+      ><a name="2339" class="Symbol"
+      >}</a
+      ><a name="2340"
+      > </a
+      ><a name="2341" class="Symbol"
+      >&#8594;</a
+      ><a name="2342"
+      > </a
+      ><a name="2343" href="Data.Product.html#2318" class="Bound"
+      >A</a
+      ><a name="2344"
+      > </a
+      ><a name="2345" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="2346"
+      > </a
+      ><a name="2347" href="Data.Product.html#2330" class="Bound"
+      >B</a
+      ><a name="2348"
+      > </a
+      ><a name="2349" class="Symbol"
+      >&#8594;</a
+      ><a name="2350"
+      > </a
+      ><a name="2351" href="Data.Product.html#2330" class="Bound"
+      >B</a
+      ><a name="2352"
+      > </a
+      ><a name="2353" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="2354"
+      > </a
+      ><a name="2355" href="Data.Product.html#2318" class="Bound"
+      >A</a
+      ><a name="2356"
+      >
+</a
+      ><a name="2357" href="Data.Product.html#2302" class="Function"
+      >swap</a
+      ><a name="2361"
+      > </a
+      ><a name="2362" class="Symbol"
+      >(</a
+      ><a name="2363" href="Data.Product.html#2363" class="Bound"
+      >x</a
+      ><a name="2364"
+      > </a
+      ><a name="2365" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2366"
+      > </a
+      ><a name="2367" href="Data.Product.html#2367" class="Bound"
+      >y</a
+      ><a name="2368" class="Symbol"
+      >)</a
+      ><a name="2369"
+      > </a
+      ><a name="2370" class="Symbol"
+      >=</a
+      ><a name="2371"
+      > </a
+      ><a name="2372" class="Symbol"
+      >(</a
+      ><a name="2373" href="Data.Product.html#2367" class="Bound"
+      >y</a
+      ><a name="2374"
+      > </a
+      ><a name="2375" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2376"
+      > </a
+      ><a name="2377" href="Data.Product.html#2363" class="Bound"
+      >x</a
+      ><a name="2378" class="Symbol"
+      >)</a
+      ><a name="2379"
+      >
+
+</a
+      ><a name="2381" href="Data.Product.html#2381" class="Function Operator"
+      >_-&#215;-_</a
+      ><a name="2386"
+      > </a
+      ><a name="2387" class="Symbol"
+      >:</a
+      ><a name="2388"
+      > </a
+      ><a name="2389" class="Symbol"
+      >&#8704;</a
+      ><a name="2390"
+      > </a
+      ><a name="2391" class="Symbol"
+      >{</a
+      ><a name="2392" href="Data.Product.html#2392" class="Bound"
+      >a</a
+      ><a name="2393"
+      > </a
+      ><a name="2394" href="Data.Product.html#2394" class="Bound"
+      >b</a
+      ><a name="2395"
+      > </a
+      ><a name="2396" href="Data.Product.html#2396" class="Bound"
+      >i</a
+      ><a name="2397"
+      > </a
+      ><a name="2398" href="Data.Product.html#2398" class="Bound"
+      >j</a
+      ><a name="2399" class="Symbol"
+      >}</a
+      ><a name="2400"
+      > </a
+      ><a name="2401" class="Symbol"
+      >{</a
+      ><a name="2402" href="Data.Product.html#2402" class="Bound"
+      >A</a
+      ><a name="2403"
+      > </a
+      ><a name="2404" class="Symbol"
+      >:</a
+      ><a name="2405"
+      > </a
+      ><a name="2406" class="PrimitiveType"
+      >Set</a
+      ><a name="2409"
+      > </a
+      ><a name="2410" href="Data.Product.html#2392" class="Bound"
+      >a</a
+      ><a name="2411" class="Symbol"
+      >}</a
+      ><a name="2412"
+      > </a
+      ><a name="2413" class="Symbol"
+      >{</a
+      ><a name="2414" href="Data.Product.html#2414" class="Bound"
+      >B</a
+      ><a name="2415"
+      > </a
+      ><a name="2416" class="Symbol"
+      >:</a
+      ><a name="2417"
+      > </a
+      ><a name="2418" class="PrimitiveType"
+      >Set</a
+      ><a name="2421"
+      > </a
+      ><a name="2422" href="Data.Product.html#2394" class="Bound"
+      >b</a
+      ><a name="2423" class="Symbol"
+      >}</a
+      ><a name="2424"
+      > </a
+      ><a name="2425" class="Symbol"
+      >&#8594;</a
+      ><a name="2426"
+      >
+        </a
+      ><a name="2435" class="Symbol"
+      >(</a
+      ><a name="2436" href="Data.Product.html#2402" class="Bound"
+      >A</a
+      ><a name="2437"
+      > </a
+      ><a name="2438" class="Symbol"
+      >&#8594;</a
+      ><a name="2439"
+      > </a
+      ><a name="2440" href="Data.Product.html#2414" class="Bound"
+      >B</a
+      ><a name="2441"
+      > </a
+      ><a name="2442" class="Symbol"
+      >&#8594;</a
+      ><a name="2443"
+      > </a
+      ><a name="2444" class="PrimitiveType"
+      >Set</a
+      ><a name="2447"
+      > </a
+      ><a name="2448" href="Data.Product.html#2396" class="Bound"
+      >i</a
+      ><a name="2449" class="Symbol"
+      >)</a
+      ><a name="2450"
+      > </a
+      ><a name="2451" class="Symbol"
+      >&#8594;</a
+      ><a name="2452"
+      > </a
+      ><a name="2453" class="Symbol"
+      >(</a
+      ><a name="2454" href="Data.Product.html#2402" class="Bound"
+      >A</a
+      ><a name="2455"
+      > </a
+      ><a name="2456" class="Symbol"
+      >&#8594;</a
+      ><a name="2457"
+      > </a
+      ><a name="2458" href="Data.Product.html#2414" class="Bound"
+      >B</a
+      ><a name="2459"
+      > </a
+      ><a name="2460" class="Symbol"
+      >&#8594;</a
+      ><a name="2461"
+      > </a
+      ><a name="2462" class="PrimitiveType"
+      >Set</a
+      ><a name="2465"
+      > </a
+      ><a name="2466" href="Data.Product.html#2398" class="Bound"
+      >j</a
+      ><a name="2467" class="Symbol"
+      >)</a
+      ><a name="2468"
+      > </a
+      ><a name="2469" class="Symbol"
+      >&#8594;</a
+      ><a name="2470"
+      > </a
+      ><a name="2471" class="Symbol"
+      >(</a
+      ><a name="2472" href="Data.Product.html#2402" class="Bound"
+      >A</a
+      ><a name="2473"
+      > </a
+      ><a name="2474" class="Symbol"
+      >&#8594;</a
+      ><a name="2475"
+      > </a
+      ><a name="2476" href="Data.Product.html#2414" class="Bound"
+      >B</a
+      ><a name="2477"
+      > </a
+      ><a name="2478" class="Symbol"
+      >&#8594;</a
+      ><a name="2479"
+      > </a
+      ><a name="2480" class="PrimitiveType"
+      >Set</a
+      ><a name="2483"
+      > </a
+      ><a name="2484" class="Symbol"
+      >_)</a
+      ><a name="2486"
+      >
+</a
+      ><a name="2487" href="Data.Product.html#2487" class="Bound"
+      >f</a
+      ><a name="2488"
+      > </a
+      ><a name="2489" href="Data.Product.html#2381" class="Function Operator"
+      >-&#215;-</a
+      ><a name="2492"
+      > </a
+      ><a name="2493" href="Data.Product.html#2493" class="Bound"
+      >g</a
+      ><a name="2494"
+      > </a
+      ><a name="2495" class="Symbol"
+      >=</a
+      ><a name="2496"
+      > </a
+      ><a name="2497" href="Data.Product.html#2487" class="Bound"
+      >f</a
+      ><a name="2498"
+      > </a
+      ><a name="2499" href="Function.html#2167" class="Function Operator"
+      >-[</a
+      ><a name="2501"
+      > </a
+      ><a name="2502" href="Data.Product.html#1055" class="Function Operator"
+      >_&#215;_</a
+      ><a name="2505"
+      > </a
+      ><a name="2506" href="Function.html#2167" class="Function Operator"
+      >]-</a
+      ><a name="2508"
+      > </a
+      ><a name="2509" href="Data.Product.html#2493" class="Bound"
+      >g</a
+      ><a name="2510"
+      >
+
+</a
+      ><a name="2512" href="Data.Product.html#2512" class="Function Operator"
+      >_-,-_</a
+      ><a name="2517"
+      > </a
+      ><a name="2518" class="Symbol"
+      >:</a
+      ><a name="2519"
+      > </a
+      ><a name="2520" class="Symbol"
+      >&#8704;</a
+      ><a name="2521"
+      > </a
+      ><a name="2522" class="Symbol"
+      >{</a
+      ><a name="2523" href="Data.Product.html#2523" class="Bound"
+      >a</a
+      ><a name="2524"
+      > </a
+      ><a name="2525" href="Data.Product.html#2525" class="Bound"
+      >b</a
+      ><a name="2526"
+      > </a
+      ><a name="2527" href="Data.Product.html#2527" class="Bound"
+      >c</a
+      ><a name="2528"
+      > </a
+      ><a name="2529" href="Data.Product.html#2529" class="Bound"
+      >d</a
+      ><a name="2530" class="Symbol"
+      >}</a
+      ><a name="2531"
+      > </a
+      ><a name="2532" class="Symbol"
+      >{</a
+      ><a name="2533" href="Data.Product.html#2533" class="Bound"
+      >A</a
+      ><a name="2534"
+      > </a
+      ><a name="2535" class="Symbol"
+      >:</a
+      ><a name="2536"
+      > </a
+      ><a name="2537" class="PrimitiveType"
+      >Set</a
+      ><a name="2540"
+      > </a
+      ><a name="2541" href="Data.Product.html#2523" class="Bound"
+      >a</a
+      ><a name="2542" class="Symbol"
+      >}</a
+      ><a name="2543"
+      > </a
+      ><a name="2544" class="Symbol"
+      >{</a
+      ><a name="2545" href="Data.Product.html#2545" class="Bound"
+      >B</a
+      ><a name="2546"
+      > </a
+      ><a name="2547" class="Symbol"
+      >:</a
+      ><a name="2548"
+      > </a
+      ><a name="2549" class="PrimitiveType"
+      >Set</a
+      ><a name="2552"
+      > </a
+      ><a name="2553" href="Data.Product.html#2525" class="Bound"
+      >b</a
+      ><a name="2554" class="Symbol"
+      >}</a
+      ><a name="2555"
+      > </a
+      ><a name="2556" class="Symbol"
+      >{</a
+      ><a name="2557" href="Data.Product.html#2557" class="Bound"
+      >C</a
+      ><a name="2558"
+      > </a
+      ><a name="2559" class="Symbol"
+      >:</a
+      ><a name="2560"
+      > </a
+      ><a name="2561" class="PrimitiveType"
+      >Set</a
+      ><a name="2564"
+      > </a
+      ><a name="2565" href="Data.Product.html#2527" class="Bound"
+      >c</a
+      ><a name="2566" class="Symbol"
+      >}</a
+      ><a name="2567"
+      > </a
+      ><a name="2568" class="Symbol"
+      >{</a
+      ><a name="2569" href="Data.Product.html#2569" class="Bound"
+      >D</a
+      ><a name="2570"
+      > </a
+      ><a name="2571" class="Symbol"
+      >:</a
+      ><a name="2572"
+      > </a
+      ><a name="2573" class="PrimitiveType"
+      >Set</a
+      ><a name="2576"
+      > </a
+      ><a name="2577" href="Data.Product.html#2529" class="Bound"
+      >d</a
+      ><a name="2578" class="Symbol"
+      >}</a
+      ><a name="2579"
+      > </a
+      ><a name="2580" class="Symbol"
+      >&#8594;</a
+      ><a name="2581"
+      >
+        </a
+      ><a name="2590" class="Symbol"
+      >(</a
+      ><a name="2591" href="Data.Product.html#2533" class="Bound"
+      >A</a
+      ><a name="2592"
+      > </a
+      ><a name="2593" class="Symbol"
+      >&#8594;</a
+      ><a name="2594"
+      > </a
+      ><a name="2595" href="Data.Product.html#2545" class="Bound"
+      >B</a
+      ><a name="2596"
+      > </a
+      ><a name="2597" class="Symbol"
+      >&#8594;</a
+      ><a name="2598"
+      > </a
+      ><a name="2599" href="Data.Product.html#2557" class="Bound"
+      >C</a
+      ><a name="2600" class="Symbol"
+      >)</a
+      ><a name="2601"
+      > </a
+      ><a name="2602" class="Symbol"
+      >&#8594;</a
+      ><a name="2603"
+      > </a
+      ><a name="2604" class="Symbol"
+      >(</a
+      ><a name="2605" href="Data.Product.html#2533" class="Bound"
+      >A</a
+      ><a name="2606"
+      > </a
+      ><a name="2607" class="Symbol"
+      >&#8594;</a
+      ><a name="2608"
+      > </a
+      ><a name="2609" href="Data.Product.html#2545" class="Bound"
+      >B</a
+      ><a name="2610"
+      > </a
+      ><a name="2611" class="Symbol"
+      >&#8594;</a
+      ><a name="2612"
+      > </a
+      ><a name="2613" href="Data.Product.html#2569" class="Bound"
+      >D</a
+      ><a name="2614" class="Symbol"
+      >)</a
+      ><a name="2615"
+      > </a
+      ><a name="2616" class="Symbol"
+      >&#8594;</a
+      ><a name="2617"
+      > </a
+      ><a name="2618" class="Symbol"
+      >(</a
+      ><a name="2619" href="Data.Product.html#2533" class="Bound"
+      >A</a
+      ><a name="2620"
+      > </a
+      ><a name="2621" class="Symbol"
+      >&#8594;</a
+      ><a name="2622"
+      > </a
+      ><a name="2623" href="Data.Product.html#2545" class="Bound"
+      >B</a
+      ><a name="2624"
+      > </a
+      ><a name="2625" class="Symbol"
+      >&#8594;</a
+      ><a name="2626"
+      > </a
+      ><a name="2627" href="Data.Product.html#2557" class="Bound"
+      >C</a
+      ><a name="2628"
+      > </a
+      ><a name="2629" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="2630"
+      > </a
+      ><a name="2631" href="Data.Product.html#2569" class="Bound"
+      >D</a
+      ><a name="2632" class="Symbol"
+      >)</a
+      ><a name="2633"
+      >
+</a
+      ><a name="2634" href="Data.Product.html#2634" class="Bound"
+      >f</a
+      ><a name="2635"
+      > </a
+      ><a name="2636" href="Data.Product.html#2512" class="Function Operator"
+      >-,-</a
+      ><a name="2639"
+      > </a
+      ><a name="2640" href="Data.Product.html#2640" class="Bound"
+      >g</a
+      ><a name="2641"
+      > </a
+      ><a name="2642" class="Symbol"
+      >=</a
+      ><a name="2643"
+      > </a
+      ><a name="2644" href="Data.Product.html#2634" class="Bound"
+      >f</a
+      ><a name="2645"
+      > </a
+      ><a name="2646" href="Function.html#2167" class="Function Operator"
+      >-[</a
+      ><a name="2648"
+      > </a
+      ><a name="2649" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >_,_</a
+      ><a name="2652"
+      > </a
+      ><a name="2653" href="Function.html#2167" class="Function Operator"
+      >]-</a
+      ><a name="2655"
+      > </a
+      ><a name="2656" href="Data.Product.html#2640" class="Bound"
+      >g</a
+      ><a name="2657"
+      >
+
+</a
+      ><a name="2659" href="Data.Product.html#2659" class="Function"
+      >curry</a
+      ><a name="2664"
+      > </a
+      ><a name="2665" class="Symbol"
+      >:</a
+      ><a name="2666"
+      > </a
+      ><a name="2667" class="Symbol"
+      >&#8704;</a
+      ><a name="2668"
+      > </a
+      ><a name="2669" class="Symbol"
+      >{</a
+      ><a name="2670" href="Data.Product.html#2670" class="Bound"
+      >a</a
+      ><a name="2671"
+      > </a
+      ><a name="2672" href="Data.Product.html#2672" class="Bound"
+      >b</a
+      ><a name="2673"
+      > </a
+      ><a name="2674" href="Data.Product.html#2674" class="Bound"
+      >c</a
+      ><a name="2675" class="Symbol"
+      >}</a
+      ><a name="2676"
+      > </a
+      ><a name="2677" class="Symbol"
+      >{</a
+      ><a name="2678" href="Data.Product.html#2678" class="Bound"
+      >A</a
+      ><a name="2679"
+      > </a
+      ><a name="2680" class="Symbol"
+      >:</a
+      ><a name="2681"
+      > </a
+      ><a name="2682" class="PrimitiveType"
+      >Set</a
+      ><a name="2685"
+      > </a
+      ><a name="2686" href="Data.Product.html#2670" class="Bound"
+      >a</a
+      ><a name="2687" class="Symbol"
+      >}</a
+      ><a name="2688"
+      > </a
+      ><a name="2689" class="Symbol"
+      >{</a
+      ><a name="2690" href="Data.Product.html#2690" class="Bound"
+      >B</a
+      ><a name="2691"
+      > </a
+      ><a name="2692" class="Symbol"
+      >:</a
+      ><a name="2693"
+      > </a
+      ><a name="2694" href="Data.Product.html#2678" class="Bound"
+      >A</a
+      ><a name="2695"
+      > </a
+      ><a name="2696" class="Symbol"
+      >&#8594;</a
+      ><a name="2697"
+      > </a
+      ><a name="2698" class="PrimitiveType"
+      >Set</a
+      ><a name="2701"
+      > </a
+      ><a name="2702" href="Data.Product.html#2672" class="Bound"
+      >b</a
+      ><a name="2703" class="Symbol"
+      >}</a
+      ><a name="2704"
+      > </a
+      ><a name="2705" class="Symbol"
+      >{</a
+      ><a name="2706" href="Data.Product.html#2706" class="Bound"
+      >C</a
+      ><a name="2707"
+      > </a
+      ><a name="2708" class="Symbol"
+      >:</a
+      ><a name="2709"
+      > </a
+      ><a name="2710" href="Data.Product.html#439" class="Record"
+      >&#931;</a
+      ><a name="2711"
+      > </a
+      ><a name="2712" href="Data.Product.html#2678" class="Bound"
+      >A</a
+      ><a name="2713"
+      > </a
+      ><a name="2714" href="Data.Product.html#2690" class="Bound"
+      >B</a
+      ><a name="2715"
+      > </a
+      ><a name="2716" class="Symbol"
+      >&#8594;</a
+      ><a name="2717"
+      > </a
+      ><a name="2718" class="PrimitiveType"
+      >Set</a
+      ><a name="2721"
+      > </a
+      ><a name="2722" href="Data.Product.html#2674" class="Bound"
+      >c</a
+      ><a name="2723" class="Symbol"
+      >}</a
+      ><a name="2724"
+      > </a
+      ><a name="2725" class="Symbol"
+      >&#8594;</a
+      ><a name="2726"
+      >
+        </a
+      ><a name="2735" class="Symbol"
+      >((</a
+      ><a name="2737" href="Data.Product.html#2737" class="Bound"
+      >p</a
+      ><a name="2738"
+      > </a
+      ><a name="2739" class="Symbol"
+      >:</a
+      ><a name="2740"
+      > </a
+      ><a name="2741" href="Data.Product.html#439" class="Record"
+      >&#931;</a
+      ><a name="2742"
+      > </a
+      ><a name="2743" href="Data.Product.html#2678" class="Bound"
+      >A</a
+      ><a name="2744"
+      > </a
+      ><a name="2745" href="Data.Product.html#2690" class="Bound"
+      >B</a
+      ><a name="2746" class="Symbol"
+      >)</a
+      ><a name="2747"
+      > </a
+      ><a name="2748" class="Symbol"
+      >&#8594;</a
+      ><a name="2749"
+      > </a
+      ><a name="2750" href="Data.Product.html#2706" class="Bound"
+      >C</a
+      ><a name="2751"
+      > </a
+      ><a name="2752" href="Data.Product.html#2737" class="Bound"
+      >p</a
+      ><a name="2753" class="Symbol"
+      >)</a
+      ><a name="2754"
+      > </a
+      ><a name="2755" class="Symbol"
+      >&#8594;</a
+      ><a name="2756"
+      >
+        </a
+      ><a name="2765" class="Symbol"
+      >((</a
+      ><a name="2767" href="Data.Product.html#2767" class="Bound"
+      >x</a
+      ><a name="2768"
+      > </a
+      ><a name="2769" class="Symbol"
+      >:</a
+      ><a name="2770"
+      > </a
+      ><a name="2771" href="Data.Product.html#2678" class="Bound"
+      >A</a
+      ><a name="2772" class="Symbol"
+      >)</a
+      ><a name="2773"
+      > </a
+      ><a name="2774" class="Symbol"
+      >&#8594;</a
+      ><a name="2775"
+      > </a
+      ><a name="2776" class="Symbol"
+      >(</a
+      ><a name="2777" href="Data.Product.html#2777" class="Bound"
+      >y</a
+      ><a name="2778"
+      > </a
+      ><a name="2779" class="Symbol"
+      >:</a
+      ><a name="2780"
+      > </a
+      ><a name="2781" href="Data.Product.html#2690" class="Bound"
+      >B</a
+      ><a name="2782"
+      > </a
+      ><a name="2783" href="Data.Product.html#2767" class="Bound"
+      >x</a
+      ><a name="2784" class="Symbol"
+      >)</a
+      ><a name="2785"
+      > </a
+      ><a name="2786" class="Symbol"
+      >&#8594;</a
+      ><a name="2787"
+      > </a
+      ><a name="2788" href="Data.Product.html#2706" class="Bound"
+      >C</a
+      ><a name="2789"
+      > </a
+      ><a name="2790" class="Symbol"
+      >(</a
+      ><a name="2791" href="Data.Product.html#2767" class="Bound"
+      >x</a
+      ><a name="2792"
+      > </a
+      ><a name="2793" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2794"
+      > </a
+      ><a name="2795" href="Data.Product.html#2777" class="Bound"
+      >y</a
+      ><a name="2796" class="Symbol"
+      >))</a
+      ><a name="2798"
+      >
+</a
+      ><a name="2799" href="Data.Product.html#2659" class="Function"
+      >curry</a
+      ><a name="2804"
+      > </a
+      ><a name="2805" href="Data.Product.html#2805" class="Bound"
+      >f</a
+      ><a name="2806"
+      > </a
+      ><a name="2807" href="Data.Product.html#2807" class="Bound"
+      >x</a
+      ><a name="2808"
+      > </a
+      ><a name="2809" href="Data.Product.html#2809" class="Bound"
+      >y</a
+      ><a name="2810"
+      > </a
+      ><a name="2811" class="Symbol"
+      >=</a
+      ><a name="2812"
+      > </a
+      ><a name="2813" href="Data.Product.html#2805" class="Bound"
+      >f</a
+      ><a name="2814"
+      > </a
+      ><a name="2815" class="Symbol"
+      >(</a
+      ><a name="2816" href="Data.Product.html#2807" class="Bound"
+      >x</a
+      ><a name="2817"
+      > </a
+      ><a name="2818" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2819"
+      > </a
+      ><a name="2820" href="Data.Product.html#2809" class="Bound"
+      >y</a
+      ><a name="2821" class="Symbol"
+      >)</a
+      ><a name="2822"
+      >
+
+</a
+      ><a name="2824" href="Data.Product.html#2824" class="Function"
+      >uncurry</a
+      ><a name="2831"
+      > </a
+      ><a name="2832" class="Symbol"
+      >:</a
+      ><a name="2833"
+      > </a
+      ><a name="2834" class="Symbol"
+      >&#8704;</a
+      ><a name="2835"
+      > </a
+      ><a name="2836" class="Symbol"
+      >{</a
+      ><a name="2837" href="Data.Product.html#2837" class="Bound"
+      >a</a
+      ><a name="2838"
+      > </a
+      ><a name="2839" href="Data.Product.html#2839" class="Bound"
+      >b</a
+      ><a name="2840"
+      > </a
+      ><a name="2841" href="Data.Product.html#2841" class="Bound"
+      >c</a
+      ><a name="2842" class="Symbol"
+      >}</a
+      ><a name="2843"
+      > </a
+      ><a name="2844" class="Symbol"
+      >{</a
+      ><a name="2845" href="Data.Product.html#2845" class="Bound"
+      >A</a
+      ><a name="2846"
+      > </a
+      ><a name="2847" class="Symbol"
+      >:</a
+      ><a name="2848"
+      > </a
+      ><a name="2849" class="PrimitiveType"
+      >Set</a
+      ><a name="2852"
+      > </a
+      ><a name="2853" href="Data.Product.html#2837" class="Bound"
+      >a</a
+      ><a name="2854" class="Symbol"
+      >}</a
+      ><a name="2855"
+      > </a
+      ><a name="2856" class="Symbol"
+      >{</a
+      ><a name="2857" href="Data.Product.html#2857" class="Bound"
+      >B</a
+      ><a name="2858"
+      > </a
+      ><a name="2859" class="Symbol"
+      >:</a
+      ><a name="2860"
+      > </a
+      ><a name="2861" href="Data.Product.html#2845" class="Bound"
+      >A</a
+      ><a name="2862"
+      > </a
+      ><a name="2863" class="Symbol"
+      >&#8594;</a
+      ><a name="2864"
+      > </a
+      ><a name="2865" class="PrimitiveType"
+      >Set</a
+      ><a name="2868"
+      > </a
+      ><a name="2869" href="Data.Product.html#2839" class="Bound"
+      >b</a
+      ><a name="2870" class="Symbol"
+      >}</a
+      ><a name="2871"
+      > </a
+      ><a name="2872" class="Symbol"
+      >{</a
+      ><a name="2873" href="Data.Product.html#2873" class="Bound"
+      >C</a
+      ><a name="2874"
+      > </a
+      ><a name="2875" class="Symbol"
+      >:</a
+      ><a name="2876"
+      > </a
+      ><a name="2877" href="Data.Product.html#439" class="Record"
+      >&#931;</a
+      ><a name="2878"
+      > </a
+      ><a name="2879" href="Data.Product.html#2845" class="Bound"
+      >A</a
+      ><a name="2880"
+      > </a
+      ><a name="2881" href="Data.Product.html#2857" class="Bound"
+      >B</a
+      ><a name="2882"
+      > </a
+      ><a name="2883" class="Symbol"
+      >&#8594;</a
+      ><a name="2884"
+      > </a
+      ><a name="2885" class="PrimitiveType"
+      >Set</a
+      ><a name="2888"
+      > </a
+      ><a name="2889" href="Data.Product.html#2841" class="Bound"
+      >c</a
+      ><a name="2890" class="Symbol"
+      >}</a
+      ><a name="2891"
+      > </a
+      ><a name="2892" class="Symbol"
+      >&#8594;</a
+      ><a name="2893"
+      >
+          </a
+      ><a name="2904" class="Symbol"
+      >((</a
+      ><a name="2906" href="Data.Product.html#2906" class="Bound"
+      >x</a
+      ><a name="2907"
+      > </a
+      ><a name="2908" class="Symbol"
+      >:</a
+      ><a name="2909"
+      > </a
+      ><a name="2910" href="Data.Product.html#2845" class="Bound"
+      >A</a
+      ><a name="2911" class="Symbol"
+      >)</a
+      ><a name="2912"
+      > </a
+      ><a name="2913" class="Symbol"
+      >&#8594;</a
+      ><a name="2914"
+      > </a
+      ><a name="2915" class="Symbol"
+      >(</a
+      ><a name="2916" href="Data.Product.html#2916" class="Bound"
+      >y</a
+      ><a name="2917"
+      > </a
+      ><a name="2918" class="Symbol"
+      >:</a
+      ><a name="2919"
+      > </a
+      ><a name="2920" href="Data.Product.html#2857" class="Bound"
+      >B</a
+      ><a name="2921"
+      > </a
+      ><a name="2922" href="Data.Product.html#2906" class="Bound"
+      >x</a
+      ><a name="2923" class="Symbol"
+      >)</a
+      ><a name="2924"
+      > </a
+      ><a name="2925" class="Symbol"
+      >&#8594;</a
+      ><a name="2926"
+      > </a
+      ><a name="2927" href="Data.Product.html#2873" class="Bound"
+      >C</a
+      ><a name="2928"
+      > </a
+      ><a name="2929" class="Symbol"
+      >(</a
+      ><a name="2930" href="Data.Product.html#2906" class="Bound"
+      >x</a
+      ><a name="2931"
+      > </a
+      ><a name="2932" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2933"
+      > </a
+      ><a name="2934" href="Data.Product.html#2916" class="Bound"
+      >y</a
+      ><a name="2935" class="Symbol"
+      >))</a
+      ><a name="2937"
+      > </a
+      ><a name="2938" class="Symbol"
+      >&#8594;</a
+      ><a name="2939"
+      >
+          </a
+      ><a name="2950" class="Symbol"
+      >((</a
+      ><a name="2952" href="Data.Product.html#2952" class="Bound"
+      >p</a
+      ><a name="2953"
+      > </a
+      ><a name="2954" class="Symbol"
+      >:</a
+      ><a name="2955"
+      > </a
+      ><a name="2956" href="Data.Product.html#439" class="Record"
+      >&#931;</a
+      ><a name="2957"
+      > </a
+      ><a name="2958" href="Data.Product.html#2845" class="Bound"
+      >A</a
+      ><a name="2959"
+      > </a
+      ><a name="2960" href="Data.Product.html#2857" class="Bound"
+      >B</a
+      ><a name="2961" class="Symbol"
+      >)</a
+      ><a name="2962"
+      > </a
+      ><a name="2963" class="Symbol"
+      >&#8594;</a
+      ><a name="2964"
+      > </a
+      ><a name="2965" href="Data.Product.html#2873" class="Bound"
+      >C</a
+      ><a name="2966"
+      > </a
+      ><a name="2967" href="Data.Product.html#2952" class="Bound"
+      >p</a
+      ><a name="2968" class="Symbol"
+      >)</a
+      ><a name="2969"
+      >
+</a
+      ><a name="2970" href="Data.Product.html#2824" class="Function"
+      >uncurry</a
+      ><a name="2977"
+      > </a
+      ><a name="2978" href="Data.Product.html#2978" class="Bound"
+      >f</a
+      ><a name="2979"
+      > </a
+      ><a name="2980" class="Symbol"
+      >(</a
+      ><a name="2981" href="Data.Product.html#2981" class="Bound"
+      >x</a
+      ><a name="2982"
+      > </a
+      ><a name="2983" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2984"
+      > </a
+      ><a name="2985" href="Data.Product.html#2985" class="Bound"
+      >y</a
+      ><a name="2986" class="Symbol"
+      >)</a
+      ><a name="2987"
+      > </a
+      ><a name="2988" class="Symbol"
+      >=</a
+      ><a name="2989"
+      > </a
+      ><a name="2990" href="Data.Product.html#2978" class="Bound"
+      >f</a
+      ><a name="2991"
+      > </a
+      ><a name="2992" href="Data.Product.html#2981" class="Bound"
+      >x</a
+      ><a name="2993"
+      > </a
+      ><a name="2994" href="Data.Product.html#2985" class="Bound"
+      >y</a
+      ><a name="2995"
+      >
+
+</a
+      ><a name="2997" href="Data.Product.html#2997" class="Function"
+      >uncurry&#8242;</a
+      ><a name="3005"
+      > </a
+      ><a name="3006" class="Symbol"
+      >:</a
+      ><a name="3007"
+      > </a
+      ><a name="3008" class="Symbol"
+      >&#8704;</a
+      ><a name="3009"
+      > </a
+      ><a name="3010" class="Symbol"
+      >{</a
+      ><a name="3011" href="Data.Product.html#3011" class="Bound"
+      >a</a
+      ><a name="3012"
+      > </a
+      ><a name="3013" href="Data.Product.html#3013" class="Bound"
+      >b</a
+      ><a name="3014"
+      > </a
+      ><a name="3015" href="Data.Product.html#3015" class="Bound"
+      >c</a
+      ><a name="3016" class="Symbol"
+      >}</a
+      ><a name="3017"
+      > </a
+      ><a name="3018" class="Symbol"
+      >{</a
+      ><a name="3019" href="Data.Product.html#3019" class="Bound"
+      >A</a
+      ><a name="3020"
+      > </a
+      ><a name="3021" class="Symbol"
+      >:</a
+      ><a name="3022"
+      > </a
+      ><a name="3023" class="PrimitiveType"
+      >Set</a
+      ><a name="3026"
+      > </a
+      ><a name="3027" href="Data.Product.html#3011" class="Bound"
+      >a</a
+      ><a name="3028" class="Symbol"
+      >}</a
+      ><a name="3029"
+      > </a
+      ><a name="3030" class="Symbol"
+      >{</a
+      ><a name="3031" href="Data.Product.html#3031" class="Bound"
+      >B</a
+      ><a name="3032"
+      > </a
+      ><a name="3033" class="Symbol"
+      >:</a
+      ><a name="3034"
+      > </a
+      ><a name="3035" class="PrimitiveType"
+      >Set</a
+      ><a name="3038"
+      > </a
+      ><a name="3039" href="Data.Product.html#3013" class="Bound"
+      >b</a
+      ><a name="3040" class="Symbol"
+      >}</a
+      ><a name="3041"
+      > </a
+      ><a name="3042" class="Symbol"
+      >{</a
+      ><a name="3043" href="Data.Product.html#3043" class="Bound"
+      >C</a
+      ><a name="3044"
+      > </a
+      ><a name="3045" class="Symbol"
+      >:</a
+      ><a name="3046"
+      > </a
+      ><a name="3047" class="PrimitiveType"
+      >Set</a
+      ><a name="3050"
+      > </a
+      ><a name="3051" href="Data.Product.html#3015" class="Bound"
+      >c</a
+      ><a name="3052" class="Symbol"
+      >}</a
+      ><a name="3053"
+      > </a
+      ><a name="3054" class="Symbol"
+      >&#8594;</a
+      ><a name="3055"
+      >
+           </a
+      ><a name="3067" class="Symbol"
+      >(</a
+      ><a name="3068" href="Data.Product.html#3019" class="Bound"
+      >A</a
+      ><a name="3069"
+      > </a
+      ><a name="3070" class="Symbol"
+      >&#8594;</a
+      ><a name="3071"
+      > </a
+      ><a name="3072" href="Data.Product.html#3031" class="Bound"
+      >B</a
+      ><a name="3073"
+      > </a
+      ><a name="3074" class="Symbol"
+      >&#8594;</a
+      ><a name="3075"
+      > </a
+      ><a name="3076" href="Data.Product.html#3043" class="Bound"
+      >C</a
+      ><a name="3077" class="Symbol"
+      >)</a
+      ><a name="3078"
+      > </a
+      ><a name="3079" class="Symbol"
+      >&#8594;</a
+      ><a name="3080"
+      > </a
+      ><a name="3081" class="Symbol"
+      >(</a
+      ><a name="3082" href="Data.Product.html#3019" class="Bound"
+      >A</a
+      ><a name="3083"
+      > </a
+      ><a name="3084" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="3085"
+      > </a
+      ><a name="3086" href="Data.Product.html#3031" class="Bound"
+      >B</a
+      ><a name="3087"
+      > </a
+      ><a name="3088" class="Symbol"
+      >&#8594;</a
+      ><a name="3089"
+      > </a
+      ><a name="3090" href="Data.Product.html#3043" class="Bound"
+      >C</a
+      ><a name="3091" class="Symbol"
+      >)</a
+      ><a name="3092"
+      >
+</a
+      ><a name="3093" href="Data.Product.html#2997" class="Function"
+      >uncurry&#8242;</a
+      ><a name="3101"
+      > </a
+      ><a name="3102" class="Symbol"
+      >=</a
+      ><a name="3103"
+      > </a
+      ><a name="3104" href="Data.Product.html#2824" class="Function"
+      >uncurry</a
+      ><a name="3111"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>
