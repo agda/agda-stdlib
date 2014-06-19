@@ -236,7 +236,7 @@ drop-length (x ∷ xs) = drop-length xs
 
 take-length : ∀ {a} {A : Set a} (xs : List A) → take (length xs) xs ≡ xs
 take-length [] = refl
-take-length (x ∷ xs) = cong (_∷_ x) (take-length xs)
+take-length (x ∷ xs) = P.cong (_∷_ x) (take-length xs)
 
 -- TakeWhile, dropWhile, and span.
 
