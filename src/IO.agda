@@ -8,6 +8,7 @@ module IO where
 
 open import Coinduction
 open import Data.Unit
+open import Data.Char
 open import Data.String
 open import Data.Colist
 open import Function
@@ -31,6 +32,7 @@ data IO {a} (A : Set a) : Set (suc a) where
   return : (x : A) → IO A
   _>>=_  : {B : Set a} (m : ∞ (IO B)) (f : (x : B) → ∞ (IO A)) → IO A
   _>>_   : {B : Set a} (m₁ : ∞ (IO B)) (m₂ : ∞ (IO A)) → IO A
+
 
 -- The use of abstract ensures that the run function will not be
 -- unfolded infinitely by the type checker.
@@ -69,6 +71,23 @@ mapM f = sequence ∘ map f
 
 mapM′ : {A B : Set} → (A → IO B) → Colist A → IO (Lift ⊤)
 mapM′ f = sequence′ ∘ map f
+
+-- Allow IO expressions to be more easily "chained" together. This makes
+-- possible expressions like
+--   ♯ putStr "name: " >>♯
+--   ♯ getLine >>= λ name →
+--   ♯ putStrLn ("hi " ++ name)
+-- where otherwise one would need to write
+--   ♯ (♯ putStr "name: " >>
+--   ♯ getLine) >>= λ name →
+--   ♯ putStrLn ("hi " ++ name)
+infixl 1 _>>♯_ _>>=♯_
+_>>♯_ : ∀ {a} {A B : Set a} (m₁ : ∞ (IO A)) (m₂ : ∞ (IO B)) → ∞ (IO B)
+a >>♯ b = ♯ (a >> b)
+
+_>>=♯_ : ∀ {a} {A B : Set a} (m : ∞ (IO A)) (f : (x : A) → ∞ (IO B)) → ∞ (IO B)
+a >>=♯ b = ♯ (a >>= b)
+
 
 ------------------------------------------------------------------------
 -- Simple lazy IO
@@ -125,3 +144,14 @@ putStrLn∞ s =
 
 putStrLn : String → IO ⊤
 putStrLn s = putStrLn∞ (toCostring s)
+
+putChar : Char → IO ⊤
+putChar c =
+  ♯ lift (Prim.putChar c) >>
+  ♯ return _
+
+getLine : IO String
+getLine = lift Prim.getLine
+
+getChar : IO Char
+getChar = lift Prim.getChar
