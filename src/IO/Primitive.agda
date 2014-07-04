@@ -48,6 +48,9 @@ postulate
   appendFile  : String → Costring → IO Unit
   putStr      : Costring → IO Unit
   putStrLn    : Costring → IO Unit
+  putChar     : Char -> IO Unit
+  getLine     : IO String
+  getChar     : IO Char
 
   -- Reads a finite file. Raises an exception if the file path refers
   -- to a non-physical file (like "/dev/zero").
@@ -60,4 +63,7 @@ postulate
 {-# COMPILED appendFile     appendFile            #-}
 {-# COMPILED putStr         putStr                #-}
 {-# COMPILED putStrLn       putStrLn              #-}
+{-# COMPILED putChar        putChar               #-}
+{-# COMPILED getLine        getLine               #-}
+{-# COMPILED getChar        getChar               #-}
 {-# COMPILED readFiniteFile IO.FFI.readFiniteFile #-}
