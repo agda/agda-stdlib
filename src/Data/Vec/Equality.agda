@@ -82,10 +82,23 @@ module DecidableEquality {d₁ d₂} (D : DecSetoid d₁ d₂) where
 module PropositionalEquality {a} {A : Set a} where
 
   open Equality (P.setoid A) public
+  open import Relation.Binary.HeterogeneousEquality as H hiding (refl)
 
   to-≡ : ∀ {n} {xs ys : Vec A n} → xs ≈ ys → xs ≡ ys
   to-≡ []-cong                 = P.refl
   to-≡ (P.refl ∷-cong xs¹≈xs²) = P.cong (_∷_ _) $ to-≡ xs¹≈xs²
 
+  to-≅ : ∀ {m n} {xs : Vec A m} {ys : Vec A n} → xs ≈ ys → xs ≅ ys
+  to-≅ p with length-equal p
+  to-≅ p | P.refl = ≡-to-≅ (to-≡ p)
+
   from-≡ : ∀ {n} {xs ys : Vec A n} → xs ≡ ys → xs ≈ ys
   from-≡ P.refl = refl _
+
+  -- Convert ≈ to a propositional equality using subst and a more specific type.
+  to-subst-≡ : ∀ {m n} {xs : Vec A m} {ys : Vec A n} → (p : xs ≈ ys) → P.subst (Vec A) (length-equal p) xs ≡ ys
+  to-subst-≡ {xs = xs} p =
+    H.≅-to-≡
+      (H.trans
+        (H.≡-subst-removable (Vec A) (length-equal p) xs)
+        (to-≅ p))
