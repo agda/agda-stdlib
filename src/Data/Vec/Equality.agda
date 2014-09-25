@@ -102,3 +102,8 @@ module PropositionalEquality {a} {A : Set a} where
       (H.trans
         (H.≡-subst-removable (Vec A) (length-equal p) xs)
         (to-≅ p))
+
+  -- Convert ≈ to a propositional equality using subst.
+  -- Written using ≅-to-subst-≡.
+  to-subst-≡′ : ∀ {m n} {xs : Vec A m} {ys : Vec A n} → (p : xs ≈ ys) → P.subst (λ x → x) (≅-to-type-≡ (to-≅ p)) xs ≡ ys
+  to-subst-≡′ = ≅-to-subst-≡ ∘ to-≅
