@@ -120,3 +120,6 @@ putStrLn∞ s =
 
 putStrLn : String → IO ⊤
 putStrLn s = putStrLn∞ (toCostring s)
+
+getLine∞ : IO Costring
+getLine∞ = lift Prim.getLine
