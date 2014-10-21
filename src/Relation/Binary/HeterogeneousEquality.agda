@@ -233,3 +233,11 @@ data Reveal_is_ {a} {A : Set a} (x : Hidden A) (y : A) : Set a where
 inspect : ∀ {a b} {A : Set a} {B : A → Set b}
           (f : (x : A) → B x) (x : A) → Reveal (hide f x) is (f x)
 inspect f x = [ refl ]
+
+------------------------------------------------------------------------
+-- Heterogeneous proof irrelevance
+
+hir : ∀{ℓ}{A A₁ A₂ A₃ : Set ℓ}{a : A}{a₁ : A₁}{a₂ : A₂}{a₃ : A₃}
+           {p : a ≅ a₁}{q : a₂ ≅ a₃} → a ≅ a₂ → p ≅ q
+hir {p = refl} {refl} refl = refl
+
