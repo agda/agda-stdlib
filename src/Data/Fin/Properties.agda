@@ -22,7 +22,7 @@ open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; refl; cong; subst)
+  using (_≡_; _≢_; refl; cong; subst)
 open import Category.Functor
 open import Category.Applicative
 
@@ -118,6 +118,43 @@ inject≤-lemma : ∀ {m n} (i : Fin m) (le : m ℕ≤ n) →
                 toℕ (inject≤ i le) ≡ toℕ i
 inject≤-lemma zero    (N.s≤s le) = refl
 inject≤-lemma (suc i) (N.s≤s le) = cong suc (inject≤-lemma i le)
+
+thin-injective : {n : ℕ}{z : Fin (suc n)}{x y : Fin n}(e : thin z x ≡ thin z y) → x ≡ y
+thin-injective {z = zero}  {x = x}     {y = y}     e = drop-suc e
+thin-injective {z = suc z} {x = zero}  {y = zero}  e = refl
+thin-injective {z = suc z} {x = zero}  {y = suc y} ()
+thin-injective {z = suc z} {x = suc x} {y = zero}  () 
+thin-injective {z = suc z} {x = suc x} {y = suc y} e = cong suc (thin-injective {z = z} {x = x} {y = y} (drop-suc e))
+
+thin-no-confusion : {n : ℕ}{z : Fin (suc n)}{x : Fin n} -> z ≢ thin z x
+thin-no-confusion {z = zero}  {x = x}    () 
+thin-no-confusion {z = suc z} {x = zero} ()
+thin-no-confusion {z = suc z} {x = suc x} e = thin-no-confusion (drop-suc e)
+
+thick-thin : {n : ℕ}(x y : Fin n) → thick (thin (suc x) y) x ≡ y
+thick-thin x       zero    = refl
+thick-thin zero    (suc y) = refl
+thick-thin (suc x) (suc y) = cong suc (thick-thin x y)
+
+thin-thin-thick : {m : ℕ}(x : Fin (suc m))(y : Fin m) →
+  thin (thin x y) (thick x y) ≡ x
+thin-thin-thick zero    zero    = refl
+thin-thin-thick zero    (suc y) = refl
+thin-thin-thick (suc x) zero    = refl
+thin-thin-thick (suc x) (suc y) = cong suc (thin-thin-thick x y)
+ 
+thick-thin-thick : {m : ℕ}(x : Fin (suc m))(y : Fin m) → 
+  thick (thin x y) (thick x y) ≡ y
+thick-thin-thick {zero}  zero    ()
+thick-thin-thick {suc n} zero    x       = refl
+thick-thin-thick         (suc x) zero    = refl
+thick-thin-thick         (suc x) (suc y) = cong suc (thick-thin-thick x y)
+
+thin-zero : {n : ℕ}{z : Fin (suc (suc n))}{x : Fin (suc n)}
+  (e : thin z x ≡ zero) → x ≡ zero
+thin-zero {z = zero } {x = x}     () 
+thin-zero {z = suc z} {x = zero}  e = refl 
+thin-zero {z = suc z} {x = suc x} () 
 
 ≺⇒<′ : _≺_ ⇒ N._<′_
 ≺⇒<′ (n ≻toℕ i) = N.≤⇒≤′ (bounded i)
