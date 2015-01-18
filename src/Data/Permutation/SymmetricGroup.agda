@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Symmetric group
+------------------------------------------------------------------------
+
 
 module Data.Permutation.SymmetricGroup where
 
@@ -11,7 +17,10 @@ open import Data.Permutation.Properties
 
 open import Relation.Binary.PropositionalEquality
 
--- ``Symmetric group Sn on a finite set of n symbols is the group whose elements are all the permutations of the n symbols, and whose group operation is the composition of such permutations, which are treated as bijective functions from the set of symbols to itself'' 
+-- ``Symmetric group S_n on a finite set of n symbols is the group 
+-- whose elements are all the permutations of the n symbols, 
+-- and whose group operation is the composition of such permutations, 
+-- which are treated as bijective functions from the set of symbols to itself'' 
 
 SymmetricGroup : ℕ -> Group _ _
 SymmetricGroup n = 

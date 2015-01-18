@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Properties of permutations
+------------------------------------------------------------------------
+
 
 module Data.Permutation.Properties where
 
