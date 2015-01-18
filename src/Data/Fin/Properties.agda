@@ -123,11 +123,11 @@ thin-injective : {n : ℕ}{z : Fin (suc n)}{x y : Fin n}(e : thin z x ≡ thin z
 thin-injective {z = zero}  {x = x}     {y = y}     e = drop-suc e
 thin-injective {z = suc z} {x = zero}  {y = zero}  e = refl
 thin-injective {z = suc z} {x = zero}  {y = suc y} ()
-thin-injective {z = suc z} {x = suc x} {y = zero}  () 
+thin-injective {z = suc z} {x = suc x} {y = zero}  ()
 thin-injective {z = suc z} {x = suc x} {y = suc y} e = cong suc (thin-injective {z = z} {x = x} {y = y} (drop-suc e))
 
 thin-no-confusion : {n : ℕ}{z : Fin (suc n)}{x : Fin n} -> z ≢ thin z x
-thin-no-confusion {z = zero}  {x = x}    () 
+thin-no-confusion {z = zero}  {x = x}    ()
 thin-no-confusion {z = suc z} {x = zero} ()
 thin-no-confusion {z = suc z} {x = suc x} e = thin-no-confusion (drop-suc e)
 
@@ -142,8 +142,8 @@ thin-thin-thick zero    zero    = refl
 thin-thin-thick zero    (suc y) = refl
 thin-thin-thick (suc x) zero    = refl
 thin-thin-thick (suc x) (suc y) = cong suc (thin-thin-thick x y)
- 
-thick-thin-thick : {m : ℕ}(x : Fin (suc m))(y : Fin m) → 
+
+thick-thin-thick : {m : ℕ}(x : Fin (suc m))(y : Fin m) →
   thick (thin x y) (thick x y) ≡ y
 thick-thin-thick {zero}  zero    ()
 thick-thin-thick {suc n} zero    x       = refl
@@ -152,9 +152,9 @@ thick-thin-thick         (suc x) (suc y) = cong suc (thick-thin-thick x y)
 
 thin-zero : {n : ℕ}{z : Fin (suc (suc n))}{x : Fin (suc n)}
   (e : thin z x ≡ zero) → x ≡ zero
-thin-zero {z = zero } {x = x}     () 
-thin-zero {z = suc z} {x = zero}  e = refl 
-thin-zero {z = suc z} {x = suc x} () 
+thin-zero {z = zero } {x = x}     ()
+thin-zero {z = suc z} {x = zero}  e = refl
+thin-zero {z = suc z} {x = suc x} ()
 
 ≺⇒<′ : _≺_ ⇒ N._<′_
 ≺⇒<′ (n ≻toℕ i) = N.≤⇒≤′ (bounded i)
