@@ -1,0 +1,678 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >README.Record</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- An example of how the Record module can be used</a
+      ><a name="156"
+      >
+</a
+      ><a name="157" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="229"
+      >
+
+</a
+      ><a name="231" class="Comment"
+      >-- Taken from Randy Pollack's paper &quot;Dependently Typed Records in Type</a
+      ><a name="301"
+      >
+</a
+      ><a name="302" class="Comment"
+      >-- Theory&quot;.</a
+      ><a name="313"
+      >
+
+</a
+      ><a name="315" class="Keyword"
+      >module</a
+      ><a name="321"
+      > </a
+      ><a name="322" href="README.Record.html#1" class="Module"
+      >README.Record</a
+      ><a name="335"
+      > </a
+      ><a name="336" class="Keyword"
+      >where</a
+      ><a name="341"
+      >
+
+</a
+      ><a name="343" class="Keyword"
+      >open</a
+      ><a name="347"
+      > </a
+      ><a name="348" class="Keyword"
+      >import</a
+      ><a name="354"
+      > </a
+      ><a name="355" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="367"
+      >
+</a
+      ><a name="368" class="Keyword"
+      >open</a
+      ><a name="372"
+      > </a
+      ><a name="373" class="Keyword"
+      >import</a
+      ><a name="379"
+      > </a
+      ><a name="380" href="Data.String.html#1" class="Module"
+      >Data.String</a
+      ><a name="391"
+      >
+</a
+      ><a name="392" class="Keyword"
+      >open</a
+      ><a name="396"
+      > </a
+      ><a name="397" class="Keyword"
+      >import</a
+      ><a name="403"
+      > </a
+      ><a name="404" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="412"
+      > </a
+      ><a name="413" class="Keyword"
+      >using</a
+      ><a name="418"
+      > </a
+      ><a name="419" class="Symbol"
+      >(</a
+      ><a name="420"
+      >flip</a
+      ><a name="424" class="Symbol"
+      >)</a
+      ><a name="425"
+      >
+</a
+      ><a name="426" class="Keyword"
+      >open</a
+      ><a name="430"
+      > </a
+      ><a name="431" class="Keyword"
+      >import</a
+      ><a name="437"
+      > </a
+      ><a name="438" href="Level.html#1" class="Module"
+      >Level</a
+      ><a name="443"
+      >
+</a
+      ><a name="444" class="Keyword"
+      >import</a
+      ><a name="450"
+      > </a
+      ><a name="451" href="Record.html#1" class="Module"
+      >Record</a
+      ><a name="457"
+      >
+</a
+      ><a name="458" class="Keyword"
+      >open</a
+      ><a name="462"
+      > </a
+      ><a name="463" class="Keyword"
+      >import</a
+      ><a name="469"
+      > </a
+      ><a name="470" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="485"
+      >
+
+</a
+      ><a name="487" class="Comment"
+      >-- Let us use strings as labels.</a
+      ><a name="519"
+      >
+
+</a
+      ><a name="521" class="Keyword"
+      >open</a
+      ><a name="525"
+      > </a
+      ><a name="526" href="Record.html#1" class="Module"
+      >Record</a
+      ><a name="532"
+      > </a
+      ><a name="533" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="539"
+      > </a
+      ><a name="540" href="Data.String.html#1196" class="Function Operator"
+      >_&#8799;_</a
+      ><a name="543"
+      >
+
+</a
+      ><a name="545" class="Comment"
+      >-- Partial equivalence relations.</a
+      ><a name="578"
+      >
+
+</a
+      ><a name="580" href="README.Record.html#580" class="Function"
+      >PER</a
+      ><a name="583"
+      > </a
+      ><a name="584" class="Symbol"
+      >:</a
+      ><a name="585"
+      > </a
+      ><a name="586" href="Record.html#1425" class="Datatype"
+      >Signature</a
+      ><a name="595"
+      > </a
+      ><a name="596" class="Symbol"
+      >_</a
+      ><a name="597"
+      >
+</a
+      ><a name="598" href="README.Record.html#580" class="Function"
+      >PER</a
+      ><a name="601"
+      > </a
+      ><a name="602" class="Symbol"
+      >=</a
+      ><a name="603"
+      > </a
+      ><a name="604" href="Record.html#1461" class="InductiveConstructor"
+      >&#8709;</a
+      ><a name="605"
+      > </a
+      ><a name="606" href="Record.html#1485" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="607"
+      > </a
+      ><a name="608" class="String"
+      >&quot;S&quot;</a
+      ><a name="611"
+      >     </a
+      ><a name="616" href="Record.html#1485" class="InductiveConstructor Operator"
+      >&#8758;</a
+      ><a name="617"
+      > </a
+      ><a name="618" class="Symbol"
+      >(&#955;</a
+      ><a name="620"
+      > </a
+      ><a name="621" href="README.Record.html#621" class="Bound"
+      >_</a
+      ><a name="622"
+      > </a
+      ><a name="623" class="Symbol"
+      >&#8594;</a
+      ><a name="624"
+      > </a
+      ><a name="625" class="PrimitiveType"
+      >Set</a
+      ><a name="628" class="Symbol"
+      >)</a
+      ><a name="629"
+      >
+        </a
+      ><a name="638" href="Record.html#1485" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="639"
+      > </a
+      ><a name="640" class="String"
+      >&quot;R&quot;</a
+      ><a name="643"
+      >     </a
+      ><a name="648" href="Record.html#1485" class="InductiveConstructor Operator"
+      >&#8758;</a
+      ><a name="649"
+      > </a
+      ><a name="650" class="Symbol"
+      >(&#955;</a
+      ><a name="652"
+      > </a
+      ><a name="653" href="README.Record.html#653" class="Bound"
+      >r</a
+      ><a name="654"
+      > </a
+      ><a name="655" class="Symbol"
+      >&#8594;</a
+      ><a name="656"
+      > </a
+      ><a name="657" href="README.Record.html#653" class="Bound"
+      >r</a
+      ><a name="658"
+      > </a
+      ><a name="659" href="Record.html#4089" class="Function Operator"
+      >&#183;</a
+      ><a name="660"
+      > </a
+      ><a name="661" class="String"
+      >&quot;S&quot;</a
+      ><a name="664"
+      > </a
+      ><a name="665" class="Symbol"
+      >&#8594;</a
+      ><a name="666"
+      > </a
+      ><a name="667" href="README.Record.html#653" class="Bound"
+      >r</a
+      ><a name="668"
+      > </a
+      ><a name="669" href="Record.html#4089" class="Function Operator"
+      >&#183;</a
+      ><a name="670"
+      > </a
+      ><a name="671" class="String"
+      >&quot;S&quot;</a
+      ><a name="674"
+      > </a
+      ><a name="675" class="Symbol"
+      >&#8594;</a
+      ><a name="676"
+      > </a
+      ><a name="677" class="PrimitiveType"
+      >Set</a
+      ><a name="680" class="Symbol"
+      >)</a
+      ><a name="681"
+      >
+        </a
+      ><a name="690" href="Record.html#1485" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="691"
+      > </a
+      ><a name="692" class="String"
+      >&quot;sym&quot;</a
+      ><a name="697"
+      >   </a
+      ><a name="700" href="Record.html#1485" class="InductiveConstructor Operator"
+      >&#8758;</a
+      ><a name="701"
+      > </a
+      ><a name="702" class="Symbol"
+      >(&#955;</a
+      ><a name="704"
+      > </a
+      ><a name="705" href="README.Record.html#705" class="Bound"
+      >r</a
+      ><a name="706"
+      > </a
+      ><a name="707" class="Symbol"
+      >&#8594;</a
+      ><a name="708"
+      > </a
+      ><a name="709" href="Level.html#350" class="Record"
+      >Lift</a
+      ><a name="713"
+      > </a
+      ><a name="714" class="Symbol"
+      >(</a
+      ><a name="715" href="Relation.Binary.Core.html#2314" class="Function"
+      >Symmetric</a
+      ><a name="724"
+      > </a
+      ><a name="725" class="Symbol"
+      >(</a
+      ><a name="726" href="README.Record.html#705" class="Bound"
+      >r</a
+      ><a name="727"
+      > </a
+      ><a name="728" href="Record.html#4089" class="Function Operator"
+      >&#183;</a
+      ><a name="729"
+      > </a
+      ><a name="730" class="String"
+      >&quot;R&quot;</a
+      ><a name="733" class="Symbol"
+      >)))</a
+      ><a name="736"
+      >
+        </a
+      ><a name="745" href="Record.html#1485" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="746"
+      > </a
+      ><a name="747" class="String"
+      >&quot;trans&quot;</a
+      ><a name="754"
+      > </a
+      ><a name="755" href="Record.html#1485" class="InductiveConstructor Operator"
+      >&#8758;</a
+      ><a name="756"
+      > </a
+      ><a name="757" class="Symbol"
+      >(&#955;</a
+      ><a name="759"
+      > </a
+      ><a name="760" href="README.Record.html#760" class="Bound"
+      >r</a
+      ><a name="761"
+      > </a
+      ><a name="762" class="Symbol"
+      >&#8594;</a
+      ><a name="763"
+      > </a
+      ><a name="764" href="Level.html#350" class="Record"
+      >Lift</a
+      ><a name="768"
+      > </a
+      ><a name="769" class="Symbol"
+      >(</a
+      ><a name="770" href="Relation.Binary.Core.html#2793" class="Function"
+      >Transitive</a
+      ><a name="780"
+      > </a
+      ><a name="781" class="Symbol"
+      >(</a
+      ><a name="782" href="README.Record.html#760" class="Bound"
+      >r</a
+      ><a name="783"
+      > </a
+      ><a name="784" href="Record.html#4089" class="Function Operator"
+      >&#183;</a
+      ><a name="785"
+      > </a
+      ><a name="786" class="String"
+      >&quot;R&quot;</a
+      ><a name="789" class="Symbol"
+      >)))</a
+      ><a name="792"
+      >
+
+</a
+      ><a name="794" class="Comment"
+      >-- Given a PER the converse relation is also a PER.</a
+      ><a name="845"
+      >
+
+</a
+      ><a name="847" href="README.Record.html#847" class="Function"
+      >converse</a
+      ><a name="855"
+      > </a
+      ><a name="856" class="Symbol"
+      >:</a
+      ><a name="857"
+      > </a
+      ><a name="858" class="Symbol"
+      >(</a
+      ><a name="859" href="README.Record.html#859" class="Bound"
+      >P</a
+      ><a name="860"
+      > </a
+      ><a name="861" class="Symbol"
+      >:</a
+      ><a name="862"
+      > </a
+      ><a name="863" href="Record.html#1883" class="Record"
+      >Record</a
+      ><a name="869"
+      > </a
+      ><a name="870" href="README.Record.html#580" class="Function"
+      >PER</a
+      ><a name="873" class="Symbol"
+      >)</a
+      ><a name="874"
+      > </a
+      ><a name="875" class="Symbol"
+      >&#8594;</a
+      ><a name="876"
+      >
+           </a
+      ><a name="888" href="Record.html#1883" class="Record"
+      >Record</a
+      ><a name="894"
+      > </a
+      ><a name="895" class="Symbol"
+      >(</a
+      ><a name="896" href="README.Record.html#580" class="Function"
+      >PER</a
+      ><a name="899"
+      > </a
+      ><a name="900" href="Record.html#4671" class="Function Operator"
+      >With</a
+      ><a name="904"
+      > </a
+      ><a name="905" class="String"
+      >&quot;S&quot;</a
+      ><a name="908"
+      > </a
+      ><a name="909" href="Record.html#4671" class="Function Operator"
+      >&#8788;</a
+      ><a name="910"
+      > </a
+      ><a name="911" class="Symbol"
+      >(&#955;</a
+      ><a name="913"
+      > </a
+      ><a name="914" href="README.Record.html#914" class="Bound"
+      >_</a
+      ><a name="915"
+      > </a
+      ><a name="916" class="Symbol"
+      >&#8594;</a
+      ><a name="917"
+      > </a
+      ><a name="918" href="README.Record.html#859" class="Bound"
+      >P</a
+      ><a name="919"
+      > </a
+      ><a name="920" href="Record.html#4089" class="Function Operator"
+      >&#183;</a
+      ><a name="921"
+      > </a
+      ><a name="922" class="String"
+      >&quot;S&quot;</a
+      ><a name="925" class="Symbol"
+      >)</a
+      ><a name="926"
+      >
+                       </a
+      ><a name="950" href="Record.html#4671" class="Function Operator"
+      >With</a
+      ><a name="954"
+      > </a
+      ><a name="955" class="String"
+      >&quot;R&quot;</a
+      ><a name="958"
+      > </a
+      ><a name="959" href="Record.html#4671" class="Function Operator"
+      >&#8788;</a
+      ><a name="960"
+      > </a
+      ><a name="961" class="Symbol"
+      >(&#955;</a
+      ><a name="963"
+      > </a
+      ><a name="964" href="README.Record.html#964" class="Bound"
+      >_</a
+      ><a name="965"
+      > </a
+      ><a name="966" class="Symbol"
+      >&#8594;</a
+      ><a name="967"
+      > </a
+      ><a name="968" href="Function.html#1480" class="Function"
+      >flip</a
+      ><a name="972"
+      > </a
+      ><a name="973" class="Symbol"
+      >(</a
+      ><a name="974" href="README.Record.html#859" class="Bound"
+      >P</a
+      ><a name="975"
+      > </a
+      ><a name="976" href="Record.html#4089" class="Function Operator"
+      >&#183;</a
+      ><a name="977"
+      > </a
+      ><a name="978" class="String"
+      >&quot;R&quot;</a
+      ><a name="981" class="Symbol"
+      >)))</a
+      ><a name="984"
+      >
+</a
+      ><a name="985" href="README.Record.html#847" class="Function"
+      >converse</a
+      ><a name="993"
+      > </a
+      ><a name="994" href="README.Record.html#994" class="Bound"
+      >P</a
+      ><a name="995"
+      > </a
+      ><a name="996" class="Symbol"
+      >=</a
+      ><a name="997"
+      >
+  </a
+      ><a name="1000" href="Record.html#1958" class="InductiveConstructor"
+      >rec</a
+      ><a name="1003"
+      > </a
+      ><a name="1004" class="Symbol"
+      >(</a
+      ><a name="1005" href="Record.html#1958" class="InductiveConstructor"
+      >rec</a
+      ><a name="1008"
+      > </a
+      ><a name="1009" class="Symbol"
+      >(_</a
+      ><a name="1011"
+      > </a
+      ><a name="1012" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1013"
+      >
+    </a
+      ><a name="1018" href="Level.html#407" class="InductiveConstructor"
+      >lift</a
+      ><a name="1022"
+      > </a
+      ><a name="1023" class="Symbol"
+      >&#955;</a
+      ><a name="1024"
+      > </a
+      ><a name="1025" class="Symbol"
+      >{</a
+      ><a name="1026" href="README.Record.html#1026" class="Bound"
+      >_</a
+      ><a name="1027" class="Symbol"
+      >}</a
+      ><a name="1028"
+      > </a
+      ><a name="1029" class="Symbol"
+      >&#8594;</a
+      ><a name="1030"
+      > </a
+      ><a name="1031" href="Level.html#420" class="Field"
+      >lower</a
+      ><a name="1036"
+      > </a
+      ><a name="1037" class="Symbol"
+      >(</a
+      ><a name="1038" href="README.Record.html#994" class="Bound"
+      >P</a
+      ><a name="1039"
+      > </a
+      ><a name="1040" href="Record.html#4089" class="Function Operator"
+      >&#183;</a
+      ><a name="1041"
+      > </a
+      ><a name="1042" class="String"
+      >&quot;sym&quot;</a
+      ><a name="1047" class="Symbol"
+      >))</a
+      ><a name="1049"
+      > </a
+      ><a name="1050" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1051"
+      >
+    </a
+      ><a name="1056" href="Level.html#407" class="InductiveConstructor"
+      >lift</a
+      ><a name="1060"
+      > </a
+      ><a name="1061" class="Symbol"
+      >&#955;</a
+      ><a name="1062"
+      > </a
+      ><a name="1063" class="Symbol"
+      >{</a
+      ><a name="1064" href="README.Record.html#1064" class="Bound"
+      >_</a
+      ><a name="1065" class="Symbol"
+      >}</a
+      ><a name="1066"
+      > </a
+      ><a name="1067" href="README.Record.html#1067" class="Bound"
+      >yRx</a
+      ><a name="1070"
+      > </a
+      ><a name="1071" href="README.Record.html#1071" class="Bound"
+      >zRy</a
+      ><a name="1074"
+      > </a
+      ><a name="1075" class="Symbol"
+      >&#8594;</a
+      ><a name="1076"
+      > </a
+      ><a name="1077" href="Level.html#420" class="Field"
+      >lower</a
+      ><a name="1082"
+      > </a
+      ><a name="1083" class="Symbol"
+      >(</a
+      ><a name="1084" href="README.Record.html#994" class="Bound"
+      >P</a
+      ><a name="1085"
+      > </a
+      ><a name="1086" href="Record.html#4089" class="Function Operator"
+      >&#183;</a
+      ><a name="1087"
+      > </a
+      ><a name="1088" class="String"
+      >&quot;trans&quot;</a
+      ><a name="1095" class="Symbol"
+      >)</a
+      ><a name="1096"
+      > </a
+      ><a name="1097" href="README.Record.html#1071" class="Bound"
+      >zRy</a
+      ><a name="1100"
+      > </a
+      ><a name="1101" href="README.Record.html#1067" class="Bound"
+      >yRx</a
+      ><a name="1104" class="Symbol"
+      >)</a
+      ><a name="1105"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

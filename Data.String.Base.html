@@ -1,0 +1,802 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.String.Base</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Strings</a
+      ><a name="116"
+      >
+</a
+      ><a name="117" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="189"
+      >
+
+</a
+      ><a name="191" class="Keyword"
+      >module</a
+      ><a name="197"
+      > </a
+      ><a name="198" href="Data.String.Base.html#1" class="Module"
+      >Data.String.Base</a
+      ><a name="214"
+      > </a
+      ><a name="215" class="Keyword"
+      >where</a
+      ><a name="220"
+      >
+
+</a
+      ><a name="222" class="Keyword"
+      >open</a
+      ><a name="226"
+      > </a
+      ><a name="227" class="Keyword"
+      >import</a
+      ><a name="233"
+      > </a
+      ><a name="234" href="Data.List.Base.html#1" class="Module"
+      >Data.List.Base</a
+      ><a name="248"
+      > </a
+      ><a name="249" class="Symbol"
+      >as</a
+      ><a name="251"
+      > </a
+      ><a name="252" class="Module"
+      >List</a
+      ><a name="256"
+      > </a
+      ><a name="257" class="Keyword"
+      >using</a
+      ><a name="262"
+      > </a
+      ><a name="263" class="Symbol"
+      >(</a
+      ><a name="264"
+      >_&#8759;_</a
+      ><a name="267" class="Symbol"
+      >;</a
+      ><a name="268"
+      > []</a
+      ><a name="271" class="Symbol"
+      >;</a
+      ><a name="272"
+      > List</a
+      ><a name="277" class="Symbol"
+      >)</a
+      ><a name="278"
+      >
+</a
+      ><a name="279" class="Keyword"
+      >open</a
+      ><a name="283"
+      > </a
+      ><a name="284" class="Keyword"
+      >import</a
+      ><a name="290"
+      > </a
+      ><a name="291" href="Data.Bool.Base.html#1" class="Module"
+      >Data.Bool.Base</a
+      ><a name="305"
+      > </a
+      ><a name="306" class="Keyword"
+      >using</a
+      ><a name="311"
+      > </a
+      ><a name="312" class="Symbol"
+      >(</a
+      ><a name="313"
+      >Bool</a
+      ><a name="317" class="Symbol"
+      >)</a
+      ><a name="318"
+      >
+</a
+      ><a name="319" class="Keyword"
+      >open</a
+      ><a name="323"
+      > </a
+      ><a name="324" class="Keyword"
+      >import</a
+      ><a name="330"
+      > </a
+      ><a name="331" href="Data.Char.Core.html#1" class="Module"
+      >Data.Char.Core</a
+      ><a name="345"
+      > </a
+      ><a name="346" class="Keyword"
+      >using</a
+      ><a name="351"
+      > </a
+      ><a name="352" class="Symbol"
+      >(</a
+      ><a name="353"
+      >Char</a
+      ><a name="357" class="Symbol"
+      >)</a
+      ><a name="358"
+      >
+</a
+      ><a name="359" class="Keyword"
+      >open</a
+      ><a name="363"
+      > </a
+      ><a name="364" class="Keyword"
+      >import</a
+      ><a name="370"
+      > </a
+      ><a name="371" href="Relation.Binary.Core.html#1" class="Module"
+      >Relation.Binary.Core</a
+      ><a name="391"
+      > </a
+      ><a name="392" class="Keyword"
+      >using</a
+      ><a name="397"
+      > </a
+      ><a name="398" class="Symbol"
+      >(</a
+      ><a name="399"
+      >_&#8801;_</a
+      ><a name="402" class="Symbol"
+      >)</a
+      ><a name="403"
+      >
+</a
+      ><a name="404" class="Keyword"
+      >open</a
+      ><a name="408"
+      > </a
+      ><a name="409" class="Keyword"
+      >import</a
+      ><a name="415"
+      > </a
+      ><a name="416" href="Relation.Binary.PropositionalEquality.TrustMe.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality.TrustMe</a
+      ><a name="461"
+      > </a
+      ><a name="462" class="Keyword"
+      >using</a
+      ><a name="467"
+      > </a
+      ><a name="468" class="Symbol"
+      >(</a
+      ><a name="469"
+      >trustMe</a
+      ><a name="476" class="Symbol"
+      >)</a
+      ><a name="477"
+      >
+
+</a
+      ><a name="479" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="551"
+      >
+</a
+      ><a name="552" class="Comment"
+      >-- The type</a
+      ><a name="563"
+      >
+
+</a
+      ><a name="565" class="Keyword"
+      >postulate</a
+      ><a name="574"
+      >
+  </a
+      ><a name="577" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="583"
+      > </a
+      ><a name="584" class="Symbol"
+      >:</a
+      ><a name="585"
+      > </a
+      ><a name="586" class="PrimitiveType"
+      >Set</a
+      ><a name="589"
+      >
+
+</a
+      ><a name="591" class="Symbol"
+      >{-#</a
+      ><a name="594"
+      > </a
+      ><a name="595" class="Keyword"
+      >BUILTIN</a
+      ><a name="602"
+      > STRING </a
+      ><a name="610" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="616"
+      > </a
+      ><a name="617" class="Symbol"
+      >#-}</a
+      ><a name="620"
+      >
+</a
+      ><a name="621" class="Symbol"
+      >{-#</a
+      ><a name="624"
+      > </a
+      ><a name="625" class="Keyword"
+      >COMPILED_TYPE</a
+      ><a name="638"
+      > </a
+      ><a name="639" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="645"
+      > String </a
+      ><a name="653" class="Symbol"
+      >#-}</a
+      ><a name="656"
+      >
+
+</a
+      ><a name="658" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="730"
+      >
+</a
+      ><a name="731" class="Comment"
+      >-- Primitive operations</a
+      ><a name="754"
+      >
+
+</a
+      ><a name="756" class="Keyword"
+      >primitive</a
+      ><a name="765"
+      >
+  </a
+      ><a name="768" href="Data.String.Base.html#768" class="Primitive"
+      >primStringAppend</a
+      ><a name="784"
+      >   </a
+      ><a name="787" class="Symbol"
+      >:</a
+      ><a name="788"
+      > </a
+      ><a name="789" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="795"
+      > </a
+      ><a name="796" class="Symbol"
+      >&#8594;</a
+      ><a name="797"
+      > </a
+      ><a name="798" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="804"
+      > </a
+      ><a name="805" class="Symbol"
+      >&#8594;</a
+      ><a name="806"
+      > </a
+      ><a name="807" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="813"
+      >
+  </a
+      ><a name="816" href="Data.String.Base.html#816" class="Primitive"
+      >primStringToList</a
+      ><a name="832"
+      >   </a
+      ><a name="835" class="Symbol"
+      >:</a
+      ><a name="836"
+      > </a
+      ><a name="837" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="843"
+      > </a
+      ><a name="844" class="Symbol"
+      >&#8594;</a
+      ><a name="845"
+      > </a
+      ><a name="846" href="Data.List.Base.html#669" class="Datatype"
+      >List</a
+      ><a name="850"
+      > </a
+      ><a name="851" href="Data.Char.Core.html#343" class="Postulate"
+      >Char</a
+      ><a name="855"
+      >
+  </a
+      ><a name="858" href="Data.String.Base.html#858" class="Primitive"
+      >primStringFromList</a
+      ><a name="876"
+      > </a
+      ><a name="877" class="Symbol"
+      >:</a
+      ><a name="878"
+      > </a
+      ><a name="879" href="Data.List.Base.html#669" class="Datatype"
+      >List</a
+      ><a name="883"
+      > </a
+      ><a name="884" href="Data.Char.Core.html#343" class="Postulate"
+      >Char</a
+      ><a name="888"
+      > </a
+      ><a name="889" class="Symbol"
+      >&#8594;</a
+      ><a name="890"
+      > </a
+      ><a name="891" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="897"
+      >
+  </a
+      ><a name="900" href="Data.String.Base.html#900" class="Primitive"
+      >primStringEquality</a
+      ><a name="918"
+      > </a
+      ><a name="919" class="Symbol"
+      >:</a
+      ><a name="920"
+      > </a
+      ><a name="921" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="927"
+      > </a
+      ><a name="928" class="Symbol"
+      >&#8594;</a
+      ><a name="929"
+      > </a
+      ><a name="930" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="936"
+      > </a
+      ><a name="937" class="Symbol"
+      >&#8594;</a
+      ><a name="938"
+      > </a
+      ><a name="939" href="Data.Bool.Base.html#469" class="Datatype"
+      >Bool</a
+      ><a name="943"
+      >
+  </a
+      ><a name="946" href="Data.String.Base.html#946" class="Primitive"
+      >primShowString</a
+      ><a name="960"
+      >     </a
+      ><a name="965" class="Symbol"
+      >:</a
+      ><a name="966"
+      > </a
+      ><a name="967" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="973"
+      > </a
+      ><a name="974" class="Symbol"
+      >&#8594;</a
+      ><a name="975"
+      > </a
+      ><a name="976" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="982"
+      >
+
+</a
+      ><a name="984" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="1056"
+      >
+</a
+      ><a name="1057" class="Comment"
+      >-- Operations</a
+      ><a name="1070"
+      >
+
+</a
+      ><a name="1072" class="Keyword"
+      >infixr</a
+      ><a name="1078"
+      > </a
+      ><a name="1079" class="Number"
+      >5</a
+      ><a name="1080"
+      > _++_
+
+</a
+      ><a name="1087" href="Data.String.Base.html#1087" class="Function Operator"
+      >_++_</a
+      ><a name="1091"
+      > </a
+      ><a name="1092" class="Symbol"
+      >:</a
+      ><a name="1093"
+      > </a
+      ><a name="1094" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="1100"
+      > </a
+      ><a name="1101" class="Symbol"
+      >&#8594;</a
+      ><a name="1102"
+      > </a
+      ><a name="1103" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="1109"
+      > </a
+      ><a name="1110" class="Symbol"
+      >&#8594;</a
+      ><a name="1111"
+      > </a
+      ><a name="1112" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="1118"
+      >
+</a
+      ><a name="1119" href="Data.String.Base.html#1087" class="Function Operator"
+      >_++_</a
+      ><a name="1123"
+      > </a
+      ><a name="1124" class="Symbol"
+      >=</a
+      ><a name="1125"
+      > </a
+      ><a name="1126" href="Data.String.Base.html#768" class="Primitive"
+      >primStringAppend</a
+      ><a name="1142"
+      >
+
+</a
+      ><a name="1144" href="Data.String.Base.html#1144" class="Function"
+      >toList</a
+      ><a name="1150"
+      > </a
+      ><a name="1151" class="Symbol"
+      >:</a
+      ><a name="1152"
+      > </a
+      ><a name="1153" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="1159"
+      > </a
+      ><a name="1160" class="Symbol"
+      >&#8594;</a
+      ><a name="1161"
+      > </a
+      ><a name="1162" href="Data.List.Base.html#669" class="Datatype"
+      >List</a
+      ><a name="1166"
+      > </a
+      ><a name="1167" href="Data.Char.Core.html#343" class="Postulate"
+      >Char</a
+      ><a name="1171"
+      >
+</a
+      ><a name="1172" href="Data.String.Base.html#1144" class="Function"
+      >toList</a
+      ><a name="1178"
+      > </a
+      ><a name="1179" class="Symbol"
+      >=</a
+      ><a name="1180"
+      > </a
+      ><a name="1181" href="Data.String.Base.html#816" class="Primitive"
+      >primStringToList</a
+      ><a name="1197"
+      >
+
+</a
+      ><a name="1199" href="Data.String.Base.html#1199" class="Function"
+      >fromList</a
+      ><a name="1207"
+      > </a
+      ><a name="1208" class="Symbol"
+      >:</a
+      ><a name="1209"
+      > </a
+      ><a name="1210" href="Data.List.Base.html#669" class="Datatype"
+      >List</a
+      ><a name="1214"
+      > </a
+      ><a name="1215" href="Data.Char.Core.html#343" class="Postulate"
+      >Char</a
+      ><a name="1219"
+      > </a
+      ><a name="1220" class="Symbol"
+      >&#8594;</a
+      ><a name="1221"
+      > </a
+      ><a name="1222" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="1228"
+      >
+</a
+      ><a name="1229" href="Data.String.Base.html#1199" class="Function"
+      >fromList</a
+      ><a name="1237"
+      > </a
+      ><a name="1238" class="Symbol"
+      >=</a
+      ><a name="1239"
+      > </a
+      ><a name="1240" href="Data.String.Base.html#858" class="Primitive"
+      >primStringFromList</a
+      ><a name="1258"
+      >
+
+</a
+      ><a name="1260" href="Data.String.Base.html#1260" class="Function"
+      >toList&#8728;fromList</a
+      ><a name="1275"
+      > </a
+      ><a name="1276" class="Symbol"
+      >:</a
+      ><a name="1277"
+      > </a
+      ><a name="1278" class="Symbol"
+      >&#8704;</a
+      ><a name="1279"
+      > </a
+      ><a name="1280" href="Data.String.Base.html#1280" class="Bound"
+      >s</a
+      ><a name="1281"
+      > </a
+      ><a name="1282" class="Symbol"
+      >&#8594;</a
+      ><a name="1283"
+      > </a
+      ><a name="1284" href="Data.String.Base.html#1144" class="Function"
+      >toList</a
+      ><a name="1290"
+      > </a
+      ><a name="1291" class="Symbol"
+      >(</a
+      ><a name="1292" href="Data.String.Base.html#1199" class="Function"
+      >fromList</a
+      ><a name="1300"
+      > </a
+      ><a name="1301" href="Data.String.Base.html#1280" class="Bound"
+      >s</a
+      ><a name="1302" class="Symbol"
+      >)</a
+      ><a name="1303"
+      > </a
+      ><a name="1304" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1305"
+      > </a
+      ><a name="1306" href="Data.String.Base.html#1280" class="Bound"
+      >s</a
+      ><a name="1307"
+      >
+</a
+      ><a name="1308" href="Data.String.Base.html#1260" class="Function"
+      >toList&#8728;fromList</a
+      ><a name="1323"
+      > </a
+      ><a name="1324" href="Data.String.Base.html#1324" class="Bound"
+      >s</a
+      ><a name="1325"
+      > </a
+      ><a name="1326" class="Symbol"
+      >=</a
+      ><a name="1327"
+      > </a
+      ><a name="1328" href="Relation.Binary.PropositionalEquality.TrustMe.html#551" class="Function"
+      >trustMe</a
+      ><a name="1335"
+      >
+
+</a
+      ><a name="1337" href="Data.String.Base.html#1337" class="Function"
+      >fromList&#8728;toList</a
+      ><a name="1352"
+      > </a
+      ><a name="1353" class="Symbol"
+      >:</a
+      ><a name="1354"
+      > </a
+      ><a name="1355" class="Symbol"
+      >&#8704;</a
+      ><a name="1356"
+      > </a
+      ><a name="1357" href="Data.String.Base.html#1357" class="Bound"
+      >s</a
+      ><a name="1358"
+      > </a
+      ><a name="1359" class="Symbol"
+      >&#8594;</a
+      ><a name="1360"
+      > </a
+      ><a name="1361" href="Data.String.Base.html#1199" class="Function"
+      >fromList</a
+      ><a name="1369"
+      > </a
+      ><a name="1370" class="Symbol"
+      >(</a
+      ><a name="1371" href="Data.String.Base.html#1144" class="Function"
+      >toList</a
+      ><a name="1377"
+      > </a
+      ><a name="1378" href="Data.String.Base.html#1357" class="Bound"
+      >s</a
+      ><a name="1379" class="Symbol"
+      >)</a
+      ><a name="1380"
+      > </a
+      ><a name="1381" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1382"
+      > </a
+      ><a name="1383" href="Data.String.Base.html#1357" class="Bound"
+      >s</a
+      ><a name="1384"
+      >
+</a
+      ><a name="1385" href="Data.String.Base.html#1337" class="Function"
+      >fromList&#8728;toList</a
+      ><a name="1400"
+      > </a
+      ><a name="1401" href="Data.String.Base.html#1401" class="Bound"
+      >s</a
+      ><a name="1402"
+      > </a
+      ><a name="1403" class="Symbol"
+      >=</a
+      ><a name="1404"
+      > </a
+      ><a name="1405" href="Relation.Binary.PropositionalEquality.TrustMe.html#551" class="Function"
+      >trustMe</a
+      ><a name="1412"
+      >
+
+</a
+      ><a name="1414" href="Data.String.Base.html#1414" class="Function"
+      >unlines</a
+      ><a name="1421"
+      > </a
+      ><a name="1422" class="Symbol"
+      >:</a
+      ><a name="1423"
+      > </a
+      ><a name="1424" href="Data.List.Base.html#669" class="Datatype"
+      >List</a
+      ><a name="1428"
+      > </a
+      ><a name="1429" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="1435"
+      > </a
+      ><a name="1436" class="Symbol"
+      >&#8594;</a
+      ><a name="1437"
+      > </a
+      ><a name="1438" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="1444"
+      >
+</a
+      ><a name="1445" href="Data.String.Base.html#1414" class="Function"
+      >unlines</a
+      ><a name="1452"
+      > </a
+      ><a name="1453" href="Data.List.Base.html#706" class="InductiveConstructor"
+      >[]</a
+      ><a name="1455"
+      >       </a
+      ><a name="1462" class="Symbol"
+      >=</a
+      ><a name="1463"
+      > </a
+      ><a name="1464" class="String"
+      >&quot;&quot;</a
+      ><a name="1466"
+      >
+</a
+      ><a name="1467" href="Data.String.Base.html#1414" class="Function"
+      >unlines</a
+      ><a name="1474"
+      > </a
+      ><a name="1475" class="Symbol"
+      >(</a
+      ><a name="1476" href="Data.String.Base.html#1476" class="Bound"
+      >x</a
+      ><a name="1477"
+      > </a
+      ><a name="1478" href="Data.List.Base.html#721" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1479"
+      > </a
+      ><a name="1480" href="Data.String.Base.html#1480" class="Bound"
+      >xs</a
+      ><a name="1482" class="Symbol"
+      >)</a
+      ><a name="1483"
+      > </a
+      ><a name="1484" class="Symbol"
+      >=</a
+      ><a name="1485"
+      > </a
+      ><a name="1486" href="Data.String.Base.html#1476" class="Bound"
+      >x</a
+      ><a name="1487"
+      > </a
+      ><a name="1488" href="Data.String.Base.html#1087" class="Function Operator"
+      >++</a
+      ><a name="1490"
+      > </a
+      ><a name="1491" class="String"
+      >&quot;\n&quot;</a
+      ><a name="1495"
+      > </a
+      ><a name="1496" href="Data.String.Base.html#1087" class="Function Operator"
+      >++</a
+      ><a name="1498"
+      > </a
+      ><a name="1499" href="Data.String.Base.html#1414" class="Function"
+      >unlines</a
+      ><a name="1506"
+      > </a
+      ><a name="1507" href="Data.String.Base.html#1480" class="Bound"
+      >xs</a
+      ><a name="1509"
+      >
+
+</a
+      ><a name="1511" href="Data.String.Base.html#1511" class="Function"
+      >show</a
+      ><a name="1515"
+      > </a
+      ><a name="1516" class="Symbol"
+      >:</a
+      ><a name="1517"
+      > </a
+      ><a name="1518" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="1524"
+      > </a
+      ><a name="1525" class="Symbol"
+      >&#8594;</a
+      ><a name="1526"
+      > </a
+      ><a name="1527" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="1533"
+      >
+</a
+      ><a name="1534" href="Data.String.Base.html#1511" class="Function"
+      >show</a
+      ><a name="1538"
+      > </a
+      ><a name="1539" class="Symbol"
+      >=</a
+      ><a name="1540"
+      > </a
+      ><a name="1541" href="Data.String.Base.html#946" class="Primitive"
+      >primShowString</a
+      ><a name="1555"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

@@ -1,0 +1,545 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >README.Case</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Examples showing how the case expressions can be used</a
+      ><a name="162"
+      >
+</a
+      ><a name="163" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="235"
+      >
+
+</a
+      ><a name="237" class="Keyword"
+      >module</a
+      ><a name="243"
+      > </a
+      ><a name="244" href="README.Case.html#1" class="Module"
+      >README.Case</a
+      ><a name="255"
+      > </a
+      ><a name="256" class="Keyword"
+      >where</a
+      ><a name="261"
+      >
+
+</a
+      ><a name="263" class="Keyword"
+      >open</a
+      ><a name="267"
+      > </a
+      ><a name="268" class="Keyword"
+      >import</a
+      ><a name="274"
+      > </a
+      ><a name="275" href="Data.Fin.html#1" class="Module"
+      >Data.Fin</a
+      ><a name="283"
+      >   </a
+      ><a name="286" class="Keyword"
+      >hiding</a
+      ><a name="292"
+      > </a
+      ><a name="293" class="Symbol"
+      >(</a
+      ><a name="294"
+      >pred</a
+      ><a name="298" class="Symbol"
+      >)</a
+      ><a name="299"
+      >
+</a
+      ><a name="300" class="Keyword"
+      >open</a
+      ><a name="304"
+      > </a
+      ><a name="305" class="Keyword"
+      >import</a
+      ><a name="311"
+      > </a
+      ><a name="312" href="Data.Maybe.html#1" class="Module"
+      >Data.Maybe</a
+      ><a name="322"
+      > </a
+      ><a name="323" class="Keyword"
+      >hiding</a
+      ><a name="329"
+      > </a
+      ><a name="330" class="Symbol"
+      >(</a
+      ><a name="331"
+      >from-just</a
+      ><a name="340" class="Symbol"
+      >)</a
+      ><a name="341"
+      >
+</a
+      ><a name="342" class="Keyword"
+      >open</a
+      ><a name="346"
+      > </a
+      ><a name="347" class="Keyword"
+      >import</a
+      ><a name="353"
+      > </a
+      ><a name="354" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="362"
+      >   </a
+      ><a name="365" class="Keyword"
+      >hiding</a
+      ><a name="371"
+      > </a
+      ><a name="372" class="Symbol"
+      >(</a
+      ><a name="373"
+      >pred</a
+      ><a name="377" class="Symbol"
+      >)</a
+      ><a name="378"
+      >
+</a
+      ><a name="379" class="Keyword"
+      >open</a
+      ><a name="383"
+      > </a
+      ><a name="384" class="Keyword"
+      >import</a
+      ><a name="390"
+      > </a
+      ><a name="391" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="399"
+      >
+
+</a
+      ><a name="401" class="Comment"
+      >-- Some simple examples.</a
+      ><a name="425"
+      >
+
+</a
+      ><a name="427" href="README.Case.html#427" class="Function"
+      >empty</a
+      ><a name="432"
+      > </a
+      ><a name="433" class="Symbol"
+      >:</a
+      ><a name="434"
+      > </a
+      ><a name="435" class="Symbol"
+      >&#8704;</a
+      ><a name="436"
+      > </a
+      ><a name="437" class="Symbol"
+      >{</a
+      ><a name="438" href="README.Case.html#438" class="Bound"
+      >a</a
+      ><a name="439" class="Symbol"
+      >}</a
+      ><a name="440"
+      > </a
+      ><a name="441" class="Symbol"
+      >{</a
+      ><a name="442" href="README.Case.html#442" class="Bound"
+      >A</a
+      ><a name="443"
+      > </a
+      ><a name="444" class="Symbol"
+      >:</a
+      ><a name="445"
+      > </a
+      ><a name="446" class="PrimitiveType"
+      >Set</a
+      ><a name="449"
+      > </a
+      ><a name="450" href="README.Case.html#438" class="Bound"
+      >a</a
+      ><a name="451" class="Symbol"
+      >}</a
+      ><a name="452"
+      > </a
+      ><a name="453" class="Symbol"
+      >&#8594;</a
+      ><a name="454"
+      > </a
+      ><a name="455" href="Data.Fin.html#842" class="Datatype"
+      >Fin</a
+      ><a name="458"
+      > </a
+      ><a name="459" class="Number"
+      >0</a
+      ><a name="460"
+      > </a
+      ><a name="461" class="Symbol"
+      >&#8594;</a
+      ><a name="462"
+      > </a
+      ><a name="463" href="README.Case.html#442" class="Bound"
+      >A</a
+      ><a name="464"
+      >
+</a
+      ><a name="465" href="README.Case.html#427" class="Function"
+      >empty</a
+      ><a name="470"
+      > </a
+      ><a name="471" href="README.Case.html#471" class="Bound"
+      >i</a
+      ><a name="472"
+      > </a
+      ><a name="473" class="Symbol"
+      >=</a
+      ><a name="474"
+      > </a
+      ><a name="475" href="Function.html#2761" class="Function Operator"
+      >case</a
+      ><a name="479"
+      > </a
+      ><a name="480" href="README.Case.html#471" class="Bound"
+      >i</a
+      ><a name="481"
+      > </a
+      ><a name="482" href="Function.html#2761" class="Function Operator"
+      >of</a
+      ><a name="484"
+      > </a
+      ><a name="485" class="Symbol"
+      >&#955;()</a
+      ><a name="488"
+      >
+
+</a
+      ><a name="490" href="README.Case.html#490" class="Function"
+      >pred</a
+      ><a name="494"
+      > </a
+      ><a name="495" class="Symbol"
+      >:</a
+      ><a name="496"
+      > </a
+      ><a name="497" href="Data.Nat.Base.html#552" class="Datatype"
+      >&#8469;</a
+      ><a name="498"
+      > </a
+      ><a name="499" class="Symbol"
+      >&#8594;</a
+      ><a name="500"
+      > </a
+      ><a name="501" href="Data.Nat.Base.html#552" class="Datatype"
+      >&#8469;</a
+      ><a name="502"
+      >
+</a
+      ><a name="503" href="README.Case.html#490" class="Function"
+      >pred</a
+      ><a name="507"
+      > </a
+      ><a name="508" href="README.Case.html#508" class="Bound"
+      >n</a
+      ><a name="509"
+      > </a
+      ><a name="510" class="Symbol"
+      >=</a
+      ><a name="511"
+      > </a
+      ><a name="512" href="Function.html#2761" class="Function Operator"
+      >case</a
+      ><a name="516"
+      > </a
+      ><a name="517" href="README.Case.html#508" class="Bound"
+      >n</a
+      ><a name="518"
+      > </a
+      ><a name="519" href="Function.html#2761" class="Function Operator"
+      >of</a
+      ><a name="521"
+      > </a
+      ><a name="522" class="Symbol"
+      >&#955;</a
+      ><a name="523"
+      >
+  </a
+      ><a name="526" class="Symbol"
+      >{</a
+      ><a name="527"
+      > </a
+      ><a name="528" href="Data.Nat.Base.html#568" class="InductiveConstructor"
+      >zero</a
+      ><a name="532"
+      >    </a
+      ><a name="536" class="Symbol"
+      >&#8594;</a
+      ><a name="537"
+      > </a
+      ><a name="538" href="Data.Nat.Base.html#568" class="InductiveConstructor"
+      >zero</a
+      ><a name="542"
+      >
+  </a
+      ><a name="545" class="Symbol"
+      >;</a
+      ><a name="546"
+      > </a
+      ><a name="547" class="Symbol"
+      >(</a
+      ><a name="548" href="Data.Nat.Base.html#579" class="InductiveConstructor"
+      >suc</a
+      ><a name="551"
+      > </a
+      ><a name="552" href="README.Case.html#552" class="Bound"
+      >n</a
+      ><a name="553" class="Symbol"
+      >)</a
+      ><a name="554"
+      > </a
+      ><a name="555" class="Symbol"
+      >&#8594;</a
+      ><a name="556"
+      > </a
+      ><a name="557" href="README.Case.html#552" class="Bound"
+      >n</a
+      ><a name="558"
+      >
+  </a
+      ><a name="561" class="Symbol"
+      >}</a
+      ><a name="562"
+      >
+
+</a
+      ><a name="564" href="README.Case.html#564" class="Function"
+      >from-just</a
+      ><a name="573"
+      > </a
+      ><a name="574" class="Symbol"
+      >:</a
+      ><a name="575"
+      > </a
+      ><a name="576" class="Symbol"
+      >&#8704;</a
+      ><a name="577"
+      > </a
+      ><a name="578" class="Symbol"
+      >{</a
+      ><a name="579" href="README.Case.html#579" class="Bound"
+      >a</a
+      ><a name="580" class="Symbol"
+      >}</a
+      ><a name="581"
+      > </a
+      ><a name="582" class="Symbol"
+      >{</a
+      ><a name="583" href="README.Case.html#583" class="Bound"
+      >A</a
+      ><a name="584"
+      > </a
+      ><a name="585" class="Symbol"
+      >:</a
+      ><a name="586"
+      > </a
+      ><a name="587" class="PrimitiveType"
+      >Set</a
+      ><a name="590"
+      > </a
+      ><a name="591" href="README.Case.html#579" class="Bound"
+      >a</a
+      ><a name="592" class="Symbol"
+      >}</a
+      ><a name="593"
+      > </a
+      ><a name="594" class="Symbol"
+      >(</a
+      ><a name="595" href="README.Case.html#595" class="Bound"
+      >x</a
+      ><a name="596"
+      > </a
+      ><a name="597" class="Symbol"
+      >:</a
+      ><a name="598"
+      > </a
+      ><a name="599" href="Data.Maybe.Base.html#335" class="Datatype"
+      >Maybe</a
+      ><a name="604"
+      > </a
+      ><a name="605" href="README.Case.html#583" class="Bound"
+      >A</a
+      ><a name="606" class="Symbol"
+      >)</a
+      ><a name="607"
+      > </a
+      ><a name="608" class="Symbol"
+      >&#8594;</a
+      ><a name="609"
+      > </a
+      ><a name="610" href="Data.Maybe.Base.html#1521" class="Function"
+      >From-just</a
+      ><a name="619"
+      > </a
+      ><a name="620" href="README.Case.html#583" class="Bound"
+      >A</a
+      ><a name="621"
+      > </a
+      ><a name="622" href="README.Case.html#595" class="Bound"
+      >x</a
+      ><a name="623"
+      >
+</a
+      ><a name="624" href="README.Case.html#564" class="Function"
+      >from-just</a
+      ><a name="633"
+      > </a
+      ><a name="634" href="README.Case.html#634" class="Bound"
+      >x</a
+      ><a name="635"
+      > </a
+      ><a name="636" class="Symbol"
+      >=</a
+      ><a name="637"
+      > </a
+      ><a name="638" href="Function.html#2643" class="Function Operator"
+      >case</a
+      ><a name="642"
+      > </a
+      ><a name="643" href="README.Case.html#634" class="Bound"
+      >x</a
+      ><a name="644"
+      > </a
+      ><a name="645" href="Function.html#2643" class="Function Operator"
+      >return</a
+      ><a name="651"
+      > </a
+      ><a name="652" href="Data.Maybe.Base.html#1521" class="Function"
+      >From-just</a
+      ><a name="661"
+      > </a
+      ><a name="662" class="Symbol"
+      >_</a
+      ><a name="663"
+      > </a
+      ><a name="664" href="Function.html#2643" class="Function Operator"
+      >of</a
+      ><a name="666"
+      > </a
+      ><a name="667" class="Symbol"
+      >&#955;</a
+      ><a name="668"
+      >
+  </a
+      ><a name="671" class="Symbol"
+      >{</a
+      ><a name="672"
+      > </a
+      ><a name="673" class="Symbol"
+      >(</a
+      ><a name="674" href="Data.Maybe.Base.html#373" class="InductiveConstructor"
+      >just</a
+      ><a name="678"
+      > </a
+      ><a name="679" href="README.Case.html#679" class="Bound"
+      >x</a
+      ><a name="680" class="Symbol"
+      >)</a
+      ><a name="681"
+      > </a
+      ><a name="682" class="Symbol"
+      >&#8594;</a
+      ><a name="683"
+      > </a
+      ><a name="684" href="README.Case.html#679" class="Bound"
+      >x</a
+      ><a name="685"
+      >
+  </a
+      ><a name="688" class="Symbol"
+      >;</a
+      ><a name="689"
+      > </a
+      ><a name="690" href="Data.Maybe.Base.html#403" class="InductiveConstructor"
+      >nothing</a
+      ><a name="697"
+      >  </a
+      ><a name="699" class="Symbol"
+      >&#8594;</a
+      ><a name="700"
+      > </a
+      ><a name="701" class="Symbol"
+      >_</a
+      ><a name="702"
+      >
+  </a
+      ><a name="705" class="Symbol"
+      >}</a
+      ><a name="706"
+      >
+
+</a
+      ><a name="708" class="Comment"
+      >-- Note that some natural uses of case are rejected by the termination</a
+      ><a name="778"
+      >
+</a
+      ><a name="779" class="Comment"
+      >-- checker:</a
+      ><a name="790"
+      >
+</a
+      ><a name="791" class="Comment"
+      >--</a
+      ><a name="793"
+      >
+</a
+      ><a name="794" class="Comment"
+      >-- plus : &#8469; &#8594; &#8469; &#8594; &#8469;</a
+      ><a name="813"
+      >
+</a
+      ><a name="814" class="Comment"
+      >-- plus m n = case m of &#955;</a
+      ><a name="839"
+      >
+</a
+      ><a name="840" class="Comment"
+      >--   { zero    &#8594; n</a
+      ><a name="858"
+      >
+</a
+      ><a name="859" class="Comment"
+      >--   ; (suc m) &#8594; suc (plus m n)</a
+      ><a name="890"
+      >
+</a
+      ><a name="891" class="Comment"
+      >--   }</a
+      ><a name="897"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

@@ -1,0 +1,328 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Char.Base</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Basic definitions for Characters</a
+      ><a name="141"
+      >
+</a
+      ><a name="142" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="214"
+      >
+</a
+      ><a name="215" class="Keyword"
+      >module</a
+      ><a name="221"
+      > </a
+      ><a name="222" href="Data.Char.Base.html#1" class="Module"
+      >Data.Char.Base</a
+      ><a name="236"
+      > </a
+      ><a name="237" class="Keyword"
+      >where</a
+      ><a name="242"
+      >
+
+</a
+      ><a name="244" class="Keyword"
+      >open</a
+      ><a name="248"
+      > </a
+      ><a name="249" class="Keyword"
+      >import</a
+      ><a name="255"
+      > </a
+      ><a name="256" href="Data.Nat.Base.html#1" class="Module"
+      >Data.Nat.Base</a
+      ><a name="269"
+      >    </a
+      ><a name="273" class="Keyword"
+      >using</a
+      ><a name="278"
+      > </a
+      ><a name="279" class="Symbol"
+      >(</a
+      ><a name="280"
+      >&#8469;</a
+      ><a name="281" class="Symbol"
+      >)</a
+      ><a name="282"
+      >
+</a
+      ><a name="283" class="Keyword"
+      >open</a
+      ><a name="287"
+      > </a
+      ><a name="288" class="Keyword"
+      >import</a
+      ><a name="294"
+      > </a
+      ><a name="295" href="Data.Bool.Base.html#1" class="Module"
+      >Data.Bool.Base</a
+      ><a name="309"
+      >   </a
+      ><a name="312" class="Keyword"
+      >using</a
+      ><a name="317"
+      > </a
+      ><a name="318" class="Symbol"
+      >(</a
+      ><a name="319"
+      >Bool</a
+      ><a name="323" class="Symbol"
+      >)</a
+      ><a name="324"
+      >
+</a
+      ><a name="325" class="Keyword"
+      >open</a
+      ><a name="329"
+      > </a
+      ><a name="330" class="Keyword"
+      >import</a
+      ><a name="336"
+      > </a
+      ><a name="337" href="Data.String.Base.html#1" class="Module"
+      >Data.String.Base</a
+      ><a name="353"
+      > </a
+      ><a name="354" class="Keyword"
+      >using</a
+      ><a name="359"
+      > </a
+      ><a name="360" class="Symbol"
+      >(</a
+      ><a name="361"
+      >String</a
+      ><a name="367" class="Symbol"
+      >)</a
+      ><a name="368"
+      >
+
+</a
+      ><a name="370" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="442"
+      >
+</a
+      ><a name="443" class="Comment"
+      >-- Re-export the type from the Core module</a
+      ><a name="485"
+      >
+
+</a
+      ><a name="487" class="Keyword"
+      >open</a
+      ><a name="491"
+      > </a
+      ><a name="492" class="Keyword"
+      >import</a
+      ><a name="498"
+      > </a
+      ><a name="499" href="Data.Char.Core.html#1" class="Module"
+      >Data.Char.Core</a
+      ><a name="513"
+      > </a
+      ><a name="514" class="Keyword"
+      >using</a
+      ><a name="519"
+      > </a
+      ><a name="520" class="Symbol"
+      >(</a
+      ><a name="521"
+      >Char</a
+      ><a name="525" class="Symbol"
+      >)</a
+      ><a name="526"
+      > </a
+      ><a name="527" class="Keyword"
+      >public</a
+      ><a name="533"
+      >
+
+</a
+      ><a name="535" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="607"
+      >
+</a
+      ><a name="608" class="Comment"
+      >-- Primitive operations</a
+      ><a name="631"
+      >
+
+</a
+      ><a name="633" class="Keyword"
+      >primitive</a
+      ><a name="642"
+      >
+  </a
+      ><a name="645" href="Data.Char.Base.html#645" class="Primitive"
+      >primCharToNat</a
+      ><a name="658"
+      >    </a
+      ><a name="662" class="Symbol"
+      >:</a
+      ><a name="663"
+      > </a
+      ><a name="664" href="Data.Char.Core.html#343" class="Postulate"
+      >Char</a
+      ><a name="668"
+      > </a
+      ><a name="669" class="Symbol"
+      >&#8594;</a
+      ><a name="670"
+      > </a
+      ><a name="671" href="Data.Nat.Base.html#552" class="Datatype"
+      >&#8469;</a
+      ><a name="672"
+      >
+  </a
+      ><a name="675" href="Data.Char.Base.html#675" class="Primitive"
+      >primCharEquality</a
+      ><a name="691"
+      > </a
+      ><a name="692" class="Symbol"
+      >:</a
+      ><a name="693"
+      > </a
+      ><a name="694" href="Data.Char.Core.html#343" class="Postulate"
+      >Char</a
+      ><a name="698"
+      > </a
+      ><a name="699" class="Symbol"
+      >&#8594;</a
+      ><a name="700"
+      > </a
+      ><a name="701" href="Data.Char.Core.html#343" class="Postulate"
+      >Char</a
+      ><a name="705"
+      > </a
+      ><a name="706" class="Symbol"
+      >&#8594;</a
+      ><a name="707"
+      > </a
+      ><a name="708" href="Data.Bool.Base.html#469" class="Datatype"
+      >Bool</a
+      ><a name="712"
+      >
+  </a
+      ><a name="715" href="Data.Char.Base.html#715" class="Primitive"
+      >primShowChar</a
+      ><a name="727"
+      >     </a
+      ><a name="732" class="Symbol"
+      >:</a
+      ><a name="733"
+      > </a
+      ><a name="734" href="Data.Char.Core.html#343" class="Postulate"
+      >Char</a
+      ><a name="738"
+      > </a
+      ><a name="739" class="Symbol"
+      >&#8594;</a
+      ><a name="740"
+      > </a
+      ><a name="741" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="747"
+      >
+
+</a
+      ><a name="749" href="Data.Char.Base.html#749" class="Function"
+      >show</a
+      ><a name="753"
+      > </a
+      ><a name="754" class="Symbol"
+      >:</a
+      ><a name="755"
+      > </a
+      ><a name="756" href="Data.Char.Core.html#343" class="Postulate"
+      >Char</a
+      ><a name="760"
+      > </a
+      ><a name="761" class="Symbol"
+      >&#8594;</a
+      ><a name="762"
+      > </a
+      ><a name="763" href="Data.String.Base.html#577" class="Postulate"
+      >String</a
+      ><a name="769"
+      >
+</a
+      ><a name="770" href="Data.Char.Base.html#749" class="Function"
+      >show</a
+      ><a name="774"
+      > </a
+      ><a name="775" class="Symbol"
+      >=</a
+      ><a name="776"
+      > </a
+      ><a name="777" href="Data.Char.Base.html#715" class="Primitive"
+      >primShowChar</a
+      ><a name="789"
+      >
+
+</a
+      ><a name="791" href="Data.Char.Base.html#791" class="Function"
+      >toNat</a
+      ><a name="796"
+      > </a
+      ><a name="797" class="Symbol"
+      >:</a
+      ><a name="798"
+      > </a
+      ><a name="799" href="Data.Char.Core.html#343" class="Postulate"
+      >Char</a
+      ><a name="803"
+      > </a
+      ><a name="804" class="Symbol"
+      >&#8594;</a
+      ><a name="805"
+      > </a
+      ><a name="806" href="Data.Nat.Base.html#552" class="Datatype"
+      >&#8469;</a
+      ><a name="807"
+      >
+</a
+      ><a name="808" href="Data.Char.Base.html#791" class="Function"
+      >toNat</a
+      ><a name="813"
+      > </a
+      ><a name="814" class="Symbol"
+      >=</a
+      ><a name="815"
+      > </a
+      ><a name="816" href="Data.Char.Base.html#645" class="Primitive"
+      >primCharToNat</a
+      ><a name="829"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

@@ -25,215 +25,92 @@
       >
 </a
       ><a name="106" class="Comment"
-      >-- Core definitions for Characters</a
-      ><a name="140"
+      >-- Basic definitions for Characters</a
+      ><a name="141"
       >
 </a
-      ><a name="141" class="Comment"
+      ><a name="142" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="213"
+      ><a name="214"
       >
 
 </a
-      ><a name="215" class="Keyword"
+      ><a name="216" class="Keyword"
       >module</a
-      ><a name="221"
+      ><a name="222"
       > </a
-      ><a name="222" href="Data.Char.Core.html#1" class="Module"
+      ><a name="223" href="Data.Char.Core.html#1" class="Module"
       >Data.Char.Core</a
-      ><a name="236"
+      ><a name="237"
       > </a
-      ><a name="237" class="Keyword"
+      ><a name="238" class="Keyword"
       >where</a
-      ><a name="242"
+      ><a name="243"
       >
 
 </a
-      ><a name="244" class="Keyword"
-      >open</a
-      ><a name="248"
-      > </a
-      ><a name="249" class="Keyword"
-      >import</a
-      ><a name="255"
-      > </a
-      ><a name="256" href="Data.Nat.html#1" class="Module"
-      >Data.Nat</a
-      ><a name="264"
-      > </a
-      ><a name="265" class="Keyword"
-      >using</a
-      ><a name="270"
-      > </a
-      ><a name="271" class="Symbol"
-      >(</a
-      ><a name="272"
-      >&#8469;</a
-      ><a name="273" class="Symbol"
-      >)</a
-      ><a name="274"
-      >
-</a
-      ><a name="275" class="Keyword"
-      >open</a
-      ><a name="279"
-      > </a
-      ><a name="280" class="Keyword"
-      >import</a
-      ><a name="286"
-      > </a
-      ><a name="287" href="Data.Bool.Base.html#1" class="Module"
-      >Data.Bool.Base</a
-      ><a name="301"
-      > </a
-      ><a name="302" class="Keyword"
-      >using</a
-      ><a name="307"
-      > </a
-      ><a name="308" class="Symbol"
-      >(</a
-      ><a name="309"
-      >Bool</a
-      ><a name="313" class="Symbol"
-      >)</a
-      ><a name="314"
-      >
-
-</a
-      ><a name="316" class="Comment"
+      ><a name="245" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="388"
+      ><a name="317"
       >
 </a
-      ><a name="389" class="Comment"
+      ><a name="318" class="Comment"
       >-- The type</a
-      ><a name="400"
+      ><a name="329"
       >
 
 </a
-      ><a name="402" class="Keyword"
+      ><a name="331" class="Keyword"
       >postulate</a
-      ><a name="411"
+      ><a name="340"
       >
   </a
-      ><a name="414" href="Data.Char.Core.html#414" class="Postulate"
+      ><a name="343" href="Data.Char.Core.html#343" class="Postulate"
       >Char</a
-      ><a name="418"
+      ><a name="347"
       > </a
-      ><a name="419" class="Symbol"
+      ><a name="348" class="Symbol"
       >:</a
-      ><a name="420"
+      ><a name="349"
       > </a
-      ><a name="421" class="PrimitiveType"
+      ><a name="350" class="PrimitiveType"
       >Set</a
-      ><a name="424"
+      ><a name="353"
       >
 
 </a
-      ><a name="426" class="Symbol"
+      ><a name="355" class="Symbol"
       >{-#</a
-      ><a name="429"
+      ><a name="358"
       > </a
-      ><a name="430" class="Keyword"
+      ><a name="359" class="Keyword"
       >BUILTIN</a
-      ><a name="437"
+      ><a name="366"
       > CHAR </a
-      ><a name="443" href="Data.Char.Core.html#414" class="Postulate"
+      ><a name="372" href="Data.Char.Core.html#343" class="Postulate"
       >Char</a
-      ><a name="447"
+      ><a name="376"
       > </a
-      ><a name="448" class="Symbol"
+      ><a name="377" class="Symbol"
       >#-}</a
-      ><a name="451"
+      ><a name="380"
       >
 </a
-      ><a name="452" class="Symbol"
+      ><a name="381" class="Symbol"
       >{-#</a
-      ><a name="455"
+      ><a name="384"
       > </a
-      ><a name="456" class="Keyword"
+      ><a name="385" class="Keyword"
       >COMPILED_TYPE</a
-      ><a name="469"
+      ><a name="398"
       > </a
-      ><a name="470" href="Data.Char.Core.html#414" class="Postulate"
+      ><a name="399" href="Data.Char.Core.html#343" class="Postulate"
       >Char</a
-      ><a name="474"
+      ><a name="403"
       > Char </a
-      ><a name="480" class="Symbol"
+      ><a name="409" class="Symbol"
       >#-}</a
-      ><a name="483"
-      >
-
-</a
-      ><a name="485" class="Comment"
-      >------------------------------------------------------------------------</a
-      ><a name="557"
-      >
-</a
-      ><a name="558" class="Comment"
-      >-- Primitive operations</a
-      ><a name="581"
-      >
-
-</a
-      ><a name="583" class="Keyword"
-      >primitive</a
-      ><a name="592"
-      >
-  </a
-      ><a name="595" href="Data.Char.Core.html#595" class="Primitive"
-      >primCharToNat</a
-      ><a name="608"
-      >    </a
-      ><a name="612" class="Symbol"
-      >:</a
-      ><a name="613"
-      > </a
-      ><a name="614" href="Data.Char.Core.html#414" class="Postulate"
-      >Char</a
-      ><a name="618"
-      > </a
-      ><a name="619" class="Symbol"
-      >&#8594;</a
-      ><a name="620"
-      > </a
-      ><a name="621" href="Data.Nat.html#663" class="Datatype"
-      >&#8469;</a
-      ><a name="622"
-      >
-  </a
-      ><a name="625" href="Data.Char.Core.html#625" class="Primitive"
-      >primCharEquality</a
-      ><a name="641"
-      > </a
-      ><a name="642" class="Symbol"
-      >:</a
-      ><a name="643"
-      > </a
-      ><a name="644" href="Data.Char.Core.html#414" class="Postulate"
-      >Char</a
-      ><a name="648"
-      > </a
-      ><a name="649" class="Symbol"
-      >&#8594;</a
-      ><a name="650"
-      > </a
-      ><a name="651" href="Data.Char.Core.html#414" class="Postulate"
-      >Char</a
-      ><a name="655"
-      > </a
-      ><a name="656" class="Symbol"
-      >&#8594;</a
-      ><a name="657"
-      > </a
-      ><a name="658" href="Data.Bool.Base.html#469" class="Datatype"
-      >Bool</a
-      ><a name="662"
-      >
-</a
-      ><a name="663" class="Comment"
-      >-- primShowChar is in Data.String.Core for break an import cycle.</a
-      ><a name="728"
+      ><a name="412"
       >
 </a
       ></pre

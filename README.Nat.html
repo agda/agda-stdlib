@@ -1,0 +1,764 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >README.Nat</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Some examples showing where the natural numbers and some related</a
+      ><a name="173"
+      >
+</a
+      ><a name="174" class="Comment"
+      >-- operations and properties are defined, and how they can be used</a
+      ><a name="240"
+      >
+</a
+      ><a name="241" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="313"
+      >
+
+</a
+      ><a name="315" class="Keyword"
+      >module</a
+      ><a name="321"
+      > </a
+      ><a name="322" href="README.Nat.html#1" class="Module"
+      >README.Nat</a
+      ><a name="332"
+      > </a
+      ><a name="333" class="Keyword"
+      >where</a
+      ><a name="338"
+      >
+
+</a
+      ><a name="340" class="Comment"
+      >-- The natural numbers and various arithmetic operations are defined</a
+      ><a name="408"
+      >
+</a
+      ><a name="409" class="Comment"
+      >-- in Data.Nat.</a
+      ><a name="424"
+      >
+
+</a
+      ><a name="426" class="Keyword"
+      >open</a
+      ><a name="430"
+      > </a
+      ><a name="431" class="Keyword"
+      >import</a
+      ><a name="437"
+      > </a
+      ><a name="438" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="446"
+      >
+
+</a
+      ><a name="448" href="README.Nat.html#448" class="Function"
+      >ex&#8321;</a
+      ><a name="451"
+      > </a
+      ><a name="452" class="Symbol"
+      >:</a
+      ><a name="453"
+      > </a
+      ><a name="454" href="Data.Nat.Base.html#552" class="Datatype"
+      >&#8469;</a
+      ><a name="455"
+      >
+</a
+      ><a name="456" href="README.Nat.html#448" class="Function"
+      >ex&#8321;</a
+      ><a name="459"
+      > </a
+      ><a name="460" class="Symbol"
+      >=</a
+      ><a name="461"
+      > </a
+      ><a name="462" class="Number"
+      >1</a
+      ><a name="463"
+      > </a
+      ><a name="464" href="Data.Nat.Base.html#833" class="Primitive Operator"
+      >+</a
+      ><a name="465"
+      > </a
+      ><a name="466" class="Number"
+      >3</a
+      ><a name="467"
+      >
+
+</a
+      ><a name="469" class="Comment"
+      >-- Propositional equality and some related properties can be found</a
+      ><a name="535"
+      >
+</a
+      ><a name="536" class="Comment"
+      >-- in Relation.Binary.PropositionalEquality.</a
+      ><a name="580"
+      >
+
+</a
+      ><a name="582" class="Keyword"
+      >open</a
+      ><a name="586"
+      > </a
+      ><a name="587" class="Keyword"
+      >import</a
+      ><a name="593"
+      > </a
+      ><a name="594" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="631"
+      >
+
+</a
+      ><a name="633" href="README.Nat.html#633" class="Function"
+      >ex&#8322;</a
+      ><a name="636"
+      > </a
+      ><a name="637" class="Symbol"
+      >:</a
+      ><a name="638"
+      > </a
+      ><a name="639" class="Number"
+      >3</a
+      ><a name="640"
+      > </a
+      ><a name="641" href="Data.Nat.Base.html#833" class="Primitive Operator"
+      >+</a
+      ><a name="642"
+      > </a
+      ><a name="643" class="Number"
+      >5</a
+      ><a name="644"
+      > </a
+      ><a name="645" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="646"
+      > </a
+      ><a name="647" class="Number"
+      >2</a
+      ><a name="648"
+      > </a
+      ><a name="649" href="Data.Nat.Base.html#1025" class="Primitive Operator"
+      >*</a
+      ><a name="650"
+      > </a
+      ><a name="651" class="Number"
+      >4</a
+      ><a name="652"
+      >
+</a
+      ><a name="653" href="README.Nat.html#633" class="Function"
+      >ex&#8322;</a
+      ><a name="656"
+      > </a
+      ><a name="657" class="Symbol"
+      >=</a
+      ><a name="658"
+      > </a
+      ><a name="659" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="663"
+      >
+
+</a
+      ><a name="665" class="Comment"
+      >-- Data.Nat.Properties contains a number of properties about natural</a
+      ><a name="733"
+      >
+</a
+      ><a name="734" class="Comment"
+      >-- numbers. Algebra defines what a commutative semiring is, among</a
+      ><a name="799"
+      >
+</a
+      ><a name="800" class="Comment"
+      >-- other things.</a
+      ><a name="816"
+      >
+
+</a
+      ><a name="818" class="Keyword"
+      >open</a
+      ><a name="822"
+      > </a
+      ><a name="823" class="Keyword"
+      >import</a
+      ><a name="829"
+      > </a
+      ><a name="830" href="Algebra.html#1" class="Module"
+      >Algebra</a
+      ><a name="837"
+      >
+</a
+      ><a name="838" class="Keyword"
+      >import</a
+      ><a name="844"
+      > </a
+      ><a name="845" href="Data.Nat.Properties.html#1" class="Module"
+      >Data.Nat.Properties</a
+      ><a name="864"
+      > </a
+      ><a name="865" class="Symbol"
+      >as</a
+      ><a name="867"
+      > </a
+      ><a name="868" class="Module"
+      >Nat</a
+      ><a name="871"
+      >
+</a
+      ><a name="872" class="Keyword"
+      >private</a
+      ><a name="879"
+      >
+  </a
+      ><a name="882" class="Keyword"
+      >module</a
+      ><a name="888"
+      > </a
+      ><a name="889" href="README.Nat.html#889" class="Module"
+      >CS</a
+      ><a name="891"
+      > </a
+      ><a name="892" class="Symbol"
+      >=</a
+      ><a name="893"
+      > </a
+      ><a name="894" href="Algebra.html#7862" class="Module"
+      >CommutativeSemiring</a
+      ><a name="913"
+      > </a
+      ><a name="914" href="Data.Nat.Properties.html#1726" class="Function"
+      >Nat.commutativeSemiring</a
+      ><a name="937"
+      >
+
+</a
+      ><a name="939" href="README.Nat.html#939" class="Function"
+      >ex&#8323;</a
+      ><a name="942"
+      > </a
+      ><a name="943" class="Symbol"
+      >:</a
+      ><a name="944"
+      > </a
+      ><a name="945" class="Symbol"
+      >&#8704;</a
+      ><a name="946"
+      > </a
+      ><a name="947" href="README.Nat.html#947" class="Bound"
+      >m</a
+      ><a name="948"
+      > </a
+      ><a name="949" href="README.Nat.html#949" class="Bound"
+      >n</a
+      ><a name="950"
+      > </a
+      ><a name="951" class="Symbol"
+      >&#8594;</a
+      ><a name="952"
+      > </a
+      ><a name="953" href="README.Nat.html#947" class="Bound"
+      >m</a
+      ><a name="954"
+      > </a
+      ><a name="955" href="Data.Nat.Base.html#1025" class="Primitive Operator"
+      >*</a
+      ><a name="956"
+      > </a
+      ><a name="957" href="README.Nat.html#949" class="Bound"
+      >n</a
+      ><a name="958"
+      > </a
+      ><a name="959" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="960"
+      > </a
+      ><a name="961" href="README.Nat.html#949" class="Bound"
+      >n</a
+      ><a name="962"
+      > </a
+      ><a name="963" href="Data.Nat.Base.html#1025" class="Primitive Operator"
+      >*</a
+      ><a name="964"
+      > </a
+      ><a name="965" href="README.Nat.html#947" class="Bound"
+      >m</a
+      ><a name="966"
+      >
+</a
+      ><a name="967" href="README.Nat.html#939" class="Function"
+      >ex&#8323;</a
+      ><a name="970"
+      > </a
+      ><a name="971" href="README.Nat.html#971" class="Bound"
+      >m</a
+      ><a name="972"
+      > </a
+      ><a name="973" href="README.Nat.html#973" class="Bound"
+      >n</a
+      ><a name="974"
+      > </a
+      ><a name="975" class="Symbol"
+      >=</a
+      ><a name="976"
+      > </a
+      ><a name="977" href="Algebra.Structures.html#1414" class="Function"
+      >CS.*-comm</a
+      ><a name="986"
+      > </a
+      ><a name="987" href="README.Nat.html#971" class="Bound"
+      >m</a
+      ><a name="988"
+      > </a
+      ><a name="989" href="README.Nat.html#973" class="Bound"
+      >n</a
+      ><a name="990"
+      >
+
+</a
+      ><a name="992" class="Comment"
+      >-- The module &#8801;-Reasoning in Relation.Binary.PropositionalEquality</a
+      ><a name="1058"
+      >
+</a
+      ><a name="1059" class="Comment"
+      >-- provides some combinators for equational reasoning.</a
+      ><a name="1113"
+      >
+
+</a
+      ><a name="1115" class="Keyword"
+      >open</a
+      ><a name="1119"
+      > </a
+      ><a name="1120" href="Relation.Binary.PropositionalEquality.html#5746" class="Module"
+      >&#8801;-Reasoning</a
+      ><a name="1131"
+      >
+</a
+      ><a name="1132" class="Keyword"
+      >open</a
+      ><a name="1136"
+      > </a
+      ><a name="1137" class="Keyword"
+      >import</a
+      ><a name="1143"
+      > </a
+      ><a name="1144" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="1156"
+      >
+
+</a
+      ><a name="1158" href="README.Nat.html#1158" class="Function"
+      >ex&#8324;</a
+      ><a name="1161"
+      > </a
+      ><a name="1162" class="Symbol"
+      >:</a
+      ><a name="1163"
+      > </a
+      ><a name="1164" class="Symbol"
+      >&#8704;</a
+      ><a name="1165"
+      > </a
+      ><a name="1166" href="README.Nat.html#1166" class="Bound"
+      >m</a
+      ><a name="1167"
+      > </a
+      ><a name="1168" href="README.Nat.html#1168" class="Bound"
+      >n</a
+      ><a name="1169"
+      > </a
+      ><a name="1170" class="Symbol"
+      >&#8594;</a
+      ><a name="1171"
+      > </a
+      ><a name="1172" href="README.Nat.html#1166" class="Bound"
+      >m</a
+      ><a name="1173"
+      > </a
+      ><a name="1174" href="Data.Nat.Base.html#1025" class="Primitive Operator"
+      >*</a
+      ><a name="1175"
+      > </a
+      ><a name="1176" class="Symbol"
+      >(</a
+      ><a name="1177" href="README.Nat.html#1168" class="Bound"
+      >n</a
+      ><a name="1178"
+      > </a
+      ><a name="1179" href="Data.Nat.Base.html#833" class="Primitive Operator"
+      >+</a
+      ><a name="1180"
+      > </a
+      ><a name="1181" class="Number"
+      >0</a
+      ><a name="1182" class="Symbol"
+      >)</a
+      ><a name="1183"
+      > </a
+      ><a name="1184" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1185"
+      > </a
+      ><a name="1186" href="README.Nat.html#1168" class="Bound"
+      >n</a
+      ><a name="1187"
+      > </a
+      ><a name="1188" href="Data.Nat.Base.html#1025" class="Primitive Operator"
+      >*</a
+      ><a name="1189"
+      > </a
+      ><a name="1190" href="README.Nat.html#1166" class="Bound"
+      >m</a
+      ><a name="1191"
+      >
+</a
+      ><a name="1192" href="README.Nat.html#1158" class="Function"
+      >ex&#8324;</a
+      ><a name="1195"
+      > </a
+      ><a name="1196" href="README.Nat.html#1196" class="Bound"
+      >m</a
+      ><a name="1197"
+      > </a
+      ><a name="1198" href="README.Nat.html#1198" class="Bound"
+      >n</a
+      ><a name="1199"
+      > </a
+      ><a name="1200" class="Symbol"
+      >=</a
+      ><a name="1201"
+      > </a
+      ><a name="1202" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      >begin</a
+      ><a name="1207"
+      >
+  </a
+      ><a name="1210" href="README.Nat.html#1196" class="Bound"
+      >m</a
+      ><a name="1211"
+      > </a
+      ><a name="1212" href="Data.Nat.Base.html#1025" class="Primitive Operator"
+      >*</a
+      ><a name="1213"
+      > </a
+      ><a name="1214" class="Symbol"
+      >(</a
+      ><a name="1215" href="README.Nat.html#1198" class="Bound"
+      >n</a
+      ><a name="1216"
+      > </a
+      ><a name="1217" href="Data.Nat.Base.html#833" class="Primitive Operator"
+      >+</a
+      ><a name="1218"
+      > </a
+      ><a name="1219" class="Number"
+      >0</a
+      ><a name="1220" class="Symbol"
+      >)</a
+      ><a name="1221"
+      >  </a
+      ><a name="1223" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="1225"
+      > </a
+      ><a name="1226" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      >cong</a
+      ><a name="1230"
+      > </a
+      ><a name="1231" class="Symbol"
+      >(</a
+      ><a name="1232" href="Data.Nat.Base.html#1025" class="Primitive Operator"
+      >_*_</a
+      ><a name="1235"
+      > </a
+      ><a name="1236" href="README.Nat.html#1196" class="Bound"
+      >m</a
+      ><a name="1237" class="Symbol"
+      >)</a
+      ><a name="1238"
+      > </a
+      ><a name="1239" class="Symbol"
+      >(</a
+      ><a name="1240" href="Data.Product.html#539" class="Field"
+      >proj&#8322;</a
+      ><a name="1245"
+      > </a
+      ><a name="1246" href="Algebra.Structures.html#1486" class="Function"
+      >CS.+-identity</a
+      ><a name="1259"
+      > </a
+      ><a name="1260" href="README.Nat.html#1198" class="Bound"
+      >n</a
+      ><a name="1261" class="Symbol"
+      >)</a
+      ><a name="1262"
+      > </a
+      ><a name="1263" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="1264"
+      >
+  </a
+      ><a name="1267" href="README.Nat.html#1196" class="Bound"
+      >m</a
+      ><a name="1268"
+      > </a
+      ><a name="1269" href="Data.Nat.Base.html#1025" class="Primitive Operator"
+      >*</a
+      ><a name="1270"
+      > </a
+      ><a name="1271" href="README.Nat.html#1198" class="Bound"
+      >n</a
+      ><a name="1272"
+      >        </a
+      ><a name="1280" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8801;&#10216;</a
+      ><a name="1282"
+      > </a
+      ><a name="1283" href="Algebra.Structures.html#1414" class="Function"
+      >CS.*-comm</a
+      ><a name="1292"
+      > </a
+      ><a name="1293" href="README.Nat.html#1196" class="Bound"
+      >m</a
+      ><a name="1294"
+      > </a
+      ><a name="1295" href="README.Nat.html#1198" class="Bound"
+      >n</a
+      ><a name="1296"
+      > </a
+      ><a name="1297" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      ><a name="1298"
+      >
+  </a
+      ><a name="1301" href="README.Nat.html#1198" class="Bound"
+      >n</a
+      ><a name="1302"
+      > </a
+      ><a name="1303" href="Data.Nat.Base.html#1025" class="Primitive Operator"
+      >*</a
+      ><a name="1304"
+      > </a
+      ><a name="1305" href="README.Nat.html#1196" class="Bound"
+      >m</a
+      ><a name="1306"
+      >        </a
+      ><a name="1314" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >&#8718;</a
+      ><a name="1315"
+      >
+
+</a
+      ><a name="1317" class="Comment"
+      >-- The module SemiringSolver in Data.Nat.Properties contains a solver</a
+      ><a name="1386"
+      >
+</a
+      ><a name="1387" class="Comment"
+      >-- for natural number equalities involving variables, constants, _+_</a
+      ><a name="1455"
+      >
+</a
+      ><a name="1456" class="Comment"
+      >-- and _*_.</a
+      ><a name="1467"
+      >
+
+</a
+      ><a name="1469" class="Keyword"
+      >open</a
+      ><a name="1473"
+      > </a
+      ><a name="1474" href="Data.Nat.Properties.html#330" class="Module"
+      >Nat.</a
+      ><a name="1478" href="Data.Nat.Properties.html#2085" class="Module"
+      >SemiringSolver</a
+      ><a name="1492"
+      >
+
+</a
+      ><a name="1494" href="README.Nat.html#1494" class="Function"
+      >ex&#8325;</a
+      ><a name="1497"
+      > </a
+      ><a name="1498" class="Symbol"
+      >:</a
+      ><a name="1499"
+      > </a
+      ><a name="1500" class="Symbol"
+      >&#8704;</a
+      ><a name="1501"
+      > </a
+      ><a name="1502" href="README.Nat.html#1502" class="Bound"
+      >m</a
+      ><a name="1503"
+      > </a
+      ><a name="1504" href="README.Nat.html#1504" class="Bound"
+      >n</a
+      ><a name="1505"
+      > </a
+      ><a name="1506" class="Symbol"
+      >&#8594;</a
+      ><a name="1507"
+      > </a
+      ><a name="1508" href="README.Nat.html#1502" class="Bound"
+      >m</a
+      ><a name="1509"
+      > </a
+      ><a name="1510" href="Data.Nat.Base.html#1025" class="Primitive Operator"
+      >*</a
+      ><a name="1511"
+      > </a
+      ><a name="1512" class="Symbol"
+      >(</a
+      ><a name="1513" href="README.Nat.html#1504" class="Bound"
+      >n</a
+      ><a name="1514"
+      > </a
+      ><a name="1515" href="Data.Nat.Base.html#833" class="Primitive Operator"
+      >+</a
+      ><a name="1516"
+      > </a
+      ><a name="1517" class="Number"
+      >0</a
+      ><a name="1518" class="Symbol"
+      >)</a
+      ><a name="1519"
+      > </a
+      ><a name="1520" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1521"
+      > </a
+      ><a name="1522" href="README.Nat.html#1504" class="Bound"
+      >n</a
+      ><a name="1523"
+      > </a
+      ><a name="1524" href="Data.Nat.Base.html#1025" class="Primitive Operator"
+      >*</a
+      ><a name="1525"
+      > </a
+      ><a name="1526" href="README.Nat.html#1502" class="Bound"
+      >m</a
+      ><a name="1527"
+      >
+</a
+      ><a name="1528" href="README.Nat.html#1494" class="Function"
+      >ex&#8325;</a
+      ><a name="1531"
+      > </a
+      ><a name="1532" class="Symbol"
+      >=</a
+      ><a name="1533"
+      > </a
+      ><a name="1534" href="Relation.Binary.Reflection.html#2382" class="Function"
+      >solve</a
+      ><a name="1539"
+      > </a
+      ><a name="1540" class="Number"
+      >2</a
+      ><a name="1541"
+      > </a
+      ><a name="1542" class="Symbol"
+      >(&#955;</a
+      ><a name="1544"
+      > </a
+      ><a name="1545" href="README.Nat.html#1545" class="Bound"
+      >m</a
+      ><a name="1546"
+      > </a
+      ><a name="1547" href="README.Nat.html#1547" class="Bound"
+      >n</a
+      ><a name="1548"
+      > </a
+      ><a name="1549" class="Symbol"
+      >&#8594;</a
+      ><a name="1550"
+      > </a
+      ><a name="1551" href="README.Nat.html#1545" class="Bound"
+      >m</a
+      ><a name="1552"
+      > </a
+      ><a name="1553" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      >:*</a
+      ><a name="1555"
+      > </a
+      ><a name="1556" class="Symbol"
+      >(</a
+      ><a name="1557" href="README.Nat.html#1547" class="Bound"
+      >n</a
+      ><a name="1558"
+      > </a
+      ><a name="1559" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      >:+</a
+      ><a name="1561"
+      > </a
+      ><a name="1562" href="Algebra.RingSolver.html#2104" class="InductiveConstructor"
+      >con</a
+      ><a name="1565"
+      > </a
+      ><a name="1566" class="Number"
+      >0</a
+      ><a name="1567" class="Symbol"
+      >)</a
+      ><a name="1568"
+      >  </a
+      ><a name="1570" href="Relation.Binary.Reflection.html#3491" class="Function Operator"
+      >:=</a
+      ><a name="1572"
+      >  </a
+      ><a name="1574" href="README.Nat.html#1547" class="Bound"
+      >n</a
+      ><a name="1575"
+      > </a
+      ><a name="1576" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      >:*</a
+      ><a name="1578"
+      > </a
+      ><a name="1579" href="README.Nat.html#1545" class="Bound"
+      >m</a
+      ><a name="1580" class="Symbol"
+      >)</a
+      ><a name="1581"
+      > </a
+      ><a name="1582" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1586"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>
