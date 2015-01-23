@@ -99,6 +99,19 @@ inject≤ : ∀ {m n} → Fin m → m N≤ n → Fin n
 inject≤ zero    (Nat.s≤s le) = zero
 inject≤ (suc i) (Nat.s≤s le) = suc (inject≤ i le)
 
+-- thin and thick functions from ``First-order unification by structural recursion'' by Conor McBride
+
+thin : {n : ℕ}(x : Fin (suc n))(y : Fin n) → Fin (suc n)
+thin  zero    y      = suc y
+thin (suc x)  zero   = zero
+thin (suc x) (suc y) = suc (thin x y)
+
+thick : {m : ℕ}(y : Fin (suc m))(x : Fin m) → Fin m
+thick {zero}  zero    ()
+thick {suc n} zero    x      = zero
+thick        (suc y)  zero   = y
+thick        (suc y) (suc x) = suc (thick y x)
+
 ------------------------------------------------------------------------
 -- Operations
 
