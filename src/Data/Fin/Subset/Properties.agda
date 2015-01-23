@@ -12,7 +12,7 @@ open import Data.Empty using (⊥-elim)
 open import Data.Fin using (Fin); open Data.Fin.Fin
 open import Data.Fin.Subset
 open import Data.Nat using (ℕ)
-open import Data.Product
+open import Data.Product as Product
 open import Data.Sum as Sum
 open import Data.Vec hiding (_∈_)
 open import Function
@@ -105,6 +105,22 @@ x∈⁅y⁆⇔x≡y {x = x} {y} =
   from : ∀ {n} {p₁ p₂ : Subset n} {x} → x ∈ p₁ ⊎ x ∈ p₂ → x ∈ p₁ ∪ p₂
   from (inj₁ x∈p₁) = ⊆∪ˡ _   x∈p₁
   from (inj₂ x∈p₂) = ⊆∪ʳ _ _ x∈p₂
+
+------------------------------------------------------------------------
+-- A property involving _∩_
+
+∩⇔× : ∀ {n} {p₁ p₂ : Subset n} {x} → x ∈ p₁ ∩ p₂ ⇔ (x ∈ p₁ × x ∈ p₂)
+∩⇔× = equivalence (to _ _) from
+  where
+  to : ∀ {n} (p₁ p₂ : Subset n) {x} → x ∈ p₁ ∩ p₂ → x ∈ p₁ × x ∈ p₂
+  to [] [] ()
+  to (inside ∷ p₁) (inside ∷ p₂) here = here , here
+  to (s₁     ∷ p₁) (s₂     ∷ p₂) (there x∈p₁∩p₂) =
+    Product.map there there (to p₁ p₂ x∈p₁∩p₂)
+
+  from : ∀ {n} {p₁ p₂ : Subset n} {x} → x ∈ p₁ × x ∈ p₂ → x ∈ p₁ ∩ p₂
+  from (here , here) = here
+  from (there x∈p₁ , there x∈p₂) = there (from (x∈p₁ , x∈p₂))
 
 ------------------------------------------------------------------------
 -- _⊆_ is a partial order
