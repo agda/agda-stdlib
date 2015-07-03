@@ -1,0 +1,2895 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Integer.Base</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="73"
+      >
+</a
+      ><a name="74" class="Comment"
+      >-- The Agda standard library</a
+      ><a name="102"
+      >
+</a
+      ><a name="103" class="Comment"
+      >--</a
+      ><a name="105"
+      >
+</a
+      ><a name="106" class="Comment"
+      >-- Integers, basic types and operations</a
+      ><a name="145"
+      >
+</a
+      ><a name="146" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="218"
+      >
+
+</a
+      ><a name="220" class="Keyword"
+      >module</a
+      ><a name="226"
+      > </a
+      ><a name="227" href="Data.Integer.Base.html#1" class="Module"
+      >Data.Integer.Base</a
+      ><a name="244"
+      > </a
+      ><a name="245" class="Keyword"
+      >where</a
+      ><a name="250"
+      >
+
+</a
+      ><a name="252" class="Keyword"
+      >open</a
+      ><a name="256"
+      > </a
+      ><a name="257" class="Keyword"
+      >import</a
+      ><a name="263"
+      > </a
+      ><a name="264" href="Data.Nat.Base.html#1" class="Module"
+      >Data.Nat.Base</a
+      ><a name="277"
+      > </a
+      ><a name="278" class="Symbol"
+      >as</a
+      ><a name="280"
+      > </a
+      ><a name="281" class="Module"
+      >&#8469;</a
+      ><a name="282"
+      >
+  </a
+      ><a name="285" class="Keyword"
+      >using</a
+      ><a name="290"
+      > </a
+      ><a name="291" class="Symbol"
+      >(</a
+      ><a name="292"
+      >&#8469;</a
+      ><a name="293" class="Symbol"
+      >)</a
+      ><a name="294"
+      > </a
+      ><a name="295" class="Keyword"
+      >renaming</a
+      ><a name="303"
+      > </a
+      ><a name="304" class="Symbol"
+      >(</a
+      ><a name="305"
+      >_+_ </a
+      ><a name="309" class="Symbol"
+      >to</a
+      ><a name="311"
+      > _&#8469;+_</a
+      ><a name="316" class="Symbol"
+      >;</a
+      ><a name="317"
+      > _*_ </a
+      ><a name="322" class="Symbol"
+      >to</a
+      ><a name="324"
+      > _&#8469;*_</a
+      ><a name="329" class="Symbol"
+      >)</a
+      ><a name="330"
+      >
+</a
+      ><a name="331" class="Keyword"
+      >open</a
+      ><a name="335"
+      > </a
+      ><a name="336" class="Keyword"
+      >import</a
+      ><a name="342"
+      > </a
+      ><a name="343" href="Data.Sign.html#1" class="Module"
+      >Data.Sign</a
+      ><a name="352"
+      > </a
+      ><a name="353" class="Symbol"
+      >as</a
+      ><a name="355"
+      > </a
+      ><a name="356" class="Module"
+      >Sign</a
+      ><a name="360"
+      > </a
+      ><a name="361" class="Keyword"
+      >using</a
+      ><a name="366"
+      > </a
+      ><a name="367" class="Symbol"
+      >(</a
+      ><a name="368"
+      >Sign</a
+      ><a name="372" class="Symbol"
+      >)</a
+      ><a name="373"
+      > </a
+      ><a name="374" class="Keyword"
+      >renaming</a
+      ><a name="382"
+      > </a
+      ><a name="383" class="Symbol"
+      >(</a
+      ><a name="384"
+      >_*_ </a
+      ><a name="388" class="Symbol"
+      >to</a
+      ><a name="390"
+      > _S*_</a
+      ><a name="395" class="Symbol"
+      >)</a
+      ><a name="396"
+      >
+</a
+      ><a name="397" class="Keyword"
+      >open</a
+      ><a name="401"
+      > </a
+      ><a name="402" class="Keyword"
+      >import</a
+      ><a name="408"
+      > </a
+      ><a name="409" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="417"
+      >
+</a
+      ><a name="418" class="Keyword"
+      >open</a
+      ><a name="422"
+      > </a
+      ><a name="423" class="Keyword"
+      >import</a
+      ><a name="429"
+      > </a
+      ><a name="430" href="Relation.Nullary.html#1" class="Module"
+      >Relation.Nullary</a
+      ><a name="446"
+      >
+</a
+      ><a name="447" class="Keyword"
+      >open</a
+      ><a name="451"
+      > </a
+      ><a name="452" class="Keyword"
+      >import</a
+      ><a name="458"
+      > </a
+      ><a name="459" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="474"
+      >
+</a
+      ><a name="475" class="Keyword"
+      >open</a
+      ><a name="479"
+      > </a
+      ><a name="480" class="Keyword"
+      >import</a
+      ><a name="486"
+      > </a
+      ><a name="487" href="Relation.Binary.Core.html#1" class="Module"
+      >Relation.Binary.Core</a
+      ><a name="507"
+      > </a
+      ><a name="508" class="Keyword"
+      >using</a
+      ><a name="513"
+      > </a
+      ><a name="514" class="Symbol"
+      >(</a
+      ><a name="515"
+      >_&#8801;_</a
+      ><a name="518" class="Symbol"
+      >;</a
+      ><a name="519"
+      > refl</a
+      ><a name="524" class="Symbol"
+      >)</a
+      ><a name="525"
+      >
+</a
+      ><a name="526" class="Comment"
+      >-- Importing Core here ^^^ to keep a small import list</a
+      ><a name="580"
+      >
+
+</a
+      ><a name="582" class="Keyword"
+      >infix</a
+      ><a name="587"
+      >  </a
+      ><a name="589" class="Number"
+      >8</a
+      ><a name="590"
+      > +_ -_
+</a
+      ><a name="597" class="Keyword"
+      >infixl</a
+      ><a name="603"
+      > </a
+      ><a name="604" class="Number"
+      >7</a
+      ><a name="605"
+      > _*_ _&#8851;_
+</a
+      ><a name="614" class="Keyword"
+      >infixl</a
+      ><a name="620"
+      > </a
+      ><a name="621" class="Number"
+      >6</a
+      ><a name="622"
+      > _+_ _-_ _&#8854;_ _&#8852;_
+</a
+      ><a name="639" class="Keyword"
+      >infix</a
+      ><a name="644"
+      >  </a
+      ><a name="646" class="Number"
+      >4</a
+      ><a name="647"
+      > _&#8804;_
+
+</a
+      ><a name="653" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="725"
+      >
+</a
+      ><a name="726" class="Comment"
+      >-- The types</a
+      ><a name="738"
+      >
+
+</a
+      ><a name="740" class="Comment"
+      >-- Integers.</a
+      ><a name="752"
+      >
+
+</a
+      ><a name="754" class="Keyword"
+      >data</a
+      ><a name="758"
+      > </a
+      ><a name="759" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="760"
+      > </a
+      ><a name="761" class="Symbol"
+      >:</a
+      ><a name="762"
+      > </a
+      ><a name="763" class="PrimitiveType"
+      >Set</a
+      ><a name="766"
+      > </a
+      ><a name="767" class="Keyword"
+      >where</a
+      ><a name="772"
+      >
+  </a
+      ><a name="775" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+_]</a
+      ><a name="781"
+      > </a
+      ><a name="782" class="Symbol"
+      >:</a
+      ><a name="783"
+      > </a
+      ><a name="784" class="Symbol"
+      >(</a
+      ><a name="785" href="Data.Integer.Base.html#785" class="Bound"
+      >n</a
+      ><a name="786"
+      > </a
+      ><a name="787" class="Symbol"
+      >:</a
+      ><a name="788"
+      > </a
+      ><a name="789" href="Data.Nat.Base.html#552" class="Datatype"
+      >&#8469;</a
+      ><a name="790" class="Symbol"
+      >)</a
+      ><a name="791"
+      > </a
+      ><a name="792" class="Symbol"
+      >&#8594;</a
+      ><a name="793"
+      > </a
+      ><a name="794" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="795"
+      >  </a
+      ><a name="797" class="Comment"
+      >-- -[1+ n ] stands for - (1 + n).</a
+      ><a name="830"
+      >
+  </a
+      ><a name="833" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+_</a
+      ><a name="835"
+      >     </a
+      ><a name="840" class="Symbol"
+      >:</a
+      ><a name="841"
+      > </a
+      ><a name="842" class="Symbol"
+      >(</a
+      ><a name="843" href="Data.Integer.Base.html#843" class="Bound"
+      >n</a
+      ><a name="844"
+      > </a
+      ><a name="845" class="Symbol"
+      >:</a
+      ><a name="846"
+      > </a
+      ><a name="847" href="Data.Nat.Base.html#552" class="Datatype"
+      >&#8469;</a
+      ><a name="848" class="Symbol"
+      >)</a
+      ><a name="849"
+      > </a
+      ><a name="850" class="Symbol"
+      >&#8594;</a
+      ><a name="851"
+      > </a
+      ><a name="852" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="853"
+      >  </a
+      ><a name="855" class="Comment"
+      >-- + n stands for n.</a
+      ><a name="875"
+      >
+
+</a
+      ><a name="877" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="949"
+      >
+</a
+      ><a name="950" class="Comment"
+      >-- Conversions</a
+      ><a name="964"
+      >
+
+</a
+      ><a name="966" class="Comment"
+      >-- Absolute value.</a
+      ><a name="984"
+      >
+
+</a
+      ><a name="986" href="Data.Integer.Base.html#986" class="Function Operator"
+      >&#8739;_&#8739;</a
+      ><a name="989"
+      > </a
+      ><a name="990" class="Symbol"
+      >:</a
+      ><a name="991"
+      > </a
+      ><a name="992" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="993"
+      > </a
+      ><a name="994" class="Symbol"
+      >&#8594;</a
+      ><a name="995"
+      > </a
+      ><a name="996" href="Data.Nat.Base.html#552" class="Datatype"
+      >&#8469;</a
+      ><a name="997"
+      >
+</a
+      ><a name="998" href="Data.Integer.Base.html#986" class="Function Operator"
+      >&#8739;</a
+      ><a name="999"
+      > </a
+      ><a name="1000" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1001"
+      > </a
+      ><a name="1002" href="Data.Integer.Base.html#1002" class="Bound"
+      >n</a
+      ><a name="1003"
+      >      </a
+      ><a name="1009" href="Data.Integer.Base.html#986" class="Function Operator"
+      >&#8739;</a
+      ><a name="1010"
+      > </a
+      ><a name="1011" class="Symbol"
+      >=</a
+      ><a name="1012"
+      > </a
+      ><a name="1013" href="Data.Integer.Base.html#1002" class="Bound"
+      >n</a
+      ><a name="1014"
+      >
+</a
+      ><a name="1015" href="Data.Integer.Base.html#986" class="Function Operator"
+      >&#8739;</a
+      ><a name="1016"
+      > </a
+      ><a name="1017" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1021"
+      > </a
+      ><a name="1022" href="Data.Integer.Base.html#1022" class="Bound"
+      >n</a
+      ><a name="1023"
+      > </a
+      ><a name="1024" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1025"
+      > </a
+      ><a name="1026" href="Data.Integer.Base.html#986" class="Function Operator"
+      >&#8739;</a
+      ><a name="1027"
+      > </a
+      ><a name="1028" class="Symbol"
+      >=</a
+      ><a name="1029"
+      > </a
+      ><a name="1030" href="Data.Nat.Base.html#579" class="InductiveConstructor"
+      >&#8469;.suc</a
+      ><a name="1035"
+      > </a
+      ><a name="1036" href="Data.Integer.Base.html#1022" class="Bound"
+      >n</a
+      ><a name="1037"
+      >
+
+</a
+      ><a name="1039" class="Comment"
+      >-- Gives the sign. For zero the sign is arbitrarily chosen to be +.</a
+      ><a name="1106"
+      >
+
+</a
+      ><a name="1108" href="Data.Integer.Base.html#1108" class="Function"
+      >sign</a
+      ><a name="1112"
+      > </a
+      ><a name="1113" class="Symbol"
+      >:</a
+      ><a name="1114"
+      > </a
+      ><a name="1115" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="1116"
+      > </a
+      ><a name="1117" class="Symbol"
+      >&#8594;</a
+      ><a name="1118"
+      > </a
+      ><a name="1119" href="Data.Sign.html#393" class="Datatype"
+      >Sign</a
+      ><a name="1123"
+      >
+</a
+      ><a name="1124" href="Data.Integer.Base.html#1108" class="Function"
+      >sign</a
+      ><a name="1128"
+      > </a
+      ><a name="1129" class="Symbol"
+      >(</a
+      ><a name="1130" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1131"
+      > </a
+      ><a name="1132" class="Symbol"
+      >_)</a
+      ><a name="1134"
+      >    </a
+      ><a name="1138" class="Symbol"
+      >=</a
+      ><a name="1139"
+      > </a
+      ><a name="1140" href="Data.Sign.html#423" class="InductiveConstructor"
+      >Sign.+</a
+      ><a name="1146"
+      >
+</a
+      ><a name="1147" href="Data.Integer.Base.html#1108" class="Function"
+      >sign</a
+      ><a name="1151"
+      > </a
+      ><a name="1152" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1156"
+      > </a
+      ><a name="1157" class="Symbol"
+      >_</a
+      ><a name="1158"
+      > </a
+      ><a name="1159" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1160"
+      > </a
+      ><a name="1161" class="Symbol"
+      >=</a
+      ><a name="1162"
+      > </a
+      ><a name="1163" href="Data.Sign.html#412" class="InductiveConstructor"
+      >Sign.-</a
+      ><a name="1169"
+      >
+
+</a
+      ><a name="1171" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="1243"
+      >
+</a
+      ><a name="1244" class="Comment"
+      >-- A view of integers as sign + absolute value</a
+      ><a name="1290"
+      >
+
+</a
+      ><a name="1292" class="Keyword"
+      >infix</a
+      ><a name="1297"
+      > </a
+      ><a name="1298" class="Number"
+      >5</a
+      ><a name="1299"
+      > _&#9666;_ _&#9667;_
+
+</a
+      ><a name="1309" href="Data.Integer.Base.html#1309" class="Function Operator"
+      >_&#9667;_</a
+      ><a name="1312"
+      > </a
+      ><a name="1313" class="Symbol"
+      >:</a
+      ><a name="1314"
+      > </a
+      ><a name="1315" href="Data.Sign.html#393" class="Datatype"
+      >Sign</a
+      ><a name="1319"
+      > </a
+      ><a name="1320" class="Symbol"
+      >&#8594;</a
+      ><a name="1321"
+      > </a
+      ><a name="1322" href="Data.Nat.Base.html#552" class="Datatype"
+      >&#8469;</a
+      ><a name="1323"
+      > </a
+      ><a name="1324" class="Symbol"
+      >&#8594;</a
+      ><a name="1325"
+      > </a
+      ><a name="1326" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="1327"
+      >
+</a
+      ><a name="1328" class="Symbol"
+      >_</a
+      ><a name="1329"
+      >      </a
+      ><a name="1335" href="Data.Integer.Base.html#1309" class="Function Operator"
+      >&#9667;</a
+      ><a name="1336"
+      > </a
+      ><a name="1337" href="Data.Nat.Base.html#568" class="InductiveConstructor"
+      >&#8469;.zero</a
+      ><a name="1343"
+      >  </a
+      ><a name="1345" class="Symbol"
+      >=</a
+      ><a name="1346"
+      > </a
+      ><a name="1347" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1348"
+      > </a
+      ><a name="1349" href="Data.Nat.Base.html#568" class="InductiveConstructor"
+      >&#8469;.zero</a
+      ><a name="1355"
+      >
+</a
+      ><a name="1356" href="Data.Sign.html#423" class="InductiveConstructor"
+      >Sign.+</a
+      ><a name="1362"
+      > </a
+      ><a name="1363" href="Data.Integer.Base.html#1309" class="Function Operator"
+      >&#9667;</a
+      ><a name="1364"
+      > </a
+      ><a name="1365" href="Data.Integer.Base.html#1365" class="Bound"
+      >n</a
+      ><a name="1366"
+      >       </a
+      ><a name="1373" class="Symbol"
+      >=</a
+      ><a name="1374"
+      > </a
+      ><a name="1375" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1376"
+      > </a
+      ><a name="1377" href="Data.Integer.Base.html#1365" class="Bound"
+      >n</a
+      ><a name="1378"
+      >
+</a
+      ><a name="1379" href="Data.Sign.html#412" class="InductiveConstructor"
+      >Sign.-</a
+      ><a name="1385"
+      > </a
+      ><a name="1386" href="Data.Integer.Base.html#1309" class="Function Operator"
+      >&#9667;</a
+      ><a name="1387"
+      > </a
+      ><a name="1388" href="Data.Nat.Base.html#579" class="InductiveConstructor"
+      >&#8469;.suc</a
+      ><a name="1393"
+      > </a
+      ><a name="1394" href="Data.Integer.Base.html#1394" class="Bound"
+      >n</a
+      ><a name="1395"
+      > </a
+      ><a name="1396" class="Symbol"
+      >=</a
+      ><a name="1397"
+      > </a
+      ><a name="1398" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1402"
+      > </a
+      ><a name="1403" href="Data.Integer.Base.html#1394" class="Bound"
+      >n</a
+      ><a name="1404"
+      > </a
+      ><a name="1405" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1406"
+      >
+
+</a
+      ><a name="1408" href="Data.Integer.Base.html#1408" class="Function"
+      >&#9667;-left-inverse</a
+      ><a name="1422"
+      > </a
+      ><a name="1423" class="Symbol"
+      >:</a
+      ><a name="1424"
+      > </a
+      ><a name="1425" class="Symbol"
+      >&#8704;</a
+      ><a name="1426"
+      > </a
+      ><a name="1427" href="Data.Integer.Base.html#1427" class="Bound"
+      >i</a
+      ><a name="1428"
+      > </a
+      ><a name="1429" class="Symbol"
+      >&#8594;</a
+      ><a name="1430"
+      > </a
+      ><a name="1431" href="Data.Integer.Base.html#1108" class="Function"
+      >sign</a
+      ><a name="1435"
+      > </a
+      ><a name="1436" href="Data.Integer.Base.html#1427" class="Bound"
+      >i</a
+      ><a name="1437"
+      > </a
+      ><a name="1438" href="Data.Integer.Base.html#1309" class="Function Operator"
+      >&#9667;</a
+      ><a name="1439"
+      > </a
+      ><a name="1440" href="Data.Integer.Base.html#986" class="Function Operator"
+      >&#8739;</a
+      ><a name="1441"
+      > </a
+      ><a name="1442" href="Data.Integer.Base.html#1427" class="Bound"
+      >i</a
+      ><a name="1443"
+      > </a
+      ><a name="1444" href="Data.Integer.Base.html#986" class="Function Operator"
+      >&#8739;</a
+      ><a name="1445"
+      > </a
+      ><a name="1446" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1447"
+      > </a
+      ><a name="1448" href="Data.Integer.Base.html#1427" class="Bound"
+      >i</a
+      ><a name="1449"
+      >
+</a
+      ><a name="1450" href="Data.Integer.Base.html#1408" class="Function"
+      >&#9667;-left-inverse</a
+      ><a name="1464"
+      > </a
+      ><a name="1465" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1469"
+      > </a
+      ><a name="1470" href="Data.Integer.Base.html#1470" class="Bound"
+      >n</a
+      ><a name="1471"
+      > </a
+      ><a name="1472" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1473"
+      >    </a
+      ><a name="1477" class="Symbol"
+      >=</a
+      ><a name="1478"
+      > </a
+      ><a name="1479" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1483"
+      >
+</a
+      ><a name="1484" href="Data.Integer.Base.html#1408" class="Function"
+      >&#9667;-left-inverse</a
+      ><a name="1498"
+      > </a
+      ><a name="1499" class="Symbol"
+      >(</a
+      ><a name="1500" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1501"
+      > </a
+      ><a name="1502" href="Data.Nat.Base.html#568" class="InductiveConstructor"
+      >&#8469;.zero</a
+      ><a name="1508" class="Symbol"
+      >)</a
+      ><a name="1509"
+      >  </a
+      ><a name="1511" class="Symbol"
+      >=</a
+      ><a name="1512"
+      > </a
+      ><a name="1513" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1517"
+      >
+</a
+      ><a name="1518" href="Data.Integer.Base.html#1408" class="Function"
+      >&#9667;-left-inverse</a
+      ><a name="1532"
+      > </a
+      ><a name="1533" class="Symbol"
+      >(</a
+      ><a name="1534" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1535"
+      > </a
+      ><a name="1536" href="Data.Nat.Base.html#579" class="InductiveConstructor"
+      >&#8469;.suc</a
+      ><a name="1541"
+      > </a
+      ><a name="1542" href="Data.Integer.Base.html#1542" class="Bound"
+      >n</a
+      ><a name="1543" class="Symbol"
+      >)</a
+      ><a name="1544"
+      > </a
+      ><a name="1545" class="Symbol"
+      >=</a
+      ><a name="1546"
+      > </a
+      ><a name="1547" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1551"
+      >
+
+</a
+      ><a name="1553" class="Keyword"
+      >data</a
+      ><a name="1557"
+      > </a
+      ><a name="1558" href="Data.Integer.Base.html#1558" class="Datatype"
+      >SignAbs</a
+      ><a name="1565"
+      > </a
+      ><a name="1566" class="Symbol"
+      >:</a
+      ><a name="1567"
+      > </a
+      ><a name="1568" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="1569"
+      > </a
+      ><a name="1570" class="Symbol"
+      >&#8594;</a
+      ><a name="1571"
+      > </a
+      ><a name="1572" class="PrimitiveType"
+      >Set</a
+      ><a name="1575"
+      > </a
+      ><a name="1576" class="Keyword"
+      >where</a
+      ><a name="1581"
+      >
+  </a
+      ><a name="1584" href="Data.Integer.Base.html#1584" class="InductiveConstructor Operator"
+      >_&#9666;_</a
+      ><a name="1587"
+      > </a
+      ><a name="1588" class="Symbol"
+      >:</a
+      ><a name="1589"
+      > </a
+      ><a name="1590" class="Symbol"
+      >(</a
+      ><a name="1591" href="Data.Integer.Base.html#1591" class="Bound"
+      >s</a
+      ><a name="1592"
+      > </a
+      ><a name="1593" class="Symbol"
+      >:</a
+      ><a name="1594"
+      > </a
+      ><a name="1595" href="Data.Sign.html#393" class="Datatype"
+      >Sign</a
+      ><a name="1599" class="Symbol"
+      >)</a
+      ><a name="1600"
+      > </a
+      ><a name="1601" class="Symbol"
+      >(</a
+      ><a name="1602" href="Data.Integer.Base.html#1602" class="Bound"
+      >n</a
+      ><a name="1603"
+      > </a
+      ><a name="1604" class="Symbol"
+      >:</a
+      ><a name="1605"
+      > </a
+      ><a name="1606" href="Data.Nat.Base.html#552" class="Datatype"
+      >&#8469;</a
+      ><a name="1607" class="Symbol"
+      >)</a
+      ><a name="1608"
+      > </a
+      ><a name="1609" class="Symbol"
+      >&#8594;</a
+      ><a name="1610"
+      > </a
+      ><a name="1611" href="Data.Integer.Base.html#1558" class="Datatype"
+      >SignAbs</a
+      ><a name="1618"
+      > </a
+      ><a name="1619" class="Symbol"
+      >(</a
+      ><a name="1620" href="Data.Integer.Base.html#1591" class="Bound"
+      >s</a
+      ><a name="1621"
+      > </a
+      ><a name="1622" href="Data.Integer.Base.html#1309" class="Function Operator"
+      >&#9667;</a
+      ><a name="1623"
+      > </a
+      ><a name="1624" href="Data.Integer.Base.html#1602" class="Bound"
+      >n</a
+      ><a name="1625" class="Symbol"
+      >)</a
+      ><a name="1626"
+      >
+
+</a
+      ><a name="1628" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="1700"
+      >
+</a
+      ><a name="1701" class="Comment"
+      >-- Arithmetic</a
+      ><a name="1714"
+      >
+
+</a
+      ><a name="1716" class="Comment"
+      >-- Negation.</a
+      ><a name="1728"
+      >
+
+</a
+      ><a name="1730" href="Data.Integer.Base.html#1730" class="Function Operator"
+      >-_</a
+      ><a name="1732"
+      > </a
+      ><a name="1733" class="Symbol"
+      >:</a
+      ><a name="1734"
+      > </a
+      ><a name="1735" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="1736"
+      > </a
+      ><a name="1737" class="Symbol"
+      >&#8594;</a
+      ><a name="1738"
+      > </a
+      ><a name="1739" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="1740"
+      >
+</a
+      ><a name="1741" href="Data.Integer.Base.html#1730" class="Function Operator"
+      >-</a
+      ><a name="1742"
+      > </a
+      ><a name="1743" class="Symbol"
+      >(</a
+      ><a name="1744" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1745"
+      > </a
+      ><a name="1746" href="Data.Nat.Base.html#579" class="InductiveConstructor"
+      >&#8469;.suc</a
+      ><a name="1751"
+      > </a
+      ><a name="1752" href="Data.Integer.Base.html#1752" class="Bound"
+      >n</a
+      ><a name="1753" class="Symbol"
+      >)</a
+      ><a name="1754"
+      > </a
+      ><a name="1755" class="Symbol"
+      >=</a
+      ><a name="1756"
+      > </a
+      ><a name="1757" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1761"
+      > </a
+      ><a name="1762" href="Data.Integer.Base.html#1752" class="Bound"
+      >n</a
+      ><a name="1763"
+      > </a
+      ><a name="1764" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1765"
+      >
+</a
+      ><a name="1766" href="Data.Integer.Base.html#1730" class="Function Operator"
+      >-</a
+      ><a name="1767"
+      > </a
+      ><a name="1768" class="Symbol"
+      >(</a
+      ><a name="1769" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1770"
+      > </a
+      ><a name="1771" href="Data.Nat.Base.html#568" class="InductiveConstructor"
+      >&#8469;.zero</a
+      ><a name="1777" class="Symbol"
+      >)</a
+      ><a name="1778"
+      >  </a
+      ><a name="1780" class="Symbol"
+      >=</a
+      ><a name="1781"
+      > </a
+      ><a name="1782" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1783"
+      > </a
+      ><a name="1784" href="Data.Nat.Base.html#568" class="InductiveConstructor"
+      >&#8469;.zero</a
+      ><a name="1790"
+      >
+</a
+      ><a name="1791" href="Data.Integer.Base.html#1730" class="Function Operator"
+      >-</a
+      ><a name="1792"
+      > </a
+      ><a name="1793" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1797"
+      > </a
+      ><a name="1798" href="Data.Integer.Base.html#1798" class="Bound"
+      >n</a
+      ><a name="1799"
+      > </a
+      ><a name="1800" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1801"
+      >    </a
+      ><a name="1805" class="Symbol"
+      >=</a
+      ><a name="1806"
+      > </a
+      ><a name="1807" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1808"
+      > </a
+      ><a name="1809" href="Data.Nat.Base.html#579" class="InductiveConstructor"
+      >&#8469;.suc</a
+      ><a name="1814"
+      > </a
+      ><a name="1815" href="Data.Integer.Base.html#1798" class="Bound"
+      >n</a
+      ><a name="1816"
+      >
+
+</a
+      ><a name="1818" class="Comment"
+      >-- Subtraction of natural numbers.</a
+      ><a name="1852"
+      >
+
+</a
+      ><a name="1854" href="Data.Integer.Base.html#1854" class="Function Operator"
+      >_&#8854;_</a
+      ><a name="1857"
+      > </a
+      ><a name="1858" class="Symbol"
+      >:</a
+      ><a name="1859"
+      > </a
+      ><a name="1860" href="Data.Nat.Base.html#552" class="Datatype"
+      >&#8469;</a
+      ><a name="1861"
+      > </a
+      ><a name="1862" class="Symbol"
+      >&#8594;</a
+      ><a name="1863"
+      > </a
+      ><a name="1864" href="Data.Nat.Base.html#552" class="Datatype"
+      >&#8469;</a
+      ><a name="1865"
+      > </a
+      ><a name="1866" class="Symbol"
+      >&#8594;</a
+      ><a name="1867"
+      > </a
+      ><a name="1868" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="1869"
+      >
+</a
+      ><a name="1870" href="Data.Integer.Base.html#1870" class="Bound"
+      >m</a
+      ><a name="1871"
+      >       </a
+      ><a name="1878" href="Data.Integer.Base.html#1854" class="Function Operator"
+      >&#8854;</a
+      ><a name="1879"
+      > </a
+      ><a name="1880" href="Data.Nat.Base.html#568" class="InductiveConstructor"
+      >&#8469;.zero</a
+      ><a name="1886"
+      >  </a
+      ><a name="1888" class="Symbol"
+      >=</a
+      ><a name="1889"
+      > </a
+      ><a name="1890" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="1891"
+      > </a
+      ><a name="1892" href="Data.Integer.Base.html#1870" class="Bound"
+      >m</a
+      ><a name="1893"
+      >
+</a
+      ><a name="1894" href="Data.Nat.Base.html#568" class="InductiveConstructor"
+      >&#8469;.zero</a
+      ><a name="1900"
+      >  </a
+      ><a name="1902" href="Data.Integer.Base.html#1854" class="Function Operator"
+      >&#8854;</a
+      ><a name="1903"
+      > </a
+      ><a name="1904" href="Data.Nat.Base.html#579" class="InductiveConstructor"
+      >&#8469;.suc</a
+      ><a name="1909"
+      > </a
+      ><a name="1910" href="Data.Integer.Base.html#1910" class="Bound"
+      >n</a
+      ><a name="1911"
+      > </a
+      ><a name="1912" class="Symbol"
+      >=</a
+      ><a name="1913"
+      > </a
+      ><a name="1914" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1918"
+      > </a
+      ><a name="1919" href="Data.Integer.Base.html#1910" class="Bound"
+      >n</a
+      ><a name="1920"
+      > </a
+      ><a name="1921" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1922"
+      >
+</a
+      ><a name="1923" href="Data.Nat.Base.html#579" class="InductiveConstructor"
+      >&#8469;.suc</a
+      ><a name="1928"
+      > </a
+      ><a name="1929" href="Data.Integer.Base.html#1929" class="Bound"
+      >m</a
+      ><a name="1930"
+      > </a
+      ><a name="1931" href="Data.Integer.Base.html#1854" class="Function Operator"
+      >&#8854;</a
+      ><a name="1932"
+      > </a
+      ><a name="1933" href="Data.Nat.Base.html#579" class="InductiveConstructor"
+      >&#8469;.suc</a
+      ><a name="1938"
+      > </a
+      ><a name="1939" href="Data.Integer.Base.html#1939" class="Bound"
+      >n</a
+      ><a name="1940"
+      > </a
+      ><a name="1941" class="Symbol"
+      >=</a
+      ><a name="1942"
+      > </a
+      ><a name="1943" href="Data.Integer.Base.html#1929" class="Bound"
+      >m</a
+      ><a name="1944"
+      > </a
+      ><a name="1945" href="Data.Integer.Base.html#1854" class="Function Operator"
+      >&#8854;</a
+      ><a name="1946"
+      > </a
+      ><a name="1947" href="Data.Integer.Base.html#1939" class="Bound"
+      >n</a
+      ><a name="1948"
+      >
+
+</a
+      ><a name="1950" class="Comment"
+      >-- Addition.</a
+      ><a name="1962"
+      >
+
+</a
+      ><a name="1964" href="Data.Integer.Base.html#1964" class="Function Operator"
+      >_+_</a
+      ><a name="1967"
+      > </a
+      ><a name="1968" class="Symbol"
+      >:</a
+      ><a name="1969"
+      > </a
+      ><a name="1970" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="1971"
+      > </a
+      ><a name="1972" class="Symbol"
+      >&#8594;</a
+      ><a name="1973"
+      > </a
+      ><a name="1974" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="1975"
+      > </a
+      ><a name="1976" class="Symbol"
+      >&#8594;</a
+      ><a name="1977"
+      > </a
+      ><a name="1978" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="1979"
+      >
+</a
+      ><a name="1980" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1984"
+      > </a
+      ><a name="1985" href="Data.Integer.Base.html#1985" class="Bound"
+      >m</a
+      ><a name="1986"
+      > </a
+      ><a name="1987" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1988"
+      > </a
+      ><a name="1989" href="Data.Integer.Base.html#1964" class="Function Operator"
+      >+</a
+      ><a name="1990"
+      > </a
+      ><a name="1991" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="1995"
+      > </a
+      ><a name="1996" href="Data.Integer.Base.html#1996" class="Bound"
+      >n</a
+      ><a name="1997"
+      > </a
+      ><a name="1998" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="1999"
+      > </a
+      ><a name="2000" class="Symbol"
+      >=</a
+      ><a name="2001"
+      > </a
+      ><a name="2002" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2006"
+      > </a
+      ><a name="2007" href="Data.Nat.Base.html#579" class="InductiveConstructor"
+      >&#8469;.suc</a
+      ><a name="2012"
+      > </a
+      ><a name="2013" class="Symbol"
+      >(</a
+      ><a name="2014" href="Data.Integer.Base.html#1985" class="Bound"
+      >m</a
+      ><a name="2015"
+      > </a
+      ><a name="2016" href="Data.Nat.Base.html#833" class="Primitive Operator"
+      >&#8469;+</a
+      ><a name="2018"
+      > </a
+      ><a name="2019" href="Data.Integer.Base.html#1996" class="Bound"
+      >n</a
+      ><a name="2020" class="Symbol"
+      >)</a
+      ><a name="2021"
+      > </a
+      ><a name="2022" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2023"
+      >
+</a
+      ><a name="2024" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2028"
+      > </a
+      ><a name="2029" href="Data.Integer.Base.html#2029" class="Bound"
+      >m</a
+      ><a name="2030"
+      > </a
+      ><a name="2031" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2032"
+      > </a
+      ><a name="2033" href="Data.Integer.Base.html#1964" class="Function Operator"
+      >+</a
+      ><a name="2034"
+      > </a
+      ><a name="2035" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2036"
+      >    </a
+      ><a name="2040" href="Data.Integer.Base.html#2040" class="Bound"
+      >n</a
+      ><a name="2041"
+      >   </a
+      ><a name="2044" class="Symbol"
+      >=</a
+      ><a name="2045"
+      > </a
+      ><a name="2046" href="Data.Integer.Base.html#2040" class="Bound"
+      >n</a
+      ><a name="2047"
+      > </a
+      ><a name="2048" href="Data.Integer.Base.html#1854" class="Function Operator"
+      >&#8854;</a
+      ><a name="2049"
+      > </a
+      ><a name="2050" href="Data.Nat.Base.html#579" class="InductiveConstructor"
+      >&#8469;.suc</a
+      ><a name="2055"
+      > </a
+      ><a name="2056" href="Data.Integer.Base.html#2029" class="Bound"
+      >m</a
+      ><a name="2057"
+      >
+</a
+      ><a name="2058" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2059"
+      >    </a
+      ><a name="2063" href="Data.Integer.Base.html#2063" class="Bound"
+      >m</a
+      ><a name="2064"
+      >   </a
+      ><a name="2067" href="Data.Integer.Base.html#1964" class="Function Operator"
+      >+</a
+      ><a name="2068"
+      > </a
+      ><a name="2069" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2073"
+      > </a
+      ><a name="2074" href="Data.Integer.Base.html#2074" class="Bound"
+      >n</a
+      ><a name="2075"
+      > </a
+      ><a name="2076" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2077"
+      > </a
+      ><a name="2078" class="Symbol"
+      >=</a
+      ><a name="2079"
+      > </a
+      ><a name="2080" href="Data.Integer.Base.html#2063" class="Bound"
+      >m</a
+      ><a name="2081"
+      > </a
+      ><a name="2082" href="Data.Integer.Base.html#1854" class="Function Operator"
+      >&#8854;</a
+      ><a name="2083"
+      > </a
+      ><a name="2084" href="Data.Nat.Base.html#579" class="InductiveConstructor"
+      >&#8469;.suc</a
+      ><a name="2089"
+      > </a
+      ><a name="2090" href="Data.Integer.Base.html#2074" class="Bound"
+      >n</a
+      ><a name="2091"
+      >
+</a
+      ><a name="2092" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2093"
+      >    </a
+      ><a name="2097" href="Data.Integer.Base.html#2097" class="Bound"
+      >m</a
+      ><a name="2098"
+      >   </a
+      ><a name="2101" href="Data.Integer.Base.html#1964" class="Function Operator"
+      >+</a
+      ><a name="2102"
+      > </a
+      ><a name="2103" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2104"
+      >    </a
+      ><a name="2108" href="Data.Integer.Base.html#2108" class="Bound"
+      >n</a
+      ><a name="2109"
+      >   </a
+      ><a name="2112" class="Symbol"
+      >=</a
+      ><a name="2113"
+      > </a
+      ><a name="2114" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2115"
+      > </a
+      ><a name="2116" class="Symbol"
+      >(</a
+      ><a name="2117" href="Data.Integer.Base.html#2097" class="Bound"
+      >m</a
+      ><a name="2118"
+      > </a
+      ><a name="2119" href="Data.Nat.Base.html#833" class="Primitive Operator"
+      >&#8469;+</a
+      ><a name="2121"
+      > </a
+      ><a name="2122" href="Data.Integer.Base.html#2108" class="Bound"
+      >n</a
+      ><a name="2123" class="Symbol"
+      >)</a
+      ><a name="2124"
+      >
+
+</a
+      ><a name="2126" class="Comment"
+      >-- Subtraction.</a
+      ><a name="2141"
+      >
+
+</a
+      ><a name="2143" href="Data.Integer.Base.html#2143" class="Function Operator"
+      >_-_</a
+      ><a name="2146"
+      > </a
+      ><a name="2147" class="Symbol"
+      >:</a
+      ><a name="2148"
+      > </a
+      ><a name="2149" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="2150"
+      > </a
+      ><a name="2151" class="Symbol"
+      >&#8594;</a
+      ><a name="2152"
+      > </a
+      ><a name="2153" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="2154"
+      > </a
+      ><a name="2155" class="Symbol"
+      >&#8594;</a
+      ><a name="2156"
+      > </a
+      ><a name="2157" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="2158"
+      >
+</a
+      ><a name="2159" href="Data.Integer.Base.html#2159" class="Bound"
+      >i</a
+      ><a name="2160"
+      > </a
+      ><a name="2161" href="Data.Integer.Base.html#2143" class="Function Operator"
+      >-</a
+      ><a name="2162"
+      > </a
+      ><a name="2163" href="Data.Integer.Base.html#2163" class="Bound"
+      >j</a
+      ><a name="2164"
+      > </a
+      ><a name="2165" class="Symbol"
+      >=</a
+      ><a name="2166"
+      > </a
+      ><a name="2167" href="Data.Integer.Base.html#2159" class="Bound"
+      >i</a
+      ><a name="2168"
+      > </a
+      ><a name="2169" href="Data.Integer.Base.html#1964" class="Function Operator"
+      >+</a
+      ><a name="2170"
+      > </a
+      ><a name="2171" href="Data.Integer.Base.html#1730" class="Function Operator"
+      >-</a
+      ><a name="2172"
+      > </a
+      ><a name="2173" href="Data.Integer.Base.html#2163" class="Bound"
+      >j</a
+      ><a name="2174"
+      >
+
+</a
+      ><a name="2176" class="Comment"
+      >-- Successor.</a
+      ><a name="2189"
+      >
+
+</a
+      ><a name="2191" href="Data.Integer.Base.html#2191" class="Function"
+      >suc</a
+      ><a name="2194"
+      > </a
+      ><a name="2195" class="Symbol"
+      >:</a
+      ><a name="2196"
+      > </a
+      ><a name="2197" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="2198"
+      > </a
+      ><a name="2199" class="Symbol"
+      >&#8594;</a
+      ><a name="2200"
+      > </a
+      ><a name="2201" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="2202"
+      >
+</a
+      ><a name="2203" href="Data.Integer.Base.html#2191" class="Function"
+      >suc</a
+      ><a name="2206"
+      > </a
+      ><a name="2207" href="Data.Integer.Base.html#2207" class="Bound"
+      >i</a
+      ><a name="2208"
+      > </a
+      ><a name="2209" class="Symbol"
+      >=</a
+      ><a name="2210"
+      > </a
+      ><a name="2211" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2212"
+      > </a
+      ><a name="2213" class="Number"
+      >1</a
+      ><a name="2214"
+      > </a
+      ><a name="2215" href="Data.Integer.Base.html#1964" class="Function Operator"
+      >+</a
+      ><a name="2216"
+      > </a
+      ><a name="2217" href="Data.Integer.Base.html#2207" class="Bound"
+      >i</a
+      ><a name="2218"
+      >
+
+</a
+      ><a name="2220" class="Keyword"
+      >private</a
+      ><a name="2227"
+      >
+
+  </a
+      ><a name="2231" href="Data.Integer.Base.html#2231" class="Function"
+      >suc-is-lazy&#8314;</a
+      ><a name="2243"
+      > </a
+      ><a name="2244" class="Symbol"
+      >:</a
+      ><a name="2245"
+      > </a
+      ><a name="2246" class="Symbol"
+      >&#8704;</a
+      ><a name="2247"
+      > </a
+      ><a name="2248" href="Data.Integer.Base.html#2248" class="Bound"
+      >n</a
+      ><a name="2249"
+      > </a
+      ><a name="2250" class="Symbol"
+      >&#8594;</a
+      ><a name="2251"
+      > </a
+      ><a name="2252" href="Data.Integer.Base.html#2191" class="Function"
+      >suc</a
+      ><a name="2255"
+      > </a
+      ><a name="2256" class="Symbol"
+      >(</a
+      ><a name="2257" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2258"
+      > </a
+      ><a name="2259" href="Data.Integer.Base.html#2248" class="Bound"
+      >n</a
+      ><a name="2260" class="Symbol"
+      >)</a
+      ><a name="2261"
+      > </a
+      ><a name="2262" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2263"
+      > </a
+      ><a name="2264" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2265"
+      > </a
+      ><a name="2266" href="Data.Nat.Base.html#579" class="InductiveConstructor"
+      >&#8469;.suc</a
+      ><a name="2271"
+      > </a
+      ><a name="2272" href="Data.Integer.Base.html#2248" class="Bound"
+      >n</a
+      ><a name="2273"
+      >
+  </a
+      ><a name="2276" href="Data.Integer.Base.html#2231" class="Function"
+      >suc-is-lazy&#8314;</a
+      ><a name="2288"
+      > </a
+      ><a name="2289" href="Data.Integer.Base.html#2289" class="Bound"
+      >n</a
+      ><a name="2290"
+      > </a
+      ><a name="2291" class="Symbol"
+      >=</a
+      ><a name="2292"
+      > </a
+      ><a name="2293" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2297"
+      >
+
+  </a
+      ><a name="2301" href="Data.Integer.Base.html#2301" class="Function"
+      >suc-is-lazy&#8315;</a
+      ><a name="2313"
+      > </a
+      ><a name="2314" class="Symbol"
+      >:</a
+      ><a name="2315"
+      > </a
+      ><a name="2316" class="Symbol"
+      >&#8704;</a
+      ><a name="2317"
+      > </a
+      ><a name="2318" href="Data.Integer.Base.html#2318" class="Bound"
+      >n</a
+      ><a name="2319"
+      > </a
+      ><a name="2320" class="Symbol"
+      >&#8594;</a
+      ><a name="2321"
+      > </a
+      ><a name="2322" href="Data.Integer.Base.html#2191" class="Function"
+      >suc</a
+      ><a name="2325"
+      > </a
+      ><a name="2326" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2330"
+      > </a
+      ><a name="2331" href="Data.Nat.Base.html#579" class="InductiveConstructor"
+      >&#8469;.suc</a
+      ><a name="2336"
+      > </a
+      ><a name="2337" href="Data.Integer.Base.html#2318" class="Bound"
+      >n</a
+      ><a name="2338"
+      > </a
+      ><a name="2339" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2340"
+      > </a
+      ><a name="2341" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2342"
+      > </a
+      ><a name="2343" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2347"
+      > </a
+      ><a name="2348" href="Data.Integer.Base.html#2318" class="Bound"
+      >n</a
+      ><a name="2349"
+      > </a
+      ><a name="2350" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2351"
+      >
+  </a
+      ><a name="2354" href="Data.Integer.Base.html#2301" class="Function"
+      >suc-is-lazy&#8315;</a
+      ><a name="2366"
+      > </a
+      ><a name="2367" href="Data.Integer.Base.html#2367" class="Bound"
+      >n</a
+      ><a name="2368"
+      > </a
+      ><a name="2369" class="Symbol"
+      >=</a
+      ><a name="2370"
+      > </a
+      ><a name="2371" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2375"
+      >
+
+</a
+      ><a name="2377" class="Comment"
+      >-- Predecessor.</a
+      ><a name="2392"
+      >
+
+</a
+      ><a name="2394" href="Data.Integer.Base.html#2394" class="Function"
+      >pred</a
+      ><a name="2398"
+      > </a
+      ><a name="2399" class="Symbol"
+      >:</a
+      ><a name="2400"
+      > </a
+      ><a name="2401" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="2402"
+      > </a
+      ><a name="2403" class="Symbol"
+      >&#8594;</a
+      ><a name="2404"
+      > </a
+      ><a name="2405" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="2406"
+      >
+</a
+      ><a name="2407" href="Data.Integer.Base.html#2394" class="Function"
+      >pred</a
+      ><a name="2411"
+      > </a
+      ><a name="2412" href="Data.Integer.Base.html#2412" class="Bound"
+      >i</a
+      ><a name="2413"
+      > </a
+      ><a name="2414" class="Symbol"
+      >=</a
+      ><a name="2415"
+      > </a
+      ><a name="2416" href="Data.Integer.Base.html#1730" class="Function Operator"
+      >-</a
+      ><a name="2417"
+      > </a
+      ><a name="2418" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2419"
+      > </a
+      ><a name="2420" class="Number"
+      >1</a
+      ><a name="2421"
+      > </a
+      ><a name="2422" href="Data.Integer.Base.html#1964" class="Function Operator"
+      >+</a
+      ><a name="2423"
+      > </a
+      ><a name="2424" href="Data.Integer.Base.html#2412" class="Bound"
+      >i</a
+      ><a name="2425"
+      >
+
+</a
+      ><a name="2427" class="Keyword"
+      >private</a
+      ><a name="2434"
+      >
+
+  </a
+      ><a name="2438" href="Data.Integer.Base.html#2438" class="Function"
+      >pred-is-lazy&#8314;</a
+      ><a name="2451"
+      > </a
+      ><a name="2452" class="Symbol"
+      >:</a
+      ><a name="2453"
+      > </a
+      ><a name="2454" class="Symbol"
+      >&#8704;</a
+      ><a name="2455"
+      > </a
+      ><a name="2456" href="Data.Integer.Base.html#2456" class="Bound"
+      >n</a
+      ><a name="2457"
+      > </a
+      ><a name="2458" class="Symbol"
+      >&#8594;</a
+      ><a name="2459"
+      > </a
+      ><a name="2460" href="Data.Integer.Base.html#2394" class="Function"
+      >pred</a
+      ><a name="2464"
+      > </a
+      ><a name="2465" class="Symbol"
+      >(</a
+      ><a name="2466" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2467"
+      > </a
+      ><a name="2468" href="Data.Nat.Base.html#579" class="InductiveConstructor"
+      >&#8469;.suc</a
+      ><a name="2473"
+      > </a
+      ><a name="2474" href="Data.Integer.Base.html#2456" class="Bound"
+      >n</a
+      ><a name="2475" class="Symbol"
+      >)</a
+      ><a name="2476"
+      > </a
+      ><a name="2477" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2478"
+      > </a
+      ><a name="2479" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2480"
+      > </a
+      ><a name="2481" href="Data.Integer.Base.html#2456" class="Bound"
+      >n</a
+      ><a name="2482"
+      >
+  </a
+      ><a name="2485" href="Data.Integer.Base.html#2438" class="Function"
+      >pred-is-lazy&#8314;</a
+      ><a name="2498"
+      > </a
+      ><a name="2499" href="Data.Integer.Base.html#2499" class="Bound"
+      >n</a
+      ><a name="2500"
+      > </a
+      ><a name="2501" class="Symbol"
+      >=</a
+      ><a name="2502"
+      > </a
+      ><a name="2503" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2507"
+      >
+
+  </a
+      ><a name="2511" href="Data.Integer.Base.html#2511" class="Function"
+      >pred-is-lazy&#8315;</a
+      ><a name="2524"
+      > </a
+      ><a name="2525" class="Symbol"
+      >:</a
+      ><a name="2526"
+      > </a
+      ><a name="2527" class="Symbol"
+      >&#8704;</a
+      ><a name="2528"
+      > </a
+      ><a name="2529" href="Data.Integer.Base.html#2529" class="Bound"
+      >n</a
+      ><a name="2530"
+      > </a
+      ><a name="2531" class="Symbol"
+      >&#8594;</a
+      ><a name="2532"
+      > </a
+      ><a name="2533" href="Data.Integer.Base.html#2394" class="Function"
+      >pred</a
+      ><a name="2537"
+      > </a
+      ><a name="2538" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2542"
+      > </a
+      ><a name="2543" href="Data.Integer.Base.html#2529" class="Bound"
+      >n</a
+      ><a name="2544"
+      > </a
+      ><a name="2545" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2546"
+      > </a
+      ><a name="2547" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2548"
+      > </a
+      ><a name="2549" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2553"
+      > </a
+      ><a name="2554" href="Data.Nat.Base.html#579" class="InductiveConstructor"
+      >&#8469;.suc</a
+      ><a name="2559"
+      > </a
+      ><a name="2560" href="Data.Integer.Base.html#2529" class="Bound"
+      >n</a
+      ><a name="2561"
+      > </a
+      ><a name="2562" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2563"
+      >
+  </a
+      ><a name="2566" href="Data.Integer.Base.html#2511" class="Function"
+      >pred-is-lazy&#8315;</a
+      ><a name="2579"
+      > </a
+      ><a name="2580" href="Data.Integer.Base.html#2580" class="Bound"
+      >n</a
+      ><a name="2581"
+      > </a
+      ><a name="2582" class="Symbol"
+      >=</a
+      ><a name="2583"
+      > </a
+      ><a name="2584" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2588"
+      >
+
+</a
+      ><a name="2590" class="Comment"
+      >-- Multiplication.</a
+      ><a name="2608"
+      >
+
+</a
+      ><a name="2610" href="Data.Integer.Base.html#2610" class="Function Operator"
+      >_*_</a
+      ><a name="2613"
+      > </a
+      ><a name="2614" class="Symbol"
+      >:</a
+      ><a name="2615"
+      > </a
+      ><a name="2616" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="2617"
+      > </a
+      ><a name="2618" class="Symbol"
+      >&#8594;</a
+      ><a name="2619"
+      > </a
+      ><a name="2620" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="2621"
+      > </a
+      ><a name="2622" class="Symbol"
+      >&#8594;</a
+      ><a name="2623"
+      > </a
+      ><a name="2624" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="2625"
+      >
+</a
+      ><a name="2626" href="Data.Integer.Base.html#2626" class="Bound"
+      >i</a
+      ><a name="2627"
+      > </a
+      ><a name="2628" href="Data.Integer.Base.html#2610" class="Function Operator"
+      >*</a
+      ><a name="2629"
+      > </a
+      ><a name="2630" href="Data.Integer.Base.html#2630" class="Bound"
+      >j</a
+      ><a name="2631"
+      > </a
+      ><a name="2632" class="Symbol"
+      >=</a
+      ><a name="2633"
+      > </a
+      ><a name="2634" href="Data.Integer.Base.html#1108" class="Function"
+      >sign</a
+      ><a name="2638"
+      > </a
+      ><a name="2639" href="Data.Integer.Base.html#2626" class="Bound"
+      >i</a
+      ><a name="2640"
+      > </a
+      ><a name="2641" href="Data.Sign.html#679" class="Function Operator"
+      >S*</a
+      ><a name="2643"
+      > </a
+      ><a name="2644" href="Data.Integer.Base.html#1108" class="Function"
+      >sign</a
+      ><a name="2648"
+      > </a
+      ><a name="2649" href="Data.Integer.Base.html#2630" class="Bound"
+      >j</a
+      ><a name="2650"
+      > </a
+      ><a name="2651" href="Data.Integer.Base.html#1309" class="Function Operator"
+      >&#9667;</a
+      ><a name="2652"
+      > </a
+      ><a name="2653" href="Data.Integer.Base.html#986" class="Function Operator"
+      >&#8739;</a
+      ><a name="2654"
+      > </a
+      ><a name="2655" href="Data.Integer.Base.html#2626" class="Bound"
+      >i</a
+      ><a name="2656"
+      > </a
+      ><a name="2657" href="Data.Integer.Base.html#986" class="Function Operator"
+      >&#8739;</a
+      ><a name="2658"
+      > </a
+      ><a name="2659" href="Data.Nat.Base.html#1025" class="Primitive Operator"
+      >&#8469;*</a
+      ><a name="2661"
+      > </a
+      ><a name="2662" href="Data.Integer.Base.html#986" class="Function Operator"
+      >&#8739;</a
+      ><a name="2663"
+      > </a
+      ><a name="2664" href="Data.Integer.Base.html#2630" class="Bound"
+      >j</a
+      ><a name="2665"
+      > </a
+      ><a name="2666" href="Data.Integer.Base.html#986" class="Function Operator"
+      >&#8739;</a
+      ><a name="2667"
+      >
+
+</a
+      ><a name="2669" class="Comment"
+      >-- Maximum.</a
+      ><a name="2680"
+      >
+
+</a
+      ><a name="2682" href="Data.Integer.Base.html#2682" class="Function Operator"
+      >_&#8852;_</a
+      ><a name="2685"
+      > </a
+      ><a name="2686" class="Symbol"
+      >:</a
+      ><a name="2687"
+      > </a
+      ><a name="2688" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="2689"
+      > </a
+      ><a name="2690" class="Symbol"
+      >&#8594;</a
+      ><a name="2691"
+      > </a
+      ><a name="2692" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="2693"
+      > </a
+      ><a name="2694" class="Symbol"
+      >&#8594;</a
+      ><a name="2695"
+      > </a
+      ><a name="2696" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="2697"
+      >
+</a
+      ><a name="2698" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2702"
+      > </a
+      ><a name="2703" href="Data.Integer.Base.html#2703" class="Bound"
+      >m</a
+      ><a name="2704"
+      > </a
+      ><a name="2705" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2706"
+      > </a
+      ><a name="2707" href="Data.Integer.Base.html#2682" class="Function Operator"
+      >&#8852;</a
+      ><a name="2708"
+      > </a
+      ><a name="2709" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2713"
+      > </a
+      ><a name="2714" href="Data.Integer.Base.html#2714" class="Bound"
+      >n</a
+      ><a name="2715"
+      > </a
+      ><a name="2716" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2717"
+      > </a
+      ><a name="2718" class="Symbol"
+      >=</a
+      ><a name="2719"
+      > </a
+      ><a name="2720" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2724"
+      > </a
+      ><a name="2725" href="Data.Nat.Base.html#2998" class="Function Operator"
+      >&#8469;._&#8851;_</a
+      ><a name="2730"
+      > </a
+      ><a name="2731" href="Data.Integer.Base.html#2703" class="Bound"
+      >m</a
+      ><a name="2732"
+      > </a
+      ><a name="2733" href="Data.Integer.Base.html#2714" class="Bound"
+      >n</a
+      ><a name="2734"
+      > </a
+      ><a name="2735" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2736"
+      >
+</a
+      ><a name="2737" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2741"
+      > </a
+      ><a name="2742" href="Data.Integer.Base.html#2742" class="Bound"
+      >m</a
+      ><a name="2743"
+      > </a
+      ><a name="2744" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2745"
+      > </a
+      ><a name="2746" href="Data.Integer.Base.html#2682" class="Function Operator"
+      >&#8852;</a
+      ><a name="2747"
+      > </a
+      ><a name="2748" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2749"
+      >    </a
+      ><a name="2753" href="Data.Integer.Base.html#2753" class="Bound"
+      >n</a
+      ><a name="2754"
+      >   </a
+      ><a name="2757" class="Symbol"
+      >=</a
+      ><a name="2758"
+      > </a
+      ><a name="2759" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2760"
+      > </a
+      ><a name="2761" href="Data.Integer.Base.html#2753" class="Bound"
+      >n</a
+      ><a name="2762"
+      >
+</a
+      ><a name="2763" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2764"
+      >    </a
+      ><a name="2768" href="Data.Integer.Base.html#2768" class="Bound"
+      >m</a
+      ><a name="2769"
+      >   </a
+      ><a name="2772" href="Data.Integer.Base.html#2682" class="Function Operator"
+      >&#8852;</a
+      ><a name="2773"
+      > </a
+      ><a name="2774" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2778"
+      > </a
+      ><a name="2779" href="Data.Integer.Base.html#2779" class="Bound"
+      >n</a
+      ><a name="2780"
+      > </a
+      ><a name="2781" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2782"
+      > </a
+      ><a name="2783" class="Symbol"
+      >=</a
+      ><a name="2784"
+      > </a
+      ><a name="2785" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2786"
+      > </a
+      ><a name="2787" href="Data.Integer.Base.html#2768" class="Bound"
+      >m</a
+      ><a name="2788"
+      >
+</a
+      ><a name="2789" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2790"
+      >    </a
+      ><a name="2794" href="Data.Integer.Base.html#2794" class="Bound"
+      >m</a
+      ><a name="2795"
+      >   </a
+      ><a name="2798" href="Data.Integer.Base.html#2682" class="Function Operator"
+      >&#8852;</a
+      ><a name="2799"
+      > </a
+      ><a name="2800" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2801"
+      >    </a
+      ><a name="2805" href="Data.Integer.Base.html#2805" class="Bound"
+      >n</a
+      ><a name="2806"
+      >   </a
+      ><a name="2809" class="Symbol"
+      >=</a
+      ><a name="2810"
+      > </a
+      ><a name="2811" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2812"
+      > </a
+      ><a name="2813" class="Symbol"
+      >(</a
+      ><a name="2814" href="Data.Nat.Base.html#2904" class="Function Operator"
+      >&#8469;._&#8852;_</a
+      ><a name="2819"
+      > </a
+      ><a name="2820" href="Data.Integer.Base.html#2794" class="Bound"
+      >m</a
+      ><a name="2821"
+      > </a
+      ><a name="2822" href="Data.Integer.Base.html#2805" class="Bound"
+      >n</a
+      ><a name="2823" class="Symbol"
+      >)</a
+      ><a name="2824"
+      >
+
+</a
+      ><a name="2826" class="Comment"
+      >-- Minimum.</a
+      ><a name="2837"
+      >
+
+</a
+      ><a name="2839" href="Data.Integer.Base.html#2839" class="Function Operator"
+      >_&#8851;_</a
+      ><a name="2842"
+      > </a
+      ><a name="2843" class="Symbol"
+      >:</a
+      ><a name="2844"
+      > </a
+      ><a name="2845" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="2846"
+      > </a
+      ><a name="2847" class="Symbol"
+      >&#8594;</a
+      ><a name="2848"
+      > </a
+      ><a name="2849" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="2850"
+      > </a
+      ><a name="2851" class="Symbol"
+      >&#8594;</a
+      ><a name="2852"
+      > </a
+      ><a name="2853" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="2854"
+      >
+</a
+      ><a name="2855" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2859"
+      > </a
+      ><a name="2860" href="Data.Integer.Base.html#2860" class="Bound"
+      >m</a
+      ><a name="2861"
+      > </a
+      ><a name="2862" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2863"
+      > </a
+      ><a name="2864" href="Data.Integer.Base.html#2839" class="Function Operator"
+      >&#8851;</a
+      ><a name="2865"
+      > </a
+      ><a name="2866" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2870"
+      > </a
+      ><a name="2871" href="Data.Integer.Base.html#2871" class="Bound"
+      >n</a
+      ><a name="2872"
+      > </a
+      ><a name="2873" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2874"
+      > </a
+      ><a name="2875" class="Symbol"
+      >=</a
+      ><a name="2876"
+      > </a
+      ><a name="2877" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2881"
+      > </a
+      ><a name="2882" href="Data.Nat.Base.html#2904" class="Function Operator"
+      >&#8469;._&#8852;_</a
+      ><a name="2887"
+      > </a
+      ><a name="2888" href="Data.Integer.Base.html#2860" class="Bound"
+      >m</a
+      ><a name="2889"
+      > </a
+      ><a name="2890" href="Data.Integer.Base.html#2871" class="Bound"
+      >n</a
+      ><a name="2891"
+      > </a
+      ><a name="2892" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2893"
+      >
+</a
+      ><a name="2894" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2898"
+      > </a
+      ><a name="2899" href="Data.Integer.Base.html#2899" class="Bound"
+      >m</a
+      ><a name="2900"
+      > </a
+      ><a name="2901" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2902"
+      > </a
+      ><a name="2903" href="Data.Integer.Base.html#2839" class="Function Operator"
+      >&#8851;</a
+      ><a name="2904"
+      > </a
+      ><a name="2905" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2906"
+      >    </a
+      ><a name="2910" href="Data.Integer.Base.html#2910" class="Bound"
+      >n</a
+      ><a name="2911"
+      >   </a
+      ><a name="2914" class="Symbol"
+      >=</a
+      ><a name="2915"
+      > </a
+      ><a name="2916" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2920"
+      > </a
+      ><a name="2921" href="Data.Integer.Base.html#2899" class="Bound"
+      >m</a
+      ><a name="2922"
+      > </a
+      ><a name="2923" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2924"
+      >
+</a
+      ><a name="2925" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2926"
+      >    </a
+      ><a name="2930" href="Data.Integer.Base.html#2930" class="Bound"
+      >m</a
+      ><a name="2931"
+      >   </a
+      ><a name="2934" href="Data.Integer.Base.html#2839" class="Function Operator"
+      >&#8851;</a
+      ><a name="2935"
+      > </a
+      ><a name="2936" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2940"
+      > </a
+      ><a name="2941" href="Data.Integer.Base.html#2941" class="Bound"
+      >n</a
+      ><a name="2942"
+      > </a
+      ><a name="2943" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2944"
+      > </a
+      ><a name="2945" class="Symbol"
+      >=</a
+      ><a name="2946"
+      > </a
+      ><a name="2947" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="2951"
+      > </a
+      ><a name="2952" href="Data.Integer.Base.html#2941" class="Bound"
+      >n</a
+      ><a name="2953"
+      > </a
+      ><a name="2954" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="2955"
+      >
+</a
+      ><a name="2956" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2957"
+      >    </a
+      ><a name="2961" href="Data.Integer.Base.html#2961" class="Bound"
+      >m</a
+      ><a name="2962"
+      >   </a
+      ><a name="2965" href="Data.Integer.Base.html#2839" class="Function Operator"
+      >&#8851;</a
+      ><a name="2966"
+      > </a
+      ><a name="2967" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2968"
+      >    </a
+      ><a name="2972" href="Data.Integer.Base.html#2972" class="Bound"
+      >n</a
+      ><a name="2973"
+      >   </a
+      ><a name="2976" class="Symbol"
+      >=</a
+      ><a name="2977"
+      > </a
+      ><a name="2978" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="2979"
+      > </a
+      ><a name="2980" class="Symbol"
+      >(</a
+      ><a name="2981" href="Data.Nat.Base.html#2998" class="Function Operator"
+      >&#8469;._&#8851;_</a
+      ><a name="2986"
+      > </a
+      ><a name="2987" href="Data.Integer.Base.html#2961" class="Bound"
+      >m</a
+      ><a name="2988"
+      > </a
+      ><a name="2989" href="Data.Integer.Base.html#2972" class="Bound"
+      >n</a
+      ><a name="2990" class="Symbol"
+      >)</a
+      ><a name="2991"
+      >
+
+</a
+      ><a name="2993" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="3065"
+      >
+</a
+      ><a name="3066" class="Comment"
+      >-- Ordering</a
+      ><a name="3077"
+      >
+
+</a
+      ><a name="3079" class="Keyword"
+      >data</a
+      ><a name="3083"
+      > </a
+      ><a name="3084" href="Data.Integer.Base.html#3084" class="Datatype Operator"
+      >_&#8804;_</a
+      ><a name="3087"
+      > </a
+      ><a name="3088" class="Symbol"
+      >:</a
+      ><a name="3089"
+      > </a
+      ><a name="3090" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="3091"
+      > </a
+      ><a name="3092" class="Symbol"
+      >&#8594;</a
+      ><a name="3093"
+      > </a
+      ><a name="3094" href="Data.Integer.Base.html#759" class="Datatype"
+      >&#8484;</a
+      ><a name="3095"
+      > </a
+      ><a name="3096" class="Symbol"
+      >&#8594;</a
+      ><a name="3097"
+      > </a
+      ><a name="3098" class="PrimitiveType"
+      >Set</a
+      ><a name="3101"
+      > </a
+      ><a name="3102" class="Keyword"
+      >where</a
+      ><a name="3107"
+      >
+  </a
+      ><a name="3110" href="Data.Integer.Base.html#3110" class="InductiveConstructor"
+      >-&#8804;+</a
+      ><a name="3113"
+      > </a
+      ><a name="3114" class="Symbol"
+      >:</a
+      ><a name="3115"
+      > </a
+      ><a name="3116" class="Symbol"
+      >&#8704;</a
+      ><a name="3117"
+      > </a
+      ><a name="3118" class="Symbol"
+      >{</a
+      ><a name="3119" href="Data.Integer.Base.html#3119" class="Bound"
+      >m</a
+      ><a name="3120"
+      > </a
+      ><a name="3121" href="Data.Integer.Base.html#3121" class="Bound"
+      >n</a
+      ><a name="3122" class="Symbol"
+      >}</a
+      ><a name="3123"
+      > </a
+      ><a name="3124" class="Symbol"
+      >&#8594;</a
+      ><a name="3125"
+      > </a
+      ><a name="3126" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="3130"
+      > </a
+      ><a name="3131" href="Data.Integer.Base.html#3119" class="Bound"
+      >m</a
+      ><a name="3132"
+      > </a
+      ><a name="3133" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="3134"
+      > </a
+      ><a name="3135" href="Data.Integer.Base.html#3084" class="Datatype Operator"
+      >&#8804;</a
+      ><a name="3136"
+      > </a
+      ><a name="3137" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3138"
+      > </a
+      ><a name="3139" href="Data.Integer.Base.html#3121" class="Bound"
+      >n</a
+      ><a name="3140"
+      >
+  </a
+      ><a name="3143" href="Data.Integer.Base.html#3143" class="InductiveConstructor"
+      >-&#8804;-</a
+      ><a name="3146"
+      > </a
+      ><a name="3147" class="Symbol"
+      >:</a
+      ><a name="3148"
+      > </a
+      ><a name="3149" class="Symbol"
+      >&#8704;</a
+      ><a name="3150"
+      > </a
+      ><a name="3151" class="Symbol"
+      >{</a
+      ><a name="3152" href="Data.Integer.Base.html#3152" class="Bound"
+      >m</a
+      ><a name="3153"
+      > </a
+      ><a name="3154" href="Data.Integer.Base.html#3154" class="Bound"
+      >n</a
+      ><a name="3155" class="Symbol"
+      >}</a
+      ><a name="3156"
+      > </a
+      ><a name="3157" class="Symbol"
+      >&#8594;</a
+      ><a name="3158"
+      > </a
+      ><a name="3159" class="Symbol"
+      >(</a
+      ><a name="3160" href="Data.Integer.Base.html#3160" class="Bound"
+      >n&#8804;m</a
+      ><a name="3163"
+      > </a
+      ><a name="3164" class="Symbol"
+      >:</a
+      ><a name="3165"
+      > </a
+      ><a name="3166" href="Data.Nat.Base.html#604" class="Datatype Operator"
+      >&#8469;._&#8804;_</a
+      ><a name="3171"
+      > </a
+      ><a name="3172" href="Data.Integer.Base.html#3154" class="Bound"
+      >n</a
+      ><a name="3173"
+      > </a
+      ><a name="3174" href="Data.Integer.Base.html#3152" class="Bound"
+      >m</a
+      ><a name="3175" class="Symbol"
+      >)</a
+      ><a name="3176"
+      > </a
+      ><a name="3177" class="Symbol"
+      >&#8594;</a
+      ><a name="3178"
+      > </a
+      ><a name="3179" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="3183"
+      > </a
+      ><a name="3184" href="Data.Integer.Base.html#3152" class="Bound"
+      >m</a
+      ><a name="3185"
+      > </a
+      ><a name="3186" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="3187"
+      > </a
+      ><a name="3188" href="Data.Integer.Base.html#3084" class="Datatype Operator"
+      >&#8804;</a
+      ><a name="3189"
+      > </a
+      ><a name="3190" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="3194"
+      > </a
+      ><a name="3195" href="Data.Integer.Base.html#3154" class="Bound"
+      >n</a
+      ><a name="3196"
+      > </a
+      ><a name="3197" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="3198"
+      >
+  </a
+      ><a name="3201" href="Data.Integer.Base.html#3201" class="InductiveConstructor"
+      >+&#8804;+</a
+      ><a name="3204"
+      > </a
+      ><a name="3205" class="Symbol"
+      >:</a
+      ><a name="3206"
+      > </a
+      ><a name="3207" class="Symbol"
+      >&#8704;</a
+      ><a name="3208"
+      > </a
+      ><a name="3209" class="Symbol"
+      >{</a
+      ><a name="3210" href="Data.Integer.Base.html#3210" class="Bound"
+      >m</a
+      ><a name="3211"
+      > </a
+      ><a name="3212" href="Data.Integer.Base.html#3212" class="Bound"
+      >n</a
+      ><a name="3213" class="Symbol"
+      >}</a
+      ><a name="3214"
+      > </a
+      ><a name="3215" class="Symbol"
+      >&#8594;</a
+      ><a name="3216"
+      > </a
+      ><a name="3217" class="Symbol"
+      >(</a
+      ><a name="3218" href="Data.Integer.Base.html#3218" class="Bound"
+      >m&#8804;n</a
+      ><a name="3221"
+      > </a
+      ><a name="3222" class="Symbol"
+      >:</a
+      ><a name="3223"
+      > </a
+      ><a name="3224" href="Data.Nat.Base.html#604" class="Datatype Operator"
+      >&#8469;._&#8804;_</a
+      ><a name="3229"
+      > </a
+      ><a name="3230" href="Data.Integer.Base.html#3210" class="Bound"
+      >m</a
+      ><a name="3231"
+      > </a
+      ><a name="3232" href="Data.Integer.Base.html#3212" class="Bound"
+      >n</a
+      ><a name="3233" class="Symbol"
+      >)</a
+      ><a name="3234"
+      > </a
+      ><a name="3235" class="Symbol"
+      >&#8594;</a
+      ><a name="3236"
+      > </a
+      ><a name="3237" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3238"
+      > </a
+      ><a name="3239" href="Data.Integer.Base.html#3210" class="Bound"
+      >m</a
+      ><a name="3240"
+      > </a
+      ><a name="3241" href="Data.Integer.Base.html#3084" class="Datatype Operator"
+      >&#8804;</a
+      ><a name="3242"
+      > </a
+      ><a name="3243" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3244"
+      > </a
+      ><a name="3245" href="Data.Integer.Base.html#3212" class="Bound"
+      >n</a
+      ><a name="3246"
+      >
+
+</a
+      ><a name="3248" href="Data.Integer.Base.html#3248" class="Function"
+      >drop&#8255;+&#8804;+</a
+      ><a name="3256"
+      > </a
+      ><a name="3257" class="Symbol"
+      >:</a
+      ><a name="3258"
+      > </a
+      ><a name="3259" class="Symbol"
+      >&#8704;</a
+      ><a name="3260"
+      > </a
+      ><a name="3261" class="Symbol"
+      >{</a
+      ><a name="3262" href="Data.Integer.Base.html#3262" class="Bound"
+      >m</a
+      ><a name="3263"
+      > </a
+      ><a name="3264" href="Data.Integer.Base.html#3264" class="Bound"
+      >n</a
+      ><a name="3265" class="Symbol"
+      >}</a
+      ><a name="3266"
+      > </a
+      ><a name="3267" class="Symbol"
+      >&#8594;</a
+      ><a name="3268"
+      > </a
+      ><a name="3269" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3270"
+      > </a
+      ><a name="3271" href="Data.Integer.Base.html#3262" class="Bound"
+      >m</a
+      ><a name="3272"
+      > </a
+      ><a name="3273" href="Data.Integer.Base.html#3084" class="Datatype Operator"
+      >&#8804;</a
+      ><a name="3274"
+      > </a
+      ><a name="3275" href="Data.Integer.Base.html#833" class="InductiveConstructor Operator"
+      >+</a
+      ><a name="3276"
+      > </a
+      ><a name="3277" href="Data.Integer.Base.html#3264" class="Bound"
+      >n</a
+      ><a name="3278"
+      > </a
+      ><a name="3279" class="Symbol"
+      >&#8594;</a
+      ><a name="3280"
+      > </a
+      ><a name="3281" href="Data.Nat.Base.html#604" class="Datatype Operator"
+      >&#8469;._&#8804;_</a
+      ><a name="3286"
+      > </a
+      ><a name="3287" href="Data.Integer.Base.html#3262" class="Bound"
+      >m</a
+      ><a name="3288"
+      > </a
+      ><a name="3289" href="Data.Integer.Base.html#3264" class="Bound"
+      >n</a
+      ><a name="3290"
+      >
+</a
+      ><a name="3291" href="Data.Integer.Base.html#3248" class="Function"
+      >drop&#8255;+&#8804;+</a
+      ><a name="3299"
+      > </a
+      ><a name="3300" class="Symbol"
+      >(</a
+      ><a name="3301" href="Data.Integer.Base.html#3201" class="InductiveConstructor"
+      >+&#8804;+</a
+      ><a name="3304"
+      > </a
+      ><a name="3305" href="Data.Integer.Base.html#3305" class="Bound"
+      >m&#8804;n</a
+      ><a name="3308" class="Symbol"
+      >)</a
+      ><a name="3309"
+      > </a
+      ><a name="3310" class="Symbol"
+      >=</a
+      ><a name="3311"
+      > </a
+      ><a name="3312" href="Data.Integer.Base.html#3305" class="Bound"
+      >m&#8804;n</a
+      ><a name="3315"
+      >
+
+</a
+      ><a name="3317" href="Data.Integer.Base.html#3317" class="Function"
+      >drop&#8255;-&#8804;-</a
+      ><a name="3325"
+      > </a
+      ><a name="3326" class="Symbol"
+      >:</a
+      ><a name="3327"
+      > </a
+      ><a name="3328" class="Symbol"
+      >&#8704;</a
+      ><a name="3329"
+      > </a
+      ><a name="3330" class="Symbol"
+      >{</a
+      ><a name="3331" href="Data.Integer.Base.html#3331" class="Bound"
+      >m</a
+      ><a name="3332"
+      > </a
+      ><a name="3333" href="Data.Integer.Base.html#3333" class="Bound"
+      >n</a
+      ><a name="3334" class="Symbol"
+      >}</a
+      ><a name="3335"
+      > </a
+      ><a name="3336" class="Symbol"
+      >&#8594;</a
+      ><a name="3337"
+      > </a
+      ><a name="3338" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="3342"
+      > </a
+      ><a name="3343" href="Data.Integer.Base.html#3331" class="Bound"
+      >m</a
+      ><a name="3344"
+      > </a
+      ><a name="3345" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="3346"
+      > </a
+      ><a name="3347" href="Data.Integer.Base.html#3084" class="Datatype Operator"
+      >&#8804;</a
+      ><a name="3348"
+      > </a
+      ><a name="3349" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >-[1+</a
+      ><a name="3353"
+      > </a
+      ><a name="3354" href="Data.Integer.Base.html#3333" class="Bound"
+      >n</a
+      ><a name="3355"
+      > </a
+      ><a name="3356" href="Data.Integer.Base.html#775" class="InductiveConstructor Operator"
+      >]</a
+      ><a name="3357"
+      > </a
+      ><a name="3358" class="Symbol"
+      >&#8594;</a
+      ><a name="3359"
+      > </a
+      ><a name="3360" href="Data.Nat.Base.html#604" class="Datatype Operator"
+      >&#8469;._&#8804;_</a
+      ><a name="3365"
+      > </a
+      ><a name="3366" href="Data.Integer.Base.html#3333" class="Bound"
+      >n</a
+      ><a name="3367"
+      > </a
+      ><a name="3368" href="Data.Integer.Base.html#3331" class="Bound"
+      >m</a
+      ><a name="3369"
+      >
+</a
+      ><a name="3370" href="Data.Integer.Base.html#3317" class="Function"
+      >drop&#8255;-&#8804;-</a
+      ><a name="3378"
+      > </a
+      ><a name="3379" class="Symbol"
+      >(</a
+      ><a name="3380" href="Data.Integer.Base.html#3143" class="InductiveConstructor"
+      >-&#8804;-</a
+      ><a name="3383"
+      > </a
+      ><a name="3384" href="Data.Integer.Base.html#3384" class="Bound"
+      >n&#8804;m</a
+      ><a name="3387" class="Symbol"
+      >)</a
+      ><a name="3388"
+      > </a
+      ><a name="3389" class="Symbol"
+      >=</a
+      ><a name="3390"
+      > </a
+      ><a name="3391" href="Data.Integer.Base.html#3384" class="Bound"
+      >n&#8804;m</a
+      ><a name="3394"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>
