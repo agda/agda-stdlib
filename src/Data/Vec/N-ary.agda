@@ -49,7 +49,7 @@ f $ⁿ (x ∷ xs) = f x $ⁿ xs
 ∀ⁿ zero    P = P
 ∀ⁿ (suc n) P = ∀ x → ∀ⁿ n (P x)
 {- Normalising is very slow for this function for some reason... -}
-{-# NO_SMASHING ∀ⁿ #-}
+
 
 -- Universal quantifier with implicit (hidden) arguments.
 

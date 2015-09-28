@@ -21,6 +21,8 @@ open import Relation.Binary
 open Record String _≟_
 
 -- Partial equivalence relations.
+{-
+--- this need to be updated to changes in _ syntax
 
 PER : Signature _
 PER = ∅ , "S"     ∶ (λ _ → Set)
@@ -34,6 +36,7 @@ converse : (P : Record PER) →
            Record (PER With "S" ≔ (λ _ → P · "S")
                        With "R" ≔ (λ _ → flip (P · "R")))
 converse P =
-  rec (rec (_ ,
+  rec (rec ( _ ,
     lift λ {_} → lower (P · "sym")) ,
     lift λ {_} yRx zRy → lower (P · "trans") zRy yRx)
+-}

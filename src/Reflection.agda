@@ -106,8 +106,8 @@ data Abs (A : Set) : Set where
   -- The actual binding structure is with de Bruijn indices.
   abs : (s : String) (x : A) → Abs A
 
-{-# BUILTIN ABS        Abs      #-}
-{-# BUILTIN ABSABS     abs      #-}
+-- {-# BUILTIN ABS        Abs      #-}
+-- {-# BUILTIN ABSABS     abs      #-}
 
 -- Literals.
 
@@ -124,7 +124,7 @@ data Literal : Set where
 {-# BUILTIN AGDALITCHAR   char    #-}
 {-# BUILTIN AGDALITSTRING string  #-}
 {-# BUILTIN AGDALITQNAME  name    #-}
-
+{-
 data Pattern : Set where
   con  : (c : Name)(pats : List (Arg Pattern)) → Pattern
   dot  : Pattern
@@ -756,3 +756,5 @@ mutual
   lit _   ≟-Sort unknown = no λ()
   unknown ≟-Sort set _   = no λ()
   unknown ≟-Sort lit _   = no λ()
+
+-}
