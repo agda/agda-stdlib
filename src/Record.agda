@@ -63,7 +63,7 @@ mutual
   -- inferred from a value of type Record Sig.
 
   record Record {s} (Sig : Signature s) : Set s where
-    eta-equality
+    -- eta-equality
     inductive
     constructor rec
     field fun : Record-fun Sig
