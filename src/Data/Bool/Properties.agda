@@ -31,46 +31,44 @@ open import Data.Empty
 ------------------------------------------------------------------------
 -- (Bool, ∨, ∧, false, true) forms a commutative semiring
 
-private
+∨-assoc : Associative _∨_
+∨-assoc true  y z = refl
+∨-assoc false y z = refl
 
-  ∨-assoc : Associative _∨_
-  ∨-assoc true  y z = refl
-  ∨-assoc false y z = refl
+∧-assoc : Associative _∧_
+∧-assoc true  y z = refl
+∧-assoc false y z = refl
 
-  ∧-assoc : Associative _∧_
-  ∧-assoc true  y z = refl
-  ∧-assoc false y z = refl
+∨-comm : Commutative _∨_
+∨-comm true  true  = refl
+∨-comm true  false = refl
+∨-comm false true  = refl
+∨-comm false false = refl
 
-  ∨-comm : Commutative _∨_
-  ∨-comm true  true  = refl
-  ∨-comm true  false = refl
-  ∨-comm false true  = refl
-  ∨-comm false false = refl
+∧-comm : Commutative _∧_
+∧-comm true  true  = refl
+∧-comm true  false = refl
+∧-comm false true  = refl
+∧-comm false false = refl
 
-  ∧-comm : Commutative _∧_
-  ∧-comm true  true  = refl
-  ∧-comm true  false = refl
-  ∧-comm false true  = refl
-  ∧-comm false false = refl
+∧-∨-distˡ : _∧_ DistributesOverˡ _∨_
+∧-∨-distˡ true  y z = refl
+∧-∨-distˡ false y z = refl
 
-  distrib-∧-∨ : _∧_ DistributesOver _∨_
-  distrib-∧-∨ = distˡ , distʳ
-    where
-    distˡ : _∧_ DistributesOverˡ _∨_
-    distˡ true  y z = refl
-    distˡ false y z = refl
+∧-∨-distʳ : _∧_ DistributesOverʳ _∨_
+∧-∨-distʳ x y z =
+  begin
+    (y ∨ z) ∧ x
+  ≡⟨ ∧-comm (y ∨ z) x ⟩
+    x ∧ (y ∨ z)
+  ≡⟨ ∧-∨-distˡ x y z ⟩
+    x ∧ y ∨ x ∧ z
+  ≡⟨ P.cong₂ _∨_ (∧-comm x y) (∧-comm x z) ⟩
+    y ∧ x ∨ z ∧ x
+  ∎
 
-    distʳ : _∧_ DistributesOverʳ _∨_
-    distʳ x y z =
-                      begin
-       (y ∨ z) ∧ x
-                      ≡⟨ ∧-comm (y ∨ z) x ⟩
-       x ∧ (y ∨ z)
-                      ≡⟨ distˡ x y z ⟩
-       x ∧ y ∨ x ∧ z
-                      ≡⟨ P.cong₂ _∨_ (∧-comm x y) (∧-comm x z) ⟩
-       y ∧ x ∨ z ∧ x
-                      ∎
+distrib-∧-∨ : _∧_ DistributesOver _∨_
+distrib-∧-∨ = ∧-∨-distˡ , ∧-∨-distʳ
 
 isCommutativeSemiring-∨-∧
   : IsCommutativeSemiring _≡_ _∨_ _∧_ false true
@@ -112,26 +110,25 @@ module RingSolver =
 ------------------------------------------------------------------------
 -- (Bool, ∧, ∨, true, false) forms a commutative semiring
 
-private
+∨-∧-distˡ : _∨_ DistributesOverˡ _∧_
+∨-∧-distˡ true  y z = refl
+∨-∧-distˡ false y z = refl
 
-  distrib-∨-∧ : _∨_ DistributesOver _∧_
-  distrib-∨-∧ = distˡ , distʳ
-    where
-    distˡ : _∨_ DistributesOverˡ _∧_
-    distˡ true  y z = refl
-    distˡ false y z = refl
+∨-∧-distʳ : _∨_ DistributesOverʳ _∧_
+∨-∧-distʳ x y z =
+  begin
+    (y ∧ z) ∨ x
+  ≡⟨ ∨-comm (y ∧ z) x ⟩
+    x ∨ (y ∧ z)
+  ≡⟨ ∨-∧-distˡ x y z ⟩
+    (x ∨ y) ∧ (x ∨ z)
+  ≡⟨ P.cong₂ _∧_ (∨-comm x y) (∨-comm x z) ⟩
+    (y ∨ x) ∧ (z ∨ x)
+  ∎
 
-    distʳ : _∨_ DistributesOverʳ _∧_
-    distʳ x y z =
-                          begin
-       (y ∧ z) ∨ x
-                          ≡⟨ ∨-comm (y ∧ z) x ⟩
-       x ∨ (y ∧ z)
-                          ≡⟨ distˡ x y z ⟩
-       (x ∨ y) ∧ (x ∨ z)
-                          ≡⟨ P.cong₂ _∧_ (∨-comm x y) (∨-comm x z) ⟩
-       (y ∨ x) ∧ (z ∨ x)
-                          ∎
+distrib-∨-∧ : _∨_ DistributesOver _∧_
+distrib-∨-∧ = ∨-∧-distˡ , ∨-∧-distʳ
+ 
 
 isCommutativeSemiring-∧-∨
   : IsCommutativeSemiring _≡_ _∧_ _∨_ true false
@@ -170,34 +167,32 @@ commutativeSemiring-∧-∨ = record
 ------------------------------------------------------------------------
 -- (Bool, ∨, ∧, not, true, false) is a boolean algebra
 
-private
+abs-∨-∧ : _∨_ Absorbs _∧_
+abs-∨-∧ true  y = refl
+abs-∨-∧ false y = refl
 
-  absorptive : Absorptive _∨_ _∧_
-  absorptive = abs-∨-∧ , abs-∧-∨
-    where
-    abs-∨-∧ : _∨_ Absorbs _∧_
-    abs-∨-∧ true  y = refl
-    abs-∨-∧ false y = refl
+abs-∧-∨ : _∧_ Absorbs _∨_
+abs-∧-∨ true  y = refl
+abs-∧-∨ false y = refl
 
-    abs-∧-∨ : _∧_ Absorbs _∨_
-    abs-∧-∨ true  y = refl
-    abs-∧-∨ false y = refl
+absorptive : Absorptive _∨_ _∧_
+absorptive = abs-∨-∧ , abs-∧-∨ 
 
-  not-∧-inverse : Inverse false not _∧_
-  not-∧-inverse =
-    ¬x∧x≡⊥ , (λ x → ∧-comm x (not x) ⟨ P.trans ⟩ ¬x∧x≡⊥ x)
-    where
-    ¬x∧x≡⊥ : LeftInverse false not _∧_
-    ¬x∧x≡⊥ false = refl
-    ¬x∧x≡⊥ true  = refl
+not-∧-inverse : Inverse false not _∧_
+not-∧-inverse =
+  ¬x∧x≡⊥ , (λ x → ∧-comm x (not x) ⟨ P.trans ⟩ ¬x∧x≡⊥ x)
+  where
+  ¬x∧x≡⊥ : LeftInverse false not _∧_
+  ¬x∧x≡⊥ false = refl
+  ¬x∧x≡⊥ true  = refl
 
-  not-∨-inverse : Inverse true not _∨_
-  not-∨-inverse =
-    ¬x∨x≡⊤ , (λ x → ∨-comm x (not x) ⟨ P.trans ⟩ ¬x∨x≡⊤ x)
-    where
-    ¬x∨x≡⊤ : LeftInverse true not _∨_
-    ¬x∨x≡⊤ false = refl
-    ¬x∨x≡⊤ true  = refl
+not-∨-inverse : Inverse true not _∨_
+not-∨-inverse =
+  ¬x∨x≡⊤ , (λ x → ∨-comm x (not x) ⟨ P.trans ⟩ ¬x∨x≡⊤ x)
+  where
+  ¬x∨x≡⊤ : LeftInverse true not _∨_
+  ¬x∨x≡⊤ false = refl
+  ¬x∨x≡⊤ true  = refl
 
 isBooleanAlgebra : IsBooleanAlgebra _≡_ _∨_ _∧_ not true false
 isBooleanAlgebra = record

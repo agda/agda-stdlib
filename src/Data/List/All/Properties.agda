@@ -72,27 +72,25 @@ all-anti-mono p xs⊆ys = All-all p ∘ anti-mono xs⊆ys ∘ all-All p _
 
 -- All P (xs ++ ys) is isomorphic to All P xs and All P ys.
 
-private
+++⁺ : ∀ {a p} {A : Set a} {P : A → Set p} {xs ys : List A} →
+      All P xs → All P ys → All P (xs ++ ys)
+++⁺ []         pys = pys
+++⁺ (px ∷ pxs) pys = px ∷ ++⁺ pxs pys
 
-  ++⁺ : ∀ {a p} {A : Set a} {P : A → Set p} {xs ys : List A} →
-        All P xs → All P ys → All P (xs ++ ys)
-  ++⁺ []         pys = pys
-  ++⁺ (px ∷ pxs) pys = px ∷ ++⁺ pxs pys
+++⁻ : ∀ {a p} {A : Set a} {P : A → Set p} (xs : List A) {ys} →
+      All P (xs ++ ys) → All P xs × All P ys
+++⁻ []       p          = [] , p
+++⁻ (x ∷ xs) (px ∷ pxs) = Prod.map (_∷_ px) id $ ++⁻ _ pxs
 
-  ++⁻ : ∀ {a p} {A : Set a} {P : A → Set p} (xs : List A) {ys} →
-        All P (xs ++ ys) → All P xs × All P ys
-  ++⁻ []       p          = [] , p
-  ++⁻ (x ∷ xs) (px ∷ pxs) = Prod.map (_∷_ px) id $ ++⁻ _ pxs
+++⁺∘++⁻ : ∀ {a p} {A : Set a} {P : A → Set p} xs {ys}
+          (p : All P (xs ++ ys)) → uncurry′ ++⁺ (++⁻ xs p) ≡ p
+++⁺∘++⁻ []       p          = P.refl
+++⁺∘++⁻ (x ∷ xs) (px ∷ pxs) = P.cong (_∷_ px) $ ++⁺∘++⁻ xs pxs
 
-  ++⁺∘++⁻ : ∀ {a p} {A : Set a} {P : A → Set p} xs {ys}
-            (p : All P (xs ++ ys)) → uncurry′ ++⁺ (++⁻ xs p) ≡ p
-  ++⁺∘++⁻ []       p          = P.refl
-  ++⁺∘++⁻ (x ∷ xs) (px ∷ pxs) = P.cong (_∷_ px) $ ++⁺∘++⁻ xs pxs
-
-  ++⁻∘++⁺ : ∀ {a p} {A : Set a} {P : A → Set p} {xs ys}
+++⁻∘++⁺ : ∀ {a p} {A : Set a} {P : A → Set p} {xs ys}
             (p : All P xs × All P ys) → ++⁻ xs (uncurry ++⁺ p) ≡ p
-  ++⁻∘++⁺ ([]       , pys) = P.refl
-  ++⁻∘++⁺ (px ∷ pxs , pys) rewrite ++⁻∘++⁺ (pxs , pys) = P.refl
+++⁻∘++⁺ ([]       , pys) = P.refl
+++⁻∘++⁺ (px ∷ pxs , pys) rewrite ++⁻∘++⁺ (pxs , pys) = P.refl
 
 ++↔ : ∀ {a p} {A : Set a} {P : A → Set p} {xs ys} →
       (All P xs × All P ys) ↔ All P (xs ++ ys)
