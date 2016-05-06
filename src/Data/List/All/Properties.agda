@@ -103,28 +103,43 @@ all-anti-mono p xs⊆ys = All-all p ∘ anti-mono xs⊆ys ∘ all-All p _
     }
   }
 
--- Three lemmas relating Any, All and negation.
+-- Results relating Any, All and negation.
+
+¬Any→All¬ : ∀ {a p} {A : Set a} {P : A → Set p} {xs} →
+     ¬ Any P xs → All (¬_ ∘ P) xs
+¬Any→All¬ {xs = []}     ¬p = []
+¬Any→All¬ {xs = x ∷ xs} ¬p = ¬p ∘ here ∷ ¬Any→All¬ (¬p ∘ there)
+
+All¬→¬Any : ∀ {a p} {A : Set a} {P : A → Set p} {xs} → 
+       All (¬_ ∘ P) xs → ¬ Any P xs
+All¬→¬Any []        ()
+All¬→¬Any (¬p ∷ _)  (here  p) = ¬p p
+All¬→¬Any (_  ∷ ¬p) (there p) = All¬→¬Any ¬p p
+
+Any¬→¬All : ∀ {a p} {A : Set a} {P : A → Set p} {xs} →
+            Any (¬_ ∘ P) xs → ¬ All P xs
+Any¬→¬All (here  ¬p) = ¬p           ∘ All.head
+Any¬→¬All (there ¬p) = Any¬→¬All ¬p ∘ All.tail
+
+¬All→Any¬ : ∀ {a p} {A : Set a} {P : A → Set p} {xs} →
+            Decidable P → ¬ All P xs → Any (¬_ ∘ P) xs
+¬All→Any¬ {xs = []}     dec ¬∀  = ⊥-elim (¬∀ [])
+¬All→Any¬ {xs = x ∷ xs} dec ¬∀ with dec x
+... | yes p = there (¬All→Any¬ dec (¬∀ ∘ _∷_ p))
+... | no ¬p = here ¬p
 
 ¬Any↠All¬ : ∀ {a p} {A : Set a} {P : A → Set p} {xs} →
             (¬ Any P xs) ↠ All (¬_ ∘ P) xs
 ¬Any↠All¬ {P = P} = record
-  { to         = P.→-to-⟶ (to _)
+  { to         = P.→-to-⟶ ¬Any→All¬
   ; surjective = record
-    { from             = P.→-to-⟶ from
+    { from             = P.→-to-⟶ All¬→¬Any
     ; right-inverse-of = to∘from
     }
   }
   where
-  to : ∀ xs → ¬ Any P xs → All (¬_ ∘ P) xs
-  to []       ¬p = []
-  to (x ∷ xs) ¬p = ¬p ∘ here ∷ to xs (¬p ∘ there)
 
-  from : ∀ {xs} → All (¬_ ∘ P) xs → ¬ Any P xs
-  from []        ()
-  from (¬p ∷ _)  (here  p) = ¬p p
-  from (_  ∷ ¬p) (there p) = from ¬p p
-
-  to∘from : ∀ {xs} (¬p : All (¬_ ∘ P) xs) → to xs (from ¬p) ≡ ¬p
+  to∘from : ∀ {xs} (¬p : All (¬_ ∘ P) xs) → ¬Any→All¬ (All¬→¬Any ¬p) ≡ ¬p
   to∘from []         = P.refl
   to∘from (¬p ∷ ¬ps) = P.cong₂ _∷_ P.refl (to∘from ¬ps)
 
@@ -132,34 +147,23 @@ all-anti-mono p xs⊆ys = All-all p ∘ anti-mono xs⊆ys ∘ all-All p _
   -- could be strengthened to a bijection.
 
   from∘to : P.Extensionality _ _ →
-            ∀ xs → (¬p : ¬ Any P xs) → from (to xs ¬p) ≡ ¬p
+            ∀ xs → (¬p : ¬ Any P xs) → All¬→¬Any (¬Any→All¬ ¬p) ≡ ¬p
   from∘to ext []       ¬p = ext λ ()
   from∘to ext (x ∷ xs) ¬p = ext λ
     { (here p)  → P.refl
     ; (there p) → P.cong (λ f → f p) $ from∘to ext xs (¬p ∘ there)
     }
 
-Any¬→¬All : ∀ {a p} {A : Set a} {P : A → Set p} {xs} →
-            Any (¬_ ∘ P) xs → ¬ All P xs
-Any¬→¬All (here  ¬p) = ¬p           ∘ All.head
-Any¬→¬All (there ¬p) = Any¬→¬All ¬p ∘ All.tail
-
 Any¬⇔¬All : ∀ {a p} {A : Set a} {P : A → Set p} {xs} →
             Decidable P → Any (¬_ ∘ P) xs ⇔ (¬ All P xs)
 Any¬⇔¬All {P = P} dec = record
   { to   = P.→-to-⟶ Any¬→¬All
-  ; from = P.→-to-⟶ (from _)
+  ; from = P.→-to-⟶ (¬All→Any¬ dec)
   }
   where
-  from : ∀ xs → ¬ All P xs → Any (¬_ ∘ P) xs
-  from []       ¬∀ = ⊥-elim (¬∀ [])
-  from (x ∷ xs) ¬∀ with dec x
-  ... | yes p = there (from xs (¬∀ ∘ _∷_ p))
-  ... | no ¬p = here ¬p
-
+  
   -- If equality of functions were extensional, then the logical
   -- equivalence could be strengthened to a surjection.
-
   to∘from : P.Extensionality _ _ →
-            ∀ {xs} (¬∀ : ¬ All P xs) → Any¬→¬All (from xs ¬∀) ≡ ¬∀
+            ∀ {xs} (¬∀ : ¬ All P xs) → Any¬→¬All (¬All→Any¬ dec ¬∀) ≡ ¬∀
   to∘from ext ¬∀ = ext (⊥-elim ∘ ¬∀)
