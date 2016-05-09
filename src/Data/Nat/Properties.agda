@@ -228,6 +228,22 @@ distributiveLattice = record
   ; isDistributiveLattice = isDistributiveLattice
   }
 
+-- Selectivity of ⊓ and ⊔
+
+⊓-sel : Selective _⊓_
+⊓-sel zero    _    = inj₁ refl
+⊓-sel (suc m) zero = inj₂ refl
+⊓-sel (suc m) (suc n) with ⊓-sel m n
+... | inj₁ m⊓n≡m = inj₁ (cong suc m⊓n≡m)
+... | inj₂ m⊓n≡n = inj₂ (cong suc m⊓n≡n)
+
+⊔-sel : Selective _⊔_
+⊔-sel zero    _    = inj₂ refl
+⊔-sel (suc m) zero = inj₁ refl
+⊔-sel (suc m) (suc n) with ⊔-sel m n
+... | inj₁ m⊔n≡m = inj₁ (cong suc m⊔n≡m)
+... | inj₂ m⊔n≡n = inj₂ (cong suc m⊔n≡n)
+
 ------------------------------------------------------------------------
 -- Converting between ≤ and ≤′
 
@@ -308,20 +324,6 @@ n≤m+n∸m : ∀ m n → n ≤ m + (n ∸ m)
 n≤m+n∸m m       zero    = z≤n
 n≤m+n∸m zero    (suc n) = ≤-refl
 n≤m+n∸m (suc m) (suc n) = s≤s (n≤m+n∸m m n)
-
-⊓-sel : Selective _⊓_
-⊓-sel zero _ = inj₁ refl
-⊓-sel (suc m) zero = inj₂ refl
-⊓-sel (suc m) (suc n) with ⊓-sel m n
-... | inj₁ m⊓n≡m = inj₁ (cong suc m⊓n≡m)
-... | inj₂ m⊓n≡n = inj₂ (cong suc m⊓n≡n)
-
-⊔-sel : Selective _⊔_
-⊔-sel zero    _    = inj₂ refl
-⊔-sel (suc m) zero = inj₁ refl
-⊔-sel (suc m) (suc n) with ⊔-sel m n
-... | inj₁ m⊔n≡m = inj₁ (cong suc m⊔n≡m)
-... | inj₂ m⊔n≡n = inj₂ (cong suc m⊔n≡n)
 
 m⊓n≤m : ∀ m n → m ⊓ n ≤ m
 m⊓n≤m zero    _       = z≤n
