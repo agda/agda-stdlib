@@ -15,6 +15,7 @@ Important changes since 0.12:
   Properties.agda files. These include:
 
     Data.Nat.Properties
+    Data.Fin.Properties
     Data.Bool.Properties
     Data.Integer.Multiplication.Properties
     Data.Integer.Addition.Properties

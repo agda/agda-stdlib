@@ -12,6 +12,7 @@ module Data.List.Countdown (D : DecSetoid Level.zero Level.zero) where
 
 open import Data.Empty
 open import Data.Fin using (Fin; zero; suc)
+open import Data.Fin.Properties using (suc-injective)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Injection
@@ -35,10 +36,6 @@ private
 -- Helper functions
 
 private
-
-  drop-suc : ∀ {n} {i j : Fin n} →
-             _≡_ {A = Fin (suc n)} (suc i) (suc j) → i ≡ j
-  drop-suc refl = refl
 
   drop-inj₂ : ∀ {A B : Set} {x y} →
               inj₂ {A = A} {B = B} x ≡ inj₂ y → x ≡ y
@@ -99,7 +96,7 @@ private
     helper (there {x = x} x₁∈xs) (there x₂∈xs) () | yes x₁≈x | no  x₂≉x
     helper (there {x = x} x₁∈xs) (there x₂∈xs) () | no  x₁≉x | yes x₂≈x
     helper (there {x = x} x₁∈xs) (there x₂∈xs) eq | no  x₁≉x | no  x₂≉x =
-      helper x₁∈xs x₂∈xs (drop-suc eq)
+      helper x₁∈xs x₂∈xs (suc-injective eq)
 
   -- If there are at least two elements in Fin (suc n), then Fin n is
   -- inhabited. This is a variant of the thick function from Conor
@@ -126,7 +123,7 @@ private
   thick-injective {suc n} (suc i)  zero    (suc k) ()
   thick-injective {suc n} (suc i)  (suc j) zero    ()
   thick-injective {suc n} (suc i)  (suc j) (suc k) {i≢j} {i≢k} eq =
-    cong suc $ thick-injective i j k {i≢j ∘ cong suc} {i≢k ∘ cong suc} (drop-suc eq)
+    cong suc $ thick-injective i j k {i≢j ∘ cong suc} {i≢k ∘ cong suc} (suc-injective eq)
 
 ------------------------------------------------------------------------
 -- The countdown data structure
