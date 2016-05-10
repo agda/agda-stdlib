@@ -51,11 +51,22 @@ open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; _≗_)
 open import Relation.Binary.HeterogeneousEquality using (_≅_; refl)
 
-∷-injective : ∀ {a n} {A : Set a} {x y : A} {xs ys : Vec A n} →
-              (x ∷ xs) ≡ (y ∷ ys) → x ≡ y × xs ≡ ys
-∷-injective refl = refl , refl
+
+------------------------------------------------------------------------
+-- Properties of lookup
 
 -- lookup is an applicative functor morphism.
+
+lookup-replicate : ∀ {a n} {A : Set a} (i : Fin n) →
+                     lookup i ∘ replicate {A = A} ≗ id {A = A}
+lookup-replicate zero    = λ _ → refl
+lookup-replicate (suc i) = lookup-replicate i
+
+lookup-⊛ : ∀ {a b n} {A : Set a} {B : Set b}
+             i (fs : Vec (A → B) n) (xs : Vec A n) →
+             lookup i (fs ⊛ xs) ≡ (lookup i fs $ lookup i xs)
+lookup-⊛ zero    (f ∷ fs) (x ∷ xs) = refl
+lookup-⊛ (suc i) (f ∷ fs) (x ∷ xs) = lookup-⊛ i fs xs
 
 lookup-morphism :
   ∀ {a n} (i : Fin n) →
@@ -66,18 +77,7 @@ lookup-morphism i = record
   ; op-pure = lookup-replicate i
   ; op-⊛    = lookup-⊛ i
   }
-  where
-  lookup-replicate : ∀ {a n} {A : Set a} (i : Fin n) →
-                     lookup i ∘ replicate {A = A} ≗ id {A = A}
-  lookup-replicate zero    = λ _ → refl
-  lookup-replicate (suc i) = lookup-replicate i
-
-  lookup-⊛ : ∀ {a b n} {A : Set a} {B : Set b}
-             i (fs : Vec (A → B) n) (xs : Vec A n) →
-             lookup i (fs ⊛ xs) ≡ (lookup i fs $ lookup i xs)
-  lookup-⊛ zero    (f ∷ fs) (x ∷ xs) = refl
-  lookup-⊛ (suc i) (f ∷ fs) (x ∷ xs) = lookup-⊛ i fs xs
-
+  
 -- tabulate is an inverse of flip lookup.
 
 lookup∘tabulate : ∀ {a n} {A : Set a} (f : Fin n → A) (i : Fin n) →
@@ -143,6 +143,10 @@ lookup∘update′ {i = suc i} {zero}  i≢j (x ∷ xs) y = refl
 lookup∘update′ {i = suc i} {suc j} i≢j (x ∷ xs) y =
   lookup∘update′ (i≢j ∘ P.cong suc) xs y
 
+
+------------------------------------------------------------------------
+-- Properties of map
+
 -- map is a congruence.
 
 map-cong : ∀ {a b n} {A : Set a} {B : Set b} {f g : A → B} →
@@ -191,32 +195,9 @@ map-lookup-allFin {n = n} xs = begin
   xs                                 ∎
   where open P.≡-Reasoning
 
--- tabulate f contains f i.
 
-∈-tabulate : ∀ {n a} {A : Set a} (f : Fin n → A) i → f i ∈ tabulate f
-∈-tabulate f zero    = here
-∈-tabulate f (suc i) = there (∈-tabulate (f ∘ suc) i)
-
--- allFin n contains all elements in Fin n.
-
-∈-allFin : ∀ {n} (i : Fin n) → i ∈ allFin n
-∈-allFin = ∈-tabulate id
-
--- sum commutes with _++_.
-
-sum-++-commute : ∀ {m n} (xs : Vec ℕ m) {ys : Vec ℕ n} →
-                 sum (xs ++ ys) ≡ sum xs + sum ys
-sum-++-commute []            = refl
-sum-++-commute (x ∷ xs) {ys} = begin
-  x + sum (xs ++ ys)
-    ≡⟨ P.cong (λ p → x + p) (sum-++-commute xs) ⟩
-  x + (sum xs + sum ys)
-    ≡⟨ P.sym (+-assoc x (sum xs) (sum ys)) ⟩
-  sum (x ∷ xs) + sum ys
-    ∎
-  where
-  open P.≡-Reasoning
-  open CommutativeSemiring Nat.commutativeSemiring hiding (_+_; sym)
+------------------------------------------------------------------------
+-- Properties of foldr
 
 -- foldr is a congruence.
 
@@ -259,13 +240,14 @@ foldr-universal : ∀ {a b} {A : Set a} (B : ℕ → Set b)
                   (∀ {n} x → h ∘ _∷_ x ≗ f {n} x ∘ h) →
                   ∀ {n} → h ≗ foldr B {n} f e
 foldr-universal B f     h base step []       = base
-foldr-universal B f {e} h base step (x ∷ xs) = begin
-  h (x ∷ xs)
-    ≡⟨ step x xs ⟩
-  f x (h xs)
-    ≡⟨ P.cong (f x) (foldr-universal B f h base step xs) ⟩
-  f x (foldr B f e xs)
-    ∎
+foldr-universal B f {e} h base step (x ∷ xs) = 
+  begin
+    h (x ∷ xs)
+  ≡⟨ step x xs ⟩
+    f x (h xs)
+  ≡⟨ P.cong (f x) (foldr-universal B f h base step xs) ⟩
+    f x (foldr B f e xs)
+  ∎
   where open P.≡-Reasoning
 
 -- A fusion law for foldr.
@@ -284,18 +266,9 @@ foldr-fusion {B = B} {f} e {C} h fuse =
 idIsFold : ∀ {a n} {A : Set a} → id ≗ foldr (Vec A) {n} _∷_ []
 idIsFold = foldr-universal _ _ id refl (λ _ _ → refl)
 
--- The _∈_ predicate is equivalent (in the following sense) to the
--- corresponding predicate for lists.
 
-∈⇒List-∈ : ∀ {a} {A : Set a} {n x} {xs : Vec A n} →
-           x ∈ xs → x List.∈ toList xs
-∈⇒List-∈ here       = here P.refl
-∈⇒List-∈ (there x∈) = there (∈⇒List-∈ x∈)
-
-List-∈⇒∈ : ∀ {a} {A : Set a} {x : A} {xs} →
-           x List.∈ xs → x ∈ fromList xs
-List-∈⇒∈ (here P.refl) = here
-List-∈⇒∈ (there x∈)    = there (List-∈⇒∈ x∈)
+------------------------------------------------------------------------
+-- Properties of _[_]=_
 
 -- Proof irrelevance for _[_]=_.
 
@@ -307,27 +280,30 @@ proof-irrelevance-[]= (there xs[i]=x) (there xs[i]=x') =
 
 -- _[_]=_ can be expressed using lookup and _≡_.
 
+[]=⇒lookup : ∀ {a n i} {A : Set a} {x} {xs : Vec A n} → 
+             xs [ i ]= x → lookup i xs ≡ x
+[]=⇒lookup here            = refl
+[]=⇒lookup (there xs[i]=x) = []=⇒lookup xs[i]=x
+
+lookup⇒[]= : ∀ {a n i} {A : Set a} {x} {xs : Vec A n} → 
+             lookup i xs ≡ x → xs [ i ]= x
+lookup⇒[]= {i = zero}  {xs = x ∷ _}  refl = here
+lookup⇒[]= {i = suc i} {xs = _ ∷ xs} p    = there (lookup⇒[]= p)
+
 []=↔lookup : ∀ {a n i} {A : Set a} {x} {xs : Vec A n} →
              xs [ i ]= x ↔ lookup i xs ≡ x
 []=↔lookup {i = i} {x = x} {xs} = record
-  { to         = P.→-to-⟶ to
-  ; from       = P.→-to-⟶ (from i xs)
+  { to         = P.→-to-⟶ []=⇒lookup
+  ; from       = P.→-to-⟶ lookup⇒[]=
   ; inverse-of = record
     { left-inverse-of  = λ _ → proof-irrelevance-[]= _ _
     ; right-inverse-of = λ _ → P.proof-irrelevance _ _
     }
   }
-  where
-  to : ∀ {n xs} {i : Fin n} → xs [ i ]= x → lookup i xs ≡ x
-  to here            = refl
-  to (there xs[i]=x) = to xs[i]=x
 
-  from : ∀ {n} (i : Fin n) xs → lookup i xs ≡ x → xs [ i ]= x
-  from zero    (.x ∷ _)  refl = here
-  from (suc i) (_  ∷ xs) p    = there (from i xs p)
 
 ------------------------------------------------------------------------
--- Some properties related to _[_]≔_
+-- Properties of _[_]≔_
 
 []≔-idempotent :
   ∀ {n a} {A : Set a} (xs : Vec A n) (i : Fin n) {x₁ x₂ : A} →
@@ -382,3 +358,53 @@ map-[]≔ f (x ∷ xs) (suc i) = P.cong (_∷_ _) $ map-[]≔ f xs i
 []≔-++-inject+ (x ∷ xs) ys zero    = refl
 []≔-++-inject+ (x ∷ xs) ys (suc i) =
   P.cong (_∷_ x) $ []≔-++-inject+ xs ys i
+
+
+------------------------------------------------------------------------
+-- Properties of _∈_
+
+-- The _∈_ predicate is equivalent (in the following sense) to the
+-- corresponding predicate for lists.
+
+∈⇒List-∈ : ∀ {a} {A : Set a} {n x} {xs : Vec A n} →
+           x ∈ xs → x List.∈ toList xs
+∈⇒List-∈ here       = here P.refl
+∈⇒List-∈ (there x∈) = there (∈⇒List-∈ x∈)
+
+List-∈⇒∈ : ∀ {a} {A : Set a} {x : A} {xs} →
+           x List.∈ xs → x ∈ fromList xs
+List-∈⇒∈ (here P.refl) = here
+List-∈⇒∈ (there x∈)    = there (List-∈⇒∈ x∈)
+
+-- tabulate f contains f i.
+
+∈-tabulate : ∀ {n a} {A : Set a} (f : Fin n → A) i → f i ∈ tabulate f
+∈-tabulate f zero    = here
+∈-tabulate f (suc i) = there (∈-tabulate (f ∘ suc) i)
+
+-- allFin n contains all elements in Fin n.
+
+∈-allFin : ∀ {n} (i : Fin n) → i ∈ allFin n
+∈-allFin = ∈-tabulate id
+
+
+------------------------------------------------------------------------
+-- Other properties
+
+∷-injective : ∀ {a n} {A : Set a} {x y : A} {xs ys : Vec A n} →
+              x ∷ xs ≡ y ∷ ys → x ≡ y × xs ≡ ys
+∷-injective refl = refl , refl
+
+sum-++-commute : ∀ {m n} (xs : Vec ℕ m) {ys : Vec ℕ n} →
+                 sum (xs ++ ys) ≡ sum xs + sum ys
+sum-++-commute []            = refl
+sum-++-commute (x ∷ xs) {ys} = begin
+  x + sum (xs ++ ys)
+    ≡⟨ P.cong (λ p → x + p) (sum-++-commute xs) ⟩
+  x + (sum xs + sum ys)
+    ≡⟨ P.sym (+-assoc x (sum xs) (sum ys)) ⟩
+  sum (x ∷ xs) + sum ys
+    ∎
+  where
+  open P.≡-Reasoning
+  open CommutativeSemiring Nat.commutativeSemiring hiding (_+_; sym)

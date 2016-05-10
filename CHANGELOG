@@ -9,7 +9,19 @@ Important changes since 0.12:
 * Added the Selectivity property in Algebra.FunctionProperties
   as well as proofs of the selectivity of min and max in
   Data.Nat.Properties
-	
+
+* Useful lemmas and properties that were previously in private scope,
+  either explicitly or within records, have been made public in several
+  Properties.agda files. These include:
+
+    Data.Nat.Properties
+    Data.Bool.Properties
+    Data.Integer.Multiplication.Properties
+    Data.Integer.Addition.Properties
+    Data.Integer.Properties
+    Data.Vec.Properties
+    Data.List.All.Properties
+
 ------------------------------------------------------------------------
 -- Release notes for Agda standard library version 0.12
 ------------------------------------------------------------------------
