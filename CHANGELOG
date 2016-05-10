@@ -11,8 +11,8 @@ Important changes since 0.12:
   Data.Nat.Properties
 
 * Added an alternative (non-degenerative) proof for totality in
-  Relation.Binary.Product.StrictLex
-	
+  Relation.Binary.Product.StrictLex: ×-total₂
+
 ------------------------------------------------------------------------
 -- Release notes for Agda standard library version 0.12
 ------------------------------------------------------------------------
