@@ -202,7 +202,7 @@ map-lookup-allFin {n = n} xs = begin
 ∈-allFin : ∀ {n} (i : Fin n) → i ∈ allFin n
 ∈-allFin = ∈-tabulate id
 
-∈-map : ∀ {a b m} {A : Set a} {B : Set b} {x : A} {xs : Vec A m} 
+∈-map : ∀ {a b m} {A : Set a} {B : Set b} {x : A} {xs : Vec A m}
         (f : A → B) → x ∈ xs → f x ∈ map f xs
 ∈-map f here         = here
 ∈-map f (there x∈xs) = there (∈-map f x∈xs)
@@ -213,19 +213,19 @@ map-lookup-allFin {n = n} xs = begin
 ∈-++ₗ here         = here
 ∈-++ₗ (there x∈xs) = there (∈-++ₗ x∈xs)
 
-∈-++ᵣ : ∀ {a m n} {A : Set a} {x : A} (xs : Vec A m) {ys : Vec A n} 
+∈-++ᵣ : ∀ {a m n} {A : Set a} {x : A} (xs : Vec A m) {ys : Vec A n}
         → x ∈ ys → x ∈ xs ++ ys
 ∈-++ᵣ []       x∈ys = x∈ys
 ∈-++ᵣ (x ∷ xs) x∈ys = there (∈-++ᵣ xs x∈ys)
 
 -- allPairs contains every pair of elements
 
-∈-allPairs : ∀ {a b} {A : Set a} {B : Set b} {m n : ℕ} 
+∈-allPairs : ∀ {a b} {A : Set a} {B : Set b} {m n : ℕ}
              {xs : Vec A m} {ys : Vec B n}
              {x y} → x ∈ xs → y ∈ ys → (x , y) ∈ allPairs xs ys
-∈-allPairs {xs = x ∷ xs} {ys} here         y∈ys = 
+∈-allPairs {xs = x ∷ xs} {ys} here         y∈ys =
   ∈-++ₗ (∈-map (x ,_) y∈ys)
-∈-allPairs {xs = x ∷ xs} {ys} (there x∈xs) y∈ys = 
+∈-allPairs {xs = x ∷ xs} {ys} (there x∈xs) y∈ys =
   ∈-++ᵣ (map (x ,_) ys) (∈-allPairs x∈xs y∈ys)
 
 -- sum commutes with _++_.
