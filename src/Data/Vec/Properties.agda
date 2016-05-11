@@ -77,7 +77,7 @@ lookup-morphism i = record
   ; op-pure = lookup-replicate i
   ; op-⊛    = lookup-⊛ i
   }
-  
+
 -- tabulate is an inverse of flip lookup.
 
 lookup∘tabulate : ∀ {a n} {A : Set a} (f : Fin n → A) (i : Fin n) →
@@ -240,7 +240,7 @@ foldr-universal : ∀ {a b} {A : Set a} (B : ℕ → Set b)
                   (∀ {n} x → h ∘ _∷_ x ≗ f {n} x ∘ h) →
                   ∀ {n} → h ≗ foldr B {n} f e
 foldr-universal B f     h base step []       = base
-foldr-universal B f {e} h base step (x ∷ xs) = 
+foldr-universal B f {e} h base step (x ∷ xs) =
   begin
     h (x ∷ xs)
   ≡⟨ step x xs ⟩
@@ -280,12 +280,12 @@ proof-irrelevance-[]= (there xs[i]=x) (there xs[i]=x') =
 
 -- _[_]=_ can be expressed using lookup and _≡_.
 
-[]=⇒lookup : ∀ {a n i} {A : Set a} {x} {xs : Vec A n} → 
+[]=⇒lookup : ∀ {a n i} {A : Set a} {x} {xs : Vec A n} →
              xs [ i ]= x → lookup i xs ≡ x
 []=⇒lookup here            = refl
 []=⇒lookup (there xs[i]=x) = []=⇒lookup xs[i]=x
 
-lookup⇒[]= : ∀ {a n i} {A : Set a} {x} {xs : Vec A n} → 
+lookup⇒[]= : ∀ {a n i} {A : Set a} {x} {xs : Vec A n} →
              lookup i xs ≡ x → xs [ i ]= x
 lookup⇒[]= {i = zero}  {xs = x ∷ _}  refl = here
 lookup⇒[]= {i = suc i} {xs = _ ∷ xs} p    = there (lookup⇒[]= p)

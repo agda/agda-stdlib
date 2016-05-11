@@ -60,7 +60,7 @@ strictTotalOrder n = record
     ; compare       = cmp
     }
   }
-  
+
 
 decSetoid : ℕ → DecSetoid _ _
 decSetoid n = StrictTotalOrder.decSetoid (strictTotalOrder n)

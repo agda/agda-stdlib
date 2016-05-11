@@ -85,11 +85,11 @@ abs-*-commute : Homomorphic₂ ∣_∣ _*_ _ℕ*_
 abs-*-commute i j = abs-◃ _ _
 
 -- Subtraction properties
-  
+
 n⊖n≡0 : ∀ n → n ⊖ n ≡ + 0
 n⊖n≡0 zero    = refl
 n⊖n≡0 (suc n) = n⊖n≡0 n
-  
+
 sign-⊖-< : ∀ {m n} → m < n → sign (m ⊖ n) ≡ Sign.-
 sign-⊖-< {zero}  (s≤s z≤n) = refl
 sign-⊖-< {suc n} (s≤s m<n) = sign-⊖-< m<n
@@ -150,7 +150,7 @@ open Algebra.Properties.AbelianGroup
 
 -- Distributivity
 
-private 
+private
 
   -- Various lemmas used to prove distributivity.
 

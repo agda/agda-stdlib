@@ -86,7 +86,7 @@ module SemiringSolver =
 ⊔-identityˡ _ = refl
 
 ⊔-identity : Identity 0 _⊔_
-⊔-identity = ⊔-identityˡ , ⊔-identityʳ  
+⊔-identity = ⊔-identityˡ , ⊔-identityʳ
 
 ⊔-comm : Commutative _⊔_
 ⊔-comm zero    n       = sym $ proj₂ ⊔-identity n
@@ -136,27 +136,27 @@ module SemiringSolver =
 ⊓-distribʳ-⊔ (suc m) (suc n) (suc o) = cong suc $ ⊓-distribʳ-⊔ m n o
 ⊓-distribʳ-⊔ (suc m) (suc n) zero    = cong suc $ refl
 ⊓-distribʳ-⊔ (suc m) zero    o       = refl
-⊓-distribʳ-⊔ zero    n       o       = 
+⊓-distribʳ-⊔ zero    n       o       =
   begin
-    (n ⊔ o) ⊓ 0    
+    (n ⊔ o) ⊓ 0
   ≡⟨ ⊓-comm (n ⊔ o) 0 ⟩
-    0 ⊓ (n ⊔ o)    
+    0 ⊓ (n ⊔ o)
   ≡⟨ refl ⟩
-    0 ⊓ n ⊔ 0 ⊓ o  
+    0 ⊓ n ⊔ 0 ⊓ o
   ≡⟨ ⊓-comm 0 n ⟨ cong₂ _⊔_ ⟩ ⊓-comm 0 o ⟩
-    n ⊓ 0 ⊔ o ⊓ 0  
+    n ⊓ 0 ⊔ o ⊓ 0
   ∎
 
 ⊓-distribˡ-⊔ : _⊓_ DistributesOverˡ _⊔_
-⊓-distribˡ-⊔ m n o = 
+⊓-distribˡ-⊔ m n o =
   begin
-    m ⊓ (n ⊔ o)    
+    m ⊓ (n ⊔ o)
   ≡⟨ ⊓-comm m _ ⟩
-    (n ⊔ o) ⊓ m    
+    (n ⊔ o) ⊓ m
   ≡⟨ ⊓-distribʳ-⊔ m n o ⟩
-    n ⊓ m ⊔ o ⊓ m  
+    n ⊓ m ⊔ o ⊓ m
   ≡⟨ ⊓-comm n m ⟨ cong₂ _⊔_ ⟩ ⊓-comm o m ⟩
-    m ⊓ n ⊔ m ⊓ o  
+    m ⊓ n ⊔ m ⊓ o
   ∎
 
 ⊓-distrib-⊔ : _⊓_ DistributesOver _⊔_

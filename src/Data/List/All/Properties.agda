@@ -110,7 +110,7 @@ all-anti-mono p xs⊆ys = All-all p ∘ anti-mono xs⊆ys ∘ all-All p _
 ¬Any→All¬ {xs = []}     ¬p = []
 ¬Any→All¬ {xs = x ∷ xs} ¬p = ¬p ∘ here ∷ ¬Any→All¬ (¬p ∘ there)
 
-All¬→¬Any : ∀ {a p} {A : Set a} {P : A → Set p} {xs} → 
+All¬→¬Any : ∀ {a p} {A : Set a} {P : A → Set p} {xs} →
        All (¬_ ∘ P) xs → ¬ Any P xs
 All¬→¬Any []        ()
 All¬→¬Any (¬p ∷ _)  (here  p) = ¬p p
