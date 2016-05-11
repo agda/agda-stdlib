@@ -74,11 +74,11 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
                   {_≈₂_} {_≤₂_} antisym₂ = antisym
     where
     antisym : Antisymmetric (_≈₁_ ×-Rel _≈₂_) (×-Lex _≈₁_ _<₁_ _≤₂_)
-    antisym (inj₁ x₁<y₁) (inj₁ y₁<x₁) = 
+    antisym (inj₁ x₁<y₁) (inj₁ y₁<x₁) =
       ⊥-elim $ asym₁ x₁<y₁ y₁<x₁
-    antisym (inj₁ x₁<y₁) (inj₂ y≈≤x)  = 
+    antisym (inj₁ x₁<y₁) (inj₂ y≈≤x)  =
       ⊥-elim $ irrefl₁ (sym₁ $ proj₁ y≈≤x) x₁<y₁
-    antisym (inj₂ x≈≤y)  (inj₁ y₁<x₁) = 
+    antisym (inj₂ x≈≤y)  (inj₁ y₁<x₁) =
       ⊥-elim $ irrefl₁ (sym₁ $ proj₁ x≈≤y) y₁<x₁
     antisym (inj₂ x≈≤y)  (inj₂ y≈≤x)  =
       proj₁ x≈≤y , antisym₂ (proj₂ x≈≤y) (proj₂ y≈≤x)
@@ -138,9 +138,9 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
             ∀ {_≤₂_} → Total (×-Lex _≈₁_ _<₁_ _≤₂_)
   ×-total total₁ x y with total₁ (proj₁ x) (proj₁ y)
   ... | inj₁ x₁<y₁ = inj₁ (inj₁ x₁<y₁)
-  ... | inj₂ x₁>y₁ = inj₂ (inj₁ x₁>y₁) 
+  ... | inj₂ x₁>y₁ = inj₂ (inj₁ x₁>y₁)
 
-  ×-total₂ : ∀ {_≈₁_ _<₁_} → Symmetric _≈₁_ → Trichotomous _≈₁_ _<₁_ → 
+  ×-total₂ : ∀ {_≈₁_ _<₁_} → Symmetric _≈₁_ → Trichotomous _≈₁_ _<₁_ →
              ∀ {_≤₂_} → Total _≤₂_ →
              Total (×-Lex _≈₁_ _<₁_ _≤₂_)
   ×-total₂ sym tri₁ total₂ x y with tri₁ (proj₁ x) (proj₁ y)
