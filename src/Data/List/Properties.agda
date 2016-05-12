@@ -12,7 +12,7 @@ module Data.List.Properties where
 open import Algebra
 import Algebra.Monoid-solver
 open import Category.Monad
-open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
+open import Data.Bool.Base using (Bool; false; true; not)
 open import Data.List as List
 open import Data.List.All using (All; []; _∷_)
 open import Data.Maybe.Base using (Maybe; just; nothing)
@@ -334,10 +334,6 @@ length-gfilter p (x ∷ xs) with p x
 length-gfilter p (x ∷ xs) | just y  = s≤s (length-gfilter p xs)
 length-gfilter p (x ∷ xs) | nothing = ≤-step (length-gfilter p xs)
 
-length-filter : ∀ {a} {A : Set a} (p : A → Bool) xs →
-                length (filter p xs) ≤ length xs
-length-filter p xs = length-gfilter (λ x → if p x then just x else nothing) xs
-
 -- Reverse.
 
 unfold-reverse : ∀ {a} {A : Set a} (x : A) (xs : List A) →
@@ -458,7 +454,7 @@ module Applicative where
 
   private
 
-    -- A variant of flip map.
+    -- A variant of flip map.
 
     pam : ∀ {ℓ} {A B : Set ℓ} → List A → (A → B) → List B
     pam xs f = xs >>= return ∘ f
@@ -517,8 +513,8 @@ module Applicative where
                 (pam xs f >>= fs) ≡ (xs >>= λ x → fs (f x))
     pam-lemma xs f fs = begin
       (pam xs f >>= fs)                   ≡⟨ P.sym $ Monad.associative xs (return ∘ f) fs ⟩
-      (xs >>= λ x → return (f x) >>= fs)  ≡⟨ Monad.cong (refl {x = xs}) (λ x → Monad.left-identity (f x) fs) ⟩
-      (xs >>= λ x → fs (f x))             ∎
+      (xs >>= λ x → return (f x) >>= fs)  ≡⟨ Monad.cong (refl {x = xs}) (λ x → Monad.left-identity (f x) fs) ⟩
+      (xs >>= λ x → fs (f x))             ∎
 
   composition :
     ∀ {ℓ} {A B C : Set ℓ}
