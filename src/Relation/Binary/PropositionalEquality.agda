@@ -50,13 +50,17 @@ setoid A = record
   ; isEquivalence = isEquivalence
   }
 
+isDecEquivalence : ∀ {a} {A : Set a} → Decidable (_≡_ {A = A}) 
+                 → IsDecEquivalence _≡_ 
+isDecEquivalence dec = record
+  { isEquivalence = isEquivalence
+  ; _≟_           = dec
+  }
+
 decSetoid : ∀ {a} {A : Set a} → Decidable (_≡_ {A = A}) → DecSetoid _ _
 decSetoid dec = record
   { _≈_              = _≡_
-  ; isDecEquivalence = record
-      { isEquivalence = isEquivalence
-      ; _≟_           = dec
-      }
+  ; isDecEquivalence = isDecEquivalence dec
   }
 
 isPreorder : ∀ {a} {A : Set a} → IsPreorder {A = A} _≡_ _≡_

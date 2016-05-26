@@ -23,6 +23,7 @@ Important changes since 0.12:
     Data.Vec.Properties
     Data.List.All.Properties
     Data.List.Any.Properties
+    Relation.Binary.PropositionalEquality
 
 * Added universe polymorphism to `Data.List.Any.Properties.×↔`
 
