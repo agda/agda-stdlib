@@ -50,8 +50,8 @@ setoid A = record
   ; isEquivalence = isEquivalence
   }
 
-isDecEquivalence : ∀ {a} {A : Set a} → Decidable (_≡_ {A = A}) 
-                 → IsDecEquivalence _≡_ 
+isDecEquivalence : ∀ {a} {A : Set a} → Decidable (_≡_ {A = A})
+                 → IsDecEquivalence _≡_
 isDecEquivalence dec = record
   { isEquivalence = isEquivalence
   ; _≟_           = dec
