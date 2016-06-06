@@ -10,6 +10,23 @@ Important changes since 0.12:
   as well as proofs of the selectivity of min and max in
   Data.Nat.Properties
 
+* Useful lemmas and properties that were previously in private scope,
+  either explicitly or within records, have been made public in several
+  Properties.agda files. These include:
+
+    Data.Nat.Properties
+    Data.Fin.Properties
+    Data.Bool.Properties
+    Data.Integer.Multiplication.Properties
+    Data.Integer.Addition.Properties
+    Data.Integer.Properties
+    Data.Vec.Properties
+    Data.List.All.Properties
+    Data.List.Any.Properties
+    Relation.Binary.PropositionalEquality
+
+* Added universe polymorphism to `Data.List.Any.Properties.×↔`
+
 * Added `Relation.Binary.Product.StrictLex.×-total₂`, an alternative
   (non-degenerative) proof for totality, and renamed `×-total` to
   `x-total₁` in that module.

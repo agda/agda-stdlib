@@ -43,7 +43,6 @@ private
 
 ------------------------------------------------------------------------
 -- Some lemmas related to map, find and lose
-
 -- Any.map is functorial.
 
 map-id : ∀ {a p} {A : Set a} {P : A → Set p} (f : P ⋐ P) {xs} →
@@ -184,61 +183,69 @@ swap {ℓ} {P = P} {xs} {ys} =
 
 -- Sums commute with Any (for a fixed list).
 
+⊎→ : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} {xs}
+     → Any P xs ⊎ Any Q xs → Any (λ x → P x ⊎ Q x) xs
+⊎→ = [ Any.map inj₁ , Any.map inj₂ ]′
+
+⊎← : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} {xs}
+     → Any (λ x → P x ⊎ Q x) xs → Any P xs ⊎ Any Q xs
+⊎← (here (inj₁ p)) = inj₁ (here p)
+⊎← (here (inj₂ q)) = inj₂ (here q)
+⊎← (there p)       = Sum.map there there (⊎← p)
+
 ⊎↔ : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} {xs} →
      (Any P xs ⊎ Any Q xs) ↔ Any (λ x → P x ⊎ Q x) xs
 ⊎↔ {P = P} {Q} = record
-  { to         = P.→-to-⟶ to
-  ; from       = P.→-to-⟶ from
+  { to         = P.→-to-⟶ ⊎→
+  ; from       = P.→-to-⟶ ⊎←
   ; inverse-of = record
     { left-inverse-of  = from∘to
     ; right-inverse-of = to∘from
     }
   }
   where
-  to : ∀ {xs} → Any P xs ⊎ Any Q xs → Any (λ x → P x ⊎ Q x) xs
-  to = [ Any.map inj₁ , Any.map inj₂ ]′
 
-  from : ∀ {xs} → Any (λ x → P x ⊎ Q x) xs → Any P xs ⊎ Any Q xs
-  from (here (inj₁ p)) = inj₁ (here p)
-  from (here (inj₂ q)) = inj₂ (here q)
-  from (there p)       = Sum.map there there (from p)
-
-  from∘to : ∀ {xs} (p : Any P xs ⊎ Any Q xs) → from (to p) ≡ p
+  from∘to : ∀ {xs} (p : Any P xs ⊎ Any Q xs) → ⊎← (⊎→ p) ≡ p
   from∘to (inj₁ (here  p)) = P.refl
   from∘to (inj₁ (there p)) rewrite from∘to (inj₁ p) = P.refl
   from∘to (inj₂ (here  q)) = P.refl
   from∘to (inj₂ (there q)) rewrite from∘to (inj₂ q) = P.refl
 
   to∘from : ∀ {xs} (p : Any (λ x → P x ⊎ Q x) xs) →
-            to (from p) ≡ p
+            ⊎→ (⊎← p) ≡ p
   to∘from (here (inj₁ p)) = P.refl
   to∘from (here (inj₂ q)) = P.refl
-  to∘from (there p) with from p | to∘from p
+  to∘from (there p) with ⊎← p | to∘from p
   to∘from (there .(Any.map inj₁ p)) | inj₁ p | P.refl = P.refl
   to∘from (there .(Any.map inj₂ q)) | inj₂ q | P.refl = P.refl
 
+
 -- Products "commute" with Any.
 
-×↔ : {A B : Set} {P : A → Set} {Q : B → Set}
-     {xs : List A} {ys : List B} →
+×→ : ∀ {a b p q} {A : Set a} {B : Set b}
+     {P : A → Set p} {Q : B → Set q} {xs : List A} {ys : List B}
+     → Any P xs × Any Q ys → Any (λ x → Any (λ y → P x × Q y) ys) xs
+×→ (p , q) = Any.map (λ p → Any.map (λ q → (p , q)) q) p
+
+×← : ∀ {a b p q} {A : Set a} {B : Set b}
+     {P : A → Set p} {Q : B → Set q} {xs : List A} {ys : List B}
+     → Any (λ x → Any (λ y → P x × Q y) ys) xs → Any P xs × Any Q ys
+×← pq with Prod.map id (Prod.map id find) (find pq)
+... | (x , x∈xs , y , y∈ys , p , q) = (lose x∈xs p , lose y∈ys q)
+
+×↔ : ∀ {a b p q} {A : Set a} {B : Set b}
+     {P : A → Set p} {Q : B → Set q} {xs : List A} {ys : List B} →
      (Any P xs × Any Q ys) ↔ Any (λ x → Any (λ y → P x × Q y) ys) xs
 ×↔ {P = P} {Q} {xs} {ys} = record
-  { to         = P.→-to-⟶ to
-  ; from       = P.→-to-⟶ from
+  { to         = P.→-to-⟶ ×→
+  ; from       = P.→-to-⟶ ×←
   ; inverse-of = record
     { left-inverse-of  = from∘to
     ; right-inverse-of = to∘from
     }
   }
   where
-  to : Any P xs × Any Q ys → Any (λ x → Any (λ y → P x × Q y) ys) xs
-  to (p , q) = Any.map (λ p → Any.map (λ q → (p , q)) q) p
-
-  from : Any (λ x → Any (λ y → P x × Q y) ys) xs → Any P xs × Any Q ys
-  from pq with Prod.map id (Prod.map id find) (find pq)
-  ... | (x , x∈xs , y , y∈ys , p , q) = (lose x∈xs p , lose y∈ys q)
-
-  from∘to : ∀ pq → from (to pq) ≡ pq
+  from∘to : ∀ pq → ×← (×→ pq) ≡ pq
   from∘to (p , q)
     rewrite find∘map {Q = λ x → Any (λ y → P x × Q y) ys}
                      p (λ p → Any.map (λ q → (p , q)) q)
@@ -248,7 +255,7 @@ swap {ℓ} {P = P} {xs} {ys} =
           | lose∘find q
       = refl
 
-  to∘from : ∀ pq → to (from pq) ≡ pq
+  to∘from : ∀ pq → ×→ (×← pq) ≡ pq
   to∘from pq
     with find pq
        | (λ (f : _≡_ (proj₁ (find pq)) ⋐ _) → map∘find pq {f})
@@ -275,20 +282,19 @@ swap {ℓ} {P = P} {xs} {ys} =
 
 -- map.
 
+map⁺ : ∀ {a b p} {A : Set a} {B : Set b} {P : B → Set p}
+       {f : A → B} {xs} → Any (P ∘ f) xs → Any P (List.map f xs)
+map⁺ (here p)  = here p
+map⁺ (there p) = there $ map⁺ p
+
+map⁻ : ∀ {a b p} {A : Set a} {B : Set b} {P : B → Set p}
+       {f : A → B} {xs} →
+       Any P (List.map f xs) → Any (P ∘ f) xs
+map⁻ {xs = []}     ()
+map⁻ {xs = x ∷ xs} (here p)  = here p
+map⁻ {xs = x ∷ xs} (there p) = there $ map⁻ p
+
 private
-
-  map⁺ : ∀ {a b p} {A : Set a} {B : Set b} {P : B → Set p}
-           {f : A → B} {xs} →
-         Any (P ∘ f) xs → Any P (List.map f xs)
-  map⁺ (here p)  = here p
-  map⁺ (there p) = there $ map⁺ p
-
-  map⁻ : ∀ {a b p} {A : Set a} {B : Set b} {P : B → Set p}
-           {f : A → B} {xs} →
-         Any P (List.map f xs) → Any (P ∘ f) xs
-  map⁻ {xs = []}     ()
-  map⁻ {xs = x ∷ xs} (here p)  = here p
-  map⁻ {xs = x ∷ xs} (there p) = there $ map⁻ p
 
   map⁺∘map⁻ : ∀ {a b p} {A : Set a} {B : Set b} {P : B → Set p}
                 {f : A → B} {xs} →
@@ -319,23 +325,23 @@ map↔ {P = P} {f = f} = record
 
 -- _++_.
 
+++⁺ˡ : ∀ {a p} {A : Set a} {P : A → Set p} {xs ys} →
+      Any P xs → Any P (xs ++ ys)
+++⁺ˡ (here p)  = here p
+++⁺ˡ (there p) = there (++⁺ˡ p)
+
+++⁺ʳ : ∀ {a p} {A : Set a} {P : A → Set p} xs {ys} →
+       Any P ys → Any P (xs ++ ys)
+++⁺ʳ []       p = p
+++⁺ʳ (x ∷ xs) p = there (++⁺ʳ xs p)
+
+++⁻ : ∀ {a p} {A : Set a} {P : A → Set p} xs {ys} →
+      Any P (xs ++ ys) → Any P xs ⊎ Any P ys
+++⁻ []       p         = inj₂ p
+++⁻ (x ∷ xs) (here p)  = inj₁ (here p)
+++⁻ (x ∷ xs) (there p) = Sum.map there id (++⁻ xs p)
+
 private
-
-  ++⁺ˡ : ∀ {a p} {A : Set a} {P : A → Set p} {xs ys} →
-         Any P xs → Any P (xs ++ ys)
-  ++⁺ˡ (here p)  = here p
-  ++⁺ˡ (there p) = there (++⁺ˡ p)
-
-  ++⁺ʳ : ∀ {a p} {A : Set a} {P : A → Set p} xs {ys} →
-         Any P ys → Any P (xs ++ ys)
-  ++⁺ʳ []       p = p
-  ++⁺ʳ (x ∷ xs) p = there (++⁺ʳ xs p)
-
-  ++⁻ : ∀ {a p} {A : Set a} {P : A → Set p} xs {ys} →
-        Any P (xs ++ ys) → Any P xs ⊎ Any P ys
-  ++⁻ []       p         = inj₂ p
-  ++⁻ (x ∷ xs) (here p)  = inj₁ (here p)
-  ++⁻ (x ∷ xs) (there p) = Sum.map there id (++⁻ xs p)
 
   ++⁺∘++⁻ : ∀ {a p} {A : Set a} {P : A → Set p} xs {ys}
             (p : Any P (xs ++ ys)) →
@@ -371,16 +377,16 @@ private
 
 -- return.
 
+return⁺ : ∀ {a p} {A : Set a} {P : A → Set p} {x} →
+          P x → Any P (return x)
+return⁺ = here
+
+return⁻ : ∀ {a p} {A : Set a} {P : A → Set p} {x} →
+          Any P (return x) → P x
+return⁻ (here p)   = p
+return⁻ (there ())
+
 private
-
-  return⁺ : ∀ {a p} {A : Set a} {P : A → Set p} {x} →
-            P x → Any P (return x)
-  return⁺ = here
-
-  return⁻ : ∀ {a p} {A : Set a} {P : A → Set p} {x} →
-            Any P (return x) → P x
-  return⁻ (here p)   = p
-  return⁻ (there ())
 
   return⁺∘return⁻ : ∀ {a p} {A : Set a} {P : A → Set p} {x}
                     (p : Any P (return x)) →
@@ -414,22 +420,21 @@ return↔ {P = P} = record
 
 -- concat.
 
+concat⁺ : ∀ {a p} {A : Set a} {P : A → Set p} {xss} →
+          Any (Any P) xss → Any P (concat xss)
+concat⁺ (here p)           = ++⁺ˡ p
+concat⁺ (there {x = xs} p) = ++⁺ʳ xs (concat⁺ p)
+
+concat⁻ : ∀ {a p} {A : Set a} {P : A → Set p} xss →
+          Any P (concat xss) → Any (Any P) xss
+concat⁻ []               ()
+concat⁻ ([]       ∷ xss) p         = there $ concat⁻ xss p
+concat⁻ ((x ∷ xs) ∷ xss) (here  p) = here (here p)
+concat⁻ ((x ∷ xs) ∷ xss) (there p) with concat⁻ (xs ∷ xss) p
+... | here  p′ = here (there p′)
+... | there p′ = there p′
+
 private
-
-  concat⁺ : ∀ {a p} {A : Set a} {P : A → Set p} {xss} →
-            Any (Any P) xss → Any P (concat xss)
-  concat⁺ (here p)           = ++⁺ˡ p
-  concat⁺ (there {x = xs} p) = ++⁺ʳ xs (concat⁺ p)
-
-  concat⁻ : ∀ {a p} {A : Set a} {P : A → Set p} xss →
-            Any P (concat xss) → Any (Any P) xss
-  concat⁻ []               ()
-  concat⁻ ([]       ∷ xss) p         = there $ concat⁻ xss p
-  concat⁻ ((x ∷ xs) ∷ xss) (here  p) = here (here p)
-  concat⁻ ((x ∷ xs) ∷ xss) (there p)
-    with concat⁻ (xs ∷ xss) p
-  ... | here  p′ = here (there p′)
-  ... | there p′ = there p′
 
   concat⁻∘++⁺ˡ : ∀ {a p} {A : Set a} {P : A → Set p} {xs} xss (p : Any P xs) →
                  concat⁻ (xs ∷ xss) (++⁺ˡ p) ≡ here p
@@ -569,21 +574,19 @@ map-with-∈↔ {A = A} {B} {P} = record
 
 -- These introduction and elimination rules are not inverses, though.
 
-private
+any⁺ : ∀ {a} {A : Set a} (p : A → Bool) {xs} →
+       Any (T ∘ p) xs → T (any p xs)
+any⁺ p (here  px)          = Equivalence.from T-∨ ⟨$⟩ inj₁ px
+any⁺ p (there {x = x} pxs) with p x
+... | true  = _
+... | false = any⁺ p pxs
 
-  any⁺ : ∀ {a} {A : Set a} (p : A → Bool) {xs} →
-         Any (T ∘ p) xs → T (any p xs)
-  any⁺ p (here  px)          = Equivalence.from T-∨ ⟨$⟩ inj₁ px
-  any⁺ p (there {x = x} pxs) with p x
-  ... | true  = _
-  ... | false = any⁺ p pxs
-
-  any⁻ : ∀ {a} {A : Set a} (p : A → Bool) xs →
-         T (any p xs) → Any (T ∘ p) xs
-  any⁻ p []       ()
-  any⁻ p (x ∷ xs) px∷xs with p x | inspect p x
-  any⁻ p (x ∷ xs) px∷xs | true  | P[ eq ] = here (Equivalence.from T-≡ ⟨$⟩ eq)
-  any⁻ p (x ∷ xs) px∷xs | false | _       = there (any⁻ p xs px∷xs)
+any⁻ : ∀ {a} {A : Set a} (p : A → Bool) xs →
+       T (any p xs) → Any (T ∘ p) xs
+any⁻ p []       ()
+any⁻ p (x ∷ xs) px∷xs with p x | inspect p x
+any⁻ p (x ∷ xs) px∷xs | true  | P[ eq ] = here (Equivalence.from T-≡ ⟨$⟩ eq)
+any⁻ p (x ∷ xs) px∷xs | false | _       = there (any⁻ p xs px∷xs)
 
 any⇔ : ∀ {a} {A : Set a} {p : A → Bool} {xs} →
        Any (T ∘ p) xs ⇔ T (any p xs)
@@ -592,12 +595,11 @@ any⇔ = Eq.equivalence (any⁺ _) (any⁻ _ _)
 ------------------------------------------------------------------------
 -- _++_ is commutative
 
-private
-
-  ++-comm : ∀ {a p} {A : Set a} {P : A → Set p} xs ys →
+++-comm : ∀ {a p} {A : Set a} {P : A → Set p} xs ys →
             Any P (xs ++ ys) → Any P (ys ++ xs)
-  ++-comm xs ys = [ ++⁺ʳ ys , ++⁺ˡ ]′ ∘ ++⁻ xs
+++-comm xs ys = [ ++⁺ʳ ys , ++⁺ˡ ]′ ∘ ++⁻ xs
 
+private
   ++-comm∘++-comm : ∀ {a p} {A : Set a} {P : A → Set p}
                     xs {ys} (p : Any P (xs ++ ys)) →
                     ++-comm ys xs (++-comm xs ys p) ≡ p

@@ -30,6 +30,26 @@ eq? inj = Dec.via-injection inj _≟_
 ------------------------------------------------------------------------
 -- Some properties
 
+≤-reflexive : _≡_ ⇒ _≤_
+≤-reflexive {zero}  refl = z≤n
+≤-reflexive {suc m} refl = s≤s (≤-reflexive refl)
+
+≤-antisym : Antisymmetric _≡_ _≤_
+≤-antisym z≤n       z≤n       = refl
+≤-antisym (s≤s m≤n) (s≤s n≤m) with ≤-antisym m≤n n≤m
+... | refl = refl
+
+≤-trans : Transitive _≤_
+≤-trans z≤n       _         = z≤n
+≤-trans (s≤s m≤n) (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
+
+≤-total : Total _≤_
+≤-total zero    _       = inj₁ z≤n
+≤-total _       zero    = inj₂ z≤n
+≤-total (suc m) (suc n) with ≤-total m n
+... | inj₁ m≤n = inj₁ (s≤s m≤n)
+... | inj₂ n≤m = inj₂ (s≤s n≤m)
+
 decTotalOrder : DecTotalOrder _ _ _
 decTotalOrder = record
   { Carrier         = ℕ
@@ -40,37 +60,17 @@ decTotalOrder = record
           { isPartialOrder = record
               { isPreorder = record
                   { isEquivalence = PropEq.isEquivalence
-                  ; reflexive     = refl′
-                  ; trans         = trans
+                  ; reflexive     = ≤-reflexive
+                  ; trans         = ≤-trans
                   }
-              ; antisym  = antisym
+              ; antisym  = ≤-antisym
               }
-          ; total = total
+          ; total = ≤-total
           }
       ; _≟_  = _≟_
       ; _≤?_ = _≤?_
       }
   }
-  where
-  refl′ : _≡_ ⇒ _≤_
-  refl′ {zero}  refl = z≤n
-  refl′ {suc m} refl = s≤s (refl′ refl)
-
-  antisym : Antisymmetric _≡_ _≤_
-  antisym z≤n       z≤n       = refl
-  antisym (s≤s m≤n) (s≤s n≤m) with antisym m≤n n≤m
-  ...                         | refl = refl
-
-  trans : Transitive _≤_
-  trans z≤n       _         = z≤n
-  trans (s≤s m≤n) (s≤s n≤o) = s≤s (trans m≤n n≤o)
-
-  total : Total _≤_
-  total zero    _       = inj₁ z≤n
-  total _       zero    = inj₂ z≤n
-  total (suc m) (suc n) with total m n
-  ...                   | inj₁ m≤n = inj₁ (s≤s m≤n)
-  ...                   | inj₂ n≤m = inj₂ (s≤s n≤m)
 
 import Relation.Binary.PartialOrderReasoning as POR
 module ≤-Reasoning where
