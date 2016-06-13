@@ -50,489 +50,243 @@
 
 </a
       ><a name="244" class="Keyword"
+      >open</a
+      ><a name="248"
+      > </a
+      ><a name="249" class="Keyword"
       >import</a
-      ><a name="250"
+      ><a name="255"
       > </a
-      ><a name="251" href="Level.html#1" class="Module"
-      >Level</a
-      ><a name="256"
+      ><a name="256" href="Agda.Builtin.Coinduction.html#1" class="Module"
+      >Agda.Builtin.Coinduction</a
+      ><a name="280"
+      > </a
+      ><a name="281" class="Keyword"
+      >public</a
+      ><a name="287"
       >
 
 </a
-      ><a name="258" class="Comment"
+      ><a name="289" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="330"
+      ><a name="361"
       >
 </a
-      ><a name="331" class="Comment"
-      >-- A type used to make recursive arguments coinductive</a
-      ><a name="385"
+      ><a name="362" class="Comment"
+      >-- Rec, a type which is analogous to the Rec type constructor used in</a
+      ><a name="431"
+      >
+</a
+      ><a name="432" class="Comment"
+      >-- &#928;&#931; (see Altenkirch, Danielsson, L&#246;h and Oury. &#928;&#931;: Dependent Types</a
+      ><a name="500"
+      >
+</a
+      ><a name="501" class="Comment"
+      >-- without the Sugar. FLOPS 2010, LNCS 6009.)</a
+      ><a name="546"
       >
 
 </a
-      ><a name="387" class="Keyword"
-      >infix</a
-      ><a name="392"
-      > </a
-      ><a name="393" class="Number"
-      >1000</a
-      ><a name="397"
-      > &#9839;_
-
-</a
-      ><a name="402" class="Keyword"
-      >postulate</a
-      ><a name="411"
-      >
-  </a
-      ><a name="414" href="Coinduction.html#414" class="Postulate"
-      >&#8734;</a
-      ><a name="415"
-      >  </a
-      ><a name="417" class="Symbol"
-      >:</a
-      ><a name="418"
-      > </a
-      ><a name="419" class="Symbol"
-      >&#8704;</a
-      ><a name="420"
-      > </a
-      ><a name="421" class="Symbol"
-      >{</a
-      ><a name="422" href="Coinduction.html#422" class="Bound"
-      >a</a
-      ><a name="423" class="Symbol"
-      >}</a
-      ><a name="424"
-      > </a
-      ><a name="425" class="Symbol"
-      >(</a
-      ><a name="426" href="Coinduction.html#426" class="Bound"
-      >A</a
-      ><a name="427"
-      > </a
-      ><a name="428" class="Symbol"
-      >:</a
-      ><a name="429"
-      > </a
-      ><a name="430" class="PrimitiveType"
-      >Set</a
-      ><a name="433"
-      > </a
-      ><a name="434" href="Coinduction.html#422" class="Bound"
-      >a</a
-      ><a name="435" class="Symbol"
-      >)</a
-      ><a name="436"
-      > </a
-      ><a name="437" class="Symbol"
-      >&#8594;</a
-      ><a name="438"
-      > </a
-      ><a name="439" class="PrimitiveType"
-      >Set</a
-      ><a name="442"
-      > </a
-      ><a name="443" href="Coinduction.html#422" class="Bound"
-      >a</a
-      ><a name="444"
-      >
-  </a
-      ><a name="447" href="Coinduction.html#447" class="Postulate Operator"
-      >&#9839;_</a
-      ><a name="449"
-      > </a
-      ><a name="450" class="Symbol"
-      >:</a
-      ><a name="451"
-      > </a
-      ><a name="452" class="Symbol"
-      >&#8704;</a
-      ><a name="453"
-      > </a
-      ><a name="454" class="Symbol"
-      >{</a
-      ><a name="455" href="Coinduction.html#455" class="Bound"
-      >a</a
-      ><a name="456" class="Symbol"
-      >}</a
-      ><a name="457"
-      > </a
-      ><a name="458" class="Symbol"
-      >{</a
-      ><a name="459" href="Coinduction.html#459" class="Bound"
-      >A</a
-      ><a name="460"
-      > </a
-      ><a name="461" class="Symbol"
-      >:</a
-      ><a name="462"
-      > </a
-      ><a name="463" class="PrimitiveType"
-      >Set</a
-      ><a name="466"
-      > </a
-      ><a name="467" href="Coinduction.html#455" class="Bound"
-      >a</a
-      ><a name="468" class="Symbol"
-      >}</a
-      ><a name="469"
-      > </a
-      ><a name="470" class="Symbol"
-      >&#8594;</a
-      ><a name="471"
-      > </a
-      ><a name="472" href="Coinduction.html#459" class="Bound"
-      >A</a
-      ><a name="473"
-      > </a
-      ><a name="474" class="Symbol"
-      >&#8594;</a
-      ><a name="475"
-      > </a
-      ><a name="476" href="Coinduction.html#414" class="Postulate"
-      >&#8734;</a
-      ><a name="477"
-      > </a
-      ><a name="478" href="Coinduction.html#459" class="Bound"
-      >A</a
-      ><a name="479"
-      >
-  </a
-      ><a name="482" href="Coinduction.html#482" class="Postulate"
-      >&#9837;</a
-      ><a name="483"
-      >  </a
-      ><a name="485" class="Symbol"
-      >:</a
-      ><a name="486"
-      > </a
-      ><a name="487" class="Symbol"
-      >&#8704;</a
-      ><a name="488"
-      > </a
-      ><a name="489" class="Symbol"
-      >{</a
-      ><a name="490" href="Coinduction.html#490" class="Bound"
-      >a</a
-      ><a name="491" class="Symbol"
-      >}</a
-      ><a name="492"
-      > </a
-      ><a name="493" class="Symbol"
-      >{</a
-      ><a name="494" href="Coinduction.html#494" class="Bound"
-      >A</a
-      ><a name="495"
-      > </a
-      ><a name="496" class="Symbol"
-      >:</a
-      ><a name="497"
-      > </a
-      ><a name="498" class="PrimitiveType"
-      >Set</a
-      ><a name="501"
-      > </a
-      ><a name="502" href="Coinduction.html#490" class="Bound"
-      >a</a
-      ><a name="503" class="Symbol"
-      >}</a
-      ><a name="504"
-      > </a
-      ><a name="505" class="Symbol"
-      >&#8594;</a
-      ><a name="506"
-      > </a
-      ><a name="507" href="Coinduction.html#414" class="Postulate"
-      >&#8734;</a
-      ><a name="508"
-      > </a
-      ><a name="509" href="Coinduction.html#494" class="Bound"
-      >A</a
-      ><a name="510"
-      > </a
-      ><a name="511" class="Symbol"
-      >&#8594;</a
-      ><a name="512"
-      > </a
-      ><a name="513" href="Coinduction.html#494" class="Bound"
-      >A</a
-      ><a name="514"
-      >
-
-</a
-      ><a name="516" class="Symbol"
-      >{-#</a
-      ><a name="519"
-      > </a
-      ><a name="520" class="Keyword"
-      >BUILTIN</a
-      ><a name="527"
-      > INFINITY </a
-      ><a name="537" href="Coinduction.html#414" class="Postulate"
-      >&#8734;</a
-      ><a name="538"
-      >  </a
-      ><a name="540" class="Symbol"
-      >#-}</a
-      ><a name="543"
-      >
-</a
-      ><a name="544" class="Symbol"
-      >{-#</a
-      ><a name="547"
-      > </a
       ><a name="548" class="Keyword"
-      >BUILTIN</a
-      ><a name="555"
-      > SHARP    </a
-      ><a name="565" href="Coinduction.html#447" class="CoinductiveConstructor Operator"
-      >&#9839;_</a
+      >data</a
+      ><a name="552"
+      > </a
+      ><a name="553" href="Coinduction.html#553" class="Datatype"
+      >Rec</a
+      ><a name="556"
+      > </a
+      ><a name="557" class="Symbol"
+      >{</a
+      ><a name="558" href="Coinduction.html#558" class="Bound"
+      >a</a
+      ><a name="559" class="Symbol"
+      >}</a
+      ><a name="560"
+      > </a
+      ><a name="561" class="Symbol"
+      >(</a
+      ><a name="562" href="Coinduction.html#562" class="Bound"
+      >A</a
+      ><a name="563"
+      > </a
+      ><a name="564" class="Symbol"
+      >:</a
+      ><a name="565"
+      > </a
+      ><a name="566" href="Agda.Builtin.Coinduction.html#96" class="Record"
+      >&#8734;</a
       ><a name="567"
       > </a
       ><a name="568" class="Symbol"
-      >#-}</a
-      ><a name="571"
-      >
-</a
-      ><a name="572" class="Symbol"
-      >{-#</a
-      ><a name="575"
-      > </a
-      ><a name="576" class="Keyword"
-      >BUILTIN</a
-      ><a name="583"
-      > FLAT     </a
-      ><a name="593" href="Coinduction.html#482" class="Field"
-      >&#9837;</a
-      ><a name="594"
-      >  </a
-      ><a name="596" class="Symbol"
-      >#-}</a
-      ><a name="599"
-      >
-
-</a
-      ><a name="601" class="Comment"
-      >------------------------------------------------------------------------</a
-      ><a name="673"
-      >
-</a
-      ><a name="674" class="Comment"
-      >-- Rec, a type which is analogous to the Rec type constructor used in</a
-      ><a name="743"
-      >
-</a
-      ><a name="744" class="Comment"
-      >-- &#928;&#931; (see Altenkirch, Danielsson, L&#246;h and Oury. &#928;&#931;: Dependent Types</a
-      ><a name="812"
-      >
-</a
-      ><a name="813" class="Comment"
-      >-- without the Sugar. FLOPS 2010, LNCS 6009.)</a
-      ><a name="858"
-      >
-
-</a
-      ><a name="860" class="Keyword"
-      >data</a
-      ><a name="864"
-      > </a
-      ><a name="865" href="Coinduction.html#865" class="Datatype"
-      >Rec</a
-      ><a name="868"
-      > </a
-      ><a name="869" class="Symbol"
-      >{</a
-      ><a name="870" href="Coinduction.html#870" class="Bound"
-      >a</a
-      ><a name="871" class="Symbol"
-      >}</a
-      ><a name="872"
-      > </a
-      ><a name="873" class="Symbol"
       >(</a
-      ><a name="874" href="Coinduction.html#874" class="Bound"
-      >A</a
-      ><a name="875"
-      > </a
-      ><a name="876" class="Symbol"
-      >:</a
-      ><a name="877"
-      > </a
-      ><a name="878" href="Coinduction.html#414" class="Record"
-      >&#8734;</a
-      ><a name="879"
-      > </a
-      ><a name="880" class="Symbol"
-      >(</a
-      ><a name="881" class="PrimitiveType"
+      ><a name="569" class="PrimitiveType"
       >Set</a
-      ><a name="884"
+      ><a name="572"
       > </a
-      ><a name="885" href="Coinduction.html#870" class="Bound"
+      ><a name="573" href="Coinduction.html#558" class="Bound"
       >a</a
-      ><a name="886" class="Symbol"
+      ><a name="574" class="Symbol"
       >))</a
-      ><a name="888"
+      ><a name="576"
       > </a
-      ><a name="889" class="Symbol"
+      ><a name="577" class="Symbol"
       >:</a
-      ><a name="890"
+      ><a name="578"
       > </a
-      ><a name="891" class="PrimitiveType"
+      ><a name="579" class="PrimitiveType"
       >Set</a
-      ><a name="894"
+      ><a name="582"
       > </a
-      ><a name="895" href="Coinduction.html#870" class="Bound"
+      ><a name="583" href="Coinduction.html#558" class="Bound"
       >a</a
-      ><a name="896"
+      ><a name="584"
       > </a
-      ><a name="897" class="Keyword"
+      ><a name="585" class="Keyword"
       >where</a
-      ><a name="902"
+      ><a name="590"
       >
   </a
-      ><a name="905" href="Coinduction.html#905" class="InductiveConstructor"
+      ><a name="593" href="Coinduction.html#593" class="InductiveConstructor"
       >fold</a
-      ><a name="909"
+      ><a name="597"
       > </a
-      ><a name="910" class="Symbol"
+      ><a name="598" class="Symbol"
       >:</a
-      ><a name="911"
+      ><a name="599"
       > </a
-      ><a name="912" class="Symbol"
+      ><a name="600" class="Symbol"
       >(</a
-      ><a name="913" href="Coinduction.html#913" class="Bound"
+      ><a name="601" href="Coinduction.html#601" class="Bound"
       >x</a
-      ><a name="914"
+      ><a name="602"
       > </a
-      ><a name="915" class="Symbol"
+      ><a name="603" class="Symbol"
       >:</a
-      ><a name="916"
+      ><a name="604"
       > </a
-      ><a name="917" href="Coinduction.html#482" class="Field"
+      ><a name="605" href="Agda.Builtin.Coinduction.html#164" class="Field"
       >&#9837;</a
-      ><a name="918"
+      ><a name="606"
       > </a
-      ><a name="919" href="Coinduction.html#874" class="Bound"
+      ><a name="607" href="Coinduction.html#562" class="Bound"
       >A</a
-      ><a name="920" class="Symbol"
+      ><a name="608" class="Symbol"
       >)</a
-      ><a name="921"
+      ><a name="609"
       > </a
-      ><a name="922" class="Symbol"
+      ><a name="610" class="Symbol"
       >&#8594;</a
-      ><a name="923"
+      ><a name="611"
       > </a
-      ><a name="924" href="Coinduction.html#865" class="Datatype"
+      ><a name="612" href="Coinduction.html#553" class="Datatype"
       >Rec</a
-      ><a name="927"
+      ><a name="615"
       > </a
-      ><a name="928" href="Coinduction.html#874" class="Bound"
+      ><a name="616" href="Coinduction.html#562" class="Bound"
       >A</a
-      ><a name="929"
+      ><a name="617"
       >
 
 </a
-      ><a name="931" href="Coinduction.html#931" class="Function"
+      ><a name="619" href="Coinduction.html#619" class="Function"
       >unfold</a
-      ><a name="937"
+      ><a name="625"
       > </a
-      ><a name="938" class="Symbol"
+      ><a name="626" class="Symbol"
       >:</a
-      ><a name="939"
+      ><a name="627"
       > </a
-      ><a name="940" class="Symbol"
+      ><a name="628" class="Symbol"
       >&#8704;</a
-      ><a name="941"
+      ><a name="629"
       > </a
-      ><a name="942" class="Symbol"
+      ><a name="630" class="Symbol"
       >{</a
-      ><a name="943" href="Coinduction.html#943" class="Bound"
+      ><a name="631" href="Coinduction.html#631" class="Bound"
       >a</a
-      ><a name="944" class="Symbol"
+      ><a name="632" class="Symbol"
       >}</a
-      ><a name="945"
+      ><a name="633"
       > </a
-      ><a name="946" class="Symbol"
+      ><a name="634" class="Symbol"
       >{</a
-      ><a name="947" href="Coinduction.html#947" class="Bound"
+      ><a name="635" href="Coinduction.html#635" class="Bound"
       >A</a
-      ><a name="948"
+      ><a name="636"
       > </a
-      ><a name="949" class="Symbol"
+      ><a name="637" class="Symbol"
       >:</a
-      ><a name="950"
+      ><a name="638"
       > </a
-      ><a name="951" href="Coinduction.html#414" class="Record"
+      ><a name="639" href="Agda.Builtin.Coinduction.html#96" class="Record"
       >&#8734;</a
-      ><a name="952"
+      ><a name="640"
       > </a
-      ><a name="953" class="Symbol"
+      ><a name="641" class="Symbol"
       >(</a
-      ><a name="954" class="PrimitiveType"
+      ><a name="642" class="PrimitiveType"
       >Set</a
-      ><a name="957"
+      ><a name="645"
       > </a
-      ><a name="958" href="Coinduction.html#943" class="Bound"
+      ><a name="646" href="Coinduction.html#631" class="Bound"
       >a</a
-      ><a name="959" class="Symbol"
+      ><a name="647" class="Symbol"
       >)}</a
-      ><a name="961"
+      ><a name="649"
       > </a
-      ><a name="962" class="Symbol"
+      ><a name="650" class="Symbol"
       >&#8594;</a
-      ><a name="963"
+      ><a name="651"
       > </a
-      ><a name="964" href="Coinduction.html#865" class="Datatype"
+      ><a name="652" href="Coinduction.html#553" class="Datatype"
       >Rec</a
-      ><a name="967"
+      ><a name="655"
       > </a
-      ><a name="968" href="Coinduction.html#947" class="Bound"
+      ><a name="656" href="Coinduction.html#635" class="Bound"
       >A</a
-      ><a name="969"
+      ><a name="657"
       > </a
-      ><a name="970" class="Symbol"
+      ><a name="658" class="Symbol"
       >&#8594;</a
-      ><a name="971"
+      ><a name="659"
       > </a
-      ><a name="972" href="Coinduction.html#482" class="Field"
+      ><a name="660" href="Agda.Builtin.Coinduction.html#164" class="Field"
       >&#9837;</a
-      ><a name="973"
+      ><a name="661"
       > </a
-      ><a name="974" href="Coinduction.html#947" class="Bound"
+      ><a name="662" href="Coinduction.html#635" class="Bound"
       >A</a
-      ><a name="975"
+      ><a name="663"
       >
 </a
-      ><a name="976" href="Coinduction.html#931" class="Function"
+      ><a name="664" href="Coinduction.html#619" class="Function"
       >unfold</a
-      ><a name="982"
+      ><a name="670"
       > </a
-      ><a name="983" class="Symbol"
+      ><a name="671" class="Symbol"
       >(</a
-      ><a name="984" href="Coinduction.html#905" class="InductiveConstructor"
+      ><a name="672" href="Coinduction.html#593" class="InductiveConstructor"
       >fold</a
-      ><a name="988"
+      ><a name="676"
       > </a
-      ><a name="989" href="Coinduction.html#989" class="Bound"
+      ><a name="677" href="Coinduction.html#677" class="Bound"
       >x</a
-      ><a name="990" class="Symbol"
+      ><a name="678" class="Symbol"
       >)</a
-      ><a name="991"
+      ><a name="679"
       > </a
-      ><a name="992" class="Symbol"
+      ><a name="680" class="Symbol"
       >=</a
-      ><a name="993"
+      ><a name="681"
       > </a
-      ><a name="994" href="Coinduction.html#989" class="Bound"
+      ><a name="682" href="Coinduction.html#677" class="Bound"
       >x</a
-      ><a name="995"
+      ><a name="683"
       >
 
 </a
-      ><a name="997" class="Comment"
+      ><a name="685" class="Comment"
       >{-
 
   -- If --guardedness-preserving-type-constructors is enabled one can
@@ -561,7 +315,7 @@
   -- inconsistencies.
 
 -}</a
-      ><a name="1533"
+      ><a name="1221"
       >
 </a
       ></pre

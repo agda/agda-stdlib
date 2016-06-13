@@ -1,0 +1,1209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Agda.Builtin.Nat</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Symbol"
+      >{-#</a
+      ><a name="4"
+      > </a
+      ><a name="5" class="Keyword"
+      >OPTIONS</a
+      ><a name="12"
+      > --without-K </a
+      ><a name="25" class="Symbol"
+      >#-}</a
+      ><a name="28"
+      >
+
+</a
+      ><a name="30" class="Keyword"
+      >module</a
+      ><a name="36"
+      > </a
+      ><a name="37" href="Agda.Builtin.Nat.html#1" class="Module"
+      >Agda.Builtin.Nat</a
+      ><a name="53"
+      > </a
+      ><a name="54" class="Keyword"
+      >where</a
+      ><a name="59"
+      >
+
+</a
+      ><a name="61" class="Keyword"
+      >open</a
+      ><a name="65"
+      > </a
+      ><a name="66" class="Keyword"
+      >import</a
+      ><a name="72"
+      > </a
+      ><a name="73" href="Agda.Builtin.Bool.html#1" class="Module"
+      >Agda.Builtin.Bool</a
+      ><a name="90"
+      >
+
+</a
+      ><a name="92" class="Keyword"
+      >data</a
+      ><a name="96"
+      > </a
+      ><a name="97" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="100"
+      > </a
+      ><a name="101" class="Symbol"
+      >:</a
+      ><a name="102"
+      > </a
+      ><a name="103" class="PrimitiveType"
+      >Set</a
+      ><a name="106"
+      > </a
+      ><a name="107" class="Keyword"
+      >where</a
+      ><a name="112"
+      >
+  </a
+      ><a name="115" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      >zero</a
+      ><a name="119"
+      > </a
+      ><a name="120" class="Symbol"
+      >:</a
+      ><a name="121"
+      > </a
+      ><a name="122" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="125"
+      >
+  </a
+      ><a name="128" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="131"
+      >  </a
+      ><a name="133" class="Symbol"
+      >:</a
+      ><a name="134"
+      > </a
+      ><a name="135" class="Symbol"
+      >(</a
+      ><a name="136" href="Agda.Builtin.Nat.html#136" class="Bound"
+      >n</a
+      ><a name="137"
+      > </a
+      ><a name="138" class="Symbol"
+      >:</a
+      ><a name="139"
+      > </a
+      ><a name="140" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="143" class="Symbol"
+      >)</a
+      ><a name="144"
+      > </a
+      ><a name="145" class="Symbol"
+      >&#8594;</a
+      ><a name="146"
+      > </a
+      ><a name="147" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="150"
+      >
+
+</a
+      ><a name="152" class="Symbol"
+      >{-#</a
+      ><a name="155"
+      > </a
+      ><a name="156" class="Keyword"
+      >BUILTIN</a
+      ><a name="163"
+      > NATURAL </a
+      ><a name="172" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="175"
+      > </a
+      ><a name="176" class="Symbol"
+      >#-}</a
+      ><a name="179"
+      >
+
+</a
+      ><a name="181" class="Keyword"
+      >infix</a
+      ><a name="186"
+      >  </a
+      ><a name="188" class="Number"
+      >4</a
+      ><a name="189"
+      > _==_ _&lt;_
+</a
+      ><a name="199" class="Keyword"
+      >infixl</a
+      ><a name="205"
+      > </a
+      ><a name="206" class="Number"
+      >6</a
+      ><a name="207"
+      > _+_ _-_
+</a
+      ><a name="216" class="Keyword"
+      >infixl</a
+      ><a name="222"
+      > </a
+      ><a name="223" class="Number"
+      >7</a
+      ><a name="224"
+      > _*_
+
+</a
+      ><a name="230" href="Agda.Builtin.Nat.html#230" class="Function Operator"
+      >_+_</a
+      ><a name="233"
+      > </a
+      ><a name="234" class="Symbol"
+      >:</a
+      ><a name="235"
+      > </a
+      ><a name="236" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="239"
+      > </a
+      ><a name="240" class="Symbol"
+      >&#8594;</a
+      ><a name="241"
+      > </a
+      ><a name="242" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="245"
+      > </a
+      ><a name="246" class="Symbol"
+      >&#8594;</a
+      ><a name="247"
+      > </a
+      ><a name="248" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="251"
+      >
+</a
+      ><a name="252" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      >zero</a
+      ><a name="256"
+      >  </a
+      ><a name="258" href="Agda.Builtin.Nat.html#230" class="Function Operator"
+      >+</a
+      ><a name="259"
+      > </a
+      ><a name="260" href="Agda.Builtin.Nat.html#260" class="Bound"
+      >m</a
+      ><a name="261"
+      > </a
+      ><a name="262" class="Symbol"
+      >=</a
+      ><a name="263"
+      > </a
+      ><a name="264" href="Agda.Builtin.Nat.html#260" class="Bound"
+      >m</a
+      ><a name="265"
+      >
+</a
+      ><a name="266" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="269"
+      > </a
+      ><a name="270" href="Agda.Builtin.Nat.html#270" class="Bound"
+      >n</a
+      ><a name="271"
+      > </a
+      ><a name="272" href="Agda.Builtin.Nat.html#230" class="Function Operator"
+      >+</a
+      ><a name="273"
+      > </a
+      ><a name="274" href="Agda.Builtin.Nat.html#274" class="Bound"
+      >m</a
+      ><a name="275"
+      > </a
+      ><a name="276" class="Symbol"
+      >=</a
+      ><a name="277"
+      > </a
+      ><a name="278" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="281"
+      > </a
+      ><a name="282" class="Symbol"
+      >(</a
+      ><a name="283" href="Agda.Builtin.Nat.html#270" class="Bound"
+      >n</a
+      ><a name="284"
+      > </a
+      ><a name="285" href="Agda.Builtin.Nat.html#230" class="Function Operator"
+      >+</a
+      ><a name="286"
+      > </a
+      ><a name="287" href="Agda.Builtin.Nat.html#274" class="Bound"
+      >m</a
+      ><a name="288" class="Symbol"
+      >)</a
+      ><a name="289"
+      >
+
+</a
+      ><a name="291" class="Symbol"
+      >{-#</a
+      ><a name="294"
+      > </a
+      ><a name="295" class="Keyword"
+      >BUILTIN</a
+      ><a name="302"
+      > NATPLUS </a
+      ><a name="311" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      >_+_</a
+      ><a name="314"
+      > </a
+      ><a name="315" class="Symbol"
+      >#-}</a
+      ><a name="318"
+      >
+
+</a
+      ><a name="320" href="Agda.Builtin.Nat.html#320" class="Function Operator"
+      >_-_</a
+      ><a name="323"
+      > </a
+      ><a name="324" class="Symbol"
+      >:</a
+      ><a name="325"
+      > </a
+      ><a name="326" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="329"
+      > </a
+      ><a name="330" class="Symbol"
+      >&#8594;</a
+      ><a name="331"
+      > </a
+      ><a name="332" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="335"
+      > </a
+      ><a name="336" class="Symbol"
+      >&#8594;</a
+      ><a name="337"
+      > </a
+      ><a name="338" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="341"
+      >
+</a
+      ><a name="342" href="Agda.Builtin.Nat.html#342" class="Bound"
+      >n</a
+      ><a name="343"
+      >     </a
+      ><a name="348" href="Agda.Builtin.Nat.html#320" class="Function Operator"
+      >-</a
+      ><a name="349"
+      > </a
+      ><a name="350" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      >zero</a
+      ><a name="354"
+      > </a
+      ><a name="355" class="Symbol"
+      >=</a
+      ><a name="356"
+      > </a
+      ><a name="357" href="Agda.Builtin.Nat.html#342" class="Bound"
+      >n</a
+      ><a name="358"
+      >
+</a
+      ><a name="359" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      >zero</a
+      ><a name="363"
+      >  </a
+      ><a name="365" href="Agda.Builtin.Nat.html#320" class="Function Operator"
+      >-</a
+      ><a name="366"
+      > </a
+      ><a name="367" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="370"
+      > </a
+      ><a name="371" href="Agda.Builtin.Nat.html#371" class="Bound"
+      >m</a
+      ><a name="372"
+      > </a
+      ><a name="373" class="Symbol"
+      >=</a
+      ><a name="374"
+      > </a
+      ><a name="375" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      >zero</a
+      ><a name="379"
+      >
+</a
+      ><a name="380" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="383"
+      > </a
+      ><a name="384" href="Agda.Builtin.Nat.html#384" class="Bound"
+      >n</a
+      ><a name="385"
+      > </a
+      ><a name="386" href="Agda.Builtin.Nat.html#320" class="Function Operator"
+      >-</a
+      ><a name="387"
+      > </a
+      ><a name="388" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="391"
+      > </a
+      ><a name="392" href="Agda.Builtin.Nat.html#392" class="Bound"
+      >m</a
+      ><a name="393"
+      > </a
+      ><a name="394" class="Symbol"
+      >=</a
+      ><a name="395"
+      > </a
+      ><a name="396" href="Agda.Builtin.Nat.html#384" class="Bound"
+      >n</a
+      ><a name="397"
+      > </a
+      ><a name="398" href="Agda.Builtin.Nat.html#320" class="Function Operator"
+      >-</a
+      ><a name="399"
+      > </a
+      ><a name="400" href="Agda.Builtin.Nat.html#392" class="Bound"
+      >m</a
+      ><a name="401"
+      >
+
+</a
+      ><a name="403" class="Symbol"
+      >{-#</a
+      ><a name="406"
+      > </a
+      ><a name="407" class="Keyword"
+      >BUILTIN</a
+      ><a name="414"
+      > NATMINUS </a
+      ><a name="424" href="Agda.Builtin.Nat.html#320" class="Primitive Operator"
+      >_-_</a
+      ><a name="427"
+      > </a
+      ><a name="428" class="Symbol"
+      >#-}</a
+      ><a name="431"
+      >
+
+</a
+      ><a name="433" href="Agda.Builtin.Nat.html#433" class="Function Operator"
+      >_*_</a
+      ><a name="436"
+      > </a
+      ><a name="437" class="Symbol"
+      >:</a
+      ><a name="438"
+      > </a
+      ><a name="439" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="442"
+      > </a
+      ><a name="443" class="Symbol"
+      >&#8594;</a
+      ><a name="444"
+      > </a
+      ><a name="445" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="448"
+      > </a
+      ><a name="449" class="Symbol"
+      >&#8594;</a
+      ><a name="450"
+      > </a
+      ><a name="451" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="454"
+      >
+</a
+      ><a name="455" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      >zero</a
+      ><a name="459"
+      >  </a
+      ><a name="461" href="Agda.Builtin.Nat.html#433" class="Function Operator"
+      >*</a
+      ><a name="462"
+      > </a
+      ><a name="463" href="Agda.Builtin.Nat.html#463" class="Bound"
+      >m</a
+      ><a name="464"
+      > </a
+      ><a name="465" class="Symbol"
+      >=</a
+      ><a name="466"
+      > </a
+      ><a name="467" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      >zero</a
+      ><a name="471"
+      >
+</a
+      ><a name="472" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="475"
+      > </a
+      ><a name="476" href="Agda.Builtin.Nat.html#476" class="Bound"
+      >n</a
+      ><a name="477"
+      > </a
+      ><a name="478" href="Agda.Builtin.Nat.html#433" class="Function Operator"
+      >*</a
+      ><a name="479"
+      > </a
+      ><a name="480" href="Agda.Builtin.Nat.html#480" class="Bound"
+      >m</a
+      ><a name="481"
+      > </a
+      ><a name="482" class="Symbol"
+      >=</a
+      ><a name="483"
+      > </a
+      ><a name="484" href="Agda.Builtin.Nat.html#480" class="Bound"
+      >m</a
+      ><a name="485"
+      > </a
+      ><a name="486" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      >+</a
+      ><a name="487"
+      > </a
+      ><a name="488" href="Agda.Builtin.Nat.html#476" class="Bound"
+      >n</a
+      ><a name="489"
+      > </a
+      ><a name="490" href="Agda.Builtin.Nat.html#433" class="Function Operator"
+      >*</a
+      ><a name="491"
+      > </a
+      ><a name="492" href="Agda.Builtin.Nat.html#480" class="Bound"
+      >m</a
+      ><a name="493"
+      >
+
+</a
+      ><a name="495" class="Symbol"
+      >{-#</a
+      ><a name="498"
+      > </a
+      ><a name="499" class="Keyword"
+      >BUILTIN</a
+      ><a name="506"
+      > NATTIMES </a
+      ><a name="516" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      >_*_</a
+      ><a name="519"
+      > </a
+      ><a name="520" class="Symbol"
+      >#-}</a
+      ><a name="523"
+      >
+
+</a
+      ><a name="525" href="Agda.Builtin.Nat.html#525" class="Function Operator"
+      >_==_</a
+      ><a name="529"
+      > </a
+      ><a name="530" class="Symbol"
+      >:</a
+      ><a name="531"
+      > </a
+      ><a name="532" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="535"
+      > </a
+      ><a name="536" class="Symbol"
+      >&#8594;</a
+      ><a name="537"
+      > </a
+      ><a name="538" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="541"
+      > </a
+      ><a name="542" class="Symbol"
+      >&#8594;</a
+      ><a name="543"
+      > </a
+      ><a name="544" href="Agda.Builtin.Bool.html#67" class="Datatype"
+      >Bool</a
+      ><a name="548"
+      >
+</a
+      ><a name="549" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      >zero</a
+      ><a name="553"
+      >  </a
+      ><a name="555" href="Agda.Builtin.Nat.html#525" class="Function Operator"
+      >==</a
+      ><a name="557"
+      > </a
+      ><a name="558" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      >zero</a
+      ><a name="562"
+      >  </a
+      ><a name="564" class="Symbol"
+      >=</a
+      ><a name="565"
+      > </a
+      ><a name="566" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor"
+      >true</a
+      ><a name="570"
+      >
+</a
+      ><a name="571" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="574"
+      > </a
+      ><a name="575" href="Agda.Builtin.Nat.html#575" class="Bound"
+      >n</a
+      ><a name="576"
+      > </a
+      ><a name="577" href="Agda.Builtin.Nat.html#525" class="Function Operator"
+      >==</a
+      ><a name="579"
+      > </a
+      ><a name="580" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="583"
+      > </a
+      ><a name="584" href="Agda.Builtin.Nat.html#584" class="Bound"
+      >m</a
+      ><a name="585"
+      > </a
+      ><a name="586" class="Symbol"
+      >=</a
+      ><a name="587"
+      > </a
+      ><a name="588" href="Agda.Builtin.Nat.html#575" class="Bound"
+      >n</a
+      ><a name="589"
+      > </a
+      ><a name="590" href="Agda.Builtin.Nat.html#525" class="Function Operator"
+      >==</a
+      ><a name="592"
+      > </a
+      ><a name="593" href="Agda.Builtin.Nat.html#584" class="Bound"
+      >m</a
+      ><a name="594"
+      >
+</a
+      ><a name="595" class="Symbol"
+      >_</a
+      ><a name="596"
+      >     </a
+      ><a name="601" href="Agda.Builtin.Nat.html#525" class="Function Operator"
+      >==</a
+      ><a name="603"
+      > </a
+      ><a name="604" class="Symbol"
+      >_</a
+      ><a name="605"
+      >     </a
+      ><a name="610" class="Symbol"
+      >=</a
+      ><a name="611"
+      > </a
+      ><a name="612" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor"
+      >false</a
+      ><a name="617"
+      >
+
+</a
+      ><a name="619" class="Symbol"
+      >{-#</a
+      ><a name="622"
+      > </a
+      ><a name="623" class="Keyword"
+      >BUILTIN</a
+      ><a name="630"
+      > NATEQUALS </a
+      ><a name="641" href="Agda.Builtin.Nat.html#525" class="Primitive Operator"
+      >_==_</a
+      ><a name="645"
+      > </a
+      ><a name="646" class="Symbol"
+      >#-}</a
+      ><a name="649"
+      >
+
+</a
+      ><a name="651" href="Agda.Builtin.Nat.html#651" class="Function Operator"
+      >_&lt;_</a
+      ><a name="654"
+      > </a
+      ><a name="655" class="Symbol"
+      >:</a
+      ><a name="656"
+      > </a
+      ><a name="657" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="660"
+      > </a
+      ><a name="661" class="Symbol"
+      >&#8594;</a
+      ><a name="662"
+      > </a
+      ><a name="663" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="666"
+      > </a
+      ><a name="667" class="Symbol"
+      >&#8594;</a
+      ><a name="668"
+      > </a
+      ><a name="669" href="Agda.Builtin.Bool.html#67" class="Datatype"
+      >Bool</a
+      ><a name="673"
+      >
+</a
+      ><a name="674" class="Symbol"
+      >_</a
+      ><a name="675"
+      >     </a
+      ><a name="680" href="Agda.Builtin.Nat.html#651" class="Function Operator"
+      >&lt;</a
+      ><a name="681"
+      > </a
+      ><a name="682" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      >zero</a
+      ><a name="686"
+      >  </a
+      ><a name="688" class="Symbol"
+      >=</a
+      ><a name="689"
+      > </a
+      ><a name="690" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor"
+      >false</a
+      ><a name="695"
+      >
+</a
+      ><a name="696" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      >zero</a
+      ><a name="700"
+      >  </a
+      ><a name="702" href="Agda.Builtin.Nat.html#651" class="Function Operator"
+      >&lt;</a
+      ><a name="703"
+      > </a
+      ><a name="704" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="707"
+      > </a
+      ><a name="708" class="Symbol"
+      >_</a
+      ><a name="709"
+      > </a
+      ><a name="710" class="Symbol"
+      >=</a
+      ><a name="711"
+      > </a
+      ><a name="712" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor"
+      >true</a
+      ><a name="716"
+      >
+</a
+      ><a name="717" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="720"
+      > </a
+      ><a name="721" href="Agda.Builtin.Nat.html#721" class="Bound"
+      >n</a
+      ><a name="722"
+      > </a
+      ><a name="723" href="Agda.Builtin.Nat.html#651" class="Function Operator"
+      >&lt;</a
+      ><a name="724"
+      > </a
+      ><a name="725" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="728"
+      > </a
+      ><a name="729" href="Agda.Builtin.Nat.html#729" class="Bound"
+      >m</a
+      ><a name="730"
+      > </a
+      ><a name="731" class="Symbol"
+      >=</a
+      ><a name="732"
+      > </a
+      ><a name="733" href="Agda.Builtin.Nat.html#721" class="Bound"
+      >n</a
+      ><a name="734"
+      > </a
+      ><a name="735" href="Agda.Builtin.Nat.html#651" class="Function Operator"
+      >&lt;</a
+      ><a name="736"
+      > </a
+      ><a name="737" href="Agda.Builtin.Nat.html#729" class="Bound"
+      >m</a
+      ><a name="738"
+      >
+
+</a
+      ><a name="740" class="Symbol"
+      >{-#</a
+      ><a name="743"
+      > </a
+      ><a name="744" class="Keyword"
+      >BUILTIN</a
+      ><a name="751"
+      > NATLESS </a
+      ><a name="760" href="Agda.Builtin.Nat.html#651" class="Primitive Operator"
+      >_&lt;_</a
+      ><a name="763"
+      > </a
+      ><a name="764" class="Symbol"
+      >#-}</a
+      ><a name="767"
+      >
+
+</a
+      ><a name="769" href="Agda.Builtin.Nat.html#769" class="Function"
+      >div-helper</a
+      ><a name="779"
+      > </a
+      ><a name="780" class="Symbol"
+      >:</a
+      ><a name="781"
+      > </a
+      ><a name="782" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="785"
+      > </a
+      ><a name="786" class="Symbol"
+      >&#8594;</a
+      ><a name="787"
+      > </a
+      ><a name="788" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="791"
+      > </a
+      ><a name="792" class="Symbol"
+      >&#8594;</a
+      ><a name="793"
+      > </a
+      ><a name="794" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="797"
+      > </a
+      ><a name="798" class="Symbol"
+      >&#8594;</a
+      ><a name="799"
+      > </a
+      ><a name="800" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="803"
+      > </a
+      ><a name="804" class="Symbol"
+      >&#8594;</a
+      ><a name="805"
+      > </a
+      ><a name="806" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="809"
+      >
+</a
+      ><a name="810" href="Agda.Builtin.Nat.html#769" class="Function"
+      >div-helper</a
+      ><a name="820"
+      > </a
+      ><a name="821" href="Agda.Builtin.Nat.html#821" class="Bound"
+      >k</a
+      ><a name="822"
+      > </a
+      ><a name="823" href="Agda.Builtin.Nat.html#823" class="Bound"
+      >m</a
+      ><a name="824"
+      >  </a
+      ><a name="826" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      >zero</a
+      ><a name="830"
+      >    </a
+      ><a name="834" href="Agda.Builtin.Nat.html#834" class="Bound"
+      >j</a
+      ><a name="835"
+      >      </a
+      ><a name="841" class="Symbol"
+      >=</a
+      ><a name="842"
+      > </a
+      ><a name="843" href="Agda.Builtin.Nat.html#821" class="Bound"
+      >k</a
+      ><a name="844"
+      >
+</a
+      ><a name="845" href="Agda.Builtin.Nat.html#769" class="Function"
+      >div-helper</a
+      ><a name="855"
+      > </a
+      ><a name="856" href="Agda.Builtin.Nat.html#856" class="Bound"
+      >k</a
+      ><a name="857"
+      > </a
+      ><a name="858" href="Agda.Builtin.Nat.html#858" class="Bound"
+      >m</a
+      ><a name="859"
+      > </a
+      ><a name="860" class="Symbol"
+      >(</a
+      ><a name="861" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="864"
+      > </a
+      ><a name="865" href="Agda.Builtin.Nat.html#865" class="Bound"
+      >n</a
+      ><a name="866" class="Symbol"
+      >)</a
+      ><a name="867"
+      >  </a
+      ><a name="869" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      >zero</a
+      ><a name="873"
+      >   </a
+      ><a name="876" class="Symbol"
+      >=</a
+      ><a name="877"
+      > </a
+      ><a name="878" href="Agda.Builtin.Nat.html#769" class="Function"
+      >div-helper</a
+      ><a name="888"
+      > </a
+      ><a name="889" class="Symbol"
+      >(</a
+      ><a name="890" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="893"
+      > </a
+      ><a name="894" href="Agda.Builtin.Nat.html#856" class="Bound"
+      >k</a
+      ><a name="895" class="Symbol"
+      >)</a
+      ><a name="896"
+      > </a
+      ><a name="897" href="Agda.Builtin.Nat.html#858" class="Bound"
+      >m</a
+      ><a name="898"
+      > </a
+      ><a name="899" href="Agda.Builtin.Nat.html#865" class="Bound"
+      >n</a
+      ><a name="900"
+      > </a
+      ><a name="901" href="Agda.Builtin.Nat.html#858" class="Bound"
+      >m</a
+      ><a name="902"
+      >
+</a
+      ><a name="903" href="Agda.Builtin.Nat.html#769" class="Function"
+      >div-helper</a
+      ><a name="913"
+      > </a
+      ><a name="914" href="Agda.Builtin.Nat.html#914" class="Bound"
+      >k</a
+      ><a name="915"
+      > </a
+      ><a name="916" href="Agda.Builtin.Nat.html#916" class="Bound"
+      >m</a
+      ><a name="917"
+      > </a
+      ><a name="918" class="Symbol"
+      >(</a
+      ><a name="919" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="922"
+      > </a
+      ><a name="923" href="Agda.Builtin.Nat.html#923" class="Bound"
+      >n</a
+      ><a name="924" class="Symbol"
+      >)</a
+      ><a name="925"
+      > </a
+      ><a name="926" class="Symbol"
+      >(</a
+      ><a name="927" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="930"
+      > </a
+      ><a name="931" href="Agda.Builtin.Nat.html#931" class="Bound"
+      >j</a
+      ><a name="932" class="Symbol"
+      >)</a
+      ><a name="933"
+      > </a
+      ><a name="934" class="Symbol"
+      >=</a
+      ><a name="935"
+      > </a
+      ><a name="936" href="Agda.Builtin.Nat.html#769" class="Function"
+      >div-helper</a
+      ><a name="946"
+      > </a
+      ><a name="947" href="Agda.Builtin.Nat.html#914" class="Bound"
+      >k</a
+      ><a name="948"
+      > </a
+      ><a name="949" href="Agda.Builtin.Nat.html#916" class="Bound"
+      >m</a
+      ><a name="950"
+      > </a
+      ><a name="951" href="Agda.Builtin.Nat.html#923" class="Bound"
+      >n</a
+      ><a name="952"
+      > </a
+      ><a name="953" href="Agda.Builtin.Nat.html#931" class="Bound"
+      >j</a
+      ><a name="954"
+      >
+
+</a
+      ><a name="956" class="Symbol"
+      >{-#</a
+      ><a name="959"
+      > </a
+      ><a name="960" class="Keyword"
+      >BUILTIN</a
+      ><a name="967"
+      > NATDIVSUCAUX </a
+      ><a name="981" href="Agda.Builtin.Nat.html#769" class="Primitive"
+      >div-helper</a
+      ><a name="991"
+      > </a
+      ><a name="992" class="Symbol"
+      >#-}</a
+      ><a name="995"
+      >
+
+</a
+      ><a name="997" href="Agda.Builtin.Nat.html#997" class="Function"
+      >mod-helper</a
+      ><a name="1007"
+      > </a
+      ><a name="1008" class="Symbol"
+      >:</a
+      ><a name="1009"
+      > </a
+      ><a name="1010" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="1013"
+      > </a
+      ><a name="1014" class="Symbol"
+      >&#8594;</a
+      ><a name="1015"
+      > </a
+      ><a name="1016" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="1019"
+      > </a
+      ><a name="1020" class="Symbol"
+      >&#8594;</a
+      ><a name="1021"
+      > </a
+      ><a name="1022" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="1025"
+      > </a
+      ><a name="1026" class="Symbol"
+      >&#8594;</a
+      ><a name="1027"
+      > </a
+      ><a name="1028" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="1031"
+      > </a
+      ><a name="1032" class="Symbol"
+      >&#8594;</a
+      ><a name="1033"
+      > </a
+      ><a name="1034" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      >Nat</a
+      ><a name="1037"
+      >
+</a
+      ><a name="1038" href="Agda.Builtin.Nat.html#997" class="Function"
+      >mod-helper</a
+      ><a name="1048"
+      > </a
+      ><a name="1049" href="Agda.Builtin.Nat.html#1049" class="Bound"
+      >k</a
+      ><a name="1050"
+      > </a
+      ><a name="1051" href="Agda.Builtin.Nat.html#1051" class="Bound"
+      >m</a
+      ><a name="1052"
+      >  </a
+      ><a name="1054" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      >zero</a
+      ><a name="1058"
+      >    </a
+      ><a name="1062" href="Agda.Builtin.Nat.html#1062" class="Bound"
+      >j</a
+      ><a name="1063"
+      >      </a
+      ><a name="1069" class="Symbol"
+      >=</a
+      ><a name="1070"
+      > </a
+      ><a name="1071" href="Agda.Builtin.Nat.html#1049" class="Bound"
+      >k</a
+      ><a name="1072"
+      >
+</a
+      ><a name="1073" href="Agda.Builtin.Nat.html#997" class="Function"
+      >mod-helper</a
+      ><a name="1083"
+      > </a
+      ><a name="1084" href="Agda.Builtin.Nat.html#1084" class="Bound"
+      >k</a
+      ><a name="1085"
+      > </a
+      ><a name="1086" href="Agda.Builtin.Nat.html#1086" class="Bound"
+      >m</a
+      ><a name="1087"
+      > </a
+      ><a name="1088" class="Symbol"
+      >(</a
+      ><a name="1089" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="1092"
+      > </a
+      ><a name="1093" href="Agda.Builtin.Nat.html#1093" class="Bound"
+      >n</a
+      ><a name="1094" class="Symbol"
+      >)</a
+      ><a name="1095"
+      >  </a
+      ><a name="1097" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      >zero</a
+      ><a name="1101"
+      >   </a
+      ><a name="1104" class="Symbol"
+      >=</a
+      ><a name="1105"
+      > </a
+      ><a name="1106" href="Agda.Builtin.Nat.html#997" class="Function"
+      >mod-helper</a
+      ><a name="1116"
+      > </a
+      ><a name="1117" class="Number"
+      >0</a
+      ><a name="1118"
+      > </a
+      ><a name="1119" href="Agda.Builtin.Nat.html#1086" class="Bound"
+      >m</a
+      ><a name="1120"
+      > </a
+      ><a name="1121" href="Agda.Builtin.Nat.html#1093" class="Bound"
+      >n</a
+      ><a name="1122"
+      > </a
+      ><a name="1123" href="Agda.Builtin.Nat.html#1086" class="Bound"
+      >m</a
+      ><a name="1124"
+      >
+</a
+      ><a name="1125" href="Agda.Builtin.Nat.html#997" class="Function"
+      >mod-helper</a
+      ><a name="1135"
+      > </a
+      ><a name="1136" href="Agda.Builtin.Nat.html#1136" class="Bound"
+      >k</a
+      ><a name="1137"
+      > </a
+      ><a name="1138" href="Agda.Builtin.Nat.html#1138" class="Bound"
+      >m</a
+      ><a name="1139"
+      > </a
+      ><a name="1140" class="Symbol"
+      >(</a
+      ><a name="1141" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="1144"
+      > </a
+      ><a name="1145" href="Agda.Builtin.Nat.html#1145" class="Bound"
+      >n</a
+      ><a name="1146" class="Symbol"
+      >)</a
+      ><a name="1147"
+      > </a
+      ><a name="1148" class="Symbol"
+      >(</a
+      ><a name="1149" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="1152"
+      > </a
+      ><a name="1153" href="Agda.Builtin.Nat.html#1153" class="Bound"
+      >j</a
+      ><a name="1154" class="Symbol"
+      >)</a
+      ><a name="1155"
+      > </a
+      ><a name="1156" class="Symbol"
+      >=</a
+      ><a name="1157"
+      > </a
+      ><a name="1158" href="Agda.Builtin.Nat.html#997" class="Function"
+      >mod-helper</a
+      ><a name="1168"
+      > </a
+      ><a name="1169" class="Symbol"
+      >(</a
+      ><a name="1170" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      >suc</a
+      ><a name="1173"
+      > </a
+      ><a name="1174" href="Agda.Builtin.Nat.html#1136" class="Bound"
+      >k</a
+      ><a name="1175" class="Symbol"
+      >)</a
+      ><a name="1176"
+      > </a
+      ><a name="1177" href="Agda.Builtin.Nat.html#1138" class="Bound"
+      >m</a
+      ><a name="1178"
+      > </a
+      ><a name="1179" href="Agda.Builtin.Nat.html#1145" class="Bound"
+      >n</a
+      ><a name="1180"
+      > </a
+      ><a name="1181" href="Agda.Builtin.Nat.html#1153" class="Bound"
+      >j</a
+      ><a name="1182"
+      >
+
+</a
+      ><a name="1184" class="Symbol"
+      >{-#</a
+      ><a name="1187"
+      > </a
+      ><a name="1188" class="Keyword"
+      >BUILTIN</a
+      ><a name="1195"
+      > NATMODSUCAUX </a
+      ><a name="1209" href="Agda.Builtin.Nat.html#997" class="Primitive"
+      >mod-helper</a
+      ><a name="1219"
+      > </a
+      ><a name="1220" class="Symbol"
+      >#-}</a
+      ><a name="1223"
+      >
+</a
+      ></pre
+    ></body
+  ></html
+>

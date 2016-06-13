@@ -15,312 +15,274 @@
       >
 
 </a
-      ><a name="38" class="Keyword"
-      >module</a
-      ><a name="44"
+      ><a name="38" class="Symbol"
+      >{-#</a
+      ><a name="41"
       > </a
-      ><a name="45" href="Agda.Primitive.html#1" class="Module"
-      >Agda.Primitive</a
-      ><a name="59"
-      > </a
-      ><a name="60" class="Keyword"
-      >where</a
+      ><a name="42" class="Keyword"
+      >OPTIONS</a
+      ><a name="49"
+      > --without-K </a
+      ><a name="62" class="Symbol"
+      >#-}</a
       ><a name="65"
       >
 
 </a
-      ><a name="67" class="Comment"
-      >------------------------------------------------------------------------</a
-      ><a name="139"
-      >
-</a
-      ><a name="140" class="Comment"
-      >-- Universe levels</a
-      ><a name="158"
-      >
-</a
-      ><a name="159" class="Comment"
-      >------------------------------------------------------------------------</a
-      ><a name="231"
+      ><a name="67" class="Keyword"
+      >module</a
+      ><a name="73"
+      > </a
+      ><a name="74" href="Agda.Primitive.html#1" class="Module"
+      >Agda.Primitive</a
+      ><a name="88"
+      > </a
+      ><a name="89" class="Keyword"
+      >where</a
+      ><a name="94"
       >
 
 </a
-      ><a name="233" class="Keyword"
+      ><a name="96" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="168"
+      >
+</a
+      ><a name="169" class="Comment"
+      >-- Universe levels</a
+      ><a name="187"
+      >
+</a
+      ><a name="188" class="Comment"
+      >------------------------------------------------------------------------</a
+      ><a name="260"
+      >
+
+</a
+      ><a name="262" class="Keyword"
       >infixl</a
-      ><a name="239"
+      ><a name="268"
       > </a
-      ><a name="240" class="Number"
+      ><a name="269" class="Number"
       >6</a
-      ><a name="241"
+      ><a name="270"
       > _&#8852;_
 
 </a
-      ><a name="247" class="Comment"
+      ><a name="276" class="Comment"
       >-- Level is the first thing we need to define.</a
-      ><a name="293"
+      ><a name="322"
       >
 </a
-      ><a name="294" class="Comment"
+      ><a name="323" class="Comment"
       >-- The other postulates can only be checked if built-in Level is known.</a
-      ><a name="365"
+      ><a name="394"
       >
 
 </a
-      ><a name="367" class="Keyword"
+      ><a name="396" class="Keyword"
       >postulate</a
-      ><a name="376"
+      ><a name="405"
       >
   </a
-      ><a name="379" href="Agda.Primitive.html#379" class="Postulate"
+      ><a name="408" href="Agda.Primitive.html#408" class="Postulate"
       >Level</a
-      ><a name="384"
+      ><a name="413"
       > </a
-      ><a name="385" class="Symbol"
+      ><a name="414" class="Symbol"
       >:</a
-      ><a name="386"
+      ><a name="415"
       > </a
-      ><a name="387" class="PrimitiveType"
+      ><a name="416" class="PrimitiveType"
       >Set</a
-      ><a name="390"
+      ><a name="419"
       >
 
 </a
-      ><a name="392" class="Comment"
+      ><a name="421" class="Comment"
       >-- MAlonzo compiles Level to (). This should be safe, because it is</a
-      ><a name="459"
+      ><a name="488"
       >
 </a
-      ><a name="460" class="Comment"
+      ><a name="489" class="Comment"
       >-- not possible to pattern match on levels.</a
-      ><a name="503"
+      ><a name="532"
       >
 
 </a
-      ><a name="505" class="Symbol"
+      ><a name="534" class="Symbol"
       >{-#</a
-      ><a name="508"
+      ><a name="537"
       > </a
-      ><a name="509" class="Keyword"
+      ><a name="538" class="Keyword"
       >COMPILED_TYPE</a
-      ><a name="522"
+      ><a name="551"
       > </a
-      ><a name="523" href="Agda.Primitive.html#379" class="Postulate"
+      ><a name="552" href="Agda.Primitive.html#408" class="Postulate"
       >Level</a
-      ><a name="528"
+      ><a name="557"
       > () </a
-      ><a name="532" class="Symbol"
+      ><a name="561" class="Symbol"
       >#-}</a
-      ><a name="535"
+      ><a name="564"
       >
 </a
-      ><a name="536" class="Symbol"
+      ><a name="565" class="Symbol"
       >{-#</a
-      ><a name="539"
+      ><a name="568"
       > </a
-      ><a name="540" class="Keyword"
+      ><a name="569" class="Keyword"
       >BUILTIN</a
-      ><a name="547"
+      ><a name="576"
       > LEVEL </a
-      ><a name="554" href="Agda.Primitive.html#379" class="Postulate"
+      ><a name="583" href="Agda.Primitive.html#408" class="Postulate"
       >Level</a
-      ><a name="559"
+      ><a name="588"
       >    </a
-      ><a name="563" class="Symbol"
+      ><a name="592" class="Symbol"
       >#-}</a
-      ><a name="566"
+      ><a name="595"
       >
 
 </a
-      ><a name="568" class="Keyword"
+      ><a name="597" class="Keyword"
       >postulate</a
-      ><a name="577"
-      >
-  </a
-      ><a name="580" href="Agda.Primitive.html#580" class="Postulate"
-      >lzero</a
-      ><a name="585"
-      > </a
-      ><a name="586" class="Symbol"
-      >:</a
-      ><a name="587"
-      > </a
-      ><a name="588" href="Agda.Primitive.html#379" class="Postulate"
-      >Level</a
-      ><a name="593"
-      >
-  </a
-      ><a name="596" href="Agda.Primitive.html#596" class="Postulate"
-      >lsuc</a
-      ><a name="600"
-      >  </a
-      ><a name="602" class="Symbol"
-      >:</a
-      ><a name="603"
-      > </a
-      ><a name="604" class="Symbol"
-      >(</a
-      ><a name="605" href="Agda.Primitive.html#605" class="Bound"
-      >&#8467;</a
       ><a name="606"
-      > </a
-      ><a name="607" class="Symbol"
-      >:</a
-      ><a name="608"
-      > </a
-      ><a name="609" href="Agda.Primitive.html#379" class="Postulate"
-      >Level</a
-      ><a name="614" class="Symbol"
-      >)</a
-      ><a name="615"
-      > </a
-      ><a name="616" class="Symbol"
-      >&#8594;</a
-      ><a name="617"
-      > </a
-      ><a name="618" href="Agda.Primitive.html#379" class="Postulate"
-      >Level</a
-      ><a name="623"
       >
   </a
-      ><a name="626" href="Agda.Primitive.html#626" class="Postulate Operator"
-      >_&#8852;_</a
-      ><a name="629"
-      >   </a
-      ><a name="632" class="Symbol"
-      >:</a
-      ><a name="633"
+      ><a name="609" href="Agda.Primitive.html#609" class="Postulate"
+      >lzero</a
+      ><a name="614"
       > </a
-      ><a name="634" class="Symbol"
+      ><a name="615" class="Symbol"
+      >:</a
+      ><a name="616"
+      > </a
+      ><a name="617" href="Agda.Primitive.html#408" class="Postulate"
+      >Level</a
+      ><a name="622"
+      >
+  </a
+      ><a name="625" href="Agda.Primitive.html#625" class="Postulate"
+      >lsuc</a
+      ><a name="629"
+      >  </a
+      ><a name="631" class="Symbol"
+      >:</a
+      ><a name="632"
+      > </a
+      ><a name="633" class="Symbol"
       >(</a
-      ><a name="635" href="Agda.Primitive.html#635" class="Bound"
-      >&#8467;&#8321;</a
+      ><a name="634" href="Agda.Primitive.html#634" class="Bound"
+      >&#8467;</a
+      ><a name="635"
+      > </a
+      ><a name="636" class="Symbol"
+      >:</a
       ><a name="637"
       > </a
-      ><a name="638" href="Agda.Primitive.html#638" class="Bound"
-      >&#8467;&#8322;</a
-      ><a name="640"
-      > </a
-      ><a name="641" class="Symbol"
-      >:</a
-      ><a name="642"
-      > </a
-      ><a name="643" href="Agda.Primitive.html#379" class="Postulate"
+      ><a name="638" href="Agda.Primitive.html#408" class="Postulate"
       >Level</a
-      ><a name="648" class="Symbol"
+      ><a name="643" class="Symbol"
       >)</a
-      ><a name="649"
+      ><a name="644"
       > </a
-      ><a name="650" class="Symbol"
+      ><a name="645" class="Symbol"
       >&#8594;</a
-      ><a name="651"
+      ><a name="646"
       > </a
-      ><a name="652" href="Agda.Primitive.html#379" class="Postulate"
+      ><a name="647" href="Agda.Primitive.html#408" class="Postulate"
       >Level</a
-      ><a name="657"
+      ><a name="652"
       >
-
-</a
-      ><a name="659" class="Symbol"
-      >{-#</a
+  </a
+      ><a name="655" href="Agda.Primitive.html#655" class="Postulate Operator"
+      >_&#8852;_</a
+      ><a name="658"
+      >   </a
+      ><a name="661" class="Symbol"
+      >:</a
       ><a name="662"
       > </a
-      ><a name="663" class="Keyword"
-      >COMPILED</a
+      ><a name="663" class="Symbol"
+      >(</a
+      ><a name="664" href="Agda.Primitive.html#664" class="Bound"
+      >&#8467;&#8321;</a
+      ><a name="666"
+      > </a
+      ><a name="667" href="Agda.Primitive.html#667" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="669"
+      > </a
+      ><a name="670" class="Symbol"
+      >:</a
       ><a name="671"
       > </a
-      ><a name="672" href="Agda.Primitive.html#580" class="Postulate"
-      >lzero</a
-      ><a name="677"
-      > ()           </a
-      ><a name="691" class="Symbol"
-      >#-}</a
-      ><a name="694"
-      >
-</a
-      ><a name="695" class="Symbol"
-      >{-#</a
-      ><a name="698"
+      ><a name="672" href="Agda.Primitive.html#408" class="Postulate"
+      >Level</a
+      ><a name="677" class="Symbol"
+      >)</a
+      ><a name="678"
       > </a
-      ><a name="699" class="Keyword"
-      >COMPILED</a
-      ><a name="707"
+      ><a name="679" class="Symbol"
+      >&#8594;</a
+      ><a name="680"
       > </a
-      ><a name="708" href="Agda.Primitive.html#596" class="Postulate"
-      >lsuc</a
-      ><a name="712"
-      >  (\_ -&gt; ())   </a
-      ><a name="727" class="Symbol"
-      >#-}</a
-      ><a name="730"
-      >
-</a
-      ><a name="731" class="Symbol"
-      >{-#</a
-      ><a name="734"
-      > </a
-      ><a name="735" class="Keyword"
-      >COMPILED</a
-      ><a name="743"
-      > </a
-      ><a name="744" href="Agda.Primitive.html#626" class="Postulate Operator"
-      >_&#8852;_</a
-      ><a name="747"
-      >   (\_ _ -&gt; ()) </a
-      ><a name="763" class="Symbol"
-      >#-}</a
-      ><a name="766"
+      ><a name="681" href="Agda.Primitive.html#408" class="Postulate"
+      >Level</a
+      ><a name="686"
       >
 
 </a
-      ><a name="768" class="Symbol"
+      ><a name="688" class="Symbol"
       >{-#</a
-      ><a name="771"
+      ><a name="691"
       > </a
-      ><a name="772" class="Keyword"
+      ><a name="692" class="Keyword"
       >BUILTIN</a
-      ><a name="779"
+      ><a name="699"
       > LEVELZERO </a
-      ><a name="790" href="Agda.Primitive.html#580" class="Primitive"
+      ><a name="710" href="Agda.Primitive.html#609" class="Primitive"
       >lzero</a
-      ><a name="795"
+      ><a name="715"
       > </a
-      ><a name="796" class="Symbol"
+      ><a name="716" class="Symbol"
       >#-}</a
-      ><a name="799"
+      ><a name="719"
       >
 </a
-      ><a name="800" class="Symbol"
+      ><a name="720" class="Symbol"
       >{-#</a
-      ><a name="803"
+      ><a name="723"
       > </a
-      ><a name="804" class="Keyword"
+      ><a name="724" class="Keyword"
       >BUILTIN</a
-      ><a name="811"
+      ><a name="731"
       > LEVELSUC  </a
-      ><a name="822" href="Agda.Primitive.html#596" class="Primitive"
+      ><a name="742" href="Agda.Primitive.html#625" class="Primitive"
       >lsuc</a
-      ><a name="826"
+      ><a name="746"
       >  </a
-      ><a name="828" class="Symbol"
+      ><a name="748" class="Symbol"
       >#-}</a
-      ><a name="831"
+      ><a name="751"
       >
 </a
-      ><a name="832" class="Symbol"
+      ><a name="752" class="Symbol"
       >{-#</a
-      ><a name="835"
+      ><a name="755"
       > </a
-      ><a name="836" class="Keyword"
+      ><a name="756" class="Keyword"
       >BUILTIN</a
-      ><a name="843"
+      ><a name="763"
       > LEVELMAX  </a
-      ><a name="854" href="Agda.Primitive.html#626" class="Primitive Operator"
+      ><a name="774" href="Agda.Primitive.html#655" class="Primitive Operator"
       >_&#8852;_</a
-      ><a name="857"
+      ><a name="777"
       >   </a
-      ><a name="860" class="Symbol"
+      ><a name="780" class="Symbol"
       >#-}</a
-      ><a name="863"
+      ><a name="783"
       >
 </a
       ></pre
