@@ -27,7 +27,7 @@ open import Data.Sum
 
 ------------------------------------------------------------------------
 
--- basic lemmas about (ℕ, +, *, 0, 1):
+-- Basic lemmas about (ℕ, +, *, 0, 1):
 open import Data.Nat.Properties.Simple
 
 -- (ℕ, +, *, 0, 1) is a commutative semiring
@@ -72,81 +72,95 @@ module SemiringSolver =
 ------------------------------------------------------------------------
 -- (ℕ, ⊔, ⊓, 0) is a commutative semiring without one
 
-private
+⊔-assoc : Associative _⊔_
+⊔-assoc zero    _       _       = refl
+⊔-assoc (suc m) zero    _       = refl
+⊔-assoc (suc m) (suc n) zero    = refl
+⊔-assoc (suc m) (suc n) (suc o) = cong suc $ ⊔-assoc m n o
 
-  ⊔-assoc : Associative _⊔_
-  ⊔-assoc zero    _       _       = refl
-  ⊔-assoc (suc m) zero    o       = refl
-  ⊔-assoc (suc m) (suc n) zero    = refl
-  ⊔-assoc (suc m) (suc n) (suc o) = cong suc $ ⊔-assoc m n o
+⊔-identityʳ : RightIdentity 0 _⊔_
+⊔-identityʳ zero    = refl
+⊔-identityʳ (suc n) = refl
 
-  ⊔-identity : Identity 0 _⊔_
-  ⊔-identity = (λ _ → refl) , n⊔0≡n
-    where
-    n⊔0≡n : RightIdentity 0 _⊔_
-    n⊔0≡n zero    = refl
-    n⊔0≡n (suc n) = refl
+⊔-identityˡ : LeftIdentity 0 _⊔_
+⊔-identityˡ _ = refl
 
-  ⊔-comm : Commutative _⊔_
-  ⊔-comm zero    n       = sym $ proj₂ ⊔-identity n
-  ⊔-comm (suc m) zero    = refl
-  ⊔-comm (suc m) (suc n) =
-    begin
-      suc m ⊔ suc n
-    ≡⟨ refl ⟩
-      suc (m ⊔ n)
-    ≡⟨ cong suc (⊔-comm m n) ⟩
-      suc (n ⊔ m)
-    ≡⟨ refl ⟩
-      suc n ⊔ suc m
-    ∎
+⊔-identity : Identity 0 _⊔_
+⊔-identity = ⊔-identityˡ , ⊔-identityʳ
 
-  ⊓-assoc : Associative _⊓_
-  ⊓-assoc zero    _       _       = refl
-  ⊓-assoc (suc m) zero    o       = refl
-  ⊓-assoc (suc m) (suc n) zero    = refl
-  ⊓-assoc (suc m) (suc n) (suc o) = cong suc $ ⊓-assoc m n o
+⊔-comm : Commutative _⊔_
+⊔-comm zero    n       = sym $ proj₂ ⊔-identity n
+⊔-comm (suc m) zero    = refl
+⊔-comm (suc m) (suc n) =
+  begin
+    suc m ⊔ suc n
+  ≡⟨ refl ⟩
+    suc (m ⊔ n)
+  ≡⟨ cong suc (⊔-comm m n) ⟩
+    suc (n ⊔ m)
+  ≡⟨ refl ⟩
+    suc n ⊔ suc m
+  ∎
 
-  ⊓-zero : Zero 0 _⊓_
-  ⊓-zero = (λ _ → refl) , n⊓0≡0
-    where
-    n⊓0≡0 : RightZero 0 _⊓_
-    n⊓0≡0 zero    = refl
-    n⊓0≡0 (suc n) = refl
+⊓-assoc : Associative _⊓_
+⊓-assoc zero    _       _       = refl
+⊓-assoc (suc m) zero    o       = refl
+⊓-assoc (suc m) (suc n) zero    = refl
+⊓-assoc (suc m) (suc n) (suc o) = cong suc $ ⊓-assoc m n o
 
-  ⊓-comm : Commutative _⊓_
-  ⊓-comm zero    n       = sym $ proj₂ ⊓-zero n
-  ⊓-comm (suc m) zero    = refl
-  ⊓-comm (suc m) (suc n) =
-    begin
-      suc m ⊓ suc n
-    ≡⟨ refl ⟩
-      suc (m ⊓ n)
-    ≡⟨ cong suc (⊓-comm m n) ⟩
-      suc (n ⊓ m)
-    ≡⟨ refl ⟩
-      suc n ⊓ suc m
-    ∎
+⊓-zeroʳ : RightZero 0 _⊓_
+⊓-zeroʳ zero    = refl
+⊓-zeroʳ (suc n) = refl
 
-  distrib-⊓-⊔ : _⊓_ DistributesOver _⊔_
-  distrib-⊓-⊔ = (distribˡ-⊓-⊔ , distribʳ-⊓-⊔)
-    where
-    distribʳ-⊓-⊔ : _⊓_ DistributesOverʳ _⊔_
-    distribʳ-⊓-⊔ (suc m) (suc n) (suc o) = cong suc $ distribʳ-⊓-⊔ m n o
-    distribʳ-⊓-⊔ (suc m) (suc n) zero    = cong suc $ refl
-    distribʳ-⊓-⊔ (suc m) zero    o       = refl
-    distribʳ-⊓-⊔ zero    n       o       = begin
-      (n ⊔ o) ⊓ 0    ≡⟨ ⊓-comm (n ⊔ o) 0 ⟩
-      0 ⊓ (n ⊔ o)    ≡⟨ refl ⟩
-      0 ⊓ n ⊔ 0 ⊓ o  ≡⟨ ⊓-comm 0 n ⟨ cong₂ _⊔_ ⟩ ⊓-comm 0 o ⟩
-      n ⊓ 0 ⊔ o ⊓ 0  ∎
+⊓-zeroˡ : LeftZero 0 _⊓_
+⊓-zeroˡ _ = refl
 
-    distribˡ-⊓-⊔ : _⊓_ DistributesOverˡ _⊔_
-    distribˡ-⊓-⊔ m n o = begin
-      m ⊓ (n ⊔ o)    ≡⟨ ⊓-comm m _ ⟩
-      (n ⊔ o) ⊓ m    ≡⟨ distribʳ-⊓-⊔ m n o ⟩
-      n ⊓ m ⊔ o ⊓ m  ≡⟨ ⊓-comm n m ⟨ cong₂ _⊔_ ⟩ ⊓-comm o m ⟩
-      m ⊓ n ⊔ m ⊓ o  ∎
+⊓-zero : Zero 0 _⊓_
+⊓-zero = ⊓-zeroˡ , ⊓-zeroʳ
+
+⊓-comm : Commutative _⊓_
+⊓-comm zero    n       = sym $ proj₂ ⊓-zero n
+⊓-comm (suc m) zero    = refl
+⊓-comm (suc m) (suc n) =
+  begin
+    suc m ⊓ suc n
+  ≡⟨ refl ⟩
+    suc (m ⊓ n)
+  ≡⟨ cong suc (⊓-comm m n) ⟩
+    suc (n ⊓ m)
+  ≡⟨ refl ⟩
+    suc n ⊓ suc m
+  ∎
+
+⊓-distribʳ-⊔ : _⊓_ DistributesOverʳ _⊔_
+⊓-distribʳ-⊔ (suc m) (suc n) (suc o) = cong suc $ ⊓-distribʳ-⊔ m n o
+⊓-distribʳ-⊔ (suc m) (suc n) zero    = cong suc $ refl
+⊓-distribʳ-⊔ (suc m) zero    o       = refl
+⊓-distribʳ-⊔ zero    n       o       =
+  begin
+    (n ⊔ o) ⊓ 0
+  ≡⟨ ⊓-comm (n ⊔ o) 0 ⟩
+    0 ⊓ (n ⊔ o)
+  ≡⟨ refl ⟩
+    0 ⊓ n ⊔ 0 ⊓ o
+  ≡⟨ ⊓-comm 0 n ⟨ cong₂ _⊔_ ⟩ ⊓-comm 0 o ⟩
+    n ⊓ 0 ⊔ o ⊓ 0
+  ∎
+
+⊓-distribˡ-⊔ : _⊓_ DistributesOverˡ _⊔_
+⊓-distribˡ-⊔ m n o =
+  begin
+    m ⊓ (n ⊔ o)
+  ≡⟨ ⊓-comm m _ ⟩
+    (n ⊔ o) ⊓ m
+  ≡⟨ ⊓-distribʳ-⊔ m n o ⟩
+    n ⊓ m ⊔ o ⊓ m
+  ≡⟨ ⊓-comm n m ⟨ cong₂ _⊔_ ⟩ ⊓-comm o m ⟩
+    m ⊓ n ⊔ m ⊓ o
+  ∎
+
+⊓-distrib-⊔ : _⊓_ DistributesOver _⊔_
+⊓-distrib-⊔ = ⊓-distribˡ-⊔ , ⊓-distribʳ-⊔
 
 ⊔-⊓-0-isCommutativeSemiringWithoutOne
   : IsCommutativeSemiringWithoutOne _≡_ _⊔_ _⊓_ 0
@@ -158,15 +172,15 @@ private
         ; assoc         = ⊔-assoc
         ; ∙-cong        = cong₂ _⊔_
         }
-      ; identityˡ = proj₁ ⊔-identity
-      ; comm      = ⊔-comm
+      ; identityˡ = ⊔-identityˡ
+      ; comm     = ⊔-comm
       }
     ; *-isSemigroup = record
       { isEquivalence = PropEq.isEquivalence
       ; assoc         = ⊓-assoc
       ; ∙-cong        = cong₂ _⊓_
       }
-    ; distrib = distrib-⊓-⊔
+    ; distrib = ⊓-distrib-⊔
     ; zero    = ⊓-zero
     }
   ; *-comm = ⊓-comm
@@ -184,27 +198,25 @@ private
 ------------------------------------------------------------------------
 -- (ℕ, ⊓, ⊔) is a lattice
 
-private
+⊔-abs-⊓ : _⊔_ Absorbs _⊓_
+⊔-abs-⊓ zero    n       = refl
+⊔-abs-⊓ (suc m) zero    = refl
+⊔-abs-⊓ (suc m) (suc n) = cong suc $ ⊔-abs-⊓ m n
 
-  absorptive-⊓-⊔ : Absorptive _⊓_ _⊔_
-  absorptive-⊓-⊔ = abs-⊓-⊔ , abs-⊔-⊓
-    where
-    abs-⊔-⊓ : _⊔_ Absorbs _⊓_
-    abs-⊔-⊓ zero    n       = refl
-    abs-⊔-⊓ (suc m) zero    = refl
-    abs-⊔-⊓ (suc m) (suc n) = cong suc $ abs-⊔-⊓ m n
+⊓-abs-⊔ : _⊓_ Absorbs _⊔_
+⊓-abs-⊔ zero    n       = refl
+⊓-abs-⊔ (suc m) (suc n) = cong suc $ ⊓-abs-⊔ m n
+⊓-abs-⊔ (suc m) zero    = cong suc $
+  begin
+    m ⊓ m
+  ≡⟨ cong (_⊓_ m) $ sym $ proj₂ ⊔-identity m ⟩
+    m ⊓ (m ⊔ 0)
+  ≡⟨ ⊓-abs-⊔ m zero ⟩
+    m
+  ∎
 
-    abs-⊓-⊔ : _⊓_ Absorbs _⊔_
-    abs-⊓-⊔ zero    n       = refl
-    abs-⊓-⊔ (suc m) (suc n) = cong suc $ abs-⊓-⊔ m n
-    abs-⊓-⊔ (suc m) zero    = cong suc $
-                   begin
-      m ⊓ m
-                   ≡⟨ cong (_⊓_ m) $ sym $ proj₂ ⊔-identity m ⟩
-      m ⊓ (m ⊔ 0)
-                   ≡⟨ abs-⊓-⊔ m zero ⟩
-      m
-                   ∎
+⊓-⊔-absorptive : Absorptive _⊓_ _⊔_
+⊓-⊔-absorptive = ⊓-abs-⊔ , ⊔-abs-⊓
 
 isDistributiveLattice : IsDistributiveLattice _≡_ _⊓_ _⊔_
 isDistributiveLattice = record
@@ -216,9 +228,9 @@ isDistributiveLattice = record
       ; ∧-comm        = ⊔-comm
       ; ∧-assoc       = ⊔-assoc
       ; ∧-cong        = cong₂ _⊔_
-      ; absorptive    = absorptive-⊓-⊔
+      ; absorptive    = ⊓-⊔-absorptive
       }
-  ; ∨-∧-distribʳ = proj₂ distrib-⊓-⊔
+  ; ∨-∧-distribʳ = ⊓-distribʳ-⊔
   }
 
 distributiveLattice : DistributiveLattice _ _
@@ -382,6 +394,15 @@ m≢1+m+n : ∀ m {n} → m ≢ suc (m + n)
 m≢1+m+n zero    ()
 m≢1+m+n (suc m) eq = m≢1+m+n m (cong pred eq)
 
+2+m+n≰m : ∀ {m n} → ¬ 2 + (m + n) ≤ m
+2+m+n≰m (s≤s le) = 2+m+n≰m le
+
+cmp : Trichotomous _≡_ _<_
+cmp m n with compare m n
+cmp .m .(suc (m + k)) | less    m k = tri< (m≤m+n (suc m) k) (m≢1+m+n _) 2+m+n≰m
+cmp .n             .n | equal   n   = tri≈ 1+n≰n refl 1+n≰n
+cmp .(suc (n + k)) .n | greater n k = tri> 2+m+n≰m (m≢1+m+n _ ∘ sym) (m≤m+n (suc n) k)
+
 strictTotalOrder : StrictTotalOrder _ _ _
 strictTotalOrder = record
   { Carrier            = ℕ
@@ -393,15 +414,6 @@ strictTotalOrder = record
     ; compare       = cmp
     }
   }
-  where
-  2+m+n≰m : ∀ {m n} → ¬ 2 + (m + n) ≤ m
-  2+m+n≰m (s≤s le) = 2+m+n≰m le
-
-  cmp : Trichotomous _≡_ _<_
-  cmp m n with compare m n
-  cmp .m .(suc (m + k)) | less    m k = tri< (m≤m+n (suc m) k) (m≢1+m+n _) 2+m+n≰m
-  cmp .n             .n | equal   n   = tri≈ 1+n≰n refl 1+n≰n
-  cmp .(suc (n + k)) .n | greater n k = tri> 2+m+n≰m (m≢1+m+n _ ∘ sym) (m≤m+n (suc n) k)
 
 ------------------------------------------------------------------------
 -- Miscellaneous other properties
