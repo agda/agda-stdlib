@@ -67,47 +67,58 @@ drop-just : ∀ {a ℓ} {A : Set a} {_≈_ : Rel A ℓ} {x y : A} →
             just x ⟨ Eq _≈_ ⟩ just y → x ≈ y
 drop-just (just x≈y) = x≈y
 
+refl : ∀ {a ℓ} {A : Set a} {_≈_ : Rel A ℓ} →
+       Reflexive _≈_ → Reflexive (Eq _≈_)
+refl refl {just x}  = just refl
+refl refl {nothing} = nothing
+
+sym :  ∀ {a ℓ} {A : Set a} {_≈_ : Rel A ℓ} →
+       Symmetric _≈_ → Symmetric (Eq _≈_)
+sym sym (just x≈y) = just (sym x≈y)
+sym sym nothing    = nothing
+
+trans : ∀ {a ℓ} {A : Set a} {_≈_ : Rel A ℓ} →
+       Transitive _≈_ → Transitive (Eq _≈_)
+trans trans (just x≈y) (just y≈z) = just (trans x≈y y≈z)
+trans trans nothing    nothing    = nothing
+
+dec : ∀ {a ℓ} {A : Set a} {_≈_ : Rel A ℓ} →
+      B.Decidable _≈_ → B.Decidable (Eq _≈_)
+dec dec (just x) (just y)  with dec x y
+...  | yes x≈y = yes (just x≈y)
+...  | no  x≉y = no (x≉y ∘ drop-just)
+dec dec (just x) nothing = no λ()
+dec dec nothing (just y)  = no λ()
+dec dec nothing nothing = yes nothing
+
+isEquivalence : ∀ {a ℓ} {A : Set a} {_≈_ : Rel A ℓ}
+                → IsEquivalence _≈_ → IsEquivalence (Eq _≈_)
+isEquivalence isEq = record
+    { refl  = refl (IsEquivalence.refl isEq)
+    ; sym   = sym (IsEquivalence.sym isEq)
+    ; trans = trans (IsEquivalence.trans isEq)
+    }
+
 setoid : ∀ {ℓ₁ ℓ₂} → Setoid ℓ₁ ℓ₂ → Setoid _ _
 setoid S = record
-  { Carrier       = Maybe S.Carrier
-  ; _≈_           = _≈_
-  ; isEquivalence = record
-    { refl  = refl
-    ; sym   = sym
-    ; trans = trans
-    }
+  { Carrier       = Maybe (Setoid.Carrier S)
+  ; _≈_           = Eq (Setoid._≈_ S)
+  ; isEquivalence = isEquivalence (Setoid.isEquivalence S)
   }
-  where
-  module S = Setoid S
-  _≈_ = Eq S._≈_
 
-  refl : ∀ {x} → x ≈ x
-  refl {just x}  = just S.refl
-  refl {nothing} = nothing
-
-  sym : ∀ {x y} → x ≈ y → y ≈ x
-  sym (just x≈y) = just (S.sym x≈y)
-  sym nothing    = nothing
-
-  trans : ∀ {x y z} → x ≈ y → y ≈ z → x ≈ z
-  trans (just x≈y) (just y≈z) = just (S.trans x≈y y≈z)
-  trans nothing    nothing    = nothing
+isDecEquivalence : ∀ {a ℓ} {A : Set a} {_≈_ : Rel A ℓ}
+                → IsDecEquivalence _≈_ → IsDecEquivalence (Eq _≈_)
+isDecEquivalence isDecEq = record
+    { isEquivalence = isEquivalence
+                        (IsDecEquivalence.isEquivalence isDecEq)
+    ; _≟_           = dec (IsDecEquivalence._≟_ isDecEq)
+    }
 
 decSetoid : ∀ {ℓ₁ ℓ₂} → DecSetoid ℓ₁ ℓ₂ → DecSetoid _ _
 decSetoid D = record
-  { isDecEquivalence = record
-    { isEquivalence = Setoid.isEquivalence (setoid (DecSetoid.setoid D))
-    ; _≟_           = _≟_
-    }
+  { isDecEquivalence = isDecEquivalence (DecSetoid.isDecEquivalence D)
   }
-  where
-  _≟_ : B.Decidable (Eq (DecSetoid._≈_ D))
-  just x  ≟ just y  with DecSetoid._≟_ D x y
-  just x  ≟ just y  | yes x≈y = yes (just x≈y)
-  just x  ≟ just y  | no  x≉y = no (x≉y ∘ drop-just)
-  just x  ≟ nothing = no λ()
-  nothing ≟ just y  = no λ()
-  nothing ≟ nothing = yes nothing
+
 
 ------------------------------------------------------------------------
 -- Any and All are preserving decidability
