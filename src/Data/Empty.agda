@@ -13,5 +13,5 @@ data ⊥ : Set where
 {-# HASKELL data AgdaEmpty #-}
 {-# COMPILED_DATA ⊥ MAlonzo.Code.Data.Empty.AgdaEmpty #-}
 
-⊥-elim : ∀ {w} {Whatever : Set w} → ⊥ → Whatever
+⊥-elim : ∀ {w} {Whatever : Set w} → .⊥ → Whatever
 ⊥-elim ()
