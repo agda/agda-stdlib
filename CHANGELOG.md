@@ -31,6 +31,8 @@ Important changes since 0.13:
      zipWith-map
      ```
 
+* Added `<'-well-founded` and `<'-Rec` to `Induction.Nat`. This allows
+  the immediate use of well-founded induction over _<_ instead of _<'_.
 
 Version 0.13
 ============

@@ -8,6 +8,7 @@ module Induction.Nat where
 
 open import Function
 open import Data.Nat
+open import Data.Nat.Properties using (≤⇒≤′)
 open import Data.Fin using (_≺_)
 open import Data.Fin.Properties
 open import Data.Product
@@ -67,6 +68,21 @@ module _ {ℓ} where
   open WF.All <-well-founded ℓ public
     renaming ( wfRec-builder to <-rec-builder
              ; wfRec to <-rec
+             )
+
+------------------------------------------------------------------------
+-- Complete induction based on _<_
+
+<'-Rec : ∀ {ℓ} → RecStruct ℕ ℓ ℓ
+<'-Rec = WfRec _<_
+
+<'-well-founded : Well-founded _<_
+<'-well-founded = Subrelation.well-founded ≤⇒≤′ <-well-founded
+
+module _ {ℓ} where
+  open WF.All <'-well-founded ℓ public
+    renaming ( wfRec-builder to <'-rec-builder
+             ; wfRec to <'-rec
              )
 
 ------------------------------------------------------------------------
