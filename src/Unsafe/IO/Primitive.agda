@@ -1,10 +1,10 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Primitive IO: simple bindings to Haskell types and functions
+-- Unsafe primitive IO: simple bindings to Haskell types and functions
 ------------------------------------------------------------------------
 
-module IO.Primitive where
+module Unsafe.IO.Primitive where
 
 open import Data.Char.Base
 open import Data.String
