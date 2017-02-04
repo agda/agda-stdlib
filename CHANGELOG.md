@@ -31,6 +31,8 @@ Important changes since 0.13:
      zipWith-map
      ```
 
+* `Data.Container` now allows for different levels in the container
+  and in the data it contains.
 
 Version 0.13
 ============
