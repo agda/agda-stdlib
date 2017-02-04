@@ -31,6 +31,11 @@ Important changes since 0.13:
      zipWith-map
      ```
 
+* Useful lemmas and properties that were previously in private scope,
+  either explicitly or within records, have been made public in several
+  Properties.agda files. These include:
+
+    Data.List.All.Properties
 
 Version 0.13
 ============
