@@ -80,8 +80,8 @@ data All₂ {a b p} {A : Set a} {B : Set b} (P : A → B → Set p) :
 lookup₂ : ∀ {a b p} {A : Set a} {B : Set b} {P : A → B → Set p} {k}
             {xs : Vec A k} {ys : Vec B k} →
             ∀ i → All₂ P xs ys → P (Vec.lookup i xs) (Vec.lookup i ys)
-lookup₂ zero    (pxy ∷ _)   = pxy
-lookup₂ (suc i) (x₁ ∷ pxys) = lookup₂ i pxys
+lookup₂ zero    (pxy ∷ _)    = pxy
+lookup₂ (suc i) (_   ∷ pxys) = lookup₂ i pxys
 
 map₂ : ∀ {a b p q} {A : Set a} {B : Set b}
          {P : A → B → Set p} {Q : A → B → Set q} →
