@@ -4,7 +4,7 @@
 -- An equality postulate which evaluates
 ------------------------------------------------------------------------
 
-module Relation.Binary.PropositionalEquality.TrustMe where
+module Unsafe.Relation.Binary.PropositionalEquality.TrustMe where
 
 open import Relation.Binary.Core using (_≡_)
 

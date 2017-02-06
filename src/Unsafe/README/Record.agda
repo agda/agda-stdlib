@@ -7,7 +7,7 @@
 -- Taken from Randy Pollack's paper "Dependently Typed Records in Type
 -- Theory".
 
-module README.Record where
+module Unsafe.README.Record where
 
 open import Data.Product
 open import Unsafe.Data.String

@@ -197,16 +197,3 @@ nonZeroDivisor-lemma m (suc q) r r≢zero d =
   lem = solve 3 (λ m r q → r :+ (m :+ q)  :=  m :+ (r :+ q))
                 refl (suc m) (Fin.toℕ r) (q * suc m)
   d' = subst (λ x → (1 + m) ∣ x) lem d
-
--- Divisibility is decidable.
-
-infix 4 _∣?_
-
-_∣?_ : Decidable _∣_
-zero  ∣? zero                         = yes (0 ∣0)
-zero  ∣? suc n                        = no ((λ ()) ∘′ 0∣⇒≡0)
-suc m ∣? n                            with n divMod suc m
-suc m ∣? .(q * suc m)                 | result q zero    refl =
-  yes $ divides q refl
-suc m ∣? .(1 + Fin.toℕ r + q * suc m) | result q (suc r) refl =
-  no $ nonZeroDivisor-lemma m q (suc r) (λ())

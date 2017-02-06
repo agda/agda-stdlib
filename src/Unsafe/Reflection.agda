@@ -1,24 +1,24 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Support for reflection
+-- Unsafe support for reflection
 ------------------------------------------------------------------------
 
-module Reflection where
+module Unsafe.Reflection where
 
 open import Data.Unit.Base using (⊤)
 open import Data.Bool.Base using (Bool; false; true)
 open import Data.List.Base using (List); open Data.List.Base.List
 open import Data.Nat using (ℕ) renaming (_≟_ to _≟-ℕ_)
-open import Data.Nat.Show renaming (show to showNat)
-open import Data.Float using (Float) renaming (_≟_ to _≟f_; show to showFloat)
-open import Data.Char using (Char) renaming (_≟_ to _≟c_; show to showChar)
-open import Data.String using (String) renaming (_≟_ to _≟s_; show to showString)
+open import Unsafe.Data.Nat.Show renaming (show to showNat)
+open import Unsafe.Data.Float using (Float) renaming (_≟_ to _≟f_; show to showFloat)
+open import Unsafe.Data.Char using (Char) renaming (_≟_ to _≟c_; show to showChar)
+open import Unsafe.Data.String using (String) renaming (_≟_ to _≟s_; show to showString)
 open import Data.Product
 open import Function
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
-open import Relation.Binary.PropositionalEquality.TrustMe
+open import Unsafe.Relation.Binary.PropositionalEquality.TrustMe
 open import Relation.Nullary hiding (module Dec)
 open import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product
