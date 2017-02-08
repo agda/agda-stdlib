@@ -45,6 +45,7 @@ postulate
 
 postulate
   getContents : IO Costring
+  getLine     : IO Costring
   readFile    : String → IO Costring
   writeFile   : String → Costring → IO Unit
   appendFile  : String → Costring → IO Unit
@@ -66,6 +67,7 @@ postulate
 #-}
 
 {-# COMPILED getContents    getContents #-}
+{-# COMPILED getLine        getLine #-}
 {-# COMPILED readFile       (readFile . Data.Text.unpack)           #-}
 {-# COMPILED writeFile      (\x -> writeFile (Data.Text.unpack x))  #-}
 {-# COMPILED appendFile     (\x -> appendFile (Data.Text.unpack x)) #-}
