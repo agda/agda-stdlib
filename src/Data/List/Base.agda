@@ -62,6 +62,12 @@ zipWith f _        _        = []
 zip : ∀ {a b} {A : Set a} {B : Set b} → List A → List B → List (A × B)
 zip = zipWith (_,_)
 
+zipWith3 : ∀ {a b c d}{A : Set a}{B : Set b}{C : Set c}{D : Set d}
+         → (A → B → C → D) → List A → List B → List C
+         → List D
+zipWith3 f (a ∷ as) (b ∷ bs) (c ∷ cs) = f a b c ∷ zipWith3 f as bs cs
+zipWith3 _ _ _ _ = []
+
 intersperse : ∀ {a} {A : Set a} → A → List A → List A
 intersperse x []           = []
 intersperse x (y ∷ [])     = [ y ]
@@ -237,3 +243,8 @@ partition p []       = ([] , [])
 partition p (x ∷ xs) with p x | partition p xs
 ... | true  | (ys , zs) = (x ∷ ys , zs)
 ... | false | (ys , zs) = (ys , x ∷ zs)
+
+catMaybes : ∀ {a}{A : Set a} → List (Maybe A) → List A
+catMaybes [] = []
+catMaybes (just a ∷ l) = a ∷ catMaybes l
+catMaybes (_ ∷ l) = catMaybes l
