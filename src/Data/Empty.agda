@@ -13,5 +13,5 @@ data ⊥ : Set where
 {-# FOREIGN GHC data AgdaEmpty #-}
 {-# COMPILE GHC ⊥ = data MAlonzo.Code.Data.Empty.AgdaEmpty () #-}
 
-⊥-elim : ∀ {w} {Whatever : Set w} → ⊥ → Whatever
+⊥-elim : ∀ {w} {Whatever : Set w} → .⊥ → Whatever
 ⊥-elim ()
