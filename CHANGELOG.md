@@ -70,6 +70,8 @@ Important changes since 0.13:
 * Moved `decTotalOrder` in `Data.Nat` to `≤-decTotalOrder` in
   `Data.Nat.Properties`
 
+* Moved `¬∀⟶∃¬` from `Relation.Nullary.Negation` to `Data.Fin.Dec`
+
 * Added `⊓-idem` and `⊔-idem` to `Data.Nat.Properties`
 
 * Useful lemmas and properties that were previously in private scope,
