@@ -85,6 +85,9 @@ Important changes since 0.13:
   `Data.Vec.All.Properties`) are more generic with respect to types and
   levels.
 
+* Added extra properties relating `_++_` and `concat` to `All` and `All₂`
+  in `Data.Vec.All.Properties`
+
 * Added syntax for existential quantifiers as `∃[ x ] B` and `∄[ x ] B`.
 
 Version 0.13
