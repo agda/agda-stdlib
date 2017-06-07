@@ -230,6 +230,14 @@ splitAt-defn (suc n) []       = refl
 splitAt-defn (suc n) (x ∷ xs) with splitAt n xs | splitAt-defn n xs
 ... | (ys , zs) | ih = P.cong (Prod.map (_∷_ x) id) ih
 
+drop-length : ∀ {a} {A : Set a} (xs : List A) → drop (length xs) xs ≡ []
+drop-length [] = refl
+drop-length (x ∷ xs) = drop-length xs
+
+take-length : ∀ {a} {A : Set a} (xs : List A) → take (length xs) xs ≡ xs
+take-length [] = refl
+take-length (x ∷ xs) = P.cong (_∷_ x) (take-length xs)
+
 -- TakeWhile, dropWhile, and span.
 
 takeWhile++dropWhile : ∀ {a} {A : Set a} (p : A → Bool) (xs : List A) →
