@@ -78,6 +78,7 @@ Important changes since 0.13:
 
   ```agda
   Data.List.Any.Properties
+  Data.Vec.All.Properties
   ```
 
 * Changed `Data.Vec.All.All₂` to a native version which allows better
