@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Data.List.Membership instantiated with propositional equality,
+-- Data.List.Any.Membership instantiated with propositional equality,
 -- along with some additional definitions.
 ------------------------------------------------------------------------
 
