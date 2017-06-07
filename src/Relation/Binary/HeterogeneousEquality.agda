@@ -37,6 +37,9 @@ x ≇ y = ¬ x ≅ y
 ≡-to-≅ : ∀ {a} {A : Set a} {x y : A} → x ≡ y → x ≅ y
 ≡-to-≅ refl = refl
 
+≅-to-type-≡ : ∀ {a} {A B : Set a} {xs : A} {ys : B} → (p : xs ≅ ys) → A ≡ B
+≅-to-type-≡ refl = P.refl
+
 open Core public using (≅-to-≡)
 
 ------------------------------------------------------------------------
@@ -81,6 +84,13 @@ cong₂ : ∀ {a b c} {A : Set a} {B : A → Set b} {C : ∀ x → B x → Set c
           {x y u v}
         (f : (x : A) (y : B x) → C x y) → x ≅ y → u ≅ v → f x u ≅ f y v
 cong₂ f refl refl = refl
+
+
+-- If you need to convert an heterogeneous equality to a propositional one,
+-- you'll have to use subst on one side. However, we can do that for you. Here's
+-- a completely generic way to do that:
+≅-to-subst-≡ : ∀ {a} {A B : Set a} {xs : A} {ys : B} → (p : xs ≅ ys) → P.subst (λ x → x) (≅-to-type-≡ p) xs ≡ ys
+≅-to-subst-≡ refl = P.refl
 
 resp₂ : ∀ {a ℓ} {A : Set a} (∼ : Rel A ℓ) → ∼ Respects₂ (λ x y → x ≅ y)
 resp₂ _∼_ = subst⟶resp₂ _∼_ subst
