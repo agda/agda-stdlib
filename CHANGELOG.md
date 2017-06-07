@@ -34,10 +34,12 @@ Important changes since 0.13:
 * `Data.Container` now allows for different levels in the container
   and in the data it contains.
 
-* Added `isDecEquivalence` proof for `_≡_` to `Data.Fin.Properties`
+* Added functions `punchIn` and `punchOut` to `Data.Fin`
 
-* Added additional ordering properties to `Data.Fin.Properties` including:
+* Added additional properties to `Data.Fin.Properties` including:
   ```agda
+  isDecEquivalence
+
   ≤-reflexive
   ≤-refl
   ≤-trans
@@ -50,6 +52,11 @@ Important changes since 0.13:
   _<?_
   <-trans
   <-isStrictTotalOrder
+
+  punchOut-injective
+  punchIn-injective
+  punchIn-punchOut
+  punchInᵢ≢i
   ```
 
 * Added additional ordering properties to `Data.Nat.Properties` including:
