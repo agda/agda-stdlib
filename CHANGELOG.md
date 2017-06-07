@@ -65,11 +65,6 @@ Important changes since 0.13:
   ≤-isDecTotalOrder
   ```
 
-* Moved module `≤-Reasoning` from `Data.Nat` to `Data.Nat.Properties`
-
-* Moved `decTotalOrder` in `Data.Nat` to `≤-decTotalOrder` in
-  `Data.Nat.Properties`
-
 * Added `⊓-idem` and `⊔-idem` to `Data.Nat.Properties`
 
 * Useful lemmas and properties that were previously in private scope,
@@ -86,6 +81,20 @@ Important changes since 0.13:
   levels.
 
 * Added syntax for existential quantifiers as `∃[ x ] B` and `∄[ x ] B`.
+
+NON-BACKWARDS COMPATIBILE CHANGES
+
+* Moved module `≤-Reasoning` from `Data.Nat` to `Data.Nat.Properties`
+
+* Moved `decTotalOrder` in `Data.Nat` to `≤-decTotalOrder` in
+  `Data.Nat.Properties`
+
+* Moved modules `Membership` and `≡-Membership` out of `Data.List.Any`
+  into `Data.List.Any.Membership` and
+  `Data.List.Any.Membership.Propositional`.
+
+* Moved contents of `Data.List.Any.Membership` to
+  `Data.List.Any.Membership.Propositional.Properties`
 
 Version 0.13
 ============
