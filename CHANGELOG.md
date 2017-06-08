@@ -89,7 +89,7 @@ NON-BACKWARDS COMPATIBILE CHANGES
 * Moved `decTotalOrder` in `Data.Nat` to `≤-decTotalOrder` in
   `Data.Nat.Properties`
 
-* Moved modules `Membership` and `≡-Membership` out of `Data.List.Any`
+* Moved modules `Membership` and `Membership-≡` out of `Data.List.Any`
   into `Data.List.Any.Membership` and
   `Data.List.Any.Membership.Propositional`.
 
