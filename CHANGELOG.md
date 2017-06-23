@@ -31,8 +31,68 @@ Important changes since 0.13:
      zipWith-map
      ```
 
-* Added `<'-well-founded` and `<'-Rec` to `Induction.Nat`. This allows
-  the immediate use of well-founded induction over _<_ instead of _<'_.
+* `Data.Container` now allows for different levels in the container
+  and in the data it contains.
+
+* Added `isDecEquivalence` proof for `_≡_` to `Data.Fin.Properties`
+
+* Added additional ordering properties to `Data.Fin.Properties` including:
+  ```agda
+  ≤-reflexive
+  ≤-refl
+  ≤-trans
+  ≤-antisymmetric
+  ≤-total
+  ≤-isPreorder
+  ≤-isPartialOrder
+  ≤-isTotalOrder
+
+  _<?_
+  <-trans
+  <-isStrictTotalOrder
+  ```
+
+* Added additional ordering properties to `Data.Nat.Properties` including:
+  ```agda
+  ≤-reflexive
+  ≤-refl
+  ≤-trans
+  ≤-antisymmetric
+  ≤-total
+  ≤-isPreorder
+  ≤-isPartialOrder
+  ≤-isTotalOrder
+  ≤-isDecTotalOrder
+  ```
+
+* Moved module `≤-Reasoning` from `Data.Nat` to `Data.Nat.Properties`
+
+* Moved `decTotalOrder` in `Data.Nat` to `≤-decTotalOrder` in
+  `Data.Nat.Properties`
+
+* Added `⊓-idem` and `⊔-idem` to `Data.Nat.Properties`
+
+* Useful lemmas and properties that were previously in private scope,
+  either explicitly or within records, have been made public in several
+  Properties.agda files. These include:
+
+  ```agda
+  Data.List.Any.Properties
+  ```
+
+* Changed `Data.Vec.All.All₂` to a native version which allows better
+  pattern matching. The new version (and the associated proofs in
+  `Data.Vec.All.Properties`) are more generic with respect to types and
+  levels.
+
+* Added syntax for existential quantifiers as `∃[ x ] B` and `∄[ x ] B`.
+
+NON-BACKWARDS COMPATIBLE CHANGES
+
+* The well-founded relation proofs for _<′_ have been renamed from
+  `<-Rec` and `<-well-founded` to `<′-Rec` and `<′-well-founded`
+  respectively. The original names `<-Rec` and `<-well-founded` now
+  refer to the new corresponding proofs for `_<_`.
 
 Version 0.13
 ============
