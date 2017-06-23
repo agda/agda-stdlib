@@ -90,7 +90,6 @@ sum-++-commute (x ∷ xs) ys = begin
   (x + sum xs) + sum ys
                          ∎
   where
-  open CommutativeSemiring commutativeSemiring hiding (_+_)
   open P.≡-Reasoning
 
 -- Various properties about folds.

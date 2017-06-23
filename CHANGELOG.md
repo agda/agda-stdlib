@@ -53,6 +53,8 @@ Important changes since 0.13:
 
   _<?_,  <-transʳ, <-transˡ, <-irrefl, <-asym
 
+  +-left-identity, *-left-zero
+
   ⊓-idem, ⊔-idem
   m⊓n≤n, m≤m⊔n, m⊔n≤m+n, m⊓n≤m+n
   ⊔-mono-≤, ⊔-mono-<, ⊓-mono-≤, ⊓-mono-<
@@ -73,14 +75,15 @@ Important changes since 0.13:
   Data.Nat.Properties
   ```
 
-* Added `+-left-identity` and `*-left-zero` to `Data.Nat.Properties.Simple`
-
 * Changed `Data.Vec.All.All₂` to a native version which allows better
   pattern matching. The new version (and the associated proofs in
   `Data.Vec.All.Properties`) are more generic with respect to types and
   levels.
 
 * Added syntax for existential quantifiers as `∃[ x ] B` and `∄[ x ] B`.
+
+* Incorporated the contents of `Data.Nat.Properties.Simple` into
+  `Data.Nat.Properties` and inverted the dependency relation between them.
 
 Version 0.13
 ============
