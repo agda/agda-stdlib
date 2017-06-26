@@ -39,12 +39,12 @@ Important changes since 0.13:
 * Added additional proofs to `Data.Fin.Properties`:
   ```agda
   isDecEquivalence
-  
+
   ≤-reflexive, ≤-refl, ≤-trans, ≤-antisymmetric
   ≤-total, ≤-isPreorder, ≤-isPartialOrder, ≤-isTotalOrder
 
   _<?_, <-trans, <-isStrictTotalOrder
-  
+
   punchOut-injective, punchIn-injective, punchIn-punchOut, punchInᵢ≢i
   ```
 
@@ -90,6 +90,9 @@ Important changes since 0.13:
 Non-backwards compatible changes
 --------------------------------
 
+* Moved `strictTotalOrder` and `decSetoid` from `Data.Bin` to
+  `<-strictTotalOrder` and `≡-decSetoid` in `Data.Bin.Properties`
+
 * Moved module `≤-Reasoning` from `Data.Nat` to `Data.Nat.Properties`
 
 * Moved `decTotalOrder` in `Data.Nat` to `≤-decTotalOrder` in
@@ -97,7 +100,7 @@ Non-backwards compatible changes
 
 * Moved `¬∀⟶∃¬` from `Relation.Nullary.Negation` to `Data.Fin.Dec`
 
-* Moved internal modules `Membership` and `Membership-≡` out of 
+* Moved internal modules `Membership` and `Membership-≡` out of
   `Data.List.Any` into `Data.List.Any.Membership` and
   `Data.List.Any.Membership.Propositional` respectively.
 
