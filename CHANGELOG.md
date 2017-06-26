@@ -31,45 +31,37 @@ Important changes since 0.13:
      zipWith-map
      ```
 
-* `Data.Container` now allows for different levels in the container
-  and in the data it contains.
+* `Data.Container` and `Data.Container.Indexed` now allow for different
+  levels in the container and in the data it contains.
 
 * Added functions `punchIn` and `punchOut` to `Data.Fin`
 
-* Added additional properties to `Data.Fin.Properties` including:
+* Added additional proofs to `Data.Fin.Properties`:
   ```agda
   isDecEquivalence
+  
+  ≤-reflexive, ≤-refl, ≤-trans, ≤-antisymmetric
+  ≤-total, ≤-isPreorder, ≤-isPartialOrder, ≤-isTotalOrder
 
-  ≤-reflexive
-  ≤-refl
-  ≤-trans
-  ≤-antisymmetric
-  ≤-total
-  ≤-isPreorder
-  ≤-isPartialOrder
-  ≤-isTotalOrder
-
-  _<?_
-  <-trans
-  <-isStrictTotalOrder
-
-  punchOut-injective
-  punchIn-injective
-  punchIn-punchOut
-  punchInᵢ≢i
+  _<?_, <-trans, <-isStrictTotalOrder
+  
+  punchOut-injective, punchIn-injective, punchIn-punchOut, punchInᵢ≢i
   ```
 
-* Added additional ordering properties to `Data.Nat.Properties` including:
+* Added additional proofs to `Data.Nat.Properties`:
   ```agda
-  ≤-reflexive
-  ≤-refl
-  ≤-trans
-  ≤-antisymmetric
-  ≤-total
-  ≤-isPreorder
-  ≤-isPartialOrder
-  ≤-isTotalOrder
-  ≤-isDecTotalOrder
+  suc-injective
+
+  ≤-reflexive, ≤-refl, ≤-trans, ≤-antisymmetric, ≤-total
+  ≤-isPreorder, ≤-isPartialOrder, ≤-isTotalOrder, ≤-isDecTotalOrder
+
+  _<?_,  <-transʳ, <-transˡ, <-irrefl, <-asym
+
+  ⊓-idem, ⊔-idem
+  m⊓n≤n, m≤m⊔n, m⊔n≤m+n, m⊓n≤m+n
+  ⊔-mono-≤, ⊔-mono-<, ⊓-mono-≤, ⊓-mono-<
+  +-distribˡ-⊔, +-distribʳ-⊔, +-distrib-⊔,
+  +-distribˡ-⊓, +-distribʳ-⊓, +-distrib-⊓
   ```
 
 * Moved module `≤-Reasoning` from `Data.Nat` to `Data.Nat.Properties`
@@ -77,20 +69,28 @@ Important changes since 0.13:
 * Moved `decTotalOrder` in `Data.Nat` to `≤-decTotalOrder` in
   `Data.Nat.Properties`
 
-* Added `⊓-idem` and `⊔-idem` to `Data.Nat.Properties`
+* Added decidability lemma `gcd?` to `Data.Nat.GCD`
+
+* Moved `¬∀⟶∃¬` from `Relation.Nullary.Negation` to `Data.Fin.Dec`
 
 * Useful lemmas and properties that were previously in private scope,
   either explicitly or within records, have been made public in several
   Properties.agda files. These include:
-
   ```agda
   Data.List.Any.Properties
+  Data.Nat.Properties
+  Data.Vec.All.Properties
   ```
+
+* Added `+-left-identity` and `*-left-zero` to `Data.Nat.Properties.Simple`
 
 * Changed `Data.Vec.All.All₂` to a native version which allows better
   pattern matching. The new version (and the associated proofs in
   `Data.Vec.All.Properties`) are more generic with respect to types and
   levels.
+
+* Added extra properties relating `_++_` and `concat` to `All` and `All₂`
+  in `Data.Vec.All.Properties`
 
 * Added syntax for existential quantifiers as `∃[ x ] B` and `∄[ x ] B`.
 
