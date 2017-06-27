@@ -5,9 +5,8 @@ The library has been tested using Agda version TODO.
 
 Important changes since 0.13:
 
-* Added support for GHC 8.0.2.
-
-* Added `Category.Functor.Morphism` and module `Category.Functor.Identity`.
+Non-backwards compatible changes
+--------------------------------
 
 * Native (pattern-matching) definitions for `Data.Vec.map` and `Data.Vec.zipWith`.
   Previously they were defined using the `applicative` operations of `Vec`.
@@ -31,18 +30,58 @@ Important changes since 0.13:
      zipWith-map
      ```
 
-* `Data.Container` now allows for different levels in the container
-  and in the data it contains.
+* Moved module `≤-Reasoning` from `Data.Nat` to `Data.Nat.Properties`
 
-* Added `isDecEquivalence` proof for `_≡_` to `Data.Fin.Properties`
+* Moved `decTotalOrder` in `Data.Nat` to `≤-decTotalOrder` in
+  `Data.Nat.Properties`
+
+* Moved `¬∀⟶∃¬` from `Relation.Nullary.Negation` to `Data.Fin.Dec`
+
+* Moved internal modules `Membership` and `Membership-≡` out of
+  `Data.List.Any` into `Data.List.Any.Membership` and
+  `Data.List.Any.Membership.Propositional` respectively.
+
+* Moved existing contents of `Data.List.Any.Membership` to
+  `Data.List.Any.Membership.Propositional.Properties`
+
+* Changed the implementation of `downFrom` in `Data.List` to a
+  more idiomatic, easier-to-reason-about version.
+
+Backwards compatible changes
+----------------------------
+
+* Added support for GHC 8.0.2.
+
+* Added `Category.Functor.Morphism` and module `Category.Functor.Identity`.
+
+* Added additional sequence-generating functions to `Data.List`
+  ```
+  applyUpTo
+  upTo
+  applyDownFrom
+  tabulate
+  allFin
+  ```
+
+* `Data.Container` and `Data.Container.Indexed` now allow for different
+  levels in the container and in the data it contains.
+
+* Added functions `punchIn` and `punchOut` to `Data.Fin`
 
 * Added additional proofs to `Data.Fin.Properties`:
   ```agda
+  isDecEquivalence
+
   ≤-reflexive, ≤-refl, ≤-trans, ≤-antisymmetric
   ≤-total, ≤-isPreorder, ≤-isPartialOrder, ≤-isTotalOrder
 
   _<?_, <-trans, <-isStrictTotalOrder
+
+  punchOut-injective, punchIn-injective, punchIn-punchOut, punchInᵢ≢i
   ```
+
+* Incorporated the contents of `Data.Nat.Properties.Simple` into
+  `Data.Nat.Properties` and inverted the dependency relation between them.
 
 * Added additional proofs to `Data.Nat.Properties`:
   ```agda
@@ -62,10 +101,9 @@ Important changes since 0.13:
   +-distribˡ-⊓, +-distribʳ-⊓, +-distrib-⊓
   ```
 
-* Moved module `≤-Reasoning` from `Data.Nat` to `Data.Nat.Properties`
+* Added decidability lemma `gcd?` to `Data.Nat.GCD`
 
-* Moved `decTotalOrder` in `Data.Nat` to `≤-decTotalOrder` in
-  `Data.Nat.Properties`
+* Added not-divisible-by relation `_∤_` to `Data.Nat.Divisibility`
 
 * Useful lemmas and properties that were previously in private scope,
   either explicitly or within records, have been made public in several
@@ -73,17 +111,22 @@ Important changes since 0.13:
   ```agda
   Data.List.Any.Properties
   Data.Nat.Properties
+  Data.Nat.Divisibility
+  Data.Vec.All.Properties
   ```
+
+* Added `length-reverse`, `foldr-++`, `foldl-++`, `map-cong₂`, `foldr-∷ʳ`,
+  `foldl-∷ʳ`, `reverse-foldr` and `reverse-foldr` to `Data.List.Properties`
 
 * Changed `Data.Vec.All.All₂` to a native version which allows better
   pattern matching. The new version (and the associated proofs in
   `Data.Vec.All.Properties`) are more generic with respect to types and
   levels.
 
-* Added syntax for existential quantifiers as `∃[ x ] B` and `∄[ x ] B`.
+* Added extra properties relating `_++_` and `concat` to `All` and `All₂`
+  in `Data.Vec.All.Properties`
 
-* Incorporated the contents of `Data.Nat.Properties.Simple` into
-  `Data.Nat.Properties` and inverted the dependency relation between them.
+* Added syntax for existential quantifiers as `∃[ x ] B` and `∄[ x ] B`.
 
 Version 0.13
 ============
