@@ -80,8 +80,11 @@ Backwards compatible changes
   punchOut-injective, punchIn-injective, punchIn-punchOut, punchInᵢ≢i
   ```
 
-* Incorporated the contents of `Data.Nat.Properties.Simple` into
-  `Data.Nat.Properties` and inverted the dependency relation between them.
+* The file `Data.Nat.Properties.Simple` is now deprecated. All proofs
+  have been moved to `Data.Nat.Properties` where they should be used directly.
+  The `Simple` file still exists and re-exports the proofs from
+  `Data.Nat.Properties` for backwards compatability reasons but will be
+  removed in some future release.
 
 * Added additional proofs to `Data.Nat.Properties`:
   ```agda
