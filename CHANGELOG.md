@@ -104,6 +104,8 @@ Important changes since 0.13:
 
 * Added syntax for existential quantifiers as `∃[ x ] B` and `∄[ x ] B`.
 
+* Added an irrelevant version of `⊥-elim` in `Data.Empty.Irrelevant`
+
 Non-backwards compatible changes
 --------------------------------
 
