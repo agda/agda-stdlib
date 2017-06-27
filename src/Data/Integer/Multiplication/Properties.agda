@@ -6,9 +6,7 @@
 
 module Data.Integer.Multiplication.Properties where
 
-open import Algebra
-  using (module CommutativeSemiring; CommutativeMonoid)
-import Algebra.FunctionProperties
+open import Algebra using (CommutativeMonoid)
 open import Algebra.Structures using (IsSemigroup; IsCommutativeMonoid)
 open import Data.Integer
    using (ℤ; -[1+_]; +_; ∣_∣; sign; _◃_) renaming (_*_ to ℤ*)
@@ -21,9 +19,7 @@ open import Function using (_∘_)
 open import Relation.Binary.PropositionalEquality
    using (_≡_; refl; cong; cong₂; isEquivalence)
 
-open Algebra.FunctionProperties (_≡_ {A = ℤ})
-open CommutativeSemiring ℕ.commutativeSemiring
-  using (+-identity; *-comm) renaming (zero to *-zero)
+open import Algebra.FunctionProperties (_≡_ {A = ℤ})
 
 ------------------------------------------------------------------------
 -- Multiplication and one form a commutative monoid
@@ -41,22 +37,22 @@ private
 
 identityˡ : LeftIdentity (+ 1) ℤ*
 identityˡ (+ zero ) = refl
-identityˡ -[1+  n ] rewrite proj₂ +-identity n = refl
-identityˡ (+ suc n) rewrite proj₂ +-identity n = refl
+identityˡ -[1+  n ] rewrite ℕ.+-right-identity n = refl
+identityˡ (+ suc n) rewrite ℕ.+-right-identity n = refl
 
 comm : Commutative ℤ*
-comm -[1+ a ] -[1+ b ] rewrite *-comm (suc a) (suc b) = refl
-comm -[1+ a ] (+   b ) rewrite *-comm (suc a) b       = refl
-comm (+   a ) -[1+ b ] rewrite *-comm a       (suc b) = refl
-comm (+   a ) (+   b ) rewrite *-comm a       b       = refl
+comm -[1+ a ] -[1+ b ] rewrite ℕ.*-comm (suc a) (suc b) = refl
+comm -[1+ a ] (+   b ) rewrite ℕ.*-comm (suc a) b       = refl
+comm (+   a ) -[1+ b ] rewrite ℕ.*-comm a       (suc b) = refl
+comm (+   a ) (+   b ) rewrite ℕ.*-comm a       b       = refl
 
 assoc : Associative ℤ*
 assoc (+ zero) _ _ = refl
-assoc x (+ zero) _ rewrite proj₂ *-zero ∣ x ∣ = refl
+assoc x (+ zero) _ rewrite ℕ.*-right-zero ∣ x ∣ = refl
 assoc x y (+ zero) rewrite
-    proj₂ *-zero ∣ y ∣
-  | proj₂ *-zero ∣ x ∣
-  | proj₂ *-zero ∣ sign x S* sign y ◃ ∣ x ∣ ℕ* ∣ y ∣ ∣
+    ℕ.*-right-zero ∣ y ∣
+  | ℕ.*-right-zero ∣ x ∣
+  | ℕ.*-right-zero ∣ sign x S* sign y ◃ ∣ x ∣ ℕ* ∣ y ∣ ∣
   = refl
 assoc -[1+ a  ] -[1+ b  ] (+ suc c) = cong (+_ ∘ suc) (lemma a b c)
 assoc -[1+ a  ] (+ suc b) -[1+ c  ] = cong (+_ ∘ suc) (lemma a b c)
