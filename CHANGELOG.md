@@ -44,9 +44,8 @@ Non-backwards compatible changes
 * Changed the implementation of `All₂` in `Data.Vec.All` to a native datatype
   which allows better pattern matching.
 
-  The new version (and the associated
-  proofs in `Data.Vec.All.Properties`) are also more generic with respect to
-  types and levels.
+  The new version (and the associated proofs in `Data.Vec.All.Properties`)
+  are also more generic with respect to types and levels.
 
 * Changed the implementation of `downFrom` in `Data.List` to a native
   (pattern-matching) definition.
@@ -64,18 +63,30 @@ but they may be removed in some future release of the library.
   have been deprecated in favour of `+-mono-≤` and `*-mono-≤` which better
   follow the library's naming conventions.
 
+* The module `Data.Nat.Properties.Simple` is now deprecated. All proofs
+  have been moved to `Data.Nat.Properties` where they should be used directly.
+  The `Simple` file still exists for backwards compatability reasons and
+  re-exports the proofs from `Data.Nat.Properties` but will be removed in some
+  future release.
+
+* The module `Data.Integer.Addition.Properties` is now deprecated. All proofs
+  have been moved to `Data.Integer.Properties` where they should be used
+  directly. The `Addition.Properties` file still exists for backwards
+  compatability reasons and re-exports the proofs from `Data.Integer.Properties`
+  but will be removed in some future release.
+
+* The module `Data.Integer.Multiplication.Properties` is now deprecated. All
+  proofs have been moved to `Data.Integer.Properties` where they should be used
+  directly. The `Multiplication.Properties` file still exists for backwards
+  compatability reasons and re-exports the proofs from `Data.Integer.Properties`
+  but will be removed in some future release.
+
 Backwards compatible changes
 ----------------------------
 
 * Added support for GHC 8.0.2.
 
 * Added `Category.Functor.Morphism` and module `Category.Functor.Identity`.
-
-* The module `Data.Nat.Properties.Simple` is now deprecated. All proofs
-  have been moved to `Data.Nat.Properties` where they should be used directly.
-  The `Simple` file still exists for backwards compatability reasons and
-  re-exports the proofs from `Data.Nat.Properties` but will be removed in some
-  future release.
 
 * `Data.Container` and `Data.Container.Indexed` now allow for different
   levels in the container and in the data it contains.
@@ -205,7 +216,29 @@ Backwards compatible changes
   ∩⇔×       : x ∈ p ∩ q ⇔ (x ∈ p × x ∈ q)
   ```
 
-* Added additional proofs to `Data.Nat.Properties`:
+* Added proofs to `Data.Integer.Properties`
+  ```agda
+  +◃n≡+n                : Sign.+ ◃ n ≡ + n
+  -◃n≡-n                : Sign.- ◃ n ≡ - + n
+  signₙ◃∣n∣≡n           : sign n ◃ ∣ n ∣ ≡ n
+
+  ⊖-≰                   : n ≰ m → m ⊖ n ≡ - + (n ∸ m)
+  ∣⊖∣-≰                 : n ≰ m → ∣ m ⊖ n ∣ ≡ n ∸ m
+  sign-⊖-≰              : n ≰ m → sign (m ⊖ n) ≡ Sign.-
+
+  +-identity            : Identity (+ 0) _+_
+  +-0-isMonoid          : IsMonoid _≡_ _+_ (+ 0)
+  +-0-isGroup           : IsGroup _≡_ _+_ (+ 0) (-_)
+
+  *-identityʳ           : RightIdentity (+ 1) _*_
+  *-identity            : Identity (+ 1) _*_
+  *-1-isMonoid          : IsMonoid _≡_ _*_ (+ 1)
+
+  +-*-isRing            : IsRing _≡_ _+_ _*_ -_ (+ 0) (+ 1)
+  +-*-isCommutativeRing : IsCommutativeRing _≡_ _+_ _*_ -_ (+ 0) (+ 1)
+  ```
+
+* Added proofs to `Data.Nat.Properties`:
   ```agda
   suc-injective        : suc m ≡ suc n → m ≡ n
   ≡-isDecEquivalence   : IsDecEquivalence (_≡_ {A = ℕ})
@@ -356,6 +389,17 @@ Backwards compatible changes
   zipWith-replicate₂      : zipWith _⊕_ xs (replicate y) ≡ map (_⊕ y) xs
   zipWith-map₁            : zipWith _⊕_ (map f xs) ys ≡ zipWith (λ x y → f x ⊕ y) xs ys
   zipWith-map₂            : zipWith _⊕_ xs (map f ys) ≡ zipWith (λ x y → x ⊕ f y) xs ys
+  ```
+
+* Added proofs to `Data.Sign.Properties`:
+  ```agda
+  opposite-cong  : opposite s ≡ opposite t → s ≡ t
+
+  *-identityˡ    : LeftIdentity + _*_
+  *-identityʳ    : RightIdentity + _*_
+  *-identity     : Identity + _*_
+  cancel-*-left  : LeftCancellative _*_
+  *-cancellative : Cancellative _*_
   ```
 
 * Added proofs to `Data.Vec.All.Properties`
