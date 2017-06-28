@@ -38,6 +38,19 @@ opposite-cong { + } { + } refl = refl
 *-identity : Identity + _*_
 *-identity = *-identityˡ  , *-identityʳ
 
+*-comm : Commutative _*_
+*-comm + + = refl
+*-comm + - = refl
+*-comm - + = refl
+*-comm - - = refl
+
+*-assoc : Associative _*_
+*-assoc + + _ = refl
+*-assoc + - _ = refl
+*-assoc - + _ = refl
+*-assoc - - + = refl
+*-assoc - - - = refl
+
 cancel-*-right : RightCancellative _*_
 cancel-*-right - - _  = refl
 cancel-*-right - + eq = ⊥-elim (opposite-not-equal _ $ sym eq)
@@ -50,3 +63,7 @@ cancel-*-left + eq = eq
 
 *-cancellative : Cancellative _*_
 *-cancellative = cancel-*-left , cancel-*-right
+
+s*s≡+ : ∀ s → s * s ≡ +
+s*s≡+ + = refl
+s*s≡+ - = refl

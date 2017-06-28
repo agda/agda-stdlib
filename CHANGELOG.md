@@ -218,6 +218,15 @@ Backwards compatible changes
 
 * Added proofs to `Data.Integer.Properties`
   ```agda
+  +-injective           : + m ≡ + n → m ≡ n
+  -[1+-injective        : -[1+ m ] ≡ -[1+ n ] → m ≡ n
+
+  doubleNeg             : - - n ≡ n
+  neg-injective         : - m ≡ - n → m ≡ n
+
+  ∣n∣≡0⇒n≡0             : ∀ {n} → ∣ n ∣ ≡ 0 → n ≡ + 0
+  ∣-n∣≡∣n∣              : ∀ n → ∣ - n ∣ ≡ ∣ n ∣
+
   +◃n≡+n                : Sign.+ ◃ n ≡ + n
   -◃n≡-n                : Sign.- ◃ n ≡ - + n
   signₙ◃∣n∣≡n           : sign n ◃ ∣ n ∣ ≡ n
@@ -225,14 +234,22 @@ Backwards compatible changes
   ⊖-≰                   : n ≰ m → m ⊖ n ≡ - + (n ∸ m)
   ∣⊖∣-≰                 : n ≰ m → ∣ m ⊖ n ∣ ≡ n ∸ m
   sign-⊖-≰              : n ≰ m → sign (m ⊖ n) ≡ Sign.-
+  -[n⊖m]≡-m+n           : - (m ⊖ n) ≡ (- (+ m)) + (+ n)
 
   +-identity            : Identity (+ 0) _+_
+  +-inverse             : Inverse (+ 0) -_ _+_
   +-0-isMonoid          : IsMonoid _≡_ _+_ (+ 0)
   +-0-isGroup           : IsGroup _≡_ _+_ (+ 0) (-_)
+  neg-distrib-+         : - (m + n) ≡ (- m) + (- n)
+  ◃-distrib-+           : s ◃ (m + n) ≡ (s ◃ m) + (s ◃ n)
 
   *-identityʳ           : RightIdentity (+ 1) _*_
   *-identity            : Identity (+ 1) _*_
+  *-zeroˡ               : LeftZero (+ 0) _*_
+  *-zeroʳ               : RightZero (+ 0) _*_
+  *-zero                : Zero (+ 0) _*_
   *-1-isMonoid          : IsMonoid _≡_ _*_ (+ 1)
+  -1*n≡-n               : -[1+ 0 ] * n ≡ - n
 
   +-*-isRing            : IsRing _≡_ _+_ _*_ -_ (+ 0) (+ 1)
   +-*-isCommutativeRing : IsCommutativeRing _≡_ _+_ _*_ -_ (+ 0) (+ 1)
@@ -398,8 +415,11 @@ Backwards compatible changes
   *-identityˡ    : LeftIdentity + _*_
   *-identityʳ    : RightIdentity + _*_
   *-identity     : Identity + _*_
+  *-comm         : Commutative _*_
+  *-assoc        : Associative _*_
   cancel-*-left  : LeftCancellative _*_
   *-cancellative : Cancellative _*_
+  s*s≡+          : s * s ≡ +
   ```
 
 * Added proofs to `Data.Vec.All.Properties`

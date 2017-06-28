@@ -32,6 +32,42 @@ open ℕ.SemiringSolver
 open ≡-Reasoning
 
 ------------------------------------------------------------------------
+-- Equality
+
++-injective : ∀ {m n} → + m ≡ + n → m ≡ n
++-injective refl = refl
+
+-[1+-injective : ∀ {m n} → -[1+ m ] ≡ -[1+ n ] → m ≡ n
+-[1+-injective refl = refl
+
+------------------------------------------------------------------------
+-- Properties of -_
+
+doubleNeg : ∀ n → - - n ≡ n
+doubleNeg (+ zero)   = refl
+doubleNeg (+ suc n)  = refl
+doubleNeg (-[1+ n ]) = refl
+
+neg-injective : ∀ {m n} → - m ≡ - n → m ≡ n
+neg-injective {m} {n} -m≡-n = begin
+  m     ≡⟨ sym (doubleNeg m) ⟩
+  - - m ≡⟨ cong -_ -m≡-n ⟩
+  - - n ≡⟨ doubleNeg n ⟩
+  n ∎
+
+------------------------------------------------------------------------
+-- Properties of ∣_∣
+
+∣n∣≡0⇒n≡0 : ∀ {n} → ∣ n ∣ ≡ 0 → n ≡ + 0
+∣n∣≡0⇒n≡0 {+ .zero} refl = refl
+∣n∣≡0⇒n≡0 { -[1+_] n} ()
+
+∣-n∣≡∣n∣ : ∀ n → ∣ - n ∣ ≡ ∣ n ∣
+∣-n∣≡∣n∣ (+ zero)   = refl
+∣-n∣≡∣n∣ (+ suc n)  = refl
+∣-n∣≡∣n∣ (-[1+ n ]) = refl
+
+------------------------------------------------------------------------
 -- Properties of sign and _◃_
 
 +◃n≡+n : ∀ n → Sign.+ ◃ n ≡ + n
@@ -108,6 +144,12 @@ sign-⊖-< {suc n} (s≤s m<n) = sign-⊖-< m<n
 
 sign-⊖-≰ : ∀ {m n} → n ≰ m → sign (m ⊖ n) ≡ Sign.-
 sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
+
+-[n⊖m]≡-m+n : ∀ m n → - (m ⊖ n) ≡ (- (+ m)) + (+ n)
+-[n⊖m]≡-m+n zero    zero    = refl
+-[n⊖m]≡-m+n zero    (suc n) = refl
+-[n⊖m]≡-m+n (suc m) zero    = refl
+-[n⊖m]≡-m+n (suc m) (suc n) = sym (⊖-swap n m)
 
 +-⊖-left-cancel : ∀ a b c → (a ℕ+ b) ⊖ (a ℕ+ c) ≡ b ⊖ c
 +-⊖-left-cancel zero    b c = refl
@@ -200,6 +242,9 @@ inverseʳ i = begin
   - i + i  ≡⟨ inverseˡ i ⟩
   + 0      ∎
 
++-inverse : Inverse (+ 0) -_ _+_
++-inverse = inverseˡ , inverseʳ
+
 +-isSemigroup : IsSemigroup _≡_ _+_
 +-isSemigroup = record
   { isEquivalence = isEquivalence
@@ -232,7 +277,7 @@ inverseʳ i = begin
 +-0-isGroup : IsGroup _≡_ _+_ (+ 0) (-_)
 +-0-isGroup = record
   { isMonoid = +-0-isMonoid
-  ; inverse  = inverseˡ , inverseʳ
+  ; inverse  = +-inverse
   ; ⁻¹-cong  = cong (-_)
   }
 
@@ -245,6 +290,32 @@ inverseʳ i = begin
 open Algebra.Properties.AbelianGroup
        (record { isAbelianGroup = +-isAbelianGroup })
   using () renaming (⁻¹-involutive to -‿involutive)
+
+-- Other properties of _+_
+
+neg-distrib-+ : ∀ m n → - (m + n) ≡ (- m) + (- n)
+neg-distrib-+ (+ zero)  (+ zero)  = refl
+neg-distrib-+ (+ zero)  (+ suc n) = refl
+neg-distrib-+ (+ suc m) (+ zero)  = cong -[1+_] (ℕ.+-right-identity m)
+neg-distrib-+ (+ suc m) (+ suc n) = cong -[1+_] (ℕ.+-suc m n)
+neg-distrib-+ -[1+ m ]  -[1+ n ] = cong (λ v → + suc v) (sym (ℕ.+-suc m n))
+neg-distrib-+ (+   m)   -[1+ n ] = -[n⊖m]≡-m+n m (suc n)
+neg-distrib-+ -[1+ m ]  (+   n)  =
+  trans (-[n⊖m]≡-m+n n (suc m)) (+-comm (- + n) (+ suc m))
+
+◃-distrib-+ : ∀ s m n → s ◃ (m ℕ+ n) ≡ (s ◃ m) + (s ◃ n)
+◃-distrib-+ Sign.- m n = begin
+  Sign.- ◃ (m ℕ+ n)           ≡⟨ -◃n≡-n (m ℕ+ n) ⟩
+  - (+ (m ℕ+ n))              ≡⟨⟩
+  - ((+ m) + (+ n))           ≡⟨ neg-distrib-+ (+ m) (+ n) ⟩
+  (- (+ m)) + (- (+ n))       ≡⟨ sym (cong₂ _+_ (-◃n≡-n m) (-◃n≡-n n)) ⟩
+  (Sign.- ◃ m) + (Sign.- ◃ n) ∎
+◃-distrib-+ Sign.+ m n = begin
+  Sign.+ ◃ (m ℕ+ n)           ≡⟨ +◃n≡+n (m ℕ+ n) ⟩
+  + (m ℕ+ n)                  ≡⟨⟩
+  (+ m) + (+ n)               ≡⟨ sym (cong₂ _+_ (+◃n≡+n m) (+◃n≡+n n)) ⟩
+  (Sign.+ ◃ m) + (Sign.+ ◃ n) ∎
+
 
 ------------------------------------------------------------------------
 -- Properties of _*_
@@ -269,6 +340,15 @@ open Algebra.Properties.AbelianGroup
 
 *-identity : Identity (+ 1) _*_
 *-identity = *-identityˡ , *-identityʳ
+
+*-zeroˡ : LeftZero (+ 0) _*_
+*-zeroˡ n = refl
+
+*-zeroʳ : RightZero (+ 0) _*_
+*-zeroʳ n rewrite *-comm n (+ 0) = refl
+
+*-zero : Zero (+ 0) _*_
+*-zero = *-zeroˡ , *-zeroʳ
 
 private
   lemma : ∀ a b c → c ℕ+ (b ℕ+ a ℕ* suc b) ℕ* suc c
@@ -476,15 +556,10 @@ import Algebra.RingSolver.AlmostCommutativeRing as ACR
 module RingSolver =
   Solver (ACR.fromCommutativeRing commutativeRing) _≟_
 
-------------------------------------------------------------------------
--- More properties
-
--- ∣_∣ commutes with multiplication.
+-- Other properties of _*_
 
 abs-*-commute : Homomorphic₂ ∣_∣ _*_ _ℕ*_
 abs-*-commute i j = abs-◃ _ _
-
--- Multiplication is right cancellative for non-zero integers.
 
 cancel-*-right : ∀ i j k → k ≢ + 0 → i * k ≡ j * k → i ≡ j
 cancel-*-right i j k            ≢0 eq with signAbs k
@@ -519,9 +594,6 @@ cancel-*-right i j .(s ◃ suc n) ≢0 eq | s ◂ suc n
   ... | .(suc n₁) | refl | .s₁ | refl | .(suc n₂) | refl | .s₂ | refl =
     𝕊.cancel-*-right s₁ s₂ (sign-cong eq)
 
--- Multiplication with a positive number is right cancellative (for
--- _≤_).
-
 cancel-*-+-right-≤ : ∀ m n o → m * + suc o ≤ n * + suc o → m ≤ n
 cancel-*-+-right-≤ (-[1+ m ]) (-[1+ n ]) o (-≤- n≤m) =
   -≤- (≤-pred (ℕ.cancel-*-right-≤ (suc n) (suc m) o (s≤s n≤m)))
@@ -534,8 +606,6 @@ cancel-*-+-right-≤ (+ suc _)  (+ 0)      _ (+≤+ ())
 cancel-*-+-right-≤ (+ suc m)  (+ suc n)  o (+≤+ m≤n) =
   +≤+ (ℕ.cancel-*-right-≤ (suc m) (suc n) o m≤n)
 
--- Multiplication with a positive number is monotone.
-
 *-+-right-mono : ∀ n → (λ x → x * + suc n) Preserves _≤_ ⟶ _≤_
 *-+-right-mono _ (-≤+             {n = 0})         = -≤+
 *-+-right-mono _ (-≤+             {n = suc _})     = -≤+
@@ -546,3 +616,8 @@ cancel-*-+-right-≤ (+ suc m)  (+ suc n)  o (+≤+ m≤n) =
 *-+-right-mono _ (+≤+ {m = suc _} {n = 0}     ())
 *-+-right-mono x (+≤+ {m = suc _} {n = suc _} m≤n) =
   +≤+ ((ℕ.*-mono-≤ m≤n (≤-refl {x = suc x})))
+
+-1*n≡-n : ∀ n → -[1+ 0 ] * n ≡ - n
+-1*n≡-n (+ zero)  = refl
+-1*n≡-n (+ suc n) = cong -[1+_] (ℕ.+-right-identity n)
+-1*n≡-n -[1+ n ]  = cong (λ v → + suc v) (ℕ.+-right-identity n)
