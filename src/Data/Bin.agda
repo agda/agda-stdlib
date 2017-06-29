@@ -119,10 +119,10 @@ private
   ∷∙ : ∀ {b₁ b₂ bs₁ bs₂} →
        bs₁ 1# < bs₂ 1# → (b₁ ∷ bs₁) 1# < (b₂ ∷ bs₂) 1#
   ∷∙ {b₁} {b₂} {bs₁} {bs₂} (less lt) = less (begin
-      1 + (m₁ + n₁ * 2)  ≤⟨ ≤-refl {x = 1} +-mono
-                              (≤-pred (FP.bounded b₁) +-mono ≤-refl) ⟩
+      1 + (m₁ + n₁ * 2)  ≤⟨ +-mono-≤ (≤-refl {x = 1})
+                              (+-mono-≤ (≤-pred (FP.bounded b₁)) ≤-refl) ⟩
       1 + (1  + n₁ * 2)  ≡⟨ refl ⟩
-            suc n₁ * 2   ≤⟨ lt *-mono ≤-refl ⟩
+            suc n₁ * 2   ≤⟨ *-mono-≤ lt ≤-refl ⟩
                 n₂ * 2   ≤⟨ n≤m+n m₂ (n₂ * 2) ⟩
            m₂ + n₂ * 2   ∎
     )
@@ -135,11 +135,10 @@ private
        Fin._<_ b₁ b₂ → (b₁ ∷ bs) 1# < (b₂ ∷ bs) 1#
   ∙∷ {b₁} {b₂} {bs} lt = less (begin
     1 + (m₁  + n * 2)  ≡⟨ sym (+-assoc 1 m₁ (n * 2)) ⟩
-    (1 + m₁) + n * 2   ≤⟨ lt +-mono ≤-refl ⟩
+    (1 + m₁) + n * 2   ≤⟨ +-mono-≤ lt ≤-refl ⟩
          m₂  + n * 2   ∎)
     where
     open Nat; open NP
-    open CommutativeSemiring commutativeSemiring using (+-assoc)
     m₁ = Fin.toℕ b₁; m₂ = Fin.toℕ b₂; n = toℕ (bs 1#)
 
   1<[23] : ∀ {b} → [] 1# < (b ∷ []) 1#
