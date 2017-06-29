@@ -14,7 +14,7 @@ Non-backwards compatible changes
   Reasons:
           1. Its old location didn't conform to the library's conventions.
           2. Its old location was causing dependency cyles when trying to
-                 add new ordering properties to `Data.Nat.Properties`.
+             add new ordering properties to `Data.Nat.Properties`.
 
 * Moved module `≤-Reasoning` from `Data.Nat` to `Data.Nat.Properties`
 
@@ -22,7 +22,7 @@ Non-backwards compatible changes
 
   Reasons:
           1. Its old location was causing dependency cyles to form between
-                 `Data.Fin.Dec`, `Relation.Nullary.Negation` and `Data.Fin`.
+             `Data.Fin.Dec`, `Relation.Nullary.Negation` and `Data.Fin`.
 
 * Moved existing contents of `Data.List.Any.Membership` to
   `Data.List.Any.Membership.Propositional.Properties` and moved internal modules
@@ -33,7 +33,7 @@ Non-backwards compatible changes
   Reasons:
           1. Improves the ease of importing and opening the membership modules
           2. Allows the creation of a new file `Data.List.Any.Membership.Properties`
-                 for setoid membership properties.
+             for setoid membership properties.
 
 * The well-founded relation proofs for the `_<′_` relation have been renamed
   from `<-Rec` and `<-well-founded` to `<′-Rec` and `<′-well-founded`
@@ -42,10 +42,10 @@ Non-backwards compatible changes
 
   Reasons:
           1. The old names were confusing for newcomers to the library as they
-                 would assume `<-wellfounded` referred to the standard `_<_` relation.
+             would assume `<-wellfounded` referred to the standard `_<_` relation.
           2. Without renaming the existing proofs, there was no way of adding
-                 wellfoundedness proofs for the `_<_` relation without increasing the
-                 confusion.
+             wellfoundedness proofs for the `_<_` relation without increasing the
+             confusion.
 
 * Changed the implementation of `map` and `zipWith` in `Data.Vec` to use native
   (pattern-matching) definitions. Previously they were defined using the
