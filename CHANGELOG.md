@@ -330,6 +330,8 @@ Backwards compatible changes
   applyDownFrom f n ≈ f[n-1] ∷ f[n-2] ∷ ... ∷ f[0]   ∷ []
   tabulate f        ≈ f[0]   ∷ f[1]   ∷ ... ∷ f[n-1] ∷ []
   allFin n          ≈ 0f     ∷ 1f     ∷ ... ∷ n-1f   ∷ []
+
+  dfilter P? xs     : Decidable P → List A → List A
   ```
 
 * Added proofs to `Data.List.Properties`
@@ -342,6 +344,10 @@ Backwards compatible changes
   reverse-foldr  : foldr f x (reverse ys) ≡ foldl (flip f) x ys
   reverse-foldr  : foldl f x (reverse ys) ≡ foldr (flip f) x ys
   length-reverse : length (reverse xs) ≡ length xs
+
+  dfilter-all    : All P xs → dfilter P? xs ≡ xs
+  dfilter-none   : All (¬_ ∘ P) xs → dfilter P? xs ≡ []
+  length-dfilter : length (dfilter P? xs) ≤ length xs
   ```
 
 * Added proofs to `Data.List.All.Properties`
@@ -369,6 +375,9 @@ Backwards compatible changes
   applyUpTo⁺₁   : (∀ {i} → i < n → P (f i)) → All P (applyUpTo f n)
   applyUpTo⁺₂   : (∀ i → P (f i)) → All P (applyUpTo f n)
   applyUpTo⁻    : All P (applyUpTo f n) → ∀ {i} → i < n → P (f i)
+
+  dfilter⁺₁     : All P (dfilter P? xs)
+  dfilter⁺₂     : All Q xs → All Q (dfilter P? xs)
   ```
 
 * Added proofs to `Data.List.Any.Properties`

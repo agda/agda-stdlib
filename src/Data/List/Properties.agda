@@ -24,7 +24,8 @@ open import Algebra.FunctionProperties
 import Relation.Binary.EqReasoning as EqR
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; _≗_; refl)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (¬_; yes; no)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable using (⌊_⌋)
 open import Relation.Unary using (Decidable)
 
@@ -307,6 +308,27 @@ length-filter : ∀ {a} {A : Set a} (p : A → Bool) xs →
                 length (filter p xs) ≤ length xs
 length-filter p xs =
   length-gfilter (λ x → if p x then just x else nothing) xs
+
+dfilter-all : ∀ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P)
+                {xs} → All P xs → dfilter P? xs ≡ xs
+dfilter-all P? {[]}     [] = refl
+dfilter-all P? {x ∷ xs} (px ∷ pxs) with P? x
+... | no  ¬px = contradiction px ¬px
+... | yes _   = P.cong (x ∷_) (dfilter-all P? pxs)
+
+dfilter-none : ∀ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P)
+                 {xs} → All (¬_ ∘ P) xs → dfilter P? xs ≡ []
+dfilter-none P? {[]} [] = refl
+dfilter-none P? {x ∷ xs} (¬px ∷ ¬pxs) with P? x
+... | no  _  = dfilter-none P? ¬pxs
+... | yes px = contradiction px ¬px
+
+length-dfilter : ∀ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P)
+                 xs → length (dfilter P? xs) ≤ length xs
+length-dfilter P? [] = z≤n
+length-dfilter P? (x ∷ xs) with P? x
+... | no  _ = ≤-step (length-dfilter P? xs)
+... | yes _ = s≤s (length-dfilter P? xs)
 
 ------------------------------------------------------------------------
 -- Inits, tails, and scanr

@@ -249,3 +249,22 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   tabulate⁻ {zero}  pf       ()
   tabulate⁻ {suc n} (px ∷ _) fzero    = px
   tabulate⁻ {suc n} (_ ∷ pf) (fsuc i) = tabulate⁻ pf i
+
+------------------------------------------------------------------------
+-- tabulate
+
+module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
+
+  dfilter⁺₁ : ∀ xs → All P (dfilter P? xs)
+  dfilter⁺₁ []       = []
+  dfilter⁺₁ (x ∷ xs) with P? x
+  ... | yes Px = Px ∷ dfilter⁺₁ xs
+  ... | no  _  = dfilter⁺₁ xs
+
+  dfilter⁺₂ : ∀ {q} {Q : A → Set q} {xs} →
+                  All Q xs → All Q (dfilter P? xs)
+  dfilter⁺₂ {xs = _}     [] = []
+  dfilter⁺₂ {xs = x ∷ _} (Qx ∷ Qxs) with P? x
+  ... | no  _ = dfilter⁺₂ Qxs
+  ... | yes _ = Qx ∷ dfilter⁺₂ Qxs
+

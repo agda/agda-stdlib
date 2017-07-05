@@ -9,10 +9,13 @@ module Data.List.Base where
 open import Data.Nat.Base using (ℕ; zero; suc; _+_; _*_)
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
-open import Data.Bool.Base using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
+open import Data.Bool.Base
+  using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Product as Prod using (_×_; _,_)
 open import Function using (id; _∘_)
+open import Relation.Nullary using (yes; no)
+open import Relation.Unary using (Decidable)
 
 ------------------------------------------------------------------------
 -- Types
@@ -249,6 +252,13 @@ gfilter p []       = []
 gfilter p (x ∷ xs) with p x
 ... | just y  = y ∷ gfilter p xs
 ... | nothing =     gfilter p xs
+
+dfilter : ∀ {a p} {A : Set a} {P : A → Set p} → Decidable P →
+          List A → List A
+dfilter P? [] = []
+dfilter P? (x ∷ xs) with P? x
+... | no  _ = dfilter P? xs
+... | yes _ = x ∷ dfilter P? xs
 
 filter : ∀ {a} {A : Set a} → (A → Bool) → List A → List A
 filter p = gfilter (λ x → if p x then just x else nothing)
