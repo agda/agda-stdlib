@@ -252,7 +252,7 @@ toℕ-raise (suc n) i = cong suc (toℕ-raise n i)
 infixl 6 _+′_
 
 _+′_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (N.pred m ℕ+ n)
-i +′ j = inject≤ (i + j) (N._+-mono_ (prop-toℕ-≤ i) N.≤-refl)
+i +′ j = inject≤ (i + j) (N.+-mono-≤ (prop-toℕ-≤ i) N.≤-refl)
 
 -- reverse {n} "i" = "n ∸ 1 ∸ i".
 
@@ -281,11 +281,10 @@ reverse-involutive {n} i = toℕ-injective (begin
   toℕ i                      ∎)
   where
   open P.≡-Reasoning
-  open CommutativeSemiring N.commutativeSemiring using (+-comm)
 
   lem₁ : ∀ m n → (m ℕ+ n) ∸ (m ℕ+ n ∸ m) ≡ m
   lem₁ m n = begin
-    m ℕ+ n ∸ (m ℕ+ n ∸ m) ≡⟨ cong (λ ξ → m ℕ+ n ∸ (ξ ∸ m)) (+-comm m n) ⟩
+    m ℕ+ n ∸ (m ℕ+ n ∸ m) ≡⟨ cong (λ ξ → m ℕ+ n ∸ (ξ ∸ m)) (N.+-comm m n) ⟩
     m ℕ+ n ∸ (n ℕ+ m ∸ m) ≡⟨ cong (λ ξ → m ℕ+ n ∸ ξ) (N.m+n∸n≡m n m) ⟩
     m ℕ+ n ∸ n            ≡⟨ N.m+n∸n≡m m n ⟩
     m                     ∎
