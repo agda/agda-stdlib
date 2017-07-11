@@ -16,11 +16,20 @@ open import Algebra
 open import Algebra.Structures
 open import Relation.Nullary
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality as PE
 open import Algebra.FunctionProperties (_≡_ {A = ℕ})
 open import Data.Product
 open import Data.Sum
 open ≡-Reasoning
+
+-- for the S.M. proposal --
+open ≡-Reasoning renaming (_≡⟨_⟩_ to _≡[_]_; begin_ to ≡begin_;
+                                                       _∎ to _≡end)
+open import Data.Empty using (⊥-elim)
+open import Data.List  using (List; []; _∷_)
+
+
+
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
@@ -924,3 +933,170 @@ im≡jm+n⇒[i∸j]m≡n i j m n eq = begin
 ⌊n/2⌋≤′n : ∀ n → ⌊ n /2⌋ ≤′ n
 ⌊n/2⌋≤′n zero    = ≤′-refl
 ⌊n/2⌋≤′n (suc n) = ≤′-step (⌈n/2⌉≤′n n)
+
+
+
+
+
+-- ***************************************************************************
+-- Auxiliary items needed for the Bin items of proposal by S.M.
+-- Some of them may have another usage.
+
+natDTO       = ≤-decTotalOrder
+natSTO       = strictTotalOrder
+natDecSetoid = DecTotalOrder.Eq.decSetoid natDTO    -- for ℕ
+natEquiv     = DecSetoid.isEquivalence natDecSetoid
+
+tail0 : ∀ {α} {A : Set α} → List A → List A      -- ≗ drop 1,  but let it be
+tail0 []       = []
+tail0 (_ ∷ bs) = bs
+
+half : ℕ → ℕ
+half = ⌊_/2⌋    -- renaming
+
+open DecTotalOrder natDTO using (_≟_)
+                          renaming (reflexive to ≤refl; trans to ≤trans;
+                                                          antisym to ≤antisym)
+open StrictTotalOrder natSTO using (compare; <-resp-≈)
+
+rDistrib = CommutativeSemiring.distribʳ commutativeSemiring
+
++cong₁ : {y : ℕ} → (_+ y) Preserves _≡_ ⟶ _≡_
++cong₁ {y} =  PE.cong (_+ y)
+
++cong₂ : {x : ℕ} → (x +_) Preserves _≡_ ⟶ _≡_
++cong₂ {x} =  PE.cong (x +_)
+
+1* : (x : ℕ) → (1 * x) ≡ x
+1* x =  +-comm x 0
+
+-- Some of the below lemmata on the relation between _<_ and _≤_ can be proved
+-- in a more generic style by using  Relation.Binary.StrictToNonStrict._≤_
+-- (which can be proved equal to  Data.Nat._≤_).
+
+suc>0 : ∀ {n} → suc n > 0
+suc>0 = s≤s z≤n
+
+n<suc-n : ∀ {n} → n < suc n
+n<suc-n = ≤refl PE.refl
+
+≤0→=0 : ∀ {n} → n ≤ 0 → n ≡ 0
+≤0→=0 z≤n =  PE.refl
+
+n≤suc-n : ∀ {n} → n ≤ suc n
+n≤suc-n = ≤-step $ ≤refl PE.refl
+
+suc-n>n : ∀ {n} → n < suc n
+suc-n>n = n<suc-n
+
+2+n>1 :  ∀ {n} → suc (suc n) > 1  -- 2 ≤ suc suc n
+2+n>1 =  s≤s $ s≤s z≤n
+
+≤→⊎ : ∀ {m n} → m ≤ n → m < n ⊎ m ≡ n
+≤→⊎ {0}     {0}     _          =  inj₂ PE.refl
+≤→⊎ {0}     {suc n} _          =  inj₁ suc>0
+≤→⊎ {suc m} {suc n} (s≤s m≤n)  with  ≤→⊎ m≤n
+...                            | inj₂ m=n = inj₂ $ PE.cong suc m=n
+...                            | inj₁ m<n = inj₁ m''≤n'
+                                            where
+                                            m' = suc m
+
+                                            m''≤n' : suc m' ≤ suc n
+                                            m''≤n' = s≤s m<n
+⊎→≤ : ∀ {m n} → m < n ⊎ m ≡ n → m ≤ n
+⊎→≤ (inj₂ m=n) =  ≤refl m=n
+⊎→≤ (inj₁ m<n) =  ≤trans m≤m' m<n  where
+                                   m≤m' = ≤-step $ ≤refl PE.refl
+
+<→≤ : ∀ {m n} → m < n → m ≤ n
+<→≤ = ⊎→≤ ∘ inj₁
+
+<→≢ : ∀ {m n} → m < n → m ≢ n
+<→≢ {_} {n} m<n m=n =  <-irrefl PE.refl n<n  where
+                                             resp = proj₂ <-resp-≈
+                                             n<n  = resp m=n m<n
+>→≢ : ∀ {m n} → m > n → m ≢ n
+>→≢ {_} {n} m>n =  <→≢ m>n ∘ PE.sym
+
+>→≰ : ∀ {m n} → m > n → m ≰ n
+>→≰ m>n m≤n =  <→≢ n<m n=m  where
+                            n<m = m>n
+                            n≤m = <→≤ n<m
+                            n=m = ≤antisym n≤m m≤n
+
+≤→≯ : ∀ {m n} → m ≤ n → m ≯ n
+≤→≯ m≤n m>e =  >→≰ m>e m≤n
+
+≤,≢-then< : ∀ {m n} → m ≤ n → m ≢ n → m < n
+≤,≢-then< m≤n m≢n  with  ≤→⊎ m≤n
+...              | inj₁ m<n =  m<n
+...              | inj₂ m=n =  ⊥-elim $ m≢n m=n
+
+<-antisym : ∀ {m n} → m < n → n ≮ m
+<-antisym m<n n<m =  <-irrefl PE.refl $ <-trans m<n n<m
+
+≤1→0or1 : ∀ n → n ≤ 1 → n ≡ 0 ⊎ n ≡ 1
+≤1→0or1 0             _     =  inj₁ PE.refl
+≤1→0or1 (suc 0)       _     =  inj₂ PE.refl
+≤1→0or1 (suc (suc n)) n''≤1 =  ⊥-elim $ n''≰1 n''≤1
+                               where
+                               n''≰1 = >→≰ $ s≤s $ s≤s z≤n
+
+monot-half : half Preserves _≤_ ⟶ _≤_
+monot-half = ⌊n/2⌋-mono
+
+------------------------------------------------------------------------------
+data Even : ℕ → Set where  even0  : Even 0
+                           even+2 : {n : ℕ} → Even n → Even (suc $ suc n)
+Odd : ℕ → Set
+Odd = ¬_ ∘ Even
+
+odd+2 : ∀ {n} → Odd n → Odd (suc (suc n))
+odd+2 {0}     odd-0  _                = odd-0 even0
+odd+2 {suc n} odd-n' (even+2 even-n') = odd-n' even-n'
+
+odd-suc : ∀ {n} → Even n → Odd (suc n)
+odd-suc {0}           _               =  λ ()
+                                           -- no constructor for Even (suc 1)
+odd-suc {suc (suc n)} (even+2 even-n) =  odd+2 $ odd-suc even-n
+
+even-2* : ∀ n → Even (n * 2)
+even-2* 0       =  even0
+even-2* (suc n) =  even+2 $ even-2* n
+
+
+------------------------------------------------------------------------------
+half-n*2 : ∀ n → half (n * 2) ≡ n
+half-n*2 0       =  PE.refl
+half-n*2 (suc n) =  PE.cong suc $ half-n*2 n
+
+half-1+n*2 : ∀ n → half (suc (n * 2)) ≡ n
+half-1+n*2 0       = PE.refl
+half-1+n*2 (suc n) =
+        ≡begin
+           half (suc ((1 + n) * 2))        ≡[ PE.cong half $ PE.cong suc $
+                                                             rDistrib 2 1 n ]
+           half (suc (2 + (n * 2)))        ≡[ PE.refl ]
+           half (suc (suc (suc (n * 2))))  ≡[ PE.refl ]
+           suc (half (suc (n * 2)))        ≡[ PE.cong suc $ half-1+n*2 n ]
+           suc n
+        ≡end
+
+open ≤-Reasoning using () renaming (begin_ to ≤begin_; _∎ to _≤end;
+                                         _≡⟨_⟩_ to _≡≤[_]_; _≤⟨_⟩_ to _≤[_]_)
+
+half≤ : (n : ℕ) → half n ≤ n
+half≤ 0             = z≤n
+half≤ (suc 0)       = z≤n
+half≤ (suc (suc n)) = ≤begin  half (suc (suc n))   ≡≤[ PE.refl ]
+                              suc (half n)          ≤[ s≤s $ half≤ n ]
+                              suc n                 ≤[ n≤suc-n ]
+                              suc (suc n)
+                      ≤end
+
+half-suc-n≤n : (n : ℕ) → half (suc n) ≤ n
+half-suc-n≤n 0       =  z≤n
+half-suc-n≤n (suc n) =  ≤begin  half (suc (suc n))   ≡≤[ PE.refl ]
+                                suc (half n)          ≤[ s≤s $ half≤ n ]
+                                suc n
+                        ≤end

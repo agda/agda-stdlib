@@ -6,7 +6,11 @@
 
 module Data.Nat.DivMod where
 
-open import Data.Fin as Fin using (Fin; toℕ)
+open import Function         using (case_of_)
+open import Relation.Nullary using (yes; no)
+open import Data.Empty       using (⊥-elim)
+open import Data.Sum         using (_⊎_; inj₁; inj₂)
+open import Data.Fin as Fin  using (Fin; toℕ)
 import Data.Fin.Properties as FinP
 open import Data.Nat as Nat
 open import Data.Nat.Properties
@@ -146,3 +150,55 @@ _divMod_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} →
   where
   lemma  = s≤s (mod-lemma 0 d s)
   lemma′ = Nat.erase (≤⇒≤″ lemma)
+
+
+
+
+-- of proposal by S.M. *******************************************************
+
+half-n=n-div-2 : ∀ n → half n ≡ (n div 2)
+half-n=n-div-2 n =
+  case
+      rN ≟ 0
+  of \
+  { (yes rN=0) → let  n=q*2 = P.trans n=rN+q*2 (+cong₁ rN=0)
+                 in
+                 begin  half n         ≡⟨ P.cong half n=q*2 ⟩
+                        half (q * 2)   ≡⟨ half-n*2 q ⟩
+                        q              ≡⟨ q=n-div-2 ⟩
+                        n div 2
+                 ∎
+  ; (no rN/=0) →
+            let  rN=1 : rN ≡ 1
+                 rN=1 = case rN=0or1 of \ { (inj₁ rN=0) → ⊥-elim (rN/=0 rN=0)
+                                          ; (inj₂ rN=1) → rN=1
+                                          }
+                 n=1+q*2 : n ≡ suc (q * 2)
+                 n=1+q*2 = begin  n              ≡⟨ n=rN+q*2 ⟩
+                                  rN + (q * 2)   ≡⟨ +cong₁ rN=1 ⟩
+                                  1 + (q * 2)
+                           ∎
+            in
+            begin  half n               ≡⟨ P.cong half n=1+q*2 ⟩
+                   half (suc (q * 2))   ≡⟨ half-1+n*2 q ⟩
+                   q                    ≡⟨ q=n-div-2 ⟩
+                   n div 2
+            ∎
+  }
+  where
+  open DivMod
+
+  res      = n divMod 2
+  q        = quotient  res
+  r        = remainder res
+  rN       = toℕ r
+  n=rN+q*2 = property res
+
+  q=n-div-2 : q ≡ (n div 2)
+  q=n-div-2 = P.refl
+
+  rN≤1 = FinP.prop-toℕ-≤ {2} r
+
+  rN=0or1 :  rN ≡ 0 ⊎ rN ≡ 1
+  rN=0or1 =  ≤1→0or1 rN rN≤1
+
