@@ -6,11 +6,13 @@
 
 module Data.Char where
 
-open import Data.Nat.Base using (ℕ)
+open import Function      using (_∘_)
+open import Data.Nat.Base using (ℕ; _+_; _*_; _∸_)
 import Data.Nat.Properties as NatProp
+open import Data.List      using (List; []; _∷_; reverse; map)
 open import Data.Bool.Base using (Bool; true; false)
 open import Relation.Nullary
-open import Relation.Nullary.Decidable
+open import Relation.Nullary.Decidable hiding (map)
 open import Relation.Binary
 import Relation.Binary.On as On
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_)
@@ -63,3 +65,17 @@ decSetoid = PropEq.decSetoid _≟_
 
 strictTotalOrder : StrictTotalOrder _ _ _
 strictTotalOrder = On.strictTotalOrder NatProp.strictTotalOrder toNat
+
+
+
+-- Proposition by S.M. *******************************************************
+
+charToDecDigitNat : Char -> ℕ
+charToDecDigitNat c = (toNat c) ∸ 48
+
+readNat : List Char → ℕ                 -- convert from decimal digit chars
+readNat =  toN ∘ map charToDecDigitNat ∘ reverse
+           where
+           toN : List ℕ -> ℕ
+           toN []       = 0
+           toN (j ∷ js) = j + (10 * (toN js))
