@@ -11,2262 +11,1300 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Digits and digit expansions</a
-      ><a name="136"
       >
-</a
-      ><a name="137" class="Comment"
+<a name="137" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="209"
       >
 
-</a
-      ><a name="211" class="Keyword"
+<a name="211" class="Keyword"
       >module</a
-      ><a name="217"
-      > </a
-      ><a name="218" href="Data.Digit.html#1" class="Module"
+      > <a name="218" href="Data.Digit.html" class="Module"
       >Data.Digit</a
-      ><a name="228"
-      > </a
-      ><a name="229" class="Keyword"
+      > <a name="229" class="Keyword"
       >where</a
-      ><a name="234"
       >
 
-</a
-      ><a name="236" class="Keyword"
+<a name="236" class="Keyword"
       >open</a
-      ><a name="240"
-      > </a
-      ><a name="241" class="Keyword"
+      > <a name="241" class="Keyword"
       >import</a
-      ><a name="247"
-      > </a
-      ><a name="248" href="Data.Nat.html#1" class="Module"
+      > <a name="248" href="Data.Nat.html" class="Module"
       >Data.Nat</a
-      ><a name="256"
       >
-</a
-      ><a name="257" class="Keyword"
+<a name="257" class="Keyword"
       >open</a
-      ><a name="261"
-      > </a
-      ><a name="262" class="Keyword"
+      > <a name="262" class="Keyword"
       >import</a
-      ><a name="268"
-      > </a
-      ><a name="269" href="Data.Nat.Properties.html#1" class="Module"
+      > <a name="269" href="Data.Nat.Properties.html" class="Module"
       >Data.Nat.Properties</a
-      ><a name="288"
       >
-</a
-      ><a name="289" class="Keyword"
+<a name="289" class="Keyword"
       >open</a
-      ><a name="293"
-      > </a
-      ><a name="294" href="Data.Nat.Properties.html#2085" class="Module"
+      > <a name="294" href="Data.Nat.Properties.html#SemiringSolver" class="Module"
       >SemiringSolver</a
-      ><a name="308"
       >
-</a
-      ><a name="309" class="Keyword"
+<a name="309" class="Keyword"
       >open</a
-      ><a name="313"
-      > </a
-      ><a name="314" class="Keyword"
+      > <a name="314" class="Keyword"
       >import</a
-      ><a name="320"
-      > </a
-      ><a name="321" href="Data.Fin.html#1" class="Module"
+      > <a name="321" href="Data.Fin.html" class="Module"
       >Data.Fin</a
-      ><a name="329"
-      > </a
-      ><a name="330" class="Symbol"
+      > <a name="330" class="Symbol"
       >as</a
-      ><a name="332"
-      > </a
-      ><a name="333" class="Module"
+      > <a name="333" class="Module"
       >Fin</a
-      ><a name="336"
-      > </a
-      ><a name="337" class="Keyword"
+      > <a name="337" class="Keyword"
       >using</a
-      ><a name="342"
-      > </a
-      ><a name="343" class="Symbol"
+      > <a name="343" class="Symbol"
       >(</a
-      ><a name="344" href="Data.Fin.html#842" class="Datatype"
+      ><a name="344" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
       ><a name="347" class="Symbol"
       >;</a
-      ><a name="348"
-      > </a
-      ><a name="349" href="Data.Fin.html#864" class="InductiveConstructor"
+      > <a name="349" href="Data.Fin.html#Fin.zero" class="InductiveConstructor"
       >zero</a
       ><a name="353" class="Symbol"
       >;</a
-      ><a name="354"
-      > </a
-      ><a name="355" href="Data.Fin.html#895" class="InductiveConstructor"
+      > <a name="355" href="Data.Fin.html#Fin.suc" class="InductiveConstructor"
       >suc</a
       ><a name="358" class="Symbol"
       >;</a
-      ><a name="359"
-      > </a
-      ><a name="360" href="Data.Fin.html#968" class="Function"
+      > <a name="360" href="Data.Fin.html#to&#8469;" class="Function"
       >to&#8469;</a
       ><a name="363" class="Symbol"
       >)</a
-      ><a name="364"
       >
-</a
-      ><a name="365" class="Keyword"
+<a name="365" class="Keyword"
       >open</a
-      ><a name="369"
-      > </a
-      ><a name="370" class="Keyword"
+      > <a name="370" class="Keyword"
       >import</a
-      ><a name="376"
-      > </a
-      ><a name="377" href="Relation.Nullary.Decidable.html#1" class="Module"
+      > <a name="377" href="Relation.Nullary.Decidable.html" class="Module"
       >Relation.Nullary.Decidable</a
-      ><a name="403"
       >
-</a
-      ><a name="404" class="Keyword"
+<a name="404" class="Keyword"
       >open</a
-      ><a name="408"
-      > </a
-      ><a name="409" class="Keyword"
+      > <a name="409" class="Keyword"
       >import</a
-      ><a name="415"
-      > </a
-      ><a name="416" href="Data.Char.html#1" class="Module"
+      > <a name="416" href="Data.Char.html" class="Module"
       >Data.Char</a
-      ><a name="425"
-      > </a
-      ><a name="426" class="Keyword"
+      > <a name="426" class="Keyword"
       >using</a
-      ><a name="431"
-      > </a
-      ><a name="432" class="Symbol"
+      > <a name="432" class="Symbol"
       >(</a
-      ><a name="433" href="Agda.Builtin.Char.html#132" class="Postulate"
+      ><a name="433" href="Agda.Builtin.Char.html#Char" class="Postulate"
       >Char</a
       ><a name="437" class="Symbol"
       >)</a
-      ><a name="438"
       >
-</a
-      ><a name="439" class="Keyword"
+<a name="439" class="Keyword"
       >open</a
-      ><a name="443"
-      > </a
-      ><a name="444" class="Keyword"
+      > <a name="444" class="Keyword"
       >import</a
-      ><a name="450"
-      > </a
-      ><a name="451" href="Data.List.Base.html#1" class="Module"
+      > <a name="451" href="Data.List.Base.html" class="Module"
       >Data.List.Base</a
-      ><a name="465"
       >
-</a
-      ><a name="466" class="Keyword"
+<a name="466" class="Keyword"
       >open</a
-      ><a name="470"
-      > </a
-      ><a name="471" class="Keyword"
+      > <a name="471" class="Keyword"
       >import</a
-      ><a name="477"
-      > </a
-      ><a name="478" href="Data.Product.html#1" class="Module"
+      > <a name="478" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="490"
       >
-</a
-      ><a name="491" class="Keyword"
+<a name="491" class="Keyword"
       >open</a
-      ><a name="495"
-      > </a
-      ><a name="496" class="Keyword"
+      > <a name="496" class="Keyword"
       >import</a
-      ><a name="502"
-      > </a
-      ><a name="503" href="Data.Vec.html#1" class="Module"
+      > <a name="503" href="Data.Vec.html" class="Module"
       >Data.Vec</a
-      ><a name="511"
-      > </a
-      ><a name="512" class="Symbol"
+      > <a name="512" class="Symbol"
       >as</a
-      ><a name="514"
-      > </a
-      ><a name="515" class="Module"
+      > <a name="515" class="Module"
       >Vec</a
-      ><a name="518"
-      > </a
-      ><a name="519" class="Keyword"
+      > <a name="519" class="Keyword"
       >using</a
-      ><a name="524"
-      > </a
-      ><a name="525" class="Symbol"
+      > <a name="525" class="Symbol"
       >(</a
-      ><a name="526" href="Data.Vec.html#609" class="Datatype"
+      ><a name="526" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
       ><a name="529" class="Symbol"
       >;</a
-      ><a name="530"
-      > </a
-      ><a name="531" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="531" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >_&#8759;_</a
       ><a name="534" class="Symbol"
       >;</a
-      ><a name="535"
-      > </a
-      ><a name="536" href="Data.Vec.html#649" class="InductiveConstructor"
+      > <a name="536" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
       >[]</a
       ><a name="538" class="Symbol"
       >)</a
-      ><a name="539"
       >
-</a
-      ><a name="540" class="Keyword"
+<a name="540" class="Keyword"
       >open</a
-      ><a name="544"
-      > </a
-      ><a name="545" class="Keyword"
+      > <a name="545" class="Keyword"
       >import</a
-      ><a name="551"
-      > </a
-      ><a name="552" href="Induction.Nat.html#1" class="Module"
+      > <a name="552" href="Induction.Nat.html" class="Module"
       >Induction.Nat</a
-      ><a name="565"
-      >
-</a
-      ><a name="566" class="Keyword"
-      >open</a
-      ><a name="570"
-      > </a
-      ><a name="571" class="Keyword"
-      >import</a
-      ><a name="577"
-      > </a
-      ><a name="578" href="Data.Nat.DivMod.html#1" class="Module"
-      >Data.Nat.DivMod</a
-      ><a name="593"
-      >
-</a
-      ><a name="594" class="Keyword"
-      >open</a
-      ><a name="598"
-      > </a
-      ><a name="599" href="Data.Nat.html#2179" class="Module"
-      >&#8804;-Reasoning</a
-      ><a name="610"
-      >
-</a
-      ><a name="611" class="Keyword"
-      >open</a
-      ><a name="615"
-      > </a
-      ><a name="616" class="Keyword"
-      >import</a
-      ><a name="622"
-      > </a
-      ><a name="623" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
-      >Relation.Binary.PropositionalEquality</a
-      ><a name="660"
-      > </a
-      ><a name="661" class="Symbol"
-      >as</a
-      ><a name="663"
-      > </a
-      ><a name="664" class="Module"
-      >P</a
-      ><a name="665"
-      > </a
-      ><a name="666" class="Keyword"
+      > <a name="566" class="Keyword"
       >using</a
-      ><a name="671"
-      > </a
-      ><a name="672" class="Symbol"
+      > <a name="572" class="Symbol"
       >(</a
-      ><a name="673" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
-      >_&#8801;_</a
-      ><a name="676" class="Symbol"
+      ><a name="573" href="Induction.WellFounded.html#1751" class="Function"
+      >&lt;&#8242;-rec</a
+      ><a name="579" class="Symbol"
       >;</a
-      ><a name="677"
-      > </a
-      ><a name="678" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
-      >refl</a
-      ><a name="682" class="Symbol"
+      > <a name="581" href="Induction.Nat.html#&lt;&#8242;-Rec" class="Function"
+      >&lt;&#8242;-Rec</a
+      ><a name="587" class="Symbol"
       >)</a
-      ><a name="683"
       >
-</a
-      ><a name="684" class="Keyword"
+<a name="589" class="Keyword"
       >open</a
-      ><a name="688"
-      > </a
-      ><a name="689" class="Keyword"
+      > <a name="594" class="Keyword"
       >import</a
-      ><a name="695"
-      > </a
-      ><a name="696" href="Function.html#1" class="Module"
+      > <a name="601" href="Data.Nat.DivMod.html" class="Module"
+      >Data.Nat.DivMod</a
+      >
+<a name="617" class="Keyword"
+      >open</a
+      > <a name="622" href="Data.Nat.Properties.html#&#8804;-Reasoning" class="Module"
+      >&#8804;-Reasoning</a
+      >
+<a name="634" class="Keyword"
+      >open</a
+      > <a name="639" class="Keyword"
+      >import</a
+      > <a name="646" href="Relation.Binary.PropositionalEquality.html" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      > <a name="684" class="Symbol"
+      >as</a
+      > <a name="687" class="Module"
+      >P</a
+      > <a name="689" class="Keyword"
+      >using</a
+      > <a name="695" class="Symbol"
+      >(</a
+      ><a name="696" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="699" class="Symbol"
+      >;</a
+      > <a name="701" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      ><a name="705" class="Symbol"
+      >)</a
+      >
+<a name="707" class="Keyword"
+      >open</a
+      > <a name="712" class="Keyword"
+      >import</a
+      > <a name="719" href="Function.html" class="Module"
       >Function</a
-      ><a name="704"
       >
 
-</a
-      ><a name="706" class="Comment"
+<a name="729" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="778"
       >
-</a
-      ><a name="779" class="Comment"
+<a name="802" class="Comment"
       >-- A boring lemma</a
-      ><a name="796"
       >
 
-</a
-      ><a name="798" class="Keyword"
+<a name="821" class="Keyword"
       >private</a
-      ><a name="805"
       >
 
-  </a
-      ><a name="809" href="Data.Digit.html#809" class="Function"
+  <a name="lem" href="Data.Digit.html#lem" class="Function"
       >lem</a
-      ><a name="812"
-      > </a
-      ><a name="813" class="Symbol"
+      > <a name="836" class="Symbol"
       >:</a
-      ><a name="814"
-      > </a
-      ><a name="815" class="Symbol"
+      > <a name="838" class="Symbol"
       >&#8704;</a
-      ><a name="816"
-      > </a
-      ><a name="817" href="Data.Digit.html#817" class="Bound"
+      > <a name="840" href="Data.Digit.html#840" class="Bound"
       >x</a
-      ><a name="818"
-      > </a
-      ><a name="819" href="Data.Digit.html#819" class="Bound"
+      > <a name="842" href="Data.Digit.html#842" class="Bound"
       >k</a
-      ><a name="820"
-      > </a
-      ><a name="821" href="Data.Digit.html#821" class="Bound"
+      > <a name="844" href="Data.Digit.html#844" class="Bound"
       >r</a
-      ><a name="822"
-      > </a
-      ><a name="823" class="Symbol"
+      > <a name="846" class="Symbol"
       >&#8594;</a
-      ><a name="824"
-      > </a
-      ><a name="825" class="Number"
+      > <a name="848" class="Number"
       >2</a
-      ><a name="826"
-      > </a
-      ><a name="827" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="850" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="828"
-      > </a
-      ><a name="829" href="Data.Digit.html#817" class="Bound"
+      > <a name="852" href="Data.Digit.html#840" class="Bound"
       >x</a
-      ><a name="830"
-      > </a
-      ><a name="831" href="Data.Nat.Base.html#1349" class="Datatype Operator"
+      > <a name="854" href="Data.Nat.Base.html#_&#8804;&#8242;_" class="Datatype Operator"
       >&#8804;&#8242;</a
-      ><a name="833"
-      > </a
-      ><a name="834" href="Data.Digit.html#821" class="Bound"
+      > <a name="857" href="Data.Digit.html#844" class="Bound"
       >r</a
-      ><a name="835"
-      > </a
-      ><a name="836" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="859" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="837"
-      > </a
-      ><a name="838" class="Symbol"
+      > <a name="861" class="Symbol"
       >(</a
-      ><a name="839" class="Number"
+      ><a name="862" class="Number"
       >1</a
-      ><a name="840"
-      > </a
-      ><a name="841" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="864" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="842"
-      > </a
-      ><a name="843" href="Data.Digit.html#817" class="Bound"
+      > <a name="866" href="Data.Digit.html#840" class="Bound"
       >x</a
-      ><a name="844" class="Symbol"
+      ><a name="867" class="Symbol"
       >)</a
-      ><a name="845"
-      > </a
-      ><a name="846" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="869" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="847"
-      > </a
-      ><a name="848" class="Symbol"
+      > <a name="871" class="Symbol"
       >(</a
-      ><a name="849" class="Number"
+      ><a name="872" class="Number"
       >2</a
-      ><a name="850"
-      > </a
-      ><a name="851" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="874" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="852"
-      > </a
-      ><a name="853" href="Data.Digit.html#819" class="Bound"
+      > <a name="876" href="Data.Digit.html#842" class="Bound"
       >k</a
-      ><a name="854" class="Symbol"
+      ><a name="877" class="Symbol"
       >)</a
-      ><a name="855"
       >
-  </a
-      ><a name="858" href="Data.Digit.html#809" class="Function"
+  <a name="881" href="Data.Digit.html#lem" class="Function"
       >lem</a
-      ><a name="861"
-      > </a
-      ><a name="862" href="Data.Digit.html#862" class="Bound"
+      > <a name="885" href="Data.Digit.html#885" class="Bound"
       >x</a
-      ><a name="863"
-      > </a
-      ><a name="864" href="Data.Digit.html#864" class="Bound"
+      > <a name="887" href="Data.Digit.html#887" class="Bound"
       >k</a
-      ><a name="865"
-      > </a
-      ><a name="866" href="Data.Digit.html#866" class="Bound"
+      > <a name="889" href="Data.Digit.html#889" class="Bound"
       >r</a
-      ><a name="867"
-      > </a
-      ><a name="868" class="Symbol"
+      > <a name="891" class="Symbol"
       >=</a
-      ><a name="869"
-      > </a
-      ><a name="870" href="Data.Nat.Properties.html#7617" class="Function"
+      > <a name="893" href="Data.Nat.Properties.html#&#8804;&#8658;&#8804;&#8242;" class="Function"
       >&#8804;&#8658;&#8804;&#8242;</a
-      ><a name="874"
-      > </a
-      ><a name="875" href="Function.html#1835" class="Function Operator"
+      > <a name="898" href="Function.html#_$_" class="Function Operator"
       >$</a
-      ><a name="876"
-      > </a
-      ><a name="877" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      > <a name="900" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
       >begin</a
-      ><a name="882"
       >
-    </a
-      ><a name="887" class="Number"
+    <a name="910" class="Number"
       >2</a
-      ><a name="888"
-      > </a
-      ><a name="889" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="912" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="890"
-      > </a
-      ><a name="891" href="Data.Digit.html#862" class="Bound"
+      > <a name="914" href="Data.Digit.html#885" class="Bound"
       >x</a
-      ><a name="892"
       >
-      </a
-      ><a name="899" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      <a name="922" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8804;&#10216;</a
-      ><a name="901"
-      > </a
-      ><a name="902" href="Data.Nat.Properties.html#7913" class="Function"
+      > <a name="925" href="Data.Nat.Properties.html#m&#8804;m+n" class="Function"
       >m&#8804;m+n</a
-      ><a name="907"
-      > </a
-      ><a name="908" class="Symbol"
+      > <a name="931" class="Symbol"
       >_</a
-      ><a name="909"
-      > </a
-      ><a name="910" class="Symbol"
+      > <a name="933" class="Symbol"
       >_</a
-      ><a name="911"
-      > </a
-      ><a name="912" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="935" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="913"
       >
-    </a
-      ><a name="918" class="Number"
+    <a name="941" class="Number"
       >2</a
-      ><a name="919"
-      > </a
-      ><a name="920" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="943" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="921"
-      > </a
-      ><a name="922" href="Data.Digit.html#862" class="Bound"
+      > <a name="945" href="Data.Digit.html#885" class="Bound"
       >x</a
-      ><a name="923"
-      > </a
-      ><a name="924" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="947" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="925"
-      > </a
-      ><a name="926" class="Symbol"
+      > <a name="949" class="Symbol"
       >(</a
-      ><a name="927" href="Data.Digit.html#862" class="Bound"
+      ><a name="950" href="Data.Digit.html#885" class="Bound"
       >x</a
-      ><a name="928"
-      > </a
-      ><a name="929" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="952" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="930"
-      > </a
-      ><a name="931" class="Symbol"
+      > <a name="954" class="Symbol"
       >(</a
-      ><a name="932" class="Number"
+      ><a name="955" class="Number"
       >1</a
-      ><a name="933"
-      > </a
-      ><a name="934" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="957" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="935"
-      > </a
-      ><a name="936" href="Data.Digit.html#862" class="Bound"
+      > <a name="959" href="Data.Digit.html#885" class="Bound"
       >x</a
-      ><a name="937" class="Symbol"
+      ><a name="960" class="Symbol"
       >)</a
-      ><a name="938"
-      > </a
-      ><a name="939" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="962" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="940"
-      > </a
-      ><a name="941" href="Data.Digit.html#864" class="Bound"
+      > <a name="964" href="Data.Digit.html#887" class="Bound"
       >k</a
-      ><a name="942"
-      > </a
-      ><a name="943" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="966" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="944"
-      > </a
-      ><a name="945" href="Data.Digit.html#866" class="Bound"
+      > <a name="968" href="Data.Digit.html#889" class="Bound"
       >r</a
-      ><a name="946" class="Symbol"
+      ><a name="969" class="Symbol"
       >)</a
-      ><a name="947"
       >
-      </a
-      ><a name="954" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
+      <a name="977" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
       >&#8801;&#10216;</a
-      ><a name="956"
-      > </a
-      ><a name="957" href="Relation.Binary.Reflection.html#2382" class="Function"
+      > <a name="980" href="Relation.Binary.Reflection.html#SemiringSolver.solve" class="Function"
       >solve</a
-      ><a name="962"
-      > </a
-      ><a name="963" class="Number"
+      > <a name="986" class="Number"
       >3</a
-      ><a name="964"
-      > </a
-      ><a name="965" class="Symbol"
+      > <a name="988" class="Symbol"
       >(&#955;</a
-      ><a name="967"
-      > </a
-      ><a name="968" href="Data.Digit.html#968" class="Bound"
+      > <a name="991" href="Data.Digit.html#991" class="Bound"
       >x</a
-      ><a name="969"
-      > </a
-      ><a name="970" href="Data.Digit.html#970" class="Bound"
+      > <a name="993" href="Data.Digit.html#993" class="Bound"
       >r</a
-      ><a name="971"
-      > </a
-      ><a name="972" href="Data.Digit.html#972" class="Bound"
+      > <a name="995" href="Data.Digit.html#995" class="Bound"
       >k</a
-      ><a name="973"
-      > </a
-      ><a name="974" class="Symbol"
+      > <a name="997" class="Symbol"
       >&#8594;</a
-      ><a name="975"
-      > </a
-      ><a name="976" href="Algebra.RingSolver.html#2104" class="InductiveConstructor"
+      > <a name="999" href="Algebra.RingSolver.html#Properties.SemiringSolver.con" class="InductiveConstructor"
       >con</a
-      ><a name="979"
-      > </a
-      ><a name="980" class="Number"
+      > <a name="1003" class="Number"
       >2</a
-      ><a name="981"
-      > </a
-      ><a name="982" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      > <a name="1005" href="Algebra.RingSolver.html#Properties.SemiringSolver._:+_" class="Function Operator"
       >:+</a
-      ><a name="984"
-      > </a
-      ><a name="985" href="Data.Digit.html#968" class="Bound"
+      > <a name="1008" href="Data.Digit.html#991" class="Bound"
       >x</a
-      ><a name="986"
-      > </a
-      ><a name="987" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      > <a name="1010" href="Algebra.RingSolver.html#Properties.SemiringSolver._:+_" class="Function Operator"
       >:+</a
-      ><a name="989"
-      > </a
-      ><a name="990" class="Symbol"
+      > <a name="1013" class="Symbol"
       >(</a
-      ><a name="991" href="Data.Digit.html#968" class="Bound"
+      ><a name="1014" href="Data.Digit.html#991" class="Bound"
       >x</a
-      ><a name="992"
-      > </a
-      ><a name="993" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      > <a name="1016" href="Algebra.RingSolver.html#Properties.SemiringSolver._:+_" class="Function Operator"
       >:+</a
-      ><a name="995"
-      > </a
-      ><a name="996" class="Symbol"
+      > <a name="1019" class="Symbol"
       >(</a
-      ><a name="997" href="Algebra.RingSolver.html#2104" class="InductiveConstructor"
+      ><a name="1020" href="Algebra.RingSolver.html#Properties.SemiringSolver.con" class="InductiveConstructor"
       >con</a
-      ><a name="1000"
-      > </a
-      ><a name="1001" class="Number"
+      > <a name="1024" class="Number"
       >1</a
-      ><a name="1002"
-      > </a
-      ><a name="1003" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      > <a name="1026" href="Algebra.RingSolver.html#Properties.SemiringSolver._:+_" class="Function Operator"
       >:+</a
-      ><a name="1005"
-      > </a
-      ><a name="1006" href="Data.Digit.html#968" class="Bound"
+      > <a name="1029" href="Data.Digit.html#991" class="Bound"
       >x</a
-      ><a name="1007" class="Symbol"
+      ><a name="1030" class="Symbol"
       >)</a
-      ><a name="1008"
-      > </a
-      ><a name="1009" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="1032" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="1011"
-      > </a
-      ><a name="1012" href="Data.Digit.html#972" class="Bound"
+      > <a name="1035" href="Data.Digit.html#995" class="Bound"
       >k</a
-      ><a name="1013"
-      > </a
-      ><a name="1014" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      > <a name="1037" href="Algebra.RingSolver.html#Properties.SemiringSolver._:+_" class="Function Operator"
       >:+</a
-      ><a name="1016"
-      > </a
-      ><a name="1017" href="Data.Digit.html#970" class="Bound"
+      > <a name="1040" href="Data.Digit.html#993" class="Bound"
       >r</a
-      ><a name="1018" class="Symbol"
+      ><a name="1041" class="Symbol"
       >)</a
-      ><a name="1019"
       >
-                              </a
-      ><a name="1050" href="Relation.Binary.Reflection.html#3491" class="Function Operator"
+                              <a name="1073" href="Relation.Binary.Reflection.html#SemiringSolver._:=_" class="Function Operator"
       >:=</a
-      ><a name="1052"
       >
-                            </a
-      ><a name="1081" href="Data.Digit.html#970" class="Bound"
+                            <a name="1104" href="Data.Digit.html#993" class="Bound"
       >r</a
-      ><a name="1082"
-      > </a
-      ><a name="1083" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      > <a name="1106" href="Algebra.RingSolver.html#Properties.SemiringSolver._:+_" class="Function Operator"
       >:+</a
-      ><a name="1085"
-      > </a
-      ><a name="1086" class="Symbol"
+      > <a name="1109" class="Symbol"
       >(</a
-      ><a name="1087" href="Algebra.RingSolver.html#2104" class="InductiveConstructor"
+      ><a name="1110" href="Algebra.RingSolver.html#Properties.SemiringSolver.con" class="InductiveConstructor"
       >con</a
-      ><a name="1090"
-      > </a
-      ><a name="1091" class="Number"
+      > <a name="1114" class="Number"
       >1</a
-      ><a name="1092"
-      > </a
-      ><a name="1093" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      > <a name="1116" href="Algebra.RingSolver.html#Properties.SemiringSolver._:+_" class="Function Operator"
       >:+</a
-      ><a name="1095"
-      > </a
-      ><a name="1096" href="Data.Digit.html#968" class="Bound"
+      > <a name="1119" href="Data.Digit.html#991" class="Bound"
       >x</a
-      ><a name="1097" class="Symbol"
+      ><a name="1120" class="Symbol"
       >)</a
-      ><a name="1098"
-      > </a
-      ><a name="1099" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="1122" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="1101"
-      > </a
-      ><a name="1102" class="Symbol"
+      > <a name="1125" class="Symbol"
       >(</a
-      ><a name="1103" href="Algebra.RingSolver.html#2104" class="InductiveConstructor"
+      ><a name="1126" href="Algebra.RingSolver.html#Properties.SemiringSolver.con" class="InductiveConstructor"
       >con</a
-      ><a name="1106"
-      > </a
-      ><a name="1107" class="Number"
+      > <a name="1130" class="Number"
       >2</a
-      ><a name="1108"
-      > </a
-      ><a name="1109" href="Algebra.RingSolver.html#2298" class="Function Operator"
+      > <a name="1132" href="Algebra.RingSolver.html#Properties.SemiringSolver._:+_" class="Function Operator"
       >:+</a
-      ><a name="1111"
-      > </a
-      ><a name="1112" href="Data.Digit.html#972" class="Bound"
+      > <a name="1135" href="Data.Digit.html#995" class="Bound"
       >k</a
-      ><a name="1113" class="Symbol"
+      ><a name="1136" class="Symbol"
       >))</a
-      ><a name="1115"
       >
-                 </a
-      ><a name="1133" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+                 <a name="1156" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="1137"
-      > </a
-      ><a name="1138" href="Data.Digit.html#862" class="Bound"
+      > <a name="1161" href="Data.Digit.html#885" class="Bound"
       >x</a
-      ><a name="1139"
-      > </a
-      ><a name="1140" href="Data.Digit.html#866" class="Bound"
+      > <a name="1163" href="Data.Digit.html#889" class="Bound"
       >r</a
-      ><a name="1141"
-      > </a
-      ><a name="1142" href="Data.Digit.html#864" class="Bound"
+      > <a name="1165" href="Data.Digit.html#887" class="Bound"
       >k</a
-      ><a name="1143"
-      > </a
-      ><a name="1144" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
+      > <a name="1167" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
       >&#10217;</a
-      ><a name="1145"
       >
-    </a
-      ><a name="1150" href="Data.Digit.html#866" class="Bound"
+    <a name="1173" href="Data.Digit.html#889" class="Bound"
       >r</a
-      ><a name="1151"
-      > </a
-      ><a name="1152" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="1175" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="1153"
-      > </a
-      ><a name="1154" class="Symbol"
+      > <a name="1177" class="Symbol"
       >(</a
-      ><a name="1155" class="Number"
+      ><a name="1178" class="Number"
       >1</a
-      ><a name="1156"
-      > </a
-      ><a name="1157" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="1180" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="1158"
-      > </a
-      ><a name="1159" href="Data.Digit.html#862" class="Bound"
+      > <a name="1182" href="Data.Digit.html#885" class="Bound"
       >x</a
-      ><a name="1160" class="Symbol"
+      ><a name="1183" class="Symbol"
       >)</a
-      ><a name="1161"
-      > </a
-      ><a name="1162" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="1185" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="1163"
-      > </a
-      ><a name="1164" class="Symbol"
+      > <a name="1187" class="Symbol"
       >(</a
-      ><a name="1165" class="Number"
+      ><a name="1188" class="Number"
       >2</a
-      ><a name="1166"
-      > </a
-      ><a name="1167" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="1190" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="1168"
-      > </a
-      ><a name="1169" href="Data.Digit.html#864" class="Bound"
+      > <a name="1192" href="Data.Digit.html#887" class="Bound"
       >k</a
-      ><a name="1170" class="Symbol"
+      ><a name="1193" class="Symbol"
       >)</a
-      ><a name="1171"
       >
-      </a
-      ><a name="1178" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      <a name="1201" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
       >&#8718;</a
-      ><a name="1179"
       >
 
-</a
-      ><a name="1181" class="Comment"
+<a name="1204" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="1253"
       >
-</a
-      ><a name="1254" class="Comment"
+<a name="1277" class="Comment"
       >-- Digits</a
-      ><a name="1263"
       >
 
-</a
-      ><a name="1265" class="Comment"
+<a name="1288" class="Comment"
       >-- Digit b is the type of digits in base b.</a
-      ><a name="1308"
       >
 
-</a
-      ><a name="1310" href="Data.Digit.html#1310" class="Function"
+<a name="Digit" href="Data.Digit.html#Digit" class="Function"
       >Digit</a
-      ><a name="1315"
-      > </a
-      ><a name="1316" class="Symbol"
+      > <a name="1339" class="Symbol"
       >:</a
-      ><a name="1317"
-      > </a
-      ><a name="1318" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="1341" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="1319"
-      > </a
-      ><a name="1320" class="Symbol"
+      > <a name="1343" class="Symbol"
       >&#8594;</a
-      ><a name="1321"
-      > </a
-      ><a name="1322" class="PrimitiveType"
+      > <a name="1345" class="PrimitiveType"
       >Set</a
-      ><a name="1325"
       >
-</a
-      ><a name="1326" href="Data.Digit.html#1310" class="Function"
+<a name="1349" href="Data.Digit.html#Digit" class="Function"
       >Digit</a
-      ><a name="1331"
-      > </a
-      ><a name="1332" href="Data.Digit.html#1332" class="Bound"
+      > <a name="1355" href="Data.Digit.html#1355" class="Bound"
       >b</a
-      ><a name="1333"
-      > </a
-      ><a name="1334" class="Symbol"
+      > <a name="1357" class="Symbol"
       >=</a
-      ><a name="1335"
-      > </a
-      ><a name="1336" href="Data.Fin.html#842" class="Datatype"
+      > <a name="1359" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
-      ><a name="1339"
-      > </a
-      ><a name="1340" href="Data.Digit.html#1332" class="Bound"
+      > <a name="1363" href="Data.Digit.html#1355" class="Bound"
       >b</a
-      ><a name="1341"
       >
 
-</a
-      ><a name="1343" class="Comment"
+<a name="1366" class="Comment"
       >-- Some specific digit kinds.</a
-      ><a name="1372"
       >
 
-</a
-      ><a name="1374" href="Data.Digit.html#1374" class="Function"
+<a name="Decimal" href="Data.Digit.html#Decimal" class="Function"
       >Decimal</a
-      ><a name="1381"
-      > </a
-      ><a name="1382" class="Symbol"
+      > <a name="1405" class="Symbol"
       >=</a
-      ><a name="1383"
-      > </a
-      ><a name="1384" href="Data.Digit.html#1310" class="Function"
+      > <a name="1407" href="Data.Digit.html#Digit" class="Function"
       >Digit</a
-      ><a name="1389"
-      > </a
-      ><a name="1390" class="Number"
+      > <a name="1413" class="Number"
       >10</a
-      ><a name="1392"
       >
-</a
-      ><a name="1393" href="Data.Digit.html#1393" class="Function"
+<a name="Bit" href="Data.Digit.html#Bit" class="Function"
       >Bit</a
-      ><a name="1396"
-      >     </a
-      ><a name="1401" class="Symbol"
+      >     <a name="1424" class="Symbol"
       >=</a
-      ><a name="1402"
-      > </a
-      ><a name="1403" href="Data.Digit.html#1310" class="Function"
+      > <a name="1426" href="Data.Digit.html#Digit" class="Function"
       >Digit</a
-      ><a name="1408"
-      > </a
-      ><a name="1409" class="Number"
+      > <a name="1432" class="Number"
       >2</a
-      ><a name="1410"
       >
 
-</a
-      ><a name="1412" class="Comment"
+<a name="1435" class="Comment"
       >-- Some named digits.</a
-      ><a name="1433"
       >
 
-</a
-      ><a name="1435" href="Data.Digit.html#1435" class="Function"
+<a name="0b" href="Data.Digit.html#0b" class="Function"
       >0b</a
-      ><a name="1437"
-      > </a
-      ><a name="1438" class="Symbol"
+      > <a name="1461" class="Symbol"
       >:</a
-      ><a name="1439"
-      > </a
-      ><a name="1440" href="Data.Digit.html#1393" class="Function"
+      > <a name="1463" href="Data.Digit.html#Bit" class="Function"
       >Bit</a
-      ><a name="1443"
       >
-</a
-      ><a name="1444" href="Data.Digit.html#1435" class="Function"
+<a name="1467" href="Data.Digit.html#0b" class="Function"
       >0b</a
-      ><a name="1446"
-      > </a
-      ><a name="1447" class="Symbol"
+      > <a name="1470" class="Symbol"
       >=</a
-      ><a name="1448"
-      > </a
-      ><a name="1449" href="Data.Fin.html#864" class="InductiveConstructor"
+      > <a name="1472" href="Data.Fin.html#Fin.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1453"
       >
 
-</a
-      ><a name="1455" href="Data.Digit.html#1455" class="Function"
+<a name="1b" href="Data.Digit.html#1b" class="Function"
       >1b</a
-      ><a name="1457"
-      > </a
-      ><a name="1458" class="Symbol"
+      > <a name="1481" class="Symbol"
       >:</a
-      ><a name="1459"
-      > </a
-      ><a name="1460" href="Data.Digit.html#1393" class="Function"
+      > <a name="1483" href="Data.Digit.html#Bit" class="Function"
       >Bit</a
-      ><a name="1463"
       >
-</a
-      ><a name="1464" href="Data.Digit.html#1455" class="Function"
+<a name="1487" href="Data.Digit.html#1b" class="Function"
       >1b</a
-      ><a name="1466"
-      > </a
-      ><a name="1467" class="Symbol"
+      > <a name="1490" class="Symbol"
       >=</a
-      ><a name="1468"
-      > </a
-      ><a name="1469" href="Data.Fin.html#895" class="InductiveConstructor"
+      > <a name="1492" href="Data.Fin.html#Fin.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1472"
-      > </a
-      ><a name="1473" href="Data.Fin.html#864" class="InductiveConstructor"
+      > <a name="1496" href="Data.Fin.html#Fin.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1477"
       >
 
-</a
-      ><a name="1479" class="Comment"
+<a name="1502" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="1551"
       >
-</a
-      ><a name="1552" class="Comment"
+<a name="1575" class="Comment"
       >-- Showing digits</a
-      ><a name="1569"
       >
 
-</a
-      ><a name="1571" class="Comment"
+<a name="1594" class="Comment"
       >-- The characters used to show the first 16 digits.</a
-      ><a name="1622"
       >
 
-</a
-      ><a name="1624" href="Data.Digit.html#1624" class="Function"
+<a name="digitChars" href="Data.Digit.html#digitChars" class="Function"
       >digitChars</a
-      ><a name="1634"
-      > </a
-      ><a name="1635" class="Symbol"
+      > <a name="1658" class="Symbol"
       >:</a
-      ><a name="1636"
-      > </a
-      ><a name="1637" href="Data.Vec.html#609" class="Datatype"
+      > <a name="1660" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
-      ><a name="1640"
-      > </a
-      ><a name="1641" href="Agda.Builtin.Char.html#132" class="Postulate"
+      > <a name="1664" href="Agda.Builtin.Char.html#Char" class="Postulate"
       >Char</a
-      ><a name="1645"
-      > </a
-      ><a name="1646" class="Number"
+      > <a name="1669" class="Number"
       >16</a
-      ><a name="1648"
       >
-</a
-      ><a name="1649" href="Data.Digit.html#1624" class="Function"
+<a name="1672" href="Data.Digit.html#digitChars" class="Function"
       >digitChars</a
-      ><a name="1659"
-      > </a
-      ><a name="1660" class="Symbol"
+      > <a name="1683" class="Symbol"
       >=</a
-      ><a name="1661"
       >
-  </a
-      ><a name="1664" class="String"
+  <a name="1687" class="String"
       >'0'</a
-      ><a name="1667"
-      > </a
-      ><a name="1668" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1691" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1669"
-      > </a
-      ><a name="1670" class="String"
+      > <a name="1693" class="String"
       >'1'</a
-      ><a name="1673"
-      > </a
-      ><a name="1674" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1697" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1675"
-      > </a
-      ><a name="1676" class="String"
+      > <a name="1699" class="String"
       >'2'</a
-      ><a name="1679"
-      > </a
-      ><a name="1680" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1703" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1681"
-      > </a
-      ><a name="1682" class="String"
+      > <a name="1705" class="String"
       >'3'</a
-      ><a name="1685"
-      > </a
-      ><a name="1686" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1709" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1687"
-      > </a
-      ><a name="1688" class="String"
+      > <a name="1711" class="String"
       >'4'</a
-      ><a name="1691"
-      > </a
-      ><a name="1692" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1715" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1693"
-      > </a
-      ><a name="1694" class="String"
+      > <a name="1717" class="String"
       >'5'</a
-      ><a name="1697"
-      > </a
-      ><a name="1698" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1721" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1699"
-      > </a
-      ><a name="1700" class="String"
+      > <a name="1723" class="String"
       >'6'</a
-      ><a name="1703"
-      > </a
-      ><a name="1704" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1727" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1705"
-      > </a
-      ><a name="1706" class="String"
+      > <a name="1729" class="String"
       >'7'</a
-      ><a name="1709"
-      > </a
-      ><a name="1710" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1733" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1711"
-      > </a
-      ><a name="1712" class="String"
+      > <a name="1735" class="String"
       >'8'</a
-      ><a name="1715"
-      > </a
-      ><a name="1716" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1739" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1717"
-      > </a
-      ><a name="1718" class="String"
+      > <a name="1741" class="String"
       >'9'</a
-      ><a name="1721"
-      > </a
-      ><a name="1722" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1745" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1723"
       >
-  </a
-      ><a name="1726" class="String"
+  <a name="1749" class="String"
       >'a'</a
-      ><a name="1729"
-      > </a
-      ><a name="1730" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1753" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1731"
-      > </a
-      ><a name="1732" class="String"
+      > <a name="1755" class="String"
       >'b'</a
-      ><a name="1735"
-      > </a
-      ><a name="1736" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1759" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1737"
-      > </a
-      ><a name="1738" class="String"
+      > <a name="1761" class="String"
       >'c'</a
-      ><a name="1741"
-      > </a
-      ><a name="1742" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1765" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1743"
-      > </a
-      ><a name="1744" class="String"
+      > <a name="1767" class="String"
       >'d'</a
-      ><a name="1747"
-      > </a
-      ><a name="1748" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1771" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1749"
-      > </a
-      ><a name="1750" class="String"
+      > <a name="1773" class="String"
       >'e'</a
-      ><a name="1753"
-      > </a
-      ><a name="1754" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1777" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1755"
-      > </a
-      ><a name="1756" class="String"
+      > <a name="1779" class="String"
       >'f'</a
-      ><a name="1759"
-      > </a
-      ><a name="1760" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1783" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1761"
-      > </a
-      ><a name="1762" href="Data.Vec.html#649" class="InductiveConstructor"
+      > <a name="1785" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1764"
       >
 
-</a
-      ><a name="1766" class="Comment"
+<a name="1789" class="Comment"
       >-- showDigit shows digits in base &#8804; 16.</a
-      ><a name="1805"
       >
 
-</a
-      ><a name="1807" href="Data.Digit.html#1807" class="Function"
+<a name="showDigit" href="Data.Digit.html#showDigit" class="Function"
       >showDigit</a
-      ><a name="1816"
-      > </a
-      ><a name="1817" class="Symbol"
+      > <a name="1840" class="Symbol"
       >:</a
-      ><a name="1818"
-      > </a
-      ><a name="1819" class="Symbol"
+      > <a name="1842" class="Symbol"
       >&#8704;</a
-      ><a name="1820"
-      > </a
-      ><a name="1821" class="Symbol"
+      > <a name="1844" class="Symbol"
       >{</a
-      ><a name="1822" href="Data.Digit.html#1822" class="Bound"
+      ><a name="1845" href="Data.Digit.html#1845" class="Bound"
       >base</a
-      ><a name="1826" class="Symbol"
+      ><a name="1849" class="Symbol"
       >}</a
-      ><a name="1827"
-      > </a
-      ><a name="1828" class="Symbol"
+      > <a name="1851" class="Symbol"
       >{</a
-      ><a name="1829" href="Data.Digit.html#1829" class="Bound"
+      ><a name="1852" href="Data.Digit.html#1852" class="Bound"
       >base&#8804;16</a
-      ><a name="1836"
-      > </a
-      ><a name="1837" class="Symbol"
+      > <a name="1860" class="Symbol"
       >:</a
-      ><a name="1838"
-      > </a
-      ><a name="1839" href="Relation.Nullary.Decidable.html#897" class="Function"
+      > <a name="1862" href="Relation.Nullary.Decidable.html#True" class="Function"
       >True</a
-      ><a name="1843"
-      > </a
-      ><a name="1844" class="Symbol"
+      > <a name="1867" class="Symbol"
       >(</a
-      ><a name="1845" href="Data.Digit.html#1822" class="Bound"
+      ><a name="1868" href="Data.Digit.html#1845" class="Bound"
       >base</a
-      ><a name="1849"
-      > </a
-      ><a name="1850" href="Data.Nat.Base.html#3509" class="Function Operator"
+      > <a name="1873" href="Data.Nat.Base.html#_&#8804;?_" class="Function Operator"
       >&#8804;?</a
-      ><a name="1852"
-      > </a
-      ><a name="1853" class="Number"
+      > <a name="1876" class="Number"
       >16</a
-      ><a name="1855" class="Symbol"
+      ><a name="1878" class="Symbol"
       >)}</a
-      ><a name="1857"
-      > </a
-      ><a name="1858" class="Symbol"
+      > <a name="1881" class="Symbol"
       >&#8594;</a
-      ><a name="1859"
       >
-            </a
-      ><a name="1872" href="Data.Digit.html#1310" class="Function"
+            <a name="1895" href="Data.Digit.html#Digit" class="Function"
       >Digit</a
-      ><a name="1877"
-      > </a
-      ><a name="1878" href="Data.Digit.html#1822" class="Bound"
+      > <a name="1901" href="Data.Digit.html#1845" class="Bound"
       >base</a
-      ><a name="1882"
-      > </a
-      ><a name="1883" class="Symbol"
+      > <a name="1906" class="Symbol"
       >&#8594;</a
-      ><a name="1884"
-      > </a
-      ><a name="1885" href="Agda.Builtin.Char.html#132" class="Postulate"
+      > <a name="1908" href="Agda.Builtin.Char.html#Char" class="Postulate"
       >Char</a
-      ><a name="1889"
       >
-</a
-      ><a name="1890" href="Data.Digit.html#1807" class="Function"
+<a name="1913" href="Data.Digit.html#showDigit" class="Function"
       >showDigit</a
-      ><a name="1899"
-      > </a
-      ><a name="1900" class="Symbol"
+      > <a name="1923" class="Symbol"
       >{</a
-      ><a name="1901" class="Argument"
+      ><a name="1924" class="Argument"
       >base&#8804;16</a
-      ><a name="1908"
-      > </a
-      ><a name="1909" class="Symbol"
+      > <a name="1932" class="Symbol"
       >=</a
-      ><a name="1910"
-      > </a
-      ><a name="1911" href="Data.Digit.html#1911" class="Bound"
+      > <a name="1934" href="Data.Digit.html#1934" class="Bound"
       >base&#8804;16</a
-      ><a name="1918" class="Symbol"
+      ><a name="1941" class="Symbol"
       >}</a
-      ><a name="1919"
-      > </a
-      ><a name="1920" href="Data.Digit.html#1920" class="Bound"
+      > <a name="1943" href="Data.Digit.html#1943" class="Bound"
       >d</a
-      ><a name="1921"
-      > </a
-      ><a name="1922" class="Symbol"
+      > <a name="1945" class="Symbol"
       >=</a
-      ><a name="1923"
       >
-  </a
-      ><a name="1926" href="Data.Vec.html#6131" class="Function"
+  <a name="1949" href="Data.Vec.html#lookup" class="Function"
       >Vec.lookup</a
-      ><a name="1936"
-      > </a
-      ><a name="1937" class="Symbol"
+      > <a name="1960" class="Symbol"
       >(</a
-      ><a name="1938" href="Data.Fin.html#2759" class="Function"
+      ><a name="1961" href="Data.Fin.html#inject&#8804;" class="Function"
       >Fin.inject&#8804;</a
-      ><a name="1949"
-      > </a
-      ><a name="1950" href="Data.Digit.html#1920" class="Bound"
+      > <a name="1973" href="Data.Digit.html#1943" class="Bound"
       >d</a
-      ><a name="1951"
-      > </a
-      ><a name="1952" class="Symbol"
+      > <a name="1975" class="Symbol"
       >(</a
-      ><a name="1953" href="Relation.Nullary.Decidable.html#1055" class="Function"
+      ><a name="1976" href="Relation.Nullary.Decidable.html#toWitness" class="Function"
       >toWitness</a
-      ><a name="1962"
-      > </a
-      ><a name="1963" href="Data.Digit.html#1911" class="Bound"
+      > <a name="1986" href="Data.Digit.html#1934" class="Bound"
       >base&#8804;16</a
-      ><a name="1970" class="Symbol"
+      ><a name="1993" class="Symbol"
       >))</a
-      ><a name="1972"
-      > </a
-      ><a name="1973" href="Data.Digit.html#1624" class="Function"
+      > <a name="1996" href="Data.Digit.html#digitChars" class="Function"
       >digitChars</a
-      ><a name="1983"
       >
 
-</a
-      ><a name="1985" class="Comment"
+<a name="2008" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="2057"
       >
-</a
-      ><a name="2058" class="Comment"
+<a name="2081" class="Comment"
       >-- Digit expansions</a
-      ><a name="2077"
       >
 
-</a
-      ><a name="2079" class="Comment"
+<a name="2102" class="Comment"
       >-- fromDigits takes a digit expansion of a natural number, starting</a
-      ><a name="2146"
       >
-</a
-      ><a name="2147" class="Comment"
+<a name="2170" class="Comment"
       >-- with the _least_ significant digit, and returns the corresponding</a
-      ><a name="2215"
       >
-</a
-      ><a name="2216" class="Comment"
+<a name="2239" class="Comment"
       >-- natural number.</a
-      ><a name="2234"
       >
 
-</a
-      ><a name="2236" href="Data.Digit.html#2236" class="Function"
+<a name="fromDigits" href="Data.Digit.html#fromDigits" class="Function"
       >fromDigits</a
-      ><a name="2246"
-      > </a
-      ><a name="2247" class="Symbol"
+      > <a name="2270" class="Symbol"
       >:</a
-      ><a name="2248"
-      > </a
-      ><a name="2249" class="Symbol"
+      > <a name="2272" class="Symbol"
       >&#8704;</a
-      ><a name="2250"
-      > </a
-      ><a name="2251" class="Symbol"
+      > <a name="2274" class="Symbol"
       >{</a
-      ><a name="2252" href="Data.Digit.html#2252" class="Bound"
+      ><a name="2275" href="Data.Digit.html#2275" class="Bound"
       >base</a
-      ><a name="2256" class="Symbol"
+      ><a name="2279" class="Symbol"
       >}</a
-      ><a name="2257"
-      > </a
-      ><a name="2258" class="Symbol"
+      > <a name="2281" class="Symbol"
       >&#8594;</a
-      ><a name="2259"
-      > </a
-      ><a name="2260" href="Agda.Builtin.List.html#80" class="Datatype"
+      > <a name="2283" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
-      ><a name="2264"
-      > </a
-      ><a name="2265" class="Symbol"
+      > <a name="2288" class="Symbol"
       >(</a
-      ><a name="2266" href="Data.Fin.html#842" class="Datatype"
+      ><a name="2289" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
-      ><a name="2269"
-      > </a
-      ><a name="2270" href="Data.Digit.html#2252" class="Bound"
+      > <a name="2293" href="Data.Digit.html#2275" class="Bound"
       >base</a
-      ><a name="2274" class="Symbol"
+      ><a name="2297" class="Symbol"
       >)</a
-      ><a name="2275"
-      > </a
-      ><a name="2276" class="Symbol"
+      > <a name="2299" class="Symbol"
       >&#8594;</a
-      ><a name="2277"
-      > </a
-      ><a name="2278" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="2301" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="2279"
       >
-</a
-      ><a name="2280" href="Data.Digit.html#2236" class="Function"
+<a name="2303" href="Data.Digit.html#fromDigits" class="Function"
       >fromDigits</a
-      ><a name="2290"
-      >        </a
-      ><a name="2298" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      >        <a name="2321" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="2300"
-      >       </a
-      ><a name="2307" class="Symbol"
+      >       <a name="2330" class="Symbol"
       >=</a
-      ><a name="2308"
-      > </a
-      ><a name="2309" class="Number"
+      > <a name="2332" class="Number"
       >0</a
-      ><a name="2310"
       >
-</a
-      ><a name="2311" href="Data.Digit.html#2236" class="Function"
+<a name="2334" href="Data.Digit.html#fromDigits" class="Function"
       >fromDigits</a
-      ><a name="2321"
-      > </a
-      ><a name="2322" class="Symbol"
+      > <a name="2345" class="Symbol"
       >{</a
-      ><a name="2323" href="Data.Digit.html#2323" class="Bound"
+      ><a name="2346" href="Data.Digit.html#2346" class="Bound"
       >base</a
-      ><a name="2327" class="Symbol"
+      ><a name="2350" class="Symbol"
       >}</a
-      ><a name="2328"
-      > </a
-      ><a name="2329" class="Symbol"
+      > <a name="2352" class="Symbol"
       >(</a
-      ><a name="2330" href="Data.Digit.html#2330" class="Bound"
+      ><a name="2353" href="Data.Digit.html#2353" class="Bound"
       >d</a
-      ><a name="2331"
-      > </a
-      ><a name="2332" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      > <a name="2355" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="2333"
-      > </a
-      ><a name="2334" href="Data.Digit.html#2334" class="Bound"
+      > <a name="2357" href="Data.Digit.html#2357" class="Bound"
       >ds</a
-      ><a name="2336" class="Symbol"
+      ><a name="2359" class="Symbol"
       >)</a
-      ><a name="2337"
-      > </a
-      ><a name="2338" class="Symbol"
+      > <a name="2361" class="Symbol"
       >=</a
-      ><a name="2339"
-      > </a
-      ><a name="2340" href="Data.Fin.html#968" class="Function"
+      > <a name="2363" href="Data.Fin.html#to&#8469;" class="Function"
       >to&#8469;</a
-      ><a name="2343"
-      > </a
-      ><a name="2344" href="Data.Digit.html#2330" class="Bound"
+      > <a name="2367" href="Data.Digit.html#2353" class="Bound"
       >d</a
-      ><a name="2345"
-      > </a
-      ><a name="2346" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="2369" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="2347"
-      > </a
-      ><a name="2348" href="Data.Digit.html#2236" class="Function"
+      > <a name="2371" href="Data.Digit.html#fromDigits" class="Function"
       >fromDigits</a
-      ><a name="2358"
-      > </a
-      ><a name="2359" href="Data.Digit.html#2334" class="Bound"
+      > <a name="2382" href="Data.Digit.html#2357" class="Bound"
       >ds</a
-      ><a name="2361"
-      > </a
-      ><a name="2362" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2385" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2363"
-      > </a
-      ><a name="2364" href="Data.Digit.html#2323" class="Bound"
+      > <a name="2387" href="Data.Digit.html#2346" class="Bound"
       >base</a
-      ><a name="2368"
       >
 
-</a
-      ><a name="2370" class="Comment"
+<a name="2393" class="Comment"
       >-- toDigits b n yields the digits of n, in base b, starting with the</a
-      ><a name="2438"
       >
-</a
-      ><a name="2439" class="Comment"
+<a name="2462" class="Comment"
       >-- _least_ significant digit.</a
-      ><a name="2468"
       >
-</a
-      ><a name="2469" class="Comment"
+<a name="2492" class="Comment"
       >--</a
-      ><a name="2471"
       >
-</a
-      ><a name="2472" class="Comment"
+<a name="2495" class="Comment"
       >-- Note that the list of digits is always non-empty.</a
-      ><a name="2524"
       >
 
-</a
-      ><a name="2526" href="Data.Digit.html#2526" class="Function"
+<a name="toDigits" href="Data.Digit.html#toDigits" class="Function"
       >toDigits</a
-      ><a name="2534"
-      > </a
-      ><a name="2535" class="Symbol"
+      > <a name="2558" class="Symbol"
       >:</a
-      ><a name="2536"
-      > </a
-      ><a name="2537" class="Symbol"
+      > <a name="2560" class="Symbol"
       >(</a
-      ><a name="2538" href="Data.Digit.html#2538" class="Bound"
+      ><a name="2561" href="Data.Digit.html#2561" class="Bound"
       >base</a
-      ><a name="2542"
-      > </a
-      ><a name="2543" class="Symbol"
+      > <a name="2566" class="Symbol"
       >:</a
-      ><a name="2544"
-      > </a
-      ><a name="2545" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="2568" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="2546" class="Symbol"
+      ><a name="2569" class="Symbol"
       >)</a
-      ><a name="2547"
-      > </a
-      ><a name="2548" class="Symbol"
+      > <a name="2571" class="Symbol"
       >{</a
-      ><a name="2549" href="Data.Digit.html#2549" class="Bound"
+      ><a name="2572" href="Data.Digit.html#2572" class="Bound"
       >base&#8805;2</a
-      ><a name="2555"
-      > </a
-      ><a name="2556" class="Symbol"
+      > <a name="2579" class="Symbol"
       >:</a
-      ><a name="2557"
-      > </a
-      ><a name="2558" href="Relation.Nullary.Decidable.html#897" class="Function"
+      > <a name="2581" href="Relation.Nullary.Decidable.html#True" class="Function"
       >True</a
-      ><a name="2562"
-      > </a
-      ><a name="2563" class="Symbol"
+      > <a name="2586" class="Symbol"
       >(</a
-      ><a name="2564" class="Number"
+      ><a name="2587" class="Number"
       >2</a
-      ><a name="2565"
-      > </a
-      ><a name="2566" href="Data.Nat.Base.html#3509" class="Function Operator"
+      > <a name="2589" href="Data.Nat.Base.html#_&#8804;?_" class="Function Operator"
       >&#8804;?</a
-      ><a name="2568"
-      > </a
-      ><a name="2569" href="Data.Digit.html#2538" class="Bound"
+      > <a name="2592" href="Data.Digit.html#2561" class="Bound"
       >base</a
-      ><a name="2573" class="Symbol"
+      ><a name="2596" class="Symbol"
       >)}</a
-      ><a name="2575"
-      > </a
-      ><a name="2576" class="Symbol"
+      > <a name="2599" class="Symbol"
       >(</a
-      ><a name="2577" href="Data.Digit.html#2577" class="Bound"
+      ><a name="2600" href="Data.Digit.html#2600" class="Bound"
       >n</a
-      ><a name="2578"
-      > </a
-      ><a name="2579" class="Symbol"
+      > <a name="2602" class="Symbol"
       >:</a
-      ><a name="2580"
-      > </a
-      ><a name="2581" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="2604" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="2582" class="Symbol"
-      >)</a
-      ><a name="2583"
-      > </a
-      ><a name="2584" class="Symbol"
-      >&#8594;</a
-      ><a name="2585"
-      >
-           </a
-      ><a name="2597" href="Data.Product.html#823" class="Function"
-      >&#8707;</a
-      ><a name="2598"
-      > </a
-      ><a name="2599" class="Symbol"
-      >&#955;</a
-      ><a name="2600"
-      > </a
-      ><a name="2601" class="Symbol"
-      >(</a
-      ><a name="2602" href="Data.Digit.html#2602" class="Bound"
-      >ds</a
-      ><a name="2604"
-      > </a
       ><a name="2605" class="Symbol"
-      >:</a
-      ><a name="2606"
-      > </a
-      ><a name="2607" href="Agda.Builtin.List.html#80" class="Datatype"
-      >List</a
-      ><a name="2611"
-      > </a
-      ><a name="2612" class="Symbol"
-      >(</a
-      ><a name="2613" href="Data.Fin.html#842" class="Datatype"
-      >Fin</a
-      ><a name="2616"
-      > </a
-      ><a name="2617" href="Data.Digit.html#2538" class="Bound"
-      >base</a
-      ><a name="2621" class="Symbol"
-      >))</a
-      ><a name="2623"
-      > </a
-      ><a name="2624" class="Symbol"
-      >&#8594;</a
-      ><a name="2625"
-      > </a
-      ><a name="2626" href="Data.Digit.html#2236" class="Function"
-      >fromDigits</a
-      ><a name="2636"
-      > </a
-      ><a name="2637" href="Data.Digit.html#2602" class="Bound"
-      >ds</a
-      ><a name="2639"
-      > </a
-      ><a name="2640" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
-      >&#8801;</a
-      ><a name="2641"
-      > </a
-      ><a name="2642" href="Data.Digit.html#2577" class="Bound"
-      >n</a
-      ><a name="2643"
-      >
-</a
-      ><a name="2644" href="Data.Digit.html#2526" class="Function"
-      >toDigits</a
-      ><a name="2652"
-      > </a
-      ><a name="2653" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
-      >zero</a
-      ><a name="2657"
-      >       </a
-      ><a name="2664" class="Symbol"
-      >{</a
-      ><a name="2665" class="Argument"
-      >base&#8805;2</a
-      ><a name="2671"
-      > </a
-      ><a name="2672" class="Symbol"
-      >=</a
-      ><a name="2673"
-      > </a
-      ><a name="2674" class="Symbol"
-      >()}</a
-      ><a name="2677"
-      > </a
-      ><a name="2678" class="Symbol"
-      >_</a
-      ><a name="2679"
-      >
-</a
-      ><a name="2680" href="Data.Digit.html#2526" class="Function"
-      >toDigits</a
-      ><a name="2688"
-      > </a
-      ><a name="2689" class="Symbol"
-      >(</a
-      ><a name="2690" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
-      >suc</a
-      ><a name="2693"
-      > </a
-      ><a name="2694" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
-      >zero</a
-      ><a name="2698" class="Symbol"
       >)</a
-      ><a name="2699"
-      > </a
-      ><a name="2700" class="Symbol"
-      >{</a
-      ><a name="2701" class="Argument"
-      >base&#8805;2</a
-      ><a name="2707"
-      > </a
-      ><a name="2708" class="Symbol"
-      >=</a
-      ><a name="2709"
-      > </a
-      ><a name="2710" class="Symbol"
-      >()}</a
-      ><a name="2713"
-      > </a
-      ><a name="2714" class="Symbol"
-      >_</a
-      ><a name="2715"
-      >
-</a
-      ><a name="2716" href="Data.Digit.html#2526" class="Function"
-      >toDigits</a
-      ><a name="2724"
-      > </a
-      ><a name="2725" class="Symbol"
-      >(</a
-      ><a name="2726" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
-      >suc</a
-      ><a name="2729"
-      > </a
-      ><a name="2730" class="Symbol"
-      >(</a
-      ><a name="2731" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
-      >suc</a
-      ><a name="2734"
-      > </a
-      ><a name="2735" href="Data.Digit.html#2735" class="Bound"
-      >k</a
-      ><a name="2736" class="Symbol"
-      >))</a
-      ><a name="2738"
-      > </a
-      ><a name="2739" href="Data.Digit.html#2739" class="Bound"
-      >n</a
-      ><a name="2740"
-      > </a
-      ><a name="2741" class="Symbol"
-      >=</a
-      ><a name="2742"
-      > </a
-      ><a name="2743" href="Induction.WellFounded.html#1751" class="Function"
-      >&lt;-rec</a
-      ><a name="2748"
-      > </a
-      ><a name="2749" href="Data.Digit.html#2794" class="Function"
-      >Pred</a
-      ><a name="2753"
-      > </a
-      ><a name="2754" href="Data.Digit.html#2970" class="Function"
-      >helper</a
-      ><a name="2760"
-      > </a
-      ><a name="2761" href="Data.Digit.html#2739" class="Bound"
-      >n</a
-      ><a name="2762"
-      >
-  </a
-      ><a name="2765" class="Keyword"
-      >where</a
-      ><a name="2770"
-      >
-  </a
-      ><a name="2773" href="Data.Digit.html#2773" class="Function"
-      >base</a
-      ><a name="2777"
-      > </a
-      ><a name="2778" class="Symbol"
-      >=</a
-      ><a name="2779"
-      > </a
-      ><a name="2780" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
-      >suc</a
-      ><a name="2783"
-      > </a
-      ><a name="2784" class="Symbol"
-      >(</a
-      ><a name="2785" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
-      >suc</a
-      ><a name="2788"
-      > </a
-      ><a name="2789" href="Data.Digit.html#2735" class="Bound"
-      >k</a
-      ><a name="2790" class="Symbol"
-      >)</a
-      ><a name="2791"
-      >
-  </a
-      ><a name="2794" href="Data.Digit.html#2794" class="Function"
-      >Pred</a
-      ><a name="2798"
-      > </a
-      ><a name="2799" class="Symbol"
-      >=</a
-      ><a name="2800"
-      > </a
-      ><a name="2801" class="Symbol"
-      >&#955;</a
-      ><a name="2802"
-      > </a
-      ><a name="2803" href="Data.Digit.html#2803" class="Bound"
-      >n</a
-      ><a name="2804"
-      > </a
-      ><a name="2805" class="Symbol"
+      > <a name="2607" class="Symbol"
       >&#8594;</a
-      ><a name="2806"
-      > </a
-      ><a name="2807" href="Data.Product.html#823" class="Function"
+      >
+           <a name="2620" href="Data.Product.html#&#8707;" class="Function"
       >&#8707;</a
-      ><a name="2808"
-      > </a
-      ><a name="2809" class="Symbol"
+      > <a name="2622" class="Symbol"
       >&#955;</a
-      ><a name="2810"
-      > </a
-      ><a name="2811" href="Data.Digit.html#2811" class="Bound"
-      >ds</a
-      ><a name="2813"
-      > </a
-      ><a name="2814" class="Symbol"
-      >&#8594;</a
-      ><a name="2815"
-      > </a
-      ><a name="2816" href="Data.Digit.html#2236" class="Function"
-      >fromDigits</a
-      ><a name="2826"
-      > </a
-      ><a name="2827" href="Data.Digit.html#2811" class="Bound"
-      >ds</a
-      ><a name="2829"
-      > </a
-      ><a name="2830" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
-      >&#8801;</a
-      ><a name="2831"
-      > </a
-      ><a name="2832" href="Data.Digit.html#2803" class="Bound"
-      >n</a
-      ><a name="2833"
-      >
-
-  </a
-      ><a name="2837" href="Data.Digit.html#2837" class="Function"
-      >cons</a
-      ><a name="2841"
-      > </a
-      ><a name="2842" class="Symbol"
-      >:</a
-      ><a name="2843"
-      > </a
-      ><a name="2844" class="Symbol"
-      >&#8704;</a
-      ><a name="2845"
-      > </a
-      ><a name="2846" class="Symbol"
-      >{</a
-      ><a name="2847" href="Data.Digit.html#2847" class="Bound"
-      >m</a
-      ><a name="2848" class="Symbol"
-      >}</a
-      ><a name="2849"
-      > </a
-      ><a name="2850" class="Symbol"
+      > <a name="2624" class="Symbol"
       >(</a
-      ><a name="2851" href="Data.Digit.html#2851" class="Bound"
-      >r</a
-      ><a name="2852"
-      > </a
-      ><a name="2853" class="Symbol"
+      ><a name="2625" href="Data.Digit.html#2625" class="Bound"
+      >ds</a
+      > <a name="2628" class="Symbol"
       >:</a
-      ><a name="2854"
-      > </a
-      ><a name="2855" href="Data.Fin.html#842" class="Datatype"
+      > <a name="2630" href="Agda.Builtin.List.html#List" class="Datatype"
+      >List</a
+      > <a name="2635" class="Symbol"
+      >(</a
+      ><a name="2636" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
-      ><a name="2858"
-      > </a
-      ><a name="2859" href="Data.Digit.html#2773" class="Function"
+      > <a name="2640" href="Data.Digit.html#2561" class="Bound"
       >base</a
-      ><a name="2863" class="Symbol"
-      >)</a
-      ><a name="2864"
-      > </a
-      ><a name="2865" class="Symbol"
+      ><a name="2644" class="Symbol"
+      >))</a
+      > <a name="2647" class="Symbol"
       >&#8594;</a
-      ><a name="2866"
-      > </a
-      ><a name="2867" href="Data.Digit.html#2794" class="Function"
-      >Pred</a
-      ><a name="2871"
-      > </a
-      ><a name="2872" href="Data.Digit.html#2847" class="Bound"
-      >m</a
-      ><a name="2873"
-      > </a
-      ><a name="2874" class="Symbol"
-      >&#8594;</a
-      ><a name="2875"
-      > </a
-      ><a name="2876" href="Data.Digit.html#2794" class="Function"
-      >Pred</a
-      ><a name="2880"
-      > </a
-      ><a name="2881" class="Symbol"
-      >(</a
-      ><a name="2882" href="Data.Fin.html#968" class="Function"
-      >to&#8469;</a
-      ><a name="2885"
-      > </a
-      ><a name="2886" href="Data.Digit.html#2851" class="Bound"
-      >r</a
-      ><a name="2887"
-      > </a
-      ><a name="2888" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
-      >+</a
-      ><a name="2889"
-      > </a
-      ><a name="2890" href="Data.Digit.html#2847" class="Bound"
-      >m</a
-      ><a name="2891"
-      > </a
-      ><a name="2892" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
-      >*</a
-      ><a name="2893"
-      > </a
-      ><a name="2894" href="Data.Digit.html#2773" class="Function"
-      >base</a
-      ><a name="2898" class="Symbol"
-      >)</a
-      ><a name="2899"
+      > <a name="2649" href="Data.Digit.html#fromDigits" class="Function"
+      >fromDigits</a
+      > <a name="2660" href="Data.Digit.html#2625" class="Bound"
+      >ds</a
+      > <a name="2663" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >&#8801;</a
+      > <a name="2665" href="Data.Digit.html#2600" class="Bound"
+      >n</a
       >
-  </a
-      ><a name="2902" href="Data.Digit.html#2837" class="Function"
-      >cons</a
-      ><a name="2906"
-      > </a
-      ><a name="2907" href="Data.Digit.html#2907" class="Bound"
-      >r</a
-      ><a name="2908"
-      > </a
-      ><a name="2909" class="Symbol"
-      >(</a
-      ><a name="2910" href="Data.Digit.html#2910" class="Bound"
-      >ds</a
-      ><a name="2912"
-      > </a
-      ><a name="2913" href="Data.Product.html#509" class="InductiveConstructor Operator"
-      >,</a
-      ><a name="2914"
-      > </a
-      ><a name="2915" href="Data.Digit.html#2915" class="Bound"
-      >eq</a
-      ><a name="2917" class="Symbol"
-      >)</a
-      ><a name="2918"
-      > </a
-      ><a name="2919" class="Symbol"
+<a name="2667" href="Data.Digit.html#toDigits" class="Function"
+      >toDigits</a
+      > <a name="2676" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      >zero</a
+      >       <a name="2687" class="Symbol"
+      >{</a
+      ><a name="2688" class="Argument"
+      >base&#8805;2</a
+      > <a name="2695" class="Symbol"
       >=</a
-      ><a name="2920"
-      > </a
-      ><a name="2921" class="Symbol"
+      > <a name="2697" class="Symbol"
+      >()}</a
+      > <a name="2701" class="Symbol"
+      >_</a
+      >
+<a name="2703" href="Data.Digit.html#toDigits" class="Function"
+      >toDigits</a
+      > <a name="2712" class="Symbol"
       >(</a
-      ><a name="2922" href="Data.Digit.html#2907" class="Bound"
-      >r</a
-      ><a name="2923"
-      > </a
-      ><a name="2924" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="2925"
-      > </a
-      ><a name="2926" href="Data.Digit.html#2910" class="Bound"
-      >ds</a
-      ><a name="2928"
-      > </a
-      ><a name="2929" href="Data.Product.html#509" class="InductiveConstructor Operator"
-      >,</a
-      ><a name="2930"
-      > </a
-      ><a name="2931" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
-      >P.cong</a
-      ><a name="2937"
-      > </a
-      ><a name="2938" class="Symbol"
-      >(&#955;</a
-      ><a name="2940"
-      > </a
-      ><a name="2941" href="Data.Digit.html#2941" class="Bound"
-      >i</a
-      ><a name="2942"
-      > </a
-      ><a name="2943" class="Symbol"
-      >&#8594;</a
-      ><a name="2944"
-      > </a
-      ><a name="2945" href="Data.Fin.html#968" class="Function"
-      >to&#8469;</a
-      ><a name="2948"
-      > </a
-      ><a name="2949" href="Data.Digit.html#2907" class="Bound"
-      >r</a
-      ><a name="2950"
-      > </a
-      ><a name="2951" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
-      >+</a
-      ><a name="2952"
-      > </a
-      ><a name="2953" href="Data.Digit.html#2941" class="Bound"
-      >i</a
-      ><a name="2954"
-      > </a
-      ><a name="2955" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
-      >*</a
-      ><a name="2956"
-      > </a
-      ><a name="2957" href="Data.Digit.html#2773" class="Function"
+      ><a name="2713" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="2717" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      >zero</a
+      ><a name="2721" class="Symbol"
+      >)</a
+      > <a name="2723" class="Symbol"
+      >{</a
+      ><a name="2724" class="Argument"
+      >base&#8805;2</a
+      > <a name="2731" class="Symbol"
+      >=</a
+      > <a name="2733" class="Symbol"
+      >()}</a
+      > <a name="2737" class="Symbol"
+      >_</a
+      >
+<a name="2739" href="Data.Digit.html#toDigits" class="Function"
+      >toDigits</a
+      > <a name="2748" class="Symbol"
+      >(</a
+      ><a name="2749" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="2753" class="Symbol"
+      >(</a
+      ><a name="2754" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="2758" href="Data.Digit.html#2758" class="Bound"
+      >k</a
+      ><a name="2759" class="Symbol"
+      >))</a
+      > <a name="2762" href="Data.Digit.html#2762" class="Bound"
+      >n</a
+      > <a name="2764" class="Symbol"
+      >=</a
+      > <a name="2766" href="Induction.WellFounded.html#1751" class="Function"
+      >&lt;&#8242;-rec</a
+      > <a name="2773" href="Data.Digit.html#2818" class="Function"
+      >Pred</a
+      > <a name="2778" href="Data.Digit.html#2994" class="Function"
+      >helper</a
+      > <a name="2785" href="Data.Digit.html#2762" class="Bound"
+      >n</a
+      >
+  <a name="2789" class="Keyword"
+      >where</a
+      >
+  <a name="2797" href="Data.Digit.html#2797" class="Function"
       >base</a
-      ><a name="2961" class="Symbol"
+      > <a name="2802" class="Symbol"
+      >=</a
+      > <a name="2804" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="2808" class="Symbol"
+      >(</a
+      ><a name="2809" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="2813" href="Data.Digit.html#2758" class="Bound"
+      >k</a
+      ><a name="2814" class="Symbol"
       >)</a
-      ><a name="2962"
-      > </a
-      ><a name="2963" href="Data.Digit.html#2915" class="Bound"
-      >eq</a
-      ><a name="2965" class="Symbol"
-      >)</a
-      ><a name="2966"
+      >
+  <a name="2818" href="Data.Digit.html#2818" class="Function"
+      >Pred</a
+      > <a name="2823" class="Symbol"
+      >=</a
+      > <a name="2825" class="Symbol"
+      >&#955;</a
+      > <a name="2827" href="Data.Digit.html#2827" class="Bound"
+      >n</a
+      > <a name="2829" class="Symbol"
+      >&#8594;</a
+      > <a name="2831" href="Data.Product.html#&#8707;" class="Function"
+      >&#8707;</a
+      > <a name="2833" class="Symbol"
+      >&#955;</a
+      > <a name="2835" href="Data.Digit.html#2835" class="Bound"
+      >ds</a
+      > <a name="2838" class="Symbol"
+      >&#8594;</a
+      > <a name="2840" href="Data.Digit.html#fromDigits" class="Function"
+      >fromDigits</a
+      > <a name="2851" href="Data.Digit.html#2835" class="Bound"
+      >ds</a
+      > <a name="2854" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >&#8801;</a
+      > <a name="2856" href="Data.Digit.html#2827" class="Bound"
+      >n</a
       >
 
-  </a
-      ><a name="2970" href="Data.Digit.html#2970" class="Function"
-      >helper</a
-      ><a name="2976"
-      > </a
-      ><a name="2977" class="Symbol"
-      >:</a
-      ><a name="2978"
-      > </a
-      ><a name="2979" class="Symbol"
-      >&#8704;</a
-      ><a name="2980"
-      > </a
-      ><a name="2981" href="Data.Digit.html#2981" class="Bound"
-      >n</a
-      ><a name="2982"
-      > </a
-      ><a name="2983" class="Symbol"
-      >&#8594;</a
-      ><a name="2984"
-      > </a
-      ><a name="2985" href="Induction.Nat.html#1443" class="Function"
-      >&lt;-Rec</a
-      ><a name="2990"
-      > </a
-      ><a name="2991" href="Data.Digit.html#2794" class="Function"
-      >Pred</a
-      ><a name="2995"
-      > </a
-      ><a name="2996" href="Data.Digit.html#2981" class="Bound"
-      >n</a
-      ><a name="2997"
-      > </a
-      ><a name="2998" class="Symbol"
-      >&#8594;</a
-      ><a name="2999"
-      > </a
-      ><a name="3000" href="Data.Digit.html#2794" class="Function"
-      >Pred</a
-      ><a name="3004"
-      > </a
-      ><a name="3005" href="Data.Digit.html#2981" class="Bound"
-      >n</a
-      ><a name="3006"
-      >
-  </a
-      ><a name="3009" href="Data.Digit.html#2970" class="Function"
-      >helper</a
-      ><a name="3015"
-      > </a
-      ><a name="3016" href="Data.Digit.html#3016" class="Bound"
-      >n</a
-      ><a name="3017"
-      >                       </a
-      ><a name="3040" href="Data.Digit.html#3040" class="Bound"
-      >rec</a
-      ><a name="3043"
-      > </a
-      ><a name="3044" class="Keyword"
-      >with</a
-      ><a name="3048"
-      > </a
-      ><a name="3049" href="Data.Digit.html#3016" class="Bound"
-      >n</a
-      ><a name="3050"
-      > </a
-      ><a name="3051" href="Data.Nat.DivMod.html#4861" class="Function Operator"
-      >divMod</a
-      ><a name="3057"
-      > </a
-      ><a name="3058" href="Data.Digit.html#2773" class="Function"
-      >base</a
-      ><a name="3062"
-      >
-  </a
-      ><a name="3065" href="Data.Digit.html#2970" class="Function"
-      >helper</a
-      ><a name="3071"
-      > </a
-      ><a name="3072" class="DottedPattern Symbol"
-      >.(</a
-      ><a name="3074" href="Data.Fin.html#968" class="DottedPattern Function"
-      >to&#8469;</a
-      ><a name="3077"
-      > </a
-      ><a name="3078" href="Data.Digit.html#3117" class="DottedPattern Bound"
-      >r</a
-      ><a name="3079"
-      > </a
-      ><a name="3080" href="Agda.Builtin.Nat.html#230" class="DottedPattern Primitive Operator"
-      >+</a
-      ><a name="3081"
-      > </a
-      ><a name="3082" class="DottedPattern Number"
-      >0</a
-      ><a name="3083"
-      >     </a
-      ><a name="3088" href="Agda.Builtin.Nat.html#433" class="DottedPattern Primitive Operator"
-      >*</a
-      ><a name="3089"
-      > </a
-      ><a name="3090" href="Data.Digit.html#2773" class="DottedPattern Function"
-      >base</a
-      ><a name="3094" class="DottedPattern Symbol"
-      >)</a
-      ><a name="3095"
-      > </a
-      ><a name="3096" href="Data.Digit.html#3096" class="Bound"
-      >rec</a
-      ><a name="3099"
-      > </a
-      ><a name="3100" class="Symbol"
-      >|</a
-      ><a name="3101"
-      > </a
-      ><a name="3102" href="Data.Nat.DivMod.html#927" class="InductiveConstructor"
-      >result</a
-      ><a name="3108"
-      > </a
-      ><a name="3109" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
-      >zero</a
-      ><a name="3113"
-      >    </a
-      ><a name="3117" href="Data.Digit.html#3117" class="Bound"
-      >r</a
-      ><a name="3118"
-      > </a
-      ><a name="3119" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
-      >refl</a
-      ><a name="3123"
-      > </a
-      ><a name="3124" class="Symbol"
-      >=</a
-      ><a name="3125"
-      > </a
-      ><a name="3126" class="Symbol"
-      >(</a
-      ><a name="3127" href="Data.List.Base.html#842" class="Function Operator"
-      >[</a
-      ><a name="3128"
-      > </a
-      ><a name="3129" href="Data.Digit.html#3117" class="Bound"
-      >r</a
-      ><a name="3130"
-      > </a
-      ><a name="3131" href="Data.List.Base.html#842" class="Function Operator"
-      >]</a
-      ><a name="3132"
-      > </a
-      ><a name="3133" href="Data.Product.html#509" class="InductiveConstructor Operator"
-      >,</a
-      ><a name="3134"
-      > </a
-      ><a name="3135" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
-      >refl</a
-      ><a name="3139" class="Symbol"
-      >)</a
-      ><a name="3140"
-      >
-  </a
-      ><a name="3143" href="Data.Digit.html#2970" class="Function"
-      >helper</a
-      ><a name="3149"
-      > </a
-      ><a name="3150" class="DottedPattern Symbol"
-      >.(</a
-      ><a name="3152" href="Data.Fin.html#968" class="DottedPattern Function"
-      >to&#8469;</a
-      ><a name="3155"
-      > </a
-      ><a name="3156" href="Data.Digit.html#3195" class="DottedPattern Bound"
-      >r</a
-      ><a name="3157"
-      > </a
-      ><a name="3158" href="Agda.Builtin.Nat.html#230" class="DottedPattern Primitive Operator"
-      >+</a
-      ><a name="3159"
-      > </a
-      ><a name="3160" href="Agda.Builtin.Nat.html#128" class="DottedPattern InductiveConstructor"
-      >suc</a
-      ><a name="3163"
-      > </a
-      ><a name="3164" href="Data.Digit.html#3192" class="DottedPattern Bound"
-      >x</a
-      ><a name="3165"
-      > </a
-      ><a name="3166" href="Agda.Builtin.Nat.html#433" class="DottedPattern Primitive Operator"
-      >*</a
-      ><a name="3167"
-      > </a
-      ><a name="3168" href="Data.Digit.html#2773" class="DottedPattern Function"
-      >base</a
-      ><a name="3172" class="DottedPattern Symbol"
-      >)</a
-      ><a name="3173"
-      > </a
-      ><a name="3174" href="Data.Digit.html#3174" class="Bound"
-      >rec</a
-      ><a name="3177"
-      > </a
-      ><a name="3178" class="Symbol"
-      >|</a
-      ><a name="3179"
-      > </a
-      ><a name="3180" href="Data.Nat.DivMod.html#927" class="InductiveConstructor"
-      >result</a
-      ><a name="3186"
-      > </a
-      ><a name="3187" class="Symbol"
-      >(</a
-      ><a name="3188" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
-      >suc</a
-      ><a name="3191"
-      > </a
-      ><a name="3192" href="Data.Digit.html#3192" class="Bound"
-      >x</a
-      ><a name="3193" class="Symbol"
-      >)</a
-      ><a name="3194"
-      > </a
-      ><a name="3195" href="Data.Digit.html#3195" class="Bound"
-      >r</a
-      ><a name="3196"
-      > </a
-      ><a name="3197" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
-      >refl</a
-      ><a name="3201"
-      > </a
-      ><a name="3202" class="Symbol"
-      >=</a
-      ><a name="3203"
-      >
-    </a
-      ><a name="3208" href="Data.Digit.html#2837" class="Function"
+  <a name="2861" href="Data.Digit.html#2861" class="Function"
       >cons</a
-      ><a name="3212"
-      > </a
-      ><a name="3213" href="Data.Digit.html#3195" class="Bound"
+      > <a name="2866" class="Symbol"
+      >:</a
+      > <a name="2868" class="Symbol"
+      >&#8704;</a
+      > <a name="2870" class="Symbol"
+      >{</a
+      ><a name="2871" href="Data.Digit.html#2871" class="Bound"
+      >m</a
+      ><a name="2872" class="Symbol"
+      >}</a
+      > <a name="2874" class="Symbol"
+      >(</a
+      ><a name="2875" href="Data.Digit.html#2875" class="Bound"
       >r</a
-      ><a name="3214"
-      > </a
-      ><a name="3215" class="Symbol"
-      >(</a
-      ><a name="3216" href="Data.Digit.html#3174" class="Bound"
-      >rec</a
-      ><a name="3219"
-      > </a
-      ><a name="3220" class="Symbol"
-      >(</a
-      ><a name="3221" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
-      >suc</a
-      ><a name="3224"
-      > </a
-      ><a name="3225" href="Data.Digit.html#3192" class="Bound"
-      >x</a
-      ><a name="3226" class="Symbol"
+      > <a name="2877" class="Symbol"
+      >:</a
+      > <a name="2879" href="Data.Fin.html#Fin" class="Datatype"
+      >Fin</a
+      > <a name="2883" href="Data.Digit.html#2797" class="Function"
+      >base</a
+      ><a name="2887" class="Symbol"
       >)</a
-      ><a name="3227"
-      > </a
-      ><a name="3228" class="Symbol"
+      > <a name="2889" class="Symbol"
+      >&#8594;</a
+      > <a name="2891" href="Data.Digit.html#2818" class="Function"
+      >Pred</a
+      > <a name="2896" href="Data.Digit.html#2871" class="Bound"
+      >m</a
+      > <a name="2898" class="Symbol"
+      >&#8594;</a
+      > <a name="2900" href="Data.Digit.html#2818" class="Function"
+      >Pred</a
+      > <a name="2905" class="Symbol"
       >(</a
-      ><a name="3229" href="Data.Digit.html#809" class="Function"
-      >lem</a
-      ><a name="3232"
-      > </a
-      ><a name="3233" class="Symbol"
-      >(</a
-      ><a name="3234" href="Data.Nat.Base.html#2508" class="Function"
-      >pred</a
-      ><a name="3238"
-      > </a
-      ><a name="3239" class="Symbol"
-      >(</a
-      ><a name="3240" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
-      >suc</a
-      ><a name="3243"
-      > </a
-      ><a name="3244" href="Data.Digit.html#3192" class="Bound"
-      >x</a
-      ><a name="3245" class="Symbol"
-      >))</a
-      ><a name="3247"
-      > </a
-      ><a name="3248" href="Data.Digit.html#2735" class="Bound"
-      >k</a
-      ><a name="3249"
-      > </a
-      ><a name="3250" class="Symbol"
-      >(</a
-      ><a name="3251" href="Data.Fin.html#968" class="Function"
+      ><a name="2906" href="Data.Fin.html#to&#8469;" class="Function"
       >to&#8469;</a
-      ><a name="3254"
-      > </a
-      ><a name="3255" href="Data.Digit.html#3195" class="Bound"
+      > <a name="2910" href="Data.Digit.html#2875" class="Bound"
       >r</a
-      ><a name="3256" class="Symbol"
-      >)))</a
-      ><a name="3259"
+      > <a name="2912" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
+      >+</a
+      > <a name="2914" href="Data.Digit.html#2871" class="Bound"
+      >m</a
+      > <a name="2916" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
+      >*</a
+      > <a name="2918" href="Data.Digit.html#2797" class="Function"
+      >base</a
+      ><a name="2922" class="Symbol"
+      >)</a
       >
-</a
-      ></pre
+  <a name="2926" href="Data.Digit.html#2861" class="Function"
+      >cons</a
+      > <a name="2931" href="Data.Digit.html#2931" class="Bound"
+      >r</a
+      > <a name="2933" class="Symbol"
+      >(</a
+      ><a name="2934" href="Data.Digit.html#2934" class="Bound"
+      >ds</a
+      > <a name="2937" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="2939" href="Data.Digit.html#2939" class="Bound"
+      >eq</a
+      ><a name="2941" class="Symbol"
+      >)</a
+      > <a name="2943" class="Symbol"
+      >=</a
+      > <a name="2945" class="Symbol"
+      >(</a
+      ><a name="2946" href="Data.Digit.html#2931" class="Bound"
+      >r</a
+      > <a name="2948" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2950" href="Data.Digit.html#2934" class="Bound"
+      >ds</a
+      > <a name="2953" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="2955" href="Relation.Binary.PropositionalEquality.html#cong" class="Function"
+      >P.cong</a
+      > <a name="2962" class="Symbol"
+      >(&#955;</a
+      > <a name="2965" href="Data.Digit.html#2965" class="Bound"
+      >i</a
+      > <a name="2967" class="Symbol"
+      >&#8594;</a
+      > <a name="2969" href="Data.Fin.html#to&#8469;" class="Function"
+      >to&#8469;</a
+      > <a name="2973" href="Data.Digit.html#2931" class="Bound"
+      >r</a
+      > <a name="2975" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
+      >+</a
+      > <a name="2977" href="Data.Digit.html#2965" class="Bound"
+      >i</a
+      > <a name="2979" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
+      >*</a
+      > <a name="2981" href="Data.Digit.html#2797" class="Function"
+      >base</a
+      ><a name="2985" class="Symbol"
+      >)</a
+      > <a name="2987" href="Data.Digit.html#2939" class="Bound"
+      >eq</a
+      ><a name="2989" class="Symbol"
+      >)</a
+      >
+
+  <a name="2994" href="Data.Digit.html#2994" class="Function"
+      >helper</a
+      > <a name="3001" class="Symbol"
+      >:</a
+      > <a name="3003" class="Symbol"
+      >&#8704;</a
+      > <a name="3005" href="Data.Digit.html#3005" class="Bound"
+      >n</a
+      > <a name="3007" class="Symbol"
+      >&#8594;</a
+      > <a name="3009" href="Induction.Nat.html#&lt;&#8242;-Rec" class="Function"
+      >&lt;&#8242;-Rec</a
+      > <a name="3016" href="Data.Digit.html#2818" class="Function"
+      >Pred</a
+      > <a name="3021" href="Data.Digit.html#3005" class="Bound"
+      >n</a
+      > <a name="3023" class="Symbol"
+      >&#8594;</a
+      > <a name="3025" href="Data.Digit.html#2818" class="Function"
+      >Pred</a
+      > <a name="3030" href="Data.Digit.html#3005" class="Bound"
+      >n</a
+      >
+  <a name="3034" href="Data.Digit.html#2994" class="Function"
+      >helper</a
+      > <a name="3041" href="Data.Digit.html#3041" class="Bound"
+      >n</a
+      >                       <a name="3065" href="Data.Digit.html#3065" class="Bound"
+      >rec</a
+      > <a name="3069" class="Keyword"
+      >with</a
+      > <a name="3074" href="Data.Digit.html#3041" class="Bound"
+      >n</a
+      > <a name="3076" href="Data.Nat.DivMod.html#_divMod_" class="Function Operator"
+      >divMod</a
+      > <a name="3083" href="Data.Digit.html#2797" class="Function"
+      >base</a
+      >
+  <a name="3090" href="Data.Digit.html#2994" class="Function"
+      >helper</a
+      > <a name="3097" class="DottedPattern Symbol"
+      >.(</a
+      ><a name="3099" href="Data.Fin.html#to&#8469;" class="DottedPattern Function"
+      >to&#8469;</a
+      > <a name="3103" href="Data.Digit.html#3142" class="DottedPattern Bound"
+      >r</a
+      > <a name="3105" href="Agda.Builtin.Nat.html#_+_" class="DottedPattern Primitive Operator"
+      >+</a
+      > <a name="3107" class="DottedPattern Number"
+      >0</a
+      >     <a name="3113" href="Agda.Builtin.Nat.html#_*_" class="DottedPattern Primitive Operator"
+      >*</a
+      > <a name="3115" href="Data.Digit.html#2797" class="DottedPattern Function"
+      >base</a
+      ><a name="3119" class="DottedPattern Symbol"
+      >)</a
+      > <a name="3121" href="Data.Digit.html#3121" class="Bound"
+      >rec</a
+      > <a name="3125" class="Symbol"
+      >|</a
+      > <a name="3127" href="Data.Nat.DivMod.html#DivMod.result" class="InductiveConstructor"
+      >result</a
+      > <a name="3134" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      >zero</a
+      >    <a name="3142" href="Data.Digit.html#3142" class="Bound"
+      >r</a
+      > <a name="3144" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      > <a name="3149" class="Symbol"
+      >=</a
+      > <a name="3151" class="Symbol"
+      >(</a
+      ><a name="3152" href="Data.List.Base.html#[_]" class="Function Operator"
+      >[</a
+      > <a name="3154" href="Data.Digit.html#3142" class="Bound"
+      >r</a
+      > <a name="3156" href="Data.List.Base.html#[_]" class="Function Operator"
+      >]</a
+      > <a name="3158" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="3160" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      ><a name="3164" class="Symbol"
+      >)</a
+      >
+  <a name="3168" href="Data.Digit.html#2994" class="Function"
+      >helper</a
+      > <a name="3175" class="DottedPattern Symbol"
+      >.(</a
+      ><a name="3177" href="Data.Fin.html#to&#8469;" class="DottedPattern Function"
+      >to&#8469;</a
+      > <a name="3181" href="Data.Digit.html#3220" class="DottedPattern Bound"
+      >r</a
+      > <a name="3183" href="Agda.Builtin.Nat.html#_+_" class="DottedPattern Primitive Operator"
+      >+</a
+      > <a name="3185" href="Agda.Builtin.Nat.html#Nat.suc" class="DottedPattern InductiveConstructor"
+      >suc</a
+      > <a name="3189" href="Data.Digit.html#3217" class="DottedPattern Bound"
+      >x</a
+      > <a name="3191" href="Agda.Builtin.Nat.html#_*_" class="DottedPattern Primitive Operator"
+      >*</a
+      > <a name="3193" href="Data.Digit.html#2797" class="DottedPattern Function"
+      >base</a
+      ><a name="3197" class="DottedPattern Symbol"
+      >)</a
+      > <a name="3199" href="Data.Digit.html#3199" class="Bound"
+      >rec</a
+      > <a name="3203" class="Symbol"
+      >|</a
+      > <a name="3205" href="Data.Nat.DivMod.html#DivMod.result" class="InductiveConstructor"
+      >result</a
+      > <a name="3212" class="Symbol"
+      >(</a
+      ><a name="3213" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="3217" href="Data.Digit.html#3217" class="Bound"
+      >x</a
+      ><a name="3218" class="Symbol"
+      >)</a
+      > <a name="3220" href="Data.Digit.html#3220" class="Bound"
+      >r</a
+      > <a name="3222" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      > <a name="3227" class="Symbol"
+      >=</a
+      >
+    <a name="3233" href="Data.Digit.html#2861" class="Function"
+      >cons</a
+      > <a name="3238" href="Data.Digit.html#3220" class="Bound"
+      >r</a
+      > <a name="3240" class="Symbol"
+      >(</a
+      ><a name="3241" href="Data.Digit.html#3199" class="Bound"
+      >rec</a
+      > <a name="3245" class="Symbol"
+      >(</a
+      ><a name="3246" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="3250" href="Data.Digit.html#3217" class="Bound"
+      >x</a
+      ><a name="3251" class="Symbol"
+      >)</a
+      > <a name="3253" class="Symbol"
+      >(</a
+      ><a name="3254" href="Data.Digit.html#lem" class="Function"
+      >lem</a
+      > <a name="3258" class="Symbol"
+      >(</a
+      ><a name="3259" href="Data.Nat.Base.html#pred" class="Function"
+      >pred</a
+      > <a name="3264" class="Symbol"
+      >(</a
+      ><a name="3265" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="3269" href="Data.Digit.html#3217" class="Bound"
+      >x</a
+      ><a name="3270" class="Symbol"
+      >))</a
+      > <a name="3273" href="Data.Digit.html#2758" class="Bound"
+      >k</a
+      > <a name="3275" class="Symbol"
+      >(</a
+      ><a name="3276" href="Data.Fin.html#to&#8469;" class="Function"
+      >to&#8469;</a
+      > <a name="3280" href="Data.Digit.html#3220" class="Bound"
+      >r</a
+      ><a name="3281" class="Symbol"
+      >)))</a
+      >
+</pre
     ></body
   ></html
 >

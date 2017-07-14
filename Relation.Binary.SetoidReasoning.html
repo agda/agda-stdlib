@@ -11,883 +11,511 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Convenient syntax for &quot;equational reasoning&quot; in multiple Setoids</a
-      ><a name="173"
       >
-</a
-      ><a name="174" class="Comment"
+<a name="174" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="246"
       >
 
-</a
-      ><a name="248" class="Comment"
+<a name="248" class="Comment"
       >-- Example use:</a
-      ><a name="263"
       >
-</a
-      ><a name="264" class="Comment"
+<a name="264" class="Comment"
       >--</a
-      ><a name="266"
       >
-</a
-      ><a name="267" class="Comment"
+<a name="267" class="Comment"
       >--   open import Data.Maybe</a
-      ><a name="294"
       >
-</a
-      ><a name="295" class="Comment"
+<a name="295" class="Comment"
       >--   import Relation.Binary.SetoidReasoning as SetR</a
-      ><a name="346"
       >
-</a
-      ><a name="347" class="Comment"
+<a name="347" class="Comment"
       >--</a
-      ><a name="349"
       >
-</a
-      ><a name="350" class="Comment"
+<a name="350" class="Comment"
       >--   begin&#10216; S &#10217;</a
-      ><a name="365"
       >
-</a
-      ><a name="366" class="Comment"
+<a name="366" class="Comment"
       >--     x</a
-      ><a name="374"
       >
-</a
-      ><a name="375" class="Comment"
+<a name="375" class="Comment"
       >--       &#8776;&#10216; drop-just (begin&#10216; setoid S &#10217;</a
-      ><a name="415"
       >
-</a
-      ><a name="416" class="Comment"
+<a name="416" class="Comment"
       >--          just x</a
-      ><a name="434"
       >
-</a
-      ><a name="435" class="Comment"
+<a name="435" class="Comment"
       >--            &#8776;&#10216; justx&#8776;mz &#10217;</a
-      ><a name="462"
       >
-</a
-      ><a name="463" class="Comment"
+<a name="463" class="Comment"
       >--          mz</a
-      ><a name="477"
       >
-</a
-      ><a name="478" class="Comment"
+<a name="478" class="Comment"
       >--            &#8776;&#10216; mz&#8776;justy &#10217;</a
-      ><a name="505"
       >
-</a
-      ><a name="506" class="Comment"
+<a name="506" class="Comment"
       >--          just y &#8718;) &#10217;</a
-      ><a name="529"
       >
-</a
-      ><a name="530" class="Comment"
+<a name="530" class="Comment"
       >--     y</a
-      ><a name="538"
       >
-</a
-      ><a name="539" class="Comment"
+<a name="539" class="Comment"
       >--       &#8776;&#10216; y&#8776;z &#10217;</a
-      ><a name="556"
       >
-</a
-      ><a name="557" class="Comment"
+<a name="557" class="Comment"
       >--     z &#8718;</a
-      ><a name="567"
       >
 
-</a
-      ><a name="569" class="Keyword"
+<a name="569" class="Keyword"
       >open</a
-      ><a name="573"
-      > </a
-      ><a name="574" class="Keyword"
+      > <a name="574" class="Keyword"
       >import</a
-      ><a name="580"
-      > </a
-      ><a name="581" href="Relation.Binary.EqReasoning.html#1" class="Module"
+      > <a name="581" href="Relation.Binary.EqReasoning.html" class="Module"
       >Relation.Binary.EqReasoning</a
-      ><a name="608"
-      > </a
-      ><a name="609" class="Symbol"
+      > <a name="609" class="Symbol"
       >as</a
-      ><a name="611"
-      > </a
-      ><a name="612" class="Module"
+      > <a name="612" class="Module"
       >EqR</a
-      ><a name="615"
-      > </a
-      ><a name="616" class="Keyword"
+      > <a name="616" class="Keyword"
       >using</a
-      ><a name="621"
-      > </a
-      ><a name="622" class="Symbol"
+      > <a name="622" class="Symbol"
       >(</a
       ><a name="623" href="Relation.Binary.PreorderReasoning.html#1066" class="Datatype Operator"
       >_IsRelatedTo_</a
       ><a name="636" class="Symbol"
       >)</a
-      ><a name="637"
       >
-</a
-      ><a name="638" class="Keyword"
+<a name="638" class="Keyword"
       >open</a
-      ><a name="642"
-      > </a
-      ><a name="643" class="Keyword"
+      > <a name="643" class="Keyword"
       >import</a
-      ><a name="649"
-      > </a
-      ><a name="650" href="Relation.Binary.html#1" class="Module"
+      > <a name="650" href="Relation.Binary.html" class="Module"
       >Relation.Binary</a
-      ><a name="665"
       >
-</a
-      ><a name="666" class="Keyword"
+<a name="666" class="Keyword"
       >open</a
-      ><a name="670"
-      > </a
-      ><a name="671" class="Keyword"
+      > <a name="671" class="Keyword"
       >import</a
-      ><a name="677"
-      > </a
-      ><a name="678" href="Relation.Binary.Core.html#1" class="Module"
+      > <a name="678" href="Relation.Binary.Core.html" class="Module"
       >Relation.Binary.Core</a
-      ><a name="698"
       >
 
-</a
-      ><a name="700" class="Keyword"
+<a name="700" class="Keyword"
       >open</a
-      ><a name="704"
-      > </a
-      ><a name="705" href="Relation.Binary.html#1908" class="Module"
+      > <a name="705" href="Relation.Binary.html#Setoid" class="Module"
       >Setoid</a
-      ><a name="711"
       >
 
-</a
-      ><a name="713" class="Keyword"
+<a name="713" class="Keyword"
       >module</a
-      ><a name="719"
-      > </a
-      ><a name="720" href="Relation.Binary.SetoidReasoning.html#1" class="Module"
+      > <a name="720" href="Relation.Binary.SetoidReasoning.html" class="Module"
       >Relation.Binary.SetoidReasoning</a
-      ><a name="751"
-      > </a
-      ><a name="752" class="Keyword"
+      > <a name="752" class="Keyword"
       >where</a
-      ><a name="757"
       >
 
-</a
-      ><a name="759" class="Keyword"
+<a name="759" class="Keyword"
       >infix</a
-      ><a name="764"
-      > </a
-      ><a name="765" class="Number"
+      > <a name="765" class="Number"
       >1</a
-      ><a name="766"
-      > begin&#10216;_&#10217;_
-</a
-      ><a name="777" class="Keyword"
-      >infixr</a
-      ><a name="783"
-      > </a
-      ><a name="784" class="Number"
-      >2</a
-      ><a name="785"
-      > _&#8776;&#10216;_&#10217;_ _&#8801;&#10216;_&#10217;_
-</a
-      ><a name="800" class="Keyword"
-      >infix</a
-      ><a name="805"
-      > </a
-      ><a name="806" class="Number"
-      >3</a
-      ><a name="807"
-      > _&#8718;
-
-</a
-      ><a name="812" href="Relation.Binary.SetoidReasoning.html#812" class="Function Operator"
+      > <a name="begin&#10216;_&#10217;_" href="Relation.Binary.SetoidReasoning.html#begin&#10216;_&#10217;_" class="Function Operator"
       >begin&#10216;_&#10217;_</a
-      ><a name="821"
-      > </a
-      ><a name="822" class="Symbol"
+      >
+<a name="777" class="Keyword"
+      >infixr</a
+      > <a name="784" class="Number"
+      >2</a
+      > <a name="_&#8776;&#10216;_&#10217;_" href="Relation.Binary.SetoidReasoning.html#_&#8776;&#10216;_&#10217;_" class="Function Operator"
+      >_&#8776;&#10216;_&#10217;_</a
+      > <a name="_&#8801;&#10216;_&#10217;_" href="Relation.Binary.SetoidReasoning.html#_&#8801;&#10216;_&#10217;_" class="Function Operator"
+      >_&#8801;&#10216;_&#10217;_</a
+      >
+<a name="800" class="Keyword"
+      >infix</a
+      > <a name="806" class="Number"
+      >3</a
+      > <a name="_&#8718;" href="Relation.Binary.SetoidReasoning.html#_&#8718;" class="Function Operator"
+      >_&#8718;</a
+      >
+
+<a name="begin&#10216;_&#10217;_" href="Relation.Binary.SetoidReasoning.html#begin&#10216;_&#10217;_" class="Function Operator"
+      >begin&#10216;_&#10217;_</a
+      > <a name="822" class="Symbol"
       >:</a
-      ><a name="823"
-      > </a
-      ><a name="824" class="Symbol"
+      > <a name="824" class="Symbol"
       >&#8704;</a
-      ><a name="825"
-      > </a
-      ><a name="826" class="Symbol"
+      > <a name="826" class="Symbol"
       >{</a
       ><a name="827" href="Relation.Binary.SetoidReasoning.html#827" class="Bound"
       >c</a
-      ><a name="828"
-      > </a
-      ><a name="829" href="Relation.Binary.SetoidReasoning.html#829" class="Bound"
+      > <a name="829" href="Relation.Binary.SetoidReasoning.html#829" class="Bound"
       >l</a
       ><a name="830" class="Symbol"
       >}</a
-      ><a name="831"
-      > </a
-      ><a name="832" class="Symbol"
+      > <a name="832" class="Symbol"
       >(</a
       ><a name="833" href="Relation.Binary.SetoidReasoning.html#833" class="Bound"
       >S</a
-      ><a name="834"
-      > </a
-      ><a name="835" class="Symbol"
+      > <a name="835" class="Symbol"
       >:</a
-      ><a name="836"
-      > </a
-      ><a name="837" href="Relation.Binary.html#1908" class="Record"
+      > <a name="837" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="843"
-      > </a
-      ><a name="844" href="Relation.Binary.SetoidReasoning.html#827" class="Bound"
+      > <a name="844" href="Relation.Binary.SetoidReasoning.html#827" class="Bound"
       >c</a
-      ><a name="845"
-      > </a
-      ><a name="846" href="Relation.Binary.SetoidReasoning.html#829" class="Bound"
+      > <a name="846" href="Relation.Binary.SetoidReasoning.html#829" class="Bound"
       >l</a
       ><a name="847" class="Symbol"
       >)</a
-      ><a name="848"
-      > </a
-      ><a name="849" class="Symbol"
+      > <a name="849" class="Symbol"
       >&#8594;</a
-      ><a name="850"
-      > </a
-      ><a name="851" class="Symbol"
+      > <a name="851" class="Symbol"
       >{</a
       ><a name="852" href="Relation.Binary.SetoidReasoning.html#852" class="Bound"
       >x</a
-      ><a name="853"
-      > </a
-      ><a name="854" href="Relation.Binary.SetoidReasoning.html#854" class="Bound"
+      > <a name="854" href="Relation.Binary.SetoidReasoning.html#854" class="Bound"
       >y</a
-      ><a name="855"
-      > </a
-      ><a name="856" class="Symbol"
+      > <a name="856" class="Symbol"
       >:</a
-      ><a name="857"
-      > </a
-      ><a name="858" href="Relation.Binary.html#1971" class="Field"
+      > <a name="858" href="Relation.Binary.html#Setoid.Carrier" class="Field"
       >Carrier</a
-      ><a name="865"
-      > </a
-      ><a name="866" href="Relation.Binary.SetoidReasoning.html#833" class="Bound"
+      > <a name="866" href="Relation.Binary.SetoidReasoning.html#833" class="Bound"
       >S</a
       ><a name="867" class="Symbol"
       >}</a
-      ><a name="868"
-      > </a
-      ><a name="869" class="Symbol"
+      > <a name="869" class="Symbol"
       >&#8594;</a
-      ><a name="870"
-      > </a
-      ><a name="871" href="Relation.Binary.PreorderReasoning.html#1066" class="Datatype Operator"
+      > <a name="871" href="Relation.Binary.PreorderReasoning.html#1066" class="Datatype Operator"
       >_IsRelatedTo_</a
-      ><a name="884"
-      > </a
-      ><a name="885" href="Relation.Binary.SetoidReasoning.html#833" class="Bound"
+      > <a name="885" href="Relation.Binary.SetoidReasoning.html#833" class="Bound"
       >S</a
-      ><a name="886"
-      > </a
-      ><a name="887" href="Relation.Binary.SetoidReasoning.html#852" class="Bound"
+      > <a name="887" href="Relation.Binary.SetoidReasoning.html#852" class="Bound"
       >x</a
-      ><a name="888"
-      > </a
-      ><a name="889" href="Relation.Binary.SetoidReasoning.html#854" class="Bound"
+      > <a name="889" href="Relation.Binary.SetoidReasoning.html#854" class="Bound"
       >y</a
-      ><a name="890"
-      > </a
-      ><a name="891" class="Symbol"
+      > <a name="891" class="Symbol"
       >&#8594;</a
-      ><a name="892"
-      > </a
-      ><a name="893" href="Relation.Binary.html#1997" class="Field Operator"
+      > <a name="893" href="Relation.Binary.html#Setoid._&#8776;_" class="Field Operator"
       >_&#8776;_</a
-      ><a name="896"
-      > </a
-      ><a name="897" href="Relation.Binary.SetoidReasoning.html#833" class="Bound"
+      > <a name="897" href="Relation.Binary.SetoidReasoning.html#833" class="Bound"
       >S</a
-      ><a name="898"
-      > </a
-      ><a name="899" href="Relation.Binary.SetoidReasoning.html#852" class="Bound"
+      > <a name="899" href="Relation.Binary.SetoidReasoning.html#852" class="Bound"
       >x</a
-      ><a name="900"
-      > </a
-      ><a name="901" href="Relation.Binary.SetoidReasoning.html#854" class="Bound"
+      > <a name="901" href="Relation.Binary.SetoidReasoning.html#854" class="Bound"
       >y</a
-      ><a name="902"
       >
-</a
-      ><a name="903" href="Relation.Binary.SetoidReasoning.html#812" class="Function Operator"
+<a name="903" href="Relation.Binary.SetoidReasoning.html#begin&#10216;_&#10217;_" class="Function Operator"
       >begin&#10216;_&#10217;_</a
-      ><a name="912"
-      > </a
-      ><a name="913" href="Relation.Binary.SetoidReasoning.html#913" class="Bound"
+      > <a name="913" href="Relation.Binary.SetoidReasoning.html#913" class="Bound"
       >S</a
-      ><a name="914"
-      > </a
-      ><a name="915" href="Relation.Binary.SetoidReasoning.html#915" class="Bound"
+      > <a name="915" href="Relation.Binary.SetoidReasoning.html#915" class="Bound"
       >p</a
-      ><a name="916"
-      > </a
-      ><a name="917" class="Symbol"
+      > <a name="917" class="Symbol"
       >=</a
-      ><a name="918"
-      > </a
-      ><a name="919" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      > <a name="919" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
       >EqR.begin_</a
-      ><a name="929"
-      > </a
-      ><a name="930" href="Relation.Binary.SetoidReasoning.html#913" class="Bound"
+      > <a name="930" href="Relation.Binary.SetoidReasoning.html#913" class="Bound"
       >S</a
-      ><a name="931"
-      > </a
-      ><a name="932" href="Relation.Binary.SetoidReasoning.html#915" class="Bound"
+      > <a name="932" href="Relation.Binary.SetoidReasoning.html#915" class="Bound"
       >p</a
-      ><a name="933"
       >
 
-</a
-      ><a name="935" href="Relation.Binary.SetoidReasoning.html#935" class="Function Operator"
+<a name="_&#8718;" href="Relation.Binary.SetoidReasoning.html#_&#8718;" class="Function Operator"
       >_&#8718;</a
-      ><a name="937"
-      > </a
-      ><a name="938" class="Symbol"
+      > <a name="938" class="Symbol"
       >:</a
-      ><a name="939"
-      > </a
-      ><a name="940" class="Symbol"
+      > <a name="940" class="Symbol"
       >&#8704;</a
-      ><a name="941"
-      > </a
-      ><a name="942" class="Symbol"
+      > <a name="942" class="Symbol"
       >{</a
       ><a name="943" href="Relation.Binary.SetoidReasoning.html#943" class="Bound"
       >c</a
-      ><a name="944"
-      > </a
-      ><a name="945" href="Relation.Binary.SetoidReasoning.html#945" class="Bound"
+      > <a name="945" href="Relation.Binary.SetoidReasoning.html#945" class="Bound"
       >l</a
       ><a name="946" class="Symbol"
       >}</a
-      ><a name="947"
-      > </a
-      ><a name="948" class="Symbol"
+      > <a name="948" class="Symbol"
       >{</a
       ><a name="949" href="Relation.Binary.SetoidReasoning.html#949" class="Bound"
       >S</a
-      ><a name="950"
-      > </a
-      ><a name="951" class="Symbol"
+      > <a name="951" class="Symbol"
       >:</a
-      ><a name="952"
-      > </a
-      ><a name="953" href="Relation.Binary.html#1908" class="Record"
+      > <a name="953" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="959"
-      > </a
-      ><a name="960" href="Relation.Binary.SetoidReasoning.html#943" class="Bound"
+      > <a name="960" href="Relation.Binary.SetoidReasoning.html#943" class="Bound"
       >c</a
-      ><a name="961"
-      > </a
-      ><a name="962" href="Relation.Binary.SetoidReasoning.html#945" class="Bound"
+      > <a name="962" href="Relation.Binary.SetoidReasoning.html#945" class="Bound"
       >l</a
       ><a name="963" class="Symbol"
       >}</a
-      ><a name="964"
-      > </a
-      ><a name="965" class="Symbol"
+      > <a name="965" class="Symbol"
       >&#8594;</a
-      ><a name="966"
-      > </a
-      ><a name="967" class="Symbol"
+      > <a name="967" class="Symbol"
       >(</a
       ><a name="968" href="Relation.Binary.SetoidReasoning.html#968" class="Bound"
       >x</a
-      ><a name="969"
-      > </a
-      ><a name="970" class="Symbol"
+      > <a name="970" class="Symbol"
       >:</a
-      ><a name="971"
-      > </a
-      ><a name="972" href="Relation.Binary.html#1971" class="Field"
+      > <a name="972" href="Relation.Binary.html#Setoid.Carrier" class="Field"
       >Carrier</a
-      ><a name="979"
-      > </a
-      ><a name="980" href="Relation.Binary.SetoidReasoning.html#949" class="Bound"
+      > <a name="980" href="Relation.Binary.SetoidReasoning.html#949" class="Bound"
       >S</a
       ><a name="981" class="Symbol"
       >)</a
-      ><a name="982"
-      > </a
-      ><a name="983" class="Symbol"
+      > <a name="983" class="Symbol"
       >&#8594;</a
-      ><a name="984"
-      > </a
-      ><a name="985" href="Relation.Binary.PreorderReasoning.html#1066" class="Datatype Operator"
+      > <a name="985" href="Relation.Binary.PreorderReasoning.html#1066" class="Datatype Operator"
       >_IsRelatedTo_</a
-      ><a name="998"
-      > </a
-      ><a name="999" href="Relation.Binary.SetoidReasoning.html#949" class="Bound"
+      > <a name="999" href="Relation.Binary.SetoidReasoning.html#949" class="Bound"
       >S</a
-      ><a name="1000"
-      > </a
-      ><a name="1001" href="Relation.Binary.SetoidReasoning.html#968" class="Bound"
+      > <a name="1001" href="Relation.Binary.SetoidReasoning.html#968" class="Bound"
       >x</a
-      ><a name="1002"
-      > </a
-      ><a name="1003" href="Relation.Binary.SetoidReasoning.html#968" class="Bound"
+      > <a name="1003" href="Relation.Binary.SetoidReasoning.html#968" class="Bound"
       >x</a
-      ><a name="1004"
       >
-</a
-      ><a name="1005" href="Relation.Binary.SetoidReasoning.html#935" class="Function Operator"
+<a name="1005" href="Relation.Binary.SetoidReasoning.html#_&#8718;" class="Function Operator"
       >_&#8718;</a
-      ><a name="1007"
-      > </a
-      ><a name="1008" class="Symbol"
+      > <a name="1008" class="Symbol"
       >{</a
       ><a name="1009" class="Argument"
       >S</a
-      ><a name="1010"
-      > </a
-      ><a name="1011" class="Symbol"
+      > <a name="1011" class="Symbol"
       >=</a
-      ><a name="1012"
-      > </a
-      ><a name="1013" href="Relation.Binary.SetoidReasoning.html#1013" class="Bound"
+      > <a name="1013" href="Relation.Binary.SetoidReasoning.html#1013" class="Bound"
       >S</a
       ><a name="1014" class="Symbol"
       >}</a
-      ><a name="1015"
-      > </a
-      ><a name="1016" class="Symbol"
+      > <a name="1016" class="Symbol"
       >=</a
-      ><a name="1017"
-      > </a
-      ><a name="1018" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      > <a name="1018" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
       >EqR._&#8718;</a
-      ><a name="1024"
-      > </a
-      ><a name="1025" href="Relation.Binary.SetoidReasoning.html#1013" class="Bound"
+      > <a name="1025" href="Relation.Binary.SetoidReasoning.html#1013" class="Bound"
       >S</a
-      ><a name="1026"
       >
 
-</a
-      ><a name="1028" href="Relation.Binary.SetoidReasoning.html#1028" class="Function Operator"
+<a name="_&#8776;&#10216;_&#10217;_" href="Relation.Binary.SetoidReasoning.html#_&#8776;&#10216;_&#10217;_" class="Function Operator"
       >_&#8776;&#10216;_&#10217;_</a
-      ><a name="1034"
-      > </a
-      ><a name="1035" class="Symbol"
+      > <a name="1035" class="Symbol"
       >:</a
-      ><a name="1036"
-      > </a
-      ><a name="1037" class="Symbol"
+      > <a name="1037" class="Symbol"
       >&#8704;</a
-      ><a name="1038"
-      > </a
-      ><a name="1039" class="Symbol"
+      > <a name="1039" class="Symbol"
       >{</a
       ><a name="1040" href="Relation.Binary.SetoidReasoning.html#1040" class="Bound"
       >c</a
-      ><a name="1041"
-      > </a
-      ><a name="1042" href="Relation.Binary.SetoidReasoning.html#1042" class="Bound"
+      > <a name="1042" href="Relation.Binary.SetoidReasoning.html#1042" class="Bound"
       >l</a
       ><a name="1043" class="Symbol"
       >}</a
-      ><a name="1044"
-      > </a
-      ><a name="1045" class="Symbol"
+      > <a name="1045" class="Symbol"
       >{</a
       ><a name="1046" href="Relation.Binary.SetoidReasoning.html#1046" class="Bound"
       >S</a
-      ><a name="1047"
-      > </a
-      ><a name="1048" class="Symbol"
+      > <a name="1048" class="Symbol"
       >:</a
-      ><a name="1049"
-      > </a
-      ><a name="1050" href="Relation.Binary.html#1908" class="Record"
+      > <a name="1050" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="1056"
-      > </a
-      ><a name="1057" href="Relation.Binary.SetoidReasoning.html#1040" class="Bound"
+      > <a name="1057" href="Relation.Binary.SetoidReasoning.html#1040" class="Bound"
       >c</a
-      ><a name="1058"
-      > </a
-      ><a name="1059" href="Relation.Binary.SetoidReasoning.html#1042" class="Bound"
+      > <a name="1059" href="Relation.Binary.SetoidReasoning.html#1042" class="Bound"
       >l</a
       ><a name="1060" class="Symbol"
       >}</a
-      ><a name="1061"
-      > </a
-      ><a name="1062" class="Symbol"
+      > <a name="1062" class="Symbol"
       >&#8594;</a
-      ><a name="1063"
-      > </a
-      ><a name="1064" class="Symbol"
+      > <a name="1064" class="Symbol"
       >(</a
       ><a name="1065" href="Relation.Binary.SetoidReasoning.html#1065" class="Bound"
       >x</a
-      ><a name="1066"
-      > </a
-      ><a name="1067" class="Symbol"
+      > <a name="1067" class="Symbol"
       >:</a
-      ><a name="1068"
-      > </a
-      ><a name="1069" href="Relation.Binary.html#1971" class="Field"
+      > <a name="1069" href="Relation.Binary.html#Setoid.Carrier" class="Field"
       >Carrier</a
-      ><a name="1076"
-      > </a
-      ><a name="1077" href="Relation.Binary.SetoidReasoning.html#1046" class="Bound"
+      > <a name="1077" href="Relation.Binary.SetoidReasoning.html#1046" class="Bound"
       >S</a
       ><a name="1078" class="Symbol"
       >)</a
-      ><a name="1079"
-      > </a
-      ><a name="1080" class="Symbol"
+      > <a name="1080" class="Symbol"
       >&#8594;</a
-      ><a name="1081"
-      > </a
-      ><a name="1082" class="Symbol"
+      > <a name="1082" class="Symbol"
       >{</a
       ><a name="1083" href="Relation.Binary.SetoidReasoning.html#1083" class="Bound"
       >y</a
-      ><a name="1084"
-      > </a
-      ><a name="1085" href="Relation.Binary.SetoidReasoning.html#1085" class="Bound"
+      > <a name="1085" href="Relation.Binary.SetoidReasoning.html#1085" class="Bound"
       >z</a
-      ><a name="1086"
-      > </a
-      ><a name="1087" class="Symbol"
+      > <a name="1087" class="Symbol"
       >:</a
-      ><a name="1088"
-      > </a
-      ><a name="1089" href="Relation.Binary.html#1971" class="Field"
+      > <a name="1089" href="Relation.Binary.html#Setoid.Carrier" class="Field"
       >Carrier</a
-      ><a name="1096"
-      > </a
-      ><a name="1097" href="Relation.Binary.SetoidReasoning.html#1046" class="Bound"
+      > <a name="1097" href="Relation.Binary.SetoidReasoning.html#1046" class="Bound"
       >S</a
       ><a name="1098" class="Symbol"
       >}</a
-      ><a name="1099"
-      > </a
-      ><a name="1100" class="Symbol"
+      > <a name="1100" class="Symbol"
       >&#8594;</a
-      ><a name="1101"
-      > </a
-      ><a name="1102" href="Relation.Binary.html#1997" class="Field Operator"
+      > <a name="1102" href="Relation.Binary.html#Setoid._&#8776;_" class="Field Operator"
       >_&#8776;_</a
-      ><a name="1105"
-      > </a
-      ><a name="1106" href="Relation.Binary.SetoidReasoning.html#1046" class="Bound"
+      > <a name="1106" href="Relation.Binary.SetoidReasoning.html#1046" class="Bound"
       >S</a
-      ><a name="1107"
-      > </a
-      ><a name="1108" href="Relation.Binary.SetoidReasoning.html#1065" class="Bound"
+      > <a name="1108" href="Relation.Binary.SetoidReasoning.html#1065" class="Bound"
       >x</a
-      ><a name="1109"
-      > </a
-      ><a name="1110" href="Relation.Binary.SetoidReasoning.html#1083" class="Bound"
+      > <a name="1110" href="Relation.Binary.SetoidReasoning.html#1083" class="Bound"
       >y</a
-      ><a name="1111"
-      > </a
-      ><a name="1112" class="Symbol"
+      > <a name="1112" class="Symbol"
       >&#8594;</a
-      ><a name="1113"
-      > </a
-      ><a name="1114" href="Relation.Binary.PreorderReasoning.html#1066" class="Datatype Operator"
+      > <a name="1114" href="Relation.Binary.PreorderReasoning.html#1066" class="Datatype Operator"
       >_IsRelatedTo_</a
-      ><a name="1127"
-      > </a
-      ><a name="1128" href="Relation.Binary.SetoidReasoning.html#1046" class="Bound"
+      > <a name="1128" href="Relation.Binary.SetoidReasoning.html#1046" class="Bound"
       >S</a
-      ><a name="1129"
-      > </a
-      ><a name="1130" href="Relation.Binary.SetoidReasoning.html#1083" class="Bound"
+      > <a name="1130" href="Relation.Binary.SetoidReasoning.html#1083" class="Bound"
       >y</a
-      ><a name="1131"
-      > </a
-      ><a name="1132" href="Relation.Binary.SetoidReasoning.html#1085" class="Bound"
+      > <a name="1132" href="Relation.Binary.SetoidReasoning.html#1085" class="Bound"
       >z</a
-      ><a name="1133"
-      > </a
-      ><a name="1134" class="Symbol"
+      > <a name="1134" class="Symbol"
       >&#8594;</a
-      ><a name="1135"
-      > </a
-      ><a name="1136" href="Relation.Binary.PreorderReasoning.html#1066" class="Datatype Operator"
+      > <a name="1136" href="Relation.Binary.PreorderReasoning.html#1066" class="Datatype Operator"
       >_IsRelatedTo_</a
-      ><a name="1149"
-      > </a
-      ><a name="1150" href="Relation.Binary.SetoidReasoning.html#1046" class="Bound"
+      > <a name="1150" href="Relation.Binary.SetoidReasoning.html#1046" class="Bound"
       >S</a
-      ><a name="1151"
-      > </a
-      ><a name="1152" href="Relation.Binary.SetoidReasoning.html#1065" class="Bound"
+      > <a name="1152" href="Relation.Binary.SetoidReasoning.html#1065" class="Bound"
       >x</a
-      ><a name="1153"
-      > </a
-      ><a name="1154" href="Relation.Binary.SetoidReasoning.html#1085" class="Bound"
+      > <a name="1154" href="Relation.Binary.SetoidReasoning.html#1085" class="Bound"
       >z</a
-      ><a name="1155"
       >
-</a
-      ><a name="1156" href="Relation.Binary.SetoidReasoning.html#1028" class="Function Operator"
+<a name="1156" href="Relation.Binary.SetoidReasoning.html#_&#8776;&#10216;_&#10217;_" class="Function Operator"
       >_&#8776;&#10216;_&#10217;_</a
-      ><a name="1162"
-      > </a
-      ><a name="1163" class="Symbol"
+      > <a name="1163" class="Symbol"
       >{</a
       ><a name="1164" class="Argument"
       >S</a
-      ><a name="1165"
-      > </a
-      ><a name="1166" class="Symbol"
+      > <a name="1166" class="Symbol"
       >=</a
-      ><a name="1167"
-      > </a
-      ><a name="1168" href="Relation.Binary.SetoidReasoning.html#1168" class="Bound"
+      > <a name="1168" href="Relation.Binary.SetoidReasoning.html#1168" class="Bound"
       >S</a
       ><a name="1169" class="Symbol"
       >}</a
-      ><a name="1170"
-      > </a
-      ><a name="1171" class="Symbol"
+      > <a name="1171" class="Symbol"
       >=</a
-      ><a name="1172"
-      > </a
-      ><a name="1173" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1173" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >EqR._&#8776;&#10216;_&#10217;_</a
-      ><a name="1183"
-      > </a
-      ><a name="1184" href="Relation.Binary.SetoidReasoning.html#1168" class="Bound"
+      > <a name="1184" href="Relation.Binary.SetoidReasoning.html#1168" class="Bound"
       >S</a
-      ><a name="1185"
       >
 
-</a
-      ><a name="1187" href="Relation.Binary.SetoidReasoning.html#1187" class="Function Operator"
+<a name="_&#8801;&#10216;_&#10217;_" href="Relation.Binary.SetoidReasoning.html#_&#8801;&#10216;_&#10217;_" class="Function Operator"
       >_&#8801;&#10216;_&#10217;_</a
-      ><a name="1193"
-      > </a
-      ><a name="1194" class="Symbol"
+      > <a name="1194" class="Symbol"
       >:</a
-      ><a name="1195"
-      > </a
-      ><a name="1196" class="Symbol"
+      > <a name="1196" class="Symbol"
       >&#8704;</a
-      ><a name="1197"
-      > </a
-      ><a name="1198" class="Symbol"
+      > <a name="1198" class="Symbol"
       >{</a
       ><a name="1199" href="Relation.Binary.SetoidReasoning.html#1199" class="Bound"
       >c</a
-      ><a name="1200"
-      > </a
-      ><a name="1201" href="Relation.Binary.SetoidReasoning.html#1201" class="Bound"
+      > <a name="1201" href="Relation.Binary.SetoidReasoning.html#1201" class="Bound"
       >l</a
       ><a name="1202" class="Symbol"
       >}</a
-      ><a name="1203"
-      > </a
-      ><a name="1204" class="Symbol"
+      > <a name="1204" class="Symbol"
       >{</a
       ><a name="1205" href="Relation.Binary.SetoidReasoning.html#1205" class="Bound"
       >S</a
-      ><a name="1206"
-      > </a
-      ><a name="1207" class="Symbol"
+      > <a name="1207" class="Symbol"
       >:</a
-      ><a name="1208"
-      > </a
-      ><a name="1209" href="Relation.Binary.html#1908" class="Record"
+      > <a name="1209" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="1215"
-      > </a
-      ><a name="1216" href="Relation.Binary.SetoidReasoning.html#1199" class="Bound"
+      > <a name="1216" href="Relation.Binary.SetoidReasoning.html#1199" class="Bound"
       >c</a
-      ><a name="1217"
-      > </a
-      ><a name="1218" href="Relation.Binary.SetoidReasoning.html#1201" class="Bound"
+      > <a name="1218" href="Relation.Binary.SetoidReasoning.html#1201" class="Bound"
       >l</a
       ><a name="1219" class="Symbol"
       >}</a
-      ><a name="1220"
-      > </a
-      ><a name="1221" class="Symbol"
+      > <a name="1221" class="Symbol"
       >&#8594;</a
-      ><a name="1222"
-      > </a
-      ><a name="1223" class="Symbol"
+      > <a name="1223" class="Symbol"
       >(</a
       ><a name="1224" href="Relation.Binary.SetoidReasoning.html#1224" class="Bound"
       >x</a
-      ><a name="1225"
-      > </a
-      ><a name="1226" class="Symbol"
+      > <a name="1226" class="Symbol"
       >:</a
-      ><a name="1227"
-      > </a
-      ><a name="1228" href="Relation.Binary.html#1971" class="Field"
+      > <a name="1228" href="Relation.Binary.html#Setoid.Carrier" class="Field"
       >Carrier</a
-      ><a name="1235"
-      > </a
-      ><a name="1236" href="Relation.Binary.SetoidReasoning.html#1205" class="Bound"
+      > <a name="1236" href="Relation.Binary.SetoidReasoning.html#1205" class="Bound"
       >S</a
       ><a name="1237" class="Symbol"
       >)</a
-      ><a name="1238"
-      > </a
-      ><a name="1239" class="Symbol"
+      > <a name="1239" class="Symbol"
       >&#8594;</a
-      ><a name="1240"
-      > </a
-      ><a name="1241" class="Symbol"
+      > <a name="1241" class="Symbol"
       >{</a
       ><a name="1242" href="Relation.Binary.SetoidReasoning.html#1242" class="Bound"
       >y</a
-      ><a name="1243"
-      > </a
-      ><a name="1244" href="Relation.Binary.SetoidReasoning.html#1244" class="Bound"
+      > <a name="1244" href="Relation.Binary.SetoidReasoning.html#1244" class="Bound"
       >z</a
-      ><a name="1245"
-      > </a
-      ><a name="1246" class="Symbol"
+      > <a name="1246" class="Symbol"
       >:</a
-      ><a name="1247"
-      > </a
-      ><a name="1248" href="Relation.Binary.html#1971" class="Field"
+      > <a name="1248" href="Relation.Binary.html#Setoid.Carrier" class="Field"
       >Carrier</a
-      ><a name="1255"
-      > </a
-      ><a name="1256" href="Relation.Binary.SetoidReasoning.html#1205" class="Bound"
+      > <a name="1256" href="Relation.Binary.SetoidReasoning.html#1205" class="Bound"
       >S</a
       ><a name="1257" class="Symbol"
       >}</a
-      ><a name="1258"
-      > </a
-      ><a name="1259" class="Symbol"
+      > <a name="1259" class="Symbol"
       >&#8594;</a
-      ><a name="1260"
-      > </a
-      ><a name="1261" href="Relation.Binary.SetoidReasoning.html#1224" class="Bound"
+      > <a name="1261" href="Relation.Binary.SetoidReasoning.html#1224" class="Bound"
       >x</a
-      ><a name="1262"
-      > </a
-      ><a name="1263" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="1263" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="1264"
-      > </a
-      ><a name="1265" href="Relation.Binary.SetoidReasoning.html#1242" class="Bound"
+      > <a name="1265" href="Relation.Binary.SetoidReasoning.html#1242" class="Bound"
       >y</a
-      ><a name="1266"
-      > </a
-      ><a name="1267" class="Symbol"
+      > <a name="1267" class="Symbol"
       >&#8594;</a
-      ><a name="1268"
-      > </a
-      ><a name="1269" href="Relation.Binary.PreorderReasoning.html#1066" class="Datatype Operator"
+      > <a name="1269" href="Relation.Binary.PreorderReasoning.html#1066" class="Datatype Operator"
       >_IsRelatedTo_</a
-      ><a name="1282"
-      > </a
-      ><a name="1283" href="Relation.Binary.SetoidReasoning.html#1205" class="Bound"
+      > <a name="1283" href="Relation.Binary.SetoidReasoning.html#1205" class="Bound"
       >S</a
-      ><a name="1284"
-      > </a
-      ><a name="1285" href="Relation.Binary.SetoidReasoning.html#1242" class="Bound"
+      > <a name="1285" href="Relation.Binary.SetoidReasoning.html#1242" class="Bound"
       >y</a
-      ><a name="1286"
-      > </a
-      ><a name="1287" href="Relation.Binary.SetoidReasoning.html#1244" class="Bound"
+      > <a name="1287" href="Relation.Binary.SetoidReasoning.html#1244" class="Bound"
       >z</a
-      ><a name="1288"
-      > </a
-      ><a name="1289" class="Symbol"
+      > <a name="1289" class="Symbol"
       >&#8594;</a
-      ><a name="1290"
-      > </a
-      ><a name="1291" href="Relation.Binary.PreorderReasoning.html#1066" class="Datatype Operator"
+      > <a name="1291" href="Relation.Binary.PreorderReasoning.html#1066" class="Datatype Operator"
       >_IsRelatedTo_</a
-      ><a name="1304"
-      > </a
-      ><a name="1305" href="Relation.Binary.SetoidReasoning.html#1205" class="Bound"
+      > <a name="1305" href="Relation.Binary.SetoidReasoning.html#1205" class="Bound"
       >S</a
-      ><a name="1306"
-      > </a
-      ><a name="1307" href="Relation.Binary.SetoidReasoning.html#1224" class="Bound"
+      > <a name="1307" href="Relation.Binary.SetoidReasoning.html#1224" class="Bound"
       >x</a
-      ><a name="1308"
-      > </a
-      ><a name="1309" href="Relation.Binary.SetoidReasoning.html#1244" class="Bound"
+      > <a name="1309" href="Relation.Binary.SetoidReasoning.html#1244" class="Bound"
       >z</a
-      ><a name="1310"
       >
-</a
-      ><a name="1311" href="Relation.Binary.SetoidReasoning.html#1187" class="Function Operator"
+<a name="1311" href="Relation.Binary.SetoidReasoning.html#_&#8801;&#10216;_&#10217;_" class="Function Operator"
       >_&#8801;&#10216;_&#10217;_</a
-      ><a name="1317"
-      > </a
-      ><a name="1318" class="Symbol"
+      > <a name="1318" class="Symbol"
       >{</a
       ><a name="1319" class="Argument"
       >S</a
-      ><a name="1320"
-      > </a
-      ><a name="1321" class="Symbol"
+      > <a name="1321" class="Symbol"
       >=</a
-      ><a name="1322"
-      > </a
-      ><a name="1323" href="Relation.Binary.SetoidReasoning.html#1323" class="Bound"
+      > <a name="1323" href="Relation.Binary.SetoidReasoning.html#1323" class="Bound"
       >S</a
       ><a name="1324" class="Symbol"
       >}</a
-      ><a name="1325"
-      > </a
-      ><a name="1326" class="Symbol"
+      > <a name="1326" class="Symbol"
       >=</a
-      ><a name="1327"
-      > </a
-      ><a name="1328" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
+      > <a name="1328" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
       >EqR._&#8801;&#10216;_&#10217;_</a
-      ><a name="1338"
-      > </a
-      ><a name="1339" href="Relation.Binary.SetoidReasoning.html#1323" class="Bound"
+      > <a name="1339" href="Relation.Binary.SetoidReasoning.html#1323" class="Bound"
       >S</a
-      ><a name="1340"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

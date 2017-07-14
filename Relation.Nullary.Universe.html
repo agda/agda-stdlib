@@ -11,3977 +11,2299 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- A universe of proposition functors, along with some properties</a
-      ><a name="171"
       >
-</a
-      ><a name="172" class="Comment"
+<a name="172" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="244"
       >
 
-</a
-      ><a name="246" class="Keyword"
+<a name="246" class="Keyword"
       >module</a
-      ><a name="252"
-      > </a
-      ><a name="253" href="Relation.Nullary.Universe.html#1" class="Module"
+      > <a name="253" href="Relation.Nullary.Universe.html" class="Module"
       >Relation.Nullary.Universe</a
-      ><a name="278"
-      > </a
-      ><a name="279" class="Keyword"
+      > <a name="279" class="Keyword"
       >where</a
-      ><a name="284"
       >
 
-</a
-      ><a name="286" class="Keyword"
+<a name="286" class="Keyword"
       >open</a
-      ><a name="290"
-      > </a
-      ><a name="291" class="Keyword"
+      > <a name="291" class="Keyword"
       >import</a
-      ><a name="297"
-      > </a
-      ><a name="298" href="Relation.Nullary.html#1" class="Module"
+      > <a name="298" href="Relation.Nullary.html" class="Module"
       >Relation.Nullary</a
-      ><a name="314"
       >
-</a
-      ><a name="315" class="Keyword"
+<a name="315" class="Keyword"
       >open</a
-      ><a name="319"
-      > </a
-      ><a name="320" class="Keyword"
+      > <a name="320" class="Keyword"
       >import</a
-      ><a name="326"
-      > </a
-      ><a name="327" href="Relation.Nullary.Negation.html#1" class="Module"
+      > <a name="327" href="Relation.Nullary.Negation.html" class="Module"
       >Relation.Nullary.Negation</a
-      ><a name="352"
       >
-</a
-      ><a name="353" class="Keyword"
+<a name="353" class="Keyword"
       >open</a
-      ><a name="357"
-      > </a
-      ><a name="358" class="Keyword"
+      > <a name="358" class="Keyword"
       >import</a
-      ><a name="364"
-      > </a
-      ><a name="365" href="Relation.Binary.html#1" class="Module"
+      > <a name="365" href="Relation.Binary.html" class="Module"
       >Relation.Binary</a
-      ><a name="380"
-      > </a
-      ><a name="381" class="Keyword"
+      > <a name="381" class="Keyword"
       >hiding</a
-      ><a name="387"
-      > </a
-      ><a name="388" class="Symbol"
+      > <a name="388" class="Symbol"
       >(</a
-      ><a name="389" href="Relation.Binary.Core.html#1004" class="Function Operator"
+      ><a name="389" href="Relation.Binary.Core.html#_&#8658;_" class="Function Operator"
       >_&#8658;_</a
       ><a name="392" class="Symbol"
       >)</a
-      ><a name="393"
       >
-</a
-      ><a name="394" class="Keyword"
+<a name="394" class="Keyword"
       >open</a
-      ><a name="398"
-      > </a
-      ><a name="399" class="Keyword"
+      > <a name="399" class="Keyword"
       >import</a
-      ><a name="405"
-      > </a
-      ><a name="406" href="Relation.Binary.Simple.html#1" class="Module"
+      > <a name="406" href="Relation.Binary.Simple.html" class="Module"
       >Relation.Binary.Simple</a
-      ><a name="428"
       >
-</a
-      ><a name="429" class="Keyword"
+<a name="429" class="Keyword"
       >open</a
-      ><a name="433"
-      > </a
-      ><a name="434" class="Keyword"
+      > <a name="434" class="Keyword"
       >import</a
-      ><a name="440"
-      > </a
-      ><a name="441" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      > <a name="441" href="Relation.Binary.PropositionalEquality.html" class="Module"
       >Relation.Binary.PropositionalEquality</a
-      ><a name="478"
-      > </a
-      ><a name="479" class="Symbol"
+      > <a name="479" class="Symbol"
       >as</a
-      ><a name="481"
-      > </a
-      ><a name="482" class="Module"
+      > <a name="482" class="Module"
       >PropEq</a
-      ><a name="488"
       >
-  </a
-      ><a name="491" class="Keyword"
+  <a name="491" class="Keyword"
       >using</a
-      ><a name="496"
-      > </a
-      ><a name="497" class="Symbol"
+      > <a name="497" class="Symbol"
       >(</a
-      ><a name="498" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      ><a name="498" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >_&#8801;_</a
       ><a name="501" class="Symbol"
       >;</a
-      ><a name="502"
-      > </a
-      ><a name="503" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="503" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
       ><a name="507" class="Symbol"
       >)</a
-      ><a name="508"
       >
-</a
-      ><a name="509" class="Keyword"
+<a name="509" class="Keyword"
       >open</a
-      ><a name="513"
-      > </a
-      ><a name="514" class="Keyword"
+      > <a name="514" class="Keyword"
       >import</a
-      ><a name="520"
-      > </a
-      ><a name="521" href="Relation.Binary.Sum.html#1" class="Module"
+      > <a name="521" href="Relation.Binary.Sum.html" class="Module"
       >Relation.Binary.Sum</a
-      ><a name="540"
       >
-</a
-      ><a name="541" class="Keyword"
+<a name="541" class="Keyword"
       >open</a
-      ><a name="545"
-      > </a
-      ><a name="546" class="Keyword"
+      > <a name="546" class="Keyword"
       >import</a
-      ><a name="552"
-      > </a
-      ><a name="553" href="Relation.Binary.Product.Pointwise.html#1" class="Module"
+      > <a name="553" href="Relation.Binary.Product.Pointwise.html" class="Module"
       >Relation.Binary.Product.Pointwise</a
-      ><a name="586"
       >
-</a
-      ><a name="587" class="Keyword"
+<a name="587" class="Keyword"
       >open</a
-      ><a name="591"
-      > </a
-      ><a name="592" class="Keyword"
+      > <a name="592" class="Keyword"
       >import</a
-      ><a name="598"
-      > </a
-      ><a name="599" href="Data.Sum.html#1" class="Module"
+      > <a name="599" href="Data.Sum.html" class="Module"
       >Data.Sum</a
-      ><a name="607"
-      >     </a
-      ><a name="612" class="Symbol"
+      >     <a name="612" class="Symbol"
       >as</a
-      ><a name="614"
-      > </a
-      ><a name="615" class="Module"
+      > <a name="615" class="Module"
       >Sum</a
-      ><a name="618"
-      >  </a
-      ><a name="620" class="Keyword"
+      >  <a name="620" class="Keyword"
       >hiding</a
-      ><a name="626"
-      > </a
-      ><a name="627" class="Symbol"
+      > <a name="627" class="Symbol"
       >(</a
-      ><a name="628" href="Data.Sum.html#1064" class="Function"
+      ><a name="628" href="Data.Sum.html#map" class="Function"
       >map</a
       ><a name="631" class="Symbol"
       >)</a
-      ><a name="632"
       >
-</a
-      ><a name="633" class="Keyword"
+<a name="633" class="Keyword"
       >open</a
-      ><a name="637"
-      > </a
-      ><a name="638" class="Keyword"
+      > <a name="638" class="Keyword"
       >import</a
-      ><a name="644"
-      > </a
-      ><a name="645" href="Data.Product.html#1" class="Module"
+      > <a name="645" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="657"
-      > </a
-      ><a name="658" class="Symbol"
+      > <a name="658" class="Symbol"
       >as</a
-      ><a name="660"
-      > </a
-      ><a name="661" class="Module"
+      > <a name="661" class="Module"
       >Prod</a
-      ><a name="665"
-      > </a
-      ><a name="666" class="Keyword"
+      > <a name="666" class="Keyword"
       >hiding</a
-      ><a name="672"
-      > </a
-      ><a name="673" class="Symbol"
+      > <a name="673" class="Symbol"
       >(</a
-      ><a name="674" href="Data.Product.html#1872" class="Function"
+      ><a name="674" href="Data.Product.html#map" class="Function"
       >map</a
       ><a name="677" class="Symbol"
       >)</a
-      ><a name="678"
       >
-</a
-      ><a name="679" class="Keyword"
+<a name="679" class="Keyword"
       >open</a
-      ><a name="683"
-      > </a
-      ><a name="684" class="Keyword"
+      > <a name="684" class="Keyword"
       >import</a
-      ><a name="690"
-      > </a
-      ><a name="691" href="Function.html#1" class="Module"
+      > <a name="691" href="Function.html" class="Module"
       >Function</a
-      ><a name="699"
       >
-</a
-      ><a name="700" class="Keyword"
+<a name="700" class="Keyword"
       >import</a
-      ><a name="706"
-      > </a
-      ><a name="707" href="Function.Equality.html#1" class="Module"
+      > <a name="707" href="Function.Equality.html" class="Module"
       >Function.Equality</a
-      ><a name="724"
-      > </a
-      ><a name="725" class="Symbol"
+      > <a name="725" class="Symbol"
       >as</a
-      ><a name="727"
-      > </a
-      ><a name="728" class="Module"
+      > <a name="728" class="Module"
       >FunS</a
-      ><a name="732"
       >
-</a
-      ><a name="733" class="Keyword"
+<a name="733" class="Keyword"
       >open</a
-      ><a name="737"
-      > </a
-      ><a name="738" class="Keyword"
+      > <a name="738" class="Keyword"
       >import</a
-      ><a name="744"
-      > </a
-      ><a name="745" href="Data.Empty.html#1" class="Module"
+      > <a name="745" href="Data.Empty.html" class="Module"
       >Data.Empty</a
-      ><a name="755"
       >
-</a
-      ><a name="756" class="Keyword"
+<a name="756" class="Keyword"
       >open</a
-      ><a name="760"
-      > </a
-      ><a name="761" class="Keyword"
+      > <a name="761" class="Keyword"
       >import</a
-      ><a name="767"
-      > </a
-      ><a name="768" href="Category.Applicative.html#1" class="Module"
+      > <a name="768" href="Category.Applicative.html" class="Module"
       >Category.Applicative</a
-      ><a name="788"
       >
-</a
-      ><a name="789" class="Keyword"
+<a name="789" class="Keyword"
       >open</a
-      ><a name="793"
-      > </a
-      ><a name="794" class="Keyword"
+      > <a name="794" class="Keyword"
       >import</a
-      ><a name="800"
-      > </a
-      ><a name="801" href="Category.Monad.html#1" class="Module"
+      > <a name="801" href="Category.Monad.html" class="Module"
       >Category.Monad</a
-      ><a name="815"
       >
-</a
-      ><a name="816" class="Keyword"
+<a name="816" class="Keyword"
       >open</a
-      ><a name="820"
-      > </a
-      ><a name="821" class="Keyword"
+      > <a name="821" class="Keyword"
       >import</a
-      ><a name="827"
-      > </a
-      ><a name="828" href="Level.html#1" class="Module"
+      > <a name="828" href="Level.html" class="Module"
       >Level</a
-      ><a name="833"
       >
 
-</a
-      ><a name="835" class="Keyword"
+<a name="835" class="Keyword"
       >infix</a
-      ><a name="840"
-      >  </a
-      ><a name="842" class="Number"
+      >  <a name="842" class="Number"
       >5</a
-      ><a name="843"
-      > &#172;&#172;_
-</a
-      ><a name="848" class="Keyword"
+      > <a name="844" href="Relation.Nullary.Universe.html#PropF.&#172;&#172;_" class="InductiveConstructor Operator"
+      >&#172;&#172;_</a
+      >
+<a name="848" class="Keyword"
       >infixr</a
-      ><a name="854"
-      > </a
-      ><a name="855" class="Number"
+      > <a name="855" class="Number"
       >4</a
-      ><a name="856"
-      > _&#8658;_
-</a
-      ><a name="861" class="Keyword"
+      > <a name="857" href="Relation.Nullary.Universe.html#PropF._&#8658;_" class="InductiveConstructor Operator"
+      >_&#8658;_</a
+      >
+<a name="861" class="Keyword"
       >infixr</a
-      ><a name="867"
-      > </a
-      ><a name="868" class="Number"
+      > <a name="868" class="Number"
       >3</a
-      ><a name="869"
-      > _&#8743;_
-</a
-      ><a name="874" class="Keyword"
+      > <a name="870" href="Relation.Nullary.Universe.html#PropF._&#8743;_" class="InductiveConstructor Operator"
+      >_&#8743;_</a
+      >
+<a name="874" class="Keyword"
       >infixr</a
-      ><a name="880"
-      > </a
-      ><a name="881" class="Number"
+      > <a name="881" class="Number"
       >2</a
-      ><a name="882"
-      > _&#8744;_
-</a
-      ><a name="887" class="Keyword"
+      > <a name="883" href="Relation.Nullary.Universe.html#PropF._&#8744;_" class="InductiveConstructor Operator"
+      >_&#8744;_</a
+      >
+<a name="887" class="Keyword"
       >infix</a
-      ><a name="892"
-      >  </a
-      ><a name="894" class="Number"
+      >  <a name="894" class="Number"
       >1</a
-      ><a name="895"
-      > &#10216;_&#10217;_&#8776;_
-
-</a
-      ><a name="904" class="Comment"
-      >-- The universe.</a
-      ><a name="920"
+      > <a name="896" href="Relation.Nullary.Universe.html#&#10216;_&#10217;_&#8776;_" class="Function Operator"
+      >&#10216;_&#10217;_&#8776;_</a
       >
 
-</a
-      ><a name="922" class="Keyword"
+<a name="904" class="Comment"
+      >-- The universe.</a
+      >
+
+<a name="922" class="Keyword"
       >data</a
-      ><a name="926"
-      > </a
-      ><a name="927" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="PropF" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="932"
-      > </a
-      ><a name="933" href="Relation.Nullary.Universe.html#933" class="Bound"
+      > <a name="933" href="Relation.Nullary.Universe.html#933" class="Bound"
       >p</a
-      ><a name="934"
-      > </a
-      ><a name="935" class="Symbol"
+      > <a name="935" class="Symbol"
       >:</a
-      ><a name="936"
-      > </a
-      ><a name="937" class="PrimitiveType"
+      > <a name="937" class="PrimitiveType"
       >Set</a
-      ><a name="940"
-      > </a
-      ><a name="941" class="Symbol"
+      > <a name="941" class="Symbol"
       >(</a
-      ><a name="942" href="Agda.Primitive.html#625" class="Primitive"
+      ><a name="942" href="Agda.Primitive.html#suc" class="Primitive"
       >suc</a
-      ><a name="945"
-      > </a
-      ><a name="946" href="Relation.Nullary.Universe.html#933" class="Bound"
+      > <a name="946" href="Relation.Nullary.Universe.html#933" class="Bound"
       >p</a
       ><a name="947" class="Symbol"
       >)</a
-      ><a name="948"
-      > </a
-      ><a name="949" class="Keyword"
+      > <a name="949" class="Keyword"
       >where</a
-      ><a name="954"
       >
-  </a
-      ><a name="957" href="Relation.Nullary.Universe.html#957" class="InductiveConstructor"
+  <a name="PropF.Id" href="Relation.Nullary.Universe.html#PropF.Id" class="InductiveConstructor"
       >Id</a
-      ><a name="959"
-      >   </a
-      ><a name="962" class="Symbol"
+      >   <a name="962" class="Symbol"
       >:</a
-      ><a name="963"
-      > </a
-      ><a name="964" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="964" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="969"
-      > </a
-      ><a name="970" href="Relation.Nullary.Universe.html#933" class="Bound"
+      > <a name="970" href="Relation.Nullary.Universe.html#933" class="Bound"
       >p</a
-      ><a name="971"
       >
-  </a
-      ><a name="974" href="Relation.Nullary.Universe.html#974" class="InductiveConstructor"
+  <a name="PropF.K" href="Relation.Nullary.Universe.html#PropF.K" class="InductiveConstructor"
       >K</a
-      ><a name="975"
-      >    </a
-      ><a name="979" class="Symbol"
+      >    <a name="979" class="Symbol"
       >:</a
-      ><a name="980"
-      > </a
-      ><a name="981" class="Symbol"
+      > <a name="981" class="Symbol"
       >(</a
       ><a name="982" href="Relation.Nullary.Universe.html#982" class="Bound"
       >P</a
-      ><a name="983"
-      > </a
-      ><a name="984" class="Symbol"
+      > <a name="984" class="Symbol"
       >:</a
-      ><a name="985"
-      > </a
-      ><a name="986" class="PrimitiveType"
+      > <a name="986" class="PrimitiveType"
       >Set</a
-      ><a name="989"
-      > </a
-      ><a name="990" href="Relation.Nullary.Universe.html#933" class="Bound"
+      > <a name="990" href="Relation.Nullary.Universe.html#933" class="Bound"
       >p</a
       ><a name="991" class="Symbol"
       >)</a
-      ><a name="992"
-      > </a
-      ><a name="993" class="Symbol"
+      > <a name="993" class="Symbol"
       >&#8594;</a
-      ><a name="994"
-      > </a
-      ><a name="995" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="995" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="1000"
-      > </a
-      ><a name="1001" href="Relation.Nullary.Universe.html#933" class="Bound"
+      > <a name="1001" href="Relation.Nullary.Universe.html#933" class="Bound"
       >p</a
-      ><a name="1002"
       >
-  </a
-      ><a name="1005" href="Relation.Nullary.Universe.html#1005" class="InductiveConstructor Operator"
+  <a name="PropF._&#8744;_" href="Relation.Nullary.Universe.html#PropF._&#8744;_" class="InductiveConstructor Operator"
       >_&#8744;_</a
-      ><a name="1008"
-      >  </a
-      ><a name="1010" class="Symbol"
+      >  <a name="1010" class="Symbol"
       >:</a
-      ><a name="1011"
-      > </a
-      ><a name="1012" class="Symbol"
+      > <a name="1012" class="Symbol"
       >(</a
       ><a name="1013" href="Relation.Nullary.Universe.html#1013" class="Bound"
       >F&#8321;</a
-      ><a name="1015"
-      > </a
-      ><a name="1016" href="Relation.Nullary.Universe.html#1016" class="Bound"
+      > <a name="1016" href="Relation.Nullary.Universe.html#1016" class="Bound"
       >F&#8322;</a
-      ><a name="1018"
-      > </a
-      ><a name="1019" class="Symbol"
+      > <a name="1019" class="Symbol"
       >:</a
-      ><a name="1020"
-      > </a
-      ><a name="1021" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="1021" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="1026"
-      > </a
-      ><a name="1027" href="Relation.Nullary.Universe.html#933" class="Bound"
+      > <a name="1027" href="Relation.Nullary.Universe.html#933" class="Bound"
       >p</a
       ><a name="1028" class="Symbol"
       >)</a
-      ><a name="1029"
-      > </a
-      ><a name="1030" class="Symbol"
+      > <a name="1030" class="Symbol"
       >&#8594;</a
-      ><a name="1031"
-      > </a
-      ><a name="1032" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="1032" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="1037"
-      > </a
-      ><a name="1038" href="Relation.Nullary.Universe.html#933" class="Bound"
+      > <a name="1038" href="Relation.Nullary.Universe.html#933" class="Bound"
       >p</a
-      ><a name="1039"
       >
-  </a
-      ><a name="1042" href="Relation.Nullary.Universe.html#1042" class="InductiveConstructor Operator"
+  <a name="PropF._&#8743;_" href="Relation.Nullary.Universe.html#PropF._&#8743;_" class="InductiveConstructor Operator"
       >_&#8743;_</a
-      ><a name="1045"
-      >  </a
-      ><a name="1047" class="Symbol"
+      >  <a name="1047" class="Symbol"
       >:</a
-      ><a name="1048"
-      > </a
-      ><a name="1049" class="Symbol"
+      > <a name="1049" class="Symbol"
       >(</a
       ><a name="1050" href="Relation.Nullary.Universe.html#1050" class="Bound"
       >F&#8321;</a
-      ><a name="1052"
-      > </a
-      ><a name="1053" href="Relation.Nullary.Universe.html#1053" class="Bound"
+      > <a name="1053" href="Relation.Nullary.Universe.html#1053" class="Bound"
       >F&#8322;</a
-      ><a name="1055"
-      > </a
-      ><a name="1056" class="Symbol"
+      > <a name="1056" class="Symbol"
       >:</a
-      ><a name="1057"
-      > </a
-      ><a name="1058" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="1058" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="1063"
-      > </a
-      ><a name="1064" href="Relation.Nullary.Universe.html#933" class="Bound"
+      > <a name="1064" href="Relation.Nullary.Universe.html#933" class="Bound"
       >p</a
       ><a name="1065" class="Symbol"
       >)</a
-      ><a name="1066"
-      > </a
-      ><a name="1067" class="Symbol"
+      > <a name="1067" class="Symbol"
       >&#8594;</a
-      ><a name="1068"
-      > </a
-      ><a name="1069" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="1069" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="1074"
-      > </a
-      ><a name="1075" href="Relation.Nullary.Universe.html#933" class="Bound"
+      > <a name="1075" href="Relation.Nullary.Universe.html#933" class="Bound"
       >p</a
-      ><a name="1076"
       >
-  </a
-      ><a name="1079" href="Relation.Nullary.Universe.html#1079" class="InductiveConstructor Operator"
+  <a name="PropF._&#8658;_" href="Relation.Nullary.Universe.html#PropF._&#8658;_" class="InductiveConstructor Operator"
       >_&#8658;_</a
-      ><a name="1082"
-      >  </a
-      ><a name="1084" class="Symbol"
+      >  <a name="1084" class="Symbol"
       >:</a
-      ><a name="1085"
-      > </a
-      ><a name="1086" class="Symbol"
+      > <a name="1086" class="Symbol"
       >(</a
       ><a name="1087" href="Relation.Nullary.Universe.html#1087" class="Bound"
       >P&#8321;</a
-      ><a name="1089"
-      > </a
-      ><a name="1090" class="Symbol"
+      > <a name="1090" class="Symbol"
       >:</a
-      ><a name="1091"
-      > </a
-      ><a name="1092" class="PrimitiveType"
+      > <a name="1092" class="PrimitiveType"
       >Set</a
-      ><a name="1095"
-      > </a
-      ><a name="1096" href="Relation.Nullary.Universe.html#933" class="Bound"
+      > <a name="1096" href="Relation.Nullary.Universe.html#933" class="Bound"
       >p</a
       ><a name="1097" class="Symbol"
       >)</a
-      ><a name="1098"
-      > </a
-      ><a name="1099" class="Symbol"
+      > <a name="1099" class="Symbol"
       >(</a
       ><a name="1100" href="Relation.Nullary.Universe.html#1100" class="Bound"
       >F&#8322;</a
-      ><a name="1102"
-      > </a
-      ><a name="1103" class="Symbol"
+      > <a name="1103" class="Symbol"
       >:</a
-      ><a name="1104"
-      > </a
-      ><a name="1105" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="1105" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="1110"
-      > </a
-      ><a name="1111" href="Relation.Nullary.Universe.html#933" class="Bound"
+      > <a name="1111" href="Relation.Nullary.Universe.html#933" class="Bound"
       >p</a
       ><a name="1112" class="Symbol"
       >)</a
-      ><a name="1113"
-      > </a
-      ><a name="1114" class="Symbol"
+      > <a name="1114" class="Symbol"
       >&#8594;</a
-      ><a name="1115"
-      > </a
-      ><a name="1116" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="1116" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="1121"
-      > </a
-      ><a name="1122" href="Relation.Nullary.Universe.html#933" class="Bound"
+      > <a name="1122" href="Relation.Nullary.Universe.html#933" class="Bound"
       >p</a
-      ><a name="1123"
       >
-  </a
-      ><a name="1126" href="Relation.Nullary.Universe.html#1126" class="InductiveConstructor Operator"
+  <a name="PropF.&#172;&#172;_" href="Relation.Nullary.Universe.html#PropF.&#172;&#172;_" class="InductiveConstructor Operator"
       >&#172;&#172;_</a
-      ><a name="1129"
-      >  </a
-      ><a name="1131" class="Symbol"
+      >  <a name="1131" class="Symbol"
       >:</a
-      ><a name="1132"
-      > </a
-      ><a name="1133" class="Symbol"
+      > <a name="1133" class="Symbol"
       >(</a
       ><a name="1134" href="Relation.Nullary.Universe.html#1134" class="Bound"
       >F</a
-      ><a name="1135"
-      > </a
-      ><a name="1136" class="Symbol"
+      > <a name="1136" class="Symbol"
       >:</a
-      ><a name="1137"
-      > </a
-      ><a name="1138" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="1138" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="1143"
-      > </a
-      ><a name="1144" href="Relation.Nullary.Universe.html#933" class="Bound"
+      > <a name="1144" href="Relation.Nullary.Universe.html#933" class="Bound"
       >p</a
       ><a name="1145" class="Symbol"
       >)</a
-      ><a name="1146"
-      > </a
-      ><a name="1147" class="Symbol"
+      > <a name="1147" class="Symbol"
       >&#8594;</a
-      ><a name="1148"
-      > </a
-      ><a name="1149" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="1149" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="1154"
-      > </a
-      ><a name="1155" href="Relation.Nullary.Universe.html#933" class="Bound"
+      > <a name="1155" href="Relation.Nullary.Universe.html#933" class="Bound"
       >p</a
-      ><a name="1156"
       >
 
-</a
-      ><a name="1158" class="Comment"
+<a name="1158" class="Comment"
       >-- Equalities for universe inhabitants.</a
-      ><a name="1197"
       >
 
-</a
-      ><a name="1199" class="Keyword"
+<a name="1199" class="Keyword"
       >mutual</a
-      ><a name="1205"
       >
 
-  </a
-      ><a name="1209" href="Relation.Nullary.Universe.html#1209" class="Function"
+  <a name="setoid" href="Relation.Nullary.Universe.html#setoid" class="Function"
       >setoid</a
-      ><a name="1215"
-      > </a
-      ><a name="1216" class="Symbol"
+      > <a name="1216" class="Symbol"
       >:</a
-      ><a name="1217"
-      > </a
-      ><a name="1218" class="Symbol"
+      > <a name="1218" class="Symbol"
       >&#8704;</a
-      ><a name="1219"
-      > </a
-      ><a name="1220" class="Symbol"
+      > <a name="1220" class="Symbol"
       >{</a
       ><a name="1221" href="Relation.Nullary.Universe.html#1221" class="Bound"
       >p</a
       ><a name="1222" class="Symbol"
       >}</a
-      ><a name="1223"
-      > </a
-      ><a name="1224" class="Symbol"
+      > <a name="1224" class="Symbol"
       >&#8594;</a
-      ><a name="1225"
-      > </a
-      ><a name="1226" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="1226" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="1231"
-      > </a
-      ><a name="1232" href="Relation.Nullary.Universe.html#1221" class="Bound"
+      > <a name="1232" href="Relation.Nullary.Universe.html#1221" class="Bound"
       >p</a
-      ><a name="1233"
-      > </a
-      ><a name="1234" class="Symbol"
+      > <a name="1234" class="Symbol"
       >&#8594;</a
-      ><a name="1235"
-      > </a
-      ><a name="1236" class="PrimitiveType"
+      > <a name="1236" class="PrimitiveType"
       >Set</a
-      ><a name="1239"
-      > </a
-      ><a name="1240" href="Relation.Nullary.Universe.html#1221" class="Bound"
+      > <a name="1240" href="Relation.Nullary.Universe.html#1221" class="Bound"
       >p</a
-      ><a name="1241"
-      > </a
-      ><a name="1242" class="Symbol"
+      > <a name="1242" class="Symbol"
       >&#8594;</a
-      ><a name="1243"
-      > </a
-      ><a name="1244" href="Relation.Binary.html#1908" class="Record"
+      > <a name="1244" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="1250"
-      > </a
-      ><a name="1251" href="Relation.Nullary.Universe.html#1221" class="Bound"
+      > <a name="1251" href="Relation.Nullary.Universe.html#1221" class="Bound"
       >p</a
-      ><a name="1252"
-      > </a
-      ><a name="1253" href="Relation.Nullary.Universe.html#1221" class="Bound"
+      > <a name="1253" href="Relation.Nullary.Universe.html#1221" class="Bound"
       >p</a
-      ><a name="1254"
       >
-  </a
-      ><a name="1257" href="Relation.Nullary.Universe.html#1209" class="Function"
+  <a name="1257" href="Relation.Nullary.Universe.html#setoid" class="Function"
       >setoid</a
-      ><a name="1263"
-      > </a
-      ><a name="1264" href="Relation.Nullary.Universe.html#957" class="InductiveConstructor"
+      > <a name="1264" href="Relation.Nullary.Universe.html#PropF.Id" class="InductiveConstructor"
       >Id</a
-      ><a name="1266"
-      >        </a
-      ><a name="1274" href="Relation.Nullary.Universe.html#1274" class="Bound"
+      >        <a name="1274" href="Relation.Nullary.Universe.html#1274" class="Bound"
       >P</a
-      ><a name="1275"
-      > </a
-      ><a name="1276" class="Symbol"
+      > <a name="1276" class="Symbol"
       >=</a
-      ><a name="1277"
-      > </a
-      ><a name="1278" href="Relation.Binary.PropositionalEquality.html#1526" class="Function"
+      > <a name="1278" href="Relation.Binary.PropositionalEquality.html#setoid" class="Function"
       >PropEq.setoid</a
-      ><a name="1291"
-      > </a
-      ><a name="1292" href="Relation.Nullary.Universe.html#1274" class="Bound"
+      > <a name="1292" href="Relation.Nullary.Universe.html#1274" class="Bound"
       >P</a
-      ><a name="1293"
       >
-  </a
-      ><a name="1296" href="Relation.Nullary.Universe.html#1209" class="Function"
+  <a name="1296" href="Relation.Nullary.Universe.html#setoid" class="Function"
       >setoid</a
-      ><a name="1302"
-      > </a
-      ><a name="1303" class="Symbol"
+      > <a name="1303" class="Symbol"
       >(</a
-      ><a name="1304" href="Relation.Nullary.Universe.html#974" class="InductiveConstructor"
+      ><a name="1304" href="Relation.Nullary.Universe.html#PropF.K" class="InductiveConstructor"
       >K</a
-      ><a name="1305"
-      > </a
-      ><a name="1306" href="Relation.Nullary.Universe.html#1306" class="Bound"
+      > <a name="1306" href="Relation.Nullary.Universe.html#1306" class="Bound"
       >P</a
       ><a name="1307" class="Symbol"
       >)</a
-      ><a name="1308"
-      >     </a
-      ><a name="1313" class="Symbol"
+      >     <a name="1313" class="Symbol"
       >_</a
-      ><a name="1314"
-      > </a
-      ><a name="1315" class="Symbol"
+      > <a name="1315" class="Symbol"
       >=</a
-      ><a name="1316"
-      > </a
-      ><a name="1317" href="Relation.Binary.PropositionalEquality.html#1526" class="Function"
+      > <a name="1317" href="Relation.Binary.PropositionalEquality.html#setoid" class="Function"
       >PropEq.setoid</a
-      ><a name="1330"
-      > </a
-      ><a name="1331" href="Relation.Nullary.Universe.html#1306" class="Bound"
+      > <a name="1331" href="Relation.Nullary.Universe.html#1306" class="Bound"
       >P</a
-      ><a name="1332"
       >
-  </a
-      ><a name="1335" href="Relation.Nullary.Universe.html#1209" class="Function"
+  <a name="1335" href="Relation.Nullary.Universe.html#setoid" class="Function"
       >setoid</a
-      ><a name="1341"
-      > </a
-      ><a name="1342" class="Symbol"
+      > <a name="1342" class="Symbol"
       >(</a
       ><a name="1343" href="Relation.Nullary.Universe.html#1343" class="Bound"
       >F&#8321;</a
-      ><a name="1345"
-      > </a
-      ><a name="1346" href="Relation.Nullary.Universe.html#1005" class="InductiveConstructor Operator"
+      > <a name="1346" href="Relation.Nullary.Universe.html#PropF._&#8744;_" class="InductiveConstructor Operator"
       >&#8744;</a
-      ><a name="1347"
-      > </a
-      ><a name="1348" href="Relation.Nullary.Universe.html#1348" class="Bound"
+      > <a name="1348" href="Relation.Nullary.Universe.html#1348" class="Bound"
       >F&#8322;</a
       ><a name="1350" class="Symbol"
       >)</a
-      ><a name="1351"
-      > </a
-      ><a name="1352" href="Relation.Nullary.Universe.html#1352" class="Bound"
+      > <a name="1352" href="Relation.Nullary.Universe.html#1352" class="Bound"
       >P</a
-      ><a name="1353"
-      > </a
-      ><a name="1354" class="Symbol"
+      > <a name="1354" class="Symbol"
       >=</a
-      ><a name="1355"
-      > </a
-      ><a name="1356" class="Symbol"
+      > <a name="1356" class="Symbol"
       >(</a
-      ><a name="1357" href="Relation.Nullary.Universe.html#1209" class="Function"
+      ><a name="1357" href="Relation.Nullary.Universe.html#setoid" class="Function"
       >setoid</a
-      ><a name="1363"
-      > </a
-      ><a name="1364" href="Relation.Nullary.Universe.html#1343" class="Bound"
+      > <a name="1364" href="Relation.Nullary.Universe.html#1343" class="Bound"
       >F&#8321;</a
-      ><a name="1366"
-      > </a
-      ><a name="1367" href="Relation.Nullary.Universe.html#1352" class="Bound"
+      > <a name="1367" href="Relation.Nullary.Universe.html#1352" class="Bound"
       >P</a
       ><a name="1368" class="Symbol"
       >)</a
-      ><a name="1369"
-      > </a
-      ><a name="1370" href="Relation.Binary.Sum.html#13298" class="Function Operator"
+      > <a name="1370" href="Relation.Binary.Sum.html#_&#8846;-setoid_" class="Function Operator"
       >&#8846;-setoid</a
-      ><a name="1378"
-      > </a
-      ><a name="1379" class="Symbol"
+      > <a name="1379" class="Symbol"
       >(</a
-      ><a name="1380" href="Relation.Nullary.Universe.html#1209" class="Function"
+      ><a name="1380" href="Relation.Nullary.Universe.html#setoid" class="Function"
       >setoid</a
-      ><a name="1386"
-      > </a
-      ><a name="1387" href="Relation.Nullary.Universe.html#1348" class="Bound"
+      > <a name="1387" href="Relation.Nullary.Universe.html#1348" class="Bound"
       >F&#8322;</a
-      ><a name="1389"
-      > </a
-      ><a name="1390" href="Relation.Nullary.Universe.html#1352" class="Bound"
+      > <a name="1390" href="Relation.Nullary.Universe.html#1352" class="Bound"
       >P</a
       ><a name="1391" class="Symbol"
       >)</a
-      ><a name="1392"
       >
-  </a
-      ><a name="1395" href="Relation.Nullary.Universe.html#1209" class="Function"
+  <a name="1395" href="Relation.Nullary.Universe.html#setoid" class="Function"
       >setoid</a
-      ><a name="1401"
-      > </a
-      ><a name="1402" class="Symbol"
+      > <a name="1402" class="Symbol"
       >(</a
       ><a name="1403" href="Relation.Nullary.Universe.html#1403" class="Bound"
       >F&#8321;</a
-      ><a name="1405"
-      > </a
-      ><a name="1406" href="Relation.Nullary.Universe.html#1042" class="InductiveConstructor Operator"
+      > <a name="1406" href="Relation.Nullary.Universe.html#PropF._&#8743;_" class="InductiveConstructor Operator"
       >&#8743;</a
-      ><a name="1407"
-      > </a
-      ><a name="1408" href="Relation.Nullary.Universe.html#1408" class="Bound"
+      > <a name="1408" href="Relation.Nullary.Universe.html#1408" class="Bound"
       >F&#8322;</a
       ><a name="1410" class="Symbol"
       >)</a
-      ><a name="1411"
-      > </a
-      ><a name="1412" href="Relation.Nullary.Universe.html#1412" class="Bound"
+      > <a name="1412" href="Relation.Nullary.Universe.html#1412" class="Bound"
       >P</a
-      ><a name="1413"
-      > </a
-      ><a name="1414" class="Symbol"
+      > <a name="1414" class="Symbol"
       >=</a
-      ><a name="1415"
-      > </a
-      ><a name="1416" class="Symbol"
+      > <a name="1416" class="Symbol"
       >(</a
-      ><a name="1417" href="Relation.Nullary.Universe.html#1209" class="Function"
+      ><a name="1417" href="Relation.Nullary.Universe.html#setoid" class="Function"
       >setoid</a
-      ><a name="1423"
-      > </a
-      ><a name="1424" href="Relation.Nullary.Universe.html#1403" class="Bound"
+      > <a name="1424" href="Relation.Nullary.Universe.html#1403" class="Bound"
       >F&#8321;</a
-      ><a name="1426"
-      > </a
-      ><a name="1427" href="Relation.Nullary.Universe.html#1412" class="Bound"
+      > <a name="1427" href="Relation.Nullary.Universe.html#1412" class="Bound"
       >P</a
       ><a name="1428" class="Symbol"
       >)</a
-      ><a name="1429"
-      > </a
-      ><a name="1430" href="Relation.Binary.Product.Pointwise.html#8262" class="Function Operator"
+      > <a name="1430" href="Relation.Binary.Product.Pointwise.html#_&#215;-setoid_" class="Function Operator"
       >&#215;-setoid</a
-      ><a name="1438"
-      > </a
-      ><a name="1439" class="Symbol"
+      > <a name="1439" class="Symbol"
       >(</a
-      ><a name="1440" href="Relation.Nullary.Universe.html#1209" class="Function"
+      ><a name="1440" href="Relation.Nullary.Universe.html#setoid" class="Function"
       >setoid</a
-      ><a name="1446"
-      > </a
-      ><a name="1447" href="Relation.Nullary.Universe.html#1408" class="Bound"
+      > <a name="1447" href="Relation.Nullary.Universe.html#1408" class="Bound"
       >F&#8322;</a
-      ><a name="1449"
-      > </a
-      ><a name="1450" href="Relation.Nullary.Universe.html#1412" class="Bound"
+      > <a name="1450" href="Relation.Nullary.Universe.html#1412" class="Bound"
       >P</a
       ><a name="1451" class="Symbol"
       >)</a
-      ><a name="1452"
       >
-  </a
-      ><a name="1455" href="Relation.Nullary.Universe.html#1209" class="Function"
+  <a name="1455" href="Relation.Nullary.Universe.html#setoid" class="Function"
       >setoid</a
-      ><a name="1461"
-      > </a
-      ><a name="1462" class="Symbol"
+      > <a name="1462" class="Symbol"
       >(</a
       ><a name="1463" href="Relation.Nullary.Universe.html#1463" class="Bound"
       >P&#8321;</a
-      ><a name="1465"
-      > </a
-      ><a name="1466" href="Relation.Nullary.Universe.html#1079" class="InductiveConstructor Operator"
+      > <a name="1466" href="Relation.Nullary.Universe.html#PropF._&#8658;_" class="InductiveConstructor Operator"
       >&#8658;</a
-      ><a name="1467"
-      > </a
-      ><a name="1468" href="Relation.Nullary.Universe.html#1468" class="Bound"
+      > <a name="1468" href="Relation.Nullary.Universe.html#1468" class="Bound"
       >F&#8322;</a
       ><a name="1470" class="Symbol"
       >)</a
-      ><a name="1471"
-      > </a
-      ><a name="1472" href="Relation.Nullary.Universe.html#1472" class="Bound"
+      > <a name="1472" href="Relation.Nullary.Universe.html#1472" class="Bound"
       >P</a
-      ><a name="1473"
-      > </a
-      ><a name="1474" class="Symbol"
+      > <a name="1474" class="Symbol"
       >=</a
-      ><a name="1475"
-      > </a
-      ><a name="1476" href="Function.Equality.html#2542" class="Function"
+      > <a name="1476" href="Function.Equality.html#&#8801;-setoid" class="Function"
       >FunS.&#8801;-setoid</a
-      ><a name="1489"
-      > </a
-      ><a name="1490" href="Relation.Nullary.Universe.html#1463" class="Bound"
+      > <a name="1490" href="Relation.Nullary.Universe.html#1463" class="Bound"
       >P&#8321;</a
-      ><a name="1492"
       >
-                         </a
-      ><a name="1518" class="Symbol"
+                         <a name="1518" class="Symbol"
       >(</a
-      ><a name="1519" href="Relation.Binary.html#2388" class="Function"
+      ><a name="1519" href="Relation.Binary.html#Setoid.indexedSetoid" class="Function"
       >Setoid.indexedSetoid</a
-      ><a name="1539"
-      > </a
-      ><a name="1540" class="Symbol"
+      > <a name="1540" class="Symbol"
       >(</a
-      ><a name="1541" href="Relation.Nullary.Universe.html#1209" class="Function"
+      ><a name="1541" href="Relation.Nullary.Universe.html#setoid" class="Function"
       >setoid</a
-      ><a name="1547"
-      > </a
-      ><a name="1548" href="Relation.Nullary.Universe.html#1468" class="Bound"
+      > <a name="1548" href="Relation.Nullary.Universe.html#1468" class="Bound"
       >F&#8322;</a
-      ><a name="1550"
-      > </a
-      ><a name="1551" href="Relation.Nullary.Universe.html#1472" class="Bound"
+      > <a name="1551" href="Relation.Nullary.Universe.html#1472" class="Bound"
       >P</a
       ><a name="1552" class="Symbol"
       >))</a
-      ><a name="1554"
       >
-  </a
-      ><a name="1557" href="Relation.Nullary.Universe.html#1209" class="Function"
+  <a name="1557" href="Relation.Nullary.Universe.html#setoid" class="Function"
       >setoid</a
-      ><a name="1563"
-      > </a
-      ><a name="1564" class="Symbol"
+      > <a name="1564" class="Symbol"
       >(</a
-      ><a name="1565" href="Relation.Nullary.Universe.html#1126" class="InductiveConstructor Operator"
+      ><a name="1565" href="Relation.Nullary.Universe.html#PropF.&#172;&#172;_" class="InductiveConstructor Operator"
       >&#172;&#172;</a
-      ><a name="1567"
-      > </a
-      ><a name="1568" href="Relation.Nullary.Universe.html#1568" class="Bound"
+      > <a name="1568" href="Relation.Nullary.Universe.html#1568" class="Bound"
       >F</a
       ><a name="1569" class="Symbol"
       >)</a
-      ><a name="1570"
-      >    </a
-      ><a name="1574" href="Relation.Nullary.Universe.html#1574" class="Bound"
+      >    <a name="1574" href="Relation.Nullary.Universe.html#1574" class="Bound"
       >P</a
-      ><a name="1575"
-      > </a
-      ><a name="1576" class="Symbol"
+      > <a name="1576" class="Symbol"
       >=</a
-      ><a name="1577"
-      > </a
-      ><a name="1578" href="Relation.Binary.Simple.html#547" class="Function"
+      > <a name="1578" href="Relation.Binary.Simple.html#Always-setoid" class="Function"
       >Always-setoid</a
-      ><a name="1591"
-      > </a
-      ><a name="1592" class="Symbol"
+      > <a name="1592" class="Symbol"
       >(</a
-      ><a name="1593" href="Relation.Nullary.html#414" class="Function Operator"
+      ><a name="1593" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="1594"
-      > </a
-      ><a name="1595" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="1595" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="1596"
-      > </a
-      ><a name="1597" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="1597" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="1598"
-      > </a
-      ><a name="1599" href="Relation.Nullary.Universe.html#1568" class="Bound"
+      > <a name="1599" href="Relation.Nullary.Universe.html#1568" class="Bound"
       >F</a
-      ><a name="1600"
-      > </a
-      ><a name="1601" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="1601" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="1602"
-      > </a
-      ><a name="1603" href="Relation.Nullary.Universe.html#1574" class="Bound"
+      > <a name="1603" href="Relation.Nullary.Universe.html#1574" class="Bound"
       >P</a
       ><a name="1604" class="Symbol"
       >)</a
-      ><a name="1605"
       >
 
-  </a
-      ><a name="1609" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+  <a name="&#10214;_&#10215;" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;_&#10215;</a
-      ><a name="1612"
-      > </a
-      ><a name="1613" class="Symbol"
+      > <a name="1613" class="Symbol"
       >:</a
-      ><a name="1614"
-      > </a
-      ><a name="1615" class="Symbol"
+      > <a name="1615" class="Symbol"
       >&#8704;</a
-      ><a name="1616"
-      > </a
-      ><a name="1617" class="Symbol"
+      > <a name="1617" class="Symbol"
       >{</a
       ><a name="1618" href="Relation.Nullary.Universe.html#1618" class="Bound"
       >p</a
       ><a name="1619" class="Symbol"
       >}</a
-      ><a name="1620"
-      > </a
-      ><a name="1621" class="Symbol"
+      > <a name="1621" class="Symbol"
       >&#8594;</a
-      ><a name="1622"
-      > </a
-      ><a name="1623" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="1623" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="1628"
-      > </a
-      ><a name="1629" href="Relation.Nullary.Universe.html#1618" class="Bound"
+      > <a name="1629" href="Relation.Nullary.Universe.html#1618" class="Bound"
       >p</a
-      ><a name="1630"
-      > </a
-      ><a name="1631" class="Symbol"
+      > <a name="1631" class="Symbol"
       >&#8594;</a
-      ><a name="1632"
-      > </a
-      ><a name="1633" class="Symbol"
+      > <a name="1633" class="Symbol"
       >(</a
       ><a name="1634" class="PrimitiveType"
       >Set</a
-      ><a name="1637"
-      > </a
-      ><a name="1638" href="Relation.Nullary.Universe.html#1618" class="Bound"
+      > <a name="1638" href="Relation.Nullary.Universe.html#1618" class="Bound"
       >p</a
-      ><a name="1639"
-      > </a
-      ><a name="1640" class="Symbol"
+      > <a name="1640" class="Symbol"
       >&#8594;</a
-      ><a name="1641"
-      > </a
-      ><a name="1642" class="PrimitiveType"
+      > <a name="1642" class="PrimitiveType"
       >Set</a
-      ><a name="1645"
-      > </a
-      ><a name="1646" href="Relation.Nullary.Universe.html#1618" class="Bound"
+      > <a name="1646" href="Relation.Nullary.Universe.html#1618" class="Bound"
       >p</a
       ><a name="1647" class="Symbol"
       >)</a
-      ><a name="1648"
       >
-  </a
-      ><a name="1651" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+  <a name="1651" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="1652"
-      > </a
-      ><a name="1653" href="Relation.Nullary.Universe.html#1653" class="Bound"
+      > <a name="1653" href="Relation.Nullary.Universe.html#1653" class="Bound"
       >F</a
-      ><a name="1654"
-      > </a
-      ><a name="1655" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="1655" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="1656"
-      > </a
-      ><a name="1657" href="Relation.Nullary.Universe.html#1657" class="Bound"
+      > <a name="1657" href="Relation.Nullary.Universe.html#1657" class="Bound"
       >P</a
-      ><a name="1658"
-      > </a
-      ><a name="1659" class="Symbol"
+      > <a name="1659" class="Symbol"
       >=</a
-      ><a name="1660"
-      > </a
-      ><a name="1661" href="Relation.Binary.html#1971" class="Field"
+      > <a name="1661" href="Relation.Binary.html#Setoid.Carrier" class="Field"
       >Setoid.Carrier</a
-      ><a name="1675"
-      > </a
-      ><a name="1676" class="Symbol"
+      > <a name="1676" class="Symbol"
       >(</a
-      ><a name="1677" href="Relation.Nullary.Universe.html#1209" class="Function"
+      ><a name="1677" href="Relation.Nullary.Universe.html#setoid" class="Function"
       >setoid</a
-      ><a name="1683"
-      > </a
-      ><a name="1684" href="Relation.Nullary.Universe.html#1653" class="Bound"
+      > <a name="1684" href="Relation.Nullary.Universe.html#1653" class="Bound"
       >F</a
-      ><a name="1685"
-      > </a
-      ><a name="1686" href="Relation.Nullary.Universe.html#1657" class="Bound"
+      > <a name="1686" href="Relation.Nullary.Universe.html#1657" class="Bound"
       >P</a
       ><a name="1687" class="Symbol"
       >)</a
-      ><a name="1688"
       >
 
-</a
-      ><a name="1690" href="Relation.Nullary.Universe.html#1690" class="Function Operator"
+<a name="&#10216;_&#10217;_&#8776;_" href="Relation.Nullary.Universe.html#&#10216;_&#10217;_&#8776;_" class="Function Operator"
       >&#10216;_&#10217;_&#8776;_</a
-      ><a name="1696"
-      > </a
-      ><a name="1697" class="Symbol"
+      > <a name="1697" class="Symbol"
       >:</a
-      ><a name="1698"
-      > </a
-      ><a name="1699" class="Symbol"
+      > <a name="1699" class="Symbol"
       >&#8704;</a
-      ><a name="1700"
-      > </a
-      ><a name="1701" class="Symbol"
+      > <a name="1701" class="Symbol"
       >{</a
       ><a name="1702" href="Relation.Nullary.Universe.html#1702" class="Bound"
       >p</a
       ><a name="1703" class="Symbol"
       >}</a
-      ><a name="1704"
-      > </a
-      ><a name="1705" class="Symbol"
+      > <a name="1705" class="Symbol"
       >(</a
       ><a name="1706" href="Relation.Nullary.Universe.html#1706" class="Bound"
       >F</a
-      ><a name="1707"
-      > </a
-      ><a name="1708" class="Symbol"
+      > <a name="1708" class="Symbol"
       >:</a
-      ><a name="1709"
-      > </a
-      ><a name="1710" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="1710" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="1715"
-      > </a
-      ><a name="1716" href="Relation.Nullary.Universe.html#1702" class="Bound"
+      > <a name="1716" href="Relation.Nullary.Universe.html#1702" class="Bound"
       >p</a
       ><a name="1717" class="Symbol"
       >)</a
-      ><a name="1718"
-      > </a
-      ><a name="1719" class="Symbol"
+      > <a name="1719" class="Symbol"
       >{</a
       ><a name="1720" href="Relation.Nullary.Universe.html#1720" class="Bound"
       >P</a
-      ><a name="1721"
-      > </a
-      ><a name="1722" class="Symbol"
+      > <a name="1722" class="Symbol"
       >:</a
-      ><a name="1723"
-      > </a
-      ><a name="1724" class="PrimitiveType"
+      > <a name="1724" class="PrimitiveType"
       >Set</a
-      ><a name="1727"
-      > </a
-      ><a name="1728" href="Relation.Nullary.Universe.html#1702" class="Bound"
+      > <a name="1728" href="Relation.Nullary.Universe.html#1702" class="Bound"
       >p</a
       ><a name="1729" class="Symbol"
       >}</a
-      ><a name="1730"
-      > </a
-      ><a name="1731" class="Symbol"
+      > <a name="1731" class="Symbol"
       >&#8594;</a
-      ><a name="1732"
-      > </a
-      ><a name="1733" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="1733" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="1736"
-      > </a
-      ><a name="1737" class="Symbol"
+      > <a name="1737" class="Symbol"
       >(</a
-      ><a name="1738" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      ><a name="1738" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="1739"
-      > </a
-      ><a name="1740" href="Relation.Nullary.Universe.html#1706" class="Bound"
+      > <a name="1740" href="Relation.Nullary.Universe.html#1706" class="Bound"
       >F</a
-      ><a name="1741"
-      > </a
-      ><a name="1742" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="1742" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="1743"
-      > </a
-      ><a name="1744" href="Relation.Nullary.Universe.html#1720" class="Bound"
+      > <a name="1744" href="Relation.Nullary.Universe.html#1720" class="Bound"
       >P</a
       ><a name="1745" class="Symbol"
       >)</a
-      ><a name="1746"
-      > </a
-      ><a name="1747" href="Relation.Nullary.Universe.html#1702" class="Bound"
+      > <a name="1747" href="Relation.Nullary.Universe.html#1702" class="Bound"
       >p</a
-      ><a name="1748"
       >
-</a
-      ><a name="1749" href="Relation.Nullary.Universe.html#1690" class="Function Operator"
+<a name="1749" href="Relation.Nullary.Universe.html#&#10216;_&#10217;_&#8776;_" class="Function Operator"
       >&#10216;_&#10217;_&#8776;_</a
-      ><a name="1755"
-      > </a
-      ><a name="1756" href="Relation.Nullary.Universe.html#1756" class="Bound"
+      > <a name="1756" href="Relation.Nullary.Universe.html#1756" class="Bound"
       >F</a
-      ><a name="1757"
-      > </a
-      ><a name="1758" class="Symbol"
+      > <a name="1758" class="Symbol"
       >=</a
-      ><a name="1759"
-      > </a
-      ><a name="1760" href="Relation.Binary.html#1997" class="Field Operator"
+      > <a name="1760" href="Relation.Binary.html#Setoid._&#8776;_" class="Field Operator"
       >Setoid._&#8776;_</a
-      ><a name="1770"
-      > </a
-      ><a name="1771" class="Symbol"
+      > <a name="1771" class="Symbol"
       >(</a
-      ><a name="1772" href="Relation.Nullary.Universe.html#1209" class="Function"
+      ><a name="1772" href="Relation.Nullary.Universe.html#setoid" class="Function"
       >setoid</a
-      ><a name="1778"
-      > </a
-      ><a name="1779" href="Relation.Nullary.Universe.html#1756" class="Bound"
+      > <a name="1779" href="Relation.Nullary.Universe.html#1756" class="Bound"
       >F</a
-      ><a name="1780"
-      > </a
-      ><a name="1781" class="Symbol"
+      > <a name="1781" class="Symbol"
       >_)</a
-      ><a name="1783"
       >
 
-</a
-      ><a name="1785" class="Comment"
+<a name="1785" class="Comment"
       >-- &#10214; F &#10215; is functorial.</a
-      ><a name="1808"
       >
 
-</a
-      ><a name="1810" href="Relation.Nullary.Universe.html#1810" class="Function"
+<a name="map" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="1813"
-      > </a
-      ><a name="1814" class="Symbol"
+      > <a name="1814" class="Symbol"
       >:</a
-      ><a name="1815"
-      > </a
-      ><a name="1816" class="Symbol"
+      > <a name="1816" class="Symbol"
       >&#8704;</a
-      ><a name="1817"
-      > </a
-      ><a name="1818" class="Symbol"
+      > <a name="1818" class="Symbol"
       >{</a
       ><a name="1819" href="Relation.Nullary.Universe.html#1819" class="Bound"
       >p</a
       ><a name="1820" class="Symbol"
       >}</a
-      ><a name="1821"
-      > </a
-      ><a name="1822" class="Symbol"
+      > <a name="1822" class="Symbol"
       >(</a
       ><a name="1823" href="Relation.Nullary.Universe.html#1823" class="Bound"
       >F</a
-      ><a name="1824"
-      > </a
-      ><a name="1825" class="Symbol"
+      > <a name="1825" class="Symbol"
       >:</a
-      ><a name="1826"
-      > </a
-      ><a name="1827" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="1827" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="1832"
-      > </a
-      ><a name="1833" href="Relation.Nullary.Universe.html#1819" class="Bound"
+      > <a name="1833" href="Relation.Nullary.Universe.html#1819" class="Bound"
       >p</a
       ><a name="1834" class="Symbol"
       >)</a
-      ><a name="1835"
-      > </a
-      ><a name="1836" class="Symbol"
+      > <a name="1836" class="Symbol"
       >{</a
       ><a name="1837" href="Relation.Nullary.Universe.html#1837" class="Bound"
       >P</a
-      ><a name="1838"
-      > </a
-      ><a name="1839" href="Relation.Nullary.Universe.html#1839" class="Bound"
+      > <a name="1839" href="Relation.Nullary.Universe.html#1839" class="Bound"
       >Q</a
       ><a name="1840" class="Symbol"
       >}</a
-      ><a name="1841"
-      > </a
-      ><a name="1842" class="Symbol"
+      > <a name="1842" class="Symbol"
       >&#8594;</a
-      ><a name="1843"
-      > </a
-      ><a name="1844" class="Symbol"
+      > <a name="1844" class="Symbol"
       >(</a
       ><a name="1845" href="Relation.Nullary.Universe.html#1837" class="Bound"
       >P</a
-      ><a name="1846"
-      > </a
-      ><a name="1847" class="Symbol"
+      > <a name="1847" class="Symbol"
       >&#8594;</a
-      ><a name="1848"
-      > </a
-      ><a name="1849" href="Relation.Nullary.Universe.html#1839" class="Bound"
+      > <a name="1849" href="Relation.Nullary.Universe.html#1839" class="Bound"
       >Q</a
       ><a name="1850" class="Symbol"
       >)</a
-      ><a name="1851"
-      > </a
-      ><a name="1852" class="Symbol"
+      > <a name="1852" class="Symbol"
       >&#8594;</a
-      ><a name="1853"
-      > </a
-      ><a name="1854" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="1854" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="1855"
-      > </a
-      ><a name="1856" href="Relation.Nullary.Universe.html#1823" class="Bound"
+      > <a name="1856" href="Relation.Nullary.Universe.html#1823" class="Bound"
       >F</a
-      ><a name="1857"
-      > </a
-      ><a name="1858" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="1858" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="1859"
-      > </a
-      ><a name="1860" href="Relation.Nullary.Universe.html#1837" class="Bound"
+      > <a name="1860" href="Relation.Nullary.Universe.html#1837" class="Bound"
       >P</a
-      ><a name="1861"
-      > </a
-      ><a name="1862" class="Symbol"
+      > <a name="1862" class="Symbol"
       >&#8594;</a
-      ><a name="1863"
-      > </a
-      ><a name="1864" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="1864" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="1865"
-      > </a
-      ><a name="1866" href="Relation.Nullary.Universe.html#1823" class="Bound"
+      > <a name="1866" href="Relation.Nullary.Universe.html#1823" class="Bound"
       >F</a
-      ><a name="1867"
-      > </a
-      ><a name="1868" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="1868" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="1869"
-      > </a
-      ><a name="1870" href="Relation.Nullary.Universe.html#1839" class="Bound"
+      > <a name="1870" href="Relation.Nullary.Universe.html#1839" class="Bound"
       >Q</a
-      ><a name="1871"
       >
-</a
-      ><a name="1872" href="Relation.Nullary.Universe.html#1810" class="Function"
+<a name="1872" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="1875"
-      > </a
-      ><a name="1876" href="Relation.Nullary.Universe.html#957" class="InductiveConstructor"
+      > <a name="1876" href="Relation.Nullary.Universe.html#PropF.Id" class="InductiveConstructor"
       >Id</a
-      ><a name="1878"
-      >        </a
-      ><a name="1886" href="Relation.Nullary.Universe.html#1886" class="Bound"
+      >        <a name="1886" href="Relation.Nullary.Universe.html#1886" class="Bound"
       >f</a
-      ><a name="1887"
-      >  </a
-      ><a name="1889" href="Relation.Nullary.Universe.html#1889" class="Bound"
+      >  <a name="1889" href="Relation.Nullary.Universe.html#1889" class="Bound"
       >p</a
-      ><a name="1890"
-      > </a
-      ><a name="1891" class="Symbol"
+      > <a name="1891" class="Symbol"
       >=</a
-      ><a name="1892"
-      > </a
-      ><a name="1893" href="Relation.Nullary.Universe.html#1886" class="Bound"
+      > <a name="1893" href="Relation.Nullary.Universe.html#1886" class="Bound"
       >f</a
-      ><a name="1894"
-      > </a
-      ><a name="1895" href="Relation.Nullary.Universe.html#1889" class="Bound"
+      > <a name="1895" href="Relation.Nullary.Universe.html#1889" class="Bound"
       >p</a
-      ><a name="1896"
       >
-</a
-      ><a name="1897" href="Relation.Nullary.Universe.html#1810" class="Function"
+<a name="1897" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="1900"
-      > </a
-      ><a name="1901" class="Symbol"
+      > <a name="1901" class="Symbol"
       >(</a
-      ><a name="1902" href="Relation.Nullary.Universe.html#974" class="InductiveConstructor"
+      ><a name="1902" href="Relation.Nullary.Universe.html#PropF.K" class="InductiveConstructor"
       >K</a
-      ><a name="1903"
-      > </a
-      ><a name="1904" href="Relation.Nullary.Universe.html#1904" class="Bound"
+      > <a name="1904" href="Relation.Nullary.Universe.html#1904" class="Bound"
       >P</a
       ><a name="1905" class="Symbol"
       >)</a
-      ><a name="1906"
-      >     </a
-      ><a name="1911" href="Relation.Nullary.Universe.html#1911" class="Bound"
+      >     <a name="1911" href="Relation.Nullary.Universe.html#1911" class="Bound"
       >f</a
-      ><a name="1912"
-      >  </a
-      ><a name="1914" href="Relation.Nullary.Universe.html#1914" class="Bound"
+      >  <a name="1914" href="Relation.Nullary.Universe.html#1914" class="Bound"
       >p</a
-      ><a name="1915"
-      > </a
-      ><a name="1916" class="Symbol"
+      > <a name="1916" class="Symbol"
       >=</a
-      ><a name="1917"
-      > </a
-      ><a name="1918" href="Relation.Nullary.Universe.html#1914" class="Bound"
+      > <a name="1918" href="Relation.Nullary.Universe.html#1914" class="Bound"
       >p</a
-      ><a name="1919"
       >
-</a
-      ><a name="1920" href="Relation.Nullary.Universe.html#1810" class="Function"
+<a name="1920" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="1923"
-      > </a
-      ><a name="1924" class="Symbol"
+      > <a name="1924" class="Symbol"
       >(</a
       ><a name="1925" href="Relation.Nullary.Universe.html#1925" class="Bound"
       >F&#8321;</a
-      ><a name="1927"
-      > </a
-      ><a name="1928" href="Relation.Nullary.Universe.html#1005" class="InductiveConstructor Operator"
+      > <a name="1928" href="Relation.Nullary.Universe.html#PropF._&#8744;_" class="InductiveConstructor Operator"
       >&#8744;</a
-      ><a name="1929"
-      > </a
-      ><a name="1930" href="Relation.Nullary.Universe.html#1930" class="Bound"
+      > <a name="1930" href="Relation.Nullary.Universe.html#1930" class="Bound"
       >F&#8322;</a
       ><a name="1932" class="Symbol"
       >)</a
-      ><a name="1933"
-      > </a
-      ><a name="1934" href="Relation.Nullary.Universe.html#1934" class="Bound"
+      > <a name="1934" href="Relation.Nullary.Universe.html#1934" class="Bound"
       >f</a
-      ><a name="1935"
-      > </a
-      ><a name="1936" href="Relation.Nullary.Universe.html#1936" class="Bound"
+      > <a name="1936" href="Relation.Nullary.Universe.html#1936" class="Bound"
       >FP</a
-      ><a name="1938"
-      > </a
-      ><a name="1939" class="Symbol"
+      > <a name="1939" class="Symbol"
       >=</a
-      ><a name="1940"
-      > </a
-      ><a name="1941" href="Data.Sum.html#1064" class="Function"
+      > <a name="1941" href="Data.Sum.html#map" class="Function"
       >Sum.map</a
-      ><a name="1948"
-      >  </a
-      ><a name="1950" class="Symbol"
+      >  <a name="1950" class="Symbol"
       >(</a
-      ><a name="1951" href="Relation.Nullary.Universe.html#1810" class="Function"
+      ><a name="1951" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="1954"
-      > </a
-      ><a name="1955" href="Relation.Nullary.Universe.html#1925" class="Bound"
+      > <a name="1955" href="Relation.Nullary.Universe.html#1925" class="Bound"
       >F&#8321;</a
-      ><a name="1957"
-      > </a
-      ><a name="1958" href="Relation.Nullary.Universe.html#1934" class="Bound"
+      > <a name="1958" href="Relation.Nullary.Universe.html#1934" class="Bound"
       >f</a
       ><a name="1959" class="Symbol"
       >)</a
-      ><a name="1960"
-      > </a
-      ><a name="1961" class="Symbol"
+      > <a name="1961" class="Symbol"
       >(</a
-      ><a name="1962" href="Relation.Nullary.Universe.html#1810" class="Function"
+      ><a name="1962" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="1965"
-      > </a
-      ><a name="1966" href="Relation.Nullary.Universe.html#1930" class="Bound"
+      > <a name="1966" href="Relation.Nullary.Universe.html#1930" class="Bound"
       >F&#8322;</a
-      ><a name="1968"
-      > </a
-      ><a name="1969" href="Relation.Nullary.Universe.html#1934" class="Bound"
+      > <a name="1969" href="Relation.Nullary.Universe.html#1934" class="Bound"
       >f</a
       ><a name="1970" class="Symbol"
       >)</a
-      ><a name="1971"
-      > </a
-      ><a name="1972" href="Relation.Nullary.Universe.html#1936" class="Bound"
+      > <a name="1972" href="Relation.Nullary.Universe.html#1936" class="Bound"
       >FP</a
-      ><a name="1974"
       >
-</a
-      ><a name="1975" href="Relation.Nullary.Universe.html#1810" class="Function"
+<a name="1975" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="1978"
-      > </a
-      ><a name="1979" class="Symbol"
+      > <a name="1979" class="Symbol"
       >(</a
       ><a name="1980" href="Relation.Nullary.Universe.html#1980" class="Bound"
       >F&#8321;</a
-      ><a name="1982"
-      > </a
-      ><a name="1983" href="Relation.Nullary.Universe.html#1042" class="InductiveConstructor Operator"
+      > <a name="1983" href="Relation.Nullary.Universe.html#PropF._&#8743;_" class="InductiveConstructor Operator"
       >&#8743;</a
-      ><a name="1984"
-      > </a
-      ><a name="1985" href="Relation.Nullary.Universe.html#1985" class="Bound"
+      > <a name="1985" href="Relation.Nullary.Universe.html#1985" class="Bound"
       >F&#8322;</a
       ><a name="1987" class="Symbol"
       >)</a
-      ><a name="1988"
-      > </a
-      ><a name="1989" href="Relation.Nullary.Universe.html#1989" class="Bound"
+      > <a name="1989" href="Relation.Nullary.Universe.html#1989" class="Bound"
       >f</a
-      ><a name="1990"
-      > </a
-      ><a name="1991" href="Relation.Nullary.Universe.html#1991" class="Bound"
+      > <a name="1991" href="Relation.Nullary.Universe.html#1991" class="Bound"
       >FP</a
-      ><a name="1993"
-      > </a
-      ><a name="1994" class="Symbol"
+      > <a name="1994" class="Symbol"
       >=</a
-      ><a name="1995"
-      > </a
-      ><a name="1996" href="Data.Product.html#1872" class="Function"
+      > <a name="1996" href="Data.Product.html#map" class="Function"
       >Prod.map</a
-      ><a name="2004"
-      > </a
-      ><a name="2005" class="Symbol"
+      > <a name="2005" class="Symbol"
       >(</a
-      ><a name="2006" href="Relation.Nullary.Universe.html#1810" class="Function"
+      ><a name="2006" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="2009"
-      > </a
-      ><a name="2010" href="Relation.Nullary.Universe.html#1980" class="Bound"
+      > <a name="2010" href="Relation.Nullary.Universe.html#1980" class="Bound"
       >F&#8321;</a
-      ><a name="2012"
-      > </a
-      ><a name="2013" href="Relation.Nullary.Universe.html#1989" class="Bound"
+      > <a name="2013" href="Relation.Nullary.Universe.html#1989" class="Bound"
       >f</a
       ><a name="2014" class="Symbol"
       >)</a
-      ><a name="2015"
-      > </a
-      ><a name="2016" class="Symbol"
+      > <a name="2016" class="Symbol"
       >(</a
-      ><a name="2017" href="Relation.Nullary.Universe.html#1810" class="Function"
+      ><a name="2017" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="2020"
-      > </a
-      ><a name="2021" href="Relation.Nullary.Universe.html#1985" class="Bound"
+      > <a name="2021" href="Relation.Nullary.Universe.html#1985" class="Bound"
       >F&#8322;</a
-      ><a name="2023"
-      > </a
-      ><a name="2024" href="Relation.Nullary.Universe.html#1989" class="Bound"
+      > <a name="2024" href="Relation.Nullary.Universe.html#1989" class="Bound"
       >f</a
       ><a name="2025" class="Symbol"
       >)</a
-      ><a name="2026"
-      > </a
-      ><a name="2027" href="Relation.Nullary.Universe.html#1991" class="Bound"
+      > <a name="2027" href="Relation.Nullary.Universe.html#1991" class="Bound"
       >FP</a
-      ><a name="2029"
       >
-</a
-      ><a name="2030" href="Relation.Nullary.Universe.html#1810" class="Function"
+<a name="2030" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="2033"
-      > </a
-      ><a name="2034" class="Symbol"
+      > <a name="2034" class="Symbol"
       >(</a
       ><a name="2035" href="Relation.Nullary.Universe.html#2035" class="Bound"
       >P&#8321;</a
-      ><a name="2037"
-      > </a
-      ><a name="2038" href="Relation.Nullary.Universe.html#1079" class="InductiveConstructor Operator"
+      > <a name="2038" href="Relation.Nullary.Universe.html#PropF._&#8658;_" class="InductiveConstructor Operator"
       >&#8658;</a
-      ><a name="2039"
-      > </a
-      ><a name="2040" href="Relation.Nullary.Universe.html#2040" class="Bound"
+      > <a name="2040" href="Relation.Nullary.Universe.html#2040" class="Bound"
       >F&#8322;</a
       ><a name="2042" class="Symbol"
       >)</a
-      ><a name="2043"
-      > </a
-      ><a name="2044" href="Relation.Nullary.Universe.html#2044" class="Bound"
+      > <a name="2044" href="Relation.Nullary.Universe.html#2044" class="Bound"
       >f</a
-      ><a name="2045"
-      > </a
-      ><a name="2046" href="Relation.Nullary.Universe.html#2046" class="Bound"
+      > <a name="2046" href="Relation.Nullary.Universe.html#2046" class="Bound"
       >FP</a
-      ><a name="2048"
-      > </a
-      ><a name="2049" class="Symbol"
+      > <a name="2049" class="Symbol"
       >=</a
-      ><a name="2050"
-      > </a
-      ><a name="2051" href="Relation.Nullary.Universe.html#1810" class="Function"
+      > <a name="2051" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="2054"
-      > </a
-      ><a name="2055" href="Relation.Nullary.Universe.html#2040" class="Bound"
+      > <a name="2055" href="Relation.Nullary.Universe.html#2040" class="Bound"
       >F&#8322;</a
-      ><a name="2057"
-      > </a
-      ><a name="2058" href="Relation.Nullary.Universe.html#2044" class="Bound"
+      > <a name="2058" href="Relation.Nullary.Universe.html#2044" class="Bound"
       >f</a
-      ><a name="2059"
-      > </a
-      ><a name="2060" href="Function.html#713" class="Function Operator"
+      > <a name="2060" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="2061"
-      > </a
-      ><a name="2062" href="Relation.Nullary.Universe.html#2046" class="Bound"
+      > <a name="2062" href="Relation.Nullary.Universe.html#2046" class="Bound"
       >FP</a
-      ><a name="2064"
       >
-</a
-      ><a name="2065" href="Relation.Nullary.Universe.html#1810" class="Function"
+<a name="2065" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="2068"
-      > </a
-      ><a name="2069" class="Symbol"
+      > <a name="2069" class="Symbol"
       >(</a
-      ><a name="2070" href="Relation.Nullary.Universe.html#1126" class="InductiveConstructor Operator"
+      ><a name="2070" href="Relation.Nullary.Universe.html#PropF.&#172;&#172;_" class="InductiveConstructor Operator"
       >&#172;&#172;</a
-      ><a name="2072"
-      > </a
-      ><a name="2073" href="Relation.Nullary.Universe.html#2073" class="Bound"
+      > <a name="2073" href="Relation.Nullary.Universe.html#2073" class="Bound"
       >F</a
       ><a name="2074" class="Symbol"
       >)</a
-      ><a name="2075"
-      >    </a
-      ><a name="2079" href="Relation.Nullary.Universe.html#2079" class="Bound"
+      >    <a name="2079" href="Relation.Nullary.Universe.html#2079" class="Bound"
       >f</a
-      ><a name="2080"
-      > </a
-      ><a name="2081" href="Relation.Nullary.Universe.html#2081" class="Bound"
+      > <a name="2081" href="Relation.Nullary.Universe.html#2081" class="Bound"
       >FP</a
-      ><a name="2083"
-      > </a
-      ><a name="2084" class="Symbol"
+      > <a name="2084" class="Symbol"
       >=</a
-      ><a name="2085"
-      > </a
-      ><a name="2086" href="Relation.Nullary.Negation.html#2103" class="Function"
+      > <a name="2086" href="Relation.Nullary.Negation.html#&#172;&#172;-map" class="Function"
       >&#172;&#172;-map</a
-      ><a name="2092"
-      > </a
-      ><a name="2093" class="Symbol"
+      > <a name="2093" class="Symbol"
       >(</a
-      ><a name="2094" href="Relation.Nullary.Universe.html#1810" class="Function"
+      ><a name="2094" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="2097"
-      > </a
-      ><a name="2098" href="Relation.Nullary.Universe.html#2073" class="Bound"
+      > <a name="2098" href="Relation.Nullary.Universe.html#2073" class="Bound"
       >F</a
-      ><a name="2099"
-      > </a
-      ><a name="2100" href="Relation.Nullary.Universe.html#2079" class="Bound"
+      > <a name="2100" href="Relation.Nullary.Universe.html#2079" class="Bound"
       >f</a
       ><a name="2101" class="Symbol"
       >)</a
-      ><a name="2102"
-      > </a
-      ><a name="2103" href="Relation.Nullary.Universe.html#2081" class="Bound"
+      > <a name="2103" href="Relation.Nullary.Universe.html#2081" class="Bound"
       >FP</a
-      ><a name="2105"
       >
 
-</a
-      ><a name="2107" href="Relation.Nullary.Universe.html#2107" class="Function"
+<a name="map-id" href="Relation.Nullary.Universe.html#map-id" class="Function"
       >map-id</a
-      ><a name="2113"
-      > </a
-      ><a name="2114" class="Symbol"
+      > <a name="2114" class="Symbol"
       >:</a
-      ><a name="2115"
-      > </a
-      ><a name="2116" class="Symbol"
+      > <a name="2116" class="Symbol"
       >&#8704;</a
-      ><a name="2117"
-      > </a
-      ><a name="2118" class="Symbol"
+      > <a name="2118" class="Symbol"
       >{</a
       ><a name="2119" href="Relation.Nullary.Universe.html#2119" class="Bound"
       >p</a
       ><a name="2120" class="Symbol"
       >}</a
-      ><a name="2121"
-      > </a
-      ><a name="2122" class="Symbol"
+      > <a name="2122" class="Symbol"
       >(</a
       ><a name="2123" href="Relation.Nullary.Universe.html#2123" class="Bound"
       >F</a
-      ><a name="2124"
-      > </a
-      ><a name="2125" class="Symbol"
+      > <a name="2125" class="Symbol"
       >:</a
-      ><a name="2126"
-      > </a
-      ><a name="2127" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="2127" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="2132"
-      > </a
-      ><a name="2133" href="Relation.Nullary.Universe.html#2119" class="Bound"
+      > <a name="2133" href="Relation.Nullary.Universe.html#2119" class="Bound"
       >p</a
       ><a name="2134" class="Symbol"
       >)</a
-      ><a name="2135"
-      > </a
-      ><a name="2136" class="Symbol"
+      > <a name="2136" class="Symbol"
       >{</a
       ><a name="2137" href="Relation.Nullary.Universe.html#2137" class="Bound"
       >P</a
       ><a name="2138" class="Symbol"
       >}</a
-      ><a name="2139"
-      > </a
-      ><a name="2140" class="Symbol"
+      > <a name="2140" class="Symbol"
       >&#8594;</a
-      ><a name="2141"
-      > </a
-      ><a name="2142" href="Relation.Nullary.Universe.html#1690" class="Function Operator"
+      > <a name="2142" href="Relation.Nullary.Universe.html#&#10216;_&#10217;_&#8776;_" class="Function Operator"
       >&#10216;</a
-      ><a name="2143"
-      > </a
-      ><a name="2144" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="2144" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="2145"
-      > </a
-      ><a name="2146" href="Relation.Nullary.Universe.html#2123" class="Bound"
+      > <a name="2146" href="Relation.Nullary.Universe.html#2123" class="Bound"
       >F</a
-      ><a name="2147"
-      > </a
-      ><a name="2148" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="2148" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="2149"
-      > </a
-      ><a name="2150" href="Relation.Nullary.Universe.html#2137" class="Bound"
+      > <a name="2150" href="Relation.Nullary.Universe.html#2137" class="Bound"
       >P</a
-      ><a name="2151"
-      > </a
-      ><a name="2152" href="Relation.Nullary.Universe.html#1079" class="InductiveConstructor Operator"
+      > <a name="2152" href="Relation.Nullary.Universe.html#PropF._&#8658;_" class="InductiveConstructor Operator"
       >&#8658;</a
-      ><a name="2153"
-      > </a
-      ><a name="2154" href="Relation.Nullary.Universe.html#2123" class="Bound"
+      > <a name="2154" href="Relation.Nullary.Universe.html#2123" class="Bound"
       >F</a
-      ><a name="2155"
-      > </a
-      ><a name="2156" href="Relation.Nullary.Universe.html#1690" class="Function Operator"
+      > <a name="2156" href="Relation.Nullary.Universe.html#&#10216;_&#10217;_&#8776;_" class="Function Operator"
       >&#10217;</a
-      ><a name="2157"
-      > </a
-      ><a name="2158" href="Relation.Nullary.Universe.html#1810" class="Function"
+      > <a name="2158" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="2161"
-      > </a
-      ><a name="2162" href="Relation.Nullary.Universe.html#2123" class="Bound"
+      > <a name="2162" href="Relation.Nullary.Universe.html#2123" class="Bound"
       >F</a
-      ><a name="2163"
-      > </a
-      ><a name="2164" href="Function.html#1012" class="Function"
+      > <a name="2164" href="Function.html#id" class="Function"
       >id</a
-      ><a name="2166"
-      > </a
-      ><a name="2167" href="Relation.Nullary.Universe.html#1690" class="Function Operator"
+      > <a name="2167" href="Relation.Nullary.Universe.html#&#10216;_&#10217;_&#8776;_" class="Function Operator"
       >&#8776;</a
-      ><a name="2168"
-      > </a
-      ><a name="2169" href="Function.html#1012" class="Function"
+      > <a name="2169" href="Function.html#id" class="Function"
       >id</a
-      ><a name="2171"
       >
-</a
-      ><a name="2172" href="Relation.Nullary.Universe.html#2107" class="Function"
+<a name="2172" href="Relation.Nullary.Universe.html#map-id" class="Function"
       >map-id</a
-      ><a name="2178"
-      > </a
-      ><a name="2179" href="Relation.Nullary.Universe.html#957" class="InductiveConstructor"
+      > <a name="2179" href="Relation.Nullary.Universe.html#PropF.Id" class="InductiveConstructor"
       >Id</a
-      ><a name="2181"
-      >        </a
-      ><a name="2189" href="Relation.Nullary.Universe.html#2189" class="Bound"
+      >        <a name="2189" href="Relation.Nullary.Universe.html#2189" class="Bound"
       >x</a
-      ><a name="2190"
-      >        </a
-      ><a name="2198" class="Symbol"
+      >        <a name="2198" class="Symbol"
       >=</a
-      ><a name="2199"
-      > </a
-      ><a name="2200" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="2200" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="2204"
       >
-</a
-      ><a name="2205" href="Relation.Nullary.Universe.html#2107" class="Function"
+<a name="2205" href="Relation.Nullary.Universe.html#map-id" class="Function"
       >map-id</a
-      ><a name="2211"
-      > </a
-      ><a name="2212" class="Symbol"
+      > <a name="2212" class="Symbol"
       >(</a
-      ><a name="2213" href="Relation.Nullary.Universe.html#974" class="InductiveConstructor"
+      ><a name="2213" href="Relation.Nullary.Universe.html#PropF.K" class="InductiveConstructor"
       >K</a
-      ><a name="2214"
-      > </a
-      ><a name="2215" href="Relation.Nullary.Universe.html#2215" class="Bound"
+      > <a name="2215" href="Relation.Nullary.Universe.html#2215" class="Bound"
       >P</a
       ><a name="2216" class="Symbol"
       >)</a
-      ><a name="2217"
-      >     </a
-      ><a name="2222" href="Relation.Nullary.Universe.html#2222" class="Bound"
+      >     <a name="2222" href="Relation.Nullary.Universe.html#2222" class="Bound"
       >x</a
-      ><a name="2223"
-      >        </a
-      ><a name="2231" class="Symbol"
+      >        <a name="2231" class="Symbol"
       >=</a
-      ><a name="2232"
-      > </a
-      ><a name="2233" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="2233" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="2237"
       >
-</a
-      ><a name="2238" href="Relation.Nullary.Universe.html#2107" class="Function"
+<a name="2238" href="Relation.Nullary.Universe.html#map-id" class="Function"
       >map-id</a
-      ><a name="2244"
-      > </a
-      ><a name="2245" class="Symbol"
+      > <a name="2245" class="Symbol"
       >(</a
       ><a name="2246" href="Relation.Nullary.Universe.html#2246" class="Bound"
       >F&#8321;</a
-      ><a name="2248"
-      > </a
-      ><a name="2249" href="Relation.Nullary.Universe.html#1005" class="InductiveConstructor Operator"
+      > <a name="2249" href="Relation.Nullary.Universe.html#PropF._&#8744;_" class="InductiveConstructor Operator"
       >&#8744;</a
-      ><a name="2250"
-      > </a
-      ><a name="2251" href="Relation.Nullary.Universe.html#2251" class="Bound"
+      > <a name="2251" href="Relation.Nullary.Universe.html#2251" class="Bound"
       >F&#8322;</a
       ><a name="2253" class="Symbol"
       >)</a
-      ><a name="2254"
-      > </a
-      ><a name="2255" class="Symbol"
+      > <a name="2255" class="Symbol"
       >(</a
-      ><a name="2256" href="Data.Sum.html#489" class="InductiveConstructor"
+      ><a name="2256" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
       >inj&#8321;</a
-      ><a name="2260"
-      > </a
-      ><a name="2261" href="Relation.Nullary.Universe.html#2261" class="Bound"
+      > <a name="2261" href="Relation.Nullary.Universe.html#2261" class="Bound"
       >x</a
       ><a name="2262" class="Symbol"
       >)</a
-      ><a name="2263"
-      > </a
-      ><a name="2264" class="Symbol"
+      > <a name="2264" class="Symbol"
       >=</a
-      ><a name="2265"
-      > </a
-      ><a name="2266" href="Relation.Binary.Sum.html#1460" class="InductiveConstructor"
+      > <a name="2266" href="Relation.Binary.Sum.html#1460" class="InductiveConstructor"
       >&#8321;&#8764;&#8321;</a
-      ><a name="2269"
-      > </a
-      ><a name="2270" class="Symbol"
+      > <a name="2270" class="Symbol"
       >(</a
-      ><a name="2271" href="Relation.Nullary.Universe.html#2107" class="Function"
+      ><a name="2271" href="Relation.Nullary.Universe.html#map-id" class="Function"
       >map-id</a
-      ><a name="2277"
-      > </a
-      ><a name="2278" href="Relation.Nullary.Universe.html#2246" class="Bound"
+      > <a name="2278" href="Relation.Nullary.Universe.html#2246" class="Bound"
       >F&#8321;</a
-      ><a name="2280"
-      > </a
-      ><a name="2281" href="Relation.Nullary.Universe.html#2261" class="Bound"
+      > <a name="2281" href="Relation.Nullary.Universe.html#2261" class="Bound"
       >x</a
       ><a name="2282" class="Symbol"
       >)</a
-      ><a name="2283"
       >
-</a
-      ><a name="2284" href="Relation.Nullary.Universe.html#2107" class="Function"
+<a name="2284" href="Relation.Nullary.Universe.html#map-id" class="Function"
       >map-id</a
-      ><a name="2290"
-      > </a
-      ><a name="2291" class="Symbol"
+      > <a name="2291" class="Symbol"
       >(</a
       ><a name="2292" href="Relation.Nullary.Universe.html#2292" class="Bound"
       >F&#8321;</a
-      ><a name="2294"
-      > </a
-      ><a name="2295" href="Relation.Nullary.Universe.html#1005" class="InductiveConstructor Operator"
+      > <a name="2295" href="Relation.Nullary.Universe.html#PropF._&#8744;_" class="InductiveConstructor Operator"
       >&#8744;</a
-      ><a name="2296"
-      > </a
-      ><a name="2297" href="Relation.Nullary.Universe.html#2297" class="Bound"
+      > <a name="2297" href="Relation.Nullary.Universe.html#2297" class="Bound"
       >F&#8322;</a
       ><a name="2299" class="Symbol"
       >)</a
-      ><a name="2300"
-      > </a
-      ><a name="2301" class="Symbol"
+      > <a name="2301" class="Symbol"
       >(</a
-      ><a name="2302" href="Data.Sum.html#514" class="InductiveConstructor"
+      ><a name="2302" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
       >inj&#8322;</a
-      ><a name="2306"
-      > </a
-      ><a name="2307" href="Relation.Nullary.Universe.html#2307" class="Bound"
+      > <a name="2307" href="Relation.Nullary.Universe.html#2307" class="Bound"
       >y</a
       ><a name="2308" class="Symbol"
       >)</a
-      ><a name="2309"
-      > </a
-      ><a name="2310" class="Symbol"
+      > <a name="2310" class="Symbol"
       >=</a
-      ><a name="2311"
-      > </a
-      ><a name="2312" href="Relation.Binary.Sum.html#1529" class="InductiveConstructor"
+      > <a name="2312" href="Relation.Binary.Sum.html#1529" class="InductiveConstructor"
       >&#8322;&#8764;&#8322;</a
-      ><a name="2315"
-      > </a
-      ><a name="2316" class="Symbol"
+      > <a name="2316" class="Symbol"
       >(</a
-      ><a name="2317" href="Relation.Nullary.Universe.html#2107" class="Function"
+      ><a name="2317" href="Relation.Nullary.Universe.html#map-id" class="Function"
       >map-id</a
-      ><a name="2323"
-      > </a
-      ><a name="2324" href="Relation.Nullary.Universe.html#2297" class="Bound"
+      > <a name="2324" href="Relation.Nullary.Universe.html#2297" class="Bound"
       >F&#8322;</a
-      ><a name="2326"
-      > </a
-      ><a name="2327" href="Relation.Nullary.Universe.html#2307" class="Bound"
+      > <a name="2327" href="Relation.Nullary.Universe.html#2307" class="Bound"
       >y</a
       ><a name="2328" class="Symbol"
       >)</a
-      ><a name="2329"
       >
-</a
-      ><a name="2330" href="Relation.Nullary.Universe.html#2107" class="Function"
+<a name="2330" href="Relation.Nullary.Universe.html#map-id" class="Function"
       >map-id</a
-      ><a name="2336"
-      > </a
-      ><a name="2337" class="Symbol"
+      > <a name="2337" class="Symbol"
       >(</a
       ><a name="2338" href="Relation.Nullary.Universe.html#2338" class="Bound"
       >F&#8321;</a
-      ><a name="2340"
-      > </a
-      ><a name="2341" href="Relation.Nullary.Universe.html#1042" class="InductiveConstructor Operator"
+      > <a name="2341" href="Relation.Nullary.Universe.html#PropF._&#8743;_" class="InductiveConstructor Operator"
       >&#8743;</a
-      ><a name="2342"
-      > </a
-      ><a name="2343" href="Relation.Nullary.Universe.html#2343" class="Bound"
+      > <a name="2343" href="Relation.Nullary.Universe.html#2343" class="Bound"
       >F&#8322;</a
       ><a name="2345" class="Symbol"
       >)</a
-      ><a name="2346"
-      > </a
-      ><a name="2347" class="Symbol"
+      > <a name="2347" class="Symbol"
       >(</a
       ><a name="2348" href="Relation.Nullary.Universe.html#2348" class="Bound"
       >x</a
-      ><a name="2349"
-      > </a
-      ><a name="2350" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2350" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2351"
-      > </a
-      ><a name="2352" href="Relation.Nullary.Universe.html#2352" class="Bound"
+      > <a name="2352" href="Relation.Nullary.Universe.html#2352" class="Bound"
       >y</a
       ><a name="2353" class="Symbol"
       >)</a
-      ><a name="2354"
-      >  </a
-      ><a name="2356" class="Symbol"
+      >  <a name="2356" class="Symbol"
       >=</a
-      ><a name="2357"
-      > </a
-      ><a name="2358" class="Symbol"
+      > <a name="2358" class="Symbol"
       >(</a
-      ><a name="2359" href="Relation.Nullary.Universe.html#2107" class="Function"
+      ><a name="2359" href="Relation.Nullary.Universe.html#map-id" class="Function"
       >map-id</a
-      ><a name="2365"
-      > </a
-      ><a name="2366" href="Relation.Nullary.Universe.html#2338" class="Bound"
+      > <a name="2366" href="Relation.Nullary.Universe.html#2338" class="Bound"
       >F&#8321;</a
-      ><a name="2368"
-      > </a
-      ><a name="2369" href="Relation.Nullary.Universe.html#2348" class="Bound"
+      > <a name="2369" href="Relation.Nullary.Universe.html#2348" class="Bound"
       >x</a
-      ><a name="2370"
-      > </a
-      ><a name="2371" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2371" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2372"
-      > </a
-      ><a name="2373" href="Relation.Nullary.Universe.html#2107" class="Function"
+      > <a name="2373" href="Relation.Nullary.Universe.html#map-id" class="Function"
       >map-id</a
-      ><a name="2379"
-      > </a
-      ><a name="2380" href="Relation.Nullary.Universe.html#2343" class="Bound"
+      > <a name="2380" href="Relation.Nullary.Universe.html#2343" class="Bound"
       >F&#8322;</a
-      ><a name="2382"
-      > </a
-      ><a name="2383" href="Relation.Nullary.Universe.html#2352" class="Bound"
+      > <a name="2383" href="Relation.Nullary.Universe.html#2352" class="Bound"
       >y</a
       ><a name="2384" class="Symbol"
       >)</a
-      ><a name="2385"
       >
-</a
-      ><a name="2386" href="Relation.Nullary.Universe.html#2107" class="Function"
+<a name="2386" href="Relation.Nullary.Universe.html#map-id" class="Function"
       >map-id</a
-      ><a name="2392"
-      > </a
-      ><a name="2393" class="Symbol"
+      > <a name="2393" class="Symbol"
       >(</a
       ><a name="2394" href="Relation.Nullary.Universe.html#2394" class="Bound"
       >P&#8321;</a
-      ><a name="2396"
-      > </a
-      ><a name="2397" href="Relation.Nullary.Universe.html#1079" class="InductiveConstructor Operator"
+      > <a name="2397" href="Relation.Nullary.Universe.html#PropF._&#8658;_" class="InductiveConstructor Operator"
       >&#8658;</a
-      ><a name="2398"
-      > </a
-      ><a name="2399" href="Relation.Nullary.Universe.html#2399" class="Bound"
+      > <a name="2399" href="Relation.Nullary.Universe.html#2399" class="Bound"
       >F&#8322;</a
       ><a name="2401" class="Symbol"
       >)</a
-      ><a name="2402"
-      > </a
-      ><a name="2403" href="Relation.Nullary.Universe.html#2403" class="Bound"
+      > <a name="2403" href="Relation.Nullary.Universe.html#2403" class="Bound"
       >f</a
-      ><a name="2404"
-      >        </a
-      ><a name="2412" class="Symbol"
+      >        <a name="2412" class="Symbol"
       >=</a
-      ><a name="2413"
-      > </a
-      ><a name="2414" class="Symbol"
+      > <a name="2414" class="Symbol"
       >&#955;</a
-      ><a name="2415"
-      > </a
-      ><a name="2416" href="Relation.Nullary.Universe.html#2416" class="Bound"
+      > <a name="2416" href="Relation.Nullary.Universe.html#2416" class="Bound"
       >x</a
-      ><a name="2417"
-      > </a
-      ><a name="2418" class="Symbol"
+      > <a name="2418" class="Symbol"
       >&#8594;</a
-      ><a name="2419"
-      > </a
-      ><a name="2420" href="Relation.Nullary.Universe.html#2107" class="Function"
+      > <a name="2420" href="Relation.Nullary.Universe.html#map-id" class="Function"
       >map-id</a
-      ><a name="2426"
-      > </a
-      ><a name="2427" href="Relation.Nullary.Universe.html#2399" class="Bound"
+      > <a name="2427" href="Relation.Nullary.Universe.html#2399" class="Bound"
       >F&#8322;</a
-      ><a name="2429"
-      > </a
-      ><a name="2430" class="Symbol"
+      > <a name="2430" class="Symbol"
       >(</a
       ><a name="2431" href="Relation.Nullary.Universe.html#2403" class="Bound"
       >f</a
-      ><a name="2432"
-      > </a
-      ><a name="2433" href="Relation.Nullary.Universe.html#2416" class="Bound"
+      > <a name="2433" href="Relation.Nullary.Universe.html#2416" class="Bound"
       >x</a
       ><a name="2434" class="Symbol"
       >)</a
-      ><a name="2435"
       >
-</a
-      ><a name="2436" href="Relation.Nullary.Universe.html#2107" class="Function"
+<a name="2436" href="Relation.Nullary.Universe.html#map-id" class="Function"
       >map-id</a
-      ><a name="2442"
-      > </a
-      ><a name="2443" class="Symbol"
+      > <a name="2443" class="Symbol"
       >(</a
-      ><a name="2444" href="Relation.Nullary.Universe.html#1126" class="InductiveConstructor Operator"
+      ><a name="2444" href="Relation.Nullary.Universe.html#PropF.&#172;&#172;_" class="InductiveConstructor Operator"
       >&#172;&#172;</a
-      ><a name="2446"
-      > </a
-      ><a name="2447" href="Relation.Nullary.Universe.html#2447" class="Bound"
+      > <a name="2447" href="Relation.Nullary.Universe.html#2447" class="Bound"
       >F</a
       ><a name="2448" class="Symbol"
       >)</a
-      ><a name="2449"
-      >    </a
-      ><a name="2453" href="Relation.Nullary.Universe.html#2453" class="Bound"
+      >    <a name="2453" href="Relation.Nullary.Universe.html#2453" class="Bound"
       >&#172;&#172;x</a
-      ><a name="2456"
-      >      </a
-      ><a name="2462" class="Symbol"
+      >      <a name="2462" class="Symbol"
       >=</a
-      ><a name="2463"
-      > </a
-      ><a name="2464" class="Symbol"
+      > <a name="2464" class="Symbol"
       >_</a
-      ><a name="2465"
       >
 
-</a
-      ><a name="2467" href="Relation.Nullary.Universe.html#2467" class="Function"
+<a name="map-&#8728;" href="Relation.Nullary.Universe.html#map-&#8728;" class="Function"
       >map-&#8728;</a
-      ><a name="2472"
-      > </a
-      ><a name="2473" class="Symbol"
+      > <a name="2473" class="Symbol"
       >:</a
-      ><a name="2474"
-      > </a
-      ><a name="2475" class="Symbol"
+      > <a name="2475" class="Symbol"
       >&#8704;</a
-      ><a name="2476"
-      > </a
-      ><a name="2477" class="Symbol"
+      > <a name="2477" class="Symbol"
       >{</a
       ><a name="2478" href="Relation.Nullary.Universe.html#2478" class="Bound"
       >p</a
       ><a name="2479" class="Symbol"
       >}</a
-      ><a name="2480"
-      > </a
-      ><a name="2481" class="Symbol"
+      > <a name="2481" class="Symbol"
       >(</a
       ><a name="2482" href="Relation.Nullary.Universe.html#2482" class="Bound"
       >F</a
-      ><a name="2483"
-      > </a
-      ><a name="2484" class="Symbol"
+      > <a name="2484" class="Symbol"
       >:</a
-      ><a name="2485"
-      > </a
-      ><a name="2486" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="2486" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="2491"
-      > </a
-      ><a name="2492" href="Relation.Nullary.Universe.html#2478" class="Bound"
+      > <a name="2492" href="Relation.Nullary.Universe.html#2478" class="Bound"
       >p</a
       ><a name="2493" class="Symbol"
       >)</a
-      ><a name="2494"
-      > </a
-      ><a name="2495" class="Symbol"
+      > <a name="2495" class="Symbol"
       >{</a
       ><a name="2496" href="Relation.Nullary.Universe.html#2496" class="Bound"
       >P</a
-      ><a name="2497"
-      > </a
-      ><a name="2498" href="Relation.Nullary.Universe.html#2498" class="Bound"
+      > <a name="2498" href="Relation.Nullary.Universe.html#2498" class="Bound"
       >Q</a
-      ><a name="2499"
-      > </a
-      ><a name="2500" href="Relation.Nullary.Universe.html#2500" class="Bound"
+      > <a name="2500" href="Relation.Nullary.Universe.html#2500" class="Bound"
       >R</a
       ><a name="2501" class="Symbol"
       >}</a
-      ><a name="2502"
-      > </a
-      ><a name="2503" class="Symbol"
+      > <a name="2503" class="Symbol"
       >(</a
       ><a name="2504" href="Relation.Nullary.Universe.html#2504" class="Bound"
       >f</a
-      ><a name="2505"
-      > </a
-      ><a name="2506" class="Symbol"
+      > <a name="2506" class="Symbol"
       >:</a
-      ><a name="2507"
-      > </a
-      ><a name="2508" href="Relation.Nullary.Universe.html#2498" class="Bound"
+      > <a name="2508" href="Relation.Nullary.Universe.html#2498" class="Bound"
       >Q</a
-      ><a name="2509"
-      > </a
-      ><a name="2510" class="Symbol"
+      > <a name="2510" class="Symbol"
       >&#8594;</a
-      ><a name="2511"
-      > </a
-      ><a name="2512" href="Relation.Nullary.Universe.html#2500" class="Bound"
+      > <a name="2512" href="Relation.Nullary.Universe.html#2500" class="Bound"
       >R</a
       ><a name="2513" class="Symbol"
       >)</a
-      ><a name="2514"
-      > </a
-      ><a name="2515" class="Symbol"
+      > <a name="2515" class="Symbol"
       >(</a
       ><a name="2516" href="Relation.Nullary.Universe.html#2516" class="Bound"
       >g</a
-      ><a name="2517"
-      > </a
-      ><a name="2518" class="Symbol"
+      > <a name="2518" class="Symbol"
       >:</a
-      ><a name="2519"
-      > </a
-      ><a name="2520" href="Relation.Nullary.Universe.html#2496" class="Bound"
+      > <a name="2520" href="Relation.Nullary.Universe.html#2496" class="Bound"
       >P</a
-      ><a name="2521"
-      > </a
-      ><a name="2522" class="Symbol"
+      > <a name="2522" class="Symbol"
       >&#8594;</a
-      ><a name="2523"
-      > </a
-      ><a name="2524" href="Relation.Nullary.Universe.html#2498" class="Bound"
+      > <a name="2524" href="Relation.Nullary.Universe.html#2498" class="Bound"
       >Q</a
       ><a name="2525" class="Symbol"
       >)</a
-      ><a name="2526"
-      > </a
-      ><a name="2527" class="Symbol"
+      > <a name="2527" class="Symbol"
       >&#8594;</a
-      ><a name="2528"
       >
-        </a
-      ><a name="2537" href="Relation.Nullary.Universe.html#1690" class="Function Operator"
+        <a name="2537" href="Relation.Nullary.Universe.html#&#10216;_&#10217;_&#8776;_" class="Function Operator"
       >&#10216;</a
-      ><a name="2538"
-      > </a
-      ><a name="2539" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="2539" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="2540"
-      > </a
-      ><a name="2541" href="Relation.Nullary.Universe.html#2482" class="Bound"
+      > <a name="2541" href="Relation.Nullary.Universe.html#2482" class="Bound"
       >F</a
-      ><a name="2542"
-      > </a
-      ><a name="2543" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="2543" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="2544"
-      > </a
-      ><a name="2545" href="Relation.Nullary.Universe.html#2496" class="Bound"
+      > <a name="2545" href="Relation.Nullary.Universe.html#2496" class="Bound"
       >P</a
-      ><a name="2546"
-      > </a
-      ><a name="2547" href="Relation.Nullary.Universe.html#1079" class="InductiveConstructor Operator"
+      > <a name="2547" href="Relation.Nullary.Universe.html#PropF._&#8658;_" class="InductiveConstructor Operator"
       >&#8658;</a
-      ><a name="2548"
-      > </a
-      ><a name="2549" href="Relation.Nullary.Universe.html#2482" class="Bound"
+      > <a name="2549" href="Relation.Nullary.Universe.html#2482" class="Bound"
       >F</a
-      ><a name="2550"
-      > </a
-      ><a name="2551" href="Relation.Nullary.Universe.html#1690" class="Function Operator"
+      > <a name="2551" href="Relation.Nullary.Universe.html#&#10216;_&#10217;_&#8776;_" class="Function Operator"
       >&#10217;</a
-      ><a name="2552"
-      > </a
-      ><a name="2553" href="Relation.Nullary.Universe.html#1810" class="Function"
+      > <a name="2553" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="2556"
-      > </a
-      ><a name="2557" href="Relation.Nullary.Universe.html#2482" class="Bound"
+      > <a name="2557" href="Relation.Nullary.Universe.html#2482" class="Bound"
       >F</a
-      ><a name="2558"
-      > </a
-      ><a name="2559" href="Relation.Nullary.Universe.html#2504" class="Bound"
+      > <a name="2559" href="Relation.Nullary.Universe.html#2504" class="Bound"
       >f</a
-      ><a name="2560"
-      > </a
-      ><a name="2561" href="Function.html#713" class="Function Operator"
+      > <a name="2561" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="2562"
-      > </a
-      ><a name="2563" href="Relation.Nullary.Universe.html#1810" class="Function"
+      > <a name="2563" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="2566"
-      > </a
-      ><a name="2567" href="Relation.Nullary.Universe.html#2482" class="Bound"
+      > <a name="2567" href="Relation.Nullary.Universe.html#2482" class="Bound"
       >F</a
-      ><a name="2568"
-      > </a
-      ><a name="2569" href="Relation.Nullary.Universe.html#2516" class="Bound"
+      > <a name="2569" href="Relation.Nullary.Universe.html#2516" class="Bound"
       >g</a
-      ><a name="2570"
-      > </a
-      ><a name="2571" href="Relation.Nullary.Universe.html#1690" class="Function Operator"
+      > <a name="2571" href="Relation.Nullary.Universe.html#&#10216;_&#10217;_&#8776;_" class="Function Operator"
       >&#8776;</a
-      ><a name="2572"
-      > </a
-      ><a name="2573" href="Relation.Nullary.Universe.html#1810" class="Function"
+      > <a name="2573" href="Relation.Nullary.Universe.html#map" class="Function"
       >map</a
-      ><a name="2576"
-      > </a
-      ><a name="2577" href="Relation.Nullary.Universe.html#2482" class="Bound"
+      > <a name="2577" href="Relation.Nullary.Universe.html#2482" class="Bound"
       >F</a
-      ><a name="2578"
-      > </a
-      ><a name="2579" class="Symbol"
+      > <a name="2579" class="Symbol"
       >(</a
       ><a name="2580" href="Relation.Nullary.Universe.html#2504" class="Bound"
       >f</a
-      ><a name="2581"
-      > </a
-      ><a name="2582" href="Function.html#713" class="Function Operator"
+      > <a name="2582" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="2583"
-      > </a
-      ><a name="2584" href="Relation.Nullary.Universe.html#2516" class="Bound"
+      > <a name="2584" href="Relation.Nullary.Universe.html#2516" class="Bound"
       >g</a
       ><a name="2585" class="Symbol"
       >)</a
-      ><a name="2586"
       >
-</a
-      ><a name="2587" href="Relation.Nullary.Universe.html#2467" class="Function"
+<a name="2587" href="Relation.Nullary.Universe.html#map-&#8728;" class="Function"
       >map-&#8728;</a
-      ><a name="2592"
-      > </a
-      ><a name="2593" href="Relation.Nullary.Universe.html#957" class="InductiveConstructor"
+      > <a name="2593" href="Relation.Nullary.Universe.html#PropF.Id" class="InductiveConstructor"
       >Id</a
-      ><a name="2595"
-      >        </a
-      ><a name="2603" href="Relation.Nullary.Universe.html#2603" class="Bound"
+      >        <a name="2603" href="Relation.Nullary.Universe.html#2603" class="Bound"
       >f</a
-      ><a name="2604"
-      > </a
-      ><a name="2605" href="Relation.Nullary.Universe.html#2605" class="Bound"
+      > <a name="2605" href="Relation.Nullary.Universe.html#2605" class="Bound"
       >g</a
-      ><a name="2606"
-      > </a
-      ><a name="2607" href="Relation.Nullary.Universe.html#2607" class="Bound"
+      > <a name="2607" href="Relation.Nullary.Universe.html#2607" class="Bound"
       >x</a
-      ><a name="2608"
-      >        </a
-      ><a name="2616" class="Symbol"
+      >        <a name="2616" class="Symbol"
       >=</a
-      ><a name="2617"
-      > </a
-      ><a name="2618" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="2618" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="2622"
       >
-</a
-      ><a name="2623" href="Relation.Nullary.Universe.html#2467" class="Function"
+<a name="2623" href="Relation.Nullary.Universe.html#map-&#8728;" class="Function"
       >map-&#8728;</a
-      ><a name="2628"
-      > </a
-      ><a name="2629" class="Symbol"
+      > <a name="2629" class="Symbol"
       >(</a
-      ><a name="2630" href="Relation.Nullary.Universe.html#974" class="InductiveConstructor"
+      ><a name="2630" href="Relation.Nullary.Universe.html#PropF.K" class="InductiveConstructor"
       >K</a
-      ><a name="2631"
-      > </a
-      ><a name="2632" href="Relation.Nullary.Universe.html#2632" class="Bound"
+      > <a name="2632" href="Relation.Nullary.Universe.html#2632" class="Bound"
       >P</a
       ><a name="2633" class="Symbol"
       >)</a
-      ><a name="2634"
-      >     </a
-      ><a name="2639" href="Relation.Nullary.Universe.html#2639" class="Bound"
+      >     <a name="2639" href="Relation.Nullary.Universe.html#2639" class="Bound"
       >f</a
-      ><a name="2640"
-      > </a
-      ><a name="2641" href="Relation.Nullary.Universe.html#2641" class="Bound"
+      > <a name="2641" href="Relation.Nullary.Universe.html#2641" class="Bound"
       >g</a
-      ><a name="2642"
-      > </a
-      ><a name="2643" href="Relation.Nullary.Universe.html#2643" class="Bound"
+      > <a name="2643" href="Relation.Nullary.Universe.html#2643" class="Bound"
       >x</a
-      ><a name="2644"
-      >        </a
-      ><a name="2652" class="Symbol"
+      >        <a name="2652" class="Symbol"
       >=</a
-      ><a name="2653"
-      > </a
-      ><a name="2654" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="2654" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="2658"
       >
-</a
-      ><a name="2659" href="Relation.Nullary.Universe.html#2467" class="Function"
+<a name="2659" href="Relation.Nullary.Universe.html#map-&#8728;" class="Function"
       >map-&#8728;</a
-      ><a name="2664"
-      > </a
-      ><a name="2665" class="Symbol"
+      > <a name="2665" class="Symbol"
       >(</a
       ><a name="2666" href="Relation.Nullary.Universe.html#2666" class="Bound"
       >F&#8321;</a
-      ><a name="2668"
-      > </a
-      ><a name="2669" href="Relation.Nullary.Universe.html#1005" class="InductiveConstructor Operator"
+      > <a name="2669" href="Relation.Nullary.Universe.html#PropF._&#8744;_" class="InductiveConstructor Operator"
       >&#8744;</a
-      ><a name="2670"
-      > </a
-      ><a name="2671" href="Relation.Nullary.Universe.html#2671" class="Bound"
+      > <a name="2671" href="Relation.Nullary.Universe.html#2671" class="Bound"
       >F&#8322;</a
       ><a name="2673" class="Symbol"
       >)</a
-      ><a name="2674"
-      > </a
-      ><a name="2675" href="Relation.Nullary.Universe.html#2675" class="Bound"
+      > <a name="2675" href="Relation.Nullary.Universe.html#2675" class="Bound"
       >f</a
-      ><a name="2676"
-      > </a
-      ><a name="2677" href="Relation.Nullary.Universe.html#2677" class="Bound"
+      > <a name="2677" href="Relation.Nullary.Universe.html#2677" class="Bound"
       >g</a
-      ><a name="2678"
-      > </a
-      ><a name="2679" class="Symbol"
+      > <a name="2679" class="Symbol"
       >(</a
-      ><a name="2680" href="Data.Sum.html#489" class="InductiveConstructor"
+      ><a name="2680" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
       >inj&#8321;</a
-      ><a name="2684"
-      > </a
-      ><a name="2685" href="Relation.Nullary.Universe.html#2685" class="Bound"
+      > <a name="2685" href="Relation.Nullary.Universe.html#2685" class="Bound"
       >x</a
       ><a name="2686" class="Symbol"
       >)</a
-      ><a name="2687"
-      > </a
-      ><a name="2688" class="Symbol"
+      > <a name="2688" class="Symbol"
       >=</a
-      ><a name="2689"
-      > </a
-      ><a name="2690" href="Relation.Binary.Sum.html#1460" class="InductiveConstructor"
+      > <a name="2690" href="Relation.Binary.Sum.html#1460" class="InductiveConstructor"
       >&#8321;&#8764;&#8321;</a
-      ><a name="2693"
-      > </a
-      ><a name="2694" class="Symbol"
+      > <a name="2694" class="Symbol"
       >(</a
-      ><a name="2695" href="Relation.Nullary.Universe.html#2467" class="Function"
+      ><a name="2695" href="Relation.Nullary.Universe.html#map-&#8728;" class="Function"
       >map-&#8728;</a
-      ><a name="2700"
-      > </a
-      ><a name="2701" href="Relation.Nullary.Universe.html#2666" class="Bound"
+      > <a name="2701" href="Relation.Nullary.Universe.html#2666" class="Bound"
       >F&#8321;</a
-      ><a name="2703"
-      > </a
-      ><a name="2704" href="Relation.Nullary.Universe.html#2675" class="Bound"
+      > <a name="2704" href="Relation.Nullary.Universe.html#2675" class="Bound"
       >f</a
-      ><a name="2705"
-      > </a
-      ><a name="2706" href="Relation.Nullary.Universe.html#2677" class="Bound"
+      > <a name="2706" href="Relation.Nullary.Universe.html#2677" class="Bound"
       >g</a
-      ><a name="2707"
-      > </a
-      ><a name="2708" href="Relation.Nullary.Universe.html#2685" class="Bound"
+      > <a name="2708" href="Relation.Nullary.Universe.html#2685" class="Bound"
       >x</a
       ><a name="2709" class="Symbol"
       >)</a
-      ><a name="2710"
       >
-</a
-      ><a name="2711" href="Relation.Nullary.Universe.html#2467" class="Function"
+<a name="2711" href="Relation.Nullary.Universe.html#map-&#8728;" class="Function"
       >map-&#8728;</a
-      ><a name="2716"
-      > </a
-      ><a name="2717" class="Symbol"
+      > <a name="2717" class="Symbol"
       >(</a
       ><a name="2718" href="Relation.Nullary.Universe.html#2718" class="Bound"
       >F&#8321;</a
-      ><a name="2720"
-      > </a
-      ><a name="2721" href="Relation.Nullary.Universe.html#1005" class="InductiveConstructor Operator"
+      > <a name="2721" href="Relation.Nullary.Universe.html#PropF._&#8744;_" class="InductiveConstructor Operator"
       >&#8744;</a
-      ><a name="2722"
-      > </a
-      ><a name="2723" href="Relation.Nullary.Universe.html#2723" class="Bound"
+      > <a name="2723" href="Relation.Nullary.Universe.html#2723" class="Bound"
       >F&#8322;</a
       ><a name="2725" class="Symbol"
       >)</a
-      ><a name="2726"
-      > </a
-      ><a name="2727" href="Relation.Nullary.Universe.html#2727" class="Bound"
+      > <a name="2727" href="Relation.Nullary.Universe.html#2727" class="Bound"
       >f</a
-      ><a name="2728"
-      > </a
-      ><a name="2729" href="Relation.Nullary.Universe.html#2729" class="Bound"
+      > <a name="2729" href="Relation.Nullary.Universe.html#2729" class="Bound"
       >g</a
-      ><a name="2730"
-      > </a
-      ><a name="2731" class="Symbol"
+      > <a name="2731" class="Symbol"
       >(</a
-      ><a name="2732" href="Data.Sum.html#514" class="InductiveConstructor"
+      ><a name="2732" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
       >inj&#8322;</a
-      ><a name="2736"
-      > </a
-      ><a name="2737" href="Relation.Nullary.Universe.html#2737" class="Bound"
+      > <a name="2737" href="Relation.Nullary.Universe.html#2737" class="Bound"
       >y</a
       ><a name="2738" class="Symbol"
       >)</a
-      ><a name="2739"
-      > </a
-      ><a name="2740" class="Symbol"
+      > <a name="2740" class="Symbol"
       >=</a
-      ><a name="2741"
-      > </a
-      ><a name="2742" href="Relation.Binary.Sum.html#1529" class="InductiveConstructor"
+      > <a name="2742" href="Relation.Binary.Sum.html#1529" class="InductiveConstructor"
       >&#8322;&#8764;&#8322;</a
-      ><a name="2745"
-      > </a
-      ><a name="2746" class="Symbol"
+      > <a name="2746" class="Symbol"
       >(</a
-      ><a name="2747" href="Relation.Nullary.Universe.html#2467" class="Function"
+      ><a name="2747" href="Relation.Nullary.Universe.html#map-&#8728;" class="Function"
       >map-&#8728;</a
-      ><a name="2752"
-      > </a
-      ><a name="2753" href="Relation.Nullary.Universe.html#2723" class="Bound"
+      > <a name="2753" href="Relation.Nullary.Universe.html#2723" class="Bound"
       >F&#8322;</a
-      ><a name="2755"
-      > </a
-      ><a name="2756" href="Relation.Nullary.Universe.html#2727" class="Bound"
+      > <a name="2756" href="Relation.Nullary.Universe.html#2727" class="Bound"
       >f</a
-      ><a name="2757"
-      > </a
-      ><a name="2758" href="Relation.Nullary.Universe.html#2729" class="Bound"
+      > <a name="2758" href="Relation.Nullary.Universe.html#2729" class="Bound"
       >g</a
-      ><a name="2759"
-      > </a
-      ><a name="2760" href="Relation.Nullary.Universe.html#2737" class="Bound"
+      > <a name="2760" href="Relation.Nullary.Universe.html#2737" class="Bound"
       >y</a
       ><a name="2761" class="Symbol"
       >)</a
-      ><a name="2762"
       >
-</a
-      ><a name="2763" href="Relation.Nullary.Universe.html#2467" class="Function"
+<a name="2763" href="Relation.Nullary.Universe.html#map-&#8728;" class="Function"
       >map-&#8728;</a
-      ><a name="2768"
-      > </a
-      ><a name="2769" class="Symbol"
+      > <a name="2769" class="Symbol"
       >(</a
       ><a name="2770" href="Relation.Nullary.Universe.html#2770" class="Bound"
       >F&#8321;</a
-      ><a name="2772"
-      > </a
-      ><a name="2773" href="Relation.Nullary.Universe.html#1042" class="InductiveConstructor Operator"
+      > <a name="2773" href="Relation.Nullary.Universe.html#PropF._&#8743;_" class="InductiveConstructor Operator"
       >&#8743;</a
-      ><a name="2774"
-      > </a
-      ><a name="2775" href="Relation.Nullary.Universe.html#2775" class="Bound"
+      > <a name="2775" href="Relation.Nullary.Universe.html#2775" class="Bound"
       >F&#8322;</a
       ><a name="2777" class="Symbol"
       >)</a
-      ><a name="2778"
-      > </a
-      ><a name="2779" href="Relation.Nullary.Universe.html#2779" class="Bound"
+      > <a name="2779" href="Relation.Nullary.Universe.html#2779" class="Bound"
       >f</a
-      ><a name="2780"
-      > </a
-      ><a name="2781" href="Relation.Nullary.Universe.html#2781" class="Bound"
+      > <a name="2781" href="Relation.Nullary.Universe.html#2781" class="Bound"
       >g</a
-      ><a name="2782"
-      > </a
-      ><a name="2783" href="Relation.Nullary.Universe.html#2783" class="Bound"
+      > <a name="2783" href="Relation.Nullary.Universe.html#2783" class="Bound"
       >x</a
-      ><a name="2784"
-      >        </a
-      ><a name="2792" class="Symbol"
+      >        <a name="2792" class="Symbol"
       >=</a
-      ><a name="2793"
-      > </a
-      ><a name="2794" class="Symbol"
+      > <a name="2794" class="Symbol"
       >(</a
-      ><a name="2795" href="Relation.Nullary.Universe.html#2467" class="Function"
+      ><a name="2795" href="Relation.Nullary.Universe.html#map-&#8728;" class="Function"
       >map-&#8728;</a
-      ><a name="2800"
-      > </a
-      ><a name="2801" href="Relation.Nullary.Universe.html#2770" class="Bound"
+      > <a name="2801" href="Relation.Nullary.Universe.html#2770" class="Bound"
       >F&#8321;</a
-      ><a name="2803"
-      > </a
-      ><a name="2804" href="Relation.Nullary.Universe.html#2779" class="Bound"
+      > <a name="2804" href="Relation.Nullary.Universe.html#2779" class="Bound"
       >f</a
-      ><a name="2805"
-      > </a
-      ><a name="2806" href="Relation.Nullary.Universe.html#2781" class="Bound"
+      > <a name="2806" href="Relation.Nullary.Universe.html#2781" class="Bound"
       >g</a
-      ><a name="2807"
-      > </a
-      ><a name="2808" class="Symbol"
+      > <a name="2808" class="Symbol"
       >(</a
-      ><a name="2809" href="Data.Product.html#525" class="Field"
+      ><a name="2809" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="2814"
-      > </a
-      ><a name="2815" href="Relation.Nullary.Universe.html#2783" class="Bound"
+      > <a name="2815" href="Relation.Nullary.Universe.html#2783" class="Bound"
       >x</a
       ><a name="2816" class="Symbol"
       >)</a
-      ><a name="2817"
-      > </a
-      ><a name="2818" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2818" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2819"
       >
-                                </a
-      ><a name="2852" href="Relation.Nullary.Universe.html#2467" class="Function"
+                                <a name="2852" href="Relation.Nullary.Universe.html#map-&#8728;" class="Function"
       >map-&#8728;</a
-      ><a name="2857"
-      > </a
-      ><a name="2858" href="Relation.Nullary.Universe.html#2775" class="Bound"
+      > <a name="2858" href="Relation.Nullary.Universe.html#2775" class="Bound"
       >F&#8322;</a
-      ><a name="2860"
-      > </a
-      ><a name="2861" href="Relation.Nullary.Universe.html#2779" class="Bound"
+      > <a name="2861" href="Relation.Nullary.Universe.html#2779" class="Bound"
       >f</a
-      ><a name="2862"
-      > </a
-      ><a name="2863" href="Relation.Nullary.Universe.html#2781" class="Bound"
+      > <a name="2863" href="Relation.Nullary.Universe.html#2781" class="Bound"
       >g</a
-      ><a name="2864"
-      > </a
-      ><a name="2865" class="Symbol"
+      > <a name="2865" class="Symbol"
       >(</a
-      ><a name="2866" href="Data.Product.html#539" class="Field"
+      ><a name="2866" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
       >proj&#8322;</a
-      ><a name="2871"
-      > </a
-      ><a name="2872" href="Relation.Nullary.Universe.html#2783" class="Bound"
+      > <a name="2872" href="Relation.Nullary.Universe.html#2783" class="Bound"
       >x</a
       ><a name="2873" class="Symbol"
       >))</a
-      ><a name="2875"
       >
-</a
-      ><a name="2876" href="Relation.Nullary.Universe.html#2467" class="Function"
+<a name="2876" href="Relation.Nullary.Universe.html#map-&#8728;" class="Function"
       >map-&#8728;</a
-      ><a name="2881"
-      > </a
-      ><a name="2882" class="Symbol"
+      > <a name="2882" class="Symbol"
       >(</a
       ><a name="2883" href="Relation.Nullary.Universe.html#2883" class="Bound"
       >P&#8321;</a
-      ><a name="2885"
-      > </a
-      ><a name="2886" href="Relation.Nullary.Universe.html#1079" class="InductiveConstructor Operator"
+      > <a name="2886" href="Relation.Nullary.Universe.html#PropF._&#8658;_" class="InductiveConstructor Operator"
       >&#8658;</a
-      ><a name="2887"
-      > </a
-      ><a name="2888" href="Relation.Nullary.Universe.html#2888" class="Bound"
+      > <a name="2888" href="Relation.Nullary.Universe.html#2888" class="Bound"
       >F&#8322;</a
       ><a name="2890" class="Symbol"
       >)</a
-      ><a name="2891"
-      > </a
-      ><a name="2892" href="Relation.Nullary.Universe.html#2892" class="Bound"
+      > <a name="2892" href="Relation.Nullary.Universe.html#2892" class="Bound"
       >f</a
-      ><a name="2893"
-      > </a
-      ><a name="2894" href="Relation.Nullary.Universe.html#2894" class="Bound"
+      > <a name="2894" href="Relation.Nullary.Universe.html#2894" class="Bound"
       >g</a
-      ><a name="2895"
-      > </a
-      ><a name="2896" href="Relation.Nullary.Universe.html#2896" class="Bound"
+      > <a name="2896" href="Relation.Nullary.Universe.html#2896" class="Bound"
       >h</a
-      ><a name="2897"
-      >        </a
-      ><a name="2905" class="Symbol"
+      >        <a name="2905" class="Symbol"
       >=</a
-      ><a name="2906"
-      > </a
-      ><a name="2907" class="Symbol"
+      > <a name="2907" class="Symbol"
       >&#955;</a
-      ><a name="2908"
-      > </a
-      ><a name="2909" href="Relation.Nullary.Universe.html#2909" class="Bound"
+      > <a name="2909" href="Relation.Nullary.Universe.html#2909" class="Bound"
       >x</a
-      ><a name="2910"
-      > </a
-      ><a name="2911" class="Symbol"
+      > <a name="2911" class="Symbol"
       >&#8594;</a
-      ><a name="2912"
-      > </a
-      ><a name="2913" href="Relation.Nullary.Universe.html#2467" class="Function"
+      > <a name="2913" href="Relation.Nullary.Universe.html#map-&#8728;" class="Function"
       >map-&#8728;</a
-      ><a name="2918"
-      > </a
-      ><a name="2919" href="Relation.Nullary.Universe.html#2888" class="Bound"
+      > <a name="2919" href="Relation.Nullary.Universe.html#2888" class="Bound"
       >F&#8322;</a
-      ><a name="2921"
-      > </a
-      ><a name="2922" href="Relation.Nullary.Universe.html#2892" class="Bound"
+      > <a name="2922" href="Relation.Nullary.Universe.html#2892" class="Bound"
       >f</a
-      ><a name="2923"
-      > </a
-      ><a name="2924" href="Relation.Nullary.Universe.html#2894" class="Bound"
+      > <a name="2924" href="Relation.Nullary.Universe.html#2894" class="Bound"
       >g</a
-      ><a name="2925"
-      > </a
-      ><a name="2926" class="Symbol"
+      > <a name="2926" class="Symbol"
       >(</a
       ><a name="2927" href="Relation.Nullary.Universe.html#2896" class="Bound"
       >h</a
-      ><a name="2928"
-      > </a
-      ><a name="2929" href="Relation.Nullary.Universe.html#2909" class="Bound"
+      > <a name="2929" href="Relation.Nullary.Universe.html#2909" class="Bound"
       >x</a
       ><a name="2930" class="Symbol"
       >)</a
-      ><a name="2931"
       >
-</a
-      ><a name="2932" href="Relation.Nullary.Universe.html#2467" class="Function"
+<a name="2932" href="Relation.Nullary.Universe.html#map-&#8728;" class="Function"
       >map-&#8728;</a
-      ><a name="2937"
-      > </a
-      ><a name="2938" class="Symbol"
+      > <a name="2938" class="Symbol"
       >(</a
-      ><a name="2939" href="Relation.Nullary.Universe.html#1126" class="InductiveConstructor Operator"
+      ><a name="2939" href="Relation.Nullary.Universe.html#PropF.&#172;&#172;_" class="InductiveConstructor Operator"
       >&#172;&#172;</a
-      ><a name="2941"
-      > </a
-      ><a name="2942" href="Relation.Nullary.Universe.html#2942" class="Bound"
+      > <a name="2942" href="Relation.Nullary.Universe.html#2942" class="Bound"
       >F</a
       ><a name="2943" class="Symbol"
       >)</a
-      ><a name="2944"
-      >    </a
-      ><a name="2948" href="Relation.Nullary.Universe.html#2948" class="Bound"
+      >    <a name="2948" href="Relation.Nullary.Universe.html#2948" class="Bound"
       >f</a
-      ><a name="2949"
-      > </a
-      ><a name="2950" href="Relation.Nullary.Universe.html#2950" class="Bound"
+      > <a name="2950" href="Relation.Nullary.Universe.html#2950" class="Bound"
       >g</a
-      ><a name="2951"
-      > </a
-      ><a name="2952" href="Relation.Nullary.Universe.html#2952" class="Bound"
+      > <a name="2952" href="Relation.Nullary.Universe.html#2952" class="Bound"
       >x</a
-      ><a name="2953"
-      >        </a
-      ><a name="2961" class="Symbol"
+      >        <a name="2961" class="Symbol"
       >=</a
-      ><a name="2962"
-      > </a
-      ><a name="2963" class="Symbol"
+      > <a name="2963" class="Symbol"
       >_</a
-      ><a name="2964"
       >
 
-</a
-      ><a name="2966" class="Comment"
+<a name="2966" class="Comment"
       >-- A variant of sequence can be implemented for &#10214; F &#10215;.</a
-      ><a name="3020"
       >
 
-</a
-      ><a name="3022" href="Relation.Nullary.Universe.html#3022" class="Function"
+<a name="sequence" href="Relation.Nullary.Universe.html#sequence" class="Function"
       >sequence</a
-      ><a name="3030"
-      > </a
-      ><a name="3031" class="Symbol"
+      > <a name="3031" class="Symbol"
       >:</a
-      ><a name="3032"
-      > </a
-      ><a name="3033" class="Symbol"
+      > <a name="3033" class="Symbol"
       >&#8704;</a
-      ><a name="3034"
-      > </a
-      ><a name="3035" class="Symbol"
+      > <a name="3035" class="Symbol"
       >{</a
       ><a name="3036" href="Relation.Nullary.Universe.html#3036" class="Bound"
       >p</a
-      ><a name="3037"
-      > </a
-      ><a name="3038" href="Relation.Nullary.Universe.html#3038" class="Bound"
+      > <a name="3038" href="Relation.Nullary.Universe.html#3038" class="Bound"
       >AF</a
       ><a name="3040" class="Symbol"
       >}</a
-      ><a name="3041"
-      > </a
-      ><a name="3042" class="Symbol"
+      > <a name="3042" class="Symbol"
       >&#8594;</a
-      ><a name="3043"
-      > </a
-      ><a name="3044" href="Category.Applicative.html#382" class="Function"
+      > <a name="3044" href="Category.Applicative.html#RawApplicative" class="Function"
       >RawApplicative</a
-      ><a name="3058"
-      > </a
-      ><a name="3059" href="Relation.Nullary.Universe.html#3038" class="Bound"
+      > <a name="3059" href="Relation.Nullary.Universe.html#3038" class="Bound"
       >AF</a
-      ><a name="3061"
-      > </a
-      ><a name="3062" class="Symbol"
+      > <a name="3062" class="Symbol"
       >&#8594;</a
-      ><a name="3063"
       >
-           </a
-      ><a name="3075" class="Symbol"
+           <a name="3075" class="Symbol"
       >(</a
       ><a name="3076" href="Relation.Nullary.Universe.html#3038" class="Bound"
       >AF</a
-      ><a name="3078"
-      > </a
-      ><a name="3079" class="Symbol"
+      > <a name="3079" class="Symbol"
       >(</a
-      ><a name="3080" href="Level.html#350" class="Record"
+      ><a name="3080" href="Level.html#Lift" class="Record"
       >Lift</a
-      ><a name="3084"
-      > </a
-      ><a name="3085" href="Data.Empty.html#243" class="Datatype"
+      > <a name="3085" href="Data.Empty.html#&#8869;" class="Datatype"
       >&#8869;</a
       ><a name="3086" class="Symbol"
       >)</a
-      ><a name="3087"
-      > </a
-      ><a name="3088" class="Symbol"
+      > <a name="3088" class="Symbol"
       >&#8594;</a
-      ><a name="3089"
-      > </a
-      ><a name="3090" href="Data.Empty.html#243" class="Datatype"
+      > <a name="3090" href="Data.Empty.html#&#8869;" class="Datatype"
       >&#8869;</a
       ><a name="3091" class="Symbol"
       >)</a
-      ><a name="3092"
-      > </a
-      ><a name="3093" class="Symbol"
+      > <a name="3093" class="Symbol"
       >&#8594;</a
-      ><a name="3094"
       >
-           </a
-      ><a name="3106" class="Symbol"
+           <a name="3106" class="Symbol"
       >({</a
       ><a name="3108" href="Relation.Nullary.Universe.html#3108" class="Bound"
       >A</a
-      ><a name="3109"
-      > </a
-      ><a name="3110" href="Relation.Nullary.Universe.html#3110" class="Bound"
+      > <a name="3110" href="Relation.Nullary.Universe.html#3110" class="Bound"
       >B</a
-      ><a name="3111"
-      > </a
-      ><a name="3112" class="Symbol"
+      > <a name="3112" class="Symbol"
       >:</a
-      ><a name="3113"
-      > </a
-      ><a name="3114" class="PrimitiveType"
+      > <a name="3114" class="PrimitiveType"
       >Set</a
-      ><a name="3117"
-      > </a
-      ><a name="3118" href="Relation.Nullary.Universe.html#3036" class="Bound"
+      > <a name="3118" href="Relation.Nullary.Universe.html#3036" class="Bound"
       >p</a
       ><a name="3119" class="Symbol"
       >}</a
-      ><a name="3120"
-      > </a
-      ><a name="3121" class="Symbol"
+      > <a name="3121" class="Symbol"
       >&#8594;</a
-      ><a name="3122"
-      > </a
-      ><a name="3123" class="Symbol"
+      > <a name="3123" class="Symbol"
       >(</a
       ><a name="3124" href="Relation.Nullary.Universe.html#3108" class="Bound"
       >A</a
-      ><a name="3125"
-      > </a
-      ><a name="3126" class="Symbol"
+      > <a name="3126" class="Symbol"
       >&#8594;</a
-      ><a name="3127"
-      > </a
-      ><a name="3128" href="Relation.Nullary.Universe.html#3038" class="Bound"
+      > <a name="3128" href="Relation.Nullary.Universe.html#3038" class="Bound"
       >AF</a
-      ><a name="3130"
-      > </a
-      ><a name="3131" href="Relation.Nullary.Universe.html#3110" class="Bound"
+      > <a name="3131" href="Relation.Nullary.Universe.html#3110" class="Bound"
       >B</a
       ><a name="3132" class="Symbol"
       >)</a
-      ><a name="3133"
-      > </a
-      ><a name="3134" class="Symbol"
+      > <a name="3134" class="Symbol"
       >&#8594;</a
-      ><a name="3135"
-      > </a
-      ><a name="3136" href="Relation.Nullary.Universe.html#3038" class="Bound"
+      > <a name="3136" href="Relation.Nullary.Universe.html#3038" class="Bound"
       >AF</a
-      ><a name="3138"
-      > </a
-      ><a name="3139" class="Symbol"
+      > <a name="3139" class="Symbol"
       >(</a
       ><a name="3140" href="Relation.Nullary.Universe.html#3108" class="Bound"
       >A</a
-      ><a name="3141"
-      > </a
-      ><a name="3142" class="Symbol"
+      > <a name="3142" class="Symbol"
       >&#8594;</a
-      ><a name="3143"
-      > </a
-      ><a name="3144" href="Relation.Nullary.Universe.html#3110" class="Bound"
+      > <a name="3144" href="Relation.Nullary.Universe.html#3110" class="Bound"
       >B</a
       ><a name="3145" class="Symbol"
       >))</a
-      ><a name="3147"
-      > </a
-      ><a name="3148" class="Symbol"
+      > <a name="3148" class="Symbol"
       >&#8594;</a
-      ><a name="3149"
       >
-           </a
-      ><a name="3161" class="Symbol"
+           <a name="3161" class="Symbol"
       >&#8704;</a
-      ><a name="3162"
-      > </a
-      ><a name="3163" href="Relation.Nullary.Universe.html#3163" class="Bound"
+      > <a name="3163" href="Relation.Nullary.Universe.html#3163" class="Bound"
       >F</a
-      ><a name="3164"
-      > </a
-      ><a name="3165" class="Symbol"
+      > <a name="3165" class="Symbol"
       >{</a
       ><a name="3166" href="Relation.Nullary.Universe.html#3166" class="Bound"
       >P</a
       ><a name="3167" class="Symbol"
       >}</a
-      ><a name="3168"
-      > </a
-      ><a name="3169" class="Symbol"
+      > <a name="3169" class="Symbol"
       >&#8594;</a
-      ><a name="3170"
-      > </a
-      ><a name="3171" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="3171" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="3172"
-      > </a
-      ><a name="3173" href="Relation.Nullary.Universe.html#3163" class="Bound"
+      > <a name="3173" href="Relation.Nullary.Universe.html#3163" class="Bound"
       >F</a
-      ><a name="3174"
-      > </a
-      ><a name="3175" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="3175" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="3176"
-      > </a
-      ><a name="3177" class="Symbol"
+      > <a name="3177" class="Symbol"
       >(</a
       ><a name="3178" href="Relation.Nullary.Universe.html#3038" class="Bound"
       >AF</a
-      ><a name="3180"
-      > </a
-      ><a name="3181" href="Relation.Nullary.Universe.html#3166" class="Bound"
+      > <a name="3181" href="Relation.Nullary.Universe.html#3166" class="Bound"
       >P</a
       ><a name="3182" class="Symbol"
       >)</a
-      ><a name="3183"
-      > </a
-      ><a name="3184" class="Symbol"
+      > <a name="3184" class="Symbol"
       >&#8594;</a
-      ><a name="3185"
-      > </a
-      ><a name="3186" href="Relation.Nullary.Universe.html#3038" class="Bound"
+      > <a name="3186" href="Relation.Nullary.Universe.html#3038" class="Bound"
       >AF</a
-      ><a name="3188"
-      > </a
-      ><a name="3189" class="Symbol"
+      > <a name="3189" class="Symbol"
       >(</a
-      ><a name="3190" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      ><a name="3190" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="3191"
-      > </a
-      ><a name="3192" href="Relation.Nullary.Universe.html#3163" class="Bound"
+      > <a name="3192" href="Relation.Nullary.Universe.html#3163" class="Bound"
       >F</a
-      ><a name="3193"
-      > </a
-      ><a name="3194" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="3194" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="3195"
-      > </a
-      ><a name="3196" href="Relation.Nullary.Universe.html#3166" class="Bound"
+      > <a name="3196" href="Relation.Nullary.Universe.html#3166" class="Bound"
       >P</a
       ><a name="3197" class="Symbol"
       >)</a
-      ><a name="3198"
       >
-</a
-      ><a name="3199" href="Relation.Nullary.Universe.html#3022" class="Function"
+<a name="3199" href="Relation.Nullary.Universe.html#sequence" class="Function"
       >sequence</a
-      ><a name="3207"
-      > </a
-      ><a name="3208" class="Symbol"
+      > <a name="3208" class="Symbol"
       >{</a
       ><a name="3209" class="Argument"
       >AF</a
-      ><a name="3211"
-      > </a
-      ><a name="3212" class="Symbol"
+      > <a name="3212" class="Symbol"
       >=</a
-      ><a name="3213"
-      > </a
-      ><a name="3214" href="Relation.Nullary.Universe.html#3214" class="Bound"
+      > <a name="3214" href="Relation.Nullary.Universe.html#3214" class="Bound"
       >AF</a
       ><a name="3216" class="Symbol"
       >}</a
-      ><a name="3217"
-      > </a
-      ><a name="3218" href="Relation.Nullary.Universe.html#3218" class="Bound"
+      > <a name="3218" href="Relation.Nullary.Universe.html#3218" class="Bound"
       >A</a
-      ><a name="3219"
-      > </a
-      ><a name="3220" href="Relation.Nullary.Universe.html#3220" class="Bound"
+      > <a name="3220" href="Relation.Nullary.Universe.html#3220" class="Bound"
       >extract-&#8869;</a
-      ><a name="3229"
-      > </a
-      ><a name="3230" href="Relation.Nullary.Universe.html#3230" class="Bound"
+      > <a name="3230" href="Relation.Nullary.Universe.html#3230" class="Bound"
       >sequence-&#8658;</a
-      ><a name="3240"
-      > </a
-      ><a name="3241" class="Symbol"
+      > <a name="3241" class="Symbol"
       >=</a
-      ><a name="3242"
-      > </a
-      ><a name="3243" href="Relation.Nullary.Universe.html#3285" class="Function"
+      > <a name="3243" href="Relation.Nullary.Universe.html#3285" class="Function"
       >helper</a
-      ><a name="3249"
       >
-  </a
-      ><a name="3252" class="Keyword"
+  <a name="3252" class="Keyword"
       >where</a
-      ><a name="3257"
       >
-  </a
-      ><a name="3260" class="Keyword"
+  <a name="3260" class="Keyword"
       >open</a
-      ><a name="3264"
-      > </a
-      ><a name="3265" href="Category.Applicative.html#494" class="Module"
+      > <a name="3265" href="Category.Applicative.html#RawApplicative" class="Module"
       >RawApplicative</a
-      ><a name="3279"
-      > </a
-      ><a name="3280" href="Relation.Nullary.Universe.html#3218" class="Bound"
+      > <a name="3280" href="Relation.Nullary.Universe.html#3218" class="Bound"
       >A</a
-      ><a name="3281"
       >
 
-  </a
-      ><a name="3285" href="Relation.Nullary.Universe.html#3285" class="Function"
+  <a name="3285" href="Relation.Nullary.Universe.html#3285" class="Function"
       >helper</a
-      ><a name="3291"
-      > </a
-      ><a name="3292" class="Symbol"
+      > <a name="3292" class="Symbol"
       >:</a
-      ><a name="3293"
-      > </a
-      ><a name="3294" class="Symbol"
+      > <a name="3294" class="Symbol"
       >&#8704;</a
-      ><a name="3295"
-      > </a
-      ><a name="3296" href="Relation.Nullary.Universe.html#3296" class="Bound"
+      > <a name="3296" href="Relation.Nullary.Universe.html#3296" class="Bound"
       >F</a
-      ><a name="3297"
-      > </a
-      ><a name="3298" class="Symbol"
+      > <a name="3298" class="Symbol"
       >{</a
       ><a name="3299" href="Relation.Nullary.Universe.html#3299" class="Bound"
       >P</a
       ><a name="3300" class="Symbol"
       >}</a
-      ><a name="3301"
-      > </a
-      ><a name="3302" class="Symbol"
+      > <a name="3302" class="Symbol"
       >&#8594;</a
-      ><a name="3303"
-      > </a
-      ><a name="3304" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="3304" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="3305"
-      > </a
-      ><a name="3306" href="Relation.Nullary.Universe.html#3296" class="Bound"
+      > <a name="3306" href="Relation.Nullary.Universe.html#3296" class="Bound"
       >F</a
-      ><a name="3307"
-      > </a
-      ><a name="3308" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="3308" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="3309"
-      > </a
-      ><a name="3310" class="Symbol"
+      > <a name="3310" class="Symbol"
       >(</a
       ><a name="3311" href="Relation.Nullary.Universe.html#3214" class="Bound"
       >AF</a
-      ><a name="3313"
-      > </a
-      ><a name="3314" href="Relation.Nullary.Universe.html#3299" class="Bound"
+      > <a name="3314" href="Relation.Nullary.Universe.html#3299" class="Bound"
       >P</a
       ><a name="3315" class="Symbol"
       >)</a
-      ><a name="3316"
-      > </a
-      ><a name="3317" class="Symbol"
+      > <a name="3317" class="Symbol"
       >&#8594;</a
-      ><a name="3318"
-      > </a
-      ><a name="3319" href="Relation.Nullary.Universe.html#3214" class="Bound"
+      > <a name="3319" href="Relation.Nullary.Universe.html#3214" class="Bound"
       >AF</a
-      ><a name="3321"
-      > </a
-      ><a name="3322" class="Symbol"
+      > <a name="3322" class="Symbol"
       >(</a
-      ><a name="3323" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      ><a name="3323" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="3324"
-      > </a
-      ><a name="3325" href="Relation.Nullary.Universe.html#3296" class="Bound"
+      > <a name="3325" href="Relation.Nullary.Universe.html#3296" class="Bound"
       >F</a
-      ><a name="3326"
-      > </a
-      ><a name="3327" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="3327" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="3328"
-      > </a
-      ><a name="3329" href="Relation.Nullary.Universe.html#3299" class="Bound"
+      > <a name="3329" href="Relation.Nullary.Universe.html#3299" class="Bound"
       >P</a
       ><a name="3330" class="Symbol"
       >)</a
-      ><a name="3331"
       >
-  </a
-      ><a name="3334" href="Relation.Nullary.Universe.html#3285" class="Function"
+  <a name="3334" href="Relation.Nullary.Universe.html#3285" class="Function"
       >helper</a
-      ><a name="3340"
-      > </a
-      ><a name="3341" href="Relation.Nullary.Universe.html#957" class="InductiveConstructor"
+      > <a name="3341" href="Relation.Nullary.Universe.html#PropF.Id" class="InductiveConstructor"
       >Id</a
-      ><a name="3343"
-      >        </a
-      ><a name="3351" href="Relation.Nullary.Universe.html#3351" class="Bound"
+      >        <a name="3351" href="Relation.Nullary.Universe.html#3351" class="Bound"
       >x</a
-      ><a name="3352"
-      >        </a
-      ><a name="3360" class="Symbol"
+      >        <a name="3360" class="Symbol"
       >=</a
-      ><a name="3361"
-      > </a
-      ><a name="3362" href="Relation.Nullary.Universe.html#3351" class="Bound"
+      > <a name="3362" href="Relation.Nullary.Universe.html#3351" class="Bound"
       >x</a
-      ><a name="3363"
       >
-  </a
-      ><a name="3366" href="Relation.Nullary.Universe.html#3285" class="Function"
+  <a name="3366" href="Relation.Nullary.Universe.html#3285" class="Function"
       >helper</a
-      ><a name="3372"
-      > </a
-      ><a name="3373" class="Symbol"
+      > <a name="3373" class="Symbol"
       >(</a
-      ><a name="3374" href="Relation.Nullary.Universe.html#974" class="InductiveConstructor"
+      ><a name="3374" href="Relation.Nullary.Universe.html#PropF.K" class="InductiveConstructor"
       >K</a
-      ><a name="3375"
-      > </a
-      ><a name="3376" href="Relation.Nullary.Universe.html#3376" class="Bound"
+      > <a name="3376" href="Relation.Nullary.Universe.html#3376" class="Bound"
       >P</a
       ><a name="3377" class="Symbol"
       >)</a
-      ><a name="3378"
-      >     </a
-      ><a name="3383" href="Relation.Nullary.Universe.html#3383" class="Bound"
+      >     <a name="3383" href="Relation.Nullary.Universe.html#3383" class="Bound"
       >x</a
-      ><a name="3384"
-      >        </a
-      ><a name="3392" class="Symbol"
+      >        <a name="3392" class="Symbol"
       >=</a
-      ><a name="3393"
-      > </a
-      ><a name="3394" href="Category.Applicative.Indexed.html#728" class="Function"
+      > <a name="3394" href="Category.Applicative.Indexed.html#747" class="Function"
       >pure</a
-      ><a name="3398"
-      > </a
-      ><a name="3399" href="Relation.Nullary.Universe.html#3383" class="Bound"
+      > <a name="3399" href="Relation.Nullary.Universe.html#3383" class="Bound"
       >x</a
-      ><a name="3400"
       >
-  </a
-      ><a name="3403" href="Relation.Nullary.Universe.html#3285" class="Function"
+  <a name="3403" href="Relation.Nullary.Universe.html#3285" class="Function"
       >helper</a
-      ><a name="3409"
-      > </a
-      ><a name="3410" class="Symbol"
+      > <a name="3410" class="Symbol"
       >(</a
       ><a name="3411" href="Relation.Nullary.Universe.html#3411" class="Bound"
       >F&#8321;</a
-      ><a name="3413"
-      > </a
-      ><a name="3414" href="Relation.Nullary.Universe.html#1005" class="InductiveConstructor Operator"
+      > <a name="3414" href="Relation.Nullary.Universe.html#PropF._&#8744;_" class="InductiveConstructor Operator"
       >&#8744;</a
-      ><a name="3415"
-      > </a
-      ><a name="3416" href="Relation.Nullary.Universe.html#3416" class="Bound"
+      > <a name="3416" href="Relation.Nullary.Universe.html#3416" class="Bound"
       >F&#8322;</a
       ><a name="3418" class="Symbol"
       >)</a
-      ><a name="3419"
-      > </a
-      ><a name="3420" class="Symbol"
+      > <a name="3420" class="Symbol"
       >(</a
-      ><a name="3421" href="Data.Sum.html#489" class="InductiveConstructor"
+      ><a name="3421" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
       >inj&#8321;</a
-      ><a name="3425"
-      > </a
-      ><a name="3426" href="Relation.Nullary.Universe.html#3426" class="Bound"
+      > <a name="3426" href="Relation.Nullary.Universe.html#3426" class="Bound"
       >x</a
       ><a name="3427" class="Symbol"
       >)</a
-      ><a name="3428"
-      > </a
-      ><a name="3429" class="Symbol"
+      > <a name="3429" class="Symbol"
       >=</a
-      ><a name="3430"
-      > </a
-      ><a name="3431" href="Data.Sum.html#489" class="InductiveConstructor"
+      > <a name="3431" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
       >inj&#8321;</a
-      ><a name="3435"
-      > </a
-      ><a name="3436" href="Category.Functor.html#424" class="Function Operator"
+      > <a name="3436" href="Category.Functor.html#475" class="Function Operator"
       >&lt;$&gt;</a
-      ><a name="3439"
-      > </a
-      ><a name="3440" href="Relation.Nullary.Universe.html#3285" class="Function"
+      > <a name="3440" href="Relation.Nullary.Universe.html#3285" class="Function"
       >helper</a
-      ><a name="3446"
-      > </a
-      ><a name="3447" href="Relation.Nullary.Universe.html#3411" class="Bound"
+      > <a name="3447" href="Relation.Nullary.Universe.html#3411" class="Bound"
       >F&#8321;</a
-      ><a name="3449"
-      > </a
-      ><a name="3450" href="Relation.Nullary.Universe.html#3426" class="Bound"
+      > <a name="3450" href="Relation.Nullary.Universe.html#3426" class="Bound"
       >x</a
-      ><a name="3451"
       >
-  </a
-      ><a name="3454" href="Relation.Nullary.Universe.html#3285" class="Function"
+  <a name="3454" href="Relation.Nullary.Universe.html#3285" class="Function"
       >helper</a
-      ><a name="3460"
-      > </a
-      ><a name="3461" class="Symbol"
+      > <a name="3461" class="Symbol"
       >(</a
       ><a name="3462" href="Relation.Nullary.Universe.html#3462" class="Bound"
       >F&#8321;</a
-      ><a name="3464"
-      > </a
-      ><a name="3465" href="Relation.Nullary.Universe.html#1005" class="InductiveConstructor Operator"
+      > <a name="3465" href="Relation.Nullary.Universe.html#PropF._&#8744;_" class="InductiveConstructor Operator"
       >&#8744;</a
-      ><a name="3466"
-      > </a
-      ><a name="3467" href="Relation.Nullary.Universe.html#3467" class="Bound"
+      > <a name="3467" href="Relation.Nullary.Universe.html#3467" class="Bound"
       >F&#8322;</a
       ><a name="3469" class="Symbol"
       >)</a
-      ><a name="3470"
-      > </a
-      ><a name="3471" class="Symbol"
+      > <a name="3471" class="Symbol"
       >(</a
-      ><a name="3472" href="Data.Sum.html#514" class="InductiveConstructor"
+      ><a name="3472" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
       >inj&#8322;</a
-      ><a name="3476"
-      > </a
-      ><a name="3477" href="Relation.Nullary.Universe.html#3477" class="Bound"
+      > <a name="3477" href="Relation.Nullary.Universe.html#3477" class="Bound"
       >y</a
       ><a name="3478" class="Symbol"
       >)</a
-      ><a name="3479"
-      > </a
-      ><a name="3480" class="Symbol"
+      > <a name="3480" class="Symbol"
       >=</a
-      ><a name="3481"
-      > </a
-      ><a name="3482" href="Data.Sum.html#514" class="InductiveConstructor"
+      > <a name="3482" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
       >inj&#8322;</a
-      ><a name="3486"
-      > </a
-      ><a name="3487" href="Category.Functor.html#424" class="Function Operator"
+      > <a name="3487" href="Category.Functor.html#475" class="Function Operator"
       >&lt;$&gt;</a
-      ><a name="3490"
-      > </a
-      ><a name="3491" href="Relation.Nullary.Universe.html#3285" class="Function"
+      > <a name="3491" href="Relation.Nullary.Universe.html#3285" class="Function"
       >helper</a
-      ><a name="3497"
-      > </a
-      ><a name="3498" href="Relation.Nullary.Universe.html#3467" class="Bound"
+      > <a name="3498" href="Relation.Nullary.Universe.html#3467" class="Bound"
       >F&#8322;</a
-      ><a name="3500"
-      > </a
-      ><a name="3501" href="Relation.Nullary.Universe.html#3477" class="Bound"
+      > <a name="3501" href="Relation.Nullary.Universe.html#3477" class="Bound"
       >y</a
-      ><a name="3502"
       >
-  </a
-      ><a name="3505" href="Relation.Nullary.Universe.html#3285" class="Function"
+  <a name="3505" href="Relation.Nullary.Universe.html#3285" class="Function"
       >helper</a
-      ><a name="3511"
-      > </a
-      ><a name="3512" class="Symbol"
+      > <a name="3512" class="Symbol"
       >(</a
       ><a name="3513" href="Relation.Nullary.Universe.html#3513" class="Bound"
       >F&#8321;</a
-      ><a name="3515"
-      > </a
-      ><a name="3516" href="Relation.Nullary.Universe.html#1042" class="InductiveConstructor Operator"
+      > <a name="3516" href="Relation.Nullary.Universe.html#PropF._&#8743;_" class="InductiveConstructor Operator"
       >&#8743;</a
-      ><a name="3517"
-      > </a
-      ><a name="3518" href="Relation.Nullary.Universe.html#3518" class="Bound"
+      > <a name="3518" href="Relation.Nullary.Universe.html#3518" class="Bound"
       >F&#8322;</a
       ><a name="3520" class="Symbol"
       >)</a
-      ><a name="3521"
-      > </a
-      ><a name="3522" class="Symbol"
+      > <a name="3522" class="Symbol"
       >(</a
       ><a name="3523" href="Relation.Nullary.Universe.html#3523" class="Bound"
       >x</a
-      ><a name="3524"
-      > </a
-      ><a name="3525" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="3525" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="3526"
-      > </a
-      ><a name="3527" href="Relation.Nullary.Universe.html#3527" class="Bound"
+      > <a name="3527" href="Relation.Nullary.Universe.html#3527" class="Bound"
       >y</a
       ><a name="3528" class="Symbol"
       >)</a
-      ><a name="3529"
-      >  </a
-      ><a name="3531" class="Symbol"
+      >  <a name="3531" class="Symbol"
       >=</a
-      ><a name="3532"
-      > </a
-      ><a name="3533" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="3533" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >_,_</a
-      ><a name="3536"
-      >  </a
-      ><a name="3538" href="Category.Functor.html#424" class="Function Operator"
+      >  <a name="3538" href="Category.Functor.html#475" class="Function Operator"
       >&lt;$&gt;</a
-      ><a name="3541"
-      > </a
-      ><a name="3542" href="Relation.Nullary.Universe.html#3285" class="Function"
+      > <a name="3542" href="Relation.Nullary.Universe.html#3285" class="Function"
       >helper</a
-      ><a name="3548"
-      > </a
-      ><a name="3549" href="Relation.Nullary.Universe.html#3513" class="Bound"
+      > <a name="3549" href="Relation.Nullary.Universe.html#3513" class="Bound"
       >F&#8321;</a
-      ><a name="3551"
-      > </a
-      ><a name="3552" href="Relation.Nullary.Universe.html#3523" class="Bound"
+      > <a name="3552" href="Relation.Nullary.Universe.html#3523" class="Bound"
       >x</a
-      ><a name="3553"
-      > </a
-      ><a name="3554" href="Category.Applicative.Indexed.html#761" class="Function Operator"
+      > <a name="3554" href="Category.Applicative.Indexed.html#780" class="Function Operator"
       >&#8859;</a
-      ><a name="3555"
-      > </a
-      ><a name="3556" href="Relation.Nullary.Universe.html#3285" class="Function"
+      > <a name="3556" href="Relation.Nullary.Universe.html#3285" class="Function"
       >helper</a
-      ><a name="3562"
-      > </a
-      ><a name="3563" href="Relation.Nullary.Universe.html#3518" class="Bound"
+      > <a name="3563" href="Relation.Nullary.Universe.html#3518" class="Bound"
       >F&#8322;</a
-      ><a name="3565"
-      > </a
-      ><a name="3566" href="Relation.Nullary.Universe.html#3527" class="Bound"
+      > <a name="3566" href="Relation.Nullary.Universe.html#3527" class="Bound"
       >y</a
-      ><a name="3567"
       >
-  </a
-      ><a name="3570" href="Relation.Nullary.Universe.html#3285" class="Function"
+  <a name="3570" href="Relation.Nullary.Universe.html#3285" class="Function"
       >helper</a
-      ><a name="3576"
-      > </a
-      ><a name="3577" class="Symbol"
+      > <a name="3577" class="Symbol"
       >(</a
       ><a name="3578" href="Relation.Nullary.Universe.html#3578" class="Bound"
       >P&#8321;</a
-      ><a name="3580"
-      > </a
-      ><a name="3581" href="Relation.Nullary.Universe.html#1079" class="InductiveConstructor Operator"
+      > <a name="3581" href="Relation.Nullary.Universe.html#PropF._&#8658;_" class="InductiveConstructor Operator"
       >&#8658;</a
-      ><a name="3582"
-      > </a
-      ><a name="3583" href="Relation.Nullary.Universe.html#3583" class="Bound"
+      > <a name="3583" href="Relation.Nullary.Universe.html#3583" class="Bound"
       >F&#8322;</a
       ><a name="3585" class="Symbol"
       >)</a
-      ><a name="3586"
-      > </a
-      ><a name="3587" href="Relation.Nullary.Universe.html#3587" class="Bound"
+      > <a name="3587" href="Relation.Nullary.Universe.html#3587" class="Bound"
       >f</a
-      ><a name="3588"
-      >        </a
-      ><a name="3596" class="Symbol"
+      >        <a name="3596" class="Symbol"
       >=</a
-      ><a name="3597"
-      > </a
-      ><a name="3598" href="Relation.Nullary.Universe.html#3230" class="Bound"
+      > <a name="3598" href="Relation.Nullary.Universe.html#3230" class="Bound"
       >sequence-&#8658;</a
-      ><a name="3608"
-      > </a
-      ><a name="3609" class="Symbol"
+      > <a name="3609" class="Symbol"
       >(</a
       ><a name="3610" href="Relation.Nullary.Universe.html#3285" class="Function"
       >helper</a
-      ><a name="3616"
-      > </a
-      ><a name="3617" href="Relation.Nullary.Universe.html#3583" class="Bound"
+      > <a name="3617" href="Relation.Nullary.Universe.html#3583" class="Bound"
       >F&#8322;</a
-      ><a name="3619"
-      > </a
-      ><a name="3620" href="Function.html#713" class="Function Operator"
+      > <a name="3620" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="3621"
-      > </a
-      ><a name="3622" href="Relation.Nullary.Universe.html#3587" class="Bound"
+      > <a name="3622" href="Relation.Nullary.Universe.html#3587" class="Bound"
       >f</a
       ><a name="3623" class="Symbol"
       >)</a
-      ><a name="3624"
       >
-  </a
-      ><a name="3627" href="Relation.Nullary.Universe.html#3285" class="Function"
+  <a name="3627" href="Relation.Nullary.Universe.html#3285" class="Function"
       >helper</a
-      ><a name="3633"
-      > </a
-      ><a name="3634" class="Symbol"
+      > <a name="3634" class="Symbol"
       >(</a
-      ><a name="3635" href="Relation.Nullary.Universe.html#1126" class="InductiveConstructor Operator"
+      ><a name="3635" href="Relation.Nullary.Universe.html#PropF.&#172;&#172;_" class="InductiveConstructor Operator"
       >&#172;&#172;</a
-      ><a name="3637"
-      > </a
-      ><a name="3638" href="Relation.Nullary.Universe.html#3638" class="Bound"
+      > <a name="3638" href="Relation.Nullary.Universe.html#3638" class="Bound"
       >F</a
       ><a name="3639" class="Symbol"
       >)</a
-      ><a name="3640"
-      >    </a
-      ><a name="3644" href="Relation.Nullary.Universe.html#3644" class="Bound"
+      >    <a name="3644" href="Relation.Nullary.Universe.html#3644" class="Bound"
       >x</a
-      ><a name="3645"
-      >        </a
-      ><a name="3653" class="Symbol"
+      >        <a name="3653" class="Symbol"
       >=</a
-      ><a name="3654"
       >
-    </a
-      ><a name="3659" href="Category.Applicative.Indexed.html#728" class="Function"
+    <a name="3659" href="Category.Applicative.Indexed.html#747" class="Function"
       >pure</a
-      ><a name="3663"
-      > </a
-      ><a name="3664" class="Symbol"
+      > <a name="3664" class="Symbol"
       >(&#955;</a
-      ><a name="3666"
-      > </a
-      ><a name="3667" href="Relation.Nullary.Universe.html#3667" class="Bound"
+      > <a name="3667" href="Relation.Nullary.Universe.html#3667" class="Bound"
       >&#172;FP</a
-      ><a name="3670"
-      > </a
-      ><a name="3671" class="Symbol"
+      > <a name="3671" class="Symbol"
       >&#8594;</a
-      ><a name="3672"
-      > </a
-      ><a name="3673" href="Relation.Nullary.Universe.html#3644" class="Bound"
+      > <a name="3673" href="Relation.Nullary.Universe.html#3644" class="Bound"
       >x</a
-      ><a name="3674"
-      > </a
-      ><a name="3675" class="Symbol"
+      > <a name="3675" class="Symbol"
       >(&#955;</a
-      ><a name="3677"
-      > </a
-      ><a name="3678" href="Relation.Nullary.Universe.html#3678" class="Bound"
+      > <a name="3678" href="Relation.Nullary.Universe.html#3678" class="Bound"
       >fp</a
-      ><a name="3680"
-      > </a
-      ><a name="3681" class="Symbol"
+      > <a name="3681" class="Symbol"
       >&#8594;</a
-      ><a name="3682"
-      > </a
-      ><a name="3683" href="Relation.Nullary.Universe.html#3220" class="Bound"
+      > <a name="3683" href="Relation.Nullary.Universe.html#3220" class="Bound"
       >extract-&#8869;</a
-      ><a name="3692"
-      > </a
-      ><a name="3693" class="Symbol"
+      > <a name="3693" class="Symbol"
       >(</a
-      ><a name="3694" href="Level.html#407" class="InductiveConstructor"
+      ><a name="3694" href="Level.html#Lift.lift" class="InductiveConstructor"
       >lift</a
-      ><a name="3698"
-      > </a
-      ><a name="3699" href="Function.html#713" class="Function Operator"
+      > <a name="3699" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="3700"
-      > </a
-      ><a name="3701" href="Relation.Nullary.Universe.html#3667" class="Bound"
+      > <a name="3701" href="Relation.Nullary.Universe.html#3667" class="Bound"
       >&#172;FP</a
-      ><a name="3704"
-      > </a
-      ><a name="3705" href="Category.Functor.html#424" class="Function Operator"
+      > <a name="3705" href="Category.Functor.html#475" class="Function Operator"
       >&lt;$&gt;</a
-      ><a name="3708"
-      > </a
-      ><a name="3709" href="Relation.Nullary.Universe.html#3285" class="Function"
+      > <a name="3709" href="Relation.Nullary.Universe.html#3285" class="Function"
       >helper</a
-      ><a name="3715"
-      > </a
-      ><a name="3716" href="Relation.Nullary.Universe.html#3638" class="Bound"
+      > <a name="3716" href="Relation.Nullary.Universe.html#3638" class="Bound"
       >F</a
-      ><a name="3717"
-      > </a
-      ><a name="3718" href="Relation.Nullary.Universe.html#3678" class="Bound"
+      > <a name="3718" href="Relation.Nullary.Universe.html#3678" class="Bound"
       >fp</a
       ><a name="3720" class="Symbol"
       >)))</a
-      ><a name="3723"
       >
 
-</a
-      ><a name="3725" class="Comment"
+<a name="3725" class="Comment"
       >-- Some lemmas about double negation.</a
-      ><a name="3762"
       >
 
-</a
-      ><a name="3764" class="Keyword"
+<a name="3764" class="Keyword"
       >private</a
-      ><a name="3771"
       >
-  </a
-      ><a name="3774" class="Keyword"
+  <a name="3774" class="Keyword"
       >open</a
-      ><a name="3778"
-      > </a
-      ><a name="3779" class="Keyword"
+      > <a name="3779" class="Keyword"
       >module</a
-      ><a name="3785"
-      > </a
-      ><a name="3786" href="Relation.Nullary.Universe.html#3786" class="Module"
+      > <a name="M" href="Relation.Nullary.Universe.html#M" class="Module"
       >M</a
-      ><a name="3787"
-      > </a
-      ><a name="3788" class="Symbol"
+      > <a name="3788" class="Symbol"
       >{</a
       ><a name="3789" href="Relation.Nullary.Universe.html#3789" class="Bound"
       >p</a
       ><a name="3790" class="Symbol"
       >}</a
-      ><a name="3791"
-      > </a
-      ><a name="3792" class="Symbol"
+      > <a name="3792" class="Symbol"
       >=</a
-      ><a name="3793"
-      > </a
-      ><a name="3794" href="Category.Monad.html#652" class="Module"
+      > <a name="3794" href="Category.Monad.html#RawMonad" class="Module"
       >RawMonad</a
-      ><a name="3802"
-      > </a
-      ><a name="3803" class="Symbol"
+      > <a name="3803" class="Symbol"
       >(</a
-      ><a name="3804" href="Relation.Nullary.Negation.html#3009" class="Function"
+      ><a name="3804" href="Relation.Nullary.Negation.html#&#172;&#172;-Monad" class="Function"
       >&#172;&#172;-Monad</a
-      ><a name="3812"
-      > </a
-      ><a name="3813" class="Symbol"
+      > <a name="3813" class="Symbol"
       >{</a
       ><a name="3814" class="Argument"
       >p</a
-      ><a name="3815"
-      > </a
-      ><a name="3816" class="Symbol"
+      > <a name="3816" class="Symbol"
       >=</a
-      ><a name="3817"
-      > </a
-      ><a name="3818" href="Relation.Nullary.Universe.html#3789" class="Bound"
+      > <a name="3818" href="Relation.Nullary.Universe.html#3789" class="Bound"
       >p</a
       ><a name="3819" class="Symbol"
       >})</a
-      ><a name="3821"
       >
 
-</a
-      ><a name="3823" href="Relation.Nullary.Universe.html#3823" class="Function"
+<a name="&#172;&#172;-pull" href="Relation.Nullary.Universe.html#&#172;&#172;-pull" class="Function"
       >&#172;&#172;-pull</a
-      ><a name="3830"
-      > </a
-      ><a name="3831" class="Symbol"
+      > <a name="3831" class="Symbol"
       >:</a
-      ><a name="3832"
-      > </a
-      ><a name="3833" class="Symbol"
+      > <a name="3833" class="Symbol"
       >&#8704;</a
-      ><a name="3834"
-      > </a
-      ><a name="3835" class="Symbol"
+      > <a name="3835" class="Symbol"
       >{</a
       ><a name="3836" href="Relation.Nullary.Universe.html#3836" class="Bound"
       >p</a
       ><a name="3837" class="Symbol"
       >}</a
-      ><a name="3838"
-      > </a
-      ><a name="3839" class="Symbol"
+      > <a name="3839" class="Symbol"
       >(</a
       ><a name="3840" href="Relation.Nullary.Universe.html#3840" class="Bound"
       >F</a
-      ><a name="3841"
-      > </a
-      ><a name="3842" class="Symbol"
+      > <a name="3842" class="Symbol"
       >:</a
-      ><a name="3843"
-      > </a
-      ><a name="3844" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="3844" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="3849"
-      > </a
-      ><a name="3850" href="Relation.Nullary.Universe.html#3836" class="Bound"
+      > <a name="3850" href="Relation.Nullary.Universe.html#3836" class="Bound"
       >p</a
       ><a name="3851" class="Symbol"
       >)</a
-      ><a name="3852"
-      > </a
-      ><a name="3853" class="Symbol"
+      > <a name="3853" class="Symbol"
       >{</a
       ><a name="3854" href="Relation.Nullary.Universe.html#3854" class="Bound"
       >P</a
       ><a name="3855" class="Symbol"
       >}</a
-      ><a name="3856"
-      > </a
-      ><a name="3857" class="Symbol"
+      > <a name="3857" class="Symbol"
       >&#8594;</a
-      ><a name="3858"
       >
-          </a
-      ><a name="3869" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+          <a name="3869" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="3870"
-      > </a
-      ><a name="3871" href="Relation.Nullary.Universe.html#3840" class="Bound"
+      > <a name="3871" href="Relation.Nullary.Universe.html#3840" class="Bound"
       >F</a
-      ><a name="3872"
-      > </a
-      ><a name="3873" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="3873" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="3874"
-      > </a
-      ><a name="3875" class="Symbol"
+      > <a name="3875" class="Symbol"
       >(</a
-      ><a name="3876" href="Relation.Nullary.html#414" class="Function Operator"
+      ><a name="3876" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="3877"
-      > </a
-      ><a name="3878" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="3878" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="3879"
-      > </a
-      ><a name="3880" href="Relation.Nullary.Universe.html#3854" class="Bound"
+      > <a name="3880" href="Relation.Nullary.Universe.html#3854" class="Bound"
       >P</a
       ><a name="3881" class="Symbol"
       >)</a
-      ><a name="3882"
-      > </a
-      ><a name="3883" class="Symbol"
+      > <a name="3883" class="Symbol"
       >&#8594;</a
-      ><a name="3884"
-      > </a
-      ><a name="3885" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="3885" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="3886"
-      > </a
-      ><a name="3887" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="3887" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="3888"
-      > </a
-      ><a name="3889" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="3889" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="3890"
-      > </a
-      ><a name="3891" href="Relation.Nullary.Universe.html#3840" class="Bound"
+      > <a name="3891" href="Relation.Nullary.Universe.html#3840" class="Bound"
       >F</a
-      ><a name="3892"
-      > </a
-      ><a name="3893" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="3893" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="3894"
-      > </a
-      ><a name="3895" href="Relation.Nullary.Universe.html#3854" class="Bound"
+      > <a name="3895" href="Relation.Nullary.Universe.html#3854" class="Bound"
       >P</a
-      ><a name="3896"
       >
-</a
-      ><a name="3897" href="Relation.Nullary.Universe.html#3823" class="Function"
+<a name="3897" href="Relation.Nullary.Universe.html#&#172;&#172;-pull" class="Function"
       >&#172;&#172;-pull</a
-      ><a name="3904"
-      > </a
-      ><a name="3905" class="Symbol"
+      > <a name="3905" class="Symbol"
       >=</a
-      ><a name="3906"
-      > </a
-      ><a name="3907" href="Relation.Nullary.Universe.html#3022" class="Function"
+      > <a name="3907" href="Relation.Nullary.Universe.html#sequence" class="Function"
       >sequence</a
-      ><a name="3915"
-      > </a
-      ><a name="3916" href="Category.Monad.Indexed.html#1104" class="Function"
+      > <a name="3916" href="Category.Monad.Indexed.html#M.rawIApplicative" class="Function"
       >rawIApplicative</a
-      ><a name="3931"
       >
-                   </a
-      ><a name="3951" class="Symbol"
+                   <a name="3951" class="Symbol"
       >(&#955;</a
-      ><a name="3953"
-      > </a
-      ><a name="3954" href="Relation.Nullary.Universe.html#3954" class="Bound"
+      > <a name="3954" href="Relation.Nullary.Universe.html#3954" class="Bound"
       >f</a
-      ><a name="3955"
-      > </a
-      ><a name="3956" class="Symbol"
+      > <a name="3956" class="Symbol"
       >&#8594;</a
-      ><a name="3957"
-      > </a
-      ><a name="3958" href="Relation.Nullary.Universe.html#3954" class="Bound"
+      > <a name="3958" href="Relation.Nullary.Universe.html#3954" class="Bound"
       >f</a
-      ><a name="3959"
-      > </a
-      ><a name="3960" href="Level.html#420" class="Field"
+      > <a name="3960" href="Level.html#Lift.lower" class="Field"
       >lower</a
       ><a name="3965" class="Symbol"
       >)</a
-      ><a name="3966"
       >
-                   </a
-      ><a name="3986" class="Symbol"
+                   <a name="3986" class="Symbol"
       >(&#955;</a
-      ><a name="3988"
-      > </a
-      ><a name="3989" href="Relation.Nullary.Universe.html#3989" class="Bound"
+      > <a name="3989" href="Relation.Nullary.Universe.html#3989" class="Bound"
       >f</a
-      ><a name="3990"
-      > </a
-      ><a name="3991" href="Relation.Nullary.Universe.html#3991" class="Bound"
+      > <a name="3991" href="Relation.Nullary.Universe.html#3991" class="Bound"
       >g</a
-      ><a name="3992"
-      > </a
-      ><a name="3993" class="Symbol"
+      > <a name="3993" class="Symbol"
       >&#8594;</a
-      ><a name="3994"
-      > </a
-      ><a name="3995" href="Relation.Nullary.Universe.html#3991" class="Bound"
+      > <a name="3995" href="Relation.Nullary.Universe.html#3991" class="Bound"
       >g</a
-      ><a name="3996"
-      > </a
-      ><a name="3997" class="Symbol"
+      > <a name="3997" class="Symbol"
       >(&#955;</a
-      ><a name="3999"
-      > </a
-      ><a name="4000" href="Relation.Nullary.Universe.html#4000" class="Bound"
+      > <a name="4000" href="Relation.Nullary.Universe.html#4000" class="Bound"
       >x</a
-      ><a name="4001"
-      > </a
-      ><a name="4002" class="Symbol"
+      > <a name="4002" class="Symbol"
       >&#8594;</a
-      ><a name="4003"
-      > </a
-      ><a name="4004" href="Data.Empty.html#348" class="Function"
+      > <a name="4004" href="Data.Empty.html#&#8869;-elim" class="Function"
       >&#8869;-elim</a
-      ><a name="4010"
-      > </a
-      ><a name="4011" class="Symbol"
+      > <a name="4011" class="Symbol"
       >(</a
       ><a name="4012" href="Relation.Nullary.Universe.html#3989" class="Bound"
       >f</a
-      ><a name="4013"
-      > </a
-      ><a name="4014" href="Relation.Nullary.Universe.html#4000" class="Bound"
+      > <a name="4014" href="Relation.Nullary.Universe.html#4000" class="Bound"
       >x</a
-      ><a name="4015"
-      > </a
-      ><a name="4016" class="Symbol"
+      > <a name="4016" class="Symbol"
       >(&#955;</a
-      ><a name="4018"
-      > </a
-      ><a name="4019" href="Relation.Nullary.Universe.html#4019" class="Bound"
+      > <a name="4019" href="Relation.Nullary.Universe.html#4019" class="Bound"
       >y</a
-      ><a name="4020"
-      > </a
-      ><a name="4021" class="Symbol"
+      > <a name="4021" class="Symbol"
       >&#8594;</a
-      ><a name="4022"
-      > </a
-      ><a name="4023" href="Relation.Nullary.Universe.html#3991" class="Bound"
+      > <a name="4023" href="Relation.Nullary.Universe.html#3991" class="Bound"
       >g</a
-      ><a name="4024"
-      > </a
-      ><a name="4025" class="Symbol"
+      > <a name="4025" class="Symbol"
       >(&#955;</a
-      ><a name="4027"
-      > </a
-      ><a name="4028" href="Relation.Nullary.Universe.html#4028" class="Bound"
+      > <a name="4028" href="Relation.Nullary.Universe.html#4028" class="Bound"
       >_</a
-      ><a name="4029"
-      > </a
-      ><a name="4030" class="Symbol"
+      > <a name="4030" class="Symbol"
       >&#8594;</a
-      ><a name="4031"
-      > </a
-      ><a name="4032" href="Relation.Nullary.Universe.html#4019" class="Bound"
+      > <a name="4032" href="Relation.Nullary.Universe.html#4019" class="Bound"
       >y</a
       ><a name="4033" class="Symbol"
       >)))))</a
-      ><a name="4038"
       >
 
-</a
-      ><a name="4040" href="Relation.Nullary.Universe.html#4040" class="Function"
+<a name="&#172;&#172;-remove" href="Relation.Nullary.Universe.html#&#172;&#172;-remove" class="Function"
       >&#172;&#172;-remove</a
-      ><a name="4049"
-      > </a
-      ><a name="4050" class="Symbol"
+      > <a name="4050" class="Symbol"
       >:</a
-      ><a name="4051"
-      > </a
-      ><a name="4052" class="Symbol"
+      > <a name="4052" class="Symbol"
       >&#8704;</a
-      ><a name="4053"
-      > </a
-      ><a name="4054" class="Symbol"
+      > <a name="4054" class="Symbol"
       >{</a
       ><a name="4055" href="Relation.Nullary.Universe.html#4055" class="Bound"
       >p</a
       ><a name="4056" class="Symbol"
       >}</a
-      ><a name="4057"
-      > </a
-      ><a name="4058" class="Symbol"
+      > <a name="4058" class="Symbol"
       >(</a
       ><a name="4059" href="Relation.Nullary.Universe.html#4059" class="Bound"
       >F</a
-      ><a name="4060"
-      > </a
-      ><a name="4061" class="Symbol"
+      > <a name="4061" class="Symbol"
       >:</a
-      ><a name="4062"
-      > </a
-      ><a name="4063" href="Relation.Nullary.Universe.html#927" class="Datatype"
+      > <a name="4063" href="Relation.Nullary.Universe.html#PropF" class="Datatype"
       >PropF</a
-      ><a name="4068"
-      > </a
-      ><a name="4069" href="Relation.Nullary.Universe.html#4055" class="Bound"
+      > <a name="4069" href="Relation.Nullary.Universe.html#4055" class="Bound"
       >p</a
       ><a name="4070" class="Symbol"
       >)</a
-      ><a name="4071"
-      > </a
-      ><a name="4072" class="Symbol"
+      > <a name="4072" class="Symbol"
       >{</a
       ><a name="4073" href="Relation.Nullary.Universe.html#4073" class="Bound"
       >P</a
       ><a name="4074" class="Symbol"
       >}</a
-      ><a name="4075"
-      > </a
-      ><a name="4076" class="Symbol"
+      > <a name="4076" class="Symbol"
       >&#8594;</a
-      ><a name="4077"
       >
-            </a
-      ><a name="4090" href="Relation.Nullary.html#414" class="Function Operator"
+            <a name="4090" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="4091"
-      > </a
-      ><a name="4092" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="4092" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="4093"
-      > </a
-      ><a name="4094" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="4094" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="4095"
-      > </a
-      ><a name="4096" href="Relation.Nullary.Universe.html#4059" class="Bound"
+      > <a name="4096" href="Relation.Nullary.Universe.html#4059" class="Bound"
       >F</a
-      ><a name="4097"
-      > </a
-      ><a name="4098" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="4098" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="4099"
-      > </a
-      ><a name="4100" class="Symbol"
+      > <a name="4100" class="Symbol"
       >(</a
-      ><a name="4101" href="Relation.Nullary.html#414" class="Function Operator"
+      ><a name="4101" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="4102"
-      > </a
-      ><a name="4103" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="4103" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="4104"
-      > </a
-      ><a name="4105" href="Relation.Nullary.Universe.html#4073" class="Bound"
+      > <a name="4105" href="Relation.Nullary.Universe.html#4073" class="Bound"
       >P</a
       ><a name="4106" class="Symbol"
       >)</a
-      ><a name="4107"
-      > </a
-      ><a name="4108" class="Symbol"
+      > <a name="4108" class="Symbol"
       >&#8594;</a
-      ><a name="4109"
-      > </a
-      ><a name="4110" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="4110" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="4111"
-      > </a
-      ><a name="4112" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="4112" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="4113"
-      > </a
-      ><a name="4114" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="4114" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="4115"
-      > </a
-      ><a name="4116" href="Relation.Nullary.Universe.html#4059" class="Bound"
+      > <a name="4116" href="Relation.Nullary.Universe.html#4059" class="Bound"
       >F</a
-      ><a name="4117"
-      > </a
-      ><a name="4118" href="Relation.Nullary.Universe.html#1609" class="Function Operator"
+      > <a name="4118" href="Relation.Nullary.Universe.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="4119"
-      > </a
-      ><a name="4120" href="Relation.Nullary.Universe.html#4073" class="Bound"
+      > <a name="4120" href="Relation.Nullary.Universe.html#4073" class="Bound"
       >P</a
-      ><a name="4121"
       >
-</a
-      ><a name="4122" href="Relation.Nullary.Universe.html#4040" class="Function"
+<a name="4122" href="Relation.Nullary.Universe.html#&#172;&#172;-remove" class="Function"
       >&#172;&#172;-remove</a
-      ><a name="4131"
-      > </a
-      ><a name="4132" href="Relation.Nullary.Universe.html#4132" class="Bound"
+      > <a name="4132" href="Relation.Nullary.Universe.html#4132" class="Bound"
       >F</a
-      ><a name="4133"
-      > </a
-      ><a name="4134" class="Symbol"
+      > <a name="4134" class="Symbol"
       >=</a
-      ><a name="4135"
-      > </a
-      ><a name="4136" href="Relation.Nullary.Negation.html#2517" class="Function"
+      > <a name="4136" href="Relation.Nullary.Negation.html#negated-stable" class="Function"
       >negated-stable</a
-      ><a name="4150"
-      > </a
-      ><a name="4151" href="Function.html#713" class="Function Operator"
+      > <a name="4151" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="4152"
-      > </a
-      ><a name="4153" href="Relation.Nullary.Universe.html#3823" class="Function"
+      > <a name="4153" href="Relation.Nullary.Universe.html#&#172;&#172;-pull" class="Function"
       >&#172;&#172;-pull</a
-      ><a name="4160"
-      > </a
-      ><a name="4161" class="Symbol"
+      > <a name="4161" class="Symbol"
       >(</a
-      ><a name="4162" href="Relation.Nullary.Universe.html#1126" class="InductiveConstructor Operator"
+      ><a name="4162" href="Relation.Nullary.Universe.html#PropF.&#172;&#172;_" class="InductiveConstructor Operator"
       >&#172;&#172;</a
-      ><a name="4164"
-      > </a
-      ><a name="4165" href="Relation.Nullary.Universe.html#4132" class="Bound"
+      > <a name="4165" href="Relation.Nullary.Universe.html#4132" class="Bound"
       >F</a
       ><a name="4166" class="Symbol"
       >)</a
-      ><a name="4167"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

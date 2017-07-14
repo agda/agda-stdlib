@@ -11,1878 +11,1094 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Lists where all elements satisfy a given property</a
-      ><a name="158"
       >
-</a
-      ><a name="159" class="Comment"
+<a name="159" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="231"
       >
 
-</a
-      ><a name="233" class="Keyword"
+<a name="233" class="Keyword"
       >module</a
-      ><a name="239"
-      > </a
-      ><a name="240" href="Data.List.All.html#1" class="Module"
+      > <a name="240" href="Data.List.All.html" class="Module"
       >Data.List.All</a
-      ><a name="253"
-      > </a
-      ><a name="254" class="Keyword"
+      > <a name="254" class="Keyword"
       >where</a
-      ><a name="259"
       >
 
-</a
-      ><a name="261" class="Keyword"
+<a name="261" class="Keyword"
       >open</a
-      ><a name="265"
-      > </a
-      ><a name="266" class="Keyword"
+      > <a name="266" class="Keyword"
       >import</a
-      ><a name="272"
-      > </a
-      ><a name="273" href="Data.List.Base.html#1" class="Module"
+      > <a name="273" href="Data.List.Base.html" class="Module"
       >Data.List.Base</a
-      ><a name="287"
-      > </a
-      ><a name="288" class="Symbol"
+      > <a name="288" class="Symbol"
       >as</a
-      ><a name="290"
-      > </a
-      ><a name="291" class="Module"
+      > <a name="291" class="Module"
       >List</a
-      ><a name="295"
-      > </a
-      ><a name="296" class="Keyword"
+      > <a name="296" class="Keyword"
       >hiding</a
-      ><a name="302"
-      > </a
-      ><a name="303" class="Symbol"
+      > <a name="303" class="Symbol"
       >(</a
-      ><a name="304" href="Data.List.Base.html#1207" class="Function"
+      ><a name="304" href="Data.List.Base.html#map" class="Function"
       >map</a
       ><a name="307" class="Symbol"
       >;</a
-      ><a name="308"
-      > </a
-      ><a name="309" href="Data.List.Base.html#2591" class="Function"
+      > <a name="309" href="Data.List.Base.html#tabulate" class="Function"
+      >tabulate</a
+      ><a name="317" class="Symbol"
+      >;</a
+      > <a name="319" href="Data.List.Base.html#all" class="Function"
       >all</a
-      ><a name="312" class="Symbol"
+      ><a name="322" class="Symbol"
       >)</a
-      ><a name="313"
       >
-</a
-      ><a name="314" class="Keyword"
+<a name="324" class="Keyword"
       >open</a
-      ><a name="318"
-      > </a
-      ><a name="319" class="Keyword"
+      > <a name="329" class="Keyword"
       >import</a
-      ><a name="325"
-      > </a
-      ><a name="326" href="Data.List.Any.html#1" class="Module"
+      > <a name="336" href="Data.List.Any.html" class="Module"
       >Data.List.Any</a
-      ><a name="339"
-      > </a
-      ><a name="340" class="Symbol"
+      > <a name="350" class="Symbol"
       >as</a
-      ><a name="342"
-      > </a
-      ><a name="343" class="Module"
+      > <a name="353" class="Module"
       >Any</a
-      ><a name="346"
-      > </a
-      ><a name="347" class="Keyword"
+      > <a name="357" class="Keyword"
       >using</a
-      ><a name="352"
-      > </a
-      ><a name="353" class="Symbol"
+      > <a name="363" class="Symbol"
       >(</a
-      ><a name="354" href="Data.List.Any.html#1174" class="InductiveConstructor"
+      ><a name="364" href="Data.List.Any.html#Any.here" class="InductiveConstructor"
       >here</a
-      ><a name="358" class="Symbol"
+      ><a name="368" class="Symbol"
       >;</a
-      ><a name="359"
-      > </a
-      ><a name="360" href="Data.List.Any.html#1227" class="InductiveConstructor"
+      > <a name="370" href="Data.List.Any.html#Any.there" class="InductiveConstructor"
       >there</a
-      ><a name="365" class="Symbol"
+      ><a name="375" class="Symbol"
       >)</a
-      ><a name="366"
       >
-</a
-      ><a name="367" class="Keyword"
+<a name="377" class="Keyword"
       >open</a
-      ><a name="371"
-      > </a
-      ><a name="372" href="Data.List.Any.html#260" class="Module"
-      >Any.</a
-      ><a name="376" href="Data.List.Any.html#4582" class="Module"
-      >Membership-&#8801;</a
-      ><a name="388"
-      > </a
-      ><a name="389" class="Keyword"
+      > <a name="382" class="Keyword"
+      >import</a
+      > <a name="389" href="Data.List.Any.Membership.Propositional.html" class="Module"
+      >Data.List.Any.Membership.Propositional</a
+      > <a name="428" class="Keyword"
       >using</a
-      ><a name="394"
-      > </a
-      ><a name="395" class="Symbol"
+      > <a name="434" class="Symbol"
       >(</a
-      ><a name="396" href="Data.List.Any.html#2920" class="Function Operator"
+      ><a name="435" href="Data.List.Any.Membership.html#Propositional.M._&#8712;_" class="Function Operator"
       >_&#8712;_</a
-      ><a name="399" class="Symbol"
-      >;</a
-      ><a name="400"
-      > </a
-      ><a name="401" href="Data.List.Any.html#3056" class="Function Operator"
-      >_&#8838;_</a
-      ><a name="404" class="Symbol"
+      ><a name="438" class="Symbol"
       >)</a
-      ><a name="405"
       >
-</a
-      ><a name="406" class="Keyword"
+<a name="440" class="Keyword"
       >open</a
-      ><a name="410"
-      > </a
-      ><a name="411" class="Keyword"
+      > <a name="445" class="Keyword"
       >import</a
-      ><a name="417"
-      > </a
-      ><a name="418" href="Function.html#1" class="Module"
+      > <a name="452" href="Function.html" class="Module"
       >Function</a
-      ><a name="426"
       >
-</a
-      ><a name="427" class="Keyword"
+<a name="461" class="Keyword"
       >open</a
-      ><a name="431"
-      > </a
-      ><a name="432" class="Keyword"
+      > <a name="466" class="Keyword"
       >import</a
-      ><a name="438"
-      > </a
-      ><a name="439" href="Level.html#1" class="Module"
+      > <a name="473" href="Level.html" class="Module"
       >Level</a
-      ><a name="444"
       >
-</a
-      ><a name="445" class="Keyword"
+<a name="479" class="Keyword"
       >open</a
-      ><a name="449"
-      > </a
-      ><a name="450" class="Keyword"
+      > <a name="484" class="Keyword"
       >import</a
-      ><a name="456"
-      > </a
-      ><a name="457" href="Relation.Nullary.html#1" class="Module"
+      > <a name="491" href="Relation.Nullary.html" class="Module"
       >Relation.Nullary</a
-      ><a name="473"
       >
-</a
-      ><a name="474" class="Keyword"
+<a name="508" class="Keyword"
       >import</a
-      ><a name="480"
-      > </a
-      ><a name="481" href="Relation.Nullary.Decidable.html#1" class="Module"
+      > <a name="515" href="Relation.Nullary.Decidable.html" class="Module"
       >Relation.Nullary.Decidable</a
-      ><a name="507"
-      > </a
-      ><a name="508" class="Symbol"
+      > <a name="542" class="Symbol"
       >as</a
-      ><a name="510"
-      > </a
-      ><a name="511" class="Module"
+      > <a name="545" class="Module"
       >Dec</a
-      ><a name="514"
       >
-</a
-      ><a name="515" class="Keyword"
+<a name="549" class="Keyword"
       >open</a
-      ><a name="519"
-      > </a
-      ><a name="520" class="Keyword"
+      > <a name="554" class="Keyword"
       >import</a
-      ><a name="526"
-      > </a
-      ><a name="527" href="Relation.Unary.html#1" class="Module"
+      > <a name="561" href="Relation.Unary.html" class="Module"
       >Relation.Unary</a
-      ><a name="541"
-      > </a
-      ><a name="542" class="Keyword"
+      > <a name="576" class="Keyword"
       >using</a
-      ><a name="547"
-      > </a
-      ><a name="548" class="Symbol"
+      > <a name="582" class="Symbol"
       >(</a
-      ><a name="549" href="Relation.Unary.html#4686" class="Function"
+      ><a name="583" href="Relation.Unary.html#Decidable" class="Function"
       >Decidable</a
-      ><a name="558" class="Symbol"
+      ><a name="592" class="Symbol"
       >)</a
-      ><a name="559"
-      > </a
-      ><a name="560" class="Keyword"
+      > <a name="594" class="Keyword"
       >renaming</a
-      ><a name="568"
-      > </a
-      ><a name="569" class="Symbol"
+      > <a name="603" class="Symbol"
       >(</a
-      ><a name="570" href="Relation.Unary.html#1822" class="Function Operator"
+      ><a name="604" href="Relation.Unary.html#1822" class="Function Operator"
       >_&#8838;_</a
-      ><a name="573"
-      > </a
-      ><a name="574" class="Symbol"
+      > <a name="608" class="Symbol"
       >to</a
-      ><a name="576"
-      > </a
-      ><a name="577" href="Relation.Unary.html#1822" class="Function Operator"
+      > <a name="611" href="Relation.Unary.html#1822" class="Function Operator"
       >_&#8912;_</a
-      ><a name="580" class="Symbol"
+      ><a name="614" class="Symbol"
       >)</a
-      ><a name="581"
       >
-</a
-      ><a name="582" class="Keyword"
+<a name="616" class="Keyword"
       >open</a
-      ><a name="586"
-      > </a
-      ><a name="587" class="Keyword"
+      > <a name="621" class="Keyword"
       >import</a
-      ><a name="593"
-      > </a
-      ><a name="594" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      > <a name="628" href="Relation.Binary.PropositionalEquality.html" class="Module"
       >Relation.Binary.PropositionalEquality</a
-      ><a name="631"
       >
 
-</a
-      ><a name="633" class="Comment"
+<a name="667" class="Comment"
       >-- All P xs means that all elements in xs satisfy P.</a
-      ><a name="685"
       >
 
-</a
-      ><a name="687" class="Keyword"
+<a name="721" class="Keyword"
       >infixr</a
-      ><a name="693"
-      > </a
-      ><a name="694" class="Number"
+      > <a name="728" class="Number"
       >5</a
-      ><a name="695"
-      > _&#8759;_
-
-</a
-      ><a name="701" class="Keyword"
-      >data</a
-      ><a name="705"
-      > </a
-      ><a name="706" href="Data.List.All.html#706" class="Datatype"
-      >All</a
-      ><a name="709"
-      > </a
-      ><a name="710" class="Symbol"
-      >{</a
-      ><a name="711" href="Data.List.All.html#711" class="Bound"
-      >a</a
-      ><a name="712"
-      > </a
-      ><a name="713" href="Data.List.All.html#713" class="Bound"
-      >p</a
-      ><a name="714" class="Symbol"
-      >}</a
-      ><a name="715"
-      > </a
-      ><a name="716" class="Symbol"
-      >{</a
-      ><a name="717" href="Data.List.All.html#717" class="Bound"
-      >A</a
-      ><a name="718"
-      > </a
-      ><a name="719" class="Symbol"
-      >:</a
-      ><a name="720"
-      > </a
-      ><a name="721" class="PrimitiveType"
-      >Set</a
-      ><a name="724"
-      > </a
-      ><a name="725" href="Data.List.All.html#711" class="Bound"
-      >a</a
-      ><a name="726" class="Symbol"
-      >}</a
-      ><a name="727"
-      >
-         </a
-      ><a name="737" class="Symbol"
-      >(</a
-      ><a name="738" href="Data.List.All.html#738" class="Bound"
-      >P</a
-      ><a name="739"
-      > </a
-      ><a name="740" class="Symbol"
-      >:</a
-      ><a name="741"
-      > </a
-      ><a name="742" href="Data.List.All.html#717" class="Bound"
-      >A</a
-      ><a name="743"
-      > </a
-      ><a name="744" class="Symbol"
-      >&#8594;</a
-      ><a name="745"
-      > </a
-      ><a name="746" class="PrimitiveType"
-      >Set</a
-      ><a name="749"
-      > </a
-      ><a name="750" href="Data.List.All.html#713" class="Bound"
-      >p</a
-      ><a name="751" class="Symbol"
-      >)</a
-      ><a name="752"
-      > </a
-      ><a name="753" class="Symbol"
-      >:</a
-      ><a name="754"
-      > </a
-      ><a name="755" href="Agda.Builtin.List.html#80" class="Datatype"
-      >List</a
-      ><a name="759"
-      > </a
-      ><a name="760" href="Data.List.All.html#717" class="Bound"
-      >A</a
-      ><a name="761"
-      > </a
-      ><a name="762" class="Symbol"
-      >&#8594;</a
-      ><a name="763"
-      > </a
-      ><a name="764" class="PrimitiveType"
-      >Set</a
-      ><a name="767"
-      > </a
-      ><a name="768" class="Symbol"
-      >(</a
-      ><a name="769" href="Data.List.All.html#713" class="Bound"
-      >p</a
-      ><a name="770"
-      > </a
-      ><a name="771" href="Agda.Primitive.html#655" class="Primitive Operator"
-      >&#8852;</a
-      ><a name="772"
-      > </a
-      ><a name="773" href="Data.List.All.html#711" class="Bound"
-      >a</a
-      ><a name="774" class="Symbol"
-      >)</a
-      ><a name="775"
-      > </a
-      ><a name="776" class="Keyword"
-      >where</a
-      ><a name="781"
-      >
-  </a
-      ><a name="784" href="Data.List.All.html#784" class="InductiveConstructor"
-      >[]</a
-      ><a name="786"
-      >  </a
-      ><a name="788" class="Symbol"
-      >:</a
-      ><a name="789"
-      > </a
-      ><a name="790" href="Data.List.All.html#706" class="Datatype"
-      >All</a
-      ><a name="793"
-      > </a
-      ><a name="794" href="Data.List.All.html#738" class="Bound"
-      >P</a
-      ><a name="795"
-      > </a
-      ><a name="796" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
-      >[]</a
-      ><a name="798"
-      >
-  </a
-      ><a name="801" href="Data.List.All.html#801" class="InductiveConstructor Operator"
+      > <a name="730" href="Data.List.All.html#All._&#8759;_" class="InductiveConstructor Operator"
       >_&#8759;_</a
-      ><a name="804"
-      > </a
-      ><a name="805" class="Symbol"
-      >:</a
-      ><a name="806"
-      > </a
-      ><a name="807" class="Symbol"
-      >&#8704;</a
-      ><a name="808"
-      > </a
-      ><a name="809" class="Symbol"
+      >
+
+<a name="735" class="Keyword"
+      >data</a
+      > <a name="All" href="Data.List.All.html#All" class="Datatype"
+      >All</a
+      > <a name="744" class="Symbol"
       >{</a
-      ><a name="810" href="Data.List.All.html#810" class="Bound"
-      >x</a
-      ><a name="811"
-      > </a
-      ><a name="812" href="Data.List.All.html#812" class="Bound"
-      >xs</a
-      ><a name="814" class="Symbol"
+      ><a name="745" href="Data.List.All.html#745" class="Bound"
+      >a</a
+      > <a name="747" href="Data.List.All.html#747" class="Bound"
+      >p</a
+      ><a name="748" class="Symbol"
       >}</a
-      ><a name="815"
-      > </a
-      ><a name="816" class="Symbol"
-      >(</a
-      ><a name="817" href="Data.List.All.html#817" class="Bound"
-      >px</a
-      ><a name="819"
-      > </a
-      ><a name="820" class="Symbol"
+      > <a name="750" class="Symbol"
+      >{</a
+      ><a name="751" href="Data.List.All.html#751" class="Bound"
+      >A</a
+      > <a name="753" class="Symbol"
       >:</a
-      ><a name="821"
-      > </a
-      ><a name="822" href="Data.List.All.html#738" class="Bound"
-      >P</a
-      ><a name="823"
-      > </a
-      ><a name="824" href="Data.List.All.html#810" class="Bound"
-      >x</a
-      ><a name="825" class="Symbol"
-      >)</a
-      ><a name="826"
-      > </a
-      ><a name="827" class="Symbol"
+      > <a name="755" class="PrimitiveType"
+      >Set</a
+      > <a name="759" href="Data.List.All.html#745" class="Bound"
+      >a</a
+      ><a name="760" class="Symbol"
+      >}</a
+      >
+         <a name="771" class="Symbol"
       >(</a
-      ><a name="828" href="Data.List.All.html#828" class="Bound"
-      >pxs</a
-      ><a name="831"
-      > </a
-      ><a name="832" class="Symbol"
-      >:</a
-      ><a name="833"
-      > </a
-      ><a name="834" href="Data.List.All.html#706" class="Datatype"
-      >All</a
-      ><a name="837"
-      > </a
-      ><a name="838" href="Data.List.All.html#738" class="Bound"
+      ><a name="772" href="Data.List.All.html#772" class="Bound"
       >P</a
-      ><a name="839"
-      > </a
-      ><a name="840" href="Data.List.All.html#812" class="Bound"
-      >xs</a
-      ><a name="842" class="Symbol"
-      >)</a
-      ><a name="843"
-      > </a
-      ><a name="844" class="Symbol"
+      > <a name="774" class="Symbol"
+      >:</a
+      > <a name="776" href="Data.List.All.html#751" class="Bound"
+      >A</a
+      > <a name="778" class="Symbol"
       >&#8594;</a
-      ><a name="845"
-      > </a
-      ><a name="846" href="Data.List.All.html#706" class="Datatype"
-      >All</a
-      ><a name="849"
-      > </a
-      ><a name="850" href="Data.List.All.html#738" class="Bound"
-      >P</a
-      ><a name="851"
-      > </a
-      ><a name="852" class="Symbol"
+      > <a name="780" class="PrimitiveType"
+      >Set</a
+      > <a name="784" href="Data.List.All.html#747" class="Bound"
+      >p</a
+      ><a name="785" class="Symbol"
+      >)</a
+      > <a name="787" class="Symbol"
+      >:</a
+      > <a name="789" href="Agda.Builtin.List.html#List" class="Datatype"
+      >List</a
+      > <a name="794" href="Data.List.All.html#751" class="Bound"
+      >A</a
+      > <a name="796" class="Symbol"
+      >&#8594;</a
+      > <a name="798" class="PrimitiveType"
+      >Set</a
+      > <a name="802" class="Symbol"
       >(</a
-      ><a name="853" href="Data.List.All.html#810" class="Bound"
+      ><a name="803" href="Data.List.All.html#747" class="Bound"
+      >p</a
+      > <a name="805" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
+      >&#8852;</a
+      > <a name="807" href="Data.List.All.html#745" class="Bound"
+      >a</a
+      ><a name="808" class="Symbol"
+      >)</a
+      > <a name="810" class="Keyword"
+      >where</a
+      >
+  <a name="All.[]" href="Data.List.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >  <a name="822" class="Symbol"
+      >:</a
+      > <a name="824" href="Data.List.All.html#All" class="Datatype"
+      >All</a
+      > <a name="828" href="Data.List.All.html#772" class="Bound"
+      >P</a
+      > <a name="830" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      >[]</a
+      >
+  <a name="All._&#8759;_" href="Data.List.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      > <a name="839" class="Symbol"
+      >:</a
+      > <a name="841" class="Symbol"
+      >&#8704;</a
+      > <a name="843" class="Symbol"
+      >{</a
+      ><a name="844" href="Data.List.All.html#844" class="Bound"
       >x</a
-      ><a name="854"
-      > </a
-      ><a name="855" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="856"
-      > </a
-      ><a name="857" href="Data.List.All.html#812" class="Bound"
+      > <a name="846" href="Data.List.All.html#846" class="Bound"
       >xs</a
+      ><a name="848" class="Symbol"
+      >}</a
+      > <a name="850" class="Symbol"
+      >(</a
+      ><a name="851" href="Data.List.All.html#851" class="Bound"
+      >px</a
+      > <a name="854" class="Symbol"
+      >:</a
+      > <a name="856" href="Data.List.All.html#772" class="Bound"
+      >P</a
+      > <a name="858" href="Data.List.All.html#844" class="Bound"
+      >x</a
       ><a name="859" class="Symbol"
       >)</a
-      ><a name="860"
+      > <a name="861" class="Symbol"
+      >(</a
+      ><a name="862" href="Data.List.All.html#862" class="Bound"
+      >pxs</a
+      > <a name="866" class="Symbol"
+      >:</a
+      > <a name="868" href="Data.List.All.html#All" class="Datatype"
+      >All</a
+      > <a name="872" href="Data.List.All.html#772" class="Bound"
+      >P</a
+      > <a name="874" href="Data.List.All.html#846" class="Bound"
+      >xs</a
+      ><a name="876" class="Symbol"
+      >)</a
+      > <a name="878" class="Symbol"
+      >&#8594;</a
+      > <a name="880" href="Data.List.All.html#All" class="Datatype"
+      >All</a
+      > <a name="884" href="Data.List.All.html#772" class="Bound"
+      >P</a
+      > <a name="886" class="Symbol"
+      >(</a
+      ><a name="887" href="Data.List.All.html#844" class="Bound"
+      >x</a
+      > <a name="889" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="891" href="Data.List.All.html#846" class="Bound"
+      >xs</a
+      ><a name="893" class="Symbol"
+      >)</a
       >
 
-</a
-      ><a name="862" href="Data.List.All.html#862" class="Function"
+<a name="head" href="Data.List.All.html#head" class="Function"
       >head</a
-      ><a name="866"
-      > </a
-      ><a name="867" class="Symbol"
+      > <a name="901" class="Symbol"
       >:</a
-      ><a name="868"
-      > </a
-      ><a name="869" class="Symbol"
+      > <a name="903" class="Symbol"
       >&#8704;</a
-      ><a name="870"
-      > </a
-      ><a name="871" class="Symbol"
-      >{</a
-      ><a name="872" href="Data.List.All.html#872" class="Bound"
-      >a</a
-      ><a name="873"
-      > </a
-      ><a name="874" href="Data.List.All.html#874" class="Bound"
-      >p</a
-      ><a name="875" class="Symbol"
-      >}</a
-      ><a name="876"
-      > </a
-      ><a name="877" class="Symbol"
-      >{</a
-      ><a name="878" href="Data.List.All.html#878" class="Bound"
-      >A</a
-      ><a name="879"
-      > </a
-      ><a name="880" class="Symbol"
-      >:</a
-      ><a name="881"
-      > </a
-      ><a name="882" class="PrimitiveType"
-      >Set</a
-      ><a name="885"
-      > </a
-      ><a name="886" href="Data.List.All.html#872" class="Bound"
-      >a</a
-      ><a name="887" class="Symbol"
-      >}</a
-      ><a name="888"
-      > </a
-      ><a name="889" class="Symbol"
-      >{</a
-      ><a name="890" href="Data.List.All.html#890" class="Bound"
-      >P</a
-      ><a name="891"
-      > </a
-      ><a name="892" class="Symbol"
-      >:</a
-      ><a name="893"
-      > </a
-      ><a name="894" href="Data.List.All.html#878" class="Bound"
-      >A</a
-      ><a name="895"
-      > </a
-      ><a name="896" class="Symbol"
-      >&#8594;</a
-      ><a name="897"
-      > </a
-      ><a name="898" class="PrimitiveType"
-      >Set</a
-      ><a name="901"
-      > </a
-      ><a name="902" href="Data.List.All.html#874" class="Bound"
-      >p</a
-      ><a name="903" class="Symbol"
-      >}</a
-      ><a name="904"
-      > </a
-      ><a name="905" class="Symbol"
+      > <a name="905" class="Symbol"
       >{</a
       ><a name="906" href="Data.List.All.html#906" class="Bound"
-      >x</a
-      ><a name="907"
-      > </a
-      ><a name="908" href="Data.List.All.html#908" class="Bound"
-      >xs</a
-      ><a name="910" class="Symbol"
+      >a</a
+      > <a name="908" href="Data.List.All.html#908" class="Bound"
+      >p</a
+      ><a name="909" class="Symbol"
       >}</a
-      ><a name="911"
-      > </a
-      ><a name="912" class="Symbol"
-      >&#8594;</a
-      ><a name="913"
-      >
-       </a
-      ><a name="921" href="Data.List.All.html#706" class="Datatype"
-      >All</a
-      ><a name="924"
-      > </a
-      ><a name="925" href="Data.List.All.html#890" class="Bound"
+      > <a name="911" class="Symbol"
+      >{</a
+      ><a name="912" href="Data.List.All.html#912" class="Bound"
+      >A</a
+      > <a name="914" class="Symbol"
+      >:</a
+      > <a name="916" class="PrimitiveType"
+      >Set</a
+      > <a name="920" href="Data.List.All.html#906" class="Bound"
+      >a</a
+      ><a name="921" class="Symbol"
+      >}</a
+      > <a name="923" class="Symbol"
+      >{</a
+      ><a name="924" href="Data.List.All.html#924" class="Bound"
       >P</a
-      ><a name="926"
-      > </a
-      ><a name="927" class="Symbol"
-      >(</a
-      ><a name="928" href="Data.List.All.html#906" class="Bound"
+      > <a name="926" class="Symbol"
+      >:</a
+      > <a name="928" href="Data.List.All.html#912" class="Bound"
+      >A</a
+      > <a name="930" class="Symbol"
+      >&#8594;</a
+      > <a name="932" class="PrimitiveType"
+      >Set</a
+      > <a name="936" href="Data.List.All.html#908" class="Bound"
+      >p</a
+      ><a name="937" class="Symbol"
+      >}</a
+      > <a name="939" class="Symbol"
+      >{</a
+      ><a name="940" href="Data.List.All.html#940" class="Bound"
       >x</a
-      ><a name="929"
-      > </a
-      ><a name="930" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="931"
-      > </a
-      ><a name="932" href="Data.List.All.html#908" class="Bound"
+      > <a name="942" href="Data.List.All.html#942" class="Bound"
       >xs</a
-      ><a name="934" class="Symbol"
-      >)</a
-      ><a name="935"
-      > </a
-      ><a name="936" class="Symbol"
+      ><a name="944" class="Symbol"
+      >}</a
+      > <a name="946" class="Symbol"
       >&#8594;</a
-      ><a name="937"
-      > </a
-      ><a name="938" href="Data.List.All.html#890" class="Bound"
-      >P</a
-      ><a name="939"
-      > </a
-      ><a name="940" href="Data.List.All.html#906" class="Bound"
-      >x</a
-      ><a name="941"
       >
-</a
-      ><a name="942" href="Data.List.All.html#862" class="Function"
-      >head</a
-      ><a name="946"
-      > </a
-      ><a name="947" class="Symbol"
+       <a name="955" href="Data.List.All.html#All" class="Datatype"
+      >All</a
+      > <a name="959" href="Data.List.All.html#924" class="Bound"
+      >P</a
+      > <a name="961" class="Symbol"
       >(</a
-      ><a name="948" href="Data.List.All.html#948" class="Bound"
-      >px</a
-      ><a name="950"
-      > </a
-      ><a name="951" href="Data.List.All.html#801" class="InductiveConstructor Operator"
+      ><a name="962" href="Data.List.All.html#940" class="Bound"
+      >x</a
+      > <a name="964" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="952"
-      > </a
-      ><a name="953" href="Data.List.All.html#953" class="Bound"
-      >pxs</a
-      ><a name="956" class="Symbol"
+      > <a name="966" href="Data.List.All.html#942" class="Bound"
+      >xs</a
+      ><a name="968" class="Symbol"
       >)</a
-      ><a name="957"
-      > </a
-      ><a name="958" class="Symbol"
-      >=</a
-      ><a name="959"
-      > </a
-      ><a name="960" href="Data.List.All.html#948" class="Bound"
+      > <a name="970" class="Symbol"
+      >&#8594;</a
+      > <a name="972" href="Data.List.All.html#924" class="Bound"
+      >P</a
+      > <a name="974" href="Data.List.All.html#940" class="Bound"
+      >x</a
+      >
+<a name="976" href="Data.List.All.html#head" class="Function"
+      >head</a
+      > <a name="981" class="Symbol"
+      >(</a
+      ><a name="982" href="Data.List.All.html#982" class="Bound"
       >px</a
-      ><a name="962"
+      > <a name="985" href="Data.List.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="987" href="Data.List.All.html#987" class="Bound"
+      >pxs</a
+      ><a name="990" class="Symbol"
+      >)</a
+      > <a name="992" class="Symbol"
+      >=</a
+      > <a name="994" href="Data.List.All.html#982" class="Bound"
+      >px</a
       >
 
-</a
-      ><a name="964" href="Data.List.All.html#964" class="Function"
+<a name="tail" href="Data.List.All.html#tail" class="Function"
       >tail</a
-      ><a name="968"
-      > </a
-      ><a name="969" class="Symbol"
+      > <a name="1003" class="Symbol"
       >:</a
-      ><a name="970"
-      > </a
-      ><a name="971" class="Symbol"
+      > <a name="1005" class="Symbol"
       >&#8704;</a
-      ><a name="972"
-      > </a
-      ><a name="973" class="Symbol"
-      >{</a
-      ><a name="974" href="Data.List.All.html#974" class="Bound"
-      >a</a
-      ><a name="975"
-      > </a
-      ><a name="976" href="Data.List.All.html#976" class="Bound"
-      >p</a
-      ><a name="977" class="Symbol"
-      >}</a
-      ><a name="978"
-      > </a
-      ><a name="979" class="Symbol"
-      >{</a
-      ><a name="980" href="Data.List.All.html#980" class="Bound"
-      >A</a
-      ><a name="981"
-      > </a
-      ><a name="982" class="Symbol"
-      >:</a
-      ><a name="983"
-      > </a
-      ><a name="984" class="PrimitiveType"
-      >Set</a
-      ><a name="987"
-      > </a
-      ><a name="988" href="Data.List.All.html#974" class="Bound"
-      >a</a
-      ><a name="989" class="Symbol"
-      >}</a
-      ><a name="990"
-      > </a
-      ><a name="991" class="Symbol"
-      >{</a
-      ><a name="992" href="Data.List.All.html#992" class="Bound"
-      >P</a
-      ><a name="993"
-      > </a
-      ><a name="994" class="Symbol"
-      >:</a
-      ><a name="995"
-      > </a
-      ><a name="996" href="Data.List.All.html#980" class="Bound"
-      >A</a
-      ><a name="997"
-      > </a
-      ><a name="998" class="Symbol"
-      >&#8594;</a
-      ><a name="999"
-      > </a
-      ><a name="1000" class="PrimitiveType"
-      >Set</a
-      ><a name="1003"
-      > </a
-      ><a name="1004" href="Data.List.All.html#976" class="Bound"
-      >p</a
-      ><a name="1005" class="Symbol"
-      >}</a
-      ><a name="1006"
-      > </a
-      ><a name="1007" class="Symbol"
+      > <a name="1007" class="Symbol"
       >{</a
       ><a name="1008" href="Data.List.All.html#1008" class="Bound"
-      >x</a
-      ><a name="1009"
-      > </a
-      ><a name="1010" href="Data.List.All.html#1010" class="Bound"
-      >xs</a
-      ><a name="1012" class="Symbol"
+      >a</a
+      > <a name="1010" href="Data.List.All.html#1010" class="Bound"
+      >p</a
+      ><a name="1011" class="Symbol"
       >}</a
-      ><a name="1013"
-      > </a
-      ><a name="1014" class="Symbol"
-      >&#8594;</a
-      ><a name="1015"
-      >
-       </a
-      ><a name="1023" href="Data.List.All.html#706" class="Datatype"
-      >All</a
-      ><a name="1026"
-      > </a
-      ><a name="1027" href="Data.List.All.html#992" class="Bound"
+      > <a name="1013" class="Symbol"
+      >{</a
+      ><a name="1014" href="Data.List.All.html#1014" class="Bound"
+      >A</a
+      > <a name="1016" class="Symbol"
+      >:</a
+      > <a name="1018" class="PrimitiveType"
+      >Set</a
+      > <a name="1022" href="Data.List.All.html#1008" class="Bound"
+      >a</a
+      ><a name="1023" class="Symbol"
+      >}</a
+      > <a name="1025" class="Symbol"
+      >{</a
+      ><a name="1026" href="Data.List.All.html#1026" class="Bound"
       >P</a
-      ><a name="1028"
-      > </a
-      ><a name="1029" class="Symbol"
-      >(</a
-      ><a name="1030" href="Data.List.All.html#1008" class="Bound"
+      > <a name="1028" class="Symbol"
+      >:</a
+      > <a name="1030" href="Data.List.All.html#1014" class="Bound"
+      >A</a
+      > <a name="1032" class="Symbol"
+      >&#8594;</a
+      > <a name="1034" class="PrimitiveType"
+      >Set</a
+      > <a name="1038" href="Data.List.All.html#1010" class="Bound"
+      >p</a
+      ><a name="1039" class="Symbol"
+      >}</a
+      > <a name="1041" class="Symbol"
+      >{</a
+      ><a name="1042" href="Data.List.All.html#1042" class="Bound"
       >x</a
-      ><a name="1031"
-      > </a
-      ><a name="1032" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="1033"
-      > </a
-      ><a name="1034" href="Data.List.All.html#1010" class="Bound"
+      > <a name="1044" href="Data.List.All.html#1044" class="Bound"
       >xs</a
-      ><a name="1036" class="Symbol"
-      >)</a
-      ><a name="1037"
-      > </a
-      ><a name="1038" class="Symbol"
+      ><a name="1046" class="Symbol"
+      >}</a
+      > <a name="1048" class="Symbol"
       >&#8594;</a
-      ><a name="1039"
-      > </a
-      ><a name="1040" href="Data.List.All.html#706" class="Datatype"
-      >All</a
-      ><a name="1043"
-      > </a
-      ><a name="1044" href="Data.List.All.html#992" class="Bound"
-      >P</a
-      ><a name="1045"
-      > </a
-      ><a name="1046" href="Data.List.All.html#1010" class="Bound"
-      >xs</a
-      ><a name="1048"
       >
-</a
-      ><a name="1049" href="Data.List.All.html#964" class="Function"
-      >tail</a
-      ><a name="1053"
-      > </a
-      ><a name="1054" class="Symbol"
+       <a name="1057" href="Data.List.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1061" href="Data.List.All.html#1026" class="Bound"
+      >P</a
+      > <a name="1063" class="Symbol"
       >(</a
-      ><a name="1055" href="Data.List.All.html#1055" class="Bound"
-      >px</a
-      ><a name="1057"
-      > </a
-      ><a name="1058" href="Data.List.All.html#801" class="InductiveConstructor Operator"
+      ><a name="1064" href="Data.List.All.html#1042" class="Bound"
+      >x</a
+      > <a name="1066" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1059"
-      > </a
-      ><a name="1060" href="Data.List.All.html#1060" class="Bound"
-      >pxs</a
-      ><a name="1063" class="Symbol"
+      > <a name="1068" href="Data.List.All.html#1044" class="Bound"
+      >xs</a
+      ><a name="1070" class="Symbol"
       >)</a
-      ><a name="1064"
-      > </a
-      ><a name="1065" class="Symbol"
-      >=</a
-      ><a name="1066"
-      > </a
-      ><a name="1067" href="Data.List.All.html#1060" class="Bound"
+      > <a name="1072" class="Symbol"
+      >&#8594;</a
+      > <a name="1074" href="Data.List.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1078" href="Data.List.All.html#1026" class="Bound"
+      >P</a
+      > <a name="1080" href="Data.List.All.html#1044" class="Bound"
+      >xs</a
+      >
+<a name="1083" href="Data.List.All.html#tail" class="Function"
+      >tail</a
+      > <a name="1088" class="Symbol"
+      >(</a
+      ><a name="1089" href="Data.List.All.html#1089" class="Bound"
+      >px</a
+      > <a name="1092" href="Data.List.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1094" href="Data.List.All.html#1094" class="Bound"
       >pxs</a
-      ><a name="1070"
+      ><a name="1097" class="Symbol"
+      >)</a
+      > <a name="1099" class="Symbol"
+      >=</a
+      > <a name="1101" href="Data.List.All.html#1094" class="Bound"
+      >pxs</a
       >
 
-</a
-      ><a name="1072" href="Data.List.All.html#1072" class="Function"
+<a name="lookup" href="Data.List.All.html#lookup" class="Function"
       >lookup</a
-      ><a name="1078"
-      > </a
-      ><a name="1079" class="Symbol"
+      > <a name="1113" class="Symbol"
       >:</a
-      ><a name="1080"
-      > </a
-      ><a name="1081" class="Symbol"
+      > <a name="1115" class="Symbol"
       >&#8704;</a
-      ><a name="1082"
-      > </a
-      ><a name="1083" class="Symbol"
-      >{</a
-      ><a name="1084" href="Data.List.All.html#1084" class="Bound"
-      >a</a
-      ><a name="1085"
-      > </a
-      ><a name="1086" href="Data.List.All.html#1086" class="Bound"
-      >p</a
-      ><a name="1087" class="Symbol"
-      >}</a
-      ><a name="1088"
-      > </a
-      ><a name="1089" class="Symbol"
-      >{</a
-      ><a name="1090" href="Data.List.All.html#1090" class="Bound"
-      >A</a
-      ><a name="1091"
-      > </a
-      ><a name="1092" class="Symbol"
-      >:</a
-      ><a name="1093"
-      > </a
-      ><a name="1094" class="PrimitiveType"
-      >Set</a
-      ><a name="1097"
-      > </a
-      ><a name="1098" href="Data.List.All.html#1084" class="Bound"
-      >a</a
-      ><a name="1099" class="Symbol"
-      >}</a
-      ><a name="1100"
-      > </a
-      ><a name="1101" class="Symbol"
-      >{</a
-      ><a name="1102" href="Data.List.All.html#1102" class="Bound"
-      >P</a
-      ><a name="1103"
-      > </a
-      ><a name="1104" class="Symbol"
-      >:</a
-      ><a name="1105"
-      > </a
-      ><a name="1106" href="Data.List.All.html#1090" class="Bound"
-      >A</a
-      ><a name="1107"
-      > </a
-      ><a name="1108" class="Symbol"
-      >&#8594;</a
-      ><a name="1109"
-      > </a
-      ><a name="1110" class="PrimitiveType"
-      >Set</a
-      ><a name="1113"
-      > </a
-      ><a name="1114" href="Data.List.All.html#1086" class="Bound"
-      >p</a
-      ><a name="1115" class="Symbol"
-      >}</a
-      ><a name="1116"
-      > </a
-      ><a name="1117" class="Symbol"
+      > <a name="1117" class="Symbol"
       >{</a
       ><a name="1118" href="Data.List.All.html#1118" class="Bound"
-      >xs</a
-      ><a name="1120"
-      > </a
+      >a</a
+      > <a name="1120" href="Data.List.All.html#1120" class="Bound"
+      >p</a
       ><a name="1121" class="Symbol"
-      >:</a
-      ><a name="1122"
-      > </a
-      ><a name="1123" href="Agda.Builtin.List.html#80" class="Datatype"
-      >List</a
-      ><a name="1127"
-      > </a
-      ><a name="1128" href="Data.List.All.html#1090" class="Bound"
-      >A</a
-      ><a name="1129" class="Symbol"
       >}</a
-      ><a name="1130"
-      > </a
-      ><a name="1131" class="Symbol"
-      >&#8594;</a
-      ><a name="1132"
-      >
-         </a
-      ><a name="1142" href="Data.List.All.html#706" class="Datatype"
-      >All</a
-      ><a name="1145"
-      > </a
-      ><a name="1146" href="Data.List.All.html#1102" class="Bound"
-      >P</a
-      ><a name="1147"
-      > </a
-      ><a name="1148" href="Data.List.All.html#1118" class="Bound"
-      >xs</a
-      ><a name="1150"
-      > </a
-      ><a name="1151" class="Symbol"
-      >&#8594;</a
-      ><a name="1152"
-      > </a
-      ><a name="1153" class="Symbol"
-      >(&#8704;</a
-      ><a name="1155"
-      > </a
-      ><a name="1156" class="Symbol"
+      > <a name="1123" class="Symbol"
       >{</a
-      ><a name="1157" href="Data.List.All.html#1157" class="Bound"
-      >x</a
-      ><a name="1158"
-      > </a
-      ><a name="1159" class="Symbol"
-      >:</a
-      ><a name="1160"
-      > </a
-      ><a name="1161" href="Data.List.All.html#1090" class="Bound"
+      ><a name="1124" href="Data.List.All.html#1124" class="Bound"
       >A</a
-      ><a name="1162" class="Symbol"
+      > <a name="1126" class="Symbol"
+      >:</a
+      > <a name="1128" class="PrimitiveType"
+      >Set</a
+      > <a name="1132" href="Data.List.All.html#1118" class="Bound"
+      >a</a
+      ><a name="1133" class="Symbol"
       >}</a
-      ><a name="1163"
-      > </a
-      ><a name="1164" class="Symbol"
-      >&#8594;</a
-      ><a name="1165"
-      > </a
-      ><a name="1166" href="Data.List.All.html#1157" class="Bound"
-      >x</a
-      ><a name="1167"
-      > </a
-      ><a name="1168" href="Data.List.Any.html#2920" class="Function Operator"
-      >&#8712;</a
-      ><a name="1169"
-      > </a
-      ><a name="1170" href="Data.List.All.html#1118" class="Bound"
-      >xs</a
-      ><a name="1172"
-      > </a
-      ><a name="1173" class="Symbol"
-      >&#8594;</a
-      ><a name="1174"
-      > </a
-      ><a name="1175" href="Data.List.All.html#1102" class="Bound"
+      > <a name="1135" class="Symbol"
+      >{</a
+      ><a name="1136" href="Data.List.All.html#1136" class="Bound"
       >P</a
-      ><a name="1176"
-      > </a
-      ><a name="1177" href="Data.List.All.html#1157" class="Bound"
+      > <a name="1138" class="Symbol"
+      >:</a
+      > <a name="1140" href="Data.List.All.html#1124" class="Bound"
+      >A</a
+      > <a name="1142" class="Symbol"
+      >&#8594;</a
+      > <a name="1144" class="PrimitiveType"
+      >Set</a
+      > <a name="1148" href="Data.List.All.html#1120" class="Bound"
+      >p</a
+      ><a name="1149" class="Symbol"
+      >}</a
+      > <a name="1151" class="Symbol"
+      >{</a
+      ><a name="1152" href="Data.List.All.html#1152" class="Bound"
+      >xs</a
+      > <a name="1155" class="Symbol"
+      >:</a
+      > <a name="1157" href="Agda.Builtin.List.html#List" class="Datatype"
+      >List</a
+      > <a name="1162" href="Data.List.All.html#1124" class="Bound"
+      >A</a
+      ><a name="1163" class="Symbol"
+      >}</a
+      > <a name="1165" class="Symbol"
+      >&#8594;</a
+      >
+         <a name="1176" href="Data.List.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1180" href="Data.List.All.html#1136" class="Bound"
+      >P</a
+      > <a name="1182" href="Data.List.All.html#1152" class="Bound"
+      >xs</a
+      > <a name="1185" class="Symbol"
+      >&#8594;</a
+      > <a name="1187" class="Symbol"
+      >(&#8704;</a
+      > <a name="1190" class="Symbol"
+      >{</a
+      ><a name="1191" href="Data.List.All.html#1191" class="Bound"
       >x</a
-      ><a name="1178" class="Symbol"
+      > <a name="1193" class="Symbol"
+      >:</a
+      > <a name="1195" href="Data.List.All.html#1124" class="Bound"
+      >A</a
+      ><a name="1196" class="Symbol"
+      >}</a
+      > <a name="1198" class="Symbol"
+      >&#8594;</a
+      > <a name="1200" href="Data.List.All.html#1191" class="Bound"
+      >x</a
+      > <a name="1202" href="Data.List.Any.Membership.html#Propositional.M._&#8712;_" class="Function Operator"
+      >&#8712;</a
+      > <a name="1204" href="Data.List.All.html#1152" class="Bound"
+      >xs</a
+      > <a name="1207" class="Symbol"
+      >&#8594;</a
+      > <a name="1209" href="Data.List.All.html#1136" class="Bound"
+      >P</a
+      > <a name="1211" href="Data.List.All.html#1191" class="Bound"
+      >x</a
+      ><a name="1212" class="Symbol"
       >)</a
-      ><a name="1179"
       >
-</a
-      ><a name="1180" href="Data.List.All.html#1072" class="Function"
+<a name="1214" href="Data.List.All.html#lookup" class="Function"
       >lookup</a
-      ><a name="1186"
-      > </a
-      ><a name="1187" href="Data.List.All.html#784" class="InductiveConstructor"
+      > <a name="1221" href="Data.List.All.html#All.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1189"
-      >         </a
-      ><a name="1198" class="Symbol"
+      >         <a name="1232" class="Symbol"
       >()</a
-      ><a name="1200"
       >
-</a
-      ><a name="1201" href="Data.List.All.html#1072" class="Function"
+<a name="1235" href="Data.List.All.html#lookup" class="Function"
       >lookup</a
-      ><a name="1207"
-      > </a
-      ><a name="1208" class="Symbol"
+      > <a name="1242" class="Symbol"
       >(</a
-      ><a name="1209" href="Data.List.All.html#1209" class="Bound"
+      ><a name="1243" href="Data.List.All.html#1243" class="Bound"
       >px</a
-      ><a name="1211"
-      > </a
-      ><a name="1212" href="Data.List.All.html#801" class="InductiveConstructor Operator"
+      > <a name="1246" href="Data.List.All.html#All._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1213"
-      > </a
-      ><a name="1214" href="Data.List.All.html#1214" class="Bound"
+      > <a name="1248" href="Data.List.All.html#1248" class="Bound"
       >pxs</a
-      ><a name="1217" class="Symbol"
+      ><a name="1251" class="Symbol"
       >)</a
-      ><a name="1218"
-      > </a
-      ><a name="1219" class="Symbol"
+      > <a name="1253" class="Symbol"
       >(</a
-      ><a name="1220" href="Data.List.Any.html#1174" class="InductiveConstructor"
+      ><a name="1254" href="Data.List.Any.html#Any.here" class="InductiveConstructor"
       >here</a
-      ><a name="1224"
-      > </a
-      ><a name="1225" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="1259" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="1229" class="Symbol"
+      ><a name="1263" class="Symbol"
       >)</a
-      ><a name="1230"
-      >  </a
-      ><a name="1232" class="Symbol"
+      >  <a name="1266" class="Symbol"
       >=</a
-      ><a name="1233"
-      > </a
-      ><a name="1234" href="Data.List.All.html#1209" class="Bound"
+      > <a name="1268" href="Data.List.All.html#1243" class="Bound"
       >px</a
-      ><a name="1236"
       >
-</a
-      ><a name="1237" href="Data.List.All.html#1072" class="Function"
+<a name="1271" href="Data.List.All.html#lookup" class="Function"
       >lookup</a
-      ><a name="1243"
-      > </a
-      ><a name="1244" class="Symbol"
+      > <a name="1278" class="Symbol"
       >(</a
-      ><a name="1245" href="Data.List.All.html#1245" class="Bound"
+      ><a name="1279" href="Data.List.All.html#1279" class="Bound"
       >px</a
-      ><a name="1247"
-      > </a
-      ><a name="1248" href="Data.List.All.html#801" class="InductiveConstructor Operator"
+      > <a name="1282" href="Data.List.All.html#All._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1249"
-      > </a
-      ><a name="1250" href="Data.List.All.html#1250" class="Bound"
+      > <a name="1284" href="Data.List.All.html#1284" class="Bound"
       >pxs</a
-      ><a name="1253" class="Symbol"
+      ><a name="1287" class="Symbol"
       >)</a
-      ><a name="1254"
-      > </a
-      ><a name="1255" class="Symbol"
+      > <a name="1289" class="Symbol"
       >(</a
-      ><a name="1256" href="Data.List.Any.html#1227" class="InductiveConstructor"
+      ><a name="1290" href="Data.List.Any.html#Any.there" class="InductiveConstructor"
       >there</a
-      ><a name="1261"
-      > </a
-      ><a name="1262" href="Data.List.All.html#1262" class="Bound"
+      > <a name="1296" href="Data.List.All.html#1296" class="Bound"
       >x&#8712;xs</a
-      ><a name="1266" class="Symbol"
+      ><a name="1300" class="Symbol"
       >)</a
-      ><a name="1267"
-      > </a
-      ><a name="1268" class="Symbol"
+      > <a name="1302" class="Symbol"
       >=</a
-      ><a name="1269"
-      > </a
-      ><a name="1270" href="Data.List.All.html#1072" class="Function"
+      > <a name="1304" href="Data.List.All.html#lookup" class="Function"
       >lookup</a
-      ><a name="1276"
-      > </a
-      ><a name="1277" href="Data.List.All.html#1250" class="Bound"
+      > <a name="1311" href="Data.List.All.html#1284" class="Bound"
       >pxs</a
-      ><a name="1280"
-      > </a
-      ><a name="1281" href="Data.List.All.html#1262" class="Bound"
+      > <a name="1315" href="Data.List.All.html#1296" class="Bound"
       >x&#8712;xs</a
-      ><a name="1285"
       >
 
-</a
-      ><a name="1287" href="Data.List.All.html#1287" class="Function"
+<a name="tabulate" href="Data.List.All.html#tabulate" class="Function"
       >tabulate</a
-      ><a name="1295"
-      > </a
-      ><a name="1296" class="Symbol"
+      > <a name="1330" class="Symbol"
       >:</a
-      ><a name="1297"
-      > </a
-      ><a name="1298" class="Symbol"
+      > <a name="1332" class="Symbol"
       >&#8704;</a
-      ><a name="1299"
-      > </a
-      ><a name="1300" class="Symbol"
-      >{</a
-      ><a name="1301" href="Data.List.All.html#1301" class="Bound"
-      >a</a
-      ><a name="1302"
-      > </a
-      ><a name="1303" href="Data.List.All.html#1303" class="Bound"
-      >p</a
-      ><a name="1304" class="Symbol"
-      >}</a
-      ><a name="1305"
-      > </a
-      ><a name="1306" class="Symbol"
-      >{</a
-      ><a name="1307" href="Data.List.All.html#1307" class="Bound"
-      >A</a
-      ><a name="1308"
-      > </a
-      ><a name="1309" class="Symbol"
-      >:</a
-      ><a name="1310"
-      > </a
-      ><a name="1311" class="PrimitiveType"
-      >Set</a
-      ><a name="1314"
-      > </a
-      ><a name="1315" href="Data.List.All.html#1301" class="Bound"
-      >a</a
-      ><a name="1316" class="Symbol"
-      >}</a
-      ><a name="1317"
-      > </a
-      ><a name="1318" class="Symbol"
-      >{</a
-      ><a name="1319" href="Data.List.All.html#1319" class="Bound"
-      >P</a
-      ><a name="1320"
-      > </a
-      ><a name="1321" class="Symbol"
-      >:</a
-      ><a name="1322"
-      > </a
-      ><a name="1323" href="Data.List.All.html#1307" class="Bound"
-      >A</a
-      ><a name="1324"
-      > </a
-      ><a name="1325" class="Symbol"
-      >&#8594;</a
-      ><a name="1326"
-      > </a
-      ><a name="1327" class="PrimitiveType"
-      >Set</a
-      ><a name="1330"
-      > </a
-      ><a name="1331" href="Data.List.All.html#1303" class="Bound"
-      >p</a
-      ><a name="1332" class="Symbol"
-      >}</a
-      ><a name="1333"
-      > </a
-      ><a name="1334" class="Symbol"
+      > <a name="1334" class="Symbol"
       >{</a
       ><a name="1335" href="Data.List.All.html#1335" class="Bound"
-      >xs</a
-      ><a name="1337" class="Symbol"
+      >a</a
+      > <a name="1337" href="Data.List.All.html#1337" class="Bound"
+      >p</a
+      ><a name="1338" class="Symbol"
       >}</a
-      ><a name="1338"
-      > </a
-      ><a name="1339" class="Symbol"
+      > <a name="1340" class="Symbol"
+      >{</a
+      ><a name="1341" href="Data.List.All.html#1341" class="Bound"
+      >A</a
+      > <a name="1343" class="Symbol"
+      >:</a
+      > <a name="1345" class="PrimitiveType"
+      >Set</a
+      > <a name="1349" href="Data.List.All.html#1335" class="Bound"
+      >a</a
+      ><a name="1350" class="Symbol"
+      >}</a
+      > <a name="1352" class="Symbol"
+      >{</a
+      ><a name="1353" href="Data.List.All.html#1353" class="Bound"
+      >P</a
+      > <a name="1355" class="Symbol"
+      >:</a
+      > <a name="1357" href="Data.List.All.html#1341" class="Bound"
+      >A</a
+      > <a name="1359" class="Symbol"
       >&#8594;</a
-      ><a name="1340"
+      > <a name="1361" class="PrimitiveType"
+      >Set</a
+      > <a name="1365" href="Data.List.All.html#1337" class="Bound"
+      >p</a
+      ><a name="1366" class="Symbol"
+      >}</a
+      > <a name="1368" class="Symbol"
+      >{</a
+      ><a name="1369" href="Data.List.All.html#1369" class="Bound"
+      >xs</a
+      ><a name="1371" class="Symbol"
+      >}</a
+      > <a name="1373" class="Symbol"
+      >&#8594;</a
       >
-           </a
-      ><a name="1352" class="Symbol"
+           <a name="1386" class="Symbol"
       >(&#8704;</a
-      ><a name="1354"
-      > </a
-      ><a name="1355" class="Symbol"
+      > <a name="1389" class="Symbol"
       >{</a
-      ><a name="1356" href="Data.List.All.html#1356" class="Bound"
+      ><a name="1390" href="Data.List.All.html#1390" class="Bound"
       >x</a
-      ><a name="1357" class="Symbol"
+      ><a name="1391" class="Symbol"
       >}</a
-      ><a name="1358"
-      > </a
-      ><a name="1359" class="Symbol"
+      > <a name="1393" class="Symbol"
       >&#8594;</a
-      ><a name="1360"
-      > </a
-      ><a name="1361" href="Data.List.All.html#1356" class="Bound"
+      > <a name="1395" href="Data.List.All.html#1390" class="Bound"
       >x</a
-      ><a name="1362"
-      > </a
-      ><a name="1363" href="Data.List.Any.html#2920" class="Function Operator"
+      > <a name="1397" href="Data.List.Any.Membership.html#Propositional.M._&#8712;_" class="Function Operator"
       >&#8712;</a
-      ><a name="1364"
-      > </a
-      ><a name="1365" href="Data.List.All.html#1335" class="Bound"
+      > <a name="1399" href="Data.List.All.html#1369" class="Bound"
       >xs</a
-      ><a name="1367"
-      > </a
-      ><a name="1368" class="Symbol"
+      > <a name="1402" class="Symbol"
       >&#8594;</a
-      ><a name="1369"
-      > </a
-      ><a name="1370" href="Data.List.All.html#1319" class="Bound"
+      > <a name="1404" href="Data.List.All.html#1353" class="Bound"
       >P</a
-      ><a name="1371"
-      > </a
-      ><a name="1372" href="Data.List.All.html#1356" class="Bound"
+      > <a name="1406" href="Data.List.All.html#1390" class="Bound"
       >x</a
-      ><a name="1373" class="Symbol"
+      ><a name="1407" class="Symbol"
       >)</a
-      ><a name="1374"
-      > </a
-      ><a name="1375" class="Symbol"
+      > <a name="1409" class="Symbol"
       >&#8594;</a
-      ><a name="1376"
-      > </a
-      ><a name="1377" href="Data.List.All.html#706" class="Datatype"
+      > <a name="1411" href="Data.List.All.html#All" class="Datatype"
       >All</a
-      ><a name="1380"
-      > </a
-      ><a name="1381" href="Data.List.All.html#1319" class="Bound"
+      > <a name="1415" href="Data.List.All.html#1353" class="Bound"
       >P</a
-      ><a name="1382"
-      > </a
-      ><a name="1383" href="Data.List.All.html#1335" class="Bound"
+      > <a name="1417" href="Data.List.All.html#1369" class="Bound"
       >xs</a
-      ><a name="1385"
       >
-</a
-      ><a name="1386" href="Data.List.All.html#1287" class="Function"
+<a name="1420" href="Data.List.All.html#tabulate" class="Function"
       >tabulate</a
-      ><a name="1394"
-      > </a
-      ><a name="1395" class="Symbol"
+      > <a name="1429" class="Symbol"
       >{</a
-      ><a name="1396" class="Argument"
+      ><a name="1430" class="Argument"
       >xs</a
-      ><a name="1398"
-      > </a
-      ><a name="1399" class="Symbol"
+      > <a name="1433" class="Symbol"
       >=</a
-      ><a name="1400"
-      > </a
-      ><a name="1401" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      > <a name="1435" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1403" class="Symbol"
+      ><a name="1437" class="Symbol"
       >}</a
-      ><a name="1404"
-      >     </a
-      ><a name="1409" href="Data.List.All.html#1409" class="Bound"
+      >     <a name="1443" href="Data.List.All.html#1443" class="Bound"
       >hyp</a
-      ><a name="1412"
-      > </a
-      ><a name="1413" class="Symbol"
+      > <a name="1447" class="Symbol"
       >=</a
-      ><a name="1414"
-      > </a
-      ><a name="1415" href="Data.List.All.html#784" class="InductiveConstructor"
+      > <a name="1449" href="Data.List.All.html#All.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1417"
       >
-</a
-      ><a name="1418" href="Data.List.All.html#1287" class="Function"
+<a name="1452" href="Data.List.All.html#tabulate" class="Function"
       >tabulate</a
-      ><a name="1426"
-      > </a
-      ><a name="1427" class="Symbol"
+      > <a name="1461" class="Symbol"
       >{</a
-      ><a name="1428" class="Argument"
+      ><a name="1462" class="Argument"
       >xs</a
-      ><a name="1430"
-      > </a
-      ><a name="1431" class="Symbol"
+      > <a name="1465" class="Symbol"
       >=</a
-      ><a name="1432"
-      > </a
-      ><a name="1433" href="Data.List.All.html#1433" class="Bound"
+      > <a name="1467" href="Data.List.All.html#1467" class="Bound"
       >x</a
-      ><a name="1434"
-      > </a
-      ><a name="1435" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      > <a name="1469" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1436"
-      > </a
-      ><a name="1437" href="Data.List.All.html#1437" class="Bound"
+      > <a name="1471" href="Data.List.All.html#1471" class="Bound"
       >xs</a
-      ><a name="1439" class="Symbol"
+      ><a name="1473" class="Symbol"
       >}</a
-      ><a name="1440"
-      > </a
-      ><a name="1441" href="Data.List.All.html#1441" class="Bound"
+      > <a name="1475" href="Data.List.All.html#1475" class="Bound"
       >hyp</a
-      ><a name="1444"
-      > </a
-      ><a name="1445" class="Symbol"
+      > <a name="1479" class="Symbol"
       >=</a
-      ><a name="1446"
-      > </a
-      ><a name="1447" href="Data.List.All.html#1441" class="Bound"
+      > <a name="1481" href="Data.List.All.html#1475" class="Bound"
       >hyp</a
-      ><a name="1450"
-      > </a
-      ><a name="1451" class="Symbol"
+      > <a name="1485" class="Symbol"
       >(</a
-      ><a name="1452" href="Data.List.Any.html#1174" class="InductiveConstructor"
+      ><a name="1486" href="Data.List.Any.html#Any.here" class="InductiveConstructor"
       >here</a
-      ><a name="1456"
-      > </a
-      ><a name="1457" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="1491" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="1461" class="Symbol"
-      >)</a
-      ><a name="1462"
-      > </a
-      ><a name="1463" href="Data.List.All.html#801" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="1464"
-      > </a
-      ><a name="1465" href="Data.List.All.html#1287" class="Function"
-      >tabulate</a
-      ><a name="1473"
-      > </a
-      ><a name="1474" class="Symbol"
-      >(</a
-      ><a name="1475" href="Data.List.All.html#1441" class="Bound"
-      >hyp</a
-      ><a name="1478"
-      > </a
-      ><a name="1479" href="Function.html#713" class="Function Operator"
-      >&#8728;</a
-      ><a name="1480"
-      > </a
-      ><a name="1481" href="Data.List.Any.html#1227" class="InductiveConstructor"
-      >there</a
-      ><a name="1486" class="Symbol"
-      >)</a
-      ><a name="1487"
-      >
-
-</a
-      ><a name="1489" href="Data.List.All.html#1489" class="Function"
-      >map</a
-      ><a name="1492"
-      > </a
-      ><a name="1493" class="Symbol"
-      >:</a
-      ><a name="1494"
-      > </a
       ><a name="1495" class="Symbol"
-      >&#8704;</a
-      ><a name="1496"
-      > </a
-      ><a name="1497" class="Symbol"
-      >{</a
-      ><a name="1498" href="Data.List.All.html#1498" class="Bound"
-      >a</a
-      ><a name="1499"
-      > </a
-      ><a name="1500" href="Data.List.All.html#1500" class="Bound"
-      >p</a
-      ><a name="1501"
-      > </a
-      ><a name="1502" href="Data.List.All.html#1502" class="Bound"
-      >q</a
-      ><a name="1503" class="Symbol"
-      >}</a
-      ><a name="1504"
-      > </a
-      ><a name="1505" class="Symbol"
-      >{</a
-      ><a name="1506" href="Data.List.All.html#1506" class="Bound"
-      >A</a
-      ><a name="1507"
-      > </a
-      ><a name="1508" class="Symbol"
-      >:</a
-      ><a name="1509"
-      > </a
-      ><a name="1510" class="PrimitiveType"
-      >Set</a
-      ><a name="1513"
-      > </a
-      ><a name="1514" href="Data.List.All.html#1498" class="Bound"
-      >a</a
-      ><a name="1515" class="Symbol"
-      >}</a
-      ><a name="1516"
-      > </a
-      ><a name="1517" class="Symbol"
-      >{</a
-      ><a name="1518" href="Data.List.All.html#1518" class="Bound"
-      >P</a
-      ><a name="1519"
-      > </a
-      ><a name="1520" class="Symbol"
-      >:</a
-      ><a name="1521"
-      > </a
-      ><a name="1522" href="Data.List.All.html#1506" class="Bound"
-      >A</a
-      ><a name="1523"
-      > </a
-      ><a name="1524" class="Symbol"
-      >&#8594;</a
-      ><a name="1525"
-      > </a
-      ><a name="1526" class="PrimitiveType"
-      >Set</a
-      ><a name="1529"
-      > </a
-      ><a name="1530" href="Data.List.All.html#1500" class="Bound"
-      >p</a
-      ><a name="1531" class="Symbol"
-      >}</a
-      ><a name="1532"
-      > </a
-      ><a name="1533" class="Symbol"
-      >{</a
-      ><a name="1534" href="Data.List.All.html#1534" class="Bound"
-      >Q</a
-      ><a name="1535"
-      > </a
-      ><a name="1536" class="Symbol"
-      >:</a
-      ><a name="1537"
-      > </a
-      ><a name="1538" href="Data.List.All.html#1506" class="Bound"
-      >A</a
-      ><a name="1539"
-      > </a
-      ><a name="1540" class="Symbol"
-      >&#8594;</a
-      ><a name="1541"
-      > </a
-      ><a name="1542" class="PrimitiveType"
-      >Set</a
-      ><a name="1545"
-      > </a
-      ><a name="1546" href="Data.List.All.html#1502" class="Bound"
-      >q</a
-      ><a name="1547" class="Symbol"
-      >}</a
-      ><a name="1548"
-      > </a
-      ><a name="1549" class="Symbol"
-      >&#8594;</a
-      ><a name="1550"
-      >
-      </a
-      ><a name="1557" href="Data.List.All.html#1518" class="Bound"
-      >P</a
-      ><a name="1558"
-      > </a
-      ><a name="1559" href="Relation.Unary.html#1822" class="Function Operator"
-      >&#8912;</a
-      ><a name="1560"
-      > </a
-      ><a name="1561" href="Data.List.All.html#1534" class="Bound"
-      >Q</a
-      ><a name="1562"
-      > </a
-      ><a name="1563" class="Symbol"
-      >&#8594;</a
-      ><a name="1564"
-      > </a
-      ><a name="1565" href="Data.List.All.html#706" class="Datatype"
-      >All</a
-      ><a name="1568"
-      > </a
-      ><a name="1569" href="Data.List.All.html#1518" class="Bound"
-      >P</a
-      ><a name="1570"
-      > </a
-      ><a name="1571" href="Relation.Unary.html#1822" class="Function Operator"
-      >&#8912;</a
-      ><a name="1572"
-      > </a
-      ><a name="1573" href="Data.List.All.html#706" class="Datatype"
-      >All</a
-      ><a name="1576"
-      > </a
-      ><a name="1577" href="Data.List.All.html#1534" class="Bound"
-      >Q</a
-      ><a name="1578"
-      >
-</a
-      ><a name="1579" href="Data.List.All.html#1489" class="Function"
-      >map</a
-      ><a name="1582"
-      > </a
-      ><a name="1583" href="Data.List.All.html#1583" class="Bound"
-      >g</a
-      ><a name="1584"
-      > </a
-      ><a name="1585" href="Data.List.All.html#784" class="InductiveConstructor"
-      >[]</a
-      ><a name="1587"
-      >         </a
-      ><a name="1596" class="Symbol"
-      >=</a
-      ><a name="1597"
-      > </a
-      ><a name="1598" href="Data.List.All.html#784" class="InductiveConstructor"
-      >[]</a
-      ><a name="1600"
-      >
-</a
-      ><a name="1601" href="Data.List.All.html#1489" class="Function"
-      >map</a
-      ><a name="1604"
-      > </a
-      ><a name="1605" href="Data.List.All.html#1605" class="Bound"
-      >g</a
-      ><a name="1606"
-      > </a
-      ><a name="1607" class="Symbol"
-      >(</a
-      ><a name="1608" href="Data.List.All.html#1608" class="Bound"
-      >px</a
-      ><a name="1610"
-      > </a
-      ><a name="1611" href="Data.List.All.html#801" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="1612"
-      > </a
-      ><a name="1613" href="Data.List.All.html#1613" class="Bound"
-      >pxs</a
-      ><a name="1616" class="Symbol"
       >)</a
-      ><a name="1617"
-      > </a
-      ><a name="1618" class="Symbol"
-      >=</a
-      ><a name="1619"
-      > </a
-      ><a name="1620" href="Data.List.All.html#1605" class="Bound"
-      >g</a
-      ><a name="1621"
-      > </a
-      ><a name="1622" href="Data.List.All.html#1608" class="Bound"
-      >px</a
-      ><a name="1624"
-      > </a
-      ><a name="1625" href="Data.List.All.html#801" class="InductiveConstructor Operator"
+      > <a name="1497" href="Data.List.All.html#All._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1626"
-      > </a
-      ><a name="1627" href="Data.List.All.html#1489" class="Function"
-      >map</a
-      ><a name="1630"
-      > </a
-      ><a name="1631" href="Data.List.All.html#1605" class="Bound"
-      >g</a
-      ><a name="1632"
-      > </a
-      ><a name="1633" href="Data.List.All.html#1613" class="Bound"
-      >pxs</a
-      ><a name="1636"
+      > <a name="1499" href="Data.List.All.html#tabulate" class="Function"
+      >tabulate</a
+      > <a name="1508" class="Symbol"
+      >(</a
+      ><a name="1509" href="Data.List.All.html#1475" class="Bound"
+      >hyp</a
+      > <a name="1513" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="1515" href="Data.List.Any.html#Any.there" class="InductiveConstructor"
+      >there</a
+      ><a name="1520" class="Symbol"
+      >)</a
       >
 
-</a
-      ><a name="1638" href="Data.List.All.html#1638" class="Function"
-      >all</a
-      ><a name="1641"
-      > </a
-      ><a name="1642" class="Symbol"
+<a name="map" href="Data.List.All.html#map" class="Function"
+      >map</a
+      > <a name="1527" class="Symbol"
       >:</a
-      ><a name="1643"
-      > </a
-      ><a name="1644" class="Symbol"
+      > <a name="1529" class="Symbol"
       >&#8704;</a
-      ><a name="1645"
-      > </a
-      ><a name="1646" class="Symbol"
+      > <a name="1531" class="Symbol"
       >{</a
-      ><a name="1647" href="Data.List.All.html#1647" class="Bound"
+      ><a name="1532" href="Data.List.All.html#1532" class="Bound"
       >a</a
-      ><a name="1648"
-      > </a
-      ><a name="1649" href="Data.List.All.html#1649" class="Bound"
+      > <a name="1534" href="Data.List.All.html#1534" class="Bound"
       >p</a
-      ><a name="1650" class="Symbol"
+      > <a name="1536" href="Data.List.All.html#1536" class="Bound"
+      >q</a
+      ><a name="1537" class="Symbol"
       >}</a
-      ><a name="1651"
-      > </a
-      ><a name="1652" class="Symbol"
+      > <a name="1539" class="Symbol"
       >{</a
-      ><a name="1653" href="Data.List.All.html#1653" class="Bound"
+      ><a name="1540" href="Data.List.All.html#1540" class="Bound"
       >A</a
-      ><a name="1654"
-      > </a
-      ><a name="1655" class="Symbol"
+      > <a name="1542" class="Symbol"
       >:</a
-      ><a name="1656"
-      > </a
-      ><a name="1657" class="PrimitiveType"
+      > <a name="1544" class="PrimitiveType"
       >Set</a
-      ><a name="1660"
-      > </a
-      ><a name="1661" href="Data.List.All.html#1647" class="Bound"
+      > <a name="1548" href="Data.List.All.html#1532" class="Bound"
       >a</a
-      ><a name="1662" class="Symbol"
+      ><a name="1549" class="Symbol"
       >}</a
-      ><a name="1663"
-      > </a
-      ><a name="1664" class="Symbol"
+      > <a name="1551" class="Symbol"
       >{</a
-      ><a name="1665" href="Data.List.All.html#1665" class="Bound"
+      ><a name="1552" href="Data.List.All.html#1552" class="Bound"
       >P</a
-      ><a name="1666"
-      > </a
-      ><a name="1667" class="Symbol"
+      > <a name="1554" class="Symbol"
       >:</a
-      ><a name="1668"
-      > </a
-      ><a name="1669" href="Data.List.All.html#1653" class="Bound"
+      > <a name="1556" href="Data.List.All.html#1540" class="Bound"
       >A</a
-      ><a name="1670"
-      > </a
-      ><a name="1671" class="Symbol"
+      > <a name="1558" class="Symbol"
       >&#8594;</a
-      ><a name="1672"
-      > </a
-      ><a name="1673" class="PrimitiveType"
+      > <a name="1560" class="PrimitiveType"
       >Set</a
-      ><a name="1676"
-      > </a
-      ><a name="1677" href="Data.List.All.html#1649" class="Bound"
+      > <a name="1564" href="Data.List.All.html#1534" class="Bound"
       >p</a
-      ><a name="1678" class="Symbol"
+      ><a name="1565" class="Symbol"
       >}</a
-      ><a name="1679"
-      > </a
-      ><a name="1680" class="Symbol"
+      > <a name="1567" class="Symbol"
+      >{</a
+      ><a name="1568" href="Data.List.All.html#1568" class="Bound"
+      >Q</a
+      > <a name="1570" class="Symbol"
+      >:</a
+      > <a name="1572" href="Data.List.All.html#1540" class="Bound"
+      >A</a
+      > <a name="1574" class="Symbol"
       >&#8594;</a
-      ><a name="1681"
+      > <a name="1576" class="PrimitiveType"
+      >Set</a
+      > <a name="1580" href="Data.List.All.html#1536" class="Bound"
+      >q</a
+      ><a name="1581" class="Symbol"
+      >}</a
+      > <a name="1583" class="Symbol"
+      >&#8594;</a
       >
-      </a
-      ><a name="1688" href="Relation.Unary.html#4686" class="Function"
-      >Decidable</a
-      ><a name="1697"
-      > </a
-      ><a name="1698" href="Data.List.All.html#1665" class="Bound"
+      <a name="1591" href="Data.List.All.html#1552" class="Bound"
       >P</a
-      ><a name="1699"
-      > </a
-      ><a name="1700" class="Symbol"
+      > <a name="1593" href="Relation.Unary.html#1822" class="Function Operator"
+      >&#8912;</a
+      > <a name="1595" href="Data.List.All.html#1568" class="Bound"
+      >Q</a
+      > <a name="1597" class="Symbol"
       >&#8594;</a
-      ><a name="1701"
-      > </a
-      ><a name="1702" href="Relation.Unary.html#4686" class="Function"
-      >Decidable</a
-      ><a name="1711"
-      > </a
-      ><a name="1712" class="Symbol"
-      >(</a
-      ><a name="1713" href="Data.List.All.html#706" class="Datatype"
+      > <a name="1599" href="Data.List.All.html#All" class="Datatype"
       >All</a
-      ><a name="1716"
-      > </a
-      ><a name="1717" href="Data.List.All.html#1665" class="Bound"
+      > <a name="1603" href="Data.List.All.html#1552" class="Bound"
       >P</a
-      ><a name="1718" class="Symbol"
-      >)</a
-      ><a name="1719"
+      > <a name="1605" href="Relation.Unary.html#1822" class="Function Operator"
+      >&#8912;</a
+      > <a name="1607" href="Data.List.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1611" href="Data.List.All.html#1568" class="Bound"
+      >Q</a
       >
-</a
-      ><a name="1720" href="Data.List.All.html#1638" class="Function"
-      >all</a
-      ><a name="1723"
-      > </a
-      ><a name="1724" href="Data.List.All.html#1724" class="Bound"
-      >p</a
-      ><a name="1725"
-      > </a
-      ><a name="1726" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+<a name="1613" href="Data.List.All.html#map" class="Function"
+      >map</a
+      > <a name="1617" href="Data.List.All.html#1617" class="Bound"
+      >g</a
+      > <a name="1619" href="Data.List.All.html#All.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1728"
-      >       </a
-      ><a name="1735" class="Symbol"
+      >         <a name="1630" class="Symbol"
       >=</a
-      ><a name="1736"
-      > </a
-      ><a name="1737" href="Relation.Nullary.html#520" class="InductiveConstructor"
-      >yes</a
-      ><a name="1740"
-      > </a
-      ><a name="1741" href="Data.List.All.html#784" class="InductiveConstructor"
+      > <a name="1632" href="Data.List.All.html#All.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1743"
       >
-</a
-      ><a name="1744" href="Data.List.All.html#1638" class="Function"
-      >all</a
-      ><a name="1747"
-      > </a
-      ><a name="1748" href="Data.List.All.html#1748" class="Bound"
-      >p</a
-      ><a name="1749"
-      > </a
-      ><a name="1750" class="Symbol"
+<a name="1635" href="Data.List.All.html#map" class="Function"
+      >map</a
+      > <a name="1639" href="Data.List.All.html#1639" class="Bound"
+      >g</a
+      > <a name="1641" class="Symbol"
       >(</a
-      ><a name="1751" href="Data.List.All.html#1751" class="Bound"
-      >x</a
-      ><a name="1752"
-      > </a
-      ><a name="1753" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      ><a name="1642" href="Data.List.All.html#1642" class="Bound"
+      >px</a
+      > <a name="1645" href="Data.List.All.html#All._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1754"
-      > </a
-      ><a name="1755" href="Data.List.All.html#1755" class="Bound"
-      >xs</a
-      ><a name="1757" class="Symbol"
+      > <a name="1647" href="Data.List.All.html#1647" class="Bound"
+      >pxs</a
+      ><a name="1650" class="Symbol"
       >)</a
-      ><a name="1758"
-      > </a
-      ><a name="1759" class="Keyword"
+      > <a name="1652" class="Symbol"
+      >=</a
+      > <a name="1654" href="Data.List.All.html#1639" class="Bound"
+      >g</a
+      > <a name="1656" href="Data.List.All.html#1642" class="Bound"
+      >px</a
+      > <a name="1659" href="Data.List.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1661" href="Data.List.All.html#map" class="Function"
+      >map</a
+      > <a name="1665" href="Data.List.All.html#1639" class="Bound"
+      >g</a
+      > <a name="1667" href="Data.List.All.html#1647" class="Bound"
+      >pxs</a
+      >
+
+<a name="all" href="Data.List.All.html#all" class="Function"
+      >all</a
+      > <a name="1676" class="Symbol"
+      >:</a
+      > <a name="1678" class="Symbol"
+      >&#8704;</a
+      > <a name="1680" class="Symbol"
+      >{</a
+      ><a name="1681" href="Data.List.All.html#1681" class="Bound"
+      >a</a
+      > <a name="1683" href="Data.List.All.html#1683" class="Bound"
+      >p</a
+      ><a name="1684" class="Symbol"
+      >}</a
+      > <a name="1686" class="Symbol"
+      >{</a
+      ><a name="1687" href="Data.List.All.html#1687" class="Bound"
+      >A</a
+      > <a name="1689" class="Symbol"
+      >:</a
+      > <a name="1691" class="PrimitiveType"
+      >Set</a
+      > <a name="1695" href="Data.List.All.html#1681" class="Bound"
+      >a</a
+      ><a name="1696" class="Symbol"
+      >}</a
+      > <a name="1698" class="Symbol"
+      >{</a
+      ><a name="1699" href="Data.List.All.html#1699" class="Bound"
+      >P</a
+      > <a name="1701" class="Symbol"
+      >:</a
+      > <a name="1703" href="Data.List.All.html#1687" class="Bound"
+      >A</a
+      > <a name="1705" class="Symbol"
+      >&#8594;</a
+      > <a name="1707" class="PrimitiveType"
+      >Set</a
+      > <a name="1711" href="Data.List.All.html#1683" class="Bound"
+      >p</a
+      ><a name="1712" class="Symbol"
+      >}</a
+      > <a name="1714" class="Symbol"
+      >&#8594;</a
+      >
+      <a name="1722" href="Relation.Unary.html#Decidable" class="Function"
+      >Decidable</a
+      > <a name="1732" href="Data.List.All.html#1699" class="Bound"
+      >P</a
+      > <a name="1734" class="Symbol"
+      >&#8594;</a
+      > <a name="1736" href="Relation.Unary.html#Decidable" class="Function"
+      >Decidable</a
+      > <a name="1746" class="Symbol"
+      >(</a
+      ><a name="1747" href="Data.List.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1751" href="Data.List.All.html#1699" class="Bound"
+      >P</a
+      ><a name="1752" class="Symbol"
+      >)</a
+      >
+<a name="1754" href="Data.List.All.html#all" class="Function"
+      >all</a
+      > <a name="1758" href="Data.List.All.html#1758" class="Bound"
+      >p</a
+      > <a name="1760" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      >[]</a
+      >       <a name="1769" class="Symbol"
+      >=</a
+      > <a name="1771" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      >yes</a
+      > <a name="1775" href="Data.List.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >
+<a name="1778" href="Data.List.All.html#all" class="Function"
+      >all</a
+      > <a name="1782" href="Data.List.All.html#1782" class="Bound"
+      >p</a
+      > <a name="1784" class="Symbol"
+      >(</a
+      ><a name="1785" href="Data.List.All.html#1785" class="Bound"
+      >x</a
+      > <a name="1787" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1789" href="Data.List.All.html#1789" class="Bound"
+      >xs</a
+      ><a name="1791" class="Symbol"
+      >)</a
+      > <a name="1793" class="Keyword"
       >with</a
-      ><a name="1763"
-      > </a
-      ><a name="1764" href="Data.List.All.html#1748" class="Bound"
+      > <a name="1798" href="Data.List.All.html#1782" class="Bound"
       >p</a
-      ><a name="1765"
-      > </a
-      ><a name="1766" href="Data.List.All.html#1751" class="Bound"
+      > <a name="1800" href="Data.List.All.html#1785" class="Bound"
       >x</a
-      ><a name="1767"
       >
-</a
-      ><a name="1768" href="Data.List.All.html#1638" class="Function"
+<a name="1802" href="Data.List.All.html#all" class="Function"
       >all</a
-      ><a name="1771"
-      > </a
-      ><a name="1772" href="Data.List.All.html#1772" class="Bound"
+      > <a name="1806" href="Data.List.All.html#1806" class="Bound"
       >p</a
-      ><a name="1773"
-      > </a
-      ><a name="1774" class="Symbol"
+      > <a name="1808" class="Symbol"
       >(</a
-      ><a name="1775" href="Data.List.All.html#1775" class="Bound"
+      ><a name="1809" href="Data.List.All.html#1809" class="Bound"
       >x</a
-      ><a name="1776"
-      > </a
-      ><a name="1777" class="InductiveConstructor Operator"
+      > <a name="1811" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1778"
-      > </a
-      ><a name="1779" href="Data.List.All.html#1779" class="Bound"
+      > <a name="1813" href="Data.List.All.html#1813" class="Bound"
       >xs</a
-      ><a name="1781" class="Symbol"
+      ><a name="1815" class="Symbol"
       >)</a
-      ><a name="1782"
-      > </a
-      ><a name="1783" class="Symbol"
+      > <a name="1817" class="Symbol"
       >|</a
-      ><a name="1784"
-      > </a
-      ><a name="1785" href="Relation.Nullary.html#520" class="InductiveConstructor"
+      > <a name="1819" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
       >yes</a
-      ><a name="1788"
-      > </a
-      ><a name="1789" href="Data.List.All.html#1789" class="Bound"
+      > <a name="1823" href="Data.List.All.html#1823" class="Bound"
       >px</a
-      ><a name="1791"
-      > </a
-      ><a name="1792" class="Symbol"
+      > <a name="1826" class="Symbol"
       >=</a
-      ><a name="1793"
-      > </a
-      ><a name="1794" href="Relation.Nullary.Decidable.html#1801" class="Function"
+      > <a name="1828" href="Relation.Nullary.Decidable.html#map&#8242;" class="Function"
       >Dec.map&#8242;</a
-      ><a name="1802"
-      > </a
-      ><a name="1803" class="Symbol"
+      > <a name="1837" class="Symbol"
       >(</a
-      ><a name="1804" href="Data.List.All.html#801" class="InductiveConstructor Operator"
+      ><a name="1838" href="Data.List.All.html#All._&#8759;_" class="InductiveConstructor Operator"
       >_&#8759;_</a
-      ><a name="1807"
-      > </a
-      ><a name="1808" href="Data.List.All.html#1789" class="Bound"
+      > <a name="1842" href="Data.List.All.html#1823" class="Bound"
       >px</a
-      ><a name="1810" class="Symbol"
+      ><a name="1844" class="Symbol"
       >)</a
-      ><a name="1811"
-      > </a
-      ><a name="1812" href="Data.List.All.html#964" class="Function"
+      > <a name="1846" href="Data.List.All.html#tail" class="Function"
       >tail</a
-      ><a name="1816"
-      > </a
-      ><a name="1817" class="Symbol"
+      > <a name="1851" class="Symbol"
       >(</a
-      ><a name="1818" href="Data.List.All.html#1638" class="Function"
+      ><a name="1852" href="Data.List.All.html#all" class="Function"
       >all</a
-      ><a name="1821"
-      > </a
-      ><a name="1822" href="Data.List.All.html#1772" class="Bound"
+      > <a name="1856" href="Data.List.All.html#1806" class="Bound"
       >p</a
-      ><a name="1823"
-      > </a
-      ><a name="1824" href="Data.List.All.html#1779" class="Bound"
+      > <a name="1858" href="Data.List.All.html#1813" class="Bound"
       >xs</a
-      ><a name="1826" class="Symbol"
+      ><a name="1860" class="Symbol"
       >)</a
-      ><a name="1827"
       >
-</a
-      ><a name="1828" href="Data.List.All.html#1638" class="Function"
+<a name="1862" href="Data.List.All.html#all" class="Function"
       >all</a
-      ><a name="1831"
-      > </a
-      ><a name="1832" href="Data.List.All.html#1832" class="Bound"
+      > <a name="1866" href="Data.List.All.html#1866" class="Bound"
       >p</a
-      ><a name="1833"
-      > </a
-      ><a name="1834" class="Symbol"
+      > <a name="1868" class="Symbol"
       >(</a
-      ><a name="1835" href="Data.List.All.html#1835" class="Bound"
+      ><a name="1869" href="Data.List.All.html#1869" class="Bound"
       >x</a
-      ><a name="1836"
-      > </a
-      ><a name="1837" class="InductiveConstructor Operator"
+      > <a name="1871" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1838"
-      > </a
-      ><a name="1839" href="Data.List.All.html#1839" class="Bound"
+      > <a name="1873" href="Data.List.All.html#1873" class="Bound"
       >xs</a
-      ><a name="1841" class="Symbol"
+      ><a name="1875" class="Symbol"
       >)</a
-      ><a name="1842"
-      > </a
-      ><a name="1843" class="Symbol"
+      > <a name="1877" class="Symbol"
       >|</a
-      ><a name="1844"
-      > </a
-      ><a name="1845" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      > <a name="1879" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      ><a name="1847"
-      > </a
-      ><a name="1848" href="Data.List.All.html#1848" class="Bound"
+      > <a name="1882" href="Data.List.All.html#1882" class="Bound"
       >&#172;px</a
-      ><a name="1851"
-      > </a
-      ><a name="1852" class="Symbol"
+      > <a name="1886" class="Symbol"
       >=</a
-      ><a name="1853"
-      > </a
-      ><a name="1854" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      > <a name="1888" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      ><a name="1856"
-      > </a
-      ><a name="1857" class="Symbol"
+      > <a name="1891" class="Symbol"
       >(</a
-      ><a name="1858" href="Data.List.All.html#1848" class="Bound"
+      ><a name="1892" href="Data.List.All.html#1882" class="Bound"
       >&#172;px</a
-      ><a name="1861"
-      > </a
-      ><a name="1862" href="Function.html#713" class="Function Operator"
+      > <a name="1896" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="1863"
-      > </a
-      ><a name="1864" href="Data.List.All.html#862" class="Function"
+      > <a name="1898" href="Data.List.All.html#head" class="Function"
       >head</a
-      ><a name="1868" class="Symbol"
+      ><a name="1902" class="Symbol"
       >)</a
-      ><a name="1869"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

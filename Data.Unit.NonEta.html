@@ -11,491 +11,287 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Some unit types</a
-      ><a name="124"
       >
-</a
-      ><a name="125" class="Comment"
+<a name="125" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="197"
       >
 
-</a
-      ><a name="199" class="Keyword"
+<a name="199" class="Keyword"
       >module</a
-      ><a name="205"
-      > </a
-      ><a name="206" href="Data.Unit.NonEta.html#1" class="Module"
+      > <a name="206" href="Data.Unit.NonEta.html" class="Module"
       >Data.Unit.NonEta</a
-      ><a name="222"
-      > </a
-      ><a name="223" class="Keyword"
+      > <a name="223" class="Keyword"
       >where</a
-      ><a name="228"
       >
 
-</a
-      ><a name="230" class="Keyword"
+<a name="230" class="Keyword"
       >open</a
-      ><a name="234"
-      > </a
-      ><a name="235" class="Keyword"
+      > <a name="235" class="Keyword"
       >import</a
-      ><a name="241"
-      > </a
-      ><a name="242" href="Level.html#1" class="Module"
+      > <a name="242" href="Level.html" class="Module"
       >Level</a
-      ><a name="247"
       >
 
-</a
-      ><a name="249" class="Comment"
+<a name="249" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="321"
       >
-</a
-      ><a name="322" class="Comment"
+<a name="322" class="Comment"
       >-- A unit type defined as a data-type</a
-      ><a name="359"
       >
 
-</a
-      ><a name="361" class="Comment"
+<a name="361" class="Comment"
       >-- The &#8868; type (see Data.Unit) comes with &#951;-equality, which is often</a
-      ><a name="428"
       >
-</a
-      ><a name="429" class="Comment"
+<a name="429" class="Comment"
       >-- nice to have, but sometimes it is convenient to be able to stop</a
-      ><a name="495"
       >
-</a
-      ><a name="496" class="Comment"
+<a name="496" class="Comment"
       >-- unfolding (see &quot;Hidden types&quot; below).</a
-      ><a name="536"
       >
 
-</a
-      ><a name="538" class="Keyword"
+<a name="538" class="Keyword"
       >data</a
-      ><a name="542"
-      > </a
-      ><a name="543" href="Data.Unit.NonEta.html#543" class="Datatype"
+      > <a name="Unit" href="Data.Unit.NonEta.html#Unit" class="Datatype"
       >Unit</a
-      ><a name="547"
-      > </a
-      ><a name="548" class="Symbol"
+      > <a name="548" class="Symbol"
       >:</a
-      ><a name="549"
-      > </a
-      ><a name="550" class="PrimitiveType"
+      > <a name="550" class="PrimitiveType"
       >Set</a
-      ><a name="553"
-      > </a
-      ><a name="554" class="Keyword"
+      > <a name="554" class="Keyword"
       >where</a
-      ><a name="559"
       >
-  </a
-      ><a name="562" href="Data.Unit.NonEta.html#562" class="InductiveConstructor"
+  <a name="Unit.unit" href="Data.Unit.NonEta.html#Unit.unit" class="InductiveConstructor"
       >unit</a
-      ><a name="566"
-      > </a
-      ><a name="567" class="Symbol"
+      > <a name="567" class="Symbol"
       >:</a
-      ><a name="568"
-      > </a
-      ><a name="569" href="Data.Unit.NonEta.html#543" class="Datatype"
+      > <a name="569" href="Data.Unit.NonEta.html#Unit" class="Datatype"
       >Unit</a
-      ><a name="573"
       >
 
-</a
-      ><a name="575" class="Comment"
+<a name="575" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="647"
       >
-</a
-      ><a name="648" class="Comment"
+<a name="648" class="Comment"
       >-- Hidden types</a
-      ><a name="663"
       >
 
-</a
-      ><a name="665" class="Comment"
+<a name="665" class="Comment"
       >-- &quot;Hidden&quot; values.</a
-      ><a name="684"
       >
 
-</a
-      ><a name="686" href="Data.Unit.NonEta.html#686" class="Function"
+<a name="Hidden" href="Data.Unit.NonEta.html#Hidden" class="Function"
       >Hidden</a
-      ><a name="692"
-      > </a
-      ><a name="693" class="Symbol"
+      > <a name="693" class="Symbol"
       >:</a
-      ><a name="694"
-      > </a
-      ><a name="695" class="Symbol"
+      > <a name="695" class="Symbol"
       >&#8704;</a
-      ><a name="696"
-      > </a
-      ><a name="697" class="Symbol"
+      > <a name="697" class="Symbol"
       >{</a
       ><a name="698" href="Data.Unit.NonEta.html#698" class="Bound"
       >a</a
       ><a name="699" class="Symbol"
       >}</a
-      ><a name="700"
-      > </a
-      ><a name="701" class="Symbol"
+      > <a name="701" class="Symbol"
       >&#8594;</a
-      ><a name="702"
-      > </a
-      ><a name="703" class="PrimitiveType"
+      > <a name="703" class="PrimitiveType"
       >Set</a
-      ><a name="706"
-      > </a
-      ><a name="707" href="Data.Unit.NonEta.html#698" class="Bound"
+      > <a name="707" href="Data.Unit.NonEta.html#698" class="Bound"
       >a</a
-      ><a name="708"
-      > </a
-      ><a name="709" class="Symbol"
+      > <a name="709" class="Symbol"
       >&#8594;</a
-      ><a name="710"
-      > </a
-      ><a name="711" class="PrimitiveType"
+      > <a name="711" class="PrimitiveType"
       >Set</a
-      ><a name="714"
-      > </a
-      ><a name="715" href="Data.Unit.NonEta.html#698" class="Bound"
+      > <a name="715" href="Data.Unit.NonEta.html#698" class="Bound"
       >a</a
-      ><a name="716"
       >
-</a
-      ><a name="717" href="Data.Unit.NonEta.html#686" class="Function"
+<a name="717" href="Data.Unit.NonEta.html#Hidden" class="Function"
       >Hidden</a
-      ><a name="723"
-      > </a
-      ><a name="724" href="Data.Unit.NonEta.html#724" class="Bound"
+      > <a name="724" href="Data.Unit.NonEta.html#724" class="Bound"
       >A</a
-      ><a name="725"
-      > </a
-      ><a name="726" class="Symbol"
+      > <a name="726" class="Symbol"
       >=</a
-      ><a name="727"
-      > </a
-      ><a name="728" href="Data.Unit.NonEta.html#543" class="Datatype"
+      > <a name="728" href="Data.Unit.NonEta.html#Unit" class="Datatype"
       >Unit</a
-      ><a name="732"
-      > </a
-      ><a name="733" class="Symbol"
+      > <a name="733" class="Symbol"
       >&#8594;</a
-      ><a name="734"
-      > </a
-      ><a name="735" href="Data.Unit.NonEta.html#724" class="Bound"
+      > <a name="735" href="Data.Unit.NonEta.html#724" class="Bound"
       >A</a
-      ><a name="736"
       >
 
-</a
-      ><a name="738" class="Comment"
+<a name="738" class="Comment"
       >-- The hide function can be used to hide function applications. Note</a
-      ><a name="806"
       >
-</a
-      ><a name="807" class="Comment"
+<a name="807" class="Comment"
       >-- that the type-checker doesn't see that &quot;hide f x&quot; contains the</a
-      ><a name="872"
       >
-</a
-      ><a name="873" class="Comment"
+<a name="873" class="Comment"
       >-- application &quot;f&#160;x&quot;.</a
-      ><a name="894"
       >
 
-</a
-      ><a name="896" href="Data.Unit.NonEta.html#896" class="Function"
+<a name="hide" href="Data.Unit.NonEta.html#hide" class="Function"
       >hide</a
-      ><a name="900"
-      > </a
-      ><a name="901" class="Symbol"
+      > <a name="901" class="Symbol"
       >:</a
-      ><a name="902"
-      > </a
-      ><a name="903" class="Symbol"
+      > <a name="903" class="Symbol"
       >&#8704;</a
-      ><a name="904"
-      > </a
-      ><a name="905" class="Symbol"
+      > <a name="905" class="Symbol"
       >{</a
       ><a name="906" href="Data.Unit.NonEta.html#906" class="Bound"
       >a</a
-      ><a name="907"
-      > </a
-      ><a name="908" href="Data.Unit.NonEta.html#908" class="Bound"
+      > <a name="908" href="Data.Unit.NonEta.html#908" class="Bound"
       >b</a
       ><a name="909" class="Symbol"
       >}</a
-      ><a name="910"
-      > </a
-      ><a name="911" class="Symbol"
+      > <a name="911" class="Symbol"
       >{</a
       ><a name="912" href="Data.Unit.NonEta.html#912" class="Bound"
       >A</a
-      ><a name="913"
-      > </a
-      ><a name="914" class="Symbol"
+      > <a name="914" class="Symbol"
       >:</a
-      ><a name="915"
-      > </a
-      ><a name="916" class="PrimitiveType"
+      > <a name="916" class="PrimitiveType"
       >Set</a
-      ><a name="919"
-      > </a
-      ><a name="920" href="Data.Unit.NonEta.html#906" class="Bound"
+      > <a name="920" href="Data.Unit.NonEta.html#906" class="Bound"
       >a</a
       ><a name="921" class="Symbol"
       >}</a
-      ><a name="922"
-      > </a
-      ><a name="923" class="Symbol"
+      > <a name="923" class="Symbol"
       >{</a
       ><a name="924" href="Data.Unit.NonEta.html#924" class="Bound"
       >B</a
-      ><a name="925"
-      > </a
-      ><a name="926" class="Symbol"
+      > <a name="926" class="Symbol"
       >:</a
-      ><a name="927"
-      > </a
-      ><a name="928" href="Data.Unit.NonEta.html#912" class="Bound"
+      > <a name="928" href="Data.Unit.NonEta.html#912" class="Bound"
       >A</a
-      ><a name="929"
-      > </a
-      ><a name="930" class="Symbol"
+      > <a name="930" class="Symbol"
       >&#8594;</a
-      ><a name="931"
-      > </a
-      ><a name="932" class="PrimitiveType"
+      > <a name="932" class="PrimitiveType"
       >Set</a
-      ><a name="935"
-      > </a
-      ><a name="936" href="Data.Unit.NonEta.html#908" class="Bound"
+      > <a name="936" href="Data.Unit.NonEta.html#908" class="Bound"
       >b</a
       ><a name="937" class="Symbol"
       >}</a
-      ><a name="938"
-      > </a
-      ><a name="939" class="Symbol"
+      > <a name="939" class="Symbol"
       >&#8594;</a
-      ><a name="940"
       >
-       </a
-      ><a name="948" class="Symbol"
+       <a name="948" class="Symbol"
       >((</a
       ><a name="950" href="Data.Unit.NonEta.html#950" class="Bound"
       >x</a
-      ><a name="951"
-      > </a
-      ><a name="952" class="Symbol"
+      > <a name="952" class="Symbol"
       >:</a
-      ><a name="953"
-      > </a
-      ><a name="954" href="Data.Unit.NonEta.html#912" class="Bound"
+      > <a name="954" href="Data.Unit.NonEta.html#912" class="Bound"
       >A</a
       ><a name="955" class="Symbol"
       >)</a
-      ><a name="956"
-      > </a
-      ><a name="957" class="Symbol"
+      > <a name="957" class="Symbol"
       >&#8594;</a
-      ><a name="958"
-      > </a
-      ><a name="959" href="Data.Unit.NonEta.html#924" class="Bound"
+      > <a name="959" href="Data.Unit.NonEta.html#924" class="Bound"
       >B</a
-      ><a name="960"
-      > </a
-      ><a name="961" href="Data.Unit.NonEta.html#950" class="Bound"
+      > <a name="961" href="Data.Unit.NonEta.html#950" class="Bound"
       >x</a
       ><a name="962" class="Symbol"
       >)</a
-      ><a name="963"
-      > </a
-      ><a name="964" class="Symbol"
+      > <a name="964" class="Symbol"
       >&#8594;</a
-      ><a name="965"
-      > </a
-      ><a name="966" class="Symbol"
+      > <a name="966" class="Symbol"
       >((</a
       ><a name="968" href="Data.Unit.NonEta.html#968" class="Bound"
       >x</a
-      ><a name="969"
-      > </a
-      ><a name="970" class="Symbol"
+      > <a name="970" class="Symbol"
       >:</a
-      ><a name="971"
-      > </a
-      ><a name="972" href="Data.Unit.NonEta.html#912" class="Bound"
+      > <a name="972" href="Data.Unit.NonEta.html#912" class="Bound"
       >A</a
       ><a name="973" class="Symbol"
       >)</a
-      ><a name="974"
-      > </a
-      ><a name="975" class="Symbol"
+      > <a name="975" class="Symbol"
       >&#8594;</a
-      ><a name="976"
-      > </a
-      ><a name="977" href="Data.Unit.NonEta.html#686" class="Function"
+      > <a name="977" href="Data.Unit.NonEta.html#Hidden" class="Function"
       >Hidden</a
-      ><a name="983"
-      > </a
-      ><a name="984" class="Symbol"
+      > <a name="984" class="Symbol"
       >(</a
       ><a name="985" href="Data.Unit.NonEta.html#924" class="Bound"
       >B</a
-      ><a name="986"
-      > </a
-      ><a name="987" href="Data.Unit.NonEta.html#968" class="Bound"
+      > <a name="987" href="Data.Unit.NonEta.html#968" class="Bound"
       >x</a
       ><a name="988" class="Symbol"
       >))</a
-      ><a name="990"
       >
-</a
-      ><a name="991" href="Data.Unit.NonEta.html#896" class="Function"
+<a name="991" href="Data.Unit.NonEta.html#hide" class="Function"
       >hide</a
-      ><a name="995"
-      > </a
-      ><a name="996" href="Data.Unit.NonEta.html#996" class="Bound"
+      > <a name="996" href="Data.Unit.NonEta.html#996" class="Bound"
       >f</a
-      ><a name="997"
-      > </a
-      ><a name="998" href="Data.Unit.NonEta.html#998" class="Bound"
+      > <a name="998" href="Data.Unit.NonEta.html#998" class="Bound"
       >x</a
-      ><a name="999"
-      > </a
-      ><a name="1000" href="Data.Unit.NonEta.html#562" class="InductiveConstructor"
+      > <a name="1000" href="Data.Unit.NonEta.html#Unit.unit" class="InductiveConstructor"
       >unit</a
-      ><a name="1004"
-      > </a
-      ><a name="1005" class="Symbol"
+      > <a name="1005" class="Symbol"
       >=</a
-      ><a name="1006"
-      > </a
-      ><a name="1007" href="Data.Unit.NonEta.html#996" class="Bound"
+      > <a name="1007" href="Data.Unit.NonEta.html#996" class="Bound"
       >f</a
-      ><a name="1008"
-      > </a
-      ><a name="1009" href="Data.Unit.NonEta.html#998" class="Bound"
+      > <a name="1009" href="Data.Unit.NonEta.html#998" class="Bound"
       >x</a
-      ><a name="1010"
       >
 
-</a
-      ><a name="1012" class="Comment"
+<a name="1012" class="Comment"
       >-- Reveals a hidden value.</a
-      ><a name="1038"
       >
 
-</a
-      ><a name="1040" href="Data.Unit.NonEta.html#1040" class="Function"
+<a name="reveal" href="Data.Unit.NonEta.html#reveal" class="Function"
       >reveal</a
-      ><a name="1046"
-      > </a
-      ><a name="1047" class="Symbol"
+      > <a name="1047" class="Symbol"
       >:</a
-      ><a name="1048"
-      > </a
-      ><a name="1049" class="Symbol"
+      > <a name="1049" class="Symbol"
       >&#8704;</a
-      ><a name="1050"
-      > </a
-      ><a name="1051" class="Symbol"
+      > <a name="1051" class="Symbol"
       >{</a
       ><a name="1052" href="Data.Unit.NonEta.html#1052" class="Bound"
       >a</a
       ><a name="1053" class="Symbol"
       >}</a
-      ><a name="1054"
-      > </a
-      ><a name="1055" class="Symbol"
+      > <a name="1055" class="Symbol"
       >{</a
       ><a name="1056" href="Data.Unit.NonEta.html#1056" class="Bound"
       >A</a
-      ><a name="1057"
-      > </a
-      ><a name="1058" class="Symbol"
+      > <a name="1058" class="Symbol"
       >:</a
-      ><a name="1059"
-      > </a
-      ><a name="1060" class="PrimitiveType"
+      > <a name="1060" class="PrimitiveType"
       >Set</a
-      ><a name="1063"
-      > </a
-      ><a name="1064" href="Data.Unit.NonEta.html#1052" class="Bound"
+      > <a name="1064" href="Data.Unit.NonEta.html#1052" class="Bound"
       >a</a
       ><a name="1065" class="Symbol"
       >}</a
-      ><a name="1066"
-      > </a
-      ><a name="1067" class="Symbol"
+      > <a name="1067" class="Symbol"
       >&#8594;</a
-      ><a name="1068"
-      > </a
-      ><a name="1069" href="Data.Unit.NonEta.html#686" class="Function"
+      > <a name="1069" href="Data.Unit.NonEta.html#Hidden" class="Function"
       >Hidden</a
-      ><a name="1075"
-      > </a
-      ><a name="1076" href="Data.Unit.NonEta.html#1056" class="Bound"
+      > <a name="1076" href="Data.Unit.NonEta.html#1056" class="Bound"
       >A</a
-      ><a name="1077"
-      > </a
-      ><a name="1078" class="Symbol"
+      > <a name="1078" class="Symbol"
       >&#8594;</a
-      ><a name="1079"
-      > </a
-      ><a name="1080" href="Data.Unit.NonEta.html#1056" class="Bound"
+      > <a name="1080" href="Data.Unit.NonEta.html#1056" class="Bound"
       >A</a
-      ><a name="1081"
       >
-</a
-      ><a name="1082" href="Data.Unit.NonEta.html#1040" class="Function"
+<a name="1082" href="Data.Unit.NonEta.html#reveal" class="Function"
       >reveal</a
-      ><a name="1088"
-      > </a
-      ><a name="1089" href="Data.Unit.NonEta.html#1089" class="Bound"
+      > <a name="1089" href="Data.Unit.NonEta.html#1089" class="Bound"
       >f</a
-      ><a name="1090"
-      > </a
-      ><a name="1091" class="Symbol"
+      > <a name="1091" class="Symbol"
       >=</a
-      ><a name="1092"
-      > </a
-      ><a name="1093" href="Data.Unit.NonEta.html#1089" class="Bound"
+      > <a name="1093" href="Data.Unit.NonEta.html#1089" class="Bound"
       >f</a
-      ><a name="1094"
-      > </a
-      ><a name="1095" href="Data.Unit.NonEta.html#562" class="InductiveConstructor"
+      > <a name="1095" href="Data.Unit.NonEta.html#Unit.unit" class="InductiveConstructor"
       >unit</a
-      ><a name="1099"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

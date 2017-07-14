@@ -11,957 +11,531 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Some examples showing where the integers and some related</a
-      ><a name="166"
       >
-</a
-      ><a name="167" class="Comment"
+<a name="167" class="Comment"
       >-- operations and properties are defined, and how they can be used</a
-      ><a name="233"
       >
-</a
-      ><a name="234" class="Comment"
+<a name="234" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="306"
       >
 
-</a
-      ><a name="308" class="Keyword"
+<a name="308" class="Keyword"
       >module</a
-      ><a name="314"
-      > </a
-      ><a name="315" href="README.Integer.html#1" class="Module"
+      > <a name="315" href="README.Integer.html" class="Module"
       >README.Integer</a
-      ><a name="329"
-      > </a
-      ><a name="330" class="Keyword"
+      > <a name="330" class="Keyword"
       >where</a
-      ><a name="335"
       >
 
-</a
-      ><a name="337" class="Comment"
+<a name="337" class="Comment"
       >-- The integers and various arithmetic operations are defined in</a
-      ><a name="401"
       >
-</a
-      ><a name="402" class="Comment"
+<a name="402" class="Comment"
       >-- Data.Integer.</a
-      ><a name="418"
       >
 
-</a
-      ><a name="420" class="Keyword"
+<a name="420" class="Keyword"
       >open</a
-      ><a name="424"
-      > </a
-      ><a name="425" class="Keyword"
+      > <a name="425" class="Keyword"
       >import</a
-      ><a name="431"
-      > </a
-      ><a name="432" href="Data.Integer.html#1" class="Module"
+      > <a name="432" href="Data.Integer.html" class="Module"
       >Data.Integer</a
-      ><a name="444"
       >
 
-</a
-      ><a name="446" class="Comment"
+<a name="446" class="Comment"
       >-- The +_ function converts natural numbers into integers.</a
-      ><a name="504"
       >
 
-</a
-      ><a name="506" href="README.Integer.html#506" class="Function"
+<a name="ex&#8321;" href="README.Integer.html#ex&#8321;" class="Function"
       >ex&#8321;</a
-      ><a name="509"
-      > </a
-      ><a name="510" class="Symbol"
+      > <a name="510" class="Symbol"
       >:</a
-      ><a name="511"
-      > </a
-      ><a name="512" href="Agda.Builtin.Int.html#178" class="Datatype"
+      > <a name="512" href="Agda.Builtin.Int.html#&#8484;" class="Datatype"
       >&#8484;</a
-      ><a name="513"
       >
-</a
-      ><a name="514" href="README.Integer.html#506" class="Function"
+<a name="514" href="README.Integer.html#ex&#8321;" class="Function"
       >ex&#8321;</a
-      ><a name="517"
-      > </a
-      ><a name="518" class="Symbol"
+      > <a name="518" class="Symbol"
       >=</a
-      ><a name="519"
-      > </a
-      ><a name="520" href="Agda.Builtin.Int.html#196" class="InductiveConstructor Operator"
+      > <a name="520" href="Agda.Builtin.Int.html#Int.+_" class="InductiveConstructor Operator"
       >+</a
-      ><a name="521"
-      > </a
-      ><a name="522" class="Number"
+      > <a name="522" class="Number"
       >2</a
-      ><a name="523"
       >
 
-</a
-      ><a name="525" class="Comment"
+<a name="525" class="Comment"
       >-- The -_ function negates an integer.</a
-      ><a name="563"
       >
 
-</a
-      ><a name="565" href="README.Integer.html#565" class="Function"
+<a name="ex&#8322;" href="README.Integer.html#ex&#8322;" class="Function"
       >ex&#8322;</a
-      ><a name="568"
-      > </a
-      ><a name="569" class="Symbol"
+      > <a name="569" class="Symbol"
       >:</a
-      ><a name="570"
-      > </a
-      ><a name="571" href="Agda.Builtin.Int.html#178" class="Datatype"
+      > <a name="571" href="Agda.Builtin.Int.html#&#8484;" class="Datatype"
       >&#8484;</a
-      ><a name="572"
       >
-</a
-      ><a name="573" href="README.Integer.html#565" class="Function"
+<a name="573" href="README.Integer.html#ex&#8322;" class="Function"
       >ex&#8322;</a
-      ><a name="576"
-      > </a
-      ><a name="577" class="Symbol"
+      > <a name="577" class="Symbol"
       >=</a
-      ><a name="578"
-      > </a
-      ><a name="579" href="Data.Integer.Base.html#1791" class="Function Operator"
+      > <a name="579" href="Data.Integer.Base.html#-_" class="Function Operator"
       >-</a
-      ><a name="580"
-      > </a
-      ><a name="581" href="Agda.Builtin.Int.html#196" class="InductiveConstructor Operator"
+      > <a name="581" href="Agda.Builtin.Int.html#Int.+_" class="InductiveConstructor Operator"
       >+</a
-      ><a name="582"
-      > </a
-      ><a name="583" class="Number"
+      > <a name="583" class="Number"
       >4</a
-      ><a name="584"
       >
 
-</a
-      ><a name="586" class="Comment"
+<a name="586" class="Comment"
       >-- Some binary operators are also defined, including addition,</a
-      ><a name="648"
       >
-</a
-      ><a name="649" class="Comment"
+<a name="649" class="Comment"
       >-- subtraction and multiplication.</a
-      ><a name="683"
       >
 
-</a
-      ><a name="685" href="README.Integer.html#685" class="Function"
+<a name="ex&#8323;" href="README.Integer.html#ex&#8323;" class="Function"
       >ex&#8323;</a
-      ><a name="688"
-      > </a
-      ><a name="689" class="Symbol"
+      > <a name="689" class="Symbol"
       >:</a
-      ><a name="690"
-      > </a
-      ><a name="691" href="Agda.Builtin.Int.html#178" class="Datatype"
+      > <a name="691" href="Agda.Builtin.Int.html#&#8484;" class="Datatype"
       >&#8484;</a
-      ><a name="692"
       >
-</a
-      ><a name="693" href="README.Integer.html#685" class="Function"
+<a name="693" href="README.Integer.html#ex&#8323;" class="Function"
       >ex&#8323;</a
-      ><a name="696"
-      > </a
-      ><a name="697" class="Symbol"
+      > <a name="697" class="Symbol"
       >=</a
-      ><a name="698"
-      > </a
-      ><a name="699" href="Agda.Builtin.Int.html#196" class="InductiveConstructor Operator"
+      > <a name="699" href="Agda.Builtin.Int.html#Int.+_" class="InductiveConstructor Operator"
       >+</a
-      ><a name="700"
-      > </a
-      ><a name="701" class="Number"
+      > <a name="701" class="Number"
       >1</a
-      ><a name="702"
-      >  </a
-      ><a name="704" href="Data.Integer.Base.html#2025" class="Function Operator"
+      >  <a name="704" href="Data.Integer.Base.html#_+_" class="Function Operator"
       >+</a
-      ><a name="705"
-      >  </a
-      ><a name="707" href="Agda.Builtin.Int.html#196" class="InductiveConstructor Operator"
+      >  <a name="707" href="Agda.Builtin.Int.html#Int.+_" class="InductiveConstructor Operator"
       >+</a
-      ><a name="708"
-      > </a
-      ><a name="709" class="Number"
+      > <a name="709" class="Number"
       >3</a
-      ><a name="710"
-      > </a
-      ><a name="711" href="Data.Integer.Base.html#2671" class="Function Operator"
+      > <a name="711" href="Data.Integer.Base.html#_*_" class="Function Operator"
       >*</a
-      ><a name="712"
-      > </a
-      ><a name="713" href="Data.Integer.Base.html#1791" class="Function Operator"
+      > <a name="713" href="Data.Integer.Base.html#-_" class="Function Operator"
       >-</a
-      ><a name="714"
-      > </a
-      ><a name="715" href="Agda.Builtin.Int.html#196" class="InductiveConstructor Operator"
+      > <a name="715" href="Agda.Builtin.Int.html#Int.+_" class="InductiveConstructor Operator"
       >+</a
-      ><a name="716"
-      > </a
-      ><a name="717" class="Number"
+      > <a name="717" class="Number"
       >2</a
-      ><a name="718"
-      >  </a
-      ><a name="720" href="Data.Integer.Base.html#2204" class="Function Operator"
+      >  <a name="720" href="Data.Integer.Base.html#_-_" class="Function Operator"
       >-</a
-      ><a name="721"
-      >  </a
-      ><a name="723" href="Agda.Builtin.Int.html#196" class="InductiveConstructor Operator"
+      >  <a name="723" href="Agda.Builtin.Int.html#Int.+_" class="InductiveConstructor Operator"
       >+</a
-      ><a name="724"
-      > </a
-      ><a name="725" class="Number"
+      > <a name="725" class="Number"
       >4</a
-      ><a name="726"
       >
 
-</a
-      ><a name="728" class="Comment"
+<a name="728" class="Comment"
       >-- Propositional equality and some related properties can be found</a
-      ><a name="794"
       >
-</a
-      ><a name="795" class="Comment"
+<a name="795" class="Comment"
       >-- in Relation.Binary.PropositionalEquality.</a
-      ><a name="839"
       >
 
-</a
-      ><a name="841" class="Keyword"
+<a name="841" class="Keyword"
       >open</a
-      ><a name="845"
-      > </a
-      ><a name="846" class="Keyword"
+      > <a name="846" class="Keyword"
       >import</a
-      ><a name="852"
-      > </a
-      ><a name="853" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      > <a name="853" href="Relation.Binary.PropositionalEquality.html" class="Module"
       >Relation.Binary.PropositionalEquality</a
-      ><a name="890"
-      > </a
-      ><a name="891" class="Symbol"
+      > <a name="891" class="Symbol"
       >as</a
-      ><a name="893"
-      > </a
-      ><a name="894" class="Module"
+      > <a name="894" class="Module"
       >P</a
-      ><a name="895"
-      > </a
-      ><a name="896" class="Keyword"
+      > <a name="896" class="Keyword"
       >using</a
-      ><a name="901"
-      > </a
-      ><a name="902" class="Symbol"
+      > <a name="902" class="Symbol"
       >(</a
-      ><a name="903" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      ><a name="903" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >_&#8801;_</a
       ><a name="906" class="Symbol"
       >)</a
-      ><a name="907"
       >
 
-</a
-      ><a name="909" href="README.Integer.html#909" class="Function"
+<a name="ex&#8324;" href="README.Integer.html#ex&#8324;" class="Function"
       >ex&#8324;</a
-      ><a name="912"
-      > </a
-      ><a name="913" class="Symbol"
+      > <a name="913" class="Symbol"
       >:</a
-      ><a name="914"
-      > </a
-      ><a name="915" href="README.Integer.html#685" class="Function"
+      > <a name="915" href="README.Integer.html#ex&#8323;" class="Function"
       >ex&#8323;</a
-      ><a name="918"
-      > </a
-      ><a name="919" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="919" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="920"
-      > </a
-      ><a name="921" href="Data.Integer.Base.html#1791" class="Function Operator"
+      > <a name="921" href="Data.Integer.Base.html#-_" class="Function Operator"
       >-</a
-      ><a name="922"
-      > </a
-      ><a name="923" href="Agda.Builtin.Int.html#196" class="InductiveConstructor Operator"
+      > <a name="923" href="Agda.Builtin.Int.html#Int.+_" class="InductiveConstructor Operator"
       >+</a
-      ><a name="924"
-      > </a
-      ><a name="925" class="Number"
+      > <a name="925" class="Number"
       >9</a
-      ><a name="926"
       >
-</a
-      ><a name="927" href="README.Integer.html#909" class="Function"
+<a name="927" href="README.Integer.html#ex&#8324;" class="Function"
       >ex&#8324;</a
-      ><a name="930"
-      > </a
-      ><a name="931" class="Symbol"
+      > <a name="931" class="Symbol"
       >=</a
-      ><a name="932"
-      > </a
-      ><a name="933" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="933" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >P.refl</a
-      ><a name="939"
       >
 
-</a
-      ><a name="941" class="Comment"
+<a name="941" class="Comment"
       >-- Data.Integer.Properties contains a number of properties related to</a
-      ><a name="1010"
       >
-</a
-      ><a name="1011" class="Comment"
+<a name="1011" class="Comment"
       >-- integers. Algebra defines what a commutative ring is, among other</a
-      ><a name="1079"
       >
-</a
-      ><a name="1080" class="Comment"
+<a name="1080" class="Comment"
       >-- things.</a
-      ><a name="1090"
       >
 
-</a
-      ><a name="1092" class="Keyword"
+<a name="1092" class="Keyword"
       >open</a
-      ><a name="1096"
-      > </a
-      ><a name="1097" class="Keyword"
+      > <a name="1097" class="Keyword"
       >import</a
-      ><a name="1103"
-      > </a
-      ><a name="1104" href="Algebra.html#1" class="Module"
+      > <a name="1104" href="Algebra.html" class="Module"
       >Algebra</a
-      ><a name="1111"
       >
-</a
-      ><a name="1112" class="Keyword"
+<a name="1112" class="Keyword"
       >import</a
-      ><a name="1118"
-      > </a
-      ><a name="1119" href="Data.Integer.Properties.html#1" class="Module"
+      > <a name="1119" href="Data.Integer.Properties.html" class="Module"
       >Data.Integer.Properties</a
-      ><a name="1142"
-      > </a
-      ><a name="1143" class="Symbol"
+      > <a name="1143" class="Symbol"
       >as</a
-      ><a name="1145"
-      > </a
-      ><a name="1146" class="Module"
+      > <a name="1146" class="Module"
       >Integer</a
-      ><a name="1153"
       >
-</a
-      ><a name="1154" class="Keyword"
+<a name="1154" class="Keyword"
       >private</a
-      ><a name="1161"
       >
-  </a
-      ><a name="1164" class="Keyword"
+  <a name="1164" class="Keyword"
       >module</a
-      ><a name="1170"
-      > </a
-      ><a name="1171" href="README.Integer.html#1171" class="Module"
+      > <a name="CR" href="README.Integer.html#CR" class="Module"
       >CR</a
-      ><a name="1173"
-      > </a
-      ><a name="1174" class="Symbol"
+      > <a name="1174" class="Symbol"
       >=</a
-      ><a name="1175"
-      > </a
-      ><a name="1176" href="Algebra.html#10462" class="Module"
+      > <a name="1176" href="Algebra.html#CommutativeRing" class="Module"
       >CommutativeRing</a
-      ><a name="1191"
-      > </a
-      ><a name="1192" href="Data.Integer.Properties.html#9041" class="Function"
+      > <a name="1192" href="Data.Integer.Properties.html#commutativeRing" class="Function"
       >Integer.commutativeRing</a
-      ><a name="1215"
       >
 
-</a
-      ><a name="1217" href="README.Integer.html#1217" class="Function"
+<a name="ex&#8325;" href="README.Integer.html#ex&#8325;" class="Function"
       >ex&#8325;</a
-      ><a name="1220"
-      > </a
-      ><a name="1221" class="Symbol"
+      > <a name="1221" class="Symbol"
       >:</a
-      ><a name="1222"
-      > </a
-      ><a name="1223" class="Symbol"
+      > <a name="1223" class="Symbol"
       >&#8704;</a
-      ><a name="1224"
-      > </a
-      ><a name="1225" href="README.Integer.html#1225" class="Bound"
+      > <a name="1225" href="README.Integer.html#1225" class="Bound"
       >i</a
-      ><a name="1226"
-      > </a
-      ><a name="1227" href="README.Integer.html#1227" class="Bound"
+      > <a name="1227" href="README.Integer.html#1227" class="Bound"
       >j</a
-      ><a name="1228"
-      > </a
-      ><a name="1229" class="Symbol"
+      > <a name="1229" class="Symbol"
       >&#8594;</a
-      ><a name="1230"
-      > </a
-      ><a name="1231" href="README.Integer.html#1225" class="Bound"
+      > <a name="1231" href="README.Integer.html#1225" class="Bound"
       >i</a
-      ><a name="1232"
-      > </a
-      ><a name="1233" href="Data.Integer.Base.html#2671" class="Function Operator"
+      > <a name="1233" href="Data.Integer.Base.html#_*_" class="Function Operator"
       >*</a
-      ><a name="1234"
-      > </a
-      ><a name="1235" href="README.Integer.html#1227" class="Bound"
+      > <a name="1235" href="README.Integer.html#1227" class="Bound"
       >j</a
-      ><a name="1236"
-      > </a
-      ><a name="1237" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="1237" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="1238"
-      > </a
-      ><a name="1239" href="README.Integer.html#1227" class="Bound"
+      > <a name="1239" href="README.Integer.html#1227" class="Bound"
       >j</a
-      ><a name="1240"
-      > </a
-      ><a name="1241" href="Data.Integer.Base.html#2671" class="Function Operator"
+      > <a name="1241" href="Data.Integer.Base.html#_*_" class="Function Operator"
       >*</a
-      ><a name="1242"
-      > </a
-      ><a name="1243" href="README.Integer.html#1225" class="Bound"
+      > <a name="1243" href="README.Integer.html#1225" class="Bound"
       >i</a
-      ><a name="1244"
       >
-</a
-      ><a name="1245" href="README.Integer.html#1217" class="Function"
+<a name="1245" href="README.Integer.html#ex&#8325;" class="Function"
       >ex&#8325;</a
-      ><a name="1248"
-      > </a
-      ><a name="1249" href="README.Integer.html#1249" class="Bound"
+      > <a name="1249" href="README.Integer.html#1249" class="Bound"
       >i</a
-      ><a name="1250"
-      > </a
-      ><a name="1251" href="README.Integer.html#1251" class="Bound"
+      > <a name="1251" href="README.Integer.html#1251" class="Bound"
       >j</a
-      ><a name="1252"
-      > </a
-      ><a name="1253" class="Symbol"
+      > <a name="1253" class="Symbol"
       >=</a
-      ><a name="1254"
-      > </a
-      ><a name="1255" href="Algebra.Structures.html#11901" class="Function"
+      > <a name="1255" href="Algebra.Structures.html#CR.*-comm" class="Function"
       >CR.*-comm</a
-      ><a name="1264"
-      > </a
-      ><a name="1265" href="README.Integer.html#1249" class="Bound"
+      > <a name="1265" href="README.Integer.html#1249" class="Bound"
       >i</a
-      ><a name="1266"
-      > </a
-      ><a name="1267" href="README.Integer.html#1251" class="Bound"
+      > <a name="1267" href="README.Integer.html#1251" class="Bound"
       >j</a
-      ><a name="1268"
       >
 
-</a
-      ><a name="1270" class="Comment"
+<a name="1270" class="Comment"
       >-- The module &#8801;-Reasoning in Relation.Binary.PropositionalEquality</a
-      ><a name="1336"
       >
-</a
-      ><a name="1337" class="Comment"
+<a name="1337" class="Comment"
       >-- provides some combinators for equational reasoning.</a
-      ><a name="1391"
       >
 
-</a
-      ><a name="1393" class="Keyword"
+<a name="1393" class="Keyword"
       >open</a
-      ><a name="1397"
-      > </a
-      ><a name="1398" href="Relation.Binary.PropositionalEquality.html#243" class="Module"
+      > <a name="1398" href="Relation.Binary.PropositionalEquality.html#PropositionalEquality" class="Module"
       >P.</a
-      ><a name="1400" href="Relation.Binary.PropositionalEquality.html#5706" class="Module"
+      ><a name="1400" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning" class="Module"
       >&#8801;-Reasoning</a
-      ><a name="1411"
       >
-</a
-      ><a name="1412" class="Keyword"
+<a name="1412" class="Keyword"
       >open</a
-      ><a name="1416"
-      > </a
-      ><a name="1417" class="Keyword"
+      > <a name="1417" class="Keyword"
       >import</a
-      ><a name="1423"
-      > </a
-      ><a name="1424" href="Data.Product.html#1" class="Module"
+      > <a name="1424" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="1436"
       >
 
-</a
-      ><a name="1438" href="README.Integer.html#1438" class="Function"
+<a name="ex&#8326;" href="README.Integer.html#ex&#8326;" class="Function"
       >ex&#8326;</a
-      ><a name="1441"
-      > </a
-      ><a name="1442" class="Symbol"
+      > <a name="1442" class="Symbol"
       >:</a
-      ><a name="1443"
-      > </a
-      ><a name="1444" class="Symbol"
+      > <a name="1444" class="Symbol"
       >&#8704;</a
-      ><a name="1445"
-      > </a
-      ><a name="1446" href="README.Integer.html#1446" class="Bound"
+      > <a name="1446" href="README.Integer.html#1446" class="Bound"
       >i</a
-      ><a name="1447"
-      > </a
-      ><a name="1448" href="README.Integer.html#1448" class="Bound"
+      > <a name="1448" href="README.Integer.html#1448" class="Bound"
       >j</a
-      ><a name="1449"
-      > </a
-      ><a name="1450" class="Symbol"
+      > <a name="1450" class="Symbol"
       >&#8594;</a
-      ><a name="1451"
-      > </a
-      ><a name="1452" href="README.Integer.html#1446" class="Bound"
+      > <a name="1452" href="README.Integer.html#1446" class="Bound"
       >i</a
-      ><a name="1453"
-      > </a
-      ><a name="1454" href="Data.Integer.Base.html#2671" class="Function Operator"
+      > <a name="1454" href="Data.Integer.Base.html#_*_" class="Function Operator"
       >*</a
-      ><a name="1455"
-      > </a
-      ><a name="1456" class="Symbol"
+      > <a name="1456" class="Symbol"
       >(</a
       ><a name="1457" href="README.Integer.html#1448" class="Bound"
       >j</a
-      ><a name="1458"
-      > </a
-      ><a name="1459" href="Data.Integer.Base.html#2025" class="Function Operator"
+      > <a name="1459" href="Data.Integer.Base.html#_+_" class="Function Operator"
       >+</a
-      ><a name="1460"
-      > </a
-      ><a name="1461" href="Agda.Builtin.Int.html#196" class="InductiveConstructor Operator"
+      > <a name="1461" href="Agda.Builtin.Int.html#Int.+_" class="InductiveConstructor Operator"
       >+</a
-      ><a name="1462"
-      > </a
-      ><a name="1463" class="Number"
+      > <a name="1463" class="Number"
       >0</a
       ><a name="1464" class="Symbol"
       >)</a
-      ><a name="1465"
-      > </a
-      ><a name="1466" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="1466" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="1467"
-      > </a
-      ><a name="1468" href="README.Integer.html#1448" class="Bound"
+      > <a name="1468" href="README.Integer.html#1448" class="Bound"
       >j</a
-      ><a name="1469"
-      > </a
-      ><a name="1470" href="Data.Integer.Base.html#2671" class="Function Operator"
+      > <a name="1470" href="Data.Integer.Base.html#_*_" class="Function Operator"
       >*</a
-      ><a name="1471"
-      > </a
-      ><a name="1472" href="README.Integer.html#1446" class="Bound"
+      > <a name="1472" href="README.Integer.html#1446" class="Bound"
       >i</a
-      ><a name="1473"
       >
-</a
-      ><a name="1474" href="README.Integer.html#1438" class="Function"
+<a name="1474" href="README.Integer.html#ex&#8326;" class="Function"
       >ex&#8326;</a
-      ><a name="1477"
-      > </a
-      ><a name="1478" href="README.Integer.html#1478" class="Bound"
+      > <a name="1478" href="README.Integer.html#1478" class="Bound"
       >i</a
-      ><a name="1479"
-      > </a
-      ><a name="1480" href="README.Integer.html#1480" class="Bound"
+      > <a name="1480" href="README.Integer.html#1480" class="Bound"
       >j</a
-      ><a name="1481"
-      > </a
-      ><a name="1482" class="Symbol"
+      > <a name="1482" class="Symbol"
       >=</a
-      ><a name="1483"
-      > </a
-      ><a name="1484" href="Relation.Binary.PropositionalEquality.html#5807" class="Function Operator"
+      > <a name="1484" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning.begin_" class="Function Operator"
       >begin</a
-      ><a name="1489"
       >
-  </a
-      ><a name="1492" href="README.Integer.html#1478" class="Bound"
+  <a name="1492" href="README.Integer.html#1478" class="Bound"
       >i</a
-      ><a name="1493"
-      > </a
-      ><a name="1494" href="Data.Integer.Base.html#2671" class="Function Operator"
+      > <a name="1494" href="Data.Integer.Base.html#_*_" class="Function Operator"
       >*</a
-      ><a name="1495"
-      > </a
-      ><a name="1496" class="Symbol"
+      > <a name="1496" class="Symbol"
       >(</a
       ><a name="1497" href="README.Integer.html#1480" class="Bound"
       >j</a
-      ><a name="1498"
-      > </a
-      ><a name="1499" href="Data.Integer.Base.html#2025" class="Function Operator"
+      > <a name="1499" href="Data.Integer.Base.html#_+_" class="Function Operator"
       >+</a
-      ><a name="1500"
-      > </a
-      ><a name="1501" href="Agda.Builtin.Int.html#196" class="InductiveConstructor Operator"
+      > <a name="1501" href="Agda.Builtin.Int.html#Int.+_" class="InductiveConstructor Operator"
       >+</a
-      ><a name="1502"
-      > </a
-      ><a name="1503" class="Number"
+      > <a name="1503" class="Number"
       >0</a
       ><a name="1504" class="Symbol"
       >)</a
-      ><a name="1505"
-      >  </a
-      ><a name="1507" href="Relation.Binary.PropositionalEquality.html#5924" class="Function Operator"
+      >  <a name="1507" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#8801;&#10216;</a
-      ><a name="1509"
-      > </a
-      ><a name="1510" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      > <a name="1510" href="Relation.Binary.PropositionalEquality.html#cong" class="Function"
       >P.cong</a
-      ><a name="1516"
-      > </a
-      ><a name="1517" class="Symbol"
+      > <a name="1517" class="Symbol"
       >(</a
-      ><a name="1518" href="Data.Integer.Base.html#2671" class="Function Operator"
+      ><a name="1518" href="Data.Integer.Base.html#_*_" class="Function Operator"
       >_*_</a
-      ><a name="1521"
-      > </a
-      ><a name="1522" href="README.Integer.html#1478" class="Bound"
+      > <a name="1522" href="README.Integer.html#1478" class="Bound"
       >i</a
       ><a name="1523" class="Symbol"
       >)</a
-      ><a name="1524"
-      > </a
-      ><a name="1525" class="Symbol"
+      > <a name="1525" class="Symbol"
       >(</a
-      ><a name="1526" href="Data.Product.html#539" class="Field"
+      ><a name="1526" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
       >proj&#8322;</a
-      ><a name="1531"
-      > </a
-      ><a name="1532" href="Algebra.Structures.html#1106" class="Function"
+      > <a name="1532" href="Algebra.Structures.html#CR.+-identity" class="Function"
       >CR.+-identity</a
-      ><a name="1545"
-      > </a
-      ><a name="1546" href="README.Integer.html#1480" class="Bound"
+      > <a name="1546" href="README.Integer.html#1480" class="Bound"
       >j</a
       ><a name="1547" class="Symbol"
       >)</a
-      ><a name="1548"
-      > </a
-      ><a name="1549" href="Relation.Binary.PropositionalEquality.html#5924" class="Function Operator"
+      > <a name="1549" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="1550"
       >
-  </a
-      ><a name="1553" href="README.Integer.html#1478" class="Bound"
+  <a name="1553" href="README.Integer.html#1478" class="Bound"
       >i</a
-      ><a name="1554"
-      > </a
-      ><a name="1555" href="Data.Integer.Base.html#2671" class="Function Operator"
+      > <a name="1555" href="Data.Integer.Base.html#_*_" class="Function Operator"
       >*</a
-      ><a name="1556"
-      > </a
-      ><a name="1557" href="README.Integer.html#1480" class="Bound"
+      > <a name="1557" href="README.Integer.html#1480" class="Bound"
       >j</a
-      ><a name="1558"
-      >          </a
-      ><a name="1568" href="Relation.Binary.PropositionalEquality.html#5924" class="Function Operator"
+      >          <a name="1568" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#8801;&#10216;</a
-      ><a name="1570"
-      > </a
-      ><a name="1571" href="Algebra.Structures.html#11901" class="Function"
+      > <a name="1571" href="Algebra.Structures.html#CR.*-comm" class="Function"
       >CR.*-comm</a
-      ><a name="1580"
-      > </a
-      ><a name="1581" href="README.Integer.html#1478" class="Bound"
+      > <a name="1581" href="README.Integer.html#1478" class="Bound"
       >i</a
-      ><a name="1582"
-      > </a
-      ><a name="1583" href="README.Integer.html#1480" class="Bound"
+      > <a name="1583" href="README.Integer.html#1480" class="Bound"
       >j</a
-      ><a name="1584"
-      > </a
-      ><a name="1585" href="Relation.Binary.PropositionalEquality.html#5924" class="Function Operator"
+      > <a name="1585" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="1586"
       >
-  </a
-      ><a name="1589" href="README.Integer.html#1480" class="Bound"
+  <a name="1589" href="README.Integer.html#1480" class="Bound"
       >j</a
-      ><a name="1590"
-      > </a
-      ><a name="1591" href="Data.Integer.Base.html#2671" class="Function Operator"
+      > <a name="1591" href="Data.Integer.Base.html#_*_" class="Function Operator"
       >*</a
-      ><a name="1592"
-      > </a
-      ><a name="1593" href="README.Integer.html#1478" class="Bound"
+      > <a name="1593" href="README.Integer.html#1478" class="Bound"
       >i</a
-      ><a name="1594"
-      >          </a
-      ><a name="1604" href="Relation.Binary.PropositionalEquality.html#6105" class="Function Operator"
+      >          <a name="1604" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8718;" class="Function Operator"
       >&#8718;</a
-      ><a name="1605"
       >
 
-</a
-      ><a name="1607" class="Comment"
+<a name="1607" class="Comment"
       >-- The module RingSolver in Data.Integer.Properties contains a solver</a
-      ><a name="1676"
       >
-</a
-      ><a name="1677" class="Comment"
+<a name="1677" class="Comment"
       >-- for integer equalities involving variables, constants, _+_, _*_, -_</a
-      ><a name="1747"
       >
-</a
-      ><a name="1748" class="Comment"
+<a name="1748" class="Comment"
       >-- and _-_.</a
-      ><a name="1759"
       >
 
-</a
-      ><a name="1761" href="README.Integer.html#1761" class="Function"
+<a name="ex&#8327;" href="README.Integer.html#ex&#8327;" class="Function"
       >ex&#8327;</a
-      ><a name="1764"
-      > </a
-      ><a name="1765" class="Symbol"
+      > <a name="1765" class="Symbol"
       >:</a
-      ><a name="1766"
-      > </a
-      ><a name="1767" class="Symbol"
+      > <a name="1767" class="Symbol"
       >&#8704;</a
-      ><a name="1768"
-      > </a
-      ><a name="1769" href="README.Integer.html#1769" class="Bound"
+      > <a name="1769" href="README.Integer.html#1769" class="Bound"
       >i</a
-      ><a name="1770"
-      > </a
-      ><a name="1771" href="README.Integer.html#1771" class="Bound"
+      > <a name="1771" href="README.Integer.html#1771" class="Bound"
       >j</a
-      ><a name="1772"
-      > </a
-      ><a name="1773" class="Symbol"
+      > <a name="1773" class="Symbol"
       >&#8594;</a
-      ><a name="1774"
-      > </a
-      ><a name="1775" href="README.Integer.html#1769" class="Bound"
+      > <a name="1775" href="README.Integer.html#1769" class="Bound"
       >i</a
-      ><a name="1776"
-      > </a
-      ><a name="1777" href="Data.Integer.Base.html#2671" class="Function Operator"
+      > <a name="1777" href="Data.Integer.Base.html#_*_" class="Function Operator"
       >*</a
-      ><a name="1778"
-      > </a
-      ><a name="1779" href="Data.Integer.Base.html#1791" class="Function Operator"
+      > <a name="1779" href="Data.Integer.Base.html#-_" class="Function Operator"
       >-</a
-      ><a name="1780"
-      > </a
-      ><a name="1781" href="README.Integer.html#1771" class="Bound"
+      > <a name="1781" href="README.Integer.html#1771" class="Bound"
       >j</a
-      ><a name="1782"
-      > </a
-      ><a name="1783" href="Data.Integer.Base.html#2204" class="Function Operator"
+      > <a name="1783" href="Data.Integer.Base.html#_-_" class="Function Operator"
       >-</a
-      ><a name="1784"
-      > </a
-      ><a name="1785" href="README.Integer.html#1771" class="Bound"
+      > <a name="1785" href="README.Integer.html#1771" class="Bound"
       >j</a
-      ><a name="1786"
-      > </a
-      ><a name="1787" href="Data.Integer.Base.html#2671" class="Function Operator"
+      > <a name="1787" href="Data.Integer.Base.html#_*_" class="Function Operator"
       >*</a
-      ><a name="1788"
-      > </a
-      ><a name="1789" href="README.Integer.html#1769" class="Bound"
+      > <a name="1789" href="README.Integer.html#1769" class="Bound"
       >i</a
-      ><a name="1790"
-      > </a
-      ><a name="1791" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="1791" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="1792"
-      > </a
-      ><a name="1793" href="Data.Integer.Base.html#1791" class="Function Operator"
+      > <a name="1793" href="Data.Integer.Base.html#-_" class="Function Operator"
       >-</a
-      ><a name="1794"
-      > </a
-      ><a name="1795" href="Agda.Builtin.Int.html#196" class="InductiveConstructor Operator"
+      > <a name="1795" href="Agda.Builtin.Int.html#Int.+_" class="InductiveConstructor Operator"
       >+</a
-      ><a name="1796"
-      > </a
-      ><a name="1797" class="Number"
+      > <a name="1797" class="Number"
       >2</a
-      ><a name="1798"
-      > </a
-      ><a name="1799" href="Data.Integer.Base.html#2671" class="Function Operator"
+      > <a name="1799" href="Data.Integer.Base.html#_*_" class="Function Operator"
       >*</a
-      ><a name="1800"
-      > </a
-      ><a name="1801" href="README.Integer.html#1769" class="Bound"
+      > <a name="1801" href="README.Integer.html#1769" class="Bound"
       >i</a
-      ><a name="1802"
-      > </a
-      ><a name="1803" href="Data.Integer.Base.html#2671" class="Function Operator"
+      > <a name="1803" href="Data.Integer.Base.html#_*_" class="Function Operator"
       >*</a
-      ><a name="1804"
-      > </a
-      ><a name="1805" href="README.Integer.html#1771" class="Bound"
+      > <a name="1805" href="README.Integer.html#1771" class="Bound"
       >j</a
-      ><a name="1806"
       >
-</a
-      ><a name="1807" href="README.Integer.html#1761" class="Function"
+<a name="1807" href="README.Integer.html#ex&#8327;" class="Function"
       >ex&#8327;</a
-      ><a name="1810"
-      > </a
-      ><a name="1811" class="Symbol"
+      > <a name="1811" class="Symbol"
       >=</a
-      ><a name="1812"
-      > </a
-      ><a name="1813" href="Relation.Binary.Reflection.html#2382" class="Function"
+      > <a name="1813" href="Relation.Binary.Reflection.html#RingSolver.solve" class="Function"
       >solve</a
-      ><a name="1818"
-      > </a
-      ><a name="1819" class="Number"
+      > <a name="1819" class="Number"
       >2</a
-      ><a name="1820"
-      > </a
-      ><a name="1821" class="Symbol"
+      > <a name="1821" class="Symbol"
       >(&#955;</a
-      ><a name="1823"
-      > </a
-      ><a name="1824" href="README.Integer.html#1824" class="Bound"
+      > <a name="1824" href="README.Integer.html#1824" class="Bound"
       >i</a
-      ><a name="1825"
-      > </a
-      ><a name="1826" href="README.Integer.html#1826" class="Bound"
+      > <a name="1826" href="README.Integer.html#1826" class="Bound"
       >j</a
-      ><a name="1827"
-      > </a
-      ><a name="1828" class="Symbol"
+      > <a name="1828" class="Symbol"
       >&#8594;</a
-      ><a name="1829"
-      > </a
-      ><a name="1830" href="README.Integer.html#1824" class="Bound"
+      > <a name="1830" href="README.Integer.html#1824" class="Bound"
       >i</a
-      ><a name="1831"
-      > </a
-      ><a name="1832" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="1832" href="Algebra.RingSolver.html#Properties.RingSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="1834"
-      > </a
-      ><a name="1835" href="Algebra.RingSolver.html#2231" class="InductiveConstructor Operator"
+      > <a name="1835" href="Algebra.RingSolver.html#Properties.RingSolver.:-_" class="InductiveConstructor Operator"
       >:-</a
-      ><a name="1837"
-      > </a
-      ><a name="1838" href="README.Integer.html#1826" class="Bound"
+      > <a name="1838" href="README.Integer.html#1826" class="Bound"
       >j</a
-      ><a name="1839"
-      > </a
-      ><a name="1840" href="Algebra.RingSolver.html#2444" class="Function Operator"
+      > <a name="1840" href="Algebra.RingSolver.html#Properties.RingSolver._:-_" class="Function Operator"
       >:-</a
-      ><a name="1842"
-      > </a
-      ><a name="1843" href="README.Integer.html#1826" class="Bound"
+      > <a name="1843" href="README.Integer.html#1826" class="Bound"
       >j</a
-      ><a name="1844"
-      > </a
-      ><a name="1845" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="1845" href="Algebra.RingSolver.html#Properties.RingSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="1847"
-      > </a
-      ><a name="1848" href="README.Integer.html#1824" class="Bound"
+      > <a name="1848" href="README.Integer.html#1824" class="Bound"
       >i</a
-      ><a name="1849"
-      >  </a
-      ><a name="1851" href="Relation.Binary.Reflection.html#3491" class="Function Operator"
+      >  <a name="1851" href="Relation.Binary.Reflection.html#RingSolver._:=_" class="Function Operator"
       >:=</a
-      ><a name="1853"
-      >  </a
-      ><a name="1855" href="Algebra.RingSolver.html#2231" class="InductiveConstructor Operator"
+      >  <a name="1855" href="Algebra.RingSolver.html#Properties.RingSolver.:-_" class="InductiveConstructor Operator"
       >:-</a
-      ><a name="1857"
-      > </a
-      ><a name="1858" href="Algebra.RingSolver.html#2104" class="InductiveConstructor"
+      > <a name="1858" href="Algebra.RingSolver.html#Properties.RingSolver.con" class="InductiveConstructor"
       >con</a
-      ><a name="1861"
-      > </a
-      ><a name="1862" class="Symbol"
+      > <a name="1862" class="Symbol"
       >(</a
-      ><a name="1863" href="Agda.Builtin.Int.html#196" class="InductiveConstructor Operator"
+      ><a name="1863" href="Agda.Builtin.Int.html#Int.+_" class="InductiveConstructor Operator"
       >+</a
-      ><a name="1864"
-      > </a
-      ><a name="1865" class="Number"
+      > <a name="1865" class="Number"
       >2</a
       ><a name="1866" class="Symbol"
       >)</a
-      ><a name="1867"
-      > </a
-      ><a name="1868" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="1868" href="Algebra.RingSolver.html#Properties.RingSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="1870"
-      > </a
-      ><a name="1871" href="README.Integer.html#1824" class="Bound"
+      > <a name="1871" href="README.Integer.html#1824" class="Bound"
       >i</a
-      ><a name="1872"
-      > </a
-      ><a name="1873" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="1873" href="Algebra.RingSolver.html#Properties.RingSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="1875"
-      > </a
-      ><a name="1876" href="README.Integer.html#1826" class="Bound"
+      > <a name="1876" href="README.Integer.html#1826" class="Bound"
       >j</a
       ><a name="1877" class="Symbol"
       >)</a
-      ><a name="1878"
       >
-              </a
-      ><a name="1893" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+              <a name="1893" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >P.refl</a
-      ><a name="1899"
       >
-  </a
-      ><a name="1902" class="Keyword"
+  <a name="1902" class="Keyword"
       >where</a
-      ><a name="1907"
-      > </a
-      ><a name="1908" class="Keyword"
+      > <a name="1908" class="Keyword"
       >open</a
-      ><a name="1912"
-      > </a
-      ><a name="1913" href="Data.Integer.Properties.html#234" class="Module"
+      > <a name="1913" href="Data.Integer.Properties.html#Properties" class="Module"
       >Integer.</a
-      ><a name="1921" href="Data.Integer.Properties.html#9686" class="Module"
+      ><a name="1921" href="Data.Integer.Properties.html#RingSolver" class="Module"
       >RingSolver</a
-      ><a name="1931"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

@@ -11,2207 +11,1221 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Conversion of &#8804; to &lt;, along with a number of properties</a
-      ><a name="164"
       >
-</a
-      ><a name="165" class="Comment"
+<a name="165" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="237"
       >
 
-</a
-      ><a name="239" class="Comment"
+<a name="239" class="Comment"
       >-- Possible TODO: Prove that a conversion &#8804; &#8594; &lt; &#8594; &#8804; returns a</a
-      ><a name="300"
       >
-</a
-      ><a name="301" class="Comment"
+<a name="301" class="Comment"
       >-- relation equivalent to the original one (and similarly for</a
-      ><a name="362"
       >
-</a
-      ><a name="363" class="Comment"
+<a name="363" class="Comment"
       >-- &lt;&#160;&#8594;&#160;&#8804;&#160;&#8594;&#160;&lt;).</a
-      ><a name="377"
       >
 
-</a
-      ><a name="379" class="Keyword"
+<a name="379" class="Keyword"
       >open</a
-      ><a name="383"
-      > </a
-      ><a name="384" class="Keyword"
+      > <a name="384" class="Keyword"
       >import</a
-      ><a name="390"
-      > </a
-      ><a name="391" href="Relation.Binary.html#1" class="Module"
+      > <a name="391" href="Relation.Binary.html" class="Module"
       >Relation.Binary</a
-      ><a name="406"
       >
 
-</a
-      ><a name="408" class="Keyword"
+<a name="408" class="Keyword"
       >module</a
-      ><a name="414"
-      > </a
-      ><a name="415" href="Relation.Binary.NonStrictToStrict.html#1" class="Module"
+      > <a name="415" href="Relation.Binary.NonStrictToStrict.html" class="Module"
       >Relation.Binary.NonStrictToStrict</a
-      ><a name="448"
       >
-         </a
-      ><a name="458" class="Symbol"
+         <a name="458" class="Symbol"
       >{</a
       ><a name="459" href="Relation.Binary.NonStrictToStrict.html#459" class="Bound"
       >a</a
-      ><a name="460"
-      > </a
-      ><a name="461" href="Relation.Binary.NonStrictToStrict.html#461" class="Bound"
+      > <a name="461" href="Relation.Binary.NonStrictToStrict.html#461" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="463"
-      > </a
-      ><a name="464" href="Relation.Binary.NonStrictToStrict.html#464" class="Bound"
+      > <a name="464" href="Relation.Binary.NonStrictToStrict.html#464" class="Bound"
       >&#8467;&#8322;</a
       ><a name="466" class="Symbol"
       >}</a
-      ><a name="467"
-      > </a
-      ><a name="468" class="Symbol"
+      > <a name="468" class="Symbol"
       >{</a
       ><a name="469" href="Relation.Binary.NonStrictToStrict.html#469" class="Bound"
       >A</a
-      ><a name="470"
-      > </a
-      ><a name="471" class="Symbol"
+      > <a name="471" class="Symbol"
       >:</a
-      ><a name="472"
-      > </a
-      ><a name="473" class="PrimitiveType"
+      > <a name="473" class="PrimitiveType"
       >Set</a
-      ><a name="476"
-      > </a
-      ><a name="477" href="Relation.Binary.NonStrictToStrict.html#459" class="Bound"
+      > <a name="477" href="Relation.Binary.NonStrictToStrict.html#459" class="Bound"
       >a</a
       ><a name="478" class="Symbol"
       >}</a
-      ><a name="479"
       >
-         </a
-      ><a name="489" class="Symbol"
+         <a name="489" class="Symbol"
       >(</a
       ><a name="490" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="493"
-      > </a
-      ><a name="494" class="Symbol"
+      > <a name="494" class="Symbol"
       >:</a
-      ><a name="495"
-      > </a
-      ><a name="496" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="496" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="499"
-      > </a
-      ><a name="500" href="Relation.Binary.NonStrictToStrict.html#469" class="Bound"
+      > <a name="500" href="Relation.Binary.NonStrictToStrict.html#469" class="Bound"
       >A</a
-      ><a name="501"
-      > </a
-      ><a name="502" href="Relation.Binary.NonStrictToStrict.html#461" class="Bound"
+      > <a name="502" href="Relation.Binary.NonStrictToStrict.html#461" class="Bound"
       >&#8467;&#8321;</a
       ><a name="504" class="Symbol"
       >)</a
-      ><a name="505"
-      > </a
-      ><a name="506" class="Symbol"
+      > <a name="506" class="Symbol"
       >(</a
       ><a name="507" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
       >_&#8804;_</a
-      ><a name="510"
-      > </a
-      ><a name="511" class="Symbol"
+      > <a name="511" class="Symbol"
       >:</a
-      ><a name="512"
-      > </a
-      ><a name="513" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="513" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="516"
-      > </a
-      ><a name="517" href="Relation.Binary.NonStrictToStrict.html#469" class="Bound"
+      > <a name="517" href="Relation.Binary.NonStrictToStrict.html#469" class="Bound"
       >A</a
-      ><a name="518"
-      > </a
-      ><a name="519" href="Relation.Binary.NonStrictToStrict.html#464" class="Bound"
+      > <a name="519" href="Relation.Binary.NonStrictToStrict.html#464" class="Bound"
       >&#8467;&#8322;</a
       ><a name="521" class="Symbol"
       >)</a
-      ><a name="522"
       >
-         </a
-      ><a name="532" class="Keyword"
+         <a name="532" class="Keyword"
       >where</a
-      ><a name="537"
       >
 
-</a
-      ><a name="539" class="Keyword"
+<a name="539" class="Keyword"
       >open</a
-      ><a name="543"
-      > </a
-      ><a name="544" class="Keyword"
+      > <a name="544" class="Keyword"
       >import</a
-      ><a name="550"
-      > </a
-      ><a name="551" href="Relation.Nullary.html#1" class="Module"
+      > <a name="551" href="Relation.Nullary.html" class="Module"
       >Relation.Nullary</a
-      ><a name="567"
       >
-</a
-      ><a name="568" class="Keyword"
+<a name="568" class="Keyword"
       >open</a
-      ><a name="572"
-      > </a
-      ><a name="573" class="Keyword"
+      > <a name="573" class="Keyword"
       >import</a
-      ><a name="579"
-      > </a
-      ><a name="580" href="Relation.Binary.Consequences.html#1" class="Module"
+      > <a name="580" href="Relation.Binary.Consequences.html" class="Module"
       >Relation.Binary.Consequences</a
-      ><a name="608"
       >
-</a
-      ><a name="609" class="Keyword"
+<a name="609" class="Keyword"
       >open</a
-      ><a name="613"
-      > </a
-      ><a name="614" class="Keyword"
+      > <a name="614" class="Keyword"
       >import</a
-      ><a name="620"
-      > </a
-      ><a name="621" href="Function.html#1" class="Module"
+      > <a name="621" href="Function.html" class="Module"
       >Function</a
-      ><a name="629"
       >
-</a
-      ><a name="630" class="Keyword"
+<a name="630" class="Keyword"
       >open</a
-      ><a name="634"
-      > </a
-      ><a name="635" class="Keyword"
+      > <a name="635" class="Keyword"
       >import</a
-      ><a name="641"
-      > </a
-      ><a name="642" href="Data.Product.html#1" class="Module"
+      > <a name="642" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="654"
       >
-</a
-      ><a name="655" class="Keyword"
+<a name="655" class="Keyword"
       >open</a
-      ><a name="659"
-      > </a
-      ><a name="660" class="Keyword"
+      > <a name="660" class="Keyword"
       >import</a
-      ><a name="666"
-      > </a
-      ><a name="667" href="Data.Sum.html#1" class="Module"
+      > <a name="667" href="Data.Sum.html" class="Module"
       >Data.Sum</a
-      ><a name="675"
       >
 
-</a
-      ><a name="677" class="Comment"
+<a name="677" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="749"
       >
-</a
-      ><a name="750" class="Comment"
+<a name="750" class="Comment"
       >-- Conversion</a
-      ><a name="763"
       >
 
-</a
-      ><a name="765" class="Comment"
+<a name="765" class="Comment"
       >-- _&#8804;_ can be turned into _&lt;_ as follows:</a
-      ><a name="806"
       >
 
-</a
-      ><a name="808" href="Relation.Binary.NonStrictToStrict.html#808" class="Function Operator"
+<a name="_&lt;_" href="Relation.Binary.NonStrictToStrict.html#_&lt;_" class="Function Operator"
       >_&lt;_</a
-      ><a name="811"
-      > </a
-      ><a name="812" class="Symbol"
+      > <a name="812" class="Symbol"
       >:</a
-      ><a name="813"
-      > </a
-      ><a name="814" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="814" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="817"
-      > </a
-      ><a name="818" href="Relation.Binary.NonStrictToStrict.html#469" class="Bound"
+      > <a name="818" href="Relation.Binary.NonStrictToStrict.html#469" class="Bound"
       >A</a
-      ><a name="819"
-      > </a
-      ><a name="820" class="Symbol"
+      > <a name="820" class="Symbol"
       >_</a
-      ><a name="821"
       >
-</a
-      ><a name="822" href="Relation.Binary.NonStrictToStrict.html#822" class="Bound"
+<a name="822" href="Relation.Binary.NonStrictToStrict.html#822" class="Bound"
       >x</a
-      ><a name="823"
-      > </a
-      ><a name="824" href="Relation.Binary.NonStrictToStrict.html#808" class="Function Operator"
+      > <a name="824" href="Relation.Binary.NonStrictToStrict.html#_&lt;_" class="Function Operator"
       >&lt;</a
-      ><a name="825"
-      > </a
-      ><a name="826" href="Relation.Binary.NonStrictToStrict.html#826" class="Bound"
+      > <a name="826" href="Relation.Binary.NonStrictToStrict.html#826" class="Bound"
       >y</a
-      ><a name="827"
-      > </a
-      ><a name="828" class="Symbol"
+      > <a name="828" class="Symbol"
       >=</a
-      ><a name="829"
-      > </a
-      ><a name="830" class="Symbol"
+      > <a name="830" class="Symbol"
       >(</a
       ><a name="831" href="Relation.Binary.NonStrictToStrict.html#822" class="Bound"
       >x</a
-      ><a name="832"
-      > </a
-      ><a name="833" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
+      > <a name="833" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
       >&#8804;</a
-      ><a name="834"
-      > </a
-      ><a name="835" href="Relation.Binary.NonStrictToStrict.html#826" class="Bound"
+      > <a name="835" href="Relation.Binary.NonStrictToStrict.html#826" class="Bound"
       >y</a
       ><a name="836" class="Symbol"
       >)</a
-      ><a name="837"
-      > </a
-      ><a name="838" href="Data.Product.html#1073" class="Function Operator"
+      > <a name="838" href="Data.Product.html#_&#215;_" class="Function Operator"
       >&#215;</a
-      ><a name="839"
-      > </a
-      ><a name="840" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="840" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="841"
-      > </a
-      ><a name="842" class="Symbol"
+      > <a name="842" class="Symbol"
       >(</a
       ><a name="843" href="Relation.Binary.NonStrictToStrict.html#822" class="Bound"
       >x</a
-      ><a name="844"
-      > </a
-      ><a name="845" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="845" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >&#8776;</a
-      ><a name="846"
-      > </a
-      ><a name="847" href="Relation.Binary.NonStrictToStrict.html#826" class="Bound"
+      > <a name="847" href="Relation.Binary.NonStrictToStrict.html#826" class="Bound"
       >y</a
       ><a name="848" class="Symbol"
       >)</a
-      ><a name="849"
       >
 
-</a
-      ><a name="851" class="Comment"
+<a name="851" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="923"
       >
-</a
-      ><a name="924" class="Comment"
+<a name="924" class="Comment"
       >-- The converted relations have certain properties</a
-      ><a name="974"
       >
-</a
-      ><a name="975" class="Comment"
+<a name="975" class="Comment"
       >-- (if the original relations have certain other properties)</a
-      ><a name="1035"
       >
 
-</a
-      ><a name="1037" href="Relation.Binary.NonStrictToStrict.html#1037" class="Function"
+<a name="irrefl" href="Relation.Binary.NonStrictToStrict.html#irrefl" class="Function"
       >irrefl</a
-      ><a name="1043"
-      > </a
-      ><a name="1044" class="Symbol"
+      > <a name="1044" class="Symbol"
       >:</a
-      ><a name="1045"
-      > </a
-      ><a name="1046" href="Relation.Binary.Core.html#2010" class="Function"
+      > <a name="1046" href="Relation.Binary.Core.html#Irreflexive" class="Function"
       >Irreflexive</a
-      ><a name="1057"
-      > </a
-      ><a name="1058" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="1058" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="1061"
-      > </a
-      ><a name="1062" href="Relation.Binary.NonStrictToStrict.html#808" class="Function Operator"
+      > <a name="1062" href="Relation.Binary.NonStrictToStrict.html#_&lt;_" class="Function Operator"
       >_&lt;_</a
-      ><a name="1065"
       >
-</a
-      ><a name="1066" href="Relation.Binary.NonStrictToStrict.html#1037" class="Function"
+<a name="1066" href="Relation.Binary.NonStrictToStrict.html#irrefl" class="Function"
       >irrefl</a
-      ><a name="1072"
-      > </a
-      ><a name="1073" href="Relation.Binary.NonStrictToStrict.html#1073" class="Bound"
+      > <a name="1073" href="Relation.Binary.NonStrictToStrict.html#1073" class="Bound"
       >x&#8776;y</a
-      ><a name="1076"
-      > </a
-      ><a name="1077" href="Relation.Binary.NonStrictToStrict.html#1077" class="Bound"
+      > <a name="1077" href="Relation.Binary.NonStrictToStrict.html#1077" class="Bound"
       >x&lt;y</a
-      ><a name="1080"
-      > </a
-      ><a name="1081" class="Symbol"
+      > <a name="1081" class="Symbol"
       >=</a
-      ><a name="1082"
-      > </a
-      ><a name="1083" href="Data.Product.html#539" class="Field"
+      > <a name="1083" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
       >proj&#8322;</a
-      ><a name="1088"
-      > </a
-      ><a name="1089" href="Relation.Binary.NonStrictToStrict.html#1077" class="Bound"
+      > <a name="1089" href="Relation.Binary.NonStrictToStrict.html#1077" class="Bound"
       >x&lt;y</a
-      ><a name="1092"
-      > </a
-      ><a name="1093" href="Relation.Binary.NonStrictToStrict.html#1073" class="Bound"
+      > <a name="1093" href="Relation.Binary.NonStrictToStrict.html#1073" class="Bound"
       >x&#8776;y</a
-      ><a name="1096"
       >
 
-</a
-      ><a name="1098" href="Relation.Binary.NonStrictToStrict.html#1098" class="Function"
+<a name="trans" href="Relation.Binary.NonStrictToStrict.html#trans" class="Function"
       >trans</a
-      ><a name="1103"
-      > </a
-      ><a name="1104" class="Symbol"
+      > <a name="1104" class="Symbol"
       >:</a
-      ><a name="1105"
-      > </a
-      ><a name="1106" href="Relation.Binary.html#3419" class="Record"
+      > <a name="1106" href="Relation.Binary.html#IsPartialOrder" class="Record"
       >IsPartialOrder</a
-      ><a name="1120"
-      > </a
-      ><a name="1121" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="1121" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="1124"
-      > </a
-      ><a name="1125" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
+      > <a name="1125" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
       >_&#8804;_</a
-      ><a name="1128"
-      > </a
-      ><a name="1129" class="Symbol"
+      > <a name="1129" class="Symbol"
       >&#8594;</a
-      ><a name="1130"
-      > </a
-      ><a name="1131" href="Relation.Binary.Core.html#2772" class="Function"
+      > <a name="1131" href="Relation.Binary.Core.html#Transitive" class="Function"
       >Transitive</a
-      ><a name="1141"
-      > </a
-      ><a name="1142" href="Relation.Binary.NonStrictToStrict.html#808" class="Function Operator"
+      > <a name="1142" href="Relation.Binary.NonStrictToStrict.html#_&lt;_" class="Function Operator"
       >_&lt;_</a
-      ><a name="1145"
       >
-</a
-      ><a name="1146" href="Relation.Binary.NonStrictToStrict.html#1098" class="Function"
+<a name="1146" href="Relation.Binary.NonStrictToStrict.html#trans" class="Function"
       >trans</a
-      ><a name="1151"
-      > </a
-      ><a name="1152" href="Relation.Binary.NonStrictToStrict.html#1152" class="Bound"
+      > <a name="1152" href="Relation.Binary.NonStrictToStrict.html#1152" class="Bound"
       >po</a
-      ><a name="1154"
-      > </a
-      ><a name="1155" class="Symbol"
+      > <a name="1155" class="Symbol"
       >=</a
-      ><a name="1156"
-      > </a
-      ><a name="1157" class="Symbol"
+      > <a name="1157" class="Symbol"
       >&#955;</a
-      ><a name="1158"
-      > </a
-      ><a name="1159" href="Relation.Binary.NonStrictToStrict.html#1159" class="Bound"
+      > <a name="1159" href="Relation.Binary.NonStrictToStrict.html#1159" class="Bound"
       >x&lt;y</a
-      ><a name="1162"
-      > </a
-      ><a name="1163" href="Relation.Binary.NonStrictToStrict.html#1163" class="Bound"
+      > <a name="1163" href="Relation.Binary.NonStrictToStrict.html#1163" class="Bound"
       >y&lt;z</a
-      ><a name="1166"
-      > </a
-      ><a name="1167" class="Symbol"
+      > <a name="1167" class="Symbol"
       >&#8594;</a
-      ><a name="1168"
       >
-  </a
-      ><a name="1171" class="Symbol"
+  <a name="1171" class="Symbol"
       >(</a
-      ><a name="1172"
-      > </a
-      ><a name="1173" href="Relation.Binary.html#1190" class="Function"
+      > <a name="1173" href="Relation.Binary.html#1190" class="Function"
       >PO.trans</a
-      ><a name="1181"
-      > </a
-      ><a name="1182" class="Symbol"
+      > <a name="1182" class="Symbol"
       >(</a
-      ><a name="1183" href="Data.Product.html#525" class="Field"
+      ><a name="1183" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="1188"
-      > </a
-      ><a name="1189" href="Relation.Binary.NonStrictToStrict.html#1159" class="Bound"
+      > <a name="1189" href="Relation.Binary.NonStrictToStrict.html#1159" class="Bound"
       >x&lt;y</a
       ><a name="1192" class="Symbol"
       >)</a
-      ><a name="1193"
-      > </a
-      ><a name="1194" class="Symbol"
+      > <a name="1194" class="Symbol"
       >(</a
-      ><a name="1195" href="Data.Product.html#525" class="Field"
+      ><a name="1195" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="1200"
-      > </a
-      ><a name="1201" href="Relation.Binary.NonStrictToStrict.html#1163" class="Bound"
+      > <a name="1201" href="Relation.Binary.NonStrictToStrict.html#1163" class="Bound"
       >y&lt;z</a
       ><a name="1204" class="Symbol"
       >)</a
-      ><a name="1205"
       >
-  </a
-      ><a name="1208" href="Data.Product.html#509" class="InductiveConstructor Operator"
+  <a name="1208" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1209"
-      > </a
-      ><a name="1210" class="Symbol"
+      > <a name="1210" class="Symbol"
       >&#955;</a
-      ><a name="1211"
-      > </a
-      ><a name="1212" href="Relation.Binary.NonStrictToStrict.html#1212" class="Bound"
+      > <a name="1212" href="Relation.Binary.NonStrictToStrict.html#1212" class="Bound"
       >x&#8776;z</a
-      ><a name="1215"
-      > </a
-      ><a name="1216" class="Symbol"
+      > <a name="1216" class="Symbol"
       >&#8594;</a
-      ><a name="1217"
-      > </a
-      ><a name="1218" href="Data.Product.html#539" class="Field"
+      > <a name="1218" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
       >proj&#8322;</a
-      ><a name="1223"
-      > </a
-      ><a name="1224" href="Relation.Binary.NonStrictToStrict.html#1159" class="Bound"
+      > <a name="1224" href="Relation.Binary.NonStrictToStrict.html#1159" class="Bound"
       >x&lt;y</a
-      ><a name="1227"
-      > </a
-      ><a name="1228" href="Function.html#1835" class="Function Operator"
+      > <a name="1228" href="Function.html#_$_" class="Function Operator"
       >$</a
-      ><a name="1229"
-      > </a
-      ><a name="1230" href="Relation.Binary.NonStrictToStrict.html#1311" class="Function"
+      > <a name="1230" href="Relation.Binary.NonStrictToStrict.html#1311" class="Function"
       >lemma</a
-      ><a name="1235"
-      > </a
-      ><a name="1236" class="Symbol"
+      > <a name="1236" class="Symbol"
       >(</a
-      ><a name="1237" href="Data.Product.html#525" class="Field"
+      ><a name="1237" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="1242"
-      > </a
-      ><a name="1243" href="Relation.Binary.NonStrictToStrict.html#1159" class="Bound"
+      > <a name="1243" href="Relation.Binary.NonStrictToStrict.html#1159" class="Bound"
       >x&lt;y</a
       ><a name="1246" class="Symbol"
       >)</a
-      ><a name="1247"
-      > </a
-      ><a name="1248" class="Symbol"
+      > <a name="1248" class="Symbol"
       >(</a
-      ><a name="1249" href="Data.Product.html#525" class="Field"
+      ><a name="1249" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="1254"
-      > </a
-      ><a name="1255" href="Relation.Binary.NonStrictToStrict.html#1163" class="Bound"
+      > <a name="1255" href="Relation.Binary.NonStrictToStrict.html#1163" class="Bound"
       >y&lt;z</a
       ><a name="1258" class="Symbol"
       >)</a
-      ><a name="1259"
-      > </a
-      ><a name="1260" href="Relation.Binary.NonStrictToStrict.html#1212" class="Bound"
+      > <a name="1260" href="Relation.Binary.NonStrictToStrict.html#1212" class="Bound"
       >x&#8776;z</a
-      ><a name="1263"
       >
-  </a
-      ><a name="1266" class="Symbol"
+  <a name="1266" class="Symbol"
       >)</a
-      ><a name="1267"
       >
-  </a
-      ><a name="1270" class="Keyword"
+  <a name="1270" class="Keyword"
       >where</a
-      ><a name="1275"
       >
-  </a
-      ><a name="1278" class="Keyword"
+  <a name="1278" class="Keyword"
       >module</a
-      ><a name="1284"
-      > </a
-      ><a name="1285" href="Relation.Binary.NonStrictToStrict.html#1285" class="Module"
+      > <a name="PO" href="Relation.Binary.NonStrictToStrict.html#PO" class="Module"
       >PO</a
-      ><a name="1287"
-      > </a
-      ><a name="1288" class="Symbol"
+      > <a name="1288" class="Symbol"
       >=</a
-      ><a name="1289"
-      > </a
-      ><a name="1290" href="Relation.Binary.html#3419" class="Module"
+      > <a name="1290" href="Relation.Binary.html#IsPartialOrder" class="Module"
       >IsPartialOrder</a
-      ><a name="1304"
-      > </a
-      ><a name="1305" href="Relation.Binary.NonStrictToStrict.html#1152" class="Bound"
+      > <a name="1305" href="Relation.Binary.NonStrictToStrict.html#1152" class="Bound"
       >po</a
-      ><a name="1307"
       >
 
-  </a
-      ><a name="1311" href="Relation.Binary.NonStrictToStrict.html#1311" class="Function"
+  <a name="1311" href="Relation.Binary.NonStrictToStrict.html#1311" class="Function"
       >lemma</a
-      ><a name="1316"
-      > </a
-      ><a name="1317" class="Symbol"
+      > <a name="1317" class="Symbol"
       >:</a
-      ><a name="1318"
-      > </a
-      ><a name="1319" class="Symbol"
+      > <a name="1319" class="Symbol"
       >&#8704;</a
-      ><a name="1320"
-      > </a
-      ><a name="1321" class="Symbol"
+      > <a name="1321" class="Symbol"
       >{</a
       ><a name="1322" href="Relation.Binary.NonStrictToStrict.html#1322" class="Bound"
       >x</a
-      ><a name="1323"
-      > </a
-      ><a name="1324" href="Relation.Binary.NonStrictToStrict.html#1324" class="Bound"
+      > <a name="1324" href="Relation.Binary.NonStrictToStrict.html#1324" class="Bound"
       >y</a
-      ><a name="1325"
-      > </a
-      ><a name="1326" href="Relation.Binary.NonStrictToStrict.html#1326" class="Bound"
+      > <a name="1326" href="Relation.Binary.NonStrictToStrict.html#1326" class="Bound"
       >z</a
       ><a name="1327" class="Symbol"
       >}</a
-      ><a name="1328"
-      > </a
-      ><a name="1329" class="Symbol"
+      > <a name="1329" class="Symbol"
       >&#8594;</a
-      ><a name="1330"
-      > </a
-      ><a name="1331" href="Relation.Binary.NonStrictToStrict.html#1322" class="Bound"
+      > <a name="1331" href="Relation.Binary.NonStrictToStrict.html#1322" class="Bound"
       >x</a
-      ><a name="1332"
-      > </a
-      ><a name="1333" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
+      > <a name="1333" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
       >&#8804;</a
-      ><a name="1334"
-      > </a
-      ><a name="1335" href="Relation.Binary.NonStrictToStrict.html#1324" class="Bound"
+      > <a name="1335" href="Relation.Binary.NonStrictToStrict.html#1324" class="Bound"
       >y</a
-      ><a name="1336"
-      > </a
-      ><a name="1337" class="Symbol"
+      > <a name="1337" class="Symbol"
       >&#8594;</a
-      ><a name="1338"
-      > </a
-      ><a name="1339" href="Relation.Binary.NonStrictToStrict.html#1324" class="Bound"
+      > <a name="1339" href="Relation.Binary.NonStrictToStrict.html#1324" class="Bound"
       >y</a
-      ><a name="1340"
-      > </a
-      ><a name="1341" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
+      > <a name="1341" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
       >&#8804;</a
-      ><a name="1342"
-      > </a
-      ><a name="1343" href="Relation.Binary.NonStrictToStrict.html#1326" class="Bound"
+      > <a name="1343" href="Relation.Binary.NonStrictToStrict.html#1326" class="Bound"
       >z</a
-      ><a name="1344"
-      > </a
-      ><a name="1345" class="Symbol"
+      > <a name="1345" class="Symbol"
       >&#8594;</a
-      ><a name="1346"
-      > </a
-      ><a name="1347" href="Relation.Binary.NonStrictToStrict.html#1322" class="Bound"
+      > <a name="1347" href="Relation.Binary.NonStrictToStrict.html#1322" class="Bound"
       >x</a
-      ><a name="1348"
-      > </a
-      ><a name="1349" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="1349" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >&#8776;</a
-      ><a name="1350"
-      > </a
-      ><a name="1351" href="Relation.Binary.NonStrictToStrict.html#1326" class="Bound"
+      > <a name="1351" href="Relation.Binary.NonStrictToStrict.html#1326" class="Bound"
       >z</a
-      ><a name="1352"
-      > </a
-      ><a name="1353" class="Symbol"
+      > <a name="1353" class="Symbol"
       >&#8594;</a
-      ><a name="1354"
-      > </a
-      ><a name="1355" href="Relation.Binary.NonStrictToStrict.html#1322" class="Bound"
+      > <a name="1355" href="Relation.Binary.NonStrictToStrict.html#1322" class="Bound"
       >x</a
-      ><a name="1356"
-      > </a
-      ><a name="1357" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="1357" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >&#8776;</a
-      ><a name="1358"
-      > </a
-      ><a name="1359" href="Relation.Binary.NonStrictToStrict.html#1324" class="Bound"
+      > <a name="1359" href="Relation.Binary.NonStrictToStrict.html#1324" class="Bound"
       >y</a
-      ><a name="1360"
       >
-  </a
-      ><a name="1363" href="Relation.Binary.NonStrictToStrict.html#1311" class="Function"
+  <a name="1363" href="Relation.Binary.NonStrictToStrict.html#1311" class="Function"
       >lemma</a
-      ><a name="1368"
-      > </a
-      ><a name="1369" href="Relation.Binary.NonStrictToStrict.html#1369" class="Bound"
+      > <a name="1369" href="Relation.Binary.NonStrictToStrict.html#1369" class="Bound"
       >x&#8804;y</a
-      ><a name="1372"
-      > </a
-      ><a name="1373" href="Relation.Binary.NonStrictToStrict.html#1373" class="Bound"
+      > <a name="1373" href="Relation.Binary.NonStrictToStrict.html#1373" class="Bound"
       >y&#8804;z</a
-      ><a name="1376"
-      > </a
-      ><a name="1377" href="Relation.Binary.NonStrictToStrict.html#1377" class="Bound"
+      > <a name="1377" href="Relation.Binary.NonStrictToStrict.html#1377" class="Bound"
       >x&#8776;z</a
-      ><a name="1380"
-      > </a
-      ><a name="1381" class="Symbol"
+      > <a name="1381" class="Symbol"
       >=</a
-      ><a name="1382"
       >
-    </a
-      ><a name="1387" href="Relation.Binary.html#3608" class="Function"
+    <a name="1387" href="Relation.Binary.html#3608" class="Function"
       >PO.antisym</a
-      ><a name="1397"
-      > </a
-      ><a name="1398" href="Relation.Binary.NonStrictToStrict.html#1369" class="Bound"
+      > <a name="1398" href="Relation.Binary.NonStrictToStrict.html#1369" class="Bound"
       >x&#8804;y</a
-      ><a name="1401"
-      > </a
-      ><a name="1402" href="Function.html#1835" class="Function Operator"
+      > <a name="1402" href="Function.html#_$_" class="Function Operator"
       >$</a
-      ><a name="1403"
-      > </a
-      ><a name="1404" href="Relation.Binary.html#1190" class="Function"
+      > <a name="1404" href="Relation.Binary.html#1190" class="Function"
       >PO.trans</a
-      ><a name="1412"
-      > </a
-      ><a name="1413" href="Relation.Binary.NonStrictToStrict.html#1373" class="Bound"
+      > <a name="1413" href="Relation.Binary.NonStrictToStrict.html#1373" class="Bound"
       >y&#8804;z</a
-      ><a name="1416"
-      > </a
-      ><a name="1417" class="Symbol"
+      > <a name="1417" class="Symbol"
       >(</a
       ><a name="1418" href="Relation.Binary.html#1160" class="Function"
       >PO.reflexive</a
-      ><a name="1430"
-      > </a
-      ><a name="1431" href="Function.html#1835" class="Function Operator"
+      > <a name="1431" href="Function.html#_$_" class="Function Operator"
       >$</a
-      ><a name="1432"
-      > </a
-      ><a name="1433" href="Relation.Binary.Core.html#4960" class="Function"
+      > <a name="1433" href="Relation.Binary.Core.html#4960" class="Function"
       >PO.Eq.sym</a
-      ><a name="1442"
-      > </a
-      ><a name="1443" href="Relation.Binary.NonStrictToStrict.html#1377" class="Bound"
+      > <a name="1443" href="Relation.Binary.NonStrictToStrict.html#1377" class="Bound"
       >x&#8776;z</a
       ><a name="1446" class="Symbol"
       >)</a
-      ><a name="1447"
       >
 
-</a
-      ><a name="1449" href="Relation.Binary.NonStrictToStrict.html#1449" class="Function"
+<a name="antisym&#10230;asym" href="Relation.Binary.NonStrictToStrict.html#antisym&#10230;asym" class="Function"
       >antisym&#10230;asym</a
-      ><a name="1461"
-      > </a
-      ><a name="1462" class="Symbol"
+      > <a name="1462" class="Symbol"
       >:</a
-      ><a name="1463"
-      > </a
-      ><a name="1464" href="Relation.Binary.Core.html#2859" class="Function"
+      > <a name="1464" href="Relation.Binary.Core.html#Antisymmetric" class="Function"
       >Antisymmetric</a
-      ><a name="1477"
-      > </a
-      ><a name="1478" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="1478" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="1481"
-      > </a
-      ><a name="1482" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
+      > <a name="1482" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
       >_&#8804;_</a
-      ><a name="1485"
-      > </a
-      ><a name="1486" class="Symbol"
+      > <a name="1486" class="Symbol"
       >&#8594;</a
-      ><a name="1487"
-      > </a
-      ><a name="1488" href="Relation.Binary.Core.html#2986" class="Function"
+      > <a name="1488" href="Relation.Binary.Core.html#Asymmetric" class="Function"
       >Asymmetric</a
-      ><a name="1498"
-      > </a
-      ><a name="1499" href="Relation.Binary.NonStrictToStrict.html#808" class="Function Operator"
+      > <a name="1499" href="Relation.Binary.NonStrictToStrict.html#_&lt;_" class="Function Operator"
       >_&lt;_</a
-      ><a name="1502"
       >
-</a
-      ><a name="1503" href="Relation.Binary.NonStrictToStrict.html#1449" class="Function"
+<a name="1503" href="Relation.Binary.NonStrictToStrict.html#antisym&#10230;asym" class="Function"
       >antisym&#10230;asym</a
-      ><a name="1515"
-      > </a
-      ><a name="1516" href="Relation.Binary.NonStrictToStrict.html#1516" class="Bound"
+      > <a name="1516" href="Relation.Binary.NonStrictToStrict.html#1516" class="Bound"
       >antisym</a
-      ><a name="1523"
-      > </a
-      ><a name="1524" class="Symbol"
+      > <a name="1524" class="Symbol"
       >(</a
       ><a name="1525" href="Relation.Binary.NonStrictToStrict.html#1525" class="Bound"
       >x&#8804;y</a
-      ><a name="1528"
-      > </a
-      ><a name="1529" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="1529" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1530"
-      > </a
-      ><a name="1531" href="Relation.Binary.NonStrictToStrict.html#1531" class="Bound"
+      > <a name="1531" href="Relation.Binary.NonStrictToStrict.html#1531" class="Bound"
       >&#172;x&#8776;y</a
       ><a name="1535" class="Symbol"
       >)</a
-      ><a name="1536"
-      > </a
-      ><a name="1537" class="Symbol"
+      > <a name="1537" class="Symbol"
       >(</a
       ><a name="1538" href="Relation.Binary.NonStrictToStrict.html#1538" class="Bound"
       >y&#8804;x</a
-      ><a name="1541"
-      > </a
-      ><a name="1542" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="1542" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1543"
-      > </a
-      ><a name="1544" href="Relation.Binary.NonStrictToStrict.html#1544" class="Bound"
+      > <a name="1544" href="Relation.Binary.NonStrictToStrict.html#1544" class="Bound"
       >&#172;y&#8776;x</a
       ><a name="1548" class="Symbol"
       >)</a
-      ><a name="1549"
-      > </a
-      ><a name="1550" class="Symbol"
+      > <a name="1550" class="Symbol"
       >=</a
-      ><a name="1551"
       >
-  </a
-      ><a name="1554" href="Relation.Binary.NonStrictToStrict.html#1531" class="Bound"
+  <a name="1554" href="Relation.Binary.NonStrictToStrict.html#1531" class="Bound"
       >&#172;x&#8776;y</a
-      ><a name="1558"
-      > </a
-      ><a name="1559" class="Symbol"
+      > <a name="1559" class="Symbol"
       >(</a
       ><a name="1560" href="Relation.Binary.NonStrictToStrict.html#1516" class="Bound"
       >antisym</a
-      ><a name="1567"
-      > </a
-      ><a name="1568" href="Relation.Binary.NonStrictToStrict.html#1525" class="Bound"
+      > <a name="1568" href="Relation.Binary.NonStrictToStrict.html#1525" class="Bound"
       >x&#8804;y</a
-      ><a name="1571"
-      > </a
-      ><a name="1572" href="Relation.Binary.NonStrictToStrict.html#1538" class="Bound"
+      > <a name="1572" href="Relation.Binary.NonStrictToStrict.html#1538" class="Bound"
       >y&#8804;x</a
       ><a name="1575" class="Symbol"
       >)</a
-      ><a name="1576"
       >
 
-</a
-      ><a name="1578" href="Relation.Binary.NonStrictToStrict.html#1578" class="Function"
+<a name="&lt;-resp-&#8776;" href="Relation.Binary.NonStrictToStrict.html#&lt;-resp-&#8776;" class="Function"
       >&lt;-resp-&#8776;</a
-      ><a name="1586"
-      > </a
-      ><a name="1587" class="Symbol"
+      > <a name="1587" class="Symbol"
       >:</a
-      ><a name="1588"
-      > </a
-      ><a name="1589" href="Relation.Binary.Core.html#4833" class="Record"
+      > <a name="1589" href="Relation.Binary.Core.html#IsEquivalence" class="Record"
       >IsEquivalence</a
-      ><a name="1602"
-      > </a
-      ><a name="1603" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="1603" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="1606"
-      > </a
-      ><a name="1607" class="Symbol"
+      > <a name="1607" class="Symbol"
       >&#8594;</a
-      ><a name="1608"
-      > </a
-      ><a name="1609" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
+      > <a name="1609" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
       >_&#8804;_</a
-      ><a name="1612"
-      > </a
-      ><a name="1613" href="Relation.Binary.Core.html#3200" class="Function Operator"
+      > <a name="1613" href="Relation.Binary.Core.html#_Respects&#8322;_" class="Function Operator"
       >Respects&#8322;</a
-      ><a name="1622"
-      > </a
-      ><a name="1623" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="1623" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="1626"
-      > </a
-      ><a name="1627" class="Symbol"
+      > <a name="1627" class="Symbol"
       >&#8594;</a
-      ><a name="1628"
-      > </a
-      ><a name="1629" href="Relation.Binary.NonStrictToStrict.html#808" class="Function Operator"
+      > <a name="1629" href="Relation.Binary.NonStrictToStrict.html#_&lt;_" class="Function Operator"
       >_&lt;_</a
-      ><a name="1632"
-      > </a
-      ><a name="1633" href="Relation.Binary.Core.html#3200" class="Function Operator"
+      > <a name="1633" href="Relation.Binary.Core.html#_Respects&#8322;_" class="Function Operator"
       >Respects&#8322;</a
-      ><a name="1642"
-      > </a
-      ><a name="1643" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="1643" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="1646"
       >
-</a
-      ><a name="1647" href="Relation.Binary.NonStrictToStrict.html#1578" class="Function"
+<a name="1647" href="Relation.Binary.NonStrictToStrict.html#&lt;-resp-&#8776;" class="Function"
       >&lt;-resp-&#8776;</a
-      ><a name="1655"
-      > </a
-      ><a name="1656" href="Relation.Binary.NonStrictToStrict.html#1656" class="Bound"
+      > <a name="1656" href="Relation.Binary.NonStrictToStrict.html#1656" class="Bound"
       >eq</a
-      ><a name="1658"
-      > </a
-      ><a name="1659" href="Relation.Binary.NonStrictToStrict.html#1659" class="Bound"
+      > <a name="1659" href="Relation.Binary.NonStrictToStrict.html#1659" class="Bound"
       >&#8804;-resp-&#8776;</a
-      ><a name="1667"
-      > </a
-      ><a name="1668" class="Symbol"
+      > <a name="1668" class="Symbol"
       >=</a
-      ><a name="1669"
       >
-  </a
-      ><a name="1672" class="Symbol"
+  <a name="1672" class="Symbol"
       >(&#955;</a
-      ><a name="1674"
-      > </a
-      ><a name="1675" class="Symbol"
+      > <a name="1675" class="Symbol"
       >{</a
       ><a name="1676" href="Relation.Binary.NonStrictToStrict.html#1676" class="Bound"
       >x</a
-      ><a name="1677"
-      > </a
-      ><a name="1678" href="Relation.Binary.NonStrictToStrict.html#1678" class="Bound"
+      > <a name="1678" href="Relation.Binary.NonStrictToStrict.html#1678" class="Bound"
       >y'</a
-      ><a name="1680"
-      > </a
-      ><a name="1681" href="Relation.Binary.NonStrictToStrict.html#1681" class="Bound"
+      > <a name="1681" href="Relation.Binary.NonStrictToStrict.html#1681" class="Bound"
       >y</a
       ><a name="1682" class="Symbol"
       >}</a
-      ><a name="1683"
-      > </a
-      ><a name="1684" href="Relation.Binary.NonStrictToStrict.html#1684" class="Bound"
+      > <a name="1684" href="Relation.Binary.NonStrictToStrict.html#1684" class="Bound"
       >y'&#8776;y</a
-      ><a name="1688"
-      > </a
-      ><a name="1689" href="Relation.Binary.NonStrictToStrict.html#1689" class="Bound"
+      > <a name="1689" href="Relation.Binary.NonStrictToStrict.html#1689" class="Bound"
       >x&lt;y'</a
-      ><a name="1693"
-      > </a
-      ><a name="1694" class="Symbol"
+      > <a name="1694" class="Symbol"
       >&#8594;</a
-      ><a name="1695"
       >
-    </a
-      ><a name="1700" class="Symbol"
+    <a name="1700" class="Symbol"
       >(</a
-      ><a name="1701"
-      > </a
-      ><a name="1702" href="Data.Product.html#525" class="Field"
+      > <a name="1702" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="1707"
-      > </a
-      ><a name="1708" href="Relation.Binary.NonStrictToStrict.html#1659" class="Bound"
+      > <a name="1708" href="Relation.Binary.NonStrictToStrict.html#1659" class="Bound"
       >&#8804;-resp-&#8776;</a
-      ><a name="1716"
-      > </a
-      ><a name="1717" href="Relation.Binary.NonStrictToStrict.html#1684" class="Bound"
+      > <a name="1717" href="Relation.Binary.NonStrictToStrict.html#1684" class="Bound"
       >y'&#8776;y</a
-      ><a name="1721"
-      > </a
-      ><a name="1722" class="Symbol"
+      > <a name="1722" class="Symbol"
       >(</a
-      ><a name="1723" href="Data.Product.html#525" class="Field"
+      ><a name="1723" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="1728"
-      > </a
-      ><a name="1729" href="Relation.Binary.NonStrictToStrict.html#1689" class="Bound"
+      > <a name="1729" href="Relation.Binary.NonStrictToStrict.html#1689" class="Bound"
       >x&lt;y'</a
       ><a name="1733" class="Symbol"
       >)</a
-      ><a name="1734"
       >
-    </a
-      ><a name="1739" href="Data.Product.html#509" class="InductiveConstructor Operator"
+    <a name="1739" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1740"
-      > </a
-      ><a name="1741" class="Symbol"
+      > <a name="1741" class="Symbol"
       >&#955;</a
-      ><a name="1742"
-      > </a
-      ><a name="1743" href="Relation.Binary.NonStrictToStrict.html#1743" class="Bound"
+      > <a name="1743" href="Relation.Binary.NonStrictToStrict.html#1743" class="Bound"
       >x&#8776;y</a
-      ><a name="1746"
-      > </a
-      ><a name="1747" class="Symbol"
+      > <a name="1747" class="Symbol"
       >&#8594;</a
-      ><a name="1748"
-      > </a
-      ><a name="1749" href="Data.Product.html#539" class="Field"
+      > <a name="1749" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
       >proj&#8322;</a
-      ><a name="1754"
-      > </a
-      ><a name="1755" href="Relation.Binary.NonStrictToStrict.html#1689" class="Bound"
+      > <a name="1755" href="Relation.Binary.NonStrictToStrict.html#1689" class="Bound"
       >x&lt;y'</a
-      ><a name="1759"
-      > </a
-      ><a name="1760" class="Symbol"
+      > <a name="1760" class="Symbol"
       >(</a
       ><a name="1761" href="Relation.Binary.Core.html#4986" class="Function"
       >Eq.trans</a
-      ><a name="1769"
-      > </a
-      ><a name="1770" href="Relation.Binary.NonStrictToStrict.html#1743" class="Bound"
+      > <a name="1770" href="Relation.Binary.NonStrictToStrict.html#1743" class="Bound"
       >x&#8776;y</a
-      ><a name="1773"
-      > </a
-      ><a name="1774" class="Symbol"
+      > <a name="1774" class="Symbol"
       >(</a
       ><a name="1775" href="Relation.Binary.Core.html#4960" class="Function"
       >Eq.sym</a
-      ><a name="1781"
-      > </a
-      ><a name="1782" href="Relation.Binary.NonStrictToStrict.html#1684" class="Bound"
+      > <a name="1782" href="Relation.Binary.NonStrictToStrict.html#1684" class="Bound"
       >y'&#8776;y</a
       ><a name="1786" class="Symbol"
       >))</a
-      ><a name="1788"
       >
-    </a
-      ><a name="1793" class="Symbol"
+    <a name="1793" class="Symbol"
       >)</a
-      ><a name="1794"
       >
-  </a
-      ><a name="1797" class="Symbol"
+  <a name="1797" class="Symbol"
       >)</a
-      ><a name="1798"
-      > </a
-      ><a name="1799" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="1799" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1800"
       >
-  </a
-      ><a name="1803" class="Symbol"
+  <a name="1803" class="Symbol"
       >(&#955;</a
-      ><a name="1805"
-      > </a
-      ><a name="1806" class="Symbol"
+      > <a name="1806" class="Symbol"
       >{</a
       ><a name="1807" href="Relation.Binary.NonStrictToStrict.html#1807" class="Bound"
       >y</a
-      ><a name="1808"
-      > </a
-      ><a name="1809" href="Relation.Binary.NonStrictToStrict.html#1809" class="Bound"
+      > <a name="1809" href="Relation.Binary.NonStrictToStrict.html#1809" class="Bound"
       >x'</a
-      ><a name="1811"
-      > </a
-      ><a name="1812" href="Relation.Binary.NonStrictToStrict.html#1812" class="Bound"
+      > <a name="1812" href="Relation.Binary.NonStrictToStrict.html#1812" class="Bound"
       >x</a
       ><a name="1813" class="Symbol"
       >}</a
-      ><a name="1814"
-      > </a
-      ><a name="1815" href="Relation.Binary.NonStrictToStrict.html#1815" class="Bound"
+      > <a name="1815" href="Relation.Binary.NonStrictToStrict.html#1815" class="Bound"
       >x'&#8776;x</a
-      ><a name="1819"
-      > </a
-      ><a name="1820" href="Relation.Binary.NonStrictToStrict.html#1820" class="Bound"
+      > <a name="1820" href="Relation.Binary.NonStrictToStrict.html#1820" class="Bound"
       >x'&lt;y</a
-      ><a name="1824"
-      > </a
-      ><a name="1825" class="Symbol"
+      > <a name="1825" class="Symbol"
       >&#8594;</a
-      ><a name="1826"
       >
-    </a
-      ><a name="1831" class="Symbol"
+    <a name="1831" class="Symbol"
       >(</a
-      ><a name="1832"
-      > </a
-      ><a name="1833" href="Data.Product.html#539" class="Field"
+      > <a name="1833" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
       >proj&#8322;</a
-      ><a name="1838"
-      > </a
-      ><a name="1839" href="Relation.Binary.NonStrictToStrict.html#1659" class="Bound"
+      > <a name="1839" href="Relation.Binary.NonStrictToStrict.html#1659" class="Bound"
       >&#8804;-resp-&#8776;</a
-      ><a name="1847"
-      > </a
-      ><a name="1848" href="Relation.Binary.NonStrictToStrict.html#1815" class="Bound"
+      > <a name="1848" href="Relation.Binary.NonStrictToStrict.html#1815" class="Bound"
       >x'&#8776;x</a
-      ><a name="1852"
-      > </a
-      ><a name="1853" class="Symbol"
+      > <a name="1853" class="Symbol"
       >(</a
-      ><a name="1854" href="Data.Product.html#525" class="Field"
+      ><a name="1854" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="1859"
-      > </a
-      ><a name="1860" href="Relation.Binary.NonStrictToStrict.html#1820" class="Bound"
+      > <a name="1860" href="Relation.Binary.NonStrictToStrict.html#1820" class="Bound"
       >x'&lt;y</a
       ><a name="1864" class="Symbol"
       >)</a
-      ><a name="1865"
       >
-    </a
-      ><a name="1870" href="Data.Product.html#509" class="InductiveConstructor Operator"
+    <a name="1870" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1871"
-      > </a
-      ><a name="1872" class="Symbol"
+      > <a name="1872" class="Symbol"
       >&#955;</a
-      ><a name="1873"
-      > </a
-      ><a name="1874" href="Relation.Binary.NonStrictToStrict.html#1874" class="Bound"
+      > <a name="1874" href="Relation.Binary.NonStrictToStrict.html#1874" class="Bound"
       >x&#8776;y</a
-      ><a name="1877"
-      > </a
-      ><a name="1878" class="Symbol"
+      > <a name="1878" class="Symbol"
       >&#8594;</a
-      ><a name="1879"
-      > </a
-      ><a name="1880" href="Data.Product.html#539" class="Field"
+      > <a name="1880" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
       >proj&#8322;</a
-      ><a name="1885"
-      > </a
-      ><a name="1886" href="Relation.Binary.NonStrictToStrict.html#1820" class="Bound"
+      > <a name="1886" href="Relation.Binary.NonStrictToStrict.html#1820" class="Bound"
       >x'&lt;y</a
-      ><a name="1890"
-      > </a
-      ><a name="1891" class="Symbol"
+      > <a name="1891" class="Symbol"
       >(</a
       ><a name="1892" href="Relation.Binary.Core.html#4986" class="Function"
       >Eq.trans</a
-      ><a name="1900"
-      > </a
-      ><a name="1901" href="Relation.Binary.NonStrictToStrict.html#1815" class="Bound"
+      > <a name="1901" href="Relation.Binary.NonStrictToStrict.html#1815" class="Bound"
       >x'&#8776;x</a
-      ><a name="1905"
-      > </a
-      ><a name="1906" href="Relation.Binary.NonStrictToStrict.html#1874" class="Bound"
+      > <a name="1906" href="Relation.Binary.NonStrictToStrict.html#1874" class="Bound"
       >x&#8776;y</a
       ><a name="1909" class="Symbol"
       >)</a
-      ><a name="1910"
       >
-    </a
-      ><a name="1915" class="Symbol"
+    <a name="1915" class="Symbol"
       >))</a
-      ><a name="1917"
       >
-  </a
-      ><a name="1920" class="Keyword"
+  <a name="1920" class="Keyword"
       >where</a
-      ><a name="1925"
-      > </a
-      ><a name="1926" class="Keyword"
+      > <a name="1926" class="Keyword"
       >module</a
-      ><a name="1932"
-      > </a
-      ><a name="1933" href="Relation.Binary.NonStrictToStrict.html#1933" class="Module"
+      > <a name="Eq" href="Relation.Binary.NonStrictToStrict.html#Eq" class="Module"
       >Eq</a
-      ><a name="1935"
-      > </a
-      ><a name="1936" class="Symbol"
+      > <a name="1936" class="Symbol"
       >=</a
-      ><a name="1937"
-      > </a
-      ><a name="1938" href="Relation.Binary.Core.html#4833" class="Module"
+      > <a name="1938" href="Relation.Binary.Core.html#IsEquivalence" class="Module"
       >IsEquivalence</a
-      ><a name="1951"
-      > </a
-      ><a name="1952" href="Relation.Binary.NonStrictToStrict.html#1656" class="Bound"
+      > <a name="1952" href="Relation.Binary.NonStrictToStrict.html#1656" class="Bound"
       >eq</a
-      ><a name="1954"
       >
 
-</a
-      ><a name="1956" href="Relation.Binary.NonStrictToStrict.html#1956" class="Function"
+<a name="trichotomous" href="Relation.Binary.NonStrictToStrict.html#trichotomous" class="Function"
       >trichotomous</a
-      ><a name="1968"
-      > </a
-      ><a name="1969" class="Symbol"
+      > <a name="1969" class="Symbol"
       >:</a
-      ><a name="1970"
-      > </a
-      ><a name="1971" href="Relation.Binary.Core.html#2293" class="Function"
+      > <a name="1971" href="Relation.Binary.Core.html#Symmetric" class="Function"
       >Symmetric</a
-      ><a name="1980"
-      > </a
-      ><a name="1981" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="1981" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="1984"
-      > </a
-      ><a name="1985" class="Symbol"
+      > <a name="1985" class="Symbol"
       >&#8594;</a
-      ><a name="1986"
-      > </a
-      ><a name="1987" href="Relation.Binary.Core.html#3490" class="Function"
+      > <a name="1987" href="Relation.Binary.Core.html#Decidable" class="Function"
       >Decidable</a
-      ><a name="1996"
-      > </a
-      ><a name="1997" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="1997" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="2000"
-      > </a
-      ><a name="2001" class="Symbol"
+      > <a name="2001" class="Symbol"
       >&#8594;</a
-      ><a name="2002"
       >
-               </a
-      ><a name="2018" href="Relation.Binary.Core.html#2859" class="Function"
+               <a name="2018" href="Relation.Binary.Core.html#Antisymmetric" class="Function"
       >Antisymmetric</a
-      ><a name="2031"
-      > </a
-      ><a name="2032" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="2032" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="2035"
-      > </a
-      ><a name="2036" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
+      > <a name="2036" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
       >_&#8804;_</a
-      ><a name="2039"
-      > </a
-      ><a name="2040" class="Symbol"
+      > <a name="2040" class="Symbol"
       >&#8594;</a
-      ><a name="2041"
-      > </a
-      ><a name="2042" href="Relation.Binary.Consequences.html#597" class="Function"
+      > <a name="2042" href="Relation.Binary.Consequences.html#Total" class="Function"
       >Total</a
-      ><a name="2047"
-      > </a
-      ><a name="2048" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
+      > <a name="2048" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
       >_&#8804;_</a
-      ><a name="2051"
-      > </a
-      ><a name="2052" class="Symbol"
+      > <a name="2052" class="Symbol"
       >&#8594;</a
-      ><a name="2053"
       >
-               </a
-      ><a name="2069" href="Relation.Binary.Core.html#3842" class="Function"
+               <a name="2069" href="Relation.Binary.Core.html#Trichotomous" class="Function"
       >Trichotomous</a
-      ><a name="2081"
-      > </a
-      ><a name="2082" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="2082" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="2085"
-      > </a
-      ><a name="2086" href="Relation.Binary.NonStrictToStrict.html#808" class="Function Operator"
+      > <a name="2086" href="Relation.Binary.NonStrictToStrict.html#_&lt;_" class="Function Operator"
       >_&lt;_</a
-      ><a name="2089"
       >
-</a
-      ><a name="2090" href="Relation.Binary.NonStrictToStrict.html#1956" class="Function"
+<a name="2090" href="Relation.Binary.NonStrictToStrict.html#trichotomous" class="Function"
       >trichotomous</a
-      ><a name="2102"
-      > </a
-      ><a name="2103" href="Relation.Binary.NonStrictToStrict.html#2103" class="Bound"
+      > <a name="2103" href="Relation.Binary.NonStrictToStrict.html#2103" class="Bound"
       >&#8776;-sym</a
-      ><a name="2108"
-      > </a
-      ><a name="2109" href="Relation.Binary.NonStrictToStrict.html#2109" class="Bound"
+      > <a name="2109" href="Relation.Binary.NonStrictToStrict.html#2109" class="Bound"
       >&#8776;-dec</a
-      ><a name="2114"
-      > </a
-      ><a name="2115" href="Relation.Binary.NonStrictToStrict.html#2115" class="Bound"
+      > <a name="2115" href="Relation.Binary.NonStrictToStrict.html#2115" class="Bound"
       >antisym</a
-      ><a name="2122"
-      > </a
-      ><a name="2123" href="Relation.Binary.NonStrictToStrict.html#2123" class="Bound"
+      > <a name="2123" href="Relation.Binary.NonStrictToStrict.html#2123" class="Bound"
       >total</a
-      ><a name="2128"
-      > </a
-      ><a name="2129" href="Relation.Binary.NonStrictToStrict.html#2129" class="Bound"
+      > <a name="2129" href="Relation.Binary.NonStrictToStrict.html#2129" class="Bound"
       >x</a
-      ><a name="2130"
-      > </a
-      ><a name="2131" href="Relation.Binary.NonStrictToStrict.html#2131" class="Bound"
+      > <a name="2131" href="Relation.Binary.NonStrictToStrict.html#2131" class="Bound"
       >y</a
-      ><a name="2132"
-      > </a
-      ><a name="2133" class="Keyword"
+      > <a name="2133" class="Keyword"
       >with</a
-      ><a name="2137"
-      > </a
-      ><a name="2138" href="Relation.Binary.NonStrictToStrict.html#2109" class="Bound"
+      > <a name="2138" href="Relation.Binary.NonStrictToStrict.html#2109" class="Bound"
       >&#8776;-dec</a
-      ><a name="2143"
-      > </a
-      ><a name="2144" href="Relation.Binary.NonStrictToStrict.html#2129" class="Bound"
+      > <a name="2144" href="Relation.Binary.NonStrictToStrict.html#2129" class="Bound"
       >x</a
-      ><a name="2145"
-      > </a
-      ><a name="2146" href="Relation.Binary.NonStrictToStrict.html#2131" class="Bound"
+      > <a name="2146" href="Relation.Binary.NonStrictToStrict.html#2131" class="Bound"
       >y</a
-      ><a name="2147"
       >
-</a
-      ><a name="2148" class="Symbol"
+<a name="2148" class="Symbol"
       >...</a
-      ><a name="2151"
-      > </a
-      ><a name="2152" class="Symbol"
+      > <a name="2152" class="Symbol"
       >|</a
-      ><a name="2153"
-      > </a
-      ><a name="2154" href="Relation.Nullary.html#520" class="InductiveConstructor"
+      > <a name="2154" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
       >yes</a
-      ><a name="2157"
-      > </a
-      ><a name="2158" href="Relation.Binary.NonStrictToStrict.html#2158" class="Bound"
+      > <a name="2158" href="Relation.Binary.NonStrictToStrict.html#2158" class="Bound"
       >x&#8776;y</a
-      ><a name="2161"
-      > </a
-      ><a name="2162" class="Symbol"
+      > <a name="2162" class="Symbol"
       >=</a
-      ><a name="2163"
-      > </a
-      ><a name="2164" href="Relation.Binary.Core.html#3735" class="InductiveConstructor"
+      > <a name="2164" href="Relation.Binary.Core.html#Tri.tri&#8776;" class="InductiveConstructor"
       >tri&#8776;</a
-      ><a name="2168"
-      > </a
-      ><a name="2169" class="Symbol"
+      > <a name="2169" class="Symbol"
       >(</a
-      ><a name="2170" href="Relation.Binary.NonStrictToStrict.html#1037" class="Function"
+      ><a name="2170" href="Relation.Binary.NonStrictToStrict.html#irrefl" class="Function"
       >irrefl</a
-      ><a name="2176"
-      > </a
-      ><a name="2177" href="Relation.Binary.NonStrictToStrict.html#2158" class="Bound"
+      > <a name="2177" href="Relation.Binary.NonStrictToStrict.html#2158" class="Bound"
       >x&#8776;y</a
       ><a name="2180" class="Symbol"
       >)</a
-      ><a name="2181"
-      > </a
-      ><a name="2182" href="Relation.Binary.NonStrictToStrict.html#2158" class="Bound"
+      > <a name="2182" href="Relation.Binary.NonStrictToStrict.html#2158" class="Bound"
       >x&#8776;y</a
-      ><a name="2185"
-      > </a
-      ><a name="2186" class="Symbol"
+      > <a name="2186" class="Symbol"
       >(</a
-      ><a name="2187" href="Relation.Binary.NonStrictToStrict.html#1037" class="Function"
+      ><a name="2187" href="Relation.Binary.NonStrictToStrict.html#irrefl" class="Function"
       >irrefl</a
-      ><a name="2193"
-      > </a
-      ><a name="2194" class="Symbol"
+      > <a name="2194" class="Symbol"
       >(</a
-      ><a name="2195" href="Relation.Binary.NonStrictToStrict.html#2103" class="Bound"
+      ><a name="2195" class="Bound"
       >&#8776;-sym</a
-      ><a name="2200"
-      > </a
-      ><a name="2201" href="Relation.Binary.NonStrictToStrict.html#2158" class="Bound"
+      > <a name="2201" href="Relation.Binary.NonStrictToStrict.html#2158" class="Bound"
       >x&#8776;y</a
       ><a name="2204" class="Symbol"
       >))</a
-      ><a name="2206"
       >
-</a
-      ><a name="2207" class="Symbol"
+<a name="2207" class="Symbol"
       >...</a
-      ><a name="2210"
-      > </a
-      ><a name="2211" class="Symbol"
+      > <a name="2211" class="Symbol"
       >|</a
-      ><a name="2212"
-      > </a
-      ><a name="2213" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      > <a name="2213" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      ><a name="2215"
-      >  </a
-      ><a name="2217" href="Relation.Binary.NonStrictToStrict.html#2217" class="Bound"
+      >  <a name="2217" href="Relation.Binary.NonStrictToStrict.html#2217" class="Bound"
       >x&#8777;y</a
-      ><a name="2220"
-      > </a
-      ><a name="2221" class="Keyword"
+      > <a name="2221" class="Keyword"
       >with</a
-      ><a name="2225"
-      > </a
-      ><a name="2226" href="Relation.Binary.NonStrictToStrict.html#2123" class="Bound"
+      > <a name="2226" class="Bound"
       >total</a
-      ><a name="2231"
-      > </a
-      ><a name="2232" href="Relation.Binary.NonStrictToStrict.html#2129" class="Bound"
+      > <a name="2232" class="Bound"
       >x</a
-      ><a name="2233"
-      > </a
-      ><a name="2234" href="Relation.Binary.NonStrictToStrict.html#2131" class="Bound"
+      > <a name="2234" class="Bound"
       >y</a
-      ><a name="2235"
       >
-</a
-      ><a name="2236" class="Symbol"
+<a name="2236" class="Symbol"
       >...</a
-      ><a name="2239"
-      >   </a
-      ><a name="2242" class="Symbol"
+      >   <a name="2242" class="Symbol"
       >|</a
-      ><a name="2243"
-      > </a
-      ><a name="2244" href="Data.Sum.html#489" class="InductiveConstructor"
+      > <a name="2244" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
       >inj&#8321;</a
-      ><a name="2248"
-      > </a
-      ><a name="2249" href="Relation.Binary.NonStrictToStrict.html#2249" class="Bound"
+      > <a name="2249" href="Relation.Binary.NonStrictToStrict.html#2249" class="Bound"
       >x&#8804;y</a
-      ><a name="2252"
-      > </a
-      ><a name="2253" class="Symbol"
+      > <a name="2253" class="Symbol"
       >=</a
-      ><a name="2254"
-      > </a
-      ><a name="2255" href="Relation.Binary.Core.html#3681" class="InductiveConstructor"
+      > <a name="2255" href="Relation.Binary.Core.html#Tri.tri&lt;" class="InductiveConstructor"
       >tri&lt;</a
-      ><a name="2259"
-      > </a
-      ><a name="2260" class="Symbol"
+      > <a name="2260" class="Symbol"
       >(</a
       ><a name="2261" href="Relation.Binary.NonStrictToStrict.html#2249" class="Bound"
       >x&#8804;y</a
-      ><a name="2264"
-      > </a
-      ><a name="2265" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2265" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2266"
-      > </a
-      ><a name="2267" href="Relation.Binary.NonStrictToStrict.html#2217" class="Bound"
+      > <a name="2267" class="Bound"
       >x&#8777;y</a
       ><a name="2270" class="Symbol"
       >)</a
-      ><a name="2271"
-      > </a
-      ><a name="2272" href="Relation.Binary.NonStrictToStrict.html#2217" class="Bound"
+      > <a name="2272" class="Bound"
       >x&#8777;y</a
-      ><a name="2275"
       >
-                        </a
-      ><a name="2300" class="Symbol"
+                        <a name="2300" class="Symbol"
       >(</a
-      ><a name="2301" href="Relation.Binary.NonStrictToStrict.html#2217" class="Bound"
+      ><a name="2301" class="Bound"
       >x&#8777;y</a
-      ><a name="2304"
-      > </a
-      ><a name="2305" href="Function.html#713" class="Function Operator"
+      > <a name="2305" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="2306"
-      > </a
-      ><a name="2307" href="Relation.Binary.NonStrictToStrict.html#2115" class="Bound"
+      > <a name="2307" class="Bound"
       >antisym</a
-      ><a name="2314"
-      > </a
-      ><a name="2315" href="Relation.Binary.NonStrictToStrict.html#2249" class="Bound"
+      > <a name="2315" href="Relation.Binary.NonStrictToStrict.html#2249" class="Bound"
       >x&#8804;y</a
-      ><a name="2318"
-      > </a
-      ><a name="2319" href="Function.html#713" class="Function Operator"
+      > <a name="2319" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="2320"
-      > </a
-      ><a name="2321" href="Data.Product.html#525" class="Field"
+      > <a name="2321" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
       ><a name="2326" class="Symbol"
       >)</a
-      ><a name="2327"
       >
-</a
-      ><a name="2328" class="Symbol"
+<a name="2328" class="Symbol"
       >...</a
-      ><a name="2331"
-      >   </a
-      ><a name="2334" class="Symbol"
+      >   <a name="2334" class="Symbol"
       >|</a
-      ><a name="2335"
-      > </a
-      ><a name="2336" href="Data.Sum.html#514" class="InductiveConstructor"
+      > <a name="2336" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
       >inj&#8322;</a
-      ><a name="2340"
-      > </a
-      ><a name="2341" href="Relation.Binary.NonStrictToStrict.html#2341" class="Bound"
+      > <a name="2341" href="Relation.Binary.NonStrictToStrict.html#2341" class="Bound"
       >x&#8805;y</a
-      ><a name="2344"
-      > </a
-      ><a name="2345" class="Symbol"
+      > <a name="2345" class="Symbol"
       >=</a
-      ><a name="2346"
-      > </a
-      ><a name="2347" href="Relation.Binary.Core.html#3789" class="InductiveConstructor"
+      > <a name="2347" href="Relation.Binary.Core.html#Tri.tri&gt;" class="InductiveConstructor"
       >tri&gt;</a
-      ><a name="2351"
-      > </a
-      ><a name="2352" class="Symbol"
+      > <a name="2352" class="Symbol"
       >(</a
-      ><a name="2353" href="Relation.Binary.NonStrictToStrict.html#2217" class="Bound"
+      ><a name="2353" class="Bound"
       >x&#8777;y</a
-      ><a name="2356"
-      > </a
-      ><a name="2357" href="Function.html#713" class="Function Operator"
+      > <a name="2357" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="2358"
-      > </a
-      ><a name="2359" href="Function.html#1480" class="Function"
+      > <a name="2359" href="Function.html#flip" class="Function"
       >flip</a
-      ><a name="2363"
-      > </a
-      ><a name="2364" href="Relation.Binary.NonStrictToStrict.html#2115" class="Bound"
+      > <a name="2364" class="Bound"
       >antisym</a
-      ><a name="2371"
-      > </a
-      ><a name="2372" href="Relation.Binary.NonStrictToStrict.html#2341" class="Bound"
+      > <a name="2372" href="Relation.Binary.NonStrictToStrict.html#2341" class="Bound"
       >x&#8805;y</a
-      ><a name="2375"
-      > </a
-      ><a name="2376" href="Function.html#713" class="Function Operator"
+      > <a name="2376" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="2377"
-      > </a
-      ><a name="2378" href="Data.Product.html#525" class="Field"
+      > <a name="2378" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
       ><a name="2383" class="Symbol"
       >)</a
-      ><a name="2384"
-      > </a
-      ><a name="2385" href="Relation.Binary.NonStrictToStrict.html#2217" class="Bound"
+      > <a name="2385" class="Bound"
       >x&#8777;y</a
-      ><a name="2388"
       >
-                        </a
-      ><a name="2413" class="Symbol"
+                        <a name="2413" class="Symbol"
       >(</a
       ><a name="2414" href="Relation.Binary.NonStrictToStrict.html#2341" class="Bound"
       >x&#8805;y</a
-      ><a name="2417"
-      > </a
-      ><a name="2418" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2418" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2419"
-      > </a
-      ><a name="2420" href="Relation.Binary.NonStrictToStrict.html#2217" class="Bound"
+      > <a name="2420" class="Bound"
       >x&#8777;y</a
-      ><a name="2423"
-      > </a
-      ><a name="2424" href="Function.html#713" class="Function Operator"
+      > <a name="2424" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="2425"
-      > </a
-      ><a name="2426" href="Relation.Binary.NonStrictToStrict.html#2103" class="Bound"
+      > <a name="2426" class="Bound"
       >&#8776;-sym</a
       ><a name="2431" class="Symbol"
       >)</a
-      ><a name="2432"
       >
 
-</a
-      ><a name="2434" href="Relation.Binary.NonStrictToStrict.html#2434" class="Function"
+<a name="decidable" href="Relation.Binary.NonStrictToStrict.html#decidable" class="Function"
       >decidable</a
-      ><a name="2443"
-      > </a
-      ><a name="2444" class="Symbol"
+      > <a name="2444" class="Symbol"
       >:</a
-      ><a name="2445"
-      > </a
-      ><a name="2446" href="Relation.Binary.Core.html#3490" class="Function"
+      > <a name="2446" href="Relation.Binary.Core.html#Decidable" class="Function"
       >Decidable</a
-      ><a name="2455"
-      > </a
-      ><a name="2456" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="2456" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="2459"
-      > </a
-      ><a name="2460" class="Symbol"
+      > <a name="2460" class="Symbol"
       >&#8594;</a
-      ><a name="2461"
-      > </a
-      ><a name="2462" href="Relation.Binary.Core.html#3490" class="Function"
+      > <a name="2462" href="Relation.Binary.Core.html#Decidable" class="Function"
       >Decidable</a
-      ><a name="2471"
-      > </a
-      ><a name="2472" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
+      > <a name="2472" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
       >_&#8804;_</a
-      ><a name="2475"
-      > </a
-      ><a name="2476" class="Symbol"
+      > <a name="2476" class="Symbol"
       >&#8594;</a
-      ><a name="2477"
-      > </a
-      ><a name="2478" href="Relation.Binary.Core.html#3490" class="Function"
+      > <a name="2478" href="Relation.Binary.Core.html#Decidable" class="Function"
       >Decidable</a
-      ><a name="2487"
-      > </a
-      ><a name="2488" href="Relation.Binary.NonStrictToStrict.html#808" class="Function Operator"
+      > <a name="2488" href="Relation.Binary.NonStrictToStrict.html#_&lt;_" class="Function Operator"
       >_&lt;_</a
-      ><a name="2491"
       >
-</a
-      ><a name="2492" href="Relation.Binary.NonStrictToStrict.html#2434" class="Function"
+<a name="2492" href="Relation.Binary.NonStrictToStrict.html#decidable" class="Function"
       >decidable</a
-      ><a name="2501"
-      > </a
-      ><a name="2502" href="Relation.Binary.NonStrictToStrict.html#2502" class="Bound"
+      > <a name="2502" href="Relation.Binary.NonStrictToStrict.html#2502" class="Bound"
       >&#8776;-dec</a
-      ><a name="2507"
-      > </a
-      ><a name="2508" href="Relation.Binary.NonStrictToStrict.html#2508" class="Bound"
+      > <a name="2508" href="Relation.Binary.NonStrictToStrict.html#2508" class="Bound"
       >&#8804;-dec</a
-      ><a name="2513"
-      > </a
-      ><a name="2514" href="Relation.Binary.NonStrictToStrict.html#2514" class="Bound"
+      > <a name="2514" href="Relation.Binary.NonStrictToStrict.html#2514" class="Bound"
       >x</a
-      ><a name="2515"
-      > </a
-      ><a name="2516" href="Relation.Binary.NonStrictToStrict.html#2516" class="Bound"
+      > <a name="2516" href="Relation.Binary.NonStrictToStrict.html#2516" class="Bound"
       >y</a
-      ><a name="2517"
-      > </a
-      ><a name="2518" class="Keyword"
+      > <a name="2518" class="Keyword"
       >with</a
-      ><a name="2522"
-      > </a
-      ><a name="2523" href="Relation.Binary.NonStrictToStrict.html#2502" class="Bound"
+      > <a name="2523" href="Relation.Binary.NonStrictToStrict.html#2502" class="Bound"
       >&#8776;-dec</a
-      ><a name="2528"
-      > </a
-      ><a name="2529" href="Relation.Binary.NonStrictToStrict.html#2514" class="Bound"
+      > <a name="2529" href="Relation.Binary.NonStrictToStrict.html#2514" class="Bound"
       >x</a
-      ><a name="2530"
-      > </a
-      ><a name="2531" href="Relation.Binary.NonStrictToStrict.html#2516" class="Bound"
+      > <a name="2531" href="Relation.Binary.NonStrictToStrict.html#2516" class="Bound"
       >y</a
-      ><a name="2532"
-      > </a
-      ><a name="2533" class="Symbol"
+      > <a name="2533" class="Symbol"
       >|</a
-      ><a name="2534"
-      > </a
-      ><a name="2535" href="Relation.Binary.NonStrictToStrict.html#2508" class="Bound"
+      > <a name="2535" href="Relation.Binary.NonStrictToStrict.html#2508" class="Bound"
       >&#8804;-dec</a
-      ><a name="2540"
-      > </a
-      ><a name="2541" href="Relation.Binary.NonStrictToStrict.html#2514" class="Bound"
+      > <a name="2541" href="Relation.Binary.NonStrictToStrict.html#2514" class="Bound"
       >x</a
-      ><a name="2542"
-      > </a
-      ><a name="2543" href="Relation.Binary.NonStrictToStrict.html#2516" class="Bound"
+      > <a name="2543" href="Relation.Binary.NonStrictToStrict.html#2516" class="Bound"
       >y</a
-      ><a name="2544"
       >
-</a
-      ><a name="2545" class="Symbol"
+<a name="2545" class="Symbol"
       >...</a
-      ><a name="2548"
-      > </a
-      ><a name="2549" class="Symbol"
+      > <a name="2549" class="Symbol"
       >|</a
-      ><a name="2550"
-      > </a
-      ><a name="2551" href="Relation.Nullary.html#520" class="InductiveConstructor"
+      > <a name="2551" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
       >yes</a
-      ><a name="2554"
-      > </a
-      ><a name="2555" href="Relation.Binary.NonStrictToStrict.html#2555" class="Bound"
+      > <a name="2555" href="Relation.Binary.NonStrictToStrict.html#2555" class="Bound"
       >x&#8776;y</a
-      ><a name="2558"
-      > </a
-      ><a name="2559" class="Symbol"
+      > <a name="2559" class="Symbol"
       >|</a
-      ><a name="2560"
-      > </a
-      ><a name="2561" class="Symbol"
+      > <a name="2561" class="Symbol"
       >_</a
-      ><a name="2562"
-      >       </a
-      ><a name="2569" class="Symbol"
+      >       <a name="2569" class="Symbol"
       >=</a
-      ><a name="2570"
-      > </a
-      ><a name="2571" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      > <a name="2571" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      ><a name="2573"
-      > </a
-      ><a name="2574" class="Symbol"
+      > <a name="2574" class="Symbol"
       >(</a
-      ><a name="2575" href="Function.html#1480" class="Function"
+      ><a name="2575" href="Function.html#flip" class="Function"
       >flip</a
-      ><a name="2579"
-      > </a
-      ><a name="2580" href="Data.Product.html#539" class="Field"
+      > <a name="2580" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
       >proj&#8322;</a
-      ><a name="2585"
-      > </a
-      ><a name="2586" href="Relation.Binary.NonStrictToStrict.html#2555" class="Bound"
+      > <a name="2586" href="Relation.Binary.NonStrictToStrict.html#2555" class="Bound"
       >x&#8776;y</a
       ><a name="2589" class="Symbol"
       >)</a
-      ><a name="2590"
       >
-</a
-      ><a name="2591" class="Symbol"
+<a name="2591" class="Symbol"
       >...</a
-      ><a name="2594"
-      > </a
-      ><a name="2595" class="Symbol"
+      > <a name="2595" class="Symbol"
       >|</a
-      ><a name="2596"
-      > </a
-      ><a name="2597" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      > <a name="2597" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      ><a name="2599"
-      >  </a
-      ><a name="2601" href="Relation.Binary.NonStrictToStrict.html#2601" class="Bound"
+      >  <a name="2601" href="Relation.Binary.NonStrictToStrict.html#2601" class="Bound"
       >x&#8777;y</a
-      ><a name="2604"
-      > </a
-      ><a name="2605" class="Symbol"
+      > <a name="2605" class="Symbol"
       >|</a
-      ><a name="2606"
-      > </a
-      ><a name="2607" href="Relation.Nullary.html#520" class="InductiveConstructor"
+      > <a name="2607" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
       >yes</a
-      ><a name="2610"
-      > </a
-      ><a name="2611" href="Relation.Binary.NonStrictToStrict.html#2611" class="Bound"
+      > <a name="2611" href="Relation.Binary.NonStrictToStrict.html#2611" class="Bound"
       >x&#8804;y</a
-      ><a name="2614"
-      > </a
-      ><a name="2615" class="Symbol"
+      > <a name="2615" class="Symbol"
       >=</a
-      ><a name="2616"
-      > </a
-      ><a name="2617" href="Relation.Nullary.html#520" class="InductiveConstructor"
+      > <a name="2617" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
       >yes</a
-      ><a name="2620"
-      > </a
-      ><a name="2621" class="Symbol"
+      > <a name="2621" class="Symbol"
       >(</a
       ><a name="2622" href="Relation.Binary.NonStrictToStrict.html#2611" class="Bound"
       >x&#8804;y</a
-      ><a name="2625"
-      > </a
-      ><a name="2626" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2626" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2627"
-      > </a
-      ><a name="2628" href="Relation.Binary.NonStrictToStrict.html#2601" class="Bound"
+      > <a name="2628" href="Relation.Binary.NonStrictToStrict.html#2601" class="Bound"
       >x&#8777;y</a
       ><a name="2631" class="Symbol"
       >)</a
-      ><a name="2632"
       >
-</a
-      ><a name="2633" class="Symbol"
+<a name="2633" class="Symbol"
       >...</a
-      ><a name="2636"
-      > </a
-      ><a name="2637" class="Symbol"
+      > <a name="2637" class="Symbol"
       >|</a
-      ><a name="2638"
-      > </a
-      ><a name="2639" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      > <a name="2639" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      ><a name="2641"
-      >  </a
-      ><a name="2643" href="Relation.Binary.NonStrictToStrict.html#2643" class="Bound"
+      >  <a name="2643" href="Relation.Binary.NonStrictToStrict.html#2643" class="Bound"
       >x&#8777;y</a
-      ><a name="2646"
-      > </a
-      ><a name="2647" class="Symbol"
+      > <a name="2647" class="Symbol"
       >|</a
-      ><a name="2648"
-      > </a
-      ><a name="2649" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      > <a name="2649" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      ><a name="2651"
-      >  </a
-      ><a name="2653" href="Relation.Binary.NonStrictToStrict.html#2653" class="Bound"
+      >  <a name="2653" href="Relation.Binary.NonStrictToStrict.html#2653" class="Bound"
       >x&#8816;y</a
-      ><a name="2656"
-      > </a
-      ><a name="2657" class="Symbol"
+      > <a name="2657" class="Symbol"
       >=</a
-      ><a name="2658"
-      > </a
-      ><a name="2659" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      > <a name="2659" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      ><a name="2661"
-      > </a
-      ><a name="2662" class="Symbol"
+      > <a name="2662" class="Symbol"
       >(</a
       ><a name="2663" href="Relation.Binary.NonStrictToStrict.html#2653" class="Bound"
       >x&#8816;y</a
-      ><a name="2666"
-      > </a
-      ><a name="2667" href="Function.html#713" class="Function Operator"
+      > <a name="2667" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="2668"
-      > </a
-      ><a name="2669" href="Data.Product.html#525" class="Field"
+      > <a name="2669" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
       ><a name="2674" class="Symbol"
       >)</a
-      ><a name="2675"
       >
 
-</a
-      ><a name="2677" href="Relation.Binary.NonStrictToStrict.html#2677" class="Function"
+<a name="isPartialOrder&#10230;isStrictPartialOrder" href="Relation.Binary.NonStrictToStrict.html#isPartialOrder&#10230;isStrictPartialOrder" class="Function"
       >isPartialOrder&#10230;isStrictPartialOrder</a
-      ><a name="2712"
-      > </a
-      ><a name="2713" class="Symbol"
+      > <a name="2713" class="Symbol"
       >:</a
-      ><a name="2714"
       >
-  </a
-      ><a name="2717" href="Relation.Binary.html#3419" class="Record"
+  <a name="2717" href="Relation.Binary.html#IsPartialOrder" class="Record"
       >IsPartialOrder</a
-      ><a name="2731"
-      > </a
-      ><a name="2732" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="2732" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="2735"
-      > </a
-      ><a name="2736" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
+      > <a name="2736" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
       >_&#8804;_</a
-      ><a name="2739"
-      > </a
-      ><a name="2740" class="Symbol"
+      > <a name="2740" class="Symbol"
       >&#8594;</a
-      ><a name="2741"
-      > </a
-      ><a name="2742" href="Relation.Binary.html#5513" class="Record"
+      > <a name="2742" href="Relation.Binary.html#IsStrictPartialOrder" class="Record"
       >IsStrictPartialOrder</a
-      ><a name="2762"
-      > </a
-      ><a name="2763" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="2763" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="2766"
-      > </a
-      ><a name="2767" href="Relation.Binary.NonStrictToStrict.html#808" class="Function Operator"
+      > <a name="2767" href="Relation.Binary.NonStrictToStrict.html#_&lt;_" class="Function Operator"
       >_&lt;_</a
-      ><a name="2770"
       >
-</a
-      ><a name="2771" href="Relation.Binary.NonStrictToStrict.html#2677" class="Function"
+<a name="2771" href="Relation.Binary.NonStrictToStrict.html#isPartialOrder&#10230;isStrictPartialOrder" class="Function"
       >isPartialOrder&#10230;isStrictPartialOrder</a
-      ><a name="2806"
-      > </a
-      ><a name="2807" href="Relation.Binary.NonStrictToStrict.html#2807" class="Bound"
+      > <a name="2807" href="Relation.Binary.NonStrictToStrict.html#2807" class="Bound"
       >po</a
-      ><a name="2809"
-      > </a
-      ><a name="2810" class="Symbol"
+      > <a name="2810" class="Symbol"
       >=</a
-      ><a name="2811"
-      > </a
-      ><a name="2812" class="Keyword"
+      > <a name="2812" class="Keyword"
       >record</a
-      ><a name="2818"
       >
-  </a
-      ><a name="2821" class="Symbol"
+  <a name="2821" class="Symbol"
       >{</a
-      ><a name="2822"
-      > </a
-      ><a name="2823" class="Field"
+      > <a name="2823" class="Field"
       >isEquivalence</a
-      ><a name="2836"
-      > </a
-      ><a name="2837" class="Symbol"
+      > <a name="2837" class="Symbol"
       >=</a
-      ><a name="2838"
-      > </a
-      ><a name="2839" href="Relation.Binary.html#1054" class="Function"
+      > <a name="2839" href="Relation.Binary.html#1054" class="Function"
       >PO.isEquivalence</a
-      ><a name="2855"
       >
-  </a
-      ><a name="2858" class="Symbol"
+  <a name="2858" class="Symbol"
       >;</a
-      ><a name="2859"
-      > </a
-      ><a name="2860" class="Field"
+      > <a name="2860" class="Field"
       >irrefl</a
-      ><a name="2866"
-      >        </a
-      ><a name="2874" class="Symbol"
+      >        <a name="2874" class="Symbol"
       >=</a
-      ><a name="2875"
-      > </a
-      ><a name="2876" href="Relation.Binary.NonStrictToStrict.html#1037" class="Function"
+      > <a name="2876" href="Relation.Binary.NonStrictToStrict.html#irrefl" class="Function"
       >irrefl</a
-      ><a name="2882"
       >
-  </a
-      ><a name="2885" class="Symbol"
+  <a name="2885" class="Symbol"
       >;</a
-      ><a name="2886"
-      > </a
-      ><a name="2887" class="Field"
+      > <a name="2887" class="Field"
       >trans</a
-      ><a name="2892"
-      >         </a
-      ><a name="2901" class="Symbol"
+      >         <a name="2901" class="Symbol"
       >=</a
-      ><a name="2902"
-      > </a
-      ><a name="2903" href="Relation.Binary.NonStrictToStrict.html#1098" class="Function"
+      > <a name="2903" href="Relation.Binary.NonStrictToStrict.html#trans" class="Function"
       >trans</a
-      ><a name="2908"
-      > </a
-      ><a name="2909" href="Relation.Binary.NonStrictToStrict.html#2807" class="Bound"
+      > <a name="2909" href="Relation.Binary.NonStrictToStrict.html#2807" class="Bound"
       >po</a
-      ><a name="2911"
       >
-  </a
-      ><a name="2914" class="Symbol"
+  <a name="2914" class="Symbol"
       >;</a
-      ><a name="2915"
-      > </a
-      ><a name="2916" class="Field"
+      > <a name="2916" class="Field"
       >&lt;-resp-&#8776;</a
-      ><a name="2924"
-      >      </a
-      ><a name="2930" class="Symbol"
+      >      <a name="2930" class="Symbol"
       >=</a
-      ><a name="2931"
-      > </a
-      ><a name="2932" href="Relation.Binary.NonStrictToStrict.html#1578" class="Function"
+      > <a name="2932" href="Relation.Binary.NonStrictToStrict.html#&lt;-resp-&#8776;" class="Function"
       >&lt;-resp-&#8776;</a
-      ><a name="2940"
-      > </a
-      ><a name="2941" href="Relation.Binary.html#1054" class="Function"
+      > <a name="2941" href="Relation.Binary.html#1054" class="Function"
       >PO.isEquivalence</a
-      ><a name="2957"
-      > </a
-      ><a name="2958" href="Relation.Binary.html#1318" class="Function"
+      > <a name="2958" href="Relation.Binary.html#1318" class="Function"
       >PO.&#8804;-resp-&#8776;</a
-      ><a name="2969"
       >
-  </a
-      ><a name="2972" class="Symbol"
+  <a name="2972" class="Symbol"
       >}</a
-      ><a name="2973"
-      > </a
-      ><a name="2974" class="Keyword"
+      > <a name="2974" class="Keyword"
       >where</a
-      ><a name="2979"
-      > </a
-      ><a name="2980" class="Keyword"
+      > <a name="2980" class="Keyword"
       >module</a
-      ><a name="2986"
-      > </a
-      ><a name="2987" href="Relation.Binary.NonStrictToStrict.html#2987" class="Module"
+      > <a name="PO" href="Relation.Binary.NonStrictToStrict.html#PO" class="Module"
       >PO</a
-      ><a name="2989"
-      > </a
-      ><a name="2990" class="Symbol"
+      > <a name="2990" class="Symbol"
       >=</a
-      ><a name="2991"
-      > </a
-      ><a name="2992" href="Relation.Binary.html#3419" class="Module"
+      > <a name="2992" href="Relation.Binary.html#IsPartialOrder" class="Module"
       >IsPartialOrder</a
-      ><a name="3006"
-      > </a
-      ><a name="3007" href="Relation.Binary.NonStrictToStrict.html#2807" class="Bound"
+      > <a name="3007" href="Relation.Binary.NonStrictToStrict.html#2807" class="Bound"
       >po</a
-      ><a name="3009"
       >
 
-</a
-      ><a name="3011" href="Relation.Binary.NonStrictToStrict.html#3011" class="Function"
+<a name="isTotalOrder&#10230;isStrictTotalOrder" href="Relation.Binary.NonStrictToStrict.html#isTotalOrder&#10230;isStrictTotalOrder" class="Function"
       >isTotalOrder&#10230;isStrictTotalOrder</a
-      ><a name="3042"
-      > </a
-      ><a name="3043" class="Symbol"
+      > <a name="3043" class="Symbol"
       >:</a
-      ><a name="3044"
       >
-  </a
-      ><a name="3047" href="Relation.Binary.Core.html#3490" class="Function"
+  <a name="3047" href="Relation.Binary.Core.html#Decidable" class="Function"
       >Decidable</a
-      ><a name="3056"
-      > </a
-      ><a name="3057" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="3057" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="3060"
-      > </a
-      ><a name="3061" class="Symbol"
+      > <a name="3061" class="Symbol"
       >&#8594;</a
-      ><a name="3062"
-      > </a
-      ><a name="3063" href="Relation.Binary.html#7876" class="Record"
+      > <a name="3063" href="Relation.Binary.html#IsTotalOrder" class="Record"
       >IsTotalOrder</a
-      ><a name="3075"
-      > </a
-      ><a name="3076" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="3076" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="3079"
-      > </a
-      ><a name="3080" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
+      > <a name="3080" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
       >_&#8804;_</a
-      ><a name="3083"
-      > </a
-      ><a name="3084" class="Symbol"
+      > <a name="3084" class="Symbol"
       >&#8594;</a
-      ><a name="3085"
-      > </a
-      ><a name="3086" href="Relation.Binary.html#10018" class="Record"
+      > <a name="3086" href="Relation.Binary.html#IsStrictTotalOrder" class="Record"
       >IsStrictTotalOrder</a
-      ><a name="3104"
-      > </a
-      ><a name="3105" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="3105" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="3108"
-      > </a
-      ><a name="3109" href="Relation.Binary.NonStrictToStrict.html#808" class="Function Operator"
+      > <a name="3109" href="Relation.Binary.NonStrictToStrict.html#_&lt;_" class="Function Operator"
       >_&lt;_</a
-      ><a name="3112"
       >
-</a
-      ><a name="3113" href="Relation.Binary.NonStrictToStrict.html#3011" class="Function"
+<a name="3113" href="Relation.Binary.NonStrictToStrict.html#isTotalOrder&#10230;isStrictTotalOrder" class="Function"
       >isTotalOrder&#10230;isStrictTotalOrder</a
-      ><a name="3144"
-      > </a
-      ><a name="3145" href="Relation.Binary.NonStrictToStrict.html#3145" class="Bound"
+      > <a name="3145" href="Relation.Binary.NonStrictToStrict.html#3145" class="Bound"
       >dec-&#8776;</a
-      ><a name="3150"
-      > </a
-      ><a name="3151" href="Relation.Binary.NonStrictToStrict.html#3151" class="Bound"
+      > <a name="3151" href="Relation.Binary.NonStrictToStrict.html#3151" class="Bound"
       >tot</a
-      ><a name="3154"
-      > </a
-      ><a name="3155" class="Symbol"
+      > <a name="3155" class="Symbol"
       >=</a
-      ><a name="3156"
-      > </a
-      ><a name="3157" class="Keyword"
+      > <a name="3157" class="Keyword"
       >record</a
-      ><a name="3163"
       >
-  </a
-      ><a name="3166" class="Symbol"
+  <a name="3166" class="Symbol"
       >{</a
-      ><a name="3167"
-      > </a
-      ><a name="3168" class="Field"
+      > <a name="3168" class="Field"
       >isEquivalence</a
-      ><a name="3181"
-      > </a
-      ><a name="3182" class="Symbol"
+      > <a name="3182" class="Symbol"
       >=</a
-      ><a name="3183"
-      > </a
-      ><a name="3184" href="Relation.Binary.html#1054" class="Function"
+      > <a name="3184" href="Relation.Binary.html#1054" class="Function"
       >TO.isEquivalence</a
-      ><a name="3200"
       >
-  </a
-      ><a name="3203" class="Symbol"
+  <a name="3203" class="Symbol"
       >;</a
-      ><a name="3204"
-      > </a
-      ><a name="3205" class="Field"
+      > <a name="3205" class="Field"
       >trans</a
-      ><a name="3210"
-      >         </a
-      ><a name="3219" class="Symbol"
+      >         <a name="3219" class="Symbol"
       >=</a
-      ><a name="3220"
-      > </a
-      ><a name="3221" href="Relation.Binary.NonStrictToStrict.html#1098" class="Function"
+      > <a name="3221" href="Relation.Binary.NonStrictToStrict.html#trans" class="Function"
       >trans</a
-      ><a name="3226"
-      > </a
-      ><a name="3227" href="Relation.Binary.html#8023" class="Field"
+      > <a name="3227" href="Relation.Binary.html#8023" class="Field"
       >TO.isPartialOrder</a
-      ><a name="3244"
       >
-  </a
-      ><a name="3247" class="Symbol"
+  <a name="3247" class="Symbol"
       >;</a
-      ><a name="3248"
-      > </a
-      ><a name="3249" class="Field"
+      > <a name="3249" class="Field"
       >compare</a
-      ><a name="3256"
-      >       </a
-      ><a name="3263" class="Symbol"
+      >       <a name="3263" class="Symbol"
       >=</a
-      ><a name="3264"
-      > </a
-      ><a name="3265" href="Relation.Binary.NonStrictToStrict.html#1956" class="Function"
+      > <a name="3265" href="Relation.Binary.NonStrictToStrict.html#trichotomous" class="Function"
       >trichotomous</a
-      ><a name="3277"
-      > </a
-      ><a name="3278" href="Relation.Binary.Core.html#4960" class="Function"
+      > <a name="3278" href="Relation.Binary.Core.html#4960" class="Function"
       >TO.Eq.sym</a
-      ><a name="3287"
-      > </a
-      ><a name="3288" href="Relation.Binary.NonStrictToStrict.html#3145" class="Bound"
+      > <a name="3288" href="Relation.Binary.NonStrictToStrict.html#3145" class="Bound"
       >dec-&#8776;</a
-      ><a name="3293"
-      > </a
-      ><a name="3294" href="Relation.Binary.html#3608" class="Function"
+      > <a name="3294" href="Relation.Binary.html#3608" class="Function"
       >TO.antisym</a
-      ><a name="3304"
-      > </a
-      ><a name="3305" href="Relation.Binary.html#8067" class="Field"
+      > <a name="3305" href="Relation.Binary.html#8067" class="Field"
       >TO.total</a
-      ><a name="3313"
       >
-  </a
-      ><a name="3316" class="Symbol"
+  <a name="3316" class="Symbol"
       >}</a
-      ><a name="3317"
-      > </a
-      ><a name="3318" class="Keyword"
+      > <a name="3318" class="Keyword"
       >where</a
-      ><a name="3323"
-      > </a
-      ><a name="3324" class="Keyword"
+      > <a name="3324" class="Keyword"
       >module</a
-      ><a name="3330"
-      > </a
-      ><a name="3331" href="Relation.Binary.NonStrictToStrict.html#3331" class="Module"
+      > <a name="TO" href="Relation.Binary.NonStrictToStrict.html#TO" class="Module"
       >TO</a
-      ><a name="3333"
-      > </a
-      ><a name="3334" class="Symbol"
+      > <a name="3334" class="Symbol"
       >=</a
-      ><a name="3335"
-      > </a
-      ><a name="3336" href="Relation.Binary.html#7876" class="Module"
+      > <a name="3336" href="Relation.Binary.html#IsTotalOrder" class="Module"
       >IsTotalOrder</a
-      ><a name="3348"
-      > </a
-      ><a name="3349" href="Relation.Binary.NonStrictToStrict.html#3151" class="Bound"
+      > <a name="3349" href="Relation.Binary.NonStrictToStrict.html#3151" class="Bound"
       >tot</a
-      ><a name="3352"
       >
 
-</a
-      ><a name="3354" href="Relation.Binary.NonStrictToStrict.html#3354" class="Function"
+<a name="isDecTotalOrder&#10230;isStrictTotalOrder" href="Relation.Binary.NonStrictToStrict.html#isDecTotalOrder&#10230;isStrictTotalOrder" class="Function"
       >isDecTotalOrder&#10230;isStrictTotalOrder</a
-      ><a name="3388"
-      > </a
-      ><a name="3389" class="Symbol"
+      > <a name="3389" class="Symbol"
       >:</a
-      ><a name="3390"
       >
-  </a
-      ><a name="3393" href="Relation.Binary.html#8628" class="Record"
+  <a name="3393" href="Relation.Binary.html#IsDecTotalOrder" class="Record"
       >IsDecTotalOrder</a
-      ><a name="3408"
-      > </a
-      ><a name="3409" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="3409" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="3412"
-      > </a
-      ><a name="3413" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
+      > <a name="3413" href="Relation.Binary.NonStrictToStrict.html#507" class="Bound Operator"
       >_&#8804;_</a
-      ><a name="3416"
-      > </a
-      ><a name="3417" class="Symbol"
+      > <a name="3417" class="Symbol"
       >&#8594;</a
-      ><a name="3418"
-      > </a
-      ><a name="3419" href="Relation.Binary.html#10018" class="Record"
+      > <a name="3419" href="Relation.Binary.html#IsStrictTotalOrder" class="Record"
       >IsStrictTotalOrder</a
-      ><a name="3437"
-      > </a
-      ><a name="3438" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
+      > <a name="3438" href="Relation.Binary.NonStrictToStrict.html#490" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="3441"
-      > </a
-      ><a name="3442" href="Relation.Binary.NonStrictToStrict.html#808" class="Function Operator"
+      > <a name="3442" href="Relation.Binary.NonStrictToStrict.html#_&lt;_" class="Function Operator"
       >_&lt;_</a
-      ><a name="3445"
       >
-</a
-      ><a name="3446" href="Relation.Binary.NonStrictToStrict.html#3354" class="Function"
+<a name="3446" href="Relation.Binary.NonStrictToStrict.html#isDecTotalOrder&#10230;isStrictTotalOrder" class="Function"
       >isDecTotalOrder&#10230;isStrictTotalOrder</a
-      ><a name="3480"
-      > </a
-      ><a name="3481" href="Relation.Binary.NonStrictToStrict.html#3481" class="Bound"
+      > <a name="3481" href="Relation.Binary.NonStrictToStrict.html#3481" class="Bound"
       >dtot</a
-      ><a name="3485"
-      > </a
-      ><a name="3486" class="Symbol"
+      > <a name="3486" class="Symbol"
       >=</a
-      ><a name="3487"
       >
-  </a
-      ><a name="3490" href="Relation.Binary.NonStrictToStrict.html#3011" class="Function"
+  <a name="3490" href="Relation.Binary.NonStrictToStrict.html#isTotalOrder&#10230;isStrictTotalOrder" class="Function"
       >isTotalOrder&#10230;isStrictTotalOrder</a
-      ><a name="3521"
-      > </a
-      ><a name="3522" href="Relation.Binary.html#8843" class="Field Operator"
+      > <a name="3522" href="Relation.Binary.html#8843" class="Field Operator"
       >DTO._&#8799;_</a
-      ><a name="3529"
-      > </a
-      ><a name="3530" href="Relation.Binary.html#8803" class="Field"
+      > <a name="3530" href="Relation.Binary.html#8803" class="Field"
       >DTO.isTotalOrder</a
-      ><a name="3546"
       >
-  </a
-      ><a name="3549" class="Keyword"
+  <a name="3549" class="Keyword"
       >where</a
-      ><a name="3554"
-      > </a
-      ><a name="3555" class="Keyword"
+      > <a name="3555" class="Keyword"
       >module</a
-      ><a name="3561"
-      > </a
-      ><a name="3562" href="Relation.Binary.NonStrictToStrict.html#3562" class="Module"
+      > <a name="DTO" href="Relation.Binary.NonStrictToStrict.html#DTO" class="Module"
       >DTO</a
-      ><a name="3565"
-      > </a
-      ><a name="3566" class="Symbol"
+      > <a name="3566" class="Symbol"
       >=</a
-      ><a name="3567"
-      > </a
-      ><a name="3568" href="Relation.Binary.html#8628" class="Module"
+      > <a name="3568" href="Relation.Binary.html#IsDecTotalOrder" class="Module"
       >IsDecTotalOrder</a
-      ><a name="3583"
-      > </a
-      ><a name="3584" href="Relation.Binary.NonStrictToStrict.html#3481" class="Bound"
+      > <a name="3584" href="Relation.Binary.NonStrictToStrict.html#3481" class="Bound"
       >dtot</a
-      ><a name="3588"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

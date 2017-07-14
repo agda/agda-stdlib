@@ -1,0 +1,627 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Relation.Binary.Properties.Lattice</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="74" class="Comment"
+      >-- The Agda standard library</a
+      >
+<a name="103" class="Comment"
+      >--</a
+      >
+<a name="106" class="Comment"
+      >-- Properties satisfied by lattices</a
+      >
+<a name="142" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+
+<a name="216" class="Keyword"
+      >open</a
+      > <a name="221" class="Keyword"
+      >import</a
+      > <a name="228" href="Relation.Binary.Lattice.html" class="Module"
+      >Relation.Binary.Lattice</a
+      >
+
+<a name="253" class="Keyword"
+      >module</a
+      > <a name="260" href="Relation.Binary.Properties.Lattice.html" class="Module"
+      >Relation.Binary.Properties.Lattice</a
+      >
+  <a name="297" class="Symbol"
+      >{</a
+      ><a name="298" href="Relation.Binary.Properties.Lattice.html#298" class="Bound"
+      >c</a
+      > <a name="300" href="Relation.Binary.Properties.Lattice.html#300" class="Bound"
+      >&#8467;&#8321;</a
+      > <a name="303" href="Relation.Binary.Properties.Lattice.html#303" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="305" class="Symbol"
+      >}</a
+      > <a name="307" class="Symbol"
+      >(</a
+      ><a name="308" href="Relation.Binary.Properties.Lattice.html#308" class="Bound"
+      >L</a
+      > <a name="310" class="Symbol"
+      >:</a
+      > <a name="312" href="Relation.Binary.Lattice.html#Lattice" class="Record"
+      >Lattice</a
+      > <a name="320" href="Relation.Binary.Properties.Lattice.html#298" class="Bound"
+      >c</a
+      > <a name="322" href="Relation.Binary.Properties.Lattice.html#300" class="Bound"
+      >&#8467;&#8321;</a
+      > <a name="325" href="Relation.Binary.Properties.Lattice.html#303" class="Bound"
+      >&#8467;&#8322;</a
+      ><a name="327" class="Symbol"
+      >)</a
+      > <a name="329" class="Keyword"
+      >where</a
+      >
+
+<a name="336" class="Keyword"
+      >open</a
+      > <a name="341" href="Relation.Binary.Lattice.html#Lattice" class="Module"
+      >Lattice</a
+      > <a name="349" href="Relation.Binary.Properties.Lattice.html#308" class="Bound"
+      >L</a
+      >
+
+<a name="352" class="Keyword"
+      >import</a
+      > <a name="359" href="Algebra.html" class="Module"
+      >Algebra</a
+      > <a name="367" class="Symbol"
+      >as</a
+      > <a name="370" class="Module"
+      >Alg</a
+      >
+<a name="374" class="Keyword"
+      >import</a
+      > <a name="381" href="Algebra.Structures.html" class="Module"
+      >Algebra.Structures</a
+      > <a name="400" class="Symbol"
+      >as</a
+      > <a name="403" class="Module"
+      >AlgS</a
+      >
+<a name="408" class="Keyword"
+      >import</a
+      > <a name="415" href="Algebra.FunctionProperties.html" class="Module"
+      >Algebra.FunctionProperties</a
+      > <a name="442" class="Symbol"
+      >as</a
+      > <a name="445" class="Module"
+      >P</a
+      ><a name="446" class="Symbol"
+      >;</a
+      > <a name="448" class="Keyword"
+      >open</a
+      > <a name="453" href="Algebra.FunctionProperties.html" class="Module"
+      >P</a
+      > <a name="455" href="Relation.Binary.Lattice.html#6635" class="Field Operator"
+      >_&#8776;_</a
+      >
+<a name="459" class="Keyword"
+      >open</a
+      > <a name="464" class="Keyword"
+      >import</a
+      > <a name="471" href="Data.Product.html" class="Module"
+      >Data.Product</a
+      > <a name="484" class="Keyword"
+      >using</a
+      > <a name="490" class="Symbol"
+      >(</a
+      ><a name="491" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >_,_</a
+      ><a name="494" class="Symbol"
+      >)</a
+      >
+<a name="496" class="Keyword"
+      >open</a
+      > <a name="501" class="Keyword"
+      >import</a
+      > <a name="508" href="Function.html" class="Module"
+      >Function</a
+      > <a name="517" class="Keyword"
+      >using</a
+      > <a name="523" class="Symbol"
+      >(</a
+      ><a name="524" href="Function.html#flip" class="Function"
+      >flip</a
+      ><a name="528" class="Symbol"
+      >)</a
+      >
+<a name="530" class="Keyword"
+      >open</a
+      > <a name="535" class="Keyword"
+      >import</a
+      > <a name="542" href="Relation.Binary.html" class="Module"
+      >Relation.Binary</a
+      >
+<a name="558" class="Keyword"
+      >open</a
+      > <a name="563" class="Keyword"
+      >import</a
+      > <a name="570" href="Relation.Binary.Properties.Poset.html" class="Module"
+      >Relation.Binary.Properties.Poset</a
+      > <a name="603" href="Relation.Binary.Lattice.html#1909" class="Function"
+      >poset</a
+      >
+<a name="609" class="Keyword"
+      >import</a
+      > <a name="616" href="Relation.Binary.Properties.JoinSemilattice.html" class="Module"
+      >Relation.Binary.Properties.JoinSemilattice</a
+      > <a name="659" href="Relation.Binary.Lattice.html#6935" class="Function"
+      >joinSemilattice</a
+      > <a name="675" class="Symbol"
+      >as</a
+      > <a name="J" href="Relation.Binary.Properties.Lattice.html#J" class="Module"
+      >J</a
+      >
+<a name="680" class="Keyword"
+      >import</a
+      > <a name="687" href="Relation.Binary.Properties.MeetSemilattice.html" class="Module"
+      >Relation.Binary.Properties.MeetSemilattice</a
+      > <a name="730" href="Relation.Binary.Lattice.html#7049" class="Function"
+      >meetSemilattice</a
+      > <a name="746" class="Symbol"
+      >as</a
+      > <a name="M" href="Relation.Binary.Properties.Lattice.html#M" class="Module"
+      >M</a
+      >
+
+<a name="&#8744;-absorbs-&#8743;" href="Relation.Binary.Properties.Lattice.html#&#8744;-absorbs-&#8743;" class="Function"
+      >&#8744;-absorbs-&#8743;</a
+      > <a name="764" class="Symbol"
+      >:</a
+      > <a name="766" href="Relation.Binary.Lattice.html#6749" class="Field Operator"
+      >_&#8744;_</a
+      > <a name="770" href="Algebra.FunctionProperties.html#2341" class="Function Operator"
+      >Absorbs</a
+      > <a name="778" href="Relation.Binary.Lattice.html#6804" class="Field Operator"
+      >_&#8743;_</a
+      >
+<a name="782" href="Relation.Binary.Properties.Lattice.html#&#8744;-absorbs-&#8743;" class="Function"
+      >&#8744;-absorbs-&#8743;</a
+      > <a name="794" href="Relation.Binary.Properties.Lattice.html#794" class="Bound"
+      >x</a
+      > <a name="796" href="Relation.Binary.Properties.Lattice.html#796" class="Bound"
+      >y</a
+      > <a name="798" class="Symbol"
+      >=</a
+      >
+  <a name="802" class="Keyword"
+      >let</a
+      > <a name="806" href="Relation.Binary.Properties.Lattice.html#806" class="Bound"
+      >x&#8804;x&#8744;[x&#8743;y]</a
+      > <a name="816" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="818" class="Symbol"
+      >_</a
+      > <a name="820" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="822" href="Relation.Binary.Properties.Lattice.html#822" class="Bound"
+      >least</a
+      > <a name="828" class="Symbol"
+      >=</a
+      > <a name="830" href="Relation.Binary.Lattice.html#6065" class="Function"
+      >supremum</a
+      >  <a name="840" href="Relation.Binary.Properties.Lattice.html#794" class="Bound"
+      >x</a
+      > <a name="842" class="Symbol"
+      >(</a
+      ><a name="843" href="Relation.Binary.Properties.Lattice.html#794" class="Bound"
+      >x</a
+      > <a name="845" href="Relation.Binary.Lattice.html#6804" class="Field Operator"
+      >&#8743;</a
+      > <a name="847" href="Relation.Binary.Properties.Lattice.html#796" class="Bound"
+      >y</a
+      ><a name="848" class="Symbol"
+      >)</a
+      >
+      <a name="856" href="Relation.Binary.Properties.Lattice.html#856" class="Bound"
+      >x&#8743;y&#8804;x</a
+      >     <a name="866" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="868" class="Symbol"
+      >_</a
+      > <a name="870" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="872" class="Symbol"
+      >_</a
+      >     <a name="878" class="Symbol"
+      >=</a
+      > <a name="880" href="Relation.Binary.Lattice.html#6103" class="Function"
+      >infimum</a
+      > <a name="888" href="Relation.Binary.Properties.Lattice.html#794" class="Bound"
+      >x</a
+      > <a name="890" href="Relation.Binary.Properties.Lattice.html#796" class="Bound"
+      >y</a
+      >
+  <a name="894" class="Keyword"
+      >in</a
+      > <a name="897" href="Relation.Binary.html#3608" class="Function"
+      >antisym</a
+      > <a name="905" class="Symbol"
+      >(</a
+      ><a name="906" href="Relation.Binary.Properties.Lattice.html#822" class="Bound"
+      >least</a
+      > <a name="912" href="Relation.Binary.Properties.Lattice.html#794" class="Bound"
+      >x</a
+      > <a name="914" href="Relation.Binary.html#1267" class="Function"
+      >refl</a
+      > <a name="919" href="Relation.Binary.Properties.Lattice.html#856" class="Bound"
+      >x&#8743;y&#8804;x</a
+      ><a name="924" class="Symbol"
+      >)</a
+      > <a name="926" href="Relation.Binary.Properties.Lattice.html#806" class="Bound"
+      >x&#8804;x&#8744;[x&#8743;y]</a
+      >
+
+<a name="&#8743;-absorbs-&#8744;" href="Relation.Binary.Properties.Lattice.html#&#8743;-absorbs-&#8744;" class="Function"
+      >&#8743;-absorbs-&#8744;</a
+      > <a name="949" class="Symbol"
+      >:</a
+      > <a name="951" href="Relation.Binary.Lattice.html#6804" class="Field Operator"
+      >_&#8743;_</a
+      > <a name="955" href="Algebra.FunctionProperties.html#2341" class="Function Operator"
+      >Absorbs</a
+      > <a name="963" href="Relation.Binary.Lattice.html#6749" class="Field Operator"
+      >_&#8744;_</a
+      >
+<a name="967" href="Relation.Binary.Properties.Lattice.html#&#8743;-absorbs-&#8744;" class="Function"
+      >&#8743;-absorbs-&#8744;</a
+      > <a name="979" href="Relation.Binary.Properties.Lattice.html#979" class="Bound"
+      >x</a
+      > <a name="981" href="Relation.Binary.Properties.Lattice.html#981" class="Bound"
+      >y</a
+      > <a name="983" class="Symbol"
+      >=</a
+      >
+  <a name="987" class="Keyword"
+      >let</a
+      > <a name="991" href="Relation.Binary.Properties.Lattice.html#991" class="Bound"
+      >x&#8743;[x&#8744;y]&#8804;x</a
+      > <a name="1001" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="1003" class="Symbol"
+      >_</a
+      > <a name="1005" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="1007" href="Relation.Binary.Properties.Lattice.html#1007" class="Bound"
+      >greatest</a
+      > <a name="1016" class="Symbol"
+      >=</a
+      > <a name="1018" href="Relation.Binary.Lattice.html#6103" class="Function"
+      >infimum</a
+      >  <a name="1027" href="Relation.Binary.Properties.Lattice.html#979" class="Bound"
+      >x</a
+      > <a name="1029" class="Symbol"
+      >(</a
+      ><a name="1030" href="Relation.Binary.Properties.Lattice.html#979" class="Bound"
+      >x</a
+      > <a name="1032" href="Relation.Binary.Lattice.html#6749" class="Field Operator"
+      >&#8744;</a
+      > <a name="1034" href="Relation.Binary.Properties.Lattice.html#981" class="Bound"
+      >y</a
+      ><a name="1035" class="Symbol"
+      >)</a
+      >
+      <a name="1043" href="Relation.Binary.Properties.Lattice.html#1043" class="Bound"
+      >x&#8804;x&#8744;y</a
+      >     <a name="1053" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="1055" class="Symbol"
+      >_</a
+      > <a name="1057" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="1059" class="Symbol"
+      >_</a
+      >        <a name="1068" class="Symbol"
+      >=</a
+      > <a name="1070" href="Relation.Binary.Lattice.html#6065" class="Function"
+      >supremum</a
+      > <a name="1079" href="Relation.Binary.Properties.Lattice.html#979" class="Bound"
+      >x</a
+      > <a name="1081" href="Relation.Binary.Properties.Lattice.html#981" class="Bound"
+      >y</a
+      >
+  <a name="1085" class="Keyword"
+      >in</a
+      > <a name="1088" href="Relation.Binary.html#3608" class="Function"
+      >antisym</a
+      > <a name="1096" href="Relation.Binary.Properties.Lattice.html#991" class="Bound"
+      >x&#8743;[x&#8744;y]&#8804;x</a
+      > <a name="1106" class="Symbol"
+      >(</a
+      ><a name="1107" href="Relation.Binary.Properties.Lattice.html#1007" class="Bound"
+      >greatest</a
+      > <a name="1116" href="Relation.Binary.Properties.Lattice.html#979" class="Bound"
+      >x</a
+      > <a name="1118" href="Relation.Binary.html#1267" class="Function"
+      >refl</a
+      > <a name="1123" href="Relation.Binary.Properties.Lattice.html#1043" class="Bound"
+      >x&#8804;x&#8744;y</a
+      ><a name="1128" class="Symbol"
+      >)</a
+      >
+
+<a name="absorptive" href="Relation.Binary.Properties.Lattice.html#absorptive" class="Function"
+      >absorptive</a
+      > <a name="1142" class="Symbol"
+      >:</a
+      > <a name="1144" href="Algebra.FunctionProperties.html#2420" class="Function"
+      >Absorptive</a
+      > <a name="1155" href="Relation.Binary.Lattice.html#6749" class="Field Operator"
+      >_&#8744;_</a
+      > <a name="1159" href="Relation.Binary.Lattice.html#6804" class="Field Operator"
+      >_&#8743;_</a
+      >
+<a name="1163" href="Relation.Binary.Properties.Lattice.html#absorptive" class="Function"
+      >absorptive</a
+      > <a name="1174" class="Symbol"
+      >=</a
+      > <a name="1176" href="Relation.Binary.Properties.Lattice.html#&#8744;-absorbs-&#8743;" class="Function"
+      >&#8744;-absorbs-&#8743;</a
+      > <a name="1188" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="1190" href="Relation.Binary.Properties.Lattice.html#&#8743;-absorbs-&#8744;" class="Function"
+      >&#8743;-absorbs-&#8744;</a
+      >
+
+<a name="1203" class="Comment"
+      >-- The dual construction is also a lattice.</a
+      >
+
+<a name="&#8743;-&#8744;-isLattice" href="Relation.Binary.Properties.Lattice.html#&#8743;-&#8744;-isLattice" class="Function"
+      >&#8743;-&#8744;-isLattice</a
+      > <a name="1262" class="Symbol"
+      >:</a
+      > <a name="1264" href="Relation.Binary.Lattice.html#IsLattice" class="Record"
+      >IsLattice</a
+      > <a name="1274" href="Relation.Binary.Lattice.html#6635" class="Field Operator"
+      >_&#8776;_</a
+      > <a name="1278" class="Symbol"
+      >(</a
+      ><a name="1279" href="Function.html#flip" class="Function"
+      >flip</a
+      > <a name="1284" href="Relation.Binary.Lattice.html#6695" class="Field Operator"
+      >_&#8804;_</a
+      ><a name="1287" class="Symbol"
+      >)</a
+      > <a name="1289" href="Relation.Binary.Lattice.html#6804" class="Field Operator"
+      >_&#8743;_</a
+      > <a name="1293" href="Relation.Binary.Lattice.html#6749" class="Field Operator"
+      >_&#8744;_</a
+      >
+<a name="1297" href="Relation.Binary.Properties.Lattice.html#&#8743;-&#8744;-isLattice" class="Function"
+      >&#8743;-&#8744;-isLattice</a
+      > <a name="1311" class="Symbol"
+      >=</a
+      > <a name="1313" class="Keyword"
+      >record</a
+      >
+  <a name="1322" class="Symbol"
+      >{</a
+      > <a name="1324" class="Field"
+      >isPartialOrder</a
+      > <a name="1339" class="Symbol"
+      >=</a
+      > <a name="1341" href="Relation.Binary.Properties.Poset.html#576" class="Function"
+      >invIsPartialOrder</a
+      >
+  <a name="1361" class="Symbol"
+      >;</a
+      > <a name="1363" class="Field"
+      >supremum</a
+      >       <a name="1378" class="Symbol"
+      >=</a
+      > <a name="1380" href="Relation.Binary.Lattice.html#6103" class="Function"
+      >infimum</a
+      >
+  <a name="1390" class="Symbol"
+      >;</a
+      > <a name="1392" class="Field"
+      >infimum</a
+      >        <a name="1407" class="Symbol"
+      >=</a
+      > <a name="1409" href="Relation.Binary.Lattice.html#6065" class="Function"
+      >supremum</a
+      >
+  <a name="1420" class="Symbol"
+      >}</a
+      >
+
+<a name="&#8743;-&#8744;-lattice" href="Relation.Binary.Properties.Lattice.html#&#8743;-&#8744;-lattice" class="Function"
+      >&#8743;-&#8744;-lattice</a
+      > <a name="1435" class="Symbol"
+      >:</a
+      > <a name="1437" href="Relation.Binary.Lattice.html#Lattice" class="Record"
+      >Lattice</a
+      > <a name="1445" href="Relation.Binary.Properties.Lattice.html#298" class="Bound"
+      >c</a
+      > <a name="1447" href="Relation.Binary.Properties.Lattice.html#300" class="Bound"
+      >&#8467;&#8321;</a
+      > <a name="1450" href="Relation.Binary.Properties.Lattice.html#303" class="Bound"
+      >&#8467;&#8322;</a
+      >
+<a name="1453" href="Relation.Binary.Properties.Lattice.html#&#8743;-&#8744;-lattice" class="Function"
+      >&#8743;-&#8744;-lattice</a
+      > <a name="1465" class="Symbol"
+      >=</a
+      > <a name="1467" class="Keyword"
+      >record</a
+      >
+  <a name="1476" class="Symbol"
+      >{</a
+      > <a name="1478" class="Field Operator"
+      >_&#8743;_</a
+      >       <a name="1488" class="Symbol"
+      >=</a
+      > <a name="1490" href="Relation.Binary.Lattice.html#6749" class="Field Operator"
+      >_&#8744;_</a
+      >
+  <a name="1496" class="Symbol"
+      >;</a
+      > <a name="1498" class="Field Operator"
+      >_&#8744;_</a
+      >       <a name="1508" class="Symbol"
+      >=</a
+      > <a name="1510" href="Relation.Binary.Lattice.html#6804" class="Field Operator"
+      >_&#8743;_</a
+      >
+  <a name="1516" class="Symbol"
+      >;</a
+      > <a name="1518" class="Field"
+      >isLattice</a
+      > <a name="1528" class="Symbol"
+      >=</a
+      > <a name="1530" href="Relation.Binary.Properties.Lattice.html#&#8743;-&#8744;-isLattice" class="Function"
+      >&#8743;-&#8744;-isLattice</a
+      >
+  <a name="1546" class="Symbol"
+      >}</a
+      >
+
+<a name="1549" class="Comment"
+      >-- Every order-theoretic lattice can be turned into an algebraic one.</a
+      >
+
+<a name="isAlgLattice" href="Relation.Binary.Properties.Lattice.html#isAlgLattice" class="Function"
+      >isAlgLattice</a
+      > <a name="1633" class="Symbol"
+      >:</a
+      > <a name="1635" href="Algebra.Structures.html#IsLattice" class="Record"
+      >AlgS.IsLattice</a
+      > <a name="1650" href="Relation.Binary.Lattice.html#6635" class="Field Operator"
+      >_&#8776;_</a
+      > <a name="1654" href="Relation.Binary.Lattice.html#6749" class="Field Operator"
+      >_&#8744;_</a
+      > <a name="1658" href="Relation.Binary.Lattice.html#6804" class="Field Operator"
+      >_&#8743;_</a
+      >
+<a name="1662" href="Relation.Binary.Properties.Lattice.html#isAlgLattice" class="Function"
+      >isAlgLattice</a
+      > <a name="1675" class="Symbol"
+      >=</a
+      > <a name="1677" class="Keyword"
+      >record</a
+      >
+  <a name="1686" class="Symbol"
+      >{</a
+      > <a name="1688" class="Field"
+      >isEquivalence</a
+      > <a name="1702" class="Symbol"
+      >=</a
+      > <a name="1704" href="Relation.Binary.html#1054" class="Function"
+      >isEquivalence</a
+      >
+  <a name="1720" class="Symbol"
+      >;</a
+      > <a name="1722" class="Field"
+      >&#8744;-comm</a
+      >        <a name="1736" class="Symbol"
+      >=</a
+      > <a name="1738" href="Relation.Binary.Properties.JoinSemilattice.html#J.&#8744;-comm" class="Function"
+      >J.&#8744;-comm</a
+      >
+  <a name="1749" class="Symbol"
+      >;</a
+      > <a name="1751" class="Field"
+      >&#8744;-assoc</a
+      >       <a name="1765" class="Symbol"
+      >=</a
+      > <a name="1767" href="Relation.Binary.Properties.JoinSemilattice.html#J.&#8744;-assoc" class="Function"
+      >J.&#8744;-assoc</a
+      >
+  <a name="1779" class="Symbol"
+      >;</a
+      > <a name="1781" class="Field"
+      >&#8744;-cong</a
+      >        <a name="1795" class="Symbol"
+      >=</a
+      > <a name="1797" href="Relation.Binary.Properties.JoinSemilattice.html#J.&#8744;-cong" class="Function"
+      >J.&#8744;-cong</a
+      >
+  <a name="1808" class="Symbol"
+      >;</a
+      > <a name="1810" class="Field"
+      >&#8743;-comm</a
+      >        <a name="1824" class="Symbol"
+      >=</a
+      > <a name="1826" href="Relation.Binary.Properties.JoinSemilattice.html#M.&#8743;-comm" class="Function"
+      >M.&#8743;-comm</a
+      >
+  <a name="1837" class="Symbol"
+      >;</a
+      > <a name="1839" class="Field"
+      >&#8743;-assoc</a
+      >       <a name="1853" class="Symbol"
+      >=</a
+      > <a name="1855" href="Relation.Binary.Properties.JoinSemilattice.html#M.&#8743;-assoc" class="Function"
+      >M.&#8743;-assoc</a
+      >
+  <a name="1867" class="Symbol"
+      >;</a
+      > <a name="1869" class="Field"
+      >&#8743;-cong</a
+      >        <a name="1883" class="Symbol"
+      >=</a
+      > <a name="1885" href="Relation.Binary.Properties.JoinSemilattice.html#M.&#8743;-cong" class="Function"
+      >M.&#8743;-cong</a
+      >
+  <a name="1896" class="Symbol"
+      >;</a
+      > <a name="1898" class="Field"
+      >absorptive</a
+      >    <a name="1912" class="Symbol"
+      >=</a
+      > <a name="1914" href="Relation.Binary.Properties.Lattice.html#absorptive" class="Function"
+      >absorptive</a
+      >
+  <a name="1927" class="Symbol"
+      >}</a
+      >
+
+<a name="algLattice" href="Relation.Binary.Properties.Lattice.html#algLattice" class="Function"
+      >algLattice</a
+      > <a name="1941" class="Symbol"
+      >:</a
+      > <a name="1943" href="Algebra.html#Lattice" class="Record"
+      >Alg.Lattice</a
+      > <a name="1955" href="Relation.Binary.Properties.Lattice.html#298" class="Bound"
+      >c</a
+      > <a name="1957" href="Relation.Binary.Properties.Lattice.html#300" class="Bound"
+      >&#8467;&#8321;</a
+      >
+<a name="1960" href="Relation.Binary.Properties.Lattice.html#algLattice" class="Function"
+      >algLattice</a
+      > <a name="1971" class="Symbol"
+      >=</a
+      > <a name="1973" class="Keyword"
+      >record</a
+      > <a name="1980" class="Symbol"
+      >{</a
+      > <a name="1982" class="Field"
+      >isLattice</a
+      > <a name="1992" class="Symbol"
+      >=</a
+      > <a name="1994" href="Relation.Binary.Properties.Lattice.html#isAlgLattice" class="Function"
+      >isAlgLattice</a
+      > <a name="2007" class="Symbol"
+      >}</a
+      >
+</pre
+    ></body
+  ></html
+>

@@ -11,1009 +11,581 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Coinductive &quot;natural&quot; numbers</a
-      ><a name="138"
       >
-</a
-      ><a name="139" class="Comment"
+<a name="139" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="211"
       >
 
-</a
-      ><a name="213" class="Keyword"
+<a name="213" class="Keyword"
       >module</a
-      ><a name="219"
-      > </a
-      ><a name="220" href="Data.Conat.html#1" class="Module"
+      > <a name="220" href="Data.Conat.html" class="Module"
       >Data.Conat</a
-      ><a name="230"
-      > </a
-      ><a name="231" class="Keyword"
+      > <a name="231" class="Keyword"
       >where</a
-      ><a name="236"
       >
 
-</a
-      ><a name="238" class="Keyword"
+<a name="238" class="Keyword"
       >open</a
-      ><a name="242"
-      > </a
-      ><a name="243" class="Keyword"
+      > <a name="243" class="Keyword"
       >import</a
-      ><a name="249"
-      > </a
-      ><a name="250" href="Coinduction.html#1" class="Module"
+      > <a name="250" href="Coinduction.html" class="Module"
       >Coinduction</a
-      ><a name="261"
       >
-</a
-      ><a name="262" class="Keyword"
+<a name="262" class="Keyword"
       >open</a
-      ><a name="266"
-      > </a
-      ><a name="267" class="Keyword"
+      > <a name="267" class="Keyword"
       >import</a
-      ><a name="273"
-      > </a
-      ><a name="274" href="Data.Nat.Base.html#1" class="Module"
+      > <a name="274" href="Data.Nat.Base.html" class="Module"
       >Data.Nat.Base</a
-      ><a name="287"
-      > </a
-      ><a name="288" class="Keyword"
+      > <a name="288" class="Keyword"
       >using</a
-      ><a name="293"
-      > </a
-      ><a name="294" class="Symbol"
+      > <a name="294" class="Symbol"
       >(</a
-      ><a name="295" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      ><a name="295" href="Agda.Builtin.Nat.html#Nat" class="Datatype"
       >&#8469;</a
       ><a name="296" class="Symbol"
       >;</a
-      ><a name="297"
-      > </a
-      ><a name="298" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      > <a name="298" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
       ><a name="302" class="Symbol"
       >;</a
-      ><a name="303"
-      > </a
-      ><a name="304" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      > <a name="304" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
       ><a name="307" class="Symbol"
       >)</a
-      ><a name="308"
       >
-</a
-      ><a name="309" class="Keyword"
+<a name="309" class="Keyword"
       >open</a
-      ><a name="313"
-      > </a
-      ><a name="314" class="Keyword"
+      > <a name="314" class="Keyword"
       >import</a
-      ><a name="320"
-      > </a
-      ><a name="321" href="Relation.Binary.html#1" class="Module"
+      > <a name="321" href="Relation.Binary.html" class="Module"
       >Relation.Binary</a
-      ><a name="336"
       >
 
-</a
-      ><a name="338" class="Comment"
+<a name="338" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="410"
       >
-</a
-      ><a name="411" class="Comment"
+<a name="411" class="Comment"
       >-- The type</a
-      ><a name="422"
       >
 
-</a
-      ><a name="424" class="Keyword"
+<a name="424" class="Keyword"
       >data</a
-      ><a name="428"
-      > </a
-      ><a name="429" href="Data.Conat.html#429" class="Datatype"
+      > <a name="Co&#8469;" href="Data.Conat.html#Co&#8469;" class="Datatype"
       >Co&#8469;</a
-      ><a name="432"
-      > </a
-      ><a name="433" class="Symbol"
+      > <a name="433" class="Symbol"
       >:</a
-      ><a name="434"
-      > </a
-      ><a name="435" class="PrimitiveType"
+      > <a name="435" class="PrimitiveType"
       >Set</a
-      ><a name="438"
-      > </a
-      ><a name="439" class="Keyword"
+      > <a name="439" class="Keyword"
       >where</a
-      ><a name="444"
       >
-  </a
-      ><a name="447" href="Data.Conat.html#447" class="InductiveConstructor"
+  <a name="Co&#8469;.zero" href="Data.Conat.html#Co&#8469;.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="451"
-      > </a
-      ><a name="452" class="Symbol"
+      > <a name="452" class="Symbol"
       >:</a
-      ><a name="453"
-      > </a
-      ><a name="454" href="Data.Conat.html#429" class="Datatype"
+      > <a name="454" href="Data.Conat.html#Co&#8469;" class="Datatype"
       >Co&#8469;</a
-      ><a name="457"
       >
-  </a
-      ><a name="460" href="Data.Conat.html#460" class="InductiveConstructor"
+  <a name="Co&#8469;.suc" href="Data.Conat.html#Co&#8469;.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="463"
-      >  </a
-      ><a name="465" class="Symbol"
+      >  <a name="465" class="Symbol"
       >:</a
-      ><a name="466"
-      > </a
-      ><a name="467" class="Symbol"
+      > <a name="467" class="Symbol"
       >(</a
       ><a name="468" href="Data.Conat.html#468" class="Bound"
       >n</a
-      ><a name="469"
-      > </a
-      ><a name="470" class="Symbol"
+      > <a name="470" class="Symbol"
       >:</a
-      ><a name="471"
-      > </a
-      ><a name="472" href="Agda.Builtin.Coinduction.html#96" class="Record"
+      > <a name="472" href="Agda.Builtin.Coinduction.html#&#8734;" class="Record"
       >&#8734;</a
-      ><a name="473"
-      > </a
-      ><a name="474" href="Data.Conat.html#429" class="Datatype"
+      > <a name="474" href="Data.Conat.html#Co&#8469;" class="Datatype"
       >Co&#8469;</a
       ><a name="477" class="Symbol"
       >)</a
-      ><a name="478"
-      > </a
-      ><a name="479" class="Symbol"
+      > <a name="479" class="Symbol"
       >&#8594;</a
-      ><a name="480"
-      > </a
-      ><a name="481" href="Data.Conat.html#429" class="Datatype"
+      > <a name="481" href="Data.Conat.html#Co&#8469;" class="Datatype"
       >Co&#8469;</a
-      ><a name="484"
       >
 
-</a
-      ><a name="486" class="Comment"
+<a name="486" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="558"
       >
-</a
-      ><a name="559" class="Comment"
+<a name="559" class="Comment"
       >-- Some operations</a
-      ><a name="577"
       >
 
-</a
-      ><a name="579" href="Data.Conat.html#579" class="Function"
+<a name="from&#8469;" href="Data.Conat.html#from&#8469;" class="Function"
       >from&#8469;</a
-      ><a name="584"
-      > </a
-      ><a name="585" class="Symbol"
+      > <a name="585" class="Symbol"
       >:</a
-      ><a name="586"
-      > </a
-      ><a name="587" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="587" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="588"
-      > </a
-      ><a name="589" class="Symbol"
+      > <a name="589" class="Symbol"
       >&#8594;</a
-      ><a name="590"
-      > </a
-      ><a name="591" href="Data.Conat.html#429" class="Datatype"
+      > <a name="591" href="Data.Conat.html#Co&#8469;" class="Datatype"
       >Co&#8469;</a
-      ><a name="594"
       >
-</a
-      ><a name="595" href="Data.Conat.html#579" class="Function"
+<a name="595" href="Data.Conat.html#from&#8469;" class="Function"
       >from&#8469;</a
-      ><a name="600"
-      > </a
-      ><a name="601" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      > <a name="601" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="605"
-      >    </a
-      ><a name="609" class="Symbol"
+      >    <a name="609" class="Symbol"
       >=</a
-      ><a name="610"
-      > </a
-      ><a name="611" href="Data.Conat.html#447" class="InductiveConstructor"
+      > <a name="611" href="Data.Conat.html#Co&#8469;.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="615"
       >
-</a
-      ><a name="616" href="Data.Conat.html#579" class="Function"
+<a name="616" href="Data.Conat.html#from&#8469;" class="Function"
       >from&#8469;</a
-      ><a name="621"
-      > </a
-      ><a name="622" class="Symbol"
+      > <a name="622" class="Symbol"
       >(</a
-      ><a name="623" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      ><a name="623" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="626"
-      > </a
-      ><a name="627" href="Data.Conat.html#627" class="Bound"
+      > <a name="627" href="Data.Conat.html#627" class="Bound"
       >n</a
       ><a name="628" class="Symbol"
       >)</a
-      ><a name="629"
-      > </a
-      ><a name="630" class="Symbol"
+      > <a name="630" class="Symbol"
       >=</a
-      ><a name="631"
-      > </a
-      ><a name="632" href="Data.Conat.html#460" class="InductiveConstructor"
+      > <a name="632" href="Data.Conat.html#Co&#8469;.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="635"
-      > </a
-      ><a name="636" class="Symbol"
+      > <a name="636" class="Symbol"
       >(</a
-      ><a name="637" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+      ><a name="637" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="638"
-      > </a
-      ><a name="639" href="Data.Conat.html#579" class="Function"
+      > <a name="639" href="Data.Conat.html#from&#8469;" class="Function"
       >from&#8469;</a
-      ><a name="644"
-      > </a
-      ><a name="645" href="Data.Conat.html#627" class="Bound"
+      > <a name="645" href="Data.Conat.html#627" class="Bound"
       >n</a
       ><a name="646" class="Symbol"
       >)</a
-      ><a name="647"
       >
 
-</a
-      ><a name="649" href="Data.Conat.html#649" class="Function"
+<a name="&#8734;&#8469;" href="Data.Conat.html#&#8734;&#8469;" class="Function"
       >&#8734;&#8469;</a
-      ><a name="651"
-      > </a
-      ><a name="652" class="Symbol"
+      > <a name="652" class="Symbol"
       >:</a
-      ><a name="653"
-      > </a
-      ><a name="654" href="Data.Conat.html#429" class="Datatype"
+      > <a name="654" href="Data.Conat.html#Co&#8469;" class="Datatype"
       >Co&#8469;</a
-      ><a name="657"
       >
-</a
-      ><a name="658" href="Data.Conat.html#649" class="Function"
+<a name="658" href="Data.Conat.html#&#8734;&#8469;" class="Function"
       >&#8734;&#8469;</a
-      ><a name="660"
-      > </a
-      ><a name="661" class="Symbol"
+      > <a name="661" class="Symbol"
       >=</a
-      ><a name="662"
-      > </a
-      ><a name="663" href="Data.Conat.html#460" class="InductiveConstructor"
+      > <a name="663" href="Data.Conat.html#Co&#8469;.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="666"
-      > </a
-      ><a name="667" class="Symbol"
+      > <a name="667" class="Symbol"
       >(</a
-      ><a name="668" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+      ><a name="668" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="669"
-      > </a
-      ><a name="670" href="Data.Conat.html#649" class="Function"
+      > <a name="670" href="Data.Conat.html#&#8734;&#8469;" class="Function"
       >&#8734;&#8469;</a
       ><a name="672" class="Symbol"
       >)</a
-      ><a name="673"
       >
 
-</a
-      ><a name="675" class="Keyword"
+<a name="675" class="Keyword"
       >infixl</a
-      ><a name="681"
-      > </a
-      ><a name="682" class="Number"
+      > <a name="682" class="Number"
       >6</a
-      ><a name="683"
-      > _+_
-
-</a
-      ><a name="689" href="Data.Conat.html#689" class="Function Operator"
+      > <a name="_+_" href="Data.Conat.html#_+_" class="Function Operator"
       >_+_</a
-      ><a name="692"
-      > </a
-      ><a name="693" class="Symbol"
+      >
+
+<a name="_+_" href="Data.Conat.html#_+_" class="Function Operator"
+      >_+_</a
+      > <a name="693" class="Symbol"
       >:</a
-      ><a name="694"
-      > </a
-      ><a name="695" href="Data.Conat.html#429" class="Datatype"
+      > <a name="695" href="Data.Conat.html#Co&#8469;" class="Datatype"
       >Co&#8469;</a
-      ><a name="698"
-      > </a
-      ><a name="699" class="Symbol"
+      > <a name="699" class="Symbol"
       >&#8594;</a
-      ><a name="700"
-      > </a
-      ><a name="701" href="Data.Conat.html#429" class="Datatype"
+      > <a name="701" href="Data.Conat.html#Co&#8469;" class="Datatype"
       >Co&#8469;</a
-      ><a name="704"
-      > </a
-      ><a name="705" class="Symbol"
+      > <a name="705" class="Symbol"
       >&#8594;</a
-      ><a name="706"
-      > </a
-      ><a name="707" href="Data.Conat.html#429" class="Datatype"
+      > <a name="707" href="Data.Conat.html#Co&#8469;" class="Datatype"
       >Co&#8469;</a
-      ><a name="710"
       >
-</a
-      ><a name="711" href="Data.Conat.html#447" class="InductiveConstructor"
+<a name="711" href="Data.Conat.html#Co&#8469;.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="715"
-      >  </a
-      ><a name="717" href="Data.Conat.html#689" class="Function Operator"
+      >  <a name="717" href="Data.Conat.html#_+_" class="Function Operator"
       >+</a
-      ><a name="718"
-      > </a
-      ><a name="719" href="Data.Conat.html#719" class="Bound"
+      > <a name="719" href="Data.Conat.html#719" class="Bound"
       >n</a
-      ><a name="720"
-      > </a
-      ><a name="721" class="Symbol"
+      > <a name="721" class="Symbol"
       >=</a
-      ><a name="722"
-      > </a
-      ><a name="723" href="Data.Conat.html#719" class="Bound"
+      > <a name="723" href="Data.Conat.html#719" class="Bound"
       >n</a
-      ><a name="724"
       >
-</a
-      ><a name="725" href="Data.Conat.html#460" class="InductiveConstructor"
+<a name="725" href="Data.Conat.html#Co&#8469;.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="728"
-      > </a
-      ><a name="729" href="Data.Conat.html#729" class="Bound"
+      > <a name="729" href="Data.Conat.html#729" class="Bound"
       >m</a
-      ><a name="730"
-      > </a
-      ><a name="731" href="Data.Conat.html#689" class="Function Operator"
+      > <a name="731" href="Data.Conat.html#_+_" class="Function Operator"
       >+</a
-      ><a name="732"
-      > </a
-      ><a name="733" href="Data.Conat.html#733" class="Bound"
+      > <a name="733" href="Data.Conat.html#733" class="Bound"
       >n</a
-      ><a name="734"
-      > </a
-      ><a name="735" class="Symbol"
+      > <a name="735" class="Symbol"
       >=</a
-      ><a name="736"
-      > </a
-      ><a name="737" href="Data.Conat.html#460" class="InductiveConstructor"
+      > <a name="737" href="Data.Conat.html#Co&#8469;.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="740"
-      > </a
-      ><a name="741" class="Symbol"
+      > <a name="741" class="Symbol"
       >(</a
-      ><a name="742" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+      ><a name="742" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="743"
-      > </a
-      ><a name="744" class="Symbol"
+      > <a name="744" class="Symbol"
       >(</a
-      ><a name="745" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      ><a name="745" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="746"
-      > </a
-      ><a name="747" href="Data.Conat.html#729" class="Bound"
+      > <a name="747" href="Data.Conat.html#729" class="Bound"
       >m</a
-      ><a name="748"
-      > </a
-      ><a name="749" href="Data.Conat.html#689" class="Function Operator"
+      > <a name="749" href="Data.Conat.html#_+_" class="Function Operator"
       >+</a
-      ><a name="750"
-      > </a
-      ><a name="751" href="Data.Conat.html#733" class="Bound"
+      > <a name="751" href="Data.Conat.html#733" class="Bound"
       >n</a
       ><a name="752" class="Symbol"
       >))</a
-      ><a name="754"
       >
 
-</a
-      ><a name="756" class="Comment"
+<a name="756" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="828"
       >
-</a
-      ><a name="829" class="Comment"
+<a name="829" class="Comment"
       >-- Equality</a
-      ><a name="840"
       >
 
-</a
-      ><a name="842" class="Keyword"
+<a name="842" class="Keyword"
       >data</a
-      ><a name="846"
-      > </a
-      ><a name="847" href="Data.Conat.html#847" class="Datatype Operator"
+      > <a name="_&#8776;_" href="Data.Conat.html#_&#8776;_" class="Datatype Operator"
       >_&#8776;_</a
-      ><a name="850"
-      > </a
-      ><a name="851" class="Symbol"
+      > <a name="851" class="Symbol"
       >:</a
-      ><a name="852"
-      > </a
-      ><a name="853" href="Data.Conat.html#429" class="Datatype"
+      > <a name="853" href="Data.Conat.html#Co&#8469;" class="Datatype"
       >Co&#8469;</a
-      ><a name="856"
-      > </a
-      ><a name="857" class="Symbol"
+      > <a name="857" class="Symbol"
       >&#8594;</a
-      ><a name="858"
-      > </a
-      ><a name="859" href="Data.Conat.html#429" class="Datatype"
+      > <a name="859" href="Data.Conat.html#Co&#8469;" class="Datatype"
       >Co&#8469;</a
-      ><a name="862"
-      > </a
-      ><a name="863" class="Symbol"
+      > <a name="863" class="Symbol"
       >&#8594;</a
-      ><a name="864"
-      > </a
-      ><a name="865" class="PrimitiveType"
+      > <a name="865" class="PrimitiveType"
       >Set</a
-      ><a name="868"
-      > </a
-      ><a name="869" class="Keyword"
+      > <a name="869" class="Keyword"
       >where</a
-      ><a name="874"
       >
-  </a
-      ><a name="877" href="Data.Conat.html#877" class="InductiveConstructor"
+  <a name="_&#8776;_.zero" href="Data.Conat.html#_&#8776;_.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="881"
-      > </a
-      ><a name="882" class="Symbol"
+      > <a name="882" class="Symbol"
       >:</a
-      ><a name="883"
-      >                                 </a
-      ><a name="916" href="Data.Conat.html#447" class="InductiveConstructor"
+      >                                 <a name="916" href="Data.Conat.html#Co&#8469;.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="920"
-      >  </a
-      ><a name="922" href="Data.Conat.html#847" class="Datatype Operator"
+      >  <a name="922" href="Data.Conat.html#_&#8776;_" class="Datatype Operator"
       >&#8776;</a
-      ><a name="923"
-      > </a
-      ><a name="924" href="Data.Conat.html#447" class="InductiveConstructor"
+      > <a name="924" href="Data.Conat.html#Co&#8469;.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="928"
       >
-  </a
-      ><a name="931" href="Data.Conat.html#931" class="InductiveConstructor"
+  <a name="_&#8776;_.suc" href="Data.Conat.html#_&#8776;_.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="934"
-      >  </a
-      ><a name="936" class="Symbol"
+      >  <a name="936" class="Symbol"
       >:</a
-      ><a name="937"
-      > </a
-      ><a name="938" class="Symbol"
+      > <a name="938" class="Symbol"
       >&#8704;</a
-      ><a name="939"
-      > </a
-      ><a name="940" class="Symbol"
+      > <a name="940" class="Symbol"
       >{</a
       ><a name="941" href="Data.Conat.html#941" class="Bound"
       >m</a
-      ><a name="942"
-      > </a
-      ><a name="943" href="Data.Conat.html#943" class="Bound"
+      > <a name="943" href="Data.Conat.html#943" class="Bound"
       >n</a
       ><a name="944" class="Symbol"
       >}</a
-      ><a name="945"
-      > </a
-      ><a name="946" class="Symbol"
+      > <a name="946" class="Symbol"
       >(</a
       ><a name="947" href="Data.Conat.html#947" class="Bound"
       >m&#8776;n</a
-      ><a name="950"
-      > </a
-      ><a name="951" class="Symbol"
+      > <a name="951" class="Symbol"
       >:</a
-      ><a name="952"
-      > </a
-      ><a name="953" href="Agda.Builtin.Coinduction.html#96" class="Record"
+      > <a name="953" href="Agda.Builtin.Coinduction.html#&#8734;" class="Record"
       >&#8734;</a
-      ><a name="954"
-      > </a
-      ><a name="955" class="Symbol"
+      > <a name="955" class="Symbol"
       >(</a
-      ><a name="956" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      ><a name="956" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="957"
-      > </a
-      ><a name="958" href="Data.Conat.html#941" class="Bound"
+      > <a name="958" href="Data.Conat.html#941" class="Bound"
       >m</a
-      ><a name="959"
-      > </a
-      ><a name="960" href="Data.Conat.html#847" class="Datatype Operator"
+      > <a name="960" href="Data.Conat.html#_&#8776;_" class="Datatype Operator"
       >&#8776;</a
-      ><a name="961"
-      > </a
-      ><a name="962" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      > <a name="962" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="963"
-      > </a
-      ><a name="964" href="Data.Conat.html#943" class="Bound"
+      > <a name="964" href="Data.Conat.html#943" class="Bound"
       >n</a
       ><a name="965" class="Symbol"
       >))</a
-      ><a name="967"
-      > </a
-      ><a name="968" class="Symbol"
+      > <a name="968" class="Symbol"
       >&#8594;</a
-      ><a name="969"
-      > </a
-      ><a name="970" href="Data.Conat.html#460" class="InductiveConstructor"
+      > <a name="970" href="Data.Conat.html#Co&#8469;.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="973"
-      > </a
-      ><a name="974" href="Data.Conat.html#941" class="Bound"
+      > <a name="974" href="Data.Conat.html#941" class="Bound"
       >m</a
-      ><a name="975"
-      > </a
-      ><a name="976" href="Data.Conat.html#847" class="Datatype Operator"
+      > <a name="976" href="Data.Conat.html#_&#8776;_" class="Datatype Operator"
       >&#8776;</a
-      ><a name="977"
-      > </a
-      ><a name="978" href="Data.Conat.html#460" class="InductiveConstructor"
+      > <a name="978" href="Data.Conat.html#Co&#8469;.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="981"
-      > </a
-      ><a name="982" href="Data.Conat.html#943" class="Bound"
+      > <a name="982" href="Data.Conat.html#943" class="Bound"
       >n</a
-      ><a name="983"
       >
 
-</a
-      ><a name="985" href="Data.Conat.html#985" class="Function"
+<a name="setoid" href="Data.Conat.html#setoid" class="Function"
       >setoid</a
-      ><a name="991"
-      > </a
-      ><a name="992" class="Symbol"
+      > <a name="992" class="Symbol"
       >:</a
-      ><a name="993"
-      > </a
-      ><a name="994" href="Relation.Binary.html#1908" class="Record"
+      > <a name="994" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="1000"
-      > </a
-      ><a name="1001" class="Symbol"
+      > <a name="1001" class="Symbol"
       >_</a
-      ><a name="1002"
-      > </a
-      ><a name="1003" class="Symbol"
+      > <a name="1003" class="Symbol"
       >_</a
-      ><a name="1004"
       >
-</a
-      ><a name="1005" href="Data.Conat.html#985" class="Function"
+<a name="1005" href="Data.Conat.html#setoid" class="Function"
       >setoid</a
-      ><a name="1011"
-      > </a
-      ><a name="1012" class="Symbol"
+      > <a name="1012" class="Symbol"
       >=</a
-      ><a name="1013"
-      > </a
-      ><a name="1014" class="Keyword"
+      > <a name="1014" class="Keyword"
       >record</a
-      ><a name="1020"
       >
-  </a
-      ><a name="1023" class="Symbol"
+  <a name="1023" class="Symbol"
       >{</a
-      ><a name="1024"
-      > </a
-      ><a name="1025" class="Field"
+      > <a name="1025" class="Field"
       >Carrier</a
-      ><a name="1032"
-      >       </a
-      ><a name="1039" class="Symbol"
+      >       <a name="1039" class="Symbol"
       >=</a
-      ><a name="1040"
-      > </a
-      ><a name="1041" href="Data.Conat.html#429" class="Datatype"
+      > <a name="1041" href="Data.Conat.html#Co&#8469;" class="Datatype"
       >Co&#8469;</a
-      ><a name="1044"
       >
-  </a
-      ><a name="1047" class="Symbol"
+  <a name="1047" class="Symbol"
       >;</a
-      ><a name="1048"
-      > </a
-      ><a name="1049" class="Field Operator"
+      > <a name="1049" class="Field Operator"
       >_&#8776;_</a
-      ><a name="1052"
-      >           </a
-      ><a name="1063" class="Symbol"
+      >           <a name="1063" class="Symbol"
       >=</a
-      ><a name="1064"
-      > </a
-      ><a name="1065" href="Data.Conat.html#847" class="Datatype Operator"
+      > <a name="1065" href="Data.Conat.html#_&#8776;_" class="Datatype Operator"
       >_&#8776;_</a
-      ><a name="1068"
       >
-  </a
-      ><a name="1071" class="Symbol"
+  <a name="1071" class="Symbol"
       >;</a
-      ><a name="1072"
-      > </a
-      ><a name="1073" class="Field"
+      > <a name="1073" class="Field"
       >isEquivalence</a
-      ><a name="1086"
-      > </a
-      ><a name="1087" class="Symbol"
+      > <a name="1087" class="Symbol"
       >=</a
-      ><a name="1088"
-      > </a
-      ><a name="1089" class="Keyword"
+      > <a name="1089" class="Keyword"
       >record</a
-      ><a name="1095"
       >
-    </a
-      ><a name="1100" class="Symbol"
+    <a name="1100" class="Symbol"
       >{</a
-      ><a name="1101"
-      > </a
-      ><a name="1102" class="Field"
+      > <a name="1102" class="Field"
       >refl</a
-      ><a name="1106"
-      >  </a
-      ><a name="1108" class="Symbol"
+      >  <a name="1108" class="Symbol"
       >=</a
-      ><a name="1109"
-      > </a
-      ><a name="1110" href="Data.Conat.html#1173" class="Function"
+      > <a name="1110" href="Data.Conat.html#1173" class="Function"
       >refl</a
-      ><a name="1114"
       >
-    </a
-      ><a name="1119" class="Symbol"
+    <a name="1119" class="Symbol"
       >;</a
-      ><a name="1120"
-      > </a
-      ><a name="1121" class="Field"
+      > <a name="1121" class="Field"
       >sym</a
-      ><a name="1124"
-      >   </a
-      ><a name="1127" class="Symbol"
+      >   <a name="1127" class="Symbol"
       >=</a
-      ><a name="1128"
-      > </a
-      ><a name="1129" href="Data.Conat.html#1249" class="Function"
+      > <a name="1129" href="Data.Conat.html#1249" class="Function"
       >sym</a
-      ><a name="1132"
       >
-    </a
-      ><a name="1137" class="Symbol"
+    <a name="1137" class="Symbol"
       >;</a
-      ><a name="1138"
-      > </a
-      ><a name="1139" class="Field"
+      > <a name="1139" class="Field"
       >trans</a
-      ><a name="1144"
-      > </a
-      ><a name="1145" class="Symbol"
+      > <a name="1145" class="Symbol"
       >=</a
-      ><a name="1146"
-      > </a
-      ><a name="1147" href="Data.Conat.html#1333" class="Function"
+      > <a name="1147" href="Data.Conat.html#1333" class="Function"
       >trans</a
-      ><a name="1152"
       >
-    </a
-      ><a name="1157" class="Symbol"
+    <a name="1157" class="Symbol"
       >}</a
-      ><a name="1158"
       >
-  </a
-      ><a name="1161" class="Symbol"
+  <a name="1161" class="Symbol"
       >}</a
-      ><a name="1162"
       >
-  </a
-      ><a name="1165" class="Keyword"
+  <a name="1165" class="Keyword"
       >where</a
-      ><a name="1170"
       >
-  </a
-      ><a name="1173" href="Data.Conat.html#1173" class="Function"
+  <a name="1173" href="Data.Conat.html#1173" class="Function"
       >refl</a
-      ><a name="1177"
-      > </a
-      ><a name="1178" class="Symbol"
+      > <a name="1178" class="Symbol"
       >:</a
-      ><a name="1179"
-      > </a
-      ><a name="1180" href="Relation.Binary.Core.html#1870" class="Function"
+      > <a name="1180" href="Relation.Binary.Core.html#Reflexive" class="Function"
       >Reflexive</a
-      ><a name="1189"
-      > </a
-      ><a name="1190" href="Data.Conat.html#847" class="Datatype Operator"
+      > <a name="1190" href="Data.Conat.html#_&#8776;_" class="Datatype Operator"
       >_&#8776;_</a
-      ><a name="1193"
       >
-  </a
-      ><a name="1196" href="Data.Conat.html#1173" class="Function"
+  <a name="1196" href="Data.Conat.html#1173" class="Function"
       >refl</a
-      ><a name="1200"
-      > </a
-      ><a name="1201" class="Symbol"
+      > <a name="1201" class="Symbol"
       >{</a
-      ><a name="1202" href="Data.Conat.html#447" class="InductiveConstructor"
+      ><a name="1202" href="Data.Conat.html#Co&#8469;.zero" class="InductiveConstructor"
       >zero</a
       ><a name="1206" class="Symbol"
       >}</a
-      ><a name="1207"
-      >  </a
-      ><a name="1209" class="Symbol"
+      >  <a name="1209" class="Symbol"
       >=</a
-      ><a name="1210"
-      > </a
-      ><a name="1211" href="Data.Conat.html#877" class="InductiveConstructor"
+      > <a name="1211" href="Data.Conat.html#_&#8776;_.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1215"
       >
-  </a
-      ><a name="1218" href="Data.Conat.html#1173" class="Function"
+  <a name="1218" href="Data.Conat.html#1173" class="Function"
       >refl</a
-      ><a name="1222"
-      > </a
-      ><a name="1223" class="Symbol"
+      > <a name="1223" class="Symbol"
       >{</a
-      ><a name="1224" href="Data.Conat.html#460" class="InductiveConstructor"
+      ><a name="1224" href="Data.Conat.html#Co&#8469;.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1227"
-      > </a
-      ><a name="1228" href="Data.Conat.html#1228" class="Bound"
+      > <a name="1228" href="Data.Conat.html#1228" class="Bound"
       >n</a
       ><a name="1229" class="Symbol"
       >}</a
-      ><a name="1230"
-      > </a
-      ><a name="1231" class="Symbol"
+      > <a name="1231" class="Symbol"
       >=</a
-      ><a name="1232"
-      > </a
-      ><a name="1233" href="Data.Conat.html#931" class="InductiveConstructor"
+      > <a name="1233" href="Data.Conat.html#_&#8776;_.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1236"
-      > </a
-      ><a name="1237" class="Symbol"
+      > <a name="1237" class="Symbol"
       >(</a
-      ><a name="1238" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+      ><a name="1238" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="1239"
-      > </a
-      ><a name="1240" href="Data.Conat.html#1173" class="Function"
+      > <a name="1240" href="Data.Conat.html#1173" class="Function"
       >refl</a
       ><a name="1244" class="Symbol"
       >)</a
-      ><a name="1245"
       >
 
-  </a
-      ><a name="1249" href="Data.Conat.html#1249" class="Function"
+  <a name="1249" href="Data.Conat.html#1249" class="Function"
       >sym</a
-      ><a name="1252"
-      > </a
-      ><a name="1253" class="Symbol"
+      > <a name="1253" class="Symbol"
       >:</a
-      ><a name="1254"
-      > </a
-      ><a name="1255" href="Relation.Binary.Core.html#2293" class="Function"
+      > <a name="1255" href="Relation.Binary.Core.html#Symmetric" class="Function"
       >Symmetric</a
-      ><a name="1264"
-      > </a
-      ><a name="1265" href="Data.Conat.html#847" class="Datatype Operator"
+      > <a name="1265" href="Data.Conat.html#_&#8776;_" class="Datatype Operator"
       >_&#8776;_</a
-      ><a name="1268"
       >
-  </a
-      ><a name="1271" href="Data.Conat.html#1249" class="Function"
+  <a name="1271" href="Data.Conat.html#1249" class="Function"
       >sym</a
-      ><a name="1274"
-      > </a
-      ><a name="1275" href="Data.Conat.html#877" class="InductiveConstructor"
+      > <a name="1275" href="Data.Conat.html#_&#8776;_.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1279"
-      >      </a
-      ><a name="1285" class="Symbol"
+      >      <a name="1285" class="Symbol"
       >=</a
-      ><a name="1286"
-      > </a
-      ><a name="1287" href="Data.Conat.html#877" class="InductiveConstructor"
+      > <a name="1287" href="Data.Conat.html#_&#8776;_.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1291"
       >
-  </a
-      ><a name="1294" href="Data.Conat.html#1249" class="Function"
+  <a name="1294" href="Data.Conat.html#1249" class="Function"
       >sym</a
-      ><a name="1297"
-      > </a
-      ><a name="1298" class="Symbol"
+      > <a name="1298" class="Symbol"
       >(</a
-      ><a name="1299" href="Data.Conat.html#931" class="InductiveConstructor"
+      ><a name="1299" href="Data.Conat.html#_&#8776;_.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1302"
-      > </a
-      ><a name="1303" href="Data.Conat.html#1303" class="Bound"
+      > <a name="1303" href="Data.Conat.html#1303" class="Bound"
       >m&#8776;n</a
       ><a name="1306" class="Symbol"
       >)</a
-      ><a name="1307"
-      > </a
-      ><a name="1308" class="Symbol"
+      > <a name="1308" class="Symbol"
       >=</a
-      ><a name="1309"
-      > </a
-      ><a name="1310" href="Data.Conat.html#931" class="InductiveConstructor"
+      > <a name="1310" href="Data.Conat.html#_&#8776;_.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1313"
-      > </a
-      ><a name="1314" class="Symbol"
+      > <a name="1314" class="Symbol"
       >(</a
-      ><a name="1315" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+      ><a name="1315" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="1316"
-      > </a
-      ><a name="1317" href="Data.Conat.html#1249" class="Function"
+      > <a name="1317" href="Data.Conat.html#1249" class="Function"
       >sym</a
-      ><a name="1320"
-      > </a
-      ><a name="1321" class="Symbol"
+      > <a name="1321" class="Symbol"
       >(</a
-      ><a name="1322" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      ><a name="1322" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="1323"
-      > </a
-      ><a name="1324" href="Data.Conat.html#1303" class="Bound"
+      > <a name="1324" href="Data.Conat.html#1303" class="Bound"
       >m&#8776;n</a
       ><a name="1327" class="Symbol"
       >))</a
-      ><a name="1329"
       >
 
-  </a
-      ><a name="1333" href="Data.Conat.html#1333" class="Function"
+  <a name="1333" href="Data.Conat.html#1333" class="Function"
       >trans</a
-      ><a name="1338"
-      > </a
-      ><a name="1339" class="Symbol"
+      > <a name="1339" class="Symbol"
       >:</a
-      ><a name="1340"
-      > </a
-      ><a name="1341" href="Relation.Binary.Core.html#2772" class="Function"
+      > <a name="1341" href="Relation.Binary.Core.html#Transitive" class="Function"
       >Transitive</a
-      ><a name="1351"
-      > </a
-      ><a name="1352" href="Data.Conat.html#847" class="Datatype Operator"
+      > <a name="1352" href="Data.Conat.html#_&#8776;_" class="Datatype Operator"
       >_&#8776;_</a
-      ><a name="1355"
       >
-  </a
-      ><a name="1358" href="Data.Conat.html#1333" class="Function"
+  <a name="1358" href="Data.Conat.html#1333" class="Function"
       >trans</a
-      ><a name="1363"
-      > </a
-      ><a name="1364" href="Data.Conat.html#877" class="InductiveConstructor"
+      > <a name="1364" href="Data.Conat.html#_&#8776;_.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1368"
-      >      </a
-      ><a name="1374" href="Data.Conat.html#877" class="InductiveConstructor"
+      >      <a name="1374" href="Data.Conat.html#_&#8776;_.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1378"
-      >      </a
-      ><a name="1384" class="Symbol"
+      >      <a name="1384" class="Symbol"
       >=</a
-      ><a name="1385"
-      > </a
-      ><a name="1386" href="Data.Conat.html#877" class="InductiveConstructor"
+      > <a name="1386" href="Data.Conat.html#_&#8776;_.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1390"
       >
-  </a
-      ><a name="1393" href="Data.Conat.html#1333" class="Function"
+  <a name="1393" href="Data.Conat.html#1333" class="Function"
       >trans</a
-      ><a name="1398"
-      > </a
-      ><a name="1399" class="Symbol"
+      > <a name="1399" class="Symbol"
       >(</a
-      ><a name="1400" href="Data.Conat.html#931" class="InductiveConstructor"
+      ><a name="1400" href="Data.Conat.html#_&#8776;_.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1403"
-      > </a
-      ><a name="1404" href="Data.Conat.html#1404" class="Bound"
+      > <a name="1404" href="Data.Conat.html#1404" class="Bound"
       >m&#8776;n</a
       ><a name="1407" class="Symbol"
       >)</a
-      ><a name="1408"
-      > </a
-      ><a name="1409" class="Symbol"
+      > <a name="1409" class="Symbol"
       >(</a
-      ><a name="1410" href="Data.Conat.html#931" class="InductiveConstructor"
+      ><a name="1410" href="Data.Conat.html#_&#8776;_.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1413"
-      > </a
-      ><a name="1414" href="Data.Conat.html#1414" class="Bound"
+      > <a name="1414" href="Data.Conat.html#1414" class="Bound"
       >n&#8776;k</a
       ><a name="1417" class="Symbol"
       >)</a
-      ><a name="1418"
-      > </a
-      ><a name="1419" class="Symbol"
+      > <a name="1419" class="Symbol"
       >=</a
-      ><a name="1420"
-      > </a
-      ><a name="1421" href="Data.Conat.html#931" class="InductiveConstructor"
+      > <a name="1421" href="Data.Conat.html#_&#8776;_.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1424"
-      > </a
-      ><a name="1425" class="Symbol"
+      > <a name="1425" class="Symbol"
       >(</a
-      ><a name="1426" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+      ><a name="1426" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="1427"
-      > </a
-      ><a name="1428" href="Data.Conat.html#1333" class="Function"
+      > <a name="1428" href="Data.Conat.html#1333" class="Function"
       >trans</a
-      ><a name="1433"
-      > </a
-      ><a name="1434" class="Symbol"
+      > <a name="1434" class="Symbol"
       >(</a
-      ><a name="1435" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      ><a name="1435" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="1436"
-      > </a
-      ><a name="1437" href="Data.Conat.html#1404" class="Bound"
+      > <a name="1437" href="Data.Conat.html#1404" class="Bound"
       >m&#8776;n</a
       ><a name="1440" class="Symbol"
       >)</a
-      ><a name="1441"
-      > </a
-      ><a name="1442" class="Symbol"
+      > <a name="1442" class="Symbol"
       >(</a
-      ><a name="1443" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      ><a name="1443" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="1444"
-      > </a
-      ><a name="1445" href="Data.Conat.html#1414" class="Bound"
+      > <a name="1445" href="Data.Conat.html#1414" class="Bound"
       >n&#8776;k</a
       ><a name="1448" class="Symbol"
       >))</a
-      ><a name="1450"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

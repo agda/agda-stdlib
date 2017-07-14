@@ -11,1103 +11,635 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Strings</a
-      ><a name="116"
       >
-</a
-      ><a name="117" class="Comment"
+<a name="117" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="189"
       >
 
-</a
-      ><a name="191" class="Keyword"
+<a name="191" class="Keyword"
       >module</a
-      ><a name="197"
-      > </a
-      ><a name="198" href="Data.String.html#1" class="Module"
+      > <a name="198" href="Data.String.html" class="Module"
       >Data.String</a
-      ><a name="209"
-      > </a
-      ><a name="210" class="Keyword"
+      > <a name="210" class="Keyword"
       >where</a
-      ><a name="215"
       >
 
-</a
-      ><a name="217" class="Keyword"
+<a name="217" class="Keyword"
       >open</a
-      ><a name="221"
-      > </a
-      ><a name="222" class="Keyword"
+      > <a name="222" class="Keyword"
       >import</a
-      ><a name="228"
-      > </a
-      ><a name="229" href="Data.List.Base.html#1" class="Module"
+      > <a name="229" href="Data.List.Base.html" class="Module"
       >Data.List.Base</a
-      ><a name="243"
-      > </a
-      ><a name="244" class="Symbol"
+      > <a name="244" class="Symbol"
       >as</a
-      ><a name="246"
-      > </a
-      ><a name="247" class="Module"
+      > <a name="247" class="Module"
       >List</a
-      ><a name="251"
-      > </a
-      ><a name="252" class="Keyword"
+      > <a name="252" class="Keyword"
       >using</a
-      ><a name="257"
-      > </a
-      ><a name="258" class="Symbol"
+      > <a name="258" class="Symbol"
       >(</a
-      ><a name="259" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      ><a name="259" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >_&#8759;_</a
       ><a name="262" class="Symbol"
       >;</a
-      ><a name="263"
-      > </a
-      ><a name="264" href="Data.List.Base.html#5519" class="InductiveConstructor"
+      > <a name="264" href="Data.List.Base.html#InitLast.[]" class="InductiveConstructor"
       >[]</a
       ><a name="266" class="Symbol"
       >;</a
-      ><a name="267"
-      > </a
-      ><a name="268" href="Agda.Builtin.List.html#80" class="Datatype"
+      > <a name="268" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
       ><a name="272" class="Symbol"
       >)</a
-      ><a name="273"
       >
-</a
-      ><a name="274" class="Keyword"
+<a name="274" class="Keyword"
       >open</a
-      ><a name="278"
-      > </a
-      ><a name="279" class="Keyword"
+      > <a name="279" class="Keyword"
       >import</a
-      ><a name="285"
-      > </a
-      ><a name="286" href="Data.Vec.html#1" class="Module"
+      > <a name="286" href="Data.Vec.html" class="Module"
       >Data.Vec</a
-      ><a name="294"
-      > </a
-      ><a name="295" class="Symbol"
+      > <a name="295" class="Symbol"
       >as</a
-      ><a name="297"
-      > </a
-      ><a name="298" class="Module"
+      > <a name="298" class="Module"
       >Vec</a
-      ><a name="301"
-      > </a
-      ><a name="302" class="Keyword"
+      > <a name="302" class="Keyword"
       >using</a
-      ><a name="307"
-      > </a
-      ><a name="308" class="Symbol"
+      > <a name="308" class="Symbol"
       >(</a
-      ><a name="309" href="Data.Vec.html#609" class="Datatype"
+      ><a name="309" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
       ><a name="312" class="Symbol"
       >)</a
-      ><a name="313"
       >
-</a
-      ><a name="314" class="Keyword"
+<a name="314" class="Keyword"
       >open</a
-      ><a name="318"
-      > </a
-      ><a name="319" class="Keyword"
+      > <a name="319" class="Keyword"
       >import</a
-      ><a name="325"
-      > </a
-      ><a name="326" href="Data.Colist.html#1" class="Module"
+      > <a name="326" href="Data.Colist.html" class="Module"
       >Data.Colist</a
-      ><a name="337"
-      > </a
-      ><a name="338" class="Symbol"
+      > <a name="338" class="Symbol"
       >as</a
-      ><a name="340"
-      > </a
-      ><a name="341" class="Module"
+      > <a name="341" class="Module"
       >Colist</a
-      ><a name="347"
-      > </a
-      ><a name="348" class="Keyword"
+      > <a name="348" class="Keyword"
       >using</a
-      ><a name="353"
-      > </a
-      ><a name="354" class="Symbol"
+      > <a name="354" class="Symbol"
       >(</a
-      ><a name="355" href="Data.Colist.html#1494" class="Datatype"
+      ><a name="355" href="Data.Colist.html#Colist" class="Datatype"
       >Colist</a
       ><a name="361" class="Symbol"
       >)</a
-      ><a name="362"
       >
-</a
-      ><a name="363" class="Keyword"
+<a name="363" class="Keyword"
       >open</a
-      ><a name="367"
-      > </a
-      ><a name="368" class="Keyword"
+      > <a name="368" class="Keyword"
       >import</a
-      ><a name="374"
-      > </a
-      ><a name="375" href="Data.Char.html#1" class="Module"
+      > <a name="375" href="Data.Char.html" class="Module"
       >Data.Char</a
-      ><a name="384"
-      > </a
-      ><a name="385" class="Symbol"
+      > <a name="385" class="Symbol"
       >as</a
-      ><a name="387"
-      > </a
-      ><a name="388" class="Module"
+      > <a name="388" class="Module"
       >Char</a
-      ><a name="392"
-      > </a
-      ><a name="393" class="Keyword"
+      > <a name="393" class="Keyword"
       >using</a
-      ><a name="398"
-      > </a
-      ><a name="399" class="Symbol"
+      > <a name="399" class="Symbol"
       >(</a
-      ><a name="400" href="Agda.Builtin.Char.html#132" class="Postulate"
+      ><a name="400" href="Agda.Builtin.Char.html#Char" class="Postulate"
       >Char</a
       ><a name="404" class="Symbol"
       >)</a
-      ><a name="405"
       >
-</a
-      ><a name="406" class="Keyword"
+<a name="406" class="Keyword"
       >open</a
-      ><a name="410"
-      > </a
-      ><a name="411" class="Keyword"
+      > <a name="411" class="Keyword"
       >import</a
-      ><a name="417"
-      > </a
-      ><a name="418" href="Data.Bool.Base.html#1" class="Module"
+      > <a name="418" href="Data.Bool.Base.html" class="Module"
       >Data.Bool.Base</a
-      ><a name="432"
-      > </a
-      ><a name="433" class="Keyword"
+      > <a name="433" class="Keyword"
       >using</a
-      ><a name="438"
-      > </a
-      ><a name="439" class="Symbol"
+      > <a name="439" class="Symbol"
       >(</a
-      ><a name="440" href="Agda.Builtin.Bool.html#67" class="Datatype"
+      ><a name="440" href="Agda.Builtin.Bool.html#Bool" class="Datatype"
       >Bool</a
       ><a name="444" class="Symbol"
       >;</a
-      ><a name="445"
-      > </a
-      ><a name="446" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor"
+      > <a name="446" href="Agda.Builtin.Bool.html#Bool.true" class="InductiveConstructor"
       >true</a
       ><a name="450" class="Symbol"
       >;</a
-      ><a name="451"
-      > </a
-      ><a name="452" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor"
+      > <a name="452" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor"
       >false</a
       ><a name="457" class="Symbol"
       >)</a
-      ><a name="458"
       >
-</a
-      ><a name="459" class="Keyword"
+<a name="459" class="Keyword"
       >open</a
-      ><a name="463"
-      > </a
-      ><a name="464" class="Keyword"
+      > <a name="464" class="Keyword"
       >import</a
-      ><a name="470"
-      > </a
-      ><a name="471" href="Function.html#1" class="Module"
+      > <a name="471" href="Function.html" class="Module"
       >Function</a
-      ><a name="479"
       >
-</a
-      ><a name="480" class="Keyword"
+<a name="480" class="Keyword"
       >open</a
-      ><a name="484"
-      > </a
-      ><a name="485" class="Keyword"
+      > <a name="485" class="Keyword"
       >import</a
-      ><a name="491"
-      > </a
-      ><a name="492" href="Relation.Nullary.html#1" class="Module"
+      > <a name="492" href="Relation.Nullary.html" class="Module"
       >Relation.Nullary</a
-      ><a name="508"
       >
-</a
-      ><a name="509" class="Keyword"
+<a name="509" class="Keyword"
       >open</a
-      ><a name="513"
-      > </a
-      ><a name="514" class="Keyword"
+      > <a name="514" class="Keyword"
       >import</a
-      ><a name="520"
-      > </a
-      ><a name="521" href="Relation.Nullary.Decidable.html#1" class="Module"
+      > <a name="521" href="Relation.Nullary.Decidable.html" class="Module"
       >Relation.Nullary.Decidable</a
-      ><a name="547"
       >
-</a
-      ><a name="548" class="Keyword"
+<a name="548" class="Keyword"
       >open</a
-      ><a name="552"
-      > </a
-      ><a name="553" class="Keyword"
+      > <a name="553" class="Keyword"
       >import</a
-      ><a name="559"
-      > </a
-      ><a name="560" href="Relation.Binary.html#1" class="Module"
+      > <a name="560" href="Relation.Binary.html" class="Module"
       >Relation.Binary</a
-      ><a name="575"
       >
-</a
-      ><a name="576" class="Keyword"
+<a name="576" class="Keyword"
       >open</a
-      ><a name="580"
-      > </a
-      ><a name="581" class="Keyword"
+      > <a name="581" class="Keyword"
       >import</a
-      ><a name="587"
-      > </a
-      ><a name="588" href="Relation.Binary.List.StrictLex.html#1" class="Module"
+      > <a name="588" href="Relation.Binary.List.StrictLex.html" class="Module"
       >Relation.Binary.List.StrictLex</a
-      ><a name="618"
-      > </a
-      ><a name="619" class="Symbol"
+      > <a name="619" class="Symbol"
       >as</a
-      ><a name="621"
-      > </a
-      ><a name="622" class="Module"
+      > <a name="622" class="Module"
       >StrictLex</a
-      ><a name="631"
       >
-</a
-      ><a name="632" class="Keyword"
+<a name="632" class="Keyword"
       >import</a
-      ><a name="638"
-      > </a
-      ><a name="639" href="Relation.Binary.On.html#1" class="Module"
+      > <a name="639" href="Relation.Binary.On.html" class="Module"
       >Relation.Binary.On</a
-      ><a name="657"
-      > </a
-      ><a name="658" class="Symbol"
+      > <a name="658" class="Symbol"
       >as</a
-      ><a name="660"
-      > </a
-      ><a name="661" class="Module"
+      > <a name="661" class="Module"
       >On</a
-      ><a name="663"
       >
-</a
-      ><a name="664" class="Keyword"
+<a name="664" class="Keyword"
       >open</a
-      ><a name="668"
-      > </a
-      ><a name="669" class="Keyword"
+      > <a name="669" class="Keyword"
       >import</a
-      ><a name="675"
-      > </a
-      ><a name="676" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      > <a name="676" href="Relation.Binary.PropositionalEquality.html" class="Module"
       >Relation.Binary.PropositionalEquality</a
-      ><a name="713"
-      > </a
-      ><a name="714" class="Symbol"
+      > <a name="714" class="Symbol"
       >as</a
-      ><a name="716"
-      > </a
-      ><a name="717" class="Module"
+      > <a name="717" class="Module"
       >PropEq</a
-      ><a name="723"
-      > </a
-      ><a name="724" class="Keyword"
+      > <a name="724" class="Keyword"
       >using</a
-      ><a name="729"
-      > </a
-      ><a name="730" class="Symbol"
+      > <a name="730" class="Symbol"
       >(</a
-      ><a name="731" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      ><a name="731" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >_&#8801;_</a
       ><a name="734" class="Symbol"
       >)</a
-      ><a name="735"
       >
-</a
-      ><a name="736" class="Keyword"
+<a name="736" class="Keyword"
       >open</a
-      ><a name="740"
-      > </a
-      ><a name="741" class="Keyword"
+      > <a name="741" class="Keyword"
       >import</a
-      ><a name="747"
-      > </a
-      ><a name="748" href="Relation.Binary.PropositionalEquality.TrustMe.html#1" class="Module"
+      > <a name="748" href="Relation.Binary.PropositionalEquality.TrustMe.html" class="Module"
       >Relation.Binary.PropositionalEquality.TrustMe</a
-      ><a name="793"
       >
 
-</a
-      ><a name="795" class="Keyword"
+<a name="795" class="Keyword"
       >open</a
-      ><a name="799"
-      > </a
-      ><a name="800" class="Keyword"
+      > <a name="800" class="Keyword"
       >import</a
-      ><a name="806"
-      > </a
-      ><a name="807" href="Data.String.Base.html#1" class="Module"
+      > <a name="807" href="Data.String.Base.html" class="Module"
       >Data.String.Base</a
-      ><a name="823"
-      > </a
-      ><a name="824" class="Keyword"
+      > <a name="824" class="Keyword"
       >public</a
-      ><a name="830"
       >
 
-</a
-      ><a name="832" class="Comment"
+<a name="832" class="Comment"
       >-- Possibly infinite strings.</a
-      ><a name="861"
       >
 
-</a
-      ><a name="863" href="Data.String.html#863" class="Function"
+<a name="Costring" href="Data.String.html#Costring" class="Function"
       >Costring</a
-      ><a name="871"
-      > </a
-      ><a name="872" class="Symbol"
+      > <a name="872" class="Symbol"
       >:</a
-      ><a name="873"
-      > </a
-      ><a name="874" class="PrimitiveType"
+      > <a name="874" class="PrimitiveType"
       >Set</a
-      ><a name="877"
       >
-</a
-      ><a name="878" href="Data.String.html#863" class="Function"
+<a name="878" href="Data.String.html#Costring" class="Function"
       >Costring</a
-      ><a name="886"
-      > </a
-      ><a name="887" class="Symbol"
+      > <a name="887" class="Symbol"
       >=</a
-      ><a name="888"
-      > </a
-      ><a name="889" href="Data.Colist.html#1494" class="Datatype"
+      > <a name="889" href="Data.Colist.html#Colist" class="Datatype"
       >Colist</a
-      ><a name="895"
-      > </a
-      ><a name="896" href="Agda.Builtin.Char.html#132" class="Postulate"
+      > <a name="896" href="Agda.Builtin.Char.html#Char" class="Postulate"
       >Char</a
-      ><a name="900"
       >
 
-</a
-      ><a name="902" class="Comment"
+<a name="902" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="974"
       >
-</a
-      ><a name="975" class="Comment"
+<a name="975" class="Comment"
       >-- Operations</a
-      ><a name="988"
       >
 
-</a
-      ><a name="990" href="Data.String.html#990" class="Function"
+<a name="toVec" href="Data.String.html#toVec" class="Function"
       >toVec</a
-      ><a name="995"
-      > </a
-      ><a name="996" class="Symbol"
+      > <a name="996" class="Symbol"
       >:</a
-      ><a name="997"
-      > </a
-      ><a name="998" class="Symbol"
+      > <a name="998" class="Symbol"
       >(</a
       ><a name="999" href="Data.String.html#999" class="Bound"
       >s</a
-      ><a name="1000"
-      > </a
-      ><a name="1001" class="Symbol"
+      > <a name="1001" class="Symbol"
       >:</a
-      ><a name="1002"
-      > </a
-      ><a name="1003" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="1003" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
       ><a name="1009" class="Symbol"
       >)</a
-      ><a name="1010"
-      > </a
-      ><a name="1011" class="Symbol"
+      > <a name="1011" class="Symbol"
       >&#8594;</a
-      ><a name="1012"
-      > </a
-      ><a name="1013" href="Data.Vec.html#609" class="Datatype"
+      > <a name="1013" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
-      ><a name="1016"
-      > </a
-      ><a name="1017" href="Agda.Builtin.Char.html#132" class="Postulate"
+      > <a name="1017" href="Agda.Builtin.Char.html#Char" class="Postulate"
       >Char</a
-      ><a name="1021"
-      > </a
-      ><a name="1022" class="Symbol"
+      > <a name="1022" class="Symbol"
       >(</a
-      ><a name="1023" href="Data.List.Base.html#2745" class="Function"
+      ><a name="1023" href="Data.List.Base.html#length" class="Function"
       >List.length</a
-      ><a name="1034"
-      > </a
-      ><a name="1035" class="Symbol"
+      > <a name="1035" class="Symbol"
       >(</a
-      ><a name="1036" href="Data.String.Base.html#930" class="Function"
+      ><a name="1036" href="Data.String.Base.html#toList" class="Function"
       >toList</a
-      ><a name="1042"
-      > </a
-      ><a name="1043" href="Data.String.html#999" class="Bound"
+      > <a name="1043" href="Data.String.html#999" class="Bound"
       >s</a
       ><a name="1044" class="Symbol"
       >))</a
-      ><a name="1046"
       >
-</a
-      ><a name="1047" href="Data.String.html#990" class="Function"
+<a name="1047" href="Data.String.html#toVec" class="Function"
       >toVec</a
-      ><a name="1052"
-      > </a
-      ><a name="1053" href="Data.String.html#1053" class="Bound"
+      > <a name="1053" href="Data.String.html#1053" class="Bound"
       >s</a
-      ><a name="1054"
-      > </a
-      ><a name="1055" class="Symbol"
+      > <a name="1055" class="Symbol"
       >=</a
-      ><a name="1056"
-      > </a
-      ><a name="1057" href="Data.Vec.html#4833" class="Function"
+      > <a name="1057" href="Data.Vec.html#fromList" class="Function"
       >Vec.fromList</a
-      ><a name="1069"
-      > </a
-      ><a name="1070" class="Symbol"
+      > <a name="1070" class="Symbol"
       >(</a
-      ><a name="1071" href="Data.String.Base.html#930" class="Function"
+      ><a name="1071" href="Data.String.Base.html#toList" class="Function"
       >toList</a
-      ><a name="1077"
-      > </a
-      ><a name="1078" href="Data.String.html#1053" class="Bound"
+      > <a name="1078" href="Data.String.html#1053" class="Bound"
       >s</a
       ><a name="1079" class="Symbol"
       >)</a
-      ><a name="1080"
       >
 
-</a
-      ><a name="1082" href="Data.String.html#1082" class="Function"
+<a name="toCostring" href="Data.String.html#toCostring" class="Function"
       >toCostring</a
-      ><a name="1092"
-      > </a
-      ><a name="1093" class="Symbol"
+      > <a name="1093" class="Symbol"
       >:</a
-      ><a name="1094"
-      > </a
-      ><a name="1095" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="1095" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="1101"
-      > </a
-      ><a name="1102" class="Symbol"
+      > <a name="1102" class="Symbol"
       >&#8594;</a
-      ><a name="1103"
-      > </a
-      ><a name="1104" href="Data.String.html#863" class="Function"
+      > <a name="1104" href="Data.String.html#Costring" class="Function"
       >Costring</a
-      ><a name="1112"
       >
-</a
-      ><a name="1113" href="Data.String.html#1082" class="Function"
+<a name="1113" href="Data.String.html#toCostring" class="Function"
       >toCostring</a
-      ><a name="1123"
-      > </a
-      ><a name="1124" class="Symbol"
+      > <a name="1124" class="Symbol"
       >=</a
-      ><a name="1125"
-      > </a
-      ><a name="1126" href="Data.Colist.html#2554" class="Function"
+      > <a name="1126" href="Data.Colist.html#fromList" class="Function"
       >Colist.fromList</a
-      ><a name="1141"
-      > </a
-      ><a name="1142" href="Function.html#713" class="Function Operator"
+      > <a name="1142" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="1143"
-      > </a
-      ><a name="1144" href="Data.String.Base.html#930" class="Function"
+      > <a name="1144" href="Data.String.Base.html#toList" class="Function"
       >toList</a
-      ><a name="1150"
       >
 
-</a
-      ><a name="1152" class="Comment"
+<a name="1152" class="Comment"
       >-- Informative equality test.</a
-      ><a name="1181"
       >
 
-</a
-      ><a name="1183" class="Keyword"
+<a name="1183" class="Keyword"
       >infix</a
-      ><a name="1188"
-      > </a
-      ><a name="1189" class="Number"
+      > <a name="1189" class="Number"
       >4</a
-      ><a name="1190"
-      > _&#8799;_
-
-</a
-      ><a name="1196" href="Data.String.html#1196" class="Function Operator"
+      > <a name="1191" href="Data.String.html#_&#8799;_" class="Function Operator"
       >_&#8799;_</a
-      ><a name="1199"
-      > </a
-      ><a name="1200" class="Symbol"
+      >
+
+<a name="_&#8799;_" href="Data.String.html#_&#8799;_" class="Function Operator"
+      >_&#8799;_</a
+      > <a name="1200" class="Symbol"
       >:</a
-      ><a name="1201"
-      > </a
-      ><a name="1202" href="Relation.Binary.Core.html#3490" class="Function"
+      > <a name="1202" href="Relation.Binary.Core.html#Decidable" class="Function"
       >Decidable</a
-      ><a name="1211"
-      > </a
-      ><a name="1212" class="Symbol"
+      > <a name="1212" class="Symbol"
       >{</a
       ><a name="1213" class="Argument"
       >A</a
-      ><a name="1214"
-      > </a
-      ><a name="1215" class="Symbol"
+      > <a name="1215" class="Symbol"
       >=</a
-      ><a name="1216"
-      > </a
-      ><a name="1217" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="1217" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
       ><a name="1223" class="Symbol"
       >}</a
-      ><a name="1224"
-      > </a
-      ><a name="1225" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="1225" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >_&#8801;_</a
-      ><a name="1228"
       >
-</a
-      ><a name="1229" href="Data.String.html#1229" class="Bound"
+<a name="1229" href="Data.String.html#1229" class="Bound"
       >s&#8321;</a
-      ><a name="1231"
-      > </a
-      ><a name="1232" href="Data.String.html#1196" class="Function Operator"
+      > <a name="1232" href="Data.String.html#_&#8799;_" class="Function Operator"
       >&#8799;</a
-      ><a name="1233"
-      > </a
-      ><a name="1234" href="Data.String.html#1234" class="Bound"
+      > <a name="1234" href="Data.String.html#1234" class="Bound"
       >s&#8322;</a
-      ><a name="1236"
-      > </a
-      ><a name="1237" class="Keyword"
+      > <a name="1237" class="Keyword"
       >with</a
-      ><a name="1241"
-      > </a
-      ><a name="1242" href="Agda.Builtin.String.html#353" class="Primitive"
+      > <a name="1242" href="Agda.Builtin.String.html#primStringEquality" class="Primitive"
       >primStringEquality</a
-      ><a name="1260"
-      > </a
-      ><a name="1261" href="Data.String.html#1229" class="Bound"
+      > <a name="1261" href="Data.String.html#1229" class="Bound"
       >s&#8321;</a
-      ><a name="1263"
-      > </a
-      ><a name="1264" href="Data.String.html#1234" class="Bound"
+      > <a name="1264" href="Data.String.html#1234" class="Bound"
       >s&#8322;</a
-      ><a name="1266"
       >
-</a
-      ><a name="1267" class="Symbol"
+<a name="1267" class="Symbol"
       >...</a
-      ><a name="1270"
-      > </a
-      ><a name="1271" class="Symbol"
+      > <a name="1271" class="Symbol"
       >|</a
-      ><a name="1272"
-      > </a
-      ><a name="1273" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor"
+      > <a name="1273" href="Agda.Builtin.Bool.html#Bool.true" class="InductiveConstructor"
       >true</a
-      ><a name="1277"
-      >  </a
-      ><a name="1279" class="Symbol"
+      >  <a name="1279" class="Symbol"
       >=</a
-      ><a name="1280"
-      > </a
-      ><a name="1281" href="Relation.Nullary.html#520" class="InductiveConstructor"
+      > <a name="1281" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
       >yes</a
-      ><a name="1284"
-      > </a
-      ><a name="1285" href="Relation.Binary.PropositionalEquality.TrustMe.html#512" class="Function"
+      > <a name="1285" href="Relation.Binary.PropositionalEquality.TrustMe.html#trustMe" class="Function"
       >trustMe</a
-      ><a name="1292"
       >
-</a
-      ><a name="1293" class="Symbol"
+<a name="1293" class="Symbol"
       >...</a
-      ><a name="1296"
-      > </a
-      ><a name="1297" class="Symbol"
+      > <a name="1297" class="Symbol"
       >|</a
-      ><a name="1298"
-      > </a
-      ><a name="1299" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor"
+      > <a name="1299" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor"
       >false</a
-      ><a name="1304"
-      > </a
-      ><a name="1305" class="Symbol"
+      > <a name="1305" class="Symbol"
       >=</a
-      ><a name="1306"
-      > </a
-      ><a name="1307" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      > <a name="1307" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      ><a name="1309"
-      > </a
-      ><a name="1310" href="Data.String.html#1337" class="Postulate"
+      > <a name="1310" href="Data.String.html#1337" class="Postulate"
       >whatever</a
-      ><a name="1318"
       >
-  </a
-      ><a name="1321" class="Keyword"
+  <a name="1321" class="Keyword"
       >where</a
-      ><a name="1326"
-      > </a
-      ><a name="1327" class="Keyword"
+      > <a name="1327" class="Keyword"
       >postulate</a
-      ><a name="1336"
-      > </a
-      ><a name="1337" href="Data.String.html#1337" class="Postulate"
+      > <a name="1337" href="Data.String.html#1337" class="Postulate"
       >whatever</a
-      ><a name="1345"
-      > </a
-      ><a name="1346" class="Symbol"
+      > <a name="1346" class="Symbol"
       >:</a
-      ><a name="1347"
-      > </a
-      ><a name="1348" class="Symbol"
+      > <a name="1348" class="Symbol"
       >_</a
-      ><a name="1349"
       >
 
-</a
-      ><a name="1351" class="Comment"
+<a name="1351" class="Comment"
       >-- Boolean equality test.</a
-      ><a name="1376"
       >
-</a
-      ><a name="1377" class="Comment"
+<a name="1377" class="Comment"
       >--</a
-      ><a name="1379"
       >
-</a
-      ><a name="1380" class="Comment"
+<a name="1380" class="Comment"
       >-- Why is the definition _==_&#160;=&#160;primStringEquality not used? One</a
-      ><a name="1444"
       >
-</a
-      ><a name="1445" class="Comment"
+<a name="1445" class="Comment"
       >-- reason is that the present definition can sometimes improve type</a
-      ><a name="1512"
       >
-</a
-      ><a name="1513" class="Comment"
+<a name="1513" class="Comment"
       >-- inference, at least with the version of Agda that is current at the</a
-      ><a name="1583"
       >
-</a
-      ><a name="1584" class="Comment"
+<a name="1584" class="Comment"
       >-- time of writing: see unit-test below.</a
-      ><a name="1624"
       >
 
-</a
-      ><a name="1626" class="Keyword"
+<a name="1626" class="Keyword"
       >infix</a
-      ><a name="1631"
-      > </a
-      ><a name="1632" class="Number"
+      > <a name="1632" class="Number"
       >4</a
-      ><a name="1633"
-      > _==_
-
-</a
-      ><a name="1640" href="Data.String.html#1640" class="Function Operator"
+      > <a name="1634" href="Data.String.html#_==_" class="Function Operator"
       >_==_</a
-      ><a name="1644"
-      > </a
-      ><a name="1645" class="Symbol"
+      >
+
+<a name="_==_" href="Data.String.html#_==_" class="Function Operator"
+      >_==_</a
+      > <a name="1645" class="Symbol"
       >:</a
-      ><a name="1646"
-      > </a
-      ><a name="1647" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="1647" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="1653"
-      > </a
-      ><a name="1654" class="Symbol"
+      > <a name="1654" class="Symbol"
       >&#8594;</a
-      ><a name="1655"
-      > </a
-      ><a name="1656" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="1656" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="1662"
-      > </a
-      ><a name="1663" class="Symbol"
+      > <a name="1663" class="Symbol"
       >&#8594;</a
-      ><a name="1664"
-      > </a
-      ><a name="1665" href="Agda.Builtin.Bool.html#67" class="Datatype"
+      > <a name="1665" href="Agda.Builtin.Bool.html#Bool" class="Datatype"
       >Bool</a
-      ><a name="1669"
       >
-</a
-      ><a name="1670" href="Data.String.html#1670" class="Bound"
+<a name="1670" href="Data.String.html#1670" class="Bound"
       >s&#8321;</a
-      ><a name="1672"
-      > </a
-      ><a name="1673" href="Data.String.html#1640" class="Function Operator"
+      > <a name="1673" href="Data.String.html#_==_" class="Function Operator"
       >==</a
-      ><a name="1675"
-      > </a
-      ><a name="1676" href="Data.String.html#1676" class="Bound"
+      > <a name="1676" href="Data.String.html#1676" class="Bound"
       >s&#8322;</a
-      ><a name="1678"
-      > </a
-      ><a name="1679" class="Symbol"
+      > <a name="1679" class="Symbol"
       >=</a
-      ><a name="1680"
-      > </a
-      ><a name="1681" href="Relation.Nullary.Decidable.html#822" class="Function Operator"
+      > <a name="1681" href="Relation.Nullary.Decidable.html#&#8970;_&#8971;" class="Function Operator"
       >&#8970;</a
-      ><a name="1682"
-      > </a
-      ><a name="1683" href="Data.String.html#1670" class="Bound"
+      > <a name="1683" href="Data.String.html#1670" class="Bound"
       >s&#8321;</a
-      ><a name="1685"
-      > </a
-      ><a name="1686" href="Data.String.html#1196" class="Function Operator"
+      > <a name="1686" href="Data.String.html#_&#8799;_" class="Function Operator"
       >&#8799;</a
-      ><a name="1687"
-      > </a
-      ><a name="1688" href="Data.String.html#1676" class="Bound"
+      > <a name="1688" href="Data.String.html#1676" class="Bound"
       >s&#8322;</a
-      ><a name="1690"
-      > </a
-      ><a name="1691" href="Relation.Nullary.Decidable.html#822" class="Function Operator"
+      > <a name="1691" href="Relation.Nullary.Decidable.html#&#8970;_&#8971;" class="Function Operator"
       >&#8971;</a
-      ><a name="1692"
       >
 
-</a
-      ><a name="1694" class="Keyword"
+<a name="1694" class="Keyword"
       >private</a
-      ><a name="1701"
       >
 
-  </a
-      ><a name="1705" class="Comment"
+  <a name="1705" class="Comment"
       >-- The following unit test does not type-check (at the time of</a
-      ><a name="1767"
       >
-  </a
-      ><a name="1770" class="Comment"
+  <a name="1770" class="Comment"
       >-- writing) if _==_ is replaced by primStringEquality.</a
-      ><a name="1824"
       >
 
-  </a
-      ><a name="1828" class="Keyword"
+  <a name="1828" class="Keyword"
       >data</a
-      ><a name="1832"
-      > </a
-      ><a name="1833" href="Data.String.html#1833" class="Datatype"
+      > <a name="P" href="Data.String.html#P" class="Datatype"
       >P</a
-      ><a name="1834"
-      > </a
-      ><a name="1835" class="Symbol"
+      > <a name="1835" class="Symbol"
       >:</a
-      ><a name="1836"
-      > </a
-      ><a name="1837" class="Symbol"
+      > <a name="1837" class="Symbol"
       >(</a
-      ><a name="1838" href="Agda.Builtin.String.html#165" class="Postulate"
+      ><a name="1838" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="1844"
-      > </a
-      ><a name="1845" class="Symbol"
+      > <a name="1845" class="Symbol"
       >&#8594;</a
-      ><a name="1846"
-      > </a
-      ><a name="1847" href="Agda.Builtin.Bool.html#67" class="Datatype"
+      > <a name="1847" href="Agda.Builtin.Bool.html#Bool" class="Datatype"
       >Bool</a
       ><a name="1851" class="Symbol"
       >)</a
-      ><a name="1852"
-      > </a
-      ><a name="1853" class="Symbol"
+      > <a name="1853" class="Symbol"
       >&#8594;</a
-      ><a name="1854"
-      > </a
-      ><a name="1855" class="PrimitiveType"
+      > <a name="1855" class="PrimitiveType"
       >Set</a
-      ><a name="1858"
-      > </a
-      ><a name="1859" class="Keyword"
+      > <a name="1859" class="Keyword"
       >where</a
-      ><a name="1864"
       >
-    </a
-      ><a name="1869" href="Data.String.html#1869" class="InductiveConstructor"
+    <a name="P.p" href="Data.String.html#P.p" class="InductiveConstructor"
       >p</a
-      ><a name="1870"
-      > </a
-      ><a name="1871" class="Symbol"
+      > <a name="1871" class="Symbol"
       >:</a
-      ><a name="1872"
-      > </a
-      ><a name="1873" class="Symbol"
+      > <a name="1873" class="Symbol"
       >(</a
       ><a name="1874" href="Data.String.html#1874" class="Bound"
       >c</a
-      ><a name="1875"
-      > </a
-      ><a name="1876" class="Symbol"
+      > <a name="1876" class="Symbol"
       >:</a
-      ><a name="1877"
-      > </a
-      ><a name="1878" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="1878" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
       ><a name="1884" class="Symbol"
       >)</a
-      ><a name="1885"
-      > </a
-      ><a name="1886" class="Symbol"
+      > <a name="1886" class="Symbol"
       >&#8594;</a
-      ><a name="1887"
-      > </a
-      ><a name="1888" href="Data.String.html#1833" class="Datatype"
+      > <a name="1888" href="Data.String.html#P" class="Datatype"
       >P</a
-      ><a name="1889"
-      > </a
-      ><a name="1890" class="Symbol"
+      > <a name="1890" class="Symbol"
       >(</a
-      ><a name="1891" href="Data.String.html#1640" class="Function Operator"
+      ><a name="1891" href="Data.String.html#_==_" class="Function Operator"
       >_==_</a
-      ><a name="1895"
-      > </a
-      ><a name="1896" href="Data.String.html#1874" class="Bound"
+      > <a name="1896" href="Data.String.html#1874" class="Bound"
       >c</a
       ><a name="1897" class="Symbol"
       >)</a
-      ><a name="1898"
       >
 
-  </a
-      ><a name="1902" href="Data.String.html#1902" class="Function"
+  <a name="unit-test" href="Data.String.html#unit-test" class="Function"
       >unit-test</a
-      ><a name="1911"
-      > </a
-      ><a name="1912" class="Symbol"
+      > <a name="1912" class="Symbol"
       >:</a
-      ><a name="1913"
-      > </a
-      ><a name="1914" href="Data.String.html#1833" class="Datatype"
+      > <a name="1914" href="Data.String.html#P" class="Datatype"
       >P</a
-      ><a name="1915"
-      > </a
-      ><a name="1916" class="Symbol"
+      > <a name="1916" class="Symbol"
       >(</a
-      ><a name="1917" href="Data.String.html#1640" class="Function Operator"
+      ><a name="1917" href="Data.String.html#_==_" class="Function Operator"
       >_==_</a
-      ><a name="1921"
-      > </a
-      ><a name="1922" class="String"
+      > <a name="1922" class="String"
       >&quot;&quot;</a
       ><a name="1924" class="Symbol"
       >)</a
-      ><a name="1925"
       >
-  </a
-      ><a name="1928" href="Data.String.html#1902" class="Function"
+  <a name="1928" href="Data.String.html#unit-test" class="Function"
       >unit-test</a
-      ><a name="1937"
-      > </a
-      ><a name="1938" class="Symbol"
+      > <a name="1938" class="Symbol"
       >=</a
-      ><a name="1939"
-      > </a
-      ><a name="1940" href="Data.String.html#1869" class="InductiveConstructor"
+      > <a name="1940" href="Data.String.html#P.p" class="InductiveConstructor"
       >p</a
-      ><a name="1941"
-      > </a
-      ><a name="1942" class="Symbol"
+      > <a name="1942" class="Symbol"
       >_</a
-      ><a name="1943"
       >
 
-</a
-      ><a name="1945" href="Data.String.html#1945" class="Function"
+<a name="setoid" href="Data.String.html#setoid" class="Function"
       >setoid</a
-      ><a name="1951"
-      > </a
-      ><a name="1952" class="Symbol"
+      > <a name="1952" class="Symbol"
       >:</a
-      ><a name="1953"
-      > </a
-      ><a name="1954" href="Relation.Binary.html#1908" class="Record"
+      > <a name="1954" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="1960"
-      > </a
-      ><a name="1961" class="Symbol"
+      > <a name="1961" class="Symbol"
       >_</a
-      ><a name="1962"
-      > </a
-      ><a name="1963" class="Symbol"
+      > <a name="1963" class="Symbol"
       >_</a
-      ><a name="1964"
       >
-</a
-      ><a name="1965" href="Data.String.html#1945" class="Function"
+<a name="1965" href="Data.String.html#setoid" class="Function"
       >setoid</a
-      ><a name="1971"
-      > </a
-      ><a name="1972" class="Symbol"
+      > <a name="1972" class="Symbol"
       >=</a
-      ><a name="1973"
-      > </a
-      ><a name="1974" href="Relation.Binary.PropositionalEquality.html#1526" class="Function"
+      > <a name="1974" href="Relation.Binary.PropositionalEquality.html#setoid" class="Function"
       >PropEq.setoid</a
-      ><a name="1987"
-      > </a
-      ><a name="1988" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="1988" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="1994"
       >
 
-</a
-      ><a name="1996" href="Data.String.html#1996" class="Function"
+<a name="decSetoid" href="Data.String.html#decSetoid" class="Function"
       >decSetoid</a
-      ><a name="2005"
-      > </a
-      ><a name="2006" class="Symbol"
+      > <a name="2006" class="Symbol"
       >:</a
-      ><a name="2007"
-      > </a
-      ><a name="2008" href="Relation.Binary.html#2977" class="Record"
+      > <a name="2008" href="Relation.Binary.html#DecSetoid" class="Record"
       >DecSetoid</a
-      ><a name="2017"
-      > </a
-      ><a name="2018" class="Symbol"
+      > <a name="2018" class="Symbol"
       >_</a
-      ><a name="2019"
-      > </a
-      ><a name="2020" class="Symbol"
+      > <a name="2020" class="Symbol"
       >_</a
-      ><a name="2021"
       >
-</a
-      ><a name="2022" href="Data.String.html#1996" class="Function"
+<a name="2022" href="Data.String.html#decSetoid" class="Function"
       >decSetoid</a
-      ><a name="2031"
-      > </a
-      ><a name="2032" class="Symbol"
+      > <a name="2032" class="Symbol"
       >=</a
-      ><a name="2033"
-      > </a
-      ><a name="2034" href="Relation.Binary.PropositionalEquality.html#1665" class="Function"
+      > <a name="2034" href="Relation.Binary.PropositionalEquality.html#decSetoid" class="Function"
       >PropEq.decSetoid</a
-      ><a name="2050"
-      > </a
-      ><a name="2051" href="Data.String.html#1196" class="Function Operator"
+      > <a name="2051" href="Data.String.html#_&#8799;_" class="Function Operator"
       >_&#8799;_</a
-      ><a name="2054"
       >
 
-</a
-      ><a name="2056" class="Comment"
+<a name="2056" class="Comment"
       >-- Lexicographic ordering of strings.</a
-      ><a name="2093"
       >
 
-</a
-      ><a name="2095" href="Data.String.html#2095" class="Function"
+<a name="strictTotalOrder" href="Data.String.html#strictTotalOrder" class="Function"
       >strictTotalOrder</a
-      ><a name="2111"
-      > </a
-      ><a name="2112" class="Symbol"
+      > <a name="2112" class="Symbol"
       >:</a
-      ><a name="2113"
-      > </a
-      ><a name="2114" href="Relation.Binary.html#10996" class="Record"
+      > <a name="2114" href="Relation.Binary.html#StrictTotalOrder" class="Record"
       >StrictTotalOrder</a
-      ><a name="2130"
-      > </a
-      ><a name="2131" class="Symbol"
+      > <a name="2131" class="Symbol"
       >_</a
-      ><a name="2132"
-      > </a
-      ><a name="2133" class="Symbol"
+      > <a name="2133" class="Symbol"
       >_</a
-      ><a name="2134"
-      > </a
-      ><a name="2135" class="Symbol"
+      > <a name="2135" class="Symbol"
       >_</a
-      ><a name="2136"
       >
-</a
-      ><a name="2137" href="Data.String.html#2095" class="Function"
+<a name="2137" href="Data.String.html#strictTotalOrder" class="Function"
       >strictTotalOrder</a
-      ><a name="2153"
-      > </a
-      ><a name="2154" class="Symbol"
+      > <a name="2154" class="Symbol"
       >=</a
-      ><a name="2155"
       >
-  </a
-      ><a name="2158" href="Relation.Binary.On.html#7015" class="Function"
+  <a name="2158" href="Relation.Binary.On.html#strictTotalOrder" class="Function"
       >On.strictTotalOrder</a
-      ><a name="2177"
       >
-    </a
-      ><a name="2182" class="Symbol"
+    <a name="2182" class="Symbol"
       >(</a
-      ><a name="2183" href="Relation.Binary.List.StrictLex.html#11779" class="Function"
+      ><a name="2183" href="Relation.Binary.List.StrictLex.html#&lt;-strictTotalOrder" class="Function"
       >StrictLex.&lt;-strictTotalOrder</a
-      ><a name="2211"
-      > </a
-      ><a name="2212" href="Data.Char.html#1670" class="Function"
+      > <a name="2212" href="Data.Char.html#strictTotalOrder" class="Function"
       >Char.strictTotalOrder</a
       ><a name="2233" class="Symbol"
       >)</a
-      ><a name="2234"
       >
-    </a
-      ><a name="2239" href="Data.String.Base.html#930" class="Function"
+    <a name="2239" href="Data.String.Base.html#toList" class="Function"
       >toList</a
-      ><a name="2245"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

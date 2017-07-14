@@ -11,1231 +11,687 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- An abstraction of various forms of recursion/induction</a
-      ><a name="163"
       >
-</a
-      ><a name="164" class="Comment"
+<a name="164" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="236"
       >
 
-</a
-      ><a name="238" class="Comment"
+<a name="238" class="Comment"
       >-- The idea underlying Induction.* comes from Epigram&#160;1, see Section&#160;4</a
-      ><a name="308"
       >
-</a
-      ><a name="309" class="Comment"
+<a name="309" class="Comment"
       >-- of &quot;The view from the left&quot; by McBride and McKinna.</a
-      ><a name="363"
       >
 
-</a
-      ><a name="365" class="Comment"
+<a name="365" class="Comment"
       >-- Note: The types in this module can perhaps be easier to understand</a
-      ><a name="434"
       >
-</a
-      ><a name="435" class="Comment"
+<a name="435" class="Comment"
       >-- if they are normalised. Note also that Agda can do the</a
-      ><a name="492"
       >
-</a
-      ><a name="493" class="Comment"
+<a name="493" class="Comment"
       >-- normalisation for you.</a
-      ><a name="518"
       >
 
-</a
-      ><a name="520" class="Keyword"
+<a name="520" class="Keyword"
       >module</a
-      ><a name="526"
-      > </a
-      ><a name="527" href="Induction.html#1" class="Module"
+      > <a name="527" href="Induction.html" class="Module"
       >Induction</a
-      ><a name="536"
-      > </a
-      ><a name="537" class="Keyword"
+      > <a name="537" class="Keyword"
       >where</a
-      ><a name="542"
       >
 
-</a
-      ><a name="544" class="Keyword"
+<a name="544" class="Keyword"
       >open</a
-      ><a name="548"
-      > </a
-      ><a name="549" class="Keyword"
+      > <a name="549" class="Keyword"
       >import</a
-      ><a name="555"
-      > </a
-      ><a name="556" href="Level.html#1" class="Module"
+      > <a name="556" href="Level.html" class="Module"
       >Level</a
-      ><a name="561"
       >
-</a
-      ><a name="562" class="Keyword"
+<a name="562" class="Keyword"
       >open</a
-      ><a name="566"
-      > </a
-      ><a name="567" class="Keyword"
+      > <a name="567" class="Keyword"
       >import</a
-      ><a name="573"
-      > </a
-      ><a name="574" href="Relation.Unary.html#1" class="Module"
+      > <a name="574" href="Relation.Unary.html" class="Module"
       >Relation.Unary</a
-      ><a name="588"
       >
 
-</a
-      ><a name="590" class="Comment"
+<a name="590" class="Comment"
       >-- A RecStruct describes the allowed structure of recursion. The</a
-      ><a name="654"
       >
-</a
-      ><a name="655" class="Comment"
+<a name="655" class="Comment"
       >-- examples in Induction.Nat should explain what this is all about.</a
-      ><a name="722"
       >
 
-</a
-      ><a name="724" href="Induction.html#724" class="Function"
+<a name="RecStruct" href="Induction.html#RecStruct" class="Function"
       >RecStruct</a
-      ><a name="733"
-      > </a
-      ><a name="734" class="Symbol"
+      > <a name="734" class="Symbol"
       >:</a
-      ><a name="735"
-      > </a
-      ><a name="736" class="Symbol"
+      > <a name="736" class="Symbol"
       >&#8704;</a
-      ><a name="737"
-      > </a
-      ><a name="738" class="Symbol"
+      > <a name="738" class="Symbol"
       >{</a
       ><a name="739" href="Induction.html#739" class="Bound"
       >a</a
       ><a name="740" class="Symbol"
       >}</a
-      ><a name="741"
-      > </a
-      ><a name="742" class="Symbol"
+      > <a name="742" class="Symbol"
       >&#8594;</a
-      ><a name="743"
-      > </a
-      ><a name="744" class="PrimitiveType"
+      > <a name="744" class="PrimitiveType"
       >Set</a
-      ><a name="747"
-      > </a
-      ><a name="748" href="Induction.html#739" class="Bound"
+      > <a name="748" href="Induction.html#739" class="Bound"
       >a</a
-      ><a name="749"
-      > </a
-      ><a name="750" class="Symbol"
+      > <a name="750" class="Symbol"
       >&#8594;</a
-      ><a name="751"
-      > </a
-      ><a name="752" class="Symbol"
+      > <a name="752" class="Symbol"
       >(</a
       ><a name="753" href="Induction.html#753" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="755"
-      > </a
-      ><a name="756" href="Induction.html#756" class="Bound"
+      > <a name="756" href="Induction.html#756" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="758"
-      > </a
-      ><a name="759" class="Symbol"
+      > <a name="759" class="Symbol"
       >:</a
-      ><a name="760"
-      > </a
-      ><a name="761" href="Agda.Primitive.html#408" class="Postulate"
+      > <a name="761" href="Agda.Primitive.html#Level" class="Postulate"
       >Level</a
       ><a name="766" class="Symbol"
       >)</a
-      ><a name="767"
-      > </a
-      ><a name="768" class="Symbol"
+      > <a name="768" class="Symbol"
       >&#8594;</a
-      ><a name="769"
-      > </a
-      ><a name="770" class="PrimitiveType"
+      > <a name="770" class="PrimitiveType"
       >Set</a
-      ><a name="773"
-      > </a
-      ><a name="774" class="Symbol"
+      > <a name="774" class="Symbol"
       >_</a
-      ><a name="775"
       >
-</a
-      ><a name="776" href="Induction.html#724" class="Function"
+<a name="776" href="Induction.html#RecStruct" class="Function"
       >RecStruct</a
-      ><a name="785"
-      > </a
-      ><a name="786" href="Induction.html#786" class="Bound"
+      > <a name="786" href="Induction.html#786" class="Bound"
       >A</a
-      ><a name="787"
-      > </a
-      ><a name="788" href="Induction.html#788" class="Bound"
+      > <a name="788" href="Induction.html#788" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="790"
-      > </a
-      ><a name="791" href="Induction.html#791" class="Bound"
+      > <a name="791" href="Induction.html#791" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="793"
-      > </a
-      ><a name="794" class="Symbol"
+      > <a name="794" class="Symbol"
       >=</a
-      ><a name="795"
-      > </a
-      ><a name="796" href="Relation.Unary.html#541" class="Function"
+      > <a name="796" href="Relation.Unary.html#Pred" class="Function"
       >Pred</a
-      ><a name="800"
-      > </a
-      ><a name="801" href="Induction.html#786" class="Bound"
+      > <a name="801" href="Induction.html#786" class="Bound"
       >A</a
-      ><a name="802"
-      > </a
-      ><a name="803" href="Induction.html#788" class="Bound"
+      > <a name="803" href="Induction.html#788" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="805"
-      > </a
-      ><a name="806" class="Symbol"
+      > <a name="806" class="Symbol"
       >&#8594;</a
-      ><a name="807"
-      > </a
-      ><a name="808" href="Relation.Unary.html#541" class="Function"
+      > <a name="808" href="Relation.Unary.html#Pred" class="Function"
       >Pred</a
-      ><a name="812"
-      > </a
-      ><a name="813" href="Induction.html#786" class="Bound"
+      > <a name="813" href="Induction.html#786" class="Bound"
       >A</a
-      ><a name="814"
-      > </a
-      ><a name="815" href="Induction.html#791" class="Bound"
+      > <a name="815" href="Induction.html#791" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="817"
       >
 
-</a
-      ><a name="819" class="Comment"
+<a name="819" class="Comment"
       >-- A recursor builder constructs an instance of a recursion structure</a
-      ><a name="888"
       >
-</a
-      ><a name="889" class="Comment"
+<a name="889" class="Comment"
       >-- for a given input.</a
-      ><a name="910"
       >
 
-</a
-      ><a name="912" href="Induction.html#912" class="Function"
+<a name="RecursorBuilder" href="Induction.html#RecursorBuilder" class="Function"
       >RecursorBuilder</a
-      ><a name="927"
-      > </a
-      ><a name="928" class="Symbol"
+      > <a name="928" class="Symbol"
       >:</a
-      ><a name="929"
-      > </a
-      ><a name="930" class="Symbol"
+      > <a name="930" class="Symbol"
       >&#8704;</a
-      ><a name="931"
-      > </a
-      ><a name="932" class="Symbol"
+      > <a name="932" class="Symbol"
       >{</a
       ><a name="933" href="Induction.html#933" class="Bound"
       >a</a
-      ><a name="934"
-      > </a
-      ><a name="935" href="Induction.html#935" class="Bound"
+      > <a name="935" href="Induction.html#935" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="937"
-      > </a
-      ><a name="938" href="Induction.html#938" class="Bound"
+      > <a name="938" href="Induction.html#938" class="Bound"
       >&#8467;&#8322;</a
       ><a name="940" class="Symbol"
       >}</a
-      ><a name="941"
-      > </a
-      ><a name="942" class="Symbol"
+      > <a name="942" class="Symbol"
       >{</a
       ><a name="943" href="Induction.html#943" class="Bound"
       >A</a
-      ><a name="944"
-      > </a
-      ><a name="945" class="Symbol"
+      > <a name="945" class="Symbol"
       >:</a
-      ><a name="946"
-      > </a
-      ><a name="947" class="PrimitiveType"
+      > <a name="947" class="PrimitiveType"
       >Set</a
-      ><a name="950"
-      > </a
-      ><a name="951" href="Induction.html#933" class="Bound"
+      > <a name="951" href="Induction.html#933" class="Bound"
       >a</a
       ><a name="952" class="Symbol"
       >}</a
-      ><a name="953"
-      > </a
-      ><a name="954" class="Symbol"
+      > <a name="954" class="Symbol"
       >&#8594;</a
-      ><a name="955"
-      > </a
-      ><a name="956" href="Induction.html#724" class="Function"
+      > <a name="956" href="Induction.html#RecStruct" class="Function"
       >RecStruct</a
-      ><a name="965"
-      > </a
-      ><a name="966" href="Induction.html#943" class="Bound"
+      > <a name="966" href="Induction.html#943" class="Bound"
       >A</a
-      ><a name="967"
-      > </a
-      ><a name="968" href="Induction.html#935" class="Bound"
+      > <a name="968" href="Induction.html#935" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="970"
-      > </a
-      ><a name="971" href="Induction.html#938" class="Bound"
+      > <a name="971" href="Induction.html#938" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="973"
-      > </a
-      ><a name="974" class="Symbol"
+      > <a name="974" class="Symbol"
       >&#8594;</a
-      ><a name="975"
-      > </a
-      ><a name="976" class="PrimitiveType"
+      > <a name="976" class="PrimitiveType"
       >Set</a
-      ><a name="979"
-      > </a
-      ><a name="980" class="Symbol"
+      > <a name="980" class="Symbol"
       >_</a
-      ><a name="981"
       >
-</a
-      ><a name="982" href="Induction.html#912" class="Function"
+<a name="982" href="Induction.html#RecursorBuilder" class="Function"
       >RecursorBuilder</a
-      ><a name="997"
-      > </a
-      ><a name="998" href="Induction.html#998" class="Bound"
+      > <a name="998" href="Induction.html#998" class="Bound"
       >Rec</a
-      ><a name="1001"
-      > </a
-      ><a name="1002" class="Symbol"
+      > <a name="1002" class="Symbol"
       >=</a
-      ><a name="1003"
-      > </a
-      ><a name="1004" class="Symbol"
+      > <a name="1004" class="Symbol"
       >&#8704;</a
-      ><a name="1005"
-      > </a
-      ><a name="1006" href="Induction.html#1006" class="Bound"
+      > <a name="1006" href="Induction.html#1006" class="Bound"
       >P</a
-      ><a name="1007"
-      > </a
-      ><a name="1008" class="Symbol"
+      > <a name="1008" class="Symbol"
       >&#8594;</a
-      ><a name="1009"
-      > </a
-      ><a name="1010" href="Induction.html#998" class="Bound"
+      > <a name="1010" href="Induction.html#998" class="Bound"
       >Rec</a
-      ><a name="1013"
-      > </a
-      ><a name="1014" href="Induction.html#1006" class="Bound"
+      > <a name="1014" href="Induction.html#1006" class="Bound"
       >P</a
-      ><a name="1015"
-      > </a
-      ><a name="1016" href="Relation.Unary.html#1905" class="Function Operator"
+      > <a name="1016" href="Relation.Unary.html#1905" class="Function Operator"
       >&#8838;&#8242;</a
-      ><a name="1018"
-      > </a
-      ><a name="1019" href="Induction.html#1006" class="Bound"
+      > <a name="1019" href="Induction.html#1006" class="Bound"
       >P</a
-      ><a name="1020"
-      > </a
-      ><a name="1021" class="Symbol"
+      > <a name="1021" class="Symbol"
       >&#8594;</a
-      ><a name="1022"
-      > </a
-      ><a name="1023" href="Relation.Unary.html#1404" class="Function"
+      > <a name="1023" href="Relation.Unary.html#1404" class="Function"
       >Universal</a
-      ><a name="1032"
-      > </a
-      ><a name="1033" class="Symbol"
+      > <a name="1033" class="Symbol"
       >(</a
       ><a name="1034" href="Induction.html#998" class="Bound"
       >Rec</a
-      ><a name="1037"
-      > </a
-      ><a name="1038" href="Induction.html#1006" class="Bound"
+      > <a name="1038" href="Induction.html#1006" class="Bound"
       >P</a
       ><a name="1039" class="Symbol"
       >)</a
-      ><a name="1040"
       >
 
-</a
-      ><a name="1042" class="Comment"
+<a name="1042" class="Comment"
       >-- A recursor can be used to actually compute/prove something useful.</a
-      ><a name="1111"
       >
 
-</a
-      ><a name="1113" href="Induction.html#1113" class="Function"
+<a name="Recursor" href="Induction.html#Recursor" class="Function"
       >Recursor</a
-      ><a name="1121"
-      > </a
-      ><a name="1122" class="Symbol"
+      > <a name="1122" class="Symbol"
       >:</a
-      ><a name="1123"
-      > </a
-      ><a name="1124" class="Symbol"
+      > <a name="1124" class="Symbol"
       >&#8704;</a
-      ><a name="1125"
-      > </a
-      ><a name="1126" class="Symbol"
+      > <a name="1126" class="Symbol"
       >{</a
       ><a name="1127" href="Induction.html#1127" class="Bound"
       >a</a
-      ><a name="1128"
-      > </a
-      ><a name="1129" href="Induction.html#1129" class="Bound"
+      > <a name="1129" href="Induction.html#1129" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1131"
-      > </a
-      ><a name="1132" href="Induction.html#1132" class="Bound"
+      > <a name="1132" href="Induction.html#1132" class="Bound"
       >&#8467;&#8322;</a
       ><a name="1134" class="Symbol"
       >}</a
-      ><a name="1135"
-      > </a
-      ><a name="1136" class="Symbol"
+      > <a name="1136" class="Symbol"
       >{</a
       ><a name="1137" href="Induction.html#1137" class="Bound"
       >A</a
-      ><a name="1138"
-      > </a
-      ><a name="1139" class="Symbol"
+      > <a name="1139" class="Symbol"
       >:</a
-      ><a name="1140"
-      > </a
-      ><a name="1141" class="PrimitiveType"
+      > <a name="1141" class="PrimitiveType"
       >Set</a
-      ><a name="1144"
-      > </a
-      ><a name="1145" href="Induction.html#1127" class="Bound"
+      > <a name="1145" href="Induction.html#1127" class="Bound"
       >a</a
       ><a name="1146" class="Symbol"
       >}</a
-      ><a name="1147"
-      > </a
-      ><a name="1148" class="Symbol"
+      > <a name="1148" class="Symbol"
       >&#8594;</a
-      ><a name="1149"
-      > </a
-      ><a name="1150" href="Induction.html#724" class="Function"
+      > <a name="1150" href="Induction.html#RecStruct" class="Function"
       >RecStruct</a
-      ><a name="1159"
-      > </a
-      ><a name="1160" href="Induction.html#1137" class="Bound"
+      > <a name="1160" href="Induction.html#1137" class="Bound"
       >A</a
-      ><a name="1161"
-      > </a
-      ><a name="1162" href="Induction.html#1129" class="Bound"
+      > <a name="1162" href="Induction.html#1129" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1164"
-      > </a
-      ><a name="1165" href="Induction.html#1132" class="Bound"
+      > <a name="1165" href="Induction.html#1132" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1167"
-      > </a
-      ><a name="1168" class="Symbol"
+      > <a name="1168" class="Symbol"
       >&#8594;</a
-      ><a name="1169"
-      > </a
-      ><a name="1170" class="PrimitiveType"
+      > <a name="1170" class="PrimitiveType"
       >Set</a
-      ><a name="1173"
-      > </a
-      ><a name="1174" class="Symbol"
+      > <a name="1174" class="Symbol"
       >_</a
-      ><a name="1175"
       >
-</a
-      ><a name="1176" href="Induction.html#1113" class="Function"
+<a name="1176" href="Induction.html#Recursor" class="Function"
       >Recursor</a
-      ><a name="1184"
-      > </a
-      ><a name="1185" href="Induction.html#1185" class="Bound"
+      > <a name="1185" href="Induction.html#1185" class="Bound"
       >Rec</a
-      ><a name="1188"
-      > </a
-      ><a name="1189" class="Symbol"
+      > <a name="1189" class="Symbol"
       >=</a
-      ><a name="1190"
-      > </a
-      ><a name="1191" class="Symbol"
+      > <a name="1191" class="Symbol"
       >&#8704;</a
-      ><a name="1192"
-      > </a
-      ><a name="1193" href="Induction.html#1193" class="Bound"
+      > <a name="1193" href="Induction.html#1193" class="Bound"
       >P</a
-      ><a name="1194"
-      > </a
-      ><a name="1195" class="Symbol"
+      > <a name="1195" class="Symbol"
       >&#8594;</a
-      ><a name="1196"
-      > </a
-      ><a name="1197" href="Induction.html#1185" class="Bound"
+      > <a name="1197" href="Induction.html#1185" class="Bound"
       >Rec</a
-      ><a name="1200"
-      > </a
-      ><a name="1201" href="Induction.html#1193" class="Bound"
+      > <a name="1201" href="Induction.html#1193" class="Bound"
       >P</a
-      ><a name="1202"
-      > </a
-      ><a name="1203" href="Relation.Unary.html#1905" class="Function Operator"
+      > <a name="1203" href="Relation.Unary.html#1905" class="Function Operator"
       >&#8838;&#8242;</a
-      ><a name="1205"
-      > </a
-      ><a name="1206" href="Induction.html#1193" class="Bound"
+      > <a name="1206" href="Induction.html#1193" class="Bound"
       >P</a
-      ><a name="1207"
-      > </a
-      ><a name="1208" class="Symbol"
+      > <a name="1208" class="Symbol"
       >&#8594;</a
-      ><a name="1209"
-      > </a
-      ><a name="1210" href="Relation.Unary.html#1404" class="Function"
+      > <a name="1210" href="Relation.Unary.html#1404" class="Function"
       >Universal</a
-      ><a name="1219"
-      > </a
-      ><a name="1220" href="Induction.html#1193" class="Bound"
+      > <a name="1220" href="Induction.html#1193" class="Bound"
       >P</a
-      ><a name="1221"
       >
 
-</a
-      ><a name="1223" class="Comment"
+<a name="1223" class="Comment"
       >-- And recursors can be constructed from recursor builders.</a
-      ><a name="1282"
       >
 
-</a
-      ><a name="1284" href="Induction.html#1284" class="Function"
+<a name="build" href="Induction.html#build" class="Function"
       >build</a
-      ><a name="1289"
-      > </a
-      ><a name="1290" class="Symbol"
+      > <a name="1290" class="Symbol"
       >:</a
-      ><a name="1291"
-      > </a
-      ><a name="1292" class="Symbol"
+      > <a name="1292" class="Symbol"
       >&#8704;</a
-      ><a name="1293"
-      > </a
-      ><a name="1294" class="Symbol"
+      > <a name="1294" class="Symbol"
       >{</a
       ><a name="1295" href="Induction.html#1295" class="Bound"
       >a</a
-      ><a name="1296"
-      > </a
-      ><a name="1297" href="Induction.html#1297" class="Bound"
+      > <a name="1297" href="Induction.html#1297" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1299"
-      > </a
-      ><a name="1300" href="Induction.html#1300" class="Bound"
+      > <a name="1300" href="Induction.html#1300" class="Bound"
       >&#8467;&#8322;</a
       ><a name="1302" class="Symbol"
       >}</a
-      ><a name="1303"
-      > </a
-      ><a name="1304" class="Symbol"
+      > <a name="1304" class="Symbol"
       >{</a
       ><a name="1305" href="Induction.html#1305" class="Bound"
       >A</a
-      ><a name="1306"
-      > </a
-      ><a name="1307" class="Symbol"
+      > <a name="1307" class="Symbol"
       >:</a
-      ><a name="1308"
-      > </a
-      ><a name="1309" class="PrimitiveType"
+      > <a name="1309" class="PrimitiveType"
       >Set</a
-      ><a name="1312"
-      > </a
-      ><a name="1313" href="Induction.html#1295" class="Bound"
+      > <a name="1313" href="Induction.html#1295" class="Bound"
       >a</a
       ><a name="1314" class="Symbol"
       >}</a
-      ><a name="1315"
-      > </a
-      ><a name="1316" class="Symbol"
+      > <a name="1316" class="Symbol"
       >{</a
       ><a name="1317" href="Induction.html#1317" class="Bound"
       >Rec</a
-      ><a name="1320"
-      > </a
-      ><a name="1321" class="Symbol"
+      > <a name="1321" class="Symbol"
       >:</a
-      ><a name="1322"
-      > </a
-      ><a name="1323" href="Induction.html#724" class="Function"
+      > <a name="1323" href="Induction.html#RecStruct" class="Function"
       >RecStruct</a
-      ><a name="1332"
-      > </a
-      ><a name="1333" href="Induction.html#1305" class="Bound"
+      > <a name="1333" href="Induction.html#1305" class="Bound"
       >A</a
-      ><a name="1334"
-      > </a
-      ><a name="1335" href="Induction.html#1297" class="Bound"
+      > <a name="1335" href="Induction.html#1297" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1337"
-      > </a
-      ><a name="1338" href="Induction.html#1300" class="Bound"
+      > <a name="1338" href="Induction.html#1300" class="Bound"
       >&#8467;&#8322;</a
       ><a name="1340" class="Symbol"
       >}</a
-      ><a name="1341"
-      > </a
-      ><a name="1342" class="Symbol"
+      > <a name="1342" class="Symbol"
       >&#8594;</a
-      ><a name="1343"
       >
-        </a
-      ><a name="1352" href="Induction.html#912" class="Function"
+        <a name="1352" href="Induction.html#RecursorBuilder" class="Function"
       >RecursorBuilder</a
-      ><a name="1367"
-      > </a
-      ><a name="1368" href="Induction.html#1317" class="Bound"
+      > <a name="1368" href="Induction.html#1317" class="Bound"
       >Rec</a
-      ><a name="1371"
-      > </a
-      ><a name="1372" class="Symbol"
+      > <a name="1372" class="Symbol"
       >&#8594;</a
-      ><a name="1373"
       >
-        </a
-      ><a name="1382" href="Induction.html#1113" class="Function"
+        <a name="1382" href="Induction.html#Recursor" class="Function"
       >Recursor</a
-      ><a name="1390"
-      > </a
-      ><a name="1391" href="Induction.html#1317" class="Bound"
+      > <a name="1391" href="Induction.html#1317" class="Bound"
       >Rec</a
-      ><a name="1394"
       >
-</a
-      ><a name="1395" href="Induction.html#1284" class="Function"
+<a name="1395" href="Induction.html#build" class="Function"
       >build</a
-      ><a name="1400"
-      > </a
-      ><a name="1401" href="Induction.html#1401" class="Bound"
+      > <a name="1401" href="Induction.html#1401" class="Bound"
       >builder</a
-      ><a name="1408"
-      > </a
-      ><a name="1409" href="Induction.html#1409" class="Bound"
+      > <a name="1409" href="Induction.html#1409" class="Bound"
       >P</a
-      ><a name="1410"
-      > </a
-      ><a name="1411" href="Induction.html#1411" class="Bound"
+      > <a name="1411" href="Induction.html#1411" class="Bound"
       >f</a
-      ><a name="1412"
-      > </a
-      ><a name="1413" href="Induction.html#1413" class="Bound"
+      > <a name="1413" href="Induction.html#1413" class="Bound"
       >x</a
-      ><a name="1414"
-      > </a
-      ><a name="1415" class="Symbol"
+      > <a name="1415" class="Symbol"
       >=</a
-      ><a name="1416"
-      > </a
-      ><a name="1417" href="Induction.html#1411" class="Bound"
+      > <a name="1417" href="Induction.html#1411" class="Bound"
       >f</a
-      ><a name="1418"
-      > </a
-      ><a name="1419" href="Induction.html#1413" class="Bound"
+      > <a name="1419" href="Induction.html#1413" class="Bound"
       >x</a
-      ><a name="1420"
-      > </a
-      ><a name="1421" class="Symbol"
+      > <a name="1421" class="Symbol"
       >(</a
       ><a name="1422" href="Induction.html#1401" class="Bound"
       >builder</a
-      ><a name="1429"
-      > </a
-      ><a name="1430" href="Induction.html#1409" class="Bound"
+      > <a name="1430" href="Induction.html#1409" class="Bound"
       >P</a
-      ><a name="1431"
-      > </a
-      ><a name="1432" href="Induction.html#1411" class="Bound"
+      > <a name="1432" href="Induction.html#1411" class="Bound"
       >f</a
-      ><a name="1433"
-      > </a
-      ><a name="1434" href="Induction.html#1413" class="Bound"
+      > <a name="1434" href="Induction.html#1413" class="Bound"
       >x</a
       ><a name="1435" class="Symbol"
       >)</a
-      ><a name="1436"
       >
 
-</a
-      ><a name="1438" class="Comment"
+<a name="1438" class="Comment"
       >-- We can repeat the exercise above for subsets of the type we are</a
-      ><a name="1504"
       >
-</a
-      ><a name="1505" class="Comment"
+<a name="1505" class="Comment"
       >-- recursing over.</a
-      ><a name="1523"
       >
 
-</a
-      ><a name="1525" href="Induction.html#1525" class="Function"
+<a name="SubsetRecursorBuilder" href="Induction.html#SubsetRecursorBuilder" class="Function"
       >SubsetRecursorBuilder</a
-      ><a name="1546"
-      > </a
-      ><a name="1547" class="Symbol"
+      > <a name="1547" class="Symbol"
       >:</a
-      ><a name="1548"
-      > </a
-      ><a name="1549" class="Symbol"
+      > <a name="1549" class="Symbol"
       >&#8704;</a
-      ><a name="1550"
-      > </a
-      ><a name="1551" class="Symbol"
+      > <a name="1551" class="Symbol"
       >{</a
       ><a name="1552" href="Induction.html#1552" class="Bound"
       >a</a
-      ><a name="1553"
-      > </a
-      ><a name="1554" href="Induction.html#1554" class="Bound"
+      > <a name="1554" href="Induction.html#1554" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1556"
-      > </a
-      ><a name="1557" href="Induction.html#1557" class="Bound"
+      > <a name="1557" href="Induction.html#1557" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1559"
-      > </a
-      ><a name="1560" href="Induction.html#1560" class="Bound"
+      > <a name="1560" href="Induction.html#1560" class="Bound"
       >&#8467;&#8323;</a
       ><a name="1562" class="Symbol"
       >}</a
-      ><a name="1563"
-      > </a
-      ><a name="1564" class="Symbol"
+      > <a name="1564" class="Symbol"
       >{</a
       ><a name="1565" href="Induction.html#1565" class="Bound"
       >A</a
-      ><a name="1566"
-      > </a
-      ><a name="1567" class="Symbol"
+      > <a name="1567" class="Symbol"
       >:</a
-      ><a name="1568"
-      > </a
-      ><a name="1569" class="PrimitiveType"
+      > <a name="1569" class="PrimitiveType"
       >Set</a
-      ><a name="1572"
-      > </a
-      ><a name="1573" href="Induction.html#1552" class="Bound"
+      > <a name="1573" href="Induction.html#1552" class="Bound"
       >a</a
       ><a name="1574" class="Symbol"
       >}</a
-      ><a name="1575"
-      > </a
-      ><a name="1576" class="Symbol"
+      > <a name="1576" class="Symbol"
       >&#8594;</a
-      ><a name="1577"
       >
-                        </a
-      ><a name="1602" href="Relation.Unary.html#541" class="Function"
+                        <a name="1602" href="Relation.Unary.html#Pred" class="Function"
       >Pred</a
-      ><a name="1606"
-      > </a
-      ><a name="1607" href="Induction.html#1565" class="Bound"
+      > <a name="1607" href="Induction.html#1565" class="Bound"
       >A</a
-      ><a name="1608"
-      > </a
-      ><a name="1609" href="Induction.html#1554" class="Bound"
+      > <a name="1609" href="Induction.html#1554" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1611"
-      > </a
-      ><a name="1612" class="Symbol"
+      > <a name="1612" class="Symbol"
       >&#8594;</a
-      ><a name="1613"
-      > </a
-      ><a name="1614" href="Induction.html#724" class="Function"
+      > <a name="1614" href="Induction.html#RecStruct" class="Function"
       >RecStruct</a
-      ><a name="1623"
-      > </a
-      ><a name="1624" href="Induction.html#1565" class="Bound"
+      > <a name="1624" href="Induction.html#1565" class="Bound"
       >A</a
-      ><a name="1625"
-      > </a
-      ><a name="1626" href="Induction.html#1557" class="Bound"
+      > <a name="1626" href="Induction.html#1557" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1628"
-      > </a
-      ><a name="1629" href="Induction.html#1560" class="Bound"
+      > <a name="1629" href="Induction.html#1560" class="Bound"
       >&#8467;&#8323;</a
-      ><a name="1631"
-      > </a
-      ><a name="1632" class="Symbol"
+      > <a name="1632" class="Symbol"
       >&#8594;</a
-      ><a name="1633"
-      > </a
-      ><a name="1634" class="PrimitiveType"
+      > <a name="1634" class="PrimitiveType"
       >Set</a
-      ><a name="1637"
-      > </a
-      ><a name="1638" class="Symbol"
+      > <a name="1638" class="Symbol"
       >_</a
-      ><a name="1639"
       >
-</a
-      ><a name="1640" href="Induction.html#1525" class="Function"
+<a name="1640" href="Induction.html#SubsetRecursorBuilder" class="Function"
       >SubsetRecursorBuilder</a
-      ><a name="1661"
-      > </a
-      ><a name="1662" href="Induction.html#1662" class="Bound"
+      > <a name="1662" href="Induction.html#1662" class="Bound"
       >Q</a
-      ><a name="1663"
-      > </a
-      ><a name="1664" href="Induction.html#1664" class="Bound"
+      > <a name="1664" href="Induction.html#1664" class="Bound"
       >Rec</a
-      ><a name="1667"
-      > </a
-      ><a name="1668" class="Symbol"
+      > <a name="1668" class="Symbol"
       >=</a
-      ><a name="1669"
-      > </a
-      ><a name="1670" class="Symbol"
+      > <a name="1670" class="Symbol"
       >&#8704;</a
-      ><a name="1671"
-      > </a
-      ><a name="1672" href="Induction.html#1672" class="Bound"
+      > <a name="1672" href="Induction.html#1672" class="Bound"
       >P</a
-      ><a name="1673"
-      > </a
-      ><a name="1674" class="Symbol"
+      > <a name="1674" class="Symbol"
       >&#8594;</a
-      ><a name="1675"
-      > </a
-      ><a name="1676" href="Induction.html#1664" class="Bound"
+      > <a name="1676" href="Induction.html#1664" class="Bound"
       >Rec</a
-      ><a name="1679"
-      > </a
-      ><a name="1680" href="Induction.html#1672" class="Bound"
+      > <a name="1680" href="Induction.html#1672" class="Bound"
       >P</a
-      ><a name="1681"
-      > </a
-      ><a name="1682" href="Relation.Unary.html#1905" class="Function Operator"
+      > <a name="1682" href="Relation.Unary.html#1905" class="Function Operator"
       >&#8838;&#8242;</a
-      ><a name="1684"
-      > </a
-      ><a name="1685" href="Induction.html#1672" class="Bound"
+      > <a name="1685" href="Induction.html#1672" class="Bound"
       >P</a
-      ><a name="1686"
-      > </a
-      ><a name="1687" class="Symbol"
+      > <a name="1687" class="Symbol"
       >&#8594;</a
-      ><a name="1688"
-      > </a
-      ><a name="1689" href="Induction.html#1662" class="Bound"
+      > <a name="1689" href="Induction.html#1662" class="Bound"
       >Q</a
-      ><a name="1690"
-      > </a
-      ><a name="1691" href="Relation.Unary.html#1905" class="Function Operator"
+      > <a name="1691" href="Relation.Unary.html#1905" class="Function Operator"
       >&#8838;&#8242;</a
-      ><a name="1693"
-      > </a
-      ><a name="1694" href="Induction.html#1664" class="Bound"
+      > <a name="1694" href="Induction.html#1664" class="Bound"
       >Rec</a
-      ><a name="1697"
-      > </a
-      ><a name="1698" href="Induction.html#1672" class="Bound"
+      > <a name="1698" href="Induction.html#1672" class="Bound"
       >P</a
-      ><a name="1699"
       >
 
-</a
-      ><a name="1701" href="Induction.html#1701" class="Function"
+<a name="SubsetRecursor" href="Induction.html#SubsetRecursor" class="Function"
       >SubsetRecursor</a
-      ><a name="1715"
-      > </a
-      ><a name="1716" class="Symbol"
+      > <a name="1716" class="Symbol"
       >:</a
-      ><a name="1717"
-      > </a
-      ><a name="1718" class="Symbol"
+      > <a name="1718" class="Symbol"
       >&#8704;</a
-      ><a name="1719"
-      > </a
-      ><a name="1720" class="Symbol"
+      > <a name="1720" class="Symbol"
       >{</a
       ><a name="1721" href="Induction.html#1721" class="Bound"
       >a</a
-      ><a name="1722"
-      > </a
-      ><a name="1723" href="Induction.html#1723" class="Bound"
+      > <a name="1723" href="Induction.html#1723" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1725"
-      > </a
-      ><a name="1726" href="Induction.html#1726" class="Bound"
+      > <a name="1726" href="Induction.html#1726" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1728"
-      > </a
-      ><a name="1729" href="Induction.html#1729" class="Bound"
+      > <a name="1729" href="Induction.html#1729" class="Bound"
       >&#8467;&#8323;</a
       ><a name="1731" class="Symbol"
       >}</a
-      ><a name="1732"
-      > </a
-      ><a name="1733" class="Symbol"
+      > <a name="1733" class="Symbol"
       >{</a
       ><a name="1734" href="Induction.html#1734" class="Bound"
       >A</a
-      ><a name="1735"
-      > </a
-      ><a name="1736" class="Symbol"
+      > <a name="1736" class="Symbol"
       >:</a
-      ><a name="1737"
-      > </a
-      ><a name="1738" class="PrimitiveType"
+      > <a name="1738" class="PrimitiveType"
       >Set</a
-      ><a name="1741"
-      > </a
-      ><a name="1742" href="Induction.html#1721" class="Bound"
+      > <a name="1742" href="Induction.html#1721" class="Bound"
       >a</a
       ><a name="1743" class="Symbol"
       >}</a
-      ><a name="1744"
-      > </a
-      ><a name="1745" class="Symbol"
+      > <a name="1745" class="Symbol"
       >&#8594;</a
-      ><a name="1746"
       >
-                 </a
-      ><a name="1764" href="Relation.Unary.html#541" class="Function"
+                 <a name="1764" href="Relation.Unary.html#Pred" class="Function"
       >Pred</a
-      ><a name="1768"
-      > </a
-      ><a name="1769" href="Induction.html#1734" class="Bound"
+      > <a name="1769" href="Induction.html#1734" class="Bound"
       >A</a
-      ><a name="1770"
-      > </a
-      ><a name="1771" href="Induction.html#1723" class="Bound"
+      > <a name="1771" href="Induction.html#1723" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1773"
-      > </a
-      ><a name="1774" class="Symbol"
+      > <a name="1774" class="Symbol"
       >&#8594;</a
-      ><a name="1775"
-      > </a
-      ><a name="1776" href="Induction.html#724" class="Function"
+      > <a name="1776" href="Induction.html#RecStruct" class="Function"
       >RecStruct</a
-      ><a name="1785"
-      > </a
-      ><a name="1786" href="Induction.html#1734" class="Bound"
+      > <a name="1786" href="Induction.html#1734" class="Bound"
       >A</a
-      ><a name="1787"
-      > </a
-      ><a name="1788" href="Induction.html#1726" class="Bound"
+      > <a name="1788" href="Induction.html#1726" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1790"
-      > </a
-      ><a name="1791" href="Induction.html#1729" class="Bound"
+      > <a name="1791" href="Induction.html#1729" class="Bound"
       >&#8467;&#8323;</a
-      ><a name="1793"
-      > </a
-      ><a name="1794" class="Symbol"
+      > <a name="1794" class="Symbol"
       >&#8594;</a
-      ><a name="1795"
-      > </a
-      ><a name="1796" class="PrimitiveType"
+      > <a name="1796" class="PrimitiveType"
       >Set</a
-      ><a name="1799"
-      > </a
-      ><a name="1800" class="Symbol"
+      > <a name="1800" class="Symbol"
       >_</a
-      ><a name="1801"
       >
-</a
-      ><a name="1802" href="Induction.html#1701" class="Function"
+<a name="1802" href="Induction.html#SubsetRecursor" class="Function"
       >SubsetRecursor</a
-      ><a name="1816"
-      > </a
-      ><a name="1817" href="Induction.html#1817" class="Bound"
+      > <a name="1817" href="Induction.html#1817" class="Bound"
       >Q</a
-      ><a name="1818"
-      > </a
-      ><a name="1819" href="Induction.html#1819" class="Bound"
+      > <a name="1819" href="Induction.html#1819" class="Bound"
       >Rec</a
-      ><a name="1822"
-      > </a
-      ><a name="1823" class="Symbol"
+      > <a name="1823" class="Symbol"
       >=</a
-      ><a name="1824"
-      > </a
-      ><a name="1825" class="Symbol"
+      > <a name="1825" class="Symbol"
       >&#8704;</a
-      ><a name="1826"
-      > </a
-      ><a name="1827" href="Induction.html#1827" class="Bound"
+      > <a name="1827" href="Induction.html#1827" class="Bound"
       >P</a
-      ><a name="1828"
-      > </a
-      ><a name="1829" class="Symbol"
+      > <a name="1829" class="Symbol"
       >&#8594;</a
-      ><a name="1830"
-      > </a
-      ><a name="1831" href="Induction.html#1819" class="Bound"
+      > <a name="1831" href="Induction.html#1819" class="Bound"
       >Rec</a
-      ><a name="1834"
-      > </a
-      ><a name="1835" href="Induction.html#1827" class="Bound"
+      > <a name="1835" href="Induction.html#1827" class="Bound"
       >P</a
-      ><a name="1836"
-      > </a
-      ><a name="1837" href="Relation.Unary.html#1905" class="Function Operator"
+      > <a name="1837" href="Relation.Unary.html#1905" class="Function Operator"
       >&#8838;&#8242;</a
-      ><a name="1839"
-      > </a
-      ><a name="1840" href="Induction.html#1827" class="Bound"
+      > <a name="1840" href="Induction.html#1827" class="Bound"
       >P</a
-      ><a name="1841"
-      > </a
-      ><a name="1842" class="Symbol"
+      > <a name="1842" class="Symbol"
       >&#8594;</a
-      ><a name="1843"
-      > </a
-      ><a name="1844" href="Induction.html#1817" class="Bound"
+      > <a name="1844" href="Induction.html#1817" class="Bound"
       >Q</a
-      ><a name="1845"
-      > </a
-      ><a name="1846" href="Relation.Unary.html#1905" class="Function Operator"
+      > <a name="1846" href="Relation.Unary.html#1905" class="Function Operator"
       >&#8838;&#8242;</a
-      ><a name="1848"
-      > </a
-      ><a name="1849" href="Induction.html#1827" class="Bound"
+      > <a name="1849" href="Induction.html#1827" class="Bound"
       >P</a
-      ><a name="1850"
       >
 
-</a
-      ><a name="1852" href="Induction.html#1852" class="Function"
+<a name="subsetBuild" href="Induction.html#subsetBuild" class="Function"
       >subsetBuild</a
-      ><a name="1863"
-      > </a
-      ><a name="1864" class="Symbol"
+      > <a name="1864" class="Symbol"
       >:</a
-      ><a name="1865"
-      > </a
-      ><a name="1866" class="Symbol"
+      > <a name="1866" class="Symbol"
       >&#8704;</a
-      ><a name="1867"
-      > </a
-      ><a name="1868" class="Symbol"
+      > <a name="1868" class="Symbol"
       >{</a
       ><a name="1869" href="Induction.html#1869" class="Bound"
       >a</a
-      ><a name="1870"
-      > </a
-      ><a name="1871" href="Induction.html#1871" class="Bound"
+      > <a name="1871" href="Induction.html#1871" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1873"
-      > </a
-      ><a name="1874" href="Induction.html#1874" class="Bound"
+      > <a name="1874" href="Induction.html#1874" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1876"
-      > </a
-      ><a name="1877" href="Induction.html#1877" class="Bound"
+      > <a name="1877" href="Induction.html#1877" class="Bound"
       >&#8467;&#8323;</a
       ><a name="1879" class="Symbol"
       >}</a
-      ><a name="1880"
       >
-                </a
-      ><a name="1897" class="Symbol"
+                <a name="1897" class="Symbol"
       >{</a
       ><a name="1898" href="Induction.html#1898" class="Bound"
       >A</a
-      ><a name="1899"
-      > </a
-      ><a name="1900" class="Symbol"
+      > <a name="1900" class="Symbol"
       >:</a
-      ><a name="1901"
-      > </a
-      ><a name="1902" class="PrimitiveType"
+      > <a name="1902" class="PrimitiveType"
       >Set</a
-      ><a name="1905"
-      > </a
-      ><a name="1906" href="Induction.html#1869" class="Bound"
+      > <a name="1906" href="Induction.html#1869" class="Bound"
       >a</a
       ><a name="1907" class="Symbol"
       >}</a
-      ><a name="1908"
-      > </a
-      ><a name="1909" class="Symbol"
+      > <a name="1909" class="Symbol"
       >{</a
       ><a name="1910" href="Induction.html#1910" class="Bound"
       >Q</a
-      ><a name="1911"
-      > </a
-      ><a name="1912" class="Symbol"
+      > <a name="1912" class="Symbol"
       >:</a
-      ><a name="1913"
-      > </a
-      ><a name="1914" href="Relation.Unary.html#541" class="Function"
+      > <a name="1914" href="Relation.Unary.html#Pred" class="Function"
       >Pred</a
-      ><a name="1918"
-      > </a
-      ><a name="1919" href="Induction.html#1898" class="Bound"
+      > <a name="1919" href="Induction.html#1898" class="Bound"
       >A</a
-      ><a name="1920"
-      > </a
-      ><a name="1921" href="Induction.html#1871" class="Bound"
+      > <a name="1921" href="Induction.html#1871" class="Bound"
       >&#8467;&#8321;</a
       ><a name="1923" class="Symbol"
       >}</a
-      ><a name="1924"
-      > </a
-      ><a name="1925" class="Symbol"
+      > <a name="1925" class="Symbol"
       >{</a
       ><a name="1926" href="Induction.html#1926" class="Bound"
       >Rec</a
-      ><a name="1929"
-      > </a
-      ><a name="1930" class="Symbol"
+      > <a name="1930" class="Symbol"
       >:</a
-      ><a name="1931"
-      > </a
-      ><a name="1932" href="Induction.html#724" class="Function"
+      > <a name="1932" href="Induction.html#RecStruct" class="Function"
       >RecStruct</a
-      ><a name="1941"
-      > </a
-      ><a name="1942" href="Induction.html#1898" class="Bound"
+      > <a name="1942" href="Induction.html#1898" class="Bound"
       >A</a
-      ><a name="1943"
-      > </a
-      ><a name="1944" href="Induction.html#1874" class="Bound"
+      > <a name="1944" href="Induction.html#1874" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1946"
-      > </a
-      ><a name="1947" href="Induction.html#1877" class="Bound"
+      > <a name="1947" href="Induction.html#1877" class="Bound"
       >&#8467;&#8323;</a
       ><a name="1949" class="Symbol"
       >}</a
-      ><a name="1950"
-      > </a
-      ><a name="1951" class="Symbol"
+      > <a name="1951" class="Symbol"
       >&#8594;</a
-      ><a name="1952"
       >
-              </a
-      ><a name="1967" href="Induction.html#1525" class="Function"
+              <a name="1967" href="Induction.html#SubsetRecursorBuilder" class="Function"
       >SubsetRecursorBuilder</a
-      ><a name="1988"
-      > </a
-      ><a name="1989" href="Induction.html#1910" class="Bound"
+      > <a name="1989" href="Induction.html#1910" class="Bound"
       >Q</a
-      ><a name="1990"
-      > </a
-      ><a name="1991" href="Induction.html#1926" class="Bound"
+      > <a name="1991" href="Induction.html#1926" class="Bound"
       >Rec</a
-      ><a name="1994"
-      > </a
-      ><a name="1995" class="Symbol"
+      > <a name="1995" class="Symbol"
       >&#8594;</a
-      ><a name="1996"
       >
-              </a
-      ><a name="2011" href="Induction.html#1701" class="Function"
+              <a name="2011" href="Induction.html#SubsetRecursor" class="Function"
       >SubsetRecursor</a
-      ><a name="2025"
-      > </a
-      ><a name="2026" href="Induction.html#1910" class="Bound"
+      > <a name="2026" href="Induction.html#1910" class="Bound"
       >Q</a
-      ><a name="2027"
-      > </a
-      ><a name="2028" href="Induction.html#1926" class="Bound"
+      > <a name="2028" href="Induction.html#1926" class="Bound"
       >Rec</a
-      ><a name="2031"
       >
-</a
-      ><a name="2032" href="Induction.html#1852" class="Function"
+<a name="2032" href="Induction.html#subsetBuild" class="Function"
       >subsetBuild</a
-      ><a name="2043"
-      > </a
-      ><a name="2044" href="Induction.html#2044" class="Bound"
+      > <a name="2044" href="Induction.html#2044" class="Bound"
       >builder</a
-      ><a name="2051"
-      > </a
-      ><a name="2052" href="Induction.html#2052" class="Bound"
+      > <a name="2052" href="Induction.html#2052" class="Bound"
       >P</a
-      ><a name="2053"
-      > </a
-      ><a name="2054" href="Induction.html#2054" class="Bound"
+      > <a name="2054" href="Induction.html#2054" class="Bound"
       >f</a
-      ><a name="2055"
-      > </a
-      ><a name="2056" href="Induction.html#2056" class="Bound"
+      > <a name="2056" href="Induction.html#2056" class="Bound"
       >x</a
-      ><a name="2057"
-      > </a
-      ><a name="2058" href="Induction.html#2058" class="Bound"
+      > <a name="2058" href="Induction.html#2058" class="Bound"
       >q</a
-      ><a name="2059"
-      > </a
-      ><a name="2060" class="Symbol"
+      > <a name="2060" class="Symbol"
       >=</a
-      ><a name="2061"
-      > </a
-      ><a name="2062" href="Induction.html#2054" class="Bound"
+      > <a name="2062" href="Induction.html#2054" class="Bound"
       >f</a
-      ><a name="2063"
-      > </a
-      ><a name="2064" href="Induction.html#2056" class="Bound"
+      > <a name="2064" href="Induction.html#2056" class="Bound"
       >x</a
-      ><a name="2065"
-      > </a
-      ><a name="2066" class="Symbol"
+      > <a name="2066" class="Symbol"
       >(</a
       ><a name="2067" href="Induction.html#2044" class="Bound"
       >builder</a
-      ><a name="2074"
-      > </a
-      ><a name="2075" href="Induction.html#2052" class="Bound"
+      > <a name="2075" href="Induction.html#2052" class="Bound"
       >P</a
-      ><a name="2076"
-      > </a
-      ><a name="2077" href="Induction.html#2054" class="Bound"
+      > <a name="2077" href="Induction.html#2054" class="Bound"
       >f</a
-      ><a name="2078"
-      > </a
-      ><a name="2079" href="Induction.html#2056" class="Bound"
+      > <a name="2079" href="Induction.html#2056" class="Bound"
       >x</a
-      ><a name="2080"
-      > </a
-      ><a name="2081" href="Induction.html#2058" class="Bound"
+      > <a name="2081" href="Induction.html#2058" class="Bound"
       >q</a
       ><a name="2082" class="Symbol"
       >)</a
-      ><a name="2083"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

@@ -11,1641 +11,937 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- A delimited continuation monad</a
-      ><a name="139"
       >
-</a
-      ><a name="140" class="Comment"
+<a name="140" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="212"
       >
 
-</a
-      ><a name="214" class="Keyword"
+<a name="214" class="Keyword"
       >module</a
-      ><a name="220"
-      > </a
-      ><a name="221" href="Category.Monad.Continuation.html#1" class="Module"
+      > <a name="221" href="Category.Monad.Continuation.html" class="Module"
       >Category.Monad.Continuation</a
-      ><a name="248"
-      > </a
-      ><a name="249" class="Keyword"
+      > <a name="249" class="Keyword"
       >where</a
-      ><a name="254"
       >
 
-</a
-      ><a name="256" class="Keyword"
+<a name="256" class="Keyword"
       >open</a
-      ><a name="260"
-      > </a
-      ><a name="261" class="Keyword"
+      > <a name="261" class="Keyword"
       >import</a
-      ><a name="267"
-      > </a
-      ><a name="268" href="Category.Applicative.html#1" class="Module"
+      > <a name="268" href="Category.Applicative.html" class="Module"
       >Category.Applicative</a
-      ><a name="288"
       >
-</a
-      ><a name="289" class="Keyword"
+<a name="289" class="Keyword"
       >open</a
-      ><a name="293"
-      > </a
-      ><a name="294" class="Keyword"
+      > <a name="294" class="Keyword"
       >import</a
-      ><a name="300"
-      > </a
-      ><a name="301" href="Category.Applicative.Indexed.html#1" class="Module"
+      > <a name="301" href="Category.Applicative.Indexed.html" class="Module"
       >Category.Applicative.Indexed</a
-      ><a name="329"
       >
-</a
-      ><a name="330" class="Keyword"
+<a name="330" class="Keyword"
       >open</a
-      ><a name="334"
-      > </a
-      ><a name="335" class="Keyword"
+      > <a name="335" class="Keyword"
       >import</a
-      ><a name="341"
-      > </a
-      ><a name="342" href="Category.Monad.html#1" class="Module"
+      > <a name="342" href="Category.Monad.html" class="Module"
       >Category.Monad</a
-      ><a name="356"
       >
-</a
-      ><a name="357" class="Keyword"
+<a name="357" class="Keyword"
       >open</a
-      ><a name="361"
-      > </a
-      ><a name="362" class="Keyword"
+      > <a name="362" class="Keyword"
       >import</a
-      ><a name="368"
-      > </a
-      ><a name="369" href="Category.Monad.Identity.html#1" class="Module"
+      > <a name="369" href="Category.Monad.Identity.html" class="Module"
       >Category.Monad.Identity</a
-      ><a name="392"
       >
-</a
-      ><a name="393" class="Keyword"
+<a name="393" class="Keyword"
       >open</a
-      ><a name="397"
-      > </a
-      ><a name="398" class="Keyword"
+      > <a name="398" class="Keyword"
       >import</a
-      ><a name="404"
-      > </a
-      ><a name="405" href="Category.Monad.Indexed.html#1" class="Module"
+      > <a name="405" href="Category.Monad.Indexed.html" class="Module"
       >Category.Monad.Indexed</a
-      ><a name="427"
       >
-</a
-      ><a name="428" class="Keyword"
+<a name="428" class="Keyword"
       >open</a
-      ><a name="432"
-      > </a
-      ><a name="433" class="Keyword"
+      > <a name="433" class="Keyword"
       >import</a
-      ><a name="439"
-      > </a
-      ><a name="440" href="Function.html#1" class="Module"
+      > <a name="440" href="Function.html" class="Module"
       >Function</a
-      ><a name="448"
       >
-</a
-      ><a name="449" class="Keyword"
+<a name="449" class="Keyword"
       >open</a
-      ><a name="453"
-      > </a
-      ><a name="454" class="Keyword"
+      > <a name="454" class="Keyword"
       >import</a
-      ><a name="460"
-      > </a
-      ><a name="461" href="Level.html#1" class="Module"
+      > <a name="461" href="Level.html" class="Module"
       >Level</a
-      ><a name="466"
       >
 
-</a
-      ><a name="468" class="Comment"
+<a name="468" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="540"
       >
-</a
-      ><a name="541" class="Comment"
+<a name="541" class="Comment"
       >-- Delimited continuation monads</a
-      ><a name="573"
       >
 
-</a
-      ><a name="575" href="Category.Monad.Continuation.html#575" class="Function"
+<a name="DContT" href="Category.Monad.Continuation.html#DContT" class="Function"
       >DContT</a
-      ><a name="581"
-      > </a
-      ><a name="582" class="Symbol"
+      > <a name="582" class="Symbol"
       >:</a
-      ><a name="583"
-      > </a
-      ><a name="584" class="Symbol"
+      > <a name="584" class="Symbol"
       >&#8704;</a
-      ><a name="585"
-      > </a
-      ><a name="586" class="Symbol"
+      > <a name="586" class="Symbol"
       >{</a
       ><a name="587" href="Category.Monad.Continuation.html#587" class="Bound"
       >i</a
-      ><a name="588"
-      > </a
-      ><a name="589" href="Category.Monad.Continuation.html#589" class="Bound"
+      > <a name="589" href="Category.Monad.Continuation.html#589" class="Bound"
       >f</a
       ><a name="590" class="Symbol"
       >}</a
-      ><a name="591"
-      > </a
-      ><a name="592" class="Symbol"
+      > <a name="592" class="Symbol"
       >{</a
       ><a name="593" href="Category.Monad.Continuation.html#593" class="Bound"
       >I</a
-      ><a name="594"
-      > </a
-      ><a name="595" class="Symbol"
+      > <a name="595" class="Symbol"
       >:</a
-      ><a name="596"
-      > </a
-      ><a name="597" class="PrimitiveType"
+      > <a name="597" class="PrimitiveType"
       >Set</a
-      ><a name="600"
-      > </a
-      ><a name="601" href="Category.Monad.Continuation.html#587" class="Bound"
+      > <a name="601" href="Category.Monad.Continuation.html#587" class="Bound"
       >i</a
       ><a name="602" class="Symbol"
       >}</a
-      ><a name="603"
-      > </a
-      ><a name="604" class="Symbol"
+      > <a name="604" class="Symbol"
       >&#8594;</a
-      ><a name="605"
-      > </a
-      ><a name="606" class="Symbol"
+      > <a name="606" class="Symbol"
       >(</a
       ><a name="607" href="Category.Monad.Continuation.html#593" class="Bound"
       >I</a
-      ><a name="608"
-      > </a
-      ><a name="609" class="Symbol"
+      > <a name="609" class="Symbol"
       >&#8594;</a
-      ><a name="610"
-      > </a
-      ><a name="611" class="PrimitiveType"
+      > <a name="611" class="PrimitiveType"
       >Set</a
-      ><a name="614"
-      > </a
-      ><a name="615" href="Category.Monad.Continuation.html#589" class="Bound"
+      > <a name="615" href="Category.Monad.Continuation.html#589" class="Bound"
       >f</a
       ><a name="616" class="Symbol"
       >)</a
-      ><a name="617"
-      > </a
-      ><a name="618" class="Symbol"
+      > <a name="618" class="Symbol"
       >&#8594;</a
-      ><a name="619"
-      > </a
-      ><a name="620" class="Symbol"
+      > <a name="620" class="Symbol"
       >(</a
       ><a name="621" class="PrimitiveType"
       >Set</a
-      ><a name="624"
-      > </a
-      ><a name="625" href="Category.Monad.Continuation.html#589" class="Bound"
+      > <a name="625" href="Category.Monad.Continuation.html#589" class="Bound"
       >f</a
-      ><a name="626"
-      > </a
-      ><a name="627" class="Symbol"
+      > <a name="627" class="Symbol"
       >&#8594;</a
-      ><a name="628"
-      > </a
-      ><a name="629" class="PrimitiveType"
+      > <a name="629" class="PrimitiveType"
       >Set</a
-      ><a name="632"
-      > </a
-      ><a name="633" href="Category.Monad.Continuation.html#589" class="Bound"
+      > <a name="633" href="Category.Monad.Continuation.html#589" class="Bound"
       >f</a
       ><a name="634" class="Symbol"
       >)</a
-      ><a name="635"
-      > </a
-      ><a name="636" class="Symbol"
+      > <a name="636" class="Symbol"
       >&#8594;</a
-      ><a name="637"
-      > </a
-      ><a name="638" href="Category.Applicative.Indexed.html#495" class="Function"
+      > <a name="638" href="Category.Applicative.Indexed.html#IFun" class="Function"
       >IFun</a
-      ><a name="642"
-      > </a
-      ><a name="643" href="Category.Monad.Continuation.html#593" class="Bound"
+      > <a name="643" href="Category.Monad.Continuation.html#593" class="Bound"
       >I</a
-      ><a name="644"
-      > </a
-      ><a name="645" href="Category.Monad.Continuation.html#589" class="Bound"
+      > <a name="645" href="Category.Monad.Continuation.html#589" class="Bound"
       >f</a
-      ><a name="646"
       >
-</a
-      ><a name="647" href="Category.Monad.Continuation.html#575" class="Function"
+<a name="647" href="Category.Monad.Continuation.html#DContT" class="Function"
       >DContT</a
-      ><a name="653"
-      > </a
-      ><a name="654" href="Category.Monad.Continuation.html#654" class="Bound"
+      > <a name="654" href="Category.Monad.Continuation.html#654" class="Bound"
       >K</a
-      ><a name="655"
-      > </a
-      ><a name="656" href="Category.Monad.Continuation.html#656" class="Bound"
+      > <a name="656" href="Category.Monad.Continuation.html#656" class="Bound"
       >M</a
-      ><a name="657"
-      > </a
-      ><a name="658" href="Category.Monad.Continuation.html#658" class="Bound"
+      > <a name="658" href="Category.Monad.Continuation.html#658" class="Bound"
       >r&#8322;</a
-      ><a name="660"
-      > </a
-      ><a name="661" href="Category.Monad.Continuation.html#661" class="Bound"
+      > <a name="661" href="Category.Monad.Continuation.html#661" class="Bound"
       >r&#8321;</a
-      ><a name="663"
-      > </a
-      ><a name="664" href="Category.Monad.Continuation.html#664" class="Bound"
+      > <a name="664" href="Category.Monad.Continuation.html#664" class="Bound"
       >a</a
-      ><a name="665"
-      > </a
-      ><a name="666" class="Symbol"
+      > <a name="666" class="Symbol"
       >=</a
-      ><a name="667"
-      > </a
-      ><a name="668" class="Symbol"
+      > <a name="668" class="Symbol"
       >(</a
       ><a name="669" href="Category.Monad.Continuation.html#664" class="Bound"
       >a</a
-      ><a name="670"
-      > </a
-      ><a name="671" class="Symbol"
+      > <a name="671" class="Symbol"
       >&#8594;</a
-      ><a name="672"
-      > </a
-      ><a name="673" href="Category.Monad.Continuation.html#656" class="Bound"
+      > <a name="673" href="Category.Monad.Continuation.html#656" class="Bound"
       >M</a
-      ><a name="674"
-      > </a
-      ><a name="675" class="Symbol"
+      > <a name="675" class="Symbol"
       >(</a
       ><a name="676" href="Category.Monad.Continuation.html#654" class="Bound"
       >K</a
-      ><a name="677"
-      > </a
-      ><a name="678" href="Category.Monad.Continuation.html#661" class="Bound"
+      > <a name="678" href="Category.Monad.Continuation.html#661" class="Bound"
       >r&#8321;</a
       ><a name="680" class="Symbol"
       >))</a
-      ><a name="682"
-      > </a
-      ><a name="683" class="Symbol"
+      > <a name="683" class="Symbol"
       >&#8594;</a
-      ><a name="684"
-      > </a
-      ><a name="685" href="Category.Monad.Continuation.html#656" class="Bound"
+      > <a name="685" href="Category.Monad.Continuation.html#656" class="Bound"
       >M</a
-      ><a name="686"
-      > </a
-      ><a name="687" class="Symbol"
+      > <a name="687" class="Symbol"
       >(</a
       ><a name="688" href="Category.Monad.Continuation.html#654" class="Bound"
       >K</a
-      ><a name="689"
-      > </a
-      ><a name="690" href="Category.Monad.Continuation.html#658" class="Bound"
+      > <a name="690" href="Category.Monad.Continuation.html#658" class="Bound"
       >r&#8322;</a
       ><a name="692" class="Symbol"
       >)</a
-      ><a name="693"
       >
 
-</a
-      ><a name="695" href="Category.Monad.Continuation.html#695" class="Function"
+<a name="DCont" href="Category.Monad.Continuation.html#DCont" class="Function"
       >DCont</a
-      ><a name="700"
-      > </a
-      ><a name="701" class="Symbol"
+      > <a name="701" class="Symbol"
       >:</a
-      ><a name="702"
-      > </a
-      ><a name="703" class="Symbol"
+      > <a name="703" class="Symbol"
       >&#8704;</a
-      ><a name="704"
-      > </a
-      ><a name="705" class="Symbol"
+      > <a name="705" class="Symbol"
       >{</a
       ><a name="706" href="Category.Monad.Continuation.html#706" class="Bound"
       >i</a
-      ><a name="707"
-      > </a
-      ><a name="708" href="Category.Monad.Continuation.html#708" class="Bound"
+      > <a name="708" href="Category.Monad.Continuation.html#708" class="Bound"
       >f</a
       ><a name="709" class="Symbol"
       >}</a
-      ><a name="710"
-      > </a
-      ><a name="711" class="Symbol"
+      > <a name="711" class="Symbol"
       >{</a
       ><a name="712" href="Category.Monad.Continuation.html#712" class="Bound"
       >I</a
-      ><a name="713"
-      > </a
-      ><a name="714" class="Symbol"
+      > <a name="714" class="Symbol"
       >:</a
-      ><a name="715"
-      > </a
-      ><a name="716" class="PrimitiveType"
+      > <a name="716" class="PrimitiveType"
       >Set</a
-      ><a name="719"
-      > </a
-      ><a name="720" href="Category.Monad.Continuation.html#706" class="Bound"
+      > <a name="720" href="Category.Monad.Continuation.html#706" class="Bound"
       >i</a
       ><a name="721" class="Symbol"
       >}</a
-      ><a name="722"
-      > </a
-      ><a name="723" class="Symbol"
+      > <a name="723" class="Symbol"
       >&#8594;</a
-      ><a name="724"
-      > </a
-      ><a name="725" class="Symbol"
+      > <a name="725" class="Symbol"
       >(</a
       ><a name="726" href="Category.Monad.Continuation.html#712" class="Bound"
       >I</a
-      ><a name="727"
-      > </a
-      ><a name="728" class="Symbol"
+      > <a name="728" class="Symbol"
       >&#8594;</a
-      ><a name="729"
-      > </a
-      ><a name="730" class="PrimitiveType"
+      > <a name="730" class="PrimitiveType"
       >Set</a
-      ><a name="733"
-      > </a
-      ><a name="734" href="Category.Monad.Continuation.html#708" class="Bound"
+      > <a name="734" href="Category.Monad.Continuation.html#708" class="Bound"
       >f</a
       ><a name="735" class="Symbol"
       >)</a
-      ><a name="736"
-      > </a
-      ><a name="737" class="Symbol"
+      > <a name="737" class="Symbol"
       >&#8594;</a
-      ><a name="738"
-      > </a
-      ><a name="739" href="Category.Applicative.Indexed.html#495" class="Function"
+      > <a name="739" href="Category.Applicative.Indexed.html#IFun" class="Function"
       >IFun</a
-      ><a name="743"
-      > </a
-      ><a name="744" href="Category.Monad.Continuation.html#712" class="Bound"
+      > <a name="744" href="Category.Monad.Continuation.html#712" class="Bound"
       >I</a
-      ><a name="745"
-      > </a
-      ><a name="746" href="Category.Monad.Continuation.html#708" class="Bound"
+      > <a name="746" href="Category.Monad.Continuation.html#708" class="Bound"
       >f</a
-      ><a name="747"
       >
-</a
-      ><a name="748" href="Category.Monad.Continuation.html#695" class="Function"
+<a name="748" href="Category.Monad.Continuation.html#DCont" class="Function"
       >DCont</a
-      ><a name="753"
-      > </a
-      ><a name="754" href="Category.Monad.Continuation.html#754" class="Bound"
+      > <a name="754" href="Category.Monad.Continuation.html#754" class="Bound"
       >K</a
-      ><a name="755"
-      > </a
-      ><a name="756" class="Symbol"
+      > <a name="756" class="Symbol"
       >=</a
-      ><a name="757"
-      > </a
-      ><a name="758" href="Category.Monad.Continuation.html#575" class="Function"
+      > <a name="758" href="Category.Monad.Continuation.html#DContT" class="Function"
       >DContT</a
-      ><a name="764"
-      > </a
-      ><a name="765" href="Category.Monad.Continuation.html#754" class="Bound"
+      > <a name="765" href="Category.Monad.Continuation.html#754" class="Bound"
       >K</a
-      ><a name="766"
-      > </a
-      ><a name="767" href="Category.Monad.Identity.html#268" class="Function"
+      > <a name="767" href="Category.Monad.Identity.html#Identity" class="Function"
       >Identity</a
-      ><a name="775"
       >
 
-</a
-      ><a name="777" href="Category.Monad.Continuation.html#777" class="Function"
+<a name="DContTIMonad" href="Category.Monad.Continuation.html#DContTIMonad" class="Function"
       >DContTIMonad</a
-      ><a name="789"
-      > </a
-      ><a name="790" class="Symbol"
+      > <a name="790" class="Symbol"
       >:</a
-      ><a name="791"
-      > </a
-      ><a name="792" class="Symbol"
+      > <a name="792" class="Symbol"
       >&#8704;</a
-      ><a name="793"
-      > </a
-      ><a name="794" class="Symbol"
+      > <a name="794" class="Symbol"
       >{</a
       ><a name="795" href="Category.Monad.Continuation.html#795" class="Bound"
       >i</a
-      ><a name="796"
-      > </a
-      ><a name="797" href="Category.Monad.Continuation.html#797" class="Bound"
+      > <a name="797" href="Category.Monad.Continuation.html#797" class="Bound"
       >f</a
       ><a name="798" class="Symbol"
       >}</a
-      ><a name="799"
-      > </a
-      ><a name="800" class="Symbol"
+      > <a name="800" class="Symbol"
       >{</a
       ><a name="801" href="Category.Monad.Continuation.html#801" class="Bound"
       >I</a
-      ><a name="802"
-      > </a
-      ><a name="803" class="Symbol"
+      > <a name="803" class="Symbol"
       >:</a
-      ><a name="804"
-      > </a
-      ><a name="805" class="PrimitiveType"
+      > <a name="805" class="PrimitiveType"
       >Set</a
-      ><a name="808"
-      > </a
-      ><a name="809" href="Category.Monad.Continuation.html#795" class="Bound"
+      > <a name="809" href="Category.Monad.Continuation.html#795" class="Bound"
       >i</a
       ><a name="810" class="Symbol"
       >}</a
-      ><a name="811"
-      > </a
-      ><a name="812" class="Symbol"
+      > <a name="812" class="Symbol"
       >(</a
       ><a name="813" href="Category.Monad.Continuation.html#813" class="Bound"
       >K</a
-      ><a name="814"
-      > </a
-      ><a name="815" class="Symbol"
+      > <a name="815" class="Symbol"
       >:</a
-      ><a name="816"
-      > </a
-      ><a name="817" href="Category.Monad.Continuation.html#801" class="Bound"
+      > <a name="817" href="Category.Monad.Continuation.html#801" class="Bound"
       >I</a
-      ><a name="818"
-      > </a
-      ><a name="819" class="Symbol"
+      > <a name="819" class="Symbol"
       >&#8594;</a
-      ><a name="820"
-      > </a
-      ><a name="821" class="PrimitiveType"
+      > <a name="821" class="PrimitiveType"
       >Set</a
-      ><a name="824"
-      > </a
-      ><a name="825" href="Category.Monad.Continuation.html#797" class="Bound"
+      > <a name="825" href="Category.Monad.Continuation.html#797" class="Bound"
       >f</a
       ><a name="826" class="Symbol"
       >)</a
-      ><a name="827"
-      > </a
-      ><a name="828" class="Symbol"
+      > <a name="828" class="Symbol"
       >{</a
       ><a name="829" href="Category.Monad.Continuation.html#829" class="Bound"
       >M</a
       ><a name="830" class="Symbol"
       >}</a
-      ><a name="831"
-      > </a
-      ><a name="832" class="Symbol"
+      > <a name="832" class="Symbol"
       >&#8594;</a
-      ><a name="833"
       >
-               </a
-      ><a name="849" href="Category.Monad.html#360" class="Function"
+               <a name="849" href="Category.Monad.html#RawMonad" class="Function"
       >RawMonad</a
-      ><a name="857"
-      > </a
-      ><a name="858" href="Category.Monad.Continuation.html#829" class="Bound"
+      > <a name="858" href="Category.Monad.Continuation.html#829" class="Bound"
       >M</a
-      ><a name="859"
-      > </a
-      ><a name="860" class="Symbol"
+      > <a name="860" class="Symbol"
       >&#8594;</a
-      ><a name="861"
-      > </a
-      ><a name="862" href="Category.Monad.Indexed.html#385" class="Record"
+      > <a name="862" href="Category.Monad.Indexed.html#RawIMonad" class="Record"
       >RawIMonad</a
-      ><a name="871"
-      > </a
-      ><a name="872" class="Symbol"
+      > <a name="872" class="Symbol"
       >(</a
-      ><a name="873" href="Category.Monad.Continuation.html#575" class="Function"
+      ><a name="873" href="Category.Monad.Continuation.html#DContT" class="Function"
       >DContT</a
-      ><a name="879"
-      > </a
-      ><a name="880" href="Category.Monad.Continuation.html#813" class="Bound"
+      > <a name="880" href="Category.Monad.Continuation.html#813" class="Bound"
       >K</a
-      ><a name="881"
-      > </a
-      ><a name="882" href="Category.Monad.Continuation.html#829" class="Bound"
+      > <a name="882" href="Category.Monad.Continuation.html#829" class="Bound"
       >M</a
       ><a name="883" class="Symbol"
       >)</a
-      ><a name="884"
       >
-</a
-      ><a name="885" href="Category.Monad.Continuation.html#777" class="Function"
+<a name="885" href="Category.Monad.Continuation.html#DContTIMonad" class="Function"
       >DContTIMonad</a
-      ><a name="897"
-      > </a
-      ><a name="898" href="Category.Monad.Continuation.html#898" class="Bound"
+      > <a name="898" href="Category.Monad.Continuation.html#898" class="Bound"
       >K</a
-      ><a name="899"
-      > </a
-      ><a name="900" href="Category.Monad.Continuation.html#900" class="Bound"
+      > <a name="900" href="Category.Monad.Continuation.html#900" class="Bound"
       >Mon</a
-      ><a name="903"
-      > </a
-      ><a name="904" class="Symbol"
+      > <a name="904" class="Symbol"
       >=</a
-      ><a name="905"
-      > </a
-      ><a name="906" class="Keyword"
+      > <a name="906" class="Keyword"
       >record</a
-      ><a name="912"
       >
-  </a
-      ><a name="915" class="Symbol"
+  <a name="915" class="Symbol"
       >{</a
-      ><a name="916"
-      > </a
-      ><a name="917" class="Field"
+      > <a name="917" class="Field"
       >return</a
-      ><a name="923"
-      > </a
-      ><a name="924" class="Symbol"
+      > <a name="924" class="Symbol"
       >=</a
-      ><a name="925"
-      > </a
-      ><a name="926" class="Symbol"
+      > <a name="926" class="Symbol"
       >&#955;</a
-      ><a name="927"
-      > </a
-      ><a name="928" href="Category.Monad.Continuation.html#928" class="Bound"
+      > <a name="928" href="Category.Monad.Continuation.html#928" class="Bound"
       >a</a
-      ><a name="929"
-      > </a
-      ><a name="930" href="Category.Monad.Continuation.html#930" class="Bound"
+      > <a name="930" href="Category.Monad.Continuation.html#930" class="Bound"
       >k</a
-      ><a name="931"
-      > </a
-      ><a name="932" class="Symbol"
+      > <a name="932" class="Symbol"
       >&#8594;</a
-      ><a name="933"
-      > </a
-      ><a name="934" href="Category.Monad.Continuation.html#930" class="Bound"
+      > <a name="934" href="Category.Monad.Continuation.html#930" class="Bound"
       >k</a
-      ><a name="935"
-      > </a
-      ><a name="936" href="Category.Monad.Continuation.html#928" class="Bound"
+      > <a name="936" href="Category.Monad.Continuation.html#928" class="Bound"
       >a</a
-      ><a name="937"
       >
-  </a
-      ><a name="940" class="Symbol"
+  <a name="940" class="Symbol"
       >;</a
-      ><a name="941"
-      > </a
-      ><a name="942" class="Field Operator"
+      > <a name="942" class="Field Operator"
       >_&gt;&gt;=_</a
-      ><a name="947"
-      >  </a
-      ><a name="949" class="Symbol"
+      >  <a name="949" class="Symbol"
       >=</a
-      ><a name="950"
-      > </a
-      ><a name="951" class="Symbol"
+      > <a name="951" class="Symbol"
       >&#955;</a
-      ><a name="952"
-      > </a
-      ><a name="953" href="Category.Monad.Continuation.html#953" class="Bound"
+      > <a name="953" href="Category.Monad.Continuation.html#953" class="Bound"
       >c</a
-      ><a name="954"
-      > </a
-      ><a name="955" href="Category.Monad.Continuation.html#955" class="Bound"
+      > <a name="955" href="Category.Monad.Continuation.html#955" class="Bound"
       >f</a
-      ><a name="956"
-      > </a
-      ><a name="957" href="Category.Monad.Continuation.html#957" class="Bound"
+      > <a name="957" href="Category.Monad.Continuation.html#957" class="Bound"
       >k</a
-      ><a name="958"
-      > </a
-      ><a name="959" class="Symbol"
+      > <a name="959" class="Symbol"
       >&#8594;</a
-      ><a name="960"
-      > </a
-      ><a name="961" href="Category.Monad.Continuation.html#953" class="Bound"
+      > <a name="961" href="Category.Monad.Continuation.html#953" class="Bound"
       >c</a
-      ><a name="962"
-      > </a
-      ><a name="963" class="Symbol"
+      > <a name="963" class="Symbol"
       >(</a
-      ><a name="964" href="Function.html#1480" class="Function"
+      ><a name="964" href="Function.html#flip" class="Function"
       >flip</a
-      ><a name="968"
-      > </a
-      ><a name="969" href="Category.Monad.Continuation.html#955" class="Bound"
+      > <a name="969" href="Category.Monad.Continuation.html#955" class="Bound"
       >f</a
-      ><a name="970"
-      > </a
-      ><a name="971" href="Category.Monad.Continuation.html#957" class="Bound"
+      > <a name="971" href="Category.Monad.Continuation.html#957" class="Bound"
       >k</a
       ><a name="972" class="Symbol"
       >)</a
-      ><a name="973"
       >
-  </a
-      ><a name="976" class="Symbol"
+  <a name="976" class="Symbol"
       >}</a
-      ><a name="977"
       >
-  </a
-      ><a name="980" class="Keyword"
+  <a name="980" class="Keyword"
       >where</a
-      ><a name="985"
-      > </a
-      ><a name="986" class="Keyword"
+      > <a name="986" class="Keyword"
       >open</a
-      ><a name="990"
-      > </a
-      ><a name="991" href="Category.Monad.html#652" class="Module"
+      > <a name="991" href="Category.Monad.html#RawMonad" class="Module"
       >RawMonad</a
-      ><a name="999"
-      > </a
-      ><a name="1000" href="Category.Monad.Continuation.html#900" class="Bound"
+      > <a name="1000" href="Category.Monad.Continuation.html#900" class="Bound"
       >Mon</a
-      ><a name="1003"
       >
 
-</a
-      ><a name="1005" href="Category.Monad.Continuation.html#1005" class="Function"
+<a name="DContIMonad" href="Category.Monad.Continuation.html#DContIMonad" class="Function"
       >DContIMonad</a
-      ><a name="1016"
-      > </a
-      ><a name="1017" class="Symbol"
+      > <a name="1017" class="Symbol"
       >:</a
-      ><a name="1018"
-      > </a
-      ><a name="1019" class="Symbol"
+      > <a name="1019" class="Symbol"
       >&#8704;</a
-      ><a name="1020"
-      > </a
-      ><a name="1021" class="Symbol"
+      > <a name="1021" class="Symbol"
       >{</a
       ><a name="1022" href="Category.Monad.Continuation.html#1022" class="Bound"
       >i</a
-      ><a name="1023"
-      > </a
-      ><a name="1024" href="Category.Monad.Continuation.html#1024" class="Bound"
+      > <a name="1024" href="Category.Monad.Continuation.html#1024" class="Bound"
       >f</a
       ><a name="1025" class="Symbol"
       >}</a
-      ><a name="1026"
-      > </a
-      ><a name="1027" class="Symbol"
+      > <a name="1027" class="Symbol"
       >{</a
       ><a name="1028" href="Category.Monad.Continuation.html#1028" class="Bound"
       >I</a
-      ><a name="1029"
-      > </a
-      ><a name="1030" class="Symbol"
+      > <a name="1030" class="Symbol"
       >:</a
-      ><a name="1031"
-      > </a
-      ><a name="1032" class="PrimitiveType"
+      > <a name="1032" class="PrimitiveType"
       >Set</a
-      ><a name="1035"
-      > </a
-      ><a name="1036" href="Category.Monad.Continuation.html#1022" class="Bound"
+      > <a name="1036" href="Category.Monad.Continuation.html#1022" class="Bound"
       >i</a
       ><a name="1037" class="Symbol"
       >}</a
-      ><a name="1038"
-      > </a
-      ><a name="1039" class="Symbol"
+      > <a name="1039" class="Symbol"
       >(</a
       ><a name="1040" href="Category.Monad.Continuation.html#1040" class="Bound"
       >K</a
-      ><a name="1041"
-      > </a
-      ><a name="1042" class="Symbol"
+      > <a name="1042" class="Symbol"
       >:</a
-      ><a name="1043"
-      > </a
-      ><a name="1044" href="Category.Monad.Continuation.html#1028" class="Bound"
+      > <a name="1044" href="Category.Monad.Continuation.html#1028" class="Bound"
       >I</a
-      ><a name="1045"
-      > </a
-      ><a name="1046" class="Symbol"
+      > <a name="1046" class="Symbol"
       >&#8594;</a
-      ><a name="1047"
-      > </a
-      ><a name="1048" class="PrimitiveType"
+      > <a name="1048" class="PrimitiveType"
       >Set</a
-      ><a name="1051"
-      > </a
-      ><a name="1052" href="Category.Monad.Continuation.html#1024" class="Bound"
+      > <a name="1052" href="Category.Monad.Continuation.html#1024" class="Bound"
       >f</a
       ><a name="1053" class="Symbol"
       >)</a
-      ><a name="1054"
-      > </a
-      ><a name="1055" class="Symbol"
+      > <a name="1055" class="Symbol"
       >&#8594;</a
-      ><a name="1056"
-      > </a
-      ><a name="1057" href="Category.Monad.Indexed.html#385" class="Record"
+      > <a name="1057" href="Category.Monad.Indexed.html#RawIMonad" class="Record"
       >RawIMonad</a
-      ><a name="1066"
-      > </a
-      ><a name="1067" class="Symbol"
+      > <a name="1067" class="Symbol"
       >(</a
-      ><a name="1068" href="Category.Monad.Continuation.html#695" class="Function"
+      ><a name="1068" href="Category.Monad.Continuation.html#DCont" class="Function"
       >DCont</a
-      ><a name="1073"
-      > </a
-      ><a name="1074" href="Category.Monad.Continuation.html#1040" class="Bound"
+      > <a name="1074" href="Category.Monad.Continuation.html#1040" class="Bound"
       >K</a
       ><a name="1075" class="Symbol"
       >)</a
-      ><a name="1076"
       >
-</a
-      ><a name="1077" href="Category.Monad.Continuation.html#1005" class="Function"
+<a name="1077" href="Category.Monad.Continuation.html#DContIMonad" class="Function"
       >DContIMonad</a
-      ><a name="1088"
-      > </a
-      ><a name="1089" href="Category.Monad.Continuation.html#1089" class="Bound"
+      > <a name="1089" href="Category.Monad.Continuation.html#1089" class="Bound"
       >K</a
-      ><a name="1090"
-      > </a
-      ><a name="1091" class="Symbol"
+      > <a name="1091" class="Symbol"
       >=</a
-      ><a name="1092"
-      > </a
-      ><a name="1093" href="Category.Monad.Continuation.html#777" class="Function"
+      > <a name="1093" href="Category.Monad.Continuation.html#DContTIMonad" class="Function"
       >DContTIMonad</a
-      ><a name="1105"
-      > </a
-      ><a name="1106" href="Category.Monad.Continuation.html#1089" class="Bound"
+      > <a name="1106" href="Category.Monad.Continuation.html#1089" class="Bound"
       >K</a
-      ><a name="1107"
-      > </a
-      ><a name="1108" href="Category.Monad.Identity.html#317" class="Function"
+      > <a name="1108" href="Category.Monad.Identity.html#IdentityMonad" class="Function"
       >IdentityMonad</a
-      ><a name="1121"
       >
 
-</a
-      ><a name="1123" class="Comment"
+<a name="1123" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="1195"
       >
-</a
-      ><a name="1196" class="Comment"
+<a name="1196" class="Comment"
       >-- Delimited continuation operations</a
-      ><a name="1232"
       >
 
-</a
-      ><a name="1234" class="Keyword"
+<a name="1234" class="Keyword"
       >record</a
-      ><a name="1240"
-      > </a
-      ><a name="1241" href="Category.Monad.Continuation.html#1241" class="Record"
+      > <a name="RawIMonadDCont" href="Category.Monad.Continuation.html#RawIMonadDCont" class="Record"
       >RawIMonadDCont</a
-      ><a name="1255"
-      > </a
-      ><a name="1256" class="Symbol"
+      > <a name="1256" class="Symbol"
       >{</a
       ><a name="1257" href="Category.Monad.Continuation.html#1257" class="Bound"
       >i</a
-      ><a name="1258"
-      > </a
-      ><a name="1259" href="Category.Monad.Continuation.html#1259" class="Bound"
+      > <a name="1259" href="Category.Monad.Continuation.html#1259" class="Bound"
       >f</a
       ><a name="1260" class="Symbol"
       >}</a
-      ><a name="1261"
-      > </a
-      ><a name="1262" class="Symbol"
+      > <a name="1262" class="Symbol"
       >{</a
       ><a name="1263" href="Category.Monad.Continuation.html#1263" class="Bound"
       >I</a
-      ><a name="1264"
-      > </a
-      ><a name="1265" class="Symbol"
+      > <a name="1265" class="Symbol"
       >:</a
-      ><a name="1266"
-      > </a
-      ><a name="1267" class="PrimitiveType"
+      > <a name="1267" class="PrimitiveType"
       >Set</a
-      ><a name="1270"
-      > </a
-      ><a name="1271" href="Category.Monad.Continuation.html#1257" class="Bound"
+      > <a name="1271" href="Category.Monad.Continuation.html#1257" class="Bound"
       >i</a
       ><a name="1272" class="Symbol"
       >}</a
-      ><a name="1273"
-      > </a
-      ><a name="1274" class="Symbol"
+      > <a name="1274" class="Symbol"
       >(</a
       ><a name="1275" href="Category.Monad.Continuation.html#1275" class="Bound"
       >K</a
-      ><a name="1276"
-      > </a
-      ><a name="1277" class="Symbol"
+      > <a name="1277" class="Symbol"
       >:</a
-      ><a name="1278"
-      > </a
-      ><a name="1279" href="Category.Monad.Continuation.html#1263" class="Bound"
+      > <a name="1279" href="Category.Monad.Continuation.html#1263" class="Bound"
       >I</a
-      ><a name="1280"
-      > </a
-      ><a name="1281" class="Symbol"
+      > <a name="1281" class="Symbol"
       >&#8594;</a
-      ><a name="1282"
-      > </a
-      ><a name="1283" class="PrimitiveType"
+      > <a name="1283" class="PrimitiveType"
       >Set</a
-      ><a name="1286"
-      > </a
-      ><a name="1287" href="Category.Monad.Continuation.html#1259" class="Bound"
+      > <a name="1287" href="Category.Monad.Continuation.html#1259" class="Bound"
       >f</a
       ><a name="1288" class="Symbol"
       >)</a
-      ><a name="1289"
       >
-                      </a
-      ><a name="1312" class="Symbol"
+                      <a name="1312" class="Symbol"
       >(</a
       ><a name="1313" href="Category.Monad.Continuation.html#1313" class="Bound"
       >M</a
-      ><a name="1314"
-      > </a
-      ><a name="1315" class="Symbol"
+      > <a name="1315" class="Symbol"
       >:</a
-      ><a name="1316"
-      > </a
-      ><a name="1317" href="Category.Applicative.Indexed.html#495" class="Function"
+      > <a name="1317" href="Category.Applicative.Indexed.html#IFun" class="Function"
       >IFun</a
-      ><a name="1321"
-      > </a
-      ><a name="1322" href="Category.Monad.Continuation.html#1263" class="Bound"
+      > <a name="1322" href="Category.Monad.Continuation.html#1263" class="Bound"
       >I</a
-      ><a name="1323"
-      > </a
-      ><a name="1324" href="Category.Monad.Continuation.html#1259" class="Bound"
+      > <a name="1324" href="Category.Monad.Continuation.html#1259" class="Bound"
       >f</a
       ><a name="1325" class="Symbol"
       >)</a
-      ><a name="1326"
-      > </a
-      ><a name="1327" class="Symbol"
+      > <a name="1327" class="Symbol"
       >:</a
-      ><a name="1328"
-      > </a
-      ><a name="1329" class="PrimitiveType"
+      > <a name="1329" class="PrimitiveType"
       >Set</a
-      ><a name="1332"
-      > </a
-      ><a name="1333" class="Symbol"
+      > <a name="1333" class="Symbol"
       >(</a
       ><a name="1334" href="Category.Monad.Continuation.html#1257" class="Bound"
       >i</a
-      ><a name="1335"
-      > </a
-      ><a name="1336" href="Agda.Primitive.html#655" class="Primitive Operator"
+      > <a name="1336" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
       >&#8852;</a
-      ><a name="1337"
-      > </a
-      ><a name="1338" href="Agda.Primitive.html#625" class="Primitive"
+      > <a name="1338" href="Agda.Primitive.html#suc" class="Primitive"
       >suc</a
-      ><a name="1341"
-      > </a
-      ><a name="1342" href="Category.Monad.Continuation.html#1259" class="Bound"
+      > <a name="1342" href="Category.Monad.Continuation.html#1259" class="Bound"
       >f</a
       ><a name="1343" class="Symbol"
       >)</a
-      ><a name="1344"
-      > </a
-      ><a name="1345" class="Keyword"
+      > <a name="1345" class="Keyword"
       >where</a
-      ><a name="1350"
       >
-  </a
-      ><a name="1353" class="Keyword"
+  <a name="1353" class="Keyword"
       >field</a
-      ><a name="1358"
       >
-    </a
-      ><a name="1363" href="Category.Monad.Continuation.html#1363" class="Field"
+    <a name="RawIMonadDCont.monad" href="Category.Monad.Continuation.html#RawIMonadDCont.monad" class="Field"
       >monad</a
-      ><a name="1368"
-      > </a
-      ><a name="1369" class="Symbol"
+      > <a name="1369" class="Symbol"
       >:</a
-      ><a name="1370"
-      > </a
-      ><a name="1371" href="Category.Monad.Indexed.html#385" class="Record"
+      > <a name="1371" href="Category.Monad.Indexed.html#RawIMonad" class="Record"
       >RawIMonad</a
-      ><a name="1380"
-      > </a
-      ><a name="1381" href="Category.Monad.Continuation.html#1313" class="Bound"
+      > <a name="1381" href="Category.Monad.Continuation.html#1313" class="Bound"
       >M</a
-      ><a name="1382"
       >
-    </a
-      ><a name="1387" href="Category.Monad.Continuation.html#1387" class="Field"
+    <a name="RawIMonadDCont.reset" href="Category.Monad.Continuation.html#RawIMonadDCont.reset" class="Field"
       >reset</a
-      ><a name="1392"
-      > </a
-      ><a name="1393" class="Symbol"
+      > <a name="1393" class="Symbol"
       >:</a
-      ><a name="1394"
-      > </a
-      ><a name="1395" class="Symbol"
+      > <a name="1395" class="Symbol"
       >&#8704;</a
-      ><a name="1396"
-      > </a
-      ><a name="1397" class="Symbol"
+      > <a name="1397" class="Symbol"
       >{</a
       ><a name="1398" href="Category.Monad.Continuation.html#1398" class="Bound"
       >r&#8321;</a
-      ><a name="1400"
-      > </a
-      ><a name="1401" href="Category.Monad.Continuation.html#1401" class="Bound"
+      > <a name="1401" href="Category.Monad.Continuation.html#1401" class="Bound"
       >r&#8322;</a
-      ><a name="1403"
-      > </a
-      ><a name="1404" href="Category.Monad.Continuation.html#1404" class="Bound"
+      > <a name="1404" href="Category.Monad.Continuation.html#1404" class="Bound"
       >r&#8323;</a
       ><a name="1406" class="Symbol"
       >}</a
-      ><a name="1407"
-      > </a
-      ><a name="1408" class="Symbol"
+      > <a name="1408" class="Symbol"
       >&#8594;</a
-      ><a name="1409"
-      > </a
-      ><a name="1410" href="Category.Monad.Continuation.html#1313" class="Bound"
+      > <a name="1410" href="Category.Monad.Continuation.html#1313" class="Bound"
       >M</a
-      ><a name="1411"
-      > </a
-      ><a name="1412" href="Category.Monad.Continuation.html#1398" class="Bound"
+      > <a name="1412" href="Category.Monad.Continuation.html#1398" class="Bound"
       >r&#8321;</a
-      ><a name="1414"
-      > </a
-      ><a name="1415" href="Category.Monad.Continuation.html#1401" class="Bound"
+      > <a name="1415" href="Category.Monad.Continuation.html#1401" class="Bound"
       >r&#8322;</a
-      ><a name="1417"
-      > </a
-      ><a name="1418" class="Symbol"
+      > <a name="1418" class="Symbol"
       >(</a
       ><a name="1419" href="Category.Monad.Continuation.html#1275" class="Bound"
       >K</a
-      ><a name="1420"
-      > </a
-      ><a name="1421" href="Category.Monad.Continuation.html#1401" class="Bound"
+      > <a name="1421" href="Category.Monad.Continuation.html#1401" class="Bound"
       >r&#8322;</a
       ><a name="1423" class="Symbol"
       >)</a
-      ><a name="1424"
-      > </a
-      ><a name="1425" class="Symbol"
+      > <a name="1425" class="Symbol"
       >&#8594;</a
-      ><a name="1426"
-      > </a
-      ><a name="1427" href="Category.Monad.Continuation.html#1313" class="Bound"
+      > <a name="1427" href="Category.Monad.Continuation.html#1313" class="Bound"
       >M</a
-      ><a name="1428"
-      > </a
-      ><a name="1429" href="Category.Monad.Continuation.html#1404" class="Bound"
+      > <a name="1429" href="Category.Monad.Continuation.html#1404" class="Bound"
       >r&#8323;</a
-      ><a name="1431"
-      > </a
-      ><a name="1432" href="Category.Monad.Continuation.html#1404" class="Bound"
+      > <a name="1432" href="Category.Monad.Continuation.html#1404" class="Bound"
       >r&#8323;</a
-      ><a name="1434"
-      > </a
-      ><a name="1435" class="Symbol"
+      > <a name="1435" class="Symbol"
       >(</a
       ><a name="1436" href="Category.Monad.Continuation.html#1275" class="Bound"
       >K</a
-      ><a name="1437"
-      > </a
-      ><a name="1438" href="Category.Monad.Continuation.html#1398" class="Bound"
+      > <a name="1438" href="Category.Monad.Continuation.html#1398" class="Bound"
       >r&#8321;</a
       ><a name="1440" class="Symbol"
       >)</a
-      ><a name="1441"
       >
-    </a
-      ><a name="1446" href="Category.Monad.Continuation.html#1446" class="Field"
+    <a name="RawIMonadDCont.shift" href="Category.Monad.Continuation.html#RawIMonadDCont.shift" class="Field"
       >shift</a
-      ><a name="1451"
-      > </a
-      ><a name="1452" class="Symbol"
+      > <a name="1452" class="Symbol"
       >:</a
-      ><a name="1453"
-      > </a
-      ><a name="1454" class="Symbol"
+      > <a name="1454" class="Symbol"
       >&#8704;</a
-      ><a name="1455"
-      > </a
-      ><a name="1456" class="Symbol"
+      > <a name="1456" class="Symbol"
       >{</a
       ><a name="1457" href="Category.Monad.Continuation.html#1457" class="Bound"
       >a</a
-      ><a name="1458"
-      > </a
-      ><a name="1459" href="Category.Monad.Continuation.html#1459" class="Bound"
+      > <a name="1459" href="Category.Monad.Continuation.html#1459" class="Bound"
       >r&#8321;</a
-      ><a name="1461"
-      > </a
-      ><a name="1462" href="Category.Monad.Continuation.html#1462" class="Bound"
+      > <a name="1462" href="Category.Monad.Continuation.html#1462" class="Bound"
       >r&#8322;</a
-      ><a name="1464"
-      > </a
-      ><a name="1465" href="Category.Monad.Continuation.html#1465" class="Bound"
+      > <a name="1465" href="Category.Monad.Continuation.html#1465" class="Bound"
       >r&#8323;</a
-      ><a name="1467"
-      > </a
-      ><a name="1468" href="Category.Monad.Continuation.html#1468" class="Bound"
+      > <a name="1468" href="Category.Monad.Continuation.html#1468" class="Bound"
       >r&#8324;</a
       ><a name="1470" class="Symbol"
       >}</a
-      ><a name="1471"
-      > </a
-      ><a name="1472" class="Symbol"
+      > <a name="1472" class="Symbol"
       >&#8594;</a
-      ><a name="1473"
       >
-            </a
-      ><a name="1486" class="Symbol"
+            <a name="1486" class="Symbol"
       >((</a
       ><a name="1488" href="Category.Monad.Continuation.html#1457" class="Bound"
       >a</a
-      ><a name="1489"
-      > </a
-      ><a name="1490" class="Symbol"
+      > <a name="1490" class="Symbol"
       >&#8594;</a
-      ><a name="1491"
-      > </a
-      ><a name="1492" href="Category.Monad.Continuation.html#1313" class="Bound"
+      > <a name="1492" href="Category.Monad.Continuation.html#1313" class="Bound"
       >M</a
-      ><a name="1493"
-      > </a
-      ><a name="1494" href="Category.Monad.Continuation.html#1459" class="Bound"
+      > <a name="1494" href="Category.Monad.Continuation.html#1459" class="Bound"
       >r&#8321;</a
-      ><a name="1496"
-      > </a
-      ><a name="1497" href="Category.Monad.Continuation.html#1459" class="Bound"
+      > <a name="1497" href="Category.Monad.Continuation.html#1459" class="Bound"
       >r&#8321;</a
-      ><a name="1499"
-      > </a
-      ><a name="1500" class="Symbol"
+      > <a name="1500" class="Symbol"
       >(</a
       ><a name="1501" href="Category.Monad.Continuation.html#1275" class="Bound"
       >K</a
-      ><a name="1502"
-      > </a
-      ><a name="1503" href="Category.Monad.Continuation.html#1462" class="Bound"
+      > <a name="1503" href="Category.Monad.Continuation.html#1462" class="Bound"
       >r&#8322;</a
       ><a name="1505" class="Symbol"
       >))</a
-      ><a name="1507"
-      > </a
-      ><a name="1508" class="Symbol"
+      > <a name="1508" class="Symbol"
       >&#8594;</a
-      ><a name="1509"
-      > </a
-      ><a name="1510" href="Category.Monad.Continuation.html#1313" class="Bound"
+      > <a name="1510" href="Category.Monad.Continuation.html#1313" class="Bound"
       >M</a
-      ><a name="1511"
-      > </a
-      ><a name="1512" href="Category.Monad.Continuation.html#1465" class="Bound"
+      > <a name="1512" href="Category.Monad.Continuation.html#1465" class="Bound"
       >r&#8323;</a
-      ><a name="1514"
-      > </a
-      ><a name="1515" href="Category.Monad.Continuation.html#1468" class="Bound"
+      > <a name="1515" href="Category.Monad.Continuation.html#1468" class="Bound"
       >r&#8324;</a
-      ><a name="1517"
-      > </a
-      ><a name="1518" class="Symbol"
+      > <a name="1518" class="Symbol"
       >(</a
       ><a name="1519" href="Category.Monad.Continuation.html#1275" class="Bound"
       >K</a
-      ><a name="1520"
-      > </a
-      ><a name="1521" href="Category.Monad.Continuation.html#1468" class="Bound"
+      > <a name="1521" href="Category.Monad.Continuation.html#1468" class="Bound"
       >r&#8324;</a
       ><a name="1523" class="Symbol"
       >))</a
-      ><a name="1525"
-      > </a
-      ><a name="1526" class="Symbol"
+      > <a name="1526" class="Symbol"
       >&#8594;</a
-      ><a name="1527"
-      > </a
-      ><a name="1528" href="Category.Monad.Continuation.html#1313" class="Bound"
+      > <a name="1528" href="Category.Monad.Continuation.html#1313" class="Bound"
       >M</a
-      ><a name="1529"
-      > </a
-      ><a name="1530" href="Category.Monad.Continuation.html#1465" class="Bound"
+      > <a name="1530" href="Category.Monad.Continuation.html#1465" class="Bound"
       >r&#8323;</a
-      ><a name="1532"
-      > </a
-      ><a name="1533" href="Category.Monad.Continuation.html#1462" class="Bound"
+      > <a name="1533" href="Category.Monad.Continuation.html#1462" class="Bound"
       >r&#8322;</a
-      ><a name="1535"
-      > </a
-      ><a name="1536" href="Category.Monad.Continuation.html#1457" class="Bound"
+      > <a name="1536" href="Category.Monad.Continuation.html#1457" class="Bound"
       >a</a
-      ><a name="1537"
       >
 
-  </a
-      ><a name="1541" class="Keyword"
+  <a name="1541" class="Keyword"
       >open</a
-      ><a name="1545"
-      > </a
-      ><a name="1546" href="Category.Monad.Indexed.html#385" class="Module"
+      > <a name="1546" href="Category.Monad.Indexed.html#RawIMonad" class="Module"
       >RawIMonad</a
-      ><a name="1555"
-      > </a
-      ><a name="1556" href="Category.Monad.Continuation.html#1363" class="Field"
+      > <a name="1556" href="Category.Monad.Continuation.html#RawIMonadDCont.monad" class="Field"
       >monad</a
-      ><a name="1561"
-      > </a
-      ><a name="1562" class="Keyword"
+      > <a name="1562" class="Keyword"
       >public</a
-      ><a name="1568"
       >
 
-</a
-      ><a name="1570" href="Category.Monad.Continuation.html#1570" class="Function"
+<a name="DContTIMonadDCont" href="Category.Monad.Continuation.html#DContTIMonadDCont" class="Function"
       >DContTIMonadDCont</a
-      ><a name="1587"
-      > </a
-      ><a name="1588" class="Symbol"
+      > <a name="1588" class="Symbol"
       >:</a
-      ><a name="1589"
-      > </a
-      ><a name="1590" class="Symbol"
+      > <a name="1590" class="Symbol"
       >&#8704;</a
-      ><a name="1591"
-      > </a
-      ><a name="1592" class="Symbol"
+      > <a name="1592" class="Symbol"
       >{</a
       ><a name="1593" href="Category.Monad.Continuation.html#1593" class="Bound"
       >i</a
-      ><a name="1594"
-      > </a
-      ><a name="1595" href="Category.Monad.Continuation.html#1595" class="Bound"
+      > <a name="1595" href="Category.Monad.Continuation.html#1595" class="Bound"
       >f</a
       ><a name="1596" class="Symbol"
       >}</a
-      ><a name="1597"
-      > </a
-      ><a name="1598" class="Symbol"
+      > <a name="1598" class="Symbol"
       >{</a
       ><a name="1599" href="Category.Monad.Continuation.html#1599" class="Bound"
       >I</a
-      ><a name="1600"
-      > </a
-      ><a name="1601" class="Symbol"
+      > <a name="1601" class="Symbol"
       >:</a
-      ><a name="1602"
-      > </a
-      ><a name="1603" class="PrimitiveType"
+      > <a name="1603" class="PrimitiveType"
       >Set</a
-      ><a name="1606"
-      > </a
-      ><a name="1607" href="Category.Monad.Continuation.html#1593" class="Bound"
+      > <a name="1607" href="Category.Monad.Continuation.html#1593" class="Bound"
       >i</a
       ><a name="1608" class="Symbol"
       >}</a
-      ><a name="1609"
-      > </a
-      ><a name="1610" class="Symbol"
+      > <a name="1610" class="Symbol"
       >(</a
       ><a name="1611" href="Category.Monad.Continuation.html#1611" class="Bound"
       >K</a
-      ><a name="1612"
-      > </a
-      ><a name="1613" class="Symbol"
+      > <a name="1613" class="Symbol"
       >:</a
-      ><a name="1614"
-      > </a
-      ><a name="1615" href="Category.Monad.Continuation.html#1599" class="Bound"
+      > <a name="1615" href="Category.Monad.Continuation.html#1599" class="Bound"
       >I</a
-      ><a name="1616"
-      > </a
-      ><a name="1617" class="Symbol"
+      > <a name="1617" class="Symbol"
       >&#8594;</a
-      ><a name="1618"
-      > </a
-      ><a name="1619" class="PrimitiveType"
+      > <a name="1619" class="PrimitiveType"
       >Set</a
-      ><a name="1622"
-      > </a
-      ><a name="1623" href="Category.Monad.Continuation.html#1595" class="Bound"
+      > <a name="1623" href="Category.Monad.Continuation.html#1595" class="Bound"
       >f</a
       ><a name="1624" class="Symbol"
       >)</a
-      ><a name="1625"
-      > </a
-      ><a name="1626" class="Symbol"
+      > <a name="1626" class="Symbol"
       >{</a
       ><a name="1627" href="Category.Monad.Continuation.html#1627" class="Bound"
       >M</a
       ><a name="1628" class="Symbol"
       >}</a
-      ><a name="1629"
-      > </a
-      ><a name="1630" class="Symbol"
+      > <a name="1630" class="Symbol"
       >&#8594;</a
-      ><a name="1631"
       >
-                    </a
-      ><a name="1652" href="Category.Monad.html#360" class="Function"
+                    <a name="1652" href="Category.Monad.html#RawMonad" class="Function"
       >RawMonad</a
-      ><a name="1660"
-      > </a
-      ><a name="1661" href="Category.Monad.Continuation.html#1627" class="Bound"
+      > <a name="1661" href="Category.Monad.Continuation.html#1627" class="Bound"
       >M</a
-      ><a name="1662"
-      > </a
-      ><a name="1663" class="Symbol"
+      > <a name="1663" class="Symbol"
       >&#8594;</a
-      ><a name="1664"
-      > </a
-      ><a name="1665" href="Category.Monad.Continuation.html#1241" class="Record"
+      > <a name="1665" href="Category.Monad.Continuation.html#RawIMonadDCont" class="Record"
       >RawIMonadDCont</a
-      ><a name="1679"
-      > </a
-      ><a name="1680" href="Category.Monad.Continuation.html#1611" class="Bound"
+      > <a name="1680" href="Category.Monad.Continuation.html#1611" class="Bound"
       >K</a
-      ><a name="1681"
-      > </a
-      ><a name="1682" class="Symbol"
+      > <a name="1682" class="Symbol"
       >(</a
-      ><a name="1683" href="Category.Monad.Continuation.html#575" class="Function"
+      ><a name="1683" href="Category.Monad.Continuation.html#DContT" class="Function"
       >DContT</a
-      ><a name="1689"
-      > </a
-      ><a name="1690" href="Category.Monad.Continuation.html#1611" class="Bound"
+      > <a name="1690" href="Category.Monad.Continuation.html#1611" class="Bound"
       >K</a
-      ><a name="1691"
-      > </a
-      ><a name="1692" href="Category.Monad.Continuation.html#1627" class="Bound"
+      > <a name="1692" href="Category.Monad.Continuation.html#1627" class="Bound"
       >M</a
       ><a name="1693" class="Symbol"
       >)</a
-      ><a name="1694"
       >
-</a
-      ><a name="1695" href="Category.Monad.Continuation.html#1570" class="Function"
+<a name="1695" href="Category.Monad.Continuation.html#DContTIMonadDCont" class="Function"
       >DContTIMonadDCont</a
-      ><a name="1712"
-      > </a
-      ><a name="1713" href="Category.Monad.Continuation.html#1713" class="Bound"
+      > <a name="1713" href="Category.Monad.Continuation.html#1713" class="Bound"
       >K</a
-      ><a name="1714"
-      > </a
-      ><a name="1715" href="Category.Monad.Continuation.html#1715" class="Bound"
+      > <a name="1715" href="Category.Monad.Continuation.html#1715" class="Bound"
       >Mon</a
-      ><a name="1718"
-      > </a
-      ><a name="1719" class="Symbol"
+      > <a name="1719" class="Symbol"
       >=</a
-      ><a name="1720"
-      > </a
-      ><a name="1721" class="Keyword"
+      > <a name="1721" class="Keyword"
       >record</a
-      ><a name="1727"
       >
-  </a
-      ><a name="1730" class="Symbol"
+  <a name="1730" class="Symbol"
       >{</a
-      ><a name="1731"
-      > </a
-      ><a name="1732" class="Field"
+      > <a name="1732" class="Field"
       >monad</a
-      ><a name="1737"
-      > </a
-      ><a name="1738" class="Symbol"
+      > <a name="1738" class="Symbol"
       >=</a
-      ><a name="1739"
-      > </a
-      ><a name="1740" href="Category.Monad.Continuation.html#777" class="Function"
+      > <a name="1740" href="Category.Monad.Continuation.html#DContTIMonad" class="Function"
       >DContTIMonad</a
-      ><a name="1752"
-      > </a
-      ><a name="1753" href="Category.Monad.Continuation.html#1713" class="Bound"
+      > <a name="1753" href="Category.Monad.Continuation.html#1713" class="Bound"
       >K</a
-      ><a name="1754"
-      > </a
-      ><a name="1755" href="Category.Monad.Continuation.html#1715" class="Bound"
+      > <a name="1755" href="Category.Monad.Continuation.html#1715" class="Bound"
       >Mon</a
-      ><a name="1758"
       >
-  </a
-      ><a name="1761" class="Symbol"
+  <a name="1761" class="Symbol"
       >;</a
-      ><a name="1762"
-      > </a
-      ><a name="1763" class="Field"
+      > <a name="1763" class="Field"
       >reset</a
-      ><a name="1768"
-      > </a
-      ><a name="1769" class="Symbol"
+      > <a name="1769" class="Symbol"
       >=</a
-      ><a name="1770"
-      > </a
-      ><a name="1771" class="Symbol"
+      > <a name="1771" class="Symbol"
       >&#955;</a
-      ><a name="1772"
-      > </a
-      ><a name="1773" href="Category.Monad.Continuation.html#1773" class="Bound"
+      > <a name="1773" href="Category.Monad.Continuation.html#1773" class="Bound"
       >e</a
-      ><a name="1774"
-      > </a
-      ><a name="1775" href="Category.Monad.Continuation.html#1775" class="Bound"
+      > <a name="1775" href="Category.Monad.Continuation.html#1775" class="Bound"
       >k</a
-      ><a name="1776"
-      > </a
-      ><a name="1777" class="Symbol"
+      > <a name="1777" class="Symbol"
       >&#8594;</a
-      ><a name="1778"
-      > </a
-      ><a name="1779" href="Category.Monad.Continuation.html#1773" class="Bound"
+      > <a name="1779" href="Category.Monad.Continuation.html#1773" class="Bound"
       >e</a
-      ><a name="1780"
-      > </a
-      ><a name="1781" href="Category.Monad.Indexed.html#533" class="Field"
+      > <a name="1781" href="Category.Monad.Indexed.html#533" class="Field"
       >return</a
-      ><a name="1787"
-      > </a
-      ><a name="1788" href="Category.Monad.Indexed.html#568" class="Field Operator"
+      > <a name="1788" href="Category.Monad.Indexed.html#568" class="Field Operator"
       >&gt;&gt;=</a
-      ><a name="1791"
-      > </a
-      ><a name="1792" href="Category.Monad.Continuation.html#1775" class="Bound"
+      > <a name="1792" href="Category.Monad.Continuation.html#1775" class="Bound"
       >k</a
-      ><a name="1793"
       >
-  </a
-      ><a name="1796" class="Symbol"
+  <a name="1796" class="Symbol"
       >;</a
-      ><a name="1797"
-      > </a
-      ><a name="1798" class="Field"
+      > <a name="1798" class="Field"
       >shift</a
-      ><a name="1803"
-      > </a
-      ><a name="1804" class="Symbol"
+      > <a name="1804" class="Symbol"
       >=</a
-      ><a name="1805"
-      > </a
-      ><a name="1806" class="Symbol"
+      > <a name="1806" class="Symbol"
       >&#955;</a
-      ><a name="1807"
-      > </a
-      ><a name="1808" href="Category.Monad.Continuation.html#1808" class="Bound"
+      > <a name="1808" href="Category.Monad.Continuation.html#1808" class="Bound"
       >e</a
-      ><a name="1809"
-      > </a
-      ><a name="1810" href="Category.Monad.Continuation.html#1810" class="Bound"
+      > <a name="1810" href="Category.Monad.Continuation.html#1810" class="Bound"
       >k</a
-      ><a name="1811"
-      > </a
-      ><a name="1812" class="Symbol"
+      > <a name="1812" class="Symbol"
       >&#8594;</a
-      ><a name="1813"
-      > </a
-      ><a name="1814" href="Category.Monad.Continuation.html#1808" class="Bound"
+      > <a name="1814" href="Category.Monad.Continuation.html#1808" class="Bound"
       >e</a
-      ><a name="1815"
-      > </a
-      ><a name="1816" class="Symbol"
+      > <a name="1816" class="Symbol"
       >(&#955;</a
-      ><a name="1818"
-      > </a
-      ><a name="1819" href="Category.Monad.Continuation.html#1819" class="Bound"
+      > <a name="1819" href="Category.Monad.Continuation.html#1819" class="Bound"
       >a</a
-      ><a name="1820"
-      > </a
-      ><a name="1821" href="Category.Monad.Continuation.html#1821" class="Bound"
+      > <a name="1821" href="Category.Monad.Continuation.html#1821" class="Bound"
       >k'</a
-      ><a name="1823"
-      > </a
-      ><a name="1824" class="Symbol"
+      > <a name="1824" class="Symbol"
       >&#8594;</a
-      ><a name="1825"
-      > </a
-      ><a name="1826" class="Symbol"
+      > <a name="1826" class="Symbol"
       >(</a
       ><a name="1827" href="Category.Monad.Continuation.html#1810" class="Bound"
       >k</a
-      ><a name="1828"
-      > </a
-      ><a name="1829" href="Category.Monad.Continuation.html#1819" class="Bound"
+      > <a name="1829" href="Category.Monad.Continuation.html#1819" class="Bound"
       >a</a
       ><a name="1830" class="Symbol"
       >)</a
-      ><a name="1831"
-      > </a
-      ><a name="1832" href="Category.Monad.Indexed.html#568" class="Field Operator"
+      > <a name="1832" href="Category.Monad.Indexed.html#568" class="Field Operator"
       >&gt;&gt;=</a
-      ><a name="1835"
-      > </a
-      ><a name="1836" href="Category.Monad.Continuation.html#1821" class="Bound"
+      > <a name="1836" href="Category.Monad.Continuation.html#1821" class="Bound"
       >k'</a
       ><a name="1838" class="Symbol"
       >)</a
-      ><a name="1839"
-      > </a
-      ><a name="1840" href="Category.Monad.Indexed.html#533" class="Field"
+      > <a name="1840" href="Category.Monad.Indexed.html#533" class="Field"
       >return</a
-      ><a name="1846"
       >
-  </a
-      ><a name="1849" class="Symbol"
+  <a name="1849" class="Symbol"
       >}</a
-      ><a name="1850"
       >
-  </a
-      ><a name="1853" class="Keyword"
+  <a name="1853" class="Keyword"
       >where</a
-      ><a name="1858"
       >
-  </a
-      ><a name="1861" class="Keyword"
+  <a name="1861" class="Keyword"
       >open</a
-      ><a name="1865"
-      > </a
-      ><a name="1866" href="Category.Monad.Indexed.html#385" class="Module"
+      > <a name="1866" href="Category.Monad.Indexed.html#RawIMonad" class="Module"
       >RawIMonad</a
-      ><a name="1875"
-      > </a
-      ><a name="1876" href="Category.Monad.Continuation.html#1715" class="Bound"
+      > <a name="1876" href="Category.Monad.Continuation.html#1715" class="Bound"
       >Mon</a
-      ><a name="1879"
       >
 
-</a
-      ><a name="1881" href="Category.Monad.Continuation.html#1881" class="Function"
+<a name="DContIMonadDCont" href="Category.Monad.Continuation.html#DContIMonadDCont" class="Function"
       >DContIMonadDCont</a
-      ><a name="1897"
-      > </a
-      ><a name="1898" class="Symbol"
+      > <a name="1898" class="Symbol"
       >:</a
-      ><a name="1899"
-      > </a
-      ><a name="1900" class="Symbol"
+      > <a name="1900" class="Symbol"
       >&#8704;</a
-      ><a name="1901"
-      > </a
-      ><a name="1902" class="Symbol"
+      > <a name="1902" class="Symbol"
       >{</a
       ><a name="1903" href="Category.Monad.Continuation.html#1903" class="Bound"
       >i</a
-      ><a name="1904"
-      > </a
-      ><a name="1905" href="Category.Monad.Continuation.html#1905" class="Bound"
+      > <a name="1905" href="Category.Monad.Continuation.html#1905" class="Bound"
       >f</a
       ><a name="1906" class="Symbol"
       >}</a
-      ><a name="1907"
-      > </a
-      ><a name="1908" class="Symbol"
+      > <a name="1908" class="Symbol"
       >{</a
       ><a name="1909" href="Category.Monad.Continuation.html#1909" class="Bound"
       >I</a
-      ><a name="1910"
-      > </a
-      ><a name="1911" class="Symbol"
+      > <a name="1911" class="Symbol"
       >:</a
-      ><a name="1912"
-      > </a
-      ><a name="1913" class="PrimitiveType"
+      > <a name="1913" class="PrimitiveType"
       >Set</a
-      ><a name="1916"
-      > </a
-      ><a name="1917" href="Category.Monad.Continuation.html#1903" class="Bound"
+      > <a name="1917" href="Category.Monad.Continuation.html#1903" class="Bound"
       >i</a
       ><a name="1918" class="Symbol"
       >}</a
-      ><a name="1919"
       >
-                   </a
-      ><a name="1939" class="Symbol"
+                   <a name="1939" class="Symbol"
       >(</a
       ><a name="1940" href="Category.Monad.Continuation.html#1940" class="Bound"
       >K</a
-      ><a name="1941"
-      > </a
-      ><a name="1942" class="Symbol"
+      > <a name="1942" class="Symbol"
       >:</a
-      ><a name="1943"
-      > </a
-      ><a name="1944" href="Category.Monad.Continuation.html#1909" class="Bound"
+      > <a name="1944" href="Category.Monad.Continuation.html#1909" class="Bound"
       >I</a
-      ><a name="1945"
-      > </a
-      ><a name="1946" class="Symbol"
+      > <a name="1946" class="Symbol"
       >&#8594;</a
-      ><a name="1947"
-      > </a
-      ><a name="1948" class="PrimitiveType"
+      > <a name="1948" class="PrimitiveType"
       >Set</a
-      ><a name="1951"
-      > </a
-      ><a name="1952" href="Category.Monad.Continuation.html#1905" class="Bound"
+      > <a name="1952" href="Category.Monad.Continuation.html#1905" class="Bound"
       >f</a
       ><a name="1953" class="Symbol"
       >)</a
-      ><a name="1954"
-      > </a
-      ><a name="1955" class="Symbol"
+      > <a name="1955" class="Symbol"
       >&#8594;</a
-      ><a name="1956"
-      > </a
-      ><a name="1957" href="Category.Monad.Continuation.html#1241" class="Record"
+      > <a name="1957" href="Category.Monad.Continuation.html#RawIMonadDCont" class="Record"
       >RawIMonadDCont</a
-      ><a name="1971"
-      > </a
-      ><a name="1972" href="Category.Monad.Continuation.html#1940" class="Bound"
+      > <a name="1972" href="Category.Monad.Continuation.html#1940" class="Bound"
       >K</a
-      ><a name="1973"
-      > </a
-      ><a name="1974" class="Symbol"
+      > <a name="1974" class="Symbol"
       >(</a
-      ><a name="1975" href="Category.Monad.Continuation.html#695" class="Function"
+      ><a name="1975" href="Category.Monad.Continuation.html#DCont" class="Function"
       >DCont</a
-      ><a name="1980"
-      > </a
-      ><a name="1981" href="Category.Monad.Continuation.html#1940" class="Bound"
+      > <a name="1981" href="Category.Monad.Continuation.html#1940" class="Bound"
       >K</a
       ><a name="1982" class="Symbol"
       >)</a
-      ><a name="1983"
       >
-</a
-      ><a name="1984" href="Category.Monad.Continuation.html#1881" class="Function"
+<a name="1984" href="Category.Monad.Continuation.html#DContIMonadDCont" class="Function"
       >DContIMonadDCont</a
-      ><a name="2000"
-      > </a
-      ><a name="2001" href="Category.Monad.Continuation.html#2001" class="Bound"
+      > <a name="2001" href="Category.Monad.Continuation.html#2001" class="Bound"
       >K</a
-      ><a name="2002"
-      > </a
-      ><a name="2003" class="Symbol"
+      > <a name="2003" class="Symbol"
       >=</a
-      ><a name="2004"
-      > </a
-      ><a name="2005" href="Category.Monad.Continuation.html#1570" class="Function"
+      > <a name="2005" href="Category.Monad.Continuation.html#DContTIMonadDCont" class="Function"
       >DContTIMonadDCont</a
-      ><a name="2022"
-      > </a
-      ><a name="2023" href="Category.Monad.Continuation.html#2001" class="Bound"
+      > <a name="2023" href="Category.Monad.Continuation.html#2001" class="Bound"
       >K</a
-      ><a name="2024"
-      > </a
-      ><a name="2025" href="Category.Monad.Identity.html#317" class="Function"
+      > <a name="2025" href="Category.Monad.Identity.html#IdentityMonad" class="Function"
       >IdentityMonad</a
-      ><a name="2038"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

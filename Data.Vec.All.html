@@ -1,0 +1,2154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Vec.All</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="74" class="Comment"
+      >-- The Agda standard library</a
+      >
+<a name="103" class="Comment"
+      >--</a
+      >
+<a name="106" class="Comment"
+      >-- Vectors where all elements satisfy a given property</a
+      >
+<a name="161" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+
+<a name="235" class="Keyword"
+      >module</a
+      > <a name="242" href="Data.Vec.All.html" class="Module"
+      >Data.Vec.All</a
+      > <a name="255" class="Keyword"
+      >where</a
+      >
+
+<a name="262" class="Keyword"
+      >open</a
+      > <a name="267" class="Keyword"
+      >import</a
+      > <a name="274" href="Data.Vec.html" class="Module"
+      >Data.Vec</a
+      > <a name="283" class="Symbol"
+      >as</a
+      > <a name="286" class="Module"
+      >Vec</a
+      > <a name="290" class="Keyword"
+      >using</a
+      > <a name="296" class="Symbol"
+      >(</a
+      ><a name="297" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      ><a name="300" class="Symbol"
+      >;</a
+      > <a name="302" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      ><a name="304" class="Symbol"
+      >;</a
+      > <a name="306" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="309" class="Symbol"
+      >;</a
+      > <a name="311" href="Data.Vec.html#zip" class="Function"
+      >zip</a
+      ><a name="314" class="Symbol"
+      >)</a
+      >
+<a name="316" class="Keyword"
+      >open</a
+      > <a name="321" class="Keyword"
+      >import</a
+      > <a name="328" href="Data.Vec.Properties.html" class="Module"
+      >Data.Vec.Properties</a
+      > <a name="348" class="Keyword"
+      >using</a
+      > <a name="354" class="Symbol"
+      >(</a
+      ><a name="355" href="Data.Vec.Properties.html#lookup-zip" class="Function"
+      >lookup-zip</a
+      ><a name="365" class="Symbol"
+      >)</a
+      >
+<a name="367" class="Keyword"
+      >open</a
+      > <a name="372" class="Keyword"
+      >import</a
+      > <a name="379" href="Data.Fin.html" class="Module"
+      >Data.Fin</a
+      > <a name="388" class="Keyword"
+      >using</a
+      > <a name="394" class="Symbol"
+      >(</a
+      ><a name="395" href="Data.Fin.html#Fin" class="Datatype"
+      >Fin</a
+      ><a name="398" class="Symbol"
+      >;</a
+      > <a name="400" href="Data.Fin.html#Fin.zero" class="InductiveConstructor"
+      >zero</a
+      ><a name="404" class="Symbol"
+      >;</a
+      > <a name="406" href="Data.Fin.html#Fin.suc" class="InductiveConstructor"
+      >suc</a
+      ><a name="409" class="Symbol"
+      >)</a
+      >
+<a name="411" class="Keyword"
+      >open</a
+      > <a name="416" class="Keyword"
+      >import</a
+      > <a name="423" href="Function.html" class="Module"
+      >Function</a
+      > <a name="432" class="Keyword"
+      >using</a
+      > <a name="438" class="Symbol"
+      >(</a
+      ><a name="439" href="Function.html#_&#8728;_" class="Function Operator"
+      >_&#8728;_</a
+      ><a name="442" class="Symbol"
+      >)</a
+      >
+<a name="444" class="Keyword"
+      >open</a
+      > <a name="449" class="Keyword"
+      >import</a
+      > <a name="456" href="Level.html" class="Module"
+      >Level</a
+      > <a name="462" class="Keyword"
+      >using</a
+      > <a name="468" class="Symbol"
+      >(</a
+      ><a name="469" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
+      >_&#8852;_</a
+      ><a name="472" class="Symbol"
+      >)</a
+      >
+<a name="474" class="Keyword"
+      >open</a
+      > <a name="479" class="Keyword"
+      >import</a
+      > <a name="486" href="Data.Product.html" class="Module"
+      >Data.Product</a
+      > <a name="499" class="Keyword"
+      >using</a
+      > <a name="505" class="Symbol"
+      >(</a
+      ><a name="506" href="Data.Product.html#uncurry" class="Function"
+      >uncurry</a
+      ><a name="513" class="Symbol"
+      >)</a
+      >
+<a name="515" class="Keyword"
+      >open</a
+      > <a name="520" class="Keyword"
+      >import</a
+      > <a name="527" href="Relation.Nullary.html" class="Module"
+      >Relation.Nullary</a
+      >
+<a name="544" class="Keyword"
+      >import</a
+      > <a name="551" href="Relation.Nullary.Decidable.html" class="Module"
+      >Relation.Nullary.Decidable</a
+      > <a name="578" class="Symbol"
+      >as</a
+      > <a name="581" class="Module"
+      >Dec</a
+      >
+<a name="585" class="Keyword"
+      >open</a
+      > <a name="590" class="Keyword"
+      >import</a
+      > <a name="597" href="Relation.Unary.html" class="Module"
+      >Relation.Unary</a
+      > <a name="612" class="Keyword"
+      >using</a
+      > <a name="618" class="Symbol"
+      >(</a
+      ><a name="619" href="Relation.Unary.html#Decidable" class="Function"
+      >Decidable</a
+      ><a name="628" class="Symbol"
+      >)</a
+      > <a name="630" class="Keyword"
+      >renaming</a
+      > <a name="639" class="Symbol"
+      >(</a
+      ><a name="640" href="Relation.Unary.html#1822" class="Function Operator"
+      >_&#8838;_</a
+      > <a name="644" class="Symbol"
+      >to</a
+      > <a name="647" href="Relation.Unary.html#1822" class="Function Operator"
+      >_&#8912;_</a
+      ><a name="650" class="Symbol"
+      >)</a
+      >
+<a name="652" class="Keyword"
+      >open</a
+      > <a name="657" class="Keyword"
+      >import</a
+      > <a name="664" href="Relation.Binary.PropositionalEquality.html" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      > <a name="702" class="Keyword"
+      >using</a
+      > <a name="708" class="Symbol"
+      >(</a
+      ><a name="709" href="Relation.Binary.PropositionalEquality.Core.html#subst" class="Function"
+      >subst</a
+      ><a name="714" class="Symbol"
+      >)</a
+      >
+
+<a name="717" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="790" class="Comment"
+      >-- All P xs means that all elements in xs satisfy P.</a
+      >
+
+<a name="844" class="Keyword"
+      >infixr</a
+      > <a name="851" class="Number"
+      >5</a
+      > <a name="853" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      >
+
+<a name="858" class="Keyword"
+      >data</a
+      > <a name="All" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="867" class="Symbol"
+      >{</a
+      ><a name="868" href="Data.Vec.All.html#868" class="Bound"
+      >a</a
+      > <a name="870" href="Data.Vec.All.html#870" class="Bound"
+      >p</a
+      ><a name="871" class="Symbol"
+      >}</a
+      > <a name="873" class="Symbol"
+      >{</a
+      ><a name="874" href="Data.Vec.All.html#874" class="Bound"
+      >A</a
+      > <a name="876" class="Symbol"
+      >:</a
+      > <a name="878" class="PrimitiveType"
+      >Set</a
+      > <a name="882" href="Data.Vec.All.html#868" class="Bound"
+      >a</a
+      ><a name="883" class="Symbol"
+      >}</a
+      >
+         <a name="894" class="Symbol"
+      >(</a
+      ><a name="895" href="Data.Vec.All.html#895" class="Bound"
+      >P</a
+      > <a name="897" class="Symbol"
+      >:</a
+      > <a name="899" href="Data.Vec.All.html#874" class="Bound"
+      >A</a
+      > <a name="901" class="Symbol"
+      >&#8594;</a
+      > <a name="903" class="PrimitiveType"
+      >Set</a
+      > <a name="907" href="Data.Vec.All.html#870" class="Bound"
+      >p</a
+      ><a name="908" class="Symbol"
+      >)</a
+      > <a name="910" class="Symbol"
+      >:</a
+      > <a name="912" class="Symbol"
+      >&#8704;</a
+      > <a name="914" class="Symbol"
+      >{</a
+      ><a name="915" href="Data.Vec.All.html#915" class="Bound"
+      >k</a
+      ><a name="916" class="Symbol"
+      >}</a
+      > <a name="918" class="Symbol"
+      >&#8594;</a
+      > <a name="920" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="924" href="Data.Vec.All.html#874" class="Bound"
+      >A</a
+      > <a name="926" href="Data.Vec.All.html#915" class="Bound"
+      >k</a
+      > <a name="928" class="Symbol"
+      >&#8594;</a
+      > <a name="930" class="PrimitiveType"
+      >Set</a
+      > <a name="934" class="Symbol"
+      >(</a
+      ><a name="935" href="Data.Vec.All.html#870" class="Bound"
+      >p</a
+      > <a name="937" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
+      >&#8852;</a
+      > <a name="939" href="Data.Vec.All.html#868" class="Bound"
+      >a</a
+      ><a name="940" class="Symbol"
+      >)</a
+      > <a name="942" class="Keyword"
+      >where</a
+      >
+  <a name="All.[]" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >  <a name="954" class="Symbol"
+      >:</a
+      > <a name="956" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="960" href="Data.Vec.All.html#895" class="Bound"
+      >P</a
+      > <a name="962" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      >
+  <a name="All._&#8759;_" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      > <a name="971" class="Symbol"
+      >:</a
+      > <a name="973" class="Symbol"
+      >&#8704;</a
+      > <a name="975" class="Symbol"
+      >{</a
+      ><a name="976" href="Data.Vec.All.html#976" class="Bound"
+      >k</a
+      > <a name="978" href="Data.Vec.All.html#978" class="Bound"
+      >x</a
+      ><a name="979" class="Symbol"
+      >}</a
+      > <a name="981" class="Symbol"
+      >{</a
+      ><a name="982" href="Data.Vec.All.html#982" class="Bound"
+      >xs</a
+      > <a name="985" class="Symbol"
+      >:</a
+      > <a name="987" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="991" href="Data.Vec.All.html#874" class="Bound"
+      >A</a
+      > <a name="993" href="Data.Vec.All.html#976" class="Bound"
+      >k</a
+      ><a name="994" class="Symbol"
+      >}</a
+      > <a name="996" class="Symbol"
+      >(</a
+      ><a name="997" href="Data.Vec.All.html#997" class="Bound"
+      >px</a
+      > <a name="1000" class="Symbol"
+      >:</a
+      > <a name="1002" href="Data.Vec.All.html#895" class="Bound"
+      >P</a
+      > <a name="1004" href="Data.Vec.All.html#978" class="Bound"
+      >x</a
+      ><a name="1005" class="Symbol"
+      >)</a
+      > <a name="1007" class="Symbol"
+      >(</a
+      ><a name="1008" href="Data.Vec.All.html#1008" class="Bound"
+      >pxs</a
+      > <a name="1012" class="Symbol"
+      >:</a
+      > <a name="1014" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1018" href="Data.Vec.All.html#895" class="Bound"
+      >P</a
+      > <a name="1020" href="Data.Vec.All.html#982" class="Bound"
+      >xs</a
+      ><a name="1022" class="Symbol"
+      >)</a
+      > <a name="1024" class="Symbol"
+      >&#8594;</a
+      > <a name="1026" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1030" href="Data.Vec.All.html#895" class="Bound"
+      >P</a
+      > <a name="1032" class="Symbol"
+      >(</a
+      ><a name="1033" href="Data.Vec.All.html#978" class="Bound"
+      >x</a
+      > <a name="1035" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1037" href="Data.Vec.All.html#982" class="Bound"
+      >xs</a
+      ><a name="1039" class="Symbol"
+      >)</a
+      >
+
+<a name="head" href="Data.Vec.All.html#head" class="Function"
+      >head</a
+      > <a name="1047" class="Symbol"
+      >:</a
+      > <a name="1049" class="Symbol"
+      >&#8704;</a
+      > <a name="1051" class="Symbol"
+      >{</a
+      ><a name="1052" href="Data.Vec.All.html#1052" class="Bound"
+      >a</a
+      > <a name="1054" href="Data.Vec.All.html#1054" class="Bound"
+      >p</a
+      ><a name="1055" class="Symbol"
+      >}</a
+      > <a name="1057" class="Symbol"
+      >{</a
+      ><a name="1058" href="Data.Vec.All.html#1058" class="Bound"
+      >A</a
+      > <a name="1060" class="Symbol"
+      >:</a
+      > <a name="1062" class="PrimitiveType"
+      >Set</a
+      > <a name="1066" href="Data.Vec.All.html#1052" class="Bound"
+      >a</a
+      ><a name="1067" class="Symbol"
+      >}</a
+      > <a name="1069" class="Symbol"
+      >{</a
+      ><a name="1070" href="Data.Vec.All.html#1070" class="Bound"
+      >P</a
+      > <a name="1072" class="Symbol"
+      >:</a
+      > <a name="1074" href="Data.Vec.All.html#1058" class="Bound"
+      >A</a
+      > <a name="1076" class="Symbol"
+      >&#8594;</a
+      > <a name="1078" class="PrimitiveType"
+      >Set</a
+      > <a name="1082" href="Data.Vec.All.html#1054" class="Bound"
+      >p</a
+      ><a name="1083" class="Symbol"
+      >}</a
+      > <a name="1085" class="Symbol"
+      >{</a
+      ><a name="1086" href="Data.Vec.All.html#1086" class="Bound"
+      >k</a
+      > <a name="1088" href="Data.Vec.All.html#1088" class="Bound"
+      >x</a
+      ><a name="1089" class="Symbol"
+      >}</a
+      > <a name="1091" class="Symbol"
+      >{</a
+      ><a name="1092" href="Data.Vec.All.html#1092" class="Bound"
+      >xs</a
+      > <a name="1095" class="Symbol"
+      >:</a
+      > <a name="1097" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="1101" href="Data.Vec.All.html#1058" class="Bound"
+      >A</a
+      > <a name="1103" href="Data.Vec.All.html#1086" class="Bound"
+      >k</a
+      ><a name="1104" class="Symbol"
+      >}</a
+      > <a name="1106" class="Symbol"
+      >&#8594;</a
+      >
+       <a name="1115" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1119" href="Data.Vec.All.html#1070" class="Bound"
+      >P</a
+      > <a name="1121" class="Symbol"
+      >(</a
+      ><a name="1122" href="Data.Vec.All.html#1088" class="Bound"
+      >x</a
+      > <a name="1124" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1126" href="Data.Vec.All.html#1092" class="Bound"
+      >xs</a
+      ><a name="1128" class="Symbol"
+      >)</a
+      > <a name="1130" class="Symbol"
+      >&#8594;</a
+      > <a name="1132" href="Data.Vec.All.html#1070" class="Bound"
+      >P</a
+      > <a name="1134" href="Data.Vec.All.html#1088" class="Bound"
+      >x</a
+      >
+<a name="1136" href="Data.Vec.All.html#head" class="Function"
+      >head</a
+      > <a name="1141" class="Symbol"
+      >(</a
+      ><a name="1142" href="Data.Vec.All.html#1142" class="Bound"
+      >px</a
+      > <a name="1145" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1147" href="Data.Vec.All.html#1147" class="Bound"
+      >pxs</a
+      ><a name="1150" class="Symbol"
+      >)</a
+      > <a name="1152" class="Symbol"
+      >=</a
+      > <a name="1154" href="Data.Vec.All.html#1142" class="Bound"
+      >px</a
+      >
+
+<a name="tail" href="Data.Vec.All.html#tail" class="Function"
+      >tail</a
+      > <a name="1163" class="Symbol"
+      >:</a
+      > <a name="1165" class="Symbol"
+      >&#8704;</a
+      > <a name="1167" class="Symbol"
+      >{</a
+      ><a name="1168" href="Data.Vec.All.html#1168" class="Bound"
+      >a</a
+      > <a name="1170" href="Data.Vec.All.html#1170" class="Bound"
+      >p</a
+      ><a name="1171" class="Symbol"
+      >}</a
+      > <a name="1173" class="Symbol"
+      >{</a
+      ><a name="1174" href="Data.Vec.All.html#1174" class="Bound"
+      >A</a
+      > <a name="1176" class="Symbol"
+      >:</a
+      > <a name="1178" class="PrimitiveType"
+      >Set</a
+      > <a name="1182" href="Data.Vec.All.html#1168" class="Bound"
+      >a</a
+      ><a name="1183" class="Symbol"
+      >}</a
+      > <a name="1185" class="Symbol"
+      >{</a
+      ><a name="1186" href="Data.Vec.All.html#1186" class="Bound"
+      >P</a
+      > <a name="1188" class="Symbol"
+      >:</a
+      > <a name="1190" href="Data.Vec.All.html#1174" class="Bound"
+      >A</a
+      > <a name="1192" class="Symbol"
+      >&#8594;</a
+      > <a name="1194" class="PrimitiveType"
+      >Set</a
+      > <a name="1198" href="Data.Vec.All.html#1170" class="Bound"
+      >p</a
+      ><a name="1199" class="Symbol"
+      >}</a
+      > <a name="1201" class="Symbol"
+      >{</a
+      ><a name="1202" href="Data.Vec.All.html#1202" class="Bound"
+      >k</a
+      > <a name="1204" href="Data.Vec.All.html#1204" class="Bound"
+      >x</a
+      ><a name="1205" class="Symbol"
+      >}</a
+      > <a name="1207" class="Symbol"
+      >{</a
+      ><a name="1208" href="Data.Vec.All.html#1208" class="Bound"
+      >xs</a
+      > <a name="1211" class="Symbol"
+      >:</a
+      > <a name="1213" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="1217" href="Data.Vec.All.html#1174" class="Bound"
+      >A</a
+      > <a name="1219" href="Data.Vec.All.html#1202" class="Bound"
+      >k</a
+      ><a name="1220" class="Symbol"
+      >}</a
+      > <a name="1222" class="Symbol"
+      >&#8594;</a
+      >
+       <a name="1231" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1235" href="Data.Vec.All.html#1186" class="Bound"
+      >P</a
+      > <a name="1237" class="Symbol"
+      >(</a
+      ><a name="1238" href="Data.Vec.All.html#1204" class="Bound"
+      >x</a
+      > <a name="1240" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1242" href="Data.Vec.All.html#1208" class="Bound"
+      >xs</a
+      ><a name="1244" class="Symbol"
+      >)</a
+      > <a name="1246" class="Symbol"
+      >&#8594;</a
+      > <a name="1248" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1252" href="Data.Vec.All.html#1186" class="Bound"
+      >P</a
+      > <a name="1254" href="Data.Vec.All.html#1208" class="Bound"
+      >xs</a
+      >
+<a name="1257" href="Data.Vec.All.html#tail" class="Function"
+      >tail</a
+      > <a name="1262" class="Symbol"
+      >(</a
+      ><a name="1263" href="Data.Vec.All.html#1263" class="Bound"
+      >px</a
+      > <a name="1266" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1268" href="Data.Vec.All.html#1268" class="Bound"
+      >pxs</a
+      ><a name="1271" class="Symbol"
+      >)</a
+      > <a name="1273" class="Symbol"
+      >=</a
+      > <a name="1275" href="Data.Vec.All.html#1268" class="Bound"
+      >pxs</a
+      >
+
+<a name="lookup" href="Data.Vec.All.html#lookup" class="Function"
+      >lookup</a
+      > <a name="1287" class="Symbol"
+      >:</a
+      > <a name="1289" class="Symbol"
+      >&#8704;</a
+      > <a name="1291" class="Symbol"
+      >{</a
+      ><a name="1292" href="Data.Vec.All.html#1292" class="Bound"
+      >a</a
+      > <a name="1294" href="Data.Vec.All.html#1294" class="Bound"
+      >p</a
+      ><a name="1295" class="Symbol"
+      >}</a
+      > <a name="1297" class="Symbol"
+      >{</a
+      ><a name="1298" href="Data.Vec.All.html#1298" class="Bound"
+      >A</a
+      > <a name="1300" class="Symbol"
+      >:</a
+      > <a name="1302" class="PrimitiveType"
+      >Set</a
+      > <a name="1306" href="Data.Vec.All.html#1292" class="Bound"
+      >a</a
+      ><a name="1307" class="Symbol"
+      >}</a
+      > <a name="1309" class="Symbol"
+      >{</a
+      ><a name="1310" href="Data.Vec.All.html#1310" class="Bound"
+      >P</a
+      > <a name="1312" class="Symbol"
+      >:</a
+      > <a name="1314" href="Data.Vec.All.html#1298" class="Bound"
+      >A</a
+      > <a name="1316" class="Symbol"
+      >&#8594;</a
+      > <a name="1318" class="PrimitiveType"
+      >Set</a
+      > <a name="1322" href="Data.Vec.All.html#1294" class="Bound"
+      >p</a
+      ><a name="1323" class="Symbol"
+      >}</a
+      > <a name="1325" class="Symbol"
+      >{</a
+      ><a name="1326" href="Data.Vec.All.html#1326" class="Bound"
+      >k</a
+      ><a name="1327" class="Symbol"
+      >}</a
+      > <a name="1329" class="Symbol"
+      >{</a
+      ><a name="1330" href="Data.Vec.All.html#1330" class="Bound"
+      >xs</a
+      > <a name="1333" class="Symbol"
+      >:</a
+      > <a name="1335" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="1339" href="Data.Vec.All.html#1298" class="Bound"
+      >A</a
+      > <a name="1341" href="Data.Vec.All.html#1326" class="Bound"
+      >k</a
+      ><a name="1342" class="Symbol"
+      >}</a
+      > <a name="1344" class="Symbol"
+      >&#8594;</a
+      >
+         <a name="1355" class="Symbol"
+      >(</a
+      ><a name="1356" href="Data.Vec.All.html#1356" class="Bound"
+      >i</a
+      > <a name="1358" class="Symbol"
+      >:</a
+      > <a name="1360" href="Data.Fin.html#Fin" class="Datatype"
+      >Fin</a
+      > <a name="1364" href="Data.Vec.All.html#1326" class="Bound"
+      >k</a
+      ><a name="1365" class="Symbol"
+      >)</a
+      > <a name="1367" class="Symbol"
+      >&#8594;</a
+      > <a name="1369" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1373" href="Data.Vec.All.html#1310" class="Bound"
+      >P</a
+      > <a name="1375" href="Data.Vec.All.html#1330" class="Bound"
+      >xs</a
+      > <a name="1378" class="Symbol"
+      >&#8594;</a
+      > <a name="1380" href="Data.Vec.All.html#1310" class="Bound"
+      >P</a
+      > <a name="1382" class="Symbol"
+      >(</a
+      ><a name="1383" href="Data.Vec.html#lookup" class="Function"
+      >Vec.lookup</a
+      > <a name="1394" href="Data.Vec.All.html#1356" class="Bound"
+      >i</a
+      > <a name="1396" href="Data.Vec.All.html#1330" class="Bound"
+      >xs</a
+      ><a name="1398" class="Symbol"
+      >)</a
+      >
+<a name="1400" href="Data.Vec.All.html#lookup" class="Function"
+      >lookup</a
+      > <a name="1407" class="Symbol"
+      >()</a
+      >      <a name="1415" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >
+<a name="1418" href="Data.Vec.All.html#lookup" class="Function"
+      >lookup</a
+      > <a name="1425" href="Data.Fin.html#Fin.zero" class="InductiveConstructor"
+      >zero</a
+      >    <a name="1433" class="Symbol"
+      >(</a
+      ><a name="1434" href="Data.Vec.All.html#1434" class="Bound"
+      >px</a
+      > <a name="1437" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1439" href="Data.Vec.All.html#1439" class="Bound"
+      >pxs</a
+      ><a name="1442" class="Symbol"
+      >)</a
+      > <a name="1444" class="Symbol"
+      >=</a
+      > <a name="1446" href="Data.Vec.All.html#1434" class="Bound"
+      >px</a
+      >
+<a name="1449" href="Data.Vec.All.html#lookup" class="Function"
+      >lookup</a
+      > <a name="1456" class="Symbol"
+      >(</a
+      ><a name="1457" href="Data.Fin.html#Fin.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="1461" href="Data.Vec.All.html#1461" class="Bound"
+      >i</a
+      ><a name="1462" class="Symbol"
+      >)</a
+      > <a name="1464" class="Symbol"
+      >(</a
+      ><a name="1465" href="Data.Vec.All.html#1465" class="Bound"
+      >px</a
+      > <a name="1468" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1470" href="Data.Vec.All.html#1470" class="Bound"
+      >pxs</a
+      ><a name="1473" class="Symbol"
+      >)</a
+      > <a name="1475" class="Symbol"
+      >=</a
+      > <a name="1477" href="Data.Vec.All.html#lookup" class="Function"
+      >lookup</a
+      > <a name="1484" href="Data.Vec.All.html#1461" class="Bound"
+      >i</a
+      > <a name="1486" href="Data.Vec.All.html#1470" class="Bound"
+      >pxs</a
+      >
+
+<a name="tabulate" href="Data.Vec.All.html#tabulate" class="Function"
+      >tabulate</a
+      > <a name="1500" class="Symbol"
+      >:</a
+      > <a name="1502" class="Symbol"
+      >&#8704;</a
+      > <a name="1504" class="Symbol"
+      >{</a
+      ><a name="1505" href="Data.Vec.All.html#1505" class="Bound"
+      >a</a
+      > <a name="1507" href="Data.Vec.All.html#1507" class="Bound"
+      >p</a
+      ><a name="1508" class="Symbol"
+      >}</a
+      > <a name="1510" class="Symbol"
+      >{</a
+      ><a name="1511" href="Data.Vec.All.html#1511" class="Bound"
+      >A</a
+      > <a name="1513" class="Symbol"
+      >:</a
+      > <a name="1515" class="PrimitiveType"
+      >Set</a
+      > <a name="1519" href="Data.Vec.All.html#1505" class="Bound"
+      >a</a
+      ><a name="1520" class="Symbol"
+      >}</a
+      > <a name="1522" class="Symbol"
+      >{</a
+      ><a name="1523" href="Data.Vec.All.html#1523" class="Bound"
+      >P</a
+      > <a name="1525" class="Symbol"
+      >:</a
+      > <a name="1527" href="Data.Vec.All.html#1511" class="Bound"
+      >A</a
+      > <a name="1529" class="Symbol"
+      >&#8594;</a
+      > <a name="1531" class="PrimitiveType"
+      >Set</a
+      > <a name="1535" href="Data.Vec.All.html#1507" class="Bound"
+      >p</a
+      ><a name="1536" class="Symbol"
+      >}</a
+      > <a name="1538" class="Symbol"
+      >{</a
+      ><a name="1539" href="Data.Vec.All.html#1539" class="Bound"
+      >k</a
+      ><a name="1540" class="Symbol"
+      >}</a
+      > <a name="1542" class="Symbol"
+      >{</a
+      ><a name="1543" href="Data.Vec.All.html#1543" class="Bound"
+      >xs</a
+      > <a name="1546" class="Symbol"
+      >:</a
+      > <a name="1548" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="1552" href="Data.Vec.All.html#1511" class="Bound"
+      >A</a
+      > <a name="1554" href="Data.Vec.All.html#1539" class="Bound"
+      >k</a
+      ><a name="1555" class="Symbol"
+      >}</a
+      > <a name="1557" class="Symbol"
+      >&#8594;</a
+      >
+           <a name="1570" class="Symbol"
+      >(&#8704;</a
+      > <a name="1573" href="Data.Vec.All.html#1573" class="Bound"
+      >x</a
+      > <a name="1575" class="Symbol"
+      >&#8594;</a
+      > <a name="1577" href="Data.Vec.All.html#1523" class="Bound"
+      >P</a
+      > <a name="1579" href="Data.Vec.All.html#1573" class="Bound"
+      >x</a
+      ><a name="1580" class="Symbol"
+      >)</a
+      > <a name="1582" class="Symbol"
+      >&#8594;</a
+      > <a name="1584" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1588" href="Data.Vec.All.html#1523" class="Bound"
+      >P</a
+      > <a name="1590" href="Data.Vec.All.html#1543" class="Bound"
+      >xs</a
+      >
+<a name="1593" href="Data.Vec.All.html#tabulate" class="Function"
+      >tabulate</a
+      > <a name="1602" class="Symbol"
+      >{</a
+      ><a name="1603" class="Argument"
+      >xs</a
+      > <a name="1606" class="Symbol"
+      >=</a
+      > <a name="1608" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      ><a name="1610" class="Symbol"
+      >}</a
+      >     <a name="1616" href="Data.Vec.All.html#1616" class="Bound"
+      >hyp</a
+      > <a name="1620" class="Symbol"
+      >=</a
+      > <a name="1622" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >
+<a name="1625" href="Data.Vec.All.html#tabulate" class="Function"
+      >tabulate</a
+      > <a name="1634" class="Symbol"
+      >{</a
+      ><a name="1635" class="Argument"
+      >xs</a
+      > <a name="1638" class="Symbol"
+      >=</a
+      > <a name="1640" href="Data.Vec.All.html#1640" class="Bound"
+      >x</a
+      > <a name="1642" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1644" href="Data.Vec.All.html#1644" class="Bound"
+      >xs</a
+      ><a name="1646" class="Symbol"
+      >}</a
+      > <a name="1648" href="Data.Vec.All.html#1648" class="Bound"
+      >hyp</a
+      > <a name="1652" class="Symbol"
+      >=</a
+      > <a name="1654" href="Data.Vec.All.html#1648" class="Bound"
+      >hyp</a
+      > <a name="1658" href="Data.Vec.All.html#1640" class="Bound"
+      >x</a
+      > <a name="1660" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1662" href="Data.Vec.All.html#tabulate" class="Function"
+      >tabulate</a
+      > <a name="1671" href="Data.Vec.All.html#1648" class="Bound"
+      >hyp</a
+      >
+
+<a name="map" href="Data.Vec.All.html#map" class="Function"
+      >map</a
+      > <a name="1680" class="Symbol"
+      >:</a
+      > <a name="1682" class="Symbol"
+      >&#8704;</a
+      > <a name="1684" class="Symbol"
+      >{</a
+      ><a name="1685" href="Data.Vec.All.html#1685" class="Bound"
+      >a</a
+      > <a name="1687" href="Data.Vec.All.html#1687" class="Bound"
+      >p</a
+      > <a name="1689" href="Data.Vec.All.html#1689" class="Bound"
+      >q</a
+      ><a name="1690" class="Symbol"
+      >}</a
+      > <a name="1692" class="Symbol"
+      >{</a
+      ><a name="1693" href="Data.Vec.All.html#1693" class="Bound"
+      >A</a
+      > <a name="1695" class="Symbol"
+      >:</a
+      > <a name="1697" class="PrimitiveType"
+      >Set</a
+      > <a name="1701" href="Data.Vec.All.html#1685" class="Bound"
+      >a</a
+      ><a name="1702" class="Symbol"
+      >}</a
+      > <a name="1704" class="Symbol"
+      >{</a
+      ><a name="1705" href="Data.Vec.All.html#1705" class="Bound"
+      >P</a
+      > <a name="1707" class="Symbol"
+      >:</a
+      > <a name="1709" href="Data.Vec.All.html#1693" class="Bound"
+      >A</a
+      > <a name="1711" class="Symbol"
+      >&#8594;</a
+      > <a name="1713" class="PrimitiveType"
+      >Set</a
+      > <a name="1717" href="Data.Vec.All.html#1687" class="Bound"
+      >p</a
+      ><a name="1718" class="Symbol"
+      >}</a
+      > <a name="1720" class="Symbol"
+      >{</a
+      ><a name="1721" href="Data.Vec.All.html#1721" class="Bound"
+      >Q</a
+      > <a name="1723" class="Symbol"
+      >:</a
+      > <a name="1725" href="Data.Vec.All.html#1693" class="Bound"
+      >A</a
+      > <a name="1727" class="Symbol"
+      >&#8594;</a
+      > <a name="1729" class="PrimitiveType"
+      >Set</a
+      > <a name="1733" href="Data.Vec.All.html#1689" class="Bound"
+      >q</a
+      ><a name="1734" class="Symbol"
+      >}</a
+      > <a name="1736" class="Symbol"
+      >{</a
+      ><a name="1737" href="Data.Vec.All.html#1737" class="Bound"
+      >k</a
+      ><a name="1738" class="Symbol"
+      >}</a
+      > <a name="1740" class="Symbol"
+      >&#8594;</a
+      >
+      <a name="1748" href="Data.Vec.All.html#1705" class="Bound"
+      >P</a
+      > <a name="1750" href="Relation.Unary.html#1822" class="Function Operator"
+      >&#8912;</a
+      > <a name="1752" href="Data.Vec.All.html#1721" class="Bound"
+      >Q</a
+      > <a name="1754" class="Symbol"
+      >&#8594;</a
+      > <a name="1756" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1760" href="Data.Vec.All.html#1705" class="Bound"
+      >P</a
+      > <a name="1762" class="Symbol"
+      >{</a
+      ><a name="1763" href="Data.Vec.All.html#1737" class="Bound"
+      >k</a
+      ><a name="1764" class="Symbol"
+      >}</a
+      > <a name="1766" href="Relation.Unary.html#1822" class="Function Operator"
+      >&#8912;</a
+      > <a name="1768" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1772" href="Data.Vec.All.html#1721" class="Bound"
+      >Q</a
+      > <a name="1774" class="Symbol"
+      >{</a
+      ><a name="1775" href="Data.Vec.All.html#1737" class="Bound"
+      >k</a
+      ><a name="1776" class="Symbol"
+      >}</a
+      >
+<a name="1778" href="Data.Vec.All.html#map" class="Function"
+      >map</a
+      > <a name="1782" href="Data.Vec.All.html#1782" class="Bound"
+      >g</a
+      > <a name="1784" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >         <a name="1795" class="Symbol"
+      >=</a
+      > <a name="1797" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >
+<a name="1800" href="Data.Vec.All.html#map" class="Function"
+      >map</a
+      > <a name="1804" href="Data.Vec.All.html#1804" class="Bound"
+      >g</a
+      > <a name="1806" class="Symbol"
+      >(</a
+      ><a name="1807" href="Data.Vec.All.html#1807" class="Bound"
+      >px</a
+      > <a name="1810" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1812" href="Data.Vec.All.html#1812" class="Bound"
+      >pxs</a
+      ><a name="1815" class="Symbol"
+      >)</a
+      > <a name="1817" class="Symbol"
+      >=</a
+      > <a name="1819" href="Data.Vec.All.html#1804" class="Bound"
+      >g</a
+      > <a name="1821" href="Data.Vec.All.html#1807" class="Bound"
+      >px</a
+      > <a name="1824" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1826" href="Data.Vec.All.html#map" class="Function"
+      >map</a
+      > <a name="1830" href="Data.Vec.All.html#1804" class="Bound"
+      >g</a
+      > <a name="1832" href="Data.Vec.All.html#1812" class="Bound"
+      >pxs</a
+      >
+
+<a name="all" href="Data.Vec.All.html#all" class="Function"
+      >all</a
+      > <a name="1841" class="Symbol"
+      >:</a
+      > <a name="1843" class="Symbol"
+      >&#8704;</a
+      > <a name="1845" class="Symbol"
+      >{</a
+      ><a name="1846" href="Data.Vec.All.html#1846" class="Bound"
+      >a</a
+      > <a name="1848" href="Data.Vec.All.html#1848" class="Bound"
+      >p</a
+      ><a name="1849" class="Symbol"
+      >}</a
+      > <a name="1851" class="Symbol"
+      >{</a
+      ><a name="1852" href="Data.Vec.All.html#1852" class="Bound"
+      >A</a
+      > <a name="1854" class="Symbol"
+      >:</a
+      > <a name="1856" class="PrimitiveType"
+      >Set</a
+      > <a name="1860" href="Data.Vec.All.html#1846" class="Bound"
+      >a</a
+      ><a name="1861" class="Symbol"
+      >}</a
+      > <a name="1863" class="Symbol"
+      >{</a
+      ><a name="1864" href="Data.Vec.All.html#1864" class="Bound"
+      >P</a
+      > <a name="1866" class="Symbol"
+      >:</a
+      > <a name="1868" href="Data.Vec.All.html#1852" class="Bound"
+      >A</a
+      > <a name="1870" class="Symbol"
+      >&#8594;</a
+      > <a name="1872" class="PrimitiveType"
+      >Set</a
+      > <a name="1876" href="Data.Vec.All.html#1848" class="Bound"
+      >p</a
+      ><a name="1877" class="Symbol"
+      >}</a
+      > <a name="1879" class="Symbol"
+      >{</a
+      ><a name="1880" href="Data.Vec.All.html#1880" class="Bound"
+      >k</a
+      ><a name="1881" class="Symbol"
+      >}</a
+      > <a name="1883" class="Symbol"
+      >&#8594;</a
+      >
+      <a name="1891" href="Relation.Unary.html#Decidable" class="Function"
+      >Decidable</a
+      > <a name="1901" href="Data.Vec.All.html#1864" class="Bound"
+      >P</a
+      > <a name="1903" class="Symbol"
+      >&#8594;</a
+      > <a name="1905" href="Relation.Unary.html#Decidable" class="Function"
+      >Decidable</a
+      > <a name="1915" class="Symbol"
+      >(</a
+      ><a name="1916" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1920" href="Data.Vec.All.html#1864" class="Bound"
+      >P</a
+      > <a name="1922" class="Symbol"
+      >{</a
+      ><a name="1923" href="Data.Vec.All.html#1880" class="Bound"
+      >k</a
+      ><a name="1924" class="Symbol"
+      >})</a
+      >
+<a name="1927" href="Data.Vec.All.html#all" class="Function"
+      >all</a
+      > <a name="1931" href="Data.Vec.All.html#1931" class="Bound"
+      >p</a
+      > <a name="1933" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      >       <a name="1942" class="Symbol"
+      >=</a
+      > <a name="1944" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      >yes</a
+      > <a name="1948" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >
+<a name="1951" href="Data.Vec.All.html#all" class="Function"
+      >all</a
+      > <a name="1955" href="Data.Vec.All.html#1955" class="Bound"
+      >p</a
+      > <a name="1957" class="Symbol"
+      >(</a
+      ><a name="1958" href="Data.Vec.All.html#1958" class="Bound"
+      >x</a
+      > <a name="1960" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1962" href="Data.Vec.All.html#1962" class="Bound"
+      >xs</a
+      ><a name="1964" class="Symbol"
+      >)</a
+      > <a name="1966" class="Keyword"
+      >with</a
+      > <a name="1971" href="Data.Vec.All.html#1955" class="Bound"
+      >p</a
+      > <a name="1973" href="Data.Vec.All.html#1958" class="Bound"
+      >x</a
+      >
+<a name="1975" href="Data.Vec.All.html#all" class="Function"
+      >all</a
+      > <a name="1979" href="Data.Vec.All.html#1979" class="Bound"
+      >p</a
+      > <a name="1981" class="Symbol"
+      >(</a
+      ><a name="1982" href="Data.Vec.All.html#1982" class="Bound"
+      >x</a
+      > <a name="1984" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1986" href="Data.Vec.All.html#1986" class="Bound"
+      >xs</a
+      ><a name="1988" class="Symbol"
+      >)</a
+      > <a name="1990" class="Symbol"
+      >|</a
+      > <a name="1992" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      >yes</a
+      > <a name="1996" href="Data.Vec.All.html#1996" class="Bound"
+      >px</a
+      > <a name="1999" class="Symbol"
+      >=</a
+      > <a name="2001" href="Relation.Nullary.Decidable.html#map&#8242;" class="Function"
+      >Dec.map&#8242;</a
+      > <a name="2010" class="Symbol"
+      >(</a
+      ><a name="2011" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      > <a name="2015" href="Data.Vec.All.html#1996" class="Bound"
+      >px</a
+      ><a name="2017" class="Symbol"
+      >)</a
+      > <a name="2019" href="Data.Vec.All.html#tail" class="Function"
+      >tail</a
+      > <a name="2024" class="Symbol"
+      >(</a
+      ><a name="2025" href="Data.Vec.All.html#all" class="Function"
+      >all</a
+      > <a name="2029" href="Data.Vec.All.html#1979" class="Bound"
+      >p</a
+      > <a name="2031" href="Data.Vec.All.html#1986" class="Bound"
+      >xs</a
+      ><a name="2033" class="Symbol"
+      >)</a
+      >
+<a name="2035" href="Data.Vec.All.html#all" class="Function"
+      >all</a
+      > <a name="2039" href="Data.Vec.All.html#2039" class="Bound"
+      >p</a
+      > <a name="2041" class="Symbol"
+      >(</a
+      ><a name="2042" href="Data.Vec.All.html#2042" class="Bound"
+      >x</a
+      > <a name="2044" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2046" href="Data.Vec.All.html#2046" class="Bound"
+      >xs</a
+      ><a name="2048" class="Symbol"
+      >)</a
+      > <a name="2050" class="Symbol"
+      >|</a
+      > <a name="2052" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      >no</a
+      > <a name="2055" href="Data.Vec.All.html#2055" class="Bound"
+      >&#172;px</a
+      > <a name="2059" class="Symbol"
+      >=</a
+      > <a name="2061" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      >no</a
+      > <a name="2064" class="Symbol"
+      >(</a
+      ><a name="2065" href="Data.Vec.All.html#2055" class="Bound"
+      >&#172;px</a
+      > <a name="2069" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="2071" href="Data.Vec.All.html#head" class="Function"
+      >head</a
+      ><a name="2075" class="Symbol"
+      >)</a
+      >
+
+<a name="zipWith" href="Data.Vec.All.html#zipWith" class="Function"
+      >zipWith</a
+      > <a name="2086" class="Symbol"
+      >:</a
+      > <a name="2088" class="Symbol"
+      >&#8704;</a
+      > <a name="2090" class="Symbol"
+      >{</a
+      ><a name="2091" href="Data.Vec.All.html#2091" class="Bound"
+      >a</a
+      > <a name="2093" href="Data.Vec.All.html#2093" class="Bound"
+      >b</a
+      > <a name="2095" href="Data.Vec.All.html#2095" class="Bound"
+      >c</a
+      > <a name="2097" href="Data.Vec.All.html#2097" class="Bound"
+      >p</a
+      > <a name="2099" href="Data.Vec.All.html#2099" class="Bound"
+      >q</a
+      > <a name="2101" href="Data.Vec.All.html#2101" class="Bound"
+      >r</a
+      ><a name="2102" class="Symbol"
+      >}</a
+      > <a name="2104" class="Symbol"
+      >{</a
+      ><a name="2105" href="Data.Vec.All.html#2105" class="Bound"
+      >A</a
+      > <a name="2107" class="Symbol"
+      >:</a
+      > <a name="2109" class="PrimitiveType"
+      >Set</a
+      > <a name="2113" href="Data.Vec.All.html#2091" class="Bound"
+      >a</a
+      ><a name="2114" class="Symbol"
+      >}</a
+      > <a name="2116" class="Symbol"
+      >{</a
+      ><a name="2117" href="Data.Vec.All.html#2117" class="Bound"
+      >B</a
+      > <a name="2119" class="Symbol"
+      >:</a
+      > <a name="2121" class="PrimitiveType"
+      >Set</a
+      > <a name="2125" href="Data.Vec.All.html#2093" class="Bound"
+      >b</a
+      ><a name="2126" class="Symbol"
+      >}</a
+      > <a name="2128" class="Symbol"
+      >{</a
+      ><a name="2129" href="Data.Vec.All.html#2129" class="Bound"
+      >C</a
+      > <a name="2131" class="Symbol"
+      >:</a
+      > <a name="2133" class="PrimitiveType"
+      >Set</a
+      > <a name="2137" href="Data.Vec.All.html#2095" class="Bound"
+      >c</a
+      ><a name="2138" class="Symbol"
+      >}</a
+      > <a name="2140" class="Symbol"
+      >{</a
+      ><a name="2141" href="Data.Vec.All.html#2141" class="Bound Operator"
+      >_&#8853;_</a
+      > <a name="2145" class="Symbol"
+      >:</a
+      > <a name="2147" href="Data.Vec.All.html#2105" class="Bound"
+      >A</a
+      > <a name="2149" class="Symbol"
+      >&#8594;</a
+      > <a name="2151" href="Data.Vec.All.html#2117" class="Bound"
+      >B</a
+      > <a name="2153" class="Symbol"
+      >&#8594;</a
+      > <a name="2155" href="Data.Vec.All.html#2129" class="Bound"
+      >C</a
+      ><a name="2156" class="Symbol"
+      >}</a
+      >
+          <a name="2168" class="Symbol"
+      >{</a
+      ><a name="2169" href="Data.Vec.All.html#2169" class="Bound"
+      >P</a
+      > <a name="2171" class="Symbol"
+      >:</a
+      > <a name="2173" href="Data.Vec.All.html#2105" class="Bound"
+      >A</a
+      > <a name="2175" class="Symbol"
+      >&#8594;</a
+      > <a name="2177" class="PrimitiveType"
+      >Set</a
+      > <a name="2181" href="Data.Vec.All.html#2097" class="Bound"
+      >p</a
+      ><a name="2182" class="Symbol"
+      >}</a
+      > <a name="2184" class="Symbol"
+      >{</a
+      ><a name="2185" href="Data.Vec.All.html#2185" class="Bound"
+      >Q</a
+      > <a name="2187" class="Symbol"
+      >:</a
+      > <a name="2189" href="Data.Vec.All.html#2117" class="Bound"
+      >B</a
+      > <a name="2191" class="Symbol"
+      >&#8594;</a
+      > <a name="2193" class="PrimitiveType"
+      >Set</a
+      > <a name="2197" href="Data.Vec.All.html#2099" class="Bound"
+      >q</a
+      ><a name="2198" class="Symbol"
+      >}</a
+      > <a name="2200" class="Symbol"
+      >{</a
+      ><a name="2201" href="Data.Vec.All.html#2201" class="Bound"
+      >R</a
+      > <a name="2203" class="Symbol"
+      >:</a
+      > <a name="2205" href="Data.Vec.All.html#2129" class="Bound"
+      >C</a
+      > <a name="2207" class="Symbol"
+      >&#8594;</a
+      > <a name="2209" class="PrimitiveType"
+      >Set</a
+      > <a name="2213" href="Data.Vec.All.html#2101" class="Bound"
+      >r</a
+      ><a name="2214" class="Symbol"
+      >}</a
+      > <a name="2216" class="Symbol"
+      >&#8594;</a
+      >
+          <a name="2228" class="Symbol"
+      >(&#8704;</a
+      > <a name="2231" class="Symbol"
+      >{</a
+      ><a name="2232" href="Data.Vec.All.html#2232" class="Bound"
+      >x</a
+      > <a name="2234" href="Data.Vec.All.html#2234" class="Bound"
+      >y</a
+      ><a name="2235" class="Symbol"
+      >}</a
+      > <a name="2237" class="Symbol"
+      >&#8594;</a
+      > <a name="2239" href="Data.Vec.All.html#2169" class="Bound"
+      >P</a
+      > <a name="2241" href="Data.Vec.All.html#2232" class="Bound"
+      >x</a
+      > <a name="2243" class="Symbol"
+      >&#8594;</a
+      > <a name="2245" href="Data.Vec.All.html#2185" class="Bound"
+      >Q</a
+      > <a name="2247" href="Data.Vec.All.html#2234" class="Bound"
+      >y</a
+      > <a name="2249" class="Symbol"
+      >&#8594;</a
+      > <a name="2251" href="Data.Vec.All.html#2201" class="Bound"
+      >R</a
+      > <a name="2253" class="Symbol"
+      >(</a
+      ><a name="2254" href="Data.Vec.All.html#2232" class="Bound"
+      >x</a
+      > <a name="2256" href="Data.Vec.All.html#2141" class="Bound Operator"
+      >&#8853;</a
+      > <a name="2258" href="Data.Vec.All.html#2234" class="Bound"
+      >y</a
+      ><a name="2259" class="Symbol"
+      >))</a
+      > <a name="2262" class="Symbol"
+      >&#8594;</a
+      >
+          <a name="2274" class="Symbol"
+      >&#8704;</a
+      > <a name="2276" class="Symbol"
+      >{</a
+      ><a name="2277" href="Data.Vec.All.html#2277" class="Bound"
+      >k</a
+      > <a name="2279" href="Data.Vec.All.html#2279" class="Bound"
+      >xs</a
+      > <a name="2282" href="Data.Vec.All.html#2282" class="Bound"
+      >ys</a
+      ><a name="2284" class="Symbol"
+      >}</a
+      > <a name="2286" class="Symbol"
+      >&#8594;</a
+      > <a name="2288" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="2292" href="Data.Vec.All.html#2169" class="Bound"
+      >P</a
+      > <a name="2294" class="Symbol"
+      >{</a
+      ><a name="2295" href="Data.Vec.All.html#2277" class="Bound"
+      >k</a
+      ><a name="2296" class="Symbol"
+      >}</a
+      > <a name="2298" href="Data.Vec.All.html#2279" class="Bound"
+      >xs</a
+      > <a name="2301" class="Symbol"
+      >&#8594;</a
+      > <a name="2303" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="2307" href="Data.Vec.All.html#2185" class="Bound"
+      >Q</a
+      > <a name="2309" class="Symbol"
+      >{</a
+      ><a name="2310" href="Data.Vec.All.html#2277" class="Bound"
+      >k</a
+      ><a name="2311" class="Symbol"
+      >}</a
+      > <a name="2313" href="Data.Vec.All.html#2282" class="Bound"
+      >ys</a
+      > <a name="2316" class="Symbol"
+      >&#8594;</a
+      >
+          <a name="2328" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="2332" href="Data.Vec.All.html#2201" class="Bound"
+      >R</a
+      > <a name="2334" class="Symbol"
+      >{</a
+      ><a name="2335" href="Data.Vec.All.html#2277" class="Bound"
+      >k</a
+      ><a name="2336" class="Symbol"
+      >}</a
+      > <a name="2338" class="Symbol"
+      >(</a
+      ><a name="2339" href="Data.Vec.html#zipWith" class="Function"
+      >Vec.zipWith</a
+      > <a name="2351" href="Data.Vec.All.html#2141" class="Bound Operator"
+      >_&#8853;_</a
+      > <a name="2355" href="Data.Vec.All.html#2279" class="Bound"
+      >xs</a
+      > <a name="2358" href="Data.Vec.All.html#2282" class="Bound"
+      >ys</a
+      ><a name="2360" class="Symbol"
+      >)</a
+      >
+<a name="2362" href="Data.Vec.All.html#zipWith" class="Function"
+      >zipWith</a
+      > <a name="2370" href="Data.Vec.All.html#2370" class="Bound Operator"
+      >_&#8853;_</a
+      > <a name="2374" class="Symbol"
+      >{</a
+      ><a name="2375" class="Argument"
+      >xs</a
+      > <a name="2378" class="Symbol"
+      >=</a
+      > <a name="2380" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      ><a name="2382" class="Symbol"
+      >}</a
+      >     <a name="2388" class="Symbol"
+      >{</a
+      ><a name="2389" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      ><a name="2391" class="Symbol"
+      >}</a
+      >     <a name="2397" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >         <a name="2408" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >         <a name="2419" class="Symbol"
+      >=</a
+      > <a name="2421" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >
+<a name="2424" href="Data.Vec.All.html#zipWith" class="Function"
+      >zipWith</a
+      > <a name="2432" href="Data.Vec.All.html#2432" class="Bound Operator"
+      >_&#8853;_</a
+      > <a name="2436" class="Symbol"
+      >{</a
+      ><a name="2437" class="Argument"
+      >xs</a
+      > <a name="2440" class="Symbol"
+      >=</a
+      > <a name="2442" href="Data.Vec.All.html#2442" class="Bound"
+      >x</a
+      > <a name="2444" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2446" href="Data.Vec.All.html#2446" class="Bound"
+      >xs</a
+      ><a name="2448" class="Symbol"
+      >}</a
+      > <a name="2450" class="Symbol"
+      >{</a
+      ><a name="2451" href="Data.Vec.All.html#2451" class="Bound"
+      >y</a
+      > <a name="2453" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2455" href="Data.Vec.All.html#2455" class="Bound"
+      >ys</a
+      ><a name="2457" class="Symbol"
+      >}</a
+      > <a name="2459" class="Symbol"
+      >(</a
+      ><a name="2460" href="Data.Vec.All.html#2460" class="Bound"
+      >px</a
+      > <a name="2463" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2465" href="Data.Vec.All.html#2465" class="Bound"
+      >pxs</a
+      ><a name="2468" class="Symbol"
+      >)</a
+      > <a name="2470" class="Symbol"
+      >(</a
+      ><a name="2471" href="Data.Vec.All.html#2471" class="Bound"
+      >qy</a
+      > <a name="2474" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2476" href="Data.Vec.All.html#2476" class="Bound"
+      >qys</a
+      ><a name="2479" class="Symbol"
+      >)</a
+      > <a name="2481" class="Symbol"
+      >=</a
+      >
+  <a name="2485" href="Data.Vec.All.html#2460" class="Bound"
+      >px</a
+      > <a name="2488" href="Data.Vec.All.html#2432" class="Bound Operator"
+      >&#8853;</a
+      > <a name="2490" href="Data.Vec.All.html#2471" class="Bound"
+      >qy</a
+      > <a name="2493" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2495" href="Data.Vec.All.html#zipWith" class="Function"
+      >zipWith</a
+      > <a name="2503" href="Data.Vec.All.html#2432" class="Bound Operator"
+      >_&#8853;_</a
+      > <a name="2507" href="Data.Vec.All.html#2465" class="Bound"
+      >pxs</a
+      > <a name="2511" href="Data.Vec.All.html#2476" class="Bound"
+      >qys</a
+      >
+
+
+<a name="2517" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="2590" class="Comment"
+      >-- All&#8322; P xs ys means that every pointwise pair in xs ys satisfy P.</a
+      >
+
+<a name="2659" class="Keyword"
+      >data</a
+      > <a name="All&#8322;" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="2669" class="Symbol"
+      >{</a
+      ><a name="2670" href="Data.Vec.All.html#2670" class="Bound"
+      >a</a
+      > <a name="2672" href="Data.Vec.All.html#2672" class="Bound"
+      >b</a
+      > <a name="2674" href="Data.Vec.All.html#2674" class="Bound"
+      >p</a
+      ><a name="2675" class="Symbol"
+      >}</a
+      > <a name="2677" class="Symbol"
+      >{</a
+      ><a name="2678" href="Data.Vec.All.html#2678" class="Bound"
+      >A</a
+      > <a name="2680" class="Symbol"
+      >:</a
+      > <a name="2682" class="PrimitiveType"
+      >Set</a
+      > <a name="2686" href="Data.Vec.All.html#2670" class="Bound"
+      >a</a
+      ><a name="2687" class="Symbol"
+      >}</a
+      > <a name="2689" class="Symbol"
+      >{</a
+      ><a name="2690" href="Data.Vec.All.html#2690" class="Bound"
+      >B</a
+      > <a name="2692" class="Symbol"
+      >:</a
+      > <a name="2694" class="PrimitiveType"
+      >Set</a
+      > <a name="2698" href="Data.Vec.All.html#2672" class="Bound"
+      >b</a
+      ><a name="2699" class="Symbol"
+      >}</a
+      > <a name="2701" class="Symbol"
+      >(</a
+      ><a name="2702" href="Data.Vec.All.html#2702" class="Bound"
+      >P</a
+      > <a name="2704" class="Symbol"
+      >:</a
+      > <a name="2706" href="Data.Vec.All.html#2678" class="Bound"
+      >A</a
+      > <a name="2708" class="Symbol"
+      >&#8594;</a
+      > <a name="2710" href="Data.Vec.All.html#2690" class="Bound"
+      >B</a
+      > <a name="2712" class="Symbol"
+      >&#8594;</a
+      > <a name="2714" class="PrimitiveType"
+      >Set</a
+      > <a name="2718" href="Data.Vec.All.html#2674" class="Bound"
+      >p</a
+      ><a name="2719" class="Symbol"
+      >)</a
+      > <a name="2721" class="Symbol"
+      >:</a
+      >
+          <a name="2733" class="Symbol"
+      >&#8704;</a
+      > <a name="2735" class="Symbol"
+      >{</a
+      ><a name="2736" href="Data.Vec.All.html#2736" class="Bound"
+      >n</a
+      ><a name="2737" class="Symbol"
+      >}</a
+      > <a name="2739" class="Symbol"
+      >&#8594;</a
+      > <a name="2741" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="2745" href="Data.Vec.All.html#2678" class="Bound"
+      >A</a
+      > <a name="2747" href="Data.Vec.All.html#2736" class="Bound"
+      >n</a
+      > <a name="2749" class="Symbol"
+      >&#8594;</a
+      > <a name="2751" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="2755" href="Data.Vec.All.html#2690" class="Bound"
+      >B</a
+      > <a name="2757" href="Data.Vec.All.html#2736" class="Bound"
+      >n</a
+      > <a name="2759" class="Symbol"
+      >&#8594;</a
+      > <a name="2761" class="PrimitiveType"
+      >Set</a
+      > <a name="2765" class="Symbol"
+      >(</a
+      ><a name="2766" href="Data.Vec.All.html#2670" class="Bound"
+      >a</a
+      > <a name="2768" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
+      >&#8852;</a
+      > <a name="2770" href="Data.Vec.All.html#2672" class="Bound"
+      >b</a
+      > <a name="2772" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
+      >&#8852;</a
+      > <a name="2774" href="Data.Vec.All.html#2674" class="Bound"
+      >p</a
+      ><a name="2775" class="Symbol"
+      >)</a
+      > <a name="2777" class="Keyword"
+      >where</a
+      >
+    <a name="All&#8322;.[]" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      >  <a name="2791" class="Symbol"
+      >:</a
+      > <a name="2793" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="2798" href="Data.Vec.All.html#2702" class="Bound"
+      >P</a
+      > <a name="2800" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="2803" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      >
+    <a name="All&#8322;._&#8759;_" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      > <a name="2814" class="Symbol"
+      >:</a
+      > <a name="2816" class="Symbol"
+      >&#8704;</a
+      > <a name="2818" class="Symbol"
+      >{</a
+      ><a name="2819" href="Data.Vec.All.html#2819" class="Bound"
+      >n</a
+      > <a name="2821" href="Data.Vec.All.html#2821" class="Bound"
+      >x</a
+      > <a name="2823" href="Data.Vec.All.html#2823" class="Bound"
+      >y</a
+      ><a name="2824" class="Symbol"
+      >}</a
+      > <a name="2826" class="Symbol"
+      >{</a
+      ><a name="2827" href="Data.Vec.All.html#2827" class="Bound"
+      >xs</a
+      > <a name="2830" class="Symbol"
+      >:</a
+      > <a name="2832" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="2836" href="Data.Vec.All.html#2678" class="Bound"
+      >A</a
+      > <a name="2838" href="Data.Vec.All.html#2819" class="Bound"
+      >n</a
+      ><a name="2839" class="Symbol"
+      >}</a
+      > <a name="2841" class="Symbol"
+      >{</a
+      ><a name="2842" href="Data.Vec.All.html#2842" class="Bound"
+      >ys</a
+      > <a name="2845" class="Symbol"
+      >:</a
+      > <a name="2847" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="2851" href="Data.Vec.All.html#2690" class="Bound"
+      >B</a
+      > <a name="2853" href="Data.Vec.All.html#2819" class="Bound"
+      >n</a
+      ><a name="2854" class="Symbol"
+      >}</a
+      > <a name="2856" class="Symbol"
+      >&#8594;</a
+      >
+            <a name="2870" href="Data.Vec.All.html#2702" class="Bound"
+      >P</a
+      > <a name="2872" href="Data.Vec.All.html#2821" class="Bound"
+      >x</a
+      > <a name="2874" href="Data.Vec.All.html#2823" class="Bound"
+      >y</a
+      > <a name="2876" class="Symbol"
+      >&#8594;</a
+      > <a name="2878" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="2883" href="Data.Vec.All.html#2702" class="Bound"
+      >P</a
+      > <a name="2885" href="Data.Vec.All.html#2827" class="Bound"
+      >xs</a
+      > <a name="2888" href="Data.Vec.All.html#2842" class="Bound"
+      >ys</a
+      > <a name="2891" class="Symbol"
+      >&#8594;</a
+      > <a name="2893" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="2898" href="Data.Vec.All.html#2702" class="Bound"
+      >P</a
+      > <a name="2900" class="Symbol"
+      >(</a
+      ><a name="2901" href="Data.Vec.All.html#2821" class="Bound"
+      >x</a
+      > <a name="2903" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2905" href="Data.Vec.All.html#2827" class="Bound"
+      >xs</a
+      ><a name="2907" class="Symbol"
+      >)</a
+      > <a name="2909" class="Symbol"
+      >(</a
+      ><a name="2910" href="Data.Vec.All.html#2823" class="Bound"
+      >y</a
+      > <a name="2912" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2914" href="Data.Vec.All.html#2842" class="Bound"
+      >ys</a
+      ><a name="2916" class="Symbol"
+      >)</a
+      >
+
+<a name="lookup&#8322;" href="Data.Vec.All.html#lookup&#8322;" class="Function"
+      >lookup&#8322;</a
+      > <a name="2927" class="Symbol"
+      >:</a
+      > <a name="2929" class="Symbol"
+      >&#8704;</a
+      > <a name="2931" class="Symbol"
+      >{</a
+      ><a name="2932" href="Data.Vec.All.html#2932" class="Bound"
+      >a</a
+      > <a name="2934" href="Data.Vec.All.html#2934" class="Bound"
+      >b</a
+      > <a name="2936" href="Data.Vec.All.html#2936" class="Bound"
+      >p</a
+      ><a name="2937" class="Symbol"
+      >}</a
+      > <a name="2939" class="Symbol"
+      >{</a
+      ><a name="2940" href="Data.Vec.All.html#2940" class="Bound"
+      >A</a
+      > <a name="2942" class="Symbol"
+      >:</a
+      > <a name="2944" class="PrimitiveType"
+      >Set</a
+      > <a name="2948" href="Data.Vec.All.html#2932" class="Bound"
+      >a</a
+      ><a name="2949" class="Symbol"
+      >}</a
+      > <a name="2951" class="Symbol"
+      >{</a
+      ><a name="2952" href="Data.Vec.All.html#2952" class="Bound"
+      >B</a
+      > <a name="2954" class="Symbol"
+      >:</a
+      > <a name="2956" class="PrimitiveType"
+      >Set</a
+      > <a name="2960" href="Data.Vec.All.html#2934" class="Bound"
+      >b</a
+      ><a name="2961" class="Symbol"
+      >}</a
+      > <a name="2963" class="Symbol"
+      >{</a
+      ><a name="2964" href="Data.Vec.All.html#2964" class="Bound"
+      >P</a
+      > <a name="2966" class="Symbol"
+      >:</a
+      > <a name="2968" href="Data.Vec.All.html#2940" class="Bound"
+      >A</a
+      > <a name="2970" class="Symbol"
+      >&#8594;</a
+      > <a name="2972" href="Data.Vec.All.html#2952" class="Bound"
+      >B</a
+      > <a name="2974" class="Symbol"
+      >&#8594;</a
+      > <a name="2976" class="PrimitiveType"
+      >Set</a
+      > <a name="2980" href="Data.Vec.All.html#2936" class="Bound"
+      >p</a
+      ><a name="2981" class="Symbol"
+      >}</a
+      > <a name="2983" class="Symbol"
+      >{</a
+      ><a name="2984" href="Data.Vec.All.html#2984" class="Bound"
+      >k</a
+      ><a name="2985" class="Symbol"
+      >}</a
+      >
+            <a name="2999" class="Symbol"
+      >{</a
+      ><a name="3000" href="Data.Vec.All.html#3000" class="Bound"
+      >xs</a
+      > <a name="3003" class="Symbol"
+      >:</a
+      > <a name="3005" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="3009" href="Data.Vec.All.html#2940" class="Bound"
+      >A</a
+      > <a name="3011" href="Data.Vec.All.html#2984" class="Bound"
+      >k</a
+      ><a name="3012" class="Symbol"
+      >}</a
+      > <a name="3014" class="Symbol"
+      >{</a
+      ><a name="3015" href="Data.Vec.All.html#3015" class="Bound"
+      >ys</a
+      > <a name="3018" class="Symbol"
+      >:</a
+      > <a name="3020" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="3024" href="Data.Vec.All.html#2952" class="Bound"
+      >B</a
+      > <a name="3026" href="Data.Vec.All.html#2984" class="Bound"
+      >k</a
+      ><a name="3027" class="Symbol"
+      >}</a
+      > <a name="3029" class="Symbol"
+      >&#8594;</a
+      >
+            <a name="3043" class="Symbol"
+      >&#8704;</a
+      > <a name="3045" href="Data.Vec.All.html#3045" class="Bound"
+      >i</a
+      > <a name="3047" class="Symbol"
+      >&#8594;</a
+      > <a name="3049" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="3054" href="Data.Vec.All.html#2964" class="Bound"
+      >P</a
+      > <a name="3056" href="Data.Vec.All.html#3000" class="Bound"
+      >xs</a
+      > <a name="3059" href="Data.Vec.All.html#3015" class="Bound"
+      >ys</a
+      > <a name="3062" class="Symbol"
+      >&#8594;</a
+      > <a name="3064" href="Data.Vec.All.html#2964" class="Bound"
+      >P</a
+      > <a name="3066" class="Symbol"
+      >(</a
+      ><a name="3067" href="Data.Vec.html#lookup" class="Function"
+      >Vec.lookup</a
+      > <a name="3078" href="Data.Vec.All.html#3045" class="Bound"
+      >i</a
+      > <a name="3080" href="Data.Vec.All.html#3000" class="Bound"
+      >xs</a
+      ><a name="3082" class="Symbol"
+      >)</a
+      > <a name="3084" class="Symbol"
+      >(</a
+      ><a name="3085" href="Data.Vec.html#lookup" class="Function"
+      >Vec.lookup</a
+      > <a name="3096" href="Data.Vec.All.html#3045" class="Bound"
+      >i</a
+      > <a name="3098" href="Data.Vec.All.html#3015" class="Bound"
+      >ys</a
+      ><a name="3100" class="Symbol"
+      >)</a
+      >
+<a name="3102" href="Data.Vec.All.html#lookup&#8322;" class="Function"
+      >lookup&#8322;</a
+      > <a name="3110" href="Data.Fin.html#Fin.zero" class="InductiveConstructor"
+      >zero</a
+      >    <a name="3118" class="Symbol"
+      >(</a
+      ><a name="3119" href="Data.Vec.All.html#3119" class="Bound"
+      >pxy</a
+      > <a name="3123" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3125" class="Symbol"
+      >_)</a
+      >    <a name="3131" class="Symbol"
+      >=</a
+      > <a name="3133" href="Data.Vec.All.html#3119" class="Bound"
+      >pxy</a
+      >
+<a name="3137" href="Data.Vec.All.html#lookup&#8322;" class="Function"
+      >lookup&#8322;</a
+      > <a name="3145" class="Symbol"
+      >(</a
+      ><a name="3146" href="Data.Fin.html#Fin.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="3150" href="Data.Vec.All.html#3150" class="Bound"
+      >i</a
+      ><a name="3151" class="Symbol"
+      >)</a
+      > <a name="3153" class="Symbol"
+      >(_</a
+      >   <a name="3158" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3160" href="Data.Vec.All.html#3160" class="Bound"
+      >pxys</a
+      ><a name="3164" class="Symbol"
+      >)</a
+      > <a name="3166" class="Symbol"
+      >=</a
+      > <a name="3168" href="Data.Vec.All.html#lookup&#8322;" class="Function"
+      >lookup&#8322;</a
+      > <a name="3176" href="Data.Vec.All.html#3150" class="Bound"
+      >i</a
+      > <a name="3178" href="Data.Vec.All.html#3160" class="Bound"
+      >pxys</a
+      >
+
+<a name="map&#8322;" href="Data.Vec.All.html#map&#8322;" class="Function"
+      >map&#8322;</a
+      > <a name="3189" class="Symbol"
+      >:</a
+      > <a name="3191" class="Symbol"
+      >&#8704;</a
+      > <a name="3193" class="Symbol"
+      >{</a
+      ><a name="3194" href="Data.Vec.All.html#3194" class="Bound"
+      >a</a
+      > <a name="3196" href="Data.Vec.All.html#3196" class="Bound"
+      >b</a
+      > <a name="3198" href="Data.Vec.All.html#3198" class="Bound"
+      >p</a
+      > <a name="3200" href="Data.Vec.All.html#3200" class="Bound"
+      >q</a
+      ><a name="3201" class="Symbol"
+      >}</a
+      > <a name="3203" class="Symbol"
+      >{</a
+      ><a name="3204" href="Data.Vec.All.html#3204" class="Bound"
+      >A</a
+      > <a name="3206" class="Symbol"
+      >:</a
+      > <a name="3208" class="PrimitiveType"
+      >Set</a
+      > <a name="3212" href="Data.Vec.All.html#3194" class="Bound"
+      >a</a
+      ><a name="3213" class="Symbol"
+      >}</a
+      > <a name="3215" class="Symbol"
+      >{</a
+      ><a name="3216" href="Data.Vec.All.html#3216" class="Bound"
+      >B</a
+      > <a name="3218" class="Symbol"
+      >:</a
+      > <a name="3220" class="PrimitiveType"
+      >Set</a
+      > <a name="3224" href="Data.Vec.All.html#3196" class="Bound"
+      >b</a
+      ><a name="3225" class="Symbol"
+      >}</a
+      >
+         <a name="3236" class="Symbol"
+      >{</a
+      ><a name="3237" href="Data.Vec.All.html#3237" class="Bound"
+      >P</a
+      > <a name="3239" class="Symbol"
+      >:</a
+      > <a name="3241" href="Data.Vec.All.html#3204" class="Bound"
+      >A</a
+      > <a name="3243" class="Symbol"
+      >&#8594;</a
+      > <a name="3245" href="Data.Vec.All.html#3216" class="Bound"
+      >B</a
+      > <a name="3247" class="Symbol"
+      >&#8594;</a
+      > <a name="3249" class="PrimitiveType"
+      >Set</a
+      > <a name="3253" href="Data.Vec.All.html#3198" class="Bound"
+      >p</a
+      ><a name="3254" class="Symbol"
+      >}</a
+      > <a name="3256" class="Symbol"
+      >{</a
+      ><a name="3257" href="Data.Vec.All.html#3257" class="Bound"
+      >Q</a
+      > <a name="3259" class="Symbol"
+      >:</a
+      > <a name="3261" href="Data.Vec.All.html#3204" class="Bound"
+      >A</a
+      > <a name="3263" class="Symbol"
+      >&#8594;</a
+      > <a name="3265" href="Data.Vec.All.html#3216" class="Bound"
+      >B</a
+      > <a name="3267" class="Symbol"
+      >&#8594;</a
+      > <a name="3269" class="PrimitiveType"
+      >Set</a
+      > <a name="3273" href="Data.Vec.All.html#3200" class="Bound"
+      >q</a
+      ><a name="3274" class="Symbol"
+      >}</a
+      > <a name="3276" class="Symbol"
+      >&#8594;</a
+      >
+         <a name="3287" class="Symbol"
+      >(&#8704;</a
+      > <a name="3290" class="Symbol"
+      >{</a
+      ><a name="3291" href="Data.Vec.All.html#3291" class="Bound"
+      >x</a
+      > <a name="3293" href="Data.Vec.All.html#3293" class="Bound"
+      >y</a
+      ><a name="3294" class="Symbol"
+      >}</a
+      > <a name="3296" class="Symbol"
+      >&#8594;</a
+      > <a name="3298" href="Data.Vec.All.html#3237" class="Bound"
+      >P</a
+      > <a name="3300" href="Data.Vec.All.html#3291" class="Bound"
+      >x</a
+      > <a name="3302" href="Data.Vec.All.html#3293" class="Bound"
+      >y</a
+      > <a name="3304" class="Symbol"
+      >&#8594;</a
+      > <a name="3306" href="Data.Vec.All.html#3257" class="Bound"
+      >Q</a
+      > <a name="3308" href="Data.Vec.All.html#3291" class="Bound"
+      >x</a
+      > <a name="3310" href="Data.Vec.All.html#3293" class="Bound"
+      >y</a
+      ><a name="3311" class="Symbol"
+      >)</a
+      > <a name="3313" class="Symbol"
+      >&#8594;</a
+      >
+         <a name="3324" class="Symbol"
+      >&#8704;</a
+      > <a name="3326" class="Symbol"
+      >{</a
+      ><a name="3327" href="Data.Vec.All.html#3327" class="Bound"
+      >k</a
+      > <a name="3329" href="Data.Vec.All.html#3329" class="Bound"
+      >xs</a
+      > <a name="3332" href="Data.Vec.All.html#3332" class="Bound"
+      >ys</a
+      ><a name="3334" class="Symbol"
+      >}</a
+      > <a name="3336" class="Symbol"
+      >&#8594;</a
+      > <a name="3338" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="3343" href="Data.Vec.All.html#3237" class="Bound"
+      >P</a
+      > <a name="3345" class="Symbol"
+      >{</a
+      ><a name="3346" href="Data.Vec.All.html#3327" class="Bound"
+      >k</a
+      ><a name="3347" class="Symbol"
+      >}</a
+      > <a name="3349" href="Data.Vec.All.html#3329" class="Bound"
+      >xs</a
+      > <a name="3352" href="Data.Vec.All.html#3332" class="Bound"
+      >ys</a
+      > <a name="3355" class="Symbol"
+      >&#8594;</a
+      > <a name="3357" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="3362" href="Data.Vec.All.html#3257" class="Bound"
+      >Q</a
+      > <a name="3364" class="Symbol"
+      >{</a
+      ><a name="3365" href="Data.Vec.All.html#3327" class="Bound"
+      >k</a
+      ><a name="3366" class="Symbol"
+      >}</a
+      > <a name="3368" href="Data.Vec.All.html#3329" class="Bound"
+      >xs</a
+      > <a name="3371" href="Data.Vec.All.html#3332" class="Bound"
+      >ys</a
+      >
+<a name="3374" href="Data.Vec.All.html#map&#8322;" class="Function"
+      >map&#8322;</a
+      > <a name="3379" href="Data.Vec.All.html#3379" class="Bound"
+      >g</a
+      > <a name="3381" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="3384" class="Symbol"
+      >=</a
+      > <a name="3386" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      >
+<a name="3389" href="Data.Vec.All.html#map&#8322;" class="Function"
+      >map&#8322;</a
+      > <a name="3394" href="Data.Vec.All.html#3394" class="Bound"
+      >g</a
+      > <a name="3396" class="Symbol"
+      >(</a
+      ><a name="3397" href="Data.Vec.All.html#3397" class="Bound"
+      >pxy</a
+      > <a name="3401" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3403" href="Data.Vec.All.html#3403" class="Bound"
+      >pxys</a
+      ><a name="3407" class="Symbol"
+      >)</a
+      > <a name="3409" class="Symbol"
+      >=</a
+      > <a name="3411" href="Data.Vec.All.html#3394" class="Bound"
+      >g</a
+      > <a name="3413" href="Data.Vec.All.html#3397" class="Bound"
+      >pxy</a
+      >  <a name="3418" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3420" href="Data.Vec.All.html#map&#8322;" class="Function"
+      >map&#8322;</a
+      > <a name="3425" href="Data.Vec.All.html#3394" class="Bound"
+      >g</a
+      > <a name="3427" href="Data.Vec.All.html#3403" class="Bound"
+      >pxys</a
+      >
+</pre
+    ></body
+  ></html
+>

@@ -11,1591 +11,927 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Vectors with fast append</a
-      ><a name="133"
       >
-</a
-      ><a name="134" class="Comment"
+<a name="134" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="206"
       >
 
-</a
-      ><a name="208" class="Keyword"
+<a name="208" class="Keyword"
       >module</a
-      ><a name="214"
-      > </a
-      ><a name="215" href="Data.DifferenceVec.html#1" class="Module"
+      > <a name="215" href="Data.DifferenceVec.html" class="Module"
       >Data.DifferenceVec</a
-      ><a name="233"
-      > </a
-      ><a name="234" class="Keyword"
+      > <a name="234" class="Keyword"
       >where</a
-      ><a name="239"
       >
 
-</a
-      ><a name="241" class="Keyword"
+<a name="241" class="Keyword"
       >open</a
-      ><a name="245"
-      > </a
-      ><a name="246" class="Keyword"
+      > <a name="246" class="Keyword"
       >import</a
-      ><a name="252"
-      > </a
-      ><a name="253" href="Data.DifferenceNat.html#1" class="Module"
+      > <a name="253" href="Data.DifferenceNat.html" class="Module"
       >Data.DifferenceNat</a
-      ><a name="271"
       >
-</a
-      ><a name="272" class="Keyword"
+<a name="272" class="Keyword"
       >open</a
-      ><a name="276"
-      > </a
-      ><a name="277" class="Keyword"
+      > <a name="277" class="Keyword"
       >import</a
-      ><a name="283"
-      > </a
-      ><a name="284" href="Data.Vec.html#1" class="Module"
+      > <a name="284" href="Data.Vec.html" class="Module"
       >Data.Vec</a
-      ><a name="292"
-      > </a
-      ><a name="293" class="Symbol"
+      > <a name="293" class="Symbol"
       >as</a
-      ><a name="295"
-      > </a
-      ><a name="296" class="Module"
+      > <a name="296" class="Module"
       >V</a
-      ><a name="297"
-      > </a
-      ><a name="298" class="Keyword"
+      > <a name="298" class="Keyword"
       >using</a
-      ><a name="303"
-      > </a
-      ><a name="304" class="Symbol"
+      > <a name="304" class="Symbol"
       >(</a
-      ><a name="305" href="Data.Vec.html#609" class="Datatype"
+      ><a name="305" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
       ><a name="308" class="Symbol"
       >)</a
-      ><a name="309"
       >
-</a
-      ><a name="310" class="Keyword"
+<a name="310" class="Keyword"
       >open</a
-      ><a name="314"
-      > </a
-      ><a name="315" class="Keyword"
+      > <a name="315" class="Keyword"
       >import</a
-      ><a name="321"
-      > </a
-      ><a name="322" href="Function.html#1" class="Module"
+      > <a name="322" href="Function.html" class="Module"
       >Function</a
-      ><a name="330"
       >
-</a
-      ><a name="331" class="Keyword"
+<a name="331" class="Keyword"
       >import</a
-      ><a name="337"
-      > </a
-      ><a name="338" href="Data.Nat.Base.html#1" class="Module"
+      > <a name="338" href="Data.Nat.Base.html" class="Module"
       >Data.Nat.Base</a
-      ><a name="351"
-      > </a
-      ><a name="352" class="Symbol"
+      > <a name="352" class="Symbol"
       >as</a
-      ><a name="354"
-      > </a
-      ><a name="355" class="Module"
+      > <a name="355" class="Module"
       >N</a
-      ><a name="356"
       >
 
-</a
-      ><a name="358" class="Keyword"
+<a name="358" class="Keyword"
       >infixr</a
-      ><a name="364"
-      > </a
-      ><a name="365" class="Number"
+      > <a name="365" class="Number"
       >5</a
-      ><a name="366"
-      > _&#8759;_ _++_
+      > <a name="367" href="Data.DifferenceVec.html#_&#8759;_" class="Function Operator"
+      >_&#8759;_</a
+      > <a name="_++_" href="Data.DifferenceVec.html#_++_" class="Function Operator"
+      >_++_</a
+      >
 
-</a
-      ><a name="377" href="Data.DifferenceVec.html#377" class="Function"
+<a name="DiffVec" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="384"
-      > </a
-      ><a name="385" class="Symbol"
+      > <a name="385" class="Symbol"
       >:</a
-      ><a name="386"
-      > </a
-      ><a name="387" class="Symbol"
+      > <a name="387" class="Symbol"
       >&#8704;</a
-      ><a name="388"
-      > </a
-      ><a name="389" class="Symbol"
+      > <a name="389" class="Symbol"
       >{</a
       ><a name="390" href="Data.DifferenceVec.html#390" class="Bound"
       >&#8467;</a
       ><a name="391" class="Symbol"
       >}</a
-      ><a name="392"
-      > </a
-      ><a name="393" class="Symbol"
+      > <a name="393" class="Symbol"
       >&#8594;</a
-      ><a name="394"
-      > </a
-      ><a name="395" class="PrimitiveType"
+      > <a name="395" class="PrimitiveType"
       >Set</a
-      ><a name="398"
-      > </a
-      ><a name="399" href="Data.DifferenceVec.html#390" class="Bound"
+      > <a name="399" href="Data.DifferenceVec.html#390" class="Bound"
       >&#8467;</a
-      ><a name="400"
-      > </a
-      ><a name="401" class="Symbol"
+      > <a name="401" class="Symbol"
       >&#8594;</a
-      ><a name="402"
-      > </a
-      ><a name="403" href="Data.DifferenceNat.html#369" class="Function"
+      > <a name="403" href="Data.DifferenceNat.html#Diff&#8469;" class="Function"
       >Diff&#8469;</a
-      ><a name="408"
-      > </a
-      ><a name="409" class="Symbol"
+      > <a name="409" class="Symbol"
       >&#8594;</a
-      ><a name="410"
-      > </a
-      ><a name="411" class="PrimitiveType"
+      > <a name="411" class="PrimitiveType"
       >Set</a
-      ><a name="414"
-      > </a
-      ><a name="415" href="Data.DifferenceVec.html#390" class="Bound"
+      > <a name="415" href="Data.DifferenceVec.html#390" class="Bound"
       >&#8467;</a
-      ><a name="416"
       >
-</a
-      ><a name="417" href="Data.DifferenceVec.html#377" class="Function"
+<a name="417" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="424"
-      > </a
-      ><a name="425" href="Data.DifferenceVec.html#425" class="Bound"
+      > <a name="425" href="Data.DifferenceVec.html#425" class="Bound"
       >A</a
-      ><a name="426"
-      > </a
-      ><a name="427" href="Data.DifferenceVec.html#427" class="Bound"
+      > <a name="427" href="Data.DifferenceVec.html#427" class="Bound"
       >m</a
-      ><a name="428"
-      > </a
-      ><a name="429" class="Symbol"
+      > <a name="429" class="Symbol"
       >=</a
-      ><a name="430"
-      > </a
-      ><a name="431" class="Symbol"
+      > <a name="431" class="Symbol"
       >&#8704;</a
-      ><a name="432"
-      > </a
-      ><a name="433" class="Symbol"
+      > <a name="433" class="Symbol"
       >{</a
       ><a name="434" href="Data.DifferenceVec.html#434" class="Bound"
       >n</a
       ><a name="435" class="Symbol"
       >}</a
-      ><a name="436"
-      > </a
-      ><a name="437" class="Symbol"
+      > <a name="437" class="Symbol"
       >&#8594;</a
-      ><a name="438"
-      > </a
-      ><a name="439" href="Data.Vec.html#609" class="Datatype"
+      > <a name="439" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
-      ><a name="442"
-      > </a
-      ><a name="443" href="Data.DifferenceVec.html#425" class="Bound"
+      > <a name="443" href="Data.DifferenceVec.html#425" class="Bound"
       >A</a
-      ><a name="444"
-      > </a
-      ><a name="445" href="Data.DifferenceVec.html#434" class="Bound"
+      > <a name="445" href="Data.DifferenceVec.html#434" class="Bound"
       >n</a
-      ><a name="446"
-      > </a
-      ><a name="447" class="Symbol"
+      > <a name="447" class="Symbol"
       >&#8594;</a
-      ><a name="448"
-      > </a
-      ><a name="449" href="Data.Vec.html#609" class="Datatype"
+      > <a name="449" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
-      ><a name="452"
-      > </a
-      ><a name="453" href="Data.DifferenceVec.html#425" class="Bound"
+      > <a name="453" href="Data.DifferenceVec.html#425" class="Bound"
       >A</a
-      ><a name="454"
-      > </a
-      ><a name="455" class="Symbol"
+      > <a name="455" class="Symbol"
       >(</a
       ><a name="456" href="Data.DifferenceVec.html#427" class="Bound"
       >m</a
-      ><a name="457"
-      > </a
-      ><a name="458" href="Data.DifferenceVec.html#434" class="Bound"
+      > <a name="458" href="Data.DifferenceVec.html#434" class="Bound"
       >n</a
       ><a name="459" class="Symbol"
       >)</a
-      ><a name="460"
       >
 
-</a
-      ><a name="462" href="Data.DifferenceVec.html#462" class="Function"
+<a name="[]" href="Data.DifferenceVec.html#[]" class="Function"
       >[]</a
-      ><a name="464"
-      > </a
-      ><a name="465" class="Symbol"
+      > <a name="465" class="Symbol"
       >:</a
-      ><a name="466"
-      > </a
-      ><a name="467" class="Symbol"
+      > <a name="467" class="Symbol"
       >&#8704;</a
-      ><a name="468"
-      > </a
-      ><a name="469" class="Symbol"
+      > <a name="469" class="Symbol"
       >{</a
       ><a name="470" href="Data.DifferenceVec.html#470" class="Bound"
       >a</a
       ><a name="471" class="Symbol"
       >}</a
-      ><a name="472"
-      > </a
-      ><a name="473" class="Symbol"
+      > <a name="473" class="Symbol"
       >{</a
       ><a name="474" href="Data.DifferenceVec.html#474" class="Bound"
       >A</a
-      ><a name="475"
-      > </a
-      ><a name="476" class="Symbol"
+      > <a name="476" class="Symbol"
       >:</a
-      ><a name="477"
-      > </a
-      ><a name="478" class="PrimitiveType"
+      > <a name="478" class="PrimitiveType"
       >Set</a
-      ><a name="481"
-      > </a
-      ><a name="482" href="Data.DifferenceVec.html#470" class="Bound"
+      > <a name="482" href="Data.DifferenceVec.html#470" class="Bound"
       >a</a
       ><a name="483" class="Symbol"
       >}</a
-      ><a name="484"
-      > </a
-      ><a name="485" class="Symbol"
+      > <a name="485" class="Symbol"
       >&#8594;</a
-      ><a name="486"
-      > </a
-      ><a name="487" href="Data.DifferenceVec.html#377" class="Function"
+      > <a name="487" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="494"
-      > </a
-      ><a name="495" href="Data.DifferenceVec.html#474" class="Bound"
+      > <a name="495" href="Data.DifferenceVec.html#474" class="Bound"
       >A</a
-      ><a name="496"
-      > </a
-      ><a name="497" href="Data.DifferenceNat.html#396" class="Function"
+      > <a name="497" href="Data.DifferenceNat.html#0#" class="Function"
       >0#</a
-      ><a name="499"
       >
-</a
-      ><a name="500" href="Data.DifferenceVec.html#462" class="Function"
+<a name="500" href="Data.DifferenceVec.html#[]" class="Function"
       >[]</a
-      ><a name="502"
-      > </a
-      ><a name="503" class="Symbol"
+      > <a name="503" class="Symbol"
       >=</a
-      ><a name="504"
-      > </a
-      ><a name="505" class="Symbol"
+      > <a name="505" class="Symbol"
       >&#955;</a
-      ><a name="506"
-      > </a
-      ><a name="507" href="Data.DifferenceVec.html#507" class="Bound"
+      > <a name="507" href="Data.DifferenceVec.html#507" class="Bound"
       >k</a
-      ><a name="508"
-      > </a
-      ><a name="509" class="Symbol"
+      > <a name="509" class="Symbol"
       >&#8594;</a
-      ><a name="510"
-      > </a
-      ><a name="511" href="Data.DifferenceVec.html#507" class="Bound"
+      > <a name="511" href="Data.DifferenceVec.html#507" class="Bound"
       >k</a
-      ><a name="512"
       >
 
-</a
-      ><a name="514" href="Data.DifferenceVec.html#514" class="Function Operator"
+<a name="_&#8759;_" href="Data.DifferenceVec.html#_&#8759;_" class="Function Operator"
       >_&#8759;_</a
-      ><a name="517"
-      > </a
-      ><a name="518" class="Symbol"
+      > <a name="518" class="Symbol"
       >:</a
-      ><a name="519"
-      > </a
-      ><a name="520" class="Symbol"
+      > <a name="520" class="Symbol"
       >&#8704;</a
-      ><a name="521"
-      > </a
-      ><a name="522" class="Symbol"
+      > <a name="522" class="Symbol"
       >{</a
       ><a name="523" href="Data.DifferenceVec.html#523" class="Bound"
       >a</a
       ><a name="524" class="Symbol"
       >}</a
-      ><a name="525"
-      > </a
-      ><a name="526" class="Symbol"
+      > <a name="526" class="Symbol"
       >{</a
       ><a name="527" href="Data.DifferenceVec.html#527" class="Bound"
       >A</a
-      ><a name="528"
-      > </a
-      ><a name="529" class="Symbol"
+      > <a name="529" class="Symbol"
       >:</a
-      ><a name="530"
-      > </a
-      ><a name="531" class="PrimitiveType"
+      > <a name="531" class="PrimitiveType"
       >Set</a
-      ><a name="534"
-      > </a
-      ><a name="535" href="Data.DifferenceVec.html#523" class="Bound"
+      > <a name="535" href="Data.DifferenceVec.html#523" class="Bound"
       >a</a
       ><a name="536" class="Symbol"
       >}</a
-      ><a name="537"
-      > </a
-      ><a name="538" class="Symbol"
+      > <a name="538" class="Symbol"
       >{</a
       ><a name="539" href="Data.DifferenceVec.html#539" class="Bound"
       >n</a
       ><a name="540" class="Symbol"
       >}</a
-      ><a name="541"
-      > </a
-      ><a name="542" class="Symbol"
+      > <a name="542" class="Symbol"
       >&#8594;</a
-      ><a name="543"
-      > </a
-      ><a name="544" href="Data.DifferenceVec.html#527" class="Bound"
+      > <a name="544" href="Data.DifferenceVec.html#527" class="Bound"
       >A</a
-      ><a name="545"
-      > </a
-      ><a name="546" class="Symbol"
+      > <a name="546" class="Symbol"
       >&#8594;</a
-      ><a name="547"
-      > </a
-      ><a name="548" href="Data.DifferenceVec.html#377" class="Function"
+      > <a name="548" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="555"
-      > </a
-      ><a name="556" href="Data.DifferenceVec.html#527" class="Bound"
+      > <a name="556" href="Data.DifferenceVec.html#527" class="Bound"
       >A</a
-      ><a name="557"
-      > </a
-      ><a name="558" href="Data.DifferenceVec.html#539" class="Bound"
+      > <a name="558" href="Data.DifferenceVec.html#539" class="Bound"
       >n</a
-      ><a name="559"
-      > </a
-      ><a name="560" class="Symbol"
+      > <a name="560" class="Symbol"
       >&#8594;</a
-      ><a name="561"
-      > </a
-      ><a name="562" href="Data.DifferenceVec.html#377" class="Function"
+      > <a name="562" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="569"
-      > </a
-      ><a name="570" href="Data.DifferenceVec.html#527" class="Bound"
+      > <a name="570" href="Data.DifferenceVec.html#527" class="Bound"
       >A</a
-      ><a name="571"
-      > </a
-      ><a name="572" class="Symbol"
+      > <a name="572" class="Symbol"
       >(</a
-      ><a name="573" href="Data.DifferenceNat.html#421" class="Function"
+      ><a name="573" href="Data.DifferenceNat.html#suc" class="Function"
       >suc</a
-      ><a name="576"
-      > </a
-      ><a name="577" href="Data.DifferenceVec.html#539" class="Bound"
+      > <a name="577" href="Data.DifferenceVec.html#539" class="Bound"
       >n</a
       ><a name="578" class="Symbol"
       >)</a
-      ><a name="579"
       >
-</a
-      ><a name="580" href="Data.DifferenceVec.html#580" class="Bound"
+<a name="580" href="Data.DifferenceVec.html#580" class="Bound"
       >x</a
-      ><a name="581"
-      > </a
-      ><a name="582" href="Data.DifferenceVec.html#514" class="Function Operator"
+      > <a name="582" href="Data.DifferenceVec.html#_&#8759;_" class="Function Operator"
       >&#8759;</a
-      ><a name="583"
-      > </a
-      ><a name="584" href="Data.DifferenceVec.html#584" class="Bound"
+      > <a name="584" href="Data.DifferenceVec.html#584" class="Bound"
       >xs</a
-      ><a name="586"
-      > </a
-      ><a name="587" class="Symbol"
+      > <a name="587" class="Symbol"
       >=</a
-      ><a name="588"
-      > </a
-      ><a name="589" class="Symbol"
+      > <a name="589" class="Symbol"
       >&#955;</a
-      ><a name="590"
-      > </a
-      ><a name="591" href="Data.DifferenceVec.html#591" class="Bound"
+      > <a name="591" href="Data.DifferenceVec.html#591" class="Bound"
       >k</a
-      ><a name="592"
-      > </a
-      ><a name="593" class="Symbol"
+      > <a name="593" class="Symbol"
       >&#8594;</a
-      ><a name="594"
-      > </a
-      ><a name="595" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="595" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >V._&#8759;_</a
-      ><a name="600"
-      > </a
-      ><a name="601" href="Data.DifferenceVec.html#580" class="Bound"
+      > <a name="601" href="Data.DifferenceVec.html#580" class="Bound"
       >x</a
-      ><a name="602"
-      > </a
-      ><a name="603" class="Symbol"
+      > <a name="603" class="Symbol"
       >(</a
       ><a name="604" href="Data.DifferenceVec.html#584" class="Bound"
       >xs</a
-      ><a name="606"
-      > </a
-      ><a name="607" href="Data.DifferenceVec.html#591" class="Bound"
+      > <a name="607" href="Data.DifferenceVec.html#591" class="Bound"
       >k</a
       ><a name="608" class="Symbol"
       >)</a
-      ><a name="609"
       >
 
-</a
-      ><a name="611" href="Data.DifferenceVec.html#611" class="Function Operator"
+<a name="[_]" href="Data.DifferenceVec.html#[_]" class="Function Operator"
       >[_]</a
-      ><a name="614"
-      > </a
-      ><a name="615" class="Symbol"
+      > <a name="615" class="Symbol"
       >:</a
-      ><a name="616"
-      > </a
-      ><a name="617" class="Symbol"
+      > <a name="617" class="Symbol"
       >&#8704;</a
-      ><a name="618"
-      > </a
-      ><a name="619" class="Symbol"
+      > <a name="619" class="Symbol"
       >{</a
       ><a name="620" href="Data.DifferenceVec.html#620" class="Bound"
       >a</a
       ><a name="621" class="Symbol"
       >}</a
-      ><a name="622"
-      > </a
-      ><a name="623" class="Symbol"
+      > <a name="623" class="Symbol"
       >{</a
       ><a name="624" href="Data.DifferenceVec.html#624" class="Bound"
       >A</a
-      ><a name="625"
-      > </a
-      ><a name="626" class="Symbol"
+      > <a name="626" class="Symbol"
       >:</a
-      ><a name="627"
-      > </a
-      ><a name="628" class="PrimitiveType"
+      > <a name="628" class="PrimitiveType"
       >Set</a
-      ><a name="631"
-      > </a
-      ><a name="632" href="Data.DifferenceVec.html#620" class="Bound"
+      > <a name="632" href="Data.DifferenceVec.html#620" class="Bound"
       >a</a
       ><a name="633" class="Symbol"
       >}</a
-      ><a name="634"
-      > </a
-      ><a name="635" class="Symbol"
+      > <a name="635" class="Symbol"
       >&#8594;</a
-      ><a name="636"
-      > </a
-      ><a name="637" href="Data.DifferenceVec.html#624" class="Bound"
+      > <a name="637" href="Data.DifferenceVec.html#624" class="Bound"
       >A</a
-      ><a name="638"
-      > </a
-      ><a name="639" class="Symbol"
+      > <a name="639" class="Symbol"
       >&#8594;</a
-      ><a name="640"
-      > </a
-      ><a name="641" href="Data.DifferenceVec.html#377" class="Function"
+      > <a name="641" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="648"
-      > </a
-      ><a name="649" href="Data.DifferenceVec.html#624" class="Bound"
+      > <a name="649" href="Data.DifferenceVec.html#624" class="Bound"
       >A</a
-      ><a name="650"
-      > </a
-      ><a name="651" href="Data.DifferenceNat.html#468" class="Function"
+      > <a name="651" href="Data.DifferenceNat.html#1#" class="Function"
       >1#</a
-      ><a name="653"
       >
-</a
-      ><a name="654" href="Data.DifferenceVec.html#611" class="Function Operator"
+<a name="654" href="Data.DifferenceVec.html#[_]" class="Function Operator"
       >[</a
-      ><a name="655"
-      > </a
-      ><a name="656" href="Data.DifferenceVec.html#656" class="Bound"
+      > <a name="656" href="Data.DifferenceVec.html#656" class="Bound"
       >x</a
-      ><a name="657"
-      > </a
-      ><a name="658" href="Data.DifferenceVec.html#611" class="Function Operator"
+      > <a name="658" href="Data.DifferenceVec.html#[_]" class="Function Operator"
       >]</a
-      ><a name="659"
-      > </a
-      ><a name="660" class="Symbol"
+      > <a name="660" class="Symbol"
       >=</a
-      ><a name="661"
-      > </a
-      ><a name="662" href="Data.DifferenceVec.html#656" class="Bound"
+      > <a name="662" href="Data.DifferenceVec.html#656" class="Bound"
       >x</a
-      ><a name="663"
-      > </a
-      ><a name="664" href="Data.DifferenceVec.html#514" class="Function Operator"
+      > <a name="664" href="Data.DifferenceVec.html#_&#8759;_" class="Function Operator"
       >&#8759;</a
-      ><a name="665"
-      > </a
-      ><a name="666" href="Data.DifferenceVec.html#462" class="Function"
+      > <a name="666" href="Data.DifferenceVec.html#[]" class="Function"
       >[]</a
-      ><a name="668"
       >
 
-</a
-      ><a name="670" href="Data.DifferenceVec.html#670" class="Function Operator"
+<a name="_++_" href="Data.DifferenceVec.html#_++_" class="Function Operator"
       >_++_</a
-      ><a name="674"
-      > </a
-      ><a name="675" class="Symbol"
+      > <a name="675" class="Symbol"
       >:</a
-      ><a name="676"
-      > </a
-      ><a name="677" class="Symbol"
+      > <a name="677" class="Symbol"
       >&#8704;</a
-      ><a name="678"
-      > </a
-      ><a name="679" class="Symbol"
+      > <a name="679" class="Symbol"
       >{</a
       ><a name="680" href="Data.DifferenceVec.html#680" class="Bound"
       >a</a
       ><a name="681" class="Symbol"
       >}</a
-      ><a name="682"
-      > </a
-      ><a name="683" class="Symbol"
+      > <a name="683" class="Symbol"
       >{</a
       ><a name="684" href="Data.DifferenceVec.html#684" class="Bound"
       >A</a
-      ><a name="685"
-      > </a
-      ><a name="686" class="Symbol"
+      > <a name="686" class="Symbol"
       >:</a
-      ><a name="687"
-      > </a
-      ><a name="688" class="PrimitiveType"
+      > <a name="688" class="PrimitiveType"
       >Set</a
-      ><a name="691"
-      > </a
-      ><a name="692" href="Data.DifferenceVec.html#680" class="Bound"
+      > <a name="692" href="Data.DifferenceVec.html#680" class="Bound"
       >a</a
       ><a name="693" class="Symbol"
       >}</a
-      ><a name="694"
-      > </a
-      ><a name="695" class="Symbol"
+      > <a name="695" class="Symbol"
       >{</a
       ><a name="696" href="Data.DifferenceVec.html#696" class="Bound"
       >m</a
-      ><a name="697"
-      > </a
-      ><a name="698" href="Data.DifferenceVec.html#698" class="Bound"
+      > <a name="698" href="Data.DifferenceVec.html#698" class="Bound"
       >n</a
       ><a name="699" class="Symbol"
       >}</a
-      ><a name="700"
-      > </a
-      ><a name="701" class="Symbol"
+      > <a name="701" class="Symbol"
       >&#8594;</a
-      ><a name="702"
       >
-       </a
-      ><a name="710" href="Data.DifferenceVec.html#377" class="Function"
+       <a name="710" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="717"
-      > </a
-      ><a name="718" href="Data.DifferenceVec.html#684" class="Bound"
+      > <a name="718" href="Data.DifferenceVec.html#684" class="Bound"
       >A</a
-      ><a name="719"
-      > </a
-      ><a name="720" href="Data.DifferenceVec.html#696" class="Bound"
+      > <a name="720" href="Data.DifferenceVec.html#696" class="Bound"
       >m</a
-      ><a name="721"
-      > </a
-      ><a name="722" class="Symbol"
+      > <a name="722" class="Symbol"
       >&#8594;</a
-      ><a name="723"
-      > </a
-      ><a name="724" href="Data.DifferenceVec.html#377" class="Function"
+      > <a name="724" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="731"
-      > </a
-      ><a name="732" href="Data.DifferenceVec.html#684" class="Bound"
+      > <a name="732" href="Data.DifferenceVec.html#684" class="Bound"
       >A</a
-      ><a name="733"
-      > </a
-      ><a name="734" href="Data.DifferenceVec.html#698" class="Bound"
+      > <a name="734" href="Data.DifferenceVec.html#698" class="Bound"
       >n</a
-      ><a name="735"
-      > </a
-      ><a name="736" class="Symbol"
+      > <a name="736" class="Symbol"
       >&#8594;</a
-      ><a name="737"
-      > </a
-      ><a name="738" href="Data.DifferenceVec.html#377" class="Function"
+      > <a name="738" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="745"
-      > </a
-      ><a name="746" href="Data.DifferenceVec.html#684" class="Bound"
+      > <a name="746" href="Data.DifferenceVec.html#684" class="Bound"
       >A</a
-      ><a name="747"
-      > </a
-      ><a name="748" class="Symbol"
+      > <a name="748" class="Symbol"
       >(</a
       ><a name="749" href="Data.DifferenceVec.html#696" class="Bound"
       >m</a
-      ><a name="750"
-      > </a
-      ><a name="751" href="Data.DifferenceNat.html#492" class="Function Operator"
+      > <a name="751" href="Data.DifferenceNat.html#_+_" class="Function Operator"
       >+</a
-      ><a name="752"
-      > </a
-      ><a name="753" href="Data.DifferenceVec.html#698" class="Bound"
+      > <a name="753" href="Data.DifferenceVec.html#698" class="Bound"
       >n</a
       ><a name="754" class="Symbol"
       >)</a
-      ><a name="755"
       >
-</a
-      ><a name="756" href="Data.DifferenceVec.html#756" class="Bound"
+<a name="756" href="Data.DifferenceVec.html#756" class="Bound"
       >xs</a
-      ><a name="758"
-      > </a
-      ><a name="759" href="Data.DifferenceVec.html#670" class="Function Operator"
+      > <a name="759" href="Data.DifferenceVec.html#_++_" class="Function Operator"
       >++</a
-      ><a name="761"
-      > </a
-      ><a name="762" href="Data.DifferenceVec.html#762" class="Bound"
+      > <a name="762" href="Data.DifferenceVec.html#762" class="Bound"
       >ys</a
-      ><a name="764"
-      > </a
-      ><a name="765" class="Symbol"
+      > <a name="765" class="Symbol"
       >=</a
-      ><a name="766"
-      > </a
-      ><a name="767" class="Symbol"
+      > <a name="767" class="Symbol"
       >&#955;</a
-      ><a name="768"
-      > </a
-      ><a name="769" href="Data.DifferenceVec.html#769" class="Bound"
+      > <a name="769" href="Data.DifferenceVec.html#769" class="Bound"
       >k</a
-      ><a name="770"
-      > </a
-      ><a name="771" class="Symbol"
+      > <a name="771" class="Symbol"
       >&#8594;</a
-      ><a name="772"
-      > </a
-      ><a name="773" href="Data.DifferenceVec.html#756" class="Bound"
+      > <a name="773" href="Data.DifferenceVec.html#756" class="Bound"
       >xs</a
-      ><a name="775"
-      > </a
-      ><a name="776" class="Symbol"
+      > <a name="776" class="Symbol"
       >(</a
       ><a name="777" href="Data.DifferenceVec.html#762" class="Bound"
       >ys</a
-      ><a name="779"
-      > </a
-      ><a name="780" href="Data.DifferenceVec.html#769" class="Bound"
+      > <a name="780" href="Data.DifferenceVec.html#769" class="Bound"
       >k</a
       ><a name="781" class="Symbol"
       >)</a
-      ><a name="782"
       >
 
-</a
-      ><a name="784" href="Data.DifferenceVec.html#784" class="Function"
+<a name="toVec" href="Data.DifferenceVec.html#toVec" class="Function"
       >toVec</a
-      ><a name="789"
-      > </a
-      ><a name="790" class="Symbol"
+      > <a name="790" class="Symbol"
       >:</a
-      ><a name="791"
-      > </a
-      ><a name="792" class="Symbol"
+      > <a name="792" class="Symbol"
       >&#8704;</a
-      ><a name="793"
-      > </a
-      ><a name="794" class="Symbol"
+      > <a name="794" class="Symbol"
       >{</a
       ><a name="795" href="Data.DifferenceVec.html#795" class="Bound"
       >a</a
       ><a name="796" class="Symbol"
       >}</a
-      ><a name="797"
-      > </a
-      ><a name="798" class="Symbol"
+      > <a name="798" class="Symbol"
       >{</a
       ><a name="799" href="Data.DifferenceVec.html#799" class="Bound"
       >A</a
-      ><a name="800"
-      > </a
-      ><a name="801" class="Symbol"
+      > <a name="801" class="Symbol"
       >:</a
-      ><a name="802"
-      > </a
-      ><a name="803" class="PrimitiveType"
+      > <a name="803" class="PrimitiveType"
       >Set</a
-      ><a name="806"
-      > </a
-      ><a name="807" href="Data.DifferenceVec.html#795" class="Bound"
+      > <a name="807" href="Data.DifferenceVec.html#795" class="Bound"
       >a</a
       ><a name="808" class="Symbol"
       >}</a
-      ><a name="809"
-      > </a
-      ><a name="810" class="Symbol"
+      > <a name="810" class="Symbol"
       >{</a
       ><a name="811" href="Data.DifferenceVec.html#811" class="Bound"
       >n</a
       ><a name="812" class="Symbol"
       >}</a
-      ><a name="813"
-      > </a
-      ><a name="814" class="Symbol"
+      > <a name="814" class="Symbol"
       >&#8594;</a
-      ><a name="815"
-      > </a
-      ><a name="816" href="Data.DifferenceVec.html#377" class="Function"
+      > <a name="816" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="823"
-      > </a
-      ><a name="824" href="Data.DifferenceVec.html#799" class="Bound"
+      > <a name="824" href="Data.DifferenceVec.html#799" class="Bound"
       >A</a
-      ><a name="825"
-      > </a
-      ><a name="826" href="Data.DifferenceVec.html#811" class="Bound"
+      > <a name="826" href="Data.DifferenceVec.html#811" class="Bound"
       >n</a
-      ><a name="827"
-      > </a
-      ><a name="828" class="Symbol"
+      > <a name="828" class="Symbol"
       >&#8594;</a
-      ><a name="829"
-      > </a
-      ><a name="830" href="Data.Vec.html#609" class="Datatype"
+      > <a name="830" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
-      ><a name="833"
-      > </a
-      ><a name="834" href="Data.DifferenceVec.html#799" class="Bound"
+      > <a name="834" href="Data.DifferenceVec.html#799" class="Bound"
       >A</a
-      ><a name="835"
-      > </a
-      ><a name="836" class="Symbol"
+      > <a name="836" class="Symbol"
       >(</a
-      ><a name="837" href="Data.DifferenceNat.html#543" class="Function"
+      ><a name="837" href="Data.DifferenceNat.html#to&#8469;" class="Function"
       >to&#8469;</a
-      ><a name="840"
-      > </a
-      ><a name="841" href="Data.DifferenceVec.html#811" class="Bound"
+      > <a name="841" href="Data.DifferenceVec.html#811" class="Bound"
       >n</a
       ><a name="842" class="Symbol"
       >)</a
-      ><a name="843"
       >
-</a
-      ><a name="844" href="Data.DifferenceVec.html#784" class="Function"
+<a name="844" href="Data.DifferenceVec.html#toVec" class="Function"
       >toVec</a
-      ><a name="849"
-      > </a
-      ><a name="850" href="Data.DifferenceVec.html#850" class="Bound"
+      > <a name="850" href="Data.DifferenceVec.html#850" class="Bound"
       >xs</a
-      ><a name="852"
-      > </a
-      ><a name="853" class="Symbol"
+      > <a name="853" class="Symbol"
       >=</a
-      ><a name="854"
-      > </a
-      ><a name="855" href="Data.DifferenceVec.html#850" class="Bound"
+      > <a name="855" href="Data.DifferenceVec.html#850" class="Bound"
       >xs</a
-      ><a name="857"
-      > </a
-      ><a name="858" href="Data.Vec.html#649" class="InductiveConstructor"
+      > <a name="858" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
       >V.[]</a
-      ><a name="862"
       >
 
-</a
-      ><a name="864" class="Comment"
+<a name="864" class="Comment"
       >-- fromVec xs is linear in the length of xs.</a
-      ><a name="908"
       >
 
-</a
-      ><a name="910" href="Data.DifferenceVec.html#910" class="Function"
+<a name="fromVec" href="Data.DifferenceVec.html#fromVec" class="Function"
       >fromVec</a
-      ><a name="917"
-      > </a
-      ><a name="918" class="Symbol"
+      > <a name="918" class="Symbol"
       >:</a
-      ><a name="919"
-      > </a
-      ><a name="920" class="Symbol"
+      > <a name="920" class="Symbol"
       >&#8704;</a
-      ><a name="921"
-      > </a
-      ><a name="922" class="Symbol"
+      > <a name="922" class="Symbol"
       >{</a
       ><a name="923" href="Data.DifferenceVec.html#923" class="Bound"
       >a</a
       ><a name="924" class="Symbol"
       >}</a
-      ><a name="925"
-      > </a
-      ><a name="926" class="Symbol"
+      > <a name="926" class="Symbol"
       >{</a
       ><a name="927" href="Data.DifferenceVec.html#927" class="Bound"
       >A</a
-      ><a name="928"
-      > </a
-      ><a name="929" class="Symbol"
+      > <a name="929" class="Symbol"
       >:</a
-      ><a name="930"
-      > </a
-      ><a name="931" class="PrimitiveType"
+      > <a name="931" class="PrimitiveType"
       >Set</a
-      ><a name="934"
-      > </a
-      ><a name="935" href="Data.DifferenceVec.html#923" class="Bound"
+      > <a name="935" href="Data.DifferenceVec.html#923" class="Bound"
       >a</a
       ><a name="936" class="Symbol"
       >}</a
-      ><a name="937"
-      > </a
-      ><a name="938" class="Symbol"
+      > <a name="938" class="Symbol"
       >{</a
       ><a name="939" href="Data.DifferenceVec.html#939" class="Bound"
       >n</a
       ><a name="940" class="Symbol"
       >}</a
-      ><a name="941"
-      > </a
-      ><a name="942" class="Symbol"
+      > <a name="942" class="Symbol"
       >&#8594;</a
-      ><a name="943"
-      > </a
-      ><a name="944" href="Data.Vec.html#609" class="Datatype"
+      > <a name="944" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
-      ><a name="947"
-      > </a
-      ><a name="948" href="Data.DifferenceVec.html#927" class="Bound"
+      > <a name="948" href="Data.DifferenceVec.html#927" class="Bound"
       >A</a
-      ><a name="949"
-      > </a
-      ><a name="950" href="Data.DifferenceVec.html#939" class="Bound"
+      > <a name="950" href="Data.DifferenceVec.html#939" class="Bound"
       >n</a
-      ><a name="951"
-      > </a
-      ><a name="952" class="Symbol"
+      > <a name="952" class="Symbol"
       >&#8594;</a
-      ><a name="953"
-      > </a
-      ><a name="954" href="Data.DifferenceVec.html#377" class="Function"
+      > <a name="954" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="961"
-      > </a
-      ><a name="962" href="Data.DifferenceVec.html#927" class="Bound"
+      > <a name="962" href="Data.DifferenceVec.html#927" class="Bound"
       >A</a
-      ><a name="963"
-      > </a
-      ><a name="964" class="Symbol"
+      > <a name="964" class="Symbol"
       >(</a
-      ><a name="965" href="Data.DifferenceNat.html#612" class="Function"
+      ><a name="965" href="Data.DifferenceNat.html#from&#8469;" class="Function"
       >from&#8469;</a
-      ><a name="970"
-      > </a
-      ><a name="971" href="Data.DifferenceVec.html#939" class="Bound"
+      > <a name="971" href="Data.DifferenceVec.html#939" class="Bound"
       >n</a
       ><a name="972" class="Symbol"
       >)</a
-      ><a name="973"
       >
-</a
-      ><a name="974" href="Data.DifferenceVec.html#910" class="Function"
+<a name="974" href="Data.DifferenceVec.html#fromVec" class="Function"
       >fromVec</a
-      ><a name="981"
-      > </a
-      ><a name="982" href="Data.DifferenceVec.html#982" class="Bound"
+      > <a name="982" href="Data.DifferenceVec.html#982" class="Bound"
       >xs</a
-      ><a name="984"
-      > </a
-      ><a name="985" class="Symbol"
+      > <a name="985" class="Symbol"
       >=</a
-      ><a name="986"
-      > </a
-      ><a name="987" class="Symbol"
+      > <a name="987" class="Symbol"
       >&#955;</a
-      ><a name="988"
-      > </a
-      ><a name="989" href="Data.DifferenceVec.html#989" class="Bound"
+      > <a name="989" href="Data.DifferenceVec.html#989" class="Bound"
       >k</a
-      ><a name="990"
-      > </a
-      ><a name="991" class="Symbol"
+      > <a name="991" class="Symbol"
       >&#8594;</a
-      ><a name="992"
-      > </a
-      ><a name="993" href="Data.DifferenceVec.html#982" class="Bound"
+      > <a name="993" href="Data.DifferenceVec.html#982" class="Bound"
       >xs</a
-      ><a name="995"
-      > </a
-      ><a name="996" href="Function.html#1932" class="Function Operator"
+      > <a name="996" href="Function.html#_&#10216;_&#10217;_" class="Function Operator"
       >&#10216;</a
-      ><a name="997"
-      > </a
-      ><a name="998" href="Data.Vec.html#1476" class="Function Operator"
+      > <a name="998" href="Data.Vec.html#_++_" class="Function Operator"
       >V._++_</a
-      ><a name="1004"
-      > </a
-      ><a name="1005" href="Function.html#1932" class="Function Operator"
+      > <a name="1005" href="Function.html#_&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="1006"
-      > </a
-      ><a name="1007" href="Data.DifferenceVec.html#989" class="Bound"
+      > <a name="1007" href="Data.DifferenceVec.html#989" class="Bound"
       >k</a
-      ><a name="1008"
       >
 
-</a
-      ><a name="1010" href="Data.DifferenceVec.html#1010" class="Function"
+<a name="head" href="Data.DifferenceVec.html#head" class="Function"
       >head</a
-      ><a name="1014"
-      > </a
-      ><a name="1015" class="Symbol"
+      > <a name="1015" class="Symbol"
       >:</a
-      ><a name="1016"
-      > </a
-      ><a name="1017" class="Symbol"
+      > <a name="1017" class="Symbol"
       >&#8704;</a
-      ><a name="1018"
-      > </a
-      ><a name="1019" class="Symbol"
+      > <a name="1019" class="Symbol"
       >{</a
       ><a name="1020" href="Data.DifferenceVec.html#1020" class="Bound"
       >a</a
       ><a name="1021" class="Symbol"
       >}</a
-      ><a name="1022"
-      > </a
-      ><a name="1023" class="Symbol"
+      > <a name="1023" class="Symbol"
       >{</a
       ><a name="1024" href="Data.DifferenceVec.html#1024" class="Bound"
       >A</a
-      ><a name="1025"
-      > </a
-      ><a name="1026" class="Symbol"
+      > <a name="1026" class="Symbol"
       >:</a
-      ><a name="1027"
-      > </a
-      ><a name="1028" class="PrimitiveType"
+      > <a name="1028" class="PrimitiveType"
       >Set</a
-      ><a name="1031"
-      > </a
-      ><a name="1032" href="Data.DifferenceVec.html#1020" class="Bound"
+      > <a name="1032" href="Data.DifferenceVec.html#1020" class="Bound"
       >a</a
       ><a name="1033" class="Symbol"
       >}</a
-      ><a name="1034"
-      > </a
-      ><a name="1035" class="Symbol"
+      > <a name="1035" class="Symbol"
       >{</a
       ><a name="1036" href="Data.DifferenceVec.html#1036" class="Bound"
       >n</a
       ><a name="1037" class="Symbol"
       >}</a
-      ><a name="1038"
-      > </a
-      ><a name="1039" class="Symbol"
+      > <a name="1039" class="Symbol"
       >&#8594;</a
-      ><a name="1040"
-      > </a
-      ><a name="1041" href="Data.DifferenceVec.html#377" class="Function"
+      > <a name="1041" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="1048"
-      > </a
-      ><a name="1049" href="Data.DifferenceVec.html#1024" class="Bound"
+      > <a name="1049" href="Data.DifferenceVec.html#1024" class="Bound"
       >A</a
-      ><a name="1050"
-      > </a
-      ><a name="1051" class="Symbol"
+      > <a name="1051" class="Symbol"
       >(</a
-      ><a name="1052" href="Data.DifferenceNat.html#421" class="Function"
+      ><a name="1052" href="Data.DifferenceNat.html#suc" class="Function"
       >suc</a
-      ><a name="1055"
-      > </a
-      ><a name="1056" href="Data.DifferenceVec.html#1036" class="Bound"
+      > <a name="1056" href="Data.DifferenceVec.html#1036" class="Bound"
       >n</a
       ><a name="1057" class="Symbol"
       >)</a
-      ><a name="1058"
-      > </a
-      ><a name="1059" class="Symbol"
+      > <a name="1059" class="Symbol"
       >&#8594;</a
-      ><a name="1060"
-      > </a
-      ><a name="1061" href="Data.DifferenceVec.html#1024" class="Bound"
+      > <a name="1061" href="Data.DifferenceVec.html#1024" class="Bound"
       >A</a
-      ><a name="1062"
       >
-</a
-      ><a name="1063" href="Data.DifferenceVec.html#1010" class="Function"
+<a name="1063" href="Data.DifferenceVec.html#head" class="Function"
       >head</a
-      ><a name="1067"
-      > </a
-      ><a name="1068" href="Data.DifferenceVec.html#1068" class="Bound"
+      > <a name="1068" href="Data.DifferenceVec.html#1068" class="Bound"
       >xs</a
-      ><a name="1070"
-      > </a
-      ><a name="1071" class="Symbol"
+      > <a name="1071" class="Symbol"
       >=</a
-      ><a name="1072"
-      > </a
-      ><a name="1073" href="Data.Vec.html#1268" class="Function"
+      > <a name="1073" href="Data.Vec.html#head" class="Function"
       >V.head</a
-      ><a name="1079"
-      > </a
-      ><a name="1080" class="Symbol"
+      > <a name="1080" class="Symbol"
       >(</a
-      ><a name="1081" href="Data.DifferenceVec.html#784" class="Function"
+      ><a name="1081" href="Data.DifferenceVec.html#toVec" class="Function"
       >toVec</a
-      ><a name="1086"
-      > </a
-      ><a name="1087" href="Data.DifferenceVec.html#1068" class="Bound"
+      > <a name="1087" href="Data.DifferenceVec.html#1068" class="Bound"
       >xs</a
       ><a name="1089" class="Symbol"
       >)</a
-      ><a name="1090"
       >
 
-</a
-      ><a name="1092" href="Data.DifferenceVec.html#1092" class="Function"
+<a name="tail" href="Data.DifferenceVec.html#tail" class="Function"
       >tail</a
-      ><a name="1096"
-      > </a
-      ><a name="1097" class="Symbol"
+      > <a name="1097" class="Symbol"
       >:</a
-      ><a name="1098"
-      > </a
-      ><a name="1099" class="Symbol"
+      > <a name="1099" class="Symbol"
       >&#8704;</a
-      ><a name="1100"
-      > </a
-      ><a name="1101" class="Symbol"
+      > <a name="1101" class="Symbol"
       >{</a
       ><a name="1102" href="Data.DifferenceVec.html#1102" class="Bound"
       >a</a
       ><a name="1103" class="Symbol"
       >}</a
-      ><a name="1104"
-      > </a
-      ><a name="1105" class="Symbol"
+      > <a name="1105" class="Symbol"
       >{</a
       ><a name="1106" href="Data.DifferenceVec.html#1106" class="Bound"
       >A</a
-      ><a name="1107"
-      > </a
-      ><a name="1108" class="Symbol"
+      > <a name="1108" class="Symbol"
       >:</a
-      ><a name="1109"
-      > </a
-      ><a name="1110" class="PrimitiveType"
+      > <a name="1110" class="PrimitiveType"
       >Set</a
-      ><a name="1113"
-      > </a
-      ><a name="1114" href="Data.DifferenceVec.html#1102" class="Bound"
+      > <a name="1114" href="Data.DifferenceVec.html#1102" class="Bound"
       >a</a
       ><a name="1115" class="Symbol"
       >}</a
-      ><a name="1116"
-      > </a
-      ><a name="1117" class="Symbol"
+      > <a name="1117" class="Symbol"
       >{</a
       ><a name="1118" href="Data.DifferenceVec.html#1118" class="Bound"
       >n</a
       ><a name="1119" class="Symbol"
       >}</a
-      ><a name="1120"
-      > </a
-      ><a name="1121" class="Symbol"
+      > <a name="1121" class="Symbol"
       >&#8594;</a
-      ><a name="1122"
-      > </a
-      ><a name="1123" href="Data.DifferenceVec.html#377" class="Function"
+      > <a name="1123" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="1130"
-      > </a
-      ><a name="1131" href="Data.DifferenceVec.html#1106" class="Bound"
+      > <a name="1131" href="Data.DifferenceVec.html#1106" class="Bound"
       >A</a
-      ><a name="1132"
-      > </a
-      ><a name="1133" class="Symbol"
+      > <a name="1133" class="Symbol"
       >(</a
-      ><a name="1134" href="Data.DifferenceNat.html#421" class="Function"
+      ><a name="1134" href="Data.DifferenceNat.html#suc" class="Function"
       >suc</a
-      ><a name="1137"
-      > </a
-      ><a name="1138" href="Data.DifferenceVec.html#1118" class="Bound"
+      > <a name="1138" href="Data.DifferenceVec.html#1118" class="Bound"
       >n</a
       ><a name="1139" class="Symbol"
       >)</a
-      ><a name="1140"
-      > </a
-      ><a name="1141" class="Symbol"
+      > <a name="1141" class="Symbol"
       >&#8594;</a
-      ><a name="1142"
-      > </a
-      ><a name="1143" href="Data.DifferenceVec.html#377" class="Function"
+      > <a name="1143" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="1150"
-      > </a
-      ><a name="1151" href="Data.DifferenceVec.html#1106" class="Bound"
+      > <a name="1151" href="Data.DifferenceVec.html#1106" class="Bound"
       >A</a
-      ><a name="1152"
-      > </a
-      ><a name="1153" href="Data.DifferenceVec.html#1118" class="Bound"
+      > <a name="1153" href="Data.DifferenceVec.html#1118" class="Bound"
       >n</a
-      ><a name="1154"
       >
-</a
-      ><a name="1155" href="Data.DifferenceVec.html#1092" class="Function"
+<a name="1155" href="Data.DifferenceVec.html#tail" class="Function"
       >tail</a
-      ><a name="1159"
-      > </a
-      ><a name="1160" href="Data.DifferenceVec.html#1160" class="Bound"
+      > <a name="1160" href="Data.DifferenceVec.html#1160" class="Bound"
       >xs</a
-      ><a name="1162"
-      > </a
-      ><a name="1163" class="Symbol"
+      > <a name="1163" class="Symbol"
       >=</a
-      ><a name="1164"
-      > </a
-      ><a name="1165" class="Symbol"
+      > <a name="1165" class="Symbol"
       >&#955;</a
-      ><a name="1166"
-      > </a
-      ><a name="1167" href="Data.DifferenceVec.html#1167" class="Bound"
+      > <a name="1167" href="Data.DifferenceVec.html#1167" class="Bound"
       >k</a
-      ><a name="1168"
-      > </a
-      ><a name="1169" class="Symbol"
+      > <a name="1169" class="Symbol"
       >&#8594;</a
-      ><a name="1170"
-      > </a
-      ><a name="1171" href="Data.Vec.html#1334" class="Function"
+      > <a name="1171" href="Data.Vec.html#tail" class="Function"
       >V.tail</a
-      ><a name="1177"
-      > </a
-      ><a name="1178" class="Symbol"
+      > <a name="1178" class="Symbol"
       >(</a
       ><a name="1179" href="Data.DifferenceVec.html#1160" class="Bound"
       >xs</a
-      ><a name="1181"
-      > </a
-      ><a name="1182" href="Data.DifferenceVec.html#1167" class="Bound"
+      > <a name="1182" href="Data.DifferenceVec.html#1167" class="Bound"
       >k</a
       ><a name="1183" class="Symbol"
       >)</a
-      ><a name="1184"
       >
 
-</a
-      ><a name="1186" href="Data.DifferenceVec.html#1186" class="Function"
+<a name="take" href="Data.DifferenceVec.html#take" class="Function"
       >take</a
-      ><a name="1190"
-      > </a
-      ><a name="1191" class="Symbol"
+      > <a name="1191" class="Symbol"
       >:</a
-      ><a name="1192"
-      > </a
-      ><a name="1193" class="Symbol"
+      > <a name="1193" class="Symbol"
       >&#8704;</a
-      ><a name="1194"
-      > </a
-      ><a name="1195" class="Symbol"
+      > <a name="1195" class="Symbol"
       >{</a
       ><a name="1196" href="Data.DifferenceVec.html#1196" class="Bound"
       >a</a
       ><a name="1197" class="Symbol"
       >}</a
-      ><a name="1198"
-      > </a
-      ><a name="1199" class="Symbol"
+      > <a name="1199" class="Symbol"
       >{</a
       ><a name="1200" href="Data.DifferenceVec.html#1200" class="Bound"
       >A</a
-      ><a name="1201"
-      > </a
-      ><a name="1202" class="Symbol"
+      > <a name="1202" class="Symbol"
       >:</a
-      ><a name="1203"
-      > </a
-      ><a name="1204" class="PrimitiveType"
+      > <a name="1204" class="PrimitiveType"
       >Set</a
-      ><a name="1207"
-      > </a
-      ><a name="1208" href="Data.DifferenceVec.html#1196" class="Bound"
+      > <a name="1208" href="Data.DifferenceVec.html#1196" class="Bound"
       >a</a
       ><a name="1209" class="Symbol"
       >}</a
-      ><a name="1210"
-      > </a
-      ><a name="1211" href="Data.DifferenceVec.html#1211" class="Bound"
+      > <a name="1211" href="Data.DifferenceVec.html#1211" class="Bound"
       >m</a
-      ><a name="1212"
-      > </a
-      ><a name="1213" class="Symbol"
+      > <a name="1213" class="Symbol"
       >{</a
       ><a name="1214" href="Data.DifferenceVec.html#1214" class="Bound"
       >n</a
       ><a name="1215" class="Symbol"
       >}</a
-      ><a name="1216"
-      > </a
-      ><a name="1217" class="Symbol"
+      > <a name="1217" class="Symbol"
       >&#8594;</a
-      ><a name="1218"
       >
-       </a
-      ><a name="1226" href="Data.DifferenceVec.html#377" class="Function"
+       <a name="1226" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="1233"
-      > </a
-      ><a name="1234" href="Data.DifferenceVec.html#1200" class="Bound"
+      > <a name="1234" href="Data.DifferenceVec.html#1200" class="Bound"
       >A</a
-      ><a name="1235"
-      > </a
-      ><a name="1236" class="Symbol"
+      > <a name="1236" class="Symbol"
       >(</a
-      ><a name="1237" href="Data.DifferenceNat.html#612" class="Function"
+      ><a name="1237" href="Data.DifferenceNat.html#from&#8469;" class="Function"
       >from&#8469;</a
-      ><a name="1242"
-      > </a
-      ><a name="1243" href="Data.DifferenceVec.html#1211" class="Bound"
+      > <a name="1243" href="Data.DifferenceVec.html#1211" class="Bound"
       >m</a
-      ><a name="1244"
-      > </a
-      ><a name="1245" href="Data.DifferenceNat.html#492" class="Function Operator"
+      > <a name="1245" href="Data.DifferenceNat.html#_+_" class="Function Operator"
       >+</a
-      ><a name="1246"
-      > </a
-      ><a name="1247" href="Data.DifferenceVec.html#1214" class="Bound"
+      > <a name="1247" href="Data.DifferenceVec.html#1214" class="Bound"
       >n</a
       ><a name="1248" class="Symbol"
       >)</a
-      ><a name="1249"
-      > </a
-      ><a name="1250" class="Symbol"
+      > <a name="1250" class="Symbol"
       >&#8594;</a
-      ><a name="1251"
-      > </a
-      ><a name="1252" href="Data.DifferenceVec.html#377" class="Function"
+      > <a name="1252" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="1259"
-      > </a
-      ><a name="1260" href="Data.DifferenceVec.html#1200" class="Bound"
+      > <a name="1260" href="Data.DifferenceVec.html#1200" class="Bound"
       >A</a
-      ><a name="1261"
-      > </a
-      ><a name="1262" class="Symbol"
+      > <a name="1262" class="Symbol"
       >(</a
-      ><a name="1263" href="Data.DifferenceNat.html#612" class="Function"
+      ><a name="1263" href="Data.DifferenceNat.html#from&#8469;" class="Function"
       >from&#8469;</a
-      ><a name="1268"
-      > </a
-      ><a name="1269" href="Data.DifferenceVec.html#1211" class="Bound"
+      > <a name="1269" href="Data.DifferenceVec.html#1211" class="Bound"
       >m</a
       ><a name="1270" class="Symbol"
       >)</a
-      ><a name="1271"
       >
-</a
-      ><a name="1272" href="Data.DifferenceVec.html#1186" class="Function"
+<a name="1272" href="Data.DifferenceVec.html#take" class="Function"
       >take</a
-      ><a name="1276"
-      > </a
-      ><a name="1277" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      > <a name="1277" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >N.zero</a
-      ><a name="1283"
-      >    </a
-      ><a name="1287" href="Data.DifferenceVec.html#1287" class="Bound"
+      >    <a name="1287" href="Data.DifferenceVec.html#1287" class="Bound"
       >xs</a
-      ><a name="1289"
-      > </a
-      ><a name="1290" class="Symbol"
+      > <a name="1290" class="Symbol"
       >=</a
-      ><a name="1291"
-      > </a
-      ><a name="1292" href="Data.DifferenceVec.html#462" class="Function"
+      > <a name="1292" href="Data.DifferenceVec.html#[]" class="Function"
       >[]</a
-      ><a name="1294"
       >
-</a
-      ><a name="1295" href="Data.DifferenceVec.html#1186" class="Function"
+<a name="1295" href="Data.DifferenceVec.html#take" class="Function"
       >take</a
-      ><a name="1299"
-      > </a
-      ><a name="1300" class="Symbol"
+      > <a name="1300" class="Symbol"
       >(</a
-      ><a name="1301" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      ><a name="1301" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >N.suc</a
-      ><a name="1306"
-      > </a
-      ><a name="1307" href="Data.DifferenceVec.html#1307" class="Bound"
+      > <a name="1307" href="Data.DifferenceVec.html#1307" class="Bound"
       >m</a
       ><a name="1308" class="Symbol"
       >)</a
-      ><a name="1309"
-      > </a
-      ><a name="1310" href="Data.DifferenceVec.html#1310" class="Bound"
+      > <a name="1310" href="Data.DifferenceVec.html#1310" class="Bound"
       >xs</a
-      ><a name="1312"
-      > </a
-      ><a name="1313" class="Symbol"
+      > <a name="1313" class="Symbol"
       >=</a
-      ><a name="1314"
-      > </a
-      ><a name="1315" href="Data.DifferenceVec.html#1010" class="Function"
+      > <a name="1315" href="Data.DifferenceVec.html#head" class="Function"
       >head</a
-      ><a name="1319"
-      > </a
-      ><a name="1320" href="Data.DifferenceVec.html#1310" class="Bound"
+      > <a name="1320" href="Data.DifferenceVec.html#1310" class="Bound"
       >xs</a
-      ><a name="1322"
-      > </a
-      ><a name="1323" href="Data.DifferenceVec.html#514" class="Function Operator"
+      > <a name="1323" href="Data.DifferenceVec.html#_&#8759;_" class="Function Operator"
       >&#8759;</a
-      ><a name="1324"
-      > </a
-      ><a name="1325" href="Data.DifferenceVec.html#1186" class="Function"
+      > <a name="1325" href="Data.DifferenceVec.html#take" class="Function"
       >take</a
-      ><a name="1329"
-      > </a
-      ><a name="1330" href="Data.DifferenceVec.html#1307" class="Bound"
+      > <a name="1330" href="Data.DifferenceVec.html#1307" class="Bound"
       >m</a
-      ><a name="1331"
-      > </a
-      ><a name="1332" class="Symbol"
+      > <a name="1332" class="Symbol"
       >(</a
-      ><a name="1333" href="Data.DifferenceVec.html#1092" class="Function"
+      ><a name="1333" href="Data.DifferenceVec.html#tail" class="Function"
       >tail</a
-      ><a name="1337"
-      > </a
-      ><a name="1338" href="Data.DifferenceVec.html#1310" class="Bound"
+      > <a name="1338" href="Data.DifferenceVec.html#1310" class="Bound"
       >xs</a
       ><a name="1340" class="Symbol"
       >)</a
-      ><a name="1341"
       >
 
-</a
-      ><a name="1343" href="Data.DifferenceVec.html#1343" class="Function"
+<a name="drop" href="Data.DifferenceVec.html#drop" class="Function"
       >drop</a
-      ><a name="1347"
-      > </a
-      ><a name="1348" class="Symbol"
+      > <a name="1348" class="Symbol"
       >:</a
-      ><a name="1349"
-      > </a
-      ><a name="1350" class="Symbol"
+      > <a name="1350" class="Symbol"
       >&#8704;</a
-      ><a name="1351"
-      > </a
-      ><a name="1352" class="Symbol"
+      > <a name="1352" class="Symbol"
       >{</a
       ><a name="1353" href="Data.DifferenceVec.html#1353" class="Bound"
       >a</a
       ><a name="1354" class="Symbol"
       >}</a
-      ><a name="1355"
-      > </a
-      ><a name="1356" class="Symbol"
+      > <a name="1356" class="Symbol"
       >{</a
       ><a name="1357" href="Data.DifferenceVec.html#1357" class="Bound"
       >A</a
-      ><a name="1358"
-      > </a
-      ><a name="1359" class="Symbol"
+      > <a name="1359" class="Symbol"
       >:</a
-      ><a name="1360"
-      > </a
-      ><a name="1361" class="PrimitiveType"
+      > <a name="1361" class="PrimitiveType"
       >Set</a
-      ><a name="1364"
-      > </a
-      ><a name="1365" href="Data.DifferenceVec.html#1353" class="Bound"
+      > <a name="1365" href="Data.DifferenceVec.html#1353" class="Bound"
       >a</a
       ><a name="1366" class="Symbol"
       >}</a
-      ><a name="1367"
-      > </a
-      ><a name="1368" href="Data.DifferenceVec.html#1368" class="Bound"
+      > <a name="1368" href="Data.DifferenceVec.html#1368" class="Bound"
       >m</a
-      ><a name="1369"
-      > </a
-      ><a name="1370" class="Symbol"
+      > <a name="1370" class="Symbol"
       >{</a
       ><a name="1371" href="Data.DifferenceVec.html#1371" class="Bound"
       >n</a
       ><a name="1372" class="Symbol"
       >}</a
-      ><a name="1373"
-      > </a
-      ><a name="1374" class="Symbol"
+      > <a name="1374" class="Symbol"
       >&#8594;</a
-      ><a name="1375"
       >
-       </a
-      ><a name="1383" href="Data.DifferenceVec.html#377" class="Function"
+       <a name="1383" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="1390"
-      > </a
-      ><a name="1391" href="Data.DifferenceVec.html#1357" class="Bound"
+      > <a name="1391" href="Data.DifferenceVec.html#1357" class="Bound"
       >A</a
-      ><a name="1392"
-      > </a
-      ><a name="1393" class="Symbol"
+      > <a name="1393" class="Symbol"
       >(</a
-      ><a name="1394" href="Data.DifferenceNat.html#612" class="Function"
+      ><a name="1394" href="Data.DifferenceNat.html#from&#8469;" class="Function"
       >from&#8469;</a
-      ><a name="1399"
-      > </a
-      ><a name="1400" href="Data.DifferenceVec.html#1368" class="Bound"
+      > <a name="1400" href="Data.DifferenceVec.html#1368" class="Bound"
       >m</a
-      ><a name="1401"
-      > </a
-      ><a name="1402" href="Data.DifferenceNat.html#492" class="Function Operator"
+      > <a name="1402" href="Data.DifferenceNat.html#_+_" class="Function Operator"
       >+</a
-      ><a name="1403"
-      > </a
-      ><a name="1404" href="Data.DifferenceVec.html#1371" class="Bound"
+      > <a name="1404" href="Data.DifferenceVec.html#1371" class="Bound"
       >n</a
       ><a name="1405" class="Symbol"
       >)</a
-      ><a name="1406"
-      > </a
-      ><a name="1407" class="Symbol"
+      > <a name="1407" class="Symbol"
       >&#8594;</a
-      ><a name="1408"
-      > </a
-      ><a name="1409" href="Data.DifferenceVec.html#377" class="Function"
+      > <a name="1409" href="Data.DifferenceVec.html#DiffVec" class="Function"
       >DiffVec</a
-      ><a name="1416"
-      > </a
-      ><a name="1417" href="Data.DifferenceVec.html#1357" class="Bound"
+      > <a name="1417" href="Data.DifferenceVec.html#1357" class="Bound"
       >A</a
-      ><a name="1418"
-      > </a
-      ><a name="1419" href="Data.DifferenceVec.html#1371" class="Bound"
+      > <a name="1419" href="Data.DifferenceVec.html#1371" class="Bound"
       >n</a
-      ><a name="1420"
       >
-</a
-      ><a name="1421" href="Data.DifferenceVec.html#1343" class="Function"
+<a name="1421" href="Data.DifferenceVec.html#drop" class="Function"
       >drop</a
-      ><a name="1425"
-      > </a
-      ><a name="1426" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      > <a name="1426" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >N.zero</a
-      ><a name="1432"
-      >    </a
-      ><a name="1436" href="Data.DifferenceVec.html#1436" class="Bound"
+      >    <a name="1436" href="Data.DifferenceVec.html#1436" class="Bound"
       >xs</a
-      ><a name="1438"
-      > </a
-      ><a name="1439" class="Symbol"
+      > <a name="1439" class="Symbol"
       >=</a
-      ><a name="1440"
-      > </a
-      ><a name="1441" href="Data.DifferenceVec.html#1436" class="Bound"
+      > <a name="1441" href="Data.DifferenceVec.html#1436" class="Bound"
       >xs</a
-      ><a name="1443"
       >
-</a
-      ><a name="1444" href="Data.DifferenceVec.html#1343" class="Function"
+<a name="1444" href="Data.DifferenceVec.html#drop" class="Function"
       >drop</a
-      ><a name="1448"
-      > </a
-      ><a name="1449" class="Symbol"
+      > <a name="1449" class="Symbol"
       >(</a
-      ><a name="1450" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      ><a name="1450" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >N.suc</a
-      ><a name="1455"
-      > </a
-      ><a name="1456" href="Data.DifferenceVec.html#1456" class="Bound"
+      > <a name="1456" href="Data.DifferenceVec.html#1456" class="Bound"
       >m</a
       ><a name="1457" class="Symbol"
       >)</a
-      ><a name="1458"
-      > </a
-      ><a name="1459" href="Data.DifferenceVec.html#1459" class="Bound"
+      > <a name="1459" href="Data.DifferenceVec.html#1459" class="Bound"
       >xs</a
-      ><a name="1461"
-      > </a
-      ><a name="1462" class="Symbol"
+      > <a name="1462" class="Symbol"
       >=</a
-      ><a name="1463"
-      > </a
-      ><a name="1464" href="Data.DifferenceVec.html#1343" class="Function"
+      > <a name="1464" href="Data.DifferenceVec.html#drop" class="Function"
       >drop</a
-      ><a name="1468"
-      > </a
-      ><a name="1469" href="Data.DifferenceVec.html#1456" class="Bound"
+      > <a name="1469" href="Data.DifferenceVec.html#1456" class="Bound"
       >m</a
-      ><a name="1470"
-      > </a
-      ><a name="1471" class="Symbol"
+      > <a name="1471" class="Symbol"
       >(</a
-      ><a name="1472" href="Data.DifferenceVec.html#1092" class="Function"
+      ><a name="1472" href="Data.DifferenceVec.html#tail" class="Function"
       >tail</a
-      ><a name="1476"
-      > </a
-      ><a name="1477" href="Data.DifferenceVec.html#1459" class="Bound"
+      > <a name="1477" href="Data.DifferenceVec.html#1459" class="Bound"
       >xs</a
       ><a name="1479" class="Symbol"
       >)</a
-      ><a name="1480"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

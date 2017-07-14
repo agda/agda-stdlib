@@ -11,795 +11,443 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Induced preorders</a
-      ><a name="126"
       >
-</a
-      ><a name="127" class="Comment"
+<a name="127" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="199"
       >
 
-</a
-      ><a name="201" class="Keyword"
+<a name="201" class="Keyword"
       >open</a
-      ><a name="205"
-      > </a
-      ><a name="206" class="Keyword"
+      > <a name="206" class="Keyword"
       >import</a
-      ><a name="212"
-      > </a
-      ><a name="213" href="Relation.Binary.html#1" class="Module"
+      > <a name="213" href="Relation.Binary.html" class="Module"
       >Relation.Binary</a
-      ><a name="228"
       >
 
-</a
-      ><a name="230" class="Keyword"
+<a name="230" class="Keyword"
       >module</a
-      ><a name="236"
-      > </a
-      ><a name="237" href="Relation.Binary.InducedPreorders.html#1" class="Module"
+      > <a name="237" href="Relation.Binary.InducedPreorders.html" class="Module"
       >Relation.Binary.InducedPreorders</a
-      ><a name="269"
       >
-         </a
-      ><a name="279" class="Symbol"
+         <a name="279" class="Symbol"
       >{</a
       ><a name="280" href="Relation.Binary.InducedPreorders.html#280" class="Bound"
       >s&#8321;</a
-      ><a name="282"
-      > </a
-      ><a name="283" href="Relation.Binary.InducedPreorders.html#283" class="Bound"
+      > <a name="283" href="Relation.Binary.InducedPreorders.html#283" class="Bound"
       >s&#8322;</a
       ><a name="285" class="Symbol"
       >}</a
-      ><a name="286"
       >
-         </a
-      ><a name="296" class="Symbol"
+         <a name="296" class="Symbol"
       >(</a
       ><a name="297" href="Relation.Binary.InducedPreorders.html#297" class="Bound"
       >S</a
-      ><a name="298"
-      > </a
-      ><a name="299" class="Symbol"
+      > <a name="299" class="Symbol"
       >:</a
-      ><a name="300"
-      > </a
-      ><a name="301" href="Relation.Binary.html#1908" class="Record"
+      > <a name="301" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="307"
-      > </a
-      ><a name="308" href="Relation.Binary.InducedPreorders.html#280" class="Bound"
+      > <a name="308" href="Relation.Binary.InducedPreorders.html#280" class="Bound"
       >s&#8321;</a
-      ><a name="310"
-      > </a
-      ><a name="311" href="Relation.Binary.InducedPreorders.html#283" class="Bound"
+      > <a name="311" href="Relation.Binary.InducedPreorders.html#283" class="Bound"
       >s&#8322;</a
       ><a name="313" class="Symbol"
       >)</a
-      ><a name="314"
-      >  </a
-      ><a name="316" class="Comment"
+      >  <a name="316" class="Comment"
       >-- The underlying equality.</a
-      ><a name="343"
       >
-         </a
-      ><a name="353" class="Keyword"
+         <a name="353" class="Keyword"
       >where</a
-      ><a name="358"
       >
 
-</a
-      ><a name="360" class="Keyword"
+<a name="360" class="Keyword"
       >open</a
-      ><a name="364"
-      > </a
-      ><a name="365" class="Keyword"
+      > <a name="365" class="Keyword"
       >import</a
-      ><a name="371"
-      > </a
-      ><a name="372" href="Function.html#1" class="Module"
+      > <a name="372" href="Function.html" class="Module"
       >Function</a
-      ><a name="380"
       >
-</a
-      ><a name="381" class="Keyword"
+<a name="381" class="Keyword"
       >open</a
-      ><a name="385"
-      > </a
-      ><a name="386" class="Keyword"
+      > <a name="386" class="Keyword"
       >import</a
-      ><a name="392"
-      > </a
-      ><a name="393" href="Data.Product.html#1" class="Module"
+      > <a name="393" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="405"
       >
 
-</a
-      ><a name="407" class="Keyword"
+<a name="407" class="Keyword"
       >open</a
-      ><a name="411"
-      > </a
-      ><a name="412" href="Relation.Binary.html#1908" class="Module"
+      > <a name="412" href="Relation.Binary.html#Setoid" class="Module"
       >Setoid</a
-      ><a name="418"
-      > </a
-      ><a name="419" href="Relation.Binary.InducedPreorders.html#297" class="Bound"
+      > <a name="419" href="Relation.Binary.InducedPreorders.html#297" class="Bound"
       >S</a
-      ><a name="420"
       >
 
-</a
-      ><a name="422" class="Comment"
+<a name="422" class="Comment"
       >-- Every respectful unary relation induces a preorder. (No claim is</a
-      ><a name="489"
       >
-</a
-      ><a name="490" class="Comment"
+<a name="490" class="Comment"
       >-- made that this preorder is unique.)</a
-      ><a name="528"
       >
 
-</a
-      ><a name="530" href="Relation.Binary.InducedPreorders.html#530" class="Function"
+<a name="InducedPreorder&#8321;" href="Relation.Binary.InducedPreorders.html#InducedPreorder&#8321;" class="Function"
       >InducedPreorder&#8321;</a
-      ><a name="546"
-      > </a
-      ><a name="547" class="Symbol"
+      > <a name="547" class="Symbol"
       >:</a
-      ><a name="548"
-      > </a
-      ><a name="549" class="Symbol"
+      > <a name="549" class="Symbol"
       >&#8704;</a
-      ><a name="550"
-      > </a
-      ><a name="551" class="Symbol"
+      > <a name="551" class="Symbol"
       >{</a
       ><a name="552" href="Relation.Binary.InducedPreorders.html#552" class="Bound"
       >p</a
       ><a name="553" class="Symbol"
       >}</a
-      ><a name="554"
-      > </a
-      ><a name="555" class="Symbol"
+      > <a name="555" class="Symbol"
       >(</a
       ><a name="556" href="Relation.Binary.InducedPreorders.html#556" class="Bound"
       >P</a
-      ><a name="557"
-      > </a
-      ><a name="558" class="Symbol"
+      > <a name="558" class="Symbol"
       >:</a
-      ><a name="559"
-      > </a
-      ><a name="560" href="Relation.Binary.html#1971" class="Field"
+      > <a name="560" href="Relation.Binary.html#1971" class="Field"
       >Carrier</a
-      ><a name="567"
-      > </a
-      ><a name="568" class="Symbol"
+      > <a name="568" class="Symbol"
       >&#8594;</a
-      ><a name="569"
-      > </a
-      ><a name="570" class="PrimitiveType"
+      > <a name="570" class="PrimitiveType"
       >Set</a
-      ><a name="573"
-      > </a
-      ><a name="574" href="Relation.Binary.InducedPreorders.html#552" class="Bound"
+      > <a name="574" href="Relation.Binary.InducedPreorders.html#552" class="Bound"
       >p</a
       ><a name="575" class="Symbol"
       >)</a
-      ><a name="576"
-      > </a
-      ><a name="577" class="Symbol"
+      > <a name="577" class="Symbol"
       >&#8594;</a
-      ><a name="578"
       >
-                   </a
-      ><a name="598" href="Relation.Binary.InducedPreorders.html#556" class="Bound"
+                   <a name="598" href="Relation.Binary.InducedPreorders.html#556" class="Bound"
       >P</a
-      ><a name="599"
-      > </a
-      ><a name="600" href="Relation.Binary.Core.html#3083" class="Function Operator"
+      > <a name="600" href="Relation.Binary.Core.html#_Respects_" class="Function Operator"
       >Respects</a
-      ><a name="608"
-      > </a
-      ><a name="609" href="Relation.Binary.html#1997" class="Field Operator"
+      > <a name="609" href="Relation.Binary.html#1997" class="Field Operator"
       >_&#8776;_</a
-      ><a name="612"
-      > </a
-      ><a name="613" class="Symbol"
+      > <a name="613" class="Symbol"
       >&#8594;</a
-      ><a name="614"
-      > </a
-      ><a name="615" href="Relation.Binary.html#1470" class="Record"
+      > <a name="615" href="Relation.Binary.html#Preorder" class="Record"
       >Preorder</a
-      ><a name="623"
-      > </a
-      ><a name="624" class="Symbol"
+      > <a name="624" class="Symbol"
       >_</a
-      ><a name="625"
-      > </a
-      ><a name="626" class="Symbol"
+      > <a name="626" class="Symbol"
       >_</a
-      ><a name="627"
-      > </a
-      ><a name="628" class="Symbol"
+      > <a name="628" class="Symbol"
       >_</a
-      ><a name="629"
       >
-</a
-      ><a name="630" href="Relation.Binary.InducedPreorders.html#530" class="Function"
+<a name="630" href="Relation.Binary.InducedPreorders.html#InducedPreorder&#8321;" class="Function"
       >InducedPreorder&#8321;</a
-      ><a name="646"
-      > </a
-      ><a name="647" href="Relation.Binary.InducedPreorders.html#647" class="Bound"
+      > <a name="647" href="Relation.Binary.InducedPreorders.html#647" class="Bound"
       >P</a
-      ><a name="648"
-      > </a
-      ><a name="649" href="Relation.Binary.InducedPreorders.html#649" class="Bound"
+      > <a name="649" href="Relation.Binary.InducedPreorders.html#649" class="Bound"
       >resp</a
-      ><a name="653"
-      > </a
-      ><a name="654" class="Symbol"
+      > <a name="654" class="Symbol"
       >=</a
-      ><a name="655"
-      > </a
-      ><a name="656" class="Keyword"
+      > <a name="656" class="Keyword"
       >record</a
-      ><a name="662"
       >
-  </a
-      ><a name="665" class="Symbol"
+  <a name="665" class="Symbol"
       >{</a
-      ><a name="666"
-      > </a
-      ><a name="667" class="Field Operator"
+      > <a name="667" class="Field Operator"
       >_&#8776;_</a
-      ><a name="670"
-      >        </a
-      ><a name="678" class="Symbol"
+      >        <a name="678" class="Symbol"
       >=</a
-      ><a name="679"
-      > </a
-      ><a name="680" href="Relation.Binary.html#1997" class="Field Operator"
+      > <a name="680" href="Relation.Binary.html#1997" class="Field Operator"
       >_&#8776;_</a
-      ><a name="683"
       >
-  </a
-      ><a name="686" class="Symbol"
+  <a name="686" class="Symbol"
       >;</a
-      ><a name="687"
-      > </a
-      ><a name="688" class="Field Operator"
+      > <a name="688" class="Field Operator"
       >_&#8764;_</a
-      ><a name="691"
-      >        </a
-      ><a name="699" class="Symbol"
+      >        <a name="699" class="Symbol"
       >=</a
-      ><a name="700"
-      > </a
-      ><a name="701" class="Symbol"
+      > <a name="701" class="Symbol"
       >&#955;</a
-      ><a name="702"
-      > </a
-      ><a name="703" href="Relation.Binary.InducedPreorders.html#703" class="Bound"
+      > <a name="703" href="Relation.Binary.InducedPreorders.html#703" class="Bound"
       >c&#8321;</a
-      ><a name="705"
-      > </a
-      ><a name="706" href="Relation.Binary.InducedPreorders.html#706" class="Bound"
+      > <a name="706" href="Relation.Binary.InducedPreorders.html#706" class="Bound"
       >c&#8322;</a
-      ><a name="708"
-      > </a
-      ><a name="709" class="Symbol"
+      > <a name="709" class="Symbol"
       >&#8594;</a
-      ><a name="710"
-      > </a
-      ><a name="711" href="Relation.Binary.InducedPreorders.html#647" class="Bound"
+      > <a name="711" href="Relation.Binary.InducedPreorders.html#647" class="Bound"
       >P</a
-      ><a name="712"
-      > </a
-      ><a name="713" href="Relation.Binary.InducedPreorders.html#703" class="Bound"
+      > <a name="713" href="Relation.Binary.InducedPreorders.html#703" class="Bound"
       >c&#8321;</a
-      ><a name="715"
-      > </a
-      ><a name="716" class="Symbol"
+      > <a name="716" class="Symbol"
       >&#8594;</a
-      ><a name="717"
-      > </a
-      ><a name="718" href="Relation.Binary.InducedPreorders.html#647" class="Bound"
+      > <a name="718" href="Relation.Binary.InducedPreorders.html#647" class="Bound"
       >P</a
-      ><a name="719"
-      > </a
-      ><a name="720" href="Relation.Binary.InducedPreorders.html#706" class="Bound"
+      > <a name="720" href="Relation.Binary.InducedPreorders.html#706" class="Bound"
       >c&#8322;</a
-      ><a name="722"
       >
-  </a
-      ><a name="725" class="Symbol"
+  <a name="725" class="Symbol"
       >;</a
-      ><a name="726"
-      > </a
-      ><a name="727" class="Field"
+      > <a name="727" class="Field"
       >isPreorder</a
-      ><a name="737"
-      > </a
-      ><a name="738" class="Symbol"
+      > <a name="738" class="Symbol"
       >=</a
-      ><a name="739"
-      > </a
-      ><a name="740" class="Keyword"
+      > <a name="740" class="Keyword"
       >record</a
-      ><a name="746"
       >
-    </a
-      ><a name="751" class="Symbol"
+    <a name="751" class="Symbol"
       >{</a
-      ><a name="752"
-      > </a
-      ><a name="753" class="Field"
+      > <a name="753" class="Field"
       >isEquivalence</a
-      ><a name="766"
-      > </a
-      ><a name="767" class="Symbol"
+      > <a name="767" class="Symbol"
       >=</a
-      ><a name="768"
-      > </a
-      ><a name="769" href="Relation.Binary.html#2031" class="Field"
+      > <a name="769" href="Relation.Binary.html#2031" class="Field"
       >isEquivalence</a
-      ><a name="782"
       >
-    </a
-      ><a name="787" class="Symbol"
+    <a name="787" class="Symbol"
       >;</a
-      ><a name="788"
-      > </a
-      ><a name="789" class="Field"
+      > <a name="789" class="Field"
       >reflexive</a
-      ><a name="798"
-      >     </a
-      ><a name="803" class="Symbol"
+      >     <a name="803" class="Symbol"
       >=</a
-      ><a name="804"
-      > </a
-      ><a name="805" href="Relation.Binary.InducedPreorders.html#649" class="Bound"
+      > <a name="805" href="Relation.Binary.InducedPreorders.html#649" class="Bound"
       >resp</a
-      ><a name="809"
       >
-    </a
-      ><a name="814" class="Symbol"
+    <a name="814" class="Symbol"
       >;</a
-      ><a name="815"
-      > </a
-      ><a name="816" class="Field"
+      > <a name="816" class="Field"
       >trans</a
-      ><a name="821"
-      >         </a
-      ><a name="830" class="Symbol"
+      >         <a name="830" class="Symbol"
       >=</a
-      ><a name="831"
-      > </a
-      ><a name="832" href="Function.html#1480" class="Function"
+      > <a name="832" href="Function.html#flip" class="Function"
       >flip</a
-      ><a name="836"
-      > </a
-      ><a name="837" href="Function.html#902" class="Function Operator"
+      > <a name="837" href="Function.html#_&#8728;&#8242;_" class="Function Operator"
       >_&#8728;&#8242;_</a
-      ><a name="841"
       >
-    </a
-      ><a name="846" class="Symbol"
+    <a name="846" class="Symbol"
       >}</a
-      ><a name="847"
       >
-  </a
-      ><a name="850" class="Symbol"
+  <a name="850" class="Symbol"
       >}</a
-      ><a name="851"
       >
 
-</a
-      ><a name="853" class="Comment"
+<a name="853" class="Comment"
       >-- Every respectful binary relation induces a preorder. (No claim is</a
-      ><a name="921"
       >
-</a
-      ><a name="922" class="Comment"
+<a name="922" class="Comment"
       >-- made that this preorder is unique.)</a
-      ><a name="960"
       >
 
-</a
-      ><a name="962" href="Relation.Binary.InducedPreorders.html#962" class="Function"
+<a name="InducedPreorder&#8322;" href="Relation.Binary.InducedPreorders.html#InducedPreorder&#8322;" class="Function"
       >InducedPreorder&#8322;</a
-      ><a name="978"
-      > </a
-      ><a name="979" class="Symbol"
+      > <a name="979" class="Symbol"
       >:</a
-      ><a name="980"
-      > </a
-      ><a name="981" class="Symbol"
+      > <a name="981" class="Symbol"
       >&#8704;</a
-      ><a name="982"
-      > </a
-      ><a name="983" class="Symbol"
+      > <a name="983" class="Symbol"
       >{</a
       ><a name="984" href="Relation.Binary.InducedPreorders.html#984" class="Bound"
       >a</a
-      ><a name="985"
-      > </a
-      ><a name="986" href="Relation.Binary.InducedPreorders.html#986" class="Bound"
+      > <a name="986" href="Relation.Binary.InducedPreorders.html#986" class="Bound"
       >r</a
       ><a name="987" class="Symbol"
       >}</a
-      ><a name="988"
-      > </a
-      ><a name="989" class="Symbol"
+      > <a name="989" class="Symbol"
       >{</a
       ><a name="990" href="Relation.Binary.InducedPreorders.html#990" class="Bound"
       >A</a
-      ><a name="991"
-      > </a
-      ><a name="992" class="Symbol"
+      > <a name="992" class="Symbol"
       >:</a
-      ><a name="993"
-      > </a
-      ><a name="994" class="PrimitiveType"
+      > <a name="994" class="PrimitiveType"
       >Set</a
-      ><a name="997"
-      > </a
-      ><a name="998" href="Relation.Binary.InducedPreorders.html#984" class="Bound"
+      > <a name="998" href="Relation.Binary.InducedPreorders.html#984" class="Bound"
       >a</a
       ><a name="999" class="Symbol"
       >}</a
-      ><a name="1000"
-      > </a
-      ><a name="1001" class="Symbol"
+      > <a name="1001" class="Symbol"
       >&#8594;</a
-      ><a name="1002"
       >
-                   </a
-      ><a name="1022" class="Symbol"
+                   <a name="1022" class="Symbol"
       >(</a
       ><a name="1023" href="Relation.Binary.InducedPreorders.html#1023" class="Bound Operator"
       >_R_</a
-      ><a name="1026"
-      > </a
-      ><a name="1027" class="Symbol"
+      > <a name="1027" class="Symbol"
       >:</a
-      ><a name="1028"
-      > </a
-      ><a name="1029" href="Relation.Binary.InducedPreorders.html#990" class="Bound"
+      > <a name="1029" href="Relation.Binary.InducedPreorders.html#990" class="Bound"
       >A</a
-      ><a name="1030"
-      > </a
-      ><a name="1031" class="Symbol"
+      > <a name="1031" class="Symbol"
       >&#8594;</a
-      ><a name="1032"
-      > </a
-      ><a name="1033" href="Relation.Binary.html#1971" class="Field"
+      > <a name="1033" href="Relation.Binary.html#1971" class="Field"
       >Carrier</a
-      ><a name="1040"
-      > </a
-      ><a name="1041" class="Symbol"
+      > <a name="1041" class="Symbol"
       >&#8594;</a
-      ><a name="1042"
-      > </a
-      ><a name="1043" class="PrimitiveType"
+      > <a name="1043" class="PrimitiveType"
       >Set</a
-      ><a name="1046"
-      > </a
-      ><a name="1047" href="Relation.Binary.InducedPreorders.html#986" class="Bound"
+      > <a name="1047" href="Relation.Binary.InducedPreorders.html#986" class="Bound"
       >r</a
       ><a name="1048" class="Symbol"
       >)</a
-      ><a name="1049"
-      > </a
-      ><a name="1050" class="Symbol"
+      > <a name="1050" class="Symbol"
       >&#8594;</a
-      ><a name="1051"
       >
-                   </a
-      ><a name="1071" class="Symbol"
+                   <a name="1071" class="Symbol"
       >(&#8704;</a
-      ><a name="1073"
-      > </a
-      ><a name="1074" class="Symbol"
+      > <a name="1074" class="Symbol"
       >{</a
       ><a name="1075" href="Relation.Binary.InducedPreorders.html#1075" class="Bound"
       >x</a
       ><a name="1076" class="Symbol"
       >}</a
-      ><a name="1077"
-      > </a
-      ><a name="1078" class="Symbol"
+      > <a name="1078" class="Symbol"
       >&#8594;</a
-      ><a name="1079"
-      > </a
-      ><a name="1080" href="Relation.Binary.InducedPreorders.html#1023" class="Bound Operator"
+      > <a name="1080" href="Relation.Binary.InducedPreorders.html#1023" class="Bound Operator"
       >_R_</a
-      ><a name="1083"
-      > </a
-      ><a name="1084" href="Relation.Binary.InducedPreorders.html#1075" class="Bound"
+      > <a name="1084" href="Relation.Binary.InducedPreorders.html#1075" class="Bound"
       >x</a
-      ><a name="1085"
-      > </a
-      ><a name="1086" href="Relation.Binary.Core.html#3083" class="Function Operator"
+      > <a name="1086" href="Relation.Binary.Core.html#_Respects_" class="Function Operator"
       >Respects</a
-      ><a name="1094"
-      > </a
-      ><a name="1095" href="Relation.Binary.html#1997" class="Field Operator"
+      > <a name="1095" href="Relation.Binary.html#1997" class="Field Operator"
       >_&#8776;_</a
       ><a name="1098" class="Symbol"
       >)</a
-      ><a name="1099"
-      > </a
-      ><a name="1100" class="Symbol"
+      > <a name="1100" class="Symbol"
       >&#8594;</a
-      ><a name="1101"
-      > </a
-      ><a name="1102" href="Relation.Binary.html#1470" class="Record"
+      > <a name="1102" href="Relation.Binary.html#Preorder" class="Record"
       >Preorder</a
-      ><a name="1110"
-      > </a
-      ><a name="1111" class="Symbol"
+      > <a name="1111" class="Symbol"
       >_</a
-      ><a name="1112"
-      > </a
-      ><a name="1113" class="Symbol"
+      > <a name="1113" class="Symbol"
       >_</a
-      ><a name="1114"
-      > </a
-      ><a name="1115" class="Symbol"
+      > <a name="1115" class="Symbol"
       >_</a
-      ><a name="1116"
       >
-</a
-      ><a name="1117" href="Relation.Binary.InducedPreorders.html#962" class="Function"
+<a name="1117" href="Relation.Binary.InducedPreorders.html#InducedPreorder&#8322;" class="Function"
       >InducedPreorder&#8322;</a
-      ><a name="1133"
-      > </a
-      ><a name="1134" href="Relation.Binary.InducedPreorders.html#1134" class="Bound Operator"
+      > <a name="1134" href="Relation.Binary.InducedPreorders.html#1134" class="Bound Operator"
       >_R_</a
-      ><a name="1137"
-      > </a
-      ><a name="1138" href="Relation.Binary.InducedPreorders.html#1138" class="Bound"
+      > <a name="1138" href="Relation.Binary.InducedPreorders.html#1138" class="Bound"
       >resp</a
-      ><a name="1142"
-      > </a
-      ><a name="1143" class="Symbol"
+      > <a name="1143" class="Symbol"
       >=</a
-      ><a name="1144"
-      > </a
-      ><a name="1145" class="Keyword"
+      > <a name="1145" class="Keyword"
       >record</a
-      ><a name="1151"
       >
-  </a
-      ><a name="1154" class="Symbol"
+  <a name="1154" class="Symbol"
       >{</a
-      ><a name="1155"
-      > </a
-      ><a name="1156" class="Field Operator"
+      > <a name="1156" class="Field Operator"
       >_&#8776;_</a
-      ><a name="1159"
-      >        </a
-      ><a name="1167" class="Symbol"
+      >        <a name="1167" class="Symbol"
       >=</a
-      ><a name="1168"
-      > </a
-      ><a name="1169" href="Relation.Binary.html#1997" class="Field Operator"
+      > <a name="1169" href="Relation.Binary.html#1997" class="Field Operator"
       >_&#8776;_</a
-      ><a name="1172"
       >
-  </a
-      ><a name="1175" class="Symbol"
+  <a name="1175" class="Symbol"
       >;</a
-      ><a name="1176"
-      > </a
-      ><a name="1177" class="Field Operator"
+      > <a name="1177" class="Field Operator"
       >_&#8764;_</a
-      ><a name="1180"
-      >        </a
-      ><a name="1188" class="Symbol"
+      >        <a name="1188" class="Symbol"
       >=</a
-      ><a name="1189"
-      > </a
-      ><a name="1190" class="Symbol"
+      > <a name="1190" class="Symbol"
       >&#955;</a
-      ><a name="1191"
-      > </a
-      ><a name="1192" href="Relation.Binary.InducedPreorders.html#1192" class="Bound"
+      > <a name="1192" href="Relation.Binary.InducedPreorders.html#1192" class="Bound"
       >c&#8321;</a
-      ><a name="1194"
-      > </a
-      ><a name="1195" href="Relation.Binary.InducedPreorders.html#1195" class="Bound"
+      > <a name="1195" href="Relation.Binary.InducedPreorders.html#1195" class="Bound"
       >c&#8322;</a
-      ><a name="1197"
-      > </a
-      ><a name="1198" class="Symbol"
+      > <a name="1198" class="Symbol"
       >&#8594;</a
-      ><a name="1199"
-      > </a
-      ><a name="1200" class="Symbol"
+      > <a name="1200" class="Symbol"
       >&#8704;</a
-      ><a name="1201"
-      > </a
-      ><a name="1202" class="Symbol"
+      > <a name="1202" class="Symbol"
       >{</a
       ><a name="1203" href="Relation.Binary.InducedPreorders.html#1203" class="Bound"
       >a</a
       ><a name="1204" class="Symbol"
       >}</a
-      ><a name="1205"
-      > </a
-      ><a name="1206" class="Symbol"
+      > <a name="1206" class="Symbol"
       >&#8594;</a
-      ><a name="1207"
-      > </a
-      ><a name="1208" href="Relation.Binary.InducedPreorders.html#1203" class="Bound"
+      > <a name="1208" href="Relation.Binary.InducedPreorders.html#1203" class="Bound"
       >a</a
-      ><a name="1209"
-      > </a
-      ><a name="1210" href="Relation.Binary.InducedPreorders.html#1134" class="Bound Operator"
+      > <a name="1210" href="Relation.Binary.InducedPreorders.html#1134" class="Bound Operator"
       >R</a
-      ><a name="1211"
-      > </a
-      ><a name="1212" href="Relation.Binary.InducedPreorders.html#1192" class="Bound"
+      > <a name="1212" href="Relation.Binary.InducedPreorders.html#1192" class="Bound"
       >c&#8321;</a
-      ><a name="1214"
-      > </a
-      ><a name="1215" class="Symbol"
+      > <a name="1215" class="Symbol"
       >&#8594;</a
-      ><a name="1216"
-      > </a
-      ><a name="1217" href="Relation.Binary.InducedPreorders.html#1203" class="Bound"
+      > <a name="1217" href="Relation.Binary.InducedPreorders.html#1203" class="Bound"
       >a</a
-      ><a name="1218"
-      > </a
-      ><a name="1219" href="Relation.Binary.InducedPreorders.html#1134" class="Bound Operator"
+      > <a name="1219" href="Relation.Binary.InducedPreorders.html#1134" class="Bound Operator"
       >R</a
-      ><a name="1220"
-      > </a
-      ><a name="1221" href="Relation.Binary.InducedPreorders.html#1195" class="Bound"
+      > <a name="1221" href="Relation.Binary.InducedPreorders.html#1195" class="Bound"
       >c&#8322;</a
-      ><a name="1223"
       >
-  </a
-      ><a name="1226" class="Symbol"
+  <a name="1226" class="Symbol"
       >;</a
-      ><a name="1227"
-      > </a
-      ><a name="1228" class="Field"
+      > <a name="1228" class="Field"
       >isPreorder</a
-      ><a name="1238"
-      > </a
-      ><a name="1239" class="Symbol"
+      > <a name="1239" class="Symbol"
       >=</a
-      ><a name="1240"
-      > </a
-      ><a name="1241" class="Keyword"
+      > <a name="1241" class="Keyword"
       >record</a
-      ><a name="1247"
       >
-    </a
-      ><a name="1252" class="Symbol"
+    <a name="1252" class="Symbol"
       >{</a
-      ><a name="1253"
-      > </a
-      ><a name="1254" class="Field"
+      > <a name="1254" class="Field"
       >isEquivalence</a
-      ><a name="1267"
-      > </a
-      ><a name="1268" class="Symbol"
+      > <a name="1268" class="Symbol"
       >=</a
-      ><a name="1269"
-      > </a
-      ><a name="1270" href="Relation.Binary.html#2031" class="Field"
+      > <a name="1270" href="Relation.Binary.html#2031" class="Field"
       >isEquivalence</a
-      ><a name="1283"
       >
-    </a
-      ><a name="1288" class="Symbol"
+    <a name="1288" class="Symbol"
       >;</a
-      ><a name="1289"
-      > </a
-      ><a name="1290" class="Field"
+      > <a name="1290" class="Field"
       >reflexive</a
-      ><a name="1299"
-      >     </a
-      ><a name="1304" class="Symbol"
+      >     <a name="1304" class="Symbol"
       >=</a
-      ><a name="1305"
-      > </a
-      ><a name="1306" class="Symbol"
+      > <a name="1306" class="Symbol"
       >&#955;</a
-      ><a name="1307"
-      > </a
-      ><a name="1308" href="Relation.Binary.InducedPreorders.html#1308" class="Bound"
+      > <a name="1308" href="Relation.Binary.InducedPreorders.html#1308" class="Bound"
       >c&#8321;&#8776;c&#8322;</a
-      ><a name="1313"
-      > </a
-      ><a name="1314" class="Symbol"
+      > <a name="1314" class="Symbol"
       >&#8594;</a
-      ><a name="1315"
-      > </a
-      ><a name="1316" href="Relation.Binary.InducedPreorders.html#1138" class="Bound"
+      > <a name="1316" href="Relation.Binary.InducedPreorders.html#1138" class="Bound"
       >resp</a
-      ><a name="1320"
-      > </a
-      ><a name="1321" href="Relation.Binary.InducedPreorders.html#1308" class="Bound"
+      > <a name="1321" href="Relation.Binary.InducedPreorders.html#1308" class="Bound"
       >c&#8321;&#8776;c&#8322;</a
-      ><a name="1326"
       >
-    </a
-      ><a name="1331" class="Symbol"
+    <a name="1331" class="Symbol"
       >;</a
-      ><a name="1332"
-      > </a
-      ><a name="1333" class="Field"
+      > <a name="1333" class="Field"
       >trans</a
-      ><a name="1338"
-      >         </a
-      ><a name="1347" class="Symbol"
+      >         <a name="1347" class="Symbol"
       >=</a
-      ><a name="1348"
-      > </a
-      ><a name="1349" class="Symbol"
+      > <a name="1349" class="Symbol"
       >&#955;</a
-      ><a name="1350"
-      > </a
-      ><a name="1351" href="Relation.Binary.InducedPreorders.html#1351" class="Bound"
+      > <a name="1351" href="Relation.Binary.InducedPreorders.html#1351" class="Bound"
       >c&#8321;&#8764;c&#8322;</a
-      ><a name="1356"
-      > </a
-      ><a name="1357" href="Relation.Binary.InducedPreorders.html#1357" class="Bound"
+      > <a name="1357" href="Relation.Binary.InducedPreorders.html#1357" class="Bound"
       >c&#8322;&#8764;c&#8323;</a
-      ><a name="1362"
-      > </a
-      ><a name="1363" class="Symbol"
+      > <a name="1363" class="Symbol"
       >&#8594;</a
-      ><a name="1364"
-      > </a
-      ><a name="1365" href="Relation.Binary.InducedPreorders.html#1357" class="Bound"
+      > <a name="1365" href="Relation.Binary.InducedPreorders.html#1357" class="Bound"
       >c&#8322;&#8764;c&#8323;</a
-      ><a name="1370"
-      > </a
-      ><a name="1371" href="Function.html#713" class="Function Operator"
+      > <a name="1371" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="1372"
-      > </a
-      ><a name="1373" href="Relation.Binary.InducedPreorders.html#1351" class="Bound"
+      > <a name="1373" href="Relation.Binary.InducedPreorders.html#1351" class="Bound"
       >c&#8321;&#8764;c&#8322;</a
-      ><a name="1378"
       >
-    </a
-      ><a name="1383" class="Symbol"
+    <a name="1383" class="Symbol"
       >}</a
-      ><a name="1384"
       >
-  </a
-      ><a name="1387" class="Symbol"
+  <a name="1387" class="Symbol"
       >}</a
-      ><a name="1388"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

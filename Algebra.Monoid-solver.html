@@ -11,2951 +11,1643 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Solver for monoid equalities</a
-      ><a name="137"
       >
-</a
-      ><a name="138" class="Comment"
+<a name="138" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="210"
       >
 
-</a
-      ><a name="212" class="Keyword"
+<a name="212" class="Keyword"
       >open</a
-      ><a name="216"
-      > </a
-      ><a name="217" class="Keyword"
+      > <a name="217" class="Keyword"
       >import</a
-      ><a name="223"
-      > </a
-      ><a name="224" href="Algebra.html#1" class="Module"
+      > <a name="224" href="Algebra.html" class="Module"
       >Algebra</a
-      ><a name="231"
       >
 
-</a
-      ><a name="233" class="Keyword"
+<a name="233" class="Keyword"
       >module</a
-      ><a name="239"
-      > </a
-      ><a name="240" href="Algebra.Monoid-solver.html#1" class="Module"
+      > <a name="240" href="Algebra.Monoid-solver.html" class="Module"
       >Algebra.Monoid-solver</a
-      ><a name="261"
-      > </a
-      ><a name="262" class="Symbol"
+      > <a name="262" class="Symbol"
       >{</a
       ><a name="263" href="Algebra.Monoid-solver.html#263" class="Bound"
       >m&#8321;</a
-      ><a name="265"
-      > </a
-      ><a name="266" href="Algebra.Monoid-solver.html#266" class="Bound"
+      > <a name="266" href="Algebra.Monoid-solver.html#266" class="Bound"
       >m&#8322;</a
       ><a name="268" class="Symbol"
       >}</a
-      ><a name="269"
-      > </a
-      ><a name="270" class="Symbol"
+      > <a name="270" class="Symbol"
       >(</a
       ><a name="271" href="Algebra.Monoid-solver.html#271" class="Bound"
       >M</a
-      ><a name="272"
-      > </a
-      ><a name="273" class="Symbol"
+      > <a name="273" class="Symbol"
       >:</a
-      ><a name="274"
-      > </a
-      ><a name="275" href="Algebra.html#1154" class="Record"
+      > <a name="275" href="Algebra.html#Monoid" class="Record"
       >Monoid</a
-      ><a name="281"
-      > </a
-      ><a name="282" href="Algebra.Monoid-solver.html#263" class="Bound"
+      > <a name="282" href="Algebra.Monoid-solver.html#263" class="Bound"
       >m&#8321;</a
-      ><a name="284"
-      > </a
-      ><a name="285" href="Algebra.Monoid-solver.html#266" class="Bound"
+      > <a name="285" href="Algebra.Monoid-solver.html#266" class="Bound"
       >m&#8322;</a
       ><a name="287" class="Symbol"
       >)</a
-      ><a name="288"
-      > </a
-      ><a name="289" class="Keyword"
+      > <a name="289" class="Keyword"
       >where</a
-      ><a name="294"
       >
 
-</a
-      ><a name="296" class="Keyword"
+<a name="296" class="Keyword"
       >open</a
-      ><a name="300"
-      > </a
-      ><a name="301" class="Keyword"
+      > <a name="301" class="Keyword"
       >import</a
-      ><a name="307"
-      > </a
-      ><a name="308" href="Data.Fin.html#1" class="Module"
+      > <a name="308" href="Data.Fin.html" class="Module"
       >Data.Fin</a
-      ><a name="316"
       >
-</a
-      ><a name="317" class="Keyword"
+<a name="317" class="Keyword"
       >import</a
-      ><a name="323"
-      > </a
-      ><a name="324" href="Data.Fin.Properties.html#1" class="Module"
+      > <a name="324" href="Data.Fin.Properties.html" class="Module"
       >Data.Fin.Properties</a
-      ><a name="343"
-      > </a
-      ><a name="344" class="Symbol"
+      > <a name="344" class="Symbol"
       >as</a
-      ><a name="346"
-      > </a
-      ><a name="347" class="Module"
+      > <a name="347" class="Module"
       >Fin</a
-      ><a name="350"
       >
-</a
-      ><a name="351" class="Keyword"
+<a name="351" class="Keyword"
       >open</a
-      ><a name="355"
-      > </a
-      ><a name="356" class="Keyword"
+      > <a name="356" class="Keyword"
       >import</a
-      ><a name="362"
-      > </a
-      ><a name="363" href="Data.List.Base.html#1" class="Module"
+      > <a name="363" href="Data.List.Base.html" class="Module"
       >Data.List.Base</a
-      ><a name="377"
       >
-</a
-      ><a name="378" class="Keyword"
+<a name="378" class="Keyword"
       >open</a
-      ><a name="382"
-      > </a
-      ><a name="383" class="Keyword"
+      > <a name="383" class="Keyword"
       >import</a
-      ><a name="389"
-      > </a
-      ><a name="390" href="Data.Maybe.html#1" class="Module"
+      > <a name="390" href="Data.Maybe.html" class="Module"
       >Data.Maybe</a
-      ><a name="400"
-      > </a
-      ><a name="401" class="Symbol"
+      > <a name="401" class="Symbol"
       >as</a
-      ><a name="403"
-      > </a
-      ><a name="404" class="Module"
+      > <a name="404" class="Module"
       >Maybe</a
-      ><a name="409"
       >
-  </a
-      ><a name="412" class="Keyword"
+  <a name="412" class="Keyword"
       >using</a
-      ><a name="417"
-      > </a
-      ><a name="418" class="Symbol"
+      > <a name="418" class="Symbol"
       >(</a
-      ><a name="419" href="Data.Maybe.Base.html#335" class="Datatype"
+      ><a name="419" href="Data.Maybe.Base.html#Maybe" class="Datatype"
       >Maybe</a
       ><a name="424" class="Symbol"
       >;</a
-      ><a name="425"
-      > </a
-      ><a name="426" href="Data.Maybe.Base.html#1043" class="Function"
+      > <a name="426" href="Data.Maybe.Base.html#decToMaybe" class="Function"
       >decToMaybe</a
       ><a name="436" class="Symbol"
       >;</a
-      ><a name="437"
-      > </a
-      ><a name="438" href="Data.Maybe.Base.html#1562" class="Function"
+      > <a name="438" href="Data.Maybe.Base.html#From-just" class="Function"
       >From-just</a
       ><a name="447" class="Symbol"
       >;</a
-      ><a name="448"
-      > </a
-      ><a name="449" href="Data.Maybe.Base.html#1666" class="Function"
+      > <a name="449" href="Data.Maybe.Base.html#from-just" class="Function"
       >from-just</a
       ><a name="458" class="Symbol"
       >)</a
-      ><a name="459"
       >
-</a
-      ><a name="460" class="Keyword"
+<a name="460" class="Keyword"
       >open</a
-      ><a name="464"
-      > </a
-      ><a name="465" class="Keyword"
+      > <a name="465" class="Keyword"
       >import</a
-      ><a name="471"
-      > </a
-      ><a name="472" href="Data.Nat.Base.html#1" class="Module"
+      > <a name="472" href="Data.Nat.Base.html" class="Module"
       >Data.Nat.Base</a
-      ><a name="485"
-      > </a
-      ><a name="486" class="Keyword"
+      > <a name="486" class="Keyword"
       >using</a
-      ><a name="491"
-      > </a
-      ><a name="492" class="Symbol"
+      > <a name="492" class="Symbol"
       >(</a
-      ><a name="493" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      ><a name="493" href="Agda.Builtin.Nat.html#Nat" class="Datatype"
       >&#8469;</a
       ><a name="494" class="Symbol"
       >)</a
-      ><a name="495"
       >
-</a
-      ><a name="496" class="Keyword"
+<a name="496" class="Keyword"
       >open</a
-      ><a name="500"
-      > </a
-      ><a name="501" class="Keyword"
+      > <a name="501" class="Keyword"
       >import</a
-      ><a name="507"
-      > </a
-      ><a name="508" href="Data.Product.html#1" class="Module"
+      > <a name="508" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="520"
       >
-</a
-      ><a name="521" class="Keyword"
+<a name="521" class="Keyword"
       >open</a
-      ><a name="525"
-      > </a
-      ><a name="526" class="Keyword"
+      > <a name="526" class="Keyword"
       >import</a
-      ><a name="532"
-      > </a
-      ><a name="533" href="Data.Vec.html#1" class="Module"
+      > <a name="533" href="Data.Vec.html" class="Module"
       >Data.Vec</a
-      ><a name="541"
-      > </a
-      ><a name="542" class="Keyword"
+      > <a name="542" class="Keyword"
       >using</a
-      ><a name="547"
-      > </a
-      ><a name="548" class="Symbol"
+      > <a name="548" class="Symbol"
       >(</a
-      ><a name="549" href="Data.Vec.html#609" class="Datatype"
+      ><a name="549" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
       ><a name="552" class="Symbol"
       >;</a
-      ><a name="553"
-      > </a
-      ><a name="554" href="Data.Vec.html#6131" class="Function"
+      > <a name="554" href="Data.Vec.html#lookup" class="Function"
       >lookup</a
       ><a name="560" class="Symbol"
       >)</a
-      ><a name="561"
       >
-</a
-      ><a name="562" class="Keyword"
+<a name="562" class="Keyword"
       >open</a
-      ><a name="566"
-      > </a
-      ><a name="567" class="Keyword"
+      > <a name="567" class="Keyword"
       >import</a
-      ><a name="573"
-      > </a
-      ><a name="574" href="Function.html#1" class="Module"
+      > <a name="574" href="Function.html" class="Module"
       >Function</a
-      ><a name="582"
-      > </a
-      ><a name="583" class="Keyword"
+      > <a name="583" class="Keyword"
       >using</a
-      ><a name="588"
-      > </a
-      ><a name="589" class="Symbol"
+      > <a name="589" class="Symbol"
       >(</a
-      ><a name="590" href="Function.html#713" class="Function Operator"
+      ><a name="590" href="Function.html#_&#8728;_" class="Function Operator"
       >_&#8728;_</a
       ><a name="593" class="Symbol"
       >;</a
-      ><a name="594"
-      > </a
-      ><a name="595" href="Function.html#1835" class="Function Operator"
+      > <a name="595" href="Function.html#_$_" class="Function Operator"
       >_$_</a
       ><a name="598" class="Symbol"
       >)</a
-      ><a name="599"
       >
-</a
-      ><a name="600" class="Keyword"
+<a name="600" class="Keyword"
       >import</a
-      ><a name="606"
-      > </a
-      ><a name="607" href="Relation.Binary.EqReasoning.html#1" class="Module"
+      > <a name="607" href="Relation.Binary.EqReasoning.html" class="Module"
       >Relation.Binary.EqReasoning</a
-      ><a name="634"
       >
-</a
-      ><a name="635" class="Keyword"
+<a name="635" class="Keyword"
       >import</a
-      ><a name="641"
-      > </a
-      ><a name="642" href="Relation.Binary.List.Pointwise.html#1" class="Module"
+      > <a name="642" href="Relation.Binary.List.Pointwise.html" class="Module"
       >Relation.Binary.List.Pointwise</a
-      ><a name="672"
-      > </a
-      ><a name="673" class="Symbol"
+      > <a name="673" class="Symbol"
       >as</a
-      ><a name="675"
-      > </a
-      ><a name="676" class="Module"
+      > <a name="676" class="Module"
       >Pointwise</a
-      ><a name="685"
       >
-</a
-      ><a name="686" class="Keyword"
+<a name="686" class="Keyword"
       >open</a
-      ><a name="690"
-      > </a
-      ><a name="691" class="Keyword"
+      > <a name="691" class="Keyword"
       >import</a
-      ><a name="697"
-      > </a
-      ><a name="698" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      > <a name="698" href="Relation.Binary.PropositionalEquality.html" class="Module"
       >Relation.Binary.PropositionalEquality</a
-      ><a name="735"
-      > </a
-      ><a name="736" class="Symbol"
+      > <a name="736" class="Symbol"
       >as</a
-      ><a name="738"
-      > </a
-      ><a name="739" class="Module"
+      > <a name="739" class="Module"
       >P</a
-      ><a name="740"
-      > </a
-      ><a name="741" class="Keyword"
+      > <a name="741" class="Keyword"
       >using</a
-      ><a name="746"
-      > </a
-      ><a name="747" class="Symbol"
+      > <a name="747" class="Symbol"
       >(</a
-      ><a name="748" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      ><a name="748" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >_&#8801;_</a
       ><a name="751" class="Symbol"
       >)</a
-      ><a name="752"
       >
-</a
-      ><a name="753" class="Keyword"
+<a name="753" class="Keyword"
       >import</a
-      ><a name="759"
-      > </a
-      ><a name="760" href="Relation.Binary.Reflection.html#1" class="Module"
+      > <a name="760" href="Relation.Binary.Reflection.html" class="Module"
       >Relation.Binary.Reflection</a
-      ><a name="786"
       >
-</a
-      ><a name="787" class="Keyword"
+<a name="787" class="Keyword"
       >open</a
-      ><a name="791"
-      > </a
-      ><a name="792" class="Keyword"
+      > <a name="792" class="Keyword"
       >import</a
-      ><a name="798"
-      > </a
-      ><a name="799" href="Relation.Nullary.html#1" class="Module"
+      > <a name="799" href="Relation.Nullary.html" class="Module"
       >Relation.Nullary</a
-      ><a name="815"
       >
-</a
-      ><a name="816" class="Keyword"
+<a name="816" class="Keyword"
       >import</a
-      ><a name="822"
-      > </a
-      ><a name="823" href="Relation.Nullary.Decidable.html#1" class="Module"
+      > <a name="823" href="Relation.Nullary.Decidable.html" class="Module"
       >Relation.Nullary.Decidable</a
-      ><a name="849"
-      > </a
-      ><a name="850" class="Symbol"
+      > <a name="850" class="Symbol"
       >as</a
-      ><a name="852"
-      > </a
-      ><a name="853" class="Module"
+      > <a name="853" class="Module"
       >Dec</a
-      ><a name="856"
       >
 
-</a
-      ><a name="858" class="Keyword"
+<a name="858" class="Keyword"
       >open</a
-      ><a name="862"
-      > </a
-      ><a name="863" href="Algebra.html#1154" class="Module"
+      > <a name="863" href="Algebra.html#Monoid" class="Module"
       >Monoid</a
-      ><a name="869"
-      > </a
-      ><a name="870" href="Algebra.Monoid-solver.html#271" class="Bound"
+      > <a name="870" href="Algebra.Monoid-solver.html#271" class="Bound"
       >M</a
-      ><a name="871"
       >
-</a
-      ><a name="872" class="Keyword"
+<a name="872" class="Keyword"
       >open</a
-      ><a name="876"
-      > </a
-      ><a name="877" href="Relation.Binary.EqReasoning.html#1" class="Module"
+      > <a name="877" href="Relation.Binary.EqReasoning.html" class="Module"
       >Relation.Binary.EqReasoning</a
-      ><a name="904"
-      > </a
-      ><a name="905" href="Algebra.html#845" class="Function"
+      > <a name="905" href="Algebra.html#845" class="Function"
       >setoid</a
-      ><a name="911"
       >
 
-</a
-      ><a name="913" class="Comment"
+<a name="913" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="985"
       >
-</a
-      ><a name="986" class="Comment"
+<a name="986" class="Comment"
       >-- Monoid expressions</a
-      ><a name="1007"
       >
 
-</a
-      ><a name="1009" class="Comment"
+<a name="1009" class="Comment"
       >-- There is one constructor for every operation, plus one for</a
-      ><a name="1070"
       >
-</a
-      ><a name="1071" class="Comment"
+<a name="1071" class="Comment"
       >-- variables; there may be at most n variables.</a
-      ><a name="1118"
       >
 
-</a
-      ><a name="1120" class="Keyword"
+<a name="1120" class="Keyword"
       >infixr</a
-      ><a name="1126"
-      > </a
-      ><a name="1127" class="Number"
+      > <a name="1127" class="Number"
       >5</a
-      ><a name="1128"
-      > _&#8853;_
+      > <a name="1129" href="Algebra.Monoid-solver.html#Expr._&#8853;_" class="InductiveConstructor Operator"
+      >_&#8853;_</a
+      >
 
-</a
-      ><a name="1134" class="Keyword"
+<a name="1134" class="Keyword"
       >data</a
-      ><a name="1138"
-      > </a
-      ><a name="1139" href="Algebra.Monoid-solver.html#1139" class="Datatype"
+      > <a name="Expr" href="Algebra.Monoid-solver.html#Expr" class="Datatype"
       >Expr</a
-      ><a name="1143"
-      > </a
-      ><a name="1144" class="Symbol"
+      > <a name="1144" class="Symbol"
       >(</a
       ><a name="1145" href="Algebra.Monoid-solver.html#1145" class="Bound"
       >n</a
-      ><a name="1146"
-      > </a
-      ><a name="1147" class="Symbol"
+      > <a name="1147" class="Symbol"
       >:</a
-      ><a name="1148"
-      > </a
-      ><a name="1149" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="1149" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
       ><a name="1150" class="Symbol"
       >)</a
-      ><a name="1151"
-      > </a
-      ><a name="1152" class="Symbol"
+      > <a name="1152" class="Symbol"
       >:</a
-      ><a name="1153"
-      > </a
-      ><a name="1154" class="PrimitiveType"
+      > <a name="1154" class="PrimitiveType"
       >Set</a
-      ><a name="1157"
-      > </a
-      ><a name="1158" class="Keyword"
+      > <a name="1158" class="Keyword"
       >where</a
-      ><a name="1163"
       >
-  </a
-      ><a name="1166" href="Algebra.Monoid-solver.html#1166" class="InductiveConstructor"
+  <a name="Expr.var" href="Algebra.Monoid-solver.html#Expr.var" class="InductiveConstructor"
       >var</a
-      ><a name="1169"
-      > </a
-      ><a name="1170" class="Symbol"
+      > <a name="1170" class="Symbol"
       >:</a
-      ><a name="1171"
-      > </a
-      ><a name="1172" href="Data.Fin.html#842" class="Datatype"
+      > <a name="1172" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
-      ><a name="1175"
-      > </a
-      ><a name="1176" href="Algebra.Monoid-solver.html#1145" class="Bound"
+      > <a name="1176" href="Algebra.Monoid-solver.html#1145" class="Bound"
       >n</a
-      ><a name="1177"
-      > </a
-      ><a name="1178" class="Symbol"
+      > <a name="1178" class="Symbol"
       >&#8594;</a
-      ><a name="1179"
-      > </a
-      ><a name="1180" href="Algebra.Monoid-solver.html#1139" class="Datatype"
+      > <a name="1180" href="Algebra.Monoid-solver.html#Expr" class="Datatype"
       >Expr</a
-      ><a name="1184"
-      > </a
-      ><a name="1185" href="Algebra.Monoid-solver.html#1145" class="Bound"
+      > <a name="1185" href="Algebra.Monoid-solver.html#1145" class="Bound"
       >n</a
-      ><a name="1186"
       >
-  </a
-      ><a name="1189" href="Algebra.Monoid-solver.html#1189" class="InductiveConstructor"
+  <a name="Expr.id" href="Algebra.Monoid-solver.html#Expr.id" class="InductiveConstructor"
       >id</a
-      ><a name="1191"
-      >  </a
-      ><a name="1193" class="Symbol"
+      >  <a name="1193" class="Symbol"
       >:</a
-      ><a name="1194"
-      > </a
-      ><a name="1195" href="Algebra.Monoid-solver.html#1139" class="Datatype"
+      > <a name="1195" href="Algebra.Monoid-solver.html#Expr" class="Datatype"
       >Expr</a
-      ><a name="1199"
-      > </a
-      ><a name="1200" href="Algebra.Monoid-solver.html#1145" class="Bound"
+      > <a name="1200" href="Algebra.Monoid-solver.html#1145" class="Bound"
       >n</a
-      ><a name="1201"
       >
-  </a
-      ><a name="1204" href="Algebra.Monoid-solver.html#1204" class="InductiveConstructor Operator"
+  <a name="Expr._&#8853;_" href="Algebra.Monoid-solver.html#Expr._&#8853;_" class="InductiveConstructor Operator"
       >_&#8853;_</a
-      ><a name="1207"
-      > </a
-      ><a name="1208" class="Symbol"
+      > <a name="1208" class="Symbol"
       >:</a
-      ><a name="1209"
-      > </a
-      ><a name="1210" href="Algebra.Monoid-solver.html#1139" class="Datatype"
+      > <a name="1210" href="Algebra.Monoid-solver.html#Expr" class="Datatype"
       >Expr</a
-      ><a name="1214"
-      > </a
-      ><a name="1215" href="Algebra.Monoid-solver.html#1145" class="Bound"
+      > <a name="1215" href="Algebra.Monoid-solver.html#1145" class="Bound"
       >n</a
-      ><a name="1216"
-      > </a
-      ><a name="1217" class="Symbol"
+      > <a name="1217" class="Symbol"
       >&#8594;</a
-      ><a name="1218"
-      > </a
-      ><a name="1219" href="Algebra.Monoid-solver.html#1139" class="Datatype"
+      > <a name="1219" href="Algebra.Monoid-solver.html#Expr" class="Datatype"
       >Expr</a
-      ><a name="1223"
-      > </a
-      ><a name="1224" href="Algebra.Monoid-solver.html#1145" class="Bound"
+      > <a name="1224" href="Algebra.Monoid-solver.html#1145" class="Bound"
       >n</a
-      ><a name="1225"
-      > </a
-      ><a name="1226" class="Symbol"
+      > <a name="1226" class="Symbol"
       >&#8594;</a
-      ><a name="1227"
-      > </a
-      ><a name="1228" href="Algebra.Monoid-solver.html#1139" class="Datatype"
+      > <a name="1228" href="Algebra.Monoid-solver.html#Expr" class="Datatype"
       >Expr</a
-      ><a name="1232"
-      > </a
-      ><a name="1233" href="Algebra.Monoid-solver.html#1145" class="Bound"
+      > <a name="1233" href="Algebra.Monoid-solver.html#1145" class="Bound"
       >n</a
-      ><a name="1234"
       >
 
-</a
-      ><a name="1236" class="Comment"
+<a name="1236" class="Comment"
       >-- An environment contains one value for every variable.</a
-      ><a name="1292"
       >
 
-</a
-      ><a name="1294" href="Algebra.Monoid-solver.html#1294" class="Function"
+<a name="Env" href="Algebra.Monoid-solver.html#Env" class="Function"
       >Env</a
-      ><a name="1297"
-      > </a
-      ><a name="1298" class="Symbol"
+      > <a name="1298" class="Symbol"
       >:</a
-      ><a name="1299"
-      > </a
-      ><a name="1300" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="1300" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="1301"
-      > </a
-      ><a name="1302" class="Symbol"
+      > <a name="1302" class="Symbol"
       >&#8594;</a
-      ><a name="1303"
-      > </a
-      ><a name="1304" class="PrimitiveType"
+      > <a name="1304" class="PrimitiveType"
       >Set</a
-      ><a name="1307"
-      > </a
-      ><a name="1308" class="Symbol"
+      > <a name="1308" class="Symbol"
       >_</a
-      ><a name="1309"
       >
-</a
-      ><a name="1310" href="Algebra.Monoid-solver.html#1294" class="Function"
+<a name="1310" href="Algebra.Monoid-solver.html#Env" class="Function"
       >Env</a
-      ><a name="1313"
-      > </a
-      ><a name="1314" href="Algebra.Monoid-solver.html#1314" class="Bound"
+      > <a name="1314" href="Algebra.Monoid-solver.html#1314" class="Bound"
       >n</a
-      ><a name="1315"
-      > </a
-      ><a name="1316" class="Symbol"
+      > <a name="1316" class="Symbol"
       >=</a
-      ><a name="1317"
-      > </a
-      ><a name="1318" href="Data.Vec.html#609" class="Datatype"
+      > <a name="1318" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
-      ><a name="1321"
-      > </a
-      ><a name="1322" href="Algebra.html#1233" class="Field"
+      > <a name="1322" href="Algebra.html#1233" class="Field"
       >Carrier</a
-      ><a name="1329"
-      > </a
-      ><a name="1330" href="Algebra.Monoid-solver.html#1314" class="Bound"
+      > <a name="1330" href="Algebra.Monoid-solver.html#1314" class="Bound"
       >n</a
-      ><a name="1331"
       >
 
-</a
-      ><a name="1333" class="Comment"
+<a name="1333" class="Comment"
       >-- The semantics of an expression is a function from an environment to</a
-      ><a name="1403"
       >
-</a
-      ><a name="1404" class="Comment"
+<a name="1404" class="Comment"
       >-- a value.</a
-      ><a name="1415"
       >
 
-</a
-      ><a name="1417" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+<a name="&#10214;_&#10215;" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;_&#10215;</a
-      ><a name="1420"
-      > </a
-      ><a name="1421" class="Symbol"
+      > <a name="1421" class="Symbol"
       >:</a
-      ><a name="1422"
-      > </a
-      ><a name="1423" class="Symbol"
+      > <a name="1423" class="Symbol"
       >&#8704;</a
-      ><a name="1424"
-      > </a
-      ><a name="1425" class="Symbol"
+      > <a name="1425" class="Symbol"
       >{</a
       ><a name="1426" href="Algebra.Monoid-solver.html#1426" class="Bound"
       >n</a
       ><a name="1427" class="Symbol"
       >}</a
-      ><a name="1428"
-      > </a
-      ><a name="1429" class="Symbol"
+      > <a name="1429" class="Symbol"
       >&#8594;</a
-      ><a name="1430"
-      > </a
-      ><a name="1431" href="Algebra.Monoid-solver.html#1139" class="Datatype"
+      > <a name="1431" href="Algebra.Monoid-solver.html#Expr" class="Datatype"
       >Expr</a
-      ><a name="1435"
-      > </a
-      ><a name="1436" href="Algebra.Monoid-solver.html#1426" class="Bound"
+      > <a name="1436" href="Algebra.Monoid-solver.html#1426" class="Bound"
       >n</a
-      ><a name="1437"
-      > </a
-      ><a name="1438" class="Symbol"
+      > <a name="1438" class="Symbol"
       >&#8594;</a
-      ><a name="1439"
-      > </a
-      ><a name="1440" href="Algebra.Monoid-solver.html#1294" class="Function"
+      > <a name="1440" href="Algebra.Monoid-solver.html#Env" class="Function"
       >Env</a
-      ><a name="1443"
-      > </a
-      ><a name="1444" href="Algebra.Monoid-solver.html#1426" class="Bound"
+      > <a name="1444" href="Algebra.Monoid-solver.html#1426" class="Bound"
       >n</a
-      ><a name="1445"
-      > </a
-      ><a name="1446" class="Symbol"
+      > <a name="1446" class="Symbol"
       >&#8594;</a
-      ><a name="1447"
-      > </a
-      ><a name="1448" href="Algebra.html#1233" class="Field"
+      > <a name="1448" href="Algebra.html#1233" class="Field"
       >Carrier</a
-      ><a name="1455"
       >
-</a
-      ><a name="1456" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+<a name="1456" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="1457"
-      > </a
-      ><a name="1458" href="Algebra.Monoid-solver.html#1166" class="InductiveConstructor"
+      > <a name="1458" href="Algebra.Monoid-solver.html#Expr.var" class="InductiveConstructor"
       >var</a
-      ><a name="1461"
-      > </a
-      ><a name="1462" href="Algebra.Monoid-solver.html#1462" class="Bound"
+      > <a name="1462" href="Algebra.Monoid-solver.html#1462" class="Bound"
       >x</a
-      ><a name="1463"
-      >   </a
-      ><a name="1466" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      >   <a name="1466" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="1467"
-      > </a
-      ><a name="1468" href="Algebra.Monoid-solver.html#1468" class="Bound"
+      > <a name="1468" href="Algebra.Monoid-solver.html#1468" class="Bound"
       >&#961;</a
-      ><a name="1469"
-      > </a
-      ><a name="1470" class="Symbol"
+      > <a name="1470" class="Symbol"
       >=</a
-      ><a name="1471"
-      > </a
-      ><a name="1472" href="Data.Vec.html#6131" class="Function"
+      > <a name="1472" href="Data.Vec.html#lookup" class="Function"
       >lookup</a
-      ><a name="1478"
-      > </a
-      ><a name="1479" href="Algebra.Monoid-solver.html#1462" class="Bound"
+      > <a name="1479" href="Algebra.Monoid-solver.html#1462" class="Bound"
       >x</a
-      ><a name="1480"
-      > </a
-      ><a name="1481" href="Algebra.Monoid-solver.html#1468" class="Bound"
+      > <a name="1481" href="Algebra.Monoid-solver.html#1468" class="Bound"
       >&#961;</a
-      ><a name="1482"
       >
-</a
-      ><a name="1483" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+<a name="1483" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="1484"
-      > </a
-      ><a name="1485" href="Algebra.Monoid-solver.html#1189" class="InductiveConstructor"
+      > <a name="1485" href="Algebra.Monoid-solver.html#Expr.id" class="InductiveConstructor"
       >id</a
-      ><a name="1487"
-      >      </a
-      ><a name="1493" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      >      <a name="1493" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="1494"
-      > </a
-      ><a name="1495" href="Algebra.Monoid-solver.html#1495" class="Bound"
+      > <a name="1495" href="Algebra.Monoid-solver.html#1495" class="Bound"
       >&#961;</a
-      ><a name="1496"
-      > </a
-      ><a name="1497" class="Symbol"
+      > <a name="1497" class="Symbol"
       >=</a
-      ><a name="1498"
-      > </a
-      ><a name="1499" href="Algebra.html#1310" class="Field"
+      > <a name="1499" href="Algebra.html#1310" class="Field"
       >&#949;</a
-      ><a name="1500"
       >
-</a
-      ><a name="1501" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+<a name="1501" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="1502"
-      > </a
-      ><a name="1503" href="Algebra.Monoid-solver.html#1503" class="Bound"
+      > <a name="1503" href="Algebra.Monoid-solver.html#1503" class="Bound"
       >e&#8321;</a
-      ><a name="1505"
-      > </a
-      ><a name="1506" href="Algebra.Monoid-solver.html#1204" class="InductiveConstructor Operator"
+      > <a name="1506" href="Algebra.Monoid-solver.html#Expr._&#8853;_" class="InductiveConstructor Operator"
       >&#8853;</a
-      ><a name="1507"
-      > </a
-      ><a name="1508" href="Algebra.Monoid-solver.html#1508" class="Bound"
+      > <a name="1508" href="Algebra.Monoid-solver.html#1508" class="Bound"
       >e&#8322;</a
-      ><a name="1510"
-      > </a
-      ><a name="1511" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="1511" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="1512"
-      > </a
-      ><a name="1513" href="Algebra.Monoid-solver.html#1513" class="Bound"
+      > <a name="1513" href="Algebra.Monoid-solver.html#1513" class="Bound"
       >&#961;</a
-      ><a name="1514"
-      > </a
-      ><a name="1515" class="Symbol"
+      > <a name="1515" class="Symbol"
       >=</a
-      ><a name="1516"
-      > </a
-      ><a name="1517" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="1517" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="1518"
-      > </a
-      ><a name="1519" href="Algebra.Monoid-solver.html#1503" class="Bound"
+      > <a name="1519" href="Algebra.Monoid-solver.html#1503" class="Bound"
       >e&#8321;</a
-      ><a name="1521"
-      > </a
-      ><a name="1522" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="1522" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="1523"
-      > </a
-      ><a name="1524" href="Algebra.Monoid-solver.html#1513" class="Bound"
+      > <a name="1524" href="Algebra.Monoid-solver.html#1513" class="Bound"
       >&#961;</a
-      ><a name="1525"
-      > </a
-      ><a name="1526" href="Algebra.html#1283" class="Field Operator"
+      > <a name="1526" href="Algebra.html#1283" class="Field Operator"
       >&#8729;</a
-      ><a name="1527"
-      > </a
-      ><a name="1528" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="1528" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="1529"
-      > </a
-      ><a name="1530" href="Algebra.Monoid-solver.html#1508" class="Bound"
+      > <a name="1530" href="Algebra.Monoid-solver.html#1508" class="Bound"
       >e&#8322;</a
-      ><a name="1532"
-      > </a
-      ><a name="1533" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="1533" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="1534"
-      > </a
-      ><a name="1535" href="Algebra.Monoid-solver.html#1513" class="Bound"
+      > <a name="1535" href="Algebra.Monoid-solver.html#1513" class="Bound"
       >&#961;</a
-      ><a name="1536"
       >
 
-</a
-      ><a name="1538" class="Comment"
+<a name="1538" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="1610"
       >
-</a
-      ><a name="1611" class="Comment"
+<a name="1611" class="Comment"
       >-- Normal forms</a
-      ><a name="1626"
       >
 
-</a
-      ><a name="1628" class="Comment"
+<a name="1628" class="Comment"
       >-- A normal form is a list of variables.</a
-      ><a name="1668"
       >
 
-</a
-      ><a name="1670" href="Algebra.Monoid-solver.html#1670" class="Function"
+<a name="Normal" href="Algebra.Monoid-solver.html#Normal" class="Function"
       >Normal</a
-      ><a name="1676"
-      > </a
-      ><a name="1677" class="Symbol"
+      > <a name="1677" class="Symbol"
       >:</a
-      ><a name="1678"
-      > </a
-      ><a name="1679" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="1679" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="1680"
-      > </a
-      ><a name="1681" class="Symbol"
+      > <a name="1681" class="Symbol"
       >&#8594;</a
-      ><a name="1682"
-      > </a
-      ><a name="1683" class="PrimitiveType"
+      > <a name="1683" class="PrimitiveType"
       >Set</a
-      ><a name="1686"
       >
-</a
-      ><a name="1687" href="Algebra.Monoid-solver.html#1670" class="Function"
+<a name="1687" href="Algebra.Monoid-solver.html#Normal" class="Function"
       >Normal</a
-      ><a name="1693"
-      > </a
-      ><a name="1694" href="Algebra.Monoid-solver.html#1694" class="Bound"
+      > <a name="1694" href="Algebra.Monoid-solver.html#1694" class="Bound"
       >n</a
-      ><a name="1695"
-      > </a
-      ><a name="1696" class="Symbol"
+      > <a name="1696" class="Symbol"
       >=</a
-      ><a name="1697"
-      > </a
-      ><a name="1698" href="Agda.Builtin.List.html#80" class="Datatype"
+      > <a name="1698" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
-      ><a name="1702"
-      > </a
-      ><a name="1703" class="Symbol"
+      > <a name="1703" class="Symbol"
       >(</a
-      ><a name="1704" href="Data.Fin.html#842" class="Datatype"
+      ><a name="1704" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
-      ><a name="1707"
-      > </a
-      ><a name="1708" href="Algebra.Monoid-solver.html#1694" class="Bound"
+      > <a name="1708" href="Algebra.Monoid-solver.html#1694" class="Bound"
       >n</a
       ><a name="1709" class="Symbol"
       >)</a
-      ><a name="1710"
       >
 
-</a
-      ><a name="1712" class="Comment"
+<a name="1712" class="Comment"
       >-- The semantics of a normal form.</a
-      ><a name="1746"
       >
 
-</a
-      ><a name="1748" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+<a name="&#10214;_&#10215;&#8659;" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;_&#10215;&#8659;</a
-      ><a name="1752"
-      > </a
-      ><a name="1753" class="Symbol"
+      > <a name="1753" class="Symbol"
       >:</a
-      ><a name="1754"
-      > </a
-      ><a name="1755" class="Symbol"
+      > <a name="1755" class="Symbol"
       >&#8704;</a
-      ><a name="1756"
-      > </a
-      ><a name="1757" class="Symbol"
+      > <a name="1757" class="Symbol"
       >{</a
       ><a name="1758" href="Algebra.Monoid-solver.html#1758" class="Bound"
       >n</a
       ><a name="1759" class="Symbol"
       >}</a
-      ><a name="1760"
-      > </a
-      ><a name="1761" class="Symbol"
+      > <a name="1761" class="Symbol"
       >&#8594;</a
-      ><a name="1762"
-      > </a
-      ><a name="1763" href="Algebra.Monoid-solver.html#1670" class="Function"
+      > <a name="1763" href="Algebra.Monoid-solver.html#Normal" class="Function"
       >Normal</a
-      ><a name="1769"
-      > </a
-      ><a name="1770" href="Algebra.Monoid-solver.html#1758" class="Bound"
+      > <a name="1770" href="Algebra.Monoid-solver.html#1758" class="Bound"
       >n</a
-      ><a name="1771"
-      > </a
-      ><a name="1772" class="Symbol"
+      > <a name="1772" class="Symbol"
       >&#8594;</a
-      ><a name="1773"
-      > </a
-      ><a name="1774" href="Algebra.Monoid-solver.html#1294" class="Function"
+      > <a name="1774" href="Algebra.Monoid-solver.html#Env" class="Function"
       >Env</a
-      ><a name="1777"
-      > </a
-      ><a name="1778" href="Algebra.Monoid-solver.html#1758" class="Bound"
+      > <a name="1778" href="Algebra.Monoid-solver.html#1758" class="Bound"
       >n</a
-      ><a name="1779"
-      > </a
-      ><a name="1780" class="Symbol"
+      > <a name="1780" class="Symbol"
       >&#8594;</a
-      ><a name="1781"
-      > </a
-      ><a name="1782" href="Algebra.html#1233" class="Field"
+      > <a name="1782" href="Algebra.html#1233" class="Field"
       >Carrier</a
-      ><a name="1789"
       >
-</a
-      ><a name="1790" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+<a name="1790" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="1791"
-      > </a
-      ><a name="1792" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      > <a name="1792" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1794"
-      >     </a
-      ><a name="1799" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      >     <a name="1799" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="1801"
-      > </a
-      ><a name="1802" href="Algebra.Monoid-solver.html#1802" class="Bound"
+      > <a name="1802" href="Algebra.Monoid-solver.html#1802" class="Bound"
       >&#961;</a
-      ><a name="1803"
-      > </a
-      ><a name="1804" class="Symbol"
+      > <a name="1804" class="Symbol"
       >=</a
-      ><a name="1805"
-      > </a
-      ><a name="1806" href="Algebra.html#1310" class="Field"
+      > <a name="1806" href="Algebra.html#1310" class="Field"
       >&#949;</a
-      ><a name="1807"
       >
-</a
-      ><a name="1808" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+<a name="1808" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="1809"
-      > </a
-      ><a name="1810" href="Algebra.Monoid-solver.html#1810" class="Bound"
+      > <a name="1810" href="Algebra.Monoid-solver.html#1810" class="Bound"
       >x</a
-      ><a name="1811"
-      > </a
-      ><a name="1812" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      > <a name="1812" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1813"
-      > </a
-      ><a name="1814" href="Algebra.Monoid-solver.html#1814" class="Bound"
+      > <a name="1814" href="Algebra.Monoid-solver.html#1814" class="Bound"
       >nf</a
-      ><a name="1816"
-      > </a
-      ><a name="1817" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="1817" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="1819"
-      > </a
-      ><a name="1820" href="Algebra.Monoid-solver.html#1820" class="Bound"
+      > <a name="1820" href="Algebra.Monoid-solver.html#1820" class="Bound"
       >&#961;</a
-      ><a name="1821"
-      > </a
-      ><a name="1822" class="Symbol"
+      > <a name="1822" class="Symbol"
       >=</a
-      ><a name="1823"
-      > </a
-      ><a name="1824" href="Data.Vec.html#6131" class="Function"
+      > <a name="1824" href="Data.Vec.html#lookup" class="Function"
       >lookup</a
-      ><a name="1830"
-      > </a
-      ><a name="1831" href="Algebra.Monoid-solver.html#1810" class="Bound"
+      > <a name="1831" href="Algebra.Monoid-solver.html#1810" class="Bound"
       >x</a
-      ><a name="1832"
-      > </a
-      ><a name="1833" href="Algebra.Monoid-solver.html#1820" class="Bound"
+      > <a name="1833" href="Algebra.Monoid-solver.html#1820" class="Bound"
       >&#961;</a
-      ><a name="1834"
-      > </a
-      ><a name="1835" href="Algebra.html#1283" class="Field Operator"
+      > <a name="1835" href="Algebra.html#1283" class="Field Operator"
       >&#8729;</a
-      ><a name="1836"
-      > </a
-      ><a name="1837" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="1837" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="1838"
-      > </a
-      ><a name="1839" href="Algebra.Monoid-solver.html#1814" class="Bound"
+      > <a name="1839" href="Algebra.Monoid-solver.html#1814" class="Bound"
       >nf</a
-      ><a name="1841"
-      > </a
-      ><a name="1842" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="1842" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="1844"
-      > </a
-      ><a name="1845" href="Algebra.Monoid-solver.html#1820" class="Bound"
+      > <a name="1845" href="Algebra.Monoid-solver.html#1820" class="Bound"
       >&#961;</a
-      ><a name="1846"
       >
 
-</a
-      ><a name="1848" class="Comment"
+<a name="1848" class="Comment"
       >-- A normaliser.</a
-      ><a name="1864"
       >
 
-</a
-      ><a name="1866" href="Algebra.Monoid-solver.html#1866" class="Function"
+<a name="normalise" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="1875"
-      > </a
-      ><a name="1876" class="Symbol"
+      > <a name="1876" class="Symbol"
       >:</a
-      ><a name="1877"
-      > </a
-      ><a name="1878" class="Symbol"
+      > <a name="1878" class="Symbol"
       >&#8704;</a
-      ><a name="1879"
-      > </a
-      ><a name="1880" class="Symbol"
+      > <a name="1880" class="Symbol"
       >{</a
       ><a name="1881" href="Algebra.Monoid-solver.html#1881" class="Bound"
       >n</a
       ><a name="1882" class="Symbol"
       >}</a
-      ><a name="1883"
-      > </a
-      ><a name="1884" class="Symbol"
+      > <a name="1884" class="Symbol"
       >&#8594;</a
-      ><a name="1885"
-      > </a
-      ><a name="1886" href="Algebra.Monoid-solver.html#1139" class="Datatype"
+      > <a name="1886" href="Algebra.Monoid-solver.html#Expr" class="Datatype"
       >Expr</a
-      ><a name="1890"
-      > </a
-      ><a name="1891" href="Algebra.Monoid-solver.html#1881" class="Bound"
+      > <a name="1891" href="Algebra.Monoid-solver.html#1881" class="Bound"
       >n</a
-      ><a name="1892"
-      > </a
-      ><a name="1893" class="Symbol"
+      > <a name="1893" class="Symbol"
       >&#8594;</a
-      ><a name="1894"
-      > </a
-      ><a name="1895" href="Algebra.Monoid-solver.html#1670" class="Function"
+      > <a name="1895" href="Algebra.Monoid-solver.html#Normal" class="Function"
       >Normal</a
-      ><a name="1901"
-      > </a
-      ><a name="1902" href="Algebra.Monoid-solver.html#1881" class="Bound"
+      > <a name="1902" href="Algebra.Monoid-solver.html#1881" class="Bound"
       >n</a
-      ><a name="1903"
       >
-</a
-      ><a name="1904" href="Algebra.Monoid-solver.html#1866" class="Function"
+<a name="1904" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="1913"
-      > </a
-      ><a name="1914" class="Symbol"
+      > <a name="1914" class="Symbol"
       >(</a
-      ><a name="1915" href="Algebra.Monoid-solver.html#1166" class="InductiveConstructor"
+      ><a name="1915" href="Algebra.Monoid-solver.html#Expr.var" class="InductiveConstructor"
       >var</a
-      ><a name="1918"
-      > </a
-      ><a name="1919" href="Algebra.Monoid-solver.html#1919" class="Bound"
+      > <a name="1919" href="Algebra.Monoid-solver.html#1919" class="Bound"
       >x</a
       ><a name="1920" class="Symbol"
       >)</a
-      ><a name="1921"
-      >   </a
-      ><a name="1924" class="Symbol"
+      >   <a name="1924" class="Symbol"
       >=</a
-      ><a name="1925"
-      > </a
-      ><a name="1926" href="Algebra.Monoid-solver.html#1919" class="Bound"
+      > <a name="1926" href="Algebra.Monoid-solver.html#1919" class="Bound"
       >x</a
-      ><a name="1927"
-      > </a
-      ><a name="1928" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      > <a name="1928" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1929"
-      > </a
-      ><a name="1930" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      > <a name="1930" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1932"
       >
-</a
-      ><a name="1933" href="Algebra.Monoid-solver.html#1866" class="Function"
+<a name="1933" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="1942"
-      > </a
-      ><a name="1943" href="Algebra.Monoid-solver.html#1189" class="InductiveConstructor"
+      > <a name="1943" href="Algebra.Monoid-solver.html#Expr.id" class="InductiveConstructor"
       >id</a
-      ><a name="1945"
-      >        </a
-      ><a name="1953" class="Symbol"
+      >        <a name="1953" class="Symbol"
       >=</a
-      ><a name="1954"
-      > </a
-      ><a name="1955" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      > <a name="1955" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1957"
       >
-</a
-      ><a name="1958" href="Algebra.Monoid-solver.html#1866" class="Function"
+<a name="1958" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="1967"
-      > </a
-      ><a name="1968" class="Symbol"
+      > <a name="1968" class="Symbol"
       >(</a
       ><a name="1969" href="Algebra.Monoid-solver.html#1969" class="Bound"
       >e&#8321;</a
-      ><a name="1971"
-      > </a
-      ><a name="1972" href="Algebra.Monoid-solver.html#1204" class="InductiveConstructor Operator"
+      > <a name="1972" href="Algebra.Monoid-solver.html#Expr._&#8853;_" class="InductiveConstructor Operator"
       >&#8853;</a
-      ><a name="1973"
-      > </a
-      ><a name="1974" href="Algebra.Monoid-solver.html#1974" class="Bound"
+      > <a name="1974" href="Algebra.Monoid-solver.html#1974" class="Bound"
       >e&#8322;</a
       ><a name="1976" class="Symbol"
       >)</a
-      ><a name="1977"
-      > </a
-      ><a name="1978" class="Symbol"
+      > <a name="1978" class="Symbol"
       >=</a
-      ><a name="1979"
-      > </a
-      ><a name="1980" href="Algebra.Monoid-solver.html#1866" class="Function"
+      > <a name="1980" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="1989"
-      > </a
-      ><a name="1990" href="Algebra.Monoid-solver.html#1969" class="Bound"
+      > <a name="1990" href="Algebra.Monoid-solver.html#1969" class="Bound"
       >e&#8321;</a
-      ><a name="1992"
-      > </a
-      ><a name="1993" href="Data.List.Base.html#895" class="Function Operator"
+      > <a name="1993" href="Data.List.Base.html#_++_" class="Function Operator"
       >++</a
-      ><a name="1995"
-      > </a
-      ><a name="1996" href="Algebra.Monoid-solver.html#1866" class="Function"
+      > <a name="1996" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="2005"
-      > </a
-      ><a name="2006" href="Algebra.Monoid-solver.html#1974" class="Bound"
+      > <a name="2006" href="Algebra.Monoid-solver.html#1974" class="Bound"
       >e&#8322;</a
-      ><a name="2008"
       >
 
-</a
-      ><a name="2010" class="Comment"
+<a name="2010" class="Comment"
       >-- The normaliser is homomorphic with respect to _++_/_&#8729;_.</a
-      ><a name="2068"
       >
 
-</a
-      ><a name="2070" href="Algebra.Monoid-solver.html#2070" class="Function"
+<a name="homomorphic" href="Algebra.Monoid-solver.html#homomorphic" class="Function"
       >homomorphic</a
-      ><a name="2081"
-      > </a
-      ><a name="2082" class="Symbol"
+      > <a name="2082" class="Symbol"
       >:</a
-      ><a name="2083"
-      > </a
-      ><a name="2084" class="Symbol"
+      > <a name="2084" class="Symbol"
       >&#8704;</a
-      ><a name="2085"
-      > </a
-      ><a name="2086" class="Symbol"
+      > <a name="2086" class="Symbol"
       >{</a
       ><a name="2087" href="Algebra.Monoid-solver.html#2087" class="Bound"
       >n</a
       ><a name="2088" class="Symbol"
       >}</a
-      ><a name="2089"
-      > </a
-      ><a name="2090" class="Symbol"
+      > <a name="2090" class="Symbol"
       >(</a
       ><a name="2091" href="Algebra.Monoid-solver.html#2091" class="Bound"
       >nf&#8321;</a
-      ><a name="2094"
-      > </a
-      ><a name="2095" href="Algebra.Monoid-solver.html#2095" class="Bound"
+      > <a name="2095" href="Algebra.Monoid-solver.html#2095" class="Bound"
       >nf&#8322;</a
-      ><a name="2098"
-      > </a
-      ><a name="2099" class="Symbol"
+      > <a name="2099" class="Symbol"
       >:</a
-      ><a name="2100"
-      > </a
-      ><a name="2101" href="Algebra.Monoid-solver.html#1670" class="Function"
+      > <a name="2101" href="Algebra.Monoid-solver.html#Normal" class="Function"
       >Normal</a
-      ><a name="2107"
-      > </a
-      ><a name="2108" href="Algebra.Monoid-solver.html#2087" class="Bound"
+      > <a name="2108" href="Algebra.Monoid-solver.html#2087" class="Bound"
       >n</a
       ><a name="2109" class="Symbol"
       >)</a
-      ><a name="2110"
-      > </a
-      ><a name="2111" class="Symbol"
+      > <a name="2111" class="Symbol"
       >(</a
       ><a name="2112" href="Algebra.Monoid-solver.html#2112" class="Bound"
       >&#961;</a
-      ><a name="2113"
-      > </a
-      ><a name="2114" class="Symbol"
+      > <a name="2114" class="Symbol"
       >:</a
-      ><a name="2115"
-      > </a
-      ><a name="2116" href="Algebra.Monoid-solver.html#1294" class="Function"
+      > <a name="2116" href="Algebra.Monoid-solver.html#Env" class="Function"
       >Env</a
-      ><a name="2119"
-      > </a
-      ><a name="2120" href="Algebra.Monoid-solver.html#2087" class="Bound"
+      > <a name="2120" href="Algebra.Monoid-solver.html#2087" class="Bound"
       >n</a
       ><a name="2121" class="Symbol"
       >)</a
-      ><a name="2122"
-      > </a
-      ><a name="2123" class="Symbol"
+      > <a name="2123" class="Symbol"
       >&#8594;</a
-      ><a name="2124"
       >
-              </a
-      ><a name="2139" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+              <a name="2139" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="2140"
-      > </a
-      ><a name="2141" href="Algebra.Monoid-solver.html#2091" class="Bound"
+      > <a name="2141" href="Algebra.Monoid-solver.html#2091" class="Bound"
       >nf&#8321;</a
-      ><a name="2144"
-      > </a
-      ><a name="2145" href="Data.List.Base.html#895" class="Function Operator"
+      > <a name="2145" href="Data.List.Base.html#_++_" class="Function Operator"
       >++</a
-      ><a name="2147"
-      > </a
-      ><a name="2148" href="Algebra.Monoid-solver.html#2095" class="Bound"
+      > <a name="2148" href="Algebra.Monoid-solver.html#2095" class="Bound"
       >nf&#8322;</a
-      ><a name="2151"
-      > </a
-      ><a name="2152" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2152" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="2154"
-      > </a
-      ><a name="2155" href="Algebra.Monoid-solver.html#2112" class="Bound"
+      > <a name="2155" href="Algebra.Monoid-solver.html#2112" class="Bound"
       >&#961;</a
-      ><a name="2156"
-      > </a
-      ><a name="2157" href="Algebra.html#1254" class="Field Operator"
+      > <a name="2157" href="Algebra.html#1254" class="Field Operator"
       >&#8776;</a
-      ><a name="2158"
-      > </a
-      ><a name="2159" class="Symbol"
+      > <a name="2159" class="Symbol"
       >(</a
-      ><a name="2160" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      ><a name="2160" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="2161"
-      > </a
-      ><a name="2162" href="Algebra.Monoid-solver.html#2091" class="Bound"
+      > <a name="2162" href="Algebra.Monoid-solver.html#2091" class="Bound"
       >nf&#8321;</a
-      ><a name="2165"
-      > </a
-      ><a name="2166" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2166" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="2168"
-      > </a
-      ><a name="2169" href="Algebra.Monoid-solver.html#2112" class="Bound"
+      > <a name="2169" href="Algebra.Monoid-solver.html#2112" class="Bound"
       >&#961;</a
-      ><a name="2170"
-      > </a
-      ><a name="2171" href="Algebra.html#1283" class="Field Operator"
+      > <a name="2171" href="Algebra.html#1283" class="Field Operator"
       >&#8729;</a
-      ><a name="2172"
-      > </a
-      ><a name="2173" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2173" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="2174"
-      > </a
-      ><a name="2175" href="Algebra.Monoid-solver.html#2095" class="Bound"
+      > <a name="2175" href="Algebra.Monoid-solver.html#2095" class="Bound"
       >nf&#8322;</a
-      ><a name="2178"
-      > </a
-      ><a name="2179" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2179" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="2181"
-      > </a
-      ><a name="2182" href="Algebra.Monoid-solver.html#2112" class="Bound"
+      > <a name="2182" href="Algebra.Monoid-solver.html#2112" class="Bound"
       >&#961;</a
       ><a name="2183" class="Symbol"
       >)</a
-      ><a name="2184"
       >
-</a
-      ><a name="2185" href="Algebra.Monoid-solver.html#2070" class="Function"
+<a name="2185" href="Algebra.Monoid-solver.html#homomorphic" class="Function"
       >homomorphic</a
-      ><a name="2196"
-      > </a
-      ><a name="2197" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      > <a name="2197" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="2199"
-      > </a
-      ><a name="2200" href="Algebra.Monoid-solver.html#2200" class="Bound"
+      > <a name="2200" href="Algebra.Monoid-solver.html#2200" class="Bound"
       >nf&#8322;</a
-      ><a name="2203"
-      > </a
-      ><a name="2204" href="Algebra.Monoid-solver.html#2204" class="Bound"
+      > <a name="2204" href="Algebra.Monoid-solver.html#2204" class="Bound"
       >&#961;</a
-      ><a name="2205"
-      > </a
-      ><a name="2206" class="Symbol"
+      > <a name="2206" class="Symbol"
       >=</a
-      ><a name="2207"
-      > </a
-      ><a name="2208" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      > <a name="2208" href="Relation.Binary.PreorderReasoning.html#begin_" class="Function Operator"
       >begin</a
-      ><a name="2213"
       >
-  </a
-      ><a name="2216" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+  <a name="2216" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="2217"
-      > </a
-      ><a name="2218" href="Algebra.Monoid-solver.html#2200" class="Bound"
+      > <a name="2218" href="Algebra.Monoid-solver.html#2200" class="Bound"
       >nf&#8322;</a
-      ><a name="2221"
-      > </a
-      ><a name="2222" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2222" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="2224"
-      > </a
-      ><a name="2225" href="Algebra.Monoid-solver.html#2204" class="Bound"
+      > <a name="2225" href="Algebra.Monoid-solver.html#2204" class="Bound"
       >&#961;</a
-      ><a name="2226"
-      >      </a
-      ><a name="2232" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >      <a name="2232" href="Relation.Binary.PreorderReasoning.html#_&#8776;&#10216;_&#10217;_" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="2234"
-      > </a
-      ><a name="2235" href="Relation.Binary.Core.html#4960" class="Function"
+      > <a name="2235" href="Relation.Binary.Core.html#sym" class="Function"
       >sym</a
-      ><a name="2238"
-      > </a
-      ><a name="2239" href="Function.html#1835" class="Function Operator"
+      > <a name="2239" href="Function.html#_$_" class="Function Operator"
       >$</a
-      ><a name="2240"
-      > </a
-      ><a name="2241" href="Data.Product.html#525" class="Field"
+      > <a name="2241" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="2246"
-      > </a
-      ><a name="2247" href="Algebra.Structures.html#1106" class="Function"
+      > <a name="2247" href="Algebra.Structures.html#1106" class="Function"
       >identity</a
-      ><a name="2255"
-      > </a
-      ><a name="2256" class="Symbol"
+      > <a name="2256" class="Symbol"
       >_</a
-      ><a name="2257"
-      > </a
-      ><a name="2258" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="2258" href="Relation.Binary.PreorderReasoning.html#_&#8776;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="2259"
       >
-  </a
-      ><a name="2262" href="Algebra.html#1310" class="Field"
+  <a name="2262" href="Algebra.html#1310" class="Field"
       >&#949;</a
-      ><a name="2263"
-      > </a
-      ><a name="2264" href="Algebra.html#1283" class="Field Operator"
+      > <a name="2264" href="Algebra.html#1283" class="Field Operator"
       >&#8729;</a
-      ><a name="2265"
-      > </a
-      ><a name="2266" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2266" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="2267"
-      > </a
-      ><a name="2268" href="Algebra.Monoid-solver.html#2200" class="Bound"
+      > <a name="2268" href="Algebra.Monoid-solver.html#2200" class="Bound"
       >nf&#8322;</a
-      ><a name="2271"
-      > </a
-      ><a name="2272" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2272" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="2274"
-      > </a
-      ><a name="2275" href="Algebra.Monoid-solver.html#2204" class="Bound"
+      > <a name="2275" href="Algebra.Monoid-solver.html#2204" class="Bound"
       >&#961;</a
-      ><a name="2276"
-      >  </a
-      ><a name="2278" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >  <a name="2278" href="Relation.Binary.PreorderReasoning.html#_&#8718;" class="Function Operator"
       >&#8718;</a
-      ><a name="2279"
       >
-</a
-      ><a name="2280" href="Algebra.Monoid-solver.html#2070" class="Function"
+<a name="2280" href="Algebra.Monoid-solver.html#homomorphic" class="Function"
       >homomorphic</a
-      ><a name="2291"
-      > </a
-      ><a name="2292" class="Symbol"
+      > <a name="2292" class="Symbol"
       >(</a
       ><a name="2293" href="Algebra.Monoid-solver.html#2293" class="Bound"
       >x</a
-      ><a name="2294"
-      > </a
-      ><a name="2295" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      > <a name="2295" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="2296"
-      > </a
-      ><a name="2297" href="Algebra.Monoid-solver.html#2297" class="Bound"
+      > <a name="2297" href="Algebra.Monoid-solver.html#2297" class="Bound"
       >nf&#8321;</a
       ><a name="2300" class="Symbol"
       >)</a
-      ><a name="2301"
-      > </a
-      ><a name="2302" href="Algebra.Monoid-solver.html#2302" class="Bound"
+      > <a name="2302" href="Algebra.Monoid-solver.html#2302" class="Bound"
       >nf&#8322;</a
-      ><a name="2305"
-      > </a
-      ><a name="2306" href="Algebra.Monoid-solver.html#2306" class="Bound"
+      > <a name="2306" href="Algebra.Monoid-solver.html#2306" class="Bound"
       >&#961;</a
-      ><a name="2307"
-      > </a
-      ><a name="2308" class="Symbol"
+      > <a name="2308" class="Symbol"
       >=</a
-      ><a name="2309"
-      > </a
-      ><a name="2310" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      > <a name="2310" href="Relation.Binary.PreorderReasoning.html#begin_" class="Function Operator"
       >begin</a
-      ><a name="2315"
       >
-  </a
-      ><a name="2318" href="Data.Vec.html#6131" class="Function"
+  <a name="2318" href="Data.Vec.html#lookup" class="Function"
       >lookup</a
-      ><a name="2324"
-      > </a
-      ><a name="2325" href="Algebra.Monoid-solver.html#2293" class="Bound"
+      > <a name="2325" href="Algebra.Monoid-solver.html#2293" class="Bound"
       >x</a
-      ><a name="2326"
-      > </a
-      ><a name="2327" href="Algebra.Monoid-solver.html#2306" class="Bound"
+      > <a name="2327" href="Algebra.Monoid-solver.html#2306" class="Bound"
       >&#961;</a
-      ><a name="2328"
-      > </a
-      ><a name="2329" href="Algebra.html#1283" class="Field Operator"
+      > <a name="2329" href="Algebra.html#1283" class="Field Operator"
       >&#8729;</a
-      ><a name="2330"
-      > </a
-      ><a name="2331" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2331" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="2332"
-      > </a
-      ><a name="2333" href="Algebra.Monoid-solver.html#2297" class="Bound"
+      > <a name="2333" href="Algebra.Monoid-solver.html#2297" class="Bound"
       >nf&#8321;</a
-      ><a name="2336"
-      > </a
-      ><a name="2337" href="Data.List.Base.html#895" class="Function Operator"
+      > <a name="2337" href="Data.List.Base.html#_++_" class="Function Operator"
       >++</a
-      ><a name="2339"
-      > </a
-      ><a name="2340" href="Algebra.Monoid-solver.html#2302" class="Bound"
+      > <a name="2340" href="Algebra.Monoid-solver.html#2302" class="Bound"
       >nf&#8322;</a
-      ><a name="2343"
-      > </a
-      ><a name="2344" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2344" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="2346"
-      > </a
-      ><a name="2347" href="Algebra.Monoid-solver.html#2306" class="Bound"
+      > <a name="2347" href="Algebra.Monoid-solver.html#2306" class="Bound"
       >&#961;</a
-      ><a name="2348"
-      >          </a
-      ><a name="2358" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >          <a name="2358" href="Relation.Binary.PreorderReasoning.html#_&#8776;&#10216;_&#10217;_" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="2360"
-      > </a
-      ><a name="2361" href="Algebra.Structures.html#845" class="Function"
+      > <a name="2361" href="Algebra.Structures.html#845" class="Function"
       >&#8729;-cong</a
-      ><a name="2367"
-      > </a
-      ><a name="2368" href="Relation.Binary.Core.html#4934" class="Function"
+      > <a name="2368" href="Relation.Binary.Core.html#refl" class="Function"
       >refl</a
-      ><a name="2372"
-      > </a
-      ><a name="2373" class="Symbol"
+      > <a name="2373" class="Symbol"
       >(</a
-      ><a name="2374" href="Algebra.Monoid-solver.html#2070" class="Function"
+      ><a name="2374" href="Algebra.Monoid-solver.html#homomorphic" class="Function"
       >homomorphic</a
-      ><a name="2385"
-      > </a
-      ><a name="2386" href="Algebra.Monoid-solver.html#2297" class="Bound"
+      > <a name="2386" href="Algebra.Monoid-solver.html#2297" class="Bound"
       >nf&#8321;</a
-      ><a name="2389"
-      > </a
-      ><a name="2390" href="Algebra.Monoid-solver.html#2302" class="Bound"
+      > <a name="2390" href="Algebra.Monoid-solver.html#2302" class="Bound"
       >nf&#8322;</a
-      ><a name="2393"
-      > </a
-      ><a name="2394" href="Algebra.Monoid-solver.html#2306" class="Bound"
+      > <a name="2394" href="Algebra.Monoid-solver.html#2306" class="Bound"
       >&#961;</a
       ><a name="2395" class="Symbol"
       >)</a
-      ><a name="2396"
-      > </a
-      ><a name="2397" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="2397" href="Relation.Binary.PreorderReasoning.html#_&#8776;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="2398"
       >
-  </a
-      ><a name="2401" href="Data.Vec.html#6131" class="Function"
+  <a name="2401" href="Data.Vec.html#lookup" class="Function"
       >lookup</a
-      ><a name="2407"
-      > </a
-      ><a name="2408" href="Algebra.Monoid-solver.html#2293" class="Bound"
+      > <a name="2408" href="Algebra.Monoid-solver.html#2293" class="Bound"
       >x</a
-      ><a name="2409"
-      > </a
-      ><a name="2410" href="Algebra.Monoid-solver.html#2306" class="Bound"
+      > <a name="2410" href="Algebra.Monoid-solver.html#2306" class="Bound"
       >&#961;</a
-      ><a name="2411"
-      > </a
-      ><a name="2412" href="Algebra.html#1283" class="Field Operator"
+      > <a name="2412" href="Algebra.html#1283" class="Field Operator"
       >&#8729;</a
-      ><a name="2413"
-      > </a
-      ><a name="2414" class="Symbol"
+      > <a name="2414" class="Symbol"
       >(</a
-      ><a name="2415" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      ><a name="2415" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="2416"
-      > </a
-      ><a name="2417" href="Algebra.Monoid-solver.html#2297" class="Bound"
+      > <a name="2417" href="Algebra.Monoid-solver.html#2297" class="Bound"
       >nf&#8321;</a
-      ><a name="2420"
-      > </a
-      ><a name="2421" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2421" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="2423"
-      > </a
-      ><a name="2424" href="Algebra.Monoid-solver.html#2306" class="Bound"
+      > <a name="2424" href="Algebra.Monoid-solver.html#2306" class="Bound"
       >&#961;</a
-      ><a name="2425"
-      > </a
-      ><a name="2426" href="Algebra.html#1283" class="Field Operator"
+      > <a name="2426" href="Algebra.html#1283" class="Field Operator"
       >&#8729;</a
-      ><a name="2427"
-      > </a
-      ><a name="2428" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2428" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="2429"
-      > </a
-      ><a name="2430" href="Algebra.Monoid-solver.html#2302" class="Bound"
+      > <a name="2430" href="Algebra.Monoid-solver.html#2302" class="Bound"
       >nf&#8322;</a
-      ><a name="2433"
-      > </a
-      ><a name="2434" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2434" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="2436"
-      > </a
-      ><a name="2437" href="Algebra.Monoid-solver.html#2306" class="Bound"
+      > <a name="2437" href="Algebra.Monoid-solver.html#2306" class="Bound"
       >&#961;</a
       ><a name="2438" class="Symbol"
       >)</a
-      ><a name="2439"
-      >  </a
-      ><a name="2441" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >  <a name="2441" href="Relation.Binary.PreorderReasoning.html#_&#8776;&#10216;_&#10217;_" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="2443"
-      > </a
-      ><a name="2444" href="Relation.Binary.Core.html#4960" class="Function"
+      > <a name="2444" href="Relation.Binary.Core.html#sym" class="Function"
       >sym</a
-      ><a name="2447"
-      > </a
-      ><a name="2448" href="Function.html#1835" class="Function Operator"
+      > <a name="2448" href="Function.html#_$_" class="Function Operator"
       >$</a
-      ><a name="2449"
-      > </a
-      ><a name="2450" href="Algebra.Structures.html#811" class="Function"
+      > <a name="2450" href="Algebra.Structures.html#811" class="Function"
       >assoc</a
-      ><a name="2455"
-      > </a
-      ><a name="2456" class="Symbol"
+      > <a name="2456" class="Symbol"
       >_</a
-      ><a name="2457"
-      > </a
-      ><a name="2458" class="Symbol"
+      > <a name="2458" class="Symbol"
       >_</a
-      ><a name="2459"
-      > </a
-      ><a name="2460" class="Symbol"
+      > <a name="2460" class="Symbol"
       >_</a
-      ><a name="2461"
-      > </a
-      ><a name="2462" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="2462" href="Relation.Binary.PreorderReasoning.html#_&#8776;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="2463"
       >
-  </a
-      ><a name="2466" href="Data.Vec.html#6131" class="Function"
+  <a name="2466" href="Data.Vec.html#lookup" class="Function"
       >lookup</a
-      ><a name="2472"
-      > </a
-      ><a name="2473" href="Algebra.Monoid-solver.html#2293" class="Bound"
+      > <a name="2473" href="Algebra.Monoid-solver.html#2293" class="Bound"
       >x</a
-      ><a name="2474"
-      > </a
-      ><a name="2475" href="Algebra.Monoid-solver.html#2306" class="Bound"
+      > <a name="2475" href="Algebra.Monoid-solver.html#2306" class="Bound"
       >&#961;</a
-      ><a name="2476"
-      > </a
-      ><a name="2477" href="Algebra.html#1283" class="Field Operator"
+      > <a name="2477" href="Algebra.html#1283" class="Field Operator"
       >&#8729;</a
-      ><a name="2478"
-      > </a
-      ><a name="2479" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2479" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="2480"
-      > </a
-      ><a name="2481" href="Algebra.Monoid-solver.html#2297" class="Bound"
+      > <a name="2481" href="Algebra.Monoid-solver.html#2297" class="Bound"
       >nf&#8321;</a
-      ><a name="2484"
-      > </a
-      ><a name="2485" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2485" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="2487"
-      > </a
-      ><a name="2488" href="Algebra.Monoid-solver.html#2306" class="Bound"
+      > <a name="2488" href="Algebra.Monoid-solver.html#2306" class="Bound"
       >&#961;</a
-      ><a name="2489"
-      > </a
-      ><a name="2490" href="Algebra.html#1283" class="Field Operator"
+      > <a name="2490" href="Algebra.html#1283" class="Field Operator"
       >&#8729;</a
-      ><a name="2491"
-      > </a
-      ><a name="2492" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2492" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="2493"
-      > </a
-      ><a name="2494" href="Algebra.Monoid-solver.html#2302" class="Bound"
+      > <a name="2494" href="Algebra.Monoid-solver.html#2302" class="Bound"
       >nf&#8322;</a
-      ><a name="2497"
-      > </a
-      ><a name="2498" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2498" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="2500"
-      > </a
-      ><a name="2501" href="Algebra.Monoid-solver.html#2306" class="Bound"
+      > <a name="2501" href="Algebra.Monoid-solver.html#2306" class="Bound"
       >&#961;</a
-      ><a name="2502"
-      >    </a
-      ><a name="2506" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >    <a name="2506" href="Relation.Binary.PreorderReasoning.html#_&#8718;" class="Function Operator"
       >&#8718;</a
-      ><a name="2507"
       >
 
-</a
-      ><a name="2509" class="Comment"
+<a name="2509" class="Comment"
       >-- The normaliser preserves the semantics of the expression.</a
-      ><a name="2569"
       >
 
-</a
-      ><a name="2571" href="Algebra.Monoid-solver.html#2571" class="Function"
+<a name="normalise-correct" href="Algebra.Monoid-solver.html#normalise-correct" class="Function"
       >normalise-correct</a
-      ><a name="2588"
-      > </a
-      ><a name="2589" class="Symbol"
+      > <a name="2589" class="Symbol"
       >:</a
-      ><a name="2590"
       >
-  </a
-      ><a name="2593" class="Symbol"
+  <a name="2593" class="Symbol"
       >&#8704;</a
-      ><a name="2594"
-      > </a
-      ><a name="2595" class="Symbol"
+      > <a name="2595" class="Symbol"
       >{</a
       ><a name="2596" href="Algebra.Monoid-solver.html#2596" class="Bound"
       >n</a
       ><a name="2597" class="Symbol"
       >}</a
-      ><a name="2598"
-      > </a
-      ><a name="2599" class="Symbol"
+      > <a name="2599" class="Symbol"
       >(</a
       ><a name="2600" href="Algebra.Monoid-solver.html#2600" class="Bound"
       >e</a
-      ><a name="2601"
-      > </a
-      ><a name="2602" class="Symbol"
+      > <a name="2602" class="Symbol"
       >:</a
-      ><a name="2603"
-      > </a
-      ><a name="2604" href="Algebra.Monoid-solver.html#1139" class="Datatype"
+      > <a name="2604" href="Algebra.Monoid-solver.html#Expr" class="Datatype"
       >Expr</a
-      ><a name="2608"
-      > </a
-      ><a name="2609" href="Algebra.Monoid-solver.html#2596" class="Bound"
+      > <a name="2609" href="Algebra.Monoid-solver.html#2596" class="Bound"
       >n</a
       ><a name="2610" class="Symbol"
       >)</a
-      ><a name="2611"
-      > </a
-      ><a name="2612" class="Symbol"
+      > <a name="2612" class="Symbol"
       >(</a
       ><a name="2613" href="Algebra.Monoid-solver.html#2613" class="Bound"
       >&#961;</a
-      ><a name="2614"
-      > </a
-      ><a name="2615" class="Symbol"
+      > <a name="2615" class="Symbol"
       >:</a
-      ><a name="2616"
-      > </a
-      ><a name="2617" href="Algebra.Monoid-solver.html#1294" class="Function"
+      > <a name="2617" href="Algebra.Monoid-solver.html#Env" class="Function"
       >Env</a
-      ><a name="2620"
-      > </a
-      ><a name="2621" href="Algebra.Monoid-solver.html#2596" class="Bound"
+      > <a name="2621" href="Algebra.Monoid-solver.html#2596" class="Bound"
       >n</a
       ><a name="2622" class="Symbol"
       >)</a
-      ><a name="2623"
-      > </a
-      ><a name="2624" class="Symbol"
+      > <a name="2624" class="Symbol"
       >&#8594;</a
-      ><a name="2625"
-      > </a
-      ><a name="2626" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2626" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="2627"
-      > </a
-      ><a name="2628" href="Algebra.Monoid-solver.html#1866" class="Function"
+      > <a name="2628" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="2637"
-      > </a
-      ><a name="2638" href="Algebra.Monoid-solver.html#2600" class="Bound"
+      > <a name="2638" href="Algebra.Monoid-solver.html#2600" class="Bound"
       >e</a
-      ><a name="2639"
-      > </a
-      ><a name="2640" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2640" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="2642"
-      > </a
-      ><a name="2643" href="Algebra.Monoid-solver.html#2613" class="Bound"
+      > <a name="2643" href="Algebra.Monoid-solver.html#2613" class="Bound"
       >&#961;</a
-      ><a name="2644"
-      > </a
-      ><a name="2645" href="Algebra.html#1254" class="Field Operator"
+      > <a name="2645" href="Algebra.html#1254" class="Field Operator"
       >&#8776;</a
-      ><a name="2646"
-      > </a
-      ><a name="2647" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="2647" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="2648"
-      > </a
-      ><a name="2649" href="Algebra.Monoid-solver.html#2600" class="Bound"
+      > <a name="2649" href="Algebra.Monoid-solver.html#2600" class="Bound"
       >e</a
-      ><a name="2650"
-      > </a
-      ><a name="2651" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="2651" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="2652"
-      > </a
-      ><a name="2653" href="Algebra.Monoid-solver.html#2613" class="Bound"
+      > <a name="2653" href="Algebra.Monoid-solver.html#2613" class="Bound"
       >&#961;</a
-      ><a name="2654"
       >
-</a
-      ><a name="2655" href="Algebra.Monoid-solver.html#2571" class="Function"
+<a name="2655" href="Algebra.Monoid-solver.html#normalise-correct" class="Function"
       >normalise-correct</a
-      ><a name="2672"
-      > </a
-      ><a name="2673" class="Symbol"
+      > <a name="2673" class="Symbol"
       >(</a
-      ><a name="2674" href="Algebra.Monoid-solver.html#1166" class="InductiveConstructor"
+      ><a name="2674" href="Algebra.Monoid-solver.html#Expr.var" class="InductiveConstructor"
       >var</a
-      ><a name="2677"
-      > </a
-      ><a name="2678" href="Algebra.Monoid-solver.html#2678" class="Bound"
+      > <a name="2678" href="Algebra.Monoid-solver.html#2678" class="Bound"
       >x</a
       ><a name="2679" class="Symbol"
       >)</a
-      ><a name="2680"
-      > </a
-      ><a name="2681" href="Algebra.Monoid-solver.html#2681" class="Bound"
+      > <a name="2681" href="Algebra.Monoid-solver.html#2681" class="Bound"
       >&#961;</a
-      ><a name="2682"
-      > </a
-      ><a name="2683" class="Symbol"
+      > <a name="2683" class="Symbol"
       >=</a
-      ><a name="2684"
-      > </a
-      ><a name="2685" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      > <a name="2685" href="Relation.Binary.PreorderReasoning.html#begin_" class="Function Operator"
       >begin</a
-      ><a name="2690"
       >
-  </a
-      ><a name="2693" href="Data.Vec.html#6131" class="Function"
+  <a name="2693" href="Data.Vec.html#lookup" class="Function"
       >lookup</a
-      ><a name="2699"
-      > </a
-      ><a name="2700" href="Algebra.Monoid-solver.html#2678" class="Bound"
+      > <a name="2700" href="Algebra.Monoid-solver.html#2678" class="Bound"
       >x</a
-      ><a name="2701"
-      > </a
-      ><a name="2702" href="Algebra.Monoid-solver.html#2681" class="Bound"
+      > <a name="2702" href="Algebra.Monoid-solver.html#2681" class="Bound"
       >&#961;</a
-      ><a name="2703"
-      > </a
-      ><a name="2704" href="Algebra.html#1283" class="Field Operator"
+      > <a name="2704" href="Algebra.html#1283" class="Field Operator"
       >&#8729;</a
-      ><a name="2705"
-      > </a
-      ><a name="2706" href="Algebra.html#1310" class="Field"
+      > <a name="2706" href="Algebra.html#1310" class="Field"
       >&#949;</a
-      ><a name="2707"
-      >  </a
-      ><a name="2709" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >  <a name="2709" href="Relation.Binary.PreorderReasoning.html#_&#8776;&#10216;_&#10217;_" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="2711"
-      > </a
-      ><a name="2712" href="Data.Product.html#539" class="Field"
+      > <a name="2712" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
       >proj&#8322;</a
-      ><a name="2717"
-      > </a
-      ><a name="2718" href="Algebra.Structures.html#1106" class="Function"
+      > <a name="2718" href="Algebra.Structures.html#1106" class="Function"
       >identity</a
-      ><a name="2726"
-      > </a
-      ><a name="2727" class="Symbol"
+      > <a name="2727" class="Symbol"
       >_</a
-      ><a name="2728"
-      > </a
-      ><a name="2729" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="2729" href="Relation.Binary.PreorderReasoning.html#_&#8776;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="2730"
       >
-  </a
-      ><a name="2733" href="Data.Vec.html#6131" class="Function"
+  <a name="2733" href="Data.Vec.html#lookup" class="Function"
       >lookup</a
-      ><a name="2739"
-      > </a
-      ><a name="2740" href="Algebra.Monoid-solver.html#2678" class="Bound"
+      > <a name="2740" href="Algebra.Monoid-solver.html#2678" class="Bound"
       >x</a
-      ><a name="2741"
-      > </a
-      ><a name="2742" href="Algebra.Monoid-solver.html#2681" class="Bound"
+      > <a name="2742" href="Algebra.Monoid-solver.html#2681" class="Bound"
       >&#961;</a
-      ><a name="2743"
-      >      </a
-      ><a name="2749" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >      <a name="2749" href="Relation.Binary.PreorderReasoning.html#_&#8718;" class="Function Operator"
       >&#8718;</a
-      ><a name="2750"
       >
-</a
-      ><a name="2751" href="Algebra.Monoid-solver.html#2571" class="Function"
+<a name="2751" href="Algebra.Monoid-solver.html#normalise-correct" class="Function"
       >normalise-correct</a
-      ><a name="2768"
-      > </a
-      ><a name="2769" href="Algebra.Monoid-solver.html#1189" class="InductiveConstructor"
+      > <a name="2769" href="Algebra.Monoid-solver.html#Expr.id" class="InductiveConstructor"
       >id</a
-      ><a name="2771"
-      > </a
-      ><a name="2772" href="Algebra.Monoid-solver.html#2772" class="Bound"
+      > <a name="2772" href="Algebra.Monoid-solver.html#2772" class="Bound"
       >&#961;</a
-      ><a name="2773"
-      > </a
-      ><a name="2774" class="Symbol"
+      > <a name="2774" class="Symbol"
       >=</a
-      ><a name="2775"
-      > </a
-      ><a name="2776" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      > <a name="2776" href="Relation.Binary.PreorderReasoning.html#begin_" class="Function Operator"
       >begin</a
-      ><a name="2781"
       >
-  </a
-      ><a name="2784" href="Algebra.html#1310" class="Field"
+  <a name="2784" href="Algebra.html#1310" class="Field"
       >&#949;</a
-      ><a name="2785"
-      >  </a
-      ><a name="2787" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >  <a name="2787" href="Relation.Binary.PreorderReasoning.html#_&#8718;" class="Function Operator"
       >&#8718;</a
-      ><a name="2788"
       >
-</a
-      ><a name="2789" href="Algebra.Monoid-solver.html#2571" class="Function"
+<a name="2789" href="Algebra.Monoid-solver.html#normalise-correct" class="Function"
       >normalise-correct</a
-      ><a name="2806"
-      > </a
-      ><a name="2807" class="Symbol"
+      > <a name="2807" class="Symbol"
       >(</a
       ><a name="2808" href="Algebra.Monoid-solver.html#2808" class="Bound"
       >e&#8321;</a
-      ><a name="2810"
-      > </a
-      ><a name="2811" href="Algebra.Monoid-solver.html#1204" class="InductiveConstructor Operator"
+      > <a name="2811" href="Algebra.Monoid-solver.html#Expr._&#8853;_" class="InductiveConstructor Operator"
       >&#8853;</a
-      ><a name="2812"
-      > </a
-      ><a name="2813" href="Algebra.Monoid-solver.html#2813" class="Bound"
+      > <a name="2813" href="Algebra.Monoid-solver.html#2813" class="Bound"
       >e&#8322;</a
       ><a name="2815" class="Symbol"
       >)</a
-      ><a name="2816"
-      > </a
-      ><a name="2817" href="Algebra.Monoid-solver.html#2817" class="Bound"
+      > <a name="2817" href="Algebra.Monoid-solver.html#2817" class="Bound"
       >&#961;</a
-      ><a name="2818"
-      > </a
-      ><a name="2819" class="Symbol"
+      > <a name="2819" class="Symbol"
       >=</a
-      ><a name="2820"
-      > </a
-      ><a name="2821" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      > <a name="2821" href="Relation.Binary.PreorderReasoning.html#begin_" class="Function Operator"
       >begin</a
-      ><a name="2826"
       >
-  </a
-      ><a name="2829" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+  <a name="2829" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="2830"
-      > </a
-      ><a name="2831" href="Algebra.Monoid-solver.html#1866" class="Function"
+      > <a name="2831" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="2840"
-      > </a
-      ><a name="2841" href="Algebra.Monoid-solver.html#2808" class="Bound"
+      > <a name="2841" href="Algebra.Monoid-solver.html#2808" class="Bound"
       >e&#8321;</a
-      ><a name="2843"
-      > </a
-      ><a name="2844" href="Data.List.Base.html#895" class="Function Operator"
+      > <a name="2844" href="Data.List.Base.html#_++_" class="Function Operator"
       >++</a
-      ><a name="2846"
-      > </a
-      ><a name="2847" href="Algebra.Monoid-solver.html#1866" class="Function"
+      > <a name="2847" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="2856"
-      > </a
-      ><a name="2857" href="Algebra.Monoid-solver.html#2813" class="Bound"
+      > <a name="2857" href="Algebra.Monoid-solver.html#2813" class="Bound"
       >e&#8322;</a
-      ><a name="2859"
-      > </a
-      ><a name="2860" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2860" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="2862"
-      > </a
-      ><a name="2863" href="Algebra.Monoid-solver.html#2817" class="Bound"
+      > <a name="2863" href="Algebra.Monoid-solver.html#2817" class="Bound"
       >&#961;</a
-      ><a name="2864"
-      >        </a
-      ><a name="2872" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >        <a name="2872" href="Relation.Binary.PreorderReasoning.html#_&#8776;&#10216;_&#10217;_" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="2874"
-      > </a
-      ><a name="2875" href="Algebra.Monoid-solver.html#2070" class="Function"
+      > <a name="2875" href="Algebra.Monoid-solver.html#homomorphic" class="Function"
       >homomorphic</a
-      ><a name="2886"
-      > </a
-      ><a name="2887" class="Symbol"
+      > <a name="2887" class="Symbol"
       >(</a
-      ><a name="2888" href="Algebra.Monoid-solver.html#1866" class="Function"
+      ><a name="2888" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="2897"
-      > </a
-      ><a name="2898" href="Algebra.Monoid-solver.html#2808" class="Bound"
+      > <a name="2898" href="Algebra.Monoid-solver.html#2808" class="Bound"
       >e&#8321;</a
       ><a name="2900" class="Symbol"
       >)</a
-      ><a name="2901"
-      > </a
-      ><a name="2902" class="Symbol"
+      > <a name="2902" class="Symbol"
       >(</a
-      ><a name="2903" href="Algebra.Monoid-solver.html#1866" class="Function"
+      ><a name="2903" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="2912"
-      > </a
-      ><a name="2913" href="Algebra.Monoid-solver.html#2813" class="Bound"
+      > <a name="2913" href="Algebra.Monoid-solver.html#2813" class="Bound"
       >e&#8322;</a
       ><a name="2915" class="Symbol"
       >)</a
-      ><a name="2916"
-      > </a
-      ><a name="2917" href="Algebra.Monoid-solver.html#2817" class="Bound"
+      > <a name="2917" href="Algebra.Monoid-solver.html#2817" class="Bound"
       >&#961;</a
-      ><a name="2918"
-      > </a
-      ><a name="2919" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="2919" href="Relation.Binary.PreorderReasoning.html#_&#8776;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="2920"
       >
-  </a
-      ><a name="2923" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+  <a name="2923" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="2924"
-      > </a
-      ><a name="2925" href="Algebra.Monoid-solver.html#1866" class="Function"
+      > <a name="2925" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="2934"
-      > </a
-      ><a name="2935" href="Algebra.Monoid-solver.html#2808" class="Bound"
+      > <a name="2935" href="Algebra.Monoid-solver.html#2808" class="Bound"
       >e&#8321;</a
-      ><a name="2937"
-      > </a
-      ><a name="2938" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2938" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="2940"
-      > </a
-      ><a name="2941" href="Algebra.Monoid-solver.html#2817" class="Bound"
+      > <a name="2941" href="Algebra.Monoid-solver.html#2817" class="Bound"
       >&#961;</a
-      ><a name="2942"
-      > </a
-      ><a name="2943" href="Algebra.html#1283" class="Field Operator"
+      > <a name="2943" href="Algebra.html#1283" class="Field Operator"
       >&#8729;</a
-      ><a name="2944"
-      > </a
-      ><a name="2945" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2945" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="2946"
-      > </a
-      ><a name="2947" href="Algebra.Monoid-solver.html#1866" class="Function"
+      > <a name="2947" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="2956"
-      > </a
-      ><a name="2957" href="Algebra.Monoid-solver.html#2813" class="Bound"
+      > <a name="2957" href="Algebra.Monoid-solver.html#2813" class="Bound"
       >e&#8322;</a
-      ><a name="2959"
-      > </a
-      ><a name="2960" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="2960" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="2962"
-      > </a
-      ><a name="2963" href="Algebra.Monoid-solver.html#2817" class="Bound"
+      > <a name="2963" href="Algebra.Monoid-solver.html#2817" class="Bound"
       >&#961;</a
-      ><a name="2964"
-      >  </a
-      ><a name="2966" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >  <a name="2966" href="Relation.Binary.PreorderReasoning.html#_&#8776;&#10216;_&#10217;_" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="2968"
-      > </a
-      ><a name="2969" href="Algebra.Structures.html#845" class="Function"
+      > <a name="2969" href="Algebra.Structures.html#845" class="Function"
       >&#8729;-cong</a
-      ><a name="2975"
-      > </a
-      ><a name="2976" class="Symbol"
+      > <a name="2976" class="Symbol"
       >(</a
-      ><a name="2977" href="Algebra.Monoid-solver.html#2571" class="Function"
+      ><a name="2977" href="Algebra.Monoid-solver.html#normalise-correct" class="Function"
       >normalise-correct</a
-      ><a name="2994"
-      > </a
-      ><a name="2995" href="Algebra.Monoid-solver.html#2808" class="Bound"
+      > <a name="2995" href="Algebra.Monoid-solver.html#2808" class="Bound"
       >e&#8321;</a
-      ><a name="2997"
-      > </a
-      ><a name="2998" href="Algebra.Monoid-solver.html#2817" class="Bound"
+      > <a name="2998" href="Algebra.Monoid-solver.html#2817" class="Bound"
       >&#961;</a
       ><a name="2999" class="Symbol"
       >)</a
-      ><a name="3000"
-      > </a
-      ><a name="3001" class="Symbol"
+      > <a name="3001" class="Symbol"
       >(</a
-      ><a name="3002" href="Algebra.Monoid-solver.html#2571" class="Function"
+      ><a name="3002" href="Algebra.Monoid-solver.html#normalise-correct" class="Function"
       >normalise-correct</a
-      ><a name="3019"
-      > </a
-      ><a name="3020" href="Algebra.Monoid-solver.html#2813" class="Bound"
+      > <a name="3020" href="Algebra.Monoid-solver.html#2813" class="Bound"
       >e&#8322;</a
-      ><a name="3022"
-      > </a
-      ><a name="3023" href="Algebra.Monoid-solver.html#2817" class="Bound"
+      > <a name="3023" href="Algebra.Monoid-solver.html#2817" class="Bound"
       >&#961;</a
       ><a name="3024" class="Symbol"
       >)</a
-      ><a name="3025"
-      > </a
-      ><a name="3026" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="3026" href="Relation.Binary.PreorderReasoning.html#_&#8776;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="3027"
       >
-  </a
-      ><a name="3030" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+  <a name="3030" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="3031"
-      > </a
-      ><a name="3032" href="Algebra.Monoid-solver.html#2808" class="Bound"
+      > <a name="3032" href="Algebra.Monoid-solver.html#2808" class="Bound"
       >e&#8321;</a
-      ><a name="3034"
-      > </a
-      ><a name="3035" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="3035" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="3036"
-      > </a
-      ><a name="3037" href="Algebra.Monoid-solver.html#2817" class="Bound"
+      > <a name="3037" href="Algebra.Monoid-solver.html#2817" class="Bound"
       >&#961;</a
-      ><a name="3038"
-      > </a
-      ><a name="3039" href="Algebra.html#1283" class="Field Operator"
+      > <a name="3039" href="Algebra.html#1283" class="Field Operator"
       >&#8729;</a
-      ><a name="3040"
-      > </a
-      ><a name="3041" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="3041" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="3042"
-      > </a
-      ><a name="3043" href="Algebra.Monoid-solver.html#2813" class="Bound"
+      > <a name="3043" href="Algebra.Monoid-solver.html#2813" class="Bound"
       >e&#8322;</a
-      ><a name="3045"
-      > </a
-      ><a name="3046" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="3046" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="3047"
-      > </a
-      ><a name="3048" href="Algebra.Monoid-solver.html#2817" class="Bound"
+      > <a name="3048" href="Algebra.Monoid-solver.html#2817" class="Bound"
       >&#961;</a
-      ><a name="3049"
-      >                        </a
-      ><a name="3073" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >                        <a name="3073" href="Relation.Binary.PreorderReasoning.html#_&#8718;" class="Function Operator"
       >&#8718;</a
-      ><a name="3074"
       >
 
-</a
-      ><a name="3076" class="Comment"
+<a name="3076" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="3148"
       >
-</a
-      ><a name="3149" class="Comment"
+<a name="3149" class="Comment"
       >-- &quot;Tactics&quot;</a
-      ><a name="3161"
       >
 
-</a
-      ><a name="3163" class="Keyword"
+<a name="3163" class="Keyword"
       >open</a
-      ><a name="3167"
-      > </a
-      ><a name="3168" class="Keyword"
+      > <a name="3168" class="Keyword"
       >module</a
-      ><a name="3174"
-      > </a
-      ><a name="3175" href="Algebra.Monoid-solver.html#3175" class="Module"
+      > <a name="R" href="Algebra.Monoid-solver.html#R" class="Module"
       >R</a
-      ><a name="3176"
-      > </a
-      ><a name="3177" class="Symbol"
+      > <a name="3177" class="Symbol"
       >=</a
-      ><a name="3178"
-      > </a
-      ><a name="3179" href="Relation.Binary.Reflection.html#1" class="Module"
+      > <a name="3179" href="Relation.Binary.Reflection.html" class="Module"
       >Relation.Binary.Reflection</a
-      ><a name="3205"
       >
-                  </a
-      ><a name="3224" href="Algebra.html#845" class="Function"
+                  <a name="3224" href="Algebra.html#845" class="Function"
       >setoid</a
-      ><a name="3230"
-      > </a
-      ><a name="3231" href="Algebra.Monoid-solver.html#1166" class="InductiveConstructor"
+      > <a name="3231" href="Algebra.Monoid-solver.html#Expr.var" class="InductiveConstructor"
       >var</a
-      ><a name="3234"
-      > </a
-      ><a name="3235" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="3235" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;_&#10215;</a
-      ><a name="3238"
-      > </a
-      ><a name="3239" class="Symbol"
+      > <a name="3239" class="Symbol"
       >(</a
-      ><a name="3240" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      ><a name="3240" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;_&#10215;&#8659;</a
-      ><a name="3244"
-      > </a
-      ><a name="3245" href="Function.html#713" class="Function Operator"
+      > <a name="3245" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="3246"
-      > </a
-      ><a name="3247" href="Algebra.Monoid-solver.html#1866" class="Function"
+      > <a name="3247" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
       ><a name="3256" class="Symbol"
       >)</a
-      ><a name="3257"
-      > </a
-      ><a name="3258" href="Algebra.Monoid-solver.html#2571" class="Function"
+      > <a name="3258" href="Algebra.Monoid-solver.html#normalise-correct" class="Function"
       >normalise-correct</a
-      ><a name="3275"
       >
-  </a
-      ><a name="3278" class="Keyword"
+  <a name="3278" class="Keyword"
       >public</a
-      ><a name="3284"
-      > </a
-      ><a name="3285" class="Keyword"
+      > <a name="3285" class="Keyword"
       >using</a
-      ><a name="3290"
-      > </a
-      ><a name="3291" class="Symbol"
+      > <a name="3291" class="Symbol"
       >(</a
-      ><a name="3292" href="Relation.Binary.Reflection.html#2382" class="Function"
+      ><a name="3292" href="Relation.Binary.Reflection.html#solve" class="Function"
       >solve</a
       ><a name="3297" class="Symbol"
       >;</a
-      ><a name="3298"
-      > </a
-      ><a name="3299" href="Relation.Binary.Reflection.html#3491" class="Function Operator"
+      > <a name="3299" href="Relation.Binary.Reflection.html#_&#8860;_" class="Function Operator"
       >_&#8860;_</a
       ><a name="3302" class="Symbol"
       >)</a
-      ><a name="3303"
       >
 
-</a
-      ><a name="3305" class="Comment"
+<a name="3305" class="Comment"
       >-- We can decide if two normal forms are /syntactically/ equal.</a
-      ><a name="3368"
       >
 
-</a
-      ><a name="3370" class="Keyword"
+<a name="3370" class="Keyword"
       >infix</a
-      ><a name="3375"
-      > </a
-      ><a name="3376" class="Number"
+      > <a name="3376" class="Number"
       >5</a
-      ><a name="3377"
-      > _&#8799;_
-
-</a
-      ><a name="3383" href="Algebra.Monoid-solver.html#3383" class="Function Operator"
+      > <a name="3378" href="Algebra.Monoid-solver.html#_&#8799;_" class="Function Operator"
       >_&#8799;_</a
-      ><a name="3386"
-      > </a
-      ><a name="3387" class="Symbol"
+      >
+
+<a name="_&#8799;_" href="Algebra.Monoid-solver.html#_&#8799;_" class="Function Operator"
+      >_&#8799;_</a
+      > <a name="3387" class="Symbol"
       >:</a
-      ><a name="3388"
-      > </a
-      ><a name="3389" class="Symbol"
+      > <a name="3389" class="Symbol"
       >&#8704;</a
-      ><a name="3390"
-      > </a
-      ><a name="3391" class="Symbol"
+      > <a name="3391" class="Symbol"
       >{</a
       ><a name="3392" href="Algebra.Monoid-solver.html#3392" class="Bound"
       >n</a
       ><a name="3393" class="Symbol"
       >}</a
-      ><a name="3394"
-      > </a
-      ><a name="3395" class="Symbol"
+      > <a name="3395" class="Symbol"
       >(</a
       ><a name="3396" href="Algebra.Monoid-solver.html#3396" class="Bound"
       >nf&#8321;</a
-      ><a name="3399"
-      > </a
-      ><a name="3400" href="Algebra.Monoid-solver.html#3400" class="Bound"
+      > <a name="3400" href="Algebra.Monoid-solver.html#3400" class="Bound"
       >nf&#8322;</a
-      ><a name="3403"
-      > </a
-      ><a name="3404" class="Symbol"
+      > <a name="3404" class="Symbol"
       >:</a
-      ><a name="3405"
-      > </a
-      ><a name="3406" href="Algebra.Monoid-solver.html#1670" class="Function"
+      > <a name="3406" href="Algebra.Monoid-solver.html#Normal" class="Function"
       >Normal</a
-      ><a name="3412"
-      > </a
-      ><a name="3413" href="Algebra.Monoid-solver.html#3392" class="Bound"
+      > <a name="3413" href="Algebra.Monoid-solver.html#3392" class="Bound"
       >n</a
       ><a name="3414" class="Symbol"
       >)</a
-      ><a name="3415"
-      > </a
-      ><a name="3416" class="Symbol"
+      > <a name="3416" class="Symbol"
       >&#8594;</a
-      ><a name="3417"
-      > </a
-      ><a name="3418" href="Relation.Nullary.html#484" class="Datatype"
+      > <a name="3418" href="Relation.Nullary.html#Dec" class="Datatype"
       >Dec</a
-      ><a name="3421"
-      > </a
-      ><a name="3422" class="Symbol"
+      > <a name="3422" class="Symbol"
       >(</a
       ><a name="3423" href="Algebra.Monoid-solver.html#3396" class="Bound"
       >nf&#8321;</a
-      ><a name="3426"
-      > </a
-      ><a name="3427" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="3427" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="3428"
-      > </a
-      ><a name="3429" href="Algebra.Monoid-solver.html#3400" class="Bound"
+      > <a name="3429" href="Algebra.Monoid-solver.html#3400" class="Bound"
       >nf&#8322;</a
       ><a name="3432" class="Symbol"
       >)</a
-      ><a name="3433"
       >
-</a
-      ><a name="3434" href="Algebra.Monoid-solver.html#3434" class="Bound"
+<a name="3434" href="Algebra.Monoid-solver.html#3434" class="Bound"
       >nf&#8321;</a
-      ><a name="3437"
-      > </a
-      ><a name="3438" href="Algebra.Monoid-solver.html#3383" class="Function Operator"
+      > <a name="3438" href="Algebra.Monoid-solver.html#_&#8799;_" class="Function Operator"
       >&#8799;</a
-      ><a name="3439"
-      > </a
-      ><a name="3440" href="Algebra.Monoid-solver.html#3440" class="Bound"
+      > <a name="3440" href="Algebra.Monoid-solver.html#3440" class="Bound"
       >nf&#8322;</a
-      ><a name="3443"
-      > </a
-      ><a name="3444" class="Symbol"
+      > <a name="3444" class="Symbol"
       >=</a
-      ><a name="3445"
-      > </a
-      ><a name="3446" href="Relation.Nullary.Decidable.html#1801" class="Function"
+      > <a name="3446" href="Relation.Nullary.Decidable.html#map&#8242;" class="Function"
       >Dec.map&#8242;</a
-      ><a name="3454"
-      > </a
-      ><a name="3455" href="Relation.Binary.List.Pointwise.html#6004" class="Function"
+      > <a name="3455" href="Relation.Binary.List.Pointwise.html#Rel&#8801;&#8658;&#8801;" class="Function"
       >Rel&#8801;&#8658;&#8801;</a
-      ><a name="3461"
-      > </a
-      ><a name="3462" href="Relation.Binary.List.Pointwise.html#6173" class="Function"
+      > <a name="3462" href="Relation.Binary.List.Pointwise.html#&#8801;&#8658;Rel&#8801;" class="Function"
       >&#8801;&#8658;Rel&#8801;</a
-      ><a name="3468"
-      > </a
-      ><a name="3469" class="Symbol"
+      > <a name="3469" class="Symbol"
       >(</a
-      ><a name="3470" href="Relation.Binary.List.Pointwise.html#3678" class="Function"
+      ><a name="3470" href="Relation.Binary.List.Pointwise.html#decidable" class="Function"
       >decidable</a
-      ><a name="3479"
-      > </a
-      ><a name="3480" href="Data.Fin.Properties.html#2219" class="Function Operator"
+      > <a name="3480" href="Data.Fin.Properties.html#_&#8799;_" class="Function Operator"
       >Fin._&#8799;_</a
-      ><a name="3487"
-      > </a
-      ><a name="3488" href="Algebra.Monoid-solver.html#3434" class="Bound"
+      > <a name="3488" href="Algebra.Monoid-solver.html#3434" class="Bound"
       >nf&#8321;</a
-      ><a name="3491"
-      > </a
-      ><a name="3492" href="Algebra.Monoid-solver.html#3440" class="Bound"
+      > <a name="3492" href="Algebra.Monoid-solver.html#3440" class="Bound"
       >nf&#8322;</a
       ><a name="3495" class="Symbol"
       >)</a
-      ><a name="3496"
       >
-  </a
-      ><a name="3499" class="Keyword"
+  <a name="3499" class="Keyword"
       >where</a
-      ><a name="3504"
-      > </a
-      ><a name="3505" class="Keyword"
+      > <a name="3505" class="Keyword"
       >open</a
-      ><a name="3509"
-      > </a
-      ><a name="3510" href="Relation.Binary.List.Pointwise.html#1" class="Module"
+      > <a name="3510" href="Relation.Binary.List.Pointwise.html" class="Module"
       >Pointwise</a
-      ><a name="3519"
       >
 
-</a
-      ><a name="3521" class="Comment"
+<a name="3521" class="Comment"
       >-- We can also give a sound, but not necessarily complete, procedure</a
-      ><a name="3589"
       >
-</a
-      ><a name="3590" class="Comment"
+<a name="3590" class="Comment"
       >-- for determining if two expressions have the same semantics.</a
-      ><a name="3652"
       >
 
-</a
-      ><a name="3654" href="Algebra.Monoid-solver.html#3654" class="Function"
+<a name="prove&#8242;" href="Algebra.Monoid-solver.html#prove&#8242;" class="Function"
       >prove&#8242;</a
-      ><a name="3660"
-      > </a
-      ><a name="3661" class="Symbol"
+      > <a name="3661" class="Symbol"
       >:</a
-      ><a name="3662"
-      > </a
-      ><a name="3663" class="Symbol"
+      > <a name="3663" class="Symbol"
       >&#8704;</a
-      ><a name="3664"
-      > </a
-      ><a name="3665" class="Symbol"
+      > <a name="3665" class="Symbol"
       >{</a
       ><a name="3666" href="Algebra.Monoid-solver.html#3666" class="Bound"
       >n</a
       ><a name="3667" class="Symbol"
       >}</a
-      ><a name="3668"
-      > </a
-      ><a name="3669" class="Symbol"
+      > <a name="3669" class="Symbol"
       >(</a
       ><a name="3670" href="Algebra.Monoid-solver.html#3670" class="Bound"
       >e&#8321;</a
-      ><a name="3672"
-      > </a
-      ><a name="3673" href="Algebra.Monoid-solver.html#3673" class="Bound"
+      > <a name="3673" href="Algebra.Monoid-solver.html#3673" class="Bound"
       >e&#8322;</a
-      ><a name="3675"
-      > </a
-      ><a name="3676" class="Symbol"
+      > <a name="3676" class="Symbol"
       >:</a
-      ><a name="3677"
-      > </a
-      ><a name="3678" href="Algebra.Monoid-solver.html#1139" class="Datatype"
+      > <a name="3678" href="Algebra.Monoid-solver.html#Expr" class="Datatype"
       >Expr</a
-      ><a name="3682"
-      > </a
-      ><a name="3683" href="Algebra.Monoid-solver.html#3666" class="Bound"
+      > <a name="3683" href="Algebra.Monoid-solver.html#3666" class="Bound"
       >n</a
       ><a name="3684" class="Symbol"
       >)</a
-      ><a name="3685"
-      > </a
-      ><a name="3686" class="Symbol"
+      > <a name="3686" class="Symbol"
       >&#8594;</a
-      ><a name="3687"
-      > </a
-      ><a name="3688" href="Data.Maybe.Base.html#335" class="Datatype"
+      > <a name="3688" href="Data.Maybe.Base.html#Maybe" class="Datatype"
       >Maybe</a
-      ><a name="3693"
-      > </a
-      ><a name="3694" class="Symbol"
+      > <a name="3694" class="Symbol"
       >(&#8704;</a
-      ><a name="3696"
-      > </a
-      ><a name="3697" href="Algebra.Monoid-solver.html#3697" class="Bound"
+      > <a name="3697" href="Algebra.Monoid-solver.html#3697" class="Bound"
       >&#961;</a
-      ><a name="3698"
-      > </a
-      ><a name="3699" class="Symbol"
+      > <a name="3699" class="Symbol"
       >&#8594;</a
-      ><a name="3700"
-      > </a
-      ><a name="3701" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="3701" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="3702"
-      > </a
-      ><a name="3703" href="Algebra.Monoid-solver.html#3670" class="Bound"
+      > <a name="3703" href="Algebra.Monoid-solver.html#3670" class="Bound"
       >e&#8321;</a
-      ><a name="3705"
-      > </a
-      ><a name="3706" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="3706" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="3707"
-      > </a
-      ><a name="3708" href="Algebra.Monoid-solver.html#3697" class="Bound"
+      > <a name="3708" href="Algebra.Monoid-solver.html#3697" class="Bound"
       >&#961;</a
-      ><a name="3709"
-      > </a
-      ><a name="3710" href="Algebra.html#1254" class="Field Operator"
+      > <a name="3710" href="Algebra.html#1254" class="Field Operator"
       >&#8776;</a
-      ><a name="3711"
-      > </a
-      ><a name="3712" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="3712" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="3713"
-      > </a
-      ><a name="3714" href="Algebra.Monoid-solver.html#3673" class="Bound"
+      > <a name="3714" href="Algebra.Monoid-solver.html#3673" class="Bound"
       >e&#8322;</a
-      ><a name="3716"
-      > </a
-      ><a name="3717" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="3717" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="3718"
-      > </a
-      ><a name="3719" href="Algebra.Monoid-solver.html#3697" class="Bound"
+      > <a name="3719" href="Algebra.Monoid-solver.html#3697" class="Bound"
       >&#961;</a
       ><a name="3720" class="Symbol"
       >)</a
-      ><a name="3721"
       >
-</a
-      ><a name="3722" href="Algebra.Monoid-solver.html#3654" class="Function"
+<a name="3722" href="Algebra.Monoid-solver.html#prove&#8242;" class="Function"
       >prove&#8242;</a
-      ><a name="3728"
-      > </a
-      ><a name="3729" href="Algebra.Monoid-solver.html#3729" class="Bound"
+      > <a name="3729" href="Algebra.Monoid-solver.html#3729" class="Bound"
       >e&#8321;</a
-      ><a name="3731"
-      > </a
-      ><a name="3732" href="Algebra.Monoid-solver.html#3732" class="Bound"
+      > <a name="3732" href="Algebra.Monoid-solver.html#3732" class="Bound"
       >e&#8322;</a
-      ><a name="3734"
-      > </a
-      ><a name="3735" class="Symbol"
+      > <a name="3735" class="Symbol"
       >=</a
-      ><a name="3736"
       >
-  </a
-      ><a name="3739" href="Data.Maybe.Base.html#1797" class="Function"
+  <a name="3739" href="Data.Maybe.Base.html#map" class="Function"
       >Maybe.map</a
-      ><a name="3748"
-      > </a
-      ><a name="3749" href="Algebra.Monoid-solver.html#3808" class="Function"
+      > <a name="3749" href="Algebra.Monoid-solver.html#3808" class="Function"
       >lemma</a
-      ><a name="3754"
-      > </a
-      ><a name="3755" href="Function.html#1835" class="Function Operator"
+      > <a name="3755" href="Function.html#_$_" class="Function Operator"
       >$</a
-      ><a name="3756"
-      > </a
-      ><a name="3757" href="Data.Maybe.Base.html#1043" class="Function"
+      > <a name="3757" href="Data.Maybe.Base.html#decToMaybe" class="Function"
       >decToMaybe</a
-      ><a name="3767"
-      > </a
-      ><a name="3768" class="Symbol"
+      > <a name="3768" class="Symbol"
       >(</a
-      ><a name="3769" href="Algebra.Monoid-solver.html#1866" class="Function"
+      ><a name="3769" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="3778"
-      > </a
-      ><a name="3779" href="Algebra.Monoid-solver.html#3729" class="Bound"
+      > <a name="3779" href="Algebra.Monoid-solver.html#3729" class="Bound"
       >e&#8321;</a
-      ><a name="3781"
-      > </a
-      ><a name="3782" href="Algebra.Monoid-solver.html#3383" class="Function Operator"
+      > <a name="3782" href="Algebra.Monoid-solver.html#_&#8799;_" class="Function Operator"
       >&#8799;</a
-      ><a name="3783"
-      > </a
-      ><a name="3784" href="Algebra.Monoid-solver.html#1866" class="Function"
+      > <a name="3784" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="3793"
-      > </a
-      ><a name="3794" href="Algebra.Monoid-solver.html#3732" class="Bound"
+      > <a name="3794" href="Algebra.Monoid-solver.html#3732" class="Bound"
       >e&#8322;</a
       ><a name="3796" class="Symbol"
       >)</a
-      ><a name="3797"
       >
-  </a
-      ><a name="3800" class="Keyword"
+  <a name="3800" class="Keyword"
       >where</a
-      ><a name="3805"
       >
-  </a
-      ><a name="3808" href="Algebra.Monoid-solver.html#3808" class="Function"
+  <a name="3808" href="Algebra.Monoid-solver.html#3808" class="Function"
       >lemma</a
-      ><a name="3813"
-      > </a
-      ><a name="3814" class="Symbol"
+      > <a name="3814" class="Symbol"
       >:</a
-      ><a name="3815"
-      > </a
-      ><a name="3816" href="Algebra.Monoid-solver.html#1866" class="Function"
+      > <a name="3816" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="3825"
-      > </a
-      ><a name="3826" href="Algebra.Monoid-solver.html#3729" class="Bound"
+      > <a name="3826" href="Algebra.Monoid-solver.html#3729" class="Bound"
       >e&#8321;</a
-      ><a name="3828"
-      > </a
-      ><a name="3829" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="3829" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="3830"
-      > </a
-      ><a name="3831" href="Algebra.Monoid-solver.html#1866" class="Function"
+      > <a name="3831" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="3840"
-      > </a
-      ><a name="3841" href="Algebra.Monoid-solver.html#3732" class="Bound"
+      > <a name="3841" href="Algebra.Monoid-solver.html#3732" class="Bound"
       >e&#8322;</a
-      ><a name="3843"
-      > </a
-      ><a name="3844" class="Symbol"
+      > <a name="3844" class="Symbol"
       >&#8594;</a
-      ><a name="3845"
-      > </a
-      ><a name="3846" class="Symbol"
+      > <a name="3846" class="Symbol"
       >&#8704;</a
-      ><a name="3847"
-      > </a
-      ><a name="3848" href="Algebra.Monoid-solver.html#3848" class="Bound"
+      > <a name="3848" href="Algebra.Monoid-solver.html#3848" class="Bound"
       >&#961;</a
-      ><a name="3849"
-      > </a
-      ><a name="3850" class="Symbol"
+      > <a name="3850" class="Symbol"
       >&#8594;</a
-      ><a name="3851"
-      > </a
-      ><a name="3852" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="3852" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="3853"
-      > </a
-      ><a name="3854" href="Algebra.Monoid-solver.html#3729" class="Bound"
+      > <a name="3854" href="Algebra.Monoid-solver.html#3729" class="Bound"
       >e&#8321;</a
-      ><a name="3856"
-      > </a
-      ><a name="3857" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="3857" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="3858"
-      > </a
-      ><a name="3859" href="Algebra.Monoid-solver.html#3848" class="Bound"
+      > <a name="3859" href="Algebra.Monoid-solver.html#3848" class="Bound"
       >&#961;</a
-      ><a name="3860"
-      > </a
-      ><a name="3861" href="Algebra.html#1254" class="Field Operator"
+      > <a name="3861" href="Algebra.html#1254" class="Field Operator"
       >&#8776;</a
-      ><a name="3862"
-      > </a
-      ><a name="3863" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="3863" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="3864"
-      > </a
-      ><a name="3865" href="Algebra.Monoid-solver.html#3732" class="Bound"
+      > <a name="3865" href="Algebra.Monoid-solver.html#3732" class="Bound"
       >e&#8322;</a
-      ><a name="3867"
-      > </a
-      ><a name="3868" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="3868" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="3869"
-      > </a
-      ><a name="3870" href="Algebra.Monoid-solver.html#3848" class="Bound"
+      > <a name="3870" href="Algebra.Monoid-solver.html#3848" class="Bound"
       >&#961;</a
-      ><a name="3871"
       >
-  </a
-      ><a name="3874" href="Algebra.Monoid-solver.html#3808" class="Function"
+  <a name="3874" href="Algebra.Monoid-solver.html#3808" class="Function"
       >lemma</a
-      ><a name="3879"
-      > </a
-      ><a name="3880" href="Algebra.Monoid-solver.html#3880" class="Bound"
+      > <a name="3880" href="Algebra.Monoid-solver.html#3880" class="Bound"
       >eq</a
-      ><a name="3882"
-      > </a
-      ><a name="3883" href="Algebra.Monoid-solver.html#3883" class="Bound"
+      > <a name="3883" href="Algebra.Monoid-solver.html#3883" class="Bound"
       >&#961;</a
-      ><a name="3884"
-      > </a
-      ><a name="3885" class="Symbol"
+      > <a name="3885" class="Symbol"
       >=</a
-      ><a name="3886"
       >
-    </a
-      ><a name="3891" href="Relation.Binary.Reflection.html#1696" class="Function"
+    <a name="3891" href="Relation.Binary.Reflection.html#prove" class="Function"
       >R.prove</a
-      ><a name="3898"
-      > </a
-      ><a name="3899" href="Algebra.Monoid-solver.html#3883" class="Bound"
+      > <a name="3899" href="Algebra.Monoid-solver.html#3883" class="Bound"
       >&#961;</a
-      ><a name="3900"
-      > </a
-      ><a name="3901" href="Algebra.Monoid-solver.html#3729" class="Bound"
+      > <a name="3901" href="Algebra.Monoid-solver.html#3729" class="Bound"
       >e&#8321;</a
-      ><a name="3903"
-      > </a
-      ><a name="3904" href="Algebra.Monoid-solver.html#3732" class="Bound"
+      > <a name="3904" href="Algebra.Monoid-solver.html#3732" class="Bound"
       >e&#8322;</a
-      ><a name="3906"
-      > </a
-      ><a name="3907" class="Symbol"
+      > <a name="3907" class="Symbol"
       >(</a
-      ><a name="3908" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      ><a name="3908" href="Relation.Binary.PreorderReasoning.html#begin_" class="Function Operator"
       >begin</a
-      ><a name="3913"
       >
-      </a
-      ><a name="3920" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      <a name="3920" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="3921"
-      > </a
-      ><a name="3922" href="Algebra.Monoid-solver.html#1866" class="Function"
+      > <a name="3922" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="3931"
-      > </a
-      ><a name="3932" href="Algebra.Monoid-solver.html#3729" class="Bound"
+      > <a name="3932" href="Algebra.Monoid-solver.html#3729" class="Bound"
       >e&#8321;</a
-      ><a name="3934"
-      > </a
-      ><a name="3935" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="3935" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="3937"
-      > </a
-      ><a name="3938" href="Algebra.Monoid-solver.html#3883" class="Bound"
+      > <a name="3938" href="Algebra.Monoid-solver.html#3883" class="Bound"
       >&#961;</a
-      ><a name="3939"
-      >  </a
-      ><a name="3941" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
+      >  <a name="3941" href="Relation.Binary.PreorderReasoning.html#_&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#8801;&#10216;</a
-      ><a name="3943"
-      > </a
-      ><a name="3944" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
+      > <a name="3944" href="Relation.Binary.PropositionalEquality.html#cong" class="Function"
       >P.cong</a
-      ><a name="3950"
-      > </a
-      ><a name="3951" class="Symbol"
+      > <a name="3951" class="Symbol"
       >(&#955;</a
-      ><a name="3953"
-      > </a
-      ><a name="3954" href="Algebra.Monoid-solver.html#3954" class="Bound"
+      > <a name="3954" href="Algebra.Monoid-solver.html#3954" class="Bound"
       >e</a
-      ><a name="3955"
-      > </a
-      ><a name="3956" class="Symbol"
+      > <a name="3956" class="Symbol"
       >&#8594;</a
-      ><a name="3957"
-      > </a
-      ><a name="3958" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="3958" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="3959"
-      > </a
-      ><a name="3960" href="Algebra.Monoid-solver.html#3954" class="Bound"
+      > <a name="3960" href="Algebra.Monoid-solver.html#3954" class="Bound"
       >e</a
-      ><a name="3961"
-      > </a
-      ><a name="3962" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="3962" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="3964"
-      > </a
-      ><a name="3965" href="Algebra.Monoid-solver.html#3883" class="Bound"
+      > <a name="3965" href="Algebra.Monoid-solver.html#3883" class="Bound"
       >&#961;</a
       ><a name="3966" class="Symbol"
       >)</a
-      ><a name="3967"
-      > </a
-      ><a name="3968" href="Algebra.Monoid-solver.html#3880" class="Bound"
+      > <a name="3968" href="Algebra.Monoid-solver.html#3880" class="Bound"
       >eq</a
-      ><a name="3970"
-      > </a
-      ><a name="3971" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
+      > <a name="3971" href="Relation.Binary.PreorderReasoning.html#_&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="3972"
       >
-      </a
-      ><a name="3979" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      <a name="3979" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10214;</a
-      ><a name="3980"
-      > </a
-      ><a name="3981" href="Algebra.Monoid-solver.html#1866" class="Function"
+      > <a name="3981" href="Algebra.Monoid-solver.html#normalise" class="Function"
       >normalise</a
-      ><a name="3990"
-      > </a
-      ><a name="3991" href="Algebra.Monoid-solver.html#3732" class="Bound"
+      > <a name="3991" href="Algebra.Monoid-solver.html#3732" class="Bound"
       >e&#8322;</a
-      ><a name="3993"
-      > </a
-      ><a name="3994" href="Algebra.Monoid-solver.html#1748" class="Function Operator"
+      > <a name="3994" href="Algebra.Monoid-solver.html#&#10214;_&#10215;&#8659;" class="Function Operator"
       >&#10215;&#8659;</a
-      ><a name="3996"
-      > </a
-      ><a name="3997" href="Algebra.Monoid-solver.html#3883" class="Bound"
+      > <a name="3997" href="Algebra.Monoid-solver.html#3883" class="Bound"
       >&#961;</a
-      ><a name="3998"
-      >  </a
-      ><a name="4000" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >  <a name="4000" href="Relation.Binary.PreorderReasoning.html#_&#8718;" class="Function Operator"
       >&#8718;</a
       ><a name="4001" class="Symbol"
       >)</a
-      ><a name="4002"
       >
 
-</a
-      ><a name="4004" class="Comment"
+<a name="4004" class="Comment"
       >-- This procedure can be combined with from-just.</a
-      ><a name="4053"
       >
 
-</a
-      ><a name="4055" href="Algebra.Monoid-solver.html#4055" class="Function"
+<a name="prove" href="Algebra.Monoid-solver.html#prove" class="Function"
       >prove</a
-      ><a name="4060"
-      > </a
-      ><a name="4061" class="Symbol"
+      > <a name="4061" class="Symbol"
       >:</a
-      ><a name="4062"
-      > </a
-      ><a name="4063" class="Symbol"
+      > <a name="4063" class="Symbol"
       >&#8704;</a
-      ><a name="4064"
-      > </a
-      ><a name="4065" href="Algebra.Monoid-solver.html#4065" class="Bound"
+      > <a name="4065" href="Algebra.Monoid-solver.html#4065" class="Bound"
       >n</a
-      ><a name="4066"
-      > </a
-      ><a name="4067" class="Symbol"
+      > <a name="4067" class="Symbol"
       >(</a
       ><a name="4068" href="Algebra.Monoid-solver.html#4068" class="Bound"
       >es</a
-      ><a name="4070"
-      > </a
-      ><a name="4071" class="Symbol"
+      > <a name="4071" class="Symbol"
       >:</a
-      ><a name="4072"
-      > </a
-      ><a name="4073" href="Algebra.Monoid-solver.html#1139" class="Datatype"
+      > <a name="4073" href="Algebra.Monoid-solver.html#Expr" class="Datatype"
       >Expr</a
-      ><a name="4077"
-      > </a
-      ><a name="4078" href="Algebra.Monoid-solver.html#4065" class="Bound"
+      > <a name="4078" href="Algebra.Monoid-solver.html#4065" class="Bound"
       >n</a
-      ><a name="4079"
-      > </a
-      ><a name="4080" href="Data.Product.html#1073" class="Function Operator"
+      > <a name="4080" href="Data.Product.html#_&#215;_" class="Function Operator"
       >&#215;</a
-      ><a name="4081"
-      > </a
-      ><a name="4082" href="Algebra.Monoid-solver.html#1139" class="Datatype"
+      > <a name="4082" href="Algebra.Monoid-solver.html#Expr" class="Datatype"
       >Expr</a
-      ><a name="4086"
-      > </a
-      ><a name="4087" href="Algebra.Monoid-solver.html#4065" class="Bound"
+      > <a name="4087" href="Algebra.Monoid-solver.html#4065" class="Bound"
       >n</a
       ><a name="4088" class="Symbol"
       >)</a
-      ><a name="4089"
-      > </a
-      ><a name="4090" class="Symbol"
+      > <a name="4090" class="Symbol"
       >&#8594;</a
-      ><a name="4091"
       >
-        </a
-      ><a name="4100" href="Data.Maybe.Base.html#1562" class="Function"
+        <a name="4100" href="Data.Maybe.Base.html#From-just" class="Function"
       >From-just</a
-      ><a name="4109"
-      > </a
-      ><a name="4110" class="Symbol"
+      > <a name="4110" class="Symbol"
       >(&#8704;</a
-      ><a name="4112"
-      > </a
-      ><a name="4113" href="Algebra.Monoid-solver.html#4113" class="Bound"
+      > <a name="4113" href="Algebra.Monoid-solver.html#4113" class="Bound"
       >&#961;</a
-      ><a name="4114"
-      > </a
-      ><a name="4115" class="Symbol"
+      > <a name="4115" class="Symbol"
       >&#8594;</a
-      ><a name="4116"
-      > </a
-      ><a name="4117" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="4117" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="4118"
-      > </a
-      ><a name="4119" href="Data.Product.html#525" class="Field"
+      > <a name="4119" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="4124"
-      > </a
-      ><a name="4125" href="Algebra.Monoid-solver.html#4068" class="Bound"
+      > <a name="4125" href="Algebra.Monoid-solver.html#4068" class="Bound"
       >es</a
-      ><a name="4127"
-      > </a
-      ><a name="4128" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="4128" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="4129"
-      > </a
-      ><a name="4130" href="Algebra.Monoid-solver.html#4113" class="Bound"
+      > <a name="4130" href="Algebra.Monoid-solver.html#4113" class="Bound"
       >&#961;</a
-      ><a name="4131"
-      > </a
-      ><a name="4132" href="Algebra.html#1254" class="Field Operator"
+      > <a name="4132" href="Algebra.html#1254" class="Field Operator"
       >&#8776;</a
-      ><a name="4133"
-      > </a
-      ><a name="4134" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="4134" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="4135"
-      > </a
-      ><a name="4136" href="Data.Product.html#539" class="Field"
+      > <a name="4136" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
       >proj&#8322;</a
-      ><a name="4141"
-      > </a
-      ><a name="4142" href="Algebra.Monoid-solver.html#4068" class="Bound"
+      > <a name="4142" href="Algebra.Monoid-solver.html#4068" class="Bound"
       >es</a
-      ><a name="4144"
-      > </a
-      ><a name="4145" href="Algebra.Monoid-solver.html#1417" class="Function Operator"
+      > <a name="4145" href="Algebra.Monoid-solver.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="4146"
-      > </a
-      ><a name="4147" href="Algebra.Monoid-solver.html#4113" class="Bound"
+      > <a name="4147" href="Algebra.Monoid-solver.html#4113" class="Bound"
       >&#961;</a
       ><a name="4148" class="Symbol"
       >)</a
-      ><a name="4149"
       >
-                  </a
-      ><a name="4168" class="Symbol"
+                  <a name="4168" class="Symbol"
       >(</a
-      ><a name="4169" href="Data.Product.html#2846" class="Function"
+      ><a name="4169" href="Data.Product.html#uncurry" class="Function"
       >uncurry</a
-      ><a name="4176"
-      > </a
-      ><a name="4177" href="Algebra.Monoid-solver.html#3654" class="Function"
+      > <a name="4177" href="Algebra.Monoid-solver.html#prove&#8242;" class="Function"
       >prove&#8242;</a
-      ><a name="4183"
-      > </a
-      ><a name="4184" href="Algebra.Monoid-solver.html#4068" class="Bound"
+      > <a name="4184" href="Algebra.Monoid-solver.html#4068" class="Bound"
       >es</a
       ><a name="4186" class="Symbol"
       >)</a
-      ><a name="4187"
       >
-</a
-      ><a name="4188" href="Algebra.Monoid-solver.html#4055" class="Function"
+<a name="4188" href="Algebra.Monoid-solver.html#prove" class="Function"
       >prove</a
-      ><a name="4193"
-      > </a
-      ><a name="4194" class="Symbol"
+      > <a name="4194" class="Symbol"
       >_</a
-      ><a name="4195"
-      > </a
-      ><a name="4196" class="Symbol"
+      > <a name="4196" class="Symbol"
       >=</a
-      ><a name="4197"
-      > </a
-      ><a name="4198" href="Data.Maybe.Base.html#1666" class="Function"
+      > <a name="4198" href="Data.Maybe.Base.html#from-just" class="Function"
       >from-just</a
-      ><a name="4207"
-      > </a
-      ><a name="4208" href="Function.html#713" class="Function Operator"
+      > <a name="4208" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="4209"
-      > </a
-      ><a name="4210" href="Data.Product.html#2846" class="Function"
+      > <a name="4210" href="Data.Product.html#uncurry" class="Function"
       >uncurry</a
-      ><a name="4217"
-      > </a
-      ><a name="4218" href="Algebra.Monoid-solver.html#3654" class="Function"
+      > <a name="4218" href="Algebra.Monoid-solver.html#prove&#8242;" class="Function"
       >prove&#8242;</a
-      ><a name="4224"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

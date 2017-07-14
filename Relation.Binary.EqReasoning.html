@@ -11,261 +11,155 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Convenient syntax for equational reasoning</a
-      ><a name="151"
       >
-</a
-      ><a name="152" class="Comment"
+<a name="152" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="224"
       >
 
-</a
-      ><a name="226" class="Comment"
+<a name="226" class="Comment"
       >-- Example use:</a
-      ><a name="241"
       >
 
-</a
-      ><a name="243" class="Comment"
+<a name="243" class="Comment"
       >-- n*0&#8801;0 : &#8704; n &#8594; n * 0 &#8801; 0</a
-      ><a name="269"
       >
-</a
-      ><a name="270" class="Comment"
+<a name="270" class="Comment"
       >-- n*0&#8801;0 zero    = refl</a
-      ><a name="293"
       >
-</a
-      ><a name="294" class="Comment"
+<a name="294" class="Comment"
       >-- n*0&#8801;0 (suc n) =</a
-      ><a name="312"
       >
-</a
-      ><a name="313" class="Comment"
+<a name="313" class="Comment"
       >--   begin</a
-      ><a name="323"
       >
-</a
-      ><a name="324" class="Comment"
+<a name="324" class="Comment"
       >--     suc n * 0</a
-      ><a name="340"
       >
-</a
-      ><a name="341" class="Comment"
+<a name="341" class="Comment"
       >--   &#8776;&#10216; refl &#10217;</a
-      ><a name="355"
       >
-</a
-      ><a name="356" class="Comment"
+<a name="356" class="Comment"
       >--     n * 0 + 0</a
-      ><a name="372"
       >
-</a
-      ><a name="373" class="Comment"
+<a name="373" class="Comment"
       >--   &#8776;&#10216; ... &#10217;</a
-      ><a name="386"
       >
-</a
-      ><a name="387" class="Comment"
+<a name="387" class="Comment"
       >--     n * 0</a
-      ><a name="399"
       >
-</a
-      ><a name="400" class="Comment"
+<a name="400" class="Comment"
       >--   &#8776;&#10216; n*0&#8801;0 n &#10217;</a
-      ><a name="417"
       >
-</a
-      ><a name="418" class="Comment"
+<a name="418" class="Comment"
       >--     0</a
-      ><a name="426"
       >
-</a
-      ><a name="427" class="Comment"
+<a name="427" class="Comment"
       >--   &#8718;</a
-      ><a name="433"
       >
 
-</a
-      ><a name="435" class="Comment"
+<a name="435" class="Comment"
       >-- Module &#8801;-Reasoning in Relation.Binary.PropositionalEquality</a
-      ><a name="497"
       >
-</a
-      ><a name="498" class="Comment"
+<a name="498" class="Comment"
       >-- is recommended for equational reasoning when the underlying equality is</a
-      ><a name="572"
       >
-</a
-      ><a name="573" class="Comment"
+<a name="573" class="Comment"
       >-- Relation.Binary.PropositionalEquality._&#8801;_.</a
-      ><a name="618"
       >
 
-</a
-      ><a name="620" class="Keyword"
+<a name="620" class="Keyword"
       >open</a
-      ><a name="624"
-      > </a
-      ><a name="625" class="Keyword"
+      > <a name="625" class="Keyword"
       >import</a
-      ><a name="631"
-      > </a
-      ><a name="632" href="Relation.Binary.html#1" class="Module"
+      > <a name="632" href="Relation.Binary.html" class="Module"
       >Relation.Binary</a
-      ><a name="647"
       >
 
-</a
-      ><a name="649" class="Keyword"
+<a name="649" class="Keyword"
       >module</a
-      ><a name="655"
-      > </a
-      ><a name="656" href="Relation.Binary.EqReasoning.html#1" class="Module"
+      > <a name="656" href="Relation.Binary.EqReasoning.html" class="Module"
       >Relation.Binary.EqReasoning</a
-      ><a name="683"
-      > </a
-      ><a name="684" class="Symbol"
+      > <a name="684" class="Symbol"
       >{</a
       ><a name="685" href="Relation.Binary.EqReasoning.html#685" class="Bound"
       >s&#8321;</a
-      ><a name="687"
-      > </a
-      ><a name="688" href="Relation.Binary.EqReasoning.html#688" class="Bound"
+      > <a name="688" href="Relation.Binary.EqReasoning.html#688" class="Bound"
       >s&#8322;</a
       ><a name="690" class="Symbol"
       >}</a
-      ><a name="691"
-      > </a
-      ><a name="692" class="Symbol"
+      > <a name="692" class="Symbol"
       >(</a
       ><a name="693" href="Relation.Binary.EqReasoning.html#693" class="Bound"
       >S</a
-      ><a name="694"
-      > </a
-      ><a name="695" class="Symbol"
+      > <a name="695" class="Symbol"
       >:</a
-      ><a name="696"
-      > </a
-      ><a name="697" href="Relation.Binary.html#1908" class="Record"
+      > <a name="697" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="703"
-      > </a
-      ><a name="704" href="Relation.Binary.EqReasoning.html#685" class="Bound"
+      > <a name="704" href="Relation.Binary.EqReasoning.html#685" class="Bound"
       >s&#8321;</a
-      ><a name="706"
-      > </a
-      ><a name="707" href="Relation.Binary.EqReasoning.html#688" class="Bound"
+      > <a name="707" href="Relation.Binary.EqReasoning.html#688" class="Bound"
       >s&#8322;</a
       ><a name="709" class="Symbol"
       >)</a
-      ><a name="710"
-      > </a
-      ><a name="711" class="Keyword"
+      > <a name="711" class="Keyword"
       >where</a
-      ><a name="716"
       >
 
-</a
-      ><a name="718" class="Keyword"
+<a name="718" class="Keyword"
       >open</a
-      ><a name="722"
-      > </a
-      ><a name="723" href="Relation.Binary.html#1908" class="Module"
+      > <a name="723" href="Relation.Binary.html#Setoid" class="Module"
       >Setoid</a
-      ><a name="729"
-      > </a
-      ><a name="730" href="Relation.Binary.EqReasoning.html#693" class="Bound"
+      > <a name="730" href="Relation.Binary.EqReasoning.html#693" class="Bound"
       >S</a
-      ><a name="731"
       >
-</a
-      ><a name="732" class="Keyword"
+<a name="732" class="Keyword"
       >import</a
-      ><a name="738"
-      > </a
-      ><a name="739" href="Relation.Binary.PreorderReasoning.html#1" class="Module"
+      > <a name="739" href="Relation.Binary.PreorderReasoning.html" class="Module"
       >Relation.Binary.PreorderReasoning</a
-      ><a name="772"
-      > </a
-      ><a name="773" class="Symbol"
+      > <a name="773" class="Symbol"
       >as</a
-      ><a name="775"
-      > </a
-      ><a name="776" class="Module"
+      > <a name="776" class="Module"
       >PreR</a
-      ><a name="780"
       >
-</a
-      ><a name="781" class="Keyword"
+<a name="781" class="Keyword"
       >open</a
-      ><a name="785"
-      > </a
-      ><a name="786" href="Relation.Binary.PreorderReasoning.html#1" class="Module"
+      > <a name="786" href="Relation.Binary.PreorderReasoning.html" class="Module"
       >PreR</a
-      ><a name="790"
-      > </a
-      ><a name="791" href="Relation.Binary.html#2277" class="Function"
+      > <a name="791" href="Relation.Binary.html#2277" class="Function"
       >preorder</a
-      ><a name="799"
-      > </a
-      ><a name="800" class="Keyword"
+      > <a name="800" class="Keyword"
       >public</a
-      ><a name="806"
       >
-       </a
-      ><a name="814" class="Keyword"
+       <a name="814" class="Keyword"
       >renaming</a
-      ><a name="822"
-      > </a
-      ><a name="823" class="Symbol"
+      > <a name="823" class="Symbol"
       >(</a
-      ><a name="824"
-      > _&#8764;&#10216;_&#10217;_  </a
-      ><a name="833" class="Symbol"
+      > _&#8764;&#10216;_&#10217;_  <a name="833" class="Symbol"
       >to</a
-      ><a name="835"
       > _&#8776;&#10216;_&#10217;_
-                </a
-      ><a name="859" class="Symbol"
+                <a name="859" class="Symbol"
       >;</a
-      ><a name="860"
-      > _&#8776;&#10216;_&#10217;_  </a
-      ><a name="869" class="Symbol"
+      > _&#8776;&#10216;_&#10217;_  <a name="869" class="Symbol"
       >to</a
-      ><a name="871"
       > _&#8801;&#10216;_&#10217;_
-                </a
-      ><a name="895" class="Symbol"
+                <a name="895" class="Symbol"
       >;</a
-      ><a name="896"
-      > _&#8776;&#10216;&#10217;_  </a
-      ><a name="904" class="Symbol"
+      > _&#8776;&#10216;&#10217;_  <a name="904" class="Symbol"
       >to</a
-      ><a name="906"
       > _&#8801;&#10216;&#10217;_
-                </a
-      ><a name="929" class="Symbol"
+                <a name="929" class="Symbol"
       >)</a
-      ><a name="930"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

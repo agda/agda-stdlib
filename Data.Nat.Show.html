@@ -11,465 +11,275 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Showing natural numbers</a
-      ><a name="132"
       >
-</a
-      ><a name="133" class="Comment"
+<a name="133" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="205"
       >
 
-</a
-      ><a name="207" class="Keyword"
+<a name="207" class="Keyword"
       >module</a
-      ><a name="213"
-      > </a
-      ><a name="214" href="Data.Nat.Show.html#1" class="Module"
+      > <a name="214" href="Data.Nat.Show.html" class="Module"
       >Data.Nat.Show</a
-      ><a name="227"
-      > </a
-      ><a name="228" class="Keyword"
+      > <a name="228" class="Keyword"
       >where</a
-      ><a name="233"
       >
 
-</a
-      ><a name="235" class="Keyword"
+<a name="235" class="Keyword"
       >open</a
-      ><a name="239"
-      > </a
-      ><a name="240" class="Keyword"
+      > <a name="240" class="Keyword"
       >import</a
-      ><a name="246"
-      > </a
-      ><a name="247" href="Data.Nat.html#1" class="Module"
+      > <a name="247" href="Data.Nat.html" class="Module"
       >Data.Nat</a
-      ><a name="255"
       >
-</a
-      ><a name="256" class="Keyword"
+<a name="256" class="Keyword"
       >open</a
-      ><a name="260"
-      > </a
-      ><a name="261" class="Keyword"
+      > <a name="261" class="Keyword"
       >import</a
-      ><a name="267"
-      > </a
-      ><a name="268" href="Relation.Nullary.Decidable.html#1" class="Module"
+      > <a name="268" href="Relation.Nullary.Decidable.html" class="Module"
       >Relation.Nullary.Decidable</a
-      ><a name="294"
-      > </a
-      ><a name="295" class="Keyword"
+      > <a name="295" class="Keyword"
       >using</a
-      ><a name="300"
-      > </a
-      ><a name="301" class="Symbol"
+      > <a name="301" class="Symbol"
       >(</a
-      ><a name="302" href="Relation.Nullary.Decidable.html#897" class="Function"
+      ><a name="302" href="Relation.Nullary.Decidable.html#True" class="Function"
       >True</a
       ><a name="306" class="Symbol"
       >)</a
-      ><a name="307"
       >
-</a
-      ><a name="308" class="Keyword"
+<a name="308" class="Keyword"
       >open</a
-      ><a name="312"
-      > </a
-      ><a name="313" class="Keyword"
+      > <a name="313" class="Keyword"
       >import</a
-      ><a name="319"
-      > </a
-      ><a name="320" href="Data.String.Base.html#1" class="Module"
+      > <a name="320" href="Data.String.Base.html" class="Module"
       >Data.String.Base</a
-      ><a name="336"
-      > </a
-      ><a name="337" class="Symbol"
+      > <a name="337" class="Symbol"
       >as</a
-      ><a name="339"
-      > </a
-      ><a name="340" class="Module"
+      > <a name="340" class="Module"
       >String</a
-      ><a name="346"
-      > </a
-      ><a name="347" class="Keyword"
+      > <a name="347" class="Keyword"
       >using</a
-      ><a name="352"
-      > </a
-      ><a name="353" class="Symbol"
+      > <a name="353" class="Symbol"
       >(</a
-      ><a name="354" href="Agda.Builtin.String.html#165" class="Postulate"
+      ><a name="354" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
       ><a name="360" class="Symbol"
       >)</a
-      ><a name="361"
       >
-</a
-      ><a name="362" class="Keyword"
+<a name="362" class="Keyword"
       >open</a
-      ><a name="366"
-      > </a
-      ><a name="367" class="Keyword"
+      > <a name="367" class="Keyword"
       >import</a
-      ><a name="373"
-      > </a
-      ><a name="374" href="Data.Digit.html#1" class="Module"
+      > <a name="374" href="Data.Digit.html" class="Module"
       >Data.Digit</a
-      ><a name="384"
       >
-</a
-      ><a name="385" class="Keyword"
+<a name="385" class="Keyword"
       >open</a
-      ><a name="389"
-      > </a
-      ><a name="390" class="Keyword"
+      > <a name="390" class="Keyword"
       >import</a
-      ><a name="396"
-      > </a
-      ><a name="397" href="Data.Product.html#1" class="Module"
+      > <a name="397" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="409"
-      > </a
-      ><a name="410" class="Keyword"
+      > <a name="410" class="Keyword"
       >using</a
-      ><a name="415"
-      > </a
-      ><a name="416" class="Symbol"
+      > <a name="416" class="Symbol"
       >(</a
-      ><a name="417" href="Data.Product.html#525" class="Field"
+      ><a name="417" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
       ><a name="422" class="Symbol"
       >)</a
-      ><a name="423"
       >
-</a
-      ><a name="424" class="Keyword"
+<a name="424" class="Keyword"
       >open</a
-      ><a name="428"
-      > </a
-      ><a name="429" class="Keyword"
+      > <a name="429" class="Keyword"
       >import</a
-      ><a name="435"
-      > </a
-      ><a name="436" href="Function.html#1" class="Module"
+      > <a name="436" href="Function.html" class="Module"
       >Function</a
-      ><a name="444"
       >
-</a
-      ><a name="445" class="Keyword"
+<a name="445" class="Keyword"
       >open</a
-      ><a name="449"
-      > </a
-      ><a name="450" class="Keyword"
+      > <a name="450" class="Keyword"
       >import</a
-      ><a name="456"
-      > </a
-      ><a name="457" href="Data.List.Base.html#1" class="Module"
+      > <a name="457" href="Data.List.Base.html" class="Module"
       >Data.List.Base</a
-      ><a name="471"
       >
 
-</a
-      ><a name="473" class="Comment"
+<a name="473" class="Comment"
       >-- showInBase b n is a string containing the representation of n in</a
-      ><a name="540"
       >
-</a
-      ><a name="541" class="Comment"
+<a name="541" class="Comment"
       >-- base b.</a
-      ><a name="551"
       >
 
-</a
-      ><a name="553" href="Data.Nat.Show.html#553" class="Function"
+<a name="showInBase" href="Data.Nat.Show.html#showInBase" class="Function"
       >showInBase</a
-      ><a name="563"
-      > </a
-      ><a name="564" class="Symbol"
+      > <a name="564" class="Symbol"
       >:</a
-      ><a name="565"
-      > </a
-      ><a name="566" class="Symbol"
+      > <a name="566" class="Symbol"
       >(</a
       ><a name="567" href="Data.Nat.Show.html#567" class="Bound"
       >base</a
-      ><a name="571"
-      > </a
-      ><a name="572" class="Symbol"
+      > <a name="572" class="Symbol"
       >:</a
-      ><a name="573"
-      > </a
-      ><a name="574" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="574" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
       ><a name="575" class="Symbol"
       >)</a
-      ><a name="576"
       >
-             </a
-      ><a name="590" class="Symbol"
+             <a name="590" class="Symbol"
       >{</a
       ><a name="591" href="Data.Nat.Show.html#591" class="Bound"
       >base&#8805;2</a
-      ><a name="597"
-      > </a
-      ><a name="598" class="Symbol"
+      > <a name="598" class="Symbol"
       >:</a
-      ><a name="599"
-      > </a
-      ><a name="600" href="Relation.Nullary.Decidable.html#897" class="Function"
+      > <a name="600" href="Relation.Nullary.Decidable.html#True" class="Function"
       >True</a
-      ><a name="604"
-      > </a
-      ><a name="605" class="Symbol"
+      > <a name="605" class="Symbol"
       >(</a
       ><a name="606" class="Number"
       >2</a
-      ><a name="607"
-      > </a
-      ><a name="608" href="Data.Nat.Base.html#3509" class="Function Operator"
+      > <a name="608" href="Data.Nat.Base.html#_&#8804;?_" class="Function Operator"
       >&#8804;?</a
-      ><a name="610"
-      > </a
-      ><a name="611" href="Data.Nat.Show.html#567" class="Bound"
+      > <a name="611" href="Data.Nat.Show.html#567" class="Bound"
       >base</a
       ><a name="615" class="Symbol"
       >)}</a
-      ><a name="617"
       >
-             </a
-      ><a name="631" class="Symbol"
+             <a name="631" class="Symbol"
       >{</a
       ><a name="632" href="Data.Nat.Show.html#632" class="Bound"
       >base&#8804;16</a
-      ><a name="639"
-      > </a
-      ><a name="640" class="Symbol"
+      > <a name="640" class="Symbol"
       >:</a
-      ><a name="641"
-      > </a
-      ><a name="642" href="Relation.Nullary.Decidable.html#897" class="Function"
+      > <a name="642" href="Relation.Nullary.Decidable.html#True" class="Function"
       >True</a
-      ><a name="646"
-      > </a
-      ><a name="647" class="Symbol"
+      > <a name="647" class="Symbol"
       >(</a
       ><a name="648" href="Data.Nat.Show.html#567" class="Bound"
       >base</a
-      ><a name="652"
-      > </a
-      ><a name="653" href="Data.Nat.Base.html#3509" class="Function Operator"
+      > <a name="653" href="Data.Nat.Base.html#_&#8804;?_" class="Function Operator"
       >&#8804;?</a
-      ><a name="655"
-      > </a
-      ><a name="656" class="Number"
+      > <a name="656" class="Number"
       >16</a
       ><a name="658" class="Symbol"
       >)}</a
-      ><a name="660"
-      > </a
-      ><a name="661" class="Symbol"
+      > <a name="661" class="Symbol"
       >&#8594;</a
-      ><a name="662"
       >
-             </a
-      ><a name="676" href="Agda.Builtin.Nat.html#97" class="Datatype"
+             <a name="676" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="677"
-      > </a
-      ><a name="678" class="Symbol"
+      > <a name="678" class="Symbol"
       >&#8594;</a
-      ><a name="679"
-      > </a
-      ><a name="680" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="680" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="686"
       >
-</a
-      ><a name="687" href="Data.Nat.Show.html#553" class="Function"
+<a name="687" href="Data.Nat.Show.html#showInBase" class="Function"
       >showInBase</a
-      ><a name="697"
-      > </a
-      ><a name="698" href="Data.Nat.Show.html#698" class="Bound"
+      > <a name="698" href="Data.Nat.Show.html#698" class="Bound"
       >base</a
-      ><a name="702"
-      > </a
-      ><a name="703" class="Symbol"
+      > <a name="703" class="Symbol"
       >{</a
       ><a name="704" href="Data.Nat.Show.html#704" class="Bound"
       >base&#8805;2</a
       ><a name="710" class="Symbol"
       >}</a
-      ><a name="711"
-      > </a
-      ><a name="712" class="Symbol"
+      > <a name="712" class="Symbol"
       >{</a
       ><a name="713" href="Data.Nat.Show.html#713" class="Bound"
       >base&#8804;16</a
       ><a name="720" class="Symbol"
       >}</a
-      ><a name="721"
-      > </a
-      ><a name="722" href="Data.Nat.Show.html#722" class="Bound"
+      > <a name="722" href="Data.Nat.Show.html#722" class="Bound"
       >n</a
-      ><a name="723"
-      > </a
-      ><a name="724" class="Symbol"
+      > <a name="724" class="Symbol"
       >=</a
-      ><a name="725"
       >
-  </a
-      ><a name="728" href="Data.String.Base.html#985" class="Function"
+  <a name="728" href="Data.String.Base.html#fromList" class="Function"
       >String.fromList</a
-      ><a name="743"
-      > </a
-      ><a name="744" href="Function.html#1835" class="Function Operator"
+      > <a name="744" href="Function.html#_$_" class="Function Operator"
       >$</a
-      ><a name="745"
       >
-  </a
-      ><a name="748" href="Data.List.Base.html#1207" class="Function"
+  <a name="748" href="Data.List.Base.html#map" class="Function"
       >map</a
-      ><a name="751"
-      > </a
-      ><a name="752" class="Symbol"
+      > <a name="752" class="Symbol"
       >(</a
-      ><a name="753" href="Data.Digit.html#1807" class="Function"
+      ><a name="753" href="Data.Digit.html#showDigit" class="Function"
       >showDigit</a
-      ><a name="762"
-      > </a
-      ><a name="763" class="Symbol"
+      > <a name="763" class="Symbol"
       >{</a
       ><a name="764" class="Argument"
       >base&#8804;16</a
-      ><a name="771"
-      > </a
-      ><a name="772" class="Symbol"
+      > <a name="772" class="Symbol"
       >=</a
-      ><a name="773"
-      > </a
-      ><a name="774" href="Data.Nat.Show.html#713" class="Bound"
+      > <a name="774" href="Data.Nat.Show.html#713" class="Bound"
       >base&#8804;16</a
       ><a name="781" class="Symbol"
       >})</a
-      ><a name="783"
-      > </a
-      ><a name="784" href="Function.html#1835" class="Function Operator"
+      > <a name="784" href="Function.html#_$_" class="Function Operator"
       >$</a
-      ><a name="785"
       >
-  </a
-      ><a name="788" href="Data.List.Base.html#2815" class="Function"
+  <a name="788" href="Data.List.Base.html#reverse" class="Function"
       >reverse</a
-      ><a name="795"
-      > </a
-      ><a name="796" href="Function.html#1835" class="Function Operator"
+      > <a name="796" href="Function.html#_$_" class="Function Operator"
       >$</a
-      ><a name="797"
       >
-  </a
-      ><a name="800" href="Data.Product.html#525" class="Field"
+  <a name="800" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="805"
-      > </a
-      ><a name="806" href="Function.html#1835" class="Function Operator"
+      > <a name="806" href="Function.html#_$_" class="Function Operator"
       >$</a
-      ><a name="807"
-      > </a
-      ><a name="808" href="Data.Digit.html#2526" class="Function"
+      > <a name="808" href="Data.Digit.html#toDigits" class="Function"
       >toDigits</a
-      ><a name="816"
-      > </a
-      ><a name="817" href="Data.Nat.Show.html#698" class="Bound"
+      > <a name="817" href="Data.Nat.Show.html#698" class="Bound"
       >base</a
-      ><a name="821"
-      > </a
-      ><a name="822" class="Symbol"
+      > <a name="822" class="Symbol"
       >{</a
       ><a name="823" class="Argument"
       >base&#8805;2</a
-      ><a name="829"
-      > </a
-      ><a name="830" class="Symbol"
+      > <a name="830" class="Symbol"
       >=</a
-      ><a name="831"
-      > </a
-      ><a name="832" href="Data.Nat.Show.html#704" class="Bound"
+      > <a name="832" href="Data.Nat.Show.html#704" class="Bound"
       >base&#8805;2</a
       ><a name="838" class="Symbol"
       >}</a
-      ><a name="839"
-      > </a
-      ><a name="840" href="Data.Nat.Show.html#722" class="Bound"
+      > <a name="840" href="Data.Nat.Show.html#722" class="Bound"
       >n</a
-      ><a name="841"
       >
 
-</a
-      ><a name="843" class="Comment"
+<a name="843" class="Comment"
       >-- show n is a string containing the decimal expansion of n (starting</a
-      ><a name="912"
       >
-</a
-      ><a name="913" class="Comment"
+<a name="913" class="Comment"
       >-- with the most significant digit).</a
-      ><a name="949"
       >
 
-</a
-      ><a name="951" href="Data.Nat.Show.html#951" class="Function"
+<a name="show" href="Data.Nat.Show.html#show" class="Function"
       >show</a
-      ><a name="955"
-      > </a
-      ><a name="956" class="Symbol"
+      > <a name="956" class="Symbol"
       >:</a
-      ><a name="957"
-      > </a
-      ><a name="958" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="958" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="959"
-      > </a
-      ><a name="960" class="Symbol"
+      > <a name="960" class="Symbol"
       >&#8594;</a
-      ><a name="961"
-      > </a
-      ><a name="962" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="962" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="968"
       >
-</a
-      ><a name="969" href="Data.Nat.Show.html#951" class="Function"
+<a name="969" href="Data.Nat.Show.html#show" class="Function"
       >show</a
-      ><a name="973"
-      > </a
-      ><a name="974" class="Symbol"
+      > <a name="974" class="Symbol"
       >=</a
-      ><a name="975"
-      > </a
-      ><a name="976" href="Data.Nat.Show.html#553" class="Function"
+      > <a name="976" href="Data.Nat.Show.html#showInBase" class="Function"
       >showInBase</a
-      ><a name="986"
-      > </a
-      ><a name="987" class="Number"
+      > <a name="987" class="Number"
       >10</a
-      ><a name="989"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

@@ -1,0 +1,2328 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Bin.Properties</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="74" class="Comment"
+      >-- The Agda standard library</a
+      >
+<a name="103" class="Comment"
+      >--</a
+      >
+<a name="106" class="Comment"
+      >-- Properties of the binary representation of natural numbers</a
+      >
+<a name="168" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+
+<a name="242" class="Keyword"
+      >module</a
+      > <a name="249" href="Data.Bin.Properties.html" class="Module"
+      >Data.Bin.Properties</a
+      > <a name="269" class="Keyword"
+      >where</a
+      >
+
+<a name="276" class="Keyword"
+      >open</a
+      > <a name="281" class="Keyword"
+      >import</a
+      > <a name="288" href="Data.Bin.html" class="Module"
+      >Data.Bin</a
+      >
+<a name="297" class="Keyword"
+      >open</a
+      > <a name="302" class="Keyword"
+      >import</a
+      > <a name="309" href="Data.Digit.html" class="Module"
+      >Data.Digit</a
+      > <a name="320" class="Keyword"
+      >using</a
+      > <a name="326" class="Symbol"
+      >(</a
+      ><a name="327" href="Data.Digit.html#Bit" class="Function"
+      >Bit</a
+      ><a name="330" class="Symbol"
+      >)</a
+      >
+<a name="332" class="Keyword"
+      >import</a
+      > <a name="339" href="Data.Fin.html" class="Module"
+      >Data.Fin</a
+      > <a name="348" class="Symbol"
+      >as</a
+      > <a name="351" class="Module"
+      >Fin</a
+      >
+<a name="355" class="Keyword"
+      >import</a
+      > <a name="362" href="Data.Fin.Properties.html" class="Module"
+      >Data.Fin.Properties</a
+      > <a name="382" class="Symbol"
+      >as</a
+      > <a name="385" class="Module"
+      >&#120125;&#8346;</a
+      >
+<a name="388" class="Keyword"
+      >open</a
+      > <a name="393" class="Keyword"
+      >import</a
+      > <a name="400" href="Data.List.Base.html" class="Module"
+      >Data.List.Base</a
+      > <a name="415" class="Keyword"
+      >using</a
+      > <a name="421" class="Symbol"
+      >(</a
+      ><a name="422" href="Agda.Builtin.List.html#List" class="Datatype"
+      >List</a
+      ><a name="426" class="Symbol"
+      >;</a
+      > <a name="428" href="Data.List.Base.html#InitLast.[]" class="InductiveConstructor"
+      >[]</a
+      ><a name="430" class="Symbol"
+      >;</a
+      > <a name="432" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="435" class="Symbol"
+      >)</a
+      >
+<a name="437" class="Keyword"
+      >open</a
+      > <a name="442" class="Keyword"
+      >import</a
+      > <a name="449" href="Data.List.Properties.html" class="Module"
+      >Data.List.Properties</a
+      > <a name="470" class="Keyword"
+      >using</a
+      > <a name="476" class="Symbol"
+      >(</a
+      ><a name="477" href="Data.List.Properties.html#&#8759;-injective" class="Function"
+      >&#8759;-injective</a
+      ><a name="488" class="Symbol"
+      >)</a
+      >
+<a name="490" class="Keyword"
+      >open</a
+      > <a name="495" class="Keyword"
+      >import</a
+      > <a name="502" href="Data.Nat.html" class="Module"
+      >Data.Nat</a
+      >
+  <a name="513" class="Keyword"
+      >using</a
+      > <a name="519" class="Symbol"
+      >(</a
+      ><a name="520" href="Agda.Builtin.Nat.html#Nat" class="Datatype"
+      >&#8469;</a
+      ><a name="521" class="Symbol"
+      >;</a
+      > <a name="523" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      >zero</a
+      ><a name="527" class="Symbol"
+      >;</a
+      > <a name="529" href="Data.Nat.Base.html#_&#8804;_.z&#8804;n" class="InductiveConstructor"
+      >z&#8804;n</a
+      ><a name="532" class="Symbol"
+      >;</a
+      > <a name="534" href="Data.Nat.Base.html#_&#8804;_.s&#8804;s" class="InductiveConstructor"
+      >s&#8804;s</a
+      ><a name="537" class="Symbol"
+      >;</a
+      > <a name="539" href="Data.Nat.Base.html#&#8804;-pred" class="Function"
+      >&#8804;-pred</a
+      ><a name="545" class="Symbol"
+      >)</a
+      >
+  <a name="549" class="Keyword"
+      >renaming</a
+      > <a name="558" class="Symbol"
+      >(</a
+      ><a name="559" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="563" class="Symbol"
+      >to</a
+      > <a name="566" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      >1+_</a
+      ><a name="569" class="Symbol"
+      >;</a
+      > <a name="571" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
+      >_+_</a
+      > <a name="575" class="Symbol"
+      >to</a
+      > <a name="578" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
+      >_+&#8469;_</a
+      ><a name="582" class="Symbol"
+      >;</a
+      > <a name="584" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
+      >_*_</a
+      > <a name="588" class="Symbol"
+      >to</a
+      > <a name="591" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
+      >_*&#8469;_</a
+      ><a name="595" class="Symbol"
+      >)</a
+      >
+<a name="597" class="Keyword"
+      >import</a
+      > <a name="604" href="Data.Nat.Properties.html" class="Module"
+      >Data.Nat.Properties</a
+      > <a name="624" class="Symbol"
+      >as</a
+      > <a name="627" class="Module"
+      >&#8469;&#8346;</a
+      >
+<a name="630" class="Keyword"
+      >open</a
+      > <a name="635" class="Keyword"
+      >import</a
+      > <a name="642" href="Data.Product.html" class="Module"
+      >Data.Product</a
+      > <a name="655" class="Keyword"
+      >using</a
+      > <a name="661" class="Symbol"
+      >(</a
+      ><a name="662" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
+      >proj&#8321;</a
+      ><a name="667" class="Symbol"
+      >;</a
+      > <a name="669" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
+      >proj&#8322;</a
+      ><a name="674" class="Symbol"
+      >)</a
+      >
+<a name="676" class="Keyword"
+      >open</a
+      > <a name="681" class="Keyword"
+      >import</a
+      > <a name="688" href="Function.html" class="Module"
+      >Function</a
+      > <a name="697" class="Keyword"
+      >using</a
+      > <a name="703" class="Symbol"
+      >(</a
+      ><a name="704" href="Function.html#_&#8728;_" class="Function Operator"
+      >_&#8728;_</a
+      ><a name="707" class="Symbol"
+      >)</a
+      >
+<a name="709" class="Keyword"
+      >open</a
+      > <a name="714" class="Keyword"
+      >import</a
+      > <a name="721" href="Relation.Binary.html" class="Module"
+      >Relation.Binary</a
+      >
+<a name="737" class="Keyword"
+      >open</a
+      > <a name="742" class="Keyword"
+      >import</a
+      > <a name="749" href="Relation.Binary.Consequences.html" class="Module"
+      >Relation.Binary.Consequences</a
+      >
+<a name="778" class="Keyword"
+      >open</a
+      > <a name="783" class="Keyword"
+      >import</a
+      > <a name="790" href="Relation.Binary.PropositionalEquality.html" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      >
+  <a name="830" class="Keyword"
+      >using</a
+      > <a name="836" class="Symbol"
+      >(</a
+      ><a name="837" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="840" class="Symbol"
+      >;</a
+      > <a name="842" href="Relation.Binary.Core.html#_&#8802;_" class="Function Operator"
+      >_&#8802;_</a
+      ><a name="845" class="Symbol"
+      >;</a
+      > <a name="847" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      ><a name="851" class="Symbol"
+      >;</a
+      > <a name="853" href="Relation.Binary.PropositionalEquality.Core.html#sym" class="Function"
+      >sym</a
+      ><a name="856" class="Symbol"
+      >;</a
+      > <a name="858" href="Relation.Binary.PropositionalEquality.Core.html#isEquivalence" class="Function"
+      >isEquivalence</a
+      ><a name="871" class="Symbol"
+      >;</a
+      > <a name="873" href="Relation.Binary.PropositionalEquality.Core.html#resp&#8322;" class="Function"
+      >resp&#8322;</a
+      ><a name="878" class="Symbol"
+      >;</a
+      > <a name="880" href="Relation.Binary.PropositionalEquality.html#decSetoid" class="Function"
+      >decSetoid</a
+      ><a name="889" class="Symbol"
+      >)</a
+      >
+<a name="891" class="Keyword"
+      >open</a
+      > <a name="896" class="Keyword"
+      >import</a
+      > <a name="903" href="Relation.Nullary.html" class="Module"
+      >Relation.Nullary</a
+      > <a name="920" class="Keyword"
+      >using</a
+      > <a name="926" class="Symbol"
+      >(</a
+      ><a name="927" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      >yes</a
+      ><a name="930" class="Symbol"
+      >;</a
+      > <a name="932" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      >no</a
+      ><a name="934" class="Symbol"
+      >)</a
+      >
+
+<a name="937" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="1010" class="Comment"
+      >-- (Bin, _&#8801;_) is a decidable setoid</a
+      >
+
+<a name="1#-injective" href="Data.Bin.Properties.html#1#-injective" class="Function"
+      >1#-injective</a
+      > <a name="1060" class="Symbol"
+      >:</a
+      > <a name="1062" class="Symbol"
+      >&#8704;</a
+      > <a name="1064" class="Symbol"
+      >{</a
+      ><a name="1065" href="Data.Bin.Properties.html#1065" class="Bound"
+      >as</a
+      > <a name="1068" href="Data.Bin.Properties.html#1068" class="Bound"
+      >bs</a
+      ><a name="1070" class="Symbol"
+      >}</a
+      > <a name="1072" class="Symbol"
+      >&#8594;</a
+      > <a name="1074" href="Data.Bin.Properties.html#1065" class="Bound"
+      >as</a
+      > <a name="1077" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      > <a name="1080" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >&#8801;</a
+      > <a name="1082" href="Data.Bin.Properties.html#1068" class="Bound"
+      >bs</a
+      > <a name="1085" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      > <a name="1088" class="Symbol"
+      >&#8594;</a
+      > <a name="1090" href="Data.Bin.Properties.html#1065" class="Bound"
+      >as</a
+      > <a name="1093" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >&#8801;</a
+      > <a name="1095" href="Data.Bin.Properties.html#1068" class="Bound"
+      >bs</a
+      >
+<a name="1098" href="Data.Bin.Properties.html#1#-injective" class="Function"
+      >1#-injective</a
+      > <a name="1111" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      > <a name="1116" class="Symbol"
+      >=</a
+      > <a name="1118" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      >
+
+<a name="1124" class="Keyword"
+      >infix</a
+      > <a name="1130" class="Number"
+      >4</a
+      > <a name="1132" href="Data.Bin.Properties.html#_&#8799;_" class="Function Operator"
+      >_&#8799;_</a
+      > <a name="1136" href="Data.Bin.Properties.html#_&#8799;LB_" class="Function Operator"
+      >_&#8799;LB_</a
+      >
+
+<a name="_&#8799;LB_" href="Data.Bin.Properties.html#_&#8799;LB_" class="Function Operator"
+      >_&#8799;LB_</a
+      > <a name="1149" class="Symbol"
+      >:</a
+      > <a name="1151" href="Relation.Binary.Core.html#Decidable" class="Function"
+      >Decidable</a
+      > <a name="1161" class="Symbol"
+      >(</a
+      ><a name="1162" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >_&#8801;_</a
+      > <a name="1166" class="Symbol"
+      >{</a
+      ><a name="1167" class="Argument"
+      >A</a
+      > <a name="1169" class="Symbol"
+      >=</a
+      > <a name="1171" href="Agda.Builtin.List.html#List" class="Datatype"
+      >List</a
+      > <a name="1176" href="Data.Digit.html#Bit" class="Function"
+      >Bit</a
+      ><a name="1179" class="Symbol"
+      >})</a
+      >
+<a name="1182" href="Data.Bin.Properties.html#_&#8799;LB_" class="Function Operator"
+      >_&#8799;LB_</a
+      > <a name="1188" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      >[]</a
+      >       <a name="1197" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      >[]</a
+      >       <a name="1206" class="Symbol"
+      >=</a
+      > <a name="1208" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      >yes</a
+      > <a name="1212" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      >
+<a name="1217" href="Data.Bin.Properties.html#_&#8799;LB_" class="Function Operator"
+      >_&#8799;LB_</a
+      > <a name="1223" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      >[]</a
+      >       <a name="1232" class="Symbol"
+      >(_</a
+      > <a name="1235" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1237" class="Symbol"
+      >_)</a
+      >  <a name="1241" class="Symbol"
+      >=</a
+      > <a name="1243" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      >no</a
+      > <a name="1246" class="Symbol"
+      >&#955;()</a
+      >
+<a name="1250" href="Data.Bin.Properties.html#_&#8799;LB_" class="Function Operator"
+      >_&#8799;LB_</a
+      > <a name="1256" class="Symbol"
+      >(_</a
+      > <a name="1259" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1261" class="Symbol"
+      >_)</a
+      > <a name="1264" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      >[]</a
+      >        <a name="1274" class="Symbol"
+      >=</a
+      > <a name="1276" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      >no</a
+      > <a name="1279" class="Symbol"
+      >&#955;()</a
+      >
+<a name="1283" href="Data.Bin.Properties.html#_&#8799;LB_" class="Function Operator"
+      >_&#8799;LB_</a
+      > <a name="1289" class="Symbol"
+      >(</a
+      ><a name="1290" href="Data.Bin.Properties.html#1290" class="Bound"
+      >x</a
+      > <a name="1292" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1294" href="Data.Bin.Properties.html#1294" class="Bound"
+      >xs</a
+      ><a name="1296" class="Symbol"
+      >)</a
+      > <a name="1298" class="Symbol"
+      >(</a
+      ><a name="1299" href="Data.Bin.Properties.html#1299" class="Bound"
+      >y</a
+      > <a name="1301" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1303" href="Data.Bin.Properties.html#1303" class="Bound"
+      >ys</a
+      ><a name="1305" class="Symbol"
+      >)</a
+      > <a name="1307" class="Keyword"
+      >with</a
+      > <a name="1312" href="Data.Bin.Properties.html#1290" class="Bound"
+      >x</a
+      > <a name="1314" href="Data.Fin.Properties.html#_&#8799;_" class="Function Operator"
+      >&#120125;&#8346;.&#8799;</a
+      > <a name="1319" href="Data.Bin.Properties.html#1299" class="Bound"
+      >y</a
+      > <a name="1321" class="Symbol"
+      >|</a
+      > <a name="1323" href="Data.Bin.Properties.html#1294" class="Bound"
+      >xs</a
+      > <a name="1326" href="Data.Bin.Properties.html#_&#8799;LB_" class="Function Operator"
+      >&#8799;LB</a
+      > <a name="1330" href="Data.Bin.Properties.html#1303" class="Bound"
+      >ys</a
+      >
+<a name="1333" class="Symbol"
+      >...</a
+      > <a name="1337" class="Symbol"
+      >|</a
+      > <a name="1339" class="Symbol"
+      >_</a
+      >        <a name="1348" class="Symbol"
+      >|</a
+      > <a name="1350" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      >no</a
+      > <a name="1353" href="Data.Bin.Properties.html#1353" class="Bound"
+      >xs&#8802;ys</a
+      > <a name="1359" class="Symbol"
+      >=</a
+      > <a name="1361" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      >no</a
+      > <a name="1364" class="Symbol"
+      >(</a
+      ><a name="1365" href="Data.Bin.Properties.html#1353" class="Bound"
+      >xs&#8802;ys</a
+      > <a name="1371" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="1373" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
+      >proj&#8322;</a
+      > <a name="1379" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="1381" href="Data.List.Properties.html#&#8759;-injective" class="Function"
+      >&#8759;-injective</a
+      ><a name="1392" class="Symbol"
+      >)</a
+      >
+<a name="1394" class="CatchallClause Symbol"
+      >...</a
+      ><a name="1397" class="CatchallClause"
+      > </a
+      ><a name="1398" class="CatchallClause Symbol"
+      >|</a
+      ><a name="1399" class="CatchallClause"
+      > </a
+      ><a name="1400" href="Relation.Nullary.html#Dec.no" class="CatchallClause InductiveConstructor"
+      >no</a
+      ><a name="1402" class="CatchallClause"
+      >  </a
+      ><a name="1404" href="Data.Bin.Properties.html#1404" class="CatchallClause Bound"
+      >x&#8802;y</a
+      ><a name="1407" class="CatchallClause"
+      >  </a
+      ><a name="1409" class="CatchallClause Symbol"
+      >|</a
+      ><a name="1410" class="CatchallClause"
+      > </a
+      ><a name="1411" class="CatchallClause Symbol"
+      >_</a
+      >        <a name="1420" class="Symbol"
+      >=</a
+      > <a name="1422" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      >no</a
+      > <a name="1425" class="Symbol"
+      >(</a
+      ><a name="1426" href="Data.Bin.Properties.html#1404" class="Bound"
+      >x&#8802;y</a
+      >   <a name="1432" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="1434" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
+      >proj&#8321;</a
+      > <a name="1440" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="1442" href="Data.List.Properties.html#&#8759;-injective" class="Function"
+      >&#8759;-injective</a
+      ><a name="1453" class="Symbol"
+      >)</a
+      >
+<a name="1455" class="Symbol"
+      >...</a
+      > <a name="1459" class="Symbol"
+      >|</a
+      > <a name="1461" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      >yes</a
+      > <a name="1465" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      > <a name="1470" class="Symbol"
+      >|</a
+      > <a name="1472" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      >yes</a
+      > <a name="1476" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      > <a name="1481" class="Symbol"
+      >=</a
+      > <a name="1483" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      >yes</a
+      > <a name="1487" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      >
+
+<a name="_&#8799;_" href="Data.Bin.Properties.html#_&#8799;_" class="Function Operator"
+      >_&#8799;_</a
+      > <a name="1497" class="Symbol"
+      >:</a
+      > <a name="1499" href="Relation.Binary.Core.html#Decidable" class="Function"
+      >Decidable</a
+      > <a name="1509" class="Symbol"
+      >{</a
+      ><a name="1510" class="Argument"
+      >A</a
+      > <a name="1512" class="Symbol"
+      >=</a
+      > <a name="1514" href="Data.Bin.html#Bin" class="Datatype"
+      >Bin</a
+      ><a name="1517" class="Symbol"
+      >}</a
+      > <a name="1519" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >_&#8801;_</a
+      >
+<a name="1523" href="Data.Bin.html#Bin.0#" class="InductiveConstructor"
+      >0#</a
+      >    <a name="1529" href="Data.Bin.Properties.html#_&#8799;_" class="Function Operator"
+      >&#8799;</a
+      > <a name="1531" href="Data.Bin.html#Bin.0#" class="InductiveConstructor"
+      >0#</a
+      >    <a name="1537" class="Symbol"
+      >=</a
+      > <a name="1539" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      >yes</a
+      > <a name="1543" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      >
+<a name="1548" href="Data.Bin.html#Bin.0#" class="InductiveConstructor"
+      >0#</a
+      >    <a name="1554" href="Data.Bin.Properties.html#_&#8799;_" class="Function Operator"
+      >&#8799;</a
+      > <a name="1556" href="Data.Bin.Properties.html#1556" class="Bound"
+      >bs</a
+      > <a name="1559" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      > <a name="1562" class="Symbol"
+      >=</a
+      > <a name="1564" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      >no</a
+      > <a name="1567" class="Symbol"
+      >&#955;()</a
+      >
+<a name="1571" href="Data.Bin.Properties.html#1571" class="Bound"
+      >as</a
+      > <a name="1574" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      > <a name="1577" href="Data.Bin.Properties.html#_&#8799;_" class="Function Operator"
+      >&#8799;</a
+      > <a name="1579" href="Data.Bin.html#Bin.0#" class="InductiveConstructor"
+      >0#</a
+      >    <a name="1585" class="Symbol"
+      >=</a
+      > <a name="1587" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      >no</a
+      > <a name="1590" class="Symbol"
+      >&#955;()</a
+      >
+<a name="1594" href="Data.Bin.Properties.html#1594" class="Bound"
+      >as</a
+      > <a name="1597" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      > <a name="1600" href="Data.Bin.Properties.html#_&#8799;_" class="Function Operator"
+      >&#8799;</a
+      > <a name="1602" href="Data.Bin.Properties.html#1602" class="Bound"
+      >bs</a
+      > <a name="1605" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      > <a name="1608" class="Keyword"
+      >with</a
+      > <a name="1613" href="Data.Bin.Properties.html#1594" class="Bound"
+      >as</a
+      > <a name="1616" href="Data.Bin.Properties.html#_&#8799;LB_" class="Function Operator"
+      >&#8799;LB</a
+      > <a name="1620" href="Data.Bin.Properties.html#1602" class="Bound"
+      >bs</a
+      >
+<a name="1623" class="Symbol"
+      >...</a
+      > <a name="1627" class="Symbol"
+      >|</a
+      > <a name="1629" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      >yes</a
+      > <a name="1633" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      >  <a name="1639" class="Symbol"
+      >=</a
+      > <a name="1641" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      >yes</a
+      > <a name="1645" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      >
+<a name="1650" class="Symbol"
+      >...</a
+      > <a name="1654" class="Symbol"
+      >|</a
+      > <a name="1656" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      >no</a
+      >  <a name="1660" href="Data.Bin.Properties.html#1660" class="Bound"
+      >as&#8802;bs</a
+      > <a name="1666" class="Symbol"
+      >=</a
+      > <a name="1668" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      >no</a
+      > <a name="1671" class="Symbol"
+      >(</a
+      ><a name="1672" href="Data.Bin.Properties.html#1660" class="Bound"
+      >as&#8802;bs</a
+      > <a name="1678" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="1680" href="Data.Bin.Properties.html#1#-injective" class="Function"
+      >1#-injective</a
+      ><a name="1692" class="Symbol"
+      >)</a
+      >
+
+<a name="&#8801;-isDecEquivalence" href="Data.Bin.Properties.html#&#8801;-isDecEquivalence" class="Function"
+      >&#8801;-isDecEquivalence</a
+      > <a name="1714" class="Symbol"
+      >:</a
+      > <a name="1716" href="Relation.Binary.html#IsDecEquivalence" class="Record"
+      >IsDecEquivalence</a
+      > <a name="1733" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >_&#8801;_</a
+      >
+<a name="1737" href="Data.Bin.Properties.html#&#8801;-isDecEquivalence" class="Function"
+      >&#8801;-isDecEquivalence</a
+      > <a name="1756" class="Symbol"
+      >=</a
+      > <a name="1758" class="Keyword"
+      >record</a
+      >
+  <a name="1767" class="Symbol"
+      >{</a
+      > <a name="1769" class="Field"
+      >isEquivalence</a
+      > <a name="1783" class="Symbol"
+      >=</a
+      > <a name="1785" href="Relation.Binary.PropositionalEquality.Core.html#isEquivalence" class="Function"
+      >isEquivalence</a
+      >
+  <a name="1801" class="Symbol"
+      >;</a
+      > <a name="1803" class="Field Operator"
+      >_&#8799;_</a
+      >           <a name="1817" class="Symbol"
+      >=</a
+      > <a name="1819" href="Data.Bin.Properties.html#_&#8799;_" class="Function Operator"
+      >_&#8799;_</a
+      >
+  <a name="1825" class="Symbol"
+      >}</a
+      >
+
+<a name="&#8801;-decSetoid" href="Data.Bin.Properties.html#&#8801;-decSetoid" class="Function"
+      >&#8801;-decSetoid</a
+      > <a name="1840" class="Symbol"
+      >:</a
+      > <a name="1842" href="Relation.Binary.html#DecSetoid" class="Record"
+      >DecSetoid</a
+      > <a name="1852" class="Symbol"
+      >_</a
+      > <a name="1854" class="Symbol"
+      >_</a
+      >
+<a name="1856" href="Data.Bin.Properties.html#&#8801;-decSetoid" class="Function"
+      >&#8801;-decSetoid</a
+      > <a name="1868" class="Symbol"
+      >=</a
+      > <a name="1870" href="Relation.Binary.PropositionalEquality.html#decSetoid" class="Function"
+      >decSetoid</a
+      > <a name="1880" href="Data.Bin.Properties.html#_&#8799;_" class="Function Operator"
+      >_&#8799;_</a
+      >
+
+<a name="1885" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="1958" class="Comment"
+      >-- (Bin _&#8801;_ _&lt;_) is a strict total order</a
+      >
+
+<a name="&lt;-trans" href="Data.Bin.Properties.html#&lt;-trans" class="Function"
+      >&lt;-trans</a
+      > <a name="2008" class="Symbol"
+      >:</a
+      > <a name="2010" href="Relation.Binary.Core.html#Transitive" class="Function"
+      >Transitive</a
+      > <a name="2021" href="Data.Bin.html#_&lt;_" class="Datatype Operator"
+      >_&lt;_</a
+      >
+<a name="2025" href="Data.Bin.Properties.html#&lt;-trans" class="Function"
+      >&lt;-trans</a
+      > <a name="2033" class="Symbol"
+      >(</a
+      ><a name="2034" href="Data.Bin.html#_&lt;_.less" class="InductiveConstructor"
+      >less</a
+      > <a name="2039" href="Data.Bin.Properties.html#2039" class="Bound"
+      >lt&#8321;</a
+      ><a name="2042" class="Symbol"
+      >)</a
+      > <a name="2044" class="Symbol"
+      >(</a
+      ><a name="2045" href="Data.Bin.html#_&lt;_.less" class="InductiveConstructor"
+      >less</a
+      > <a name="2050" href="Data.Bin.Properties.html#2050" class="Bound"
+      >lt&#8322;</a
+      ><a name="2053" class="Symbol"
+      >)</a
+      > <a name="2055" class="Symbol"
+      >=</a
+      > <a name="2057" href="Data.Bin.html#_&lt;_.less" class="InductiveConstructor"
+      >less</a
+      > <a name="2062" class="Symbol"
+      >(</a
+      ><a name="2063" href="Data.Nat.Properties.html#&lt;-trans" class="Function"
+      >&#8469;&#8346;.&lt;-trans</a
+      > <a name="2074" href="Data.Bin.Properties.html#2039" class="Bound"
+      >lt&#8321;</a
+      > <a name="2078" href="Data.Bin.Properties.html#2050" class="Bound"
+      >lt&#8322;</a
+      ><a name="2081" class="Symbol"
+      >)</a
+      >
+
+<a name="&lt;-asym" href="Data.Bin.Properties.html#&lt;-asym" class="Function"
+      >&lt;-asym</a
+      > <a name="2091" class="Symbol"
+      >:</a
+      > <a name="2093" href="Relation.Binary.Core.html#Asymmetric" class="Function"
+      >Asymmetric</a
+      > <a name="2104" href="Data.Bin.html#_&lt;_" class="Datatype Operator"
+      >_&lt;_</a
+      >
+<a name="2108" href="Data.Bin.Properties.html#&lt;-asym" class="Function"
+      >&lt;-asym</a
+      > <a name="2115" class="Symbol"
+      >(</a
+      ><a name="2116" href="Data.Bin.html#_&lt;_.less" class="InductiveConstructor"
+      >less</a
+      > <a name="2121" href="Data.Bin.Properties.html#2121" class="Bound"
+      >lt</a
+      ><a name="2123" class="Symbol"
+      >)</a
+      > <a name="2125" class="Symbol"
+      >(</a
+      ><a name="2126" href="Data.Bin.html#_&lt;_.less" class="InductiveConstructor"
+      >less</a
+      > <a name="2131" href="Data.Bin.Properties.html#2131" class="Bound"
+      >gt</a
+      ><a name="2133" class="Symbol"
+      >)</a
+      > <a name="2135" class="Symbol"
+      >=</a
+      > <a name="2137" href="Data.Nat.Properties.html#&lt;-asym" class="Function"
+      >&#8469;&#8346;.&lt;-asym</a
+      > <a name="2147" href="Data.Bin.Properties.html#2121" class="Bound"
+      >lt</a
+      > <a name="2150" href="Data.Bin.Properties.html#2131" class="Bound"
+      >gt</a
+      >
+
+<a name="&lt;-irrefl" href="Data.Bin.Properties.html#&lt;-irrefl" class="Function"
+      >&lt;-irrefl</a
+      > <a name="2163" class="Symbol"
+      >:</a
+      > <a name="2165" href="Relation.Binary.Core.html#Irreflexive" class="Function"
+      >Irreflexive</a
+      > <a name="2177" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >_&#8801;_</a
+      > <a name="2181" href="Data.Bin.html#_&lt;_" class="Datatype Operator"
+      >_&lt;_</a
+      >
+<a name="2185" href="Data.Bin.Properties.html#&lt;-irrefl" class="Function"
+      >&lt;-irrefl</a
+      > <a name="2194" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      > <a name="2199" class="Symbol"
+      >(</a
+      ><a name="2200" href="Data.Bin.html#_&lt;_.less" class="InductiveConstructor"
+      >less</a
+      > <a name="2205" href="Data.Bin.Properties.html#2205" class="Bound"
+      >lt</a
+      ><a name="2207" class="Symbol"
+      >)</a
+      > <a name="2209" class="Symbol"
+      >=</a
+      > <a name="2211" href="Data.Nat.Properties.html#&lt;-irrefl" class="Function"
+      >&#8469;&#8346;.&lt;-irrefl</a
+      > <a name="2223" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      > <a name="2228" href="Data.Bin.Properties.html#2205" class="Bound"
+      >lt</a
+      >
+
+<a name="&#8759;&#691;-mono-&lt;" href="Data.Bin.Properties.html#&#8759;&#691;-mono-&lt;" class="Function"
+      >&#8759;&#691;-mono-&lt;</a
+      > <a name="2242" class="Symbol"
+      >:</a
+      > <a name="2244" class="Symbol"
+      >&#8704;</a
+      > <a name="2246" class="Symbol"
+      >{</a
+      ><a name="2247" href="Data.Bin.Properties.html#2247" class="Bound"
+      >a</a
+      > <a name="2249" href="Data.Bin.Properties.html#2249" class="Bound"
+      >b</a
+      > <a name="2251" href="Data.Bin.Properties.html#2251" class="Bound"
+      >as</a
+      > <a name="2254" href="Data.Bin.Properties.html#2254" class="Bound"
+      >bs</a
+      ><a name="2256" class="Symbol"
+      >}</a
+      > <a name="2258" class="Symbol"
+      >&#8594;</a
+      > <a name="2260" href="Data.Bin.Properties.html#2251" class="Bound"
+      >as</a
+      > <a name="2263" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      > <a name="2266" href="Data.Bin.html#_&lt;_" class="Datatype Operator"
+      >&lt;</a
+      > <a name="2268" href="Data.Bin.Properties.html#2254" class="Bound"
+      >bs</a
+      > <a name="2271" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      > <a name="2274" class="Symbol"
+      >&#8594;</a
+      > <a name="2276" class="Symbol"
+      >(</a
+      ><a name="2277" href="Data.Bin.Properties.html#2247" class="Bound"
+      >a</a
+      > <a name="2279" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2281" href="Data.Bin.Properties.html#2251" class="Bound"
+      >as</a
+      ><a name="2283" class="Symbol"
+      >)</a
+      > <a name="2285" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      > <a name="2288" href="Data.Bin.html#_&lt;_" class="Datatype Operator"
+      >&lt;</a
+      > <a name="2290" class="Symbol"
+      >(</a
+      ><a name="2291" href="Data.Bin.Properties.html#2249" class="Bound"
+      >b</a
+      > <a name="2293" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2295" href="Data.Bin.Properties.html#2254" class="Bound"
+      >bs</a
+      ><a name="2297" class="Symbol"
+      >)</a
+      > <a name="2299" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      >
+<a name="2302" href="Data.Bin.Properties.html#&#8759;&#691;-mono-&lt;" class="Function"
+      >&#8759;&#691;-mono-&lt;</a
+      > <a name="2312" class="Symbol"
+      >{</a
+      ><a name="2313" href="Data.Bin.Properties.html#2313" class="Bound"
+      >a</a
+      ><a name="2314" class="Symbol"
+      >}</a
+      > <a name="2316" class="Symbol"
+      >{</a
+      ><a name="2317" href="Data.Bin.Properties.html#2317" class="Bound"
+      >b</a
+      ><a name="2318" class="Symbol"
+      >}</a
+      > <a name="2320" class="Symbol"
+      >{</a
+      ><a name="2321" href="Data.Bin.Properties.html#2321" class="Bound"
+      >as</a
+      ><a name="2323" class="Symbol"
+      >}</a
+      > <a name="2325" class="Symbol"
+      >{</a
+      ><a name="2326" href="Data.Bin.Properties.html#2326" class="Bound"
+      >bs</a
+      ><a name="2328" class="Symbol"
+      >}</a
+      > <a name="2330" class="Symbol"
+      >(</a
+      ><a name="2331" href="Data.Bin.html#_&lt;_.less" class="InductiveConstructor"
+      >less</a
+      > <a name="2336" href="Data.Bin.Properties.html#2336" class="Bound"
+      >lt</a
+      ><a name="2338" class="Symbol"
+      >)</a
+      > <a name="2340" class="Symbol"
+      >=</a
+      > <a name="2342" href="Data.Bin.html#_&lt;_.less" class="InductiveConstructor"
+      >less</a
+      > <a name="2347" class="Symbol"
+      >(</a
+      ><a name="2348" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      >begin</a
+      >
+  <a name="2356" href="Agda.Builtin.Nat.html#Nat.1+_" class="InductiveConstructor Operator"
+      >1+</a
+      > <a name="2359" class="Symbol"
+      >(</a
+      ><a name="2360" href="Data.Bin.Properties.html#2618" class="Function"
+      >m&#8321;</a
+      > <a name="2363" href="Agda.Builtin.Nat.html#_+&#8469;_" class="Primitive Operator"
+      >+&#8469;</a
+      > <a name="2366" href="Data.Bin.Properties.html#2653" class="Function"
+      >n&#8321;</a
+      > <a name="2369" href="Agda.Builtin.Nat.html#_*&#8469;_" class="Primitive Operator"
+      >*&#8469;</a
+      > <a name="2372" class="Number"
+      >2</a
+      ><a name="2373" class="Symbol"
+      >)</a
+      > <a name="2375" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8804;&#10216;</a
+      > <a name="2378" href="Data.Nat.Base.html#_&#8804;_.s&#8804;s" class="InductiveConstructor"
+      >s&#8804;s</a
+      > <a name="2382" class="Symbol"
+      >(</a
+      ><a name="2383" href="Data.Nat.Properties.html#+-mono-&#8804;" class="Function"
+      >&#8469;&#8346;.+-mono-&#8804;</a
+      > <a name="2395" class="Symbol"
+      >(</a
+      ><a name="2396" href="Data.Nat.Base.html#&#8804;-pred" class="Function"
+      >&#8804;-pred</a
+      > <a name="2403" class="Symbol"
+      >(</a
+      ><a name="2404" href="Data.Fin.Properties.html#bounded" class="Function"
+      >&#120125;&#8346;.bounded</a
+      > <a name="2415" href="Data.Bin.Properties.html#2313" class="Bound"
+      >a</a
+      ><a name="2416" class="Symbol"
+      >))</a
+      > <a name="2419" href="Data.Nat.Properties.html#&#8804;-refl" class="Function"
+      >&#8469;&#8346;.&#8804;-refl</a
+      ><a name="2428" class="Symbol"
+      >)</a
+      > <a name="2430" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      >
+  <a name="2434" href="Agda.Builtin.Nat.html#Nat.1+_" class="InductiveConstructor Operator"
+      >1+</a
+      > <a name="2437" class="Symbol"
+      >(</a
+      ><a name="2438" class="Number"
+      >1</a
+      > <a name="2440" href="Agda.Builtin.Nat.html#_+&#8469;_" class="Primitive Operator"
+      >+&#8469;</a
+      > <a name="2443" href="Data.Bin.Properties.html#2653" class="Function"
+      >n&#8321;</a
+      > <a name="2446" href="Agda.Builtin.Nat.html#_*&#8469;_" class="Primitive Operator"
+      >*&#8469;</a
+      > <a name="2449" class="Number"
+      >2</a
+      ><a name="2450" class="Symbol"
+      >)</a
+      >  <a name="2453" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
+      >&#8801;&#10216;</a
+      > <a name="2456" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      > <a name="2461" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
+      >&#10217;</a
+      >
+  <a name="2465" href="Agda.Builtin.Nat.html#Nat.1+_" class="InductiveConstructor Operator"
+      >1+</a
+      > <a name="2468" href="Data.Bin.Properties.html#2653" class="Function"
+      >n&#8321;</a
+      > <a name="2471" href="Agda.Builtin.Nat.html#_*&#8469;_" class="Primitive Operator"
+      >*&#8469;</a
+      > <a name="2474" class="Number"
+      >2</a
+      >         <a name="2484" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8804;&#10216;</a
+      > <a name="2487" href="Data.Nat.Properties.html#*-mono-&#8804;" class="Function"
+      >&#8469;&#8346;.*-mono-&#8804;</a
+      > <a name="2499" href="Data.Bin.Properties.html#2336" class="Bound"
+      >lt</a
+      > <a name="2502" href="Data.Nat.Properties.html#&#8804;-refl" class="Function"
+      >&#8469;&#8346;.&#8804;-refl</a
+      > <a name="2512" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      >
+  <a name="2516" href="Data.Bin.Properties.html#2671" class="Function"
+      >n&#8322;</a
+      > <a name="2519" href="Agda.Builtin.Nat.html#_*&#8469;_" class="Primitive Operator"
+      >*&#8469;</a
+      > <a name="2522" class="Number"
+      >2</a
+      >            <a name="2535" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8804;&#10216;</a
+      > <a name="2538" href="Data.Nat.Properties.html#n&#8804;m+n" class="Function"
+      >&#8469;&#8346;.n&#8804;m+n</a
+      > <a name="2547" href="Data.Bin.Properties.html#2636" class="Function"
+      >m&#8322;</a
+      > <a name="2550" class="Symbol"
+      >(</a
+      ><a name="2551" href="Data.Bin.Properties.html#2671" class="Function"
+      >n&#8322;</a
+      > <a name="2554" href="Agda.Builtin.Nat.html#_*&#8469;_" class="Primitive Operator"
+      >*&#8469;</a
+      > <a name="2557" class="Number"
+      >2</a
+      ><a name="2558" class="Symbol"
+      >)</a
+      > <a name="2560" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      >
+  <a name="2564" href="Data.Bin.Properties.html#2636" class="Function"
+      >m&#8322;</a
+      > <a name="2567" href="Agda.Builtin.Nat.html#_+&#8469;_" class="Primitive Operator"
+      >+&#8469;</a
+      > <a name="2570" href="Data.Bin.Properties.html#2671" class="Function"
+      >n&#8322;</a
+      > <a name="2573" href="Agda.Builtin.Nat.html#_*&#8469;_" class="Primitive Operator"
+      >*&#8469;</a
+      > <a name="2576" class="Number"
+      >2</a
+      >      <a name="2583" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >&#8718;</a
+      ><a name="2584" class="Symbol"
+      >)</a
+      >
+  <a name="2588" class="Keyword"
+      >where</a
+      >
+  <a name="2596" class="Keyword"
+      >open</a
+      > <a name="2601" href="Data.Nat.Properties.html#Properties" class="Module"
+      >&#8469;&#8346;.</a
+      ><a name="2604" href="Data.Nat.Properties.html#&#8804;-Reasoning" class="Module"
+      >&#8804;-Reasoning</a
+      >
+  <a name="2618" href="Data.Bin.Properties.html#2618" class="Function"
+      >m&#8321;</a
+      > <a name="2621" class="Symbol"
+      >=</a
+      > <a name="2623" href="Data.Fin.html#to&#8469;" class="Function"
+      >Fin.to&#8469;</a
+      > <a name="2631" href="Data.Bin.Properties.html#2313" class="Bound"
+      >a</a
+      ><a name="2632" class="Symbol"
+      >;</a
+      >   <a name="2636" href="Data.Bin.Properties.html#2636" class="Function"
+      >m&#8322;</a
+      > <a name="2639" class="Symbol"
+      >=</a
+      > <a name="2641" href="Data.Fin.html#to&#8469;" class="Function"
+      >Fin.to&#8469;</a
+      > <a name="2649" href="Data.Bin.Properties.html#2317" class="Bound"
+      >b</a
+      >
+  <a name="2653" href="Data.Bin.Properties.html#2653" class="Function"
+      >n&#8321;</a
+      > <a name="2656" class="Symbol"
+      >=</a
+      > <a name="2658" href="Data.Bin.html#to&#8469;" class="Function"
+      >to&#8469;</a
+      > <a name="2662" class="Symbol"
+      >(</a
+      ><a name="2663" href="Data.Bin.Properties.html#2321" class="Bound"
+      >as</a
+      > <a name="2666" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      ><a name="2668" class="Symbol"
+      >);</a
+      > <a name="2671" href="Data.Bin.Properties.html#2671" class="Function"
+      >n&#8322;</a
+      > <a name="2674" class="Symbol"
+      >=</a
+      > <a name="2676" href="Data.Bin.html#to&#8469;" class="Function"
+      >to&#8469;</a
+      > <a name="2680" class="Symbol"
+      >(</a
+      ><a name="2681" href="Data.Bin.Properties.html#2326" class="Bound"
+      >bs</a
+      > <a name="2684" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      ><a name="2686" class="Symbol"
+      >)</a
+      >
+
+<a name="&#8759;&#737;-mono-&lt;" href="Data.Bin.Properties.html#&#8759;&#737;-mono-&lt;" class="Function"
+      >&#8759;&#737;-mono-&lt;</a
+      > <a name="2699" class="Symbol"
+      >:</a
+      > <a name="2701" class="Symbol"
+      >&#8704;</a
+      > <a name="2703" class="Symbol"
+      >{</a
+      ><a name="2704" href="Data.Bin.Properties.html#2704" class="Bound"
+      >a</a
+      > <a name="2706" href="Data.Bin.Properties.html#2706" class="Bound"
+      >b</a
+      > <a name="2708" href="Data.Bin.Properties.html#2708" class="Bound"
+      >bs</a
+      ><a name="2710" class="Symbol"
+      >}</a
+      > <a name="2712" class="Symbol"
+      >&#8594;</a
+      > <a name="2714" href="Data.Bin.Properties.html#2704" class="Bound"
+      >a</a
+      > <a name="2716" href="Data.Fin.html#_&lt;_" class="Function Operator"
+      >Fin.&lt;</a
+      > <a name="2722" href="Data.Bin.Properties.html#2706" class="Bound"
+      >b</a
+      > <a name="2724" class="Symbol"
+      >&#8594;</a
+      > <a name="2726" class="Symbol"
+      >(</a
+      ><a name="2727" href="Data.Bin.Properties.html#2704" class="Bound"
+      >a</a
+      > <a name="2729" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2731" href="Data.Bin.Properties.html#2708" class="Bound"
+      >bs</a
+      ><a name="2733" class="Symbol"
+      >)</a
+      > <a name="2735" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      > <a name="2738" href="Data.Bin.html#_&lt;_" class="Datatype Operator"
+      >&lt;</a
+      > <a name="2740" class="Symbol"
+      >(</a
+      ><a name="2741" href="Data.Bin.Properties.html#2706" class="Bound"
+      >b</a
+      > <a name="2743" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2745" href="Data.Bin.Properties.html#2708" class="Bound"
+      >bs</a
+      ><a name="2747" class="Symbol"
+      >)</a
+      > <a name="2749" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      >
+<a name="2752" href="Data.Bin.Properties.html#&#8759;&#737;-mono-&lt;" class="Function"
+      >&#8759;&#737;-mono-&lt;</a
+      > <a name="2762" class="Symbol"
+      >{</a
+      ><a name="2763" href="Data.Bin.Properties.html#2763" class="Bound"
+      >a</a
+      ><a name="2764" class="Symbol"
+      >}</a
+      > <a name="2766" class="Symbol"
+      >{</a
+      ><a name="2767" href="Data.Bin.Properties.html#2767" class="Bound"
+      >b</a
+      ><a name="2768" class="Symbol"
+      >}</a
+      > <a name="2770" class="Symbol"
+      >{</a
+      ><a name="2771" href="Data.Bin.Properties.html#2771" class="Bound"
+      >bs</a
+      ><a name="2773" class="Symbol"
+      >}</a
+      > <a name="2775" href="Data.Bin.Properties.html#2775" class="Bound"
+      >lt</a
+      > <a name="2778" class="Symbol"
+      >=</a
+      > <a name="2780" href="Data.Bin.html#_&lt;_.less" class="InductiveConstructor"
+      >less</a
+      > <a name="2785" class="Symbol"
+      >(</a
+      ><a name="2786" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      >begin</a
+      >
+  <a name="2794" class="Number"
+      >1</a
+      > <a name="2796" href="Agda.Builtin.Nat.html#_+&#8469;_" class="Primitive Operator"
+      >+&#8469;</a
+      > <a name="2799" class="Symbol"
+      >(</a
+      ><a name="2800" href="Data.Bin.Properties.html#2959" class="Function"
+      >m&#8321;</a
+      >  <a name="2804" href="Agda.Builtin.Nat.html#_+&#8469;_" class="Primitive Operator"
+      >+&#8469;</a
+      > <a name="2807" href="Data.Bin.Properties.html#2991" class="Function"
+      >n</a
+      > <a name="2809" href="Agda.Builtin.Nat.html#_*&#8469;_" class="Primitive Operator"
+      >*&#8469;</a
+      > <a name="2812" class="Number"
+      >2</a
+      ><a name="2813" class="Symbol"
+      >)</a
+      >  <a name="2816" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
+      >&#8801;&#10216;</a
+      > <a name="2819" href="Relation.Binary.PropositionalEquality.Core.html#sym" class="Function"
+      >sym</a
+      > <a name="2823" class="Symbol"
+      >(</a
+      ><a name="2824" href="Data.Nat.Properties.html#+-assoc" class="Function"
+      >&#8469;&#8346;.+-assoc</a
+      > <a name="2835" class="Number"
+      >1</a
+      > <a name="2837" href="Data.Bin.Properties.html#2959" class="Function"
+      >m&#8321;</a
+      > <a name="2840" class="Symbol"
+      >(</a
+      ><a name="2841" href="Data.Bin.Properties.html#2991" class="Function"
+      >n</a
+      > <a name="2843" href="Agda.Builtin.Nat.html#_*&#8469;_" class="Primitive Operator"
+      >*&#8469;</a
+      > <a name="2846" class="Number"
+      >2</a
+      ><a name="2847" class="Symbol"
+      >))</a
+      > <a name="2850" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
+      >&#10217;</a
+      >
+  <a name="2854" class="Symbol"
+      >(</a
+      ><a name="2855" class="Number"
+      >1</a
+      > <a name="2857" href="Agda.Builtin.Nat.html#_+&#8469;_" class="Primitive Operator"
+      >+&#8469;</a
+      > <a name="2860" href="Data.Bin.Properties.html#2959" class="Function"
+      >m&#8321;</a
+      ><a name="2862" class="Symbol"
+      >)</a
+      > <a name="2864" href="Agda.Builtin.Nat.html#_+&#8469;_" class="Primitive Operator"
+      >+&#8469;</a
+      > <a name="2867" href="Data.Bin.Properties.html#2991" class="Function"
+      >n</a
+      > <a name="2869" href="Agda.Builtin.Nat.html#_*&#8469;_" class="Primitive Operator"
+      >*&#8469;</a
+      > <a name="2872" class="Number"
+      >2</a
+      >   <a name="2876" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#8804;&#10216;</a
+      > <a name="2879" href="Data.Nat.Properties.html#+-mono-&#8804;" class="Function"
+      >&#8469;&#8346;.+-mono-&#8804;</a
+      > <a name="2891" href="Data.Bin.Properties.html#2775" class="Bound"
+      >lt</a
+      > <a name="2894" href="Data.Nat.Properties.html#&#8804;-refl" class="Function"
+      >&#8469;&#8346;.&#8804;-refl</a
+      > <a name="2904" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >&#10217;</a
+      >
+  <a name="2908" href="Data.Bin.Properties.html#2975" class="Function"
+      >m&#8322;</a
+      >  <a name="2912" href="Agda.Builtin.Nat.html#_+&#8469;_" class="Primitive Operator"
+      >+&#8469;</a
+      > <a name="2915" href="Data.Bin.Properties.html#2991" class="Function"
+      >n</a
+      > <a name="2917" href="Agda.Builtin.Nat.html#_*&#8469;_" class="Primitive Operator"
+      >*&#8469;</a
+      > <a name="2920" class="Number"
+      >2</a
+      >   <a name="2924" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >&#8718;</a
+      ><a name="2925" class="Symbol"
+      >)</a
+      >
+  <a name="2929" class="Keyword"
+      >where</a
+      >
+  <a name="2937" class="Keyword"
+      >open</a
+      > <a name="2942" href="Data.Nat.Properties.html#Properties" class="Module"
+      >&#8469;&#8346;.</a
+      ><a name="2945" href="Data.Nat.Properties.html#&#8804;-Reasoning" class="Module"
+      >&#8804;-Reasoning</a
+      >
+  <a name="2959" href="Data.Bin.Properties.html#2959" class="Function"
+      >m&#8321;</a
+      > <a name="2962" class="Symbol"
+      >=</a
+      > <a name="2964" href="Data.Fin.html#to&#8469;" class="Function"
+      >Fin.to&#8469;</a
+      > <a name="2972" href="Data.Bin.Properties.html#2763" class="Bound"
+      >a</a
+      ><a name="2973" class="Symbol"
+      >;</a
+      > <a name="2975" href="Data.Bin.Properties.html#2975" class="Function"
+      >m&#8322;</a
+      > <a name="2978" class="Symbol"
+      >=</a
+      > <a name="2980" href="Data.Fin.html#to&#8469;" class="Function"
+      >Fin.to&#8469;</a
+      > <a name="2988" href="Data.Bin.Properties.html#2767" class="Bound"
+      >b</a
+      ><a name="2989" class="Symbol"
+      >;</a
+      > <a name="2991" href="Data.Bin.Properties.html#2991" class="Function"
+      >n</a
+      > <a name="2993" class="Symbol"
+      >=</a
+      > <a name="2995" href="Data.Bin.html#to&#8469;" class="Function"
+      >to&#8469;</a
+      > <a name="2999" class="Symbol"
+      >(</a
+      ><a name="3000" href="Data.Bin.Properties.html#2771" class="Bound"
+      >bs</a
+      > <a name="3003" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      ><a name="3005" class="Symbol"
+      >)</a
+      >
+
+<a name="1&lt;[23]" href="Data.Bin.Properties.html#1&lt;[23]" class="Function"
+      >1&lt;[23]</a
+      > <a name="3015" class="Symbol"
+      >:</a
+      > <a name="3017" class="Symbol"
+      >&#8704;</a
+      > <a name="3019" class="Symbol"
+      >{</a
+      ><a name="3020" href="Data.Bin.Properties.html#3020" class="Bound"
+      >b</a
+      ><a name="3021" class="Symbol"
+      >}</a
+      > <a name="3023" class="Symbol"
+      >&#8594;</a
+      > <a name="3025" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="3028" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      > <a name="3031" href="Data.Bin.html#_&lt;_" class="Datatype Operator"
+      >&lt;</a
+      > <a name="3033" class="Symbol"
+      >(</a
+      ><a name="3034" href="Data.Bin.Properties.html#3020" class="Bound"
+      >b</a
+      > <a name="3036" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3038" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      >[]</a
+      ><a name="3040" class="Symbol"
+      >)</a
+      > <a name="3042" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      >
+<a name="3045" href="Data.Bin.Properties.html#1&lt;[23]" class="Function"
+      >1&lt;[23]</a
+      > <a name="3052" class="Symbol"
+      >{</a
+      ><a name="3053" href="Data.Bin.Properties.html#3053" class="Bound"
+      >b</a
+      ><a name="3054" class="Symbol"
+      >}</a
+      > <a name="3056" class="Symbol"
+      >=</a
+      > <a name="3058" href="Data.Bin.html#_&lt;_.less" class="InductiveConstructor"
+      >less</a
+      > <a name="3063" class="Symbol"
+      >(</a
+      ><a name="3064" href="Data.Nat.Properties.html#n&#8804;m+n" class="Function"
+      >&#8469;&#8346;.n&#8804;m+n</a
+      > <a name="3073" class="Symbol"
+      >(</a
+      ><a name="3074" href="Data.Fin.html#to&#8469;" class="Function"
+      >Fin.to&#8469;</a
+      > <a name="3082" href="Data.Bin.Properties.html#3053" class="Bound"
+      >b</a
+      ><a name="3083" class="Symbol"
+      >)</a
+      > <a name="3085" class="Number"
+      >2</a
+      ><a name="3086" class="Symbol"
+      >)</a
+      >
+
+<a name="1&lt;2+" href="Data.Bin.Properties.html#1&lt;2+" class="Function"
+      >1&lt;2+</a
+      > <a name="3094" class="Symbol"
+      >:</a
+      > <a name="3096" class="Symbol"
+      >&#8704;</a
+      > <a name="3098" class="Symbol"
+      >{</a
+      ><a name="3099" href="Data.Bin.Properties.html#3099" class="Bound"
+      >b</a
+      > <a name="3101" href="Data.Bin.Properties.html#3101" class="Bound"
+      >bs</a
+      ><a name="3103" class="Symbol"
+      >}</a
+      > <a name="3105" class="Symbol"
+      >&#8594;</a
+      > <a name="3107" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="3110" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      > <a name="3113" href="Data.Bin.html#_&lt;_" class="Datatype Operator"
+      >&lt;</a
+      > <a name="3115" class="Symbol"
+      >(</a
+      ><a name="3116" href="Data.Bin.Properties.html#3099" class="Bound"
+      >b</a
+      > <a name="3118" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3120" href="Data.Bin.Properties.html#3101" class="Bound"
+      >bs</a
+      ><a name="3122" class="Symbol"
+      >)</a
+      > <a name="3124" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      >
+<a name="3127" href="Data.Bin.Properties.html#1&lt;2+" class="Function"
+      >1&lt;2+</a
+      > <a name="3132" class="Symbol"
+      >{_}</a
+      > <a name="3136" class="Symbol"
+      >{</a
+      ><a name="3137" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      >[]</a
+      ><a name="3139" class="Symbol"
+      >}</a
+      >     <a name="3145" class="Symbol"
+      >=</a
+      > <a name="3147" href="Data.Bin.Properties.html#1&lt;[23]" class="Function"
+      >1&lt;[23]</a
+      >
+<a name="3154" href="Data.Bin.Properties.html#1&lt;2+" class="Function"
+      >1&lt;2+</a
+      > <a name="3159" class="Symbol"
+      >{_}</a
+      > <a name="3163" class="Symbol"
+      >{</a
+      ><a name="3164" href="Data.Bin.Properties.html#3164" class="Bound"
+      >b</a
+      > <a name="3166" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3168" href="Data.Bin.Properties.html#3168" class="Bound"
+      >bs</a
+      ><a name="3170" class="Symbol"
+      >}</a
+      > <a name="3172" class="Symbol"
+      >=</a
+      > <a name="3174" href="Data.Bin.Properties.html#&lt;-trans" class="Function"
+      >&lt;-trans</a
+      > <a name="3182" href="Data.Bin.Properties.html#1&lt;[23]" class="Function"
+      >1&lt;[23]</a
+      > <a name="3189" class="Symbol"
+      >(</a
+      ><a name="3190" href="Data.Bin.Properties.html#&#8759;&#691;-mono-&lt;" class="Function"
+      >&#8759;&#691;-mono-&lt;</a
+      > <a name="3200" class="Symbol"
+      >{</a
+      ><a name="3201" class="Argument"
+      >a</a
+      > <a name="3203" class="Symbol"
+      >=</a
+      > <a name="3205" href="Data.Bin.Properties.html#3164" class="Bound"
+      >b</a
+      ><a name="3206" class="Symbol"
+      >}</a
+      > <a name="3208" href="Data.Bin.Properties.html#1&lt;2+" class="Function"
+      >1&lt;2+</a
+      ><a name="3212" class="Symbol"
+      >)</a
+      >
+
+<a name="0&lt;1+" href="Data.Bin.Properties.html#0&lt;1+" class="Function"
+      >0&lt;1+</a
+      > <a name="3220" class="Symbol"
+      >:</a
+      > <a name="3222" class="Symbol"
+      >&#8704;</a
+      > <a name="3224" class="Symbol"
+      >{</a
+      ><a name="3225" href="Data.Bin.Properties.html#3225" class="Bound"
+      >bs</a
+      ><a name="3227" class="Symbol"
+      >}</a
+      > <a name="3229" class="Symbol"
+      >&#8594;</a
+      > <a name="3231" href="Data.Bin.html#Bin.0#" class="InductiveConstructor"
+      >0#</a
+      > <a name="3234" href="Data.Bin.html#_&lt;_" class="Datatype Operator"
+      >&lt;</a
+      > <a name="3236" href="Data.Bin.Properties.html#3225" class="Bound"
+      >bs</a
+      > <a name="3239" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      >
+<a name="3242" href="Data.Bin.Properties.html#0&lt;1+" class="Function"
+      >0&lt;1+</a
+      > <a name="3247" class="Symbol"
+      >{</a
+      ><a name="3248" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      >[]</a
+      ><a name="3250" class="Symbol"
+      >}</a
+      >     <a name="3256" class="Symbol"
+      >=</a
+      > <a name="3258" href="Data.Bin.html#_&lt;_.less" class="InductiveConstructor"
+      >less</a
+      > <a name="3263" class="Symbol"
+      >(</a
+      ><a name="3264" href="Data.Nat.Base.html#_&#8804;_.s&#8804;s" class="InductiveConstructor"
+      >s&#8804;s</a
+      > <a name="3268" href="Data.Nat.Base.html#_&#8804;_.z&#8804;n" class="InductiveConstructor"
+      >z&#8804;n</a
+      ><a name="3271" class="Symbol"
+      >)</a
+      >
+<a name="3273" href="Data.Bin.Properties.html#0&lt;1+" class="Function"
+      >0&lt;1+</a
+      > <a name="3278" class="Symbol"
+      >{</a
+      ><a name="3279" href="Data.Bin.Properties.html#3279" class="Bound"
+      >b</a
+      > <a name="3281" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3283" href="Data.Bin.Properties.html#3283" class="Bound"
+      >bs</a
+      ><a name="3285" class="Symbol"
+      >}</a
+      > <a name="3287" class="Symbol"
+      >=</a
+      > <a name="3289" href="Data.Bin.Properties.html#&lt;-trans" class="Function"
+      >&lt;-trans</a
+      > <a name="3297" class="Symbol"
+      >(</a
+      ><a name="3298" href="Data.Bin.html#_&lt;_.less" class="InductiveConstructor"
+      >less</a
+      > <a name="3303" class="Symbol"
+      >(</a
+      ><a name="3304" href="Data.Nat.Base.html#_&#8804;_.s&#8804;s" class="InductiveConstructor"
+      >s&#8804;s</a
+      > <a name="3308" href="Data.Nat.Base.html#_&#8804;_.z&#8804;n" class="InductiveConstructor"
+      >z&#8804;n</a
+      ><a name="3311" class="Symbol"
+      >))</a
+      > <a name="3314" href="Data.Bin.Properties.html#1&lt;2+" class="Function"
+      >1&lt;2+</a
+      >
+
+<a name="&lt;&#8658;&#8802;" href="Data.Bin.Properties.html#&lt;&#8658;&#8802;" class="Function"
+      >&lt;&#8658;&#8802;</a
+      > <a name="3324" class="Symbol"
+      >:</a
+      > <a name="3326" class="Symbol"
+      >&#8704;</a
+      > <a name="3328" class="Symbol"
+      >{</a
+      ><a name="3329" href="Data.Bin.Properties.html#3329" class="Bound"
+      >a</a
+      > <a name="3331" href="Data.Bin.Properties.html#3331" class="Bound"
+      >b</a
+      ><a name="3332" class="Symbol"
+      >}</a
+      > <a name="3334" class="Symbol"
+      >&#8594;</a
+      > <a name="3336" href="Data.Bin.Properties.html#3329" class="Bound"
+      >a</a
+      > <a name="3338" href="Data.Bin.html#_&lt;_" class="Datatype Operator"
+      >&lt;</a
+      > <a name="3340" href="Data.Bin.Properties.html#3331" class="Bound"
+      >b</a
+      > <a name="3342" class="Symbol"
+      >&#8594;</a
+      > <a name="3344" href="Data.Bin.Properties.html#3329" class="Bound"
+      >a</a
+      > <a name="3346" href="Relation.Binary.Core.html#_&#8802;_" class="Function Operator"
+      >&#8802;</a
+      > <a name="3348" href="Data.Bin.Properties.html#3331" class="Bound"
+      >b</a
+      >
+<a name="3350" href="Data.Bin.Properties.html#&lt;&#8658;&#8802;" class="Function"
+      >&lt;&#8658;&#8802;</a
+      > <a name="3354" href="Data.Bin.Properties.html#3354" class="Bound"
+      >lt</a
+      > <a name="3357" href="Data.Bin.Properties.html#3357" class="Bound"
+      >eq</a
+      > <a name="3360" class="Symbol"
+      >=</a
+      > <a name="3362" href="Relation.Binary.Consequences.html#asym&#10230;irr" class="Function"
+      >asym&#10230;irr</a
+      > <a name="3371" class="Symbol"
+      >(</a
+      ><a name="3372" href="Relation.Binary.PropositionalEquality.Core.html#resp&#8322;" class="Function"
+      >resp&#8322;</a
+      > <a name="3378" href="Data.Bin.html#_&lt;_" class="Datatype Operator"
+      >_&lt;_</a
+      ><a name="3381" class="Symbol"
+      >)</a
+      > <a name="3383" href="Relation.Binary.PropositionalEquality.Core.html#sym" class="Function"
+      >sym</a
+      > <a name="3387" href="Data.Bin.Properties.html#&lt;-asym" class="Function"
+      >&lt;-asym</a
+      > <a name="3394" href="Data.Bin.Properties.html#3357" class="Bound"
+      >eq</a
+      > <a name="3397" href="Data.Bin.Properties.html#3354" class="Bound"
+      >lt</a
+      >
+
+<a name="&lt;-cmp" href="Data.Bin.Properties.html#&lt;-cmp" class="Function"
+      >&lt;-cmp</a
+      > <a name="3407" class="Symbol"
+      >:</a
+      > <a name="3409" href="Relation.Binary.Core.html#Trichotomous" class="Function"
+      >Trichotomous</a
+      > <a name="3422" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >_&#8801;_</a
+      > <a name="3426" href="Data.Bin.html#_&lt;_" class="Datatype Operator"
+      >_&lt;_</a
+      >
+<a name="3430" href="Data.Bin.Properties.html#&lt;-cmp" class="Function"
+      >&lt;-cmp</a
+      > <a name="3436" href="Data.Bin.html#Bin.0#" class="InductiveConstructor"
+      >0#</a
+      >            <a name="3450" href="Data.Bin.html#Bin.0#" class="InductiveConstructor"
+      >0#</a
+      >            <a name="3464" class="Symbol"
+      >=</a
+      > <a name="3466" href="Relation.Binary.Core.html#Tri.tri&#8776;" class="InductiveConstructor"
+      >tri&#8776;</a
+      > <a name="3471" class="Symbol"
+      >(</a
+      ><a name="3472" href="Data.Bin.Properties.html#&lt;-irrefl" class="Function"
+      >&lt;-irrefl</a
+      > <a name="3481" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      ><a name="3485" class="Symbol"
+      >)</a
+      > <a name="3487" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      > <a name="3492" class="Symbol"
+      >(</a
+      ><a name="3493" href="Data.Bin.Properties.html#&lt;-irrefl" class="Function"
+      >&lt;-irrefl</a
+      > <a name="3502" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      ><a name="3506" class="Symbol"
+      >)</a
+      >
+<a name="3508" href="Data.Bin.Properties.html#&lt;-cmp" class="Function"
+      >&lt;-cmp</a
+      > <a name="3514" href="Data.Bin.html#Bin.0#" class="InductiveConstructor"
+      >0#</a
+      >            <a name="3528" class="Symbol"
+      >(_</a
+      > <a name="3531" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      ><a name="3533" class="Symbol"
+      >)</a
+      >        <a name="3542" class="Symbol"
+      >=</a
+      > <a name="3544" href="Relation.Binary.Core.html#Tri.tri&lt;" class="InductiveConstructor"
+      >tri&lt;</a
+      > <a name="3549" href="Data.Bin.Properties.html#0&lt;1+" class="Function"
+      >0&lt;1+</a
+      > <a name="3554" class="Symbol"
+      >(</a
+      ><a name="3555" href="Data.Bin.Properties.html#&lt;&#8658;&#8802;" class="Function"
+      >&lt;&#8658;&#8802;</a
+      > <a name="3559" href="Data.Bin.Properties.html#0&lt;1+" class="Function"
+      >0&lt;1+</a
+      ><a name="3563" class="Symbol"
+      >)</a
+      > <a name="3565" class="Symbol"
+      >(</a
+      ><a name="3566" href="Data.Bin.Properties.html#&lt;-asym" class="Function"
+      >&lt;-asym</a
+      > <a name="3573" href="Data.Bin.Properties.html#0&lt;1+" class="Function"
+      >0&lt;1+</a
+      ><a name="3577" class="Symbol"
+      >)</a
+      >
+<a name="3579" href="Data.Bin.Properties.html#&lt;-cmp" class="Function"
+      >&lt;-cmp</a
+      > <a name="3585" class="Symbol"
+      >(_</a
+      > <a name="3588" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      ><a name="3590" class="Symbol"
+      >)</a
+      >        <a name="3599" href="Data.Bin.html#Bin.0#" class="InductiveConstructor"
+      >0#</a
+      >            <a name="3613" class="Symbol"
+      >=</a
+      > <a name="3615" href="Relation.Binary.Core.html#Tri.tri&gt;" class="InductiveConstructor"
+      >tri&gt;</a
+      > <a name="3620" class="Symbol"
+      >(</a
+      ><a name="3621" href="Data.Bin.Properties.html#&lt;-asym" class="Function"
+      >&lt;-asym</a
+      > <a name="3628" href="Data.Bin.Properties.html#0&lt;1+" class="Function"
+      >0&lt;1+</a
+      ><a name="3632" class="Symbol"
+      >)</a
+      > <a name="3634" class="Symbol"
+      >(</a
+      ><a name="3635" href="Data.Bin.Properties.html#&lt;&#8658;&#8802;" class="Function"
+      >&lt;&#8658;&#8802;</a
+      > <a name="3639" href="Data.Bin.Properties.html#0&lt;1+" class="Function"
+      >0&lt;1+</a
+      > <a name="3644" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="3646" href="Relation.Binary.PropositionalEquality.Core.html#sym" class="Function"
+      >sym</a
+      ><a name="3649" class="Symbol"
+      >)</a
+      > <a name="3651" href="Data.Bin.Properties.html#0&lt;1+" class="Function"
+      >0&lt;1+</a
+      >
+<a name="3656" href="Data.Bin.Properties.html#&lt;-cmp" class="Function"
+      >&lt;-cmp</a
+      > <a name="3662" class="Symbol"
+      >(</a
+      ><a name="3663" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="3666" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      ><a name="3668" class="Symbol"
+      >)</a
+      >       <a name="3676" class="Symbol"
+      >(</a
+      ><a name="3677" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="3680" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      ><a name="3682" class="Symbol"
+      >)</a
+      >       <a name="3690" class="Symbol"
+      >=</a
+      > <a name="3692" href="Relation.Binary.Core.html#Tri.tri&#8776;" class="InductiveConstructor"
+      >tri&#8776;</a
+      > <a name="3697" class="Symbol"
+      >(</a
+      ><a name="3698" href="Data.Bin.Properties.html#&lt;-irrefl" class="Function"
+      >&lt;-irrefl</a
+      > <a name="3707" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      ><a name="3711" class="Symbol"
+      >)</a
+      > <a name="3713" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      > <a name="3718" class="Symbol"
+      >(</a
+      ><a name="3719" href="Data.Bin.Properties.html#&lt;-irrefl" class="Function"
+      >&lt;-irrefl</a
+      > <a name="3728" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      ><a name="3732" class="Symbol"
+      >)</a
+      >
+<a name="3734" href="Data.Bin.Properties.html#&lt;-cmp" class="Function"
+      >&lt;-cmp</a
+      > <a name="3740" class="Symbol"
+      >(</a
+      ><a name="3741" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="3744" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      ><a name="3746" class="Symbol"
+      >)</a
+      >       <a name="3754" class="Symbol"
+      >((</a
+      ><a name="3756" href="Data.Bin.Properties.html#3756" class="Bound"
+      >b</a
+      > <a name="3758" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3760" href="Data.Bin.Properties.html#3760" class="Bound"
+      >bs</a
+      ><a name="3762" class="Symbol"
+      >)</a
+      > <a name="3764" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      ><a name="3766" class="Symbol"
+      >)</a
+      > <a name="3768" class="Symbol"
+      >=</a
+      > <a name="3770" href="Relation.Binary.Core.html#Tri.tri&lt;" class="InductiveConstructor"
+      >tri&lt;</a
+      > <a name="3775" href="Data.Bin.Properties.html#1&lt;2+" class="Function"
+      >1&lt;2+</a
+      > <a name="3780" class="Symbol"
+      >(</a
+      ><a name="3781" href="Data.Bin.Properties.html#&lt;&#8658;&#8802;" class="Function"
+      >&lt;&#8658;&#8802;</a
+      > <a name="3785" href="Data.Bin.Properties.html#1&lt;2+" class="Function"
+      >1&lt;2+</a
+      ><a name="3789" class="Symbol"
+      >)</a
+      > <a name="3791" class="Symbol"
+      >(</a
+      ><a name="3792" href="Data.Bin.Properties.html#&lt;-asym" class="Function"
+      >&lt;-asym</a
+      > <a name="3799" href="Data.Bin.Properties.html#1&lt;2+" class="Function"
+      >1&lt;2+</a
+      ><a name="3803" class="Symbol"
+      >)</a
+      >
+<a name="3805" href="Data.Bin.Properties.html#&lt;-cmp" class="Function"
+      >&lt;-cmp</a
+      > <a name="3811" class="Symbol"
+      >((</a
+      ><a name="3813" href="Data.Bin.Properties.html#3813" class="Bound"
+      >a</a
+      > <a name="3815" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3817" href="Data.Bin.Properties.html#3817" class="Bound"
+      >as</a
+      ><a name="3819" class="Symbol"
+      >)</a
+      > <a name="3821" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      ><a name="3823" class="Symbol"
+      >)</a
+      > <a name="3825" class="Symbol"
+      >(</a
+      ><a name="3826" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="3829" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      ><a name="3831" class="Symbol"
+      >)</a
+      >       <a name="3839" class="Symbol"
+      >=</a
+      > <a name="3841" href="Relation.Binary.Core.html#Tri.tri&gt;" class="InductiveConstructor"
+      >tri&gt;</a
+      > <a name="3846" class="Symbol"
+      >(</a
+      ><a name="3847" href="Data.Bin.Properties.html#&lt;-asym" class="Function"
+      >&lt;-asym</a
+      > <a name="3854" href="Data.Bin.Properties.html#1&lt;2+" class="Function"
+      >1&lt;2+</a
+      ><a name="3858" class="Symbol"
+      >)</a
+      > <a name="3860" class="Symbol"
+      >(</a
+      ><a name="3861" href="Data.Bin.Properties.html#&lt;&#8658;&#8802;" class="Function"
+      >&lt;&#8658;&#8802;</a
+      > <a name="3865" href="Data.Bin.Properties.html#1&lt;2+" class="Function"
+      >1&lt;2+</a
+      > <a name="3870" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="3872" href="Relation.Binary.PropositionalEquality.Core.html#sym" class="Function"
+      >sym</a
+      ><a name="3875" class="Symbol"
+      >)</a
+      > <a name="3877" href="Data.Bin.Properties.html#1&lt;2+" class="Function"
+      >1&lt;2+</a
+      >
+<a name="3882" href="Data.Bin.Properties.html#&lt;-cmp" class="Function"
+      >&lt;-cmp</a
+      > <a name="3888" class="Symbol"
+      >((</a
+      ><a name="3890" href="Data.Bin.Properties.html#3890" class="Bound"
+      >a</a
+      > <a name="3892" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3894" href="Data.Bin.Properties.html#3894" class="Bound"
+      >as</a
+      ><a name="3896" class="Symbol"
+      >)</a
+      > <a name="3898" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      ><a name="3900" class="Symbol"
+      >)</a
+      > <a name="3902" class="Symbol"
+      >((</a
+      ><a name="3904" href="Data.Bin.Properties.html#3904" class="Bound"
+      >b</a
+      > <a name="3906" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3908" href="Data.Bin.Properties.html#3908" class="Bound"
+      >bs</a
+      ><a name="3910" class="Symbol"
+      >)</a
+      > <a name="3912" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      ><a name="3914" class="Symbol"
+      >)</a
+      > <a name="3916" class="Keyword"
+      >with</a
+      > <a name="3921" href="Data.Bin.Properties.html#&lt;-cmp" class="Function"
+      >&lt;-cmp</a
+      > <a name="3927" class="Symbol"
+      >(</a
+      ><a name="3928" href="Data.Bin.Properties.html#3894" class="Bound"
+      >as</a
+      > <a name="3931" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      ><a name="3933" class="Symbol"
+      >)</a
+      > <a name="3935" class="Symbol"
+      >(</a
+      ><a name="3936" href="Data.Bin.Properties.html#3908" class="Bound"
+      >bs</a
+      > <a name="3939" href="Data.Bin.html#Bin._1#" class="InductiveConstructor Operator"
+      >1#</a
+      ><a name="3941" class="Symbol"
+      >)</a
+      >
+<a name="3943" class="Symbol"
+      >...</a
+      > <a name="3947" class="Symbol"
+      >|</a
+      > <a name="3949" href="Relation.Binary.Core.html#Tri.tri&lt;" class="InductiveConstructor"
+      >tri&lt;</a
+      >  <a name="3955" href="Data.Bin.Properties.html#3955" class="Bound"
+      >lt</a
+      > <a name="3958" href="Data.Bin.Properties.html#3958" class="Bound"
+      >&#172;eq</a
+      > <a name="3962" href="Data.Bin.Properties.html#3962" class="Bound"
+      >&#172;gt</a
+      > <a name="3966" class="Symbol"
+      >=</a
+      >
+  <a name="3970" href="Relation.Binary.Core.html#Tri.tri&lt;" class="InductiveConstructor"
+      >tri&lt;</a
+      > <a name="3975" class="Symbol"
+      >(</a
+      ><a name="3976" href="Data.Bin.Properties.html#&#8759;&#691;-mono-&lt;" class="Function"
+      >&#8759;&#691;-mono-&lt;</a
+      > <a name="3986" href="Data.Bin.Properties.html#3955" class="Bound"
+      >lt</a
+      ><a name="3988" class="Symbol"
+      >)</a
+      >  <a name="3991" class="Symbol"
+      >(</a
+      ><a name="3992" href="Data.Bin.Properties.html#&lt;&#8658;&#8802;" class="Function"
+      >&lt;&#8658;&#8802;</a
+      > <a name="3996" class="Symbol"
+      >(</a
+      ><a name="3997" href="Data.Bin.Properties.html#&#8759;&#691;-mono-&lt;" class="Function"
+      >&#8759;&#691;-mono-&lt;</a
+      > <a name="4007" href="Data.Bin.Properties.html#3955" class="Bound"
+      >lt</a
+      ><a name="4009" class="Symbol"
+      >))</a
+      > <a name="4012" class="Symbol"
+      >(</a
+      ><a name="4013" href="Data.Bin.Properties.html#&lt;-asym" class="Function"
+      >&lt;-asym</a
+      > <a name="4020" class="Symbol"
+      >(</a
+      ><a name="4021" href="Data.Bin.Properties.html#&#8759;&#691;-mono-&lt;" class="Function"
+      >&#8759;&#691;-mono-&lt;</a
+      > <a name="4031" href="Data.Bin.Properties.html#3955" class="Bound"
+      >lt</a
+      ><a name="4033" class="Symbol"
+      >))</a
+      >
+<a name="4036" class="Symbol"
+      >...</a
+      > <a name="4040" class="Symbol"
+      >|</a
+      > <a name="4042" href="Relation.Binary.Core.html#Tri.tri&gt;" class="InductiveConstructor"
+      >tri&gt;</a
+      > <a name="4047" href="Data.Bin.Properties.html#4047" class="Bound"
+      >&#172;lt</a
+      > <a name="4051" href="Data.Bin.Properties.html#4051" class="Bound"
+      >&#172;eq</a
+      >  <a name="4056" href="Data.Bin.Properties.html#4056" class="Bound"
+      >gt</a
+      > <a name="4059" class="Symbol"
+      >=</a
+      >
+  <a name="4063" href="Relation.Binary.Core.html#Tri.tri&gt;" class="InductiveConstructor"
+      >tri&gt;</a
+      > <a name="4068" class="Symbol"
+      >(</a
+      ><a name="4069" href="Data.Bin.Properties.html#&lt;-asym" class="Function"
+      >&lt;-asym</a
+      > <a name="4076" class="Symbol"
+      >(</a
+      ><a name="4077" href="Data.Bin.Properties.html#&#8759;&#691;-mono-&lt;" class="Function"
+      >&#8759;&#691;-mono-&lt;</a
+      > <a name="4087" href="Data.Bin.Properties.html#4056" class="Bound"
+      >gt</a
+      ><a name="4089" class="Symbol"
+      >))</a
+      > <a name="4092" class="Symbol"
+      >(</a
+      ><a name="4093" href="Data.Bin.Properties.html#&lt;&#8658;&#8802;" class="Function"
+      >&lt;&#8658;&#8802;</a
+      > <a name="4097" class="Symbol"
+      >(</a
+      ><a name="4098" href="Data.Bin.Properties.html#&#8759;&#691;-mono-&lt;" class="Function"
+      >&#8759;&#691;-mono-&lt;</a
+      > <a name="4108" href="Data.Bin.Properties.html#4056" class="Bound"
+      >gt</a
+      ><a name="4110" class="Symbol"
+      >)</a
+      > <a name="4112" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="4114" href="Relation.Binary.PropositionalEquality.Core.html#sym" class="Function"
+      >sym</a
+      ><a name="4117" class="Symbol"
+      >)</a
+      > <a name="4119" class="Symbol"
+      >(</a
+      ><a name="4120" href="Data.Bin.Properties.html#&#8759;&#691;-mono-&lt;" class="Function"
+      >&#8759;&#691;-mono-&lt;</a
+      > <a name="4130" href="Data.Bin.Properties.html#4056" class="Bound"
+      >gt</a
+      ><a name="4132" class="Symbol"
+      >)</a
+      >
+<a name="4134" class="Symbol"
+      >...</a
+      > <a name="4138" class="Symbol"
+      >|</a
+      > <a name="4140" href="Relation.Binary.Core.html#Tri.tri&#8776;" class="InductiveConstructor"
+      >tri&#8776;</a
+      > <a name="4145" href="Data.Bin.Properties.html#4145" class="Bound"
+      >&#172;lt</a
+      > <a name="4149" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      > <a name="4154" href="Data.Bin.Properties.html#4154" class="Bound"
+      >&#172;gt</a
+      > <a name="4158" class="Keyword"
+      >with</a
+      > <a name="4163" href="Data.Fin.Properties.html#cmp" class="Function"
+      >&#120125;&#8346;.cmp</a
+      > <a name="4170" class="Bound"
+      >a</a
+      > <a name="4172" class="Bound"
+      >b</a
+      >
+<a name="4174" class="Symbol"
+      >...</a
+      >   <a name="4180" class="Symbol"
+      >|</a
+      > <a name="4182" href="Relation.Binary.Core.html#Tri.tri&#8776;" class="InductiveConstructor"
+      >tri&#8776;</a
+      > <a name="4187" href="Data.Bin.Properties.html#4187" class="Bound"
+      >&#172;lt&#8242;</a
+      > <a name="4192" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      > <a name="4197" href="Data.Bin.Properties.html#4197" class="Bound"
+      >&#172;gt&#8242;</a
+      > <a name="4202" class="Symbol"
+      >=</a
+      >
+  <a name="4206" href="Relation.Binary.Core.html#Tri.tri&#8776;" class="InductiveConstructor"
+      >tri&#8776;</a
+      > <a name="4211" class="Symbol"
+      >(</a
+      ><a name="4212" href="Data.Bin.Properties.html#&lt;-irrefl" class="Function"
+      >&lt;-irrefl</a
+      > <a name="4221" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      ><a name="4225" class="Symbol"
+      >)</a
+      > <a name="4227" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      > <a name="4232" class="Symbol"
+      >(</a
+      ><a name="4233" href="Data.Bin.Properties.html#&lt;-irrefl" class="Function"
+      >&lt;-irrefl</a
+      > <a name="4242" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      ><a name="4246" class="Symbol"
+      >)</a
+      >
+<a name="4248" class="Symbol"
+      >...</a
+      >   <a name="4254" class="Symbol"
+      >|</a
+      > <a name="4256" href="Relation.Binary.Core.html#Tri.tri&lt;" class="InductiveConstructor"
+      >tri&lt;</a
+      >  <a name="4262" href="Data.Bin.Properties.html#4262" class="Bound"
+      >lt&#8242;</a
+      > <a name="4266" href="Data.Bin.Properties.html#4266" class="Bound"
+      >&#172;eq</a
+      >  <a name="4271" href="Data.Bin.Properties.html#4271" class="Bound"
+      >&#172;gt&#8242;</a
+      > <a name="4276" class="Symbol"
+      >=</a
+      >
+  <a name="4280" href="Relation.Binary.Core.html#Tri.tri&lt;" class="InductiveConstructor"
+      >tri&lt;</a
+      > <a name="4285" class="Symbol"
+      >(</a
+      ><a name="4286" href="Data.Bin.Properties.html#&#8759;&#737;-mono-&lt;" class="Function"
+      >&#8759;&#737;-mono-&lt;</a
+      > <a name="4296" href="Data.Bin.Properties.html#4262" class="Bound"
+      >lt&#8242;</a
+      ><a name="4299" class="Symbol"
+      >)</a
+      >  <a name="4302" class="Symbol"
+      >(</a
+      ><a name="4303" href="Data.Bin.Properties.html#&lt;&#8658;&#8802;" class="Function"
+      >&lt;&#8658;&#8802;</a
+      > <a name="4307" class="Symbol"
+      >(</a
+      ><a name="4308" href="Data.Bin.Properties.html#&#8759;&#737;-mono-&lt;" class="Function"
+      >&#8759;&#737;-mono-&lt;</a
+      > <a name="4318" href="Data.Bin.Properties.html#4262" class="Bound"
+      >lt&#8242;</a
+      ><a name="4321" class="Symbol"
+      >))</a
+      > <a name="4324" class="Symbol"
+      >(</a
+      ><a name="4325" href="Data.Bin.Properties.html#&lt;-asym" class="Function"
+      >&lt;-asym</a
+      > <a name="4332" class="Symbol"
+      >(</a
+      ><a name="4333" href="Data.Bin.Properties.html#&#8759;&#737;-mono-&lt;" class="Function"
+      >&#8759;&#737;-mono-&lt;</a
+      > <a name="4343" href="Data.Bin.Properties.html#4262" class="Bound"
+      >lt&#8242;</a
+      ><a name="4346" class="Symbol"
+      >))</a
+      >
+<a name="4349" class="Symbol"
+      >...</a
+      >   <a name="4355" class="Symbol"
+      >|</a
+      > <a name="4357" href="Relation.Binary.Core.html#Tri.tri&gt;" class="InductiveConstructor"
+      >tri&gt;</a
+      > <a name="4362" href="Data.Bin.Properties.html#4362" class="Bound"
+      >&#172;lt&#8242;</a
+      > <a name="4367" href="Data.Bin.Properties.html#4367" class="Bound"
+      >&#172;eq</a
+      >  <a name="4372" href="Data.Bin.Properties.html#4372" class="Bound"
+      >gt&#8242;</a
+      >  <a name="4377" class="Symbol"
+      >=</a
+      >
+  <a name="4381" href="Relation.Binary.Core.html#Tri.tri&gt;" class="InductiveConstructor"
+      >tri&gt;</a
+      > <a name="4386" class="Symbol"
+      >(</a
+      ><a name="4387" href="Data.Bin.Properties.html#&lt;-asym" class="Function"
+      >&lt;-asym</a
+      > <a name="4394" class="Symbol"
+      >(</a
+      ><a name="4395" href="Data.Bin.Properties.html#&#8759;&#737;-mono-&lt;" class="Function"
+      >&#8759;&#737;-mono-&lt;</a
+      > <a name="4405" href="Data.Bin.Properties.html#4372" class="Bound"
+      >gt&#8242;</a
+      ><a name="4408" class="Symbol"
+      >))</a
+      > <a name="4411" class="Symbol"
+      >(</a
+      ><a name="4412" href="Data.Bin.Properties.html#&lt;&#8658;&#8802;" class="Function"
+      >&lt;&#8658;&#8802;</a
+      > <a name="4416" class="Symbol"
+      >(</a
+      ><a name="4417" href="Data.Bin.Properties.html#&#8759;&#737;-mono-&lt;" class="Function"
+      >&#8759;&#737;-mono-&lt;</a
+      > <a name="4427" href="Data.Bin.Properties.html#4372" class="Bound"
+      >gt&#8242;</a
+      ><a name="4430" class="Symbol"
+      >)</a
+      > <a name="4432" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="4434" href="Relation.Binary.PropositionalEquality.Core.html#sym" class="Function"
+      >sym</a
+      ><a name="4437" class="Symbol"
+      >)</a
+      > <a name="4439" class="Symbol"
+      >(</a
+      ><a name="4440" href="Data.Bin.Properties.html#&#8759;&#737;-mono-&lt;" class="Function"
+      >&#8759;&#737;-mono-&lt;</a
+      > <a name="4450" href="Data.Bin.Properties.html#4372" class="Bound"
+      >gt&#8242;</a
+      ><a name="4453" class="Symbol"
+      >)</a
+      >
+
+<a name="&lt;-isStrictTotalOrder" href="Data.Bin.Properties.html#&lt;-isStrictTotalOrder" class="Function"
+      >&lt;-isStrictTotalOrder</a
+      > <a name="4477" class="Symbol"
+      >:</a
+      > <a name="4479" href="Relation.Binary.html#IsStrictTotalOrder" class="Record"
+      >IsStrictTotalOrder</a
+      > <a name="4498" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >_&#8801;_</a
+      > <a name="4502" href="Data.Bin.html#_&lt;_" class="Datatype Operator"
+      >_&lt;_</a
+      >
+<a name="4506" href="Data.Bin.Properties.html#&lt;-isStrictTotalOrder" class="Function"
+      >&lt;-isStrictTotalOrder</a
+      > <a name="4527" class="Symbol"
+      >=</a
+      > <a name="4529" class="Keyword"
+      >record</a
+      >
+  <a name="4538" class="Symbol"
+      >{</a
+      > <a name="4540" class="Field"
+      >isEquivalence</a
+      > <a name="4554" class="Symbol"
+      >=</a
+      > <a name="4556" href="Relation.Binary.PropositionalEquality.Core.html#isEquivalence" class="Function"
+      >isEquivalence</a
+      >
+  <a name="4572" class="Symbol"
+      >;</a
+      > <a name="4574" class="Field"
+      >trans</a
+      >         <a name="4588" class="Symbol"
+      >=</a
+      > <a name="4590" href="Data.Bin.Properties.html#&lt;-trans" class="Function"
+      >&lt;-trans</a
+      >
+  <a name="4600" class="Symbol"
+      >;</a
+      > <a name="4602" class="Field"
+      >compare</a
+      >       <a name="4616" class="Symbol"
+      >=</a
+      > <a name="4618" href="Data.Bin.Properties.html#&lt;-cmp" class="Function"
+      >&lt;-cmp</a
+      >
+  <a name="4626" class="Symbol"
+      >}</a
+      >
+
+<a name="&lt;-strictTotalOrder" href="Data.Bin.Properties.html#&lt;-strictTotalOrder" class="Function"
+      >&lt;-strictTotalOrder</a
+      > <a name="4648" class="Symbol"
+      >:</a
+      > <a name="4650" href="Relation.Binary.html#StrictTotalOrder" class="Record"
+      >StrictTotalOrder</a
+      > <a name="4667" class="Symbol"
+      >_</a
+      > <a name="4669" class="Symbol"
+      >_</a
+      > <a name="4671" class="Symbol"
+      >_</a
+      >
+<a name="4673" href="Data.Bin.Properties.html#&lt;-strictTotalOrder" class="Function"
+      >&lt;-strictTotalOrder</a
+      > <a name="4692" class="Symbol"
+      >=</a
+      > <a name="4694" class="Keyword"
+      >record</a
+      >
+  <a name="4703" class="Symbol"
+      >{</a
+      > <a name="4705" class="Field"
+      >Carrier</a
+      >            <a name="4724" class="Symbol"
+      >=</a
+      > <a name="4726" href="Data.Bin.html#Bin" class="Datatype"
+      >Bin</a
+      >
+  <a name="4732" class="Symbol"
+      >;</a
+      > <a name="4734" class="Field Operator"
+      >_&#8776;_</a
+      >                <a name="4753" class="Symbol"
+      >=</a
+      > <a name="4755" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >_&#8801;_</a
+      >
+  <a name="4761" class="Symbol"
+      >;</a
+      > <a name="4763" class="Field Operator"
+      >_&lt;_</a
+      >                <a name="4782" class="Symbol"
+      >=</a
+      > <a name="4784" href="Data.Bin.html#_&lt;_" class="Datatype Operator"
+      >_&lt;_</a
+      >
+  <a name="4790" class="Symbol"
+      >;</a
+      > <a name="4792" class="Field"
+      >isStrictTotalOrder</a
+      > <a name="4811" class="Symbol"
+      >=</a
+      > <a name="4813" href="Data.Bin.Properties.html#&lt;-isStrictTotalOrder" class="Function"
+      >&lt;-isStrictTotalOrder</a
+      >
+  <a name="4836" class="Symbol"
+      >}</a
+      >
+</pre
+    ></body
+  ></html
+>

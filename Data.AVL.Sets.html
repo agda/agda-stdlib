@@ -11,938 +11,536 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Finite sets, based on AVL trees</a
-      ><a name="140"
       >
-</a
-      ><a name="141" class="Comment"
+<a name="141" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="213"
       >
 
-</a
-      ><a name="215" class="Keyword"
+<a name="215" class="Keyword"
       >open</a
-      ><a name="219"
-      > </a
-      ><a name="220" class="Keyword"
+      > <a name="220" class="Keyword"
       >import</a
-      ><a name="226"
-      > </a
-      ><a name="227" href="Relation.Binary.html#1" class="Module"
+      > <a name="227" href="Relation.Binary.html" class="Module"
       >Relation.Binary</a
-      ><a name="242"
       >
-</a
-      ><a name="243" class="Keyword"
+<a name="243" class="Keyword"
       >open</a
-      ><a name="247"
-      > </a
-      ><a name="248" class="Keyword"
+      > <a name="248" class="Keyword"
       >import</a
-      ><a name="254"
-      > </a
-      ><a name="255" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      > <a name="255" href="Relation.Binary.PropositionalEquality.html" class="Module"
       >Relation.Binary.PropositionalEquality</a
-      ><a name="292"
-      > </a
-      ><a name="293" class="Keyword"
+      > <a name="293" class="Keyword"
       >using</a
-      ><a name="298"
-      > </a
-      ><a name="299" class="Symbol"
+      > <a name="299" class="Symbol"
       >(</a
-      ><a name="300" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      ><a name="300" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >_&#8801;_</a
       ><a name="303" class="Symbol"
       >)</a
-      ><a name="304"
       >
 
-</a
-      ><a name="306" class="Keyword"
+<a name="306" class="Keyword"
       >module</a
-      ><a name="312"
-      > </a
-      ><a name="313" href="Data.AVL.Sets.html#1" class="Module"
+      > <a name="313" href="Data.AVL.Sets.html" class="Module"
       >Data.AVL.Sets</a
-      ><a name="326"
       >
-  </a
-      ><a name="329" class="Symbol"
+  <a name="329" class="Symbol"
       >{</a
       ><a name="330" href="Data.AVL.Sets.html#330" class="Bound"
       >k</a
-      ><a name="331"
-      > </a
-      ><a name="332" href="Data.AVL.Sets.html#332" class="Bound"
+      > <a name="332" href="Data.AVL.Sets.html#332" class="Bound"
       >&#8467;</a
       ><a name="333" class="Symbol"
       >}</a
-      ><a name="334"
-      > </a
-      ><a name="335" class="Symbol"
+      > <a name="335" class="Symbol"
       >{</a
       ><a name="336" href="Data.AVL.Sets.html#336" class="Bound"
       >Key</a
-      ><a name="339"
-      > </a
-      ><a name="340" class="Symbol"
+      > <a name="340" class="Symbol"
       >:</a
-      ><a name="341"
-      > </a
-      ><a name="342" class="PrimitiveType"
+      > <a name="342" class="PrimitiveType"
       >Set</a
-      ><a name="345"
-      > </a
-      ><a name="346" href="Data.AVL.Sets.html#330" class="Bound"
+      > <a name="346" href="Data.AVL.Sets.html#330" class="Bound"
       >k</a
       ><a name="347" class="Symbol"
       >}</a
-      ><a name="348"
-      > </a
-      ><a name="349" class="Symbol"
+      > <a name="349" class="Symbol"
       >{</a
       ><a name="350" href="Data.AVL.Sets.html#350" class="Bound Operator"
       >_&lt;_</a
-      ><a name="353"
-      > </a
-      ><a name="354" class="Symbol"
+      > <a name="354" class="Symbol"
       >:</a
-      ><a name="355"
-      > </a
-      ><a name="356" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="356" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="359"
-      > </a
-      ><a name="360" href="Data.AVL.Sets.html#336" class="Bound"
+      > <a name="360" href="Data.AVL.Sets.html#336" class="Bound"
       >Key</a
-      ><a name="363"
-      > </a
-      ><a name="364" href="Data.AVL.Sets.html#332" class="Bound"
+      > <a name="364" href="Data.AVL.Sets.html#332" class="Bound"
       >&#8467;</a
       ><a name="365" class="Symbol"
       >}</a
-      ><a name="366"
       >
-  </a
-      ><a name="369" class="Symbol"
+  <a name="369" class="Symbol"
       >(</a
       ><a name="370" href="Data.AVL.Sets.html#370" class="Bound"
       >isStrictTotalOrder</a
-      ><a name="388"
-      > </a
-      ><a name="389" class="Symbol"
+      > <a name="389" class="Symbol"
       >:</a
-      ><a name="390"
-      > </a
-      ><a name="391" href="Relation.Binary.html#10018" class="Record"
+      > <a name="391" href="Relation.Binary.html#IsStrictTotalOrder" class="Record"
       >IsStrictTotalOrder</a
-      ><a name="409"
-      > </a
-      ><a name="410" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="410" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >_&#8801;_</a
-      ><a name="413"
-      > </a
-      ><a name="414" href="Data.AVL.Sets.html#350" class="Bound Operator"
+      > <a name="414" href="Data.AVL.Sets.html#350" class="Bound Operator"
       >_&lt;_</a
       ><a name="417" class="Symbol"
       >)</a
-      ><a name="418"
       >
-  </a
-      ><a name="421" class="Keyword"
+  <a name="421" class="Keyword"
       >where</a
-      ><a name="426"
       >
 
-</a
-      ><a name="428" class="Keyword"
+<a name="428" class="Keyword"
       >import</a
-      ><a name="434"
-      > </a
-      ><a name="435" href="Data.AVL.html#1" class="Module"
+      > <a name="435" href="Data.AVL.html" class="Module"
       >Data.AVL</a
-      ><a name="443"
-      > </a
-      ><a name="444" class="Symbol"
+      > <a name="444" class="Symbol"
       >as</a
-      ><a name="446"
-      > </a
-      ><a name="447" class="Module"
+      > <a name="447" class="Module"
       >AVL</a
-      ><a name="450"
       >
-</a
-      ><a name="451" class="Keyword"
+<a name="451" class="Keyword"
       >open</a
-      ><a name="455"
-      > </a
-      ><a name="456" class="Keyword"
+      > <a name="456" class="Keyword"
       >import</a
-      ><a name="462"
-      > </a
-      ><a name="463" href="Data.Bool.html#1" class="Module"
+      > <a name="463" href="Data.Bool.html" class="Module"
       >Data.Bool</a
-      ><a name="472"
       >
-</a
-      ><a name="473" class="Keyword"
+<a name="473" class="Keyword"
       >open</a
-      ><a name="477"
-      > </a
-      ><a name="478" class="Keyword"
+      > <a name="478" class="Keyword"
       >import</a
-      ><a name="484"
-      > </a
-      ><a name="485" href="Data.List.Base.html#1" class="Module"
+      > <a name="485" href="Data.List.Base.html" class="Module"
       >Data.List.Base</a
-      ><a name="499"
-      > </a
-      ><a name="500" class="Symbol"
+      > <a name="500" class="Symbol"
       >as</a
-      ><a name="502"
-      > </a
-      ><a name="503" class="Module"
+      > <a name="503" class="Module"
       >List</a
-      ><a name="507"
-      > </a
-      ><a name="508" class="Keyword"
+      > <a name="508" class="Keyword"
       >using</a
-      ><a name="513"
-      > </a
-      ><a name="514" class="Symbol"
+      > <a name="514" class="Symbol"
       >(</a
-      ><a name="515" href="Agda.Builtin.List.html#80" class="Datatype"
+      ><a name="515" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
       ><a name="519" class="Symbol"
       >)</a
-      ><a name="520"
       >
-</a
-      ><a name="521" class="Keyword"
+<a name="521" class="Keyword"
       >open</a
-      ><a name="525"
-      > </a
-      ><a name="526" class="Keyword"
+      > <a name="526" class="Keyword"
       >import</a
-      ><a name="532"
-      > </a
-      ><a name="533" href="Data.Maybe.Base.html#1" class="Module"
+      > <a name="533" href="Data.Maybe.Base.html" class="Module"
       >Data.Maybe.Base</a
-      ><a name="548"
-      > </a
-      ><a name="549" class="Symbol"
+      > <a name="549" class="Symbol"
       >as</a
-      ><a name="551"
-      > </a
-      ><a name="552" class="Module"
+      > <a name="552" class="Module"
       >Maybe</a
-      ><a name="557"
       >
-</a
-      ><a name="558" class="Keyword"
+<a name="558" class="Keyword"
       >open</a
-      ><a name="562"
-      > </a
-      ><a name="563" class="Keyword"
+      > <a name="563" class="Keyword"
       >import</a
-      ><a name="569"
-      > </a
-      ><a name="570" href="Data.Product.html#1" class="Module"
+      > <a name="570" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="582"
-      > </a
-      ><a name="583" class="Symbol"
+      > <a name="583" class="Symbol"
       >as</a
-      ><a name="585"
-      > </a
-      ><a name="586" class="Module"
+      > <a name="586" class="Module"
       >Prod</a
-      ><a name="590"
-      > </a
-      ><a name="591" class="Keyword"
+      > <a name="591" class="Keyword"
       >using</a
-      ><a name="596"
-      > </a
-      ><a name="597" class="Symbol"
+      > <a name="597" class="Symbol"
       >(</a
-      ><a name="598" href="Data.Product.html#1073" class="Function Operator"
+      ><a name="598" href="Data.Product.html#_&#215;_" class="Function Operator"
       >_&#215;_</a
       ><a name="601" class="Symbol"
       >;</a
-      ><a name="602"
-      > </a
-      ><a name="603" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="603" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >_,_</a
       ><a name="606" class="Symbol"
       >;</a
-      ><a name="607"
-      > </a
-      ><a name="608" href="Data.Product.html#525" class="Field"
+      > <a name="608" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
       ><a name="613" class="Symbol"
       >)</a
-      ><a name="614"
       >
-</a
-      ><a name="615" class="Keyword"
+<a name="615" class="Keyword"
       >open</a
-      ><a name="619"
-      > </a
-      ><a name="620" class="Keyword"
+      > <a name="620" class="Keyword"
       >import</a
-      ><a name="626"
-      > </a
-      ><a name="627" href="Data.Unit.html#1" class="Module"
+      > <a name="627" href="Data.Unit.html" class="Module"
       >Data.Unit</a
-      ><a name="636"
       >
-</a
-      ><a name="637" class="Keyword"
+<a name="637" class="Keyword"
       >open</a
-      ><a name="641"
-      > </a
-      ><a name="642" class="Keyword"
+      > <a name="642" class="Keyword"
       >import</a
-      ><a name="648"
-      > </a
-      ><a name="649" href="Function.html#1" class="Module"
+      > <a name="649" href="Function.html" class="Module"
       >Function</a
-      ><a name="657"
       >
-</a
-      ><a name="658" class="Keyword"
+<a name="658" class="Keyword"
       >open</a
-      ><a name="662"
-      > </a
-      ><a name="663" class="Keyword"
+      > <a name="663" class="Keyword"
       >import</a
-      ><a name="669"
-      > </a
-      ><a name="670" href="Level.html#1" class="Module"
+      > <a name="670" href="Level.html" class="Module"
       >Level</a
-      ><a name="675"
       >
 
-</a
-      ><a name="677" class="Comment"
+<a name="677" class="Comment"
       >-- The set type. (Note that Set is a reserved word.)</a
-      ><a name="729"
       >
 
-</a
-      ><a name="731" class="Keyword"
+<a name="731" class="Keyword"
       >private</a
-      ><a name="738"
       >
-  </a
-      ><a name="741" class="Keyword"
+  <a name="741" class="Keyword"
       >open</a
-      ><a name="745"
-      > </a
-      ><a name="746" class="Keyword"
+      > <a name="746" class="Keyword"
       >module</a
-      ><a name="752"
-      > </a
-      ><a name="753" href="Data.AVL.Sets.html#753" class="Module"
+      > <a name="S" href="Data.AVL.Sets.html#S" class="Module"
       >S</a
-      ><a name="754"
-      > </a
-      ><a name="755" class="Symbol"
+      > <a name="755" class="Symbol"
       >=</a
-      ><a name="756"
-      > </a
-      ><a name="757" href="Data.AVL.html#1" class="Module"
+      > <a name="757" href="Data.AVL.html" class="Module"
       >AVL</a
-      ><a name="760"
-      > </a
-      ><a name="761" class="Symbol"
+      > <a name="761" class="Symbol"
       >(</a
-      ><a name="762" href="Function.html#1053" class="Function"
+      ><a name="762" href="Function.html#const" class="Function"
       >const</a
-      ><a name="767"
-      > </a
-      ><a name="768" href="Agda.Builtin.Unit.html#69" class="Record"
+      > <a name="768" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
       >&#8868;</a
       ><a name="769" class="Symbol"
       >)</a
-      ><a name="770"
-      > </a
-      ><a name="771" href="Data.AVL.Sets.html#370" class="Bound"
+      > <a name="771" href="Data.AVL.Sets.html#370" class="Bound"
       >isStrictTotalOrder</a
-      ><a name="789"
       >
-    </a
-      ><a name="794" class="Keyword"
+    <a name="794" class="Keyword"
       >public</a
-      ><a name="800"
-      > </a
-      ><a name="801" class="Keyword"
+      > <a name="801" class="Keyword"
       >using</a
-      ><a name="806"
-      > </a
-      ><a name="807" class="Symbol"
+      > <a name="807" class="Symbol"
       >()</a
-      ><a name="809"
-      > </a
-      ><a name="810" class="Keyword"
+      > <a name="810" class="Keyword"
       >renaming</a
-      ><a name="818"
-      > </a
-      ><a name="819" class="Symbol"
+      > <a name="819" class="Symbol"
       >(</a
-      ><a name="820" href="Data.AVL.html#12566" class="Datatype"
+      ><a name="820" href="Data.AVL.html#Sets.S.Tree" class="Datatype"
       >Tree</a
-      ><a name="824"
-      > </a
-      ><a name="825" class="Symbol"
+      > <a name="825" class="Symbol"
       >to</a
-      ><a name="827"
-      > </a
-      ><a name="828" href="Data.AVL.html#12566" class="Datatype"
+      > <a name="828" href="Data.AVL.html#Sets.S.Tree" class="Datatype"
       >&#10216;Set&#10217;</a
       ><a name="833" class="Symbol"
       >)</a
-      ><a name="834"
       >
 
-</a
-      ><a name="836" class="Comment"
+<a name="836" class="Comment"
       >-- Repackaged functions.</a
-      ><a name="860"
       >
 
-</a
-      ><a name="862" href="Data.AVL.Sets.html#862" class="Function"
+<a name="empty" href="Data.AVL.Sets.html#empty" class="Function"
       >empty</a
-      ><a name="867"
-      > </a
-      ><a name="868" class="Symbol"
+      > <a name="868" class="Symbol"
       >:</a
-      ><a name="869"
-      > </a
-      ><a name="870" href="Data.AVL.html#12566" class="Datatype"
+      > <a name="870" href="Data.AVL.html#Sets.S.&#10216;Set&#10217;" class="Datatype"
       >&#10216;Set&#10217;</a
-      ><a name="875"
       >
-</a
-      ><a name="876" href="Data.AVL.Sets.html#862" class="Function"
+<a name="876" href="Data.AVL.Sets.html#empty" class="Function"
       >empty</a
-      ><a name="881"
-      > </a
-      ><a name="882" class="Symbol"
+      > <a name="882" class="Symbol"
       >=</a
-      ><a name="883"
-      > </a
-      ><a name="884" href="Data.AVL.html#12675" class="Function"
+      > <a name="884" href="Data.AVL.html#Sets.S.empty" class="Function"
       >S.empty</a
-      ><a name="891"
       >
 
-</a
-      ><a name="893" href="Data.AVL.Sets.html#893" class="Function"
+<a name="singleton" href="Data.AVL.Sets.html#singleton" class="Function"
       >singleton</a
-      ><a name="902"
-      > </a
-      ><a name="903" class="Symbol"
+      > <a name="903" class="Symbol"
       >:</a
-      ><a name="904"
-      > </a
-      ><a name="905" href="Data.AVL.Sets.html#336" class="Bound"
+      > <a name="905" href="Data.AVL.Sets.html#336" class="Bound"
       >Key</a
-      ><a name="908"
-      > </a
-      ><a name="909" class="Symbol"
+      > <a name="909" class="Symbol"
       >&#8594;</a
-      ><a name="910"
-      > </a
-      ><a name="911" href="Data.AVL.html#12566" class="Datatype"
+      > <a name="911" href="Data.AVL.html#Sets.S.&#10216;Set&#10217;" class="Datatype"
       >&#10216;Set&#10217;</a
-      ><a name="916"
       >
-</a
-      ><a name="917" href="Data.AVL.Sets.html#893" class="Function"
+<a name="917" href="Data.AVL.Sets.html#singleton" class="Function"
       >singleton</a
-      ><a name="926"
-      > </a
-      ><a name="927" href="Data.AVL.Sets.html#927" class="Bound"
+      > <a name="927" href="Data.AVL.Sets.html#927" class="Bound"
       >k</a
-      ><a name="928"
-      > </a
-      ><a name="929" class="Symbol"
+      > <a name="929" class="Symbol"
       >=</a
-      ><a name="930"
-      > </a
-      ><a name="931" href="Data.AVL.html#12720" class="Function"
+      > <a name="931" href="Data.AVL.html#Sets.S.singleton" class="Function"
       >S.singleton</a
-      ><a name="942"
-      > </a
-      ><a name="943" href="Data.AVL.Sets.html#927" class="Bound"
+      > <a name="943" href="Data.AVL.Sets.html#927" class="Bound"
       >k</a
-      ><a name="944"
-      > </a
-      ><a name="945" class="Symbol"
+      > <a name="945" class="Symbol"
       >_</a
-      ><a name="946"
       >
 
-</a
-      ><a name="948" href="Data.AVL.Sets.html#948" class="Function"
+<a name="insert" href="Data.AVL.Sets.html#insert" class="Function"
       >insert</a
-      ><a name="954"
-      > </a
-      ><a name="955" class="Symbol"
+      > <a name="955" class="Symbol"
       >:</a
-      ><a name="956"
-      > </a
-      ><a name="957" href="Data.AVL.Sets.html#336" class="Bound"
+      > <a name="957" href="Data.AVL.Sets.html#336" class="Bound"
       >Key</a
-      ><a name="960"
-      > </a
-      ><a name="961" class="Symbol"
+      > <a name="961" class="Symbol"
       >&#8594;</a
-      ><a name="962"
-      > </a
-      ><a name="963" href="Data.AVL.html#12566" class="Datatype"
+      > <a name="963" href="Data.AVL.html#Sets.S.&#10216;Set&#10217;" class="Datatype"
       >&#10216;Set&#10217;</a
-      ><a name="968"
-      > </a
-      ><a name="969" class="Symbol"
+      > <a name="969" class="Symbol"
       >&#8594;</a
-      ><a name="970"
-      > </a
-      ><a name="971" href="Data.AVL.html#12566" class="Datatype"
+      > <a name="971" href="Data.AVL.html#Sets.S.&#10216;Set&#10217;" class="Datatype"
       >&#10216;Set&#10217;</a
-      ><a name="976"
       >
-</a
-      ><a name="977" href="Data.AVL.Sets.html#948" class="Function"
+<a name="977" href="Data.AVL.Sets.html#insert" class="Function"
       >insert</a
-      ><a name="983"
-      > </a
-      ><a name="984" href="Data.AVL.Sets.html#984" class="Bound"
+      > <a name="984" href="Data.AVL.Sets.html#984" class="Bound"
       >k</a
-      ><a name="985"
-      > </a
-      ><a name="986" class="Symbol"
+      > <a name="986" class="Symbol"
       >=</a
-      ><a name="987"
-      > </a
-      ><a name="988" href="Data.AVL.html#12807" class="Function"
+      > <a name="988" href="Data.AVL.html#Sets.S.insert" class="Function"
       >S.insert</a
-      ><a name="996"
-      > </a
-      ><a name="997" href="Data.AVL.Sets.html#984" class="Bound"
+      > <a name="997" href="Data.AVL.Sets.html#984" class="Bound"
       >k</a
-      ><a name="998"
-      > </a
-      ><a name="999" class="Symbol"
+      > <a name="999" class="Symbol"
       >_</a
-      ><a name="1000"
       >
 
-</a
-      ><a name="1002" href="Data.AVL.Sets.html#1002" class="Function"
+<a name="delete" href="Data.AVL.Sets.html#delete" class="Function"
       >delete</a
-      ><a name="1008"
-      > </a
-      ><a name="1009" class="Symbol"
+      > <a name="1009" class="Symbol"
       >:</a
-      ><a name="1010"
-      > </a
-      ><a name="1011" href="Data.AVL.Sets.html#336" class="Bound"
+      > <a name="1011" href="Data.AVL.Sets.html#336" class="Bound"
       >Key</a
-      ><a name="1014"
-      > </a
-      ><a name="1015" class="Symbol"
+      > <a name="1015" class="Symbol"
       >&#8594;</a
-      ><a name="1016"
-      > </a
-      ><a name="1017" href="Data.AVL.html#12566" class="Datatype"
+      > <a name="1017" href="Data.AVL.html#Sets.S.&#10216;Set&#10217;" class="Datatype"
       >&#10216;Set&#10217;</a
-      ><a name="1022"
-      > </a
-      ><a name="1023" class="Symbol"
+      > <a name="1023" class="Symbol"
       >&#8594;</a
-      ><a name="1024"
-      > </a
-      ><a name="1025" href="Data.AVL.html#12566" class="Datatype"
+      > <a name="1025" href="Data.AVL.html#Sets.S.&#10216;Set&#10217;" class="Datatype"
       >&#10216;Set&#10217;</a
-      ><a name="1030"
       >
-</a
-      ><a name="1031" href="Data.AVL.Sets.html#1002" class="Function"
+<a name="1031" href="Data.AVL.Sets.html#delete" class="Function"
       >delete</a
-      ><a name="1037"
-      > </a
-      ><a name="1038" class="Symbol"
+      > <a name="1038" class="Symbol"
       >=</a
-      ><a name="1039"
-      > </a
-      ><a name="1040" href="Data.AVL.html#13076" class="Function"
+      > <a name="1040" href="Data.AVL.html#Sets.S.delete" class="Function"
       >S.delete</a
-      ><a name="1048"
       >
 
-</a
-      ><a name="1050" class="Keyword"
+<a name="1050" class="Keyword"
       >infix</a
-      ><a name="1055"
-      > </a
-      ><a name="1056" class="Number"
+      > <a name="1056" class="Number"
       >4</a
-      ><a name="1057"
-      > _&#8712;?_
-
-</a
-      ><a name="1064" href="Data.AVL.Sets.html#1064" class="Function Operator"
+      > <a name="_&#8712;?_" href="Data.AVL.Sets.html#_&#8712;?_" class="Function Operator"
       >_&#8712;?_</a
-      ><a name="1068"
-      > </a
-      ><a name="1069" class="Symbol"
+      >
+
+<a name="_&#8712;?_" href="Data.AVL.Sets.html#_&#8712;?_" class="Function Operator"
+      >_&#8712;?_</a
+      > <a name="1069" class="Symbol"
       >:</a
-      ><a name="1070"
-      > </a
-      ><a name="1071" href="Data.AVL.Sets.html#336" class="Bound"
+      > <a name="1071" href="Data.AVL.Sets.html#336" class="Bound"
       >Key</a
-      ><a name="1074"
-      > </a
-      ><a name="1075" class="Symbol"
+      > <a name="1075" class="Symbol"
       >&#8594;</a
-      ><a name="1076"
-      > </a
-      ><a name="1077" href="Data.AVL.html#12566" class="Datatype"
+      > <a name="1077" href="Data.AVL.html#Sets.S.&#10216;Set&#10217;" class="Datatype"
       >&#10216;Set&#10217;</a
-      ><a name="1082"
-      > </a
-      ><a name="1083" class="Symbol"
+      > <a name="1083" class="Symbol"
       >&#8594;</a
-      ><a name="1084"
-      > </a
-      ><a name="1085" href="Agda.Builtin.Bool.html#67" class="Datatype"
+      > <a name="1085" href="Agda.Builtin.Bool.html#Bool" class="Datatype"
       >Bool</a
-      ><a name="1089"
       >
-</a
-      ><a name="1090" href="Data.AVL.Sets.html#1064" class="Function Operator"
+<a name="1090" href="Data.AVL.Sets.html#_&#8712;?_" class="Function Operator"
       >_&#8712;?_</a
-      ><a name="1094"
-      > </a
-      ><a name="1095" class="Symbol"
+      > <a name="1095" class="Symbol"
       >=</a
-      ><a name="1096"
-      > </a
-      ><a name="1097" href="Data.AVL.html#13349" class="Function Operator"
+      > <a name="1097" href="Data.AVL.html#Sets.S._&#8712;?_" class="Function Operator"
       >S._&#8712;?_</a
-      ><a name="1103"
       >
 
-</a
-      ><a name="1105" href="Data.AVL.Sets.html#1105" class="Function"
+<a name="headTail" href="Data.AVL.Sets.html#headTail" class="Function"
       >headTail</a
-      ><a name="1113"
-      > </a
-      ><a name="1114" class="Symbol"
+      > <a name="1114" class="Symbol"
       >:</a
-      ><a name="1115"
-      > </a
-      ><a name="1116" href="Data.AVL.html#12566" class="Datatype"
+      > <a name="1116" href="Data.AVL.html#Sets.S.&#10216;Set&#10217;" class="Datatype"
       >&#10216;Set&#10217;</a
-      ><a name="1121"
-      > </a
-      ><a name="1122" class="Symbol"
+      > <a name="1122" class="Symbol"
       >&#8594;</a
-      ><a name="1123"
-      > </a
-      ><a name="1124" href="Data.Maybe.Base.html#335" class="Datatype"
+      > <a name="1124" href="Data.Maybe.Base.html#Maybe" class="Datatype"
       >Maybe</a
-      ><a name="1129"
-      > </a
-      ><a name="1130" class="Symbol"
+      > <a name="1130" class="Symbol"
       >(</a
       ><a name="1131" href="Data.AVL.Sets.html#336" class="Bound"
       >Key</a
-      ><a name="1134"
-      > </a
-      ><a name="1135" href="Data.Product.html#1073" class="Function Operator"
+      > <a name="1135" href="Data.Product.html#_&#215;_" class="Function Operator"
       >&#215;</a
-      ><a name="1136"
-      > </a
-      ><a name="1137" href="Data.AVL.html#12566" class="Datatype"
+      > <a name="1137" href="Data.AVL.html#Sets.S.&#10216;Set&#10217;" class="Datatype"
       >&#10216;Set&#10217;</a
       ><a name="1142" class="Symbol"
       >)</a
-      ><a name="1143"
       >
-</a
-      ><a name="1144" href="Data.AVL.Sets.html#1105" class="Function"
+<a name="1144" href="Data.AVL.Sets.html#headTail" class="Function"
       >headTail</a
-      ><a name="1152"
-      > </a
-      ><a name="1153" href="Data.AVL.Sets.html#1153" class="Bound"
+      > <a name="1153" href="Data.AVL.Sets.html#1153" class="Bound"
       >s</a
-      ><a name="1154"
-      > </a
-      ><a name="1155" class="Symbol"
+      > <a name="1155" class="Symbol"
       >=</a
-      ><a name="1156"
-      > </a
-      ><a name="1157" href="Data.Maybe.Base.html#1797" class="Function"
+      > <a name="1157" href="Data.Maybe.Base.html#map" class="Function"
       >Maybe.map</a
-      ><a name="1166"
-      > </a
-      ><a name="1167" class="Symbol"
+      > <a name="1167" class="Symbol"
       >(</a
-      ><a name="1168" href="Data.Product.html#1872" class="Function"
+      ><a name="1168" href="Data.Product.html#map" class="Function"
       >Prod.map</a
-      ><a name="1176"
-      > </a
-      ><a name="1177" href="Data.Product.html#525" class="Field"
+      > <a name="1177" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="1182"
-      > </a
-      ><a name="1183" href="Function.html#1012" class="Function"
+      > <a name="1183" href="Function.html#id" class="Function"
       >id</a
       ><a name="1185" class="Symbol"
       >)</a
-      ><a name="1186"
-      > </a
-      ><a name="1187" class="Symbol"
+      > <a name="1187" class="Symbol"
       >(</a
-      ><a name="1188" href="Data.AVL.html#13405" class="Function"
+      ><a name="1188" href="Data.AVL.html#Sets.S.headTail" class="Function"
       >S.headTail</a
-      ><a name="1198"
-      > </a
-      ><a name="1199" href="Data.AVL.Sets.html#1153" class="Bound"
+      > <a name="1199" href="Data.AVL.Sets.html#1153" class="Bound"
       >s</a
       ><a name="1200" class="Symbol"
       >)</a
-      ><a name="1201"
       >
 
-</a
-      ><a name="1203" href="Data.AVL.Sets.html#1203" class="Function"
+<a name="initLast" href="Data.AVL.Sets.html#initLast" class="Function"
       >initLast</a
-      ><a name="1211"
-      > </a
-      ><a name="1212" class="Symbol"
+      > <a name="1212" class="Symbol"
       >:</a
-      ><a name="1213"
-      > </a
-      ><a name="1214" href="Data.AVL.html#12566" class="Datatype"
+      > <a name="1214" href="Data.AVL.html#Sets.S.&#10216;Set&#10217;" class="Datatype"
       >&#10216;Set&#10217;</a
-      ><a name="1219"
-      > </a
-      ><a name="1220" class="Symbol"
+      > <a name="1220" class="Symbol"
       >&#8594;</a
-      ><a name="1221"
-      > </a
-      ><a name="1222" href="Data.Maybe.Base.html#335" class="Datatype"
+      > <a name="1222" href="Data.Maybe.Base.html#Maybe" class="Datatype"
       >Maybe</a
-      ><a name="1227"
-      > </a
-      ><a name="1228" class="Symbol"
+      > <a name="1228" class="Symbol"
       >(</a
-      ><a name="1229" href="Data.AVL.html#12566" class="Datatype"
+      ><a name="1229" href="Data.AVL.html#Sets.S.&#10216;Set&#10217;" class="Datatype"
       >&#10216;Set&#10217;</a
-      ><a name="1234"
-      > </a
-      ><a name="1235" href="Data.Product.html#1073" class="Function Operator"
+      > <a name="1235" href="Data.Product.html#_&#215;_" class="Function Operator"
       >&#215;</a
-      ><a name="1236"
-      > </a
-      ><a name="1237" href="Data.AVL.Sets.html#336" class="Bound"
+      > <a name="1237" href="Data.AVL.Sets.html#336" class="Bound"
       >Key</a
       ><a name="1240" class="Symbol"
       >)</a
-      ><a name="1241"
       >
-</a
-      ><a name="1242" href="Data.AVL.Sets.html#1203" class="Function"
+<a name="1242" href="Data.AVL.Sets.html#initLast" class="Function"
       >initLast</a
-      ><a name="1250"
-      > </a
-      ><a name="1251" href="Data.AVL.Sets.html#1251" class="Bound"
+      > <a name="1251" href="Data.AVL.Sets.html#1251" class="Bound"
       >s</a
-      ><a name="1252"
-      > </a
-      ><a name="1253" class="Symbol"
+      > <a name="1253" class="Symbol"
       >=</a
-      ><a name="1254"
-      > </a
-      ><a name="1255" href="Data.Maybe.Base.html#1797" class="Function"
+      > <a name="1255" href="Data.Maybe.Base.html#map" class="Function"
       >Maybe.map</a
-      ><a name="1264"
-      > </a
-      ><a name="1265" class="Symbol"
+      > <a name="1265" class="Symbol"
       >(</a
-      ><a name="1266" href="Data.Product.html#1872" class="Function"
+      ><a name="1266" href="Data.Product.html#map" class="Function"
       >Prod.map</a
-      ><a name="1274"
-      > </a
-      ><a name="1275" href="Function.html#1012" class="Function"
+      > <a name="1275" href="Function.html#id" class="Function"
       >id</a
-      ><a name="1277"
-      > </a
-      ><a name="1278" href="Data.Product.html#525" class="Field"
+      > <a name="1278" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
       ><a name="1283" class="Symbol"
       >)</a
-      ><a name="1284"
-      > </a
-      ><a name="1285" class="Symbol"
+      > <a name="1285" class="Symbol"
       >(</a
-      ><a name="1286" href="Data.AVL.html#13604" class="Function"
+      ><a name="1286" href="Data.AVL.html#Sets.S.initLast" class="Function"
       >S.initLast</a
-      ><a name="1296"
-      > </a
-      ><a name="1297" href="Data.AVL.Sets.html#1251" class="Bound"
+      > <a name="1297" href="Data.AVL.Sets.html#1251" class="Bound"
       >s</a
       ><a name="1298" class="Symbol"
       >)</a
-      ><a name="1299"
       >
 
-</a
-      ><a name="1301" href="Data.AVL.Sets.html#1301" class="Function"
+<a name="fromList" href="Data.AVL.Sets.html#fromList" class="Function"
       >fromList</a
-      ><a name="1309"
-      > </a
-      ><a name="1310" class="Symbol"
+      > <a name="1310" class="Symbol"
       >:</a
-      ><a name="1311"
-      > </a
-      ><a name="1312" href="Agda.Builtin.List.html#80" class="Datatype"
+      > <a name="1312" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
-      ><a name="1316"
-      > </a
-      ><a name="1317" href="Data.AVL.Sets.html#336" class="Bound"
+      > <a name="1317" href="Data.AVL.Sets.html#336" class="Bound"
       >Key</a
-      ><a name="1320"
-      > </a
-      ><a name="1321" class="Symbol"
+      > <a name="1321" class="Symbol"
       >&#8594;</a
-      ><a name="1322"
-      > </a
-      ><a name="1323" href="Data.AVL.html#12566" class="Datatype"
+      > <a name="1323" href="Data.AVL.html#Sets.S.&#10216;Set&#10217;" class="Datatype"
       >&#10216;Set&#10217;</a
-      ><a name="1328"
       >
-</a
-      ><a name="1329" href="Data.AVL.Sets.html#1301" class="Function"
+<a name="1329" href="Data.AVL.Sets.html#fromList" class="Function"
       >fromList</a
-      ><a name="1337"
-      > </a
-      ><a name="1338" class="Symbol"
+      > <a name="1338" class="Symbol"
       >=</a
-      ><a name="1339"
-      > </a
-      ><a name="1340" href="Data.AVL.html#13846" class="Function"
+      > <a name="1340" href="Data.AVL.html#Sets.S.fromList" class="Function"
       >S.fromList</a
-      ><a name="1350"
-      > </a
-      ><a name="1351" href="Function.html#713" class="Function Operator"
+      > <a name="1351" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="1352"
-      > </a
-      ><a name="1353" href="Data.List.Base.html#1207" class="Function"
+      > <a name="1353" href="Data.List.Base.html#map" class="Function"
       >List.map</a
-      ><a name="1361"
-      > </a
-      ><a name="1362" class="Symbol"
+      > <a name="1362" class="Symbol"
       >(&#955;</a
-      ><a name="1364"
-      > </a
-      ><a name="1365" href="Data.AVL.Sets.html#1365" class="Bound"
+      > <a name="1365" href="Data.AVL.Sets.html#1365" class="Bound"
       >k</a
-      ><a name="1366"
-      > </a
-      ><a name="1367" class="Symbol"
+      > <a name="1367" class="Symbol"
       >&#8594;</a
-      ><a name="1368"
-      > </a
-      ><a name="1369" class="Symbol"
+      > <a name="1369" class="Symbol"
       >(</a
       ><a name="1370" href="Data.AVL.Sets.html#1365" class="Bound"
       >k</a
-      ><a name="1371"
-      > </a
-      ><a name="1372" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="1372" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1373"
-      > </a
-      ><a name="1374" class="Symbol"
+      > <a name="1374" class="Symbol"
       >_))</a
-      ><a name="1377"
       >
 
-</a
-      ><a name="1379" href="Data.AVL.Sets.html#1379" class="Function"
+<a name="toList" href="Data.AVL.Sets.html#toList" class="Function"
       >toList</a
-      ><a name="1385"
-      > </a
-      ><a name="1386" class="Symbol"
+      > <a name="1386" class="Symbol"
       >:</a
-      ><a name="1387"
-      > </a
-      ><a name="1388" href="Data.AVL.html#12566" class="Datatype"
+      > <a name="1388" href="Data.AVL.html#Sets.S.&#10216;Set&#10217;" class="Datatype"
       >&#10216;Set&#10217;</a
-      ><a name="1393"
-      > </a
-      ><a name="1394" class="Symbol"
+      > <a name="1394" class="Symbol"
       >&#8594;</a
-      ><a name="1395"
-      > </a
-      ><a name="1396" href="Agda.Builtin.List.html#80" class="Datatype"
+      > <a name="1396" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
-      ><a name="1400"
-      > </a
-      ><a name="1401" href="Data.AVL.Sets.html#336" class="Bound"
+      > <a name="1401" href="Data.AVL.Sets.html#336" class="Bound"
       >Key</a
-      ><a name="1404"
       >
-</a
-      ><a name="1405" href="Data.AVL.Sets.html#1379" class="Function"
+<a name="1405" href="Data.AVL.Sets.html#toList" class="Function"
       >toList</a
-      ><a name="1411"
-      > </a
-      ><a name="1412" class="Symbol"
+      > <a name="1412" class="Symbol"
       >=</a
-      ><a name="1413"
-      > </a
-      ><a name="1414" href="Data.List.Base.html#1207" class="Function"
+      > <a name="1414" href="Data.List.Base.html#map" class="Function"
       >List.map</a
-      ><a name="1422"
-      > </a
-      ><a name="1423" href="Data.Product.html#525" class="Field"
+      > <a name="1423" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="1428"
-      > </a
-      ><a name="1429" href="Function.html#713" class="Function Operator"
+      > <a name="1429" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="1430"
-      > </a
-      ><a name="1431" href="Data.AVL.html#13947" class="Function"
+      > <a name="1431" href="Data.AVL.html#Sets.S.toList" class="Function"
       >S.toList</a
-      ><a name="1439"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

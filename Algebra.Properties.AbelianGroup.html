@@ -11,1201 +11,651 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Some derivable properties</a
-      ><a name="134"
       >
-</a
-      ><a name="135" class="Comment"
+<a name="135" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="207"
       >
 
-</a
-      ><a name="209" class="Keyword"
+<a name="209" class="Keyword"
       >open</a
-      ><a name="213"
-      > </a
-      ><a name="214" class="Keyword"
+      > <a name="214" class="Keyword"
       >import</a
-      ><a name="220"
-      > </a
-      ><a name="221" href="Algebra.html#1" class="Module"
+      > <a name="221" href="Algebra.html" class="Module"
       >Algebra</a
-      ><a name="228"
       >
 
-</a
-      ><a name="230" class="Keyword"
+<a name="230" class="Keyword"
       >module</a
-      ><a name="236"
-      > </a
-      ><a name="237" href="Algebra.Properties.AbelianGroup.html#1" class="Module"
+      > <a name="237" href="Algebra.Properties.AbelianGroup.html" class="Module"
       >Algebra.Properties.AbelianGroup</a
-      ><a name="268"
       >
-         </a
-      ><a name="278" class="Symbol"
+         <a name="278" class="Symbol"
       >{</a
       ><a name="279" href="Algebra.Properties.AbelianGroup.html#279" class="Bound"
       >g&#8321;</a
-      ><a name="281"
-      > </a
-      ><a name="282" href="Algebra.Properties.AbelianGroup.html#282" class="Bound"
+      > <a name="282" href="Algebra.Properties.AbelianGroup.html#282" class="Bound"
       >g&#8322;</a
       ><a name="284" class="Symbol"
       >}</a
-      ><a name="285"
-      > </a
-      ><a name="286" class="Symbol"
+      > <a name="286" class="Symbol"
       >(</a
       ><a name="287" href="Algebra.Properties.AbelianGroup.html#287" class="Bound"
       >G</a
-      ><a name="288"
-      > </a
-      ><a name="289" class="Symbol"
+      > <a name="289" class="Symbol"
       >:</a
-      ><a name="290"
-      > </a
-      ><a name="291" href="Algebra.html#2533" class="Record"
+      > <a name="291" href="Algebra.html#AbelianGroup" class="Record"
       >AbelianGroup</a
-      ><a name="303"
-      > </a
-      ><a name="304" href="Algebra.Properties.AbelianGroup.html#279" class="Bound"
+      > <a name="304" href="Algebra.Properties.AbelianGroup.html#279" class="Bound"
       >g&#8321;</a
-      ><a name="306"
-      > </a
-      ><a name="307" href="Algebra.Properties.AbelianGroup.html#282" class="Bound"
+      > <a name="307" href="Algebra.Properties.AbelianGroup.html#282" class="Bound"
       >g&#8322;</a
       ><a name="309" class="Symbol"
       >)</a
-      ><a name="310"
-      > </a
-      ><a name="311" class="Keyword"
+      > <a name="311" class="Keyword"
       >where</a
-      ><a name="316"
       >
 
-</a
-      ><a name="318" class="Keyword"
+<a name="318" class="Keyword"
       >import</a
-      ><a name="324"
-      > </a
-      ><a name="325" href="Algebra.Properties.Group.html#1" class="Module"
+      > <a name="325" href="Algebra.Properties.Group.html" class="Module"
       >Algebra.Properties.Group</a
-      ><a name="349"
-      > </a
-      ><a name="350" class="Symbol"
+      > <a name="350" class="Symbol"
       >as</a
-      ><a name="352"
-      > </a
-      ><a name="353" class="Module"
+      > <a name="353" class="Module"
       >GP</a
-      ><a name="355"
       >
-</a
-      ><a name="356" class="Keyword"
+<a name="356" class="Keyword"
       >open</a
-      ><a name="360"
-      > </a
-      ><a name="361" class="Keyword"
+      > <a name="361" class="Keyword"
       >import</a
-      ><a name="367"
-      > </a
-      ><a name="368" href="Data.Product.html#1" class="Module"
+      > <a name="368" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="380"
       >
-</a
-      ><a name="381" class="Keyword"
+<a name="381" class="Keyword"
       >open</a
-      ><a name="385"
-      > </a
-      ><a name="386" class="Keyword"
+      > <a name="386" class="Keyword"
       >import</a
-      ><a name="392"
-      > </a
-      ><a name="393" href="Function.html#1" class="Module"
+      > <a name="393" href="Function.html" class="Module"
       >Function</a
-      ><a name="401"
       >
-</a
-      ><a name="402" class="Keyword"
+<a name="402" class="Keyword"
       >import</a
-      ><a name="408"
-      > </a
-      ><a name="409" href="Relation.Binary.EqReasoning.html#1" class="Module"
+      > <a name="409" href="Relation.Binary.EqReasoning.html" class="Module"
       >Relation.Binary.EqReasoning</a
-      ><a name="436"
-      > </a
-      ><a name="437" class="Symbol"
+      > <a name="437" class="Symbol"
       >as</a
-      ><a name="439"
-      > </a
-      ><a name="440" class="Module"
+      > <a name="440" class="Module"
       >EqR</a
-      ><a name="443"
       >
 
-</a
-      ><a name="445" class="Keyword"
+<a name="445" class="Keyword"
       >open</a
-      ><a name="449"
-      > </a
-      ><a name="450" href="Algebra.html#2533" class="Module"
+      > <a name="450" href="Algebra.html#AbelianGroup" class="Module"
       >AbelianGroup</a
-      ><a name="462"
-      > </a
-      ><a name="463" href="Algebra.Properties.AbelianGroup.html#287" class="Bound"
+      > <a name="463" href="Algebra.Properties.AbelianGroup.html#287" class="Bound"
       >G</a
-      ><a name="464"
       >
-</a
-      ><a name="465" class="Keyword"
+<a name="465" class="Keyword"
       >open</a
-      ><a name="469"
-      > </a
-      ><a name="470" href="Relation.Binary.EqReasoning.html#1" class="Module"
+      > <a name="470" href="Relation.Binary.EqReasoning.html" class="Module"
       >EqR</a
-      ><a name="473"
-      > </a
-      ><a name="474" href="Algebra.html#845" class="Function"
+      > <a name="474" href="Algebra.html#845" class="Function"
       >setoid</a
-      ><a name="480"
       >
 
-</a
-      ><a name="482" class="Keyword"
+<a name="482" class="Keyword"
       >open</a
-      ><a name="486"
-      > </a
-      ><a name="487" href="Algebra.Properties.Group.html#1" class="Module"
+      > <a name="487" href="Algebra.Properties.Group.html" class="Module"
       >GP</a
-      ><a name="489"
-      > </a
-      ><a name="490" href="Algebra.html#2884" class="Function"
+      > <a name="490" href="Algebra.html#3543" class="Function"
       >group</a
-      ><a name="495"
-      > </a
-      ><a name="496" class="Keyword"
+      > <a name="496" class="Keyword"
       >public</a
-      ><a name="502"
       >
 
-</a
-      ><a name="504" class="Keyword"
+<a name="504" class="Keyword"
       >private</a
-      ><a name="511"
       >
-  </a
-      ><a name="514" href="Algebra.Properties.AbelianGroup.html#514" class="Function"
+  <a name="lemma" href="Algebra.Properties.AbelianGroup.html#lemma" class="Function"
       >lemma</a
-      ><a name="519"
-      > </a
-      ><a name="520" class="Symbol"
+      > <a name="520" class="Symbol"
       >:</a
-      ><a name="521"
-      > </a
-      ><a name="522" class="Symbol"
+      > <a name="522" class="Symbol"
       >&#8704;</a
-      ><a name="523"
-      > </a
-      ><a name="524" href="Algebra.Properties.AbelianGroup.html#524" class="Bound"
+      > <a name="524" href="Algebra.Properties.AbelianGroup.html#524" class="Bound"
       >x</a
-      ><a name="525"
-      > </a
-      ><a name="526" href="Algebra.Properties.AbelianGroup.html#526" class="Bound"
+      > <a name="526" href="Algebra.Properties.AbelianGroup.html#526" class="Bound"
       >y</a
-      ><a name="527"
-      > </a
-      ><a name="528" class="Symbol"
+      > <a name="528" class="Symbol"
       >&#8594;</a
-      ><a name="529"
-      > </a
-      ><a name="530" href="Algebra.Properties.AbelianGroup.html#524" class="Bound"
+      > <a name="530" href="Algebra.Properties.AbelianGroup.html#524" class="Bound"
       >x</a
-      ><a name="531"
-      > </a
-      ><a name="532" href="Algebra.html#2695" class="Field Operator"
+      > <a name="532" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="533"
-      > </a
-      ><a name="534" href="Algebra.Properties.AbelianGroup.html#526" class="Bound"
+      > <a name="534" href="Algebra.Properties.AbelianGroup.html#526" class="Bound"
       >y</a
-      ><a name="535"
-      > </a
-      ><a name="536" href="Algebra.html#2695" class="Field Operator"
+      > <a name="536" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="537"
-      > </a
-      ><a name="538" href="Algebra.Properties.AbelianGroup.html#524" class="Bound"
+      > <a name="538" href="Algebra.Properties.AbelianGroup.html#524" class="Bound"
       >x</a
-      ><a name="539"
-      > </a
-      ><a name="540" href="Algebra.html#2757" class="Field Operator"
+      > <a name="540" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="542"
-      > </a
-      ><a name="543" href="Algebra.html#2660" class="Field Operator"
+      > <a name="543" href="Algebra.html#3319" class="Field Operator"
       >&#8776;</a
-      ><a name="544"
-      > </a
-      ><a name="545" href="Algebra.Properties.AbelianGroup.html#526" class="Bound"
+      > <a name="545" href="Algebra.Properties.AbelianGroup.html#526" class="Bound"
       >y</a
-      ><a name="546"
       >
-  </a
-      ><a name="549" href="Algebra.Properties.AbelianGroup.html#514" class="Function"
+  <a name="549" href="Algebra.Properties.AbelianGroup.html#lemma" class="Function"
       >lemma</a
-      ><a name="554"
-      > </a
-      ><a name="555" href="Algebra.Properties.AbelianGroup.html#555" class="Bound"
+      > <a name="555" href="Algebra.Properties.AbelianGroup.html#555" class="Bound"
       >x</a
-      ><a name="556"
-      > </a
-      ><a name="557" href="Algebra.Properties.AbelianGroup.html#557" class="Bound"
+      > <a name="557" href="Algebra.Properties.AbelianGroup.html#557" class="Bound"
       >y</a
-      ><a name="558"
-      > </a
-      ><a name="559" class="Symbol"
+      > <a name="559" class="Symbol"
       >=</a
-      ><a name="560"
-      > </a
-      ><a name="561" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      > <a name="561" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
       >begin</a
-      ><a name="566"
       >
-    </a
-      ><a name="571" href="Algebra.Properties.AbelianGroup.html#555" class="Bound"
+    <a name="571" href="Algebra.Properties.AbelianGroup.html#555" class="Bound"
       >x</a
-      ><a name="572"
-      > </a
-      ><a name="573" href="Algebra.html#2695" class="Field Operator"
+      > <a name="573" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="574"
-      > </a
-      ><a name="575" href="Algebra.Properties.AbelianGroup.html#557" class="Bound"
+      > <a name="575" href="Algebra.Properties.AbelianGroup.html#557" class="Bound"
       >y</a
-      ><a name="576"
-      > </a
-      ><a name="577" href="Algebra.html#2695" class="Field Operator"
+      > <a name="577" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="578"
-      > </a
-      ><a name="579" href="Algebra.Properties.AbelianGroup.html#555" class="Bound"
+      > <a name="579" href="Algebra.Properties.AbelianGroup.html#555" class="Bound"
       >x</a
-      ><a name="580"
-      > </a
-      ><a name="581" href="Algebra.html#2757" class="Field Operator"
+      > <a name="581" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="583"
-      >    </a
-      ><a name="587" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >    <a name="587" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="589"
-      > </a
-      ><a name="590" href="Algebra.Structures.html#2434" class="Function"
+      > <a name="590" href="Algebra.Structures.html#2769" class="Function"
       >comm</a
-      ><a name="594"
-      > </a
-      ><a name="595" class="Symbol"
+      > <a name="595" class="Symbol"
       >_</a
-      ><a name="596"
-      > </a
-      ><a name="597" class="Symbol"
+      > <a name="597" class="Symbol"
       >_</a
-      ><a name="598"
-      > </a
-      ><a name="599" href="Function.html#1932" class="Function Operator"
+      > <a name="599" href="Function.html#_&#10216;_&#10217;_" class="Function Operator"
       >&#10216;</a
-      ><a name="600"
-      > </a
-      ><a name="601" href="Algebra.Structures.html#845" class="Function"
+      > <a name="601" href="Algebra.Structures.html#845" class="Function"
       >&#8729;-cong</a
-      ><a name="607"
-      > </a
-      ><a name="608" href="Function.html#1932" class="Function Operator"
+      > <a name="608" href="Function.html#_&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="609"
-      > </a
-      ><a name="610" href="Relation.Binary.Core.html#4934" class="Function"
+      > <a name="610" href="Relation.Binary.Core.html#4934" class="Function"
       >refl</a
-      ><a name="614"
-      > </a
-      ><a name="615" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="615" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="616"
       >
-    </a
-      ><a name="621" href="Algebra.Properties.AbelianGroup.html#557" class="Bound"
+    <a name="621" href="Algebra.Properties.AbelianGroup.html#557" class="Bound"
       >y</a
-      ><a name="622"
-      > </a
-      ><a name="623" href="Algebra.html#2695" class="Field Operator"
+      > <a name="623" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="624"
-      > </a
-      ><a name="625" href="Algebra.Properties.AbelianGroup.html#555" class="Bound"
+      > <a name="625" href="Algebra.Properties.AbelianGroup.html#555" class="Bound"
       >x</a
-      ><a name="626"
-      > </a
-      ><a name="627" href="Algebra.html#2695" class="Field Operator"
+      > <a name="627" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="628"
-      > </a
-      ><a name="629" href="Algebra.Properties.AbelianGroup.html#555" class="Bound"
+      > <a name="629" href="Algebra.Properties.AbelianGroup.html#555" class="Bound"
       >x</a
-      ><a name="630"
-      > </a
-      ><a name="631" href="Algebra.html#2757" class="Field Operator"
+      > <a name="631" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="633"
-      >    </a
-      ><a name="637" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >    <a name="637" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="639"
-      > </a
-      ><a name="640" href="Algebra.Structures.html#811" class="Function"
+      > <a name="640" href="Algebra.Structures.html#811" class="Function"
       >assoc</a
-      ><a name="645"
-      > </a
-      ><a name="646" class="Symbol"
+      > <a name="646" class="Symbol"
       >_</a
-      ><a name="647"
-      > </a
-      ><a name="648" class="Symbol"
+      > <a name="648" class="Symbol"
       >_</a
-      ><a name="649"
-      > </a
-      ><a name="650" class="Symbol"
+      > <a name="650" class="Symbol"
       >_</a
-      ><a name="651"
-      > </a
-      ><a name="652" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="652" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="653"
       >
-    </a
-      ><a name="658" href="Algebra.Properties.AbelianGroup.html#557" class="Bound"
+    <a name="658" href="Algebra.Properties.AbelianGroup.html#557" class="Bound"
       >y</a
-      ><a name="659"
-      > </a
-      ><a name="660" href="Algebra.html#2695" class="Field Operator"
+      > <a name="660" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="661"
-      > </a
-      ><a name="662" class="Symbol"
+      > <a name="662" class="Symbol"
       >(</a
       ><a name="663" href="Algebra.Properties.AbelianGroup.html#555" class="Bound"
       >x</a
-      ><a name="664"
-      > </a
-      ><a name="665" href="Algebra.html#2695" class="Field Operator"
+      > <a name="665" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="666"
-      > </a
-      ><a name="667" href="Algebra.Properties.AbelianGroup.html#555" class="Bound"
+      > <a name="667" href="Algebra.Properties.AbelianGroup.html#555" class="Bound"
       >x</a
-      ><a name="668"
-      > </a
-      ><a name="669" href="Algebra.html#2757" class="Field Operator"
+      > <a name="669" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
       ><a name="671" class="Symbol"
       >)</a
-      ><a name="672"
-      >  </a
-      ><a name="674" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >  <a name="674" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="676"
-      > </a
-      ><a name="677" href="Relation.Binary.Core.html#4934" class="Function"
+      > <a name="677" href="Relation.Binary.Core.html#4934" class="Function"
       >refl</a
-      ><a name="681"
-      > </a
-      ><a name="682" href="Function.html#1932" class="Function Operator"
+      > <a name="682" href="Function.html#_&#10216;_&#10217;_" class="Function Operator"
       >&#10216;</a
-      ><a name="683"
-      > </a
-      ><a name="684" href="Algebra.Structures.html#845" class="Function"
+      > <a name="684" href="Algebra.Structures.html#845" class="Function"
       >&#8729;-cong</a
-      ><a name="690"
-      > </a
-      ><a name="691" href="Function.html#1932" class="Function Operator"
+      > <a name="691" href="Function.html#_&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="692"
-      > </a
-      ><a name="693" href="Data.Product.html#539" class="Field"
+      > <a name="693" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
       >proj&#8322;</a
-      ><a name="698"
-      > </a
-      ><a name="699" href="Algebra.Structures.html#2083" class="Function"
+      > <a name="699" href="Algebra.Structures.html#2418" class="Function"
       >inverse</a
-      ><a name="706"
-      > </a
-      ><a name="707" class="Symbol"
+      > <a name="707" class="Symbol"
       >_</a
-      ><a name="708"
-      > </a
-      ><a name="709" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="709" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="710"
       >
-    </a
-      ><a name="715" href="Algebra.Properties.AbelianGroup.html#557" class="Bound"
+    <a name="715" href="Algebra.Properties.AbelianGroup.html#557" class="Bound"
       >y</a
-      ><a name="716"
-      > </a
-      ><a name="717" href="Algebra.html#2695" class="Field Operator"
+      > <a name="717" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="718"
-      > </a
-      ><a name="719" href="Algebra.html#2728" class="Field"
+      > <a name="719" href="Algebra.html#3387" class="Field"
       >&#949;</a
-      ><a name="720"
-      >           </a
-      ><a name="731" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >           <a name="731" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="733"
-      > </a
-      ><a name="734" href="Data.Product.html#539" class="Field"
+      > <a name="734" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
       >proj&#8322;</a
-      ><a name="739"
-      > </a
-      ><a name="740" href="Algebra.Structures.html#1106" class="Function"
+      > <a name="740" href="Algebra.Structures.html#1106" class="Function"
       >identity</a
-      ><a name="748"
-      > </a
-      ><a name="749" class="Symbol"
+      > <a name="749" class="Symbol"
       >_</a
-      ><a name="750"
-      > </a
-      ><a name="751" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="751" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="752"
       >
-    </a
-      ><a name="757" href="Algebra.Properties.AbelianGroup.html#557" class="Bound"
+    <a name="757" href="Algebra.Properties.AbelianGroup.html#557" class="Bound"
       >y</a
-      ><a name="758"
-      >               </a
-      ><a name="773" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >               <a name="773" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
       >&#8718;</a
-      ><a name="774"
       >
 
-</a
-      ><a name="776" href="Algebra.Properties.AbelianGroup.html#776" class="Function"
+<a name="&#8315;&#185;-&#8729;-comm" href="Algebra.Properties.AbelianGroup.html#&#8315;&#185;-&#8729;-comm" class="Function"
       >&#8315;&#185;-&#8729;-comm</a
-      ><a name="785"
-      > </a
-      ><a name="786" class="Symbol"
+      > <a name="786" class="Symbol"
       >:</a
-      ><a name="787"
-      > </a
-      ><a name="788" class="Symbol"
+      > <a name="788" class="Symbol"
       >&#8704;</a
-      ><a name="789"
-      > </a
-      ><a name="790" href="Algebra.Properties.AbelianGroup.html#790" class="Bound"
+      > <a name="790" href="Algebra.Properties.AbelianGroup.html#790" class="Bound"
       >x</a
-      ><a name="791"
-      > </a
-      ><a name="792" href="Algebra.Properties.AbelianGroup.html#792" class="Bound"
+      > <a name="792" href="Algebra.Properties.AbelianGroup.html#792" class="Bound"
       >y</a
-      ><a name="793"
-      > </a
-      ><a name="794" class="Symbol"
+      > <a name="794" class="Symbol"
       >&#8594;</a
-      ><a name="795"
-      > </a
-      ><a name="796" href="Algebra.Properties.AbelianGroup.html#790" class="Bound"
+      > <a name="796" href="Algebra.Properties.AbelianGroup.html#790" class="Bound"
       >x</a
-      ><a name="797"
-      > </a
-      ><a name="798" href="Algebra.html#2757" class="Field Operator"
+      > <a name="798" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="800"
-      > </a
-      ><a name="801" href="Algebra.html#2695" class="Field Operator"
+      > <a name="801" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="802"
-      > </a
-      ><a name="803" href="Algebra.Properties.AbelianGroup.html#792" class="Bound"
+      > <a name="803" href="Algebra.Properties.AbelianGroup.html#792" class="Bound"
       >y</a
-      ><a name="804"
-      > </a
-      ><a name="805" href="Algebra.html#2757" class="Field Operator"
+      > <a name="805" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="807"
-      > </a
-      ><a name="808" href="Algebra.html#2660" class="Field Operator"
+      > <a name="808" href="Algebra.html#3319" class="Field Operator"
       >&#8776;</a
-      ><a name="809"
-      > </a
-      ><a name="810" class="Symbol"
+      > <a name="810" class="Symbol"
       >(</a
       ><a name="811" href="Algebra.Properties.AbelianGroup.html#790" class="Bound"
       >x</a
-      ><a name="812"
-      > </a
-      ><a name="813" href="Algebra.html#2695" class="Field Operator"
+      > <a name="813" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="814"
-      > </a
-      ><a name="815" href="Algebra.Properties.AbelianGroup.html#792" class="Bound"
+      > <a name="815" href="Algebra.Properties.AbelianGroup.html#792" class="Bound"
       >y</a
       ><a name="816" class="Symbol"
       >)</a
-      ><a name="817"
-      > </a
-      ><a name="818" href="Algebra.html#2757" class="Field Operator"
+      > <a name="818" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="820"
       >
-</a
-      ><a name="821" href="Algebra.Properties.AbelianGroup.html#776" class="Function"
+<a name="821" href="Algebra.Properties.AbelianGroup.html#&#8315;&#185;-&#8729;-comm" class="Function"
       >&#8315;&#185;-&#8729;-comm</a
-      ><a name="830"
-      > </a
-      ><a name="831" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
+      > <a name="831" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
       >x</a
-      ><a name="832"
-      > </a
-      ><a name="833" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+      > <a name="833" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
-      ><a name="834"
-      > </a
-      ><a name="835" class="Symbol"
+      > <a name="835" class="Symbol"
       >=</a
-      ><a name="836"
-      > </a
-      ><a name="837" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      > <a name="837" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
       >begin</a
-      ><a name="842"
       >
-  </a
-      ><a name="845" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
+  <a name="845" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
       >x</a
-      ><a name="846"
-      > </a
-      ><a name="847" href="Algebra.html#2757" class="Field Operator"
+      > <a name="847" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="849"
-      > </a
-      ><a name="850" href="Algebra.html#2695" class="Field Operator"
+      > <a name="850" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="851"
-      > </a
-      ><a name="852" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+      > <a name="852" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
-      ><a name="853"
-      > </a
-      ><a name="854" href="Algebra.html#2757" class="Field Operator"
+      > <a name="854" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="856"
-      >                         </a
-      ><a name="881" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >                         <a name="881" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="883"
-      > </a
-      ><a name="884" href="Algebra.Structures.html#2434" class="Function"
+      > <a name="884" href="Algebra.Structures.html#2769" class="Function"
       >comm</a
-      ><a name="888"
-      > </a
-      ><a name="889" class="Symbol"
+      > <a name="889" class="Symbol"
       >_</a
-      ><a name="890"
-      > </a
-      ><a name="891" class="Symbol"
+      > <a name="891" class="Symbol"
       >_</a
-      ><a name="892"
-      > </a
-      ><a name="893" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="893" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="894"
       >
-  </a
-      ><a name="897" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+  <a name="897" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
-      ><a name="898"
-      > </a
-      ><a name="899" href="Algebra.html#2757" class="Field Operator"
+      > <a name="899" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="901"
-      > </a
-      ><a name="902" href="Algebra.html#2695" class="Field Operator"
+      > <a name="902" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="903"
-      > </a
-      ><a name="904" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
+      > <a name="904" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
       >x</a
-      ><a name="905"
-      > </a
-      ><a name="906" href="Algebra.html#2757" class="Field Operator"
+      > <a name="906" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="908"
-      >                         </a
-      ><a name="933" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >                         <a name="933" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="935"
-      > </a
-      ><a name="936" href="Relation.Binary.Core.html#4960" class="Function"
+      > <a name="936" href="Relation.Binary.Core.html#4960" class="Function"
       >sym</a
-      ><a name="939"
-      > </a
-      ><a name="940" href="Function.html#1835" class="Function Operator"
+      > <a name="940" href="Function.html#_$_" class="Function Operator"
       >$</a
-      ><a name="941"
-      > </a
-      ><a name="942" href="Algebra.Properties.AbelianGroup.html#1120" class="Function"
+      > <a name="942" href="Algebra.Properties.AbelianGroup.html#1120" class="Function"
       >lem</a
-      ><a name="945"
-      > </a
-      ><a name="946" href="Function.html#1932" class="Function Operator"
+      > <a name="946" href="Function.html#_&#10216;_&#10217;_" class="Function Operator"
       >&#10216;</a
-      ><a name="947"
-      > </a
-      ><a name="948" href="Algebra.Structures.html#845" class="Function"
+      > <a name="948" href="Algebra.Structures.html#845" class="Function"
       >&#8729;-cong</a
-      ><a name="954"
-      > </a
-      ><a name="955" href="Function.html#1932" class="Function Operator"
+      > <a name="955" href="Function.html#_&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="956"
-      > </a
-      ><a name="957" href="Relation.Binary.Core.html#4934" class="Function"
+      > <a name="957" href="Relation.Binary.Core.html#4934" class="Function"
       >refl</a
-      ><a name="961"
-      > </a
-      ><a name="962" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="962" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="963"
       >
-  </a
-      ><a name="966" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
+  <a name="966" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
       >x</a
-      ><a name="967"
-      > </a
-      ><a name="968" href="Algebra.html#2695" class="Field Operator"
+      > <a name="968" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="969"
-      > </a
-      ><a name="970" class="Symbol"
+      > <a name="970" class="Symbol"
       >(</a
       ><a name="971" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
-      ><a name="972"
-      > </a
-      ><a name="973" href="Algebra.html#2695" class="Field Operator"
+      > <a name="973" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="974"
-      > </a
-      ><a name="975" class="Symbol"
+      > <a name="975" class="Symbol"
       >(</a
       ><a name="976" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
       >x</a
-      ><a name="977"
-      > </a
-      ><a name="978" href="Algebra.html#2695" class="Field Operator"
+      > <a name="978" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="979"
-      > </a
-      ><a name="980" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+      > <a name="980" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
       ><a name="981" class="Symbol"
       >)</a
-      ><a name="982"
-      > </a
-      ><a name="983" href="Algebra.html#2757" class="Field Operator"
+      > <a name="983" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="985"
-      > </a
-      ><a name="986" href="Algebra.html#2695" class="Field Operator"
+      > <a name="986" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="987"
-      > </a
-      ><a name="988" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+      > <a name="988" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
-      ><a name="989"
-      > </a
-      ><a name="990" href="Algebra.html#2757" class="Field Operator"
+      > <a name="990" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
       ><a name="992" class="Symbol"
       >)</a
-      ><a name="993"
-      > </a
-      ><a name="994" href="Algebra.html#2695" class="Field Operator"
+      > <a name="994" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="995"
-      > </a
-      ><a name="996" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
+      > <a name="996" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
       >x</a
-      ><a name="997"
-      > </a
-      ><a name="998" href="Algebra.html#2757" class="Field Operator"
+      > <a name="998" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="1000"
-      >  </a
-      ><a name="1002" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >  <a name="1002" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="1004"
-      > </a
-      ><a name="1005" href="Algebra.Properties.AbelianGroup.html#514" class="Function"
+      > <a name="1005" href="Algebra.Properties.AbelianGroup.html#lemma" class="Function"
       >lemma</a
-      ><a name="1010"
-      > </a
-      ><a name="1011" class="Symbol"
+      > <a name="1011" class="Symbol"
       >_</a
-      ><a name="1012"
-      > </a
-      ><a name="1013" class="Symbol"
+      > <a name="1013" class="Symbol"
       >_</a
-      ><a name="1014"
-      > </a
-      ><a name="1015" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1015" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="1016"
       >
-  </a
-      ><a name="1019" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+  <a name="1019" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
-      ><a name="1020"
-      > </a
-      ><a name="1021" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1021" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1022"
-      > </a
-      ><a name="1023" class="Symbol"
+      > <a name="1023" class="Symbol"
       >(</a
       ><a name="1024" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
       >x</a
-      ><a name="1025"
-      > </a
-      ><a name="1026" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1026" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1027"
-      > </a
-      ><a name="1028" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+      > <a name="1028" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
       ><a name="1029" class="Symbol"
       >)</a
-      ><a name="1030"
-      > </a
-      ><a name="1031" href="Algebra.html#2757" class="Field Operator"
+      > <a name="1031" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="1033"
-      > </a
-      ><a name="1034" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1034" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1035"
-      > </a
-      ><a name="1036" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+      > <a name="1036" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
-      ><a name="1037"
-      > </a
-      ><a name="1038" href="Algebra.html#2757" class="Field Operator"
+      > <a name="1038" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="1040"
-      >               </a
-      ><a name="1055" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >               <a name="1055" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="1057"
-      > </a
-      ><a name="1058" href="Algebra.Properties.AbelianGroup.html#514" class="Function"
+      > <a name="1058" href="Algebra.Properties.AbelianGroup.html#lemma" class="Function"
       >lemma</a
-      ><a name="1063"
-      > </a
-      ><a name="1064" class="Symbol"
+      > <a name="1064" class="Symbol"
       >_</a
-      ><a name="1065"
-      > </a
-      ><a name="1066" class="Symbol"
+      > <a name="1066" class="Symbol"
       >_</a
-      ><a name="1067"
-      > </a
-      ><a name="1068" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1068" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="1069"
       >
-  </a
-      ><a name="1072" class="Symbol"
+  <a name="1072" class="Symbol"
       >(</a
       ><a name="1073" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
       >x</a
-      ><a name="1074"
-      > </a
-      ><a name="1075" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1075" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1076"
-      > </a
-      ><a name="1077" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+      > <a name="1077" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
       ><a name="1078" class="Symbol"
       >)</a
-      ><a name="1079"
-      > </a
-      ><a name="1080" href="Algebra.html#2757" class="Field Operator"
+      > <a name="1080" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="1082"
-      >                          </a
-      ><a name="1108" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >                          <a name="1108" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
       >&#8718;</a
-      ><a name="1109"
       >
-  </a
-      ><a name="1112" class="Keyword"
+  <a name="1112" class="Keyword"
       >where</a
-      ><a name="1117"
       >
-  </a
-      ><a name="1120" href="Algebra.Properties.AbelianGroup.html#1120" class="Function"
+  <a name="1120" href="Algebra.Properties.AbelianGroup.html#1120" class="Function"
       >lem</a
-      ><a name="1123"
-      > </a
-      ><a name="1124" class="Symbol"
+      > <a name="1124" class="Symbol"
       >=</a
-      ><a name="1125"
-      > </a
-      ><a name="1126" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      > <a name="1126" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
       >begin</a
-      ><a name="1131"
       >
-    </a
-      ><a name="1136" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
+    <a name="1136" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
       >x</a
-      ><a name="1137"
-      > </a
-      ><a name="1138" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1138" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1139"
-      > </a
-      ><a name="1140" class="Symbol"
+      > <a name="1140" class="Symbol"
       >(</a
       ><a name="1141" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
-      ><a name="1142"
-      > </a
-      ><a name="1143" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1143" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1144"
-      > </a
-      ><a name="1145" class="Symbol"
+      > <a name="1145" class="Symbol"
       >(</a
       ><a name="1146" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
       >x</a
-      ><a name="1147"
-      > </a
-      ><a name="1148" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1148" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1149"
-      > </a
-      ><a name="1150" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+      > <a name="1150" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
       ><a name="1151" class="Symbol"
       >)</a
-      ><a name="1152"
-      > </a
-      ><a name="1153" href="Algebra.html#2757" class="Field Operator"
+      > <a name="1153" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="1155"
-      > </a
-      ><a name="1156" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1156" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1157"
-      > </a
-      ><a name="1158" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+      > <a name="1158" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
-      ><a name="1159"
-      > </a
-      ><a name="1160" href="Algebra.html#2757" class="Field Operator"
+      > <a name="1160" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
       ><a name="1162" class="Symbol"
       >)</a
-      ><a name="1163"
-      >  </a
-      ><a name="1165" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >  <a name="1165" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="1167"
-      > </a
-      ><a name="1168" href="Relation.Binary.Core.html#4960" class="Function"
+      > <a name="1168" href="Relation.Binary.Core.html#4960" class="Function"
       >sym</a
-      ><a name="1171"
-      > </a
-      ><a name="1172" href="Function.html#1835" class="Function Operator"
+      > <a name="1172" href="Function.html#_$_" class="Function Operator"
       >$</a
-      ><a name="1173"
-      > </a
-      ><a name="1174" href="Algebra.Structures.html#811" class="Function"
+      > <a name="1174" href="Algebra.Structures.html#811" class="Function"
       >assoc</a
-      ><a name="1179"
-      > </a
-      ><a name="1180" class="Symbol"
+      > <a name="1180" class="Symbol"
       >_</a
-      ><a name="1181"
-      > </a
-      ><a name="1182" class="Symbol"
+      > <a name="1182" class="Symbol"
       >_</a
-      ><a name="1183"
-      > </a
-      ><a name="1184" class="Symbol"
+      > <a name="1184" class="Symbol"
       >_</a
-      ><a name="1185"
-      > </a
-      ><a name="1186" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1186" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="1187"
       >
-    </a
-      ><a name="1192" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
+    <a name="1192" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
       >x</a
-      ><a name="1193"
-      > </a
-      ><a name="1194" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1194" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1195"
-      > </a
-      ><a name="1196" class="Symbol"
+      > <a name="1196" class="Symbol"
       >(</a
       ><a name="1197" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
-      ><a name="1198"
-      > </a
-      ><a name="1199" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1199" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1200"
-      > </a
-      ><a name="1201" class="Symbol"
+      > <a name="1201" class="Symbol"
       >(</a
       ><a name="1202" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
       >x</a
-      ><a name="1203"
-      > </a
-      ><a name="1204" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1204" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1205"
-      > </a
-      ><a name="1206" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+      > <a name="1206" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
       ><a name="1207" class="Symbol"
       >)</a
-      ><a name="1208"
-      > </a
-      ><a name="1209" href="Algebra.html#2757" class="Field Operator"
+      > <a name="1209" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
       ><a name="1211" class="Symbol"
       >)</a
-      ><a name="1212"
-      > </a
-      ><a name="1213" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1213" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1214"
-      > </a
-      ><a name="1215" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+      > <a name="1215" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
-      ><a name="1216"
-      > </a
-      ><a name="1217" href="Algebra.html#2757" class="Field Operator"
+      > <a name="1217" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="1219"
-      >  </a
-      ><a name="1221" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >  <a name="1221" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="1223"
-      > </a
-      ><a name="1224" href="Relation.Binary.Core.html#4960" class="Function"
+      > <a name="1224" href="Relation.Binary.Core.html#4960" class="Function"
       >sym</a
-      ><a name="1227"
-      > </a
-      ><a name="1228" href="Function.html#1835" class="Function Operator"
+      > <a name="1228" href="Function.html#_$_" class="Function Operator"
       >$</a
-      ><a name="1229"
-      > </a
-      ><a name="1230" href="Algebra.Structures.html#811" class="Function"
+      > <a name="1230" href="Algebra.Structures.html#811" class="Function"
       >assoc</a
-      ><a name="1235"
-      > </a
-      ><a name="1236" class="Symbol"
+      > <a name="1236" class="Symbol"
       >_</a
-      ><a name="1237"
-      > </a
-      ><a name="1238" class="Symbol"
+      > <a name="1238" class="Symbol"
       >_</a
-      ><a name="1239"
-      > </a
-      ><a name="1240" class="Symbol"
+      > <a name="1240" class="Symbol"
       >_</a
-      ><a name="1241"
-      > </a
-      ><a name="1242" href="Function.html#1932" class="Function Operator"
+      > <a name="1242" href="Function.html#_&#10216;_&#10217;_" class="Function Operator"
       >&#10216;</a
-      ><a name="1243"
-      > </a
-      ><a name="1244" href="Algebra.Structures.html#845" class="Function"
+      > <a name="1244" href="Algebra.Structures.html#845" class="Function"
       >&#8729;-cong</a
-      ><a name="1250"
-      > </a
-      ><a name="1251" href="Function.html#1932" class="Function Operator"
+      > <a name="1251" href="Function.html#_&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="1252"
-      > </a
-      ><a name="1253" href="Relation.Binary.Core.html#4934" class="Function"
+      > <a name="1253" href="Relation.Binary.Core.html#4934" class="Function"
       >refl</a
-      ><a name="1257"
-      > </a
-      ><a name="1258" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1258" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="1259"
       >
-    </a
-      ><a name="1264" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
+    <a name="1264" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
       >x</a
-      ><a name="1265"
-      > </a
-      ><a name="1266" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1266" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1267"
-      > </a
-      ><a name="1268" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+      > <a name="1268" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
-      ><a name="1269"
-      > </a
-      ><a name="1270" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1270" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1271"
-      > </a
-      ><a name="1272" class="Symbol"
+      > <a name="1272" class="Symbol"
       >(</a
       ><a name="1273" href="Algebra.Properties.AbelianGroup.html#831" class="Bound"
       >x</a
-      ><a name="1274"
-      > </a
-      ><a name="1275" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1275" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1276"
-      > </a
-      ><a name="1277" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+      > <a name="1277" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
       ><a name="1278" class="Symbol"
       >)</a
-      ><a name="1279"
-      > </a
-      ><a name="1280" href="Algebra.html#2757" class="Field Operator"
+      > <a name="1280" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="1282"
-      > </a
-      ><a name="1283" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1283" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1284"
-      > </a
-      ><a name="1285" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+      > <a name="1285" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
-      ><a name="1286"
-      > </a
-      ><a name="1287" href="Algebra.html#2757" class="Field Operator"
+      > <a name="1287" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="1289"
-      >    </a
-      ><a name="1293" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >    <a name="1293" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="1295"
-      > </a
-      ><a name="1296" href="Data.Product.html#539" class="Field"
+      > <a name="1296" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
       >proj&#8322;</a
-      ><a name="1301"
-      > </a
-      ><a name="1302" href="Algebra.Structures.html#2083" class="Function"
+      > <a name="1302" href="Algebra.Structures.html#2418" class="Function"
       >inverse</a
-      ><a name="1309"
-      > </a
-      ><a name="1310" class="Symbol"
+      > <a name="1310" class="Symbol"
       >_</a
-      ><a name="1311"
-      > </a
-      ><a name="1312" href="Function.html#1932" class="Function Operator"
+      > <a name="1312" href="Function.html#_&#10216;_&#10217;_" class="Function Operator"
       >&#10216;</a
-      ><a name="1313"
-      > </a
-      ><a name="1314" href="Algebra.Structures.html#845" class="Function"
+      > <a name="1314" href="Algebra.Structures.html#845" class="Function"
       >&#8729;-cong</a
-      ><a name="1320"
-      > </a
-      ><a name="1321" href="Function.html#1932" class="Function Operator"
+      > <a name="1321" href="Function.html#_&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="1322"
-      > </a
-      ><a name="1323" href="Relation.Binary.Core.html#4934" class="Function"
+      > <a name="1323" href="Relation.Binary.Core.html#4934" class="Function"
       >refl</a
-      ><a name="1327"
-      > </a
-      ><a name="1328" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1328" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="1329"
       >
-    </a
-      ><a name="1334" href="Algebra.html#2728" class="Field"
+    <a name="1334" href="Algebra.html#3387" class="Field"
       >&#949;</a
-      ><a name="1335"
-      > </a
-      ><a name="1336" href="Algebra.html#2695" class="Field Operator"
+      > <a name="1336" href="Algebra.html#3354" class="Field Operator"
       >&#8729;</a
-      ><a name="1337"
-      > </a
-      ><a name="1338" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+      > <a name="1338" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
-      ><a name="1339"
-      > </a
-      ><a name="1340" href="Algebra.html#2757" class="Field Operator"
+      > <a name="1340" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="1342"
-      >                     </a
-      ><a name="1363" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >                     <a name="1363" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="1365"
-      > </a
-      ><a name="1366" href="Data.Product.html#525" class="Field"
+      > <a name="1366" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="1371"
-      > </a
-      ><a name="1372" href="Algebra.Structures.html#1106" class="Function"
+      > <a name="1372" href="Algebra.Structures.html#1106" class="Function"
       >identity</a
-      ><a name="1380"
-      > </a
-      ><a name="1381" class="Symbol"
+      > <a name="1381" class="Symbol"
       >_</a
-      ><a name="1382"
-      > </a
-      ><a name="1383" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1383" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="1384"
       >
-    </a
-      ><a name="1389" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
+    <a name="1389" href="Algebra.Properties.AbelianGroup.html#833" class="Bound"
       >y</a
-      ><a name="1390"
-      > </a
-      ><a name="1391" href="Algebra.html#2757" class="Field Operator"
+      > <a name="1391" href="Algebra.html#3416" class="Field Operator"
       >&#8315;&#185;</a
-      ><a name="1393"
-      >                         </a
-      ><a name="1418" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >                         <a name="1418" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
       >&#8718;</a
-      ><a name="1419"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

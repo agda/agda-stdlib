@@ -11,3948 +11,2637 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Streams</a
-      ><a name="116"
       >
-</a
-      ><a name="117" class="Comment"
+<a name="117" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="189"
       >
 
-</a
-      ><a name="191" class="Keyword"
+<a name="191" class="Keyword"
       >module</a
-      ><a name="197"
-      > </a
-      ><a name="198" href="Data.Stream.html#1" class="Module"
+      > <a name="198" href="Data.Stream.html" class="Module"
       >Data.Stream</a
-      ><a name="209"
-      > </a
-      ><a name="210" class="Keyword"
+      > <a name="210" class="Keyword"
       >where</a
-      ><a name="215"
       >
 
-</a
-      ><a name="217" class="Keyword"
+<a name="217" class="Keyword"
       >open</a
-      ><a name="221"
-      > </a
-      ><a name="222" class="Keyword"
+      > <a name="222" class="Keyword"
       >import</a
-      ><a name="228"
-      > </a
-      ><a name="229" href="Coinduction.html#1" class="Module"
+      > <a name="229" href="Coinduction.html" class="Module"
       >Coinduction</a
-      ><a name="240"
       >
-</a
-      ><a name="241" class="Keyword"
+<a name="241" class="Keyword"
       >open</a
-      ><a name="245"
-      > </a
-      ><a name="246" class="Keyword"
+      > <a name="246" class="Keyword"
       >import</a
-      ><a name="252"
-      > </a
-      ><a name="253" href="Data.Colist.html#1" class="Module"
+      > <a name="253" href="Data.Colist.html" class="Module"
       >Data.Colist</a
-      ><a name="264"
-      > </a
-      ><a name="265" class="Keyword"
+      > <a name="265" class="Keyword"
       >using</a
-      ><a name="270"
-      > </a
-      ><a name="271" class="Symbol"
+      > <a name="271" class="Symbol"
       >(</a
-      ><a name="272" href="Data.Colist.html#1494" class="Datatype"
+      ><a name="272" href="Data.Colist.html#Colist" class="Datatype"
       >Colist</a
       ><a name="278" class="Symbol"
       >;</a
-      ><a name="279"
-      > </a
-      ><a name="280" href="Data.Colist.html#1533" class="InductiveConstructor"
+      > <a name="280" href="Data.Colist.html#Colist.[]" class="InductiveConstructor"
       >[]</a
       ><a name="282" class="Symbol"
       >;</a
-      ><a name="283"
-      > </a
-      ><a name="284" href="Data.Colist.html#1550" class="InductiveConstructor Operator"
+      > <a name="284" href="Data.Colist.html#Colist._&#8759;_" class="InductiveConstructor Operator"
       >_&#8759;_</a
       ><a name="287" class="Symbol"
       >)</a
-      ><a name="288"
       >
-</a
-      ><a name="289" class="Keyword"
+<a name="289" class="Keyword"
       >open</a
-      ><a name="293"
-      > </a
-      ><a name="294" class="Keyword"
+      > <a name="294" class="Keyword"
       >import</a
-      ><a name="300"
-      > </a
-      ><a name="301" href="Data.Vec.html#1" class="Module"
+      > <a name="301" href="Data.Vec.html" class="Module"
       >Data.Vec</a
-      ><a name="309"
-      >    </a
-      ><a name="313" class="Keyword"
+      >    <a name="313" class="Keyword"
       >using</a
-      ><a name="318"
-      > </a
-      ><a name="319" class="Symbol"
+      > <a name="319" class="Symbol"
       >(</a
-      ><a name="320" href="Data.Vec.html#609" class="Datatype"
+      ><a name="320" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
       ><a name="323" class="Symbol"
       >;</a
-      ><a name="324"
-      >    </a
-      ><a name="328" href="Data.Vec.html#649" class="InductiveConstructor"
+      >    <a name="328" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
       >[]</a
       ><a name="330" class="Symbol"
       >;</a
-      ><a name="331"
-      > </a
-      ><a name="332" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="332" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >_&#8759;_</a
       ><a name="335" class="Symbol"
       >)</a
-      ><a name="336"
       >
-</a
-      ><a name="337" class="Keyword"
+<a name="337" class="Keyword"
       >open</a
-      ><a name="341"
-      > </a
-      ><a name="342" class="Keyword"
+      > <a name="342" class="Keyword"
       >import</a
-      ><a name="348"
-      > </a
-      ><a name="349" href="Data.Nat.Base.html#1" class="Module"
+      > <a name="349" href="Data.Nat.Base.html" class="Module"
       >Data.Nat.Base</a
-      ><a name="362"
-      > </a
-      ><a name="363" class="Keyword"
+      > <a name="363" class="Keyword"
       >using</a
-      ><a name="368"
-      > </a
-      ><a name="369" class="Symbol"
+      > <a name="369" class="Symbol"
       >(</a
-      ><a name="370" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      ><a name="370" href="Agda.Builtin.Nat.html#Nat" class="Datatype"
       >&#8469;</a
       ><a name="371" class="Symbol"
       >;</a
-      ><a name="372"
-      > </a
-      ><a name="373" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      > <a name="373" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
       ><a name="377" class="Symbol"
       >;</a
-      ><a name="378"
-      > </a
-      ><a name="379" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      > <a name="379" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
       ><a name="382" class="Symbol"
       >)</a
-      ><a name="383"
       >
-</a
-      ><a name="384" class="Keyword"
+<a name="384" class="Keyword"
       >open</a
-      ><a name="388"
-      > </a
-      ><a name="389" class="Keyword"
+      > <a name="389" class="Keyword"
       >import</a
-      ><a name="395"
-      > </a
-      ><a name="396" href="Relation.Binary.html#1" class="Module"
+      > <a name="396" href="Relation.Binary.html" class="Module"
       >Relation.Binary</a
-      ><a name="411"
       >
-</a
-      ><a name="412" class="Keyword"
+<a name="412" class="Keyword"
       >open</a
-      ><a name="416"
-      > </a
-      ><a name="417" class="Keyword"
+      > <a name="417" class="Keyword"
       >import</a
-      ><a name="423"
-      > </a
-      ><a name="424" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      > <a name="424" href="Relation.Binary.PropositionalEquality.html" class="Module"
       >Relation.Binary.PropositionalEquality</a
-      ><a name="461"
-      > </a
-      ><a name="462" class="Symbol"
+      > <a name="462" class="Symbol"
       >as</a
-      ><a name="464"
-      > </a
-      ><a name="465" class="Module"
+      > <a name="465" class="Module"
       >P</a
-      ><a name="466"
-      > </a
-      ><a name="467" class="Keyword"
+      > <a name="467" class="Keyword"
       >using</a
-      ><a name="472"
-      > </a
-      ><a name="473" class="Symbol"
+      > <a name="473" class="Symbol"
       >(</a
-      ><a name="474" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      ><a name="474" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >_&#8801;_</a
       ><a name="477" class="Symbol"
       >)</a
-      ><a name="478"
       >
 
-</a
-      ><a name="480" class="Comment"
+<a name="480" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="552"
       >
-</a
-      ><a name="553" class="Comment"
+<a name="553" class="Comment"
       >-- The type</a
-      ><a name="564"
       >
 
-</a
-      ><a name="566" class="Keyword"
+<a name="566" class="Keyword"
       >infixr</a
-      ><a name="572"
-      > </a
-      ><a name="573" class="Number"
+      > <a name="573" class="Number"
       >5</a
-      ><a name="574"
-      > _&#8759;_
-
-</a
-      ><a name="580" class="Keyword"
-      >data</a
-      ><a name="584"
-      > </a
-      ><a name="585" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="591"
-      > </a
-      ><a name="592" class="Symbol"
-      >(</a
-      ><a name="593" href="Data.Stream.html#593" class="Bound"
-      >A</a
-      ><a name="594"
-      > </a
-      ><a name="595" class="Symbol"
-      >:</a
-      ><a name="596"
-      > </a
-      ><a name="597" class="PrimitiveType"
-      >Set</a
-      ><a name="600" class="Symbol"
-      >)</a
-      ><a name="601"
-      > </a
-      ><a name="602" class="Symbol"
-      >:</a
-      ><a name="603"
-      > </a
-      ><a name="604" class="PrimitiveType"
-      >Set</a
-      ><a name="607"
-      > </a
-      ><a name="608" class="Keyword"
-      >where</a
-      ><a name="613"
-      >
-  </a
-      ><a name="616" href="Data.Stream.html#616" class="InductiveConstructor Operator"
+      > <a name="575" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
       >_&#8759;_</a
-      ><a name="619"
-      > </a
-      ><a name="620" class="Symbol"
-      >:</a
-      ><a name="621"
-      > </a
-      ><a name="622" class="Symbol"
+      >
+
+<a name="580" class="Keyword"
+      >data</a
+      > <a name="Stream" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="592" class="Symbol"
+      >{</a
+      ><a name="593" href="Data.Stream.html#593" class="Bound"
+      >a</a
+      ><a name="594" class="Symbol"
+      >}</a
+      > <a name="596" class="Symbol"
       >(</a
-      ><a name="623" href="Data.Stream.html#623" class="Bound"
-      >x</a
-      ><a name="624"
-      > </a
-      ><a name="625" class="Symbol"
-      >:</a
-      ><a name="626"
-      > </a
-      ><a name="627" href="Data.Stream.html#593" class="Bound"
+      ><a name="597" href="Data.Stream.html#597" class="Bound"
       >A</a
-      ><a name="628" class="Symbol"
+      > <a name="599" class="Symbol"
+      >:</a
+      > <a name="601" class="PrimitiveType"
+      >Set</a
+      > <a name="605" href="Data.Stream.html#593" class="Bound"
+      >a</a
+      ><a name="606" class="Symbol"
       >)</a
-      ><a name="629"
-      > </a
-      ><a name="630" class="Symbol"
+      > <a name="608" class="Symbol"
+      >:</a
+      > <a name="610" class="PrimitiveType"
+      >Set</a
+      > <a name="614" href="Data.Stream.html#593" class="Bound"
+      >a</a
+      > <a name="616" class="Keyword"
+      >where</a
+      >
+  <a name="Stream._&#8759;_" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      > <a name="628" class="Symbol"
+      >:</a
+      > <a name="630" class="Symbol"
       >(</a
       ><a name="631" href="Data.Stream.html#631" class="Bound"
-      >xs</a
-      ><a name="633"
-      > </a
-      ><a name="634" class="Symbol"
+      >x</a
+      > <a name="633" class="Symbol"
       >:</a
-      ><a name="635"
-      > </a
-      ><a name="636" href="Agda.Builtin.Coinduction.html#96" class="Record"
+      > <a name="635" href="Data.Stream.html#597" class="Bound"
+      >A</a
+      ><a name="636" class="Symbol"
+      >)</a
+      > <a name="638" class="Symbol"
+      >(</a
+      ><a name="639" href="Data.Stream.html#639" class="Bound"
+      >xs</a
+      > <a name="642" class="Symbol"
+      >:</a
+      > <a name="644" href="Agda.Builtin.Coinduction.html#&#8734;" class="Record"
       >&#8734;</a
-      ><a name="637"
-      > </a
-      ><a name="638" class="Symbol"
+      > <a name="646" class="Symbol"
       >(</a
-      ><a name="639" href="Data.Stream.html#585" class="Datatype"
+      ><a name="647" href="Data.Stream.html#Stream" class="Datatype"
       >Stream</a
-      ><a name="645"
-      > </a
-      ><a name="646" href="Data.Stream.html#593" class="Bound"
+      > <a name="654" href="Data.Stream.html#597" class="Bound"
       >A</a
-      ><a name="647" class="Symbol"
+      ><a name="655" class="Symbol"
       >))</a
-      ><a name="649"
-      > </a
-      ><a name="650" class="Symbol"
+      > <a name="658" class="Symbol"
       >&#8594;</a
-      ><a name="651"
-      > </a
-      ><a name="652" href="Data.Stream.html#585" class="Datatype"
+      > <a name="660" href="Data.Stream.html#Stream" class="Datatype"
       >Stream</a
-      ><a name="658"
-      > </a
-      ><a name="659" href="Data.Stream.html#593" class="Bound"
+      > <a name="667" href="Data.Stream.html#597" class="Bound"
       >A</a
-      ><a name="660"
       >
 
-</a
-      ><a name="662" class="Symbol"
+<a name="670" class="Symbol"
       >{-#</a
-      ><a name="665"
-      > </a
-      ><a name="666" class="Keyword"
-      >HASKELL</a
-      ><a name="673"
-      > data AgdaStream a = Cons a (AgdaStream a) </a
-      ><a name="716" class="Symbol"
+      > <a name="674" class="Keyword"
+      >FOREIGN</a
+      > GHC data AgdaStream a = Cons a (AgdaStream a) <a name="728" class="Symbol"
       >#-}</a
-      ><a name="719"
       >
-</a
-      ><a name="720" class="Symbol"
+<a name="732" class="Symbol"
       >{-#</a
-      ><a name="723"
-      > </a
-      ><a name="724" class="Keyword"
-      >COMPILED_DATA</a
-      ><a name="737"
-      > </a
-      ><a name="738" href="Data.Stream.html#585" class="Datatype"
+      > <a name="736" class="Keyword"
+      >COMPILE</a
+      > GHC <a name="748" href="Data.Stream.html#Stream" class="Datatype"
       >Stream</a
-      ><a name="744"
-      > MAlonzo.Code.Data.Stream.AgdaStream MAlonzo.Code.Data.Stream.Cons </a
-      ><a name="811" class="Symbol"
+      > = data MAlonzo.Code.Data.Stream.AgdaStream (MAlonzo.Code.Data.Stream.Cons) <a name="830" class="Symbol"
       >#-}</a
-      ><a name="814"
       >
 
-</a
-      ><a name="816" class="Comment"
+<a name="835" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="888"
       >
-</a
-      ><a name="889" class="Comment"
+<a name="908" class="Comment"
       >-- Some operations</a
-      ><a name="907"
       >
 
-</a
-      ><a name="909" href="Data.Stream.html#909" class="Function"
+<a name="head" href="Data.Stream.html#head" class="Function"
       >head</a
-      ><a name="913"
-      > </a
-      ><a name="914" class="Symbol"
+      > <a name="933" class="Symbol"
       >:</a
-      ><a name="915"
-      > </a
-      ><a name="916" class="Symbol"
+      > <a name="935" class="Symbol"
       >&#8704;</a
-      ><a name="917"
-      > </a
-      ><a name="918" class="Symbol"
+      > <a name="937" class="Symbol"
       >{</a
-      ><a name="919" href="Data.Stream.html#919" class="Bound"
-      >A</a
-      ><a name="920" class="Symbol"
+      ><a name="938" href="Data.Stream.html#938" class="Bound"
+      >a</a
+      ><a name="939" class="Symbol"
       >}</a
-      ><a name="921"
-      > </a
-      ><a name="922" class="Symbol"
-      >&#8594;</a
-      ><a name="923"
-      > </a
-      ><a name="924" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="930"
-      > </a
-      ><a name="931" href="Data.Stream.html#919" class="Bound"
+      > <a name="941" class="Symbol"
+      >{</a
+      ><a name="942" href="Data.Stream.html#942" class="Bound"
       >A</a
-      ><a name="932"
-      > </a
-      ><a name="933" class="Symbol"
-      >&#8594;</a
-      ><a name="934"
-      > </a
-      ><a name="935" href="Data.Stream.html#919" class="Bound"
-      >A</a
-      ><a name="936"
-      >
-</a
-      ><a name="937" href="Data.Stream.html#909" class="Function"
-      >head</a
-      ><a name="941"
-      > </a
-      ><a name="942" class="Symbol"
-      >(</a
-      ><a name="943" href="Data.Stream.html#943" class="Bound"
-      >x</a
-      ><a name="944"
-      > </a
-      ><a name="945" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="946"
-      > </a
-      ><a name="947" href="Data.Stream.html#947" class="Bound"
-      >xs</a
-      ><a name="949" class="Symbol"
-      >)</a
-      ><a name="950"
-      > </a
+      > <a name="944" class="Symbol"
+      >:</a
+      > <a name="946" class="PrimitiveType"
+      >Set</a
+      > <a name="950" href="Data.Stream.html#938" class="Bound"
+      >a</a
       ><a name="951" class="Symbol"
-      >=</a
-      ><a name="952"
-      > </a
-      ><a name="953" href="Data.Stream.html#943" class="Bound"
-      >x</a
-      ><a name="954"
-      >
-
-</a
-      ><a name="956" href="Data.Stream.html#956" class="Function"
-      >tail</a
-      ><a name="960"
-      > </a
-      ><a name="961" class="Symbol"
-      >:</a
-      ><a name="962"
-      > </a
-      ><a name="963" class="Symbol"
-      >&#8704;</a
-      ><a name="964"
-      > </a
-      ><a name="965" class="Symbol"
-      >{</a
-      ><a name="966" href="Data.Stream.html#966" class="Bound"
-      >A</a
-      ><a name="967" class="Symbol"
       >}</a
-      ><a name="968"
-      > </a
-      ><a name="969" class="Symbol"
+      > <a name="953" class="Symbol"
       >&#8594;</a
-      ><a name="970"
-      > </a
-      ><a name="971" href="Data.Stream.html#585" class="Datatype"
+      > <a name="955" href="Data.Stream.html#Stream" class="Datatype"
       >Stream</a
-      ><a name="977"
-      > </a
-      ><a name="978" href="Data.Stream.html#966" class="Bound"
+      > <a name="962" href="Data.Stream.html#942" class="Bound"
       >A</a
-      ><a name="979"
-      > </a
+      > <a name="964" class="Symbol"
+      >&#8594;</a
+      > <a name="966" href="Data.Stream.html#942" class="Bound"
+      >A</a
+      >
+<a name="968" href="Data.Stream.html#head" class="Function"
+      >head</a
+      > <a name="973" class="Symbol"
+      >(</a
+      ><a name="974" href="Data.Stream.html#974" class="Bound"
+      >x</a
+      > <a name="976" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="978" href="Data.Stream.html#978" class="Bound"
+      >xs</a
       ><a name="980" class="Symbol"
-      >&#8594;</a
-      ><a name="981"
-      > </a
-      ><a name="982" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="988"
-      > </a
-      ><a name="989" href="Data.Stream.html#966" class="Bound"
-      >A</a
-      ><a name="990"
+      >)</a
+      > <a name="982" class="Symbol"
+      >=</a
+      > <a name="984" href="Data.Stream.html#974" class="Bound"
+      >x</a
       >
-</a
-      ><a name="991" href="Data.Stream.html#956" class="Function"
+
+<a name="tail" href="Data.Stream.html#tail" class="Function"
       >tail</a
-      ><a name="995"
-      > </a
-      ><a name="996" class="Symbol"
-      >(</a
+      > <a name="992" class="Symbol"
+      >:</a
+      > <a name="994" class="Symbol"
+      >&#8704;</a
+      > <a name="996" class="Symbol"
+      >{</a
       ><a name="997" href="Data.Stream.html#997" class="Bound"
-      >x</a
-      ><a name="998"
-      > </a
-      ><a name="999" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="1000"
-      > </a
+      >a</a
+      ><a name="998" class="Symbol"
+      >}</a
+      > <a name="1000" class="Symbol"
+      >{</a
       ><a name="1001" href="Data.Stream.html#1001" class="Bound"
+      >A</a
+      > <a name="1003" class="Symbol"
+      >:</a
+      > <a name="1005" class="PrimitiveType"
+      >Set</a
+      > <a name="1009" href="Data.Stream.html#997" class="Bound"
+      >a</a
+      ><a name="1010" class="Symbol"
+      >}</a
+      > <a name="1012" class="Symbol"
+      >&#8594;</a
+      > <a name="1014" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="1021" href="Data.Stream.html#1001" class="Bound"
+      >A</a
+      > <a name="1023" class="Symbol"
+      >&#8594;</a
+      > <a name="1025" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="1032" href="Data.Stream.html#1001" class="Bound"
+      >A</a
+      >
+<a name="1034" href="Data.Stream.html#tail" class="Function"
+      >tail</a
+      > <a name="1039" class="Symbol"
+      >(</a
+      ><a name="1040" href="Data.Stream.html#1040" class="Bound"
+      >x</a
+      > <a name="1042" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1044" href="Data.Stream.html#1044" class="Bound"
       >xs</a
-      ><a name="1003" class="Symbol"
+      ><a name="1046" class="Symbol"
       >)</a
-      ><a name="1004"
-      > </a
-      ><a name="1005" class="Symbol"
+      > <a name="1048" class="Symbol"
       >=</a
-      ><a name="1006"
-      > </a
-      ><a name="1007" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      > <a name="1050" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="1008"
-      > </a
-      ><a name="1009" href="Data.Stream.html#1001" class="Bound"
+      > <a name="1052" href="Data.Stream.html#1044" class="Bound"
       >xs</a
-      ><a name="1011"
       >
 
-</a
-      ><a name="1013" href="Data.Stream.html#1013" class="Function"
+<a name="map" href="Data.Stream.html#map" class="Function"
       >map</a
-      ><a name="1016"
-      > </a
-      ><a name="1017" class="Symbol"
+      > <a name="1060" class="Symbol"
       >:</a
-      ><a name="1018"
-      > </a
-      ><a name="1019" class="Symbol"
+      > <a name="1062" class="Symbol"
       >&#8704;</a
-      ><a name="1020"
-      > </a
-      ><a name="1021" class="Symbol"
+      > <a name="1064" class="Symbol"
       >{</a
-      ><a name="1022" href="Data.Stream.html#1022" class="Bound"
-      >A</a
-      ><a name="1023"
-      > </a
-      ><a name="1024" href="Data.Stream.html#1024" class="Bound"
-      >B</a
-      ><a name="1025" class="Symbol"
+      ><a name="1065" href="Data.Stream.html#1065" class="Bound"
+      >a</a
+      > <a name="1067" href="Data.Stream.html#1067" class="Bound"
+      >b</a
+      ><a name="1068" class="Symbol"
       >}</a
-      ><a name="1026"
-      > </a
-      ><a name="1027" class="Symbol"
+      > <a name="1070" class="Symbol"
+      >{</a
+      ><a name="1071" href="Data.Stream.html#1071" class="Bound"
+      >A</a
+      > <a name="1073" class="Symbol"
+      >:</a
+      > <a name="1075" class="PrimitiveType"
+      >Set</a
+      > <a name="1079" href="Data.Stream.html#1065" class="Bound"
+      >a</a
+      ><a name="1080" class="Symbol"
+      >}</a
+      > <a name="1082" class="Symbol"
+      >{</a
+      ><a name="1083" href="Data.Stream.html#1083" class="Bound"
+      >B</a
+      > <a name="1085" class="Symbol"
+      >:</a
+      > <a name="1087" class="PrimitiveType"
+      >Set</a
+      > <a name="1091" href="Data.Stream.html#1067" class="Bound"
+      >b</a
+      ><a name="1092" class="Symbol"
+      >}</a
+      > <a name="1094" class="Symbol"
       >&#8594;</a
-      ><a name="1028"
-      > </a
-      ><a name="1029" class="Symbol"
+      > <a name="1096" class="Symbol"
       >(</a
-      ><a name="1030" href="Data.Stream.html#1022" class="Bound"
+      ><a name="1097" href="Data.Stream.html#1071" class="Bound"
       >A</a
-      ><a name="1031"
-      > </a
-      ><a name="1032" class="Symbol"
+      > <a name="1099" class="Symbol"
       >&#8594;</a
-      ><a name="1033"
-      > </a
-      ><a name="1034" href="Data.Stream.html#1024" class="Bound"
+      > <a name="1101" href="Data.Stream.html#1083" class="Bound"
       >B</a
-      ><a name="1035" class="Symbol"
+      ><a name="1102" class="Symbol"
       >)</a
-      ><a name="1036"
-      > </a
-      ><a name="1037" class="Symbol"
+      > <a name="1104" class="Symbol"
       >&#8594;</a
-      ><a name="1038"
-      > </a
-      ><a name="1039" href="Data.Stream.html#585" class="Datatype"
+      > <a name="1106" href="Data.Stream.html#Stream" class="Datatype"
       >Stream</a
-      ><a name="1045"
-      > </a
-      ><a name="1046" href="Data.Stream.html#1022" class="Bound"
+      > <a name="1113" href="Data.Stream.html#1071" class="Bound"
       >A</a
-      ><a name="1047"
-      > </a
-      ><a name="1048" class="Symbol"
+      > <a name="1115" class="Symbol"
       >&#8594;</a
-      ><a name="1049"
-      > </a
-      ><a name="1050" href="Data.Stream.html#585" class="Datatype"
+      > <a name="1117" href="Data.Stream.html#Stream" class="Datatype"
       >Stream</a
-      ><a name="1056"
-      > </a
-      ><a name="1057" href="Data.Stream.html#1024" class="Bound"
+      > <a name="1124" href="Data.Stream.html#1083" class="Bound"
       >B</a
-      ><a name="1058"
       >
-</a
-      ><a name="1059" href="Data.Stream.html#1013" class="Function"
+<a name="1126" href="Data.Stream.html#map" class="Function"
       >map</a
-      ><a name="1062"
-      > </a
-      ><a name="1063" href="Data.Stream.html#1063" class="Bound"
+      > <a name="1130" href="Data.Stream.html#1130" class="Bound"
       >f</a
-      ><a name="1064"
-      > </a
-      ><a name="1065" class="Symbol"
+      > <a name="1132" class="Symbol"
       >(</a
-      ><a name="1066" href="Data.Stream.html#1066" class="Bound"
+      ><a name="1133" href="Data.Stream.html#1133" class="Bound"
       >x</a
-      ><a name="1067"
-      > </a
-      ><a name="1068" href="Data.Stream.html#616" class="InductiveConstructor Operator"
+      > <a name="1135" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1069"
-      > </a
-      ><a name="1070" href="Data.Stream.html#1070" class="Bound"
+      > <a name="1137" href="Data.Stream.html#1137" class="Bound"
       >xs</a
-      ><a name="1072" class="Symbol"
+      ><a name="1139" class="Symbol"
       >)</a
-      ><a name="1073"
-      > </a
-      ><a name="1074" class="Symbol"
+      > <a name="1141" class="Symbol"
       >=</a
-      ><a name="1075"
-      > </a
-      ><a name="1076" href="Data.Stream.html#1063" class="Bound"
+      > <a name="1143" href="Data.Stream.html#1130" class="Bound"
       >f</a
-      ><a name="1077"
-      > </a
-      ><a name="1078" href="Data.Stream.html#1066" class="Bound"
+      > <a name="1145" href="Data.Stream.html#1133" class="Bound"
       >x</a
-      ><a name="1079"
-      > </a
-      ><a name="1080" href="Data.Stream.html#616" class="InductiveConstructor Operator"
+      > <a name="1147" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1081"
-      > </a
-      ><a name="1082" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+      > <a name="1149" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="1083"
-      > </a
-      ><a name="1084" href="Data.Stream.html#1013" class="Function"
+      > <a name="1151" href="Data.Stream.html#map" class="Function"
       >map</a
-      ><a name="1087"
-      > </a
-      ><a name="1088" href="Data.Stream.html#1063" class="Bound"
+      > <a name="1155" href="Data.Stream.html#1130" class="Bound"
       >f</a
-      ><a name="1089"
-      > </a
-      ><a name="1090" class="Symbol"
+      > <a name="1157" class="Symbol"
       >(</a
-      ><a name="1091" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      ><a name="1158" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="1092"
-      > </a
-      ><a name="1093" href="Data.Stream.html#1070" class="Bound"
+      > <a name="1160" href="Data.Stream.html#1137" class="Bound"
       >xs</a
-      ><a name="1095" class="Symbol"
+      ><a name="1162" class="Symbol"
       >)</a
-      ><a name="1096"
       >
 
-</a
-      ><a name="1098" href="Data.Stream.html#1098" class="Function"
+<a name="zipWith" href="Data.Stream.html#zipWith" class="Function"
       >zipWith</a
-      ><a name="1105"
-      > </a
-      ><a name="1106" class="Symbol"
+      > <a name="1173" class="Symbol"
       >:</a
-      ><a name="1107"
-      > </a
-      ><a name="1108" class="Symbol"
+      > <a name="1175" class="Symbol"
       >&#8704;</a
-      ><a name="1109"
-      > </a
-      ><a name="1110" class="Symbol"
+      > <a name="1177" class="Symbol"
       >{</a
-      ><a name="1111" href="Data.Stream.html#1111" class="Bound"
-      >A</a
-      ><a name="1112"
-      > </a
-      ><a name="1113" href="Data.Stream.html#1113" class="Bound"
-      >B</a
-      ><a name="1114"
-      > </a
-      ><a name="1115" href="Data.Stream.html#1115" class="Bound"
-      >C</a
-      ><a name="1116" class="Symbol"
+      ><a name="1178" href="Data.Stream.html#1178" class="Bound"
+      >a</a
+      > <a name="1180" href="Data.Stream.html#1180" class="Bound"
+      >b</a
+      > <a name="1182" href="Data.Stream.html#1182" class="Bound"
+      >c</a
+      ><a name="1183" class="Symbol"
       >}</a
-      ><a name="1117"
-      > </a
-      ><a name="1118" class="Symbol"
-      >&#8594;</a
-      ><a name="1119"
-      >
-          </a
-      ><a name="1130" class="Symbol"
-      >(</a
-      ><a name="1131" href="Data.Stream.html#1111" class="Bound"
+      > <a name="1185" class="Symbol"
+      >{</a
+      ><a name="1186" href="Data.Stream.html#1186" class="Bound"
       >A</a
-      ><a name="1132"
-      > </a
-      ><a name="1133" class="Symbol"
-      >&#8594;</a
-      ><a name="1134"
-      > </a
-      ><a name="1135" href="Data.Stream.html#1113" class="Bound"
+      > <a name="1188" class="Symbol"
+      >:</a
+      > <a name="1190" class="PrimitiveType"
+      >Set</a
+      > <a name="1194" href="Data.Stream.html#1178" class="Bound"
+      >a</a
+      ><a name="1195" class="Symbol"
+      >}</a
+      > <a name="1197" class="Symbol"
+      >{</a
+      ><a name="1198" href="Data.Stream.html#1198" class="Bound"
       >B</a
-      ><a name="1136"
-      > </a
-      ><a name="1137" class="Symbol"
-      >&#8594;</a
-      ><a name="1138"
-      > </a
-      ><a name="1139" href="Data.Stream.html#1115" class="Bound"
-      >C</a
-      ><a name="1140" class="Symbol"
-      >)</a
-      ><a name="1141"
-      > </a
-      ><a name="1142" class="Symbol"
-      >&#8594;</a
-      ><a name="1143"
-      > </a
-      ><a name="1144" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="1150"
-      > </a
-      ><a name="1151" href="Data.Stream.html#1111" class="Bound"
-      >A</a
-      ><a name="1152"
-      > </a
-      ><a name="1153" class="Symbol"
-      >&#8594;</a
-      ><a name="1154"
-      > </a
-      ><a name="1155" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="1161"
-      > </a
-      ><a name="1162" href="Data.Stream.html#1113" class="Bound"
-      >B</a
-      ><a name="1163"
-      > </a
-      ><a name="1164" class="Symbol"
-      >&#8594;</a
-      ><a name="1165"
-      > </a
-      ><a name="1166" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="1172"
-      > </a
-      ><a name="1173" href="Data.Stream.html#1115" class="Bound"
-      >C</a
-      ><a name="1174"
-      >
-</a
-      ><a name="1175" href="Data.Stream.html#1098" class="Function"
-      >zipWith</a
-      ><a name="1182"
-      > </a
-      ><a name="1183" href="Data.Stream.html#1183" class="Bound Operator"
-      >_&#8729;_</a
-      ><a name="1186"
-      > </a
-      ><a name="1187" class="Symbol"
-      >(</a
-      ><a name="1188" href="Data.Stream.html#1188" class="Bound"
-      >x</a
-      ><a name="1189"
-      > </a
-      ><a name="1190" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="1191"
-      > </a
-      ><a name="1192" href="Data.Stream.html#1192" class="Bound"
-      >xs</a
-      ><a name="1194" class="Symbol"
-      >)</a
-      ><a name="1195"
-      > </a
-      ><a name="1196" class="Symbol"
-      >(</a
-      ><a name="1197" href="Data.Stream.html#1197" class="Bound"
-      >y</a
-      ><a name="1198"
-      > </a
-      ><a name="1199" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="1200"
-      > </a
-      ><a name="1201" href="Data.Stream.html#1201" class="Bound"
-      >ys</a
-      ><a name="1203" class="Symbol"
-      >)</a
-      ><a name="1204"
-      > </a
-      ><a name="1205" class="Symbol"
-      >=</a
-      ><a name="1206"
-      > </a
+      > <a name="1200" class="Symbol"
+      >:</a
+      > <a name="1202" class="PrimitiveType"
+      >Set</a
+      > <a name="1206" href="Data.Stream.html#1180" class="Bound"
+      >b</a
       ><a name="1207" class="Symbol"
+      >}</a
+      > <a name="1209" class="Symbol"
+      >{</a
+      ><a name="1210" href="Data.Stream.html#1210" class="Bound"
+      >C</a
+      > <a name="1212" class="Symbol"
+      >:</a
+      > <a name="1214" class="PrimitiveType"
+      >Set</a
+      > <a name="1218" href="Data.Stream.html#1182" class="Bound"
+      >c</a
+      ><a name="1219" class="Symbol"
+      >}</a
+      > <a name="1221" class="Symbol"
+      >&#8594;</a
+      >
+          <a name="1233" class="Symbol"
       >(</a
-      ><a name="1208" href="Data.Stream.html#1188" class="Bound"
-      >x</a
-      ><a name="1209"
-      > </a
-      ><a name="1210" href="Data.Stream.html#1183" class="Bound Operator"
-      >&#8729;</a
-      ><a name="1211"
-      > </a
-      ><a name="1212" href="Data.Stream.html#1197" class="Bound"
-      >y</a
-      ><a name="1213" class="Symbol"
-      >)</a
-      ><a name="1214"
-      > </a
-      ><a name="1215" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="1216"
-      > </a
-      ><a name="1217" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
-      >&#9839;</a
-      ><a name="1218"
-      > </a
-      ><a name="1219" href="Data.Stream.html#1098" class="Function"
-      >zipWith</a
-      ><a name="1226"
-      > </a
-      ><a name="1227" href="Data.Stream.html#1183" class="Bound Operator"
-      >_&#8729;_</a
-      ><a name="1230"
-      > </a
-      ><a name="1231" class="Symbol"
-      >(</a
-      ><a name="1232" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="1233"
-      > </a
-      ><a name="1234" href="Data.Stream.html#1192" class="Bound"
-      >xs</a
-      ><a name="1236" class="Symbol"
-      >)</a
-      ><a name="1237"
-      > </a
-      ><a name="1238" class="Symbol"
-      >(</a
-      ><a name="1239" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="1240"
-      > </a
-      ><a name="1241" href="Data.Stream.html#1201" class="Bound"
-      >ys</a
+      ><a name="1234" href="Data.Stream.html#1186" class="Bound"
+      >A</a
+      > <a name="1236" class="Symbol"
+      >&#8594;</a
+      > <a name="1238" href="Data.Stream.html#1198" class="Bound"
+      >B</a
+      > <a name="1240" class="Symbol"
+      >&#8594;</a
+      > <a name="1242" href="Data.Stream.html#1210" class="Bound"
+      >C</a
       ><a name="1243" class="Symbol"
       >)</a
-      ><a name="1244"
+      > <a name="1245" class="Symbol"
+      >&#8594;</a
+      > <a name="1247" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="1254" href="Data.Stream.html#1186" class="Bound"
+      >A</a
+      > <a name="1256" class="Symbol"
+      >&#8594;</a
+      > <a name="1258" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="1265" href="Data.Stream.html#1198" class="Bound"
+      >B</a
+      > <a name="1267" class="Symbol"
+      >&#8594;</a
+      > <a name="1269" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="1276" href="Data.Stream.html#1210" class="Bound"
+      >C</a
+      >
+<a name="1278" href="Data.Stream.html#zipWith" class="Function"
+      >zipWith</a
+      > <a name="1286" href="Data.Stream.html#1286" class="Bound Operator"
+      >_&#8729;_</a
+      > <a name="1290" class="Symbol"
+      >(</a
+      ><a name="1291" href="Data.Stream.html#1291" class="Bound"
+      >x</a
+      > <a name="1293" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1295" href="Data.Stream.html#1295" class="Bound"
+      >xs</a
+      ><a name="1297" class="Symbol"
+      >)</a
+      > <a name="1299" class="Symbol"
+      >(</a
+      ><a name="1300" href="Data.Stream.html#1300" class="Bound"
+      >y</a
+      > <a name="1302" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1304" href="Data.Stream.html#1304" class="Bound"
+      >ys</a
+      ><a name="1306" class="Symbol"
+      >)</a
+      > <a name="1308" class="Symbol"
+      >=</a
+      > <a name="1310" class="Symbol"
+      >(</a
+      ><a name="1311" href="Data.Stream.html#1291" class="Bound"
+      >x</a
+      > <a name="1313" href="Data.Stream.html#1286" class="Bound Operator"
+      >&#8729;</a
+      > <a name="1315" href="Data.Stream.html#1300" class="Bound"
+      >y</a
+      ><a name="1316" class="Symbol"
+      >)</a
+      > <a name="1318" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1320" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      > <a name="1322" href="Data.Stream.html#zipWith" class="Function"
+      >zipWith</a
+      > <a name="1330" href="Data.Stream.html#1286" class="Bound Operator"
+      >_&#8729;_</a
+      > <a name="1334" class="Symbol"
+      >(</a
+      ><a name="1335" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="1337" href="Data.Stream.html#1295" class="Bound"
+      >xs</a
+      ><a name="1339" class="Symbol"
+      >)</a
+      > <a name="1341" class="Symbol"
+      >(</a
+      ><a name="1342" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="1344" href="Data.Stream.html#1304" class="Bound"
+      >ys</a
+      ><a name="1346" class="Symbol"
+      >)</a
       >
 
-</a
-      ><a name="1246" href="Data.Stream.html#1246" class="Function"
+<a name="take" href="Data.Stream.html#take" class="Function"
       >take</a
-      ><a name="1250"
-      > </a
-      ><a name="1251" class="Symbol"
+      > <a name="1354" class="Symbol"
       >:</a
-      ><a name="1252"
-      > </a
-      ><a name="1253" class="Symbol"
+      > <a name="1356" class="Symbol"
       >&#8704;</a
-      ><a name="1254"
-      > </a
-      ><a name="1255" class="Symbol"
+      > <a name="1358" class="Symbol"
       >{</a
-      ><a name="1256" href="Data.Stream.html#1256" class="Bound"
-      >A</a
-      ><a name="1257" class="Symbol"
+      ><a name="1359" href="Data.Stream.html#1359" class="Bound"
+      >a</a
+      ><a name="1360" class="Symbol"
       >}</a
-      ><a name="1258"
-      > </a
-      ><a name="1259" href="Data.Stream.html#1259" class="Bound"
-      >n</a
-      ><a name="1260"
-      > </a
-      ><a name="1261" class="Symbol"
-      >&#8594;</a
-      ><a name="1262"
-      > </a
-      ><a name="1263" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="1269"
-      > </a
-      ><a name="1270" href="Data.Stream.html#1256" class="Bound"
+      > <a name="1362" class="Symbol"
+      >{</a
+      ><a name="1363" href="Data.Stream.html#1363" class="Bound"
       >A</a
-      ><a name="1271"
-      > </a
-      ><a name="1272" class="Symbol"
+      > <a name="1365" class="Symbol"
+      >:</a
+      > <a name="1367" class="PrimitiveType"
+      >Set</a
+      > <a name="1371" href="Data.Stream.html#1359" class="Bound"
+      >a</a
+      ><a name="1372" class="Symbol"
+      >}</a
+      > <a name="1374" href="Data.Stream.html#1374" class="Bound"
+      >n</a
+      > <a name="1376" class="Symbol"
       >&#8594;</a
-      ><a name="1273"
-      > </a
-      ><a name="1274" href="Data.Vec.html#609" class="Datatype"
+      > <a name="1378" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="1385" href="Data.Stream.html#1363" class="Bound"
+      >A</a
+      > <a name="1387" class="Symbol"
+      >&#8594;</a
+      > <a name="1389" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
-      ><a name="1277"
-      > </a
-      ><a name="1278" href="Data.Stream.html#1256" class="Bound"
+      > <a name="1393" href="Data.Stream.html#1363" class="Bound"
       >A</a
-      ><a name="1279"
-      > </a
-      ><a name="1280" href="Data.Stream.html#1259" class="Bound"
+      > <a name="1395" href="Data.Stream.html#1374" class="Bound"
       >n</a
-      ><a name="1281"
       >
-</a
-      ><a name="1282" href="Data.Stream.html#1246" class="Function"
+<a name="1397" href="Data.Stream.html#take" class="Function"
       >take</a
-      ><a name="1286"
-      > </a
-      ><a name="1287" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      > <a name="1402" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1291"
-      >    </a
-      ><a name="1295" href="Data.Stream.html#1295" class="Bound"
+      >    <a name="1410" href="Data.Stream.html#1410" class="Bound"
       >xs</a
-      ><a name="1297"
-      >       </a
-      ><a name="1304" class="Symbol"
+      >       <a name="1419" class="Symbol"
       >=</a
-      ><a name="1305"
-      > </a
-      ><a name="1306" href="Data.Vec.html#649" class="InductiveConstructor"
+      > <a name="1421" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1308"
       >
-</a
-      ><a name="1309" href="Data.Stream.html#1246" class="Function"
+<a name="1424" href="Data.Stream.html#take" class="Function"
       >take</a
-      ><a name="1313"
-      > </a
-      ><a name="1314" class="Symbol"
+      > <a name="1429" class="Symbol"
       >(</a
-      ><a name="1315" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      ><a name="1430" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1318"
-      > </a
-      ><a name="1319" href="Data.Stream.html#1319" class="Bound"
+      > <a name="1434" href="Data.Stream.html#1434" class="Bound"
       >n</a
-      ><a name="1320" class="Symbol"
+      ><a name="1435" class="Symbol"
       >)</a
-      ><a name="1321"
-      > </a
-      ><a name="1322" class="Symbol"
+      > <a name="1437" class="Symbol"
       >(</a
-      ><a name="1323" href="Data.Stream.html#1323" class="Bound"
+      ><a name="1438" href="Data.Stream.html#1438" class="Bound"
       >x</a
-      ><a name="1324"
-      > </a
-      ><a name="1325" href="Data.Stream.html#616" class="InductiveConstructor Operator"
+      > <a name="1440" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1326"
-      > </a
-      ><a name="1327" href="Data.Stream.html#1327" class="Bound"
+      > <a name="1442" href="Data.Stream.html#1442" class="Bound"
       >xs</a
-      ><a name="1329" class="Symbol"
+      ><a name="1444" class="Symbol"
       >)</a
-      ><a name="1330"
-      > </a
-      ><a name="1331" class="Symbol"
+      > <a name="1446" class="Symbol"
       >=</a
-      ><a name="1332"
-      > </a
-      ><a name="1333" href="Data.Stream.html#1323" class="Bound"
+      > <a name="1448" href="Data.Stream.html#1438" class="Bound"
       >x</a
-      ><a name="1334"
-      > </a
-      ><a name="1335" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1450" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1336"
-      > </a
-      ><a name="1337" href="Data.Stream.html#1246" class="Function"
+      > <a name="1452" href="Data.Stream.html#take" class="Function"
       >take</a
-      ><a name="1341"
-      > </a
-      ><a name="1342" href="Data.Stream.html#1319" class="Bound"
+      > <a name="1457" href="Data.Stream.html#1434" class="Bound"
       >n</a
-      ><a name="1343"
-      > </a
-      ><a name="1344" class="Symbol"
+      > <a name="1459" class="Symbol"
       >(</a
-      ><a name="1345" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      ><a name="1460" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="1346"
-      > </a
-      ><a name="1347" href="Data.Stream.html#1327" class="Bound"
+      > <a name="1462" href="Data.Stream.html#1442" class="Bound"
       >xs</a
-      ><a name="1349" class="Symbol"
-      >)</a
-      ><a name="1350"
-      >
-
-</a
-      ><a name="1352" href="Data.Stream.html#1352" class="Function"
-      >drop</a
-      ><a name="1356"
-      > </a
-      ><a name="1357" class="Symbol"
-      >:</a
-      ><a name="1358"
-      > </a
-      ><a name="1359" class="Symbol"
-      >&#8704;</a
-      ><a name="1360"
-      > </a
-      ><a name="1361" class="Symbol"
-      >{</a
-      ><a name="1362" href="Data.Stream.html#1362" class="Bound"
-      >A</a
-      ><a name="1363" class="Symbol"
-      >}</a
-      ><a name="1364"
-      > </a
-      ><a name="1365" class="Symbol"
-      >&#8594;</a
-      ><a name="1366"
-      > </a
-      ><a name="1367" href="Agda.Builtin.Nat.html#97" class="Datatype"
-      >&#8469;</a
-      ><a name="1368"
-      > </a
-      ><a name="1369" class="Symbol"
-      >&#8594;</a
-      ><a name="1370"
-      > </a
-      ><a name="1371" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="1377"
-      > </a
-      ><a name="1378" href="Data.Stream.html#1362" class="Bound"
-      >A</a
-      ><a name="1379"
-      > </a
-      ><a name="1380" class="Symbol"
-      >&#8594;</a
-      ><a name="1381"
-      > </a
-      ><a name="1382" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="1388"
-      > </a
-      ><a name="1389" href="Data.Stream.html#1362" class="Bound"
-      >A</a
-      ><a name="1390"
-      >
-</a
-      ><a name="1391" href="Data.Stream.html#1352" class="Function"
-      >drop</a
-      ><a name="1395"
-      > </a
-      ><a name="1396" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
-      >zero</a
-      ><a name="1400"
-      >    </a
-      ><a name="1404" href="Data.Stream.html#1404" class="Bound"
-      >xs</a
-      ><a name="1406"
-      >       </a
-      ><a name="1413" class="Symbol"
-      >=</a
-      ><a name="1414"
-      > </a
-      ><a name="1415" href="Data.Stream.html#1404" class="Bound"
-      >xs</a
-      ><a name="1417"
-      >
-</a
-      ><a name="1418" href="Data.Stream.html#1352" class="Function"
-      >drop</a
-      ><a name="1422"
-      > </a
-      ><a name="1423" class="Symbol"
-      >(</a
-      ><a name="1424" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
-      >suc</a
-      ><a name="1427"
-      > </a
-      ><a name="1428" href="Data.Stream.html#1428" class="Bound"
-      >n</a
-      ><a name="1429" class="Symbol"
-      >)</a
-      ><a name="1430"
-      > </a
-      ><a name="1431" class="Symbol"
-      >(</a
-      ><a name="1432" href="Data.Stream.html#1432" class="Bound"
-      >x</a
-      ><a name="1433"
-      > </a
-      ><a name="1434" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="1435"
-      > </a
-      ><a name="1436" href="Data.Stream.html#1436" class="Bound"
-      >xs</a
-      ><a name="1438" class="Symbol"
-      >)</a
-      ><a name="1439"
-      > </a
-      ><a name="1440" class="Symbol"
-      >=</a
-      ><a name="1441"
-      > </a
-      ><a name="1442" href="Data.Stream.html#1352" class="Function"
-      >drop</a
-      ><a name="1446"
-      > </a
-      ><a name="1447" href="Data.Stream.html#1428" class="Bound"
-      >n</a
-      ><a name="1448"
-      > </a
-      ><a name="1449" class="Symbol"
-      >(</a
-      ><a name="1450" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="1451"
-      > </a
-      ><a name="1452" href="Data.Stream.html#1436" class="Bound"
-      >xs</a
-      ><a name="1454" class="Symbol"
-      >)</a
-      ><a name="1455"
-      >
-
-</a
-      ><a name="1457" href="Data.Stream.html#1457" class="Function"
-      >repeat</a
-      ><a name="1463"
-      > </a
       ><a name="1464" class="Symbol"
+      >)</a
+      >
+
+<a name="drop" href="Data.Stream.html#drop" class="Function"
+      >drop</a
+      > <a name="1472" class="Symbol"
       >:</a
-      ><a name="1465"
-      > </a
-      ><a name="1466" class="Symbol"
+      > <a name="1474" class="Symbol"
       >&#8704;</a
-      ><a name="1467"
-      > </a
-      ><a name="1468" class="Symbol"
+      > <a name="1476" class="Symbol"
       >{</a
-      ><a name="1469" href="Data.Stream.html#1469" class="Bound"
-      >A</a
-      ><a name="1470" class="Symbol"
+      ><a name="1477" href="Data.Stream.html#1477" class="Bound"
+      >a</a
+      ><a name="1478" class="Symbol"
       >}</a
-      ><a name="1471"
-      > </a
-      ><a name="1472" class="Symbol"
-      >&#8594;</a
-      ><a name="1473"
-      > </a
-      ><a name="1474" href="Data.Stream.html#1469" class="Bound"
+      > <a name="1480" class="Symbol"
+      >{</a
+      ><a name="1481" href="Data.Stream.html#1481" class="Bound"
       >A</a
-      ><a name="1475"
-      > </a
-      ><a name="1476" class="Symbol"
-      >&#8594;</a
-      ><a name="1477"
-      > </a
-      ><a name="1478" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="1484"
-      > </a
-      ><a name="1485" href="Data.Stream.html#1469" class="Bound"
-      >A</a
-      ><a name="1486"
-      >
-</a
-      ><a name="1487" href="Data.Stream.html#1457" class="Function"
-      >repeat</a
-      ><a name="1493"
-      > </a
-      ><a name="1494" href="Data.Stream.html#1494" class="Bound"
-      >x</a
-      ><a name="1495"
-      > </a
-      ><a name="1496" class="Symbol"
-      >=</a
-      ><a name="1497"
-      > </a
-      ><a name="1498" href="Data.Stream.html#1494" class="Bound"
-      >x</a
-      ><a name="1499"
-      > </a
-      ><a name="1500" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="1501"
-      > </a
-      ><a name="1502" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
-      >&#9839;</a
-      ><a name="1503"
-      > </a
-      ><a name="1504" href="Data.Stream.html#1457" class="Function"
-      >repeat</a
-      ><a name="1510"
-      > </a
-      ><a name="1511" href="Data.Stream.html#1494" class="Bound"
-      >x</a
-      ><a name="1512"
-      >
-
-</a
-      ><a name="1514" href="Data.Stream.html#1514" class="Function"
-      >iterate</a
-      ><a name="1521"
-      > </a
-      ><a name="1522" class="Symbol"
+      > <a name="1483" class="Symbol"
       >:</a
-      ><a name="1523"
-      > </a
-      ><a name="1524" class="Symbol"
-      >&#8704;</a
-      ><a name="1525"
-      > </a
-      ><a name="1526" class="Symbol"
-      >{</a
-      ><a name="1527" href="Data.Stream.html#1527" class="Bound"
-      >A</a
-      ><a name="1528" class="Symbol"
+      > <a name="1485" class="PrimitiveType"
+      >Set</a
+      > <a name="1489" href="Data.Stream.html#1477" class="Bound"
+      >a</a
+      ><a name="1490" class="Symbol"
       >}</a
-      ><a name="1529"
-      > </a
-      ><a name="1530" class="Symbol"
+      > <a name="1492" class="Symbol"
       >&#8594;</a
-      ><a name="1531"
-      > </a
-      ><a name="1532" class="Symbol"
-      >(</a
-      ><a name="1533" href="Data.Stream.html#1527" class="Bound"
-      >A</a
-      ><a name="1534"
-      > </a
-      ><a name="1535" class="Symbol"
-      >&#8594;</a
-      ><a name="1536"
-      > </a
-      ><a name="1537" href="Data.Stream.html#1527" class="Bound"
-      >A</a
-      ><a name="1538" class="Symbol"
-      >)</a
-      ><a name="1539"
-      > </a
-      ><a name="1540" class="Symbol"
-      >&#8594;</a
-      ><a name="1541"
-      > </a
-      ><a name="1542" href="Data.Stream.html#1527" class="Bound"
-      >A</a
-      ><a name="1543"
-      > </a
-      ><a name="1544" class="Symbol"
-      >&#8594;</a
-      ><a name="1545"
-      > </a
-      ><a name="1546" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="1552"
-      > </a
-      ><a name="1553" href="Data.Stream.html#1527" class="Bound"
-      >A</a
-      ><a name="1554"
-      >
-</a
-      ><a name="1555" href="Data.Stream.html#1514" class="Function"
-      >iterate</a
-      ><a name="1562"
-      > </a
-      ><a name="1563" href="Data.Stream.html#1563" class="Bound"
-      >f</a
-      ><a name="1564"
-      > </a
-      ><a name="1565" href="Data.Stream.html#1565" class="Bound"
-      >x</a
-      ><a name="1566"
-      > </a
-      ><a name="1567" class="Symbol"
-      >=</a
-      ><a name="1568"
-      > </a
-      ><a name="1569" href="Data.Stream.html#1565" class="Bound"
-      >x</a
-      ><a name="1570"
-      > </a
-      ><a name="1571" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="1572"
-      > </a
-      ><a name="1573" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
-      >&#9839;</a
-      ><a name="1574"
-      > </a
-      ><a name="1575" href="Data.Stream.html#1514" class="Function"
-      >iterate</a
-      ><a name="1582"
-      > </a
-      ><a name="1583" href="Data.Stream.html#1563" class="Bound"
-      >f</a
-      ><a name="1584"
-      > </a
-      ><a name="1585" class="Symbol"
-      >(</a
-      ><a name="1586" href="Data.Stream.html#1563" class="Bound"
-      >f</a
-      ><a name="1587"
-      > </a
-      ><a name="1588" href="Data.Stream.html#1565" class="Bound"
-      >x</a
-      ><a name="1589" class="Symbol"
-      >)</a
-      ><a name="1590"
-      >
-
-</a
-      ><a name="1592" class="Comment"
-      >-- Interleaves the two streams.</a
-      ><a name="1623"
-      >
-
-</a
-      ><a name="1625" class="Keyword"
-      >infixr</a
-      ><a name="1631"
-      > </a
-      ><a name="1632" class="Number"
-      >5</a
-      ><a name="1633"
-      > _&#8910;_
-
-</a
-      ><a name="1639" href="Data.Stream.html#1639" class="Function Operator"
-      >_&#8910;_</a
-      ><a name="1642"
-      > </a
-      ><a name="1643" class="Symbol"
-      >:</a
-      ><a name="1644"
-      > </a
-      ><a name="1645" class="Symbol"
-      >&#8704;</a
-      ><a name="1646"
-      > </a
-      ><a name="1647" class="Symbol"
-      >{</a
-      ><a name="1648" href="Data.Stream.html#1648" class="Bound"
-      >A</a
-      ><a name="1649" class="Symbol"
-      >}</a
-      ><a name="1650"
-      > </a
-      ><a name="1651" class="Symbol"
-      >&#8594;</a
-      ><a name="1652"
-      > </a
-      ><a name="1653" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="1659"
-      > </a
-      ><a name="1660" href="Data.Stream.html#1648" class="Bound"
-      >A</a
-      ><a name="1661"
-      > </a
-      ><a name="1662" class="Symbol"
-      >&#8594;</a
-      ><a name="1663"
-      > </a
-      ><a name="1664" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="1670"
-      > </a
-      ><a name="1671" href="Data.Stream.html#1648" class="Bound"
-      >A</a
-      ><a name="1672"
-      > </a
-      ><a name="1673" class="Symbol"
-      >&#8594;</a
-      ><a name="1674"
-      > </a
-      ><a name="1675" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="1681"
-      > </a
-      ><a name="1682" href="Data.Stream.html#1648" class="Bound"
-      >A</a
-      ><a name="1683"
-      >
-</a
-      ><a name="1684" class="Symbol"
-      >(</a
-      ><a name="1685" href="Data.Stream.html#1685" class="Bound"
-      >x</a
-      ><a name="1686"
-      > </a
-      ><a name="1687" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="1688"
-      > </a
-      ><a name="1689" href="Data.Stream.html#1689" class="Bound"
-      >xs</a
-      ><a name="1691" class="Symbol"
-      >)</a
-      ><a name="1692"
-      > </a
-      ><a name="1693" href="Data.Stream.html#1639" class="Function Operator"
-      >&#8910;</a
-      ><a name="1694"
-      > </a
-      ><a name="1695" href="Data.Stream.html#1695" class="Bound"
-      >ys</a
-      ><a name="1697"
-      > </a
-      ><a name="1698" class="Symbol"
-      >=</a
-      ><a name="1699"
-      > </a
-      ><a name="1700" href="Data.Stream.html#1685" class="Bound"
-      >x</a
-      ><a name="1701"
-      > </a
-      ><a name="1702" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="1703"
-      > </a
-      ><a name="1704" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
-      >&#9839;</a
-      ><a name="1705"
-      > </a
-      ><a name="1706" class="Symbol"
-      >(</a
-      ><a name="1707" href="Data.Stream.html#1695" class="Bound"
-      >ys</a
-      ><a name="1709"
-      > </a
-      ><a name="1710" href="Data.Stream.html#1639" class="Function Operator"
-      >&#8910;</a
-      ><a name="1711"
-      > </a
-      ><a name="1712" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="1713"
-      > </a
-      ><a name="1714" href="Data.Stream.html#1689" class="Bound"
-      >xs</a
-      ><a name="1716" class="Symbol"
-      >)</a
-      ><a name="1717"
-      >
-
-</a
-      ><a name="1719" class="Keyword"
-      >mutual</a
-      ><a name="1725"
-      >
-
-  </a
-      ><a name="1729" class="Comment"
-      >-- Takes every other element from the stream, starting with the</a
-      ><a name="1792"
-      >
-  </a
-      ><a name="1795" class="Comment"
-      >-- first one.</a
-      ><a name="1808"
-      >
-
-  </a
-      ><a name="1812" href="Data.Stream.html#1812" class="Function"
-      >evens</a
-      ><a name="1817"
-      > </a
-      ><a name="1818" class="Symbol"
-      >:</a
-      ><a name="1819"
-      > </a
-      ><a name="1820" class="Symbol"
-      >&#8704;</a
-      ><a name="1821"
-      > </a
-      ><a name="1822" class="Symbol"
-      >{</a
-      ><a name="1823" href="Data.Stream.html#1823" class="Bound"
-      >A</a
-      ><a name="1824" class="Symbol"
-      >}</a
-      ><a name="1825"
-      > </a
-      ><a name="1826" class="Symbol"
-      >&#8594;</a
-      ><a name="1827"
-      > </a
-      ><a name="1828" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="1834"
-      > </a
-      ><a name="1835" href="Data.Stream.html#1823" class="Bound"
-      >A</a
-      ><a name="1836"
-      > </a
-      ><a name="1837" class="Symbol"
-      >&#8594;</a
-      ><a name="1838"
-      > </a
-      ><a name="1839" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="1845"
-      > </a
-      ><a name="1846" href="Data.Stream.html#1823" class="Bound"
-      >A</a
-      ><a name="1847"
-      >
-  </a
-      ><a name="1850" href="Data.Stream.html#1812" class="Function"
-      >evens</a
-      ><a name="1855"
-      > </a
-      ><a name="1856" class="Symbol"
-      >(</a
-      ><a name="1857" href="Data.Stream.html#1857" class="Bound"
-      >x</a
-      ><a name="1858"
-      > </a
-      ><a name="1859" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="1860"
-      > </a
-      ><a name="1861" href="Data.Stream.html#1861" class="Bound"
-      >xs</a
-      ><a name="1863" class="Symbol"
-      >)</a
-      ><a name="1864"
-      > </a
-      ><a name="1865" class="Symbol"
-      >=</a
-      ><a name="1866"
-      > </a
-      ><a name="1867" href="Data.Stream.html#1857" class="Bound"
-      >x</a
-      ><a name="1868"
-      > </a
-      ><a name="1869" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="1870"
-      > </a
-      ><a name="1871" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
-      >&#9839;</a
-      ><a name="1872"
-      > </a
-      ><a name="1873" href="Data.Stream.html#1972" class="Function"
-      >odds</a
-      ><a name="1877"
-      > </a
-      ><a name="1878" class="Symbol"
-      >(</a
-      ><a name="1879" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="1880"
-      > </a
-      ><a name="1881" href="Data.Stream.html#1861" class="Bound"
-      >xs</a
-      ><a name="1883" class="Symbol"
-      >)</a
-      ><a name="1884"
-      >
-
-  </a
-      ><a name="1888" class="Comment"
-      >-- Takes every other element from the stream, starting with the</a
-      ><a name="1951"
-      >
-  </a
-      ><a name="1954" class="Comment"
-      >-- second one.</a
-      ><a name="1968"
-      >
-
-  </a
-      ><a name="1972" href="Data.Stream.html#1972" class="Function"
-      >odds</a
-      ><a name="1976"
-      > </a
-      ><a name="1977" class="Symbol"
-      >:</a
-      ><a name="1978"
-      > </a
-      ><a name="1979" class="Symbol"
-      >&#8704;</a
-      ><a name="1980"
-      > </a
-      ><a name="1981" class="Symbol"
-      >{</a
-      ><a name="1982" href="Data.Stream.html#1982" class="Bound"
-      >A</a
-      ><a name="1983" class="Symbol"
-      >}</a
-      ><a name="1984"
-      > </a
-      ><a name="1985" class="Symbol"
-      >&#8594;</a
-      ><a name="1986"
-      > </a
-      ><a name="1987" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="1993"
-      > </a
-      ><a name="1994" href="Data.Stream.html#1982" class="Bound"
-      >A</a
-      ><a name="1995"
-      > </a
-      ><a name="1996" class="Symbol"
-      >&#8594;</a
-      ><a name="1997"
-      > </a
-      ><a name="1998" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="2004"
-      > </a
-      ><a name="2005" href="Data.Stream.html#1982" class="Bound"
-      >A</a
-      ><a name="2006"
-      >
-  </a
-      ><a name="2009" href="Data.Stream.html#1972" class="Function"
-      >odds</a
-      ><a name="2013"
-      > </a
-      ><a name="2014" class="Symbol"
-      >(</a
-      ><a name="2015" href="Data.Stream.html#2015" class="Bound"
-      >x</a
-      ><a name="2016"
-      > </a
-      ><a name="2017" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="2018"
-      > </a
-      ><a name="2019" href="Data.Stream.html#2019" class="Bound"
-      >xs</a
-      ><a name="2021" class="Symbol"
-      >)</a
-      ><a name="2022"
-      > </a
-      ><a name="2023" class="Symbol"
-      >=</a
-      ><a name="2024"
-      > </a
-      ><a name="2025" href="Data.Stream.html#1812" class="Function"
-      >evens</a
-      ><a name="2030"
-      > </a
-      ><a name="2031" class="Symbol"
-      >(</a
-      ><a name="2032" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="2033"
-      > </a
-      ><a name="2034" href="Data.Stream.html#2019" class="Bound"
-      >xs</a
-      ><a name="2036" class="Symbol"
-      >)</a
-      ><a name="2037"
-      >
-
-</a
-      ><a name="2039" href="Data.Stream.html#2039" class="Function"
-      >toColist</a
-      ><a name="2047"
-      > </a
-      ><a name="2048" class="Symbol"
-      >:</a
-      ><a name="2049"
-      > </a
-      ><a name="2050" class="Symbol"
-      >&#8704;</a
-      ><a name="2051"
-      > </a
-      ><a name="2052" class="Symbol"
-      >{</a
-      ><a name="2053" href="Data.Stream.html#2053" class="Bound"
-      >A</a
-      ><a name="2054" class="Symbol"
-      >}</a
-      ><a name="2055"
-      > </a
-      ><a name="2056" class="Symbol"
-      >&#8594;</a
-      ><a name="2057"
-      > </a
-      ><a name="2058" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="2064"
-      > </a
-      ><a name="2065" href="Data.Stream.html#2053" class="Bound"
-      >A</a
-      ><a name="2066"
-      > </a
-      ><a name="2067" class="Symbol"
-      >&#8594;</a
-      ><a name="2068"
-      > </a
-      ><a name="2069" href="Data.Colist.html#1494" class="Datatype"
-      >Colist</a
-      ><a name="2075"
-      > </a
-      ><a name="2076" href="Data.Stream.html#2053" class="Bound"
-      >A</a
-      ><a name="2077"
-      >
-</a
-      ><a name="2078" href="Data.Stream.html#2039" class="Function"
-      >toColist</a
-      ><a name="2086"
-      > </a
-      ><a name="2087" class="Symbol"
-      >(</a
-      ><a name="2088" href="Data.Stream.html#2088" class="Bound"
-      >x</a
-      ><a name="2089"
-      > </a
-      ><a name="2090" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="2091"
-      > </a
-      ><a name="2092" href="Data.Stream.html#2092" class="Bound"
-      >xs</a
-      ><a name="2094" class="Symbol"
-      >)</a
-      ><a name="2095"
-      > </a
-      ><a name="2096" class="Symbol"
-      >=</a
-      ><a name="2097"
-      > </a
-      ><a name="2098" href="Data.Stream.html#2088" class="Bound"
-      >x</a
-      ><a name="2099"
-      > </a
-      ><a name="2100" href="Data.Colist.html#1550" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="2101"
-      > </a
-      ><a name="2102" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
-      >&#9839;</a
-      ><a name="2103"
-      > </a
-      ><a name="2104" href="Data.Stream.html#2039" class="Function"
-      >toColist</a
-      ><a name="2112"
-      > </a
-      ><a name="2113" class="Symbol"
-      >(</a
-      ><a name="2114" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="2115"
-      > </a
-      ><a name="2116" href="Data.Stream.html#2092" class="Bound"
-      >xs</a
-      ><a name="2118" class="Symbol"
-      >)</a
-      ><a name="2119"
-      >
-
-</a
-      ><a name="2121" href="Data.Stream.html#2121" class="Function"
-      >lookup</a
-      ><a name="2127"
-      > </a
-      ><a name="2128" class="Symbol"
-      >:</a
-      ><a name="2129"
-      > </a
-      ><a name="2130" class="Symbol"
-      >&#8704;</a
-      ><a name="2131"
-      > </a
-      ><a name="2132" class="Symbol"
-      >{</a
-      ><a name="2133" href="Data.Stream.html#2133" class="Bound"
-      >A</a
-      ><a name="2134" class="Symbol"
-      >}</a
-      ><a name="2135"
-      > </a
-      ><a name="2136" class="Symbol"
-      >&#8594;</a
-      ><a name="2137"
-      > </a
-      ><a name="2138" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="1494" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="2139"
-      > </a
-      ><a name="2140" class="Symbol"
+      > <a name="1496" class="Symbol"
       >&#8594;</a
-      ><a name="2141"
-      > </a
-      ><a name="2142" href="Data.Stream.html#585" class="Datatype"
+      > <a name="1498" href="Data.Stream.html#Stream" class="Datatype"
       >Stream</a
-      ><a name="2148"
-      > </a
-      ><a name="2149" href="Data.Stream.html#2133" class="Bound"
+      > <a name="1505" href="Data.Stream.html#1481" class="Bound"
       >A</a
-      ><a name="2150"
-      > </a
-      ><a name="2151" class="Symbol"
+      > <a name="1507" class="Symbol"
       >&#8594;</a
-      ><a name="2152"
-      > </a
-      ><a name="2153" href="Data.Stream.html#2133" class="Bound"
+      > <a name="1509" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="1516" href="Data.Stream.html#1481" class="Bound"
       >A</a
-      ><a name="2154"
       >
-</a
-      ><a name="2155" href="Data.Stream.html#2121" class="Function"
-      >lookup</a
-      ><a name="2161"
-      > </a
-      ><a name="2162" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+<a name="1518" href="Data.Stream.html#drop" class="Function"
+      >drop</a
+      > <a name="1523" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="2166"
-      >    </a
-      ><a name="2170" class="Symbol"
-      >(</a
-      ><a name="2171" href="Data.Stream.html#2171" class="Bound"
-      >x</a
-      ><a name="2172"
-      > </a
-      ><a name="2173" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="2174"
-      > </a
-      ><a name="2175" href="Data.Stream.html#2175" class="Bound"
+      >    <a name="1531" href="Data.Stream.html#1531" class="Bound"
       >xs</a
-      ><a name="2177" class="Symbol"
-      >)</a
-      ><a name="2178"
-      > </a
-      ><a name="2179" class="Symbol"
+      >       <a name="1540" class="Symbol"
       >=</a
-      ><a name="2180"
-      > </a
-      ><a name="2181" href="Data.Stream.html#2171" class="Bound"
-      >x</a
-      ><a name="2182"
+      > <a name="1542" href="Data.Stream.html#1531" class="Bound"
+      >xs</a
       >
-</a
-      ><a name="2183" href="Data.Stream.html#2121" class="Function"
-      >lookup</a
-      ><a name="2189"
-      > </a
-      ><a name="2190" class="Symbol"
+<a name="1545" href="Data.Stream.html#drop" class="Function"
+      >drop</a
+      > <a name="1550" class="Symbol"
       >(</a
-      ><a name="2191" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      ><a name="1551" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="2194"
-      > </a
-      ><a name="2195" href="Data.Stream.html#2195" class="Bound"
+      > <a name="1555" href="Data.Stream.html#1555" class="Bound"
       >n</a
-      ><a name="2196" class="Symbol"
+      ><a name="1556" class="Symbol"
       >)</a
-      ><a name="2197"
-      > </a
-      ><a name="2198" class="Symbol"
+      > <a name="1558" class="Symbol"
       >(</a
-      ><a name="2199" href="Data.Stream.html#2199" class="Bound"
+      ><a name="1559" href="Data.Stream.html#1559" class="Bound"
       >x</a
-      ><a name="2200"
-      > </a
-      ><a name="2201" href="Data.Stream.html#616" class="InductiveConstructor Operator"
+      > <a name="1561" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="2202"
-      > </a
-      ><a name="2203" href="Data.Stream.html#2203" class="Bound"
+      > <a name="1563" href="Data.Stream.html#1563" class="Bound"
       >xs</a
-      ><a name="2205" class="Symbol"
+      ><a name="1565" class="Symbol"
       >)</a
-      ><a name="2206"
-      > </a
-      ><a name="2207" class="Symbol"
+      > <a name="1567" class="Symbol"
       >=</a
-      ><a name="2208"
-      > </a
-      ><a name="2209" href="Data.Stream.html#2121" class="Function"
-      >lookup</a
-      ><a name="2215"
-      > </a
-      ><a name="2216" href="Data.Stream.html#2195" class="Bound"
+      > <a name="1569" href="Data.Stream.html#drop" class="Function"
+      >drop</a
+      > <a name="1574" href="Data.Stream.html#1555" class="Bound"
       >n</a
-      ><a name="2217"
-      > </a
-      ><a name="2218" class="Symbol"
+      > <a name="1576" class="Symbol"
       >(</a
-      ><a name="2219" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      ><a name="1577" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="2220"
-      > </a
-      ><a name="2221" href="Data.Stream.html#2203" class="Bound"
+      > <a name="1579" href="Data.Stream.html#1563" class="Bound"
+      >xs</a
+      ><a name="1581" class="Symbol"
+      >)</a
+      >
+
+<a name="repeat" href="Data.Stream.html#repeat" class="Function"
+      >repeat</a
+      > <a name="1591" class="Symbol"
+      >:</a
+      > <a name="1593" class="Symbol"
+      >&#8704;</a
+      > <a name="1595" class="Symbol"
+      >{</a
+      ><a name="1596" href="Data.Stream.html#1596" class="Bound"
+      >a</a
+      ><a name="1597" class="Symbol"
+      >}</a
+      > <a name="1599" class="Symbol"
+      >{</a
+      ><a name="1600" href="Data.Stream.html#1600" class="Bound"
+      >A</a
+      > <a name="1602" class="Symbol"
+      >:</a
+      > <a name="1604" class="PrimitiveType"
+      >Set</a
+      > <a name="1608" href="Data.Stream.html#1596" class="Bound"
+      >a</a
+      ><a name="1609" class="Symbol"
+      >}</a
+      > <a name="1611" class="Symbol"
+      >&#8594;</a
+      > <a name="1613" href="Data.Stream.html#1600" class="Bound"
+      >A</a
+      > <a name="1615" class="Symbol"
+      >&#8594;</a
+      > <a name="1617" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="1624" href="Data.Stream.html#1600" class="Bound"
+      >A</a
+      >
+<a name="1626" href="Data.Stream.html#repeat" class="Function"
+      >repeat</a
+      > <a name="1633" href="Data.Stream.html#1633" class="Bound"
+      >x</a
+      > <a name="1635" class="Symbol"
+      >=</a
+      > <a name="1637" href="Data.Stream.html#1633" class="Bound"
+      >x</a
+      > <a name="1639" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1641" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      > <a name="1643" href="Data.Stream.html#repeat" class="Function"
+      >repeat</a
+      > <a name="1650" href="Data.Stream.html#1633" class="Bound"
+      >x</a
+      >
+
+<a name="iterate" href="Data.Stream.html#iterate" class="Function"
+      >iterate</a
+      > <a name="1661" class="Symbol"
+      >:</a
+      > <a name="1663" class="Symbol"
+      >&#8704;</a
+      > <a name="1665" class="Symbol"
+      >{</a
+      ><a name="1666" href="Data.Stream.html#1666" class="Bound"
+      >a</a
+      ><a name="1667" class="Symbol"
+      >}</a
+      > <a name="1669" class="Symbol"
+      >{</a
+      ><a name="1670" href="Data.Stream.html#1670" class="Bound"
+      >A</a
+      > <a name="1672" class="Symbol"
+      >:</a
+      > <a name="1674" class="PrimitiveType"
+      >Set</a
+      > <a name="1678" href="Data.Stream.html#1666" class="Bound"
+      >a</a
+      ><a name="1679" class="Symbol"
+      >}</a
+      > <a name="1681" class="Symbol"
+      >&#8594;</a
+      > <a name="1683" class="Symbol"
+      >(</a
+      ><a name="1684" href="Data.Stream.html#1670" class="Bound"
+      >A</a
+      > <a name="1686" class="Symbol"
+      >&#8594;</a
+      > <a name="1688" href="Data.Stream.html#1670" class="Bound"
+      >A</a
+      ><a name="1689" class="Symbol"
+      >)</a
+      > <a name="1691" class="Symbol"
+      >&#8594;</a
+      > <a name="1693" href="Data.Stream.html#1670" class="Bound"
+      >A</a
+      > <a name="1695" class="Symbol"
+      >&#8594;</a
+      > <a name="1697" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="1704" href="Data.Stream.html#1670" class="Bound"
+      >A</a
+      >
+<a name="1706" href="Data.Stream.html#iterate" class="Function"
+      >iterate</a
+      > <a name="1714" href="Data.Stream.html#1714" class="Bound"
+      >f</a
+      > <a name="1716" href="Data.Stream.html#1716" class="Bound"
+      >x</a
+      > <a name="1718" class="Symbol"
+      >=</a
+      > <a name="1720" href="Data.Stream.html#1716" class="Bound"
+      >x</a
+      > <a name="1722" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1724" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      > <a name="1726" href="Data.Stream.html#iterate" class="Function"
+      >iterate</a
+      > <a name="1734" href="Data.Stream.html#1714" class="Bound"
+      >f</a
+      > <a name="1736" class="Symbol"
+      >(</a
+      ><a name="1737" href="Data.Stream.html#1714" class="Bound"
+      >f</a
+      > <a name="1739" href="Data.Stream.html#1716" class="Bound"
+      >x</a
+      ><a name="1740" class="Symbol"
+      >)</a
+      >
+
+<a name="1743" class="Comment"
+      >-- Interleaves the two streams.</a
+      >
+
+<a name="1776" class="Keyword"
+      >infixr</a
+      > <a name="1783" class="Number"
+      >5</a
+      > <a name="1785" href="Data.Stream.html#_&#8910;_" class="Function Operator"
+      >_&#8910;_</a
+      >
+
+<a name="_&#8910;_" href="Data.Stream.html#_&#8910;_" class="Function Operator"
+      >_&#8910;_</a
+      > <a name="1794" class="Symbol"
+      >:</a
+      > <a name="1796" class="Symbol"
+      >&#8704;</a
+      > <a name="1798" class="Symbol"
+      >{</a
+      ><a name="1799" href="Data.Stream.html#1799" class="Bound"
+      >a</a
+      ><a name="1800" class="Symbol"
+      >}</a
+      > <a name="1802" class="Symbol"
+      >{</a
+      ><a name="1803" href="Data.Stream.html#1803" class="Bound"
+      >A</a
+      > <a name="1805" class="Symbol"
+      >:</a
+      > <a name="1807" class="PrimitiveType"
+      >Set</a
+      > <a name="1811" href="Data.Stream.html#1799" class="Bound"
+      >a</a
+      ><a name="1812" class="Symbol"
+      >}</a
+      > <a name="1814" class="Symbol"
+      >&#8594;</a
+      > <a name="1816" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="1823" href="Data.Stream.html#1803" class="Bound"
+      >A</a
+      > <a name="1825" class="Symbol"
+      >&#8594;</a
+      > <a name="1827" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="1834" href="Data.Stream.html#1803" class="Bound"
+      >A</a
+      > <a name="1836" class="Symbol"
+      >&#8594;</a
+      > <a name="1838" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="1845" href="Data.Stream.html#1803" class="Bound"
+      >A</a
+      >
+<a name="1847" class="Symbol"
+      >(</a
+      ><a name="1848" href="Data.Stream.html#1848" class="Bound"
+      >x</a
+      > <a name="1850" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1852" href="Data.Stream.html#1852" class="Bound"
+      >xs</a
+      ><a name="1854" class="Symbol"
+      >)</a
+      > <a name="1856" href="Data.Stream.html#_&#8910;_" class="Function Operator"
+      >&#8910;</a
+      > <a name="1858" href="Data.Stream.html#1858" class="Bound"
+      >ys</a
+      > <a name="1861" class="Symbol"
+      >=</a
+      > <a name="1863" href="Data.Stream.html#1848" class="Bound"
+      >x</a
+      > <a name="1865" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1867" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      > <a name="1869" class="Symbol"
+      >(</a
+      ><a name="1870" href="Data.Stream.html#1858" class="Bound"
+      >ys</a
+      > <a name="1873" href="Data.Stream.html#_&#8910;_" class="Function Operator"
+      >&#8910;</a
+      > <a name="1875" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="1877" href="Data.Stream.html#1852" class="Bound"
+      >xs</a
+      ><a name="1879" class="Symbol"
+      >)</a
+      >
+
+<a name="1882" class="Keyword"
+      >mutual</a
+      >
+
+  <a name="1892" class="Comment"
+      >-- Takes every other element from the stream, starting with the</a
+      >
+  <a name="1958" class="Comment"
+      >-- first one.</a
+      >
+
+  <a name="evens" href="Data.Stream.html#evens" class="Function"
+      >evens</a
+      > <a name="1981" class="Symbol"
+      >:</a
+      > <a name="1983" class="Symbol"
+      >&#8704;</a
+      > <a name="1985" class="Symbol"
+      >{</a
+      ><a name="1986" href="Data.Stream.html#1986" class="Bound"
+      >a</a
+      ><a name="1987" class="Symbol"
+      >}</a
+      > <a name="1989" class="Symbol"
+      >{</a
+      ><a name="1990" href="Data.Stream.html#1990" class="Bound"
+      >A</a
+      > <a name="1992" class="Symbol"
+      >:</a
+      > <a name="1994" class="PrimitiveType"
+      >Set</a
+      > <a name="1998" href="Data.Stream.html#1986" class="Bound"
+      >a</a
+      ><a name="1999" class="Symbol"
+      >}</a
+      > <a name="2001" class="Symbol"
+      >&#8594;</a
+      > <a name="2003" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="2010" href="Data.Stream.html#1990" class="Bound"
+      >A</a
+      > <a name="2012" class="Symbol"
+      >&#8594;</a
+      > <a name="2014" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="2021" href="Data.Stream.html#1990" class="Bound"
+      >A</a
+      >
+  <a name="2025" href="Data.Stream.html#evens" class="Function"
+      >evens</a
+      > <a name="2031" class="Symbol"
+      >(</a
+      ><a name="2032" href="Data.Stream.html#2032" class="Bound"
+      >x</a
+      > <a name="2034" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2036" href="Data.Stream.html#2036" class="Bound"
+      >xs</a
+      ><a name="2038" class="Symbol"
+      >)</a
+      > <a name="2040" class="Symbol"
+      >=</a
+      > <a name="2042" href="Data.Stream.html#2032" class="Bound"
+      >x</a
+      > <a name="2044" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2046" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      > <a name="2048" href="Data.Stream.html#odds" class="Function"
+      >odds</a
+      > <a name="2053" class="Symbol"
+      >(</a
+      ><a name="2054" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="2056" href="Data.Stream.html#2036" class="Bound"
+      >xs</a
+      ><a name="2058" class="Symbol"
+      >)</a
+      >
+
+  <a name="2063" class="Comment"
+      >-- Takes every other element from the stream, starting with the</a
+      >
+  <a name="2129" class="Comment"
+      >-- second one.</a
+      >
+
+  <a name="odds" href="Data.Stream.html#odds" class="Function"
+      >odds</a
+      > <a name="2152" class="Symbol"
+      >:</a
+      > <a name="2154" class="Symbol"
+      >&#8704;</a
+      > <a name="2156" class="Symbol"
+      >{</a
+      ><a name="2157" href="Data.Stream.html#2157" class="Bound"
+      >a</a
+      ><a name="2158" class="Symbol"
+      >}</a
+      > <a name="2160" class="Symbol"
+      >{</a
+      ><a name="2161" href="Data.Stream.html#2161" class="Bound"
+      >A</a
+      > <a name="2163" class="Symbol"
+      >:</a
+      > <a name="2165" class="PrimitiveType"
+      >Set</a
+      > <a name="2169" href="Data.Stream.html#2157" class="Bound"
+      >a</a
+      ><a name="2170" class="Symbol"
+      >}</a
+      > <a name="2172" class="Symbol"
+      >&#8594;</a
+      > <a name="2174" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="2181" href="Data.Stream.html#2161" class="Bound"
+      >A</a
+      > <a name="2183" class="Symbol"
+      >&#8594;</a
+      > <a name="2185" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="2192" href="Data.Stream.html#2161" class="Bound"
+      >A</a
+      >
+  <a name="2196" href="Data.Stream.html#odds" class="Function"
+      >odds</a
+      > <a name="2201" class="Symbol"
+      >(</a
+      ><a name="2202" href="Data.Stream.html#2202" class="Bound"
+      >x</a
+      > <a name="2204" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2206" href="Data.Stream.html#2206" class="Bound"
+      >xs</a
+      ><a name="2208" class="Symbol"
+      >)</a
+      > <a name="2210" class="Symbol"
+      >=</a
+      > <a name="2212" href="Data.Stream.html#evens" class="Function"
+      >evens</a
+      > <a name="2218" class="Symbol"
+      >(</a
+      ><a name="2219" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="2221" href="Data.Stream.html#2206" class="Bound"
       >xs</a
       ><a name="2223" class="Symbol"
       >)</a
-      ><a name="2224"
       >
 
-</a
-      ><a name="2226" class="Keyword"
-      >infixr</a
-      ><a name="2232"
-      > </a
-      ><a name="2233" class="Number"
-      >5</a
-      ><a name="2234"
-      > _++_
+<a name="toColist" href="Data.Stream.html#toColist" class="Function"
+      >toColist</a
+      > <a name="2235" class="Symbol"
+      >:</a
+      > <a name="2237" class="Symbol"
+      >&#8704;</a
+      > <a name="2239" class="Symbol"
+      >{</a
+      ><a name="2240" href="Data.Stream.html#2240" class="Bound"
+      >a</a
+      ><a name="2241" class="Symbol"
+      >}</a
+      > <a name="2243" class="Symbol"
+      >{</a
+      ><a name="2244" href="Data.Stream.html#2244" class="Bound"
+      >A</a
+      > <a name="2246" class="Symbol"
+      >:</a
+      > <a name="2248" class="PrimitiveType"
+      >Set</a
+      > <a name="2252" href="Data.Stream.html#2240" class="Bound"
+      >a</a
+      ><a name="2253" class="Symbol"
+      >}</a
+      > <a name="2255" class="Symbol"
+      >&#8594;</a
+      > <a name="2257" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="2264" href="Data.Stream.html#2244" class="Bound"
+      >A</a
+      > <a name="2266" class="Symbol"
+      >&#8594;</a
+      > <a name="2268" href="Data.Colist.html#Colist" class="Datatype"
+      >Colist</a
+      > <a name="2275" href="Data.Stream.html#2244" class="Bound"
+      >A</a
+      >
+<a name="2277" href="Data.Stream.html#toColist" class="Function"
+      >toColist</a
+      > <a name="2286" class="Symbol"
+      >(</a
+      ><a name="2287" href="Data.Stream.html#2287" class="Bound"
+      >x</a
+      > <a name="2289" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2291" href="Data.Stream.html#2291" class="Bound"
+      >xs</a
+      ><a name="2293" class="Symbol"
+      >)</a
+      > <a name="2295" class="Symbol"
+      >=</a
+      > <a name="2297" href="Data.Stream.html#2287" class="Bound"
+      >x</a
+      > <a name="2299" href="Data.Colist.html#Colist._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2301" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      > <a name="2303" href="Data.Stream.html#toColist" class="Function"
+      >toColist</a
+      > <a name="2312" class="Symbol"
+      >(</a
+      ><a name="2313" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="2315" href="Data.Stream.html#2291" class="Bound"
+      >xs</a
+      ><a name="2317" class="Symbol"
+      >)</a
+      >
 
-</a
-      ><a name="2241" href="Data.Stream.html#2241" class="Function Operator"
+<a name="lookup" href="Data.Stream.html#lookup" class="Function"
+      >lookup</a
+      > <a name="2327" class="Symbol"
+      >:</a
+      > <a name="2329" class="Symbol"
+      >&#8704;</a
+      > <a name="2331" class="Symbol"
+      >{</a
+      ><a name="2332" href="Data.Stream.html#2332" class="Bound"
+      >a</a
+      ><a name="2333" class="Symbol"
+      >}</a
+      > <a name="2335" class="Symbol"
+      >{</a
+      ><a name="2336" href="Data.Stream.html#2336" class="Bound"
+      >A</a
+      > <a name="2338" class="Symbol"
+      >:</a
+      > <a name="2340" class="PrimitiveType"
+      >Set</a
+      > <a name="2344" href="Data.Stream.html#2332" class="Bound"
+      >a</a
+      ><a name="2345" class="Symbol"
+      >}</a
+      > <a name="2347" class="Symbol"
+      >&#8594;</a
+      > <a name="2349" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      >&#8469;</a
+      > <a name="2351" class="Symbol"
+      >&#8594;</a
+      > <a name="2353" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="2360" href="Data.Stream.html#2336" class="Bound"
+      >A</a
+      > <a name="2362" class="Symbol"
+      >&#8594;</a
+      > <a name="2364" href="Data.Stream.html#2336" class="Bound"
+      >A</a
+      >
+<a name="2366" href="Data.Stream.html#lookup" class="Function"
+      >lookup</a
+      > <a name="2373" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      >zero</a
+      >    <a name="2381" class="Symbol"
+      >(</a
+      ><a name="2382" href="Data.Stream.html#2382" class="Bound"
+      >x</a
+      > <a name="2384" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2386" href="Data.Stream.html#2386" class="Bound"
+      >xs</a
+      ><a name="2388" class="Symbol"
+      >)</a
+      > <a name="2390" class="Symbol"
+      >=</a
+      > <a name="2392" href="Data.Stream.html#2382" class="Bound"
+      >x</a
+      >
+<a name="2394" href="Data.Stream.html#lookup" class="Function"
+      >lookup</a
+      > <a name="2401" class="Symbol"
+      >(</a
+      ><a name="2402" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="2406" href="Data.Stream.html#2406" class="Bound"
+      >n</a
+      ><a name="2407" class="Symbol"
+      >)</a
+      > <a name="2409" class="Symbol"
+      >(</a
+      ><a name="2410" href="Data.Stream.html#2410" class="Bound"
+      >x</a
+      > <a name="2412" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2414" href="Data.Stream.html#2414" class="Bound"
+      >xs</a
+      ><a name="2416" class="Symbol"
+      >)</a
+      > <a name="2418" class="Symbol"
+      >=</a
+      > <a name="2420" href="Data.Stream.html#lookup" class="Function"
+      >lookup</a
+      > <a name="2427" href="Data.Stream.html#2406" class="Bound"
+      >n</a
+      > <a name="2429" class="Symbol"
+      >(</a
+      ><a name="2430" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="2432" href="Data.Stream.html#2414" class="Bound"
+      >xs</a
+      ><a name="2434" class="Symbol"
+      >)</a
+      >
+
+<a name="2437" class="Keyword"
+      >infixr</a
+      > <a name="2444" class="Number"
+      >5</a
+      > <a name="_++_" href="Data.Stream.html#_++_" class="Function Operator"
       >_++_</a
-      ><a name="2245"
-      > </a
-      ><a name="2246" class="Symbol"
+      >
+
+<a name="_++_" href="Data.Stream.html#_++_" class="Function Operator"
+      >_++_</a
+      > <a name="2457" class="Symbol"
       >:</a
-      ><a name="2247"
-      > </a
-      ><a name="2248" class="Symbol"
+      > <a name="2459" class="Symbol"
       >&#8704;</a
-      ><a name="2249"
-      > </a
-      ><a name="2250" class="Symbol"
+      > <a name="2461" class="Symbol"
       >{</a
-      ><a name="2251" href="Data.Stream.html#2251" class="Bound"
-      >A</a
-      ><a name="2252" class="Symbol"
+      ><a name="2462" href="Data.Stream.html#2462" class="Bound"
+      >a</a
+      ><a name="2463" class="Symbol"
       >}</a
-      ><a name="2253"
-      > </a
-      ><a name="2254" class="Symbol"
-      >&#8594;</a
-      ><a name="2255"
-      > </a
-      ><a name="2256" href="Data.Colist.html#1494" class="Datatype"
-      >Colist</a
-      ><a name="2262"
-      > </a
-      ><a name="2263" href="Data.Stream.html#2251" class="Bound"
-      >A</a
-      ><a name="2264"
-      > </a
-      ><a name="2265" class="Symbol"
-      >&#8594;</a
-      ><a name="2266"
-      > </a
-      ><a name="2267" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="2273"
-      > </a
-      ><a name="2274" href="Data.Stream.html#2251" class="Bound"
-      >A</a
-      ><a name="2275"
-      > </a
-      ><a name="2276" class="Symbol"
-      >&#8594;</a
-      ><a name="2277"
-      > </a
-      ><a name="2278" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="2284"
-      > </a
-      ><a name="2285" href="Data.Stream.html#2251" class="Bound"
-      >A</a
-      ><a name="2286"
-      >
-</a
-      ><a name="2287" href="Data.Colist.html#1533" class="InductiveConstructor"
-      >[]</a
-      ><a name="2289"
-      >       </a
-      ><a name="2296" href="Data.Stream.html#2241" class="Function Operator"
-      >++</a
-      ><a name="2298"
-      > </a
-      ><a name="2299" href="Data.Stream.html#2299" class="Bound"
-      >ys</a
-      ><a name="2301"
-      > </a
-      ><a name="2302" class="Symbol"
-      >=</a
-      ><a name="2303"
-      > </a
-      ><a name="2304" href="Data.Stream.html#2299" class="Bound"
-      >ys</a
-      ><a name="2306"
-      >
-</a
-      ><a name="2307" class="Symbol"
-      >(</a
-      ><a name="2308" href="Data.Stream.html#2308" class="Bound"
-      >x</a
-      ><a name="2309"
-      > </a
-      ><a name="2310" href="Data.Colist.html#1550" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="2311"
-      > </a
-      ><a name="2312" href="Data.Stream.html#2312" class="Bound"
-      >xs</a
-      ><a name="2314" class="Symbol"
-      >)</a
-      ><a name="2315"
-      > </a
-      ><a name="2316" href="Data.Stream.html#2241" class="Function Operator"
-      >++</a
-      ><a name="2318"
-      > </a
-      ><a name="2319" href="Data.Stream.html#2319" class="Bound"
-      >ys</a
-      ><a name="2321"
-      > </a
-      ><a name="2322" class="Symbol"
-      >=</a
-      ><a name="2323"
-      > </a
-      ><a name="2324" href="Data.Stream.html#2308" class="Bound"
-      >x</a
-      ><a name="2325"
-      > </a
-      ><a name="2326" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="2327"
-      > </a
-      ><a name="2328" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
-      >&#9839;</a
-      ><a name="2329"
-      > </a
-      ><a name="2330" class="Symbol"
-      >(</a
-      ><a name="2331" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="2332"
-      > </a
-      ><a name="2333" href="Data.Stream.html#2312" class="Bound"
-      >xs</a
-      ><a name="2335"
-      > </a
-      ><a name="2336" href="Data.Stream.html#2241" class="Function Operator"
-      >++</a
-      ><a name="2338"
-      > </a
-      ><a name="2339" href="Data.Stream.html#2319" class="Bound"
-      >ys</a
-      ><a name="2341" class="Symbol"
-      >)</a
-      ><a name="2342"
-      >
-
-</a
-      ><a name="2344" class="Comment"
-      >------------------------------------------------------------------------</a
-      ><a name="2416"
-      >
-</a
-      ><a name="2417" class="Comment"
-      >-- Equality and other relations</a
-      ><a name="2448"
-      >
-
-</a
-      ><a name="2450" class="Comment"
-      >-- xs &#8776; ys means that xs and ys are equal.</a
-      ><a name="2492"
-      >
-
-</a
-      ><a name="2494" class="Keyword"
-      >infix</a
-      ><a name="2499"
-      > </a
-      ><a name="2500" class="Number"
-      >4</a
-      ><a name="2501"
-      > _&#8776;_
-
-</a
-      ><a name="2507" class="Keyword"
-      >data</a
-      ><a name="2511"
-      > </a
-      ><a name="2512" href="Data.Stream.html#2512" class="Datatype Operator"
-      >_&#8776;_</a
-      ><a name="2515"
-      > </a
-      ><a name="2516" class="Symbol"
+      > <a name="2465" class="Symbol"
       >{</a
-      ><a name="2517" href="Data.Stream.html#2517" class="Bound"
+      ><a name="2466" href="Data.Stream.html#2466" class="Bound"
       >A</a
-      ><a name="2518" class="Symbol"
-      >}</a
-      ><a name="2519"
-      > </a
-      ><a name="2520" class="Symbol"
+      > <a name="2468" class="Symbol"
       >:</a
-      ><a name="2521"
-      > </a
-      ><a name="2522" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="2528"
-      > </a
-      ><a name="2529" href="Data.Stream.html#2517" class="Bound"
-      >A</a
-      ><a name="2530"
-      > </a
-      ><a name="2531" class="Symbol"
-      >&#8594;</a
-      ><a name="2532"
-      > </a
-      ><a name="2533" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="2539"
-      > </a
-      ><a name="2540" href="Data.Stream.html#2517" class="Bound"
-      >A</a
-      ><a name="2541"
-      > </a
-      ><a name="2542" class="Symbol"
-      >&#8594;</a
-      ><a name="2543"
-      > </a
-      ><a name="2544" class="PrimitiveType"
+      > <a name="2470" class="PrimitiveType"
       >Set</a
-      ><a name="2547"
-      > </a
-      ><a name="2548" class="Keyword"
-      >where</a
-      ><a name="2553"
+      > <a name="2474" href="Data.Stream.html#2462" class="Bound"
+      >a</a
+      ><a name="2475" class="Symbol"
+      >}</a
+      > <a name="2477" class="Symbol"
+      >&#8594;</a
+      > <a name="2479" href="Data.Colist.html#Colist" class="Datatype"
+      >Colist</a
+      > <a name="2486" href="Data.Stream.html#2466" class="Bound"
+      >A</a
+      > <a name="2488" class="Symbol"
+      >&#8594;</a
+      > <a name="2490" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="2497" href="Data.Stream.html#2466" class="Bound"
+      >A</a
+      > <a name="2499" class="Symbol"
+      >&#8594;</a
+      > <a name="2501" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="2508" href="Data.Stream.html#2466" class="Bound"
+      >A</a
       >
-  </a
-      ><a name="2556" href="Data.Stream.html#2556" class="InductiveConstructor Operator"
-      >_&#8759;_</a
-      ><a name="2559"
-      > </a
-      ><a name="2560" class="Symbol"
-      >:</a
-      ><a name="2561"
-      > </a
-      ><a name="2562" class="Symbol"
-      >&#8704;</a
-      ><a name="2563"
-      > </a
+<a name="2510" href="Data.Colist.html#Colist.[]" class="InductiveConstructor"
+      >[]</a
+      >       <a name="2519" href="Data.Stream.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="2522" href="Data.Stream.html#2522" class="Bound"
+      >ys</a
+      > <a name="2525" class="Symbol"
+      >=</a
+      > <a name="2527" href="Data.Stream.html#2522" class="Bound"
+      >ys</a
+      >
+<a name="2530" class="Symbol"
+      >(</a
+      ><a name="2531" href="Data.Stream.html#2531" class="Bound"
+      >x</a
+      > <a name="2533" href="Data.Colist.html#Colist._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2535" href="Data.Stream.html#2535" class="Bound"
+      >xs</a
+      ><a name="2537" class="Symbol"
+      >)</a
+      > <a name="2539" href="Data.Stream.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="2542" href="Data.Stream.html#2542" class="Bound"
+      >ys</a
+      > <a name="2545" class="Symbol"
+      >=</a
+      > <a name="2547" href="Data.Stream.html#2531" class="Bound"
+      >x</a
+      > <a name="2549" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2551" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      > <a name="2553" class="Symbol"
+      >(</a
+      ><a name="2554" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="2556" href="Data.Stream.html#2535" class="Bound"
+      >xs</a
+      > <a name="2559" href="Data.Stream.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="2562" href="Data.Stream.html#2542" class="Bound"
+      >ys</a
       ><a name="2564" class="Symbol"
-      >{</a
-      ><a name="2565" href="Data.Stream.html#2565" class="Bound"
-      >x</a
-      ><a name="2566"
-      > </a
-      ><a name="2567" href="Data.Stream.html#2567" class="Bound"
-      >y</a
-      ><a name="2568"
-      > </a
-      ><a name="2569" href="Data.Stream.html#2569" class="Bound"
-      >xs</a
-      ><a name="2571"
-      > </a
-      ><a name="2572" href="Data.Stream.html#2572" class="Bound"
-      >ys</a
-      ><a name="2574" class="Symbol"
-      >}</a
-      ><a name="2575"
-      >
-        </a
-      ><a name="2584" class="Symbol"
-      >(</a
-      ><a name="2585" href="Data.Stream.html#2585" class="Bound"
-      >x&#8801;</a
-      ><a name="2587"
-      > </a
-      ><a name="2588" class="Symbol"
-      >:</a
-      ><a name="2589"
-      > </a
-      ><a name="2590" href="Data.Stream.html#2565" class="Bound"
-      >x</a
-      ><a name="2591"
-      > </a
-      ><a name="2592" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
-      >&#8801;</a
-      ><a name="2593"
-      > </a
-      ><a name="2594" href="Data.Stream.html#2567" class="Bound"
-      >y</a
-      ><a name="2595" class="Symbol"
       >)</a
-      ><a name="2596"
-      > </a
-      ><a name="2597" class="Symbol"
-      >(</a
-      ><a name="2598" href="Data.Stream.html#2598" class="Bound"
-      >xs&#8776;</a
-      ><a name="2601"
-      > </a
-      ><a name="2602" class="Symbol"
-      >:</a
-      ><a name="2603"
-      > </a
-      ><a name="2604" href="Agda.Builtin.Coinduction.html#96" class="Record"
-      >&#8734;</a
-      ><a name="2605"
-      > </a
-      ><a name="2606" class="Symbol"
-      >(</a
-      ><a name="2607" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="2608"
-      > </a
-      ><a name="2609" href="Data.Stream.html#2569" class="Bound"
-      >xs</a
-      ><a name="2611"
-      > </a
-      ><a name="2612" href="Data.Stream.html#2512" class="Datatype Operator"
-      >&#8776;</a
-      ><a name="2613"
-      > </a
-      ><a name="2614" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="2615"
-      > </a
-      ><a name="2616" href="Data.Stream.html#2572" class="Bound"
-      >ys</a
-      ><a name="2618" class="Symbol"
-      >))</a
-      ><a name="2620"
-      > </a
-      ><a name="2621" class="Symbol"
-      >&#8594;</a
-      ><a name="2622"
-      > </a
-      ><a name="2623" href="Data.Stream.html#2565" class="Bound"
-      >x</a
-      ><a name="2624"
-      > </a
-      ><a name="2625" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="2626"
-      > </a
-      ><a name="2627" href="Data.Stream.html#2569" class="Bound"
-      >xs</a
-      ><a name="2629"
-      > </a
-      ><a name="2630" href="Data.Stream.html#2512" class="Datatype Operator"
-      >&#8776;</a
-      ><a name="2631"
-      > </a
-      ><a name="2632" href="Data.Stream.html#2567" class="Bound"
-      >y</a
-      ><a name="2633"
-      > </a
-      ><a name="2634" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="2635"
-      > </a
-      ><a name="2636" href="Data.Stream.html#2572" class="Bound"
-      >ys</a
-      ><a name="2638"
       >
 
-</a
-      ><a name="2640" class="Comment"
-      >-- x &#8712; xs means that x is a member of xs.</a
-      ><a name="2681"
-      >
-
-</a
-      ><a name="2683" class="Keyword"
-      >infix</a
-      ><a name="2688"
-      > </a
-      ><a name="2689" class="Number"
-      >4</a
-      ><a name="2690"
-      > _&#8712;_
-
-</a
-      ><a name="2696" class="Keyword"
-      >data</a
-      ><a name="2700"
-      > </a
-      ><a name="2701" href="Data.Stream.html#2701" class="Datatype Operator"
-      >_&#8712;_</a
-      ><a name="2704"
-      > </a
-      ><a name="2705" class="Symbol"
-      >{</a
-      ><a name="2706" href="Data.Stream.html#2706" class="Bound"
-      >A</a
-      ><a name="2707" class="Symbol"
-      >}</a
-      ><a name="2708"
-      > </a
-      ><a name="2709" class="Symbol"
-      >:</a
-      ><a name="2710"
-      > </a
-      ><a name="2711" href="Data.Stream.html#2706" class="Bound"
-      >A</a
-      ><a name="2712"
-      > </a
-      ><a name="2713" class="Symbol"
-      >&#8594;</a
-      ><a name="2714"
-      > </a
-      ><a name="2715" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="2721"
-      > </a
-      ><a name="2722" href="Data.Stream.html#2706" class="Bound"
-      >A</a
-      ><a name="2723"
-      > </a
-      ><a name="2724" class="Symbol"
-      >&#8594;</a
-      ><a name="2725"
-      > </a
-      ><a name="2726" class="PrimitiveType"
-      >Set</a
-      ><a name="2729"
-      > </a
-      ><a name="2730" class="Keyword"
-      >where</a
-      ><a name="2735"
-      >
-  </a
-      ><a name="2738" href="Data.Stream.html#2738" class="InductiveConstructor"
-      >here</a
-      ><a name="2742"
-      >  </a
-      ><a name="2744" class="Symbol"
-      >:</a
-      ><a name="2745"
-      > </a
-      ><a name="2746" class="Symbol"
-      >&#8704;</a
-      ><a name="2747"
-      > </a
-      ><a name="2748" class="Symbol"
-      >{</a
-      ><a name="2749" href="Data.Stream.html#2749" class="Bound"
-      >x</a
-      ><a name="2750"
-      >   </a
-      ><a name="2753" href="Data.Stream.html#2753" class="Bound"
-      >xs</a
-      ><a name="2755" class="Symbol"
-      >}</a
-      ><a name="2756"
-      >                   </a
-      ><a name="2775" class="Symbol"
-      >&#8594;</a
-      ><a name="2776"
-      > </a
-      ><a name="2777" href="Data.Stream.html#2749" class="Bound"
-      >x</a
-      ><a name="2778"
-      > </a
-      ><a name="2779" href="Data.Stream.html#2701" class="Datatype Operator"
-      >&#8712;</a
-      ><a name="2780"
-      > </a
-      ><a name="2781" href="Data.Stream.html#2749" class="Bound"
-      >x</a
-      ><a name="2782"
-      > </a
-      ><a name="2783" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="2784"
-      > </a
-      ><a name="2785" href="Data.Stream.html#2753" class="Bound"
-      >xs</a
-      ><a name="2787"
-      >
-  </a
-      ><a name="2790" href="Data.Stream.html#2790" class="InductiveConstructor"
-      >there</a
-      ><a name="2795"
-      > </a
-      ><a name="2796" class="Symbol"
-      >:</a
-      ><a name="2797"
-      > </a
-      ><a name="2798" class="Symbol"
-      >&#8704;</a
-      ><a name="2799"
-      > </a
-      ><a name="2800" class="Symbol"
-      >{</a
-      ><a name="2801" href="Data.Stream.html#2801" class="Bound"
-      >x</a
-      ><a name="2802"
-      > </a
-      ><a name="2803" href="Data.Stream.html#2803" class="Bound"
-      >y</a
-      ><a name="2804"
-      > </a
-      ><a name="2805" href="Data.Stream.html#2805" class="Bound"
-      >xs</a
-      ><a name="2807" class="Symbol"
-      >}</a
-      ><a name="2808"
-      > </a
-      ><a name="2809" class="Symbol"
-      >(</a
-      ><a name="2810" href="Data.Stream.html#2810" class="Bound"
-      >x&#8712;xs</a
-      ><a name="2814"
-      > </a
-      ><a name="2815" class="Symbol"
-      >:</a
-      ><a name="2816"
-      > </a
-      ><a name="2817" href="Data.Stream.html#2801" class="Bound"
-      >x</a
-      ><a name="2818"
-      > </a
-      ><a name="2819" href="Data.Stream.html#2701" class="Datatype Operator"
-      >&#8712;</a
-      ><a name="2820"
-      > </a
-      ><a name="2821" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="2822"
-      > </a
-      ><a name="2823" href="Data.Stream.html#2805" class="Bound"
-      >xs</a
-      ><a name="2825" class="Symbol"
-      >)</a
-      ><a name="2826"
-      > </a
-      ><a name="2827" class="Symbol"
-      >&#8594;</a
-      ><a name="2828"
-      > </a
-      ><a name="2829" href="Data.Stream.html#2801" class="Bound"
-      >x</a
-      ><a name="2830"
-      > </a
-      ><a name="2831" href="Data.Stream.html#2701" class="Datatype Operator"
-      >&#8712;</a
-      ><a name="2832"
-      > </a
-      ><a name="2833" href="Data.Stream.html#2803" class="Bound"
-      >y</a
-      ><a name="2834"
-      > </a
-      ><a name="2835" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="2836"
-      > </a
-      ><a name="2837" href="Data.Stream.html#2805" class="Bound"
-      >xs</a
-      ><a name="2839"
-      >
-
-</a
-      ><a name="2841" class="Comment"
-      >-- xs &#8849; ys means that xs is a prefix of ys.</a
-      ><a name="2884"
-      >
-
-</a
-      ><a name="2886" class="Keyword"
-      >infix</a
-      ><a name="2891"
-      > </a
-      ><a name="2892" class="Number"
-      >4</a
-      ><a name="2893"
-      > _&#8849;_
-
-</a
-      ><a name="2899" class="Keyword"
-      >data</a
-      ><a name="2903"
-      > </a
-      ><a name="2904" href="Data.Stream.html#2904" class="Datatype Operator"
-      >_&#8849;_</a
-      ><a name="2907"
-      > </a
-      ><a name="2908" class="Symbol"
-      >{</a
-      ><a name="2909" href="Data.Stream.html#2909" class="Bound"
-      >A</a
-      ><a name="2910" class="Symbol"
-      >}</a
-      ><a name="2911"
-      > </a
-      ><a name="2912" class="Symbol"
-      >:</a
-      ><a name="2913"
-      > </a
-      ><a name="2914" href="Data.Colist.html#1494" class="Datatype"
-      >Colist</a
-      ><a name="2920"
-      > </a
-      ><a name="2921" href="Data.Stream.html#2909" class="Bound"
-      >A</a
-      ><a name="2922"
-      > </a
-      ><a name="2923" class="Symbol"
-      >&#8594;</a
-      ><a name="2924"
-      > </a
-      ><a name="2925" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="2931"
-      > </a
-      ><a name="2932" href="Data.Stream.html#2909" class="Bound"
-      >A</a
-      ><a name="2933"
-      > </a
-      ><a name="2934" class="Symbol"
-      >&#8594;</a
-      ><a name="2935"
-      > </a
-      ><a name="2936" class="PrimitiveType"
-      >Set</a
-      ><a name="2939"
-      > </a
-      ><a name="2940" class="Keyword"
-      >where</a
-      ><a name="2945"
-      >
-  </a
-      ><a name="2948" href="Data.Stream.html#2948" class="InductiveConstructor"
-      >[]</a
-      ><a name="2950"
-      >  </a
-      ><a name="2952" class="Symbol"
-      >:</a
-      ><a name="2953"
-      > </a
-      ><a name="2954" class="Symbol"
-      >&#8704;</a
-      ><a name="2955"
-      > </a
-      ><a name="2956" class="Symbol"
-      >{</a
-      ><a name="2957" href="Data.Stream.html#2957" class="Bound"
-      >ys</a
-      ><a name="2959" class="Symbol"
-      >}</a
-      ><a name="2960"
-      >                            </a
-      ><a name="2988" class="Symbol"
-      >&#8594;</a
-      ><a name="2989"
-      > </a
-      ><a name="2990" href="Data.Colist.html#1533" class="InductiveConstructor"
-      >[]</a
-      ><a name="2992"
-      >     </a
-      ><a name="2997" href="Data.Stream.html#2904" class="Datatype Operator"
-      >&#8849;</a
-      ><a name="2998"
-      > </a
-      ><a name="2999" href="Data.Stream.html#2957" class="Bound"
-      >ys</a
-      ><a name="3001"
-      >
-  </a
-      ><a name="3004" href="Data.Stream.html#3004" class="InductiveConstructor Operator"
-      >_&#8759;_</a
-      ><a name="3007"
-      > </a
-      ><a name="3008" class="Symbol"
-      >:</a
-      ><a name="3009"
-      > </a
-      ><a name="3010" class="Symbol"
-      >&#8704;</a
-      ><a name="3011"
-      > </a
-      ><a name="3012" href="Data.Stream.html#3012" class="Bound"
-      >x</a
-      ><a name="3013"
-      > </a
-      ><a name="3014" class="Symbol"
-      >{</a
-      ><a name="3015" href="Data.Stream.html#3015" class="Bound"
-      >xs</a
-      ><a name="3017"
-      > </a
-      ><a name="3018" href="Data.Stream.html#3018" class="Bound"
-      >ys</a
-      ><a name="3020" class="Symbol"
-      >}</a
-      ><a name="3021"
-      > </a
-      ><a name="3022" class="Symbol"
-      >(</a
-      ><a name="3023" href="Data.Stream.html#3023" class="Bound"
-      >p</a
-      ><a name="3024"
-      > </a
-      ><a name="3025" class="Symbol"
-      >:</a
-      ><a name="3026"
-      > </a
-      ><a name="3027" href="Agda.Builtin.Coinduction.html#96" class="Record"
-      >&#8734;</a
-      ><a name="3028"
-      > </a
-      ><a name="3029" class="Symbol"
-      >(</a
-      ><a name="3030" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="3031"
-      > </a
-      ><a name="3032" href="Data.Stream.html#3015" class="Bound"
-      >xs</a
-      ><a name="3034"
-      > </a
-      ><a name="3035" href="Data.Stream.html#2904" class="Datatype Operator"
-      >&#8849;</a
-      ><a name="3036"
-      > </a
-      ><a name="3037" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="3038"
-      > </a
-      ><a name="3039" href="Data.Stream.html#3018" class="Bound"
-      >ys</a
-      ><a name="3041" class="Symbol"
-      >))</a
-      ><a name="3043"
-      > </a
-      ><a name="3044" class="Symbol"
-      >&#8594;</a
-      ><a name="3045"
-      > </a
-      ><a name="3046" href="Data.Stream.html#3012" class="Bound"
-      >x</a
-      ><a name="3047"
-      > </a
-      ><a name="3048" href="Data.Colist.html#1550" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="3049"
-      > </a
-      ><a name="3050" href="Data.Stream.html#3015" class="Bound"
-      >xs</a
-      ><a name="3052"
-      > </a
-      ><a name="3053" href="Data.Stream.html#2904" class="Datatype Operator"
-      >&#8849;</a
-      ><a name="3054"
-      > </a
-      ><a name="3055" href="Data.Stream.html#3012" class="Bound"
-      >x</a
-      ><a name="3056"
-      > </a
-      ><a name="3057" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="3058"
-      > </a
-      ><a name="3059" href="Data.Stream.html#3018" class="Bound"
-      >ys</a
-      ><a name="3061"
-      >
-
-</a
-      ><a name="3063" class="Comment"
+<a name="2567" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="3135"
       >
-</a
-      ><a name="3136" class="Comment"
-      >-- Some proofs</a
-      ><a name="3150"
+<a name="2640" class="Comment"
+      >-- Equality and other relations</a
       >
 
-</a
-      ><a name="3152" href="Data.Stream.html#3152" class="Function"
-      >setoid</a
-      ><a name="3158"
-      > </a
-      ><a name="3159" class="Symbol"
+<a name="2673" class="Comment"
+      >-- xs &#8776; ys means that xs and ys are equal.</a
+      >
+
+<a name="2717" class="Keyword"
+      >infix</a
+      > <a name="2723" class="Number"
+      >4</a
+      > <a name="2725" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >_&#8776;_</a
+      >
+
+<a name="2730" class="Keyword"
+      >data</a
+      > <a name="_&#8776;_" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >_&#8776;_</a
+      > <a name="2739" class="Symbol"
+      >{</a
+      ><a name="2740" href="Data.Stream.html#2740" class="Bound"
+      >a</a
+      ><a name="2741" class="Symbol"
+      >}</a
+      > <a name="2743" class="Symbol"
+      >{</a
+      ><a name="2744" href="Data.Stream.html#2744" class="Bound"
+      >A</a
+      > <a name="2746" class="Symbol"
       >:</a
-      ><a name="3160"
-      > </a
-      ><a name="3161" class="PrimitiveType"
+      > <a name="2748" class="PrimitiveType"
       >Set</a
-      ><a name="3164"
-      > </a
-      ><a name="3165" class="Symbol"
-      >&#8594;</a
-      ><a name="3166"
-      > </a
-      ><a name="3167" href="Relation.Binary.html#1908" class="Record"
-      >Setoid</a
-      ><a name="3173"
-      > </a
-      ><a name="3174" class="Symbol"
-      >_</a
-      ><a name="3175"
-      > </a
-      ><a name="3176" class="Symbol"
-      >_</a
-      ><a name="3177"
-      >
-</a
-      ><a name="3178" href="Data.Stream.html#3152" class="Function"
-      >setoid</a
-      ><a name="3184"
-      > </a
-      ><a name="3185" href="Data.Stream.html#3185" class="Bound"
-      >A</a
-      ><a name="3186"
-      > </a
-      ><a name="3187" class="Symbol"
-      >=</a
-      ><a name="3188"
-      > </a
-      ><a name="3189" class="Keyword"
-      >record</a
-      ><a name="3195"
-      >
-  </a
-      ><a name="3198" class="Symbol"
-      >{</a
-      ><a name="3199"
-      > </a
-      ><a name="3200" class="Field"
-      >Carrier</a
-      ><a name="3207"
-      >       </a
-      ><a name="3214" class="Symbol"
-      >=</a
-      ><a name="3215"
-      > </a
-      ><a name="3216" href="Data.Stream.html#585" class="Datatype"
+      > <a name="2752" href="Data.Stream.html#2740" class="Bound"
+      >a</a
+      ><a name="2753" class="Symbol"
+      >}</a
+      > <a name="2755" class="Symbol"
+      >:</a
+      > <a name="2757" href="Data.Stream.html#Stream" class="Datatype"
       >Stream</a
-      ><a name="3222"
-      > </a
-      ><a name="3223" href="Data.Stream.html#3185" class="Bound"
+      > <a name="2764" href="Data.Stream.html#2744" class="Bound"
       >A</a
-      ><a name="3224"
-      >
-  </a
-      ><a name="3227" class="Symbol"
-      >;</a
-      ><a name="3228"
-      > </a
-      ><a name="3229" class="Field Operator"
-      >_&#8776;_</a
-      ><a name="3232"
-      >           </a
-      ><a name="3243" class="Symbol"
-      >=</a
-      ><a name="3244"
-      > </a
-      ><a name="3245" href="Data.Stream.html#2512" class="Datatype Operator"
-      >_&#8776;_</a
-      ><a name="3248"
-      > </a
-      ><a name="3249" class="Symbol"
-      >{</a
-      ><a name="3250" href="Data.Stream.html#3185" class="Bound"
+      > <a name="2766" class="Symbol"
+      >&#8594;</a
+      > <a name="2768" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="2775" href="Data.Stream.html#2744" class="Bound"
       >A</a
-      ><a name="3251" class="Symbol"
-      >}</a
-      ><a name="3252"
-      >
-  </a
-      ><a name="3255" class="Symbol"
-      >;</a
-      ><a name="3256"
-      > </a
-      ><a name="3257" class="Field"
-      >isEquivalence</a
-      ><a name="3270"
-      > </a
-      ><a name="3271" class="Symbol"
-      >=</a
-      ><a name="3272"
-      > </a
-      ><a name="3273" class="Keyword"
-      >record</a
-      ><a name="3279"
-      >
-    </a
-      ><a name="3284" class="Symbol"
-      >{</a
-      ><a name="3285"
-      > </a
-      ><a name="3286" class="Field"
-      >refl</a
-      ><a name="3290"
-      >  </a
-      ><a name="3292" class="Symbol"
-      >=</a
-      ><a name="3293"
-      > </a
-      ><a name="3294" href="Data.Stream.html#3357" class="Function"
-      >refl</a
-      ><a name="3298"
-      >
-    </a
-      ><a name="3303" class="Symbol"
-      >;</a
-      ><a name="3304"
-      > </a
-      ><a name="3305" class="Field"
-      >sym</a
-      ><a name="3308"
-      >   </a
-      ><a name="3311" class="Symbol"
-      >=</a
-      ><a name="3312"
-      > </a
-      ><a name="3313" href="Data.Stream.html#3414" class="Function"
-      >sym</a
-      ><a name="3316"
-      >
-    </a
-      ><a name="3321" class="Symbol"
-      >;</a
-      ><a name="3322"
-      > </a
-      ><a name="3323" class="Field"
-      >trans</a
-      ><a name="3328"
-      > </a
-      ><a name="3329" class="Symbol"
-      >=</a
-      ><a name="3330"
-      > </a
-      ><a name="3331" href="Data.Stream.html#3481" class="Function"
-      >trans</a
-      ><a name="3336"
-      >
-    </a
-      ><a name="3341" class="Symbol"
-      >}</a
-      ><a name="3342"
-      >
-  </a
-      ><a name="3345" class="Symbol"
-      >}</a
-      ><a name="3346"
-      >
-  </a
-      ><a name="3349" class="Keyword"
+      > <a name="2777" class="Symbol"
+      >&#8594;</a
+      > <a name="2779" class="PrimitiveType"
+      >Set</a
+      > <a name="2783" href="Data.Stream.html#2740" class="Bound"
+      >a</a
+      > <a name="2785" class="Keyword"
       >where</a
-      ><a name="3354"
       >
-  </a
-      ><a name="3357" href="Data.Stream.html#3357" class="Function"
-      >refl</a
-      ><a name="3361"
-      > </a
-      ><a name="3362" class="Symbol"
+  <a name="_&#8776;_._&#8759;_" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      > <a name="2797" class="Symbol"
       >:</a
-      ><a name="3363"
-      > </a
-      ><a name="3364" href="Relation.Binary.Core.html#1870" class="Function"
-      >Reflexive</a
-      ><a name="3373"
-      > </a
-      ><a name="3374" href="Data.Stream.html#2512" class="Datatype Operator"
-      >_&#8776;_</a
-      ><a name="3377"
-      >
-  </a
-      ><a name="3380" href="Data.Stream.html#3357" class="Function"
-      >refl</a
-      ><a name="3384"
-      > </a
-      ><a name="3385" class="Symbol"
-      >{_</a
-      ><a name="3387"
-      > </a
-      ><a name="3388" href="Data.Stream.html#616" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="3389"
-      > </a
-      ><a name="3390" class="Symbol"
-      >_}</a
-      ><a name="3392"
-      > </a
-      ><a name="3393" class="Symbol"
-      >=</a
-      ><a name="3394"
-      > </a
-      ><a name="3395" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
-      >P.refl</a
-      ><a name="3401"
-      > </a
-      ><a name="3402" href="Data.Stream.html#2556" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="3403"
-      > </a
-      ><a name="3404" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
-      >&#9839;</a
-      ><a name="3405"
-      > </a
-      ><a name="3406" href="Data.Stream.html#3357" class="Function"
-      >refl</a
-      ><a name="3410"
-      >
-
-  </a
-      ><a name="3414" href="Data.Stream.html#3414" class="Function"
-      >sym</a
-      ><a name="3417"
-      > </a
-      ><a name="3418" class="Symbol"
-      >:</a
-      ><a name="3419"
-      > </a
-      ><a name="3420" href="Relation.Binary.Core.html#2293" class="Function"
-      >Symmetric</a
-      ><a name="3429"
-      > </a
-      ><a name="3430" href="Data.Stream.html#2512" class="Datatype Operator"
-      >_&#8776;_</a
-      ><a name="3433"
-      >
-  </a
-      ><a name="3436" href="Data.Stream.html#3414" class="Function"
-      >sym</a
-      ><a name="3439"
-      > </a
-      ><a name="3440" class="Symbol"
-      >(</a
-      ><a name="3441" href="Data.Stream.html#3441" class="Bound"
-      >x&#8801;</a
-      ><a name="3443"
-      > </a
-      ><a name="3444" href="Data.Stream.html#2556" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="3445"
-      > </a
-      ><a name="3446" href="Data.Stream.html#3446" class="Bound"
-      >xs&#8776;</a
-      ><a name="3449" class="Symbol"
-      >)</a
-      ><a name="3450"
-      > </a
-      ><a name="3451" class="Symbol"
-      >=</a
-      ><a name="3452"
-      > </a
-      ><a name="3453" href="Relation.Binary.PropositionalEquality.Core.html#565" class="Function"
-      >P.sym</a
-      ><a name="3458"
-      > </a
-      ><a name="3459" href="Data.Stream.html#3441" class="Bound"
-      >x&#8801;</a
-      ><a name="3461"
-      > </a
-      ><a name="3462" href="Data.Stream.html#2556" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="3463"
-      > </a
-      ><a name="3464" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
-      >&#9839;</a
-      ><a name="3465"
-      > </a
-      ><a name="3466" href="Data.Stream.html#3414" class="Function"
-      >sym</a
-      ><a name="3469"
-      > </a
-      ><a name="3470" class="Symbol"
-      >(</a
-      ><a name="3471" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="3472"
-      > </a
-      ><a name="3473" href="Data.Stream.html#3446" class="Bound"
-      >xs&#8776;</a
-      ><a name="3476" class="Symbol"
-      >)</a
-      ><a name="3477"
-      >
-
-  </a
-      ><a name="3481" href="Data.Stream.html#3481" class="Function"
-      >trans</a
-      ><a name="3486"
-      > </a
-      ><a name="3487" class="Symbol"
-      >:</a
-      ><a name="3488"
-      > </a
-      ><a name="3489" href="Relation.Binary.Core.html#2772" class="Function"
-      >Transitive</a
-      ><a name="3499"
-      > </a
-      ><a name="3500" href="Data.Stream.html#2512" class="Datatype Operator"
-      >_&#8776;_</a
-      ><a name="3503"
-      >
-  </a
-      ><a name="3506" href="Data.Stream.html#3481" class="Function"
-      >trans</a
-      ><a name="3511"
-      > </a
-      ><a name="3512" class="Symbol"
-      >(</a
-      ><a name="3513" href="Data.Stream.html#3513" class="Bound"
-      >x&#8801;</a
-      ><a name="3515"
-      > </a
-      ><a name="3516" href="Data.Stream.html#2556" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="3517"
-      > </a
-      ><a name="3518" href="Data.Stream.html#3518" class="Bound"
-      >xs&#8776;</a
-      ><a name="3521" class="Symbol"
-      >)</a
-      ><a name="3522"
-      > </a
-      ><a name="3523" class="Symbol"
-      >(</a
-      ><a name="3524" href="Data.Stream.html#3524" class="Bound"
-      >y&#8801;</a
-      ><a name="3526"
-      > </a
-      ><a name="3527" href="Data.Stream.html#2556" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="3528"
-      > </a
-      ><a name="3529" href="Data.Stream.html#3529" class="Bound"
-      >ys&#8776;</a
-      ><a name="3532" class="Symbol"
-      >)</a
-      ><a name="3533"
-      > </a
-      ><a name="3534" class="Symbol"
-      >=</a
-      ><a name="3535"
-      > </a
-      ><a name="3536" href="Relation.Binary.PropositionalEquality.Core.html#632" class="Function"
-      >P.trans</a
-      ><a name="3543"
-      > </a
-      ><a name="3544" href="Data.Stream.html#3513" class="Bound"
-      >x&#8801;</a
-      ><a name="3546"
-      > </a
-      ><a name="3547" href="Data.Stream.html#3524" class="Bound"
-      >y&#8801;</a
-      ><a name="3549"
-      > </a
-      ><a name="3550" href="Data.Stream.html#2556" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="3551"
-      > </a
-      ><a name="3552" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
-      >&#9839;</a
-      ><a name="3553"
-      > </a
-      ><a name="3554" href="Data.Stream.html#3481" class="Function"
-      >trans</a
-      ><a name="3559"
-      > </a
-      ><a name="3560" class="Symbol"
-      >(</a
-      ><a name="3561" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="3562"
-      > </a
-      ><a name="3563" href="Data.Stream.html#3518" class="Bound"
-      >xs&#8776;</a
-      ><a name="3566" class="Symbol"
-      >)</a
-      ><a name="3567"
-      > </a
-      ><a name="3568" class="Symbol"
-      >(</a
-      ><a name="3569" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="3570"
-      > </a
-      ><a name="3571" href="Data.Stream.html#3529" class="Bound"
-      >ys&#8776;</a
-      ><a name="3574" class="Symbol"
-      >)</a
-      ><a name="3575"
-      >
-
-</a
-      ><a name="3577" href="Data.Stream.html#3577" class="Function"
-      >head-cong</a
-      ><a name="3586"
-      > </a
-      ><a name="3587" class="Symbol"
-      >:</a
-      ><a name="3588"
-      > </a
-      ><a name="3589" class="Symbol"
+      > <a name="2799" class="Symbol"
       >&#8704;</a
-      ><a name="3590"
-      > </a
-      ><a name="3591" class="Symbol"
+      > <a name="2801" class="Symbol"
       >{</a
-      ><a name="3592" href="Data.Stream.html#3592" class="Bound"
-      >A</a
-      ><a name="3593" class="Symbol"
-      >}</a
-      ><a name="3594"
-      > </a
-      ><a name="3595" class="Symbol"
-      >{</a
-      ><a name="3596" href="Data.Stream.html#3596" class="Bound"
+      ><a name="2802" href="Data.Stream.html#2802" class="Bound"
+      >x</a
+      > <a name="2804" href="Data.Stream.html#2804" class="Bound"
+      >y</a
+      > <a name="2806" href="Data.Stream.html#2806" class="Bound"
       >xs</a
-      ><a name="3598"
-      > </a
-      ><a name="3599" href="Data.Stream.html#3599" class="Bound"
+      > <a name="2809" href="Data.Stream.html#2809" class="Bound"
       >ys</a
-      ><a name="3601"
-      > </a
-      ><a name="3602" class="Symbol"
+      ><a name="2811" class="Symbol"
+      >}</a
+      >
+        <a name="2821" class="Symbol"
+      >(</a
+      ><a name="2822" href="Data.Stream.html#2822" class="Bound"
+      >x&#8801;</a
+      > <a name="2825" class="Symbol"
       >:</a
-      ><a name="3603"
-      > </a
-      ><a name="3604" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="3610"
-      > </a
-      ><a name="3611" href="Data.Stream.html#3592" class="Bound"
-      >A</a
-      ><a name="3612" class="Symbol"
-      >}</a
-      ><a name="3613"
-      > </a
-      ><a name="3614" class="Symbol"
-      >&#8594;</a
-      ><a name="3615"
-      > </a
-      ><a name="3616" href="Data.Stream.html#3596" class="Bound"
-      >xs</a
-      ><a name="3618"
-      > </a
-      ><a name="3619" href="Data.Stream.html#2512" class="Datatype Operator"
-      >&#8776;</a
-      ><a name="3620"
-      > </a
-      ><a name="3621" href="Data.Stream.html#3599" class="Bound"
-      >ys</a
-      ><a name="3623"
-      > </a
-      ><a name="3624" class="Symbol"
-      >&#8594;</a
-      ><a name="3625"
-      > </a
-      ><a name="3626" href="Data.Stream.html#909" class="Function"
-      >head</a
-      ><a name="3630"
-      > </a
-      ><a name="3631" href="Data.Stream.html#3596" class="Bound"
-      >xs</a
-      ><a name="3633"
-      > </a
-      ><a name="3634" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="2827" href="Data.Stream.html#2802" class="Bound"
+      >x</a
+      > <a name="2829" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="3635"
-      > </a
-      ><a name="3636" href="Data.Stream.html#909" class="Function"
-      >head</a
-      ><a name="3640"
-      > </a
-      ><a name="3641" href="Data.Stream.html#3599" class="Bound"
+      > <a name="2831" href="Data.Stream.html#2804" class="Bound"
+      >y</a
+      ><a name="2832" class="Symbol"
+      >)</a
+      > <a name="2834" class="Symbol"
+      >(</a
+      ><a name="2835" href="Data.Stream.html#2835" class="Bound"
+      >xs&#8776;</a
+      > <a name="2839" class="Symbol"
+      >:</a
+      > <a name="2841" href="Agda.Builtin.Coinduction.html#&#8734;" class="Record"
+      >&#8734;</a
+      > <a name="2843" class="Symbol"
+      >(</a
+      ><a name="2844" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="2846" href="Data.Stream.html#2806" class="Bound"
+      >xs</a
+      > <a name="2849" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >&#8776;</a
+      > <a name="2851" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="2853" href="Data.Stream.html#2809" class="Bound"
       >ys</a
-      ><a name="3643"
+      ><a name="2855" class="Symbol"
+      >))</a
+      > <a name="2858" class="Symbol"
+      >&#8594;</a
+      > <a name="2860" href="Data.Stream.html#2802" class="Bound"
+      >x</a
+      > <a name="2862" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2864" href="Data.Stream.html#2806" class="Bound"
+      >xs</a
+      > <a name="2867" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >&#8776;</a
+      > <a name="2869" href="Data.Stream.html#2804" class="Bound"
+      >y</a
+      > <a name="2871" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2873" href="Data.Stream.html#2809" class="Bound"
+      >ys</a
       >
-</a
-      ><a name="3644" href="Data.Stream.html#3577" class="Function"
+
+<a name="2877" class="Comment"
+      >-- x &#8712; xs means that x is a member of xs.</a
+      >
+
+<a name="2920" class="Keyword"
+      >infix</a
+      > <a name="2926" class="Number"
+      >4</a
+      > <a name="_&#8712;_" href="Data.Stream.html#_&#8712;_" class="Datatype Operator"
+      >_&#8712;_</a
+      >
+
+<a name="2933" class="Keyword"
+      >data</a
+      > <a name="_&#8712;_" href="Data.Stream.html#_&#8712;_" class="Datatype Operator"
+      >_&#8712;_</a
+      > <a name="2942" class="Symbol"
+      >{</a
+      ><a name="2943" href="Data.Stream.html#2943" class="Bound"
+      >a</a
+      ><a name="2944" class="Symbol"
+      >}</a
+      > <a name="2946" class="Symbol"
+      >{</a
+      ><a name="2947" href="Data.Stream.html#2947" class="Bound"
+      >A</a
+      > <a name="2949" class="Symbol"
+      >:</a
+      > <a name="2951" class="PrimitiveType"
+      >Set</a
+      > <a name="2955" href="Data.Stream.html#2943" class="Bound"
+      >a</a
+      ><a name="2956" class="Symbol"
+      >}</a
+      > <a name="2958" class="Symbol"
+      >:</a
+      > <a name="2960" href="Data.Stream.html#2947" class="Bound"
+      >A</a
+      > <a name="2962" class="Symbol"
+      >&#8594;</a
+      > <a name="2964" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="2971" href="Data.Stream.html#2947" class="Bound"
+      >A</a
+      > <a name="2973" class="Symbol"
+      >&#8594;</a
+      > <a name="2975" class="PrimitiveType"
+      >Set</a
+      > <a name="2979" href="Data.Stream.html#2943" class="Bound"
+      >a</a
+      > <a name="2981" class="Keyword"
+      >where</a
+      >
+  <a name="_&#8712;_.here" href="Data.Stream.html#_&#8712;_.here" class="InductiveConstructor"
+      >here</a
+      >  <a name="2995" class="Symbol"
+      >:</a
+      > <a name="2997" class="Symbol"
+      >&#8704;</a
+      > <a name="2999" class="Symbol"
+      >{</a
+      ><a name="3000" href="Data.Stream.html#3000" class="Bound"
+      >x</a
+      >   <a name="3004" href="Data.Stream.html#3004" class="Bound"
+      >xs</a
+      ><a name="3006" class="Symbol"
+      >}</a
+      >                   <a name="3026" class="Symbol"
+      >&#8594;</a
+      > <a name="3028" href="Data.Stream.html#3000" class="Bound"
+      >x</a
+      > <a name="3030" href="Data.Stream.html#_&#8712;_" class="Datatype Operator"
+      >&#8712;</a
+      > <a name="3032" href="Data.Stream.html#3000" class="Bound"
+      >x</a
+      > <a name="3034" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3036" href="Data.Stream.html#3004" class="Bound"
+      >xs</a
+      >
+  <a name="_&#8712;_.there" href="Data.Stream.html#_&#8712;_.there" class="InductiveConstructor"
+      >there</a
+      > <a name="3047" class="Symbol"
+      >:</a
+      > <a name="3049" class="Symbol"
+      >&#8704;</a
+      > <a name="3051" class="Symbol"
+      >{</a
+      ><a name="3052" href="Data.Stream.html#3052" class="Bound"
+      >x</a
+      > <a name="3054" href="Data.Stream.html#3054" class="Bound"
+      >y</a
+      > <a name="3056" href="Data.Stream.html#3056" class="Bound"
+      >xs</a
+      ><a name="3058" class="Symbol"
+      >}</a
+      > <a name="3060" class="Symbol"
+      >(</a
+      ><a name="3061" href="Data.Stream.html#3061" class="Bound"
+      >x&#8712;xs</a
+      > <a name="3066" class="Symbol"
+      >:</a
+      > <a name="3068" href="Data.Stream.html#3052" class="Bound"
+      >x</a
+      > <a name="3070" href="Data.Stream.html#_&#8712;_" class="Datatype Operator"
+      >&#8712;</a
+      > <a name="3072" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="3074" href="Data.Stream.html#3056" class="Bound"
+      >xs</a
+      ><a name="3076" class="Symbol"
+      >)</a
+      > <a name="3078" class="Symbol"
+      >&#8594;</a
+      > <a name="3080" href="Data.Stream.html#3052" class="Bound"
+      >x</a
+      > <a name="3082" href="Data.Stream.html#_&#8712;_" class="Datatype Operator"
+      >&#8712;</a
+      > <a name="3084" href="Data.Stream.html#3054" class="Bound"
+      >y</a
+      > <a name="3086" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3088" href="Data.Stream.html#3056" class="Bound"
+      >xs</a
+      >
+
+<a name="3092" class="Comment"
+      >-- xs &#8849; ys means that xs is a prefix of ys.</a
+      >
+
+<a name="3137" class="Keyword"
+      >infix</a
+      > <a name="3143" class="Number"
+      >4</a
+      > <a name="_&#8849;_" href="Data.Stream.html#_&#8849;_" class="Datatype Operator"
+      >_&#8849;_</a
+      >
+
+<a name="3150" class="Keyword"
+      >data</a
+      > <a name="_&#8849;_" href="Data.Stream.html#_&#8849;_" class="Datatype Operator"
+      >_&#8849;_</a
+      > <a name="3159" class="Symbol"
+      >{</a
+      ><a name="3160" href="Data.Stream.html#3160" class="Bound"
+      >a</a
+      ><a name="3161" class="Symbol"
+      >}</a
+      > <a name="3163" class="Symbol"
+      >{</a
+      ><a name="3164" href="Data.Stream.html#3164" class="Bound"
+      >A</a
+      > <a name="3166" class="Symbol"
+      >:</a
+      > <a name="3168" class="PrimitiveType"
+      >Set</a
+      > <a name="3172" href="Data.Stream.html#3160" class="Bound"
+      >a</a
+      ><a name="3173" class="Symbol"
+      >}</a
+      > <a name="3175" class="Symbol"
+      >:</a
+      > <a name="3177" href="Data.Colist.html#Colist" class="Datatype"
+      >Colist</a
+      > <a name="3184" href="Data.Stream.html#3164" class="Bound"
+      >A</a
+      > <a name="3186" class="Symbol"
+      >&#8594;</a
+      > <a name="3188" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="3195" href="Data.Stream.html#3164" class="Bound"
+      >A</a
+      > <a name="3197" class="Symbol"
+      >&#8594;</a
+      > <a name="3199" class="PrimitiveType"
+      >Set</a
+      > <a name="3203" href="Data.Stream.html#3160" class="Bound"
+      >a</a
+      > <a name="3205" class="Keyword"
+      >where</a
+      >
+  <a name="_&#8849;_.[]" href="Data.Stream.html#_&#8849;_.[]" class="InductiveConstructor"
+      >[]</a
+      >  <a name="3217" class="Symbol"
+      >:</a
+      > <a name="3219" class="Symbol"
+      >&#8704;</a
+      > <a name="3221" class="Symbol"
+      >{</a
+      ><a name="3222" href="Data.Stream.html#3222" class="Bound"
+      >ys</a
+      ><a name="3224" class="Symbol"
+      >}</a
+      >                            <a name="3253" class="Symbol"
+      >&#8594;</a
+      > <a name="3255" href="Data.Colist.html#Colist.[]" class="InductiveConstructor"
+      >[]</a
+      >     <a name="3262" href="Data.Stream.html#_&#8849;_" class="Datatype Operator"
+      >&#8849;</a
+      > <a name="3264" href="Data.Stream.html#3222" class="Bound"
+      >ys</a
+      >
+  <a name="_&#8849;_._&#8759;_" href="Data.Stream.html#_&#8849;_._&#8759;_" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      > <a name="3273" class="Symbol"
+      >:</a
+      > <a name="3275" class="Symbol"
+      >&#8704;</a
+      > <a name="3277" href="Data.Stream.html#3277" class="Bound"
+      >x</a
+      > <a name="3279" class="Symbol"
+      >{</a
+      ><a name="3280" href="Data.Stream.html#3280" class="Bound"
+      >xs</a
+      > <a name="3283" href="Data.Stream.html#3283" class="Bound"
+      >ys</a
+      ><a name="3285" class="Symbol"
+      >}</a
+      > <a name="3287" class="Symbol"
+      >(</a
+      ><a name="3288" href="Data.Stream.html#3288" class="Bound"
+      >p</a
+      > <a name="3290" class="Symbol"
+      >:</a
+      > <a name="3292" href="Agda.Builtin.Coinduction.html#&#8734;" class="Record"
+      >&#8734;</a
+      > <a name="3294" class="Symbol"
+      >(</a
+      ><a name="3295" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="3297" href="Data.Stream.html#3280" class="Bound"
+      >xs</a
+      > <a name="3300" href="Data.Stream.html#_&#8849;_" class="Datatype Operator"
+      >&#8849;</a
+      > <a name="3302" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="3304" href="Data.Stream.html#3283" class="Bound"
+      >ys</a
+      ><a name="3306" class="Symbol"
+      >))</a
+      > <a name="3309" class="Symbol"
+      >&#8594;</a
+      > <a name="3311" href="Data.Stream.html#3277" class="Bound"
+      >x</a
+      > <a name="3313" href="Data.Colist.html#Colist._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3315" href="Data.Stream.html#3280" class="Bound"
+      >xs</a
+      > <a name="3318" href="Data.Stream.html#_&#8849;_" class="Datatype Operator"
+      >&#8849;</a
+      > <a name="3320" href="Data.Stream.html#3277" class="Bound"
+      >x</a
+      > <a name="3322" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3324" href="Data.Stream.html#3283" class="Bound"
+      >ys</a
+      >
+
+<a name="3328" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="3401" class="Comment"
+      >-- Some proofs</a
+      >
+
+<a name="setoid" href="Data.Stream.html#setoid" class="Function"
+      >setoid</a
+      > <a name="3424" class="Symbol"
+      >:</a
+      > <a name="3426" class="Symbol"
+      >&#8704;</a
+      > <a name="3428" class="Symbol"
+      >{</a
+      ><a name="3429" href="Data.Stream.html#3429" class="Bound"
+      >a</a
+      ><a name="3430" class="Symbol"
+      >}</a
+      > <a name="3432" class="Symbol"
+      >&#8594;</a
+      > <a name="3434" class="PrimitiveType"
+      >Set</a
+      > <a name="3438" href="Data.Stream.html#3429" class="Bound"
+      >a</a
+      > <a name="3440" class="Symbol"
+      >&#8594;</a
+      > <a name="3442" href="Relation.Binary.html#Setoid" class="Record"
+      >Setoid</a
+      > <a name="3449" class="Symbol"
+      >_</a
+      > <a name="3451" class="Symbol"
+      >_</a
+      >
+<a name="3453" href="Data.Stream.html#setoid" class="Function"
+      >setoid</a
+      > <a name="3460" href="Data.Stream.html#3460" class="Bound"
+      >A</a
+      > <a name="3462" class="Symbol"
+      >=</a
+      > <a name="3464" class="Keyword"
+      >record</a
+      >
+  <a name="3473" class="Symbol"
+      >{</a
+      > <a name="3475" class="Field"
+      >Carrier</a
+      >       <a name="3489" class="Symbol"
+      >=</a
+      > <a name="3491" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="3498" href="Data.Stream.html#3460" class="Bound"
+      >A</a
+      >
+  <a name="3502" class="Symbol"
+      >;</a
+      > <a name="3504" class="Field Operator"
+      >_&#8776;_</a
+      >           <a name="3518" class="Symbol"
+      >=</a
+      > <a name="3520" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >_&#8776;_</a
+      > <a name="3524" class="Symbol"
+      >{</a
+      ><a name="3525" class="Argument"
+      >A</a
+      > <a name="3527" class="Symbol"
+      >=</a
+      > <a name="3529" href="Data.Stream.html#3460" class="Bound"
+      >A</a
+      ><a name="3530" class="Symbol"
+      >}</a
+      >
+  <a name="3534" class="Symbol"
+      >;</a
+      > <a name="3536" class="Field"
+      >isEquivalence</a
+      > <a name="3550" class="Symbol"
+      >=</a
+      > <a name="3552" class="Keyword"
+      >record</a
+      >
+    <a name="3563" class="Symbol"
+      >{</a
+      > <a name="3565" class="Field"
+      >refl</a
+      >  <a name="3571" class="Symbol"
+      >=</a
+      > <a name="3573" href="Data.Stream.html#3636" class="Function"
+      >refl</a
+      >
+    <a name="3582" class="Symbol"
+      >;</a
+      > <a name="3584" class="Field"
+      >sym</a
+      >   <a name="3590" class="Symbol"
+      >=</a
+      > <a name="3592" href="Data.Stream.html#3693" class="Function"
+      >sym</a
+      >
+    <a name="3600" class="Symbol"
+      >;</a
+      > <a name="3602" class="Field"
+      >trans</a
+      > <a name="3608" class="Symbol"
+      >=</a
+      > <a name="3610" href="Data.Stream.html#3760" class="Function"
+      >trans</a
+      >
+    <a name="3620" class="Symbol"
+      >}</a
+      >
+  <a name="3624" class="Symbol"
+      >}</a
+      >
+  <a name="3628" class="Keyword"
+      >where</a
+      >
+  <a name="3636" href="Data.Stream.html#3636" class="Function"
+      >refl</a
+      > <a name="3641" class="Symbol"
+      >:</a
+      > <a name="3643" href="Relation.Binary.Core.html#Reflexive" class="Function"
+      >Reflexive</a
+      > <a name="3653" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >_&#8776;_</a
+      >
+  <a name="3659" href="Data.Stream.html#3636" class="Function"
+      >refl</a
+      > <a name="3664" class="Symbol"
+      >{_</a
+      > <a name="3667" href="Data.Stream.html#Stream._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3669" class="Symbol"
+      >_}</a
+      > <a name="3672" class="Symbol"
+      >=</a
+      > <a name="3674" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >P.refl</a
+      > <a name="3681" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3683" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      > <a name="3685" href="Data.Stream.html#3636" class="Function"
+      >refl</a
+      >
+
+  <a name="3693" href="Data.Stream.html#3693" class="Function"
+      >sym</a
+      > <a name="3697" class="Symbol"
+      >:</a
+      > <a name="3699" href="Relation.Binary.Core.html#Symmetric" class="Function"
+      >Symmetric</a
+      > <a name="3709" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >_&#8776;_</a
+      >
+  <a name="3715" href="Data.Stream.html#3693" class="Function"
+      >sym</a
+      > <a name="3719" class="Symbol"
+      >(</a
+      ><a name="3720" href="Data.Stream.html#3720" class="Bound"
+      >x&#8801;</a
+      > <a name="3723" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3725" href="Data.Stream.html#3725" class="Bound"
+      >xs&#8776;</a
+      ><a name="3728" class="Symbol"
+      >)</a
+      > <a name="3730" class="Symbol"
+      >=</a
+      > <a name="3732" href="Relation.Binary.PropositionalEquality.Core.html#sym" class="Function"
+      >P.sym</a
+      > <a name="3738" href="Data.Stream.html#3720" class="Bound"
+      >x&#8801;</a
+      > <a name="3741" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3743" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      > <a name="3745" href="Data.Stream.html#3693" class="Function"
+      >sym</a
+      > <a name="3749" class="Symbol"
+      >(</a
+      ><a name="3750" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="3752" href="Data.Stream.html#3725" class="Bound"
+      >xs&#8776;</a
+      ><a name="3755" class="Symbol"
+      >)</a
+      >
+
+  <a name="3760" href="Data.Stream.html#3760" class="Function"
+      >trans</a
+      > <a name="3766" class="Symbol"
+      >:</a
+      > <a name="3768" href="Relation.Binary.Core.html#Transitive" class="Function"
+      >Transitive</a
+      > <a name="3779" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >_&#8776;_</a
+      >
+  <a name="3785" href="Data.Stream.html#3760" class="Function"
+      >trans</a
+      > <a name="3791" class="Symbol"
+      >(</a
+      ><a name="3792" href="Data.Stream.html#3792" class="Bound"
+      >x&#8801;</a
+      > <a name="3795" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3797" href="Data.Stream.html#3797" class="Bound"
+      >xs&#8776;</a
+      ><a name="3800" class="Symbol"
+      >)</a
+      > <a name="3802" class="Symbol"
+      >(</a
+      ><a name="3803" href="Data.Stream.html#3803" class="Bound"
+      >y&#8801;</a
+      > <a name="3806" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3808" href="Data.Stream.html#3808" class="Bound"
+      >ys&#8776;</a
+      ><a name="3811" class="Symbol"
+      >)</a
+      > <a name="3813" class="Symbol"
+      >=</a
+      > <a name="3815" href="Relation.Binary.PropositionalEquality.Core.html#trans" class="Function"
+      >P.trans</a
+      > <a name="3823" href="Data.Stream.html#3792" class="Bound"
+      >x&#8801;</a
+      > <a name="3826" href="Data.Stream.html#3803" class="Bound"
+      >y&#8801;</a
+      > <a name="3829" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3831" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      > <a name="3833" href="Data.Stream.html#3760" class="Function"
+      >trans</a
+      > <a name="3839" class="Symbol"
+      >(</a
+      ><a name="3840" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="3842" href="Data.Stream.html#3797" class="Bound"
+      >xs&#8776;</a
+      ><a name="3845" class="Symbol"
+      >)</a
+      > <a name="3847" class="Symbol"
+      >(</a
+      ><a name="3848" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="3850" href="Data.Stream.html#3808" class="Bound"
+      >ys&#8776;</a
+      ><a name="3853" class="Symbol"
+      >)</a
+      >
+
+<a name="head-cong" href="Data.Stream.html#head-cong" class="Function"
       >head-cong</a
-      ><a name="3653"
-      > </a
-      ><a name="3654" class="Symbol"
+      > <a name="3866" class="Symbol"
+      >:</a
+      > <a name="3868" class="Symbol"
+      >&#8704;</a
+      > <a name="3870" class="Symbol"
+      >{</a
+      ><a name="3871" href="Data.Stream.html#3871" class="Bound"
+      >a</a
+      ><a name="3872" class="Symbol"
+      >}</a
+      > <a name="3874" class="Symbol"
+      >{</a
+      ><a name="3875" href="Data.Stream.html#3875" class="Bound"
+      >A</a
+      > <a name="3877" class="Symbol"
+      >:</a
+      > <a name="3879" class="PrimitiveType"
+      >Set</a
+      > <a name="3883" href="Data.Stream.html#3871" class="Bound"
+      >a</a
+      ><a name="3884" class="Symbol"
+      >}</a
+      > <a name="3886" class="Symbol"
+      >{</a
+      ><a name="3887" href="Data.Stream.html#3887" class="Bound"
+      >xs</a
+      > <a name="3890" href="Data.Stream.html#3890" class="Bound"
+      >ys</a
+      > <a name="3893" class="Symbol"
+      >:</a
+      > <a name="3895" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="3902" href="Data.Stream.html#3875" class="Bound"
+      >A</a
+      ><a name="3903" class="Symbol"
+      >}</a
+      > <a name="3905" class="Symbol"
+      >&#8594;</a
+      > <a name="3907" href="Data.Stream.html#3887" class="Bound"
+      >xs</a
+      > <a name="3910" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >&#8776;</a
+      > <a name="3912" href="Data.Stream.html#3890" class="Bound"
+      >ys</a
+      > <a name="3915" class="Symbol"
+      >&#8594;</a
+      > <a name="3917" href="Data.Stream.html#head" class="Function"
+      >head</a
+      > <a name="3922" href="Data.Stream.html#3887" class="Bound"
+      >xs</a
+      > <a name="3925" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >&#8801;</a
+      > <a name="3927" href="Data.Stream.html#head" class="Function"
+      >head</a
+      > <a name="3932" href="Data.Stream.html#3890" class="Bound"
+      >ys</a
+      >
+<a name="3935" href="Data.Stream.html#head-cong" class="Function"
+      >head-cong</a
+      > <a name="3945" class="Symbol"
       >(</a
-      ><a name="3655" href="Data.Stream.html#3655" class="Bound"
+      ><a name="3946" href="Data.Stream.html#3946" class="Bound"
       >x&#8801;</a
-      ><a name="3657"
-      > </a
-      ><a name="3658" href="Data.Stream.html#2556" class="InductiveConstructor Operator"
+      > <a name="3949" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="3659"
-      > </a
-      ><a name="3660" class="Symbol"
+      > <a name="3951" class="Symbol"
       >_)</a
-      ><a name="3662"
-      > </a
-      ><a name="3663" class="Symbol"
+      > <a name="3954" class="Symbol"
       >=</a
-      ><a name="3664"
-      > </a
-      ><a name="3665" href="Data.Stream.html#3655" class="Bound"
+      > <a name="3956" href="Data.Stream.html#3946" class="Bound"
       >x&#8801;</a
-      ><a name="3667"
       >
 
-</a
-      ><a name="3669" href="Data.Stream.html#3669" class="Function"
+<a name="tail-cong" href="Data.Stream.html#tail-cong" class="Function"
       >tail-cong</a
-      ><a name="3678"
-      > </a
-      ><a name="3679" class="Symbol"
+      > <a name="3970" class="Symbol"
       >:</a
-      ><a name="3680"
-      > </a
-      ><a name="3681" class="Symbol"
+      > <a name="3972" class="Symbol"
       >&#8704;</a
-      ><a name="3682"
-      > </a
-      ><a name="3683" class="Symbol"
+      > <a name="3974" class="Symbol"
       >{</a
-      ><a name="3684" href="Data.Stream.html#3684" class="Bound"
-      >A</a
-      ><a name="3685" class="Symbol"
+      ><a name="3975" href="Data.Stream.html#3975" class="Bound"
+      >a</a
+      ><a name="3976" class="Symbol"
       >}</a
-      ><a name="3686"
-      > </a
-      ><a name="3687" class="Symbol"
+      > <a name="3978" class="Symbol"
       >{</a
-      ><a name="3688" href="Data.Stream.html#3688" class="Bound"
-      >xs</a
-      ><a name="3690"
-      > </a
-      ><a name="3691" href="Data.Stream.html#3691" class="Bound"
-      >ys</a
-      ><a name="3693"
-      > </a
-      ><a name="3694" class="Symbol"
+      ><a name="3979" href="Data.Stream.html#3979" class="Bound"
+      >A</a
+      > <a name="3981" class="Symbol"
       >:</a
-      ><a name="3695"
-      > </a
-      ><a name="3696" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="3702"
-      > </a
-      ><a name="3703" href="Data.Stream.html#3684" class="Bound"
-      >A</a
-      ><a name="3704" class="Symbol"
+      > <a name="3983" class="PrimitiveType"
+      >Set</a
+      > <a name="3987" href="Data.Stream.html#3975" class="Bound"
+      >a</a
+      ><a name="3988" class="Symbol"
       >}</a
-      ><a name="3705"
-      > </a
-      ><a name="3706" class="Symbol"
-      >&#8594;</a
-      ><a name="3707"
-      > </a
-      ><a name="3708" href="Data.Stream.html#3688" class="Bound"
+      > <a name="3990" class="Symbol"
+      >{</a
+      ><a name="3991" href="Data.Stream.html#3991" class="Bound"
       >xs</a
-      ><a name="3710"
-      > </a
-      ><a name="3711" href="Data.Stream.html#2512" class="Datatype Operator"
-      >&#8776;</a
-      ><a name="3712"
-      > </a
-      ><a name="3713" href="Data.Stream.html#3691" class="Bound"
+      > <a name="3994" href="Data.Stream.html#3994" class="Bound"
       >ys</a
-      ><a name="3715"
-      > </a
-      ><a name="3716" class="Symbol"
+      > <a name="3997" class="Symbol"
+      >:</a
+      > <a name="3999" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="4006" href="Data.Stream.html#3979" class="Bound"
+      >A</a
+      ><a name="4007" class="Symbol"
+      >}</a
+      > <a name="4009" class="Symbol"
       >&#8594;</a
-      ><a name="3717"
-      > </a
-      ><a name="3718" href="Data.Stream.html#956" class="Function"
-      >tail</a
-      ><a name="3722"
-      > </a
-      ><a name="3723" href="Data.Stream.html#3688" class="Bound"
+      > <a name="4011" href="Data.Stream.html#3991" class="Bound"
       >xs</a
-      ><a name="3725"
-      > </a
-      ><a name="3726" href="Data.Stream.html#2512" class="Datatype Operator"
+      > <a name="4014" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
       >&#8776;</a
-      ><a name="3727"
-      > </a
-      ><a name="3728" href="Data.Stream.html#956" class="Function"
-      >tail</a
-      ><a name="3732"
-      > </a
-      ><a name="3733" href="Data.Stream.html#3691" class="Bound"
+      > <a name="4016" href="Data.Stream.html#3994" class="Bound"
       >ys</a
-      ><a name="3735"
+      > <a name="4019" class="Symbol"
+      >&#8594;</a
+      > <a name="4021" href="Data.Stream.html#tail" class="Function"
+      >tail</a
+      > <a name="4026" href="Data.Stream.html#3991" class="Bound"
+      >xs</a
+      > <a name="4029" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >&#8776;</a
+      > <a name="4031" href="Data.Stream.html#tail" class="Function"
+      >tail</a
+      > <a name="4036" href="Data.Stream.html#3994" class="Bound"
+      >ys</a
       >
-</a
-      ><a name="3736" href="Data.Stream.html#3669" class="Function"
+<a name="4039" href="Data.Stream.html#tail-cong" class="Function"
       >tail-cong</a
-      ><a name="3745"
-      > </a
-      ><a name="3746" class="Symbol"
+      > <a name="4049" class="Symbol"
       >(_</a
-      ><a name="3748"
-      > </a
-      ><a name="3749" href="Data.Stream.html#2556" class="InductiveConstructor Operator"
+      > <a name="4052" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="3750"
-      > </a
-      ><a name="3751" href="Data.Stream.html#3751" class="Bound"
+      > <a name="4054" href="Data.Stream.html#4054" class="Bound"
       >xs&#8776;</a
-      ><a name="3754" class="Symbol"
+      ><a name="4057" class="Symbol"
       >)</a
-      ><a name="3755"
-      > </a
-      ><a name="3756" class="Symbol"
+      > <a name="4059" class="Symbol"
       >=</a
-      ><a name="3757"
-      > </a
-      ><a name="3758" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      > <a name="4061" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="3759"
-      > </a
-      ><a name="3760" href="Data.Stream.html#3751" class="Bound"
+      > <a name="4063" href="Data.Stream.html#4054" class="Bound"
       >xs&#8776;</a
-      ><a name="3763"
       >
 
-</a
-      ><a name="3765" href="Data.Stream.html#3765" class="Function"
+<a name="map-cong" href="Data.Stream.html#map-cong" class="Function"
       >map-cong</a
-      ><a name="3773"
-      > </a
-      ><a name="3774" class="Symbol"
+      > <a name="4077" class="Symbol"
       >:</a
-      ><a name="3775"
-      > </a
-      ><a name="3776" class="Symbol"
+      > <a name="4079" class="Symbol"
       >&#8704;</a
-      ><a name="3777"
-      > </a
-      ><a name="3778" class="Symbol"
+      > <a name="4081" class="Symbol"
       >{</a
-      ><a name="3779" href="Data.Stream.html#3779" class="Bound"
-      >A</a
-      ><a name="3780"
-      > </a
-      ><a name="3781" href="Data.Stream.html#3781" class="Bound"
-      >B</a
-      ><a name="3782" class="Symbol"
+      ><a name="4082" href="Data.Stream.html#4082" class="Bound"
+      >a</a
+      > <a name="4084" href="Data.Stream.html#4084" class="Bound"
+      >b</a
+      ><a name="4085" class="Symbol"
       >}</a
-      ><a name="3783"
-      > </a
-      ><a name="3784" class="Symbol"
-      >(</a
-      ><a name="3785" href="Data.Stream.html#3785" class="Bound"
-      >f</a
-      ><a name="3786"
-      > </a
-      ><a name="3787" class="Symbol"
+      > <a name="4087" class="Symbol"
+      >{</a
+      ><a name="4088" href="Data.Stream.html#4088" class="Bound"
+      >A</a
+      > <a name="4090" class="Symbol"
       >:</a
-      ><a name="3788"
-      > </a
-      ><a name="3789" href="Data.Stream.html#3779" class="Bound"
-      >A</a
-      ><a name="3790"
-      > </a
-      ><a name="3791" class="Symbol"
-      >&#8594;</a
-      ><a name="3792"
-      > </a
-      ><a name="3793" href="Data.Stream.html#3781" class="Bound"
-      >B</a
-      ><a name="3794" class="Symbol"
-      >)</a
-      ><a name="3795"
-      > </a
-      ><a name="3796" class="Symbol"
-      >{</a
-      ><a name="3797" href="Data.Stream.html#3797" class="Bound"
-      >xs</a
-      ><a name="3799"
-      > </a
-      ><a name="3800" href="Data.Stream.html#3800" class="Bound"
-      >ys</a
-      ><a name="3802" class="Symbol"
-      >}</a
-      ><a name="3803"
-      > </a
-      ><a name="3804" class="Symbol"
-      >&#8594;</a
-      ><a name="3805"
-      >
-           </a
-      ><a name="3817" href="Data.Stream.html#3797" class="Bound"
-      >xs</a
-      ><a name="3819"
-      > </a
-      ><a name="3820" href="Data.Stream.html#2512" class="Datatype Operator"
-      >&#8776;</a
-      ><a name="3821"
-      > </a
-      ><a name="3822" href="Data.Stream.html#3800" class="Bound"
-      >ys</a
-      ><a name="3824"
-      > </a
-      ><a name="3825" class="Symbol"
-      >&#8594;</a
-      ><a name="3826"
-      > </a
-      ><a name="3827" href="Data.Stream.html#1013" class="Function"
-      >map</a
-      ><a name="3830"
-      > </a
-      ><a name="3831" href="Data.Stream.html#3785" class="Bound"
-      >f</a
-      ><a name="3832"
-      > </a
-      ><a name="3833" href="Data.Stream.html#3797" class="Bound"
-      >xs</a
-      ><a name="3835"
-      > </a
-      ><a name="3836" href="Data.Stream.html#2512" class="Datatype Operator"
-      >&#8776;</a
-      ><a name="3837"
-      > </a
-      ><a name="3838" href="Data.Stream.html#1013" class="Function"
-      >map</a
-      ><a name="3841"
-      > </a
-      ><a name="3842" href="Data.Stream.html#3785" class="Bound"
-      >f</a
-      ><a name="3843"
-      > </a
-      ><a name="3844" href="Data.Stream.html#3800" class="Bound"
-      >ys</a
-      ><a name="3846"
-      >
-</a
-      ><a name="3847" href="Data.Stream.html#3765" class="Function"
-      >map-cong</a
-      ><a name="3855"
-      > </a
-      ><a name="3856" href="Data.Stream.html#3856" class="Bound"
-      >f</a
-      ><a name="3857"
-      > </a
-      ><a name="3858" class="Symbol"
-      >(</a
-      ><a name="3859" href="Data.Stream.html#3859" class="Bound"
-      >x&#8801;</a
-      ><a name="3861"
-      > </a
-      ><a name="3862" href="Data.Stream.html#2556" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="3863"
-      > </a
-      ><a name="3864" href="Data.Stream.html#3864" class="Bound"
-      >xs&#8776;</a
-      ><a name="3867" class="Symbol"
-      >)</a
-      ><a name="3868"
-      > </a
-      ><a name="3869" class="Symbol"
-      >=</a
-      ><a name="3870"
-      > </a
-      ><a name="3871" href="Relation.Binary.PropositionalEquality.html#1036" class="Function"
-      >P.cong</a
-      ><a name="3877"
-      > </a
-      ><a name="3878" href="Data.Stream.html#3856" class="Bound"
-      >f</a
-      ><a name="3879"
-      > </a
-      ><a name="3880" href="Data.Stream.html#3859" class="Bound"
-      >x&#8801;</a
-      ><a name="3882"
-      > </a
-      ><a name="3883" href="Data.Stream.html#2556" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="3884"
-      > </a
-      ><a name="3885" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
-      >&#9839;</a
-      ><a name="3886"
-      > </a
-      ><a name="3887" href="Data.Stream.html#3765" class="Function"
-      >map-cong</a
-      ><a name="3895"
-      > </a
-      ><a name="3896" href="Data.Stream.html#3856" class="Bound"
-      >f</a
-      ><a name="3897"
-      > </a
-      ><a name="3898" class="Symbol"
-      >(</a
-      ><a name="3899" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="3900"
-      > </a
-      ><a name="3901" href="Data.Stream.html#3864" class="Bound"
-      >xs&#8776;</a
-      ><a name="3904" class="Symbol"
-      >)</a
-      ><a name="3905"
-      >
-
-</a
-      ><a name="3907" href="Data.Stream.html#3907" class="Function"
-      >zipWith-cong</a
-      ><a name="3919"
-      > </a
-      ><a name="3920" class="Symbol"
-      >:</a
-      ><a name="3921"
-      > </a
-      ><a name="3922" class="Symbol"
-      >&#8704;</a
-      ><a name="3923"
-      > </a
-      ><a name="3924" class="Symbol"
-      >{</a
-      ><a name="3925" href="Data.Stream.html#3925" class="Bound"
-      >A</a
-      ><a name="3926"
-      > </a
-      ><a name="3927" href="Data.Stream.html#3927" class="Bound"
-      >B</a
-      ><a name="3928"
-      > </a
-      ><a name="3929" href="Data.Stream.html#3929" class="Bound"
-      >C</a
-      ><a name="3930" class="Symbol"
-      >}</a
-      ><a name="3931"
-      > </a
-      ><a name="3932" class="Symbol"
-      >(</a
-      ><a name="3933" href="Data.Stream.html#3933" class="Bound Operator"
-      >_&#8729;_</a
-      ><a name="3936"
-      > </a
-      ><a name="3937" class="Symbol"
-      >:</a
-      ><a name="3938"
-      > </a
-      ><a name="3939" href="Data.Stream.html#3925" class="Bound"
-      >A</a
-      ><a name="3940"
-      > </a
-      ><a name="3941" class="Symbol"
-      >&#8594;</a
-      ><a name="3942"
-      > </a
-      ><a name="3943" href="Data.Stream.html#3927" class="Bound"
-      >B</a
-      ><a name="3944"
-      > </a
-      ><a name="3945" class="Symbol"
-      >&#8594;</a
-      ><a name="3946"
-      > </a
-      ><a name="3947" href="Data.Stream.html#3929" class="Bound"
-      >C</a
-      ><a name="3948" class="Symbol"
-      >)</a
-      ><a name="3949"
-      > </a
-      ><a name="3950" class="Symbol"
-      >{</a
-      ><a name="3951" href="Data.Stream.html#3951" class="Bound"
-      >xs</a
-      ><a name="3953"
-      > </a
-      ><a name="3954" href="Data.Stream.html#3954" class="Bound"
-      >xs&#8242;</a
-      ><a name="3957"
-      > </a
-      ><a name="3958" href="Data.Stream.html#3958" class="Bound"
-      >ys</a
-      ><a name="3960"
-      > </a
-      ><a name="3961" href="Data.Stream.html#3961" class="Bound"
-      >ys&#8242;</a
-      ><a name="3964" class="Symbol"
-      >}</a
-      ><a name="3965"
-      > </a
-      ><a name="3966" class="Symbol"
-      >&#8594;</a
-      ><a name="3967"
-      >
-               </a
-      ><a name="3983" href="Data.Stream.html#3951" class="Bound"
-      >xs</a
-      ><a name="3985"
-      > </a
-      ><a name="3986" href="Data.Stream.html#2512" class="Datatype Operator"
-      >&#8776;</a
-      ><a name="3987"
-      > </a
-      ><a name="3988" href="Data.Stream.html#3954" class="Bound"
-      >xs&#8242;</a
-      ><a name="3991"
-      > </a
-      ><a name="3992" class="Symbol"
-      >&#8594;</a
-      ><a name="3993"
-      > </a
-      ><a name="3994" href="Data.Stream.html#3958" class="Bound"
-      >ys</a
-      ><a name="3996"
-      > </a
-      ><a name="3997" href="Data.Stream.html#2512" class="Datatype Operator"
-      >&#8776;</a
-      ><a name="3998"
-      > </a
-      ><a name="3999" href="Data.Stream.html#3961" class="Bound"
-      >ys&#8242;</a
-      ><a name="4002"
-      > </a
-      ><a name="4003" class="Symbol"
-      >&#8594;</a
-      ><a name="4004"
-      >
-               </a
-      ><a name="4020" href="Data.Stream.html#1098" class="Function"
-      >zipWith</a
-      ><a name="4027"
-      > </a
-      ><a name="4028" href="Data.Stream.html#3933" class="Bound Operator"
-      >_&#8729;_</a
-      ><a name="4031"
-      > </a
-      ><a name="4032" href="Data.Stream.html#3951" class="Bound"
-      >xs</a
-      ><a name="4034"
-      > </a
-      ><a name="4035" href="Data.Stream.html#3958" class="Bound"
-      >ys</a
-      ><a name="4037"
-      > </a
-      ><a name="4038" href="Data.Stream.html#2512" class="Datatype Operator"
-      >&#8776;</a
-      ><a name="4039"
-      > </a
-      ><a name="4040" href="Data.Stream.html#1098" class="Function"
-      >zipWith</a
-      ><a name="4047"
-      > </a
-      ><a name="4048" href="Data.Stream.html#3933" class="Bound Operator"
-      >_&#8729;_</a
-      ><a name="4051"
-      > </a
-      ><a name="4052" href="Data.Stream.html#3954" class="Bound"
-      >xs&#8242;</a
-      ><a name="4055"
-      > </a
-      ><a name="4056" href="Data.Stream.html#3961" class="Bound"
-      >ys&#8242;</a
-      ><a name="4059"
-      >
-</a
-      ><a name="4060" href="Data.Stream.html#3907" class="Function"
-      >zipWith-cong</a
-      ><a name="4072"
-      > </a
-      ><a name="4073" href="Data.Stream.html#4073" class="Bound Operator"
-      >_&#8729;_</a
-      ><a name="4076"
-      > </a
-      ><a name="4077" class="Symbol"
-      >(</a
-      ><a name="4078" href="Data.Stream.html#4078" class="Bound"
-      >x&#8801;</a
-      ><a name="4080"
-      > </a
-      ><a name="4081" href="Data.Stream.html#2556" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="4082"
-      > </a
-      ><a name="4083" href="Data.Stream.html#4083" class="Bound"
-      >xs&#8776;</a
-      ><a name="4086" class="Symbol"
-      >)</a
-      ><a name="4087"
-      > </a
-      ><a name="4088" class="Symbol"
-      >(</a
-      ><a name="4089" href="Data.Stream.html#4089" class="Bound"
-      >y&#8801;</a
-      ><a name="4091"
-      > </a
-      ><a name="4092" href="Data.Stream.html#2556" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="4093"
-      > </a
-      ><a name="4094" href="Data.Stream.html#4094" class="Bound"
-      >ys&#8776;</a
+      > <a name="4092" class="PrimitiveType"
+      >Set</a
+      > <a name="4096" href="Data.Stream.html#4082" class="Bound"
+      >a</a
       ><a name="4097" class="Symbol"
+      >}</a
+      > <a name="4099" class="Symbol"
+      >{</a
+      ><a name="4100" href="Data.Stream.html#4100" class="Bound"
+      >B</a
+      > <a name="4102" class="Symbol"
+      >:</a
+      > <a name="4104" class="PrimitiveType"
+      >Set</a
+      > <a name="4108" href="Data.Stream.html#4084" class="Bound"
+      >b</a
+      ><a name="4109" class="Symbol"
+      >}</a
+      > <a name="4111" class="Symbol"
+      >(</a
+      ><a name="4112" href="Data.Stream.html#4112" class="Bound"
+      >f</a
+      > <a name="4114" class="Symbol"
+      >:</a
+      > <a name="4116" href="Data.Stream.html#4088" class="Bound"
+      >A</a
+      > <a name="4118" class="Symbol"
+      >&#8594;</a
+      > <a name="4120" href="Data.Stream.html#4100" class="Bound"
+      >B</a
+      ><a name="4121" class="Symbol"
       >)</a
-      ><a name="4098"
-      > </a
-      ><a name="4099" class="Symbol"
-      >=</a
-      ><a name="4100"
+      > <a name="4123" class="Symbol"
+      >{</a
+      ><a name="4124" href="Data.Stream.html#4124" class="Bound"
+      >xs</a
+      > <a name="4127" href="Data.Stream.html#4127" class="Bound"
+      >ys</a
+      ><a name="4129" class="Symbol"
+      >}</a
+      > <a name="4131" class="Symbol"
+      >&#8594;</a
       >
-  </a
-      ><a name="4103" href="Relation.Binary.PropositionalEquality.html#1274" class="Function"
-      >P.cong&#8322;</a
-      ><a name="4110"
-      > </a
-      ><a name="4111" href="Data.Stream.html#4073" class="Bound Operator"
-      >_&#8729;_</a
-      ><a name="4114"
-      > </a
-      ><a name="4115" href="Data.Stream.html#4078" class="Bound"
+           <a name="4144" href="Data.Stream.html#4124" class="Bound"
+      >xs</a
+      > <a name="4147" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >&#8776;</a
+      > <a name="4149" href="Data.Stream.html#4127" class="Bound"
+      >ys</a
+      > <a name="4152" class="Symbol"
+      >&#8594;</a
+      > <a name="4154" href="Data.Stream.html#map" class="Function"
+      >map</a
+      > <a name="4158" href="Data.Stream.html#4112" class="Bound"
+      >f</a
+      > <a name="4160" href="Data.Stream.html#4124" class="Bound"
+      >xs</a
+      > <a name="4163" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >&#8776;</a
+      > <a name="4165" href="Data.Stream.html#map" class="Function"
+      >map</a
+      > <a name="4169" href="Data.Stream.html#4112" class="Bound"
+      >f</a
+      > <a name="4171" href="Data.Stream.html#4127" class="Bound"
+      >ys</a
+      >
+<a name="4174" href="Data.Stream.html#map-cong" class="Function"
+      >map-cong</a
+      > <a name="4183" href="Data.Stream.html#4183" class="Bound"
+      >f</a
+      > <a name="4185" class="Symbol"
+      >(</a
+      ><a name="4186" href="Data.Stream.html#4186" class="Bound"
       >x&#8801;</a
-      ><a name="4117"
-      > </a
-      ><a name="4118" href="Data.Stream.html#4089" class="Bound"
-      >y&#8801;</a
-      ><a name="4120"
-      > </a
-      ><a name="4121" href="Data.Stream.html#2556" class="InductiveConstructor Operator"
+      > <a name="4189" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="4122"
-      > </a
-      ><a name="4123" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
-      >&#9839;</a
-      ><a name="4124"
-      > </a
-      ><a name="4125" href="Data.Stream.html#3907" class="Function"
-      >zipWith-cong</a
-      ><a name="4137"
-      > </a
-      ><a name="4138" href="Data.Stream.html#4073" class="Bound Operator"
-      >_&#8729;_</a
-      ><a name="4141"
-      > </a
-      ><a name="4142" class="Symbol"
-      >(</a
-      ><a name="4143" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="4144"
-      > </a
-      ><a name="4145" href="Data.Stream.html#4083" class="Bound"
+      > <a name="4191" href="Data.Stream.html#4191" class="Bound"
       >xs&#8776;</a
-      ><a name="4148" class="Symbol"
+      ><a name="4194" class="Symbol"
       >)</a
-      ><a name="4149"
-      > </a
-      ><a name="4150" class="Symbol"
-      >(</a
-      ><a name="4151" href="Agda.Builtin.Coinduction.html#164" class="Field"
-      >&#9837;</a
-      ><a name="4152"
-      > </a
-      ><a name="4153" href="Data.Stream.html#4094" class="Bound"
-      >ys&#8776;</a
-      ><a name="4156" class="Symbol"
-      >)</a
-      ><a name="4157"
-      >
-
-</a
-      ><a name="4159" class="Keyword"
-      >infixr</a
-      ><a name="4165"
-      > </a
-      ><a name="4166" class="Number"
-      >5</a
-      ><a name="4167"
-      > _&#8910;-cong_
-
-</a
-      ><a name="4178" href="Data.Stream.html#4178" class="Function Operator"
-      >_&#8910;-cong_</a
-      ><a name="4186"
-      > </a
-      ><a name="4187" class="Symbol"
-      >:</a
-      ><a name="4188"
-      > </a
-      ><a name="4189" class="Symbol"
-      >&#8704;</a
-      ><a name="4190"
-      > </a
-      ><a name="4191" class="Symbol"
-      >{</a
-      ><a name="4192" href="Data.Stream.html#4192" class="Bound"
-      >A</a
-      ><a name="4193" class="Symbol"
-      >}</a
-      ><a name="4194"
-      > </a
-      ><a name="4195" class="Symbol"
-      >{</a
-      ><a name="4196" href="Data.Stream.html#4196" class="Bound"
-      >xs</a
-      ><a name="4198"
-      > </a
-      ><a name="4199" href="Data.Stream.html#4199" class="Bound"
-      >xs&#8242;</a
-      ><a name="4202"
-      > </a
-      ><a name="4203" href="Data.Stream.html#4203" class="Bound"
-      >ys</a
-      ><a name="4205"
-      > </a
-      ><a name="4206" href="Data.Stream.html#4206" class="Bound"
-      >ys&#8242;</a
-      ><a name="4209"
-      > </a
-      ><a name="4210" class="Symbol"
-      >:</a
-      ><a name="4211"
-      > </a
-      ><a name="4212" href="Data.Stream.html#585" class="Datatype"
-      >Stream</a
-      ><a name="4218"
-      > </a
-      ><a name="4219" href="Data.Stream.html#4192" class="Bound"
-      >A</a
-      ><a name="4220" class="Symbol"
-      >}</a
-      ><a name="4221"
-      > </a
-      ><a name="4222" class="Symbol"
-      >&#8594;</a
-      ><a name="4223"
-      >
-           </a
-      ><a name="4235" href="Data.Stream.html#4196" class="Bound"
-      >xs</a
-      ><a name="4237"
-      > </a
-      ><a name="4238" href="Data.Stream.html#2512" class="Datatype Operator"
-      >&#8776;</a
-      ><a name="4239"
-      > </a
-      ><a name="4240" href="Data.Stream.html#4199" class="Bound"
-      >xs&#8242;</a
-      ><a name="4243"
-      > </a
-      ><a name="4244" class="Symbol"
-      >&#8594;</a
-      ><a name="4245"
-      > </a
-      ><a name="4246" href="Data.Stream.html#4203" class="Bound"
-      >ys</a
-      ><a name="4248"
-      > </a
-      ><a name="4249" href="Data.Stream.html#2512" class="Datatype Operator"
-      >&#8776;</a
-      ><a name="4250"
-      > </a
-      ><a name="4251" href="Data.Stream.html#4206" class="Bound"
-      >ys&#8242;</a
-      ><a name="4254"
-      > </a
-      ><a name="4255" class="Symbol"
-      >&#8594;</a
-      ><a name="4256"
-      > </a
-      ><a name="4257" href="Data.Stream.html#4196" class="Bound"
-      >xs</a
-      ><a name="4259"
-      > </a
-      ><a name="4260" href="Data.Stream.html#1639" class="Function Operator"
-      >&#8910;</a
-      ><a name="4261"
-      > </a
-      ><a name="4262" href="Data.Stream.html#4203" class="Bound"
-      >ys</a
-      ><a name="4264"
-      > </a
-      ><a name="4265" href="Data.Stream.html#2512" class="Datatype Operator"
-      >&#8776;</a
-      ><a name="4266"
-      > </a
-      ><a name="4267" href="Data.Stream.html#4199" class="Bound"
-      >xs&#8242;</a
-      ><a name="4270"
-      > </a
-      ><a name="4271" href="Data.Stream.html#1639" class="Function Operator"
-      >&#8910;</a
-      ><a name="4272"
-      > </a
-      ><a name="4273" href="Data.Stream.html#4206" class="Bound"
-      >ys&#8242;</a
-      ><a name="4276"
-      >
-</a
-      ><a name="4277" class="Symbol"
-      >(</a
-      ><a name="4278" href="Data.Stream.html#4278" class="Bound"
-      >x</a
-      ><a name="4279"
-      > </a
-      ><a name="4280" href="Data.Stream.html#2556" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="4281"
-      > </a
-      ><a name="4282" href="Data.Stream.html#4282" class="Bound"
-      >xs&#8776;</a
-      ><a name="4285" class="Symbol"
-      >)</a
-      ><a name="4286"
-      > </a
-      ><a name="4287" href="Data.Stream.html#4178" class="Function Operator"
-      >&#8910;-cong</a
-      ><a name="4293"
-      > </a
-      ><a name="4294" href="Data.Stream.html#4294" class="Bound"
-      >ys&#8776;</a
-      ><a name="4297"
-      > </a
-      ><a name="4298" class="Symbol"
+      > <a name="4196" class="Symbol"
       >=</a
-      ><a name="4299"
-      > </a
-      ><a name="4300" href="Data.Stream.html#4278" class="Bound"
-      >x</a
-      ><a name="4301"
-      > </a
-      ><a name="4302" href="Data.Stream.html#2556" class="InductiveConstructor Operator"
+      > <a name="4198" href="Relation.Binary.PropositionalEquality.html#cong" class="Function"
+      >P.cong</a
+      > <a name="4205" href="Data.Stream.html#4183" class="Bound"
+      >f</a
+      > <a name="4207" href="Data.Stream.html#4186" class="Bound"
+      >x&#8801;</a
+      > <a name="4210" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="4303"
-      > </a
-      ><a name="4304" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+      > <a name="4212" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="4305"
-      > </a
-      ><a name="4306" class="Symbol"
+      > <a name="4214" href="Data.Stream.html#map-cong" class="Function"
+      >map-cong</a
+      > <a name="4223" href="Data.Stream.html#4183" class="Bound"
+      >f</a
+      > <a name="4225" class="Symbol"
       >(</a
-      ><a name="4307" href="Data.Stream.html#4294" class="Bound"
-      >ys&#8776;</a
-      ><a name="4310"
-      > </a
-      ><a name="4311" href="Data.Stream.html#4178" class="Function Operator"
-      >&#8910;-cong</a
-      ><a name="4317"
-      > </a
-      ><a name="4318" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      ><a name="4226" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="4319"
-      > </a
-      ><a name="4320" href="Data.Stream.html#4282" class="Bound"
+      > <a name="4228" href="Data.Stream.html#4191" class="Bound"
       >xs&#8776;</a
-      ><a name="4323" class="Symbol"
+      ><a name="4231" class="Symbol"
       >)</a
-      ><a name="4324"
       >
-</a
-      ></pre
+
+<a name="zipWith-cong" href="Data.Stream.html#zipWith-cong" class="Function"
+      >zipWith-cong</a
+      > <a name="4247" class="Symbol"
+      >:</a
+      > <a name="4249" class="Symbol"
+      >&#8704;</a
+      > <a name="4251" class="Symbol"
+      >{</a
+      ><a name="4252" href="Data.Stream.html#4252" class="Bound"
+      >a</a
+      > <a name="4254" href="Data.Stream.html#4254" class="Bound"
+      >b</a
+      > <a name="4256" href="Data.Stream.html#4256" class="Bound"
+      >c</a
+      ><a name="4257" class="Symbol"
+      >}</a
+      > <a name="4259" class="Symbol"
+      >{</a
+      ><a name="4260" href="Data.Stream.html#4260" class="Bound"
+      >A</a
+      > <a name="4262" class="Symbol"
+      >:</a
+      > <a name="4264" class="PrimitiveType"
+      >Set</a
+      > <a name="4268" href="Data.Stream.html#4252" class="Bound"
+      >a</a
+      ><a name="4269" class="Symbol"
+      >}</a
+      > <a name="4271" class="Symbol"
+      >{</a
+      ><a name="4272" href="Data.Stream.html#4272" class="Bound"
+      >B</a
+      > <a name="4274" class="Symbol"
+      >:</a
+      > <a name="4276" class="PrimitiveType"
+      >Set</a
+      > <a name="4280" href="Data.Stream.html#4254" class="Bound"
+      >b</a
+      ><a name="4281" class="Symbol"
+      >}</a
+      > <a name="4283" class="Symbol"
+      >{</a
+      ><a name="4284" href="Data.Stream.html#4284" class="Bound"
+      >C</a
+      > <a name="4286" class="Symbol"
+      >:</a
+      > <a name="4288" class="PrimitiveType"
+      >Set</a
+      > <a name="4292" href="Data.Stream.html#4256" class="Bound"
+      >c</a
+      ><a name="4293" class="Symbol"
+      >}</a
+      >
+               <a name="4310" class="Symbol"
+      >(</a
+      ><a name="4311" href="Data.Stream.html#4311" class="Bound Operator"
+      >_&#8729;_</a
+      > <a name="4315" class="Symbol"
+      >:</a
+      > <a name="4317" href="Data.Stream.html#4260" class="Bound"
+      >A</a
+      > <a name="4319" class="Symbol"
+      >&#8594;</a
+      > <a name="4321" href="Data.Stream.html#4272" class="Bound"
+      >B</a
+      > <a name="4323" class="Symbol"
+      >&#8594;</a
+      > <a name="4325" href="Data.Stream.html#4284" class="Bound"
+      >C</a
+      ><a name="4326" class="Symbol"
+      >)</a
+      > <a name="4328" class="Symbol"
+      >{</a
+      ><a name="4329" href="Data.Stream.html#4329" class="Bound"
+      >xs</a
+      > <a name="4332" href="Data.Stream.html#4332" class="Bound"
+      >xs&#8242;</a
+      > <a name="4336" href="Data.Stream.html#4336" class="Bound"
+      >ys</a
+      > <a name="4339" href="Data.Stream.html#4339" class="Bound"
+      >ys&#8242;</a
+      ><a name="4342" class="Symbol"
+      >}</a
+      > <a name="4344" class="Symbol"
+      >&#8594;</a
+      >
+               <a name="4361" href="Data.Stream.html#4329" class="Bound"
+      >xs</a
+      > <a name="4364" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >&#8776;</a
+      > <a name="4366" href="Data.Stream.html#4332" class="Bound"
+      >xs&#8242;</a
+      > <a name="4370" class="Symbol"
+      >&#8594;</a
+      > <a name="4372" href="Data.Stream.html#4336" class="Bound"
+      >ys</a
+      > <a name="4375" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >&#8776;</a
+      > <a name="4377" href="Data.Stream.html#4339" class="Bound"
+      >ys&#8242;</a
+      > <a name="4381" class="Symbol"
+      >&#8594;</a
+      >
+               <a name="4398" href="Data.Stream.html#zipWith" class="Function"
+      >zipWith</a
+      > <a name="4406" href="Data.Stream.html#4311" class="Bound Operator"
+      >_&#8729;_</a
+      > <a name="4410" href="Data.Stream.html#4329" class="Bound"
+      >xs</a
+      > <a name="4413" href="Data.Stream.html#4336" class="Bound"
+      >ys</a
+      > <a name="4416" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >&#8776;</a
+      > <a name="4418" href="Data.Stream.html#zipWith" class="Function"
+      >zipWith</a
+      > <a name="4426" href="Data.Stream.html#4311" class="Bound Operator"
+      >_&#8729;_</a
+      > <a name="4430" href="Data.Stream.html#4332" class="Bound"
+      >xs&#8242;</a
+      > <a name="4434" href="Data.Stream.html#4339" class="Bound"
+      >ys&#8242;</a
+      >
+<a name="4438" href="Data.Stream.html#zipWith-cong" class="Function"
+      >zipWith-cong</a
+      > <a name="4451" href="Data.Stream.html#4451" class="Bound Operator"
+      >_&#8729;_</a
+      > <a name="4455" class="Symbol"
+      >(</a
+      ><a name="4456" href="Data.Stream.html#4456" class="Bound"
+      >x&#8801;</a
+      > <a name="4459" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="4461" href="Data.Stream.html#4461" class="Bound"
+      >xs&#8776;</a
+      ><a name="4464" class="Symbol"
+      >)</a
+      > <a name="4466" class="Symbol"
+      >(</a
+      ><a name="4467" href="Data.Stream.html#4467" class="Bound"
+      >y&#8801;</a
+      > <a name="4470" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="4472" href="Data.Stream.html#4472" class="Bound"
+      >ys&#8776;</a
+      ><a name="4475" class="Symbol"
+      >)</a
+      > <a name="4477" class="Symbol"
+      >=</a
+      >
+  <a name="4481" href="Relation.Binary.PropositionalEquality.html#cong&#8322;" class="Function"
+      >P.cong&#8322;</a
+      > <a name="4489" href="Data.Stream.html#4451" class="Bound Operator"
+      >_&#8729;_</a
+      > <a name="4493" href="Data.Stream.html#4456" class="Bound"
+      >x&#8801;</a
+      > <a name="4496" href="Data.Stream.html#4467" class="Bound"
+      >y&#8801;</a
+      > <a name="4499" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="4501" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      > <a name="4503" href="Data.Stream.html#zipWith-cong" class="Function"
+      >zipWith-cong</a
+      > <a name="4516" href="Data.Stream.html#4451" class="Bound Operator"
+      >_&#8729;_</a
+      > <a name="4520" class="Symbol"
+      >(</a
+      ><a name="4521" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="4523" href="Data.Stream.html#4461" class="Bound"
+      >xs&#8776;</a
+      ><a name="4526" class="Symbol"
+      >)</a
+      > <a name="4528" class="Symbol"
+      >(</a
+      ><a name="4529" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="4531" href="Data.Stream.html#4472" class="Bound"
+      >ys&#8776;</a
+      ><a name="4534" class="Symbol"
+      >)</a
+      >
+
+<a name="4537" class="Keyword"
+      >infixr</a
+      > <a name="4544" class="Number"
+      >5</a
+      > <a name="_&#8910;-cong_" href="Data.Stream.html#_&#8910;-cong_" class="Function Operator"
+      >_&#8910;-cong_</a
+      >
+
+<a name="_&#8910;-cong_" href="Data.Stream.html#_&#8910;-cong_" class="Function Operator"
+      >_&#8910;-cong_</a
+      > <a name="4565" class="Symbol"
+      >:</a
+      > <a name="4567" class="Symbol"
+      >&#8704;</a
+      > <a name="4569" class="Symbol"
+      >{</a
+      ><a name="4570" href="Data.Stream.html#4570" class="Bound"
+      >a</a
+      ><a name="4571" class="Symbol"
+      >}</a
+      > <a name="4573" class="Symbol"
+      >{</a
+      ><a name="4574" href="Data.Stream.html#4574" class="Bound"
+      >A</a
+      > <a name="4576" class="Symbol"
+      >:</a
+      > <a name="4578" class="PrimitiveType"
+      >Set</a
+      > <a name="4582" href="Data.Stream.html#4570" class="Bound"
+      >a</a
+      ><a name="4583" class="Symbol"
+      >}</a
+      > <a name="4585" class="Symbol"
+      >{</a
+      ><a name="4586" href="Data.Stream.html#4586" class="Bound"
+      >xs</a
+      > <a name="4589" href="Data.Stream.html#4589" class="Bound"
+      >xs&#8242;</a
+      > <a name="4593" href="Data.Stream.html#4593" class="Bound"
+      >ys</a
+      > <a name="4596" href="Data.Stream.html#4596" class="Bound"
+      >ys&#8242;</a
+      > <a name="4600" class="Symbol"
+      >:</a
+      > <a name="4602" href="Data.Stream.html#Stream" class="Datatype"
+      >Stream</a
+      > <a name="4609" href="Data.Stream.html#4574" class="Bound"
+      >A</a
+      ><a name="4610" class="Symbol"
+      >}</a
+      > <a name="4612" class="Symbol"
+      >&#8594;</a
+      >
+           <a name="4625" href="Data.Stream.html#4586" class="Bound"
+      >xs</a
+      > <a name="4628" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >&#8776;</a
+      > <a name="4630" href="Data.Stream.html#4589" class="Bound"
+      >xs&#8242;</a
+      > <a name="4634" class="Symbol"
+      >&#8594;</a
+      > <a name="4636" href="Data.Stream.html#4593" class="Bound"
+      >ys</a
+      > <a name="4639" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >&#8776;</a
+      > <a name="4641" href="Data.Stream.html#4596" class="Bound"
+      >ys&#8242;</a
+      > <a name="4645" class="Symbol"
+      >&#8594;</a
+      > <a name="4647" href="Data.Stream.html#4586" class="Bound"
+      >xs</a
+      > <a name="4650" href="Data.Stream.html#_&#8910;_" class="Function Operator"
+      >&#8910;</a
+      > <a name="4652" href="Data.Stream.html#4593" class="Bound"
+      >ys</a
+      > <a name="4655" href="Data.Stream.html#_&#8776;_" class="Datatype Operator"
+      >&#8776;</a
+      > <a name="4657" href="Data.Stream.html#4589" class="Bound"
+      >xs&#8242;</a
+      > <a name="4661" href="Data.Stream.html#_&#8910;_" class="Function Operator"
+      >&#8910;</a
+      > <a name="4663" href="Data.Stream.html#4596" class="Bound"
+      >ys&#8242;</a
+      >
+<a name="4667" class="Symbol"
+      >(</a
+      ><a name="4668" href="Data.Stream.html#4668" class="Bound"
+      >x</a
+      > <a name="4670" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="4672" href="Data.Stream.html#4672" class="Bound"
+      >xs&#8776;</a
+      ><a name="4675" class="Symbol"
+      >)</a
+      > <a name="4677" href="Data.Stream.html#_&#8910;-cong_" class="Function Operator"
+      >&#8910;-cong</a
+      > <a name="4684" href="Data.Stream.html#4684" class="Bound"
+      >ys&#8776;</a
+      > <a name="4688" class="Symbol"
+      >=</a
+      > <a name="4690" href="Data.Stream.html#4668" class="Bound"
+      >x</a
+      > <a name="4692" href="Data.Stream.html#_&#8776;_._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="4694" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
+      >&#9839;</a
+      > <a name="4696" class="Symbol"
+      >(</a
+      ><a name="4697" href="Data.Stream.html#4684" class="Bound"
+      >ys&#8776;</a
+      > <a name="4701" href="Data.Stream.html#_&#8910;-cong_" class="Function Operator"
+      >&#8910;-cong</a
+      > <a name="4708" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
+      >&#9837;</a
+      > <a name="4710" href="Data.Stream.html#4672" class="Bound"
+      >xs&#8776;</a
+      ><a name="4713" class="Symbol"
+      >)</a
+      >
+</pre
     ></body
   ></html
 >

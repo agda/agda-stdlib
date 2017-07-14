@@ -11,2348 +11,1328 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Left inverses</a
-      ><a name="122"
       >
-</a
-      ><a name="123" class="Comment"
+<a name="123" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="195"
       >
 
-</a
-      ><a name="197" class="Keyword"
+<a name="197" class="Keyword"
       >module</a
-      ><a name="203"
-      > </a
-      ><a name="204" href="Function.LeftInverse.html#1" class="Module"
+      > <a name="204" href="Function.LeftInverse.html" class="Module"
       >Function.LeftInverse</a
-      ><a name="224"
-      > </a
-      ><a name="225" class="Keyword"
+      > <a name="225" class="Keyword"
       >where</a
-      ><a name="230"
       >
 
-</a
-      ><a name="232" class="Keyword"
+<a name="232" class="Keyword"
       >open</a
-      ><a name="236"
-      > </a
-      ><a name="237" class="Keyword"
+      > <a name="237" class="Keyword"
       >import</a
-      ><a name="243"
-      > </a
-      ><a name="244" href="Data.Product.html#1" class="Module"
+      > <a name="244" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="256"
       >
-</a
-      ><a name="257" class="Keyword"
+<a name="257" class="Keyword"
       >open</a
-      ><a name="261"
-      > </a
-      ><a name="262" class="Keyword"
+      > <a name="262" class="Keyword"
       >import</a
-      ><a name="268"
-      > </a
-      ><a name="269" href="Level.html#1" class="Module"
+      > <a name="269" href="Level.html" class="Module"
       >Level</a
-      ><a name="274"
       >
-</a
-      ><a name="275" class="Keyword"
+<a name="275" class="Keyword"
       >import</a
-      ><a name="281"
-      > </a
-      ><a name="282" href="Relation.Binary.EqReasoning.html#1" class="Module"
+      > <a name="282" href="Relation.Binary.EqReasoning.html" class="Module"
       >Relation.Binary.EqReasoning</a
-      ><a name="309"
-      > </a
-      ><a name="310" class="Symbol"
+      > <a name="310" class="Symbol"
       >as</a
-      ><a name="312"
-      > </a
-      ><a name="313" class="Module"
+      > <a name="313" class="Module"
       >EqReasoning</a
-      ><a name="324"
       >
-</a
-      ><a name="325" class="Keyword"
+<a name="325" class="Keyword"
       >open</a
-      ><a name="329"
-      > </a
-      ><a name="330" class="Keyword"
+      > <a name="330" class="Keyword"
       >import</a
-      ><a name="336"
-      > </a
-      ><a name="337" href="Relation.Binary.html#1" class="Module"
+      > <a name="337" href="Relation.Binary.html" class="Module"
       >Relation.Binary</a
-      ><a name="352"
       >
-</a
-      ><a name="353" class="Keyword"
+<a name="353" class="Keyword"
       >open</a
-      ><a name="357"
-      > </a
-      ><a name="358" class="Keyword"
+      > <a name="358" class="Keyword"
       >import</a
-      ><a name="364"
-      > </a
-      ><a name="365" href="Function.Equality.html#1" class="Module"
+      > <a name="365" href="Function.Equality.html" class="Module"
       >Function.Equality</a
-      ><a name="382"
-      > </a
-      ><a name="383" class="Symbol"
+      > <a name="383" class="Symbol"
       >as</a
-      ><a name="385"
-      > </a
-      ><a name="386" class="Module"
+      > <a name="386" class="Module"
       >Eq</a
-      ><a name="388"
       >
-  </a
-      ><a name="391" class="Keyword"
+  <a name="391" class="Keyword"
       >using</a
-      ><a name="396"
-      > </a
-      ><a name="397" class="Symbol"
+      > <a name="397" class="Symbol"
       >(</a
-      ><a name="398" href="Function.Equality.html#829" class="Function Operator"
+      ><a name="398" href="Function.Equality.html#_&#10230;_" class="Function Operator"
       >_&#10230;_</a
       ><a name="401" class="Symbol"
       >;</a
-      ><a name="402"
-      > </a
-      ><a name="403" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="403" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >_&#10216;$&#10217;_</a
       ><a name="408" class="Symbol"
       >)</a
-      ><a name="409"
-      > </a
-      ><a name="410" class="Keyword"
+      > <a name="410" class="Keyword"
       >renaming</a
-      ><a name="418"
-      > </a
-      ><a name="419" class="Symbol"
+      > <a name="419" class="Symbol"
       >(</a
-      ><a name="420" href="Function.Equality.html#1076" class="Function Operator"
+      ><a name="420" href="Function.Equality.html#_&#8728;_" class="Function Operator"
       >_&#8728;_</a
-      ><a name="423"
-      > </a
-      ><a name="424" class="Symbol"
+      > <a name="424" class="Symbol"
       >to</a
-      ><a name="426"
-      > </a
-      ><a name="427" href="Function.Equality.html#1076" class="Function Operator"
+      > <a name="427" href="Function.Equality.html#_&#8728;_" class="Function Operator"
       >_&#10218;&#8728;&#10219;_</a
       ><a name="432" class="Symbol"
       >)</a
-      ><a name="433"
       >
-</a
-      ><a name="434" class="Keyword"
+<a name="434" class="Keyword"
       >open</a
-      ><a name="438"
-      > </a
-      ><a name="439" class="Keyword"
+      > <a name="439" class="Keyword"
       >import</a
-      ><a name="445"
-      > </a
-      ><a name="446" href="Function.Equivalence.html#1" class="Module"
+      > <a name="446" href="Function.Equivalence.html" class="Module"
       >Function.Equivalence</a
-      ><a name="466"
-      > </a
-      ><a name="467" class="Keyword"
+      > <a name="467" class="Keyword"
       >using</a
-      ><a name="472"
-      > </a
-      ><a name="473" class="Symbol"
+      > <a name="473" class="Symbol"
       >(</a
-      ><a name="474" href="Function.Equivalence.html#488" class="Record"
+      ><a name="474" href="Function.Equivalence.html#Equivalence" class="Record"
       >Equivalence</a
       ><a name="485" class="Symbol"
       >)</a
-      ><a name="486"
       >
-</a
-      ><a name="487" class="Keyword"
+<a name="487" class="Keyword"
       >open</a
-      ><a name="491"
-      > </a
-      ><a name="492" class="Keyword"
+      > <a name="492" class="Keyword"
       >import</a
-      ><a name="498"
-      > </a
-      ><a name="499" href="Function.Injection.html#1" class="Module"
+      > <a name="499" href="Function.Injection.html" class="Module"
       >Function.Injection</a
-      ><a name="517"
-      > </a
-      ><a name="518" class="Keyword"
+      > <a name="518" class="Keyword"
       >using</a
-      ><a name="523"
-      > </a
-      ><a name="524" class="Symbol"
+      > <a name="524" class="Symbol"
       >(</a
-      ><a name="525" href="Function.Injection.html#490" class="Function"
+      ><a name="525" href="Function.Injection.html#Injective" class="Function"
       >Injective</a
       ><a name="534" class="Symbol"
       >;</a
-      ><a name="535"
-      > </a
-      ><a name="536" href="Function.Injection.html#793" class="Record"
+      > <a name="536" href="Function.Injection.html#Injection" class="Record"
       >Injection</a
       ><a name="545" class="Symbol"
       >)</a
-      ><a name="546"
       >
-</a
-      ><a name="547" class="Keyword"
+<a name="547" class="Keyword"
       >import</a
-      ><a name="553"
-      > </a
-      ><a name="554" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      > <a name="554" href="Relation.Binary.PropositionalEquality.html" class="Module"
       >Relation.Binary.PropositionalEquality</a
-      ><a name="591"
-      > </a
-      ><a name="592" class="Symbol"
+      > <a name="592" class="Symbol"
       >as</a
-      ><a name="594"
-      > </a
-      ><a name="595" class="Module"
+      > <a name="595" class="Module"
       >P</a
-      ><a name="596"
       >
 
-</a
-      ><a name="598" class="Comment"
+<a name="598" class="Comment"
       >-- Left and right inverses.</a
-      ><a name="625"
       >
 
-</a
-      ><a name="627" href="Function.LeftInverse.html#627" class="Function Operator"
+<a name="_LeftInverseOf_" href="Function.LeftInverse.html#_LeftInverseOf_" class="Function Operator"
       >_LeftInverseOf_</a
-      ><a name="642"
-      > </a
-      ><a name="643" class="Symbol"
+      > <a name="643" class="Symbol"
       >:</a
-      ><a name="644"
       >
-  </a
-      ><a name="647" class="Symbol"
+  <a name="647" class="Symbol"
       >&#8704;</a
-      ><a name="648"
-      > </a
-      ><a name="649" class="Symbol"
+      > <a name="649" class="Symbol"
       >{</a
       ><a name="650" href="Function.LeftInverse.html#650" class="Bound"
       >f&#8321;</a
-      ><a name="652"
-      > </a
-      ><a name="653" href="Function.LeftInverse.html#653" class="Bound"
+      > <a name="653" href="Function.LeftInverse.html#653" class="Bound"
       >f&#8322;</a
-      ><a name="655"
-      > </a
-      ><a name="656" href="Function.LeftInverse.html#656" class="Bound"
+      > <a name="656" href="Function.LeftInverse.html#656" class="Bound"
       >t&#8321;</a
-      ><a name="658"
-      > </a
-      ><a name="659" href="Function.LeftInverse.html#659" class="Bound"
+      > <a name="659" href="Function.LeftInverse.html#659" class="Bound"
       >t&#8322;</a
       ><a name="661" class="Symbol"
       >}</a
-      ><a name="662"
-      > </a
-      ><a name="663" class="Symbol"
+      > <a name="663" class="Symbol"
       >{</a
       ><a name="664" href="Function.LeftInverse.html#664" class="Bound"
       >From</a
-      ><a name="668"
-      > </a
-      ><a name="669" class="Symbol"
+      > <a name="669" class="Symbol"
       >:</a
-      ><a name="670"
-      > </a
-      ><a name="671" href="Relation.Binary.html#1908" class="Record"
+      > <a name="671" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="677"
-      > </a
-      ><a name="678" href="Function.LeftInverse.html#650" class="Bound"
+      > <a name="678" href="Function.LeftInverse.html#650" class="Bound"
       >f&#8321;</a
-      ><a name="680"
-      > </a
-      ><a name="681" href="Function.LeftInverse.html#653" class="Bound"
+      > <a name="681" href="Function.LeftInverse.html#653" class="Bound"
       >f&#8322;</a
       ><a name="683" class="Symbol"
       >}</a
-      ><a name="684"
-      > </a
-      ><a name="685" class="Symbol"
+      > <a name="685" class="Symbol"
       >{</a
       ><a name="686" href="Function.LeftInverse.html#686" class="Bound"
       >To</a
-      ><a name="688"
-      > </a
-      ><a name="689" class="Symbol"
+      > <a name="689" class="Symbol"
       >:</a
-      ><a name="690"
-      > </a
-      ><a name="691" href="Relation.Binary.html#1908" class="Record"
+      > <a name="691" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="697"
-      > </a
-      ><a name="698" href="Function.LeftInverse.html#656" class="Bound"
+      > <a name="698" href="Function.LeftInverse.html#656" class="Bound"
       >t&#8321;</a
-      ><a name="700"
-      > </a
-      ><a name="701" href="Function.LeftInverse.html#659" class="Bound"
+      > <a name="701" href="Function.LeftInverse.html#659" class="Bound"
       >t&#8322;</a
       ><a name="703" class="Symbol"
       >}</a
-      ><a name="704"
-      > </a
-      ><a name="705" class="Symbol"
+      > <a name="705" class="Symbol"
       >&#8594;</a
-      ><a name="706"
       >
-  </a
-      ><a name="709" href="Function.LeftInverse.html#686" class="Bound"
+  <a name="709" href="Function.LeftInverse.html#686" class="Bound"
       >To</a
-      ><a name="711"
-      > </a
-      ><a name="712" href="Function.Equality.html#829" class="Function Operator"
+      > <a name="712" href="Function.Equality.html#_&#10230;_" class="Function Operator"
       >&#10230;</a
-      ><a name="713"
-      > </a
-      ><a name="714" href="Function.LeftInverse.html#664" class="Bound"
+      > <a name="714" href="Function.LeftInverse.html#664" class="Bound"
       >From</a
-      ><a name="718"
-      > </a
-      ><a name="719" class="Symbol"
+      > <a name="719" class="Symbol"
       >&#8594;</a
-      ><a name="720"
-      > </a
-      ><a name="721" href="Function.LeftInverse.html#664" class="Bound"
+      > <a name="721" href="Function.LeftInverse.html#664" class="Bound"
       >From</a
-      ><a name="725"
-      > </a
-      ><a name="726" href="Function.Equality.html#829" class="Function Operator"
+      > <a name="726" href="Function.Equality.html#_&#10230;_" class="Function Operator"
       >&#10230;</a
-      ><a name="727"
-      > </a
-      ><a name="728" href="Function.LeftInverse.html#686" class="Bound"
+      > <a name="728" href="Function.LeftInverse.html#686" class="Bound"
       >To</a
-      ><a name="730"
-      > </a
-      ><a name="731" class="Symbol"
+      > <a name="731" class="Symbol"
       >&#8594;</a
-      ><a name="732"
-      > </a
-      ><a name="733" class="PrimitiveType"
+      > <a name="733" class="PrimitiveType"
       >Set</a
-      ><a name="736"
-      > </a
-      ><a name="737" class="Symbol"
+      > <a name="737" class="Symbol"
       >_</a
-      ><a name="738"
       >
-</a
-      ><a name="739" href="Function.LeftInverse.html#627" class="Function Operator"
+<a name="739" href="Function.LeftInverse.html#_LeftInverseOf_" class="Function Operator"
       >_LeftInverseOf_</a
-      ><a name="754"
-      > </a
-      ><a name="755" class="Symbol"
+      > <a name="755" class="Symbol"
       >{</a
       ><a name="756" class="Argument"
       >From</a
-      ><a name="760"
-      > </a
-      ><a name="761" class="Symbol"
+      > <a name="761" class="Symbol"
       >=</a
-      ><a name="762"
-      > </a
-      ><a name="763" href="Function.LeftInverse.html#763" class="Bound"
+      > <a name="763" href="Function.LeftInverse.html#763" class="Bound"
       >From</a
       ><a name="767" class="Symbol"
       >}</a
-      ><a name="768"
-      > </a
-      ><a name="769" href="Function.LeftInverse.html#769" class="Bound"
+      > <a name="769" href="Function.LeftInverse.html#769" class="Bound"
       >f</a
-      ><a name="770"
-      > </a
-      ><a name="771" href="Function.LeftInverse.html#771" class="Bound"
+      > <a name="771" href="Function.LeftInverse.html#771" class="Bound"
       >g</a
-      ><a name="772"
-      > </a
-      ><a name="773" class="Symbol"
+      > <a name="773" class="Symbol"
       >=</a
-      ><a name="774"
-      > </a
-      ><a name="775" class="Symbol"
+      > <a name="775" class="Symbol"
       >&#8704;</a
-      ><a name="776"
-      > </a
-      ><a name="777" href="Function.LeftInverse.html#777" class="Bound"
+      > <a name="777" href="Function.LeftInverse.html#777" class="Bound"
       >x</a
-      ><a name="778"
-      > </a
-      ><a name="779" class="Symbol"
+      > <a name="779" class="Symbol"
       >&#8594;</a
-      ><a name="780"
-      > </a
-      ><a name="781" href="Function.LeftInverse.html#769" class="Bound"
+      > <a name="781" href="Function.LeftInverse.html#769" class="Bound"
       >f</a
-      ><a name="782"
-      > </a
-      ><a name="783" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="783" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="786"
-      > </a
-      ><a name="787" class="Symbol"
+      > <a name="787" class="Symbol"
       >(</a
       ><a name="788" href="Function.LeftInverse.html#771" class="Bound"
       >g</a
-      ><a name="789"
-      > </a
-      ><a name="790" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="790" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="793"
-      > </a
-      ><a name="794" href="Function.LeftInverse.html#777" class="Bound"
+      > <a name="794" href="Function.LeftInverse.html#777" class="Bound"
       >x</a
       ><a name="795" class="Symbol"
       >)</a
-      ><a name="796"
-      > </a
-      ><a name="797" href="Relation.Binary.html#1997" class="Function Operator"
+      > <a name="797" href="Relation.Binary.html#1997" class="Function Operator"
       >&#8776;</a
-      ><a name="798"
-      > </a
-      ><a name="799" href="Function.LeftInverse.html#777" class="Bound"
+      > <a name="799" href="Function.LeftInverse.html#777" class="Bound"
       >x</a
-      ><a name="800"
       >
-  </a
-      ><a name="803" class="Keyword"
+  <a name="803" class="Keyword"
       >where</a
-      ><a name="808"
-      > </a
-      ><a name="809" class="Keyword"
+      > <a name="809" class="Keyword"
       >open</a
-      ><a name="813"
-      > </a
-      ><a name="814" href="Relation.Binary.html#1908" class="Module"
+      > <a name="814" href="Relation.Binary.html#Setoid" class="Module"
       >Setoid</a
-      ><a name="820"
-      > </a
-      ><a name="821" href="Function.LeftInverse.html#763" class="Bound"
+      > <a name="821" href="Function.LeftInverse.html#763" class="Bound"
       >From</a
-      ><a name="825"
       >
 
-</a
-      ><a name="827" href="Function.LeftInverse.html#827" class="Function Operator"
+<a name="_RightInverseOf_" href="Function.LeftInverse.html#_RightInverseOf_" class="Function Operator"
       >_RightInverseOf_</a
-      ><a name="843"
-      > </a
-      ><a name="844" class="Symbol"
+      > <a name="844" class="Symbol"
       >:</a
-      ><a name="845"
       >
-  </a
-      ><a name="848" class="Symbol"
+  <a name="848" class="Symbol"
       >&#8704;</a
-      ><a name="849"
-      > </a
-      ><a name="850" class="Symbol"
+      > <a name="850" class="Symbol"
       >{</a
       ><a name="851" href="Function.LeftInverse.html#851" class="Bound"
       >f&#8321;</a
-      ><a name="853"
-      > </a
-      ><a name="854" href="Function.LeftInverse.html#854" class="Bound"
+      > <a name="854" href="Function.LeftInverse.html#854" class="Bound"
       >f&#8322;</a
-      ><a name="856"
-      > </a
-      ><a name="857" href="Function.LeftInverse.html#857" class="Bound"
+      > <a name="857" href="Function.LeftInverse.html#857" class="Bound"
       >t&#8321;</a
-      ><a name="859"
-      > </a
-      ><a name="860" href="Function.LeftInverse.html#860" class="Bound"
+      > <a name="860" href="Function.LeftInverse.html#860" class="Bound"
       >t&#8322;</a
       ><a name="862" class="Symbol"
       >}</a
-      ><a name="863"
-      > </a
-      ><a name="864" class="Symbol"
+      > <a name="864" class="Symbol"
       >{</a
       ><a name="865" href="Function.LeftInverse.html#865" class="Bound"
       >From</a
-      ><a name="869"
-      > </a
-      ><a name="870" class="Symbol"
+      > <a name="870" class="Symbol"
       >:</a
-      ><a name="871"
-      > </a
-      ><a name="872" href="Relation.Binary.html#1908" class="Record"
+      > <a name="872" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="878"
-      > </a
-      ><a name="879" href="Function.LeftInverse.html#851" class="Bound"
+      > <a name="879" href="Function.LeftInverse.html#851" class="Bound"
       >f&#8321;</a
-      ><a name="881"
-      > </a
-      ><a name="882" href="Function.LeftInverse.html#854" class="Bound"
+      > <a name="882" href="Function.LeftInverse.html#854" class="Bound"
       >f&#8322;</a
       ><a name="884" class="Symbol"
       >}</a
-      ><a name="885"
-      > </a
-      ><a name="886" class="Symbol"
+      > <a name="886" class="Symbol"
       >{</a
       ><a name="887" href="Function.LeftInverse.html#887" class="Bound"
       >To</a
-      ><a name="889"
-      > </a
-      ><a name="890" class="Symbol"
+      > <a name="890" class="Symbol"
       >:</a
-      ><a name="891"
-      > </a
-      ><a name="892" href="Relation.Binary.html#1908" class="Record"
+      > <a name="892" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="898"
-      > </a
-      ><a name="899" href="Function.LeftInverse.html#857" class="Bound"
+      > <a name="899" href="Function.LeftInverse.html#857" class="Bound"
       >t&#8321;</a
-      ><a name="901"
-      > </a
-      ><a name="902" href="Function.LeftInverse.html#860" class="Bound"
+      > <a name="902" href="Function.LeftInverse.html#860" class="Bound"
       >t&#8322;</a
       ><a name="904" class="Symbol"
       >}</a
-      ><a name="905"
-      > </a
-      ><a name="906" class="Symbol"
+      > <a name="906" class="Symbol"
       >&#8594;</a
-      ><a name="907"
       >
-  </a
-      ><a name="910" href="Function.LeftInverse.html#887" class="Bound"
+  <a name="910" href="Function.LeftInverse.html#887" class="Bound"
       >To</a
-      ><a name="912"
-      > </a
-      ><a name="913" href="Function.Equality.html#829" class="Function Operator"
+      > <a name="913" href="Function.Equality.html#_&#10230;_" class="Function Operator"
       >&#10230;</a
-      ><a name="914"
-      > </a
-      ><a name="915" href="Function.LeftInverse.html#865" class="Bound"
+      > <a name="915" href="Function.LeftInverse.html#865" class="Bound"
       >From</a
-      ><a name="919"
-      > </a
-      ><a name="920" class="Symbol"
+      > <a name="920" class="Symbol"
       >&#8594;</a
-      ><a name="921"
-      > </a
-      ><a name="922" href="Function.LeftInverse.html#865" class="Bound"
+      > <a name="922" href="Function.LeftInverse.html#865" class="Bound"
       >From</a
-      ><a name="926"
-      > </a
-      ><a name="927" href="Function.Equality.html#829" class="Function Operator"
+      > <a name="927" href="Function.Equality.html#_&#10230;_" class="Function Operator"
       >&#10230;</a
-      ><a name="928"
-      > </a
-      ><a name="929" href="Function.LeftInverse.html#887" class="Bound"
+      > <a name="929" href="Function.LeftInverse.html#887" class="Bound"
       >To</a
-      ><a name="931"
-      > </a
-      ><a name="932" class="Symbol"
+      > <a name="932" class="Symbol"
       >&#8594;</a
-      ><a name="933"
-      > </a
-      ><a name="934" class="PrimitiveType"
+      > <a name="934" class="PrimitiveType"
       >Set</a
-      ><a name="937"
-      > </a
-      ><a name="938" class="Symbol"
+      > <a name="938" class="Symbol"
       >_</a
-      ><a name="939"
       >
-</a
-      ><a name="940" href="Function.LeftInverse.html#940" class="Bound"
+<a name="940" href="Function.LeftInverse.html#940" class="Bound"
       >f</a
-      ><a name="941"
-      > </a
-      ><a name="942" href="Function.LeftInverse.html#827" class="Function Operator"
+      > <a name="942" href="Function.LeftInverse.html#_RightInverseOf_" class="Function Operator"
       >RightInverseOf</a
-      ><a name="956"
-      > </a
-      ><a name="957" href="Function.LeftInverse.html#957" class="Bound"
+      > <a name="957" href="Function.LeftInverse.html#957" class="Bound"
       >g</a
-      ><a name="958"
-      > </a
-      ><a name="959" class="Symbol"
+      > <a name="959" class="Symbol"
       >=</a
-      ><a name="960"
-      > </a
-      ><a name="961" href="Function.LeftInverse.html#957" class="Bound"
+      > <a name="961" href="Function.LeftInverse.html#957" class="Bound"
       >g</a
-      ><a name="962"
-      > </a
-      ><a name="963" href="Function.LeftInverse.html#627" class="Function Operator"
+      > <a name="963" href="Function.LeftInverse.html#_LeftInverseOf_" class="Function Operator"
       >LeftInverseOf</a
-      ><a name="976"
-      > </a
-      ><a name="977" href="Function.LeftInverse.html#940" class="Bound"
+      > <a name="977" href="Function.LeftInverse.html#940" class="Bound"
       >f</a
-      ><a name="978"
       >
 
-</a
-      ><a name="980" class="Comment"
+<a name="980" class="Comment"
       >-- The set of all left inverses between two setoids.</a
-      ><a name="1032"
       >
 
-</a
-      ><a name="1034" class="Keyword"
+<a name="1034" class="Keyword"
       >record</a
-      ><a name="1040"
-      > </a
-      ><a name="1041" href="Function.LeftInverse.html#1041" class="Record"
+      > <a name="LeftInverse" href="Function.LeftInverse.html#LeftInverse" class="Record"
       >LeftInverse</a
-      ><a name="1052"
-      > </a
-      ><a name="1053" class="Symbol"
+      > <a name="1053" class="Symbol"
       >{</a
       ><a name="1054" href="Function.LeftInverse.html#1054" class="Bound"
       >f&#8321;</a
-      ><a name="1056"
-      > </a
-      ><a name="1057" href="Function.LeftInverse.html#1057" class="Bound"
+      > <a name="1057" href="Function.LeftInverse.html#1057" class="Bound"
       >f&#8322;</a
-      ><a name="1059"
-      > </a
-      ><a name="1060" href="Function.LeftInverse.html#1060" class="Bound"
+      > <a name="1060" href="Function.LeftInverse.html#1060" class="Bound"
       >t&#8321;</a
-      ><a name="1062"
-      > </a
-      ><a name="1063" href="Function.LeftInverse.html#1063" class="Bound"
+      > <a name="1063" href="Function.LeftInverse.html#1063" class="Bound"
       >t&#8322;</a
       ><a name="1065" class="Symbol"
       >}</a
-      ><a name="1066"
       >
-                   </a
-      ><a name="1086" class="Symbol"
+                   <a name="1086" class="Symbol"
       >(</a
       ><a name="1087" href="Function.LeftInverse.html#1087" class="Bound"
       >From</a
-      ><a name="1091"
-      > </a
-      ><a name="1092" class="Symbol"
+      > <a name="1092" class="Symbol"
       >:</a
-      ><a name="1093"
-      > </a
-      ><a name="1094" href="Relation.Binary.html#1908" class="Record"
+      > <a name="1094" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="1100"
-      > </a
-      ><a name="1101" href="Function.LeftInverse.html#1054" class="Bound"
+      > <a name="1101" href="Function.LeftInverse.html#1054" class="Bound"
       >f&#8321;</a
-      ><a name="1103"
-      > </a
-      ><a name="1104" href="Function.LeftInverse.html#1057" class="Bound"
+      > <a name="1104" href="Function.LeftInverse.html#1057" class="Bound"
       >f&#8322;</a
       ><a name="1106" class="Symbol"
       >)</a
-      ><a name="1107"
-      > </a
-      ><a name="1108" class="Symbol"
+      > <a name="1108" class="Symbol"
       >(</a
       ><a name="1109" href="Function.LeftInverse.html#1109" class="Bound"
       >To</a
-      ><a name="1111"
-      > </a
-      ><a name="1112" class="Symbol"
+      > <a name="1112" class="Symbol"
       >:</a
-      ><a name="1113"
-      > </a
-      ><a name="1114" href="Relation.Binary.html#1908" class="Record"
+      > <a name="1114" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="1120"
-      > </a
-      ><a name="1121" href="Function.LeftInverse.html#1060" class="Bound"
+      > <a name="1121" href="Function.LeftInverse.html#1060" class="Bound"
       >t&#8321;</a
-      ><a name="1123"
-      > </a
-      ><a name="1124" href="Function.LeftInverse.html#1063" class="Bound"
+      > <a name="1124" href="Function.LeftInverse.html#1063" class="Bound"
       >t&#8322;</a
       ><a name="1126" class="Symbol"
       >)</a
-      ><a name="1127"
-      > </a
-      ><a name="1128" class="Symbol"
+      > <a name="1128" class="Symbol"
       >:</a
-      ><a name="1129"
       >
-                   </a
-      ><a name="1149" class="PrimitiveType"
+                   <a name="1149" class="PrimitiveType"
       >Set</a
-      ><a name="1152"
-      > </a
-      ><a name="1153" class="Symbol"
+      > <a name="1153" class="Symbol"
       >(</a
       ><a name="1154" href="Function.LeftInverse.html#1054" class="Bound"
       >f&#8321;</a
-      ><a name="1156"
-      > </a
-      ><a name="1157" href="Agda.Primitive.html#655" class="Primitive Operator"
+      > <a name="1157" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
       >&#8852;</a
-      ><a name="1158"
-      > </a
-      ><a name="1159" href="Function.LeftInverse.html#1057" class="Bound"
+      > <a name="1159" href="Function.LeftInverse.html#1057" class="Bound"
       >f&#8322;</a
-      ><a name="1161"
-      > </a
-      ><a name="1162" href="Agda.Primitive.html#655" class="Primitive Operator"
+      > <a name="1162" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
       >&#8852;</a
-      ><a name="1163"
-      > </a
-      ><a name="1164" href="Function.LeftInverse.html#1060" class="Bound"
+      > <a name="1164" href="Function.LeftInverse.html#1060" class="Bound"
       >t&#8321;</a
-      ><a name="1166"
-      > </a
-      ><a name="1167" href="Agda.Primitive.html#655" class="Primitive Operator"
+      > <a name="1167" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
       >&#8852;</a
-      ><a name="1168"
-      > </a
-      ><a name="1169" href="Function.LeftInverse.html#1063" class="Bound"
+      > <a name="1169" href="Function.LeftInverse.html#1063" class="Bound"
       >t&#8322;</a
       ><a name="1171" class="Symbol"
       >)</a
-      ><a name="1172"
-      > </a
-      ><a name="1173" class="Keyword"
+      > <a name="1173" class="Keyword"
       >where</a
-      ><a name="1178"
       >
-  </a
-      ><a name="1181" class="Keyword"
+  <a name="1181" class="Keyword"
       >field</a
-      ><a name="1186"
       >
-    </a
-      ><a name="1191" href="Function.LeftInverse.html#1191" class="Field"
+    <a name="LeftInverse.to" href="Function.LeftInverse.html#LeftInverse.to" class="Field"
       >to</a
-      ><a name="1193"
-      >              </a
-      ><a name="1207" class="Symbol"
+      >              <a name="1207" class="Symbol"
       >:</a
-      ><a name="1208"
-      > </a
-      ><a name="1209" href="Function.LeftInverse.html#1087" class="Bound"
+      > <a name="1209" href="Function.LeftInverse.html#1087" class="Bound"
       >From</a
-      ><a name="1213"
-      > </a
-      ><a name="1214" href="Function.Equality.html#829" class="Function Operator"
+      > <a name="1214" href="Function.Equality.html#_&#10230;_" class="Function Operator"
       >&#10230;</a
-      ><a name="1215"
-      > </a
-      ><a name="1216" href="Function.LeftInverse.html#1109" class="Bound"
+      > <a name="1216" href="Function.LeftInverse.html#1109" class="Bound"
       >To</a
-      ><a name="1218"
       >
-    </a
-      ><a name="1223" href="Function.LeftInverse.html#1223" class="Field"
+    <a name="LeftInverse.from" href="Function.LeftInverse.html#LeftInverse.from" class="Field"
       >from</a
-      ><a name="1227"
-      >            </a
-      ><a name="1239" class="Symbol"
+      >            <a name="1239" class="Symbol"
       >:</a
-      ><a name="1240"
-      > </a
-      ><a name="1241" href="Function.LeftInverse.html#1109" class="Bound"
+      > <a name="1241" href="Function.LeftInverse.html#1109" class="Bound"
       >To</a
-      ><a name="1243"
-      > </a
-      ><a name="1244" href="Function.Equality.html#829" class="Function Operator"
+      > <a name="1244" href="Function.Equality.html#_&#10230;_" class="Function Operator"
       >&#10230;</a
-      ><a name="1245"
-      > </a
-      ><a name="1246" href="Function.LeftInverse.html#1087" class="Bound"
+      > <a name="1246" href="Function.LeftInverse.html#1087" class="Bound"
       >From</a
-      ><a name="1250"
       >
-    </a
-      ><a name="1255" href="Function.LeftInverse.html#1255" class="Field"
+    <a name="LeftInverse.left-inverse-of" href="Function.LeftInverse.html#LeftInverse.left-inverse-of" class="Field"
       >left-inverse-of</a
-      ><a name="1270"
-      > </a
-      ><a name="1271" class="Symbol"
+      > <a name="1271" class="Symbol"
       >:</a
-      ><a name="1272"
-      > </a
-      ><a name="1273" href="Function.LeftInverse.html#1223" class="Field"
+      > <a name="1273" href="Function.LeftInverse.html#LeftInverse.from" class="Field"
       >from</a
-      ><a name="1277"
-      > </a
-      ><a name="1278" href="Function.LeftInverse.html#627" class="Function Operator"
+      > <a name="1278" href="Function.LeftInverse.html#_LeftInverseOf_" class="Function Operator"
       >LeftInverseOf</a
-      ><a name="1291"
-      > </a
-      ><a name="1292" href="Function.LeftInverse.html#1191" class="Field"
+      > <a name="1292" href="Function.LeftInverse.html#LeftInverse.to" class="Field"
       >to</a
-      ><a name="1294"
       >
 
-  </a
-      ><a name="1298" class="Keyword"
+  <a name="1298" class="Keyword"
       >private</a
-      ><a name="1305"
       >
-    </a
-      ><a name="1310" class="Keyword"
+    <a name="1310" class="Keyword"
       >open</a
-      ><a name="1314"
-      > </a
-      ><a name="1315" class="Keyword"
+      > <a name="1315" class="Keyword"
       >module</a
-      ><a name="1321"
-      > </a
-      ><a name="1322" href="Function.LeftInverse.html#1322" class="Module"
+      > <a name="F" href="Function.LeftInverse.html#F" class="Module"
       >F</a
-      ><a name="1323"
-      > </a
-      ><a name="1324" class="Symbol"
+      > <a name="1324" class="Symbol"
       >=</a
-      ><a name="1325"
-      > </a
-      ><a name="1326" href="Relation.Binary.html#1908" class="Module"
+      > <a name="1326" href="Relation.Binary.html#Setoid" class="Module"
       >Setoid</a
-      ><a name="1332"
-      > </a
-      ><a name="1333" href="Function.LeftInverse.html#1087" class="Bound"
+      > <a name="1333" href="Function.LeftInverse.html#1087" class="Bound"
       >From</a
-      ><a name="1337"
       >
-    </a
-      ><a name="1342" class="Keyword"
+    <a name="1342" class="Keyword"
       >open</a
-      ><a name="1346"
-      > </a
-      ><a name="1347" class="Keyword"
+      > <a name="1347" class="Keyword"
       >module</a
-      ><a name="1353"
-      > </a
-      ><a name="1354" href="Function.LeftInverse.html#1354" class="Module"
+      > <a name="T" href="Function.LeftInverse.html#T" class="Module"
       >T</a
-      ><a name="1355"
-      > </a
-      ><a name="1356" class="Symbol"
+      > <a name="1356" class="Symbol"
       >=</a
-      ><a name="1357"
-      > </a
-      ><a name="1358" href="Relation.Binary.html#1908" class="Module"
+      > <a name="1358" href="Relation.Binary.html#Setoid" class="Module"
       >Setoid</a
-      ><a name="1364"
-      > </a
-      ><a name="1365" href="Function.LeftInverse.html#1109" class="Bound"
+      > <a name="1365" href="Function.LeftInverse.html#1109" class="Bound"
       >To</a
-      ><a name="1367"
       >
-  </a
-      ><a name="1370" class="Keyword"
+  <a name="1370" class="Keyword"
       >open</a
-      ><a name="1374"
-      > </a
-      ><a name="1375" href="Relation.Binary.EqReasoning.html#1" class="Module"
+      > <a name="1375" href="Relation.Binary.EqReasoning.html" class="Module"
       >EqReasoning</a
-      ><a name="1386"
-      > </a
-      ><a name="1387" href="Function.LeftInverse.html#1087" class="Bound"
+      > <a name="1387" href="Function.LeftInverse.html#1087" class="Bound"
       >From</a
-      ><a name="1391"
       >
 
-  </a
-      ><a name="1395" href="Function.LeftInverse.html#1395" class="Function"
+  <a name="LeftInverse.injective" href="Function.LeftInverse.html#LeftInverse.injective" class="Function"
       >injective</a
-      ><a name="1404"
-      > </a
-      ><a name="1405" class="Symbol"
+      > <a name="1405" class="Symbol"
       >:</a
-      ><a name="1406"
-      > </a
-      ><a name="1407" href="Function.Injection.html#490" class="Function"
+      > <a name="1407" href="Function.Injection.html#Injective" class="Function"
       >Injective</a
-      ><a name="1416"
-      > </a
-      ><a name="1417" href="Function.LeftInverse.html#1191" class="Field"
+      > <a name="1417" href="Function.LeftInverse.html#LeftInverse.to" class="Field"
       >to</a
-      ><a name="1419"
       >
-  </a
-      ><a name="1422" href="Function.LeftInverse.html#1395" class="Function"
+  <a name="1422" href="Function.LeftInverse.html#LeftInverse.injective" class="Function"
       >injective</a
-      ><a name="1431"
-      > </a
-      ><a name="1432" class="Symbol"
+      > <a name="1432" class="Symbol"
       >{</a
       ><a name="1433" href="Function.LeftInverse.html#1433" class="Bound"
       >x</a
       ><a name="1434" class="Symbol"
       >}</a
-      ><a name="1435"
-      > </a
-      ><a name="1436" class="Symbol"
+      > <a name="1436" class="Symbol"
       >{</a
       ><a name="1437" href="Function.LeftInverse.html#1437" class="Bound"
       >y</a
       ><a name="1438" class="Symbol"
       >}</a
-      ><a name="1439"
-      > </a
-      ><a name="1440" href="Function.LeftInverse.html#1440" class="Bound"
+      > <a name="1440" href="Function.LeftInverse.html#1440" class="Bound"
       >eq</a
-      ><a name="1442"
-      > </a
-      ><a name="1443" class="Symbol"
+      > <a name="1443" class="Symbol"
       >=</a
-      ><a name="1444"
-      > </a
-      ><a name="1445" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      > <a name="1445" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
       >begin</a
-      ><a name="1450"
       >
-    </a
-      ><a name="1455" href="Function.LeftInverse.html#1433" class="Bound"
+    <a name="1455" href="Function.LeftInverse.html#1433" class="Bound"
       >x</a
-      ><a name="1456"
-      >                    </a
-      ><a name="1476" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >                    <a name="1476" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="1478"
-      > </a
-      ><a name="1479" href="Relation.Binary.Core.html#4960" class="Function"
+      > <a name="1479" href="Relation.Binary.Core.html#F.sym" class="Function"
       >F.sym</a
-      ><a name="1484"
-      > </a
-      ><a name="1485" class="Symbol"
+      > <a name="1485" class="Symbol"
       >(</a
-      ><a name="1486" href="Function.LeftInverse.html#1255" class="Field"
+      ><a name="1486" href="Function.LeftInverse.html#LeftInverse.left-inverse-of" class="Field"
       >left-inverse-of</a
-      ><a name="1501"
-      > </a
-      ><a name="1502" href="Function.LeftInverse.html#1433" class="Bound"
+      > <a name="1502" href="Function.LeftInverse.html#1433" class="Bound"
       >x</a
       ><a name="1503" class="Symbol"
       >)</a
-      ><a name="1504"
-      > </a
-      ><a name="1505" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1505" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="1506"
       >
-    </a
-      ><a name="1511" href="Function.LeftInverse.html#1223" class="Field"
+    <a name="1511" href="Function.LeftInverse.html#LeftInverse.from" class="Field"
       >from</a
-      ><a name="1515"
-      > </a
-      ><a name="1516" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="1516" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="1519"
-      > </a
-      ><a name="1520" class="Symbol"
+      > <a name="1520" class="Symbol"
       >(</a
-      ><a name="1521" href="Function.LeftInverse.html#1191" class="Field"
+      ><a name="1521" href="Function.LeftInverse.html#LeftInverse.to" class="Field"
       >to</a
-      ><a name="1523"
-      > </a
-      ><a name="1524" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="1524" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="1527"
-      > </a
-      ><a name="1528" href="Function.LeftInverse.html#1433" class="Bound"
+      > <a name="1528" href="Function.LeftInverse.html#1433" class="Bound"
       >x</a
       ><a name="1529" class="Symbol"
       >)</a
-      ><a name="1530"
-      >  </a
-      ><a name="1532" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >  <a name="1532" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="1534"
-      > </a
-      ><a name="1535" href="Function.Equality.html#745" class="Field"
+      > <a name="1535" href="Function.Equality.html#&#928;.cong" class="Field"
       >Eq.cong</a
-      ><a name="1542"
-      > </a
-      ><a name="1543" href="Function.LeftInverse.html#1223" class="Field"
+      > <a name="1543" href="Function.LeftInverse.html#LeftInverse.from" class="Field"
       >from</a
-      ><a name="1547"
-      > </a
-      ><a name="1548" href="Function.LeftInverse.html#1440" class="Bound"
+      > <a name="1548" href="Function.LeftInverse.html#1440" class="Bound"
       >eq</a
-      ><a name="1550"
-      > </a
-      ><a name="1551" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1551" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="1552"
       >
-    </a
-      ><a name="1557" href="Function.LeftInverse.html#1223" class="Field"
+    <a name="1557" href="Function.LeftInverse.html#LeftInverse.from" class="Field"
       >from</a
-      ><a name="1561"
-      > </a
-      ><a name="1562" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="1562" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="1565"
-      > </a
-      ><a name="1566" class="Symbol"
+      > <a name="1566" class="Symbol"
       >(</a
-      ><a name="1567" href="Function.LeftInverse.html#1191" class="Field"
+      ><a name="1567" href="Function.LeftInverse.html#LeftInverse.to" class="Field"
       >to</a
-      ><a name="1569"
-      > </a
-      ><a name="1570" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="1570" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="1573"
-      > </a
-      ><a name="1574" href="Function.LeftInverse.html#1437" class="Bound"
+      > <a name="1574" href="Function.LeftInverse.html#1437" class="Bound"
       >y</a
       ><a name="1575" class="Symbol"
       >)</a
-      ><a name="1576"
-      >  </a
-      ><a name="1578" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >  <a name="1578" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="1580"
-      > </a
-      ><a name="1581" href="Function.LeftInverse.html#1255" class="Field"
+      > <a name="1581" href="Function.LeftInverse.html#LeftInverse.left-inverse-of" class="Field"
       >left-inverse-of</a
-      ><a name="1596"
-      > </a
-      ><a name="1597" href="Function.LeftInverse.html#1437" class="Bound"
+      > <a name="1597" href="Function.LeftInverse.html#1437" class="Bound"
       >y</a
-      ><a name="1598"
-      > </a
-      ><a name="1599" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1599" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="1600"
       >
-    </a
-      ><a name="1605" href="Function.LeftInverse.html#1437" class="Bound"
+    <a name="1605" href="Function.LeftInverse.html#1437" class="Bound"
       >y</a
-      ><a name="1606"
-      >                    </a
-      ><a name="1626" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >                    <a name="1626" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
       >&#8718;</a
-      ><a name="1627"
       >
 
-  </a
-      ><a name="1631" href="Function.LeftInverse.html#1631" class="Function"
+  <a name="LeftInverse.injection" href="Function.LeftInverse.html#LeftInverse.injection" class="Function"
       >injection</a
-      ><a name="1640"
-      > </a
-      ><a name="1641" class="Symbol"
+      > <a name="1641" class="Symbol"
       >:</a
-      ><a name="1642"
-      > </a
-      ><a name="1643" href="Function.Injection.html#793" class="Record"
+      > <a name="1643" href="Function.Injection.html#Injection" class="Record"
       >Injection</a
-      ><a name="1652"
-      > </a
-      ><a name="1653" href="Function.LeftInverse.html#1087" class="Bound"
+      > <a name="1653" href="Function.LeftInverse.html#1087" class="Bound"
       >From</a
-      ><a name="1657"
-      > </a
-      ><a name="1658" href="Function.LeftInverse.html#1109" class="Bound"
+      > <a name="1658" href="Function.LeftInverse.html#1109" class="Bound"
       >To</a
-      ><a name="1660"
       >
-  </a
-      ><a name="1663" href="Function.LeftInverse.html#1631" class="Function"
+  <a name="1663" href="Function.LeftInverse.html#LeftInverse.injection" class="Function"
       >injection</a
-      ><a name="1672"
-      > </a
-      ><a name="1673" class="Symbol"
+      > <a name="1673" class="Symbol"
       >=</a
-      ><a name="1674"
-      > </a
-      ><a name="1675" class="Keyword"
+      > <a name="1675" class="Keyword"
       >record</a
-      ><a name="1681"
-      > </a
-      ><a name="1682" class="Symbol"
+      > <a name="1682" class="Symbol"
       >{</a
-      ><a name="1683"
-      > </a
-      ><a name="1684" class="Field"
+      > <a name="1684" class="Field"
       >to</a
-      ><a name="1686"
-      > </a
-      ><a name="1687" class="Symbol"
+      > <a name="1687" class="Symbol"
       >=</a
-      ><a name="1688"
-      > </a
-      ><a name="1689" href="Function.LeftInverse.html#1191" class="Field"
+      > <a name="1689" href="Function.LeftInverse.html#LeftInverse.to" class="Field"
       >to</a
       ><a name="1691" class="Symbol"
       >;</a
-      ><a name="1692"
-      > </a
-      ><a name="1693" class="Field"
+      > <a name="1693" class="Field"
       >injective</a
-      ><a name="1702"
-      > </a
-      ><a name="1703" class="Symbol"
+      > <a name="1703" class="Symbol"
       >=</a
-      ><a name="1704"
-      > </a
-      ><a name="1705" href="Function.LeftInverse.html#1395" class="Function"
+      > <a name="1705" href="Function.LeftInverse.html#LeftInverse.injective" class="Function"
       >injective</a
-      ><a name="1714"
-      > </a
-      ><a name="1715" class="Symbol"
+      > <a name="1715" class="Symbol"
       >}</a
-      ><a name="1716"
       >
 
-  </a
-      ><a name="1720" href="Function.LeftInverse.html#1720" class="Function"
+  <a name="LeftInverse.equivalence" href="Function.LeftInverse.html#LeftInverse.equivalence" class="Function"
       >equivalence</a
-      ><a name="1731"
-      > </a
-      ><a name="1732" class="Symbol"
+      > <a name="1732" class="Symbol"
       >:</a
-      ><a name="1733"
-      > </a
-      ><a name="1734" href="Function.Equivalence.html#488" class="Record"
+      > <a name="1734" href="Function.Equivalence.html#Equivalence" class="Record"
       >Equivalence</a
-      ><a name="1745"
-      > </a
-      ><a name="1746" href="Function.LeftInverse.html#1087" class="Bound"
+      > <a name="1746" href="Function.LeftInverse.html#1087" class="Bound"
       >From</a
-      ><a name="1750"
-      > </a
-      ><a name="1751" href="Function.LeftInverse.html#1109" class="Bound"
+      > <a name="1751" href="Function.LeftInverse.html#1109" class="Bound"
       >To</a
-      ><a name="1753"
       >
-  </a
-      ><a name="1756" href="Function.LeftInverse.html#1720" class="Function"
+  <a name="1756" href="Function.LeftInverse.html#LeftInverse.equivalence" class="Function"
       >equivalence</a
-      ><a name="1767"
-      > </a
-      ><a name="1768" class="Symbol"
+      > <a name="1768" class="Symbol"
       >=</a
-      ><a name="1769"
-      > </a
-      ><a name="1770" class="Keyword"
+      > <a name="1770" class="Keyword"
       >record</a
-      ><a name="1776"
       >
-    </a
-      ><a name="1781" class="Symbol"
+    <a name="1781" class="Symbol"
       >{</a
-      ><a name="1782"
-      > </a
-      ><a name="1783" class="Field"
+      > <a name="1783" class="Field"
       >to</a
-      ><a name="1785"
-      >   </a
-      ><a name="1788" class="Symbol"
+      >   <a name="1788" class="Symbol"
       >=</a
-      ><a name="1789"
-      > </a
-      ><a name="1790" href="Function.LeftInverse.html#1191" class="Field"
+      > <a name="1790" href="Function.LeftInverse.html#LeftInverse.to" class="Field"
       >to</a
-      ><a name="1792"
       >
-    </a
-      ><a name="1797" class="Symbol"
+    <a name="1797" class="Symbol"
       >;</a
-      ><a name="1798"
-      > </a
-      ><a name="1799" class="Field"
+      > <a name="1799" class="Field"
       >from</a
-      ><a name="1803"
-      > </a
-      ><a name="1804" class="Symbol"
+      > <a name="1804" class="Symbol"
       >=</a
-      ><a name="1805"
-      > </a
-      ><a name="1806" href="Function.LeftInverse.html#1223" class="Field"
+      > <a name="1806" href="Function.LeftInverse.html#LeftInverse.from" class="Field"
       >from</a
-      ><a name="1810"
       >
-    </a
-      ><a name="1815" class="Symbol"
+    <a name="1815" class="Symbol"
       >}</a
-      ><a name="1816"
       >
 
-  </a
-      ><a name="1820" href="Function.LeftInverse.html#1820" class="Function"
+  <a name="LeftInverse.to-from" href="Function.LeftInverse.html#LeftInverse.to-from" class="Function"
       >to-from</a
-      ><a name="1827"
-      > </a
-      ><a name="1828" class="Symbol"
+      > <a name="1828" class="Symbol"
       >:</a
-      ><a name="1829"
-      > </a
-      ><a name="1830" class="Symbol"
+      > <a name="1830" class="Symbol"
       >&#8704;</a
-      ><a name="1831"
-      > </a
-      ><a name="1832" class="Symbol"
+      > <a name="1832" class="Symbol"
       >{</a
       ><a name="1833" href="Function.LeftInverse.html#1833" class="Bound"
       >x</a
-      ><a name="1834"
-      > </a
-      ><a name="1835" href="Function.LeftInverse.html#1835" class="Bound"
+      > <a name="1835" href="Function.LeftInverse.html#1835" class="Bound"
       >y</a
       ><a name="1836" class="Symbol"
       >}</a
-      ><a name="1837"
-      > </a
-      ><a name="1838" class="Symbol"
+      > <a name="1838" class="Symbol"
       >&#8594;</a
-      ><a name="1839"
-      > </a
-      ><a name="1840" href="Function.LeftInverse.html#1191" class="Field"
+      > <a name="1840" href="Function.LeftInverse.html#LeftInverse.to" class="Field"
       >to</a
-      ><a name="1842"
-      > </a
-      ><a name="1843" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="1843" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="1846"
-      > </a
-      ><a name="1847" href="Function.LeftInverse.html#1833" class="Bound"
+      > <a name="1847" href="Function.LeftInverse.html#1833" class="Bound"
       >x</a
-      ><a name="1848"
-      > </a
-      ><a name="1849" href="Relation.Binary.html#1997" class="Function Operator"
+      > <a name="1849" href="Relation.Binary.html#LeftInverse.T._&#8776;_" class="Function Operator"
       >T.&#8776;</a
-      ><a name="1852"
-      > </a
-      ><a name="1853" href="Function.LeftInverse.html#1835" class="Bound"
+      > <a name="1853" href="Function.LeftInverse.html#1835" class="Bound"
       >y</a
-      ><a name="1854"
-      > </a
-      ><a name="1855" class="Symbol"
+      > <a name="1855" class="Symbol"
       >&#8594;</a
-      ><a name="1856"
-      > </a
-      ><a name="1857" href="Function.LeftInverse.html#1223" class="Field"
+      > <a name="1857" href="Function.LeftInverse.html#LeftInverse.from" class="Field"
       >from</a
-      ><a name="1861"
-      > </a
-      ><a name="1862" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="1862" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="1865"
-      > </a
-      ><a name="1866" href="Function.LeftInverse.html#1835" class="Bound"
+      > <a name="1866" href="Function.LeftInverse.html#1835" class="Bound"
       >y</a
-      ><a name="1867"
-      > </a
-      ><a name="1868" href="Relation.Binary.html#1997" class="Function Operator"
+      > <a name="1868" href="Relation.Binary.html#LeftInverse.F._&#8776;_" class="Function Operator"
       >F.&#8776;</a
-      ><a name="1871"
-      > </a
-      ><a name="1872" href="Function.LeftInverse.html#1833" class="Bound"
+      > <a name="1872" href="Function.LeftInverse.html#1833" class="Bound"
       >x</a
-      ><a name="1873"
       >
-  </a
-      ><a name="1876" href="Function.LeftInverse.html#1820" class="Function"
+  <a name="1876" href="Function.LeftInverse.html#LeftInverse.to-from" class="Function"
       >to-from</a
-      ><a name="1883"
-      > </a
-      ><a name="1884" class="Symbol"
+      > <a name="1884" class="Symbol"
       >{</a
       ><a name="1885" href="Function.LeftInverse.html#1885" class="Bound"
       >x</a
       ><a name="1886" class="Symbol"
       >}</a
-      ><a name="1887"
-      > </a
-      ><a name="1888" class="Symbol"
+      > <a name="1888" class="Symbol"
       >{</a
       ><a name="1889" href="Function.LeftInverse.html#1889" class="Bound"
       >y</a
       ><a name="1890" class="Symbol"
       >}</a
-      ><a name="1891"
-      > </a
-      ><a name="1892" href="Function.LeftInverse.html#1892" class="Bound"
+      > <a name="1892" href="Function.LeftInverse.html#1892" class="Bound"
       >to-x&#8776;y</a
-      ><a name="1898"
-      > </a
-      ><a name="1899" class="Symbol"
+      > <a name="1899" class="Symbol"
       >=</a
-      ><a name="1900"
-      > </a
-      ><a name="1901" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      > <a name="1901" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
       >begin</a
-      ><a name="1906"
       >
-    </a
-      ><a name="1911" href="Function.LeftInverse.html#1223" class="Field"
+    <a name="1911" href="Function.LeftInverse.html#LeftInverse.from" class="Field"
       >from</a
-      ><a name="1915"
-      > </a
-      ><a name="1916" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="1916" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="1919"
-      > </a
-      ><a name="1920" href="Function.LeftInverse.html#1889" class="Bound"
+      > <a name="1920" href="Function.LeftInverse.html#1889" class="Bound"
       >y</a
-      ><a name="1921"
-      >           </a
-      ><a name="1932" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >           <a name="1932" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="1934"
-      > </a
-      ><a name="1935" href="Function.Equality.html#745" class="Field"
+      > <a name="1935" href="Function.Equality.html#&#928;.cong" class="Field"
       >Eq.cong</a
-      ><a name="1942"
-      > </a
-      ><a name="1943" href="Function.LeftInverse.html#1223" class="Field"
+      > <a name="1943" href="Function.LeftInverse.html#LeftInverse.from" class="Field"
       >from</a
-      ><a name="1947"
-      > </a
-      ><a name="1948" class="Symbol"
+      > <a name="1948" class="Symbol"
       >(</a
-      ><a name="1949" href="Relation.Binary.Core.html#4960" class="Function"
+      ><a name="1949" href="Relation.Binary.Core.html#T.sym" class="Function"
       >T.sym</a
-      ><a name="1954"
-      > </a
-      ><a name="1955" href="Function.LeftInverse.html#1892" class="Bound"
+      > <a name="1955" href="Function.LeftInverse.html#1892" class="Bound"
       >to-x&#8776;y</a
       ><a name="1961" class="Symbol"
       >)</a
-      ><a name="1962"
-      > </a
-      ><a name="1963" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1963" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="1964"
       >
-    </a
-      ><a name="1969" href="Function.LeftInverse.html#1223" class="Field"
+    <a name="1969" href="Function.LeftInverse.html#LeftInverse.from" class="Field"
       >from</a
-      ><a name="1973"
-      > </a
-      ><a name="1974" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="1974" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="1977"
-      > </a
-      ><a name="1978" class="Symbol"
+      > <a name="1978" class="Symbol"
       >(</a
-      ><a name="1979" href="Function.LeftInverse.html#1191" class="Field"
+      ><a name="1979" href="Function.LeftInverse.html#LeftInverse.to" class="Field"
       >to</a
-      ><a name="1981"
-      > </a
-      ><a name="1982" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="1982" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="1985"
-      > </a
-      ><a name="1986" href="Function.LeftInverse.html#1885" class="Bound"
+      > <a name="1986" href="Function.LeftInverse.html#1885" class="Bound"
       >x</a
       ><a name="1987" class="Symbol"
       >)</a
-      ><a name="1988"
-      >  </a
-      ><a name="1990" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >  <a name="1990" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="1992"
-      > </a
-      ><a name="1993" href="Function.LeftInverse.html#1255" class="Field"
+      > <a name="1993" href="Function.LeftInverse.html#LeftInverse.left-inverse-of" class="Field"
       >left-inverse-of</a
-      ><a name="2008"
-      > </a
-      ><a name="2009" href="Function.LeftInverse.html#1885" class="Bound"
+      > <a name="2009" href="Function.LeftInverse.html#1885" class="Bound"
       >x</a
-      ><a name="2010"
-      > </a
-      ><a name="2011" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="2011" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="2012"
       >
-    </a
-      ><a name="2017" href="Function.LeftInverse.html#1885" class="Bound"
+    <a name="2017" href="Function.LeftInverse.html#1885" class="Bound"
       >x</a
-      ><a name="2018"
-      >                    </a
-      ><a name="2038" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >                    <a name="2038" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
       >&#8718;</a
-      ><a name="2039"
       >
 
-</a
-      ><a name="2041" class="Comment"
+<a name="2041" class="Comment"
       >-- The set of all right inverses between two setoids.</a
-      ><a name="2094"
       >
 
-</a
-      ><a name="2096" href="Function.LeftInverse.html#2096" class="Function"
+<a name="RightInverse" href="Function.LeftInverse.html#RightInverse" class="Function"
       >RightInverse</a
-      ><a name="2108"
-      > </a
-      ><a name="2109" class="Symbol"
+      > <a name="2109" class="Symbol"
       >:</a
-      ><a name="2110"
-      > </a
-      ><a name="2111" class="Symbol"
+      > <a name="2111" class="Symbol"
       >&#8704;</a
-      ><a name="2112"
-      > </a
-      ><a name="2113" class="Symbol"
+      > <a name="2113" class="Symbol"
       >{</a
       ><a name="2114" href="Function.LeftInverse.html#2114" class="Bound"
       >f&#8321;</a
-      ><a name="2116"
-      > </a
-      ><a name="2117" href="Function.LeftInverse.html#2117" class="Bound"
+      > <a name="2117" href="Function.LeftInverse.html#2117" class="Bound"
       >f&#8322;</a
-      ><a name="2119"
-      > </a
-      ><a name="2120" href="Function.LeftInverse.html#2120" class="Bound"
+      > <a name="2120" href="Function.LeftInverse.html#2120" class="Bound"
       >t&#8321;</a
-      ><a name="2122"
-      > </a
-      ><a name="2123" href="Function.LeftInverse.html#2123" class="Bound"
+      > <a name="2123" href="Function.LeftInverse.html#2123" class="Bound"
       >t&#8322;</a
       ><a name="2125" class="Symbol"
       >}</a
-      ><a name="2126"
       >
-               </a
-      ><a name="2142" class="Symbol"
+               <a name="2142" class="Symbol"
       >(</a
       ><a name="2143" href="Function.LeftInverse.html#2143" class="Bound"
       >From</a
-      ><a name="2147"
-      > </a
-      ><a name="2148" class="Symbol"
+      > <a name="2148" class="Symbol"
       >:</a
-      ><a name="2149"
-      > </a
-      ><a name="2150" href="Relation.Binary.html#1908" class="Record"
+      > <a name="2150" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="2156"
-      > </a
-      ><a name="2157" href="Function.LeftInverse.html#2114" class="Bound"
+      > <a name="2157" href="Function.LeftInverse.html#2114" class="Bound"
       >f&#8321;</a
-      ><a name="2159"
-      > </a
-      ><a name="2160" href="Function.LeftInverse.html#2117" class="Bound"
+      > <a name="2160" href="Function.LeftInverse.html#2117" class="Bound"
       >f&#8322;</a
       ><a name="2162" class="Symbol"
       >)</a
-      ><a name="2163"
-      > </a
-      ><a name="2164" class="Symbol"
+      > <a name="2164" class="Symbol"
       >(</a
       ><a name="2165" href="Function.LeftInverse.html#2165" class="Bound"
       >To</a
-      ><a name="2167"
-      > </a
-      ><a name="2168" class="Symbol"
+      > <a name="2168" class="Symbol"
       >:</a
-      ><a name="2169"
-      > </a
-      ><a name="2170" href="Relation.Binary.html#1908" class="Record"
+      > <a name="2170" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="2176"
-      > </a
-      ><a name="2177" href="Function.LeftInverse.html#2120" class="Bound"
+      > <a name="2177" href="Function.LeftInverse.html#2120" class="Bound"
       >t&#8321;</a
-      ><a name="2179"
-      > </a
-      ><a name="2180" href="Function.LeftInverse.html#2123" class="Bound"
+      > <a name="2180" href="Function.LeftInverse.html#2123" class="Bound"
       >t&#8322;</a
       ><a name="2182" class="Symbol"
       >)</a
-      ><a name="2183"
-      > </a
-      ><a name="2184" class="Symbol"
+      > <a name="2184" class="Symbol"
       >&#8594;</a
-      ><a name="2185"
-      > </a
-      ><a name="2186" class="PrimitiveType"
+      > <a name="2186" class="PrimitiveType"
       >Set</a
-      ><a name="2189"
-      > </a
-      ><a name="2190" class="Symbol"
+      > <a name="2190" class="Symbol"
       >_</a
-      ><a name="2191"
       >
-</a
-      ><a name="2192" href="Function.LeftInverse.html#2096" class="Function"
+<a name="2192" href="Function.LeftInverse.html#RightInverse" class="Function"
       >RightInverse</a
-      ><a name="2204"
-      > </a
-      ><a name="2205" href="Function.LeftInverse.html#2205" class="Bound"
+      > <a name="2205" href="Function.LeftInverse.html#2205" class="Bound"
       >From</a
-      ><a name="2209"
-      > </a
-      ><a name="2210" href="Function.LeftInverse.html#2210" class="Bound"
+      > <a name="2210" href="Function.LeftInverse.html#2210" class="Bound"
       >To</a
-      ><a name="2212"
-      > </a
-      ><a name="2213" class="Symbol"
+      > <a name="2213" class="Symbol"
       >=</a
-      ><a name="2214"
-      > </a
-      ><a name="2215" href="Function.LeftInverse.html#1041" class="Record"
+      > <a name="2215" href="Function.LeftInverse.html#LeftInverse" class="Record"
       >LeftInverse</a
-      ><a name="2226"
-      > </a
-      ><a name="2227" href="Function.LeftInverse.html#2210" class="Bound"
+      > <a name="2227" href="Function.LeftInverse.html#2210" class="Bound"
       >To</a
-      ><a name="2229"
-      > </a
-      ><a name="2230" href="Function.LeftInverse.html#2205" class="Bound"
+      > <a name="2230" href="Function.LeftInverse.html#2205" class="Bound"
       >From</a
-      ><a name="2234"
       >
 
-</a
-      ><a name="2236" class="Comment"
+<a name="2236" class="Comment"
       >-- The set of all left inverses from one set to another. (Read A&#160;&#8606;&#160;B</a
-      ><a name="2304"
       >
-</a
-      ><a name="2305" class="Comment"
+<a name="2305" class="Comment"
       >-- as &quot;surjection from B to A&quot;.)</a
-      ><a name="2337"
       >
 
-</a
-      ><a name="2339" class="Keyword"
+<a name="2339" class="Keyword"
       >infix</a
-      ><a name="2344"
-      > </a
-      ><a name="2345" class="Number"
+      > <a name="2345" class="Number"
       >3</a
-      ><a name="2346"
-      > _&#8606;_
-
-</a
-      ><a name="2352" href="Function.LeftInverse.html#2352" class="Function Operator"
+      > <a name="_&#8606;_" href="Function.LeftInverse.html#_&#8606;_" class="Function Operator"
       >_&#8606;_</a
-      ><a name="2355"
-      > </a
-      ><a name="2356" class="Symbol"
+      >
+
+<a name="_&#8606;_" href="Function.LeftInverse.html#_&#8606;_" class="Function Operator"
+      >_&#8606;_</a
+      > <a name="2356" class="Symbol"
       >:</a
-      ><a name="2357"
-      > </a
-      ><a name="2358" class="Symbol"
+      > <a name="2358" class="Symbol"
       >&#8704;</a
-      ><a name="2359"
-      > </a
-      ><a name="2360" class="Symbol"
+      > <a name="2360" class="Symbol"
       >{</a
       ><a name="2361" href="Function.LeftInverse.html#2361" class="Bound"
       >f</a
-      ><a name="2362"
-      > </a
-      ><a name="2363" href="Function.LeftInverse.html#2363" class="Bound"
+      > <a name="2363" href="Function.LeftInverse.html#2363" class="Bound"
       >t</a
       ><a name="2364" class="Symbol"
       >}</a
-      ><a name="2365"
-      > </a
-      ><a name="2366" class="Symbol"
+      > <a name="2366" class="Symbol"
       >&#8594;</a
-      ><a name="2367"
-      > </a
-      ><a name="2368" class="PrimitiveType"
+      > <a name="2368" class="PrimitiveType"
       >Set</a
-      ><a name="2371"
-      > </a
-      ><a name="2372" href="Function.LeftInverse.html#2361" class="Bound"
+      > <a name="2372" href="Function.LeftInverse.html#2361" class="Bound"
       >f</a
-      ><a name="2373"
-      > </a
-      ><a name="2374" class="Symbol"
+      > <a name="2374" class="Symbol"
       >&#8594;</a
-      ><a name="2375"
-      > </a
-      ><a name="2376" class="PrimitiveType"
+      > <a name="2376" class="PrimitiveType"
       >Set</a
-      ><a name="2379"
-      > </a
-      ><a name="2380" href="Function.LeftInverse.html#2363" class="Bound"
+      > <a name="2380" href="Function.LeftInverse.html#2363" class="Bound"
       >t</a
-      ><a name="2381"
-      > </a
-      ><a name="2382" class="Symbol"
+      > <a name="2382" class="Symbol"
       >&#8594;</a
-      ><a name="2383"
-      > </a
-      ><a name="2384" class="PrimitiveType"
+      > <a name="2384" class="PrimitiveType"
       >Set</a
-      ><a name="2387"
-      > </a
-      ><a name="2388" class="Symbol"
+      > <a name="2388" class="Symbol"
       >_</a
-      ><a name="2389"
       >
-</a
-      ><a name="2390" href="Function.LeftInverse.html#2390" class="Bound"
+<a name="2390" href="Function.LeftInverse.html#2390" class="Bound"
       >From</a
-      ><a name="2394"
-      > </a
-      ><a name="2395" href="Function.LeftInverse.html#2352" class="Function Operator"
+      > <a name="2395" href="Function.LeftInverse.html#_&#8606;_" class="Function Operator"
       >&#8606;</a
-      ><a name="2396"
-      > </a
-      ><a name="2397" href="Function.LeftInverse.html#2397" class="Bound"
+      > <a name="2397" href="Function.LeftInverse.html#2397" class="Bound"
       >To</a
-      ><a name="2399"
-      > </a
-      ><a name="2400" class="Symbol"
+      > <a name="2400" class="Symbol"
       >=</a
-      ><a name="2401"
-      > </a
-      ><a name="2402" href="Function.LeftInverse.html#1041" class="Record"
+      > <a name="2402" href="Function.LeftInverse.html#LeftInverse" class="Record"
       >LeftInverse</a
-      ><a name="2413"
-      > </a
-      ><a name="2414" class="Symbol"
+      > <a name="2414" class="Symbol"
       >(</a
-      ><a name="2415" href="Relation.Binary.PropositionalEquality.html#1526" class="Function"
+      ><a name="2415" href="Relation.Binary.PropositionalEquality.html#setoid" class="Function"
       >P.setoid</a
-      ><a name="2423"
-      > </a
-      ><a name="2424" href="Function.LeftInverse.html#2390" class="Bound"
+      > <a name="2424" href="Function.LeftInverse.html#2390" class="Bound"
       >From</a
       ><a name="2428" class="Symbol"
       >)</a
-      ><a name="2429"
-      > </a
-      ><a name="2430" class="Symbol"
+      > <a name="2430" class="Symbol"
       >(</a
-      ><a name="2431" href="Relation.Binary.PropositionalEquality.html#1526" class="Function"
+      ><a name="2431" href="Relation.Binary.PropositionalEquality.html#setoid" class="Function"
       >P.setoid</a
-      ><a name="2439"
-      > </a
-      ><a name="2440" href="Function.LeftInverse.html#2397" class="Bound"
+      > <a name="2440" href="Function.LeftInverse.html#2397" class="Bound"
       >To</a
       ><a name="2442" class="Symbol"
       >)</a
-      ><a name="2443"
       >
 
-</a
-      ><a name="2445" class="Comment"
+<a name="2445" class="Comment"
       >-- Identity and composition.</a
-      ><a name="2473"
       >
 
-</a
-      ><a name="2475" href="Function.LeftInverse.html#2475" class="Function"
+<a name="id" href="Function.LeftInverse.html#id" class="Function"
       >id</a
-      ><a name="2477"
-      > </a
-      ><a name="2478" class="Symbol"
+      > <a name="2478" class="Symbol"
       >:</a
-      ><a name="2479"
-      > </a
-      ><a name="2480" class="Symbol"
+      > <a name="2480" class="Symbol"
       >&#8704;</a
-      ><a name="2481"
-      > </a
-      ><a name="2482" class="Symbol"
+      > <a name="2482" class="Symbol"
       >{</a
       ><a name="2483" href="Function.LeftInverse.html#2483" class="Bound"
       >s&#8321;</a
-      ><a name="2485"
-      > </a
-      ><a name="2486" href="Function.LeftInverse.html#2486" class="Bound"
+      > <a name="2486" href="Function.LeftInverse.html#2486" class="Bound"
       >s&#8322;</a
       ><a name="2488" class="Symbol"
       >}</a
-      ><a name="2489"
-      > </a
-      ><a name="2490" class="Symbol"
+      > <a name="2490" class="Symbol"
       >{</a
       ><a name="2491" href="Function.LeftInverse.html#2491" class="Bound"
       >S</a
-      ><a name="2492"
-      > </a
-      ><a name="2493" class="Symbol"
+      > <a name="2493" class="Symbol"
       >:</a
-      ><a name="2494"
-      > </a
-      ><a name="2495" href="Relation.Binary.html#1908" class="Record"
+      > <a name="2495" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="2501"
-      > </a
-      ><a name="2502" href="Function.LeftInverse.html#2483" class="Bound"
+      > <a name="2502" href="Function.LeftInverse.html#2483" class="Bound"
       >s&#8321;</a
-      ><a name="2504"
-      > </a
-      ><a name="2505" href="Function.LeftInverse.html#2486" class="Bound"
+      > <a name="2505" href="Function.LeftInverse.html#2486" class="Bound"
       >s&#8322;</a
       ><a name="2507" class="Symbol"
       >}</a
-      ><a name="2508"
-      > </a
-      ><a name="2509" class="Symbol"
+      > <a name="2509" class="Symbol"
       >&#8594;</a
-      ><a name="2510"
-      > </a
-      ><a name="2511" href="Function.LeftInverse.html#1041" class="Record"
+      > <a name="2511" href="Function.LeftInverse.html#LeftInverse" class="Record"
       >LeftInverse</a
-      ><a name="2522"
-      > </a
-      ><a name="2523" href="Function.LeftInverse.html#2491" class="Bound"
+      > <a name="2523" href="Function.LeftInverse.html#2491" class="Bound"
       >S</a
-      ><a name="2524"
-      > </a
-      ><a name="2525" href="Function.LeftInverse.html#2491" class="Bound"
+      > <a name="2525" href="Function.LeftInverse.html#2491" class="Bound"
       >S</a
-      ><a name="2526"
       >
-</a
-      ><a name="2527" href="Function.LeftInverse.html#2475" class="Function"
+<a name="2527" href="Function.LeftInverse.html#id" class="Function"
       >id</a
-      ><a name="2529"
-      > </a
-      ><a name="2530" class="Symbol"
+      > <a name="2530" class="Symbol"
       >{</a
       ><a name="2531" class="Argument"
       >S</a
-      ><a name="2532"
-      > </a
-      ><a name="2533" class="Symbol"
+      > <a name="2533" class="Symbol"
       >=</a
-      ><a name="2534"
-      > </a
-      ><a name="2535" href="Function.LeftInverse.html#2535" class="Bound"
+      > <a name="2535" href="Function.LeftInverse.html#2535" class="Bound"
       >S</a
       ><a name="2536" class="Symbol"
       >}</a
-      ><a name="2537"
-      > </a
-      ><a name="2538" class="Symbol"
+      > <a name="2538" class="Symbol"
       >=</a
-      ><a name="2539"
-      > </a
-      ><a name="2540" class="Keyword"
+      > <a name="2540" class="Keyword"
       >record</a
-      ><a name="2546"
       >
-  </a
-      ><a name="2549" class="Symbol"
+  <a name="2549" class="Symbol"
       >{</a
-      ><a name="2550"
-      > </a
-      ><a name="2551" class="Field"
+      > <a name="2551" class="Field"
       >to</a
-      ><a name="2553"
-      >              </a
-      ><a name="2567" class="Symbol"
+      >              <a name="2567" class="Symbol"
       >=</a
-      ><a name="2568"
-      > </a
-      ><a name="2569" href="Function.Equality.html#971" class="Function"
+      > <a name="2569" href="Function.Equality.html#id" class="Function"
       >Eq.id</a
-      ><a name="2574"
       >
-  </a
-      ><a name="2577" class="Symbol"
+  <a name="2577" class="Symbol"
       >;</a
-      ><a name="2578"
-      > </a
-      ><a name="2579" class="Field"
+      > <a name="2579" class="Field"
       >from</a
-      ><a name="2583"
-      >            </a
-      ><a name="2595" class="Symbol"
+      >            <a name="2595" class="Symbol"
       >=</a
-      ><a name="2596"
-      > </a
-      ><a name="2597" href="Function.Equality.html#971" class="Function"
+      > <a name="2597" href="Function.Equality.html#id" class="Function"
       >Eq.id</a
-      ><a name="2602"
       >
-  </a
-      ><a name="2605" class="Symbol"
+  <a name="2605" class="Symbol"
       >;</a
-      ><a name="2606"
-      > </a
-      ><a name="2607" class="Field"
+      > <a name="2607" class="Field"
       >left-inverse-of</a
-      ><a name="2622"
-      > </a
-      ><a name="2623" class="Symbol"
+      > <a name="2623" class="Symbol"
       >=</a
-      ><a name="2624"
-      > </a
-      ><a name="2625" class="Symbol"
+      > <a name="2625" class="Symbol"
       >&#955;</a
-      ><a name="2626"
-      > </a
-      ><a name="2627" href="Function.LeftInverse.html#2627" class="Bound"
+      > <a name="2627" href="Function.LeftInverse.html#2627" class="Bound"
       >_</a
-      ><a name="2628"
-      > </a
-      ><a name="2629" class="Symbol"
+      > <a name="2629" class="Symbol"
       >&#8594;</a
-      ><a name="2630"
-      > </a
-      ><a name="2631" href="Relation.Binary.Core.html#4934" class="Function"
+      > <a name="2631" href="Relation.Binary.Core.html#4934" class="Function"
       >Setoid.refl</a
-      ><a name="2642"
-      > </a
-      ><a name="2643" href="Function.LeftInverse.html#2535" class="Bound"
+      > <a name="2643" href="Function.LeftInverse.html#2535" class="Bound"
       >S</a
-      ><a name="2644"
       >
-  </a
-      ><a name="2647" class="Symbol"
+  <a name="2647" class="Symbol"
       >}</a
-      ><a name="2648"
       >
 
-</a
-      ><a name="2650" class="Keyword"
+<a name="2650" class="Keyword"
       >infixr</a
-      ><a name="2656"
-      > </a
-      ><a name="2657" class="Number"
+      > <a name="2657" class="Number"
       >9</a
-      ><a name="2658"
-      > _&#8728;_
-
-</a
-      ><a name="2664" href="Function.LeftInverse.html#2664" class="Function Operator"
+      > <a name="_&#8728;_" href="Function.LeftInverse.html#_&#8728;_" class="Function Operator"
       >_&#8728;_</a
-      ><a name="2667"
-      > </a
-      ><a name="2668" class="Symbol"
+      >
+
+<a name="_&#8728;_" href="Function.LeftInverse.html#_&#8728;_" class="Function Operator"
+      >_&#8728;_</a
+      > <a name="2668" class="Symbol"
       >:</a
-      ><a name="2669"
-      > </a
-      ><a name="2670" class="Symbol"
+      > <a name="2670" class="Symbol"
       >&#8704;</a
-      ><a name="2671"
-      > </a
-      ><a name="2672" class="Symbol"
+      > <a name="2672" class="Symbol"
       >{</a
       ><a name="2673" href="Function.LeftInverse.html#2673" class="Bound"
       >f&#8321;</a
-      ><a name="2675"
-      > </a
-      ><a name="2676" href="Function.LeftInverse.html#2676" class="Bound"
+      > <a name="2676" href="Function.LeftInverse.html#2676" class="Bound"
       >f&#8322;</a
-      ><a name="2678"
-      > </a
-      ><a name="2679" href="Function.LeftInverse.html#2679" class="Bound"
+      > <a name="2679" href="Function.LeftInverse.html#2679" class="Bound"
       >m&#8321;</a
-      ><a name="2681"
-      > </a
-      ><a name="2682" href="Function.LeftInverse.html#2682" class="Bound"
+      > <a name="2682" href="Function.LeftInverse.html#2682" class="Bound"
       >m&#8322;</a
-      ><a name="2684"
-      > </a
-      ><a name="2685" href="Function.LeftInverse.html#2685" class="Bound"
+      > <a name="2685" href="Function.LeftInverse.html#2685" class="Bound"
       >t&#8321;</a
-      ><a name="2687"
-      > </a
-      ><a name="2688" href="Function.LeftInverse.html#2688" class="Bound"
+      > <a name="2688" href="Function.LeftInverse.html#2688" class="Bound"
       >t&#8322;</a
       ><a name="2690" class="Symbol"
       >}</a
-      ><a name="2691"
       >
-        </a
-      ><a name="2700" class="Symbol"
+        <a name="2700" class="Symbol"
       >{</a
       ><a name="2701" href="Function.LeftInverse.html#2701" class="Bound"
       >F</a
-      ><a name="2702"
-      > </a
-      ><a name="2703" class="Symbol"
+      > <a name="2703" class="Symbol"
       >:</a
-      ><a name="2704"
-      > </a
-      ><a name="2705" href="Relation.Binary.html#1908" class="Record"
+      > <a name="2705" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="2711"
-      > </a
-      ><a name="2712" href="Function.LeftInverse.html#2673" class="Bound"
+      > <a name="2712" href="Function.LeftInverse.html#2673" class="Bound"
       >f&#8321;</a
-      ><a name="2714"
-      > </a
-      ><a name="2715" href="Function.LeftInverse.html#2676" class="Bound"
+      > <a name="2715" href="Function.LeftInverse.html#2676" class="Bound"
       >f&#8322;</a
       ><a name="2717" class="Symbol"
       >}</a
-      ><a name="2718"
-      > </a
-      ><a name="2719" class="Symbol"
+      > <a name="2719" class="Symbol"
       >{</a
       ><a name="2720" href="Function.LeftInverse.html#2720" class="Bound"
       >M</a
-      ><a name="2721"
-      > </a
-      ><a name="2722" class="Symbol"
+      > <a name="2722" class="Symbol"
       >:</a
-      ><a name="2723"
-      > </a
-      ><a name="2724" href="Relation.Binary.html#1908" class="Record"
+      > <a name="2724" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="2730"
-      > </a
-      ><a name="2731" href="Function.LeftInverse.html#2679" class="Bound"
+      > <a name="2731" href="Function.LeftInverse.html#2679" class="Bound"
       >m&#8321;</a
-      ><a name="2733"
-      > </a
-      ><a name="2734" href="Function.LeftInverse.html#2682" class="Bound"
+      > <a name="2734" href="Function.LeftInverse.html#2682" class="Bound"
       >m&#8322;</a
       ><a name="2736" class="Symbol"
       >}</a
-      ><a name="2737"
-      > </a
-      ><a name="2738" class="Symbol"
+      > <a name="2738" class="Symbol"
       >{</a
       ><a name="2739" href="Function.LeftInverse.html#2739" class="Bound"
       >T</a
-      ><a name="2740"
-      > </a
-      ><a name="2741" class="Symbol"
+      > <a name="2741" class="Symbol"
       >:</a
-      ><a name="2742"
-      > </a
-      ><a name="2743" href="Relation.Binary.html#1908" class="Record"
+      > <a name="2743" href="Relation.Binary.html#Setoid" class="Record"
       >Setoid</a
-      ><a name="2749"
-      > </a
-      ><a name="2750" href="Function.LeftInverse.html#2685" class="Bound"
+      > <a name="2750" href="Function.LeftInverse.html#2685" class="Bound"
       >t&#8321;</a
-      ><a name="2752"
-      > </a
-      ><a name="2753" href="Function.LeftInverse.html#2688" class="Bound"
+      > <a name="2753" href="Function.LeftInverse.html#2688" class="Bound"
       >t&#8322;</a
       ><a name="2755" class="Symbol"
       >}</a
-      ><a name="2756"
-      > </a
-      ><a name="2757" class="Symbol"
+      > <a name="2757" class="Symbol"
       >&#8594;</a
-      ><a name="2758"
       >
-      </a
-      ><a name="2765" href="Function.LeftInverse.html#1041" class="Record"
+      <a name="2765" href="Function.LeftInverse.html#LeftInverse" class="Record"
       >LeftInverse</a
-      ><a name="2776"
-      > </a
-      ><a name="2777" href="Function.LeftInverse.html#2720" class="Bound"
+      > <a name="2777" href="Function.LeftInverse.html#2720" class="Bound"
       >M</a
-      ><a name="2778"
-      > </a
-      ><a name="2779" href="Function.LeftInverse.html#2739" class="Bound"
+      > <a name="2779" href="Function.LeftInverse.html#2739" class="Bound"
       >T</a
-      ><a name="2780"
-      > </a
-      ><a name="2781" class="Symbol"
+      > <a name="2781" class="Symbol"
       >&#8594;</a
-      ><a name="2782"
-      > </a
-      ><a name="2783" href="Function.LeftInverse.html#1041" class="Record"
+      > <a name="2783" href="Function.LeftInverse.html#LeftInverse" class="Record"
       >LeftInverse</a
-      ><a name="2794"
-      > </a
-      ><a name="2795" href="Function.LeftInverse.html#2701" class="Bound"
+      > <a name="2795" href="Function.LeftInverse.html#2701" class="Bound"
       >F</a
-      ><a name="2796"
-      > </a
-      ><a name="2797" href="Function.LeftInverse.html#2720" class="Bound"
+      > <a name="2797" href="Function.LeftInverse.html#2720" class="Bound"
       >M</a
-      ><a name="2798"
-      > </a
-      ><a name="2799" class="Symbol"
+      > <a name="2799" class="Symbol"
       >&#8594;</a
-      ><a name="2800"
-      > </a
-      ><a name="2801" href="Function.LeftInverse.html#1041" class="Record"
+      > <a name="2801" href="Function.LeftInverse.html#LeftInverse" class="Record"
       >LeftInverse</a
-      ><a name="2812"
-      > </a
-      ><a name="2813" href="Function.LeftInverse.html#2701" class="Bound"
+      > <a name="2813" href="Function.LeftInverse.html#2701" class="Bound"
       >F</a
-      ><a name="2814"
-      > </a
-      ><a name="2815" href="Function.LeftInverse.html#2739" class="Bound"
+      > <a name="2815" href="Function.LeftInverse.html#2739" class="Bound"
       >T</a
-      ><a name="2816"
       >
-</a
-      ><a name="2817" href="Function.LeftInverse.html#2664" class="Function Operator"
+<a name="2817" href="Function.LeftInverse.html#_&#8728;_" class="Function Operator"
       >_&#8728;_</a
-      ><a name="2820"
-      > </a
-      ><a name="2821" class="Symbol"
+      > <a name="2821" class="Symbol"
       >{</a
       ><a name="2822" class="Argument"
       >F</a
-      ><a name="2823"
-      > </a
-      ><a name="2824" class="Symbol"
+      > <a name="2824" class="Symbol"
       >=</a
-      ><a name="2825"
-      > </a
-      ><a name="2826" href="Function.LeftInverse.html#2826" class="Bound"
+      > <a name="2826" href="Function.LeftInverse.html#2826" class="Bound"
       >F</a
       ><a name="2827" class="Symbol"
       >}</a
-      ><a name="2828"
-      > </a
-      ><a name="2829" href="Function.LeftInverse.html#2829" class="Bound"
+      > <a name="2829" href="Function.LeftInverse.html#2829" class="Bound"
       >f</a
-      ><a name="2830"
-      > </a
-      ><a name="2831" href="Function.LeftInverse.html#2831" class="Bound"
+      > <a name="2831" href="Function.LeftInverse.html#2831" class="Bound"
       >g</a
-      ><a name="2832"
-      > </a
-      ><a name="2833" class="Symbol"
+      > <a name="2833" class="Symbol"
       >=</a
-      ><a name="2834"
-      > </a
-      ><a name="2835" class="Keyword"
+      > <a name="2835" class="Keyword"
       >record</a
-      ><a name="2841"
       >
-  </a
-      ><a name="2844" class="Symbol"
+  <a name="2844" class="Symbol"
       >{</a
-      ><a name="2845"
-      > </a
-      ><a name="2846" class="Field"
+      > <a name="2846" class="Field"
       >to</a
-      ><a name="2848"
-      >              </a
-      ><a name="2862" class="Symbol"
+      >              <a name="2862" class="Symbol"
       >=</a
-      ><a name="2863"
-      > </a
-      ><a name="2864" href="Function.LeftInverse.html#1191" class="Field"
+      > <a name="2864" href="Function.LeftInverse.html#LeftInverse.to" class="Field"
       >to</a
-      ><a name="2866"
-      >   </a
-      ><a name="2869" href="Function.LeftInverse.html#2829" class="Bound"
+      >   <a name="2869" href="Function.LeftInverse.html#2829" class="Bound"
       >f</a
-      ><a name="2870"
-      > </a
-      ><a name="2871" href="Function.Equality.html#1076" class="Function Operator"
+      > <a name="2871" href="Function.Equality.html#_&#10218;&#8728;&#10219;_" class="Function Operator"
       >&#10218;&#8728;&#10219;</a
-      ><a name="2874"
-      > </a
-      ><a name="2875" href="Function.LeftInverse.html#1191" class="Field"
+      > <a name="2875" href="Function.LeftInverse.html#LeftInverse.to" class="Field"
       >to</a
-      ><a name="2877"
-      >   </a
-      ><a name="2880" href="Function.LeftInverse.html#2831" class="Bound"
+      >   <a name="2880" href="Function.LeftInverse.html#2831" class="Bound"
       >g</a
-      ><a name="2881"
       >
-  </a
-      ><a name="2884" class="Symbol"
+  <a name="2884" class="Symbol"
       >;</a
-      ><a name="2885"
-      > </a
-      ><a name="2886" class="Field"
+      > <a name="2886" class="Field"
       >from</a
-      ><a name="2890"
-      >            </a
-      ><a name="2902" class="Symbol"
+      >            <a name="2902" class="Symbol"
       >=</a
-      ><a name="2903"
-      > </a
-      ><a name="2904" href="Function.LeftInverse.html#1223" class="Field"
+      > <a name="2904" href="Function.LeftInverse.html#LeftInverse.from" class="Field"
       >from</a
-      ><a name="2908"
-      > </a
-      ><a name="2909" href="Function.LeftInverse.html#2831" class="Bound"
+      > <a name="2909" href="Function.LeftInverse.html#2831" class="Bound"
       >g</a
-      ><a name="2910"
-      > </a
-      ><a name="2911" href="Function.Equality.html#1076" class="Function Operator"
+      > <a name="2911" href="Function.Equality.html#_&#10218;&#8728;&#10219;_" class="Function Operator"
       >&#10218;&#8728;&#10219;</a
-      ><a name="2914"
-      > </a
-      ><a name="2915" href="Function.LeftInverse.html#1223" class="Field"
+      > <a name="2915" href="Function.LeftInverse.html#LeftInverse.from" class="Field"
       >from</a
-      ><a name="2919"
-      > </a
-      ><a name="2920" href="Function.LeftInverse.html#2829" class="Bound"
+      > <a name="2920" href="Function.LeftInverse.html#2829" class="Bound"
       >f</a
-      ><a name="2921"
       >
-  </a
-      ><a name="2924" class="Symbol"
+  <a name="2924" class="Symbol"
       >;</a
-      ><a name="2925"
-      > </a
-      ><a name="2926" class="Field"
+      > <a name="2926" class="Field"
       >left-inverse-of</a
-      ><a name="2941"
-      > </a
-      ><a name="2942" class="Symbol"
+      > <a name="2942" class="Symbol"
       >=</a
-      ><a name="2943"
-      > </a
-      ><a name="2944" class="Symbol"
+      > <a name="2944" class="Symbol"
       >&#955;</a
-      ><a name="2945"
-      > </a
-      ><a name="2946" href="Function.LeftInverse.html#2946" class="Bound"
+      > <a name="2946" href="Function.LeftInverse.html#2946" class="Bound"
       >x</a
-      ><a name="2947"
-      > </a
-      ><a name="2948" class="Symbol"
+      > <a name="2948" class="Symbol"
       >&#8594;</a
-      ><a name="2949"
-      > </a
-      ><a name="2950" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      > <a name="2950" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
       >begin</a
-      ><a name="2955"
       >
-      </a
-      ><a name="2962" href="Function.LeftInverse.html#1223" class="Field"
+      <a name="2962" href="Function.LeftInverse.html#LeftInverse.from" class="Field"
       >from</a
-      ><a name="2966"
-      > </a
-      ><a name="2967" href="Function.LeftInverse.html#2831" class="Bound"
+      > <a name="2967" href="Function.LeftInverse.html#2831" class="Bound"
       >g</a
-      ><a name="2968"
-      > </a
-      ><a name="2969" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="2969" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="2972"
-      > </a
-      ><a name="2973" class="Symbol"
+      > <a name="2973" class="Symbol"
       >(</a
-      ><a name="2974" href="Function.LeftInverse.html#1223" class="Field"
+      ><a name="2974" href="Function.LeftInverse.html#LeftInverse.from" class="Field"
       >from</a
-      ><a name="2978"
-      > </a
-      ><a name="2979" href="Function.LeftInverse.html#2829" class="Bound"
+      > <a name="2979" href="Function.LeftInverse.html#2829" class="Bound"
       >f</a
-      ><a name="2980"
-      > </a
-      ><a name="2981" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="2981" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="2984"
-      > </a
-      ><a name="2985" class="Symbol"
+      > <a name="2985" class="Symbol"
       >(</a
-      ><a name="2986" href="Function.LeftInverse.html#1191" class="Field"
+      ><a name="2986" href="Function.LeftInverse.html#LeftInverse.to" class="Field"
       >to</a
-      ><a name="2988"
-      > </a
-      ><a name="2989" href="Function.LeftInverse.html#2829" class="Bound"
+      > <a name="2989" href="Function.LeftInverse.html#2829" class="Bound"
       >f</a
-      ><a name="2990"
-      > </a
-      ><a name="2991" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="2991" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="2994"
-      > </a
-      ><a name="2995" class="Symbol"
+      > <a name="2995" class="Symbol"
       >(</a
-      ><a name="2996" href="Function.LeftInverse.html#1191" class="Field"
+      ><a name="2996" href="Function.LeftInverse.html#LeftInverse.to" class="Field"
       >to</a
-      ><a name="2998"
-      > </a
-      ><a name="2999" href="Function.LeftInverse.html#2831" class="Bound"
+      > <a name="2999" href="Function.LeftInverse.html#2831" class="Bound"
       >g</a
-      ><a name="3000"
-      > </a
-      ><a name="3001" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="3001" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="3004"
-      > </a
-      ><a name="3005" href="Function.LeftInverse.html#2946" class="Bound"
+      > <a name="3005" href="Function.LeftInverse.html#2946" class="Bound"
       >x</a
       ><a name="3006" class="Symbol"
       >)))</a
-      ><a name="3009"
-      >  </a
-      ><a name="3011" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >  <a name="3011" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="3013"
-      > </a
-      ><a name="3014" href="Function.Equality.html#745" class="Field"
+      > <a name="3014" href="Function.Equality.html#&#928;.cong" class="Field"
       >Eq.cong</a
-      ><a name="3021"
-      > </a
-      ><a name="3022" class="Symbol"
+      > <a name="3022" class="Symbol"
       >(</a
-      ><a name="3023" href="Function.LeftInverse.html#1223" class="Field"
+      ><a name="3023" href="Function.LeftInverse.html#LeftInverse.from" class="Field"
       >from</a
-      ><a name="3027"
-      > </a
-      ><a name="3028" href="Function.LeftInverse.html#2831" class="Bound"
+      > <a name="3028" href="Function.LeftInverse.html#2831" class="Bound"
       >g</a
       ><a name="3029" class="Symbol"
       >)</a
-      ><a name="3030"
-      > </a
-      ><a name="3031" class="Symbol"
+      > <a name="3031" class="Symbol"
       >(</a
-      ><a name="3032" href="Function.LeftInverse.html#1255" class="Field"
+      ><a name="3032" href="Function.LeftInverse.html#LeftInverse.left-inverse-of" class="Field"
       >left-inverse-of</a
-      ><a name="3047"
-      > </a
-      ><a name="3048" href="Function.LeftInverse.html#2829" class="Bound"
+      > <a name="3048" href="Function.LeftInverse.html#2829" class="Bound"
       >f</a
-      ><a name="3049"
-      > </a
-      ><a name="3050" class="Symbol"
+      > <a name="3050" class="Symbol"
       >(</a
-      ><a name="3051" href="Function.LeftInverse.html#1191" class="Field"
+      ><a name="3051" href="Function.LeftInverse.html#LeftInverse.to" class="Field"
       >to</a
-      ><a name="3053"
-      > </a
-      ><a name="3054" href="Function.LeftInverse.html#2831" class="Bound"
+      > <a name="3054" href="Function.LeftInverse.html#2831" class="Bound"
       >g</a
-      ><a name="3055"
-      > </a
-      ><a name="3056" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="3056" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="3059"
-      > </a
-      ><a name="3060" href="Function.LeftInverse.html#2946" class="Bound"
+      > <a name="3060" href="Function.LeftInverse.html#2946" class="Bound"
       >x</a
       ><a name="3061" class="Symbol"
       >))</a
-      ><a name="3063"
-      > </a
-      ><a name="3064" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="3064" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="3065"
       >
-      </a
-      ><a name="3072" href="Function.LeftInverse.html#1223" class="Field"
+      <a name="3072" href="Function.LeftInverse.html#LeftInverse.from" class="Field"
       >from</a
-      ><a name="3076"
-      > </a
-      ><a name="3077" href="Function.LeftInverse.html#2831" class="Bound"
+      > <a name="3077" href="Function.LeftInverse.html#2831" class="Bound"
       >g</a
-      ><a name="3078"
-      > </a
-      ><a name="3079" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="3079" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="3082"
-      > </a
-      ><a name="3083" class="Symbol"
+      > <a name="3083" class="Symbol"
       >(</a
-      ><a name="3084" href="Function.LeftInverse.html#1191" class="Field"
+      ><a name="3084" href="Function.LeftInverse.html#LeftInverse.to" class="Field"
       >to</a
-      ><a name="3086"
-      > </a
-      ><a name="3087" href="Function.LeftInverse.html#2831" class="Bound"
+      > <a name="3087" href="Function.LeftInverse.html#2831" class="Bound"
       >g</a
-      ><a name="3088"
-      > </a
-      ><a name="3089" href="Function.Equality.html#681" class="Field Operator"
+      > <a name="3089" href="Function.Equality.html#&#928;._&#10216;$&#10217;_" class="Field Operator"
       >&#10216;$&#10217;</a
-      ><a name="3092"
-      > </a
-      ><a name="3093" href="Function.LeftInverse.html#2946" class="Bound"
+      > <a name="3093" href="Function.LeftInverse.html#2946" class="Bound"
       >x</a
       ><a name="3094" class="Symbol"
       >)</a
-      ><a name="3095"
-      >                          </a
-      ><a name="3121" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >                          <a name="3121" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="3123"
-      > </a
-      ><a name="3124" href="Function.LeftInverse.html#1255" class="Field"
+      > <a name="3124" href="Function.LeftInverse.html#LeftInverse.left-inverse-of" class="Field"
       >left-inverse-of</a
-      ><a name="3139"
-      > </a
-      ><a name="3140" href="Function.LeftInverse.html#2831" class="Bound"
+      > <a name="3140" href="Function.LeftInverse.html#2831" class="Bound"
       >g</a
-      ><a name="3141"
-      > </a
-      ><a name="3142" href="Function.LeftInverse.html#2946" class="Bound"
+      > <a name="3142" href="Function.LeftInverse.html#2946" class="Bound"
       >x</a
-      ><a name="3143"
-      > </a
-      ><a name="3144" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="3144" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="3145"
       >
-      </a
-      ><a name="3152" href="Function.LeftInverse.html#2946" class="Bound"
+      <a name="3152" href="Function.LeftInverse.html#2946" class="Bound"
       >x</a
-      ><a name="3153"
-      >                                                </a
-      ><a name="3201" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >                                                <a name="3201" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
       >&#8718;</a
-      ><a name="3202"
       >
-  </a
-      ><a name="3205" class="Symbol"
+  <a name="3205" class="Symbol"
       >}</a
-      ><a name="3206"
       >
-  </a
-      ><a name="3209" class="Keyword"
+  <a name="3209" class="Keyword"
       >where</a
-      ><a name="3214"
       >
-  </a
-      ><a name="3217" class="Keyword"
+  <a name="3217" class="Keyword"
       >open</a
-      ><a name="3221"
-      > </a
-      ><a name="3222" href="Function.LeftInverse.html#1041" class="Module"
+      > <a name="3222" href="Function.LeftInverse.html#LeftInverse" class="Module"
       >LeftInverse</a
-      ><a name="3233"
       >
-  </a
-      ><a name="3236" class="Keyword"
+  <a name="3236" class="Keyword"
       >open</a
-      ><a name="3240"
-      > </a
-      ><a name="3241" href="Relation.Binary.EqReasoning.html#1" class="Module"
+      > <a name="3241" href="Relation.Binary.EqReasoning.html" class="Module"
       >EqReasoning</a
-      ><a name="3252"
-      > </a
-      ><a name="3253" href="Function.LeftInverse.html#2826" class="Bound"
+      > <a name="3253" href="Function.LeftInverse.html#2826" class="Bound"
       >F</a
-      ><a name="3254"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

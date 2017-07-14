@@ -11,1550 +11,910 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Some examples showing how the AVL tree module can be used</a
-      ><a name="166"
       >
-</a
-      ><a name="167" class="Comment"
+<a name="167" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="239"
       >
 
-</a
-      ><a name="241" class="Keyword"
+<a name="241" class="Keyword"
       >module</a
-      ><a name="247"
-      > </a
-      ><a name="248" href="README.AVL.html#1" class="Module"
+      > <a name="248" href="README.AVL.html" class="Module"
       >README.AVL</a
-      ><a name="258"
-      > </a
-      ><a name="259" class="Keyword"
+      > <a name="259" class="Keyword"
       >where</a
-      ><a name="264"
       >
 
-</a
-      ><a name="266" class="Comment"
+<a name="266" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="338"
       >
-</a
-      ><a name="339" class="Comment"
+<a name="339" class="Comment"
       >-- Setup</a
-      ><a name="347"
       >
 
-</a
-      ><a name="349" class="Comment"
+<a name="349" class="Comment"
       >-- AVL trees are defined in Data.AVL.</a
-      ><a name="386"
       >
 
-</a
-      ><a name="388" class="Keyword"
+<a name="388" class="Keyword"
       >import</a
-      ><a name="394"
-      > </a
-      ><a name="395" href="Data.AVL.html#1" class="Module"
+      > <a name="395" href="Data.AVL.html" class="Module"
       >Data.AVL</a
-      ><a name="403"
       >
 
-</a
-      ><a name="405" class="Comment"
+<a name="405" class="Comment"
       >-- This module is parametrised by keys, which have to form a (strict)</a
-      ><a name="474"
       >
-</a
-      ><a name="475" class="Comment"
+<a name="475" class="Comment"
       >-- total order, and values, which are indexed by keys. Let us use</a
-      ><a name="540"
       >
-</a
-      ><a name="541" class="Comment"
+<a name="541" class="Comment"
       >-- natural numbers as keys and vectors of strings as values.</a
-      ><a name="601"
       >
 
-</a
-      ><a name="603" class="Keyword"
+<a name="603" class="Keyword"
       >import</a
-      ><a name="609"
-      > </a
-      ><a name="610" href="Data.Nat.Properties.html#1" class="Module"
+      > <a name="610" href="Data.Nat.Properties.html" class="Module"
       >Data.Nat.Properties</a
-      ><a name="629"
-      > </a
-      ><a name="630" class="Symbol"
+      > <a name="630" class="Symbol"
       >as</a
-      ><a name="632"
-      > </a
-      ><a name="633" class="Module"
+      > <a name="633" class="Module"
       >&#8469;</a
-      ><a name="634"
       >
-</a
-      ><a name="635" class="Keyword"
+<a name="635" class="Keyword"
       >open</a
-      ><a name="639"
-      > </a
-      ><a name="640" class="Keyword"
+      > <a name="640" class="Keyword"
       >import</a
-      ><a name="646"
-      > </a
-      ><a name="647" href="Data.String.html#1" class="Module"
+      > <a name="647" href="Data.String.html" class="Module"
       >Data.String</a
-      ><a name="658"
-      > </a
-      ><a name="659" class="Keyword"
+      > <a name="659" class="Keyword"
       >using</a
-      ><a name="664"
-      > </a
-      ><a name="665" class="Symbol"
+      > <a name="665" class="Symbol"
       >(</a
-      ><a name="666" href="Agda.Builtin.String.html#165" class="Postulate"
+      ><a name="666" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
       ><a name="672" class="Symbol"
       >)</a
-      ><a name="673"
       >
-</a
-      ><a name="674" class="Keyword"
+<a name="674" class="Keyword"
       >open</a
-      ><a name="678"
-      > </a
-      ><a name="679" class="Keyword"
+      > <a name="679" class="Keyword"
       >import</a
-      ><a name="685"
-      > </a
-      ><a name="686" href="Data.Vec.html#1" class="Module"
+      > <a name="686" href="Data.Vec.html" class="Module"
       >Data.Vec</a
-      ><a name="694"
-      > </a
-      ><a name="695" class="Keyword"
+      > <a name="695" class="Keyword"
       >using</a
-      ><a name="700"
-      > </a
-      ><a name="701" class="Symbol"
+      > <a name="701" class="Symbol"
       >(</a
-      ><a name="702" href="Data.Vec.html#609" class="Datatype"
+      ><a name="702" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
       ><a name="705" class="Symbol"
       >;</a
-      ><a name="706"
-      > </a
-      ><a name="707" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="707" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >_&#8759;_</a
       ><a name="710" class="Symbol"
       >;</a
-      ><a name="711"
-      > </a
-      ><a name="712" href="Data.Vec.html#649" class="InductiveConstructor"
+      > <a name="712" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
       >[]</a
       ><a name="714" class="Symbol"
       >)</a
-      ><a name="715"
       >
-</a
-      ><a name="716" class="Keyword"
+<a name="716" class="Keyword"
       >open</a
-      ><a name="720"
-      > </a
-      ><a name="721" class="Keyword"
+      > <a name="721" class="Keyword"
       >import</a
-      ><a name="727"
-      > </a
-      ><a name="728" href="Relation.Binary.html#1" class="Module"
+      > <a name="728" href="Relation.Binary.html" class="Module"
       >Relation.Binary</a
-      ><a name="743"
-      > </a
-      ><a name="744" class="Keyword"
+      > <a name="744" class="Keyword"
       >using</a
-      ><a name="749"
-      > </a
-      ><a name="750" class="Symbol"
+      > <a name="750" class="Symbol"
       >(</a
       ><a name="751" class="Keyword"
       >module</a
-      ><a name="757"
-      > </a
-      ><a name="758" href="Relation.Binary.html#233" class="Module"
+      > <a name="758" href="Relation.Binary.html#Relation" class="Module"
       >StrictTotalOrder</a
       ><a name="774" class="Symbol"
       >)</a
-      ><a name="775"
       >
 
-</a
-      ><a name="777" class="Keyword"
+<a name="777" class="Keyword"
       >open</a
-      ><a name="781"
-      > </a
-      ><a name="782" href="Data.AVL.html#1" class="Module"
+      > <a name="782" href="Data.AVL.html" class="Module"
       >Data.AVL</a
-      ><a name="790"
-      > </a
-      ><a name="791" class="Symbol"
+      > <a name="791" class="Symbol"
       >(</a
-      ><a name="792" href="Data.Vec.html#609" class="Datatype"
+      ><a name="792" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
-      ><a name="795"
-      > </a
-      ><a name="796" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="796" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
       ><a name="802" class="Symbol"
       >)</a
-      ><a name="803"
       >
-              </a
-      ><a name="818" class="Symbol"
+              <a name="818" class="Symbol"
       >(</a
-      ><a name="819" href="Relation.Binary.html#11194" class="Field"
+      ><a name="819" href="Relation.Binary.html#StrictTotalOrder.isStrictTotalOrder" class="Field"
       >StrictTotalOrder.isStrictTotalOrder</a
-      ><a name="854"
-      > </a
-      ><a name="855" href="Data.Nat.Properties.html#10497" class="Function"
+      > <a name="855" href="Data.Nat.Properties.html#strictTotalOrder" class="Function"
       >&#8469;.strictTotalOrder</a
       ><a name="873" class="Symbol"
       >)</a
-      ><a name="874"
       >
 
-</a
-      ><a name="876" class="Comment"
+<a name="876" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="948"
       >
-</a
-      ><a name="949" class="Comment"
+<a name="949" class="Comment"
       >-- Construction of trees</a
-      ><a name="973"
       >
 
-</a
-      ><a name="975" class="Comment"
+<a name="975" class="Comment"
       >-- Some values.</a
-      ><a name="990"
       >
 
-</a
-      ><a name="992" href="README.AVL.html#992" class="Function"
+<a name="v&#8321;" href="README.AVL.html#v&#8321;" class="Function"
       >v&#8321;</a
-      ><a name="994"
-      >  </a
-      ><a name="996" class="Symbol"
+      >  <a name="996" class="Symbol"
       >=</a
-      ><a name="997"
-      > </a
-      ><a name="998" class="String"
+      > <a name="998" class="String"
       >&quot;cepa&quot;</a
-      ><a name="1004"
-      > </a
-      ><a name="1005" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1005" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1006"
-      > </a
-      ><a name="1007" href="Data.Vec.html#649" class="InductiveConstructor"
+      > <a name="1007" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1009"
       >
-</a
-      ><a name="1010" href="README.AVL.html#1010" class="Function"
+<a name="v&#8321;&#8242;" href="README.AVL.html#v&#8321;&#8242;" class="Function"
       >v&#8321;&#8242;</a
-      ><a name="1013"
-      > </a
-      ><a name="1014" class="Symbol"
+      > <a name="1014" class="Symbol"
       >=</a
-      ><a name="1015"
-      > </a
-      ><a name="1016" class="String"
+      > <a name="1016" class="String"
       >&quot;depa&quot;</a
-      ><a name="1022"
-      > </a
-      ><a name="1023" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1023" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1024"
-      > </a
-      ><a name="1025" href="Data.Vec.html#649" class="InductiveConstructor"
+      > <a name="1025" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1027"
       >
-</a
-      ><a name="1028" href="README.AVL.html#1028" class="Function"
+<a name="v&#8322;" href="README.AVL.html#v&#8322;" class="Function"
       >v&#8322;</a
-      ><a name="1030"
-      >  </a
-      ><a name="1032" class="Symbol"
+      >  <a name="1032" class="Symbol"
       >=</a
-      ><a name="1033"
-      > </a
-      ><a name="1034" class="String"
+      > <a name="1034" class="String"
       >&quot;apa&quot;</a
-      ><a name="1039"
-      > </a
-      ><a name="1040" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1040" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1041"
-      > </a
-      ><a name="1042" class="String"
+      > <a name="1042" class="String"
       >&quot;bepa&quot;</a
-      ><a name="1048"
-      > </a
-      ><a name="1049" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1049" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1050"
-      > </a
-      ><a name="1051" href="Data.Vec.html#649" class="InductiveConstructor"
+      > <a name="1051" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1053"
       >
 
-</a
-      ><a name="1055" class="Comment"
+<a name="1055" class="Comment"
       >-- Empty and singleton trees.</a
-      ><a name="1084"
       >
 
-</a
-      ><a name="1086" href="README.AVL.html#1086" class="Function"
+<a name="t&#8320;" href="README.AVL.html#t&#8320;" class="Function"
       >t&#8320;</a
-      ><a name="1088"
-      > </a
-      ><a name="1089" class="Symbol"
+      > <a name="1089" class="Symbol"
       >:</a
-      ><a name="1090"
-      > </a
-      ><a name="1091" href="Data.AVL.html#12566" class="Datatype"
+      > <a name="1091" href="Data.AVL.html#12566" class="Datatype"
       >Tree</a
-      ><a name="1095"
       >
-</a
-      ><a name="1096" href="README.AVL.html#1086" class="Function"
+<a name="1096" href="README.AVL.html#t&#8320;" class="Function"
       >t&#8320;</a
-      ><a name="1098"
-      > </a
-      ><a name="1099" class="Symbol"
+      > <a name="1099" class="Symbol"
       >=</a
-      ><a name="1100"
-      > </a
-      ><a name="1101" href="Data.AVL.html#12675" class="Function"
+      > <a name="1101" href="Data.AVL.html#12675" class="Function"
       >empty</a
-      ><a name="1106"
       >
 
-</a
-      ><a name="1108" href="README.AVL.html#1108" class="Function"
+<a name="t&#8321;" href="README.AVL.html#t&#8321;" class="Function"
       >t&#8321;</a
-      ><a name="1110"
-      > </a
-      ><a name="1111" class="Symbol"
+      > <a name="1111" class="Symbol"
       >:</a
-      ><a name="1112"
-      > </a
-      ><a name="1113" href="Data.AVL.html#12566" class="Datatype"
+      > <a name="1113" href="Data.AVL.html#12566" class="Datatype"
       >Tree</a
-      ><a name="1117"
       >
-</a
-      ><a name="1118" href="README.AVL.html#1108" class="Function"
+<a name="1118" href="README.AVL.html#t&#8321;" class="Function"
       >t&#8321;</a
-      ><a name="1120"
-      > </a
-      ><a name="1121" class="Symbol"
+      > <a name="1121" class="Symbol"
       >=</a
-      ><a name="1122"
-      > </a
-      ><a name="1123" href="Data.AVL.html#12720" class="Function"
+      > <a name="1123" href="Data.AVL.html#12720" class="Function"
       >singleton</a
-      ><a name="1132"
-      > </a
-      ><a name="1133" class="Number"
+      > <a name="1133" class="Number"
       >2</a
-      ><a name="1134"
-      > </a
-      ><a name="1135" href="README.AVL.html#1028" class="Function"
+      > <a name="1135" href="README.AVL.html#v&#8322;" class="Function"
       >v&#8322;</a
-      ><a name="1137"
       >
 
-</a
-      ><a name="1139" class="Comment"
+<a name="1139" class="Comment"
       >-- Insertion of a key-value pair into a tree.</a
-      ><a name="1184"
       >
 
-</a
-      ><a name="1186" href="README.AVL.html#1186" class="Function"
+<a name="t&#8322;" href="README.AVL.html#t&#8322;" class="Function"
       >t&#8322;</a
-      ><a name="1188"
-      > </a
-      ><a name="1189" class="Symbol"
+      > <a name="1189" class="Symbol"
       >=</a
-      ><a name="1190"
-      > </a
-      ><a name="1191" href="Data.AVL.html#12807" class="Function"
+      > <a name="1191" href="Data.AVL.html#12807" class="Function"
       >insert</a
-      ><a name="1197"
-      > </a
-      ><a name="1198" class="Number"
+      > <a name="1198" class="Number"
       >1</a
-      ><a name="1199"
-      > </a
-      ><a name="1200" href="README.AVL.html#992" class="Function"
+      > <a name="1200" href="README.AVL.html#v&#8321;" class="Function"
       >v&#8321;</a
-      ><a name="1202"
-      > </a
-      ><a name="1203" href="README.AVL.html#1108" class="Function"
+      > <a name="1203" href="README.AVL.html#t&#8321;" class="Function"
       >t&#8321;</a
-      ><a name="1205"
       >
 
-</a
-      ><a name="1207" class="Comment"
+<a name="1207" class="Comment"
       >-- If you insert a key-value pair and the key already exists in the</a
-      ><a name="1274"
       >
-</a
-      ><a name="1275" class="Comment"
+<a name="1275" class="Comment"
       >-- tree, then the old value is thrown away.</a
-      ><a name="1318"
       >
 
-</a
-      ><a name="1320" href="README.AVL.html#1320" class="Function"
+<a name="t&#8322;&#8242;" href="README.AVL.html#t&#8322;&#8242;" class="Function"
       >t&#8322;&#8242;</a
-      ><a name="1323"
-      > </a
-      ><a name="1324" class="Symbol"
+      > <a name="1324" class="Symbol"
       >=</a
-      ><a name="1325"
-      > </a
-      ><a name="1326" href="Data.AVL.html#12807" class="Function"
+      > <a name="1326" href="Data.AVL.html#12807" class="Function"
       >insert</a
-      ><a name="1332"
-      > </a
-      ><a name="1333" class="Number"
+      > <a name="1333" class="Number"
       >1</a
-      ><a name="1334"
-      > </a
-      ><a name="1335" href="README.AVL.html#1010" class="Function"
+      > <a name="1335" href="README.AVL.html#v&#8321;&#8242;" class="Function"
       >v&#8321;&#8242;</a
-      ><a name="1338"
-      > </a
-      ><a name="1339" href="README.AVL.html#1186" class="Function"
+      > <a name="1339" href="README.AVL.html#t&#8322;" class="Function"
       >t&#8322;</a
-      ><a name="1341"
       >
 
-</a
-      ><a name="1343" class="Comment"
+<a name="1343" class="Comment"
       >-- Deletion of the mapping for a certain key.</a
-      ><a name="1388"
       >
 
-</a
-      ><a name="1390" href="README.AVL.html#1390" class="Function"
+<a name="t&#8323;" href="README.AVL.html#t&#8323;" class="Function"
       >t&#8323;</a
-      ><a name="1392"
-      > </a
-      ><a name="1393" class="Symbol"
+      > <a name="1393" class="Symbol"
       >=</a
-      ><a name="1394"
-      > </a
-      ><a name="1395" href="Data.AVL.html#13076" class="Function"
+      > <a name="1395" href="Data.AVL.html#13076" class="Function"
       >delete</a
-      ><a name="1401"
-      > </a
-      ><a name="1402" class="Number"
+      > <a name="1402" class="Number"
       >2</a
-      ><a name="1403"
-      > </a
-      ><a name="1404" href="README.AVL.html#1186" class="Function"
+      > <a name="1404" href="README.AVL.html#t&#8322;" class="Function"
       >t&#8322;</a
-      ><a name="1406"
       >
 
-</a
-      ><a name="1408" class="Comment"
+<a name="1408" class="Comment"
       >-- Conversion of a list of key-value mappings to a tree.</a
-      ><a name="1464"
       >
 
-</a
-      ><a name="1466" class="Keyword"
+<a name="1466" class="Keyword"
       >open</a
-      ><a name="1470"
-      > </a
-      ><a name="1471" class="Keyword"
+      > <a name="1471" class="Keyword"
       >import</a
-      ><a name="1477"
-      > </a
-      ><a name="1478" href="Data.List.html#1" class="Module"
+      > <a name="1478" href="Data.List.html" class="Module"
       >Data.List</a
-      ><a name="1487"
-      > </a
-      ><a name="1488" class="Keyword"
+      > <a name="1488" class="Keyword"
       >using</a
-      ><a name="1493"
-      > </a
-      ><a name="1494" class="Symbol"
+      > <a name="1494" class="Symbol"
       >(</a
-      ><a name="1495" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      ><a name="1495" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >_&#8759;_</a
       ><a name="1498" class="Symbol"
       >;</a
-      ><a name="1499"
-      > </a
-      ><a name="1500" href="Data.List.Base.html#5519" class="InductiveConstructor"
+      > <a name="1500" href="Data.List.Base.html#InitLast.[]" class="InductiveConstructor"
       >[]</a
       ><a name="1502" class="Symbol"
       >)</a
-      ><a name="1503"
       >
-</a
-      ><a name="1504" class="Keyword"
+<a name="1504" class="Keyword"
       >open</a
-      ><a name="1508"
-      > </a
-      ><a name="1509" class="Keyword"
+      > <a name="1509" class="Keyword"
       >import</a
-      ><a name="1515"
-      > </a
-      ><a name="1516" href="Data.Product.html#1" class="Module"
+      > <a name="1516" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="1528"
-      > </a
-      ><a name="1529" class="Symbol"
+      > <a name="1529" class="Symbol"
       >as</a
-      ><a name="1531"
-      > </a
-      ><a name="1532" class="Module"
+      > <a name="1532" class="Module"
       >Prod</a
-      ><a name="1536"
-      > </a
-      ><a name="1537" class="Keyword"
+      > <a name="1537" class="Keyword"
       >using</a
-      ><a name="1542"
-      > </a
-      ><a name="1543" class="Symbol"
+      > <a name="1543" class="Symbol"
       >(</a
-      ><a name="1544" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      ><a name="1544" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >_,_</a
       ><a name="1547" class="Symbol"
       >;</a
-      ><a name="1548"
-      > </a
-      ><a name="1549" href="Data.Product.html#1147" class="Function Operator"
+      > <a name="1549" href="Data.Product.html#_,&#8242;_" class="Function Operator"
       >_,&#8242;_</a
       ><a name="1553" class="Symbol"
       >)</a
-      ><a name="1554"
       >
 
-</a
-      ><a name="1556" href="README.AVL.html#1556" class="Function"
+<a name="t&#8324;" href="README.AVL.html#t&#8324;" class="Function"
       >t&#8324;</a
-      ><a name="1558"
-      > </a
-      ><a name="1559" class="Symbol"
+      > <a name="1559" class="Symbol"
       >=</a
-      ><a name="1560"
-      > </a
-      ><a name="1561" href="Data.AVL.html#13846" class="Function"
+      > <a name="1561" href="Data.AVL.html#13846" class="Function"
       >fromList</a
-      ><a name="1569"
-      > </a
-      ><a name="1570" class="Symbol"
+      > <a name="1570" class="Symbol"
       >((</a
       ><a name="1572" class="Number"
       >2</a
-      ><a name="1573"
-      > </a
-      ><a name="1574" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="1574" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1575"
-      > </a
-      ><a name="1576" href="README.AVL.html#1028" class="Function"
+      > <a name="1576" href="README.AVL.html#v&#8322;" class="Function"
       >v&#8322;</a
       ><a name="1578" class="Symbol"
       >)</a
-      ><a name="1579"
-      > </a
-      ><a name="1580" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      > <a name="1580" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1581"
-      > </a
-      ><a name="1582" class="Symbol"
+      > <a name="1582" class="Symbol"
       >(</a
       ><a name="1583" class="Number"
       >1</a
-      ><a name="1584"
-      > </a
-      ><a name="1585" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="1585" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1586"
-      > </a
-      ><a name="1587" href="README.AVL.html#992" class="Function"
+      > <a name="1587" href="README.AVL.html#v&#8321;" class="Function"
       >v&#8321;</a
       ><a name="1589" class="Symbol"
       >)</a
-      ><a name="1590"
-      > </a
-      ><a name="1591" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      > <a name="1591" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1592"
-      > </a
-      ><a name="1593" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      > <a name="1593" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
       >[]</a
       ><a name="1595" class="Symbol"
       >)</a
-      ><a name="1596"
       >
 
-</a
-      ><a name="1598" class="Comment"
+<a name="1598" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="1670"
       >
-</a
-      ><a name="1671" class="Comment"
+<a name="1671" class="Comment"
       >-- Queries</a
-      ><a name="1681"
       >
 
-</a
-      ><a name="1683" class="Comment"
+<a name="1683" class="Comment"
       >-- Let us formulate queries as unit tests.</a
-      ><a name="1725"
       >
 
-</a
-      ><a name="1727" class="Keyword"
+<a name="1727" class="Keyword"
       >open</a
-      ><a name="1731"
-      > </a
-      ><a name="1732" class="Keyword"
+      > <a name="1732" class="Keyword"
       >import</a
-      ><a name="1738"
-      > </a
-      ><a name="1739" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      > <a name="1739" href="Relation.Binary.PropositionalEquality.html" class="Module"
       >Relation.Binary.PropositionalEquality</a
-      ><a name="1776"
-      > </a
-      ><a name="1777" class="Keyword"
+      > <a name="1777" class="Keyword"
       >using</a
-      ><a name="1782"
-      > </a
-      ><a name="1783" class="Symbol"
+      > <a name="1783" class="Symbol"
       >(</a
-      ><a name="1784" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      ><a name="1784" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >_&#8801;_</a
       ><a name="1787" class="Symbol"
       >;</a
-      ><a name="1788"
-      > </a
-      ><a name="1789" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="1789" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
       ><a name="1793" class="Symbol"
       >)</a
-      ><a name="1794"
       >
 
-</a
-      ><a name="1796" class="Comment"
+<a name="1796" class="Comment"
       >-- Searching for a key.</a
-      ><a name="1819"
       >
 
-</a
-      ><a name="1821" class="Keyword"
+<a name="1821" class="Keyword"
       >open</a
-      ><a name="1825"
-      > </a
-      ><a name="1826" class="Keyword"
+      > <a name="1826" class="Keyword"
       >import</a
-      ><a name="1832"
-      > </a
-      ><a name="1833" href="Data.Bool.Base.html#1" class="Module"
+      > <a name="1833" href="Data.Bool.Base.html" class="Module"
       >Data.Bool.Base</a
-      ><a name="1847"
-      > </a
-      ><a name="1848" class="Keyword"
+      > <a name="1848" class="Keyword"
       >using</a
-      ><a name="1853"
-      > </a
-      ><a name="1854" class="Symbol"
+      > <a name="1854" class="Symbol"
       >(</a
-      ><a name="1855" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor"
+      ><a name="1855" href="Agda.Builtin.Bool.html#Bool.true" class="InductiveConstructor"
       >true</a
       ><a name="1859" class="Symbol"
       >;</a
-      ><a name="1860"
-      > </a
-      ><a name="1861" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor"
+      > <a name="1861" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor"
       >false</a
       ><a name="1866" class="Symbol"
       >)</a
-      ><a name="1867"
       >
-</a
-      ><a name="1868" class="Keyword"
+<a name="1868" class="Keyword"
       >open</a
-      ><a name="1872"
-      > </a
-      ><a name="1873" class="Keyword"
+      > <a name="1873" class="Keyword"
       >import</a
-      ><a name="1879"
-      > </a
-      ><a name="1880" href="Data.Maybe.Base.html#1" class="Module"
+      > <a name="1880" href="Data.Maybe.Base.html" class="Module"
       >Data.Maybe.Base</a
-      ><a name="1895"
-      > </a
-      ><a name="1896" class="Symbol"
+      > <a name="1896" class="Symbol"
       >as</a
-      ><a name="1898"
-      > </a
-      ><a name="1899" class="Module"
+      > <a name="1899" class="Module"
       >Maybe</a
-      ><a name="1904"
-      > </a
-      ><a name="1905" class="Keyword"
+      > <a name="1905" class="Keyword"
       >using</a
-      ><a name="1910"
-      > </a
-      ><a name="1911" class="Symbol"
+      > <a name="1911" class="Symbol"
       >(</a
-      ><a name="1912" href="Data.Maybe.Base.html#373" class="InductiveConstructor"
+      ><a name="1912" href="Data.Maybe.Base.html#Maybe.just" class="InductiveConstructor"
       >just</a
       ><a name="1916" class="Symbol"
       >;</a
-      ><a name="1917"
-      > </a
-      ><a name="1918" href="Data.Maybe.Base.html#403" class="InductiveConstructor"
+      > <a name="1918" href="Data.Maybe.Base.html#Maybe.nothing" class="InductiveConstructor"
       >nothing</a
       ><a name="1925" class="Symbol"
       >)</a
-      ><a name="1926"
       >
 
-</a
-      ><a name="1928" href="README.AVL.html#1928" class="Function"
+<a name="q&#8320;" href="README.AVL.html#q&#8320;" class="Function"
       >q&#8320;</a
-      ><a name="1930"
-      > </a
-      ><a name="1931" class="Symbol"
+      > <a name="1931" class="Symbol"
       >:</a
-      ><a name="1932"
-      > </a
-      ><a name="1933" href="Data.AVL.html#13158" class="Function"
+      > <a name="1933" href="Data.AVL.html#13158" class="Function"
       >lookup</a
-      ><a name="1939"
-      > </a
-      ><a name="1940" class="Number"
+      > <a name="1940" class="Number"
       >2</a
-      ><a name="1941"
-      > </a
-      ><a name="1942" href="README.AVL.html#1186" class="Function"
+      > <a name="1942" href="README.AVL.html#t&#8322;" class="Function"
       >t&#8322;</a
-      ><a name="1944"
-      > </a
-      ><a name="1945" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="1945" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="1946"
-      > </a
-      ><a name="1947" href="Data.Maybe.Base.html#373" class="InductiveConstructor"
+      > <a name="1947" href="Data.Maybe.Base.html#Maybe.just" class="InductiveConstructor"
       >just</a
-      ><a name="1951"
-      > </a
-      ><a name="1952" href="README.AVL.html#1028" class="Function"
+      > <a name="1952" href="README.AVL.html#v&#8322;" class="Function"
       >v&#8322;</a
-      ><a name="1954"
       >
-</a
-      ><a name="1955" href="README.AVL.html#1928" class="Function"
+<a name="1955" href="README.AVL.html#q&#8320;" class="Function"
       >q&#8320;</a
-      ><a name="1957"
-      > </a
-      ><a name="1958" class="Symbol"
+      > <a name="1958" class="Symbol"
       >=</a
-      ><a name="1959"
-      > </a
-      ><a name="1960" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="1960" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="1964"
       >
 
-</a
-      ><a name="1966" href="README.AVL.html#1966" class="Function"
+<a name="q&#8321;" href="README.AVL.html#q&#8321;" class="Function"
       >q&#8321;</a
-      ><a name="1968"
-      > </a
-      ><a name="1969" class="Symbol"
+      > <a name="1969" class="Symbol"
       >:</a
-      ><a name="1970"
-      > </a
-      ><a name="1971" href="Data.AVL.html#13158" class="Function"
+      > <a name="1971" href="Data.AVL.html#13158" class="Function"
       >lookup</a
-      ><a name="1977"
-      > </a
-      ><a name="1978" class="Number"
+      > <a name="1978" class="Number"
       >2</a
-      ><a name="1979"
-      > </a
-      ><a name="1980" href="README.AVL.html#1390" class="Function"
+      > <a name="1980" href="README.AVL.html#t&#8323;" class="Function"
       >t&#8323;</a
-      ><a name="1982"
-      > </a
-      ><a name="1983" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="1983" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="1984"
-      > </a
-      ><a name="1985" href="Data.Maybe.Base.html#403" class="InductiveConstructor"
+      > <a name="1985" href="Data.Maybe.Base.html#Maybe.nothing" class="InductiveConstructor"
       >nothing</a
-      ><a name="1992"
       >
-</a
-      ><a name="1993" href="README.AVL.html#1966" class="Function"
+<a name="1993" href="README.AVL.html#q&#8321;" class="Function"
       >q&#8321;</a
-      ><a name="1995"
-      > </a
-      ><a name="1996" class="Symbol"
+      > <a name="1996" class="Symbol"
       >=</a
-      ><a name="1997"
-      > </a
-      ><a name="1998" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="1998" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="2002"
       >
 
-</a
-      ><a name="2004" href="README.AVL.html#2004" class="Function"
+<a name="q&#8322;" href="README.AVL.html#q&#8322;" class="Function"
       >q&#8322;</a
-      ><a name="2006"
-      > </a
-      ><a name="2007" class="Symbol"
+      > <a name="2007" class="Symbol"
       >:</a
-      ><a name="2008"
-      > </a
-      ><a name="2009" class="Symbol"
+      > <a name="2009" class="Symbol"
       >(</a
       ><a name="2010" class="Number"
       >3</a
-      ><a name="2011"
-      > </a
-      ><a name="2012" href="Data.AVL.html#13349" class="Function Operator"
+      > <a name="2012" href="Data.AVL.html#13349" class="Function Operator"
       >&#8712;?</a
-      ><a name="2014"
-      > </a
-      ><a name="2015" href="README.AVL.html#1186" class="Function"
+      > <a name="2015" href="README.AVL.html#t&#8322;" class="Function"
       >t&#8322;</a
       ><a name="2017" class="Symbol"
       >)</a
-      ><a name="2018"
-      > </a
-      ><a name="2019" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="2019" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="2020"
-      > </a
-      ><a name="2021" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor"
+      > <a name="2021" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor"
       >false</a
-      ><a name="2026"
       >
-</a
-      ><a name="2027" href="README.AVL.html#2004" class="Function"
+<a name="2027" href="README.AVL.html#q&#8322;" class="Function"
       >q&#8322;</a
-      ><a name="2029"
-      > </a
-      ><a name="2030" class="Symbol"
+      > <a name="2030" class="Symbol"
       >=</a
-      ><a name="2031"
-      > </a
-      ><a name="2032" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="2032" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="2036"
       >
 
-</a
-      ><a name="2038" href="README.AVL.html#2038" class="Function"
+<a name="q&#8323;" href="README.AVL.html#q&#8323;" class="Function"
       >q&#8323;</a
-      ><a name="2040"
-      > </a
-      ><a name="2041" class="Symbol"
+      > <a name="2041" class="Symbol"
       >:</a
-      ><a name="2042"
-      > </a
-      ><a name="2043" class="Symbol"
+      > <a name="2043" class="Symbol"
       >(</a
       ><a name="2044" class="Number"
       >1</a
-      ><a name="2045"
-      > </a
-      ><a name="2046" href="Data.AVL.html#13349" class="Function Operator"
+      > <a name="2046" href="Data.AVL.html#13349" class="Function Operator"
       >&#8712;?</a
-      ><a name="2048"
-      > </a
-      ><a name="2049" href="README.AVL.html#1556" class="Function"
+      > <a name="2049" href="README.AVL.html#t&#8324;" class="Function"
       >t&#8324;</a
       ><a name="2051" class="Symbol"
       >)</a
-      ><a name="2052"
-      > </a
-      ><a name="2053" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="2053" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="2054"
-      > </a
-      ><a name="2055" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor"
+      > <a name="2055" href="Agda.Builtin.Bool.html#Bool.true" class="InductiveConstructor"
       >true</a
-      ><a name="2059"
       >
-</a
-      ><a name="2060" href="README.AVL.html#2038" class="Function"
+<a name="2060" href="README.AVL.html#q&#8323;" class="Function"
       >q&#8323;</a
-      ><a name="2062"
-      > </a
-      ><a name="2063" class="Symbol"
+      > <a name="2063" class="Symbol"
       >=</a
-      ><a name="2064"
-      > </a
-      ><a name="2065" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="2065" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="2069"
       >
 
-</a
-      ><a name="2071" class="Comment"
+<a name="2071" class="Comment"
       >-- Turning a tree into a sorted list of key-value pairs.</a
-      ><a name="2127"
       >
 
-</a
-      ><a name="2129" href="README.AVL.html#2129" class="Function"
+<a name="q&#8324;" href="README.AVL.html#q&#8324;" class="Function"
       >q&#8324;</a
-      ><a name="2131"
-      > </a
-      ><a name="2132" class="Symbol"
+      > <a name="2132" class="Symbol"
       >:</a
-      ><a name="2133"
-      > </a
-      ><a name="2134" href="Data.AVL.html#13947" class="Function"
+      > <a name="2134" href="Data.AVL.html#13947" class="Function"
       >toList</a
-      ><a name="2140"
-      > </a
-      ><a name="2141" href="README.AVL.html#1108" class="Function"
+      > <a name="2141" href="README.AVL.html#t&#8321;" class="Function"
       >t&#8321;</a
-      ><a name="2143"
-      > </a
-      ><a name="2144" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="2144" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="2145"
-      > </a
-      ><a name="2146" class="Symbol"
+      > <a name="2146" class="Symbol"
       >(</a
       ><a name="2147" class="Number"
       >2</a
-      ><a name="2148"
-      > </a
-      ><a name="2149" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2149" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2150"
-      > </a
-      ><a name="2151" href="README.AVL.html#1028" class="Function"
+      > <a name="2151" href="README.AVL.html#v&#8322;" class="Function"
       >v&#8322;</a
       ><a name="2153" class="Symbol"
       >)</a
-      ><a name="2154"
-      > </a
-      ><a name="2155" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      > <a name="2155" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="2156"
-      > </a
-      ><a name="2157" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      > <a name="2157" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="2159"
       >
-</a
-      ><a name="2160" href="README.AVL.html#2129" class="Function"
+<a name="2160" href="README.AVL.html#q&#8324;" class="Function"
       >q&#8324;</a
-      ><a name="2162"
-      > </a
-      ><a name="2163" class="Symbol"
+      > <a name="2163" class="Symbol"
       >=</a
-      ><a name="2164"
-      > </a
-      ><a name="2165" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="2165" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="2169"
       >
 
-</a
-      ><a name="2171" href="README.AVL.html#2171" class="Function"
+<a name="q&#8325;" href="README.AVL.html#q&#8325;" class="Function"
       >q&#8325;</a
-      ><a name="2173"
-      > </a
-      ><a name="2174" class="Symbol"
+      > <a name="2174" class="Symbol"
       >:</a
-      ><a name="2175"
-      > </a
-      ><a name="2176" href="Data.AVL.html#13947" class="Function"
+      > <a name="2176" href="Data.AVL.html#13947" class="Function"
       >toList</a
-      ><a name="2182"
-      > </a
-      ><a name="2183" href="README.AVL.html#1186" class="Function"
+      > <a name="2183" href="README.AVL.html#t&#8322;" class="Function"
       >t&#8322;</a
-      ><a name="2185"
-      > </a
-      ><a name="2186" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="2186" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="2187"
-      > </a
-      ><a name="2188" class="Symbol"
+      > <a name="2188" class="Symbol"
       >(</a
       ><a name="2189" class="Number"
       >1</a
-      ><a name="2190"
-      > </a
-      ><a name="2191" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2191" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2192"
-      > </a
-      ><a name="2193" href="README.AVL.html#992" class="Function"
+      > <a name="2193" href="README.AVL.html#v&#8321;" class="Function"
       >v&#8321;</a
       ><a name="2195" class="Symbol"
       >)</a
-      ><a name="2196"
-      > </a
-      ><a name="2197" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      > <a name="2197" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="2198"
-      > </a
-      ><a name="2199" class="Symbol"
+      > <a name="2199" class="Symbol"
       >(</a
       ><a name="2200" class="Number"
       >2</a
-      ><a name="2201"
-      > </a
-      ><a name="2202" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2202" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2203"
-      > </a
-      ><a name="2204" href="README.AVL.html#1028" class="Function"
+      > <a name="2204" href="README.AVL.html#v&#8322;" class="Function"
       >v&#8322;</a
       ><a name="2206" class="Symbol"
       >)</a
-      ><a name="2207"
-      > </a
-      ><a name="2208" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      > <a name="2208" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="2209"
-      > </a
-      ><a name="2210" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      > <a name="2210" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="2212"
       >
-</a
-      ><a name="2213" href="README.AVL.html#2171" class="Function"
+<a name="2213" href="README.AVL.html#q&#8325;" class="Function"
       >q&#8325;</a
-      ><a name="2215"
-      > </a
-      ><a name="2216" class="Symbol"
+      > <a name="2216" class="Symbol"
       >=</a
-      ><a name="2217"
-      > </a
-      ><a name="2218" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="2218" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="2222"
       >
 
-</a
-      ><a name="2224" href="README.AVL.html#2224" class="Function"
+<a name="q&#8325;&#8242;" href="README.AVL.html#q&#8325;&#8242;" class="Function"
       >q&#8325;&#8242;</a
-      ><a name="2227"
-      > </a
-      ><a name="2228" class="Symbol"
+      > <a name="2228" class="Symbol"
       >:</a
-      ><a name="2229"
-      > </a
-      ><a name="2230" href="Data.AVL.html#13947" class="Function"
+      > <a name="2230" href="Data.AVL.html#13947" class="Function"
       >toList</a
-      ><a name="2236"
-      > </a
-      ><a name="2237" href="README.AVL.html#1320" class="Function"
+      > <a name="2237" href="README.AVL.html#t&#8322;&#8242;" class="Function"
       >t&#8322;&#8242;</a
-      ><a name="2240"
-      > </a
-      ><a name="2241" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="2241" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="2242"
-      > </a
-      ><a name="2243" class="Symbol"
+      > <a name="2243" class="Symbol"
       >(</a
       ><a name="2244" class="Number"
       >1</a
-      ><a name="2245"
-      > </a
-      ><a name="2246" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2246" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2247"
-      > </a
-      ><a name="2248" href="README.AVL.html#1010" class="Function"
+      > <a name="2248" href="README.AVL.html#v&#8321;&#8242;" class="Function"
       >v&#8321;&#8242;</a
       ><a name="2251" class="Symbol"
       >)</a
-      ><a name="2252"
-      > </a
-      ><a name="2253" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      > <a name="2253" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="2254"
-      > </a
-      ><a name="2255" class="Symbol"
+      > <a name="2255" class="Symbol"
       >(</a
       ><a name="2256" class="Number"
       >2</a
-      ><a name="2257"
-      > </a
-      ><a name="2258" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2258" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2259"
-      > </a
-      ><a name="2260" href="README.AVL.html#1028" class="Function"
+      > <a name="2260" href="README.AVL.html#v&#8322;" class="Function"
       >v&#8322;</a
       ><a name="2262" class="Symbol"
       >)</a
-      ><a name="2263"
-      > </a
-      ><a name="2264" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      > <a name="2264" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="2265"
-      > </a
-      ><a name="2266" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      > <a name="2266" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="2268"
       >
-</a
-      ><a name="2269" href="README.AVL.html#2224" class="Function"
+<a name="2269" href="README.AVL.html#q&#8325;&#8242;" class="Function"
       >q&#8325;&#8242;</a
-      ><a name="2272"
-      > </a
-      ><a name="2273" class="Symbol"
+      > <a name="2273" class="Symbol"
       >=</a
-      ><a name="2274"
-      > </a
-      ><a name="2275" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="2275" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="2279"
       >
 
-</a
-      ><a name="2281" class="Comment"
+<a name="2281" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="2353"
       >
-</a
-      ><a name="2354" class="Comment"
+<a name="2354" class="Comment"
       >-- Views</a
-      ><a name="2362"
       >
 
-</a
-      ><a name="2364" class="Comment"
+<a name="2364" class="Comment"
       >-- Partitioning a tree into the smallest element plus the rest, or the</a
-      ><a name="2434"
       >
-</a
-      ><a name="2435" class="Comment"
+<a name="2435" class="Comment"
       >-- largest element plus the rest.</a
-      ><a name="2468"
       >
 
-</a
-      ><a name="2470" class="Keyword"
+<a name="2470" class="Keyword"
       >open</a
-      ><a name="2474"
-      > </a
-      ><a name="2475" class="Keyword"
+      > <a name="2475" class="Keyword"
       >import</a
-      ><a name="2481"
-      > </a
-      ><a name="2482" href="Function.html#1" class="Module"
+      > <a name="2482" href="Function.html" class="Module"
       >Function</a
-      ><a name="2490"
-      > </a
-      ><a name="2491" class="Keyword"
+      > <a name="2491" class="Keyword"
       >using</a
-      ><a name="2496"
-      > </a
-      ><a name="2497" class="Symbol"
+      > <a name="2497" class="Symbol"
       >(</a
-      ><a name="2498" href="Function.html#1012" class="Function"
+      ><a name="2498" href="Function.html#id" class="Function"
       >id</a
       ><a name="2500" class="Symbol"
       >)</a
-      ><a name="2501"
       >
 
-</a
-      ><a name="2503" href="README.AVL.html#2503" class="Function"
+<a name="v&#8326;" href="README.AVL.html#v&#8326;" class="Function"
       >v&#8326;</a
-      ><a name="2505"
-      > </a
-      ><a name="2506" class="Symbol"
+      > <a name="2506" class="Symbol"
       >:</a
-      ><a name="2507"
-      > </a
-      ><a name="2508" href="Data.AVL.html#13405" class="Function"
+      > <a name="2508" href="Data.AVL.html#13405" class="Function"
       >headTail</a
-      ><a name="2516"
-      > </a
-      ><a name="2517" href="README.AVL.html#1086" class="Function"
+      > <a name="2517" href="README.AVL.html#t&#8320;" class="Function"
       >t&#8320;</a
-      ><a name="2519"
-      > </a
-      ><a name="2520" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="2520" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="2521"
-      > </a
-      ><a name="2522" href="Data.Maybe.Base.html#403" class="InductiveConstructor"
+      > <a name="2522" href="Data.Maybe.Base.html#Maybe.nothing" class="InductiveConstructor"
       >nothing</a
-      ><a name="2529"
       >
-</a
-      ><a name="2530" href="README.AVL.html#2503" class="Function"
+<a name="2530" href="README.AVL.html#v&#8326;" class="Function"
       >v&#8326;</a
-      ><a name="2532"
-      > </a
-      ><a name="2533" class="Symbol"
+      > <a name="2533" class="Symbol"
       >=</a
-      ><a name="2534"
-      > </a
-      ><a name="2535" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="2535" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="2539"
       >
 
-</a
-      ><a name="2541" href="README.AVL.html#2541" class="Function"
+<a name="v&#8327;" href="README.AVL.html#v&#8327;" class="Function"
       >v&#8327;</a
-      ><a name="2543"
-      > </a
-      ><a name="2544" class="Symbol"
+      > <a name="2544" class="Symbol"
       >:</a
-      ><a name="2545"
-      > </a
-      ><a name="2546" href="Data.Maybe.Base.html#1797" class="Function"
+      > <a name="2546" href="Data.Maybe.Base.html#map" class="Function"
       >Maybe.map</a
-      ><a name="2555"
-      > </a
-      ><a name="2556" class="Symbol"
+      > <a name="2556" class="Symbol"
       >(</a
-      ><a name="2557" href="Data.Product.html#1872" class="Function"
+      ><a name="2557" href="Data.Product.html#map" class="Function"
       >Prod.map</a
-      ><a name="2565"
-      > </a
-      ><a name="2566" href="Function.html#1012" class="Function"
+      > <a name="2566" href="Function.html#id" class="Function"
       >id</a
-      ><a name="2568"
-      > </a
-      ><a name="2569" href="Data.AVL.html#13947" class="Function"
+      > <a name="2569" href="Data.AVL.html#13947" class="Function"
       >toList</a
       ><a name="2575" class="Symbol"
       >)</a
-      ><a name="2576"
-      > </a
-      ><a name="2577" class="Symbol"
+      > <a name="2577" class="Symbol"
       >(</a
       ><a name="2578" href="Data.AVL.html#13405" class="Function"
       >headTail</a
-      ><a name="2586"
-      > </a
-      ><a name="2587" href="README.AVL.html#1186" class="Function"
+      > <a name="2587" href="README.AVL.html#t&#8322;" class="Function"
       >t&#8322;</a
       ><a name="2589" class="Symbol"
       >)</a
-      ><a name="2590"
-      > </a
-      ><a name="2591" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="2591" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="2592"
       >
-     </a
-      ><a name="2598" href="Data.Maybe.Base.html#373" class="InductiveConstructor"
+     <a name="2598" href="Data.Maybe.Base.html#Maybe.just" class="InductiveConstructor"
       >just</a
-      ><a name="2602"
-      > </a
-      ><a name="2603" class="Symbol"
+      > <a name="2603" class="Symbol"
       >((</a
       ><a name="2605" class="Number"
       >1</a
-      ><a name="2606"
-      > </a
-      ><a name="2607" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2607" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2608"
-      > </a
-      ><a name="2609" href="README.AVL.html#992" class="Function"
+      > <a name="2609" href="README.AVL.html#v&#8321;" class="Function"
       >v&#8321;</a
       ><a name="2611" class="Symbol"
       >)</a
-      ><a name="2612"
-      > </a
-      ><a name="2613" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2613" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2614"
-      > </a
-      ><a name="2615" class="Symbol"
+      > <a name="2615" class="Symbol"
       >((</a
       ><a name="2617" class="Number"
       >2</a
-      ><a name="2618"
-      > </a
-      ><a name="2619" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2619" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2620"
-      > </a
-      ><a name="2621" href="README.AVL.html#1028" class="Function"
+      > <a name="2621" href="README.AVL.html#v&#8322;" class="Function"
       >v&#8322;</a
       ><a name="2623" class="Symbol"
       >)</a
-      ><a name="2624"
-      > </a
-      ><a name="2625" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      > <a name="2625" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="2626"
-      > </a
-      ><a name="2627" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      > <a name="2627" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
       >[]</a
       ><a name="2629" class="Symbol"
       >))</a
-      ><a name="2631"
       >
-</a
-      ><a name="2632" href="README.AVL.html#2541" class="Function"
+<a name="2632" href="README.AVL.html#v&#8327;" class="Function"
       >v&#8327;</a
-      ><a name="2634"
-      > </a
-      ><a name="2635" class="Symbol"
+      > <a name="2635" class="Symbol"
       >=</a
-      ><a name="2636"
-      > </a
-      ><a name="2637" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="2637" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="2641"
       >
 
-</a
-      ><a name="2643" href="README.AVL.html#2643" class="Function"
+<a name="v&#8328;" href="README.AVL.html#v&#8328;" class="Function"
       >v&#8328;</a
-      ><a name="2645"
-      > </a
-      ><a name="2646" class="Symbol"
+      > <a name="2646" class="Symbol"
       >:</a
-      ><a name="2647"
-      > </a
-      ><a name="2648" href="Data.AVL.html#13604" class="Function"
+      > <a name="2648" href="Data.AVL.html#13604" class="Function"
       >initLast</a
-      ><a name="2656"
-      > </a
-      ><a name="2657" href="README.AVL.html#1086" class="Function"
+      > <a name="2657" href="README.AVL.html#t&#8320;" class="Function"
       >t&#8320;</a
-      ><a name="2659"
-      > </a
-      ><a name="2660" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="2660" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="2661"
-      > </a
-      ><a name="2662" href="Data.Maybe.Base.html#403" class="InductiveConstructor"
+      > <a name="2662" href="Data.Maybe.Base.html#Maybe.nothing" class="InductiveConstructor"
       >nothing</a
-      ><a name="2669"
       >
-</a
-      ><a name="2670" href="README.AVL.html#2643" class="Function"
+<a name="2670" href="README.AVL.html#v&#8328;" class="Function"
       >v&#8328;</a
-      ><a name="2672"
-      > </a
-      ><a name="2673" class="Symbol"
+      > <a name="2673" class="Symbol"
       >=</a
-      ><a name="2674"
-      > </a
-      ><a name="2675" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="2675" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="2679"
       >
 
-</a
-      ><a name="2681" href="README.AVL.html#2681" class="Function"
+<a name="v&#8329;" href="README.AVL.html#v&#8329;" class="Function"
       >v&#8329;</a
-      ><a name="2683"
-      > </a
-      ><a name="2684" class="Symbol"
+      > <a name="2684" class="Symbol"
       >:</a
-      ><a name="2685"
-      > </a
-      ><a name="2686" href="Data.Maybe.Base.html#1797" class="Function"
+      > <a name="2686" href="Data.Maybe.Base.html#map" class="Function"
       >Maybe.map</a
-      ><a name="2695"
-      > </a
-      ><a name="2696" class="Symbol"
+      > <a name="2696" class="Symbol"
       >(</a
-      ><a name="2697" href="Data.Product.html#1872" class="Function"
+      ><a name="2697" href="Data.Product.html#map" class="Function"
       >Prod.map</a
-      ><a name="2705"
-      > </a
-      ><a name="2706" href="Data.AVL.html#13947" class="Function"
+      > <a name="2706" href="Data.AVL.html#13947" class="Function"
       >toList</a
-      ><a name="2712"
-      > </a
-      ><a name="2713" href="Function.html#1012" class="Function"
+      > <a name="2713" href="Function.html#id" class="Function"
       >id</a
       ><a name="2715" class="Symbol"
       >)</a
-      ><a name="2716"
-      > </a
-      ><a name="2717" class="Symbol"
+      > <a name="2717" class="Symbol"
       >(</a
       ><a name="2718" href="Data.AVL.html#13604" class="Function"
       >initLast</a
-      ><a name="2726"
-      > </a
-      ><a name="2727" href="README.AVL.html#1556" class="Function"
+      > <a name="2727" href="README.AVL.html#t&#8324;" class="Function"
       >t&#8324;</a
       ><a name="2729" class="Symbol"
       >)</a
-      ><a name="2730"
-      > </a
-      ><a name="2731" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="2731" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="2732"
       >
-     </a
-      ><a name="2738" href="Data.Maybe.Base.html#373" class="InductiveConstructor"
+     <a name="2738" href="Data.Maybe.Base.html#Maybe.just" class="InductiveConstructor"
       >just</a
-      ><a name="2742"
-      > </a
-      ><a name="2743" class="Symbol"
+      > <a name="2743" class="Symbol"
       >(((</a
       ><a name="2746" class="Number"
       >1</a
-      ><a name="2747"
-      > </a
-      ><a name="2748" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2748" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2749"
-      > </a
-      ><a name="2750" href="README.AVL.html#992" class="Function"
+      > <a name="2750" href="README.AVL.html#v&#8321;" class="Function"
       >v&#8321;</a
       ><a name="2752" class="Symbol"
       >)</a
-      ><a name="2753"
-      > </a
-      ><a name="2754" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      > <a name="2754" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="2755"
-      > </a
-      ><a name="2756" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      > <a name="2756" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
       >[]</a
       ><a name="2758" class="Symbol"
       >)</a
-      ><a name="2759"
-      > </a
-      ><a name="2760" href="Data.Product.html#1147" class="Function Operator"
+      > <a name="2760" href="Data.Product.html#_,&#8242;_" class="Function Operator"
       >,&#8242;</a
-      ><a name="2762"
-      > </a
-      ><a name="2763" class="Symbol"
+      > <a name="2763" class="Symbol"
       >(</a
       ><a name="2764" class="Number"
       >2</a
-      ><a name="2765"
-      > </a
-      ><a name="2766" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2766" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2767"
-      > </a
-      ><a name="2768" href="README.AVL.html#1028" class="Function"
+      > <a name="2768" href="README.AVL.html#v&#8322;" class="Function"
       >v&#8322;</a
       ><a name="2770" class="Symbol"
       >))</a
-      ><a name="2772"
       >
-</a
-      ><a name="2773" href="README.AVL.html#2681" class="Function"
+<a name="2773" href="README.AVL.html#v&#8329;" class="Function"
       >v&#8329;</a
-      ><a name="2775"
-      > </a
-      ><a name="2776" class="Symbol"
+      > <a name="2776" class="Symbol"
       >=</a
-      ><a name="2777"
-      > </a
-      ><a name="2778" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="2778" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="2782"
       >
 
-</a
-      ><a name="2784" class="Comment"
+<a name="2784" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="2856"
       >
-</a
-      ><a name="2857" class="Comment"
+<a name="2857" class="Comment"
       >-- Further reading</a
-      ><a name="2875"
       >
 
-</a
-      ><a name="2877" class="Comment"
+<a name="2877" class="Comment"
       >-- Variations of the AVL tree module are available:</a
-      ><a name="2928"
       >
 
-</a
-      ><a name="2930" class="Comment"
+<a name="2930" class="Comment"
       >-- &#8226; Finite maps with indexed keys and values.</a
-      ><a name="2976"
       >
 
-</a
-      ><a name="2978" class="Keyword"
+<a name="2978" class="Keyword"
       >import</a
-      ><a name="2984"
-      > </a
-      ><a name="2985" href="Data.AVL.IndexedMap.html#1" class="Module"
+      > <a name="2985" href="Data.AVL.IndexedMap.html" class="Module"
       >Data.AVL.IndexedMap</a
-      ><a name="3004"
       >
 
-</a
-      ><a name="3006" class="Comment"
+<a name="3006" class="Comment"
       >-- &#8226; Finite sets.</a
-      ><a name="3023"
       >
 
-</a
-      ><a name="3025" class="Keyword"
+<a name="3025" class="Keyword"
       >import</a
-      ><a name="3031"
-      > </a
-      ><a name="3032" href="Data.AVL.Sets.html#1" class="Module"
+      > <a name="3032" href="Data.AVL.Sets.html" class="Module"
       >Data.AVL.Sets</a
-      ><a name="3045"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

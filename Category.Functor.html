@@ -11,326 +11,386 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Functors</a
-      ><a name="117"
       >
-</a
-      ><a name="118" class="Comment"
+<a name="118" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="190"
       >
 
-</a
-      ><a name="192" class="Comment"
+<a name="192" class="Comment"
       >-- Note that currently the functor laws are not included here.</a
-      ><a name="254"
       >
 
-</a
-      ><a name="256" class="Keyword"
+<a name="256" class="Keyword"
       >module</a
-      ><a name="262"
-      > </a
-      ><a name="263" href="Category.Functor.html#1" class="Module"
+      > <a name="263" href="Category.Functor.html" class="Module"
       >Category.Functor</a
-      ><a name="279"
-      > </a
-      ><a name="280" class="Keyword"
+      > <a name="280" class="Keyword"
       >where</a
-      ><a name="285"
       >
 
-</a
-      ><a name="287" class="Keyword"
+<a name="287" class="Keyword"
       >open</a
-      ><a name="291"
-      > </a
-      ><a name="292" class="Keyword"
+      > <a name="292" class="Keyword"
       >import</a
-      ><a name="298"
-      > </a
-      ><a name="299" href="Function.html#1" class="Module"
+      > <a name="299" href="Function.html" class="Module"
       >Function</a
-      ><a name="307"
       >
-</a
-      ><a name="308" class="Keyword"
+<a name="308" class="Keyword"
       >open</a
-      ><a name="312"
-      > </a
-      ><a name="313" class="Keyword"
+      > <a name="313" class="Keyword"
       >import</a
-      ><a name="319"
-      > </a
-      ><a name="320" href="Level.html#1" class="Module"
+      > <a name="320" href="Level.html" class="Module"
       >Level</a
-      ><a name="325"
       >
 
-</a
-      ><a name="327" class="Keyword"
+<a name="327" class="Keyword"
+      >open</a
+      > <a name="332" class="Keyword"
+      >import</a
+      > <a name="339" href="Relation.Binary.PropositionalEquality.html" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      >
+
+<a name="378" class="Keyword"
       >record</a
-      ><a name="333"
-      > </a
-      ><a name="334" href="Category.Functor.html#334" class="Record"
+      > <a name="RawFunctor" href="Category.Functor.html#RawFunctor" class="Record"
       >RawFunctor</a
-      ><a name="344"
-      > </a
-      ><a name="345" class="Symbol"
+      > <a name="396" class="Symbol"
       >{</a
-      ><a name="346" href="Category.Functor.html#346" class="Bound"
+      ><a name="397" href="Category.Functor.html#397" class="Bound"
       >&#8467;</a
-      ><a name="347" class="Symbol"
+      ><a name="398" class="Symbol"
       >}</a
-      ><a name="348"
-      > </a
-      ><a name="349" class="Symbol"
+      > <a name="400" class="Symbol"
       >(</a
-      ><a name="350" href="Category.Functor.html#350" class="Bound"
+      ><a name="401" href="Category.Functor.html#401" class="Bound"
       >F</a
-      ><a name="351"
-      > </a
-      ><a name="352" class="Symbol"
+      > <a name="403" class="Symbol"
       >:</a
-      ><a name="353"
-      > </a
-      ><a name="354" class="PrimitiveType"
+      > <a name="405" class="PrimitiveType"
       >Set</a
-      ><a name="357"
-      > </a
-      ><a name="358" href="Category.Functor.html#346" class="Bound"
+      > <a name="409" href="Category.Functor.html#397" class="Bound"
       >&#8467;</a
-      ><a name="359"
-      > </a
-      ><a name="360" class="Symbol"
+      > <a name="411" class="Symbol"
       >&#8594;</a
-      ><a name="361"
-      > </a
-      ><a name="362" class="PrimitiveType"
+      > <a name="413" class="PrimitiveType"
       >Set</a
-      ><a name="365"
-      > </a
-      ><a name="366" href="Category.Functor.html#346" class="Bound"
+      > <a name="417" href="Category.Functor.html#397" class="Bound"
       >&#8467;</a
-      ><a name="367" class="Symbol"
+      ><a name="418" class="Symbol"
       >)</a
-      ><a name="368"
-      > </a
-      ><a name="369" class="Symbol"
+      > <a name="420" class="Symbol"
       >:</a
-      ><a name="370"
-      > </a
-      ><a name="371" class="PrimitiveType"
+      > <a name="422" class="PrimitiveType"
       >Set</a
-      ><a name="374"
-      > </a
-      ><a name="375" class="Symbol"
+      > <a name="426" class="Symbol"
       >(</a
-      ><a name="376" href="Agda.Primitive.html#625" class="Primitive"
+      ><a name="427" href="Agda.Primitive.html#suc" class="Primitive"
       >suc</a
-      ><a name="379"
-      > </a
-      ><a name="380" href="Category.Functor.html#346" class="Bound"
+      > <a name="431" href="Category.Functor.html#397" class="Bound"
       >&#8467;</a
-      ><a name="381" class="Symbol"
-      >)</a
-      ><a name="382"
-      > </a
-      ><a name="383" class="Keyword"
-      >where</a
-      ><a name="388"
-      >
-  </a
-      ><a name="391" class="Keyword"
-      >infixl</a
-      ><a name="397"
-      > </a
-      ><a name="398" class="Number"
-      >4</a
-      ><a name="399"
-      > _&lt;$&gt;_ _&lt;$_
-
-  </a
-      ><a name="414" class="Keyword"
-      >field</a
-      ><a name="419"
-      >
-    </a
-      ><a name="424" href="Category.Functor.html#424" class="Field Operator"
-      >_&lt;$&gt;_</a
-      ><a name="429"
-      > </a
-      ><a name="430" class="Symbol"
-      >:</a
-      ><a name="431"
-      > </a
       ><a name="432" class="Symbol"
-      >&#8704;</a
-      ><a name="433"
-      > </a
-      ><a name="434" class="Symbol"
-      >{</a
-      ><a name="435" href="Category.Functor.html#435" class="Bound"
-      >A</a
-      ><a name="436"
-      > </a
-      ><a name="437" href="Category.Functor.html#437" class="Bound"
-      >B</a
-      ><a name="438" class="Symbol"
-      >}</a
-      ><a name="439"
-      > </a
-      ><a name="440" class="Symbol"
-      >&#8594;</a
-      ><a name="441"
-      > </a
-      ><a name="442" class="Symbol"
-      >(</a
-      ><a name="443" href="Category.Functor.html#435" class="Bound"
-      >A</a
-      ><a name="444"
-      > </a
-      ><a name="445" class="Symbol"
-      >&#8594;</a
-      ><a name="446"
-      > </a
-      ><a name="447" href="Category.Functor.html#437" class="Bound"
-      >B</a
-      ><a name="448" class="Symbol"
       >)</a
-      ><a name="449"
-      > </a
-      ><a name="450" class="Symbol"
-      >&#8594;</a
-      ><a name="451"
-      > </a
-      ><a name="452" href="Category.Functor.html#350" class="Bound"
-      >F</a
-      ><a name="453"
-      > </a
-      ><a name="454" href="Category.Functor.html#435" class="Bound"
-      >A</a
-      ><a name="455"
-      > </a
-      ><a name="456" class="Symbol"
-      >&#8594;</a
-      ><a name="457"
-      > </a
-      ><a name="458" href="Category.Functor.html#350" class="Bound"
-      >F</a
-      ><a name="459"
-      > </a
-      ><a name="460" href="Category.Functor.html#437" class="Bound"
-      >B</a
-      ><a name="461"
+      > <a name="434" class="Keyword"
+      >where</a
+      >
+  <a name="442" class="Keyword"
+      >infixl</a
+      > <a name="449" class="Number"
+      >4</a
+      > <a name="451" href="Category.Functor.html#RawFunctor._&lt;$&gt;_" class="Field Operator"
+      >_&lt;$&gt;_</a
+      > <a name="RawFunctor._&lt;$_" href="Category.Functor.html#RawFunctor._&lt;$_" class="Function Operator"
+      >_&lt;$_</a
       >
 
-  </a
-      ><a name="465" href="Category.Functor.html#465" class="Function Operator"
-      >_&lt;$_</a
-      ><a name="469"
-      > </a
-      ><a name="470" class="Symbol"
+  <a name="465" class="Keyword"
+      >field</a
+      >
+    <a name="RawFunctor._&lt;$&gt;_" href="Category.Functor.html#RawFunctor._&lt;$&gt;_" class="Field Operator"
+      >_&lt;$&gt;_</a
+      > <a name="481" class="Symbol"
       >:</a
-      ><a name="471"
-      > </a
-      ><a name="472" class="Symbol"
+      > <a name="483" class="Symbol"
       >&#8704;</a
-      ><a name="473"
-      > </a
-      ><a name="474" class="Symbol"
+      > <a name="485" class="Symbol"
       >{</a
-      ><a name="475" href="Category.Functor.html#475" class="Bound"
+      ><a name="486" href="Category.Functor.html#486" class="Bound"
       >A</a
-      ><a name="476"
-      > </a
-      ><a name="477" href="Category.Functor.html#477" class="Bound"
+      > <a name="488" href="Category.Functor.html#488" class="Bound"
       >B</a
-      ><a name="478" class="Symbol"
+      ><a name="489" class="Symbol"
       >}</a
-      ><a name="479"
-      > </a
-      ><a name="480" class="Symbol"
+      > <a name="491" class="Symbol"
       >&#8594;</a
-      ><a name="481"
-      > </a
-      ><a name="482" href="Category.Functor.html#475" class="Bound"
+      > <a name="493" class="Symbol"
+      >(</a
+      ><a name="494" href="Category.Functor.html#486" class="Bound"
       >A</a
-      ><a name="483"
-      > </a
-      ><a name="484" class="Symbol"
+      > <a name="496" class="Symbol"
       >&#8594;</a
-      ><a name="485"
-      > </a
-      ><a name="486" href="Category.Functor.html#350" class="Bound"
-      >F</a
-      ><a name="487"
-      > </a
-      ><a name="488" href="Category.Functor.html#477" class="Bound"
+      > <a name="498" href="Category.Functor.html#488" class="Bound"
       >B</a
-      ><a name="489"
-      > </a
-      ><a name="490" class="Symbol"
+      ><a name="499" class="Symbol"
+      >)</a
+      > <a name="501" class="Symbol"
       >&#8594;</a
-      ><a name="491"
-      > </a
-      ><a name="492" href="Category.Functor.html#350" class="Bound"
+      > <a name="503" href="Category.Functor.html#401" class="Bound"
       >F</a
-      ><a name="493"
-      > </a
-      ><a name="494" href="Category.Functor.html#475" class="Bound"
+      > <a name="505" href="Category.Functor.html#486" class="Bound"
       >A</a
-      ><a name="495"
+      > <a name="507" class="Symbol"
+      >&#8594;</a
+      > <a name="509" href="Category.Functor.html#401" class="Bound"
+      >F</a
+      > <a name="511" href="Category.Functor.html#488" class="Bound"
+      >B</a
       >
-  </a
-      ><a name="498" href="Category.Functor.html#498" class="Bound"
+
+  <a name="RawFunctor._&lt;$_" href="Category.Functor.html#RawFunctor._&lt;$_" class="Function Operator"
+      >_&lt;$_</a
+      > <a name="521" class="Symbol"
+      >:</a
+      > <a name="523" class="Symbol"
+      >&#8704;</a
+      > <a name="525" class="Symbol"
+      >{</a
+      ><a name="526" href="Category.Functor.html#526" class="Bound"
+      >A</a
+      > <a name="528" href="Category.Functor.html#528" class="Bound"
+      >B</a
+      ><a name="529" class="Symbol"
+      >}</a
+      > <a name="531" class="Symbol"
+      >&#8594;</a
+      > <a name="533" href="Category.Functor.html#526" class="Bound"
+      >A</a
+      > <a name="535" class="Symbol"
+      >&#8594;</a
+      > <a name="537" href="Category.Functor.html#401" class="Bound"
+      >F</a
+      > <a name="539" href="Category.Functor.html#528" class="Bound"
+      >B</a
+      > <a name="541" class="Symbol"
+      >&#8594;</a
+      > <a name="543" href="Category.Functor.html#401" class="Bound"
+      >F</a
+      > <a name="545" href="Category.Functor.html#526" class="Bound"
+      >A</a
+      >
+  <a name="549" href="Category.Functor.html#549" class="Bound"
       >x</a
-      ><a name="499"
-      > </a
-      ><a name="500" href="Category.Functor.html#465" class="Function Operator"
+      > <a name="551" href="Category.Functor.html#RawFunctor._&lt;$_" class="Function Operator"
       >&lt;$</a
-      ><a name="502"
-      > </a
-      ><a name="503" href="Category.Functor.html#503" class="Bound"
+      > <a name="554" href="Category.Functor.html#554" class="Bound"
       >y</a
-      ><a name="504"
-      > </a
-      ><a name="505" class="Symbol"
+      > <a name="556" class="Symbol"
       >=</a
-      ><a name="506"
-      > </a
-      ><a name="507" href="Function.html#1053" class="Function"
+      > <a name="558" href="Function.html#const" class="Function"
       >const</a
-      ><a name="512"
-      > </a
-      ><a name="513" href="Category.Functor.html#498" class="Bound"
+      > <a name="564" href="Category.Functor.html#549" class="Bound"
       >x</a
-      ><a name="514"
-      > </a
-      ><a name="515" href="Category.Functor.html#424" class="Field Operator"
+      > <a name="566" href="Category.Functor.html#RawFunctor._&lt;$&gt;_" class="Field Operator"
       >&lt;$&gt;</a
-      ><a name="518"
-      > </a
-      ><a name="519" href="Category.Functor.html#503" class="Bound"
+      > <a name="570" href="Category.Functor.html#554" class="Bound"
       >y</a
-      ><a name="520"
       >
-</a
-      ></pre
+
+<a name="573" class="Comment"
+      >-- A functor morphism from F&#8321; to F&#8322; is an operation op such that</a
+      >
+<a name="638" class="Comment"
+      >-- op (F&#8321; f x) &#8801; F&#8322; f (op x)</a
+      >
+
+<a name="668" class="Keyword"
+      >record</a
+      > <a name="Morphism" href="Category.Functor.html#Morphism" class="Record"
+      >Morphism</a
+      > <a name="684" class="Symbol"
+      >{</a
+      ><a name="685" href="Category.Functor.html#685" class="Bound"
+      >&#8467;</a
+      ><a name="686" class="Symbol"
+      >}</a
+      > <a name="688" class="Symbol"
+      >{</a
+      ><a name="689" href="Category.Functor.html#689" class="Bound"
+      >F&#8321;</a
+      > <a name="692" href="Category.Functor.html#692" class="Bound"
+      >F&#8322;</a
+      > <a name="695" class="Symbol"
+      >:</a
+      > <a name="697" class="PrimitiveType"
+      >Set</a
+      > <a name="701" href="Category.Functor.html#685" class="Bound"
+      >&#8467;</a
+      > <a name="703" class="Symbol"
+      >&#8594;</a
+      > <a name="705" class="PrimitiveType"
+      >Set</a
+      > <a name="709" href="Category.Functor.html#685" class="Bound"
+      >&#8467;</a
+      ><a name="710" class="Symbol"
+      >}</a
+      >
+                <a name="728" class="Symbol"
+      >(</a
+      ><a name="729" href="Category.Functor.html#729" class="Bound"
+      >fun&#8321;</a
+      > <a name="734" class="Symbol"
+      >:</a
+      > <a name="736" href="Category.Functor.html#RawFunctor" class="Record"
+      >RawFunctor</a
+      > <a name="747" href="Category.Functor.html#689" class="Bound"
+      >F&#8321;</a
+      ><a name="749" class="Symbol"
+      >)</a
+      >
+                <a name="767" class="Symbol"
+      >(</a
+      ><a name="768" href="Category.Functor.html#768" class="Bound"
+      >fun&#8322;</a
+      > <a name="773" class="Symbol"
+      >:</a
+      > <a name="775" href="Category.Functor.html#RawFunctor" class="Record"
+      >RawFunctor</a
+      > <a name="786" href="Category.Functor.html#692" class="Bound"
+      >F&#8322;</a
+      ><a name="788" class="Symbol"
+      >)</a
+      > <a name="790" class="Symbol"
+      >:</a
+      > <a name="792" class="PrimitiveType"
+      >Set</a
+      > <a name="796" class="Symbol"
+      >(</a
+      ><a name="797" href="Agda.Primitive.html#suc" class="Primitive"
+      >suc</a
+      > <a name="801" href="Category.Functor.html#685" class="Bound"
+      >&#8467;</a
+      ><a name="802" class="Symbol"
+      >)</a
+      > <a name="804" class="Keyword"
+      >where</a
+      >
+  <a name="812" class="Keyword"
+      >open</a
+      > <a name="817" href="Category.Functor.html#RawFunctor" class="Module"
+      >RawFunctor</a
+      >
+  <a name="830" class="Keyword"
+      >field</a
+      >
+    <a name="Morphism.op" href="Category.Functor.html#Morphism.op" class="Field"
+      >op</a
+      >     <a name="847" class="Symbol"
+      >:</a
+      > <a name="849" class="Symbol"
+      >&#8704;{</a
+      ><a name="851" href="Category.Functor.html#851" class="Bound"
+      >X</a
+      ><a name="852" class="Symbol"
+      >}</a
+      > <a name="854" class="Symbol"
+      >&#8594;</a
+      > <a name="856" href="Category.Functor.html#689" class="Bound"
+      >F&#8321;</a
+      > <a name="859" href="Category.Functor.html#851" class="Bound"
+      >X</a
+      > <a name="861" class="Symbol"
+      >&#8594;</a
+      > <a name="863" href="Category.Functor.html#692" class="Bound"
+      >F&#8322;</a
+      > <a name="866" href="Category.Functor.html#851" class="Bound"
+      >X</a
+      >
+    <a name="Morphism.op-&lt;$&gt;" href="Category.Functor.html#Morphism.op-&lt;$&gt;" class="Field"
+      >op-&lt;$&gt;</a
+      > <a name="879" class="Symbol"
+      >:</a
+      > <a name="881" class="Symbol"
+      >&#8704;{</a
+      ><a name="883" href="Category.Functor.html#883" class="Bound"
+      >X</a
+      > <a name="885" href="Category.Functor.html#885" class="Bound"
+      >Y</a
+      ><a name="886" class="Symbol"
+      >}</a
+      > <a name="888" class="Symbol"
+      >(</a
+      ><a name="889" href="Category.Functor.html#889" class="Bound"
+      >f</a
+      > <a name="891" class="Symbol"
+      >:</a
+      > <a name="893" href="Category.Functor.html#883" class="Bound"
+      >X</a
+      > <a name="895" class="Symbol"
+      >&#8594;</a
+      > <a name="897" href="Category.Functor.html#885" class="Bound"
+      >Y</a
+      ><a name="898" class="Symbol"
+      >)</a
+      > <a name="900" class="Symbol"
+      >(</a
+      ><a name="901" href="Category.Functor.html#901" class="Bound"
+      >x</a
+      > <a name="903" class="Symbol"
+      >:</a
+      > <a name="905" href="Category.Functor.html#689" class="Bound"
+      >F&#8321;</a
+      > <a name="908" href="Category.Functor.html#883" class="Bound"
+      >X</a
+      ><a name="909" class="Symbol"
+      >)</a
+      > <a name="911" class="Symbol"
+      >&#8594;</a
+      >
+             <a name="926" href="Category.Functor.html#Morphism.op" class="Field"
+      >op</a
+      > <a name="929" class="Symbol"
+      >(</a
+      ><a name="930" href="Category.Functor.html#729" class="Bound"
+      >fun&#8321;</a
+      > <a name="935" class="Symbol"
+      >.</a
+      ><a name="936" href="Category.Functor.html#RawFunctor._&lt;$&gt;_" class="Field Operator"
+      >_&lt;$&gt;_</a
+      > <a name="942" href="Category.Functor.html#889" class="Bound"
+      >f</a
+      > <a name="944" href="Category.Functor.html#901" class="Bound"
+      >x</a
+      ><a name="945" class="Symbol"
+      >)</a
+      > <a name="947" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >&#8801;</a
+      > <a name="949" href="Category.Functor.html#768" class="Bound"
+      >fun&#8322;</a
+      > <a name="954" class="Symbol"
+      >.</a
+      ><a name="955" href="Category.Functor.html#RawFunctor._&lt;$&gt;_" class="Field Operator"
+      >_&lt;$&gt;_</a
+      > <a name="961" href="Category.Functor.html#889" class="Bound"
+      >f</a
+      > <a name="963" class="Symbol"
+      >(</a
+      ><a name="964" href="Category.Functor.html#Morphism.op" class="Field"
+      >op</a
+      > <a name="967" href="Category.Functor.html#901" class="Bound"
+      >x</a
+      ><a name="968" class="Symbol"
+      >)</a
+      >
+</pre
     ></body
   ></html
 >

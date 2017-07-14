@@ -11,3224 +11,1808 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Least common multiple</a
-      ><a name="130"
       >
-</a
-      ><a name="131" class="Comment"
+<a name="131" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="203"
       >
 
-</a
-      ><a name="205" class="Keyword"
+<a name="205" class="Keyword"
       >module</a
-      ><a name="211"
-      > </a
-      ><a name="212" href="Data.Nat.LCM.html#1" class="Module"
+      > <a name="212" href="Data.Nat.LCM.html" class="Module"
       >Data.Nat.LCM</a
-      ><a name="224"
-      > </a
-      ><a name="225" class="Keyword"
+      > <a name="225" class="Keyword"
       >where</a
-      ><a name="230"
       >
 
-</a
-      ><a name="232" class="Keyword"
+<a name="232" class="Keyword"
       >open</a
-      ><a name="236"
-      > </a
-      ><a name="237" class="Keyword"
+      > <a name="237" class="Keyword"
       >import</a
-      ><a name="243"
-      > </a
-      ><a name="244" href="Data.Nat.html#1" class="Module"
+      > <a name="244" href="Data.Nat.html" class="Module"
       >Data.Nat</a
-      ><a name="252"
       >
-</a
-      ><a name="253" class="Keyword"
+<a name="253" class="Keyword"
       >import</a
-      ><a name="259"
-      > </a
-      ><a name="260" href="Data.Nat.Properties.html#1" class="Module"
+      > <a name="260" href="Data.Nat.Properties.html" class="Module"
       >Data.Nat.Properties</a
-      ><a name="279"
-      > </a
-      ><a name="280" class="Symbol"
+      > <a name="280" class="Symbol"
       >as</a
-      ><a name="282"
-      > </a
-      ><a name="283" class="Module"
+      > <a name="283" class="Module"
       >NatProp</a
-      ><a name="290"
       >
-</a
-      ><a name="291" class="Keyword"
+<a name="291" class="Keyword"
       >open</a
-      ><a name="295"
-      > </a
-      ><a name="296" href="Data.Nat.Properties.html#330" class="Module"
+      > <a name="296" href="Data.Nat.Properties.html#Properties" class="Module"
       >NatProp.</a
-      ><a name="304" href="Data.Nat.Properties.html#2085" class="Module"
+      ><a name="304" href="Data.Nat.Properties.html#SemiringSolver" class="Module"
       >SemiringSolver</a
-      ><a name="318"
       >
-</a
-      ><a name="319" class="Keyword"
+<a name="319" class="Keyword"
       >open</a
-      ><a name="323"
-      > </a
-      ><a name="324" class="Keyword"
+      > <a name="324" class="Keyword"
       >import</a
-      ><a name="330"
-      > </a
-      ><a name="331" href="Data.Nat.GCD.html#1" class="Module"
+      > <a name="331" href="Data.Nat.GCD.html" class="Module"
       >Data.Nat.GCD</a
-      ><a name="343"
       >
-</a
-      ><a name="344" class="Keyword"
+<a name="344" class="Keyword"
       >open</a
-      ><a name="348"
-      > </a
-      ><a name="349" class="Keyword"
+      > <a name="349" class="Keyword"
       >import</a
-      ><a name="355"
-      > </a
-      ><a name="356" href="Data.Nat.Divisibility.html#1" class="Module"
+      > <a name="356" href="Data.Nat.Divisibility.html" class="Module"
       >Data.Nat.Divisibility</a
-      ><a name="377"
-      > </a
-      ><a name="378" class="Symbol"
+      > <a name="378" class="Symbol"
       >as</a
-      ><a name="380"
-      > </a
-      ><a name="381" class="Module"
+      > <a name="381" class="Module"
       >Div</a
-      ><a name="384"
       >
-</a
-      ><a name="385" class="Keyword"
+<a name="385" class="Keyword"
       >open</a
-      ><a name="389"
-      > </a
-      ><a name="390" class="Keyword"
+      > <a name="390" class="Keyword"
       >import</a
-      ><a name="396"
-      > </a
-      ><a name="397" href="Data.Nat.Coprimality.html#1" class="Module"
+      > <a name="397" href="Data.Nat.Coprimality.html" class="Module"
       >Data.Nat.Coprimality</a
-      ><a name="417"
-      > </a
-      ><a name="418" class="Symbol"
+      > <a name="418" class="Symbol"
       >as</a
-      ><a name="420"
-      > </a
-      ><a name="421" class="Module"
+      > <a name="421" class="Module"
       >Coprime</a
-      ><a name="428"
       >
-</a
-      ><a name="429" class="Keyword"
+<a name="429" class="Keyword"
       >open</a
-      ><a name="433"
-      > </a
-      ><a name="434" class="Keyword"
+      > <a name="434" class="Keyword"
       >import</a
-      ><a name="440"
-      > </a
-      ><a name="441" href="Data.Product.html#1" class="Module"
+      > <a name="441" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="453"
       >
-</a
-      ><a name="454" class="Keyword"
+<a name="454" class="Keyword"
       >open</a
-      ><a name="458"
-      > </a
-      ><a name="459" class="Keyword"
+      > <a name="459" class="Keyword"
       >import</a
-      ><a name="465"
-      > </a
-      ><a name="466" href="Function.html#1" class="Module"
+      > <a name="466" href="Function.html" class="Module"
       >Function</a
-      ><a name="474"
       >
-</a
-      ><a name="475" class="Keyword"
+<a name="475" class="Keyword"
       >open</a
-      ><a name="479"
-      > </a
-      ><a name="480" class="Keyword"
+      > <a name="480" class="Keyword"
       >import</a
-      ><a name="486"
-      > </a
-      ><a name="487" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      > <a name="487" href="Relation.Binary.PropositionalEquality.html" class="Module"
       >Relation.Binary.PropositionalEquality</a
-      ><a name="524"
-      > </a
-      ><a name="525" class="Symbol"
+      > <a name="525" class="Symbol"
       >as</a
-      ><a name="527"
-      > </a
-      ><a name="528" class="Module"
+      > <a name="528" class="Module"
       >PropEq</a
-      ><a name="534"
       >
-  </a
-      ><a name="537" class="Keyword"
+  <a name="537" class="Keyword"
       >using</a
-      ><a name="542"
-      > </a
-      ><a name="543" class="Symbol"
+      > <a name="543" class="Symbol"
       >(</a
-      ><a name="544" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      ><a name="544" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >_&#8801;_</a
       ><a name="547" class="Symbol"
       >;</a
-      ><a name="548"
-      > </a
-      ><a name="549" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="549" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
       ><a name="553" class="Symbol"
       >)</a
-      ><a name="554"
       >
-</a
-      ><a name="555" class="Keyword"
+<a name="555" class="Keyword"
       >open</a
-      ><a name="559"
-      > </a
-      ><a name="560" class="Keyword"
+      > <a name="560" class="Keyword"
       >import</a
-      ><a name="566"
-      > </a
-      ><a name="567" href="Algebra.html#1" class="Module"
+      > <a name="567" href="Algebra.html" class="Module"
       >Algebra</a
-      ><a name="574"
       >
-</a
-      ><a name="575" class="Keyword"
+<a name="575" class="Keyword"
       >open</a
-      ><a name="579"
-      > </a
-      ><a name="580" class="Keyword"
+      > <a name="580" class="Keyword"
       >import</a
-      ><a name="586"
-      > </a
-      ><a name="587" href="Relation.Binary.html#1" class="Module"
+      > <a name="587" href="Relation.Binary.html" class="Module"
       >Relation.Binary</a
-      ><a name="602"
       >
-</a
-      ><a name="603" class="Keyword"
+<a name="603" class="Keyword"
       >private</a
-      ><a name="610"
       >
-  </a
-      ><a name="613" class="Keyword"
+  <a name="613" class="Keyword"
       >module</a
-      ><a name="619"
-      > </a
-      ><a name="620" href="Data.Nat.LCM.html#620" class="Module"
+      > <a name="P" href="Data.Nat.LCM.html#P" class="Module"
       >P</a
-      ><a name="621"
-      >  </a
-      ><a name="623" class="Symbol"
+      >  <a name="623" class="Symbol"
       >=</a
-      ><a name="624"
-      > </a
-      ><a name="625" href="Relation.Binary.html#3729" class="Module"
+      > <a name="625" href="Relation.Binary.html#Poset" class="Module"
       >Poset</a
-      ><a name="630"
-      > </a
-      ><a name="631" href="Data.Nat.Divisibility.html#1599" class="Function"
+      > <a name="631" href="Data.Nat.Divisibility.html#poset" class="Function"
       >Div.poset</a
-      ><a name="640"
       >
-  </a
-      ><a name="643" class="Keyword"
+  <a name="643" class="Keyword"
       >module</a
-      ><a name="649"
-      > </a
-      ><a name="650" href="Data.Nat.LCM.html#650" class="Module"
+      > <a name="CS" href="Data.Nat.LCM.html#CS" class="Module"
       >CS</a
-      ><a name="652"
-      > </a
-      ><a name="653" class="Symbol"
+      > <a name="653" class="Symbol"
       >=</a
-      ><a name="654"
-      > </a
-      ><a name="655" href="Algebra.html#7862" class="Module"
+      > <a name="655" href="Algebra.html#CommutativeSemiring" class="Module"
       >CommutativeSemiring</a
-      ><a name="674"
-      > </a
-      ><a name="675" href="Data.Nat.Properties.html#1726" class="Function"
+      > <a name="675" href="Data.Nat.Properties.html#commutativeSemiring" class="Function"
       >NatProp.commutativeSemiring</a
-      ><a name="702"
       >
 
-</a
-      ><a name="704" class="Comment"
+<a name="704" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="776"
       >
-</a
-      ><a name="777" class="Comment"
+<a name="777" class="Comment"
       >-- Least common multiple (lcm).</a
-      ><a name="808"
       >
 
-</a
-      ><a name="810" class="Keyword"
+<a name="810" class="Keyword"
       >module</a
-      ><a name="816"
-      > </a
-      ><a name="817" href="Data.Nat.LCM.html#817" class="Module"
+      > <a name="LCM" href="Data.Nat.LCM.html#LCM" class="Module"
       >LCM</a
-      ><a name="820"
-      > </a
-      ><a name="821" class="Keyword"
+      > <a name="821" class="Keyword"
       >where</a
-      ><a name="826"
       >
 
-  </a
-      ><a name="830" class="Comment"
+  <a name="830" class="Comment"
       >-- Specification of the least common multiple (lcm) of two natural</a
-      ><a name="896"
       >
-  </a
-      ><a name="899" class="Comment"
+  <a name="899" class="Comment"
       >-- numbers.</a
-      ><a name="910"
       >
 
-  </a
-      ><a name="914" class="Keyword"
+  <a name="914" class="Keyword"
       >record</a
-      ><a name="920"
-      > </a
-      ><a name="921" href="Data.Nat.LCM.html#921" class="Record"
+      > <a name="LCM.LCM" href="Data.Nat.LCM.html#LCM.LCM" class="Record"
       >LCM</a
-      ><a name="924"
-      > </a
-      ><a name="925" class="Symbol"
+      > <a name="925" class="Symbol"
       >(</a
       ><a name="926" href="Data.Nat.LCM.html#926" class="Bound"
       >i</a
-      ><a name="927"
-      > </a
-      ><a name="928" href="Data.Nat.LCM.html#928" class="Bound"
+      > <a name="928" href="Data.Nat.LCM.html#928" class="Bound"
       >j</a
-      ><a name="929"
-      > </a
-      ><a name="930" href="Data.Nat.LCM.html#930" class="Bound"
+      > <a name="930" href="Data.Nat.LCM.html#930" class="Bound"
       >lcm</a
-      ><a name="933"
-      > </a
-      ><a name="934" class="Symbol"
+      > <a name="934" class="Symbol"
       >:</a
-      ><a name="935"
-      > </a
-      ><a name="936" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="936" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
       ><a name="937" class="Symbol"
       >)</a
-      ><a name="938"
-      > </a
-      ><a name="939" class="Symbol"
+      > <a name="939" class="Symbol"
       >:</a
-      ><a name="940"
-      > </a
-      ><a name="941" class="PrimitiveType"
+      > <a name="941" class="PrimitiveType"
       >Set</a
-      ><a name="944"
-      > </a
-      ><a name="945" class="Keyword"
+      > <a name="945" class="Keyword"
       >where</a
-      ><a name="950"
       >
-    </a
-      ><a name="955" class="Keyword"
+    <a name="955" class="Keyword"
       >field</a
-      ><a name="960"
       >
-      </a
-      ><a name="967" class="Comment"
+      <a name="967" class="Comment"
       >-- The lcm is a common multiple.</a
-      ><a name="999"
       >
-      </a
-      ><a name="1006" href="Data.Nat.LCM.html#1006" class="Field"
+      <a name="LCM.LCM.commonMultiple" href="Data.Nat.LCM.html#LCM.LCM.commonMultiple" class="Field"
       >commonMultiple</a
-      ><a name="1020"
-      > </a
-      ><a name="1021" class="Symbol"
+      > <a name="1021" class="Symbol"
       >:</a
-      ><a name="1022"
-      > </a
-      ><a name="1023" href="Data.Nat.LCM.html#926" class="Bound"
+      > <a name="1023" href="Data.Nat.LCM.html#926" class="Bound"
       >i</a
-      ><a name="1024"
-      > </a
-      ><a name="1025" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      > <a name="1025" href="Data.Nat.Divisibility.html#_&#8739;_" class="Datatype Operator"
       >&#8739;</a
-      ><a name="1026"
-      > </a
-      ><a name="1027" href="Data.Nat.LCM.html#930" class="Bound"
+      > <a name="1027" href="Data.Nat.LCM.html#930" class="Bound"
       >lcm</a
-      ><a name="1030"
-      > </a
-      ><a name="1031" href="Data.Product.html#1073" class="Function Operator"
+      > <a name="1031" href="Data.Product.html#_&#215;_" class="Function Operator"
       >&#215;</a
-      ><a name="1032"
-      > </a
-      ><a name="1033" href="Data.Nat.LCM.html#928" class="Bound"
+      > <a name="1033" href="Data.Nat.LCM.html#928" class="Bound"
       >j</a
-      ><a name="1034"
-      > </a
-      ><a name="1035" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      > <a name="1035" href="Data.Nat.Divisibility.html#_&#8739;_" class="Datatype Operator"
       >&#8739;</a
-      ><a name="1036"
-      > </a
-      ><a name="1037" href="Data.Nat.LCM.html#930" class="Bound"
+      > <a name="1037" href="Data.Nat.LCM.html#930" class="Bound"
       >lcm</a
-      ><a name="1040"
       >
 
-      </a
-      ><a name="1048" class="Comment"
+      <a name="1048" class="Comment"
       >-- The lcm divides all common multiples, i.e. the lcm is the least</a
-      ><a name="1114"
       >
-      </a
-      ><a name="1121" class="Comment"
+      <a name="1121" class="Comment"
       >-- common multiple according to the partial order _&#8739;_.</a
-      ><a name="1175"
       >
-      </a
-      ><a name="1182" href="Data.Nat.LCM.html#1182" class="Field"
+      <a name="LCM.LCM.least" href="Data.Nat.LCM.html#LCM.LCM.least" class="Field"
       >least</a
-      ><a name="1187"
-      > </a
-      ><a name="1188" class="Symbol"
+      > <a name="1188" class="Symbol"
       >:</a
-      ><a name="1189"
-      > </a
-      ><a name="1190" class="Symbol"
+      > <a name="1190" class="Symbol"
       >&#8704;</a
-      ><a name="1191"
-      > </a
-      ><a name="1192" class="Symbol"
+      > <a name="1192" class="Symbol"
       >{</a
       ><a name="1193" href="Data.Nat.LCM.html#1193" class="Bound"
       >m</a
       ><a name="1194" class="Symbol"
       >}</a
-      ><a name="1195"
-      > </a
-      ><a name="1196" class="Symbol"
+      > <a name="1196" class="Symbol"
       >&#8594;</a
-      ><a name="1197"
-      > </a
-      ><a name="1198" href="Data.Nat.LCM.html#926" class="Bound"
+      > <a name="1198" href="Data.Nat.LCM.html#926" class="Bound"
       >i</a
-      ><a name="1199"
-      > </a
-      ><a name="1200" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      > <a name="1200" href="Data.Nat.Divisibility.html#_&#8739;_" class="Datatype Operator"
       >&#8739;</a
-      ><a name="1201"
-      > </a
-      ><a name="1202" href="Data.Nat.LCM.html#1193" class="Bound"
+      > <a name="1202" href="Data.Nat.LCM.html#1193" class="Bound"
       >m</a
-      ><a name="1203"
-      > </a
-      ><a name="1204" href="Data.Product.html#1073" class="Function Operator"
+      > <a name="1204" href="Data.Product.html#_&#215;_" class="Function Operator"
       >&#215;</a
-      ><a name="1205"
-      > </a
-      ><a name="1206" href="Data.Nat.LCM.html#928" class="Bound"
+      > <a name="1206" href="Data.Nat.LCM.html#928" class="Bound"
       >j</a
-      ><a name="1207"
-      > </a
-      ><a name="1208" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      > <a name="1208" href="Data.Nat.Divisibility.html#_&#8739;_" class="Datatype Operator"
       >&#8739;</a
-      ><a name="1209"
-      > </a
-      ><a name="1210" href="Data.Nat.LCM.html#1193" class="Bound"
+      > <a name="1210" href="Data.Nat.LCM.html#1193" class="Bound"
       >m</a
-      ><a name="1211"
-      > </a
-      ><a name="1212" class="Symbol"
+      > <a name="1212" class="Symbol"
       >&#8594;</a
-      ><a name="1213"
-      > </a
-      ><a name="1214" href="Data.Nat.LCM.html#930" class="Bound"
+      > <a name="1214" href="Data.Nat.LCM.html#930" class="Bound"
       >lcm</a
-      ><a name="1217"
-      > </a
-      ><a name="1218" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      > <a name="1218" href="Data.Nat.Divisibility.html#_&#8739;_" class="Datatype Operator"
       >&#8739;</a
-      ><a name="1219"
-      > </a
-      ><a name="1220" href="Data.Nat.LCM.html#1193" class="Bound"
+      > <a name="1220" href="Data.Nat.LCM.html#1193" class="Bound"
       >m</a
-      ><a name="1221"
       >
 
-  </a
-      ><a name="1225" class="Keyword"
+  <a name="1225" class="Keyword"
       >open</a
-      ><a name="1229"
-      > </a
-      ><a name="1230" href="Data.Nat.LCM.html#921" class="Module"
+      > <a name="1230" href="Data.Nat.LCM.html#LCM" class="Module"
       >LCM</a
-      ><a name="1233"
-      > </a
-      ><a name="1234" class="Keyword"
+      > <a name="1234" class="Keyword"
       >public</a
-      ><a name="1240"
       >
 
-  </a
-      ><a name="1244" class="Comment"
+  <a name="1244" class="Comment"
       >-- The lcm is unique.</a
-      ><a name="1265"
       >
 
-  </a
-      ><a name="1269" href="Data.Nat.LCM.html#1269" class="Function"
+  <a name="LCM.unique" href="Data.Nat.LCM.html#LCM.unique" class="Function"
       >unique</a
-      ><a name="1275"
-      > </a
-      ><a name="1276" class="Symbol"
+      > <a name="1276" class="Symbol"
       >:</a
-      ><a name="1277"
-      > </a
-      ><a name="1278" class="Symbol"
+      > <a name="1278" class="Symbol"
       >&#8704;</a
-      ><a name="1279"
-      > </a
-      ><a name="1280" class="Symbol"
+      > <a name="1280" class="Symbol"
       >{</a
       ><a name="1281" href="Data.Nat.LCM.html#1281" class="Bound"
       >d&#8321;</a
-      ><a name="1283"
-      > </a
-      ><a name="1284" href="Data.Nat.LCM.html#1284" class="Bound"
+      > <a name="1284" href="Data.Nat.LCM.html#1284" class="Bound"
       >d&#8322;</a
-      ><a name="1286"
-      > </a
-      ><a name="1287" href="Data.Nat.LCM.html#1287" class="Bound"
+      > <a name="1287" href="Data.Nat.LCM.html#1287" class="Bound"
       >m</a
-      ><a name="1288"
-      > </a
-      ><a name="1289" href="Data.Nat.LCM.html#1289" class="Bound"
+      > <a name="1289" href="Data.Nat.LCM.html#1289" class="Bound"
       >n</a
       ><a name="1290" class="Symbol"
       >}</a
-      ><a name="1291"
-      > </a
-      ><a name="1292" class="Symbol"
+      > <a name="1292" class="Symbol"
       >&#8594;</a
-      ><a name="1293"
-      > </a
-      ><a name="1294" href="Data.Nat.LCM.html#921" class="Record"
+      > <a name="1294" href="Data.Nat.LCM.html#LCM.LCM" class="Record"
       >LCM</a
-      ><a name="1297"
-      > </a
-      ><a name="1298" href="Data.Nat.LCM.html#1287" class="Bound"
+      > <a name="1298" href="Data.Nat.LCM.html#1287" class="Bound"
       >m</a
-      ><a name="1299"
-      > </a
-      ><a name="1300" href="Data.Nat.LCM.html#1289" class="Bound"
+      > <a name="1300" href="Data.Nat.LCM.html#1289" class="Bound"
       >n</a
-      ><a name="1301"
-      > </a
-      ><a name="1302" href="Data.Nat.LCM.html#1281" class="Bound"
+      > <a name="1302" href="Data.Nat.LCM.html#1281" class="Bound"
       >d&#8321;</a
-      ><a name="1304"
-      > </a
-      ><a name="1305" class="Symbol"
+      > <a name="1305" class="Symbol"
       >&#8594;</a
-      ><a name="1306"
-      > </a
-      ><a name="1307" href="Data.Nat.LCM.html#921" class="Record"
+      > <a name="1307" href="Data.Nat.LCM.html#LCM.LCM" class="Record"
       >LCM</a
-      ><a name="1310"
-      > </a
-      ><a name="1311" href="Data.Nat.LCM.html#1287" class="Bound"
+      > <a name="1311" href="Data.Nat.LCM.html#1287" class="Bound"
       >m</a
-      ><a name="1312"
-      > </a
-      ><a name="1313" href="Data.Nat.LCM.html#1289" class="Bound"
+      > <a name="1313" href="Data.Nat.LCM.html#1289" class="Bound"
       >n</a
-      ><a name="1314"
-      > </a
-      ><a name="1315" href="Data.Nat.LCM.html#1284" class="Bound"
+      > <a name="1315" href="Data.Nat.LCM.html#1284" class="Bound"
       >d&#8322;</a
-      ><a name="1317"
-      > </a
-      ><a name="1318" class="Symbol"
+      > <a name="1318" class="Symbol"
       >&#8594;</a
-      ><a name="1319"
-      > </a
-      ><a name="1320" href="Data.Nat.LCM.html#1281" class="Bound"
+      > <a name="1320" href="Data.Nat.LCM.html#1281" class="Bound"
       >d&#8321;</a
-      ><a name="1322"
-      > </a
-      ><a name="1323" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="1323" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="1324"
-      > </a
-      ><a name="1325" href="Data.Nat.LCM.html#1284" class="Bound"
+      > <a name="1325" href="Data.Nat.LCM.html#1284" class="Bound"
       >d&#8322;</a
-      ><a name="1327"
       >
-  </a
-      ><a name="1330" href="Data.Nat.LCM.html#1269" class="Function"
+  <a name="1330" href="Data.Nat.LCM.html#LCM.unique" class="Function"
       >unique</a
-      ><a name="1336"
-      > </a
-      ><a name="1337" href="Data.Nat.LCM.html#1337" class="Bound"
+      > <a name="1337" href="Data.Nat.LCM.html#1337" class="Bound"
       >d&#8321;</a
-      ><a name="1339"
-      > </a
-      ><a name="1340" href="Data.Nat.LCM.html#1340" class="Bound"
+      > <a name="1340" href="Data.Nat.LCM.html#1340" class="Bound"
       >d&#8322;</a
-      ><a name="1342"
-      > </a
-      ><a name="1343" class="Symbol"
+      > <a name="1343" class="Symbol"
       >=</a
-      ><a name="1344"
-      > </a
-      ><a name="1345" href="Relation.Binary.html#3608" class="Function"
+      > <a name="1345" href="Relation.Binary.html#LCM.P.antisym" class="Function"
       >P.antisym</a
-      ><a name="1354"
-      > </a
-      ><a name="1355" class="Symbol"
+      > <a name="1355" class="Symbol"
       >(</a
-      ><a name="1356" href="Data.Nat.LCM.html#1182" class="Field"
+      ><a name="1356" href="Data.Nat.LCM.html#LCM.LCM.least" class="Field"
       >LCM.least</a
-      ><a name="1365"
-      > </a
-      ><a name="1366" href="Data.Nat.LCM.html#1337" class="Bound"
+      > <a name="1366" href="Data.Nat.LCM.html#1337" class="Bound"
       >d&#8321;</a
-      ><a name="1368"
-      > </a
-      ><a name="1369" class="Symbol"
+      > <a name="1369" class="Symbol"
       >(</a
-      ><a name="1370" href="Data.Nat.LCM.html#1006" class="Field"
+      ><a name="1370" href="Data.Nat.LCM.html#LCM.LCM.commonMultiple" class="Field"
       >LCM.commonMultiple</a
-      ><a name="1388"
-      > </a
-      ><a name="1389" href="Data.Nat.LCM.html#1340" class="Bound"
+      > <a name="1389" href="Data.Nat.LCM.html#1340" class="Bound"
       >d&#8322;</a
       ><a name="1391" class="Symbol"
       >))</a
-      ><a name="1393"
       >
-                           </a
-      ><a name="1421" class="Symbol"
+                           <a name="1421" class="Symbol"
       >(</a
-      ><a name="1422" href="Data.Nat.LCM.html#1182" class="Field"
+      ><a name="1422" href="Data.Nat.LCM.html#LCM.LCM.least" class="Field"
       >LCM.least</a
-      ><a name="1431"
-      > </a
-      ><a name="1432" href="Data.Nat.LCM.html#1340" class="Bound"
+      > <a name="1432" href="Data.Nat.LCM.html#1340" class="Bound"
       >d&#8322;</a
-      ><a name="1434"
-      > </a
-      ><a name="1435" class="Symbol"
+      > <a name="1435" class="Symbol"
       >(</a
-      ><a name="1436" href="Data.Nat.LCM.html#1006" class="Field"
+      ><a name="1436" href="Data.Nat.LCM.html#LCM.LCM.commonMultiple" class="Field"
       >LCM.commonMultiple</a
-      ><a name="1454"
-      > </a
-      ><a name="1455" href="Data.Nat.LCM.html#1337" class="Bound"
+      > <a name="1455" href="Data.Nat.LCM.html#1337" class="Bound"
       >d&#8321;</a
       ><a name="1457" class="Symbol"
       >))</a
-      ><a name="1459"
       >
 
-</a
-      ><a name="1461" class="Keyword"
+<a name="1461" class="Keyword"
       >open</a
-      ><a name="1465"
-      > </a
-      ><a name="1466" href="Data.Nat.LCM.html#817" class="Module"
+      > <a name="1466" href="Data.Nat.LCM.html#LCM" class="Module"
       >LCM</a
-      ><a name="1469"
-      > </a
-      ><a name="1470" class="Keyword"
+      > <a name="1470" class="Keyword"
       >public</a
-      ><a name="1476"
-      > </a
-      ><a name="1477" class="Keyword"
+      > <a name="1477" class="Keyword"
       >using</a
-      ><a name="1482"
-      > </a
-      ><a name="1483" class="Symbol"
+      > <a name="1483" class="Symbol"
       >(</a
-      ><a name="1484" href="Data.Nat.LCM.html#921" class="Record"
+      ><a name="1484" href="Data.Nat.LCM.html#LCM.LCM" class="Record"
       >LCM</a
       ><a name="1487" class="Symbol"
       >)</a
-      ><a name="1488"
-      > </a
-      ><a name="1489" class="Keyword"
+      > <a name="1489" class="Keyword"
       >hiding</a
-      ><a name="1495"
-      > </a
-      ><a name="1496" class="Symbol"
+      > <a name="1496" class="Symbol"
       >(</a
       ><a name="1497" class="Keyword"
       >module</a
-      ><a name="1503"
-      > </a
-      ><a name="1504" href="Data.Nat.LCM.html#212" class="Module"
+      > <a name="1504" href="Data.Nat.LCM.html#Data" class="Module"
       >LCM</a
       ><a name="1507" class="Symbol"
       >)</a
-      ><a name="1508"
       >
 
-</a
-      ><a name="1510" class="Comment"
+<a name="1510" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="1582"
       >
-</a
-      ><a name="1583" class="Comment"
+<a name="1583" class="Comment"
       >-- Calculating the lcm</a
-      ><a name="1605"
       >
 
-</a
-      ><a name="1607" class="Keyword"
+<a name="1607" class="Keyword"
       >private</a
-      ><a name="1614"
       >
-  </a
-      ><a name="1617" href="Data.Nat.LCM.html#1617" class="Function"
+  <a name="lem&#8321;" href="Data.Nat.LCM.html#lem&#8321;" class="Function"
       >lem&#8321;</a
-      ><a name="1621"
-      > </a
-      ><a name="1622" class="Symbol"
+      > <a name="1622" class="Symbol"
       >=</a
-      ><a name="1623"
-      > </a
-      ><a name="1624" href="Relation.Binary.Reflection.html#2382" class="Function"
+      > <a name="1624" href="Relation.Binary.Reflection.html#SemiringSolver.solve" class="Function"
       >solve</a
-      ><a name="1629"
-      > </a
-      ><a name="1630" class="Number"
+      > <a name="1630" class="Number"
       >3</a
-      ><a name="1631"
-      > </a
-      ><a name="1632" class="Symbol"
+      > <a name="1632" class="Symbol"
       >(&#955;</a
-      ><a name="1634"
-      > </a
-      ><a name="1635" href="Data.Nat.LCM.html#1635" class="Bound"
+      > <a name="1635" href="Data.Nat.LCM.html#1635" class="Bound"
       >a</a
-      ><a name="1636"
-      > </a
-      ><a name="1637" href="Data.Nat.LCM.html#1637" class="Bound"
+      > <a name="1637" href="Data.Nat.LCM.html#1637" class="Bound"
       >b</a
-      ><a name="1638"
-      > </a
-      ><a name="1639" href="Data.Nat.LCM.html#1639" class="Bound"
+      > <a name="1639" href="Data.Nat.LCM.html#1639" class="Bound"
       >c</a
-      ><a name="1640"
-      > </a
-      ><a name="1641" class="Symbol"
+      > <a name="1641" class="Symbol"
       >&#8594;</a
-      ><a name="1642"
-      > </a
-      ><a name="1643" href="Data.Nat.LCM.html#1635" class="Bound"
+      > <a name="1643" href="Data.Nat.LCM.html#1635" class="Bound"
       >a</a
-      ><a name="1644"
-      > </a
-      ><a name="1645" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="1645" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="1647"
-      > </a
-      ><a name="1648" href="Data.Nat.LCM.html#1637" class="Bound"
+      > <a name="1648" href="Data.Nat.LCM.html#1637" class="Bound"
       >b</a
-      ><a name="1649"
-      > </a
-      ><a name="1650" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="1650" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="1652"
-      > </a
-      ><a name="1653" href="Data.Nat.LCM.html#1639" class="Bound"
+      > <a name="1653" href="Data.Nat.LCM.html#1639" class="Bound"
       >c</a
-      ><a name="1654"
-      >  </a
-      ><a name="1656" href="Relation.Binary.Reflection.html#3491" class="Function Operator"
+      >  <a name="1656" href="Relation.Binary.Reflection.html#SemiringSolver._:=_" class="Function Operator"
       >:=</a
-      ><a name="1658"
-      >  </a
-      ><a name="1660" href="Data.Nat.LCM.html#1637" class="Bound"
+      >  <a name="1660" href="Data.Nat.LCM.html#1637" class="Bound"
       >b</a
-      ><a name="1661"
-      > </a
-      ><a name="1662" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="1662" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="1664"
-      > </a
-      ><a name="1665" class="Symbol"
+      > <a name="1665" class="Symbol"
       >(</a
       ><a name="1666" href="Data.Nat.LCM.html#1635" class="Bound"
       >a</a
-      ><a name="1667"
-      > </a
-      ><a name="1668" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="1668" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="1670"
-      > </a
-      ><a name="1671" href="Data.Nat.LCM.html#1639" class="Bound"
+      > <a name="1671" href="Data.Nat.LCM.html#1639" class="Bound"
       >c</a
       ><a name="1672" class="Symbol"
       >))</a
-      ><a name="1674"
-      > </a
-      ><a name="1675" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="1675" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="1679"
       >
-  </a
-      ><a name="1682" href="Data.Nat.LCM.html#1682" class="Function"
+  <a name="lem&#8322;" href="Data.Nat.LCM.html#lem&#8322;" class="Function"
       >lem&#8322;</a
-      ><a name="1686"
-      > </a
-      ><a name="1687" class="Symbol"
+      > <a name="1687" class="Symbol"
       >=</a
-      ><a name="1688"
-      > </a
-      ><a name="1689" href="Relation.Binary.Reflection.html#2382" class="Function"
+      > <a name="1689" href="Relation.Binary.Reflection.html#SemiringSolver.solve" class="Function"
       >solve</a
-      ><a name="1694"
-      > </a
-      ><a name="1695" class="Number"
+      > <a name="1695" class="Number"
       >3</a
-      ><a name="1696"
-      > </a
-      ><a name="1697" class="Symbol"
+      > <a name="1697" class="Symbol"
       >(&#955;</a
-      ><a name="1699"
-      > </a
-      ><a name="1700" href="Data.Nat.LCM.html#1700" class="Bound"
+      > <a name="1700" href="Data.Nat.LCM.html#1700" class="Bound"
       >a</a
-      ><a name="1701"
-      > </a
-      ><a name="1702" href="Data.Nat.LCM.html#1702" class="Bound"
+      > <a name="1702" href="Data.Nat.LCM.html#1702" class="Bound"
       >b</a
-      ><a name="1703"
-      > </a
-      ><a name="1704" href="Data.Nat.LCM.html#1704" class="Bound"
+      > <a name="1704" href="Data.Nat.LCM.html#1704" class="Bound"
       >c</a
-      ><a name="1705"
-      > </a
-      ><a name="1706" class="Symbol"
+      > <a name="1706" class="Symbol"
       >&#8594;</a
-      ><a name="1707"
-      > </a
-      ><a name="1708" href="Data.Nat.LCM.html#1700" class="Bound"
+      > <a name="1708" href="Data.Nat.LCM.html#1700" class="Bound"
       >a</a
-      ><a name="1709"
-      > </a
-      ><a name="1710" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="1710" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="1712"
-      > </a
-      ><a name="1713" href="Data.Nat.LCM.html#1702" class="Bound"
+      > <a name="1713" href="Data.Nat.LCM.html#1702" class="Bound"
       >b</a
-      ><a name="1714"
-      > </a
-      ><a name="1715" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="1715" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="1717"
-      > </a
-      ><a name="1718" href="Data.Nat.LCM.html#1704" class="Bound"
+      > <a name="1718" href="Data.Nat.LCM.html#1704" class="Bound"
       >c</a
-      ><a name="1719"
-      >  </a
-      ><a name="1721" href="Relation.Binary.Reflection.html#3491" class="Function Operator"
+      >  <a name="1721" href="Relation.Binary.Reflection.html#SemiringSolver._:=_" class="Function Operator"
       >:=</a
-      ><a name="1723"
-      >  </a
-      ><a name="1725" href="Data.Nat.LCM.html#1700" class="Bound"
+      >  <a name="1725" href="Data.Nat.LCM.html#1700" class="Bound"
       >a</a
-      ><a name="1726"
-      > </a
-      ><a name="1727" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="1727" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="1729"
-      > </a
-      ><a name="1730" class="Symbol"
+      > <a name="1730" class="Symbol"
       >(</a
       ><a name="1731" href="Data.Nat.LCM.html#1702" class="Bound"
       >b</a
-      ><a name="1732"
-      > </a
-      ><a name="1733" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="1733" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="1735"
-      > </a
-      ><a name="1736" href="Data.Nat.LCM.html#1704" class="Bound"
+      > <a name="1736" href="Data.Nat.LCM.html#1704" class="Bound"
       >c</a
       ><a name="1737" class="Symbol"
       >))</a
-      ><a name="1739"
-      > </a
-      ><a name="1740" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="1740" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="1744"
       >
 
-  </a
-      ><a name="1748" class="Comment"
+  <a name="1748" class="Comment"
       >-- If these lemmas are inlined, then type checking takes a lot</a
-      ><a name="1810"
       >
-  </a
-      ><a name="1813" class="Comment"
+  <a name="1813" class="Comment"
       >-- longer... (In the development version of Agda from 2009-05-21.)</a
-      ><a name="1879"
       >
 
-  </a
-      ><a name="1883" href="Data.Nat.LCM.html#1883" class="Function"
+  <a name="mult&#8321;" href="Data.Nat.LCM.html#mult&#8321;" class="Function"
       >mult&#8321;</a
-      ><a name="1888"
-      > </a
-      ><a name="1889" class="Symbol"
+      > <a name="1889" class="Symbol"
       >:</a
-      ><a name="1890"
-      > </a
-      ><a name="1891" class="Symbol"
+      > <a name="1891" class="Symbol"
       >&#8704;</a
-      ><a name="1892"
-      > </a
-      ><a name="1893" href="Data.Nat.LCM.html#1893" class="Bound"
+      > <a name="1893" href="Data.Nat.LCM.html#1893" class="Bound"
       >q&#8321;</a
-      ><a name="1895"
-      > </a
-      ><a name="1896" href="Data.Nat.LCM.html#1896" class="Bound"
+      > <a name="1896" href="Data.Nat.LCM.html#1896" class="Bound"
       >q&#8322;</a
-      ><a name="1898"
-      > </a
-      ><a name="1899" href="Data.Nat.LCM.html#1899" class="Bound"
+      > <a name="1899" href="Data.Nat.LCM.html#1899" class="Bound"
       >d</a
-      ><a name="1900"
-      > </a
-      ><a name="1901" class="Symbol"
+      > <a name="1901" class="Symbol"
       >&#8594;</a
-      ><a name="1902"
-      > </a
-      ><a name="1903" href="Data.Nat.LCM.html#1893" class="Bound"
+      > <a name="1903" href="Data.Nat.LCM.html#1893" class="Bound"
       >q&#8321;</a
-      ><a name="1905"
-      > </a
-      ><a name="1906" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="1906" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="1907"
-      > </a
-      ><a name="1908" href="Data.Nat.LCM.html#1899" class="Bound"
+      > <a name="1908" href="Data.Nat.LCM.html#1899" class="Bound"
       >d</a
-      ><a name="1909"
-      > </a
-      ><a name="1910" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      > <a name="1910" href="Data.Nat.Divisibility.html#_&#8739;_" class="Datatype Operator"
       >&#8739;</a
-      ><a name="1911"
-      > </a
-      ><a name="1912" href="Data.Nat.LCM.html#1893" class="Bound"
+      > <a name="1912" href="Data.Nat.LCM.html#1893" class="Bound"
       >q&#8321;</a
-      ><a name="1914"
-      > </a
-      ><a name="1915" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="1915" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="1916"
-      > </a
-      ><a name="1917" href="Data.Nat.LCM.html#1896" class="Bound"
+      > <a name="1917" href="Data.Nat.LCM.html#1896" class="Bound"
       >q&#8322;</a
-      ><a name="1919"
-      > </a
-      ><a name="1920" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="1920" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="1921"
-      > </a
-      ><a name="1922" href="Data.Nat.LCM.html#1899" class="Bound"
+      > <a name="1922" href="Data.Nat.LCM.html#1899" class="Bound"
       >d</a
-      ><a name="1923"
       >
-  </a
-      ><a name="1926" href="Data.Nat.LCM.html#1883" class="Function"
+  <a name="1926" href="Data.Nat.LCM.html#mult&#8321;" class="Function"
       >mult&#8321;</a
-      ><a name="1931"
-      > </a
-      ><a name="1932" href="Data.Nat.LCM.html#1932" class="Bound"
+      > <a name="1932" href="Data.Nat.LCM.html#1932" class="Bound"
       >q&#8321;</a
-      ><a name="1934"
-      > </a
-      ><a name="1935" href="Data.Nat.LCM.html#1935" class="Bound"
+      > <a name="1935" href="Data.Nat.LCM.html#1935" class="Bound"
       >q&#8322;</a
-      ><a name="1937"
-      > </a
-      ><a name="1938" href="Data.Nat.LCM.html#1938" class="Bound"
+      > <a name="1938" href="Data.Nat.LCM.html#1938" class="Bound"
       >d</a
-      ><a name="1939"
-      > </a
-      ><a name="1940" class="Symbol"
+      > <a name="1940" class="Symbol"
       >=</a
-      ><a name="1941"
-      > </a
-      ><a name="1942" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      > <a name="1942" href="Data.Nat.Divisibility.html#_&#8739;_.divides" class="InductiveConstructor"
       >divides</a
-      ><a name="1949"
-      > </a
-      ><a name="1950" href="Data.Nat.LCM.html#1935" class="Bound"
+      > <a name="1950" href="Data.Nat.LCM.html#1935" class="Bound"
       >q&#8322;</a
-      ><a name="1952"
-      > </a
-      ><a name="1953" class="Symbol"
+      > <a name="1953" class="Symbol"
       >(</a
-      ><a name="1954" href="Data.Nat.LCM.html#1617" class="Function"
+      ><a name="1954" href="Data.Nat.LCM.html#lem&#8321;" class="Function"
       >lem&#8321;</a
-      ><a name="1958"
-      > </a
-      ><a name="1959" href="Data.Nat.LCM.html#1932" class="Bound"
+      > <a name="1959" href="Data.Nat.LCM.html#1932" class="Bound"
       >q&#8321;</a
-      ><a name="1961"
-      > </a
-      ><a name="1962" href="Data.Nat.LCM.html#1935" class="Bound"
+      > <a name="1962" href="Data.Nat.LCM.html#1935" class="Bound"
       >q&#8322;</a
-      ><a name="1964"
-      > </a
-      ><a name="1965" href="Data.Nat.LCM.html#1938" class="Bound"
+      > <a name="1965" href="Data.Nat.LCM.html#1938" class="Bound"
       >d</a
       ><a name="1966" class="Symbol"
       >)</a
-      ><a name="1967"
       >
 
-  </a
-      ><a name="1971" href="Data.Nat.LCM.html#1971" class="Function"
+  <a name="mult&#8322;" href="Data.Nat.LCM.html#mult&#8322;" class="Function"
       >mult&#8322;</a
-      ><a name="1976"
-      > </a
-      ><a name="1977" class="Symbol"
+      > <a name="1977" class="Symbol"
       >:</a
-      ><a name="1978"
-      > </a
-      ><a name="1979" class="Symbol"
+      > <a name="1979" class="Symbol"
       >&#8704;</a
-      ><a name="1980"
-      > </a
-      ><a name="1981" href="Data.Nat.LCM.html#1981" class="Bound"
+      > <a name="1981" href="Data.Nat.LCM.html#1981" class="Bound"
       >q&#8321;</a
-      ><a name="1983"
-      > </a
-      ><a name="1984" href="Data.Nat.LCM.html#1984" class="Bound"
+      > <a name="1984" href="Data.Nat.LCM.html#1984" class="Bound"
       >q&#8322;</a
-      ><a name="1986"
-      > </a
-      ><a name="1987" href="Data.Nat.LCM.html#1987" class="Bound"
+      > <a name="1987" href="Data.Nat.LCM.html#1987" class="Bound"
       >d</a
-      ><a name="1988"
-      > </a
-      ><a name="1989" class="Symbol"
+      > <a name="1989" class="Symbol"
       >&#8594;</a
-      ><a name="1990"
-      > </a
-      ><a name="1991" href="Data.Nat.LCM.html#1984" class="Bound"
+      > <a name="1991" href="Data.Nat.LCM.html#1984" class="Bound"
       >q&#8322;</a
-      ><a name="1993"
-      > </a
-      ><a name="1994" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="1994" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="1995"
-      > </a
-      ><a name="1996" href="Data.Nat.LCM.html#1987" class="Bound"
+      > <a name="1996" href="Data.Nat.LCM.html#1987" class="Bound"
       >d</a
-      ><a name="1997"
-      > </a
-      ><a name="1998" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      > <a name="1998" href="Data.Nat.Divisibility.html#_&#8739;_" class="Datatype Operator"
       >&#8739;</a
-      ><a name="1999"
-      > </a
-      ><a name="2000" href="Data.Nat.LCM.html#1981" class="Bound"
+      > <a name="2000" href="Data.Nat.LCM.html#1981" class="Bound"
       >q&#8321;</a
-      ><a name="2002"
-      > </a
-      ><a name="2003" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2003" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2004"
-      > </a
-      ><a name="2005" href="Data.Nat.LCM.html#1984" class="Bound"
+      > <a name="2005" href="Data.Nat.LCM.html#1984" class="Bound"
       >q&#8322;</a
-      ><a name="2007"
-      > </a
-      ><a name="2008" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2008" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2009"
-      > </a
-      ><a name="2010" href="Data.Nat.LCM.html#1987" class="Bound"
+      > <a name="2010" href="Data.Nat.LCM.html#1987" class="Bound"
       >d</a
-      ><a name="2011"
       >
-  </a
-      ><a name="2014" href="Data.Nat.LCM.html#1971" class="Function"
+  <a name="2014" href="Data.Nat.LCM.html#mult&#8322;" class="Function"
       >mult&#8322;</a
-      ><a name="2019"
-      > </a
-      ><a name="2020" href="Data.Nat.LCM.html#2020" class="Bound"
+      > <a name="2020" href="Data.Nat.LCM.html#2020" class="Bound"
       >q&#8321;</a
-      ><a name="2022"
-      > </a
-      ><a name="2023" href="Data.Nat.LCM.html#2023" class="Bound"
+      > <a name="2023" href="Data.Nat.LCM.html#2023" class="Bound"
       >q&#8322;</a
-      ><a name="2025"
-      > </a
-      ><a name="2026" href="Data.Nat.LCM.html#2026" class="Bound"
+      > <a name="2026" href="Data.Nat.LCM.html#2026" class="Bound"
       >d</a
-      ><a name="2027"
-      > </a
-      ><a name="2028" class="Symbol"
+      > <a name="2028" class="Symbol"
       >=</a
-      ><a name="2029"
-      > </a
-      ><a name="2030" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      > <a name="2030" href="Data.Nat.Divisibility.html#_&#8739;_.divides" class="InductiveConstructor"
       >divides</a
-      ><a name="2037"
-      > </a
-      ><a name="2038" href="Data.Nat.LCM.html#2020" class="Bound"
+      > <a name="2038" href="Data.Nat.LCM.html#2020" class="Bound"
       >q&#8321;</a
-      ><a name="2040"
-      > </a
-      ><a name="2041" class="Symbol"
+      > <a name="2041" class="Symbol"
       >(</a
-      ><a name="2042" href="Data.Nat.LCM.html#1682" class="Function"
+      ><a name="2042" href="Data.Nat.LCM.html#lem&#8322;" class="Function"
       >lem&#8322;</a
-      ><a name="2046"
-      > </a
-      ><a name="2047" href="Data.Nat.LCM.html#2020" class="Bound"
+      > <a name="2047" href="Data.Nat.LCM.html#2020" class="Bound"
       >q&#8321;</a
-      ><a name="2049"
-      > </a
-      ><a name="2050" href="Data.Nat.LCM.html#2023" class="Bound"
+      > <a name="2050" href="Data.Nat.LCM.html#2023" class="Bound"
       >q&#8322;</a
-      ><a name="2052"
-      > </a
-      ><a name="2053" href="Data.Nat.LCM.html#2026" class="Bound"
+      > <a name="2053" href="Data.Nat.LCM.html#2026" class="Bound"
       >d</a
       ><a name="2054" class="Symbol"
       >)</a
-      ><a name="2055"
       >
 
-</a
-      ><a name="2057" class="Comment"
+<a name="2057" class="Comment"
       >-- The lcm can be calculated from the gcd.</a
-      ><a name="2099"
       >
 
-</a
-      ><a name="2101" href="Data.Nat.LCM.html#2101" class="Function"
+<a name="lcm" href="Data.Nat.LCM.html#lcm" class="Function"
       >lcm</a
-      ><a name="2104"
-      > </a
-      ><a name="2105" class="Symbol"
+      > <a name="2105" class="Symbol"
       >:</a
-      ><a name="2106"
-      > </a
-      ><a name="2107" class="Symbol"
+      > <a name="2107" class="Symbol"
       >(</a
       ><a name="2108" href="Data.Nat.LCM.html#2108" class="Bound"
       >i</a
-      ><a name="2109"
-      > </a
-      ><a name="2110" href="Data.Nat.LCM.html#2110" class="Bound"
+      > <a name="2110" href="Data.Nat.LCM.html#2110" class="Bound"
       >j</a
-      ><a name="2111"
-      > </a
-      ><a name="2112" class="Symbol"
+      > <a name="2112" class="Symbol"
       >:</a
-      ><a name="2113"
-      > </a
-      ><a name="2114" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="2114" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
       ><a name="2115" class="Symbol"
       >)</a
-      ><a name="2116"
-      > </a
-      ><a name="2117" class="Symbol"
+      > <a name="2117" class="Symbol"
       >&#8594;</a
-      ><a name="2118"
-      > </a
-      ><a name="2119" href="Data.Product.html#823" class="Function"
+      > <a name="2119" href="Data.Product.html#&#8707;" class="Function"
       >&#8707;</a
-      ><a name="2120"
-      > </a
-      ><a name="2121" class="Symbol"
+      > <a name="2121" class="Symbol"
       >&#955;</a
-      ><a name="2122"
-      > </a
-      ><a name="2123" href="Data.Nat.LCM.html#2123" class="Bound"
+      > <a name="2123" href="Data.Nat.LCM.html#2123" class="Bound"
       >d</a
-      ><a name="2124"
-      > </a
-      ><a name="2125" class="Symbol"
+      > <a name="2125" class="Symbol"
       >&#8594;</a
-      ><a name="2126"
-      > </a
-      ><a name="2127" href="Data.Nat.LCM.html#921" class="Record"
+      > <a name="2127" href="Data.Nat.LCM.html#LCM.LCM" class="Record"
       >LCM</a
-      ><a name="2130"
-      > </a
-      ><a name="2131" href="Data.Nat.LCM.html#2108" class="Bound"
+      > <a name="2131" href="Data.Nat.LCM.html#2108" class="Bound"
       >i</a
-      ><a name="2132"
-      > </a
-      ><a name="2133" href="Data.Nat.LCM.html#2110" class="Bound"
+      > <a name="2133" href="Data.Nat.LCM.html#2110" class="Bound"
       >j</a
-      ><a name="2134"
-      > </a
-      ><a name="2135" href="Data.Nat.LCM.html#2123" class="Bound"
+      > <a name="2135" href="Data.Nat.LCM.html#2123" class="Bound"
       >d</a
-      ><a name="2136"
       >
-</a
-      ><a name="2137" href="Data.Nat.LCM.html#2101" class="Function"
+<a name="2137" href="Data.Nat.LCM.html#lcm" class="Function"
       >lcm</a
-      ><a name="2140"
-      > </a
-      ><a name="2141" href="Data.Nat.LCM.html#2141" class="Bound"
+      > <a name="2141" href="Data.Nat.LCM.html#2141" class="Bound"
       >i</a
-      ><a name="2142"
-      > </a
-      ><a name="2143" href="Data.Nat.LCM.html#2143" class="Bound"
+      > <a name="2143" href="Data.Nat.LCM.html#2143" class="Bound"
       >j</a
-      ><a name="2144"
-      > </a
-      ><a name="2145" class="Keyword"
+      > <a name="2145" class="Keyword"
       >with</a
-      ><a name="2149"
-      > </a
-      ><a name="2150" href="Data.Nat.Coprimality.html#4438" class="Function"
+      > <a name="2150" href="Data.Nat.Coprimality.html#gcd&#8242;" class="Function"
       >gcd&#8242;</a
-      ><a name="2154"
-      > </a
-      ><a name="2155" href="Data.Nat.LCM.html#2141" class="Bound"
+      > <a name="2155" href="Data.Nat.LCM.html#2141" class="Bound"
       >i</a
-      ><a name="2156"
-      > </a
-      ><a name="2157" href="Data.Nat.LCM.html#2143" class="Bound"
+      > <a name="2157" href="Data.Nat.LCM.html#2143" class="Bound"
       >j</a
-      ><a name="2158"
       >
-</a
-      ><a name="2159" href="Data.Nat.LCM.html#2101" class="Function"
+<a name="2159" href="Data.Nat.LCM.html#lcm" class="Function"
       >lcm</a
-      ><a name="2162"
-      > </a
-      ><a name="2163" class="DottedPattern Symbol"
+      > <a name="2163" class="DottedPattern Symbol"
       >.(</a
       ><a name="2165" href="Data.Nat.LCM.html#2196" class="DottedPattern Bound"
       >q&#8321;</a
-      ><a name="2167"
-      > </a
-      ><a name="2168" href="Agda.Builtin.Nat.html#433" class="DottedPattern Primitive Operator"
+      > <a name="2168" href="Agda.Builtin.Nat.html#_*_" class="DottedPattern Primitive Operator"
       >*</a
-      ><a name="2169"
-      > </a
-      ><a name="2170" href="Data.Nat.LCM.html#2186" class="DottedPattern Bound"
+      > <a name="2170" href="Data.Nat.LCM.html#2186" class="DottedPattern Bound"
       >d</a
       ><a name="2171" class="DottedPattern Symbol"
       >)</a
-      ><a name="2172"
-      > </a
-      ><a name="2173" class="DottedPattern Symbol"
+      > <a name="2173" class="DottedPattern Symbol"
       >.(</a
       ><a name="2175" href="Data.Nat.LCM.html#2199" class="DottedPattern Bound"
       >q&#8322;</a
-      ><a name="2177"
-      > </a
-      ><a name="2178" href="Agda.Builtin.Nat.html#433" class="DottedPattern Primitive Operator"
+      > <a name="2178" href="Agda.Builtin.Nat.html#_*_" class="DottedPattern Primitive Operator"
       >*</a
-      ><a name="2179"
-      > </a
-      ><a name="2180" href="Data.Nat.LCM.html#2186" class="DottedPattern Bound"
+      > <a name="2180" href="Data.Nat.LCM.html#2186" class="DottedPattern Bound"
       >d</a
       ><a name="2181" class="DottedPattern Symbol"
       >)</a
-      ><a name="2182"
-      > </a
-      ><a name="2183" class="Symbol"
+      > <a name="2183" class="Symbol"
       >|</a
-      ><a name="2184"
-      > </a
-      ><a name="2185" class="Symbol"
+      > <a name="2185" class="Symbol"
       >(</a
       ><a name="2186" href="Data.Nat.LCM.html#2186" class="Bound"
       >d</a
-      ><a name="2187"
-      > </a
-      ><a name="2188" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2188" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2189"
-      > </a
-      ><a name="2190" href="Data.Nat.Coprimality.html#3690" class="InductiveConstructor"
+      > <a name="2190" href="Data.Nat.Coprimality.html#GCD&#8242;.gcd-*" class="InductiveConstructor"
       >gcd-*</a
-      ><a name="2195"
-      > </a
-      ><a name="2196" href="Data.Nat.LCM.html#2196" class="Bound"
+      > <a name="2196" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="2198"
-      > </a
-      ><a name="2199" href="Data.Nat.LCM.html#2199" class="Bound"
+      > <a name="2199" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="2201"
-      > </a
-      ><a name="2202" href="Data.Nat.LCM.html#2202" class="Bound"
+      > <a name="2202" href="Data.Nat.LCM.html#2202" class="Bound"
       >q&#8321;-q&#8322;-coprime</a
       ><a name="2215" class="Symbol"
       >)</a
-      ><a name="2216"
-      > </a
-      ><a name="2217" class="Symbol"
+      > <a name="2217" class="Symbol"
       >=</a
-      ><a name="2218"
       >
-  </a
-      ><a name="2221" class="Symbol"
+  <a name="2221" class="Symbol"
       >(</a
-      ><a name="2222"
-      > </a
-      ><a name="2223" href="Data.Nat.LCM.html#2196" class="Bound"
+      > <a name="2223" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="2225"
-      > </a
-      ><a name="2226" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2226" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2227"
-      > </a
-      ><a name="2228" href="Data.Nat.LCM.html#2199" class="Bound"
+      > <a name="2228" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="2230"
-      > </a
-      ><a name="2231" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2231" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2232"
-      > </a
-      ><a name="2233" href="Data.Nat.LCM.html#2186" class="Bound"
+      > <a name="2233" href="Data.Nat.LCM.html#2186" class="Bound"
       >d</a
-      ><a name="2234"
       >
-  </a
-      ><a name="2237" href="Data.Product.html#509" class="InductiveConstructor Operator"
+  <a name="2237" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2238"
-      > </a
-      ><a name="2239" class="Keyword"
+      > <a name="2239" class="Keyword"
       >record</a
-      ><a name="2245"
-      > </a
-      ><a name="2246" class="Symbol"
+      > <a name="2246" class="Symbol"
       >{</a
-      ><a name="2247"
-      > </a
-      ><a name="2248" class="Field"
+      > <a name="2248" class="Field"
       >commonMultiple</a
-      ><a name="2262"
-      > </a
-      ><a name="2263" class="Symbol"
+      > <a name="2263" class="Symbol"
       >=</a
-      ><a name="2264"
-      > </a
-      ><a name="2265" class="Symbol"
+      > <a name="2265" class="Symbol"
       >(</a
-      ><a name="2266" href="Data.Nat.LCM.html#1883" class="Function"
+      ><a name="2266" href="Data.Nat.LCM.html#mult&#8321;" class="Function"
       >mult&#8321;</a
-      ><a name="2271"
-      > </a
-      ><a name="2272" href="Data.Nat.LCM.html#2196" class="Bound"
+      > <a name="2272" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="2274"
-      > </a
-      ><a name="2275" href="Data.Nat.LCM.html#2199" class="Bound"
+      > <a name="2275" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="2277"
-      > </a
-      ><a name="2278" href="Data.Nat.LCM.html#2186" class="Bound"
+      > <a name="2278" href="Data.Nat.LCM.html#2186" class="Bound"
       >d</a
-      ><a name="2279"
-      > </a
-      ><a name="2280" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2280" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2281"
-      > </a
-      ><a name="2282" href="Data.Nat.LCM.html#1971" class="Function"
+      > <a name="2282" href="Data.Nat.LCM.html#mult&#8322;" class="Function"
       >mult&#8322;</a
-      ><a name="2287"
-      > </a
-      ><a name="2288" href="Data.Nat.LCM.html#2196" class="Bound"
+      > <a name="2288" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="2290"
-      > </a
-      ><a name="2291" href="Data.Nat.LCM.html#2199" class="Bound"
+      > <a name="2291" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="2293"
-      > </a
-      ><a name="2294" href="Data.Nat.LCM.html#2186" class="Bound"
+      > <a name="2294" href="Data.Nat.LCM.html#2186" class="Bound"
       >d</a
       ><a name="2295" class="Symbol"
       >)</a
-      ><a name="2296"
       >
-           </a
-      ><a name="2308" class="Symbol"
+           <a name="2308" class="Symbol"
       >;</a
-      ><a name="2309"
-      > </a
-      ><a name="2310" class="Field"
+      > <a name="2310" class="Field"
       >least</a
-      ><a name="2315"
-      >          </a
-      ><a name="2325" class="Symbol"
+      >          <a name="2325" class="Symbol"
       >=</a
-      ><a name="2326"
-      > </a
-      ><a name="2327" href="Data.Nat.LCM.html#2362" class="Function"
+      > <a name="2327" href="Data.Nat.LCM.html#2362" class="Function"
       >least</a
-      ><a name="2332"
-      > </a
-      ><a name="2333" href="Data.Nat.LCM.html#2186" class="Bound"
+      > <a name="2333" href="Data.Nat.LCM.html#2186" class="Bound"
       >d</a
-      ><a name="2334"
       >
-           </a
-      ><a name="2346" class="Symbol"
+           <a name="2346" class="Symbol"
       >}</a
-      ><a name="2347"
       >
-  </a
-      ><a name="2350" class="Symbol"
+  <a name="2350" class="Symbol"
       >)</a
-      ><a name="2351"
       >
-  </a
-      ><a name="2354" class="Keyword"
+  <a name="2354" class="Keyword"
       >where</a
-      ><a name="2359"
       >
-  </a
-      ><a name="2362" href="Data.Nat.LCM.html#2362" class="Function"
+  <a name="2362" href="Data.Nat.LCM.html#2362" class="Function"
       >least</a
-      ><a name="2367"
-      > </a
-      ><a name="2368" class="Symbol"
+      > <a name="2368" class="Symbol"
       >:</a
-      ><a name="2369"
-      > </a
-      ><a name="2370" class="Symbol"
+      > <a name="2370" class="Symbol"
       >&#8704;</a
-      ><a name="2371"
-      > </a
-      ><a name="2372" href="Data.Nat.LCM.html#2372" class="Bound"
+      > <a name="2372" href="Data.Nat.LCM.html#2372" class="Bound"
       >d</a
-      ><a name="2373"
-      > </a
-      ><a name="2374" class="Symbol"
+      > <a name="2374" class="Symbol"
       >{</a
       ><a name="2375" href="Data.Nat.LCM.html#2375" class="Bound"
       >m</a
       ><a name="2376" class="Symbol"
       >}</a
-      ><a name="2377"
-      > </a
-      ><a name="2378" class="Symbol"
+      > <a name="2378" class="Symbol"
       >&#8594;</a
-      ><a name="2379"
-      > </a
-      ><a name="2380" href="Data.Nat.LCM.html#2196" class="Bound"
+      > <a name="2380" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="2382"
-      > </a
-      ><a name="2383" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2383" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2384"
-      > </a
-      ><a name="2385" href="Data.Nat.LCM.html#2372" class="Bound"
+      > <a name="2385" href="Data.Nat.LCM.html#2372" class="Bound"
       >d</a
-      ><a name="2386"
-      > </a
-      ><a name="2387" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      > <a name="2387" href="Data.Nat.Divisibility.html#_&#8739;_" class="Datatype Operator"
       >&#8739;</a
-      ><a name="2388"
-      > </a
-      ><a name="2389" href="Data.Nat.LCM.html#2375" class="Bound"
+      > <a name="2389" href="Data.Nat.LCM.html#2375" class="Bound"
       >m</a
-      ><a name="2390"
-      > </a
-      ><a name="2391" href="Data.Product.html#1073" class="Function Operator"
+      > <a name="2391" href="Data.Product.html#_&#215;_" class="Function Operator"
       >&#215;</a
-      ><a name="2392"
-      > </a
-      ><a name="2393" href="Data.Nat.LCM.html#2199" class="Bound"
+      > <a name="2393" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="2395"
-      > </a
-      ><a name="2396" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2396" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2397"
-      > </a
-      ><a name="2398" href="Data.Nat.LCM.html#2372" class="Bound"
+      > <a name="2398" href="Data.Nat.LCM.html#2372" class="Bound"
       >d</a
-      ><a name="2399"
-      > </a
-      ><a name="2400" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      > <a name="2400" href="Data.Nat.Divisibility.html#_&#8739;_" class="Datatype Operator"
       >&#8739;</a
-      ><a name="2401"
-      > </a
-      ><a name="2402" href="Data.Nat.LCM.html#2375" class="Bound"
+      > <a name="2402" href="Data.Nat.LCM.html#2375" class="Bound"
       >m</a
-      ><a name="2403"
-      > </a
-      ><a name="2404" class="Symbol"
+      > <a name="2404" class="Symbol"
       >&#8594;</a
-      ><a name="2405"
-      > </a
-      ><a name="2406" href="Data.Nat.LCM.html#2196" class="Bound"
+      > <a name="2406" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="2408"
-      > </a
-      ><a name="2409" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2409" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2410"
-      > </a
-      ><a name="2411" href="Data.Nat.LCM.html#2199" class="Bound"
+      > <a name="2411" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="2413"
-      > </a
-      ><a name="2414" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2414" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2415"
-      > </a
-      ><a name="2416" href="Data.Nat.LCM.html#2372" class="Bound"
+      > <a name="2416" href="Data.Nat.LCM.html#2372" class="Bound"
       >d</a
-      ><a name="2417"
-      > </a
-      ><a name="2418" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      > <a name="2418" href="Data.Nat.Divisibility.html#_&#8739;_" class="Datatype Operator"
       >&#8739;</a
-      ><a name="2419"
-      > </a
-      ><a name="2420" href="Data.Nat.LCM.html#2375" class="Bound"
+      > <a name="2420" href="Data.Nat.LCM.html#2375" class="Bound"
       >m</a
-      ><a name="2421"
       >
-  </a
-      ><a name="2424" href="Data.Nat.LCM.html#2362" class="Function"
+  <a name="2424" href="Data.Nat.LCM.html#2362" class="Function"
       >least</a
-      ><a name="2429"
-      > </a
-      ><a name="2430" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      > <a name="2430" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="2434"
-      > </a
-      ><a name="2435" class="Symbol"
+      > <a name="2435" class="Symbol"
       >(</a
-      ><a name="2436" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      ><a name="2436" href="Data.Nat.Divisibility.html#_&#8739;_.divides" class="InductiveConstructor"
       >divides</a
-      ><a name="2443"
-      > </a
-      ><a name="2444" href="Data.Nat.LCM.html#2444" class="Bound"
+      > <a name="2444" href="Data.Nat.LCM.html#2444" class="Bound"
       >q&#8323;</a
-      ><a name="2446"
-      > </a
-      ><a name="2447" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="2447" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="2451"
-      > </a
-      ><a name="2452" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2452" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2453"
-      > </a
-      ><a name="2454" class="Symbol"
+      > <a name="2454" class="Symbol"
       >_)</a
-      ><a name="2456"
-      > </a
-      ><a name="2457" class="Symbol"
+      > <a name="2457" class="Symbol"
       >=</a
-      ><a name="2458"
-      > </a
-      ><a name="2459" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      > <a name="2459" href="Relation.Binary.PreorderReasoning.html#&#8739;-Reasoning.begin_" class="Function Operator"
       >begin</a
-      ><a name="2464"
       >
-    </a
-      ><a name="2469" href="Data.Nat.LCM.html#2196" class="Bound"
+    <a name="2469" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="2471"
-      > </a
-      ><a name="2472" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2472" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2473"
-      > </a
-      ><a name="2474" href="Data.Nat.LCM.html#2199" class="Bound"
+      > <a name="2474" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="2476"
-      > </a
-      ><a name="2477" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2477" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2478"
-      > </a
-      ><a name="2479" class="Number"
+      > <a name="2479" class="Number"
       >0</a
-      ><a name="2480"
-      >    </a
-      ><a name="2484" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >    <a name="2484" href="Relation.Binary.PreorderReasoning.html#&#8739;-Reasoning._&#8739;&#10216;_&#10217;_" class="Function Operator"
       >&#8739;&#10216;</a
-      ><a name="2486"
-      > </a
-      ><a name="2487" class="Symbol"
+      > <a name="2487" class="Symbol"
       >(</a
       ><a name="2488" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="2490"
-      > </a
-      ><a name="2491" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2491" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2492"
-      > </a
-      ><a name="2493" href="Data.Nat.LCM.html#2199" class="Bound"
+      > <a name="2493" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="2495"
-      > </a
-      ><a name="2496" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2496" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2497"
-      > </a
-      ><a name="2498" class="Number"
+      > <a name="2498" class="Number"
       >0</a
       ><a name="2499" class="Symbol"
       >)</a
-      ><a name="2500"
-      > </a
-      ><a name="2501" href="Data.Nat.Divisibility.html#2930" class="Function Operator"
+      > <a name="2501" href="Data.Nat.Divisibility.html#_&#8739;0" class="Function Operator"
       >&#8739;0</a
-      ><a name="2503"
-      > </a
-      ><a name="2504" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="2504" href="Relation.Binary.PreorderReasoning.html#&#8739;-Reasoning._&#8739;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="2505"
       >
-    </a
-      ><a name="2510" class="Number"
+    <a name="2510" class="Number"
       >0</a
-      ><a name="2511"
-      >              </a
-      ><a name="2525" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
+      >              <a name="2525" href="Relation.Binary.PreorderReasoning.html#&#8739;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#8801;&#10216;</a
-      ><a name="2527"
-      > </a
-      ><a name="2528" href="Relation.Binary.Reflection.html#2382" class="Function"
+      > <a name="2528" href="Relation.Binary.Reflection.html#SemiringSolver.solve" class="Function"
       >solve</a
-      ><a name="2533"
-      > </a
-      ><a name="2534" class="Number"
+      > <a name="2534" class="Number"
       >2</a
-      ><a name="2535"
-      > </a
-      ><a name="2536" class="Symbol"
+      > <a name="2536" class="Symbol"
       >(&#955;</a
-      ><a name="2538"
-      > </a
-      ><a name="2539" href="Data.Nat.LCM.html#2539" class="Bound"
+      > <a name="2539" href="Data.Nat.LCM.html#2539" class="Bound"
       >a</a
-      ><a name="2540"
-      > </a
-      ><a name="2541" href="Data.Nat.LCM.html#2541" class="Bound"
+      > <a name="2541" href="Data.Nat.LCM.html#2541" class="Bound"
       >b</a
-      ><a name="2542"
-      > </a
-      ><a name="2543" class="Symbol"
+      > <a name="2543" class="Symbol"
       >&#8594;</a
-      ><a name="2544"
-      > </a
-      ><a name="2545" href="Algebra.RingSolver.html#2104" class="InductiveConstructor"
+      > <a name="2545" href="Algebra.RingSolver.html#Properties.SemiringSolver.con" class="InductiveConstructor"
       >con</a
-      ><a name="2548"
-      > </a
-      ><a name="2549" class="Number"
+      > <a name="2549" class="Number"
       >0</a
-      ><a name="2550"
-      >  </a
-      ><a name="2552" href="Relation.Binary.Reflection.html#3491" class="Function Operator"
+      >  <a name="2552" href="Relation.Binary.Reflection.html#SemiringSolver._:=_" class="Function Operator"
       >:=</a
-      ><a name="2554"
-      >  </a
-      ><a name="2556" href="Data.Nat.LCM.html#2539" class="Bound"
+      >  <a name="2556" href="Data.Nat.LCM.html#2539" class="Bound"
       >a</a
-      ><a name="2557"
-      > </a
-      ><a name="2558" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="2558" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="2560"
-      > </a
-      ><a name="2561" class="Symbol"
+      > <a name="2561" class="Symbol"
       >(</a
       ><a name="2562" href="Data.Nat.LCM.html#2541" class="Bound"
       >b</a
-      ><a name="2563"
-      > </a
-      ><a name="2564" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="2564" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="2566"
-      > </a
-      ><a name="2567" href="Algebra.RingSolver.html#2104" class="InductiveConstructor"
+      > <a name="2567" href="Algebra.RingSolver.html#Properties.SemiringSolver.con" class="InductiveConstructor"
       >con</a
-      ><a name="2570"
-      > </a
-      ><a name="2571" class="Number"
+      > <a name="2571" class="Number"
       >0</a
       ><a name="2572" class="Symbol"
       >))</a
-      ><a name="2574"
       >
-                              </a
-      ><a name="2605" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+                              <a name="2605" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="2609"
-      > </a
-      ><a name="2610" href="Data.Nat.LCM.html#2444" class="Bound"
+      > <a name="2610" href="Data.Nat.LCM.html#2444" class="Bound"
       >q&#8323;</a
-      ><a name="2612"
-      > </a
-      ><a name="2613" href="Data.Nat.LCM.html#2196" class="Bound"
+      > <a name="2613" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="2615"
-      > </a
-      ><a name="2616" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
+      > <a name="2616" href="Relation.Binary.PreorderReasoning.html#&#8739;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="2617"
       >
-    </a
-      ><a name="2622" href="Data.Nat.LCM.html#2444" class="Bound"
+    <a name="2622" href="Data.Nat.LCM.html#2444" class="Bound"
       >q&#8323;</a
-      ><a name="2624"
-      > </a
-      ><a name="2625" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2625" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2626"
-      > </a
-      ><a name="2627" class="Symbol"
+      > <a name="2627" class="Symbol"
       >(</a
       ><a name="2628" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="2630"
-      > </a
-      ><a name="2631" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2631" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2632"
-      > </a
-      ><a name="2633" class="Number"
+      > <a name="2633" class="Number"
       >0</a
       ><a name="2634" class="Symbol"
       >)</a
-      ><a name="2635"
-      >  </a
-      ><a name="2637" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >  <a name="2637" href="Relation.Binary.PreorderReasoning.html#&#8739;-Reasoning._&#8718;" class="Function Operator"
       >&#8718;</a
-      ><a name="2638"
       >
-    </a
-      ><a name="2643" class="Keyword"
+    <a name="2643" class="Keyword"
       >where</a
-      ><a name="2648"
-      > </a
-      ><a name="2649" class="Keyword"
+      > <a name="2649" class="Keyword"
       >open</a
-      ><a name="2653"
-      > </a
-      ><a name="2654" href="Data.Nat.Divisibility.html#2661" class="Module"
+      > <a name="2654" href="Data.Nat.Divisibility.html#&#8739;-Reasoning" class="Module"
       >&#8739;-Reasoning</a
-      ><a name="2665"
       >
-  </a
-      ><a name="2668" href="Data.Nat.LCM.html#2362" class="Function"
+  <a name="2668" href="Data.Nat.LCM.html#2362" class="Function"
       >least</a
-      ><a name="2673"
-      > </a
-      ><a name="2674" class="Symbol"
+      > <a name="2674" class="Symbol"
       >(</a
-      ><a name="2675" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      ><a name="2675" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="2678"
-      > </a
-      ><a name="2679" href="Data.Nat.LCM.html#2679" class="Bound"
+      > <a name="2679" href="Data.Nat.LCM.html#2679" class="Bound"
       >d</a
       ><a name="2680" class="Symbol"
       >)</a
-      ><a name="2681"
-      > </a
-      ><a name="2682" class="Symbol"
+      > <a name="2682" class="Symbol"
       >{</a
       ><a name="2683" href="Data.Nat.LCM.html#2683" class="Bound"
       >m</a
       ><a name="2684" class="Symbol"
       >}</a
-      ><a name="2685"
-      > </a
-      ><a name="2686" class="Symbol"
+      > <a name="2686" class="Symbol"
       >(</a
-      ><a name="2687" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      ><a name="2687" href="Data.Nat.Divisibility.html#_&#8739;_.divides" class="InductiveConstructor"
       >divides</a
-      ><a name="2694"
-      > </a
-      ><a name="2695" href="Data.Nat.LCM.html#2695" class="Bound"
+      > <a name="2695" href="Data.Nat.LCM.html#2695" class="Bound"
       >q&#8323;</a
-      ><a name="2697"
-      > </a
-      ><a name="2698" href="Data.Nat.LCM.html#2698" class="Bound"
+      > <a name="2698" href="Data.Nat.LCM.html#2698" class="Bound"
       >eq&#8323;</a
-      ><a name="2701"
-      > </a
-      ><a name="2702" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2702" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2703"
-      > </a
-      ><a name="2704" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      > <a name="2704" href="Data.Nat.Divisibility.html#_&#8739;_.divides" class="InductiveConstructor"
       >divides</a
-      ><a name="2711"
-      > </a
-      ><a name="2712" href="Data.Nat.LCM.html#2712" class="Bound"
+      > <a name="2712" href="Data.Nat.LCM.html#2712" class="Bound"
       >q&#8324;</a
-      ><a name="2714"
-      > </a
-      ><a name="2715" href="Data.Nat.LCM.html#2715" class="Bound"
+      > <a name="2715" href="Data.Nat.LCM.html#2715" class="Bound"
       >eq&#8324;</a
       ><a name="2718" class="Symbol"
       >)</a
-      ><a name="2719"
-      > </a
-      ><a name="2720" class="Symbol"
+      > <a name="2720" class="Symbol"
       >=</a
-      ><a name="2721"
       >
-    </a
-      ><a name="2726" href="Data.Nat.LCM.html#3194" class="Function"
+    <a name="2726" href="Data.Nat.LCM.html#3194" class="Function"
       >q&#8321;q&#8322;d&#8242;&#8739;m</a
-      ><a name="2734"
-      > </a
-      ><a name="2735" href="Data.Nat.LCM.html#2695" class="Bound"
+      > <a name="2735" href="Data.Nat.LCM.html#2695" class="Bound"
       >q&#8323;</a
-      ><a name="2737"
-      > </a
-      ><a name="2738" href="Data.Nat.LCM.html#2698" class="Bound"
+      > <a name="2738" href="Data.Nat.LCM.html#2698" class="Bound"
       >eq&#8323;</a
-      ><a name="2741"
-      > </a
-      ><a name="2742" href="Data.Nat.LCM.html#2806" class="Function"
+      > <a name="2742" href="Data.Nat.LCM.html#2806" class="Function"
       >q&#8322;&#8739;q&#8323;</a
-      ><a name="2747"
       >
-    </a
-      ><a name="2752" class="Keyword"
+    <a name="2752" class="Keyword"
       >where</a
-      ><a name="2757"
       >
-    </a
-      ><a name="2762" class="Keyword"
+    <a name="2762" class="Keyword"
       >open</a
-      ><a name="2766"
-      > </a
-      ><a name="2767" href="Relation.Binary.PropositionalEquality.html#243" class="Module"
+      > <a name="2767" href="Relation.Binary.PropositionalEquality.html#PropositionalEquality" class="Module"
       >PropEq.</a
-      ><a name="2774" href="Relation.Binary.PropositionalEquality.html#5706" class="Module"
+      ><a name="2774" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning" class="Module"
       >&#8801;-Reasoning</a
-      ><a name="2785"
       >
-    </a
-      ><a name="2790" href="Data.Nat.LCM.html#2790" class="Function"
+    <a name="2790" href="Data.Nat.LCM.html#2790" class="Function"
       >d&#8242;</a
-      ><a name="2792"
-      > </a
-      ><a name="2793" class="Symbol"
+      > <a name="2793" class="Symbol"
       >=</a
-      ><a name="2794"
-      > </a
-      ><a name="2795" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      > <a name="2795" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="2798"
-      > </a
-      ><a name="2799" href="Data.Nat.LCM.html#2679" class="Bound"
+      > <a name="2799" href="Data.Nat.LCM.html#2679" class="Bound"
       >d</a
-      ><a name="2800"
       >
 
-    </a
-      ><a name="2806" href="Data.Nat.LCM.html#2806" class="Function"
+    <a name="2806" href="Data.Nat.LCM.html#2806" class="Function"
       >q&#8322;&#8739;q&#8323;</a
-      ><a name="2811"
-      > </a
-      ><a name="2812" class="Symbol"
+      > <a name="2812" class="Symbol"
       >:</a
-      ><a name="2813"
-      > </a
-      ><a name="2814" href="Data.Nat.LCM.html#2199" class="Bound"
+      > <a name="2814" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="2816"
-      > </a
-      ><a name="2817" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      > <a name="2817" href="Data.Nat.Divisibility.html#_&#8739;_" class="Datatype Operator"
       >&#8739;</a
-      ><a name="2818"
-      > </a
-      ><a name="2819" href="Data.Nat.LCM.html#2695" class="Bound"
+      > <a name="2819" href="Data.Nat.LCM.html#2695" class="Bound"
       >q&#8323;</a
-      ><a name="2821"
       >
-    </a
-      ><a name="2826" href="Data.Nat.LCM.html#2806" class="Function"
+    <a name="2826" href="Data.Nat.LCM.html#2806" class="Function"
       >q&#8322;&#8739;q&#8323;</a
-      ><a name="2831"
-      > </a
-      ><a name="2832" class="Symbol"
+      > <a name="2832" class="Symbol"
       >=</a
-      ><a name="2833"
-      > </a
-      ><a name="2834" href="Data.Nat.Coprimality.html#2969" class="Function"
+      > <a name="2834" href="Data.Nat.Coprimality.html#coprime-divisor" class="Function"
       >coprime-divisor</a
-      ><a name="2849"
-      > </a
-      ><a name="2850" class="Symbol"
+      > <a name="2850" class="Symbol"
       >(</a
-      ><a name="2851" href="Data.Nat.Coprimality.html#1903" class="Function"
+      ><a name="2851" href="Data.Nat.Coprimality.html#sym" class="Function"
       >Coprime.sym</a
-      ><a name="2862"
-      > </a
-      ><a name="2863" href="Data.Nat.LCM.html#2202" class="Bound"
+      > <a name="2863" href="Data.Nat.LCM.html#2202" class="Bound"
       >q&#8321;-q&#8322;-coprime</a
       ><a name="2876" class="Symbol"
       >)</a
-      ><a name="2877"
       >
-              </a
-      ><a name="2892" class="Symbol"
+              <a name="2892" class="Symbol"
       >(</a
-      ><a name="2893" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      ><a name="2893" href="Data.Nat.Divisibility.html#_&#8739;_.divides" class="InductiveConstructor"
       >divides</a
-      ><a name="2900"
-      > </a
-      ><a name="2901" href="Data.Nat.LCM.html#2712" class="Bound"
+      > <a name="2901" href="Data.Nat.LCM.html#2712" class="Bound"
       >q&#8324;</a
-      ><a name="2903"
-      > </a
-      ><a name="2904" href="Function.html#1835" class="Function Operator"
+      > <a name="2904" href="Function.html#_$_" class="Function Operator"
       >$</a
-      ><a name="2905"
-      > </a
-      ><a name="2906" href="Data.Nat.Properties.html#15216" class="Function"
+      > <a name="2906" href="Data.Nat.Properties.html#cancel-*-right" class="Function"
       >NatProp.cancel-*-right</a
-      ><a name="2928"
-      > </a
-      ><a name="2929" class="Symbol"
+      > <a name="2929" class="Symbol"
       >_</a
-      ><a name="2930"
-      > </a
-      ><a name="2931" class="Symbol"
+      > <a name="2931" class="Symbol"
       >_</a
-      ><a name="2932"
-      > </a
-      ><a name="2933" class="Symbol"
+      > <a name="2933" class="Symbol"
       >(</a
-      ><a name="2934" href="Relation.Binary.PropositionalEquality.html#5807" class="Function Operator"
+      ><a name="2934" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning.begin_" class="Function Operator"
       >begin</a
-      ><a name="2939"
       >
-                 </a
-      ><a name="2957" href="Data.Nat.LCM.html#2196" class="Bound"
+                 <a name="2957" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="2959"
-      > </a
-      ><a name="2960" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2960" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2961"
-      > </a
-      ><a name="2962" href="Data.Nat.LCM.html#2695" class="Bound"
+      > <a name="2962" href="Data.Nat.LCM.html#2695" class="Bound"
       >q&#8323;</a
-      ><a name="2964"
-      > </a
-      ><a name="2965" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="2965" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="2966"
-      > </a
-      ><a name="2967" href="Data.Nat.LCM.html#2790" class="Function"
+      > <a name="2967" href="Data.Nat.LCM.html#2790" class="Function"
       >d&#8242;</a
-      ><a name="2969"
-      >    </a
-      ><a name="2973" href="Relation.Binary.PropositionalEquality.html#5924" class="Function Operator"
+      >    <a name="2973" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#8801;&#10216;</a
-      ><a name="2975"
-      > </a
-      ><a name="2976" href="Data.Nat.LCM.html#1617" class="Function"
+      > <a name="2976" href="Data.Nat.LCM.html#lem&#8321;" class="Function"
       >lem&#8321;</a
-      ><a name="2980"
-      > </a
-      ><a name="2981" href="Data.Nat.LCM.html#2196" class="Bound"
+      > <a name="2981" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="2983"
-      > </a
-      ><a name="2984" href="Data.Nat.LCM.html#2695" class="Bound"
+      > <a name="2984" href="Data.Nat.LCM.html#2695" class="Bound"
       >q&#8323;</a
-      ><a name="2986"
-      > </a
-      ><a name="2987" href="Data.Nat.LCM.html#2790" class="Function"
+      > <a name="2987" href="Data.Nat.LCM.html#2790" class="Function"
       >d&#8242;</a
-      ><a name="2989"
-      > </a
-      ><a name="2990" href="Relation.Binary.PropositionalEquality.html#5924" class="Function Operator"
+      > <a name="2990" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="2991"
       >
-                 </a
-      ><a name="3009" href="Data.Nat.LCM.html#2695" class="Bound"
+                 <a name="3009" href="Data.Nat.LCM.html#2695" class="Bound"
       >q&#8323;</a
-      ><a name="3011"
-      > </a
-      ><a name="3012" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3012" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3013"
-      > </a
-      ><a name="3014" class="Symbol"
+      > <a name="3014" class="Symbol"
       >(</a
       ><a name="3015" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="3017"
-      > </a
-      ><a name="3018" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3018" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3019"
-      > </a
-      ><a name="3020" href="Data.Nat.LCM.html#2790" class="Function"
+      > <a name="3020" href="Data.Nat.LCM.html#2790" class="Function"
       >d&#8242;</a
       ><a name="3022" class="Symbol"
       >)</a
-      ><a name="3023"
-      >  </a
-      ><a name="3025" href="Relation.Binary.PropositionalEquality.html#5924" class="Function Operator"
+      >  <a name="3025" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#8801;&#10216;</a
-      ><a name="3027"
-      > </a
-      ><a name="3028" href="Relation.Binary.PropositionalEquality.Core.html#565" class="Function"
+      > <a name="3028" href="Relation.Binary.PropositionalEquality.Core.html#sym" class="Function"
       >PropEq.sym</a
-      ><a name="3038"
-      > </a
-      ><a name="3039" href="Data.Nat.LCM.html#2698" class="Bound"
+      > <a name="3039" href="Data.Nat.LCM.html#2698" class="Bound"
       >eq&#8323;</a
-      ><a name="3042"
-      > </a
-      ><a name="3043" href="Relation.Binary.PropositionalEquality.html#5924" class="Function Operator"
+      > <a name="3043" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="3044"
       >
-                 </a
-      ><a name="3062" href="Data.Nat.LCM.html#2683" class="Bound"
+                 <a name="3062" href="Data.Nat.LCM.html#2683" class="Bound"
       >m</a
-      ><a name="3063"
-      >               </a
-      ><a name="3078" href="Relation.Binary.PropositionalEquality.html#5924" class="Function Operator"
+      >               <a name="3078" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#8801;&#10216;</a
-      ><a name="3080"
-      > </a
-      ><a name="3081" href="Data.Nat.LCM.html#2715" class="Bound"
+      > <a name="3081" href="Data.Nat.LCM.html#2715" class="Bound"
       >eq&#8324;</a
-      ><a name="3084"
-      > </a
-      ><a name="3085" href="Relation.Binary.PropositionalEquality.html#5924" class="Function Operator"
+      > <a name="3085" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="3086"
       >
-                 </a
-      ><a name="3104" href="Data.Nat.LCM.html#2712" class="Bound"
+                 <a name="3104" href="Data.Nat.LCM.html#2712" class="Bound"
       >q&#8324;</a
-      ><a name="3106"
-      > </a
-      ><a name="3107" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3107" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3108"
-      > </a
-      ><a name="3109" class="Symbol"
+      > <a name="3109" class="Symbol"
       >(</a
       ><a name="3110" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="3112"
-      > </a
-      ><a name="3113" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3113" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3114"
-      > </a
-      ><a name="3115" href="Data.Nat.LCM.html#2790" class="Function"
+      > <a name="3115" href="Data.Nat.LCM.html#2790" class="Function"
       >d&#8242;</a
       ><a name="3117" class="Symbol"
       >)</a
-      ><a name="3118"
-      >  </a
-      ><a name="3120" href="Relation.Binary.PropositionalEquality.html#5924" class="Function Operator"
+      >  <a name="3120" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#8801;&#10216;</a
-      ><a name="3122"
-      > </a
-      ><a name="3123" href="Relation.Binary.PropositionalEquality.Core.html#565" class="Function"
+      > <a name="3123" href="Relation.Binary.PropositionalEquality.Core.html#sym" class="Function"
       >PropEq.sym</a
-      ><a name="3133"
-      > </a
-      ><a name="3134" class="Symbol"
+      > <a name="3134" class="Symbol"
       >(</a
-      ><a name="3135" href="Data.Nat.LCM.html#1682" class="Function"
+      ><a name="3135" href="Data.Nat.LCM.html#lem&#8322;" class="Function"
       >lem&#8322;</a
-      ><a name="3139"
-      > </a
-      ><a name="3140" href="Data.Nat.LCM.html#2712" class="Bound"
+      > <a name="3140" href="Data.Nat.LCM.html#2712" class="Bound"
       >q&#8324;</a
-      ><a name="3142"
-      > </a
-      ><a name="3143" href="Data.Nat.LCM.html#2199" class="Bound"
+      > <a name="3143" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="3145"
-      > </a
-      ><a name="3146" href="Data.Nat.LCM.html#2790" class="Function"
+      > <a name="3146" href="Data.Nat.LCM.html#2790" class="Function"
       >d&#8242;</a
       ><a name="3148" class="Symbol"
       >)</a
-      ><a name="3149"
-      > </a
-      ><a name="3150" href="Relation.Binary.PropositionalEquality.html#5924" class="Function Operator"
+      > <a name="3150" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="3151"
       >
-                 </a
-      ><a name="3169" href="Data.Nat.LCM.html#2712" class="Bound"
+                 <a name="3169" href="Data.Nat.LCM.html#2712" class="Bound"
       >q&#8324;</a
-      ><a name="3171"
-      > </a
-      ><a name="3172" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3172" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3173"
-      >  </a
-      ><a name="3175" href="Data.Nat.LCM.html#2199" class="Bound"
+      >  <a name="3175" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="3177"
-      > </a
-      ><a name="3178" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3178" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3179"
-      > </a
-      ><a name="3180" href="Data.Nat.LCM.html#2790" class="Function"
+      > <a name="3180" href="Data.Nat.LCM.html#2790" class="Function"
       >d&#8242;</a
-      ><a name="3182"
-      >   </a
-      ><a name="3185" href="Relation.Binary.PropositionalEquality.html#6105" class="Function Operator"
+      >   <a name="3185" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8718;" class="Function Operator"
       >&#8718;</a
       ><a name="3186" class="Symbol"
       >))</a
-      ><a name="3188"
       >
 
-    </a
-      ><a name="3194" href="Data.Nat.LCM.html#3194" class="Function"
+    <a name="3194" href="Data.Nat.LCM.html#3194" class="Function"
       >q&#8321;q&#8322;d&#8242;&#8739;m</a
-      ><a name="3202"
-      > </a
-      ><a name="3203" class="Symbol"
+      > <a name="3203" class="Symbol"
       >:</a
-      ><a name="3204"
-      > </a
-      ><a name="3205" class="Symbol"
+      > <a name="3205" class="Symbol"
       >&#8704;</a
-      ><a name="3206"
-      > </a
-      ><a name="3207" href="Data.Nat.LCM.html#3207" class="Bound"
+      > <a name="3207" href="Data.Nat.LCM.html#3207" class="Bound"
       >q&#8323;</a
-      ><a name="3209"
-      > </a
-      ><a name="3210" class="Symbol"
+      > <a name="3210" class="Symbol"
       >&#8594;</a
-      ><a name="3211"
-      > </a
-      ><a name="3212" href="Data.Nat.LCM.html#2683" class="Bound"
+      > <a name="3212" href="Data.Nat.LCM.html#2683" class="Bound"
       >m</a
-      ><a name="3213"
-      > </a
-      ><a name="3214" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="3214" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="3215"
-      > </a
-      ><a name="3216" href="Data.Nat.LCM.html#3207" class="Bound"
+      > <a name="3216" href="Data.Nat.LCM.html#3207" class="Bound"
       >q&#8323;</a
-      ><a name="3218"
-      > </a
-      ><a name="3219" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3219" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3220"
-      > </a
-      ><a name="3221" class="Symbol"
+      > <a name="3221" class="Symbol"
       >(</a
       ><a name="3222" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="3224"
-      > </a
-      ><a name="3225" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3225" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3226"
-      > </a
-      ><a name="3227" href="Data.Nat.LCM.html#2790" class="Function"
+      > <a name="3227" href="Data.Nat.LCM.html#2790" class="Function"
       >d&#8242;</a
       ><a name="3229" class="Symbol"
       >)</a
-      ><a name="3230"
-      > </a
-      ><a name="3231" class="Symbol"
+      > <a name="3231" class="Symbol"
       >&#8594;</a
-      ><a name="3232"
-      > </a
-      ><a name="3233" href="Data.Nat.LCM.html#2199" class="Bound"
+      > <a name="3233" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="3235"
-      > </a
-      ><a name="3236" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      > <a name="3236" href="Data.Nat.Divisibility.html#_&#8739;_" class="Datatype Operator"
       >&#8739;</a
-      ><a name="3237"
-      > </a
-      ><a name="3238" href="Data.Nat.LCM.html#3207" class="Bound"
+      > <a name="3238" href="Data.Nat.LCM.html#3207" class="Bound"
       >q&#8323;</a
-      ><a name="3240"
-      > </a
-      ><a name="3241" class="Symbol"
+      > <a name="3241" class="Symbol"
       >&#8594;</a
-      ><a name="3242"
-      > </a
-      ><a name="3243" href="Data.Nat.LCM.html#2196" class="Bound"
+      > <a name="3243" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="3245"
-      > </a
-      ><a name="3246" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3246" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3247"
-      > </a
-      ><a name="3248" href="Data.Nat.LCM.html#2199" class="Bound"
+      > <a name="3248" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="3250"
-      > </a
-      ><a name="3251" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3251" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3252"
-      > </a
-      ><a name="3253" href="Data.Nat.LCM.html#2790" class="Function"
+      > <a name="3253" href="Data.Nat.LCM.html#2790" class="Function"
       >d&#8242;</a
-      ><a name="3255"
-      > </a
-      ><a name="3256" href="Data.Nat.Divisibility.html#1134" class="Datatype Operator"
+      > <a name="3256" href="Data.Nat.Divisibility.html#_&#8739;_" class="Datatype Operator"
       >&#8739;</a
-      ><a name="3257"
-      > </a
-      ><a name="3258" href="Data.Nat.LCM.html#2683" class="Bound"
+      > <a name="3258" href="Data.Nat.LCM.html#2683" class="Bound"
       >m</a
-      ><a name="3259"
       >
-    </a
-      ><a name="3264" href="Data.Nat.LCM.html#3194" class="Function"
+    <a name="3264" href="Data.Nat.LCM.html#3194" class="Function"
       >q&#8321;q&#8322;d&#8242;&#8739;m</a
-      ><a name="3272"
-      > </a
-      ><a name="3273" class="DottedPattern Symbol"
+      > <a name="3273" class="DottedPattern Symbol"
       >.(</a
       ><a name="3275" href="Data.Nat.LCM.html#3298" class="DottedPattern Bound"
       >q&#8325;</a
-      ><a name="3277"
-      > </a
-      ><a name="3278" href="Agda.Builtin.Nat.html#433" class="DottedPattern Primitive Operator"
+      > <a name="3278" href="Agda.Builtin.Nat.html#_*_" class="DottedPattern Primitive Operator"
       >*</a
-      ><a name="3279"
-      > </a
-      ><a name="3280" href="Data.Nat.LCM.html#2199" class="DottedPattern Bound"
+      > <a name="3280" href="Data.Nat.LCM.html#2199" class="DottedPattern Bound"
       >q&#8322;</a
       ><a name="3282" class="DottedPattern Symbol"
       >)</a
-      ><a name="3283"
-      > </a
-      ><a name="3284" href="Data.Nat.LCM.html#3284" class="Bound"
+      > <a name="3284" href="Data.Nat.LCM.html#3284" class="Bound"
       >eq&#8323;&#8242;</a
-      ><a name="3288"
-      > </a
-      ><a name="3289" class="Symbol"
+      > <a name="3289" class="Symbol"
       >(</a
-      ><a name="3290" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      ><a name="3290" href="Data.Nat.Divisibility.html#_&#8739;_.divides" class="InductiveConstructor"
       >divides</a
-      ><a name="3297"
-      > </a
-      ><a name="3298" href="Data.Nat.LCM.html#3298" class="Bound"
+      > <a name="3298" href="Data.Nat.LCM.html#3298" class="Bound"
       >q&#8325;</a
-      ><a name="3300"
-      > </a
-      ><a name="3301" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="3301" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
       ><a name="3305" class="Symbol"
       >)</a
-      ><a name="3306"
-      > </a
-      ><a name="3307" class="Symbol"
+      > <a name="3307" class="Symbol"
       >=</a
-      ><a name="3308"
       >
-      </a
-      ><a name="3315" href="Data.Nat.Divisibility.html#1160" class="InductiveConstructor"
+      <a name="3315" href="Data.Nat.Divisibility.html#_&#8739;_.divides" class="InductiveConstructor"
       >divides</a
-      ><a name="3322"
-      > </a
-      ><a name="3323" href="Data.Nat.LCM.html#3298" class="Bound"
+      > <a name="3323" href="Data.Nat.LCM.html#3298" class="Bound"
       >q&#8325;</a
-      ><a name="3325"
-      > </a
-      ><a name="3326" class="Symbol"
+      > <a name="3326" class="Symbol"
       >(</a
-      ><a name="3327" href="Relation.Binary.PropositionalEquality.html#5807" class="Function Operator"
+      ><a name="3327" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning.begin_" class="Function Operator"
       >begin</a
-      ><a name="3332"
       >
-        </a
-      ><a name="3341" href="Data.Nat.LCM.html#2683" class="Bound"
+        <a name="3341" href="Data.Nat.LCM.html#2683" class="Bound"
       >m</a
-      ><a name="3342"
-      >                    </a
-      ><a name="3362" href="Relation.Binary.PropositionalEquality.html#5924" class="Function Operator"
+      >                    <a name="3362" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#8801;&#10216;</a
-      ><a name="3364"
-      > </a
-      ><a name="3365" href="Data.Nat.LCM.html#3284" class="Bound"
+      > <a name="3365" href="Data.Nat.LCM.html#3284" class="Bound"
       >eq&#8323;&#8242;</a
-      ><a name="3369"
-      > </a
-      ><a name="3370" href="Relation.Binary.PropositionalEquality.html#5924" class="Function Operator"
+      > <a name="3370" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="3371"
       >
-        </a
-      ><a name="3380" href="Data.Nat.LCM.html#3298" class="Bound"
+        <a name="3380" href="Data.Nat.LCM.html#3298" class="Bound"
       >q&#8325;</a
-      ><a name="3382"
-      > </a
-      ><a name="3383" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3383" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3384"
-      > </a
-      ><a name="3385" href="Data.Nat.LCM.html#2199" class="Bound"
+      > <a name="3385" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="3387"
-      > </a
-      ><a name="3388" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3388" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3389"
-      > </a
-      ><a name="3390" class="Symbol"
+      > <a name="3390" class="Symbol"
       >(</a
       ><a name="3391" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="3393"
-      > </a
-      ><a name="3394" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3394" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3395"
-      > </a
-      ><a name="3396" href="Data.Nat.LCM.html#2790" class="Function"
+      > <a name="3396" href="Data.Nat.LCM.html#2790" class="Function"
       >d&#8242;</a
       ><a name="3398" class="Symbol"
       >)</a
-      ><a name="3399"
-      >  </a
-      ><a name="3401" href="Relation.Binary.PropositionalEquality.html#5924" class="Function Operator"
+      >  <a name="3401" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#8801;&#10216;</a
-      ><a name="3403"
-      > </a
-      ><a name="3404" href="Relation.Binary.Reflection.html#2382" class="Function"
+      > <a name="3404" href="Relation.Binary.Reflection.html#SemiringSolver.solve" class="Function"
       >solve</a
-      ><a name="3409"
-      > </a
-      ><a name="3410" class="Number"
+      > <a name="3410" class="Number"
       >4</a
-      ><a name="3411"
-      > </a
-      ><a name="3412" class="Symbol"
+      > <a name="3412" class="Symbol"
       >(&#955;</a
-      ><a name="3414"
-      > </a
-      ><a name="3415" href="Data.Nat.LCM.html#3415" class="Bound"
+      > <a name="3415" href="Data.Nat.LCM.html#3415" class="Bound"
       >q&#8321;</a
-      ><a name="3417"
-      > </a
-      ><a name="3418" href="Data.Nat.LCM.html#3418" class="Bound"
+      > <a name="3418" href="Data.Nat.LCM.html#3418" class="Bound"
       >q&#8322;</a
-      ><a name="3420"
-      > </a
-      ><a name="3421" href="Data.Nat.LCM.html#3421" class="Bound"
+      > <a name="3421" href="Data.Nat.LCM.html#3421" class="Bound"
       >q&#8325;</a
-      ><a name="3423"
-      > </a
-      ><a name="3424" href="Data.Nat.LCM.html#3424" class="Bound"
+      > <a name="3424" href="Data.Nat.LCM.html#3424" class="Bound"
       >d&#8242;</a
-      ><a name="3426"
-      > </a
-      ><a name="3427" class="Symbol"
+      > <a name="3427" class="Symbol"
       >&#8594;</a
-      ><a name="3428"
-      > </a
-      ><a name="3429" href="Data.Nat.LCM.html#3421" class="Bound"
+      > <a name="3429" href="Data.Nat.LCM.html#3421" class="Bound"
       >q&#8325;</a
-      ><a name="3431"
-      > </a
-      ><a name="3432" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="3432" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="3434"
-      > </a
-      ><a name="3435" href="Data.Nat.LCM.html#3418" class="Bound"
+      > <a name="3435" href="Data.Nat.LCM.html#3418" class="Bound"
       >q&#8322;</a
-      ><a name="3437"
-      > </a
-      ><a name="3438" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="3438" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="3440"
-      > </a
-      ><a name="3441" class="Symbol"
+      > <a name="3441" class="Symbol"
       >(</a
       ><a name="3442" href="Data.Nat.LCM.html#3415" class="Bound"
       >q&#8321;</a
-      ><a name="3444"
-      > </a
-      ><a name="3445" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="3445" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="3447"
-      > </a
-      ><a name="3448" href="Data.Nat.LCM.html#3424" class="Bound"
+      > <a name="3448" href="Data.Nat.LCM.html#3424" class="Bound"
       >d&#8242;</a
       ><a name="3450" class="Symbol"
       >)</a
-      ><a name="3451"
       >
-                                                     </a
-      ><a name="3505" href="Relation.Binary.Reflection.html#3491" class="Function Operator"
+                                                     <a name="3505" href="Relation.Binary.Reflection.html#SemiringSolver._:=_" class="Function Operator"
       >:=</a
-      ><a name="3507"
-      >  </a
-      ><a name="3509" href="Data.Nat.LCM.html#3421" class="Bound"
+      >  <a name="3509" href="Data.Nat.LCM.html#3421" class="Bound"
       >q&#8325;</a
-      ><a name="3511"
-      > </a
-      ><a name="3512" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="3512" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="3514"
-      > </a
-      ><a name="3515" class="Symbol"
+      > <a name="3515" class="Symbol"
       >(</a
       ><a name="3516" href="Data.Nat.LCM.html#3415" class="Bound"
       >q&#8321;</a
-      ><a name="3518"
-      > </a
-      ><a name="3519" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="3519" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="3521"
-      > </a
-      ><a name="3522" href="Data.Nat.LCM.html#3418" class="Bound"
+      > <a name="3522" href="Data.Nat.LCM.html#3418" class="Bound"
       >q&#8322;</a
-      ><a name="3524"
-      > </a
-      ><a name="3525" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="3525" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="3527"
-      > </a
-      ><a name="3528" href="Data.Nat.LCM.html#3424" class="Bound"
+      > <a name="3528" href="Data.Nat.LCM.html#3424" class="Bound"
       >d&#8242;</a
       ><a name="3530" class="Symbol"
       >))</a
-      ><a name="3532"
       >
-                                        </a
-      ><a name="3573" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+                                        <a name="3573" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="3577"
-      > </a
-      ><a name="3578" href="Data.Nat.LCM.html#2196" class="Bound"
+      > <a name="3578" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="3580"
-      > </a
-      ><a name="3581" href="Data.Nat.LCM.html#2199" class="Bound"
+      > <a name="3581" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="3583"
-      > </a
-      ><a name="3584" href="Data.Nat.LCM.html#3298" class="Bound"
+      > <a name="3584" href="Data.Nat.LCM.html#3298" class="Bound"
       >q&#8325;</a
-      ><a name="3586"
-      > </a
-      ><a name="3587" href="Data.Nat.LCM.html#2790" class="Function"
+      > <a name="3587" href="Data.Nat.LCM.html#2790" class="Function"
       >d&#8242;</a
-      ><a name="3589"
-      > </a
-      ><a name="3590" href="Relation.Binary.PropositionalEquality.html#5924" class="Function Operator"
+      > <a name="3590" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8801;&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="3591"
       >
-        </a
-      ><a name="3600" href="Data.Nat.LCM.html#3298" class="Bound"
+        <a name="3600" href="Data.Nat.LCM.html#3298" class="Bound"
       >q&#8325;</a
-      ><a name="3602"
-      > </a
-      ><a name="3603" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3603" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3604"
-      > </a
-      ><a name="3605" class="Symbol"
+      > <a name="3605" class="Symbol"
       >(</a
       ><a name="3606" href="Data.Nat.LCM.html#2196" class="Bound"
       >q&#8321;</a
-      ><a name="3608"
-      > </a
-      ><a name="3609" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3609" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3610"
-      > </a
-      ><a name="3611" href="Data.Nat.LCM.html#2199" class="Bound"
+      > <a name="3611" href="Data.Nat.LCM.html#2199" class="Bound"
       >q&#8322;</a
-      ><a name="3613"
-      > </a
-      ><a name="3614" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3614" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3615"
-      > </a
-      ><a name="3616" href="Data.Nat.LCM.html#2790" class="Function"
+      > <a name="3616" href="Data.Nat.LCM.html#2790" class="Function"
       >d&#8242;</a
       ><a name="3618" class="Symbol"
       >)</a
-      ><a name="3619"
-      >  </a
-      ><a name="3621" href="Relation.Binary.PropositionalEquality.html#6105" class="Function Operator"
+      >  <a name="3621" href="Relation.Binary.PropositionalEquality.html#&#8801;-Reasoning._&#8718;" class="Function Operator"
       >&#8718;</a
       ><a name="3622" class="Symbol"
       >)</a
-      ><a name="3623"
       >
 
-</a
-      ><a name="3625" class="Comment"
+<a name="3625" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="3697"
       >
-</a
-      ><a name="3698" class="Comment"
+<a name="3698" class="Comment"
       >-- Properties</a
-      ><a name="3711"
       >
 
-</a
-      ><a name="3713" class="Comment"
+<a name="3713" class="Comment"
       >-- The product of the gcd and the lcm is the product of the two</a
-      ><a name="3776"
       >
-</a
-      ><a name="3777" class="Comment"
+<a name="3777" class="Comment"
       >-- numbers.</a
-      ><a name="3788"
       >
 
-</a
-      ><a name="3790" href="Data.Nat.LCM.html#3790" class="Function"
+<a name="gcd*lcm" href="Data.Nat.LCM.html#gcd*lcm" class="Function"
       >gcd*lcm</a
-      ><a name="3797"
-      > </a
-      ><a name="3798" class="Symbol"
+      > <a name="3798" class="Symbol"
       >:</a
-      ><a name="3799"
-      > </a
-      ><a name="3800" class="Symbol"
+      > <a name="3800" class="Symbol"
       >&#8704;</a
-      ><a name="3801"
-      > </a
-      ><a name="3802" class="Symbol"
+      > <a name="3802" class="Symbol"
       >{</a
       ><a name="3803" href="Data.Nat.LCM.html#3803" class="Bound"
       >i</a
-      ><a name="3804"
-      > </a
-      ><a name="3805" href="Data.Nat.LCM.html#3805" class="Bound"
+      > <a name="3805" href="Data.Nat.LCM.html#3805" class="Bound"
       >j</a
-      ><a name="3806"
-      > </a
-      ><a name="3807" href="Data.Nat.LCM.html#3807" class="Bound"
+      > <a name="3807" href="Data.Nat.LCM.html#3807" class="Bound"
       >d</a
-      ><a name="3808"
-      > </a
-      ><a name="3809" href="Data.Nat.LCM.html#3809" class="Bound"
+      > <a name="3809" href="Data.Nat.LCM.html#3809" class="Bound"
       >m</a
       ><a name="3810" class="Symbol"
       >}</a
-      ><a name="3811"
-      > </a
-      ><a name="3812" class="Symbol"
+      > <a name="3812" class="Symbol"
       >&#8594;</a
-      ><a name="3813"
-      > </a
-      ><a name="3814" href="Data.Nat.GCD.html#808" class="Record"
+      > <a name="3814" href="Data.Nat.GCD.html#GCD.GCD" class="Record"
       >GCD</a
-      ><a name="3817"
-      > </a
-      ><a name="3818" href="Data.Nat.LCM.html#3803" class="Bound"
+      > <a name="3818" href="Data.Nat.LCM.html#3803" class="Bound"
       >i</a
-      ><a name="3819"
-      > </a
-      ><a name="3820" href="Data.Nat.LCM.html#3805" class="Bound"
+      > <a name="3820" href="Data.Nat.LCM.html#3805" class="Bound"
       >j</a
-      ><a name="3821"
-      > </a
-      ><a name="3822" href="Data.Nat.LCM.html#3807" class="Bound"
+      > <a name="3822" href="Data.Nat.LCM.html#3807" class="Bound"
       >d</a
-      ><a name="3823"
-      > </a
-      ><a name="3824" class="Symbol"
+      > <a name="3824" class="Symbol"
       >&#8594;</a
-      ><a name="3825"
-      > </a
-      ><a name="3826" href="Data.Nat.LCM.html#921" class="Record"
+      > <a name="3826" href="Data.Nat.LCM.html#LCM.LCM" class="Record"
       >LCM</a
-      ><a name="3829"
-      > </a
-      ><a name="3830" href="Data.Nat.LCM.html#3803" class="Bound"
+      > <a name="3830" href="Data.Nat.LCM.html#3803" class="Bound"
       >i</a
-      ><a name="3831"
-      > </a
-      ><a name="3832" href="Data.Nat.LCM.html#3805" class="Bound"
+      > <a name="3832" href="Data.Nat.LCM.html#3805" class="Bound"
       >j</a
-      ><a name="3833"
-      > </a
-      ><a name="3834" href="Data.Nat.LCM.html#3809" class="Bound"
+      > <a name="3834" href="Data.Nat.LCM.html#3809" class="Bound"
       >m</a
-      ><a name="3835"
-      > </a
-      ><a name="3836" class="Symbol"
+      > <a name="3836" class="Symbol"
       >&#8594;</a
-      ><a name="3837"
-      > </a
-      ><a name="3838" href="Data.Nat.LCM.html#3803" class="Bound"
+      > <a name="3838" href="Data.Nat.LCM.html#3803" class="Bound"
       >i</a
-      ><a name="3839"
-      > </a
-      ><a name="3840" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3840" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3841"
-      > </a
-      ><a name="3842" href="Data.Nat.LCM.html#3805" class="Bound"
+      > <a name="3842" href="Data.Nat.LCM.html#3805" class="Bound"
       >j</a
-      ><a name="3843"
-      > </a
-      ><a name="3844" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="3844" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      ><a name="3845"
-      > </a
-      ><a name="3846" href="Data.Nat.LCM.html#3807" class="Bound"
+      > <a name="3846" href="Data.Nat.LCM.html#3807" class="Bound"
       >d</a
-      ><a name="3847"
-      > </a
-      ><a name="3848" href="Agda.Builtin.Nat.html#433" class="Primitive Operator"
+      > <a name="3848" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      ><a name="3849"
-      > </a
-      ><a name="3850" href="Data.Nat.LCM.html#3809" class="Bound"
+      > <a name="3850" href="Data.Nat.LCM.html#3809" class="Bound"
       >m</a
-      ><a name="3851"
       >
-</a
-      ><a name="3852" href="Data.Nat.LCM.html#3790" class="Function"
+<a name="3852" href="Data.Nat.LCM.html#gcd*lcm" class="Function"
       >gcd*lcm</a
-      ><a name="3859"
-      >  </a
-      ><a name="3861" class="Symbol"
+      >  <a name="3861" class="Symbol"
       >{</a
       ><a name="3862" href="Data.Nat.LCM.html#3862" class="Bound"
       >i</a
       ><a name="3863" class="Symbol"
       >}</a
-      ><a name="3864"
-      >        </a
-      ><a name="3872" class="Symbol"
+      >        <a name="3872" class="Symbol"
       >{</a
       ><a name="3873" href="Data.Nat.LCM.html#3873" class="Bound"
       >j</a
       ><a name="3874" class="Symbol"
       >}</a
-      ><a name="3875"
-      >       </a
-      ><a name="3882" class="Symbol"
+      >       <a name="3882" class="Symbol"
       >{</a
       ><a name="3883" href="Data.Nat.LCM.html#3883" class="Bound"
       >d</a
       ><a name="3884" class="Symbol"
       >}</a
-      ><a name="3885"
-      >  </a
-      ><a name="3887" class="Symbol"
+      >  <a name="3887" class="Symbol"
       >{</a
       ><a name="3888" href="Data.Nat.LCM.html#3888" class="Bound"
       >m</a
       ><a name="3889" class="Symbol"
       >}</a
-      ><a name="3890"
-      >               </a
-      ><a name="3905" href="Data.Nat.LCM.html#3905" class="Bound"
+      >               <a name="3905" href="Data.Nat.LCM.html#3905" class="Bound"
       >g</a
-      ><a name="3906"
-      > </a
-      ><a name="3907" href="Data.Nat.LCM.html#3907" class="Bound"
+      > <a name="3907" href="Data.Nat.LCM.html#3907" class="Bound"
       >l</a
-      ><a name="3908"
-      > </a
-      ><a name="3909" class="Keyword"
+      > <a name="3909" class="Keyword"
       >with</a
-      ><a name="3913"
-      > </a
-      ><a name="3914" href="Data.Nat.LCM.html#1269" class="Function"
+      > <a name="3914" href="Data.Nat.LCM.html#LCM.unique" class="Function"
       >LCM.unique</a
-      ><a name="3924"
-      > </a
-      ><a name="3925" href="Data.Nat.LCM.html#3907" class="Bound"
+      > <a name="3925" href="Data.Nat.LCM.html#3907" class="Bound"
       >l</a
-      ><a name="3926"
-      > </a
-      ><a name="3927" class="Symbol"
+      > <a name="3927" class="Symbol"
       >(</a
-      ><a name="3928" href="Data.Product.html#539" class="Field"
+      ><a name="3928" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
       >proj&#8322;</a
-      ><a name="3933"
-      > </a
-      ><a name="3934" class="Symbol"
+      > <a name="3934" class="Symbol"
       >(</a
-      ><a name="3935" href="Data.Nat.LCM.html#2101" class="Function"
+      ><a name="3935" href="Data.Nat.LCM.html#lcm" class="Function"
       >lcm</a
-      ><a name="3938"
-      > </a
-      ><a name="3939" href="Data.Nat.LCM.html#3862" class="Bound"
+      > <a name="3939" href="Data.Nat.LCM.html#3862" class="Bound"
       >i</a
-      ><a name="3940"
-      > </a
-      ><a name="3941" href="Data.Nat.LCM.html#3873" class="Bound"
+      > <a name="3941" href="Data.Nat.LCM.html#3873" class="Bound"
       >j</a
       ><a name="3942" class="Symbol"
       >))</a
-      ><a name="3944"
       >
-</a
-      ><a name="3945" href="Data.Nat.LCM.html#3790" class="Function"
+<a name="3945" href="Data.Nat.LCM.html#gcd*lcm" class="Function"
       >gcd*lcm</a
-      ><a name="3952"
-      >  </a
-      ><a name="3954" class="Symbol"
+      >  <a name="3954" class="Symbol"
       >{</a
       ><a name="3955" href="Data.Nat.LCM.html#3955" class="Bound"
       >i</a
       ><a name="3956" class="Symbol"
       >}</a
-      ><a name="3957"
-      >        </a
-      ><a name="3965" class="Symbol"
+      >        <a name="3965" class="Symbol"
       >{</a
       ><a name="3966" href="Data.Nat.LCM.html#3966" class="Bound"
       >j</a
       ><a name="3967" class="Symbol"
       >}</a
-      ><a name="3968"
-      >       </a
-      ><a name="3975" class="Symbol"
+      >       <a name="3975" class="Symbol"
       >{</a
       ><a name="3976" href="Data.Nat.LCM.html#3976" class="Bound"
       >d</a
       ><a name="3977" class="Symbol"
       >}</a
-      ><a name="3978"
-      > </a
-      ><a name="3979" class="DottedPattern Symbol"
+      > <a name="3979" class="DottedPattern Symbol"
       >.{</a
-      ><a name="3981" href="Data.Product.html#525" class="DottedPattern Field"
+      ><a name="3981" href="Data.Product.html#&#931;.proj&#8321;" class="DottedPattern Field"
       >proj&#8321;</a
-      ><a name="3986"
-      > </a
-      ><a name="3987" class="DottedPattern Symbol"
+      > <a name="3987" class="DottedPattern Symbol"
       >(</a
-      ><a name="3988" href="Data.Nat.LCM.html#2101" class="DottedPattern Function"
+      ><a name="3988" href="Data.Nat.LCM.html#lcm" class="DottedPattern Function"
       >lcm</a
-      ><a name="3991"
-      > </a
-      ><a name="3992" href="Data.Nat.LCM.html#3955" class="DottedPattern Bound"
+      > <a name="3992" href="Data.Nat.LCM.html#3955" class="DottedPattern Bound"
       >i</a
-      ><a name="3993"
-      > </a
-      ><a name="3994" href="Data.Nat.LCM.html#3966" class="DottedPattern Bound"
+      > <a name="3994" href="Data.Nat.LCM.html#3966" class="DottedPattern Bound"
       >j</a
       ><a name="3995" class="DottedPattern Symbol"
       >)}</a
-      ><a name="3997"
-      > </a
-      ><a name="3998" href="Data.Nat.LCM.html#3998" class="Bound"
+      > <a name="3998" href="Data.Nat.LCM.html#3998" class="Bound"
       >g</a
-      ><a name="3999"
-      > </a
-      ><a name="4000" href="Data.Nat.LCM.html#4000" class="Bound"
+      > <a name="4000" href="Data.Nat.LCM.html#4000" class="Bound"
       >l</a
-      ><a name="4001"
-      > </a
-      ><a name="4002" class="Symbol"
+      > <a name="4002" class="Symbol"
       >|</a
-      ><a name="4003"
-      > </a
-      ><a name="4004" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="4004" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="4008"
-      > </a
-      ><a name="4009" class="Keyword"
+      > <a name="4009" class="Keyword"
       >with</a
-      ><a name="4013"
-      > </a
-      ><a name="4014" href="Data.Nat.Coprimality.html#4438" class="Function"
+      > <a name="4014" href="Data.Nat.Coprimality.html#gcd&#8242;" class="Function"
       >gcd&#8242;</a
-      ><a name="4018"
-      > </a
-      ><a name="4019" href="Data.Nat.LCM.html#3955" class="Bound"
+      > <a name="4019" href="Data.Nat.LCM.html#3955" class="Bound"
       >i</a
-      ><a name="4020"
-      > </a
-      ><a name="4021" href="Data.Nat.LCM.html#3966" class="Bound"
+      > <a name="4021" href="Data.Nat.LCM.html#3966" class="Bound"
       >j</a
-      ><a name="4022"
       >
-</a
-      ><a name="4023" href="Data.Nat.LCM.html#3790" class="Function"
+<a name="4023" href="Data.Nat.LCM.html#gcd*lcm" class="Function"
       >gcd*lcm</a
-      ><a name="4030"
-      > </a
-      ><a name="4031" class="DottedPattern Symbol"
+      > <a name="4031" class="DottedPattern Symbol"
       >.{</a
       ><a name="4033" href="Data.Nat.LCM.html#4101" class="DottedPattern Bound"
       >q&#8321;</a
-      ><a name="4035"
-      > </a
-      ><a name="4036" href="Agda.Builtin.Nat.html#433" class="DottedPattern Primitive Operator"
+      > <a name="4036" href="Agda.Builtin.Nat.html#_*_" class="DottedPattern Primitive Operator"
       >*</a
-      ><a name="4037"
-      > </a
-      ><a name="4038" href="Data.Nat.LCM.html#4090" class="DottedPattern Bound"
+      > <a name="4038" href="Data.Nat.LCM.html#4090" class="DottedPattern Bound"
       >d&#8242;</a
       ><a name="4040" class="DottedPattern Symbol"
       >}</a
-      ><a name="4041"
-      > </a
-      ><a name="4042" class="DottedPattern Symbol"
+      > <a name="4042" class="DottedPattern Symbol"
       >.{</a
       ><a name="4044" href="Data.Nat.LCM.html#4104" class="DottedPattern Bound"
       >q&#8322;</a
-      ><a name="4046"
-      > </a
-      ><a name="4047" href="Agda.Builtin.Nat.html#433" class="DottedPattern Primitive Operator"
+      > <a name="4047" href="Agda.Builtin.Nat.html#_*_" class="DottedPattern Primitive Operator"
       >*</a
-      ><a name="4048"
-      > </a
-      ><a name="4049" href="Data.Nat.LCM.html#4090" class="DottedPattern Bound"
+      > <a name="4049" href="Data.Nat.LCM.html#4090" class="DottedPattern Bound"
       >d&#8242;</a
       ><a name="4051" class="DottedPattern Symbol"
       >}</a
-      ><a name="4052"
-      > </a
-      ><a name="4053" class="Symbol"
+      > <a name="4053" class="Symbol"
       >{</a
       ><a name="4054" href="Data.Nat.LCM.html#4054" class="Bound"
       >d</a
       ><a name="4055" class="Symbol"
       >}</a
-      ><a name="4056"
-      > </a
-      ><a name="4057" class="DottedPattern Symbol"
+      > <a name="4057" class="DottedPattern Symbol"
       >.{</a
       ><a name="4059" href="Data.Nat.LCM.html#4101" class="DottedPattern Bound"
       >q&#8321;</a
-      ><a name="4061"
-      > </a
-      ><a name="4062" href="Agda.Builtin.Nat.html#433" class="DottedPattern Primitive Operator"
+      > <a name="4062" href="Agda.Builtin.Nat.html#_*_" class="DottedPattern Primitive Operator"
       >*</a
-      ><a name="4063"
-      > </a
-      ><a name="4064" href="Data.Nat.LCM.html#4104" class="DottedPattern Bound"
+      > <a name="4064" href="Data.Nat.LCM.html#4104" class="DottedPattern Bound"
       >q&#8322;</a
-      ><a name="4066"
-      > </a
-      ><a name="4067" href="Agda.Builtin.Nat.html#433" class="DottedPattern Primitive Operator"
+      > <a name="4067" href="Agda.Builtin.Nat.html#_*_" class="DottedPattern Primitive Operator"
       >*</a
-      ><a name="4068"
-      > </a
-      ><a name="4069" href="Data.Nat.LCM.html#4090" class="DottedPattern Bound"
+      > <a name="4069" href="Data.Nat.LCM.html#4090" class="DottedPattern Bound"
       >d&#8242;</a
       ><a name="4071" class="DottedPattern Symbol"
       >}</a
-      ><a name="4072"
-      >    </a
-      ><a name="4076" href="Data.Nat.LCM.html#4076" class="Bound"
+      >    <a name="4076" href="Data.Nat.LCM.html#4076" class="Bound"
       >g</a
-      ><a name="4077"
-      > </a
-      ><a name="4078" href="Data.Nat.LCM.html#4078" class="Bound"
+      > <a name="4078" href="Data.Nat.LCM.html#4078" class="Bound"
       >l</a
-      ><a name="4079"
-      > </a
-      ><a name="4080" class="Symbol"
+      > <a name="4080" class="Symbol"
       >|</a
-      ><a name="4081"
-      > </a
-      ><a name="4082" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="4082" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="4086"
-      > </a
-      ><a name="4087" class="Symbol"
+      > <a name="4087" class="Symbol"
       >|</a
-      ><a name="4088"
-      > </a
-      ><a name="4089" class="Symbol"
+      > <a name="4089" class="Symbol"
       >(</a
       ><a name="4090" href="Data.Nat.LCM.html#4090" class="Bound"
       >d&#8242;</a
-      ><a name="4092"
-      > </a
-      ><a name="4093" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="4093" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="4094"
-      > </a
-      ><a name="4095" href="Data.Nat.Coprimality.html#3690" class="InductiveConstructor"
+      > <a name="4095" href="Data.Nat.Coprimality.html#GCD&#8242;.gcd-*" class="InductiveConstructor"
       >gcd-*</a
-      ><a name="4100"
-      > </a
-      ><a name="4101" href="Data.Nat.LCM.html#4101" class="Bound"
+      > <a name="4101" href="Data.Nat.LCM.html#4101" class="Bound"
       >q&#8321;</a
-      ><a name="4103"
-      > </a
-      ><a name="4104" href="Data.Nat.LCM.html#4104" class="Bound"
+      > <a name="4104" href="Data.Nat.LCM.html#4104" class="Bound"
       >q&#8322;</a
-      ><a name="4106"
-      > </a
-      ><a name="4107" href="Data.Nat.LCM.html#4107" class="Bound"
+      > <a name="4107" href="Data.Nat.LCM.html#4107" class="Bound"
       >q&#8321;-q&#8322;-coprime</a
       ><a name="4120" class="Symbol"
       >)</a
-      ><a name="4121"
       >
-                                                           </a
-      ><a name="4181" class="Keyword"
+                                                           <a name="4181" class="Keyword"
       >with</a
-      ><a name="4185"
-      > </a
-      ><a name="4186" href="Data.Nat.GCD.html#1176" class="Function"
+      > <a name="4186" href="Data.Nat.GCD.html#GCD.unique" class="Function"
       >GCD.unique</a
-      ><a name="4196"
-      > </a
-      ><a name="4197" href="Data.Nat.LCM.html#4076" class="Bound"
+      > <a name="4197" href="Data.Nat.LCM.html#4076" class="Bound"
       >g</a
-      ><a name="4198"
       >
-                                                                  </a
-      ><a name="4265" class="Symbol"
+                                                                  <a name="4265" class="Symbol"
       >(</a
-      ><a name="4266" href="Data.Nat.Coprimality.html#4239" class="Function"
+      ><a name="4266" href="Data.Nat.Coprimality.html#gcd&#8242;-gcd" class="Function"
       >gcd&#8242;-gcd</a
-      ><a name="4274"
-      > </a
-      ><a name="4275" class="Symbol"
+      > <a name="4275" class="Symbol"
       >(</a
-      ><a name="4276" href="Data.Nat.Coprimality.html#3690" class="InductiveConstructor"
+      ><a name="4276" href="Data.Nat.Coprimality.html#GCD&#8242;.gcd-*" class="InductiveConstructor"
       >gcd-*</a
-      ><a name="4281"
-      > </a
-      ><a name="4282" href="Data.Nat.LCM.html#4101" class="Bound"
+      > <a name="4282" href="Data.Nat.LCM.html#4101" class="Bound"
       >q&#8321;</a
-      ><a name="4284"
-      > </a
-      ><a name="4285" href="Data.Nat.LCM.html#4104" class="Bound"
+      > <a name="4285" href="Data.Nat.LCM.html#4104" class="Bound"
       >q&#8322;</a
-      ><a name="4287"
-      > </a
-      ><a name="4288" href="Data.Nat.LCM.html#4107" class="Bound"
+      > <a name="4288" href="Data.Nat.LCM.html#4107" class="Bound"
       >q&#8321;-q&#8322;-coprime</a
       ><a name="4301" class="Symbol"
       >))</a
-      ><a name="4303"
       >
-</a
-      ><a name="4304" href="Data.Nat.LCM.html#3790" class="Function"
+<a name="4304" href="Data.Nat.LCM.html#gcd*lcm" class="Function"
       >gcd*lcm</a
-      ><a name="4311"
-      > </a
-      ><a name="4312" class="DottedPattern Symbol"
+      > <a name="4312" class="DottedPattern Symbol"
       >.{</a
       ><a name="4314" href="Data.Nat.LCM.html#4382" class="DottedPattern Bound"
       >q&#8321;</a
-      ><a name="4316"
-      > </a
-      ><a name="4317" href="Agda.Builtin.Nat.html#433" class="DottedPattern Primitive Operator"
+      > <a name="4317" href="Agda.Builtin.Nat.html#_*_" class="DottedPattern Primitive Operator"
       >*</a
-      ><a name="4318"
-      > </a
-      ><a name="4319" href="Data.Nat.LCM.html#4335" class="DottedPattern Bound"
+      > <a name="4319" href="Data.Nat.LCM.html#4335" class="DottedPattern Bound"
       >d</a
       ><a name="4320" class="DottedPattern Symbol"
       >}</a
-      ><a name="4321"
-      >  </a
-      ><a name="4323" class="DottedPattern Symbol"
+      >  <a name="4323" class="DottedPattern Symbol"
       >.{</a
       ><a name="4325" href="Data.Nat.LCM.html#4385" class="DottedPattern Bound"
       >q&#8322;</a
-      ><a name="4327"
-      > </a
-      ><a name="4328" href="Agda.Builtin.Nat.html#433" class="DottedPattern Primitive Operator"
+      > <a name="4328" href="Agda.Builtin.Nat.html#_*_" class="DottedPattern Primitive Operator"
       >*</a
-      ><a name="4329"
-      > </a
-      ><a name="4330" href="Data.Nat.LCM.html#4335" class="DottedPattern Bound"
+      > <a name="4330" href="Data.Nat.LCM.html#4335" class="DottedPattern Bound"
       >d</a
       ><a name="4331" class="DottedPattern Symbol"
       >}</a
-      ><a name="4332"
-      >  </a
-      ><a name="4334" class="Symbol"
+      >  <a name="4334" class="Symbol"
       >{</a
       ><a name="4335" href="Data.Nat.LCM.html#4335" class="Bound"
       >d</a
       ><a name="4336" class="Symbol"
       >}</a
-      ><a name="4337"
-      > </a
-      ><a name="4338" class="DottedPattern Symbol"
+      > <a name="4338" class="DottedPattern Symbol"
       >.{</a
       ><a name="4340" href="Data.Nat.LCM.html#4382" class="DottedPattern Bound"
       >q&#8321;</a
-      ><a name="4342"
-      > </a
-      ><a name="4343" href="Agda.Builtin.Nat.html#433" class="DottedPattern Primitive Operator"
+      > <a name="4343" href="Agda.Builtin.Nat.html#_*_" class="DottedPattern Primitive Operator"
       >*</a
-      ><a name="4344"
-      > </a
-      ><a name="4345" href="Data.Nat.LCM.html#4385" class="DottedPattern Bound"
+      > <a name="4345" href="Data.Nat.LCM.html#4385" class="DottedPattern Bound"
       >q&#8322;</a
-      ><a name="4347"
-      > </a
-      ><a name="4348" href="Agda.Builtin.Nat.html#433" class="DottedPattern Primitive Operator"
+      > <a name="4348" href="Agda.Builtin.Nat.html#_*_" class="DottedPattern Primitive Operator"
       >*</a
-      ><a name="4349"
-      > </a
-      ><a name="4350" href="Data.Nat.LCM.html#4335" class="DottedPattern Bound"
+      > <a name="4350" href="Data.Nat.LCM.html#4335" class="DottedPattern Bound"
       >d</a
       ><a name="4351" class="DottedPattern Symbol"
       >}</a
-      ><a name="4352"
-      >     </a
-      ><a name="4357" href="Data.Nat.LCM.html#4357" class="Bound"
+      >     <a name="4357" href="Data.Nat.LCM.html#4357" class="Bound"
       >g</a
-      ><a name="4358"
-      > </a
-      ><a name="4359" href="Data.Nat.LCM.html#4359" class="Bound"
+      > <a name="4359" href="Data.Nat.LCM.html#4359" class="Bound"
       >l</a
-      ><a name="4360"
-      > </a
-      ><a name="4361" class="Symbol"
+      > <a name="4361" class="Symbol"
       >|</a
-      ><a name="4362"
-      > </a
-      ><a name="4363" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="4363" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="4367"
-      > </a
-      ><a name="4368" class="Symbol"
+      > <a name="4368" class="Symbol"
       >|</a
-      ><a name="4369"
-      > </a
-      ><a name="4370" class="Symbol"
+      > <a name="4370" class="Symbol"
       >(</a
       ><a name="4371" class="DottedPattern Symbol"
       >.</a
       ><a name="4372" href="Data.Nat.LCM.html#4335" class="DottedPattern Bound"
       >d</a
-      ><a name="4373"
-      > </a
-      ><a name="4374" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="4374" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="4375"
-      > </a
-      ><a name="4376" href="Data.Nat.Coprimality.html#3690" class="InductiveConstructor"
+      > <a name="4376" href="Data.Nat.Coprimality.html#GCD&#8242;.gcd-*" class="InductiveConstructor"
       >gcd-*</a
-      ><a name="4381"
-      > </a
-      ><a name="4382" href="Data.Nat.LCM.html#4382" class="Bound"
+      > <a name="4382" href="Data.Nat.LCM.html#4382" class="Bound"
       >q&#8321;</a
-      ><a name="4384"
-      > </a
-      ><a name="4385" href="Data.Nat.LCM.html#4385" class="Bound"
+      > <a name="4385" href="Data.Nat.LCM.html#4385" class="Bound"
       >q&#8322;</a
-      ><a name="4387"
-      > </a
-      ><a name="4388" href="Data.Nat.LCM.html#4388" class="Bound"
+      > <a name="4388" href="Data.Nat.LCM.html#4388" class="Bound"
       >q&#8321;-q&#8322;-coprime</a
       ><a name="4401" class="Symbol"
       >)</a
-      ><a name="4402"
-      > </a
-      ><a name="4403" class="Symbol"
+      > <a name="4403" class="Symbol"
       >|</a
-      ><a name="4404"
-      > </a
-      ><a name="4405" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="4405" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="4409"
-      > </a
-      ><a name="4410" class="Symbol"
+      > <a name="4410" class="Symbol"
       >=</a
-      ><a name="4411"
       >
-  </a
-      ><a name="4414" href="Relation.Binary.Reflection.html#2382" class="Function"
+  <a name="4414" href="Relation.Binary.Reflection.html#SemiringSolver.solve" class="Function"
       >solve</a
-      ><a name="4419"
-      > </a
-      ><a name="4420" class="Number"
+      > <a name="4420" class="Number"
       >3</a
-      ><a name="4421"
-      > </a
-      ><a name="4422" class="Symbol"
+      > <a name="4422" class="Symbol"
       >(&#955;</a
-      ><a name="4424"
-      > </a
-      ><a name="4425" href="Data.Nat.LCM.html#4425" class="Bound"
+      > <a name="4425" href="Data.Nat.LCM.html#4425" class="Bound"
       >q&#8321;</a
-      ><a name="4427"
-      > </a
-      ><a name="4428" href="Data.Nat.LCM.html#4428" class="Bound"
+      > <a name="4428" href="Data.Nat.LCM.html#4428" class="Bound"
       >q&#8322;</a
-      ><a name="4430"
-      > </a
-      ><a name="4431" href="Data.Nat.LCM.html#4431" class="Bound"
+      > <a name="4431" href="Data.Nat.LCM.html#4431" class="Bound"
       >d</a
-      ><a name="4432"
-      > </a
-      ><a name="4433" class="Symbol"
+      > <a name="4433" class="Symbol"
       >&#8594;</a
-      ><a name="4434"
-      > </a
-      ><a name="4435" href="Data.Nat.LCM.html#4425" class="Bound"
+      > <a name="4435" href="Data.Nat.LCM.html#4425" class="Bound"
       >q&#8321;</a
-      ><a name="4437"
-      > </a
-      ><a name="4438" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="4438" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="4440"
-      > </a
-      ><a name="4441" href="Data.Nat.LCM.html#4431" class="Bound"
+      > <a name="4441" href="Data.Nat.LCM.html#4431" class="Bound"
       >d</a
-      ><a name="4442"
-      > </a
-      ><a name="4443" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="4443" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="4445"
-      > </a
-      ><a name="4446" class="Symbol"
+      > <a name="4446" class="Symbol"
       >(</a
       ><a name="4447" href="Data.Nat.LCM.html#4428" class="Bound"
       >q&#8322;</a
-      ><a name="4449"
-      > </a
-      ><a name="4450" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="4450" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="4452"
-      > </a
-      ><a name="4453" href="Data.Nat.LCM.html#4431" class="Bound"
+      > <a name="4453" href="Data.Nat.LCM.html#4431" class="Bound"
       >d</a
       ><a name="4454" class="Symbol"
       >)</a
-      ><a name="4455"
       >
-                   </a
-      ><a name="4475" href="Relation.Binary.Reflection.html#3491" class="Function Operator"
+                   <a name="4475" href="Relation.Binary.Reflection.html#SemiringSolver._:=_" class="Function Operator"
       >:=</a
-      ><a name="4477"
-      >  </a
-      ><a name="4479" href="Data.Nat.LCM.html#4431" class="Bound"
+      >  <a name="4479" href="Data.Nat.LCM.html#4431" class="Bound"
       >d</a
-      ><a name="4480"
-      > </a
-      ><a name="4481" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="4481" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="4483"
-      > </a
-      ><a name="4484" class="Symbol"
+      > <a name="4484" class="Symbol"
       >(</a
       ><a name="4485" href="Data.Nat.LCM.html#4425" class="Bound"
       >q&#8321;</a
-      ><a name="4487"
-      > </a
-      ><a name="4488" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="4488" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="4490"
-      > </a
-      ><a name="4491" href="Data.Nat.LCM.html#4428" class="Bound"
+      > <a name="4491" href="Data.Nat.LCM.html#4428" class="Bound"
       >q&#8322;</a
-      ><a name="4493"
-      > </a
-      ><a name="4494" href="Algebra.RingSolver.html#2371" class="Function Operator"
+      > <a name="4494" href="Algebra.RingSolver.html#Properties.SemiringSolver._:*_" class="Function Operator"
       >:*</a
-      ><a name="4496"
-      > </a
-      ><a name="4497" href="Data.Nat.LCM.html#4431" class="Bound"
+      > <a name="4497" href="Data.Nat.LCM.html#4431" class="Bound"
       >d</a
       ><a name="4498" class="Symbol"
       >))</a
-      ><a name="4500"
       >
-          </a
-      ><a name="4511" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+          <a name="4511" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="4515"
-      > </a
-      ><a name="4516" href="Data.Nat.LCM.html#4382" class="Bound"
+      > <a name="4516" href="Data.Nat.LCM.html#4382" class="Bound"
       >q&#8321;</a
-      ><a name="4518"
-      > </a
-      ><a name="4519" href="Data.Nat.LCM.html#4385" class="Bound"
+      > <a name="4519" href="Data.Nat.LCM.html#4385" class="Bound"
       >q&#8322;</a
-      ><a name="4521"
-      > </a
-      ><a name="4522" href="Data.Nat.LCM.html#4335" class="Bound"
+      > <a name="4522" href="Data.Nat.LCM.html#4335" class="Bound"
       >d</a
-      ><a name="4523"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

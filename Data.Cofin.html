@@ -11,777 +11,463 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- &quot;Finite&quot; sets indexed on coinductive &quot;natural&quot; numbers</a
-      ><a name="163"
       >
-</a
-      ><a name="164" class="Comment"
+<a name="164" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="236"
       >
 
-</a
-      ><a name="238" class="Keyword"
+<a name="238" class="Keyword"
       >module</a
-      ><a name="244"
-      > </a
-      ><a name="245" href="Data.Cofin.html#1" class="Module"
+      > <a name="245" href="Data.Cofin.html" class="Module"
       >Data.Cofin</a
-      ><a name="255"
-      > </a
-      ><a name="256" class="Keyword"
+      > <a name="256" class="Keyword"
       >where</a
-      ><a name="261"
       >
 
-</a
-      ><a name="263" class="Keyword"
+<a name="263" class="Keyword"
       >open</a
-      ><a name="267"
-      > </a
-      ><a name="268" class="Keyword"
+      > <a name="268" class="Keyword"
       >import</a
-      ><a name="274"
-      > </a
-      ><a name="275" href="Coinduction.html#1" class="Module"
+      > <a name="275" href="Coinduction.html" class="Module"
       >Coinduction</a
-      ><a name="286"
       >
-</a
-      ><a name="287" class="Keyword"
+<a name="287" class="Keyword"
       >open</a
-      ><a name="291"
-      > </a
-      ><a name="292" class="Keyword"
+      > <a name="292" class="Keyword"
       >import</a
-      ><a name="298"
-      > </a
-      ><a name="299" href="Data.Conat.html#1" class="Module"
+      > <a name="299" href="Data.Conat.html" class="Module"
       >Data.Conat</a
-      ><a name="309"
-      > </a
-      ><a name="310" class="Symbol"
+      > <a name="310" class="Symbol"
       >as</a
-      ><a name="312"
-      > </a
-      ><a name="313" class="Module"
+      > <a name="313" class="Module"
       >Conat</a
-      ><a name="318"
-      > </a
-      ><a name="319" class="Keyword"
+      > <a name="319" class="Keyword"
       >using</a
-      ><a name="324"
-      > </a
-      ><a name="325" class="Symbol"
+      > <a name="325" class="Symbol"
       >(</a
-      ><a name="326" href="Data.Conat.html#429" class="Datatype"
+      ><a name="326" href="Data.Conat.html#Co&#8469;" class="Datatype"
       >Co&#8469;</a
       ><a name="329" class="Symbol"
       >;</a
-      ><a name="330"
-      > </a
-      ><a name="331" href="Data.Conat.html#460" class="InductiveConstructor"
+      > <a name="331" href="Data.Conat.html#Co&#8469;.suc" class="InductiveConstructor"
       >suc</a
       ><a name="334" class="Symbol"
       >;</a
-      ><a name="335"
-      > </a
-      ><a name="336" href="Data.Conat.html#649" class="Function"
+      > <a name="336" href="Data.Conat.html#&#8734;&#8469;" class="Function"
       >&#8734;&#8469;</a
       ><a name="338" class="Symbol"
       >)</a
-      ><a name="339"
       >
-</a
-      ><a name="340" class="Keyword"
+<a name="340" class="Keyword"
       >open</a
-      ><a name="344"
-      > </a
-      ><a name="345" class="Keyword"
+      > <a name="345" class="Keyword"
       >import</a
-      ><a name="351"
-      > </a
-      ><a name="352" href="Data.Nat.Base.html#1" class="Module"
+      > <a name="352" href="Data.Nat.Base.html" class="Module"
       >Data.Nat.Base</a
-      ><a name="365"
-      > </a
-      ><a name="366" class="Keyword"
+      > <a name="366" class="Keyword"
       >using</a
-      ><a name="371"
-      > </a
-      ><a name="372" class="Symbol"
+      > <a name="372" class="Symbol"
       >(</a
-      ><a name="373" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      ><a name="373" href="Agda.Builtin.Nat.html#Nat" class="Datatype"
       >&#8469;</a
       ><a name="374" class="Symbol"
       >;</a
-      ><a name="375"
-      > </a
-      ><a name="376" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      > <a name="376" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
       ><a name="380" class="Symbol"
       >;</a
-      ><a name="381"
-      > </a
-      ><a name="382" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      > <a name="382" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
       ><a name="385" class="Symbol"
       >)</a
-      ><a name="386"
       >
-</a
-      ><a name="387" class="Keyword"
+<a name="387" class="Keyword"
       >open</a
-      ><a name="391"
-      > </a
-      ><a name="392" class="Keyword"
+      > <a name="392" class="Keyword"
       >import</a
-      ><a name="398"
-      > </a
-      ><a name="399" href="Data.Fin.html#1" class="Module"
+      > <a name="399" href="Data.Fin.html" class="Module"
       >Data.Fin</a
-      ><a name="407"
-      > </a
-      ><a name="408" class="Keyword"
+      > <a name="408" class="Keyword"
       >using</a
-      ><a name="413"
-      > </a
-      ><a name="414" class="Symbol"
+      > <a name="414" class="Symbol"
       >(</a
-      ><a name="415" href="Data.Fin.html#842" class="Datatype"
+      ><a name="415" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
       ><a name="418" class="Symbol"
       >;</a
-      ><a name="419"
-      > </a
-      ><a name="420" href="Data.Fin.html#864" class="InductiveConstructor"
+      > <a name="420" href="Data.Fin.html#Fin.zero" class="InductiveConstructor"
       >zero</a
       ><a name="424" class="Symbol"
       >;</a
-      ><a name="425"
-      > </a
-      ><a name="426" href="Data.Fin.html#895" class="InductiveConstructor"
+      > <a name="426" href="Data.Fin.html#Fin.suc" class="InductiveConstructor"
       >suc</a
       ><a name="429" class="Symbol"
       >)</a
-      ><a name="430"
       >
 
-</a
-      ><a name="432" class="Comment"
+<a name="432" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="504"
       >
-</a
-      ><a name="505" class="Comment"
+<a name="505" class="Comment"
       >-- The type</a
-      ><a name="516"
       >
 
-</a
-      ><a name="518" class="Comment"
+<a name="518" class="Comment"
       >-- Note that Cofin &#8734;&#8469; is /not/ finite. Note also that this is not a</a
-      ><a name="585"
       >
-</a
-      ><a name="586" class="Comment"
+<a name="586" class="Comment"
       >-- coinductive type, but it is indexed on a coinductive type.</a
-      ><a name="647"
       >
 
-</a
-      ><a name="649" class="Keyword"
+<a name="649" class="Keyword"
       >data</a
-      ><a name="653"
-      > </a
-      ><a name="654" href="Data.Cofin.html#654" class="Datatype"
+      > <a name="Cofin" href="Data.Cofin.html#Cofin" class="Datatype"
       >Cofin</a
-      ><a name="659"
-      > </a
-      ><a name="660" class="Symbol"
+      > <a name="660" class="Symbol"
       >:</a
-      ><a name="661"
-      > </a
-      ><a name="662" href="Data.Conat.html#429" class="Datatype"
+      > <a name="662" href="Data.Conat.html#Co&#8469;" class="Datatype"
       >Co&#8469;</a
-      ><a name="665"
-      > </a
-      ><a name="666" class="Symbol"
+      > <a name="666" class="Symbol"
       >&#8594;</a
-      ><a name="667"
-      > </a
-      ><a name="668" class="PrimitiveType"
+      > <a name="668" class="PrimitiveType"
       >Set</a
-      ><a name="671"
-      > </a
-      ><a name="672" class="Keyword"
+      > <a name="672" class="Keyword"
       >where</a
-      ><a name="677"
       >
-  </a
-      ><a name="680" href="Data.Cofin.html#680" class="InductiveConstructor"
+  <a name="Cofin.zero" href="Data.Cofin.html#Cofin.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="684"
-      > </a
-      ><a name="685" class="Symbol"
+      > <a name="685" class="Symbol"
       >:</a
-      ><a name="686"
-      > </a
-      ><a name="687" class="Symbol"
+      > <a name="687" class="Symbol"
       >&#8704;</a
-      ><a name="688"
-      > </a
-      ><a name="689" class="Symbol"
+      > <a name="689" class="Symbol"
       >{</a
       ><a name="690" href="Data.Cofin.html#690" class="Bound"
       >n</a
       ><a name="691" class="Symbol"
       >}</a
-      ><a name="692"
-      > </a
-      ><a name="693" class="Symbol"
+      > <a name="693" class="Symbol"
       >&#8594;</a
-      ><a name="694"
-      > </a
-      ><a name="695" href="Data.Cofin.html#654" class="Datatype"
+      > <a name="695" href="Data.Cofin.html#Cofin" class="Datatype"
       >Cofin</a
-      ><a name="700"
-      > </a
-      ><a name="701" class="Symbol"
+      > <a name="701" class="Symbol"
       >(</a
-      ><a name="702" href="Data.Conat.html#460" class="InductiveConstructor"
+      ><a name="702" href="Data.Conat.html#Co&#8469;.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="705"
-      > </a
-      ><a name="706" href="Data.Cofin.html#690" class="Bound"
+      > <a name="706" href="Data.Cofin.html#690" class="Bound"
       >n</a
       ><a name="707" class="Symbol"
       >)</a
-      ><a name="708"
       >
-  </a
-      ><a name="711" href="Data.Cofin.html#711" class="InductiveConstructor"
+  <a name="Cofin.suc" href="Data.Cofin.html#Cofin.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="714"
-      >  </a
-      ><a name="716" class="Symbol"
+      >  <a name="716" class="Symbol"
       >:</a
-      ><a name="717"
-      > </a
-      ><a name="718" class="Symbol"
+      > <a name="718" class="Symbol"
       >&#8704;</a
-      ><a name="719"
-      > </a
-      ><a name="720" class="Symbol"
+      > <a name="720" class="Symbol"
       >{</a
       ><a name="721" href="Data.Cofin.html#721" class="Bound"
       >n</a
       ><a name="722" class="Symbol"
       >}</a
-      ><a name="723"
-      > </a
-      ><a name="724" class="Symbol"
+      > <a name="724" class="Symbol"
       >(</a
       ><a name="725" href="Data.Cofin.html#725" class="Bound"
       >i</a
-      ><a name="726"
-      > </a
-      ><a name="727" class="Symbol"
+      > <a name="727" class="Symbol"
       >:</a
-      ><a name="728"
-      > </a
-      ><a name="729" href="Data.Cofin.html#654" class="Datatype"
+      > <a name="729" href="Data.Cofin.html#Cofin" class="Datatype"
       >Cofin</a
-      ><a name="734"
-      > </a
-      ><a name="735" class="Symbol"
+      > <a name="735" class="Symbol"
       >(</a
-      ><a name="736" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      ><a name="736" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="737"
-      > </a
-      ><a name="738" href="Data.Cofin.html#721" class="Bound"
+      > <a name="738" href="Data.Cofin.html#721" class="Bound"
       >n</a
       ><a name="739" class="Symbol"
       >))</a
-      ><a name="741"
-      > </a
-      ><a name="742" class="Symbol"
+      > <a name="742" class="Symbol"
       >&#8594;</a
-      ><a name="743"
-      > </a
-      ><a name="744" href="Data.Cofin.html#654" class="Datatype"
+      > <a name="744" href="Data.Cofin.html#Cofin" class="Datatype"
       >Cofin</a
-      ><a name="749"
-      > </a
-      ><a name="750" class="Symbol"
+      > <a name="750" class="Symbol"
       >(</a
-      ><a name="751" href="Data.Conat.html#460" class="InductiveConstructor"
+      ><a name="751" href="Data.Conat.html#Co&#8469;.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="754"
-      > </a
-      ><a name="755" href="Data.Cofin.html#721" class="Bound"
+      > <a name="755" href="Data.Cofin.html#721" class="Bound"
       >n</a
       ><a name="756" class="Symbol"
       >)</a
-      ><a name="757"
       >
 
-</a
-      ><a name="759" class="Comment"
+<a name="759" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="831"
       >
-</a
-      ><a name="832" class="Comment"
+<a name="832" class="Comment"
       >-- Some operations</a
-      ><a name="850"
       >
 
-</a
-      ><a name="852" href="Data.Cofin.html#852" class="Function"
+<a name="from&#8469;" href="Data.Cofin.html#from&#8469;" class="Function"
       >from&#8469;</a
-      ><a name="857"
-      > </a
-      ><a name="858" class="Symbol"
+      > <a name="858" class="Symbol"
       >:</a
-      ><a name="859"
-      > </a
-      ><a name="860" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="860" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="861"
-      > </a
-      ><a name="862" class="Symbol"
+      > <a name="862" class="Symbol"
       >&#8594;</a
-      ><a name="863"
-      > </a
-      ><a name="864" href="Data.Cofin.html#654" class="Datatype"
+      > <a name="864" href="Data.Cofin.html#Cofin" class="Datatype"
       >Cofin</a
-      ><a name="869"
-      > </a
-      ><a name="870" href="Data.Conat.html#649" class="Function"
+      > <a name="870" href="Data.Conat.html#&#8734;&#8469;" class="Function"
       >&#8734;&#8469;</a
-      ><a name="872"
       >
-</a
-      ><a name="873" href="Data.Cofin.html#852" class="Function"
+<a name="873" href="Data.Cofin.html#from&#8469;" class="Function"
       >from&#8469;</a
-      ><a name="878"
-      > </a
-      ><a name="879" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      > <a name="879" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="883"
-      >    </a
-      ><a name="887" class="Symbol"
+      >    <a name="887" class="Symbol"
       >=</a
-      ><a name="888"
-      > </a
-      ><a name="889" href="Data.Cofin.html#680" class="InductiveConstructor"
+      > <a name="889" href="Data.Cofin.html#Cofin.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="893"
       >
-</a
-      ><a name="894" href="Data.Cofin.html#852" class="Function"
+<a name="894" href="Data.Cofin.html#from&#8469;" class="Function"
       >from&#8469;</a
-      ><a name="899"
-      > </a
-      ><a name="900" class="Symbol"
+      > <a name="900" class="Symbol"
       >(</a
-      ><a name="901" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      ><a name="901" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="904"
-      > </a
-      ><a name="905" href="Data.Cofin.html#905" class="Bound"
+      > <a name="905" href="Data.Cofin.html#905" class="Bound"
       >n</a
       ><a name="906" class="Symbol"
       >)</a
-      ><a name="907"
-      > </a
-      ><a name="908" class="Symbol"
+      > <a name="908" class="Symbol"
       >=</a
-      ><a name="909"
-      > </a
-      ><a name="910" href="Data.Cofin.html#711" class="InductiveConstructor"
+      > <a name="910" href="Data.Cofin.html#Cofin.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="913"
-      > </a
-      ><a name="914" class="Symbol"
+      > <a name="914" class="Symbol"
       >(</a
-      ><a name="915" href="Data.Cofin.html#852" class="Function"
+      ><a name="915" href="Data.Cofin.html#from&#8469;" class="Function"
       >from&#8469;</a
-      ><a name="920"
-      > </a
-      ><a name="921" href="Data.Cofin.html#905" class="Bound"
+      > <a name="921" href="Data.Cofin.html#905" class="Bound"
       >n</a
       ><a name="922" class="Symbol"
       >)</a
-      ><a name="923"
       >
 
-</a
-      ><a name="925" href="Data.Cofin.html#925" class="Function"
+<a name="to&#8469;" href="Data.Cofin.html#to&#8469;" class="Function"
       >to&#8469;</a
-      ><a name="928"
-      > </a
-      ><a name="929" class="Symbol"
+      > <a name="929" class="Symbol"
       >:</a
-      ><a name="930"
-      > </a
-      ><a name="931" class="Symbol"
+      > <a name="931" class="Symbol"
       >&#8704;</a
-      ><a name="932"
-      > </a
-      ><a name="933" class="Symbol"
+      > <a name="933" class="Symbol"
       >{</a
       ><a name="934" href="Data.Cofin.html#934" class="Bound"
       >n</a
       ><a name="935" class="Symbol"
       >}</a
-      ><a name="936"
-      > </a
-      ><a name="937" class="Symbol"
+      > <a name="937" class="Symbol"
       >&#8594;</a
-      ><a name="938"
-      > </a
-      ><a name="939" href="Data.Cofin.html#654" class="Datatype"
+      > <a name="939" href="Data.Cofin.html#Cofin" class="Datatype"
       >Cofin</a
-      ><a name="944"
-      > </a
-      ><a name="945" href="Data.Cofin.html#934" class="Bound"
+      > <a name="945" href="Data.Cofin.html#934" class="Bound"
       >n</a
-      ><a name="946"
-      > </a
-      ><a name="947" class="Symbol"
+      > <a name="947" class="Symbol"
       >&#8594;</a
-      ><a name="948"
-      > </a
-      ><a name="949" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="949" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="950"
       >
-</a
-      ><a name="951" href="Data.Cofin.html#925" class="Function"
+<a name="951" href="Data.Cofin.html#to&#8469;" class="Function"
       >to&#8469;</a
-      ><a name="954"
-      > </a
-      ><a name="955" href="Data.Cofin.html#680" class="InductiveConstructor"
+      > <a name="955" href="Data.Cofin.html#Cofin.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="959"
-      >    </a
-      ><a name="963" class="Symbol"
+      >    <a name="963" class="Symbol"
       >=</a
-      ><a name="964"
-      > </a
-      ><a name="965" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      > <a name="965" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="969"
       >
-</a
-      ><a name="970" href="Data.Cofin.html#925" class="Function"
+<a name="970" href="Data.Cofin.html#to&#8469;" class="Function"
       >to&#8469;</a
-      ><a name="973"
-      > </a
-      ><a name="974" class="Symbol"
+      > <a name="974" class="Symbol"
       >(</a
-      ><a name="975" href="Data.Cofin.html#711" class="InductiveConstructor"
+      ><a name="975" href="Data.Cofin.html#Cofin.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="978"
-      > </a
-      ><a name="979" href="Data.Cofin.html#979" class="Bound"
+      > <a name="979" href="Data.Cofin.html#979" class="Bound"
       >i</a
       ><a name="980" class="Symbol"
       >)</a
-      ><a name="981"
-      > </a
-      ><a name="982" class="Symbol"
+      > <a name="982" class="Symbol"
       >=</a
-      ><a name="983"
-      > </a
-      ><a name="984" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      > <a name="984" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="987"
-      > </a
-      ><a name="988" class="Symbol"
+      > <a name="988" class="Symbol"
       >(</a
-      ><a name="989" href="Data.Cofin.html#925" class="Function"
+      ><a name="989" href="Data.Cofin.html#to&#8469;" class="Function"
       >to&#8469;</a
-      ><a name="992"
-      > </a
-      ><a name="993" href="Data.Cofin.html#979" class="Bound"
+      > <a name="993" href="Data.Cofin.html#979" class="Bound"
       >i</a
       ><a name="994" class="Symbol"
       >)</a
-      ><a name="995"
       >
 
-</a
-      ><a name="997" href="Data.Cofin.html#997" class="Function"
+<a name="fromFin" href="Data.Cofin.html#fromFin" class="Function"
       >fromFin</a
-      ><a name="1004"
-      > </a
-      ><a name="1005" class="Symbol"
+      > <a name="1005" class="Symbol"
       >:</a
-      ><a name="1006"
-      > </a
-      ><a name="1007" class="Symbol"
+      > <a name="1007" class="Symbol"
       >&#8704;</a
-      ><a name="1008"
-      > </a
-      ><a name="1009" class="Symbol"
+      > <a name="1009" class="Symbol"
       >{</a
       ><a name="1010" href="Data.Cofin.html#1010" class="Bound"
       >n</a
       ><a name="1011" class="Symbol"
       >}</a
-      ><a name="1012"
-      > </a
-      ><a name="1013" class="Symbol"
+      > <a name="1013" class="Symbol"
       >&#8594;</a
-      ><a name="1014"
-      > </a
-      ><a name="1015" href="Data.Fin.html#842" class="Datatype"
+      > <a name="1015" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
-      ><a name="1018"
-      > </a
-      ><a name="1019" href="Data.Cofin.html#1010" class="Bound"
+      > <a name="1019" href="Data.Cofin.html#1010" class="Bound"
       >n</a
-      ><a name="1020"
-      > </a
-      ><a name="1021" class="Symbol"
+      > <a name="1021" class="Symbol"
       >&#8594;</a
-      ><a name="1022"
-      > </a
-      ><a name="1023" href="Data.Cofin.html#654" class="Datatype"
+      > <a name="1023" href="Data.Cofin.html#Cofin" class="Datatype"
       >Cofin</a
-      ><a name="1028"
-      > </a
-      ><a name="1029" class="Symbol"
+      > <a name="1029" class="Symbol"
       >(</a
-      ><a name="1030" href="Data.Conat.html#579" class="Function"
+      ><a name="1030" href="Data.Conat.html#from&#8469;" class="Function"
       >Conat.from&#8469;</a
-      ><a name="1041"
-      > </a
-      ><a name="1042" href="Data.Cofin.html#1010" class="Bound"
+      > <a name="1042" href="Data.Cofin.html#1010" class="Bound"
       >n</a
       ><a name="1043" class="Symbol"
       >)</a
-      ><a name="1044"
       >
-</a
-      ><a name="1045" href="Data.Cofin.html#997" class="Function"
+<a name="1045" href="Data.Cofin.html#fromFin" class="Function"
       >fromFin</a
-      ><a name="1052"
-      > </a
-      ><a name="1053" href="Data.Fin.html#864" class="InductiveConstructor"
+      > <a name="1053" href="Data.Fin.html#Fin.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1057"
-      >    </a
-      ><a name="1061" class="Symbol"
+      >    <a name="1061" class="Symbol"
       >=</a
-      ><a name="1062"
-      > </a
-      ><a name="1063" href="Data.Cofin.html#680" class="InductiveConstructor"
+      > <a name="1063" href="Data.Cofin.html#Cofin.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1067"
       >
-</a
-      ><a name="1068" href="Data.Cofin.html#997" class="Function"
+<a name="1068" href="Data.Cofin.html#fromFin" class="Function"
       >fromFin</a
-      ><a name="1075"
-      > </a
-      ><a name="1076" class="Symbol"
+      > <a name="1076" class="Symbol"
       >(</a
-      ><a name="1077" href="Data.Fin.html#895" class="InductiveConstructor"
+      ><a name="1077" href="Data.Fin.html#Fin.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1080"
-      > </a
-      ><a name="1081" href="Data.Cofin.html#1081" class="Bound"
+      > <a name="1081" href="Data.Cofin.html#1081" class="Bound"
       >i</a
       ><a name="1082" class="Symbol"
       >)</a
-      ><a name="1083"
-      > </a
-      ><a name="1084" class="Symbol"
+      > <a name="1084" class="Symbol"
       >=</a
-      ><a name="1085"
-      > </a
-      ><a name="1086" href="Data.Cofin.html#711" class="InductiveConstructor"
+      > <a name="1086" href="Data.Cofin.html#Cofin.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1089"
-      > </a
-      ><a name="1090" class="Symbol"
+      > <a name="1090" class="Symbol"
       >(</a
-      ><a name="1091" href="Data.Cofin.html#997" class="Function"
+      ><a name="1091" href="Data.Cofin.html#fromFin" class="Function"
       >fromFin</a
-      ><a name="1098"
-      > </a
-      ><a name="1099" href="Data.Cofin.html#1081" class="Bound"
+      > <a name="1099" href="Data.Cofin.html#1081" class="Bound"
       >i</a
       ><a name="1100" class="Symbol"
       >)</a
-      ><a name="1101"
       >
 
-</a
-      ><a name="1103" href="Data.Cofin.html#1103" class="Function"
+<a name="toFin" href="Data.Cofin.html#toFin" class="Function"
       >toFin</a
-      ><a name="1108"
-      > </a
-      ><a name="1109" class="Symbol"
+      > <a name="1109" class="Symbol"
       >:</a
-      ><a name="1110"
-      > </a
-      ><a name="1111" class="Symbol"
+      > <a name="1111" class="Symbol"
       >&#8704;</a
-      ><a name="1112"
-      > </a
-      ><a name="1113" href="Data.Cofin.html#1113" class="Bound"
+      > <a name="1113" href="Data.Cofin.html#1113" class="Bound"
       >n</a
-      ><a name="1114"
-      > </a
-      ><a name="1115" class="Symbol"
+      > <a name="1115" class="Symbol"
       >&#8594;</a
-      ><a name="1116"
-      > </a
-      ><a name="1117" href="Data.Cofin.html#654" class="Datatype"
+      > <a name="1117" href="Data.Cofin.html#Cofin" class="Datatype"
       >Cofin</a
-      ><a name="1122"
-      > </a
-      ><a name="1123" class="Symbol"
+      > <a name="1123" class="Symbol"
       >(</a
-      ><a name="1124" href="Data.Conat.html#579" class="Function"
+      ><a name="1124" href="Data.Conat.html#from&#8469;" class="Function"
       >Conat.from&#8469;</a
-      ><a name="1135"
-      > </a
-      ><a name="1136" href="Data.Cofin.html#1113" class="Bound"
+      > <a name="1136" href="Data.Cofin.html#1113" class="Bound"
       >n</a
       ><a name="1137" class="Symbol"
       >)</a
-      ><a name="1138"
-      > </a
-      ><a name="1139" class="Symbol"
+      > <a name="1139" class="Symbol"
       >&#8594;</a
-      ><a name="1140"
-      > </a
-      ><a name="1141" href="Data.Fin.html#842" class="Datatype"
+      > <a name="1141" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
-      ><a name="1144"
-      > </a
-      ><a name="1145" href="Data.Cofin.html#1113" class="Bound"
+      > <a name="1145" href="Data.Cofin.html#1113" class="Bound"
       >n</a
-      ><a name="1146"
       >
-</a
-      ><a name="1147" href="Data.Cofin.html#1103" class="Function"
+<a name="1147" href="Data.Cofin.html#toFin" class="Function"
       >toFin</a
-      ><a name="1152"
-      > </a
-      ><a name="1153" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      > <a name="1153" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1157"
-      >    </a
-      ><a name="1161" class="Symbol"
+      >    <a name="1161" class="Symbol"
       >()</a
-      ><a name="1163"
       >
-</a
-      ><a name="1164" href="Data.Cofin.html#1103" class="Function"
+<a name="1164" href="Data.Cofin.html#toFin" class="Function"
       >toFin</a
-      ><a name="1169"
-      > </a
-      ><a name="1170" class="Symbol"
+      > <a name="1170" class="Symbol"
       >(</a
-      ><a name="1171" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      ><a name="1171" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1174"
-      > </a
-      ><a name="1175" href="Data.Cofin.html#1175" class="Bound"
+      > <a name="1175" href="Data.Cofin.html#1175" class="Bound"
       >n</a
       ><a name="1176" class="Symbol"
       >)</a
-      ><a name="1177"
-      > </a
-      ><a name="1178" href="Data.Cofin.html#680" class="InductiveConstructor"
+      > <a name="1178" href="Data.Cofin.html#Cofin.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1182"
-      >    </a
-      ><a name="1186" class="Symbol"
+      >    <a name="1186" class="Symbol"
       >=</a
-      ><a name="1187"
-      > </a
-      ><a name="1188" href="Data.Fin.html#864" class="InductiveConstructor"
+      > <a name="1188" href="Data.Fin.html#Fin.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1192"
       >
-</a
-      ><a name="1193" href="Data.Cofin.html#1103" class="Function"
+<a name="1193" href="Data.Cofin.html#toFin" class="Function"
       >toFin</a
-      ><a name="1198"
-      > </a
-      ><a name="1199" class="Symbol"
+      > <a name="1199" class="Symbol"
       >(</a
-      ><a name="1200" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      ><a name="1200" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1203"
-      > </a
-      ><a name="1204" href="Data.Cofin.html#1204" class="Bound"
+      > <a name="1204" href="Data.Cofin.html#1204" class="Bound"
       >n</a
       ><a name="1205" class="Symbol"
       >)</a
-      ><a name="1206"
-      > </a
-      ><a name="1207" class="Symbol"
+      > <a name="1207" class="Symbol"
       >(</a
-      ><a name="1208" href="Data.Cofin.html#711" class="InductiveConstructor"
+      ><a name="1208" href="Data.Cofin.html#Cofin.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1211"
-      > </a
-      ><a name="1212" href="Data.Cofin.html#1212" class="Bound"
+      > <a name="1212" href="Data.Cofin.html#1212" class="Bound"
       >i</a
       ><a name="1213" class="Symbol"
       >)</a
-      ><a name="1214"
-      > </a
-      ><a name="1215" class="Symbol"
+      > <a name="1215" class="Symbol"
       >=</a
-      ><a name="1216"
-      > </a
-      ><a name="1217" href="Data.Fin.html#895" class="InductiveConstructor"
+      > <a name="1217" href="Data.Fin.html#Fin.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1220"
-      > </a
-      ><a name="1221" class="Symbol"
+      > <a name="1221" class="Symbol"
       >(</a
-      ><a name="1222" href="Data.Cofin.html#1103" class="Function"
+      ><a name="1222" href="Data.Cofin.html#toFin" class="Function"
       >toFin</a
-      ><a name="1227"
-      > </a
-      ><a name="1228" href="Data.Cofin.html#1204" class="Bound"
+      > <a name="1228" href="Data.Cofin.html#1204" class="Bound"
       >n</a
-      ><a name="1229"
-      > </a
-      ><a name="1230" href="Data.Cofin.html#1212" class="Bound"
+      > <a name="1230" href="Data.Cofin.html#1212" class="Bound"
       >i</a
       ><a name="1231" class="Symbol"
       >)</a
-      ><a name="1232"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

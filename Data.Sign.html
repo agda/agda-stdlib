@@ -11,465 +11,265 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Signs</a
-      ><a name="114"
       >
-</a
-      ><a name="115" class="Comment"
+<a name="115" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="187"
       >
 
-</a
-      ><a name="189" class="Keyword"
+<a name="189" class="Keyword"
       >module</a
-      ><a name="195"
-      > </a
-      ><a name="196" href="Data.Sign.html#1" class="Module"
+      > <a name="196" href="Data.Sign.html" class="Module"
       >Data.Sign</a
-      ><a name="205"
-      > </a
-      ><a name="206" class="Keyword"
+      > <a name="206" class="Keyword"
       >where</a
-      ><a name="211"
       >
 
-</a
-      ><a name="213" class="Keyword"
+<a name="213" class="Keyword"
       >open</a
-      ><a name="217"
-      > </a
-      ><a name="218" class="Keyword"
+      > <a name="218" class="Keyword"
       >import</a
-      ><a name="224"
-      > </a
-      ><a name="225" href="Relation.Nullary.html#1" class="Module"
+      > <a name="225" href="Relation.Nullary.html" class="Module"
       >Relation.Nullary</a
-      ><a name="241"
       >
-</a
-      ><a name="242" class="Keyword"
+<a name="242" class="Keyword"
       >open</a
-      ><a name="246"
-      > </a
-      ><a name="247" class="Keyword"
+      > <a name="247" class="Keyword"
       >import</a
-      ><a name="253"
-      > </a
-      ><a name="254" href="Relation.Binary.html#1" class="Module"
+      > <a name="254" href="Relation.Binary.html" class="Module"
       >Relation.Binary</a
-      ><a name="269"
       >
-</a
-      ><a name="270" class="Keyword"
+<a name="270" class="Keyword"
       >open</a
-      ><a name="274"
-      > </a
-      ><a name="275" class="Keyword"
+      > <a name="275" class="Keyword"
       >import</a
-      ><a name="281"
-      > </a
-      ><a name="282" href="Relation.Binary.Core.html#1" class="Module"
+      > <a name="282" href="Relation.Binary.Core.html" class="Module"
       >Relation.Binary.Core</a
-      ><a name="302"
-      > </a
-      ><a name="303" class="Keyword"
+      > <a name="303" class="Keyword"
       >using</a
-      ><a name="308"
-      > </a
-      ><a name="309" class="Symbol"
+      > <a name="309" class="Symbol"
       >(</a
-      ><a name="310" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      ><a name="310" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >_&#8801;_</a
       ><a name="313" class="Symbol"
       >;</a
-      ><a name="314"
-      > </a
-      ><a name="315" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="315" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
       ><a name="319" class="Symbol"
       >)</a
-      ><a name="320"
       >
-</a
-      ><a name="321" class="Comment"
+<a name="321" class="Comment"
       >-- Importing Core here ^^^ to keep a small import list</a
-      ><a name="375"
       >
 
-</a
-      ><a name="377" class="Comment"
+<a name="377" class="Comment"
       >-- Signs.</a
-      ><a name="386"
       >
 
-</a
-      ><a name="388" class="Keyword"
+<a name="388" class="Keyword"
       >data</a
-      ><a name="392"
-      > </a
-      ><a name="393" href="Data.Sign.html#393" class="Datatype"
+      > <a name="Sign" href="Data.Sign.html#Sign" class="Datatype"
       >Sign</a
-      ><a name="397"
-      > </a
-      ><a name="398" class="Symbol"
+      > <a name="398" class="Symbol"
       >:</a
-      ><a name="399"
-      > </a
-      ><a name="400" class="PrimitiveType"
+      > <a name="400" class="PrimitiveType"
       >Set</a
-      ><a name="403"
-      > </a
-      ><a name="404" class="Keyword"
+      > <a name="404" class="Keyword"
       >where</a
-      ><a name="409"
       >
-  </a
-      ><a name="412" href="Data.Sign.html#412" class="InductiveConstructor"
+  <a name="Sign.-" href="Data.Sign.html#Sign.-" class="InductiveConstructor"
       >-</a
-      ><a name="413"
-      > </a
-      ><a name="414" class="Symbol"
+      > <a name="414" class="Symbol"
       >:</a
-      ><a name="415"
-      > </a
-      ><a name="416" href="Data.Sign.html#393" class="Datatype"
+      > <a name="416" href="Data.Sign.html#Sign" class="Datatype"
       >Sign</a
-      ><a name="420"
       >
-  </a
-      ><a name="423" href="Data.Sign.html#423" class="InductiveConstructor"
+  <a name="Sign.+" href="Data.Sign.html#Sign.+" class="InductiveConstructor"
       >+</a
-      ><a name="424"
-      > </a
-      ><a name="425" class="Symbol"
+      > <a name="425" class="Symbol"
       >:</a
-      ><a name="426"
-      > </a
-      ><a name="427" href="Data.Sign.html#393" class="Datatype"
+      > <a name="427" href="Data.Sign.html#Sign" class="Datatype"
       >Sign</a
-      ><a name="431"
       >
 
-</a
-      ><a name="433" class="Comment"
+<a name="433" class="Comment"
       >-- Decidable equality.</a
-      ><a name="455"
       >
 
-</a
-      ><a name="457" class="Keyword"
+<a name="457" class="Keyword"
       >infix</a
-      ><a name="462"
-      > </a
-      ><a name="463" class="Number"
+      > <a name="463" class="Number"
       >4</a
-      ><a name="464"
-      > _&#8799;_
-
-</a
-      ><a name="470" href="Data.Sign.html#470" class="Function Operator"
+      > <a name="_&#8799;_" href="Data.Sign.html#_&#8799;_" class="Function Operator"
       >_&#8799;_</a
-      ><a name="473"
-      > </a
-      ><a name="474" class="Symbol"
+      >
+
+<a name="_&#8799;_" href="Data.Sign.html#_&#8799;_" class="Function Operator"
+      >_&#8799;_</a
+      > <a name="474" class="Symbol"
       >:</a
-      ><a name="475"
-      > </a
-      ><a name="476" href="Relation.Binary.Core.html#3490" class="Function"
+      > <a name="476" href="Relation.Binary.Core.html#Decidable" class="Function"
       >Decidable</a
-      ><a name="485"
-      > </a
-      ><a name="486" class="Symbol"
+      > <a name="486" class="Symbol"
       >{</a
       ><a name="487" class="Argument"
       >A</a
-      ><a name="488"
-      > </a
-      ><a name="489" class="Symbol"
+      > <a name="489" class="Symbol"
       >=</a
-      ><a name="490"
-      > </a
-      ><a name="491" href="Data.Sign.html#393" class="Datatype"
+      > <a name="491" href="Data.Sign.html#Sign" class="Datatype"
       >Sign</a
       ><a name="495" class="Symbol"
       >}</a
-      ><a name="496"
-      > </a
-      ><a name="497" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
+      > <a name="497" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >_&#8801;_</a
-      ><a name="500"
       >
-</a
-      ><a name="501" href="Data.Sign.html#412" class="InductiveConstructor"
+<a name="501" href="Data.Sign.html#Sign.-" class="InductiveConstructor"
       >-</a
-      ><a name="502"
-      > </a
-      ><a name="503" href="Data.Sign.html#470" class="Function Operator"
+      > <a name="503" href="Data.Sign.html#_&#8799;_" class="Function Operator"
       >&#8799;</a
-      ><a name="504"
-      > </a
-      ><a name="505" href="Data.Sign.html#412" class="InductiveConstructor"
+      > <a name="505" href="Data.Sign.html#Sign.-" class="InductiveConstructor"
       >-</a
-      ><a name="506"
-      > </a
-      ><a name="507" class="Symbol"
+      > <a name="507" class="Symbol"
       >=</a
-      ><a name="508"
-      > </a
-      ><a name="509" href="Relation.Nullary.html#520" class="InductiveConstructor"
+      > <a name="509" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
       >yes</a
-      ><a name="512"
-      > </a
-      ><a name="513" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="513" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="517"
       >
-</a
-      ><a name="518" href="Data.Sign.html#412" class="InductiveConstructor"
+<a name="518" href="Data.Sign.html#Sign.-" class="InductiveConstructor"
       >-</a
-      ><a name="519"
-      > </a
-      ><a name="520" href="Data.Sign.html#470" class="Function Operator"
+      > <a name="520" href="Data.Sign.html#_&#8799;_" class="Function Operator"
       >&#8799;</a
-      ><a name="521"
-      > </a
-      ><a name="522" href="Data.Sign.html#423" class="InductiveConstructor"
+      > <a name="522" href="Data.Sign.html#Sign.+" class="InductiveConstructor"
       >+</a
-      ><a name="523"
-      > </a
-      ><a name="524" class="Symbol"
+      > <a name="524" class="Symbol"
       >=</a
-      ><a name="525"
-      > </a
-      ><a name="526" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      > <a name="526" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      ><a name="528"
-      > </a
-      ><a name="529" class="Symbol"
+      > <a name="529" class="Symbol"
       >&#955;()</a
-      ><a name="532"
       >
-</a
-      ><a name="533" href="Data.Sign.html#423" class="InductiveConstructor"
+<a name="533" href="Data.Sign.html#Sign.+" class="InductiveConstructor"
       >+</a
-      ><a name="534"
-      > </a
-      ><a name="535" href="Data.Sign.html#470" class="Function Operator"
+      > <a name="535" href="Data.Sign.html#_&#8799;_" class="Function Operator"
       >&#8799;</a
-      ><a name="536"
-      > </a
-      ><a name="537" href="Data.Sign.html#412" class="InductiveConstructor"
+      > <a name="537" href="Data.Sign.html#Sign.-" class="InductiveConstructor"
       >-</a
-      ><a name="538"
-      > </a
-      ><a name="539" class="Symbol"
+      > <a name="539" class="Symbol"
       >=</a
-      ><a name="540"
-      > </a
-      ><a name="541" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      > <a name="541" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      ><a name="543"
-      > </a
-      ><a name="544" class="Symbol"
+      > <a name="544" class="Symbol"
       >&#955;()</a
-      ><a name="547"
       >
-</a
-      ><a name="548" href="Data.Sign.html#423" class="InductiveConstructor"
+<a name="548" href="Data.Sign.html#Sign.+" class="InductiveConstructor"
       >+</a
-      ><a name="549"
-      > </a
-      ><a name="550" href="Data.Sign.html#470" class="Function Operator"
+      > <a name="550" href="Data.Sign.html#_&#8799;_" class="Function Operator"
       >&#8799;</a
-      ><a name="551"
-      > </a
-      ><a name="552" href="Data.Sign.html#423" class="InductiveConstructor"
+      > <a name="552" href="Data.Sign.html#Sign.+" class="InductiveConstructor"
       >+</a
-      ><a name="553"
-      > </a
-      ><a name="554" class="Symbol"
+      > <a name="554" class="Symbol"
       >=</a
-      ><a name="555"
-      > </a
-      ><a name="556" href="Relation.Nullary.html#520" class="InductiveConstructor"
+      > <a name="556" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
       >yes</a
-      ><a name="559"
-      > </a
-      ><a name="560" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
+      > <a name="560" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="564"
       >
 
-</a
-      ><a name="566" class="Comment"
+<a name="566" class="Comment"
       >-- The opposite sign.</a
-      ><a name="587"
       >
 
-</a
-      ><a name="589" href="Data.Sign.html#589" class="Function"
+<a name="opposite" href="Data.Sign.html#opposite" class="Function"
       >opposite</a
-      ><a name="597"
-      > </a
-      ><a name="598" class="Symbol"
+      > <a name="598" class="Symbol"
       >:</a
-      ><a name="599"
-      > </a
-      ><a name="600" href="Data.Sign.html#393" class="Datatype"
+      > <a name="600" href="Data.Sign.html#Sign" class="Datatype"
       >Sign</a
-      ><a name="604"
-      > </a
-      ><a name="605" class="Symbol"
+      > <a name="605" class="Symbol"
       >&#8594;</a
-      ><a name="606"
-      > </a
-      ><a name="607" href="Data.Sign.html#393" class="Datatype"
+      > <a name="607" href="Data.Sign.html#Sign" class="Datatype"
       >Sign</a
-      ><a name="611"
       >
-</a
-      ><a name="612" href="Data.Sign.html#589" class="Function"
+<a name="612" href="Data.Sign.html#opposite" class="Function"
       >opposite</a
-      ><a name="620"
-      > </a
-      ><a name="621" href="Data.Sign.html#412" class="InductiveConstructor"
+      > <a name="621" href="Data.Sign.html#Sign.-" class="InductiveConstructor"
       >-</a
-      ><a name="622"
-      > </a
-      ><a name="623" class="Symbol"
+      > <a name="623" class="Symbol"
       >=</a
-      ><a name="624"
-      > </a
-      ><a name="625" href="Data.Sign.html#423" class="InductiveConstructor"
+      > <a name="625" href="Data.Sign.html#Sign.+" class="InductiveConstructor"
       >+</a
-      ><a name="626"
       >
-</a
-      ><a name="627" href="Data.Sign.html#589" class="Function"
+<a name="627" href="Data.Sign.html#opposite" class="Function"
       >opposite</a
-      ><a name="635"
-      > </a
-      ><a name="636" href="Data.Sign.html#423" class="InductiveConstructor"
+      > <a name="636" href="Data.Sign.html#Sign.+" class="InductiveConstructor"
       >+</a
-      ><a name="637"
-      > </a
-      ><a name="638" class="Symbol"
+      > <a name="638" class="Symbol"
       >=</a
-      ><a name="639"
-      > </a
-      ><a name="640" href="Data.Sign.html#412" class="InductiveConstructor"
+      > <a name="640" href="Data.Sign.html#Sign.-" class="InductiveConstructor"
       >-</a
-      ><a name="641"
       >
 
-</a
-      ><a name="643" class="Comment"
+<a name="643" class="Comment"
       >-- &quot;Multiplication&quot;.</a
-      ><a name="663"
       >
 
-</a
-      ><a name="665" class="Keyword"
+<a name="665" class="Keyword"
       >infixl</a
-      ><a name="671"
-      > </a
-      ><a name="672" class="Number"
+      > <a name="672" class="Number"
       >7</a
-      ><a name="673"
-      > _*_
-
-</a
-      ><a name="679" href="Data.Sign.html#679" class="Function Operator"
+      > <a name="_*_" href="Data.Sign.html#_*_" class="Function Operator"
       >_*_</a
-      ><a name="682"
-      > </a
-      ><a name="683" class="Symbol"
+      >
+
+<a name="_*_" href="Data.Sign.html#_*_" class="Function Operator"
+      >_*_</a
+      > <a name="683" class="Symbol"
       >:</a
-      ><a name="684"
-      > </a
-      ><a name="685" href="Data.Sign.html#393" class="Datatype"
+      > <a name="685" href="Data.Sign.html#Sign" class="Datatype"
       >Sign</a
-      ><a name="689"
-      > </a
-      ><a name="690" class="Symbol"
+      > <a name="690" class="Symbol"
       >&#8594;</a
-      ><a name="691"
-      > </a
-      ><a name="692" href="Data.Sign.html#393" class="Datatype"
+      > <a name="692" href="Data.Sign.html#Sign" class="Datatype"
       >Sign</a
-      ><a name="696"
-      > </a
-      ><a name="697" class="Symbol"
+      > <a name="697" class="Symbol"
       >&#8594;</a
-      ><a name="698"
-      > </a
-      ><a name="699" href="Data.Sign.html#393" class="Datatype"
+      > <a name="699" href="Data.Sign.html#Sign" class="Datatype"
       >Sign</a
-      ><a name="703"
       >
-</a
-      ><a name="704" href="Data.Sign.html#423" class="InductiveConstructor"
+<a name="704" href="Data.Sign.html#Sign.+" class="InductiveConstructor"
       >+</a
-      ><a name="705"
-      > </a
-      ><a name="706" href="Data.Sign.html#679" class="Function Operator"
+      > <a name="706" href="Data.Sign.html#_*_" class="Function Operator"
       >*</a
-      ><a name="707"
-      > </a
-      ><a name="708" href="Data.Sign.html#708" class="Bound"
+      > <a name="708" href="Data.Sign.html#708" class="Bound"
       >s&#8322;</a
-      ><a name="710"
-      > </a
-      ><a name="711" class="Symbol"
+      > <a name="711" class="Symbol"
       >=</a
-      ><a name="712"
-      > </a
-      ><a name="713" href="Data.Sign.html#708" class="Bound"
+      > <a name="713" href="Data.Sign.html#708" class="Bound"
       >s&#8322;</a
-      ><a name="715"
       >
-</a
-      ><a name="716" href="Data.Sign.html#412" class="InductiveConstructor"
+<a name="716" href="Data.Sign.html#Sign.-" class="InductiveConstructor"
       >-</a
-      ><a name="717"
-      > </a
-      ><a name="718" href="Data.Sign.html#679" class="Function Operator"
+      > <a name="718" href="Data.Sign.html#_*_" class="Function Operator"
       >*</a
-      ><a name="719"
-      > </a
-      ><a name="720" href="Data.Sign.html#720" class="Bound"
+      > <a name="720" href="Data.Sign.html#720" class="Bound"
       >s&#8322;</a
-      ><a name="722"
-      > </a
-      ><a name="723" class="Symbol"
+      > <a name="723" class="Symbol"
       >=</a
-      ><a name="724"
-      > </a
-      ><a name="725" href="Data.Sign.html#589" class="Function"
+      > <a name="725" href="Data.Sign.html#opposite" class="Function"
       >opposite</a
-      ><a name="733"
-      > </a
-      ><a name="734" href="Data.Sign.html#720" class="Bound"
+      > <a name="734" href="Data.Sign.html#720" class="Bound"
       >s&#8322;</a
-      ><a name="736"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

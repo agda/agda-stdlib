@@ -11,3247 +11,1849 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Substitutions</a
-      ><a name="122"
       >
-</a
-      ><a name="123" class="Comment"
+<a name="123" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="195"
       >
 
-</a
-      ><a name="197" class="Comment"
+<a name="197" class="Comment"
       >-- Uses a variant of Conor McBride's technique from &quot;Type-Preserving</a
-      ><a name="265"
       >
-</a
-      ><a name="266" class="Comment"
+<a name="266" class="Comment"
       >-- Renaming and Substitution&quot;.</a
-      ><a name="296"
       >
 
-</a
-      ><a name="298" class="Comment"
+<a name="298" class="Comment"
       >-- See Data.Fin.Substitution.Example for an example of how this module</a
-      ><a name="368"
       >
-</a
-      ><a name="369" class="Comment"
+<a name="369" class="Comment"
       >-- can be used: a definition of substitution for the untyped</a
-      ><a name="429"
       >
-</a
-      ><a name="430" class="Comment"
+<a name="430" class="Comment"
       >-- &#955;-calculus.</a
-      ><a name="444"
       >
 
-</a
-      ><a name="446" class="Keyword"
+<a name="446" class="Keyword"
       >module</a
-      ><a name="452"
-      > </a
-      ><a name="453" href="Data.Fin.Substitution.html#1" class="Module"
+      > <a name="453" href="Data.Fin.Substitution.html" class="Module"
       >Data.Fin.Substitution</a
-      ><a name="474"
-      > </a
-      ><a name="475" class="Keyword"
+      > <a name="475" class="Keyword"
       >where</a
-      ><a name="480"
       >
 
-</a
-      ><a name="482" class="Keyword"
+<a name="482" class="Keyword"
       >open</a
-      ><a name="486"
-      > </a
-      ><a name="487" class="Keyword"
+      > <a name="487" class="Keyword"
       >import</a
-      ><a name="493"
-      > </a
-      ><a name="494" href="Data.Nat.html#1" class="Module"
+      > <a name="494" href="Data.Nat.html" class="Module"
       >Data.Nat</a
-      ><a name="502"
       >
-</a
-      ><a name="503" class="Keyword"
+<a name="503" class="Keyword"
       >open</a
-      ><a name="507"
-      > </a
-      ><a name="508" class="Keyword"
+      > <a name="508" class="Keyword"
       >import</a
-      ><a name="514"
-      > </a
-      ><a name="515" href="Data.Fin.html#1" class="Module"
+      > <a name="515" href="Data.Fin.html" class="Module"
       >Data.Fin</a
-      ><a name="523"
-      > </a
-      ><a name="524" class="Keyword"
+      > <a name="524" class="Keyword"
       >using</a
-      ><a name="529"
-      > </a
-      ><a name="530" class="Symbol"
+      > <a name="530" class="Symbol"
       >(</a
-      ><a name="531" href="Data.Fin.html#842" class="Datatype"
+      ><a name="531" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
       ><a name="534" class="Symbol"
       >;</a
-      ><a name="535"
-      > </a
-      ><a name="536" href="Data.Fin.html#864" class="InductiveConstructor"
+      > <a name="536" href="Data.Fin.html#Fin.zero" class="InductiveConstructor"
       >zero</a
       ><a name="540" class="Symbol"
       >;</a
-      ><a name="541"
-      > </a
-      ><a name="542" href="Data.Fin.html#895" class="InductiveConstructor"
+      > <a name="542" href="Data.Fin.html#Fin.suc" class="InductiveConstructor"
       >suc</a
       ><a name="545" class="Symbol"
       >)</a
-      ><a name="546"
       >
-</a
-      ><a name="547" class="Keyword"
+<a name="547" class="Keyword"
       >open</a
-      ><a name="551"
-      > </a
-      ><a name="552" class="Keyword"
+      > <a name="552" class="Keyword"
       >import</a
-      ><a name="558"
-      > </a
-      ><a name="559" href="Data.Vec.html#1" class="Module"
+      > <a name="559" href="Data.Vec.html" class="Module"
       >Data.Vec</a
-      ><a name="567"
       >
-</a
-      ><a name="568" class="Keyword"
+<a name="568" class="Keyword"
       >open</a
-      ><a name="572"
-      > </a
-      ><a name="573" class="Keyword"
+      > <a name="573" class="Keyword"
       >import</a
-      ><a name="579"
-      > </a
-      ><a name="580" href="Function.html#1" class="Module"
+      > <a name="580" href="Function.html" class="Module"
       >Function</a
-      ><a name="588"
-      > </a
-      ><a name="589" class="Symbol"
+      > <a name="589" class="Symbol"
       >as</a
-      ><a name="591"
-      > </a
-      ><a name="592" class="Module"
+      > <a name="592" class="Module"
       >Fun</a
-      ><a name="595"
-      > </a
-      ><a name="596" class="Keyword"
+      > <a name="596" class="Keyword"
       >using</a
-      ><a name="601"
-      > </a
-      ><a name="602" class="Symbol"
+      > <a name="602" class="Symbol"
       >(</a
-      ><a name="603" href="Function.html#1480" class="Function"
+      ><a name="603" href="Function.html#flip" class="Function"
       >flip</a
       ><a name="607" class="Symbol"
       >)</a
-      ><a name="608"
       >
-</a
-      ><a name="609" class="Keyword"
+<a name="609" class="Keyword"
       >open</a
-      ><a name="613"
-      > </a
-      ><a name="614" class="Keyword"
+      > <a name="614" class="Keyword"
       >import</a
-      ><a name="620"
-      > </a
-      ><a name="621" href="Data.Star.html#1" class="Module"
+      > <a name="621" href="Data.Star.html" class="Module"
       >Data.Star</a
-      ><a name="630"
-      > </a
-      ><a name="631" class="Symbol"
+      > <a name="631" class="Symbol"
       >as</a
-      ><a name="633"
-      > </a
-      ><a name="634" class="Module"
+      > <a name="634" class="Module"
       >Star</a
-      ><a name="638"
-      > </a
-      ><a name="639" class="Keyword"
+      > <a name="639" class="Keyword"
       >using</a
-      ><a name="644"
-      > </a
-      ><a name="645" class="Symbol"
+      > <a name="645" class="Symbol"
       >(</a
-      ><a name="646" href="Data.Star.html#553" class="Datatype"
+      ><a name="646" href="Data.Star.html#Star" class="Datatype"
       >Star</a
       ><a name="650" class="Symbol"
       >;</a
-      ><a name="651"
-      > </a
-      ><a name="652" href="Data.Star.html#614" class="InductiveConstructor"
+      > <a name="652" href="Data.Star.html#Star.&#949;" class="InductiveConstructor"
       >&#949;</a
       ><a name="653" class="Symbol"
       >;</a
-      ><a name="654"
-      > </a
-      ><a name="655" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="655" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >_&#9669;_</a
       ><a name="658" class="Symbol"
       >)</a
-      ><a name="659"
       >
 
-</a
-      ><a name="661" class="Comment"
+<a name="661" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="733"
       >
-</a
-      ><a name="734" class="Comment"
+<a name="734" class="Comment"
       >-- General functionality</a
-      ><a name="758"
       >
 
-</a
-      ><a name="760" class="Comment"
+<a name="760" class="Comment"
       >-- A Sub T m n is a substitution which, when applied to something with</a
-      ><a name="830"
       >
-</a
-      ><a name="831" class="Comment"
+<a name="831" class="Comment"
       >-- at most m variables, yields something with at most n variables.</a
-      ><a name="897"
       >
 
-</a
-      ><a name="899" href="Data.Fin.Substitution.html#899" class="Function"
+<a name="Sub" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="902"
-      > </a
-      ><a name="903" class="Symbol"
+      > <a name="903" class="Symbol"
       >:</a
-      ><a name="904"
-      > </a
-      ><a name="905" class="Symbol"
+      > <a name="905" class="Symbol"
       >(</a
-      ><a name="906" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      ><a name="906" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="907"
-      > </a
-      ><a name="908" class="Symbol"
+      > <a name="908" class="Symbol"
       >&#8594;</a
-      ><a name="909"
-      > </a
-      ><a name="910" class="PrimitiveType"
+      > <a name="910" class="PrimitiveType"
       >Set</a
       ><a name="913" class="Symbol"
       >)</a
-      ><a name="914"
-      > </a
-      ><a name="915" class="Symbol"
+      > <a name="915" class="Symbol"
       >&#8594;</a
-      ><a name="916"
-      > </a
-      ><a name="917" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="917" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="918"
-      > </a
-      ><a name="919" class="Symbol"
+      > <a name="919" class="Symbol"
       >&#8594;</a
-      ><a name="920"
-      > </a
-      ><a name="921" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="921" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="922"
-      > </a
-      ><a name="923" class="Symbol"
+      > <a name="923" class="Symbol"
       >&#8594;</a
-      ><a name="924"
-      > </a
-      ><a name="925" class="PrimitiveType"
+      > <a name="925" class="PrimitiveType"
       >Set</a
-      ><a name="928"
       >
-</a
-      ><a name="929" href="Data.Fin.Substitution.html#899" class="Function"
+<a name="929" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="932"
-      > </a
-      ><a name="933" href="Data.Fin.Substitution.html#933" class="Bound"
+      > <a name="933" href="Data.Fin.Substitution.html#933" class="Bound"
       >T</a
-      ><a name="934"
-      > </a
-      ><a name="935" href="Data.Fin.Substitution.html#935" class="Bound"
+      > <a name="935" href="Data.Fin.Substitution.html#935" class="Bound"
       >m</a
-      ><a name="936"
-      > </a
-      ><a name="937" href="Data.Fin.Substitution.html#937" class="Bound"
+      > <a name="937" href="Data.Fin.Substitution.html#937" class="Bound"
       >n</a
-      ><a name="938"
-      > </a
-      ><a name="939" class="Symbol"
+      > <a name="939" class="Symbol"
       >=</a
-      ><a name="940"
-      > </a
-      ><a name="941" href="Data.Vec.html#609" class="Datatype"
+      > <a name="941" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
-      ><a name="944"
-      > </a
-      ><a name="945" class="Symbol"
+      > <a name="945" class="Symbol"
       >(</a
       ><a name="946" href="Data.Fin.Substitution.html#933" class="Bound"
       >T</a
-      ><a name="947"
-      > </a
-      ><a name="948" href="Data.Fin.Substitution.html#937" class="Bound"
+      > <a name="948" href="Data.Fin.Substitution.html#937" class="Bound"
       >n</a
       ><a name="949" class="Symbol"
       >)</a
-      ><a name="950"
-      > </a
-      ><a name="951" href="Data.Fin.Substitution.html#935" class="Bound"
+      > <a name="951" href="Data.Fin.Substitution.html#935" class="Bound"
       >m</a
-      ><a name="952"
       >
 
-</a
-      ><a name="954" class="Comment"
+<a name="954" class="Comment"
       >-- A /reversed/ sequence of matching substitutions.</a
-      ><a name="1005"
       >
 
-</a
-      ><a name="1007" href="Data.Fin.Substitution.html#1007" class="Function"
+<a name="Subs" href="Data.Fin.Substitution.html#Subs" class="Function"
       >Subs</a
-      ><a name="1011"
-      > </a
-      ><a name="1012" class="Symbol"
+      > <a name="1012" class="Symbol"
       >:</a
-      ><a name="1013"
-      > </a
-      ><a name="1014" class="Symbol"
+      > <a name="1014" class="Symbol"
       >(</a
-      ><a name="1015" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      ><a name="1015" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="1016"
-      > </a
-      ><a name="1017" class="Symbol"
+      > <a name="1017" class="Symbol"
       >&#8594;</a
-      ><a name="1018"
-      > </a
-      ><a name="1019" class="PrimitiveType"
+      > <a name="1019" class="PrimitiveType"
       >Set</a
       ><a name="1022" class="Symbol"
       >)</a
-      ><a name="1023"
-      > </a
-      ><a name="1024" class="Symbol"
+      > <a name="1024" class="Symbol"
       >&#8594;</a
-      ><a name="1025"
-      > </a
-      ><a name="1026" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="1026" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="1027"
-      > </a
-      ><a name="1028" class="Symbol"
+      > <a name="1028" class="Symbol"
       >&#8594;</a
-      ><a name="1029"
-      > </a
-      ><a name="1030" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="1030" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="1031"
-      > </a
-      ><a name="1032" class="Symbol"
+      > <a name="1032" class="Symbol"
       >&#8594;</a
-      ><a name="1033"
-      > </a
-      ><a name="1034" class="PrimitiveType"
+      > <a name="1034" class="PrimitiveType"
       >Set</a
-      ><a name="1037"
       >
-</a
-      ><a name="1038" href="Data.Fin.Substitution.html#1007" class="Function"
+<a name="1038" href="Data.Fin.Substitution.html#Subs" class="Function"
       >Subs</a
-      ><a name="1042"
-      > </a
-      ><a name="1043" href="Data.Fin.Substitution.html#1043" class="Bound"
+      > <a name="1043" href="Data.Fin.Substitution.html#1043" class="Bound"
       >T</a
-      ><a name="1044"
-      > </a
-      ><a name="1045" class="Symbol"
+      > <a name="1045" class="Symbol"
       >=</a
-      ><a name="1046"
-      > </a
-      ><a name="1047" href="Function.html#1480" class="Function"
+      > <a name="1047" href="Function.html#flip" class="Function"
       >flip</a
-      ><a name="1051"
-      > </a
-      ><a name="1052" class="Symbol"
+      > <a name="1052" class="Symbol"
       >(</a
-      ><a name="1053" href="Data.Star.html#553" class="Datatype"
+      ><a name="1053" href="Data.Star.html#Star" class="Datatype"
       >Star</a
-      ><a name="1057"
-      > </a
-      ><a name="1058" class="Symbol"
+      > <a name="1058" class="Symbol"
       >(</a
-      ><a name="1059" href="Function.html#1480" class="Function"
+      ><a name="1059" href="Function.html#flip" class="Function"
       >flip</a
-      ><a name="1063"
-      > </a
-      ><a name="1064" class="Symbol"
+      > <a name="1064" class="Symbol"
       >(</a
-      ><a name="1065" href="Data.Fin.Substitution.html#899" class="Function"
+      ><a name="1065" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="1068"
-      > </a
-      ><a name="1069" href="Data.Fin.Substitution.html#1043" class="Bound"
+      > <a name="1069" href="Data.Fin.Substitution.html#1043" class="Bound"
       >T</a
       ><a name="1070" class="Symbol"
       >)))</a
-      ><a name="1073"
       >
 
-</a
-      ><a name="1075" class="Comment"
+<a name="1075" class="Comment"
       >-- Some simple substitutions.</a
-      ><a name="1104"
       >
 
-</a
-      ><a name="1106" class="Keyword"
+<a name="1106" class="Keyword"
       >record</a
-      ><a name="1112"
-      > </a
-      ><a name="1113" href="Data.Fin.Substitution.html#1113" class="Record"
+      > <a name="Simple" href="Data.Fin.Substitution.html#Simple" class="Record"
       >Simple</a
-      ><a name="1119"
-      > </a
-      ><a name="1120" class="Symbol"
+      > <a name="1120" class="Symbol"
       >(</a
       ><a name="1121" href="Data.Fin.Substitution.html#1121" class="Bound"
       >T</a
-      ><a name="1122"
-      > </a
-      ><a name="1123" class="Symbol"
+      > <a name="1123" class="Symbol"
       >:</a
-      ><a name="1124"
-      > </a
-      ><a name="1125" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="1125" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="1126"
-      > </a
-      ><a name="1127" class="Symbol"
+      > <a name="1127" class="Symbol"
       >&#8594;</a
-      ><a name="1128"
-      > </a
-      ><a name="1129" class="PrimitiveType"
+      > <a name="1129" class="PrimitiveType"
       >Set</a
       ><a name="1132" class="Symbol"
       >)</a
-      ><a name="1133"
-      > </a
-      ><a name="1134" class="Symbol"
+      > <a name="1134" class="Symbol"
       >:</a
-      ><a name="1135"
-      > </a
-      ><a name="1136" class="PrimitiveType"
+      > <a name="1136" class="PrimitiveType"
       >Set</a
-      ><a name="1139"
-      > </a
-      ><a name="1140" class="Keyword"
+      > <a name="1140" class="Keyword"
       >where</a
-      ><a name="1145"
       >
-  </a
-      ><a name="1148" class="Keyword"
+  <a name="1148" class="Keyword"
       >infix</a
-      ><a name="1153"
-      >  </a
-      ><a name="1155" class="Number"
+      >  <a name="1155" class="Number"
       >10</a
-      ><a name="1157"
-      > _&#8593;
-  </a
-      ><a name="1163" class="Keyword"
-      >infixl</a
-      ><a name="1169"
-      > </a
-      ><a name="1170" class="Number"
-      >10</a
-      ><a name="1172"
-      > _&#8593;&#8902;_ _&#8593;&#10038;_
-
-  </a
-      ><a name="1186" class="Keyword"
-      >field</a
-      ><a name="1191"
+      > <a name="1158" href="Data.Fin.Substitution.html#Simple._&#8593;" class="Function Operator"
+      >_&#8593;</a
       >
-    </a
-      ><a name="1196" href="Data.Fin.Substitution.html#1196" class="Field"
+  <a name="1163" class="Keyword"
+      >infixl</a
+      > <a name="1170" class="Number"
+      >10</a
+      > <a name="1173" href="Data.Fin.Substitution.html#Simple._&#8593;&#8902;_" class="Function Operator"
+      >_&#8593;&#8902;_</a
+      > <a name="Simple._&#8593;&#10038;_" href="Data.Fin.Substitution.html#Simple._&#8593;&#10038;_" class="Function Operator"
+      >_&#8593;&#10038;_</a
+      >
+
+  <a name="1186" class="Keyword"
+      >field</a
+      >
+    <a name="Simple.var" href="Data.Fin.Substitution.html#Simple.var" class="Field"
       >var</a
-      ><a name="1199"
-      >    </a
-      ><a name="1203" class="Symbol"
+      >    <a name="1203" class="Symbol"
       >:</a
-      ><a name="1204"
-      > </a
-      ><a name="1205" class="Symbol"
+      > <a name="1205" class="Symbol"
       >&#8704;</a
-      ><a name="1206"
-      > </a
-      ><a name="1207" class="Symbol"
+      > <a name="1207" class="Symbol"
       >{</a
       ><a name="1208" href="Data.Fin.Substitution.html#1208" class="Bound"
       >n</a
       ><a name="1209" class="Symbol"
       >}</a
-      ><a name="1210"
-      > </a
-      ><a name="1211" class="Symbol"
+      > <a name="1211" class="Symbol"
       >&#8594;</a
-      ><a name="1212"
-      > </a
-      ><a name="1213" href="Data.Fin.html#842" class="Datatype"
+      > <a name="1213" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
-      ><a name="1216"
-      > </a
-      ><a name="1217" href="Data.Fin.Substitution.html#1208" class="Bound"
+      > <a name="1217" href="Data.Fin.Substitution.html#1208" class="Bound"
       >n</a
-      ><a name="1218"
-      > </a
-      ><a name="1219" class="Symbol"
+      > <a name="1219" class="Symbol"
       >&#8594;</a
-      ><a name="1220"
-      > </a
-      ><a name="1221" href="Data.Fin.Substitution.html#1121" class="Bound"
+      > <a name="1221" href="Data.Fin.Substitution.html#1121" class="Bound"
       >T</a
-      ><a name="1222"
-      > </a
-      ><a name="1223" href="Data.Fin.Substitution.html#1208" class="Bound"
+      > <a name="1223" href="Data.Fin.Substitution.html#1208" class="Bound"
       >n</a
-      ><a name="1224"
-      >      </a
-      ><a name="1230" class="Comment"
+      >      <a name="1230" class="Comment"
       >-- Takes variables to Ts.</a
-      ><a name="1255"
       >
-    </a
-      ><a name="1260" href="Data.Fin.Substitution.html#1260" class="Field"
+    <a name="Simple.weaken" href="Data.Fin.Substitution.html#Simple.weaken" class="Field"
       >weaken</a
-      ><a name="1266"
-      > </a
-      ><a name="1267" class="Symbol"
+      > <a name="1267" class="Symbol"
       >:</a
-      ><a name="1268"
-      > </a
-      ><a name="1269" class="Symbol"
+      > <a name="1269" class="Symbol"
       >&#8704;</a
-      ><a name="1270"
-      > </a
-      ><a name="1271" class="Symbol"
+      > <a name="1271" class="Symbol"
       >{</a
       ><a name="1272" href="Data.Fin.Substitution.html#1272" class="Bound"
       >n</a
       ><a name="1273" class="Symbol"
       >}</a
-      ><a name="1274"
-      > </a
-      ><a name="1275" class="Symbol"
+      > <a name="1275" class="Symbol"
       >&#8594;</a
-      ><a name="1276"
-      > </a
-      ><a name="1277" href="Data.Fin.Substitution.html#1121" class="Bound"
+      > <a name="1277" href="Data.Fin.Substitution.html#1121" class="Bound"
       >T</a
-      ><a name="1278"
-      > </a
-      ><a name="1279" href="Data.Fin.Substitution.html#1272" class="Bound"
+      > <a name="1279" href="Data.Fin.Substitution.html#1272" class="Bound"
       >n</a
-      ><a name="1280"
-      > </a
-      ><a name="1281" class="Symbol"
+      > <a name="1281" class="Symbol"
       >&#8594;</a
-      ><a name="1282"
-      > </a
-      ><a name="1283" href="Data.Fin.Substitution.html#1121" class="Bound"
+      > <a name="1283" href="Data.Fin.Substitution.html#1121" class="Bound"
       >T</a
-      ><a name="1284"
-      > </a
-      ><a name="1285" class="Symbol"
+      > <a name="1285" class="Symbol"
       >(</a
-      ><a name="1286" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      ><a name="1286" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1289"
-      > </a
-      ><a name="1290" href="Data.Fin.Substitution.html#1272" class="Bound"
+      > <a name="1290" href="Data.Fin.Substitution.html#1272" class="Bound"
       >n</a
       ><a name="1291" class="Symbol"
       >)</a
-      ><a name="1292"
-      >  </a
-      ><a name="1294" class="Comment"
+      >  <a name="1294" class="Comment"
       >-- Weakens Ts.</a
-      ><a name="1308"
       >
 
-  </a
-      ><a name="1312" class="Comment"
+  <a name="1312" class="Comment"
       >-- Lifting.</a
-      ><a name="1323"
       >
 
-  </a
-      ><a name="1327" href="Data.Fin.Substitution.html#1327" class="Function Operator"
+  <a name="Simple._&#8593;" href="Data.Fin.Substitution.html#Simple._&#8593;" class="Function Operator"
       >_&#8593;</a
-      ><a name="1329"
-      > </a
-      ><a name="1330" class="Symbol"
+      > <a name="1330" class="Symbol"
       >:</a
-      ><a name="1331"
-      > </a
-      ><a name="1332" class="Symbol"
+      > <a name="1332" class="Symbol"
       >&#8704;</a
-      ><a name="1333"
-      > </a
-      ><a name="1334" class="Symbol"
+      > <a name="1334" class="Symbol"
       >{</a
       ><a name="1335" href="Data.Fin.Substitution.html#1335" class="Bound"
       >m</a
-      ><a name="1336"
-      > </a
-      ><a name="1337" href="Data.Fin.Substitution.html#1337" class="Bound"
+      > <a name="1337" href="Data.Fin.Substitution.html#1337" class="Bound"
       >n</a
       ><a name="1338" class="Symbol"
       >}</a
-      ><a name="1339"
-      > </a
-      ><a name="1340" class="Symbol"
+      > <a name="1340" class="Symbol"
       >&#8594;</a
-      ><a name="1341"
-      > </a
-      ><a name="1342" href="Data.Fin.Substitution.html#899" class="Function"
+      > <a name="1342" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="1345"
-      > </a
-      ><a name="1346" href="Data.Fin.Substitution.html#1121" class="Bound"
+      > <a name="1346" href="Data.Fin.Substitution.html#1121" class="Bound"
       >T</a
-      ><a name="1347"
-      > </a
-      ><a name="1348" href="Data.Fin.Substitution.html#1335" class="Bound"
+      > <a name="1348" href="Data.Fin.Substitution.html#1335" class="Bound"
       >m</a
-      ><a name="1349"
-      > </a
-      ><a name="1350" href="Data.Fin.Substitution.html#1337" class="Bound"
+      > <a name="1350" href="Data.Fin.Substitution.html#1337" class="Bound"
       >n</a
-      ><a name="1351"
-      > </a
-      ><a name="1352" class="Symbol"
+      > <a name="1352" class="Symbol"
       >&#8594;</a
-      ><a name="1353"
-      > </a
-      ><a name="1354" href="Data.Fin.Substitution.html#899" class="Function"
+      > <a name="1354" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="1357"
-      > </a
-      ><a name="1358" href="Data.Fin.Substitution.html#1121" class="Bound"
+      > <a name="1358" href="Data.Fin.Substitution.html#1121" class="Bound"
       >T</a
-      ><a name="1359"
-      > </a
-      ><a name="1360" class="Symbol"
+      > <a name="1360" class="Symbol"
       >(</a
-      ><a name="1361" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      ><a name="1361" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1364"
-      > </a
-      ><a name="1365" href="Data.Fin.Substitution.html#1335" class="Bound"
+      > <a name="1365" href="Data.Fin.Substitution.html#1335" class="Bound"
       >m</a
       ><a name="1366" class="Symbol"
       >)</a
-      ><a name="1367"
-      > </a
-      ><a name="1368" class="Symbol"
+      > <a name="1368" class="Symbol"
       >(</a
-      ><a name="1369" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      ><a name="1369" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1372"
-      > </a
-      ><a name="1373" href="Data.Fin.Substitution.html#1337" class="Bound"
+      > <a name="1373" href="Data.Fin.Substitution.html#1337" class="Bound"
       >n</a
       ><a name="1374" class="Symbol"
       >)</a
-      ><a name="1375"
       >
-  </a
-      ><a name="1378" href="Data.Fin.Substitution.html#1378" class="Bound"
+  <a name="1378" href="Data.Fin.Substitution.html#1378" class="Bound"
       >&#961;</a
-      ><a name="1379"
-      > </a
-      ><a name="1380" href="Data.Fin.Substitution.html#1327" class="Function Operator"
+      > <a name="1380" href="Data.Fin.Substitution.html#Simple._&#8593;" class="Function Operator"
       >&#8593;</a
-      ><a name="1381"
-      > </a
-      ><a name="1382" class="Symbol"
+      > <a name="1382" class="Symbol"
       >=</a
-      ><a name="1383"
-      > </a
-      ><a name="1384" href="Data.Fin.Substitution.html#1196" class="Field"
+      > <a name="1384" href="Data.Fin.Substitution.html#Simple.var" class="Field"
       >var</a
-      ><a name="1387"
-      > </a
-      ><a name="1388" href="Data.Fin.html#864" class="InductiveConstructor"
+      > <a name="1388" href="Data.Fin.html#Fin.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1392"
-      > </a
-      ><a name="1393" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1393" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1394"
-      > </a
-      ><a name="1395" href="Data.Vec.html#1999" class="Function"
+      > <a name="1395" href="Data.Vec.html#map" class="Function"
       >map</a
-      ><a name="1398"
-      > </a
-      ><a name="1399" href="Data.Fin.Substitution.html#1260" class="Field"
+      > <a name="1399" href="Data.Fin.Substitution.html#Simple.weaken" class="Field"
       >weaken</a
-      ><a name="1405"
-      > </a
-      ><a name="1406" href="Data.Fin.Substitution.html#1378" class="Bound"
+      > <a name="1406" href="Data.Fin.Substitution.html#1378" class="Bound"
       >&#961;</a
-      ><a name="1407"
       >
 
-  </a
-      ><a name="1411" href="Data.Fin.Substitution.html#1411" class="Function Operator"
+  <a name="Simple._&#8593;&#8902;_" href="Data.Fin.Substitution.html#Simple._&#8593;&#8902;_" class="Function Operator"
       >_&#8593;&#8902;_</a
-      ><a name="1415"
-      > </a
-      ><a name="1416" class="Symbol"
+      > <a name="1416" class="Symbol"
       >:</a
-      ><a name="1417"
-      > </a
-      ><a name="1418" class="Symbol"
+      > <a name="1418" class="Symbol"
       >&#8704;</a
-      ><a name="1419"
-      > </a
-      ><a name="1420" class="Symbol"
+      > <a name="1420" class="Symbol"
       >{</a
       ><a name="1421" href="Data.Fin.Substitution.html#1421" class="Bound"
       >m</a
-      ><a name="1422"
-      > </a
-      ><a name="1423" href="Data.Fin.Substitution.html#1423" class="Bound"
+      > <a name="1423" href="Data.Fin.Substitution.html#1423" class="Bound"
       >n</a
       ><a name="1424" class="Symbol"
       >}</a
-      ><a name="1425"
-      > </a
-      ><a name="1426" class="Symbol"
+      > <a name="1426" class="Symbol"
       >&#8594;</a
-      ><a name="1427"
-      > </a
-      ><a name="1428" href="Data.Fin.Substitution.html#899" class="Function"
+      > <a name="1428" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="1431"
-      > </a
-      ><a name="1432" href="Data.Fin.Substitution.html#1121" class="Bound"
+      > <a name="1432" href="Data.Fin.Substitution.html#1121" class="Bound"
       >T</a
-      ><a name="1433"
-      > </a
-      ><a name="1434" href="Data.Fin.Substitution.html#1421" class="Bound"
+      > <a name="1434" href="Data.Fin.Substitution.html#1421" class="Bound"
       >m</a
-      ><a name="1435"
-      > </a
-      ><a name="1436" href="Data.Fin.Substitution.html#1423" class="Bound"
+      > <a name="1436" href="Data.Fin.Substitution.html#1423" class="Bound"
       >n</a
-      ><a name="1437"
-      > </a
-      ><a name="1438" class="Symbol"
+      > <a name="1438" class="Symbol"
       >&#8594;</a
-      ><a name="1439"
-      > </a
-      ><a name="1440" class="Symbol"
+      > <a name="1440" class="Symbol"
       >&#8704;</a
-      ><a name="1441"
-      > </a
-      ><a name="1442" href="Data.Fin.Substitution.html#1442" class="Bound"
+      > <a name="1442" href="Data.Fin.Substitution.html#1442" class="Bound"
       >k</a
-      ><a name="1443"
-      > </a
-      ><a name="1444" class="Symbol"
+      > <a name="1444" class="Symbol"
       >&#8594;</a
-      ><a name="1445"
-      > </a
-      ><a name="1446" href="Data.Fin.Substitution.html#899" class="Function"
+      > <a name="1446" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="1449"
-      > </a
-      ><a name="1450" href="Data.Fin.Substitution.html#1121" class="Bound"
+      > <a name="1450" href="Data.Fin.Substitution.html#1121" class="Bound"
       >T</a
-      ><a name="1451"
-      > </a
-      ><a name="1452" class="Symbol"
+      > <a name="1452" class="Symbol"
       >(</a
       ><a name="1453" href="Data.Fin.Substitution.html#1442" class="Bound"
       >k</a
-      ><a name="1454"
-      > </a
-      ><a name="1455" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="1455" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="1456"
-      > </a
-      ><a name="1457" href="Data.Fin.Substitution.html#1421" class="Bound"
+      > <a name="1457" href="Data.Fin.Substitution.html#1421" class="Bound"
       >m</a
       ><a name="1458" class="Symbol"
       >)</a
-      ><a name="1459"
-      > </a
-      ><a name="1460" class="Symbol"
+      > <a name="1460" class="Symbol"
       >(</a
       ><a name="1461" href="Data.Fin.Substitution.html#1442" class="Bound"
       >k</a
-      ><a name="1462"
-      > </a
-      ><a name="1463" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="1463" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="1464"
-      > </a
-      ><a name="1465" href="Data.Fin.Substitution.html#1423" class="Bound"
+      > <a name="1465" href="Data.Fin.Substitution.html#1423" class="Bound"
       >n</a
       ><a name="1466" class="Symbol"
       >)</a
-      ><a name="1467"
       >
-  </a
-      ><a name="1470" href="Data.Fin.Substitution.html#1470" class="Bound"
+  <a name="1470" href="Data.Fin.Substitution.html#1470" class="Bound"
       >&#961;</a
-      ><a name="1471"
-      > </a
-      ><a name="1472" href="Data.Fin.Substitution.html#1411" class="Function Operator"
+      > <a name="1472" href="Data.Fin.Substitution.html#Simple._&#8593;&#8902;_" class="Function Operator"
       >&#8593;&#8902;</a
-      ><a name="1474"
-      > </a
-      ><a name="1475" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      > <a name="1475" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1479"
-      >  </a
-      ><a name="1481" class="Symbol"
+      >  <a name="1481" class="Symbol"
       >=</a
-      ><a name="1482"
-      > </a
-      ><a name="1483" href="Data.Fin.Substitution.html#1470" class="Bound"
+      > <a name="1483" href="Data.Fin.Substitution.html#1470" class="Bound"
       >&#961;</a
-      ><a name="1484"
       >
-  </a
-      ><a name="1487" href="Data.Fin.Substitution.html#1487" class="Bound"
+  <a name="1487" href="Data.Fin.Substitution.html#1487" class="Bound"
       >&#961;</a
-      ><a name="1488"
-      > </a
-      ><a name="1489" href="Data.Fin.Substitution.html#1411" class="Function Operator"
+      > <a name="1489" href="Data.Fin.Substitution.html#Simple._&#8593;&#8902;_" class="Function Operator"
       >&#8593;&#8902;</a
-      ><a name="1491"
-      > </a
-      ><a name="1492" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      > <a name="1492" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1495"
-      > </a
-      ><a name="1496" href="Data.Fin.Substitution.html#1496" class="Bound"
+      > <a name="1496" href="Data.Fin.Substitution.html#1496" class="Bound"
       >k</a
-      ><a name="1497"
-      > </a
-      ><a name="1498" class="Symbol"
+      > <a name="1498" class="Symbol"
       >=</a
-      ><a name="1499"
-      > </a
-      ><a name="1500" class="Symbol"
+      > <a name="1500" class="Symbol"
       >(</a
       ><a name="1501" href="Data.Fin.Substitution.html#1487" class="Bound"
       >&#961;</a
-      ><a name="1502"
-      > </a
-      ><a name="1503" href="Data.Fin.Substitution.html#1411" class="Function Operator"
+      > <a name="1503" href="Data.Fin.Substitution.html#Simple._&#8593;&#8902;_" class="Function Operator"
       >&#8593;&#8902;</a
-      ><a name="1505"
-      > </a
-      ><a name="1506" href="Data.Fin.Substitution.html#1496" class="Bound"
+      > <a name="1506" href="Data.Fin.Substitution.html#1496" class="Bound"
       >k</a
       ><a name="1507" class="Symbol"
       >)</a
-      ><a name="1508"
-      > </a
-      ><a name="1509" href="Data.Fin.Substitution.html#1327" class="Function Operator"
+      > <a name="1509" href="Data.Fin.Substitution.html#Simple._&#8593;" class="Function Operator"
       >&#8593;</a
-      ><a name="1510"
       >
 
-  </a
-      ><a name="1514" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+  <a name="Simple._&#8593;&#10038;_" href="Data.Fin.Substitution.html#Simple._&#8593;&#10038;_" class="Function Operator"
       >_&#8593;&#10038;_</a
-      ><a name="1518"
-      > </a
-      ><a name="1519" class="Symbol"
+      > <a name="1519" class="Symbol"
       >:</a
-      ><a name="1520"
-      > </a
-      ><a name="1521" class="Symbol"
+      > <a name="1521" class="Symbol"
       >&#8704;</a
-      ><a name="1522"
-      > </a
-      ><a name="1523" class="Symbol"
+      > <a name="1523" class="Symbol"
       >{</a
       ><a name="1524" href="Data.Fin.Substitution.html#1524" class="Bound"
       >m</a
-      ><a name="1525"
-      > </a
-      ><a name="1526" href="Data.Fin.Substitution.html#1526" class="Bound"
+      > <a name="1526" href="Data.Fin.Substitution.html#1526" class="Bound"
       >n</a
       ><a name="1527" class="Symbol"
       >}</a
-      ><a name="1528"
-      > </a
-      ><a name="1529" class="Symbol"
+      > <a name="1529" class="Symbol"
       >&#8594;</a
-      ><a name="1530"
-      > </a
-      ><a name="1531" href="Data.Fin.Substitution.html#1007" class="Function"
+      > <a name="1531" href="Data.Fin.Substitution.html#Subs" class="Function"
       >Subs</a
-      ><a name="1535"
-      > </a
-      ><a name="1536" href="Data.Fin.Substitution.html#1121" class="Bound"
+      > <a name="1536" href="Data.Fin.Substitution.html#1121" class="Bound"
       >T</a
-      ><a name="1537"
-      > </a
-      ><a name="1538" href="Data.Fin.Substitution.html#1524" class="Bound"
+      > <a name="1538" href="Data.Fin.Substitution.html#1524" class="Bound"
       >m</a
-      ><a name="1539"
-      > </a
-      ><a name="1540" href="Data.Fin.Substitution.html#1526" class="Bound"
+      > <a name="1540" href="Data.Fin.Substitution.html#1526" class="Bound"
       >n</a
-      ><a name="1541"
-      > </a
-      ><a name="1542" class="Symbol"
+      > <a name="1542" class="Symbol"
       >&#8594;</a
-      ><a name="1543"
-      > </a
-      ><a name="1544" class="Symbol"
+      > <a name="1544" class="Symbol"
       >&#8704;</a
-      ><a name="1545"
-      > </a
-      ><a name="1546" href="Data.Fin.Substitution.html#1546" class="Bound"
+      > <a name="1546" href="Data.Fin.Substitution.html#1546" class="Bound"
       >k</a
-      ><a name="1547"
-      > </a
-      ><a name="1548" class="Symbol"
+      > <a name="1548" class="Symbol"
       >&#8594;</a
-      ><a name="1549"
-      > </a
-      ><a name="1550" href="Data.Fin.Substitution.html#1007" class="Function"
+      > <a name="1550" href="Data.Fin.Substitution.html#Subs" class="Function"
       >Subs</a
-      ><a name="1554"
-      > </a
-      ><a name="1555" href="Data.Fin.Substitution.html#1121" class="Bound"
+      > <a name="1555" href="Data.Fin.Substitution.html#1121" class="Bound"
       >T</a
-      ><a name="1556"
-      > </a
-      ><a name="1557" class="Symbol"
+      > <a name="1557" class="Symbol"
       >(</a
       ><a name="1558" href="Data.Fin.Substitution.html#1546" class="Bound"
       >k</a
-      ><a name="1559"
-      > </a
-      ><a name="1560" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="1560" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="1561"
-      > </a
-      ><a name="1562" href="Data.Fin.Substitution.html#1524" class="Bound"
+      > <a name="1562" href="Data.Fin.Substitution.html#1524" class="Bound"
       >m</a
       ><a name="1563" class="Symbol"
       >)</a
-      ><a name="1564"
-      > </a
-      ><a name="1565" class="Symbol"
+      > <a name="1565" class="Symbol"
       >(</a
       ><a name="1566" href="Data.Fin.Substitution.html#1546" class="Bound"
       >k</a
-      ><a name="1567"
-      > </a
-      ><a name="1568" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="1568" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="1569"
-      > </a
-      ><a name="1570" href="Data.Fin.Substitution.html#1526" class="Bound"
+      > <a name="1570" href="Data.Fin.Substitution.html#1526" class="Bound"
       >n</a
       ><a name="1571" class="Symbol"
       >)</a
-      ><a name="1572"
       >
-  </a
-      ><a name="1575" href="Data.Fin.Substitution.html#1575" class="Bound"
+  <a name="1575" href="Data.Fin.Substitution.html#1575" class="Bound"
       >&#961;s</a
-      ><a name="1577"
-      > </a
-      ><a name="1578" href="Data.Fin.Substitution.html#1514" class="Function Operator"
+      > <a name="1578" href="Data.Fin.Substitution.html#Simple._&#8593;&#10038;_" class="Function Operator"
       >&#8593;&#10038;</a
-      ><a name="1580"
-      > </a
-      ><a name="1581" href="Data.Fin.Substitution.html#1581" class="Bound"
+      > <a name="1581" href="Data.Fin.Substitution.html#1581" class="Bound"
       >k</a
-      ><a name="1582"
-      > </a
-      ><a name="1583" class="Symbol"
+      > <a name="1583" class="Symbol"
       >=</a
-      ><a name="1584"
-      > </a
-      ><a name="1585" href="Data.Star.html#1592" class="Function"
+      > <a name="1585" href="Data.Star.html#gmap" class="Function"
       >Star.gmap</a
-      ><a name="1594"
-      > </a
-      ><a name="1595" class="Symbol"
+      > <a name="1595" class="Symbol"
       >(</a
-      ><a name="1596" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      ><a name="1596" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >_+_</a
-      ><a name="1599"
-      > </a
-      ><a name="1600" href="Data.Fin.Substitution.html#1581" class="Bound"
+      > <a name="1600" href="Data.Fin.Substitution.html#1581" class="Bound"
       >k</a
       ><a name="1601" class="Symbol"
       >)</a
-      ><a name="1602"
-      > </a
-      ><a name="1603" class="Symbol"
+      > <a name="1603" class="Symbol"
       >(&#955;</a
-      ><a name="1605"
-      > </a
-      ><a name="1606" href="Data.Fin.Substitution.html#1606" class="Bound"
+      > <a name="1606" href="Data.Fin.Substitution.html#1606" class="Bound"
       >&#961;</a
-      ><a name="1607"
-      > </a
-      ><a name="1608" class="Symbol"
+      > <a name="1608" class="Symbol"
       >&#8594;</a
-      ><a name="1609"
-      > </a
-      ><a name="1610" href="Data.Fin.Substitution.html#1606" class="Bound"
+      > <a name="1610" href="Data.Fin.Substitution.html#1606" class="Bound"
       >&#961;</a
-      ><a name="1611"
-      > </a
-      ><a name="1612" href="Data.Fin.Substitution.html#1411" class="Function Operator"
+      > <a name="1612" href="Data.Fin.Substitution.html#Simple._&#8593;&#8902;_" class="Function Operator"
       >&#8593;&#8902;</a
-      ><a name="1614"
-      > </a
-      ><a name="1615" href="Data.Fin.Substitution.html#1581" class="Bound"
+      > <a name="1615" href="Data.Fin.Substitution.html#1581" class="Bound"
       >k</a
       ><a name="1616" class="Symbol"
       >)</a
-      ><a name="1617"
-      > </a
-      ><a name="1618" href="Data.Fin.Substitution.html#1575" class="Bound"
+      > <a name="1618" href="Data.Fin.Substitution.html#1575" class="Bound"
       >&#961;s</a
-      ><a name="1620"
       >
 
-  </a
-      ><a name="1624" class="Comment"
+  <a name="1624" class="Comment"
       >-- The identity substitution.</a
-      ><a name="1653"
       >
 
-  </a
-      ><a name="1657" href="Data.Fin.Substitution.html#1657" class="Function"
+  <a name="Simple.id" href="Data.Fin.Substitution.html#Simple.id" class="Function"
       >id</a
-      ><a name="1659"
-      > </a
-      ><a name="1660" class="Symbol"
+      > <a name="1660" class="Symbol"
       >:</a
-      ><a name="1661"
-      > </a
-      ><a name="1662" class="Symbol"
+      > <a name="1662" class="Symbol"
       >&#8704;</a
-      ><a name="1663"
-      > </a
-      ><a name="1664" class="Symbol"
+      > <a name="1664" class="Symbol"
       >{</a
       ><a name="1665" href="Data.Fin.Substitution.html#1665" class="Bound"
       >n</a
       ><a name="1666" class="Symbol"
       >}</a
-      ><a name="1667"
-      > </a
-      ><a name="1668" class="Symbol"
+      > <a name="1668" class="Symbol"
       >&#8594;</a
-      ><a name="1669"
-      > </a
-      ><a name="1670" href="Data.Fin.Substitution.html#899" class="Function"
+      > <a name="1670" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="1673"
-      > </a
-      ><a name="1674" href="Data.Fin.Substitution.html#1121" class="Bound"
+      > <a name="1674" href="Data.Fin.Substitution.html#1121" class="Bound"
       >T</a
-      ><a name="1675"
-      > </a
-      ><a name="1676" href="Data.Fin.Substitution.html#1665" class="Bound"
+      > <a name="1676" href="Data.Fin.Substitution.html#1665" class="Bound"
       >n</a
-      ><a name="1677"
-      > </a
-      ><a name="1678" href="Data.Fin.Substitution.html#1665" class="Bound"
+      > <a name="1678" href="Data.Fin.Substitution.html#1665" class="Bound"
       >n</a
-      ><a name="1679"
       >
-  </a
-      ><a name="1682" href="Data.Fin.Substitution.html#1657" class="Function"
+  <a name="1682" href="Data.Fin.Substitution.html#Simple.id" class="Function"
       >id</a
-      ><a name="1684"
-      > </a
-      ><a name="1685" class="Symbol"
+      > <a name="1685" class="Symbol"
       >{</a
-      ><a name="1686" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      ><a name="1686" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
       ><a name="1690" class="Symbol"
       >}</a
-      ><a name="1691"
-      >  </a
-      ><a name="1693" class="Symbol"
+      >  <a name="1693" class="Symbol"
       >=</a
-      ><a name="1694"
-      > </a
-      ><a name="1695" href="Data.Vec.html#649" class="InductiveConstructor"
+      > <a name="1695" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1697"
       >
-  </a
-      ><a name="1700" href="Data.Fin.Substitution.html#1657" class="Function"
+  <a name="1700" href="Data.Fin.Substitution.html#Simple.id" class="Function"
       >id</a
-      ><a name="1702"
-      > </a
-      ><a name="1703" class="Symbol"
+      > <a name="1703" class="Symbol"
       >{</a
-      ><a name="1704" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      ><a name="1704" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1707"
-      > </a
-      ><a name="1708" href="Data.Fin.Substitution.html#1708" class="Bound"
+      > <a name="1708" href="Data.Fin.Substitution.html#1708" class="Bound"
       >n</a
       ><a name="1709" class="Symbol"
       >}</a
-      ><a name="1710"
-      > </a
-      ><a name="1711" class="Symbol"
+      > <a name="1711" class="Symbol"
       >=</a
-      ><a name="1712"
-      > </a
-      ><a name="1713" href="Data.Fin.Substitution.html#1657" class="Function"
+      > <a name="1713" href="Data.Fin.Substitution.html#Simple.id" class="Function"
       >id</a
-      ><a name="1715"
-      > </a
-      ><a name="1716" href="Data.Fin.Substitution.html#1327" class="Function Operator"
+      > <a name="1716" href="Data.Fin.Substitution.html#Simple._&#8593;" class="Function Operator"
       >&#8593;</a
-      ><a name="1717"
       >
 
-  </a
-      ><a name="1721" class="Comment"
+  <a name="1721" class="Comment"
       >-- Weakening.</a
-      ><a name="1734"
       >
 
-  </a
-      ><a name="1738" href="Data.Fin.Substitution.html#1738" class="Function"
+  <a name="Simple.wk&#8902;" href="Data.Fin.Substitution.html#Simple.wk&#8902;" class="Function"
       >wk&#8902;</a
-      ><a name="1741"
-      > </a
-      ><a name="1742" class="Symbol"
+      > <a name="1742" class="Symbol"
       >:</a
-      ><a name="1743"
-      > </a
-      ><a name="1744" class="Symbol"
+      > <a name="1744" class="Symbol"
       >&#8704;</a
-      ><a name="1745"
-      > </a
-      ><a name="1746" href="Data.Fin.Substitution.html#1746" class="Bound"
+      > <a name="1746" href="Data.Fin.Substitution.html#1746" class="Bound"
       >k</a
-      ><a name="1747"
-      > </a
-      ><a name="1748" class="Symbol"
+      > <a name="1748" class="Symbol"
       >{</a
       ><a name="1749" href="Data.Fin.Substitution.html#1749" class="Bound"
       >n</a
       ><a name="1750" class="Symbol"
       >}</a
-      ><a name="1751"
-      > </a
-      ><a name="1752" class="Symbol"
+      > <a name="1752" class="Symbol"
       >&#8594;</a
-      ><a name="1753"
-      > </a
-      ><a name="1754" href="Data.Fin.Substitution.html#899" class="Function"
+      > <a name="1754" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="1757"
-      > </a
-      ><a name="1758" href="Data.Fin.Substitution.html#1121" class="Bound"
+      > <a name="1758" href="Data.Fin.Substitution.html#1121" class="Bound"
       >T</a
-      ><a name="1759"
-      > </a
-      ><a name="1760" href="Data.Fin.Substitution.html#1749" class="Bound"
+      > <a name="1760" href="Data.Fin.Substitution.html#1749" class="Bound"
       >n</a
-      ><a name="1761"
-      > </a
-      ><a name="1762" class="Symbol"
+      > <a name="1762" class="Symbol"
       >(</a
       ><a name="1763" href="Data.Fin.Substitution.html#1746" class="Bound"
       >k</a
-      ><a name="1764"
-      > </a
-      ><a name="1765" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="1765" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="1766"
-      > </a
-      ><a name="1767" href="Data.Fin.Substitution.html#1749" class="Bound"
+      > <a name="1767" href="Data.Fin.Substitution.html#1749" class="Bound"
       >n</a
       ><a name="1768" class="Symbol"
       >)</a
-      ><a name="1769"
       >
-  </a
-      ><a name="1772" href="Data.Fin.Substitution.html#1738" class="Function"
+  <a name="1772" href="Data.Fin.Substitution.html#Simple.wk&#8902;" class="Function"
       >wk&#8902;</a
-      ><a name="1775"
-      > </a
-      ><a name="1776" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      > <a name="1776" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1780"
-      >    </a
-      ><a name="1784" class="Symbol"
+      >    <a name="1784" class="Symbol"
       >=</a
-      ><a name="1785"
-      > </a
-      ><a name="1786" href="Data.Fin.Substitution.html#1657" class="Function"
+      > <a name="1786" href="Data.Fin.Substitution.html#Simple.id" class="Function"
       >id</a
-      ><a name="1788"
       >
-  </a
-      ><a name="1791" href="Data.Fin.Substitution.html#1738" class="Function"
+  <a name="1791" href="Data.Fin.Substitution.html#Simple.wk&#8902;" class="Function"
       >wk&#8902;</a
-      ><a name="1794"
-      > </a
-      ><a name="1795" class="Symbol"
+      > <a name="1795" class="Symbol"
       >(</a
-      ><a name="1796" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      ><a name="1796" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1799"
-      > </a
-      ><a name="1800" href="Data.Fin.Substitution.html#1800" class="Bound"
+      > <a name="1800" href="Data.Fin.Substitution.html#1800" class="Bound"
       >k</a
       ><a name="1801" class="Symbol"
       >)</a
-      ><a name="1802"
-      > </a
-      ><a name="1803" class="Symbol"
+      > <a name="1803" class="Symbol"
       >=</a
-      ><a name="1804"
-      > </a
-      ><a name="1805" href="Data.Vec.html#1999" class="Function"
+      > <a name="1805" href="Data.Vec.html#map" class="Function"
       >map</a
-      ><a name="1808"
-      > </a
-      ><a name="1809" href="Data.Fin.Substitution.html#1260" class="Field"
+      > <a name="1809" href="Data.Fin.Substitution.html#Simple.weaken" class="Field"
       >weaken</a
-      ><a name="1815"
-      > </a
-      ><a name="1816" class="Symbol"
+      > <a name="1816" class="Symbol"
       >(</a
-      ><a name="1817" href="Data.Fin.Substitution.html#1738" class="Function"
+      ><a name="1817" href="Data.Fin.Substitution.html#Simple.wk&#8902;" class="Function"
       >wk&#8902;</a
-      ><a name="1820"
-      > </a
-      ><a name="1821" href="Data.Fin.Substitution.html#1800" class="Bound"
+      > <a name="1821" href="Data.Fin.Substitution.html#1800" class="Bound"
       >k</a
       ><a name="1822" class="Symbol"
       >)</a
-      ><a name="1823"
       >
 
-  </a
-      ><a name="1827" href="Data.Fin.Substitution.html#1827" class="Function"
+  <a name="Simple.wk" href="Data.Fin.Substitution.html#Simple.wk" class="Function"
       >wk</a
-      ><a name="1829"
-      > </a
-      ><a name="1830" class="Symbol"
+      > <a name="1830" class="Symbol"
       >:</a
-      ><a name="1831"
-      > </a
-      ><a name="1832" class="Symbol"
+      > <a name="1832" class="Symbol"
       >&#8704;</a
-      ><a name="1833"
-      > </a
-      ><a name="1834" class="Symbol"
+      > <a name="1834" class="Symbol"
       >{</a
       ><a name="1835" href="Data.Fin.Substitution.html#1835" class="Bound"
       >n</a
       ><a name="1836" class="Symbol"
       >}</a
-      ><a name="1837"
-      > </a
-      ><a name="1838" class="Symbol"
+      > <a name="1838" class="Symbol"
       >&#8594;</a
-      ><a name="1839"
-      > </a
-      ><a name="1840" href="Data.Fin.Substitution.html#899" class="Function"
+      > <a name="1840" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="1843"
-      > </a
-      ><a name="1844" href="Data.Fin.Substitution.html#1121" class="Bound"
+      > <a name="1844" href="Data.Fin.Substitution.html#1121" class="Bound"
       >T</a
-      ><a name="1845"
-      > </a
-      ><a name="1846" href="Data.Fin.Substitution.html#1835" class="Bound"
+      > <a name="1846" href="Data.Fin.Substitution.html#1835" class="Bound"
       >n</a
-      ><a name="1847"
-      > </a
-      ><a name="1848" class="Symbol"
+      > <a name="1848" class="Symbol"
       >(</a
-      ><a name="1849" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      ><a name="1849" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1852"
-      > </a
-      ><a name="1853" href="Data.Fin.Substitution.html#1835" class="Bound"
+      > <a name="1853" href="Data.Fin.Substitution.html#1835" class="Bound"
       >n</a
       ><a name="1854" class="Symbol"
       >)</a
-      ><a name="1855"
       >
-  </a
-      ><a name="1858" href="Data.Fin.Substitution.html#1827" class="Function"
+  <a name="1858" href="Data.Fin.Substitution.html#Simple.wk" class="Function"
       >wk</a
-      ><a name="1860"
-      > </a
-      ><a name="1861" class="Symbol"
+      > <a name="1861" class="Symbol"
       >=</a
-      ><a name="1862"
-      > </a
-      ><a name="1863" href="Data.Fin.Substitution.html#1738" class="Function"
+      > <a name="1863" href="Data.Fin.Substitution.html#Simple.wk&#8902;" class="Function"
       >wk&#8902;</a
-      ><a name="1866"
-      > </a
-      ><a name="1867" class="Number"
+      > <a name="1867" class="Number"
       >1</a
-      ><a name="1868"
       >
 
-  </a
-      ><a name="1872" class="Comment"
+  <a name="1872" class="Comment"
       >-- A substitution which only replaces the first variable.</a
-      ><a name="1929"
       >
 
-  </a
-      ><a name="1933" href="Data.Fin.Substitution.html#1933" class="Function"
+  <a name="Simple.sub" href="Data.Fin.Substitution.html#Simple.sub" class="Function"
       >sub</a
-      ><a name="1936"
-      > </a
-      ><a name="1937" class="Symbol"
+      > <a name="1937" class="Symbol"
       >:</a
-      ><a name="1938"
-      > </a
-      ><a name="1939" class="Symbol"
+      > <a name="1939" class="Symbol"
       >&#8704;</a
-      ><a name="1940"
-      > </a
-      ><a name="1941" class="Symbol"
+      > <a name="1941" class="Symbol"
       >{</a
       ><a name="1942" href="Data.Fin.Substitution.html#1942" class="Bound"
       >n</a
       ><a name="1943" class="Symbol"
       >}</a
-      ><a name="1944"
-      > </a
-      ><a name="1945" class="Symbol"
+      > <a name="1945" class="Symbol"
       >&#8594;</a
-      ><a name="1946"
-      > </a
-      ><a name="1947" href="Data.Fin.Substitution.html#1121" class="Bound"
+      > <a name="1947" href="Data.Fin.Substitution.html#1121" class="Bound"
       >T</a
-      ><a name="1948"
-      > </a
-      ><a name="1949" href="Data.Fin.Substitution.html#1942" class="Bound"
+      > <a name="1949" href="Data.Fin.Substitution.html#1942" class="Bound"
       >n</a
-      ><a name="1950"
-      > </a
-      ><a name="1951" class="Symbol"
+      > <a name="1951" class="Symbol"
       >&#8594;</a
-      ><a name="1952"
-      > </a
-      ><a name="1953" href="Data.Fin.Substitution.html#899" class="Function"
+      > <a name="1953" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="1956"
-      > </a
-      ><a name="1957" href="Data.Fin.Substitution.html#1121" class="Bound"
+      > <a name="1957" href="Data.Fin.Substitution.html#1121" class="Bound"
       >T</a
-      ><a name="1958"
-      > </a
-      ><a name="1959" class="Symbol"
+      > <a name="1959" class="Symbol"
       >(</a
-      ><a name="1960" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
+      ><a name="1960" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="1963"
-      > </a
-      ><a name="1964" href="Data.Fin.Substitution.html#1942" class="Bound"
+      > <a name="1964" href="Data.Fin.Substitution.html#1942" class="Bound"
       >n</a
       ><a name="1965" class="Symbol"
       >)</a
-      ><a name="1966"
-      > </a
-      ><a name="1967" href="Data.Fin.Substitution.html#1942" class="Bound"
+      > <a name="1967" href="Data.Fin.Substitution.html#1942" class="Bound"
       >n</a
-      ><a name="1968"
       >
-  </a
-      ><a name="1971" href="Data.Fin.Substitution.html#1933" class="Function"
+  <a name="1971" href="Data.Fin.Substitution.html#Simple.sub" class="Function"
       >sub</a
-      ><a name="1974"
-      > </a
-      ><a name="1975" href="Data.Fin.Substitution.html#1975" class="Bound"
+      > <a name="1975" href="Data.Fin.Substitution.html#1975" class="Bound"
       >t</a
-      ><a name="1976"
-      > </a
-      ><a name="1977" class="Symbol"
+      > <a name="1977" class="Symbol"
       >=</a
-      ><a name="1978"
-      > </a
-      ><a name="1979" href="Data.Fin.Substitution.html#1975" class="Bound"
+      > <a name="1979" href="Data.Fin.Substitution.html#1975" class="Bound"
       >t</a
-      ><a name="1980"
-      > </a
-      ><a name="1981" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="1981" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1982"
-      > </a
-      ><a name="1983" href="Data.Fin.Substitution.html#1657" class="Function"
+      > <a name="1983" href="Data.Fin.Substitution.html#Simple.id" class="Function"
       >id</a
-      ><a name="1985"
       >
 
-</a
-      ><a name="1987" class="Comment"
+<a name="1987" class="Comment"
       >-- Application of substitutions.</a
-      ><a name="2019"
       >
 
-</a
-      ><a name="2021" class="Keyword"
+<a name="2021" class="Keyword"
       >record</a
-      ><a name="2027"
-      > </a
-      ><a name="2028" href="Data.Fin.Substitution.html#2028" class="Record"
+      > <a name="Application" href="Data.Fin.Substitution.html#Application" class="Record"
       >Application</a
-      ><a name="2039"
-      > </a
-      ><a name="2040" class="Symbol"
+      > <a name="2040" class="Symbol"
       >(</a
       ><a name="2041" href="Data.Fin.Substitution.html#2041" class="Bound"
       >T&#8321;</a
-      ><a name="2043"
-      > </a
-      ><a name="2044" href="Data.Fin.Substitution.html#2044" class="Bound"
+      > <a name="2044" href="Data.Fin.Substitution.html#2044" class="Bound"
       >T&#8322;</a
-      ><a name="2046"
-      > </a
-      ><a name="2047" class="Symbol"
+      > <a name="2047" class="Symbol"
       >:</a
-      ><a name="2048"
-      > </a
-      ><a name="2049" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="2049" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="2050"
-      > </a
-      ><a name="2051" class="Symbol"
+      > <a name="2051" class="Symbol"
       >&#8594;</a
-      ><a name="2052"
-      > </a
-      ><a name="2053" class="PrimitiveType"
+      > <a name="2053" class="PrimitiveType"
       >Set</a
       ><a name="2056" class="Symbol"
       >)</a
-      ><a name="2057"
-      > </a
-      ><a name="2058" class="Symbol"
+      > <a name="2058" class="Symbol"
       >:</a
-      ><a name="2059"
-      > </a
-      ><a name="2060" class="PrimitiveType"
+      > <a name="2060" class="PrimitiveType"
       >Set</a
-      ><a name="2063"
-      > </a
-      ><a name="2064" class="Keyword"
+      > <a name="2064" class="Keyword"
       >where</a
-      ><a name="2069"
       >
-  </a
-      ><a name="2072" class="Keyword"
+  <a name="2072" class="Keyword"
       >infixl</a
-      ><a name="2078"
-      > </a
-      ><a name="2079" class="Number"
+      > <a name="2079" class="Number"
       >8</a
-      ><a name="2080"
-      > _/_ _/&#10038;_
-  </a
-      ><a name="2092" class="Keyword"
+      > <a name="Application._/_" href="Data.Fin.Substitution.html#Application._/_" class="Field Operator"
+      >_/_</a
+      > <a name="Application._/&#10038;_" href="Data.Fin.Substitution.html#Application._/&#10038;_" class="Function Operator"
+      >_/&#10038;_</a
+      >
+  <a name="2092" class="Keyword"
       >infixl</a
-      ><a name="2098"
-      > </a
-      ><a name="2099" class="Number"
+      > <a name="2099" class="Number"
       >9</a
-      ><a name="2100"
-      > _&#8857;_
-
-  </a
-      ><a name="2108" class="Comment"
-      >-- Post-application of substitutions to things.</a
-      ><a name="2155"
+      > <a name="2101" href="Data.Fin.Substitution.html#2271" class="Function Operator"
+      >_&#8857;_</a
       >
 
-  </a
-      ><a name="2159" class="Keyword"
+  <a name="2108" class="Comment"
+      >-- Post-application of substitutions to things.</a
+      >
+
+  <a name="2159" class="Keyword"
       >field</a
-      ><a name="2164"
-      > </a
-      ><a name="2165" href="Data.Fin.Substitution.html#2165" class="Field Operator"
+      > <a name="Application._/_" href="Data.Fin.Substitution.html#Application._/_" class="Field Operator"
       >_/_</a
-      ><a name="2168"
-      > </a
-      ><a name="2169" class="Symbol"
+      > <a name="2169" class="Symbol"
       >:</a
-      ><a name="2170"
-      > </a
-      ><a name="2171" class="Symbol"
+      > <a name="2171" class="Symbol"
       >&#8704;</a
-      ><a name="2172"
-      > </a
-      ><a name="2173" class="Symbol"
+      > <a name="2173" class="Symbol"
       >{</a
       ><a name="2174" href="Data.Fin.Substitution.html#2174" class="Bound"
       >m</a
-      ><a name="2175"
-      > </a
-      ><a name="2176" href="Data.Fin.Substitution.html#2176" class="Bound"
+      > <a name="2176" href="Data.Fin.Substitution.html#2176" class="Bound"
       >n</a
       ><a name="2177" class="Symbol"
       >}</a
-      ><a name="2178"
-      > </a
-      ><a name="2179" class="Symbol"
+      > <a name="2179" class="Symbol"
       >&#8594;</a
-      ><a name="2180"
-      > </a
-      ><a name="2181" href="Data.Fin.Substitution.html#2041" class="Bound"
+      > <a name="2181" href="Data.Fin.Substitution.html#2041" class="Bound"
       >T&#8321;</a
-      ><a name="2183"
-      > </a
-      ><a name="2184" href="Data.Fin.Substitution.html#2174" class="Bound"
+      > <a name="2184" href="Data.Fin.Substitution.html#2174" class="Bound"
       >m</a
-      ><a name="2185"
-      > </a
-      ><a name="2186" class="Symbol"
+      > <a name="2186" class="Symbol"
       >&#8594;</a
-      ><a name="2187"
-      > </a
-      ><a name="2188" href="Data.Fin.Substitution.html#899" class="Function"
+      > <a name="2188" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="2191"
-      > </a
-      ><a name="2192" href="Data.Fin.Substitution.html#2044" class="Bound"
+      > <a name="2192" href="Data.Fin.Substitution.html#2044" class="Bound"
       >T&#8322;</a
-      ><a name="2194"
-      > </a
-      ><a name="2195" href="Data.Fin.Substitution.html#2174" class="Bound"
+      > <a name="2195" href="Data.Fin.Substitution.html#2174" class="Bound"
       >m</a
-      ><a name="2196"
-      > </a
-      ><a name="2197" href="Data.Fin.Substitution.html#2176" class="Bound"
+      > <a name="2197" href="Data.Fin.Substitution.html#2176" class="Bound"
       >n</a
-      ><a name="2198"
-      > </a
-      ><a name="2199" class="Symbol"
+      > <a name="2199" class="Symbol"
       >&#8594;</a
-      ><a name="2200"
-      > </a
-      ><a name="2201" href="Data.Fin.Substitution.html#2041" class="Bound"
+      > <a name="2201" href="Data.Fin.Substitution.html#2041" class="Bound"
       >T&#8321;</a
-      ><a name="2203"
-      > </a
-      ><a name="2204" href="Data.Fin.Substitution.html#2176" class="Bound"
+      > <a name="2204" href="Data.Fin.Substitution.html#2176" class="Bound"
       >n</a
-      ><a name="2205"
       >
 
-  </a
-      ><a name="2209" class="Comment"
+  <a name="2209" class="Comment"
       >-- Reverse composition. (Fits well with post-application.)</a
-      ><a name="2267"
       >
 
-  </a
-      ><a name="2271" href="Data.Fin.Substitution.html#2271" class="Function Operator"
+  <a name="Application._&#8857;_" href="Data.Fin.Substitution.html#Application._&#8857;_" class="Function Operator"
       >_&#8857;_</a
-      ><a name="2274"
-      > </a
-      ><a name="2275" class="Symbol"
+      > <a name="2275" class="Symbol"
       >:</a
-      ><a name="2276"
-      > </a
-      ><a name="2277" class="Symbol"
+      > <a name="2277" class="Symbol"
       >&#8704;</a
-      ><a name="2278"
-      > </a
-      ><a name="2279" class="Symbol"
+      > <a name="2279" class="Symbol"
       >{</a
       ><a name="2280" href="Data.Fin.Substitution.html#2280" class="Bound"
       >m</a
-      ><a name="2281"
-      > </a
-      ><a name="2282" href="Data.Fin.Substitution.html#2282" class="Bound"
+      > <a name="2282" href="Data.Fin.Substitution.html#2282" class="Bound"
       >n</a
-      ><a name="2283"
-      > </a
-      ><a name="2284" href="Data.Fin.Substitution.html#2284" class="Bound"
+      > <a name="2284" href="Data.Fin.Substitution.html#2284" class="Bound"
       >k</a
       ><a name="2285" class="Symbol"
       >}</a
-      ><a name="2286"
-      > </a
-      ><a name="2287" class="Symbol"
+      > <a name="2287" class="Symbol"
       >&#8594;</a
-      ><a name="2288"
-      > </a
-      ><a name="2289" href="Data.Fin.Substitution.html#899" class="Function"
+      > <a name="2289" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="2292"
-      > </a
-      ><a name="2293" href="Data.Fin.Substitution.html#2041" class="Bound"
+      > <a name="2293" href="Data.Fin.Substitution.html#2041" class="Bound"
       >T&#8321;</a
-      ><a name="2295"
-      > </a
-      ><a name="2296" href="Data.Fin.Substitution.html#2280" class="Bound"
+      > <a name="2296" href="Data.Fin.Substitution.html#2280" class="Bound"
       >m</a
-      ><a name="2297"
-      > </a
-      ><a name="2298" href="Data.Fin.Substitution.html#2282" class="Bound"
+      > <a name="2298" href="Data.Fin.Substitution.html#2282" class="Bound"
       >n</a
-      ><a name="2299"
-      > </a
-      ><a name="2300" class="Symbol"
+      > <a name="2300" class="Symbol"
       >&#8594;</a
-      ><a name="2301"
-      > </a
-      ><a name="2302" href="Data.Fin.Substitution.html#899" class="Function"
+      > <a name="2302" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="2305"
-      > </a
-      ><a name="2306" href="Data.Fin.Substitution.html#2044" class="Bound"
+      > <a name="2306" href="Data.Fin.Substitution.html#2044" class="Bound"
       >T&#8322;</a
-      ><a name="2308"
-      > </a
-      ><a name="2309" href="Data.Fin.Substitution.html#2282" class="Bound"
+      > <a name="2309" href="Data.Fin.Substitution.html#2282" class="Bound"
       >n</a
-      ><a name="2310"
-      > </a
-      ><a name="2311" href="Data.Fin.Substitution.html#2284" class="Bound"
+      > <a name="2311" href="Data.Fin.Substitution.html#2284" class="Bound"
       >k</a
-      ><a name="2312"
-      > </a
-      ><a name="2313" class="Symbol"
+      > <a name="2313" class="Symbol"
       >&#8594;</a
-      ><a name="2314"
-      > </a
-      ><a name="2315" href="Data.Fin.Substitution.html#899" class="Function"
+      > <a name="2315" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="2318"
-      > </a
-      ><a name="2319" href="Data.Fin.Substitution.html#2041" class="Bound"
+      > <a name="2319" href="Data.Fin.Substitution.html#2041" class="Bound"
       >T&#8321;</a
-      ><a name="2321"
-      > </a
-      ><a name="2322" href="Data.Fin.Substitution.html#2280" class="Bound"
+      > <a name="2322" href="Data.Fin.Substitution.html#2280" class="Bound"
       >m</a
-      ><a name="2323"
-      > </a
-      ><a name="2324" href="Data.Fin.Substitution.html#2284" class="Bound"
+      > <a name="2324" href="Data.Fin.Substitution.html#2284" class="Bound"
       >k</a
-      ><a name="2325"
       >
-  </a
-      ><a name="2328" href="Data.Fin.Substitution.html#2328" class="Bound"
+  <a name="2328" href="Data.Fin.Substitution.html#2328" class="Bound"
       >&#961;&#8321;</a
-      ><a name="2330"
-      > </a
-      ><a name="2331" href="Data.Fin.Substitution.html#2271" class="Function Operator"
+      > <a name="2331" href="Data.Fin.Substitution.html#Application._&#8857;_" class="Function Operator"
       >&#8857;</a
-      ><a name="2332"
-      > </a
-      ><a name="2333" href="Data.Fin.Substitution.html#2333" class="Bound"
+      > <a name="2333" href="Data.Fin.Substitution.html#2333" class="Bound"
       >&#961;&#8322;</a
-      ><a name="2335"
-      > </a
-      ><a name="2336" class="Symbol"
+      > <a name="2336" class="Symbol"
       >=</a
-      ><a name="2337"
-      > </a
-      ><a name="2338" href="Data.Vec.html#1999" class="Function"
+      > <a name="2338" href="Data.Vec.html#map" class="Function"
       >map</a
-      ><a name="2341"
-      > </a
-      ><a name="2342" class="Symbol"
+      > <a name="2342" class="Symbol"
       >(&#955;</a
-      ><a name="2344"
-      > </a
-      ><a name="2345" href="Data.Fin.Substitution.html#2345" class="Bound"
+      > <a name="2345" href="Data.Fin.Substitution.html#2345" class="Bound"
       >t</a
-      ><a name="2346"
-      > </a
-      ><a name="2347" class="Symbol"
+      > <a name="2347" class="Symbol"
       >&#8594;</a
-      ><a name="2348"
-      > </a
-      ><a name="2349" href="Data.Fin.Substitution.html#2345" class="Bound"
+      > <a name="2349" href="Data.Fin.Substitution.html#2345" class="Bound"
       >t</a
-      ><a name="2350"
-      > </a
-      ><a name="2351" href="Data.Fin.Substitution.html#2165" class="Field Operator"
+      > <a name="2351" href="Data.Fin.Substitution.html#Application._/_" class="Field Operator"
       >/</a
-      ><a name="2352"
-      > </a
-      ><a name="2353" href="Data.Fin.Substitution.html#2333" class="Bound"
+      > <a name="2353" href="Data.Fin.Substitution.html#2333" class="Bound"
       >&#961;&#8322;</a
       ><a name="2355" class="Symbol"
       >)</a
-      ><a name="2356"
-      > </a
-      ><a name="2357" href="Data.Fin.Substitution.html#2328" class="Bound"
+      > <a name="2357" href="Data.Fin.Substitution.html#2328" class="Bound"
       >&#961;&#8321;</a
-      ><a name="2359"
       >
 
-  </a
-      ><a name="2363" class="Comment"
+  <a name="2363" class="Comment"
       >-- Application of multiple substitutions.</a
-      ><a name="2404"
       >
 
-  </a
-      ><a name="2408" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+  <a name="Application._/&#10038;_" href="Data.Fin.Substitution.html#Application._/&#10038;_" class="Function Operator"
       >_/&#10038;_</a
-      ><a name="2412"
-      > </a
-      ><a name="2413" class="Symbol"
+      > <a name="2413" class="Symbol"
       >:</a
-      ><a name="2414"
-      > </a
-      ><a name="2415" class="Symbol"
+      > <a name="2415" class="Symbol"
       >&#8704;</a
-      ><a name="2416"
-      > </a
-      ><a name="2417" class="Symbol"
+      > <a name="2417" class="Symbol"
       >{</a
       ><a name="2418" href="Data.Fin.Substitution.html#2418" class="Bound"
       >m</a
-      ><a name="2419"
-      > </a
-      ><a name="2420" href="Data.Fin.Substitution.html#2420" class="Bound"
+      > <a name="2420" href="Data.Fin.Substitution.html#2420" class="Bound"
       >n</a
       ><a name="2421" class="Symbol"
       >}</a
-      ><a name="2422"
-      > </a
-      ><a name="2423" class="Symbol"
+      > <a name="2423" class="Symbol"
       >&#8594;</a
-      ><a name="2424"
-      > </a
-      ><a name="2425" href="Data.Fin.Substitution.html#2041" class="Bound"
+      > <a name="2425" href="Data.Fin.Substitution.html#2041" class="Bound"
       >T&#8321;</a
-      ><a name="2427"
-      > </a
-      ><a name="2428" href="Data.Fin.Substitution.html#2418" class="Bound"
+      > <a name="2428" href="Data.Fin.Substitution.html#2418" class="Bound"
       >m</a
-      ><a name="2429"
-      > </a
-      ><a name="2430" class="Symbol"
+      > <a name="2430" class="Symbol"
       >&#8594;</a
-      ><a name="2431"
-      > </a
-      ><a name="2432" href="Data.Fin.Substitution.html#1007" class="Function"
+      > <a name="2432" href="Data.Fin.Substitution.html#Subs" class="Function"
       >Subs</a
-      ><a name="2436"
-      > </a
-      ><a name="2437" href="Data.Fin.Substitution.html#2044" class="Bound"
+      > <a name="2437" href="Data.Fin.Substitution.html#2044" class="Bound"
       >T&#8322;</a
-      ><a name="2439"
-      > </a
-      ><a name="2440" href="Data.Fin.Substitution.html#2418" class="Bound"
+      > <a name="2440" href="Data.Fin.Substitution.html#2418" class="Bound"
       >m</a
-      ><a name="2441"
-      > </a
-      ><a name="2442" href="Data.Fin.Substitution.html#2420" class="Bound"
+      > <a name="2442" href="Data.Fin.Substitution.html#2420" class="Bound"
       >n</a
-      ><a name="2443"
-      > </a
-      ><a name="2444" class="Symbol"
+      > <a name="2444" class="Symbol"
       >&#8594;</a
-      ><a name="2445"
-      > </a
-      ><a name="2446" href="Data.Fin.Substitution.html#2041" class="Bound"
+      > <a name="2446" href="Data.Fin.Substitution.html#2041" class="Bound"
       >T&#8321;</a
-      ><a name="2448"
-      > </a
-      ><a name="2449" href="Data.Fin.Substitution.html#2420" class="Bound"
+      > <a name="2449" href="Data.Fin.Substitution.html#2420" class="Bound"
       >n</a
-      ><a name="2450"
       >
-  </a
-      ><a name="2453" href="Data.Fin.Substitution.html#2408" class="Function Operator"
+  <a name="2453" href="Data.Fin.Substitution.html#Application._/&#10038;_" class="Function Operator"
       >_/&#10038;_</a
-      ><a name="2457"
-      > </a
-      ><a name="2458" class="Symbol"
+      > <a name="2458" class="Symbol"
       >=</a
-      ><a name="2459"
-      > </a
-      ><a name="2460" href="Data.Star.html#1921" class="Function"
+      > <a name="2460" href="Data.Star.html#gfold" class="Function"
       >Star.gfold</a
-      ><a name="2470"
-      > </a
-      ><a name="2471" href="Function.html#1012" class="Function"
+      > <a name="2471" href="Function.html#id" class="Function"
       >Fun.id</a
-      ><a name="2477"
-      > </a
-      ><a name="2478" class="Symbol"
+      > <a name="2478" class="Symbol"
       >_</a
-      ><a name="2479"
-      > </a
-      ><a name="2480" class="Symbol"
+      > <a name="2480" class="Symbol"
       >(</a
-      ><a name="2481" href="Function.html#1480" class="Function"
+      ><a name="2481" href="Function.html#flip" class="Function"
       >flip</a
-      ><a name="2485"
-      > </a
-      ><a name="2486" href="Data.Fin.Substitution.html#2165" class="Field Operator"
+      > <a name="2486" href="Data.Fin.Substitution.html#Application._/_" class="Field Operator"
       >_/_</a
       ><a name="2489" class="Symbol"
       >)</a
-      ><a name="2490"
-      > </a
-      ><a name="2491" class="Symbol"
+      > <a name="2491" class="Symbol"
       >{</a
       ><a name="2492" class="Argument"
       >k</a
-      ><a name="2493"
-      > </a
-      ><a name="2494" class="Symbol"
+      > <a name="2494" class="Symbol"
       >=</a
-      ><a name="2495"
-      > </a
-      ><a name="2496" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      > <a name="2496" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
       ><a name="2500" class="Symbol"
       >}</a
-      ><a name="2501"
       >
 
-</a
-      ><a name="2503" class="Comment"
+<a name="2503" class="Comment"
       >-- A combination of the two records above.</a
-      ><a name="2545"
       >
 
-</a
-      ><a name="2547" class="Keyword"
+<a name="2547" class="Keyword"
       >record</a
-      ><a name="2553"
-      > </a
-      ><a name="2554" href="Data.Fin.Substitution.html#2554" class="Record"
+      > <a name="Subst" href="Data.Fin.Substitution.html#Subst" class="Record"
       >Subst</a
-      ><a name="2559"
-      > </a
-      ><a name="2560" class="Symbol"
+      > <a name="2560" class="Symbol"
       >(</a
       ><a name="2561" href="Data.Fin.Substitution.html#2561" class="Bound"
       >T</a
-      ><a name="2562"
-      > </a
-      ><a name="2563" class="Symbol"
+      > <a name="2563" class="Symbol"
       >:</a
-      ><a name="2564"
-      > </a
-      ><a name="2565" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="2565" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="2566"
-      > </a
-      ><a name="2567" class="Symbol"
+      > <a name="2567" class="Symbol"
       >&#8594;</a
-      ><a name="2568"
-      > </a
-      ><a name="2569" class="PrimitiveType"
+      > <a name="2569" class="PrimitiveType"
       >Set</a
       ><a name="2572" class="Symbol"
       >)</a
-      ><a name="2573"
-      > </a
-      ><a name="2574" class="Symbol"
+      > <a name="2574" class="Symbol"
       >:</a
-      ><a name="2575"
-      > </a
-      ><a name="2576" class="PrimitiveType"
+      > <a name="2576" class="PrimitiveType"
       >Set</a
-      ><a name="2579"
-      > </a
-      ><a name="2580" class="Keyword"
+      > <a name="2580" class="Keyword"
       >where</a
-      ><a name="2585"
       >
-  </a
-      ><a name="2588" class="Keyword"
+  <a name="2588" class="Keyword"
       >field</a
-      ><a name="2593"
       >
-    </a
-      ><a name="2598" href="Data.Fin.Substitution.html#2598" class="Field"
+    <a name="Subst.simple" href="Data.Fin.Substitution.html#Subst.simple" class="Field"
       >simple</a
-      ><a name="2604"
-      >      </a
-      ><a name="2610" class="Symbol"
+      >      <a name="2610" class="Symbol"
       >:</a
-      ><a name="2611"
-      > </a
-      ><a name="2612" href="Data.Fin.Substitution.html#1113" class="Record"
+      > <a name="2612" href="Data.Fin.Substitution.html#Simple" class="Record"
       >Simple</a
-      ><a name="2618"
-      >      </a
-      ><a name="2624" href="Data.Fin.Substitution.html#2561" class="Bound"
+      >      <a name="2624" href="Data.Fin.Substitution.html#2561" class="Bound"
       >T</a
-      ><a name="2625"
       >
-    </a
-      ><a name="2630" href="Data.Fin.Substitution.html#2630" class="Field"
+    <a name="Subst.application" href="Data.Fin.Substitution.html#Subst.application" class="Field"
       >application</a
-      ><a name="2641"
-      > </a
-      ><a name="2642" class="Symbol"
+      > <a name="2642" class="Symbol"
       >:</a
-      ><a name="2643"
-      > </a
-      ><a name="2644" href="Data.Fin.Substitution.html#2028" class="Record"
+      > <a name="2644" href="Data.Fin.Substitution.html#Application" class="Record"
       >Application</a
-      ><a name="2655"
-      > </a
-      ><a name="2656" href="Data.Fin.Substitution.html#2561" class="Bound"
+      > <a name="2656" href="Data.Fin.Substitution.html#2561" class="Bound"
       >T</a
-      ><a name="2657"
-      > </a
-      ><a name="2658" href="Data.Fin.Substitution.html#2561" class="Bound"
+      > <a name="2658" href="Data.Fin.Substitution.html#2561" class="Bound"
       >T</a
-      ><a name="2659"
       >
 
-  </a
-      ><a name="2663" class="Keyword"
+  <a name="2663" class="Keyword"
       >open</a
-      ><a name="2667"
-      > </a
-      ><a name="2668" href="Data.Fin.Substitution.html#1113" class="Module"
+      > <a name="2668" href="Data.Fin.Substitution.html#Simple" class="Module"
       >Simple</a
-      ><a name="2674"
-      >      </a
-      ><a name="2680" href="Data.Fin.Substitution.html#2598" class="Field"
+      >      <a name="2680" href="Data.Fin.Substitution.html#Subst.simple" class="Field"
       >simple</a
-      ><a name="2686"
-      >      </a
-      ><a name="2692" class="Keyword"
+      >      <a name="2692" class="Keyword"
       >public</a
-      ><a name="2698"
       >
-  </a
-      ><a name="2701" class="Keyword"
+  <a name="2701" class="Keyword"
       >open</a
-      ><a name="2705"
-      > </a
-      ><a name="2706" href="Data.Fin.Substitution.html#2028" class="Module"
+      > <a name="2706" href="Data.Fin.Substitution.html#Application" class="Module"
       >Application</a
-      ><a name="2717"
-      > </a
-      ><a name="2718" href="Data.Fin.Substitution.html#2630" class="Field"
+      > <a name="2718" href="Data.Fin.Substitution.html#Subst.application" class="Field"
       >application</a
-      ><a name="2729"
-      > </a
-      ><a name="2730" class="Keyword"
+      > <a name="2730" class="Keyword"
       >public</a
-      ><a name="2736"
       >
 
-  </a
-      ><a name="2740" class="Comment"
+  <a name="2740" class="Comment"
       >-- Composition of multiple substitutions.</a
-      ><a name="2781"
       >
 
-  </a
-      ><a name="2785" href="Data.Fin.Substitution.html#2785" class="Function"
+  <a name="Subst.&#10752;" href="Data.Fin.Substitution.html#Subst.&#10752;" class="Function"
       >&#10752;</a
-      ><a name="2786"
-      > </a
-      ><a name="2787" class="Symbol"
+      > <a name="2787" class="Symbol"
       >:</a
-      ><a name="2788"
-      > </a
-      ><a name="2789" class="Symbol"
+      > <a name="2789" class="Symbol"
       >&#8704;</a
-      ><a name="2790"
-      > </a
-      ><a name="2791" class="Symbol"
+      > <a name="2791" class="Symbol"
       >{</a
       ><a name="2792" href="Data.Fin.Substitution.html#2792" class="Bound"
       >m</a
-      ><a name="2793"
-      > </a
-      ><a name="2794" href="Data.Fin.Substitution.html#2794" class="Bound"
+      > <a name="2794" href="Data.Fin.Substitution.html#2794" class="Bound"
       >n</a
       ><a name="2795" class="Symbol"
       >}</a
-      ><a name="2796"
-      > </a
-      ><a name="2797" class="Symbol"
+      > <a name="2797" class="Symbol"
       >&#8594;</a
-      ><a name="2798"
-      > </a
-      ><a name="2799" href="Data.Fin.Substitution.html#1007" class="Function"
+      > <a name="2799" href="Data.Fin.Substitution.html#Subs" class="Function"
       >Subs</a
-      ><a name="2803"
-      > </a
-      ><a name="2804" href="Data.Fin.Substitution.html#2561" class="Bound"
+      > <a name="2804" href="Data.Fin.Substitution.html#2561" class="Bound"
       >T</a
-      ><a name="2805"
-      > </a
-      ><a name="2806" href="Data.Fin.Substitution.html#2792" class="Bound"
+      > <a name="2806" href="Data.Fin.Substitution.html#2792" class="Bound"
       >m</a
-      ><a name="2807"
-      > </a
-      ><a name="2808" href="Data.Fin.Substitution.html#2794" class="Bound"
+      > <a name="2808" href="Data.Fin.Substitution.html#2794" class="Bound"
       >n</a
-      ><a name="2809"
-      > </a
-      ><a name="2810" class="Symbol"
+      > <a name="2810" class="Symbol"
       >&#8594;</a
-      ><a name="2811"
-      > </a
-      ><a name="2812" href="Data.Fin.Substitution.html#899" class="Function"
+      > <a name="2812" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="2815"
-      > </a
-      ><a name="2816" href="Data.Fin.Substitution.html#2561" class="Bound"
+      > <a name="2816" href="Data.Fin.Substitution.html#2561" class="Bound"
       >T</a
-      ><a name="2817"
-      > </a
-      ><a name="2818" href="Data.Fin.Substitution.html#2792" class="Bound"
+      > <a name="2818" href="Data.Fin.Substitution.html#2792" class="Bound"
       >m</a
-      ><a name="2819"
-      > </a
-      ><a name="2820" href="Data.Fin.Substitution.html#2794" class="Bound"
+      > <a name="2820" href="Data.Fin.Substitution.html#2794" class="Bound"
       >n</a
-      ><a name="2821"
       >
-  </a
-      ><a name="2824" href="Data.Fin.Substitution.html#2785" class="Function"
+  <a name="2824" href="Data.Fin.Substitution.html#Subst.&#10752;" class="Function"
       >&#10752;</a
-      ><a name="2825"
-      > </a
-      ><a name="2826" href="Data.Star.html#614" class="InductiveConstructor"
+      > <a name="2826" href="Data.Star.html#Star.&#949;" class="InductiveConstructor"
       >&#949;</a
-      ><a name="2827"
-      >        </a
-      ><a name="2835" class="Symbol"
+      >        <a name="2835" class="Symbol"
       >=</a
-      ><a name="2836"
-      > </a
-      ><a name="2837" href="Data.Fin.Substitution.html#1657" class="Function"
+      > <a name="2837" href="Data.Fin.Substitution.html#1657" class="Function"
       >id</a
-      ><a name="2839"
       >
-  </a
-      ><a name="2842" href="Data.Fin.Substitution.html#2785" class="Function"
+  <a name="2842" href="Data.Fin.Substitution.html#Subst.&#10752;" class="Function"
       >&#10752;</a
-      ><a name="2843"
-      > </a
-      ><a name="2844" class="Symbol"
+      > <a name="2844" class="Symbol"
       >(</a
       ><a name="2845" href="Data.Fin.Substitution.html#2845" class="Bound"
       >&#961;</a
-      ><a name="2846"
-      > </a
-      ><a name="2847" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="2847" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="2848"
-      > </a
-      ><a name="2849" href="Data.Star.html#614" class="InductiveConstructor"
+      > <a name="2849" href="Data.Star.html#Star.&#949;" class="InductiveConstructor"
       >&#949;</a
       ><a name="2850" class="Symbol"
       >)</a
-      ><a name="2851"
-      >  </a
-      ><a name="2853" class="Symbol"
+      >  <a name="2853" class="Symbol"
       >=</a
-      ><a name="2854"
-      > </a
-      ><a name="2855" href="Data.Fin.Substitution.html#2845" class="Bound"
+      > <a name="2855" href="Data.Fin.Substitution.html#2845" class="Bound"
       >&#961;</a
-      ><a name="2856"
-      >  </a
-      ><a name="2858" class="Comment"
+      >  <a name="2858" class="Comment"
       >-- Convenient optimisation; simplifies some proofs.</a
-      ><a name="2909"
       >
-  </a
-      ><a name="2912" href="Data.Fin.Substitution.html#2785" class="Function"
+  <a name="2912" href="Data.Fin.Substitution.html#Subst.&#10752;" class="CatchallClause Function"
       >&#10752;</a
-      ><a name="2913"
+      ><a name="2913" class="CatchallClause"
       > </a
-      ><a name="2914" class="Symbol"
+      ><a name="2914" class="CatchallClause Symbol"
       >(</a
-      ><a name="2915" href="Data.Fin.Substitution.html#2915" class="Bound"
+      ><a name="2915" href="Data.Fin.Substitution.html#2915" class="CatchallClause Bound"
       >&#961;</a
-      ><a name="2916"
+      ><a name="2916" class="CatchallClause"
       > </a
-      ><a name="2917" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      ><a name="2917" href="Data.Star.html#Star._&#9669;_" class="CatchallClause InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="2918"
+      ><a name="2918" class="CatchallClause"
       > </a
-      ><a name="2919" href="Data.Fin.Substitution.html#2919" class="Bound"
+      ><a name="2919" href="Data.Fin.Substitution.html#2919" class="CatchallClause Bound"
       >&#961;s</a
-      ><a name="2921" class="Symbol"
+      ><a name="2921" class="CatchallClause Symbol"
       >)</a
-      ><a name="2922"
-      > </a
-      ><a name="2923" class="Symbol"
+      > <a name="2923" class="Symbol"
       >=</a
-      ><a name="2924"
-      > </a
-      ><a name="2925" href="Data.Fin.Substitution.html#2785" class="Function"
+      > <a name="2925" href="Data.Fin.Substitution.html#Subst.&#10752;" class="Function"
       >&#10752;</a
-      ><a name="2926"
-      > </a
-      ><a name="2927" href="Data.Fin.Substitution.html#2919" class="Bound"
+      > <a name="2927" href="Data.Fin.Substitution.html#2919" class="Bound"
       >&#961;s</a
-      ><a name="2929"
-      > </a
-      ><a name="2930" href="Data.Fin.Substitution.html#2271" class="Function Operator"
+      > <a name="2930" href="Data.Fin.Substitution.html#2271" class="Function Operator"
       >&#8857;</a
-      ><a name="2931"
-      > </a
-      ><a name="2932" href="Data.Fin.Substitution.html#2915" class="Bound"
+      > <a name="2932" href="Data.Fin.Substitution.html#2915" class="Bound"
       >&#961;</a
-      ><a name="2933"
       >
 
-</a
-      ><a name="2935" class="Comment"
+<a name="2935" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="3007"
       >
-</a
-      ><a name="3008" class="Comment"
+<a name="3008" class="Comment"
       >-- Instantiations and code for facilitating instantiations</a
-      ><a name="3066"
       >
 
-</a
-      ><a name="3068" class="Comment"
+<a name="3068" class="Comment"
       >-- Liftings from T&#8321; to T&#8322;.</a
-      ><a name="3094"
       >
 
-</a
-      ><a name="3096" class="Keyword"
+<a name="3096" class="Keyword"
       >record</a
-      ><a name="3102"
-      > </a
-      ><a name="3103" href="Data.Fin.Substitution.html#3103" class="Record"
+      > <a name="Lift" href="Data.Fin.Substitution.html#Lift" class="Record"
       >Lift</a
-      ><a name="3107"
-      > </a
-      ><a name="3108" class="Symbol"
+      > <a name="3108" class="Symbol"
       >(</a
       ><a name="3109" href="Data.Fin.Substitution.html#3109" class="Bound"
       >T&#8321;</a
-      ><a name="3111"
-      > </a
-      ><a name="3112" href="Data.Fin.Substitution.html#3112" class="Bound"
+      > <a name="3112" href="Data.Fin.Substitution.html#3112" class="Bound"
       >T&#8322;</a
-      ><a name="3114"
-      > </a
-      ><a name="3115" class="Symbol"
+      > <a name="3115" class="Symbol"
       >:</a
-      ><a name="3116"
-      > </a
-      ><a name="3117" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="3117" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="3118"
-      > </a
-      ><a name="3119" class="Symbol"
+      > <a name="3119" class="Symbol"
       >&#8594;</a
-      ><a name="3120"
-      > </a
-      ><a name="3121" class="PrimitiveType"
+      > <a name="3121" class="PrimitiveType"
       >Set</a
       ><a name="3124" class="Symbol"
       >)</a
-      ><a name="3125"
-      > </a
-      ><a name="3126" class="Symbol"
+      > <a name="3126" class="Symbol"
       >:</a
-      ><a name="3127"
-      > </a
-      ><a name="3128" class="PrimitiveType"
+      > <a name="3128" class="PrimitiveType"
       >Set</a
-      ><a name="3131"
-      > </a
-      ><a name="3132" class="Keyword"
+      > <a name="3132" class="Keyword"
       >where</a
-      ><a name="3137"
       >
-  </a
-      ><a name="3140" class="Keyword"
+  <a name="3140" class="Keyword"
       >field</a
-      ><a name="3145"
       >
-    </a
-      ><a name="3150" href="Data.Fin.Substitution.html#3150" class="Field"
+    <a name="Lift.simple" href="Data.Fin.Substitution.html#Lift.simple" class="Field"
       >simple</a
-      ><a name="3156"
-      > </a
-      ><a name="3157" class="Symbol"
+      > <a name="3157" class="Symbol"
       >:</a
-      ><a name="3158"
-      > </a
-      ><a name="3159" href="Data.Fin.Substitution.html#1113" class="Record"
+      > <a name="3159" href="Data.Fin.Substitution.html#Simple" class="Record"
       >Simple</a
-      ><a name="3165"
-      > </a
-      ><a name="3166" href="Data.Fin.Substitution.html#3109" class="Bound"
+      > <a name="3166" href="Data.Fin.Substitution.html#3109" class="Bound"
       >T&#8321;</a
-      ><a name="3168"
       >
-    </a
-      ><a name="3173" href="Data.Fin.Substitution.html#3173" class="Field"
+    <a name="Lift.lift" href="Data.Fin.Substitution.html#Lift.lift" class="Field"
       >lift</a
-      ><a name="3177"
-      >   </a
-      ><a name="3180" class="Symbol"
+      >   <a name="3180" class="Symbol"
       >:</a
-      ><a name="3181"
-      > </a
-      ><a name="3182" class="Symbol"
+      > <a name="3182" class="Symbol"
       >&#8704;</a
-      ><a name="3183"
-      > </a
-      ><a name="3184" class="Symbol"
+      > <a name="3184" class="Symbol"
       >{</a
       ><a name="3185" href="Data.Fin.Substitution.html#3185" class="Bound"
       >n</a
       ><a name="3186" class="Symbol"
       >}</a
-      ><a name="3187"
-      > </a
-      ><a name="3188" class="Symbol"
+      > <a name="3188" class="Symbol"
       >&#8594;</a
-      ><a name="3189"
-      > </a
-      ><a name="3190" href="Data.Fin.Substitution.html#3109" class="Bound"
+      > <a name="3190" href="Data.Fin.Substitution.html#3109" class="Bound"
       >T&#8321;</a
-      ><a name="3192"
-      > </a
-      ><a name="3193" href="Data.Fin.Substitution.html#3185" class="Bound"
+      > <a name="3193" href="Data.Fin.Substitution.html#3185" class="Bound"
       >n</a
-      ><a name="3194"
-      > </a
-      ><a name="3195" class="Symbol"
+      > <a name="3195" class="Symbol"
       >&#8594;</a
-      ><a name="3196"
-      > </a
-      ><a name="3197" href="Data.Fin.Substitution.html#3112" class="Bound"
+      > <a name="3197" href="Data.Fin.Substitution.html#3112" class="Bound"
       >T&#8322;</a
-      ><a name="3199"
-      > </a
-      ><a name="3200" href="Data.Fin.Substitution.html#3185" class="Bound"
+      > <a name="3200" href="Data.Fin.Substitution.html#3185" class="Bound"
       >n</a
-      ><a name="3201"
       >
 
-  </a
-      ><a name="3205" class="Keyword"
+  <a name="3205" class="Keyword"
       >open</a
-      ><a name="3209"
-      > </a
-      ><a name="3210" href="Data.Fin.Substitution.html#1113" class="Module"
+      > <a name="3210" href="Data.Fin.Substitution.html#Simple" class="Module"
       >Simple</a
-      ><a name="3216"
-      > </a
-      ><a name="3217" href="Data.Fin.Substitution.html#3150" class="Field"
+      > <a name="3217" href="Data.Fin.Substitution.html#Lift.simple" class="Field"
       >simple</a
-      ><a name="3223"
-      > </a
-      ><a name="3224" class="Keyword"
+      > <a name="3224" class="Keyword"
       >public</a
-      ><a name="3230"
       >
 
-</a
-      ><a name="3232" class="Comment"
+<a name="3232" class="Comment"
       >-- Variable substitutions (renamings).</a
-      ><a name="3270"
       >
 
-</a
-      ><a name="3272" class="Keyword"
+<a name="3272" class="Keyword"
       >module</a
-      ><a name="3278"
-      > </a
-      ><a name="3279" href="Data.Fin.Substitution.html#3279" class="Module"
+      > <a name="VarSubst" href="Data.Fin.Substitution.html#VarSubst" class="Module"
       >VarSubst</a
-      ><a name="3287"
-      > </a
-      ><a name="3288" class="Keyword"
+      > <a name="3288" class="Keyword"
       >where</a
-      ><a name="3293"
       >
 
-  </a
-      ><a name="3297" href="Data.Fin.Substitution.html#3297" class="Function"
+  <a name="VarSubst.subst" href="Data.Fin.Substitution.html#VarSubst.subst" class="Function"
       >subst</a
-      ><a name="3302"
-      > </a
-      ><a name="3303" class="Symbol"
+      > <a name="3303" class="Symbol"
       >:</a
-      ><a name="3304"
-      > </a
-      ><a name="3305" href="Data.Fin.Substitution.html#2554" class="Record"
+      > <a name="3305" href="Data.Fin.Substitution.html#Subst" class="Record"
       >Subst</a
-      ><a name="3310"
-      > </a
-      ><a name="3311" href="Data.Fin.html#842" class="Datatype"
+      > <a name="3311" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
-      ><a name="3314"
       >
-  </a
-      ><a name="3317" href="Data.Fin.Substitution.html#3297" class="Function"
+  <a name="3317" href="Data.Fin.Substitution.html#VarSubst.subst" class="Function"
       >subst</a
-      ><a name="3322"
-      > </a
-      ><a name="3323" class="Symbol"
+      > <a name="3323" class="Symbol"
       >=</a
-      ><a name="3324"
-      > </a
-      ><a name="3325" class="Keyword"
+      > <a name="3325" class="Keyword"
       >record</a
-      ><a name="3331"
       >
-    </a
-      ><a name="3336" class="Symbol"
+    <a name="3336" class="Symbol"
       >{</a
-      ><a name="3337"
-      > </a
-      ><a name="3338" class="Field"
+      > <a name="3338" class="Field"
       >simple</a
-      ><a name="3344"
-      >      </a
-      ><a name="3350" class="Symbol"
+      >      <a name="3350" class="Symbol"
       >=</a
-      ><a name="3351"
-      > </a
-      ><a name="3352" class="Keyword"
+      > <a name="3352" class="Keyword"
       >record</a
-      ><a name="3358"
-      > </a
-      ><a name="3359" class="Symbol"
+      > <a name="3359" class="Symbol"
       >{</a
-      ><a name="3360"
-      > </a
-      ><a name="3361" class="Field"
+      > <a name="3361" class="Field"
       >var</a
-      ><a name="3364"
-      > </a
-      ><a name="3365" class="Symbol"
+      > <a name="3365" class="Symbol"
       >=</a
-      ><a name="3366"
-      > </a
-      ><a name="3367" href="Function.html#1012" class="Function"
+      > <a name="3367" href="Function.html#id" class="Function"
       >Fun.id</a
       ><a name="3373" class="Symbol"
       >;</a
-      ><a name="3374"
-      > </a
-      ><a name="3375" class="Field"
+      > <a name="3375" class="Field"
       >weaken</a
-      ><a name="3381"
-      > </a
-      ><a name="3382" class="Symbol"
+      > <a name="3382" class="Symbol"
       >=</a
-      ><a name="3383"
-      > </a
-      ><a name="3384" href="Data.Fin.html#895" class="InductiveConstructor"
+      > <a name="3384" href="Data.Fin.html#Fin.suc" class="InductiveConstructor"
       >suc</a
-      ><a name="3387"
-      > </a
-      ><a name="3388" class="Symbol"
+      > <a name="3388" class="Symbol"
       >}</a
-      ><a name="3389"
       >
-    </a
-      ><a name="3394" class="Symbol"
+    <a name="3394" class="Symbol"
       >;</a
-      ><a name="3395"
-      > </a
-      ><a name="3396" class="Field"
+      > <a name="3396" class="Field"
       >application</a
-      ><a name="3407"
-      > </a
-      ><a name="3408" class="Symbol"
+      > <a name="3408" class="Symbol"
       >=</a
-      ><a name="3409"
-      > </a
-      ><a name="3410" class="Keyword"
+      > <a name="3410" class="Keyword"
       >record</a
-      ><a name="3416"
-      > </a
-      ><a name="3417" class="Symbol"
+      > <a name="3417" class="Symbol"
       >{</a
-      ><a name="3418"
-      > </a
-      ><a name="3419" class="Field Operator"
+      > <a name="3419" class="Field Operator"
       >_/_</a
-      ><a name="3422"
-      > </a
-      ><a name="3423" class="Symbol"
+      > <a name="3423" class="Symbol"
       >=</a
-      ><a name="3424"
-      > </a
-      ><a name="3425" href="Data.Vec.html#6131" class="Function"
+      > <a name="3425" href="Data.Vec.html#lookup" class="Function"
       >lookup</a
-      ><a name="3431"
-      > </a
-      ><a name="3432" class="Symbol"
+      > <a name="3432" class="Symbol"
       >}</a
-      ><a name="3433"
       >
-    </a
-      ><a name="3438" class="Symbol"
+    <a name="3438" class="Symbol"
       >}</a
-      ><a name="3439"
       >
 
-  </a
-      ><a name="3443" class="Keyword"
+  <a name="3443" class="Keyword"
       >open</a
-      ><a name="3447"
-      > </a
-      ><a name="3448" href="Data.Fin.Substitution.html#2554" class="Module"
+      > <a name="3448" href="Data.Fin.Substitution.html#Subst" class="Module"
       >Subst</a
-      ><a name="3453"
-      > </a
-      ><a name="3454" href="Data.Fin.Substitution.html#3297" class="Function"
+      > <a name="3454" href="Data.Fin.Substitution.html#VarSubst.subst" class="Function"
       >subst</a
-      ><a name="3459"
-      > </a
-      ><a name="3460" class="Keyword"
+      > <a name="3460" class="Keyword"
       >public</a
-      ><a name="3466"
       >
 
-</a
-      ><a name="3468" class="Comment"
+<a name="3468" class="Comment"
       >-- &quot;Term&quot; substitutions.</a
-      ><a name="3492"
       >
 
-</a
-      ><a name="3494" class="Keyword"
+<a name="3494" class="Keyword"
       >record</a
-      ><a name="3500"
-      > </a
-      ><a name="3501" href="Data.Fin.Substitution.html#3501" class="Record"
+      > <a name="TermSubst" href="Data.Fin.Substitution.html#TermSubst" class="Record"
       >TermSubst</a
-      ><a name="3510"
-      > </a
-      ><a name="3511" class="Symbol"
+      > <a name="3511" class="Symbol"
       >(</a
       ><a name="3512" href="Data.Fin.Substitution.html#3512" class="Bound"
       >T</a
-      ><a name="3513"
-      > </a
-      ><a name="3514" class="Symbol"
+      > <a name="3514" class="Symbol"
       >:</a
-      ><a name="3515"
-      > </a
-      ><a name="3516" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="3516" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="3517"
-      > </a
-      ><a name="3518" class="Symbol"
+      > <a name="3518" class="Symbol"
       >&#8594;</a
-      ><a name="3519"
-      > </a
-      ><a name="3520" class="PrimitiveType"
+      > <a name="3520" class="PrimitiveType"
       >Set</a
       ><a name="3523" class="Symbol"
       >)</a
-      ><a name="3524"
-      > </a
-      ><a name="3525" class="Symbol"
+      > <a name="3525" class="Symbol"
       >:</a
-      ><a name="3526"
-      > </a
-      ><a name="3527" class="PrimitiveType"
+      > <a name="3527" class="PrimitiveType"
       >Set&#8321;</a
-      ><a name="3531"
-      > </a
-      ><a name="3532" class="Keyword"
+      > <a name="3532" class="Keyword"
       >where</a
-      ><a name="3537"
       >
-  </a
-      ><a name="3540" class="Keyword"
+  <a name="3540" class="Keyword"
       >field</a
-      ><a name="3545"
       >
-    </a
-      ><a name="3550" href="Data.Fin.Substitution.html#3550" class="Field"
+    <a name="TermSubst.var" href="Data.Fin.Substitution.html#TermSubst.var" class="Field"
       >var</a
-      ><a name="3553"
-      > </a
-      ><a name="3554" class="Symbol"
+      > <a name="3554" class="Symbol"
       >:</a
-      ><a name="3555"
-      > </a
-      ><a name="3556" class="Symbol"
+      > <a name="3556" class="Symbol"
       >&#8704;</a
-      ><a name="3557"
-      > </a
-      ><a name="3558" class="Symbol"
+      > <a name="3558" class="Symbol"
       >{</a
       ><a name="3559" href="Data.Fin.Substitution.html#3559" class="Bound"
       >n</a
       ><a name="3560" class="Symbol"
       >}</a
-      ><a name="3561"
-      > </a
-      ><a name="3562" class="Symbol"
+      > <a name="3562" class="Symbol"
       >&#8594;</a
-      ><a name="3563"
-      > </a
-      ><a name="3564" href="Data.Fin.html#842" class="Datatype"
+      > <a name="3564" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
-      ><a name="3567"
-      > </a
-      ><a name="3568" href="Data.Fin.Substitution.html#3559" class="Bound"
+      > <a name="3568" href="Data.Fin.Substitution.html#3559" class="Bound"
       >n</a
-      ><a name="3569"
-      > </a
-      ><a name="3570" class="Symbol"
+      > <a name="3570" class="Symbol"
       >&#8594;</a
-      ><a name="3571"
-      > </a
-      ><a name="3572" href="Data.Fin.Substitution.html#3512" class="Bound"
+      > <a name="3572" href="Data.Fin.Substitution.html#3512" class="Bound"
       >T</a
-      ><a name="3573"
-      > </a
-      ><a name="3574" href="Data.Fin.Substitution.html#3559" class="Bound"
+      > <a name="3574" href="Data.Fin.Substitution.html#3559" class="Bound"
       >n</a
-      ><a name="3575"
       >
-    </a
-      ><a name="3580" href="Data.Fin.Substitution.html#3580" class="Field"
+    <a name="TermSubst.app" href="Data.Fin.Substitution.html#TermSubst.app" class="Field"
       >app</a
-      ><a name="3583"
-      > </a
-      ><a name="3584" class="Symbol"
+      > <a name="3584" class="Symbol"
       >:</a
-      ><a name="3585"
-      > </a
-      ><a name="3586" class="Symbol"
+      > <a name="3586" class="Symbol"
       >&#8704;</a
-      ><a name="3587"
-      > </a
-      ><a name="3588" class="Symbol"
+      > <a name="3588" class="Symbol"
       >{</a
       ><a name="3589" href="Data.Fin.Substitution.html#3589" class="Bound"
       >T&#8242;</a
       ><a name="3591" class="Symbol"
       >}</a
-      ><a name="3592"
-      > </a
-      ><a name="3593" class="Symbol"
+      > <a name="3593" class="Symbol"
       >&#8594;</a
-      ><a name="3594"
-      > </a
-      ><a name="3595" href="Data.Fin.Substitution.html#3103" class="Record"
+      > <a name="3595" href="Data.Fin.Substitution.html#Lift" class="Record"
       >Lift</a
-      ><a name="3599"
-      > </a
-      ><a name="3600" href="Data.Fin.Substitution.html#3589" class="Bound"
+      > <a name="3600" href="Data.Fin.Substitution.html#3589" class="Bound"
       >T&#8242;</a
-      ><a name="3602"
-      > </a
-      ><a name="3603" href="Data.Fin.Substitution.html#3512" class="Bound"
+      > <a name="3603" href="Data.Fin.Substitution.html#3512" class="Bound"
       >T</a
-      ><a name="3604"
-      > </a
-      ><a name="3605" class="Symbol"
+      > <a name="3605" class="Symbol"
       >&#8594;</a
-      ><a name="3606"
-      > </a
-      ><a name="3607" class="Symbol"
+      > <a name="3607" class="Symbol"
       >&#8704;</a
-      ><a name="3608"
-      > </a
-      ><a name="3609" class="Symbol"
+      > <a name="3609" class="Symbol"
       >{</a
       ><a name="3610" href="Data.Fin.Substitution.html#3610" class="Bound"
       >m</a
-      ><a name="3611"
-      > </a
-      ><a name="3612" href="Data.Fin.Substitution.html#3612" class="Bound"
+      > <a name="3612" href="Data.Fin.Substitution.html#3612" class="Bound"
       >n</a
       ><a name="3613" class="Symbol"
       >}</a
-      ><a name="3614"
-      > </a
-      ><a name="3615" class="Symbol"
+      > <a name="3615" class="Symbol"
       >&#8594;</a
-      ><a name="3616"
-      > </a
-      ><a name="3617" href="Data.Fin.Substitution.html#3512" class="Bound"
+      > <a name="3617" href="Data.Fin.Substitution.html#3512" class="Bound"
       >T</a
-      ><a name="3618"
-      > </a
-      ><a name="3619" href="Data.Fin.Substitution.html#3610" class="Bound"
+      > <a name="3619" href="Data.Fin.Substitution.html#3610" class="Bound"
       >m</a
-      ><a name="3620"
-      > </a
-      ><a name="3621" class="Symbol"
+      > <a name="3621" class="Symbol"
       >&#8594;</a
-      ><a name="3622"
-      > </a
-      ><a name="3623" href="Data.Fin.Substitution.html#899" class="Function"
+      > <a name="3623" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="3626"
-      > </a
-      ><a name="3627" href="Data.Fin.Substitution.html#3589" class="Bound"
+      > <a name="3627" href="Data.Fin.Substitution.html#3589" class="Bound"
       >T&#8242;</a
-      ><a name="3629"
-      > </a
-      ><a name="3630" href="Data.Fin.Substitution.html#3610" class="Bound"
+      > <a name="3630" href="Data.Fin.Substitution.html#3610" class="Bound"
       >m</a
-      ><a name="3631"
-      > </a
-      ><a name="3632" href="Data.Fin.Substitution.html#3612" class="Bound"
+      > <a name="3632" href="Data.Fin.Substitution.html#3612" class="Bound"
       >n</a
-      ><a name="3633"
-      > </a
-      ><a name="3634" class="Symbol"
+      > <a name="3634" class="Symbol"
       >&#8594;</a
-      ><a name="3635"
-      > </a
-      ><a name="3636" href="Data.Fin.Substitution.html#3512" class="Bound"
+      > <a name="3636" href="Data.Fin.Substitution.html#3512" class="Bound"
       >T</a
-      ><a name="3637"
-      > </a
-      ><a name="3638" href="Data.Fin.Substitution.html#3612" class="Bound"
+      > <a name="3638" href="Data.Fin.Substitution.html#3612" class="Bound"
       >n</a
-      ><a name="3639"
       >
 
-  </a
-      ><a name="3643" class="Keyword"
+  <a name="3643" class="Keyword"
       >module</a
-      ><a name="3649"
-      > </a
-      ><a name="3650" href="Data.Fin.Substitution.html#3650" class="Module"
+      > <a name="Lifted" href="Data.Fin.Substitution.html#Lifted" class="Module"
       >Lifted</a
-      ><a name="3656"
-      > </a
-      ><a name="3657" class="Symbol"
+      > <a name="3657" class="Symbol"
       >{</a
       ><a name="3658" href="Data.Fin.Substitution.html#3658" class="Bound"
       >T&#8242;</a
       ><a name="3660" class="Symbol"
       >}</a
-      ><a name="3661"
-      > </a
-      ><a name="3662" class="Symbol"
+      > <a name="3662" class="Symbol"
       >(</a
       ><a name="3663" href="Data.Fin.Substitution.html#3663" class="Bound"
       >lift</a
-      ><a name="3667"
-      > </a
-      ><a name="3668" class="Symbol"
+      > <a name="3668" class="Symbol"
       >:</a
-      ><a name="3669"
-      > </a
-      ><a name="3670" href="Data.Fin.Substitution.html#3103" class="Record"
+      > <a name="3670" href="Data.Fin.Substitution.html#Lift" class="Record"
       >Lift</a
-      ><a name="3674"
-      > </a
-      ><a name="3675" href="Data.Fin.Substitution.html#3658" class="Bound"
+      > <a name="3675" href="Data.Fin.Substitution.html#3658" class="Bound"
       >T&#8242;</a
-      ><a name="3677"
-      > </a
-      ><a name="3678" href="Data.Fin.Substitution.html#3512" class="Bound"
+      > <a name="3678" href="Data.Fin.Substitution.html#3512" class="Bound"
       >T</a
       ><a name="3679" class="Symbol"
       >)</a
-      ><a name="3680"
-      > </a
-      ><a name="3681" class="Keyword"
+      > <a name="3681" class="Keyword"
       >where</a
-      ><a name="3686"
       >
-    </a
-      ><a name="3691" href="Data.Fin.Substitution.html#3691" class="Function"
+    <a name="TermSubst.Lifted.application" href="Data.Fin.Substitution.html#TermSubst.Lifted.application" class="Function"
       >application</a
-      ><a name="3702"
-      > </a
-      ><a name="3703" class="Symbol"
+      > <a name="3703" class="Symbol"
       >:</a
-      ><a name="3704"
-      > </a
-      ><a name="3705" href="Data.Fin.Substitution.html#2028" class="Record"
+      > <a name="3705" href="Data.Fin.Substitution.html#Application" class="Record"
       >Application</a
-      ><a name="3716"
-      > </a
-      ><a name="3717" href="Data.Fin.Substitution.html#3512" class="Bound"
+      > <a name="3717" href="Data.Fin.Substitution.html#3512" class="Bound"
       >T</a
-      ><a name="3718"
-      > </a
-      ><a name="3719" href="Data.Fin.Substitution.html#3658" class="Bound"
+      > <a name="3719" href="Data.Fin.Substitution.html#3658" class="Bound"
       >T&#8242;</a
-      ><a name="3721"
       >
-    </a
-      ><a name="3726" href="Data.Fin.Substitution.html#3691" class="Function"
+    <a name="3726" href="Data.Fin.Substitution.html#TermSubst.Lifted.application" class="Function"
       >application</a
-      ><a name="3737"
-      > </a
-      ><a name="3738" class="Symbol"
+      > <a name="3738" class="Symbol"
       >=</a
-      ><a name="3739"
-      > </a
-      ><a name="3740" class="Keyword"
+      > <a name="3740" class="Keyword"
       >record</a
-      ><a name="3746"
-      > </a
-      ><a name="3747" class="Symbol"
+      > <a name="3747" class="Symbol"
       >{</a
-      ><a name="3748"
-      > </a
-      ><a name="3749" class="Field Operator"
+      > <a name="3749" class="Field Operator"
       >_/_</a
-      ><a name="3752"
-      > </a
-      ><a name="3753" class="Symbol"
+      > <a name="3753" class="Symbol"
       >=</a
-      ><a name="3754"
-      > </a
-      ><a name="3755" href="Data.Fin.Substitution.html#3580" class="Field"
+      > <a name="3755" href="Data.Fin.Substitution.html#TermSubst.app" class="Field"
       >app</a
-      ><a name="3758"
-      > </a
-      ><a name="3759" href="Data.Fin.Substitution.html#3663" class="Bound"
+      > <a name="3759" href="Data.Fin.Substitution.html#3663" class="Bound"
       >lift</a
-      ><a name="3763"
-      > </a
-      ><a name="3764" class="Symbol"
+      > <a name="3764" class="Symbol"
       >}</a
-      ><a name="3765"
       >
 
-    </a
-      ><a name="3771" class="Keyword"
+    <a name="3771" class="Keyword"
       >open</a
-      ><a name="3775"
-      > </a
-      ><a name="3776" href="Data.Fin.Substitution.html#3103" class="Module"
+      > <a name="3776" href="Data.Fin.Substitution.html#Lift" class="Module"
       >Lift</a
-      ><a name="3780"
-      > </a
-      ><a name="3781" href="Data.Fin.Substitution.html#3663" class="Bound"
+      > <a name="3781" href="Data.Fin.Substitution.html#3663" class="Bound"
       >lift</a
-      ><a name="3785"
-      > </a
-      ><a name="3786" class="Keyword"
+      > <a name="3786" class="Keyword"
       >public</a
-      ><a name="3792"
       >
-    </a
-      ><a name="3797" class="Keyword"
+    <a name="3797" class="Keyword"
       >open</a
-      ><a name="3801"
-      > </a
-      ><a name="3802" href="Data.Fin.Substitution.html#2028" class="Module"
+      > <a name="3802" href="Data.Fin.Substitution.html#Application" class="Module"
       >Application</a
-      ><a name="3813"
-      > </a
-      ><a name="3814" href="Data.Fin.Substitution.html#3691" class="Function"
+      > <a name="3814" href="Data.Fin.Substitution.html#TermSubst.Lifted.application" class="Function"
       >application</a
-      ><a name="3825"
-      > </a
-      ><a name="3826" class="Keyword"
+      > <a name="3826" class="Keyword"
       >public</a
-      ><a name="3832"
       >
 
-  </a
-      ><a name="3836" href="Data.Fin.Substitution.html#3836" class="Function"
+  <a name="TermSubst.varLift" href="Data.Fin.Substitution.html#TermSubst.varLift" class="Function"
       >varLift</a
-      ><a name="3843"
-      > </a
-      ><a name="3844" class="Symbol"
+      > <a name="3844" class="Symbol"
       >:</a
-      ><a name="3845"
-      > </a
-      ><a name="3846" href="Data.Fin.Substitution.html#3103" class="Record"
+      > <a name="3846" href="Data.Fin.Substitution.html#Lift" class="Record"
       >Lift</a
-      ><a name="3850"
-      > </a
-      ><a name="3851" href="Data.Fin.html#842" class="Datatype"
+      > <a name="3851" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
-      ><a name="3854"
-      > </a
-      ><a name="3855" href="Data.Fin.Substitution.html#3512" class="Bound"
+      > <a name="3855" href="Data.Fin.Substitution.html#3512" class="Bound"
       >T</a
-      ><a name="3856"
       >
-  </a
-      ><a name="3859" href="Data.Fin.Substitution.html#3836" class="Function"
+  <a name="3859" href="Data.Fin.Substitution.html#TermSubst.varLift" class="Function"
       >varLift</a
-      ><a name="3866"
-      > </a
-      ><a name="3867" class="Symbol"
+      > <a name="3867" class="Symbol"
       >=</a
-      ><a name="3868"
-      > </a
-      ><a name="3869" class="Keyword"
+      > <a name="3869" class="Keyword"
       >record</a
-      ><a name="3875"
-      > </a
-      ><a name="3876" class="Symbol"
+      > <a name="3876" class="Symbol"
       >{</a
-      ><a name="3877"
-      > </a
-      ><a name="3878" class="Field"
+      > <a name="3878" class="Field"
       >simple</a
-      ><a name="3884"
-      > </a
-      ><a name="3885" class="Symbol"
+      > <a name="3885" class="Symbol"
       >=</a
-      ><a name="3886"
-      > </a
-      ><a name="3887" href="Data.Fin.Substitution.html#2598" class="Function"
+      > <a name="3887" href="Data.Fin.Substitution.html#2598" class="Function"
       >VarSubst.simple</a
       ><a name="3902" class="Symbol"
       >;</a
-      ><a name="3903"
-      > </a
-      ><a name="3904" class="Field"
+      > <a name="3904" class="Field"
       >lift</a
-      ><a name="3908"
-      > </a
-      ><a name="3909" class="Symbol"
+      > <a name="3909" class="Symbol"
       >=</a
-      ><a name="3910"
-      > </a
-      ><a name="3911" href="Data.Fin.Substitution.html#3550" class="Field"
+      > <a name="3911" href="Data.Fin.Substitution.html#TermSubst.var" class="Field"
       >var</a
-      ><a name="3914"
-      > </a
-      ><a name="3915" class="Symbol"
+      > <a name="3915" class="Symbol"
       >}</a
-      ><a name="3916"
       >
 
-  </a
-      ><a name="3920" class="Keyword"
+  <a name="3920" class="Keyword"
       >infix</a
-      ><a name="3925"
-      > </a
-      ><a name="3926" class="Number"
+      > <a name="3926" class="Number"
       >8</a
-      ><a name="3927"
-      > _/Var_
-
-  </a
-      ><a name="3938" href="Data.Fin.Substitution.html#3938" class="Function Operator"
+      > <a name="3928" href="Data.Fin.Substitution.html#TermSubst._/Var_" class="Function Operator"
       >_/Var_</a
-      ><a name="3944"
-      > </a
-      ><a name="3945" class="Symbol"
+      >
+
+  <a name="TermSubst._/Var_" href="Data.Fin.Substitution.html#TermSubst._/Var_" class="Function Operator"
+      >_/Var_</a
+      > <a name="3945" class="Symbol"
       >:</a
-      ><a name="3946"
-      > </a
-      ><a name="3947" class="Symbol"
+      > <a name="3947" class="Symbol"
       >&#8704;</a
-      ><a name="3948"
-      > </a
-      ><a name="3949" class="Symbol"
+      > <a name="3949" class="Symbol"
       >{</a
       ><a name="3950" href="Data.Fin.Substitution.html#3950" class="Bound"
       >m</a
-      ><a name="3951"
-      > </a
-      ><a name="3952" href="Data.Fin.Substitution.html#3952" class="Bound"
+      > <a name="3952" href="Data.Fin.Substitution.html#3952" class="Bound"
       >n</a
       ><a name="3953" class="Symbol"
       >}</a
-      ><a name="3954"
-      > </a
-      ><a name="3955" class="Symbol"
+      > <a name="3955" class="Symbol"
       >&#8594;</a
-      ><a name="3956"
-      > </a
-      ><a name="3957" href="Data.Fin.Substitution.html#3512" class="Bound"
+      > <a name="3957" href="Data.Fin.Substitution.html#3512" class="Bound"
       >T</a
-      ><a name="3958"
-      > </a
-      ><a name="3959" href="Data.Fin.Substitution.html#3950" class="Bound"
+      > <a name="3959" href="Data.Fin.Substitution.html#3950" class="Bound"
       >m</a
-      ><a name="3960"
-      > </a
-      ><a name="3961" class="Symbol"
+      > <a name="3961" class="Symbol"
       >&#8594;</a
-      ><a name="3962"
-      > </a
-      ><a name="3963" href="Data.Fin.Substitution.html#899" class="Function"
+      > <a name="3963" href="Data.Fin.Substitution.html#Sub" class="Function"
       >Sub</a
-      ><a name="3966"
-      > </a
-      ><a name="3967" href="Data.Fin.html#842" class="Datatype"
+      > <a name="3967" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
-      ><a name="3970"
-      > </a
-      ><a name="3971" href="Data.Fin.Substitution.html#3950" class="Bound"
+      > <a name="3971" href="Data.Fin.Substitution.html#3950" class="Bound"
       >m</a
-      ><a name="3972"
-      > </a
-      ><a name="3973" href="Data.Fin.Substitution.html#3952" class="Bound"
+      > <a name="3973" href="Data.Fin.Substitution.html#3952" class="Bound"
       >n</a
-      ><a name="3974"
-      > </a
-      ><a name="3975" class="Symbol"
+      > <a name="3975" class="Symbol"
       >&#8594;</a
-      ><a name="3976"
-      > </a
-      ><a name="3977" href="Data.Fin.Substitution.html#3512" class="Bound"
+      > <a name="3977" href="Data.Fin.Substitution.html#3512" class="Bound"
       >T</a
-      ><a name="3978"
-      > </a
-      ><a name="3979" href="Data.Fin.Substitution.html#3952" class="Bound"
+      > <a name="3979" href="Data.Fin.Substitution.html#3952" class="Bound"
       >n</a
-      ><a name="3980"
       >
-  </a
-      ><a name="3983" href="Data.Fin.Substitution.html#3938" class="Function Operator"
+  <a name="3983" href="Data.Fin.Substitution.html#TermSubst._/Var_" class="Function Operator"
       >_/Var_</a
-      ><a name="3989"
-      > </a
-      ><a name="3990" class="Symbol"
+      > <a name="3990" class="Symbol"
       >=</a
-      ><a name="3991"
-      > </a
-      ><a name="3992" href="Data.Fin.Substitution.html#3580" class="Field"
+      > <a name="3992" href="Data.Fin.Substitution.html#TermSubst.app" class="Field"
       >app</a
-      ><a name="3995"
-      > </a
-      ><a name="3996" href="Data.Fin.Substitution.html#3836" class="Function"
+      > <a name="3996" href="Data.Fin.Substitution.html#TermSubst.varLift" class="Function"
       >varLift</a
-      ><a name="4003"
       >
 
-  </a
-      ><a name="4007" href="Data.Fin.Substitution.html#4007" class="Function"
+  <a name="TermSubst.simple" href="Data.Fin.Substitution.html#TermSubst.simple" class="Function"
       >simple</a
-      ><a name="4013"
-      > </a
-      ><a name="4014" class="Symbol"
+      > <a name="4014" class="Symbol"
       >:</a
-      ><a name="4015"
-      > </a
-      ><a name="4016" href="Data.Fin.Substitution.html#1113" class="Record"
+      > <a name="4016" href="Data.Fin.Substitution.html#Simple" class="Record"
       >Simple</a
-      ><a name="4022"
-      > </a
-      ><a name="4023" href="Data.Fin.Substitution.html#3512" class="Bound"
+      > <a name="4023" href="Data.Fin.Substitution.html#3512" class="Bound"
       >T</a
-      ><a name="4024"
       >
-  </a
-      ><a name="4027" href="Data.Fin.Substitution.html#4007" class="Function"
+  <a name="4027" href="Data.Fin.Substitution.html#TermSubst.simple" class="Function"
       >simple</a
-      ><a name="4033"
-      > </a
-      ><a name="4034" class="Symbol"
+      > <a name="4034" class="Symbol"
       >=</a
-      ><a name="4035"
-      > </a
-      ><a name="4036" class="Keyword"
+      > <a name="4036" class="Keyword"
       >record</a
-      ><a name="4042"
       >
-    </a
-      ><a name="4047" class="Symbol"
+    <a name="4047" class="Symbol"
       >{</a
-      ><a name="4048"
-      > </a
-      ><a name="4049" class="Field"
+      > <a name="4049" class="Field"
       >var</a
-      ><a name="4052"
-      >    </a
-      ><a name="4056" class="Symbol"
+      >    <a name="4056" class="Symbol"
       >=</a
-      ><a name="4057"
-      > </a
-      ><a name="4058" href="Data.Fin.Substitution.html#3550" class="Field"
+      > <a name="4058" href="Data.Fin.Substitution.html#TermSubst.var" class="Field"
       >var</a
-      ><a name="4061"
       >
-    </a
-      ><a name="4066" class="Symbol"
+    <a name="4066" class="Symbol"
       >;</a
-      ><a name="4067"
-      > </a
-      ><a name="4068" class="Field"
+      > <a name="4068" class="Field"
       >weaken</a
-      ><a name="4074"
-      > </a
-      ><a name="4075" class="Symbol"
+      > <a name="4075" class="Symbol"
       >=</a
-      ><a name="4076"
-      > </a
-      ><a name="4077" class="Symbol"
+      > <a name="4077" class="Symbol"
       >&#955;</a
-      ><a name="4078"
-      > </a
-      ><a name="4079" href="Data.Fin.Substitution.html#4079" class="Bound"
+      > <a name="4079" href="Data.Fin.Substitution.html#4079" class="Bound"
       >t</a
-      ><a name="4080"
-      > </a
-      ><a name="4081" class="Symbol"
+      > <a name="4081" class="Symbol"
       >&#8594;</a
-      ><a name="4082"
-      > </a
-      ><a name="4083" href="Data.Fin.Substitution.html#4079" class="Bound"
+      > <a name="4083" href="Data.Fin.Substitution.html#4079" class="Bound"
       >t</a
-      ><a name="4084"
-      > </a
-      ><a name="4085" href="Data.Fin.Substitution.html#3938" class="Function Operator"
+      > <a name="4085" href="Data.Fin.Substitution.html#TermSubst._/Var_" class="Function Operator"
       >/Var</a
-      ><a name="4089"
-      > </a
-      ><a name="4090" href="Data.Fin.Substitution.html#1827" class="Function"
+      > <a name="4090" href="Data.Fin.Substitution.html#1827" class="Function"
       >VarSubst.wk</a
-      ><a name="4101"
       >
-    </a
-      ><a name="4106" class="Symbol"
+    <a name="4106" class="Symbol"
       >}</a
-      ><a name="4107"
       >
 
-  </a
-      ><a name="4111" href="Data.Fin.Substitution.html#4111" class="Function"
+  <a name="TermSubst.termLift" href="Data.Fin.Substitution.html#TermSubst.termLift" class="Function"
       >termLift</a
-      ><a name="4119"
-      > </a
-      ><a name="4120" class="Symbol"
+      > <a name="4120" class="Symbol"
       >:</a
-      ><a name="4121"
-      > </a
-      ><a name="4122" href="Data.Fin.Substitution.html#3103" class="Record"
+      > <a name="4122" href="Data.Fin.Substitution.html#Lift" class="Record"
       >Lift</a
-      ><a name="4126"
-      > </a
-      ><a name="4127" href="Data.Fin.Substitution.html#3512" class="Bound"
+      > <a name="4127" href="Data.Fin.Substitution.html#3512" class="Bound"
       >T</a
-      ><a name="4128"
-      > </a
-      ><a name="4129" href="Data.Fin.Substitution.html#3512" class="Bound"
+      > <a name="4129" href="Data.Fin.Substitution.html#3512" class="Bound"
       >T</a
-      ><a name="4130"
       >
-  </a
-      ><a name="4133" href="Data.Fin.Substitution.html#4111" class="Function"
+  <a name="4133" href="Data.Fin.Substitution.html#TermSubst.termLift" class="Function"
       >termLift</a
-      ><a name="4141"
-      > </a
-      ><a name="4142" class="Symbol"
+      > <a name="4142" class="Symbol"
       >=</a
-      ><a name="4143"
-      > </a
-      ><a name="4144" class="Keyword"
+      > <a name="4144" class="Keyword"
       >record</a
-      ><a name="4150"
-      > </a
-      ><a name="4151" class="Symbol"
+      > <a name="4151" class="Symbol"
       >{</a
-      ><a name="4152"
-      > </a
-      ><a name="4153" class="Field"
+      > <a name="4153" class="Field"
       >simple</a
-      ><a name="4159"
-      > </a
-      ><a name="4160" class="Symbol"
+      > <a name="4160" class="Symbol"
       >=</a
-      ><a name="4161"
-      > </a
-      ><a name="4162" href="Data.Fin.Substitution.html#4007" class="Function"
+      > <a name="4162" href="Data.Fin.Substitution.html#TermSubst.simple" class="Function"
       >simple</a
       ><a name="4168" class="Symbol"
       >;</a
-      ><a name="4169"
-      > </a
-      ><a name="4170" class="Field"
+      > <a name="4170" class="Field"
       >lift</a
-      ><a name="4174"
-      > </a
-      ><a name="4175" class="Symbol"
+      > <a name="4175" class="Symbol"
       >=</a
-      ><a name="4176"
-      > </a
-      ><a name="4177" href="Function.html#1012" class="Function"
+      > <a name="4177" href="Function.html#id" class="Function"
       >Fun.id</a
-      ><a name="4183"
-      > </a
-      ><a name="4184" class="Symbol"
+      > <a name="4184" class="Symbol"
       >}</a
-      ><a name="4185"
       >
 
-  </a
-      ><a name="4189" href="Data.Fin.Substitution.html#4189" class="Function"
+  <a name="TermSubst.subst" href="Data.Fin.Substitution.html#TermSubst.subst" class="Function"
       >subst</a
-      ><a name="4194"
-      > </a
-      ><a name="4195" class="Symbol"
+      > <a name="4195" class="Symbol"
       >:</a
-      ><a name="4196"
-      > </a
-      ><a name="4197" href="Data.Fin.Substitution.html#2554" class="Record"
+      > <a name="4197" href="Data.Fin.Substitution.html#Subst" class="Record"
       >Subst</a
-      ><a name="4202"
-      > </a
-      ><a name="4203" href="Data.Fin.Substitution.html#3512" class="Bound"
+      > <a name="4203" href="Data.Fin.Substitution.html#3512" class="Bound"
       >T</a
-      ><a name="4204"
       >
-  </a
-      ><a name="4207" href="Data.Fin.Substitution.html#4189" class="Function"
+  <a name="4207" href="Data.Fin.Substitution.html#TermSubst.subst" class="Function"
       >subst</a
-      ><a name="4212"
-      > </a
-      ><a name="4213" class="Symbol"
+      > <a name="4213" class="Symbol"
       >=</a
-      ><a name="4214"
-      > </a
-      ><a name="4215" class="Keyword"
+      > <a name="4215" class="Keyword"
       >record</a
-      ><a name="4221"
       >
-    </a
-      ><a name="4226" class="Symbol"
+    <a name="4226" class="Symbol"
       >{</a
-      ><a name="4227"
-      > </a
-      ><a name="4228" class="Field"
+      > <a name="4228" class="Field"
       >simple</a
-      ><a name="4234"
-      >      </a
-      ><a name="4240" class="Symbol"
+      >      <a name="4240" class="Symbol"
       >=</a
-      ><a name="4241"
-      > </a
-      ><a name="4242" href="Data.Fin.Substitution.html#4007" class="Function"
+      > <a name="4242" href="Data.Fin.Substitution.html#TermSubst.simple" class="Function"
       >simple</a
-      ><a name="4248"
       >
-    </a
-      ><a name="4253" class="Symbol"
+    <a name="4253" class="Symbol"
       >;</a
-      ><a name="4254"
-      > </a
-      ><a name="4255" class="Field"
+      > <a name="4255" class="Field"
       >application</a
-      ><a name="4266"
-      > </a
-      ><a name="4267" class="Symbol"
+      > <a name="4267" class="Symbol"
       >=</a
-      ><a name="4268"
-      > </a
-      ><a name="4269" href="Data.Fin.Substitution.html#3691" class="Function"
+      > <a name="4269" href="Data.Fin.Substitution.html#TermSubst.Lifted.application" class="Function"
       >Lifted.application</a
-      ><a name="4287"
-      > </a
-      ><a name="4288" href="Data.Fin.Substitution.html#4111" class="Function"
+      > <a name="4288" href="Data.Fin.Substitution.html#TermSubst.termLift" class="Function"
       >termLift</a
-      ><a name="4296"
       >
-    </a
-      ><a name="4301" class="Symbol"
+    <a name="4301" class="Symbol"
       >}</a
-      ><a name="4302"
       >
 
-  </a
-      ><a name="4306" class="Keyword"
+  <a name="4306" class="Keyword"
       >open</a
-      ><a name="4310"
-      > </a
-      ><a name="4311" href="Data.Fin.Substitution.html#2554" class="Module"
+      > <a name="4311" href="Data.Fin.Substitution.html#Subst" class="Module"
       >Subst</a
-      ><a name="4316"
-      > </a
-      ><a name="4317" href="Data.Fin.Substitution.html#4189" class="Function"
+      > <a name="4317" href="Data.Fin.Substitution.html#TermSubst.subst" class="Function"
       >subst</a
-      ><a name="4322"
-      > </a
-      ><a name="4323" class="Keyword"
+      > <a name="4323" class="Keyword"
       >public</a
-      ><a name="4329"
-      > </a
-      ><a name="4330" class="Keyword"
+      > <a name="4330" class="Keyword"
       >hiding</a
-      ><a name="4336"
-      > </a
-      ><a name="4337" class="Symbol"
+      > <a name="4337" class="Symbol"
       >(</a
-      ><a name="4338"
-      >var</a
-      ><a name="4341" class="Symbol"
+      >var<a name="4341" class="Symbol"
       >;</a
-      ><a name="4342"
-      > simple</a
-      ><a name="4349" class="Symbol"
+      > simple<a name="4349" class="Symbol"
       >)</a
-      ><a name="4350"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

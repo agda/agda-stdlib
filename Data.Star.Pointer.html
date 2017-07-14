@@ -11,2747 +11,1601 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Pointers into star-lists</a
-      ><a name="133"
       >
-</a
-      ><a name="134" class="Comment"
+<a name="134" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="206"
       >
 
-</a
-      ><a name="208" class="Keyword"
+<a name="208" class="Keyword"
       >module</a
-      ><a name="214"
-      > </a
-      ><a name="215" href="Data.Star.Pointer.html#1" class="Module"
+      > <a name="215" href="Data.Star.Pointer.html" class="Module"
       >Data.Star.Pointer</a
-      ><a name="232"
-      > </a
-      ><a name="233" class="Keyword"
+      > <a name="233" class="Keyword"
       >where</a
-      ><a name="238"
       >
 
-</a
-      ><a name="240" class="Keyword"
+<a name="240" class="Keyword"
       >open</a
-      ><a name="244"
-      > </a
-      ><a name="245" class="Keyword"
+      > <a name="245" class="Keyword"
       >import</a
-      ><a name="251"
-      > </a
-      ><a name="252" href="Data.Star.html#1" class="Module"
+      > <a name="252" href="Data.Star.html" class="Module"
       >Data.Star</a
-      ><a name="261"
       >
-</a
-      ><a name="262" class="Keyword"
+<a name="262" class="Keyword"
       >open</a
-      ><a name="266"
-      > </a
-      ><a name="267" class="Keyword"
+      > <a name="267" class="Keyword"
       >import</a
-      ><a name="273"
-      > </a
-      ><a name="274" href="Data.Star.Decoration.html#1" class="Module"
+      > <a name="274" href="Data.Star.Decoration.html" class="Module"
       >Data.Star.Decoration</a
-      ><a name="294"
       >
-</a
-      ><a name="295" class="Keyword"
+<a name="295" class="Keyword"
       >open</a
-      ><a name="299"
-      > </a
-      ><a name="300" class="Keyword"
+      > <a name="300" class="Keyword"
       >import</a
-      ><a name="306"
-      > </a
-      ><a name="307" href="Relation.Binary.html#1" class="Module"
+      > <a name="307" href="Relation.Binary.html" class="Module"
       >Relation.Binary</a
-      ><a name="322"
       >
-</a
-      ><a name="323" class="Keyword"
+<a name="323" class="Keyword"
       >open</a
-      ><a name="327"
-      > </a
-      ><a name="328" class="Keyword"
+      > <a name="328" class="Keyword"
       >import</a
-      ><a name="334"
-      > </a
-      ><a name="335" href="Data.Maybe.Base.html#1" class="Module"
+      > <a name="335" href="Data.Maybe.Base.html" class="Module"
       >Data.Maybe.Base</a
-      ><a name="350"
-      > </a
-      ><a name="351" class="Keyword"
+      > <a name="351" class="Keyword"
       >using</a
-      ><a name="356"
-      > </a
-      ><a name="357" class="Symbol"
+      > <a name="357" class="Symbol"
       >(</a
-      ><a name="358" href="Data.Maybe.Base.html#335" class="Datatype"
+      ><a name="358" href="Data.Maybe.Base.html#Maybe" class="Datatype"
       >Maybe</a
       ><a name="363" class="Symbol"
       >;</a
-      ><a name="364"
-      > </a
-      ><a name="365" href="Data.Maybe.Base.html#403" class="InductiveConstructor"
+      > <a name="365" href="Data.Maybe.Base.html#Maybe.nothing" class="InductiveConstructor"
       >nothing</a
       ><a name="372" class="Symbol"
       >;</a
-      ><a name="373"
-      > </a
-      ><a name="374" href="Data.Maybe.Base.html#373" class="InductiveConstructor"
+      > <a name="374" href="Data.Maybe.Base.html#Maybe.just" class="InductiveConstructor"
       >just</a
       ><a name="378" class="Symbol"
       >)</a
-      ><a name="379"
       >
-</a
-      ><a name="380" class="Keyword"
+<a name="380" class="Keyword"
       >open</a
-      ><a name="384"
-      > </a
-      ><a name="385" class="Keyword"
+      > <a name="385" class="Keyword"
       >import</a
-      ><a name="391"
-      > </a
-      ><a name="392" href="Data.Unit.html#1" class="Module"
+      > <a name="392" href="Data.Unit.html" class="Module"
       >Data.Unit</a
-      ><a name="401"
       >
-</a
-      ><a name="402" class="Keyword"
+<a name="402" class="Keyword"
       >open</a
-      ><a name="406"
-      > </a
-      ><a name="407" class="Keyword"
+      > <a name="407" class="Keyword"
       >import</a
-      ><a name="413"
-      > </a
-      ><a name="414" href="Function.html#1" class="Module"
+      > <a name="414" href="Function.html" class="Module"
       >Function</a
-      ><a name="422"
       >
-</a
-      ><a name="423" class="Keyword"
+<a name="423" class="Keyword"
       >open</a
-      ><a name="427"
-      > </a
-      ><a name="428" class="Keyword"
+      > <a name="428" class="Keyword"
       >import</a
-      ><a name="434"
-      > </a
-      ><a name="435" href="Level.html#1" class="Module"
+      > <a name="435" href="Level.html" class="Module"
       >Level</a
-      ><a name="440"
       >
 
-</a
-      ><a name="442" class="Comment"
+<a name="442" class="Comment"
       >-- Pointers into star-lists. The edge pointed to is decorated with Q,</a
-      ><a name="511"
       >
-</a
-      ><a name="512" class="Comment"
+<a name="512" class="Comment"
       >-- while other edges are decorated with P.</a
-      ><a name="554"
       >
 
-</a
-      ><a name="556" class="Keyword"
+<a name="556" class="Keyword"
       >data</a
-      ><a name="560"
-      > </a
-      ><a name="561" href="Data.Star.Pointer.html#561" class="Datatype"
+      > <a name="Pointer" href="Data.Star.Pointer.html#Pointer" class="Datatype"
       >Pointer</a
-      ><a name="568"
-      > </a
-      ><a name="569" class="Symbol"
+      > <a name="569" class="Symbol"
       >{</a
       ><a name="570" href="Data.Star.Pointer.html#570" class="Bound"
       >I</a
-      ><a name="571"
-      > </a
-      ><a name="572" class="Symbol"
+      > <a name="572" class="Symbol"
       >:</a
-      ><a name="573"
-      > </a
-      ><a name="574" class="PrimitiveType"
+      > <a name="574" class="PrimitiveType"
       >Set</a
       ><a name="577" class="Symbol"
       >}</a
-      ><a name="578"
-      > </a
-      ><a name="579" class="Symbol"
+      > <a name="579" class="Symbol"
       >{</a
       ><a name="580" href="Data.Star.Pointer.html#580" class="Bound"
       >T</a
-      ><a name="581"
-      > </a
-      ><a name="582" class="Symbol"
+      > <a name="582" class="Symbol"
       >:</a
-      ><a name="583"
-      > </a
-      ><a name="584" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="584" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="587"
-      > </a
-      ><a name="588" href="Data.Star.Pointer.html#570" class="Bound"
+      > <a name="588" href="Data.Star.Pointer.html#570" class="Bound"
       >I</a
-      ><a name="589"
-      > </a
-      ><a name="590" href="Agda.Primitive.html#609" class="Primitive"
+      > <a name="590" href="Agda.Primitive.html#zero" class="Primitive"
       >zero</a
       ><a name="594" class="Symbol"
       >}</a
-      ><a name="595"
-      > </a
-      ><a name="596" class="Symbol"
+      > <a name="596" class="Symbol"
       >(</a
       ><a name="597" href="Data.Star.Pointer.html#597" class="Bound"
       >P</a
-      ><a name="598"
-      > </a
-      ><a name="599" href="Data.Star.Pointer.html#599" class="Bound"
+      > <a name="599" href="Data.Star.Pointer.html#599" class="Bound"
       >Q</a
-      ><a name="600"
-      > </a
-      ><a name="601" class="Symbol"
+      > <a name="601" class="Symbol"
       >:</a
-      ><a name="602"
-      > </a
-      ><a name="603" href="Data.Star.Decoration.html#423" class="Function"
+      > <a name="603" href="Data.Star.Decoration.html#EdgePred" class="Function"
       >EdgePred</a
-      ><a name="611"
-      > </a
-      ><a name="612" href="Data.Star.Pointer.html#580" class="Bound"
+      > <a name="612" href="Data.Star.Pointer.html#580" class="Bound"
       >T</a
       ><a name="613" class="Symbol"
       >)</a
-      ><a name="614"
       >
-       </a
-      ><a name="622" class="Symbol"
+       <a name="622" class="Symbol"
       >:</a
-      ><a name="623"
-      > </a
-      ><a name="624" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="624" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="627"
-      > </a
-      ><a name="628" class="Symbol"
+      > <a name="628" class="Symbol"
       >(</a
-      ><a name="629" href="Data.Maybe.Base.html#335" class="Datatype"
+      ><a name="629" href="Data.Maybe.Base.html#Maybe" class="Datatype"
       >Maybe</a
-      ><a name="634"
-      > </a
-      ><a name="635" class="Symbol"
+      > <a name="635" class="Symbol"
       >(</a
-      ><a name="636" href="Relation.Binary.Core.html#4001" class="Record"
+      ><a name="636" href="Relation.Binary.Core.html#NonEmpty" class="Record"
       >NonEmpty</a
-      ><a name="644"
-      > </a
-      ><a name="645" class="Symbol"
+      > <a name="645" class="Symbol"
       >(</a
-      ><a name="646" href="Data.Star.html#553" class="Datatype"
+      ><a name="646" href="Data.Star.html#Star" class="Datatype"
       >Star</a
-      ><a name="650"
-      > </a
-      ><a name="651" href="Data.Star.Pointer.html#580" class="Bound"
+      > <a name="651" href="Data.Star.Pointer.html#580" class="Bound"
       >T</a
       ><a name="652" class="Symbol"
       >)))</a
-      ><a name="655"
-      > </a
-      ><a name="656" href="Agda.Primitive.html#609" class="Primitive"
+      > <a name="656" href="Agda.Primitive.html#zero" class="Primitive"
       >zero</a
-      ><a name="660"
-      > </a
-      ><a name="661" class="Keyword"
+      > <a name="661" class="Keyword"
       >where</a
-      ><a name="666"
       >
-  </a
-      ><a name="669" href="Data.Star.Pointer.html#669" class="InductiveConstructor"
+  <a name="Pointer.step" href="Data.Star.Pointer.html#Pointer.step" class="InductiveConstructor"
       >step</a
-      ><a name="673"
-      > </a
-      ><a name="674" class="Symbol"
+      > <a name="674" class="Symbol"
       >:</a
-      ><a name="675"
-      > </a
-      ><a name="676" class="Symbol"
+      > <a name="676" class="Symbol"
       >&#8704;</a
-      ><a name="677"
-      > </a
-      ><a name="678" class="Symbol"
+      > <a name="678" class="Symbol"
       >{</a
       ><a name="679" href="Data.Star.Pointer.html#679" class="Bound"
       >i</a
-      ><a name="680"
-      > </a
-      ><a name="681" href="Data.Star.Pointer.html#681" class="Bound"
+      > <a name="681" href="Data.Star.Pointer.html#681" class="Bound"
       >j</a
-      ><a name="682"
-      > </a
-      ><a name="683" href="Data.Star.Pointer.html#683" class="Bound"
+      > <a name="683" href="Data.Star.Pointer.html#683" class="Bound"
       >k</a
       ><a name="684" class="Symbol"
       >}</a
-      ><a name="685"
-      > </a
-      ><a name="686" class="Symbol"
+      > <a name="686" class="Symbol"
       >{</a
       ><a name="687" href="Data.Star.Pointer.html#687" class="Bound"
       >x</a
-      ><a name="688"
-      > </a
-      ><a name="689" class="Symbol"
+      > <a name="689" class="Symbol"
       >:</a
-      ><a name="690"
-      > </a
-      ><a name="691" href="Data.Star.Pointer.html#580" class="Bound"
+      > <a name="691" href="Data.Star.Pointer.html#580" class="Bound"
       >T</a
-      ><a name="692"
-      > </a
-      ><a name="693" href="Data.Star.Pointer.html#679" class="Bound"
+      > <a name="693" href="Data.Star.Pointer.html#679" class="Bound"
       >i</a
-      ><a name="694"
-      > </a
-      ><a name="695" href="Data.Star.Pointer.html#681" class="Bound"
+      > <a name="695" href="Data.Star.Pointer.html#681" class="Bound"
       >j</a
       ><a name="696" class="Symbol"
       >}</a
-      ><a name="697"
-      > </a
-      ><a name="698" class="Symbol"
+      > <a name="698" class="Symbol"
       >{</a
       ><a name="699" href="Data.Star.Pointer.html#699" class="Bound"
       >xs</a
-      ><a name="701"
-      > </a
-      ><a name="702" class="Symbol"
+      > <a name="702" class="Symbol"
       >:</a
-      ><a name="703"
-      > </a
-      ><a name="704" href="Data.Star.html#553" class="Datatype"
+      > <a name="704" href="Data.Star.html#Star" class="Datatype"
       >Star</a
-      ><a name="708"
-      > </a
-      ><a name="709" href="Data.Star.Pointer.html#580" class="Bound"
+      > <a name="709" href="Data.Star.Pointer.html#580" class="Bound"
       >T</a
-      ><a name="710"
-      > </a
-      ><a name="711" href="Data.Star.Pointer.html#681" class="Bound"
+      > <a name="711" href="Data.Star.Pointer.html#681" class="Bound"
       >j</a
-      ><a name="712"
-      > </a
-      ><a name="713" href="Data.Star.Pointer.html#683" class="Bound"
+      > <a name="713" href="Data.Star.Pointer.html#683" class="Bound"
       >k</a
       ><a name="714" class="Symbol"
       >}</a
-      ><a name="715"
       >
-         </a
-      ><a name="725" class="Symbol"
+         <a name="725" class="Symbol"
       >(</a
       ><a name="726" href="Data.Star.Pointer.html#726" class="Bound"
       >p</a
-      ><a name="727"
-      > </a
-      ><a name="728" class="Symbol"
+      > <a name="728" class="Symbol"
       >:</a
-      ><a name="729"
-      > </a
-      ><a name="730" href="Data.Star.Pointer.html#597" class="Bound"
+      > <a name="730" href="Data.Star.Pointer.html#597" class="Bound"
       >P</a
-      ><a name="731"
-      > </a
-      ><a name="732" href="Data.Star.Pointer.html#687" class="Bound"
+      > <a name="732" href="Data.Star.Pointer.html#687" class="Bound"
       >x</a
       ><a name="733" class="Symbol"
       >)</a
-      ><a name="734"
-      > </a
-      ><a name="735" class="Symbol"
+      > <a name="735" class="Symbol"
       >&#8594;</a
-      ><a name="736"
-      > </a
-      ><a name="737" href="Data.Star.Pointer.html#561" class="Datatype"
+      > <a name="737" href="Data.Star.Pointer.html#Pointer" class="Datatype"
       >Pointer</a
-      ><a name="744"
-      > </a
-      ><a name="745" href="Data.Star.Pointer.html#597" class="Bound"
+      > <a name="745" href="Data.Star.Pointer.html#597" class="Bound"
       >P</a
-      ><a name="746"
-      > </a
-      ><a name="747" href="Data.Star.Pointer.html#599" class="Bound"
+      > <a name="747" href="Data.Star.Pointer.html#599" class="Bound"
       >Q</a
-      ><a name="748"
-      > </a
-      ><a name="749" class="Symbol"
+      > <a name="749" class="Symbol"
       >(</a
-      ><a name="750" href="Data.Maybe.Base.html#373" class="InductiveConstructor"
+      ><a name="750" href="Data.Maybe.Base.html#Maybe.just" class="InductiveConstructor"
       >just</a
-      ><a name="754"
-      > </a
-      ><a name="755" class="Symbol"
+      > <a name="755" class="Symbol"
       >(</a
-      ><a name="756" href="Relation.Binary.Core.html#4112" class="InductiveConstructor"
+      ><a name="756" href="Relation.Binary.Core.html#NonEmpty.nonEmpty" class="InductiveConstructor"
       >nonEmpty</a
-      ><a name="764"
-      > </a
-      ><a name="765" class="Symbol"
+      > <a name="765" class="Symbol"
       >(</a
       ><a name="766" href="Data.Star.Pointer.html#687" class="Bound"
       >x</a
-      ><a name="767"
-      > </a
-      ><a name="768" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="768" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="769"
-      > </a
-      ><a name="770" href="Data.Star.Pointer.html#699" class="Bound"
+      > <a name="770" href="Data.Star.Pointer.html#699" class="Bound"
       >xs</a
       ><a name="772" class="Symbol"
       >)))</a
-      ><a name="775"
       >
-                                 </a
-      ><a name="809" class="Symbol"
+                                 <a name="809" class="Symbol"
       >(</a
-      ><a name="810" href="Data.Maybe.Base.html#373" class="InductiveConstructor"
+      ><a name="810" href="Data.Maybe.Base.html#Maybe.just" class="InductiveConstructor"
       >just</a
-      ><a name="814"
-      > </a
-      ><a name="815" class="Symbol"
+      > <a name="815" class="Symbol"
       >(</a
-      ><a name="816" href="Relation.Binary.Core.html#4112" class="InductiveConstructor"
+      ><a name="816" href="Relation.Binary.Core.html#NonEmpty.nonEmpty" class="InductiveConstructor"
       >nonEmpty</a
-      ><a name="824"
-      > </a
-      ><a name="825" href="Data.Star.Pointer.html#699" class="Bound"
+      > <a name="825" href="Data.Star.Pointer.html#699" class="Bound"
       >xs</a
       ><a name="827" class="Symbol"
       >))</a
-      ><a name="829"
       >
-  </a
-      ><a name="832" href="Data.Star.Pointer.html#832" class="InductiveConstructor"
+  <a name="Pointer.done" href="Data.Star.Pointer.html#Pointer.done" class="InductiveConstructor"
       >done</a
-      ><a name="836"
-      > </a
-      ><a name="837" class="Symbol"
+      > <a name="837" class="Symbol"
       >:</a
-      ><a name="838"
-      > </a
-      ><a name="839" class="Symbol"
+      > <a name="839" class="Symbol"
       >&#8704;</a
-      ><a name="840"
-      > </a
-      ><a name="841" class="Symbol"
+      > <a name="841" class="Symbol"
       >{</a
       ><a name="842" href="Data.Star.Pointer.html#842" class="Bound"
       >i</a
-      ><a name="843"
-      > </a
-      ><a name="844" href="Data.Star.Pointer.html#844" class="Bound"
+      > <a name="844" href="Data.Star.Pointer.html#844" class="Bound"
       >j</a
-      ><a name="845"
-      > </a
-      ><a name="846" href="Data.Star.Pointer.html#846" class="Bound"
+      > <a name="846" href="Data.Star.Pointer.html#846" class="Bound"
       >k</a
       ><a name="847" class="Symbol"
       >}</a
-      ><a name="848"
-      > </a
-      ><a name="849" class="Symbol"
+      > <a name="849" class="Symbol"
       >{</a
       ><a name="850" href="Data.Star.Pointer.html#850" class="Bound"
       >x</a
-      ><a name="851"
-      > </a
-      ><a name="852" class="Symbol"
+      > <a name="852" class="Symbol"
       >:</a
-      ><a name="853"
-      > </a
-      ><a name="854" href="Data.Star.Pointer.html#580" class="Bound"
+      > <a name="854" href="Data.Star.Pointer.html#580" class="Bound"
       >T</a
-      ><a name="855"
-      > </a
-      ><a name="856" href="Data.Star.Pointer.html#842" class="Bound"
+      > <a name="856" href="Data.Star.Pointer.html#842" class="Bound"
       >i</a
-      ><a name="857"
-      > </a
-      ><a name="858" href="Data.Star.Pointer.html#844" class="Bound"
+      > <a name="858" href="Data.Star.Pointer.html#844" class="Bound"
       >j</a
       ><a name="859" class="Symbol"
       >}</a
-      ><a name="860"
-      > </a
-      ><a name="861" class="Symbol"
+      > <a name="861" class="Symbol"
       >{</a
       ><a name="862" href="Data.Star.Pointer.html#862" class="Bound"
       >xs</a
-      ><a name="864"
-      > </a
-      ><a name="865" class="Symbol"
+      > <a name="865" class="Symbol"
       >:</a
-      ><a name="866"
-      > </a
-      ><a name="867" href="Data.Star.html#553" class="Datatype"
+      > <a name="867" href="Data.Star.html#Star" class="Datatype"
       >Star</a
-      ><a name="871"
-      > </a
-      ><a name="872" href="Data.Star.Pointer.html#580" class="Bound"
+      > <a name="872" href="Data.Star.Pointer.html#580" class="Bound"
       >T</a
-      ><a name="873"
-      > </a
-      ><a name="874" href="Data.Star.Pointer.html#844" class="Bound"
+      > <a name="874" href="Data.Star.Pointer.html#844" class="Bound"
       >j</a
-      ><a name="875"
-      > </a
-      ><a name="876" href="Data.Star.Pointer.html#846" class="Bound"
+      > <a name="876" href="Data.Star.Pointer.html#846" class="Bound"
       >k</a
       ><a name="877" class="Symbol"
       >}</a
-      ><a name="878"
       >
-         </a
-      ><a name="888" class="Symbol"
+         <a name="888" class="Symbol"
       >(</a
       ><a name="889" href="Data.Star.Pointer.html#889" class="Bound"
       >q</a
-      ><a name="890"
-      > </a
-      ><a name="891" class="Symbol"
+      > <a name="891" class="Symbol"
       >:</a
-      ><a name="892"
-      > </a
-      ><a name="893" href="Data.Star.Pointer.html#599" class="Bound"
+      > <a name="893" href="Data.Star.Pointer.html#599" class="Bound"
       >Q</a
-      ><a name="894"
-      > </a
-      ><a name="895" href="Data.Star.Pointer.html#850" class="Bound"
+      > <a name="895" href="Data.Star.Pointer.html#850" class="Bound"
       >x</a
       ><a name="896" class="Symbol"
       >)</a
-      ><a name="897"
-      > </a
-      ><a name="898" class="Symbol"
+      > <a name="898" class="Symbol"
       >&#8594;</a
-      ><a name="899"
-      > </a
-      ><a name="900" href="Data.Star.Pointer.html#561" class="Datatype"
+      > <a name="900" href="Data.Star.Pointer.html#Pointer" class="Datatype"
       >Pointer</a
-      ><a name="907"
-      > </a
-      ><a name="908" href="Data.Star.Pointer.html#597" class="Bound"
+      > <a name="908" href="Data.Star.Pointer.html#597" class="Bound"
       >P</a
-      ><a name="909"
-      > </a
-      ><a name="910" href="Data.Star.Pointer.html#599" class="Bound"
+      > <a name="910" href="Data.Star.Pointer.html#599" class="Bound"
       >Q</a
-      ><a name="911"
-      > </a
-      ><a name="912" class="Symbol"
+      > <a name="912" class="Symbol"
       >(</a
-      ><a name="913" href="Data.Maybe.Base.html#373" class="InductiveConstructor"
+      ><a name="913" href="Data.Maybe.Base.html#Maybe.just" class="InductiveConstructor"
       >just</a
-      ><a name="917"
-      > </a
-      ><a name="918" class="Symbol"
+      > <a name="918" class="Symbol"
       >(</a
-      ><a name="919" href="Relation.Binary.Core.html#4112" class="InductiveConstructor"
+      ><a name="919" href="Relation.Binary.Core.html#NonEmpty.nonEmpty" class="InductiveConstructor"
       >nonEmpty</a
-      ><a name="927"
-      > </a
-      ><a name="928" class="Symbol"
+      > <a name="928" class="Symbol"
       >(</a
       ><a name="929" href="Data.Star.Pointer.html#850" class="Bound"
       >x</a
-      ><a name="930"
-      > </a
-      ><a name="931" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="931" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="932"
-      > </a
-      ><a name="933" href="Data.Star.Pointer.html#862" class="Bound"
+      > <a name="933" href="Data.Star.Pointer.html#862" class="Bound"
       >xs</a
       ><a name="935" class="Symbol"
       >)))</a
-      ><a name="938"
-      > </a
-      ><a name="939" href="Data.Maybe.Base.html#403" class="InductiveConstructor"
+      > <a name="939" href="Data.Maybe.Base.html#Maybe.nothing" class="InductiveConstructor"
       >nothing</a
-      ><a name="946"
       >
 
-</a
-      ><a name="948" class="Comment"
+<a name="948" class="Comment"
       >-- Any P Q xs means that some edge in xs satisfies Q, while all</a
-      ><a name="1011"
       >
-</a
-      ><a name="1012" class="Comment"
+<a name="1012" class="Comment"
       >-- preceding edges satisfy P. A star-list of type Any&#160;Always&#160;Always&#160;xs</a
-      ><a name="1082"
       >
-</a
-      ><a name="1083" class="Comment"
+<a name="1083" class="Comment"
       >-- is basically a prefix of xs; the existence of such a prefix</a
-      ><a name="1145"
       >
-</a
-      ><a name="1146" class="Comment"
+<a name="1146" class="Comment"
       >-- guarantees that xs is non-empty.</a
-      ><a name="1181"
       >
 
-</a
-      ><a name="1183" href="Data.Star.Pointer.html#1183" class="Function"
+<a name="Any" href="Data.Star.Pointer.html#Any" class="Function"
       >Any</a
-      ><a name="1186"
-      > </a
-      ><a name="1187" class="Symbol"
+      > <a name="1187" class="Symbol"
       >:</a
-      ><a name="1188"
-      > </a
-      ><a name="1189" class="Symbol"
+      > <a name="1189" class="Symbol"
       >&#8704;</a
-      ><a name="1190"
-      > </a
-      ><a name="1191" class="Symbol"
+      > <a name="1191" class="Symbol"
       >{</a
       ><a name="1192" href="Data.Star.Pointer.html#1192" class="Bound"
       >I</a
       ><a name="1193" class="Symbol"
       >}</a
-      ><a name="1194"
-      > </a
-      ><a name="1195" class="Symbol"
+      > <a name="1195" class="Symbol"
       >{</a
       ><a name="1196" href="Data.Star.Pointer.html#1196" class="Bound"
       >T</a
-      ><a name="1197"
-      > </a
-      ><a name="1198" class="Symbol"
+      > <a name="1198" class="Symbol"
       >:</a
-      ><a name="1199"
-      > </a
-      ><a name="1200" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="1200" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="1203"
-      > </a
-      ><a name="1204" href="Data.Star.Pointer.html#1192" class="Bound"
+      > <a name="1204" href="Data.Star.Pointer.html#1192" class="Bound"
       >I</a
-      ><a name="1205"
-      > </a
-      ><a name="1206" href="Agda.Primitive.html#609" class="Primitive"
+      > <a name="1206" href="Agda.Primitive.html#zero" class="Primitive"
       >zero</a
       ><a name="1210" class="Symbol"
       >}</a
-      ><a name="1211"
-      > </a
-      ><a name="1212" class="Symbol"
+      > <a name="1212" class="Symbol"
       >(</a
       ><a name="1213" href="Data.Star.Pointer.html#1213" class="Bound"
       >P</a
-      ><a name="1214"
-      > </a
-      ><a name="1215" href="Data.Star.Pointer.html#1215" class="Bound"
+      > <a name="1215" href="Data.Star.Pointer.html#1215" class="Bound"
       >Q</a
-      ><a name="1216"
-      > </a
-      ><a name="1217" class="Symbol"
+      > <a name="1217" class="Symbol"
       >:</a
-      ><a name="1218"
-      > </a
-      ><a name="1219" href="Data.Star.Decoration.html#423" class="Function"
+      > <a name="1219" href="Data.Star.Decoration.html#EdgePred" class="Function"
       >EdgePred</a
-      ><a name="1227"
-      > </a
-      ><a name="1228" href="Data.Star.Pointer.html#1196" class="Bound"
+      > <a name="1228" href="Data.Star.Pointer.html#1196" class="Bound"
       >T</a
       ><a name="1229" class="Symbol"
       >)</a
-      ><a name="1230"
-      > </a
-      ><a name="1231" class="Symbol"
+      > <a name="1231" class="Symbol"
       >&#8594;</a
-      ><a name="1232"
-      > </a
-      ><a name="1233" href="Data.Star.Decoration.html#423" class="Function"
+      > <a name="1233" href="Data.Star.Decoration.html#EdgePred" class="Function"
       >EdgePred</a
-      ><a name="1241"
-      > </a
-      ><a name="1242" class="Symbol"
+      > <a name="1242" class="Symbol"
       >(</a
-      ><a name="1243" href="Data.Star.html#553" class="Datatype"
+      ><a name="1243" href="Data.Star.html#Star" class="Datatype"
       >Star</a
-      ><a name="1247"
-      > </a
-      ><a name="1248" href="Data.Star.Pointer.html#1196" class="Bound"
+      > <a name="1248" href="Data.Star.Pointer.html#1196" class="Bound"
       >T</a
       ><a name="1249" class="Symbol"
       >)</a
-      ><a name="1250"
       >
-</a
-      ><a name="1251" href="Data.Star.Pointer.html#1183" class="Function"
+<a name="1251" href="Data.Star.Pointer.html#Any" class="Function"
       >Any</a
-      ><a name="1254"
-      > </a
-      ><a name="1255" href="Data.Star.Pointer.html#1255" class="Bound"
+      > <a name="1255" href="Data.Star.Pointer.html#1255" class="Bound"
       >P</a
-      ><a name="1256"
-      > </a
-      ><a name="1257" href="Data.Star.Pointer.html#1257" class="Bound"
+      > <a name="1257" href="Data.Star.Pointer.html#1257" class="Bound"
       >Q</a
-      ><a name="1258"
-      > </a
-      ><a name="1259" href="Data.Star.Pointer.html#1259" class="Bound"
+      > <a name="1259" href="Data.Star.Pointer.html#1259" class="Bound"
       >xs</a
-      ><a name="1261"
-      > </a
-      ><a name="1262" class="Symbol"
+      > <a name="1262" class="Symbol"
       >=</a
-      ><a name="1263"
-      > </a
-      ><a name="1264" href="Data.Star.html#553" class="Datatype"
+      > <a name="1264" href="Data.Star.html#Star" class="Datatype"
       >Star</a
-      ><a name="1268"
-      > </a
-      ><a name="1269" class="Symbol"
+      > <a name="1269" class="Symbol"
       >(</a
-      ><a name="1270" href="Data.Star.Pointer.html#561" class="Datatype"
+      ><a name="1270" href="Data.Star.Pointer.html#Pointer" class="Datatype"
       >Pointer</a
-      ><a name="1277"
-      > </a
-      ><a name="1278" href="Data.Star.Pointer.html#1255" class="Bound"
+      > <a name="1278" href="Data.Star.Pointer.html#1255" class="Bound"
       >P</a
-      ><a name="1279"
-      > </a
-      ><a name="1280" href="Data.Star.Pointer.html#1257" class="Bound"
+      > <a name="1280" href="Data.Star.Pointer.html#1257" class="Bound"
       >Q</a
       ><a name="1281" class="Symbol"
       >)</a
-      ><a name="1282"
-      > </a
-      ><a name="1283" class="Symbol"
+      > <a name="1283" class="Symbol"
       >(</a
-      ><a name="1284" href="Data.Maybe.Base.html#373" class="InductiveConstructor"
+      ><a name="1284" href="Data.Maybe.Base.html#Maybe.just" class="InductiveConstructor"
       >just</a
-      ><a name="1288"
-      > </a
-      ><a name="1289" class="Symbol"
+      > <a name="1289" class="Symbol"
       >(</a
-      ><a name="1290" href="Relation.Binary.Core.html#4112" class="InductiveConstructor"
+      ><a name="1290" href="Relation.Binary.Core.html#NonEmpty.nonEmpty" class="InductiveConstructor"
       >nonEmpty</a
-      ><a name="1298"
-      > </a
-      ><a name="1299" href="Data.Star.Pointer.html#1259" class="Bound"
+      > <a name="1299" href="Data.Star.Pointer.html#1259" class="Bound"
       >xs</a
       ><a name="1301" class="Symbol"
       >))</a
-      ><a name="1303"
-      > </a
-      ><a name="1304" href="Data.Maybe.Base.html#403" class="InductiveConstructor"
+      > <a name="1304" href="Data.Maybe.Base.html#Maybe.nothing" class="InductiveConstructor"
       >nothing</a
-      ><a name="1311"
       >
 
-</a
-      ><a name="1313" href="Data.Star.Pointer.html#1313" class="Function"
+<a name="this" href="Data.Star.Pointer.html#this" class="Function"
       >this</a
-      ><a name="1317"
-      > </a
-      ><a name="1318" class="Symbol"
+      > <a name="1318" class="Symbol"
       >:</a
-      ><a name="1319"
-      > </a
-      ><a name="1320" class="Symbol"
+      > <a name="1320" class="Symbol"
       >&#8704;</a
-      ><a name="1321"
-      > </a
-      ><a name="1322" class="Symbol"
+      > <a name="1322" class="Symbol"
       >{</a
       ><a name="1323" href="Data.Star.Pointer.html#1323" class="Bound"
       >I</a
       ><a name="1324" class="Symbol"
       >}</a
-      ><a name="1325"
-      > </a
-      ><a name="1326" class="Symbol"
+      > <a name="1326" class="Symbol"
       >{</a
       ><a name="1327" href="Data.Star.Pointer.html#1327" class="Bound"
       >T</a
-      ><a name="1328"
-      > </a
-      ><a name="1329" class="Symbol"
+      > <a name="1329" class="Symbol"
       >:</a
-      ><a name="1330"
-      > </a
-      ><a name="1331" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="1331" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="1334"
-      > </a
-      ><a name="1335" href="Data.Star.Pointer.html#1323" class="Bound"
+      > <a name="1335" href="Data.Star.Pointer.html#1323" class="Bound"
       >I</a
-      ><a name="1336"
-      > </a
-      ><a name="1337" href="Agda.Primitive.html#609" class="Primitive"
+      > <a name="1337" href="Agda.Primitive.html#zero" class="Primitive"
       >zero</a
       ><a name="1341" class="Symbol"
       >}</a
-      ><a name="1342"
-      > </a
-      ><a name="1343" class="Symbol"
+      > <a name="1343" class="Symbol"
       >{</a
       ><a name="1344" href="Data.Star.Pointer.html#1344" class="Bound"
       >P</a
-      ><a name="1345"
-      > </a
-      ><a name="1346" href="Data.Star.Pointer.html#1346" class="Bound"
+      > <a name="1346" href="Data.Star.Pointer.html#1346" class="Bound"
       >Q</a
-      ><a name="1347"
-      > </a
-      ><a name="1348" class="Symbol"
+      > <a name="1348" class="Symbol"
       >:</a
-      ><a name="1349"
-      > </a
-      ><a name="1350" href="Data.Star.Decoration.html#423" class="Function"
+      > <a name="1350" href="Data.Star.Decoration.html#EdgePred" class="Function"
       >EdgePred</a
-      ><a name="1358"
-      > </a
-      ><a name="1359" href="Data.Star.Pointer.html#1327" class="Bound"
+      > <a name="1359" href="Data.Star.Pointer.html#1327" class="Bound"
       >T</a
       ><a name="1360" class="Symbol"
       >}</a
-      ><a name="1361"
       >
-             </a
-      ><a name="1375" class="Symbol"
+             <a name="1375" class="Symbol"
       >{</a
       ><a name="1376" href="Data.Star.Pointer.html#1376" class="Bound"
       >i</a
-      ><a name="1377"
-      > </a
-      ><a name="1378" href="Data.Star.Pointer.html#1378" class="Bound"
+      > <a name="1378" href="Data.Star.Pointer.html#1378" class="Bound"
       >j</a
-      ><a name="1379"
-      > </a
-      ><a name="1380" href="Data.Star.Pointer.html#1380" class="Bound"
+      > <a name="1380" href="Data.Star.Pointer.html#1380" class="Bound"
       >k</a
       ><a name="1381" class="Symbol"
       >}</a
-      ><a name="1382"
-      > </a
-      ><a name="1383" class="Symbol"
+      > <a name="1383" class="Symbol"
       >{</a
       ><a name="1384" href="Data.Star.Pointer.html#1384" class="Bound"
       >x</a
-      ><a name="1385"
-      > </a
-      ><a name="1386" class="Symbol"
+      > <a name="1386" class="Symbol"
       >:</a
-      ><a name="1387"
-      > </a
-      ><a name="1388" href="Data.Star.Pointer.html#1327" class="Bound"
+      > <a name="1388" href="Data.Star.Pointer.html#1327" class="Bound"
       >T</a
-      ><a name="1389"
-      > </a
-      ><a name="1390" href="Data.Star.Pointer.html#1376" class="Bound"
+      > <a name="1390" href="Data.Star.Pointer.html#1376" class="Bound"
       >i</a
-      ><a name="1391"
-      > </a
-      ><a name="1392" href="Data.Star.Pointer.html#1378" class="Bound"
+      > <a name="1392" href="Data.Star.Pointer.html#1378" class="Bound"
       >j</a
       ><a name="1393" class="Symbol"
       >}</a
-      ><a name="1394"
-      > </a
-      ><a name="1395" class="Symbol"
+      > <a name="1395" class="Symbol"
       >{</a
       ><a name="1396" href="Data.Star.Pointer.html#1396" class="Bound"
       >xs</a
-      ><a name="1398"
-      > </a
-      ><a name="1399" class="Symbol"
+      > <a name="1399" class="Symbol"
       >:</a
-      ><a name="1400"
-      > </a
-      ><a name="1401" href="Data.Star.html#553" class="Datatype"
+      > <a name="1401" href="Data.Star.html#Star" class="Datatype"
       >Star</a
-      ><a name="1405"
-      > </a
-      ><a name="1406" href="Data.Star.Pointer.html#1327" class="Bound"
+      > <a name="1406" href="Data.Star.Pointer.html#1327" class="Bound"
       >T</a
-      ><a name="1407"
-      > </a
-      ><a name="1408" href="Data.Star.Pointer.html#1378" class="Bound"
+      > <a name="1408" href="Data.Star.Pointer.html#1378" class="Bound"
       >j</a
-      ><a name="1409"
-      > </a
-      ><a name="1410" href="Data.Star.Pointer.html#1380" class="Bound"
+      > <a name="1410" href="Data.Star.Pointer.html#1380" class="Bound"
       >k</a
       ><a name="1411" class="Symbol"
       >}</a
-      ><a name="1412"
-      > </a
-      ><a name="1413" class="Symbol"
+      > <a name="1413" class="Symbol"
       >&#8594;</a
-      ><a name="1414"
       >
-       </a
-      ><a name="1422" href="Data.Star.Pointer.html#1346" class="Bound"
+       <a name="1422" href="Data.Star.Pointer.html#1346" class="Bound"
       >Q</a
-      ><a name="1423"
-      > </a
-      ><a name="1424" href="Data.Star.Pointer.html#1384" class="Bound"
+      > <a name="1424" href="Data.Star.Pointer.html#1384" class="Bound"
       >x</a
-      ><a name="1425"
-      > </a
-      ><a name="1426" class="Symbol"
+      > <a name="1426" class="Symbol"
       >&#8594;</a
-      ><a name="1427"
-      > </a
-      ><a name="1428" href="Data.Star.Pointer.html#1183" class="Function"
+      > <a name="1428" href="Data.Star.Pointer.html#Any" class="Function"
       >Any</a
-      ><a name="1431"
-      > </a
-      ><a name="1432" href="Data.Star.Pointer.html#1344" class="Bound"
+      > <a name="1432" href="Data.Star.Pointer.html#1344" class="Bound"
       >P</a
-      ><a name="1433"
-      > </a
-      ><a name="1434" href="Data.Star.Pointer.html#1346" class="Bound"
+      > <a name="1434" href="Data.Star.Pointer.html#1346" class="Bound"
       >Q</a
-      ><a name="1435"
-      > </a
-      ><a name="1436" class="Symbol"
+      > <a name="1436" class="Symbol"
       >(</a
       ><a name="1437" href="Data.Star.Pointer.html#1384" class="Bound"
       >x</a
-      ><a name="1438"
-      > </a
-      ><a name="1439" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="1439" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="1440"
-      > </a
-      ><a name="1441" href="Data.Star.Pointer.html#1396" class="Bound"
+      > <a name="1441" href="Data.Star.Pointer.html#1396" class="Bound"
       >xs</a
       ><a name="1443" class="Symbol"
       >)</a
-      ><a name="1444"
       >
-</a
-      ><a name="1445" href="Data.Star.Pointer.html#1313" class="Function"
+<a name="1445" href="Data.Star.Pointer.html#this" class="Function"
       >this</a
-      ><a name="1449"
-      > </a
-      ><a name="1450" href="Data.Star.Pointer.html#1450" class="Bound"
+      > <a name="1450" href="Data.Star.Pointer.html#1450" class="Bound"
       >q</a
-      ><a name="1451"
-      > </a
-      ><a name="1452" class="Symbol"
+      > <a name="1452" class="Symbol"
       >=</a
-      ><a name="1453"
-      > </a
-      ><a name="1454" href="Data.Star.Pointer.html#832" class="InductiveConstructor"
+      > <a name="1454" href="Data.Star.Pointer.html#Pointer.done" class="InductiveConstructor"
       >done</a
-      ><a name="1458"
-      > </a
-      ><a name="1459" href="Data.Star.Pointer.html#1450" class="Bound"
+      > <a name="1459" href="Data.Star.Pointer.html#1450" class="Bound"
       >q</a
-      ><a name="1460"
-      > </a
-      ><a name="1461" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="1461" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="1462"
-      > </a
-      ><a name="1463" href="Data.Star.html#614" class="InductiveConstructor"
+      > <a name="1463" href="Data.Star.html#Star.&#949;" class="InductiveConstructor"
       >&#949;</a
-      ><a name="1464"
       >
 
-</a
-      ><a name="1466" href="Data.Star.Pointer.html#1466" class="Function"
+<a name="that" href="Data.Star.Pointer.html#that" class="Function"
       >that</a
-      ><a name="1470"
-      > </a
-      ><a name="1471" class="Symbol"
+      > <a name="1471" class="Symbol"
       >:</a
-      ><a name="1472"
-      > </a
-      ><a name="1473" class="Symbol"
+      > <a name="1473" class="Symbol"
       >&#8704;</a
-      ><a name="1474"
-      > </a
-      ><a name="1475" class="Symbol"
+      > <a name="1475" class="Symbol"
       >{</a
       ><a name="1476" href="Data.Star.Pointer.html#1476" class="Bound"
       >I</a
       ><a name="1477" class="Symbol"
       >}</a
-      ><a name="1478"
-      > </a
-      ><a name="1479" class="Symbol"
+      > <a name="1479" class="Symbol"
       >{</a
       ><a name="1480" href="Data.Star.Pointer.html#1480" class="Bound"
       >T</a
-      ><a name="1481"
-      > </a
-      ><a name="1482" class="Symbol"
+      > <a name="1482" class="Symbol"
       >:</a
-      ><a name="1483"
-      > </a
-      ><a name="1484" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="1484" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="1487"
-      > </a
-      ><a name="1488" href="Data.Star.Pointer.html#1476" class="Bound"
+      > <a name="1488" href="Data.Star.Pointer.html#1476" class="Bound"
       >I</a
-      ><a name="1489"
-      > </a
-      ><a name="1490" href="Agda.Primitive.html#609" class="Primitive"
+      > <a name="1490" href="Agda.Primitive.html#zero" class="Primitive"
       >zero</a
       ><a name="1494" class="Symbol"
       >}</a
-      ><a name="1495"
-      > </a
-      ><a name="1496" class="Symbol"
+      > <a name="1496" class="Symbol"
       >{</a
       ><a name="1497" href="Data.Star.Pointer.html#1497" class="Bound"
       >P</a
-      ><a name="1498"
-      > </a
-      ><a name="1499" href="Data.Star.Pointer.html#1499" class="Bound"
+      > <a name="1499" href="Data.Star.Pointer.html#1499" class="Bound"
       >Q</a
-      ><a name="1500"
-      > </a
-      ><a name="1501" class="Symbol"
+      > <a name="1501" class="Symbol"
       >:</a
-      ><a name="1502"
-      > </a
-      ><a name="1503" href="Data.Star.Decoration.html#423" class="Function"
+      > <a name="1503" href="Data.Star.Decoration.html#EdgePred" class="Function"
       >EdgePred</a
-      ><a name="1511"
-      > </a
-      ><a name="1512" href="Data.Star.Pointer.html#1480" class="Bound"
+      > <a name="1512" href="Data.Star.Pointer.html#1480" class="Bound"
       >T</a
       ><a name="1513" class="Symbol"
       >}</a
-      ><a name="1514"
       >
-       </a
-      ><a name="1522" class="Symbol"
+       <a name="1522" class="Symbol"
       >{</a
       ><a name="1523" href="Data.Star.Pointer.html#1523" class="Bound"
       >i</a
-      ><a name="1524"
-      > </a
-      ><a name="1525" href="Data.Star.Pointer.html#1525" class="Bound"
+      > <a name="1525" href="Data.Star.Pointer.html#1525" class="Bound"
       >j</a
-      ><a name="1526"
-      > </a
-      ><a name="1527" href="Data.Star.Pointer.html#1527" class="Bound"
+      > <a name="1527" href="Data.Star.Pointer.html#1527" class="Bound"
       >k</a
       ><a name="1528" class="Symbol"
       >}</a
-      ><a name="1529"
-      > </a
-      ><a name="1530" class="Symbol"
+      > <a name="1530" class="Symbol"
       >{</a
       ><a name="1531" href="Data.Star.Pointer.html#1531" class="Bound"
       >x</a
-      ><a name="1532"
-      > </a
-      ><a name="1533" class="Symbol"
+      > <a name="1533" class="Symbol"
       >:</a
-      ><a name="1534"
-      > </a
-      ><a name="1535" href="Data.Star.Pointer.html#1480" class="Bound"
+      > <a name="1535" href="Data.Star.Pointer.html#1480" class="Bound"
       >T</a
-      ><a name="1536"
-      > </a
-      ><a name="1537" href="Data.Star.Pointer.html#1523" class="Bound"
+      > <a name="1537" href="Data.Star.Pointer.html#1523" class="Bound"
       >i</a
-      ><a name="1538"
-      > </a
-      ><a name="1539" href="Data.Star.Pointer.html#1525" class="Bound"
+      > <a name="1539" href="Data.Star.Pointer.html#1525" class="Bound"
       >j</a
       ><a name="1540" class="Symbol"
       >}</a
-      ><a name="1541"
-      > </a
-      ><a name="1542" class="Symbol"
+      > <a name="1542" class="Symbol"
       >{</a
       ><a name="1543" href="Data.Star.Pointer.html#1543" class="Bound"
       >xs</a
-      ><a name="1545"
-      > </a
-      ><a name="1546" class="Symbol"
+      > <a name="1546" class="Symbol"
       >:</a
-      ><a name="1547"
-      > </a
-      ><a name="1548" href="Data.Star.html#553" class="Datatype"
+      > <a name="1548" href="Data.Star.html#Star" class="Datatype"
       >Star</a
-      ><a name="1552"
-      > </a
-      ><a name="1553" href="Data.Star.Pointer.html#1480" class="Bound"
+      > <a name="1553" href="Data.Star.Pointer.html#1480" class="Bound"
       >T</a
-      ><a name="1554"
-      > </a
-      ><a name="1555" href="Data.Star.Pointer.html#1525" class="Bound"
+      > <a name="1555" href="Data.Star.Pointer.html#1525" class="Bound"
       >j</a
-      ><a name="1556"
-      > </a
-      ><a name="1557" href="Data.Star.Pointer.html#1527" class="Bound"
+      > <a name="1557" href="Data.Star.Pointer.html#1527" class="Bound"
       >k</a
       ><a name="1558" class="Symbol"
       >}</a
-      ><a name="1559"
-      > </a
-      ><a name="1560" class="Symbol"
+      > <a name="1560" class="Symbol"
       >&#8594;</a
-      ><a name="1561"
       >
-       </a
-      ><a name="1569" href="Data.Star.Pointer.html#1497" class="Bound"
+       <a name="1569" href="Data.Star.Pointer.html#1497" class="Bound"
       >P</a
-      ><a name="1570"
-      > </a
-      ><a name="1571" href="Data.Star.Pointer.html#1531" class="Bound"
+      > <a name="1571" href="Data.Star.Pointer.html#1531" class="Bound"
       >x</a
-      ><a name="1572"
-      > </a
-      ><a name="1573" class="Symbol"
+      > <a name="1573" class="Symbol"
       >&#8594;</a
-      ><a name="1574"
-      > </a
-      ><a name="1575" href="Data.Star.Pointer.html#1183" class="Function"
+      > <a name="1575" href="Data.Star.Pointer.html#Any" class="Function"
       >Any</a
-      ><a name="1578"
-      > </a
-      ><a name="1579" href="Data.Star.Pointer.html#1497" class="Bound"
+      > <a name="1579" href="Data.Star.Pointer.html#1497" class="Bound"
       >P</a
-      ><a name="1580"
-      > </a
-      ><a name="1581" href="Data.Star.Pointer.html#1499" class="Bound"
+      > <a name="1581" href="Data.Star.Pointer.html#1499" class="Bound"
       >Q</a
-      ><a name="1582"
-      > </a
-      ><a name="1583" href="Data.Star.Pointer.html#1543" class="Bound"
+      > <a name="1583" href="Data.Star.Pointer.html#1543" class="Bound"
       >xs</a
-      ><a name="1585"
-      > </a
-      ><a name="1586" class="Symbol"
+      > <a name="1586" class="Symbol"
       >&#8594;</a
-      ><a name="1587"
-      > </a
-      ><a name="1588" href="Data.Star.Pointer.html#1183" class="Function"
+      > <a name="1588" href="Data.Star.Pointer.html#Any" class="Function"
       >Any</a
-      ><a name="1591"
-      > </a
-      ><a name="1592" href="Data.Star.Pointer.html#1497" class="Bound"
+      > <a name="1592" href="Data.Star.Pointer.html#1497" class="Bound"
       >P</a
-      ><a name="1593"
-      > </a
-      ><a name="1594" href="Data.Star.Pointer.html#1499" class="Bound"
+      > <a name="1594" href="Data.Star.Pointer.html#1499" class="Bound"
       >Q</a
-      ><a name="1595"
-      > </a
-      ><a name="1596" class="Symbol"
+      > <a name="1596" class="Symbol"
       >(</a
       ><a name="1597" href="Data.Star.Pointer.html#1531" class="Bound"
       >x</a
-      ><a name="1598"
-      > </a
-      ><a name="1599" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="1599" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="1600"
-      > </a
-      ><a name="1601" href="Data.Star.Pointer.html#1543" class="Bound"
+      > <a name="1601" href="Data.Star.Pointer.html#1543" class="Bound"
       >xs</a
       ><a name="1603" class="Symbol"
       >)</a
-      ><a name="1604"
       >
-</a
-      ><a name="1605" href="Data.Star.Pointer.html#1466" class="Function"
+<a name="1605" href="Data.Star.Pointer.html#that" class="Function"
       >that</a
-      ><a name="1609"
-      > </a
-      ><a name="1610" href="Data.Star.Pointer.html#1610" class="Bound"
+      > <a name="1610" href="Data.Star.Pointer.html#1610" class="Bound"
       >p</a
-      ><a name="1611"
-      > </a
-      ><a name="1612" class="Symbol"
+      > <a name="1612" class="Symbol"
       >=</a
-      ><a name="1613"
-      > </a
-      ><a name="1614" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="1614" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >_&#9669;_</a
-      ><a name="1617"
-      > </a
-      ><a name="1618" class="Symbol"
+      > <a name="1618" class="Symbol"
       >(</a
-      ><a name="1619" href="Data.Star.Pointer.html#669" class="InductiveConstructor"
+      ><a name="1619" href="Data.Star.Pointer.html#Pointer.step" class="InductiveConstructor"
       >step</a
-      ><a name="1623"
-      > </a
-      ><a name="1624" href="Data.Star.Pointer.html#1610" class="Bound"
+      > <a name="1624" href="Data.Star.Pointer.html#1610" class="Bound"
       >p</a
       ><a name="1625" class="Symbol"
       >)</a
-      ><a name="1626"
       >
 
-</a
-      ><a name="1628" class="Comment"
+<a name="1628" class="Comment"
       >-- Safe lookup.</a
-      ><a name="1643"
       >
 
-</a
-      ><a name="1645" class="Keyword"
+<a name="1645" class="Keyword"
       >data</a
-      ><a name="1649"
-      > </a
-      ><a name="1650" href="Data.Star.Pointer.html#1650" class="Datatype"
+      > <a name="Result" href="Data.Star.Pointer.html#Result" class="Datatype"
       >Result</a
-      ><a name="1656"
-      > </a
-      ><a name="1657" class="Symbol"
+      > <a name="1657" class="Symbol"
       >{</a
       ><a name="1658" href="Data.Star.Pointer.html#1658" class="Bound"
       >I</a
-      ><a name="1659"
-      > </a
-      ><a name="1660" class="Symbol"
+      > <a name="1660" class="Symbol"
       >:</a
-      ><a name="1661"
-      > </a
-      ><a name="1662" class="PrimitiveType"
+      > <a name="1662" class="PrimitiveType"
       >Set</a
       ><a name="1665" class="Symbol"
       >}</a
-      ><a name="1666"
-      > </a
-      ><a name="1667" class="Symbol"
+      > <a name="1667" class="Symbol"
       >(</a
       ><a name="1668" href="Data.Star.Pointer.html#1668" class="Bound"
       >T</a
-      ><a name="1669"
-      > </a
-      ><a name="1670" class="Symbol"
+      > <a name="1670" class="Symbol"
       >:</a
-      ><a name="1671"
-      > </a
-      ><a name="1672" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="1672" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="1675"
-      > </a
-      ><a name="1676" href="Data.Star.Pointer.html#1658" class="Bound"
+      > <a name="1676" href="Data.Star.Pointer.html#1658" class="Bound"
       >I</a
-      ><a name="1677"
-      > </a
-      ><a name="1678" href="Agda.Primitive.html#609" class="Primitive"
+      > <a name="1678" href="Agda.Primitive.html#zero" class="Primitive"
       >zero</a
       ><a name="1682" class="Symbol"
       >)</a
-      ><a name="1683"
-      > </a
-      ><a name="1684" class="Symbol"
+      > <a name="1684" class="Symbol"
       >(</a
       ><a name="1685" href="Data.Star.Pointer.html#1685" class="Bound"
       >P</a
-      ><a name="1686"
-      > </a
-      ><a name="1687" href="Data.Star.Pointer.html#1687" class="Bound"
+      > <a name="1687" href="Data.Star.Pointer.html#1687" class="Bound"
       >Q</a
-      ><a name="1688"
-      > </a
-      ><a name="1689" class="Symbol"
+      > <a name="1689" class="Symbol"
       >:</a
-      ><a name="1690"
-      > </a
-      ><a name="1691" href="Data.Star.Decoration.html#423" class="Function"
+      > <a name="1691" href="Data.Star.Decoration.html#EdgePred" class="Function"
       >EdgePred</a
-      ><a name="1699"
-      > </a
-      ><a name="1700" href="Data.Star.Pointer.html#1668" class="Bound"
+      > <a name="1700" href="Data.Star.Pointer.html#1668" class="Bound"
       >T</a
       ><a name="1701" class="Symbol"
       >)</a
-      ><a name="1702"
-      > </a
-      ><a name="1703" class="Symbol"
+      > <a name="1703" class="Symbol"
       >:</a
-      ><a name="1704"
-      > </a
-      ><a name="1705" class="PrimitiveType"
+      > <a name="1705" class="PrimitiveType"
       >Set</a
-      ><a name="1708"
-      > </a
-      ><a name="1709" class="Keyword"
+      > <a name="1709" class="Keyword"
       >where</a
-      ><a name="1714"
       >
-  </a
-      ><a name="1717" href="Data.Star.Pointer.html#1717" class="InductiveConstructor"
+  <a name="Result.result" href="Data.Star.Pointer.html#Result.result" class="InductiveConstructor"
       >result</a
-      ><a name="1723"
-      > </a
-      ><a name="1724" class="Symbol"
+      > <a name="1724" class="Symbol"
       >:</a
-      ><a name="1725"
-      > </a
-      ><a name="1726" class="Symbol"
+      > <a name="1726" class="Symbol"
       >&#8704;</a
-      ><a name="1727"
-      > </a
-      ><a name="1728" class="Symbol"
+      > <a name="1728" class="Symbol"
       >{</a
       ><a name="1729" href="Data.Star.Pointer.html#1729" class="Bound"
       >i</a
-      ><a name="1730"
-      > </a
-      ><a name="1731" href="Data.Star.Pointer.html#1731" class="Bound"
+      > <a name="1731" href="Data.Star.Pointer.html#1731" class="Bound"
       >j</a
       ><a name="1732" class="Symbol"
       >}</a
-      ><a name="1733"
-      > </a
-      ><a name="1734" class="Symbol"
+      > <a name="1734" class="Symbol"
       >{</a
       ><a name="1735" href="Data.Star.Pointer.html#1735" class="Bound"
       >x</a
-      ><a name="1736"
-      > </a
-      ><a name="1737" class="Symbol"
+      > <a name="1737" class="Symbol"
       >:</a
-      ><a name="1738"
-      > </a
-      ><a name="1739" href="Data.Star.Pointer.html#1668" class="Bound"
+      > <a name="1739" href="Data.Star.Pointer.html#1668" class="Bound"
       >T</a
-      ><a name="1740"
-      > </a
-      ><a name="1741" href="Data.Star.Pointer.html#1729" class="Bound"
+      > <a name="1741" href="Data.Star.Pointer.html#1729" class="Bound"
       >i</a
-      ><a name="1742"
-      > </a
-      ><a name="1743" href="Data.Star.Pointer.html#1731" class="Bound"
+      > <a name="1743" href="Data.Star.Pointer.html#1731" class="Bound"
       >j</a
       ><a name="1744" class="Symbol"
       >}</a
-      ><a name="1745"
       >
-           </a
-      ><a name="1757" class="Symbol"
+           <a name="1757" class="Symbol"
       >(</a
       ><a name="1758" href="Data.Star.Pointer.html#1758" class="Bound"
       >p</a
-      ><a name="1759"
-      > </a
-      ><a name="1760" class="Symbol"
+      > <a name="1760" class="Symbol"
       >:</a
-      ><a name="1761"
-      > </a
-      ><a name="1762" href="Data.Star.Pointer.html#1685" class="Bound"
+      > <a name="1762" href="Data.Star.Pointer.html#1685" class="Bound"
       >P</a
-      ><a name="1763"
-      > </a
-      ><a name="1764" href="Data.Star.Pointer.html#1735" class="Bound"
+      > <a name="1764" href="Data.Star.Pointer.html#1735" class="Bound"
       >x</a
       ><a name="1765" class="Symbol"
       >)</a
-      ><a name="1766"
-      > </a
-      ><a name="1767" class="Symbol"
+      > <a name="1767" class="Symbol"
       >(</a
       ><a name="1768" href="Data.Star.Pointer.html#1768" class="Bound"
       >q</a
-      ><a name="1769"
-      > </a
-      ><a name="1770" class="Symbol"
+      > <a name="1770" class="Symbol"
       >:</a
-      ><a name="1771"
-      > </a
-      ><a name="1772" href="Data.Star.Pointer.html#1687" class="Bound"
+      > <a name="1772" href="Data.Star.Pointer.html#1687" class="Bound"
       >Q</a
-      ><a name="1773"
-      > </a
-      ><a name="1774" href="Data.Star.Pointer.html#1735" class="Bound"
+      > <a name="1774" href="Data.Star.Pointer.html#1735" class="Bound"
       >x</a
       ><a name="1775" class="Symbol"
       >)</a
-      ><a name="1776"
-      > </a
-      ><a name="1777" class="Symbol"
+      > <a name="1777" class="Symbol"
       >&#8594;</a
-      ><a name="1778"
-      > </a
-      ><a name="1779" href="Data.Star.Pointer.html#1650" class="Datatype"
+      > <a name="1779" href="Data.Star.Pointer.html#Result" class="Datatype"
       >Result</a
-      ><a name="1785"
-      > </a
-      ><a name="1786" href="Data.Star.Pointer.html#1668" class="Bound"
+      > <a name="1786" href="Data.Star.Pointer.html#1668" class="Bound"
       >T</a
-      ><a name="1787"
-      > </a
-      ><a name="1788" href="Data.Star.Pointer.html#1685" class="Bound"
+      > <a name="1788" href="Data.Star.Pointer.html#1685" class="Bound"
       >P</a
-      ><a name="1789"
-      > </a
-      ><a name="1790" href="Data.Star.Pointer.html#1687" class="Bound"
+      > <a name="1790" href="Data.Star.Pointer.html#1687" class="Bound"
       >Q</a
-      ><a name="1791"
       >
 
-</a
-      ><a name="1793" class="Comment"
+<a name="1793" class="Comment"
       >-- The first argument points out which edge to extract. The edge is</a
-      ><a name="1860"
       >
-</a
-      ><a name="1861" class="Comment"
+<a name="1861" class="Comment"
       >-- returned, together with proofs that it satisfies Q and R.</a
-      ><a name="1921"
       >
 
-</a
-      ><a name="1923" href="Data.Star.Pointer.html#1923" class="Function"
+<a name="lookup" href="Data.Star.Pointer.html#lookup" class="Function"
       >lookup</a
-      ><a name="1929"
-      > </a
-      ><a name="1930" class="Symbol"
+      > <a name="1930" class="Symbol"
       >:</a
-      ><a name="1931"
-      > </a
-      ><a name="1932" class="Symbol"
+      > <a name="1932" class="Symbol"
       >&#8704;</a
-      ><a name="1933"
-      > </a
-      ><a name="1934" class="Symbol"
+      > <a name="1934" class="Symbol"
       >{</a
       ><a name="1935" href="Data.Star.Pointer.html#1935" class="Bound"
       >I</a
       ><a name="1936" class="Symbol"
       >}</a
-      ><a name="1937"
-      > </a
-      ><a name="1938" class="Symbol"
+      > <a name="1938" class="Symbol"
       >{</a
       ><a name="1939" href="Data.Star.Pointer.html#1939" class="Bound"
       >T</a
-      ><a name="1940"
-      > </a
-      ><a name="1941" class="Symbol"
+      > <a name="1941" class="Symbol"
       >:</a
-      ><a name="1942"
-      > </a
-      ><a name="1943" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="1943" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="1946"
-      > </a
-      ><a name="1947" href="Data.Star.Pointer.html#1935" class="Bound"
+      > <a name="1947" href="Data.Star.Pointer.html#1935" class="Bound"
       >I</a
-      ><a name="1948"
-      > </a
-      ><a name="1949" href="Agda.Primitive.html#609" class="Primitive"
+      > <a name="1949" href="Agda.Primitive.html#zero" class="Primitive"
       >zero</a
       ><a name="1953" class="Symbol"
       >}</a
-      ><a name="1954"
-      > </a
-      ><a name="1955" class="Symbol"
+      > <a name="1955" class="Symbol"
       >{</a
       ><a name="1956" href="Data.Star.Pointer.html#1956" class="Bound"
       >P</a
-      ><a name="1957"
-      > </a
-      ><a name="1958" href="Data.Star.Pointer.html#1958" class="Bound"
+      > <a name="1958" href="Data.Star.Pointer.html#1958" class="Bound"
       >Q</a
-      ><a name="1959"
-      > </a
-      ><a name="1960" href="Data.Star.Pointer.html#1960" class="Bound"
+      > <a name="1960" href="Data.Star.Pointer.html#1960" class="Bound"
       >R</a
-      ><a name="1961"
-      > </a
-      ><a name="1962" class="Symbol"
+      > <a name="1962" class="Symbol"
       >:</a
-      ><a name="1963"
-      > </a
-      ><a name="1964" href="Data.Star.Decoration.html#423" class="Function"
+      > <a name="1964" href="Data.Star.Decoration.html#EdgePred" class="Function"
       >EdgePred</a
-      ><a name="1972"
-      > </a
-      ><a name="1973" href="Data.Star.Pointer.html#1939" class="Bound"
+      > <a name="1973" href="Data.Star.Pointer.html#1939" class="Bound"
       >T</a
       ><a name="1974" class="Symbol"
       >}</a
-      ><a name="1975"
       >
-               </a
-      ><a name="1991" class="Symbol"
+               <a name="1991" class="Symbol"
       >{</a
       ><a name="1992" href="Data.Star.Pointer.html#1992" class="Bound"
       >i</a
-      ><a name="1993"
-      > </a
-      ><a name="1994" href="Data.Star.Pointer.html#1994" class="Bound"
+      > <a name="1994" href="Data.Star.Pointer.html#1994" class="Bound"
       >j</a
       ><a name="1995" class="Symbol"
       >}</a
-      ><a name="1996"
-      > </a
-      ><a name="1997" class="Symbol"
+      > <a name="1997" class="Symbol"
       >{</a
       ><a name="1998" href="Data.Star.Pointer.html#1998" class="Bound"
       >xs</a
-      ><a name="2000"
-      > </a
-      ><a name="2001" class="Symbol"
+      > <a name="2001" class="Symbol"
       >:</a
-      ><a name="2002"
-      > </a
-      ><a name="2003" href="Data.Star.html#553" class="Datatype"
+      > <a name="2003" href="Data.Star.html#Star" class="Datatype"
       >Star</a
-      ><a name="2007"
-      > </a
-      ><a name="2008" href="Data.Star.Pointer.html#1939" class="Bound"
+      > <a name="2008" href="Data.Star.Pointer.html#1939" class="Bound"
       >T</a
-      ><a name="2009"
-      > </a
-      ><a name="2010" href="Data.Star.Pointer.html#1992" class="Bound"
+      > <a name="2010" href="Data.Star.Pointer.html#1992" class="Bound"
       >i</a
-      ><a name="2011"
-      > </a
-      ><a name="2012" href="Data.Star.Pointer.html#1994" class="Bound"
+      > <a name="2012" href="Data.Star.Pointer.html#1994" class="Bound"
       >j</a
       ><a name="2013" class="Symbol"
       >}</a
-      ><a name="2014"
-      > </a
-      ><a name="2015" class="Symbol"
+      > <a name="2015" class="Symbol"
       >&#8594;</a
-      ><a name="2016"
       >
-         </a
-      ><a name="2026" href="Data.Star.Pointer.html#1183" class="Function"
+         <a name="2026" href="Data.Star.Pointer.html#Any" class="Function"
       >Any</a
-      ><a name="2029"
-      > </a
-      ><a name="2030" href="Data.Star.Pointer.html#1956" class="Bound"
+      > <a name="2030" href="Data.Star.Pointer.html#1956" class="Bound"
       >P</a
-      ><a name="2031"
-      > </a
-      ><a name="2032" href="Data.Star.Pointer.html#1958" class="Bound"
+      > <a name="2032" href="Data.Star.Pointer.html#1958" class="Bound"
       >Q</a
-      ><a name="2033"
-      > </a
-      ><a name="2034" href="Data.Star.Pointer.html#1998" class="Bound"
+      > <a name="2034" href="Data.Star.Pointer.html#1998" class="Bound"
       >xs</a
-      ><a name="2036"
-      > </a
-      ><a name="2037" class="Symbol"
+      > <a name="2037" class="Symbol"
       >&#8594;</a
-      ><a name="2038"
-      > </a
-      ><a name="2039" href="Data.Star.Decoration.html#1372" class="Function"
+      > <a name="2039" href="Data.Star.Decoration.html#All" class="Function"
       >All</a
-      ><a name="2042"
-      > </a
-      ><a name="2043" href="Data.Star.Pointer.html#1960" class="Bound"
+      > <a name="2043" href="Data.Star.Pointer.html#1960" class="Bound"
       >R</a
-      ><a name="2044"
-      > </a
-      ><a name="2045" href="Data.Star.Pointer.html#1998" class="Bound"
+      > <a name="2045" href="Data.Star.Pointer.html#1998" class="Bound"
       >xs</a
-      ><a name="2047"
-      > </a
-      ><a name="2048" class="Symbol"
+      > <a name="2048" class="Symbol"
       >&#8594;</a
-      ><a name="2049"
-      > </a
-      ><a name="2050" href="Data.Star.Pointer.html#1650" class="Datatype"
+      > <a name="2050" href="Data.Star.Pointer.html#Result" class="Datatype"
       >Result</a
-      ><a name="2056"
-      > </a
-      ><a name="2057" href="Data.Star.Pointer.html#1939" class="Bound"
+      > <a name="2057" href="Data.Star.Pointer.html#1939" class="Bound"
       >T</a
-      ><a name="2058"
-      > </a
-      ><a name="2059" href="Data.Star.Pointer.html#1958" class="Bound"
+      > <a name="2059" href="Data.Star.Pointer.html#1958" class="Bound"
       >Q</a
-      ><a name="2060"
-      > </a
-      ><a name="2061" href="Data.Star.Pointer.html#1960" class="Bound"
+      > <a name="2061" href="Data.Star.Pointer.html#1960" class="Bound"
       >R</a
-      ><a name="2062"
       >
-</a
-      ><a name="2063" href="Data.Star.Pointer.html#1923" class="Function"
+<a name="2063" href="Data.Star.Pointer.html#lookup" class="Function"
       >lookup</a
-      ><a name="2069"
-      > </a
-      ><a name="2070" class="Symbol"
+      > <a name="2070" class="Symbol"
       >(</a
-      ><a name="2071" href="Data.Star.Pointer.html#832" class="InductiveConstructor"
+      ><a name="2071" href="Data.Star.Pointer.html#Pointer.done" class="InductiveConstructor"
       >done</a
-      ><a name="2075"
-      > </a
-      ><a name="2076" href="Data.Star.Pointer.html#2076" class="Bound"
+      > <a name="2076" href="Data.Star.Pointer.html#2076" class="Bound"
       >q</a
-      ><a name="2077"
-      > </a
-      ><a name="2078" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="2078" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="2079"
-      > </a
-      ><a name="2080" href="Data.Star.html#614" class="InductiveConstructor"
+      > <a name="2080" href="Data.Star.html#Star.&#949;" class="InductiveConstructor"
       >&#949;</a
       ><a name="2081" class="Symbol"
       >)</a
-      ><a name="2082"
-      >      </a
-      ><a name="2088" class="Symbol"
+      >      <a name="2088" class="Symbol"
       >(</a
-      ><a name="2089" href="Data.Star.Decoration.html#851" class="InductiveConstructor"
+      ><a name="2089" href="Data.Star.Decoration.html#DecoratedWith.&#8614;" class="InductiveConstructor"
       >&#8614;</a
-      ><a name="2090"
-      > </a
-      ><a name="2091" href="Data.Star.Pointer.html#2091" class="Bound"
+      > <a name="2091" href="Data.Star.Pointer.html#2091" class="Bound"
       >r</a
-      ><a name="2092"
-      > </a
-      ><a name="2093" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="2093" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="2094"
-      > </a
-      ><a name="2095" class="Symbol"
+      > <a name="2095" class="Symbol"
       >_)</a
-      ><a name="2097"
-      >  </a
-      ><a name="2099" class="Symbol"
+      >  <a name="2099" class="Symbol"
       >=</a
-      ><a name="2100"
-      > </a
-      ><a name="2101" href="Data.Star.Pointer.html#1717" class="InductiveConstructor"
+      > <a name="2101" href="Data.Star.Pointer.html#Result.result" class="InductiveConstructor"
       >result</a
-      ><a name="2107"
-      > </a
-      ><a name="2108" href="Data.Star.Pointer.html#2076" class="Bound"
+      > <a name="2108" href="Data.Star.Pointer.html#2076" class="Bound"
       >q</a
-      ><a name="2109"
-      > </a
-      ><a name="2110" href="Data.Star.Pointer.html#2091" class="Bound"
+      > <a name="2110" href="Data.Star.Pointer.html#2091" class="Bound"
       >r</a
-      ><a name="2111"
       >
-</a
-      ><a name="2112" href="Data.Star.Pointer.html#1923" class="Function"
+<a name="2112" href="Data.Star.Pointer.html#lookup" class="Function"
       >lookup</a
-      ><a name="2118"
-      > </a
-      ><a name="2119" class="Symbol"
+      > <a name="2119" class="Symbol"
       >(</a
-      ><a name="2120" href="Data.Star.Pointer.html#669" class="InductiveConstructor"
+      ><a name="2120" href="Data.Star.Pointer.html#Pointer.step" class="InductiveConstructor"
       >step</a
-      ><a name="2124"
-      > </a
-      ><a name="2125" href="Data.Star.Pointer.html#2125" class="Bound"
+      > <a name="2125" href="Data.Star.Pointer.html#2125" class="Bound"
       >p</a
-      ><a name="2126"
-      > </a
-      ><a name="2127" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="2127" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="2128"
-      > </a
-      ><a name="2129" href="Data.Star.Pointer.html#2129" class="Bound"
+      > <a name="2129" href="Data.Star.Pointer.html#2129" class="Bound"
       >ps</a
       ><a name="2131" class="Symbol"
       >)</a
-      ><a name="2132"
-      >     </a
-      ><a name="2137" class="Symbol"
+      >     <a name="2137" class="Symbol"
       >(</a
-      ><a name="2138" href="Data.Star.Decoration.html#851" class="InductiveConstructor"
+      ><a name="2138" href="Data.Star.Decoration.html#DecoratedWith.&#8614;" class="InductiveConstructor"
       >&#8614;</a
-      ><a name="2139"
-      > </a
-      ><a name="2140" href="Data.Star.Pointer.html#2140" class="Bound"
+      > <a name="2140" href="Data.Star.Pointer.html#2140" class="Bound"
       >r</a
-      ><a name="2141"
-      > </a
-      ><a name="2142" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="2142" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="2143"
-      > </a
-      ><a name="2144" href="Data.Star.Pointer.html#2144" class="Bound"
+      > <a name="2144" href="Data.Star.Pointer.html#2144" class="Bound"
       >rs</a
       ><a name="2146" class="Symbol"
       >)</a
-      ><a name="2147"
-      > </a
-      ><a name="2148" class="Symbol"
+      > <a name="2148" class="Symbol"
       >=</a
-      ><a name="2149"
-      > </a
-      ><a name="2150" href="Data.Star.Pointer.html#1923" class="Function"
+      > <a name="2150" href="Data.Star.Pointer.html#lookup" class="Function"
       >lookup</a
-      ><a name="2156"
-      > </a
-      ><a name="2157" href="Data.Star.Pointer.html#2129" class="Bound"
+      > <a name="2157" href="Data.Star.Pointer.html#2129" class="Bound"
       >ps</a
-      ><a name="2159"
-      > </a
-      ><a name="2160" href="Data.Star.Pointer.html#2144" class="Bound"
+      > <a name="2160" href="Data.Star.Pointer.html#2144" class="Bound"
       >rs</a
-      ><a name="2162"
       >
-</a
-      ><a name="2163" href="Data.Star.Pointer.html#1923" class="Function"
+<a name="2163" href="Data.Star.Pointer.html#lookup" class="Function"
       >lookup</a
-      ><a name="2169"
-      > </a
-      ><a name="2170" class="Symbol"
+      > <a name="2170" class="Symbol"
       >(</a
-      ><a name="2171" href="Data.Star.Pointer.html#832" class="InductiveConstructor"
+      ><a name="2171" href="Data.Star.Pointer.html#Pointer.done" class="InductiveConstructor"
       >done</a
-      ><a name="2175"
-      > </a
-      ><a name="2176" class="Symbol"
+      > <a name="2176" class="Symbol"
       >_</a
-      ><a name="2177"
-      > </a
-      ><a name="2178" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="2178" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="2179"
-      > </a
-      ><a name="2180" class="Symbol"
+      > <a name="2180" class="Symbol"
       >()</a
-      ><a name="2182"
-      > </a
-      ><a name="2183" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="2183" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="2184"
-      > </a
-      ><a name="2185" class="Symbol"
+      > <a name="2185" class="Symbol"
       >_)</a
-      ><a name="2187"
-      > </a
-      ><a name="2188" class="Symbol"
+      > <a name="2188" class="Symbol"
       >_</a
-      ><a name="2189"
       >
 
-</a
-      ><a name="2191" class="Comment"
+<a name="2191" class="Comment"
       >-- We can define something resembling init.</a
-      ><a name="2234"
       >
 
-</a
-      ><a name="2236" href="Data.Star.Pointer.html#2236" class="Function"
+<a name="prefixIndex" href="Data.Star.Pointer.html#prefixIndex" class="Function"
       >prefixIndex</a
-      ><a name="2247"
-      > </a
-      ><a name="2248" class="Symbol"
+      > <a name="2248" class="Symbol"
       >:</a
-      ><a name="2249"
-      > </a
-      ><a name="2250" class="Symbol"
+      > <a name="2250" class="Symbol"
       >&#8704;</a
-      ><a name="2251"
-      > </a
-      ><a name="2252" class="Symbol"
+      > <a name="2252" class="Symbol"
       >{</a
       ><a name="2253" href="Data.Star.Pointer.html#2253" class="Bound"
       >I</a
       ><a name="2254" class="Symbol"
       >}</a
-      ><a name="2255"
-      > </a
-      ><a name="2256" class="Symbol"
+      > <a name="2256" class="Symbol"
       >{</a
       ><a name="2257" href="Data.Star.Pointer.html#2257" class="Bound"
       >T</a
-      ><a name="2258"
-      > </a
-      ><a name="2259" class="Symbol"
+      > <a name="2259" class="Symbol"
       >:</a
-      ><a name="2260"
-      > </a
-      ><a name="2261" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="2261" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="2264"
-      > </a
-      ><a name="2265" href="Data.Star.Pointer.html#2253" class="Bound"
+      > <a name="2265" href="Data.Star.Pointer.html#2253" class="Bound"
       >I</a
-      ><a name="2266"
-      > </a
-      ><a name="2267" href="Agda.Primitive.html#609" class="Primitive"
+      > <a name="2267" href="Agda.Primitive.html#zero" class="Primitive"
       >zero</a
       ><a name="2271" class="Symbol"
       >}</a
-      ><a name="2272"
-      > </a
-      ><a name="2273" class="Symbol"
+      > <a name="2273" class="Symbol"
       >{</a
       ><a name="2274" href="Data.Star.Pointer.html#2274" class="Bound"
       >P</a
-      ><a name="2275"
-      > </a
-      ><a name="2276" href="Data.Star.Pointer.html#2276" class="Bound"
+      > <a name="2276" href="Data.Star.Pointer.html#2276" class="Bound"
       >Q</a
-      ><a name="2277"
-      > </a
-      ><a name="2278" class="Symbol"
+      > <a name="2278" class="Symbol"
       >:</a
-      ><a name="2279"
-      > </a
-      ><a name="2280" href="Data.Star.Decoration.html#423" class="Function"
+      > <a name="2280" href="Data.Star.Decoration.html#EdgePred" class="Function"
       >EdgePred</a
-      ><a name="2288"
-      > </a
-      ><a name="2289" href="Data.Star.Pointer.html#2257" class="Bound"
+      > <a name="2289" href="Data.Star.Pointer.html#2257" class="Bound"
       >T</a
       ><a name="2290" class="Symbol"
       >}</a
-      ><a name="2291"
       >
-                    </a
-      ><a name="2312" class="Symbol"
+                    <a name="2312" class="Symbol"
       >{</a
       ><a name="2313" href="Data.Star.Pointer.html#2313" class="Bound"
       >i</a
-      ><a name="2314"
-      > </a
-      ><a name="2315" href="Data.Star.Pointer.html#2315" class="Bound"
+      > <a name="2315" href="Data.Star.Pointer.html#2315" class="Bound"
       >j</a
       ><a name="2316" class="Symbol"
       >}</a
-      ><a name="2317"
-      > </a
-      ><a name="2318" class="Symbol"
+      > <a name="2318" class="Symbol"
       >{</a
       ><a name="2319" href="Data.Star.Pointer.html#2319" class="Bound"
       >xs</a
-      ><a name="2321"
-      > </a
-      ><a name="2322" class="Symbol"
+      > <a name="2322" class="Symbol"
       >:</a
-      ><a name="2323"
-      > </a
-      ><a name="2324" href="Data.Star.html#553" class="Datatype"
+      > <a name="2324" href="Data.Star.html#Star" class="Datatype"
       >Star</a
-      ><a name="2328"
-      > </a
-      ><a name="2329" href="Data.Star.Pointer.html#2257" class="Bound"
+      > <a name="2329" href="Data.Star.Pointer.html#2257" class="Bound"
       >T</a
-      ><a name="2330"
-      > </a
-      ><a name="2331" href="Data.Star.Pointer.html#2313" class="Bound"
+      > <a name="2331" href="Data.Star.Pointer.html#2313" class="Bound"
       >i</a
-      ><a name="2332"
-      > </a
-      ><a name="2333" href="Data.Star.Pointer.html#2315" class="Bound"
+      > <a name="2333" href="Data.Star.Pointer.html#2315" class="Bound"
       >j</a
       ><a name="2334" class="Symbol"
       >}</a
-      ><a name="2335"
-      > </a
-      ><a name="2336" class="Symbol"
+      > <a name="2336" class="Symbol"
       >&#8594;</a
-      ><a name="2337"
       >
-              </a
-      ><a name="2352" href="Data.Star.Pointer.html#1183" class="Function"
+              <a name="2352" href="Data.Star.Pointer.html#Any" class="Function"
       >Any</a
-      ><a name="2355"
-      > </a
-      ><a name="2356" href="Data.Star.Pointer.html#2274" class="Bound"
+      > <a name="2356" href="Data.Star.Pointer.html#2274" class="Bound"
       >P</a
-      ><a name="2357"
-      > </a
-      ><a name="2358" href="Data.Star.Pointer.html#2276" class="Bound"
+      > <a name="2358" href="Data.Star.Pointer.html#2276" class="Bound"
       >Q</a
-      ><a name="2359"
-      > </a
-      ><a name="2360" href="Data.Star.Pointer.html#2319" class="Bound"
+      > <a name="2360" href="Data.Star.Pointer.html#2319" class="Bound"
       >xs</a
-      ><a name="2362"
-      > </a
-      ><a name="2363" class="Symbol"
+      > <a name="2363" class="Symbol"
       >&#8594;</a
-      ><a name="2364"
-      > </a
-      ><a name="2365" href="Data.Star.Pointer.html#2253" class="Bound"
+      > <a name="2365" href="Data.Star.Pointer.html#2253" class="Bound"
       >I</a
-      ><a name="2366"
       >
-</a
-      ><a name="2367" href="Data.Star.Pointer.html#2236" class="Function"
+<a name="2367" href="Data.Star.Pointer.html#prefixIndex" class="Function"
       >prefixIndex</a
-      ><a name="2378"
-      > </a
-      ><a name="2379" class="Symbol"
+      > <a name="2379" class="Symbol"
       >(</a
-      ><a name="2380" href="Data.Star.Pointer.html#832" class="InductiveConstructor"
+      ><a name="2380" href="Data.Star.Pointer.html#Pointer.done" class="InductiveConstructor"
       >done</a
-      ><a name="2384"
-      > </a
-      ><a name="2385" class="Symbol"
+      > <a name="2385" class="Symbol"
       >{</a
       ><a name="2386" class="Argument"
       >i</a
-      ><a name="2387"
-      > </a
-      ><a name="2388" class="Symbol"
+      > <a name="2388" class="Symbol"
       >=</a
-      ><a name="2389"
-      > </a
-      ><a name="2390" href="Data.Star.Pointer.html#2390" class="Bound"
+      > <a name="2390" href="Data.Star.Pointer.html#2390" class="Bound"
       >i</a
       ><a name="2391" class="Symbol"
       >}</a
-      ><a name="2392"
-      > </a
-      ><a name="2393" href="Data.Star.Pointer.html#2393" class="Bound"
+      > <a name="2393" href="Data.Star.Pointer.html#2393" class="Bound"
       >q</a
-      ><a name="2394"
-      > </a
-      ><a name="2395" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="2395" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="2396"
-      > </a
-      ><a name="2397" class="Symbol"
+      > <a name="2397" class="Symbol"
       >_)</a
-      ><a name="2399"
-      >  </a
-      ><a name="2401" class="Symbol"
+      >  <a name="2401" class="Symbol"
       >=</a
-      ><a name="2402"
-      > </a
-      ><a name="2403" href="Data.Star.Pointer.html#2390" class="Bound"
+      > <a name="2403" href="Data.Star.Pointer.html#2390" class="Bound"
       >i</a
-      ><a name="2404"
       >
-</a
-      ><a name="2405" href="Data.Star.Pointer.html#2236" class="Function"
+<a name="2405" href="Data.Star.Pointer.html#prefixIndex" class="Function"
       >prefixIndex</a
-      ><a name="2416"
-      > </a
-      ><a name="2417" class="Symbol"
+      > <a name="2417" class="Symbol"
       >(</a
-      ><a name="2418" href="Data.Star.Pointer.html#669" class="InductiveConstructor"
+      ><a name="2418" href="Data.Star.Pointer.html#Pointer.step" class="InductiveConstructor"
       >step</a
-      ><a name="2422"
-      > </a
-      ><a name="2423" href="Data.Star.Pointer.html#2423" class="Bound"
+      > <a name="2423" href="Data.Star.Pointer.html#2423" class="Bound"
       >p</a
-      ><a name="2424"
-      >         </a
-      ><a name="2433" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      >         <a name="2433" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="2434"
-      > </a
-      ><a name="2435" href="Data.Star.Pointer.html#2435" class="Bound"
+      > <a name="2435" href="Data.Star.Pointer.html#2435" class="Bound"
       >ps</a
       ><a name="2437" class="Symbol"
       >)</a
-      ><a name="2438"
-      > </a
-      ><a name="2439" class="Symbol"
+      > <a name="2439" class="Symbol"
       >=</a
-      ><a name="2440"
-      > </a
-      ><a name="2441" href="Data.Star.Pointer.html#2236" class="Function"
+      > <a name="2441" href="Data.Star.Pointer.html#prefixIndex" class="Function"
       >prefixIndex</a
-      ><a name="2452"
-      > </a
-      ><a name="2453" href="Data.Star.Pointer.html#2435" class="Bound"
+      > <a name="2453" href="Data.Star.Pointer.html#2435" class="Bound"
       >ps</a
-      ><a name="2455"
       >
 
-</a
-      ><a name="2457" href="Data.Star.Pointer.html#2457" class="Function"
+<a name="prefix" href="Data.Star.Pointer.html#prefix" class="Function"
       >prefix</a
-      ><a name="2463"
-      > </a
-      ><a name="2464" class="Symbol"
+      > <a name="2464" class="Symbol"
       >:</a
-      ><a name="2465"
-      > </a
-      ><a name="2466" class="Symbol"
+      > <a name="2466" class="Symbol"
       >&#8704;</a
-      ><a name="2467"
-      > </a
-      ><a name="2468" class="Symbol"
+      > <a name="2468" class="Symbol"
       >{</a
       ><a name="2469" href="Data.Star.Pointer.html#2469" class="Bound"
       >I</a
       ><a name="2470" class="Symbol"
       >}</a
-      ><a name="2471"
-      > </a
-      ><a name="2472" class="Symbol"
+      > <a name="2472" class="Symbol"
       >{</a
       ><a name="2473" href="Data.Star.Pointer.html#2473" class="Bound"
       >T</a
-      ><a name="2474"
-      > </a
-      ><a name="2475" class="Symbol"
+      > <a name="2475" class="Symbol"
       >:</a
-      ><a name="2476"
-      > </a
-      ><a name="2477" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="2477" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="2480"
-      > </a
-      ><a name="2481" href="Data.Star.Pointer.html#2469" class="Bound"
+      > <a name="2481" href="Data.Star.Pointer.html#2469" class="Bound"
       >I</a
-      ><a name="2482"
-      > </a
-      ><a name="2483" href="Agda.Primitive.html#609" class="Primitive"
+      > <a name="2483" href="Agda.Primitive.html#zero" class="Primitive"
       >zero</a
       ><a name="2487" class="Symbol"
       >}</a
-      ><a name="2488"
-      > </a
-      ><a name="2489" class="Symbol"
+      > <a name="2489" class="Symbol"
       >{</a
       ><a name="2490" href="Data.Star.Pointer.html#2490" class="Bound"
       >P</a
-      ><a name="2491"
-      > </a
-      ><a name="2492" href="Data.Star.Pointer.html#2492" class="Bound"
+      > <a name="2492" href="Data.Star.Pointer.html#2492" class="Bound"
       >Q</a
-      ><a name="2493"
-      > </a
-      ><a name="2494" class="Symbol"
+      > <a name="2494" class="Symbol"
       >:</a
-      ><a name="2495"
-      > </a
-      ><a name="2496" href="Data.Star.Decoration.html#423" class="Function"
+      > <a name="2496" href="Data.Star.Decoration.html#EdgePred" class="Function"
       >EdgePred</a
-      ><a name="2504"
-      > </a
-      ><a name="2505" href="Data.Star.Pointer.html#2473" class="Bound"
+      > <a name="2505" href="Data.Star.Pointer.html#2473" class="Bound"
       >T</a
       ><a name="2506" class="Symbol"
       >}</a
-      ><a name="2507"
-      > </a
-      ><a name="2508" class="Symbol"
+      > <a name="2508" class="Symbol"
       >{</a
       ><a name="2509" href="Data.Star.Pointer.html#2509" class="Bound"
       >i</a
-      ><a name="2510"
-      > </a
-      ><a name="2511" href="Data.Star.Pointer.html#2511" class="Bound"
+      > <a name="2511" href="Data.Star.Pointer.html#2511" class="Bound"
       >j</a
       ><a name="2512" class="Symbol"
       >}</a
-      ><a name="2513"
-      > </a
-      ><a name="2514" class="Symbol"
+      > <a name="2514" class="Symbol"
       >{</a
       ><a name="2515" href="Data.Star.Pointer.html#2515" class="Bound"
       >xs</a
-      ><a name="2517"
-      > </a
-      ><a name="2518" class="Symbol"
+      > <a name="2518" class="Symbol"
       >:</a
-      ><a name="2519"
-      > </a
-      ><a name="2520" href="Data.Star.html#553" class="Datatype"
+      > <a name="2520" href="Data.Star.html#Star" class="Datatype"
       >Star</a
-      ><a name="2524"
-      > </a
-      ><a name="2525" href="Data.Star.Pointer.html#2473" class="Bound"
+      > <a name="2525" href="Data.Star.Pointer.html#2473" class="Bound"
       >T</a
-      ><a name="2526"
-      > </a
-      ><a name="2527" href="Data.Star.Pointer.html#2509" class="Bound"
+      > <a name="2527" href="Data.Star.Pointer.html#2509" class="Bound"
       >i</a
-      ><a name="2528"
-      > </a
-      ><a name="2529" href="Data.Star.Pointer.html#2511" class="Bound"
+      > <a name="2529" href="Data.Star.Pointer.html#2511" class="Bound"
       >j</a
       ><a name="2530" class="Symbol"
       >}</a
-      ><a name="2531"
-      > </a
-      ><a name="2532" class="Symbol"
+      > <a name="2532" class="Symbol"
       >&#8594;</a
-      ><a name="2533"
       >
-         </a
-      ><a name="2543" class="Symbol"
+         <a name="2543" class="Symbol"
       >(</a
       ><a name="2544" href="Data.Star.Pointer.html#2544" class="Bound"
       >ps</a
-      ><a name="2546"
-      > </a
-      ><a name="2547" class="Symbol"
+      > <a name="2547" class="Symbol"
       >:</a
-      ><a name="2548"
-      > </a
-      ><a name="2549" href="Data.Star.Pointer.html#1183" class="Function"
+      > <a name="2549" href="Data.Star.Pointer.html#Any" class="Function"
       >Any</a
-      ><a name="2552"
-      > </a
-      ><a name="2553" href="Data.Star.Pointer.html#2490" class="Bound"
+      > <a name="2553" href="Data.Star.Pointer.html#2490" class="Bound"
       >P</a
-      ><a name="2554"
-      > </a
-      ><a name="2555" href="Data.Star.Pointer.html#2492" class="Bound"
+      > <a name="2555" href="Data.Star.Pointer.html#2492" class="Bound"
       >Q</a
-      ><a name="2556"
-      > </a
-      ><a name="2557" href="Data.Star.Pointer.html#2515" class="Bound"
+      > <a name="2557" href="Data.Star.Pointer.html#2515" class="Bound"
       >xs</a
       ><a name="2559" class="Symbol"
       >)</a
-      ><a name="2560"
-      > </a
-      ><a name="2561" class="Symbol"
+      > <a name="2561" class="Symbol"
       >&#8594;</a
-      ><a name="2562"
-      > </a
-      ><a name="2563" href="Data.Star.html#553" class="Datatype"
+      > <a name="2563" href="Data.Star.html#Star" class="Datatype"
       >Star</a
-      ><a name="2567"
-      > </a
-      ><a name="2568" href="Data.Star.Pointer.html#2473" class="Bound"
+      > <a name="2568" href="Data.Star.Pointer.html#2473" class="Bound"
       >T</a
-      ><a name="2569"
-      > </a
-      ><a name="2570" href="Data.Star.Pointer.html#2509" class="Bound"
+      > <a name="2570" href="Data.Star.Pointer.html#2509" class="Bound"
       >i</a
-      ><a name="2571"
-      > </a
-      ><a name="2572" class="Symbol"
+      > <a name="2572" class="Symbol"
       >(</a
-      ><a name="2573" href="Data.Star.Pointer.html#2236" class="Function"
+      ><a name="2573" href="Data.Star.Pointer.html#prefixIndex" class="Function"
       >prefixIndex</a
-      ><a name="2584"
-      > </a
-      ><a name="2585" href="Data.Star.Pointer.html#2544" class="Bound"
+      > <a name="2585" href="Data.Star.Pointer.html#2544" class="Bound"
       >ps</a
       ><a name="2587" class="Symbol"
       >)</a
-      ><a name="2588"
       >
-</a
-      ><a name="2589" href="Data.Star.Pointer.html#2457" class="Function"
+<a name="2589" href="Data.Star.Pointer.html#prefix" class="Function"
       >prefix</a
-      ><a name="2595"
-      > </a
-      ><a name="2596" class="Symbol"
+      > <a name="2596" class="Symbol"
       >(</a
-      ><a name="2597" href="Data.Star.Pointer.html#832" class="InductiveConstructor"
+      ><a name="2597" href="Data.Star.Pointer.html#Pointer.done" class="InductiveConstructor"
       >done</a
-      ><a name="2601"
-      > </a
-      ><a name="2602" href="Data.Star.Pointer.html#2602" class="Bound"
+      > <a name="2602" href="Data.Star.Pointer.html#2602" class="Bound"
       >q</a
-      ><a name="2603"
-      >         </a
-      ><a name="2612" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      >         <a name="2612" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="2613"
-      > </a
-      ><a name="2614" class="Symbol"
+      > <a name="2614" class="Symbol"
       >_)</a
-      ><a name="2616"
-      >  </a
-      ><a name="2618" class="Symbol"
+      >  <a name="2618" class="Symbol"
       >=</a
-      ><a name="2619"
-      > </a
-      ><a name="2620" href="Data.Star.html#614" class="InductiveConstructor"
+      > <a name="2620" href="Data.Star.html#Star.&#949;" class="InductiveConstructor"
       >&#949;</a
-      ><a name="2621"
       >
-</a
-      ><a name="2622" href="Data.Star.Pointer.html#2457" class="Function"
+<a name="2622" href="Data.Star.Pointer.html#prefix" class="Function"
       >prefix</a
-      ><a name="2628"
-      > </a
-      ><a name="2629" class="Symbol"
+      > <a name="2629" class="Symbol"
       >(</a
-      ><a name="2630" href="Data.Star.Pointer.html#669" class="InductiveConstructor"
+      ><a name="2630" href="Data.Star.Pointer.html#Pointer.step" class="InductiveConstructor"
       >step</a
-      ><a name="2634"
-      > </a
-      ><a name="2635" class="Symbol"
+      > <a name="2635" class="Symbol"
       >{</a
       ><a name="2636" class="Argument"
       >x</a
-      ><a name="2637"
-      > </a
-      ><a name="2638" class="Symbol"
+      > <a name="2638" class="Symbol"
       >=</a
-      ><a name="2639"
-      > </a
-      ><a name="2640" href="Data.Star.Pointer.html#2640" class="Bound"
+      > <a name="2640" href="Data.Star.Pointer.html#2640" class="Bound"
       >x</a
       ><a name="2641" class="Symbol"
       >}</a
-      ><a name="2642"
-      > </a
-      ><a name="2643" href="Data.Star.Pointer.html#2643" class="Bound"
+      > <a name="2643" href="Data.Star.Pointer.html#2643" class="Bound"
       >p</a
-      ><a name="2644"
-      > </a
-      ><a name="2645" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="2645" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="2646"
-      > </a
-      ><a name="2647" href="Data.Star.Pointer.html#2647" class="Bound"
+      > <a name="2647" href="Data.Star.Pointer.html#2647" class="Bound"
       >ps</a
       ><a name="2649" class="Symbol"
       >)</a
-      ><a name="2650"
-      > </a
-      ><a name="2651" class="Symbol"
+      > <a name="2651" class="Symbol"
       >=</a
-      ><a name="2652"
-      > </a
-      ><a name="2653" href="Data.Star.Pointer.html#2640" class="Bound"
+      > <a name="2653" href="Data.Star.Pointer.html#2640" class="Bound"
       >x</a
-      ><a name="2654"
-      > </a
-      ><a name="2655" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="2655" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="2656"
-      > </a
-      ><a name="2657" href="Data.Star.Pointer.html#2457" class="Function"
+      > <a name="2657" href="Data.Star.Pointer.html#prefix" class="Function"
       >prefix</a
-      ><a name="2663"
-      > </a
-      ><a name="2664" href="Data.Star.Pointer.html#2647" class="Bound"
+      > <a name="2664" href="Data.Star.Pointer.html#2647" class="Bound"
       >ps</a
-      ><a name="2666"
       >
 
-</a
-      ><a name="2668" class="Comment"
+<a name="2668" class="Comment"
       >-- Here we are taking the initial segment of ps (all elements but the</a
-      ><a name="2737"
       >
-</a
-      ><a name="2738" class="Comment"
+<a name="2738" class="Comment"
       >-- last, i.e. all edges satisfying P).</a
-      ><a name="2776"
       >
 
-</a
-      ><a name="2778" href="Data.Star.Pointer.html#2778" class="Function"
+<a name="init" href="Data.Star.Pointer.html#init" class="Function"
       >init</a
-      ><a name="2782"
-      > </a
-      ><a name="2783" class="Symbol"
+      > <a name="2783" class="Symbol"
       >:</a
-      ><a name="2784"
-      > </a
-      ><a name="2785" class="Symbol"
+      > <a name="2785" class="Symbol"
       >&#8704;</a
-      ><a name="2786"
-      > </a
-      ><a name="2787" class="Symbol"
+      > <a name="2787" class="Symbol"
       >{</a
       ><a name="2788" href="Data.Star.Pointer.html#2788" class="Bound"
       >I</a
       ><a name="2789" class="Symbol"
       >}</a
-      ><a name="2790"
-      > </a
-      ><a name="2791" class="Symbol"
+      > <a name="2791" class="Symbol"
       >{</a
       ><a name="2792" href="Data.Star.Pointer.html#2792" class="Bound"
       >T</a
-      ><a name="2793"
-      > </a
-      ><a name="2794" class="Symbol"
+      > <a name="2794" class="Symbol"
       >:</a
-      ><a name="2795"
-      > </a
-      ><a name="2796" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="2796" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="2799"
-      > </a
-      ><a name="2800" href="Data.Star.Pointer.html#2788" class="Bound"
+      > <a name="2800" href="Data.Star.Pointer.html#2788" class="Bound"
       >I</a
-      ><a name="2801"
-      > </a
-      ><a name="2802" href="Agda.Primitive.html#609" class="Primitive"
+      > <a name="2802" href="Agda.Primitive.html#zero" class="Primitive"
       >zero</a
       ><a name="2806" class="Symbol"
       >}</a
-      ><a name="2807"
-      > </a
-      ><a name="2808" class="Symbol"
+      > <a name="2808" class="Symbol"
       >{</a
       ><a name="2809" href="Data.Star.Pointer.html#2809" class="Bound"
       >P</a
-      ><a name="2810"
-      > </a
-      ><a name="2811" href="Data.Star.Pointer.html#2811" class="Bound"
+      > <a name="2811" href="Data.Star.Pointer.html#2811" class="Bound"
       >Q</a
-      ><a name="2812"
-      > </a
-      ><a name="2813" class="Symbol"
+      > <a name="2813" class="Symbol"
       >:</a
-      ><a name="2814"
-      > </a
-      ><a name="2815" href="Data.Star.Decoration.html#423" class="Function"
+      > <a name="2815" href="Data.Star.Decoration.html#EdgePred" class="Function"
       >EdgePred</a
-      ><a name="2823"
-      > </a
-      ><a name="2824" href="Data.Star.Pointer.html#2792" class="Bound"
+      > <a name="2824" href="Data.Star.Pointer.html#2792" class="Bound"
       >T</a
       ><a name="2825" class="Symbol"
       >}</a
-      ><a name="2826"
-      > </a
-      ><a name="2827" class="Symbol"
+      > <a name="2827" class="Symbol"
       >{</a
       ><a name="2828" href="Data.Star.Pointer.html#2828" class="Bound"
       >i</a
-      ><a name="2829"
-      > </a
-      ><a name="2830" href="Data.Star.Pointer.html#2830" class="Bound"
+      > <a name="2830" href="Data.Star.Pointer.html#2830" class="Bound"
       >j</a
       ><a name="2831" class="Symbol"
       >}</a
-      ><a name="2832"
-      > </a
-      ><a name="2833" class="Symbol"
+      > <a name="2833" class="Symbol"
       >{</a
       ><a name="2834" href="Data.Star.Pointer.html#2834" class="Bound"
       >xs</a
-      ><a name="2836"
-      > </a
-      ><a name="2837" class="Symbol"
+      > <a name="2837" class="Symbol"
       >:</a
-      ><a name="2838"
-      > </a
-      ><a name="2839" href="Data.Star.html#553" class="Datatype"
+      > <a name="2839" href="Data.Star.html#Star" class="Datatype"
       >Star</a
-      ><a name="2843"
-      > </a
-      ><a name="2844" href="Data.Star.Pointer.html#2792" class="Bound"
+      > <a name="2844" href="Data.Star.Pointer.html#2792" class="Bound"
       >T</a
-      ><a name="2845"
-      > </a
-      ><a name="2846" href="Data.Star.Pointer.html#2828" class="Bound"
+      > <a name="2846" href="Data.Star.Pointer.html#2828" class="Bound"
       >i</a
-      ><a name="2847"
-      > </a
-      ><a name="2848" href="Data.Star.Pointer.html#2830" class="Bound"
+      > <a name="2848" href="Data.Star.Pointer.html#2830" class="Bound"
       >j</a
       ><a name="2849" class="Symbol"
       >}</a
-      ><a name="2850"
-      > </a
-      ><a name="2851" class="Symbol"
+      > <a name="2851" class="Symbol"
       >&#8594;</a
-      ><a name="2852"
       >
-       </a
-      ><a name="2860" class="Symbol"
+       <a name="2860" class="Symbol"
       >(</a
       ><a name="2861" href="Data.Star.Pointer.html#2861" class="Bound"
       >ps</a
-      ><a name="2863"
-      > </a
-      ><a name="2864" class="Symbol"
+      > <a name="2864" class="Symbol"
       >:</a
-      ><a name="2865"
-      > </a
-      ><a name="2866" href="Data.Star.Pointer.html#1183" class="Function"
+      > <a name="2866" href="Data.Star.Pointer.html#Any" class="Function"
       >Any</a
-      ><a name="2869"
-      > </a
-      ><a name="2870" href="Data.Star.Pointer.html#2809" class="Bound"
+      > <a name="2870" href="Data.Star.Pointer.html#2809" class="Bound"
       >P</a
-      ><a name="2871"
-      > </a
-      ><a name="2872" href="Data.Star.Pointer.html#2811" class="Bound"
+      > <a name="2872" href="Data.Star.Pointer.html#2811" class="Bound"
       >Q</a
-      ><a name="2873"
-      > </a
-      ><a name="2874" href="Data.Star.Pointer.html#2834" class="Bound"
+      > <a name="2874" href="Data.Star.Pointer.html#2834" class="Bound"
       >xs</a
       ><a name="2876" class="Symbol"
       >)</a
-      ><a name="2877"
-      > </a
-      ><a name="2878" class="Symbol"
+      > <a name="2878" class="Symbol"
       >&#8594;</a
-      ><a name="2879"
-      > </a
-      ><a name="2880" href="Data.Star.Decoration.html#1372" class="Function"
+      > <a name="2880" href="Data.Star.Decoration.html#All" class="Function"
       >All</a
-      ><a name="2883"
-      > </a
-      ><a name="2884" href="Data.Star.Pointer.html#2809" class="Bound"
+      > <a name="2884" href="Data.Star.Pointer.html#2809" class="Bound"
       >P</a
-      ><a name="2885"
-      > </a
-      ><a name="2886" class="Symbol"
+      > <a name="2886" class="Symbol"
       >(</a
-      ><a name="2887" href="Data.Star.Pointer.html#2457" class="Function"
+      ><a name="2887" href="Data.Star.Pointer.html#prefix" class="Function"
       >prefix</a
-      ><a name="2893"
-      > </a
-      ><a name="2894" href="Data.Star.Pointer.html#2861" class="Bound"
+      > <a name="2894" href="Data.Star.Pointer.html#2861" class="Bound"
       >ps</a
       ><a name="2896" class="Symbol"
       >)</a
-      ><a name="2897"
       >
-</a
-      ><a name="2898" href="Data.Star.Pointer.html#2778" class="Function"
+<a name="2898" href="Data.Star.Pointer.html#init" class="Function"
       >init</a
-      ><a name="2902"
-      > </a
-      ><a name="2903" class="Symbol"
+      > <a name="2903" class="Symbol"
       >(</a
-      ><a name="2904" href="Data.Star.Pointer.html#832" class="InductiveConstructor"
+      ><a name="2904" href="Data.Star.Pointer.html#Pointer.done" class="InductiveConstructor"
       >done</a
-      ><a name="2908"
-      > </a
-      ><a name="2909" href="Data.Star.Pointer.html#2909" class="Bound"
+      > <a name="2909" href="Data.Star.Pointer.html#2909" class="Bound"
       >q</a
-      ><a name="2910"
-      > </a
-      ><a name="2911" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="2911" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="2912"
-      > </a
-      ><a name="2913" class="Symbol"
+      > <a name="2913" class="Symbol"
       >_)</a
-      ><a name="2915"
-      >  </a
-      ><a name="2917" class="Symbol"
+      >  <a name="2917" class="Symbol"
       >=</a
-      ><a name="2918"
-      > </a
-      ><a name="2919" href="Data.Star.html#614" class="InductiveConstructor"
+      > <a name="2919" href="Data.Star.html#Star.&#949;" class="InductiveConstructor"
       >&#949;</a
-      ><a name="2920"
       >
-</a
-      ><a name="2921" href="Data.Star.Pointer.html#2778" class="Function"
+<a name="2921" href="Data.Star.Pointer.html#init" class="Function"
       >init</a
-      ><a name="2925"
-      > </a
-      ><a name="2926" class="Symbol"
+      > <a name="2926" class="Symbol"
       >(</a
-      ><a name="2927" href="Data.Star.Pointer.html#669" class="InductiveConstructor"
+      ><a name="2927" href="Data.Star.Pointer.html#Pointer.step" class="InductiveConstructor"
       >step</a
-      ><a name="2931"
-      > </a
-      ><a name="2932" href="Data.Star.Pointer.html#2932" class="Bound"
+      > <a name="2932" href="Data.Star.Pointer.html#2932" class="Bound"
       >p</a
-      ><a name="2933"
-      > </a
-      ><a name="2934" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="2934" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="2935"
-      > </a
-      ><a name="2936" href="Data.Star.Pointer.html#2936" class="Bound"
+      > <a name="2936" href="Data.Star.Pointer.html#2936" class="Bound"
       >ps</a
       ><a name="2938" class="Symbol"
       >)</a
-      ><a name="2939"
-      > </a
-      ><a name="2940" class="Symbol"
+      > <a name="2940" class="Symbol"
       >=</a
-      ><a name="2941"
-      > </a
-      ><a name="2942" href="Data.Star.Decoration.html#851" class="InductiveConstructor"
+      > <a name="2942" href="Data.Star.Decoration.html#DecoratedWith.&#8614;" class="InductiveConstructor"
       >&#8614;</a
-      ><a name="2943"
-      > </a
-      ><a name="2944" href="Data.Star.Pointer.html#2932" class="Bound"
+      > <a name="2944" href="Data.Star.Pointer.html#2932" class="Bound"
       >p</a
-      ><a name="2945"
-      > </a
-      ><a name="2946" href="Data.Star.html#641" class="InductiveConstructor Operator"
+      > <a name="2946" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
       >&#9669;</a
-      ><a name="2947"
-      > </a
-      ><a name="2948" href="Data.Star.Pointer.html#2778" class="Function"
+      > <a name="2948" href="Data.Star.Pointer.html#init" class="Function"
       >init</a
-      ><a name="2952"
-      > </a
-      ><a name="2953" href="Data.Star.Pointer.html#2936" class="Bound"
+      > <a name="2953" href="Data.Star.Pointer.html#2936" class="Bound"
       >ps</a
-      ><a name="2955"
       >
 
-</a
-      ><a name="2957" class="Comment"
+<a name="2957" class="Comment"
       >-- One can simplify the implementation by not carrying around the</a
-      ><a name="3022"
       >
-</a
-      ><a name="3023" class="Comment"
+<a name="3023" class="Comment"
       >-- indices in the type:</a
-      ><a name="3046"
       >
 
-</a
-      ><a name="3048" href="Data.Star.Pointer.html#3048" class="Function"
+<a name="last" href="Data.Star.Pointer.html#last" class="Function"
       >last</a
-      ><a name="3052"
-      > </a
-      ><a name="3053" class="Symbol"
+      > <a name="3053" class="Symbol"
       >:</a
-      ><a name="3054"
-      > </a
-      ><a name="3055" class="Symbol"
+      > <a name="3055" class="Symbol"
       >&#8704;</a
-      ><a name="3056"
-      > </a
-      ><a name="3057" class="Symbol"
+      > <a name="3057" class="Symbol"
       >{</a
       ><a name="3058" href="Data.Star.Pointer.html#3058" class="Bound"
       >I</a
       ><a name="3059" class="Symbol"
       >}</a
-      ><a name="3060"
-      > </a
-      ><a name="3061" class="Symbol"
+      > <a name="3061" class="Symbol"
       >{</a
       ><a name="3062" href="Data.Star.Pointer.html#3062" class="Bound"
       >T</a
-      ><a name="3063"
-      > </a
-      ><a name="3064" class="Symbol"
+      > <a name="3064" class="Symbol"
       >:</a
-      ><a name="3065"
-      > </a
-      ><a name="3066" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="3066" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="3069"
-      > </a
-      ><a name="3070" href="Data.Star.Pointer.html#3058" class="Bound"
+      > <a name="3070" href="Data.Star.Pointer.html#3058" class="Bound"
       >I</a
-      ><a name="3071"
-      > </a
-      ><a name="3072" href="Agda.Primitive.html#609" class="Primitive"
+      > <a name="3072" href="Agda.Primitive.html#zero" class="Primitive"
       >zero</a
       ><a name="3076" class="Symbol"
       >}</a
-      ><a name="3077"
-      > </a
-      ><a name="3078" class="Symbol"
+      > <a name="3078" class="Symbol"
       >{</a
       ><a name="3079" href="Data.Star.Pointer.html#3079" class="Bound"
       >P</a
-      ><a name="3080"
-      > </a
-      ><a name="3081" href="Data.Star.Pointer.html#3081" class="Bound"
+      > <a name="3081" href="Data.Star.Pointer.html#3081" class="Bound"
       >Q</a
-      ><a name="3082"
-      > </a
-      ><a name="3083" class="Symbol"
+      > <a name="3083" class="Symbol"
       >:</a
-      ><a name="3084"
-      > </a
-      ><a name="3085" href="Data.Star.Decoration.html#423" class="Function"
+      > <a name="3085" href="Data.Star.Decoration.html#EdgePred" class="Function"
       >EdgePred</a
-      ><a name="3093"
-      > </a
-      ><a name="3094" href="Data.Star.Pointer.html#3062" class="Bound"
+      > <a name="3094" href="Data.Star.Pointer.html#3062" class="Bound"
       >T</a
       ><a name="3095" class="Symbol"
       >}</a
-      ><a name="3096"
       >
-             </a
-      ><a name="3110" class="Symbol"
+             <a name="3110" class="Symbol"
       >{</a
       ><a name="3111" href="Data.Star.Pointer.html#3111" class="Bound"
       >i</a
-      ><a name="3112"
-      > </a
-      ><a name="3113" href="Data.Star.Pointer.html#3113" class="Bound"
+      > <a name="3113" href="Data.Star.Pointer.html#3113" class="Bound"
       >j</a
       ><a name="3114" class="Symbol"
       >}</a
-      ><a name="3115"
-      > </a
-      ><a name="3116" class="Symbol"
+      > <a name="3116" class="Symbol"
       >{</a
       ><a name="3117" href="Data.Star.Pointer.html#3117" class="Bound"
       >xs</a
-      ><a name="3119"
-      > </a
-      ><a name="3120" class="Symbol"
+      > <a name="3120" class="Symbol"
       >:</a
-      ><a name="3121"
-      > </a
-      ><a name="3122" href="Data.Star.html#553" class="Datatype"
+      > <a name="3122" href="Data.Star.html#Star" class="Datatype"
       >Star</a
-      ><a name="3126"
-      > </a
-      ><a name="3127" href="Data.Star.Pointer.html#3062" class="Bound"
+      > <a name="3127" href="Data.Star.Pointer.html#3062" class="Bound"
       >T</a
-      ><a name="3128"
-      > </a
-      ><a name="3129" href="Data.Star.Pointer.html#3111" class="Bound"
+      > <a name="3129" href="Data.Star.Pointer.html#3111" class="Bound"
       >i</a
-      ><a name="3130"
-      > </a
-      ><a name="3131" href="Data.Star.Pointer.html#3113" class="Bound"
+      > <a name="3131" href="Data.Star.Pointer.html#3113" class="Bound"
       >j</a
       ><a name="3132" class="Symbol"
       >}</a
-      ><a name="3133"
-      > </a
-      ><a name="3134" class="Symbol"
+      > <a name="3134" class="Symbol"
       >&#8594;</a
-      ><a name="3135"
       >
-       </a
-      ><a name="3143" href="Data.Star.Pointer.html#1183" class="Function"
+       <a name="3143" href="Data.Star.Pointer.html#Any" class="Function"
       >Any</a
-      ><a name="3146"
-      > </a
-      ><a name="3147" href="Data.Star.Pointer.html#3079" class="Bound"
+      > <a name="3147" href="Data.Star.Pointer.html#3079" class="Bound"
       >P</a
-      ><a name="3148"
-      > </a
-      ><a name="3149" href="Data.Star.Pointer.html#3081" class="Bound"
+      > <a name="3149" href="Data.Star.Pointer.html#3081" class="Bound"
       >Q</a
-      ><a name="3150"
-      > </a
-      ><a name="3151" href="Data.Star.Pointer.html#3117" class="Bound"
+      > <a name="3151" href="Data.Star.Pointer.html#3117" class="Bound"
       >xs</a
-      ><a name="3153"
-      > </a
-      ><a name="3154" class="Symbol"
+      > <a name="3154" class="Symbol"
       >&#8594;</a
-      ><a name="3155"
-      > </a
-      ><a name="3156" href="Data.Star.Decoration.html#505" class="Datatype"
+      > <a name="3156" href="Data.Star.Decoration.html#NonEmptyEdgePred" class="Datatype"
       >NonEmptyEdgePred</a
-      ><a name="3172"
-      > </a
-      ><a name="3173" href="Data.Star.Pointer.html#3062" class="Bound"
+      > <a name="3173" href="Data.Star.Pointer.html#3062" class="Bound"
       >T</a
-      ><a name="3174"
-      > </a
-      ><a name="3175" href="Data.Star.Pointer.html#3081" class="Bound"
+      > <a name="3175" href="Data.Star.Pointer.html#3081" class="Bound"
       >Q</a
-      ><a name="3176"
       >
-</a
-      ><a name="3177" href="Data.Star.Pointer.html#3048" class="Function"
+<a name="3177" href="Data.Star.Pointer.html#last" class="Function"
       >last</a
-      ><a name="3181"
-      > </a
-      ><a name="3182" href="Data.Star.Pointer.html#3182" class="Bound"
+      > <a name="3182" href="Data.Star.Pointer.html#3182" class="Bound"
       >ps</a
-      ><a name="3184"
-      > </a
-      ><a name="3185" class="Keyword"
+      > <a name="3185" class="Keyword"
       >with</a
-      ><a name="3189"
-      > </a
-      ><a name="3190" href="Data.Star.Pointer.html#1923" class="Function"
+      > <a name="3190" href="Data.Star.Pointer.html#lookup" class="Function"
       >lookup</a
-      ><a name="3196"
-      > </a
-      ><a name="3197" href="Data.Star.Pointer.html#3182" class="Bound"
+      > <a name="3197" href="Data.Star.Pointer.html#3182" class="Bound"
       >ps</a
-      ><a name="3199"
-      > </a
-      ><a name="3200" class="Symbol"
+      > <a name="3200" class="Symbol"
       >(</a
-      ><a name="3201" href="Data.Star.Decoration.html#2377" class="Function"
+      ><a name="3201" href="Data.Star.Decoration.html#decorate" class="Function"
       >decorate</a
-      ><a name="3209"
-      > </a
-      ><a name="3210" class="Symbol"
+      > <a name="3210" class="Symbol"
       >(</a
-      ><a name="3211" href="Function.html#1053" class="Function"
+      ><a name="3211" href="Function.html#const" class="Function"
       >const</a
-      ><a name="3216"
-      > </a
-      ><a name="3217" href="Agda.Builtin.Unit.html#106" class="InductiveConstructor"
+      > <a name="3217" href="Agda.Builtin.Unit.html#&#8868;.tt" class="InductiveConstructor"
       >tt</a
       ><a name="3219" class="Symbol"
       >)</a
-      ><a name="3220"
-      > </a
-      ><a name="3221" class="Symbol"
+      > <a name="3221" class="Symbol"
       >_)</a
-      ><a name="3223"
       >
-</a
-      ><a name="3224" class="Symbol"
+<a name="3224" class="Symbol"
       >...</a
-      ><a name="3227"
-      > </a
-      ><a name="3228" class="Symbol"
+      > <a name="3228" class="Symbol"
       >|</a
-      ><a name="3229"
-      > </a
-      ><a name="3230" href="Data.Star.Pointer.html#1717" class="InductiveConstructor"
+      > <a name="3230" href="Data.Star.Pointer.html#Result.result" class="InductiveConstructor"
       >result</a
-      ><a name="3236"
-      > </a
-      ><a name="3237" href="Data.Star.Pointer.html#3237" class="Bound"
+      > <a name="3237" href="Data.Star.Pointer.html#3237" class="Bound"
       >q</a
-      ><a name="3238"
-      > </a
-      ><a name="3239" class="Symbol"
+      > <a name="3239" class="Symbol"
       >_</a
-      ><a name="3240"
-      > </a
-      ><a name="3241" class="Symbol"
+      > <a name="3241" class="Symbol"
       >=</a
-      ><a name="3242"
-      > </a
-      ><a name="3243" href="Data.Star.Decoration.html#602" class="InductiveConstructor"
+      > <a name="3243" href="Data.Star.Decoration.html#NonEmptyEdgePred.nonEmptyEdgePred" class="InductiveConstructor"
       >nonEmptyEdgePred</a
-      ><a name="3259"
-      > </a
-      ><a name="3260" href="Data.Star.Pointer.html#3237" class="Bound"
+      > <a name="3260" href="Data.Star.Pointer.html#3237" class="Bound"
       >q</a
-      ><a name="3261"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

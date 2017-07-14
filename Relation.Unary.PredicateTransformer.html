@@ -11,2798 +11,1550 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Predicate transformers</a
-      ><a name="131"
       >
-</a
-      ><a name="132" class="Comment"
+<a name="132" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="204"
       >
 
-</a
-      ><a name="206" class="Keyword"
+<a name="206" class="Keyword"
       >module</a
-      ><a name="212"
-      > </a
-      ><a name="213" href="Relation.Unary.PredicateTransformer.html#1" class="Module"
+      > <a name="213" href="Relation.Unary.PredicateTransformer.html" class="Module"
       >Relation.Unary.PredicateTransformer</a
-      ><a name="248"
-      > </a
-      ><a name="249" class="Keyword"
+      > <a name="249" class="Keyword"
       >where</a
-      ><a name="254"
       >
 
-</a
-      ><a name="256" class="Keyword"
+<a name="256" class="Keyword"
       >open</a
-      ><a name="260"
-      > </a
-      ><a name="261" class="Keyword"
+      > <a name="261" class="Keyword"
       >import</a
-      ><a name="267"
-      > </a
-      ><a name="268" href="Level.html#1" class="Module"
+      > <a name="268" href="Level.html" class="Module"
       >Level</a
-      ><a name="273"
-      > </a
-      ><a name="274" class="Keyword"
+      > <a name="274" class="Keyword"
       >hiding</a
-      ><a name="280"
-      > </a
-      ><a name="281" class="Symbol"
+      > <a name="281" class="Symbol"
       >(</a
-      ><a name="282" href="Agda.Primitive.html#655" class="Primitive Operator"
+      ><a name="282" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
       >_&#8852;_</a
       ><a name="285" class="Symbol"
       >)</a
-      ><a name="286"
       >
-</a
-      ><a name="287" class="Keyword"
+<a name="287" class="Keyword"
       >open</a
-      ><a name="291"
-      > </a
-      ><a name="292" class="Keyword"
+      > <a name="292" class="Keyword"
       >import</a
-      ><a name="298"
-      > </a
-      ><a name="299" href="Function.html#1" class="Module"
+      > <a name="299" href="Function.html" class="Module"
       >Function</a
-      ><a name="307"
       >
-</a
-      ><a name="308" class="Keyword"
+<a name="308" class="Keyword"
       >open</a
-      ><a name="312"
-      > </a
-      ><a name="313" class="Keyword"
+      > <a name="313" class="Keyword"
       >import</a
-      ><a name="319"
-      > </a
-      ><a name="320" href="Data.Product.html#1" class="Module"
+      > <a name="320" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="332"
       >
-</a
-      ><a name="333" class="Keyword"
+<a name="333" class="Keyword"
       >open</a
-      ><a name="337"
-      > </a
-      ><a name="338" class="Keyword"
+      > <a name="338" class="Keyword"
       >import</a
-      ><a name="344"
-      > </a
-      ><a name="345" href="Relation.Nullary.html#1" class="Module"
+      > <a name="345" href="Relation.Nullary.html" class="Module"
       >Relation.Nullary</a
-      ><a name="361"
       >
-</a
-      ><a name="362" class="Keyword"
+<a name="362" class="Keyword"
       >open</a
-      ><a name="366"
-      > </a
-      ><a name="367" class="Keyword"
+      > <a name="367" class="Keyword"
       >import</a
-      ><a name="373"
-      > </a
-      ><a name="374" href="Relation.Unary.html#1" class="Module"
+      > <a name="374" href="Relation.Unary.html" class="Module"
       >Relation.Unary</a
-      ><a name="388"
       >
-</a
-      ><a name="389" class="Keyword"
+<a name="389" class="Keyword"
       >open</a
-      ><a name="393"
-      > </a
-      ><a name="394" class="Keyword"
+      > <a name="394" class="Keyword"
       >import</a
-      ><a name="400"
-      > </a
-      ><a name="401" href="Relation.Binary.html#1" class="Module"
+      > <a name="401" href="Relation.Binary.html" class="Module"
       >Relation.Binary</a
-      ><a name="416"
-      > </a
-      ><a name="417" class="Keyword"
+      > <a name="417" class="Keyword"
       >using</a
-      ><a name="422"
-      > </a
-      ><a name="423" class="Symbol"
+      > <a name="423" class="Symbol"
       >(</a
-      ><a name="424" href="Relation.Binary.Core.html#614" class="Function"
+      ><a name="424" href="Relation.Binary.Core.html#REL" class="Function"
       >REL</a
       ><a name="427" class="Symbol"
       >)</a
-      ><a name="428"
       >
 
-</a
-      ><a name="430" class="Comment"
+<a name="430" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="502"
       >
 
-</a
-      ><a name="504" class="Comment"
+<a name="504" class="Comment"
       >-- Heterogeneous and homogeneous predicate transformers</a
-      ><a name="559"
       >
 
-</a
-      ><a name="561" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+<a name="PT" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="563"
-      > </a
-      ><a name="564" class="Symbol"
+      > <a name="564" class="Symbol"
       >:</a
-      ><a name="565"
-      > </a
-      ><a name="566" class="Symbol"
+      > <a name="566" class="Symbol"
       >&#8704;</a
-      ><a name="567"
-      > </a
-      ><a name="568" class="Symbol"
+      > <a name="568" class="Symbol"
       >{</a
       ><a name="569" href="Relation.Unary.PredicateTransformer.html#569" class="Bound"
       >a</a
-      ><a name="570"
-      > </a
-      ><a name="571" href="Relation.Unary.PredicateTransformer.html#571" class="Bound"
+      > <a name="571" href="Relation.Unary.PredicateTransformer.html#571" class="Bound"
       >b</a
       ><a name="572" class="Symbol"
       >}</a
-      ><a name="573"
-      > </a
-      ><a name="574" class="Symbol"
+      > <a name="574" class="Symbol"
       >&#8594;</a
-      ><a name="575"
-      > </a
-      ><a name="576" class="PrimitiveType"
+      > <a name="576" class="PrimitiveType"
       >Set</a
-      ><a name="579"
-      > </a
-      ><a name="580" href="Relation.Unary.PredicateTransformer.html#569" class="Bound"
+      > <a name="580" href="Relation.Unary.PredicateTransformer.html#569" class="Bound"
       >a</a
-      ><a name="581"
-      > </a
-      ><a name="582" class="Symbol"
+      > <a name="582" class="Symbol"
       >&#8594;</a
-      ><a name="583"
-      > </a
-      ><a name="584" class="PrimitiveType"
+      > <a name="584" class="PrimitiveType"
       >Set</a
-      ><a name="587"
-      > </a
-      ><a name="588" href="Relation.Unary.PredicateTransformer.html#571" class="Bound"
+      > <a name="588" href="Relation.Unary.PredicateTransformer.html#571" class="Bound"
       >b</a
-      ><a name="589"
-      > </a
-      ><a name="590" class="Symbol"
+      > <a name="590" class="Symbol"
       >&#8594;</a
-      ><a name="591"
-      > </a
-      ><a name="592" class="Symbol"
+      > <a name="592" class="Symbol"
       >(</a
       ><a name="593" href="Relation.Unary.PredicateTransformer.html#593" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="595"
-      > </a
-      ><a name="596" href="Relation.Unary.PredicateTransformer.html#596" class="Bound"
+      > <a name="596" href="Relation.Unary.PredicateTransformer.html#596" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="598"
-      > </a
-      ><a name="599" class="Symbol"
+      > <a name="599" class="Symbol"
       >:</a
-      ><a name="600"
-      > </a
-      ><a name="601" href="Agda.Primitive.html#408" class="Postulate"
+      > <a name="601" href="Agda.Primitive.html#Level" class="Postulate"
       >Level</a
       ><a name="606" class="Symbol"
       >)</a
-      ><a name="607"
-      > </a
-      ><a name="608" class="Symbol"
+      > <a name="608" class="Symbol"
       >&#8594;</a
-      ><a name="609"
-      > </a
-      ><a name="610" class="PrimitiveType"
+      > <a name="610" class="PrimitiveType"
       >Set</a
-      ><a name="613"
-      > </a
-      ><a name="614" class="Symbol"
+      > <a name="614" class="Symbol"
       >_</a
-      ><a name="615"
       >
-</a
-      ><a name="616" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+<a name="616" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="618"
-      > </a
-      ><a name="619" href="Relation.Unary.PredicateTransformer.html#619" class="Bound"
+      > <a name="619" href="Relation.Unary.PredicateTransformer.html#619" class="Bound"
       >A</a
-      ><a name="620"
-      > </a
-      ><a name="621" href="Relation.Unary.PredicateTransformer.html#621" class="Bound"
+      > <a name="621" href="Relation.Unary.PredicateTransformer.html#621" class="Bound"
       >B</a
-      ><a name="622"
-      > </a
-      ><a name="623" href="Relation.Unary.PredicateTransformer.html#623" class="Bound"
+      > <a name="623" href="Relation.Unary.PredicateTransformer.html#623" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="625"
-      > </a
-      ><a name="626" href="Relation.Unary.PredicateTransformer.html#626" class="Bound"
+      > <a name="626" href="Relation.Unary.PredicateTransformer.html#626" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="628"
-      > </a
-      ><a name="629" class="Symbol"
+      > <a name="629" class="Symbol"
       >=</a
-      ><a name="630"
-      > </a
-      ><a name="631" href="Relation.Unary.html#541" class="Function"
+      > <a name="631" href="Relation.Unary.html#Pred" class="Function"
       >Pred</a
-      ><a name="635"
-      > </a
-      ><a name="636" href="Relation.Unary.PredicateTransformer.html#619" class="Bound"
+      > <a name="636" href="Relation.Unary.PredicateTransformer.html#619" class="Bound"
       >A</a
-      ><a name="637"
-      > </a
-      ><a name="638" href="Relation.Unary.PredicateTransformer.html#623" class="Bound"
+      > <a name="638" href="Relation.Unary.PredicateTransformer.html#623" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="640"
-      > </a
-      ><a name="641" class="Symbol"
+      > <a name="641" class="Symbol"
       >&#8594;</a
-      ><a name="642"
-      > </a
-      ><a name="643" href="Relation.Unary.html#541" class="Function"
+      > <a name="643" href="Relation.Unary.html#Pred" class="Function"
       >Pred</a
-      ><a name="647"
-      > </a
-      ><a name="648" href="Relation.Unary.PredicateTransformer.html#621" class="Bound"
+      > <a name="648" href="Relation.Unary.PredicateTransformer.html#621" class="Bound"
       >B</a
-      ><a name="649"
-      > </a
-      ><a name="650" href="Relation.Unary.PredicateTransformer.html#626" class="Bound"
+      > <a name="650" href="Relation.Unary.PredicateTransformer.html#626" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="652"
       >
 
-</a
-      ><a name="654" href="Relation.Unary.PredicateTransformer.html#654" class="Function"
+<a name="Pt" href="Relation.Unary.PredicateTransformer.html#Pt" class="Function"
       >Pt</a
-      ><a name="656"
-      > </a
-      ><a name="657" class="Symbol"
+      > <a name="657" class="Symbol"
       >:</a
-      ><a name="658"
-      > </a
-      ><a name="659" class="Symbol"
+      > <a name="659" class="Symbol"
       >&#8704;</a
-      ><a name="660"
-      > </a
-      ><a name="661" class="Symbol"
+      > <a name="661" class="Symbol"
       >{</a
       ><a name="662" href="Relation.Unary.PredicateTransformer.html#662" class="Bound"
       >a</a
       ><a name="663" class="Symbol"
       >}</a
-      ><a name="664"
-      > </a
-      ><a name="665" class="Symbol"
+      > <a name="665" class="Symbol"
       >&#8594;</a
-      ><a name="666"
-      > </a
-      ><a name="667" class="PrimitiveType"
+      > <a name="667" class="PrimitiveType"
       >Set</a
-      ><a name="670"
-      > </a
-      ><a name="671" href="Relation.Unary.PredicateTransformer.html#662" class="Bound"
+      > <a name="671" href="Relation.Unary.PredicateTransformer.html#662" class="Bound"
       >a</a
-      ><a name="672"
-      > </a
-      ><a name="673" class="Symbol"
+      > <a name="673" class="Symbol"
       >&#8594;</a
-      ><a name="674"
-      > </a
-      ><a name="675" class="Symbol"
+      > <a name="675" class="Symbol"
       >(</a
       ><a name="676" href="Relation.Unary.PredicateTransformer.html#676" class="Bound"
       >&#8467;</a
-      ><a name="677"
-      > </a
-      ><a name="678" class="Symbol"
+      > <a name="678" class="Symbol"
       >:</a
-      ><a name="679"
-      > </a
-      ><a name="680" href="Agda.Primitive.html#408" class="Postulate"
+      > <a name="680" href="Agda.Primitive.html#Level" class="Postulate"
       >Level</a
       ><a name="685" class="Symbol"
       >)</a
-      ><a name="686"
-      > </a
-      ><a name="687" class="Symbol"
+      > <a name="687" class="Symbol"
       >&#8594;</a
-      ><a name="688"
-      > </a
-      ><a name="689" class="PrimitiveType"
+      > <a name="689" class="PrimitiveType"
       >Set</a
-      ><a name="692"
-      > </a
-      ><a name="693" class="Symbol"
+      > <a name="693" class="Symbol"
       >_</a
-      ><a name="694"
       >
-</a
-      ><a name="695" href="Relation.Unary.PredicateTransformer.html#654" class="Function"
+<a name="695" href="Relation.Unary.PredicateTransformer.html#Pt" class="Function"
       >Pt</a
-      ><a name="697"
-      > </a
-      ><a name="698" href="Relation.Unary.PredicateTransformer.html#698" class="Bound"
+      > <a name="698" href="Relation.Unary.PredicateTransformer.html#698" class="Bound"
       >A</a
-      ><a name="699"
-      > </a
-      ><a name="700" href="Relation.Unary.PredicateTransformer.html#700" class="Bound"
+      > <a name="700" href="Relation.Unary.PredicateTransformer.html#700" class="Bound"
       >&#8467;</a
-      ><a name="701"
-      > </a
-      ><a name="702" class="Symbol"
+      > <a name="702" class="Symbol"
       >=</a
-      ><a name="703"
-      > </a
-      ><a name="704" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="704" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="706"
-      > </a
-      ><a name="707" href="Relation.Unary.PredicateTransformer.html#698" class="Bound"
+      > <a name="707" href="Relation.Unary.PredicateTransformer.html#698" class="Bound"
       >A</a
-      ><a name="708"
-      > </a
-      ><a name="709" href="Relation.Unary.PredicateTransformer.html#698" class="Bound"
+      > <a name="709" href="Relation.Unary.PredicateTransformer.html#698" class="Bound"
       >A</a
-      ><a name="710"
-      > </a
-      ><a name="711" href="Relation.Unary.PredicateTransformer.html#700" class="Bound"
+      > <a name="711" href="Relation.Unary.PredicateTransformer.html#700" class="Bound"
       >&#8467;</a
-      ><a name="712"
-      > </a
-      ><a name="713" href="Relation.Unary.PredicateTransformer.html#700" class="Bound"
+      > <a name="713" href="Relation.Unary.PredicateTransformer.html#700" class="Bound"
       >&#8467;</a
-      ><a name="714"
       >
 
-</a
-      ><a name="716" class="Comment"
+<a name="716" class="Comment"
       >-- Composition and identity</a
-      ><a name="743"
       >
 
-</a
-      ><a name="745" href="Relation.Unary.PredicateTransformer.html#745" class="Function Operator"
+<a name="_&#9070;_" href="Relation.Unary.PredicateTransformer.html#_&#9070;_" class="Function Operator"
       >_&#9070;_</a
-      ><a name="748"
-      > </a
-      ><a name="749" class="Symbol"
+      > <a name="749" class="Symbol"
       >:</a
-      ><a name="750"
-      > </a
-      ><a name="751" class="Symbol"
+      > <a name="751" class="Symbol"
       >&#8704;</a
-      ><a name="752"
-      > </a
-      ><a name="753" class="Symbol"
+      > <a name="753" class="Symbol"
       >{</a
       ><a name="754" href="Relation.Unary.PredicateTransformer.html#754" class="Bound"
       >a</a
-      ><a name="755"
-      > </a
-      ><a name="756" href="Relation.Unary.PredicateTransformer.html#756" class="Bound"
+      > <a name="756" href="Relation.Unary.PredicateTransformer.html#756" class="Bound"
       >b</a
-      ><a name="757"
-      > </a
-      ><a name="758" href="Relation.Unary.PredicateTransformer.html#758" class="Bound"
+      > <a name="758" href="Relation.Unary.PredicateTransformer.html#758" class="Bound"
       >c</a
-      ><a name="759"
-      > </a
-      ><a name="760" href="Relation.Unary.PredicateTransformer.html#760" class="Bound"
+      > <a name="760" href="Relation.Unary.PredicateTransformer.html#760" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="762"
-      > </a
-      ><a name="763" href="Relation.Unary.PredicateTransformer.html#763" class="Bound"
+      > <a name="763" href="Relation.Unary.PredicateTransformer.html#763" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="765"
-      > </a
-      ><a name="766" href="Relation.Unary.PredicateTransformer.html#766" class="Bound"
+      > <a name="766" href="Relation.Unary.PredicateTransformer.html#766" class="Bound"
       >&#8467;&#8323;</a
       ><a name="768" class="Symbol"
       >}</a
-      ><a name="769"
-      > </a
-      ><a name="770" class="Symbol"
+      > <a name="770" class="Symbol"
       >{</a
       ><a name="771" href="Relation.Unary.PredicateTransformer.html#771" class="Bound"
       >A</a
-      ><a name="772"
-      > </a
-      ><a name="773" class="Symbol"
+      > <a name="773" class="Symbol"
       >:</a
-      ><a name="774"
-      > </a
-      ><a name="775" class="PrimitiveType"
+      > <a name="775" class="PrimitiveType"
       >Set</a
-      ><a name="778"
-      > </a
-      ><a name="779" href="Relation.Unary.PredicateTransformer.html#754" class="Bound"
+      > <a name="779" href="Relation.Unary.PredicateTransformer.html#754" class="Bound"
       >a</a
       ><a name="780" class="Symbol"
       >}</a
-      ><a name="781"
-      > </a
-      ><a name="782" class="Symbol"
+      > <a name="782" class="Symbol"
       >{</a
       ><a name="783" href="Relation.Unary.PredicateTransformer.html#783" class="Bound"
       >B</a
-      ><a name="784"
-      > </a
-      ><a name="785" class="Symbol"
+      > <a name="785" class="Symbol"
       >:</a
-      ><a name="786"
-      > </a
-      ><a name="787" class="PrimitiveType"
+      > <a name="787" class="PrimitiveType"
       >Set</a
-      ><a name="790"
-      > </a
-      ><a name="791" href="Relation.Unary.PredicateTransformer.html#756" class="Bound"
+      > <a name="791" href="Relation.Unary.PredicateTransformer.html#756" class="Bound"
       >b</a
       ><a name="792" class="Symbol"
       >}</a
-      ><a name="793"
-      > </a
-      ><a name="794" class="Symbol"
+      > <a name="794" class="Symbol"
       >{</a
       ><a name="795" href="Relation.Unary.PredicateTransformer.html#795" class="Bound"
       >C</a
-      ><a name="796"
-      > </a
-      ><a name="797" class="Symbol"
+      > <a name="797" class="Symbol"
       >:</a
-      ><a name="798"
-      > </a
-      ><a name="799" class="PrimitiveType"
+      > <a name="799" class="PrimitiveType"
       >Set</a
-      ><a name="802"
-      > </a
-      ><a name="803" href="Relation.Unary.PredicateTransformer.html#758" class="Bound"
+      > <a name="803" href="Relation.Unary.PredicateTransformer.html#758" class="Bound"
       >c</a
       ><a name="804" class="Symbol"
       >}</a
-      ><a name="805"
-      > </a
-      ><a name="806" class="Symbol"
+      > <a name="806" class="Symbol"
       >&#8594;</a
-      ><a name="807"
       >
-      </a
-      ><a name="814" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      <a name="814" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="816"
-      > </a
-      ><a name="817" href="Relation.Unary.PredicateTransformer.html#783" class="Bound"
+      > <a name="817" href="Relation.Unary.PredicateTransformer.html#783" class="Bound"
       >B</a
-      ><a name="818"
-      > </a
-      ><a name="819" href="Relation.Unary.PredicateTransformer.html#795" class="Bound"
+      > <a name="819" href="Relation.Unary.PredicateTransformer.html#795" class="Bound"
       >C</a
-      ><a name="820"
-      > </a
-      ><a name="821" href="Relation.Unary.PredicateTransformer.html#763" class="Bound"
+      > <a name="821" href="Relation.Unary.PredicateTransformer.html#763" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="823"
-      > </a
-      ><a name="824" href="Relation.Unary.PredicateTransformer.html#766" class="Bound"
+      > <a name="824" href="Relation.Unary.PredicateTransformer.html#766" class="Bound"
       >&#8467;&#8323;</a
-      ><a name="826"
-      > </a
-      ><a name="827" class="Symbol"
+      > <a name="827" class="Symbol"
       >&#8594;</a
-      ><a name="828"
-      > </a
-      ><a name="829" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="829" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="831"
-      > </a
-      ><a name="832" href="Relation.Unary.PredicateTransformer.html#771" class="Bound"
+      > <a name="832" href="Relation.Unary.PredicateTransformer.html#771" class="Bound"
       >A</a
-      ><a name="833"
-      > </a
-      ><a name="834" href="Relation.Unary.PredicateTransformer.html#783" class="Bound"
+      > <a name="834" href="Relation.Unary.PredicateTransformer.html#783" class="Bound"
       >B</a
-      ><a name="835"
-      > </a
-      ><a name="836" href="Relation.Unary.PredicateTransformer.html#760" class="Bound"
+      > <a name="836" href="Relation.Unary.PredicateTransformer.html#760" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="838"
-      > </a
-      ><a name="839" href="Relation.Unary.PredicateTransformer.html#763" class="Bound"
+      > <a name="839" href="Relation.Unary.PredicateTransformer.html#763" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="841"
-      > </a
-      ><a name="842" class="Symbol"
+      > <a name="842" class="Symbol"
       >&#8594;</a
-      ><a name="843"
-      > </a
-      ><a name="844" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="844" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="846"
-      > </a
-      ><a name="847" href="Relation.Unary.PredicateTransformer.html#771" class="Bound"
+      > <a name="847" href="Relation.Unary.PredicateTransformer.html#771" class="Bound"
       >A</a
-      ><a name="848"
-      > </a
-      ><a name="849" href="Relation.Unary.PredicateTransformer.html#795" class="Bound"
+      > <a name="849" href="Relation.Unary.PredicateTransformer.html#795" class="Bound"
       >C</a
-      ><a name="850"
-      > </a
-      ><a name="851" href="Relation.Unary.PredicateTransformer.html#760" class="Bound"
+      > <a name="851" href="Relation.Unary.PredicateTransformer.html#760" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="853"
-      > </a
-      ><a name="854" class="Symbol"
+      > <a name="854" class="Symbol"
       >_</a
-      ><a name="855"
       >
-</a
-      ><a name="856" href="Relation.Unary.PredicateTransformer.html#856" class="Bound"
+<a name="856" href="Relation.Unary.PredicateTransformer.html#856" class="Bound"
       >S</a
-      ><a name="857"
-      > </a
-      ><a name="858" href="Relation.Unary.PredicateTransformer.html#745" class="Function Operator"
+      > <a name="858" href="Relation.Unary.PredicateTransformer.html#_&#9070;_" class="Function Operator"
       >&#9070;</a
-      ><a name="859"
-      > </a
-      ><a name="860" href="Relation.Unary.PredicateTransformer.html#860" class="Bound"
+      > <a name="860" href="Relation.Unary.PredicateTransformer.html#860" class="Bound"
       >T</a
-      ><a name="861"
-      > </a
-      ><a name="862" class="Symbol"
+      > <a name="862" class="Symbol"
       >=</a
-      ><a name="863"
-      > </a
-      ><a name="864" href="Relation.Unary.PredicateTransformer.html#856" class="Bound"
+      > <a name="864" href="Relation.Unary.PredicateTransformer.html#856" class="Bound"
       >S</a
-      ><a name="865"
-      > </a
-      ><a name="866" href="Function.html#713" class="Function Operator"
+      > <a name="866" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="867"
-      > </a
-      ><a name="868" href="Relation.Unary.PredicateTransformer.html#860" class="Bound"
+      > <a name="868" href="Relation.Unary.PredicateTransformer.html#860" class="Bound"
       >T</a
-      ><a name="869"
       >
 
-</a
-      ><a name="871" href="Relation.Unary.PredicateTransformer.html#871" class="Function"
+<a name="skip" href="Relation.Unary.PredicateTransformer.html#skip" class="Function"
       >skip</a
-      ><a name="875"
-      > </a
-      ><a name="876" class="Symbol"
+      > <a name="876" class="Symbol"
       >:</a
-      ><a name="877"
-      > </a
-      ><a name="878" class="Symbol"
+      > <a name="878" class="Symbol"
       >&#8704;</a
-      ><a name="879"
-      > </a
-      ><a name="880" class="Symbol"
+      > <a name="880" class="Symbol"
       >{</a
       ><a name="881" href="Relation.Unary.PredicateTransformer.html#881" class="Bound"
       >a</a
-      ><a name="882"
-      > </a
-      ><a name="883" href="Relation.Unary.PredicateTransformer.html#883" class="Bound"
+      > <a name="883" href="Relation.Unary.PredicateTransformer.html#883" class="Bound"
       >&#8467;</a
       ><a name="884" class="Symbol"
       >}</a
-      ><a name="885"
-      > </a
-      ><a name="886" class="Symbol"
+      > <a name="886" class="Symbol"
       >{</a
       ><a name="887" href="Relation.Unary.PredicateTransformer.html#887" class="Bound"
       >A</a
-      ><a name="888"
-      > </a
-      ><a name="889" class="Symbol"
+      > <a name="889" class="Symbol"
       >:</a
-      ><a name="890"
-      > </a
-      ><a name="891" class="PrimitiveType"
+      > <a name="891" class="PrimitiveType"
       >Set</a
-      ><a name="894"
-      > </a
-      ><a name="895" href="Relation.Unary.PredicateTransformer.html#881" class="Bound"
+      > <a name="895" href="Relation.Unary.PredicateTransformer.html#881" class="Bound"
       >a</a
       ><a name="896" class="Symbol"
       >}</a
-      ><a name="897"
-      > </a
-      ><a name="898" class="Symbol"
+      > <a name="898" class="Symbol"
       >&#8594;</a
-      ><a name="899"
-      > </a
-      ><a name="900" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="900" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="902"
-      > </a
-      ><a name="903" href="Relation.Unary.PredicateTransformer.html#887" class="Bound"
+      > <a name="903" href="Relation.Unary.PredicateTransformer.html#887" class="Bound"
       >A</a
-      ><a name="904"
-      > </a
-      ><a name="905" href="Relation.Unary.PredicateTransformer.html#887" class="Bound"
+      > <a name="905" href="Relation.Unary.PredicateTransformer.html#887" class="Bound"
       >A</a
-      ><a name="906"
-      > </a
-      ><a name="907" href="Relation.Unary.PredicateTransformer.html#883" class="Bound"
+      > <a name="907" href="Relation.Unary.PredicateTransformer.html#883" class="Bound"
       >&#8467;</a
-      ><a name="908"
-      > </a
-      ><a name="909" href="Relation.Unary.PredicateTransformer.html#883" class="Bound"
+      > <a name="909" href="Relation.Unary.PredicateTransformer.html#883" class="Bound"
       >&#8467;</a
-      ><a name="910"
       >
-</a
-      ><a name="911" href="Relation.Unary.PredicateTransformer.html#871" class="Function"
+<a name="911" href="Relation.Unary.PredicateTransformer.html#skip" class="Function"
       >skip</a
-      ><a name="915"
-      > </a
-      ><a name="916" href="Relation.Unary.PredicateTransformer.html#916" class="Bound"
+      > <a name="916" href="Relation.Unary.PredicateTransformer.html#916" class="Bound"
       >P</a
-      ><a name="917"
-      > </a
-      ><a name="918" class="Symbol"
+      > <a name="918" class="Symbol"
       >=</a
-      ><a name="919"
-      > </a
-      ><a name="920" href="Relation.Unary.PredicateTransformer.html#916" class="Bound"
+      > <a name="920" href="Relation.Unary.PredicateTransformer.html#916" class="Bound"
       >P</a
-      ><a name="921"
       >
 
-</a
-      ><a name="923" class="Comment"
+<a name="923" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="995"
       >
-</a
-      ><a name="996" class="Comment"
+<a name="996" class="Comment"
       >-- Operations on predicates extend pointwise to predicate transformers</a
-      ><a name="1066"
       >
 
-</a
-      ><a name="1068" class="Keyword"
+<a name="1068" class="Keyword"
       >module</a
-      ><a name="1074"
-      > </a
-      ><a name="1075" href="Relation.Unary.PredicateTransformer.html#1075" class="Module"
+      > <a name="1075" href="Relation.Unary.PredicateTransformer.html#1075" class="Module"
       >_</a
-      ><a name="1076"
-      > </a
-      ><a name="1077" class="Symbol"
+      > <a name="1077" class="Symbol"
       >{</a
       ><a name="1078" href="Relation.Unary.PredicateTransformer.html#1078" class="Bound"
       >a</a
-      ><a name="1079"
-      > </a
-      ><a name="1080" href="Relation.Unary.PredicateTransformer.html#1080" class="Bound"
+      > <a name="1080" href="Relation.Unary.PredicateTransformer.html#1080" class="Bound"
       >b</a
       ><a name="1081" class="Symbol"
       >}</a
-      ><a name="1082"
-      > </a
-      ><a name="1083" class="Symbol"
+      > <a name="1083" class="Symbol"
       >{</a
       ><a name="1084" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1085"
-      > </a
-      ><a name="1086" class="Symbol"
+      > <a name="1086" class="Symbol"
       >:</a
-      ><a name="1087"
-      > </a
-      ><a name="1088" class="PrimitiveType"
+      > <a name="1088" class="PrimitiveType"
       >Set</a
-      ><a name="1091"
-      > </a
-      ><a name="1092" href="Relation.Unary.PredicateTransformer.html#1078" class="Bound"
+      > <a name="1092" href="Relation.Unary.PredicateTransformer.html#1078" class="Bound"
       >a</a
       ><a name="1093" class="Symbol"
       >}</a
-      ><a name="1094"
-      > </a
-      ><a name="1095" class="Symbol"
+      > <a name="1095" class="Symbol"
       >{</a
       ><a name="1096" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1097"
-      > </a
-      ><a name="1098" class="Symbol"
+      > <a name="1098" class="Symbol"
       >:</a
-      ><a name="1099"
-      > </a
-      ><a name="1100" class="PrimitiveType"
+      > <a name="1100" class="PrimitiveType"
       >Set</a
-      ><a name="1103"
-      > </a
-      ><a name="1104" href="Relation.Unary.PredicateTransformer.html#1080" class="Bound"
+      > <a name="1104" href="Relation.Unary.PredicateTransformer.html#1080" class="Bound"
       >b</a
       ><a name="1105" class="Symbol"
       >}</a
-      ><a name="1106"
-      > </a
-      ><a name="1107" class="Keyword"
+      > <a name="1107" class="Keyword"
       >where</a
-      ><a name="1112"
       >
 
-  </a
-      ><a name="1116" class="Comment"
+  <a name="1116" class="Comment"
       >-- The bottom and the top of the predicate transformer lattice.</a
-      ><a name="1179"
       >
 
-  </a
-      ><a name="1183" href="Relation.Unary.PredicateTransformer.html#1183" class="Function"
+  <a name="1183" href="Relation.Unary.PredicateTransformer.html#1183" class="Function"
       >abort</a
-      ><a name="1188"
-      > </a
-      ><a name="1189" class="Symbol"
+      > <a name="1189" class="Symbol"
       >:</a
-      ><a name="1190"
-      > </a
-      ><a name="1191" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1191" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1193"
-      > </a
-      ><a name="1194" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1194" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1195"
-      > </a
-      ><a name="1196" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1196" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1197"
-      > </a
-      ><a name="1198" href="Agda.Primitive.html#609" class="Primitive"
+      > <a name="1198" href="Agda.Primitive.html#zero" class="Primitive"
       >zero</a
-      ><a name="1202"
-      > </a
-      ><a name="1203" href="Agda.Primitive.html#609" class="Primitive"
+      > <a name="1203" href="Agda.Primitive.html#zero" class="Primitive"
       >zero</a
-      ><a name="1207"
       >
-  </a
-      ><a name="1210" href="Relation.Unary.PredicateTransformer.html#1183" class="Function"
+  <a name="1210" href="Relation.Unary.PredicateTransformer.html#1183" class="Function"
       >abort</a
-      ><a name="1215"
-      > </a
-      ><a name="1216" class="Symbol"
+      > <a name="1216" class="Symbol"
       >=</a
-      ><a name="1217"
-      > </a
-      ><a name="1218" class="Symbol"
+      > <a name="1218" class="Symbol"
       >&#955;</a
-      ><a name="1219"
-      > </a
-      ><a name="1220" href="Relation.Unary.PredicateTransformer.html#1220" class="Bound"
+      > <a name="1220" href="Relation.Unary.PredicateTransformer.html#1220" class="Bound"
       >_</a
-      ><a name="1221"
-      > </a
-      ><a name="1222" class="Symbol"
+      > <a name="1222" class="Symbol"
       >&#8594;</a
-      ><a name="1223"
-      > </a
-      ><a name="1224" href="Relation.Unary.html#1040" class="Function"
+      > <a name="1224" href="Relation.Unary.html#1040" class="Function"
       >&#8709;</a
-      ><a name="1225"
       >
 
-  </a
-      ><a name="1229" href="Relation.Unary.PredicateTransformer.html#1229" class="Function"
+  <a name="1229" href="Relation.Unary.PredicateTransformer.html#1229" class="Function"
       >magic</a
-      ><a name="1234"
-      > </a
-      ><a name="1235" class="Symbol"
+      > <a name="1235" class="Symbol"
       >:</a
-      ><a name="1236"
-      > </a
-      ><a name="1237" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1237" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1239"
-      > </a
-      ><a name="1240" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1240" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1241"
-      > </a
-      ><a name="1242" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1242" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1243"
-      > </a
-      ><a name="1244" href="Agda.Primitive.html#609" class="Primitive"
+      > <a name="1244" href="Agda.Primitive.html#zero" class="Primitive"
       >zero</a
-      ><a name="1248"
-      > </a
-      ><a name="1249" href="Agda.Primitive.html#609" class="Primitive"
+      > <a name="1249" href="Agda.Primitive.html#zero" class="Primitive"
       >zero</a
-      ><a name="1253"
       >
-  </a
-      ><a name="1256" href="Relation.Unary.PredicateTransformer.html#1229" class="Function"
+  <a name="1256" href="Relation.Unary.PredicateTransformer.html#1229" class="Function"
       >magic</a
-      ><a name="1261"
-      > </a
-      ><a name="1262" class="Symbol"
+      > <a name="1262" class="Symbol"
       >=</a
-      ><a name="1263"
-      > </a
-      ><a name="1264" class="Symbol"
+      > <a name="1264" class="Symbol"
       >&#955;</a
-      ><a name="1265"
-      > </a
-      ><a name="1266" href="Relation.Unary.PredicateTransformer.html#1266" class="Bound"
+      > <a name="1266" href="Relation.Unary.PredicateTransformer.html#1266" class="Bound"
       >_</a
-      ><a name="1267"
-      > </a
-      ><a name="1268" class="Symbol"
+      > <a name="1268" class="Symbol"
       >&#8594;</a
-      ><a name="1269"
-      > </a
-      ><a name="1270" href="Relation.Unary.html#1332" class="Function"
+      > <a name="1270" href="Relation.Unary.html#1332" class="Function"
       >U</a
-      ><a name="1271"
       >
 
-  </a
-      ><a name="1275" class="Comment"
+  <a name="1275" class="Comment"
       >-- Negation.</a
-      ><a name="1287"
       >
 
-  </a
-      ><a name="1291" href="Relation.Unary.PredicateTransformer.html#1291" class="Function Operator"
+  <a name="1291" href="Relation.Unary.PredicateTransformer.html#1291" class="Function Operator"
       >&#8764;_</a
-      ><a name="1293"
-      > </a
-      ><a name="1294" class="Symbol"
+      > <a name="1294" class="Symbol"
       >:</a
-      ><a name="1295"
-      > </a
-      ><a name="1296" class="Symbol"
+      > <a name="1296" class="Symbol"
       >&#8704;</a
-      ><a name="1297"
-      > </a
-      ><a name="1298" class="Symbol"
+      > <a name="1298" class="Symbol"
       >{</a
       ><a name="1299" href="Relation.Unary.PredicateTransformer.html#1299" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1301"
-      > </a
-      ><a name="1302" href="Relation.Unary.PredicateTransformer.html#1302" class="Bound"
+      > <a name="1302" href="Relation.Unary.PredicateTransformer.html#1302" class="Bound"
       >&#8467;&#8322;</a
       ><a name="1304" class="Symbol"
       >}</a
-      ><a name="1305"
-      > </a
-      ><a name="1306" class="Symbol"
+      > <a name="1306" class="Symbol"
       >&#8594;</a
-      ><a name="1307"
-      > </a
-      ><a name="1308" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1308" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1310"
-      > </a
-      ><a name="1311" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1311" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1312"
-      > </a
-      ><a name="1313" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1313" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1314"
-      > </a
-      ><a name="1315" href="Relation.Unary.PredicateTransformer.html#1299" class="Bound"
+      > <a name="1315" href="Relation.Unary.PredicateTransformer.html#1299" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1317"
-      > </a
-      ><a name="1318" href="Relation.Unary.PredicateTransformer.html#1302" class="Bound"
+      > <a name="1318" href="Relation.Unary.PredicateTransformer.html#1302" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1320"
-      > </a
-      ><a name="1321" class="Symbol"
+      > <a name="1321" class="Symbol"
       >&#8594;</a
-      ><a name="1322"
-      > </a
-      ><a name="1323" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1323" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1325"
-      > </a
-      ><a name="1326" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1326" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1327"
-      > </a
-      ><a name="1328" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1328" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1329"
-      > </a
-      ><a name="1330" href="Relation.Unary.PredicateTransformer.html#1299" class="Bound"
+      > <a name="1330" href="Relation.Unary.PredicateTransformer.html#1299" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1332"
-      > </a
-      ><a name="1333" href="Relation.Unary.PredicateTransformer.html#1302" class="Bound"
+      > <a name="1333" href="Relation.Unary.PredicateTransformer.html#1302" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1335"
       >
-  </a
-      ><a name="1338" href="Relation.Unary.PredicateTransformer.html#1291" class="Function Operator"
+  <a name="1338" href="Relation.Unary.PredicateTransformer.html#1291" class="Function Operator"
       >&#8764;</a
-      ><a name="1339"
-      > </a
-      ><a name="1340" href="Relation.Unary.PredicateTransformer.html#1340" class="Bound"
+      > <a name="1340" href="Relation.Unary.PredicateTransformer.html#1340" class="Bound"
       >T</a
-      ><a name="1341"
-      > </a
-      ><a name="1342" class="Symbol"
+      > <a name="1342" class="Symbol"
       >=</a
-      ><a name="1343"
-      > </a
-      ><a name="1344" href="Relation.Unary.html#1547" class="Function"
+      > <a name="1344" href="Relation.Unary.html#1547" class="Function"
       >&#8705;</a
-      ><a name="1345"
-      > </a
-      ><a name="1346" href="Function.html#713" class="Function Operator"
+      > <a name="1346" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="1347"
-      > </a
-      ><a name="1348" href="Relation.Unary.PredicateTransformer.html#1340" class="Bound"
+      > <a name="1348" href="Relation.Unary.PredicateTransformer.html#1340" class="Bound"
       >T</a
-      ><a name="1349"
       >
 
-  </a
-      ><a name="1353" class="Comment"
+  <a name="1353" class="Comment"
       >-- Refinement.</a
-      ><a name="1367"
       >
 
-  </a
-      ><a name="1371" class="Keyword"
+  <a name="1371" class="Keyword"
       >infix</a
-      ><a name="1376"
-      > </a
-      ><a name="1377" class="Number"
+      > <a name="1377" class="Number"
       >4</a
-      ><a name="1378"
-      > _&#8849;_ _&#8850;_ _&#8849;&#8242;_ _&#8850;&#8242;_
-
-  </a
-      ><a name="1400" href="Relation.Unary.PredicateTransformer.html#1400" class="Function Operator"
+      > <a name="1379" href="Relation.Unary.PredicateTransformer.html#1400" class="Function Operator"
       >_&#8849;_</a
-      ><a name="1403"
-      > </a
-      ><a name="1404" class="Symbol"
+      > <a name="1383" href="Relation.Unary.PredicateTransformer.html#1570" class="Function Operator"
+      >_&#8850;_</a
+      > <a name="1387" href="Relation.Unary.PredicateTransformer.html#1485" class="Function Operator"
+      >_&#8849;&#8242;_</a
+      > <a name="1392" href="Relation.Unary.PredicateTransformer.html#1643" class="Function Operator"
+      >_&#8850;&#8242;_</a
+      >
+
+  <a name="1400" href="Relation.Unary.PredicateTransformer.html#1400" class="Function Operator"
+      >_&#8849;_</a
+      > <a name="1404" class="Symbol"
       >:</a
-      ><a name="1405"
-      > </a
-      ><a name="1406" class="Symbol"
+      > <a name="1406" class="Symbol"
       >&#8704;</a
-      ><a name="1407"
-      > </a
-      ><a name="1408" class="Symbol"
+      > <a name="1408" class="Symbol"
       >{</a
       ><a name="1409" href="Relation.Unary.PredicateTransformer.html#1409" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1411"
-      > </a
-      ><a name="1412" href="Relation.Unary.PredicateTransformer.html#1412" class="Bound"
+      > <a name="1412" href="Relation.Unary.PredicateTransformer.html#1412" class="Bound"
       >&#8467;&#8322;</a
       ><a name="1414" class="Symbol"
       >}</a
-      ><a name="1415"
-      > </a
-      ><a name="1416" class="Symbol"
+      > <a name="1416" class="Symbol"
       >&#8594;</a
-      ><a name="1417"
-      > </a
-      ><a name="1418" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1418" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1420"
-      > </a
-      ><a name="1421" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1421" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1422"
-      > </a
-      ><a name="1423" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1423" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1424"
-      > </a
-      ><a name="1425" href="Relation.Unary.PredicateTransformer.html#1409" class="Bound"
+      > <a name="1425" href="Relation.Unary.PredicateTransformer.html#1409" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1427"
-      > </a
-      ><a name="1428" href="Relation.Unary.PredicateTransformer.html#1412" class="Bound"
+      > <a name="1428" href="Relation.Unary.PredicateTransformer.html#1412" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1430"
-      > </a
-      ><a name="1431" class="Symbol"
+      > <a name="1431" class="Symbol"
       >&#8594;</a
-      ><a name="1432"
-      > </a
-      ><a name="1433" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1433" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1435"
-      > </a
-      ><a name="1436" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1436" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1437"
-      > </a
-      ><a name="1438" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1438" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1439"
-      > </a
-      ><a name="1440" href="Relation.Unary.PredicateTransformer.html#1409" class="Bound"
+      > <a name="1440" href="Relation.Unary.PredicateTransformer.html#1409" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1442"
-      > </a
-      ><a name="1443" href="Relation.Unary.PredicateTransformer.html#1412" class="Bound"
+      > <a name="1443" href="Relation.Unary.PredicateTransformer.html#1412" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1445"
-      > </a
-      ><a name="1446" class="Symbol"
+      > <a name="1446" class="Symbol"
       >&#8594;</a
-      ><a name="1447"
-      > </a
-      ><a name="1448" class="PrimitiveType"
+      > <a name="1448" class="PrimitiveType"
       >Set</a
-      ><a name="1451"
-      > </a
-      ><a name="1452" class="Symbol"
+      > <a name="1452" class="Symbol"
       >_</a
-      ><a name="1453"
       >
-  </a
-      ><a name="1456" href="Relation.Unary.PredicateTransformer.html#1456" class="Bound"
+  <a name="1456" href="Relation.Unary.PredicateTransformer.html#1456" class="Bound"
       >S</a
-      ><a name="1457"
-      > </a
-      ><a name="1458" href="Relation.Unary.PredicateTransformer.html#1400" class="Function Operator"
+      > <a name="1458" href="Relation.Unary.PredicateTransformer.html#1400" class="Function Operator"
       >&#8849;</a
-      ><a name="1459"
-      > </a
-      ><a name="1460" href="Relation.Unary.PredicateTransformer.html#1460" class="Bound"
+      > <a name="1460" href="Relation.Unary.PredicateTransformer.html#1460" class="Bound"
       >T</a
-      ><a name="1461"
-      > </a
-      ><a name="1462" class="Symbol"
+      > <a name="1462" class="Symbol"
       >=</a
-      ><a name="1463"
-      > </a
-      ><a name="1464" class="Symbol"
+      > <a name="1464" class="Symbol"
       >&#8704;</a
-      ><a name="1465"
-      > </a
-      ><a name="1466" class="Symbol"
+      > <a name="1466" class="Symbol"
       >{</a
       ><a name="1467" href="Relation.Unary.PredicateTransformer.html#1467" class="Bound"
       >X</a
       ><a name="1468" class="Symbol"
       >}</a
-      ><a name="1469"
-      > </a
-      ><a name="1470" class="Symbol"
+      > <a name="1470" class="Symbol"
       >&#8594;</a
-      ><a name="1471"
-      > </a
-      ><a name="1472" href="Relation.Unary.PredicateTransformer.html#1456" class="Bound"
+      > <a name="1472" href="Relation.Unary.PredicateTransformer.html#1456" class="Bound"
       >S</a
-      ><a name="1473"
-      > </a
-      ><a name="1474" href="Relation.Unary.PredicateTransformer.html#1467" class="Bound"
+      > <a name="1474" href="Relation.Unary.PredicateTransformer.html#1467" class="Bound"
       >X</a
-      ><a name="1475"
-      > </a
-      ><a name="1476" href="Relation.Unary.html#1822" class="Function Operator"
+      > <a name="1476" href="Relation.Unary.html#1822" class="Function Operator"
       >&#8838;</a
-      ><a name="1477"
-      > </a
-      ><a name="1478" href="Relation.Unary.PredicateTransformer.html#1460" class="Bound"
+      > <a name="1478" href="Relation.Unary.PredicateTransformer.html#1460" class="Bound"
       >T</a
-      ><a name="1479"
-      > </a
-      ><a name="1480" href="Relation.Unary.PredicateTransformer.html#1467" class="Bound"
+      > <a name="1480" href="Relation.Unary.PredicateTransformer.html#1467" class="Bound"
       >X</a
-      ><a name="1481"
       >
 
-  </a
-      ><a name="1485" href="Relation.Unary.PredicateTransformer.html#1485" class="Function Operator"
+  <a name="1485" href="Relation.Unary.PredicateTransformer.html#1485" class="Function Operator"
       >_&#8849;&#8242;_</a
-      ><a name="1489"
-      > </a
-      ><a name="1490" class="Symbol"
+      > <a name="1490" class="Symbol"
       >:</a
-      ><a name="1491"
-      > </a
-      ><a name="1492" class="Symbol"
+      > <a name="1492" class="Symbol"
       >&#8704;</a
-      ><a name="1493"
-      > </a
-      ><a name="1494" class="Symbol"
+      > <a name="1494" class="Symbol"
       >{</a
       ><a name="1495" href="Relation.Unary.PredicateTransformer.html#1495" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1497"
-      > </a
-      ><a name="1498" href="Relation.Unary.PredicateTransformer.html#1498" class="Bound"
+      > <a name="1498" href="Relation.Unary.PredicateTransformer.html#1498" class="Bound"
       >&#8467;&#8322;</a
       ><a name="1500" class="Symbol"
       >}</a
-      ><a name="1501"
-      > </a
-      ><a name="1502" class="Symbol"
+      > <a name="1502" class="Symbol"
       >&#8594;</a
-      ><a name="1503"
-      > </a
-      ><a name="1504" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1504" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1506"
-      > </a
-      ><a name="1507" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1507" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1508"
-      > </a
-      ><a name="1509" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1509" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1510"
-      > </a
-      ><a name="1511" href="Relation.Unary.PredicateTransformer.html#1495" class="Bound"
+      > <a name="1511" href="Relation.Unary.PredicateTransformer.html#1495" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1513"
-      > </a
-      ><a name="1514" href="Relation.Unary.PredicateTransformer.html#1498" class="Bound"
+      > <a name="1514" href="Relation.Unary.PredicateTransformer.html#1498" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1516"
-      > </a
-      ><a name="1517" class="Symbol"
+      > <a name="1517" class="Symbol"
       >&#8594;</a
-      ><a name="1518"
-      > </a
-      ><a name="1519" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1519" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1521"
-      > </a
-      ><a name="1522" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1522" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1523"
-      > </a
-      ><a name="1524" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1524" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1525"
-      > </a
-      ><a name="1526" href="Relation.Unary.PredicateTransformer.html#1495" class="Bound"
+      > <a name="1526" href="Relation.Unary.PredicateTransformer.html#1495" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1528"
-      > </a
-      ><a name="1529" href="Relation.Unary.PredicateTransformer.html#1498" class="Bound"
+      > <a name="1529" href="Relation.Unary.PredicateTransformer.html#1498" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1531"
-      > </a
-      ><a name="1532" class="Symbol"
+      > <a name="1532" class="Symbol"
       >&#8594;</a
-      ><a name="1533"
-      > </a
-      ><a name="1534" class="PrimitiveType"
+      > <a name="1534" class="PrimitiveType"
       >Set</a
-      ><a name="1537"
-      > </a
-      ><a name="1538" class="Symbol"
+      > <a name="1538" class="Symbol"
       >_</a
-      ><a name="1539"
       >
-  </a
-      ><a name="1542" href="Relation.Unary.PredicateTransformer.html#1542" class="Bound"
+  <a name="1542" href="Relation.Unary.PredicateTransformer.html#1542" class="Bound"
       >S</a
-      ><a name="1543"
-      > </a
-      ><a name="1544" href="Relation.Unary.PredicateTransformer.html#1485" class="Function Operator"
+      > <a name="1544" href="Relation.Unary.PredicateTransformer.html#1485" class="Function Operator"
       >&#8849;&#8242;</a
-      ><a name="1546"
-      > </a
-      ><a name="1547" href="Relation.Unary.PredicateTransformer.html#1547" class="Bound"
+      > <a name="1547" href="Relation.Unary.PredicateTransformer.html#1547" class="Bound"
       >T</a
-      ><a name="1548"
-      > </a
-      ><a name="1549" class="Symbol"
+      > <a name="1549" class="Symbol"
       >=</a
-      ><a name="1550"
-      > </a
-      ><a name="1551" class="Symbol"
+      > <a name="1551" class="Symbol"
       >&#8704;</a
-      ><a name="1552"
-      > </a
-      ><a name="1553" href="Relation.Unary.PredicateTransformer.html#1553" class="Bound"
+      > <a name="1553" href="Relation.Unary.PredicateTransformer.html#1553" class="Bound"
       >X</a
-      ><a name="1554"
-      > </a
-      ><a name="1555" class="Symbol"
+      > <a name="1555" class="Symbol"
       >&#8594;</a
-      ><a name="1556"
-      > </a
-      ><a name="1557" href="Relation.Unary.PredicateTransformer.html#1542" class="Bound"
+      > <a name="1557" href="Relation.Unary.PredicateTransformer.html#1542" class="Bound"
       >S</a
-      ><a name="1558"
-      > </a
-      ><a name="1559" href="Relation.Unary.PredicateTransformer.html#1553" class="Bound"
+      > <a name="1559" href="Relation.Unary.PredicateTransformer.html#1553" class="Bound"
       >X</a
-      ><a name="1560"
-      > </a
-      ><a name="1561" href="Relation.Unary.html#1822" class="Function Operator"
+      > <a name="1561" href="Relation.Unary.html#1822" class="Function Operator"
       >&#8838;</a
-      ><a name="1562"
-      > </a
-      ><a name="1563" href="Relation.Unary.PredicateTransformer.html#1547" class="Bound"
+      > <a name="1563" href="Relation.Unary.PredicateTransformer.html#1547" class="Bound"
       >T</a
-      ><a name="1564"
-      > </a
-      ><a name="1565" href="Relation.Unary.PredicateTransformer.html#1553" class="Bound"
+      > <a name="1565" href="Relation.Unary.PredicateTransformer.html#1553" class="Bound"
       >X</a
-      ><a name="1566"
       >
 
-  </a
-      ><a name="1570" href="Relation.Unary.PredicateTransformer.html#1570" class="Function Operator"
+  <a name="1570" href="Relation.Unary.PredicateTransformer.html#1570" class="Function Operator"
       >_&#8850;_</a
-      ><a name="1573"
-      > </a
-      ><a name="1574" class="Symbol"
+      > <a name="1574" class="Symbol"
       >:</a
-      ><a name="1575"
-      > </a
-      ><a name="1576" class="Symbol"
+      > <a name="1576" class="Symbol"
       >&#8704;</a
-      ><a name="1577"
-      > </a
-      ><a name="1578" class="Symbol"
+      > <a name="1578" class="Symbol"
       >{</a
       ><a name="1579" href="Relation.Unary.PredicateTransformer.html#1579" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1581"
-      > </a
-      ><a name="1582" href="Relation.Unary.PredicateTransformer.html#1582" class="Bound"
+      > <a name="1582" href="Relation.Unary.PredicateTransformer.html#1582" class="Bound"
       >&#8467;&#8322;</a
       ><a name="1584" class="Symbol"
       >}</a
-      ><a name="1585"
-      > </a
-      ><a name="1586" class="Symbol"
+      > <a name="1586" class="Symbol"
       >&#8594;</a
-      ><a name="1587"
-      > </a
-      ><a name="1588" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1588" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1590"
-      > </a
-      ><a name="1591" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1591" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1592"
-      > </a
-      ><a name="1593" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1593" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1594"
-      > </a
-      ><a name="1595" href="Relation.Unary.PredicateTransformer.html#1579" class="Bound"
+      > <a name="1595" href="Relation.Unary.PredicateTransformer.html#1579" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1597"
-      > </a
-      ><a name="1598" href="Relation.Unary.PredicateTransformer.html#1582" class="Bound"
+      > <a name="1598" href="Relation.Unary.PredicateTransformer.html#1582" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1600"
-      > </a
-      ><a name="1601" class="Symbol"
+      > <a name="1601" class="Symbol"
       >&#8594;</a
-      ><a name="1602"
-      > </a
-      ><a name="1603" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1603" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1605"
-      > </a
-      ><a name="1606" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1606" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1607"
-      > </a
-      ><a name="1608" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1608" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1609"
-      > </a
-      ><a name="1610" href="Relation.Unary.PredicateTransformer.html#1579" class="Bound"
+      > <a name="1610" href="Relation.Unary.PredicateTransformer.html#1579" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1612"
-      > </a
-      ><a name="1613" href="Relation.Unary.PredicateTransformer.html#1582" class="Bound"
+      > <a name="1613" href="Relation.Unary.PredicateTransformer.html#1582" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1615"
-      > </a
-      ><a name="1616" class="Symbol"
+      > <a name="1616" class="Symbol"
       >&#8594;</a
-      ><a name="1617"
-      > </a
-      ><a name="1618" class="PrimitiveType"
+      > <a name="1618" class="PrimitiveType"
       >Set</a
-      ><a name="1621"
-      > </a
-      ><a name="1622" class="Symbol"
+      > <a name="1622" class="Symbol"
       >_</a
-      ><a name="1623"
       >
-  </a
-      ><a name="1626" href="Relation.Unary.PredicateTransformer.html#1626" class="Bound"
+  <a name="1626" href="Relation.Unary.PredicateTransformer.html#1626" class="Bound"
       >T</a
-      ><a name="1627"
-      > </a
-      ><a name="1628" href="Relation.Unary.PredicateTransformer.html#1570" class="Function Operator"
+      > <a name="1628" href="Relation.Unary.PredicateTransformer.html#1570" class="Function Operator"
       >&#8850;</a
-      ><a name="1629"
-      > </a
-      ><a name="1630" href="Relation.Unary.PredicateTransformer.html#1630" class="Bound"
+      > <a name="1630" href="Relation.Unary.PredicateTransformer.html#1630" class="Bound"
       >S</a
-      ><a name="1631"
-      > </a
-      ><a name="1632" class="Symbol"
+      > <a name="1632" class="Symbol"
       >=</a
-      ><a name="1633"
-      > </a
-      ><a name="1634" href="Relation.Unary.PredicateTransformer.html#1626" class="Bound"
+      > <a name="1634" href="Relation.Unary.PredicateTransformer.html#1626" class="Bound"
       >T</a
-      ><a name="1635"
-      > </a
-      ><a name="1636" href="Relation.Unary.PredicateTransformer.html#1400" class="Function Operator"
+      > <a name="1636" href="Relation.Unary.PredicateTransformer.html#1400" class="Function Operator"
       >&#8849;</a
-      ><a name="1637"
-      > </a
-      ><a name="1638" href="Relation.Unary.PredicateTransformer.html#1630" class="Bound"
+      > <a name="1638" href="Relation.Unary.PredicateTransformer.html#1630" class="Bound"
       >S</a
-      ><a name="1639"
       >
 
-  </a
-      ><a name="1643" href="Relation.Unary.PredicateTransformer.html#1643" class="Function Operator"
+  <a name="1643" href="Relation.Unary.PredicateTransformer.html#1643" class="Function Operator"
       >_&#8850;&#8242;_</a
-      ><a name="1647"
-      > </a
-      ><a name="1648" class="Symbol"
+      > <a name="1648" class="Symbol"
       >:</a
-      ><a name="1649"
-      > </a
-      ><a name="1650" class="Symbol"
+      > <a name="1650" class="Symbol"
       >&#8704;</a
-      ><a name="1651"
-      > </a
-      ><a name="1652" class="Symbol"
+      > <a name="1652" class="Symbol"
       >{</a
       ><a name="1653" href="Relation.Unary.PredicateTransformer.html#1653" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1655"
-      > </a
-      ><a name="1656" href="Relation.Unary.PredicateTransformer.html#1656" class="Bound"
+      > <a name="1656" href="Relation.Unary.PredicateTransformer.html#1656" class="Bound"
       >&#8467;&#8322;</a
       ><a name="1658" class="Symbol"
       >}</a
-      ><a name="1659"
-      > </a
-      ><a name="1660" class="Symbol"
+      > <a name="1660" class="Symbol"
       >&#8594;</a
-      ><a name="1661"
-      > </a
-      ><a name="1662" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1662" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1664"
-      > </a
-      ><a name="1665" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1665" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1666"
-      > </a
-      ><a name="1667" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1667" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1668"
-      > </a
-      ><a name="1669" href="Relation.Unary.PredicateTransformer.html#1653" class="Bound"
+      > <a name="1669" href="Relation.Unary.PredicateTransformer.html#1653" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1671"
-      > </a
-      ><a name="1672" href="Relation.Unary.PredicateTransformer.html#1656" class="Bound"
+      > <a name="1672" href="Relation.Unary.PredicateTransformer.html#1656" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1674"
-      > </a
-      ><a name="1675" class="Symbol"
+      > <a name="1675" class="Symbol"
       >&#8594;</a
-      ><a name="1676"
-      > </a
-      ><a name="1677" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1677" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1679"
-      > </a
-      ><a name="1680" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1680" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1681"
-      > </a
-      ><a name="1682" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1682" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1683"
-      > </a
-      ><a name="1684" href="Relation.Unary.PredicateTransformer.html#1653" class="Bound"
+      > <a name="1684" href="Relation.Unary.PredicateTransformer.html#1653" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1686"
-      > </a
-      ><a name="1687" href="Relation.Unary.PredicateTransformer.html#1656" class="Bound"
+      > <a name="1687" href="Relation.Unary.PredicateTransformer.html#1656" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1689"
-      > </a
-      ><a name="1690" class="Symbol"
+      > <a name="1690" class="Symbol"
       >&#8594;</a
-      ><a name="1691"
-      > </a
-      ><a name="1692" class="PrimitiveType"
+      > <a name="1692" class="PrimitiveType"
       >Set</a
-      ><a name="1695"
-      > </a
-      ><a name="1696" class="Symbol"
+      > <a name="1696" class="Symbol"
       >_</a
-      ><a name="1697"
       >
-  </a
-      ><a name="1700" href="Relation.Unary.PredicateTransformer.html#1700" class="Bound"
+  <a name="1700" href="Relation.Unary.PredicateTransformer.html#1700" class="Bound"
       >T</a
-      ><a name="1701"
-      > </a
-      ><a name="1702" href="Relation.Unary.PredicateTransformer.html#1643" class="Function Operator"
+      > <a name="1702" href="Relation.Unary.PredicateTransformer.html#1643" class="Function Operator"
       >&#8850;&#8242;</a
-      ><a name="1704"
-      > </a
-      ><a name="1705" href="Relation.Unary.PredicateTransformer.html#1705" class="Bound"
+      > <a name="1705" href="Relation.Unary.PredicateTransformer.html#1705" class="Bound"
       >S</a
-      ><a name="1706"
-      > </a
-      ><a name="1707" class="Symbol"
+      > <a name="1707" class="Symbol"
       >=</a
-      ><a name="1708"
-      > </a
-      ><a name="1709" href="Relation.Unary.PredicateTransformer.html#1705" class="Bound"
+      > <a name="1709" href="Relation.Unary.PredicateTransformer.html#1705" class="Bound"
       >S</a
-      ><a name="1710"
-      > </a
-      ><a name="1711" href="Relation.Unary.PredicateTransformer.html#1485" class="Function Operator"
+      > <a name="1711" href="Relation.Unary.PredicateTransformer.html#1485" class="Function Operator"
       >&#8849;&#8242;</a
-      ><a name="1713"
-      > </a
-      ><a name="1714" href="Relation.Unary.PredicateTransformer.html#1700" class="Bound"
+      > <a name="1714" href="Relation.Unary.PredicateTransformer.html#1700" class="Bound"
       >T</a
-      ><a name="1715"
       >
 
-  </a
-      ><a name="1719" class="Comment"
+  <a name="1719" class="Comment"
       >-- The dual of refinement.</a
-      ><a name="1745"
       >
 
-  </a
-      ><a name="1749" class="Keyword"
+  <a name="1749" class="Keyword"
       >infix</a
-      ><a name="1754"
-      > </a
-      ><a name="1755" class="Number"
+      > <a name="1755" class="Number"
       >4</a
-      ><a name="1756"
-      > _&#8930;_
-
-  </a
-      ><a name="1764" href="Relation.Unary.PredicateTransformer.html#1764" class="Function Operator"
+      > <a name="1757" href="Relation.Unary.PredicateTransformer.html#1764" class="Function Operator"
       >_&#8930;_</a
-      ><a name="1767"
-      > </a
-      ><a name="1768" class="Symbol"
+      >
+
+  <a name="1764" href="Relation.Unary.PredicateTransformer.html#1764" class="Function Operator"
+      >_&#8930;_</a
+      > <a name="1768" class="Symbol"
       >:</a
-      ><a name="1769"
-      > </a
-      ><a name="1770" class="Symbol"
+      > <a name="1770" class="Symbol"
       >&#8704;</a
-      ><a name="1771"
-      > </a
-      ><a name="1772" class="Symbol"
+      > <a name="1772" class="Symbol"
       >{</a
       ><a name="1773" href="Relation.Unary.PredicateTransformer.html#1773" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1775"
-      > </a
-      ><a name="1776" href="Relation.Unary.PredicateTransformer.html#1776" class="Bound"
+      > <a name="1776" href="Relation.Unary.PredicateTransformer.html#1776" class="Bound"
       >&#8467;&#8322;</a
       ><a name="1778" class="Symbol"
       >}</a
-      ><a name="1779"
-      > </a
-      ><a name="1780" class="Symbol"
+      > <a name="1780" class="Symbol"
       >&#8594;</a
-      ><a name="1781"
-      > </a
-      ><a name="1782" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1782" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1784"
-      > </a
-      ><a name="1785" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1785" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1786"
-      > </a
-      ><a name="1787" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1787" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1788"
-      > </a
-      ><a name="1789" href="Relation.Unary.PredicateTransformer.html#1773" class="Bound"
+      > <a name="1789" href="Relation.Unary.PredicateTransformer.html#1773" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1791"
-      > </a
-      ><a name="1792" href="Relation.Unary.PredicateTransformer.html#1776" class="Bound"
+      > <a name="1792" href="Relation.Unary.PredicateTransformer.html#1776" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1794"
-      > </a
-      ><a name="1795" class="Symbol"
+      > <a name="1795" class="Symbol"
       >&#8594;</a
-      ><a name="1796"
-      > </a
-      ><a name="1797" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1797" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1799"
-      > </a
-      ><a name="1800" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1800" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1801"
-      > </a
-      ><a name="1802" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1802" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1803"
-      > </a
-      ><a name="1804" href="Relation.Unary.PredicateTransformer.html#1773" class="Bound"
+      > <a name="1804" href="Relation.Unary.PredicateTransformer.html#1773" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1806"
-      > </a
-      ><a name="1807" href="Relation.Unary.PredicateTransformer.html#1776" class="Bound"
+      > <a name="1807" href="Relation.Unary.PredicateTransformer.html#1776" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1809"
-      > </a
-      ><a name="1810" class="Symbol"
+      > <a name="1810" class="Symbol"
       >&#8594;</a
-      ><a name="1811"
-      > </a
-      ><a name="1812" class="PrimitiveType"
+      > <a name="1812" class="PrimitiveType"
       >Set</a
-      ><a name="1815"
-      > </a
-      ><a name="1816" class="Symbol"
+      > <a name="1816" class="Symbol"
       >_</a
-      ><a name="1817"
       >
-  </a
-      ><a name="1820" href="Relation.Unary.PredicateTransformer.html#1820" class="Bound"
+  <a name="1820" href="Relation.Unary.PredicateTransformer.html#1820" class="Bound"
       >S</a
-      ><a name="1821"
-      > </a
-      ><a name="1822" href="Relation.Unary.PredicateTransformer.html#1764" class="Function Operator"
+      > <a name="1822" href="Relation.Unary.PredicateTransformer.html#1764" class="Function Operator"
       >&#8930;</a
-      ><a name="1823"
-      > </a
-      ><a name="1824" href="Relation.Unary.PredicateTransformer.html#1824" class="Bound"
+      > <a name="1824" href="Relation.Unary.PredicateTransformer.html#1824" class="Bound"
       >T</a
-      ><a name="1825"
-      > </a
-      ><a name="1826" class="Symbol"
+      > <a name="1826" class="Symbol"
       >=</a
-      ><a name="1827"
-      > </a
-      ><a name="1828" href="Data.Product.html#823" class="Function"
+      > <a name="1828" href="Data.Product.html#&#8707;" class="Function"
       >&#8707;</a
-      ><a name="1829"
-      > </a
-      ><a name="1830" class="Symbol"
+      > <a name="1830" class="Symbol"
       >&#955;</a
-      ><a name="1831"
-      > </a
-      ><a name="1832" href="Relation.Unary.PredicateTransformer.html#1832" class="Bound"
+      > <a name="1832" href="Relation.Unary.PredicateTransformer.html#1832" class="Bound"
       >X</a
-      ><a name="1833"
-      > </a
-      ><a name="1834" class="Symbol"
+      > <a name="1834" class="Symbol"
       >&#8594;</a
-      ><a name="1835"
-      > </a
-      ><a name="1836" href="Relation.Unary.PredicateTransformer.html#1820" class="Bound"
+      > <a name="1836" href="Relation.Unary.PredicateTransformer.html#1820" class="Bound"
       >S</a
-      ><a name="1837"
-      > </a
-      ><a name="1838" href="Relation.Unary.PredicateTransformer.html#1832" class="Bound"
+      > <a name="1838" href="Relation.Unary.PredicateTransformer.html#1832" class="Bound"
       >X</a
-      ><a name="1839"
-      > </a
-      ><a name="1840" href="Relation.Unary.html#2308" class="Function Operator"
+      > <a name="1840" href="Relation.Unary.html#2308" class="Function Operator"
       >&#8812;</a
-      ><a name="1841"
-      > </a
-      ><a name="1842" href="Relation.Unary.PredicateTransformer.html#1824" class="Bound"
+      > <a name="1842" href="Relation.Unary.PredicateTransformer.html#1824" class="Bound"
       >T</a
-      ><a name="1843"
-      > </a
-      ><a name="1844" href="Relation.Unary.PredicateTransformer.html#1832" class="Bound"
+      > <a name="1844" href="Relation.Unary.PredicateTransformer.html#1832" class="Bound"
       >X</a
-      ><a name="1845"
       >
 
-  </a
-      ><a name="1849" class="Comment"
+  <a name="1849" class="Comment"
       >-- Union.</a
-      ><a name="1858"
       >
 
-  </a
-      ><a name="1862" class="Keyword"
+  <a name="1862" class="Keyword"
       >infixl</a
-      ><a name="1868"
-      > </a
-      ><a name="1869" class="Number"
+      > <a name="1869" class="Number"
       >6</a
-      ><a name="1870"
-      > _&#8851;_
-
-  </a
-      ><a name="1878" href="Relation.Unary.PredicateTransformer.html#1878" class="Function Operator"
+      > <a name="1871" href="Relation.Unary.PredicateTransformer.html#1878" class="Function Operator"
       >_&#8851;_</a
-      ><a name="1881"
-      > </a
-      ><a name="1882" class="Symbol"
+      >
+
+  <a name="1878" href="Relation.Unary.PredicateTransformer.html#1878" class="Function Operator"
+      >_&#8851;_</a
+      > <a name="1882" class="Symbol"
       >:</a
-      ><a name="1883"
-      > </a
-      ><a name="1884" class="Symbol"
+      > <a name="1884" class="Symbol"
       >&#8704;</a
-      ><a name="1885"
-      > </a
-      ><a name="1886" class="Symbol"
+      > <a name="1886" class="Symbol"
       >{</a
       ><a name="1887" href="Relation.Unary.PredicateTransformer.html#1887" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1889"
-      > </a
-      ><a name="1890" href="Relation.Unary.PredicateTransformer.html#1890" class="Bound"
+      > <a name="1890" href="Relation.Unary.PredicateTransformer.html#1890" class="Bound"
       >&#8467;&#8322;</a
       ><a name="1892" class="Symbol"
       >}</a
-      ><a name="1893"
-      > </a
-      ><a name="1894" class="Symbol"
+      > <a name="1894" class="Symbol"
       >&#8594;</a
-      ><a name="1895"
-      > </a
-      ><a name="1896" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1896" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1898"
-      > </a
-      ><a name="1899" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1899" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1900"
-      > </a
-      ><a name="1901" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1901" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1902"
-      > </a
-      ><a name="1903" href="Relation.Unary.PredicateTransformer.html#1887" class="Bound"
+      > <a name="1903" href="Relation.Unary.PredicateTransformer.html#1887" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1905"
-      > </a
-      ><a name="1906" href="Relation.Unary.PredicateTransformer.html#1890" class="Bound"
+      > <a name="1906" href="Relation.Unary.PredicateTransformer.html#1890" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1908"
-      > </a
-      ><a name="1909" class="Symbol"
+      > <a name="1909" class="Symbol"
       >&#8594;</a
-      ><a name="1910"
-      > </a
-      ><a name="1911" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1911" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1913"
-      > </a
-      ><a name="1914" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1914" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1915"
-      > </a
-      ><a name="1916" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1916" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1917"
-      > </a
-      ><a name="1918" href="Relation.Unary.PredicateTransformer.html#1887" class="Bound"
+      > <a name="1918" href="Relation.Unary.PredicateTransformer.html#1887" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1920"
-      > </a
-      ><a name="1921" href="Relation.Unary.PredicateTransformer.html#1890" class="Bound"
+      > <a name="1921" href="Relation.Unary.PredicateTransformer.html#1890" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1923"
-      > </a
-      ><a name="1924" class="Symbol"
+      > <a name="1924" class="Symbol"
       >&#8594;</a
-      ><a name="1925"
-      > </a
-      ><a name="1926" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="1926" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="1928"
-      > </a
-      ><a name="1929" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="1929" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="1930"
-      > </a
-      ><a name="1931" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="1931" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="1932"
-      > </a
-      ><a name="1933" href="Relation.Unary.PredicateTransformer.html#1887" class="Bound"
+      > <a name="1933" href="Relation.Unary.PredicateTransformer.html#1887" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="1935"
-      > </a
-      ><a name="1936" href="Relation.Unary.PredicateTransformer.html#1890" class="Bound"
+      > <a name="1936" href="Relation.Unary.PredicateTransformer.html#1890" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="1938"
       >
-  </a
-      ><a name="1941" href="Relation.Unary.PredicateTransformer.html#1941" class="Bound"
+  <a name="1941" href="Relation.Unary.PredicateTransformer.html#1941" class="Bound"
       >S</a
-      ><a name="1942"
-      > </a
-      ><a name="1943" href="Relation.Unary.PredicateTransformer.html#1878" class="Function Operator"
+      > <a name="1943" href="Relation.Unary.PredicateTransformer.html#1878" class="Function Operator"
       >&#8851;</a
-      ><a name="1944"
-      > </a
-      ><a name="1945" href="Relation.Unary.PredicateTransformer.html#1945" class="Bound"
+      > <a name="1945" href="Relation.Unary.PredicateTransformer.html#1945" class="Bound"
       >T</a
-      ><a name="1946"
-      > </a
-      ><a name="1947" class="Symbol"
+      > <a name="1947" class="Symbol"
       >=</a
-      ><a name="1948"
-      > </a
-      ><a name="1949" class="Symbol"
+      > <a name="1949" class="Symbol"
       >&#955;</a
-      ><a name="1950"
-      > </a
-      ><a name="1951" href="Relation.Unary.PredicateTransformer.html#1951" class="Bound"
+      > <a name="1951" href="Relation.Unary.PredicateTransformer.html#1951" class="Bound"
       >X</a
-      ><a name="1952"
-      > </a
-      ><a name="1953" class="Symbol"
+      > <a name="1953" class="Symbol"
       >&#8594;</a
-      ><a name="1954"
-      > </a
-      ><a name="1955" href="Relation.Unary.PredicateTransformer.html#1941" class="Bound"
+      > <a name="1955" href="Relation.Unary.PredicateTransformer.html#1941" class="Bound"
       >S</a
-      ><a name="1956"
-      > </a
-      ><a name="1957" href="Relation.Unary.PredicateTransformer.html#1951" class="Bound"
+      > <a name="1957" href="Relation.Unary.PredicateTransformer.html#1951" class="Bound"
       >X</a
-      ><a name="1958"
-      > </a
-      ><a name="1959" href="Relation.Unary.html#2424" class="Function Operator"
+      > <a name="1959" href="Relation.Unary.html#2424" class="Function Operator"
       >&#8746;</a
-      ><a name="1960"
-      > </a
-      ><a name="1961" href="Relation.Unary.PredicateTransformer.html#1945" class="Bound"
+      > <a name="1961" href="Relation.Unary.PredicateTransformer.html#1945" class="Bound"
       >T</a
-      ><a name="1962"
-      > </a
-      ><a name="1963" href="Relation.Unary.PredicateTransformer.html#1951" class="Bound"
+      > <a name="1963" href="Relation.Unary.PredicateTransformer.html#1951" class="Bound"
       >X</a
-      ><a name="1964"
       >
 
-  </a
-      ><a name="1968" class="Comment"
+  <a name="1968" class="Comment"
       >-- Intersection.</a
-      ><a name="1984"
       >
 
-  </a
-      ><a name="1988" class="Keyword"
+  <a name="1988" class="Keyword"
       >infixl</a
-      ><a name="1994"
-      > </a
-      ><a name="1995" class="Number"
+      > <a name="1995" class="Number"
       >7</a
-      ><a name="1996"
-      > _&#8852;_
-
-  </a
-      ><a name="2004" href="Relation.Unary.PredicateTransformer.html#2004" class="Function Operator"
+      > <a name="1997" href="Relation.Unary.PredicateTransformer.html#2004" class="Function Operator"
       >_&#8852;_</a
-      ><a name="2007"
-      > </a
-      ><a name="2008" class="Symbol"
+      >
+
+  <a name="2004" href="Relation.Unary.PredicateTransformer.html#2004" class="Function Operator"
+      >_&#8852;_</a
+      > <a name="2008" class="Symbol"
       >:</a
-      ><a name="2009"
-      > </a
-      ><a name="2010" class="Symbol"
+      > <a name="2010" class="Symbol"
       >&#8704;</a
-      ><a name="2011"
-      > </a
-      ><a name="2012" class="Symbol"
+      > <a name="2012" class="Symbol"
       >{</a
       ><a name="2013" href="Relation.Unary.PredicateTransformer.html#2013" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="2015"
-      > </a
-      ><a name="2016" href="Relation.Unary.PredicateTransformer.html#2016" class="Bound"
+      > <a name="2016" href="Relation.Unary.PredicateTransformer.html#2016" class="Bound"
       >&#8467;&#8322;</a
       ><a name="2018" class="Symbol"
       >}</a
-      ><a name="2019"
-      > </a
-      ><a name="2020" class="Symbol"
+      > <a name="2020" class="Symbol"
       >&#8594;</a
-      ><a name="2021"
-      > </a
-      ><a name="2022" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="2022" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="2024"
-      > </a
-      ><a name="2025" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="2025" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="2026"
-      > </a
-      ><a name="2027" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="2027" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="2028"
-      > </a
-      ><a name="2029" href="Relation.Unary.PredicateTransformer.html#2013" class="Bound"
+      > <a name="2029" href="Relation.Unary.PredicateTransformer.html#2013" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="2031"
-      > </a
-      ><a name="2032" href="Relation.Unary.PredicateTransformer.html#2016" class="Bound"
+      > <a name="2032" href="Relation.Unary.PredicateTransformer.html#2016" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="2034"
-      > </a
-      ><a name="2035" class="Symbol"
+      > <a name="2035" class="Symbol"
       >&#8594;</a
-      ><a name="2036"
-      > </a
-      ><a name="2037" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="2037" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="2039"
-      > </a
-      ><a name="2040" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="2040" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="2041"
-      > </a
-      ><a name="2042" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="2042" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="2043"
-      > </a
-      ><a name="2044" href="Relation.Unary.PredicateTransformer.html#2013" class="Bound"
+      > <a name="2044" href="Relation.Unary.PredicateTransformer.html#2013" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="2046"
-      > </a
-      ><a name="2047" href="Relation.Unary.PredicateTransformer.html#2016" class="Bound"
+      > <a name="2047" href="Relation.Unary.PredicateTransformer.html#2016" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="2049"
-      > </a
-      ><a name="2050" class="Symbol"
+      > <a name="2050" class="Symbol"
       >&#8594;</a
-      ><a name="2051"
-      > </a
-      ><a name="2052" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="2052" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="2054"
-      > </a
-      ><a name="2055" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="2055" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="2056"
-      > </a
-      ><a name="2057" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="2057" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="2058"
-      > </a
-      ><a name="2059" href="Relation.Unary.PredicateTransformer.html#2013" class="Bound"
+      > <a name="2059" href="Relation.Unary.PredicateTransformer.html#2013" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="2061"
-      > </a
-      ><a name="2062" href="Relation.Unary.PredicateTransformer.html#2016" class="Bound"
+      > <a name="2062" href="Relation.Unary.PredicateTransformer.html#2016" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="2064"
       >
-  </a
-      ><a name="2067" href="Relation.Unary.PredicateTransformer.html#2067" class="Bound"
+  <a name="2067" href="Relation.Unary.PredicateTransformer.html#2067" class="Bound"
       >S</a
-      ><a name="2068"
-      > </a
-      ><a name="2069" href="Relation.Unary.PredicateTransformer.html#2004" class="Function Operator"
+      > <a name="2069" href="Relation.Unary.PredicateTransformer.html#2004" class="Function Operator"
       >&#8852;</a
-      ><a name="2070"
-      > </a
-      ><a name="2071" href="Relation.Unary.PredicateTransformer.html#2071" class="Bound"
+      > <a name="2071" href="Relation.Unary.PredicateTransformer.html#2071" class="Bound"
       >T</a
-      ><a name="2072"
-      > </a
-      ><a name="2073" class="Symbol"
+      > <a name="2073" class="Symbol"
       >=</a
-      ><a name="2074"
-      > </a
-      ><a name="2075" class="Symbol"
+      > <a name="2075" class="Symbol"
       >&#955;</a
-      ><a name="2076"
-      > </a
-      ><a name="2077" href="Relation.Unary.PredicateTransformer.html#2077" class="Bound"
+      > <a name="2077" href="Relation.Unary.PredicateTransformer.html#2077" class="Bound"
       >X</a
-      ><a name="2078"
-      > </a
-      ><a name="2079" class="Symbol"
+      > <a name="2079" class="Symbol"
       >&#8594;</a
-      ><a name="2080"
-      > </a
-      ><a name="2081" href="Relation.Unary.PredicateTransformer.html#2067" class="Bound"
+      > <a name="2081" href="Relation.Unary.PredicateTransformer.html#2067" class="Bound"
       >S</a
-      ><a name="2082"
-      > </a
-      ><a name="2083" href="Relation.Unary.PredicateTransformer.html#2077" class="Bound"
+      > <a name="2083" href="Relation.Unary.PredicateTransformer.html#2077" class="Bound"
       >X</a
-      ><a name="2084"
-      > </a
-      ><a name="2085" href="Relation.Unary.html#2548" class="Function Operator"
+      > <a name="2085" href="Relation.Unary.html#2548" class="Function Operator"
       >&#8745;</a
-      ><a name="2086"
-      > </a
-      ><a name="2087" href="Relation.Unary.PredicateTransformer.html#2071" class="Bound"
+      > <a name="2087" href="Relation.Unary.PredicateTransformer.html#2071" class="Bound"
       >T</a
-      ><a name="2088"
-      > </a
-      ><a name="2089" href="Relation.Unary.PredicateTransformer.html#2077" class="Bound"
+      > <a name="2089" href="Relation.Unary.PredicateTransformer.html#2077" class="Bound"
       >X</a
-      ><a name="2090"
       >
 
-  </a
-      ><a name="2094" class="Comment"
+  <a name="2094" class="Comment"
       >-- Implication.</a
-      ><a name="2109"
       >
 
-  </a
-      ><a name="2113" class="Keyword"
+  <a name="2113" class="Keyword"
       >infixl</a
-      ><a name="2119"
-      > </a
-      ><a name="2120" class="Number"
+      > <a name="2120" class="Number"
       >8</a
-      ><a name="2121"
-      > _&#8667;_
-
-  </a
-      ><a name="2129" href="Relation.Unary.PredicateTransformer.html#2129" class="Function Operator"
+      > <a name="2122" href="Relation.Unary.PredicateTransformer.html#2129" class="Function Operator"
       >_&#8667;_</a
-      ><a name="2132"
-      > </a
-      ><a name="2133" class="Symbol"
+      >
+
+  <a name="2129" href="Relation.Unary.PredicateTransformer.html#2129" class="Function Operator"
+      >_&#8667;_</a
+      > <a name="2133" class="Symbol"
       >:</a
-      ><a name="2134"
-      > </a
-      ><a name="2135" class="Symbol"
+      > <a name="2135" class="Symbol"
       >&#8704;</a
-      ><a name="2136"
-      > </a
-      ><a name="2137" class="Symbol"
+      > <a name="2137" class="Symbol"
       >{</a
       ><a name="2138" href="Relation.Unary.PredicateTransformer.html#2138" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="2140"
-      > </a
-      ><a name="2141" href="Relation.Unary.PredicateTransformer.html#2141" class="Bound"
+      > <a name="2141" href="Relation.Unary.PredicateTransformer.html#2141" class="Bound"
       >&#8467;&#8322;</a
       ><a name="2143" class="Symbol"
       >}</a
-      ><a name="2144"
-      > </a
-      ><a name="2145" class="Symbol"
+      > <a name="2145" class="Symbol"
       >&#8594;</a
-      ><a name="2146"
-      > </a
-      ><a name="2147" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="2147" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="2149"
-      > </a
-      ><a name="2150" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="2150" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="2151"
-      > </a
-      ><a name="2152" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="2152" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="2153"
-      > </a
-      ><a name="2154" href="Relation.Unary.PredicateTransformer.html#2138" class="Bound"
+      > <a name="2154" href="Relation.Unary.PredicateTransformer.html#2138" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="2156"
-      > </a
-      ><a name="2157" href="Relation.Unary.PredicateTransformer.html#2141" class="Bound"
+      > <a name="2157" href="Relation.Unary.PredicateTransformer.html#2141" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="2159"
-      > </a
-      ><a name="2160" class="Symbol"
+      > <a name="2160" class="Symbol"
       >&#8594;</a
-      ><a name="2161"
-      > </a
-      ><a name="2162" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="2162" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="2164"
-      > </a
-      ><a name="2165" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="2165" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="2166"
-      > </a
-      ><a name="2167" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="2167" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="2168"
-      > </a
-      ><a name="2169" href="Relation.Unary.PredicateTransformer.html#2138" class="Bound"
+      > <a name="2169" href="Relation.Unary.PredicateTransformer.html#2138" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="2171"
-      > </a
-      ><a name="2172" href="Relation.Unary.PredicateTransformer.html#2141" class="Bound"
+      > <a name="2172" href="Relation.Unary.PredicateTransformer.html#2141" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="2174"
-      > </a
-      ><a name="2175" class="Symbol"
+      > <a name="2175" class="Symbol"
       >&#8594;</a
-      ><a name="2176"
-      > </a
-      ><a name="2177" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="2177" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="2179"
-      > </a
-      ><a name="2180" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="2180" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="2181"
-      > </a
-      ><a name="2182" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="2182" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="2183"
-      > </a
-      ><a name="2184" href="Relation.Unary.PredicateTransformer.html#2138" class="Bound"
+      > <a name="2184" href="Relation.Unary.PredicateTransformer.html#2138" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="2186"
-      > </a
-      ><a name="2187" href="Relation.Unary.PredicateTransformer.html#2141" class="Bound"
+      > <a name="2187" href="Relation.Unary.PredicateTransformer.html#2141" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="2189"
       >
-  </a
-      ><a name="2192" href="Relation.Unary.PredicateTransformer.html#2192" class="Bound"
+  <a name="2192" href="Relation.Unary.PredicateTransformer.html#2192" class="Bound"
       >S</a
-      ><a name="2193"
-      > </a
-      ><a name="2194" href="Relation.Unary.PredicateTransformer.html#2129" class="Function Operator"
+      > <a name="2194" href="Relation.Unary.PredicateTransformer.html#2129" class="Function Operator"
       >&#8667;</a
-      ><a name="2195"
-      > </a
-      ><a name="2196" href="Relation.Unary.PredicateTransformer.html#2196" class="Bound"
+      > <a name="2196" href="Relation.Unary.PredicateTransformer.html#2196" class="Bound"
       >T</a
-      ><a name="2197"
-      > </a
-      ><a name="2198" class="Symbol"
+      > <a name="2198" class="Symbol"
       >=</a
-      ><a name="2199"
-      > </a
-      ><a name="2200" class="Symbol"
+      > <a name="2200" class="Symbol"
       >&#955;</a
-      ><a name="2201"
-      > </a
-      ><a name="2202" href="Relation.Unary.PredicateTransformer.html#2202" class="Bound"
+      > <a name="2202" href="Relation.Unary.PredicateTransformer.html#2202" class="Bound"
       >X</a
-      ><a name="2203"
-      > </a
-      ><a name="2204" class="Symbol"
+      > <a name="2204" class="Symbol"
       >&#8594;</a
-      ><a name="2205"
-      > </a
-      ><a name="2206" href="Relation.Unary.PredicateTransformer.html#2192" class="Bound"
+      > <a name="2206" href="Relation.Unary.PredicateTransformer.html#2192" class="Bound"
       >S</a
-      ><a name="2207"
-      > </a
-      ><a name="2208" href="Relation.Unary.PredicateTransformer.html#2202" class="Bound"
+      > <a name="2208" href="Relation.Unary.PredicateTransformer.html#2202" class="Bound"
       >X</a
-      ><a name="2209"
-      > </a
-      ><a name="2210" href="Relation.Unary.html#2667" class="Function Operator"
+      > <a name="2210" href="Relation.Unary.html#2667" class="Function Operator"
       >&#8658;</a
-      ><a name="2211"
-      > </a
-      ><a name="2212" href="Relation.Unary.PredicateTransformer.html#2196" class="Bound"
+      > <a name="2212" href="Relation.Unary.PredicateTransformer.html#2196" class="Bound"
       >T</a
-      ><a name="2213"
-      > </a
-      ><a name="2214" href="Relation.Unary.PredicateTransformer.html#2202" class="Bound"
+      > <a name="2214" href="Relation.Unary.PredicateTransformer.html#2202" class="Bound"
       >X</a
-      ><a name="2215"
       >
 
-  </a
-      ><a name="2219" class="Comment"
+  <a name="2219" class="Comment"
       >-- Infinitary union and intersection.</a
-      ><a name="2256"
       >
 
-  </a
-      ><a name="2260" class="Keyword"
+  <a name="2260" class="Keyword"
       >infix</a
-      ><a name="2265"
-      > </a
-      ><a name="2266" class="Number"
+      > <a name="2266" class="Number"
       >9</a
-      ><a name="2267"
-      > &#10758; &#10757;
-
-  </a
-      ><a name="2275" href="Relation.Unary.PredicateTransformer.html#2275" class="Function"
+      > <a name="2268" href="Relation.Unary.PredicateTransformer.html#2275" class="Function"
       >&#10758;</a
-      ><a name="2276"
-      > </a
-      ><a name="2277" class="Symbol"
+      > <a name="2270" href="Relation.Unary.PredicateTransformer.html#2413" class="Function"
+      >&#10757;</a
+      >
+
+  <a name="2275" href="Relation.Unary.PredicateTransformer.html#2275" class="Function"
+      >&#10758;</a
+      > <a name="2277" class="Symbol"
       >:</a
-      ><a name="2278"
-      > </a
-      ><a name="2279" class="Symbol"
+      > <a name="2279" class="Symbol"
       >&#8704;</a
-      ><a name="2280"
-      > </a
-      ><a name="2281" class="Symbol"
+      > <a name="2281" class="Symbol"
       >{</a
       ><a name="2282" href="Relation.Unary.PredicateTransformer.html#2282" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="2284"
-      > </a
-      ><a name="2285" href="Relation.Unary.PredicateTransformer.html#2285" class="Bound"
+      > <a name="2285" href="Relation.Unary.PredicateTransformer.html#2285" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="2287"
-      > </a
-      ><a name="2288" href="Relation.Unary.PredicateTransformer.html#2288" class="Bound"
+      > <a name="2288" href="Relation.Unary.PredicateTransformer.html#2288" class="Bound"
       >i</a
       ><a name="2289" class="Symbol"
       >}</a
-      ><a name="2290"
-      > </a
-      ><a name="2291" class="Symbol"
+      > <a name="2291" class="Symbol"
       >(</a
       ><a name="2292" href="Relation.Unary.PredicateTransformer.html#2292" class="Bound"
       >I</a
-      ><a name="2293"
-      > </a
-      ><a name="2294" class="Symbol"
+      > <a name="2294" class="Symbol"
       >:</a
-      ><a name="2295"
-      > </a
-      ><a name="2296" class="PrimitiveType"
+      > <a name="2296" class="PrimitiveType"
       >Set</a
-      ><a name="2299"
-      > </a
-      ><a name="2300" href="Relation.Unary.PredicateTransformer.html#2288" class="Bound"
+      > <a name="2300" href="Relation.Unary.PredicateTransformer.html#2288" class="Bound"
       >i</a
       ><a name="2301" class="Symbol"
       >)</a
-      ><a name="2302"
-      > </a
-      ><a name="2303" class="Symbol"
+      > <a name="2303" class="Symbol"
       >&#8594;</a
-      ><a name="2304"
-      > </a
-      ><a name="2305" class="Symbol"
+      > <a name="2305" class="Symbol"
       >(</a
       ><a name="2306" href="Relation.Unary.PredicateTransformer.html#2292" class="Bound"
       >I</a
-      ><a name="2307"
-      > </a
-      ><a name="2308" class="Symbol"
+      > <a name="2308" class="Symbol"
       >&#8594;</a
-      ><a name="2309"
-      > </a
-      ><a name="2310" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="2310" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="2312"
-      > </a
-      ><a name="2313" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="2313" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="2314"
-      > </a
-      ><a name="2315" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="2315" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="2316"
-      > </a
-      ><a name="2317" href="Relation.Unary.PredicateTransformer.html#2282" class="Bound"
+      > <a name="2317" href="Relation.Unary.PredicateTransformer.html#2282" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="2319"
-      > </a
-      ><a name="2320" href="Relation.Unary.PredicateTransformer.html#2285" class="Bound"
+      > <a name="2320" href="Relation.Unary.PredicateTransformer.html#2285" class="Bound"
       >&#8467;&#8322;</a
       ><a name="2322" class="Symbol"
       >)</a
-      ><a name="2323"
-      > </a
-      ><a name="2324" class="Symbol"
+      > <a name="2324" class="Symbol"
       >&#8594;</a
-      ><a name="2325"
-      > </a
-      ><a name="2326" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="2326" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="2328"
-      > </a
-      ><a name="2329" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="2329" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="2330"
-      > </a
-      ><a name="2331" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="2331" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="2332"
-      > </a
-      ><a name="2333" href="Relation.Unary.PredicateTransformer.html#2282" class="Bound"
+      > <a name="2333" href="Relation.Unary.PredicateTransformer.html#2282" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="2335"
-      > </a
-      ><a name="2336" class="Symbol"
+      > <a name="2336" class="Symbol"
       >_</a
-      ><a name="2337"
       >
-  </a
-      ><a name="2340" href="Relation.Unary.PredicateTransformer.html#2275" class="Function"
+  <a name="2340" href="Relation.Unary.PredicateTransformer.html#2275" class="Function"
       >&#10758;</a
-      ><a name="2341"
-      > </a
-      ><a name="2342" href="Relation.Unary.PredicateTransformer.html#2342" class="Bound"
+      > <a name="2342" href="Relation.Unary.PredicateTransformer.html#2342" class="Bound"
       >I</a
-      ><a name="2343"
-      > </a
-      ><a name="2344" href="Relation.Unary.PredicateTransformer.html#2344" class="Bound"
+      > <a name="2344" href="Relation.Unary.PredicateTransformer.html#2344" class="Bound"
       >T</a
-      ><a name="2345"
-      > </a
-      ><a name="2346" class="Symbol"
+      > <a name="2346" class="Symbol"
       >=</a
-      ><a name="2347"
-      > </a
-      ><a name="2348" class="Symbol"
+      > <a name="2348" class="Symbol"
       >&#955;</a
-      ><a name="2349"
-      > </a
-      ><a name="2350" href="Relation.Unary.PredicateTransformer.html#2350" class="Bound"
+      > <a name="2350" href="Relation.Unary.PredicateTransformer.html#2350" class="Bound"
       >X</a
-      ><a name="2351"
-      > </a
-      ><a name="2352" class="Symbol"
+      > <a name="2352" class="Symbol"
       >&#8594;</a
-      ><a name="2353"
-      > </a
-      ><a name="2354" href="Relation.Unary.html#2807" class="Function"
+      > <a name="2354" href="Relation.Unary.html#2807" class="Function"
       >&#8899;[</a
-      ><a name="2356"
-      > </a
-      ><a name="2357" href="Relation.Unary.PredicateTransformer.html#2357" class="Bound"
+      > <a name="2357" href="Relation.Unary.PredicateTransformer.html#2357" class="Bound"
       >i</a
-      ><a name="2358"
-      > </a
-      ><a name="2359" href="Relation.Unary.html#2807" class="Function"
+      > <a name="2359" href="Relation.Unary.html#2807" class="Function"
       >&#8758;</a
-      ><a name="2360"
-      > </a
-      ><a name="2361" href="Relation.Unary.PredicateTransformer.html#2342" class="Bound"
+      > <a name="2361" href="Relation.Unary.PredicateTransformer.html#2342" class="Bound"
       >I</a
-      ><a name="2362"
-      > </a
-      ><a name="2363" href="Relation.Unary.html#2807" class="Function"
+      > <a name="2363" href="Relation.Unary.html#2807" class="Function"
       >]</a
-      ><a name="2364"
-      > </a
-      ><a name="2365" href="Relation.Unary.PredicateTransformer.html#2344" class="Bound"
+      > <a name="2365" href="Relation.Unary.PredicateTransformer.html#2344" class="Bound"
       >T</a
-      ><a name="2366"
-      > </a
-      ><a name="2367" href="Relation.Unary.PredicateTransformer.html#2357" class="Bound"
+      > <a name="2367" href="Relation.Unary.PredicateTransformer.html#2357" class="Bound"
       >i</a
-      ><a name="2368"
-      > </a
-      ><a name="2369" href="Relation.Unary.PredicateTransformer.html#2350" class="Bound"
+      > <a name="2369" href="Relation.Unary.PredicateTransformer.html#2350" class="Bound"
       >X</a
-      ><a name="2370"
       >
 
-  </a
-      ><a name="2374" class="Keyword"
+  <a name="2374" class="Keyword"
       >syntax</a
-      ><a name="2380"
-      > &#10758; I </a
-      ><a name="2385" class="Symbol"
+      > <a name="2381" href="Relation.Unary.PredicateTransformer.html#2275" class="Function"
+      >&#10758;</a
+      > I <a name="2385" class="Symbol"
       >(&#955;</a
-      ><a name="2387"
-      > i </a
-      ><a name="2390" class="Symbol"
+      > i <a name="2390" class="Symbol"
       >&#8594;</a
-      ><a name="2391"
-      > T</a
-      ><a name="2393" class="Symbol"
+      > T<a name="2393" class="Symbol"
       >)</a
-      ><a name="2394"
-      > </a
-      ><a name="2395" class="Symbol"
+      > <a name="2395" class="Symbol"
       >=</a
-      ><a name="2396"
       > &#10758;[ i &#8758; I ] T
 
-  </a
-      ><a name="2413" href="Relation.Unary.PredicateTransformer.html#2413" class="Function"
+  <a name="2413" href="Relation.Unary.PredicateTransformer.html#2413" class="Function"
       >&#10757;</a
-      ><a name="2414"
-      > </a
-      ><a name="2415" class="Symbol"
+      > <a name="2415" class="Symbol"
       >:</a
-      ><a name="2416"
-      > </a
-      ><a name="2417" class="Symbol"
+      > <a name="2417" class="Symbol"
       >&#8704;</a
-      ><a name="2418"
-      > </a
-      ><a name="2419" class="Symbol"
+      > <a name="2419" class="Symbol"
       >{</a
       ><a name="2420" href="Relation.Unary.PredicateTransformer.html#2420" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="2422"
-      > </a
-      ><a name="2423" href="Relation.Unary.PredicateTransformer.html#2423" class="Bound"
+      > <a name="2423" href="Relation.Unary.PredicateTransformer.html#2423" class="Bound"
       >&#8467;&#8322;</a
-      ><a name="2425"
-      > </a
-      ><a name="2426" href="Relation.Unary.PredicateTransformer.html#2426" class="Bound"
+      > <a name="2426" href="Relation.Unary.PredicateTransformer.html#2426" class="Bound"
       >i</a
       ><a name="2427" class="Symbol"
       >}</a
-      ><a name="2428"
-      > </a
-      ><a name="2429" class="Symbol"
+      > <a name="2429" class="Symbol"
       >(</a
       ><a name="2430" href="Relation.Unary.PredicateTransformer.html#2430" class="Bound"
       >I</a
-      ><a name="2431"
-      > </a
-      ><a name="2432" class="Symbol"
+      > <a name="2432" class="Symbol"
       >:</a
-      ><a name="2433"
-      > </a
-      ><a name="2434" class="PrimitiveType"
+      > <a name="2434" class="PrimitiveType"
       >Set</a
-      ><a name="2437"
-      > </a
-      ><a name="2438" href="Relation.Unary.PredicateTransformer.html#2426" class="Bound"
+      > <a name="2438" href="Relation.Unary.PredicateTransformer.html#2426" class="Bound"
       >i</a
       ><a name="2439" class="Symbol"
       >)</a
-      ><a name="2440"
-      > </a
-      ><a name="2441" class="Symbol"
+      > <a name="2441" class="Symbol"
       >&#8594;</a
-      ><a name="2442"
-      > </a
-      ><a name="2443" class="Symbol"
+      > <a name="2443" class="Symbol"
       >(</a
       ><a name="2444" href="Relation.Unary.PredicateTransformer.html#2430" class="Bound"
       >I</a
-      ><a name="2445"
-      > </a
-      ><a name="2446" class="Symbol"
+      > <a name="2446" class="Symbol"
       >&#8594;</a
-      ><a name="2447"
-      > </a
-      ><a name="2448" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="2448" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="2450"
-      > </a
-      ><a name="2451" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="2451" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="2452"
-      > </a
-      ><a name="2453" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="2453" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="2454"
-      > </a
-      ><a name="2455" href="Relation.Unary.PredicateTransformer.html#2420" class="Bound"
+      > <a name="2455" href="Relation.Unary.PredicateTransformer.html#2420" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="2457"
-      > </a
-      ><a name="2458" href="Relation.Unary.PredicateTransformer.html#2423" class="Bound"
+      > <a name="2458" href="Relation.Unary.PredicateTransformer.html#2423" class="Bound"
       >&#8467;&#8322;</a
       ><a name="2460" class="Symbol"
       >)</a
-      ><a name="2461"
-      > </a
-      ><a name="2462" class="Symbol"
+      > <a name="2462" class="Symbol"
       >&#8594;</a
-      ><a name="2463"
-      > </a
-      ><a name="2464" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="2464" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="2466"
-      > </a
-      ><a name="2467" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="2467" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="2468"
-      > </a
-      ><a name="2469" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="2469" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="2470"
-      > </a
-      ><a name="2471" href="Relation.Unary.PredicateTransformer.html#2420" class="Bound"
+      > <a name="2471" href="Relation.Unary.PredicateTransformer.html#2420" class="Bound"
       >&#8467;&#8321;</a
-      ><a name="2473"
-      > </a
-      ><a name="2474" class="Symbol"
+      > <a name="2474" class="Symbol"
       >_</a
-      ><a name="2475"
       >
-  </a
-      ><a name="2478" href="Relation.Unary.PredicateTransformer.html#2413" class="Function"
+  <a name="2478" href="Relation.Unary.PredicateTransformer.html#2413" class="Function"
       >&#10757;</a
-      ><a name="2479"
-      > </a
-      ><a name="2480" href="Relation.Unary.PredicateTransformer.html#2480" class="Bound"
+      > <a name="2480" href="Relation.Unary.PredicateTransformer.html#2480" class="Bound"
       >I</a
-      ><a name="2481"
-      > </a
-      ><a name="2482" href="Relation.Unary.PredicateTransformer.html#2482" class="Bound"
+      > <a name="2482" href="Relation.Unary.PredicateTransformer.html#2482" class="Bound"
       >T</a
-      ><a name="2483"
-      > </a
-      ><a name="2484" class="Symbol"
+      > <a name="2484" class="Symbol"
       >=</a
-      ><a name="2485"
-      > </a
-      ><a name="2486" class="Symbol"
+      > <a name="2486" class="Symbol"
       >&#955;</a
-      ><a name="2487"
-      > </a
-      ><a name="2488" href="Relation.Unary.PredicateTransformer.html#2488" class="Bound"
+      > <a name="2488" href="Relation.Unary.PredicateTransformer.html#2488" class="Bound"
       >X</a
-      ><a name="2489"
-      > </a
-      ><a name="2490" class="Symbol"
+      > <a name="2490" class="Symbol"
       >&#8594;</a
-      ><a name="2491"
-      > </a
-      ><a name="2492" href="Relation.Unary.html#2934" class="Function"
+      > <a name="2492" href="Relation.Unary.html#2934" class="Function"
       >&#8898;[</a
-      ><a name="2494"
-      > </a
-      ><a name="2495" href="Relation.Unary.PredicateTransformer.html#2495" class="Bound"
+      > <a name="2495" href="Relation.Unary.PredicateTransformer.html#2495" class="Bound"
       >i</a
-      ><a name="2496"
-      > </a
-      ><a name="2497" href="Relation.Unary.html#2934" class="Function"
+      > <a name="2497" href="Relation.Unary.html#2934" class="Function"
       >&#8758;</a
-      ><a name="2498"
-      > </a
-      ><a name="2499" href="Relation.Unary.PredicateTransformer.html#2480" class="Bound"
+      > <a name="2499" href="Relation.Unary.PredicateTransformer.html#2480" class="Bound"
       >I</a
-      ><a name="2500"
-      > </a
-      ><a name="2501" href="Relation.Unary.html#2934" class="Function"
+      > <a name="2501" href="Relation.Unary.html#2934" class="Function"
       >]</a
-      ><a name="2502"
-      > </a
-      ><a name="2503" href="Relation.Unary.PredicateTransformer.html#2482" class="Bound"
+      > <a name="2503" href="Relation.Unary.PredicateTransformer.html#2482" class="Bound"
       >T</a
-      ><a name="2504"
-      > </a
-      ><a name="2505" href="Relation.Unary.PredicateTransformer.html#2495" class="Bound"
+      > <a name="2505" href="Relation.Unary.PredicateTransformer.html#2495" class="Bound"
       >i</a
-      ><a name="2506"
-      > </a
-      ><a name="2507" href="Relation.Unary.PredicateTransformer.html#2488" class="Bound"
+      > <a name="2507" href="Relation.Unary.PredicateTransformer.html#2488" class="Bound"
       >X</a
-      ><a name="2508"
       >
 
-  </a
-      ><a name="2512" class="Keyword"
+  <a name="2512" class="Keyword"
       >syntax</a
-      ><a name="2518"
-      > &#10757; I </a
-      ><a name="2523" class="Symbol"
+      > <a name="2519" href="Relation.Unary.PredicateTransformer.html#2413" class="Function"
+      >&#10757;</a
+      > I <a name="2523" class="Symbol"
       >(&#955;</a
-      ><a name="2525"
-      > i </a
-      ><a name="2528" class="Symbol"
+      > i <a name="2528" class="Symbol"
       >&#8594;</a
-      ><a name="2529"
-      > T</a
-      ><a name="2531" class="Symbol"
+      > T<a name="2531" class="Symbol"
       >)</a
-      ><a name="2532"
-      > </a
-      ><a name="2533" class="Symbol"
+      > <a name="2533" class="Symbol"
       >=</a
-      ><a name="2534"
       > &#10757;[ i &#8758; I ] T
 
-  </a
-      ><a name="2551" class="Comment"
+  <a name="2551" class="Comment"
       >-- Angelic and demonic update.</a
-      ><a name="2581"
       >
 
-  </a
-      ><a name="2585" href="Relation.Unary.PredicateTransformer.html#2585" class="Function Operator"
+  <a name="2585" href="Relation.Unary.PredicateTransformer.html#2585" class="Function Operator"
       >&#10216;_&#10217;</a
-      ><a name="2588"
-      > </a
-      ><a name="2589" class="Symbol"
+      > <a name="2589" class="Symbol"
       >:</a
-      ><a name="2590"
-      > </a
-      ><a name="2591" class="Symbol"
+      > <a name="2591" class="Symbol"
       >&#8704;</a
-      ><a name="2592"
-      > </a
-      ><a name="2593" class="Symbol"
+      > <a name="2593" class="Symbol"
       >{</a
       ><a name="2594" href="Relation.Unary.PredicateTransformer.html#2594" class="Bound"
       >&#8467;</a
       ><a name="2595" class="Symbol"
       >}</a
-      ><a name="2596"
-      > </a
-      ><a name="2597" class="Symbol"
+      > <a name="2597" class="Symbol"
       >&#8594;</a
-      ><a name="2598"
-      > </a
-      ><a name="2599" href="Relation.Binary.Core.html#614" class="Function"
+      > <a name="2599" href="Relation.Binary.Core.html#REL" class="Function"
       >REL</a
-      ><a name="2602"
-      > </a
-      ><a name="2603" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="2603" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="2604"
-      > </a
-      ><a name="2605" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="2605" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="2606"
-      > </a
-      ><a name="2607" href="Relation.Unary.PredicateTransformer.html#2594" class="Bound"
+      > <a name="2607" href="Relation.Unary.PredicateTransformer.html#2594" class="Bound"
       >&#8467;</a
-      ><a name="2608"
-      > </a
-      ><a name="2609" class="Symbol"
+      > <a name="2609" class="Symbol"
       >&#8594;</a
-      ><a name="2610"
-      > </a
-      ><a name="2611" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="2611" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="2613"
-      > </a
-      ><a name="2614" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="2614" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="2615"
-      > </a
-      ><a name="2616" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="2616" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="2617"
-      > </a
-      ><a name="2618" href="Relation.Unary.PredicateTransformer.html#2594" class="Bound"
+      > <a name="2618" href="Relation.Unary.PredicateTransformer.html#2594" class="Bound"
       >&#8467;</a
-      ><a name="2619"
-      > </a
-      ><a name="2620" class="Symbol"
+      > <a name="2620" class="Symbol"
       >_</a
-      ><a name="2621"
       >
-  </a
-      ><a name="2624" href="Relation.Unary.PredicateTransformer.html#2585" class="Function Operator"
+  <a name="2624" href="Relation.Unary.PredicateTransformer.html#2585" class="Function Operator"
       >&#10216;</a
-      ><a name="2625"
-      > </a
-      ><a name="2626" href="Relation.Unary.PredicateTransformer.html#2626" class="Bound"
+      > <a name="2626" href="Relation.Unary.PredicateTransformer.html#2626" class="Bound"
       >R</a
-      ><a name="2627"
-      > </a
-      ><a name="2628" href="Relation.Unary.PredicateTransformer.html#2585" class="Function Operator"
+      > <a name="2628" href="Relation.Unary.PredicateTransformer.html#2585" class="Function Operator"
       >&#10217;</a
-      ><a name="2629"
-      > </a
-      ><a name="2630" href="Relation.Unary.PredicateTransformer.html#2630" class="Bound"
+      > <a name="2630" href="Relation.Unary.PredicateTransformer.html#2630" class="Bound"
       >P</a
-      ><a name="2631"
-      > </a
-      ><a name="2632" class="Symbol"
+      > <a name="2632" class="Symbol"
       >=</a
-      ><a name="2633"
-      > </a
-      ><a name="2634" class="Symbol"
+      > <a name="2634" class="Symbol"
       >&#955;</a
-      ><a name="2635"
-      > </a
-      ><a name="2636" href="Relation.Unary.PredicateTransformer.html#2636" class="Bound"
+      > <a name="2636" href="Relation.Unary.PredicateTransformer.html#2636" class="Bound"
       >x</a
-      ><a name="2637"
-      > </a
-      ><a name="2638" class="Symbol"
+      > <a name="2638" class="Symbol"
       >&#8594;</a
-      ><a name="2639"
-      > </a
-      ><a name="2640" href="Relation.Unary.PredicateTransformer.html#2626" class="Bound"
+      > <a name="2640" href="Relation.Unary.PredicateTransformer.html#2626" class="Bound"
       >R</a
-      ><a name="2641"
-      > </a
-      ><a name="2642" href="Relation.Unary.PredicateTransformer.html#2636" class="Bound"
+      > <a name="2642" href="Relation.Unary.PredicateTransformer.html#2636" class="Bound"
       >x</a
-      ><a name="2643"
-      > </a
-      ><a name="2644" href="Relation.Unary.html#2308" class="Function Operator"
+      > <a name="2644" href="Relation.Unary.html#2308" class="Function Operator"
       >&#8812;</a
-      ><a name="2645"
-      > </a
-      ><a name="2646" href="Relation.Unary.PredicateTransformer.html#2630" class="Bound"
+      > <a name="2646" href="Relation.Unary.PredicateTransformer.html#2630" class="Bound"
       >P</a
-      ><a name="2647"
       >
 
-  </a
-      ><a name="2651" href="Relation.Unary.PredicateTransformer.html#2651" class="Function Operator"
+  <a name="2651" href="Relation.Unary.PredicateTransformer.html#2651" class="Function Operator"
       >[_]</a
-      ><a name="2654"
-      > </a
-      ><a name="2655" class="Symbol"
+      > <a name="2655" class="Symbol"
       >:</a
-      ><a name="2656"
-      > </a
-      ><a name="2657" class="Symbol"
+      > <a name="2657" class="Symbol"
       >&#8704;</a
-      ><a name="2658"
-      > </a
-      ><a name="2659" class="Symbol"
+      > <a name="2659" class="Symbol"
       >{</a
       ><a name="2660" href="Relation.Unary.PredicateTransformer.html#2660" class="Bound"
       >&#8467;</a
       ><a name="2661" class="Symbol"
       >}</a
-      ><a name="2662"
-      > </a
-      ><a name="2663" class="Symbol"
+      > <a name="2663" class="Symbol"
       >&#8594;</a
-      ><a name="2664"
-      > </a
-      ><a name="2665" href="Relation.Binary.Core.html#614" class="Function"
+      > <a name="2665" href="Relation.Binary.Core.html#REL" class="Function"
       >REL</a
-      ><a name="2668"
-      > </a
-      ><a name="2669" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="2669" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="2670"
-      > </a
-      ><a name="2671" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="2671" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="2672"
-      > </a
-      ><a name="2673" href="Relation.Unary.PredicateTransformer.html#2660" class="Bound"
+      > <a name="2673" href="Relation.Unary.PredicateTransformer.html#2660" class="Bound"
       >&#8467;</a
-      ><a name="2674"
-      > </a
-      ><a name="2675" class="Symbol"
+      > <a name="2675" class="Symbol"
       >&#8594;</a
-      ><a name="2676"
-      > </a
-      ><a name="2677" href="Relation.Unary.PredicateTransformer.html#561" class="Function"
+      > <a name="2677" href="Relation.Unary.PredicateTransformer.html#PT" class="Function"
       >PT</a
-      ><a name="2679"
-      > </a
-      ><a name="2680" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
+      > <a name="2680" href="Relation.Unary.PredicateTransformer.html#1096" class="Bound"
       >B</a
-      ><a name="2681"
-      > </a
-      ><a name="2682" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
+      > <a name="2682" href="Relation.Unary.PredicateTransformer.html#1084" class="Bound"
       >A</a
-      ><a name="2683"
-      > </a
-      ><a name="2684" href="Relation.Unary.PredicateTransformer.html#2660" class="Bound"
+      > <a name="2684" href="Relation.Unary.PredicateTransformer.html#2660" class="Bound"
       >&#8467;</a
-      ><a name="2685"
-      > </a
-      ><a name="2686" class="Symbol"
+      > <a name="2686" class="Symbol"
       >_</a
-      ><a name="2687"
       >
-  </a
-      ><a name="2690" href="Relation.Unary.PredicateTransformer.html#2651" class="Function Operator"
+  <a name="2690" href="Relation.Unary.PredicateTransformer.html#2651" class="Function Operator"
       >[</a
-      ><a name="2691"
-      > </a
-      ><a name="2692" href="Relation.Unary.PredicateTransformer.html#2692" class="Bound"
+      > <a name="2692" href="Relation.Unary.PredicateTransformer.html#2692" class="Bound"
       >R</a
-      ><a name="2693"
-      > </a
-      ><a name="2694" href="Relation.Unary.PredicateTransformer.html#2651" class="Function Operator"
+      > <a name="2694" href="Relation.Unary.PredicateTransformer.html#2651" class="Function Operator"
       >]</a
-      ><a name="2695"
-      > </a
-      ><a name="2696" href="Relation.Unary.PredicateTransformer.html#2696" class="Bound"
+      > <a name="2696" href="Relation.Unary.PredicateTransformer.html#2696" class="Bound"
       >P</a
-      ><a name="2697"
-      > </a
-      ><a name="2698" class="Symbol"
+      > <a name="2698" class="Symbol"
       >=</a
-      ><a name="2699"
-      > </a
-      ><a name="2700" class="Symbol"
+      > <a name="2700" class="Symbol"
       >&#955;</a
-      ><a name="2701"
-      > </a
-      ><a name="2702" href="Relation.Unary.PredicateTransformer.html#2702" class="Bound"
+      > <a name="2702" href="Relation.Unary.PredicateTransformer.html#2702" class="Bound"
       >x</a
-      ><a name="2703"
-      > </a
-      ><a name="2704" class="Symbol"
+      > <a name="2704" class="Symbol"
       >&#8594;</a
-      ><a name="2705"
-      > </a
-      ><a name="2706" href="Relation.Unary.PredicateTransformer.html#2692" class="Bound"
+      > <a name="2706" href="Relation.Unary.PredicateTransformer.html#2692" class="Bound"
       >R</a
-      ><a name="2707"
-      > </a
-      ><a name="2708" href="Relation.Unary.PredicateTransformer.html#2702" class="Bound"
+      > <a name="2708" href="Relation.Unary.PredicateTransformer.html#2702" class="Bound"
       >x</a
-      ><a name="2709"
-      > </a
-      ><a name="2710" href="Relation.Unary.html#1822" class="Function Operator"
+      > <a name="2710" href="Relation.Unary.html#1822" class="Function Operator"
       >&#8838;</a
-      ><a name="2711"
-      > </a
-      ><a name="2712" href="Relation.Unary.PredicateTransformer.html#2696" class="Bound"
+      > <a name="2712" href="Relation.Unary.PredicateTransformer.html#2696" class="Bound"
       >P</a
-      ><a name="2713"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

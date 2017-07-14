@@ -11,946 +11,532 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Primitive IO: simple bindings to Haskell types and functions</a
-      ><a name="169"
       >
-</a
-      ><a name="170" class="Comment"
+<a name="170" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="242"
       >
 
-</a
-      ><a name="244" class="Keyword"
+<a name="244" class="Keyword"
       >module</a
-      ><a name="250"
-      > </a
-      ><a name="251" href="IO.Primitive.html#1" class="Module"
+      > <a name="251" href="IO.Primitive.html" class="Module"
       >IO.Primitive</a
-      ><a name="263"
-      > </a
-      ><a name="264" class="Keyword"
+      > <a name="264" class="Keyword"
       >where</a
-      ><a name="269"
       >
 
-</a
-      ><a name="271" class="Keyword"
+<a name="271" class="Keyword"
       >open</a
-      ><a name="275"
-      > </a
-      ><a name="276" class="Keyword"
+      > <a name="276" class="Keyword"
       >import</a
-      ><a name="282"
-      > </a
-      ><a name="283" href="Data.Char.Base.html#1" class="Module"
+      > <a name="283" href="Data.Char.Base.html" class="Module"
       >Data.Char.Base</a
-      ><a name="297"
       >
-</a
-      ><a name="298" class="Keyword"
+<a name="298" class="Keyword"
       >open</a
-      ><a name="302"
-      > </a
-      ><a name="303" class="Keyword"
+      > <a name="303" class="Keyword"
       >import</a
-      ><a name="309"
-      > </a
-      ><a name="310" href="Data.String.html#1" class="Module"
+      > <a name="310" href="Data.String.html" class="Module"
       >Data.String</a
-      ><a name="321"
       >
-</a
-      ><a name="322" class="Keyword"
+<a name="322" class="Keyword"
       >open</a
-      ><a name="326"
-      > </a
-      ><a name="327" class="Keyword"
+      > <a name="327" class="Keyword"
       >import</a
-      ><a name="333"
-      > </a
-      ><a name="334" href="Foreign.Haskell.html#1" class="Module"
+      > <a name="334" href="Foreign.Haskell.html" class="Module"
       >Foreign.Haskell</a
-      ><a name="349"
       >
 
-</a
-      ><a name="351" class="Comment"
+<a name="351" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="423"
       >
-</a
-      ><a name="424" class="Comment"
+<a name="424" class="Comment"
       >-- The IO monad</a
-      ><a name="439"
       >
 
-</a
-      ><a name="441" class="Keyword"
+<a name="441" class="Keyword"
       >open</a
-      ><a name="445"
-      > </a
-      ><a name="446" class="Keyword"
+      > <a name="446" class="Keyword"
       >import</a
-      ><a name="452"
-      > </a
-      ><a name="453" href="Agda.Builtin.IO.html#1" class="Module"
+      > <a name="453" href="Agda.Builtin.IO.html" class="Module"
       >Agda.Builtin.IO</a
-      ><a name="468"
-      > </a
-      ><a name="469" class="Keyword"
+      > <a name="469" class="Keyword"
       >public</a
-      ><a name="475"
-      > </a
-      ><a name="476" class="Keyword"
+      > <a name="476" class="Keyword"
       >using</a
-      ><a name="481"
-      > </a
-      ><a name="482" class="Symbol"
+      > <a name="482" class="Symbol"
       >(</a
-      ><a name="483" href="Agda.Builtin.IO.html#70" class="Postulate"
+      ><a name="483" href="Agda.Builtin.IO.html#IO" class="Postulate"
       >IO</a
       ><a name="485" class="Symbol"
       >)</a
-      ><a name="486"
       >
 
-</a
-      ><a name="488" class="Keyword"
+<a name="488" class="Keyword"
       >infixl</a
-      ><a name="494"
-      > </a
-      ><a name="495" class="Number"
+      > <a name="495" class="Number"
       >1</a
-      ><a name="496"
-      > _&gt;&gt;=_
-
-</a
-      ><a name="504" class="Keyword"
-      >postulate</a
-      ><a name="513"
+      > <a name="497" href="IO.Primitive.html#_&gt;&gt;=_" class="Postulate Operator"
+      >_&gt;&gt;=_</a
       >
-  </a
-      ><a name="516" href="IO.Primitive.html#516" class="Postulate"
+
+<a name="504" class="Keyword"
+      >postulate</a
+      >
+  <a name="return" href="IO.Primitive.html#return" class="Postulate"
       >return</a
-      ><a name="522"
-      > </a
-      ><a name="523" class="Symbol"
+      > <a name="523" class="Symbol"
       >:</a
-      ><a name="524"
-      > </a
-      ><a name="525" class="Symbol"
+      > <a name="525" class="Symbol"
       >&#8704;</a
-      ><a name="526"
-      > </a
-      ><a name="527" class="Symbol"
+      > <a name="527" class="Symbol"
       >{</a
       ><a name="528" href="IO.Primitive.html#528" class="Bound"
       >a</a
       ><a name="529" class="Symbol"
       >}</a
-      ><a name="530"
-      > </a
-      ><a name="531" class="Symbol"
+      > <a name="531" class="Symbol"
       >{</a
       ><a name="532" href="IO.Primitive.html#532" class="Bound"
       >A</a
-      ><a name="533"
-      > </a
-      ><a name="534" class="Symbol"
+      > <a name="534" class="Symbol"
       >:</a
-      ><a name="535"
-      > </a
-      ><a name="536" class="PrimitiveType"
+      > <a name="536" class="PrimitiveType"
       >Set</a
-      ><a name="539"
-      > </a
-      ><a name="540" href="IO.Primitive.html#528" class="Bound"
+      > <a name="540" href="IO.Primitive.html#528" class="Bound"
       >a</a
       ><a name="541" class="Symbol"
       >}</a
-      ><a name="542"
-      > </a
-      ><a name="543" class="Symbol"
+      > <a name="543" class="Symbol"
       >&#8594;</a
-      ><a name="544"
-      > </a
-      ><a name="545" href="IO.Primitive.html#532" class="Bound"
+      > <a name="545" href="IO.Primitive.html#532" class="Bound"
       >A</a
-      ><a name="546"
-      > </a
-      ><a name="547" class="Symbol"
+      > <a name="547" class="Symbol"
       >&#8594;</a
-      ><a name="548"
-      > </a
-      ><a name="549" href="Agda.Builtin.IO.html#70" class="Postulate"
+      > <a name="549" href="Agda.Builtin.IO.html#IO" class="Postulate"
       >IO</a
-      ><a name="551"
-      > </a
-      ><a name="552" href="IO.Primitive.html#532" class="Bound"
+      > <a name="552" href="IO.Primitive.html#532" class="Bound"
       >A</a
-      ><a name="553"
       >
-  </a
-      ><a name="556" href="IO.Primitive.html#556" class="Postulate Operator"
+  <a name="_&gt;&gt;=_" href="IO.Primitive.html#_&gt;&gt;=_" class="Postulate Operator"
       >_&gt;&gt;=_</a
-      ><a name="561"
-      >  </a
-      ><a name="563" class="Symbol"
+      >  <a name="563" class="Symbol"
       >:</a
-      ><a name="564"
-      > </a
-      ><a name="565" class="Symbol"
+      > <a name="565" class="Symbol"
       >&#8704;</a
-      ><a name="566"
-      > </a
-      ><a name="567" class="Symbol"
+      > <a name="567" class="Symbol"
       >{</a
       ><a name="568" href="IO.Primitive.html#568" class="Bound"
       >a</a
-      ><a name="569"
-      > </a
-      ><a name="570" href="IO.Primitive.html#570" class="Bound"
+      > <a name="570" href="IO.Primitive.html#570" class="Bound"
       >b</a
       ><a name="571" class="Symbol"
       >}</a
-      ><a name="572"
-      > </a
-      ><a name="573" class="Symbol"
+      > <a name="573" class="Symbol"
       >{</a
       ><a name="574" href="IO.Primitive.html#574" class="Bound"
       >A</a
-      ><a name="575"
-      > </a
-      ><a name="576" class="Symbol"
+      > <a name="576" class="Symbol"
       >:</a
-      ><a name="577"
-      > </a
-      ><a name="578" class="PrimitiveType"
+      > <a name="578" class="PrimitiveType"
       >Set</a
-      ><a name="581"
-      > </a
-      ><a name="582" href="IO.Primitive.html#568" class="Bound"
+      > <a name="582" href="IO.Primitive.html#568" class="Bound"
       >a</a
       ><a name="583" class="Symbol"
       >}</a
-      ><a name="584"
-      > </a
-      ><a name="585" class="Symbol"
+      > <a name="585" class="Symbol"
       >{</a
       ><a name="586" href="IO.Primitive.html#586" class="Bound"
       >B</a
-      ><a name="587"
-      > </a
-      ><a name="588" class="Symbol"
+      > <a name="588" class="Symbol"
       >:</a
-      ><a name="589"
-      > </a
-      ><a name="590" class="PrimitiveType"
+      > <a name="590" class="PrimitiveType"
       >Set</a
-      ><a name="593"
-      > </a
-      ><a name="594" href="IO.Primitive.html#570" class="Bound"
+      > <a name="594" href="IO.Primitive.html#570" class="Bound"
       >b</a
       ><a name="595" class="Symbol"
       >}</a
-      ><a name="596"
-      > </a
-      ><a name="597" class="Symbol"
+      > <a name="597" class="Symbol"
       >&#8594;</a
-      ><a name="598"
-      > </a
-      ><a name="599" href="Agda.Builtin.IO.html#70" class="Postulate"
+      > <a name="599" href="Agda.Builtin.IO.html#IO" class="Postulate"
       >IO</a
-      ><a name="601"
-      > </a
-      ><a name="602" href="IO.Primitive.html#574" class="Bound"
+      > <a name="602" href="IO.Primitive.html#574" class="Bound"
       >A</a
-      ><a name="603"
-      > </a
-      ><a name="604" class="Symbol"
+      > <a name="604" class="Symbol"
       >&#8594;</a
-      ><a name="605"
-      > </a
-      ><a name="606" class="Symbol"
+      > <a name="606" class="Symbol"
       >(</a
       ><a name="607" href="IO.Primitive.html#574" class="Bound"
       >A</a
-      ><a name="608"
-      > </a
-      ><a name="609" class="Symbol"
+      > <a name="609" class="Symbol"
       >&#8594;</a
-      ><a name="610"
-      > </a
-      ><a name="611" href="Agda.Builtin.IO.html#70" class="Postulate"
+      > <a name="611" href="Agda.Builtin.IO.html#IO" class="Postulate"
       >IO</a
-      ><a name="613"
-      > </a
-      ><a name="614" href="IO.Primitive.html#586" class="Bound"
+      > <a name="614" href="IO.Primitive.html#586" class="Bound"
       >B</a
       ><a name="615" class="Symbol"
       >)</a
-      ><a name="616"
-      > </a
-      ><a name="617" class="Symbol"
+      > <a name="617" class="Symbol"
       >&#8594;</a
-      ><a name="618"
-      > </a
-      ><a name="619" href="Agda.Builtin.IO.html#70" class="Postulate"
+      > <a name="619" href="Agda.Builtin.IO.html#IO" class="Postulate"
       >IO</a
-      ><a name="621"
-      > </a
-      ><a name="622" href="IO.Primitive.html#586" class="Bound"
+      > <a name="622" href="IO.Primitive.html#586" class="Bound"
       >B</a
-      ><a name="623"
       >
 
-</a
-      ><a name="625" class="Symbol"
+<a name="625" class="Symbol"
       >{-#</a
-      ><a name="628"
-      > </a
-      ><a name="629" class="Keyword"
-      >COMPILED</a
-      ><a name="637"
-      > </a
-      ><a name="638" href="IO.Primitive.html#516" class="Postulate"
+      > <a name="629" class="Keyword"
+      >COMPILE</a
+      > GHC <a name="641" href="IO.Primitive.html#return" class="Postulate"
       >return</a
-      ><a name="644"
-      > (\_ _ -&gt; return)    </a
-      ><a name="665" class="Symbol"
+      > = \_ _ -&gt; return    <a name="668" class="Symbol"
       >#-}</a
-      ><a name="668"
       >
-</a
-      ><a name="669" class="Symbol"
+<a name="672" class="Symbol"
       >{-#</a
-      ><a name="672"
-      > </a
-      ><a name="673" class="Keyword"
-      >COMPILED</a
-      ><a name="681"
-      > </a
-      ><a name="682" href="IO.Primitive.html#556" class="Postulate Operator"
+      > <a name="676" class="Keyword"
+      >COMPILE</a
+      > GHC <a name="688" href="IO.Primitive.html#_&gt;&gt;=_" class="Postulate Operator"
       >_&gt;&gt;=_</a
-      ><a name="687"
-      >  (\_ _ _ _ -&gt; (&gt;&gt;=)) </a
-      ><a name="709" class="Symbol"
+      >  = \_ _ _ _ -&gt; (&gt;&gt;=) <a name="715" class="Symbol"
       >#-}</a
-      ><a name="712"
       >
-</a
-      ><a name="713" class="Symbol"
+<a name="719" class="Symbol"
       >{-#</a
-      ><a name="716"
-      > </a
-      ><a name="717" class="Keyword"
-      >COMPILED_UHC</a
-      ><a name="729"
-      > </a
-      ><a name="730" href="IO.Primitive.html#516" class="Postulate"
+      > <a name="723" class="Keyword"
+      >COMPILE</a
+      > UHC <a name="735" href="IO.Primitive.html#return" class="Postulate"
       >return</a
-      ><a name="736"
-      > (\_ _ x -&gt; UHC.Agda.Builtins.primReturn x) </a
-      ><a name="780" class="Symbol"
+      > = \_ _ x -&gt; UHC.Agda.Builtins.primReturn x <a name="785" class="Symbol"
       >#-}</a
-      ><a name="783"
       >
-</a
-      ><a name="784" class="Symbol"
+<a name="789" class="Symbol"
       >{-#</a
-      ><a name="787"
-      > </a
-      ><a name="788" class="Keyword"
-      >COMPILED_UHC</a
-      ><a name="800"
-      > </a
-      ><a name="801" href="IO.Primitive.html#556" class="Postulate Operator"
+      > <a name="793" class="Keyword"
+      >COMPILE</a
+      > UHC <a name="805" href="IO.Primitive.html#_&gt;&gt;=_" class="Postulate Operator"
       >_&gt;&gt;=_</a
-      ><a name="806"
-      > (\_ _ _ _ x y -&gt; UHC.Agda.Builtins.primBind x y) </a
-      ><a name="856" class="Symbol"
+      >  = \_ _ _ _ x y -&gt; UHC.Agda.Builtins.primBind x y <a name="861" class="Symbol"
       >#-}</a
-      ><a name="859"
       >
 
-</a
-      ><a name="861" class="Comment"
+<a name="866" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="933"
       >
-</a
-      ><a name="934" class="Comment"
+<a name="939" class="Comment"
       >-- Simple lazy IO</a
-      ><a name="951"
       >
 
-</a
-      ><a name="953" class="Comment"
+<a name="958" class="Comment"
       >-- Note that the functions below produce commands which, when</a
-      ><a name="1014"
       >
-</a
-      ><a name="1015" class="Comment"
+<a name="1020" class="Comment"
       >-- executed, may raise exceptions.</a
-      ><a name="1049"
       >
 
-</a
-      ><a name="1051" class="Comment"
+<a name="1056" class="Comment"
       >-- Note also that the semantics of these functions depends on the</a
-      ><a name="1116"
       >
-</a
-      ><a name="1117" class="Comment"
+<a name="1122" class="Comment"
       >-- version of the Haskell base library. If the version is 4.2.0.0 (or</a
-      ><a name="1186"
       >
-</a
-      ><a name="1187" class="Comment"
+<a name="1192" class="Comment"
       >-- later?), then the functions use the character encoding specified by</a
-      ><a name="1257"
       >
-</a
-      ><a name="1258" class="Comment"
+<a name="1263" class="Comment"
       >-- the locale. For older versions of the library (going back to at</a
-      ><a name="1324"
       >
-</a
-      ><a name="1325" class="Comment"
+<a name="1330" class="Comment"
       >-- least version 3) the functions use ISO-8859-1.</a
-      ><a name="1374"
       >
 
-</a
-      ><a name="1376" class="Symbol"
+<a name="1381" class="Symbol"
       >{-#</a
-      ><a name="1379"
-      > </a
-      ><a name="1380" class="Keyword"
-      >IMPORT</a
-      ><a name="1386"
-      > Data.Text    </a
-      ><a name="1400" class="Symbol"
+      > <a name="1385" class="Keyword"
+      >FOREIGN</a
+      > GHC import qualified Data.Text    <a name="1427" class="Symbol"
       >#-}</a
-      ><a name="1403"
       >
-</a
-      ><a name="1404" class="Symbol"
+<a name="1431" class="Symbol"
       >{-#</a
-      ><a name="1407"
-      > </a
-      ><a name="1408" class="Keyword"
-      >IMPORT</a
-      ><a name="1414"
-      > Data.Text.IO </a
-      ><a name="1428" class="Symbol"
+      > <a name="1435" class="Keyword"
+      >FOREIGN</a
+      > GHC import qualified Data.Text.IO <a name="1477" class="Symbol"
       >#-}</a
-      ><a name="1431"
       >
-</a
-      ><a name="1432" class="Symbol"
+<a name="1481" class="Symbol"
       >{-#</a
-      ><a name="1435"
-      > </a
-      ><a name="1436" class="Keyword"
-      >IMPORT</a
-      ><a name="1442"
-      > System.IO    </a
-      ><a name="1456" class="Symbol"
+      > <a name="1485" class="Keyword"
+      >FOREIGN</a
+      > GHC import qualified System.IO    <a name="1527" class="Symbol"
       >#-}</a
-      ><a name="1459"
       >
-</a
-      ><a name="1460" class="Symbol"
+<a name="1531" class="Symbol"
       >{-#</a
-      ><a name="1463"
-      > </a
-      ><a name="1464" class="Keyword"
-      >IMPORT</a
-      ><a name="1470"
-      > Control.Exception </a
-      ><a name="1489" class="Symbol"
+      > <a name="1535" class="Keyword"
+      >FOREIGN</a
+      > GHC import qualified Control.Exception <a name="1582" class="Symbol"
       >#-}</a
-      ><a name="1492"
       >
 
-</a
-      ><a name="1494" class="Keyword"
+<a name="1587" class="Keyword"
       >postulate</a
-      ><a name="1503"
       >
-  </a
-      ><a name="1506" href="IO.Primitive.html#1506" class="Postulate"
+  <a name="getContents" href="IO.Primitive.html#getContents" class="Postulate"
       >getContents</a
-      ><a name="1517"
-      > </a
-      ><a name="1518" class="Symbol"
+      > <a name="1611" class="Symbol"
       >:</a
-      ><a name="1519"
-      > </a
-      ><a name="1520" href="Agda.Builtin.IO.html#70" class="Postulate"
+      > <a name="1613" href="Agda.Builtin.IO.html#IO" class="Postulate"
       >IO</a
-      ><a name="1522"
-      > </a
-      ><a name="1523" href="Data.String.html#863" class="Function"
+      > <a name="1616" href="Data.String.html#Costring" class="Function"
       >Costring</a
-      ><a name="1531"
       >
-  </a
-      ><a name="1534" href="IO.Primitive.html#1534" class="Postulate"
+  <a name="readFile" href="IO.Primitive.html#readFile" class="Postulate"
       >readFile</a
-      ><a name="1542"
-      >    </a
-      ><a name="1546" class="Symbol"
+      >    <a name="1639" class="Symbol"
       >:</a
-      ><a name="1547"
-      > </a
-      ><a name="1548" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="1641" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="1554"
-      > </a
-      ><a name="1555" class="Symbol"
+      > <a name="1648" class="Symbol"
       >&#8594;</a
-      ><a name="1556"
-      > </a
-      ><a name="1557" href="Agda.Builtin.IO.html#70" class="Postulate"
+      > <a name="1650" href="Agda.Builtin.IO.html#IO" class="Postulate"
       >IO</a
-      ><a name="1559"
-      > </a
-      ><a name="1560" href="Data.String.html#863" class="Function"
+      > <a name="1653" href="Data.String.html#Costring" class="Function"
       >Costring</a
-      ><a name="1568"
       >
-  </a
-      ><a name="1571" href="IO.Primitive.html#1571" class="Postulate"
+  <a name="writeFile" href="IO.Primitive.html#writeFile" class="Postulate"
       >writeFile</a
-      ><a name="1580"
-      >   </a
-      ><a name="1583" class="Symbol"
+      >   <a name="1676" class="Symbol"
       >:</a
-      ><a name="1584"
-      > </a
-      ><a name="1585" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="1678" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="1591"
-      > </a
-      ><a name="1592" class="Symbol"
+      > <a name="1685" class="Symbol"
       >&#8594;</a
-      ><a name="1593"
-      > </a
-      ><a name="1594" href="Data.String.html#863" class="Function"
+      > <a name="1687" href="Data.String.html#Costring" class="Function"
       >Costring</a
-      ><a name="1602"
-      > </a
-      ><a name="1603" class="Symbol"
+      > <a name="1696" class="Symbol"
       >&#8594;</a
-      ><a name="1604"
-      > </a
-      ><a name="1605" href="Agda.Builtin.IO.html#70" class="Postulate"
+      > <a name="1698" href="Agda.Builtin.IO.html#IO" class="Postulate"
       >IO</a
-      ><a name="1607"
-      > </a
-      ><a name="1608" href="Foreign.Haskell.html#295" class="Datatype"
+      > <a name="1701" href="Foreign.Haskell.html#Unit" class="Datatype"
       >Unit</a
-      ><a name="1612"
       >
-  </a
-      ><a name="1615" href="IO.Primitive.html#1615" class="Postulate"
+  <a name="appendFile" href="IO.Primitive.html#appendFile" class="Postulate"
       >appendFile</a
-      ><a name="1625"
-      >  </a
-      ><a name="1627" class="Symbol"
+      >  <a name="1720" class="Symbol"
       >:</a
-      ><a name="1628"
-      > </a
-      ><a name="1629" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="1722" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="1635"
-      > </a
-      ><a name="1636" class="Symbol"
+      > <a name="1729" class="Symbol"
       >&#8594;</a
-      ><a name="1637"
-      > </a
-      ><a name="1638" href="Data.String.html#863" class="Function"
+      > <a name="1731" href="Data.String.html#Costring" class="Function"
       >Costring</a
-      ><a name="1646"
-      > </a
-      ><a name="1647" class="Symbol"
+      > <a name="1740" class="Symbol"
       >&#8594;</a
-      ><a name="1648"
-      > </a
-      ><a name="1649" href="Agda.Builtin.IO.html#70" class="Postulate"
+      > <a name="1742" href="Agda.Builtin.IO.html#IO" class="Postulate"
       >IO</a
-      ><a name="1651"
-      > </a
-      ><a name="1652" href="Foreign.Haskell.html#295" class="Datatype"
+      > <a name="1745" href="Foreign.Haskell.html#Unit" class="Datatype"
       >Unit</a
-      ><a name="1656"
       >
-  </a
-      ><a name="1659" href="IO.Primitive.html#1659" class="Postulate"
+  <a name="putStr" href="IO.Primitive.html#putStr" class="Postulate"
       >putStr</a
-      ><a name="1665"
-      >      </a
-      ><a name="1671" class="Symbol"
+      >      <a name="1764" class="Symbol"
       >:</a
-      ><a name="1672"
-      > </a
-      ><a name="1673" href="Data.String.html#863" class="Function"
+      > <a name="1766" href="Data.String.html#Costring" class="Function"
       >Costring</a
-      ><a name="1681"
-      > </a
-      ><a name="1682" class="Symbol"
+      > <a name="1775" class="Symbol"
       >&#8594;</a
-      ><a name="1683"
-      > </a
-      ><a name="1684" href="Agda.Builtin.IO.html#70" class="Postulate"
+      > <a name="1777" href="Agda.Builtin.IO.html#IO" class="Postulate"
       >IO</a
-      ><a name="1686"
-      > </a
-      ><a name="1687" href="Foreign.Haskell.html#295" class="Datatype"
+      > <a name="1780" href="Foreign.Haskell.html#Unit" class="Datatype"
       >Unit</a
-      ><a name="1691"
       >
-  </a
-      ><a name="1694" href="IO.Primitive.html#1694" class="Postulate"
+  <a name="putStrLn" href="IO.Primitive.html#putStrLn" class="Postulate"
       >putStrLn</a
-      ><a name="1702"
-      >    </a
-      ><a name="1706" class="Symbol"
+      >    <a name="1799" class="Symbol"
       >:</a
-      ><a name="1707"
-      > </a
-      ><a name="1708" href="Data.String.html#863" class="Function"
+      > <a name="1801" href="Data.String.html#Costring" class="Function"
       >Costring</a
-      ><a name="1716"
-      > </a
-      ><a name="1717" class="Symbol"
+      > <a name="1810" class="Symbol"
       >&#8594;</a
-      ><a name="1718"
-      > </a
-      ><a name="1719" href="Agda.Builtin.IO.html#70" class="Postulate"
+      > <a name="1812" href="Agda.Builtin.IO.html#IO" class="Postulate"
       >IO</a
-      ><a name="1721"
-      > </a
-      ><a name="1722" href="Foreign.Haskell.html#295" class="Datatype"
+      > <a name="1815" href="Foreign.Haskell.html#Unit" class="Datatype"
       >Unit</a
-      ><a name="1726"
       >
 
-  </a
-      ><a name="1730" class="Comment"
+  <a name="1823" class="Comment"
       >-- Reads a finite file. Raises an exception if the file path refers</a
-      ><a name="1797"
       >
-  </a
-      ><a name="1800" class="Comment"
+  <a name="1893" class="Comment"
       >-- to a non-physical file (like &quot;/dev/zero&quot;).</a
-      ><a name="1845"
       >
 
-  </a
-      ><a name="1849" href="IO.Primitive.html#1849" class="Postulate"
+  <a name="readFiniteFile" href="IO.Primitive.html#readFiniteFile" class="Postulate"
       >readFiniteFile</a
-      ><a name="1863"
-      > </a
-      ><a name="1864" class="Symbol"
+      > <a name="1957" class="Symbol"
       >:</a
-      ><a name="1865"
-      > </a
-      ><a name="1866" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="1959" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="1872"
-      > </a
-      ><a name="1873" class="Symbol"
+      > <a name="1966" class="Symbol"
       >&#8594;</a
-      ><a name="1874"
-      > </a
-      ><a name="1875" href="Agda.Builtin.IO.html#70" class="Postulate"
+      > <a name="1968" href="Agda.Builtin.IO.html#IO" class="Postulate"
       >IO</a
-      ><a name="1877"
-      > </a
-      ><a name="1878" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="1971" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="1884"
       >
 
-</a
-      ><a name="1886" class="Symbol"
+<a name="1979" class="Symbol"
       >{-#</a
-      ><a name="1889"
-      > </a
-      ><a name="1890" class="Keyword"
-      >HASKELL</a
-      ><a name="1897"
-      >
+      > <a name="1983" class="Keyword"
+      >FOREIGN</a
+      > GHC
   readFiniteFile :: Data.Text.Text -&gt; IO Data.Text.Text
   readFiniteFile f = do
     h &lt;- System.IO.openFile (Data.Text.unpack f) System.IO.ReadMode
     Control.Exception.bracketOnError (return ()) (\_ -&gt; System.IO.hClose h)
                                                  (\_ -&gt; System.IO.hFileSize h)
     Data.Text.IO.hGetContents h
-</a
-      ><a name="2233" class="Symbol"
+<a name="2330" class="Symbol"
       >#-}</a
-      ><a name="2236"
       >
 
-</a
-      ><a name="2238" class="Symbol"
+<a name="2335" class="Symbol"
       >{-#</a
-      ><a name="2241"
-      > </a
-      ><a name="2242" class="Keyword"
-      >COMPILED</a
-      ><a name="2250"
-      > </a
-      ><a name="2251" href="IO.Primitive.html#1506" class="Postulate"
+      > <a name="2339" class="Keyword"
+      >COMPILE</a
+      > GHC <a name="2351" href="IO.Primitive.html#getContents" class="Postulate"
       >getContents</a
-      ><a name="2262"
-      >    getContents </a
-      ><a name="2278" class="Symbol"
+      >    = getContents                           <a name="2406" class="Symbol"
       >#-}</a
-      ><a name="2281"
       >
-</a
-      ><a name="2282" class="Symbol"
+<a name="2410" class="Symbol"
       >{-#</a
-      ><a name="2285"
-      > </a
-      ><a name="2286" class="Keyword"
-      >COMPILED</a
-      ><a name="2294"
-      > </a
-      ><a name="2295" href="IO.Primitive.html#1534" class="Postulate"
+      > <a name="2414" class="Keyword"
+      >COMPILE</a
+      > GHC <a name="2426" href="IO.Primitive.html#readFile" class="Postulate"
       >readFile</a
-      ><a name="2303"
-      >       (readFile . Data.Text.unpack)           </a
-      ><a name="2350" class="Symbol"
+      >       = readFile . Data.Text.unpack           <a name="2481" class="Symbol"
       >#-}</a
-      ><a name="2353"
       >
-</a
-      ><a name="2354" class="Symbol"
+<a name="2485" class="Symbol"
       >{-#</a
-      ><a name="2357"
-      > </a
-      ><a name="2358" class="Keyword"
-      >COMPILED</a
-      ><a name="2366"
-      > </a
-      ><a name="2367" href="IO.Primitive.html#1571" class="Postulate"
+      > <a name="2489" class="Keyword"
+      >COMPILE</a
+      > GHC <a name="2501" href="IO.Primitive.html#writeFile" class="Postulate"
       >writeFile</a
-      ><a name="2376"
-      >      (\x -&gt; writeFile (Data.Text.unpack x))  </a
-      ><a name="2422" class="Symbol"
+      >      = \x -&gt; writeFile (Data.Text.unpack x)  <a name="2556" class="Symbol"
       >#-}</a
-      ><a name="2425"
       >
-</a
-      ><a name="2426" class="Symbol"
+<a name="2560" class="Symbol"
       >{-#</a
-      ><a name="2429"
-      > </a
-      ><a name="2430" class="Keyword"
-      >COMPILED</a
-      ><a name="2438"
-      > </a
-      ><a name="2439" href="IO.Primitive.html#1615" class="Postulate"
+      > <a name="2564" class="Keyword"
+      >COMPILE</a
+      > GHC <a name="2576" href="IO.Primitive.html#appendFile" class="Postulate"
       >appendFile</a
-      ><a name="2449"
-      >     (\x -&gt; appendFile (Data.Text.unpack x)) </a
-      ><a name="2494" class="Symbol"
+      >     = \x -&gt; appendFile (Data.Text.unpack x) <a name="2631" class="Symbol"
       >#-}</a
-      ><a name="2497"
       >
-</a
-      ><a name="2498" class="Symbol"
+<a name="2635" class="Symbol"
       >{-#</a
-      ><a name="2501"
-      > </a
-      ><a name="2502" class="Keyword"
-      >COMPILED</a
-      ><a name="2510"
-      > </a
-      ><a name="2511" href="IO.Primitive.html#1659" class="Postulate"
+      > <a name="2639" class="Keyword"
+      >COMPILE</a
+      > GHC <a name="2651" href="IO.Primitive.html#putStr" class="Postulate"
       >putStr</a
-      ><a name="2517"
-      >         putStr      </a
-      ><a name="2538" class="Symbol"
+      >         = putStr                                <a name="2706" class="Symbol"
       >#-}</a
-      ><a name="2541"
       >
-</a
-      ><a name="2542" class="Symbol"
+<a name="2710" class="Symbol"
       >{-#</a
-      ><a name="2545"
-      > </a
-      ><a name="2546" class="Keyword"
-      >COMPILED</a
-      ><a name="2554"
-      > </a
-      ><a name="2555" href="IO.Primitive.html#1694" class="Postulate"
+      > <a name="2714" class="Keyword"
+      >COMPILE</a
+      > GHC <a name="2726" href="IO.Primitive.html#putStrLn" class="Postulate"
       >putStrLn</a
-      ><a name="2563"
-      >       putStrLn    </a
-      ><a name="2582" class="Symbol"
+      >       = putStrLn                              <a name="2781" class="Symbol"
       >#-}</a
-      ><a name="2585"
       >
-</a
-      ><a name="2586" class="Symbol"
+<a name="2785" class="Symbol"
       >{-#</a
-      ><a name="2589"
-      > </a
-      ><a name="2590" class="Keyword"
-      >COMPILED</a
-      ><a name="2598"
-      > </a
-      ><a name="2599" href="IO.Primitive.html#1849" class="Postulate"
+      > <a name="2789" class="Keyword"
+      >COMPILE</a
+      > GHC <a name="2801" href="IO.Primitive.html#readFiniteFile" class="Postulate"
       >readFiniteFile</a
-      ><a name="2613"
-      > readFiniteFile    </a
-      ><a name="2632" class="Symbol"
+      > = readFiniteFile                        <a name="2856" class="Symbol"
       >#-}</a
-      ><a name="2635"
       >
-</a
-      ><a name="2636" class="Symbol"
+<a name="2860" class="Symbol"
       >{-#</a
-      ><a name="2639"
-      > </a
-      ><a name="2640" class="Keyword"
-      >COMPILED_UHC</a
-      ><a name="2652"
-      > </a
-      ><a name="2653" href="IO.Primitive.html#1506" class="Postulate"
+      > <a name="2864" class="Keyword"
+      >COMPILE</a
+      > UHC <a name="2876" href="IO.Primitive.html#getContents" class="Postulate"
       >getContents</a
-      ><a name="2664"
-      >    (UHC.Agda.Builtins.primGetContents) </a
-      ><a name="2704" class="Symbol"
+      >    = UHC.Agda.Builtins.primGetContents     <a name="2931" class="Symbol"
       >#-}</a
-      ><a name="2707"
       >
-</a
-      ><a name="2708" class="Symbol"
+<a name="2935" class="Symbol"
       >{-#</a
-      ><a name="2711"
-      > </a
-      ><a name="2712" class="Keyword"
-      >COMPILED_UHC</a
-      ><a name="2724"
-      > </a
-      ><a name="2725" href="IO.Primitive.html#1534" class="Postulate"
+      > <a name="2939" class="Keyword"
+      >COMPILE</a
+      > UHC <a name="2951" href="IO.Primitive.html#readFile" class="Postulate"
       >readFile</a
-      ><a name="2733"
-      >       (UHC.Agda.Builtins.primReadFile) </a
-      ><a name="2773" class="Symbol"
+      >       = UHC.Agda.Builtins.primReadFile        <a name="3006" class="Symbol"
       >#-}</a
-      ><a name="2776"
       >
-</a
-      ><a name="2777" class="Symbol"
+<a name="3010" class="Symbol"
       >{-#</a
-      ><a name="2780"
-      > </a
-      ><a name="2781" class="Keyword"
-      >COMPILED_UHC</a
-      ><a name="2793"
-      > </a
-      ><a name="2794" href="IO.Primitive.html#1571" class="Postulate"
+      > <a name="3014" class="Keyword"
+      >COMPILE</a
+      > UHC <a name="3026" href="IO.Primitive.html#writeFile" class="Postulate"
       >writeFile</a
-      ><a name="2803"
-      >      (UHC.Agda.Builtins.primWriteFile) </a
-      ><a name="2843" class="Symbol"
+      >      = UHC.Agda.Builtins.primWriteFile       <a name="3081" class="Symbol"
       >#-}</a
-      ><a name="2846"
       >
-</a
-      ><a name="2847" class="Symbol"
+<a name="3085" class="Symbol"
       >{-#</a
-      ><a name="2850"
-      > </a
-      ><a name="2851" class="Keyword"
-      >COMPILED_UHC</a
-      ><a name="2863"
-      > </a
-      ><a name="2864" href="IO.Primitive.html#1615" class="Postulate"
+      > <a name="3089" class="Keyword"
+      >COMPILE</a
+      > UHC <a name="3101" href="IO.Primitive.html#appendFile" class="Postulate"
       >appendFile</a
-      ><a name="2874"
-      >     (UHC.Agda.Builtins.primAppendFile) </a
-      ><a name="2914" class="Symbol"
+      >     = UHC.Agda.Builtins.primAppendFile      <a name="3156" class="Symbol"
       >#-}</a
-      ><a name="2917"
       >
-</a
-      ><a name="2918" class="Symbol"
+<a name="3160" class="Symbol"
       >{-#</a
-      ><a name="2921"
-      > </a
-      ><a name="2922" class="Keyword"
-      >COMPILED_UHC</a
-      ><a name="2934"
-      > </a
-      ><a name="2935" href="IO.Primitive.html#1659" class="Postulate"
+      > <a name="3164" class="Keyword"
+      >COMPILE</a
+      > UHC <a name="3176" href="IO.Primitive.html#putStr" class="Postulate"
       >putStr</a
-      ><a name="2941"
-      >         (UHC.Agda.Builtins.primPutStr) </a
-      ><a name="2981" class="Symbol"
+      >         = UHC.Agda.Builtins.primPutStr          <a name="3231" class="Symbol"
       >#-}</a
-      ><a name="2984"
       >
-</a
-      ><a name="2985" class="Symbol"
+<a name="3235" class="Symbol"
       >{-#</a
-      ><a name="2988"
-      > </a
-      ><a name="2989" class="Keyword"
-      >COMPILED_UHC</a
-      ><a name="3001"
-      > </a
-      ><a name="3002" href="IO.Primitive.html#1694" class="Postulate"
+      > <a name="3239" class="Keyword"
+      >COMPILE</a
+      > UHC <a name="3251" href="IO.Primitive.html#putStrLn" class="Postulate"
       >putStrLn</a
-      ><a name="3010"
-      >       (UHC.Agda.Builtins.primPutStrLn) </a
-      ><a name="3050" class="Symbol"
+      >       = UHC.Agda.Builtins.primPutStrLn        <a name="3306" class="Symbol"
       >#-}</a
-      ><a name="3053"
       >
-</a
-      ><a name="3054" class="Symbol"
+<a name="3310" class="Symbol"
       >{-#</a
-      ><a name="3057"
-      > </a
-      ><a name="3058" class="Keyword"
-      >COMPILED_UHC</a
-      ><a name="3070"
-      > </a
-      ><a name="3071" href="IO.Primitive.html#1849" class="Postulate"
+      > <a name="3314" class="Keyword"
+      >COMPILE</a
+      > UHC <a name="3326" href="IO.Primitive.html#readFiniteFile" class="Postulate"
       >readFiniteFile</a
-      ><a name="3085"
-      > (UHC.Agda.Builtins.primReadFiniteFile) </a
-      ><a name="3125" class="Symbol"
+      > = UHC.Agda.Builtins.primReadFiniteFile  <a name="3381" class="Symbol"
       >#-}</a
-      ><a name="3128"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

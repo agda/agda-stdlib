@@ -1,0 +1,4162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Data.Vec.All.Properties</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="74" class="Comment"
+      >-- The Agda standard library</a
+      >
+<a name="103" class="Comment"
+      >--</a
+      >
+<a name="106" class="Comment"
+      >-- Properties related to All</a
+      >
+<a name="135" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+
+<a name="209" class="Keyword"
+      >module</a
+      > <a name="216" href="Data.Vec.All.Properties.html" class="Module"
+      >Data.Vec.All.Properties</a
+      > <a name="240" class="Keyword"
+      >where</a
+      >
+
+<a name="247" class="Keyword"
+      >open</a
+      > <a name="252" class="Keyword"
+      >import</a
+      > <a name="259" href="Data.Vec.html" class="Module"
+      >Data.Vec</a
+      > <a name="268" class="Symbol"
+      >as</a
+      > <a name="271" class="Module"
+      >Vec</a
+      > <a name="275" class="Keyword"
+      >using</a
+      > <a name="281" class="Symbol"
+      >(</a
+      ><a name="282" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      ><a name="285" class="Symbol"
+      >;</a
+      > <a name="287" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      ><a name="289" class="Symbol"
+      >;</a
+      > <a name="291" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="294" class="Symbol"
+      >;</a
+      > <a name="296" href="Data.Vec.html#zip" class="Function"
+      >zip</a
+      ><a name="299" class="Symbol"
+      >;</a
+      > <a name="301" href="Data.Vec.html#concat" class="Function"
+      >concat</a
+      ><a name="307" class="Symbol"
+      >;</a
+      > <a name="309" href="Data.Vec.html#_++_" class="Function Operator"
+      >_++_</a
+      ><a name="313" class="Symbol"
+      >)</a
+      >
+<a name="315" class="Keyword"
+      >open</a
+      > <a name="320" class="Keyword"
+      >import</a
+      > <a name="327" href="Data.Vec.Properties.html" class="Module"
+      >Data.Vec.Properties</a
+      > <a name="347" class="Keyword"
+      >using</a
+      > <a name="353" class="Symbol"
+      >(</a
+      ><a name="354" href="Data.Vec.Properties.html#map-id" class="Function"
+      >map-id</a
+      ><a name="360" class="Symbol"
+      >;</a
+      > <a name="362" href="Data.Vec.Properties.html#lookup-zip" class="Function"
+      >lookup-zip</a
+      ><a name="372" class="Symbol"
+      >)</a
+      >
+<a name="374" class="Keyword"
+      >open</a
+      > <a name="379" class="Keyword"
+      >import</a
+      > <a name="386" href="Data.Product.html" class="Module"
+      >Data.Product</a
+      > <a name="399" class="Symbol"
+      >as</a
+      > <a name="402" class="Module"
+      >Prod</a
+      > <a name="407" class="Keyword"
+      >using</a
+      > <a name="413" class="Symbol"
+      >(</a
+      ><a name="414" href="Data.Product.html#_&#215;_" class="Function Operator"
+      >_&#215;_</a
+      ><a name="417" class="Symbol"
+      >;</a
+      > <a name="419" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >_,_</a
+      ><a name="422" class="Symbol"
+      >;</a
+      > <a name="424" href="Data.Product.html#uncurry" class="Function"
+      >uncurry</a
+      ><a name="431" class="Symbol"
+      >;</a
+      > <a name="433" href="Data.Product.html#uncurry&#8242;" class="Function"
+      >uncurry&#8242;</a
+      ><a name="441" class="Symbol"
+      >)</a
+      >
+<a name="443" class="Keyword"
+      >open</a
+      > <a name="448" class="Keyword"
+      >import</a
+      > <a name="455" href="Data.Vec.All.html" class="Module"
+      >Data.Vec.All</a
+      > <a name="468" class="Symbol"
+      >as</a
+      > <a name="471" class="Module"
+      >All</a
+      > <a name="475" class="Keyword"
+      >using</a
+      > <a name="481" class="Symbol"
+      >(</a
+      ><a name="482" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      ><a name="485" class="Symbol"
+      >;</a
+      > <a name="487" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      ><a name="491" class="Symbol"
+      >;</a
+      > <a name="493" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      ><a name="495" class="Symbol"
+      >;</a
+      > <a name="497" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="500" class="Symbol"
+      >)</a
+      >
+<a name="502" class="Keyword"
+      >open</a
+      > <a name="507" class="Keyword"
+      >import</a
+      > <a name="514" href="Function.html" class="Module"
+      >Function</a
+      >
+<a name="523" class="Keyword"
+      >open</a
+      > <a name="528" class="Keyword"
+      >import</a
+      > <a name="535" href="Function.Inverse.html" class="Module"
+      >Function.Inverse</a
+      > <a name="552" class="Keyword"
+      >using</a
+      > <a name="558" class="Symbol"
+      >(</a
+      ><a name="559" href="Function.Inverse.html#_&#8596;_" class="Function Operator"
+      >_&#8596;_</a
+      ><a name="562" class="Symbol"
+      >)</a
+      >
+<a name="564" class="Keyword"
+      >open</a
+      > <a name="569" class="Keyword"
+      >import</a
+      > <a name="576" href="Relation.Unary.html" class="Module"
+      >Relation.Unary</a
+      > <a name="591" class="Keyword"
+      >using</a
+      > <a name="597" class="Symbol"
+      >()</a
+      > <a name="600" class="Keyword"
+      >renaming</a
+      > <a name="609" class="Symbol"
+      >(</a
+      ><a name="610" href="Relation.Unary.html#1822" class="Function Operator"
+      >_&#8838;_</a
+      > <a name="614" class="Symbol"
+      >to</a
+      > <a name="617" href="Relation.Unary.html#1822" class="Function Operator"
+      >_&#8912;_</a
+      ><a name="620" class="Symbol"
+      >)</a
+      >
+<a name="622" class="Keyword"
+      >open</a
+      > <a name="627" class="Keyword"
+      >import</a
+      > <a name="634" href="Relation.Binary.html" class="Module"
+      >Relation.Binary</a
+      > <a name="650" class="Keyword"
+      >using</a
+      > <a name="656" class="Symbol"
+      >(</a
+      ><a name="657" href="Relation.Binary.Core.html#REL" class="Function"
+      >REL</a
+      ><a name="660" class="Symbol"
+      >;</a
+      > <a name="662" href="Relation.Binary.Core.html#Trans" class="Function"
+      >Trans</a
+      ><a name="667" class="Symbol"
+      >)</a
+      >
+<a name="669" class="Keyword"
+      >open</a
+      > <a name="674" class="Keyword"
+      >import</a
+      > <a name="681" href="Relation.Binary.PropositionalEquality.html" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      > <a name="719" class="Symbol"
+      >as</a
+      > <a name="722" class="Module"
+      >P</a
+      > <a name="724" class="Keyword"
+      >using</a
+      > <a name="730" class="Symbol"
+      >(</a
+      ><a name="731" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="734" class="Symbol"
+      >)</a
+      >
+
+<a name="737" class="Comment"
+      >-- Functions can be shifted between the predicate and the vector.</a
+      >
+
+<a name="All-map" href="Data.Vec.All.Properties.html#All-map" class="Function"
+      >All-map</a
+      > <a name="812" class="Symbol"
+      >:</a
+      > <a name="814" class="Symbol"
+      >&#8704;</a
+      > <a name="816" class="Symbol"
+      >{</a
+      ><a name="817" href="Data.Vec.All.Properties.html#817" class="Bound"
+      >a</a
+      > <a name="819" href="Data.Vec.All.Properties.html#819" class="Bound"
+      >b</a
+      > <a name="821" href="Data.Vec.All.Properties.html#821" class="Bound"
+      >p</a
+      ><a name="822" class="Symbol"
+      >}</a
+      > <a name="824" class="Symbol"
+      >{</a
+      ><a name="825" href="Data.Vec.All.Properties.html#825" class="Bound"
+      >A</a
+      > <a name="827" class="Symbol"
+      >:</a
+      > <a name="829" class="PrimitiveType"
+      >Set</a
+      > <a name="833" href="Data.Vec.All.Properties.html#817" class="Bound"
+      >a</a
+      ><a name="834" class="Symbol"
+      >}</a
+      > <a name="836" class="Symbol"
+      >{</a
+      ><a name="837" href="Data.Vec.All.Properties.html#837" class="Bound"
+      >B</a
+      > <a name="839" class="Symbol"
+      >:</a
+      > <a name="841" class="PrimitiveType"
+      >Set</a
+      > <a name="845" href="Data.Vec.All.Properties.html#819" class="Bound"
+      >b</a
+      ><a name="846" class="Symbol"
+      >}</a
+      > <a name="848" class="Symbol"
+      >{</a
+      ><a name="849" href="Data.Vec.All.Properties.html#849" class="Bound"
+      >P</a
+      > <a name="851" class="Symbol"
+      >:</a
+      > <a name="853" href="Data.Vec.All.Properties.html#837" class="Bound"
+      >B</a
+      > <a name="855" class="Symbol"
+      >&#8594;</a
+      > <a name="857" class="PrimitiveType"
+      >Set</a
+      > <a name="861" href="Data.Vec.All.Properties.html#821" class="Bound"
+      >p</a
+      ><a name="862" class="Symbol"
+      >}</a
+      >
+            <a name="876" class="Symbol"
+      >{</a
+      ><a name="877" href="Data.Vec.All.Properties.html#877" class="Bound"
+      >f</a
+      > <a name="879" class="Symbol"
+      >:</a
+      > <a name="881" href="Data.Vec.All.Properties.html#825" class="Bound"
+      >A</a
+      > <a name="883" class="Symbol"
+      >&#8594;</a
+      > <a name="885" href="Data.Vec.All.Properties.html#837" class="Bound"
+      >B</a
+      ><a name="886" class="Symbol"
+      >}</a
+      > <a name="888" class="Symbol"
+      >{</a
+      ><a name="889" href="Data.Vec.All.Properties.html#889" class="Bound"
+      >k</a
+      ><a name="890" class="Symbol"
+      >}</a
+      > <a name="892" class="Symbol"
+      >{</a
+      ><a name="893" href="Data.Vec.All.Properties.html#893" class="Bound"
+      >xs</a
+      > <a name="896" class="Symbol"
+      >:</a
+      > <a name="898" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="902" href="Data.Vec.All.Properties.html#825" class="Bound"
+      >A</a
+      > <a name="904" href="Data.Vec.All.Properties.html#889" class="Bound"
+      >k</a
+      ><a name="905" class="Symbol"
+      >}</a
+      > <a name="907" class="Symbol"
+      >&#8594;</a
+      >
+          <a name="919" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="923" class="Symbol"
+      >(</a
+      ><a name="924" href="Data.Vec.All.Properties.html#849" class="Bound"
+      >P</a
+      > <a name="926" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="928" href="Data.Vec.All.Properties.html#877" class="Bound"
+      >f</a
+      ><a name="929" class="Symbol"
+      >)</a
+      > <a name="931" href="Data.Vec.All.Properties.html#893" class="Bound"
+      >xs</a
+      > <a name="934" class="Symbol"
+      >&#8594;</a
+      > <a name="936" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="940" href="Data.Vec.All.Properties.html#849" class="Bound"
+      >P</a
+      > <a name="942" class="Symbol"
+      >(</a
+      ><a name="943" href="Data.Vec.html#map" class="Function"
+      >Vec.map</a
+      > <a name="951" href="Data.Vec.All.Properties.html#877" class="Bound"
+      >f</a
+      > <a name="953" href="Data.Vec.All.Properties.html#893" class="Bound"
+      >xs</a
+      ><a name="955" class="Symbol"
+      >)</a
+      >
+<a name="957" href="Data.Vec.All.Properties.html#All-map" class="Function"
+      >All-map</a
+      > <a name="965" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >         <a name="976" class="Symbol"
+      >=</a
+      > <a name="978" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >
+<a name="981" href="Data.Vec.All.Properties.html#All-map" class="Function"
+      >All-map</a
+      > <a name="989" class="Symbol"
+      >(</a
+      ><a name="990" href="Data.Vec.All.Properties.html#990" class="Bound"
+      >px</a
+      > <a name="993" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="995" href="Data.Vec.All.Properties.html#995" class="Bound"
+      >pxs</a
+      ><a name="998" class="Symbol"
+      >)</a
+      > <a name="1000" class="Symbol"
+      >=</a
+      > <a name="1002" href="Data.Vec.All.Properties.html#990" class="Bound"
+      >px</a
+      > <a name="1005" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1007" href="Data.Vec.All.Properties.html#All-map" class="Function"
+      >All-map</a
+      > <a name="1015" href="Data.Vec.All.Properties.html#995" class="Bound"
+      >pxs</a
+      >
+
+<a name="map-All" href="Data.Vec.All.Properties.html#map-All" class="Function"
+      >map-All</a
+      > <a name="1028" class="Symbol"
+      >:</a
+      > <a name="1030" class="Symbol"
+      >&#8704;</a
+      > <a name="1032" class="Symbol"
+      >{</a
+      ><a name="1033" href="Data.Vec.All.Properties.html#1033" class="Bound"
+      >a</a
+      > <a name="1035" href="Data.Vec.All.Properties.html#1035" class="Bound"
+      >b</a
+      > <a name="1037" href="Data.Vec.All.Properties.html#1037" class="Bound"
+      >p</a
+      ><a name="1038" class="Symbol"
+      >}</a
+      > <a name="1040" class="Symbol"
+      >{</a
+      ><a name="1041" href="Data.Vec.All.Properties.html#1041" class="Bound"
+      >A</a
+      > <a name="1043" class="Symbol"
+      >:</a
+      > <a name="1045" class="PrimitiveType"
+      >Set</a
+      > <a name="1049" href="Data.Vec.All.Properties.html#1033" class="Bound"
+      >a</a
+      ><a name="1050" class="Symbol"
+      >}</a
+      > <a name="1052" class="Symbol"
+      >{</a
+      ><a name="1053" href="Data.Vec.All.Properties.html#1053" class="Bound"
+      >B</a
+      > <a name="1055" class="Symbol"
+      >:</a
+      > <a name="1057" class="PrimitiveType"
+      >Set</a
+      > <a name="1061" href="Data.Vec.All.Properties.html#1035" class="Bound"
+      >b</a
+      ><a name="1062" class="Symbol"
+      >}</a
+      > <a name="1064" class="Symbol"
+      >{</a
+      ><a name="1065" href="Data.Vec.All.Properties.html#1065" class="Bound"
+      >P</a
+      > <a name="1067" class="Symbol"
+      >:</a
+      > <a name="1069" href="Data.Vec.All.Properties.html#1053" class="Bound"
+      >B</a
+      > <a name="1071" class="Symbol"
+      >&#8594;</a
+      > <a name="1073" class="PrimitiveType"
+      >Set</a
+      > <a name="1077" href="Data.Vec.All.Properties.html#1037" class="Bound"
+      >p</a
+      ><a name="1078" class="Symbol"
+      >}</a
+      >
+            <a name="1092" class="Symbol"
+      >{</a
+      ><a name="1093" href="Data.Vec.All.Properties.html#1093" class="Bound"
+      >f</a
+      > <a name="1095" class="Symbol"
+      >:</a
+      > <a name="1097" href="Data.Vec.All.Properties.html#1041" class="Bound"
+      >A</a
+      > <a name="1099" class="Symbol"
+      >&#8594;</a
+      > <a name="1101" href="Data.Vec.All.Properties.html#1053" class="Bound"
+      >B</a
+      ><a name="1102" class="Symbol"
+      >}</a
+      > <a name="1104" class="Symbol"
+      >{</a
+      ><a name="1105" href="Data.Vec.All.Properties.html#1105" class="Bound"
+      >k</a
+      ><a name="1106" class="Symbol"
+      >}</a
+      > <a name="1108" class="Symbol"
+      >{</a
+      ><a name="1109" href="Data.Vec.All.Properties.html#1109" class="Bound"
+      >xs</a
+      > <a name="1112" class="Symbol"
+      >:</a
+      > <a name="1114" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="1118" href="Data.Vec.All.Properties.html#1041" class="Bound"
+      >A</a
+      > <a name="1120" href="Data.Vec.All.Properties.html#1105" class="Bound"
+      >k</a
+      ><a name="1121" class="Symbol"
+      >}</a
+      > <a name="1123" class="Symbol"
+      >&#8594;</a
+      >
+          <a name="1135" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1139" href="Data.Vec.All.Properties.html#1065" class="Bound"
+      >P</a
+      > <a name="1141" class="Symbol"
+      >(</a
+      ><a name="1142" href="Data.Vec.html#map" class="Function"
+      >Vec.map</a
+      > <a name="1150" href="Data.Vec.All.Properties.html#1093" class="Bound"
+      >f</a
+      > <a name="1152" href="Data.Vec.All.Properties.html#1109" class="Bound"
+      >xs</a
+      ><a name="1154" class="Symbol"
+      >)</a
+      > <a name="1156" class="Symbol"
+      >&#8594;</a
+      > <a name="1158" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1162" class="Symbol"
+      >(</a
+      ><a name="1163" href="Data.Vec.All.Properties.html#1065" class="Bound"
+      >P</a
+      > <a name="1165" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="1167" href="Data.Vec.All.Properties.html#1093" class="Bound"
+      >f</a
+      ><a name="1168" class="Symbol"
+      >)</a
+      > <a name="1170" href="Data.Vec.All.Properties.html#1109" class="Bound"
+      >xs</a
+      >
+<a name="1173" href="Data.Vec.All.Properties.html#map-All" class="Function"
+      >map-All</a
+      > <a name="1181" class="Symbol"
+      >{</a
+      ><a name="1182" class="Argument"
+      >xs</a
+      > <a name="1185" class="Symbol"
+      >=</a
+      > <a name="1187" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      ><a name="1189" class="Symbol"
+      >}</a
+      >    <a name="1194" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >       <a name="1203" class="Symbol"
+      >=</a
+      > <a name="1205" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >
+<a name="1208" href="Data.Vec.All.Properties.html#map-All" class="Function"
+      >map-All</a
+      > <a name="1216" class="Symbol"
+      >{</a
+      ><a name="1217" class="Argument"
+      >xs</a
+      > <a name="1220" class="Symbol"
+      >=</a
+      > <a name="1222" class="Symbol"
+      >_</a
+      > <a name="1224" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1226" class="Symbol"
+      >_}</a
+      > <a name="1229" class="Symbol"
+      >(</a
+      ><a name="1230" href="Data.Vec.All.Properties.html#1230" class="Bound"
+      >px</a
+      > <a name="1233" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1235" href="Data.Vec.All.Properties.html#1235" class="Bound"
+      >pxs</a
+      ><a name="1238" class="Symbol"
+      >)</a
+      > <a name="1240" class="Symbol"
+      >=</a
+      > <a name="1242" href="Data.Vec.All.Properties.html#1230" class="Bound"
+      >px</a
+      > <a name="1245" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1247" href="Data.Vec.All.Properties.html#map-All" class="Function"
+      >map-All</a
+      > <a name="1255" href="Data.Vec.All.Properties.html#1235" class="Bound"
+      >pxs</a
+      >
+
+<a name="1260" class="Comment"
+      >-- A variant of All.map.</a
+      >
+
+<a name="gmap" href="Data.Vec.All.Properties.html#gmap" class="Function"
+      >gmap</a
+      > <a name="1291" class="Symbol"
+      >:</a
+      > <a name="1293" class="Symbol"
+      >&#8704;</a
+      > <a name="1295" class="Symbol"
+      >{</a
+      ><a name="1296" href="Data.Vec.All.Properties.html#1296" class="Bound"
+      >a</a
+      > <a name="1298" href="Data.Vec.All.Properties.html#1298" class="Bound"
+      >b</a
+      > <a name="1300" href="Data.Vec.All.Properties.html#1300" class="Bound"
+      >p</a
+      > <a name="1302" href="Data.Vec.All.Properties.html#1302" class="Bound"
+      >q</a
+      ><a name="1303" class="Symbol"
+      >}</a
+      >
+         <a name="1314" class="Symbol"
+      >{</a
+      ><a name="1315" href="Data.Vec.All.Properties.html#1315" class="Bound"
+      >A</a
+      > <a name="1317" class="Symbol"
+      >:</a
+      > <a name="1319" class="PrimitiveType"
+      >Set</a
+      > <a name="1323" href="Data.Vec.All.Properties.html#1296" class="Bound"
+      >a</a
+      ><a name="1324" class="Symbol"
+      >}</a
+      > <a name="1326" class="Symbol"
+      >{</a
+      ><a name="1327" href="Data.Vec.All.Properties.html#1327" class="Bound"
+      >B</a
+      > <a name="1329" class="Symbol"
+      >:</a
+      > <a name="1331" class="PrimitiveType"
+      >Set</a
+      > <a name="1335" href="Data.Vec.All.Properties.html#1298" class="Bound"
+      >b</a
+      ><a name="1336" class="Symbol"
+      >}</a
+      > <a name="1338" class="Symbol"
+      >{</a
+      ><a name="1339" href="Data.Vec.All.Properties.html#1339" class="Bound"
+      >P</a
+      > <a name="1341" class="Symbol"
+      >:</a
+      > <a name="1343" href="Data.Vec.All.Properties.html#1315" class="Bound"
+      >A</a
+      > <a name="1345" class="Symbol"
+      >&#8594;</a
+      > <a name="1347" class="PrimitiveType"
+      >Set</a
+      > <a name="1351" href="Data.Vec.All.Properties.html#1300" class="Bound"
+      >p</a
+      ><a name="1352" class="Symbol"
+      >}</a
+      > <a name="1354" class="Symbol"
+      >{</a
+      ><a name="1355" href="Data.Vec.All.Properties.html#1355" class="Bound"
+      >Q</a
+      > <a name="1357" class="Symbol"
+      >:</a
+      > <a name="1359" href="Data.Vec.All.Properties.html#1327" class="Bound"
+      >B</a
+      > <a name="1361" class="Symbol"
+      >&#8594;</a
+      > <a name="1363" class="PrimitiveType"
+      >Set</a
+      > <a name="1367" href="Data.Vec.All.Properties.html#1302" class="Bound"
+      >q</a
+      ><a name="1368" class="Symbol"
+      >}</a
+      >
+         <a name="1379" class="Symbol"
+      >{</a
+      ><a name="1380" href="Data.Vec.All.Properties.html#1380" class="Bound"
+      >f</a
+      > <a name="1382" class="Symbol"
+      >:</a
+      > <a name="1384" href="Data.Vec.All.Properties.html#1315" class="Bound"
+      >A</a
+      > <a name="1386" class="Symbol"
+      >&#8594;</a
+      > <a name="1388" href="Data.Vec.All.Properties.html#1327" class="Bound"
+      >B</a
+      ><a name="1389" class="Symbol"
+      >}</a
+      > <a name="1391" class="Symbol"
+      >{</a
+      ><a name="1392" href="Data.Vec.All.Properties.html#1392" class="Bound"
+      >k</a
+      ><a name="1393" class="Symbol"
+      >}</a
+      > <a name="1395" class="Symbol"
+      >&#8594;</a
+      >
+       <a name="1404" href="Data.Vec.All.Properties.html#1339" class="Bound"
+      >P</a
+      > <a name="1406" href="Relation.Unary.html#1822" class="Function Operator"
+      >&#8912;</a
+      > <a name="1408" href="Data.Vec.All.Properties.html#1355" class="Bound"
+      >Q</a
+      > <a name="1410" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="1412" href="Data.Vec.All.Properties.html#1380" class="Bound"
+      >f</a
+      > <a name="1414" class="Symbol"
+      >&#8594;</a
+      > <a name="1416" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1420" href="Data.Vec.All.Properties.html#1339" class="Bound"
+      >P</a
+      > <a name="1422" class="Symbol"
+      >{</a
+      ><a name="1423" href="Data.Vec.All.Properties.html#1392" class="Bound"
+      >k</a
+      ><a name="1424" class="Symbol"
+      >}</a
+      > <a name="1426" href="Relation.Unary.html#1822" class="Function Operator"
+      >&#8912;</a
+      > <a name="1428" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="1432" href="Data.Vec.All.Properties.html#1355" class="Bound"
+      >Q</a
+      > <a name="1434" class="Symbol"
+      >{</a
+      ><a name="1435" href="Data.Vec.All.Properties.html#1392" class="Bound"
+      >k</a
+      ><a name="1436" class="Symbol"
+      >}</a
+      > <a name="1438" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="1440" href="Data.Vec.html#map" class="Function"
+      >Vec.map</a
+      > <a name="1448" href="Data.Vec.All.Properties.html#1380" class="Bound"
+      >f</a
+      >
+<a name="1450" href="Data.Vec.All.Properties.html#gmap" class="Function"
+      >gmap</a
+      > <a name="1455" href="Data.Vec.All.Properties.html#1455" class="Bound"
+      >g</a
+      > <a name="1457" class="Symbol"
+      >=</a
+      > <a name="1459" href="Data.Vec.All.Properties.html#All-map" class="Function"
+      >All-map</a
+      > <a name="1467" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="1469" href="Data.Vec.All.html#map" class="Function"
+      >All.map</a
+      > <a name="1477" href="Data.Vec.All.Properties.html#1455" class="Bound"
+      >g</a
+      >
+
+<a name="1480" class="Comment"
+      >-- A variant of All-map for All&#8322;.</a
+      >
+
+<a name="All&#8322;-map" href="Data.Vec.All.Properties.html#All&#8322;-map" class="Function"
+      >All&#8322;-map</a
+      > <a name="1524" class="Symbol"
+      >:</a
+      > <a name="1526" class="Symbol"
+      >&#8704;</a
+      > <a name="1528" class="Symbol"
+      >{</a
+      ><a name="1529" href="Data.Vec.All.Properties.html#1529" class="Bound"
+      >a</a
+      > <a name="1531" href="Data.Vec.All.Properties.html#1531" class="Bound"
+      >b</a
+      > <a name="1533" href="Data.Vec.All.Properties.html#1533" class="Bound"
+      >c</a
+      > <a name="1535" href="Data.Vec.All.Properties.html#1535" class="Bound"
+      >d</a
+      > <a name="1537" href="Data.Vec.All.Properties.html#1537" class="Bound"
+      >p</a
+      ><a name="1538" class="Symbol"
+      >}</a
+      > <a name="1540" class="Symbol"
+      >{</a
+      ><a name="1541" href="Data.Vec.All.Properties.html#1541" class="Bound"
+      >A</a
+      > <a name="1543" class="Symbol"
+      >:</a
+      > <a name="1545" class="PrimitiveType"
+      >Set</a
+      > <a name="1549" href="Data.Vec.All.Properties.html#1529" class="Bound"
+      >a</a
+      ><a name="1550" class="Symbol"
+      >}</a
+      > <a name="1552" class="Symbol"
+      >{</a
+      ><a name="1553" href="Data.Vec.All.Properties.html#1553" class="Bound"
+      >B</a
+      > <a name="1555" class="Symbol"
+      >:</a
+      > <a name="1557" class="PrimitiveType"
+      >Set</a
+      > <a name="1561" href="Data.Vec.All.Properties.html#1531" class="Bound"
+      >b</a
+      ><a name="1562" class="Symbol"
+      >}</a
+      > <a name="1564" class="Symbol"
+      >{</a
+      ><a name="1565" href="Data.Vec.All.Properties.html#1565" class="Bound"
+      >C</a
+      > <a name="1567" class="Symbol"
+      >:</a
+      > <a name="1569" class="PrimitiveType"
+      >Set</a
+      > <a name="1573" href="Data.Vec.All.Properties.html#1533" class="Bound"
+      >c</a
+      ><a name="1574" class="Symbol"
+      >}</a
+      > <a name="1576" class="Symbol"
+      >{</a
+      ><a name="1577" href="Data.Vec.All.Properties.html#1577" class="Bound"
+      >D</a
+      > <a name="1579" class="Symbol"
+      >:</a
+      > <a name="1581" class="PrimitiveType"
+      >Set</a
+      > <a name="1585" href="Data.Vec.All.Properties.html#1535" class="Bound"
+      >d</a
+      ><a name="1586" class="Symbol"
+      >}</a
+      >
+           <a name="1599" class="Symbol"
+      >{</a
+      ><a name="1600" href="Data.Vec.All.Properties.html#1600" class="Bound"
+      >P</a
+      > <a name="1602" class="Symbol"
+      >:</a
+      > <a name="1604" href="Data.Vec.All.Properties.html#1565" class="Bound"
+      >C</a
+      > <a name="1606" class="Symbol"
+      >&#8594;</a
+      > <a name="1608" href="Data.Vec.All.Properties.html#1577" class="Bound"
+      >D</a
+      > <a name="1610" class="Symbol"
+      >&#8594;</a
+      > <a name="1612" class="PrimitiveType"
+      >Set</a
+      > <a name="1616" href="Data.Vec.All.Properties.html#1537" class="Bound"
+      >p</a
+      ><a name="1617" class="Symbol"
+      >}</a
+      >
+           <a name="1630" class="Symbol"
+      >{</a
+      ><a name="1631" href="Data.Vec.All.Properties.html#1631" class="Bound"
+      >f&#8321;</a
+      > <a name="1634" class="Symbol"
+      >:</a
+      > <a name="1636" href="Data.Vec.All.Properties.html#1541" class="Bound"
+      >A</a
+      > <a name="1638" class="Symbol"
+      >&#8594;</a
+      > <a name="1640" href="Data.Vec.All.Properties.html#1565" class="Bound"
+      >C</a
+      ><a name="1641" class="Symbol"
+      >}</a
+      > <a name="1643" class="Symbol"
+      >{</a
+      ><a name="1644" href="Data.Vec.All.Properties.html#1644" class="Bound"
+      >f&#8322;</a
+      > <a name="1647" class="Symbol"
+      >:</a
+      > <a name="1649" href="Data.Vec.All.Properties.html#1553" class="Bound"
+      >B</a
+      > <a name="1651" class="Symbol"
+      >&#8594;</a
+      > <a name="1653" href="Data.Vec.All.Properties.html#1577" class="Bound"
+      >D</a
+      ><a name="1654" class="Symbol"
+      >}</a
+      > <a name="1656" class="Symbol"
+      >{</a
+      ><a name="1657" href="Data.Vec.All.Properties.html#1657" class="Bound"
+      >k</a
+      ><a name="1658" class="Symbol"
+      >}</a
+      > <a name="1660" class="Symbol"
+      >{</a
+      ><a name="1661" href="Data.Vec.All.Properties.html#1661" class="Bound"
+      >xs</a
+      > <a name="1664" class="Symbol"
+      >:</a
+      > <a name="1666" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="1670" href="Data.Vec.All.Properties.html#1541" class="Bound"
+      >A</a
+      > <a name="1672" href="Data.Vec.All.Properties.html#1657" class="Bound"
+      >k</a
+      ><a name="1673" class="Symbol"
+      >}</a
+      > <a name="1675" class="Symbol"
+      >{</a
+      ><a name="1676" href="Data.Vec.All.Properties.html#1676" class="Bound"
+      >ys</a
+      > <a name="1679" class="Symbol"
+      >:</a
+      > <a name="1681" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="1685" href="Data.Vec.All.Properties.html#1553" class="Bound"
+      >B</a
+      > <a name="1687" href="Data.Vec.All.Properties.html#1657" class="Bound"
+      >k</a
+      ><a name="1688" class="Symbol"
+      >}</a
+      > <a name="1690" class="Symbol"
+      >&#8594;</a
+      >
+           <a name="1703" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="1708" class="Symbol"
+      >(&#955;</a
+      > <a name="1711" href="Data.Vec.All.Properties.html#1711" class="Bound"
+      >x</a
+      > <a name="1713" href="Data.Vec.All.Properties.html#1713" class="Bound"
+      >y</a
+      > <a name="1715" class="Symbol"
+      >&#8594;</a
+      > <a name="1717" href="Data.Vec.All.Properties.html#1600" class="Bound"
+      >P</a
+      > <a name="1719" class="Symbol"
+      >(</a
+      ><a name="1720" href="Data.Vec.All.Properties.html#1631" class="Bound"
+      >f&#8321;</a
+      > <a name="1723" href="Data.Vec.All.Properties.html#1711" class="Bound"
+      >x</a
+      ><a name="1724" class="Symbol"
+      >)</a
+      > <a name="1726" class="Symbol"
+      >(</a
+      ><a name="1727" href="Data.Vec.All.Properties.html#1644" class="Bound"
+      >f&#8322;</a
+      > <a name="1730" href="Data.Vec.All.Properties.html#1713" class="Bound"
+      >y</a
+      ><a name="1731" class="Symbol"
+      >))</a
+      > <a name="1734" href="Data.Vec.All.Properties.html#1661" class="Bound"
+      >xs</a
+      > <a name="1737" href="Data.Vec.All.Properties.html#1676" class="Bound"
+      >ys</a
+      > <a name="1740" class="Symbol"
+      >&#8594;</a
+      >
+           <a name="1753" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="1758" href="Data.Vec.All.Properties.html#1600" class="Bound"
+      >P</a
+      > <a name="1760" class="Symbol"
+      >(</a
+      ><a name="1761" href="Data.Vec.html#map" class="Function"
+      >Vec.map</a
+      > <a name="1769" href="Data.Vec.All.Properties.html#1631" class="Bound"
+      >f&#8321;</a
+      > <a name="1772" href="Data.Vec.All.Properties.html#1661" class="Bound"
+      >xs</a
+      ><a name="1774" class="Symbol"
+      >)</a
+      > <a name="1776" class="Symbol"
+      >(</a
+      ><a name="1777" href="Data.Vec.html#map" class="Function"
+      >Vec.map</a
+      > <a name="1785" href="Data.Vec.All.Properties.html#1644" class="Bound"
+      >f&#8322;</a
+      > <a name="1788" href="Data.Vec.All.Properties.html#1676" class="Bound"
+      >ys</a
+      ><a name="1790" class="Symbol"
+      >)</a
+      >
+<a name="1792" href="Data.Vec.All.Properties.html#All&#8322;-map" class="Function"
+      >All&#8322;-map</a
+      > <a name="1801" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      >         <a name="1812" class="Symbol"
+      >=</a
+      > <a name="1814" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      >
+<a name="1817" href="Data.Vec.All.Properties.html#All&#8322;-map" class="Function"
+      >All&#8322;-map</a
+      > <a name="1826" class="Symbol"
+      >(</a
+      ><a name="1827" href="Data.Vec.All.Properties.html#1827" class="Bound"
+      >px</a
+      > <a name="1830" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1832" href="Data.Vec.All.Properties.html#1832" class="Bound"
+      >pxs</a
+      ><a name="1835" class="Symbol"
+      >)</a
+      > <a name="1837" class="Symbol"
+      >=</a
+      > <a name="1839" href="Data.Vec.All.Properties.html#1827" class="Bound"
+      >px</a
+      > <a name="1842" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1844" href="Data.Vec.All.Properties.html#All&#8322;-map" class="Function"
+      >All&#8322;-map</a
+      > <a name="1853" href="Data.Vec.All.Properties.html#1832" class="Bound"
+      >pxs</a
+      >
+
+<a name="1858" class="Comment"
+      >-- Abstract composition of binary relations lifted to All&#8322;.</a
+      >
+
+<a name="comp" href="Data.Vec.All.Properties.html#comp" class="Function"
+      >comp</a
+      > <a name="1924" class="Symbol"
+      >:</a
+      > <a name="1926" class="Symbol"
+      >&#8704;</a
+      > <a name="1928" class="Symbol"
+      >{</a
+      ><a name="1929" href="Data.Vec.All.Properties.html#1929" class="Bound"
+      >a</a
+      > <a name="1931" href="Data.Vec.All.Properties.html#1931" class="Bound"
+      >b</a
+      > <a name="1933" href="Data.Vec.All.Properties.html#1933" class="Bound"
+      >c</a
+      > <a name="1935" href="Data.Vec.All.Properties.html#1935" class="Bound"
+      >p</a
+      > <a name="1937" href="Data.Vec.All.Properties.html#1937" class="Bound"
+      >q</a
+      > <a name="1939" href="Data.Vec.All.Properties.html#1939" class="Bound"
+      >r</a
+      ><a name="1940" class="Symbol"
+      >}</a
+      > <a name="1942" class="Symbol"
+      >{</a
+      ><a name="1943" href="Data.Vec.All.Properties.html#1943" class="Bound"
+      >A</a
+      > <a name="1945" class="Symbol"
+      >:</a
+      > <a name="1947" class="PrimitiveType"
+      >Set</a
+      > <a name="1951" href="Data.Vec.All.Properties.html#1929" class="Bound"
+      >a</a
+      ><a name="1952" class="Symbol"
+      >}</a
+      > <a name="1954" class="Symbol"
+      >{</a
+      ><a name="1955" href="Data.Vec.All.Properties.html#1955" class="Bound"
+      >B</a
+      > <a name="1957" class="Symbol"
+      >:</a
+      > <a name="1959" class="PrimitiveType"
+      >Set</a
+      > <a name="1963" href="Data.Vec.All.Properties.html#1931" class="Bound"
+      >b</a
+      ><a name="1964" class="Symbol"
+      >}</a
+      > <a name="1966" class="Symbol"
+      >{</a
+      ><a name="1967" href="Data.Vec.All.Properties.html#1967" class="Bound"
+      >C</a
+      > <a name="1969" class="Symbol"
+      >:</a
+      > <a name="1971" class="PrimitiveType"
+      >Set</a
+      > <a name="1975" href="Data.Vec.All.Properties.html#1933" class="Bound"
+      >c</a
+      ><a name="1976" class="Symbol"
+      >}</a
+      >
+       <a name="1985" class="Symbol"
+      >{</a
+      ><a name="1986" href="Data.Vec.All.Properties.html#1986" class="Bound"
+      >P</a
+      > <a name="1988" class="Symbol"
+      >:</a
+      > <a name="1990" href="Data.Vec.All.Properties.html#1943" class="Bound"
+      >A</a
+      > <a name="1992" class="Symbol"
+      >&#8594;</a
+      > <a name="1994" href="Data.Vec.All.Properties.html#1955" class="Bound"
+      >B</a
+      > <a name="1996" class="Symbol"
+      >&#8594;</a
+      > <a name="1998" class="PrimitiveType"
+      >Set</a
+      > <a name="2002" href="Data.Vec.All.Properties.html#1935" class="Bound"
+      >p</a
+      ><a name="2003" class="Symbol"
+      >}</a
+      > <a name="2005" class="Symbol"
+      >{</a
+      ><a name="2006" href="Data.Vec.All.Properties.html#2006" class="Bound"
+      >Q</a
+      > <a name="2008" class="Symbol"
+      >:</a
+      > <a name="2010" href="Data.Vec.All.Properties.html#1955" class="Bound"
+      >B</a
+      > <a name="2012" class="Symbol"
+      >&#8594;</a
+      > <a name="2014" href="Data.Vec.All.Properties.html#1967" class="Bound"
+      >C</a
+      > <a name="2016" class="Symbol"
+      >&#8594;</a
+      > <a name="2018" class="PrimitiveType"
+      >Set</a
+      > <a name="2022" href="Data.Vec.All.Properties.html#1937" class="Bound"
+      >q</a
+      ><a name="2023" class="Symbol"
+      >}</a
+      > <a name="2025" class="Symbol"
+      >{</a
+      ><a name="2026" href="Data.Vec.All.Properties.html#2026" class="Bound"
+      >R</a
+      > <a name="2028" class="Symbol"
+      >:</a
+      > <a name="2030" href="Data.Vec.All.Properties.html#1943" class="Bound"
+      >A</a
+      > <a name="2032" class="Symbol"
+      >&#8594;</a
+      > <a name="2034" href="Data.Vec.All.Properties.html#1967" class="Bound"
+      >C</a
+      > <a name="2036" class="Symbol"
+      >&#8594;</a
+      > <a name="2038" class="PrimitiveType"
+      >Set</a
+      > <a name="2042" href="Data.Vec.All.Properties.html#1939" class="Bound"
+      >r</a
+      ><a name="2043" class="Symbol"
+      >}</a
+      > <a name="2045" class="Symbol"
+      >&#8594;</a
+      >
+       <a name="2054" href="Relation.Binary.Core.html#Trans" class="Function"
+      >Trans</a
+      > <a name="2060" href="Data.Vec.All.Properties.html#1986" class="Bound"
+      >P</a
+      > <a name="2062" href="Data.Vec.All.Properties.html#2006" class="Bound"
+      >Q</a
+      > <a name="2064" href="Data.Vec.All.Properties.html#2026" class="Bound"
+      >R</a
+      > <a name="2066" class="Symbol"
+      >&#8594;</a
+      > <a name="2068" class="Symbol"
+      >&#8704;</a
+      > <a name="2070" class="Symbol"
+      >{</a
+      ><a name="2071" href="Data.Vec.All.Properties.html#2071" class="Bound"
+      >k</a
+      ><a name="2072" class="Symbol"
+      >}</a
+      > <a name="2074" class="Symbol"
+      >&#8594;</a
+      > <a name="2076" href="Relation.Binary.Core.html#Trans" class="Function"
+      >Trans</a
+      > <a name="2082" class="Symbol"
+      >(</a
+      ><a name="2083" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="2088" href="Data.Vec.All.Properties.html#1986" class="Bound"
+      >P</a
+      > <a name="2090" class="Symbol"
+      >{</a
+      ><a name="2091" href="Data.Vec.All.Properties.html#2071" class="Bound"
+      >k</a
+      ><a name="2092" class="Symbol"
+      >})</a
+      > <a name="2095" class="Symbol"
+      >(</a
+      ><a name="2096" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="2101" href="Data.Vec.All.Properties.html#2006" class="Bound"
+      >Q</a
+      ><a name="2102" class="Symbol"
+      >)</a
+      > <a name="2104" class="Symbol"
+      >(</a
+      ><a name="2105" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="2110" href="Data.Vec.All.Properties.html#2026" class="Bound"
+      >R</a
+      ><a name="2111" class="Symbol"
+      >)</a
+      >
+<a name="2113" href="Data.Vec.All.Properties.html#comp" class="Function"
+      >comp</a
+      > <a name="2118" href="Data.Vec.All.Properties.html#2118" class="Bound Operator"
+      >_&#8857;_</a
+      > <a name="2122" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      >           <a name="2135" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      >           <a name="2148" class="Symbol"
+      >=</a
+      > <a name="2150" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      >
+<a name="2153" href="Data.Vec.All.Properties.html#comp" class="Function"
+      >comp</a
+      > <a name="2158" href="Data.Vec.All.Properties.html#2158" class="Bound Operator"
+      >_&#8857;_</a
+      > <a name="2162" class="Symbol"
+      >(</a
+      ><a name="2163" href="Data.Vec.All.Properties.html#2163" class="Bound"
+      >pxy</a
+      > <a name="2167" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2169" href="Data.Vec.All.Properties.html#2169" class="Bound"
+      >pxys</a
+      ><a name="2173" class="Symbol"
+      >)</a
+      > <a name="2175" class="Symbol"
+      >(</a
+      ><a name="2176" href="Data.Vec.All.Properties.html#2176" class="Bound"
+      >qzx</a
+      > <a name="2180" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2182" href="Data.Vec.All.Properties.html#2182" class="Bound"
+      >qzxs</a
+      ><a name="2186" class="Symbol"
+      >)</a
+      > <a name="2188" class="Symbol"
+      >=</a
+      > <a name="2190" href="Data.Vec.All.Properties.html#2163" class="Bound"
+      >pxy</a
+      > <a name="2194" href="Data.Vec.All.Properties.html#2158" class="Bound Operator"
+      >&#8857;</a
+      > <a name="2196" href="Data.Vec.All.Properties.html#2176" class="Bound"
+      >qzx</a
+      > <a name="2200" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2202" href="Data.Vec.All.Properties.html#comp" class="Function"
+      >comp</a
+      > <a name="2207" href="Data.Vec.All.Properties.html#2158" class="Bound Operator"
+      >_&#8857;_</a
+      > <a name="2211" href="Data.Vec.All.Properties.html#2169" class="Bound"
+      >pxys</a
+      > <a name="2216" href="Data.Vec.All.Properties.html#2182" class="Bound"
+      >qzxs</a
+      >
+
+<a name="2222" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="2295" class="Comment"
+      >-- Variants of gmap for All&#8322;.</a
+      >
+
+<a name="2326" class="Keyword"
+      >module</a
+      > <a name="2333" href="Data.Vec.All.Properties.html#2333" class="Module"
+      >_</a
+      > <a name="2335" class="Symbol"
+      >{</a
+      ><a name="2336" href="Data.Vec.All.Properties.html#2336" class="Bound"
+      >a</a
+      > <a name="2338" href="Data.Vec.All.Properties.html#2338" class="Bound"
+      >b</a
+      > <a name="2340" href="Data.Vec.All.Properties.html#2340" class="Bound"
+      >c</a
+      > <a name="2342" href="Data.Vec.All.Properties.html#2342" class="Bound"
+      >p</a
+      > <a name="2344" href="Data.Vec.All.Properties.html#2344" class="Bound"
+      >q</a
+      ><a name="2345" class="Symbol"
+      >}</a
+      > <a name="2347" class="Symbol"
+      >{</a
+      ><a name="2348" href="Data.Vec.All.Properties.html#2348" class="Bound"
+      >A</a
+      > <a name="2350" class="Symbol"
+      >:</a
+      > <a name="2352" class="PrimitiveType"
+      >Set</a
+      > <a name="2356" href="Data.Vec.All.Properties.html#2336" class="Bound"
+      >a</a
+      ><a name="2357" class="Symbol"
+      >}</a
+      > <a name="2359" class="Symbol"
+      >{</a
+      ><a name="2360" href="Data.Vec.All.Properties.html#2360" class="Bound"
+      >B</a
+      > <a name="2362" class="Symbol"
+      >:</a
+      > <a name="2364" class="PrimitiveType"
+      >Set</a
+      > <a name="2368" href="Data.Vec.All.Properties.html#2338" class="Bound"
+      >b</a
+      ><a name="2369" class="Symbol"
+      >}</a
+      > <a name="2371" class="Symbol"
+      >{</a
+      ><a name="2372" href="Data.Vec.All.Properties.html#2372" class="Bound"
+      >C</a
+      > <a name="2374" class="Symbol"
+      >:</a
+      > <a name="2376" class="PrimitiveType"
+      >Set</a
+      > <a name="2380" href="Data.Vec.All.Properties.html#2340" class="Bound"
+      >c</a
+      ><a name="2381" class="Symbol"
+      >}</a
+      > <a name="2383" class="Keyword"
+      >where</a
+      >
+
+  <a name="2392" class="Comment"
+      >-- A variant of gmap&#8322; shifting two functions from the binary</a
+      >
+  <a name="2455" class="Comment"
+      >-- relation to the vector.</a
+      >
+
+  <a name="2485" href="Data.Vec.All.Properties.html#2485" class="Function"
+      >gmap&#8322;</a
+      > <a name="2491" class="Symbol"
+      >:</a
+      > <a name="2493" class="Symbol"
+      >&#8704;</a
+      > <a name="2495" class="Symbol"
+      >{</a
+      ><a name="2496" href="Data.Vec.All.Properties.html#2496" class="Bound"
+      >d</a
+      ><a name="2497" class="Symbol"
+      >}</a
+      > <a name="2499" class="Symbol"
+      >{</a
+      ><a name="2500" href="Data.Vec.All.Properties.html#2500" class="Bound"
+      >D</a
+      > <a name="2502" class="Symbol"
+      >:</a
+      > <a name="2504" class="PrimitiveType"
+      >Set</a
+      > <a name="2508" href="Data.Vec.All.Properties.html#2496" class="Bound"
+      >d</a
+      ><a name="2509" class="Symbol"
+      >}</a
+      > <a name="2511" class="Symbol"
+      >{</a
+      ><a name="2512" href="Data.Vec.All.Properties.html#2512" class="Bound"
+      >P</a
+      > <a name="2514" class="Symbol"
+      >:</a
+      > <a name="2516" href="Data.Vec.All.Properties.html#2348" class="Bound"
+      >A</a
+      > <a name="2518" class="Symbol"
+      >&#8594;</a
+      > <a name="2520" href="Data.Vec.All.Properties.html#2360" class="Bound"
+      >B</a
+      > <a name="2522" class="Symbol"
+      >&#8594;</a
+      > <a name="2524" class="PrimitiveType"
+      >Set</a
+      > <a name="2528" href="Data.Vec.All.Properties.html#2342" class="Bound"
+      >p</a
+      ><a name="2529" class="Symbol"
+      >}</a
+      > <a name="2531" class="Symbol"
+      >{</a
+      ><a name="2532" href="Data.Vec.All.Properties.html#2532" class="Bound"
+      >Q</a
+      > <a name="2534" class="Symbol"
+      >:</a
+      > <a name="2536" href="Data.Vec.All.Properties.html#2372" class="Bound"
+      >C</a
+      > <a name="2538" class="Symbol"
+      >&#8594;</a
+      > <a name="2540" href="Data.Vec.All.Properties.html#2500" class="Bound"
+      >D</a
+      > <a name="2542" class="Symbol"
+      >&#8594;</a
+      > <a name="2544" class="PrimitiveType"
+      >Set</a
+      > <a name="2548" href="Data.Vec.All.Properties.html#2344" class="Bound"
+      >q</a
+      ><a name="2549" class="Symbol"
+      >}</a
+      >
+            <a name="2563" class="Symbol"
+      >{</a
+      ><a name="2564" href="Data.Vec.All.Properties.html#2564" class="Bound"
+      >f&#8321;</a
+      > <a name="2567" class="Symbol"
+      >:</a
+      > <a name="2569" href="Data.Vec.All.Properties.html#2348" class="Bound"
+      >A</a
+      > <a name="2571" class="Symbol"
+      >&#8594;</a
+      > <a name="2573" href="Data.Vec.All.Properties.html#2372" class="Bound"
+      >C</a
+      ><a name="2574" class="Symbol"
+      >}</a
+      > <a name="2576" class="Symbol"
+      >{</a
+      ><a name="2577" href="Data.Vec.All.Properties.html#2577" class="Bound"
+      >f&#8322;</a
+      > <a name="2580" class="Symbol"
+      >:</a
+      > <a name="2582" href="Data.Vec.All.Properties.html#2360" class="Bound"
+      >B</a
+      > <a name="2584" class="Symbol"
+      >&#8594;</a
+      > <a name="2586" href="Data.Vec.All.Properties.html#2500" class="Bound"
+      >D</a
+      ><a name="2587" class="Symbol"
+      >}</a
+      > <a name="2589" class="Symbol"
+      >&#8594;</a
+      >
+          <a name="2601" class="Symbol"
+      >(&#8704;</a
+      > <a name="2604" class="Symbol"
+      >{</a
+      ><a name="2605" href="Data.Vec.All.Properties.html#2605" class="Bound"
+      >x</a
+      > <a name="2607" href="Data.Vec.All.Properties.html#2607" class="Bound"
+      >y</a
+      ><a name="2608" class="Symbol"
+      >}</a
+      > <a name="2610" class="Symbol"
+      >&#8594;</a
+      > <a name="2612" href="Data.Vec.All.Properties.html#2512" class="Bound"
+      >P</a
+      > <a name="2614" href="Data.Vec.All.Properties.html#2605" class="Bound"
+      >x</a
+      > <a name="2616" href="Data.Vec.All.Properties.html#2607" class="Bound"
+      >y</a
+      > <a name="2618" class="Symbol"
+      >&#8594;</a
+      > <a name="2620" href="Data.Vec.All.Properties.html#2532" class="Bound"
+      >Q</a
+      > <a name="2622" class="Symbol"
+      >(</a
+      ><a name="2623" href="Data.Vec.All.Properties.html#2564" class="Bound"
+      >f&#8321;</a
+      > <a name="2626" href="Data.Vec.All.Properties.html#2605" class="Bound"
+      >x</a
+      ><a name="2627" class="Symbol"
+      >)</a
+      > <a name="2629" class="Symbol"
+      >(</a
+      ><a name="2630" href="Data.Vec.All.Properties.html#2577" class="Bound"
+      >f&#8322;</a
+      > <a name="2633" href="Data.Vec.All.Properties.html#2607" class="Bound"
+      >y</a
+      ><a name="2634" class="Symbol"
+      >))</a
+      > <a name="2637" class="Symbol"
+      >&#8594;</a
+      > <a name="2639" class="Symbol"
+      >&#8704;</a
+      > <a name="2641" class="Symbol"
+      >{</a
+      ><a name="2642" href="Data.Vec.All.Properties.html#2642" class="Bound"
+      >k</a
+      > <a name="2644" href="Data.Vec.All.Properties.html#2644" class="Bound"
+      >xs</a
+      > <a name="2647" href="Data.Vec.All.Properties.html#2647" class="Bound"
+      >ys</a
+      ><a name="2649" class="Symbol"
+      >}</a
+      > <a name="2651" class="Symbol"
+      >&#8594;</a
+      >
+          <a name="2663" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="2668" href="Data.Vec.All.Properties.html#2512" class="Bound"
+      >P</a
+      > <a name="2670" class="Symbol"
+      >{</a
+      ><a name="2671" href="Data.Vec.All.Properties.html#2642" class="Bound"
+      >k</a
+      ><a name="2672" class="Symbol"
+      >}</a
+      > <a name="2674" href="Data.Vec.All.Properties.html#2644" class="Bound"
+      >xs</a
+      > <a name="2677" href="Data.Vec.All.Properties.html#2647" class="Bound"
+      >ys</a
+      > <a name="2680" class="Symbol"
+      >&#8594;</a
+      > <a name="2682" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="2687" href="Data.Vec.All.Properties.html#2532" class="Bound"
+      >Q</a
+      > <a name="2689" class="Symbol"
+      >{</a
+      ><a name="2690" href="Data.Vec.All.Properties.html#2642" class="Bound"
+      >k</a
+      ><a name="2691" class="Symbol"
+      >}</a
+      > <a name="2693" class="Symbol"
+      >(</a
+      ><a name="2694" href="Data.Vec.html#map" class="Function"
+      >Vec.map</a
+      > <a name="2702" href="Data.Vec.All.Properties.html#2564" class="Bound"
+      >f&#8321;</a
+      > <a name="2705" href="Data.Vec.All.Properties.html#2644" class="Bound"
+      >xs</a
+      ><a name="2707" class="Symbol"
+      >)</a
+      > <a name="2709" class="Symbol"
+      >(</a
+      ><a name="2710" href="Data.Vec.html#map" class="Function"
+      >Vec.map</a
+      > <a name="2718" href="Data.Vec.All.Properties.html#2577" class="Bound"
+      >f&#8322;</a
+      > <a name="2721" href="Data.Vec.All.Properties.html#2647" class="Bound"
+      >ys</a
+      ><a name="2723" class="Symbol"
+      >)</a
+      >
+  <a name="2727" href="Data.Vec.All.Properties.html#2485" class="Function"
+      >gmap&#8322;</a
+      > <a name="2733" href="Data.Vec.All.Properties.html#2733" class="Bound"
+      >g</a
+      > <a name="2735" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="2738" class="Symbol"
+      >=</a
+      > <a name="2740" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      >
+  <a name="2745" href="Data.Vec.All.Properties.html#2485" class="Function"
+      >gmap&#8322;</a
+      > <a name="2751" href="Data.Vec.All.Properties.html#2751" class="Bound"
+      >g</a
+      > <a name="2753" class="Symbol"
+      >(</a
+      ><a name="2754" href="Data.Vec.All.Properties.html#2754" class="Bound"
+      >pxy</a
+      > <a name="2758" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2760" href="Data.Vec.All.Properties.html#2760" class="Bound"
+      >pxys</a
+      ><a name="2764" class="Symbol"
+      >)</a
+      > <a name="2766" class="Symbol"
+      >=</a
+      > <a name="2768" href="Data.Vec.All.Properties.html#2751" class="Bound"
+      >g</a
+      > <a name="2770" href="Data.Vec.All.Properties.html#2754" class="Bound"
+      >pxy</a
+      > <a name="2774" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2776" href="Data.Vec.All.Properties.html#2485" class="Function"
+      >gmap&#8322;</a
+      > <a name="2782" href="Data.Vec.All.Properties.html#2751" class="Bound"
+      >g</a
+      > <a name="2784" href="Data.Vec.All.Properties.html#2760" class="Bound"
+      >pxys</a
+      >
+
+  <a name="2792" class="Comment"
+      >-- A variant of gmap&#8322; shifting only the first function from the binary</a
+      >
+  <a name="2865" class="Comment"
+      >-- relation to the vector.</a
+      >
+
+  <a name="2895" href="Data.Vec.All.Properties.html#2895" class="Function"
+      >gmap&#8322;&#8321;</a
+      > <a name="2902" class="Symbol"
+      >:</a
+      > <a name="2904" class="Symbol"
+      >&#8704;</a
+      > <a name="2906" class="Symbol"
+      >{</a
+      ><a name="2907" href="Data.Vec.All.Properties.html#2907" class="Bound"
+      >P</a
+      > <a name="2909" class="Symbol"
+      >:</a
+      > <a name="2911" href="Data.Vec.All.Properties.html#2348" class="Bound"
+      >A</a
+      > <a name="2913" class="Symbol"
+      >&#8594;</a
+      > <a name="2915" href="Data.Vec.All.Properties.html#2360" class="Bound"
+      >B</a
+      > <a name="2917" class="Symbol"
+      >&#8594;</a
+      > <a name="2919" class="PrimitiveType"
+      >Set</a
+      > <a name="2923" href="Data.Vec.All.Properties.html#2342" class="Bound"
+      >p</a
+      ><a name="2924" class="Symbol"
+      >}</a
+      > <a name="2926" class="Symbol"
+      >{</a
+      ><a name="2927" href="Data.Vec.All.Properties.html#2927" class="Bound"
+      >Q</a
+      > <a name="2929" class="Symbol"
+      >:</a
+      > <a name="2931" href="Data.Vec.All.Properties.html#2372" class="Bound"
+      >C</a
+      > <a name="2933" class="Symbol"
+      >&#8594;</a
+      > <a name="2935" href="Data.Vec.All.Properties.html#2360" class="Bound"
+      >B</a
+      > <a name="2937" class="Symbol"
+      >&#8594;</a
+      > <a name="2939" class="PrimitiveType"
+      >Set</a
+      > <a name="2943" href="Data.Vec.All.Properties.html#2344" class="Bound"
+      >q</a
+      ><a name="2944" class="Symbol"
+      >}</a
+      > <a name="2946" class="Symbol"
+      >{</a
+      ><a name="2947" href="Data.Vec.All.Properties.html#2947" class="Bound"
+      >f</a
+      > <a name="2949" class="Symbol"
+      >:</a
+      > <a name="2951" href="Data.Vec.All.Properties.html#2348" class="Bound"
+      >A</a
+      > <a name="2953" class="Symbol"
+      >&#8594;</a
+      > <a name="2955" href="Data.Vec.All.Properties.html#2372" class="Bound"
+      >C</a
+      ><a name="2956" class="Symbol"
+      >}</a
+      > <a name="2958" class="Symbol"
+      >&#8594;</a
+      >
+           <a name="2971" class="Symbol"
+      >(&#8704;</a
+      > <a name="2974" class="Symbol"
+      >{</a
+      ><a name="2975" href="Data.Vec.All.Properties.html#2975" class="Bound"
+      >x</a
+      > <a name="2977" href="Data.Vec.All.Properties.html#2977" class="Bound"
+      >y</a
+      ><a name="2978" class="Symbol"
+      >}</a
+      > <a name="2980" class="Symbol"
+      >&#8594;</a
+      > <a name="2982" href="Data.Vec.All.Properties.html#2907" class="Bound"
+      >P</a
+      > <a name="2984" href="Data.Vec.All.Properties.html#2975" class="Bound"
+      >x</a
+      > <a name="2986" href="Data.Vec.All.Properties.html#2977" class="Bound"
+      >y</a
+      > <a name="2988" class="Symbol"
+      >&#8594;</a
+      > <a name="2990" href="Data.Vec.All.Properties.html#2927" class="Bound"
+      >Q</a
+      > <a name="2992" class="Symbol"
+      >(</a
+      ><a name="2993" href="Data.Vec.All.Properties.html#2947" class="Bound"
+      >f</a
+      > <a name="2995" href="Data.Vec.All.Properties.html#2975" class="Bound"
+      >x</a
+      ><a name="2996" class="Symbol"
+      >)</a
+      > <a name="2998" href="Data.Vec.All.Properties.html#2977" class="Bound"
+      >y</a
+      ><a name="2999" class="Symbol"
+      >)</a
+      > <a name="3001" class="Symbol"
+      >&#8594;</a
+      > <a name="3003" class="Symbol"
+      >&#8704;</a
+      > <a name="3005" class="Symbol"
+      >{</a
+      ><a name="3006" href="Data.Vec.All.Properties.html#3006" class="Bound"
+      >k</a
+      > <a name="3008" href="Data.Vec.All.Properties.html#3008" class="Bound"
+      >xs</a
+      > <a name="3011" href="Data.Vec.All.Properties.html#3011" class="Bound"
+      >ys</a
+      ><a name="3013" class="Symbol"
+      >}</a
+      > <a name="3015" class="Symbol"
+      >&#8594;</a
+      >
+           <a name="3028" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="3033" href="Data.Vec.All.Properties.html#2907" class="Bound"
+      >P</a
+      > <a name="3035" class="Symbol"
+      >{</a
+      ><a name="3036" href="Data.Vec.All.Properties.html#3006" class="Bound"
+      >k</a
+      ><a name="3037" class="Symbol"
+      >}</a
+      > <a name="3039" href="Data.Vec.All.Properties.html#3008" class="Bound"
+      >xs</a
+      > <a name="3042" href="Data.Vec.All.Properties.html#3011" class="Bound"
+      >ys</a
+      > <a name="3045" class="Symbol"
+      >&#8594;</a
+      > <a name="3047" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="3052" href="Data.Vec.All.Properties.html#2927" class="Bound"
+      >Q</a
+      > <a name="3054" class="Symbol"
+      >{</a
+      ><a name="3055" href="Data.Vec.All.Properties.html#3006" class="Bound"
+      >k</a
+      ><a name="3056" class="Symbol"
+      >}</a
+      > <a name="3058" class="Symbol"
+      >(</a
+      ><a name="3059" href="Data.Vec.html#map" class="Function"
+      >Vec.map</a
+      > <a name="3067" href="Data.Vec.All.Properties.html#2947" class="Bound"
+      >f</a
+      > <a name="3069" href="Data.Vec.All.Properties.html#3008" class="Bound"
+      >xs</a
+      ><a name="3071" class="Symbol"
+      >)</a
+      > <a name="3073" href="Data.Vec.All.Properties.html#3011" class="Bound"
+      >ys</a
+      >
+  <a name="3078" href="Data.Vec.All.Properties.html#2895" class="Function"
+      >gmap&#8322;&#8321;</a
+      > <a name="3085" href="Data.Vec.All.Properties.html#3085" class="Bound"
+      >g</a
+      > <a name="3087" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="3090" class="Symbol"
+      >=</a
+      > <a name="3092" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      >
+  <a name="3097" href="Data.Vec.All.Properties.html#2895" class="Function"
+      >gmap&#8322;&#8321;</a
+      > <a name="3104" href="Data.Vec.All.Properties.html#3104" class="Bound"
+      >g</a
+      > <a name="3106" class="Symbol"
+      >(</a
+      ><a name="3107" href="Data.Vec.All.Properties.html#3107" class="Bound"
+      >pxy</a
+      > <a name="3111" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3113" href="Data.Vec.All.Properties.html#3113" class="Bound"
+      >pxys</a
+      ><a name="3117" class="Symbol"
+      >)</a
+      > <a name="3119" class="Symbol"
+      >=</a
+      > <a name="3121" href="Data.Vec.All.Properties.html#3104" class="Bound"
+      >g</a
+      > <a name="3123" href="Data.Vec.All.Properties.html#3107" class="Bound"
+      >pxy</a
+      > <a name="3127" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3129" href="Data.Vec.All.Properties.html#2895" class="Function"
+      >gmap&#8322;&#8321;</a
+      > <a name="3136" href="Data.Vec.All.Properties.html#3104" class="Bound"
+      >g</a
+      > <a name="3138" href="Data.Vec.All.Properties.html#3113" class="Bound"
+      >pxys</a
+      >
+
+  <a name="3146" class="Comment"
+      >-- A variant of gmap&#8322; shifting only the second function from the</a
+      >
+  <a name="3213" class="Comment"
+      >-- binary relation to the vector.</a
+      >
+
+  <a name="3250" href="Data.Vec.All.Properties.html#3250" class="Function"
+      >gmap&#8322;&#8322;</a
+      > <a name="3257" class="Symbol"
+      >:</a
+      > <a name="3259" class="Symbol"
+      >&#8704;</a
+      > <a name="3261" class="Symbol"
+      >{</a
+      ><a name="3262" href="Data.Vec.All.Properties.html#3262" class="Bound"
+      >P</a
+      > <a name="3264" class="Symbol"
+      >:</a
+      > <a name="3266" href="Data.Vec.All.Properties.html#2348" class="Bound"
+      >A</a
+      > <a name="3268" class="Symbol"
+      >&#8594;</a
+      > <a name="3270" href="Data.Vec.All.Properties.html#2360" class="Bound"
+      >B</a
+      > <a name="3272" class="Symbol"
+      >&#8594;</a
+      > <a name="3274" class="PrimitiveType"
+      >Set</a
+      > <a name="3278" href="Data.Vec.All.Properties.html#2342" class="Bound"
+      >p</a
+      ><a name="3279" class="Symbol"
+      >}</a
+      > <a name="3281" class="Symbol"
+      >{</a
+      ><a name="3282" href="Data.Vec.All.Properties.html#3282" class="Bound"
+      >Q</a
+      > <a name="3284" class="Symbol"
+      >:</a
+      > <a name="3286" href="Data.Vec.All.Properties.html#2348" class="Bound"
+      >A</a
+      > <a name="3288" class="Symbol"
+      >&#8594;</a
+      > <a name="3290" href="Data.Vec.All.Properties.html#2372" class="Bound"
+      >C</a
+      > <a name="3292" class="Symbol"
+      >&#8594;</a
+      > <a name="3294" class="PrimitiveType"
+      >Set</a
+      > <a name="3298" href="Data.Vec.All.Properties.html#2344" class="Bound"
+      >q</a
+      ><a name="3299" class="Symbol"
+      >}</a
+      > <a name="3301" class="Symbol"
+      >{</a
+      ><a name="3302" href="Data.Vec.All.Properties.html#3302" class="Bound"
+      >f</a
+      > <a name="3304" class="Symbol"
+      >:</a
+      > <a name="3306" href="Data.Vec.All.Properties.html#2360" class="Bound"
+      >B</a
+      > <a name="3308" class="Symbol"
+      >&#8594;</a
+      > <a name="3310" href="Data.Vec.All.Properties.html#2372" class="Bound"
+      >C</a
+      ><a name="3311" class="Symbol"
+      >}</a
+      > <a name="3313" class="Symbol"
+      >&#8594;</a
+      >
+           <a name="3326" class="Symbol"
+      >(&#8704;</a
+      > <a name="3329" class="Symbol"
+      >{</a
+      ><a name="3330" href="Data.Vec.All.Properties.html#3330" class="Bound"
+      >x</a
+      > <a name="3332" href="Data.Vec.All.Properties.html#3332" class="Bound"
+      >y</a
+      ><a name="3333" class="Symbol"
+      >}</a
+      > <a name="3335" class="Symbol"
+      >&#8594;</a
+      > <a name="3337" href="Data.Vec.All.Properties.html#3262" class="Bound"
+      >P</a
+      > <a name="3339" href="Data.Vec.All.Properties.html#3330" class="Bound"
+      >x</a
+      > <a name="3341" href="Data.Vec.All.Properties.html#3332" class="Bound"
+      >y</a
+      > <a name="3343" class="Symbol"
+      >&#8594;</a
+      > <a name="3345" href="Data.Vec.All.Properties.html#3282" class="Bound"
+      >Q</a
+      > <a name="3347" href="Data.Vec.All.Properties.html#3330" class="Bound"
+      >x</a
+      > <a name="3349" class="Symbol"
+      >(</a
+      ><a name="3350" href="Data.Vec.All.Properties.html#3302" class="Bound"
+      >f</a
+      > <a name="3352" href="Data.Vec.All.Properties.html#3332" class="Bound"
+      >y</a
+      ><a name="3353" class="Symbol"
+      >))</a
+      > <a name="3356" class="Symbol"
+      >&#8594;</a
+      > <a name="3358" class="Symbol"
+      >&#8704;</a
+      > <a name="3360" class="Symbol"
+      >{</a
+      ><a name="3361" href="Data.Vec.All.Properties.html#3361" class="Bound"
+      >k</a
+      > <a name="3363" href="Data.Vec.All.Properties.html#3363" class="Bound"
+      >xs</a
+      > <a name="3366" href="Data.Vec.All.Properties.html#3366" class="Bound"
+      >ys</a
+      ><a name="3368" class="Symbol"
+      >}</a
+      > <a name="3370" class="Symbol"
+      >&#8594;</a
+      >
+           <a name="3383" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="3388" href="Data.Vec.All.Properties.html#3262" class="Bound"
+      >P</a
+      > <a name="3390" class="Symbol"
+      >{</a
+      ><a name="3391" href="Data.Vec.All.Properties.html#3361" class="Bound"
+      >k</a
+      ><a name="3392" class="Symbol"
+      >}</a
+      > <a name="3394" href="Data.Vec.All.Properties.html#3363" class="Bound"
+      >xs</a
+      > <a name="3397" href="Data.Vec.All.Properties.html#3366" class="Bound"
+      >ys</a
+      > <a name="3400" class="Symbol"
+      >&#8594;</a
+      > <a name="3402" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="3407" href="Data.Vec.All.Properties.html#3282" class="Bound"
+      >Q</a
+      > <a name="3409" class="Symbol"
+      >{</a
+      ><a name="3410" href="Data.Vec.All.Properties.html#3361" class="Bound"
+      >k</a
+      ><a name="3411" class="Symbol"
+      >}</a
+      > <a name="3413" href="Data.Vec.All.Properties.html#3363" class="Bound"
+      >xs</a
+      > <a name="3416" class="Symbol"
+      >(</a
+      ><a name="3417" href="Data.Vec.html#map" class="Function"
+      >Vec.map</a
+      > <a name="3425" href="Data.Vec.All.Properties.html#3302" class="Bound"
+      >f</a
+      > <a name="3427" href="Data.Vec.All.Properties.html#3366" class="Bound"
+      >ys</a
+      ><a name="3429" class="Symbol"
+      >)</a
+      >
+  <a name="3433" href="Data.Vec.All.Properties.html#3250" class="Function"
+      >gmap&#8322;&#8322;</a
+      > <a name="3440" href="Data.Vec.All.Properties.html#3440" class="Bound"
+      >g</a
+      > <a name="3442" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="3445" class="Symbol"
+      >=</a
+      > <a name="3447" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      >
+  <a name="3452" href="Data.Vec.All.Properties.html#3250" class="Function"
+      >gmap&#8322;&#8322;</a
+      > <a name="3459" href="Data.Vec.All.Properties.html#3459" class="Bound"
+      >g</a
+      > <a name="3461" class="Symbol"
+      >(</a
+      ><a name="3462" href="Data.Vec.All.Properties.html#3462" class="Bound"
+      >pxy</a
+      > <a name="3466" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3468" href="Data.Vec.All.Properties.html#3468" class="Bound"
+      >pxys</a
+      ><a name="3472" class="Symbol"
+      >)</a
+      > <a name="3474" class="Symbol"
+      >=</a
+      > <a name="3476" href="Data.Vec.All.Properties.html#3459" class="Bound"
+      >g</a
+      > <a name="3478" href="Data.Vec.All.Properties.html#3462" class="Bound"
+      >pxy</a
+      > <a name="3482" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3484" href="Data.Vec.All.Properties.html#3250" class="Function"
+      >gmap&#8322;&#8322;</a
+      > <a name="3491" href="Data.Vec.All.Properties.html#3459" class="Bound"
+      >g</a
+      > <a name="3493" href="Data.Vec.All.Properties.html#3468" class="Bound"
+      >pxys</a
+      >
+
+
+<a name="3500" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="3573" class="Comment"
+      >-- All and _++_</a
+      >
+
+<a name="3590" class="Keyword"
+      >module</a
+      > <a name="3597" href="Data.Vec.All.Properties.html#3597" class="Module"
+      >_</a
+      > <a name="3599" class="Symbol"
+      >{</a
+      ><a name="3600" href="Data.Vec.All.Properties.html#3600" class="Bound"
+      >a</a
+      > <a name="3602" href="Data.Vec.All.Properties.html#3602" class="Bound"
+      >n</a
+      > <a name="3604" href="Data.Vec.All.Properties.html#3604" class="Bound"
+      >p</a
+      ><a name="3605" class="Symbol"
+      >}</a
+      > <a name="3607" class="Symbol"
+      >{</a
+      ><a name="3608" href="Data.Vec.All.Properties.html#3608" class="Bound"
+      >A</a
+      > <a name="3610" class="Symbol"
+      >:</a
+      > <a name="3612" class="PrimitiveType"
+      >Set</a
+      > <a name="3616" href="Data.Vec.All.Properties.html#3600" class="Bound"
+      >a</a
+      ><a name="3617" class="Symbol"
+      >}</a
+      > <a name="3619" class="Symbol"
+      >{</a
+      ><a name="3620" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="3622" class="Symbol"
+      >:</a
+      > <a name="3624" href="Data.Vec.All.Properties.html#3608" class="Bound"
+      >A</a
+      > <a name="3626" class="Symbol"
+      >&#8594;</a
+      > <a name="3628" class="PrimitiveType"
+      >Set</a
+      > <a name="3632" href="Data.Vec.All.Properties.html#3604" class="Bound"
+      >p</a
+      ><a name="3633" class="Symbol"
+      >}</a
+      > <a name="3635" class="Keyword"
+      >where</a
+      >
+
+  <a name="3644" href="Data.Vec.All.Properties.html#3644" class="Function"
+      >All-++&#8314;</a
+      > <a name="3652" class="Symbol"
+      >:</a
+      > <a name="3654" class="Symbol"
+      >&#8704;</a
+      > <a name="3656" class="Symbol"
+      >{</a
+      ><a name="3657" href="Data.Vec.All.Properties.html#3657" class="Bound"
+      >m</a
+      ><a name="3658" class="Symbol"
+      >}</a
+      > <a name="3660" class="Symbol"
+      >{</a
+      ><a name="3661" href="Data.Vec.All.Properties.html#3661" class="Bound"
+      >xs</a
+      > <a name="3664" class="Symbol"
+      >:</a
+      > <a name="3666" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="3670" href="Data.Vec.All.Properties.html#3608" class="Bound"
+      >A</a
+      > <a name="3672" href="Data.Vec.All.Properties.html#3657" class="Bound"
+      >m</a
+      ><a name="3673" class="Symbol"
+      >}</a
+      > <a name="3675" class="Symbol"
+      >{</a
+      ><a name="3676" href="Data.Vec.All.Properties.html#3676" class="Bound"
+      >ys</a
+      > <a name="3679" class="Symbol"
+      >:</a
+      > <a name="3681" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="3685" href="Data.Vec.All.Properties.html#3608" class="Bound"
+      >A</a
+      > <a name="3687" href="Data.Vec.All.Properties.html#3602" class="Bound"
+      >n</a
+      ><a name="3688" class="Symbol"
+      >}</a
+      > <a name="3690" class="Symbol"
+      >&#8594;</a
+      >
+            <a name="3704" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="3708" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="3710" href="Data.Vec.All.Properties.html#3661" class="Bound"
+      >xs</a
+      > <a name="3713" class="Symbol"
+      >&#8594;</a
+      > <a name="3715" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="3719" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="3721" href="Data.Vec.All.Properties.html#3676" class="Bound"
+      >ys</a
+      > <a name="3724" class="Symbol"
+      >&#8594;</a
+      > <a name="3726" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="3730" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="3732" class="Symbol"
+      >(</a
+      ><a name="3733" href="Data.Vec.All.Properties.html#3661" class="Bound"
+      >xs</a
+      > <a name="3736" href="Data.Vec.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="3739" href="Data.Vec.All.Properties.html#3676" class="Bound"
+      >ys</a
+      ><a name="3741" class="Symbol"
+      >)</a
+      >
+  <a name="3745" href="Data.Vec.All.Properties.html#3644" class="Function"
+      >All-++&#8314;</a
+      > <a name="3753" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >         <a name="3764" href="Data.Vec.All.Properties.html#3764" class="Bound"
+      >pys</a
+      > <a name="3768" class="Symbol"
+      >=</a
+      > <a name="3770" href="Data.Vec.All.Properties.html#3764" class="Bound"
+      >pys</a
+      >
+  <a name="3776" href="Data.Vec.All.Properties.html#3644" class="Function"
+      >All-++&#8314;</a
+      > <a name="3784" class="Symbol"
+      >(</a
+      ><a name="3785" href="Data.Vec.All.Properties.html#3785" class="Bound"
+      >px</a
+      > <a name="3788" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3790" href="Data.Vec.All.Properties.html#3790" class="Bound"
+      >pxs</a
+      ><a name="3793" class="Symbol"
+      >)</a
+      > <a name="3795" href="Data.Vec.All.Properties.html#3795" class="Bound"
+      >pys</a
+      > <a name="3799" class="Symbol"
+      >=</a
+      > <a name="3801" href="Data.Vec.All.Properties.html#3785" class="Bound"
+      >px</a
+      > <a name="3804" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3806" href="Data.Vec.All.Properties.html#3644" class="Function"
+      >All-++&#8314;</a
+      > <a name="3814" href="Data.Vec.All.Properties.html#3790" class="Bound"
+      >pxs</a
+      > <a name="3818" href="Data.Vec.All.Properties.html#3795" class="Bound"
+      >pys</a
+      >
+
+  <a name="3825" href="Data.Vec.All.Properties.html#3825" class="Function"
+      >All-++&#737;&#8315;</a
+      > <a name="3834" class="Symbol"
+      >:</a
+      > <a name="3836" class="Symbol"
+      >&#8704;</a
+      > <a name="3838" class="Symbol"
+      >{</a
+      ><a name="3839" href="Data.Vec.All.Properties.html#3839" class="Bound"
+      >m</a
+      ><a name="3840" class="Symbol"
+      >}</a
+      > <a name="3842" class="Symbol"
+      >(</a
+      ><a name="3843" href="Data.Vec.All.Properties.html#3843" class="Bound"
+      >xs</a
+      > <a name="3846" class="Symbol"
+      >:</a
+      > <a name="3848" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="3852" href="Data.Vec.All.Properties.html#3608" class="Bound"
+      >A</a
+      > <a name="3854" href="Data.Vec.All.Properties.html#3839" class="Bound"
+      >m</a
+      ><a name="3855" class="Symbol"
+      >)</a
+      > <a name="3857" class="Symbol"
+      >{</a
+      ><a name="3858" href="Data.Vec.All.Properties.html#3858" class="Bound"
+      >ys</a
+      > <a name="3861" class="Symbol"
+      >:</a
+      > <a name="3863" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="3867" href="Data.Vec.All.Properties.html#3608" class="Bound"
+      >A</a
+      > <a name="3869" href="Data.Vec.All.Properties.html#3602" class="Bound"
+      >n</a
+      ><a name="3870" class="Symbol"
+      >}</a
+      > <a name="3872" class="Symbol"
+      >&#8594;</a
+      >
+          <a name="3884" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="3888" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="3890" class="Symbol"
+      >(</a
+      ><a name="3891" href="Data.Vec.All.Properties.html#3843" class="Bound"
+      >xs</a
+      > <a name="3894" href="Data.Vec.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="3897" href="Data.Vec.All.Properties.html#3858" class="Bound"
+      >ys</a
+      ><a name="3899" class="Symbol"
+      >)</a
+      > <a name="3901" class="Symbol"
+      >&#8594;</a
+      > <a name="3903" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="3907" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="3909" href="Data.Vec.All.Properties.html#3843" class="Bound"
+      >xs</a
+      >
+  <a name="3914" href="Data.Vec.All.Properties.html#3825" class="Function"
+      >All-++&#737;&#8315;</a
+      > <a name="3923" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      >       <a name="3932" class="Symbol"
+      >_</a
+      >          <a name="3943" class="Symbol"
+      >=</a
+      > <a name="3945" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >
+  <a name="3950" href="Data.Vec.All.Properties.html#3825" class="Function"
+      >All-++&#737;&#8315;</a
+      > <a name="3959" class="Symbol"
+      >(</a
+      ><a name="3960" href="Data.Vec.All.Properties.html#3960" class="Bound"
+      >x</a
+      > <a name="3962" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3964" href="Data.Vec.All.Properties.html#3964" class="Bound"
+      >xs</a
+      ><a name="3966" class="Symbol"
+      >)</a
+      > <a name="3968" class="Symbol"
+      >(</a
+      ><a name="3969" href="Data.Vec.All.Properties.html#3969" class="Bound"
+      >px</a
+      > <a name="3972" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3974" href="Data.Vec.All.Properties.html#3974" class="Bound"
+      >pxs</a
+      ><a name="3977" class="Symbol"
+      >)</a
+      > <a name="3979" class="Symbol"
+      >=</a
+      > <a name="3981" href="Data.Vec.All.Properties.html#3969" class="Bound"
+      >px</a
+      > <a name="3984" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="3986" href="Data.Vec.All.Properties.html#3825" class="Function"
+      >All-++&#737;&#8315;</a
+      > <a name="3995" href="Data.Vec.All.Properties.html#3964" class="Bound"
+      >xs</a
+      > <a name="3998" href="Data.Vec.All.Properties.html#3974" class="Bound"
+      >pxs</a
+      >
+
+  <a name="4005" href="Data.Vec.All.Properties.html#4005" class="Function"
+      >All-++&#691;&#8315;</a
+      > <a name="4014" class="Symbol"
+      >:</a
+      > <a name="4016" class="Symbol"
+      >&#8704;</a
+      > <a name="4018" class="Symbol"
+      >{</a
+      ><a name="4019" href="Data.Vec.All.Properties.html#4019" class="Bound"
+      >m</a
+      ><a name="4020" class="Symbol"
+      >}</a
+      > <a name="4022" class="Symbol"
+      >(</a
+      ><a name="4023" href="Data.Vec.All.Properties.html#4023" class="Bound"
+      >xs</a
+      > <a name="4026" class="Symbol"
+      >:</a
+      > <a name="4028" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="4032" href="Data.Vec.All.Properties.html#3608" class="Bound"
+      >A</a
+      > <a name="4034" href="Data.Vec.All.Properties.html#4019" class="Bound"
+      >m</a
+      ><a name="4035" class="Symbol"
+      >)</a
+      > <a name="4037" class="Symbol"
+      >{</a
+      ><a name="4038" href="Data.Vec.All.Properties.html#4038" class="Bound"
+      >ys</a
+      > <a name="4041" class="Symbol"
+      >:</a
+      > <a name="4043" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="4047" href="Data.Vec.All.Properties.html#3608" class="Bound"
+      >A</a
+      > <a name="4049" href="Data.Vec.All.Properties.html#3602" class="Bound"
+      >n</a
+      ><a name="4050" class="Symbol"
+      >}</a
+      > <a name="4052" class="Symbol"
+      >&#8594;</a
+      >
+          <a name="4064" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="4068" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="4070" class="Symbol"
+      >(</a
+      ><a name="4071" href="Data.Vec.All.Properties.html#4023" class="Bound"
+      >xs</a
+      > <a name="4074" href="Data.Vec.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="4077" href="Data.Vec.All.Properties.html#4038" class="Bound"
+      >ys</a
+      ><a name="4079" class="Symbol"
+      >)</a
+      > <a name="4081" class="Symbol"
+      >&#8594;</a
+      > <a name="4083" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="4087" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="4089" href="Data.Vec.All.Properties.html#4038" class="Bound"
+      >ys</a
+      >
+  <a name="4094" href="Data.Vec.All.Properties.html#4005" class="Function"
+      >All-++&#691;&#8315;</a
+      > <a name="4103" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      >       <a name="4112" href="Data.Vec.All.Properties.html#4112" class="Bound"
+      >pys</a
+      >        <a name="4123" class="Symbol"
+      >=</a
+      > <a name="4125" href="Data.Vec.All.Properties.html#4112" class="Bound"
+      >pys</a
+      >
+  <a name="4131" href="Data.Vec.All.Properties.html#4005" class="Function"
+      >All-++&#691;&#8315;</a
+      > <a name="4140" class="Symbol"
+      >(</a
+      ><a name="4141" href="Data.Vec.All.Properties.html#4141" class="Bound"
+      >x</a
+      > <a name="4143" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="4145" href="Data.Vec.All.Properties.html#4145" class="Bound"
+      >xs</a
+      ><a name="4147" class="Symbol"
+      >)</a
+      > <a name="4149" class="Symbol"
+      >(</a
+      ><a name="4150" href="Data.Vec.All.Properties.html#4150" class="Bound"
+      >px</a
+      > <a name="4153" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="4155" href="Data.Vec.All.Properties.html#4155" class="Bound"
+      >pxs</a
+      ><a name="4158" class="Symbol"
+      >)</a
+      > <a name="4160" class="Symbol"
+      >=</a
+      > <a name="4162" href="Data.Vec.All.Properties.html#4005" class="Function"
+      >All-++&#691;&#8315;</a
+      > <a name="4171" href="Data.Vec.All.Properties.html#4145" class="Bound"
+      >xs</a
+      > <a name="4174" href="Data.Vec.All.Properties.html#4155" class="Bound"
+      >pxs</a
+      >
+
+  <a name="4181" href="Data.Vec.All.Properties.html#4181" class="Function"
+      >All-++&#8315;</a
+      > <a name="4189" class="Symbol"
+      >:</a
+      > <a name="4191" class="Symbol"
+      >&#8704;</a
+      > <a name="4193" class="Symbol"
+      >{</a
+      ><a name="4194" href="Data.Vec.All.Properties.html#4194" class="Bound"
+      >m</a
+      ><a name="4195" class="Symbol"
+      >}</a
+      > <a name="4197" class="Symbol"
+      >(</a
+      ><a name="4198" href="Data.Vec.All.Properties.html#4198" class="Bound"
+      >xs</a
+      > <a name="4201" class="Symbol"
+      >:</a
+      > <a name="4203" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="4207" href="Data.Vec.All.Properties.html#3608" class="Bound"
+      >A</a
+      > <a name="4209" href="Data.Vec.All.Properties.html#4194" class="Bound"
+      >m</a
+      ><a name="4210" class="Symbol"
+      >)</a
+      > <a name="4212" class="Symbol"
+      >{</a
+      ><a name="4213" href="Data.Vec.All.Properties.html#4213" class="Bound"
+      >ys</a
+      > <a name="4216" class="Symbol"
+      >:</a
+      > <a name="4218" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="4222" href="Data.Vec.All.Properties.html#3608" class="Bound"
+      >A</a
+      > <a name="4224" href="Data.Vec.All.Properties.html#3602" class="Bound"
+      >n</a
+      ><a name="4225" class="Symbol"
+      >}</a
+      > <a name="4227" class="Symbol"
+      >&#8594;</a
+      >
+        <a name="4237" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="4241" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="4243" class="Symbol"
+      >(</a
+      ><a name="4244" href="Data.Vec.All.Properties.html#4198" class="Bound"
+      >xs</a
+      > <a name="4247" href="Data.Vec.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="4250" href="Data.Vec.All.Properties.html#4213" class="Bound"
+      >ys</a
+      ><a name="4252" class="Symbol"
+      >)</a
+      > <a name="4254" class="Symbol"
+      >&#8594;</a
+      > <a name="4256" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="4260" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="4262" href="Data.Vec.All.Properties.html#4198" class="Bound"
+      >xs</a
+      > <a name="4265" href="Data.Product.html#_&#215;_" class="Function Operator"
+      >&#215;</a
+      > <a name="4267" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="4271" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="4273" href="Data.Vec.All.Properties.html#4213" class="Bound"
+      >ys</a
+      >
+  <a name="4278" href="Data.Vec.All.Properties.html#4181" class="Function"
+      >All-++&#8315;</a
+      > <a name="4286" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      >       <a name="4295" href="Data.Vec.All.Properties.html#4295" class="Bound"
+      >p</a
+      >          <a name="4306" class="Symbol"
+      >=</a
+      > <a name="4308" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="4311" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="4313" href="Data.Vec.All.Properties.html#4295" class="Bound"
+      >p</a
+      >
+  <a name="4317" href="Data.Vec.All.Properties.html#4181" class="Function"
+      >All-++&#8315;</a
+      > <a name="4325" class="Symbol"
+      >(</a
+      ><a name="4326" href="Data.Vec.All.Properties.html#4326" class="Bound"
+      >x</a
+      > <a name="4328" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="4330" href="Data.Vec.All.Properties.html#4330" class="Bound"
+      >xs</a
+      ><a name="4332" class="Symbol"
+      >)</a
+      > <a name="4334" class="Symbol"
+      >(</a
+      ><a name="4335" href="Data.Vec.All.Properties.html#4335" class="Bound"
+      >px</a
+      > <a name="4338" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="4340" href="Data.Vec.All.Properties.html#4340" class="Bound"
+      >pxs</a
+      ><a name="4343" class="Symbol"
+      >)</a
+      > <a name="4345" class="Symbol"
+      >=</a
+      > <a name="4347" href="Data.Product.html#map" class="Function"
+      >Prod.map</a
+      > <a name="4356" class="Symbol"
+      >(</a
+      ><a name="4357" href="Data.Vec.All.Properties.html#4335" class="Bound"
+      >px</a
+      > <a name="4360" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;_</a
+      ><a name="4362" class="Symbol"
+      >)</a
+      > <a name="4364" href="Function.html#id" class="Function"
+      >id</a
+      > <a name="4367" class="Symbol"
+      >(</a
+      ><a name="4368" href="Data.Vec.All.Properties.html#4181" class="Function"
+      >All-++&#8315;</a
+      > <a name="4376" class="Symbol"
+      >_</a
+      > <a name="4378" href="Data.Vec.All.Properties.html#4340" class="Bound"
+      >pxs</a
+      ><a name="4381" class="Symbol"
+      >)</a
+      >
+
+  <a name="4386" href="Data.Vec.All.Properties.html#4386" class="Function"
+      >All-++&#8314;&#8728;++&#8315;</a
+      > <a name="4398" class="Symbol"
+      >:</a
+      > <a name="4400" class="Symbol"
+      >&#8704;</a
+      > <a name="4402" class="Symbol"
+      >{</a
+      ><a name="4403" href="Data.Vec.All.Properties.html#4403" class="Bound"
+      >m</a
+      ><a name="4404" class="Symbol"
+      >}</a
+      > <a name="4406" class="Symbol"
+      >(</a
+      ><a name="4407" href="Data.Vec.All.Properties.html#4407" class="Bound"
+      >xs</a
+      > <a name="4410" class="Symbol"
+      >:</a
+      > <a name="4412" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="4416" href="Data.Vec.All.Properties.html#3608" class="Bound"
+      >A</a
+      > <a name="4418" href="Data.Vec.All.Properties.html#4403" class="Bound"
+      >m</a
+      ><a name="4419" class="Symbol"
+      >)</a
+      > <a name="4421" class="Symbol"
+      >{</a
+      ><a name="4422" href="Data.Vec.All.Properties.html#4422" class="Bound"
+      >ys</a
+      > <a name="4425" class="Symbol"
+      >:</a
+      > <a name="4427" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="4431" href="Data.Vec.All.Properties.html#3608" class="Bound"
+      >A</a
+      > <a name="4433" href="Data.Vec.All.Properties.html#3602" class="Bound"
+      >n</a
+      ><a name="4434" class="Symbol"
+      >}</a
+      > <a name="4436" class="Symbol"
+      >&#8594;</a
+      >
+                <a name="4454" class="Symbol"
+      >(</a
+      ><a name="4455" href="Data.Vec.All.Properties.html#4455" class="Bound"
+      >p</a
+      > <a name="4457" class="Symbol"
+      >:</a
+      > <a name="4459" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="4463" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="4465" class="Symbol"
+      >(</a
+      ><a name="4466" href="Data.Vec.All.Properties.html#4407" class="Bound"
+      >xs</a
+      > <a name="4469" href="Data.Vec.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="4472" href="Data.Vec.All.Properties.html#4422" class="Bound"
+      >ys</a
+      ><a name="4474" class="Symbol"
+      >))</a
+      > <a name="4477" class="Symbol"
+      >&#8594;</a
+      >
+                <a name="4495" href="Data.Product.html#uncurry&#8242;" class="Function"
+      >uncurry&#8242;</a
+      > <a name="4504" href="Data.Vec.All.Properties.html#3644" class="Function"
+      >All-++&#8314;</a
+      > <a name="4512" class="Symbol"
+      >(</a
+      ><a name="4513" href="Data.Vec.All.Properties.html#4181" class="Function"
+      >All-++&#8315;</a
+      > <a name="4521" href="Data.Vec.All.Properties.html#4407" class="Bound"
+      >xs</a
+      > <a name="4524" href="Data.Vec.All.Properties.html#4455" class="Bound"
+      >p</a
+      ><a name="4525" class="Symbol"
+      >)</a
+      > <a name="4527" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >&#8801;</a
+      > <a name="4529" href="Data.Vec.All.Properties.html#4455" class="Bound"
+      >p</a
+      >
+  <a name="4533" href="Data.Vec.All.Properties.html#4386" class="Function"
+      >All-++&#8314;&#8728;++&#8315;</a
+      > <a name="4545" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      >       <a name="4554" href="Data.Vec.All.Properties.html#4554" class="Bound"
+      >p</a
+      >          <a name="4565" class="Symbol"
+      >=</a
+      > <a name="4567" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >P.refl</a
+      >
+  <a name="4576" href="Data.Vec.All.Properties.html#4386" class="Function"
+      >All-++&#8314;&#8728;++&#8315;</a
+      > <a name="4588" class="Symbol"
+      >(</a
+      ><a name="4589" href="Data.Vec.All.Properties.html#4589" class="Bound"
+      >x</a
+      > <a name="4591" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="4593" href="Data.Vec.All.Properties.html#4593" class="Bound"
+      >xs</a
+      ><a name="4595" class="Symbol"
+      >)</a
+      > <a name="4597" class="Symbol"
+      >(</a
+      ><a name="4598" href="Data.Vec.All.Properties.html#4598" class="Bound"
+      >px</a
+      > <a name="4601" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="4603" href="Data.Vec.All.Properties.html#4603" class="Bound"
+      >pxs</a
+      ><a name="4606" class="Symbol"
+      >)</a
+      > <a name="4608" class="Symbol"
+      >=</a
+      > <a name="4610" href="Relation.Binary.PropositionalEquality.html#cong" class="Function"
+      >P.cong</a
+      > <a name="4617" class="Symbol"
+      >(</a
+      ><a name="4618" href="Data.Vec.All.Properties.html#4598" class="Bound"
+      >px</a
+      > <a name="4621" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;_</a
+      ><a name="4623" class="Symbol"
+      >)</a
+      > <a name="4625" class="Symbol"
+      >(</a
+      ><a name="4626" href="Data.Vec.All.Properties.html#4386" class="Function"
+      >All-++&#8314;&#8728;++&#8315;</a
+      > <a name="4638" href="Data.Vec.All.Properties.html#4593" class="Bound"
+      >xs</a
+      > <a name="4641" href="Data.Vec.All.Properties.html#4603" class="Bound"
+      >pxs</a
+      ><a name="4644" class="Symbol"
+      >)</a
+      >
+
+  <a name="4649" href="Data.Vec.All.Properties.html#4649" class="Function"
+      >All-++&#8315;&#8728;++&#8314;</a
+      > <a name="4661" class="Symbol"
+      >:</a
+      > <a name="4663" class="Symbol"
+      >&#8704;</a
+      > <a name="4665" class="Symbol"
+      >{</a
+      ><a name="4666" href="Data.Vec.All.Properties.html#4666" class="Bound"
+      >m</a
+      ><a name="4667" class="Symbol"
+      >}</a
+      > <a name="4669" class="Symbol"
+      >{</a
+      ><a name="4670" href="Data.Vec.All.Properties.html#4670" class="Bound"
+      >xs</a
+      > <a name="4673" class="Symbol"
+      >:</a
+      > <a name="4675" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="4679" href="Data.Vec.All.Properties.html#3608" class="Bound"
+      >A</a
+      > <a name="4681" href="Data.Vec.All.Properties.html#4666" class="Bound"
+      >m</a
+      ><a name="4682" class="Symbol"
+      >}</a
+      > <a name="4684" class="Symbol"
+      >{</a
+      ><a name="4685" href="Data.Vec.All.Properties.html#4685" class="Bound"
+      >ys</a
+      > <a name="4688" class="Symbol"
+      >:</a
+      > <a name="4690" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="4694" href="Data.Vec.All.Properties.html#3608" class="Bound"
+      >A</a
+      > <a name="4696" href="Data.Vec.All.Properties.html#3602" class="Bound"
+      >n</a
+      ><a name="4697" class="Symbol"
+      >}</a
+      > <a name="4699" class="Symbol"
+      >&#8594;</a
+      >
+                <a name="4717" class="Symbol"
+      >(</a
+      ><a name="4718" href="Data.Vec.All.Properties.html#4718" class="Bound"
+      >p</a
+      > <a name="4720" class="Symbol"
+      >:</a
+      > <a name="4722" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="4726" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="4728" href="Data.Vec.All.Properties.html#4670" class="Bound"
+      >xs</a
+      > <a name="4731" href="Data.Product.html#_&#215;_" class="Function Operator"
+      >&#215;</a
+      > <a name="4733" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="4737" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="4739" href="Data.Vec.All.Properties.html#4685" class="Bound"
+      >ys</a
+      ><a name="4741" class="Symbol"
+      >)</a
+      > <a name="4743" class="Symbol"
+      >&#8594;</a
+      >
+                <a name="4761" href="Data.Vec.All.Properties.html#4181" class="Function"
+      >All-++&#8315;</a
+      > <a name="4769" href="Data.Vec.All.Properties.html#4670" class="Bound"
+      >xs</a
+      > <a name="4772" class="Symbol"
+      >(</a
+      ><a name="4773" href="Data.Product.html#uncurry" class="Function"
+      >uncurry</a
+      > <a name="4781" href="Data.Vec.All.Properties.html#3644" class="Function"
+      >All-++&#8314;</a
+      > <a name="4789" href="Data.Vec.All.Properties.html#4718" class="Bound"
+      >p</a
+      ><a name="4790" class="Symbol"
+      >)</a
+      > <a name="4792" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >&#8801;</a
+      > <a name="4794" href="Data.Vec.All.Properties.html#4718" class="Bound"
+      >p</a
+      >
+  <a name="4798" href="Data.Vec.All.Properties.html#4649" class="Function"
+      >All-++&#8315;&#8728;++&#8314;</a
+      > <a name="4810" class="Symbol"
+      >(</a
+      ><a name="4811" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >       <a name="4820" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="4822" href="Data.Vec.All.Properties.html#4822" class="Bound"
+      >pys</a
+      ><a name="4825" class="Symbol"
+      >)</a
+      > <a name="4827" class="Symbol"
+      >=</a
+      > <a name="4829" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >P.refl</a
+      >
+  <a name="4838" href="Data.Vec.All.Properties.html#4649" class="Function"
+      >All-++&#8315;&#8728;++&#8314;</a
+      > <a name="4850" class="Symbol"
+      >(</a
+      ><a name="4851" href="Data.Vec.All.Properties.html#4851" class="Bound"
+      >px</a
+      > <a name="4854" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="4856" href="Data.Vec.All.Properties.html#4856" class="Bound"
+      >pxs</a
+      > <a name="4860" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="4862" href="Data.Vec.All.Properties.html#4862" class="Bound"
+      >pys</a
+      ><a name="4865" class="Symbol"
+      >)</a
+      > <a name="4867" class="Keyword"
+      >rewrite</a
+      > <a name="4875" href="Data.Vec.All.Properties.html#4649" class="Function"
+      >All-++&#8315;&#8728;++&#8314;</a
+      > <a name="4887" class="Symbol"
+      >(</a
+      ><a name="4888" href="Data.Vec.All.Properties.html#4856" class="Bound"
+      >pxs</a
+      > <a name="4892" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="4894" href="Data.Vec.All.Properties.html#4862" class="Bound"
+      >pys</a
+      ><a name="4897" class="Symbol"
+      >)</a
+      > <a name="4899" class="Symbol"
+      >=</a
+      > <a name="4901" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >P.refl</a
+      >
+
+  <a name="4911" href="Data.Vec.All.Properties.html#4911" class="Function"
+      >++&#8596;</a
+      > <a name="4915" class="Symbol"
+      >:</a
+      > <a name="4917" class="Symbol"
+      >&#8704;</a
+      > <a name="4919" class="Symbol"
+      >{</a
+      ><a name="4920" href="Data.Vec.All.Properties.html#4920" class="Bound"
+      >m</a
+      ><a name="4921" class="Symbol"
+      >}</a
+      > <a name="4923" class="Symbol"
+      >{</a
+      ><a name="4924" href="Data.Vec.All.Properties.html#4924" class="Bound"
+      >xs</a
+      > <a name="4927" class="Symbol"
+      >:</a
+      > <a name="4929" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="4933" href="Data.Vec.All.Properties.html#3608" class="Bound"
+      >A</a
+      > <a name="4935" href="Data.Vec.All.Properties.html#4920" class="Bound"
+      >m</a
+      ><a name="4936" class="Symbol"
+      >}</a
+      > <a name="4938" class="Symbol"
+      >{</a
+      ><a name="4939" href="Data.Vec.All.Properties.html#4939" class="Bound"
+      >ys</a
+      > <a name="4942" class="Symbol"
+      >:</a
+      > <a name="4944" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="4948" href="Data.Vec.All.Properties.html#3608" class="Bound"
+      >A</a
+      > <a name="4950" href="Data.Vec.All.Properties.html#3602" class="Bound"
+      >n</a
+      ><a name="4951" class="Symbol"
+      >}</a
+      > <a name="4953" class="Symbol"
+      >&#8594;</a
+      >
+        <a name="4963" class="Symbol"
+      >(</a
+      ><a name="4964" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="4968" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="4970" href="Data.Vec.All.Properties.html#4924" class="Bound"
+      >xs</a
+      > <a name="4973" href="Data.Product.html#_&#215;_" class="Function Operator"
+      >&#215;</a
+      > <a name="4975" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="4979" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="4981" href="Data.Vec.All.Properties.html#4939" class="Bound"
+      >ys</a
+      ><a name="4983" class="Symbol"
+      >)</a
+      > <a name="4985" href="Function.Inverse.html#_&#8596;_" class="Function Operator"
+      >&#8596;</a
+      > <a name="4987" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="4991" href="Data.Vec.All.Properties.html#3620" class="Bound"
+      >P</a
+      > <a name="4993" class="Symbol"
+      >(</a
+      ><a name="4994" href="Data.Vec.All.Properties.html#4924" class="Bound"
+      >xs</a
+      > <a name="4997" href="Data.Vec.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="5000" href="Data.Vec.All.Properties.html#4939" class="Bound"
+      >ys</a
+      ><a name="5002" class="Symbol"
+      >)</a
+      >
+  <a name="5006" href="Data.Vec.All.Properties.html#4911" class="Function"
+      >++&#8596;</a
+      > <a name="5010" class="Symbol"
+      >{</a
+      ><a name="5011" class="Argument"
+      >xs</a
+      > <a name="5014" class="Symbol"
+      >=</a
+      > <a name="5016" href="Data.Vec.All.Properties.html#5016" class="Bound"
+      >xs</a
+      ><a name="5018" class="Symbol"
+      >}</a
+      > <a name="5020" class="Symbol"
+      >=</a
+      > <a name="5022" class="Keyword"
+      >record</a
+      >
+    <a name="5033" class="Symbol"
+      >{</a
+      > <a name="5035" class="Field"
+      >to</a
+      >         <a name="5046" class="Symbol"
+      >=</a
+      > <a name="5048" href="Relation.Binary.PropositionalEquality.html#&#8594;-to-&#10230;" class="Function"
+      >P.&#8594;-to-&#10230;</a
+      > <a name="5057" href="Function.html#_$_" class="Function Operator"
+      >$</a
+      > <a name="5059" href="Data.Product.html#uncurry" class="Function"
+      >uncurry</a
+      > <a name="5067" href="Data.Vec.All.Properties.html#3644" class="Function"
+      >All-++&#8314;</a
+      >
+    <a name="5079" class="Symbol"
+      >;</a
+      > <a name="5081" class="Field"
+      >from</a
+      >       <a name="5092" class="Symbol"
+      >=</a
+      > <a name="5094" href="Relation.Binary.PropositionalEquality.html#&#8594;-to-&#10230;" class="Function"
+      >P.&#8594;-to-&#10230;</a
+      > <a name="5103" href="Function.html#_$_" class="Function Operator"
+      >$</a
+      > <a name="5105" href="Data.Vec.All.Properties.html#4181" class="Function"
+      >All-++&#8315;</a
+      > <a name="5113" href="Data.Vec.All.Properties.html#5016" class="Bound"
+      >xs</a
+      >
+    <a name="5120" class="Symbol"
+      >;</a
+      > <a name="5122" class="Field"
+      >inverse-of</a
+      > <a name="5133" class="Symbol"
+      >=</a
+      > <a name="5135" class="Keyword"
+      >record</a
+      >
+      <a name="5148" class="Symbol"
+      >{</a
+      > <a name="5150" class="Field"
+      >left-inverse-of</a
+      >  <a name="5167" class="Symbol"
+      >=</a
+      > <a name="5169" href="Data.Vec.All.Properties.html#4649" class="Function"
+      >All-++&#8315;&#8728;++&#8314;</a
+      >
+      <a name="5187" class="Symbol"
+      >;</a
+      > <a name="5189" class="Field"
+      >right-inverse-of</a
+      > <a name="5206" class="Symbol"
+      >=</a
+      > <a name="5208" href="Data.Vec.All.Properties.html#4386" class="Function"
+      >All-++&#8314;&#8728;++&#8315;</a
+      > <a name="5220" href="Data.Vec.All.Properties.html#5016" class="Bound"
+      >xs</a
+      >
+      <a name="5229" class="Symbol"
+      >}</a
+      >
+    <a name="5235" class="Symbol"
+      >}</a
+      >
+
+<a name="5238" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="5311" class="Comment"
+      >-- All&#8322; and _++_</a
+      >
+
+<a name="5329" class="Keyword"
+      >module</a
+      > <a name="5336" href="Data.Vec.All.Properties.html#5336" class="Module"
+      >_</a
+      > <a name="5338" class="Symbol"
+      >{</a
+      ><a name="5339" href="Data.Vec.All.Properties.html#5339" class="Bound"
+      >a</a
+      > <a name="5341" href="Data.Vec.All.Properties.html#5341" class="Bound"
+      >b</a
+      > <a name="5343" href="Data.Vec.All.Properties.html#5343" class="Bound"
+      >n</a
+      > <a name="5345" href="Data.Vec.All.Properties.html#5345" class="Bound"
+      >p</a
+      ><a name="5346" class="Symbol"
+      >}</a
+      > <a name="5348" class="Symbol"
+      >{</a
+      ><a name="5349" href="Data.Vec.All.Properties.html#5349" class="Bound"
+      >A</a
+      > <a name="5351" class="Symbol"
+      >:</a
+      > <a name="5353" class="PrimitiveType"
+      >Set</a
+      > <a name="5357" href="Data.Vec.All.Properties.html#5339" class="Bound"
+      >a</a
+      ><a name="5358" class="Symbol"
+      >}</a
+      > <a name="5360" class="Symbol"
+      >{</a
+      ><a name="5361" href="Data.Vec.All.Properties.html#5361" class="Bound"
+      >B</a
+      > <a name="5363" class="Symbol"
+      >:</a
+      > <a name="5365" class="PrimitiveType"
+      >Set</a
+      > <a name="5369" href="Data.Vec.All.Properties.html#5341" class="Bound"
+      >b</a
+      ><a name="5370" class="Symbol"
+      >}</a
+      > <a name="5372" class="Symbol"
+      >{</a
+      ><a name="5373" href="Data.Vec.All.Properties.html#5373" class="Bound Operator"
+      >_~_</a
+      > <a name="5377" class="Symbol"
+      >:</a
+      > <a name="5379" href="Relation.Binary.Core.html#REL" class="Function"
+      >REL</a
+      > <a name="5383" href="Data.Vec.All.Properties.html#5349" class="Bound"
+      >A</a
+      > <a name="5385" href="Data.Vec.All.Properties.html#5361" class="Bound"
+      >B</a
+      > <a name="5387" href="Data.Vec.All.Properties.html#5345" class="Bound"
+      >p</a
+      ><a name="5388" class="Symbol"
+      >}</a
+      > <a name="5390" class="Keyword"
+      >where</a
+      >
+
+  <a name="5399" href="Data.Vec.All.Properties.html#5399" class="Function"
+      >All&#8322;-++&#8314;</a
+      > <a name="5408" class="Symbol"
+      >:</a
+      > <a name="5410" class="Symbol"
+      >&#8704;</a
+      > <a name="5412" class="Symbol"
+      >{</a
+      ><a name="5413" href="Data.Vec.All.Properties.html#5413" class="Bound"
+      >m</a
+      ><a name="5414" class="Symbol"
+      >}</a
+      > <a name="5416" class="Symbol"
+      >{</a
+      ><a name="5417" href="Data.Vec.All.Properties.html#5417" class="Bound"
+      >ws</a
+      > <a name="5420" class="Symbol"
+      >:</a
+      > <a name="5422" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="5426" href="Data.Vec.All.Properties.html#5349" class="Bound"
+      >A</a
+      > <a name="5428" href="Data.Vec.All.Properties.html#5413" class="Bound"
+      >m</a
+      ><a name="5429" class="Symbol"
+      >}</a
+      > <a name="5431" class="Symbol"
+      >{</a
+      ><a name="5432" href="Data.Vec.All.Properties.html#5432" class="Bound"
+      >xs</a
+      ><a name="5434" class="Symbol"
+      >}</a
+      > <a name="5436" class="Symbol"
+      >{</a
+      ><a name="5437" href="Data.Vec.All.Properties.html#5437" class="Bound"
+      >ys</a
+      > <a name="5440" class="Symbol"
+      >:</a
+      > <a name="5442" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="5446" href="Data.Vec.All.Properties.html#5349" class="Bound"
+      >A</a
+      > <a name="5448" href="Data.Vec.All.Properties.html#5343" class="Bound"
+      >n</a
+      ><a name="5449" class="Symbol"
+      >}</a
+      > <a name="5451" class="Symbol"
+      >{</a
+      ><a name="5452" href="Data.Vec.All.Properties.html#5452" class="Bound"
+      >zs</a
+      ><a name="5454" class="Symbol"
+      >}</a
+      > <a name="5456" class="Symbol"
+      >&#8594;</a
+      >
+           <a name="5469" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="5474" href="Data.Vec.All.Properties.html#5373" class="Bound Operator"
+      >_~_</a
+      > <a name="5478" href="Data.Vec.All.Properties.html#5417" class="Bound"
+      >ws</a
+      > <a name="5481" href="Data.Vec.All.Properties.html#5432" class="Bound"
+      >xs</a
+      > <a name="5484" class="Symbol"
+      >&#8594;</a
+      > <a name="5486" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="5491" href="Data.Vec.All.Properties.html#5373" class="Bound Operator"
+      >_~_</a
+      > <a name="5495" href="Data.Vec.All.Properties.html#5437" class="Bound"
+      >ys</a
+      > <a name="5498" href="Data.Vec.All.Properties.html#5452" class="Bound"
+      >zs</a
+      > <a name="5501" class="Symbol"
+      >&#8594;</a
+      >
+           <a name="5514" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="5519" href="Data.Vec.All.Properties.html#5373" class="Bound Operator"
+      >_~_</a
+      > <a name="5523" class="Symbol"
+      >(</a
+      ><a name="5524" href="Data.Vec.All.Properties.html#5417" class="Bound"
+      >ws</a
+      > <a name="5527" href="Data.Vec.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="5530" href="Data.Vec.All.Properties.html#5437" class="Bound"
+      >ys</a
+      ><a name="5532" class="Symbol"
+      >)</a
+      > <a name="5534" class="Symbol"
+      >(</a
+      ><a name="5535" href="Data.Vec.All.Properties.html#5432" class="Bound"
+      >xs</a
+      > <a name="5538" href="Data.Vec.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="5541" href="Data.Vec.All.Properties.html#5452" class="Bound"
+      >zs</a
+      ><a name="5543" class="Symbol"
+      >)</a
+      >
+  <a name="5547" href="Data.Vec.All.Properties.html#5399" class="Function"
+      >All&#8322;-++&#8314;</a
+      > <a name="5556" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      >            <a name="5570" href="Data.Vec.All.Properties.html#5570" class="Bound"
+      >ys~zs</a
+      > <a name="5576" class="Symbol"
+      >=</a
+      > <a name="5578" href="Data.Vec.All.Properties.html#5570" class="Bound"
+      >ys~zs</a
+      >
+  <a name="5586" href="Data.Vec.All.Properties.html#5399" class="Function"
+      >All&#8322;-++&#8314;</a
+      > <a name="5595" class="Symbol"
+      >(</a
+      ><a name="5596" href="Data.Vec.All.Properties.html#5596" class="Bound"
+      >w~x</a
+      > <a name="5600" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="5602" href="Data.Vec.All.Properties.html#5602" class="Bound"
+      >ws~xs</a
+      ><a name="5607" class="Symbol"
+      >)</a
+      > <a name="5609" href="Data.Vec.All.Properties.html#5609" class="Bound"
+      >ys~zs</a
+      > <a name="5615" class="Symbol"
+      >=</a
+      > <a name="5617" href="Data.Vec.All.Properties.html#5596" class="Bound"
+      >w~x</a
+      > <a name="5621" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="5623" class="Symbol"
+      >(</a
+      ><a name="5624" href="Data.Vec.All.Properties.html#5399" class="Function"
+      >All&#8322;-++&#8314;</a
+      > <a name="5633" href="Data.Vec.All.Properties.html#5602" class="Bound"
+      >ws~xs</a
+      > <a name="5639" href="Data.Vec.All.Properties.html#5609" class="Bound"
+      >ys~zs</a
+      ><a name="5644" class="Symbol"
+      >)</a
+      >
+
+  <a name="5649" href="Data.Vec.All.Properties.html#5649" class="Function"
+      >All&#8322;-++&#737;&#8315;</a
+      > <a name="5659" class="Symbol"
+      >:</a
+      > <a name="5661" class="Symbol"
+      >&#8704;</a
+      > <a name="5663" class="Symbol"
+      >{</a
+      ><a name="5664" href="Data.Vec.All.Properties.html#5664" class="Bound"
+      >m</a
+      ><a name="5665" class="Symbol"
+      >}</a
+      > <a name="5667" class="Symbol"
+      >(</a
+      ><a name="5668" href="Data.Vec.All.Properties.html#5668" class="Bound"
+      >ws</a
+      > <a name="5671" class="Symbol"
+      >:</a
+      > <a name="5673" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="5677" href="Data.Vec.All.Properties.html#5349" class="Bound"
+      >A</a
+      > <a name="5679" href="Data.Vec.All.Properties.html#5664" class="Bound"
+      >m</a
+      ><a name="5680" class="Symbol"
+      >)</a
+      > <a name="5682" href="Data.Vec.All.Properties.html#5682" class="Bound"
+      >xs</a
+      > <a name="5685" class="Symbol"
+      >{</a
+      ><a name="5686" href="Data.Vec.All.Properties.html#5686" class="Bound"
+      >ys</a
+      > <a name="5689" class="Symbol"
+      >:</a
+      > <a name="5691" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="5695" href="Data.Vec.All.Properties.html#5349" class="Bound"
+      >A</a
+      > <a name="5697" href="Data.Vec.All.Properties.html#5343" class="Bound"
+      >n</a
+      ><a name="5698" class="Symbol"
+      >}</a
+      > <a name="5700" class="Symbol"
+      >{</a
+      ><a name="5701" href="Data.Vec.All.Properties.html#5701" class="Bound"
+      >zs</a
+      ><a name="5703" class="Symbol"
+      >}</a
+      > <a name="5705" class="Symbol"
+      >&#8594;</a
+      >
+           <a name="5718" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="5723" href="Data.Vec.All.Properties.html#5373" class="Bound Operator"
+      >_~_</a
+      > <a name="5727" class="Symbol"
+      >(</a
+      ><a name="5728" href="Data.Vec.All.Properties.html#5668" class="Bound"
+      >ws</a
+      > <a name="5731" href="Data.Vec.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="5734" href="Data.Vec.All.Properties.html#5686" class="Bound"
+      >ys</a
+      ><a name="5736" class="Symbol"
+      >)</a
+      > <a name="5738" class="Symbol"
+      >(</a
+      ><a name="5739" href="Data.Vec.All.Properties.html#5682" class="Bound"
+      >xs</a
+      > <a name="5742" href="Data.Vec.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="5745" href="Data.Vec.All.Properties.html#5701" class="Bound"
+      >zs</a
+      ><a name="5747" class="Symbol"
+      >)</a
+      > <a name="5749" class="Symbol"
+      >&#8594;</a
+      > <a name="5751" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="5756" href="Data.Vec.All.Properties.html#5373" class="Bound Operator"
+      >_~_</a
+      > <a name="5760" href="Data.Vec.All.Properties.html#5668" class="Bound"
+      >ws</a
+      > <a name="5763" href="Data.Vec.All.Properties.html#5682" class="Bound"
+      >xs</a
+      >
+  <a name="5768" href="Data.Vec.All.Properties.html#5649" class="Function"
+      >All&#8322;-++&#737;&#8315;</a
+      > <a name="5778" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      >       <a name="5787" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      >        <a name="5797" class="Symbol"
+      >_</a
+      >                    <a name="5818" class="Symbol"
+      >=</a
+      > <a name="5820" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      >
+  <a name="5825" href="Data.Vec.All.Properties.html#5649" class="Function"
+      >All&#8322;-++&#737;&#8315;</a
+      > <a name="5835" class="Symbol"
+      >(</a
+      ><a name="5836" href="Data.Vec.All.Properties.html#5836" class="Bound"
+      >w</a
+      > <a name="5838" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="5840" href="Data.Vec.All.Properties.html#5840" class="Bound"
+      >ws</a
+      ><a name="5842" class="Symbol"
+      >)</a
+      > <a name="5844" class="Symbol"
+      >(</a
+      ><a name="5845" href="Data.Vec.All.Properties.html#5845" class="Bound"
+      >x</a
+      > <a name="5847" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="5849" href="Data.Vec.All.Properties.html#5849" class="Bound"
+      >xs</a
+      ><a name="5851" class="Symbol"
+      >)</a
+      > <a name="5853" class="Symbol"
+      >(</a
+      ><a name="5854" href="Data.Vec.All.Properties.html#5854" class="Bound"
+      >w~x</a
+      > <a name="5858" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="5860" href="Data.Vec.All.Properties.html#5860" class="Bound"
+      >ps</a
+      ><a name="5862" class="Symbol"
+      >)</a
+      > <a name="5864" class="Symbol"
+      >=</a
+      > <a name="5866" href="Data.Vec.All.Properties.html#5854" class="Bound"
+      >w~x</a
+      > <a name="5870" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="5872" href="Data.Vec.All.Properties.html#5649" class="Function"
+      >All&#8322;-++&#737;&#8315;</a
+      > <a name="5882" href="Data.Vec.All.Properties.html#5840" class="Bound"
+      >ws</a
+      > <a name="5885" href="Data.Vec.All.Properties.html#5849" class="Bound"
+      >xs</a
+      > <a name="5888" href="Data.Vec.All.Properties.html#5860" class="Bound"
+      >ps</a
+      >
+
+  <a name="5894" href="Data.Vec.All.Properties.html#5894" class="Function"
+      >All&#8322;-++&#691;&#8315;</a
+      > <a name="5904" class="Symbol"
+      >:</a
+      > <a name="5906" class="Symbol"
+      >&#8704;</a
+      > <a name="5908" class="Symbol"
+      >{</a
+      ><a name="5909" href="Data.Vec.All.Properties.html#5909" class="Bound"
+      >m</a
+      ><a name="5910" class="Symbol"
+      >}</a
+      > <a name="5912" class="Symbol"
+      >(</a
+      ><a name="5913" href="Data.Vec.All.Properties.html#5913" class="Bound"
+      >ws</a
+      > <a name="5916" class="Symbol"
+      >:</a
+      > <a name="5918" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="5922" href="Data.Vec.All.Properties.html#5349" class="Bound"
+      >A</a
+      > <a name="5924" href="Data.Vec.All.Properties.html#5909" class="Bound"
+      >m</a
+      ><a name="5925" class="Symbol"
+      >)</a
+      > <a name="5927" class="Symbol"
+      >(</a
+      ><a name="5928" href="Data.Vec.All.Properties.html#5928" class="Bound"
+      >xs</a
+      > <a name="5931" class="Symbol"
+      >:</a
+      > <a name="5933" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="5937" href="Data.Vec.All.Properties.html#5361" class="Bound"
+      >B</a
+      > <a name="5939" href="Data.Vec.All.Properties.html#5909" class="Bound"
+      >m</a
+      ><a name="5940" class="Symbol"
+      >)</a
+      > <a name="5942" class="Symbol"
+      >{</a
+      ><a name="5943" href="Data.Vec.All.Properties.html#5943" class="Bound"
+      >ys</a
+      > <a name="5946" class="Symbol"
+      >:</a
+      > <a name="5948" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="5952" href="Data.Vec.All.Properties.html#5349" class="Bound"
+      >A</a
+      > <a name="5954" href="Data.Vec.All.Properties.html#5343" class="Bound"
+      >n</a
+      ><a name="5955" class="Symbol"
+      >}</a
+      > <a name="5957" class="Symbol"
+      >{</a
+      ><a name="5958" href="Data.Vec.All.Properties.html#5958" class="Bound"
+      >zs</a
+      ><a name="5960" class="Symbol"
+      >}</a
+      > <a name="5962" class="Symbol"
+      >&#8594;</a
+      >
+           <a name="5975" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="5980" href="Data.Vec.All.Properties.html#5373" class="Bound Operator"
+      >_~_</a
+      > <a name="5984" class="Symbol"
+      >(</a
+      ><a name="5985" href="Data.Vec.All.Properties.html#5913" class="Bound"
+      >ws</a
+      > <a name="5988" href="Data.Vec.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="5991" href="Data.Vec.All.Properties.html#5943" class="Bound"
+      >ys</a
+      ><a name="5993" class="Symbol"
+      >)</a
+      > <a name="5995" class="Symbol"
+      >(</a
+      ><a name="5996" href="Data.Vec.All.Properties.html#5928" class="Bound"
+      >xs</a
+      > <a name="5999" href="Data.Vec.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="6002" href="Data.Vec.All.Properties.html#5958" class="Bound"
+      >zs</a
+      ><a name="6004" class="Symbol"
+      >)</a
+      > <a name="6006" class="Symbol"
+      >&#8594;</a
+      > <a name="6008" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="6013" href="Data.Vec.All.Properties.html#5373" class="Bound Operator"
+      >_~_</a
+      > <a name="6017" href="Data.Vec.All.Properties.html#5943" class="Bound"
+      >ys</a
+      > <a name="6020" href="Data.Vec.All.Properties.html#5958" class="Bound"
+      >zs</a
+      >
+  <a name="6025" href="Data.Vec.All.Properties.html#5894" class="Function"
+      >All&#8322;-++&#691;&#8315;</a
+      > <a name="6035" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="6038" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="6041" href="Data.Vec.All.Properties.html#6041" class="Bound"
+      >ys~zs</a
+      > <a name="6047" class="Symbol"
+      >=</a
+      > <a name="6049" href="Data.Vec.All.Properties.html#6041" class="Bound"
+      >ys~zs</a
+      >
+  <a name="6057" href="Data.Vec.All.Properties.html#5894" class="Function"
+      >All&#8322;-++&#691;&#8315;</a
+      > <a name="6067" class="Symbol"
+      >(</a
+      ><a name="6068" href="Data.Vec.All.Properties.html#6068" class="Bound"
+      >w</a
+      > <a name="6070" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="6072" href="Data.Vec.All.Properties.html#6072" class="Bound"
+      >ws</a
+      ><a name="6074" class="Symbol"
+      >)</a
+      > <a name="6076" class="Symbol"
+      >(</a
+      ><a name="6077" href="Data.Vec.All.Properties.html#6077" class="Bound"
+      >x</a
+      > <a name="6079" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="6081" href="Data.Vec.All.Properties.html#6081" class="Bound"
+      >xs</a
+      ><a name="6083" class="Symbol"
+      >)</a
+      > <a name="6085" class="Symbol"
+      >(_</a
+      > <a name="6088" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="6090" href="Data.Vec.All.Properties.html#6090" class="Bound"
+      >ps</a
+      ><a name="6092" class="Symbol"
+      >)</a
+      > <a name="6094" class="Symbol"
+      >=</a
+      > <a name="6096" href="Data.Vec.All.Properties.html#5894" class="Function"
+      >All&#8322;-++&#691;&#8315;</a
+      > <a name="6106" href="Data.Vec.All.Properties.html#6072" class="Bound"
+      >ws</a
+      > <a name="6109" href="Data.Vec.All.Properties.html#6081" class="Bound"
+      >xs</a
+      > <a name="6112" href="Data.Vec.All.Properties.html#6090" class="Bound"
+      >ps</a
+      >
+
+  <a name="6118" href="Data.Vec.All.Properties.html#6118" class="Function"
+      >All&#8322;-++&#8315;</a
+      > <a name="6127" class="Symbol"
+      >:</a
+      > <a name="6129" class="Symbol"
+      >&#8704;</a
+      > <a name="6131" class="Symbol"
+      >{</a
+      ><a name="6132" href="Data.Vec.All.Properties.html#6132" class="Bound"
+      >m</a
+      ><a name="6133" class="Symbol"
+      >}</a
+      > <a name="6135" class="Symbol"
+      >(</a
+      ><a name="6136" href="Data.Vec.All.Properties.html#6136" class="Bound"
+      >ws</a
+      > <a name="6139" class="Symbol"
+      >:</a
+      > <a name="6141" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="6145" href="Data.Vec.All.Properties.html#5349" class="Bound"
+      >A</a
+      > <a name="6147" href="Data.Vec.All.Properties.html#6132" class="Bound"
+      >m</a
+      ><a name="6148" class="Symbol"
+      >)</a
+      > <a name="6150" class="Symbol"
+      >(</a
+      ><a name="6151" href="Data.Vec.All.Properties.html#6151" class="Bound"
+      >xs</a
+      > <a name="6154" class="Symbol"
+      >:</a
+      > <a name="6156" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="6160" href="Data.Vec.All.Properties.html#5361" class="Bound"
+      >B</a
+      > <a name="6162" href="Data.Vec.All.Properties.html#6132" class="Bound"
+      >m</a
+      ><a name="6163" class="Symbol"
+      >)</a
+      > <a name="6165" class="Symbol"
+      >{</a
+      ><a name="6166" href="Data.Vec.All.Properties.html#6166" class="Bound"
+      >ys</a
+      > <a name="6169" class="Symbol"
+      >:</a
+      > <a name="6171" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="6175" href="Data.Vec.All.Properties.html#5349" class="Bound"
+      >A</a
+      > <a name="6177" href="Data.Vec.All.Properties.html#5343" class="Bound"
+      >n</a
+      ><a name="6178" class="Symbol"
+      >}</a
+      > <a name="6180" class="Symbol"
+      >{</a
+      ><a name="6181" href="Data.Vec.All.Properties.html#6181" class="Bound"
+      >zs</a
+      ><a name="6183" class="Symbol"
+      >}</a
+      > <a name="6185" class="Symbol"
+      >&#8594;</a
+      >
+           <a name="6198" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="6203" href="Data.Vec.All.Properties.html#5373" class="Bound Operator"
+      >_~_</a
+      > <a name="6207" class="Symbol"
+      >(</a
+      ><a name="6208" href="Data.Vec.All.Properties.html#6136" class="Bound"
+      >ws</a
+      > <a name="6211" href="Data.Vec.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="6214" href="Data.Vec.All.Properties.html#6166" class="Bound"
+      >ys</a
+      ><a name="6216" class="Symbol"
+      >)</a
+      > <a name="6218" class="Symbol"
+      >(</a
+      ><a name="6219" href="Data.Vec.All.Properties.html#6151" class="Bound"
+      >xs</a
+      > <a name="6222" href="Data.Vec.html#_++_" class="Function Operator"
+      >++</a
+      > <a name="6225" href="Data.Vec.All.Properties.html#6181" class="Bound"
+      >zs</a
+      ><a name="6227" class="Symbol"
+      >)</a
+      > <a name="6229" class="Symbol"
+      >&#8594;</a
+      >
+           <a name="6242" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="6247" href="Data.Vec.All.Properties.html#5373" class="Bound Operator"
+      >_~_</a
+      > <a name="6251" href="Data.Vec.All.Properties.html#6136" class="Bound"
+      >ws</a
+      > <a name="6254" href="Data.Vec.All.Properties.html#6151" class="Bound"
+      >xs</a
+      > <a name="6257" href="Data.Product.html#_&#215;_" class="Function Operator"
+      >&#215;</a
+      > <a name="6259" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="6264" href="Data.Vec.All.Properties.html#5373" class="Bound Operator"
+      >_~_</a
+      > <a name="6268" href="Data.Vec.All.Properties.html#6166" class="Bound"
+      >ys</a
+      > <a name="6271" href="Data.Vec.All.Properties.html#6181" class="Bound"
+      >zs</a
+      >
+  <a name="6276" href="Data.Vec.All.Properties.html#6118" class="Function"
+      >All&#8322;-++&#8315;</a
+      > <a name="6285" href="Data.Vec.All.Properties.html#6285" class="Bound"
+      >ws</a
+      > <a name="6288" href="Data.Vec.All.Properties.html#6288" class="Bound"
+      >xs</a
+      > <a name="6291" href="Data.Vec.All.Properties.html#6291" class="Bound"
+      >ps</a
+      > <a name="6294" class="Symbol"
+      >=</a
+      > <a name="6296" href="Data.Vec.All.Properties.html#5649" class="Function"
+      >All&#8322;-++&#737;&#8315;</a
+      > <a name="6306" href="Data.Vec.All.Properties.html#6285" class="Bound"
+      >ws</a
+      > <a name="6309" href="Data.Vec.All.Properties.html#6288" class="Bound"
+      >xs</a
+      > <a name="6312" href="Data.Vec.All.Properties.html#6291" class="Bound"
+      >ps</a
+      > <a name="6315" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="6317" href="Data.Vec.All.Properties.html#5894" class="Function"
+      >All&#8322;-++&#691;&#8315;</a
+      > <a name="6327" href="Data.Vec.All.Properties.html#6285" class="Bound"
+      >ws</a
+      > <a name="6330" href="Data.Vec.All.Properties.html#6288" class="Bound"
+      >xs</a
+      > <a name="6333" href="Data.Vec.All.Properties.html#6291" class="Bound"
+      >ps</a
+      >
+
+<a name="6337" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="6410" class="Comment"
+      >-- All and concat</a
+      >
+
+<a name="6429" class="Keyword"
+      >module</a
+      > <a name="6436" href="Data.Vec.All.Properties.html#6436" class="Module"
+      >_</a
+      > <a name="6438" class="Symbol"
+      >{</a
+      ><a name="6439" href="Data.Vec.All.Properties.html#6439" class="Bound"
+      >a</a
+      > <a name="6441" href="Data.Vec.All.Properties.html#6441" class="Bound"
+      >m</a
+      > <a name="6443" href="Data.Vec.All.Properties.html#6443" class="Bound"
+      >p</a
+      ><a name="6444" class="Symbol"
+      >}</a
+      > <a name="6446" class="Symbol"
+      >{</a
+      ><a name="6447" href="Data.Vec.All.Properties.html#6447" class="Bound"
+      >A</a
+      > <a name="6449" class="Symbol"
+      >:</a
+      > <a name="6451" class="PrimitiveType"
+      >Set</a
+      > <a name="6455" href="Data.Vec.All.Properties.html#6439" class="Bound"
+      >a</a
+      ><a name="6456" class="Symbol"
+      >}</a
+      > <a name="6458" class="Symbol"
+      >{</a
+      ><a name="6459" href="Data.Vec.All.Properties.html#6459" class="Bound"
+      >P</a
+      > <a name="6461" class="Symbol"
+      >:</a
+      > <a name="6463" href="Data.Vec.All.Properties.html#6447" class="Bound"
+      >A</a
+      > <a name="6465" class="Symbol"
+      >&#8594;</a
+      > <a name="6467" class="PrimitiveType"
+      >Set</a
+      > <a name="6471" href="Data.Vec.All.Properties.html#6443" class="Bound"
+      >p</a
+      ><a name="6472" class="Symbol"
+      >}</a
+      > <a name="6474" class="Keyword"
+      >where</a
+      >
+
+  <a name="6483" href="Data.Vec.All.Properties.html#6483" class="Function"
+      >All-concat&#8314;</a
+      > <a name="6495" class="Symbol"
+      >:</a
+      > <a name="6497" class="Symbol"
+      >&#8704;</a
+      > <a name="6499" class="Symbol"
+      >{</a
+      ><a name="6500" href="Data.Vec.All.Properties.html#6500" class="Bound"
+      >n</a
+      ><a name="6501" class="Symbol"
+      >}</a
+      > <a name="6503" class="Symbol"
+      >{</a
+      ><a name="6504" href="Data.Vec.All.Properties.html#6504" class="Bound"
+      >xss</a
+      > <a name="6508" class="Symbol"
+      >:</a
+      > <a name="6510" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="6514" class="Symbol"
+      >(</a
+      ><a name="6515" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="6519" href="Data.Vec.All.Properties.html#6447" class="Bound"
+      >A</a
+      > <a name="6521" href="Data.Vec.All.Properties.html#6441" class="Bound"
+      >m</a
+      ><a name="6522" class="Symbol"
+      >)</a
+      > <a name="6524" href="Data.Vec.All.Properties.html#6500" class="Bound"
+      >n</a
+      ><a name="6525" class="Symbol"
+      >}</a
+      > <a name="6527" class="Symbol"
+      >&#8594;</a
+      >
+                  <a name="6547" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="6551" class="Symbol"
+      >(</a
+      ><a name="6552" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="6556" href="Data.Vec.All.Properties.html#6459" class="Bound"
+      >P</a
+      ><a name="6557" class="Symbol"
+      >)</a
+      > <a name="6559" href="Data.Vec.All.Properties.html#6504" class="Bound"
+      >xss</a
+      > <a name="6563" class="Symbol"
+      >&#8594;</a
+      > <a name="6565" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="6569" href="Data.Vec.All.Properties.html#6459" class="Bound"
+      >P</a
+      > <a name="6571" class="Symbol"
+      >(</a
+      ><a name="6572" href="Data.Vec.html#concat" class="Function"
+      >concat</a
+      > <a name="6579" href="Data.Vec.All.Properties.html#6504" class="Bound"
+      >xss</a
+      ><a name="6582" class="Symbol"
+      >)</a
+      >
+  <a name="6586" href="Data.Vec.All.Properties.html#6483" class="Function"
+      >All-concat&#8314;</a
+      > <a name="6598" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="6601" class="Symbol"
+      >=</a
+      > <a name="6603" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >
+  <a name="6608" href="Data.Vec.All.Properties.html#6483" class="Function"
+      >All-concat&#8314;</a
+      > <a name="6620" class="Symbol"
+      >(</a
+      ><a name="6621" href="Data.Vec.All.Properties.html#6621" class="Bound"
+      >pxs</a
+      > <a name="6625" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="6627" href="Data.Vec.All.Properties.html#6627" class="Bound"
+      >pxss</a
+      ><a name="6631" class="Symbol"
+      >)</a
+      > <a name="6633" class="Symbol"
+      >=</a
+      > <a name="6635" href="Data.Vec.All.Properties.html#3644" class="Function"
+      >All-++&#8314;</a
+      > <a name="6643" href="Data.Vec.All.Properties.html#6621" class="Bound"
+      >pxs</a
+      > <a name="6647" class="Symbol"
+      >(</a
+      ><a name="6648" href="Data.Vec.All.Properties.html#6483" class="Function"
+      >All-concat&#8314;</a
+      > <a name="6660" href="Data.Vec.All.Properties.html#6627" class="Bound"
+      >pxss</a
+      ><a name="6664" class="Symbol"
+      >)</a
+      >
+
+  <a name="6669" href="Data.Vec.All.Properties.html#6669" class="Function"
+      >All-concat&#8315;</a
+      > <a name="6681" class="Symbol"
+      >:</a
+      > <a name="6683" class="Symbol"
+      >&#8704;</a
+      > <a name="6685" class="Symbol"
+      >{</a
+      ><a name="6686" href="Data.Vec.All.Properties.html#6686" class="Bound"
+      >n</a
+      ><a name="6687" class="Symbol"
+      >}</a
+      > <a name="6689" class="Symbol"
+      >(</a
+      ><a name="6690" href="Data.Vec.All.Properties.html#6690" class="Bound"
+      >xss</a
+      > <a name="6694" class="Symbol"
+      >:</a
+      > <a name="6696" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="6700" class="Symbol"
+      >(</a
+      ><a name="6701" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="6705" href="Data.Vec.All.Properties.html#6447" class="Bound"
+      >A</a
+      > <a name="6707" href="Data.Vec.All.Properties.html#6441" class="Bound"
+      >m</a
+      ><a name="6708" class="Symbol"
+      >)</a
+      > <a name="6710" href="Data.Vec.All.Properties.html#6686" class="Bound"
+      >n</a
+      ><a name="6711" class="Symbol"
+      >)</a
+      > <a name="6713" class="Symbol"
+      >&#8594;</a
+      >
+                  <a name="6733" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="6737" href="Data.Vec.All.Properties.html#6459" class="Bound"
+      >P</a
+      > <a name="6739" class="Symbol"
+      >(</a
+      ><a name="6740" href="Data.Vec.html#concat" class="Function"
+      >concat</a
+      > <a name="6747" href="Data.Vec.All.Properties.html#6690" class="Bound"
+      >xss</a
+      ><a name="6750" class="Symbol"
+      >)</a
+      > <a name="6752" class="Symbol"
+      >&#8594;</a
+      > <a name="6754" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="6758" class="Symbol"
+      >(</a
+      ><a name="6759" href="Data.Vec.All.html#All" class="Datatype"
+      >All</a
+      > <a name="6763" href="Data.Vec.All.Properties.html#6459" class="Bound"
+      >P</a
+      ><a name="6764" class="Symbol"
+      >)</a
+      > <a name="6766" href="Data.Vec.All.Properties.html#6690" class="Bound"
+      >xss</a
+      >
+  <a name="6772" href="Data.Vec.All.Properties.html#6669" class="Function"
+      >All-concat&#8315;</a
+      > <a name="6784" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="6787" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="6790" class="Symbol"
+      >=</a
+      > <a name="6792" href="Data.Vec.All.html#All.[]" class="InductiveConstructor"
+      >[]</a
+      >
+  <a name="6797" href="Data.Vec.All.Properties.html#6669" class="Function"
+      >All-concat&#8315;</a
+      > <a name="6809" class="Symbol"
+      >(</a
+      ><a name="6810" href="Data.Vec.All.Properties.html#6810" class="Bound"
+      >xs</a
+      > <a name="6813" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="6815" href="Data.Vec.All.Properties.html#6815" class="Bound"
+      >xss</a
+      ><a name="6818" class="Symbol"
+      >)</a
+      > <a name="6820" href="Data.Vec.All.Properties.html#6820" class="Bound"
+      >pxss</a
+      > <a name="6825" class="Symbol"
+      >=</a
+      > <a name="6827" href="Data.Vec.All.Properties.html#3825" class="Function"
+      >All-++&#737;&#8315;</a
+      > <a name="6836" href="Data.Vec.All.Properties.html#6810" class="Bound"
+      >xs</a
+      > <a name="6839" href="Data.Vec.All.Properties.html#6820" class="Bound"
+      >pxss</a
+      > <a name="6844" href="Data.Vec.All.html#All._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="6846" href="Data.Vec.All.Properties.html#6669" class="Function"
+      >All-concat&#8315;</a
+      > <a name="6858" href="Data.Vec.All.Properties.html#6815" class="Bound"
+      >xss</a
+      > <a name="6862" class="Symbol"
+      >(</a
+      ><a name="6863" href="Data.Vec.All.Properties.html#4005" class="Function"
+      >All-++&#691;&#8315;</a
+      > <a name="6872" href="Data.Vec.All.Properties.html#6810" class="Bound"
+      >xs</a
+      > <a name="6875" href="Data.Vec.All.Properties.html#6820" class="Bound"
+      >pxss</a
+      ><a name="6879" class="Symbol"
+      >)</a
+      >
+
+<a name="6882" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="6955" class="Comment"
+      >-- All&#8322; and concat</a
+      >
+
+<a name="6975" class="Keyword"
+      >module</a
+      > <a name="6982" href="Data.Vec.All.Properties.html#6982" class="Module"
+      >_</a
+      > <a name="6984" class="Symbol"
+      >{</a
+      ><a name="6985" href="Data.Vec.All.Properties.html#6985" class="Bound"
+      >a</a
+      > <a name="6987" href="Data.Vec.All.Properties.html#6987" class="Bound"
+      >b</a
+      > <a name="6989" href="Data.Vec.All.Properties.html#6989" class="Bound"
+      >m</a
+      > <a name="6991" href="Data.Vec.All.Properties.html#6991" class="Bound"
+      >p</a
+      ><a name="6992" class="Symbol"
+      >}</a
+      > <a name="6994" class="Symbol"
+      >{</a
+      ><a name="6995" href="Data.Vec.All.Properties.html#6995" class="Bound"
+      >A</a
+      > <a name="6997" class="Symbol"
+      >:</a
+      > <a name="6999" class="PrimitiveType"
+      >Set</a
+      > <a name="7003" href="Data.Vec.All.Properties.html#6985" class="Bound"
+      >a</a
+      ><a name="7004" class="Symbol"
+      >}</a
+      > <a name="7006" class="Symbol"
+      >{</a
+      ><a name="7007" href="Data.Vec.All.Properties.html#7007" class="Bound"
+      >B</a
+      > <a name="7009" class="Symbol"
+      >:</a
+      > <a name="7011" class="PrimitiveType"
+      >Set</a
+      > <a name="7015" href="Data.Vec.All.Properties.html#6987" class="Bound"
+      >b</a
+      ><a name="7016" class="Symbol"
+      >}</a
+      > <a name="7018" class="Symbol"
+      >{</a
+      ><a name="7019" href="Data.Vec.All.Properties.html#7019" class="Bound Operator"
+      >_~_</a
+      > <a name="7023" class="Symbol"
+      >:</a
+      > <a name="7025" href="Relation.Binary.Core.html#REL" class="Function"
+      >REL</a
+      > <a name="7029" href="Data.Vec.All.Properties.html#6995" class="Bound"
+      >A</a
+      > <a name="7031" href="Data.Vec.All.Properties.html#7007" class="Bound"
+      >B</a
+      > <a name="7033" href="Data.Vec.All.Properties.html#6991" class="Bound"
+      >p</a
+      ><a name="7034" class="Symbol"
+      >}</a
+      > <a name="7036" class="Keyword"
+      >where</a
+      >
+
+  <a name="7045" href="Data.Vec.All.Properties.html#7045" class="Function"
+      >All&#8322;-concat&#8314;</a
+      > <a name="7058" class="Symbol"
+      >:</a
+      > <a name="7060" class="Symbol"
+      >&#8704;</a
+      > <a name="7062" class="Symbol"
+      >{</a
+      ><a name="7063" href="Data.Vec.All.Properties.html#7063" class="Bound"
+      >n</a
+      ><a name="7064" class="Symbol"
+      >}</a
+      > <a name="7066" class="Symbol"
+      >{</a
+      ><a name="7067" href="Data.Vec.All.Properties.html#7067" class="Bound"
+      >xss</a
+      > <a name="7071" class="Symbol"
+      >:</a
+      > <a name="7073" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="7077" class="Symbol"
+      >(</a
+      ><a name="7078" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="7082" href="Data.Vec.All.Properties.html#6995" class="Bound"
+      >A</a
+      > <a name="7084" href="Data.Vec.All.Properties.html#6989" class="Bound"
+      >m</a
+      ><a name="7085" class="Symbol"
+      >)</a
+      > <a name="7087" href="Data.Vec.All.Properties.html#7063" class="Bound"
+      >n</a
+      ><a name="7088" class="Symbol"
+      >}</a
+      > <a name="7090" class="Symbol"
+      >{</a
+      ><a name="7091" href="Data.Vec.All.Properties.html#7091" class="Bound"
+      >yss</a
+      ><a name="7094" class="Symbol"
+      >}</a
+      > <a name="7096" class="Symbol"
+      >&#8594;</a
+      >
+                   <a name="7117" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="7122" class="Symbol"
+      >(</a
+      ><a name="7123" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="7128" href="Data.Vec.All.Properties.html#7019" class="Bound Operator"
+      >_~_</a
+      ><a name="7131" class="Symbol"
+      >)</a
+      > <a name="7133" href="Data.Vec.All.Properties.html#7067" class="Bound"
+      >xss</a
+      > <a name="7137" href="Data.Vec.All.Properties.html#7091" class="Bound"
+      >yss</a
+      > <a name="7141" class="Symbol"
+      >&#8594;</a
+      >
+                   <a name="7162" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="7167" href="Data.Vec.All.Properties.html#7019" class="Bound Operator"
+      >_~_</a
+      > <a name="7171" class="Symbol"
+      >(</a
+      ><a name="7172" href="Data.Vec.html#concat" class="Function"
+      >concat</a
+      > <a name="7179" href="Data.Vec.All.Properties.html#7067" class="Bound"
+      >xss</a
+      ><a name="7182" class="Symbol"
+      >)</a
+      > <a name="7184" class="Symbol"
+      >(</a
+      ><a name="7185" href="Data.Vec.html#concat" class="Function"
+      >concat</a
+      > <a name="7192" href="Data.Vec.All.Properties.html#7091" class="Bound"
+      >yss</a
+      ><a name="7195" class="Symbol"
+      >)</a
+      >
+  <a name="7199" href="Data.Vec.All.Properties.html#7045" class="Function"
+      >All&#8322;-concat&#8314;</a
+      > <a name="7212" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="7215" class="Symbol"
+      >=</a
+      > <a name="7217" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      >
+  <a name="7222" href="Data.Vec.All.Properties.html#7045" class="Function"
+      >All&#8322;-concat&#8314;</a
+      > <a name="7235" class="Symbol"
+      >(</a
+      ><a name="7236" href="Data.Vec.All.Properties.html#7236" class="Bound"
+      >xs~ys</a
+      > <a name="7242" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="7244" href="Data.Vec.All.Properties.html#7244" class="Bound"
+      >ps</a
+      ><a name="7246" class="Symbol"
+      >)</a
+      > <a name="7248" class="Symbol"
+      >=</a
+      > <a name="7250" href="Data.Vec.All.Properties.html#5399" class="Function"
+      >All&#8322;-++&#8314;</a
+      > <a name="7259" href="Data.Vec.All.Properties.html#7236" class="Bound"
+      >xs~ys</a
+      > <a name="7265" class="Symbol"
+      >(</a
+      ><a name="7266" href="Data.Vec.All.Properties.html#7045" class="Function"
+      >All&#8322;-concat&#8314;</a
+      > <a name="7279" href="Data.Vec.All.Properties.html#7244" class="Bound"
+      >ps</a
+      ><a name="7281" class="Symbol"
+      >)</a
+      >
+
+  <a name="7286" href="Data.Vec.All.Properties.html#7286" class="Function"
+      >All&#8322;-concat&#8315;</a
+      > <a name="7299" class="Symbol"
+      >:</a
+      > <a name="7301" class="Symbol"
+      >&#8704;</a
+      > <a name="7303" class="Symbol"
+      >{</a
+      ><a name="7304" href="Data.Vec.All.Properties.html#7304" class="Bound"
+      >n</a
+      ><a name="7305" class="Symbol"
+      >}</a
+      > <a name="7307" class="Symbol"
+      >(</a
+      ><a name="7308" href="Data.Vec.All.Properties.html#7308" class="Bound"
+      >xss</a
+      > <a name="7312" class="Symbol"
+      >:</a
+      > <a name="7314" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="7318" class="Symbol"
+      >(</a
+      ><a name="7319" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="7323" href="Data.Vec.All.Properties.html#6995" class="Bound"
+      >A</a
+      > <a name="7325" href="Data.Vec.All.Properties.html#6989" class="Bound"
+      >m</a
+      ><a name="7326" class="Symbol"
+      >)</a
+      > <a name="7328" href="Data.Vec.All.Properties.html#7304" class="Bound"
+      >n</a
+      ><a name="7329" class="Symbol"
+      >)</a
+      > <a name="7331" href="Data.Vec.All.Properties.html#7331" class="Bound"
+      >yss</a
+      > <a name="7335" class="Symbol"
+      >&#8594;</a
+      >
+                   <a name="7356" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="7361" href="Data.Vec.All.Properties.html#7019" class="Bound Operator"
+      >_~_</a
+      > <a name="7365" class="Symbol"
+      >(</a
+      ><a name="7366" href="Data.Vec.html#concat" class="Function"
+      >concat</a
+      > <a name="7373" href="Data.Vec.All.Properties.html#7308" class="Bound"
+      >xss</a
+      ><a name="7376" class="Symbol"
+      >)</a
+      > <a name="7378" class="Symbol"
+      >(</a
+      ><a name="7379" href="Data.Vec.html#concat" class="Function"
+      >concat</a
+      > <a name="7386" href="Data.Vec.All.Properties.html#7331" class="Bound"
+      >yss</a
+      ><a name="7389" class="Symbol"
+      >)</a
+      > <a name="7391" class="Symbol"
+      >&#8594;</a
+      >
+                   <a name="7412" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="7417" class="Symbol"
+      >(</a
+      ><a name="7418" href="Data.Vec.All.html#All&#8322;" class="Datatype"
+      >All&#8322;</a
+      > <a name="7423" href="Data.Vec.All.Properties.html#7019" class="Bound Operator"
+      >_~_</a
+      ><a name="7426" class="Symbol"
+      >)</a
+      > <a name="7428" href="Data.Vec.All.Properties.html#7308" class="Bound"
+      >xss</a
+      > <a name="7432" href="Data.Vec.All.Properties.html#7331" class="Bound"
+      >yss</a
+      >
+  <a name="7438" href="Data.Vec.All.Properties.html#7286" class="Function"
+      >All&#8322;-concat&#8315;</a
+      > <a name="7451" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      >         <a name="7462" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      >         <a name="7473" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="7476" class="Symbol"
+      >=</a
+      > <a name="7478" href="Data.Vec.All.html#All&#8322;.[]" class="InductiveConstructor"
+      >[]</a
+      >
+  <a name="7483" href="Data.Vec.All.Properties.html#7286" class="Function"
+      >All&#8322;-concat&#8315;</a
+      > <a name="7496" class="Symbol"
+      >(</a
+      ><a name="7497" href="Data.Vec.All.Properties.html#7497" class="Bound"
+      >xs</a
+      > <a name="7500" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="7502" href="Data.Vec.All.Properties.html#7502" class="Bound"
+      >xss</a
+      ><a name="7505" class="Symbol"
+      >)</a
+      > <a name="7507" class="Symbol"
+      >(</a
+      ><a name="7508" href="Data.Vec.All.Properties.html#7508" class="Bound"
+      >ys</a
+      > <a name="7511" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="7513" href="Data.Vec.All.Properties.html#7513" class="Bound"
+      >yss</a
+      ><a name="7516" class="Symbol"
+      >)</a
+      > <a name="7518" href="Data.Vec.All.Properties.html#7518" class="Bound"
+      >ps</a
+      > <a name="7521" class="Symbol"
+      >=</a
+      >
+    <a name="7527" href="Data.Vec.All.Properties.html#5649" class="Function"
+      >All&#8322;-++&#737;&#8315;</a
+      > <a name="7537" href="Data.Vec.All.Properties.html#7497" class="Bound"
+      >xs</a
+      > <a name="7540" href="Data.Vec.All.Properties.html#7508" class="Bound"
+      >ys</a
+      > <a name="7543" href="Data.Vec.All.Properties.html#7518" class="Bound"
+      >ps</a
+      > <a name="7546" href="Data.Vec.All.html#All&#8322;._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="7548" href="Data.Vec.All.Properties.html#7286" class="Function"
+      >All&#8322;-concat&#8315;</a
+      > <a name="7561" href="Data.Vec.All.Properties.html#7502" class="Bound"
+      >xss</a
+      > <a name="7565" href="Data.Vec.All.Properties.html#7513" class="Bound"
+      >yss</a
+      > <a name="7569" class="Symbol"
+      >(</a
+      ><a name="7570" href="Data.Vec.All.Properties.html#5894" class="Function"
+      >All&#8322;-++&#691;&#8315;</a
+      > <a name="7580" href="Data.Vec.All.Properties.html#7497" class="Bound"
+      >xs</a
+      > <a name="7583" href="Data.Vec.All.Properties.html#7508" class="Bound"
+      >ys</a
+      > <a name="7586" href="Data.Vec.All.Properties.html#7518" class="Bound"
+      >ps</a
+      ><a name="7588" class="Symbol"
+      >)</a
+      >
+
+</pre
+    ></body
+  ></html
+>

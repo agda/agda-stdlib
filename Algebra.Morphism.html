@@ -11,1448 +11,802 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Morphisms between algebraic structures</a
-      ><a name="147"
       >
-</a
-      ><a name="148" class="Comment"
+<a name="148" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="220"
       >
 
-</a
-      ><a name="222" class="Keyword"
+<a name="222" class="Keyword"
       >module</a
-      ><a name="228"
-      > </a
-      ><a name="229" href="Algebra.Morphism.html#1" class="Module"
+      > <a name="229" href="Algebra.Morphism.html" class="Module"
       >Algebra.Morphism</a
-      ><a name="245"
-      > </a
-      ><a name="246" class="Keyword"
+      > <a name="246" class="Keyword"
       >where</a
-      ><a name="251"
       >
 
-</a
-      ><a name="253" class="Keyword"
+<a name="253" class="Keyword"
       >open</a
-      ><a name="257"
-      > </a
-      ><a name="258" class="Keyword"
+      > <a name="258" class="Keyword"
       >import</a
-      ><a name="264"
-      > </a
-      ><a name="265" href="Relation.Binary.html#1" class="Module"
+      > <a name="265" href="Relation.Binary.html" class="Module"
       >Relation.Binary</a
-      ><a name="280"
       >
-</a
-      ><a name="281" class="Keyword"
+<a name="281" class="Keyword"
       >open</a
-      ><a name="285"
-      > </a
-      ><a name="286" class="Keyword"
+      > <a name="286" class="Keyword"
       >import</a
-      ><a name="292"
-      > </a
-      ><a name="293" href="Algebra.html#1" class="Module"
+      > <a name="293" href="Algebra.html" class="Module"
       >Algebra</a
-      ><a name="300"
       >
-</a
-      ><a name="301" class="Keyword"
+<a name="301" class="Keyword"
       >open</a
-      ><a name="305"
-      > </a
-      ><a name="306" class="Keyword"
+      > <a name="306" class="Keyword"
       >import</a
-      ><a name="312"
-      > </a
-      ><a name="313" href="Algebra.FunctionProperties.html#1" class="Module"
+      > <a name="313" href="Algebra.FunctionProperties.html" class="Module"
       >Algebra.FunctionProperties</a
-      ><a name="339"
       >
-</a
-      ><a name="340" class="Keyword"
+<a name="340" class="Keyword"
       >import</a
-      ><a name="346"
-      > </a
-      ><a name="347" href="Algebra.Properties.Group.html#1" class="Module"
+      > <a name="347" href="Algebra.Properties.Group.html" class="Module"
       >Algebra.Properties.Group</a
-      ><a name="371"
-      > </a
-      ><a name="372" class="Symbol"
+      > <a name="372" class="Symbol"
       >as</a
-      ><a name="374"
-      > </a
-      ><a name="375" class="Module"
+      > <a name="375" class="Module"
       >GroupP</a
-      ><a name="381"
       >
-</a
-      ><a name="382" class="Keyword"
+<a name="382" class="Keyword"
       >open</a
-      ><a name="386"
-      > </a
-      ><a name="387" class="Keyword"
+      > <a name="387" class="Keyword"
       >import</a
-      ><a name="393"
-      > </a
-      ><a name="394" href="Function.html#1" class="Module"
+      > <a name="394" href="Function.html" class="Module"
       >Function</a
-      ><a name="402"
       >
-</a
-      ><a name="403" class="Keyword"
+<a name="403" class="Keyword"
       >open</a
-      ><a name="407"
-      > </a
-      ><a name="408" class="Keyword"
+      > <a name="408" class="Keyword"
       >import</a
-      ><a name="414"
-      > </a
-      ><a name="415" href="Data.Product.html#1" class="Module"
+      > <a name="415" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="427"
       >
-</a
-      ><a name="428" class="Keyword"
+<a name="428" class="Keyword"
       >open</a
-      ><a name="432"
-      > </a
-      ><a name="433" class="Keyword"
+      > <a name="433" class="Keyword"
       >import</a
-      ><a name="439"
-      > </a
-      ><a name="440" href="Level.html#1" class="Module"
+      > <a name="440" href="Level.html" class="Module"
       >Level</a
-      ><a name="445"
       >
-</a
-      ><a name="446" class="Keyword"
+<a name="446" class="Keyword"
       >import</a
-      ><a name="452"
-      > </a
-      ><a name="453" href="Relation.Binary.EqReasoning.html#1" class="Module"
+      > <a name="453" href="Relation.Binary.EqReasoning.html" class="Module"
       >Relation.Binary.EqReasoning</a
-      ><a name="480"
-      > </a
-      ><a name="481" class="Symbol"
+      > <a name="481" class="Symbol"
       >as</a
-      ><a name="483"
-      > </a
-      ><a name="484" class="Module"
+      > <a name="484" class="Module"
       >EqR</a
-      ><a name="487"
       >
 
-</a
-      ><a name="489" class="Comment"
+<a name="489" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="561"
       >
-</a
-      ><a name="562" class="Comment"
+<a name="562" class="Comment"
       >-- Basic definitions</a
-      ><a name="582"
       >
 
-</a
-      ><a name="584" class="Keyword"
+<a name="584" class="Keyword"
       >module</a
-      ><a name="590"
-      > </a
-      ><a name="591" href="Algebra.Morphism.html#591" class="Module"
+      > <a name="Definitions" href="Algebra.Morphism.html#Definitions" class="Module"
       >Definitions</a
-      ><a name="602"
-      > </a
-      ><a name="603" class="Symbol"
+      > <a name="603" class="Symbol"
       >{</a
       ><a name="604" href="Algebra.Morphism.html#604" class="Bound"
       >f</a
-      ><a name="605"
-      > </a
-      ><a name="606" href="Algebra.Morphism.html#606" class="Bound"
+      > <a name="606" href="Algebra.Morphism.html#606" class="Bound"
       >t</a
-      ><a name="607"
-      > </a
-      ><a name="608" href="Algebra.Morphism.html#608" class="Bound"
+      > <a name="608" href="Algebra.Morphism.html#608" class="Bound"
       >&#8467;</a
       ><a name="609" class="Symbol"
       >}</a
-      ><a name="610"
       >
-                   </a
-      ><a name="630" class="Symbol"
+                   <a name="630" class="Symbol"
       >(</a
       ><a name="631" href="Algebra.Morphism.html#631" class="Bound"
       >From</a
-      ><a name="635"
-      > </a
-      ><a name="636" class="Symbol"
+      > <a name="636" class="Symbol"
       >:</a
-      ><a name="637"
-      > </a
-      ><a name="638" class="PrimitiveType"
+      > <a name="638" class="PrimitiveType"
       >Set</a
-      ><a name="641"
-      > </a
-      ><a name="642" href="Algebra.Morphism.html#604" class="Bound"
+      > <a name="642" href="Algebra.Morphism.html#604" class="Bound"
       >f</a
       ><a name="643" class="Symbol"
       >)</a
-      ><a name="644"
-      > </a
-      ><a name="645" class="Symbol"
+      > <a name="645" class="Symbol"
       >(</a
       ><a name="646" href="Algebra.Morphism.html#646" class="Bound"
       >To</a
-      ><a name="648"
-      > </a
-      ><a name="649" class="Symbol"
+      > <a name="649" class="Symbol"
       >:</a
-      ><a name="650"
-      > </a
-      ><a name="651" class="PrimitiveType"
+      > <a name="651" class="PrimitiveType"
       >Set</a
-      ><a name="654"
-      > </a
-      ><a name="655" href="Algebra.Morphism.html#606" class="Bound"
+      > <a name="655" href="Algebra.Morphism.html#606" class="Bound"
       >t</a
       ><a name="656" class="Symbol"
       >)</a
-      ><a name="657"
-      > </a
-      ><a name="658" class="Symbol"
+      > <a name="658" class="Symbol"
       >(</a
       ><a name="659" href="Algebra.Morphism.html#659" class="Bound Operator"
       >_&#8776;_</a
-      ><a name="662"
-      > </a
-      ><a name="663" class="Symbol"
+      > <a name="663" class="Symbol"
       >:</a
-      ><a name="664"
-      > </a
-      ><a name="665" href="Relation.Binary.Core.html#740" class="Function"
+      > <a name="665" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      ><a name="668"
-      > </a
-      ><a name="669" href="Algebra.Morphism.html#646" class="Bound"
+      > <a name="669" href="Algebra.Morphism.html#646" class="Bound"
       >To</a
-      ><a name="671"
-      > </a
-      ><a name="672" href="Algebra.Morphism.html#608" class="Bound"
+      > <a name="672" href="Algebra.Morphism.html#608" class="Bound"
       >&#8467;</a
       ><a name="673" class="Symbol"
       >)</a
-      ><a name="674"
-      > </a
-      ><a name="675" class="Keyword"
+      > <a name="675" class="Keyword"
       >where</a
-      ><a name="680"
       >
-  </a
-      ><a name="683" href="Algebra.Morphism.html#683" class="Function"
+  <a name="Definitions.Morphism" href="Algebra.Morphism.html#Definitions.Morphism" class="Function"
       >Morphism</a
-      ><a name="691"
-      > </a
-      ><a name="692" class="Symbol"
+      > <a name="692" class="Symbol"
       >:</a
-      ><a name="693"
-      > </a
-      ><a name="694" class="PrimitiveType"
+      > <a name="694" class="PrimitiveType"
       >Set</a
-      ><a name="697"
-      > </a
-      ><a name="698" class="Symbol"
+      > <a name="698" class="Symbol"
       >_</a
-      ><a name="699"
       >
-  </a
-      ><a name="702" href="Algebra.Morphism.html#683" class="Function"
+  <a name="702" href="Algebra.Morphism.html#Definitions.Morphism" class="Function"
       >Morphism</a
-      ><a name="710"
-      > </a
-      ><a name="711" class="Symbol"
+      > <a name="711" class="Symbol"
       >=</a
-      ><a name="712"
-      > </a
-      ><a name="713" href="Algebra.Morphism.html#631" class="Bound"
+      > <a name="713" href="Algebra.Morphism.html#631" class="Bound"
       >From</a
-      ><a name="717"
-      > </a
-      ><a name="718" class="Symbol"
+      > <a name="718" class="Symbol"
       >&#8594;</a
-      ><a name="719"
-      > </a
-      ><a name="720" href="Algebra.Morphism.html#646" class="Bound"
+      > <a name="720" href="Algebra.Morphism.html#646" class="Bound"
       >To</a
-      ><a name="722"
       >
 
-  </a
-      ><a name="726" href="Algebra.Morphism.html#726" class="Function"
+  <a name="Definitions.Homomorphic&#8320;" href="Algebra.Morphism.html#Definitions.Homomorphic&#8320;" class="Function"
       >Homomorphic&#8320;</a
-      ><a name="738"
-      > </a
-      ><a name="739" class="Symbol"
+      > <a name="739" class="Symbol"
       >:</a
-      ><a name="740"
-      > </a
-      ><a name="741" href="Algebra.Morphism.html#683" class="Function"
+      > <a name="741" href="Algebra.Morphism.html#Definitions.Morphism" class="Function"
       >Morphism</a
-      ><a name="749"
-      > </a
-      ><a name="750" class="Symbol"
+      > <a name="750" class="Symbol"
       >&#8594;</a
-      ><a name="751"
-      > </a
-      ><a name="752" href="Algebra.Morphism.html#631" class="Bound"
+      > <a name="752" href="Algebra.Morphism.html#631" class="Bound"
       >From</a
-      ><a name="756"
-      > </a
-      ><a name="757" class="Symbol"
+      > <a name="757" class="Symbol"
       >&#8594;</a
-      ><a name="758"
-      > </a
-      ><a name="759" href="Algebra.Morphism.html#646" class="Bound"
+      > <a name="759" href="Algebra.Morphism.html#646" class="Bound"
       >To</a
-      ><a name="761"
-      > </a
-      ><a name="762" class="Symbol"
+      > <a name="762" class="Symbol"
       >&#8594;</a
-      ><a name="763"
-      > </a
-      ><a name="764" class="PrimitiveType"
+      > <a name="764" class="PrimitiveType"
       >Set</a
-      ><a name="767"
-      > </a
-      ><a name="768" class="Symbol"
+      > <a name="768" class="Symbol"
       >_</a
-      ><a name="769"
       >
-  </a
-      ><a name="772" href="Algebra.Morphism.html#726" class="Function"
+  <a name="772" href="Algebra.Morphism.html#Definitions.Homomorphic&#8320;" class="Function"
       >Homomorphic&#8320;</a
-      ><a name="784"
-      > </a
-      ><a name="785" href="Algebra.Morphism.html#785" class="Bound Operator"
+      > <a name="785" href="Algebra.Morphism.html#785" class="Bound Operator"
       >&#10214;_&#10215;</a
-      ><a name="788"
-      > </a
-      ><a name="789" href="Algebra.Morphism.html#789" class="Bound"
+      > <a name="789" href="Algebra.Morphism.html#789" class="Bound"
       >&#8729;</a
-      ><a name="790"
-      > </a
-      ><a name="791" href="Algebra.Morphism.html#791" class="Bound"
+      > <a name="791" href="Algebra.Morphism.html#791" class="Bound"
       >&#8728;</a
-      ><a name="792"
-      > </a
-      ><a name="793" class="Symbol"
+      > <a name="793" class="Symbol"
       >=</a
-      ><a name="794"
-      > </a
-      ><a name="795" href="Algebra.Morphism.html#785" class="Bound Operator"
+      > <a name="795" href="Algebra.Morphism.html#785" class="Bound Operator"
       >&#10214;</a
-      ><a name="796"
-      > </a
-      ><a name="797" href="Algebra.Morphism.html#789" class="Bound"
+      > <a name="797" href="Algebra.Morphism.html#789" class="Bound"
       >&#8729;</a
-      ><a name="798"
-      > </a
-      ><a name="799" href="Algebra.Morphism.html#785" class="Bound Operator"
+      > <a name="799" href="Algebra.Morphism.html#785" class="Bound Operator"
       >&#10215;</a
-      ><a name="800"
-      > </a
-      ><a name="801" href="Algebra.Morphism.html#659" class="Bound Operator"
+      > <a name="801" href="Algebra.Morphism.html#659" class="Bound Operator"
       >&#8776;</a
-      ><a name="802"
-      > </a
-      ><a name="803" href="Algebra.Morphism.html#791" class="Bound"
+      > <a name="803" href="Algebra.Morphism.html#791" class="Bound"
       >&#8728;</a
-      ><a name="804"
       >
 
-  </a
-      ><a name="808" href="Algebra.Morphism.html#808" class="Function"
+  <a name="Definitions.Homomorphic&#8321;" href="Algebra.Morphism.html#Definitions.Homomorphic&#8321;" class="Function"
       >Homomorphic&#8321;</a
-      ><a name="820"
-      > </a
-      ><a name="821" class="Symbol"
+      > <a name="821" class="Symbol"
       >:</a
-      ><a name="822"
-      > </a
-      ><a name="823" href="Algebra.Morphism.html#683" class="Function"
+      > <a name="823" href="Algebra.Morphism.html#Definitions.Morphism" class="Function"
       >Morphism</a
-      ><a name="831"
-      > </a
-      ><a name="832" class="Symbol"
+      > <a name="832" class="Symbol"
       >&#8594;</a
-      ><a name="833"
-      > </a
-      ><a name="834" href="Function.html#495" class="Function"
+      > <a name="834" href="Function.html#Fun&#8321;" class="Function"
       >Fun&#8321;</a
-      ><a name="838"
-      > </a
-      ><a name="839" href="Algebra.Morphism.html#631" class="Bound"
+      > <a name="839" href="Algebra.Morphism.html#631" class="Bound"
       >From</a
-      ><a name="843"
-      > </a
-      ><a name="844" class="Symbol"
+      > <a name="844" class="Symbol"
       >&#8594;</a
-      ><a name="845"
-      > </a
-      ><a name="846" href="Algebra.FunctionProperties.Core.html#672" class="Function"
+      > <a name="846" href="Algebra.FunctionProperties.Core.html#Op&#8321;" class="Function"
       >Op&#8321;</a
-      ><a name="849"
-      > </a
-      ><a name="850" href="Algebra.Morphism.html#646" class="Bound"
+      > <a name="850" href="Algebra.Morphism.html#646" class="Bound"
       >To</a
-      ><a name="852"
-      > </a
-      ><a name="853" class="Symbol"
+      > <a name="853" class="Symbol"
       >&#8594;</a
-      ><a name="854"
-      > </a
-      ><a name="855" class="PrimitiveType"
+      > <a name="855" class="PrimitiveType"
       >Set</a
-      ><a name="858"
-      > </a
-      ><a name="859" class="Symbol"
+      > <a name="859" class="Symbol"
       >_</a
-      ><a name="860"
       >
-  </a
-      ><a name="863" href="Algebra.Morphism.html#808" class="Function"
+  <a name="863" href="Algebra.Morphism.html#Definitions.Homomorphic&#8321;" class="Function"
       >Homomorphic&#8321;</a
-      ><a name="875"
-      > </a
-      ><a name="876" href="Algebra.Morphism.html#876" class="Bound Operator"
+      > <a name="876" href="Algebra.Morphism.html#876" class="Bound Operator"
       >&#10214;_&#10215;</a
-      ><a name="879"
-      > </a
-      ><a name="880" href="Algebra.Morphism.html#880" class="Bound Operator"
+      > <a name="880" href="Algebra.Morphism.html#880" class="Bound Operator"
       >&#8729;_</a
-      ><a name="882"
-      > </a
-      ><a name="883" href="Algebra.Morphism.html#883" class="Bound Operator"
+      > <a name="883" href="Algebra.Morphism.html#883" class="Bound Operator"
       >&#8728;_</a
-      ><a name="885"
-      > </a
-      ><a name="886" class="Symbol"
+      > <a name="886" class="Symbol"
       >=</a
-      ><a name="887"
-      > </a
-      ><a name="888" class="Symbol"
+      > <a name="888" class="Symbol"
       >&#8704;</a
-      ><a name="889"
-      > </a
-      ><a name="890" href="Algebra.Morphism.html#890" class="Bound"
+      > <a name="890" href="Algebra.Morphism.html#890" class="Bound"
       >x</a
-      ><a name="891"
-      > </a
-      ><a name="892" class="Symbol"
+      > <a name="892" class="Symbol"
       >&#8594;</a
-      ><a name="893"
-      > </a
-      ><a name="894" href="Algebra.Morphism.html#876" class="Bound Operator"
+      > <a name="894" href="Algebra.Morphism.html#876" class="Bound Operator"
       >&#10214;</a
-      ><a name="895"
-      > </a
-      ><a name="896" href="Algebra.Morphism.html#880" class="Bound Operator"
+      > <a name="896" href="Algebra.Morphism.html#880" class="Bound Operator"
       >&#8729;</a
-      ><a name="897"
-      > </a
-      ><a name="898" href="Algebra.Morphism.html#890" class="Bound"
+      > <a name="898" href="Algebra.Morphism.html#890" class="Bound"
       >x</a
-      ><a name="899"
-      > </a
-      ><a name="900" href="Algebra.Morphism.html#876" class="Bound Operator"
+      > <a name="900" href="Algebra.Morphism.html#876" class="Bound Operator"
       >&#10215;</a
-      ><a name="901"
-      > </a
-      ><a name="902" href="Algebra.Morphism.html#659" class="Bound Operator"
+      > <a name="902" href="Algebra.Morphism.html#659" class="Bound Operator"
       >&#8776;</a
-      ><a name="903"
-      > </a
-      ><a name="904" class="Symbol"
+      > <a name="904" class="Symbol"
       >(</a
       ><a name="905" href="Algebra.Morphism.html#883" class="Bound Operator"
       >&#8728;</a
-      ><a name="906"
-      > </a
-      ><a name="907" href="Algebra.Morphism.html#876" class="Bound Operator"
+      > <a name="907" href="Algebra.Morphism.html#876" class="Bound Operator"
       >&#10214;</a
-      ><a name="908"
-      > </a
-      ><a name="909" href="Algebra.Morphism.html#890" class="Bound"
+      > <a name="909" href="Algebra.Morphism.html#890" class="Bound"
       >x</a
-      ><a name="910"
-      > </a
-      ><a name="911" href="Algebra.Morphism.html#876" class="Bound Operator"
+      > <a name="911" href="Algebra.Morphism.html#876" class="Bound Operator"
       >&#10215;</a
       ><a name="912" class="Symbol"
       >)</a
-      ><a name="913"
       >
 
-  </a
-      ><a name="917" href="Algebra.Morphism.html#917" class="Function"
+  <a name="Definitions.Homomorphic&#8322;" href="Algebra.Morphism.html#Definitions.Homomorphic&#8322;" class="Function"
       >Homomorphic&#8322;</a
-      ><a name="929"
-      > </a
-      ><a name="930" class="Symbol"
+      > <a name="930" class="Symbol"
       >:</a
-      ><a name="931"
-      > </a
-      ><a name="932" href="Algebra.Morphism.html#683" class="Function"
+      > <a name="932" href="Algebra.Morphism.html#Definitions.Morphism" class="Function"
       >Morphism</a
-      ><a name="940"
-      > </a
-      ><a name="941" class="Symbol"
+      > <a name="941" class="Symbol"
       >&#8594;</a
-      ><a name="942"
-      > </a
-      ><a name="943" href="Function.html#577" class="Function"
+      > <a name="943" href="Function.html#Fun&#8322;" class="Function"
       >Fun&#8322;</a
-      ><a name="947"
-      > </a
-      ><a name="948" href="Algebra.Morphism.html#631" class="Bound"
+      > <a name="948" href="Algebra.Morphism.html#631" class="Bound"
       >From</a
-      ><a name="952"
-      > </a
-      ><a name="953" class="Symbol"
+      > <a name="953" class="Symbol"
       >&#8594;</a
-      ><a name="954"
-      > </a
-      ><a name="955" href="Algebra.FunctionProperties.Core.html#715" class="Function"
+      > <a name="955" href="Algebra.FunctionProperties.Core.html#Op&#8322;" class="Function"
       >Op&#8322;</a
-      ><a name="958"
-      > </a
-      ><a name="959" href="Algebra.Morphism.html#646" class="Bound"
+      > <a name="959" href="Algebra.Morphism.html#646" class="Bound"
       >To</a
-      ><a name="961"
-      > </a
-      ><a name="962" class="Symbol"
+      > <a name="962" class="Symbol"
       >&#8594;</a
-      ><a name="963"
-      > </a
-      ><a name="964" class="PrimitiveType"
+      > <a name="964" class="PrimitiveType"
       >Set</a
-      ><a name="967"
-      > </a
-      ><a name="968" class="Symbol"
+      > <a name="968" class="Symbol"
       >_</a
-      ><a name="969"
       >
-  </a
-      ><a name="972" href="Algebra.Morphism.html#917" class="Function"
+  <a name="972" href="Algebra.Morphism.html#Definitions.Homomorphic&#8322;" class="Function"
       >Homomorphic&#8322;</a
-      ><a name="984"
-      > </a
-      ><a name="985" href="Algebra.Morphism.html#985" class="Bound Operator"
+      > <a name="985" href="Algebra.Morphism.html#985" class="Bound Operator"
       >&#10214;_&#10215;</a
-      ><a name="988"
-      > </a
-      ><a name="989" href="Algebra.Morphism.html#989" class="Bound Operator"
+      > <a name="989" href="Algebra.Morphism.html#989" class="Bound Operator"
       >_&#8729;_</a
-      ><a name="992"
-      > </a
-      ><a name="993" href="Algebra.Morphism.html#993" class="Bound Operator"
+      > <a name="993" href="Algebra.Morphism.html#993" class="Bound Operator"
       >_&#8728;_</a
-      ><a name="996"
-      > </a
-      ><a name="997" class="Symbol"
+      > <a name="997" class="Symbol"
       >=</a
-      ><a name="998"
       >
-    </a
-      ><a name="1003" class="Symbol"
+    <a name="1003" class="Symbol"
       >&#8704;</a
-      ><a name="1004"
-      > </a
-      ><a name="1005" href="Algebra.Morphism.html#1005" class="Bound"
+      > <a name="1005" href="Algebra.Morphism.html#1005" class="Bound"
       >x</a
-      ><a name="1006"
-      > </a
-      ><a name="1007" href="Algebra.Morphism.html#1007" class="Bound"
+      > <a name="1007" href="Algebra.Morphism.html#1007" class="Bound"
       >y</a
-      ><a name="1008"
-      > </a
-      ><a name="1009" class="Symbol"
+      > <a name="1009" class="Symbol"
       >&#8594;</a
-      ><a name="1010"
-      > </a
-      ><a name="1011" href="Algebra.Morphism.html#985" class="Bound Operator"
+      > <a name="1011" href="Algebra.Morphism.html#985" class="Bound Operator"
       >&#10214;</a
-      ><a name="1012"
-      > </a
-      ><a name="1013" href="Algebra.Morphism.html#1005" class="Bound"
+      > <a name="1013" href="Algebra.Morphism.html#1005" class="Bound"
       >x</a
-      ><a name="1014"
-      > </a
-      ><a name="1015" href="Algebra.Morphism.html#989" class="Bound Operator"
+      > <a name="1015" href="Algebra.Morphism.html#989" class="Bound Operator"
       >&#8729;</a
-      ><a name="1016"
-      > </a
-      ><a name="1017" href="Algebra.Morphism.html#1007" class="Bound"
+      > <a name="1017" href="Algebra.Morphism.html#1007" class="Bound"
       >y</a
-      ><a name="1018"
-      > </a
-      ><a name="1019" href="Algebra.Morphism.html#985" class="Bound Operator"
+      > <a name="1019" href="Algebra.Morphism.html#985" class="Bound Operator"
       >&#10215;</a
-      ><a name="1020"
-      > </a
-      ><a name="1021" href="Algebra.Morphism.html#659" class="Bound Operator"
+      > <a name="1021" href="Algebra.Morphism.html#659" class="Bound Operator"
       >&#8776;</a
-      ><a name="1022"
-      > </a
-      ><a name="1023" class="Symbol"
+      > <a name="1023" class="Symbol"
       >(</a
       ><a name="1024" href="Algebra.Morphism.html#985" class="Bound Operator"
       >&#10214;</a
-      ><a name="1025"
-      > </a
-      ><a name="1026" href="Algebra.Morphism.html#1005" class="Bound"
+      > <a name="1026" href="Algebra.Morphism.html#1005" class="Bound"
       >x</a
-      ><a name="1027"
-      > </a
-      ><a name="1028" href="Algebra.Morphism.html#985" class="Bound Operator"
+      > <a name="1028" href="Algebra.Morphism.html#985" class="Bound Operator"
       >&#10215;</a
-      ><a name="1029"
-      > </a
-      ><a name="1030" href="Algebra.Morphism.html#993" class="Bound Operator"
+      > <a name="1030" href="Algebra.Morphism.html#993" class="Bound Operator"
       >&#8728;</a
-      ><a name="1031"
-      > </a
-      ><a name="1032" href="Algebra.Morphism.html#985" class="Bound Operator"
+      > <a name="1032" href="Algebra.Morphism.html#985" class="Bound Operator"
       >&#10214;</a
-      ><a name="1033"
-      > </a
-      ><a name="1034" href="Algebra.Morphism.html#1007" class="Bound"
+      > <a name="1034" href="Algebra.Morphism.html#1007" class="Bound"
       >y</a
-      ><a name="1035"
-      > </a
-      ><a name="1036" href="Algebra.Morphism.html#985" class="Bound Operator"
+      > <a name="1036" href="Algebra.Morphism.html#985" class="Bound Operator"
       >&#10215;</a
       ><a name="1037" class="Symbol"
       >)</a
-      ><a name="1038"
       >
 
-</a
-      ><a name="1040" class="Comment"
+<a name="1040" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="1112"
       >
-</a
-      ><a name="1113" class="Comment"
+<a name="1113" class="Comment"
       >-- An example showing how a morphism type can be defined</a
-      ><a name="1169"
       >
 
-</a
-      ><a name="1171" class="Comment"
+<a name="1171" class="Comment"
       >-- Ring homomorphisms.</a
-      ><a name="1193"
       >
 
-</a
-      ><a name="1195" class="Keyword"
+<a name="1195" class="Keyword"
       >record</a
-      ><a name="1201"
-      > </a
-      ><a name="1202" href="Algebra.Morphism.html#1202" class="Record Operator"
+      > <a name="_-Ring&#10230;_" href="Algebra.Morphism.html#_-Ring&#10230;_" class="Record Operator"
       >_-Ring&#10230;_</a
-      ><a name="1210"
-      > </a
-      ><a name="1211" class="Symbol"
+      > <a name="1211" class="Symbol"
       >{</a
       ><a name="1212" href="Algebra.Morphism.html#1212" class="Bound"
       >r&#8321;</a
-      ><a name="1214"
-      > </a
-      ><a name="1215" href="Algebra.Morphism.html#1215" class="Bound"
+      > <a name="1215" href="Algebra.Morphism.html#1215" class="Bound"
       >r&#8322;</a
-      ><a name="1217"
-      > </a
-      ><a name="1218" href="Algebra.Morphism.html#1218" class="Bound"
+      > <a name="1218" href="Algebra.Morphism.html#1218" class="Bound"
       >r&#8323;</a
-      ><a name="1220"
-      > </a
-      ><a name="1221" href="Algebra.Morphism.html#1221" class="Bound"
+      > <a name="1221" href="Algebra.Morphism.html#1221" class="Bound"
       >r&#8324;</a
       ><a name="1223" class="Symbol"
       >}</a
-      ><a name="1224"
       >
-                </a
-      ><a name="1241" class="Symbol"
+                <a name="1241" class="Symbol"
       >(</a
       ><a name="1242" href="Algebra.Morphism.html#1242" class="Bound"
       >From</a
-      ><a name="1246"
-      > </a
-      ><a name="1247" class="Symbol"
+      > <a name="1247" class="Symbol"
       >:</a
-      ><a name="1248"
-      > </a
-      ><a name="1249" href="Algebra.html#9407" class="Record"
+      > <a name="1249" href="Algebra.html#Ring" class="Record"
       >Ring</a
-      ><a name="1253"
-      > </a
-      ><a name="1254" href="Algebra.Morphism.html#1212" class="Bound"
+      > <a name="1254" href="Algebra.Morphism.html#1212" class="Bound"
       >r&#8321;</a
-      ><a name="1256"
-      > </a
-      ><a name="1257" href="Algebra.Morphism.html#1215" class="Bound"
+      > <a name="1257" href="Algebra.Morphism.html#1215" class="Bound"
       >r&#8322;</a
       ><a name="1259" class="Symbol"
       >)</a
-      ><a name="1260"
-      > </a
-      ><a name="1261" class="Symbol"
+      > <a name="1261" class="Symbol"
       >(</a
       ><a name="1262" href="Algebra.Morphism.html#1262" class="Bound"
       >To</a
-      ><a name="1264"
-      > </a
-      ><a name="1265" class="Symbol"
+      > <a name="1265" class="Symbol"
       >:</a
-      ><a name="1266"
-      > </a
-      ><a name="1267" href="Algebra.html#9407" class="Record"
+      > <a name="1267" href="Algebra.html#Ring" class="Record"
       >Ring</a
-      ><a name="1271"
-      > </a
-      ><a name="1272" href="Algebra.Morphism.html#1218" class="Bound"
+      > <a name="1272" href="Algebra.Morphism.html#1218" class="Bound"
       >r&#8323;</a
-      ><a name="1274"
-      > </a
-      ><a name="1275" href="Algebra.Morphism.html#1221" class="Bound"
+      > <a name="1275" href="Algebra.Morphism.html#1221" class="Bound"
       >r&#8324;</a
       ><a name="1277" class="Symbol"
       >)</a
-      ><a name="1278"
-      > </a
-      ><a name="1279" class="Symbol"
+      > <a name="1279" class="Symbol"
       >:</a
-      ><a name="1280"
       >
-                </a
-      ><a name="1297" class="PrimitiveType"
+                <a name="1297" class="PrimitiveType"
       >Set</a
-      ><a name="1300"
-      > </a
-      ><a name="1301" class="Symbol"
+      > <a name="1301" class="Symbol"
       >(</a
       ><a name="1302" href="Algebra.Morphism.html#1212" class="Bound"
       >r&#8321;</a
-      ><a name="1304"
-      > </a
-      ><a name="1305" href="Agda.Primitive.html#655" class="Primitive Operator"
+      > <a name="1305" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
       >&#8852;</a
-      ><a name="1306"
-      > </a
-      ><a name="1307" href="Algebra.Morphism.html#1215" class="Bound"
+      > <a name="1307" href="Algebra.Morphism.html#1215" class="Bound"
       >r&#8322;</a
-      ><a name="1309"
-      > </a
-      ><a name="1310" href="Agda.Primitive.html#655" class="Primitive Operator"
+      > <a name="1310" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
       >&#8852;</a
-      ><a name="1311"
-      > </a
-      ><a name="1312" href="Algebra.Morphism.html#1218" class="Bound"
+      > <a name="1312" href="Algebra.Morphism.html#1218" class="Bound"
       >r&#8323;</a
-      ><a name="1314"
-      > </a
-      ><a name="1315" href="Agda.Primitive.html#655" class="Primitive Operator"
+      > <a name="1315" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
       >&#8852;</a
-      ><a name="1316"
-      > </a
-      ><a name="1317" href="Algebra.Morphism.html#1221" class="Bound"
+      > <a name="1317" href="Algebra.Morphism.html#1221" class="Bound"
       >r&#8324;</a
       ><a name="1319" class="Symbol"
       >)</a
-      ><a name="1320"
-      > </a
-      ><a name="1321" class="Keyword"
+      > <a name="1321" class="Keyword"
       >where</a
-      ><a name="1326"
       >
-  </a
-      ><a name="1329" class="Keyword"
+  <a name="1329" class="Keyword"
       >private</a
-      ><a name="1336"
       >
-    </a
-      ><a name="1341" class="Keyword"
+    <a name="1341" class="Keyword"
       >module</a
-      ><a name="1347"
-      > </a
-      ><a name="1348" href="Algebra.Morphism.html#1348" class="Module"
+      > <a name="F" href="Algebra.Morphism.html#F" class="Module"
       >F</a
-      ><a name="1349"
-      > </a
-      ><a name="1350" class="Symbol"
+      > <a name="1350" class="Symbol"
       >=</a
-      ><a name="1351"
-      > </a
-      ><a name="1352" href="Algebra.html#9407" class="Module"
+      > <a name="1352" href="Algebra.html#Ring" class="Module"
       >Ring</a
-      ><a name="1356"
-      > </a
-      ><a name="1357" href="Algebra.Morphism.html#1242" class="Bound"
+      > <a name="1357" href="Algebra.Morphism.html#1242" class="Bound"
       >From</a
-      ><a name="1361"
       >
-    </a
-      ><a name="1366" class="Keyword"
+    <a name="1366" class="Keyword"
       >module</a
-      ><a name="1372"
-      > </a
-      ><a name="1373" href="Algebra.Morphism.html#1373" class="Module"
+      > <a name="T" href="Algebra.Morphism.html#T" class="Module"
       >T</a
-      ><a name="1374"
-      > </a
-      ><a name="1375" class="Symbol"
+      > <a name="1375" class="Symbol"
       >=</a
-      ><a name="1376"
-      > </a
-      ><a name="1377" href="Algebra.html#9407" class="Module"
+      > <a name="1377" href="Algebra.html#Ring" class="Module"
       >Ring</a
-      ><a name="1381"
-      > </a
-      ><a name="1382" href="Algebra.Morphism.html#1262" class="Bound"
+      > <a name="1382" href="Algebra.Morphism.html#1262" class="Bound"
       >To</a
-      ><a name="1384"
       >
-  </a
-      ><a name="1387" class="Keyword"
+  <a name="1387" class="Keyword"
       >open</a
-      ><a name="1391"
-      > </a
-      ><a name="1392" href="Algebra.Morphism.html#591" class="Module"
+      > <a name="1392" href="Algebra.Morphism.html#Definitions" class="Module"
       >Definitions</a
-      ><a name="1403"
-      > </a
-      ><a name="1404" href="Algebra.html#9513" class="Function"
+      > <a name="1404" href="Algebra.html#Morphism._-Ring&#10230;_.F.Carrier" class="Function"
       >F.Carrier</a
-      ><a name="1413"
-      > </a
-      ><a name="1414" href="Algebra.html#9513" class="Function"
+      > <a name="1414" href="Algebra.html#Morphism._-Ring&#10230;_.T.Carrier" class="Function"
       >T.Carrier</a
-      ><a name="1423"
-      > </a
-      ><a name="1424" href="Algebra.html#9533" class="Function Operator"
+      > <a name="1424" href="Algebra.html#Morphism._-Ring&#10230;_.T._&#8776;_" class="Function Operator"
       >T._&#8776;_</a
-      ><a name="1429"
       >
 
-  </a
-      ><a name="1433" class="Keyword"
+  <a name="1433" class="Keyword"
       >field</a
-      ><a name="1438"
       >
-    </a
-      ><a name="1443" href="Algebra.Morphism.html#1443" class="Field Operator"
+    <a name="_-Ring&#10230;_.&#10214;_&#10215;" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;_&#10215;</a
-      ><a name="1446"
-      >     </a
-      ><a name="1451" class="Symbol"
+      >     <a name="1451" class="Symbol"
       >:</a
-      ><a name="1452"
-      > </a
-      ><a name="1453" href="Algebra.Morphism.html#683" class="Function"
+      > <a name="1453" href="Algebra.Morphism.html#683" class="Function"
       >Morphism</a
-      ><a name="1461"
       >
-    </a
-      ><a name="1466" href="Algebra.Morphism.html#1466" class="Field"
+    <a name="_-Ring&#10230;_.&#10214;&#10215;-cong" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;&#10215;-cong" class="Field"
       >&#10214;&#10215;-cong</a
-      ><a name="1473"
-      > </a
-      ><a name="1474" class="Symbol"
+      > <a name="1474" class="Symbol"
       >:</a
-      ><a name="1475"
-      > </a
-      ><a name="1476" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="1476" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;_&#10215;</a
-      ><a name="1479"
-      > </a
-      ><a name="1480" href="Relation.Binary.Core.html#1367" class="Function Operator"
+      > <a name="1480" href="Relation.Binary.Core.html#_Preserves_&#10230;_" class="Function Operator"
       >Preserves</a
-      ><a name="1489"
-      > </a
-      ><a name="1490" href="Algebra.html#9533" class="Function Operator"
+      > <a name="1490" href="Algebra.html#Morphism._-Ring&#10230;_.F._&#8776;_" class="Function Operator"
       >F._&#8776;_</a
-      ><a name="1495"
-      > </a
-      ><a name="1496" href="Relation.Binary.Core.html#1367" class="Function Operator"
+      > <a name="1496" href="Relation.Binary.Core.html#_Preserves_&#10230;_" class="Function Operator"
       >&#10230;</a
-      ><a name="1497"
-      > </a
-      ><a name="1498" href="Algebra.html#9533" class="Function Operator"
+      > <a name="1498" href="Algebra.html#Morphism._-Ring&#10230;_.T._&#8776;_" class="Function Operator"
       >T._&#8776;_</a
-      ><a name="1503"
       >
-    </a
-      ><a name="1508" href="Algebra.Morphism.html#1508" class="Field"
+    <a name="_-Ring&#10230;_.+-homo" href="Algebra.Morphism.html#_-Ring&#10230;_.+-homo" class="Field"
       >+-homo</a
-      ><a name="1514"
-      >  </a
-      ><a name="1516" class="Symbol"
+      >  <a name="1516" class="Symbol"
       >:</a
-      ><a name="1517"
-      > </a
-      ><a name="1518" href="Algebra.Morphism.html#917" class="Function"
+      > <a name="1518" href="Algebra.Morphism.html#917" class="Function"
       >Homomorphic&#8322;</a
-      ><a name="1530"
-      > </a
-      ><a name="1531" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="1531" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;_&#10215;</a
-      ><a name="1534"
-      > </a
-      ><a name="1535" href="Algebra.html#9561" class="Function Operator"
+      > <a name="1535" href="Algebra.html#Morphism._-Ring&#10230;_.F._+_" class="Function Operator"
       >F._+_</a
-      ><a name="1540"
-      > </a
-      ><a name="1541" href="Algebra.html#9561" class="Function Operator"
+      > <a name="1541" href="Algebra.html#Morphism._-Ring&#10230;_.T._+_" class="Function Operator"
       >T._+_</a
-      ><a name="1546"
       >
-    </a
-      ><a name="1551" href="Algebra.Morphism.html#1551" class="Field"
+    <a name="_-Ring&#10230;_.*-homo" href="Algebra.Morphism.html#_-Ring&#10230;_.*-homo" class="Field"
       >*-homo</a
-      ><a name="1557"
-      >  </a
-      ><a name="1559" class="Symbol"
+      >  <a name="1559" class="Symbol"
       >:</a
-      ><a name="1560"
-      > </a
-      ><a name="1561" href="Algebra.Morphism.html#917" class="Function"
+      > <a name="1561" href="Algebra.Morphism.html#917" class="Function"
       >Homomorphic&#8322;</a
-      ><a name="1573"
-      > </a
-      ><a name="1574" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="1574" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;_&#10215;</a
-      ><a name="1577"
-      > </a
-      ><a name="1578" href="Algebra.html#9587" class="Function Operator"
+      > <a name="1578" href="Algebra.html#Morphism._-Ring&#10230;_.F._*_" class="Function Operator"
       >F._*_</a
-      ><a name="1583"
-      > </a
-      ><a name="1584" href="Algebra.html#9587" class="Function Operator"
+      > <a name="1584" href="Algebra.html#Morphism._-Ring&#10230;_.T._*_" class="Function Operator"
       >T._*_</a
-      ><a name="1589"
       >
-    </a
-      ><a name="1594" href="Algebra.Morphism.html#1594" class="Field"
+    <a name="_-Ring&#10230;_.1-homo" href="Algebra.Morphism.html#_-Ring&#10230;_.1-homo" class="Field"
       >1-homo</a
-      ><a name="1600"
-      >  </a
-      ><a name="1602" class="Symbol"
+      >  <a name="1602" class="Symbol"
       >:</a
-      ><a name="1603"
-      > </a
-      ><a name="1604" href="Algebra.Morphism.html#726" class="Function"
+      > <a name="1604" href="Algebra.Morphism.html#726" class="Function"
       >Homomorphic&#8320;</a
-      ><a name="1616"
-      > </a
-      ><a name="1617" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="1617" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;_&#10215;</a
-      ><a name="1620"
-      > </a
-      ><a name="1621" href="Algebra.html#9661" class="Function"
+      > <a name="1621" href="Algebra.html#Morphism._-Ring&#10230;_.F.1#" class="Function"
       >F.1#</a
-      ><a name="1625"
-      >  </a
-      ><a name="1627" href="Algebra.html#9661" class="Function"
+      >  <a name="1627" href="Algebra.html#Morphism._-Ring&#10230;_.T.1#" class="Function"
       >T.1#</a
-      ><a name="1631"
       >
 
-  </a
-      ><a name="1635" class="Keyword"
+  <a name="1635" class="Keyword"
       >open</a
-      ><a name="1639"
-      > </a
-      ><a name="1640" href="Relation.Binary.EqReasoning.html#1" class="Module"
+      > <a name="1640" href="Relation.Binary.EqReasoning.html" class="Module"
       >EqR</a
-      ><a name="1643"
-      > </a
-      ><a name="1644" href="Algebra.html#845" class="Function"
+      > <a name="1644" href="Algebra.html#Morphism._-Ring&#10230;_.T.setoid" class="Function"
       >T.setoid</a
-      ><a name="1652"
       >
 
-  </a
-      ><a name="1656" href="Algebra.Morphism.html#1656" class="Function"
+  <a name="_-Ring&#10230;_.0-homo" href="Algebra.Morphism.html#_-Ring&#10230;_.0-homo" class="Function"
       >0-homo</a
-      ><a name="1662"
-      > </a
-      ><a name="1663" class="Symbol"
+      > <a name="1663" class="Symbol"
       >:</a
-      ><a name="1664"
-      > </a
-      ><a name="1665" href="Algebra.Morphism.html#726" class="Function"
+      > <a name="1665" href="Algebra.Morphism.html#726" class="Function"
       >Homomorphic&#8320;</a
-      ><a name="1677"
-      > </a
-      ><a name="1678" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="1678" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;_&#10215;</a
-      ><a name="1681"
-      > </a
-      ><a name="1682" href="Algebra.html#9639" class="Function"
+      > <a name="1682" href="Algebra.html#Morphism._-Ring&#10230;_.F.0#" class="Function"
       >F.0#</a
-      ><a name="1686"
-      > </a
-      ><a name="1687" href="Algebra.html#9639" class="Function"
+      > <a name="1687" href="Algebra.html#Morphism._-Ring&#10230;_.T.0#" class="Function"
       >T.0#</a
-      ><a name="1691"
       >
-  </a
-      ><a name="1694" href="Algebra.Morphism.html#1656" class="Function"
+  <a name="1694" href="Algebra.Morphism.html#_-Ring&#10230;_.0-homo" class="Function"
       >0-homo</a
-      ><a name="1700"
-      > </a
-      ><a name="1701" class="Symbol"
+      > <a name="1701" class="Symbol"
       >=</a
-      ><a name="1702"
       >
-    </a
-      ><a name="1707" href="Algebra.Properties.Group.html#1322" class="Function"
+    <a name="1707" href="Algebra.Properties.Group.html#left-identity-unique" class="Function"
       >GroupP.left-identity-unique</a
-      ><a name="1734"
-      > </a
-      ><a name="1735" href="Algebra.html#2884" class="Function"
+      > <a name="1735" href="Algebra.html#Morphism._-Ring&#10230;_.T.+-group" class="Function"
       >T.+-group</a
-      ><a name="1744"
-      > </a
-      ><a name="1745" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="1745" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;</a
-      ><a name="1746"
-      > </a
-      ><a name="1747" href="Algebra.html#9639" class="Function"
+      > <a name="1747" href="Algebra.html#Morphism._-Ring&#10230;_.F.0#" class="Function"
       >F.0#</a
-      ><a name="1751"
-      > </a
-      ><a name="1752" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="1752" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10215;</a
-      ><a name="1753"
-      > </a
-      ><a name="1754" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="1754" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;</a
-      ><a name="1755"
-      > </a
-      ><a name="1756" href="Algebra.html#9639" class="Function"
+      > <a name="1756" href="Algebra.html#Morphism._-Ring&#10230;_.F.0#" class="Function"
       >F.0#</a
-      ><a name="1760"
-      > </a
-      ><a name="1761" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="1761" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10215;</a
-      ><a name="1762"
-      > </a
-      ><a name="1763" class="Symbol"
+      > <a name="1763" class="Symbol"
       >(</a
       ><a name="1764" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
       >begin</a
-      ><a name="1769"
       >
-      </a
-      ><a name="1776" href="Algebra.html#9561" class="Function Operator"
+      <a name="1776" href="Algebra.html#Morphism._-Ring&#10230;_.T._+_" class="Function Operator"
       >T._+_</a
-      ><a name="1781"
-      > </a
-      ><a name="1782" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="1782" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;</a
-      ><a name="1783"
-      > </a
-      ><a name="1784" href="Algebra.html#9639" class="Function"
+      > <a name="1784" href="Algebra.html#Morphism._-Ring&#10230;_.F.0#" class="Function"
       >F.0#</a
-      ><a name="1788"
-      > </a
-      ><a name="1789" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="1789" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10215;</a
-      ><a name="1790"
-      > </a
-      ><a name="1791" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="1791" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;</a
-      ><a name="1792"
-      > </a
-      ><a name="1793" href="Algebra.html#9639" class="Function"
+      > <a name="1793" href="Algebra.html#Morphism._-Ring&#10230;_.F.0#" class="Function"
       >F.0#</a
-      ><a name="1797"
-      > </a
-      ><a name="1798" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="1798" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10215;</a
-      ><a name="1799"
-      > </a
-      ><a name="1800" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1800" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="1802"
-      > </a
-      ><a name="1803" href="Relation.Binary.Core.html#4960" class="Function"
+      > <a name="1803" href="Relation.Binary.Core.html#T.sym" class="Function"
       >T.sym</a
-      ><a name="1808"
-      > </a
-      ><a name="1809" class="Symbol"
+      > <a name="1809" class="Symbol"
       >(</a
-      ><a name="1810" href="Algebra.Morphism.html#1508" class="Field"
+      ><a name="1810" href="Algebra.Morphism.html#_-Ring&#10230;_.+-homo" class="Field"
       >+-homo</a
-      ><a name="1816"
-      > </a
-      ><a name="1817" href="Algebra.html#9639" class="Function"
+      > <a name="1817" href="Algebra.html#Morphism._-Ring&#10230;_.F.0#" class="Function"
       >F.0#</a
-      ><a name="1821"
-      > </a
-      ><a name="1822" href="Algebra.html#9639" class="Function"
+      > <a name="1822" href="Algebra.html#Morphism._-Ring&#10230;_.F.0#" class="Function"
       >F.0#</a
       ><a name="1826" class="Symbol"
       >)</a
-      ><a name="1827"
-      > </a
-      ><a name="1828" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1828" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="1829"
       >
-      </a
-      ><a name="1836" href="Algebra.Morphism.html#1443" class="Field Operator"
+      <a name="1836" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;</a
-      ><a name="1837"
-      > </a
-      ><a name="1838" href="Algebra.html#9561" class="Function Operator"
+      > <a name="1838" href="Algebra.html#Morphism._-Ring&#10230;_.F._+_" class="Function Operator"
       >F._+_</a
-      ><a name="1843"
-      > </a
-      ><a name="1844" href="Algebra.html#9639" class="Function"
+      > <a name="1844" href="Algebra.html#Morphism._-Ring&#10230;_.F.0#" class="Function"
       >F.0#</a
-      ><a name="1848"
-      > </a
-      ><a name="1849" href="Algebra.html#9639" class="Function"
+      > <a name="1849" href="Algebra.html#Morphism._-Ring&#10230;_.F.0#" class="Function"
       >F.0#</a
-      ><a name="1853"
-      > </a
-      ><a name="1854" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="1854" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10215;</a
-      ><a name="1855"
-      >     </a
-      ><a name="1860" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >     <a name="1860" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="1862"
-      > </a
-      ><a name="1863" href="Algebra.Morphism.html#1466" class="Field"
+      > <a name="1863" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;&#10215;-cong" class="Field"
       >&#10214;&#10215;-cong</a
-      ><a name="1870"
-      > </a
-      ><a name="1871" class="Symbol"
+      > <a name="1871" class="Symbol"
       >(</a
-      ><a name="1872" href="Data.Product.html#525" class="Field"
+      ><a name="1872" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="1877"
-      > </a
-      ><a name="1878" href="Algebra.Structures.html#1106" class="Function"
+      > <a name="1878" href="Algebra.Structures.html#_-Ring&#10230;_.F.+-identity" class="Function"
       >F.+-identity</a
-      ><a name="1890"
-      > </a
-      ><a name="1891" href="Algebra.html#9639" class="Function"
+      > <a name="1891" href="Algebra.html#Morphism._-Ring&#10230;_.F.0#" class="Function"
       >F.0#</a
       ><a name="1895" class="Symbol"
       >)</a
-      ><a name="1896"
-      > </a
-      ><a name="1897" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1897" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="1898"
       >
-      </a
-      ><a name="1905" href="Algebra.Morphism.html#1443" class="Field Operator"
+      <a name="1905" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;</a
-      ><a name="1906"
-      > </a
-      ><a name="1907" href="Algebra.html#9639" class="Function"
+      > <a name="1907" href="Algebra.html#Morphism._-Ring&#10230;_.F.0#" class="Function"
       >F.0#</a
-      ><a name="1911"
-      > </a
-      ><a name="1912" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="1912" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10215;</a
-      ><a name="1913"
-      >                </a
-      ><a name="1929" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >                <a name="1929" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
       >&#8718;</a
       ><a name="1930" class="Symbol"
       >)</a
-      ><a name="1931"
       >
 
-  </a
-      ><a name="1935" href="Algebra.Morphism.html#1935" class="Function"
+  <a name="_-Ring&#10230;_.-&#8255;homo" href="Algebra.Morphism.html#_-Ring&#10230;_.-&#8255;homo" class="Function"
       >-&#8255;homo</a
-      ><a name="1941"
-      > </a
-      ><a name="1942" class="Symbol"
+      > <a name="1942" class="Symbol"
       >:</a
-      ><a name="1943"
-      > </a
-      ><a name="1944" href="Algebra.Morphism.html#808" class="Function"
+      > <a name="1944" href="Algebra.Morphism.html#808" class="Function"
       >Homomorphic&#8321;</a
-      ><a name="1956"
-      > </a
-      ><a name="1957" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="1957" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;_&#10215;</a
-      ><a name="1960"
-      > </a
-      ><a name="1961" class="Symbol"
+      > <a name="1961" class="Symbol"
       >(</a
-      ><a name="1962" href="Algebra.html#9613" class="Function Operator"
+      ><a name="1962" href="Algebra.html#Morphism._-Ring&#10230;_.F.-_" class="Function Operator"
       >F.-_</a
       ><a name="1966" class="Symbol"
       >)</a
-      ><a name="1967"
-      > </a
-      ><a name="1968" class="Symbol"
+      > <a name="1968" class="Symbol"
       >(</a
-      ><a name="1969" href="Algebra.html#9613" class="Function Operator"
+      ><a name="1969" href="Algebra.html#Morphism._-Ring&#10230;_.T.-_" class="Function Operator"
       >T.-_</a
       ><a name="1973" class="Symbol"
       >)</a
-      ><a name="1974"
       >
-  </a
-      ><a name="1977" href="Algebra.Morphism.html#1935" class="Function"
+  <a name="1977" href="Algebra.Morphism.html#_-Ring&#10230;_.-&#8255;homo" class="Function"
       >-&#8255;homo</a
-      ><a name="1983"
-      > </a
-      ><a name="1984" href="Algebra.Morphism.html#1984" class="Bound"
+      > <a name="1984" href="Algebra.Morphism.html#1984" class="Bound"
       >x</a
-      ><a name="1985"
-      > </a
-      ><a name="1986" class="Symbol"
+      > <a name="1986" class="Symbol"
       >=</a
-      ><a name="1987"
       >
-    </a
-      ><a name="1992" href="Algebra.Properties.Group.html#1882" class="Function"
+    <a name="1992" href="Algebra.Properties.Group.html#left-inverse-unique" class="Function"
       >GroupP.left-inverse-unique</a
-      ><a name="2018"
-      > </a
-      ><a name="2019" href="Algebra.html#2884" class="Function"
+      > <a name="2019" href="Algebra.html#Morphism._-Ring&#10230;_.T.+-group" class="Function"
       >T.+-group</a
-      ><a name="2028"
-      > </a
-      ><a name="2029" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="2029" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;</a
-      ><a name="2030"
-      > </a
-      ><a name="2031" href="Algebra.html#9613" class="Function Operator"
+      > <a name="2031" href="Algebra.html#Morphism._-Ring&#10230;_.F.-_" class="Function Operator"
       >F.-_</a
-      ><a name="2035"
-      > </a
-      ><a name="2036" href="Algebra.Morphism.html#1984" class="Bound"
+      > <a name="2036" href="Algebra.Morphism.html#1984" class="Bound"
       >x</a
-      ><a name="2037"
-      > </a
-      ><a name="2038" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="2038" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10215;</a
-      ><a name="2039"
-      > </a
-      ><a name="2040" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="2040" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;</a
-      ><a name="2041"
-      > </a
-      ><a name="2042" href="Algebra.Morphism.html#1984" class="Bound"
+      > <a name="2042" href="Algebra.Morphism.html#1984" class="Bound"
       >x</a
-      ><a name="2043"
-      > </a
-      ><a name="2044" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="2044" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10215;</a
-      ><a name="2045"
-      > </a
-      ><a name="2046" class="Symbol"
+      > <a name="2046" class="Symbol"
       >(</a
       ><a name="2047" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
       >begin</a
-      ><a name="2052"
       >
-      </a
-      ><a name="2059" href="Algebra.html#9561" class="Function Operator"
+      <a name="2059" href="Algebra.html#Morphism._-Ring&#10230;_.T._+_" class="Function Operator"
       >T._+_</a
-      ><a name="2064"
-      > </a
-      ><a name="2065" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="2065" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;</a
-      ><a name="2066"
-      > </a
-      ><a name="2067" href="Algebra.html#9613" class="Function Operator"
+      > <a name="2067" href="Algebra.html#Morphism._-Ring&#10230;_.F.-_" class="Function Operator"
       >F.-_</a
-      ><a name="2071"
-      > </a
-      ><a name="2072" href="Algebra.Morphism.html#1984" class="Bound"
+      > <a name="2072" href="Algebra.Morphism.html#1984" class="Bound"
       >x</a
-      ><a name="2073"
-      > </a
-      ><a name="2074" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="2074" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10215;</a
-      ><a name="2075"
-      > </a
-      ><a name="2076" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="2076" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;</a
-      ><a name="2077"
-      > </a
-      ><a name="2078" href="Algebra.Morphism.html#1984" class="Bound"
+      > <a name="2078" href="Algebra.Morphism.html#1984" class="Bound"
       >x</a
-      ><a name="2079"
-      > </a
-      ><a name="2080" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="2080" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10215;</a
-      ><a name="2081"
-      > </a
-      ><a name="2082" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="2082" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="2084"
-      > </a
-      ><a name="2085" href="Relation.Binary.Core.html#4960" class="Function"
+      > <a name="2085" href="Relation.Binary.Core.html#T.sym" class="Function"
       >T.sym</a
-      ><a name="2090"
-      > </a
-      ><a name="2091" class="Symbol"
+      > <a name="2091" class="Symbol"
       >(</a
-      ><a name="2092" href="Algebra.Morphism.html#1508" class="Field"
+      ><a name="2092" href="Algebra.Morphism.html#_-Ring&#10230;_.+-homo" class="Field"
       >+-homo</a
-      ><a name="2098"
-      > </a
-      ><a name="2099" class="Symbol"
+      > <a name="2099" class="Symbol"
       >(</a
-      ><a name="2100" href="Algebra.html#9613" class="Function Operator"
+      ><a name="2100" href="Algebra.html#Morphism._-Ring&#10230;_.F.-_" class="Function Operator"
       >F.-_</a
-      ><a name="2104"
-      > </a
-      ><a name="2105" href="Algebra.Morphism.html#1984" class="Bound"
+      > <a name="2105" href="Algebra.Morphism.html#1984" class="Bound"
       >x</a
       ><a name="2106" class="Symbol"
       >)</a
-      ><a name="2107"
-      > </a
-      ><a name="2108" href="Algebra.Morphism.html#1984" class="Bound"
+      > <a name="2108" href="Algebra.Morphism.html#1984" class="Bound"
       >x</a
       ><a name="2109" class="Symbol"
       >)</a
-      ><a name="2110"
-      > </a
-      ><a name="2111" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="2111" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="2112"
       >
-      </a
-      ><a name="2119" href="Algebra.Morphism.html#1443" class="Field Operator"
+      <a name="2119" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;</a
-      ><a name="2120"
-      > </a
-      ><a name="2121" href="Algebra.html#9561" class="Function Operator"
+      > <a name="2121" href="Algebra.html#Morphism._-Ring&#10230;_.F._+_" class="Function Operator"
       >F._+_</a
-      ><a name="2126"
-      > </a
-      ><a name="2127" class="Symbol"
+      > <a name="2127" class="Symbol"
       >(</a
-      ><a name="2128" href="Algebra.html#9613" class="Function Operator"
+      ><a name="2128" href="Algebra.html#Morphism._-Ring&#10230;_.F.-_" class="Function Operator"
       >F.-_</a
-      ><a name="2132"
-      > </a
-      ><a name="2133" href="Algebra.Morphism.html#1984" class="Bound"
+      > <a name="2133" href="Algebra.Morphism.html#1984" class="Bound"
       >x</a
       ><a name="2134" class="Symbol"
       >)</a
-      ><a name="2135"
-      > </a
-      ><a name="2136" href="Algebra.Morphism.html#1984" class="Bound"
+      > <a name="2136" href="Algebra.Morphism.html#1984" class="Bound"
       >x</a
-      ><a name="2137"
-      > </a
-      ><a name="2138" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="2138" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10215;</a
-      ><a name="2139"
-      >   </a
-      ><a name="2142" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >   <a name="2142" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="2144"
-      > </a
-      ><a name="2145" href="Algebra.Morphism.html#1466" class="Field"
+      > <a name="2145" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;&#10215;-cong" class="Field"
       >&#10214;&#10215;-cong</a
-      ><a name="2152"
-      > </a
-      ><a name="2153" class="Symbol"
+      > <a name="2153" class="Symbol"
       >(</a
-      ><a name="2154" href="Data.Product.html#525" class="Field"
+      ><a name="2154" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="2159"
-      > </a
-      ><a name="2160" href="Algebra.Structures.html#2083" class="Function"
+      > <a name="2160" href="Algebra.Structures.html#_-Ring&#10230;_.F.-&#8255;inverse" class="Function"
       >F.-&#8255;inverse</a
-      ><a name="2171"
-      > </a
-      ><a name="2172" href="Algebra.Morphism.html#1984" class="Bound"
+      > <a name="2172" href="Algebra.Morphism.html#1984" class="Bound"
       >x</a
       ><a name="2173" class="Symbol"
       >)</a
-      ><a name="2174"
-      > </a
-      ><a name="2175" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="2175" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="2176"
       >
-      </a
-      ><a name="2183" href="Algebra.Morphism.html#1443" class="Field Operator"
+      <a name="2183" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10214;</a
-      ><a name="2184"
-      > </a
-      ><a name="2185" href="Algebra.html#9639" class="Function"
+      > <a name="2185" href="Algebra.html#Morphism._-Ring&#10230;_.F.0#" class="Function"
       >F.0#</a
-      ><a name="2189"
-      > </a
-      ><a name="2190" href="Algebra.Morphism.html#1443" class="Field Operator"
+      > <a name="2190" href="Algebra.Morphism.html#_-Ring&#10230;_.&#10214;_&#10215;" class="Field Operator"
       >&#10215;</a
-      ><a name="2191"
-      >               </a
-      ><a name="2206" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >               <a name="2206" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8776;&#10216;</a
-      ><a name="2208"
-      > </a
-      ><a name="2209" href="Algebra.Morphism.html#1656" class="Function"
+      > <a name="2209" href="Algebra.Morphism.html#_-Ring&#10230;_.0-homo" class="Function"
       >0-homo</a
-      ><a name="2215"
-      > </a
-      ><a name="2216" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="2216" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="2217"
       >
-      </a
-      ><a name="2224" href="Algebra.html#9639" class="Function"
+      <a name="2224" href="Algebra.html#Morphism._-Ring&#10230;_.T.0#" class="Function"
       >T.0#</a
-      ><a name="2228"
-      >                   </a
-      ><a name="2247" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >                   <a name="2247" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
       >&#8718;</a
       ><a name="2248" class="Symbol"
       >)</a
-      ><a name="2249"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

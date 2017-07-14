@@ -11,2323 +11,1343 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- IO</a
-      ><a name="111"
       >
-</a
-      ><a name="112" class="Comment"
+<a name="112" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="184"
       >
 
-</a
-      ><a name="186" class="Keyword"
+<a name="186" class="Keyword"
       >module</a
-      ><a name="192"
-      > </a
-      ><a name="193" href="IO.html#1" class="Module"
+      > <a name="193" href="IO.html" class="Module"
       >IO</a
-      ><a name="195"
-      > </a
-      ><a name="196" class="Keyword"
+      > <a name="196" class="Keyword"
       >where</a
-      ><a name="201"
       >
 
-</a
-      ><a name="203" class="Keyword"
+<a name="203" class="Keyword"
       >open</a
-      ><a name="207"
-      > </a
-      ><a name="208" class="Keyword"
+      > <a name="208" class="Keyword"
       >import</a
-      ><a name="214"
-      > </a
-      ><a name="215" href="Coinduction.html#1" class="Module"
+      > <a name="215" href="Coinduction.html" class="Module"
       >Coinduction</a
-      ><a name="226"
       >
-</a
-      ><a name="227" class="Keyword"
+<a name="227" class="Keyword"
       >open</a
-      ><a name="231"
-      > </a
-      ><a name="232" class="Keyword"
+      > <a name="232" class="Keyword"
       >import</a
-      ><a name="238"
-      > </a
-      ><a name="239" href="Data.Unit.html#1" class="Module"
+      > <a name="239" href="Data.Unit.html" class="Module"
       >Data.Unit</a
-      ><a name="248"
       >
-</a
-      ><a name="249" class="Keyword"
+<a name="249" class="Keyword"
       >open</a
-      ><a name="253"
-      > </a
-      ><a name="254" class="Keyword"
+      > <a name="254" class="Keyword"
       >import</a
-      ><a name="260"
-      > </a
-      ><a name="261" href="Data.String.html#1" class="Module"
+      > <a name="261" href="Data.String.html" class="Module"
       >Data.String</a
-      ><a name="272"
       >
-</a
-      ><a name="273" class="Keyword"
+<a name="273" class="Keyword"
       >open</a
-      ><a name="277"
-      > </a
-      ><a name="278" class="Keyword"
+      > <a name="278" class="Keyword"
       >import</a
-      ><a name="284"
-      > </a
-      ><a name="285" href="Data.Colist.html#1" class="Module"
+      > <a name="285" href="Data.Colist.html" class="Module"
       >Data.Colist</a
-      ><a name="296"
       >
-</a
-      ><a name="297" class="Keyword"
+<a name="297" class="Keyword"
       >open</a
-      ><a name="301"
-      > </a
-      ><a name="302" class="Keyword"
+      > <a name="302" class="Keyword"
       >import</a
-      ><a name="308"
-      > </a
-      ><a name="309" href="Function.html#1" class="Module"
+      > <a name="309" href="Function.html" class="Module"
       >Function</a
-      ><a name="317"
       >
-</a
-      ><a name="318" class="Keyword"
+<a name="318" class="Keyword"
       >import</a
-      ><a name="324"
-      > </a
-      ><a name="325" href="IO.Primitive.html#1" class="Module"
+      > <a name="325" href="IO.Primitive.html" class="Module"
       >IO.Primitive</a
-      ><a name="337"
-      > </a
-      ><a name="338" class="Symbol"
+      > <a name="338" class="Symbol"
       >as</a
-      ><a name="340"
-      > </a
-      ><a name="341" class="Module"
+      > <a name="341" class="Module"
       >Prim</a
-      ><a name="345"
       >
-</a
-      ><a name="346" class="Keyword"
+<a name="346" class="Keyword"
       >open</a
-      ><a name="350"
-      > </a
-      ><a name="351" class="Keyword"
+      > <a name="351" class="Keyword"
       >import</a
-      ><a name="357"
-      > </a
-      ><a name="358" href="Level.html#1" class="Module"
+      > <a name="358" href="Level.html" class="Module"
       >Level</a
-      ><a name="363"
       >
 
-</a
-      ><a name="365" class="Comment"
+<a name="365" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="437"
       >
-</a
-      ><a name="438" class="Comment"
+<a name="438" class="Comment"
       >-- The IO monad</a
-      ><a name="453"
       >
 
-</a
-      ><a name="455" class="Comment"
+<a name="455" class="Comment"
       >-- One cannot write &quot;infinitely large&quot; computations with the</a
-      ><a name="515"
       >
-</a
-      ><a name="516" class="Comment"
+<a name="516" class="Comment"
       >-- postulated IO monad in IO.Primitive without turning off the</a
-      ><a name="578"
       >
-</a
-      ><a name="579" class="Comment"
+<a name="579" class="Comment"
       >-- termination checker (or going via the FFI, or perhaps abusing</a
-      ><a name="643"
       >
-</a
-      ><a name="644" class="Comment"
+<a name="644" class="Comment"
       >-- something else). The following coinductive deep embedding is</a
-      ><a name="707"
       >
-</a
-      ><a name="708" class="Comment"
+<a name="708" class="Comment"
       >-- introduced to avoid this problem. Possible non-termination is</a
-      ><a name="772"
       >
-</a
-      ><a name="773" class="Comment"
+<a name="773" class="Comment"
       >-- isolated to the run function below.</a
-      ><a name="811"
       >
 
-</a
-      ><a name="813" class="Keyword"
+<a name="813" class="Keyword"
       >infixl</a
-      ><a name="819"
-      > </a
-      ><a name="820" class="Number"
+      > <a name="820" class="Number"
       >1</a
-      ><a name="821"
-      > _&gt;&gt;=_ _&gt;&gt;_
+      > <a name="822" href="IO.html#IO._&gt;&gt;=_" class="InductiveConstructor Operator"
+      >_&gt;&gt;=_</a
+      > <a name="828" href="IO.html#IO._&gt;&gt;_" class="InductiveConstructor Operator"
+      >_&gt;&gt;_</a
+      >
 
-</a
-      ><a name="834" class="Keyword"
+<a name="834" class="Keyword"
       >data</a
-      ><a name="838"
-      > </a
-      ><a name="839" href="IO.html#839" class="Datatype"
+      > <a name="IO" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="841"
-      > </a
-      ><a name="842" class="Symbol"
+      > <a name="842" class="Symbol"
       >{</a
       ><a name="843" href="IO.html#843" class="Bound"
       >a</a
       ><a name="844" class="Symbol"
       >}</a
-      ><a name="845"
-      > </a
-      ><a name="846" class="Symbol"
+      > <a name="846" class="Symbol"
       >(</a
       ><a name="847" href="IO.html#847" class="Bound"
       >A</a
-      ><a name="848"
-      > </a
-      ><a name="849" class="Symbol"
+      > <a name="849" class="Symbol"
       >:</a
-      ><a name="850"
-      > </a
-      ><a name="851" class="PrimitiveType"
+      > <a name="851" class="PrimitiveType"
       >Set</a
-      ><a name="854"
-      > </a
-      ><a name="855" href="IO.html#843" class="Bound"
+      > <a name="855" href="IO.html#843" class="Bound"
       >a</a
       ><a name="856" class="Symbol"
       >)</a
-      ><a name="857"
-      > </a
-      ><a name="858" class="Symbol"
+      > <a name="858" class="Symbol"
       >:</a
-      ><a name="859"
-      > </a
-      ><a name="860" class="PrimitiveType"
+      > <a name="860" class="PrimitiveType"
       >Set</a
-      ><a name="863"
-      > </a
-      ><a name="864" class="Symbol"
+      > <a name="864" class="Symbol"
       >(</a
-      ><a name="865" href="Agda.Primitive.html#625" class="Primitive"
+      ><a name="865" href="Agda.Primitive.html#suc" class="Primitive"
       >suc</a
-      ><a name="868"
-      > </a
-      ><a name="869" href="IO.html#843" class="Bound"
+      > <a name="869" href="IO.html#843" class="Bound"
       >a</a
       ><a name="870" class="Symbol"
       >)</a
-      ><a name="871"
-      > </a
-      ><a name="872" class="Keyword"
+      > <a name="872" class="Keyword"
       >where</a
-      ><a name="877"
       >
-  </a
-      ><a name="880" href="IO.html#880" class="InductiveConstructor"
+  <a name="IO.lift" href="IO.html#IO.lift" class="InductiveConstructor"
       >lift</a
-      ><a name="884"
-      >   </a
-      ><a name="887" class="Symbol"
+      >   <a name="887" class="Symbol"
       >:</a
-      ><a name="888"
-      > </a
-      ><a name="889" class="Symbol"
+      > <a name="889" class="Symbol"
       >(</a
       ><a name="890" href="IO.html#890" class="Bound"
       >m</a
-      ><a name="891"
-      > </a
-      ><a name="892" class="Symbol"
+      > <a name="892" class="Symbol"
       >:</a
-      ><a name="893"
-      > </a
-      ><a name="894" href="Agda.Builtin.IO.html#70" class="Postulate"
+      > <a name="894" href="Agda.Builtin.IO.html#IO" class="Postulate"
       >Prim.IO</a
-      ><a name="901"
-      > </a
-      ><a name="902" href="IO.html#847" class="Bound"
+      > <a name="902" href="IO.html#847" class="Bound"
       >A</a
       ><a name="903" class="Symbol"
       >)</a
-      ><a name="904"
-      > </a
-      ><a name="905" class="Symbol"
+      > <a name="905" class="Symbol"
       >&#8594;</a
-      ><a name="906"
-      > </a
-      ><a name="907" href="IO.html#839" class="Datatype"
+      > <a name="907" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="909"
-      > </a
-      ><a name="910" href="IO.html#847" class="Bound"
+      > <a name="910" href="IO.html#847" class="Bound"
       >A</a
-      ><a name="911"
       >
-  </a
-      ><a name="914" href="IO.html#914" class="InductiveConstructor"
+  <a name="IO.return" href="IO.html#IO.return" class="InductiveConstructor"
       >return</a
-      ><a name="920"
-      > </a
-      ><a name="921" class="Symbol"
+      > <a name="921" class="Symbol"
       >:</a
-      ><a name="922"
-      > </a
-      ><a name="923" class="Symbol"
+      > <a name="923" class="Symbol"
       >(</a
       ><a name="924" href="IO.html#924" class="Bound"
       >x</a
-      ><a name="925"
-      > </a
-      ><a name="926" class="Symbol"
+      > <a name="926" class="Symbol"
       >:</a
-      ><a name="927"
-      > </a
-      ><a name="928" href="IO.html#847" class="Bound"
+      > <a name="928" href="IO.html#847" class="Bound"
       >A</a
       ><a name="929" class="Symbol"
       >)</a
-      ><a name="930"
-      > </a
-      ><a name="931" class="Symbol"
+      > <a name="931" class="Symbol"
       >&#8594;</a
-      ><a name="932"
-      > </a
-      ><a name="933" href="IO.html#839" class="Datatype"
+      > <a name="933" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="935"
-      > </a
-      ><a name="936" href="IO.html#847" class="Bound"
+      > <a name="936" href="IO.html#847" class="Bound"
       >A</a
-      ><a name="937"
       >
-  </a
-      ><a name="940" href="IO.html#940" class="InductiveConstructor Operator"
+  <a name="IO._&gt;&gt;=_" href="IO.html#IO._&gt;&gt;=_" class="InductiveConstructor Operator"
       >_&gt;&gt;=_</a
-      ><a name="945"
-      >  </a
-      ><a name="947" class="Symbol"
+      >  <a name="947" class="Symbol"
       >:</a
-      ><a name="948"
-      > </a
-      ><a name="949" class="Symbol"
+      > <a name="949" class="Symbol"
       >{</a
       ><a name="950" href="IO.html#950" class="Bound"
       >B</a
-      ><a name="951"
-      > </a
-      ><a name="952" class="Symbol"
+      > <a name="952" class="Symbol"
       >:</a
-      ><a name="953"
-      > </a
-      ><a name="954" class="PrimitiveType"
+      > <a name="954" class="PrimitiveType"
       >Set</a
-      ><a name="957"
-      > </a
-      ><a name="958" href="IO.html#843" class="Bound"
+      > <a name="958" href="IO.html#843" class="Bound"
       >a</a
       ><a name="959" class="Symbol"
       >}</a
-      ><a name="960"
-      > </a
-      ><a name="961" class="Symbol"
+      > <a name="961" class="Symbol"
       >(</a
       ><a name="962" href="IO.html#962" class="Bound"
       >m</a
-      ><a name="963"
-      > </a
-      ><a name="964" class="Symbol"
+      > <a name="964" class="Symbol"
       >:</a
-      ><a name="965"
-      > </a
-      ><a name="966" href="Agda.Builtin.Coinduction.html#96" class="Record"
+      > <a name="966" href="Agda.Builtin.Coinduction.html#&#8734;" class="Record"
       >&#8734;</a
-      ><a name="967"
-      > </a
-      ><a name="968" class="Symbol"
+      > <a name="968" class="Symbol"
       >(</a
-      ><a name="969" href="IO.html#839" class="Datatype"
+      ><a name="969" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="971"
-      > </a
-      ><a name="972" href="IO.html#950" class="Bound"
+      > <a name="972" href="IO.html#950" class="Bound"
       >B</a
       ><a name="973" class="Symbol"
       >))</a
-      ><a name="975"
-      > </a
-      ><a name="976" class="Symbol"
+      > <a name="976" class="Symbol"
       >(</a
       ><a name="977" href="IO.html#977" class="Bound"
       >f</a
-      ><a name="978"
-      > </a
-      ><a name="979" class="Symbol"
+      > <a name="979" class="Symbol"
       >:</a
-      ><a name="980"
-      > </a
-      ><a name="981" class="Symbol"
+      > <a name="981" class="Symbol"
       >(</a
       ><a name="982" href="IO.html#982" class="Bound"
       >x</a
-      ><a name="983"
-      > </a
-      ><a name="984" class="Symbol"
+      > <a name="984" class="Symbol"
       >:</a
-      ><a name="985"
-      > </a
-      ><a name="986" href="IO.html#950" class="Bound"
+      > <a name="986" href="IO.html#950" class="Bound"
       >B</a
       ><a name="987" class="Symbol"
       >)</a
-      ><a name="988"
-      > </a
-      ><a name="989" class="Symbol"
+      > <a name="989" class="Symbol"
       >&#8594;</a
-      ><a name="990"
-      > </a
-      ><a name="991" href="Agda.Builtin.Coinduction.html#96" class="Record"
+      > <a name="991" href="Agda.Builtin.Coinduction.html#&#8734;" class="Record"
       >&#8734;</a
-      ><a name="992"
-      > </a
-      ><a name="993" class="Symbol"
+      > <a name="993" class="Symbol"
       >(</a
-      ><a name="994" href="IO.html#839" class="Datatype"
+      ><a name="994" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="996"
-      > </a
-      ><a name="997" href="IO.html#847" class="Bound"
+      > <a name="997" href="IO.html#847" class="Bound"
       >A</a
       ><a name="998" class="Symbol"
       >))</a
-      ><a name="1000"
-      > </a
-      ><a name="1001" class="Symbol"
+      > <a name="1001" class="Symbol"
       >&#8594;</a
-      ><a name="1002"
-      > </a
-      ><a name="1003" href="IO.html#839" class="Datatype"
+      > <a name="1003" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="1005"
-      > </a
-      ><a name="1006" href="IO.html#847" class="Bound"
+      > <a name="1006" href="IO.html#847" class="Bound"
       >A</a
-      ><a name="1007"
       >
-  </a
-      ><a name="1010" href="IO.html#1010" class="InductiveConstructor Operator"
+  <a name="IO._&gt;&gt;_" href="IO.html#IO._&gt;&gt;_" class="InductiveConstructor Operator"
       >_&gt;&gt;_</a
-      ><a name="1014"
-      >   </a
-      ><a name="1017" class="Symbol"
+      >   <a name="1017" class="Symbol"
       >:</a
-      ><a name="1018"
-      > </a
-      ><a name="1019" class="Symbol"
+      > <a name="1019" class="Symbol"
       >{</a
       ><a name="1020" href="IO.html#1020" class="Bound"
       >B</a
-      ><a name="1021"
-      > </a
-      ><a name="1022" class="Symbol"
+      > <a name="1022" class="Symbol"
       >:</a
-      ><a name="1023"
-      > </a
-      ><a name="1024" class="PrimitiveType"
+      > <a name="1024" class="PrimitiveType"
       >Set</a
-      ><a name="1027"
-      > </a
-      ><a name="1028" href="IO.html#843" class="Bound"
+      > <a name="1028" href="IO.html#843" class="Bound"
       >a</a
       ><a name="1029" class="Symbol"
       >}</a
-      ><a name="1030"
-      > </a
-      ><a name="1031" class="Symbol"
+      > <a name="1031" class="Symbol"
       >(</a
       ><a name="1032" href="IO.html#1032" class="Bound"
       >m&#8321;</a
-      ><a name="1034"
-      > </a
-      ><a name="1035" class="Symbol"
+      > <a name="1035" class="Symbol"
       >:</a
-      ><a name="1036"
-      > </a
-      ><a name="1037" href="Agda.Builtin.Coinduction.html#96" class="Record"
+      > <a name="1037" href="Agda.Builtin.Coinduction.html#&#8734;" class="Record"
       >&#8734;</a
-      ><a name="1038"
-      > </a
-      ><a name="1039" class="Symbol"
+      > <a name="1039" class="Symbol"
       >(</a
-      ><a name="1040" href="IO.html#839" class="Datatype"
+      ><a name="1040" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="1042"
-      > </a
-      ><a name="1043" href="IO.html#1020" class="Bound"
+      > <a name="1043" href="IO.html#1020" class="Bound"
       >B</a
       ><a name="1044" class="Symbol"
       >))</a
-      ><a name="1046"
-      > </a
-      ><a name="1047" class="Symbol"
+      > <a name="1047" class="Symbol"
       >(</a
       ><a name="1048" href="IO.html#1048" class="Bound"
       >m&#8322;</a
-      ><a name="1050"
-      > </a
-      ><a name="1051" class="Symbol"
+      > <a name="1051" class="Symbol"
       >:</a
-      ><a name="1052"
-      > </a
-      ><a name="1053" href="Agda.Builtin.Coinduction.html#96" class="Record"
+      > <a name="1053" href="Agda.Builtin.Coinduction.html#&#8734;" class="Record"
       >&#8734;</a
-      ><a name="1054"
-      > </a
-      ><a name="1055" class="Symbol"
+      > <a name="1055" class="Symbol"
       >(</a
-      ><a name="1056" href="IO.html#839" class="Datatype"
+      ><a name="1056" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="1058"
-      > </a
-      ><a name="1059" href="IO.html#847" class="Bound"
+      > <a name="1059" href="IO.html#847" class="Bound"
       >A</a
       ><a name="1060" class="Symbol"
       >))</a
-      ><a name="1062"
-      > </a
-      ><a name="1063" class="Symbol"
+      > <a name="1063" class="Symbol"
       >&#8594;</a
-      ><a name="1064"
-      > </a
-      ><a name="1065" href="IO.html#839" class="Datatype"
+      > <a name="1065" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="1067"
-      > </a
-      ><a name="1068" href="IO.html#847" class="Bound"
+      > <a name="1068" href="IO.html#847" class="Bound"
       >A</a
-      ><a name="1069"
       >
 
-</a
-      ><a name="1071" class="Symbol"
+<a name="1071" class="Symbol"
       >{-#</a
-      ><a name="1074"
-      > </a
-      ><a name="1075" class="Keyword"
+      > <a name="1075" class="Keyword"
       >NON_TERMINATING</a
-      ><a name="1090"
-      > </a
-      ><a name="1091" class="Symbol"
+      > <a name="1091" class="Symbol"
       >#-}</a
-      ><a name="1094"
       >
 
-</a
-      ><a name="1096" href="IO.html#1096" class="Function"
+<a name="run" href="IO.html#run" class="Function"
       >run</a
-      ><a name="1099"
-      > </a
-      ><a name="1100" class="Symbol"
+      > <a name="1100" class="Symbol"
       >:</a
-      ><a name="1101"
-      > </a
-      ><a name="1102" class="Symbol"
+      > <a name="1102" class="Symbol"
       >&#8704;</a
-      ><a name="1103"
-      > </a
-      ><a name="1104" class="Symbol"
+      > <a name="1104" class="Symbol"
       >{</a
       ><a name="1105" href="IO.html#1105" class="Bound"
       >a</a
       ><a name="1106" class="Symbol"
       >}</a
-      ><a name="1107"
-      > </a
-      ><a name="1108" class="Symbol"
+      > <a name="1108" class="Symbol"
       >{</a
       ><a name="1109" href="IO.html#1109" class="Bound"
       >A</a
-      ><a name="1110"
-      > </a
-      ><a name="1111" class="Symbol"
+      > <a name="1111" class="Symbol"
       >:</a
-      ><a name="1112"
-      > </a
-      ><a name="1113" class="PrimitiveType"
+      > <a name="1113" class="PrimitiveType"
       >Set</a
-      ><a name="1116"
-      > </a
-      ><a name="1117" href="IO.html#1105" class="Bound"
+      > <a name="1117" href="IO.html#1105" class="Bound"
       >a</a
       ><a name="1118" class="Symbol"
       >}</a
-      ><a name="1119"
-      > </a
-      ><a name="1120" class="Symbol"
+      > <a name="1120" class="Symbol"
       >&#8594;</a
-      ><a name="1121"
-      > </a
-      ><a name="1122" href="IO.html#839" class="Datatype"
+      > <a name="1122" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="1124"
-      > </a
-      ><a name="1125" href="IO.html#1109" class="Bound"
+      > <a name="1125" href="IO.html#1109" class="Bound"
       >A</a
-      ><a name="1126"
-      > </a
-      ><a name="1127" class="Symbol"
+      > <a name="1127" class="Symbol"
       >&#8594;</a
-      ><a name="1128"
-      > </a
-      ><a name="1129" href="Agda.Builtin.IO.html#70" class="Postulate"
+      > <a name="1129" href="Agda.Builtin.IO.html#IO" class="Postulate"
       >Prim.IO</a
-      ><a name="1136"
-      > </a
-      ><a name="1137" href="IO.html#1109" class="Bound"
+      > <a name="1137" href="IO.html#1109" class="Bound"
       >A</a
-      ><a name="1138"
       >
-</a
-      ><a name="1139" href="IO.html#1096" class="Function"
+<a name="1139" href="IO.html#run" class="Function"
       >run</a
-      ><a name="1142"
-      > </a
-      ><a name="1143" class="Symbol"
+      > <a name="1143" class="Symbol"
       >(</a
-      ><a name="1144" href="IO.html#880" class="InductiveConstructor"
+      ><a name="1144" href="IO.html#IO.lift" class="InductiveConstructor"
       >lift</a
-      ><a name="1148"
-      > </a
-      ><a name="1149" href="IO.html#1149" class="Bound"
+      > <a name="1149" href="IO.html#1149" class="Bound"
       >m</a
       ><a name="1150" class="Symbol"
       >)</a
-      ><a name="1151"
-      >   </a
-      ><a name="1154" class="Symbol"
+      >   <a name="1154" class="Symbol"
       >=</a
-      ><a name="1155"
-      > </a
-      ><a name="1156" href="IO.html#1149" class="Bound"
+      > <a name="1156" href="IO.html#1149" class="Bound"
       >m</a
-      ><a name="1157"
       >
-</a
-      ><a name="1158" href="IO.html#1096" class="Function"
+<a name="1158" href="IO.html#run" class="Function"
       >run</a
-      ><a name="1161"
-      > </a
-      ><a name="1162" class="Symbol"
+      > <a name="1162" class="Symbol"
       >(</a
-      ><a name="1163" href="IO.html#914" class="InductiveConstructor"
+      ><a name="1163" href="IO.html#IO.return" class="InductiveConstructor"
       >return</a
-      ><a name="1169"
-      > </a
-      ><a name="1170" href="IO.html#1170" class="Bound"
+      > <a name="1170" href="IO.html#1170" class="Bound"
       >x</a
       ><a name="1171" class="Symbol"
       >)</a
-      ><a name="1172"
-      > </a
-      ><a name="1173" class="Symbol"
+      > <a name="1173" class="Symbol"
       >=</a
-      ><a name="1174"
-      > </a
-      ><a name="1175" href="IO.Primitive.html#516" class="Postulate"
+      > <a name="1175" href="IO.Primitive.html#return" class="Postulate"
       >Prim.return</a
-      ><a name="1186"
-      > </a
-      ><a name="1187" href="IO.html#1170" class="Bound"
+      > <a name="1187" href="IO.html#1170" class="Bound"
       >x</a
-      ><a name="1188"
       >
-</a
-      ><a name="1189" href="IO.html#1096" class="Function"
+<a name="1189" href="IO.html#run" class="Function"
       >run</a
-      ><a name="1192"
-      > </a
-      ><a name="1193" class="Symbol"
+      > <a name="1193" class="Symbol"
       >(</a
       ><a name="1194" href="IO.html#1194" class="Bound"
       >m</a
-      ><a name="1195"
-      >  </a
-      ><a name="1197" href="IO.html#940" class="InductiveConstructor Operator"
+      >  <a name="1197" href="IO.html#IO._&gt;&gt;=_" class="InductiveConstructor Operator"
       >&gt;&gt;=</a
-      ><a name="1200"
-      > </a
-      ><a name="1201" href="IO.html#1201" class="Bound"
+      > <a name="1201" href="IO.html#1201" class="Bound"
       >f</a
       ><a name="1202" class="Symbol"
       >)</a
-      ><a name="1203"
-      > </a
-      ><a name="1204" class="Symbol"
+      > <a name="1204" class="Symbol"
       >=</a
-      ><a name="1205"
-      > </a
-      ><a name="1206" href="IO.Primitive.html#556" class="Postulate Operator"
+      > <a name="1206" href="IO.Primitive.html#_&gt;&gt;=_" class="Postulate Operator"
       >Prim._&gt;&gt;=_</a
-      ><a name="1216"
-      > </a
-      ><a name="1217" class="Symbol"
+      > <a name="1217" class="Symbol"
       >(</a
-      ><a name="1218" href="IO.html#1096" class="Function"
+      ><a name="1218" href="IO.html#run" class="Function"
       >run</a
-      ><a name="1221"
-      > </a
-      ><a name="1222" class="Symbol"
+      > <a name="1222" class="Symbol"
       >(</a
-      ><a name="1223" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      ><a name="1223" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="1224"
-      > </a
-      ><a name="1225" href="IO.html#1194" class="Bound"
+      > <a name="1225" href="IO.html#1194" class="Bound"
       >m</a
-      ><a name="1226"
-      > </a
-      ><a name="1227" class="Symbol"
+      > <a name="1227" class="Symbol"
       >))</a
-      ><a name="1229"
-      > </a
-      ><a name="1230" class="Symbol"
+      > <a name="1230" class="Symbol"
       >&#955;</a
-      ><a name="1231"
-      > </a
-      ><a name="1232" href="IO.html#1232" class="Bound"
+      > <a name="1232" href="IO.html#1232" class="Bound"
       >x</a
-      ><a name="1233"
-      > </a
-      ><a name="1234" class="Symbol"
+      > <a name="1234" class="Symbol"
       >&#8594;</a
-      ><a name="1235"
-      > </a
-      ><a name="1236" href="IO.html#1096" class="Function"
+      > <a name="1236" href="IO.html#run" class="Function"
       >run</a
-      ><a name="1239"
-      > </a
-      ><a name="1240" class="Symbol"
+      > <a name="1240" class="Symbol"
       >(</a
-      ><a name="1241" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      ><a name="1241" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="1242"
-      > </a
-      ><a name="1243" class="Symbol"
+      > <a name="1243" class="Symbol"
       >(</a
       ><a name="1244" href="IO.html#1201" class="Bound"
       >f</a
-      ><a name="1245"
-      > </a
-      ><a name="1246" href="IO.html#1232" class="Bound"
+      > <a name="1246" href="IO.html#1232" class="Bound"
       >x</a
       ><a name="1247" class="Symbol"
       >))</a
-      ><a name="1249"
       >
-</a
-      ><a name="1250" href="IO.html#1096" class="Function"
+<a name="1250" href="IO.html#run" class="Function"
       >run</a
-      ><a name="1253"
-      > </a
-      ><a name="1254" class="Symbol"
+      > <a name="1254" class="Symbol"
       >(</a
       ><a name="1255" href="IO.html#1255" class="Bound"
       >m&#8321;</a
-      ><a name="1257"
-      > </a
-      ><a name="1258" href="IO.html#1010" class="InductiveConstructor Operator"
+      > <a name="1258" href="IO.html#IO._&gt;&gt;_" class="InductiveConstructor Operator"
       >&gt;&gt;</a
-      ><a name="1260"
-      > </a
-      ><a name="1261" href="IO.html#1261" class="Bound"
+      > <a name="1261" href="IO.html#1261" class="Bound"
       >m&#8322;</a
       ><a name="1263" class="Symbol"
       >)</a
-      ><a name="1264"
-      > </a
-      ><a name="1265" class="Symbol"
+      > <a name="1265" class="Symbol"
       >=</a
-      ><a name="1266"
-      > </a
-      ><a name="1267" href="IO.Primitive.html#556" class="Postulate Operator"
+      > <a name="1267" href="IO.Primitive.html#_&gt;&gt;=_" class="Postulate Operator"
       >Prim._&gt;&gt;=_</a
-      ><a name="1277"
-      > </a
-      ><a name="1278" class="Symbol"
+      > <a name="1278" class="Symbol"
       >(</a
-      ><a name="1279" href="IO.html#1096" class="Function"
+      ><a name="1279" href="IO.html#run" class="Function"
       >run</a
-      ><a name="1282"
-      > </a
-      ><a name="1283" class="Symbol"
+      > <a name="1283" class="Symbol"
       >(</a
-      ><a name="1284" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      ><a name="1284" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="1285"
-      > </a
-      ><a name="1286" href="IO.html#1255" class="Bound"
+      > <a name="1286" href="IO.html#1255" class="Bound"
       >m&#8321;</a
       ><a name="1288" class="Symbol"
       >))</a
-      ><a name="1290"
-      > </a
-      ><a name="1291" class="Symbol"
+      > <a name="1291" class="Symbol"
       >&#955;</a
-      ><a name="1292"
-      > </a
-      ><a name="1293" href="IO.html#1293" class="Bound"
+      > <a name="1293" href="IO.html#1293" class="Bound"
       >_</a
-      ><a name="1294"
-      > </a
-      ><a name="1295" class="Symbol"
+      > <a name="1295" class="Symbol"
       >&#8594;</a
-      ><a name="1296"
-      > </a
-      ><a name="1297" href="IO.html#1096" class="Function"
+      > <a name="1297" href="IO.html#run" class="Function"
       >run</a
-      ><a name="1300"
-      > </a
-      ><a name="1301" class="Symbol"
+      > <a name="1301" class="Symbol"
       >(</a
-      ><a name="1302" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      ><a name="1302" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="1303"
-      > </a
-      ><a name="1304" href="IO.html#1261" class="Bound"
+      > <a name="1304" href="IO.html#1261" class="Bound"
       >m&#8322;</a
       ><a name="1306" class="Symbol"
       >)</a
-      ><a name="1307"
       >
 
-</a
-      ><a name="1309" class="Comment"
+<a name="1309" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="1381"
       >
-</a
-      ><a name="1382" class="Comment"
+<a name="1382" class="Comment"
       >-- Utilities</a
-      ><a name="1394"
       >
 
-</a
-      ><a name="1396" href="IO.html#1396" class="Function"
+<a name="sequence" href="IO.html#sequence" class="Function"
       >sequence</a
-      ><a name="1404"
-      > </a
-      ><a name="1405" class="Symbol"
+      > <a name="1405" class="Symbol"
       >:</a
-      ><a name="1406"
-      > </a
-      ><a name="1407" class="Symbol"
+      > <a name="1407" class="Symbol"
       >&#8704;</a
-      ><a name="1408"
-      > </a
-      ><a name="1409" class="Symbol"
+      > <a name="1409" class="Symbol"
       >{</a
       ><a name="1410" href="IO.html#1410" class="Bound"
       >a</a
       ><a name="1411" class="Symbol"
       >}</a
-      ><a name="1412"
-      > </a
-      ><a name="1413" class="Symbol"
+      > <a name="1413" class="Symbol"
       >{</a
       ><a name="1414" href="IO.html#1414" class="Bound"
       >A</a
-      ><a name="1415"
-      > </a
-      ><a name="1416" class="Symbol"
+      > <a name="1416" class="Symbol"
       >:</a
-      ><a name="1417"
-      > </a
-      ><a name="1418" class="PrimitiveType"
+      > <a name="1418" class="PrimitiveType"
       >Set</a
-      ><a name="1421"
-      > </a
-      ><a name="1422" href="IO.html#1410" class="Bound"
+      > <a name="1422" href="IO.html#1410" class="Bound"
       >a</a
       ><a name="1423" class="Symbol"
       >}</a
-      ><a name="1424"
-      > </a
-      ><a name="1425" class="Symbol"
+      > <a name="1425" class="Symbol"
       >&#8594;</a
-      ><a name="1426"
-      > </a
-      ><a name="1427" href="Data.Colist.html#1494" class="Datatype"
+      > <a name="1427" href="Data.Colist.html#Colist" class="Datatype"
       >Colist</a
-      ><a name="1433"
-      > </a
-      ><a name="1434" class="Symbol"
+      > <a name="1434" class="Symbol"
       >(</a
-      ><a name="1435" href="IO.html#839" class="Datatype"
+      ><a name="1435" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="1437"
-      > </a
-      ><a name="1438" href="IO.html#1414" class="Bound"
+      > <a name="1438" href="IO.html#1414" class="Bound"
       >A</a
       ><a name="1439" class="Symbol"
       >)</a
-      ><a name="1440"
-      > </a
-      ><a name="1441" class="Symbol"
+      > <a name="1441" class="Symbol"
       >&#8594;</a
-      ><a name="1442"
-      > </a
-      ><a name="1443" href="IO.html#839" class="Datatype"
+      > <a name="1443" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="1445"
-      > </a
-      ><a name="1446" class="Symbol"
+      > <a name="1446" class="Symbol"
       >(</a
-      ><a name="1447" href="Data.Colist.html#1494" class="Datatype"
+      ><a name="1447" href="Data.Colist.html#Colist" class="Datatype"
       >Colist</a
-      ><a name="1453"
-      > </a
-      ><a name="1454" href="IO.html#1414" class="Bound"
+      > <a name="1454" href="IO.html#1414" class="Bound"
       >A</a
       ><a name="1455" class="Symbol"
       >)</a
-      ><a name="1456"
       >
-</a
-      ><a name="1457" href="IO.html#1396" class="Function"
+<a name="1457" href="IO.html#sequence" class="Function"
       >sequence</a
-      ><a name="1465"
-      > </a
-      ><a name="1466" href="Data.Colist.html#1533" class="InductiveConstructor"
+      > <a name="1466" href="Data.Colist.html#Colist.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1468"
-      >       </a
-      ><a name="1475" class="Symbol"
+      >       <a name="1475" class="Symbol"
       >=</a
-      ><a name="1476"
-      > </a
-      ><a name="1477" href="IO.html#914" class="InductiveConstructor"
+      > <a name="1477" href="IO.html#IO.return" class="InductiveConstructor"
       >return</a
-      ><a name="1483"
-      > </a
-      ><a name="1484" href="Data.Colist.html#1533" class="InductiveConstructor"
+      > <a name="1484" href="Data.Colist.html#Colist.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1486"
       >
-</a
-      ><a name="1487" href="IO.html#1396" class="Function"
+<a name="1487" href="IO.html#sequence" class="Function"
       >sequence</a
-      ><a name="1495"
-      > </a
-      ><a name="1496" class="Symbol"
+      > <a name="1496" class="Symbol"
       >(</a
       ><a name="1497" href="IO.html#1497" class="Bound"
       >c</a
-      ><a name="1498"
-      > </a
-      ><a name="1499" href="Data.Colist.html#1550" class="InductiveConstructor Operator"
+      > <a name="1499" href="Data.Colist.html#Colist._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1500"
-      > </a
-      ><a name="1501" href="IO.html#1501" class="Bound"
+      > <a name="1501" href="IO.html#1501" class="Bound"
       >cs</a
       ><a name="1503" class="Symbol"
       >)</a
-      ><a name="1504"
-      > </a
-      ><a name="1505" class="Symbol"
+      > <a name="1505" class="Symbol"
       >=</a
-      ><a name="1506"
-      > </a
-      ><a name="1507" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+      > <a name="1507" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="1508"
-      > </a
-      ><a name="1509" href="IO.html#1497" class="Bound"
+      > <a name="1509" href="IO.html#1497" class="Bound"
       >c</a
-      ><a name="1510"
-      >                  </a
-      ><a name="1528" href="IO.html#940" class="InductiveConstructor Operator"
+      >                  <a name="1528" href="IO.html#IO._&gt;&gt;=_" class="InductiveConstructor Operator"
       >&gt;&gt;=</a
-      ><a name="1531"
-      > </a
-      ><a name="1532" class="Symbol"
+      > <a name="1532" class="Symbol"
       >&#955;</a
-      ><a name="1533"
-      > </a
-      ><a name="1534" href="IO.html#1534" class="Bound"
+      > <a name="1534" href="IO.html#1534" class="Bound"
       >x</a
-      ><a name="1535"
-      >  </a
-      ><a name="1537" class="Symbol"
+      >  <a name="1537" class="Symbol"
       >&#8594;</a
-      ><a name="1538"
       >
-                    </a
-      ><a name="1559" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+                    <a name="1559" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="1560"
-      > </a
-      ><a name="1561" class="Symbol"
+      > <a name="1561" class="Symbol"
       >(</a
-      ><a name="1562" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+      ><a name="1562" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="1563"
-      > </a
-      ><a name="1564" href="IO.html#1396" class="Function"
+      > <a name="1564" href="IO.html#sequence" class="Function"
       >sequence</a
-      ><a name="1572"
-      > </a
-      ><a name="1573" class="Symbol"
+      > <a name="1573" class="Symbol"
       >(</a
-      ><a name="1574" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      ><a name="1574" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="1575"
-      > </a
-      ><a name="1576" href="IO.html#1501" class="Bound"
+      > <a name="1576" href="IO.html#1501" class="Bound"
       >cs</a
       ><a name="1578" class="Symbol"
       >)</a
-      ><a name="1579"
-      > </a
-      ><a name="1580" href="IO.html#940" class="InductiveConstructor Operator"
+      > <a name="1580" href="IO.html#IO._&gt;&gt;=_" class="InductiveConstructor Operator"
       >&gt;&gt;=</a
-      ><a name="1583"
-      > </a
-      ><a name="1584" class="Symbol"
+      > <a name="1584" class="Symbol"
       >&#955;</a
-      ><a name="1585"
-      > </a
-      ><a name="1586" href="IO.html#1586" class="Bound"
+      > <a name="1586" href="IO.html#1586" class="Bound"
       >xs</a
-      ><a name="1588"
-      > </a
-      ><a name="1589" class="Symbol"
+      > <a name="1589" class="Symbol"
       >&#8594;</a
-      ><a name="1590"
       >
-                    </a
-      ><a name="1611" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+                    <a name="1611" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="1612"
-      > </a
-      ><a name="1613" href="IO.html#914" class="InductiveConstructor"
+      > <a name="1613" href="IO.html#IO.return" class="InductiveConstructor"
       >return</a
-      ><a name="1619"
-      > </a
-      ><a name="1620" class="Symbol"
+      > <a name="1620" class="Symbol"
       >(</a
       ><a name="1621" href="IO.html#1534" class="Bound"
       >x</a
-      ><a name="1622"
-      > </a
-      ><a name="1623" href="Data.Colist.html#1550" class="InductiveConstructor Operator"
+      > <a name="1623" href="Data.Colist.html#Colist._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1624"
-      > </a
-      ><a name="1625" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+      > <a name="1625" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="1626"
-      > </a
-      ><a name="1627" href="IO.html#1586" class="Bound"
+      > <a name="1627" href="IO.html#1586" class="Bound"
       >xs</a
       ><a name="1629" class="Symbol"
       >))</a
-      ><a name="1631"
       >
 
-</a
-      ><a name="1633" class="Comment"
+<a name="1633" class="Comment"
       >-- The reason for not defining sequence&#8242; in terms of sequence is</a
-      ><a name="1697"
       >
-</a
-      ><a name="1698" class="Comment"
+<a name="1698" class="Comment"
       >-- efficiency (the unused results could cause unnecessary memory use).</a
-      ><a name="1768"
       >
 
-</a
-      ><a name="1770" href="IO.html#1770" class="Function"
+<a name="sequence&#8242;" href="IO.html#sequence&#8242;" class="Function"
       >sequence&#8242;</a
-      ><a name="1779"
-      > </a
-      ><a name="1780" class="Symbol"
+      > <a name="1780" class="Symbol"
       >:</a
-      ><a name="1781"
-      > </a
-      ><a name="1782" class="Symbol"
+      > <a name="1782" class="Symbol"
       >&#8704;</a
-      ><a name="1783"
-      > </a
-      ><a name="1784" class="Symbol"
+      > <a name="1784" class="Symbol"
       >{</a
       ><a name="1785" href="IO.html#1785" class="Bound"
       >a</a
       ><a name="1786" class="Symbol"
       >}</a
-      ><a name="1787"
-      > </a
-      ><a name="1788" class="Symbol"
+      > <a name="1788" class="Symbol"
       >{</a
       ><a name="1789" href="IO.html#1789" class="Bound"
       >A</a
-      ><a name="1790"
-      > </a
-      ><a name="1791" class="Symbol"
+      > <a name="1791" class="Symbol"
       >:</a
-      ><a name="1792"
-      > </a
-      ><a name="1793" class="PrimitiveType"
+      > <a name="1793" class="PrimitiveType"
       >Set</a
-      ><a name="1796"
-      > </a
-      ><a name="1797" href="IO.html#1785" class="Bound"
+      > <a name="1797" href="IO.html#1785" class="Bound"
       >a</a
       ><a name="1798" class="Symbol"
       >}</a
-      ><a name="1799"
-      > </a
-      ><a name="1800" class="Symbol"
+      > <a name="1800" class="Symbol"
       >&#8594;</a
-      ><a name="1801"
-      > </a
-      ><a name="1802" href="Data.Colist.html#1494" class="Datatype"
+      > <a name="1802" href="Data.Colist.html#Colist" class="Datatype"
       >Colist</a
-      ><a name="1808"
-      > </a
-      ><a name="1809" class="Symbol"
+      > <a name="1809" class="Symbol"
       >(</a
-      ><a name="1810" href="IO.html#839" class="Datatype"
+      ><a name="1810" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="1812"
-      > </a
-      ><a name="1813" href="IO.html#1789" class="Bound"
+      > <a name="1813" href="IO.html#1789" class="Bound"
       >A</a
       ><a name="1814" class="Symbol"
       >)</a
-      ><a name="1815"
-      > </a
-      ><a name="1816" class="Symbol"
+      > <a name="1816" class="Symbol"
       >&#8594;</a
-      ><a name="1817"
-      > </a
-      ><a name="1818" href="IO.html#839" class="Datatype"
+      > <a name="1818" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="1820"
-      > </a
-      ><a name="1821" class="Symbol"
+      > <a name="1821" class="Symbol"
       >(</a
-      ><a name="1822" href="Level.html#350" class="Record"
+      ><a name="1822" href="Level.html#Lift" class="Record"
       >Lift</a
-      ><a name="1826"
-      > </a
-      ><a name="1827" href="Agda.Builtin.Unit.html#69" class="Record"
+      > <a name="1827" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
       >&#8868;</a
       ><a name="1828" class="Symbol"
       >)</a
-      ><a name="1829"
       >
-</a
-      ><a name="1830" href="IO.html#1770" class="Function"
+<a name="1830" href="IO.html#sequence&#8242;" class="Function"
       >sequence&#8242;</a
-      ><a name="1839"
-      > </a
-      ><a name="1840" href="Data.Colist.html#1533" class="InductiveConstructor"
+      > <a name="1840" href="Data.Colist.html#Colist.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1842"
-      >       </a
-      ><a name="1849" class="Symbol"
+      >       <a name="1849" class="Symbol"
       >=</a
-      ><a name="1850"
-      > </a
-      ><a name="1851" href="IO.html#914" class="InductiveConstructor"
+      > <a name="1851" href="IO.html#IO.return" class="InductiveConstructor"
       >return</a
-      ><a name="1857"
-      > </a
-      ><a name="1858" class="Symbol"
+      > <a name="1858" class="Symbol"
       >_</a
-      ><a name="1859"
       >
-</a
-      ><a name="1860" href="IO.html#1770" class="Function"
+<a name="1860" href="IO.html#sequence&#8242;" class="Function"
       >sequence&#8242;</a
-      ><a name="1869"
-      > </a
-      ><a name="1870" class="Symbol"
+      > <a name="1870" class="Symbol"
       >(</a
       ><a name="1871" href="IO.html#1871" class="Bound"
       >c</a
-      ><a name="1872"
-      > </a
-      ><a name="1873" href="Data.Colist.html#1550" class="InductiveConstructor Operator"
+      > <a name="1873" href="Data.Colist.html#Colist._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      ><a name="1874"
-      > </a
-      ><a name="1875" href="IO.html#1875" class="Bound"
+      > <a name="1875" href="IO.html#1875" class="Bound"
       >cs</a
       ><a name="1877" class="Symbol"
       >)</a
-      ><a name="1878"
-      > </a
-      ><a name="1879" class="Symbol"
+      > <a name="1879" class="Symbol"
       >=</a
-      ><a name="1880"
-      > </a
-      ><a name="1881" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+      > <a name="1881" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="1882"
-      > </a
-      ><a name="1883" href="IO.html#1871" class="Bound"
+      > <a name="1883" href="IO.html#1871" class="Bound"
       >c</a
-      ><a name="1884"
-      >                   </a
-      ><a name="1903" href="IO.html#1010" class="InductiveConstructor Operator"
+      >                   <a name="1903" href="IO.html#IO._&gt;&gt;_" class="InductiveConstructor Operator"
       >&gt;&gt;</a
-      ><a name="1905"
       >
-                     </a
-      ><a name="1927" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+                     <a name="1927" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="1928"
-      > </a
-      ><a name="1929" class="Symbol"
+      > <a name="1929" class="Symbol"
       >(</a
-      ><a name="1930" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+      ><a name="1930" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="1931"
-      > </a
-      ><a name="1932" href="IO.html#1770" class="Function"
+      > <a name="1932" href="IO.html#sequence&#8242;" class="Function"
       >sequence&#8242;</a
-      ><a name="1941"
-      > </a
-      ><a name="1942" class="Symbol"
+      > <a name="1942" class="Symbol"
       >(</a
-      ><a name="1943" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      ><a name="1943" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="1944"
-      > </a
-      ><a name="1945" href="IO.html#1875" class="Bound"
+      > <a name="1945" href="IO.html#1875" class="Bound"
       >cs</a
       ><a name="1947" class="Symbol"
       >)</a
-      ><a name="1948"
-      > </a
-      ><a name="1949" href="IO.html#1010" class="InductiveConstructor Operator"
+      > <a name="1949" href="IO.html#IO._&gt;&gt;_" class="InductiveConstructor Operator"
       >&gt;&gt;</a
-      ><a name="1951"
       >
-                     </a
-      ><a name="1973" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+                     <a name="1973" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="1974"
-      > </a
-      ><a name="1975" href="IO.html#914" class="InductiveConstructor"
+      > <a name="1975" href="IO.html#IO.return" class="InductiveConstructor"
       >return</a
-      ><a name="1981"
-      > </a
-      ><a name="1982" class="Symbol"
+      > <a name="1982" class="Symbol"
       >_)</a
-      ><a name="1984"
       >
 
-</a
-      ><a name="1986" href="IO.html#1986" class="Function"
+<a name="mapM" href="IO.html#mapM" class="Function"
       >mapM</a
-      ><a name="1990"
-      > </a
-      ><a name="1991" class="Symbol"
+      > <a name="1991" class="Symbol"
       >:</a
-      ><a name="1992"
-      > </a
-      ><a name="1993" class="Symbol"
+      > <a name="1993" class="Symbol"
       >&#8704;</a
-      ><a name="1994"
-      > </a
-      ><a name="1995" class="Symbol"
+      > <a name="1995" class="Symbol"
       >{</a
       ><a name="1996" href="IO.html#1996" class="Bound"
       >a</a
-      ><a name="1997"
-      > </a
-      ><a name="1998" href="IO.html#1998" class="Bound"
+      > <a name="1998" href="IO.html#1998" class="Bound"
       >b</a
       ><a name="1999" class="Symbol"
       >}</a
-      ><a name="2000"
-      > </a
-      ><a name="2001" class="Symbol"
+      > <a name="2001" class="Symbol"
       >{</a
       ><a name="2002" href="IO.html#2002" class="Bound"
       >A</a
-      ><a name="2003"
-      > </a
-      ><a name="2004" class="Symbol"
+      > <a name="2004" class="Symbol"
       >:</a
-      ><a name="2005"
-      > </a
-      ><a name="2006" class="PrimitiveType"
+      > <a name="2006" class="PrimitiveType"
       >Set</a
-      ><a name="2009"
-      > </a
-      ><a name="2010" href="IO.html#1996" class="Bound"
+      > <a name="2010" href="IO.html#1996" class="Bound"
       >a</a
       ><a name="2011" class="Symbol"
       >}</a
-      ><a name="2012"
-      > </a
-      ><a name="2013" class="Symbol"
+      > <a name="2013" class="Symbol"
       >{</a
       ><a name="2014" href="IO.html#2014" class="Bound"
       >B</a
-      ><a name="2015"
-      > </a
-      ><a name="2016" class="Symbol"
+      > <a name="2016" class="Symbol"
       >:</a
-      ><a name="2017"
-      > </a
-      ><a name="2018" class="PrimitiveType"
+      > <a name="2018" class="PrimitiveType"
       >Set</a
-      ><a name="2021"
-      > </a
-      ><a name="2022" href="IO.html#1998" class="Bound"
+      > <a name="2022" href="IO.html#1998" class="Bound"
       >b</a
       ><a name="2023" class="Symbol"
       >}</a
-      ><a name="2024"
-      > </a
-      ><a name="2025" class="Symbol"
+      > <a name="2025" class="Symbol"
       >&#8594;</a
-      ><a name="2026"
       >
-       </a
-      ><a name="2034" class="Symbol"
+       <a name="2034" class="Symbol"
       >(</a
       ><a name="2035" href="IO.html#2002" class="Bound"
       >A</a
-      ><a name="2036"
-      > </a
-      ><a name="2037" class="Symbol"
+      > <a name="2037" class="Symbol"
       >&#8594;</a
-      ><a name="2038"
-      > </a
-      ><a name="2039" href="IO.html#839" class="Datatype"
+      > <a name="2039" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="2041"
-      > </a
-      ><a name="2042" href="IO.html#2014" class="Bound"
+      > <a name="2042" href="IO.html#2014" class="Bound"
       >B</a
       ><a name="2043" class="Symbol"
       >)</a
-      ><a name="2044"
-      > </a
-      ><a name="2045" class="Symbol"
+      > <a name="2045" class="Symbol"
       >&#8594;</a
-      ><a name="2046"
-      > </a
-      ><a name="2047" href="Data.Colist.html#1494" class="Datatype"
+      > <a name="2047" href="Data.Colist.html#Colist" class="Datatype"
       >Colist</a
-      ><a name="2053"
-      > </a
-      ><a name="2054" href="IO.html#2002" class="Bound"
+      > <a name="2054" href="IO.html#2002" class="Bound"
       >A</a
-      ><a name="2055"
-      > </a
-      ><a name="2056" class="Symbol"
+      > <a name="2056" class="Symbol"
       >&#8594;</a
-      ><a name="2057"
-      > </a
-      ><a name="2058" href="IO.html#839" class="Datatype"
+      > <a name="2058" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="2060"
-      > </a
-      ><a name="2061" class="Symbol"
+      > <a name="2061" class="Symbol"
       >(</a
-      ><a name="2062" href="Data.Colist.html#1494" class="Datatype"
+      ><a name="2062" href="Data.Colist.html#Colist" class="Datatype"
       >Colist</a
-      ><a name="2068"
-      > </a
-      ><a name="2069" href="IO.html#2014" class="Bound"
+      > <a name="2069" href="IO.html#2014" class="Bound"
       >B</a
       ><a name="2070" class="Symbol"
       >)</a
-      ><a name="2071"
       >
-</a
-      ><a name="2072" href="IO.html#1986" class="Function"
+<a name="2072" href="IO.html#mapM" class="Function"
       >mapM</a
-      ><a name="2076"
-      > </a
-      ><a name="2077" href="IO.html#2077" class="Bound"
+      > <a name="2077" href="IO.html#2077" class="Bound"
       >f</a
-      ><a name="2078"
-      > </a
-      ><a name="2079" class="Symbol"
+      > <a name="2079" class="Symbol"
       >=</a
-      ><a name="2080"
-      > </a
-      ><a name="2081" href="IO.html#1396" class="Function"
+      > <a name="2081" href="IO.html#sequence" class="Function"
       >sequence</a
-      ><a name="2089"
-      > </a
-      ><a name="2090" href="Function.html#713" class="Function Operator"
+      > <a name="2090" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="2091"
-      > </a
-      ><a name="2092" href="Data.Colist.html#2425" class="Function"
+      > <a name="2092" href="Data.Colist.html#map" class="Function"
       >map</a
-      ><a name="2095"
-      > </a
-      ><a name="2096" href="IO.html#2077" class="Bound"
+      > <a name="2096" href="IO.html#2077" class="Bound"
       >f</a
-      ><a name="2097"
       >
 
-</a
-      ><a name="2099" href="IO.html#2099" class="Function"
+<a name="mapM&#8242;" href="IO.html#mapM&#8242;" class="Function"
       >mapM&#8242;</a
-      ><a name="2104"
-      > </a
-      ><a name="2105" class="Symbol"
+      > <a name="2105" class="Symbol"
       >:</a
-      ><a name="2106"
-      > </a
-      ><a name="2107" class="Symbol"
+      > <a name="2107" class="Symbol"
       >{</a
       ><a name="2108" href="IO.html#2108" class="Bound"
       >A</a
-      ><a name="2109"
-      > </a
-      ><a name="2110" href="IO.html#2110" class="Bound"
+      > <a name="2110" href="IO.html#2110" class="Bound"
       >B</a
-      ><a name="2111"
-      > </a
-      ><a name="2112" class="Symbol"
+      > <a name="2112" class="Symbol"
       >:</a
-      ><a name="2113"
-      > </a
-      ><a name="2114" class="PrimitiveType"
+      > <a name="2114" class="PrimitiveType"
       >Set</a
       ><a name="2117" class="Symbol"
       >}</a
-      ><a name="2118"
-      > </a
-      ><a name="2119" class="Symbol"
+      > <a name="2119" class="Symbol"
       >&#8594;</a
-      ><a name="2120"
-      > </a
-      ><a name="2121" class="Symbol"
+      > <a name="2121" class="Symbol"
       >(</a
       ><a name="2122" href="IO.html#2108" class="Bound"
       >A</a
-      ><a name="2123"
-      > </a
-      ><a name="2124" class="Symbol"
+      > <a name="2124" class="Symbol"
       >&#8594;</a
-      ><a name="2125"
-      > </a
-      ><a name="2126" href="IO.html#839" class="Datatype"
+      > <a name="2126" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="2128"
-      > </a
-      ><a name="2129" href="IO.html#2110" class="Bound"
+      > <a name="2129" href="IO.html#2110" class="Bound"
       >B</a
       ><a name="2130" class="Symbol"
       >)</a
-      ><a name="2131"
-      > </a
-      ><a name="2132" class="Symbol"
+      > <a name="2132" class="Symbol"
       >&#8594;</a
-      ><a name="2133"
-      > </a
-      ><a name="2134" href="Data.Colist.html#1494" class="Datatype"
+      > <a name="2134" href="Data.Colist.html#Colist" class="Datatype"
       >Colist</a
-      ><a name="2140"
-      > </a
-      ><a name="2141" href="IO.html#2108" class="Bound"
+      > <a name="2141" href="IO.html#2108" class="Bound"
       >A</a
-      ><a name="2142"
-      > </a
-      ><a name="2143" class="Symbol"
+      > <a name="2143" class="Symbol"
       >&#8594;</a
-      ><a name="2144"
-      > </a
-      ><a name="2145" href="IO.html#839" class="Datatype"
+      > <a name="2145" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="2147"
-      > </a
-      ><a name="2148" class="Symbol"
+      > <a name="2148" class="Symbol"
       >(</a
-      ><a name="2149" href="Level.html#350" class="Record"
+      ><a name="2149" href="Level.html#Lift" class="Record"
       >Lift</a
-      ><a name="2153"
-      > </a
-      ><a name="2154" href="Agda.Builtin.Unit.html#69" class="Record"
+      > <a name="2154" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
       >&#8868;</a
       ><a name="2155" class="Symbol"
       >)</a
-      ><a name="2156"
       >
-</a
-      ><a name="2157" href="IO.html#2099" class="Function"
+<a name="2157" href="IO.html#mapM&#8242;" class="Function"
       >mapM&#8242;</a
-      ><a name="2162"
-      > </a
-      ><a name="2163" href="IO.html#2163" class="Bound"
+      > <a name="2163" href="IO.html#2163" class="Bound"
       >f</a
-      ><a name="2164"
-      > </a
-      ><a name="2165" class="Symbol"
+      > <a name="2165" class="Symbol"
       >=</a
-      ><a name="2166"
-      > </a
-      ><a name="2167" href="IO.html#1770" class="Function"
+      > <a name="2167" href="IO.html#sequence&#8242;" class="Function"
       >sequence&#8242;</a
-      ><a name="2176"
-      > </a
-      ><a name="2177" href="Function.html#713" class="Function Operator"
+      > <a name="2177" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="2178"
-      > </a
-      ><a name="2179" href="Data.Colist.html#2425" class="Function"
+      > <a name="2179" href="Data.Colist.html#map" class="Function"
       >map</a
-      ><a name="2182"
-      > </a
-      ><a name="2183" href="IO.html#2163" class="Bound"
+      > <a name="2183" href="IO.html#2163" class="Bound"
       >f</a
-      ><a name="2184"
       >
 
-</a
-      ><a name="2186" class="Comment"
+<a name="2186" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="2258"
       >
-</a
-      ><a name="2259" class="Comment"
+<a name="2259" class="Comment"
       >-- Simple lazy IO</a
-      ><a name="2276"
       >
 
-</a
-      ><a name="2278" class="Comment"
+<a name="2278" class="Comment"
       >-- Note that the functions below produce commands which, when</a
-      ><a name="2339"
       >
-</a
-      ><a name="2340" class="Comment"
+<a name="2340" class="Comment"
       >-- executed, may raise exceptions.</a
-      ><a name="2374"
       >
 
-</a
-      ><a name="2376" class="Comment"
+<a name="2376" class="Comment"
       >-- Note also that the semantics of these functions depends on the</a
-      ><a name="2441"
       >
-</a
-      ><a name="2442" class="Comment"
+<a name="2442" class="Comment"
       >-- version of the Haskell base library. If the version is 4.2.0.0 (or</a
-      ><a name="2511"
       >
-</a
-      ><a name="2512" class="Comment"
+<a name="2512" class="Comment"
       >-- later?), then the functions use the character encoding specified by</a
-      ><a name="2582"
       >
-</a
-      ><a name="2583" class="Comment"
+<a name="2583" class="Comment"
       >-- the locale. For older versions of the library (going back to at</a
-      ><a name="2649"
       >
-</a
-      ><a name="2650" class="Comment"
+<a name="2650" class="Comment"
       >-- least version 3) the functions use ISO-8859-1.</a
-      ><a name="2699"
       >
 
-</a
-      ><a name="2701" href="IO.html#2701" class="Function"
+<a name="getContents" href="IO.html#getContents" class="Function"
       >getContents</a
-      ><a name="2712"
-      > </a
-      ><a name="2713" class="Symbol"
+      > <a name="2713" class="Symbol"
       >:</a
-      ><a name="2714"
-      > </a
-      ><a name="2715" href="IO.html#839" class="Datatype"
+      > <a name="2715" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="2717"
-      > </a
-      ><a name="2718" href="Data.String.html#863" class="Function"
+      > <a name="2718" href="Data.String.html#Costring" class="Function"
       >Costring</a
-      ><a name="2726"
       >
-</a
-      ><a name="2727" href="IO.html#2701" class="Function"
+<a name="2727" href="IO.html#getContents" class="Function"
       >getContents</a
-      ><a name="2738"
-      > </a
-      ><a name="2739" class="Symbol"
+      > <a name="2739" class="Symbol"
       >=</a
-      ><a name="2740"
-      > </a
-      ><a name="2741" href="IO.html#880" class="InductiveConstructor"
+      > <a name="2741" href="IO.html#IO.lift" class="InductiveConstructor"
       >lift</a
-      ><a name="2745"
-      > </a
-      ><a name="2746" href="IO.Primitive.html#1506" class="Postulate"
+      > <a name="2746" href="IO.Primitive.html#getContents" class="Postulate"
       >Prim.getContents</a
-      ><a name="2762"
       >
 
-</a
-      ><a name="2764" href="IO.html#2764" class="Function"
+<a name="readFile" href="IO.html#readFile" class="Function"
       >readFile</a
-      ><a name="2772"
-      > </a
-      ><a name="2773" class="Symbol"
+      > <a name="2773" class="Symbol"
       >:</a
-      ><a name="2774"
-      > </a
-      ><a name="2775" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="2775" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="2781"
-      > </a
-      ><a name="2782" class="Symbol"
+      > <a name="2782" class="Symbol"
       >&#8594;</a
-      ><a name="2783"
-      > </a
-      ><a name="2784" href="IO.html#839" class="Datatype"
+      > <a name="2784" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="2786"
-      > </a
-      ><a name="2787" href="Data.String.html#863" class="Function"
+      > <a name="2787" href="Data.String.html#Costring" class="Function"
       >Costring</a
-      ><a name="2795"
       >
-</a
-      ><a name="2796" href="IO.html#2764" class="Function"
+<a name="2796" href="IO.html#readFile" class="Function"
       >readFile</a
-      ><a name="2804"
-      > </a
-      ><a name="2805" href="IO.html#2805" class="Bound"
+      > <a name="2805" href="IO.html#2805" class="Bound"
       >f</a
-      ><a name="2806"
-      > </a
-      ><a name="2807" class="Symbol"
+      > <a name="2807" class="Symbol"
       >=</a
-      ><a name="2808"
-      > </a
-      ><a name="2809" href="IO.html#880" class="InductiveConstructor"
+      > <a name="2809" href="IO.html#IO.lift" class="InductiveConstructor"
       >lift</a
-      ><a name="2813"
-      > </a
-      ><a name="2814" class="Symbol"
+      > <a name="2814" class="Symbol"
       >(</a
-      ><a name="2815" href="IO.Primitive.html#1534" class="Postulate"
+      ><a name="2815" href="IO.Primitive.html#readFile" class="Postulate"
       >Prim.readFile</a
-      ><a name="2828"
-      > </a
-      ><a name="2829" href="IO.html#2805" class="Bound"
+      > <a name="2829" href="IO.html#2805" class="Bound"
       >f</a
       ><a name="2830" class="Symbol"
       >)</a
-      ><a name="2831"
       >
 
-</a
-      ><a name="2833" class="Comment"
+<a name="2833" class="Comment"
       >-- Reads a finite file. Raises an exception if the file path refers to</a
-      ><a name="2903"
       >
-</a
-      ><a name="2904" class="Comment"
+<a name="2904" class="Comment"
       >-- a non-physical file (like &quot;/dev/zero&quot;).</a
-      ><a name="2946"
       >
 
-</a
-      ><a name="2948" href="IO.html#2948" class="Function"
+<a name="readFiniteFile" href="IO.html#readFiniteFile" class="Function"
       >readFiniteFile</a
-      ><a name="2962"
-      > </a
-      ><a name="2963" class="Symbol"
+      > <a name="2963" class="Symbol"
       >:</a
-      ><a name="2964"
-      > </a
-      ><a name="2965" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="2965" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="2971"
-      > </a
-      ><a name="2972" class="Symbol"
+      > <a name="2972" class="Symbol"
       >&#8594;</a
-      ><a name="2973"
-      > </a
-      ><a name="2974" href="IO.html#839" class="Datatype"
+      > <a name="2974" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="2976"
-      > </a
-      ><a name="2977" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="2977" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="2983"
       >
-</a
-      ><a name="2984" href="IO.html#2948" class="Function"
+<a name="2984" href="IO.html#readFiniteFile" class="Function"
       >readFiniteFile</a
-      ><a name="2998"
-      > </a
-      ><a name="2999" href="IO.html#2999" class="Bound"
+      > <a name="2999" href="IO.html#2999" class="Bound"
       >f</a
-      ><a name="3000"
-      > </a
-      ><a name="3001" class="Symbol"
+      > <a name="3001" class="Symbol"
       >=</a
-      ><a name="3002"
-      > </a
-      ><a name="3003" href="IO.html#880" class="InductiveConstructor"
+      > <a name="3003" href="IO.html#IO.lift" class="InductiveConstructor"
       >lift</a
-      ><a name="3007"
-      > </a
-      ><a name="3008" class="Symbol"
+      > <a name="3008" class="Symbol"
       >(</a
-      ><a name="3009" href="IO.Primitive.html#1849" class="Postulate"
+      ><a name="3009" href="IO.Primitive.html#readFiniteFile" class="Postulate"
       >Prim.readFiniteFile</a
-      ><a name="3028"
-      > </a
-      ><a name="3029" href="IO.html#2999" class="Bound"
+      > <a name="3029" href="IO.html#2999" class="Bound"
       >f</a
       ><a name="3030" class="Symbol"
       >)</a
-      ><a name="3031"
       >
 
-</a
-      ><a name="3033" href="IO.html#3033" class="Function"
+<a name="writeFile&#8734;" href="IO.html#writeFile&#8734;" class="Function"
       >writeFile&#8734;</a
-      ><a name="3043"
-      > </a
-      ><a name="3044" class="Symbol"
+      > <a name="3044" class="Symbol"
       >:</a
-      ><a name="3045"
-      > </a
-      ><a name="3046" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="3046" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="3052"
-      > </a
-      ><a name="3053" class="Symbol"
+      > <a name="3053" class="Symbol"
       >&#8594;</a
-      ><a name="3054"
-      > </a
-      ><a name="3055" href="Data.String.html#863" class="Function"
+      > <a name="3055" href="Data.String.html#Costring" class="Function"
       >Costring</a
-      ><a name="3063"
-      > </a
-      ><a name="3064" class="Symbol"
+      > <a name="3064" class="Symbol"
       >&#8594;</a
-      ><a name="3065"
-      > </a
-      ><a name="3066" href="IO.html#839" class="Datatype"
+      > <a name="3066" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="3068"
-      > </a
-      ><a name="3069" href="Agda.Builtin.Unit.html#69" class="Record"
+      > <a name="3069" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
       >&#8868;</a
-      ><a name="3070"
       >
-</a
-      ><a name="3071" href="IO.html#3033" class="Function"
+<a name="3071" href="IO.html#writeFile&#8734;" class="Function"
       >writeFile&#8734;</a
-      ><a name="3081"
-      > </a
-      ><a name="3082" href="IO.html#3082" class="Bound"
+      > <a name="3082" href="IO.html#3082" class="Bound"
       >f</a
-      ><a name="3083"
-      > </a
-      ><a name="3084" href="IO.html#3084" class="Bound"
+      > <a name="3084" href="IO.html#3084" class="Bound"
       >s</a
-      ><a name="3085"
-      > </a
-      ><a name="3086" class="Symbol"
+      > <a name="3086" class="Symbol"
       >=</a
-      ><a name="3087"
       >
-  </a
-      ><a name="3090" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+  <a name="3090" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="3091"
-      > </a
-      ><a name="3092" href="IO.html#880" class="InductiveConstructor"
+      > <a name="3092" href="IO.html#IO.lift" class="InductiveConstructor"
       >lift</a
-      ><a name="3096"
-      > </a
-      ><a name="3097" class="Symbol"
+      > <a name="3097" class="Symbol"
       >(</a
-      ><a name="3098" href="IO.Primitive.html#1571" class="Postulate"
+      ><a name="3098" href="IO.Primitive.html#writeFile" class="Postulate"
       >Prim.writeFile</a
-      ><a name="3112"
-      > </a
-      ><a name="3113" href="IO.html#3082" class="Bound"
+      > <a name="3113" href="IO.html#3082" class="Bound"
       >f</a
-      ><a name="3114"
-      > </a
-      ><a name="3115" href="IO.html#3084" class="Bound"
+      > <a name="3115" href="IO.html#3084" class="Bound"
       >s</a
       ><a name="3116" class="Symbol"
       >)</a
-      ><a name="3117"
-      > </a
-      ><a name="3118" href="IO.html#1010" class="InductiveConstructor Operator"
+      > <a name="3118" href="IO.html#IO._&gt;&gt;_" class="InductiveConstructor Operator"
       >&gt;&gt;</a
-      ><a name="3120"
       >
-  </a
-      ><a name="3123" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+  <a name="3123" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="3124"
-      > </a
-      ><a name="3125" href="IO.html#914" class="InductiveConstructor"
+      > <a name="3125" href="IO.html#IO.return" class="InductiveConstructor"
       >return</a
-      ><a name="3131"
-      > </a
-      ><a name="3132" class="Symbol"
+      > <a name="3132" class="Symbol"
       >_</a
-      ><a name="3133"
       >
 
-</a
-      ><a name="3135" href="IO.html#3135" class="Function"
+<a name="writeFile" href="IO.html#writeFile" class="Function"
       >writeFile</a
-      ><a name="3144"
-      > </a
-      ><a name="3145" class="Symbol"
+      > <a name="3145" class="Symbol"
       >:</a
-      ><a name="3146"
-      > </a
-      ><a name="3147" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="3147" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="3153"
-      > </a
-      ><a name="3154" class="Symbol"
+      > <a name="3154" class="Symbol"
       >&#8594;</a
-      ><a name="3155"
-      > </a
-      ><a name="3156" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="3156" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="3162"
-      > </a
-      ><a name="3163" class="Symbol"
+      > <a name="3163" class="Symbol"
       >&#8594;</a
-      ><a name="3164"
-      > </a
-      ><a name="3165" href="IO.html#839" class="Datatype"
+      > <a name="3165" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="3167"
-      > </a
-      ><a name="3168" href="Agda.Builtin.Unit.html#69" class="Record"
+      > <a name="3168" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
       >&#8868;</a
-      ><a name="3169"
       >
-</a
-      ><a name="3170" href="IO.html#3135" class="Function"
+<a name="3170" href="IO.html#writeFile" class="Function"
       >writeFile</a
-      ><a name="3179"
-      > </a
-      ><a name="3180" href="IO.html#3180" class="Bound"
+      > <a name="3180" href="IO.html#3180" class="Bound"
       >f</a
-      ><a name="3181"
-      > </a
-      ><a name="3182" href="IO.html#3182" class="Bound"
+      > <a name="3182" href="IO.html#3182" class="Bound"
       >s</a
-      ><a name="3183"
-      > </a
-      ><a name="3184" class="Symbol"
+      > <a name="3184" class="Symbol"
       >=</a
-      ><a name="3185"
-      > </a
-      ><a name="3186" href="IO.html#3033" class="Function"
+      > <a name="3186" href="IO.html#writeFile&#8734;" class="Function"
       >writeFile&#8734;</a
-      ><a name="3196"
-      > </a
-      ><a name="3197" href="IO.html#3180" class="Bound"
+      > <a name="3197" href="IO.html#3180" class="Bound"
       >f</a
-      ><a name="3198"
-      > </a
-      ><a name="3199" class="Symbol"
+      > <a name="3199" class="Symbol"
       >(</a
-      ><a name="3200" href="Data.String.html#1082" class="Function"
+      ><a name="3200" href="Data.String.html#toCostring" class="Function"
       >toCostring</a
-      ><a name="3210"
-      > </a
-      ><a name="3211" href="IO.html#3182" class="Bound"
+      > <a name="3211" href="IO.html#3182" class="Bound"
       >s</a
       ><a name="3212" class="Symbol"
       >)</a
-      ><a name="3213"
       >
 
-</a
-      ><a name="3215" href="IO.html#3215" class="Function"
+<a name="appendFile&#8734;" href="IO.html#appendFile&#8734;" class="Function"
       >appendFile&#8734;</a
-      ><a name="3226"
-      > </a
-      ><a name="3227" class="Symbol"
+      > <a name="3227" class="Symbol"
       >:</a
-      ><a name="3228"
-      > </a
-      ><a name="3229" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="3229" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="3235"
-      > </a
-      ><a name="3236" class="Symbol"
+      > <a name="3236" class="Symbol"
       >&#8594;</a
-      ><a name="3237"
-      > </a
-      ><a name="3238" href="Data.String.html#863" class="Function"
+      > <a name="3238" href="Data.String.html#Costring" class="Function"
       >Costring</a
-      ><a name="3246"
-      > </a
-      ><a name="3247" class="Symbol"
+      > <a name="3247" class="Symbol"
       >&#8594;</a
-      ><a name="3248"
-      > </a
-      ><a name="3249" href="IO.html#839" class="Datatype"
+      > <a name="3249" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="3251"
-      > </a
-      ><a name="3252" href="Agda.Builtin.Unit.html#69" class="Record"
+      > <a name="3252" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
       >&#8868;</a
-      ><a name="3253"
       >
-</a
-      ><a name="3254" href="IO.html#3215" class="Function"
+<a name="3254" href="IO.html#appendFile&#8734;" class="Function"
       >appendFile&#8734;</a
-      ><a name="3265"
-      > </a
-      ><a name="3266" href="IO.html#3266" class="Bound"
+      > <a name="3266" href="IO.html#3266" class="Bound"
       >f</a
-      ><a name="3267"
-      > </a
-      ><a name="3268" href="IO.html#3268" class="Bound"
+      > <a name="3268" href="IO.html#3268" class="Bound"
       >s</a
-      ><a name="3269"
-      > </a
-      ><a name="3270" class="Symbol"
+      > <a name="3270" class="Symbol"
       >=</a
-      ><a name="3271"
       >
-  </a
-      ><a name="3274" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+  <a name="3274" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="3275"
-      > </a
-      ><a name="3276" href="IO.html#880" class="InductiveConstructor"
+      > <a name="3276" href="IO.html#IO.lift" class="InductiveConstructor"
       >lift</a
-      ><a name="3280"
-      > </a
-      ><a name="3281" class="Symbol"
+      > <a name="3281" class="Symbol"
       >(</a
-      ><a name="3282" href="IO.Primitive.html#1615" class="Postulate"
+      ><a name="3282" href="IO.Primitive.html#appendFile" class="Postulate"
       >Prim.appendFile</a
-      ><a name="3297"
-      > </a
-      ><a name="3298" href="IO.html#3266" class="Bound"
+      > <a name="3298" href="IO.html#3266" class="Bound"
       >f</a
-      ><a name="3299"
-      > </a
-      ><a name="3300" href="IO.html#3268" class="Bound"
+      > <a name="3300" href="IO.html#3268" class="Bound"
       >s</a
       ><a name="3301" class="Symbol"
       >)</a
-      ><a name="3302"
-      > </a
-      ><a name="3303" href="IO.html#1010" class="InductiveConstructor Operator"
+      > <a name="3303" href="IO.html#IO._&gt;&gt;_" class="InductiveConstructor Operator"
       >&gt;&gt;</a
-      ><a name="3305"
       >
-  </a
-      ><a name="3308" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+  <a name="3308" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="3309"
-      > </a
-      ><a name="3310" href="IO.html#914" class="InductiveConstructor"
+      > <a name="3310" href="IO.html#IO.return" class="InductiveConstructor"
       >return</a
-      ><a name="3316"
-      > </a
-      ><a name="3317" class="Symbol"
+      > <a name="3317" class="Symbol"
       >_</a
-      ><a name="3318"
       >
 
-</a
-      ><a name="3320" href="IO.html#3320" class="Function"
+<a name="appendFile" href="IO.html#appendFile" class="Function"
       >appendFile</a
-      ><a name="3330"
-      > </a
-      ><a name="3331" class="Symbol"
+      > <a name="3331" class="Symbol"
       >:</a
-      ><a name="3332"
-      > </a
-      ><a name="3333" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="3333" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="3339"
-      > </a
-      ><a name="3340" class="Symbol"
+      > <a name="3340" class="Symbol"
       >&#8594;</a
-      ><a name="3341"
-      > </a
-      ><a name="3342" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="3342" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="3348"
-      > </a
-      ><a name="3349" class="Symbol"
+      > <a name="3349" class="Symbol"
       >&#8594;</a
-      ><a name="3350"
-      > </a
-      ><a name="3351" href="IO.html#839" class="Datatype"
+      > <a name="3351" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="3353"
-      > </a
-      ><a name="3354" href="Agda.Builtin.Unit.html#69" class="Record"
+      > <a name="3354" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
       >&#8868;</a
-      ><a name="3355"
       >
-</a
-      ><a name="3356" href="IO.html#3320" class="Function"
+<a name="3356" href="IO.html#appendFile" class="Function"
       >appendFile</a
-      ><a name="3366"
-      > </a
-      ><a name="3367" href="IO.html#3367" class="Bound"
+      > <a name="3367" href="IO.html#3367" class="Bound"
       >f</a
-      ><a name="3368"
-      > </a
-      ><a name="3369" href="IO.html#3369" class="Bound"
+      > <a name="3369" href="IO.html#3369" class="Bound"
       >s</a
-      ><a name="3370"
-      > </a
-      ><a name="3371" class="Symbol"
+      > <a name="3371" class="Symbol"
       >=</a
-      ><a name="3372"
-      > </a
-      ><a name="3373" href="IO.html#3215" class="Function"
+      > <a name="3373" href="IO.html#appendFile&#8734;" class="Function"
       >appendFile&#8734;</a
-      ><a name="3384"
-      > </a
-      ><a name="3385" href="IO.html#3367" class="Bound"
+      > <a name="3385" href="IO.html#3367" class="Bound"
       >f</a
-      ><a name="3386"
-      > </a
-      ><a name="3387" class="Symbol"
+      > <a name="3387" class="Symbol"
       >(</a
-      ><a name="3388" href="Data.String.html#1082" class="Function"
+      ><a name="3388" href="Data.String.html#toCostring" class="Function"
       >toCostring</a
-      ><a name="3398"
-      > </a
-      ><a name="3399" href="IO.html#3369" class="Bound"
+      > <a name="3399" href="IO.html#3369" class="Bound"
       >s</a
       ><a name="3400" class="Symbol"
       >)</a
-      ><a name="3401"
       >
 
-</a
-      ><a name="3403" href="IO.html#3403" class="Function"
+<a name="putStr&#8734;" href="IO.html#putStr&#8734;" class="Function"
       >putStr&#8734;</a
-      ><a name="3410"
-      > </a
-      ><a name="3411" class="Symbol"
+      > <a name="3411" class="Symbol"
       >:</a
-      ><a name="3412"
-      > </a
-      ><a name="3413" href="Data.String.html#863" class="Function"
+      > <a name="3413" href="Data.String.html#Costring" class="Function"
       >Costring</a
-      ><a name="3421"
-      > </a
-      ><a name="3422" class="Symbol"
+      > <a name="3422" class="Symbol"
       >&#8594;</a
-      ><a name="3423"
-      > </a
-      ><a name="3424" href="IO.html#839" class="Datatype"
+      > <a name="3424" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="3426"
-      > </a
-      ><a name="3427" href="Agda.Builtin.Unit.html#69" class="Record"
+      > <a name="3427" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
       >&#8868;</a
-      ><a name="3428"
       >
-</a
-      ><a name="3429" href="IO.html#3403" class="Function"
+<a name="3429" href="IO.html#putStr&#8734;" class="Function"
       >putStr&#8734;</a
-      ><a name="3436"
-      > </a
-      ><a name="3437" href="IO.html#3437" class="Bound"
+      > <a name="3437" href="IO.html#3437" class="Bound"
       >s</a
-      ><a name="3438"
-      > </a
-      ><a name="3439" class="Symbol"
+      > <a name="3439" class="Symbol"
       >=</a
-      ><a name="3440"
       >
-  </a
-      ><a name="3443" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+  <a name="3443" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="3444"
-      > </a
-      ><a name="3445" href="IO.html#880" class="InductiveConstructor"
+      > <a name="3445" href="IO.html#IO.lift" class="InductiveConstructor"
       >lift</a
-      ><a name="3449"
-      > </a
-      ><a name="3450" class="Symbol"
+      > <a name="3450" class="Symbol"
       >(</a
-      ><a name="3451" href="IO.Primitive.html#1659" class="Postulate"
+      ><a name="3451" href="IO.Primitive.html#putStr" class="Postulate"
       >Prim.putStr</a
-      ><a name="3462"
-      > </a
-      ><a name="3463" href="IO.html#3437" class="Bound"
+      > <a name="3463" href="IO.html#3437" class="Bound"
       >s</a
       ><a name="3464" class="Symbol"
       >)</a
-      ><a name="3465"
-      > </a
-      ><a name="3466" href="IO.html#1010" class="InductiveConstructor Operator"
+      > <a name="3466" href="IO.html#IO._&gt;&gt;_" class="InductiveConstructor Operator"
       >&gt;&gt;</a
-      ><a name="3468"
       >
-  </a
-      ><a name="3471" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+  <a name="3471" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="3472"
-      > </a
-      ><a name="3473" href="IO.html#914" class="InductiveConstructor"
+      > <a name="3473" href="IO.html#IO.return" class="InductiveConstructor"
       >return</a
-      ><a name="3479"
-      > </a
-      ><a name="3480" class="Symbol"
+      > <a name="3480" class="Symbol"
       >_</a
-      ><a name="3481"
       >
 
-</a
-      ><a name="3483" href="IO.html#3483" class="Function"
+<a name="putStr" href="IO.html#putStr" class="Function"
       >putStr</a
-      ><a name="3489"
-      > </a
-      ><a name="3490" class="Symbol"
+      > <a name="3490" class="Symbol"
       >:</a
-      ><a name="3491"
-      > </a
-      ><a name="3492" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="3492" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="3498"
-      > </a
-      ><a name="3499" class="Symbol"
+      > <a name="3499" class="Symbol"
       >&#8594;</a
-      ><a name="3500"
-      > </a
-      ><a name="3501" href="IO.html#839" class="Datatype"
+      > <a name="3501" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="3503"
-      > </a
-      ><a name="3504" href="Agda.Builtin.Unit.html#69" class="Record"
+      > <a name="3504" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
       >&#8868;</a
-      ><a name="3505"
       >
-</a
-      ><a name="3506" href="IO.html#3483" class="Function"
+<a name="3506" href="IO.html#putStr" class="Function"
       >putStr</a
-      ><a name="3512"
-      > </a
-      ><a name="3513" href="IO.html#3513" class="Bound"
+      > <a name="3513" href="IO.html#3513" class="Bound"
       >s</a
-      ><a name="3514"
-      > </a
-      ><a name="3515" class="Symbol"
+      > <a name="3515" class="Symbol"
       >=</a
-      ><a name="3516"
-      > </a
-      ><a name="3517" href="IO.html#3403" class="Function"
+      > <a name="3517" href="IO.html#putStr&#8734;" class="Function"
       >putStr&#8734;</a
-      ><a name="3524"
-      > </a
-      ><a name="3525" class="Symbol"
+      > <a name="3525" class="Symbol"
       >(</a
-      ><a name="3526" href="Data.String.html#1082" class="Function"
+      ><a name="3526" href="Data.String.html#toCostring" class="Function"
       >toCostring</a
-      ><a name="3536"
-      > </a
-      ><a name="3537" href="IO.html#3513" class="Bound"
+      > <a name="3537" href="IO.html#3513" class="Bound"
       >s</a
       ><a name="3538" class="Symbol"
       >)</a
-      ><a name="3539"
       >
 
-</a
-      ><a name="3541" href="IO.html#3541" class="Function"
+<a name="putStrLn&#8734;" href="IO.html#putStrLn&#8734;" class="Function"
       >putStrLn&#8734;</a
-      ><a name="3550"
-      > </a
-      ><a name="3551" class="Symbol"
+      > <a name="3551" class="Symbol"
       >:</a
-      ><a name="3552"
-      > </a
-      ><a name="3553" href="Data.String.html#863" class="Function"
+      > <a name="3553" href="Data.String.html#Costring" class="Function"
       >Costring</a
-      ><a name="3561"
-      > </a
-      ><a name="3562" class="Symbol"
+      > <a name="3562" class="Symbol"
       >&#8594;</a
-      ><a name="3563"
-      > </a
-      ><a name="3564" href="IO.html#839" class="Datatype"
+      > <a name="3564" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="3566"
-      > </a
-      ><a name="3567" href="Agda.Builtin.Unit.html#69" class="Record"
+      > <a name="3567" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
       >&#8868;</a
-      ><a name="3568"
       >
-</a
-      ><a name="3569" href="IO.html#3541" class="Function"
+<a name="3569" href="IO.html#putStrLn&#8734;" class="Function"
       >putStrLn&#8734;</a
-      ><a name="3578"
-      > </a
-      ><a name="3579" href="IO.html#3579" class="Bound"
+      > <a name="3579" href="IO.html#3579" class="Bound"
       >s</a
-      ><a name="3580"
-      > </a
-      ><a name="3581" class="Symbol"
+      > <a name="3581" class="Symbol"
       >=</a
-      ><a name="3582"
       >
-  </a
-      ><a name="3585" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+  <a name="3585" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="3586"
-      > </a
-      ><a name="3587" href="IO.html#880" class="InductiveConstructor"
+      > <a name="3587" href="IO.html#IO.lift" class="InductiveConstructor"
       >lift</a
-      ><a name="3591"
-      > </a
-      ><a name="3592" class="Symbol"
+      > <a name="3592" class="Symbol"
       >(</a
-      ><a name="3593" href="IO.Primitive.html#1694" class="Postulate"
+      ><a name="3593" href="IO.Primitive.html#putStrLn" class="Postulate"
       >Prim.putStrLn</a
-      ><a name="3606"
-      > </a
-      ><a name="3607" href="IO.html#3579" class="Bound"
+      > <a name="3607" href="IO.html#3579" class="Bound"
       >s</a
       ><a name="3608" class="Symbol"
       >)</a
-      ><a name="3609"
-      > </a
-      ><a name="3610" href="IO.html#1010" class="InductiveConstructor Operator"
+      > <a name="3610" href="IO.html#IO._&gt;&gt;_" class="InductiveConstructor Operator"
       >&gt;&gt;</a
-      ><a name="3612"
       >
-  </a
-      ><a name="3615" href="Agda.Builtin.Coinduction.html#129" class="CoinductiveConstructor Operator"
+  <a name="3615" href="Agda.Builtin.Coinduction.html#&#9839;_" class="CoinductiveConstructor Operator"
       >&#9839;</a
-      ><a name="3616"
-      > </a
-      ><a name="3617" href="IO.html#914" class="InductiveConstructor"
+      > <a name="3617" href="IO.html#IO.return" class="InductiveConstructor"
       >return</a
-      ><a name="3623"
-      > </a
-      ><a name="3624" class="Symbol"
+      > <a name="3624" class="Symbol"
       >_</a
-      ><a name="3625"
       >
 
-</a
-      ><a name="3627" href="IO.html#3627" class="Function"
+<a name="putStrLn" href="IO.html#putStrLn" class="Function"
       >putStrLn</a
-      ><a name="3635"
-      > </a
-      ><a name="3636" class="Symbol"
+      > <a name="3636" class="Symbol"
       >:</a
-      ><a name="3637"
-      > </a
-      ><a name="3638" href="Agda.Builtin.String.html#165" class="Postulate"
+      > <a name="3638" href="Agda.Builtin.String.html#String" class="Postulate"
       >String</a
-      ><a name="3644"
-      > </a
-      ><a name="3645" class="Symbol"
+      > <a name="3645" class="Symbol"
       >&#8594;</a
-      ><a name="3646"
-      > </a
-      ><a name="3647" href="IO.html#839" class="Datatype"
+      > <a name="3647" href="IO.html#IO" class="Datatype"
       >IO</a
-      ><a name="3649"
-      > </a
-      ><a name="3650" href="Agda.Builtin.Unit.html#69" class="Record"
+      > <a name="3650" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
       >&#8868;</a
-      ><a name="3651"
       >
-</a
-      ><a name="3652" href="IO.html#3627" class="Function"
+<a name="3652" href="IO.html#putStrLn" class="Function"
       >putStrLn</a
-      ><a name="3660"
-      > </a
-      ><a name="3661" href="IO.html#3661" class="Bound"
+      > <a name="3661" href="IO.html#3661" class="Bound"
       >s</a
-      ><a name="3662"
-      > </a
-      ><a name="3663" class="Symbol"
+      > <a name="3663" class="Symbol"
       >=</a
-      ><a name="3664"
-      > </a
-      ><a name="3665" href="IO.html#3541" class="Function"
+      > <a name="3665" href="IO.html#putStrLn&#8734;" class="Function"
       >putStrLn&#8734;</a
-      ><a name="3674"
-      > </a
-      ><a name="3675" class="Symbol"
+      > <a name="3675" class="Symbol"
       >(</a
-      ><a name="3676" href="Data.String.html#1082" class="Function"
+      ><a name="3676" href="Data.String.html#toCostring" class="Function"
       >toCostring</a
-      ><a name="3686"
-      > </a
-      ><a name="3687" href="IO.html#3661" class="Bound"
+      > <a name="3687" href="IO.html#3661" class="Bound"
       >s</a
       ><a name="3688" class="Symbol"
       >)</a
-      ><a name="3689"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

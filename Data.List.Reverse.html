@@ -11,1044 +11,602 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Reverse view</a
-      ><a name="121"
       >
-</a
-      ><a name="122" class="Comment"
+<a name="122" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="194"
       >
 
-</a
-      ><a name="196" class="Keyword"
+<a name="196" class="Keyword"
       >module</a
-      ><a name="202"
-      > </a
-      ><a name="203" href="Data.List.Reverse.html#1" class="Module"
+      > <a name="203" href="Data.List.Reverse.html" class="Module"
       >Data.List.Reverse</a
-      ><a name="220"
-      > </a
-      ><a name="221" class="Keyword"
+      > <a name="221" class="Keyword"
       >where</a
-      ><a name="226"
       >
 
-</a
-      ><a name="228" class="Keyword"
+<a name="228" class="Keyword"
       >open</a
-      ><a name="232"
-      > </a
-      ><a name="233" class="Keyword"
+      > <a name="233" class="Keyword"
       >import</a
-      ><a name="239"
-      > </a
-      ><a name="240" href="Data.List.Base.html#1" class="Module"
+      > <a name="240" href="Data.List.Base.html" class="Module"
       >Data.List.Base</a
-      ><a name="254"
       >
-</a
-      ><a name="255" class="Keyword"
+<a name="255" class="Keyword"
       >open</a
-      ><a name="259"
-      > </a
-      ><a name="260" class="Keyword"
+      > <a name="260" class="Keyword"
       >import</a
-      ><a name="266"
-      > </a
-      ><a name="267" href="Data.Nat.html#1" class="Module"
+      > <a name="267" href="Data.Nat.html" class="Module"
       >Data.Nat</a
-      ><a name="275"
       >
-</a
-      ><a name="276" class="Keyword"
+<a name="276" class="Keyword"
       >import</a
-      ><a name="282"
-      > </a
-      ><a name="283" href="Data.Nat.Properties.html#1" class="Module"
+      > <a name="283" href="Data.Nat.Properties.html" class="Module"
       >Data.Nat.Properties</a
-      ><a name="302"
-      > </a
-      ><a name="303" class="Symbol"
+      > <a name="303" class="Symbol"
       >as</a
-      ><a name="305"
-      > </a
-      ><a name="306" class="Module"
+      > <a name="306" class="Module"
       >Nat</a
-      ><a name="309"
       >
-</a
-      ><a name="310" class="Keyword"
+<a name="310" class="Keyword"
       >open</a
-      ><a name="314"
-      > </a
-      ><a name="315" class="Keyword"
+      > <a name="315" class="Keyword"
       >import</a
-      ><a name="321"
-      > </a
-      ><a name="322" href="Induction.Nat.html#1" class="Module"
+      > <a name="322" href="Induction.Nat.html" class="Module"
       >Induction.Nat</a
-      ><a name="335"
+      > <a name="336" class="Keyword"
+      >using</a
+      > <a name="342" class="Symbol"
+      >(</a
+      ><a name="343" href="Induction.Nat.html#&lt;&#8242;-Rec" class="Function"
+      >&lt;&#8242;-Rec</a
+      ><a name="349" class="Symbol"
+      >;</a
+      > <a name="351" href="Induction.WellFounded.html#1751" class="Function"
+      >&lt;&#8242;-rec</a
+      ><a name="357" class="Symbol"
+      >)</a
       >
-</a
-      ><a name="336" class="Keyword"
+<a name="359" class="Keyword"
       >open</a
-      ><a name="340"
-      > </a
-      ><a name="341" class="Keyword"
+      > <a name="364" class="Keyword"
       >import</a
-      ><a name="347"
-      > </a
-      ><a name="348" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      > <a name="371" href="Relation.Binary.PropositionalEquality.html" class="Module"
       >Relation.Binary.PropositionalEquality</a
-      ><a name="385"
       >
 
-</a
-      ><a name="387" class="Comment"
+<a name="410" class="Comment"
       >-- If you want to traverse a list from the end, then you can use the</a
-      ><a name="455"
       >
-</a
-      ><a name="456" class="Comment"
+<a name="479" class="Comment"
       >-- reverse view of it.</a
-      ><a name="478"
       >
 
-</a
-      ><a name="480" class="Keyword"
+<a name="503" class="Keyword"
       >infixl</a
-      ><a name="486"
-      > </a
-      ><a name="487" class="Number"
+      > <a name="510" class="Number"
       >5</a
-      ><a name="488"
-      > _&#8758;_&#8758;&#691;_
-
-</a
-      ><a name="497" class="Keyword"
-      >data</a
-      ><a name="501"
-      > </a
-      ><a name="502" href="Data.List.Reverse.html#502" class="Datatype"
-      >Reverse</a
-      ><a name="509"
-      > </a
-      ><a name="510" class="Symbol"
-      >{</a
-      ><a name="511" href="Data.List.Reverse.html#511" class="Bound"
-      >A</a
-      ><a name="512"
-      > </a
-      ><a name="513" class="Symbol"
-      >:</a
-      ><a name="514"
-      > </a
-      ><a name="515" class="PrimitiveType"
-      >Set</a
-      ><a name="518" class="Symbol"
-      >}</a
-      ><a name="519"
-      > </a
-      ><a name="520" class="Symbol"
-      >:</a
-      ><a name="521"
-      > </a
-      ><a name="522" href="Agda.Builtin.List.html#80" class="Datatype"
-      >List</a
-      ><a name="526"
-      > </a
-      ><a name="527" href="Data.List.Reverse.html#511" class="Bound"
-      >A</a
-      ><a name="528"
-      > </a
-      ><a name="529" class="Symbol"
-      >&#8594;</a
-      ><a name="530"
-      > </a
-      ><a name="531" class="PrimitiveType"
-      >Set</a
-      ><a name="534"
-      > </a
-      ><a name="535" class="Keyword"
-      >where</a
-      ><a name="540"
-      >
-  </a
-      ><a name="543" href="Data.List.Reverse.html#543" class="InductiveConstructor"
-      >[]</a
-      ><a name="545"
-      >     </a
-      ><a name="550" class="Symbol"
-      >:</a
-      ><a name="551"
-      > </a
-      ><a name="552" href="Data.List.Reverse.html#502" class="Datatype"
-      >Reverse</a
-      ><a name="559"
-      > </a
-      ><a name="560" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
-      >[]</a
-      ><a name="562"
-      >
-  </a
-      ><a name="565" href="Data.List.Reverse.html#565" class="InductiveConstructor Operator"
+      > <a name="512" href="Data.List.Reverse.html#Reverse._&#8758;_&#8758;&#691;_" class="InductiveConstructor Operator"
       >_&#8758;_&#8758;&#691;_</a
-      ><a name="571"
-      > </a
-      ><a name="572" class="Symbol"
-      >:</a
-      ><a name="573"
-      > </a
-      ><a name="574" class="Symbol"
-      >&#8704;</a
-      ><a name="575"
-      > </a
-      ><a name="576" href="Data.List.Reverse.html#576" class="Bound"
-      >xs</a
-      ><a name="578"
-      > </a
-      ><a name="579" class="Symbol"
-      >(</a
-      ><a name="580" href="Data.List.Reverse.html#580" class="Bound"
-      >rs</a
-      ><a name="582"
-      > </a
-      ><a name="583" class="Symbol"
-      >:</a
-      ><a name="584"
-      > </a
-      ><a name="585" href="Data.List.Reverse.html#502" class="Datatype"
-      >Reverse</a
-      ><a name="592"
-      > </a
-      ><a name="593" href="Data.List.Reverse.html#576" class="Bound"
-      >xs</a
-      ><a name="595" class="Symbol"
-      >)</a
-      ><a name="596"
-      > </a
-      ><a name="597" class="Symbol"
-      >(</a
-      ><a name="598" href="Data.List.Reverse.html#598" class="Bound"
-      >x</a
-      ><a name="599"
-      > </a
-      ><a name="600" class="Symbol"
-      >:</a
-      ><a name="601"
-      > </a
-      ><a name="602" href="Data.List.Reverse.html#511" class="Bound"
-      >A</a
-      ><a name="603" class="Symbol"
-      >)</a
-      ><a name="604"
-      > </a
-      ><a name="605" class="Symbol"
-      >&#8594;</a
-      ><a name="606"
-      > </a
-      ><a name="607" href="Data.List.Reverse.html#502" class="Datatype"
-      >Reverse</a
-      ><a name="614"
-      > </a
-      ><a name="615" class="Symbol"
-      >(</a
-      ><a name="616" href="Data.List.Reverse.html#576" class="Bound"
-      >xs</a
-      ><a name="618"
-      > </a
-      ><a name="619" href="Data.List.Base.html#1025" class="Function Operator"
-      >&#8759;&#691;</a
-      ><a name="621"
-      > </a
-      ><a name="622" href="Data.List.Reverse.html#598" class="Bound"
-      >x</a
-      ><a name="623" class="Symbol"
-      >)</a
-      ><a name="624"
       >
 
-</a
-      ><a name="626" href="Data.List.Reverse.html#626" class="Function"
-      >reverseView</a
-      ><a name="637"
-      > </a
-      ><a name="638" class="Symbol"
-      >:</a
-      ><a name="639"
-      > </a
-      ><a name="640" class="Symbol"
-      >&#8704;</a
-      ><a name="641"
-      > </a
-      ><a name="642" class="Symbol"
-      >{</a
-      ><a name="643" href="Data.List.Reverse.html#643" class="Bound"
-      >A</a
-      ><a name="644" class="Symbol"
-      >}</a
-      ><a name="645"
-      > </a
-      ><a name="646" class="Symbol"
-      >(</a
-      ><a name="647" href="Data.List.Reverse.html#647" class="Bound"
-      >xs</a
-      ><a name="649"
-      > </a
-      ><a name="650" class="Symbol"
-      >:</a
-      ><a name="651"
-      > </a
-      ><a name="652" href="Agda.Builtin.List.html#80" class="Datatype"
-      >List</a
-      ><a name="656"
-      > </a
-      ><a name="657" href="Data.List.Reverse.html#643" class="Bound"
-      >A</a
-      ><a name="658" class="Symbol"
-      >)</a
-      ><a name="659"
-      > </a
-      ><a name="660" class="Symbol"
-      >&#8594;</a
-      ><a name="661"
-      > </a
-      ><a name="662" href="Data.List.Reverse.html#502" class="Datatype"
+<a name="520" class="Keyword"
+      >data</a
+      > <a name="Reverse" href="Data.List.Reverse.html#Reverse" class="Datatype"
       >Reverse</a
-      ><a name="669"
-      > </a
-      ><a name="670" href="Data.List.Reverse.html#647" class="Bound"
-      >xs</a
-      ><a name="672"
-      >
-</a
-      ><a name="673" href="Data.List.Reverse.html#626" class="Function"
-      >reverseView</a
-      ><a name="684"
-      > </a
-      ><a name="685" class="Symbol"
+      > <a name="533" class="Symbol"
       >{</a
-      ><a name="686" href="Data.List.Reverse.html#686" class="Bound"
+      ><a name="534" href="Data.List.Reverse.html#534" class="Bound"
       >A</a
-      ><a name="687" class="Symbol"
-      >}</a
-      ><a name="688"
-      > </a
-      ><a name="689" href="Data.List.Reverse.html#689" class="Bound"
-      >xs</a
-      ><a name="691"
-      > </a
-      ><a name="692" class="Symbol"
-      >=</a
-      ><a name="693"
-      > </a
-      ><a name="694" href="Induction.WellFounded.html#1751" class="Function"
-      >&lt;-rec</a
-      ><a name="699"
-      > </a
-      ><a name="700" href="Data.List.Reverse.html#739" class="Function"
-      >Pred</a
-      ><a name="704"
-      > </a
-      ><a name="705" href="Data.List.Reverse.html#925" class="Function"
-      >rev</a
-      ><a name="708"
-      > </a
-      ><a name="709" class="Symbol"
-      >(</a
-      ><a name="710" href="Data.List.Base.html#2745" class="Function"
-      >length</a
-      ><a name="716"
-      > </a
-      ><a name="717" href="Data.List.Reverse.html#689" class="Bound"
-      >xs</a
-      ><a name="719" class="Symbol"
-      >)</a
-      ><a name="720"
-      > </a
-      ><a name="721" href="Data.List.Reverse.html#689" class="Bound"
-      >xs</a
-      ><a name="723"
-      > </a
-      ><a name="724" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
-      >refl</a
-      ><a name="728"
-      >
-  </a
-      ><a name="731" class="Keyword"
-      >where</a
-      ><a name="736"
-      >
-  </a
-      ><a name="739" href="Data.List.Reverse.html#739" class="Function"
-      >Pred</a
-      ><a name="743"
-      > </a
-      ><a name="744" class="Symbol"
+      > <a name="536" class="Symbol"
       >:</a
-      ><a name="745"
-      > </a
-      ><a name="746" href="Agda.Builtin.Nat.html#97" class="Datatype"
-      >&#8469;</a
-      ><a name="747"
-      > </a
-      ><a name="748" class="Symbol"
-      >&#8594;</a
-      ><a name="749"
-      > </a
-      ><a name="750" class="PrimitiveType"
+      > <a name="538" class="PrimitiveType"
       >Set</a
-      ><a name="753"
-      >
-  </a
-      ><a name="756" href="Data.List.Reverse.html#739" class="Function"
-      >Pred</a
-      ><a name="760"
-      > </a
-      ><a name="761" href="Data.List.Reverse.html#761" class="Bound"
-      >n</a
-      ><a name="762"
-      > </a
-      ><a name="763" class="Symbol"
-      >=</a
-      ><a name="764"
-      > </a
-      ><a name="765" class="Symbol"
-      >(</a
-      ><a name="766" href="Data.List.Reverse.html#766" class="Bound"
-      >xs</a
-      ><a name="768"
-      > </a
-      ><a name="769" class="Symbol"
-      >:</a
-      ><a name="770"
-      > </a
-      ><a name="771" href="Agda.Builtin.List.html#80" class="Datatype"
-      >List</a
-      ><a name="775"
-      > </a
-      ><a name="776" href="Data.List.Reverse.html#686" class="Bound"
-      >A</a
-      ><a name="777" class="Symbol"
-      >)</a
-      ><a name="778"
-      > </a
-      ><a name="779" class="Symbol"
-      >&#8594;</a
-      ><a name="780"
-      > </a
-      ><a name="781" href="Data.List.Base.html#2745" class="Function"
-      >length</a
-      ><a name="787"
-      > </a
-      ><a name="788" href="Data.List.Reverse.html#766" class="Bound"
-      >xs</a
-      ><a name="790"
-      > </a
-      ><a name="791" href="Agda.Builtin.Equality.html#83" class="Datatype Operator"
-      >&#8801;</a
-      ><a name="792"
-      > </a
-      ><a name="793" href="Data.List.Reverse.html#761" class="Bound"
-      >n</a
-      ><a name="794"
-      > </a
-      ><a name="795" class="Symbol"
-      >&#8594;</a
-      ><a name="796"
-      > </a
-      ><a name="797" href="Data.List.Reverse.html#502" class="Datatype"
-      >Reverse</a
-      ><a name="804"
-      > </a
-      ><a name="805" href="Data.List.Reverse.html#766" class="Bound"
-      >xs</a
-      ><a name="807"
-      >
-
-  </a
-      ><a name="811" href="Data.List.Reverse.html#811" class="Function"
-      >lem</a
-      ><a name="814"
-      > </a
-      ><a name="815" class="Symbol"
-      >:</a
-      ><a name="816"
-      > </a
-      ><a name="817" class="Symbol"
-      >&#8704;</a
-      ><a name="818"
-      > </a
-      ><a name="819" href="Data.List.Reverse.html#819" class="Bound"
-      >xs</a
-      ><a name="821"
-      > </a
-      ><a name="822" class="Symbol"
-      >{</a
-      ><a name="823" href="Data.List.Reverse.html#823" class="Bound"
-      >x</a
-      ><a name="824"
-      > </a
-      ><a name="825" class="Symbol"
-      >:</a
-      ><a name="826"
-      > </a
-      ><a name="827" href="Data.List.Reverse.html#686" class="Bound"
-      >A</a
-      ><a name="828" class="Symbol"
+      ><a name="541" class="Symbol"
       >}</a
-      ><a name="829"
-      > </a
-      ><a name="830" class="Symbol"
+      > <a name="543" class="Symbol"
+      >:</a
+      > <a name="545" href="Agda.Builtin.List.html#List" class="Datatype"
+      >List</a
+      > <a name="550" href="Data.List.Reverse.html#534" class="Bound"
+      >A</a
+      > <a name="552" class="Symbol"
       >&#8594;</a
-      ><a name="831"
-      > </a
-      ><a name="832" href="Data.List.Base.html#2745" class="Function"
-      >length</a
-      ><a name="838"
-      > </a
-      ><a name="839" href="Data.List.Reverse.html#819" class="Bound"
-      >xs</a
-      ><a name="841"
-      > </a
-      ><a name="842" href="Data.Nat.Base.html#1469" class="Function Operator"
-      >&lt;&#8242;</a
-      ><a name="844"
-      > </a
-      ><a name="845" href="Data.List.Base.html#2745" class="Function"
-      >length</a
-      ><a name="851"
-      > </a
-      ><a name="852" class="Symbol"
-      >(</a
-      ><a name="853" href="Data.List.Reverse.html#819" class="Bound"
-      >xs</a
-      ><a name="855"
-      > </a
-      ><a name="856" href="Data.List.Base.html#1025" class="Function Operator"
-      >&#8759;&#691;</a
-      ><a name="858"
-      > </a
-      ><a name="859" href="Data.List.Reverse.html#823" class="Bound"
-      >x</a
-      ><a name="860" class="Symbol"
-      >)</a
-      ><a name="861"
+      > <a name="554" class="PrimitiveType"
+      >Set</a
+      > <a name="558" class="Keyword"
+      >where</a
       >
-  </a
-      ><a name="864" href="Data.List.Reverse.html#811" class="Function"
-      >lem</a
-      ><a name="867"
-      > </a
-      ><a name="868" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+  <a name="Reverse.[]" href="Data.List.Reverse.html#Reverse.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="870"
-      >       </a
-      ><a name="877" class="Symbol"
-      >=</a
-      ><a name="878"
-      > </a
-      ><a name="879" href="Data.Nat.Base.html#1380" class="InductiveConstructor"
-      >&#8804;&#8242;-refl</a
-      ><a name="886"
+      >     <a name="573" class="Symbol"
+      >:</a
+      > <a name="575" href="Data.List.Reverse.html#Reverse" class="Datatype"
+      >Reverse</a
+      > <a name="583" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      >[]</a
       >
-  </a
-      ><a name="889" href="Data.List.Reverse.html#811" class="Function"
-      >lem</a
-      ><a name="892"
-      > </a
-      ><a name="893" class="Symbol"
+  <a name="Reverse._&#8758;_&#8758;&#691;_" href="Data.List.Reverse.html#Reverse._&#8758;_&#8758;&#691;_" class="InductiveConstructor Operator"
+      >_&#8758;_&#8758;&#691;_</a
+      > <a name="595" class="Symbol"
+      >:</a
+      > <a name="597" class="Symbol"
+      >&#8704;</a
+      > <a name="599" href="Data.List.Reverse.html#599" class="Bound"
+      >xs</a
+      > <a name="602" class="Symbol"
       >(</a
-      ><a name="894" href="Data.List.Reverse.html#894" class="Bound"
+      ><a name="603" href="Data.List.Reverse.html#603" class="Bound"
+      >rs</a
+      > <a name="606" class="Symbol"
+      >:</a
+      > <a name="608" href="Data.List.Reverse.html#Reverse" class="Datatype"
+      >Reverse</a
+      > <a name="616" href="Data.List.Reverse.html#599" class="Bound"
+      >xs</a
+      ><a name="618" class="Symbol"
+      >)</a
+      > <a name="620" class="Symbol"
+      >(</a
+      ><a name="621" href="Data.List.Reverse.html#621" class="Bound"
       >x</a
-      ><a name="895"
-      > </a
-      ><a name="896" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="897"
-      > </a
-      ><a name="898" href="Data.List.Reverse.html#898" class="Bound"
-      >xs</a
-      ><a name="900" class="Symbol"
+      > <a name="623" class="Symbol"
+      >:</a
+      > <a name="625" href="Data.List.Reverse.html#534" class="Bound"
+      >A</a
+      ><a name="626" class="Symbol"
       >)</a
-      ><a name="901"
-      > </a
-      ><a name="902" class="Symbol"
-      >=</a
-      ><a name="903"
-      > </a
-      ><a name="904" href="Data.Nat.Properties.html#7503" class="Function"
-      >Nat.s&#8804;&#8242;s</a
-      ><a name="912"
-      > </a
-      ><a name="913" class="Symbol"
+      > <a name="628" class="Symbol"
+      >&#8594;</a
+      > <a name="630" href="Data.List.Reverse.html#Reverse" class="Datatype"
+      >Reverse</a
+      > <a name="638" class="Symbol"
       >(</a
-      ><a name="914" href="Data.List.Reverse.html#811" class="Function"
-      >lem</a
-      ><a name="917"
-      > </a
-      ><a name="918" href="Data.List.Reverse.html#898" class="Bound"
+      ><a name="639" href="Data.List.Reverse.html#599" class="Bound"
       >xs</a
-      ><a name="920" class="Symbol"
+      > <a name="642" href="Data.List.Base.html#_&#8759;&#691;_" class="Function Operator"
+      >&#8759;&#691;</a
+      > <a name="645" href="Data.List.Reverse.html#621" class="Bound"
+      >x</a
+      ><a name="646" class="Symbol"
       >)</a
-      ><a name="921"
       >
 
-  </a
-      ><a name="925" href="Data.List.Reverse.html#925" class="Function"
-      >rev</a
-      ><a name="928"
-      > </a
-      ><a name="929" class="Symbol"
+<a name="reverseView" href="Data.List.Reverse.html#reverseView" class="Function"
+      >reverseView</a
+      > <a name="661" class="Symbol"
       >:</a
-      ><a name="930"
-      > </a
-      ><a name="931" class="Symbol"
+      > <a name="663" class="Symbol"
+      >&#8704;</a
+      > <a name="665" class="Symbol"
+      >{</a
+      ><a name="666" href="Data.List.Reverse.html#666" class="Bound"
+      >A</a
+      ><a name="667" class="Symbol"
+      >}</a
+      > <a name="669" class="Symbol"
       >(</a
-      ><a name="932" href="Data.List.Reverse.html#932" class="Bound"
-      >n</a
-      ><a name="933"
-      > </a
-      ><a name="934" class="Symbol"
+      ><a name="670" href="Data.List.Reverse.html#670" class="Bound"
+      >xs</a
+      > <a name="673" class="Symbol"
       >:</a
-      ><a name="935"
-      > </a
-      ><a name="936" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="675" href="Agda.Builtin.List.html#List" class="Datatype"
+      >List</a
+      > <a name="680" href="Data.List.Reverse.html#666" class="Bound"
+      >A</a
+      ><a name="681" class="Symbol"
+      >)</a
+      > <a name="683" class="Symbol"
+      >&#8594;</a
+      > <a name="685" href="Data.List.Reverse.html#Reverse" class="Datatype"
+      >Reverse</a
+      > <a name="693" href="Data.List.Reverse.html#670" class="Bound"
+      >xs</a
+      >
+<a name="696" href="Data.List.Reverse.html#reverseView" class="Function"
+      >reverseView</a
+      > <a name="708" class="Symbol"
+      >{</a
+      ><a name="709" href="Data.List.Reverse.html#709" class="Bound"
+      >A</a
+      ><a name="710" class="Symbol"
+      >}</a
+      > <a name="712" href="Data.List.Reverse.html#712" class="Bound"
+      >xs</a
+      > <a name="715" class="Symbol"
+      >=</a
+      > <a name="717" href="Induction.WellFounded.html#1751" class="Function"
+      >&lt;&#8242;-rec</a
+      > <a name="724" href="Data.List.Reverse.html#763" class="Function"
+      >Pred</a
+      > <a name="729" href="Data.List.Reverse.html#949" class="Function"
+      >rev</a
+      > <a name="733" class="Symbol"
+      >(</a
+      ><a name="734" href="Data.List.Base.html#length" class="Function"
+      >length</a
+      > <a name="741" href="Data.List.Reverse.html#712" class="Bound"
+      >xs</a
+      ><a name="743" class="Symbol"
+      >)</a
+      > <a name="745" href="Data.List.Reverse.html#712" class="Bound"
+      >xs</a
+      > <a name="748" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      >
+  <a name="755" class="Keyword"
+      >where</a
+      >
+  <a name="763" href="Data.List.Reverse.html#763" class="Function"
+      >Pred</a
+      > <a name="768" class="Symbol"
+      >:</a
+      > <a name="770" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="937" class="Symbol"
-      >)</a
-      ><a name="938"
-      > </a
-      ><a name="939" class="Symbol"
+      > <a name="772" class="Symbol"
       >&#8594;</a
-      ><a name="940"
-      > </a
-      ><a name="941" href="Induction.Nat.html#1443" class="Function"
-      >&lt;-Rec</a
-      ><a name="946"
-      > </a
-      ><a name="947" href="Data.List.Reverse.html#739" class="Function"
-      >Pred</a
-      ><a name="951"
-      > </a
-      ><a name="952" href="Data.List.Reverse.html#932" class="Bound"
-      >n</a
-      ><a name="953"
-      > </a
-      ><a name="954" class="Symbol"
-      >&#8594;</a
-      ><a name="955"
-      > </a
-      ><a name="956" href="Data.List.Reverse.html#739" class="Function"
-      >Pred</a
-      ><a name="960"
-      > </a
-      ><a name="961" href="Data.List.Reverse.html#932" class="Bound"
-      >n</a
-      ><a name="962"
+      > <a name="774" class="PrimitiveType"
+      >Set</a
       >
-  </a
-      ><a name="965" href="Data.List.Reverse.html#925" class="Function"
-      >rev</a
-      ><a name="968"
-      > </a
-      ><a name="969" href="Data.List.Reverse.html#969" class="Bound"
+  <a name="780" href="Data.List.Reverse.html#763" class="Function"
+      >Pred</a
+      > <a name="785" href="Data.List.Reverse.html#785" class="Bound"
       >n</a
-      ><a name="970"
-      >                   </a
-      ><a name="989" href="Data.List.Reverse.html#989" class="Bound"
-      >rec</a
-      ><a name="992"
-      > </a
-      ><a name="993" href="Data.List.Reverse.html#993" class="Bound"
-      >xs</a
-      ><a name="995"
-      >         </a
-      ><a name="1004" href="Data.List.Reverse.html#1004" class="Bound"
-      >eq</a
-      ><a name="1006"
-      >   </a
-      ><a name="1009" class="Keyword"
-      >with</a
-      ><a name="1013"
-      > </a
-      ><a name="1014" href="Data.List.Base.html#5593" class="Function"
-      >initLast</a
-      ><a name="1022"
-      > </a
-      ><a name="1023" href="Data.List.Reverse.html#993" class="Bound"
-      >xs</a
-      ><a name="1025"
-      >
-  </a
-      ><a name="1028" href="Data.List.Reverse.html#925" class="Function"
-      >rev</a
-      ><a name="1031"
-      > </a
-      ><a name="1032" href="Data.List.Reverse.html#1032" class="Bound"
-      >n</a
-      ><a name="1033"
-      >                   </a
-      ><a name="1052" href="Data.List.Reverse.html#1052" class="Bound"
-      >rec</a
-      ><a name="1055"
-      > </a
-      ><a name="1056" class="DottedPattern Symbol"
-      >.</a
-      ><a name="1057" href="Agda.Builtin.List.html#117" class="DottedPattern InductiveConstructor"
-      >[]</a
-      ><a name="1059"
-      >        </a
-      ><a name="1067" href="Data.List.Reverse.html#1067" class="Bound"
-      >eq</a
-      ><a name="1069"
-      >   </a
-      ><a name="1072" class="Symbol"
-      >|</a
-      ><a name="1073"
-      > </a
-      ><a name="1074" href="Data.List.Base.html#5519" class="InductiveConstructor"
-      >[]</a
-      ><a name="1076"
-      >       </a
-      ><a name="1083" class="Symbol"
+      > <a name="787" class="Symbol"
       >=</a
-      ><a name="1084"
-      > </a
-      ><a name="1085" href="Data.List.Reverse.html#543" class="InductiveConstructor"
-      >[]</a
-      ><a name="1087"
-      >
-  </a
-      ><a name="1090" href="Data.List.Reverse.html#925" class="Function"
-      >rev</a
-      ><a name="1093"
-      > </a
-      ><a name="1094" class="DottedPattern Symbol"
-      >.(</a
-      ><a name="1096" href="Data.List.Base.html#2745" class="DottedPattern Function"
-      >length</a
-      ><a name="1102"
-      > </a
-      ><a name="1103" class="DottedPattern Symbol"
+      > <a name="789" class="Symbol"
       >(</a
-      ><a name="1104" href="Data.List.Reverse.html#1136" class="DottedPattern Bound"
+      ><a name="790" href="Data.List.Reverse.html#790" class="Bound"
       >xs</a
-      ><a name="1106"
-      > </a
-      ><a name="1107" href="Data.List.Base.html#1025" class="DottedPattern Function Operator"
-      >&#8759;&#691;</a
-      ><a name="1109"
-      > </a
-      ><a name="1110" href="Data.List.Reverse.html#1143" class="DottedPattern Bound"
-      >x</a
-      ><a name="1111" class="DottedPattern Symbol"
-      >))</a
-      ><a name="1113"
-      > </a
-      ><a name="1114" href="Data.List.Reverse.html#1114" class="Bound"
-      >rec</a
-      ><a name="1117"
-      > </a
-      ><a name="1118" class="DottedPattern Symbol"
-      >.(</a
-      ><a name="1120" href="Data.List.Reverse.html#1136" class="DottedPattern Bound"
-      >xs</a
-      ><a name="1122"
-      > </a
-      ><a name="1123" href="Data.List.Base.html#1025" class="DottedPattern Function Operator"
-      >&#8759;&#691;</a
-      ><a name="1125"
-      > </a
-      ><a name="1126" href="Data.List.Reverse.html#1143" class="DottedPattern Bound"
-      >x</a
-      ><a name="1127" class="DottedPattern Symbol"
+      > <a name="793" class="Symbol"
+      >:</a
+      > <a name="795" href="Agda.Builtin.List.html#List" class="Datatype"
+      >List</a
+      > <a name="800" href="Data.List.Reverse.html#709" class="Bound"
+      >A</a
+      ><a name="801" class="Symbol"
       >)</a
-      ><a name="1128"
-      > </a
-      ><a name="1129" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
-      >refl</a
-      ><a name="1133"
-      > </a
-      ><a name="1134" class="Symbol"
-      >|</a
-      ><a name="1135"
-      > </a
-      ><a name="1136" href="Data.List.Reverse.html#1136" class="Bound"
-      >xs</a
-      ><a name="1138"
-      > </a
-      ><a name="1139" href="Data.List.Base.html#5541" class="InductiveConstructor Operator"
-      >&#8759;&#691;'</a
-      ><a name="1142"
-      > </a
-      ><a name="1143" href="Data.List.Reverse.html#1143" class="Bound"
-      >x</a
-      ><a name="1144"
-      >
-    </a
-      ><a name="1149" class="Keyword"
-      >with</a
-      ><a name="1153"
-      > </a
-      ><a name="1154" href="Data.List.Reverse.html#1114" class="Bound"
-      >rec</a
-      ><a name="1157"
-      > </a
-      ><a name="1158" class="Symbol"
-      >(</a
-      ><a name="1159" href="Data.List.Base.html#2745" class="Function"
+      > <a name="803" class="Symbol"
+      >&#8594;</a
+      > <a name="805" href="Data.List.Base.html#length" class="Function"
       >length</a
-      ><a name="1165"
-      > </a
-      ><a name="1166" href="Data.List.Reverse.html#1136" class="Bound"
+      > <a name="812" href="Data.List.Reverse.html#790" class="Bound"
       >xs</a
-      ><a name="1168" class="Symbol"
-      >)</a
-      ><a name="1169"
-      > </a
-      ><a name="1170" class="Symbol"
-      >(</a
-      ><a name="1171" href="Data.List.Reverse.html#811" class="Function"
+      > <a name="815" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >&#8801;</a
+      > <a name="817" href="Data.List.Reverse.html#785" class="Bound"
+      >n</a
+      > <a name="819" class="Symbol"
+      >&#8594;</a
+      > <a name="821" href="Data.List.Reverse.html#Reverse" class="Datatype"
+      >Reverse</a
+      > <a name="829" href="Data.List.Reverse.html#790" class="Bound"
+      >xs</a
+      >
+
+  <a name="835" href="Data.List.Reverse.html#835" class="Function"
       >lem</a
-      ><a name="1174"
-      > </a
-      ><a name="1175" href="Data.List.Reverse.html#1136" class="Bound"
+      > <a name="839" class="Symbol"
+      >:</a
+      > <a name="841" class="Symbol"
+      >&#8704;</a
+      > <a name="843" href="Data.List.Reverse.html#843" class="Bound"
       >xs</a
-      ><a name="1177" class="Symbol"
-      >)</a
-      ><a name="1178"
-      > </a
-      ><a name="1179" href="Data.List.Reverse.html#1136" class="Bound"
+      > <a name="846" class="Symbol"
+      >{</a
+      ><a name="847" href="Data.List.Reverse.html#847" class="Bound"
+      >x</a
+      > <a name="849" class="Symbol"
+      >:</a
+      > <a name="851" href="Data.List.Reverse.html#709" class="Bound"
+      >A</a
+      ><a name="852" class="Symbol"
+      >}</a
+      > <a name="854" class="Symbol"
+      >&#8594;</a
+      > <a name="856" href="Data.List.Base.html#length" class="Function"
+      >length</a
+      > <a name="863" href="Data.List.Reverse.html#843" class="Bound"
       >xs</a
-      ><a name="1181"
-      > </a
-      ><a name="1182" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
-      >refl</a
-      ><a name="1186"
-      >
-  </a
-      ><a name="1189" href="Data.List.Reverse.html#925" class="Function"
-      >rev</a
-      ><a name="1192"
-      > </a
-      ><a name="1193" class="DottedPattern Symbol"
-      >._</a
-      ><a name="1195"
-      > </a
-      ><a name="1196" href="Data.List.Reverse.html#1196" class="Bound"
-      >rec</a
-      ><a name="1199"
-      > </a
-      ><a name="1200" class="DottedPattern Symbol"
-      >.(</a
-      ><a name="1202" class="DottedPattern InductiveConstructor"
-      >[]</a
-      ><a name="1204"
-      >      </a
-      ><a name="1210" href="Data.List.Base.html#1025" class="DottedPattern Function Operator"
+      > <a name="866" href="Data.Nat.Base.html#_&lt;&#8242;_" class="Function Operator"
+      >&lt;&#8242;</a
+      > <a name="869" href="Data.List.Base.html#length" class="Function"
+      >length</a
+      > <a name="876" class="Symbol"
+      >(</a
+      ><a name="877" href="Data.List.Reverse.html#843" class="Bound"
+      >xs</a
+      > <a name="880" href="Data.List.Base.html#_&#8759;&#691;_" class="Function Operator"
       >&#8759;&#691;</a
-      ><a name="1212"
-      > </a
-      ><a name="1213" href="Data.List.Reverse.html#1230" class="DottedPattern Bound"
+      > <a name="883" href="Data.List.Reverse.html#847" class="Bound"
       >x</a
-      ><a name="1214" class="DottedPattern Symbol"
+      ><a name="884" class="Symbol"
       >)</a
-      ><a name="1215"
-      > </a
-      ><a name="1216" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
-      >refl</a
-      ><a name="1220"
-      > </a
-      ><a name="1221" class="Symbol"
-      >|</a
-      ><a name="1222"
-      > </a
-      ><a name="1223" class="DottedPattern Symbol"
-      >._</a
-      ><a name="1225"
-      > </a
-      ><a name="1226" href="Data.List.Base.html#5541" class="InductiveConstructor Operator"
-      >&#8759;&#691;'</a
-      ><a name="1229"
-      > </a
-      ><a name="1230" href="Data.List.Reverse.html#1230" class="Bound"
-      >x</a
-      ><a name="1231"
-      > </a
-      ><a name="1232" class="Symbol"
-      >|</a
-      ><a name="1233"
-      > </a
-      ><a name="1234" href="Data.List.Reverse.html#543" class="InductiveConstructor"
+      >
+  <a name="888" href="Data.List.Reverse.html#835" class="Function"
+      >lem</a
+      > <a name="892" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1236"
-      > </a
-      ><a name="1237" class="Symbol"
+      >       <a name="901" class="Symbol"
       >=</a
-      ><a name="1238"
-      > </a
-      ><a name="1239" class="Symbol"
-      >_</a
-      ><a name="1240"
-      > </a
-      ><a name="1241" href="Data.List.Reverse.html#565" class="InductiveConstructor Operator"
-      >&#8758;</a
-      ><a name="1242"
-      > </a
-      ><a name="1243" href="Data.List.Reverse.html#543" class="InductiveConstructor"
-      >[]</a
-      ><a name="1245"
-      > </a
-      ><a name="1246" href="Data.List.Reverse.html#565" class="InductiveConstructor Operator"
-      >&#8758;&#691;</a
-      ><a name="1248"
-      > </a
-      ><a name="1249" href="Data.List.Reverse.html#1230" class="Bound"
-      >x</a
-      ><a name="1250"
+      > <a name="903" href="Data.Nat.Base.html#_&#8804;&#8242;_.&#8804;&#8242;-refl" class="InductiveConstructor"
+      >&#8804;&#8242;-refl</a
       >
-  </a
-      ><a name="1253" href="Data.List.Reverse.html#925" class="Function"
-      >rev</a
-      ><a name="1256"
-      > </a
-      ><a name="1257" class="DottedPattern Symbol"
-      >._</a
-      ><a name="1259"
-      > </a
-      ><a name="1260" href="Data.List.Reverse.html#1260" class="Bound"
-      >rec</a
-      ><a name="1263"
-      > </a
-      ><a name="1264" class="DottedPattern Symbol"
-      >.(</a
-      ><a name="1266" href="Data.List.Reverse.html#1298" class="DottedPattern Bound"
-      >ys</a
-      ><a name="1268"
-      > </a
-      ><a name="1269" href="Data.List.Base.html#1025" class="DottedPattern Function Operator"
-      >&#8759;&#691;</a
-      ><a name="1271"
-      > </a
-      ><a name="1272" href="Data.List.Reverse.html#1309" class="DottedPattern Bound"
-      >y</a
-      ><a name="1273"
-      > </a
-      ><a name="1274" href="Data.List.Base.html#1025" class="DottedPattern Function Operator"
-      >&#8759;&#691;</a
-      ><a name="1276"
-      > </a
-      ><a name="1277" href="Data.List.Reverse.html#1294" class="DottedPattern Bound"
+  <a name="913" href="Data.List.Reverse.html#835" class="Function"
+      >lem</a
+      > <a name="917" class="Symbol"
+      >(</a
+      ><a name="918" href="Data.List.Reverse.html#918" class="Bound"
       >x</a
-      ><a name="1278" class="DottedPattern Symbol"
+      > <a name="920" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="922" href="Data.List.Reverse.html#922" class="Bound"
+      >xs</a
+      ><a name="924" class="Symbol"
       >)</a
-      ><a name="1279"
-      > </a
-      ><a name="1280" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor"
-      >refl</a
-      ><a name="1284"
-      > </a
-      ><a name="1285" class="Symbol"
+      > <a name="926" class="Symbol"
+      >=</a
+      > <a name="928" href="Data.Nat.Properties.html#s&#8804;&#8242;s" class="Function"
+      >Nat.s&#8804;&#8242;s</a
+      > <a name="937" class="Symbol"
+      >(</a
+      ><a name="938" href="Data.List.Reverse.html#835" class="Function"
+      >lem</a
+      > <a name="942" href="Data.List.Reverse.html#922" class="Bound"
+      >xs</a
+      ><a name="944" class="Symbol"
+      >)</a
+      >
+
+  <a name="949" href="Data.List.Reverse.html#949" class="Function"
+      >rev</a
+      > <a name="953" class="Symbol"
+      >:</a
+      > <a name="955" class="Symbol"
+      >(</a
+      ><a name="956" href="Data.List.Reverse.html#956" class="Bound"
+      >n</a
+      > <a name="958" class="Symbol"
+      >:</a
+      > <a name="960" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      >&#8469;</a
+      ><a name="961" class="Symbol"
+      >)</a
+      > <a name="963" class="Symbol"
+      >&#8594;</a
+      > <a name="965" href="Induction.Nat.html#&lt;&#8242;-Rec" class="Function"
+      >&lt;&#8242;-Rec</a
+      > <a name="972" href="Data.List.Reverse.html#763" class="Function"
+      >Pred</a
+      > <a name="977" href="Data.List.Reverse.html#956" class="Bound"
+      >n</a
+      > <a name="979" class="Symbol"
+      >&#8594;</a
+      > <a name="981" href="Data.List.Reverse.html#763" class="Function"
+      >Pred</a
+      > <a name="986" href="Data.List.Reverse.html#956" class="Bound"
+      >n</a
+      >
+  <a name="990" href="Data.List.Reverse.html#949" class="Function"
+      >rev</a
+      > <a name="994" href="Data.List.Reverse.html#994" class="Bound"
+      >n</a
+      >                   <a name="1014" href="Data.List.Reverse.html#1014" class="Bound"
+      >rec</a
+      > <a name="1018" href="Data.List.Reverse.html#1018" class="Bound"
+      >xs</a
+      >         <a name="1029" href="Data.List.Reverse.html#1029" class="Bound"
+      >eq</a
+      >   <a name="1034" class="Keyword"
+      >with</a
+      > <a name="1039" href="Data.List.Base.html#initLast" class="Function"
+      >initLast</a
+      > <a name="1048" href="Data.List.Reverse.html#1018" class="Bound"
+      >xs</a
+      >
+  <a name="1053" href="Data.List.Reverse.html#949" class="Function"
+      >rev</a
+      > <a name="1057" href="Data.List.Reverse.html#1057" class="Bound"
+      >n</a
+      >                   <a name="1077" href="Data.List.Reverse.html#1077" class="Bound"
+      >rec</a
+      > <a name="1081" class="DottedPattern Symbol"
+      >.</a
+      ><a name="1082" href="Agda.Builtin.List.html#List.[]" class="DottedPattern InductiveConstructor"
+      >[]</a
+      >        <a name="1092" href="Data.List.Reverse.html#1092" class="Bound"
+      >eq</a
+      >   <a name="1097" class="Symbol"
       >|</a
-      ><a name="1286"
-      > </a
-      ><a name="1287" class="DottedPattern Symbol"
-      >._</a
-      ><a name="1289"
-      > </a
-      ><a name="1290" href="Data.List.Base.html#5541" class="InductiveConstructor Operator"
-      >&#8759;&#691;'</a
-      ><a name="1293"
-      > </a
-      ><a name="1294" href="Data.List.Reverse.html#1294" class="Bound"
+      > <a name="1099" href="Data.List.Base.html#InitLast.[]" class="InductiveConstructor"
+      >[]</a
+      >       <a name="1108" class="Symbol"
+      >=</a
+      > <a name="1110" href="Data.List.Reverse.html#Reverse.[]" class="InductiveConstructor"
+      >[]</a
+      >
+  <a name="1115" href="Data.List.Reverse.html#949" class="Function"
+      >rev</a
+      > <a name="1119" class="DottedPattern Symbol"
+      >.(</a
+      ><a name="1121" href="Data.List.Base.html#length" class="DottedPattern Function"
+      >length</a
+      > <a name="1128" class="DottedPattern Symbol"
+      >(</a
+      ><a name="1129" href="Data.List.Reverse.html#1161" class="DottedPattern Bound"
+      >xs</a
+      > <a name="1132" href="Data.List.Base.html#_&#8759;&#691;_" class="DottedPattern Function Operator"
+      >&#8759;&#691;</a
+      > <a name="1135" href="Data.List.Reverse.html#1168" class="DottedPattern Bound"
       >x</a
-      ><a name="1295"
-      > </a
-      ><a name="1296" class="Symbol"
+      ><a name="1136" class="DottedPattern Symbol"
+      >))</a
+      > <a name="1139" href="Data.List.Reverse.html#1139" class="Bound"
+      >rec</a
+      > <a name="1143" class="DottedPattern Symbol"
+      >.(</a
+      ><a name="1145" href="Data.List.Reverse.html#1161" class="DottedPattern Bound"
+      >xs</a
+      > <a name="1148" href="Data.List.Base.html#_&#8759;&#691;_" class="DottedPattern Function Operator"
+      >&#8759;&#691;</a
+      > <a name="1151" href="Data.List.Reverse.html#1168" class="DottedPattern Bound"
+      >x</a
+      ><a name="1152" class="DottedPattern Symbol"
+      >)</a
+      > <a name="1154" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      > <a name="1159" class="Symbol"
       >|</a
-      ><a name="1297"
-      > </a
-      ><a name="1298" href="Data.List.Reverse.html#1298" class="Bound"
-      >ys</a
-      ><a name="1300"
-      > </a
-      ><a name="1301" href="Data.List.Reverse.html#565" class="InductiveConstructor Operator"
+      > <a name="1161" href="Data.List.Reverse.html#1161" class="Bound"
+      >xs</a
+      > <a name="1164" href="Data.List.Base.html#InitLast._&#8759;&#691;'_" class="InductiveConstructor Operator"
+      >&#8759;&#691;'</a
+      > <a name="1168" href="Data.List.Reverse.html#1168" class="Bound"
+      >x</a
+      >
+    <a name="1174" class="Keyword"
+      >with</a
+      > <a name="1179" href="Data.List.Reverse.html#1139" class="Bound"
+      >rec</a
+      > <a name="1183" class="Symbol"
+      >(</a
+      ><a name="1184" href="Data.List.Base.html#length" class="Function"
+      >length</a
+      > <a name="1191" href="Data.List.Reverse.html#1161" class="Bound"
+      >xs</a
+      ><a name="1193" class="Symbol"
+      >)</a
+      > <a name="1195" class="Symbol"
+      >(</a
+      ><a name="1196" href="Data.List.Reverse.html#835" class="Function"
+      >lem</a
+      > <a name="1200" href="Data.List.Reverse.html#1161" class="Bound"
+      >xs</a
+      ><a name="1202" class="Symbol"
+      >)</a
+      > <a name="1204" href="Data.List.Reverse.html#1161" class="Bound"
+      >xs</a
+      > <a name="1207" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      >
+  <a name="1214" href="Data.List.Reverse.html#949" class="Function"
+      >rev</a
+      > <a name="1218" class="DottedPattern Symbol"
+      >._</a
+      > <a name="1221" href="Data.List.Reverse.html#1221" class="Bound"
+      >rec</a
+      > <a name="1225" class="DottedPattern Symbol"
+      >.(</a
+      ><a name="1227" class="DottedPattern InductiveConstructor"
+      >[]</a
+      >      <a name="1235" href="Data.List.Base.html#_&#8759;&#691;_" class="DottedPattern Function Operator"
+      >&#8759;&#691;</a
+      > <a name="1238" href="Data.List.Reverse.html#1255" class="DottedPattern Bound"
+      >x</a
+      ><a name="1239" class="DottedPattern Symbol"
+      >)</a
+      > <a name="1241" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      > <a name="1246" class="Symbol"
+      >|</a
+      > <a name="1248" class="DottedPattern Symbol"
+      >._</a
+      > <a name="1251" href="Data.List.Base.html#InitLast._&#8759;&#691;'_" class="InductiveConstructor Operator"
+      >&#8759;&#691;'</a
+      > <a name="1255" href="Data.List.Reverse.html#1255" class="Bound"
+      >x</a
+      > <a name="1257" class="Symbol"
+      >|</a
+      > <a name="1259" href="Data.List.Reverse.html#Reverse.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="1262" class="Symbol"
+      >=</a
+      > <a name="1264" class="Symbol"
+      >_</a
+      > <a name="1266" href="Data.List.Reverse.html#Reverse._&#8758;_&#8758;&#691;_" class="InductiveConstructor Operator"
       >&#8758;</a
-      ><a name="1302"
-      > </a
-      ><a name="1303" href="Data.List.Reverse.html#1303" class="Bound"
+      > <a name="1268" href="Data.List.Reverse.html#Reverse.[]" class="InductiveConstructor"
+      >[]</a
+      > <a name="1271" href="Data.List.Reverse.html#Reverse._&#8758;_&#8758;&#691;_" class="InductiveConstructor Operator"
+      >&#8758;&#691;</a
+      > <a name="1274" href="Data.List.Reverse.html#1255" class="Bound"
+      >x</a
+      >
+  <a name="1278" href="Data.List.Reverse.html#949" class="Function"
+      >rev</a
+      > <a name="1282" class="DottedPattern Symbol"
+      >._</a
+      > <a name="1285" href="Data.List.Reverse.html#1285" class="Bound"
+      >rec</a
+      > <a name="1289" class="DottedPattern Symbol"
+      >.(</a
+      ><a name="1291" href="Data.List.Reverse.html#1323" class="DottedPattern Bound"
+      >ys</a
+      > <a name="1294" href="Data.List.Base.html#_&#8759;&#691;_" class="DottedPattern Function Operator"
+      >&#8759;&#691;</a
+      > <a name="1297" href="Data.List.Reverse.html#1334" class="DottedPattern Bound"
+      >y</a
+      > <a name="1299" href="Data.List.Base.html#_&#8759;&#691;_" class="DottedPattern Function Operator"
+      >&#8759;&#691;</a
+      > <a name="1302" href="Data.List.Reverse.html#1319" class="DottedPattern Bound"
+      >x</a
+      ><a name="1303" class="DottedPattern Symbol"
+      >)</a
+      > <a name="1305" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      > <a name="1310" class="Symbol"
+      >|</a
+      > <a name="1312" class="DottedPattern Symbol"
+      >._</a
+      > <a name="1315" href="Data.List.Base.html#InitLast._&#8759;&#691;'_" class="InductiveConstructor Operator"
+      >&#8759;&#691;'</a
+      > <a name="1319" href="Data.List.Reverse.html#1319" class="Bound"
+      >x</a
+      > <a name="1321" class="Symbol"
+      >|</a
+      > <a name="1323" href="Data.List.Reverse.html#1323" class="Bound"
+      >ys</a
+      > <a name="1326" href="Data.List.Reverse.html#Reverse._&#8758;_&#8758;&#691;_" class="InductiveConstructor Operator"
+      >&#8758;</a
+      > <a name="1328" href="Data.List.Reverse.html#1328" class="Bound"
       >rs</a
-      ><a name="1305"
-      > </a
-      ><a name="1306" href="Data.List.Reverse.html#565" class="InductiveConstructor Operator"
+      > <a name="1331" href="Data.List.Reverse.html#Reverse._&#8758;_&#8758;&#691;_" class="InductiveConstructor Operator"
       >&#8758;&#691;</a
-      ><a name="1308"
-      > </a
-      ><a name="1309" href="Data.List.Reverse.html#1309" class="Bound"
+      > <a name="1334" href="Data.List.Reverse.html#1334" class="Bound"
       >y</a
-      ><a name="1310"
-      > </a
-      ><a name="1311" class="Symbol"
+      > <a name="1336" class="Symbol"
       >=</a
-      ><a name="1312"
       >
-    </a
-      ><a name="1317" class="Symbol"
+    <a name="1342" class="Symbol"
       >_</a
-      ><a name="1318"
-      > </a
-      ><a name="1319" href="Data.List.Reverse.html#565" class="InductiveConstructor Operator"
+      > <a name="1344" href="Data.List.Reverse.html#Reverse._&#8758;_&#8758;&#691;_" class="InductiveConstructor Operator"
       >&#8758;</a
-      ><a name="1320"
-      > </a
-      ><a name="1321" class="Symbol"
+      > <a name="1346" class="Symbol"
       >(_</a
-      ><a name="1323"
-      > </a
-      ><a name="1324" href="Data.List.Reverse.html#565" class="InductiveConstructor Operator"
+      > <a name="1349" href="Data.List.Reverse.html#Reverse._&#8758;_&#8758;&#691;_" class="InductiveConstructor Operator"
       >&#8758;</a
-      ><a name="1325"
-      > </a
-      ><a name="1326" href="Data.List.Reverse.html#1303" class="Bound"
+      > <a name="1351" href="Data.List.Reverse.html#1328" class="Bound"
       >rs</a
-      ><a name="1328"
-      > </a
-      ><a name="1329" href="Data.List.Reverse.html#565" class="InductiveConstructor Operator"
+      > <a name="1354" href="Data.List.Reverse.html#Reverse._&#8758;_&#8758;&#691;_" class="InductiveConstructor Operator"
       >&#8758;&#691;</a
-      ><a name="1331"
-      > </a
-      ><a name="1332" href="Data.List.Reverse.html#1309" class="Bound"
+      > <a name="1357" href="Data.List.Reverse.html#1334" class="Bound"
       >y</a
-      ><a name="1333" class="Symbol"
+      ><a name="1358" class="Symbol"
       >)</a
-      ><a name="1334"
-      > </a
-      ><a name="1335" href="Data.List.Reverse.html#565" class="InductiveConstructor Operator"
+      > <a name="1360" href="Data.List.Reverse.html#Reverse._&#8758;_&#8758;&#691;_" class="InductiveConstructor Operator"
       >&#8758;&#691;</a
-      ><a name="1337"
-      > </a
-      ><a name="1338" href="Data.List.Reverse.html#1294" class="Bound"
+      > <a name="1363" href="Data.List.Reverse.html#1319" class="Bound"
       >x</a
-      ><a name="1339"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

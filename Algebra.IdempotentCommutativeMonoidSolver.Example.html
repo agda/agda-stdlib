@@ -1,0 +1,595 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Algebra.IdempotentCommutativeMonoidSolver.Example</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="74" class="Comment"
+      >-- The Agda standard library</a
+      >
+<a name="103" class="Comment"
+      >--</a
+      >
+<a name="106" class="Comment"
+      >-- An example of how Algebra.IdempotentCommutativeMonoidSolver can be</a
+      >
+<a name="176" class="Comment"
+      >-- used</a
+      >
+<a name="184" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+
+<a name="258" class="Keyword"
+      >module</a
+      > <a name="265" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html" class="Module"
+      >Algebra.IdempotentCommutativeMonoidSolver.Example</a
+      > <a name="315" class="Keyword"
+      >where</a
+      >
+
+<a name="322" class="Keyword"
+      >open</a
+      > <a name="327" class="Keyword"
+      >import</a
+      > <a name="334" href="Relation.Binary.PropositionalEquality.html" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      > <a name="372" class="Keyword"
+      >using</a
+      > <a name="378" class="Symbol"
+      >(</a
+      ><a name="379" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="382" class="Symbol"
+      >;</a
+      > <a name="384" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      ><a name="388" class="Symbol"
+      >;</a
+      > <a name="390" href="Relation.Binary.PropositionalEquality.html#cong&#8322;" class="Function"
+      >cong&#8322;</a
+      ><a name="395" class="Symbol"
+      >;</a
+      > <a name="397" href="Relation.Binary.PropositionalEquality.Core.html#isEquivalence" class="Function"
+      >isEquivalence</a
+      ><a name="410" class="Symbol"
+      >)</a
+      >
+
+<a name="413" class="Keyword"
+      >open</a
+      > <a name="418" class="Keyword"
+      >import</a
+      > <a name="425" href="Data.Bool.Base.html" class="Module"
+      >Data.Bool.Base</a
+      > <a name="440" class="Keyword"
+      >using</a
+      > <a name="446" class="Symbol"
+      >(</a
+      ><a name="447" href="Agda.Builtin.Bool.html#Bool" class="Datatype"
+      >Bool</a
+      ><a name="451" class="Symbol"
+      >;</a
+      > <a name="453" href="Agda.Builtin.Bool.html#Bool.true" class="InductiveConstructor"
+      >true</a
+      ><a name="457" class="Symbol"
+      >;</a
+      > <a name="459" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor"
+      >false</a
+      ><a name="464" class="Symbol"
+      >;</a
+      > <a name="466" href="Data.Bool.Base.html#if_then_else_" class="Function Operator"
+      >if_then_else_</a
+      ><a name="479" class="Symbol"
+      >;</a
+      > <a name="481" href="Data.Bool.Base.html#not" class="Function"
+      >not</a
+      ><a name="484" class="Symbol"
+      >;</a
+      > <a name="486" href="Data.Bool.Base.html#_&#8743;_" class="Function Operator"
+      >_&#8743;_</a
+      ><a name="489" class="Symbol"
+      >;</a
+      > <a name="491" href="Data.Bool.Base.html#_&#8744;_" class="Function Operator"
+      >_&#8744;_</a
+      ><a name="494" class="Symbol"
+      >)</a
+      >
+<a name="496" class="Keyword"
+      >open</a
+      > <a name="501" class="Keyword"
+      >import</a
+      > <a name="508" href="Data.Bool.Properties.html" class="Module"
+      >Data.Bool.Properties</a
+      > <a name="529" class="Keyword"
+      >using</a
+      > <a name="535" class="Symbol"
+      >(</a
+      ><a name="536" href="Data.Bool.Properties.html#isBooleanAlgebra" class="Function"
+      >isBooleanAlgebra</a
+      ><a name="552" class="Symbol"
+      >)</a
+      >
+
+<a name="555" class="Keyword"
+      >open</a
+      > <a name="560" class="Keyword"
+      >import</a
+      > <a name="567" href="Data.Fin.html" class="Module"
+      >Data.Fin</a
+      > <a name="576" class="Keyword"
+      >using</a
+      > <a name="582" class="Symbol"
+      >(</a
+      ><a name="583" href="Data.Fin.html#Fin.zero" class="InductiveConstructor"
+      >zero</a
+      ><a name="587" class="Symbol"
+      >;</a
+      > <a name="589" href="Data.Fin.html#Fin.suc" class="InductiveConstructor"
+      >suc</a
+      ><a name="592" class="Symbol"
+      >)</a
+      >
+<a name="594" class="Keyword"
+      >open</a
+      > <a name="599" class="Keyword"
+      >import</a
+      > <a name="606" href="Data.Vec.html" class="Module"
+      >Data.Vec</a
+      > <a name="615" class="Keyword"
+      >using</a
+      > <a name="621" class="Symbol"
+      >(</a
+      ><a name="622" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      ><a name="624" class="Symbol"
+      >;</a
+      > <a name="626" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      ><a name="629" class="Symbol"
+      >)</a
+      >
+
+<a name="632" class="Keyword"
+      >open</a
+      > <a name="637" class="Keyword"
+      >import</a
+      > <a name="644" href="Algebra.html" class="Module"
+      >Algebra</a
+      >
+<a name="652" class="Keyword"
+      >open</a
+      > <a name="657" class="Keyword"
+      >import</a
+      > <a name="664" href="Algebra.Structures.html" class="Module"
+      >Algebra.Structures</a
+      > <a name="683" class="Keyword"
+      >using</a
+      > <a name="689" class="Symbol"
+      >(</a
+      ><a name="690" class="Keyword"
+      >module</a
+      > <a name="697" href="Algebra.Structures.html#Algebra" class="Module"
+      >IsBooleanAlgebra</a
+      ><a name="713" class="Symbol"
+      >;</a
+      > <a name="715" class="Keyword"
+      >module</a
+      > <a name="722" href="Algebra.Structures.html#Algebra" class="Module"
+      >IsDistributiveLattice</a
+      ><a name="743" class="Symbol"
+      >;</a
+      > <a name="745" class="Keyword"
+      >module</a
+      > <a name="752" href="Algebra.Structures.html#Algebra" class="Module"
+      >IsLattice</a
+      ><a name="761" class="Symbol"
+      >)</a
+      >
+<a name="763" class="Keyword"
+      >open</a
+      > <a name="768" href="Algebra.Structures.html#IsBooleanAlgebra" class="Module"
+      >IsBooleanAlgebra</a
+      > <a name="785" href="Data.Bool.Properties.html#isBooleanAlgebra" class="Function"
+      >isBooleanAlgebra</a
+      > <a name="802" class="Keyword"
+      >using</a
+      > <a name="808" class="Symbol"
+      >(</a
+      >&#8743;-comm<a name="815" class="Symbol"
+      >;</a
+      > &#8743;-assoc<a name="824" class="Symbol"
+      >;</a
+      > &#8744;-comm<a name="832" class="Symbol"
+      >;</a
+      > &#8744;-assoc<a name="841" class="Symbol"
+      >;</a
+      > &#8744;-&#8743;-distrib&#691;<a name="855" class="Symbol"
+      >;</a
+      > isDistributiveLattice<a name="878" class="Symbol"
+      >;</a
+      > isLattice<a name="889" class="Symbol"
+      >)</a
+      >
+
+<a name="892" class="Keyword"
+      >open</a
+      > <a name="897" class="Keyword"
+      >import</a
+      > <a name="904" href="Algebra.Properties.DistributiveLattice.html" class="Module"
+      >Algebra.Properties.DistributiveLattice</a
+      > <a name="943" class="Symbol"
+      >(</a
+      ><a name="944" class="Keyword"
+      >record</a
+      > <a name="951" class="Symbol"
+      >{</a
+      > <a name="953" class="Field"
+      >isDistributiveLattice</a
+      > <a name="975" class="Symbol"
+      >=</a
+      > <a name="977" href="Algebra.Structures.html#13753" class="Function"
+      >isDistributiveLattice</a
+      > <a name="999" class="Symbol"
+      >})</a
+      >
+
+<a name="&#8744;-icm" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#&#8744;-icm" class="Function"
+      >&#8744;-icm</a
+      > <a name="1009" class="Symbol"
+      >:</a
+      > <a name="1011" href="Algebra.html#IdempotentCommutativeMonoid" class="Record"
+      >IdempotentCommutativeMonoid</a
+      > <a name="1039" class="Symbol"
+      >_</a
+      > <a name="1041" class="Symbol"
+      >_</a
+      >
+<a name="1043" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#&#8744;-icm" class="Function"
+      >&#8744;-icm</a
+      > <a name="1049" class="Symbol"
+      >=</a
+      > <a name="1051" class="Keyword"
+      >record</a
+      >
+     <a name="1063" class="Symbol"
+      >{</a
+      > <a name="1065" class="Field"
+      >Carrier</a
+      > <a name="1073" class="Symbol"
+      >=</a
+      > <a name="1075" href="Agda.Builtin.Bool.html#Bool" class="Datatype"
+      >Bool</a
+      >
+     <a name="1085" class="Symbol"
+      >;</a
+      > <a name="1087" class="Field Operator"
+      >_&#8776;_</a
+      >     <a name="1095" class="Symbol"
+      >=</a
+      > <a name="1097" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >_&#8801;_</a
+      >
+     <a name="1106" class="Symbol"
+      >;</a
+      > <a name="1108" class="Field Operator"
+      >_&#8729;_</a
+      >     <a name="1116" class="Symbol"
+      >=</a
+      > <a name="1118" href="Data.Bool.Base.html#_&#8744;_" class="Function Operator"
+      >_&#8744;_</a
+      >
+     <a name="1127" class="Symbol"
+      >;</a
+      > <a name="1129" class="Field"
+      >&#949;</a
+      >       <a name="1137" class="Symbol"
+      >=</a
+      > <a name="1139" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor"
+      >false</a
+      >
+     <a name="1150" class="Symbol"
+      >;</a
+      > <a name="1152" class="Field"
+      >isIdempotentCommutativeMonoid</a
+      > <a name="1182" class="Symbol"
+      >=</a
+      > <a name="1184" class="Keyword"
+      >record</a
+      >
+       <a name="1198" class="Symbol"
+      >{</a
+      > <a name="1200" class="Field"
+      >isCommutativeMonoid</a
+      > <a name="1220" class="Symbol"
+      >=</a
+      > <a name="1222" class="Keyword"
+      >record</a
+      >
+         <a name="1238" class="Symbol"
+      >{</a
+      > <a name="1240" class="Field"
+      >isSemigroup</a
+      > <a name="1252" class="Symbol"
+      >=</a
+      > <a name="1254" class="Keyword"
+      >record</a
+      >
+           <a name="1272" class="Symbol"
+      >{</a
+      > <a name="1274" class="Field"
+      >isEquivalence</a
+      > <a name="1288" class="Symbol"
+      >=</a
+      > <a name="1290" href="Relation.Binary.PropositionalEquality.Core.html#isEquivalence" class="Function"
+      >isEquivalence</a
+      >
+           <a name="1315" class="Symbol"
+      >;</a
+      > <a name="1317" class="Field"
+      >assoc</a
+      >         <a name="1331" class="Symbol"
+      >=</a
+      > <a name="1333" href="Algebra.Structures.html#13049" class="Function"
+      >&#8744;-assoc</a
+      >
+           <a name="1352" class="Symbol"
+      >;</a
+      > <a name="1354" class="Field"
+      >&#8729;-cong</a
+      >        <a name="1368" class="Symbol"
+      >=</a
+      > <a name="1370" href="Relation.Binary.PropositionalEquality.html#cong&#8322;" class="Function"
+      >cong&#8322;</a
+      > <a name="1376" href="Data.Bool.Base.html#_&#8744;_" class="Function Operator"
+      >_&#8744;_</a
+      >
+           <a name="1391" class="Symbol"
+      >}</a
+      >
+         <a name="1402" class="Symbol"
+      >;</a
+      > <a name="1404" class="Field"
+      >identity&#737;</a
+      > <a name="1414" class="Symbol"
+      >=</a
+      > <a name="1416" class="Symbol"
+      >&#955;</a
+      > <a name="1418" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1418" class="Bound"
+      >x</a
+      > <a name="1420" class="Symbol"
+      >&#8594;</a
+      > <a name="1422" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      >refl</a
+      >
+         <a name="1436" class="Symbol"
+      >;</a
+      > <a name="1438" class="Field"
+      >comm</a
+      >      <a name="1448" class="Symbol"
+      >=</a
+      > <a name="1450" href="Algebra.Structures.html#13015" class="Function"
+      >&#8744;-comm</a
+      >
+         <a name="1466" class="Symbol"
+      >}</a
+      >
+       <a name="1475" class="Symbol"
+      >;</a
+      > <a name="1477" class="Field"
+      >idem</a
+      > <a name="1482" class="Symbol"
+      >=</a
+      > <a name="1484" href="Algebra.Properties.Lattice.html#862" class="Function"
+      >&#8744;-idempotent</a
+      >
+       <a name="1504" class="Symbol"
+      >}</a
+      >
+     <a name="1511" class="Symbol"
+      >}</a
+      >
+
+<a name="1514" class="Keyword"
+      >open</a
+      > <a name="1519" class="Keyword"
+      >import</a
+      > <a name="1526" href="Algebra.IdempotentCommutativeMonoidSolver.html" class="Module"
+      >Algebra.IdempotentCommutativeMonoidSolver</a
+      > <a name="1568" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#&#8744;-icm" class="Function"
+      >&#8744;-icm</a
+      >
+
+<a name="test" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#test" class="Function"
+      >test</a
+      > <a name="1580" class="Symbol"
+      >:</a
+      > <a name="1582" class="Symbol"
+      >&#8704;</a
+      > <a name="1584" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1584" class="Bound"
+      >x</a
+      > <a name="1586" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1586" class="Bound"
+      >y</a
+      > <a name="1588" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1588" class="Bound"
+      >z</a
+      > <a name="1590" class="Symbol"
+      >&#8594;</a
+      > <a name="1592" class="Symbol"
+      >(</a
+      ><a name="1593" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1584" class="Bound"
+      >x</a
+      > <a name="1595" href="Data.Bool.Base.html#_&#8744;_" class="Function Operator"
+      >&#8744;</a
+      > <a name="1597" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1586" class="Bound"
+      >y</a
+      ><a name="1598" class="Symbol"
+      >)</a
+      > <a name="1600" href="Data.Bool.Base.html#_&#8744;_" class="Function Operator"
+      >&#8744;</a
+      > <a name="1602" class="Symbol"
+      >(</a
+      ><a name="1603" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1584" class="Bound"
+      >x</a
+      > <a name="1605" href="Data.Bool.Base.html#_&#8744;_" class="Function Operator"
+      >&#8744;</a
+      > <a name="1607" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1588" class="Bound"
+      >z</a
+      ><a name="1608" class="Symbol"
+      >)</a
+      > <a name="1610" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      >&#8801;</a
+      > <a name="1612" class="Symbol"
+      >(</a
+      ><a name="1613" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1588" class="Bound"
+      >z</a
+      > <a name="1615" href="Data.Bool.Base.html#_&#8744;_" class="Function Operator"
+      >&#8744;</a
+      > <a name="1617" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1586" class="Bound"
+      >y</a
+      ><a name="1618" class="Symbol"
+      >)</a
+      > <a name="1620" href="Data.Bool.Base.html#_&#8744;_" class="Function Operator"
+      >&#8744;</a
+      > <a name="1622" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1584" class="Bound"
+      >x</a
+      >
+<a name="1624" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#test" class="Function"
+      >test</a
+      > <a name="1629" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1629" class="Bound"
+      >a</a
+      > <a name="1631" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1631" class="Bound"
+      >b</a
+      > <a name="1633" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1633" class="Bound"
+      >c</a
+      > <a name="1635" class="Symbol"
+      >=</a
+      > <a name="1637" class="Keyword"
+      >let</a
+      > <a name="1641" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1641" class="Bound Operator"
+      >_&#8744;_</a
+      > <a name="1645" class="Symbol"
+      >=</a
+      > <a name="1647" href="Algebra.IdempotentCommutativeMonoidSolver.html#1498" class="InductiveConstructor Operator"
+      >_&#8853;_</a
+      > <a name="1651" class="Keyword"
+      >in</a
+      >
+  <a name="1656" href="Algebra.IdempotentCommutativeMonoidSolver.html#6150" class="Function"
+      >prove</a
+      > <a name="1662" class="Number"
+      >3</a
+      > <a name="1664" class="Symbol"
+      >((</a
+      ><a name="1666" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1725" class="Function"
+      >x</a
+      > <a name="1668" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1641" class="Bound Operator"
+      >&#8744;</a
+      > <a name="1670" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1740" class="Function"
+      >y</a
+      ><a name="1671" class="Symbol"
+      >)</a
+      > <a name="1673" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1641" class="Bound Operator"
+      >&#8744;</a
+      > <a name="1675" class="Symbol"
+      >(</a
+      ><a name="1676" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1725" class="Function"
+      >x</a
+      > <a name="1678" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1641" class="Bound Operator"
+      >&#8744;</a
+      > <a name="1680" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1761" class="Function"
+      >z</a
+      ><a name="1681" class="Symbol"
+      >))</a
+      > <a name="1684" class="Symbol"
+      >((</a
+      ><a name="1686" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1761" class="Function"
+      >z</a
+      > <a name="1688" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1641" class="Bound Operator"
+      >&#8744;</a
+      > <a name="1690" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1740" class="Function"
+      >y</a
+      ><a name="1691" class="Symbol"
+      >)</a
+      > <a name="1693" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1641" class="Bound Operator"
+      >&#8744;</a
+      > <a name="1695" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1725" class="Function"
+      >x</a
+      ><a name="1696" class="Symbol"
+      >)</a
+      > <a name="1698" class="Symbol"
+      >(</a
+      ><a name="1699" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1629" class="Bound"
+      >a</a
+      > <a name="1701" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1703" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1631" class="Bound"
+      >b</a
+      > <a name="1705" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1707" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1633" class="Bound"
+      >c</a
+      > <a name="1709" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1711" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      >[]</a
+      ><a name="1713" class="Symbol"
+      >)</a
+      >
+  <a name="1717" class="Keyword"
+      >where</a
+      >
+  <a name="1725" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1725" class="Function"
+      >x</a
+      > <a name="1727" class="Symbol"
+      >=</a
+      > <a name="1729" href="Algebra.IdempotentCommutativeMonoidSolver.html#1460" class="InductiveConstructor"
+      >var</a
+      > <a name="1733" href="Data.Fin.html#Fin.zero" class="InductiveConstructor"
+      >zero</a
+      >
+  <a name="1740" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1740" class="Function"
+      >y</a
+      > <a name="1742" class="Symbol"
+      >=</a
+      > <a name="1744" href="Algebra.IdempotentCommutativeMonoidSolver.html#1460" class="InductiveConstructor"
+      >var</a
+      > <a name="1748" class="Symbol"
+      >(</a
+      ><a name="1749" href="Data.Fin.html#Fin.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="1753" href="Data.Fin.html#Fin.zero" class="InductiveConstructor"
+      >zero</a
+      ><a name="1757" class="Symbol"
+      >)</a
+      >
+  <a name="1761" href="Algebra.IdempotentCommutativeMonoidSolver.Example.html#1761" class="Function"
+      >z</a
+      > <a name="1763" class="Symbol"
+      >=</a
+      > <a name="1765" href="Algebra.IdempotentCommutativeMonoidSolver.html#1460" class="InductiveConstructor"
+      >var</a
+      > <a name="1769" class="Symbol"
+      >(</a
+      ><a name="1770" href="Data.Fin.html#Fin.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="1774" class="Symbol"
+      >(</a
+      ><a name="1775" href="Data.Fin.html#Fin.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="1779" href="Data.Fin.html#Fin.zero" class="InductiveConstructor"
+      >zero</a
+      ><a name="1783" class="Symbol"
+      >))</a
+      >
+</pre
+    ></body
+  ></html
+>

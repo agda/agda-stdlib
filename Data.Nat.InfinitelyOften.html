@@ -11,2060 +11,1160 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Definition of and lemmas related to &quot;true infinitely often&quot;</a
-      ><a name="168"
       >
-</a
-      ><a name="169" class="Comment"
+<a name="169" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="241"
       >
 
-</a
-      ><a name="243" class="Keyword"
+<a name="243" class="Keyword"
       >module</a
-      ><a name="249"
-      > </a
-      ><a name="250" href="Data.Nat.InfinitelyOften.html#1" class="Module"
+      > <a name="250" href="Data.Nat.InfinitelyOften.html" class="Module"
       >Data.Nat.InfinitelyOften</a
-      ><a name="274"
-      > </a
-      ><a name="275" class="Keyword"
+      > <a name="275" class="Keyword"
       >where</a
-      ><a name="280"
       >
 
-</a
-      ><a name="282" class="Keyword"
+<a name="282" class="Keyword"
       >import</a
-      ><a name="288"
-      > </a
-      ><a name="289" href="Level.html#1" class="Module"
+      > <a name="289" href="Level.html" class="Module"
       >Level</a
-      ><a name="294"
       >
-</a
-      ><a name="295" class="Keyword"
+<a name="295" class="Keyword"
       >open</a
-      ><a name="299"
-      > </a
-      ><a name="300" class="Keyword"
+      > <a name="300" class="Keyword"
       >import</a
-      ><a name="306"
-      > </a
-      ><a name="307" href="Algebra.html#1" class="Module"
+      > <a name="307" href="Algebra.html" class="Module"
       >Algebra</a
-      ><a name="314"
       >
-</a
-      ><a name="315" class="Keyword"
+<a name="315" class="Keyword"
       >open</a
-      ><a name="319"
-      > </a
-      ><a name="320" class="Keyword"
+      > <a name="320" class="Keyword"
       >import</a
-      ><a name="326"
-      > </a
-      ><a name="327" href="Category.Monad.html#1" class="Module"
+      > <a name="327" href="Category.Monad.html" class="Module"
       >Category.Monad</a
-      ><a name="341"
       >
-</a
-      ><a name="342" class="Keyword"
+<a name="342" class="Keyword"
       >open</a
-      ><a name="346"
-      > </a
-      ><a name="347" class="Keyword"
+      > <a name="347" class="Keyword"
       >import</a
-      ><a name="353"
-      > </a
-      ><a name="354" href="Data.Empty.html#1" class="Module"
+      > <a name="354" href="Data.Empty.html" class="Module"
       >Data.Empty</a
-      ><a name="364"
       >
-</a
-      ><a name="365" class="Keyword"
+<a name="365" class="Keyword"
       >open</a
-      ><a name="369"
-      > </a
-      ><a name="370" class="Keyword"
+      > <a name="370" class="Keyword"
       >import</a
-      ><a name="376"
-      > </a
-      ><a name="377" href="Function.html#1" class="Module"
+      > <a name="377" href="Function.html" class="Module"
       >Function</a
-      ><a name="385"
       >
-</a
-      ><a name="386" class="Keyword"
+<a name="386" class="Keyword"
       >open</a
-      ><a name="390"
-      > </a
-      ><a name="391" class="Keyword"
+      > <a name="391" class="Keyword"
       >import</a
-      ><a name="397"
-      > </a
-      ><a name="398" href="Data.Nat.html#1" class="Module"
+      > <a name="398" href="Data.Nat.html" class="Module"
       >Data.Nat</a
-      ><a name="406"
       >
-</a
-      ><a name="407" class="Keyword"
+<a name="407" class="Keyword"
       >import</a
-      ><a name="413"
-      > </a
-      ><a name="414" href="Data.Nat.Properties.html#1" class="Module"
+      > <a name="414" href="Data.Nat.Properties.html" class="Module"
       >Data.Nat.Properties</a
-      ><a name="433"
-      > </a
-      ><a name="434" class="Symbol"
+      > <a name="434" class="Symbol"
       >as</a
-      ><a name="436"
-      > </a
-      ><a name="437" class="Module"
+      > <a name="437" class="Module"
       >NatProp</a
-      ><a name="444"
       >
-</a
-      ><a name="445" class="Keyword"
+<a name="445" class="Keyword"
       >open</a
-      ><a name="449"
-      > </a
-      ><a name="450" class="Keyword"
+      > <a name="450" class="Keyword"
       >import</a
-      ><a name="456"
-      > </a
-      ><a name="457" href="Data.Product.html#1" class="Module"
+      > <a name="457" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="469"
-      > </a
-      ><a name="470" class="Symbol"
+      > <a name="470" class="Symbol"
       >as</a
-      ><a name="472"
-      > </a
-      ><a name="473" class="Module"
+      > <a name="473" class="Module"
       >Prod</a
-      ><a name="477"
-      > </a
-      ><a name="478" class="Keyword"
+      > <a name="478" class="Keyword"
       >hiding</a
-      ><a name="484"
-      > </a
-      ><a name="485" class="Symbol"
+      > <a name="485" class="Symbol"
       >(</a
-      ><a name="486" href="Data.Product.html#1872" class="Function"
+      ><a name="486" href="Data.Product.html#map" class="Function"
       >map</a
       ><a name="489" class="Symbol"
       >)</a
-      ><a name="490"
       >
-</a
-      ><a name="491" class="Keyword"
+<a name="491" class="Keyword"
       >open</a
-      ><a name="495"
-      > </a
-      ><a name="496" class="Keyword"
+      > <a name="496" class="Keyword"
       >import</a
-      ><a name="502"
-      > </a
-      ><a name="503" href="Data.Sum.html#1" class="Module"
+      > <a name="503" href="Data.Sum.html" class="Module"
       >Data.Sum</a
-      ><a name="511"
-      > </a
-      ><a name="512" class="Keyword"
+      > <a name="512" class="Keyword"
       >hiding</a
-      ><a name="518"
-      > </a
-      ><a name="519" class="Symbol"
+      > <a name="519" class="Symbol"
       >(</a
-      ><a name="520" href="Data.Sum.html#1064" class="Function"
+      ><a name="520" href="Data.Sum.html#map" class="Function"
       >map</a
       ><a name="523" class="Symbol"
       >)</a
-      ><a name="524"
       >
-</a
-      ><a name="525" class="Keyword"
+<a name="525" class="Keyword"
       >open</a
-      ><a name="529"
-      > </a
-      ><a name="530" class="Keyword"
+      > <a name="530" class="Keyword"
       >import</a
-      ><a name="536"
-      > </a
-      ><a name="537" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      > <a name="537" href="Relation.Binary.PropositionalEquality.html" class="Module"
       >Relation.Binary.PropositionalEquality</a
-      ><a name="574"
       >
-</a
-      ><a name="575" class="Keyword"
+<a name="575" class="Keyword"
       >open</a
-      ><a name="579"
-      > </a
-      ><a name="580" class="Keyword"
+      > <a name="580" class="Keyword"
       >import</a
-      ><a name="586"
-      > </a
-      ><a name="587" href="Relation.Nullary.html#1" class="Module"
+      > <a name="587" href="Relation.Nullary.html" class="Module"
       >Relation.Nullary</a
-      ><a name="603"
       >
-</a
-      ><a name="604" class="Keyword"
+<a name="604" class="Keyword"
       >open</a
-      ><a name="608"
-      > </a
-      ><a name="609" class="Keyword"
+      > <a name="609" class="Keyword"
       >import</a
-      ><a name="615"
-      > </a
-      ><a name="616" href="Relation.Nullary.Negation.html#1" class="Module"
+      > <a name="616" href="Relation.Nullary.Negation.html" class="Module"
       >Relation.Nullary.Negation</a
-      ><a name="641"
       >
-</a
-      ><a name="642" class="Keyword"
+<a name="642" class="Keyword"
       >open</a
-      ><a name="646"
-      > </a
-      ><a name="647" class="Keyword"
+      > <a name="647" class="Keyword"
       >import</a
-      ><a name="653"
-      > </a
-      ><a name="654" href="Relation.Unary.html#1" class="Module"
+      > <a name="654" href="Relation.Unary.html" class="Module"
       >Relation.Unary</a
-      ><a name="668"
-      > </a
-      ><a name="669" class="Keyword"
+      > <a name="669" class="Keyword"
       >using</a
-      ><a name="674"
-      > </a
-      ><a name="675" class="Symbol"
+      > <a name="675" class="Symbol"
       >(</a
       ><a name="676" href="Relation.Unary.html#2424" class="Function Operator"
       >_&#8746;_</a
       ><a name="679" class="Symbol"
       >;</a
-      ><a name="680"
-      > </a
-      ><a name="681" href="Relation.Unary.html#1822" class="Function Operator"
+      > <a name="681" href="Relation.Unary.html#1822" class="Function Operator"
       >_&#8838;_</a
       ><a name="684" class="Symbol"
       >)</a
-      ><a name="685"
       >
-</a
-      ><a name="686" class="Keyword"
+<a name="686" class="Keyword"
       >open</a
-      ><a name="690"
-      > </a
-      ><a name="691" href="Category.Monad.html#652" class="Module"
+      > <a name="691" href="Category.Monad.html#RawMonad" class="Module"
       >RawMonad</a
-      ><a name="699"
-      > </a
-      ><a name="700" class="Symbol"
+      > <a name="700" class="Symbol"
       >(</a
-      ><a name="701" href="Relation.Nullary.Negation.html#3009" class="Function"
+      ><a name="701" href="Relation.Nullary.Negation.html#&#172;&#172;-Monad" class="Function"
       >&#172;&#172;-Monad</a
-      ><a name="709"
-      > </a
-      ><a name="710" class="Symbol"
+      > <a name="710" class="Symbol"
       >{</a
       ><a name="711" class="Argument"
       >p</a
-      ><a name="712"
-      > </a
-      ><a name="713" class="Symbol"
+      > <a name="713" class="Symbol"
       >=</a
-      ><a name="714"
-      > </a
-      ><a name="715" href="Agda.Primitive.html#609" class="Primitive"
+      > <a name="715" href="Agda.Primitive.html#zero" class="Primitive"
       >Level.zero</a
       ><a name="725" class="Symbol"
       >})</a
-      ><a name="727"
       >
-</a
-      ><a name="728" class="Keyword"
+<a name="728" class="Keyword"
       >private</a
-      ><a name="735"
       >
-  </a
-      ><a name="738" class="Keyword"
+  <a name="738" class="Keyword"
       >module</a
-      ><a name="744"
-      > </a
-      ><a name="745" href="Data.Nat.InfinitelyOften.html#745" class="Module"
+      > <a name="NatLattice" href="Data.Nat.InfinitelyOften.html#NatLattice" class="Module"
       >NatLattice</a
-      ><a name="755"
-      > </a
-      ><a name="756" class="Symbol"
+      > <a name="756" class="Symbol"
       >=</a
-      ><a name="757"
-      > </a
-      ><a name="758" href="Algebra.html#12066" class="Module"
+      > <a name="758" href="Algebra.html#DistributiveLattice" class="Module"
       >DistributiveLattice</a
-      ><a name="777"
-      > </a
-      ><a name="778" href="Data.Nat.Properties.html#6506" class="Function"
+      > <a name="778" href="Data.Nat.Properties.html#distributiveLattice" class="Function"
       >NatProp.distributiveLattice</a
-      ><a name="805"
       >
 
-</a
-      ><a name="807" class="Comment"
+<a name="807" class="Comment"
       >-- Only true finitely often.</a
-      ><a name="835"
       >
 
-</a
-      ><a name="837" href="Data.Nat.InfinitelyOften.html#837" class="Function"
+<a name="Fin" href="Data.Nat.InfinitelyOften.html#Fin" class="Function"
       >Fin</a
-      ><a name="840"
-      > </a
-      ><a name="841" class="Symbol"
+      > <a name="841" class="Symbol"
       >:</a
-      ><a name="842"
-      > </a
-      ><a name="843" class="Symbol"
+      > <a name="843" class="Symbol"
       >(</a
-      ><a name="844" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      ><a name="844" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="845"
-      > </a
-      ><a name="846" class="Symbol"
+      > <a name="846" class="Symbol"
       >&#8594;</a
-      ><a name="847"
-      > </a
-      ><a name="848" class="PrimitiveType"
+      > <a name="848" class="PrimitiveType"
       >Set</a
       ><a name="851" class="Symbol"
       >)</a
-      ><a name="852"
-      > </a
-      ><a name="853" class="Symbol"
+      > <a name="853" class="Symbol"
       >&#8594;</a
-      ><a name="854"
-      > </a
-      ><a name="855" class="PrimitiveType"
+      > <a name="855" class="PrimitiveType"
       >Set</a
-      ><a name="858"
       >
-</a
-      ><a name="859" href="Data.Nat.InfinitelyOften.html#837" class="Function"
+<a name="859" href="Data.Nat.InfinitelyOften.html#Fin" class="Function"
       >Fin</a
-      ><a name="862"
-      > </a
-      ><a name="863" href="Data.Nat.InfinitelyOften.html#863" class="Bound"
+      > <a name="863" href="Data.Nat.InfinitelyOften.html#863" class="Bound"
       >P</a
-      ><a name="864"
-      > </a
-      ><a name="865" class="Symbol"
+      > <a name="865" class="Symbol"
       >=</a
-      ><a name="866"
-      > </a
-      ><a name="867" href="Data.Product.html#823" class="Function"
+      > <a name="867" href="Data.Product.html#&#8707;" class="Function"
       >&#8707;</a
-      ><a name="868"
-      > </a
-      ><a name="869" class="Symbol"
+      > <a name="869" class="Symbol"
       >&#955;</a
-      ><a name="870"
-      > </a
-      ><a name="871" href="Data.Nat.InfinitelyOften.html#871" class="Bound"
+      > <a name="871" href="Data.Nat.InfinitelyOften.html#871" class="Bound"
       >i</a
-      ><a name="872"
-      > </a
-      ><a name="873" class="Symbol"
+      > <a name="873" class="Symbol"
       >&#8594;</a
-      ><a name="874"
-      > </a
-      ><a name="875" class="Symbol"
+      > <a name="875" class="Symbol"
       >&#8704;</a
-      ><a name="876"
-      > </a
-      ><a name="877" href="Data.Nat.InfinitelyOften.html#877" class="Bound"
+      > <a name="877" href="Data.Nat.InfinitelyOften.html#877" class="Bound"
       >j</a
-      ><a name="878"
-      > </a
-      ><a name="879" class="Symbol"
+      > <a name="879" class="Symbol"
       >&#8594;</a
-      ><a name="880"
-      > </a
-      ><a name="881" href="Data.Nat.InfinitelyOften.html#871" class="Bound"
+      > <a name="881" href="Data.Nat.InfinitelyOften.html#871" class="Bound"
       >i</a
-      ><a name="882"
-      > </a
-      ><a name="883" href="Data.Nat.Base.html#802" class="Datatype Operator"
+      > <a name="883" href="Data.Nat.Base.html#_&#8804;_" class="Datatype Operator"
       >&#8804;</a
-      ><a name="884"
-      > </a
-      ><a name="885" href="Data.Nat.InfinitelyOften.html#877" class="Bound"
+      > <a name="885" href="Data.Nat.InfinitelyOften.html#877" class="Bound"
       >j</a
-      ><a name="886"
-      > </a
-      ><a name="887" class="Symbol"
+      > <a name="887" class="Symbol"
       >&#8594;</a
-      ><a name="888"
-      > </a
-      ><a name="889" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="889" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="890"
-      > </a
-      ><a name="891" href="Data.Nat.InfinitelyOften.html#863" class="Bound"
+      > <a name="891" href="Data.Nat.InfinitelyOften.html#863" class="Bound"
       >P</a
-      ><a name="892"
-      > </a
-      ><a name="893" href="Data.Nat.InfinitelyOften.html#877" class="Bound"
+      > <a name="893" href="Data.Nat.InfinitelyOften.html#877" class="Bound"
       >j</a
-      ><a name="894"
       >
 
-</a
-      ><a name="896" class="Comment"
+<a name="896" class="Comment"
       >-- Fin is preserved by binary sums.</a
-      ><a name="931"
       >
 
-</a
-      ><a name="933" href="Data.Nat.InfinitelyOften.html#933" class="Function Operator"
+<a name="_&#8746;-Fin_" href="Data.Nat.InfinitelyOften.html#_&#8746;-Fin_" class="Function Operator"
       >_&#8746;-Fin_</a
-      ><a name="940"
-      > </a
-      ><a name="941" class="Symbol"
+      > <a name="941" class="Symbol"
       >:</a
-      ><a name="942"
-      > </a
-      ><a name="943" class="Symbol"
+      > <a name="943" class="Symbol"
       >&#8704;</a
-      ><a name="944"
-      > </a
-      ><a name="945" class="Symbol"
+      > <a name="945" class="Symbol"
       >{</a
       ><a name="946" href="Data.Nat.InfinitelyOften.html#946" class="Bound"
       >P</a
-      ><a name="947"
-      > </a
-      ><a name="948" href="Data.Nat.InfinitelyOften.html#948" class="Bound"
+      > <a name="948" href="Data.Nat.InfinitelyOften.html#948" class="Bound"
       >Q</a
       ><a name="949" class="Symbol"
       >}</a
-      ><a name="950"
-      > </a
-      ><a name="951" class="Symbol"
+      > <a name="951" class="Symbol"
       >&#8594;</a
-      ><a name="952"
-      > </a
-      ><a name="953" href="Data.Nat.InfinitelyOften.html#837" class="Function"
+      > <a name="953" href="Data.Nat.InfinitelyOften.html#Fin" class="Function"
       >Fin</a
-      ><a name="956"
-      > </a
-      ><a name="957" href="Data.Nat.InfinitelyOften.html#946" class="Bound"
+      > <a name="957" href="Data.Nat.InfinitelyOften.html#946" class="Bound"
       >P</a
-      ><a name="958"
-      > </a
-      ><a name="959" class="Symbol"
+      > <a name="959" class="Symbol"
       >&#8594;</a
-      ><a name="960"
-      > </a
-      ><a name="961" href="Data.Nat.InfinitelyOften.html#837" class="Function"
+      > <a name="961" href="Data.Nat.InfinitelyOften.html#Fin" class="Function"
       >Fin</a
-      ><a name="964"
-      > </a
-      ><a name="965" href="Data.Nat.InfinitelyOften.html#948" class="Bound"
+      > <a name="965" href="Data.Nat.InfinitelyOften.html#948" class="Bound"
       >Q</a
-      ><a name="966"
-      > </a
-      ><a name="967" class="Symbol"
+      > <a name="967" class="Symbol"
       >&#8594;</a
-      ><a name="968"
-      > </a
-      ><a name="969" href="Data.Nat.InfinitelyOften.html#837" class="Function"
+      > <a name="969" href="Data.Nat.InfinitelyOften.html#Fin" class="Function"
       >Fin</a
-      ><a name="972"
-      > </a
-      ><a name="973" class="Symbol"
+      > <a name="973" class="Symbol"
       >(</a
       ><a name="974" href="Data.Nat.InfinitelyOften.html#946" class="Bound"
       >P</a
-      ><a name="975"
-      > </a
-      ><a name="976" href="Relation.Unary.html#2424" class="Function Operator"
+      > <a name="976" href="Relation.Unary.html#2424" class="Function Operator"
       >&#8746;</a
-      ><a name="977"
-      > </a
-      ><a name="978" href="Data.Nat.InfinitelyOften.html#948" class="Bound"
+      > <a name="978" href="Data.Nat.InfinitelyOften.html#948" class="Bound"
       >Q</a
       ><a name="979" class="Symbol"
       >)</a
-      ><a name="980"
       >
-</a
-      ><a name="981" href="Data.Nat.InfinitelyOften.html#933" class="Function Operator"
+<a name="981" href="Data.Nat.InfinitelyOften.html#_&#8746;-Fin_" class="Function Operator"
       >_&#8746;-Fin_</a
-      ><a name="988"
-      > </a
-      ><a name="989" class="Symbol"
+      > <a name="989" class="Symbol"
       >{</a
       ><a name="990" href="Data.Nat.InfinitelyOften.html#990" class="Bound"
       >P</a
       ><a name="991" class="Symbol"
       >}</a
-      ><a name="992"
-      > </a
-      ><a name="993" class="Symbol"
+      > <a name="993" class="Symbol"
       >{</a
       ><a name="994" href="Data.Nat.InfinitelyOften.html#994" class="Bound"
       >Q</a
       ><a name="995" class="Symbol"
       >}</a
-      ><a name="996"
-      > </a
-      ><a name="997" class="Symbol"
+      > <a name="997" class="Symbol"
       >(</a
       ><a name="998" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
       >i</a
-      ><a name="999"
-      > </a
-      ><a name="1000" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="1000" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1001"
-      > </a
-      ><a name="1002" href="Data.Nat.InfinitelyOften.html#1002" class="Bound"
+      > <a name="1002" href="Data.Nat.InfinitelyOften.html#1002" class="Bound"
       >&#172;p</a
       ><a name="1004" class="Symbol"
       >)</a
-      ><a name="1005"
-      > </a
-      ><a name="1006" class="Symbol"
+      > <a name="1006" class="Symbol"
       >(</a
       ><a name="1007" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
       >j</a
-      ><a name="1008"
-      > </a
-      ><a name="1009" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="1009" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1010"
-      > </a
-      ><a name="1011" href="Data.Nat.InfinitelyOften.html#1011" class="Bound"
+      > <a name="1011" href="Data.Nat.InfinitelyOften.html#1011" class="Bound"
       >&#172;q</a
       ><a name="1013" class="Symbol"
       >)</a
-      ><a name="1014"
-      > </a
-      ><a name="1015" class="Symbol"
+      > <a name="1015" class="Symbol"
       >=</a
-      ><a name="1016"
-      > </a
-      ><a name="1017" class="Symbol"
+      > <a name="1017" class="Symbol"
       >(</a
       ><a name="1018" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
       >i</a
-      ><a name="1019"
-      > </a
-      ><a name="1020" href="Data.Nat.Base.html#2713" class="Function Operator"
+      > <a name="1020" href="Data.Nat.Base.html#_&#8852;_" class="Function Operator"
       >&#8852;</a
-      ><a name="1021"
-      > </a
-      ><a name="1022" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
+      > <a name="1022" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
       >j</a
-      ><a name="1023"
-      > </a
-      ><a name="1024" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="1024" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1025"
-      > </a
-      ><a name="1026" href="Data.Nat.InfinitelyOften.html#1064" class="Function"
+      > <a name="1026" href="Data.Nat.InfinitelyOften.html#1072" class="Function"
       >helper</a
       ><a name="1032" class="Symbol"
       >)</a
-      ><a name="1033"
       >
-  </a
-      ><a name="1036" class="Keyword"
+  <a name="1036" class="Keyword"
       >where</a
-      ><a name="1041"
       >
-  </a
-      ><a name="1044" class="Keyword"
+  <a name="1044" class="Keyword"
       >open</a
-      ><a name="1048"
-      > </a
-      ><a name="1049" href="Data.Nat.html#2179" class="Module"
+      > <a name="1049" href="Data.Nat.Properties.html#Properties" class="Module"
+      >NatProp.</a
+      ><a name="1057" href="Data.Nat.Properties.html#&#8804;-Reasoning" class="Module"
       >&#8804;-Reasoning</a
-      ><a name="1060"
       >
 
-  </a
-      ><a name="1064" href="Data.Nat.InfinitelyOften.html#1064" class="Function"
+  <a name="1072" href="Data.Nat.InfinitelyOften.html#1072" class="Function"
       >helper</a
-      ><a name="1070"
-      > </a
-      ><a name="1071" class="Symbol"
+      > <a name="1079" class="Symbol"
       >:</a
-      ><a name="1072"
-      > </a
-      ><a name="1073" class="Symbol"
+      > <a name="1081" class="Symbol"
       >&#8704;</a
-      ><a name="1074"
-      > </a
-      ><a name="1075" href="Data.Nat.InfinitelyOften.html#1075" class="Bound"
+      > <a name="1083" href="Data.Nat.InfinitelyOften.html#1083" class="Bound"
       >k</a
-      ><a name="1076"
-      > </a
-      ><a name="1077" class="Symbol"
+      > <a name="1085" class="Symbol"
       >&#8594;</a
-      ><a name="1078"
-      > </a
-      ><a name="1079" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
+      > <a name="1087" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
       >i</a
-      ><a name="1080"
-      > </a
-      ><a name="1081" href="Data.Nat.Base.html#2713" class="Function Operator"
+      > <a name="1089" href="Data.Nat.Base.html#_&#8852;_" class="Function Operator"
       >&#8852;</a
-      ><a name="1082"
-      > </a
-      ><a name="1083" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
+      > <a name="1091" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
       >j</a
-      ><a name="1084"
-      > </a
-      ><a name="1085" href="Data.Nat.Base.html#802" class="Datatype Operator"
+      > <a name="1093" href="Data.Nat.Base.html#_&#8804;_" class="Datatype Operator"
       >&#8804;</a
-      ><a name="1086"
-      > </a
-      ><a name="1087" href="Data.Nat.InfinitelyOften.html#1075" class="Bound"
+      > <a name="1095" href="Data.Nat.InfinitelyOften.html#1083" class="Bound"
       >k</a
-      ><a name="1088"
-      > </a
-      ><a name="1089" class="Symbol"
+      > <a name="1097" class="Symbol"
       >&#8594;</a
-      ><a name="1090"
-      > </a
-      ><a name="1091" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="1099" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="1092"
-      > </a
-      ><a name="1093" class="Symbol"
+      > <a name="1101" class="Symbol"
       >(</a
-      ><a name="1094" href="Data.Nat.InfinitelyOften.html#990" class="Bound"
+      ><a name="1102" href="Data.Nat.InfinitelyOften.html#990" class="Bound"
       >P</a
-      ><a name="1095"
-      > </a
-      ><a name="1096" href="Relation.Unary.html#2424" class="Function Operator"
+      > <a name="1104" href="Relation.Unary.html#2424" class="Function Operator"
       >&#8746;</a
-      ><a name="1097"
-      > </a
-      ><a name="1098" href="Data.Nat.InfinitelyOften.html#994" class="Bound"
+      > <a name="1106" href="Data.Nat.InfinitelyOften.html#994" class="Bound"
       >Q</a
-      ><a name="1099" class="Symbol"
+      ><a name="1107" class="Symbol"
       >)</a
-      ><a name="1100"
-      > </a
-      ><a name="1101" href="Data.Nat.InfinitelyOften.html#1075" class="Bound"
+      > <a name="1109" href="Data.Nat.InfinitelyOften.html#1083" class="Bound"
       >k</a
-      ><a name="1102"
       >
-  </a
-      ><a name="1105" href="Data.Nat.InfinitelyOften.html#1064" class="Function"
+  <a name="1113" href="Data.Nat.InfinitelyOften.html#1072" class="Function"
       >helper</a
-      ><a name="1111"
-      > </a
-      ><a name="1112" href="Data.Nat.InfinitelyOften.html#1112" class="Bound"
+      > <a name="1120" href="Data.Nat.InfinitelyOften.html#1120" class="Bound"
       >k</a
-      ><a name="1113"
-      > </a
-      ><a name="1114" href="Data.Nat.InfinitelyOften.html#1114" class="Bound"
+      > <a name="1122" href="Data.Nat.InfinitelyOften.html#1122" class="Bound"
       >i&#8852;j&#8804;k</a
-      ><a name="1119"
-      > </a
-      ><a name="1120" class="Symbol"
+      > <a name="1128" class="Symbol"
       >(</a
-      ><a name="1121" href="Data.Sum.html#489" class="InductiveConstructor"
+      ><a name="1129" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
       >inj&#8321;</a
-      ><a name="1125"
-      > </a
-      ><a name="1126" href="Data.Nat.InfinitelyOften.html#1126" class="Bound"
+      > <a name="1134" href="Data.Nat.InfinitelyOften.html#1134" class="Bound"
       >p</a
-      ><a name="1127" class="Symbol"
+      ><a name="1135" class="Symbol"
       >)</a
-      ><a name="1128"
-      > </a
-      ><a name="1129" class="Symbol"
+      > <a name="1137" class="Symbol"
       >=</a
-      ><a name="1130"
-      > </a
-      ><a name="1131" href="Data.Nat.InfinitelyOften.html#1002" class="Bound"
+      > <a name="1139" href="Data.Nat.InfinitelyOften.html#1002" class="Bound"
       >&#172;p</a
-      ><a name="1133"
-      > </a
-      ><a name="1134" href="Data.Nat.InfinitelyOften.html#1112" class="Bound"
+      > <a name="1142" href="Data.Nat.InfinitelyOften.html#1120" class="Bound"
       >k</a
-      ><a name="1135"
-      > </a
-      ><a name="1136" class="Symbol"
+      > <a name="1144" class="Symbol"
       >(</a
-      ><a name="1137" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      ><a name="1145" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
       >begin</a
-      ><a name="1142"
       >
-    </a
-      ><a name="1147" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
+    <a name="1155" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
       >i</a
-      ><a name="1148"
-      >      </a
-      ><a name="1154" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >      <a name="1162" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8804;&#10216;</a
-      ><a name="1156"
-      > </a
-      ><a name="1157" href="Data.Nat.Properties.html#9155" class="Function"
+      > <a name="1165" href="Data.Nat.Properties.html#m&#8804;m&#8852;n" class="Function"
       >NatProp.m&#8804;m&#8852;n</a
-      ><a name="1170"
-      > </a
-      ><a name="1171" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
+      > <a name="1179" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
       >i</a
-      ><a name="1172"
-      > </a
-      ><a name="1173" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
+      > <a name="1181" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
       >j</a
-      ><a name="1174"
-      > </a
-      ><a name="1175" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1183" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="1176"
       >
-    </a
-      ><a name="1181" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
+    <a name="1189" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
       >i</a
-      ><a name="1182"
-      > </a
-      ><a name="1183" href="Data.Nat.Base.html#2713" class="Function Operator"
+      > <a name="1191" href="Data.Nat.Base.html#_&#8852;_" class="Function Operator"
       >&#8852;</a
-      ><a name="1184"
-      > </a
-      ><a name="1185" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
+      > <a name="1193" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
       >j</a
-      ><a name="1186"
-      >  </a
-      ><a name="1188" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >  <a name="1196" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8804;&#10216;</a
-      ><a name="1190"
-      > </a
-      ><a name="1191" href="Data.Nat.InfinitelyOften.html#1114" class="Bound"
+      > <a name="1199" href="Data.Nat.InfinitelyOften.html#1122" class="Bound"
       >i&#8852;j&#8804;k</a
-      ><a name="1196"
-      > </a
-      ><a name="1197" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1205" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="1198"
       >
-    </a
-      ><a name="1203" href="Data.Nat.InfinitelyOften.html#1112" class="Bound"
+    <a name="1211" href="Data.Nat.InfinitelyOften.html#1120" class="Bound"
       >k</a
-      ><a name="1204"
-      >      </a
-      ><a name="1210" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >      <a name="1218" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
       >&#8718;</a
-      ><a name="1211" class="Symbol"
+      ><a name="1219" class="Symbol"
       >)</a
-      ><a name="1212"
-      > </a
-      ><a name="1213" href="Data.Nat.InfinitelyOften.html#1126" class="Bound"
+      > <a name="1221" href="Data.Nat.InfinitelyOften.html#1134" class="Bound"
       >p</a
-      ><a name="1214"
       >
-  </a
-      ><a name="1217" href="Data.Nat.InfinitelyOften.html#1064" class="Function"
+  <a name="1225" href="Data.Nat.InfinitelyOften.html#1072" class="Function"
       >helper</a
-      ><a name="1223"
-      > </a
-      ><a name="1224" href="Data.Nat.InfinitelyOften.html#1224" class="Bound"
+      > <a name="1232" href="Data.Nat.InfinitelyOften.html#1232" class="Bound"
       >k</a
-      ><a name="1225"
-      > </a
-      ><a name="1226" href="Data.Nat.InfinitelyOften.html#1226" class="Bound"
+      > <a name="1234" href="Data.Nat.InfinitelyOften.html#1234" class="Bound"
       >i&#8852;j&#8804;k</a
-      ><a name="1231"
-      > </a
-      ><a name="1232" class="Symbol"
+      > <a name="1240" class="Symbol"
       >(</a
-      ><a name="1233" href="Data.Sum.html#514" class="InductiveConstructor"
+      ><a name="1241" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
       >inj&#8322;</a
-      ><a name="1237"
-      > </a
-      ><a name="1238" href="Data.Nat.InfinitelyOften.html#1238" class="Bound"
+      > <a name="1246" href="Data.Nat.InfinitelyOften.html#1246" class="Bound"
       >q</a
-      ><a name="1239" class="Symbol"
+      ><a name="1247" class="Symbol"
       >)</a
-      ><a name="1240"
-      > </a
-      ><a name="1241" class="Symbol"
+      > <a name="1249" class="Symbol"
       >=</a
-      ><a name="1242"
-      > </a
-      ><a name="1243" href="Data.Nat.InfinitelyOften.html#1011" class="Bound"
+      > <a name="1251" href="Data.Nat.InfinitelyOften.html#1011" class="Bound"
       >&#172;q</a
-      ><a name="1245"
-      > </a
-      ><a name="1246" href="Data.Nat.InfinitelyOften.html#1224" class="Bound"
+      > <a name="1254" href="Data.Nat.InfinitelyOften.html#1232" class="Bound"
       >k</a
-      ><a name="1247"
-      > </a
-      ><a name="1248" class="Symbol"
+      > <a name="1256" class="Symbol"
       >(</a
-      ><a name="1249" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      ><a name="1257" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
       >begin</a
-      ><a name="1254"
       >
-    </a
-      ><a name="1259" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
+    <a name="1267" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
       >j</a
-      ><a name="1260"
-      >      </a
-      ><a name="1266" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >      <a name="1274" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8804;&#10216;</a
-      ><a name="1268"
-      > </a
-      ><a name="1269" href="Data.Nat.Properties.html#9155" class="Function"
+      > <a name="1277" href="Data.Nat.Properties.html#m&#8804;m&#8852;n" class="Function"
       >NatProp.m&#8804;m&#8852;n</a
-      ><a name="1282"
-      > </a
-      ><a name="1283" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
+      > <a name="1291" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
       >j</a
-      ><a name="1284"
-      > </a
-      ><a name="1285" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
+      > <a name="1293" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
       >i</a
-      ><a name="1286"
-      > </a
-      ><a name="1287" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1295" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="1288"
       >
-    </a
-      ><a name="1293" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
+    <a name="1301" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
       >j</a
-      ><a name="1294"
-      > </a
-      ><a name="1295" href="Data.Nat.Base.html#2713" class="Function Operator"
+      > <a name="1303" href="Data.Nat.Base.html#_&#8852;_" class="Function Operator"
       >&#8852;</a
-      ><a name="1296"
-      > </a
-      ><a name="1297" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
+      > <a name="1305" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
       >i</a
-      ><a name="1298"
-      >  </a
-      ><a name="1300" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
+      >  <a name="1308" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
       >&#8801;&#10216;</a
-      ><a name="1302"
-      > </a
-      ><a name="1303" href="Algebra.Structures.html#12791" class="Function"
+      > <a name="1311" href="Algebra.Structures.html#InfinitelyOften.NatLattice.&#8743;-comm" class="Function"
       >NatLattice.&#8743;-comm</a
-      ><a name="1320"
-      > </a
-      ><a name="1321" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
+      > <a name="1329" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
       >j</a
-      ><a name="1322"
-      > </a
-      ><a name="1323" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
+      > <a name="1331" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
       >i</a
-      ><a name="1324"
-      > </a
-      ><a name="1325" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
+      > <a name="1333" href="Relation.Binary.PreorderReasoning.html#1329" class="Function Operator"
       >&#10217;</a
-      ><a name="1326"
       >
-    </a
-      ><a name="1331" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
+    <a name="1339" href="Data.Nat.InfinitelyOften.html#998" class="Bound"
       >i</a
-      ><a name="1332"
-      > </a
-      ><a name="1333" href="Data.Nat.Base.html#2713" class="Function Operator"
+      > <a name="1341" href="Data.Nat.Base.html#_&#8852;_" class="Function Operator"
       >&#8852;</a
-      ><a name="1334"
-      > </a
-      ><a name="1335" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
+      > <a name="1343" href="Data.Nat.InfinitelyOften.html#1007" class="Bound"
       >j</a
-      ><a name="1336"
-      >  </a
-      ><a name="1338" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      >  <a name="1346" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#8804;&#10216;</a
-      ><a name="1340"
-      > </a
-      ><a name="1341" href="Data.Nat.InfinitelyOften.html#1226" class="Bound"
+      > <a name="1349" href="Data.Nat.InfinitelyOften.html#1234" class="Bound"
       >i&#8852;j&#8804;k</a
-      ><a name="1346"
-      > </a
-      ><a name="1347" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
+      > <a name="1355" href="Relation.Binary.PreorderReasoning.html#1220" class="Function Operator"
       >&#10217;</a
-      ><a name="1348"
       >
-    </a
-      ><a name="1353" href="Data.Nat.InfinitelyOften.html#1224" class="Bound"
+    <a name="1361" href="Data.Nat.InfinitelyOften.html#1232" class="Bound"
       >k</a
-      ><a name="1354"
-      >      </a
-      ><a name="1360" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
+      >      <a name="1368" href="Relation.Binary.PreorderReasoning.html#1519" class="Function Operator"
       >&#8718;</a
-      ><a name="1361" class="Symbol"
+      ><a name="1369" class="Symbol"
       >)</a
-      ><a name="1362"
-      > </a
-      ><a name="1363" href="Data.Nat.InfinitelyOften.html#1238" class="Bound"
+      > <a name="1371" href="Data.Nat.InfinitelyOften.html#1246" class="Bound"
       >q</a
-      ><a name="1364"
       >
 
-</a
-      ><a name="1366" class="Comment"
+<a name="1374" class="Comment"
       >-- A non-constructive definition of &quot;true infinitely often&quot;.</a
-      ><a name="1426"
       >
 
-</a
-      ><a name="1428" href="Data.Nat.InfinitelyOften.html#1428" class="Function"
+<a name="Inf" href="Data.Nat.InfinitelyOften.html#Inf" class="Function"
       >Inf</a
-      ><a name="1431"
-      > </a
-      ><a name="1432" class="Symbol"
+      > <a name="1440" class="Symbol"
       >:</a
-      ><a name="1433"
-      > </a
-      ><a name="1434" class="Symbol"
+      > <a name="1442" class="Symbol"
       >(</a
-      ><a name="1435" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      ><a name="1443" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="1436"
-      > </a
-      ><a name="1437" class="Symbol"
+      > <a name="1445" class="Symbol"
       >&#8594;</a
-      ><a name="1438"
-      > </a
-      ><a name="1439" class="PrimitiveType"
+      > <a name="1447" class="PrimitiveType"
       >Set</a
-      ><a name="1442" class="Symbol"
+      ><a name="1450" class="Symbol"
       >)</a
-      ><a name="1443"
-      > </a
-      ><a name="1444" class="Symbol"
+      > <a name="1452" class="Symbol"
       >&#8594;</a
-      ><a name="1445"
-      > </a
-      ><a name="1446" class="PrimitiveType"
+      > <a name="1454" class="PrimitiveType"
       >Set</a
-      ><a name="1449"
       >
-</a
-      ><a name="1450" href="Data.Nat.InfinitelyOften.html#1428" class="Function"
+<a name="1458" href="Data.Nat.InfinitelyOften.html#Inf" class="Function"
       >Inf</a
-      ><a name="1453"
-      > </a
-      ><a name="1454" href="Data.Nat.InfinitelyOften.html#1454" class="Bound"
+      > <a name="1462" href="Data.Nat.InfinitelyOften.html#1462" class="Bound"
       >P</a
-      ><a name="1455"
-      > </a
-      ><a name="1456" class="Symbol"
+      > <a name="1464" class="Symbol"
       >=</a
-      ><a name="1457"
-      > </a
-      ><a name="1458" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="1466" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="1459"
-      > </a
-      ><a name="1460" href="Data.Nat.InfinitelyOften.html#837" class="Function"
+      > <a name="1468" href="Data.Nat.InfinitelyOften.html#Fin" class="Function"
       >Fin</a
-      ><a name="1463"
-      > </a
-      ><a name="1464" href="Data.Nat.InfinitelyOften.html#1454" class="Bound"
+      > <a name="1472" href="Data.Nat.InfinitelyOften.html#1462" class="Bound"
       >P</a
-      ><a name="1465"
       >
 
-</a
-      ><a name="1467" class="Comment"
+<a name="1475" class="Comment"
       >-- Inf commutes with binary sums (in the double-negation monad).</a
-      ><a name="1531"
       >
 
-</a
-      ><a name="1533" href="Data.Nat.InfinitelyOften.html#1533" class="Function"
+<a name="commutes-with-&#8746;" href="Data.Nat.InfinitelyOften.html#commutes-with-&#8746;" class="Function"
       >commutes-with-&#8746;</a
-      ><a name="1548"
-      > </a
-      ><a name="1549" class="Symbol"
+      > <a name="1557" class="Symbol"
       >:</a
-      ><a name="1550"
-      > </a
-      ><a name="1551" class="Symbol"
+      > <a name="1559" class="Symbol"
       >&#8704;</a
-      ><a name="1552"
-      > </a
-      ><a name="1553" class="Symbol"
+      > <a name="1561" class="Symbol"
       >{</a
-      ><a name="1554" href="Data.Nat.InfinitelyOften.html#1554" class="Bound"
+      ><a name="1562" href="Data.Nat.InfinitelyOften.html#1562" class="Bound"
       >P</a
-      ><a name="1555"
-      > </a
-      ><a name="1556" href="Data.Nat.InfinitelyOften.html#1556" class="Bound"
+      > <a name="1564" href="Data.Nat.InfinitelyOften.html#1564" class="Bound"
       >Q</a
-      ><a name="1557" class="Symbol"
-      >}</a
-      ><a name="1558"
-      > </a
-      ><a name="1559" class="Symbol"
-      >&#8594;</a
-      ><a name="1560"
-      > </a
-      ><a name="1561" href="Data.Nat.InfinitelyOften.html#1428" class="Function"
-      >Inf</a
-      ><a name="1564"
-      > </a
       ><a name="1565" class="Symbol"
+      >}</a
+      > <a name="1567" class="Symbol"
+      >&#8594;</a
+      > <a name="1569" href="Data.Nat.InfinitelyOften.html#Inf" class="Function"
+      >Inf</a
+      > <a name="1573" class="Symbol"
       >(</a
-      ><a name="1566" href="Data.Nat.InfinitelyOften.html#1554" class="Bound"
+      ><a name="1574" href="Data.Nat.InfinitelyOften.html#1562" class="Bound"
       >P</a
-      ><a name="1567"
-      > </a
-      ><a name="1568" href="Relation.Unary.html#2424" class="Function Operator"
+      > <a name="1576" href="Relation.Unary.html#2424" class="Function Operator"
       >&#8746;</a
-      ><a name="1569"
-      > </a
-      ><a name="1570" href="Data.Nat.InfinitelyOften.html#1556" class="Bound"
+      > <a name="1578" href="Data.Nat.InfinitelyOften.html#1564" class="Bound"
       >Q</a
-      ><a name="1571" class="Symbol"
-      >)</a
-      ><a name="1572"
-      > </a
-      ><a name="1573" class="Symbol"
-      >&#8594;</a
-      ><a name="1574"
-      > </a
-      ><a name="1575" href="Relation.Nullary.html#414" class="Function Operator"
-      >&#172;</a
-      ><a name="1576"
-      > </a
-      ><a name="1577" href="Relation.Nullary.html#414" class="Function Operator"
-      >&#172;</a
-      ><a name="1578"
-      > </a
       ><a name="1579" class="Symbol"
+      >)</a
+      > <a name="1581" class="Symbol"
+      >&#8594;</a
+      > <a name="1583" href="Relation.Nullary.html#&#172;_" class="Function Operator"
+      >&#172;</a
+      > <a name="1585" href="Relation.Nullary.html#&#172;_" class="Function Operator"
+      >&#172;</a
+      > <a name="1587" class="Symbol"
       >(</a
-      ><a name="1580" href="Data.Nat.InfinitelyOften.html#1428" class="Function"
+      ><a name="1588" href="Data.Nat.InfinitelyOften.html#Inf" class="Function"
       >Inf</a
-      ><a name="1583"
-      > </a
-      ><a name="1584" href="Data.Nat.InfinitelyOften.html#1554" class="Bound"
+      > <a name="1592" href="Data.Nat.InfinitelyOften.html#1562" class="Bound"
       >P</a
-      ><a name="1585"
-      > </a
-      ><a name="1586" href="Data.Sum.html#433" class="Datatype Operator"
+      > <a name="1594" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
       >&#8846;</a
-      ><a name="1587"
-      > </a
-      ><a name="1588" href="Data.Nat.InfinitelyOften.html#1428" class="Function"
+      > <a name="1596" href="Data.Nat.InfinitelyOften.html#Inf" class="Function"
       >Inf</a
-      ><a name="1591"
-      > </a
-      ><a name="1592" href="Data.Nat.InfinitelyOften.html#1556" class="Bound"
+      > <a name="1600" href="Data.Nat.InfinitelyOften.html#1564" class="Bound"
       >Q</a
-      ><a name="1593" class="Symbol"
+      ><a name="1601" class="Symbol"
       >)</a
-      ><a name="1594"
       >
-</a
-      ><a name="1595" href="Data.Nat.InfinitelyOften.html#1533" class="Function"
+<a name="1603" href="Data.Nat.InfinitelyOften.html#commutes-with-&#8746;" class="Function"
       >commutes-with-&#8746;</a
-      ><a name="1610"
-      > </a
-      ><a name="1611" href="Data.Nat.InfinitelyOften.html#1611" class="Bound"
+      > <a name="1619" href="Data.Nat.InfinitelyOften.html#1619" class="Bound"
       >p&#8746;q</a
-      ><a name="1614"
-      > </a
-      ><a name="1615" class="Symbol"
+      > <a name="1623" class="Symbol"
       >=</a
-      ><a name="1616"
       >
-  </a
-      ><a name="1619" href="Relation.Nullary.Negation.html#3963" class="Function"
+  <a name="1627" href="Relation.Nullary.Negation.html#call/cc" class="Function"
       >call/cc</a
-      ><a name="1626"
-      > </a
-      ><a name="1627" class="Symbol"
+      > <a name="1635" class="Symbol"
       >&#955;</a
-      ><a name="1628"
-      > </a
-      ><a name="1629" href="Data.Nat.InfinitelyOften.html#1629" class="Bound"
+      > <a name="1637" href="Data.Nat.InfinitelyOften.html#1637" class="Bound"
       >&#172;[p&#8846;q]</a
-      ><a name="1635"
-      > </a
-      ><a name="1636" class="Symbol"
+      > <a name="1644" class="Symbol"
       >&#8594;</a
-      ><a name="1637"
       >
-  </a
-      ><a name="1640" class="Symbol"
+  <a name="1648" class="Symbol"
       >(&#955;</a
-      ><a name="1642"
-      > </a
-      ><a name="1643" href="Data.Nat.InfinitelyOften.html#1643" class="Bound"
+      > <a name="1651" href="Data.Nat.InfinitelyOften.html#1651" class="Bound"
       >&#172;p</a
-      ><a name="1645"
-      > </a
-      ><a name="1646" href="Data.Nat.InfinitelyOften.html#1646" class="Bound"
+      > <a name="1654" href="Data.Nat.InfinitelyOften.html#1654" class="Bound"
       >&#172;q</a
-      ><a name="1648"
-      > </a
-      ><a name="1649" class="Symbol"
+      > <a name="1657" class="Symbol"
       >&#8594;</a
-      ><a name="1650"
-      > </a
-      ><a name="1651" href="Data.Empty.html#348" class="Function"
+      > <a name="1659" href="Data.Empty.html#&#8869;-elim" class="Function"
       >&#8869;-elim</a
-      ><a name="1657"
-      > </a
-      ><a name="1658" class="Symbol"
+      > <a name="1666" class="Symbol"
       >(</a
-      ><a name="1659" href="Data.Nat.InfinitelyOften.html#1611" class="Bound"
+      ><a name="1667" href="Data.Nat.InfinitelyOften.html#1619" class="Bound"
       >p&#8746;q</a
-      ><a name="1662"
-      > </a
-      ><a name="1663" class="Symbol"
+      > <a name="1671" class="Symbol"
       >(</a
-      ><a name="1664" href="Data.Nat.InfinitelyOften.html#1643" class="Bound"
+      ><a name="1672" href="Data.Nat.InfinitelyOften.html#1651" class="Bound"
       >&#172;p</a
-      ><a name="1666"
-      > </a
-      ><a name="1667" href="Data.Nat.InfinitelyOften.html#933" class="Function Operator"
+      > <a name="1675" href="Data.Nat.InfinitelyOften.html#_&#8746;-Fin_" class="Function Operator"
       >&#8746;-Fin</a
-      ><a name="1672"
-      > </a
-      ><a name="1673" href="Data.Nat.InfinitelyOften.html#1646" class="Bound"
+      > <a name="1681" href="Data.Nat.InfinitelyOften.html#1654" class="Bound"
       >&#172;q</a
-      ><a name="1675" class="Symbol"
+      ><a name="1683" class="Symbol"
       >)))</a
-      ><a name="1678"
       >
-    </a
-      ><a name="1683" href="Category.Functor.html#424" class="Function Operator"
+    <a name="1691" href="Category.Functor.html#475" class="Function Operator"
       >&lt;$&gt;</a
-      ><a name="1686"
-      > </a
-      ><a name="1687" href="Data.Nat.InfinitelyOften.html#1629" class="Bound"
+      > <a name="1695" href="Data.Nat.InfinitelyOften.html#1637" class="Bound"
       >&#172;[p&#8846;q]</a
-      ><a name="1693"
-      > </a
-      ><a name="1694" href="Function.html#713" class="Function Operator"
+      > <a name="1702" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="1695"
-      > </a
-      ><a name="1696" href="Data.Sum.html#489" class="InductiveConstructor"
+      > <a name="1704" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
       >inj&#8321;</a
-      ><a name="1700"
-      > </a
-      ><a name="1701" href="Category.Applicative.Indexed.html#761" class="Function Operator"
+      > <a name="1709" href="Category.Applicative.Indexed.html#780" class="Function Operator"
       >&#8859;</a
-      ><a name="1702"
-      > </a
-      ><a name="1703" href="Data.Nat.InfinitelyOften.html#1629" class="Bound"
+      > <a name="1711" href="Data.Nat.InfinitelyOften.html#1637" class="Bound"
       >&#172;[p&#8846;q]</a
-      ><a name="1709"
-      > </a
-      ><a name="1710" href="Function.html#713" class="Function Operator"
+      > <a name="1718" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="1711"
-      > </a
-      ><a name="1712" href="Data.Sum.html#514" class="InductiveConstructor"
+      > <a name="1720" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
       >inj&#8322;</a
-      ><a name="1716"
       >
 
-</a
-      ><a name="1718" class="Comment"
+<a name="1726" class="Comment"
       >-- Inf is functorial.</a
-      ><a name="1739"
       >
 
-</a
-      ><a name="1741" href="Data.Nat.InfinitelyOften.html#1741" class="Function"
+<a name="map" href="Data.Nat.InfinitelyOften.html#map" class="Function"
       >map</a
-      ><a name="1744"
-      > </a
-      ><a name="1745" class="Symbol"
+      > <a name="1753" class="Symbol"
       >:</a
-      ><a name="1746"
-      > </a
-      ><a name="1747" class="Symbol"
+      > <a name="1755" class="Symbol"
       >&#8704;</a
-      ><a name="1748"
-      > </a
-      ><a name="1749" class="Symbol"
+      > <a name="1757" class="Symbol"
       >{</a
-      ><a name="1750" href="Data.Nat.InfinitelyOften.html#1750" class="Bound"
+      ><a name="1758" href="Data.Nat.InfinitelyOften.html#1758" class="Bound"
       >P</a
-      ><a name="1751"
-      > </a
-      ><a name="1752" href="Data.Nat.InfinitelyOften.html#1752" class="Bound"
+      > <a name="1760" href="Data.Nat.InfinitelyOften.html#1760" class="Bound"
       >Q</a
-      ><a name="1753" class="Symbol"
+      ><a name="1761" class="Symbol"
       >}</a
-      ><a name="1754"
-      > </a
-      ><a name="1755" class="Symbol"
+      > <a name="1763" class="Symbol"
       >&#8594;</a
-      ><a name="1756"
-      > </a
-      ><a name="1757" href="Data.Nat.InfinitelyOften.html#1750" class="Bound"
+      > <a name="1765" href="Data.Nat.InfinitelyOften.html#1758" class="Bound"
       >P</a
-      ><a name="1758"
-      > </a
-      ><a name="1759" href="Relation.Unary.html#1822" class="Function Operator"
+      > <a name="1767" href="Relation.Unary.html#1822" class="Function Operator"
       >&#8838;</a
-      ><a name="1760"
-      > </a
-      ><a name="1761" href="Data.Nat.InfinitelyOften.html#1752" class="Bound"
+      > <a name="1769" href="Data.Nat.InfinitelyOften.html#1760" class="Bound"
       >Q</a
-      ><a name="1762"
-      > </a
-      ><a name="1763" class="Symbol"
+      > <a name="1771" class="Symbol"
       >&#8594;</a
-      ><a name="1764"
-      > </a
-      ><a name="1765" href="Data.Nat.InfinitelyOften.html#1428" class="Function"
+      > <a name="1773" href="Data.Nat.InfinitelyOften.html#Inf" class="Function"
       >Inf</a
-      ><a name="1768"
-      > </a
-      ><a name="1769" href="Data.Nat.InfinitelyOften.html#1750" class="Bound"
+      > <a name="1777" href="Data.Nat.InfinitelyOften.html#1758" class="Bound"
       >P</a
-      ><a name="1770"
-      > </a
-      ><a name="1771" class="Symbol"
+      > <a name="1779" class="Symbol"
       >&#8594;</a
-      ><a name="1772"
-      > </a
-      ><a name="1773" href="Data.Nat.InfinitelyOften.html#1428" class="Function"
+      > <a name="1781" href="Data.Nat.InfinitelyOften.html#Inf" class="Function"
       >Inf</a
-      ><a name="1776"
-      > </a
-      ><a name="1777" href="Data.Nat.InfinitelyOften.html#1752" class="Bound"
+      > <a name="1785" href="Data.Nat.InfinitelyOften.html#1760" class="Bound"
       >Q</a
-      ><a name="1778"
       >
-</a
-      ><a name="1779" href="Data.Nat.InfinitelyOften.html#1741" class="Function"
+<a name="1787" href="Data.Nat.InfinitelyOften.html#map" class="Function"
       >map</a
-      ><a name="1782"
-      > </a
-      ><a name="1783" href="Data.Nat.InfinitelyOften.html#1783" class="Bound"
+      > <a name="1791" href="Data.Nat.InfinitelyOften.html#1791" class="Bound"
       >P&#8838;Q</a
-      ><a name="1786"
-      > </a
-      ><a name="1787" href="Data.Nat.InfinitelyOften.html#1787" class="Bound"
+      > <a name="1795" href="Data.Nat.InfinitelyOften.html#1795" class="Bound"
       >&#172;fin</a
-      ><a name="1791"
-      > </a
-      ><a name="1792" class="Symbol"
+      > <a name="1800" class="Symbol"
       >=</a
-      ><a name="1793"
-      > </a
-      ><a name="1794" href="Data.Nat.InfinitelyOften.html#1787" class="Bound"
+      > <a name="1802" href="Data.Nat.InfinitelyOften.html#1795" class="Bound"
       >&#172;fin</a
-      ><a name="1798"
-      > </a
-      ><a name="1799" href="Function.html#713" class="Function Operator"
+      > <a name="1807" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="1800"
-      > </a
-      ><a name="1801" href="Data.Product.html#1872" class="Function"
+      > <a name="1809" href="Data.Product.html#map" class="Function"
       >Prod.map</a
-      ><a name="1809"
-      > </a
-      ><a name="1810" href="Function.html#1012" class="Function"
+      > <a name="1818" href="Function.html#id" class="Function"
       >id</a
-      ><a name="1812"
-      > </a
-      ><a name="1813" class="Symbol"
+      > <a name="1821" class="Symbol"
       >(&#955;</a
-      ><a name="1815"
-      > </a
-      ><a name="1816" href="Data.Nat.InfinitelyOften.html#1816" class="Bound"
+      > <a name="1824" href="Data.Nat.InfinitelyOften.html#1824" class="Bound"
       >fin</a
-      ><a name="1819"
-      > </a
-      ><a name="1820" href="Data.Nat.InfinitelyOften.html#1820" class="Bound"
+      > <a name="1828" href="Data.Nat.InfinitelyOften.html#1828" class="Bound"
       >j</a
-      ><a name="1821"
-      > </a
-      ><a name="1822" href="Data.Nat.InfinitelyOften.html#1822" class="Bound"
+      > <a name="1830" href="Data.Nat.InfinitelyOften.html#1830" class="Bound"
       >i&#8804;j</a
-      ><a name="1825"
-      > </a
-      ><a name="1826" class="Symbol"
+      > <a name="1834" class="Symbol"
       >&#8594;</a
-      ><a name="1827"
-      > </a
-      ><a name="1828" href="Data.Nat.InfinitelyOften.html#1816" class="Bound"
+      > <a name="1836" href="Data.Nat.InfinitelyOften.html#1824" class="Bound"
       >fin</a
-      ><a name="1831"
-      > </a
-      ><a name="1832" href="Data.Nat.InfinitelyOften.html#1820" class="Bound"
+      > <a name="1840" href="Data.Nat.InfinitelyOften.html#1828" class="Bound"
       >j</a
-      ><a name="1833"
-      > </a
-      ><a name="1834" href="Data.Nat.InfinitelyOften.html#1822" class="Bound"
+      > <a name="1842" href="Data.Nat.InfinitelyOften.html#1830" class="Bound"
       >i&#8804;j</a
-      ><a name="1837"
-      > </a
-      ><a name="1838" href="Function.html#713" class="Function Operator"
+      > <a name="1846" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="1839"
-      > </a
-      ><a name="1840" href="Data.Nat.InfinitelyOften.html#1783" class="Bound"
+      > <a name="1848" href="Data.Nat.InfinitelyOften.html#1791" class="Bound"
       >P&#8838;Q</a
-      ><a name="1843" class="Symbol"
+      ><a name="1851" class="Symbol"
       >)</a
-      ><a name="1844"
       >
 
-</a
-      ><a name="1846" class="Comment"
+<a name="1854" class="Comment"
       >-- Inf is upwards closed.</a
-      ><a name="1871"
       >
 
-</a
-      ><a name="1873" href="Data.Nat.InfinitelyOften.html#1873" class="Function"
+<a name="up" href="Data.Nat.InfinitelyOften.html#up" class="Function"
       >up</a
-      ><a name="1875"
-      > </a
-      ><a name="1876" class="Symbol"
+      > <a name="1884" class="Symbol"
       >:</a
-      ><a name="1877"
-      > </a
-      ><a name="1878" class="Symbol"
+      > <a name="1886" class="Symbol"
       >&#8704;</a
-      ><a name="1879"
-      > </a
-      ><a name="1880" class="Symbol"
+      > <a name="1888" class="Symbol"
       >{</a
-      ><a name="1881" href="Data.Nat.InfinitelyOften.html#1881" class="Bound"
+      ><a name="1889" href="Data.Nat.InfinitelyOften.html#1889" class="Bound"
       >P</a
-      ><a name="1882" class="Symbol"
+      ><a name="1890" class="Symbol"
       >}</a
-      ><a name="1883"
-      > </a
-      ><a name="1884" href="Data.Nat.InfinitelyOften.html#1884" class="Bound"
+      > <a name="1892" href="Data.Nat.InfinitelyOften.html#1892" class="Bound"
       >n</a
-      ><a name="1885"
-      > </a
-      ><a name="1886" class="Symbol"
+      > <a name="1894" class="Symbol"
       >&#8594;</a
-      ><a name="1887"
-      > </a
-      ><a name="1888" href="Data.Nat.InfinitelyOften.html#1428" class="Function"
+      > <a name="1896" href="Data.Nat.InfinitelyOften.html#Inf" class="Function"
       >Inf</a
-      ><a name="1891"
-      > </a
-      ><a name="1892" href="Data.Nat.InfinitelyOften.html#1881" class="Bound"
+      > <a name="1900" href="Data.Nat.InfinitelyOften.html#1889" class="Bound"
       >P</a
-      ><a name="1893"
-      > </a
-      ><a name="1894" class="Symbol"
+      > <a name="1902" class="Symbol"
       >&#8594;</a
-      ><a name="1895"
-      > </a
-      ><a name="1896" href="Data.Nat.InfinitelyOften.html#1428" class="Function"
+      > <a name="1904" href="Data.Nat.InfinitelyOften.html#Inf" class="Function"
       >Inf</a
-      ><a name="1899"
-      > </a
-      ><a name="1900" class="Symbol"
+      > <a name="1908" class="Symbol"
       >(</a
-      ><a name="1901" href="Data.Nat.InfinitelyOften.html#1881" class="Bound"
+      ><a name="1909" href="Data.Nat.InfinitelyOften.html#1889" class="Bound"
       >P</a
-      ><a name="1902"
-      > </a
-      ><a name="1903" href="Function.html#713" class="Function Operator"
+      > <a name="1911" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      ><a name="1904"
-      > </a
-      ><a name="1905" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="1913" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >_+_</a
-      ><a name="1908"
-      > </a
-      ><a name="1909" href="Data.Nat.InfinitelyOften.html#1884" class="Bound"
+      > <a name="1917" href="Data.Nat.InfinitelyOften.html#1892" class="Bound"
       >n</a
-      ><a name="1910" class="Symbol"
+      ><a name="1918" class="Symbol"
       >)</a
-      ><a name="1911"
       >
-</a
-      ><a name="1912" href="Data.Nat.InfinitelyOften.html#1873" class="Function"
+<a name="1920" href="Data.Nat.InfinitelyOften.html#up" class="Function"
       >up</a
-      ><a name="1914"
-      >     </a
-      ><a name="1919" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor"
+      >     <a name="1927" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      ><a name="1923"
-      >    </a
-      ><a name="1927" class="Symbol"
+      >    <a name="1935" class="Symbol"
       >=</a
-      ><a name="1928"
-      > </a
-      ><a name="1929" href="Function.html#1012" class="Function"
+      > <a name="1937" href="Function.html#id" class="Function"
       >id</a
-      ><a name="1931"
       >
-</a
-      ><a name="1932" href="Data.Nat.InfinitelyOften.html#1873" class="Function"
+<a name="1940" href="Data.Nat.InfinitelyOften.html#up" class="Function"
       >up</a
-      ><a name="1934"
-      > </a
-      ><a name="1935" class="Symbol"
+      > <a name="1943" class="Symbol"
       >{</a
-      ><a name="1936" href="Data.Nat.InfinitelyOften.html#1936" class="Bound"
-      >P</a
-      ><a name="1937" class="Symbol"
-      >}</a
-      ><a name="1938"
-      > </a
-      ><a name="1939" class="Symbol"
-      >(</a
-      ><a name="1940" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
-      >suc</a
-      ><a name="1943"
-      > </a
       ><a name="1944" href="Data.Nat.InfinitelyOften.html#1944" class="Bound"
-      >n</a
+      >P</a
       ><a name="1945" class="Symbol"
-      >)</a
-      ><a name="1946"
-      > </a
-      ><a name="1947" class="Symbol"
-      >=</a
-      ><a name="1948"
-      > </a
-      ><a name="1949" href="Data.Nat.InfinitelyOften.html#1873" class="Function"
-      >up</a
-      ><a name="1951"
-      > </a
-      ><a name="1952" href="Data.Nat.InfinitelyOften.html#1944" class="Bound"
+      >}</a
+      > <a name="1947" class="Symbol"
+      >(</a
+      ><a name="1948" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="1952" href="Data.Nat.InfinitelyOften.html#1952" class="Bound"
       >n</a
-      ><a name="1953"
-      > </a
-      ><a name="1954" href="Function.html#713" class="Function Operator"
-      >&#8728;</a
-      ><a name="1955"
-      > </a
-      ><a name="1956" href="Data.Nat.InfinitelyOften.html#1970" class="Function"
-      >up&#8321;</a
-      ><a name="1959"
-      >
-  </a
-      ><a name="1962" class="Keyword"
-      >where</a
-      ><a name="1967"
-      >
-  </a
-      ><a name="1970" href="Data.Nat.InfinitelyOften.html#1970" class="Function"
-      >up&#8321;</a
-      ><a name="1973"
-      > </a
-      ><a name="1974" class="Symbol"
-      >:</a
-      ><a name="1975"
-      > </a
-      ><a name="1976" href="Data.Nat.InfinitelyOften.html#1428" class="Function"
-      >Inf</a
-      ><a name="1979"
-      > </a
-      ><a name="1980" href="Data.Nat.InfinitelyOften.html#1936" class="Bound"
-      >P</a
-      ><a name="1981"
-      > </a
-      ><a name="1982" class="Symbol"
-      >&#8594;</a
-      ><a name="1983"
-      > </a
-      ><a name="1984" href="Data.Nat.InfinitelyOften.html#1428" class="Function"
-      >Inf</a
-      ><a name="1987"
-      > </a
-      ><a name="1988" class="Symbol"
-      >(</a
-      ><a name="1989" href="Data.Nat.InfinitelyOften.html#1936" class="Bound"
-      >P</a
-      ><a name="1990"
-      > </a
-      ><a name="1991" href="Function.html#713" class="Function Operator"
-      >&#8728;</a
-      ><a name="1992"
-      > </a
-      ><a name="1993" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
-      >suc</a
-      ><a name="1996" class="Symbol"
+      ><a name="1953" class="Symbol"
       >)</a
-      ><a name="1997"
-      >
-  </a
-      ><a name="2000" href="Data.Nat.InfinitelyOften.html#1970" class="Function"
-      >up&#8321;</a
-      ><a name="2003"
-      > </a
-      ><a name="2004" href="Data.Nat.InfinitelyOften.html#2004" class="Bound"
-      >&#172;fin</a
-      ><a name="2008"
-      > </a
-      ><a name="2009" class="Symbol"
-      >(</a
-      ><a name="2010" href="Data.Nat.InfinitelyOften.html#2010" class="Bound"
-      >i</a
-      ><a name="2011"
-      > </a
-      ><a name="2012" href="Data.Product.html#509" class="InductiveConstructor Operator"
-      >,</a
-      ><a name="2013"
-      > </a
-      ><a name="2014" href="Data.Nat.InfinitelyOften.html#2014" class="Bound"
-      >fin</a
-      ><a name="2017" class="Symbol"
-      >)</a
-      ><a name="2018"
-      > </a
-      ><a name="2019" class="Symbol"
+      > <a name="1955" class="Symbol"
       >=</a
-      ><a name="2020"
-      > </a
-      ><a name="2021" href="Data.Nat.InfinitelyOften.html#2004" class="Bound"
-      >&#172;fin</a
-      ><a name="2025"
-      > </a
-      ><a name="2026" class="Symbol"
-      >(</a
-      ><a name="2027" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor"
-      >suc</a
-      ><a name="2030"
-      > </a
-      ><a name="2031" href="Data.Nat.InfinitelyOften.html#2010" class="Bound"
-      >i</a
-      ><a name="2032"
-      > </a
-      ><a name="2033" href="Data.Product.html#509" class="InductiveConstructor Operator"
-      >,</a
-      ><a name="2034"
-      > </a
-      ><a name="2035" href="Data.Nat.InfinitelyOften.html#2057" class="Function"
-      >helper</a
-      ><a name="2041" class="Symbol"
-      >)</a
-      ><a name="2042"
+      > <a name="1957" href="Data.Nat.InfinitelyOften.html#up" class="Function"
+      >up</a
+      > <a name="1960" href="Data.Nat.InfinitelyOften.html#1952" class="Bound"
+      >n</a
+      > <a name="1962" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="1964" href="Data.Nat.InfinitelyOften.html#1978" class="Function"
+      >up&#8321;</a
       >
-    </a
-      ><a name="2047" class="Keyword"
+  <a name="1970" class="Keyword"
       >where</a
-      ><a name="2052"
       >
-    </a
-      ><a name="2057" href="Data.Nat.InfinitelyOften.html#2057" class="Function"
-      >helper</a
-      ><a name="2063"
-      > </a
-      ><a name="2064" class="Symbol"
+  <a name="1978" href="Data.Nat.InfinitelyOften.html#1978" class="Function"
+      >up&#8321;</a
+      > <a name="1982" class="Symbol"
       >:</a
-      ><a name="2065"
-      > </a
-      ><a name="2066" class="Symbol"
-      >&#8704;</a
-      ><a name="2067"
-      > </a
-      ><a name="2068" href="Data.Nat.InfinitelyOften.html#2068" class="Bound"
-      >j</a
-      ><a name="2069"
-      > </a
-      ><a name="2070" class="Symbol"
+      > <a name="1984" href="Data.Nat.InfinitelyOften.html#Inf" class="Function"
+      >Inf</a
+      > <a name="1988" href="Data.Nat.InfinitelyOften.html#1944" class="Bound"
+      >P</a
+      > <a name="1990" class="Symbol"
       >&#8594;</a
-      ><a name="2071"
-      > </a
-      ><a name="2072" class="Number"
-      >1</a
-      ><a name="2073"
-      > </a
-      ><a name="2074" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
-      >+</a
-      ><a name="2075"
-      > </a
-      ><a name="2076" href="Data.Nat.InfinitelyOften.html#2010" class="Bound"
+      > <a name="1992" href="Data.Nat.InfinitelyOften.html#Inf" class="Function"
+      >Inf</a
+      > <a name="1996" class="Symbol"
+      >(</a
+      ><a name="1997" href="Data.Nat.InfinitelyOften.html#1944" class="Bound"
+      >P</a
+      > <a name="1999" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="2001" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      >suc</a
+      ><a name="2004" class="Symbol"
+      >)</a
+      >
+  <a name="2008" href="Data.Nat.InfinitelyOften.html#1978" class="Function"
+      >up&#8321;</a
+      > <a name="2012" href="Data.Nat.InfinitelyOften.html#2012" class="Bound"
+      >&#172;fin</a
+      > <a name="2017" class="Symbol"
+      >(</a
+      ><a name="2018" href="Data.Nat.InfinitelyOften.html#2018" class="Bound"
       >i</a
-      ><a name="2077"
-      > </a
-      ><a name="2078" href="Data.Nat.Base.html#802" class="Datatype Operator"
+      > <a name="2020" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="2022" href="Data.Nat.InfinitelyOften.html#2022" class="Bound"
+      >fin</a
+      ><a name="2025" class="Symbol"
+      >)</a
+      > <a name="2027" class="Symbol"
+      >=</a
+      > <a name="2029" href="Data.Nat.InfinitelyOften.html#2012" class="Bound"
+      >&#172;fin</a
+      > <a name="2034" class="Symbol"
+      >(</a
+      ><a name="2035" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="2039" href="Data.Nat.InfinitelyOften.html#2018" class="Bound"
+      >i</a
+      > <a name="2041" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="2043" href="Data.Nat.InfinitelyOften.html#2065" class="Function"
+      >helper</a
+      ><a name="2049" class="Symbol"
+      >)</a
+      >
+    <a name="2055" class="Keyword"
+      >where</a
+      >
+    <a name="2065" href="Data.Nat.InfinitelyOften.html#2065" class="Function"
+      >helper</a
+      > <a name="2072" class="Symbol"
+      >:</a
+      > <a name="2074" class="Symbol"
+      >&#8704;</a
+      > <a name="2076" href="Data.Nat.InfinitelyOften.html#2076" class="Bound"
+      >j</a
+      > <a name="2078" class="Symbol"
+      >&#8594;</a
+      > <a name="2080" class="Number"
+      >1</a
+      > <a name="2082" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
+      >+</a
+      > <a name="2084" href="Data.Nat.InfinitelyOften.html#2018" class="Bound"
+      >i</a
+      > <a name="2086" href="Data.Nat.Base.html#_&#8804;_" class="Datatype Operator"
       >&#8804;</a
-      ><a name="2079"
-      > </a
-      ><a name="2080" href="Data.Nat.InfinitelyOften.html#2068" class="Bound"
+      > <a name="2088" href="Data.Nat.InfinitelyOften.html#2076" class="Bound"
       >j</a
-      ><a name="2081"
-      > </a
-      ><a name="2082" class="Symbol"
+      > <a name="2090" class="Symbol"
       >&#8594;</a
-      ><a name="2083"
-      > </a
-      ><a name="2084" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="2092" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="2085"
-      > </a
-      ><a name="2086" href="Data.Nat.InfinitelyOften.html#1936" class="Bound"
+      > <a name="2094" href="Data.Nat.InfinitelyOften.html#1944" class="Bound"
       >P</a
-      ><a name="2087"
-      > </a
-      ><a name="2088" href="Data.Nat.InfinitelyOften.html#2068" class="Bound"
+      > <a name="2096" href="Data.Nat.InfinitelyOften.html#2076" class="Bound"
       >j</a
-      ><a name="2089"
       >
-    </a
-      ><a name="2094" href="Data.Nat.InfinitelyOften.html#2057" class="Function"
+    <a name="2102" href="Data.Nat.InfinitelyOften.html#2065" class="Function"
       >helper</a
-      ><a name="2100"
-      > </a
-      ><a name="2101" class="DottedPattern Symbol"
+      > <a name="2109" class="DottedPattern Symbol"
       >._</a
-      ><a name="2103"
-      > </a
-      ><a name="2104" class="Symbol"
+      > <a name="2112" class="Symbol"
       >(</a
-      ><a name="2105" href="Data.Nat.Base.html#875" class="InductiveConstructor"
+      ><a name="2113" href="Data.Nat.Base.html#_&#8804;_.s&#8804;s" class="InductiveConstructor"
       >s&#8804;s</a
-      ><a name="2108"
-      > </a
-      ><a name="2109" href="Data.Nat.InfinitelyOften.html#2109" class="Bound"
+      > <a name="2117" href="Data.Nat.InfinitelyOften.html#2117" class="Bound"
       >i&#8804;j</a
-      ><a name="2112" class="Symbol"
-      >)</a
-      ><a name="2113"
-      > </a
-      ><a name="2114" class="Symbol"
-      >=</a
-      ><a name="2115"
-      > </a
-      ><a name="2116" href="Data.Nat.InfinitelyOften.html#2014" class="Bound"
-      >fin</a
-      ><a name="2119"
-      > </a
       ><a name="2120" class="Symbol"
+      >)</a
+      > <a name="2122" class="Symbol"
+      >=</a
+      > <a name="2124" href="Data.Nat.InfinitelyOften.html#2022" class="Bound"
+      >fin</a
+      > <a name="2128" class="Symbol"
       >_</a
-      ><a name="2121"
-      > </a
-      ><a name="2122" href="Data.Nat.InfinitelyOften.html#2109" class="Bound"
+      > <a name="2130" href="Data.Nat.InfinitelyOften.html#2117" class="Bound"
       >i&#8804;j</a
-      ><a name="2125"
       >
 
-</a
-      ><a name="2127" class="Comment"
+<a name="2135" class="Comment"
       >-- A witness.</a
-      ><a name="2140"
       >
 
-</a
-      ><a name="2142" href="Data.Nat.InfinitelyOften.html#2142" class="Function"
+<a name="witness" href="Data.Nat.InfinitelyOften.html#witness" class="Function"
       >witness</a
-      ><a name="2149"
-      > </a
-      ><a name="2150" class="Symbol"
+      > <a name="2158" class="Symbol"
       >:</a
-      ><a name="2151"
-      > </a
-      ><a name="2152" class="Symbol"
+      > <a name="2160" class="Symbol"
       >&#8704;</a
-      ><a name="2153"
-      > </a
-      ><a name="2154" class="Symbol"
+      > <a name="2162" class="Symbol"
       >{</a
-      ><a name="2155" href="Data.Nat.InfinitelyOften.html#2155" class="Bound"
+      ><a name="2163" href="Data.Nat.InfinitelyOften.html#2163" class="Bound"
       >P</a
-      ><a name="2156" class="Symbol"
+      ><a name="2164" class="Symbol"
       >}</a
-      ><a name="2157"
-      > </a
-      ><a name="2158" class="Symbol"
+      > <a name="2166" class="Symbol"
       >&#8594;</a
-      ><a name="2159"
-      > </a
-      ><a name="2160" href="Data.Nat.InfinitelyOften.html#1428" class="Function"
+      > <a name="2168" href="Data.Nat.InfinitelyOften.html#Inf" class="Function"
       >Inf</a
-      ><a name="2163"
-      > </a
-      ><a name="2164" href="Data.Nat.InfinitelyOften.html#2155" class="Bound"
+      > <a name="2172" href="Data.Nat.InfinitelyOften.html#2163" class="Bound"
       >P</a
-      ><a name="2165"
-      > </a
-      ><a name="2166" class="Symbol"
+      > <a name="2174" class="Symbol"
       >&#8594;</a
-      ><a name="2167"
-      > </a
-      ><a name="2168" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="2176" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="2169"
-      > </a
-      ><a name="2170" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="2178" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="2171"
-      > </a
-      ><a name="2172" href="Data.Product.html#823" class="Function"
+      > <a name="2180" href="Data.Product.html#&#8707;" class="Function"
       >&#8707;</a
-      ><a name="2173"
-      > </a
-      ><a name="2174" href="Data.Nat.InfinitelyOften.html#2155" class="Bound"
+      > <a name="2182" href="Data.Nat.InfinitelyOften.html#2163" class="Bound"
       >P</a
-      ><a name="2175"
       >
-</a
-      ><a name="2176" href="Data.Nat.InfinitelyOften.html#2142" class="Function"
+<a name="2184" href="Data.Nat.InfinitelyOften.html#witness" class="Function"
       >witness</a
-      ><a name="2183"
-      > </a
-      ><a name="2184" href="Data.Nat.InfinitelyOften.html#2184" class="Bound"
+      > <a name="2192" href="Data.Nat.InfinitelyOften.html#2192" class="Bound"
       >&#172;fin</a
-      ><a name="2188"
-      > </a
-      ><a name="2189" href="Data.Nat.InfinitelyOften.html#2189" class="Bound"
+      > <a name="2197" href="Data.Nat.InfinitelyOften.html#2197" class="Bound"
       >&#172;p</a
-      ><a name="2191"
-      > </a
-      ><a name="2192" class="Symbol"
+      > <a name="2200" class="Symbol"
       >=</a
-      ><a name="2193"
-      > </a
-      ><a name="2194" href="Data.Nat.InfinitelyOften.html#2184" class="Bound"
+      > <a name="2202" href="Data.Nat.InfinitelyOften.html#2192" class="Bound"
       >&#172;fin</a
-      ><a name="2198"
-      > </a
-      ><a name="2199" class="Symbol"
+      > <a name="2207" class="Symbol"
       >(</a
-      ><a name="2200" class="Number"
+      ><a name="2208" class="Number"
       >0</a
-      ><a name="2201"
-      > </a
-      ><a name="2202" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2210" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2203"
-      > </a
-      ><a name="2204" class="Symbol"
+      > <a name="2212" class="Symbol"
       >&#955;</a
-      ><a name="2205"
-      > </a
-      ><a name="2206" href="Data.Nat.InfinitelyOften.html#2206" class="Bound"
+      > <a name="2214" href="Data.Nat.InfinitelyOften.html#2214" class="Bound"
       >i</a
-      ><a name="2207"
-      > </a
-      ><a name="2208" href="Data.Nat.InfinitelyOften.html#2208" class="Bound"
+      > <a name="2216" href="Data.Nat.InfinitelyOften.html#2216" class="Bound"
       >_</a
-      ><a name="2209"
-      > </a
-      ><a name="2210" href="Data.Nat.InfinitelyOften.html#2210" class="Bound"
+      > <a name="2218" href="Data.Nat.InfinitelyOften.html#2218" class="Bound"
       >Pi</a
-      ><a name="2212"
-      > </a
-      ><a name="2213" class="Symbol"
+      > <a name="2221" class="Symbol"
       >&#8594;</a
-      ><a name="2214"
-      > </a
-      ><a name="2215" href="Data.Nat.InfinitelyOften.html#2189" class="Bound"
+      > <a name="2223" href="Data.Nat.InfinitelyOften.html#2197" class="Bound"
       >&#172;p</a
-      ><a name="2217"
-      > </a
-      ><a name="2218" class="Symbol"
+      > <a name="2226" class="Symbol"
       >(</a
-      ><a name="2219" href="Data.Nat.InfinitelyOften.html#2206" class="Bound"
+      ><a name="2227" href="Data.Nat.InfinitelyOften.html#2214" class="Bound"
       >i</a
-      ><a name="2220"
-      > </a
-      ><a name="2221" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2229" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2222"
-      > </a
-      ><a name="2223" href="Data.Nat.InfinitelyOften.html#2210" class="Bound"
+      > <a name="2231" href="Data.Nat.InfinitelyOften.html#2218" class="Bound"
       >Pi</a
-      ><a name="2225" class="Symbol"
+      ><a name="2233" class="Symbol"
       >))</a
-      ><a name="2227"
       >
 
-</a
-      ><a name="2229" class="Comment"
+<a name="2237" class="Comment"
       >-- Two different witnesses.</a
-      ><a name="2256"
       >
 
-</a
-      ><a name="2258" href="Data.Nat.InfinitelyOften.html#2258" class="Function"
+<a name="twoDifferentWitnesses" href="Data.Nat.InfinitelyOften.html#twoDifferentWitnesses" class="Function"
       >twoDifferentWitnesses</a
-      ><a name="2279"
       >
-  </a
-      ><a name="2282" class="Symbol"
+  <a name="2290" class="Symbol"
       >:</a
-      ><a name="2283"
-      > </a
-      ><a name="2284" class="Symbol"
+      > <a name="2292" class="Symbol"
       >&#8704;</a
-      ><a name="2285"
-      > </a
-      ><a name="2286" class="Symbol"
+      > <a name="2294" class="Symbol"
       >{</a
-      ><a name="2287" href="Data.Nat.InfinitelyOften.html#2287" class="Bound"
+      ><a name="2295" href="Data.Nat.InfinitelyOften.html#2295" class="Bound"
       >P</a
-      ><a name="2288" class="Symbol"
+      ><a name="2296" class="Symbol"
       >}</a
-      ><a name="2289"
-      > </a
-      ><a name="2290" class="Symbol"
+      > <a name="2298" class="Symbol"
       >&#8594;</a
-      ><a name="2291"
-      > </a
-      ><a name="2292" href="Data.Nat.InfinitelyOften.html#1428" class="Function"
+      > <a name="2300" href="Data.Nat.InfinitelyOften.html#Inf" class="Function"
       >Inf</a
-      ><a name="2295"
-      > </a
-      ><a name="2296" href="Data.Nat.InfinitelyOften.html#2287" class="Bound"
+      > <a name="2304" href="Data.Nat.InfinitelyOften.html#2295" class="Bound"
       >P</a
-      ><a name="2297"
-      > </a
-      ><a name="2298" class="Symbol"
+      > <a name="2306" class="Symbol"
       >&#8594;</a
-      ><a name="2299"
-      > </a
-      ><a name="2300" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="2308" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="2301"
-      > </a
-      ><a name="2302" href="Relation.Nullary.html#414" class="Function Operator"
+      > <a name="2310" href="Relation.Nullary.html#&#172;_" class="Function Operator"
       >&#172;</a
-      ><a name="2303"
-      > </a
-      ><a name="2304" href="Data.Product.html#949" class="Function"
+      > <a name="2312" href="Data.Product.html#&#8707;&#8322;" class="Function"
       >&#8707;&#8322;</a
-      ><a name="2306"
-      > </a
-      ><a name="2307" class="Symbol"
+      > <a name="2315" class="Symbol"
       >&#955;</a
-      ><a name="2308"
-      > </a
-      ><a name="2309" href="Data.Nat.InfinitelyOften.html#2309" class="Bound"
+      > <a name="2317" href="Data.Nat.InfinitelyOften.html#2317" class="Bound"
       >m</a
-      ><a name="2310"
-      > </a
-      ><a name="2311" href="Data.Nat.InfinitelyOften.html#2311" class="Bound"
+      > <a name="2319" href="Data.Nat.InfinitelyOften.html#2319" class="Bound"
       >n</a
-      ><a name="2312"
-      > </a
-      ><a name="2313" class="Symbol"
+      > <a name="2321" class="Symbol"
       >&#8594;</a
-      ><a name="2314"
-      > </a
-      ><a name="2315" href="Data.Nat.InfinitelyOften.html#2309" class="Bound"
+      > <a name="2323" href="Data.Nat.InfinitelyOften.html#2317" class="Bound"
       >m</a
-      ><a name="2316"
-      > </a
-      ><a name="2317" href="Relation.Binary.Core.html#4493" class="Function Operator"
+      > <a name="2325" href="Relation.Binary.Core.html#_&#8802;_" class="Function Operator"
       >&#8802;</a
-      ><a name="2318"
-      > </a
-      ><a name="2319" href="Data.Nat.InfinitelyOften.html#2311" class="Bound"
+      > <a name="2327" href="Data.Nat.InfinitelyOften.html#2319" class="Bound"
       >n</a
-      ><a name="2320"
-      > </a
-      ><a name="2321" href="Data.Product.html#1073" class="Function Operator"
+      > <a name="2329" href="Data.Product.html#_&#215;_" class="Function Operator"
       >&#215;</a
-      ><a name="2322"
-      > </a
-      ><a name="2323" href="Data.Nat.InfinitelyOften.html#2287" class="Bound"
+      > <a name="2331" href="Data.Nat.InfinitelyOften.html#2295" class="Bound"
       >P</a
-      ><a name="2324"
-      > </a
-      ><a name="2325" href="Data.Nat.InfinitelyOften.html#2309" class="Bound"
+      > <a name="2333" href="Data.Nat.InfinitelyOften.html#2317" class="Bound"
       >m</a
-      ><a name="2326"
-      > </a
-      ><a name="2327" href="Data.Product.html#1073" class="Function Operator"
+      > <a name="2335" href="Data.Product.html#_&#215;_" class="Function Operator"
       >&#215;</a
-      ><a name="2328"
-      > </a
-      ><a name="2329" href="Data.Nat.InfinitelyOften.html#2287" class="Bound"
+      > <a name="2337" href="Data.Nat.InfinitelyOften.html#2295" class="Bound"
       >P</a
-      ><a name="2330"
-      > </a
-      ><a name="2331" href="Data.Nat.InfinitelyOften.html#2311" class="Bound"
+      > <a name="2339" href="Data.Nat.InfinitelyOften.html#2319" class="Bound"
       >n</a
-      ><a name="2332"
       >
-</a
-      ><a name="2333" href="Data.Nat.InfinitelyOften.html#2258" class="Function"
+<a name="2341" href="Data.Nat.InfinitelyOften.html#twoDifferentWitnesses" class="Function"
       >twoDifferentWitnesses</a
-      ><a name="2354"
-      > </a
-      ><a name="2355" href="Data.Nat.InfinitelyOften.html#2355" class="Bound"
+      > <a name="2363" href="Data.Nat.InfinitelyOften.html#2363" class="Bound"
       >inf</a
-      ><a name="2358"
-      > </a
-      ><a name="2359" class="Symbol"
+      > <a name="2367" class="Symbol"
       >=</a
-      ><a name="2360"
       >
-  </a
-      ><a name="2363" href="Data.Nat.InfinitelyOften.html#2142" class="Function"
+  <a name="2371" href="Data.Nat.InfinitelyOften.html#witness" class="Function"
       >witness</a
-      ><a name="2370"
-      > </a
-      ><a name="2371" href="Data.Nat.InfinitelyOften.html#2355" class="Bound"
+      > <a name="2379" href="Data.Nat.InfinitelyOften.html#2363" class="Bound"
       >inf</a
-      ><a name="2374"
-      >                     </a
-      ><a name="2395" href="Category.Monad.Indexed.html#568" class="Function Operator"
+      >                     <a name="2403" href="Category.Monad.Indexed.html#568" class="Function Operator"
       >&gt;&gt;=</a
-      ><a name="2398"
-      > </a
-      ><a name="2399" class="Symbol"
+      > <a name="2407" class="Symbol"
       >&#955;</a
-      ><a name="2400"
-      > </a
-      ><a name="2401" href="Data.Nat.InfinitelyOften.html#2401" class="Bound"
+      > <a name="2409" href="Data.Nat.InfinitelyOften.html#2409" class="Bound"
       >w&#8321;</a
-      ><a name="2403"
-      > </a
-      ><a name="2404" class="Symbol"
+      > <a name="2412" class="Symbol"
       >&#8594;</a
-      ><a name="2405"
       >
-  </a
-      ><a name="2408" href="Data.Nat.InfinitelyOften.html#2142" class="Function"
+  <a name="2416" href="Data.Nat.InfinitelyOften.html#witness" class="Function"
       >witness</a
-      ><a name="2415"
-      > </a
-      ><a name="2416" class="Symbol"
+      > <a name="2424" class="Symbol"
       >(</a
-      ><a name="2417" href="Data.Nat.InfinitelyOften.html#1873" class="Function"
+      ><a name="2425" href="Data.Nat.InfinitelyOften.html#up" class="Function"
       >up</a
-      ><a name="2419"
-      > </a
-      ><a name="2420" class="Symbol"
+      > <a name="2428" class="Symbol"
       >(</a
-      ><a name="2421" class="Number"
+      ><a name="2429" class="Number"
       >1</a
-      ><a name="2422"
-      > </a
-      ><a name="2423" href="Agda.Builtin.Nat.html#230" class="Primitive Operator"
+      > <a name="2431" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      ><a name="2424"
-      > </a
-      ><a name="2425" href="Data.Product.html#525" class="Field"
+      > <a name="2433" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="2430"
-      > </a
-      ><a name="2431" href="Data.Nat.InfinitelyOften.html#2401" class="Bound"
+      > <a name="2439" href="Data.Nat.InfinitelyOften.html#2409" class="Bound"
       >w&#8321;</a
-      ><a name="2433" class="Symbol"
+      ><a name="2441" class="Symbol"
       >)</a
-      ><a name="2434"
-      > </a
-      ><a name="2435" href="Data.Nat.InfinitelyOften.html#2355" class="Bound"
+      > <a name="2443" href="Data.Nat.InfinitelyOften.html#2363" class="Bound"
       >inf</a
-      ><a name="2438" class="Symbol"
+      ><a name="2446" class="Symbol"
       >)</a
-      ><a name="2439"
-      > </a
-      ><a name="2440" href="Category.Monad.Indexed.html#568" class="Function Operator"
+      > <a name="2448" href="Category.Monad.Indexed.html#568" class="Function Operator"
       >&gt;&gt;=</a
-      ><a name="2443"
-      > </a
-      ><a name="2444" class="Symbol"
+      > <a name="2452" class="Symbol"
       >&#955;</a
-      ><a name="2445"
-      > </a
-      ><a name="2446" href="Data.Nat.InfinitelyOften.html#2446" class="Bound"
+      > <a name="2454" href="Data.Nat.InfinitelyOften.html#2454" class="Bound"
       >w&#8322;</a
-      ><a name="2448"
-      > </a
-      ><a name="2449" class="Symbol"
+      > <a name="2457" class="Symbol"
       >&#8594;</a
-      ><a name="2450"
       >
-  </a
-      ><a name="2453" href="Category.Monad.Indexed.html#533" class="Function"
+  <a name="2461" href="Category.Monad.Indexed.html#533" class="Function"
       >return</a
-      ><a name="2459"
-      > </a
-      ><a name="2460" class="Symbol"
+      > <a name="2468" class="Symbol"
       >(_</a
-      ><a name="2462"
-      > </a
-      ><a name="2463" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2471" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2464"
-      > </a
-      ><a name="2465" class="Symbol"
+      > <a name="2473" class="Symbol"
       >_</a
-      ><a name="2466"
-      > </a
-      ><a name="2467" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2475" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2468"
-      > </a
-      ><a name="2469" href="Data.Nat.Properties.html#10395" class="Function"
+      > <a name="2477" href="Data.Nat.Properties.html#m&#8802;1+m+n" class="Function"
       >NatProp.m&#8802;1+m+n</a
-      ><a name="2484"
-      > </a
-      ><a name="2485" class="Symbol"
+      > <a name="2493" class="Symbol"
       >(</a
-      ><a name="2486" href="Data.Product.html#525" class="Field"
+      ><a name="2494" href="Data.Product.html#&#931;.proj&#8321;" class="Field"
       >proj&#8321;</a
-      ><a name="2491"
-      > </a
-      ><a name="2492" href="Data.Nat.InfinitelyOften.html#2401" class="Bound"
+      > <a name="2500" href="Data.Nat.InfinitelyOften.html#2409" class="Bound"
       >w&#8321;</a
-      ><a name="2494" class="Symbol"
+      ><a name="2502" class="Symbol"
       >)</a
-      ><a name="2495"
-      > </a
-      ><a name="2496" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2504" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2497"
-      > </a
-      ><a name="2498" href="Data.Product.html#539" class="Field"
+      > <a name="2506" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
       >proj&#8322;</a
-      ><a name="2503"
-      > </a
-      ><a name="2504" href="Data.Nat.InfinitelyOften.html#2401" class="Bound"
+      > <a name="2512" href="Data.Nat.InfinitelyOften.html#2409" class="Bound"
       >w&#8321;</a
-      ><a name="2506"
-      > </a
-      ><a name="2507" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="2515" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="2508"
-      > </a
-      ><a name="2509" href="Data.Product.html#539" class="Field"
+      > <a name="2517" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
       >proj&#8322;</a
-      ><a name="2514"
-      > </a
-      ><a name="2515" href="Data.Nat.InfinitelyOften.html#2446" class="Bound"
+      > <a name="2523" href="Data.Nat.InfinitelyOften.html#2454" class="Bound"
       >w&#8322;</a
-      ><a name="2517" class="Symbol"
+      ><a name="2525" class="Symbol"
       >)</a
-      ><a name="2518"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

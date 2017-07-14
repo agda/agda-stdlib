@@ -11,1538 +11,884 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Lists with fast append</a
-      ><a name="131"
       >
-</a
-      ><a name="132" class="Comment"
+<a name="132" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="204"
       >
 
-</a
-      ><a name="206" class="Keyword"
+<a name="206" class="Keyword"
       >module</a
-      ><a name="212"
-      > </a
-      ><a name="213" href="Data.DifferenceList.html#1" class="Module"
+      > <a name="213" href="Data.DifferenceList.html" class="Module"
       >Data.DifferenceList</a
-      ><a name="232"
-      > </a
-      ><a name="233" class="Keyword"
+      > <a name="233" class="Keyword"
       >where</a
-      ><a name="238"
       >
 
-</a
-      ><a name="240" class="Keyword"
+<a name="240" class="Keyword"
       >open</a
-      ><a name="244"
-      > </a
-      ><a name="245" class="Keyword"
+      > <a name="245" class="Keyword"
       >import</a
-      ><a name="251"
-      > </a
-      ><a name="252" href="Data.List.Base.html#1" class="Module"
+      > <a name="252" href="Data.List.Base.html" class="Module"
       >Data.List.Base</a
-      ><a name="266"
-      > </a
-      ><a name="267" class="Symbol"
+      > <a name="267" class="Symbol"
       >as</a
-      ><a name="269"
-      > </a
-      ><a name="270" class="Module"
+      > <a name="270" class="Module"
       >L</a
-      ><a name="271"
-      > </a
-      ><a name="272" class="Keyword"
+      > <a name="272" class="Keyword"
       >using</a
-      ><a name="277"
-      > </a
-      ><a name="278" class="Symbol"
+      > <a name="278" class="Symbol"
       >(</a
-      ><a name="279" href="Agda.Builtin.List.html#80" class="Datatype"
+      ><a name="279" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
       ><a name="283" class="Symbol"
       >)</a
-      ><a name="284"
       >
-</a
-      ><a name="285" class="Keyword"
+<a name="285" class="Keyword"
       >open</a
-      ><a name="289"
-      > </a
-      ><a name="290" class="Keyword"
+      > <a name="290" class="Keyword"
       >import</a
-      ><a name="296"
-      > </a
-      ><a name="297" href="Function.html#1" class="Module"
+      > <a name="297" href="Function.html" class="Module"
       >Function</a
-      ><a name="305"
       >
-</a
-      ><a name="306" class="Keyword"
+<a name="306" class="Keyword"
       >open</a
-      ><a name="310"
-      > </a
-      ><a name="311" class="Keyword"
+      > <a name="311" class="Keyword"
       >import</a
-      ><a name="317"
-      > </a
-      ><a name="318" href="Data.Nat.Base.html#1" class="Module"
+      > <a name="318" href="Data.Nat.Base.html" class="Module"
       >Data.Nat.Base</a
-      ><a name="331"
       >
 
-</a
-      ><a name="333" class="Keyword"
+<a name="333" class="Keyword"
       >infixr</a
-      ><a name="339"
-      > </a
-      ><a name="340" class="Number"
+      > <a name="340" class="Number"
       >5</a
-      ><a name="341"
-      > _&#8759;_ _++_
+      > <a name="342" href="Data.DifferenceList.html#_&#8759;_" class="Function Operator"
+      >_&#8759;_</a
+      > <a name="346" href="Data.DifferenceList.html#_++_" class="Function Operator"
+      >_++_</a
+      >
 
-</a
-      ><a name="352" href="Data.DifferenceList.html#352" class="Function"
+<a name="DiffList" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="360"
-      > </a
-      ><a name="361" class="Symbol"
+      > <a name="361" class="Symbol"
       >:</a
-      ><a name="362"
-      > </a
-      ><a name="363" class="Symbol"
+      > <a name="363" class="Symbol"
       >&#8704;</a
-      ><a name="364"
-      > </a
-      ><a name="365" class="Symbol"
+      > <a name="365" class="Symbol"
       >{</a
       ><a name="366" href="Data.DifferenceList.html#366" class="Bound"
       >&#8467;</a
       ><a name="367" class="Symbol"
       >}</a
-      ><a name="368"
-      > </a
-      ><a name="369" class="Symbol"
+      > <a name="369" class="Symbol"
       >&#8594;</a
-      ><a name="370"
-      > </a
-      ><a name="371" class="PrimitiveType"
+      > <a name="371" class="PrimitiveType"
       >Set</a
-      ><a name="374"
-      > </a
-      ><a name="375" href="Data.DifferenceList.html#366" class="Bound"
+      > <a name="375" href="Data.DifferenceList.html#366" class="Bound"
       >&#8467;</a
-      ><a name="376"
-      > </a
-      ><a name="377" class="Symbol"
+      > <a name="377" class="Symbol"
       >&#8594;</a
-      ><a name="378"
-      > </a
-      ><a name="379" class="PrimitiveType"
+      > <a name="379" class="PrimitiveType"
       >Set</a
-      ><a name="382"
-      > </a
-      ><a name="383" href="Data.DifferenceList.html#366" class="Bound"
+      > <a name="383" href="Data.DifferenceList.html#366" class="Bound"
       >&#8467;</a
-      ><a name="384"
       >
-</a
-      ><a name="385" href="Data.DifferenceList.html#352" class="Function"
+<a name="385" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="393"
-      > </a
-      ><a name="394" href="Data.DifferenceList.html#394" class="Bound"
+      > <a name="394" href="Data.DifferenceList.html#394" class="Bound"
       >A</a
-      ><a name="395"
-      > </a
-      ><a name="396" class="Symbol"
+      > <a name="396" class="Symbol"
       >=</a
-      ><a name="397"
-      > </a
-      ><a name="398" href="Agda.Builtin.List.html#80" class="Datatype"
+      > <a name="398" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
-      ><a name="402"
-      > </a
-      ><a name="403" href="Data.DifferenceList.html#394" class="Bound"
+      > <a name="403" href="Data.DifferenceList.html#394" class="Bound"
       >A</a
-      ><a name="404"
-      > </a
-      ><a name="405" class="Symbol"
+      > <a name="405" class="Symbol"
       >&#8594;</a
-      ><a name="406"
-      > </a
-      ><a name="407" href="Agda.Builtin.List.html#80" class="Datatype"
+      > <a name="407" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
-      ><a name="411"
-      > </a
-      ><a name="412" href="Data.DifferenceList.html#394" class="Bound"
+      > <a name="412" href="Data.DifferenceList.html#394" class="Bound"
       >A</a
-      ><a name="413"
       >
 
-</a
-      ><a name="415" href="Data.DifferenceList.html#415" class="Function"
+<a name="lift" href="Data.DifferenceList.html#lift" class="Function"
       >lift</a
-      ><a name="419"
-      > </a
-      ><a name="420" class="Symbol"
+      > <a name="420" class="Symbol"
       >:</a
-      ><a name="421"
-      > </a
-      ><a name="422" class="Symbol"
+      > <a name="422" class="Symbol"
       >&#8704;</a
-      ><a name="423"
-      > </a
-      ><a name="424" class="Symbol"
+      > <a name="424" class="Symbol"
       >{</a
       ><a name="425" href="Data.DifferenceList.html#425" class="Bound"
       >a</a
       ><a name="426" class="Symbol"
       >}</a
-      ><a name="427"
-      > </a
-      ><a name="428" class="Symbol"
+      > <a name="428" class="Symbol"
       >{</a
       ><a name="429" href="Data.DifferenceList.html#429" class="Bound"
       >A</a
-      ><a name="430"
-      > </a
-      ><a name="431" class="Symbol"
+      > <a name="431" class="Symbol"
       >:</a
-      ><a name="432"
-      > </a
-      ><a name="433" class="PrimitiveType"
+      > <a name="433" class="PrimitiveType"
       >Set</a
-      ><a name="436"
-      > </a
-      ><a name="437" href="Data.DifferenceList.html#425" class="Bound"
+      > <a name="437" href="Data.DifferenceList.html#425" class="Bound"
       >a</a
       ><a name="438" class="Symbol"
       >}</a
-      ><a name="439"
-      > </a
-      ><a name="440" class="Symbol"
+      > <a name="440" class="Symbol"
       >&#8594;</a
-      ><a name="441"
       >
-       </a
-      ><a name="449" class="Symbol"
+       <a name="449" class="Symbol"
       >(</a
-      ><a name="450" href="Agda.Builtin.List.html#80" class="Datatype"
+      ><a name="450" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
-      ><a name="454"
-      > </a
-      ><a name="455" href="Data.DifferenceList.html#429" class="Bound"
+      > <a name="455" href="Data.DifferenceList.html#429" class="Bound"
       >A</a
-      ><a name="456"
-      > </a
-      ><a name="457" class="Symbol"
+      > <a name="457" class="Symbol"
       >&#8594;</a
-      ><a name="458"
-      > </a
-      ><a name="459" href="Agda.Builtin.List.html#80" class="Datatype"
+      > <a name="459" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
-      ><a name="463"
-      > </a
-      ><a name="464" href="Data.DifferenceList.html#429" class="Bound"
+      > <a name="464" href="Data.DifferenceList.html#429" class="Bound"
       >A</a
       ><a name="465" class="Symbol"
       >)</a
-      ><a name="466"
-      > </a
-      ><a name="467" class="Symbol"
+      > <a name="467" class="Symbol"
       >&#8594;</a
-      ><a name="468"
-      > </a
-      ><a name="469" class="Symbol"
+      > <a name="469" class="Symbol"
       >(</a
-      ><a name="470" href="Data.DifferenceList.html#352" class="Function"
+      ><a name="470" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="478"
-      > </a
-      ><a name="479" href="Data.DifferenceList.html#429" class="Bound"
+      > <a name="479" href="Data.DifferenceList.html#429" class="Bound"
       >A</a
-      ><a name="480"
-      > </a
-      ><a name="481" class="Symbol"
+      > <a name="481" class="Symbol"
       >&#8594;</a
-      ><a name="482"
-      > </a
-      ><a name="483" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="483" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="491"
-      > </a
-      ><a name="492" href="Data.DifferenceList.html#429" class="Bound"
+      > <a name="492" href="Data.DifferenceList.html#429" class="Bound"
       >A</a
       ><a name="493" class="Symbol"
       >)</a
-      ><a name="494"
       >
-</a
-      ><a name="495" href="Data.DifferenceList.html#415" class="Function"
+<a name="495" href="Data.DifferenceList.html#lift" class="Function"
       >lift</a
-      ><a name="499"
-      > </a
-      ><a name="500" href="Data.DifferenceList.html#500" class="Bound"
+      > <a name="500" href="Data.DifferenceList.html#500" class="Bound"
       >f</a
-      ><a name="501"
-      > </a
-      ><a name="502" href="Data.DifferenceList.html#502" class="Bound"
+      > <a name="502" href="Data.DifferenceList.html#502" class="Bound"
       >xs</a
-      ><a name="504"
-      > </a
-      ><a name="505" class="Symbol"
+      > <a name="505" class="Symbol"
       >=</a
-      ><a name="506"
-      > </a
-      ><a name="507" class="Symbol"
+      > <a name="507" class="Symbol"
       >&#955;</a
-      ><a name="508"
-      > </a
-      ><a name="509" href="Data.DifferenceList.html#509" class="Bound"
+      > <a name="509" href="Data.DifferenceList.html#509" class="Bound"
       >k</a
-      ><a name="510"
-      > </a
-      ><a name="511" class="Symbol"
+      > <a name="511" class="Symbol"
       >&#8594;</a
-      ><a name="512"
-      > </a
-      ><a name="513" href="Data.DifferenceList.html#500" class="Bound"
+      > <a name="513" href="Data.DifferenceList.html#500" class="Bound"
       >f</a
-      ><a name="514"
-      > </a
-      ><a name="515" class="Symbol"
+      > <a name="515" class="Symbol"
       >(</a
       ><a name="516" href="Data.DifferenceList.html#502" class="Bound"
       >xs</a
-      ><a name="518"
-      > </a
-      ><a name="519" href="Data.DifferenceList.html#509" class="Bound"
+      > <a name="519" href="Data.DifferenceList.html#509" class="Bound"
       >k</a
       ><a name="520" class="Symbol"
       >)</a
-      ><a name="521"
       >
 
-</a
-      ><a name="523" href="Data.DifferenceList.html#523" class="Function"
+<a name="[]" href="Data.DifferenceList.html#[]" class="Function"
       >[]</a
-      ><a name="525"
-      > </a
-      ><a name="526" class="Symbol"
+      > <a name="526" class="Symbol"
       >:</a
-      ><a name="527"
-      > </a
-      ><a name="528" class="Symbol"
+      > <a name="528" class="Symbol"
       >&#8704;</a
-      ><a name="529"
-      > </a
-      ><a name="530" class="Symbol"
+      > <a name="530" class="Symbol"
       >{</a
       ><a name="531" href="Data.DifferenceList.html#531" class="Bound"
       >a</a
       ><a name="532" class="Symbol"
       >}</a
-      ><a name="533"
-      > </a
-      ><a name="534" class="Symbol"
+      > <a name="534" class="Symbol"
       >{</a
       ><a name="535" href="Data.DifferenceList.html#535" class="Bound"
       >A</a
-      ><a name="536"
-      > </a
-      ><a name="537" class="Symbol"
+      > <a name="537" class="Symbol"
       >:</a
-      ><a name="538"
-      > </a
-      ><a name="539" class="PrimitiveType"
+      > <a name="539" class="PrimitiveType"
       >Set</a
-      ><a name="542"
-      > </a
-      ><a name="543" href="Data.DifferenceList.html#531" class="Bound"
+      > <a name="543" href="Data.DifferenceList.html#531" class="Bound"
       >a</a
       ><a name="544" class="Symbol"
       >}</a
-      ><a name="545"
-      > </a
-      ><a name="546" class="Symbol"
+      > <a name="546" class="Symbol"
       >&#8594;</a
-      ><a name="547"
-      > </a
-      ><a name="548" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="548" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="556"
-      > </a
-      ><a name="557" href="Data.DifferenceList.html#535" class="Bound"
+      > <a name="557" href="Data.DifferenceList.html#535" class="Bound"
       >A</a
-      ><a name="558"
       >
-</a
-      ><a name="559" href="Data.DifferenceList.html#523" class="Function"
+<a name="559" href="Data.DifferenceList.html#[]" class="Function"
       >[]</a
-      ><a name="561"
-      > </a
-      ><a name="562" class="Symbol"
+      > <a name="562" class="Symbol"
       >=</a
-      ><a name="563"
-      > </a
-      ><a name="564" class="Symbol"
+      > <a name="564" class="Symbol"
       >&#955;</a
-      ><a name="565"
-      > </a
-      ><a name="566" href="Data.DifferenceList.html#566" class="Bound"
+      > <a name="566" href="Data.DifferenceList.html#566" class="Bound"
       >k</a
-      ><a name="567"
-      > </a
-      ><a name="568" class="Symbol"
+      > <a name="568" class="Symbol"
       >&#8594;</a
-      ><a name="569"
-      > </a
-      ><a name="570" href="Data.DifferenceList.html#566" class="Bound"
+      > <a name="570" href="Data.DifferenceList.html#566" class="Bound"
       >k</a
-      ><a name="571"
       >
 
-</a
-      ><a name="573" href="Data.DifferenceList.html#573" class="Function Operator"
+<a name="_&#8759;_" href="Data.DifferenceList.html#_&#8759;_" class="Function Operator"
       >_&#8759;_</a
-      ><a name="576"
-      > </a
-      ><a name="577" class="Symbol"
+      > <a name="577" class="Symbol"
       >:</a
-      ><a name="578"
-      > </a
-      ><a name="579" class="Symbol"
+      > <a name="579" class="Symbol"
       >&#8704;</a
-      ><a name="580"
-      > </a
-      ><a name="581" class="Symbol"
+      > <a name="581" class="Symbol"
       >{</a
       ><a name="582" href="Data.DifferenceList.html#582" class="Bound"
       >a</a
       ><a name="583" class="Symbol"
       >}</a
-      ><a name="584"
-      > </a
-      ><a name="585" class="Symbol"
+      > <a name="585" class="Symbol"
       >{</a
       ><a name="586" href="Data.DifferenceList.html#586" class="Bound"
       >A</a
-      ><a name="587"
-      > </a
-      ><a name="588" class="Symbol"
+      > <a name="588" class="Symbol"
       >:</a
-      ><a name="589"
-      > </a
-      ><a name="590" class="PrimitiveType"
+      > <a name="590" class="PrimitiveType"
       >Set</a
-      ><a name="593"
-      > </a
-      ><a name="594" href="Data.DifferenceList.html#582" class="Bound"
+      > <a name="594" href="Data.DifferenceList.html#582" class="Bound"
       >a</a
       ><a name="595" class="Symbol"
       >}</a
-      ><a name="596"
-      > </a
-      ><a name="597" class="Symbol"
+      > <a name="597" class="Symbol"
       >&#8594;</a
-      ><a name="598"
-      > </a
-      ><a name="599" href="Data.DifferenceList.html#586" class="Bound"
+      > <a name="599" href="Data.DifferenceList.html#586" class="Bound"
       >A</a
-      ><a name="600"
-      > </a
-      ><a name="601" class="Symbol"
+      > <a name="601" class="Symbol"
       >&#8594;</a
-      ><a name="602"
-      > </a
-      ><a name="603" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="603" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="611"
-      > </a
-      ><a name="612" href="Data.DifferenceList.html#586" class="Bound"
+      > <a name="612" href="Data.DifferenceList.html#586" class="Bound"
       >A</a
-      ><a name="613"
-      > </a
-      ><a name="614" class="Symbol"
+      > <a name="614" class="Symbol"
       >&#8594;</a
-      ><a name="615"
-      > </a
-      ><a name="616" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="616" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="624"
-      > </a
-      ><a name="625" href="Data.DifferenceList.html#586" class="Bound"
+      > <a name="625" href="Data.DifferenceList.html#586" class="Bound"
       >A</a
-      ><a name="626"
       >
-</a
-      ><a name="627" href="Data.DifferenceList.html#573" class="Function Operator"
+<a name="627" href="Data.DifferenceList.html#_&#8759;_" class="Function Operator"
       >_&#8759;_</a
-      ><a name="630"
-      > </a
-      ><a name="631" href="Data.DifferenceList.html#631" class="Bound"
+      > <a name="631" href="Data.DifferenceList.html#631" class="Bound"
       >x</a
-      ><a name="632"
-      > </a
-      ><a name="633" class="Symbol"
+      > <a name="633" class="Symbol"
       >=</a
-      ><a name="634"
-      > </a
-      ><a name="635" href="Data.DifferenceList.html#415" class="Function"
+      > <a name="635" href="Data.DifferenceList.html#lift" class="Function"
       >lift</a
-      ><a name="639"
-      > </a
-      ><a name="640" class="Symbol"
+      > <a name="640" class="Symbol"
       >(</a
-      ><a name="641" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator"
+      ><a name="641" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >L._&#8759;_</a
-      ><a name="646"
-      > </a
-      ><a name="647" href="Data.DifferenceList.html#631" class="Bound"
+      > <a name="647" href="Data.DifferenceList.html#631" class="Bound"
       >x</a
       ><a name="648" class="Symbol"
       >)</a
-      ><a name="649"
       >
 
-</a
-      ><a name="651" href="Data.DifferenceList.html#651" class="Function Operator"
+<a name="[_]" href="Data.DifferenceList.html#[_]" class="Function Operator"
       >[_]</a
-      ><a name="654"
-      > </a
-      ><a name="655" class="Symbol"
+      > <a name="655" class="Symbol"
       >:</a
-      ><a name="656"
-      > </a
-      ><a name="657" class="Symbol"
+      > <a name="657" class="Symbol"
       >&#8704;</a
-      ><a name="658"
-      > </a
-      ><a name="659" class="Symbol"
+      > <a name="659" class="Symbol"
       >{</a
       ><a name="660" href="Data.DifferenceList.html#660" class="Bound"
       >a</a
       ><a name="661" class="Symbol"
       >}</a
-      ><a name="662"
-      > </a
-      ><a name="663" class="Symbol"
+      > <a name="663" class="Symbol"
       >{</a
       ><a name="664" href="Data.DifferenceList.html#664" class="Bound"
       >A</a
-      ><a name="665"
-      > </a
-      ><a name="666" class="Symbol"
+      > <a name="666" class="Symbol"
       >:</a
-      ><a name="667"
-      > </a
-      ><a name="668" class="PrimitiveType"
+      > <a name="668" class="PrimitiveType"
       >Set</a
-      ><a name="671"
-      > </a
-      ><a name="672" href="Data.DifferenceList.html#660" class="Bound"
+      > <a name="672" href="Data.DifferenceList.html#660" class="Bound"
       >a</a
       ><a name="673" class="Symbol"
       >}</a
-      ><a name="674"
-      > </a
-      ><a name="675" class="Symbol"
+      > <a name="675" class="Symbol"
       >&#8594;</a
-      ><a name="676"
-      > </a
-      ><a name="677" href="Data.DifferenceList.html#664" class="Bound"
+      > <a name="677" href="Data.DifferenceList.html#664" class="Bound"
       >A</a
-      ><a name="678"
-      > </a
-      ><a name="679" class="Symbol"
+      > <a name="679" class="Symbol"
       >&#8594;</a
-      ><a name="680"
-      > </a
-      ><a name="681" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="681" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="689"
-      > </a
-      ><a name="690" href="Data.DifferenceList.html#664" class="Bound"
+      > <a name="690" href="Data.DifferenceList.html#664" class="Bound"
       >A</a
-      ><a name="691"
       >
-</a
-      ><a name="692" href="Data.DifferenceList.html#651" class="Function Operator"
+<a name="692" href="Data.DifferenceList.html#[_]" class="Function Operator"
       >[</a
-      ><a name="693"
-      > </a
-      ><a name="694" href="Data.DifferenceList.html#694" class="Bound"
+      > <a name="694" href="Data.DifferenceList.html#694" class="Bound"
       >x</a
-      ><a name="695"
-      > </a
-      ><a name="696" href="Data.DifferenceList.html#651" class="Function Operator"
+      > <a name="696" href="Data.DifferenceList.html#[_]" class="Function Operator"
       >]</a
-      ><a name="697"
-      > </a
-      ><a name="698" class="Symbol"
+      > <a name="698" class="Symbol"
       >=</a
-      ><a name="699"
-      > </a
-      ><a name="700" href="Data.DifferenceList.html#694" class="Bound"
+      > <a name="700" href="Data.DifferenceList.html#694" class="Bound"
       >x</a
-      ><a name="701"
-      > </a
-      ><a name="702" href="Data.DifferenceList.html#573" class="Function Operator"
+      > <a name="702" href="Data.DifferenceList.html#_&#8759;_" class="Function Operator"
       >&#8759;</a
-      ><a name="703"
-      > </a
-      ><a name="704" href="Data.DifferenceList.html#523" class="Function"
+      > <a name="704" href="Data.DifferenceList.html#[]" class="Function"
       >[]</a
-      ><a name="706"
       >
 
-</a
-      ><a name="708" href="Data.DifferenceList.html#708" class="Function Operator"
+<a name="_++_" href="Data.DifferenceList.html#_++_" class="Function Operator"
       >_++_</a
-      ><a name="712"
-      > </a
-      ><a name="713" class="Symbol"
+      > <a name="713" class="Symbol"
       >:</a
-      ><a name="714"
-      > </a
-      ><a name="715" class="Symbol"
+      > <a name="715" class="Symbol"
       >&#8704;</a
-      ><a name="716"
-      > </a
-      ><a name="717" class="Symbol"
+      > <a name="717" class="Symbol"
       >{</a
       ><a name="718" href="Data.DifferenceList.html#718" class="Bound"
       >a</a
       ><a name="719" class="Symbol"
       >}</a
-      ><a name="720"
-      > </a
-      ><a name="721" class="Symbol"
+      > <a name="721" class="Symbol"
       >{</a
       ><a name="722" href="Data.DifferenceList.html#722" class="Bound"
       >A</a
-      ><a name="723"
-      > </a
-      ><a name="724" class="Symbol"
+      > <a name="724" class="Symbol"
       >:</a
-      ><a name="725"
-      > </a
-      ><a name="726" class="PrimitiveType"
+      > <a name="726" class="PrimitiveType"
       >Set</a
-      ><a name="729"
-      > </a
-      ><a name="730" href="Data.DifferenceList.html#718" class="Bound"
+      > <a name="730" href="Data.DifferenceList.html#718" class="Bound"
       >a</a
       ><a name="731" class="Symbol"
       >}</a
-      ><a name="732"
-      > </a
-      ><a name="733" class="Symbol"
+      > <a name="733" class="Symbol"
       >&#8594;</a
-      ><a name="734"
-      > </a
-      ><a name="735" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="735" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="743"
-      > </a
-      ><a name="744" href="Data.DifferenceList.html#722" class="Bound"
+      > <a name="744" href="Data.DifferenceList.html#722" class="Bound"
       >A</a
-      ><a name="745"
-      > </a
-      ><a name="746" class="Symbol"
+      > <a name="746" class="Symbol"
       >&#8594;</a
-      ><a name="747"
-      > </a
-      ><a name="748" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="748" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="756"
-      > </a
-      ><a name="757" href="Data.DifferenceList.html#722" class="Bound"
+      > <a name="757" href="Data.DifferenceList.html#722" class="Bound"
       >A</a
-      ><a name="758"
-      > </a
-      ><a name="759" class="Symbol"
+      > <a name="759" class="Symbol"
       >&#8594;</a
-      ><a name="760"
-      > </a
-      ><a name="761" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="761" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="769"
-      > </a
-      ><a name="770" href="Data.DifferenceList.html#722" class="Bound"
+      > <a name="770" href="Data.DifferenceList.html#722" class="Bound"
       >A</a
-      ><a name="771"
       >
-</a
-      ><a name="772" href="Data.DifferenceList.html#772" class="Bound"
+<a name="772" href="Data.DifferenceList.html#772" class="Bound"
       >xs</a
-      ><a name="774"
-      > </a
-      ><a name="775" href="Data.DifferenceList.html#708" class="Function Operator"
+      > <a name="775" href="Data.DifferenceList.html#_++_" class="Function Operator"
       >++</a
-      ><a name="777"
-      > </a
-      ><a name="778" href="Data.DifferenceList.html#778" class="Bound"
+      > <a name="778" href="Data.DifferenceList.html#778" class="Bound"
       >ys</a
-      ><a name="780"
-      > </a
-      ><a name="781" class="Symbol"
+      > <a name="781" class="Symbol"
       >=</a
-      ><a name="782"
-      > </a
-      ><a name="783" class="Symbol"
+      > <a name="783" class="Symbol"
       >&#955;</a
-      ><a name="784"
-      > </a
-      ><a name="785" href="Data.DifferenceList.html#785" class="Bound"
+      > <a name="785" href="Data.DifferenceList.html#785" class="Bound"
       >k</a
-      ><a name="786"
-      > </a
-      ><a name="787" class="Symbol"
+      > <a name="787" class="Symbol"
       >&#8594;</a
-      ><a name="788"
-      > </a
-      ><a name="789" href="Data.DifferenceList.html#772" class="Bound"
+      > <a name="789" href="Data.DifferenceList.html#772" class="Bound"
       >xs</a
-      ><a name="791"
-      > </a
-      ><a name="792" class="Symbol"
+      > <a name="792" class="Symbol"
       >(</a
       ><a name="793" href="Data.DifferenceList.html#778" class="Bound"
       >ys</a
-      ><a name="795"
-      > </a
-      ><a name="796" href="Data.DifferenceList.html#785" class="Bound"
+      > <a name="796" href="Data.DifferenceList.html#785" class="Bound"
       >k</a
       ><a name="797" class="Symbol"
       >)</a
-      ><a name="798"
       >
 
-</a
-      ><a name="800" href="Data.DifferenceList.html#800" class="Function"
+<a name="toList" href="Data.DifferenceList.html#toList" class="Function"
       >toList</a
-      ><a name="806"
-      > </a
-      ><a name="807" class="Symbol"
+      > <a name="807" class="Symbol"
       >:</a
-      ><a name="808"
-      > </a
-      ><a name="809" class="Symbol"
+      > <a name="809" class="Symbol"
       >&#8704;</a
-      ><a name="810"
-      > </a
-      ><a name="811" class="Symbol"
+      > <a name="811" class="Symbol"
       >{</a
       ><a name="812" href="Data.DifferenceList.html#812" class="Bound"
       >a</a
       ><a name="813" class="Symbol"
       >}</a
-      ><a name="814"
-      > </a
-      ><a name="815" class="Symbol"
+      > <a name="815" class="Symbol"
       >{</a
       ><a name="816" href="Data.DifferenceList.html#816" class="Bound"
       >A</a
-      ><a name="817"
-      > </a
-      ><a name="818" class="Symbol"
+      > <a name="818" class="Symbol"
       >:</a
-      ><a name="819"
-      > </a
-      ><a name="820" class="PrimitiveType"
+      > <a name="820" class="PrimitiveType"
       >Set</a
-      ><a name="823"
-      > </a
-      ><a name="824" href="Data.DifferenceList.html#812" class="Bound"
+      > <a name="824" href="Data.DifferenceList.html#812" class="Bound"
       >a</a
       ><a name="825" class="Symbol"
       >}</a
-      ><a name="826"
-      > </a
-      ><a name="827" class="Symbol"
+      > <a name="827" class="Symbol"
       >&#8594;</a
-      ><a name="828"
-      > </a
-      ><a name="829" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="829" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="837"
-      > </a
-      ><a name="838" href="Data.DifferenceList.html#816" class="Bound"
+      > <a name="838" href="Data.DifferenceList.html#816" class="Bound"
       >A</a
-      ><a name="839"
-      > </a
-      ><a name="840" class="Symbol"
+      > <a name="840" class="Symbol"
       >&#8594;</a
-      ><a name="841"
-      > </a
-      ><a name="842" href="Agda.Builtin.List.html#80" class="Datatype"
+      > <a name="842" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
-      ><a name="846"
-      > </a
-      ><a name="847" href="Data.DifferenceList.html#816" class="Bound"
+      > <a name="847" href="Data.DifferenceList.html#816" class="Bound"
       >A</a
-      ><a name="848"
       >
-</a
-      ><a name="849" href="Data.DifferenceList.html#800" class="Function"
+<a name="849" href="Data.DifferenceList.html#toList" class="Function"
       >toList</a
-      ><a name="855"
-      > </a
-      ><a name="856" href="Data.DifferenceList.html#856" class="Bound"
+      > <a name="856" href="Data.DifferenceList.html#856" class="Bound"
       >xs</a
-      ><a name="858"
-      > </a
-      ><a name="859" class="Symbol"
+      > <a name="859" class="Symbol"
       >=</a
-      ><a name="860"
-      > </a
-      ><a name="861" href="Data.DifferenceList.html#856" class="Bound"
+      > <a name="861" href="Data.DifferenceList.html#856" class="Bound"
       >xs</a
-      ><a name="863"
-      > </a
-      ><a name="864" href="Agda.Builtin.List.html#117" class="InductiveConstructor"
+      > <a name="864" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
       >L.[]</a
-      ><a name="868"
       >
 
-</a
-      ><a name="870" class="Comment"
+<a name="870" class="Comment"
       >-- fromList xs is linear in the length of xs.</a
-      ><a name="915"
       >
 
-</a
-      ><a name="917" href="Data.DifferenceList.html#917" class="Function"
+<a name="fromList" href="Data.DifferenceList.html#fromList" class="Function"
       >fromList</a
-      ><a name="925"
-      > </a
-      ><a name="926" class="Symbol"
+      > <a name="926" class="Symbol"
       >:</a
-      ><a name="927"
-      > </a
-      ><a name="928" class="Symbol"
+      > <a name="928" class="Symbol"
       >&#8704;</a
-      ><a name="929"
-      > </a
-      ><a name="930" class="Symbol"
+      > <a name="930" class="Symbol"
       >{</a
       ><a name="931" href="Data.DifferenceList.html#931" class="Bound"
       >a</a
       ><a name="932" class="Symbol"
       >}</a
-      ><a name="933"
-      > </a
-      ><a name="934" class="Symbol"
+      > <a name="934" class="Symbol"
       >{</a
       ><a name="935" href="Data.DifferenceList.html#935" class="Bound"
       >A</a
-      ><a name="936"
-      > </a
-      ><a name="937" class="Symbol"
+      > <a name="937" class="Symbol"
       >:</a
-      ><a name="938"
-      > </a
-      ><a name="939" class="PrimitiveType"
+      > <a name="939" class="PrimitiveType"
       >Set</a
-      ><a name="942"
-      > </a
-      ><a name="943" href="Data.DifferenceList.html#931" class="Bound"
+      > <a name="943" href="Data.DifferenceList.html#931" class="Bound"
       >a</a
       ><a name="944" class="Symbol"
       >}</a
-      ><a name="945"
-      > </a
-      ><a name="946" class="Symbol"
+      > <a name="946" class="Symbol"
       >&#8594;</a
-      ><a name="947"
-      > </a
-      ><a name="948" href="Agda.Builtin.List.html#80" class="Datatype"
+      > <a name="948" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
-      ><a name="952"
-      > </a
-      ><a name="953" href="Data.DifferenceList.html#935" class="Bound"
+      > <a name="953" href="Data.DifferenceList.html#935" class="Bound"
       >A</a
-      ><a name="954"
-      > </a
-      ><a name="955" class="Symbol"
+      > <a name="955" class="Symbol"
       >&#8594;</a
-      ><a name="956"
-      > </a
-      ><a name="957" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="957" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="965"
-      > </a
-      ><a name="966" href="Data.DifferenceList.html#935" class="Bound"
+      > <a name="966" href="Data.DifferenceList.html#935" class="Bound"
       >A</a
-      ><a name="967"
       >
-</a
-      ><a name="968" href="Data.DifferenceList.html#917" class="Function"
+<a name="968" href="Data.DifferenceList.html#fromList" class="Function"
       >fromList</a
-      ><a name="976"
-      > </a
-      ><a name="977" href="Data.DifferenceList.html#977" class="Bound"
+      > <a name="977" href="Data.DifferenceList.html#977" class="Bound"
       >xs</a
-      ><a name="979"
-      > </a
-      ><a name="980" class="Symbol"
+      > <a name="980" class="Symbol"
       >=</a
-      ><a name="981"
-      > </a
-      ><a name="982" class="Symbol"
+      > <a name="982" class="Symbol"
       >&#955;</a
-      ><a name="983"
-      > </a
-      ><a name="984" href="Data.DifferenceList.html#984" class="Bound"
+      > <a name="984" href="Data.DifferenceList.html#984" class="Bound"
       >k</a
-      ><a name="985"
-      > </a
-      ><a name="986" class="Symbol"
+      > <a name="986" class="Symbol"
       >&#8594;</a
-      ><a name="987"
-      > </a
-      ><a name="988" href="Data.DifferenceList.html#977" class="Bound"
+      > <a name="988" href="Data.DifferenceList.html#977" class="Bound"
       >xs</a
-      ><a name="990"
-      > </a
-      ><a name="991" href="Function.html#1932" class="Function Operator"
+      > <a name="991" href="Function.html#_&#10216;_&#10217;_" class="Function Operator"
       >&#10216;</a
-      ><a name="992"
-      > </a
-      ><a name="993" href="Data.List.Base.html#895" class="Function Operator"
+      > <a name="993" href="Data.List.Base.html#_++_" class="Function Operator"
       >L._++_</a
-      ><a name="999"
-      > </a
-      ><a name="1000" href="Function.html#1932" class="Function Operator"
+      > <a name="1000" href="Function.html#_&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="1001"
-      > </a
-      ><a name="1002" href="Data.DifferenceList.html#984" class="Bound"
+      > <a name="1002" href="Data.DifferenceList.html#984" class="Bound"
       >k</a
-      ><a name="1003"
       >
 
-</a
-      ><a name="1005" class="Comment"
+<a name="1005" class="Comment"
       >-- It is OK to use L._++_ here, since map is linear in the length of</a
-      ><a name="1073"
       >
-</a
-      ><a name="1074" class="Comment"
+<a name="1074" class="Comment"
       >-- the list anyway.</a
-      ><a name="1093"
       >
 
-</a
-      ><a name="1095" href="Data.DifferenceList.html#1095" class="Function"
+<a name="map" href="Data.DifferenceList.html#map" class="Function"
       >map</a
-      ><a name="1098"
-      > </a
-      ><a name="1099" class="Symbol"
+      > <a name="1099" class="Symbol"
       >:</a
-      ><a name="1100"
-      > </a
-      ><a name="1101" class="Symbol"
+      > <a name="1101" class="Symbol"
       >&#8704;</a
-      ><a name="1102"
-      > </a
-      ><a name="1103" class="Symbol"
+      > <a name="1103" class="Symbol"
       >{</a
       ><a name="1104" href="Data.DifferenceList.html#1104" class="Bound"
       >a</a
-      ><a name="1105"
-      > </a
-      ><a name="1106" href="Data.DifferenceList.html#1106" class="Bound"
+      > <a name="1106" href="Data.DifferenceList.html#1106" class="Bound"
       >b</a
       ><a name="1107" class="Symbol"
       >}</a
-      ><a name="1108"
-      > </a
-      ><a name="1109" class="Symbol"
+      > <a name="1109" class="Symbol"
       >{</a
       ><a name="1110" href="Data.DifferenceList.html#1110" class="Bound"
       >A</a
-      ><a name="1111"
-      > </a
-      ><a name="1112" class="Symbol"
+      > <a name="1112" class="Symbol"
       >:</a
-      ><a name="1113"
-      > </a
-      ><a name="1114" class="PrimitiveType"
+      > <a name="1114" class="PrimitiveType"
       >Set</a
-      ><a name="1117"
-      > </a
-      ><a name="1118" href="Data.DifferenceList.html#1104" class="Bound"
+      > <a name="1118" href="Data.DifferenceList.html#1104" class="Bound"
       >a</a
       ><a name="1119" class="Symbol"
       >}</a
-      ><a name="1120"
-      > </a
-      ><a name="1121" class="Symbol"
+      > <a name="1121" class="Symbol"
       >{</a
       ><a name="1122" href="Data.DifferenceList.html#1122" class="Bound"
       >B</a
-      ><a name="1123"
-      > </a
-      ><a name="1124" class="Symbol"
+      > <a name="1124" class="Symbol"
       >:</a
-      ><a name="1125"
-      > </a
-      ><a name="1126" class="PrimitiveType"
+      > <a name="1126" class="PrimitiveType"
       >Set</a
-      ><a name="1129"
-      > </a
-      ><a name="1130" href="Data.DifferenceList.html#1106" class="Bound"
+      > <a name="1130" href="Data.DifferenceList.html#1106" class="Bound"
       >b</a
       ><a name="1131" class="Symbol"
       >}</a
-      ><a name="1132"
-      > </a
-      ><a name="1133" class="Symbol"
+      > <a name="1133" class="Symbol"
       >&#8594;</a
-      ><a name="1134"
       >
-      </a
-      ><a name="1141" class="Symbol"
+      <a name="1141" class="Symbol"
       >(</a
       ><a name="1142" href="Data.DifferenceList.html#1110" class="Bound"
       >A</a
-      ><a name="1143"
-      > </a
-      ><a name="1144" class="Symbol"
+      > <a name="1144" class="Symbol"
       >&#8594;</a
-      ><a name="1145"
-      > </a
-      ><a name="1146" href="Data.DifferenceList.html#1122" class="Bound"
+      > <a name="1146" href="Data.DifferenceList.html#1122" class="Bound"
       >B</a
       ><a name="1147" class="Symbol"
       >)</a
-      ><a name="1148"
-      > </a
-      ><a name="1149" class="Symbol"
+      > <a name="1149" class="Symbol"
       >&#8594;</a
-      ><a name="1150"
-      > </a
-      ><a name="1151" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="1151" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="1159"
-      > </a
-      ><a name="1160" href="Data.DifferenceList.html#1110" class="Bound"
+      > <a name="1160" href="Data.DifferenceList.html#1110" class="Bound"
       >A</a
-      ><a name="1161"
-      > </a
-      ><a name="1162" class="Symbol"
+      > <a name="1162" class="Symbol"
       >&#8594;</a
-      ><a name="1163"
-      > </a
-      ><a name="1164" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="1164" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="1172"
-      > </a
-      ><a name="1173" href="Data.DifferenceList.html#1122" class="Bound"
+      > <a name="1173" href="Data.DifferenceList.html#1122" class="Bound"
       >B</a
-      ><a name="1174"
       >
-</a
-      ><a name="1175" href="Data.DifferenceList.html#1095" class="Function"
+<a name="1175" href="Data.DifferenceList.html#map" class="Function"
       >map</a
-      ><a name="1178"
-      > </a
-      ><a name="1179" href="Data.DifferenceList.html#1179" class="Bound"
+      > <a name="1179" href="Data.DifferenceList.html#1179" class="Bound"
       >f</a
-      ><a name="1180"
-      > </a
-      ><a name="1181" href="Data.DifferenceList.html#1181" class="Bound"
+      > <a name="1181" href="Data.DifferenceList.html#1181" class="Bound"
       >xs</a
-      ><a name="1183"
-      > </a
-      ><a name="1184" class="Symbol"
+      > <a name="1184" class="Symbol"
       >=</a
-      ><a name="1185"
-      > </a
-      ><a name="1186" class="Symbol"
+      > <a name="1186" class="Symbol"
       >&#955;</a
-      ><a name="1187"
-      > </a
-      ><a name="1188" href="Data.DifferenceList.html#1188" class="Bound"
+      > <a name="1188" href="Data.DifferenceList.html#1188" class="Bound"
       >k</a
-      ><a name="1189"
-      > </a
-      ><a name="1190" class="Symbol"
+      > <a name="1190" class="Symbol"
       >&#8594;</a
-      ><a name="1191"
-      > </a
-      ><a name="1192" href="Data.List.Base.html#1207" class="Function"
+      > <a name="1192" href="Data.List.Base.html#map" class="Function"
       >L.map</a
-      ><a name="1197"
-      > </a
-      ><a name="1198" href="Data.DifferenceList.html#1179" class="Bound"
+      > <a name="1198" href="Data.DifferenceList.html#1179" class="Bound"
       >f</a
-      ><a name="1199"
-      > </a
-      ><a name="1200" class="Symbol"
+      > <a name="1200" class="Symbol"
       >(</a
-      ><a name="1201" href="Data.DifferenceList.html#800" class="Function"
+      ><a name="1201" href="Data.DifferenceList.html#toList" class="Function"
       >toList</a
-      ><a name="1207"
-      > </a
-      ><a name="1208" href="Data.DifferenceList.html#1181" class="Bound"
+      > <a name="1208" href="Data.DifferenceList.html#1181" class="Bound"
       >xs</a
       ><a name="1210" class="Symbol"
       >)</a
-      ><a name="1211"
-      > </a
-      ><a name="1212" href="Function.html#1932" class="Function Operator"
+      > <a name="1212" href="Function.html#_&#10216;_&#10217;_" class="Function Operator"
       >&#10216;</a
-      ><a name="1213"
-      > </a
-      ><a name="1214" href="Data.List.Base.html#895" class="Function Operator"
+      > <a name="1214" href="Data.List.Base.html#_++_" class="Function Operator"
       >L._++_</a
-      ><a name="1220"
-      > </a
-      ><a name="1221" href="Function.html#1932" class="Function Operator"
+      > <a name="1221" href="Function.html#_&#10216;_&#10217;_" class="Function Operator"
       >&#10217;</a
-      ><a name="1222"
-      > </a
-      ><a name="1223" href="Data.DifferenceList.html#1188" class="Bound"
+      > <a name="1223" href="Data.DifferenceList.html#1188" class="Bound"
       >k</a
-      ><a name="1224"
       >
 
-</a
-      ><a name="1226" class="Comment"
+<a name="1226" class="Comment"
       >-- concat is linear in the length of the outer list.</a
-      ><a name="1278"
       >
 
-</a
-      ><a name="1280" href="Data.DifferenceList.html#1280" class="Function"
+<a name="concat" href="Data.DifferenceList.html#concat" class="Function"
       >concat</a
-      ><a name="1286"
-      > </a
-      ><a name="1287" class="Symbol"
+      > <a name="1287" class="Symbol"
       >:</a
-      ><a name="1288"
-      > </a
-      ><a name="1289" class="Symbol"
+      > <a name="1289" class="Symbol"
       >&#8704;</a
-      ><a name="1290"
-      > </a
-      ><a name="1291" class="Symbol"
+      > <a name="1291" class="Symbol"
       >{</a
       ><a name="1292" href="Data.DifferenceList.html#1292" class="Bound"
       >a</a
       ><a name="1293" class="Symbol"
       >}</a
-      ><a name="1294"
-      > </a
-      ><a name="1295" class="Symbol"
+      > <a name="1295" class="Symbol"
       >{</a
       ><a name="1296" href="Data.DifferenceList.html#1296" class="Bound"
       >A</a
-      ><a name="1297"
-      > </a
-      ><a name="1298" class="Symbol"
+      > <a name="1298" class="Symbol"
       >:</a
-      ><a name="1299"
-      > </a
-      ><a name="1300" class="PrimitiveType"
+      > <a name="1300" class="PrimitiveType"
       >Set</a
-      ><a name="1303"
-      > </a
-      ><a name="1304" href="Data.DifferenceList.html#1292" class="Bound"
+      > <a name="1304" href="Data.DifferenceList.html#1292" class="Bound"
       >a</a
       ><a name="1305" class="Symbol"
       >}</a
-      ><a name="1306"
-      > </a
-      ><a name="1307" class="Symbol"
+      > <a name="1307" class="Symbol"
       >&#8594;</a
-      ><a name="1308"
-      > </a
-      ><a name="1309" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="1309" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="1317"
-      > </a
-      ><a name="1318" class="Symbol"
+      > <a name="1318" class="Symbol"
       >(</a
-      ><a name="1319" href="Data.DifferenceList.html#352" class="Function"
+      ><a name="1319" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="1327"
-      > </a
-      ><a name="1328" href="Data.DifferenceList.html#1296" class="Bound"
+      > <a name="1328" href="Data.DifferenceList.html#1296" class="Bound"
       >A</a
       ><a name="1329" class="Symbol"
       >)</a
-      ><a name="1330"
-      > </a
-      ><a name="1331" class="Symbol"
+      > <a name="1331" class="Symbol"
       >&#8594;</a
-      ><a name="1332"
-      > </a
-      ><a name="1333" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="1333" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="1341"
-      > </a
-      ><a name="1342" href="Data.DifferenceList.html#1296" class="Bound"
+      > <a name="1342" href="Data.DifferenceList.html#1296" class="Bound"
       >A</a
-      ><a name="1343"
       >
-</a
-      ><a name="1344" href="Data.DifferenceList.html#1280" class="Function"
+<a name="1344" href="Data.DifferenceList.html#concat" class="Function"
       >concat</a
-      ><a name="1350"
-      > </a
-      ><a name="1351" href="Data.DifferenceList.html#1351" class="Bound"
+      > <a name="1351" href="Data.DifferenceList.html#1351" class="Bound"
       >xs</a
-      ><a name="1353"
-      > </a
-      ><a name="1354" class="Symbol"
+      > <a name="1354" class="Symbol"
       >=</a
-      ><a name="1355"
-      > </a
-      ><a name="1356" href="Data.DifferenceList.html#1386" class="Function"
+      > <a name="1356" href="Data.DifferenceList.html#1386" class="Function"
       >concat'</a
-      ><a name="1363"
-      > </a
-      ><a name="1364" class="Symbol"
+      > <a name="1364" class="Symbol"
       >(</a
-      ><a name="1365" href="Data.DifferenceList.html#800" class="Function"
+      ><a name="1365" href="Data.DifferenceList.html#toList" class="Function"
       >toList</a
-      ><a name="1371"
-      > </a
-      ><a name="1372" href="Data.DifferenceList.html#1351" class="Bound"
+      > <a name="1372" href="Data.DifferenceList.html#1351" class="Bound"
       >xs</a
       ><a name="1374" class="Symbol"
       >)</a
-      ><a name="1375"
       >
-  </a
-      ><a name="1378" class="Keyword"
+  <a name="1378" class="Keyword"
       >where</a
-      ><a name="1383"
       >
-  </a
-      ><a name="1386" href="Data.DifferenceList.html#1386" class="Function"
+  <a name="1386" href="Data.DifferenceList.html#1386" class="Function"
       >concat'</a
-      ><a name="1393"
-      > </a
-      ><a name="1394" class="Symbol"
+      > <a name="1394" class="Symbol"
       >:</a
-      ><a name="1395"
-      > </a
-      ><a name="1396" class="Symbol"
+      > <a name="1396" class="Symbol"
       >&#8704;</a
-      ><a name="1397"
-      > </a
-      ><a name="1398" class="Symbol"
+      > <a name="1398" class="Symbol"
       >{</a
       ><a name="1399" href="Data.DifferenceList.html#1399" class="Bound"
       >a</a
       ><a name="1400" class="Symbol"
       >}</a
-      ><a name="1401"
-      > </a
-      ><a name="1402" class="Symbol"
+      > <a name="1402" class="Symbol"
       >{</a
       ><a name="1403" href="Data.DifferenceList.html#1403" class="Bound"
       >A</a
-      ><a name="1404"
-      > </a
-      ><a name="1405" class="Symbol"
+      > <a name="1405" class="Symbol"
       >:</a
-      ><a name="1406"
-      > </a
-      ><a name="1407" class="PrimitiveType"
+      > <a name="1407" class="PrimitiveType"
       >Set</a
-      ><a name="1410"
-      > </a
-      ><a name="1411" href="Data.DifferenceList.html#1399" class="Bound"
+      > <a name="1411" href="Data.DifferenceList.html#1399" class="Bound"
       >a</a
       ><a name="1412" class="Symbol"
       >}</a
-      ><a name="1413"
-      > </a
-      ><a name="1414" class="Symbol"
+      > <a name="1414" class="Symbol"
       >&#8594;</a
-      ><a name="1415"
-      > </a
-      ><a name="1416" href="Agda.Builtin.List.html#80" class="Datatype"
+      > <a name="1416" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
-      ><a name="1420"
-      > </a
-      ><a name="1421" class="Symbol"
+      > <a name="1421" class="Symbol"
       >(</a
-      ><a name="1422" href="Data.DifferenceList.html#352" class="Function"
+      ><a name="1422" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="1430"
-      > </a
-      ><a name="1431" href="Data.DifferenceList.html#1403" class="Bound"
+      > <a name="1431" href="Data.DifferenceList.html#1403" class="Bound"
       >A</a
       ><a name="1432" class="Symbol"
       >)</a
-      ><a name="1433"
-      > </a
-      ><a name="1434" class="Symbol"
+      > <a name="1434" class="Symbol"
       >&#8594;</a
-      ><a name="1435"
-      > </a
-      ><a name="1436" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="1436" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="1444"
-      > </a
-      ><a name="1445" href="Data.DifferenceList.html#1403" class="Bound"
+      > <a name="1445" href="Data.DifferenceList.html#1403" class="Bound"
       >A</a
-      ><a name="1446"
       >
-  </a
-      ><a name="1449" href="Data.DifferenceList.html#1386" class="Function"
+  <a name="1449" href="Data.DifferenceList.html#1386" class="Function"
       >concat'</a
-      ><a name="1456"
-      > </a
-      ><a name="1457" class="Symbol"
+      > <a name="1457" class="Symbol"
       >=</a
-      ><a name="1458"
-      > </a
-      ><a name="1459" href="Data.List.Base.html#1943" class="Function"
+      > <a name="1459" href="Data.List.Base.html#foldr" class="Function"
       >L.foldr</a
-      ><a name="1466"
-      > </a
-      ><a name="1467" href="Data.DifferenceList.html#708" class="Function Operator"
+      > <a name="1467" href="Data.DifferenceList.html#_++_" class="Function Operator"
       >_++_</a
-      ><a name="1471"
-      > </a
-      ><a name="1472" href="Data.DifferenceList.html#523" class="Function"
+      > <a name="1472" href="Data.DifferenceList.html#[]" class="Function"
       >[]</a
-      ><a name="1474"
       >
 
-</a
-      ><a name="1476" href="Data.DifferenceList.html#1476" class="Function"
+<a name="take" href="Data.DifferenceList.html#take" class="Function"
       >take</a
-      ><a name="1480"
-      > </a
-      ><a name="1481" class="Symbol"
+      > <a name="1481" class="Symbol"
       >:</a
-      ><a name="1482"
-      > </a
-      ><a name="1483" class="Symbol"
+      > <a name="1483" class="Symbol"
       >&#8704;</a
-      ><a name="1484"
-      > </a
-      ><a name="1485" class="Symbol"
+      > <a name="1485" class="Symbol"
       >{</a
       ><a name="1486" href="Data.DifferenceList.html#1486" class="Bound"
       >a</a
       ><a name="1487" class="Symbol"
       >}</a
-      ><a name="1488"
-      > </a
-      ><a name="1489" class="Symbol"
+      > <a name="1489" class="Symbol"
       >{</a
       ><a name="1490" href="Data.DifferenceList.html#1490" class="Bound"
       >A</a
-      ><a name="1491"
-      > </a
-      ><a name="1492" class="Symbol"
+      > <a name="1492" class="Symbol"
       >:</a
-      ><a name="1493"
-      > </a
-      ><a name="1494" class="PrimitiveType"
+      > <a name="1494" class="PrimitiveType"
       >Set</a
-      ><a name="1497"
-      > </a
-      ><a name="1498" href="Data.DifferenceList.html#1486" class="Bound"
+      > <a name="1498" href="Data.DifferenceList.html#1486" class="Bound"
       >a</a
       ><a name="1499" class="Symbol"
       >}</a
-      ><a name="1500"
-      > </a
-      ><a name="1501" class="Symbol"
+      > <a name="1501" class="Symbol"
       >&#8594;</a
-      ><a name="1502"
-      > </a
-      ><a name="1503" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="1503" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="1504"
-      > </a
-      ><a name="1505" class="Symbol"
+      > <a name="1505" class="Symbol"
       >&#8594;</a
-      ><a name="1506"
-      > </a
-      ><a name="1507" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="1507" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="1515"
-      > </a
-      ><a name="1516" href="Data.DifferenceList.html#1490" class="Bound"
+      > <a name="1516" href="Data.DifferenceList.html#1490" class="Bound"
       >A</a
-      ><a name="1517"
-      > </a
-      ><a name="1518" class="Symbol"
+      > <a name="1518" class="Symbol"
       >&#8594;</a
-      ><a name="1519"
-      > </a
-      ><a name="1520" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="1520" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="1528"
-      > </a
-      ><a name="1529" href="Data.DifferenceList.html#1490" class="Bound"
+      > <a name="1529" href="Data.DifferenceList.html#1490" class="Bound"
       >A</a
-      ><a name="1530"
       >
-</a
-      ><a name="1531" href="Data.DifferenceList.html#1476" class="Function"
+<a name="1531" href="Data.DifferenceList.html#take" class="Function"
       >take</a
-      ><a name="1535"
-      > </a
-      ><a name="1536" href="Data.DifferenceList.html#1536" class="Bound"
+      > <a name="1536" href="Data.DifferenceList.html#1536" class="Bound"
       >n</a
-      ><a name="1537"
-      > </a
-      ><a name="1538" class="Symbol"
+      > <a name="1538" class="Symbol"
       >=</a
-      ><a name="1539"
-      > </a
-      ><a name="1540" href="Data.DifferenceList.html#415" class="Function"
+      > <a name="1540" href="Data.DifferenceList.html#lift" class="Function"
       >lift</a
-      ><a name="1544"
-      > </a
-      ><a name="1545" class="Symbol"
+      > <a name="1545" class="Symbol"
       >(</a
-      ><a name="1546" href="Data.List.Base.html#4100" class="Function"
+      ><a name="1546" href="Data.List.Base.html#take" class="Function"
       >L.take</a
-      ><a name="1552"
-      > </a
-      ><a name="1553" href="Data.DifferenceList.html#1536" class="Bound"
+      > <a name="1553" href="Data.DifferenceList.html#1536" class="Bound"
       >n</a
       ><a name="1554" class="Symbol"
       >)</a
-      ><a name="1555"
       >
 
-</a
-      ><a name="1557" href="Data.DifferenceList.html#1557" class="Function"
+<a name="drop" href="Data.DifferenceList.html#drop" class="Function"
       >drop</a
-      ><a name="1561"
-      > </a
-      ><a name="1562" class="Symbol"
+      > <a name="1562" class="Symbol"
       >:</a
-      ><a name="1563"
-      > </a
-      ><a name="1564" class="Symbol"
+      > <a name="1564" class="Symbol"
       >&#8704;</a
-      ><a name="1565"
-      > </a
-      ><a name="1566" class="Symbol"
+      > <a name="1566" class="Symbol"
       >{</a
       ><a name="1567" href="Data.DifferenceList.html#1567" class="Bound"
       >a</a
       ><a name="1568" class="Symbol"
       >}</a
-      ><a name="1569"
-      > </a
-      ><a name="1570" class="Symbol"
+      > <a name="1570" class="Symbol"
       >{</a
       ><a name="1571" href="Data.DifferenceList.html#1571" class="Bound"
       >A</a
-      ><a name="1572"
-      > </a
-      ><a name="1573" class="Symbol"
+      > <a name="1573" class="Symbol"
       >:</a
-      ><a name="1574"
-      > </a
-      ><a name="1575" class="PrimitiveType"
+      > <a name="1575" class="PrimitiveType"
       >Set</a
-      ><a name="1578"
-      > </a
-      ><a name="1579" href="Data.DifferenceList.html#1567" class="Bound"
+      > <a name="1579" href="Data.DifferenceList.html#1567" class="Bound"
       >a</a
       ><a name="1580" class="Symbol"
       >}</a
-      ><a name="1581"
-      > </a
-      ><a name="1582" class="Symbol"
+      > <a name="1582" class="Symbol"
       >&#8594;</a
-      ><a name="1583"
-      > </a
-      ><a name="1584" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="1584" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="1585"
-      > </a
-      ><a name="1586" class="Symbol"
+      > <a name="1586" class="Symbol"
       >&#8594;</a
-      ><a name="1587"
-      > </a
-      ><a name="1588" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="1588" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="1596"
-      > </a
-      ><a name="1597" href="Data.DifferenceList.html#1571" class="Bound"
+      > <a name="1597" href="Data.DifferenceList.html#1571" class="Bound"
       >A</a
-      ><a name="1598"
-      > </a
-      ><a name="1599" class="Symbol"
+      > <a name="1599" class="Symbol"
       >&#8594;</a
-      ><a name="1600"
-      > </a
-      ><a name="1601" href="Data.DifferenceList.html#352" class="Function"
+      > <a name="1601" href="Data.DifferenceList.html#DiffList" class="Function"
       >DiffList</a
-      ><a name="1609"
-      > </a
-      ><a name="1610" href="Data.DifferenceList.html#1571" class="Bound"
+      > <a name="1610" href="Data.DifferenceList.html#1571" class="Bound"
       >A</a
-      ><a name="1611"
       >
-</a
-      ><a name="1612" href="Data.DifferenceList.html#1557" class="Function"
+<a name="1612" href="Data.DifferenceList.html#drop" class="Function"
       >drop</a
-      ><a name="1616"
-      > </a
-      ><a name="1617" href="Data.DifferenceList.html#1617" class="Bound"
+      > <a name="1617" href="Data.DifferenceList.html#1617" class="Bound"
       >n</a
-      ><a name="1618"
-      > </a
-      ><a name="1619" class="Symbol"
+      > <a name="1619" class="Symbol"
       >=</a
-      ><a name="1620"
-      > </a
-      ><a name="1621" href="Data.DifferenceList.html#415" class="Function"
+      > <a name="1621" href="Data.DifferenceList.html#lift" class="Function"
       >lift</a
-      ><a name="1625"
-      > </a
-      ><a name="1626" class="Symbol"
+      > <a name="1626" class="Symbol"
       >(</a
-      ><a name="1627" href="Data.List.Base.html#4240" class="Function"
+      ><a name="1627" href="Data.List.Base.html#drop" class="Function"
       >L.drop</a
-      ><a name="1633"
-      > </a
-      ><a name="1634" href="Data.DifferenceList.html#1617" class="Bound"
+      > <a name="1634" href="Data.DifferenceList.html#1617" class="Bound"
       >n</a
       ><a name="1635" class="Symbol"
       >)</a
-      ><a name="1636"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

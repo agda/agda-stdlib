@@ -11,1655 +11,951 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Subsets of finite sets</a
-      ><a name="131"
       >
-</a
-      ><a name="132" class="Comment"
+<a name="132" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="204"
       >
 
-</a
-      ><a name="206" class="Keyword"
+<a name="206" class="Keyword"
       >module</a
-      ><a name="212"
-      > </a
-      ><a name="213" href="Data.Fin.Subset.html#1" class="Module"
+      > <a name="213" href="Data.Fin.Subset.html" class="Module"
       >Data.Fin.Subset</a
-      ><a name="228"
-      > </a
-      ><a name="229" class="Keyword"
+      > <a name="229" class="Keyword"
       >where</a
-      ><a name="234"
       >
 
-</a
-      ><a name="236" class="Keyword"
+<a name="236" class="Keyword"
       >open</a
-      ><a name="240"
-      > </a
-      ><a name="241" class="Keyword"
+      > <a name="241" class="Keyword"
       >import</a
-      ><a name="247"
-      > </a
-      ><a name="248" href="Algebra.html#1" class="Module"
+      > <a name="248" href="Algebra.html" class="Module"
       >Algebra</a
-      ><a name="255"
       >
-</a
-      ><a name="256" class="Keyword"
+<a name="256" class="Keyword"
       >import</a
-      ><a name="262"
-      > </a
-      ><a name="263" href="Algebra.Properties.BooleanAlgebra.html#1" class="Module"
+      > <a name="263" href="Algebra.Properties.BooleanAlgebra.html" class="Module"
       >Algebra.Properties.BooleanAlgebra</a
-      ><a name="296"
-      > </a
-      ><a name="297" class="Symbol"
+      > <a name="297" class="Symbol"
       >as</a
-      ><a name="299"
-      > </a
-      ><a name="300" class="Module"
+      > <a name="300" class="Module"
       >BoolAlgProp</a
-      ><a name="311"
       >
-</a
-      ><a name="312" class="Keyword"
+<a name="312" class="Keyword"
       >import</a
-      ><a name="318"
-      > </a
-      ><a name="319" href="Algebra.Properties.BooleanAlgebra.Expression.html#1" class="Module"
+      > <a name="319" href="Algebra.Properties.BooleanAlgebra.Expression.html" class="Module"
       >Algebra.Properties.BooleanAlgebra.Expression</a
-      ><a name="363"
-      > </a
-      ><a name="364" class="Symbol"
+      > <a name="364" class="Symbol"
       >as</a
-      ><a name="366"
-      > </a
-      ><a name="367" class="Module"
+      > <a name="367" class="Module"
       >BAExpr</a
-      ><a name="373"
       >
-</a
-      ><a name="374" class="Keyword"
+<a name="374" class="Keyword"
       >import</a
-      ><a name="380"
-      > </a
-      ><a name="381" href="Data.Bool.Properties.html#1" class="Module"
+      > <a name="381" href="Data.Bool.Properties.html" class="Module"
       >Data.Bool.Properties</a
-      ><a name="401"
-      > </a
-      ><a name="402" class="Symbol"
+      > <a name="402" class="Symbol"
       >as</a
-      ><a name="404"
-      > </a
-      ><a name="405" class="Module"
+      > <a name="405" class="Module"
       >BoolProp</a
-      ><a name="413"
       >
-</a
-      ><a name="414" class="Keyword"
+<a name="414" class="Keyword"
       >open</a
-      ><a name="418"
-      > </a
-      ><a name="419" class="Keyword"
+      > <a name="419" class="Keyword"
       >import</a
-      ><a name="425"
-      > </a
-      ><a name="426" href="Data.Fin.html#1" class="Module"
+      > <a name="426" href="Data.Fin.html" class="Module"
       >Data.Fin</a
-      ><a name="434"
       >
-</a
-      ><a name="435" class="Keyword"
+<a name="435" class="Keyword"
       >open</a
-      ><a name="439"
-      > </a
-      ><a name="440" class="Keyword"
+      > <a name="440" class="Keyword"
       >import</a
-      ><a name="446"
-      > </a
-      ><a name="447" href="Data.List.Base.html#1" class="Module"
+      > <a name="447" href="Data.List.Base.html" class="Module"
       >Data.List.Base</a
-      ><a name="461"
-      > </a
-      ><a name="462" class="Symbol"
-      >as</a
-      ><a name="464"
-      > </a
-      ><a name="465" class="Module"
-      >List</a
-      ><a name="469"
-      > </a
-      ><a name="470" class="Keyword"
+      > <a name="462" class="Keyword"
       >using</a
-      ><a name="475"
-      > </a
-      ><a name="476" class="Symbol"
+      > <a name="468" class="Symbol"
       >(</a
-      ><a name="477" href="Agda.Builtin.List.html#80" class="Datatype"
+      ><a name="469" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
-      ><a name="481" class="Symbol"
+      ><a name="473" class="Symbol"
+      >;</a
+      > <a name="475" href="Data.List.Base.html#foldr" class="Function"
+      >foldr</a
+      ><a name="480" class="Symbol"
+      >;</a
+      > <a name="482" href="Data.List.Base.html#foldl" class="Function"
+      >foldl</a
+      ><a name="487" class="Symbol"
       >)</a
-      ><a name="482"
       >
-</a
-      ><a name="483" class="Keyword"
+<a name="489" class="Keyword"
       >open</a
-      ><a name="487"
-      > </a
-      ><a name="488" class="Keyword"
+      > <a name="494" class="Keyword"
       >import</a
-      ><a name="494"
-      > </a
-      ><a name="495" href="Data.Nat.html#1" class="Module"
+      > <a name="501" href="Data.Nat.html" class="Module"
       >Data.Nat</a
-      ><a name="503"
       >
-</a
-      ><a name="504" class="Keyword"
+<a name="510" class="Keyword"
       >open</a
-      ><a name="508"
-      > </a
-      ><a name="509" class="Keyword"
+      > <a name="515" class="Keyword"
       >import</a
-      ><a name="515"
-      > </a
-      ><a name="516" href="Data.Product.html#1" class="Module"
+      > <a name="522" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="528"
       >
-</a
-      ><a name="529" class="Keyword"
+<a name="535" class="Keyword"
       >open</a
-      ><a name="533"
-      > </a
-      ><a name="534" class="Keyword"
+      > <a name="540" class="Keyword"
       >import</a
-      ><a name="540"
-      > </a
-      ><a name="541" href="Data.Vec.html#1" class="Module"
+      > <a name="547" href="Data.Vec.html" class="Module"
       >Data.Vec</a
-      ><a name="549"
-      > </a
-      ><a name="550" class="Keyword"
+      > <a name="556" class="Keyword"
       >using</a
-      ><a name="555"
-      > </a
-      ><a name="556" class="Symbol"
+      > <a name="562" class="Symbol"
       >(</a
-      ><a name="557" href="Data.Vec.html#609" class="Datatype"
+      ><a name="563" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
-      ><a name="560" class="Symbol"
+      ><a name="566" class="Symbol"
       >;</a
-      ><a name="561"
-      > </a
-      ><a name="562" href="Data.Vec.html#668" class="InductiveConstructor Operator"
+      > <a name="568" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >_&#8759;_</a
-      ><a name="565" class="Symbol"
+      ><a name="571" class="Symbol"
       >;</a
-      ><a name="566"
-      > </a
-      ><a name="567" href="Data.Vec.html#934" class="Datatype Operator"
+      > <a name="573" href="Data.Vec.html#_[_]=_" class="Datatype Operator"
       >_[_]=_</a
-      ><a name="573" class="Symbol"
+      ><a name="579" class="Symbol"
       >)</a
-      ><a name="574"
       >
-</a
-      ><a name="575" class="Keyword"
+<a name="581" class="Keyword"
       >import</a
-      ><a name="581"
-      > </a
-      ><a name="582" href="Relation.Binary.Vec.Pointwise.html#1" class="Module"
+      > <a name="588" href="Relation.Binary.Vec.Pointwise.html" class="Module"
       >Relation.Binary.Vec.Pointwise</a
-      ><a name="611"
-      > </a
-      ><a name="612" class="Symbol"
+      > <a name="618" class="Symbol"
       >as</a
-      ><a name="614"
-      > </a
-      ><a name="615" class="Module"
+      > <a name="621" class="Module"
       >Pointwise</a
-      ><a name="624"
       >
-</a
-      ><a name="625" class="Keyword"
+<a name="631" class="Keyword"
       >open</a
-      ><a name="629"
-      > </a
-      ><a name="630" class="Keyword"
+      > <a name="636" class="Keyword"
       >import</a
-      ><a name="636"
-      > </a
-      ><a name="637" href="Relation.Nullary.html#1" class="Module"
+      > <a name="643" href="Relation.Nullary.html" class="Module"
       >Relation.Nullary</a
-      ><a name="653"
       >
 
-</a
-      ><a name="655" class="Keyword"
-      >infix</a
-      ><a name="660"
-      > </a
-      ><a name="661" class="Number"
-      >4</a
-      ><a name="662"
-      > _&#8712;_ _&#8713;_ _&#8838;_ _&#8840;_
-
-</a
-      ><a name="680" class="Comment"
+<a name="661" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="752"
       >
-</a
-      ><a name="753" class="Comment"
+<a name="734" class="Comment"
       >-- Definitions</a
-      ><a name="767"
       >
 
-</a
-      ><a name="769" class="Comment"
+<a name="750" class="Comment"
       >-- Sides.</a
-      ><a name="778"
       >
 
-</a
-      ><a name="780" class="Keyword"
+<a name="761" class="Keyword"
       >open</a
-      ><a name="784"
-      > </a
-      ><a name="785" class="Keyword"
+      > <a name="766" class="Keyword"
       >import</a
-      ><a name="791"
-      > </a
-      ><a name="792" href="Data.Bool.Base.html#1" class="Module"
+      > <a name="773" href="Data.Bool.Base.html" class="Module"
       >Data.Bool.Base</a
-      ><a name="806"
-      > </a
-      ><a name="807" class="Keyword"
+      > <a name="788" class="Keyword"
       >public</a
-      ><a name="813"
       >
-  </a
-      ><a name="816" class="Keyword"
+  <a name="797" class="Keyword"
       >using</a
-      ><a name="821"
-      > </a
-      ><a name="822" class="Symbol"
+      > <a name="803" class="Symbol"
       >()</a
-      ><a name="824"
-      > </a
-      ><a name="825" class="Keyword"
+      > <a name="806" class="Keyword"
       >renaming</a
-      ><a name="833"
-      > </a
-      ><a name="834" class="Symbol"
+      > <a name="815" class="Symbol"
       >(</a
-      ><a name="835" href="Agda.Builtin.Bool.html#67" class="Datatype"
+      ><a name="816" href="Agda.Builtin.Bool.html#Bool" class="Datatype"
       >Bool</a
-      ><a name="839"
-      > </a
-      ><a name="840" class="Symbol"
+      > <a name="821" class="Symbol"
       >to</a
-      ><a name="842"
-      > </a
-      ><a name="843" href="Agda.Builtin.Bool.html#67" class="Datatype"
+      > <a name="824" href="Agda.Builtin.Bool.html#Bool" class="Datatype"
       >Side</a
-      ><a name="847" class="Symbol"
+      ><a name="828" class="Symbol"
       >;</a
-      ><a name="848"
-      > </a
-      ><a name="849" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor"
+      > <a name="830" href="Agda.Builtin.Bool.html#Bool.true" class="InductiveConstructor"
       >true</a
-      ><a name="853"
-      > </a
-      ><a name="854" class="Symbol"
+      > <a name="835" class="Symbol"
       >to</a
-      ><a name="856"
-      > </a
-      ><a name="857" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor"
+      > <a name="838" href="Agda.Builtin.Bool.html#Bool.true" class="InductiveConstructor"
       >inside</a
-      ><a name="863" class="Symbol"
+      ><a name="844" class="Symbol"
       >;</a
-      ><a name="864"
-      > </a
-      ><a name="865" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor"
+      > <a name="846" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor"
       >false</a
-      ><a name="870"
-      > </a
-      ><a name="871" class="Symbol"
+      > <a name="852" class="Symbol"
       >to</a
-      ><a name="873"
-      > </a
-      ><a name="874" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor"
+      > <a name="855" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor"
       >outside</a
-      ><a name="881" class="Symbol"
+      ><a name="862" class="Symbol"
       >)</a
-      ><a name="882"
       >
 
-</a
-      ><a name="884" class="Comment"
+<a name="865" class="Comment"
       >-- Partitions a finite set into two parts, the inside and the outside.</a
-      ><a name="954"
       >
 
-</a
-      ><a name="956" href="Data.Fin.Subset.html#956" class="Function"
+<a name="Subset" href="Data.Fin.Subset.html#Subset" class="Function"
       >Subset</a
-      ><a name="962"
-      > </a
-      ><a name="963" class="Symbol"
+      > <a name="944" class="Symbol"
       >:</a
-      ><a name="964"
-      > </a
-      ><a name="965" href="Agda.Builtin.Nat.html#97" class="Datatype"
+      > <a name="946" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="966"
-      > </a
-      ><a name="967" class="Symbol"
+      > <a name="948" class="Symbol"
       >&#8594;</a
-      ><a name="968"
-      > </a
-      ><a name="969" class="PrimitiveType"
+      > <a name="950" class="PrimitiveType"
       >Set</a
-      ><a name="972"
       >
-</a
-      ><a name="973" href="Data.Fin.Subset.html#956" class="Function"
+<a name="954" href="Data.Fin.Subset.html#Subset" class="Function"
       >Subset</a
-      ><a name="979"
-      > </a
-      ><a name="980" class="Symbol"
+      > <a name="961" class="Symbol"
       >=</a
-      ><a name="981"
-      > </a
-      ><a name="982" href="Data.Vec.html#609" class="Datatype"
+      > <a name="963" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
-      ><a name="985"
-      > </a
-      ><a name="986" href="Agda.Builtin.Bool.html#67" class="Datatype"
+      > <a name="967" href="Agda.Builtin.Bool.html#Side" class="Datatype"
       >Side</a
-      ><a name="990"
       >
 
-</a
-      ><a name="992" class="Comment"
+<a name="973" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="1064"
       >
-</a
-      ><a name="1065" class="Comment"
+<a name="1046" class="Comment"
       >-- Membership and subset predicates</a
-      ><a name="1100"
       >
 
-</a
-      ><a name="1102" href="Data.Fin.Subset.html#1102" class="Function Operator"
+<a name="1083" class="Keyword"
+      >infix</a
+      > <a name="1089" class="Number"
+      >4</a
+      > <a name="1091" href="Data.Fin.Subset.html#_&#8712;_" class="Function Operator"
       >_&#8712;_</a
-      ><a name="1105"
-      > </a
-      ><a name="1106" class="Symbol"
-      >:</a
-      ><a name="1107"
-      > </a
-      ><a name="1108" class="Symbol"
-      >&#8704;</a
-      ><a name="1109"
-      > </a
-      ><a name="1110" class="Symbol"
-      >{</a
-      ><a name="1111" href="Data.Fin.Subset.html#1111" class="Bound"
-      >n</a
-      ><a name="1112" class="Symbol"
-      >}</a
-      ><a name="1113"
-      > </a
-      ><a name="1114" class="Symbol"
-      >&#8594;</a
-      ><a name="1115"
-      > </a
-      ><a name="1116" href="Data.Fin.html#842" class="Datatype"
-      >Fin</a
-      ><a name="1119"
-      > </a
-      ><a name="1120" href="Data.Fin.Subset.html#1111" class="Bound"
-      >n</a
-      ><a name="1121"
-      > </a
-      ><a name="1122" class="Symbol"
-      >&#8594;</a
-      ><a name="1123"
-      > </a
-      ><a name="1124" href="Data.Fin.Subset.html#956" class="Function"
-      >Subset</a
-      ><a name="1130"
-      > </a
-      ><a name="1131" href="Data.Fin.Subset.html#1111" class="Bound"
-      >n</a
-      ><a name="1132"
-      > </a
-      ><a name="1133" class="Symbol"
-      >&#8594;</a
-      ><a name="1134"
-      > </a
-      ><a name="1135" class="PrimitiveType"
-      >Set</a
-      ><a name="1138"
-      >
-</a
-      ><a name="1139" href="Data.Fin.Subset.html#1139" class="Bound"
-      >x</a
-      ><a name="1140"
-      > </a
-      ><a name="1141" href="Data.Fin.Subset.html#1102" class="Function Operator"
-      >&#8712;</a
-      ><a name="1142"
-      > </a
-      ><a name="1143" href="Data.Fin.Subset.html#1143" class="Bound"
-      >p</a
-      ><a name="1144"
-      > </a
-      ><a name="1145" class="Symbol"
-      >=</a
-      ><a name="1146"
-      > </a
-      ><a name="1147" href="Data.Fin.Subset.html#1143" class="Bound"
-      >p</a
-      ><a name="1148"
-      > </a
-      ><a name="1149" href="Data.Vec.html#934" class="Datatype Operator"
-      >[</a
-      ><a name="1150"
-      > </a
-      ><a name="1151" href="Data.Fin.Subset.html#1139" class="Bound"
-      >x</a
-      ><a name="1152"
-      > </a
-      ><a name="1153" href="Data.Vec.html#934" class="Datatype Operator"
-      >]=</a
-      ><a name="1155"
-      > </a
-      ><a name="1156" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor"
-      >inside</a
-      ><a name="1162"
-      >
-
-</a
-      ><a name="1164" href="Data.Fin.Subset.html#1164" class="Function Operator"
+      > <a name="_&#8713;_" href="Data.Fin.Subset.html#_&#8713;_" class="Function Operator"
       >_&#8713;_</a
-      ><a name="1167"
-      > </a
-      ><a name="1168" class="Symbol"
-      >:</a
-      ><a name="1169"
-      > </a
-      ><a name="1170" class="Symbol"
-      >&#8704;</a
-      ><a name="1171"
-      > </a
-      ><a name="1172" class="Symbol"
-      >{</a
-      ><a name="1173" href="Data.Fin.Subset.html#1173" class="Bound"
-      >n</a
-      ><a name="1174" class="Symbol"
-      >}</a
-      ><a name="1175"
-      > </a
-      ><a name="1176" class="Symbol"
-      >&#8594;</a
-      ><a name="1177"
-      > </a
-      ><a name="1178" href="Data.Fin.html#842" class="Datatype"
-      >Fin</a
-      ><a name="1181"
-      > </a
-      ><a name="1182" href="Data.Fin.Subset.html#1173" class="Bound"
-      >n</a
-      ><a name="1183"
-      > </a
-      ><a name="1184" class="Symbol"
-      >&#8594;</a
-      ><a name="1185"
-      > </a
-      ><a name="1186" href="Data.Fin.Subset.html#956" class="Function"
-      >Subset</a
-      ><a name="1192"
-      > </a
-      ><a name="1193" href="Data.Fin.Subset.html#1173" class="Bound"
-      >n</a
-      ><a name="1194"
-      > </a
-      ><a name="1195" class="Symbol"
-      >&#8594;</a
-      ><a name="1196"
-      > </a
-      ><a name="1197" class="PrimitiveType"
-      >Set</a
-      ><a name="1200"
-      >
-</a
-      ><a name="1201" href="Data.Fin.Subset.html#1201" class="Bound"
-      >x</a
-      ><a name="1202"
-      > </a
-      ><a name="1203" href="Data.Fin.Subset.html#1164" class="Function Operator"
-      >&#8713;</a
-      ><a name="1204"
-      > </a
-      ><a name="1205" href="Data.Fin.Subset.html#1205" class="Bound"
-      >p</a
-      ><a name="1206"
-      > </a
-      ><a name="1207" class="Symbol"
-      >=</a
-      ><a name="1208"
-      > </a
-      ><a name="1209" href="Relation.Nullary.html#414" class="Function Operator"
-      >&#172;</a
-      ><a name="1210"
-      > </a
-      ><a name="1211" class="Symbol"
-      >(</a
-      ><a name="1212" href="Data.Fin.Subset.html#1201" class="Bound"
-      >x</a
-      ><a name="1213"
-      > </a
-      ><a name="1214" href="Data.Fin.Subset.html#1102" class="Function Operator"
-      >&#8712;</a
-      ><a name="1215"
-      > </a
-      ><a name="1216" href="Data.Fin.Subset.html#1205" class="Bound"
-      >p</a
-      ><a name="1217" class="Symbol"
-      >)</a
-      ><a name="1218"
-      >
-
-</a
-      ><a name="1220" href="Data.Fin.Subset.html#1220" class="Function Operator"
+      > <a name="1099" href="Data.Fin.Subset.html#_&#8838;_" class="Function Operator"
       >_&#8838;_</a
-      ><a name="1223"
-      > </a
-      ><a name="1224" class="Symbol"
-      >:</a
-      ><a name="1225"
-      > </a
-      ><a name="1226" class="Symbol"
-      >&#8704;</a
-      ><a name="1227"
-      > </a
-      ><a name="1228" class="Symbol"
-      >{</a
-      ><a name="1229" href="Data.Fin.Subset.html#1229" class="Bound"
-      >n</a
-      ><a name="1230" class="Symbol"
-      >}</a
-      ><a name="1231"
-      > </a
-      ><a name="1232" class="Symbol"
-      >&#8594;</a
-      ><a name="1233"
-      > </a
-      ><a name="1234" href="Data.Fin.Subset.html#956" class="Function"
-      >Subset</a
-      ><a name="1240"
-      > </a
-      ><a name="1241" href="Data.Fin.Subset.html#1229" class="Bound"
-      >n</a
-      ><a name="1242"
-      > </a
-      ><a name="1243" class="Symbol"
-      >&#8594;</a
-      ><a name="1244"
-      > </a
-      ><a name="1245" href="Data.Fin.Subset.html#956" class="Function"
-      >Subset</a
-      ><a name="1251"
-      > </a
-      ><a name="1252" href="Data.Fin.Subset.html#1229" class="Bound"
-      >n</a
-      ><a name="1253"
-      > </a
-      ><a name="1254" class="Symbol"
-      >&#8594;</a
-      ><a name="1255"
-      > </a
-      ><a name="1256" class="PrimitiveType"
-      >Set</a
-      ><a name="1259"
-      >
-</a
-      ><a name="1260" href="Data.Fin.Subset.html#1260" class="Bound"
-      >p&#8321;</a
-      ><a name="1262"
-      > </a
-      ><a name="1263" href="Data.Fin.Subset.html#1220" class="Function Operator"
-      >&#8838;</a
-      ><a name="1264"
-      > </a
-      ><a name="1265" href="Data.Fin.Subset.html#1265" class="Bound"
-      >p&#8322;</a
-      ><a name="1267"
-      > </a
-      ><a name="1268" class="Symbol"
-      >=</a
-      ><a name="1269"
-      > </a
-      ><a name="1270" class="Symbol"
-      >&#8704;</a
-      ><a name="1271"
-      > </a
-      ><a name="1272" class="Symbol"
-      >{</a
-      ><a name="1273" href="Data.Fin.Subset.html#1273" class="Bound"
-      >x</a
-      ><a name="1274" class="Symbol"
-      >}</a
-      ><a name="1275"
-      > </a
-      ><a name="1276" class="Symbol"
-      >&#8594;</a
-      ><a name="1277"
-      > </a
-      ><a name="1278" href="Data.Fin.Subset.html#1273" class="Bound"
-      >x</a
-      ><a name="1279"
-      > </a
-      ><a name="1280" href="Data.Fin.Subset.html#1102" class="Function Operator"
-      >&#8712;</a
-      ><a name="1281"
-      > </a
-      ><a name="1282" href="Data.Fin.Subset.html#1260" class="Bound"
-      >p&#8321;</a
-      ><a name="1284"
-      > </a
-      ><a name="1285" class="Symbol"
-      >&#8594;</a
-      ><a name="1286"
-      > </a
-      ><a name="1287" href="Data.Fin.Subset.html#1273" class="Bound"
-      >x</a
-      ><a name="1288"
-      > </a
-      ><a name="1289" href="Data.Fin.Subset.html#1102" class="Function Operator"
-      >&#8712;</a
-      ><a name="1290"
-      > </a
-      ><a name="1291" href="Data.Fin.Subset.html#1265" class="Bound"
-      >p&#8322;</a
-      ><a name="1293"
-      >
-
-</a
-      ><a name="1295" href="Data.Fin.Subset.html#1295" class="Function Operator"
+      > <a name="_&#8840;_" href="Data.Fin.Subset.html#_&#8840;_" class="Function Operator"
       >_&#8840;_</a
-      ><a name="1298"
-      > </a
-      ><a name="1299" class="Symbol"
+      >
+
+<a name="_&#8712;_" href="Data.Fin.Subset.html#_&#8712;_" class="Function Operator"
+      >_&#8712;_</a
+      > <a name="1112" class="Symbol"
       >:</a
-      ><a name="1300"
-      > </a
-      ><a name="1301" class="Symbol"
+      > <a name="1114" class="Symbol"
       >&#8704;</a
-      ><a name="1302"
-      > </a
-      ><a name="1303" class="Symbol"
+      > <a name="1116" class="Symbol"
       >{</a
-      ><a name="1304" href="Data.Fin.Subset.html#1304" class="Bound"
+      ><a name="1117" href="Data.Fin.Subset.html#1117" class="Bound"
       >n</a
-      ><a name="1305" class="Symbol"
+      ><a name="1118" class="Symbol"
       >}</a
-      ><a name="1306"
-      > </a
-      ><a name="1307" class="Symbol"
+      > <a name="1120" class="Symbol"
       >&#8594;</a
-      ><a name="1308"
-      > </a
-      ><a name="1309" href="Data.Fin.Subset.html#956" class="Function"
-      >Subset</a
-      ><a name="1315"
-      > </a
-      ><a name="1316" href="Data.Fin.Subset.html#1304" class="Bound"
-      >n</a
-      ><a name="1317"
-      > </a
-      ><a name="1318" class="Symbol"
-      >&#8594;</a
-      ><a name="1319"
-      > </a
-      ><a name="1320" href="Data.Fin.Subset.html#956" class="Function"
-      >Subset</a
-      ><a name="1326"
-      > </a
-      ><a name="1327" href="Data.Fin.Subset.html#1304" class="Bound"
-      >n</a
-      ><a name="1328"
-      > </a
-      ><a name="1329" class="Symbol"
-      >&#8594;</a
-      ><a name="1330"
-      > </a
-      ><a name="1331" class="PrimitiveType"
-      >Set</a
-      ><a name="1334"
-      >
-</a
-      ><a name="1335" href="Data.Fin.Subset.html#1335" class="Bound"
-      >p&#8321;</a
-      ><a name="1337"
-      > </a
-      ><a name="1338" href="Data.Fin.Subset.html#1295" class="Function Operator"
-      >&#8840;</a
-      ><a name="1339"
-      > </a
-      ><a name="1340" href="Data.Fin.Subset.html#1340" class="Bound"
-      >p&#8322;</a
-      ><a name="1342"
-      > </a
-      ><a name="1343" class="Symbol"
-      >=</a
-      ><a name="1344"
-      > </a
-      ><a name="1345" href="Relation.Nullary.html#414" class="Function Operator"
-      >&#172;</a
-      ><a name="1346"
-      > </a
-      ><a name="1347" class="Symbol"
-      >(</a
-      ><a name="1348" href="Data.Fin.Subset.html#1335" class="Bound"
-      >p&#8321;</a
-      ><a name="1350"
-      > </a
-      ><a name="1351" href="Data.Fin.Subset.html#1220" class="Function Operator"
-      >&#8838;</a
-      ><a name="1352"
-      > </a
-      ><a name="1353" href="Data.Fin.Subset.html#1340" class="Bound"
-      >p&#8322;</a
-      ><a name="1355" class="Symbol"
-      >)</a
-      ><a name="1356"
-      >
-
-</a
-      ><a name="1358" class="Comment"
-      >------------------------------------------------------------------------</a
-      ><a name="1430"
-      >
-</a
-      ><a name="1431" class="Comment"
-      >-- Set operations</a
-      ><a name="1448"
-      >
-
-</a
-      ><a name="1450" class="Comment"
-      >-- Pointwise lifting of the usual boolean algebra for booleans gives</a
-      ><a name="1518"
-      >
-</a
-      ><a name="1519" class="Comment"
-      >-- us a boolean algebra for subsets.</a
-      ><a name="1555"
-      >
-</a
-      ><a name="1556" class="Comment"
-      >--</a
-      ><a name="1558"
-      >
-</a
-      ><a name="1559" class="Comment"
-      >-- The underlying equality of the returned boolean algebra is</a
-      ><a name="1620"
-      >
-</a
-      ><a name="1621" class="Comment"
-      >-- propositional equality.</a
-      ><a name="1647"
-      >
-
-</a
-      ><a name="1649" href="Data.Fin.Subset.html#1649" class="Function"
-      >booleanAlgebra</a
-      ><a name="1663"
-      > </a
-      ><a name="1664" class="Symbol"
-      >:</a
-      ><a name="1665"
-      > </a
-      ><a name="1666" href="Agda.Builtin.Nat.html#97" class="Datatype"
-      >&#8469;</a
-      ><a name="1667"
-      > </a
-      ><a name="1668" class="Symbol"
-      >&#8594;</a
-      ><a name="1669"
-      > </a
-      ><a name="1670" href="Algebra.html#12570" class="Record"
-      >BooleanAlgebra</a
-      ><a name="1684"
-      > </a
-      ><a name="1685" class="Symbol"
-      >_</a
-      ><a name="1686"
-      > </a
-      ><a name="1687" class="Symbol"
-      >_</a
-      ><a name="1688"
-      >
-</a
-      ><a name="1689" href="Data.Fin.Subset.html#1649" class="Function"
-      >booleanAlgebra</a
-      ><a name="1703"
-      > </a
-      ><a name="1704" href="Data.Fin.Subset.html#1704" class="Bound"
-      >n</a
-      ><a name="1705"
-      > </a
-      ><a name="1706" class="Symbol"
-      >=</a
-      ><a name="1707"
-      >
-  </a
-      ><a name="1710" href="Algebra.Properties.BooleanAlgebra.html#8036" class="Function"
-      >BoolAlgProp.replace-equality</a
-      ><a name="1738"
-      >
-    </a
-      ><a name="1743" class="Symbol"
-      >(</a
-      ><a name="1744" href="Algebra.Properties.BooleanAlgebra.Expression.html#4233" class="Function"
-      >BAExpr.lift</a
-      ><a name="1755"
-      > </a
-      ><a name="1756" href="Data.Bool.Properties.html#6095" class="Function"
-      >BoolProp.booleanAlgebra</a
-      ><a name="1779"
-      > </a
-      ><a name="1780" href="Data.Fin.Subset.html#1704" class="Bound"
-      >n</a
-      ><a name="1781" class="Symbol"
-      >)</a
-      ><a name="1782"
-      >
-    </a
-      ><a name="1787" href="Relation.Binary.Vec.Pointwise.html#4363" class="Function"
-      >Pointwise.Pointwise-&#8801;</a
-      ><a name="1808"
-      >
-
-</a
-      ><a name="1810" class="Keyword"
-      >private</a
-      ><a name="1817"
-      >
-  </a
-      ><a name="1820" class="Keyword"
-      >open</a
-      ><a name="1824"
-      > </a
-      ><a name="1825" class="Keyword"
-      >module</a
-      ><a name="1831"
-      > </a
-      ><a name="1832" href="Data.Fin.Subset.html#1832" class="Module"
-      >BA</a
-      ><a name="1834"
-      > </a
-      ><a name="1835" class="Symbol"
-      >{</a
-      ><a name="1836" href="Data.Fin.Subset.html#1836" class="Bound"
-      >n</a
-      ><a name="1837" class="Symbol"
-      >}</a
-      ><a name="1838"
-      > </a
-      ><a name="1839" class="Symbol"
-      >=</a
-      ><a name="1840"
-      > </a
-      ><a name="1841" href="Algebra.html#12570" class="Module"
-      >BooleanAlgebra</a
-      ><a name="1855"
-      > </a
-      ><a name="1856" class="Symbol"
-      >(</a
-      ><a name="1857" href="Data.Fin.Subset.html#1649" class="Function"
-      >booleanAlgebra</a
-      ><a name="1871"
-      > </a
-      ><a name="1872" href="Data.Fin.Subset.html#1836" class="Bound"
-      >n</a
-      ><a name="1873" class="Symbol"
-      >)</a
-      ><a name="1874"
-      > </a
-      ><a name="1875" class="Keyword"
-      >public</a
-      ><a name="1881"
-      >
-    </a
-      ><a name="1886" class="Keyword"
-      >using</a
-      ><a name="1891"
-      >
-      </a
-      ><a name="1898" class="Symbol"
-      >(</a
-      ><a name="1899"
-      > </a
-      ><a name="1900" href="Algebra.html#12888" class="Function"
-      >&#8869;</a
-      ><a name="1901"
-      >  </a
-      ><a name="1903" class="Comment"
-      >-- The empty subset.</a
-      ><a name="1923"
-      >
-      </a
-      ><a name="1930" class="Symbol"
-      >;</a
-      ><a name="1931"
-      > </a
-      ><a name="1932" href="Algebra.html#12857" class="Function"
-      >&#8868;</a
-      ><a name="1933"
-      >  </a
-      ><a name="1935" class="Comment"
-      >-- The subset containing all elements.</a
-      ><a name="1973"
-      >
-      </a
-      ><a name="1980" class="Symbol"
-      >)</a
-      ><a name="1981"
-      >
-    </a
-      ><a name="1986" class="Keyword"
-      >renaming</a
-      ><a name="1994"
-      >
-      </a
-      ><a name="2001" class="Symbol"
-      >(</a
-      ><a name="2002"
-      > </a
-      ><a name="2003" href="Algebra.html#12752" class="Function Operator"
-      >_&#8744;_</a
-      ><a name="2006"
-      > </a
-      ><a name="2007" class="Symbol"
-      >to</a
-      ><a name="2009"
-      > </a
-      ><a name="2010" href="Algebra.html#12752" class="Function Operator"
-      >_&#8746;_</a
-      ><a name="2013"
-      >  </a
-      ><a name="2015" class="Comment"
-      >-- Binary union.</a
-      ><a name="2031"
-      >
-      </a
-      ><a name="2038" class="Symbol"
-      >;</a
-      ><a name="2039"
-      > </a
-      ><a name="2040" href="Algebra.html#12787" class="Function Operator"
-      >_&#8743;_</a
-      ><a name="2043"
-      > </a
-      ><a name="2044" class="Symbol"
-      >to</a
-      ><a name="2046"
-      > </a
-      ><a name="2047" href="Algebra.html#12787" class="Function Operator"
-      >_&#8745;_</a
-      ><a name="2050"
-      >  </a
-      ><a name="2052" class="Comment"
-      >-- Binary intersection.</a
-      ><a name="2075"
-      >
-      </a
-      ><a name="2082" class="Symbol"
-      >;</a
-      ><a name="2083"
-      > </a
-      ><a name="2084" href="Algebra.html#12822" class="Function Operator"
-      >&#172;_</a
-      ><a name="2086"
-      >  </a
-      ><a name="2088" class="Symbol"
-      >to</a
-      ><a name="2090"
-      > </a
-      ><a name="2091" href="Algebra.html#12822" class="Function Operator"
-      >&#8705;</a
-      ><a name="2092"
-      >    </a
-      ><a name="2096" class="Comment"
-      >-- Complement.</a
-      ><a name="2110"
-      >
-      </a
-      ><a name="2117" class="Symbol"
-      >)</a
-      ><a name="2118"
-      >
-
-</a
-      ><a name="2120" class="Comment"
-      >-- A singleton subset, containing just the given element.</a
-      ><a name="2177"
-      >
-
-</a
-      ><a name="2179" href="Data.Fin.Subset.html#2179" class="Function Operator"
-      >&#8261;_&#8262;</a
-      ><a name="2182"
-      > </a
-      ><a name="2183" class="Symbol"
-      >:</a
-      ><a name="2184"
-      > </a
-      ><a name="2185" class="Symbol"
-      >&#8704;</a
-      ><a name="2186"
-      > </a
-      ><a name="2187" class="Symbol"
-      >{</a
-      ><a name="2188" href="Data.Fin.Subset.html#2188" class="Bound"
-      >n</a
-      ><a name="2189" class="Symbol"
-      >}</a
-      ><a name="2190"
-      > </a
-      ><a name="2191" class="Symbol"
-      >&#8594;</a
-      ><a name="2192"
-      > </a
-      ><a name="2193" href="Data.Fin.html#842" class="Datatype"
+      > <a name="1122" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
-      ><a name="2196"
-      > </a
-      ><a name="2197" href="Data.Fin.Subset.html#2188" class="Bound"
+      > <a name="1126" href="Data.Fin.Subset.html#1117" class="Bound"
       >n</a
-      ><a name="2198"
-      > </a
-      ><a name="2199" class="Symbol"
+      > <a name="1128" class="Symbol"
       >&#8594;</a
-      ><a name="2200"
-      > </a
-      ><a name="2201" href="Data.Fin.Subset.html#956" class="Function"
+      > <a name="1130" href="Data.Fin.Subset.html#Subset" class="Function"
       >Subset</a
-      ><a name="2207"
-      > </a
-      ><a name="2208" href="Data.Fin.Subset.html#2188" class="Bound"
+      > <a name="1137" href="Data.Fin.Subset.html#1117" class="Bound"
       >n</a
-      ><a name="2209"
+      > <a name="1139" class="Symbol"
+      >&#8594;</a
+      > <a name="1141" class="PrimitiveType"
+      >Set</a
       >
-</a
-      ><a name="2210" href="Data.Fin.Subset.html#2179" class="Function Operator"
-      >&#8261;</a
-      ><a name="2211"
-      > </a
-      ><a name="2212" href="Data.Fin.html#864" class="InductiveConstructor"
-      >zero</a
-      ><a name="2216"
-      >  </a
-      ><a name="2218" href="Data.Fin.Subset.html#2179" class="Function Operator"
-      >&#8262;</a
-      ><a name="2219"
-      > </a
-      ><a name="2220" class="Symbol"
+<a name="1145" href="Data.Fin.Subset.html#1145" class="Bound"
+      >x</a
+      > <a name="1147" href="Data.Fin.Subset.html#_&#8712;_" class="Function Operator"
+      >&#8712;</a
+      > <a name="1149" href="Data.Fin.Subset.html#1149" class="Bound"
+      >p</a
+      > <a name="1151" class="Symbol"
       >=</a
-      ><a name="2221"
-      > </a
-      ><a name="2222" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor"
+      > <a name="1153" href="Data.Fin.Subset.html#1149" class="Bound"
+      >p</a
+      > <a name="1155" href="Data.Vec.html#_[_]=_" class="Datatype Operator"
+      >[</a
+      > <a name="1157" href="Data.Fin.Subset.html#1145" class="Bound"
+      >x</a
+      > <a name="1159" href="Data.Vec.html#_[_]=_" class="Datatype Operator"
+      >]=</a
+      > <a name="1162" href="Agda.Builtin.Bool.html#Bool.inside" class="InductiveConstructor"
       >inside</a
-      ><a name="2228"
-      >  </a
-      ><a name="2230" href="Data.Vec.html#668" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="2231"
-      > </a
-      ><a name="2232" href="Algebra.html#12888" class="Function"
-      >&#8869;</a
-      ><a name="2233"
-      >
-</a
-      ><a name="2234" href="Data.Fin.Subset.html#2179" class="Function Operator"
-      >&#8261;</a
-      ><a name="2235"
-      > </a
-      ><a name="2236" href="Data.Fin.html#895" class="InductiveConstructor"
-      >suc</a
-      ><a name="2239"
-      > </a
-      ><a name="2240" href="Data.Fin.Subset.html#2240" class="Bound"
-      >i</a
-      ><a name="2241"
-      > </a
-      ><a name="2242" href="Data.Fin.Subset.html#2179" class="Function Operator"
-      >&#8262;</a
-      ><a name="2243"
-      > </a
-      ><a name="2244" class="Symbol"
-      >=</a
-      ><a name="2245"
-      > </a
-      ><a name="2246" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor"
-      >outside</a
-      ><a name="2253"
-      > </a
-      ><a name="2254" href="Data.Vec.html#668" class="InductiveConstructor Operator"
-      >&#8759;</a
-      ><a name="2255"
-      > </a
-      ><a name="2256" href="Data.Fin.Subset.html#2179" class="Function Operator"
-      >&#8261;</a
-      ><a name="2257"
-      > </a
-      ><a name="2258" href="Data.Fin.Subset.html#2240" class="Bound"
-      >i</a
-      ><a name="2259"
-      > </a
-      ><a name="2260" href="Data.Fin.Subset.html#2179" class="Function Operator"
-      >&#8262;</a
-      ><a name="2261"
       >
 
-</a
-      ><a name="2263" class="Comment"
-      >-- N-ary union.</a
-      ><a name="2278"
-      >
-
-</a
-      ><a name="2280" href="Data.Fin.Subset.html#2280" class="Function"
-      >&#8899;</a
-      ><a name="2281"
-      > </a
-      ><a name="2282" class="Symbol"
+<a name="_&#8713;_" href="Data.Fin.Subset.html#_&#8713;_" class="Function Operator"
+      >_&#8713;_</a
+      > <a name="1174" class="Symbol"
       >:</a
-      ><a name="2283"
-      > </a
-      ><a name="2284" class="Symbol"
+      > <a name="1176" class="Symbol"
       >&#8704;</a
-      ><a name="2285"
-      > </a
-      ><a name="2286" class="Symbol"
+      > <a name="1178" class="Symbol"
       >{</a
-      ><a name="2287" href="Data.Fin.Subset.html#2287" class="Bound"
+      ><a name="1179" href="Data.Fin.Subset.html#1179" class="Bound"
       >n</a
-      ><a name="2288" class="Symbol"
+      ><a name="1180" class="Symbol"
       >}</a
-      ><a name="2289"
-      > </a
-      ><a name="2290" class="Symbol"
+      > <a name="1182" class="Symbol"
       >&#8594;</a
-      ><a name="2291"
-      > </a
-      ><a name="2292" href="Agda.Builtin.List.html#80" class="Datatype"
-      >List</a
-      ><a name="2296"
-      > </a
-      ><a name="2297" class="Symbol"
-      >(</a
-      ><a name="2298" href="Data.Fin.Subset.html#956" class="Function"
-      >Subset</a
-      ><a name="2304"
-      > </a
-      ><a name="2305" href="Data.Fin.Subset.html#2287" class="Bound"
-      >n</a
-      ><a name="2306" class="Symbol"
-      >)</a
-      ><a name="2307"
-      > </a
-      ><a name="2308" class="Symbol"
-      >&#8594;</a
-      ><a name="2309"
-      > </a
-      ><a name="2310" href="Data.Fin.Subset.html#956" class="Function"
-      >Subset</a
-      ><a name="2316"
-      > </a
-      ><a name="2317" href="Data.Fin.Subset.html#2287" class="Bound"
-      >n</a
-      ><a name="2318"
-      >
-</a
-      ><a name="2319" href="Data.Fin.Subset.html#2280" class="Function"
-      >&#8899;</a
-      ><a name="2320"
-      > </a
-      ><a name="2321" class="Symbol"
-      >=</a
-      ><a name="2322"
-      > </a
-      ><a name="2323" href="Data.List.Base.html#1943" class="Function"
-      >List.foldr</a
-      ><a name="2333"
-      > </a
-      ><a name="2334" href="Algebra.html#12752" class="Function Operator"
-      >_&#8746;_</a
-      ><a name="2337"
-      > </a
-      ><a name="2338" href="Algebra.html#12888" class="Function"
-      >&#8869;</a
-      ><a name="2339"
-      >
-
-</a
-      ><a name="2341" class="Comment"
-      >-- N-ary intersection.</a
-      ><a name="2363"
-      >
-
-</a
-      ><a name="2365" href="Data.Fin.Subset.html#2365" class="Function"
-      >&#8898;</a
-      ><a name="2366"
-      > </a
-      ><a name="2367" class="Symbol"
-      >:</a
-      ><a name="2368"
-      > </a
-      ><a name="2369" class="Symbol"
-      >&#8704;</a
-      ><a name="2370"
-      > </a
-      ><a name="2371" class="Symbol"
-      >{</a
-      ><a name="2372" href="Data.Fin.Subset.html#2372" class="Bound"
-      >n</a
-      ><a name="2373" class="Symbol"
-      >}</a
-      ><a name="2374"
-      > </a
-      ><a name="2375" class="Symbol"
-      >&#8594;</a
-      ><a name="2376"
-      > </a
-      ><a name="2377" href="Agda.Builtin.List.html#80" class="Datatype"
-      >List</a
-      ><a name="2381"
-      > </a
-      ><a name="2382" class="Symbol"
-      >(</a
-      ><a name="2383" href="Data.Fin.Subset.html#956" class="Function"
-      >Subset</a
-      ><a name="2389"
-      > </a
-      ><a name="2390" href="Data.Fin.Subset.html#2372" class="Bound"
-      >n</a
-      ><a name="2391" class="Symbol"
-      >)</a
-      ><a name="2392"
-      > </a
-      ><a name="2393" class="Symbol"
-      >&#8594;</a
-      ><a name="2394"
-      > </a
-      ><a name="2395" href="Data.Fin.Subset.html#956" class="Function"
-      >Subset</a
-      ><a name="2401"
-      > </a
-      ><a name="2402" href="Data.Fin.Subset.html#2372" class="Bound"
-      >n</a
-      ><a name="2403"
-      >
-</a
-      ><a name="2404" href="Data.Fin.Subset.html#2365" class="Function"
-      >&#8898;</a
-      ><a name="2405"
-      > </a
-      ><a name="2406" class="Symbol"
-      >=</a
-      ><a name="2407"
-      > </a
-      ><a name="2408" href="Data.List.Base.html#1943" class="Function"
-      >List.foldr</a
-      ><a name="2418"
-      > </a
-      ><a name="2419" href="Algebra.html#12787" class="Function Operator"
-      >_&#8745;_</a
-      ><a name="2422"
-      > </a
-      ><a name="2423" href="Algebra.html#12857" class="Function"
-      >&#8868;</a
-      ><a name="2424"
-      >
-
-</a
-      ><a name="2426" class="Comment"
-      >------------------------------------------------------------------------</a
-      ><a name="2498"
-      >
-</a
-      ><a name="2499" class="Comment"
-      >-- Properties</a
-      ><a name="2512"
-      >
-
-</a
-      ><a name="2514" href="Data.Fin.Subset.html#2514" class="Function"
-      >Nonempty</a
-      ><a name="2522"
-      > </a
-      ><a name="2523" class="Symbol"
-      >:</a
-      ><a name="2524"
-      > </a
-      ><a name="2525" class="Symbol"
-      >&#8704;</a
-      ><a name="2526"
-      > </a
-      ><a name="2527" class="Symbol"
-      >{</a
-      ><a name="2528" href="Data.Fin.Subset.html#2528" class="Bound"
-      >n</a
-      ><a name="2529" class="Symbol"
-      >}</a
-      ><a name="2530"
-      > </a
-      ><a name="2531" class="Symbol"
-      >(</a
-      ><a name="2532" href="Data.Fin.Subset.html#2532" class="Bound"
-      >p</a
-      ><a name="2533"
-      > </a
-      ><a name="2534" class="Symbol"
-      >:</a
-      ><a name="2535"
-      > </a
-      ><a name="2536" href="Data.Fin.Subset.html#956" class="Function"
-      >Subset</a
-      ><a name="2542"
-      > </a
-      ><a name="2543" href="Data.Fin.Subset.html#2528" class="Bound"
-      >n</a
-      ><a name="2544" class="Symbol"
-      >)</a
-      ><a name="2545"
-      > </a
-      ><a name="2546" class="Symbol"
-      >&#8594;</a
-      ><a name="2547"
-      > </a
-      ><a name="2548" class="PrimitiveType"
-      >Set</a
-      ><a name="2551"
-      >
-</a
-      ><a name="2552" href="Data.Fin.Subset.html#2514" class="Function"
-      >Nonempty</a
-      ><a name="2560"
-      > </a
-      ><a name="2561" href="Data.Fin.Subset.html#2561" class="Bound"
-      >p</a
-      ><a name="2562"
-      > </a
-      ><a name="2563" class="Symbol"
-      >=</a
-      ><a name="2564"
-      > </a
-      ><a name="2565" href="Data.Product.html#823" class="Function"
-      >&#8707;</a
-      ><a name="2566"
-      > </a
-      ><a name="2567" class="Symbol"
-      >&#955;</a
-      ><a name="2568"
-      > </a
-      ><a name="2569" href="Data.Fin.Subset.html#2569" class="Bound"
-      >f</a
-      ><a name="2570"
-      > </a
-      ><a name="2571" class="Symbol"
-      >&#8594;</a
-      ><a name="2572"
-      > </a
-      ><a name="2573" href="Data.Fin.Subset.html#2569" class="Bound"
-      >f</a
-      ><a name="2574"
-      > </a
-      ><a name="2575" href="Data.Fin.Subset.html#1102" class="Function Operator"
-      >&#8712;</a
-      ><a name="2576"
-      > </a
-      ><a name="2577" href="Data.Fin.Subset.html#2561" class="Bound"
-      >p</a
-      ><a name="2578"
-      >
-
-</a
-      ><a name="2580" href="Data.Fin.Subset.html#2580" class="Function"
-      >Empty</a
-      ><a name="2585"
-      > </a
-      ><a name="2586" class="Symbol"
-      >:</a
-      ><a name="2587"
-      > </a
-      ><a name="2588" class="Symbol"
-      >&#8704;</a
-      ><a name="2589"
-      > </a
-      ><a name="2590" class="Symbol"
-      >{</a
-      ><a name="2591" href="Data.Fin.Subset.html#2591" class="Bound"
-      >n</a
-      ><a name="2592" class="Symbol"
-      >}</a
-      ><a name="2593"
-      > </a
-      ><a name="2594" class="Symbol"
-      >(</a
-      ><a name="2595" href="Data.Fin.Subset.html#2595" class="Bound"
-      >p</a
-      ><a name="2596"
-      > </a
-      ><a name="2597" class="Symbol"
-      >:</a
-      ><a name="2598"
-      > </a
-      ><a name="2599" href="Data.Fin.Subset.html#956" class="Function"
-      >Subset</a
-      ><a name="2605"
-      > </a
-      ><a name="2606" href="Data.Fin.Subset.html#2591" class="Bound"
-      >n</a
-      ><a name="2607" class="Symbol"
-      >)</a
-      ><a name="2608"
-      > </a
-      ><a name="2609" class="Symbol"
-      >&#8594;</a
-      ><a name="2610"
-      > </a
-      ><a name="2611" class="PrimitiveType"
-      >Set</a
-      ><a name="2614"
-      >
-</a
-      ><a name="2615" href="Data.Fin.Subset.html#2580" class="Function"
-      >Empty</a
-      ><a name="2620"
-      > </a
-      ><a name="2621" href="Data.Fin.Subset.html#2621" class="Bound"
-      >p</a
-      ><a name="2622"
-      > </a
-      ><a name="2623" class="Symbol"
-      >=</a
-      ><a name="2624"
-      > </a
-      ><a name="2625" href="Relation.Nullary.html#414" class="Function Operator"
-      >&#172;</a
-      ><a name="2626"
-      > </a
-      ><a name="2627" href="Data.Fin.Subset.html#2514" class="Function"
-      >Nonempty</a
-      ><a name="2635"
-      > </a
-      ><a name="2636" href="Data.Fin.Subset.html#2621" class="Bound"
-      >p</a
-      ><a name="2637"
-      >
-
-</a
-      ><a name="2639" class="Comment"
-      >-- Point-wise lifting of properties.</a
-      ><a name="2675"
-      >
-
-</a
-      ><a name="2677" href="Data.Fin.Subset.html#2677" class="Function"
-      >Lift</a
-      ><a name="2681"
-      > </a
-      ><a name="2682" class="Symbol"
-      >:</a
-      ><a name="2683"
-      > </a
-      ><a name="2684" class="Symbol"
-      >&#8704;</a
-      ><a name="2685"
-      > </a
-      ><a name="2686" class="Symbol"
-      >{</a
-      ><a name="2687" href="Data.Fin.Subset.html#2687" class="Bound"
-      >n</a
-      ><a name="2688" class="Symbol"
-      >}</a
-      ><a name="2689"
-      > </a
-      ><a name="2690" class="Symbol"
-      >&#8594;</a
-      ><a name="2691"
-      > </a
-      ><a name="2692" class="Symbol"
-      >(</a
-      ><a name="2693" href="Data.Fin.html#842" class="Datatype"
+      > <a name="1184" href="Data.Fin.html#Fin" class="Datatype"
       >Fin</a
-      ><a name="2696"
-      > </a
-      ><a name="2697" href="Data.Fin.Subset.html#2687" class="Bound"
+      > <a name="1188" href="Data.Fin.Subset.html#1179" class="Bound"
       >n</a
-      ><a name="2698"
-      > </a
-      ><a name="2699" class="Symbol"
+      > <a name="1190" class="Symbol"
       >&#8594;</a
-      ><a name="2700"
-      > </a
-      ><a name="2701" class="PrimitiveType"
-      >Set</a
-      ><a name="2704" class="Symbol"
-      >)</a
-      ><a name="2705"
-      > </a
-      ><a name="2706" class="Symbol"
-      >&#8594;</a
-      ><a name="2707"
-      > </a
-      ><a name="2708" class="Symbol"
-      >(</a
-      ><a name="2709" href="Data.Fin.Subset.html#956" class="Function"
+      > <a name="1192" href="Data.Fin.Subset.html#Subset" class="Function"
       >Subset</a
-      ><a name="2715"
-      > </a
-      ><a name="2716" href="Data.Fin.Subset.html#2687" class="Bound"
+      > <a name="1199" href="Data.Fin.Subset.html#1179" class="Bound"
       >n</a
-      ><a name="2717"
-      > </a
-      ><a name="2718" class="Symbol"
+      > <a name="1201" class="Symbol"
       >&#8594;</a
-      ><a name="2719"
-      > </a
-      ><a name="2720" class="PrimitiveType"
+      > <a name="1203" class="PrimitiveType"
       >Set</a
-      ><a name="2723" class="Symbol"
-      >)</a
-      ><a name="2724"
       >
-</a
-      ><a name="2725" href="Data.Fin.Subset.html#2677" class="Function"
-      >Lift</a
-      ><a name="2729"
-      > </a
-      ><a name="2730" href="Data.Fin.Subset.html#2730" class="Bound"
-      >P</a
-      ><a name="2731"
-      > </a
-      ><a name="2732" href="Data.Fin.Subset.html#2732" class="Bound"
+<a name="1207" href="Data.Fin.Subset.html#1207" class="Bound"
+      >x</a
+      > <a name="1209" href="Data.Fin.Subset.html#_&#8713;_" class="Function Operator"
+      >&#8713;</a
+      > <a name="1211" href="Data.Fin.Subset.html#1211" class="Bound"
       >p</a
-      ><a name="2733"
-      > </a
-      ><a name="2734" class="Symbol"
+      > <a name="1213" class="Symbol"
       >=</a
-      ><a name="2735"
-      > </a
-      ><a name="2736" class="Symbol"
-      >&#8704;</a
-      ><a name="2737"
-      > </a
-      ><a name="2738" class="Symbol"
-      >{</a
-      ><a name="2739" href="Data.Fin.Subset.html#2739" class="Bound"
+      > <a name="1215" href="Relation.Nullary.html#&#172;_" class="Function Operator"
+      >&#172;</a
+      > <a name="1217" class="Symbol"
+      >(</a
+      ><a name="1218" href="Data.Fin.Subset.html#1207" class="Bound"
       >x</a
-      ><a name="2740" class="Symbol"
-      >}</a
-      ><a name="2741"
-      > </a
-      ><a name="2742" class="Symbol"
-      >&#8594;</a
-      ><a name="2743"
-      > </a
-      ><a name="2744" href="Data.Fin.Subset.html#2739" class="Bound"
-      >x</a
-      ><a name="2745"
-      > </a
-      ><a name="2746" href="Data.Fin.Subset.html#1102" class="Function Operator"
+      > <a name="1220" href="Data.Fin.Subset.html#_&#8712;_" class="Function Operator"
       >&#8712;</a
-      ><a name="2747"
-      > </a
-      ><a name="2748" href="Data.Fin.Subset.html#2732" class="Bound"
+      > <a name="1222" href="Data.Fin.Subset.html#1211" class="Bound"
       >p</a
-      ><a name="2749"
-      > </a
-      ><a name="2750" class="Symbol"
-      >&#8594;</a
-      ><a name="2751"
-      > </a
-      ><a name="2752" href="Data.Fin.Subset.html#2730" class="Bound"
-      >P</a
-      ><a name="2753"
-      > </a
-      ><a name="2754" href="Data.Fin.Subset.html#2739" class="Bound"
-      >x</a
-      ><a name="2755"
+      ><a name="1223" class="Symbol"
+      >)</a
       >
-</a
-      ></pre
+
+<a name="_&#8838;_" href="Data.Fin.Subset.html#_&#8838;_" class="Function Operator"
+      >_&#8838;_</a
+      > <a name="1230" class="Symbol"
+      >:</a
+      > <a name="1232" class="Symbol"
+      >&#8704;</a
+      > <a name="1234" class="Symbol"
+      >{</a
+      ><a name="1235" href="Data.Fin.Subset.html#1235" class="Bound"
+      >n</a
+      ><a name="1236" class="Symbol"
+      >}</a
+      > <a name="1238" class="Symbol"
+      >&#8594;</a
+      > <a name="1240" href="Data.Fin.Subset.html#Subset" class="Function"
+      >Subset</a
+      > <a name="1247" href="Data.Fin.Subset.html#1235" class="Bound"
+      >n</a
+      > <a name="1249" class="Symbol"
+      >&#8594;</a
+      > <a name="1251" href="Data.Fin.Subset.html#Subset" class="Function"
+      >Subset</a
+      > <a name="1258" href="Data.Fin.Subset.html#1235" class="Bound"
+      >n</a
+      > <a name="1260" class="Symbol"
+      >&#8594;</a
+      > <a name="1262" class="PrimitiveType"
+      >Set</a
+      >
+<a name="1266" href="Data.Fin.Subset.html#1266" class="Bound"
+      >p&#8321;</a
+      > <a name="1269" href="Data.Fin.Subset.html#_&#8838;_" class="Function Operator"
+      >&#8838;</a
+      > <a name="1271" href="Data.Fin.Subset.html#1271" class="Bound"
+      >p&#8322;</a
+      > <a name="1274" class="Symbol"
+      >=</a
+      > <a name="1276" class="Symbol"
+      >&#8704;</a
+      > <a name="1278" class="Symbol"
+      >{</a
+      ><a name="1279" href="Data.Fin.Subset.html#1279" class="Bound"
+      >x</a
+      ><a name="1280" class="Symbol"
+      >}</a
+      > <a name="1282" class="Symbol"
+      >&#8594;</a
+      > <a name="1284" href="Data.Fin.Subset.html#1279" class="Bound"
+      >x</a
+      > <a name="1286" href="Data.Fin.Subset.html#_&#8712;_" class="Function Operator"
+      >&#8712;</a
+      > <a name="1288" href="Data.Fin.Subset.html#1266" class="Bound"
+      >p&#8321;</a
+      > <a name="1291" class="Symbol"
+      >&#8594;</a
+      > <a name="1293" href="Data.Fin.Subset.html#1279" class="Bound"
+      >x</a
+      > <a name="1295" href="Data.Fin.Subset.html#_&#8712;_" class="Function Operator"
+      >&#8712;</a
+      > <a name="1297" href="Data.Fin.Subset.html#1271" class="Bound"
+      >p&#8322;</a
+      >
+
+<a name="_&#8840;_" href="Data.Fin.Subset.html#_&#8840;_" class="Function Operator"
+      >_&#8840;_</a
+      > <a name="1305" class="Symbol"
+      >:</a
+      > <a name="1307" class="Symbol"
+      >&#8704;</a
+      > <a name="1309" class="Symbol"
+      >{</a
+      ><a name="1310" href="Data.Fin.Subset.html#1310" class="Bound"
+      >n</a
+      ><a name="1311" class="Symbol"
+      >}</a
+      > <a name="1313" class="Symbol"
+      >&#8594;</a
+      > <a name="1315" href="Data.Fin.Subset.html#Subset" class="Function"
+      >Subset</a
+      > <a name="1322" href="Data.Fin.Subset.html#1310" class="Bound"
+      >n</a
+      > <a name="1324" class="Symbol"
+      >&#8594;</a
+      > <a name="1326" href="Data.Fin.Subset.html#Subset" class="Function"
+      >Subset</a
+      > <a name="1333" href="Data.Fin.Subset.html#1310" class="Bound"
+      >n</a
+      > <a name="1335" class="Symbol"
+      >&#8594;</a
+      > <a name="1337" class="PrimitiveType"
+      >Set</a
+      >
+<a name="1341" href="Data.Fin.Subset.html#1341" class="Bound"
+      >p&#8321;</a
+      > <a name="1344" href="Data.Fin.Subset.html#_&#8840;_" class="Function Operator"
+      >&#8840;</a
+      > <a name="1346" href="Data.Fin.Subset.html#1346" class="Bound"
+      >p&#8322;</a
+      > <a name="1349" class="Symbol"
+      >=</a
+      > <a name="1351" href="Relation.Nullary.html#&#172;_" class="Function Operator"
+      >&#172;</a
+      > <a name="1353" class="Symbol"
+      >(</a
+      ><a name="1354" href="Data.Fin.Subset.html#1341" class="Bound"
+      >p&#8321;</a
+      > <a name="1357" href="Data.Fin.Subset.html#_&#8838;_" class="Function Operator"
+      >&#8838;</a
+      > <a name="1359" href="Data.Fin.Subset.html#1346" class="Bound"
+      >p&#8322;</a
+      ><a name="1361" class="Symbol"
+      >)</a
+      >
+
+<a name="1364" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="1437" class="Comment"
+      >-- Set operations</a
+      >
+
+<a name="1456" class="Comment"
+      >-- Pointwise lifting of the usual boolean algebra for booleans gives</a
+      >
+<a name="1525" class="Comment"
+      >-- us a boolean algebra for subsets.</a
+      >
+<a name="1562" class="Comment"
+      >--</a
+      >
+<a name="1565" class="Comment"
+      >-- The underlying equality of the returned boolean algebra is</a
+      >
+<a name="1627" class="Comment"
+      >-- propositional equality.</a
+      >
+
+<a name="booleanAlgebra" href="Data.Fin.Subset.html#booleanAlgebra" class="Function"
+      >booleanAlgebra</a
+      > <a name="1670" class="Symbol"
+      >:</a
+      > <a name="1672" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      >&#8469;</a
+      > <a name="1674" class="Symbol"
+      >&#8594;</a
+      > <a name="1676" href="Algebra.html#BooleanAlgebra" class="Record"
+      >BooleanAlgebra</a
+      > <a name="1691" class="Symbol"
+      >_</a
+      > <a name="1693" class="Symbol"
+      >_</a
+      >
+<a name="1695" href="Data.Fin.Subset.html#booleanAlgebra" class="Function"
+      >booleanAlgebra</a
+      > <a name="1710" href="Data.Fin.Subset.html#1710" class="Bound"
+      >n</a
+      > <a name="1712" class="Symbol"
+      >=</a
+      >
+  <a name="1716" href="Algebra.Properties.BooleanAlgebra.html#replace-equality" class="Function"
+      >BoolAlgProp.replace-equality</a
+      >
+    <a name="1749" class="Symbol"
+      >(</a
+      ><a name="1750" href="Algebra.Properties.BooleanAlgebra.Expression.html#lift" class="Function"
+      >BAExpr.lift</a
+      > <a name="1762" href="Data.Bool.Properties.html#booleanAlgebra" class="Function"
+      >BoolProp.booleanAlgebra</a
+      > <a name="1786" href="Data.Fin.Subset.html#1710" class="Bound"
+      >n</a
+      ><a name="1787" class="Symbol"
+      >)</a
+      >
+    <a name="1793" href="Relation.Binary.Vec.Pointwise.html#Pointwise-&#8801;" class="Function"
+      >Pointwise.Pointwise-&#8801;</a
+      >
+
+<a name="1816" class="Keyword"
+      >private</a
+      >
+  <a name="1826" class="Keyword"
+      >open</a
+      > <a name="1831" class="Keyword"
+      >module</a
+      > <a name="BA" href="Data.Fin.Subset.html#BA" class="Module"
+      >BA</a
+      > <a name="1841" class="Symbol"
+      >{</a
+      ><a name="1842" href="Data.Fin.Subset.html#1842" class="Bound"
+      >n</a
+      ><a name="1843" class="Symbol"
+      >}</a
+      > <a name="1845" class="Symbol"
+      >=</a
+      > <a name="1847" href="Algebra.html#BooleanAlgebra" class="Module"
+      >BooleanAlgebra</a
+      > <a name="1862" class="Symbol"
+      >(</a
+      ><a name="1863" href="Data.Fin.Subset.html#booleanAlgebra" class="Function"
+      >booleanAlgebra</a
+      > <a name="1878" href="Data.Fin.Subset.html#1842" class="Bound"
+      >n</a
+      ><a name="1879" class="Symbol"
+      >)</a
+      > <a name="1881" class="Keyword"
+      >public</a
+      >
+    <a name="1892" class="Keyword"
+      >using</a
+      >
+      <a name="1904" class="Symbol"
+      >(</a
+      > <a name="1906" href="Algebra.html#Fin.Subset.BA.&#8869;" class="Function"
+      >&#8869;</a
+      >  <a name="1909" class="Comment"
+      >-- The empty subset.</a
+      >
+      <a name="1936" class="Symbol"
+      >;</a
+      > <a name="1938" href="Algebra.html#Fin.Subset.BA.&#8868;" class="Function"
+      >&#8868;</a
+      >  <a name="1941" class="Comment"
+      >-- The subset containing all elements.</a
+      >
+      <a name="1986" class="Symbol"
+      >)</a
+      >
+    <a name="1992" class="Keyword"
+      >renaming</a
+      >
+      <a name="2007" class="Symbol"
+      >(</a
+      > <a name="2009" href="Algebra.html#Fin.Subset.BA._&#8744;_" class="Function Operator"
+      >_&#8744;_</a
+      > <a name="2013" class="Symbol"
+      >to</a
+      > <a name="2016" href="Algebra.html#Fin.Subset.BA._&#8744;_" class="Function Operator"
+      >_&#8746;_</a
+      >  <a name="2021" class="Comment"
+      >-- Binary union.</a
+      >
+      <a name="2044" class="Symbol"
+      >;</a
+      > <a name="2046" href="Algebra.html#Fin.Subset.BA._&#8743;_" class="Function Operator"
+      >_&#8743;_</a
+      > <a name="2050" class="Symbol"
+      >to</a
+      > <a name="2053" href="Algebra.html#Fin.Subset.BA._&#8743;_" class="Function Operator"
+      >_&#8745;_</a
+      >  <a name="2058" class="Comment"
+      >-- Binary intersection.</a
+      >
+      <a name="2088" class="Symbol"
+      >;</a
+      > <a name="2090" href="Algebra.html#Fin.Subset.BA.&#172;_" class="Function Operator"
+      >&#172;_</a
+      >  <a name="2094" class="Symbol"
+      >to</a
+      > <a name="2097" href="Algebra.html#Fin.Subset.BA.&#172;_" class="Function Operator"
+      >&#8705;</a
+      >    <a name="2102" class="Comment"
+      >-- Complement.</a
+      >
+      <a name="2123" class="Symbol"
+      >)</a
+      >
+
+<a name="2126" class="Comment"
+      >-- A singleton subset, containing just the given element.</a
+      >
+
+<a name="&#8261;_&#8262;" href="Data.Fin.Subset.html#&#8261;_&#8262;" class="Function Operator"
+      >&#8261;_&#8262;</a
+      > <a name="2189" class="Symbol"
+      >:</a
+      > <a name="2191" class="Symbol"
+      >&#8704;</a
+      > <a name="2193" class="Symbol"
+      >{</a
+      ><a name="2194" href="Data.Fin.Subset.html#2194" class="Bound"
+      >n</a
+      ><a name="2195" class="Symbol"
+      >}</a
+      > <a name="2197" class="Symbol"
+      >&#8594;</a
+      > <a name="2199" href="Data.Fin.html#Fin" class="Datatype"
+      >Fin</a
+      > <a name="2203" href="Data.Fin.Subset.html#2194" class="Bound"
+      >n</a
+      > <a name="2205" class="Symbol"
+      >&#8594;</a
+      > <a name="2207" href="Data.Fin.Subset.html#Subset" class="Function"
+      >Subset</a
+      > <a name="2214" href="Data.Fin.Subset.html#2194" class="Bound"
+      >n</a
+      >
+<a name="2216" href="Data.Fin.Subset.html#&#8261;_&#8262;" class="Function Operator"
+      >&#8261;</a
+      > <a name="2218" href="Data.Fin.html#Fin.zero" class="InductiveConstructor"
+      >zero</a
+      >  <a name="2224" href="Data.Fin.Subset.html#&#8261;_&#8262;" class="Function Operator"
+      >&#8262;</a
+      > <a name="2226" class="Symbol"
+      >=</a
+      > <a name="2228" href="Agda.Builtin.Bool.html#Bool.inside" class="InductiveConstructor"
+      >inside</a
+      >  <a name="2236" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2238" href="Algebra.html#Fin.Subset.BA.&#8869;" class="Function"
+      >&#8869;</a
+      >
+<a name="2240" href="Data.Fin.Subset.html#&#8261;_&#8262;" class="Function Operator"
+      >&#8261;</a
+      > <a name="2242" href="Data.Fin.html#Fin.suc" class="InductiveConstructor"
+      >suc</a
+      > <a name="2246" href="Data.Fin.Subset.html#2246" class="Bound"
+      >i</a
+      > <a name="2248" href="Data.Fin.Subset.html#&#8261;_&#8262;" class="Function Operator"
+      >&#8262;</a
+      > <a name="2250" class="Symbol"
+      >=</a
+      > <a name="2252" href="Agda.Builtin.Bool.html#Bool.outside" class="InductiveConstructor"
+      >outside</a
+      > <a name="2260" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2262" href="Data.Fin.Subset.html#&#8261;_&#8262;" class="Function Operator"
+      >&#8261;</a
+      > <a name="2264" href="Data.Fin.Subset.html#2246" class="Bound"
+      >i</a
+      > <a name="2266" href="Data.Fin.Subset.html#&#8261;_&#8262;" class="Function Operator"
+      >&#8262;</a
+      >
+
+<a name="2269" class="Comment"
+      >-- N-ary union.</a
+      >
+
+<a name="&#8899;" href="Data.Fin.Subset.html#&#8899;" class="Function"
+      >&#8899;</a
+      > <a name="2288" class="Symbol"
+      >:</a
+      > <a name="2290" class="Symbol"
+      >&#8704;</a
+      > <a name="2292" class="Symbol"
+      >{</a
+      ><a name="2293" href="Data.Fin.Subset.html#2293" class="Bound"
+      >n</a
+      ><a name="2294" class="Symbol"
+      >}</a
+      > <a name="2296" class="Symbol"
+      >&#8594;</a
+      > <a name="2298" href="Agda.Builtin.List.html#List" class="Datatype"
+      >List</a
+      > <a name="2303" class="Symbol"
+      >(</a
+      ><a name="2304" href="Data.Fin.Subset.html#Subset" class="Function"
+      >Subset</a
+      > <a name="2311" href="Data.Fin.Subset.html#2293" class="Bound"
+      >n</a
+      ><a name="2312" class="Symbol"
+      >)</a
+      > <a name="2314" class="Symbol"
+      >&#8594;</a
+      > <a name="2316" href="Data.Fin.Subset.html#Subset" class="Function"
+      >Subset</a
+      > <a name="2323" href="Data.Fin.Subset.html#2293" class="Bound"
+      >n</a
+      >
+<a name="2325" href="Data.Fin.Subset.html#&#8899;" class="Function"
+      >&#8899;</a
+      > <a name="2327" class="Symbol"
+      >=</a
+      > <a name="2329" href="Data.List.Base.html#foldr" class="Function"
+      >foldr</a
+      > <a name="2335" href="Algebra.html#Fin.Subset.BA._&#8746;_" class="Function Operator"
+      >_&#8746;_</a
+      > <a name="2339" href="Algebra.html#Fin.Subset.BA.&#8869;" class="Function"
+      >&#8869;</a
+      >
+
+<a name="2342" class="Comment"
+      >-- N-ary intersection.</a
+      >
+
+<a name="&#8898;" href="Data.Fin.Subset.html#&#8898;" class="Function"
+      >&#8898;</a
+      > <a name="2368" class="Symbol"
+      >:</a
+      > <a name="2370" class="Symbol"
+      >&#8704;</a
+      > <a name="2372" class="Symbol"
+      >{</a
+      ><a name="2373" href="Data.Fin.Subset.html#2373" class="Bound"
+      >n</a
+      ><a name="2374" class="Symbol"
+      >}</a
+      > <a name="2376" class="Symbol"
+      >&#8594;</a
+      > <a name="2378" href="Agda.Builtin.List.html#List" class="Datatype"
+      >List</a
+      > <a name="2383" class="Symbol"
+      >(</a
+      ><a name="2384" href="Data.Fin.Subset.html#Subset" class="Function"
+      >Subset</a
+      > <a name="2391" href="Data.Fin.Subset.html#2373" class="Bound"
+      >n</a
+      ><a name="2392" class="Symbol"
+      >)</a
+      > <a name="2394" class="Symbol"
+      >&#8594;</a
+      > <a name="2396" href="Data.Fin.Subset.html#Subset" class="Function"
+      >Subset</a
+      > <a name="2403" href="Data.Fin.Subset.html#2373" class="Bound"
+      >n</a
+      >
+<a name="2405" href="Data.Fin.Subset.html#&#8898;" class="Function"
+      >&#8898;</a
+      > <a name="2407" class="Symbol"
+      >=</a
+      > <a name="2409" href="Data.List.Base.html#foldr" class="Function"
+      >foldr</a
+      > <a name="2415" href="Algebra.html#Fin.Subset.BA._&#8745;_" class="Function Operator"
+      >_&#8745;_</a
+      > <a name="2419" href="Algebra.html#Fin.Subset.BA.&#8868;" class="Function"
+      >&#8868;</a
+      >
+
+<a name="2422" class="Comment"
+      >------------------------------------------------------------------------</a
+      >
+<a name="2495" class="Comment"
+      >-- Properties</a
+      >
+
+<a name="Nonempty" href="Data.Fin.Subset.html#Nonempty" class="Function"
+      >Nonempty</a
+      > <a name="2519" class="Symbol"
+      >:</a
+      > <a name="2521" class="Symbol"
+      >&#8704;</a
+      > <a name="2523" class="Symbol"
+      >{</a
+      ><a name="2524" href="Data.Fin.Subset.html#2524" class="Bound"
+      >n</a
+      ><a name="2525" class="Symbol"
+      >}</a
+      > <a name="2527" class="Symbol"
+      >(</a
+      ><a name="2528" href="Data.Fin.Subset.html#2528" class="Bound"
+      >p</a
+      > <a name="2530" class="Symbol"
+      >:</a
+      > <a name="2532" href="Data.Fin.Subset.html#Subset" class="Function"
+      >Subset</a
+      > <a name="2539" href="Data.Fin.Subset.html#2524" class="Bound"
+      >n</a
+      ><a name="2540" class="Symbol"
+      >)</a
+      > <a name="2542" class="Symbol"
+      >&#8594;</a
+      > <a name="2544" class="PrimitiveType"
+      >Set</a
+      >
+<a name="2548" href="Data.Fin.Subset.html#Nonempty" class="Function"
+      >Nonempty</a
+      > <a name="2557" href="Data.Fin.Subset.html#2557" class="Bound"
+      >p</a
+      > <a name="2559" class="Symbol"
+      >=</a
+      > <a name="2561" href="Data.Product.html#&#8707;" class="Function"
+      >&#8707;</a
+      > <a name="2563" class="Symbol"
+      >&#955;</a
+      > <a name="2565" href="Data.Fin.Subset.html#2565" class="Bound"
+      >f</a
+      > <a name="2567" class="Symbol"
+      >&#8594;</a
+      > <a name="2569" href="Data.Fin.Subset.html#2565" class="Bound"
+      >f</a
+      > <a name="2571" href="Data.Fin.Subset.html#_&#8712;_" class="Function Operator"
+      >&#8712;</a
+      > <a name="2573" href="Data.Fin.Subset.html#2557" class="Bound"
+      >p</a
+      >
+
+<a name="Empty" href="Data.Fin.Subset.html#Empty" class="Function"
+      >Empty</a
+      > <a name="2582" class="Symbol"
+      >:</a
+      > <a name="2584" class="Symbol"
+      >&#8704;</a
+      > <a name="2586" class="Symbol"
+      >{</a
+      ><a name="2587" href="Data.Fin.Subset.html#2587" class="Bound"
+      >n</a
+      ><a name="2588" class="Symbol"
+      >}</a
+      > <a name="2590" class="Symbol"
+      >(</a
+      ><a name="2591" href="Data.Fin.Subset.html#2591" class="Bound"
+      >p</a
+      > <a name="2593" class="Symbol"
+      >:</a
+      > <a name="2595" href="Data.Fin.Subset.html#Subset" class="Function"
+      >Subset</a
+      > <a name="2602" href="Data.Fin.Subset.html#2587" class="Bound"
+      >n</a
+      ><a name="2603" class="Symbol"
+      >)</a
+      > <a name="2605" class="Symbol"
+      >&#8594;</a
+      > <a name="2607" class="PrimitiveType"
+      >Set</a
+      >
+<a name="2611" href="Data.Fin.Subset.html#Empty" class="Function"
+      >Empty</a
+      > <a name="2617" href="Data.Fin.Subset.html#2617" class="Bound"
+      >p</a
+      > <a name="2619" class="Symbol"
+      >=</a
+      > <a name="2621" href="Relation.Nullary.html#&#172;_" class="Function Operator"
+      >&#172;</a
+      > <a name="2623" href="Data.Fin.Subset.html#Nonempty" class="Function"
+      >Nonempty</a
+      > <a name="2632" href="Data.Fin.Subset.html#2617" class="Bound"
+      >p</a
+      >
+
+<a name="2635" class="Comment"
+      >-- Point-wise lifting of properties.</a
+      >
+
+<a name="Lift" href="Data.Fin.Subset.html#Lift" class="Function"
+      >Lift</a
+      > <a name="2678" class="Symbol"
+      >:</a
+      > <a name="2680" class="Symbol"
+      >&#8704;</a
+      > <a name="2682" class="Symbol"
+      >{</a
+      ><a name="2683" href="Data.Fin.Subset.html#2683" class="Bound"
+      >n</a
+      ><a name="2684" class="Symbol"
+      >}</a
+      > <a name="2686" class="Symbol"
+      >&#8594;</a
+      > <a name="2688" class="Symbol"
+      >(</a
+      ><a name="2689" href="Data.Fin.html#Fin" class="Datatype"
+      >Fin</a
+      > <a name="2693" href="Data.Fin.Subset.html#2683" class="Bound"
+      >n</a
+      > <a name="2695" class="Symbol"
+      >&#8594;</a
+      > <a name="2697" class="PrimitiveType"
+      >Set</a
+      ><a name="2700" class="Symbol"
+      >)</a
+      > <a name="2702" class="Symbol"
+      >&#8594;</a
+      > <a name="2704" class="Symbol"
+      >(</a
+      ><a name="2705" href="Data.Fin.Subset.html#Subset" class="Function"
+      >Subset</a
+      > <a name="2712" href="Data.Fin.Subset.html#2683" class="Bound"
+      >n</a
+      > <a name="2714" class="Symbol"
+      >&#8594;</a
+      > <a name="2716" class="PrimitiveType"
+      >Set</a
+      ><a name="2719" class="Symbol"
+      >)</a
+      >
+<a name="2721" href="Data.Fin.Subset.html#Lift" class="Function"
+      >Lift</a
+      > <a name="2726" href="Data.Fin.Subset.html#2726" class="Bound"
+      >P</a
+      > <a name="2728" href="Data.Fin.Subset.html#2728" class="Bound"
+      >p</a
+      > <a name="2730" class="Symbol"
+      >=</a
+      > <a name="2732" class="Symbol"
+      >&#8704;</a
+      > <a name="2734" class="Symbol"
+      >{</a
+      ><a name="2735" href="Data.Fin.Subset.html#2735" class="Bound"
+      >x</a
+      ><a name="2736" class="Symbol"
+      >}</a
+      > <a name="2738" class="Symbol"
+      >&#8594;</a
+      > <a name="2740" href="Data.Fin.Subset.html#2735" class="Bound"
+      >x</a
+      > <a name="2742" href="Data.Fin.Subset.html#_&#8712;_" class="Function Operator"
+      >&#8712;</a
+      > <a name="2744" href="Data.Fin.Subset.html#2728" class="Bound"
+      >p</a
+      > <a name="2746" class="Symbol"
+      >&#8594;</a
+      > <a name="2748" href="Data.Fin.Subset.html#2726" class="Bound"
+      >P</a
+      > <a name="2750" href="Data.Fin.Subset.html#2735" class="Bound"
+      >x</a
+      >
+</pre
     ></body
   ></html
 >

@@ -11,282 +11,168 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Basic types related to coinduction</a
-      ><a name="143"
       >
-</a
-      ><a name="144" class="Comment"
+<a name="144" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="216"
       >
 
-</a
-      ><a name="218" class="Keyword"
+<a name="218" class="Keyword"
       >module</a
-      ><a name="224"
-      > </a
-      ><a name="225" href="Coinduction.html#1" class="Module"
+      > <a name="225" href="Coinduction.html" class="Module"
       >Coinduction</a
-      ><a name="236"
-      > </a
-      ><a name="237" class="Keyword"
+      > <a name="237" class="Keyword"
       >where</a
-      ><a name="242"
       >
 
-</a
-      ><a name="244" class="Keyword"
+<a name="244" class="Keyword"
       >open</a
-      ><a name="248"
-      > </a
-      ><a name="249" class="Keyword"
+      > <a name="249" class="Keyword"
       >import</a
-      ><a name="255"
-      > </a
-      ><a name="256" href="Agda.Builtin.Coinduction.html#1" class="Module"
+      > <a name="256" href="Agda.Builtin.Coinduction.html" class="Module"
       >Agda.Builtin.Coinduction</a
-      ><a name="280"
-      > </a
-      ><a name="281" class="Keyword"
+      > <a name="281" class="Keyword"
       >public</a
-      ><a name="287"
       >
 
-</a
-      ><a name="289" class="Comment"
+<a name="289" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="361"
       >
-</a
-      ><a name="362" class="Comment"
+<a name="362" class="Comment"
       >-- Rec, a type which is analogous to the Rec type constructor used in</a
-      ><a name="431"
       >
-</a
-      ><a name="432" class="Comment"
+<a name="432" class="Comment"
       >-- &#928;&#931; (see Altenkirch, Danielsson, L&#246;h and Oury. &#928;&#931;: Dependent Types</a
-      ><a name="500"
       >
-</a
-      ><a name="501" class="Comment"
+<a name="501" class="Comment"
       >-- without the Sugar. FLOPS 2010, LNCS 6009.)</a
-      ><a name="546"
       >
 
-</a
-      ><a name="548" class="Keyword"
+<a name="548" class="Keyword"
       >data</a
-      ><a name="552"
-      > </a
-      ><a name="553" href="Coinduction.html#553" class="Datatype"
+      > <a name="Rec" href="Coinduction.html#Rec" class="Datatype"
       >Rec</a
-      ><a name="556"
-      > </a
-      ><a name="557" class="Symbol"
+      > <a name="557" class="Symbol"
       >{</a
       ><a name="558" href="Coinduction.html#558" class="Bound"
       >a</a
       ><a name="559" class="Symbol"
       >}</a
-      ><a name="560"
-      > </a
-      ><a name="561" class="Symbol"
+      > <a name="561" class="Symbol"
       >(</a
       ><a name="562" href="Coinduction.html#562" class="Bound"
       >A</a
-      ><a name="563"
-      > </a
-      ><a name="564" class="Symbol"
+      > <a name="564" class="Symbol"
       >:</a
-      ><a name="565"
-      > </a
-      ><a name="566" href="Agda.Builtin.Coinduction.html#96" class="Record"
+      > <a name="566" href="Agda.Builtin.Coinduction.html#&#8734;" class="Record"
       >&#8734;</a
-      ><a name="567"
-      > </a
-      ><a name="568" class="Symbol"
+      > <a name="568" class="Symbol"
       >(</a
       ><a name="569" class="PrimitiveType"
       >Set</a
-      ><a name="572"
-      > </a
-      ><a name="573" href="Coinduction.html#558" class="Bound"
+      > <a name="573" href="Coinduction.html#558" class="Bound"
       >a</a
       ><a name="574" class="Symbol"
       >))</a
-      ><a name="576"
-      > </a
-      ><a name="577" class="Symbol"
+      > <a name="577" class="Symbol"
       >:</a
-      ><a name="578"
-      > </a
-      ><a name="579" class="PrimitiveType"
+      > <a name="579" class="PrimitiveType"
       >Set</a
-      ><a name="582"
-      > </a
-      ><a name="583" href="Coinduction.html#558" class="Bound"
+      > <a name="583" href="Coinduction.html#558" class="Bound"
       >a</a
-      ><a name="584"
-      > </a
-      ><a name="585" class="Keyword"
+      > <a name="585" class="Keyword"
       >where</a
-      ><a name="590"
       >
-  </a
-      ><a name="593" href="Coinduction.html#593" class="InductiveConstructor"
+  <a name="Rec.fold" href="Coinduction.html#Rec.fold" class="InductiveConstructor"
       >fold</a
-      ><a name="597"
-      > </a
-      ><a name="598" class="Symbol"
+      > <a name="598" class="Symbol"
       >:</a
-      ><a name="599"
-      > </a
-      ><a name="600" class="Symbol"
+      > <a name="600" class="Symbol"
       >(</a
       ><a name="601" href="Coinduction.html#601" class="Bound"
       >x</a
-      ><a name="602"
-      > </a
-      ><a name="603" class="Symbol"
+      > <a name="603" class="Symbol"
       >:</a
-      ><a name="604"
-      > </a
-      ><a name="605" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      > <a name="605" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="606"
-      > </a
-      ><a name="607" href="Coinduction.html#562" class="Bound"
+      > <a name="607" href="Coinduction.html#562" class="Bound"
       >A</a
       ><a name="608" class="Symbol"
       >)</a
-      ><a name="609"
-      > </a
-      ><a name="610" class="Symbol"
+      > <a name="610" class="Symbol"
       >&#8594;</a
-      ><a name="611"
-      > </a
-      ><a name="612" href="Coinduction.html#553" class="Datatype"
+      > <a name="612" href="Coinduction.html#Rec" class="Datatype"
       >Rec</a
-      ><a name="615"
-      > </a
-      ><a name="616" href="Coinduction.html#562" class="Bound"
+      > <a name="616" href="Coinduction.html#562" class="Bound"
       >A</a
-      ><a name="617"
       >
 
-</a
-      ><a name="619" href="Coinduction.html#619" class="Function"
+<a name="unfold" href="Coinduction.html#unfold" class="Function"
       >unfold</a
-      ><a name="625"
-      > </a
-      ><a name="626" class="Symbol"
+      > <a name="626" class="Symbol"
       >:</a
-      ><a name="627"
-      > </a
-      ><a name="628" class="Symbol"
+      > <a name="628" class="Symbol"
       >&#8704;</a
-      ><a name="629"
-      > </a
-      ><a name="630" class="Symbol"
+      > <a name="630" class="Symbol"
       >{</a
       ><a name="631" href="Coinduction.html#631" class="Bound"
       >a</a
       ><a name="632" class="Symbol"
       >}</a
-      ><a name="633"
-      > </a
-      ><a name="634" class="Symbol"
+      > <a name="634" class="Symbol"
       >{</a
       ><a name="635" href="Coinduction.html#635" class="Bound"
       >A</a
-      ><a name="636"
-      > </a
-      ><a name="637" class="Symbol"
+      > <a name="637" class="Symbol"
       >:</a
-      ><a name="638"
-      > </a
-      ><a name="639" href="Agda.Builtin.Coinduction.html#96" class="Record"
+      > <a name="639" href="Agda.Builtin.Coinduction.html#&#8734;" class="Record"
       >&#8734;</a
-      ><a name="640"
-      > </a
-      ><a name="641" class="Symbol"
+      > <a name="641" class="Symbol"
       >(</a
       ><a name="642" class="PrimitiveType"
       >Set</a
-      ><a name="645"
-      > </a
-      ><a name="646" href="Coinduction.html#631" class="Bound"
+      > <a name="646" href="Coinduction.html#631" class="Bound"
       >a</a
       ><a name="647" class="Symbol"
       >)}</a
-      ><a name="649"
-      > </a
-      ><a name="650" class="Symbol"
+      > <a name="650" class="Symbol"
       >&#8594;</a
-      ><a name="651"
-      > </a
-      ><a name="652" href="Coinduction.html#553" class="Datatype"
+      > <a name="652" href="Coinduction.html#Rec" class="Datatype"
       >Rec</a
-      ><a name="655"
-      > </a
-      ><a name="656" href="Coinduction.html#635" class="Bound"
+      > <a name="656" href="Coinduction.html#635" class="Bound"
       >A</a
-      ><a name="657"
-      > </a
-      ><a name="658" class="Symbol"
+      > <a name="658" class="Symbol"
       >&#8594;</a
-      ><a name="659"
-      > </a
-      ><a name="660" href="Agda.Builtin.Coinduction.html#164" class="Field"
+      > <a name="660" href="Agda.Builtin.Coinduction.html#&#9837;" class="Field"
       >&#9837;</a
-      ><a name="661"
-      > </a
-      ><a name="662" href="Coinduction.html#635" class="Bound"
+      > <a name="662" href="Coinduction.html#635" class="Bound"
       >A</a
-      ><a name="663"
       >
-</a
-      ><a name="664" href="Coinduction.html#619" class="Function"
+<a name="664" href="Coinduction.html#unfold" class="Function"
       >unfold</a
-      ><a name="670"
-      > </a
-      ><a name="671" class="Symbol"
+      > <a name="671" class="Symbol"
       >(</a
-      ><a name="672" href="Coinduction.html#593" class="InductiveConstructor"
+      ><a name="672" href="Coinduction.html#Rec.fold" class="InductiveConstructor"
       >fold</a
-      ><a name="676"
-      > </a
-      ><a name="677" href="Coinduction.html#677" class="Bound"
+      > <a name="677" href="Coinduction.html#677" class="Bound"
       >x</a
       ><a name="678" class="Symbol"
       >)</a
-      ><a name="679"
-      > </a
-      ><a name="680" class="Symbol"
+      > <a name="680" class="Symbol"
       >=</a
-      ><a name="681"
-      > </a
-      ><a name="682" href="Coinduction.html#677" class="Bound"
+      > <a name="682" href="Coinduction.html#677" class="Bound"
       >x</a
-      ><a name="683"
       >
 
-</a
-      ><a name="685" class="Comment"
+<a name="685" class="Comment"
       >{-
 
   -- If --guardedness-preserving-type-constructors is enabled one can
@@ -315,10 +201,8 @@
   -- inconsistencies.
 
 -}</a
-      ><a name="1221"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >

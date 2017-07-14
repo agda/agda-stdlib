@@ -11,1120 +11,642 @@
   ><pre
     ><a name="1" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="73"
       >
-</a
-      ><a name="74" class="Comment"
+<a name="74" class="Comment"
       >-- The Agda standard library</a
-      ><a name="102"
       >
-</a
-      ><a name="103" class="Comment"
+<a name="103" class="Comment"
       >--</a
-      ><a name="105"
       >
-</a
-      ><a name="106" class="Comment"
+<a name="106" class="Comment"
       >-- Indexed containers core</a
-      ><a name="132"
       >
-</a
-      ><a name="133" class="Comment"
+<a name="133" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="205"
       >
 
-</a
-      ><a name="207" class="Keyword"
+<a name="207" class="Keyword"
       >module</a
-      ><a name="213"
-      > </a
-      ><a name="214" href="Data.Container.Indexed.Core.html#1" class="Module"
+      > <a name="214" href="Data.Container.Indexed.Core.html" class="Module"
       >Data.Container.Indexed.Core</a
-      ><a name="241"
-      > </a
-      ><a name="242" class="Keyword"
+      > <a name="242" class="Keyword"
       >where</a
-      ><a name="247"
       >
 
-</a
-      ><a name="249" class="Keyword"
+<a name="249" class="Keyword"
       >open</a
-      ><a name="253"
-      > </a
-      ><a name="254" class="Keyword"
+      > <a name="254" class="Keyword"
       >import</a
-      ><a name="260"
-      > </a
-      ><a name="261" href="Level.html#1" class="Module"
+      > <a name="261" href="Level.html" class="Module"
       >Level</a
-      ><a name="266"
       >
-</a
-      ><a name="267" class="Keyword"
+<a name="267" class="Keyword"
       >open</a
-      ><a name="271"
-      > </a
-      ><a name="272" class="Keyword"
+      > <a name="272" class="Keyword"
       >import</a
-      ><a name="278"
-      > </a
-      ><a name="279" href="Data.Product.html#1" class="Module"
+      > <a name="279" href="Data.Product.html" class="Module"
       >Data.Product</a
-      ><a name="291"
       >
-</a
-      ><a name="292" class="Keyword"
+<a name="292" class="Keyword"
       >open</a
-      ><a name="296"
-      > </a
-      ><a name="297" class="Keyword"
+      > <a name="297" class="Keyword"
       >import</a
-      ><a name="303"
-      > </a
-      ><a name="304" href="Relation.Unary.html#1" class="Module"
+      > <a name="304" href="Relation.Unary.html" class="Module"
       >Relation.Unary</a
-      ><a name="318"
       >
 
-</a
-      ><a name="320" class="Keyword"
+<a name="320" class="Keyword"
       >infix</a
-      ><a name="325"
-      > </a
-      ><a name="326" class="Number"
+      > <a name="326" class="Number"
       >5</a
-      ><a name="327"
-      > _&#9667;_/_
+      > <a name="328" href="Data.Container.Indexed.Core.html#Container._&#9667;_/_" class="InductiveConstructor Operator"
+      >_&#9667;_/_</a
+      >
 
-</a
-      ><a name="335" class="Keyword"
+<a name="335" class="Keyword"
       >record</a
-      ><a name="341"
-      > </a
-      ><a name="342" href="Data.Container.Indexed.Core.html#342" class="Record"
+      > <a name="Container" href="Data.Container.Indexed.Core.html#Container" class="Record"
       >Container</a
-      ><a name="351"
-      > </a
-      ><a name="352" class="Symbol"
+      > <a name="352" class="Symbol"
       >{</a
       ><a name="353" href="Data.Container.Indexed.Core.html#353" class="Bound"
       >i</a
-      ><a name="354"
-      > </a
-      ><a name="355" href="Data.Container.Indexed.Core.html#355" class="Bound"
+      > <a name="355" href="Data.Container.Indexed.Core.html#355" class="Bound"
       >o</a
       ><a name="356" class="Symbol"
       >}</a
-      ><a name="357"
-      > </a
-      ><a name="358" class="Symbol"
+      > <a name="358" class="Symbol"
       >(</a
       ><a name="359" href="Data.Container.Indexed.Core.html#359" class="Bound"
       >I</a
-      ><a name="360"
-      > </a
-      ><a name="361" class="Symbol"
+      > <a name="361" class="Symbol"
       >:</a
-      ><a name="362"
-      > </a
-      ><a name="363" class="PrimitiveType"
+      > <a name="363" class="PrimitiveType"
       >Set</a
-      ><a name="366"
-      > </a
-      ><a name="367" href="Data.Container.Indexed.Core.html#353" class="Bound"
+      > <a name="367" href="Data.Container.Indexed.Core.html#353" class="Bound"
       >i</a
       ><a name="368" class="Symbol"
       >)</a
-      ><a name="369"
-      > </a
-      ><a name="370" class="Symbol"
+      > <a name="370" class="Symbol"
       >(</a
       ><a name="371" href="Data.Container.Indexed.Core.html#371" class="Bound"
       >O</a
-      ><a name="372"
-      > </a
-      ><a name="373" class="Symbol"
+      > <a name="373" class="Symbol"
       >:</a
-      ><a name="374"
-      > </a
-      ><a name="375" class="PrimitiveType"
+      > <a name="375" class="PrimitiveType"
       >Set</a
-      ><a name="378"
-      > </a
-      ><a name="379" href="Data.Container.Indexed.Core.html#355" class="Bound"
+      > <a name="379" href="Data.Container.Indexed.Core.html#355" class="Bound"
       >o</a
       ><a name="380" class="Symbol"
       >)</a
-      ><a name="381"
-      > </a
-      ><a name="382" class="Symbol"
+      > <a name="382" class="Symbol"
       >(</a
       ><a name="383" href="Data.Container.Indexed.Core.html#383" class="Bound"
       >c</a
-      ><a name="384"
-      > </a
-      ><a name="385" href="Data.Container.Indexed.Core.html#385" class="Bound"
+      > <a name="385" href="Data.Container.Indexed.Core.html#385" class="Bound"
       >r</a
-      ><a name="386"
-      > </a
-      ><a name="387" class="Symbol"
+      > <a name="387" class="Symbol"
       >:</a
-      ><a name="388"
-      > </a
-      ><a name="389" href="Agda.Primitive.html#408" class="Postulate"
+      > <a name="389" href="Agda.Primitive.html#Level" class="Postulate"
       >Level</a
       ><a name="394" class="Symbol"
       >)</a
-      ><a name="395"
-      > </a
-      ><a name="396" class="Symbol"
+      > <a name="396" class="Symbol"
       >:</a
-      ><a name="397"
       >
-                 </a
-      ><a name="415" class="PrimitiveType"
+                 <a name="415" class="PrimitiveType"
       >Set</a
-      ><a name="418"
-      > </a
-      ><a name="419" class="Symbol"
+      > <a name="419" class="Symbol"
       >(</a
       ><a name="420" href="Data.Container.Indexed.Core.html#353" class="Bound"
       >i</a
-      ><a name="421"
-      > </a
-      ><a name="422" href="Agda.Primitive.html#655" class="Primitive Operator"
+      > <a name="422" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
       >&#8852;</a
-      ><a name="423"
-      > </a
-      ><a name="424" href="Data.Container.Indexed.Core.html#355" class="Bound"
+      > <a name="424" href="Data.Container.Indexed.Core.html#355" class="Bound"
       >o</a
-      ><a name="425"
-      > </a
-      ><a name="426" href="Agda.Primitive.html#655" class="Primitive Operator"
+      > <a name="426" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
       >&#8852;</a
-      ><a name="427"
-      > </a
-      ><a name="428" href="Agda.Primitive.html#625" class="Primitive"
+      > <a name="428" href="Agda.Primitive.html#suc" class="Primitive"
       >suc</a
-      ><a name="431"
-      > </a
-      ><a name="432" href="Data.Container.Indexed.Core.html#383" class="Bound"
+      > <a name="432" href="Data.Container.Indexed.Core.html#383" class="Bound"
       >c</a
-      ><a name="433"
-      > </a
-      ><a name="434" href="Agda.Primitive.html#655" class="Primitive Operator"
+      > <a name="434" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
       >&#8852;</a
-      ><a name="435"
-      > </a
-      ><a name="436" href="Agda.Primitive.html#625" class="Primitive"
+      > <a name="436" href="Agda.Primitive.html#suc" class="Primitive"
       >suc</a
-      ><a name="439"
-      > </a
-      ><a name="440" href="Data.Container.Indexed.Core.html#385" class="Bound"
+      > <a name="440" href="Data.Container.Indexed.Core.html#385" class="Bound"
       >r</a
       ><a name="441" class="Symbol"
       >)</a
-      ><a name="442"
-      > </a
-      ><a name="443" class="Keyword"
+      > <a name="443" class="Keyword"
       >where</a
-      ><a name="448"
       >
-  </a
-      ><a name="451" class="Keyword"
+  <a name="451" class="Keyword"
       >constructor</a
-      ><a name="462"
-      > </a
-      ><a name="463" href="Data.Container.Indexed.Core.html#463" class="InductiveConstructor Operator"
+      > <a name="Container._&#9667;_/_" href="Data.Container.Indexed.Core.html#Container._&#9667;_/_" class="InductiveConstructor Operator"
       >_&#9667;_/_</a
-      ><a name="468"
       >
-  </a
-      ><a name="471" class="Keyword"
+  <a name="471" class="Keyword"
       >field</a
-      ><a name="476"
       >
-    </a
-      ><a name="481" href="Data.Container.Indexed.Core.html#481" class="Field"
+    <a name="Container.Command" href="Data.Container.Indexed.Core.html#Container.Command" class="Field"
       >Command</a
-      ><a name="488"
-      >  </a
-      ><a name="490" class="Symbol"
+      >  <a name="490" class="Symbol"
       >:</a
-      ><a name="491"
-      > </a
-      ><a name="492" class="Symbol"
+      > <a name="492" class="Symbol"
       >(</a
       ><a name="493" href="Data.Container.Indexed.Core.html#493" class="Bound"
       >o</a
-      ><a name="494"
-      > </a
-      ><a name="495" class="Symbol"
+      > <a name="495" class="Symbol"
       >:</a
-      ><a name="496"
-      > </a
-      ><a name="497" href="Data.Container.Indexed.Core.html#371" class="Bound"
+      > <a name="497" href="Data.Container.Indexed.Core.html#371" class="Bound"
       >O</a
       ><a name="498" class="Symbol"
       >)</a
-      ><a name="499"
-      > </a
-      ><a name="500" class="Symbol"
+      > <a name="500" class="Symbol"
       >&#8594;</a
-      ><a name="501"
-      > </a
-      ><a name="502" class="PrimitiveType"
+      > <a name="502" class="PrimitiveType"
       >Set</a
-      ><a name="505"
-      > </a
-      ><a name="506" href="Data.Container.Indexed.Core.html#383" class="Bound"
+      > <a name="506" href="Data.Container.Indexed.Core.html#383" class="Bound"
       >c</a
-      ><a name="507"
       >
-    </a
-      ><a name="512" href="Data.Container.Indexed.Core.html#512" class="Field"
+    <a name="Container.Response" href="Data.Container.Indexed.Core.html#Container.Response" class="Field"
       >Response</a
-      ><a name="520"
-      > </a
-      ><a name="521" class="Symbol"
+      > <a name="521" class="Symbol"
       >:</a
-      ><a name="522"
-      > </a
-      ><a name="523" class="Symbol"
+      > <a name="523" class="Symbol"
       >&#8704;</a
-      ><a name="524"
-      > </a
-      ><a name="525" class="Symbol"
+      > <a name="525" class="Symbol"
       >{</a
       ><a name="526" href="Data.Container.Indexed.Core.html#526" class="Bound"
       >o</a
       ><a name="527" class="Symbol"
       >}</a
-      ><a name="528"
-      > </a
-      ><a name="529" class="Symbol"
+      > <a name="529" class="Symbol"
       >&#8594;</a
-      ><a name="530"
-      > </a
-      ><a name="531" href="Data.Container.Indexed.Core.html#481" class="Field"
+      > <a name="531" href="Data.Container.Indexed.Core.html#Container.Command" class="Field"
       >Command</a
-      ><a name="538"
-      > </a
-      ><a name="539" href="Data.Container.Indexed.Core.html#526" class="Bound"
+      > <a name="539" href="Data.Container.Indexed.Core.html#526" class="Bound"
       >o</a
-      ><a name="540"
-      > </a
-      ><a name="541" class="Symbol"
+      > <a name="541" class="Symbol"
       >&#8594;</a
-      ><a name="542"
-      > </a
-      ><a name="543" class="PrimitiveType"
+      > <a name="543" class="PrimitiveType"
       >Set</a
-      ><a name="546"
-      > </a
-      ><a name="547" href="Data.Container.Indexed.Core.html#385" class="Bound"
+      > <a name="547" href="Data.Container.Indexed.Core.html#385" class="Bound"
       >r</a
-      ><a name="548"
       >
-    </a
-      ><a name="553" href="Data.Container.Indexed.Core.html#553" class="Field"
+    <a name="Container.next" href="Data.Container.Indexed.Core.html#Container.next" class="Field"
       >next</a
-      ><a name="557"
-      >     </a
-      ><a name="562" class="Symbol"
+      >     <a name="562" class="Symbol"
       >:</a
-      ><a name="563"
-      > </a
-      ><a name="564" class="Symbol"
+      > <a name="564" class="Symbol"
       >&#8704;</a
-      ><a name="565"
-      > </a
-      ><a name="566" class="Symbol"
+      > <a name="566" class="Symbol"
       >{</a
       ><a name="567" href="Data.Container.Indexed.Core.html#567" class="Bound"
       >o</a
       ><a name="568" class="Symbol"
       >}</a
-      ><a name="569"
-      > </a
-      ><a name="570" class="Symbol"
+      > <a name="570" class="Symbol"
       >(</a
       ><a name="571" href="Data.Container.Indexed.Core.html#571" class="Bound"
       >c</a
-      ><a name="572"
-      > </a
-      ><a name="573" class="Symbol"
+      > <a name="573" class="Symbol"
       >:</a
-      ><a name="574"
-      > </a
-      ><a name="575" href="Data.Container.Indexed.Core.html#481" class="Field"
+      > <a name="575" href="Data.Container.Indexed.Core.html#Container.Command" class="Field"
       >Command</a
-      ><a name="582"
-      > </a
-      ><a name="583" href="Data.Container.Indexed.Core.html#567" class="Bound"
+      > <a name="583" href="Data.Container.Indexed.Core.html#567" class="Bound"
       >o</a
       ><a name="584" class="Symbol"
       >)</a
-      ><a name="585"
-      > </a
-      ><a name="586" class="Symbol"
+      > <a name="586" class="Symbol"
       >&#8594;</a
-      ><a name="587"
-      > </a
-      ><a name="588" href="Data.Container.Indexed.Core.html#512" class="Field"
+      > <a name="588" href="Data.Container.Indexed.Core.html#Container.Response" class="Field"
       >Response</a
-      ><a name="596"
-      > </a
-      ><a name="597" href="Data.Container.Indexed.Core.html#571" class="Bound"
+      > <a name="597" href="Data.Container.Indexed.Core.html#571" class="Bound"
       >c</a
-      ><a name="598"
-      > </a
-      ><a name="599" class="Symbol"
+      > <a name="599" class="Symbol"
       >&#8594;</a
-      ><a name="600"
-      > </a
-      ><a name="601" href="Data.Container.Indexed.Core.html#359" class="Bound"
+      > <a name="601" href="Data.Container.Indexed.Core.html#359" class="Bound"
       >I</a
-      ><a name="602"
       >
 
-</a
-      ><a name="604" class="Comment"
+<a name="604" class="Comment"
       >-- The semantics (&quot;extension&quot;) of an indexed container.</a
-      ><a name="659"
       >
 
-</a
-      ><a name="661" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+<a name="&#10214;_&#10215;" href="Data.Container.Indexed.Core.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;_&#10215;</a
-      ><a name="664"
-      > </a
-      ><a name="665" class="Symbol"
+      > <a name="665" class="Symbol"
       >:</a
-      ><a name="666"
-      > </a
-      ><a name="667" class="Symbol"
+      > <a name="667" class="Symbol"
       >&#8704;</a
-      ><a name="668"
-      > </a
-      ><a name="669" class="Symbol"
+      > <a name="669" class="Symbol"
       >{</a
       ><a name="670" href="Data.Container.Indexed.Core.html#670" class="Bound"
       >i</a
-      ><a name="671"
-      > </a
-      ><a name="672" href="Data.Container.Indexed.Core.html#672" class="Bound"
+      > <a name="672" href="Data.Container.Indexed.Core.html#672" class="Bound"
       >o</a
-      ><a name="673"
-      > </a
-      ><a name="674" href="Data.Container.Indexed.Core.html#674" class="Bound"
+      > <a name="674" href="Data.Container.Indexed.Core.html#674" class="Bound"
       >c</a
-      ><a name="675"
-      > </a
-      ><a name="676" href="Data.Container.Indexed.Core.html#676" class="Bound"
+      > <a name="676" href="Data.Container.Indexed.Core.html#676" class="Bound"
       >r</a
-      ><a name="677"
-      > </a
-      ><a name="678" href="Data.Container.Indexed.Core.html#678" class="Bound"
+      > <a name="678" href="Data.Container.Indexed.Core.html#678" class="Bound"
       >&#8467;</a
       ><a name="679" class="Symbol"
       >}</a
-      ><a name="680"
-      > </a
-      ><a name="681" class="Symbol"
+      > <a name="681" class="Symbol"
       >{</a
       ><a name="682" href="Data.Container.Indexed.Core.html#682" class="Bound"
       >I</a
-      ><a name="683"
-      > </a
-      ><a name="684" class="Symbol"
+      > <a name="684" class="Symbol"
       >:</a
-      ><a name="685"
-      > </a
-      ><a name="686" class="PrimitiveType"
+      > <a name="686" class="PrimitiveType"
       >Set</a
-      ><a name="689"
-      > </a
-      ><a name="690" href="Data.Container.Indexed.Core.html#670" class="Bound"
+      > <a name="690" href="Data.Container.Indexed.Core.html#670" class="Bound"
       >i</a
       ><a name="691" class="Symbol"
       >}</a
-      ><a name="692"
-      > </a
-      ><a name="693" class="Symbol"
+      > <a name="693" class="Symbol"
       >{</a
       ><a name="694" href="Data.Container.Indexed.Core.html#694" class="Bound"
       >O</a
-      ><a name="695"
-      > </a
-      ><a name="696" class="Symbol"
+      > <a name="696" class="Symbol"
       >:</a
-      ><a name="697"
-      > </a
-      ><a name="698" class="PrimitiveType"
+      > <a name="698" class="PrimitiveType"
       >Set</a
-      ><a name="701"
-      > </a
-      ><a name="702" href="Data.Container.Indexed.Core.html#672" class="Bound"
+      > <a name="702" href="Data.Container.Indexed.Core.html#672" class="Bound"
       >o</a
       ><a name="703" class="Symbol"
       >}</a
-      ><a name="704"
-      > </a
-      ><a name="705" class="Symbol"
+      > <a name="705" class="Symbol"
       >&#8594;</a
-      ><a name="706"
-      > </a
-      ><a name="707" href="Data.Container.Indexed.Core.html#342" class="Record"
+      > <a name="707" href="Data.Container.Indexed.Core.html#Container" class="Record"
       >Container</a
-      ><a name="716"
-      > </a
-      ><a name="717" href="Data.Container.Indexed.Core.html#682" class="Bound"
+      > <a name="717" href="Data.Container.Indexed.Core.html#682" class="Bound"
       >I</a
-      ><a name="718"
-      > </a
-      ><a name="719" href="Data.Container.Indexed.Core.html#694" class="Bound"
+      > <a name="719" href="Data.Container.Indexed.Core.html#694" class="Bound"
       >O</a
-      ><a name="720"
-      > </a
-      ><a name="721" href="Data.Container.Indexed.Core.html#674" class="Bound"
+      > <a name="721" href="Data.Container.Indexed.Core.html#674" class="Bound"
       >c</a
-      ><a name="722"
-      > </a
-      ><a name="723" href="Data.Container.Indexed.Core.html#676" class="Bound"
+      > <a name="723" href="Data.Container.Indexed.Core.html#676" class="Bound"
       >r</a
-      ><a name="724"
-      > </a
-      ><a name="725" class="Symbol"
+      > <a name="725" class="Symbol"
       >&#8594;</a
-      ><a name="726"
       >
-      </a
-      ><a name="733" href="Relation.Unary.html#541" class="Function"
+      <a name="733" href="Relation.Unary.html#Pred" class="Function"
       >Pred</a
-      ><a name="737"
-      > </a
-      ><a name="738" href="Data.Container.Indexed.Core.html#682" class="Bound"
+      > <a name="738" href="Data.Container.Indexed.Core.html#682" class="Bound"
       >I</a
-      ><a name="739"
-      > </a
-      ><a name="740" href="Data.Container.Indexed.Core.html#678" class="Bound"
+      > <a name="740" href="Data.Container.Indexed.Core.html#678" class="Bound"
       >&#8467;</a
-      ><a name="741"
-      > </a
-      ><a name="742" class="Symbol"
+      > <a name="742" class="Symbol"
       >&#8594;</a
-      ><a name="743"
-      > </a
-      ><a name="744" href="Relation.Unary.html#541" class="Function"
+      > <a name="744" href="Relation.Unary.html#Pred" class="Function"
       >Pred</a
-      ><a name="748"
-      > </a
-      ><a name="749" href="Data.Container.Indexed.Core.html#694" class="Bound"
+      > <a name="749" href="Data.Container.Indexed.Core.html#694" class="Bound"
       >O</a
-      ><a name="750"
-      > </a
-      ><a name="751" class="Symbol"
+      > <a name="751" class="Symbol"
       >_</a
-      ><a name="752"
       >
-</a
-      ><a name="753" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+<a name="753" href="Data.Container.Indexed.Core.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="754"
-      > </a
-      ><a name="755" href="Data.Container.Indexed.Core.html#755" class="Bound"
+      > <a name="755" href="Data.Container.Indexed.Core.html#755" class="Bound"
       >C</a
-      ><a name="756"
-      > </a
-      ><a name="757" href="Data.Container.Indexed.Core.html#463" class="InductiveConstructor Operator"
+      > <a name="757" href="Data.Container.Indexed.Core.html#Container._&#9667;_/_" class="InductiveConstructor Operator"
       >&#9667;</a
-      ><a name="758"
-      > </a
-      ><a name="759" href="Data.Container.Indexed.Core.html#759" class="Bound"
+      > <a name="759" href="Data.Container.Indexed.Core.html#759" class="Bound"
       >R</a
-      ><a name="760"
-      > </a
-      ><a name="761" href="Data.Container.Indexed.Core.html#463" class="InductiveConstructor Operator"
+      > <a name="761" href="Data.Container.Indexed.Core.html#Container._&#9667;_/_" class="InductiveConstructor Operator"
       >/</a
-      ><a name="762"
-      > </a
-      ><a name="763" href="Data.Container.Indexed.Core.html#763" class="Bound"
+      > <a name="763" href="Data.Container.Indexed.Core.html#763" class="Bound"
       >n</a
-      ><a name="764"
-      > </a
-      ><a name="765" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+      > <a name="765" href="Data.Container.Indexed.Core.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="766"
-      > </a
-      ><a name="767" href="Data.Container.Indexed.Core.html#767" class="Bound"
+      > <a name="767" href="Data.Container.Indexed.Core.html#767" class="Bound"
       >X</a
-      ><a name="768"
-      > </a
-      ><a name="769" href="Data.Container.Indexed.Core.html#769" class="Bound"
+      > <a name="769" href="Data.Container.Indexed.Core.html#769" class="Bound"
       >o</a
-      ><a name="770"
-      > </a
-      ><a name="771" class="Symbol"
+      > <a name="771" class="Symbol"
       >=</a
-      ><a name="772"
-      > </a
-      ><a name="773" href="Data.Product.html#706" class="Function"
+      > <a name="773" href="Data.Product.html#&#931;-syntax" class="Function"
       >&#931;[</a
-      ><a name="775"
-      > </a
-      ><a name="776" href="Data.Container.Indexed.Core.html#776" class="Bound"
+      > <a name="776" href="Data.Container.Indexed.Core.html#776" class="Bound"
       >c</a
-      ><a name="777"
-      > </a
-      ><a name="778" href="Data.Product.html#706" class="Function"
+      > <a name="778" href="Data.Product.html#&#931;-syntax" class="Function"
       >&#8712;</a
-      ><a name="779"
-      > </a
-      ><a name="780" href="Data.Container.Indexed.Core.html#755" class="Bound"
+      > <a name="780" href="Data.Container.Indexed.Core.html#755" class="Bound"
       >C</a
-      ><a name="781"
-      > </a
-      ><a name="782" href="Data.Container.Indexed.Core.html#769" class="Bound"
+      > <a name="782" href="Data.Container.Indexed.Core.html#769" class="Bound"
       >o</a
-      ><a name="783"
-      > </a
-      ><a name="784" href="Data.Product.html#706" class="Function"
+      > <a name="784" href="Data.Product.html#&#931;-syntax" class="Function"
       >]</a
-      ><a name="785"
-      > </a
-      ><a name="786" class="Symbol"
+      > <a name="786" class="Symbol"
       >((</a
       ><a name="788" href="Data.Container.Indexed.Core.html#788" class="Bound"
       >r</a
-      ><a name="789"
-      > </a
-      ><a name="790" class="Symbol"
+      > <a name="790" class="Symbol"
       >:</a
-      ><a name="791"
-      > </a
-      ><a name="792" href="Data.Container.Indexed.Core.html#759" class="Bound"
+      > <a name="792" href="Data.Container.Indexed.Core.html#759" class="Bound"
       >R</a
-      ><a name="793"
-      > </a
-      ><a name="794" href="Data.Container.Indexed.Core.html#776" class="Bound"
+      > <a name="794" href="Data.Container.Indexed.Core.html#776" class="Bound"
       >c</a
       ><a name="795" class="Symbol"
       >)</a
-      ><a name="796"
-      > </a
-      ><a name="797" class="Symbol"
+      > <a name="797" class="Symbol"
       >&#8594;</a
-      ><a name="798"
-      > </a
-      ><a name="799" href="Data.Container.Indexed.Core.html#767" class="Bound"
+      > <a name="799" href="Data.Container.Indexed.Core.html#767" class="Bound"
       >X</a
-      ><a name="800"
-      > </a
-      ><a name="801" class="Symbol"
+      > <a name="801" class="Symbol"
       >(</a
       ><a name="802" href="Data.Container.Indexed.Core.html#763" class="Bound"
       >n</a
-      ><a name="803"
-      > </a
-      ><a name="804" href="Data.Container.Indexed.Core.html#776" class="Bound"
+      > <a name="804" href="Data.Container.Indexed.Core.html#776" class="Bound"
       >c</a
-      ><a name="805"
-      > </a
-      ><a name="806" href="Data.Container.Indexed.Core.html#788" class="Bound"
+      > <a name="806" href="Data.Container.Indexed.Core.html#788" class="Bound"
       >r</a
       ><a name="807" class="Symbol"
       >))</a
-      ><a name="809"
       >
 
-</a
-      ><a name="811" class="Comment"
+<a name="811" class="Comment"
       >------------------------------------------------------------------------</a
-      ><a name="883"
       >
-</a
-      ><a name="884" class="Comment"
+<a name="884" class="Comment"
       >-- All and any</a
-      ><a name="898"
       >
 
-</a
-      ><a name="900" class="Keyword"
+<a name="900" class="Keyword"
       >module</a
-      ><a name="906"
-      > </a
-      ><a name="907" href="Data.Container.Indexed.Core.html#907" class="Module"
+      > <a name="907" href="Data.Container.Indexed.Core.html#907" class="Module"
       >_</a
-      ><a name="908"
-      > </a
-      ><a name="909" class="Symbol"
+      > <a name="909" class="Symbol"
       >{</a
       ><a name="910" href="Data.Container.Indexed.Core.html#910" class="Bound"
       >i</a
-      ><a name="911"
-      > </a
-      ><a name="912" href="Data.Container.Indexed.Core.html#912" class="Bound"
+      > <a name="912" href="Data.Container.Indexed.Core.html#912" class="Bound"
       >o</a
-      ><a name="913"
-      > </a
-      ><a name="914" href="Data.Container.Indexed.Core.html#914" class="Bound"
+      > <a name="914" href="Data.Container.Indexed.Core.html#914" class="Bound"
       >c</a
-      ><a name="915"
-      > </a
-      ><a name="916" href="Data.Container.Indexed.Core.html#916" class="Bound"
+      > <a name="916" href="Data.Container.Indexed.Core.html#916" class="Bound"
       >r</a
-      ><a name="917"
-      > </a
-      ><a name="918" href="Data.Container.Indexed.Core.html#918" class="Bound"
+      > <a name="918" href="Data.Container.Indexed.Core.html#918" class="Bound"
       >&#8467;</a
       ><a name="919" class="Symbol"
       >}</a
-      ><a name="920"
-      > </a
-      ><a name="921" class="Symbol"
+      > <a name="921" class="Symbol"
       >{</a
       ><a name="922" href="Data.Container.Indexed.Core.html#922" class="Bound"
       >I</a
-      ><a name="923"
-      > </a
-      ><a name="924" class="Symbol"
+      > <a name="924" class="Symbol"
       >:</a
-      ><a name="925"
-      > </a
-      ><a name="926" class="PrimitiveType"
+      > <a name="926" class="PrimitiveType"
       >Set</a
-      ><a name="929"
-      > </a
-      ><a name="930" href="Data.Container.Indexed.Core.html#910" class="Bound"
+      > <a name="930" href="Data.Container.Indexed.Core.html#910" class="Bound"
       >i</a
       ><a name="931" class="Symbol"
       >}</a
-      ><a name="932"
-      > </a
-      ><a name="933" class="Symbol"
+      > <a name="933" class="Symbol"
       >{</a
       ><a name="934" href="Data.Container.Indexed.Core.html#934" class="Bound"
       >O</a
-      ><a name="935"
-      > </a
-      ><a name="936" class="Symbol"
+      > <a name="936" class="Symbol"
       >:</a
-      ><a name="937"
-      > </a
-      ><a name="938" class="PrimitiveType"
+      > <a name="938" class="PrimitiveType"
       >Set</a
-      ><a name="941"
-      > </a
-      ><a name="942" href="Data.Container.Indexed.Core.html#912" class="Bound"
+      > <a name="942" href="Data.Container.Indexed.Core.html#912" class="Bound"
       >o</a
       ><a name="943" class="Symbol"
       >}</a
-      ><a name="944"
       >
-         </a
-      ><a name="954" class="Symbol"
+         <a name="954" class="Symbol"
       >(</a
       ><a name="955" href="Data.Container.Indexed.Core.html#955" class="Bound"
       >C</a
-      ><a name="956"
-      > </a
-      ><a name="957" class="Symbol"
+      > <a name="957" class="Symbol"
       >:</a
-      ><a name="958"
-      > </a
-      ><a name="959" href="Data.Container.Indexed.Core.html#342" class="Record"
+      > <a name="959" href="Data.Container.Indexed.Core.html#Container" class="Record"
       >Container</a
-      ><a name="968"
-      > </a
-      ><a name="969" href="Data.Container.Indexed.Core.html#922" class="Bound"
+      > <a name="969" href="Data.Container.Indexed.Core.html#922" class="Bound"
       >I</a
-      ><a name="970"
-      > </a
-      ><a name="971" href="Data.Container.Indexed.Core.html#934" class="Bound"
+      > <a name="971" href="Data.Container.Indexed.Core.html#934" class="Bound"
       >O</a
-      ><a name="972"
-      > </a
-      ><a name="973" href="Data.Container.Indexed.Core.html#914" class="Bound"
+      > <a name="973" href="Data.Container.Indexed.Core.html#914" class="Bound"
       >c</a
-      ><a name="974"
-      > </a
-      ><a name="975" href="Data.Container.Indexed.Core.html#916" class="Bound"
+      > <a name="975" href="Data.Container.Indexed.Core.html#916" class="Bound"
       >r</a
       ><a name="976" class="Symbol"
       >)</a
-      ><a name="977"
-      > </a
-      ><a name="978" class="Symbol"
+      > <a name="978" class="Symbol"
       >{</a
       ><a name="979" href="Data.Container.Indexed.Core.html#979" class="Bound"
       >X</a
-      ><a name="980"
-      > </a
-      ><a name="981" class="Symbol"
+      > <a name="981" class="Symbol"
       >:</a
-      ><a name="982"
-      > </a
-      ><a name="983" href="Relation.Unary.html#541" class="Function"
+      > <a name="983" href="Relation.Unary.html#Pred" class="Function"
       >Pred</a
-      ><a name="987"
-      > </a
-      ><a name="988" href="Data.Container.Indexed.Core.html#922" class="Bound"
+      > <a name="988" href="Data.Container.Indexed.Core.html#922" class="Bound"
       >I</a
-      ><a name="989"
-      > </a
-      ><a name="990" href="Data.Container.Indexed.Core.html#918" class="Bound"
+      > <a name="990" href="Data.Container.Indexed.Core.html#918" class="Bound"
       >&#8467;</a
       ><a name="991" class="Symbol"
       >}</a
-      ><a name="992"
-      > </a
-      ><a name="993" class="Keyword"
+      > <a name="993" class="Keyword"
       >where</a
-      ><a name="998"
       >
 
-  </a
-      ><a name="1002" class="Comment"
+  <a name="1002" class="Comment"
       >-- All.</a
-      ><a name="1009"
       >
 
-  </a
-      ><a name="1013" href="Data.Container.Indexed.Core.html#1013" class="Function"
+  <a name="1013" href="Data.Container.Indexed.Core.html#1013" class="Function"
       >&#9633;</a
-      ><a name="1014"
-      > </a
-      ><a name="1015" class="Symbol"
+      > <a name="1015" class="Symbol"
       >:</a
-      ><a name="1016"
-      > </a
-      ><a name="1017" class="Symbol"
+      > <a name="1017" class="Symbol"
       >&#8704;</a
-      ><a name="1018"
-      > </a
-      ><a name="1019" class="Symbol"
+      > <a name="1019" class="Symbol"
       >{</a
       ><a name="1020" href="Data.Container.Indexed.Core.html#1020" class="Bound"
       >&#8467;&#8242;</a
       ><a name="1022" class="Symbol"
       >}</a
-      ><a name="1023"
-      > </a
-      ><a name="1024" class="Symbol"
+      > <a name="1024" class="Symbol"
       >&#8594;</a
-      ><a name="1025"
-      > </a
-      ><a name="1026" href="Relation.Unary.html#541" class="Function"
+      > <a name="1026" href="Relation.Unary.html#Pred" class="Function"
       >Pred</a
-      ><a name="1030"
-      > </a
-      ><a name="1031" class="Symbol"
+      > <a name="1031" class="Symbol"
       >(</a
-      ><a name="1032" href="Data.Product.html#439" class="Record"
+      ><a name="1032" href="Data.Product.html#&#931;" class="Record"
       >&#931;</a
-      ><a name="1033"
-      > </a
-      ><a name="1034" href="Data.Container.Indexed.Core.html#922" class="Bound"
+      > <a name="1034" href="Data.Container.Indexed.Core.html#922" class="Bound"
       >I</a
-      ><a name="1035"
-      > </a
-      ><a name="1036" href="Data.Container.Indexed.Core.html#979" class="Bound"
+      > <a name="1036" href="Data.Container.Indexed.Core.html#979" class="Bound"
       >X</a
       ><a name="1037" class="Symbol"
       >)</a
-      ><a name="1038"
-      > </a
-      ><a name="1039" href="Data.Container.Indexed.Core.html#1020" class="Bound"
+      > <a name="1039" href="Data.Container.Indexed.Core.html#1020" class="Bound"
       >&#8467;&#8242;</a
-      ><a name="1041"
-      > </a
-      ><a name="1042" class="Symbol"
+      > <a name="1042" class="Symbol"
       >&#8594;</a
-      ><a name="1043"
-      > </a
-      ><a name="1044" href="Relation.Unary.html#541" class="Function"
+      > <a name="1044" href="Relation.Unary.html#Pred" class="Function"
       >Pred</a
-      ><a name="1048"
-      > </a
-      ><a name="1049" class="Symbol"
+      > <a name="1049" class="Symbol"
       >(</a
-      ><a name="1050" href="Data.Product.html#439" class="Record"
+      ><a name="1050" href="Data.Product.html#&#931;" class="Record"
       >&#931;</a
-      ><a name="1051"
-      > </a
-      ><a name="1052" href="Data.Container.Indexed.Core.html#934" class="Bound"
+      > <a name="1052" href="Data.Container.Indexed.Core.html#934" class="Bound"
       >O</a
-      ><a name="1053"
-      > </a
-      ><a name="1054" class="Symbol"
+      > <a name="1054" class="Symbol"
       >(</a
-      ><a name="1055" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+      ><a name="1055" href="Data.Container.Indexed.Core.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="1056"
-      > </a
-      ><a name="1057" href="Data.Container.Indexed.Core.html#955" class="Bound"
+      > <a name="1057" href="Data.Container.Indexed.Core.html#955" class="Bound"
       >C</a
-      ><a name="1058"
-      > </a
-      ><a name="1059" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+      > <a name="1059" href="Data.Container.Indexed.Core.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="1060"
-      > </a
-      ><a name="1061" href="Data.Container.Indexed.Core.html#979" class="Bound"
+      > <a name="1061" href="Data.Container.Indexed.Core.html#979" class="Bound"
       >X</a
       ><a name="1062" class="Symbol"
       >))</a
-      ><a name="1064"
-      > </a
-      ><a name="1065" class="Symbol"
+      > <a name="1065" class="Symbol"
       >_</a
-      ><a name="1066"
       >
-  </a
-      ><a name="1069" href="Data.Container.Indexed.Core.html#1013" class="Function"
+  <a name="1069" href="Data.Container.Indexed.Core.html#1013" class="Function"
       >&#9633;</a
-      ><a name="1070"
-      > </a
-      ><a name="1071" href="Data.Container.Indexed.Core.html#1071" class="Bound"
+      > <a name="1071" href="Data.Container.Indexed.Core.html#1071" class="Bound"
       >P</a
-      ><a name="1072"
-      > </a
-      ><a name="1073" class="Symbol"
+      > <a name="1073" class="Symbol"
       >(_</a
-      ><a name="1075"
-      > </a
-      ><a name="1076" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="1076" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1077"
-      > </a
-      ><a name="1078" class="Symbol"
+      > <a name="1078" class="Symbol"
       >_</a
-      ><a name="1079"
-      > </a
-      ><a name="1080" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="1080" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1081"
-      > </a
-      ><a name="1082" href="Data.Container.Indexed.Core.html#1082" class="Bound"
+      > <a name="1082" href="Data.Container.Indexed.Core.html#1082" class="Bound"
       >k</a
       ><a name="1083" class="Symbol"
       >)</a
-      ><a name="1084"
-      > </a
-      ><a name="1085" class="Symbol"
+      > <a name="1085" class="Symbol"
       >=</a
-      ><a name="1086"
-      > </a
-      ><a name="1087" class="Symbol"
+      > <a name="1087" class="Symbol"
       >&#8704;</a
-      ><a name="1088"
-      > </a
-      ><a name="1089" href="Data.Container.Indexed.Core.html#1089" class="Bound"
+      > <a name="1089" href="Data.Container.Indexed.Core.html#1089" class="Bound"
       >r</a
-      ><a name="1090"
-      > </a
-      ><a name="1091" class="Symbol"
+      > <a name="1091" class="Symbol"
       >&#8594;</a
-      ><a name="1092"
-      > </a
-      ><a name="1093" href="Data.Container.Indexed.Core.html#1071" class="Bound"
+      > <a name="1093" href="Data.Container.Indexed.Core.html#1071" class="Bound"
       >P</a
-      ><a name="1094"
-      > </a
-      ><a name="1095" class="Symbol"
+      > <a name="1095" class="Symbol"
       >(_</a
-      ><a name="1097"
-      > </a
-      ><a name="1098" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="1098" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1099"
-      > </a
-      ><a name="1100" href="Data.Container.Indexed.Core.html#1082" class="Bound"
+      > <a name="1100" href="Data.Container.Indexed.Core.html#1082" class="Bound"
       >k</a
-      ><a name="1101"
-      > </a
-      ><a name="1102" href="Data.Container.Indexed.Core.html#1089" class="Bound"
+      > <a name="1102" href="Data.Container.Indexed.Core.html#1089" class="Bound"
       >r</a
       ><a name="1103" class="Symbol"
       >)</a
-      ><a name="1104"
       >
 
-  </a
-      ><a name="1108" class="Comment"
+  <a name="1108" class="Comment"
       >-- Any.</a
-      ><a name="1115"
       >
 
-  </a
-      ><a name="1119" href="Data.Container.Indexed.Core.html#1119" class="Function"
+  <a name="1119" href="Data.Container.Indexed.Core.html#1119" class="Function"
       >&#9671;</a
-      ><a name="1120"
-      > </a
-      ><a name="1121" class="Symbol"
+      > <a name="1121" class="Symbol"
       >:</a
-      ><a name="1122"
-      > </a
-      ><a name="1123" class="Symbol"
+      > <a name="1123" class="Symbol"
       >&#8704;</a
-      ><a name="1124"
-      > </a
-      ><a name="1125" class="Symbol"
+      > <a name="1125" class="Symbol"
       >{</a
       ><a name="1126" href="Data.Container.Indexed.Core.html#1126" class="Bound"
       >&#8467;&#8242;</a
       ><a name="1128" class="Symbol"
       >}</a
-      ><a name="1129"
-      > </a
-      ><a name="1130" class="Symbol"
+      > <a name="1130" class="Symbol"
       >&#8594;</a
-      ><a name="1131"
-      > </a
-      ><a name="1132" href="Relation.Unary.html#541" class="Function"
+      > <a name="1132" href="Relation.Unary.html#Pred" class="Function"
       >Pred</a
-      ><a name="1136"
-      > </a
-      ><a name="1137" class="Symbol"
+      > <a name="1137" class="Symbol"
       >(</a
-      ><a name="1138" href="Data.Product.html#439" class="Record"
+      ><a name="1138" href="Data.Product.html#&#931;" class="Record"
       >&#931;</a
-      ><a name="1139"
-      > </a
-      ><a name="1140" href="Data.Container.Indexed.Core.html#922" class="Bound"
+      > <a name="1140" href="Data.Container.Indexed.Core.html#922" class="Bound"
       >I</a
-      ><a name="1141"
-      > </a
-      ><a name="1142" href="Data.Container.Indexed.Core.html#979" class="Bound"
+      > <a name="1142" href="Data.Container.Indexed.Core.html#979" class="Bound"
       >X</a
       ><a name="1143" class="Symbol"
       >)</a
-      ><a name="1144"
-      > </a
-      ><a name="1145" href="Data.Container.Indexed.Core.html#1126" class="Bound"
+      > <a name="1145" href="Data.Container.Indexed.Core.html#1126" class="Bound"
       >&#8467;&#8242;</a
-      ><a name="1147"
-      > </a
-      ><a name="1148" class="Symbol"
+      > <a name="1148" class="Symbol"
       >&#8594;</a
-      ><a name="1149"
-      > </a
-      ><a name="1150" href="Relation.Unary.html#541" class="Function"
+      > <a name="1150" href="Relation.Unary.html#Pred" class="Function"
       >Pred</a
-      ><a name="1154"
-      > </a
-      ><a name="1155" class="Symbol"
+      > <a name="1155" class="Symbol"
       >(</a
-      ><a name="1156" href="Data.Product.html#439" class="Record"
+      ><a name="1156" href="Data.Product.html#&#931;" class="Record"
       >&#931;</a
-      ><a name="1157"
-      > </a
-      ><a name="1158" href="Data.Container.Indexed.Core.html#934" class="Bound"
+      > <a name="1158" href="Data.Container.Indexed.Core.html#934" class="Bound"
       >O</a
-      ><a name="1159"
-      > </a
-      ><a name="1160" class="Symbol"
+      > <a name="1160" class="Symbol"
       >(</a
-      ><a name="1161" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+      ><a name="1161" href="Data.Container.Indexed.Core.html#&#10214;_&#10215;" class="Function Operator"
       >&#10214;</a
-      ><a name="1162"
-      > </a
-      ><a name="1163" href="Data.Container.Indexed.Core.html#955" class="Bound"
+      > <a name="1163" href="Data.Container.Indexed.Core.html#955" class="Bound"
       >C</a
-      ><a name="1164"
-      > </a
-      ><a name="1165" href="Data.Container.Indexed.Core.html#661" class="Function Operator"
+      > <a name="1165" href="Data.Container.Indexed.Core.html#&#10214;_&#10215;" class="Function Operator"
       >&#10215;</a
-      ><a name="1166"
-      > </a
-      ><a name="1167" href="Data.Container.Indexed.Core.html#979" class="Bound"
+      > <a name="1167" href="Data.Container.Indexed.Core.html#979" class="Bound"
       >X</a
       ><a name="1168" class="Symbol"
       >))</a
-      ><a name="1170"
-      > </a
-      ><a name="1171" class="Symbol"
+      > <a name="1171" class="Symbol"
       >_</a
-      ><a name="1172"
       >
-  </a
-      ><a name="1175" href="Data.Container.Indexed.Core.html#1119" class="Function"
+  <a name="1175" href="Data.Container.Indexed.Core.html#1119" class="Function"
       >&#9671;</a
-      ><a name="1176"
-      > </a
-      ><a name="1177" href="Data.Container.Indexed.Core.html#1177" class="Bound"
+      > <a name="1177" href="Data.Container.Indexed.Core.html#1177" class="Bound"
       >P</a
-      ><a name="1178"
-      > </a
-      ><a name="1179" class="Symbol"
+      > <a name="1179" class="Symbol"
       >(_</a
-      ><a name="1181"
-      > </a
-      ><a name="1182" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="1182" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1183"
-      > </a
-      ><a name="1184" class="Symbol"
+      > <a name="1184" class="Symbol"
       >_</a
-      ><a name="1185"
-      > </a
-      ><a name="1186" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="1186" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1187"
-      > </a
-      ><a name="1188" href="Data.Container.Indexed.Core.html#1188" class="Bound"
+      > <a name="1188" href="Data.Container.Indexed.Core.html#1188" class="Bound"
       >k</a
       ><a name="1189" class="Symbol"
       >)</a
-      ><a name="1190"
-      > </a
-      ><a name="1191" class="Symbol"
+      > <a name="1191" class="Symbol"
       >=</a
-      ><a name="1192"
-      > </a
-      ><a name="1193" href="Data.Product.html#823" class="Function"
+      > <a name="1193" href="Data.Product.html#&#8707;" class="Function"
       >&#8707;</a
-      ><a name="1194"
-      > </a
-      ><a name="1195" class="Symbol"
+      > <a name="1195" class="Symbol"
       >&#955;</a
-      ><a name="1196"
-      > </a
-      ><a name="1197" href="Data.Container.Indexed.Core.html#1197" class="Bound"
+      > <a name="1197" href="Data.Container.Indexed.Core.html#1197" class="Bound"
       >r</a
-      ><a name="1198"
-      > </a
-      ><a name="1199" class="Symbol"
+      > <a name="1199" class="Symbol"
       >&#8594;</a
-      ><a name="1200"
-      > </a
-      ><a name="1201" href="Data.Container.Indexed.Core.html#1177" class="Bound"
+      > <a name="1201" href="Data.Container.Indexed.Core.html#1177" class="Bound"
       >P</a
-      ><a name="1202"
-      > </a
-      ><a name="1203" class="Symbol"
+      > <a name="1203" class="Symbol"
       >(_</a
-      ><a name="1205"
-      > </a
-      ><a name="1206" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      > <a name="1206" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      ><a name="1207"
-      > </a
-      ><a name="1208" href="Data.Container.Indexed.Core.html#1188" class="Bound"
+      > <a name="1208" href="Data.Container.Indexed.Core.html#1188" class="Bound"
       >k</a
-      ><a name="1209"
-      > </a
-      ><a name="1210" href="Data.Container.Indexed.Core.html#1197" class="Bound"
+      > <a name="1210" href="Data.Container.Indexed.Core.html#1197" class="Bound"
       >r</a
       ><a name="1211" class="Symbol"
       >)</a
-      ><a name="1212"
       >
-</a
-      ></pre
+</pre
     ></body
   ></html
 >
