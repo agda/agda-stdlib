@@ -26,11 +26,383 @@
       >
 
 <a name="235" class="Keyword"
+      >open</a
+      > <a name="240" class="Keyword"
+      >import</a
+      > <a name="247" href="Data.List.Any.Properties.html" class="Module"
+      >Data.List.Any.Properties</a
+      > <a name="272" class="Keyword"
+      >using</a
+      > <a name="278" class="Symbol"
+      >(</a
+      ><a name="279" href="Data.List.Any.Properties.html#lift-resp" class="Function"
+      >lift-resp</a
+      ><a name="288" class="Symbol"
+      >)</a
+      >
+<a name="290" class="Keyword"
+      >open</a
+      > <a name="295" class="Keyword"
+      >import</a
+      > <a name="302" href="Function.html" class="Module"
+      >Function</a
+      > <a name="311" class="Keyword"
+      >using</a
+      > <a name="317" class="Symbol"
+      >(</a
+      ><a name="318" href="Function.html#flip" class="Function"
+      >flip</a
+      ><a name="322" class="Symbol"
+      >)</a
+      >
+<a name="324" class="Keyword"
+      >open</a
+      > <a name="329" class="Keyword"
+      >import</a
+      > <a name="336" href="Relation.Binary.html" class="Module"
+      >Relation.Binary</a
+      >
+<a name="352" class="Keyword"
+      >open</a
+      > <a name="357" class="Keyword"
+      >import</a
+      > <a name="364" href="Relation.Binary.InducedPreorders.html" class="Module"
+      >Relation.Binary.InducedPreorders</a
+      > <a name="397" class="Keyword"
+      >using</a
+      > <a name="403" class="Symbol"
+      >(</a
+      ><a name="404" href="Relation.Binary.InducedPreorders.html#InducedPreorder&#8322;" class="Function"
+      >InducedPreorder&#8322;</a
+      ><a name="420" class="Symbol"
+      >)</a
+      >
+<a name="422" class="Keyword"
+      >open</a
+      > <a name="427" class="Keyword"
+      >import</a
+      > <a name="434" href="Relation.Binary.List.Pointwise.html" class="Module"
+      >Relation.Binary.List.Pointwise</a
+      > <a name="465" class="Symbol"
+      >as</a
+      > <a name="468" class="Module"
+      >ListEq</a
+      >
+  <a name="477" class="Keyword"
+      >using</a
+      > <a name="483" class="Symbol"
+      >()</a
+      > <a name="486" class="Keyword"
+      >renaming</a
+      > <a name="495" class="Symbol"
+      >(</a
+      ><a name="496" href="Relation.Binary.List.Pointwise.html#Rel" class="Datatype"
+      >Rel</a
+      > <a name="500" class="Symbol"
+      >to</a
+      > <a name="503" href="Relation.Binary.List.Pointwise.html#Rel" class="Datatype"
+      >ListRel</a
+      ><a name="510" class="Symbol"
+      >)</a
+      >
+
+<a name="513" class="Keyword"
       >module</a
-      > <a name="242" href="Data.List.Any.Membership.Properties.html" class="Module"
+      > <a name="520" href="Data.List.Any.Membership.Properties.html" class="Module"
       >Data.List.Any.Membership.Properties</a
-      > <a name="278" class="Keyword"
+      > <a name="556" class="Keyword"
       >where</a
+      >
+
+<a name="563" class="Keyword"
+      >module</a
+      > <a name="SingleSetoid" href="Data.List.Any.Membership.Properties.html#SingleSetoid" class="Module"
+      >SingleSetoid</a
+      > <a name="583" class="Symbol"
+      >{</a
+      ><a name="584" href="Data.List.Any.Membership.Properties.html#584" class="Bound"
+      >c</a
+      > <a name="586" href="Data.List.Any.Membership.Properties.html#586" class="Bound"
+      >&#8467;</a
+      ><a name="587" class="Symbol"
+      >}</a
+      > <a name="589" class="Symbol"
+      >(</a
+      ><a name="590" href="Data.List.Any.Membership.Properties.html#590" class="Bound"
+      >S</a
+      > <a name="592" class="Symbol"
+      >:</a
+      > <a name="594" href="Relation.Binary.html#Setoid" class="Record"
+      >Setoid</a
+      > <a name="601" href="Data.List.Any.Membership.Properties.html#584" class="Bound"
+      >c</a
+      > <a name="603" href="Data.List.Any.Membership.Properties.html#586" class="Bound"
+      >&#8467;</a
+      ><a name="604" class="Symbol"
+      >)</a
+      > <a name="606" class="Keyword"
+      >where</a
+      >
+
+  <a name="615" class="Keyword"
+      >open</a
+      > <a name="620" href="Relation.Binary.html#Setoid" class="Module"
+      >Setoid</a
+      > <a name="627" href="Data.List.Any.Membership.Properties.html#590" class="Bound"
+      >S</a
+      >
+  <a name="631" class="Keyword"
+      >open</a
+      > <a name="636" class="Keyword"
+      >import</a
+      > <a name="643" href="Data.List.Any.Membership.html" class="Module"
+      >Data.List.Any.Membership</a
+      > <a name="668" href="Data.List.Any.Membership.Properties.html#590" class="Bound"
+      >S</a
+      >
+
+  <a name="673" class="Comment"
+      >-- Equality is respected by the predicate which is used to define</a
+      >
+  <a name="741" class="Comment"
+      >-- _&#8712;_.</a
+      >
+
+  <a name="SingleSetoid.&#8712;-resp-&#8776;" href="Data.List.Any.Membership.Properties.html#SingleSetoid.&#8712;-resp-&#8776;" class="Function"
+      >&#8712;-resp-&#8776;</a
+      > <a name="761" class="Symbol"
+      >:</a
+      > <a name="763" class="Symbol"
+      >&#8704;</a
+      > <a name="765" class="Symbol"
+      >{</a
+      ><a name="766" href="Data.List.Any.Membership.Properties.html#766" class="Bound"
+      >x</a
+      ><a name="767" class="Symbol"
+      >}</a
+      > <a name="769" class="Symbol"
+      >&#8594;</a
+      > <a name="771" class="Symbol"
+      >(</a
+      ><a name="772" href="Data.List.Any.Membership.Properties.html#766" class="Bound"
+      >x</a
+      > <a name="774" href="Relation.Binary.html#1997" class="Field Operator"
+      >&#8776;_</a
+      ><a name="776" class="Symbol"
+      >)</a
+      > <a name="778" href="Relation.Binary.Core.html#_Respects_" class="Function Operator"
+      >Respects</a
+      > <a name="787" href="Relation.Binary.html#1997" class="Field Operator"
+      >_&#8776;_</a
+      >
+  <a name="793" href="Data.List.Any.Membership.Properties.html#SingleSetoid.&#8712;-resp-&#8776;" class="Function"
+      >&#8712;-resp-&#8776;</a
+      > <a name="802" class="Symbol"
+      >=</a
+      > <a name="804" href="Function.html#flip" class="Function"
+      >flip</a
+      > <a name="809" href="Relation.Binary.Core.html#4986" class="Function"
+      >trans</a
+      >
+
+  <a name="818" class="Comment"
+      >-- List equality is respected by _&#8712;_.</a
+      >
+
+  <a name="SingleSetoid.&#8712;-resp-&#8779;" href="Data.List.Any.Membership.Properties.html#SingleSetoid.&#8712;-resp-&#8779;" class="Function"
+      >&#8712;-resp-&#8779;</a
+      > <a name="868" class="Symbol"
+      >:</a
+      > <a name="870" class="Symbol"
+      >&#8704;</a
+      > <a name="872" class="Symbol"
+      >{</a
+      ><a name="873" href="Data.List.Any.Membership.Properties.html#873" class="Bound"
+      >x</a
+      ><a name="874" class="Symbol"
+      >}</a
+      > <a name="876" class="Symbol"
+      >&#8594;</a
+      > <a name="878" class="Symbol"
+      >(</a
+      ><a name="879" href="Data.List.Any.Membership.Properties.html#873" class="Bound"
+      >x</a
+      > <a name="881" href="Data.List.Any.Membership.html#665" class="Function Operator"
+      >&#8712;_</a
+      ><a name="883" class="Symbol"
+      >)</a
+      > <a name="885" href="Relation.Binary.Core.html#_Respects_" class="Function Operator"
+      >Respects</a
+      > <a name="894" class="Symbol"
+      >(</a
+      ><a name="895" href="Relation.Binary.List.Pointwise.html#ListRel" class="Datatype"
+      >ListRel</a
+      > <a name="903" href="Relation.Binary.html#1997" class="Field Operator"
+      >_&#8776;_</a
+      ><a name="906" class="Symbol"
+      >)</a
+      >
+  <a name="910" href="Data.List.Any.Membership.Properties.html#SingleSetoid.&#8712;-resp-&#8779;" class="Function"
+      >&#8712;-resp-&#8779;</a
+      > <a name="919" class="Symbol"
+      >=</a
+      > <a name="921" href="Data.List.Any.Properties.html#lift-resp" class="Function"
+      >lift-resp</a
+      > <a name="931" href="Data.List.Any.Membership.Properties.html#SingleSetoid.&#8712;-resp-&#8776;" class="Function"
+      >&#8712;-resp-&#8776;</a
+      >
+
+  <a name="943" class="Comment"
+      >-- _&#8838;_ is a preorder.</a
+      >
+
+  <a name="SingleSetoid.&#8838;-preorder" href="Data.List.Any.Membership.Properties.html#SingleSetoid.&#8838;-preorder" class="Function"
+      >&#8838;-preorder</a
+      > <a name="979" class="Symbol"
+      >:</a
+      > <a name="981" href="Relation.Binary.html#Preorder" class="Record"
+      >Preorder</a
+      > <a name="990" class="Symbol"
+      >_</a
+      > <a name="992" class="Symbol"
+      >_</a
+      > <a name="994" class="Symbol"
+      >_</a
+      >
+  <a name="998" href="Data.List.Any.Membership.Properties.html#SingleSetoid.&#8838;-preorder" class="Function"
+      >&#8838;-preorder</a
+      > <a name="1009" class="Symbol"
+      >=</a
+      > <a name="1011" href="Relation.Binary.InducedPreorders.html#InducedPreorder&#8322;" class="Function"
+      >InducedPreorder&#8322;</a
+      > <a name="1028" class="Symbol"
+      >(</a
+      ><a name="1029" href="Relation.Binary.List.Pointwise.html#setoid" class="Function"
+      >ListEq.setoid</a
+      > <a name="1043" href="Data.List.Any.Membership.Properties.html#590" class="Bound"
+      >S</a
+      ><a name="1044" class="Symbol"
+      >)</a
+      > <a name="1046" href="Data.List.Any.Membership.html#665" class="Function Operator"
+      >_&#8712;_</a
+      > <a name="1050" href="Data.List.Any.Membership.Properties.html#SingleSetoid.&#8712;-resp-&#8779;" class="Function"
+      >&#8712;-resp-&#8779;</a
+      >
+
+  <a name="1062" class="Keyword"
+      >module</a
+      > <a name="&#8838;-Reasoning" href="Data.List.Any.Membership.Properties.html#&#8838;-Reasoning" class="Module"
+      >&#8838;-Reasoning</a
+      > <a name="1081" class="Keyword"
+      >where</a
+      >
+    <a name="1091" class="Keyword"
+      >import</a
+      > <a name="1098" href="Relation.Binary.PreorderReasoning.html" class="Module"
+      >Relation.Binary.PreorderReasoning</a
+      > <a name="1132" class="Symbol"
+      >as</a
+      > <a name="1135" class="Module"
+      >PreR</a
+      >
+    <a name="1144" class="Keyword"
+      >open</a
+      > <a name="1149" href="Relation.Binary.PreorderReasoning.html" class="Module"
+      >PreR</a
+      > <a name="1154" href="Data.List.Any.Membership.Properties.html#SingleSetoid.&#8838;-preorder" class="Function"
+      >&#8838;-preorder</a
+      > <a name="1165" class="Keyword"
+      >public</a
+      >
+      <a name="1178" class="Keyword"
+      >renaming</a
+      > <a name="1187" class="Symbol"
+      >(</a
+      >_&#8764;&#10216;_&#10217;_ <a name="1195" class="Symbol"
+      >to</a
+      > _&#8838;&#10216;_&#10217;_<a name="1204" class="Symbol"
+      >)</a
+      >
+
+    <a name="1211" class="Keyword"
+      >infix</a
+      > <a name="1217" class="Number"
+      >1</a
+      > <a name="SingleSetoid.&#8838;-Reasoning._&#8712;&#10216;_&#10217;_" href="Data.List.Any.Membership.Properties.html#SingleSetoid.&#8838;-Reasoning._&#8712;&#10216;_&#10217;_" class="Function Operator"
+      >_&#8712;&#10216;_&#10217;_</a
+      >
+
+    <a name="SingleSetoid.&#8838;-Reasoning._&#8712;&#10216;_&#10217;_" href="Data.List.Any.Membership.Properties.html#SingleSetoid.&#8838;-Reasoning._&#8712;&#10216;_&#10217;_" class="Function Operator"
+      >_&#8712;&#10216;_&#10217;_</a
+      > <a name="1238" class="Symbol"
+      >:</a
+      > <a name="1240" class="Symbol"
+      >&#8704;</a
+      > <a name="1242" href="Data.List.Any.Membership.Properties.html#1242" class="Bound"
+      >x</a
+      > <a name="1244" class="Symbol"
+      >{</a
+      ><a name="1245" href="Data.List.Any.Membership.Properties.html#1245" class="Bound"
+      >xs</a
+      > <a name="1248" href="Data.List.Any.Membership.Properties.html#1248" class="Bound"
+      >ys</a
+      ><a name="1250" class="Symbol"
+      >}</a
+      > <a name="1252" class="Symbol"
+      >&#8594;</a
+      > <a name="1254" href="Data.List.Any.Membership.Properties.html#1242" class="Bound"
+      >x</a
+      > <a name="1256" href="Data.List.Any.Membership.html#665" class="Function Operator"
+      >&#8712;</a
+      > <a name="1258" href="Data.List.Any.Membership.Properties.html#1245" class="Bound"
+      >xs</a
+      > <a name="1261" class="Symbol"
+      >&#8594;</a
+      > <a name="1263" href="Data.List.Any.Membership.Properties.html#1245" class="Bound"
+      >xs</a
+      > <a name="1266" href="Relation.Binary.PreorderReasoning.html#1066" class="Datatype Operator"
+      >IsRelatedTo</a
+      > <a name="1278" href="Data.List.Any.Membership.Properties.html#1248" class="Bound"
+      >ys</a
+      > <a name="1281" class="Symbol"
+      >&#8594;</a
+      > <a name="1283" href="Data.List.Any.Membership.Properties.html#1242" class="Bound"
+      >x</a
+      > <a name="1285" href="Data.List.Any.Membership.html#665" class="Function Operator"
+      >&#8712;</a
+      > <a name="1287" href="Data.List.Any.Membership.Properties.html#1248" class="Bound"
+      >ys</a
+      >
+    <a name="1294" href="Data.List.Any.Membership.Properties.html#1294" class="Bound"
+      >x</a
+      > <a name="1296" href="Data.List.Any.Membership.Properties.html#SingleSetoid.&#8838;-Reasoning._&#8712;&#10216;_&#10217;_" class="Function Operator"
+      >&#8712;&#10216;</a
+      > <a name="1299" href="Data.List.Any.Membership.Properties.html#1299" class="Bound"
+      >x&#8712;xs</a
+      > <a name="1304" href="Data.List.Any.Membership.Properties.html#SingleSetoid.&#8838;-Reasoning._&#8712;&#10216;_&#10217;_" class="Function Operator"
+      >&#10217;</a
+      > <a name="1306" href="Data.List.Any.Membership.Properties.html#1306" class="Bound"
+      >xs&#8838;ys</a
+      > <a name="1312" class="Symbol"
+      >=</a
+      > <a name="1314" class="Symbol"
+      >(</a
+      ><a name="1315" href="Relation.Binary.PreorderReasoning.html#1154" class="Function Operator"
+      >begin</a
+      > <a name="1321" href="Data.List.Any.Membership.Properties.html#1306" class="Bound"
+      >xs&#8838;ys</a
+      ><a name="1326" class="Symbol"
+      >)</a
+      > <a name="1328" href="Data.List.Any.Membership.Properties.html#1299" class="Bound"
+      >x&#8712;xs</a
+      >
+
+<a name="1334" class="Keyword"
+      >open</a
+      > <a name="1339" href="Data.List.Any.Membership.Properties.html#SingleSetoid" class="Module"
+      >SingleSetoid</a
+      > <a name="1352" class="Keyword"
+      >public</a
       >
 </pre
     ></body
