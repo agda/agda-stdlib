@@ -615,6 +615,32 @@ Backwards compatible changes
   P-resp⟶¬P-resp : Symmetric _≈_ → P Respects _≈_ → (¬_ ∘ P) Respects _≈_
   ```
 
+
+
+* Added features to `Data.Nat`:
+  several functions and proofs -- to be used in new items in
+  `Data.Bin, Data.Bin.Properties'.
+  But may be, they can serve other purposes.
+
+* Added to `Data.Nat.DivMod`:
+  the lemma
+           half-n=n-div-2 :  ∀ n → half n ≡ (n div 2)
+  It is needed for the new Bin items, and may be can serve other purposes.
+
+* Added features to `Data.Bin`:
+  it is proved that the binary coding for Nat is an isomorhism between Nat
+  and Bin with respect to the operations  suc  and  addCarryToBitList.
+  This proves that the binary coding  has, at all, sense:
+  that it represents the needed thing.
+
+* Added features to `Data.Bin.Properties`:
+  the  DecTotalOrder instance  for Bin,
+  for  x ≤ y  defined on Bin as   x < y ⊎ x ≡ y.
+
+* Added to `Data.Char`:
+  the  readNat  function to read Nat from (List Char).
+
+
 Version 0.13
 ============
 
