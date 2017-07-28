@@ -11,9 +11,10 @@ open import Data.Nat.Divisibility as Div
 open import Relation.Binary
 private module P = Poset Div.poset
 open import Data.Product
-open import Relation.Binary.PropositionalEquality as PropEq using (_≡_)
+open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; subst)
+open import Relation.Nullary using (Dec; yes; no)
 open import Induction
-open import Induction.Nat
+open import Induction.Nat using (<′-Rec; <′-rec-builder)
 open import Induction.Lexicographic
 open import Function
 open import Data.Nat.GCD.Lemmas
@@ -64,10 +65,10 @@ module GCD where
 
   step : ∀ {n k d} → GCD n k d → GCD n (n + k) d
   step g with GCD.commonDivisor g
-  step {n} {k} {d} g | (d₁ , d₂) = is (d₁ , ∣-+ d₁ d₂) greatest′
+  step {n} {k} {d} g | (d₁ , d₂) = is (d₁ , ∣m∣n⇒∣m+n d₁ d₂) greatest′
     where
     greatest′ : ∀ {d′} → d′ ∣ n × d′ ∣ n + k → d′ ∣ d
-    greatest′ (d₁ , d₂) = GCD.greatest g (d₁ , ∣-∸ d₂ d₁)
+    greatest′ (d₁ , d₂) = GCD.greatest g (d₁ , ∣m+n|m⇒|n d₂ d₁)
 
 open GCD public using (GCD) hiding (module GCD)
 
@@ -154,12 +155,12 @@ module Bézout where
   -- Euclidean algorithm.
 
   lemma : (m n : ℕ) → Lemma m n
-  lemma m n = build [ <-rec-builder ⊗ <-rec-builder ] P gcd (m , n)
+  lemma m n = build [ <′-rec-builder ⊗ <′-rec-builder ] P gcd (m , n)
     where
     P : ℕ × ℕ → Set
     P (m , n) = Lemma m n
 
-    gcd : ∀ p → (<-Rec ⊗ <-Rec) P p → P p
+    gcd : ∀ p → (<′-Rec ⊗ <′-Rec) P p → P p
     gcd (zero  , n                 ) rec = Lemma.base n
     gcd (suc m , zero              ) rec = Lemma.sym (Lemma.base (suc m))
     gcd (suc m , suc n             ) rec with compare m n
@@ -183,3 +184,11 @@ module Bézout where
 gcd : (m n : ℕ) → ∃ λ d → GCD m n d
 gcd m n with Bézout.lemma m n
 gcd m n | Bézout.result d g _ = (d , g)
+
+-- gcd as a proposition is decidable
+
+gcd? : (m n d : ℕ) → Dec (GCD m n d)
+gcd? m n d with gcd m n
+... | d′ , p with d′ ≟ d
+... | no ¬g = no (λ p′ → ¬g (GCD.unique p p′))
+... | yes g = yes (subst (GCD m n) g p)
