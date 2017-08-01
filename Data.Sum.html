@@ -44,603 +44,622 @@
       >open</a
       > <a name="255" class="Keyword"
       >import</a
-      > <a name="262" href="Data.Maybe.Base.html" class="Module"
-      >Data.Maybe.Base</a
-      > <a name="278" class="Keyword"
+      > <a name="262" href="Data.Unit.Base.html" class="Module"
+      >Data.Unit.Base</a
+      > <a name="277" class="Keyword"
       >using</a
-      > <a name="284" class="Symbol"
+      > <a name="283" class="Symbol"
       >(</a
-      ><a name="285" href="Data.Maybe.Base.html#Maybe" class="Datatype"
-      >Maybe</a
-      ><a name="290" class="Symbol"
+      ><a name="284" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
+      >&#8868;</a
+      ><a name="285" class="Symbol"
       >;</a
-      > <a name="292" href="Data.Maybe.Base.html#Maybe.just" class="InductiveConstructor"
-      >just</a
-      ><a name="296" class="Symbol"
-      >;</a
-      > <a name="298" href="Data.Maybe.Base.html#Maybe.nothing" class="InductiveConstructor"
-      >nothing</a
-      ><a name="305" class="Symbol"
+      > <a name="287" href="Agda.Builtin.Unit.html#&#8868;.tt" class="InductiveConstructor"
+      >tt</a
+      ><a name="289" class="Symbol"
       >)</a
       >
-<a name="307" class="Keyword"
+<a name="291" class="Keyword"
       >open</a
-      > <a name="312" class="Keyword"
+      > <a name="296" class="Keyword"
       >import</a
-      > <a name="319" href="Level.html" class="Module"
+      > <a name="303" href="Data.Maybe.Base.html" class="Module"
+      >Data.Maybe.Base</a
+      > <a name="319" class="Keyword"
+      >using</a
+      > <a name="325" class="Symbol"
+      >(</a
+      ><a name="326" href="Data.Maybe.Base.html#Maybe" class="Datatype"
+      >Maybe</a
+      ><a name="331" class="Symbol"
+      >;</a
+      > <a name="333" href="Data.Maybe.Base.html#Maybe.just" class="InductiveConstructor"
+      >just</a
+      ><a name="337" class="Symbol"
+      >;</a
+      > <a name="339" href="Data.Maybe.Base.html#Maybe.nothing" class="InductiveConstructor"
+      >nothing</a
+      ><a name="346" class="Symbol"
+      >)</a
+      >
+<a name="348" class="Keyword"
+      >open</a
+      > <a name="353" class="Keyword"
+      >import</a
+      > <a name="360" href="Level.html" class="Module"
       >Level</a
       >
 
-<a name="326" class="Comment"
+<a name="367" class="Comment"
       >------------------------------------------------------------------------</a
       >
-<a name="399" class="Comment"
+<a name="440" class="Comment"
       >-- Definition</a
       >
 
-<a name="414" class="Keyword"
+<a name="455" class="Keyword"
       >infixr</a
-      > <a name="421" class="Number"
+      > <a name="462" class="Number"
       >1</a
-      > <a name="423" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
+      > <a name="464" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
       >_&#8846;_</a
       >
 
-<a name="428" class="Keyword"
+<a name="469" class="Keyword"
       >data</a
       > <a name="_&#8846;_" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
       >_&#8846;_</a
-      > <a name="437" class="Symbol"
+      > <a name="478" class="Symbol"
       >{</a
-      ><a name="438" href="Data.Sum.html#438" class="Bound"
+      ><a name="479" href="Data.Sum.html#479" class="Bound"
       >a</a
-      > <a name="440" href="Data.Sum.html#440" class="Bound"
+      > <a name="481" href="Data.Sum.html#481" class="Bound"
       >b</a
-      ><a name="441" class="Symbol"
+      ><a name="482" class="Symbol"
       >}</a
-      > <a name="443" class="Symbol"
+      > <a name="484" class="Symbol"
       >(</a
-      ><a name="444" href="Data.Sum.html#444" class="Bound"
+      ><a name="485" href="Data.Sum.html#485" class="Bound"
       >A</a
-      > <a name="446" class="Symbol"
+      > <a name="487" class="Symbol"
       >:</a
-      > <a name="448" class="PrimitiveType"
+      > <a name="489" class="PrimitiveType"
       >Set</a
-      > <a name="452" href="Data.Sum.html#438" class="Bound"
+      > <a name="493" href="Data.Sum.html#479" class="Bound"
       >a</a
-      ><a name="453" class="Symbol"
+      ><a name="494" class="Symbol"
       >)</a
-      > <a name="455" class="Symbol"
+      > <a name="496" class="Symbol"
       >(</a
-      ><a name="456" href="Data.Sum.html#456" class="Bound"
+      ><a name="497" href="Data.Sum.html#497" class="Bound"
       >B</a
-      > <a name="458" class="Symbol"
+      > <a name="499" class="Symbol"
       >:</a
-      > <a name="460" class="PrimitiveType"
+      > <a name="501" class="PrimitiveType"
       >Set</a
-      > <a name="464" href="Data.Sum.html#440" class="Bound"
+      > <a name="505" href="Data.Sum.html#481" class="Bound"
       >b</a
-      ><a name="465" class="Symbol"
+      ><a name="506" class="Symbol"
       >)</a
-      > <a name="467" class="Symbol"
+      > <a name="508" class="Symbol"
       >:</a
-      > <a name="469" class="PrimitiveType"
+      > <a name="510" class="PrimitiveType"
       >Set</a
-      > <a name="473" class="Symbol"
+      > <a name="514" class="Symbol"
       >(</a
-      ><a name="474" href="Data.Sum.html#438" class="Bound"
+      ><a name="515" href="Data.Sum.html#479" class="Bound"
       >a</a
-      > <a name="476" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
+      > <a name="517" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
       >&#8852;</a
-      > <a name="478" href="Data.Sum.html#440" class="Bound"
+      > <a name="519" href="Data.Sum.html#481" class="Bound"
       >b</a
-      ><a name="479" class="Symbol"
+      ><a name="520" class="Symbol"
       >)</a
-      > <a name="481" class="Keyword"
+      > <a name="522" class="Keyword"
       >where</a
       >
   <a name="_&#8846;_.inj&#8321;" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
       >inj&#8321;</a
-      > <a name="494" class="Symbol"
+      > <a name="535" class="Symbol"
       >:</a
-      > <a name="496" class="Symbol"
+      > <a name="537" class="Symbol"
       >(</a
-      ><a name="497" href="Data.Sum.html#497" class="Bound"
+      ><a name="538" href="Data.Sum.html#538" class="Bound"
       >x</a
-      > <a name="499" class="Symbol"
+      > <a name="540" class="Symbol"
       >:</a
-      > <a name="501" href="Data.Sum.html#444" class="Bound"
+      > <a name="542" href="Data.Sum.html#485" class="Bound"
       >A</a
-      ><a name="502" class="Symbol"
+      ><a name="543" class="Symbol"
       >)</a
-      > <a name="504" class="Symbol"
+      > <a name="545" class="Symbol"
       >&#8594;</a
-      > <a name="506" href="Data.Sum.html#444" class="Bound"
+      > <a name="547" href="Data.Sum.html#485" class="Bound"
       >A</a
-      > <a name="508" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
+      > <a name="549" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
       >&#8846;</a
-      > <a name="510" href="Data.Sum.html#456" class="Bound"
+      > <a name="551" href="Data.Sum.html#497" class="Bound"
       >B</a
       >
   <a name="_&#8846;_.inj&#8322;" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
       >inj&#8322;</a
-      > <a name="519" class="Symbol"
+      > <a name="560" class="Symbol"
       >:</a
-      > <a name="521" class="Symbol"
+      > <a name="562" class="Symbol"
       >(</a
-      ><a name="522" href="Data.Sum.html#522" class="Bound"
+      ><a name="563" href="Data.Sum.html#563" class="Bound"
       >y</a
-      > <a name="524" class="Symbol"
+      > <a name="565" class="Symbol"
       >:</a
-      > <a name="526" href="Data.Sum.html#456" class="Bound"
+      > <a name="567" href="Data.Sum.html#497" class="Bound"
       >B</a
-      ><a name="527" class="Symbol"
+      ><a name="568" class="Symbol"
       >)</a
-      > <a name="529" class="Symbol"
+      > <a name="570" class="Symbol"
       >&#8594;</a
-      > <a name="531" href="Data.Sum.html#444" class="Bound"
+      > <a name="572" href="Data.Sum.html#485" class="Bound"
       >A</a
-      > <a name="533" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
+      > <a name="574" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
       >&#8846;</a
-      > <a name="535" href="Data.Sum.html#456" class="Bound"
+      > <a name="576" href="Data.Sum.html#497" class="Bound"
       >B</a
       >
 
-<a name="538" class="Symbol"
+<a name="579" class="Symbol"
       >{-#</a
-      > <a name="542" class="Keyword"
+      > <a name="583" class="Keyword"
       >FOREIGN</a
-      > GHC type AgdaEither a b c d = Either c d <a name="591" class="Symbol"
+      > GHC type AgdaEither a b c d = Either c d <a name="632" class="Symbol"
       >#-}</a
       >
-<a name="595" class="Symbol"
+<a name="636" class="Symbol"
       >{-#</a
-      > <a name="599" class="Keyword"
+      > <a name="640" class="Keyword"
       >COMPILE</a
-      > GHC <a name="611" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
+      > GHC <a name="652" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
       >_&#8846;_</a
-      > = data MAlonzo.Code.Data.Sum.AgdaEither (Left | Right) <a name="670" class="Symbol"
+      > = data MAlonzo.Code.Data.Sum.AgdaEither (Left | Right) <a name="711" class="Symbol"
       >#-}</a
       >
 
-<a name="675" class="Comment"
+<a name="716" class="Comment"
       >------------------------------------------------------------------------</a
       >
-<a name="748" class="Comment"
+<a name="789" class="Comment"
       >-- Functions</a
       >
 
 <a name="[_,_]" href="Data.Sum.html#[_,_]" class="Function Operator"
       >[_,_]</a
-      > <a name="768" class="Symbol"
+      > <a name="809" class="Symbol"
       >:</a
-      > <a name="770" class="Symbol"
+      > <a name="811" class="Symbol"
       >&#8704;</a
-      > <a name="772" class="Symbol"
+      > <a name="813" class="Symbol"
       >{</a
-      ><a name="773" href="Data.Sum.html#773" class="Bound"
+      ><a name="814" href="Data.Sum.html#814" class="Bound"
       >a</a
-      > <a name="775" href="Data.Sum.html#775" class="Bound"
+      > <a name="816" href="Data.Sum.html#816" class="Bound"
       >b</a
-      > <a name="777" href="Data.Sum.html#777" class="Bound"
+      > <a name="818" href="Data.Sum.html#818" class="Bound"
       >c</a
-      ><a name="778" class="Symbol"
+      ><a name="819" class="Symbol"
       >}</a
-      > <a name="780" class="Symbol"
+      > <a name="821" class="Symbol"
       >{</a
-      ><a name="781" href="Data.Sum.html#781" class="Bound"
+      ><a name="822" href="Data.Sum.html#822" class="Bound"
       >A</a
-      > <a name="783" class="Symbol"
-      >:</a
-      > <a name="785" class="PrimitiveType"
-      >Set</a
-      > <a name="789" href="Data.Sum.html#773" class="Bound"
-      >a</a
-      ><a name="790" class="Symbol"
-      >}</a
-      > <a name="792" class="Symbol"
-      >{</a
-      ><a name="793" href="Data.Sum.html#793" class="Bound"
-      >B</a
-      > <a name="795" class="Symbol"
-      >:</a
-      > <a name="797" class="PrimitiveType"
-      >Set</a
-      > <a name="801" href="Data.Sum.html#775" class="Bound"
-      >b</a
-      ><a name="802" class="Symbol"
-      >}</a
-      > <a name="804" class="Symbol"
-      >{</a
-      ><a name="805" href="Data.Sum.html#805" class="Bound"
-      >C</a
-      > <a name="807" class="Symbol"
-      >:</a
-      > <a name="809" href="Data.Sum.html#781" class="Bound"
-      >A</a
-      > <a name="811" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
-      >&#8846;</a
-      > <a name="813" href="Data.Sum.html#793" class="Bound"
-      >B</a
-      > <a name="815" class="Symbol"
-      >&#8594;</a
-      > <a name="817" class="PrimitiveType"
-      >Set</a
-      > <a name="821" href="Data.Sum.html#777" class="Bound"
-      >c</a
-      ><a name="822" class="Symbol"
-      >}</a
       > <a name="824" class="Symbol"
-      >&#8594;</a
-      >
-        <a name="834" class="Symbol"
-      >((</a
-      ><a name="836" href="Data.Sum.html#836" class="Bound"
-      >x</a
-      > <a name="838" class="Symbol"
       >:</a
-      > <a name="840" href="Data.Sum.html#781" class="Bound"
-      >A</a
-      ><a name="841" class="Symbol"
-      >)</a
-      > <a name="843" class="Symbol"
-      >&#8594;</a
-      > <a name="845" href="Data.Sum.html#805" class="Bound"
-      >C</a
-      > <a name="847" class="Symbol"
-      >(</a
-      ><a name="848" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
-      >inj&#8321;</a
-      > <a name="853" href="Data.Sum.html#836" class="Bound"
-      >x</a
-      ><a name="854" class="Symbol"
-      >))</a
-      > <a name="857" class="Symbol"
-      >&#8594;</a
-      > <a name="859" class="Symbol"
-      >((</a
-      ><a name="861" href="Data.Sum.html#861" class="Bound"
-      >x</a
-      > <a name="863" class="Symbol"
-      >:</a
-      > <a name="865" href="Data.Sum.html#793" class="Bound"
+      > <a name="826" class="PrimitiveType"
+      >Set</a
+      > <a name="830" href="Data.Sum.html#814" class="Bound"
+      >a</a
+      ><a name="831" class="Symbol"
+      >}</a
+      > <a name="833" class="Symbol"
+      >{</a
+      ><a name="834" href="Data.Sum.html#834" class="Bound"
       >B</a
-      ><a name="866" class="Symbol"
-      >)</a
-      > <a name="868" class="Symbol"
-      >&#8594;</a
-      > <a name="870" href="Data.Sum.html#805" class="Bound"
-      >C</a
-      > <a name="872" class="Symbol"
-      >(</a
-      ><a name="873" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
-      >inj&#8322;</a
-      > <a name="878" href="Data.Sum.html#861" class="Bound"
-      >x</a
-      ><a name="879" class="Symbol"
-      >))</a
-      > <a name="882" class="Symbol"
-      >&#8594;</a
-      >
-        <a name="892" class="Symbol"
-      >((</a
-      ><a name="894" href="Data.Sum.html#894" class="Bound"
-      >x</a
-      > <a name="896" class="Symbol"
+      > <a name="836" class="Symbol"
       >:</a
-      > <a name="898" href="Data.Sum.html#781" class="Bound"
+      > <a name="838" class="PrimitiveType"
+      >Set</a
+      > <a name="842" href="Data.Sum.html#816" class="Bound"
+      >b</a
+      ><a name="843" class="Symbol"
+      >}</a
+      > <a name="845" class="Symbol"
+      >{</a
+      ><a name="846" href="Data.Sum.html#846" class="Bound"
+      >C</a
+      > <a name="848" class="Symbol"
+      >:</a
+      > <a name="850" href="Data.Sum.html#822" class="Bound"
       >A</a
-      > <a name="900" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
+      > <a name="852" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
       >&#8846;</a
-      > <a name="902" href="Data.Sum.html#793" class="Bound"
+      > <a name="854" href="Data.Sum.html#834" class="Bound"
       >B</a
-      ><a name="903" class="Symbol"
-      >)</a
-      > <a name="905" class="Symbol"
+      > <a name="856" class="Symbol"
       >&#8594;</a
-      > <a name="907" href="Data.Sum.html#805" class="Bound"
+      > <a name="858" class="PrimitiveType"
+      >Set</a
+      > <a name="862" href="Data.Sum.html#818" class="Bound"
+      >c</a
+      ><a name="863" class="Symbol"
+      >}</a
+      > <a name="865" class="Symbol"
+      >&#8594;</a
+      >
+        <a name="875" class="Symbol"
+      >((</a
+      ><a name="877" href="Data.Sum.html#877" class="Bound"
+      >x</a
+      > <a name="879" class="Symbol"
+      >:</a
+      > <a name="881" href="Data.Sum.html#822" class="Bound"
+      >A</a
+      ><a name="882" class="Symbol"
+      >)</a
+      > <a name="884" class="Symbol"
+      >&#8594;</a
+      > <a name="886" href="Data.Sum.html#846" class="Bound"
       >C</a
-      > <a name="909" href="Data.Sum.html#894" class="Bound"
-      >x</a
-      ><a name="910" class="Symbol"
-      >)</a
-      >
-<a name="912" href="Data.Sum.html#[_,_]" class="Function Operator"
-      >[</a
-      > <a name="914" href="Data.Sum.html#914" class="Bound"
-      >f</a
-      > <a name="916" href="Data.Sum.html#[_,_]" class="Function Operator"
-      >,</a
-      > <a name="918" href="Data.Sum.html#918" class="Bound"
-      >g</a
-      > <a name="920" href="Data.Sum.html#[_,_]" class="Function Operator"
-      >]</a
-      > <a name="922" class="Symbol"
+      > <a name="888" class="Symbol"
       >(</a
-      ><a name="923" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
+      ><a name="889" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
       >inj&#8321;</a
-      > <a name="928" href="Data.Sum.html#928" class="Bound"
+      > <a name="894" href="Data.Sum.html#877" class="Bound"
       >x</a
-      ><a name="929" class="Symbol"
+      ><a name="895" class="Symbol"
+      >))</a
+      > <a name="898" class="Symbol"
+      >&#8594;</a
+      > <a name="900" class="Symbol"
+      >((</a
+      ><a name="902" href="Data.Sum.html#902" class="Bound"
+      >x</a
+      > <a name="904" class="Symbol"
+      >:</a
+      > <a name="906" href="Data.Sum.html#834" class="Bound"
+      >B</a
+      ><a name="907" class="Symbol"
       >)</a
-      > <a name="931" class="Symbol"
-      >=</a
-      > <a name="933" href="Data.Sum.html#914" class="Bound"
+      > <a name="909" class="Symbol"
+      >&#8594;</a
+      > <a name="911" href="Data.Sum.html#846" class="Bound"
+      >C</a
+      > <a name="913" class="Symbol"
+      >(</a
+      ><a name="914" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
+      >inj&#8322;</a
+      > <a name="919" href="Data.Sum.html#902" class="Bound"
+      >x</a
+      ><a name="920" class="Symbol"
+      >))</a
+      > <a name="923" class="Symbol"
+      >&#8594;</a
+      >
+        <a name="933" class="Symbol"
+      >((</a
+      ><a name="935" href="Data.Sum.html#935" class="Bound"
+      >x</a
+      > <a name="937" class="Symbol"
+      >:</a
+      > <a name="939" href="Data.Sum.html#822" class="Bound"
+      >A</a
+      > <a name="941" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
+      >&#8846;</a
+      > <a name="943" href="Data.Sum.html#834" class="Bound"
+      >B</a
+      ><a name="944" class="Symbol"
+      >)</a
+      > <a name="946" class="Symbol"
+      >&#8594;</a
+      > <a name="948" href="Data.Sum.html#846" class="Bound"
+      >C</a
+      > <a name="950" href="Data.Sum.html#935" class="Bound"
+      >x</a
+      ><a name="951" class="Symbol"
+      >)</a
+      >
+<a name="953" href="Data.Sum.html#[_,_]" class="Function Operator"
+      >[</a
+      > <a name="955" href="Data.Sum.html#955" class="Bound"
       >f</a
-      > <a name="935" href="Data.Sum.html#928" class="Bound"
+      > <a name="957" href="Data.Sum.html#[_,_]" class="Function Operator"
+      >,</a
+      > <a name="959" href="Data.Sum.html#959" class="Bound"
+      >g</a
+      > <a name="961" href="Data.Sum.html#[_,_]" class="Function Operator"
+      >]</a
+      > <a name="963" class="Symbol"
+      >(</a
+      ><a name="964" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
+      >inj&#8321;</a
+      > <a name="969" href="Data.Sum.html#969" class="Bound"
+      >x</a
+      ><a name="970" class="Symbol"
+      >)</a
+      > <a name="972" class="Symbol"
+      >=</a
+      > <a name="974" href="Data.Sum.html#955" class="Bound"
+      >f</a
+      > <a name="976" href="Data.Sum.html#969" class="Bound"
       >x</a
       >
-<a name="937" href="Data.Sum.html#[_,_]" class="Function Operator"
+<a name="978" href="Data.Sum.html#[_,_]" class="Function Operator"
       >[</a
-      > <a name="939" href="Data.Sum.html#939" class="Bound"
+      > <a name="980" href="Data.Sum.html#980" class="Bound"
       >f</a
-      > <a name="941" href="Data.Sum.html#[_,_]" class="Function Operator"
+      > <a name="982" href="Data.Sum.html#[_,_]" class="Function Operator"
       >,</a
-      > <a name="943" href="Data.Sum.html#943" class="Bound"
+      > <a name="984" href="Data.Sum.html#984" class="Bound"
       >g</a
-      > <a name="945" href="Data.Sum.html#[_,_]" class="Function Operator"
+      > <a name="986" href="Data.Sum.html#[_,_]" class="Function Operator"
       >]</a
-      > <a name="947" class="Symbol"
+      > <a name="988" class="Symbol"
       >(</a
-      ><a name="948" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
+      ><a name="989" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
       >inj&#8322;</a
-      > <a name="953" href="Data.Sum.html#953" class="Bound"
+      > <a name="994" href="Data.Sum.html#994" class="Bound"
       >y</a
-      ><a name="954" class="Symbol"
+      ><a name="995" class="Symbol"
       >)</a
-      > <a name="956" class="Symbol"
+      > <a name="997" class="Symbol"
       >=</a
-      > <a name="958" href="Data.Sum.html#943" class="Bound"
+      > <a name="999" href="Data.Sum.html#984" class="Bound"
       >g</a
-      > <a name="960" href="Data.Sum.html#953" class="Bound"
+      > <a name="1001" href="Data.Sum.html#994" class="Bound"
       >y</a
       >
 
 <a name="[_,_]&#8242;" href="Data.Sum.html#[_,_]&#8242;" class="Function Operator"
       >[_,_]&#8242;</a
-      > <a name="970" class="Symbol"
+      > <a name="1011" class="Symbol"
       >:</a
-      > <a name="972" class="Symbol"
+      > <a name="1013" class="Symbol"
       >&#8704;</a
-      > <a name="974" class="Symbol"
+      > <a name="1015" class="Symbol"
       >{</a
-      ><a name="975" href="Data.Sum.html#975" class="Bound"
+      ><a name="1016" href="Data.Sum.html#1016" class="Bound"
       >a</a
-      > <a name="977" href="Data.Sum.html#977" class="Bound"
+      > <a name="1018" href="Data.Sum.html#1018" class="Bound"
       >b</a
-      > <a name="979" href="Data.Sum.html#979" class="Bound"
+      > <a name="1020" href="Data.Sum.html#1020" class="Bound"
       >c</a
-      ><a name="980" class="Symbol"
+      ><a name="1021" class="Symbol"
       >}</a
-      > <a name="982" class="Symbol"
+      > <a name="1023" class="Symbol"
       >{</a
-      ><a name="983" href="Data.Sum.html#983" class="Bound"
+      ><a name="1024" href="Data.Sum.html#1024" class="Bound"
       >A</a
-      > <a name="985" class="Symbol"
+      > <a name="1026" class="Symbol"
       >:</a
-      > <a name="987" class="PrimitiveType"
+      > <a name="1028" class="PrimitiveType"
       >Set</a
-      > <a name="991" href="Data.Sum.html#975" class="Bound"
+      > <a name="1032" href="Data.Sum.html#1016" class="Bound"
       >a</a
-      ><a name="992" class="Symbol"
+      ><a name="1033" class="Symbol"
       >}</a
-      > <a name="994" class="Symbol"
+      > <a name="1035" class="Symbol"
       >{</a
-      ><a name="995" href="Data.Sum.html#995" class="Bound"
+      ><a name="1036" href="Data.Sum.html#1036" class="Bound"
       >B</a
-      > <a name="997" class="Symbol"
+      > <a name="1038" class="Symbol"
       >:</a
-      > <a name="999" class="PrimitiveType"
+      > <a name="1040" class="PrimitiveType"
       >Set</a
-      > <a name="1003" href="Data.Sum.html#977" class="Bound"
+      > <a name="1044" href="Data.Sum.html#1018" class="Bound"
       >b</a
-      ><a name="1004" class="Symbol"
-      >}</a
-      > <a name="1006" class="Symbol"
-      >{</a
-      ><a name="1007" href="Data.Sum.html#1007" class="Bound"
-      >C</a
-      > <a name="1009" class="Symbol"
-      >:</a
-      > <a name="1011" class="PrimitiveType"
-      >Set</a
-      > <a name="1015" href="Data.Sum.html#979" class="Bound"
-      >c</a
-      ><a name="1016" class="Symbol"
-      >}</a
-      > <a name="1018" class="Symbol"
-      >&#8594;</a
-      >
-         <a name="1029" class="Symbol"
-      >(</a
-      ><a name="1030" href="Data.Sum.html#983" class="Bound"
-      >A</a
-      > <a name="1032" class="Symbol"
-      >&#8594;</a
-      > <a name="1034" href="Data.Sum.html#1007" class="Bound"
-      >C</a
-      ><a name="1035" class="Symbol"
-      >)</a
-      > <a name="1037" class="Symbol"
-      >&#8594;</a
-      > <a name="1039" class="Symbol"
-      >(</a
-      ><a name="1040" href="Data.Sum.html#995" class="Bound"
-      >B</a
-      > <a name="1042" class="Symbol"
-      >&#8594;</a
-      > <a name="1044" href="Data.Sum.html#1007" class="Bound"
-      >C</a
       ><a name="1045" class="Symbol"
-      >)</a
+      >}</a
       > <a name="1047" class="Symbol"
-      >&#8594;</a
-      > <a name="1049" class="Symbol"
-      >(</a
-      ><a name="1050" href="Data.Sum.html#983" class="Bound"
-      >A</a
-      > <a name="1052" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
-      >&#8846;</a
-      > <a name="1054" href="Data.Sum.html#995" class="Bound"
-      >B</a
-      > <a name="1056" class="Symbol"
-      >&#8594;</a
-      > <a name="1058" href="Data.Sum.html#1007" class="Bound"
+      >{</a
+      ><a name="1048" href="Data.Sum.html#1048" class="Bound"
       >C</a
-      ><a name="1059" class="Symbol"
+      > <a name="1050" class="Symbol"
+      >:</a
+      > <a name="1052" class="PrimitiveType"
+      >Set</a
+      > <a name="1056" href="Data.Sum.html#1020" class="Bound"
+      >c</a
+      ><a name="1057" class="Symbol"
+      >}</a
+      > <a name="1059" class="Symbol"
+      >&#8594;</a
+      >
+         <a name="1070" class="Symbol"
+      >(</a
+      ><a name="1071" href="Data.Sum.html#1024" class="Bound"
+      >A</a
+      > <a name="1073" class="Symbol"
+      >&#8594;</a
+      > <a name="1075" href="Data.Sum.html#1048" class="Bound"
+      >C</a
+      ><a name="1076" class="Symbol"
+      >)</a
+      > <a name="1078" class="Symbol"
+      >&#8594;</a
+      > <a name="1080" class="Symbol"
+      >(</a
+      ><a name="1081" href="Data.Sum.html#1036" class="Bound"
+      >B</a
+      > <a name="1083" class="Symbol"
+      >&#8594;</a
+      > <a name="1085" href="Data.Sum.html#1048" class="Bound"
+      >C</a
+      ><a name="1086" class="Symbol"
+      >)</a
+      > <a name="1088" class="Symbol"
+      >&#8594;</a
+      > <a name="1090" class="Symbol"
+      >(</a
+      ><a name="1091" href="Data.Sum.html#1024" class="Bound"
+      >A</a
+      > <a name="1093" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
+      >&#8846;</a
+      > <a name="1095" href="Data.Sum.html#1036" class="Bound"
+      >B</a
+      > <a name="1097" class="Symbol"
+      >&#8594;</a
+      > <a name="1099" href="Data.Sum.html#1048" class="Bound"
+      >C</a
+      ><a name="1100" class="Symbol"
       >)</a
       >
-<a name="1061" href="Data.Sum.html#[_,_]&#8242;" class="Function Operator"
+<a name="1102" href="Data.Sum.html#[_,_]&#8242;" class="Function Operator"
       >[_,_]&#8242;</a
-      > <a name="1068" class="Symbol"
+      > <a name="1109" class="Symbol"
       >=</a
-      > <a name="1070" href="Data.Sum.html#[_,_]" class="Function Operator"
+      > <a name="1111" href="Data.Sum.html#[_,_]" class="Function Operator"
       >[_,_]</a
       >
 
 <a name="map" href="Data.Sum.html#map" class="Function"
       >map</a
-      > <a name="1081" class="Symbol"
-      >:</a
-      > <a name="1083" class="Symbol"
-      >&#8704;</a
-      > <a name="1085" class="Symbol"
-      >{</a
-      ><a name="1086" href="Data.Sum.html#1086" class="Bound"
-      >a</a
-      > <a name="1088" href="Data.Sum.html#1088" class="Bound"
-      >b</a
-      > <a name="1090" href="Data.Sum.html#1090" class="Bound"
-      >c</a
-      > <a name="1092" href="Data.Sum.html#1092" class="Bound"
-      >d</a
-      ><a name="1093" class="Symbol"
-      >}</a
-      > <a name="1095" class="Symbol"
-      >{</a
-      ><a name="1096" href="Data.Sum.html#1096" class="Bound"
-      >A</a
-      > <a name="1098" class="Symbol"
-      >:</a
-      > <a name="1100" class="PrimitiveType"
-      >Set</a
-      > <a name="1104" href="Data.Sum.html#1086" class="Bound"
-      >a</a
-      ><a name="1105" class="Symbol"
-      >}</a
-      > <a name="1107" class="Symbol"
-      >{</a
-      ><a name="1108" href="Data.Sum.html#1108" class="Bound"
-      >B</a
-      > <a name="1110" class="Symbol"
-      >:</a
-      > <a name="1112" class="PrimitiveType"
-      >Set</a
-      > <a name="1116" href="Data.Sum.html#1088" class="Bound"
-      >b</a
-      ><a name="1117" class="Symbol"
-      >}</a
-      > <a name="1119" class="Symbol"
-      >{</a
-      ><a name="1120" href="Data.Sum.html#1120" class="Bound"
-      >C</a
       > <a name="1122" class="Symbol"
       >:</a
-      > <a name="1124" class="PrimitiveType"
-      >Set</a
-      > <a name="1128" href="Data.Sum.html#1090" class="Bound"
-      >c</a
-      ><a name="1129" class="Symbol"
-      >}</a
-      > <a name="1131" class="Symbol"
+      > <a name="1124" class="Symbol"
+      >&#8704;</a
+      > <a name="1126" class="Symbol"
       >{</a
-      ><a name="1132" href="Data.Sum.html#1132" class="Bound"
-      >D</a
-      > <a name="1134" class="Symbol"
-      >:</a
-      > <a name="1136" class="PrimitiveType"
-      >Set</a
-      > <a name="1140" href="Data.Sum.html#1092" class="Bound"
+      ><a name="1127" href="Data.Sum.html#1127" class="Bound"
+      >a</a
+      > <a name="1129" href="Data.Sum.html#1129" class="Bound"
+      >b</a
+      > <a name="1131" href="Data.Sum.html#1131" class="Bound"
+      >c</a
+      > <a name="1133" href="Data.Sum.html#1133" class="Bound"
       >d</a
-      ><a name="1141" class="Symbol"
+      ><a name="1134" class="Symbol"
       >}</a
-      > <a name="1143" class="Symbol"
+      > <a name="1136" class="Symbol"
+      >{</a
+      ><a name="1137" href="Data.Sum.html#1137" class="Bound"
+      >A</a
+      > <a name="1139" class="Symbol"
+      >:</a
+      > <a name="1141" class="PrimitiveType"
+      >Set</a
+      > <a name="1145" href="Data.Sum.html#1127" class="Bound"
+      >a</a
+      ><a name="1146" class="Symbol"
+      >}</a
+      > <a name="1148" class="Symbol"
+      >{</a
+      ><a name="1149" href="Data.Sum.html#1149" class="Bound"
+      >B</a
+      > <a name="1151" class="Symbol"
+      >:</a
+      > <a name="1153" class="PrimitiveType"
+      >Set</a
+      > <a name="1157" href="Data.Sum.html#1129" class="Bound"
+      >b</a
+      ><a name="1158" class="Symbol"
+      >}</a
+      > <a name="1160" class="Symbol"
+      >{</a
+      ><a name="1161" href="Data.Sum.html#1161" class="Bound"
+      >C</a
+      > <a name="1163" class="Symbol"
+      >:</a
+      > <a name="1165" class="PrimitiveType"
+      >Set</a
+      > <a name="1169" href="Data.Sum.html#1131" class="Bound"
+      >c</a
+      ><a name="1170" class="Symbol"
+      >}</a
+      > <a name="1172" class="Symbol"
+      >{</a
+      ><a name="1173" href="Data.Sum.html#1173" class="Bound"
+      >D</a
+      > <a name="1175" class="Symbol"
+      >:</a
+      > <a name="1177" class="PrimitiveType"
+      >Set</a
+      > <a name="1181" href="Data.Sum.html#1133" class="Bound"
+      >d</a
+      ><a name="1182" class="Symbol"
+      >}</a
+      > <a name="1184" class="Symbol"
       >&#8594;</a
       >
-      <a name="1151" class="Symbol"
+      <a name="1192" class="Symbol"
       >(</a
-      ><a name="1152" href="Data.Sum.html#1096" class="Bound"
+      ><a name="1193" href="Data.Sum.html#1137" class="Bound"
       >A</a
-      > <a name="1154" class="Symbol"
-      >&#8594;</a
-      > <a name="1156" href="Data.Sum.html#1120" class="Bound"
-      >C</a
-      ><a name="1157" class="Symbol"
-      >)</a
-      > <a name="1159" class="Symbol"
-      >&#8594;</a
-      > <a name="1161" class="Symbol"
-      >(</a
-      ><a name="1162" href="Data.Sum.html#1108" class="Bound"
-      >B</a
-      > <a name="1164" class="Symbol"
-      >&#8594;</a
-      > <a name="1166" href="Data.Sum.html#1132" class="Bound"
-      >D</a
-      ><a name="1167" class="Symbol"
-      >)</a
-      > <a name="1169" class="Symbol"
-      >&#8594;</a
-      > <a name="1171" class="Symbol"
-      >(</a
-      ><a name="1172" href="Data.Sum.html#1096" class="Bound"
-      >A</a
-      > <a name="1174" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
-      >&#8846;</a
-      > <a name="1176" href="Data.Sum.html#1108" class="Bound"
-      >B</a
-      > <a name="1178" class="Symbol"
-      >&#8594;</a
-      > <a name="1180" href="Data.Sum.html#1120" class="Bound"
-      >C</a
-      > <a name="1182" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
-      >&#8846;</a
-      > <a name="1184" href="Data.Sum.html#1132" class="Bound"
-      >D</a
-      ><a name="1185" class="Symbol"
-      >)</a
-      >
-<a name="1187" href="Data.Sum.html#map" class="Function"
-      >map</a
-      > <a name="1191" href="Data.Sum.html#1191" class="Bound"
-      >f</a
-      > <a name="1193" href="Data.Sum.html#1193" class="Bound"
-      >g</a
       > <a name="1195" class="Symbol"
-      >=</a
-      > <a name="1197" href="Data.Sum.html#[_,_]" class="Function Operator"
-      >[</a
-      > <a name="1199" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
-      >inj&#8321;</a
-      > <a name="1204" href="Function.html#_&#8728;_" class="Function Operator"
-      >&#8728;</a
-      > <a name="1206" href="Data.Sum.html#1191" class="Bound"
+      >&#8594;</a
+      > <a name="1197" href="Data.Sum.html#1161" class="Bound"
+      >C</a
+      ><a name="1198" class="Symbol"
+      >)</a
+      > <a name="1200" class="Symbol"
+      >&#8594;</a
+      > <a name="1202" class="Symbol"
+      >(</a
+      ><a name="1203" href="Data.Sum.html#1149" class="Bound"
+      >B</a
+      > <a name="1205" class="Symbol"
+      >&#8594;</a
+      > <a name="1207" href="Data.Sum.html#1173" class="Bound"
+      >D</a
+      ><a name="1208" class="Symbol"
+      >)</a
+      > <a name="1210" class="Symbol"
+      >&#8594;</a
+      > <a name="1212" class="Symbol"
+      >(</a
+      ><a name="1213" href="Data.Sum.html#1137" class="Bound"
+      >A</a
+      > <a name="1215" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
+      >&#8846;</a
+      > <a name="1217" href="Data.Sum.html#1149" class="Bound"
+      >B</a
+      > <a name="1219" class="Symbol"
+      >&#8594;</a
+      > <a name="1221" href="Data.Sum.html#1161" class="Bound"
+      >C</a
+      > <a name="1223" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
+      >&#8846;</a
+      > <a name="1225" href="Data.Sum.html#1173" class="Bound"
+      >D</a
+      ><a name="1226" class="Symbol"
+      >)</a
+      >
+<a name="1228" href="Data.Sum.html#map" class="Function"
+      >map</a
+      > <a name="1232" href="Data.Sum.html#1232" class="Bound"
       >f</a
-      > <a name="1208" href="Data.Sum.html#[_,_]" class="Function Operator"
-      >,</a
-      > <a name="1210" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
-      >inj&#8322;</a
-      > <a name="1215" href="Function.html#_&#8728;_" class="Function Operator"
-      >&#8728;</a
-      > <a name="1217" href="Data.Sum.html#1193" class="Bound"
+      > <a name="1234" href="Data.Sum.html#1234" class="Bound"
       >g</a
-      > <a name="1219" href="Data.Sum.html#[_,_]" class="Function Operator"
+      > <a name="1236" class="Symbol"
+      >=</a
+      > <a name="1238" href="Data.Sum.html#[_,_]" class="Function Operator"
+      >[</a
+      > <a name="1240" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
+      >inj&#8321;</a
+      > <a name="1245" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="1247" href="Data.Sum.html#1232" class="Bound"
+      >f</a
+      > <a name="1249" href="Data.Sum.html#[_,_]" class="Function Operator"
+      >,</a
+      > <a name="1251" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
+      >inj&#8322;</a
+      > <a name="1256" href="Function.html#_&#8728;_" class="Function Operator"
+      >&#8728;</a
+      > <a name="1258" href="Data.Sum.html#1234" class="Bound"
+      >g</a
+      > <a name="1260" href="Data.Sum.html#[_,_]" class="Function Operator"
       >]</a
       >
 
-<a name="1222" class="Keyword"
+<a name="1263" class="Keyword"
       >infixr</a
-      > <a name="1229" class="Number"
+      > <a name="1270" class="Number"
       >1</a
       > <a name="_-&#8846;-_" href="Data.Sum.html#_-&#8846;-_" class="Function Operator"
       >_-&#8846;-_</a
@@ -648,298 +667,662 @@
 
 <a name="_-&#8846;-_" href="Data.Sum.html#_-&#8846;-_" class="Function Operator"
       >_-&#8846;-_</a
-      > <a name="1244" class="Symbol"
+      > <a name="1285" class="Symbol"
       >:</a
-      > <a name="1246" class="Symbol"
+      > <a name="1287" class="Symbol"
       >&#8704;</a
-      > <a name="1248" class="Symbol"
+      > <a name="1289" class="Symbol"
       >{</a
-      ><a name="1249" href="Data.Sum.html#1249" class="Bound"
+      ><a name="1290" href="Data.Sum.html#1290" class="Bound"
       >a</a
-      > <a name="1251" href="Data.Sum.html#1251" class="Bound"
+      > <a name="1292" href="Data.Sum.html#1292" class="Bound"
       >b</a
-      > <a name="1253" href="Data.Sum.html#1253" class="Bound"
+      > <a name="1294" href="Data.Sum.html#1294" class="Bound"
       >c</a
-      > <a name="1255" href="Data.Sum.html#1255" class="Bound"
+      > <a name="1296" href="Data.Sum.html#1296" class="Bound"
       >d</a
-      ><a name="1256" class="Symbol"
+      ><a name="1297" class="Symbol"
       >}</a
-      > <a name="1258" class="Symbol"
+      > <a name="1299" class="Symbol"
       >{</a
-      ><a name="1259" href="Data.Sum.html#1259" class="Bound"
+      ><a name="1300" href="Data.Sum.html#1300" class="Bound"
       >A</a
-      > <a name="1261" class="Symbol"
+      > <a name="1302" class="Symbol"
       >:</a
-      > <a name="1263" class="PrimitiveType"
+      > <a name="1304" class="PrimitiveType"
       >Set</a
-      > <a name="1267" href="Data.Sum.html#1249" class="Bound"
+      > <a name="1308" href="Data.Sum.html#1290" class="Bound"
       >a</a
-      ><a name="1268" class="Symbol"
+      ><a name="1309" class="Symbol"
       >}</a
-      > <a name="1270" class="Symbol"
+      > <a name="1311" class="Symbol"
       >{</a
-      ><a name="1271" href="Data.Sum.html#1271" class="Bound"
+      ><a name="1312" href="Data.Sum.html#1312" class="Bound"
       >B</a
-      > <a name="1273" class="Symbol"
+      > <a name="1314" class="Symbol"
       >:</a
-      > <a name="1275" class="PrimitiveType"
+      > <a name="1316" class="PrimitiveType"
       >Set</a
-      > <a name="1279" href="Data.Sum.html#1251" class="Bound"
+      > <a name="1320" href="Data.Sum.html#1292" class="Bound"
       >b</a
-      ><a name="1280" class="Symbol"
+      ><a name="1321" class="Symbol"
       >}</a
-      > <a name="1282" class="Symbol"
+      > <a name="1323" class="Symbol"
       >&#8594;</a
       >
-        <a name="1292" class="Symbol"
+        <a name="1333" class="Symbol"
       >(</a
-      ><a name="1293" href="Data.Sum.html#1259" class="Bound"
+      ><a name="1334" href="Data.Sum.html#1300" class="Bound"
       >A</a
-      > <a name="1295" class="Symbol"
+      > <a name="1336" class="Symbol"
       >&#8594;</a
-      > <a name="1297" href="Data.Sum.html#1271" class="Bound"
+      > <a name="1338" href="Data.Sum.html#1312" class="Bound"
       >B</a
-      > <a name="1299" class="Symbol"
+      > <a name="1340" class="Symbol"
       >&#8594;</a
-      > <a name="1301" class="PrimitiveType"
+      > <a name="1342" class="PrimitiveType"
       >Set</a
-      > <a name="1305" href="Data.Sum.html#1253" class="Bound"
+      > <a name="1346" href="Data.Sum.html#1294" class="Bound"
       >c</a
-      ><a name="1306" class="Symbol"
-      >)</a
-      > <a name="1308" class="Symbol"
-      >&#8594;</a
-      > <a name="1310" class="Symbol"
-      >(</a
-      ><a name="1311" href="Data.Sum.html#1259" class="Bound"
-      >A</a
-      > <a name="1313" class="Symbol"
-      >&#8594;</a
-      > <a name="1315" href="Data.Sum.html#1271" class="Bound"
-      >B</a
-      > <a name="1317" class="Symbol"
-      >&#8594;</a
-      > <a name="1319" class="PrimitiveType"
-      >Set</a
-      > <a name="1323" href="Data.Sum.html#1255" class="Bound"
-      >d</a
-      ><a name="1324" class="Symbol"
-      >)</a
-      > <a name="1326" class="Symbol"
-      >&#8594;</a
-      > <a name="1328" class="Symbol"
-      >(</a
-      ><a name="1329" href="Data.Sum.html#1259" class="Bound"
-      >A</a
-      > <a name="1331" class="Symbol"
-      >&#8594;</a
-      > <a name="1333" href="Data.Sum.html#1271" class="Bound"
-      >B</a
-      > <a name="1335" class="Symbol"
-      >&#8594;</a
-      > <a name="1337" class="PrimitiveType"
-      >Set</a
-      > <a name="1341" class="Symbol"
-      >(</a
-      ><a name="1342" href="Data.Sum.html#1253" class="Bound"
-      >c</a
-      > <a name="1344" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
-      >&#8852;</a
-      > <a name="1346" href="Data.Sum.html#1255" class="Bound"
-      >d</a
       ><a name="1347" class="Symbol"
+      >)</a
+      > <a name="1349" class="Symbol"
+      >&#8594;</a
+      > <a name="1351" class="Symbol"
+      >(</a
+      ><a name="1352" href="Data.Sum.html#1300" class="Bound"
+      >A</a
+      > <a name="1354" class="Symbol"
+      >&#8594;</a
+      > <a name="1356" href="Data.Sum.html#1312" class="Bound"
+      >B</a
+      > <a name="1358" class="Symbol"
+      >&#8594;</a
+      > <a name="1360" class="PrimitiveType"
+      >Set</a
+      > <a name="1364" href="Data.Sum.html#1296" class="Bound"
+      >d</a
+      ><a name="1365" class="Symbol"
+      >)</a
+      > <a name="1367" class="Symbol"
+      >&#8594;</a
+      > <a name="1369" class="Symbol"
+      >(</a
+      ><a name="1370" href="Data.Sum.html#1300" class="Bound"
+      >A</a
+      > <a name="1372" class="Symbol"
+      >&#8594;</a
+      > <a name="1374" href="Data.Sum.html#1312" class="Bound"
+      >B</a
+      > <a name="1376" class="Symbol"
+      >&#8594;</a
+      > <a name="1378" class="PrimitiveType"
+      >Set</a
+      > <a name="1382" class="Symbol"
+      >(</a
+      ><a name="1383" href="Data.Sum.html#1294" class="Bound"
+      >c</a
+      > <a name="1385" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
+      >&#8852;</a
+      > <a name="1387" href="Data.Sum.html#1296" class="Bound"
+      >d</a
+      ><a name="1388" class="Symbol"
       >))</a
       >
-<a name="1350" href="Data.Sum.html#1350" class="Bound"
+<a name="1391" href="Data.Sum.html#1391" class="Bound"
       >f</a
-      > <a name="1352" href="Data.Sum.html#_-&#8846;-_" class="Function Operator"
+      > <a name="1393" href="Data.Sum.html#_-&#8846;-_" class="Function Operator"
       >-&#8846;-</a
-      > <a name="1356" href="Data.Sum.html#1356" class="Bound"
+      > <a name="1397" href="Data.Sum.html#1397" class="Bound"
       >g</a
-      > <a name="1358" class="Symbol"
+      > <a name="1399" class="Symbol"
       >=</a
-      > <a name="1360" href="Data.Sum.html#1350" class="Bound"
+      > <a name="1401" href="Data.Sum.html#1391" class="Bound"
       >f</a
-      > <a name="1362" href="Function.html#_-[_]-_" class="Function Operator"
+      > <a name="1403" href="Function.html#_-[_]-_" class="Function Operator"
       >-[</a
-      > <a name="1365" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
+      > <a name="1406" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
       >_&#8846;_</a
-      > <a name="1369" href="Function.html#_-[_]-_" class="Function Operator"
+      > <a name="1410" href="Function.html#_-[_]-_" class="Function Operator"
       >]-</a
-      > <a name="1372" href="Data.Sum.html#1356" class="Bound"
+      > <a name="1413" href="Data.Sum.html#1397" class="Bound"
       >g</a
       >
 
 <a name="isInj&#8321;" href="Data.Sum.html#isInj&#8321;" class="Function"
       >isInj&#8321;</a
-      > <a name="1382" class="Symbol"
+      > <a name="1423" class="Symbol"
       >:</a
-      > <a name="1384" class="Symbol"
+      > <a name="1425" class="Symbol"
       >&#8704;</a
-      > <a name="1386" class="Symbol"
+      > <a name="1427" class="Symbol"
       >{</a
-      ><a name="1387" href="Data.Sum.html#1387" class="Bound"
+      ><a name="1428" href="Data.Sum.html#1428" class="Bound"
       >a</a
-      > <a name="1389" href="Data.Sum.html#1389" class="Bound"
+      > <a name="1430" href="Data.Sum.html#1430" class="Bound"
       >b</a
-      ><a name="1390" class="Symbol"
+      ><a name="1431" class="Symbol"
       >}</a
-      > <a name="1392" class="Symbol"
+      > <a name="1433" class="Symbol"
       >{</a
-      ><a name="1393" href="Data.Sum.html#1393" class="Bound"
+      ><a name="1434" href="Data.Sum.html#1434" class="Bound"
       >A</a
-      > <a name="1395" class="Symbol"
+      > <a name="1436" class="Symbol"
       >:</a
-      > <a name="1397" class="PrimitiveType"
+      > <a name="1438" class="PrimitiveType"
       >Set</a
-      > <a name="1401" href="Data.Sum.html#1387" class="Bound"
+      > <a name="1442" href="Data.Sum.html#1428" class="Bound"
       >a</a
-      ><a name="1402" class="Symbol"
+      ><a name="1443" class="Symbol"
       >}</a
-      > <a name="1404" class="Symbol"
+      > <a name="1445" class="Symbol"
       >{</a
-      ><a name="1405" href="Data.Sum.html#1405" class="Bound"
+      ><a name="1446" href="Data.Sum.html#1446" class="Bound"
       >B</a
-      > <a name="1407" class="Symbol"
+      > <a name="1448" class="Symbol"
       >:</a
-      > <a name="1409" class="PrimitiveType"
+      > <a name="1450" class="PrimitiveType"
       >Set</a
-      > <a name="1413" href="Data.Sum.html#1389" class="Bound"
+      > <a name="1454" href="Data.Sum.html#1430" class="Bound"
       >b</a
-      ><a name="1414" class="Symbol"
+      ><a name="1455" class="Symbol"
       >}</a
-      > <a name="1416" class="Symbol"
+      > <a name="1457" class="Symbol"
       >&#8594;</a
-      > <a name="1418" href="Data.Sum.html#1393" class="Bound"
+      > <a name="1459" href="Data.Sum.html#1434" class="Bound"
       >A</a
-      > <a name="1420" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
+      > <a name="1461" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
       >&#8846;</a
-      > <a name="1422" href="Data.Sum.html#1405" class="Bound"
+      > <a name="1463" href="Data.Sum.html#1446" class="Bound"
       >B</a
-      > <a name="1424" class="Symbol"
+      > <a name="1465" class="Symbol"
       >&#8594;</a
-      > <a name="1426" href="Data.Maybe.Base.html#Maybe" class="Datatype"
+      > <a name="1467" href="Data.Maybe.Base.html#Maybe" class="Datatype"
       >Maybe</a
-      > <a name="1432" href="Data.Sum.html#1393" class="Bound"
+      > <a name="1473" href="Data.Sum.html#1434" class="Bound"
       >A</a
       >
-<a name="1434" href="Data.Sum.html#isInj&#8321;" class="Function"
+<a name="1475" href="Data.Sum.html#isInj&#8321;" class="Function"
       >isInj&#8321;</a
-      > <a name="1441" class="Symbol"
+      > <a name="1482" class="Symbol"
       >(</a
-      ><a name="1442" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
+      ><a name="1483" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
       >inj&#8321;</a
-      > <a name="1447" href="Data.Sum.html#1447" class="Bound"
+      > <a name="1488" href="Data.Sum.html#1488" class="Bound"
       >x</a
-      ><a name="1448" class="Symbol"
+      ><a name="1489" class="Symbol"
       >)</a
-      > <a name="1450" class="Symbol"
+      > <a name="1491" class="Symbol"
       >=</a
-      > <a name="1452" href="Data.Maybe.Base.html#Maybe.just" class="InductiveConstructor"
+      > <a name="1493" href="Data.Maybe.Base.html#Maybe.just" class="InductiveConstructor"
       >just</a
-      > <a name="1457" href="Data.Sum.html#1447" class="Bound"
+      > <a name="1498" href="Data.Sum.html#1488" class="Bound"
       >x</a
       >
-<a name="1459" href="Data.Sum.html#isInj&#8321;" class="Function"
+<a name="1500" href="Data.Sum.html#isInj&#8321;" class="Function"
       >isInj&#8321;</a
-      > <a name="1466" class="Symbol"
+      > <a name="1507" class="Symbol"
       >(</a
-      ><a name="1467" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
+      ><a name="1508" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
       >inj&#8322;</a
-      > <a name="1472" href="Data.Sum.html#1472" class="Bound"
+      > <a name="1513" href="Data.Sum.html#1513" class="Bound"
       >y</a
-      ><a name="1473" class="Symbol"
+      ><a name="1514" class="Symbol"
       >)</a
-      > <a name="1475" class="Symbol"
+      > <a name="1516" class="Symbol"
       >=</a
-      > <a name="1477" href="Data.Maybe.Base.html#Maybe.nothing" class="InductiveConstructor"
+      > <a name="1518" href="Data.Maybe.Base.html#Maybe.nothing" class="InductiveConstructor"
       >nothing</a
       >
 
 <a name="isInj&#8322;" href="Data.Sum.html#isInj&#8322;" class="Function"
       >isInj&#8322;</a
-      > <a name="1493" class="Symbol"
+      > <a name="1534" class="Symbol"
       >:</a
-      > <a name="1495" class="Symbol"
+      > <a name="1536" class="Symbol"
       >&#8704;</a
-      > <a name="1497" class="Symbol"
+      > <a name="1538" class="Symbol"
       >{</a
-      ><a name="1498" href="Data.Sum.html#1498" class="Bound"
+      ><a name="1539" href="Data.Sum.html#1539" class="Bound"
       >a</a
-      > <a name="1500" href="Data.Sum.html#1500" class="Bound"
+      > <a name="1541" href="Data.Sum.html#1541" class="Bound"
       >b</a
-      ><a name="1501" class="Symbol"
+      ><a name="1542" class="Symbol"
       >}</a
-      > <a name="1503" class="Symbol"
+      > <a name="1544" class="Symbol"
       >{</a
-      ><a name="1504" href="Data.Sum.html#1504" class="Bound"
+      ><a name="1545" href="Data.Sum.html#1545" class="Bound"
       >A</a
-      > <a name="1506" class="Symbol"
+      > <a name="1547" class="Symbol"
       >:</a
-      > <a name="1508" class="PrimitiveType"
+      > <a name="1549" class="PrimitiveType"
       >Set</a
-      > <a name="1512" href="Data.Sum.html#1498" class="Bound"
+      > <a name="1553" href="Data.Sum.html#1539" class="Bound"
       >a</a
-      ><a name="1513" class="Symbol"
+      ><a name="1554" class="Symbol"
       >}</a
-      > <a name="1515" class="Symbol"
+      > <a name="1556" class="Symbol"
       >{</a
-      ><a name="1516" href="Data.Sum.html#1516" class="Bound"
+      ><a name="1557" href="Data.Sum.html#1557" class="Bound"
       >B</a
-      > <a name="1518" class="Symbol"
+      > <a name="1559" class="Symbol"
       >:</a
-      > <a name="1520" class="PrimitiveType"
+      > <a name="1561" class="PrimitiveType"
       >Set</a
-      > <a name="1524" href="Data.Sum.html#1500" class="Bound"
+      > <a name="1565" href="Data.Sum.html#1541" class="Bound"
       >b</a
-      ><a name="1525" class="Symbol"
+      ><a name="1566" class="Symbol"
       >}</a
-      > <a name="1527" class="Symbol"
+      > <a name="1568" class="Symbol"
       >&#8594;</a
-      > <a name="1529" href="Data.Sum.html#1504" class="Bound"
+      > <a name="1570" href="Data.Sum.html#1545" class="Bound"
       >A</a
-      > <a name="1531" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
+      > <a name="1572" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
       >&#8846;</a
-      > <a name="1533" href="Data.Sum.html#1516" class="Bound"
+      > <a name="1574" href="Data.Sum.html#1557" class="Bound"
       >B</a
-      > <a name="1535" class="Symbol"
+      > <a name="1576" class="Symbol"
       >&#8594;</a
-      > <a name="1537" href="Data.Maybe.Base.html#Maybe" class="Datatype"
+      > <a name="1578" href="Data.Maybe.Base.html#Maybe" class="Datatype"
       >Maybe</a
-      > <a name="1543" href="Data.Sum.html#1516" class="Bound"
+      > <a name="1584" href="Data.Sum.html#1557" class="Bound"
       >B</a
       >
-<a name="1545" href="Data.Sum.html#isInj&#8322;" class="Function"
+<a name="1586" href="Data.Sum.html#isInj&#8322;" class="Function"
       >isInj&#8322;</a
-      > <a name="1552" class="Symbol"
+      > <a name="1593" class="Symbol"
       >(</a
-      ><a name="1553" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
+      ><a name="1594" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
       >inj&#8321;</a
-      > <a name="1558" href="Data.Sum.html#1558" class="Bound"
+      > <a name="1599" href="Data.Sum.html#1599" class="Bound"
       >x</a
-      ><a name="1559" class="Symbol"
+      ><a name="1600" class="Symbol"
       >)</a
-      > <a name="1561" class="Symbol"
+      > <a name="1602" class="Symbol"
       >=</a
-      > <a name="1563" href="Data.Maybe.Base.html#Maybe.nothing" class="InductiveConstructor"
+      > <a name="1604" href="Data.Maybe.Base.html#Maybe.nothing" class="InductiveConstructor"
       >nothing</a
       >
-<a name="1571" href="Data.Sum.html#isInj&#8322;" class="Function"
+<a name="1612" href="Data.Sum.html#isInj&#8322;" class="Function"
       >isInj&#8322;</a
-      > <a name="1578" class="Symbol"
+      > <a name="1619" class="Symbol"
       >(</a
-      ><a name="1579" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
+      ><a name="1620" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
       >inj&#8322;</a
-      > <a name="1584" href="Data.Sum.html#1584" class="Bound"
+      > <a name="1625" href="Data.Sum.html#1625" class="Bound"
       >y</a
-      ><a name="1585" class="Symbol"
+      ><a name="1626" class="Symbol"
       >)</a
-      > <a name="1587" class="Symbol"
+      > <a name="1628" class="Symbol"
       >=</a
-      > <a name="1589" href="Data.Maybe.Base.html#Maybe.just" class="InductiveConstructor"
+      > <a name="1630" href="Data.Maybe.Base.html#Maybe.just" class="InductiveConstructor"
       >just</a
-      > <a name="1594" href="Data.Sum.html#1584" class="Bound"
+      > <a name="1635" href="Data.Sum.html#1625" class="Bound"
       >y</a
+      >
+
+<a name="From-inj&#8321;" href="Data.Sum.html#From-inj&#8321;" class="Function"
+      >From-inj&#8321;</a
+      > <a name="1648" class="Symbol"
+      >:</a
+      > <a name="1650" class="Symbol"
+      >&#8704;</a
+      > <a name="1652" class="Symbol"
+      >{</a
+      ><a name="1653" href="Data.Sum.html#1653" class="Bound"
+      >a</a
+      > <a name="1655" href="Data.Sum.html#1655" class="Bound"
+      >b</a
+      ><a name="1656" class="Symbol"
+      >}</a
+      > <a name="1658" class="Symbol"
+      >{</a
+      ><a name="1659" href="Data.Sum.html#1659" class="Bound"
+      >A</a
+      > <a name="1661" class="Symbol"
+      >:</a
+      > <a name="1663" class="PrimitiveType"
+      >Set</a
+      > <a name="1667" href="Data.Sum.html#1653" class="Bound"
+      >a</a
+      ><a name="1668" class="Symbol"
+      >}</a
+      > <a name="1670" class="Symbol"
+      >{</a
+      ><a name="1671" href="Data.Sum.html#1671" class="Bound"
+      >B</a
+      > <a name="1673" class="Symbol"
+      >:</a
+      > <a name="1675" class="PrimitiveType"
+      >Set</a
+      > <a name="1679" href="Data.Sum.html#1655" class="Bound"
+      >b</a
+      ><a name="1680" class="Symbol"
+      >}</a
+      > <a name="1682" class="Symbol"
+      >&#8594;</a
+      > <a name="1684" href="Data.Sum.html#1659" class="Bound"
+      >A</a
+      > <a name="1686" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
+      >&#8846;</a
+      > <a name="1688" href="Data.Sum.html#1671" class="Bound"
+      >B</a
+      > <a name="1690" class="Symbol"
+      >&#8594;</a
+      > <a name="1692" class="PrimitiveType"
+      >Set</a
+      > <a name="1696" href="Data.Sum.html#1653" class="Bound"
+      >a</a
+      >
+<a name="1698" href="Data.Sum.html#From-inj&#8321;" class="Function"
+      >From-inj&#8321;</a
+      > <a name="1708" class="Symbol"
+      >{</a
+      ><a name="1709" class="Argument"
+      >A</a
+      > <a name="1711" class="Symbol"
+      >=</a
+      > <a name="1713" href="Data.Sum.html#1713" class="Bound"
+      >A</a
+      ><a name="1714" class="Symbol"
+      >}</a
+      > <a name="1716" class="Symbol"
+      >(</a
+      ><a name="1717" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
+      >inj&#8321;</a
+      > <a name="1722" class="Symbol"
+      >_)</a
+      > <a name="1725" class="Symbol"
+      >=</a
+      > <a name="1727" href="Data.Sum.html#1713" class="Bound"
+      >A</a
+      >
+<a name="1729" href="Data.Sum.html#From-inj&#8321;" class="Function"
+      >From-inj&#8321;</a
+      >         <a name="1747" class="Symbol"
+      >(</a
+      ><a name="1748" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
+      >inj&#8322;</a
+      > <a name="1753" class="Symbol"
+      >_)</a
+      > <a name="1756" class="Symbol"
+      >=</a
+      > <a name="1758" href="Level.html#Lift" class="Record"
+      >Lift</a
+      > <a name="1763" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
+      >&#8868;</a
+      >
+
+<a name="from-inj&#8321;" href="Data.Sum.html#from-inj&#8321;" class="Function"
+      >from-inj&#8321;</a
+      > <a name="1776" class="Symbol"
+      >:</a
+      > <a name="1778" class="Symbol"
+      >&#8704;</a
+      > <a name="1780" class="Symbol"
+      >{</a
+      ><a name="1781" href="Data.Sum.html#1781" class="Bound"
+      >a</a
+      > <a name="1783" href="Data.Sum.html#1783" class="Bound"
+      >b</a
+      ><a name="1784" class="Symbol"
+      >}</a
+      > <a name="1786" class="Symbol"
+      >{</a
+      ><a name="1787" href="Data.Sum.html#1787" class="Bound"
+      >A</a
+      > <a name="1789" class="Symbol"
+      >:</a
+      > <a name="1791" class="PrimitiveType"
+      >Set</a
+      > <a name="1795" href="Data.Sum.html#1781" class="Bound"
+      >a</a
+      ><a name="1796" class="Symbol"
+      >}</a
+      > <a name="1798" class="Symbol"
+      >{</a
+      ><a name="1799" href="Data.Sum.html#1799" class="Bound"
+      >B</a
+      > <a name="1801" class="Symbol"
+      >:</a
+      > <a name="1803" class="PrimitiveType"
+      >Set</a
+      > <a name="1807" href="Data.Sum.html#1783" class="Bound"
+      >b</a
+      ><a name="1808" class="Symbol"
+      >}</a
+      > <a name="1810" class="Symbol"
+      >(</a
+      ><a name="1811" href="Data.Sum.html#1811" class="Bound"
+      >x</a
+      > <a name="1813" class="Symbol"
+      >:</a
+      > <a name="1815" href="Data.Sum.html#1787" class="Bound"
+      >A</a
+      > <a name="1817" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
+      >&#8846;</a
+      > <a name="1819" href="Data.Sum.html#1799" class="Bound"
+      >B</a
+      ><a name="1820" class="Symbol"
+      >)</a
+      > <a name="1822" class="Symbol"
+      >&#8594;</a
+      > <a name="1824" href="Data.Sum.html#From-inj&#8321;" class="Function"
+      >From-inj&#8321;</a
+      > <a name="1834" href="Data.Sum.html#1811" class="Bound"
+      >x</a
+      >
+<a name="1836" href="Data.Sum.html#from-inj&#8321;" class="Function"
+      >from-inj&#8321;</a
+      > <a name="1846" class="Symbol"
+      >(</a
+      ><a name="1847" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
+      >inj&#8321;</a
+      > <a name="1852" href="Data.Sum.html#1852" class="Bound"
+      >x</a
+      ><a name="1853" class="Symbol"
+      >)</a
+      > <a name="1855" class="Symbol"
+      >=</a
+      > <a name="1857" href="Data.Sum.html#1852" class="Bound"
+      >x</a
+      >
+<a name="1859" href="Data.Sum.html#from-inj&#8321;" class="Function"
+      >from-inj&#8321;</a
+      > <a name="1869" class="Symbol"
+      >(</a
+      ><a name="1870" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
+      >inj&#8322;</a
+      > <a name="1875" class="Symbol"
+      >_)</a
+      > <a name="1878" class="Symbol"
+      >=</a
+      > <a name="1880" href="Level.html#Lift.lift" class="InductiveConstructor"
+      >lift</a
+      > <a name="1885" href="Agda.Builtin.Unit.html#&#8868;.tt" class="InductiveConstructor"
+      >tt</a
+      >
+
+<a name="From-inj&#8322;" href="Data.Sum.html#From-inj&#8322;" class="Function"
+      >From-inj&#8322;</a
+      > <a name="1899" class="Symbol"
+      >:</a
+      > <a name="1901" class="Symbol"
+      >&#8704;</a
+      > <a name="1903" class="Symbol"
+      >{</a
+      ><a name="1904" href="Data.Sum.html#1904" class="Bound"
+      >a</a
+      > <a name="1906" href="Data.Sum.html#1906" class="Bound"
+      >b</a
+      ><a name="1907" class="Symbol"
+      >}</a
+      > <a name="1909" class="Symbol"
+      >{</a
+      ><a name="1910" href="Data.Sum.html#1910" class="Bound"
+      >A</a
+      > <a name="1912" class="Symbol"
+      >:</a
+      > <a name="1914" class="PrimitiveType"
+      >Set</a
+      > <a name="1918" href="Data.Sum.html#1904" class="Bound"
+      >a</a
+      ><a name="1919" class="Symbol"
+      >}</a
+      > <a name="1921" class="Symbol"
+      >{</a
+      ><a name="1922" href="Data.Sum.html#1922" class="Bound"
+      >B</a
+      > <a name="1924" class="Symbol"
+      >:</a
+      > <a name="1926" class="PrimitiveType"
+      >Set</a
+      > <a name="1930" href="Data.Sum.html#1906" class="Bound"
+      >b</a
+      ><a name="1931" class="Symbol"
+      >}</a
+      > <a name="1933" class="Symbol"
+      >&#8594;</a
+      > <a name="1935" href="Data.Sum.html#1910" class="Bound"
+      >A</a
+      > <a name="1937" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
+      >&#8846;</a
+      > <a name="1939" href="Data.Sum.html#1922" class="Bound"
+      >B</a
+      > <a name="1941" class="Symbol"
+      >&#8594;</a
+      > <a name="1943" class="PrimitiveType"
+      >Set</a
+      > <a name="1947" href="Data.Sum.html#1906" class="Bound"
+      >b</a
+      >
+<a name="1949" href="Data.Sum.html#From-inj&#8322;" class="Function"
+      >From-inj&#8322;</a
+      >         <a name="1967" class="Symbol"
+      >(</a
+      ><a name="1968" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
+      >inj&#8321;</a
+      > <a name="1973" class="Symbol"
+      >_)</a
+      > <a name="1976" class="Symbol"
+      >=</a
+      > <a name="1978" href="Level.html#Lift" class="Record"
+      >Lift</a
+      > <a name="1983" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
+      >&#8868;</a
+      >
+<a name="1985" href="Data.Sum.html#From-inj&#8322;" class="Function"
+      >From-inj&#8322;</a
+      > <a name="1995" class="Symbol"
+      >{</a
+      ><a name="1996" class="Argument"
+      >B</a
+      > <a name="1998" class="Symbol"
+      >=</a
+      > <a name="2000" href="Data.Sum.html#2000" class="Bound"
+      >B</a
+      ><a name="2001" class="Symbol"
+      >}</a
+      > <a name="2003" class="Symbol"
+      >(</a
+      ><a name="2004" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
+      >inj&#8322;</a
+      > <a name="2009" class="Symbol"
+      >_)</a
+      > <a name="2012" class="Symbol"
+      >=</a
+      > <a name="2014" href="Data.Sum.html#2000" class="Bound"
+      >B</a
+      >
+
+<a name="from-inj&#8322;" href="Data.Sum.html#from-inj&#8322;" class="Function"
+      >from-inj&#8322;</a
+      > <a name="2027" class="Symbol"
+      >:</a
+      > <a name="2029" class="Symbol"
+      >&#8704;</a
+      > <a name="2031" class="Symbol"
+      >{</a
+      ><a name="2032" href="Data.Sum.html#2032" class="Bound"
+      >a</a
+      > <a name="2034" href="Data.Sum.html#2034" class="Bound"
+      >b</a
+      ><a name="2035" class="Symbol"
+      >}</a
+      > <a name="2037" class="Symbol"
+      >{</a
+      ><a name="2038" href="Data.Sum.html#2038" class="Bound"
+      >A</a
+      > <a name="2040" class="Symbol"
+      >:</a
+      > <a name="2042" class="PrimitiveType"
+      >Set</a
+      > <a name="2046" href="Data.Sum.html#2032" class="Bound"
+      >a</a
+      ><a name="2047" class="Symbol"
+      >}</a
+      > <a name="2049" class="Symbol"
+      >{</a
+      ><a name="2050" href="Data.Sum.html#2050" class="Bound"
+      >B</a
+      > <a name="2052" class="Symbol"
+      >:</a
+      > <a name="2054" class="PrimitiveType"
+      >Set</a
+      > <a name="2058" href="Data.Sum.html#2034" class="Bound"
+      >b</a
+      ><a name="2059" class="Symbol"
+      >}</a
+      > <a name="2061" class="Symbol"
+      >(</a
+      ><a name="2062" href="Data.Sum.html#2062" class="Bound"
+      >x</a
+      > <a name="2064" class="Symbol"
+      >:</a
+      > <a name="2066" href="Data.Sum.html#2038" class="Bound"
+      >A</a
+      > <a name="2068" href="Data.Sum.html#_&#8846;_" class="Datatype Operator"
+      >&#8846;</a
+      > <a name="2070" href="Data.Sum.html#2050" class="Bound"
+      >B</a
+      ><a name="2071" class="Symbol"
+      >)</a
+      > <a name="2073" class="Symbol"
+      >&#8594;</a
+      > <a name="2075" href="Data.Sum.html#From-inj&#8322;" class="Function"
+      >From-inj&#8322;</a
+      > <a name="2085" href="Data.Sum.html#2062" class="Bound"
+      >x</a
+      >
+<a name="2087" href="Data.Sum.html#from-inj&#8322;" class="Function"
+      >from-inj&#8322;</a
+      > <a name="2097" class="Symbol"
+      >(</a
+      ><a name="2098" href="Data.Sum.html#_&#8846;_.inj&#8321;" class="InductiveConstructor"
+      >inj&#8321;</a
+      > <a name="2103" class="Symbol"
+      >_)</a
+      > <a name="2106" class="Symbol"
+      >=</a
+      > <a name="2108" href="Level.html#Lift.lift" class="InductiveConstructor"
+      >lift</a
+      > <a name="2113" href="Agda.Builtin.Unit.html#&#8868;.tt" class="InductiveConstructor"
+      >tt</a
+      >
+<a name="2116" href="Data.Sum.html#from-inj&#8322;" class="Function"
+      >from-inj&#8322;</a
+      > <a name="2126" class="Symbol"
+      >(</a
+      ><a name="2127" href="Data.Sum.html#_&#8846;_.inj&#8322;" class="InductiveConstructor"
+      >inj&#8322;</a
+      > <a name="2132" href="Data.Sum.html#2132" class="Bound"
+      >x</a
+      ><a name="2133" class="Symbol"
+      >)</a
+      > <a name="2135" class="Symbol"
+      >=</a
+      > <a name="2137" href="Data.Sum.html#2132" class="Bound"
+      >x</a
       >
 </pre
     ></body
