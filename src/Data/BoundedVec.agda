@@ -11,6 +11,7 @@ module Data.BoundedVec where
 open import Data.Nat
 open import Data.List.Base as List using (List)
 open import Data.Vec as Vec using (Vec)
+import Data.BoundedVec.Inefficient as Ineff
 open import Relation.Binary.PropositionalEquality
 open import Data.Nat.Properties
 open SemiringSolver
@@ -78,3 +79,12 @@ module _ {a} {A : Set a} where
 
   toList : ∀ {n} → BoundedVec A n → List A
   toList (bVec xs) = Vec.toList xs
+
+  toInefficient : ∀ {n} → BoundedVec A n → Ineff.BoundedVec A n
+  toInefficient xs with view xs
+  ... | []v     = Ineff.[]
+  ... | y ∷v ys = y Ineff.∷ toInefficient ys
+
+  fromInefficient : ∀ {n} → Ineff.BoundedVec A n → BoundedVec A n
+  fromInefficient Ineff.[]       = []
+  fromInefficient (x Ineff.∷ xs) = x ∷ fromInefficient xs
