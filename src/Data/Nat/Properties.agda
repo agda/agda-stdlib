@@ -564,9 +564,9 @@ module _ {ℓ} {a : Set ℓ} {s : a → a} {z : a} where
   fold (fold z +n m) s n      ≡⟨ sym (fold-k n) ⟩
   fold z +n (suc m)           ∎
 
-m-is-fold : ∀ m → fold zero suc m ≡ m
-m-is-fold zero    = refl
-m-is-fold (suc m) = cong suc (m-is-fold m)
+id-is-fold : ∀ m → fold zero suc m ≡ m
+id-is-fold zero    = refl
+id-is-fold (suc m) = cong suc (id-is-fold m)
 
 +-is-fold : ∀ m {n} → fold n suc m ≡ m + n
 +-is-fold zero    = refl
@@ -615,9 +615,9 @@ i^j≡0⇒i≡0 : ∀ i j → i ^ j ≡ 0 → i ≡ 0
 i^j≡0⇒i≡0 i zero    ()
 i^j≡0⇒i≡0 i (suc j) eq = [ id , i^j≡0⇒i≡0 i j ]′ (i*j≡0⇒i≡0∨j≡0 i eq)
 
-i^j≡1⇒i≡1∨j≡0 : ∀ i j → i ^ j ≡ 1 → j ≡ 0 ⊎ i ≡ 1
-i^j≡1⇒i≡1∨j≡0 i zero    _  = inj₁ refl
-i^j≡1⇒i≡1∨j≡0 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
+i^j≡1⇒j≡0∨i≡1 : ∀ i j → i ^ j ≡ 1 → j ≡ 0 ⊎ i ≡ 1
+i^j≡1⇒j≡0∨i≡1 i zero    _  = inj₁ refl
+i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
 
 ------------------------------------------------------------------------
 -- Properties of _⊔_ and _⊓_
