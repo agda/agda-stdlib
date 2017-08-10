@@ -150,45 +150,45 @@
       >COMPILE</a
       > GHC <a name="310" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
-      > = data MAlonzo.Code.Agda.Builtin.List.AgdaList ([] | (:)) <a name="373" class="Symbol"
+      > = data AgdaList ([] | (:)) <a name="342" class="Symbol"
       >#-}</a
       >
-<a name="377" class="Symbol"
+<a name="346" class="Symbol"
       >{-#</a
-      > <a name="381" class="Keyword"
+      > <a name="350" class="Keyword"
       >COMPILE</a
-      > UHC <a name="393" href="Agda.Builtin.List.html#List" class="Datatype"
+      > UHC <a name="362" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
-      > = data __LIST__ (__NIL__ | __CONS__) <a name="435" class="Symbol"
+      > = data __LIST__ (__NIL__ | __CONS__) <a name="404" class="Symbol"
       >#-}</a
       >
-<a name="439" class="Symbol"
+<a name="408" class="Symbol"
       >{-#</a
-      > <a name="443" class="Keyword"
+      > <a name="412" class="Keyword"
       >COMPILE</a
-      > JS  <a name="455" href="Agda.Builtin.List.html#List" class="Datatype"
+      > JS  <a name="424" href="Agda.Builtin.List.html#List" class="Datatype"
       >List</a
       > = function(x,v) {
   if (x.length &lt; 1) { return v[&quot;[]&quot;](); } else { return v[&quot;_&#8759;_&quot;](x[0], x.slice(1)); }
-} <a name="566" class="Symbol"
+} <a name="535" class="Symbol"
       >#-}</a
       >
-<a name="570" class="Symbol"
+<a name="539" class="Symbol"
       >{-#</a
-      > <a name="574" class="Keyword"
+      > <a name="543" class="Keyword"
       >COMPILE</a
-      > JS <a name="585" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
+      > JS <a name="554" href="Agda.Builtin.List.html#List.[]" class="InductiveConstructor"
       >[]</a
-      > = Array() <a name="598" class="Symbol"
+      > = Array() <a name="567" class="Symbol"
       >#-}</a
       >
-<a name="602" class="Symbol"
+<a name="571" class="Symbol"
       >{-#</a
-      > <a name="606" class="Keyword"
+      > <a name="575" class="Keyword"
       >COMPILE</a
-      > JS <a name="617" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
+      > JS <a name="586" href="Agda.Builtin.List.html#List._&#8759;_" class="InductiveConstructor Operator"
       >_&#8759;_</a
-      > = function (x) { return function(y) { return Array(x).concat(y); }; } <a name="691" class="Symbol"
+      > = function (x) { return function(y) { return Array(x).concat(y); }; } <a name="660" class="Symbol"
       >#-}</a
       >
 </pre
