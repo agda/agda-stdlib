@@ -149,7 +149,8 @@ suc m ⊓ suc n = suc (m ⊓ n)
 -- Naïve exponentiation
 
 _^_ : ℕ → ℕ → ℕ
-x ^ n = fold 1 (x *_) n
+x ^ zero  = 1
+x ^ suc n = x * x ^ n
 
 ------------------------------------------------------------------------
 -- Queries

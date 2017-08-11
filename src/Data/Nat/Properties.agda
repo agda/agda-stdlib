@@ -576,6 +576,10 @@ id-is-fold (suc m) = cong suc (id-is-fold m)
 *-is-fold zero        = refl
 *-is-fold (suc m) {n} = cong (n +_) (*-is-fold m)
 
+^-is-fold : ∀ {m} n → fold 1 (m *_) n ≡ m ^ n
+^-is-fold     zero    = refl
+^-is-fold {m} (suc n) = cong (m *_) (^-is-fold n)
+
 module _ {ℓ} {a : Set ℓ} {s : a → a} {z : a}
          (g : a → a → a) (p : a)
          (eqz : g z p ≡ p)
@@ -599,15 +603,17 @@ module _ {ℓ} {a : Set ℓ} {s : a → a} {z : a}
 ^*-is-fold m n {p} = begin
   fold p (m *_) n     ≡⟨ fold-pull _*_ p (*-identityˡ p)
                            (λ l → sym (*-assoc m l p)) n ⟩
-  fold 1 (m *_) n * p ≡⟨⟩
+  fold 1 (m *_) n * p ≡⟨ cong (_* p) (^-is-fold n) ⟩
   m ^ n * p           ∎
 
 ------------------------------------------------------------------------
 -- Properties of _^_
 
 exp-+ : ∀ m n p → m ^ (n + p) ≡ m ^ n * m ^ p
-exp-+ m n p = begin
-  m ^ (n + p)           ≡⟨ fold-+ n ⟩
+exp-+ m n p = let m^ = fold 1 (m *_) in begin
+  m ^ (n + p)           ≡⟨ sym (^-is-fold (n + p)) ⟩
+  m^  (n + p)           ≡⟨ fold-+ n ⟩
+  fold (m^ p) (m *_) n  ≡⟨ cong (λ z → fold z (m *_) n) (^-is-fold p) ⟩
   fold (m ^ p) (m *_) n ≡⟨ ^*-is-fold m n ⟩
   (m ^ n) * (m ^ p)     ∎
 
