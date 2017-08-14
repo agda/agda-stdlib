@@ -874,308 +874,55 @@
       >------------------------------------------------------------------------</a
       >
 <a name="2085" class="Comment"
-      >-- A generalisation of the arithmetic operations</a
-      >
-
-<a name="fold" href="Data.Nat.Base.html#fold" class="Function"
-      >fold</a
-      > <a name="2140" class="Symbol"
-      >:</a
-      > <a name="2142" class="Symbol"
-      >&#8704;{</a
-      ><a name="2144" href="Data.Nat.Base.html#2144" class="Bound"
-      >&#8467;</a
-      ><a name="2145" class="Symbol"
-      >}</a
-      > <a name="2147" class="Symbol"
-      >{</a
-      ><a name="2148" href="Data.Nat.Base.html#2148" class="Bound"
-      >a</a
-      > <a name="2150" class="Symbol"
-      >:</a
-      > <a name="2152" class="PrimitiveType"
-      >Set</a
-      > <a name="2156" href="Data.Nat.Base.html#2144" class="Bound"
-      >&#8467;</a
-      ><a name="2157" class="Symbol"
-      >}</a
-      > <a name="2159" class="Symbol"
-      >&#8594;</a
-      > <a name="2161" href="Data.Nat.Base.html#2148" class="Bound"
-      >a</a
-      > <a name="2163" class="Symbol"
-      >&#8594;</a
-      > <a name="2165" class="Symbol"
-      >(</a
-      ><a name="2166" href="Data.Nat.Base.html#2148" class="Bound"
-      >a</a
-      > <a name="2168" class="Symbol"
-      >&#8594;</a
-      > <a name="2170" href="Data.Nat.Base.html#2148" class="Bound"
-      >a</a
-      ><a name="2171" class="Symbol"
-      >)</a
-      > <a name="2173" class="Symbol"
-      >&#8594;</a
-      > <a name="2175" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
-      >&#8469;</a
-      > <a name="2177" class="Symbol"
-      >&#8594;</a
-      > <a name="2179" href="Data.Nat.Base.html#2148" class="Bound"
-      >a</a
-      >
-<a name="2181" href="Data.Nat.Base.html#fold" class="Function"
-      >fold</a
-      > <a name="2186" href="Data.Nat.Base.html#2186" class="Bound"
-      >z</a
-      > <a name="2188" href="Data.Nat.Base.html#2188" class="Bound"
-      >s</a
-      > <a name="2190" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
-      >zero</a
-      >    <a name="2198" class="Symbol"
-      >=</a
-      > <a name="2200" href="Data.Nat.Base.html#2186" class="Bound"
-      >z</a
-      >
-<a name="2202" href="Data.Nat.Base.html#fold" class="Function"
-      >fold</a
-      > <a name="2207" href="Data.Nat.Base.html#2207" class="Bound"
-      >z</a
-      > <a name="2209" href="Data.Nat.Base.html#2209" class="Bound"
-      >s</a
-      > <a name="2211" class="Symbol"
-      >(</a
-      ><a name="2212" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
-      >suc</a
-      > <a name="2216" href="Data.Nat.Base.html#2216" class="Bound"
-      >n</a
-      ><a name="2217" class="Symbol"
-      >)</a
-      > <a name="2219" class="Symbol"
-      >=</a
-      > <a name="2221" href="Data.Nat.Base.html#2209" class="Bound"
-      >s</a
-      > <a name="2223" class="Symbol"
-      >(</a
-      ><a name="2224" href="Data.Nat.Base.html#fold" class="Function"
-      >fold</a
-      > <a name="2229" href="Data.Nat.Base.html#2207" class="Bound"
-      >z</a
-      > <a name="2231" href="Data.Nat.Base.html#2209" class="Bound"
-      >s</a
-      > <a name="2233" href="Data.Nat.Base.html#2216" class="Bound"
-      >n</a
-      ><a name="2234" class="Symbol"
-      >)</a
-      >
-
-<a name="2237" class="Keyword"
-      >module</a
-      > <a name="GeneralisedArithmetic" href="Data.Nat.Base.html#GeneralisedArithmetic" class="Module"
-      >GeneralisedArithmetic</a
-      > <a name="2266" class="Symbol"
-      >{</a
-      ><a name="2267" href="Data.Nat.Base.html#2267" class="Bound"
-      >&#8467;</a
-      ><a name="2268" class="Symbol"
-      >}</a
-      > <a name="2270" class="Symbol"
-      >{</a
-      ><a name="2271" href="Data.Nat.Base.html#2271" class="Bound"
-      >a</a
-      > <a name="2273" class="Symbol"
-      >:</a
-      > <a name="2275" class="PrimitiveType"
-      >Set</a
-      > <a name="2279" href="Data.Nat.Base.html#2267" class="Bound"
-      >&#8467;</a
-      ><a name="2280" class="Symbol"
-      >}</a
-      > <a name="2282" class="Symbol"
-      >(</a
-      ><a name="2283" href="Data.Nat.Base.html#2283" class="Bound"
-      >0#</a
-      > <a name="2286" class="Symbol"
-      >:</a
-      > <a name="2288" href="Data.Nat.Base.html#2271" class="Bound"
-      >a</a
-      ><a name="2289" class="Symbol"
-      >)</a
-      > <a name="2291" class="Symbol"
-      >(</a
-      ><a name="2292" href="Data.Nat.Base.html#2292" class="Bound"
-      >1+</a
-      > <a name="2295" class="Symbol"
-      >:</a
-      > <a name="2297" href="Data.Nat.Base.html#2271" class="Bound"
-      >a</a
-      > <a name="2299" class="Symbol"
-      >&#8594;</a
-      > <a name="2301" href="Data.Nat.Base.html#2271" class="Bound"
-      >a</a
-      ><a name="2302" class="Symbol"
-      >)</a
-      > <a name="2304" class="Keyword"
-      >where</a
-      >
-
-  <a name="GeneralisedArithmetic.add" href="Data.Nat.Base.html#GeneralisedArithmetic.add" class="Function"
-      >add</a
-      > <a name="2317" class="Symbol"
-      >:</a
-      > <a name="2319" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
-      >&#8469;</a
-      > <a name="2321" class="Symbol"
-      >&#8594;</a
-      > <a name="2323" href="Data.Nat.Base.html#2271" class="Bound"
-      >a</a
-      > <a name="2325" class="Symbol"
-      >&#8594;</a
-      > <a name="2327" href="Data.Nat.Base.html#2271" class="Bound"
-      >a</a
-      >
-  <a name="2331" href="Data.Nat.Base.html#GeneralisedArithmetic.add" class="Function"
-      >add</a
-      > <a name="2335" href="Data.Nat.Base.html#2335" class="Bound"
-      >n</a
-      > <a name="2337" href="Data.Nat.Base.html#2337" class="Bound"
-      >z</a
-      > <a name="2339" class="Symbol"
-      >=</a
-      > <a name="2341" href="Data.Nat.Base.html#fold" class="Function"
-      >fold</a
-      > <a name="2346" href="Data.Nat.Base.html#2337" class="Bound"
-      >z</a
-      > <a name="2348" href="Data.Nat.Base.html#2292" class="Bound"
-      >1+</a
-      > <a name="2351" href="Data.Nat.Base.html#2335" class="Bound"
-      >n</a
-      >
-
-  <a name="GeneralisedArithmetic.mul" href="Data.Nat.Base.html#GeneralisedArithmetic.mul" class="Function"
-      >mul</a
-      > <a name="2360" class="Symbol"
-      >:</a
-      > <a name="2362" class="Symbol"
-      >(</a
-      ><a name="2363" href="Data.Nat.Base.html#2363" class="Bound"
-      >+</a
-      > <a name="2365" class="Symbol"
-      >:</a
-      > <a name="2367" href="Data.Nat.Base.html#2271" class="Bound"
-      >a</a
-      > <a name="2369" class="Symbol"
-      >&#8594;</a
-      > <a name="2371" href="Data.Nat.Base.html#2271" class="Bound"
-      >a</a
-      > <a name="2373" class="Symbol"
-      >&#8594;</a
-      > <a name="2375" href="Data.Nat.Base.html#2271" class="Bound"
-      >a</a
-      ><a name="2376" class="Symbol"
-      >)</a
-      > <a name="2378" class="Symbol"
-      >&#8594;</a
-      > <a name="2380" class="Symbol"
-      >(</a
-      ><a name="2381" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
-      >&#8469;</a
-      > <a name="2383" class="Symbol"
-      >&#8594;</a
-      > <a name="2385" href="Data.Nat.Base.html#2271" class="Bound"
-      >a</a
-      > <a name="2387" class="Symbol"
-      >&#8594;</a
-      > <a name="2389" href="Data.Nat.Base.html#2271" class="Bound"
-      >a</a
-      ><a name="2390" class="Symbol"
-      >)</a
-      >
-  <a name="2394" href="Data.Nat.Base.html#GeneralisedArithmetic.mul" class="Function"
-      >mul</a
-      > <a name="2398" href="Data.Nat.Base.html#2398" class="Bound Operator"
-      >_+_</a
-      > <a name="2402" href="Data.Nat.Base.html#2402" class="Bound"
-      >n</a
-      > <a name="2404" href="Data.Nat.Base.html#2404" class="Bound"
-      >x</a
-      > <a name="2406" class="Symbol"
-      >=</a
-      > <a name="2408" href="Data.Nat.Base.html#fold" class="Function"
-      >fold</a
-      > <a name="2413" href="Data.Nat.Base.html#2283" class="Bound"
-      >0#</a
-      > <a name="2416" class="Symbol"
-      >(&#955;</a
-      > <a name="2419" href="Data.Nat.Base.html#2419" class="Bound"
-      >s</a
-      > <a name="2421" class="Symbol"
-      >&#8594;</a
-      > <a name="2423" href="Data.Nat.Base.html#2404" class="Bound"
-      >x</a
-      > <a name="2425" href="Data.Nat.Base.html#2398" class="Bound Operator"
-      >+</a
-      > <a name="2427" href="Data.Nat.Base.html#2419" class="Bound"
-      >s</a
-      ><a name="2428" class="Symbol"
-      >)</a
-      > <a name="2430" href="Data.Nat.Base.html#2402" class="Bound"
-      >n</a
-      >
-
-<a name="2433" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="2506" class="Comment"
       >-- Arithmetic</a
       >
 
 <a name="pred" href="Data.Nat.Base.html#pred" class="Function"
       >pred</a
-      > <a name="2526" class="Symbol"
+      > <a name="2105" class="Symbol"
       >:</a
-      > <a name="2528" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2107" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      > <a name="2530" class="Symbol"
+      > <a name="2109" class="Symbol"
       >&#8594;</a
-      > <a name="2532" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2111" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
       >
-<a name="2534" href="Data.Nat.Base.html#pred" class="Function"
+<a name="2113" href="Data.Nat.Base.html#pred" class="Function"
       >pred</a
-      > <a name="2539" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      > <a name="2118" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >    <a name="2547" class="Symbol"
+      >    <a name="2126" class="Symbol"
       >=</a
-      > <a name="2549" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      > <a name="2128" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
       >
-<a name="2554" href="Data.Nat.Base.html#pred" class="Function"
+<a name="2133" href="Data.Nat.Base.html#pred" class="Function"
       >pred</a
-      > <a name="2559" class="Symbol"
+      > <a name="2138" class="Symbol"
       >(</a
-      ><a name="2560" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="2139" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="2564" href="Data.Nat.Base.html#2564" class="Bound"
+      > <a name="2143" href="Data.Nat.Base.html#2143" class="Bound"
       >n</a
-      ><a name="2565" class="Symbol"
+      ><a name="2144" class="Symbol"
       >)</a
-      > <a name="2567" class="Symbol"
+      > <a name="2146" class="Symbol"
       >=</a
-      > <a name="2569" href="Data.Nat.Base.html#2564" class="Bound"
+      > <a name="2148" href="Data.Nat.Base.html#2143" class="Bound"
       >n</a
       >
 
-<a name="2572" class="Keyword"
+<a name="2151" class="Keyword"
       >infixl</a
-      > <a name="2579" class="Number"
+      > <a name="2158" class="Number"
       >7</a
       > <a name="_&#8851;_" href="Data.Nat.Base.html#_&#8851;_" class="Function Operator"
       >_&#8851;_</a
       >
-<a name="2585" class="Keyword"
+<a name="2164" class="Keyword"
       >infixl</a
-      > <a name="2592" class="Number"
+      > <a name="2171" class="Number"
       >6</a
       > <a name="_+&#8910;_" href="Data.Nat.Base.html#_+&#8910;_" class="Function Operator"
       >_+&#8910;_</a
@@ -1183,358 +930,358 @@
       >_&#8852;_</a
       >
 
-<a name="2604" class="Comment"
+<a name="2183" class="Comment"
       >-- Argument-swapping addition. Used by Data.Vec._&#8910;_.</a
       >
 
 <a name="_+&#8910;_" href="Data.Nat.Base.html#_+&#8910;_" class="Function Operator"
       >_+&#8910;_</a
-      > <a name="2663" class="Symbol"
+      > <a name="2242" class="Symbol"
       >:</a
-      > <a name="2665" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2244" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      > <a name="2667" class="Symbol"
+      > <a name="2246" class="Symbol"
       >&#8594;</a
-      > <a name="2669" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2248" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      > <a name="2671" class="Symbol"
+      > <a name="2250" class="Symbol"
       >&#8594;</a
-      > <a name="2673" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2252" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
       >
-<a name="2675" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+<a name="2254" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >  <a name="2681" href="Data.Nat.Base.html#_+&#8910;_" class="Function Operator"
+      >  <a name="2260" href="Data.Nat.Base.html#_+&#8910;_" class="Function Operator"
       >+&#8910;</a
-      > <a name="2684" href="Data.Nat.Base.html#2684" class="Bound"
+      > <a name="2263" href="Data.Nat.Base.html#2263" class="Bound"
       >n</a
-      > <a name="2686" class="Symbol"
+      > <a name="2265" class="Symbol"
       >=</a
-      > <a name="2688" href="Data.Nat.Base.html#2684" class="Bound"
+      > <a name="2267" href="Data.Nat.Base.html#2263" class="Bound"
       >n</a
       >
-<a name="2690" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+<a name="2269" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="2694" href="Data.Nat.Base.html#2694" class="Bound"
+      > <a name="2273" href="Data.Nat.Base.html#2273" class="Bound"
       >m</a
-      > <a name="2696" href="Data.Nat.Base.html#_+&#8910;_" class="Function Operator"
+      > <a name="2275" href="Data.Nat.Base.html#_+&#8910;_" class="Function Operator"
       >+&#8910;</a
-      > <a name="2699" href="Data.Nat.Base.html#2699" class="Bound"
+      > <a name="2278" href="Data.Nat.Base.html#2278" class="Bound"
       >n</a
-      > <a name="2701" class="Symbol"
+      > <a name="2280" class="Symbol"
       >=</a
-      > <a name="2703" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="2282" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="2707" class="Symbol"
+      > <a name="2286" class="Symbol"
       >(</a
-      ><a name="2708" href="Data.Nat.Base.html#2699" class="Bound"
+      ><a name="2287" href="Data.Nat.Base.html#2278" class="Bound"
       >n</a
-      > <a name="2710" href="Data.Nat.Base.html#_+&#8910;_" class="Function Operator"
+      > <a name="2289" href="Data.Nat.Base.html#_+&#8910;_" class="Function Operator"
       >+&#8910;</a
-      > <a name="2713" href="Data.Nat.Base.html#2694" class="Bound"
+      > <a name="2292" href="Data.Nat.Base.html#2273" class="Bound"
       >m</a
-      ><a name="2714" class="Symbol"
+      ><a name="2293" class="Symbol"
       >)</a
       >
 
-<a name="2717" class="Comment"
+<a name="2296" class="Comment"
       >-- Max.</a
       >
 
 <a name="_&#8852;_" href="Data.Nat.Base.html#_&#8852;_" class="Function Operator"
       >_&#8852;_</a
-      > <a name="2730" class="Symbol"
+      > <a name="2309" class="Symbol"
       >:</a
-      > <a name="2732" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2311" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      > <a name="2734" class="Symbol"
+      > <a name="2313" class="Symbol"
       >&#8594;</a
-      > <a name="2736" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2315" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      > <a name="2738" class="Symbol"
+      > <a name="2317" class="Symbol"
       >&#8594;</a
-      > <a name="2740" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2319" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
       >
-<a name="2742" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+<a name="2321" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >  <a name="2748" href="Data.Nat.Base.html#_&#8852;_" class="Function Operator"
+      >  <a name="2327" href="Data.Nat.Base.html#_&#8852;_" class="Function Operator"
       >&#8852;</a
-      > <a name="2750" href="Data.Nat.Base.html#2750" class="Bound"
+      > <a name="2329" href="Data.Nat.Base.html#2329" class="Bound"
       >n</a
-      >     <a name="2756" class="Symbol"
+      >     <a name="2335" class="Symbol"
       >=</a
-      > <a name="2758" href="Data.Nat.Base.html#2750" class="Bound"
+      > <a name="2337" href="Data.Nat.Base.html#2329" class="Bound"
       >n</a
       >
-<a name="2760" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+<a name="2339" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="2764" href="Data.Nat.Base.html#2764" class="Bound"
+      > <a name="2343" href="Data.Nat.Base.html#2343" class="Bound"
       >m</a
-      > <a name="2766" href="Data.Nat.Base.html#_&#8852;_" class="Function Operator"
+      > <a name="2345" href="Data.Nat.Base.html#_&#8852;_" class="Function Operator"
       >&#8852;</a
-      > <a name="2768" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      > <a name="2347" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >  <a name="2774" class="Symbol"
+      >  <a name="2353" class="Symbol"
       >=</a
-      > <a name="2776" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="2355" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="2780" href="Data.Nat.Base.html#2764" class="Bound"
+      > <a name="2359" href="Data.Nat.Base.html#2343" class="Bound"
       >m</a
       >
-<a name="2782" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+<a name="2361" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="2786" href="Data.Nat.Base.html#2786" class="Bound"
+      > <a name="2365" href="Data.Nat.Base.html#2365" class="Bound"
       >m</a
-      > <a name="2788" href="Data.Nat.Base.html#_&#8852;_" class="Function Operator"
+      > <a name="2367" href="Data.Nat.Base.html#_&#8852;_" class="Function Operator"
       >&#8852;</a
-      > <a name="2790" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="2369" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="2794" href="Data.Nat.Base.html#2794" class="Bound"
+      > <a name="2373" href="Data.Nat.Base.html#2373" class="Bound"
       >n</a
-      > <a name="2796" class="Symbol"
+      > <a name="2375" class="Symbol"
       >=</a
-      > <a name="2798" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="2377" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="2802" class="Symbol"
+      > <a name="2381" class="Symbol"
       >(</a
-      ><a name="2803" href="Data.Nat.Base.html#2786" class="Bound"
+      ><a name="2382" href="Data.Nat.Base.html#2365" class="Bound"
       >m</a
-      > <a name="2805" href="Data.Nat.Base.html#_&#8852;_" class="Function Operator"
+      > <a name="2384" href="Data.Nat.Base.html#_&#8852;_" class="Function Operator"
       >&#8852;</a
-      > <a name="2807" href="Data.Nat.Base.html#2794" class="Bound"
+      > <a name="2386" href="Data.Nat.Base.html#2373" class="Bound"
       >n</a
-      ><a name="2808" class="Symbol"
+      ><a name="2387" class="Symbol"
       >)</a
       >
 
-<a name="2811" class="Comment"
+<a name="2390" class="Comment"
       >-- Min.</a
       >
 
 <a name="_&#8851;_" href="Data.Nat.Base.html#_&#8851;_" class="Function Operator"
       >_&#8851;_</a
-      > <a name="2824" class="Symbol"
+      > <a name="2403" class="Symbol"
       >:</a
-      > <a name="2826" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2405" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      > <a name="2828" class="Symbol"
+      > <a name="2407" class="Symbol"
       >&#8594;</a
-      > <a name="2830" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2409" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      > <a name="2832" class="Symbol"
+      > <a name="2411" class="Symbol"
       >&#8594;</a
-      > <a name="2834" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2413" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
       >
-<a name="2836" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+<a name="2415" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >  <a name="2842" href="Data.Nat.Base.html#_&#8851;_" class="Function Operator"
+      >  <a name="2421" href="Data.Nat.Base.html#_&#8851;_" class="Function Operator"
       >&#8851;</a
-      > <a name="2844" href="Data.Nat.Base.html#2844" class="Bound"
+      > <a name="2423" href="Data.Nat.Base.html#2423" class="Bound"
       >n</a
-      >     <a name="2850" class="Symbol"
+      >     <a name="2429" class="Symbol"
       >=</a
-      > <a name="2852" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      > <a name="2431" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
       >
-<a name="2857" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+<a name="2436" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="2861" href="Data.Nat.Base.html#2861" class="Bound"
+      > <a name="2440" href="Data.Nat.Base.html#2440" class="Bound"
       >m</a
-      > <a name="2863" href="Data.Nat.Base.html#_&#8851;_" class="Function Operator"
+      > <a name="2442" href="Data.Nat.Base.html#_&#8851;_" class="Function Operator"
       >&#8851;</a
-      > <a name="2865" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      > <a name="2444" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >  <a name="2871" class="Symbol"
+      >  <a name="2450" class="Symbol"
       >=</a
-      > <a name="2873" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      > <a name="2452" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
       >
-<a name="2878" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+<a name="2457" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="2882" href="Data.Nat.Base.html#2882" class="Bound"
+      > <a name="2461" href="Data.Nat.Base.html#2461" class="Bound"
       >m</a
-      > <a name="2884" href="Data.Nat.Base.html#_&#8851;_" class="Function Operator"
+      > <a name="2463" href="Data.Nat.Base.html#_&#8851;_" class="Function Operator"
       >&#8851;</a
-      > <a name="2886" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="2465" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="2890" href="Data.Nat.Base.html#2890" class="Bound"
+      > <a name="2469" href="Data.Nat.Base.html#2469" class="Bound"
       >n</a
-      > <a name="2892" class="Symbol"
+      > <a name="2471" class="Symbol"
       >=</a
-      > <a name="2894" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="2473" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="2898" class="Symbol"
+      > <a name="2477" class="Symbol"
       >(</a
-      ><a name="2899" href="Data.Nat.Base.html#2882" class="Bound"
+      ><a name="2478" href="Data.Nat.Base.html#2461" class="Bound"
       >m</a
-      > <a name="2901" href="Data.Nat.Base.html#_&#8851;_" class="Function Operator"
+      > <a name="2480" href="Data.Nat.Base.html#_&#8851;_" class="Function Operator"
       >&#8851;</a
-      > <a name="2903" href="Data.Nat.Base.html#2890" class="Bound"
+      > <a name="2482" href="Data.Nat.Base.html#2469" class="Bound"
       >n</a
-      ><a name="2904" class="Symbol"
+      ><a name="2483" class="Symbol"
       >)</a
       >
 
-<a name="2907" class="Comment"
+<a name="2486" class="Comment"
       >-- Division by 2, rounded downwards.</a
       >
 
 <a name="&#8970;_/2&#8971;" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
       >&#8970;_/2&#8971;</a
-      > <a name="2951" class="Symbol"
+      > <a name="2530" class="Symbol"
       >:</a
-      > <a name="2953" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2532" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      > <a name="2955" class="Symbol"
+      > <a name="2534" class="Symbol"
       >&#8594;</a
-      > <a name="2957" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2536" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
       >
-<a name="2959" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
+<a name="2538" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
       >&#8970;</a
-      > <a name="2961" class="Number"
+      > <a name="2540" class="Number"
       >0</a
-      > <a name="2963" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
+      > <a name="2542" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
       >/2&#8971;</a
-      >           <a name="2977" class="Symbol"
+      >           <a name="2556" class="Symbol"
       >=</a
-      > <a name="2979" class="Number"
+      > <a name="2558" class="Number"
       >0</a
       >
-<a name="2981" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
+<a name="2560" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
       >&#8970;</a
-      > <a name="2983" class="Number"
+      > <a name="2562" class="Number"
       >1</a
-      > <a name="2985" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
+      > <a name="2564" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
       >/2&#8971;</a
-      >           <a name="2999" class="Symbol"
+      >           <a name="2578" class="Symbol"
       >=</a
-      > <a name="3001" class="Number"
+      > <a name="2580" class="Number"
       >0</a
       >
-<a name="3003" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
+<a name="2582" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
       >&#8970;</a
-      > <a name="3005" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="2584" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3009" class="Symbol"
+      > <a name="2588" class="Symbol"
       >(</a
-      ><a name="3010" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="2589" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3014" href="Data.Nat.Base.html#3014" class="Bound"
+      > <a name="2593" href="Data.Nat.Base.html#2593" class="Bound"
       >n</a
-      ><a name="3015" class="Symbol"
+      ><a name="2594" class="Symbol"
       >)</a
-      > <a name="3017" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
+      > <a name="2596" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
       >/2&#8971;</a
-      > <a name="3021" class="Symbol"
+      > <a name="2600" class="Symbol"
       >=</a
-      > <a name="3023" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="2602" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3027" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
+      > <a name="2606" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
       >&#8970;</a
-      > <a name="3029" href="Data.Nat.Base.html#3014" class="Bound"
+      > <a name="2608" href="Data.Nat.Base.html#2593" class="Bound"
       >n</a
-      > <a name="3031" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
+      > <a name="2610" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
       >/2&#8971;</a
       >
 
-<a name="3036" class="Comment"
+<a name="2615" class="Comment"
       >-- Division by 2, rounded upwards.</a
       >
 
 <a name="&#8968;_/2&#8969;" href="Data.Nat.Base.html#&#8968;_/2&#8969;" class="Function Operator"
       >&#8968;_/2&#8969;</a
-      > <a name="3078" class="Symbol"
+      > <a name="2657" class="Symbol"
       >:</a
-      > <a name="3080" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2659" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      > <a name="3082" class="Symbol"
+      > <a name="2661" class="Symbol"
       >&#8594;</a
-      > <a name="3084" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2663" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
       >
-<a name="3086" href="Data.Nat.Base.html#&#8968;_/2&#8969;" class="Function Operator"
+<a name="2665" href="Data.Nat.Base.html#&#8968;_/2&#8969;" class="Function Operator"
       >&#8968;</a
-      > <a name="3088" href="Data.Nat.Base.html#3088" class="Bound"
+      > <a name="2667" href="Data.Nat.Base.html#2667" class="Bound"
       >n</a
-      > <a name="3090" href="Data.Nat.Base.html#&#8968;_/2&#8969;" class="Function Operator"
+      > <a name="2669" href="Data.Nat.Base.html#&#8968;_/2&#8969;" class="Function Operator"
       >/2&#8969;</a
-      > <a name="3094" class="Symbol"
+      > <a name="2673" class="Symbol"
       >=</a
-      > <a name="3096" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
+      > <a name="2675" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
       >&#8970;</a
-      > <a name="3098" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="2677" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3102" href="Data.Nat.Base.html#3088" class="Bound"
+      > <a name="2681" href="Data.Nat.Base.html#2667" class="Bound"
       >n</a
-      > <a name="3104" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
+      > <a name="2683" href="Data.Nat.Base.html#&#8970;_/2&#8971;" class="Function Operator"
       >/2&#8971;</a
       >
 
-<a name="3109" class="Comment"
+<a name="2688" class="Comment"
       >-- Na&#239;ve exponentiation</a
       >
 
 <a name="_^_" href="Data.Nat.Base.html#_^_" class="Function Operator"
       >_^_</a
-      > <a name="3138" class="Symbol"
+      > <a name="2717" class="Symbol"
       >:</a
-      > <a name="3140" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2719" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      > <a name="3142" class="Symbol"
+      > <a name="2721" class="Symbol"
       >&#8594;</a
-      > <a name="3144" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2723" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      > <a name="3146" class="Symbol"
+      > <a name="2725" class="Symbol"
       >&#8594;</a
-      > <a name="3148" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2727" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
       >
-<a name="3150" href="Data.Nat.Base.html#3150" class="Bound"
+<a name="2729" href="Data.Nat.Base.html#2729" class="Bound"
       >x</a
-      > <a name="3152" href="Data.Nat.Base.html#_^_" class="Function Operator"
+      > <a name="2731" href="Data.Nat.Base.html#_^_" class="Function Operator"
       >^</a
-      > <a name="3154" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      > <a name="2733" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >  <a name="3160" class="Symbol"
+      >  <a name="2739" class="Symbol"
       >=</a
-      > <a name="3162" class="Number"
+      > <a name="2741" class="Number"
       >1</a
       >
-<a name="3164" href="Data.Nat.Base.html#3164" class="Bound"
+<a name="2743" href="Data.Nat.Base.html#2743" class="Bound"
       >x</a
-      > <a name="3166" href="Data.Nat.Base.html#_^_" class="Function Operator"
+      > <a name="2745" href="Data.Nat.Base.html#_^_" class="Function Operator"
       >^</a
-      > <a name="3168" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="2747" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3172" href="Data.Nat.Base.html#3172" class="Bound"
+      > <a name="2751" href="Data.Nat.Base.html#2751" class="Bound"
       >n</a
-      > <a name="3174" class="Symbol"
+      > <a name="2753" class="Symbol"
       >=</a
-      > <a name="3176" href="Data.Nat.Base.html#3164" class="Bound"
+      > <a name="2755" href="Data.Nat.Base.html#2743" class="Bound"
       >x</a
-      > <a name="3178" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
+      > <a name="2757" href="Agda.Builtin.Nat.html#_*_" class="Primitive Operator"
       >*</a
-      > <a name="3180" href="Data.Nat.Base.html#3164" class="Bound"
+      > <a name="2759" href="Data.Nat.Base.html#2743" class="Bound"
       >x</a
-      > <a name="3182" href="Data.Nat.Base.html#_^_" class="Function Operator"
+      > <a name="2761" href="Data.Nat.Base.html#_^_" class="Function Operator"
       >^</a
-      > <a name="3184" href="Data.Nat.Base.html#3172" class="Bound"
+      > <a name="2763" href="Data.Nat.Base.html#2751" class="Bound"
       >n</a
       >
 
-<a name="3187" class="Comment"
+<a name="2766" class="Comment"
       >------------------------------------------------------------------------</a
       >
-<a name="3260" class="Comment"
+<a name="2839" class="Comment"
       >-- Queries</a
       >
 
-<a name="3272" class="Keyword"
+<a name="2851" class="Keyword"
       >infix</a
-      > <a name="3278" class="Number"
+      > <a name="2857" class="Number"
       >4</a
       > <a name="_&#8799;_" href="Data.Nat.Base.html#_&#8799;_" class="Function Operator"
       >_&#8799;_</a
@@ -1544,668 +1291,668 @@
 
 <a name="_&#8799;_" href="Data.Nat.Base.html#_&#8799;_" class="Function Operator"
       >_&#8799;_</a
-      > <a name="3294" class="Symbol"
+      > <a name="2873" class="Symbol"
       >:</a
-      > <a name="3296" href="Relation.Binary.Core.html#Decidable" class="Function"
+      > <a name="2875" href="Relation.Binary.Core.html#Decidable" class="Function"
       >Decidable</a
-      > <a name="3306" class="Symbol"
+      > <a name="2885" class="Symbol"
       >{</a
-      ><a name="3307" class="Argument"
+      ><a name="2886" class="Argument"
       >A</a
-      > <a name="3309" class="Symbol"
+      > <a name="2888" class="Symbol"
       >=</a
-      > <a name="3311" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="2890" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      ><a name="3312" class="Symbol"
+      ><a name="2891" class="Symbol"
       >}</a
-      > <a name="3314" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      > <a name="2893" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >_&#8801;_</a
       >
-<a name="3318" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+<a name="2897" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >  <a name="3324" href="Data.Nat.Base.html#_&#8799;_" class="Function Operator"
+      >  <a name="2903" href="Data.Nat.Base.html#_&#8799;_" class="Function Operator"
       >&#8799;</a
-      > <a name="3326" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      > <a name="2905" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >   <a name="3333" class="Symbol"
+      >   <a name="2912" class="Symbol"
       >=</a
-      > <a name="3335" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      > <a name="2914" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
       >yes</a
-      > <a name="3339" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      > <a name="2918" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
       >
-<a name="3344" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+<a name="2923" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3348" href="Data.Nat.Base.html#3348" class="Bound"
+      > <a name="2927" href="Data.Nat.Base.html#2927" class="Bound"
       >m</a
-      > <a name="3350" href="Data.Nat.Base.html#_&#8799;_" class="Function Operator"
+      > <a name="2929" href="Data.Nat.Base.html#_&#8799;_" class="Function Operator"
       >&#8799;</a
-      > <a name="3352" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="2931" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3356" href="Data.Nat.Base.html#3356" class="Bound"
+      > <a name="2935" href="Data.Nat.Base.html#2935" class="Bound"
       >n</a
-      >  <a name="3359" class="Keyword"
+      >  <a name="2938" class="Keyword"
       >with</a
-      > <a name="3364" href="Data.Nat.Base.html#3348" class="Bound"
+      > <a name="2943" href="Data.Nat.Base.html#2927" class="Bound"
       >m</a
-      > <a name="3366" href="Data.Nat.Base.html#_&#8799;_" class="Function Operator"
+      > <a name="2945" href="Data.Nat.Base.html#_&#8799;_" class="Function Operator"
       >&#8799;</a
-      > <a name="3368" href="Data.Nat.Base.html#3356" class="Bound"
+      > <a name="2947" href="Data.Nat.Base.html#2935" class="Bound"
       >n</a
       >
-<a name="3370" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+<a name="2949" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3374" href="Data.Nat.Base.html#3374" class="Bound"
+      > <a name="2953" href="Data.Nat.Base.html#2953" class="Bound"
       >m</a
-      > <a name="3376" href="Data.Nat.Base.html#_&#8799;_" class="Function Operator"
+      > <a name="2955" href="Data.Nat.Base.html#_&#8799;_" class="Function Operator"
       >&#8799;</a
-      > <a name="3378" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="2957" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3382" class="DottedPattern Symbol"
+      > <a name="2961" class="DottedPattern Symbol"
       >.</a
-      ><a name="3383" href="Data.Nat.Base.html#3374" class="DottedPattern Bound"
+      ><a name="2962" href="Data.Nat.Base.html#2953" class="DottedPattern Bound"
       >m</a
-      > <a name="3385" class="Symbol"
+      > <a name="2964" class="Symbol"
       >|</a
-      > <a name="3387" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      > <a name="2966" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
       >yes</a
-      > <a name="3391" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      > <a name="2970" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      > <a name="3396" class="Symbol"
+      > <a name="2975" class="Symbol"
       >=</a
-      > <a name="3398" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      > <a name="2977" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
       >yes</a
-      > <a name="3402" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      > <a name="2981" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
       >
-<a name="3407" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+<a name="2986" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3411" href="Data.Nat.Base.html#3411" class="Bound"
+      > <a name="2990" href="Data.Nat.Base.html#2990" class="Bound"
       >m</a
-      > <a name="3413" href="Data.Nat.Base.html#_&#8799;_" class="Function Operator"
+      > <a name="2992" href="Data.Nat.Base.html#_&#8799;_" class="Function Operator"
       >&#8799;</a
-      > <a name="3415" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="2994" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3419" href="Data.Nat.Base.html#3419" class="Bound"
+      > <a name="2998" href="Data.Nat.Base.html#2998" class="Bound"
       >n</a
-      >  <a name="3422" class="Symbol"
+      >  <a name="3001" class="Symbol"
       >|</a
-      > <a name="3424" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      > <a name="3003" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      > <a name="3427" href="Data.Nat.Base.html#3427" class="Bound"
+      > <a name="3006" href="Data.Nat.Base.html#3006" class="Bound"
       >prf</a
-      >   <a name="3433" class="Symbol"
+      >   <a name="3012" class="Symbol"
       >=</a
-      > <a name="3435" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      > <a name="3014" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      > <a name="3438" class="Symbol"
+      > <a name="3017" class="Symbol"
       >(</a
-      ><a name="3439" href="Data.Nat.Base.html#3427" class="Bound"
+      ><a name="3018" href="Data.Nat.Base.html#3006" class="Bound"
       >prf</a
-      > <a name="3443" href="Function.html#_&#8728;_" class="Function Operator"
+      > <a name="3022" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      > <a name="3445" class="Symbol"
+      > <a name="3024" class="Symbol"
       >(&#955;</a
-      > <a name="3448" href="Data.Nat.Base.html#3448" class="Bound"
+      > <a name="3027" href="Data.Nat.Base.html#3027" class="Bound"
       >p</a
-      > <a name="3450" class="Symbol"
+      > <a name="3029" class="Symbol"
       >&#8594;</a
-      > <a name="3452" href="Relation.Binary.PropositionalEquality.Core.html#subst" class="Function"
+      > <a name="3031" href="Relation.Binary.PropositionalEquality.Core.html#subst" class="Function"
       >subst</a
-      > <a name="3458" class="Symbol"
+      > <a name="3037" class="Symbol"
       >(&#955;</a
-      > <a name="3461" href="Data.Nat.Base.html#3461" class="Bound"
+      > <a name="3040" href="Data.Nat.Base.html#3040" class="Bound"
       >x</a
-      > <a name="3463" class="Symbol"
+      > <a name="3042" class="Symbol"
       >&#8594;</a
-      > <a name="3465" href="Data.Nat.Base.html#3411" class="Bound"
+      > <a name="3044" href="Data.Nat.Base.html#2990" class="Bound"
       >m</a
-      > <a name="3467" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      > <a name="3046" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      > <a name="3469" href="Data.Nat.Base.html#pred" class="Function"
+      > <a name="3048" href="Data.Nat.Base.html#pred" class="Function"
       >pred</a
-      > <a name="3474" href="Data.Nat.Base.html#3461" class="Bound"
+      > <a name="3053" href="Data.Nat.Base.html#3040" class="Bound"
       >x</a
-      ><a name="3475" class="Symbol"
+      ><a name="3054" class="Symbol"
       >)</a
-      > <a name="3477" href="Data.Nat.Base.html#3448" class="Bound"
+      > <a name="3056" href="Data.Nat.Base.html#3027" class="Bound"
       >p</a
-      > <a name="3479" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      > <a name="3058" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >refl</a
-      ><a name="3483" class="Symbol"
+      ><a name="3062" class="Symbol"
       >))</a
       >
-<a name="3486" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+<a name="3065" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >  <a name="3492" href="Data.Nat.Base.html#_&#8799;_" class="Function Operator"
+      >  <a name="3071" href="Data.Nat.Base.html#_&#8799;_" class="Function Operator"
       >&#8799;</a
-      > <a name="3494" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="3073" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3498" href="Data.Nat.Base.html#3498" class="Bound"
+      > <a name="3077" href="Data.Nat.Base.html#3077" class="Bound"
       >n</a
-      >  <a name="3501" class="Symbol"
+      >  <a name="3080" class="Symbol"
       >=</a
-      > <a name="3503" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      > <a name="3082" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      > <a name="3506" class="Symbol"
+      > <a name="3085" class="Symbol"
       >&#955;()</a
       >
-<a name="3510" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+<a name="3089" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3514" href="Data.Nat.Base.html#3514" class="Bound"
+      > <a name="3093" href="Data.Nat.Base.html#3093" class="Bound"
       >m</a
-      > <a name="3516" href="Data.Nat.Base.html#_&#8799;_" class="Function Operator"
+      > <a name="3095" href="Data.Nat.Base.html#_&#8799;_" class="Function Operator"
       >&#8799;</a
-      > <a name="3518" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      > <a name="3097" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >   <a name="3525" class="Symbol"
+      >   <a name="3104" class="Symbol"
       >=</a
-      > <a name="3527" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      > <a name="3106" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      > <a name="3530" class="Symbol"
+      > <a name="3109" class="Symbol"
       >&#955;()</a
       >
 
 <a name="&#8804;-pred" href="Data.Nat.Base.html#&#8804;-pred" class="Function"
       >&#8804;-pred</a
-      > <a name="3542" class="Symbol"
+      > <a name="3121" class="Symbol"
       >:</a
-      > <a name="3544" class="Symbol"
+      > <a name="3123" class="Symbol"
       >&#8704;</a
-      > <a name="3546" class="Symbol"
+      > <a name="3125" class="Symbol"
       >{</a
-      ><a name="3547" href="Data.Nat.Base.html#3547" class="Bound"
+      ><a name="3126" href="Data.Nat.Base.html#3126" class="Bound"
       >m</a
-      > <a name="3549" href="Data.Nat.Base.html#3549" class="Bound"
+      > <a name="3128" href="Data.Nat.Base.html#3128" class="Bound"
       >n</a
-      ><a name="3550" class="Symbol"
+      ><a name="3129" class="Symbol"
       >}</a
-      > <a name="3552" class="Symbol"
+      > <a name="3131" class="Symbol"
       >&#8594;</a
-      > <a name="3554" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="3133" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3558" href="Data.Nat.Base.html#3547" class="Bound"
+      > <a name="3137" href="Data.Nat.Base.html#3126" class="Bound"
       >m</a
-      > <a name="3560" href="Data.Nat.Base.html#_&#8804;_" class="Datatype Operator"
+      > <a name="3139" href="Data.Nat.Base.html#_&#8804;_" class="Datatype Operator"
       >&#8804;</a
-      > <a name="3562" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="3141" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3566" href="Data.Nat.Base.html#3549" class="Bound"
+      > <a name="3145" href="Data.Nat.Base.html#3128" class="Bound"
       >n</a
-      > <a name="3568" class="Symbol"
+      > <a name="3147" class="Symbol"
       >&#8594;</a
-      > <a name="3570" href="Data.Nat.Base.html#3547" class="Bound"
+      > <a name="3149" href="Data.Nat.Base.html#3126" class="Bound"
       >m</a
-      > <a name="3572" href="Data.Nat.Base.html#_&#8804;_" class="Datatype Operator"
+      > <a name="3151" href="Data.Nat.Base.html#_&#8804;_" class="Datatype Operator"
       >&#8804;</a
-      > <a name="3574" href="Data.Nat.Base.html#3549" class="Bound"
+      > <a name="3153" href="Data.Nat.Base.html#3128" class="Bound"
       >n</a
       >
-<a name="3576" href="Data.Nat.Base.html#&#8804;-pred" class="Function"
+<a name="3155" href="Data.Nat.Base.html#&#8804;-pred" class="Function"
       >&#8804;-pred</a
-      > <a name="3583" class="Symbol"
+      > <a name="3162" class="Symbol"
       >(</a
-      ><a name="3584" href="Data.Nat.Base.html#_&#8804;_.s&#8804;s" class="InductiveConstructor"
+      ><a name="3163" href="Data.Nat.Base.html#_&#8804;_.s&#8804;s" class="InductiveConstructor"
       >s&#8804;s</a
-      > <a name="3588" href="Data.Nat.Base.html#3588" class="Bound"
+      > <a name="3167" href="Data.Nat.Base.html#3167" class="Bound"
       >m&#8804;n</a
-      ><a name="3591" class="Symbol"
+      ><a name="3170" class="Symbol"
       >)</a
-      > <a name="3593" class="Symbol"
+      > <a name="3172" class="Symbol"
       >=</a
-      > <a name="3595" href="Data.Nat.Base.html#3588" class="Bound"
+      > <a name="3174" href="Data.Nat.Base.html#3167" class="Bound"
       >m&#8804;n</a
       >
 
 <a name="_&#8804;?_" href="Data.Nat.Base.html#_&#8804;?_" class="Function Operator"
       >_&#8804;?_</a
-      > <a name="3605" class="Symbol"
+      > <a name="3184" class="Symbol"
       >:</a
-      > <a name="3607" href="Relation.Binary.Core.html#Decidable" class="Function"
+      > <a name="3186" href="Relation.Binary.Core.html#Decidable" class="Function"
       >Decidable</a
-      > <a name="3617" href="Data.Nat.Base.html#_&#8804;_" class="Datatype Operator"
+      > <a name="3196" href="Data.Nat.Base.html#_&#8804;_" class="Datatype Operator"
       >_&#8804;_</a
       >
-<a name="3621" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+<a name="3200" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >  <a name="3627" href="Data.Nat.Base.html#_&#8804;?_" class="Function Operator"
+      >  <a name="3206" href="Data.Nat.Base.html#_&#8804;?_" class="Function Operator"
       >&#8804;?</a
-      > <a name="3630" class="Symbol"
+      > <a name="3209" class="Symbol"
       >_</a
-      >     <a name="3636" class="Symbol"
+      >     <a name="3215" class="Symbol"
       >=</a
-      > <a name="3638" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      > <a name="3217" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
       >yes</a
-      > <a name="3642" href="Data.Nat.Base.html#_&#8804;_.z&#8804;n" class="InductiveConstructor"
+      > <a name="3221" href="Data.Nat.Base.html#_&#8804;_.z&#8804;n" class="InductiveConstructor"
       >z&#8804;n</a
       >
-<a name="3646" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+<a name="3225" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3650" href="Data.Nat.Base.html#3650" class="Bound"
+      > <a name="3229" href="Data.Nat.Base.html#3229" class="Bound"
       >m</a
-      > <a name="3652" href="Data.Nat.Base.html#_&#8804;?_" class="Function Operator"
+      > <a name="3231" href="Data.Nat.Base.html#_&#8804;?_" class="Function Operator"
       >&#8804;?</a
-      > <a name="3655" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      > <a name="3234" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >  <a name="3661" class="Symbol"
+      >  <a name="3240" class="Symbol"
       >=</a
-      > <a name="3663" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      > <a name="3242" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      > <a name="3666" class="Symbol"
+      > <a name="3245" class="Symbol"
       >&#955;()</a
       >
-<a name="3670" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+<a name="3249" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3674" href="Data.Nat.Base.html#3674" class="Bound"
+      > <a name="3253" href="Data.Nat.Base.html#3253" class="Bound"
       >m</a
-      > <a name="3676" href="Data.Nat.Base.html#_&#8804;?_" class="Function Operator"
+      > <a name="3255" href="Data.Nat.Base.html#_&#8804;?_" class="Function Operator"
       >&#8804;?</a
-      > <a name="3679" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="3258" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3683" href="Data.Nat.Base.html#3683" class="Bound"
+      > <a name="3262" href="Data.Nat.Base.html#3262" class="Bound"
       >n</a
-      > <a name="3685" class="Keyword"
+      > <a name="3264" class="Keyword"
       >with</a
-      > <a name="3690" href="Data.Nat.Base.html#3674" class="Bound"
+      > <a name="3269" href="Data.Nat.Base.html#3253" class="Bound"
       >m</a
-      > <a name="3692" href="Data.Nat.Base.html#_&#8804;?_" class="Function Operator"
+      > <a name="3271" href="Data.Nat.Base.html#_&#8804;?_" class="Function Operator"
       >&#8804;?</a
-      > <a name="3695" href="Data.Nat.Base.html#3683" class="Bound"
+      > <a name="3274" href="Data.Nat.Base.html#3262" class="Bound"
       >n</a
       >
-<a name="3697" class="Symbol"
+<a name="3276" class="Symbol"
       >...</a
-      >            <a name="3712" class="Symbol"
+      >            <a name="3291" class="Symbol"
       >|</a
-      > <a name="3714" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      > <a name="3293" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
       >yes</a
-      > <a name="3718" href="Data.Nat.Base.html#3718" class="Bound"
+      > <a name="3297" href="Data.Nat.Base.html#3297" class="Bound"
       >m&#8804;n</a
-      > <a name="3722" class="Symbol"
+      > <a name="3301" class="Symbol"
       >=</a
-      > <a name="3724" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
+      > <a name="3303" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
       >yes</a
-      > <a name="3728" class="Symbol"
+      > <a name="3307" class="Symbol"
       >(</a
-      ><a name="3729" href="Data.Nat.Base.html#_&#8804;_.s&#8804;s" class="InductiveConstructor"
+      ><a name="3308" href="Data.Nat.Base.html#_&#8804;_.s&#8804;s" class="InductiveConstructor"
       >s&#8804;s</a
-      > <a name="3733" href="Data.Nat.Base.html#3718" class="Bound"
+      > <a name="3312" href="Data.Nat.Base.html#3297" class="Bound"
       >m&#8804;n</a
-      ><a name="3736" class="Symbol"
+      ><a name="3315" class="Symbol"
       >)</a
       >
-<a name="3738" class="Symbol"
+<a name="3317" class="Symbol"
       >...</a
-      >            <a name="3753" class="Symbol"
+      >            <a name="3332" class="Symbol"
       >|</a
-      > <a name="3755" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      > <a name="3334" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      >  <a name="3759" href="Data.Nat.Base.html#3759" class="Bound"
+      >  <a name="3338" href="Data.Nat.Base.html#3338" class="Bound"
       >m&#8816;n</a
-      > <a name="3763" class="Symbol"
+      > <a name="3342" class="Symbol"
       >=</a
-      > <a name="3765" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
+      > <a name="3344" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
       >no</a
-      >  <a name="3769" class="Symbol"
+      >  <a name="3348" class="Symbol"
       >(</a
-      ><a name="3770" href="Data.Nat.Base.html#3759" class="Bound"
+      ><a name="3349" href="Data.Nat.Base.html#3338" class="Bound"
       >m&#8816;n</a
-      > <a name="3774" href="Function.html#_&#8728;_" class="Function Operator"
+      > <a name="3353" href="Function.html#_&#8728;_" class="Function Operator"
       >&#8728;</a
-      > <a name="3776" href="Data.Nat.Base.html#&#8804;-pred" class="Function"
+      > <a name="3355" href="Data.Nat.Base.html#&#8804;-pred" class="Function"
       >&#8804;-pred</a
-      ><a name="3782" class="Symbol"
+      ><a name="3361" class="Symbol"
       >)</a
       >
 
-<a name="3785" class="Comment"
+<a name="3364" class="Comment"
       >-- A comparison view. Taken from &quot;View from the left&quot;</a
       >
-<a name="3839" class="Comment"
+<a name="3418" class="Comment"
       >-- (McBride/McKinna); details may differ.</a
       >
 
-<a name="3882" class="Keyword"
+<a name="3461" class="Keyword"
       >data</a
       > <a name="Ordering" href="Data.Nat.Base.html#Ordering" class="Datatype"
       >Ordering</a
-      > <a name="3896" class="Symbol"
+      > <a name="3475" class="Symbol"
       >:</a
-      > <a name="3898" href="Relation.Binary.Core.html#Rel" class="Function"
+      > <a name="3477" href="Relation.Binary.Core.html#Rel" class="Function"
       >Rel</a
-      > <a name="3902" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="3481" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      > <a name="3904" href="Agda.Primitive.html#zero" class="Primitive"
+      > <a name="3483" href="Agda.Primitive.html#zero" class="Primitive"
       >Level.zero</a
-      > <a name="3915" class="Keyword"
+      > <a name="3494" class="Keyword"
       >where</a
       >
   <a name="Ordering.less" href="Data.Nat.Base.html#Ordering.less" class="InductiveConstructor"
       >less</a
-      >    <a name="3931" class="Symbol"
+      >    <a name="3510" class="Symbol"
       >:</a
-      > <a name="3933" class="Symbol"
+      > <a name="3512" class="Symbol"
       >&#8704;</a
-      > <a name="3935" href="Data.Nat.Base.html#3935" class="Bound"
+      > <a name="3514" href="Data.Nat.Base.html#3514" class="Bound"
       >m</a
-      > <a name="3937" href="Data.Nat.Base.html#3937" class="Bound"
+      > <a name="3516" href="Data.Nat.Base.html#3516" class="Bound"
       >k</a
-      > <a name="3939" class="Symbol"
+      > <a name="3518" class="Symbol"
       >&#8594;</a
-      > <a name="3941" href="Data.Nat.Base.html#Ordering" class="Datatype"
+      > <a name="3520" href="Data.Nat.Base.html#Ordering" class="Datatype"
       >Ordering</a
-      > <a name="3950" href="Data.Nat.Base.html#3935" class="Bound"
+      > <a name="3529" href="Data.Nat.Base.html#3514" class="Bound"
       >m</a
-      > <a name="3952" class="Symbol"
+      > <a name="3531" class="Symbol"
       >(</a
-      ><a name="3953" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="3532" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="3957" class="Symbol"
+      > <a name="3536" class="Symbol"
       >(</a
-      ><a name="3958" href="Data.Nat.Base.html#3935" class="Bound"
+      ><a name="3537" href="Data.Nat.Base.html#3514" class="Bound"
       >m</a
-      > <a name="3960" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
+      > <a name="3539" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      > <a name="3962" href="Data.Nat.Base.html#3937" class="Bound"
+      > <a name="3541" href="Data.Nat.Base.html#3516" class="Bound"
       >k</a
-      ><a name="3963" class="Symbol"
+      ><a name="3542" class="Symbol"
       >))</a
       >
   <a name="Ordering.equal" href="Data.Nat.Base.html#Ordering.equal" class="InductiveConstructor"
       >equal</a
-      >   <a name="3976" class="Symbol"
+      >   <a name="3555" class="Symbol"
       >:</a
-      > <a name="3978" class="Symbol"
+      > <a name="3557" class="Symbol"
       >&#8704;</a
-      > <a name="3980" href="Data.Nat.Base.html#3980" class="Bound"
+      > <a name="3559" href="Data.Nat.Base.html#3559" class="Bound"
       >m</a
-      >   <a name="3984" class="Symbol"
+      >   <a name="3563" class="Symbol"
       >&#8594;</a
-      > <a name="3986" href="Data.Nat.Base.html#Ordering" class="Datatype"
+      > <a name="3565" href="Data.Nat.Base.html#Ordering" class="Datatype"
       >Ordering</a
-      > <a name="3995" href="Data.Nat.Base.html#3980" class="Bound"
+      > <a name="3574" href="Data.Nat.Base.html#3559" class="Bound"
       >m</a
-      > <a name="3997" href="Data.Nat.Base.html#3980" class="Bound"
+      > <a name="3576" href="Data.Nat.Base.html#3559" class="Bound"
       >m</a
       >
   <a name="Ordering.greater" href="Data.Nat.Base.html#Ordering.greater" class="InductiveConstructor"
       >greater</a
-      > <a name="4009" class="Symbol"
+      > <a name="3588" class="Symbol"
       >:</a
-      > <a name="4011" class="Symbol"
+      > <a name="3590" class="Symbol"
       >&#8704;</a
-      > <a name="4013" href="Data.Nat.Base.html#4013" class="Bound"
+      > <a name="3592" href="Data.Nat.Base.html#3592" class="Bound"
       >m</a
-      > <a name="4015" href="Data.Nat.Base.html#4015" class="Bound"
+      > <a name="3594" href="Data.Nat.Base.html#3594" class="Bound"
       >k</a
-      > <a name="4017" class="Symbol"
+      > <a name="3596" class="Symbol"
       >&#8594;</a
-      > <a name="4019" href="Data.Nat.Base.html#Ordering" class="Datatype"
+      > <a name="3598" href="Data.Nat.Base.html#Ordering" class="Datatype"
       >Ordering</a
-      > <a name="4028" class="Symbol"
+      > <a name="3607" class="Symbol"
       >(</a
-      ><a name="4029" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="3608" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="4033" class="Symbol"
+      > <a name="3612" class="Symbol"
       >(</a
-      ><a name="4034" href="Data.Nat.Base.html#4013" class="Bound"
+      ><a name="3613" href="Data.Nat.Base.html#3592" class="Bound"
       >m</a
-      > <a name="4036" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
+      > <a name="3615" href="Agda.Builtin.Nat.html#_+_" class="Primitive Operator"
       >+</a
-      > <a name="4038" href="Data.Nat.Base.html#4015" class="Bound"
+      > <a name="3617" href="Data.Nat.Base.html#3594" class="Bound"
       >k</a
-      ><a name="4039" class="Symbol"
+      ><a name="3618" class="Symbol"
       >))</a
-      > <a name="4042" href="Data.Nat.Base.html#4013" class="Bound"
+      > <a name="3621" href="Data.Nat.Base.html#3592" class="Bound"
       >m</a
       >
 
 <a name="compare" href="Data.Nat.Base.html#compare" class="Function"
       >compare</a
-      > <a name="4053" class="Symbol"
+      > <a name="3632" class="Symbol"
       >:</a
-      > <a name="4055" class="Symbol"
+      > <a name="3634" class="Symbol"
       >&#8704;</a
-      > <a name="4057" href="Data.Nat.Base.html#4057" class="Bound"
+      > <a name="3636" href="Data.Nat.Base.html#3636" class="Bound"
       >m</a
-      > <a name="4059" href="Data.Nat.Base.html#4059" class="Bound"
+      > <a name="3638" href="Data.Nat.Base.html#3638" class="Bound"
       >n</a
-      > <a name="4061" class="Symbol"
+      > <a name="3640" class="Symbol"
       >&#8594;</a
-      > <a name="4063" href="Data.Nat.Base.html#Ordering" class="Datatype"
+      > <a name="3642" href="Data.Nat.Base.html#Ordering" class="Datatype"
       >Ordering</a
-      > <a name="4072" href="Data.Nat.Base.html#4057" class="Bound"
+      > <a name="3651" href="Data.Nat.Base.html#3636" class="Bound"
       >m</a
-      > <a name="4074" href="Data.Nat.Base.html#4059" class="Bound"
+      > <a name="3653" href="Data.Nat.Base.html#3638" class="Bound"
       >n</a
       >
-<a name="4076" href="Data.Nat.Base.html#compare" class="Function"
+<a name="3655" href="Data.Nat.Base.html#compare" class="Function"
       >compare</a
-      > <a name="4084" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      > <a name="3663" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >    <a name="4092" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      >    <a name="3671" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >    <a name="4100" class="Symbol"
+      >    <a name="3679" class="Symbol"
       >=</a
-      > <a name="4102" href="Data.Nat.Base.html#Ordering.equal" class="InductiveConstructor"
+      > <a name="3681" href="Data.Nat.Base.html#Ordering.equal" class="InductiveConstructor"
       >equal</a
-      >   <a name="4110" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      >   <a name="3689" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
       >
-<a name="4115" href="Data.Nat.Base.html#compare" class="Function"
+<a name="3694" href="Data.Nat.Base.html#compare" class="Function"
       >compare</a
-      > <a name="4123" class="Symbol"
+      > <a name="3702" class="Symbol"
       >(</a
-      ><a name="4124" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="3703" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="4128" href="Data.Nat.Base.html#4128" class="Bound"
+      > <a name="3707" href="Data.Nat.Base.html#3707" class="Bound"
       >m</a
-      ><a name="4129" class="Symbol"
+      ><a name="3708" class="Symbol"
       >)</a
-      > <a name="4131" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      > <a name="3710" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >    <a name="4139" class="Symbol"
+      >    <a name="3718" class="Symbol"
       >=</a
-      > <a name="4141" href="Data.Nat.Base.html#Ordering.greater" class="InductiveConstructor"
+      > <a name="3720" href="Data.Nat.Base.html#Ordering.greater" class="InductiveConstructor"
       >greater</a
-      > <a name="4149" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      > <a name="3728" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      > <a name="4154" href="Data.Nat.Base.html#4128" class="Bound"
+      > <a name="3733" href="Data.Nat.Base.html#3707" class="Bound"
       >m</a
       >
-<a name="4156" href="Data.Nat.Base.html#compare" class="Function"
+<a name="3735" href="Data.Nat.Base.html#compare" class="Function"
       >compare</a
-      > <a name="4164" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      > <a name="3743" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      >    <a name="4172" class="Symbol"
+      >    <a name="3751" class="Symbol"
       >(</a
-      ><a name="4173" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="3752" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="4177" href="Data.Nat.Base.html#4177" class="Bound"
+      > <a name="3756" href="Data.Nat.Base.html#3756" class="Bound"
       >n</a
-      ><a name="4178" class="Symbol"
+      ><a name="3757" class="Symbol"
       >)</a
-      > <a name="4180" class="Symbol"
+      > <a name="3759" class="Symbol"
       >=</a
-      > <a name="4182" href="Data.Nat.Base.html#Ordering.less" class="InductiveConstructor"
+      > <a name="3761" href="Data.Nat.Base.html#Ordering.less" class="InductiveConstructor"
       >less</a
-      >    <a name="4190" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
+      >    <a name="3769" href="Agda.Builtin.Nat.html#Nat.zero" class="InductiveConstructor"
       >zero</a
-      > <a name="4195" href="Data.Nat.Base.html#4177" class="Bound"
+      > <a name="3774" href="Data.Nat.Base.html#3756" class="Bound"
       >n</a
       >
-<a name="4197" href="Data.Nat.Base.html#compare" class="Function"
+<a name="3776" href="Data.Nat.Base.html#compare" class="Function"
       >compare</a
-      > <a name="4205" class="Symbol"
+      > <a name="3784" class="Symbol"
       >(</a
-      ><a name="4206" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="3785" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="4210" href="Data.Nat.Base.html#4210" class="Bound"
+      > <a name="3789" href="Data.Nat.Base.html#3789" class="Bound"
       >m</a
-      ><a name="4211" class="Symbol"
+      ><a name="3790" class="Symbol"
       >)</a
-      > <a name="4213" class="Symbol"
+      > <a name="3792" class="Symbol"
       >(</a
-      ><a name="4214" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="3793" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="4218" href="Data.Nat.Base.html#4218" class="Bound"
+      > <a name="3797" href="Data.Nat.Base.html#3797" class="Bound"
       >n</a
-      ><a name="4219" class="Symbol"
+      ><a name="3798" class="Symbol"
       >)</a
-      > <a name="4221" class="Keyword"
+      > <a name="3800" class="Keyword"
       >with</a
-      > <a name="4226" href="Data.Nat.Base.html#compare" class="Function"
+      > <a name="3805" href="Data.Nat.Base.html#compare" class="Function"
       >compare</a
-      > <a name="4234" href="Data.Nat.Base.html#4210" class="Bound"
+      > <a name="3813" href="Data.Nat.Base.html#3789" class="Bound"
       >m</a
-      > <a name="4236" href="Data.Nat.Base.html#4218" class="Bound"
+      > <a name="3815" href="Data.Nat.Base.html#3797" class="Bound"
       >n</a
       >
-<a name="4238" href="Data.Nat.Base.html#compare" class="Function"
+<a name="3817" href="Data.Nat.Base.html#compare" class="Function"
       >compare</a
-      > <a name="4246" class="Symbol"
+      > <a name="3825" class="Symbol"
       >(</a
-      ><a name="4247" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="3826" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="4251" class="DottedPattern Symbol"
+      > <a name="3830" class="DottedPattern Symbol"
       >.</a
-      ><a name="4252" href="Data.Nat.Base.html#4294" class="DottedPattern Bound"
+      ><a name="3831" href="Data.Nat.Base.html#3873" class="DottedPattern Bound"
       >m</a
-      ><a name="4253" class="Symbol"
+      ><a name="3832" class="Symbol"
       >)</a
-      >           <a name="4265" class="Symbol"
+      >           <a name="3844" class="Symbol"
       >(</a
-      ><a name="4266" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="3845" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="4270" class="DottedPattern Symbol"
+      > <a name="3849" class="DottedPattern Symbol"
       >.(</a
-      ><a name="4272" href="Agda.Builtin.Nat.html#Nat.suc" class="DottedPattern InductiveConstructor"
+      ><a name="3851" href="Agda.Builtin.Nat.html#Nat.suc" class="DottedPattern InductiveConstructor"
       >suc</a
-      > <a name="4276" href="Data.Nat.Base.html#4294" class="DottedPattern Bound"
+      > <a name="3855" href="Data.Nat.Base.html#3873" class="DottedPattern Bound"
       >m</a
-      > <a name="4278" href="Agda.Builtin.Nat.html#_+_" class="DottedPattern Primitive Operator"
+      > <a name="3857" href="Agda.Builtin.Nat.html#_+_" class="DottedPattern Primitive Operator"
       >+</a
-      > <a name="4280" href="Data.Nat.Base.html#4296" class="DottedPattern Bound"
+      > <a name="3859" href="Data.Nat.Base.html#3875" class="DottedPattern Bound"
       >k</a
-      ><a name="4281" class="DottedPattern Symbol"
+      ><a name="3860" class="DottedPattern Symbol"
       >)</a
-      ><a name="4282" class="Symbol"
+      ><a name="3861" class="Symbol"
       >)</a
-      > <a name="4284" class="Symbol"
+      > <a name="3863" class="Symbol"
       >|</a
-      > <a name="4286" href="Data.Nat.Base.html#Ordering.less" class="InductiveConstructor"
+      > <a name="3865" href="Data.Nat.Base.html#Ordering.less" class="InductiveConstructor"
       >less</a
-      >    <a name="4294" href="Data.Nat.Base.html#4294" class="Bound"
+      >    <a name="3873" href="Data.Nat.Base.html#3873" class="Bound"
       >m</a
-      > <a name="4296" href="Data.Nat.Base.html#4296" class="Bound"
+      > <a name="3875" href="Data.Nat.Base.html#3875" class="Bound"
       >k</a
-      > <a name="4298" class="Symbol"
+      > <a name="3877" class="Symbol"
       >=</a
-      > <a name="4300" href="Data.Nat.Base.html#Ordering.less" class="InductiveConstructor"
+      > <a name="3879" href="Data.Nat.Base.html#Ordering.less" class="InductiveConstructor"
       >less</a
-      >    <a name="4308" class="Symbol"
+      >    <a name="3887" class="Symbol"
       >(</a
-      ><a name="4309" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="3888" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="4313" href="Data.Nat.Base.html#4294" class="Bound"
+      > <a name="3892" href="Data.Nat.Base.html#3873" class="Bound"
       >m</a
-      ><a name="4314" class="Symbol"
+      ><a name="3893" class="Symbol"
       >)</a
-      > <a name="4316" href="Data.Nat.Base.html#4296" class="Bound"
+      > <a name="3895" href="Data.Nat.Base.html#3875" class="Bound"
       >k</a
       >
-<a name="4318" href="Data.Nat.Base.html#compare" class="Function"
+<a name="3897" href="Data.Nat.Base.html#compare" class="Function"
       >compare</a
-      > <a name="4326" class="Symbol"
+      > <a name="3905" class="Symbol"
       >(</a
-      ><a name="4327" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="3906" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="4331" class="DottedPattern Symbol"
+      > <a name="3910" class="DottedPattern Symbol"
       >.</a
-      ><a name="4332" href="Data.Nat.Base.html#4374" class="DottedPattern Bound"
+      ><a name="3911" href="Data.Nat.Base.html#3953" class="DottedPattern Bound"
       >m</a
-      ><a name="4333" class="Symbol"
+      ><a name="3912" class="Symbol"
       >)</a
-      >           <a name="4345" class="Symbol"
+      >           <a name="3924" class="Symbol"
       >(</a
-      ><a name="4346" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="3925" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="4350" class="DottedPattern Symbol"
+      > <a name="3929" class="DottedPattern Symbol"
       >.</a
-      ><a name="4351" href="Data.Nat.Base.html#4374" class="DottedPattern Bound"
+      ><a name="3930" href="Data.Nat.Base.html#3953" class="DottedPattern Bound"
       >m</a
-      ><a name="4352" class="Symbol"
+      ><a name="3931" class="Symbol"
       >)</a
-      >           <a name="4364" class="Symbol"
+      >           <a name="3943" class="Symbol"
       >|</a
-      > <a name="4366" href="Data.Nat.Base.html#Ordering.equal" class="InductiveConstructor"
+      > <a name="3945" href="Data.Nat.Base.html#Ordering.equal" class="InductiveConstructor"
       >equal</a
-      >   <a name="4374" href="Data.Nat.Base.html#4374" class="Bound"
+      >   <a name="3953" href="Data.Nat.Base.html#3953" class="Bound"
       >m</a
-      >   <a name="4378" class="Symbol"
+      >   <a name="3957" class="Symbol"
       >=</a
-      > <a name="4380" href="Data.Nat.Base.html#Ordering.equal" class="InductiveConstructor"
+      > <a name="3959" href="Data.Nat.Base.html#Ordering.equal" class="InductiveConstructor"
       >equal</a
-      >   <a name="4388" class="Symbol"
+      >   <a name="3967" class="Symbol"
       >(</a
-      ><a name="4389" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="3968" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="4393" href="Data.Nat.Base.html#4374" class="Bound"
+      > <a name="3972" href="Data.Nat.Base.html#3953" class="Bound"
       >m</a
-      ><a name="4394" class="Symbol"
+      ><a name="3973" class="Symbol"
       >)</a
       >
-<a name="4396" href="Data.Nat.Base.html#compare" class="Function"
+<a name="3975" href="Data.Nat.Base.html#compare" class="Function"
       >compare</a
-      > <a name="4404" class="Symbol"
+      > <a name="3983" class="Symbol"
       >(</a
-      ><a name="4405" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="3984" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="4409" class="DottedPattern Symbol"
+      > <a name="3988" class="DottedPattern Symbol"
       >.(</a
-      ><a name="4411" href="Agda.Builtin.Nat.html#Nat.suc" class="DottedPattern InductiveConstructor"
+      ><a name="3990" href="Agda.Builtin.Nat.html#Nat.suc" class="DottedPattern InductiveConstructor"
       >suc</a
-      > <a name="4415" href="Data.Nat.Base.html#4452" class="DottedPattern Bound"
+      > <a name="3994" href="Data.Nat.Base.html#4031" class="DottedPattern Bound"
       >m</a
-      > <a name="4417" href="Agda.Builtin.Nat.html#_+_" class="DottedPattern Primitive Operator"
+      > <a name="3996" href="Agda.Builtin.Nat.html#_+_" class="DottedPattern Primitive Operator"
       >+</a
-      > <a name="4419" href="Data.Nat.Base.html#4454" class="DottedPattern Bound"
+      > <a name="3998" href="Data.Nat.Base.html#4033" class="DottedPattern Bound"
       >k</a
-      ><a name="4420" class="DottedPattern Symbol"
+      ><a name="3999" class="DottedPattern Symbol"
       >)</a
-      ><a name="4421" class="Symbol"
+      ><a name="4000" class="Symbol"
       >)</a
-      > <a name="4423" class="Symbol"
+      > <a name="4002" class="Symbol"
       >(</a
-      ><a name="4424" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="4003" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="4428" class="DottedPattern Symbol"
+      > <a name="4007" class="DottedPattern Symbol"
       >.</a
-      ><a name="4429" href="Data.Nat.Base.html#4452" class="DottedPattern Bound"
+      ><a name="4008" href="Data.Nat.Base.html#4031" class="DottedPattern Bound"
       >m</a
-      ><a name="4430" class="Symbol"
+      ><a name="4009" class="Symbol"
       >)</a
-      >           <a name="4442" class="Symbol"
+      >           <a name="4021" class="Symbol"
       >|</a
-      > <a name="4444" href="Data.Nat.Base.html#Ordering.greater" class="InductiveConstructor"
+      > <a name="4023" href="Data.Nat.Base.html#Ordering.greater" class="InductiveConstructor"
       >greater</a
-      > <a name="4452" href="Data.Nat.Base.html#4452" class="Bound"
+      > <a name="4031" href="Data.Nat.Base.html#4031" class="Bound"
       >m</a
-      > <a name="4454" href="Data.Nat.Base.html#4454" class="Bound"
+      > <a name="4033" href="Data.Nat.Base.html#4033" class="Bound"
       >k</a
-      > <a name="4456" class="Symbol"
+      > <a name="4035" class="Symbol"
       >=</a
-      > <a name="4458" href="Data.Nat.Base.html#Ordering.greater" class="InductiveConstructor"
+      > <a name="4037" href="Data.Nat.Base.html#Ordering.greater" class="InductiveConstructor"
       >greater</a
-      > <a name="4466" class="Symbol"
+      > <a name="4045" class="Symbol"
       >(</a
-      ><a name="4467" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="4046" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="4471" href="Data.Nat.Base.html#4452" class="Bound"
+      > <a name="4050" href="Data.Nat.Base.html#4031" class="Bound"
       >m</a
-      ><a name="4472" class="Symbol"
+      ><a name="4051" class="Symbol"
       >)</a
-      > <a name="4474" href="Data.Nat.Base.html#4454" class="Bound"
+      > <a name="4053" href="Data.Nat.Base.html#4033" class="Bound"
       >k</a
       >
 </pre
