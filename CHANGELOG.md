@@ -575,7 +575,7 @@ Backwards compatible changes
   *-monoʳ-<            : (suc n *_) Preserves _<_ ⟶ _<_
   *-cancelˡ-≡          : suc k * i ≡ suc k * j → i ≡ j
 
-  ^-distribˡ-+         : m ^ (n + p) ≡ m ^ n * m ^ p
+  ^-distribˡ-+-*       : m ^ (n + p) ≡ m ^ n * m ^ p
   i^j≡0⇒i≡0            : i ^ j ≡ 0 → i ≡ 0
   i^j≡1⇒j≡0∨i≡1        : i ^ j ≡ 1 → j ≡ 0 ⊎ i ≡ 1
 

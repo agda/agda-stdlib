@@ -544,10 +544,10 @@ i*j≡1⇒j≡1 i j eq = i*j≡1⇒i≡1 j i (trans (*-comm j i) eq)
 ------------------------------------------------------------------------
 -- Properties of _^_
 
-^-distribˡ-+ : ∀ m n p → m ^ (n + p) ≡ m ^ n * m ^ p
-^-distribˡ-+ m zero    p = sym (+-identityʳ (m ^ p))
-^-distribˡ-+ m (suc n) p = begin
-  m * (m ^ (n + p))       ≡⟨ cong (m *_) (^-distribˡ-+ m n p) ⟩
+^-distribˡ-+-* : ∀ m n p → m ^ (n + p) ≡ m ^ n * m ^ p
+^-distribˡ-+-* m zero    p = sym (+-identityʳ (m ^ p))
+^-distribˡ-+-* m (suc n) p = begin
+  m * (m ^ (n + p))       ≡⟨ cong (m *_) (^-distribˡ-+-* m n p) ⟩
   m * ((m ^ n) * (m ^ p)) ≡⟨ sym (*-assoc m _ _) ⟩
   (m * (m ^ n)) * (m ^ p) ∎
 
