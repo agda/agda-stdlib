@@ -55,828 +55,836 @@
       >import</a
       > <a name="538" href="Data.Nat.html" class="Module"
       >Data.Nat</a
-      >
-<a name="547" class="Keyword"
-      >open</a
-      > <a name="552" class="Keyword"
-      >import</a
-      > <a name="559" href="Data.Product.html" class="Module"
-      >Data.Product</a
-      >
-<a name="572" class="Keyword"
-      >open</a
-      > <a name="577" class="Keyword"
-      >import</a
-      > <a name="584" href="Data.Unit.html" class="Module"
-      >Data.Unit</a
-      >
-<a name="594" class="Keyword"
-      >open</a
-      > <a name="599" class="Keyword"
-      >import</a
-      > <a name="606" href="Data.Vec.html" class="Module"
-      >Data.Vec</a
-      >
-<a name="615" class="Keyword"
-      >open</a
-      > <a name="620" class="Keyword"
-      >import</a
-      > <a name="627" href="Function.Inverse.html" class="Module"
-      >Function.Inverse</a
-      >
-<a name="644" class="Keyword"
-      >open</a
-      > <a name="649" class="Keyword"
-      >import</a
-      > <a name="656" href="Level.html" class="Module"
-      >Level</a
-      > <a name="662" class="Keyword"
-      >using</a
-      > <a name="668" class="Symbol"
+      > <a name="547" class="Keyword"
+      >hiding</a
+      > <a name="554" class="Symbol"
       >(</a
-      ><a name="669" href="Level.html#Lift" class="Record"
-      >Lift</a
-      ><a name="673" class="Symbol"
-      >;</a
-      > <a name="675" href="Level.html#Lift.lift" class="InductiveConstructor"
-      >lift</a
-      ><a name="679" class="Symbol"
+      ><a name="555" href="Data.Nat.Base.html#_^_" class="Function Operator"
+      >_^_</a
+      ><a name="558" class="Symbol"
       >)</a
       >
-<a name="681" class="Keyword"
+<a name="560" class="Keyword"
       >open</a
-      > <a name="686" class="Keyword"
+      > <a name="565" class="Keyword"
       >import</a
-      > <a name="693" href="Relation.Binary.PropositionalEquality.html" class="Module"
-      >Relation.Binary.PropositionalEquality</a
-      > <a name="731" class="Symbol"
-      >as</a
-      > <a name="734" class="Module"
-      >P</a
-      > <a name="736" class="Keyword"
+      > <a name="572" href="Data.Product.html" class="Module"
+      >Data.Product</a
+      >
+<a name="585" class="Keyword"
+      >open</a
+      > <a name="590" class="Keyword"
+      >import</a
+      > <a name="597" href="Data.Unit.html" class="Module"
+      >Data.Unit</a
+      >
+<a name="607" class="Keyword"
+      >open</a
+      > <a name="612" class="Keyword"
+      >import</a
+      > <a name="619" href="Data.Vec.html" class="Module"
+      >Data.Vec</a
+      >
+<a name="628" class="Keyword"
+      >open</a
+      > <a name="633" class="Keyword"
+      >import</a
+      > <a name="640" href="Function.Inverse.html" class="Module"
+      >Function.Inverse</a
+      >
+<a name="657" class="Keyword"
+      >open</a
+      > <a name="662" class="Keyword"
+      >import</a
+      > <a name="669" href="Level.html" class="Module"
+      >Level</a
+      > <a name="675" class="Keyword"
       >using</a
-      > <a name="742" class="Symbol"
+      > <a name="681" class="Symbol"
       >(</a
-      ><a name="743" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      ><a name="682" href="Level.html#Lift" class="Record"
+      >Lift</a
+      ><a name="686" class="Symbol"
+      >;</a
+      > <a name="688" href="Level.html#Lift.lift" class="InductiveConstructor"
+      >lift</a
+      ><a name="692" class="Symbol"
+      >)</a
+      >
+<a name="694" class="Keyword"
+      >open</a
+      > <a name="699" class="Keyword"
+      >import</a
+      > <a name="706" href="Relation.Binary.PropositionalEquality.html" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      > <a name="744" class="Symbol"
+      >as</a
+      > <a name="747" class="Module"
+      >P</a
+      > <a name="749" class="Keyword"
+      >using</a
+      > <a name="755" class="Symbol"
+      >(</a
+      ><a name="756" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >_&#8801;_</a
-      ><a name="746" class="Symbol"
+      ><a name="759" class="Symbol"
       >)</a
       >
 
-<a name="749" class="Comment"
+<a name="762" class="Comment"
       >-- N-ary product.</a
       >
 
-<a name="768" class="Keyword"
+<a name="781" class="Keyword"
       >infix</a
-      > <a name="774" class="Number"
+      > <a name="787" class="Number"
       >8</a
-      > <a name="776" href="Data.Product.N-ary.html#_^_" class="Function Operator"
+      > <a name="789" href="Data.Product.N-ary.html#_^_" class="Function Operator"
       >_^_</a
       >
 
 <a name="_^_" href="Data.Product.N-ary.html#_^_" class="Function Operator"
       >_^_</a
-      > <a name="785" class="Symbol"
+      > <a name="798" class="Symbol"
       >:</a
-      > <a name="787" class="Symbol"
+      > <a name="800" class="Symbol"
       >&#8704;</a
-      > <a name="789" class="Symbol"
+      > <a name="802" class="Symbol"
       >{</a
-      ><a name="790" href="Data.Product.N-ary.html#790" class="Bound"
+      ><a name="803" href="Data.Product.N-ary.html#803" class="Bound"
       >&#8467;</a
-      ><a name="791" class="Symbol"
+      ><a name="804" class="Symbol"
       >}</a
-      > <a name="793" class="Symbol"
+      > <a name="806" class="Symbol"
       >&#8594;</a
-      > <a name="795" class="PrimitiveType"
+      > <a name="808" class="PrimitiveType"
       >Set</a
-      > <a name="799" href="Data.Product.N-ary.html#790" class="Bound"
+      > <a name="812" href="Data.Product.N-ary.html#803" class="Bound"
       >&#8467;</a
-      > <a name="801" class="Symbol"
+      > <a name="814" class="Symbol"
       >&#8594;</a
-      > <a name="803" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
+      > <a name="816" href="Agda.Builtin.Nat.html#&#8469;" class="Datatype"
       >&#8469;</a
-      > <a name="805" class="Symbol"
+      > <a name="818" class="Symbol"
       >&#8594;</a
-      > <a name="807" class="PrimitiveType"
+      > <a name="820" class="PrimitiveType"
       >Set</a
-      > <a name="811" href="Data.Product.N-ary.html#790" class="Bound"
+      > <a name="824" href="Data.Product.N-ary.html#803" class="Bound"
       >&#8467;</a
       >
-<a name="813" href="Data.Product.N-ary.html#813" class="Bound"
+<a name="826" href="Data.Product.N-ary.html#826" class="Bound"
       >A</a
-      > <a name="815" href="Data.Product.N-ary.html#_^_" class="Function Operator"
+      > <a name="828" href="Data.Product.N-ary.html#_^_" class="Function Operator"
       >^</a
-      > <a name="817" class="Number"
+      > <a name="830" class="Number"
       >0</a
-      >           <a name="829" class="Symbol"
+      >           <a name="842" class="Symbol"
       >=</a
-      > <a name="831" href="Level.html#Lift" class="Record"
+      > <a name="844" href="Level.html#Lift" class="Record"
       >Lift</a
-      > <a name="836" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
+      > <a name="849" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
       >&#8868;</a
       >
-<a name="838" href="Data.Product.N-ary.html#838" class="Bound"
+<a name="851" href="Data.Product.N-ary.html#851" class="Bound"
       >A</a
-      > <a name="840" href="Data.Product.N-ary.html#_^_" class="Function Operator"
+      > <a name="853" href="Data.Product.N-ary.html#_^_" class="Function Operator"
       >^</a
-      > <a name="842" class="Number"
+      > <a name="855" class="Number"
       >1</a
-      >           <a name="854" class="Symbol"
+      >           <a name="867" class="Symbol"
       >=</a
-      > <a name="856" href="Data.Product.N-ary.html#838" class="Bound"
+      > <a name="869" href="Data.Product.N-ary.html#851" class="Bound"
       >A</a
       >
-<a name="858" href="Data.Product.N-ary.html#858" class="Bound"
+<a name="871" href="Data.Product.N-ary.html#871" class="Bound"
       >A</a
-      > <a name="860" href="Data.Product.N-ary.html#_^_" class="Function Operator"
+      > <a name="873" href="Data.Product.N-ary.html#_^_" class="Function Operator"
       >^</a
-      > <a name="862" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="875" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="866" class="Symbol"
+      > <a name="879" class="Symbol"
       >(</a
-      ><a name="867" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="880" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="871" href="Data.Product.N-ary.html#871" class="Bound"
+      > <a name="884" href="Data.Product.N-ary.html#884" class="Bound"
       >n</a
-      ><a name="872" class="Symbol"
+      ><a name="885" class="Symbol"
       >)</a
-      > <a name="874" class="Symbol"
+      > <a name="887" class="Symbol"
       >=</a
-      > <a name="876" href="Data.Product.N-ary.html#858" class="Bound"
+      > <a name="889" href="Data.Product.N-ary.html#871" class="Bound"
       >A</a
-      > <a name="878" href="Data.Product.html#_&#215;_" class="Function Operator"
+      > <a name="891" href="Data.Product.html#_&#215;_" class="Function Operator"
       >&#215;</a
-      > <a name="880" href="Data.Product.N-ary.html#858" class="Bound"
+      > <a name="893" href="Data.Product.N-ary.html#871" class="Bound"
       >A</a
-      > <a name="882" href="Data.Product.N-ary.html#_^_" class="Function Operator"
+      > <a name="895" href="Data.Product.N-ary.html#_^_" class="Function Operator"
       >^</a
-      > <a name="884" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      > <a name="897" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="888" href="Data.Product.N-ary.html#871" class="Bound"
+      > <a name="901" href="Data.Product.N-ary.html#884" class="Bound"
       >n</a
       >
 
-<a name="891" class="Comment"
+<a name="904" class="Comment"
       >-- Conversions.</a
       >
 
 <a name="&#8596;Vec" href="Data.Product.N-ary.html#&#8596;Vec" class="Function"
       >&#8596;Vec</a
-      > <a name="913" class="Symbol"
+      > <a name="926" class="Symbol"
       >:</a
-      > <a name="915" class="Symbol"
+      > <a name="928" class="Symbol"
       >&#8704;</a
-      > <a name="917" class="Symbol"
+      > <a name="930" class="Symbol"
       >{</a
-      ><a name="918" href="Data.Product.N-ary.html#918" class="Bound"
+      ><a name="931" href="Data.Product.N-ary.html#931" class="Bound"
       >a</a
-      ><a name="919" class="Symbol"
+      ><a name="932" class="Symbol"
       >}</a
-      > <a name="921" class="Symbol"
+      > <a name="934" class="Symbol"
       >{</a
-      ><a name="922" href="Data.Product.N-ary.html#922" class="Bound"
+      ><a name="935" href="Data.Product.N-ary.html#935" class="Bound"
       >A</a
-      > <a name="924" class="Symbol"
+      > <a name="937" class="Symbol"
       >:</a
-      > <a name="926" class="PrimitiveType"
+      > <a name="939" class="PrimitiveType"
       >Set</a
-      > <a name="930" href="Data.Product.N-ary.html#918" class="Bound"
+      > <a name="943" href="Data.Product.N-ary.html#931" class="Bound"
       >a</a
-      ><a name="931" class="Symbol"
+      ><a name="944" class="Symbol"
       >}</a
-      > <a name="933" href="Data.Product.N-ary.html#933" class="Bound"
+      > <a name="946" href="Data.Product.N-ary.html#946" class="Bound"
       >n</a
-      > <a name="935" class="Symbol"
+      > <a name="948" class="Symbol"
       >&#8594;</a
-      > <a name="937" href="Data.Product.N-ary.html#922" class="Bound"
+      > <a name="950" href="Data.Product.N-ary.html#935" class="Bound"
       >A</a
-      > <a name="939" href="Data.Product.N-ary.html#_^_" class="Function Operator"
+      > <a name="952" href="Data.Product.N-ary.html#_^_" class="Function Operator"
       >^</a
-      > <a name="941" href="Data.Product.N-ary.html#933" class="Bound"
+      > <a name="954" href="Data.Product.N-ary.html#946" class="Bound"
       >n</a
-      > <a name="943" href="Function.Inverse.html#_&#8596;_" class="Function Operator"
+      > <a name="956" href="Function.Inverse.html#_&#8596;_" class="Function Operator"
       >&#8596;</a
-      > <a name="945" href="Data.Vec.html#Vec" class="Datatype"
+      > <a name="958" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
-      > <a name="949" href="Data.Product.N-ary.html#922" class="Bound"
+      > <a name="962" href="Data.Product.N-ary.html#935" class="Bound"
       >A</a
-      > <a name="951" href="Data.Product.N-ary.html#933" class="Bound"
+      > <a name="964" href="Data.Product.N-ary.html#946" class="Bound"
       >n</a
       >
-<a name="953" href="Data.Product.N-ary.html#&#8596;Vec" class="Function"
+<a name="966" href="Data.Product.N-ary.html#&#8596;Vec" class="Function"
       >&#8596;Vec</a
-      > <a name="958" href="Data.Product.N-ary.html#958" class="Bound"
+      > <a name="971" href="Data.Product.N-ary.html#971" class="Bound"
       >n</a
-      > <a name="960" class="Symbol"
+      > <a name="973" class="Symbol"
       >=</a
-      > <a name="962" class="Keyword"
+      > <a name="975" class="Keyword"
       >record</a
       >
-  <a name="971" class="Symbol"
+  <a name="984" class="Symbol"
       >{</a
-      > <a name="973" class="Field"
+      > <a name="986" class="Field"
       >to</a
-      >         <a name="984" class="Symbol"
+      >         <a name="997" class="Symbol"
       >=</a
-      > <a name="986" href="Relation.Binary.PropositionalEquality.html#&#8594;-to-&#10230;" class="Function"
+      > <a name="999" href="Relation.Binary.PropositionalEquality.html#&#8594;-to-&#10230;" class="Function"
       >P.&#8594;-to-&#10230;</a
-      > <a name="995" class="Symbol"
+      > <a name="1008" class="Symbol"
       >(</a
-      ><a name="996" href="Data.Product.N-ary.html#1163" class="Function"
+      ><a name="1009" href="Data.Product.N-ary.html#1176" class="Function"
       >toVec</a
-      > <a name="1002" href="Data.Product.N-ary.html#958" class="Bound"
+      > <a name="1015" href="Data.Product.N-ary.html#971" class="Bound"
       >n</a
-      ><a name="1003" class="Symbol"
+      ><a name="1016" class="Symbol"
       >)</a
       >
-  <a name="1007" class="Symbol"
+  <a name="1020" class="Symbol"
       >;</a
-      > <a name="1009" class="Field"
+      > <a name="1022" class="Field"
       >from</a
-      >       <a name="1020" class="Symbol"
+      >       <a name="1033" class="Symbol"
       >=</a
-      > <a name="1022" href="Relation.Binary.PropositionalEquality.html#&#8594;-to-&#10230;" class="Function"
+      > <a name="1035" href="Relation.Binary.PropositionalEquality.html#&#8594;-to-&#10230;" class="Function"
       >P.&#8594;-to-&#10230;</a
-      > <a name="1031" href="Data.Product.N-ary.html#1338" class="Function"
+      > <a name="1044" href="Data.Product.N-ary.html#1351" class="Function"
       >fromVec</a
       >
-  <a name="1041" class="Symbol"
+  <a name="1054" class="Symbol"
       >;</a
-      > <a name="1043" class="Field"
+      > <a name="1056" class="Field"
       >inverse-of</a
-      > <a name="1054" class="Symbol"
+      > <a name="1067" class="Symbol"
       >=</a
-      > <a name="1056" class="Keyword"
+      > <a name="1069" class="Keyword"
       >record</a
       >
-    <a name="1067" class="Symbol"
+    <a name="1080" class="Symbol"
       >{</a
-      > <a name="1069" class="Field"
+      > <a name="1082" class="Field"
       >left-inverse-of</a
-      >  <a name="1086" class="Symbol"
+      >  <a name="1099" class="Symbol"
       >=</a
-      > <a name="1088" href="Data.Product.N-ary.html#1499" class="Function"
+      > <a name="1101" href="Data.Product.N-ary.html#1512" class="Function"
       >fromVec&#8728;toVec</a
-      > <a name="1102" href="Data.Product.N-ary.html#958" class="Bound"
+      > <a name="1115" href="Data.Product.N-ary.html#971" class="Bound"
       >n</a
       >
-    <a name="1108" class="Symbol"
+    <a name="1121" class="Symbol"
       >;</a
-      > <a name="1110" class="Field"
+      > <a name="1123" class="Field"
       >right-inverse-of</a
-      > <a name="1127" class="Symbol"
+      > <a name="1140" class="Symbol"
       >=</a
-      > <a name="1129" href="Data.Product.N-ary.html#1880" class="Function"
+      > <a name="1142" href="Data.Product.N-ary.html#1893" class="Function"
       >toVec&#8728;fromVec</a
       >
-    <a name="1147" class="Symbol"
+    <a name="1160" class="Symbol"
       >}</a
       >
-  <a name="1151" class="Symbol"
+  <a name="1164" class="Symbol"
       >}</a
       >
-  <a name="1155" class="Keyword"
+  <a name="1168" class="Keyword"
       >where</a
       >
-  <a name="1163" href="Data.Product.N-ary.html#1163" class="Function"
+  <a name="1176" href="Data.Product.N-ary.html#1176" class="Function"
       >toVec</a
-      > <a name="1169" class="Symbol"
+      > <a name="1182" class="Symbol"
       >:</a
-      > <a name="1171" class="Symbol"
+      > <a name="1184" class="Symbol"
       >&#8704;</a
-      > <a name="1173" class="Symbol"
+      > <a name="1186" class="Symbol"
       >{</a
-      ><a name="1174" href="Data.Product.N-ary.html#1174" class="Bound"
+      ><a name="1187" href="Data.Product.N-ary.html#1187" class="Bound"
       >a</a
-      ><a name="1175" class="Symbol"
+      ><a name="1188" class="Symbol"
       >}</a
-      > <a name="1177" class="Symbol"
+      > <a name="1190" class="Symbol"
       >{</a
-      ><a name="1178" href="Data.Product.N-ary.html#1178" class="Bound"
+      ><a name="1191" href="Data.Product.N-ary.html#1191" class="Bound"
       >A</a
-      > <a name="1180" class="Symbol"
+      > <a name="1193" class="Symbol"
       >:</a
-      > <a name="1182" class="PrimitiveType"
+      > <a name="1195" class="PrimitiveType"
       >Set</a
-      > <a name="1186" href="Data.Product.N-ary.html#1174" class="Bound"
+      > <a name="1199" href="Data.Product.N-ary.html#1187" class="Bound"
       >a</a
-      ><a name="1187" class="Symbol"
+      ><a name="1200" class="Symbol"
       >}</a
-      > <a name="1189" href="Data.Product.N-ary.html#1189" class="Bound"
+      > <a name="1202" href="Data.Product.N-ary.html#1202" class="Bound"
       >n</a
-      > <a name="1191" class="Symbol"
+      > <a name="1204" class="Symbol"
       >&#8594;</a
-      > <a name="1193" href="Data.Product.N-ary.html#1178" class="Bound"
+      > <a name="1206" href="Data.Product.N-ary.html#1191" class="Bound"
       >A</a
-      > <a name="1195" href="Data.Product.N-ary.html#_^_" class="Function Operator"
+      > <a name="1208" href="Data.Product.N-ary.html#_^_" class="Function Operator"
       >^</a
-      > <a name="1197" href="Data.Product.N-ary.html#1189" class="Bound"
+      > <a name="1210" href="Data.Product.N-ary.html#1202" class="Bound"
       >n</a
-      > <a name="1199" class="Symbol"
+      > <a name="1212" class="Symbol"
       >&#8594;</a
-      > <a name="1201" href="Data.Vec.html#Vec" class="Datatype"
+      > <a name="1214" href="Data.Vec.html#Vec" class="Datatype"
       >Vec</a
-      > <a name="1205" href="Data.Product.N-ary.html#1178" class="Bound"
+      > <a name="1218" href="Data.Product.N-ary.html#1191" class="Bound"
       >A</a
-      > <a name="1207" href="Data.Product.N-ary.html#1189" class="Bound"
+      > <a name="1220" href="Data.Product.N-ary.html#1202" class="Bound"
       >n</a
       >
-  <a name="1211" href="Data.Product.N-ary.html#1163" class="Function"
+  <a name="1224" href="Data.Product.N-ary.html#1176" class="Function"
       >toVec</a
-      > <a name="1217" class="Number"
+      > <a name="1230" class="Number"
       >0</a
-      >             <a name="1231" class="Symbol"
+      >             <a name="1244" class="Symbol"
       >(</a
-      ><a name="1232" href="Level.html#Lift.lift" class="InductiveConstructor"
+      ><a name="1245" href="Level.html#Lift.lift" class="InductiveConstructor"
       >lift</a
-      > <a name="1237" href="Agda.Builtin.Unit.html#&#8868;.tt" class="InductiveConstructor"
+      > <a name="1250" href="Agda.Builtin.Unit.html#&#8868;.tt" class="InductiveConstructor"
       >tt</a
-      ><a name="1239" class="Symbol"
+      ><a name="1252" class="Symbol"
       >)</a
-      > <a name="1241" class="Symbol"
+      > <a name="1254" class="Symbol"
       >=</a
-      > <a name="1243" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      > <a name="1256" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
       >[]</a
       >
-  <a name="1248" href="Data.Product.N-ary.html#1163" class="Function"
+  <a name="1261" href="Data.Product.N-ary.html#1176" class="Function"
       >toVec</a
-      > <a name="1254" class="Number"
+      > <a name="1267" class="Number"
       >1</a
-      >             <a name="1268" href="Data.Product.N-ary.html#1268" class="Bound"
+      >             <a name="1281" href="Data.Product.N-ary.html#1281" class="Bound"
       >x</a
-      >         <a name="1278" class="Symbol"
+      >         <a name="1291" class="Symbol"
       >=</a
-      > <a name="1280" href="Data.Vec.html#[_]" class="Function Operator"
+      > <a name="1293" href="Data.Vec.html#[_]" class="Function Operator"
       >[</a
-      > <a name="1282" href="Data.Product.N-ary.html#1268" class="Bound"
+      > <a name="1295" href="Data.Product.N-ary.html#1281" class="Bound"
       >x</a
-      > <a name="1284" href="Data.Vec.html#[_]" class="Function Operator"
+      > <a name="1297" href="Data.Vec.html#[_]" class="Function Operator"
       >]</a
       >
-  <a name="1288" href="Data.Product.N-ary.html#1163" class="Function"
+  <a name="1301" href="Data.Product.N-ary.html#1176" class="Function"
       >toVec</a
-      > <a name="1294" class="Symbol"
+      > <a name="1307" class="Symbol"
       >(</a
-      ><a name="1295" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="1308" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="1299" class="Symbol"
+      > <a name="1312" class="Symbol"
       >(</a
-      ><a name="1300" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="1313" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="1304" href="Data.Product.N-ary.html#1304" class="Bound"
+      > <a name="1317" href="Data.Product.N-ary.html#1317" class="Bound"
       >n</a
-      ><a name="1305" class="Symbol"
+      ><a name="1318" class="Symbol"
       >))</a
-      > <a name="1308" class="Symbol"
+      > <a name="1321" class="Symbol"
       >(</a
-      ><a name="1309" href="Data.Product.N-ary.html#1309" class="Bound"
+      ><a name="1322" href="Data.Product.N-ary.html#1322" class="Bound"
       >x</a
-      > <a name="1311" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      > <a name="1324" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      > <a name="1313" href="Data.Product.N-ary.html#1313" class="Bound"
+      > <a name="1326" href="Data.Product.N-ary.html#1326" class="Bound"
       >xs</a
-      ><a name="1315" class="Symbol"
+      ><a name="1328" class="Symbol"
       >)</a
-      >  <a name="1318" class="Symbol"
+      >  <a name="1331" class="Symbol"
       >=</a
-      > <a name="1320" href="Data.Product.N-ary.html#1309" class="Bound"
+      > <a name="1333" href="Data.Product.N-ary.html#1322" class="Bound"
       >x</a
-      > <a name="1322" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      > <a name="1335" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      > <a name="1324" href="Data.Product.N-ary.html#1163" class="Function"
+      > <a name="1337" href="Data.Product.N-ary.html#1176" class="Function"
       >toVec</a
-      > <a name="1330" class="Symbol"
+      > <a name="1343" class="Symbol"
       >_</a
-      > <a name="1332" href="Data.Product.N-ary.html#1313" class="Bound"
+      > <a name="1345" href="Data.Product.N-ary.html#1326" class="Bound"
       >xs</a
       >
 
-  <a name="1338" href="Data.Product.N-ary.html#1338" class="Function"
+  <a name="1351" href="Data.Product.N-ary.html#1351" class="Function"
       >fromVec</a
-      > <a name="1346" class="Symbol"
+      > <a name="1359" class="Symbol"
       >:</a
-      > <a name="1348" class="Symbol"
+      > <a name="1361" class="Symbol"
       >&#8704;</a
-      > <a name="1350" class="Symbol"
+      > <a name="1363" class="Symbol"
       >{</a
-      ><a name="1351" href="Data.Product.N-ary.html#1351" class="Bound"
+      ><a name="1364" href="Data.Product.N-ary.html#1364" class="Bound"
       >a</a
-      ><a name="1352" class="Symbol"
+      ><a name="1365" class="Symbol"
       >}</a
-      > <a name="1354" class="Symbol"
+      > <a name="1367" class="Symbol"
       >{</a
-      ><a name="1355" href="Data.Product.N-ary.html#1355" class="Bound"
+      ><a name="1368" href="Data.Product.N-ary.html#1368" class="Bound"
       >A</a
-      > <a name="1357" class="Symbol"
-      >:</a
-      > <a name="1359" class="PrimitiveType"
-      >Set</a
-      > <a name="1363" href="Data.Product.N-ary.html#1351" class="Bound"
-      >a</a
-      ><a name="1364" class="Symbol"
-      >}</a
-      > <a name="1366" class="Symbol"
-      >{</a
-      ><a name="1367" href="Data.Product.N-ary.html#1367" class="Bound"
-      >n</a
-      ><a name="1368" class="Symbol"
-      >}</a
       > <a name="1370" class="Symbol"
-      >&#8594;</a
-      > <a name="1372" href="Data.Vec.html#Vec" class="Datatype"
-      >Vec</a
-      > <a name="1376" href="Data.Product.N-ary.html#1355" class="Bound"
-      >A</a
-      > <a name="1378" href="Data.Product.N-ary.html#1367" class="Bound"
+      >:</a
+      > <a name="1372" class="PrimitiveType"
+      >Set</a
+      > <a name="1376" href="Data.Product.N-ary.html#1364" class="Bound"
+      >a</a
+      ><a name="1377" class="Symbol"
+      >}</a
+      > <a name="1379" class="Symbol"
+      >{</a
+      ><a name="1380" href="Data.Product.N-ary.html#1380" class="Bound"
       >n</a
-      > <a name="1380" class="Symbol"
+      ><a name="1381" class="Symbol"
+      >}</a
+      > <a name="1383" class="Symbol"
       >&#8594;</a
-      > <a name="1382" href="Data.Product.N-ary.html#1355" class="Bound"
+      > <a name="1385" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="1389" href="Data.Product.N-ary.html#1368" class="Bound"
       >A</a
-      > <a name="1384" href="Data.Product.N-ary.html#_^_" class="Function Operator"
+      > <a name="1391" href="Data.Product.N-ary.html#1380" class="Bound"
+      >n</a
+      > <a name="1393" class="Symbol"
+      >&#8594;</a
+      > <a name="1395" href="Data.Product.N-ary.html#1368" class="Bound"
+      >A</a
+      > <a name="1397" href="Data.Product.N-ary.html#_^_" class="Function Operator"
       >^</a
-      > <a name="1386" href="Data.Product.N-ary.html#1367" class="Bound"
+      > <a name="1399" href="Data.Product.N-ary.html#1380" class="Bound"
       >n</a
       >
-  <a name="1390" href="Data.Product.N-ary.html#1338" class="Function"
+  <a name="1403" href="Data.Product.N-ary.html#1351" class="Function"
       >fromVec</a
-      > <a name="1398" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      > <a name="1411" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
       >[]</a
-      >           <a name="1411" class="Symbol"
+      >           <a name="1424" class="Symbol"
       >=</a
-      > <a name="1413" href="Level.html#Lift.lift" class="InductiveConstructor"
+      > <a name="1426" href="Level.html#Lift.lift" class="InductiveConstructor"
       >lift</a
-      > <a name="1418" href="Agda.Builtin.Unit.html#&#8868;.tt" class="InductiveConstructor"
+      > <a name="1431" href="Agda.Builtin.Unit.html#&#8868;.tt" class="InductiveConstructor"
       >tt</a
       >
-  <a name="1423" href="Data.Product.N-ary.html#1338" class="Function"
+  <a name="1436" href="Data.Product.N-ary.html#1351" class="Function"
       >fromVec</a
-      > <a name="1431" class="Symbol"
+      > <a name="1444" class="Symbol"
       >(</a
-      ><a name="1432" href="Data.Product.N-ary.html#1432" class="Bound"
+      ><a name="1445" href="Data.Product.N-ary.html#1445" class="Bound"
       >x</a
-      > <a name="1434" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      > <a name="1447" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      > <a name="1436" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      > <a name="1449" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="1438" class="Symbol"
+      ><a name="1451" class="Symbol"
       >)</a
-      >     <a name="1444" class="Symbol"
+      >     <a name="1457" class="Symbol"
       >=</a
-      > <a name="1446" href="Data.Product.N-ary.html#1432" class="Bound"
+      > <a name="1459" href="Data.Product.N-ary.html#1445" class="Bound"
       >x</a
       >
-  <a name="1450" href="Data.Product.N-ary.html#1338" class="Function"
+  <a name="1463" href="Data.Product.N-ary.html#1351" class="Function"
       >fromVec</a
-      > <a name="1458" class="Symbol"
-      >(</a
-      ><a name="1459" href="Data.Product.N-ary.html#1459" class="Bound"
-      >x</a
-      > <a name="1461" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
-      >&#8759;</a
-      > <a name="1463" href="Data.Product.N-ary.html#1463" class="Bound"
-      >y</a
-      > <a name="1465" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
-      >&#8759;</a
-      > <a name="1467" href="Data.Product.N-ary.html#1467" class="Bound"
-      >xs</a
-      ><a name="1469" class="Symbol"
-      >)</a
       > <a name="1471" class="Symbol"
-      >=</a
-      > <a name="1473" class="Symbol"
       >(</a
-      ><a name="1474" href="Data.Product.N-ary.html#1459" class="Bound"
+      ><a name="1472" href="Data.Product.N-ary.html#1472" class="Bound"
       >x</a
-      > <a name="1476" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
-      >,</a
-      > <a name="1478" href="Data.Product.N-ary.html#1338" class="Function"
-      >fromVec</a
+      > <a name="1474" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1476" href="Data.Product.N-ary.html#1476" class="Bound"
+      >y</a
+      > <a name="1478" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="1480" href="Data.Product.N-ary.html#1480" class="Bound"
+      >xs</a
+      ><a name="1482" class="Symbol"
+      >)</a
+      > <a name="1484" class="Symbol"
+      >=</a
       > <a name="1486" class="Symbol"
       >(</a
-      ><a name="1487" href="Data.Product.N-ary.html#1463" class="Bound"
+      ><a name="1487" href="Data.Product.N-ary.html#1472" class="Bound"
+      >x</a
+      > <a name="1489" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="1491" href="Data.Product.N-ary.html#1351" class="Function"
+      >fromVec</a
+      > <a name="1499" class="Symbol"
+      >(</a
+      ><a name="1500" href="Data.Product.N-ary.html#1476" class="Bound"
       >y</a
-      > <a name="1489" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      > <a name="1502" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      > <a name="1491" href="Data.Product.N-ary.html#1467" class="Bound"
+      > <a name="1504" href="Data.Product.N-ary.html#1480" class="Bound"
       >xs</a
-      ><a name="1493" class="Symbol"
+      ><a name="1506" class="Symbol"
       >))</a
       >
 
-  <a name="1499" href="Data.Product.N-ary.html#1499" class="Function"
+  <a name="1512" href="Data.Product.N-ary.html#1512" class="Function"
       >fromVec&#8728;toVec</a
-      > <a name="1513" class="Symbol"
+      > <a name="1526" class="Symbol"
       >:</a
-      > <a name="1515" class="Symbol"
+      > <a name="1528" class="Symbol"
       >&#8704;</a
-      > <a name="1517" class="Symbol"
+      > <a name="1530" class="Symbol"
       >{</a
-      ><a name="1518" href="Data.Product.N-ary.html#1518" class="Bound"
+      ><a name="1531" href="Data.Product.N-ary.html#1531" class="Bound"
       >a</a
-      ><a name="1519" class="Symbol"
+      ><a name="1532" class="Symbol"
       >}</a
-      > <a name="1521" class="Symbol"
+      > <a name="1534" class="Symbol"
       >{</a
-      ><a name="1522" href="Data.Product.N-ary.html#1522" class="Bound"
+      ><a name="1535" href="Data.Product.N-ary.html#1535" class="Bound"
       >A</a
-      > <a name="1524" class="Symbol"
+      > <a name="1537" class="Symbol"
       >:</a
-      > <a name="1526" class="PrimitiveType"
+      > <a name="1539" class="PrimitiveType"
       >Set</a
-      > <a name="1530" href="Data.Product.N-ary.html#1518" class="Bound"
+      > <a name="1543" href="Data.Product.N-ary.html#1531" class="Bound"
       >a</a
-      ><a name="1531" class="Symbol"
+      ><a name="1544" class="Symbol"
       >}</a
-      > <a name="1533" href="Data.Product.N-ary.html#1533" class="Bound"
+      > <a name="1546" href="Data.Product.N-ary.html#1546" class="Bound"
       >n</a
-      > <a name="1535" class="Symbol"
-      >(</a
-      ><a name="1536" href="Data.Product.N-ary.html#1536" class="Bound"
-      >xs</a
-      > <a name="1539" class="Symbol"
-      >:</a
-      > <a name="1541" href="Data.Product.N-ary.html#1522" class="Bound"
-      >A</a
-      > <a name="1543" href="Data.Product.N-ary.html#_^_" class="Function Operator"
-      >^</a
-      > <a name="1545" href="Data.Product.N-ary.html#1533" class="Bound"
-      >n</a
-      ><a name="1546" class="Symbol"
-      >)</a
       > <a name="1548" class="Symbol"
+      >(</a
+      ><a name="1549" href="Data.Product.N-ary.html#1549" class="Bound"
+      >xs</a
+      > <a name="1552" class="Symbol"
+      >:</a
+      > <a name="1554" href="Data.Product.N-ary.html#1535" class="Bound"
+      >A</a
+      > <a name="1556" href="Data.Product.N-ary.html#_^_" class="Function Operator"
+      >^</a
+      > <a name="1558" href="Data.Product.N-ary.html#1546" class="Bound"
+      >n</a
+      ><a name="1559" class="Symbol"
+      >)</a
+      > <a name="1561" class="Symbol"
       >&#8594;</a
       >
-                  <a name="1568" href="Data.Product.N-ary.html#1338" class="Function"
+                  <a name="1581" href="Data.Product.N-ary.html#1351" class="Function"
       >fromVec</a
-      > <a name="1576" class="Symbol"
+      > <a name="1589" class="Symbol"
       >(</a
-      ><a name="1577" href="Data.Product.N-ary.html#1163" class="Function"
+      ><a name="1590" href="Data.Product.N-ary.html#1176" class="Function"
       >toVec</a
-      > <a name="1583" href="Data.Product.N-ary.html#1533" class="Bound"
+      > <a name="1596" href="Data.Product.N-ary.html#1546" class="Bound"
       >n</a
-      > <a name="1585" href="Data.Product.N-ary.html#1536" class="Bound"
+      > <a name="1598" href="Data.Product.N-ary.html#1549" class="Bound"
       >xs</a
-      ><a name="1587" class="Symbol"
+      ><a name="1600" class="Symbol"
       >)</a
-      > <a name="1589" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      > <a name="1602" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      > <a name="1591" href="Data.Product.N-ary.html#1536" class="Bound"
+      > <a name="1604" href="Data.Product.N-ary.html#1549" class="Bound"
       >xs</a
       >
-  <a name="1596" href="Data.Product.N-ary.html#1499" class="Function"
+  <a name="1609" href="Data.Product.N-ary.html#1512" class="Function"
       >fromVec&#8728;toVec</a
-      > <a name="1610" class="Number"
+      > <a name="1623" class="Number"
       >0</a
-      >                   <a name="1630" class="Symbol"
+      >                   <a name="1643" class="Symbol"
       >(</a
-      ><a name="1631" href="Level.html#Lift.lift" class="InductiveConstructor"
+      ><a name="1644" href="Level.html#Lift.lift" class="InductiveConstructor"
       >lift</a
-      > <a name="1636" href="Agda.Builtin.Unit.html#&#8868;.tt" class="InductiveConstructor"
+      > <a name="1649" href="Agda.Builtin.Unit.html#&#8868;.tt" class="InductiveConstructor"
       >tt</a
-      ><a name="1638" class="Symbol"
+      ><a name="1651" class="Symbol"
       >)</a
-      >    <a name="1643" class="Symbol"
+      >    <a name="1656" class="Symbol"
       >=</a
-      > <a name="1645" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      > <a name="1658" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >P.refl</a
       >
-  <a name="1654" href="Data.Product.N-ary.html#1499" class="Function"
+  <a name="1667" href="Data.Product.N-ary.html#1512" class="Function"
       >fromVec&#8728;toVec</a
-      > <a name="1668" class="Number"
+      > <a name="1681" class="Number"
       >1</a
-      >                   <a name="1688" href="Data.Product.N-ary.html#1688" class="Bound"
+      >                   <a name="1701" href="Data.Product.N-ary.html#1701" class="Bound"
       >x</a
-      >            <a name="1701" class="Symbol"
+      >            <a name="1714" class="Symbol"
       >=</a
-      > <a name="1703" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      > <a name="1716" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >P.refl</a
       >
-  <a name="1712" href="Data.Product.N-ary.html#1499" class="Function"
+  <a name="1725" href="Data.Product.N-ary.html#1512" class="Function"
       >fromVec&#8728;toVec</a
-      > <a name="1726" class="Number"
+      > <a name="1739" class="Number"
       >2</a
-      >                   <a name="1746" class="Symbol"
+      >                   <a name="1759" class="Symbol"
       >(</a
-      ><a name="1747" href="Data.Product.N-ary.html#1747" class="Bound"
+      ><a name="1760" href="Data.Product.N-ary.html#1760" class="Bound"
       >x</a
-      > <a name="1749" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      > <a name="1762" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      > <a name="1751" href="Data.Product.N-ary.html#1751" class="Bound"
+      > <a name="1764" href="Data.Product.N-ary.html#1764" class="Bound"
       >y</a
-      ><a name="1752" class="Symbol"
+      ><a name="1765" class="Symbol"
       >)</a
-      >      <a name="1759" class="Symbol"
+      >      <a name="1772" class="Symbol"
       >=</a
-      > <a name="1761" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      > <a name="1774" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >P.refl</a
       >
-  <a name="1770" href="Data.Product.N-ary.html#1499" class="Function"
+  <a name="1783" href="Data.Product.N-ary.html#1512" class="Function"
       >fromVec&#8728;toVec</a
-      > <a name="1784" class="Symbol"
+      > <a name="1797" class="Symbol"
       >(</a
-      ><a name="1785" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="1798" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="1789" class="Symbol"
+      > <a name="1802" class="Symbol"
       >(</a
-      ><a name="1790" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="1803" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="1794" class="Symbol"
+      > <a name="1807" class="Symbol"
       >(</a
-      ><a name="1795" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="1808" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="1799" href="Data.Product.N-ary.html#1799" class="Bound"
+      > <a name="1812" href="Data.Product.N-ary.html#1812" class="Bound"
       >n</a
-      ><a name="1800" class="Symbol"
+      ><a name="1813" class="Symbol"
       >)))</a
-      > <a name="1804" class="Symbol"
-      >(</a
-      ><a name="1805" href="Data.Product.N-ary.html#1805" class="Bound"
-      >x</a
-      > <a name="1807" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
-      >,</a
-      > <a name="1809" href="Data.Product.N-ary.html#1809" class="Bound"
-      >y</a
-      > <a name="1811" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
-      >,</a
-      > <a name="1813" href="Data.Product.N-ary.html#1813" class="Bound"
-      >xs</a
-      ><a name="1815" class="Symbol"
-      >)</a
       > <a name="1817" class="Symbol"
+      >(</a
+      ><a name="1818" href="Data.Product.N-ary.html#1818" class="Bound"
+      >x</a
+      > <a name="1820" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="1822" href="Data.Product.N-ary.html#1822" class="Bound"
+      >y</a
+      > <a name="1824" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      >,</a
+      > <a name="1826" href="Data.Product.N-ary.html#1826" class="Bound"
+      >xs</a
+      ><a name="1828" class="Symbol"
+      >)</a
+      > <a name="1830" class="Symbol"
       >=</a
       >
-    <a name="1823" href="Relation.Binary.PropositionalEquality.html#cong" class="Function"
+    <a name="1836" href="Relation.Binary.PropositionalEquality.html#cong" class="Function"
       >P.cong</a
-      > <a name="1830" class="Symbol"
+      > <a name="1843" class="Symbol"
       >(</a
-      ><a name="1831" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      ><a name="1844" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >_,_</a
-      > <a name="1835" href="Data.Product.N-ary.html#1805" class="Bound"
+      > <a name="1848" href="Data.Product.N-ary.html#1818" class="Bound"
       >x</a
-      ><a name="1836" class="Symbol"
+      ><a name="1849" class="Symbol"
       >)</a
-      > <a name="1838" class="Symbol"
+      > <a name="1851" class="Symbol"
       >(</a
-      ><a name="1839" href="Data.Product.N-ary.html#1499" class="Function"
+      ><a name="1852" href="Data.Product.N-ary.html#1512" class="Function"
       >fromVec&#8728;toVec</a
-      > <a name="1853" class="Symbol"
+      > <a name="1866" class="Symbol"
       >(</a
-      ><a name="1854" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="1867" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="1858" class="Symbol"
+      > <a name="1871" class="Symbol"
       >(</a
-      ><a name="1859" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
+      ><a name="1872" href="Agda.Builtin.Nat.html#Nat.suc" class="InductiveConstructor"
       >suc</a
-      > <a name="1863" href="Data.Product.N-ary.html#1799" class="Bound"
+      > <a name="1876" href="Data.Product.N-ary.html#1812" class="Bound"
       >n</a
-      ><a name="1864" class="Symbol"
+      ><a name="1877" class="Symbol"
       >))</a
-      > <a name="1867" class="Symbol"
+      > <a name="1880" class="Symbol"
       >(</a
-      ><a name="1868" href="Data.Product.N-ary.html#1809" class="Bound"
+      ><a name="1881" href="Data.Product.N-ary.html#1822" class="Bound"
       >y</a
-      > <a name="1870" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
+      > <a name="1883" href="Data.Product.html#&#931;._,_" class="InductiveConstructor Operator"
       >,</a
-      > <a name="1872" href="Data.Product.N-ary.html#1813" class="Bound"
+      > <a name="1885" href="Data.Product.N-ary.html#1826" class="Bound"
       >xs</a
-      ><a name="1874" class="Symbol"
+      ><a name="1887" class="Symbol"
       >))</a
       >
 
-  <a name="1880" href="Data.Product.N-ary.html#1880" class="Function"
+  <a name="1893" href="Data.Product.N-ary.html#1893" class="Function"
       >toVec&#8728;fromVec</a
-      > <a name="1894" class="Symbol"
+      > <a name="1907" class="Symbol"
       >:</a
-      > <a name="1896" class="Symbol"
+      > <a name="1909" class="Symbol"
       >&#8704;</a
-      > <a name="1898" class="Symbol"
+      > <a name="1911" class="Symbol"
       >{</a
-      ><a name="1899" href="Data.Product.N-ary.html#1899" class="Bound"
+      ><a name="1912" href="Data.Product.N-ary.html#1912" class="Bound"
       >a</a
-      ><a name="1900" class="Symbol"
+      ><a name="1913" class="Symbol"
       >}</a
-      > <a name="1902" class="Symbol"
+      > <a name="1915" class="Symbol"
       >{</a
-      ><a name="1903" href="Data.Product.N-ary.html#1903" class="Bound"
+      ><a name="1916" href="Data.Product.N-ary.html#1916" class="Bound"
       >A</a
-      > <a name="1905" class="Symbol"
-      >:</a
-      > <a name="1907" class="PrimitiveType"
-      >Set</a
-      > <a name="1911" href="Data.Product.N-ary.html#1899" class="Bound"
-      >a</a
-      ><a name="1912" class="Symbol"
-      >}</a
-      > <a name="1914" class="Symbol"
-      >{</a
-      ><a name="1915" href="Data.Product.N-ary.html#1915" class="Bound"
-      >n</a
-      ><a name="1916" class="Symbol"
-      >}</a
       > <a name="1918" class="Symbol"
-      >(</a
-      ><a name="1919" href="Data.Product.N-ary.html#1919" class="Bound"
-      >xs</a
-      > <a name="1922" class="Symbol"
       >:</a
-      > <a name="1924" href="Data.Vec.html#Vec" class="Datatype"
-      >Vec</a
-      > <a name="1928" href="Data.Product.N-ary.html#1903" class="Bound"
-      >A</a
-      > <a name="1930" href="Data.Product.N-ary.html#1915" class="Bound"
+      > <a name="1920" class="PrimitiveType"
+      >Set</a
+      > <a name="1924" href="Data.Product.N-ary.html#1912" class="Bound"
+      >a</a
+      ><a name="1925" class="Symbol"
+      >}</a
+      > <a name="1927" class="Symbol"
+      >{</a
+      ><a name="1928" href="Data.Product.N-ary.html#1928" class="Bound"
       >n</a
-      ><a name="1931" class="Symbol"
+      ><a name="1929" class="Symbol"
+      >}</a
+      > <a name="1931" class="Symbol"
+      >(</a
+      ><a name="1932" href="Data.Product.N-ary.html#1932" class="Bound"
+      >xs</a
+      > <a name="1935" class="Symbol"
+      >:</a
+      > <a name="1937" href="Data.Vec.html#Vec" class="Datatype"
+      >Vec</a
+      > <a name="1941" href="Data.Product.N-ary.html#1916" class="Bound"
+      >A</a
+      > <a name="1943" href="Data.Product.N-ary.html#1928" class="Bound"
+      >n</a
+      ><a name="1944" class="Symbol"
       >)</a
-      > <a name="1933" class="Symbol"
+      > <a name="1946" class="Symbol"
       >&#8594;</a
       >
-                  <a name="1953" href="Data.Product.N-ary.html#1163" class="Function"
+                  <a name="1966" href="Data.Product.N-ary.html#1176" class="Function"
       >toVec</a
-      > <a name="1959" href="Data.Product.N-ary.html#1915" class="Bound"
+      > <a name="1972" href="Data.Product.N-ary.html#1928" class="Bound"
       >n</a
-      > <a name="1961" class="Symbol"
+      > <a name="1974" class="Symbol"
       >(</a
-      ><a name="1962" href="Data.Product.N-ary.html#1338" class="Function"
+      ><a name="1975" href="Data.Product.N-ary.html#1351" class="Function"
       >fromVec</a
-      > <a name="1970" href="Data.Product.N-ary.html#1919" class="Bound"
+      > <a name="1983" href="Data.Product.N-ary.html#1932" class="Bound"
       >xs</a
-      ><a name="1972" class="Symbol"
+      ><a name="1985" class="Symbol"
       >)</a
-      > <a name="1974" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
+      > <a name="1987" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
       >&#8801;</a
-      > <a name="1976" href="Data.Product.N-ary.html#1919" class="Bound"
+      > <a name="1989" href="Data.Product.N-ary.html#1932" class="Bound"
       >xs</a
       >
-  <a name="1981" href="Data.Product.N-ary.html#1880" class="Function"
+  <a name="1994" href="Data.Product.N-ary.html#1893" class="Function"
       >toVec&#8728;fromVec</a
-      > <a name="1995" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      > <a name="2008" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
       >[]</a
-      >           <a name="2008" class="Symbol"
+      >           <a name="2021" class="Symbol"
       >=</a
-      > <a name="2010" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      > <a name="2023" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >P.refl</a
       >
-  <a name="2019" href="Data.Product.N-ary.html#1880" class="Function"
+  <a name="2032" href="Data.Product.N-ary.html#1893" class="Function"
       >toVec&#8728;fromVec</a
-      > <a name="2033" class="Symbol"
+      > <a name="2046" class="Symbol"
       >(</a
-      ><a name="2034" href="Data.Product.N-ary.html#2034" class="Bound"
+      ><a name="2047" href="Data.Product.N-ary.html#2047" class="Bound"
       >x</a
-      > <a name="2036" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      > <a name="2049" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      > <a name="2038" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
+      > <a name="2051" href="Data.Vec.html#Vec.[]" class="InductiveConstructor"
       >[]</a
-      ><a name="2040" class="Symbol"
+      ><a name="2053" class="Symbol"
       >)</a
-      >     <a name="2046" class="Symbol"
+      >     <a name="2059" class="Symbol"
       >=</a
-      > <a name="2048" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
+      > <a name="2061" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
       >P.refl</a
       >
-  <a name="2057" href="Data.Product.N-ary.html#1880" class="Function"
+  <a name="2070" href="Data.Product.N-ary.html#1893" class="Function"
       >toVec&#8728;fromVec</a
-      > <a name="2071" class="Symbol"
-      >(</a
-      ><a name="2072" href="Data.Product.N-ary.html#2072" class="Bound"
-      >x</a
-      > <a name="2074" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
-      >&#8759;</a
-      > <a name="2076" href="Data.Product.N-ary.html#2076" class="Bound"
-      >y</a
-      > <a name="2078" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
-      >&#8759;</a
-      > <a name="2080" href="Data.Product.N-ary.html#2080" class="Bound"
-      >xs</a
-      ><a name="2082" class="Symbol"
-      >)</a
       > <a name="2084" class="Symbol"
-      >=</a
-      > <a name="2086" href="Relation.Binary.PropositionalEquality.html#cong" class="Function"
-      >P.cong</a
-      > <a name="2093" class="Symbol"
       >(</a
-      ><a name="2094" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
-      >_&#8759;_</a
-      > <a name="2098" href="Data.Product.N-ary.html#2072" class="Bound"
+      ><a name="2085" href="Data.Product.N-ary.html#2085" class="Bound"
       >x</a
-      ><a name="2099" class="Symbol"
-      >)</a
-      > <a name="2101" class="Symbol"
-      >(</a
-      ><a name="2102" href="Data.Product.N-ary.html#1880" class="Function"
-      >toVec&#8728;fromVec</a
-      > <a name="2116" class="Symbol"
-      >(</a
-      ><a name="2117" href="Data.Product.N-ary.html#2076" class="Bound"
-      >y</a
-      > <a name="2119" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      > <a name="2087" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
       >&#8759;</a
-      > <a name="2121" href="Data.Product.N-ary.html#2080" class="Bound"
+      > <a name="2089" href="Data.Product.N-ary.html#2089" class="Bound"
+      >y</a
+      > <a name="2091" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2093" href="Data.Product.N-ary.html#2093" class="Bound"
       >xs</a
-      ><a name="2123" class="Symbol"
+      ><a name="2095" class="Symbol"
+      >)</a
+      > <a name="2097" class="Symbol"
+      >=</a
+      > <a name="2099" href="Relation.Binary.PropositionalEquality.html#cong" class="Function"
+      >P.cong</a
+      > <a name="2106" class="Symbol"
+      >(</a
+      ><a name="2107" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >_&#8759;_</a
+      > <a name="2111" href="Data.Product.N-ary.html#2085" class="Bound"
+      >x</a
+      ><a name="2112" class="Symbol"
+      >)</a
+      > <a name="2114" class="Symbol"
+      >(</a
+      ><a name="2115" href="Data.Product.N-ary.html#1893" class="Function"
+      >toVec&#8728;fromVec</a
+      > <a name="2129" class="Symbol"
+      >(</a
+      ><a name="2130" href="Data.Product.N-ary.html#2089" class="Bound"
+      >y</a
+      > <a name="2132" href="Data.Vec.html#Vec._&#8759;_" class="InductiveConstructor Operator"
+      >&#8759;</a
+      > <a name="2134" href="Data.Product.N-ary.html#2093" class="Bound"
+      >xs</a
+      ><a name="2136" class="Symbol"
       >))</a
       >
 </pre
