@@ -60,6 +60,16 @@ Non-backwards compatible changes
   respectively. The original names `<-Rec` and `<-well-founded` now refer to new
   corresponding proofs for `_<_`.
 
+#### Overhaul of `Algebra.Morphism`
+
+* Currently `Algebra.Morphism` only gives an example of a `Ring` homomorphism which
+  packs the homomorphism and all the proofs that it behaves the right way.
+
+  Instead we have adopted and `Algebra.Structures`-like approach with proof-only
+  records parametrised by the homomorphism and the structures it acts on. This make
+  it possible to define the proof requirement for e.g. a ring in terms of the proof
+  requirements for its additive abelian group and multiplicative monoid.
+
 #### Other
 
 * Changed the implementation of `map` and `zipWith` in `Data.Vec` to use native
@@ -528,104 +538,112 @@ Backwards compatible changes
 
 * Added proofs to `Data.Nat.Properties`:
   ```agda
-  suc-injective        : suc m ≡ suc n → m ≡ n
-  ≡-isDecEquivalence   : IsDecEquivalence (_≡_ {A = ℕ})
-  ≡-decSetoid          : DecSetoid _ _
+  suc-injective         : suc m ≡ suc n → m ≡ n
+  ≡-isDecEquivalence    : IsDecEquivalence (_≡_ {A = ℕ})
+  ≡-decSetoid           : DecSetoid _ _
 
-  ≤-reflexive          : _≡_ ⇒ _≤_
-  ≤-refl               : Reflexive _≤_
-  ≤-trans              : Antisymmetric _≡_ _≤_
-  ≤-antisymmetric      : Transitive _≤_
-  ≤-total              : Total _≤_
-  ≤-isPreorder         : IsPreorder _≡_ _≤_
-  ≤-isPartialOrder     : IsPartialOrder _≡_ _≤_
-  ≤-isTotalOrder       : IsTotalOrder _≡_ _≤_
-  ≤-isDecTotalOrder    : IsDecTotalOrder _≡_ _≤_
+  ≤-reflexive           : _≡_ ⇒ _≤_
+  ≤-refl                : Reflexive _≤_
+  ≤-trans               : Antisymmetric _≡_ _≤_
+  ≤-antisymmetric       : Transitive _≤_
+  ≤-total               : Total _≤_
+  ≤-isPreorder          : IsPreorder _≡_ _≤_
+  ≤-isPartialOrder      : IsPartialOrder _≡_ _≤_
+  ≤-isTotalOrder        : IsTotalOrder _≡_ _≤_
+  ≤-isDecTotalOrder     : IsDecTotalOrder _≡_ _≤_
 
-  _<?_                 : Decidable _<_
-  <-irrefl             : Irreflexive _≡_ _<_
-  <-asym               : Asymmetric _<_
-  <-transʳ             : Trans _≤_ _<_ _<_
-  <-transˡ             : Trans _<_ _≤_ _<_
-  <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
-  <⇒≤                  : _<_ ⇒ _≤_
-  <⇒≢                  : _<_ ⇒ _≢_
-  <⇒≱                  : _<_ ⇒ _≱_
-  <⇒≯                  : _<_ ⇒ _≯_
-  ≰⇒≮                  : _≰_ ⇒ _≮_
-  ≰⇒≥                  : _≰_ ⇒ _≥_
-  ≮⇒≥                  : _≮_ ⇒ _≥_
-  ≤+≢⇒<                : m ≤ n → m ≢ n → m < n
+  _<?_                  : Decidable _<_
+  <-irrefl              : Irreflexive _≡_ _<_
+  <-asym                : Asymmetric _<_
+  <-transʳ              : Trans _≤_ _<_ _<_
+  <-transˡ              : Trans _<_ _≤_ _<_
+  <-isStrictTotalOrder  : IsStrictTotalOrder _≡_ _<_
+  <⇒≤                   : _<_ ⇒ _≤_
+  <⇒≢                   : _<_ ⇒ _≢_
+  <⇒≱                   : _<_ ⇒ _≱_
+  <⇒≯                   : _<_ ⇒ _≯_
+  ≰⇒≮                   : _≰_ ⇒ _≮_
+  ≰⇒≥                   : _≰_ ⇒ _≥_
+  ≮⇒≥                   : _≮_ ⇒ _≥_
+  ≤+≢⇒<                 : m ≤ n → m ≢ n → m < n
 
-  +-identityˡ          : LeftIdentity 0 _+_
-  +-identity           : Identity 0 _+_
-  +-cancelʳ-≡          : RightCancellative _≡_ _+_
-  +-cancel-≡           : Cancellative _≡_ _+_
-  +-cancelʳ-≤          : RightCancellative _≤_ _+_
-  +-cancel-≤           : Cancellative _≤_ _+_
-  +-isSemigroup        : IsSemigroup _≡_ _+_
-  +-monoˡ-<            : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
-  +-monoʳ-<            : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
-  +-mono-<             : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
-  m+n≤o⇒m≤o            : m + n ≤ o → m ≤ o
-  m+n≤o⇒n≤o            : m + n ≤ o → n ≤ o
-  m+n≮n                : m + n ≮ n
+  +-identityˡ           : LeftIdentity 0 _+_
+  +-identity            : Identity 0 _+_
+  +-cancelʳ-≡           : RightCancellative _≡_ _+_
+  +-cancel-≡            : Cancellative _≡_ _+_
+  +-cancelʳ-≤           : RightCancellative _≤_ _+_
+  +-cancel-≤            : Cancellative _≤_ _+_
+  +-isSemigroup         : IsSemigroup _≡_ _+_
+  +-semigroup           : Semigroup _ _
+  +-0-monoid            : Monoid _ _
+  +-0-commutativeMonoid : CommutativeMonoid _ _
+  +-monoˡ-<             : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
+  +-monoʳ-<             : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
+  +-mono-<              : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
+  m+n≤o⇒m≤o             : m + n ≤ o → m ≤ o
+  m+n≤o⇒n≤o             : m + n ≤ o → n ≤ o
+  m+n≮n                 : m + n ≮ n
 
-  *-zeroˡ              : LeftZero 0 _*_
-  *-zero               : Zero 0 _*_
-  *-identityˡ          : LeftIdentity 1 _*_
-  *-identityʳ          : RightIdentity 1 _*_
-  *-identity           : Identity 1 _*_
-  *-distribˡ-+         : _*_ DistributesOverˡ _+_
-  *-distrib-+          : _*_ DistributesOver _+_
-  *-isSemigroup        : IsSemigroup _≡_ _*_
-  *-mono-<             : _*_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
-  *-monoˡ-<            : (_* suc n) Preserves _<_ ⟶ _<_
-  *-monoʳ-<            : (suc n *_) Preserves _<_ ⟶ _<_
-  *-cancelˡ-≡          : suc k * i ≡ suc k * j → i ≡ j
+  *-zeroˡ               : LeftZero 0 _*_
+  *-zero                : Zero 0 _*_
+  *-identityˡ           : LeftIdentity 1 _*_
+  *-identityʳ           : RightIdentity 1 _*_
+  *-identity            : Identity 1 _*_
+  *-distribˡ-+          : _*_ DistributesOverˡ _+_
+  *-distrib-+           : _*_ DistributesOver _+_
+  *-isSemigroup         : IsSemigroup _≡_ _*_
+  *-semigroup           : Semigroup _ _
+  *-1-monoid            : Monoid _ _
+  *-1-commutativeMonoid : CommutativeMonoid _ _
+  *-mono-<              : _*_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
+  *-monoˡ-<             : (_* suc n) Preserves _<_ ⟶ _<_
+  *-monoʳ-<             : (suc n *_) Preserves _<_ ⟶ _<_
+  *-cancelˡ-≡           : suc k * i ≡ suc k * j → i ≡ j
 
-  ^-distribˡ-+-*       : m ^ (n + p) ≡ m ^ n * m ^ p
-  i^j≡0⇒i≡0            : i ^ j ≡ 0 → i ≡ 0
-  i^j≡1⇒j≡0∨i≡1        : i ^ j ≡ 1 → j ≡ 0 ⊎ i ≡ 1
+  ^-distribˡ-+-*        : m ^ (n + p) ≡ m ^ n * m ^ p
+  i^j≡0⇒i≡0             : i ^ j ≡ 0 → i ≡ 0
+  i^j≡1⇒j≡0∨i≡1         : i ^ j ≡ 1 → j ≡ 0 ⊎ i ≡ 1
+  ^-semigroup-morphism  : (x ^_) Is +-semigroup -Semigroup⟶ *-semigroup
+  ^-monoid-morphism     : (x ^_) Is +-0-monoid -Monoid⟶ *-1-monoid
 
-  ⊔-assoc              : Associative _⊔_
-  ⊔-comm               : Commutative _⊔_
-  ⊔-idem               : Idempotent _⊔_
-  ⊔-identityˡ          : LeftIdentity 0 _⊔_
-  ⊔-identityʳ          : RightIdentity 0 _⊔_
-  ⊔-identity           : Identity 0 _⊔_
-  ⊓-assoc              : Associative _⊓_
-  ⊓-comm               : Commutative _⊓_
-  ⊓-idem               : Idempotent _⊓_
-  ⊓-zeroˡ              : LeftZero 0 _⊓_
-  ⊓-zeroʳ              : RightZero 0 _⊓_
-  ⊓-zero               : Zero 0 _⊓_
-  ⊓-distribʳ-⊔         : _⊓_ DistributesOverʳ _⊔_
-  ⊓-distribˡ-⊔         : _⊓_ DistributesOverˡ _⊔_
-  ⊔-abs-⊓              : _⊔_ Absorbs _⊓_
-  ⊓-abs-⊔              : _⊓_ Absorbs _⊔_
-  m⊓n≤n                : m ⊓ n ≤ n
-  m≤m⊔n                : m ≤ m ⊔ n
-  m⊔n≤m+n              : m ⊔ n ≤ m + n
-  m⊓n≤m+n              : m ⊓ n ≤ m + n
-  m⊓n≤m⊔n              : m ⊔ n ≤ m ⊔ n
-  ⊔-mono-≤             : _⊔_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
-  ⊔-mono-<             : _⊔_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
-  ⊓-mono-≤             : _⊓_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
-  ⊓-mono-<             : _⊓_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
-  +-distribˡ-⊔         : _+_ DistributesOverˡ _⊔_
-  +-distribʳ-⊔         : _+_ DistributesOverʳ _⊔_
-  +-distrib-⊔          : _+_ DistributesOver _⊔_
-  +-distribˡ-⊓         : _+_ DistributesOverˡ _⊓_
-  +-distribʳ-⊓         : _+_ DistributesOverʳ _⊓_
-  +-distrib-⊓          : _+_ DistributesOver _⊓_
-  ⊔-isSemigroup        : IsSemigroup _≡_ _⊔_
-  ⊓-isSemigroup        : IsSemigroup _≡_ _⊓_
-  ⊓-⊔-isLattice        : IsLattice _≡_ _⊓_ _⊔_
+  ⊔-assoc               : Associative _⊔_
+  ⊔-comm                : Commutative _⊔_
+  ⊔-idem                : Idempotent _⊔_
+  ⊔-identityˡ           : LeftIdentity 0 _⊔_
+  ⊔-identityʳ           : RightIdentity 0 _⊔_
+  ⊔-identity            : Identity 0 _⊔_
+  ⊓-assoc               : Associative _⊓_
+  ⊓-comm                : Commutative _⊓_
+  ⊓-idem                : Idempotent _⊓_
+  ⊓-zeroˡ               : LeftZero 0 _⊓_
+  ⊓-zeroʳ               : RightZero 0 _⊓_
+  ⊓-zero                : Zero 0 _⊓_
+  ⊓-distribʳ-⊔          : _⊓_ DistributesOverʳ _⊔_
+  ⊓-distribˡ-⊔          : _⊓_ DistributesOverˡ _⊔_
+  ⊔-abs-⊓               : _⊔_ Absorbs _⊓_
+  ⊓-abs-⊔               : _⊓_ Absorbs _⊔_
+  m⊓n≤n                 : m ⊓ n ≤ n
+  m≤m⊔n                 : m ≤ m ⊔ n
+  m⊔n≤m+n               : m ⊔ n ≤ m + n
+  m⊓n≤m+n               : m ⊓ n ≤ m + n
+  m⊓n≤m⊔n               : m ⊔ n ≤ m ⊔ n
+  ⊔-mono-≤              : _⊔_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
+  ⊔-mono-<              : _⊔_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
+  ⊓-mono-≤              : _⊓_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
+  ⊓-mono-<              : _⊓_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
+  +-distribˡ-⊔          : _+_ DistributesOverˡ _⊔_
+  +-distribʳ-⊔          : _+_ DistributesOverʳ _⊔_
+  +-distrib-⊔           : _+_ DistributesOver _⊔_
+  +-distribˡ-⊓          : _+_ DistributesOverˡ _⊓_
+  +-distribʳ-⊓          : _+_ DistributesOverʳ _⊓_
+  +-distrib-⊓           : _+_ DistributesOver _⊓_
+  ⊔-isSemigroup         : IsSemigroup _≡_ _⊔_
+  ⊓-isSemigroup         : IsSemigroup _≡_ _⊓_
+  ⊓-⊔-isLattice         : IsLattice _≡_ _⊓_ _⊔_
 
-  ∸-distribʳ-⊔         : _∸_ DistributesOverʳ _⊔_
-  ∸-distribʳ-⊓         : _∸_ DistributesOverʳ _⊓_
-  +-∸-comm             : o ≤ m → (m + n) ∸ o ≡ (m ∸ o) + n
+  ∸-distribʳ-⊔          : _∸_ DistributesOverʳ _⊔_
+  ∸-distribʳ-⊓          : _∸_ DistributesOverʳ _⊓_
+  +-∸-comm              : o ≤ m → (m + n) ∸ o ≡ (m ∸ o) + n
   ```
 
 * Added decidability relation to `Data.Nat.GCD`
