@@ -775,7 +775,7 @@ Backwards compatible changes
   ≅-to-subst-≡ : (p : x ≅ y) → subst (λ x → x) (≅-to-type-≡ p) x ≡ y
   ```
 
-* Added new combinators to `Relation.Binary`:
+* Added new combinators to `Relation.Unary`:
   ```agda
   ∀[_] : Pred A ℓ → Set _
   _⊢_  : (A → B) → Pred B ℓ → Pred A ℓ
