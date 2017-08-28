@@ -93,6 +93,8 @@ Non-backwards compatible changes
   from `x < y ⊎ x ≈ y` to `x < y`. `_≈⟨_⟩_` is left unchanged to take a value with type `x ≈ y`.
   Old code may be fixed by prefixing the contents of `_<⟨_⟩_` with `inj₁`.
 
+* Changed the fixity of `⋃` and `⋂` in `Relation.Unary` to make space for `_⊢_`.
+
 Deprecated features
 -------------------
 
@@ -771,6 +773,12 @@ Backwards compatible changes
   ```agda
   ≅-to-type-≡  : {x : A} {y : B} → x ≅ y → A ≡ B
   ≅-to-subst-≡ : (p : x ≅ y) → subst (λ x → x) (≅-to-type-≡ p) x ≡ y
+  ```
+
+* Added new combinators to `Relation.Binary`:
+  ```agda
+  ∀[_] : Pred A ℓ → Set _
+  _⊢_  : (A → B) → Pred B ℓ → Pred A ℓ
   ```
 
 Version 0.13
