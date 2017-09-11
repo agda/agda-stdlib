@@ -1,201 +1,28 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-><head
-  ><title
-    >Relation.Binary.PropositionalEquality.TrustMe</title
-    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-     /><meta http-equiv="Content-Style-Type" content="text/css"
-     /><link href="Agda.css" rel="stylesheet" type="text/css"
-     /></head
-  ><body
-  ><pre
-    ><a name="1" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="74" class="Comment"
-      >-- The Agda standard library</a
-      >
-<a name="103" class="Comment"
-      >--</a
-      >
-<a name="106" class="Comment"
-      >-- An equality postulate which evaluates</a
-      >
-<a name="147" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.PropositionalEquality.TrustMe</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- An equality postulate which evaluates</a>
+<a id="147" class="Comment">------------------------------------------------------------------------</a>
 
-<a name="221" class="Keyword"
-      >module</a
-      > <a name="228" href="Relation.Binary.PropositionalEquality.TrustMe.html" class="Module"
-      >Relation.Binary.PropositionalEquality.TrustMe</a
-      > <a name="274" class="Keyword"
-      >where</a
-      >
+<a id="221" class="Keyword">module</a> <a id="228" href="Relation.Binary.PropositionalEquality.TrustMe.html" class="Module">Relation.Binary.PropositionalEquality.TrustMe</a> <a id="274" class="Keyword">where</a>
 
-<a name="281" class="Keyword"
-      >open</a
-      > <a name="286" class="Keyword"
-      >import</a
-      > <a name="293" href="Relation.Binary.Core.html" class="Module"
-      >Relation.Binary.Core</a
-      > <a name="314" class="Keyword"
-      >using</a
-      > <a name="320" class="Symbol"
-      >(</a
-      ><a name="321" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
-      >_&#8801;_</a
-      ><a name="324" class="Symbol"
-      >)</a
-      >
+<a id="281" class="Keyword">open</a> <a id="286" class="Keyword">import</a> <a id="293" href="Relation.Binary.Core.html" class="Module">Relation.Binary.Core</a> <a id="314" class="Keyword">using</a> <a id="320" class="Symbol">(</a><a id="321" href="Agda.Builtin.Equality.html#_%E2%89%A1_" class="Datatype Operator">_≡_</a><a id="324" class="Symbol">)</a>
 
-<a name="327" class="Keyword"
-      >open</a
-      > <a name="332" class="Keyword"
-      >import</a
-      > <a name="339" href="Agda.Builtin.TrustMe.html" class="Module"
-      >Agda.Builtin.TrustMe</a
-      >
+<a id="327" class="Keyword">open</a> <a id="332" class="Keyword">import</a> <a id="339" href="Agda.Builtin.TrustMe.html" class="Module">Agda.Builtin.TrustMe</a>
 
-<a name="361" class="Comment"
-      >-- trustMe {x = x} {y = y} evaluates to refl if x and y are</a
-      >
-<a name="421" class="Comment"
-      >-- definitionally equal.</a
-      >
-<a name="446" class="Comment"
-      >--</a
-      >
-<a name="449" class="Comment"
-      >-- For an example of the use of trustMe, see Data.String._&#8799;_.</a
-      >
+<a id="361" class="Comment">-- trustMe {x = x} {y = y} evaluates to refl if x and y are</a>
+<a id="421" class="Comment">-- definitionally equal.</a>
+<a id="446" class="Comment">--</a>
+<a id="449" class="Comment">-- For an example of the use of trustMe, see Data.String._≟_.</a>
 
-<a name="trustMe" href="Relation.Binary.PropositionalEquality.TrustMe.html#trustMe" class="Function"
-      >trustMe</a
-      > <a name="520" class="Symbol"
-      >:</a
-      > <a name="522" class="Symbol"
-      >&#8704;</a
-      > <a name="524" class="Symbol"
-      >{</a
-      ><a name="525" href="Relation.Binary.PropositionalEquality.TrustMe.html#525" class="Bound"
-      >a</a
-      ><a name="526" class="Symbol"
-      >}</a
-      > <a name="528" class="Symbol"
-      >{</a
-      ><a name="529" href="Relation.Binary.PropositionalEquality.TrustMe.html#529" class="Bound"
-      >A</a
-      > <a name="531" class="Symbol"
-      >:</a
-      > <a name="533" class="PrimitiveType"
-      >Set</a
-      > <a name="537" href="Relation.Binary.PropositionalEquality.TrustMe.html#525" class="Bound"
-      >a</a
-      ><a name="538" class="Symbol"
-      >}</a
-      > <a name="540" class="Symbol"
-      >{</a
-      ><a name="541" href="Relation.Binary.PropositionalEquality.TrustMe.html#541" class="Bound"
-      >x</a
-      > <a name="543" href="Relation.Binary.PropositionalEquality.TrustMe.html#543" class="Bound"
-      >y</a
-      > <a name="545" class="Symbol"
-      >:</a
-      > <a name="547" href="Relation.Binary.PropositionalEquality.TrustMe.html#529" class="Bound"
-      >A</a
-      ><a name="548" class="Symbol"
-      >}</a
-      > <a name="550" class="Symbol"
-      >&#8594;</a
-      > <a name="552" href="Relation.Binary.PropositionalEquality.TrustMe.html#541" class="Bound"
-      >x</a
-      > <a name="554" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
-      >&#8801;</a
-      > <a name="556" href="Relation.Binary.PropositionalEquality.TrustMe.html#543" class="Bound"
-      >y</a
-      >
-<a name="558" href="Relation.Binary.PropositionalEquality.TrustMe.html#trustMe" class="Function"
-      >trustMe</a
-      > <a name="566" class="Symbol"
-      >=</a
-      > <a name="568" href="Agda.Builtin.TrustMe.html#primTrustMe" class="Primitive"
-      >primTrustMe</a
-      >
+<a id="trustMe" href="Relation.Binary.PropositionalEquality.TrustMe.html#trustMe" class="Function">trustMe</a> <a id="520" class="Symbol">:</a> <a id="522" class="Symbol">∀</a> <a id="524" class="Symbol">{</a><a id="525" href="Relation.Binary.PropositionalEquality.TrustMe.html#525" class="Bound">a</a><a id="526" class="Symbol">}</a> <a id="528" class="Symbol">{</a><a id="529" href="Relation.Binary.PropositionalEquality.TrustMe.html#529" class="Bound">A</a> <a id="531" class="Symbol">:</a> <a id="533" class="PrimitiveType">Set</a> <a id="537" href="Relation.Binary.PropositionalEquality.TrustMe.html#525" class="Bound">a</a><a id="538" class="Symbol">}</a> <a id="540" class="Symbol">{</a><a id="541" href="Relation.Binary.PropositionalEquality.TrustMe.html#541" class="Bound">x</a> <a id="543" href="Relation.Binary.PropositionalEquality.TrustMe.html#543" class="Bound">y</a> <a id="545" class="Symbol">:</a> <a id="547" href="Relation.Binary.PropositionalEquality.TrustMe.html#529" class="Bound">A</a><a id="548" class="Symbol">}</a> <a id="550" class="Symbol">→</a> <a id="552" href="Relation.Binary.PropositionalEquality.TrustMe.html#541" class="Bound">x</a> <a id="554" href="Agda.Builtin.Equality.html#_%E2%89%A1_" class="Datatype Operator">≡</a> <a id="556" href="Relation.Binary.PropositionalEquality.TrustMe.html#543" class="Bound">y</a>
+<a id="558" href="Relation.Binary.PropositionalEquality.TrustMe.html#trustMe" class="Function">trustMe</a> <a id="566" class="Symbol">=</a> <a id="568" href="Agda.Builtin.TrustMe.html#primTrustMe" class="Primitive">primTrustMe</a>
 
-<a name="581" class="Comment"
-      >-- &quot;Erases&quot; a proof. The original proof is not inspected. The</a
-      >
-<a name="643" class="Comment"
-      >-- resulting proof reduces to refl if the two sides are definitionally</a
-      >
-<a name="714" class="Comment"
-      >-- equal. Note that checking for definitional equality can be slow.</a
-      >
+<a id="581" class="Comment">-- &quot;Erases&quot; a proof. The original proof is not inspected. The</a>
+<a id="643" class="Comment">-- resulting proof reduces to refl if the two sides are definitionally</a>
+<a id="714" class="Comment">-- equal. Note that checking for definitional equality can be slow.</a>
 
-<a name="erase" href="Relation.Binary.PropositionalEquality.TrustMe.html#erase" class="Function"
-      >erase</a
-      > <a name="789" class="Symbol"
-      >:</a
-      > <a name="791" class="Symbol"
-      >&#8704;</a
-      > <a name="793" class="Symbol"
-      >{</a
-      ><a name="794" href="Relation.Binary.PropositionalEquality.TrustMe.html#794" class="Bound"
-      >a</a
-      ><a name="795" class="Symbol"
-      >}</a
-      > <a name="797" class="Symbol"
-      >{</a
-      ><a name="798" href="Relation.Binary.PropositionalEquality.TrustMe.html#798" class="Bound"
-      >A</a
-      > <a name="800" class="Symbol"
-      >:</a
-      > <a name="802" class="PrimitiveType"
-      >Set</a
-      > <a name="806" href="Relation.Binary.PropositionalEquality.TrustMe.html#794" class="Bound"
-      >a</a
-      ><a name="807" class="Symbol"
-      >}</a
-      > <a name="809" class="Symbol"
-      >{</a
-      ><a name="810" href="Relation.Binary.PropositionalEquality.TrustMe.html#810" class="Bound"
-      >x</a
-      > <a name="812" href="Relation.Binary.PropositionalEquality.TrustMe.html#812" class="Bound"
-      >y</a
-      > <a name="814" class="Symbol"
-      >:</a
-      > <a name="816" href="Relation.Binary.PropositionalEquality.TrustMe.html#798" class="Bound"
-      >A</a
-      ><a name="817" class="Symbol"
-      >}</a
-      > <a name="819" class="Symbol"
-      >&#8594;</a
-      > <a name="821" href="Relation.Binary.PropositionalEquality.TrustMe.html#810" class="Bound"
-      >x</a
-      > <a name="823" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
-      >&#8801;</a
-      > <a name="825" href="Relation.Binary.PropositionalEquality.TrustMe.html#812" class="Bound"
-      >y</a
-      > <a name="827" class="Symbol"
-      >&#8594;</a
-      > <a name="829" href="Relation.Binary.PropositionalEquality.TrustMe.html#810" class="Bound"
-      >x</a
-      > <a name="831" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
-      >&#8801;</a
-      > <a name="833" href="Relation.Binary.PropositionalEquality.TrustMe.html#812" class="Bound"
-      >y</a
-      >
-<a name="835" href="Relation.Binary.PropositionalEquality.TrustMe.html#erase" class="Function"
-      >erase</a
-      > <a name="841" class="Symbol"
-      >_</a
-      > <a name="843" class="Symbol"
-      >=</a
-      > <a name="845" href="Relation.Binary.PropositionalEquality.TrustMe.html#trustMe" class="Function"
-      >trustMe</a
-      >
-</pre
-    ></body
-  ></html
->
+<a id="erase" href="Relation.Binary.PropositionalEquality.TrustMe.html#erase" class="Function">erase</a> <a id="789" class="Symbol">:</a> <a id="791" class="Symbol">∀</a> <a id="793" class="Symbol">{</a><a id="794" href="Relation.Binary.PropositionalEquality.TrustMe.html#794" class="Bound">a</a><a id="795" class="Symbol">}</a> <a id="797" class="Symbol">{</a><a id="798" href="Relation.Binary.PropositionalEquality.TrustMe.html#798" class="Bound">A</a> <a id="800" class="Symbol">:</a> <a id="802" class="PrimitiveType">Set</a> <a id="806" href="Relation.Binary.PropositionalEquality.TrustMe.html#794" class="Bound">a</a><a id="807" class="Symbol">}</a> <a id="809" class="Symbol">{</a><a id="810" href="Relation.Binary.PropositionalEquality.TrustMe.html#810" class="Bound">x</a> <a id="812" href="Relation.Binary.PropositionalEquality.TrustMe.html#812" class="Bound">y</a> <a id="814" class="Symbol">:</a> <a id="816" href="Relation.Binary.PropositionalEquality.TrustMe.html#798" class="Bound">A</a><a id="817" class="Symbol">}</a> <a id="819" class="Symbol">→</a> <a id="821" href="Relation.Binary.PropositionalEquality.TrustMe.html#810" class="Bound">x</a> <a id="823" href="Agda.Builtin.Equality.html#_%E2%89%A1_" class="Datatype Operator">≡</a> <a id="825" href="Relation.Binary.PropositionalEquality.TrustMe.html#812" class="Bound">y</a> <a id="827" class="Symbol">→</a> <a id="829" href="Relation.Binary.PropositionalEquality.TrustMe.html#810" class="Bound">x</a> <a id="831" href="Agda.Builtin.Equality.html#_%E2%89%A1_" class="Datatype Operator">≡</a> <a id="833" href="Relation.Binary.PropositionalEquality.TrustMe.html#812" class="Bound">y</a>
+<a id="835" href="Relation.Binary.PropositionalEquality.TrustMe.html#erase" class="Function">erase</a> <a id="841" class="Symbol">_</a> <a id="843" class="Symbol">=</a> <a id="845" href="Relation.Binary.PropositionalEquality.TrustMe.html#trustMe" class="Function">trustMe</a>
+</pre></body></html>

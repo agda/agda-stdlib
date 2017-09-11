@@ -1,119 +1,18 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-><head
-  ><title
-    >Agda.Builtin.Bool</title
-    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-     /><meta http-equiv="Content-Style-Type" content="text/css"
-     /><link href="Agda.css" rel="stylesheet" type="text/css"
-     /></head
-  ><body
-  ><pre
-    ><a name="1" class="Symbol"
-      >{-#</a
-      > <a name="5" class="Keyword"
-      >OPTIONS</a
-      > <a name="13" class="Option"
-      >--without-K</a
-      > <a name="25" class="Symbol"
-      >#-}</a
-      >
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Agda.Builtin.Bool</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Option">--without-K</a> <a id="25" class="Symbol">#-}</a>
 
-<a name="30" class="Keyword"
-      >module</a
-      > <a name="37" href="Agda.Builtin.Bool.html" class="Module"
-      >Agda.Builtin.Bool</a
-      > <a name="55" class="Keyword"
-      >where</a
-      >
+<a id="30" class="Keyword">module</a> <a id="37" href="Agda.Builtin.Bool.html" class="Module">Agda.Builtin.Bool</a> <a id="55" class="Keyword">where</a>
 
-<a name="62" class="Keyword"
-      >data</a
-      > <a name="Bool" href="Agda.Builtin.Bool.html#Bool" class="Datatype"
-      >Bool</a
-      > <a name="72" class="Symbol"
-      >:</a
-      > <a name="74" class="PrimitiveType"
-      >Set</a
-      > <a name="78" class="Keyword"
-      >where</a
-      >
-  <a name="Bool.false" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor"
-      >false</a
-      > <a name="Bool.true" href="Agda.Builtin.Bool.html#Bool.true" class="InductiveConstructor"
-      >true</a
-      > <a name="97" class="Symbol"
-      >:</a
-      > <a name="99" href="Agda.Builtin.Bool.html#Bool" class="Datatype"
-      >Bool</a
-      >
+<a id="62" class="Keyword">data</a> <a id="Bool" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a> <a id="72" class="Symbol">:</a> <a id="74" class="PrimitiveType">Set</a> <a id="78" class="Keyword">where</a>
+  <a id="Bool.false" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor">false</a> <a id="Bool.true" href="Agda.Builtin.Bool.html#Bool.true" class="InductiveConstructor">true</a> <a id="97" class="Symbol">:</a> <a id="99" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a>
 
-<a name="105" class="Symbol"
-      >{-#</a
-      > <a name="109" class="Keyword"
-      >BUILTIN</a
-      > BOOL  <a name="123" href="Agda.Builtin.Bool.html#Bool" class="Datatype"
-      >Bool</a
-      >  <a name="129" class="Symbol"
-      >#-}</a
-      >
-<a name="133" class="Symbol"
-      >{-#</a
-      > <a name="137" class="Keyword"
-      >BUILTIN</a
-      > FALSE <a name="151" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor"
-      >false</a
-      > <a name="157" class="Symbol"
-      >#-}</a
-      >
-<a name="161" class="Symbol"
-      >{-#</a
-      > <a name="165" class="Keyword"
-      >BUILTIN</a
-      > TRUE  <a name="179" href="Agda.Builtin.Bool.html#Bool.true" class="InductiveConstructor"
-      >true</a
-      >  <a name="185" class="Symbol"
-      >#-}</a
-      >
+<a id="105" class="Symbol">{-#</a> <a id="109" class="Keyword">BUILTIN</a> BOOL  <a id="123" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a>  <a id="129" class="Symbol">#-}</a>
+<a id="133" class="Symbol">{-#</a> <a id="137" class="Keyword">BUILTIN</a> FALSE <a id="151" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor">false</a> <a id="157" class="Symbol">#-}</a>
+<a id="161" class="Symbol">{-#</a> <a id="165" class="Keyword">BUILTIN</a> TRUE  <a id="179" href="Agda.Builtin.Bool.html#Bool.true" class="InductiveConstructor">true</a>  <a id="185" class="Symbol">#-}</a>
 
-<a name="190" class="Symbol"
-      >{-#</a
-      > <a name="194" class="Keyword"
-      >COMPILE</a
-      > UHC <a name="206" href="Agda.Builtin.Bool.html#Bool" class="Datatype"
-      >Bool</a
-      > = data __BOOL__ (__FALSE__ | __TRUE__) <a name="250" class="Symbol"
-      >#-}</a
-      >
+<a id="190" class="Symbol">{-#</a> <a id="194" class="Keyword">COMPILE</a> UHC <a id="206" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a> = data __BOOL__ (__FALSE__ | __TRUE__) <a id="250" class="Symbol">#-}</a>
 
-<a name="255" class="Symbol"
-      >{-#</a
-      > <a name="259" class="Keyword"
-      >COMPILE</a
-      > JS <a name="270" href="Agda.Builtin.Bool.html#Bool" class="Datatype"
-      >Bool</a
-      >  = function (x,v) { return ((x)? v[&quot;true&quot;]() : v[&quot;false&quot;]()); } <a name="339" class="Symbol"
-      >#-}</a
-      >
-<a name="343" class="Symbol"
-      >{-#</a
-      > <a name="347" class="Keyword"
-      >COMPILE</a
-      > JS <a name="358" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor"
-      >false</a
-      > = false <a name="372" class="Symbol"
-      >#-}</a
-      >
-<a name="376" class="Symbol"
-      >{-#</a
-      > <a name="380" class="Keyword"
-      >COMPILE</a
-      > JS <a name="391" href="Agda.Builtin.Bool.html#Bool.true" class="InductiveConstructor"
-      >true</a
-      >  = true  <a name="405" class="Symbol"
-      >#-}</a
-      >
-</pre
-    ></body
-  ></html
->
+<a id="255" class="Symbol">{-#</a> <a id="259" class="Keyword">COMPILE</a> JS <a id="270" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a>  = function (x,v) { return ((x)? v[&quot;true&quot;]() : v[&quot;false&quot;]()); } <a id="339" class="Symbol">#-}</a>
+<a id="343" class="Symbol">{-#</a> <a id="347" class="Keyword">COMPILE</a> JS <a id="358" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor">false</a> = false <a id="372" class="Symbol">#-}</a>
+<a id="376" class="Symbol">{-#</a> <a id="380" class="Keyword">COMPILE</a> JS <a id="391" href="Agda.Builtin.Bool.html#Bool.true" class="InductiveConstructor">true</a>  = true  <a id="405" class="Symbol">#-}</a>
+</pre></body></html>

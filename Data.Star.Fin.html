@@ -1,202 +1,27 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-><head
-  ><title
-    >Data.Star.Fin</title
-    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-     /><meta http-equiv="Content-Style-Type" content="text/css"
-     /><link href="Agda.css" rel="stylesheet" type="text/css"
-     /></head
-  ><body
-  ><pre
-    ><a name="1" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="74" class="Comment"
-      >-- The Agda standard library</a
-      >
-<a name="103" class="Comment"
-      >--</a
-      >
-<a name="106" class="Comment"
-      >-- Finite sets defined in terms of Data.Star</a
-      >
-<a name="151" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Star.Fin</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Finite sets defined in terms of Data.Star</a>
+<a id="151" class="Comment">------------------------------------------------------------------------</a>
 
-<a name="225" class="Keyword"
-      >module</a
-      > <a name="232" href="Data.Star.Fin.html" class="Module"
-      >Data.Star.Fin</a
-      > <a name="246" class="Keyword"
-      >where</a
-      >
+<a id="225" class="Keyword">module</a> <a id="232" href="Data.Star.Fin.html" class="Module">Data.Star.Fin</a> <a id="246" class="Keyword">where</a>
 
-<a name="253" class="Keyword"
-      >open</a
-      > <a name="258" class="Keyword"
-      >import</a
-      > <a name="265" href="Data.Star.html" class="Module"
-      >Data.Star</a
-      >
-<a name="275" class="Keyword"
-      >open</a
-      > <a name="280" class="Keyword"
-      >import</a
-      > <a name="287" href="Data.Star.Nat.html" class="Module"
-      >Data.Star.Nat</a
-      > <a name="301" class="Symbol"
-      >as</a
-      > <a name="304" class="Module"
-      >&#8469;</a
-      > <a name="306" class="Keyword"
-      >using</a
-      > <a name="312" class="Symbol"
-      >(</a
-      ><a name="313" href="Data.Star.Nat.html#&#8469;" class="Function"
-      >&#8469;</a
-      ><a name="314" class="Symbol"
-      >)</a
-      >
-<a name="316" class="Keyword"
-      >open</a
-      > <a name="321" class="Keyword"
-      >import</a
-      > <a name="328" href="Data.Star.Pointer.html" class="Module"
-      >Data.Star.Pointer</a
-      >
-<a name="346" class="Keyword"
-      >open</a
-      > <a name="351" class="Keyword"
-      >import</a
-      > <a name="358" href="Data.Unit.html" class="Module"
-      >Data.Unit</a
-      >
+<a id="253" class="Keyword">open</a> <a id="258" class="Keyword">import</a> <a id="265" href="Data.Star.html" class="Module">Data.Star</a>
+<a id="275" class="Keyword">open</a> <a id="280" class="Keyword">import</a> <a id="287" href="Data.Star.Nat.html" class="Module">Data.Star.Nat</a> <a id="301" class="Symbol">as</a> <a id="304" class="Module">ℕ</a> <a id="306" class="Keyword">using</a> <a id="312" class="Symbol">(</a><a id="313" href="Data.Star.Nat.html#%E2%84%95" class="Function">ℕ</a><a id="314" class="Symbol">)</a>
+<a id="316" class="Keyword">open</a> <a id="321" class="Keyword">import</a> <a id="328" href="Data.Star.Pointer.html" class="Module">Data.Star.Pointer</a>
+<a id="346" class="Keyword">open</a> <a id="351" class="Keyword">import</a> <a id="358" href="Data.Unit.html" class="Module">Data.Unit</a>
 
-<a name="369" class="Comment"
-      >-- Finite sets are undecorated pointers into natural numbers.</a
-      >
+<a id="369" class="Comment">-- Finite sets are undecorated pointers into natural numbers.</a>
 
-<a name="Fin" href="Data.Star.Fin.html#Fin" class="Function"
-      >Fin</a
-      > <a name="436" class="Symbol"
-      >:</a
-      > <a name="438" href="Data.Star.Nat.html#&#8469;" class="Function"
-      >&#8469;</a
-      > <a name="440" class="Symbol"
-      >&#8594;</a
-      > <a name="442" class="PrimitiveType"
-      >Set</a
-      >
-<a name="446" href="Data.Star.Fin.html#Fin" class="Function"
-      >Fin</a
-      > <a name="450" class="Symbol"
-      >=</a
-      > <a name="452" href="Data.Star.Pointer.html#Any" class="Function"
-      >Any</a
-      > <a name="456" class="Symbol"
-      >(&#955;</a
-      > <a name="459" href="Data.Star.Fin.html#459" class="Bound"
-      >_</a
-      > <a name="461" class="Symbol"
-      >&#8594;</a
-      > <a name="463" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
-      >&#8868;</a
-      ><a name="464" class="Symbol"
-      >)</a
-      > <a name="466" class="Symbol"
-      >(&#955;</a
-      > <a name="469" href="Data.Star.Fin.html#469" class="Bound"
-      >_</a
-      > <a name="471" class="Symbol"
-      >&#8594;</a
-      > <a name="473" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
-      >&#8868;</a
-      ><a name="474" class="Symbol"
-      >)</a
-      >
+<a id="Fin" href="Data.Star.Fin.html#Fin" class="Function">Fin</a> <a id="436" class="Symbol">:</a> <a id="438" href="Data.Star.Nat.html#%E2%84%95" class="Function">ℕ</a> <a id="440" class="Symbol">→</a> <a id="442" class="PrimitiveType">Set</a>
+<a id="446" href="Data.Star.Fin.html#Fin" class="Function">Fin</a> <a id="450" class="Symbol">=</a> <a id="452" href="Data.Star.Pointer.html#Any" class="Function">Any</a> <a id="456" class="Symbol">(λ</a> <a id="459" href="Data.Star.Fin.html#459" class="Bound">_</a> <a id="461" class="Symbol">→</a> <a id="463" href="Agda.Builtin.Unit.html#%E2%8A%A4" class="Record">⊤</a><a id="464" class="Symbol">)</a> <a id="466" class="Symbol">(λ</a> <a id="469" href="Data.Star.Fin.html#469" class="Bound">_</a> <a id="471" class="Symbol">→</a> <a id="473" href="Agda.Builtin.Unit.html#%E2%8A%A4" class="Record">⊤</a><a id="474" class="Symbol">)</a>
 
-<a name="477" class="Comment"
-      >-- &quot;Constructors&quot;.</a
-      >
+<a id="477" class="Comment">-- &quot;Constructors&quot;.</a>
 
-<a name="zero" href="Data.Star.Fin.html#zero" class="Function"
-      >zero</a
-      > <a name="502" class="Symbol"
-      >:</a
-      > <a name="504" class="Symbol"
-      >&#8704;</a
-      > <a name="506" class="Symbol"
-      >{</a
-      ><a name="507" href="Data.Star.Fin.html#507" class="Bound"
-      >n</a
-      ><a name="508" class="Symbol"
-      >}</a
-      > <a name="510" class="Symbol"
-      >&#8594;</a
-      > <a name="512" href="Data.Star.Fin.html#Fin" class="Function"
-      >Fin</a
-      > <a name="516" class="Symbol"
-      >(</a
-      ><a name="517" href="Data.Star.Nat.html#suc" class="Function"
-      >&#8469;.suc</a
-      > <a name="523" href="Data.Star.Fin.html#507" class="Bound"
-      >n</a
-      ><a name="524" class="Symbol"
-      >)</a
-      >
-<a name="526" href="Data.Star.Fin.html#zero" class="Function"
-      >zero</a
-      > <a name="531" class="Symbol"
-      >=</a
-      > <a name="533" href="Data.Star.Pointer.html#this" class="Function"
-      >this</a
-      > <a name="538" href="Agda.Builtin.Unit.html#&#8868;.tt" class="InductiveConstructor"
-      >tt</a
-      >
+<a id="zero" href="Data.Star.Fin.html#zero" class="Function">zero</a> <a id="502" class="Symbol">:</a> <a id="504" class="Symbol">∀</a> <a id="506" class="Symbol">{</a><a id="507" href="Data.Star.Fin.html#507" class="Bound">n</a><a id="508" class="Symbol">}</a> <a id="510" class="Symbol">→</a> <a id="512" href="Data.Star.Fin.html#Fin" class="Function">Fin</a> <a id="516" class="Symbol">(</a><a id="517" href="Data.Star.Nat.html#suc" class="Function">ℕ.suc</a> <a id="523" href="Data.Star.Fin.html#507" class="Bound">n</a><a id="524" class="Symbol">)</a>
+<a id="526" href="Data.Star.Fin.html#zero" class="Function">zero</a> <a id="531" class="Symbol">=</a> <a id="533" href="Data.Star.Pointer.html#this" class="Function">this</a> <a id="538" href="Agda.Builtin.Unit.html#%E2%8A%A4.tt" class="InductiveConstructor">tt</a>
 
-<a name="suc" href="Data.Star.Fin.html#suc" class="Function"
-      >suc</a
-      > <a name="546" class="Symbol"
-      >:</a
-      > <a name="548" class="Symbol"
-      >&#8704;</a
-      > <a name="550" class="Symbol"
-      >{</a
-      ><a name="551" href="Data.Star.Fin.html#551" class="Bound"
-      >n</a
-      ><a name="552" class="Symbol"
-      >}</a
-      > <a name="554" class="Symbol"
-      >&#8594;</a
-      > <a name="556" href="Data.Star.Fin.html#Fin" class="Function"
-      >Fin</a
-      > <a name="560" href="Data.Star.Fin.html#551" class="Bound"
-      >n</a
-      > <a name="562" class="Symbol"
-      >&#8594;</a
-      > <a name="564" href="Data.Star.Fin.html#Fin" class="Function"
-      >Fin</a
-      > <a name="568" class="Symbol"
-      >(</a
-      ><a name="569" href="Data.Star.Nat.html#suc" class="Function"
-      >&#8469;.suc</a
-      > <a name="575" href="Data.Star.Fin.html#551" class="Bound"
-      >n</a
-      ><a name="576" class="Symbol"
-      >)</a
-      >
-<a name="578" href="Data.Star.Fin.html#suc" class="Function"
-      >suc</a
-      > <a name="582" class="Symbol"
-      >=</a
-      > <a name="584" href="Data.Star.Pointer.html#that" class="Function"
-      >that</a
-      > <a name="589" href="Agda.Builtin.Unit.html#&#8868;.tt" class="InductiveConstructor"
-      >tt</a
-      >
-</pre
-    ></body
-  ></html
->
+<a id="suc" href="Data.Star.Fin.html#suc" class="Function">suc</a> <a id="546" class="Symbol">:</a> <a id="548" class="Symbol">∀</a> <a id="550" class="Symbol">{</a><a id="551" href="Data.Star.Fin.html#551" class="Bound">n</a><a id="552" class="Symbol">}</a> <a id="554" class="Symbol">→</a> <a id="556" href="Data.Star.Fin.html#Fin" class="Function">Fin</a> <a id="560" href="Data.Star.Fin.html#551" class="Bound">n</a> <a id="562" class="Symbol">→</a> <a id="564" href="Data.Star.Fin.html#Fin" class="Function">Fin</a> <a id="568" class="Symbol">(</a><a id="569" href="Data.Star.Nat.html#suc" class="Function">ℕ.suc</a> <a id="575" href="Data.Star.Fin.html#551" class="Bound">n</a><a id="576" class="Symbol">)</a>
+<a id="578" href="Data.Star.Fin.html#suc" class="Function">suc</a> <a id="582" class="Symbol">=</a> <a id="584" href="Data.Star.Pointer.html#that" class="Function">that</a> <a id="589" href="Agda.Builtin.Unit.html#%E2%8A%A4.tt" class="InductiveConstructor">tt</a>
+</pre></body></html>

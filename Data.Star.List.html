@@ -1,217 +1,34 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-><head
-  ><title
-    >Data.Star.List</title
-    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-     /><meta http-equiv="Content-Style-Type" content="text/css"
-     /><link href="Agda.css" rel="stylesheet" type="text/css"
-     /></head
-  ><body
-  ><pre
-    ><a name="1" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="74" class="Comment"
-      >-- The Agda standard library</a
-      >
-<a name="103" class="Comment"
-      >--</a
-      >
-<a name="106" class="Comment"
-      >-- Lists defined in terms of Data.Star</a
-      >
-<a name="145" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Star.List</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Lists defined in terms of Data.Star</a>
+<a id="145" class="Comment">------------------------------------------------------------------------</a>
 
-<a name="219" class="Keyword"
-      >module</a
-      > <a name="226" href="Data.Star.List.html" class="Module"
-      >Data.Star.List</a
-      > <a name="241" class="Keyword"
-      >where</a
-      >
+<a id="219" class="Keyword">module</a> <a id="226" href="Data.Star.List.html" class="Module">Data.Star.List</a> <a id="241" class="Keyword">where</a>
 
-<a name="248" class="Keyword"
-      >open</a
-      > <a name="253" class="Keyword"
-      >import</a
-      > <a name="260" href="Data.Star.html" class="Module"
-      >Data.Star</a
-      >
-<a name="270" class="Keyword"
-      >open</a
-      > <a name="275" class="Keyword"
-      >import</a
-      > <a name="282" href="Data.Unit.html" class="Module"
-      >Data.Unit</a
-      >
-<a name="292" class="Keyword"
-      >open</a
-      > <a name="297" class="Keyword"
-      >import</a
-      > <a name="304" href="Relation.Binary.Simple.html" class="Module"
-      >Relation.Binary.Simple</a
-      >
-<a name="327" class="Keyword"
-      >open</a
-      > <a name="332" class="Keyword"
-      >import</a
-      > <a name="339" href="Data.Star.Nat.html" class="Module"
-      >Data.Star.Nat</a
-      >
+<a id="248" class="Keyword">open</a> <a id="253" class="Keyword">import</a> <a id="260" href="Data.Star.html" class="Module">Data.Star</a>
+<a id="270" class="Keyword">open</a> <a id="275" class="Keyword">import</a> <a id="282" href="Data.Unit.html" class="Module">Data.Unit</a>
+<a id="292" class="Keyword">open</a> <a id="297" class="Keyword">import</a> <a id="304" href="Relation.Binary.Simple.html" class="Module">Relation.Binary.Simple</a>
+<a id="327" class="Keyword">open</a> <a id="332" class="Keyword">import</a> <a id="339" href="Data.Star.Nat.html" class="Module">Data.Star.Nat</a>
 
-<a name="354" class="Comment"
-      >-- Lists.</a
-      >
+<a id="354" class="Comment">-- Lists.</a>
 
-<a name="List" href="Data.Star.List.html#List" class="Function"
-      >List</a
-      > <a name="370" class="Symbol"
-      >:</a
-      > <a name="372" class="PrimitiveType"
-      >Set</a
-      > <a name="376" class="Symbol"
-      >&#8594;</a
-      > <a name="378" class="PrimitiveType"
-      >Set</a
-      >
-<a name="382" href="Data.Star.List.html#List" class="Function"
-      >List</a
-      > <a name="387" href="Data.Star.List.html#387" class="Bound"
-      >a</a
-      > <a name="389" class="Symbol"
-      >=</a
-      > <a name="391" href="Data.Star.html#Star" class="Datatype"
-      >Star</a
-      > <a name="396" class="Symbol"
-      >(</a
-      ><a name="397" href="Relation.Binary.Simple.html#Const" class="Function"
-      >Const</a
-      > <a name="403" href="Data.Star.List.html#387" class="Bound"
-      >a</a
-      ><a name="404" class="Symbol"
-      >)</a
-      > <a name="406" href="Agda.Builtin.Unit.html#&#8868;.tt" class="InductiveConstructor"
-      >tt</a
-      > <a name="409" href="Agda.Builtin.Unit.html#&#8868;.tt" class="InductiveConstructor"
-      >tt</a
-      >
+<a id="List" href="Data.Star.List.html#List" class="Function">List</a> <a id="370" class="Symbol">:</a> <a id="372" class="PrimitiveType">Set</a> <a id="376" class="Symbol">→</a> <a id="378" class="PrimitiveType">Set</a>
+<a id="382" href="Data.Star.List.html#List" class="Function">List</a> <a id="387" href="Data.Star.List.html#387" class="Bound">a</a> <a id="389" class="Symbol">=</a> <a id="391" href="Data.Star.html#Star" class="Datatype">Star</a> <a id="396" class="Symbol">(</a><a id="397" href="Relation.Binary.Simple.html#Const" class="Function">Const</a> <a id="403" href="Data.Star.List.html#387" class="Bound">a</a><a id="404" class="Symbol">)</a> <a id="406" href="Agda.Builtin.Unit.html#%E2%8A%A4.tt" class="InductiveConstructor">tt</a> <a id="409" href="Agda.Builtin.Unit.html#%E2%8A%A4.tt" class="InductiveConstructor">tt</a>
 
-<a name="413" class="Comment"
-      >-- Nil and cons.</a
-      >
+<a id="413" class="Comment">-- Nil and cons.</a>
 
-<a name="[]" href="Data.Star.List.html#[]" class="Function"
-      >[]</a
-      > <a name="434" class="Symbol"
-      >:</a
-      > <a name="436" class="Symbol"
-      >&#8704;</a
-      > <a name="438" class="Symbol"
-      >{</a
-      ><a name="439" href="Data.Star.List.html#439" class="Bound"
-      >a</a
-      ><a name="440" class="Symbol"
-      >}</a
-      > <a name="442" class="Symbol"
-      >&#8594;</a
-      > <a name="444" href="Data.Star.List.html#List" class="Function"
-      >List</a
-      > <a name="449" href="Data.Star.List.html#439" class="Bound"
-      >a</a
-      >
-<a name="451" href="Data.Star.List.html#[]" class="Function"
-      >[]</a
-      > <a name="454" class="Symbol"
-      >=</a
-      > <a name="456" href="Data.Star.html#Star.&#949;" class="InductiveConstructor"
-      >&#949;</a
-      >
+<a id="[]" href="Data.Star.List.html#%5B%5D" class="Function">[]</a> <a id="434" class="Symbol">:</a> <a id="436" class="Symbol">∀</a> <a id="438" class="Symbol">{</a><a id="439" href="Data.Star.List.html#439" class="Bound">a</a><a id="440" class="Symbol">}</a> <a id="442" class="Symbol">→</a> <a id="444" href="Data.Star.List.html#List" class="Function">List</a> <a id="449" href="Data.Star.List.html#439" class="Bound">a</a>
+<a id="451" href="Data.Star.List.html#%5B%5D" class="Function">[]</a> <a id="454" class="Symbol">=</a> <a id="456" href="Data.Star.html#Star.%CE%B5" class="InductiveConstructor">ε</a>
 
-<a name="459" class="Keyword"
-      >infixr</a
-      > <a name="466" class="Number"
-      >5</a
-      > <a name="_&#8759;_" href="Data.Star.List.html#_&#8759;_" class="Function Operator"
-      >_&#8759;_</a
-      >
+<a id="459" class="Keyword">infixr</a> <a id="466" class="Number">5</a> <a id="468" href="Data.Star.List.html#_%E2%88%B7_" class="Function Operator">_∷_</a>
 
-<a name="_&#8759;_" href="Data.Star.List.html#_&#8759;_" class="Function Operator"
-      >_&#8759;_</a
-      > <a name="477" class="Symbol"
-      >:</a
-      > <a name="479" class="Symbol"
-      >&#8704;</a
-      > <a name="481" class="Symbol"
-      >{</a
-      ><a name="482" href="Data.Star.List.html#482" class="Bound"
-      >a</a
-      ><a name="483" class="Symbol"
-      >}</a
-      > <a name="485" class="Symbol"
-      >&#8594;</a
-      > <a name="487" href="Data.Star.List.html#482" class="Bound"
-      >a</a
-      > <a name="489" class="Symbol"
-      >&#8594;</a
-      > <a name="491" href="Data.Star.List.html#List" class="Function"
-      >List</a
-      > <a name="496" href="Data.Star.List.html#482" class="Bound"
-      >a</a
-      > <a name="498" class="Symbol"
-      >&#8594;</a
-      > <a name="500" href="Data.Star.List.html#List" class="Function"
-      >List</a
-      > <a name="505" href="Data.Star.List.html#482" class="Bound"
-      >a</a
-      >
-<a name="507" href="Data.Star.List.html#_&#8759;_" class="Function Operator"
-      >_&#8759;_</a
-      > <a name="511" class="Symbol"
-      >=</a
-      > <a name="513" href="Data.Star.html#Star._&#9669;_" class="InductiveConstructor Operator"
-      >_&#9669;_</a
-      >
+<a id="_∷_" href="Data.Star.List.html#_%E2%88%B7_" class="Function Operator">_∷_</a> <a id="477" class="Symbol">:</a> <a id="479" class="Symbol">∀</a> <a id="481" class="Symbol">{</a><a id="482" href="Data.Star.List.html#482" class="Bound">a</a><a id="483" class="Symbol">}</a> <a id="485" class="Symbol">→</a> <a id="487" href="Data.Star.List.html#482" class="Bound">a</a> <a id="489" class="Symbol">→</a> <a id="491" href="Data.Star.List.html#List" class="Function">List</a> <a id="496" href="Data.Star.List.html#482" class="Bound">a</a> <a id="498" class="Symbol">→</a> <a id="500" href="Data.Star.List.html#List" class="Function">List</a> <a id="505" href="Data.Star.List.html#482" class="Bound">a</a>
+<a id="507" href="Data.Star.List.html#_%E2%88%B7_" class="Function Operator">_∷_</a> <a id="511" class="Symbol">=</a> <a id="513" href="Data.Star.html#Star._%E2%97%85_" class="InductiveConstructor Operator">_◅_</a>
 
-<a name="518" class="Comment"
-      >-- The sum of the elements in a list containing natural numbers.</a
-      >
+<a id="518" class="Comment">-- The sum of the elements in a list containing natural numbers.</a>
 
-<a name="sum" href="Data.Star.List.html#sum" class="Function"
-      >sum</a
-      > <a name="588" class="Symbol"
-      >:</a
-      > <a name="590" href="Data.Star.List.html#List" class="Function"
-      >List</a
-      > <a name="595" href="Data.Star.Nat.html#&#8469;" class="Function"
-      >&#8469;</a
-      > <a name="597" class="Symbol"
-      >&#8594;</a
-      > <a name="599" href="Data.Star.Nat.html#&#8469;" class="Function"
-      >&#8469;</a
-      >
-<a name="601" href="Data.Star.List.html#sum" class="Function"
-      >sum</a
-      > <a name="605" class="Symbol"
-      >=</a
-      > <a name="607" href="Data.Star.html#fold" class="Function"
-      >fold</a
-      > <a name="612" class="Symbol"
-      >(</a
-      ><a name="613" href="Data.Star.html#Star" class="Datatype"
-      >Star</a
-      > <a name="618" href="Relation.Binary.Simple.html#Always" class="Function"
-      >Always</a
-      ><a name="624" class="Symbol"
-      >)</a
-      > <a name="626" href="Data.Star.Nat.html#_+_" class="Function Operator"
-      >_+_</a
-      > <a name="630" href="Data.Star.Nat.html#zero" class="Function"
-      >zero</a
-      >
-</pre
-    ></body
-  ></html
->
+<a id="sum" href="Data.Star.List.html#sum" class="Function">sum</a> <a id="588" class="Symbol">:</a> <a id="590" href="Data.Star.List.html#List" class="Function">List</a> <a id="595" href="Data.Star.Nat.html#%E2%84%95" class="Function">ℕ</a> <a id="597" class="Symbol">→</a> <a id="599" href="Data.Star.Nat.html#%E2%84%95" class="Function">ℕ</a>
+<a id="601" href="Data.Star.List.html#sum" class="Function">sum</a> <a id="605" class="Symbol">=</a> <a id="607" href="Data.Star.html#fold" class="Function">fold</a> <a id="612" class="Symbol">(</a><a id="613" href="Data.Star.html#Star" class="Datatype">Star</a> <a id="618" href="Relation.Binary.Simple.html#Always" class="Function">Always</a><a id="624" class="Symbol">)</a> <a id="626" href="Data.Star.Nat.html#_%2B_" class="Function Operator">_+_</a> <a id="630" href="Data.Star.Nat.html#zero" class="Function">zero</a>
+</pre></body></html>

@@ -1,305 +1,44 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-><head
-  ><title
-    >Relation.Binary.Properties.Poset</title
-    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-     /><meta http-equiv="Content-Style-Type" content="text/css"
-     /><link href="Agda.css" rel="stylesheet" type="text/css"
-     /></head
-  ><body
-  ><pre
-    ><a name="1" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="74" class="Comment"
-      >-- The Agda standard library</a
-      >
-<a name="103" class="Comment"
-      >--</a
-      >
-<a name="106" class="Comment"
-      >-- Properties satisfied by posets</a
-      >
-<a name="140" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.Properties.Poset</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Properties satisfied by posets</a>
+<a id="140" class="Comment">------------------------------------------------------------------------</a>
 
-<a name="214" class="Keyword"
-      >open</a
-      > <a name="219" class="Keyword"
-      >import</a
-      > <a name="226" href="Relation.Binary.html" class="Module"
-      >Relation.Binary</a
-      >
+<a id="214" class="Keyword">open</a> <a id="219" class="Keyword">import</a> <a id="226" href="Relation.Binary.html" class="Module">Relation.Binary</a>
 
-<a name="243" class="Keyword"
-      >module</a
-      > <a name="250" href="Relation.Binary.Properties.Poset.html" class="Module"
-      >Relation.Binary.Properties.Poset</a
-      >
-         <a name="292" class="Symbol"
-      >{</a
-      ><a name="293" href="Relation.Binary.Properties.Poset.html#293" class="Bound"
-      >p&#8321;</a
-      > <a name="296" href="Relation.Binary.Properties.Poset.html#296" class="Bound"
-      >p&#8322;</a
-      > <a name="299" href="Relation.Binary.Properties.Poset.html#299" class="Bound"
-      >p&#8323;</a
-      ><a name="301" class="Symbol"
-      >}</a
-      > <a name="303" class="Symbol"
-      >(</a
-      ><a name="304" href="Relation.Binary.Properties.Poset.html#304" class="Bound"
-      >P</a
-      > <a name="306" class="Symbol"
-      >:</a
-      > <a name="308" href="Relation.Binary.html#Poset" class="Record"
-      >Poset</a
-      > <a name="314" href="Relation.Binary.Properties.Poset.html#293" class="Bound"
-      >p&#8321;</a
-      > <a name="317" href="Relation.Binary.Properties.Poset.html#296" class="Bound"
-      >p&#8322;</a
-      > <a name="320" href="Relation.Binary.Properties.Poset.html#299" class="Bound"
-      >p&#8323;</a
-      ><a name="322" class="Symbol"
-      >)</a
-      > <a name="324" class="Keyword"
-      >where</a
-      >
+<a id="243" class="Keyword">module</a> <a id="250" href="Relation.Binary.Properties.Poset.html" class="Module">Relation.Binary.Properties.Poset</a>
+         <a id="292" class="Symbol">{</a><a id="293" href="Relation.Binary.Properties.Poset.html#293" class="Bound">p₁</a> <a id="296" href="Relation.Binary.Properties.Poset.html#296" class="Bound">p₂</a> <a id="299" href="Relation.Binary.Properties.Poset.html#299" class="Bound">p₃</a><a id="301" class="Symbol">}</a> <a id="303" class="Symbol">(</a><a id="304" href="Relation.Binary.Properties.Poset.html#304" class="Bound">P</a> <a id="306" class="Symbol">:</a> <a id="308" href="Relation.Binary.html#Poset" class="Record">Poset</a> <a id="314" href="Relation.Binary.Properties.Poset.html#293" class="Bound">p₁</a> <a id="317" href="Relation.Binary.Properties.Poset.html#296" class="Bound">p₂</a> <a id="320" href="Relation.Binary.Properties.Poset.html#299" class="Bound">p₃</a><a id="322" class="Symbol">)</a> <a id="324" class="Keyword">where</a>
 
-<a name="331" class="Keyword"
-      >open</a
-      > <a name="336" href="Relation.Binary.html#Poset" class="Module"
-      >Relation.Binary.Poset</a
-      > <a name="358" href="Relation.Binary.Properties.Poset.html#304" class="Bound"
-      >P</a
-      > <a name="360" class="Keyword"
-      >hiding</a
-      > <a name="367" class="Symbol"
-      >(</a
-      >trans<a name="373" class="Symbol"
-      >)</a
-      >
-<a name="375" class="Keyword"
-      >import</a
-      > <a name="382" href="Relation.Binary.NonStrictToStrict.html" class="Module"
-      >Relation.Binary.NonStrictToStrict</a
-      > <a name="416" class="Symbol"
-      >as</a
-      > <a name="419" class="Module"
-      >Conv</a
-      >
-<a name="424" class="Keyword"
-      >open</a
-      > <a name="429" href="Relation.Binary.NonStrictToStrict.html" class="Module"
-      >Conv</a
-      > <a name="434" href="Relation.Binary.html#3832" class="Field Operator"
-      >_&#8776;_</a
-      > <a name="438" href="Relation.Binary.html#3868" class="Field Operator"
-      >_&#8804;_</a
-      >
-<a name="442" class="Keyword"
-      >open</a
-      > <a name="447" class="Keyword"
-      >import</a
-      > <a name="454" href="Relation.Binary.Properties.Preorder.html" class="Module"
-      >Relation.Binary.Properties.Preorder</a
-      > <a name="490" href="Relation.Binary.html#3992" class="Function"
-      >preorder</a
-      >
-<a name="499" class="Keyword"
-      >open</a
-      > <a name="504" class="Keyword"
-      >import</a
-      > <a name="511" href="Function.html" class="Module"
-      >Function</a
-      > <a name="520" class="Keyword"
-      >using</a
-      > <a name="526" class="Symbol"
-      >(</a
-      ><a name="527" href="Function.html#flip" class="Function"
-      >flip</a
-      ><a name="531" class="Symbol"
-      >)</a
-      >
+<a id="331" class="Keyword">open</a> <a id="336" href="Relation.Binary.html#Poset" class="Module">Relation.Binary.Poset</a> <a id="358" href="Relation.Binary.Properties.Poset.html#304" class="Bound">P</a> <a id="360" class="Keyword">hiding</a> <a id="367" class="Symbol">(</a>trans<a id="373" class="Symbol">)</a>
+<a id="375" class="Keyword">import</a> <a id="382" href="Relation.Binary.NonStrictToStrict.html" class="Module">Relation.Binary.NonStrictToStrict</a> <a id="416" class="Symbol">as</a> <a id="419" class="Module">Conv</a>
+<a id="424" class="Keyword">open</a> <a id="429" href="Relation.Binary.NonStrictToStrict.html" class="Module">Conv</a> <a id="434" href="Relation.Binary.html#3832" class="Field Operator">_≈_</a> <a id="438" href="Relation.Binary.html#3868" class="Field Operator">_≤_</a>
+<a id="442" class="Keyword">open</a> <a id="447" class="Keyword">import</a> <a id="454" href="Relation.Binary.Properties.Preorder.html" class="Module">Relation.Binary.Properties.Preorder</a> <a id="490" href="Relation.Binary.html#3992" class="Function">preorder</a>
+<a id="499" class="Keyword">open</a> <a id="504" class="Keyword">import</a> <a id="511" href="Function.html" class="Module">Function</a> <a id="520" class="Keyword">using</a> <a id="526" class="Symbol">(</a><a id="527" href="Function.html#flip" class="Function">flip</a><a id="531" class="Symbol">)</a>
 
-<a name="534" class="Comment"
-      >-- The inverse relation is also a poset.</a
-      >
+<a id="534" class="Comment">-- The inverse relation is also a poset.</a>
 
-<a name="invIsPartialOrder" href="Relation.Binary.Properties.Poset.html#invIsPartialOrder" class="Function"
-      >invIsPartialOrder</a
-      > <a name="594" class="Symbol"
-      >:</a
-      > <a name="596" href="Relation.Binary.html#IsPartialOrder" class="Record"
-      >IsPartialOrder</a
-      > <a name="611" href="Relation.Binary.html#3832" class="Field Operator"
-      >_&#8776;_</a
-      > <a name="615" class="Symbol"
-      >(</a
-      ><a name="616" href="Function.html#flip" class="Function"
-      >flip</a
-      > <a name="621" href="Relation.Binary.html#3868" class="Field Operator"
-      >_&#8804;_</a
-      ><a name="624" class="Symbol"
-      >)</a
-      >
-<a name="626" href="Relation.Binary.Properties.Poset.html#invIsPartialOrder" class="Function"
-      >invIsPartialOrder</a
-      > <a name="644" class="Symbol"
-      >=</a
-      > <a name="646" class="Keyword"
-      >record</a
-      >
-  <a name="655" class="Symbol"
-      >{</a
-      > <a name="657" class="Field"
-      >isPreorder</a
-      >   <a name="670" class="Symbol"
-      >=</a
-      > <a name="672" href="Relation.Binary.Properties.Preorder.html#473" class="Function"
-      >invIsPreorder</a
-      >
-  <a name="688" class="Symbol"
-      >;</a
-      > <a name="690" class="Field"
-      >antisym</a
-      >      <a name="703" class="Symbol"
-      >=</a
-      > <a name="705" href="Function.html#flip" class="Function"
-      >flip</a
-      > <a name="710" href="Relation.Binary.html#3608" class="Function"
-      >antisym</a
-      >
-  <a name="720" class="Symbol"
-      >}</a
-      >
+<a id="invIsPartialOrder" href="Relation.Binary.Properties.Poset.html#invIsPartialOrder" class="Function">invIsPartialOrder</a> <a id="594" class="Symbol">:</a> <a id="596" href="Relation.Binary.html#IsPartialOrder" class="Record">IsPartialOrder</a> <a id="611" href="Relation.Binary.html#3832" class="Field Operator">_≈_</a> <a id="615" class="Symbol">(</a><a id="616" href="Function.html#flip" class="Function">flip</a> <a id="621" href="Relation.Binary.html#3868" class="Field Operator">_≤_</a><a id="624" class="Symbol">)</a>
+<a id="626" href="Relation.Binary.Properties.Poset.html#invIsPartialOrder" class="Function">invIsPartialOrder</a> <a id="644" class="Symbol">=</a> <a id="646" class="Keyword">record</a>
+  <a id="655" class="Symbol">{</a> <a id="657" class="Field">isPreorder</a>   <a id="670" class="Symbol">=</a> <a id="672" href="Relation.Binary.Properties.Preorder.html#473" class="Function">invIsPreorder</a>
+  <a id="688" class="Symbol">;</a> <a id="690" class="Field">antisym</a>      <a id="703" class="Symbol">=</a> <a id="705" href="Function.html#flip" class="Function">flip</a> <a id="710" href="Relation.Binary.html#3608" class="Function">antisym</a>
+  <a id="720" class="Symbol">}</a>
 
-<a name="invPoset" href="Relation.Binary.Properties.Poset.html#invPoset" class="Function"
-      >invPoset</a
-      > <a name="732" class="Symbol"
-      >:</a
-      > <a name="734" href="Relation.Binary.html#Poset" class="Record"
-      >Poset</a
-      > <a name="740" href="Relation.Binary.Properties.Poset.html#293" class="Bound"
-      >p&#8321;</a
-      > <a name="743" href="Relation.Binary.Properties.Poset.html#296" class="Bound"
-      >p&#8322;</a
-      > <a name="746" href="Relation.Binary.Properties.Poset.html#299" class="Bound"
-      >p&#8323;</a
-      >
-<a name="749" href="Relation.Binary.Properties.Poset.html#invPoset" class="Function"
-      >invPoset</a
-      > <a name="758" class="Symbol"
-      >=</a
-      > <a name="760" class="Keyword"
-      >record</a
-      > <a name="767" class="Symbol"
-      >{</a
-      > <a name="769" class="Field"
-      >isPartialOrder</a
-      > <a name="784" class="Symbol"
-      >=</a
-      > <a name="786" href="Relation.Binary.Properties.Poset.html#invIsPartialOrder" class="Function"
-      >invIsPartialOrder</a
-      > <a name="804" class="Symbol"
-      >}</a
-      >
+<a id="invPoset" href="Relation.Binary.Properties.Poset.html#invPoset" class="Function">invPoset</a> <a id="732" class="Symbol">:</a> <a id="734" href="Relation.Binary.html#Poset" class="Record">Poset</a> <a id="740" href="Relation.Binary.Properties.Poset.html#293" class="Bound">p₁</a> <a id="743" href="Relation.Binary.Properties.Poset.html#296" class="Bound">p₂</a> <a id="746" href="Relation.Binary.Properties.Poset.html#299" class="Bound">p₃</a>
+<a id="749" href="Relation.Binary.Properties.Poset.html#invPoset" class="Function">invPoset</a> <a id="758" class="Symbol">=</a> <a id="760" class="Keyword">record</a> <a id="767" class="Symbol">{</a> <a id="769" class="Field">isPartialOrder</a> <a id="784" class="Symbol">=</a> <a id="786" href="Relation.Binary.Properties.Poset.html#invIsPartialOrder" class="Function">invIsPartialOrder</a> <a id="804" class="Symbol">}</a>
 
-<a name="807" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="880" class="Comment"
-      >-- Posets can be turned into strict partial orders</a
-      >
+<a id="807" class="Comment">------------------------------------------------------------------------</a>
+<a id="880" class="Comment">-- Posets can be turned into strict partial orders</a>
 
-<a name="strictPartialOrder" href="Relation.Binary.Properties.Poset.html#strictPartialOrder" class="Function"
-      >strictPartialOrder</a
-      > <a name="951" class="Symbol"
-      >:</a
-      > <a name="953" href="Relation.Binary.html#StrictPartialOrder" class="Record"
-      >StrictPartialOrder</a
-      > <a name="972" class="Symbol"
-      >_</a
-      > <a name="974" class="Symbol"
-      >_</a
-      > <a name="976" class="Symbol"
-      >_</a
-      >
-<a name="978" href="Relation.Binary.Properties.Poset.html#strictPartialOrder" class="Function"
-      >strictPartialOrder</a
-      > <a name="997" class="Symbol"
-      >=</a
-      > <a name="999" class="Keyword"
-      >record</a
-      >
-  <a name="1008" class="Symbol"
-      >{</a
-      > <a name="1010" class="Field"
-      >isStrictPartialOrder</a
-      > <a name="1031" class="Symbol"
-      >=</a
-      > <a name="1033" class="Keyword"
-      >record</a
-      >
-    <a name="1044" class="Symbol"
-      >{</a
-      > <a name="1046" class="Field"
-      >isEquivalence</a
-      > <a name="1060" class="Symbol"
-      >=</a
-      > <a name="1062" href="Relation.Binary.html#1054" class="Function"
-      >isEquivalence</a
-      >
-    <a name="1080" class="Symbol"
-      >;</a
-      > <a name="1082" class="Field"
-      >irrefl</a
-      >        <a name="1096" class="Symbol"
-      >=</a
-      > <a name="1098" href="Relation.Binary.NonStrictToStrict.html#1037" class="Function"
-      >irrefl</a
-      >
-    <a name="1109" class="Symbol"
-      >;</a
-      > <a name="1111" class="Field"
-      >trans</a
-      >         <a name="1125" class="Symbol"
-      >=</a
-      > <a name="1127" href="Relation.Binary.NonStrictToStrict.html#1098" class="Function"
-      >trans</a
-      > <a name="1133" href="Relation.Binary.html#3904" class="Field"
-      >isPartialOrder</a
-      >
-    <a name="1152" class="Symbol"
-      >;</a
-      > <a name="1154" class="Field"
-      >&lt;-resp-&#8776;</a
-      >      <a name="1168" class="Symbol"
-      >=</a
-      > <a name="1170" href="Relation.Binary.NonStrictToStrict.html#1578" class="Function"
-      >&lt;-resp-&#8776;</a
-      > <a name="1179" href="Relation.Binary.html#1054" class="Function"
-      >isEquivalence</a
-      > <a name="1193" href="Relation.Binary.html#1318" class="Function"
-      >&#8804;-resp-&#8776;</a
-      >
-    <a name="1206" class="Symbol"
-      >}</a
-      >
-  <a name="1210" class="Symbol"
-      >}</a
-      >
+<a id="strictPartialOrder" href="Relation.Binary.Properties.Poset.html#strictPartialOrder" class="Function">strictPartialOrder</a> <a id="951" class="Symbol">:</a> <a id="953" href="Relation.Binary.html#StrictPartialOrder" class="Record">StrictPartialOrder</a> <a id="972" class="Symbol">_</a> <a id="974" class="Symbol">_</a> <a id="976" class="Symbol">_</a>
+<a id="978" href="Relation.Binary.Properties.Poset.html#strictPartialOrder" class="Function">strictPartialOrder</a> <a id="997" class="Symbol">=</a> <a id="999" class="Keyword">record</a>
+  <a id="1008" class="Symbol">{</a> <a id="1010" class="Field">isStrictPartialOrder</a> <a id="1031" class="Symbol">=</a> <a id="1033" class="Keyword">record</a>
+    <a id="1044" class="Symbol">{</a> <a id="1046" class="Field">isEquivalence</a> <a id="1060" class="Symbol">=</a> <a id="1062" href="Relation.Binary.html#1054" class="Function">isEquivalence</a>
+    <a id="1080" class="Symbol">;</a> <a id="1082" class="Field">irrefl</a>        <a id="1096" class="Symbol">=</a> <a id="1098" href="Relation.Binary.NonStrictToStrict.html#1037" class="Function">irrefl</a>
+    <a id="1109" class="Symbol">;</a> <a id="1111" class="Field">trans</a>         <a id="1125" class="Symbol">=</a> <a id="1127" href="Relation.Binary.NonStrictToStrict.html#1098" class="Function">trans</a> <a id="1133" href="Relation.Binary.html#3904" class="Field">isPartialOrder</a>
+    <a id="1152" class="Symbol">;</a> <a id="1154" class="Field">&lt;-resp-≈</a>      <a id="1168" class="Symbol">=</a> <a id="1170" href="Relation.Binary.NonStrictToStrict.html#1578" class="Function">&lt;-resp-≈</a> <a id="1179" href="Relation.Binary.html#1054" class="Function">isEquivalence</a> <a id="1193" href="Relation.Binary.html#1318" class="Function">≤-resp-≈</a>
+    <a id="1206" class="Symbol">}</a>
+  <a id="1210" class="Symbol">}</a>
 
-<a name="1213" class="Keyword"
-      >open</a
-      > <a name="1218" href="Relation.Binary.html#StrictPartialOrder" class="Module"
-      >StrictPartialOrder</a
-      > <a name="1237" href="Relation.Binary.Properties.Poset.html#strictPartialOrder" class="Function"
-      >strictPartialOrder</a
-      >
-</pre
-    ></body
-  ></html
->
+<a id="1213" class="Keyword">open</a> <a id="1218" href="Relation.Binary.html#StrictPartialOrder" class="Module">StrictPartialOrder</a> <a id="1237" href="Relation.Binary.Properties.Poset.html#strictPartialOrder" class="Function">strictPartialOrder</a>
+</pre></body></html>

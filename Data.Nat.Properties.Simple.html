@@ -1,139 +1,26 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-><head
-  ><title
-    >Data.Nat.Properties.Simple</title
-    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-     /><meta http-equiv="Content-Style-Type" content="text/css"
-     /><link href="Agda.css" rel="stylesheet" type="text/css"
-     /></head
-  ><body
-  ><pre
-    ><a name="1" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="74" class="Comment"
-      >-- The Agda standard library</a
-      >
-<a name="103" class="Comment"
-      >--</a
-      >
-<a name="106" class="Comment"
-      >-- A bunch of properties about natural number operations</a
-      >
-<a name="163" class="Comment"
-      >--</a
-      >
-<a name="166" class="Comment"
-      >-- This module is DEPRECATED. Please use Data.Nat.Properties directly.</a
-      >
-<a name="237" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Nat.Properties.Simple</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- A bunch of properties about natural number operations</a>
+<a id="163" class="Comment">--</a>
+<a id="166" class="Comment">-- This module is DEPRECATED. Please use Data.Nat.Properties directly.</a>
+<a id="237" class="Comment">------------------------------------------------------------------------</a>
 
-<a name="311" class="Keyword"
-      >module</a
-      > <a name="318" href="Data.Nat.Properties.Simple.html" class="Module"
-      >Data.Nat.Properties.Simple</a
-      > <a name="345" class="Keyword"
-      >where</a
-      >
+<a id="311" class="Keyword">module</a> <a id="318" href="Data.Nat.Properties.Simple.html" class="Module">Data.Nat.Properties.Simple</a> <a id="345" class="Keyword">where</a>
 
-<a name="352" class="Keyword"
-      >open</a
-      > <a name="357" class="Keyword"
-      >import</a
-      > <a name="364" href="Data.Nat.Properties.html" class="Module"
-      >Data.Nat.Properties</a
-      > <a name="384" class="Keyword"
-      >public</a
-      > <a name="391" class="Keyword"
-      >using</a
-      >
-  <a name="399" class="Symbol"
-      >(</a
-      > <a name="401" href="Data.Nat.Properties.html#+-assoc" class="Function"
-      >+-assoc</a
-      >
-  <a name="411" class="Symbol"
-      >;</a
-      > <a name="413" href="Data.Nat.Properties.html#+-suc" class="Function"
-      >+-suc</a
-      >
-  <a name="421" class="Symbol"
-      >;</a
-      > <a name="423" href="Data.Nat.Properties.html#+-comm" class="Function"
-      >+-comm</a
-      >
-  <a name="432" class="Symbol"
-      >;</a
-      > <a name="434" href="Data.Nat.Properties.html#+-*-suc" class="Function"
-      >+-*-suc</a
-      >
-  <a name="444" class="Symbol"
-      >;</a
-      > <a name="446" href="Data.Nat.Properties.html#*-comm" class="Function"
-      >*-comm</a
-      >
-  <a name="455" class="Symbol"
-      >;</a
-      > <a name="457" href="Data.Nat.Properties.html#*-assoc" class="Function"
-      >*-assoc</a
-      >
-  <a name="467" class="Symbol"
-      >)</a
-      > <a name="469" class="Keyword"
-      >renaming</a
-      >
-  <a name="480" class="Symbol"
-      >(</a
-      > <a name="482" href="Data.Nat.Properties.html#+-identity&#691;" class="Function"
-      >+-identity&#691;</a
-      >  <a name="495" class="Symbol"
-      >to</a
-      > <a name="498" href="Data.Nat.Properties.html#+-identity&#691;" class="Function"
-      >+-right-identity</a
-      >
-  <a name="517" class="Symbol"
-      >;</a
-      > <a name="519" href="Data.Nat.Properties.html#+-identity&#737;" class="Function"
-      >+-identity&#737;</a
-      >  <a name="532" class="Symbol"
-      >to</a
-      > <a name="535" href="Data.Nat.Properties.html#+-identity&#737;" class="Function"
-      >+-left-identity</a
-      >
-  <a name="553" class="Symbol"
-      >;</a
-      > <a name="555" href="Data.Nat.Properties.html#*-zero&#691;" class="Function"
-      >*-zero&#691;</a
-      >      <a name="568" class="Symbol"
-      >to</a
-      > <a name="571" href="Data.Nat.Properties.html#*-zero&#691;" class="Function"
-      >*-right-zero</a
-      >
-  <a name="586" class="Symbol"
-      >;</a
-      > <a name="588" href="Data.Nat.Properties.html#*-zero&#737;" class="Function"
-      >*-zero&#737;</a
-      >      <a name="601" class="Symbol"
-      >to</a
-      > <a name="604" href="Data.Nat.Properties.html#*-zero&#737;" class="Function"
-      >*-left-zero</a
-      >
-  <a name="618" class="Symbol"
-      >;</a
-      > <a name="620" href="Data.Nat.Properties.html#*-distrib&#691;-+" class="Function"
-      >*-distrib&#691;-+</a
-      > <a name="633" class="Symbol"
-      >to</a
-      > <a name="636" href="Data.Nat.Properties.html#*-distrib&#691;-+" class="Function"
-      >distrib&#691;-*-+</a
-      >
-  <a name="651" class="Symbol"
-      >)</a
-      >
-</pre
-    ></body
-  ></html
->
+<a id="352" class="Keyword">open</a> <a id="357" class="Keyword">import</a> <a id="364" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="384" class="Keyword">public</a> <a id="391" class="Keyword">using</a>
+  <a id="399" class="Symbol">(</a> <a id="401" href="Data.Nat.Properties.html#%2B-assoc" class="Function">+-assoc</a>
+  <a id="411" class="Symbol">;</a> <a id="413" href="Data.Nat.Properties.html#%2B-suc" class="Function">+-suc</a>
+  <a id="421" class="Symbol">;</a> <a id="423" href="Data.Nat.Properties.html#%2B-comm" class="Function">+-comm</a>
+  <a id="432" class="Symbol">;</a> <a id="434" href="Data.Nat.Properties.html#%2B-%2A-suc" class="Function">+-*-suc</a>
+  <a id="444" class="Symbol">;</a> <a id="446" href="Data.Nat.Properties.html#%2A-comm" class="Function">*-comm</a>
+  <a id="455" class="Symbol">;</a> <a id="457" href="Data.Nat.Properties.html#%2A-assoc" class="Function">*-assoc</a>
+  <a id="467" class="Symbol">)</a> <a id="469" class="Keyword">renaming</a>
+  <a id="480" class="Symbol">(</a> <a id="482" href="Data.Nat.Properties.html#%2B-identity%CA%B3" class="Function">+-identityʳ</a>  <a id="495" class="Symbol">to</a> <a id="498" href="Data.Nat.Properties.html#%2B-identity%CA%B3" class="Function">+-right-identity</a>
+  <a id="517" class="Symbol">;</a> <a id="519" href="Data.Nat.Properties.html#%2B-identity%CB%A1" class="Function">+-identityˡ</a>  <a id="532" class="Symbol">to</a> <a id="535" href="Data.Nat.Properties.html#%2B-identity%CB%A1" class="Function">+-left-identity</a>
+  <a id="553" class="Symbol">;</a> <a id="555" href="Data.Nat.Properties.html#%2A-zero%CA%B3" class="Function">*-zeroʳ</a>      <a id="568" class="Symbol">to</a> <a id="571" href="Data.Nat.Properties.html#%2A-zero%CA%B3" class="Function">*-right-zero</a>
+  <a id="586" class="Symbol">;</a> <a id="588" href="Data.Nat.Properties.html#%2A-zero%CB%A1" class="Function">*-zeroˡ</a>      <a id="601" class="Symbol">to</a> <a id="604" href="Data.Nat.Properties.html#%2A-zero%CB%A1" class="Function">*-left-zero</a>
+  <a id="618" class="Symbol">;</a> <a id="620" href="Data.Nat.Properties.html#%2A-distrib%CA%B3-%2B" class="Function">*-distribʳ-+</a> <a id="633" class="Symbol">to</a> <a id="636" href="Data.Nat.Properties.html#%2A-distrib%CA%B3-%2B" class="Function">distribʳ-*-+</a>
+  <a id="651" class="Symbol">)</a>
+</pre></body></html>

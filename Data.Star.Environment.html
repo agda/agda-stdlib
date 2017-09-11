@@ -1,396 +1,45 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-><head
-  ><title
-    >Data.Star.Environment</title
-    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-     /><meta http-equiv="Content-Style-Type" content="text/css"
-     /><link href="Agda.css" rel="stylesheet" type="text/css"
-     /></head
-  ><body
-  ><pre
-    ><a name="1" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="74" class="Comment"
-      >-- The Agda standard library</a
-      >
-<a name="103" class="Comment"
-      >--</a
-      >
-<a name="106" class="Comment"
-      >-- Environments (heterogeneous collections)</a
-      >
-<a name="150" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Star.Environment</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Environments (heterogeneous collections)</a>
+<a id="150" class="Comment">------------------------------------------------------------------------</a>
 
-<a name="224" class="Keyword"
-      >module</a
-      > <a name="231" href="Data.Star.Environment.html" class="Module"
-      >Data.Star.Environment</a
-      > <a name="253" class="Symbol"
-      >(</a
-      ><a name="254" href="Data.Star.Environment.html#254" class="Bound"
-      >Ty</a
-      > <a name="257" class="Symbol"
-      >:</a
-      > <a name="259" class="PrimitiveType"
-      >Set</a
-      ><a name="262" class="Symbol"
-      >)</a
-      > <a name="264" class="Keyword"
-      >where</a
-      >
+<a id="224" class="Keyword">module</a> <a id="231" href="Data.Star.Environment.html" class="Module">Data.Star.Environment</a> <a id="253" class="Symbol">(</a><a id="254" href="Data.Star.Environment.html#254" class="Bound">Ty</a> <a id="257" class="Symbol">:</a> <a id="259" class="PrimitiveType">Set</a><a id="262" class="Symbol">)</a> <a id="264" class="Keyword">where</a>
 
-<a name="271" class="Keyword"
-      >open</a
-      > <a name="276" class="Keyword"
-      >import</a
-      > <a name="283" href="Data.Star.html" class="Module"
-      >Data.Star</a
-      >
-<a name="293" class="Keyword"
-      >open</a
-      > <a name="298" class="Keyword"
-      >import</a
-      > <a name="305" href="Data.Star.List.html" class="Module"
-      >Data.Star.List</a
-      >
-<a name="320" class="Keyword"
-      >open</a
-      > <a name="325" class="Keyword"
-      >import</a
-      > <a name="332" href="Data.Star.Decoration.html" class="Module"
-      >Data.Star.Decoration</a
-      >
-<a name="353" class="Keyword"
-      >open</a
-      > <a name="358" class="Keyword"
-      >import</a
-      > <a name="365" href="Data.Star.Pointer.html" class="Module"
-      >Data.Star.Pointer</a
-      > <a name="383" class="Symbol"
-      >as</a
-      > <a name="386" class="Module"
-      >Pointer</a
-      > <a name="394" class="Keyword"
-      >hiding</a
-      > <a name="401" class="Symbol"
-      >(</a
-      ><a name="402" href="Data.Star.Pointer.html#lookup" class="Function"
-      >lookup</a
-      ><a name="408" class="Symbol"
-      >)</a
-      >
-<a name="410" class="Keyword"
-      >open</a
-      > <a name="415" class="Keyword"
-      >import</a
-      > <a name="422" href="Data.Unit.html" class="Module"
-      >Data.Unit</a
-      >
-<a name="432" class="Keyword"
-      >open</a
-      > <a name="437" class="Keyword"
-      >import</a
-      > <a name="444" href="Relation.Binary.PropositionalEquality.html" class="Module"
-      >Relation.Binary.PropositionalEquality</a
-      >
+<a id="271" class="Keyword">open</a> <a id="276" class="Keyword">import</a> <a id="283" href="Data.Star.html" class="Module">Data.Star</a>
+<a id="293" class="Keyword">open</a> <a id="298" class="Keyword">import</a> <a id="305" href="Data.Star.List.html" class="Module">Data.Star.List</a>
+<a id="320" class="Keyword">open</a> <a id="325" class="Keyword">import</a> <a id="332" href="Data.Star.Decoration.html" class="Module">Data.Star.Decoration</a>
+<a id="353" class="Keyword">open</a> <a id="358" class="Keyword">import</a> <a id="365" href="Data.Star.Pointer.html" class="Module">Data.Star.Pointer</a> <a id="383" class="Symbol">as</a> <a id="386" class="Module">Pointer</a> <a id="394" class="Keyword">hiding</a> <a id="401" class="Symbol">(</a><a id="402" href="Data.Star.Pointer.html#lookup" class="Function">lookup</a><a id="408" class="Symbol">)</a>
+<a id="410" class="Keyword">open</a> <a id="415" class="Keyword">import</a> <a id="422" href="Data.Unit.html" class="Module">Data.Unit</a>
+<a id="432" class="Keyword">open</a> <a id="437" class="Keyword">import</a> <a id="444" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
 
-<a name="483" class="Comment"
-      >-- Contexts, listing the types of all the elements in an environment.</a
-      >
+<a id="483" class="Comment">-- Contexts, listing the types of all the elements in an environment.</a>
 
-<a name="Ctxt" href="Data.Star.Environment.html#Ctxt" class="Function"
-      >Ctxt</a
-      > <a name="559" class="Symbol"
-      >:</a
-      > <a name="561" class="PrimitiveType"
-      >Set</a
-      >
-<a name="565" href="Data.Star.Environment.html#Ctxt" class="Function"
-      >Ctxt</a
-      > <a name="570" class="Symbol"
-      >=</a
-      > <a name="572" href="Data.Star.List.html#List" class="Function"
-      >List</a
-      > <a name="577" href="Data.Star.Environment.html#254" class="Bound"
-      >Ty</a
-      >
+<a id="Ctxt" href="Data.Star.Environment.html#Ctxt" class="Function">Ctxt</a> <a id="559" class="Symbol">:</a> <a id="561" class="PrimitiveType">Set</a>
+<a id="565" href="Data.Star.Environment.html#Ctxt" class="Function">Ctxt</a> <a id="570" class="Symbol">=</a> <a id="572" href="Data.Star.List.html#List" class="Function">List</a> <a id="577" href="Data.Star.Environment.html#254" class="Bound">Ty</a>
 
-<a name="581" class="Comment"
-      >-- Variables (de&#160;Bruijn indices); pointers into environments.</a
-      >
+<a id="581" class="Comment">-- Variables (de Bruijn indices); pointers into environments.</a>
 
-<a name="644" class="Keyword"
-      >infix</a
-      > <a name="650" class="Number"
-      >4</a
-      > <a name="652" href="Data.Star.Environment.html#_&#8715;_" class="Function Operator"
-      >_&#8715;_</a
-      >
+<a id="644" class="Keyword">infix</a> <a id="650" class="Number">4</a> <a id="652" href="Data.Star.Environment.html#_%E2%88%8B_" class="Function Operator">_∋_</a>
 
-<a name="_&#8715;_" href="Data.Star.Environment.html#_&#8715;_" class="Function Operator"
-      >_&#8715;_</a
-      > <a name="661" class="Symbol"
-      >:</a
-      > <a name="663" href="Data.Star.Environment.html#Ctxt" class="Function"
-      >Ctxt</a
-      > <a name="668" class="Symbol"
-      >&#8594;</a
-      > <a name="670" href="Data.Star.Environment.html#254" class="Bound"
-      >Ty</a
-      > <a name="673" class="Symbol"
-      >&#8594;</a
-      > <a name="675" class="PrimitiveType"
-      >Set</a
-      >
-<a name="679" href="Data.Star.Environment.html#679" class="Bound"
-      >&#915;</a
-      > <a name="681" href="Data.Star.Environment.html#_&#8715;_" class="Function Operator"
-      >&#8715;</a
-      > <a name="683" href="Data.Star.Environment.html#683" class="Bound"
-      >&#963;</a
-      > <a name="685" class="Symbol"
-      >=</a
-      > <a name="687" href="Data.Star.Pointer.html#Any" class="Function"
-      >Any</a
-      > <a name="691" class="Symbol"
-      >(&#955;</a
-      > <a name="694" href="Data.Star.Environment.html#694" class="Bound"
-      >_</a
-      > <a name="696" class="Symbol"
-      >&#8594;</a
-      > <a name="698" href="Agda.Builtin.Unit.html#&#8868;" class="Record"
-      >&#8868;</a
-      ><a name="699" class="Symbol"
-      >)</a
-      > <a name="701" class="Symbol"
-      >(</a
-      ><a name="702" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
-      >_&#8801;_</a
-      > <a name="706" href="Data.Star.Environment.html#683" class="Bound"
-      >&#963;</a
-      ><a name="707" class="Symbol"
-      >)</a
-      > <a name="709" href="Data.Star.Environment.html#679" class="Bound"
-      >&#915;</a
-      >
+<a id="_∋_" href="Data.Star.Environment.html#_%E2%88%8B_" class="Function Operator">_∋_</a> <a id="661" class="Symbol">:</a> <a id="663" href="Data.Star.Environment.html#Ctxt" class="Function">Ctxt</a> <a id="668" class="Symbol">→</a> <a id="670" href="Data.Star.Environment.html#254" class="Bound">Ty</a> <a id="673" class="Symbol">→</a> <a id="675" class="PrimitiveType">Set</a>
+<a id="679" href="Data.Star.Environment.html#679" class="Bound">Γ</a> <a id="681" href="Data.Star.Environment.html#_%E2%88%8B_" class="Function Operator">∋</a> <a id="683" href="Data.Star.Environment.html#683" class="Bound">σ</a> <a id="685" class="Symbol">=</a> <a id="687" href="Data.Star.Pointer.html#Any" class="Function">Any</a> <a id="691" class="Symbol">(λ</a> <a id="694" href="Data.Star.Environment.html#694" class="Bound">_</a> <a id="696" class="Symbol">→</a> <a id="698" href="Agda.Builtin.Unit.html#%E2%8A%A4" class="Record">⊤</a><a id="699" class="Symbol">)</a> <a id="701" class="Symbol">(</a><a id="702" href="Agda.Builtin.Equality.html#_%E2%89%A1_" class="Datatype Operator">_≡_</a> <a id="706" href="Data.Star.Environment.html#683" class="Bound">σ</a><a id="707" class="Symbol">)</a> <a id="709" href="Data.Star.Environment.html#679" class="Bound">Γ</a>
 
-<a name="vz" href="Data.Star.Environment.html#vz" class="Function"
-      >vz</a
-      > <a name="715" class="Symbol"
-      >:</a
-      > <a name="717" class="Symbol"
-      >&#8704;</a
-      > <a name="719" class="Symbol"
-      >{</a
-      ><a name="720" href="Data.Star.Environment.html#720" class="Bound"
-      >&#915;</a
-      > <a name="722" href="Data.Star.Environment.html#722" class="Bound"
-      >&#963;</a
-      ><a name="723" class="Symbol"
-      >}</a
-      > <a name="725" class="Symbol"
-      >&#8594;</a
-      > <a name="727" href="Data.Star.Environment.html#720" class="Bound"
-      >&#915;</a
-      > <a name="729" href="Data.Star.html#_&#9659;_" class="Function Operator"
-      >&#9659;</a
-      > <a name="731" href="Data.Star.Environment.html#722" class="Bound"
-      >&#963;</a
-      > <a name="733" href="Data.Star.Environment.html#_&#8715;_" class="Function Operator"
-      >&#8715;</a
-      > <a name="735" href="Data.Star.Environment.html#722" class="Bound"
-      >&#963;</a
-      >
-<a name="737" href="Data.Star.Environment.html#vz" class="Function"
-      >vz</a
-      > <a name="740" class="Symbol"
-      >=</a
-      > <a name="742" href="Data.Star.Pointer.html#this" class="Function"
-      >this</a
-      > <a name="747" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
-      >refl</a
-      >
+<a id="vz" href="Data.Star.Environment.html#vz" class="Function">vz</a> <a id="715" class="Symbol">:</a> <a id="717" class="Symbol">∀</a> <a id="719" class="Symbol">{</a><a id="720" href="Data.Star.Environment.html#720" class="Bound">Γ</a> <a id="722" href="Data.Star.Environment.html#722" class="Bound">σ</a><a id="723" class="Symbol">}</a> <a id="725" class="Symbol">→</a> <a id="727" href="Data.Star.Environment.html#720" class="Bound">Γ</a> <a id="729" href="Data.Star.html#_%E2%96%BB_" class="Function Operator">▻</a> <a id="731" href="Data.Star.Environment.html#722" class="Bound">σ</a> <a id="733" href="Data.Star.Environment.html#_%E2%88%8B_" class="Function Operator">∋</a> <a id="735" href="Data.Star.Environment.html#722" class="Bound">σ</a>
+<a id="737" href="Data.Star.Environment.html#vz" class="Function">vz</a> <a id="740" class="Symbol">=</a> <a id="742" href="Data.Star.Pointer.html#this" class="Function">this</a> <a id="747" href="Agda.Builtin.Equality.html#_%E2%89%A1_.refl" class="InductiveConstructor">refl</a>
 
-<a name="vs" href="Data.Star.Environment.html#vs" class="Function"
-      >vs</a
-      > <a name="756" class="Symbol"
-      >:</a
-      > <a name="758" class="Symbol"
-      >&#8704;</a
-      > <a name="760" class="Symbol"
-      >{</a
-      ><a name="761" href="Data.Star.Environment.html#761" class="Bound"
-      >&#915;</a
-      > <a name="763" href="Data.Star.Environment.html#763" class="Bound"
-      >&#963;</a
-      > <a name="765" href="Data.Star.Environment.html#765" class="Bound"
-      >&#964;</a
-      ><a name="766" class="Symbol"
-      >}</a
-      > <a name="768" class="Symbol"
-      >&#8594;</a
-      > <a name="770" href="Data.Star.Environment.html#761" class="Bound"
-      >&#915;</a
-      > <a name="772" href="Data.Star.Environment.html#_&#8715;_" class="Function Operator"
-      >&#8715;</a
-      > <a name="774" href="Data.Star.Environment.html#765" class="Bound"
-      >&#964;</a
-      > <a name="776" class="Symbol"
-      >&#8594;</a
-      > <a name="778" href="Data.Star.Environment.html#761" class="Bound"
-      >&#915;</a
-      > <a name="780" href="Data.Star.html#_&#9659;_" class="Function Operator"
-      >&#9659;</a
-      > <a name="782" href="Data.Star.Environment.html#763" class="Bound"
-      >&#963;</a
-      > <a name="784" href="Data.Star.Environment.html#_&#8715;_" class="Function Operator"
-      >&#8715;</a
-      > <a name="786" href="Data.Star.Environment.html#765" class="Bound"
-      >&#964;</a
-      >
-<a name="788" href="Data.Star.Environment.html#vs" class="Function"
-      >vs</a
-      > <a name="791" class="Symbol"
-      >=</a
-      > <a name="793" href="Data.Star.Pointer.html#that" class="Function"
-      >that</a
-      > <a name="798" href="Agda.Builtin.Unit.html#&#8868;.tt" class="InductiveConstructor"
-      >tt</a
-      >
+<a id="vs" href="Data.Star.Environment.html#vs" class="Function">vs</a> <a id="756" class="Symbol">:</a> <a id="758" class="Symbol">∀</a> <a id="760" class="Symbol">{</a><a id="761" href="Data.Star.Environment.html#761" class="Bound">Γ</a> <a id="763" href="Data.Star.Environment.html#763" class="Bound">σ</a> <a id="765" href="Data.Star.Environment.html#765" class="Bound">τ</a><a id="766" class="Symbol">}</a> <a id="768" class="Symbol">→</a> <a id="770" href="Data.Star.Environment.html#761" class="Bound">Γ</a> <a id="772" href="Data.Star.Environment.html#_%E2%88%8B_" class="Function Operator">∋</a> <a id="774" href="Data.Star.Environment.html#765" class="Bound">τ</a> <a id="776" class="Symbol">→</a> <a id="778" href="Data.Star.Environment.html#761" class="Bound">Γ</a> <a id="780" href="Data.Star.html#_%E2%96%BB_" class="Function Operator">▻</a> <a id="782" href="Data.Star.Environment.html#763" class="Bound">σ</a> <a id="784" href="Data.Star.Environment.html#_%E2%88%8B_" class="Function Operator">∋</a> <a id="786" href="Data.Star.Environment.html#765" class="Bound">τ</a>
+<a id="788" href="Data.Star.Environment.html#vs" class="Function">vs</a> <a id="791" class="Symbol">=</a> <a id="793" href="Data.Star.Pointer.html#that" class="Function">that</a> <a id="798" href="Agda.Builtin.Unit.html#%E2%8A%A4.tt" class="InductiveConstructor">tt</a>
 
-<a name="802" class="Comment"
-      >-- Environments. The T function maps types to element types.</a
-      >
+<a id="802" class="Comment">-- Environments. The T function maps types to element types.</a>
 
-<a name="Env" href="Data.Star.Environment.html#Env" class="Function"
-      >Env</a
-      > <a name="868" class="Symbol"
-      >:</a
-      > <a name="870" class="Symbol"
-      >(</a
-      ><a name="871" href="Data.Star.Environment.html#254" class="Bound"
-      >Ty</a
-      > <a name="874" class="Symbol"
-      >&#8594;</a
-      > <a name="876" class="PrimitiveType"
-      >Set</a
-      ><a name="879" class="Symbol"
-      >)</a
-      > <a name="881" class="Symbol"
-      >&#8594;</a
-      > <a name="883" href="Data.Star.Environment.html#Ctxt" class="Function"
-      >Ctxt</a
-      > <a name="888" class="Symbol"
-      >&#8594;</a
-      > <a name="890" class="PrimitiveType"
-      >Set</a
-      >
-<a name="894" href="Data.Star.Environment.html#Env" class="Function"
-      >Env</a
-      > <a name="898" href="Data.Star.Environment.html#898" class="Bound"
-      >T</a
-      > <a name="900" href="Data.Star.Environment.html#900" class="Bound"
-      >&#915;</a
-      > <a name="902" class="Symbol"
-      >=</a
-      > <a name="904" href="Data.Star.Decoration.html#All" class="Function"
-      >All</a
-      > <a name="908" href="Data.Star.Environment.html#898" class="Bound"
-      >T</a
-      > <a name="910" href="Data.Star.Environment.html#900" class="Bound"
-      >&#915;</a
-      >
+<a id="Env" href="Data.Star.Environment.html#Env" class="Function">Env</a> <a id="868" class="Symbol">:</a> <a id="870" class="Symbol">(</a><a id="871" href="Data.Star.Environment.html#254" class="Bound">Ty</a> <a id="874" class="Symbol">→</a> <a id="876" class="PrimitiveType">Set</a><a id="879" class="Symbol">)</a> <a id="881" class="Symbol">→</a> <a id="883" href="Data.Star.Environment.html#Ctxt" class="Function">Ctxt</a> <a id="888" class="Symbol">→</a> <a id="890" class="PrimitiveType">Set</a>
+<a id="894" href="Data.Star.Environment.html#Env" class="Function">Env</a> <a id="898" href="Data.Star.Environment.html#898" class="Bound">T</a> <a id="900" href="Data.Star.Environment.html#900" class="Bound">Γ</a> <a id="902" class="Symbol">=</a> <a id="904" href="Data.Star.Decoration.html#All" class="Function">All</a> <a id="908" href="Data.Star.Environment.html#898" class="Bound">T</a> <a id="910" href="Data.Star.Environment.html#900" class="Bound">Γ</a>
 
-<a name="913" class="Comment"
-      >-- A safe lookup function for environments.</a
-      >
+<a id="913" class="Comment">-- A safe lookup function for environments.</a>
 
-<a name="lookup" href="Data.Star.Environment.html#lookup" class="Function"
-      >lookup</a
-      > <a name="965" class="Symbol"
-      >:</a
-      > <a name="967" class="Symbol"
-      >&#8704;</a
-      > <a name="969" class="Symbol"
-      >{</a
-      ><a name="970" href="Data.Star.Environment.html#970" class="Bound"
-      >&#915;</a
-      > <a name="972" href="Data.Star.Environment.html#972" class="Bound"
-      >&#963;</a
-      ><a name="973" class="Symbol"
-      >}</a
-      > <a name="975" class="Symbol"
-      >{</a
-      ><a name="976" href="Data.Star.Environment.html#976" class="Bound"
-      >T</a
-      > <a name="978" class="Symbol"
-      >:</a
-      > <a name="980" href="Data.Star.Environment.html#254" class="Bound"
-      >Ty</a
-      > <a name="983" class="Symbol"
-      >&#8594;</a
-      > <a name="985" class="PrimitiveType"
-      >Set</a
-      ><a name="988" class="Symbol"
-      >}</a
-      > <a name="990" class="Symbol"
-      >&#8594;</a
-      > <a name="992" href="Data.Star.Environment.html#970" class="Bound"
-      >&#915;</a
-      > <a name="994" href="Data.Star.Environment.html#_&#8715;_" class="Function Operator"
-      >&#8715;</a
-      > <a name="996" href="Data.Star.Environment.html#972" class="Bound"
-      >&#963;</a
-      > <a name="998" class="Symbol"
-      >&#8594;</a
-      > <a name="1000" href="Data.Star.Environment.html#Env" class="Function"
-      >Env</a
-      > <a name="1004" href="Data.Star.Environment.html#976" class="Bound"
-      >T</a
-      > <a name="1006" href="Data.Star.Environment.html#970" class="Bound"
-      >&#915;</a
-      > <a name="1008" class="Symbol"
-      >&#8594;</a
-      > <a name="1010" href="Data.Star.Environment.html#976" class="Bound"
-      >T</a
-      > <a name="1012" href="Data.Star.Environment.html#972" class="Bound"
-      >&#963;</a
-      >
-<a name="1014" href="Data.Star.Environment.html#lookup" class="Function"
-      >lookup</a
-      > <a name="1021" href="Data.Star.Environment.html#1021" class="Bound"
-      >i</a
-      > <a name="1023" href="Data.Star.Environment.html#1023" class="Bound"
-      >&#961;</a
-      > <a name="1025" class="Keyword"
-      >with</a
-      > <a name="1030" href="Data.Star.Pointer.html#lookup" class="Function"
-      >Pointer.lookup</a
-      > <a name="1045" href="Data.Star.Environment.html#1021" class="Bound"
-      >i</a
-      > <a name="1047" href="Data.Star.Environment.html#1023" class="Bound"
-      >&#961;</a
-      >
-<a name="1049" class="Symbol"
-      >...</a
-      > <a name="1053" class="Symbol"
-      >|</a
-      > <a name="1055" href="Data.Star.Pointer.html#Result.result" class="InductiveConstructor"
-      >result</a
-      > <a name="1062" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
-      >refl</a
-      > <a name="1067" href="Data.Star.Environment.html#1067" class="Bound"
-      >x</a
-      > <a name="1069" class="Symbol"
-      >=</a
-      > <a name="1071" href="Data.Star.Environment.html#1067" class="Bound"
-      >x</a
-      >
-</pre
-    ></body
-  ></html
->
+<a id="lookup" href="Data.Star.Environment.html#lookup" class="Function">lookup</a> <a id="965" class="Symbol">:</a> <a id="967" class="Symbol">∀</a> <a id="969" class="Symbol">{</a><a id="970" href="Data.Star.Environment.html#970" class="Bound">Γ</a> <a id="972" href="Data.Star.Environment.html#972" class="Bound">σ</a><a id="973" class="Symbol">}</a> <a id="975" class="Symbol">{</a><a id="976" href="Data.Star.Environment.html#976" class="Bound">T</a> <a id="978" class="Symbol">:</a> <a id="980" href="Data.Star.Environment.html#254" class="Bound">Ty</a> <a id="983" class="Symbol">→</a> <a id="985" class="PrimitiveType">Set</a><a id="988" class="Symbol">}</a> <a id="990" class="Symbol">→</a> <a id="992" href="Data.Star.Environment.html#970" class="Bound">Γ</a> <a id="994" href="Data.Star.Environment.html#_%E2%88%8B_" class="Function Operator">∋</a> <a id="996" href="Data.Star.Environment.html#972" class="Bound">σ</a> <a id="998" class="Symbol">→</a> <a id="1000" href="Data.Star.Environment.html#Env" class="Function">Env</a> <a id="1004" href="Data.Star.Environment.html#976" class="Bound">T</a> <a id="1006" href="Data.Star.Environment.html#970" class="Bound">Γ</a> <a id="1008" class="Symbol">→</a> <a id="1010" href="Data.Star.Environment.html#976" class="Bound">T</a> <a id="1012" href="Data.Star.Environment.html#972" class="Bound">σ</a>
+<a id="1014" href="Data.Star.Environment.html#lookup" class="Function">lookup</a> <a id="1021" href="Data.Star.Environment.html#1021" class="Bound">i</a> <a id="1023" href="Data.Star.Environment.html#1023" class="Bound">ρ</a> <a id="1025" class="Keyword">with</a> <a id="1030" href="Data.Star.Pointer.html#lookup" class="Function">Pointer.lookup</a> <a id="1045" href="Data.Star.Environment.html#1021" class="Bound">i</a> <a id="1047" href="Data.Star.Environment.html#1023" class="Bound">ρ</a>
+<a id="1049" class="Symbol">...</a> <a id="1053" class="Symbol">|</a> <a id="1055" href="Data.Star.Pointer.html#Result.result" class="InductiveConstructor">result</a> <a id="1062" href="Agda.Builtin.Equality.html#_%E2%89%A1_.refl" class="InductiveConstructor">refl</a> <a id="1067" href="Data.Star.Environment.html#1067" class="Bound">x</a> <a id="1069" class="Symbol">=</a> <a id="1071" href="Data.Star.Environment.html#1067" class="Bound">x</a>
+</pre></body></html>

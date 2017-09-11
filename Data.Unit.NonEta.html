@@ -1,297 +1,42 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-><head
-  ><title
-    >Data.Unit.NonEta</title
-    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-     /><meta http-equiv="Content-Style-Type" content="text/css"
-     /><link href="Agda.css" rel="stylesheet" type="text/css"
-     /></head
-  ><body
-  ><pre
-    ><a name="1" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="74" class="Comment"
-      >-- The Agda standard library</a
-      >
-<a name="103" class="Comment"
-      >--</a
-      >
-<a name="106" class="Comment"
-      >-- Some unit types</a
-      >
-<a name="125" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Unit.NonEta</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Some unit types</a>
+<a id="125" class="Comment">------------------------------------------------------------------------</a>
 
-<a name="199" class="Keyword"
-      >module</a
-      > <a name="206" href="Data.Unit.NonEta.html" class="Module"
-      >Data.Unit.NonEta</a
-      > <a name="223" class="Keyword"
-      >where</a
-      >
+<a id="199" class="Keyword">module</a> <a id="206" href="Data.Unit.NonEta.html" class="Module">Data.Unit.NonEta</a> <a id="223" class="Keyword">where</a>
 
-<a name="230" class="Keyword"
-      >open</a
-      > <a name="235" class="Keyword"
-      >import</a
-      > <a name="242" href="Level.html" class="Module"
-      >Level</a
-      >
+<a id="230" class="Keyword">open</a> <a id="235" class="Keyword">import</a> <a id="242" href="Level.html" class="Module">Level</a>
 
-<a name="249" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="322" class="Comment"
-      >-- A unit type defined as a data-type</a
-      >
+<a id="249" class="Comment">------------------------------------------------------------------------</a>
+<a id="322" class="Comment">-- A unit type defined as a data-type</a>
 
-<a name="361" class="Comment"
-      >-- The &#8868; type (see Data.Unit) comes with &#951;-equality, which is often</a
-      >
-<a name="429" class="Comment"
-      >-- nice to have, but sometimes it is convenient to be able to stop</a
-      >
-<a name="496" class="Comment"
-      >-- unfolding (see &quot;Hidden types&quot; below).</a
-      >
+<a id="361" class="Comment">-- The ⊤ type (see Data.Unit) comes with η-equality, which is often</a>
+<a id="429" class="Comment">-- nice to have, but sometimes it is convenient to be able to stop</a>
+<a id="496" class="Comment">-- unfolding (see &quot;Hidden types&quot; below).</a>
 
-<a name="538" class="Keyword"
-      >data</a
-      > <a name="Unit" href="Data.Unit.NonEta.html#Unit" class="Datatype"
-      >Unit</a
-      > <a name="548" class="Symbol"
-      >:</a
-      > <a name="550" class="PrimitiveType"
-      >Set</a
-      > <a name="554" class="Keyword"
-      >where</a
-      >
-  <a name="Unit.unit" href="Data.Unit.NonEta.html#Unit.unit" class="InductiveConstructor"
-      >unit</a
-      > <a name="567" class="Symbol"
-      >:</a
-      > <a name="569" href="Data.Unit.NonEta.html#Unit" class="Datatype"
-      >Unit</a
-      >
+<a id="538" class="Keyword">data</a> <a id="Unit" href="Data.Unit.NonEta.html#Unit" class="Datatype">Unit</a> <a id="548" class="Symbol">:</a> <a id="550" class="PrimitiveType">Set</a> <a id="554" class="Keyword">where</a>
+  <a id="Unit.unit" href="Data.Unit.NonEta.html#Unit.unit" class="InductiveConstructor">unit</a> <a id="567" class="Symbol">:</a> <a id="569" href="Data.Unit.NonEta.html#Unit" class="Datatype">Unit</a>
 
-<a name="575" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="648" class="Comment"
-      >-- Hidden types</a
-      >
+<a id="575" class="Comment">------------------------------------------------------------------------</a>
+<a id="648" class="Comment">-- Hidden types</a>
 
-<a name="665" class="Comment"
-      >-- &quot;Hidden&quot; values.</a
-      >
+<a id="665" class="Comment">-- &quot;Hidden&quot; values.</a>
 
-<a name="Hidden" href="Data.Unit.NonEta.html#Hidden" class="Function"
-      >Hidden</a
-      > <a name="693" class="Symbol"
-      >:</a
-      > <a name="695" class="Symbol"
-      >&#8704;</a
-      > <a name="697" class="Symbol"
-      >{</a
-      ><a name="698" href="Data.Unit.NonEta.html#698" class="Bound"
-      >a</a
-      ><a name="699" class="Symbol"
-      >}</a
-      > <a name="701" class="Symbol"
-      >&#8594;</a
-      > <a name="703" class="PrimitiveType"
-      >Set</a
-      > <a name="707" href="Data.Unit.NonEta.html#698" class="Bound"
-      >a</a
-      > <a name="709" class="Symbol"
-      >&#8594;</a
-      > <a name="711" class="PrimitiveType"
-      >Set</a
-      > <a name="715" href="Data.Unit.NonEta.html#698" class="Bound"
-      >a</a
-      >
-<a name="717" href="Data.Unit.NonEta.html#Hidden" class="Function"
-      >Hidden</a
-      > <a name="724" href="Data.Unit.NonEta.html#724" class="Bound"
-      >A</a
-      > <a name="726" class="Symbol"
-      >=</a
-      > <a name="728" href="Data.Unit.NonEta.html#Unit" class="Datatype"
-      >Unit</a
-      > <a name="733" class="Symbol"
-      >&#8594;</a
-      > <a name="735" href="Data.Unit.NonEta.html#724" class="Bound"
-      >A</a
-      >
+<a id="Hidden" href="Data.Unit.NonEta.html#Hidden" class="Function">Hidden</a> <a id="693" class="Symbol">:</a> <a id="695" class="Symbol">∀</a> <a id="697" class="Symbol">{</a><a id="698" href="Data.Unit.NonEta.html#698" class="Bound">a</a><a id="699" class="Symbol">}</a> <a id="701" class="Symbol">→</a> <a id="703" class="PrimitiveType">Set</a> <a id="707" href="Data.Unit.NonEta.html#698" class="Bound">a</a> <a id="709" class="Symbol">→</a> <a id="711" class="PrimitiveType">Set</a> <a id="715" href="Data.Unit.NonEta.html#698" class="Bound">a</a>
+<a id="717" href="Data.Unit.NonEta.html#Hidden" class="Function">Hidden</a> <a id="724" href="Data.Unit.NonEta.html#724" class="Bound">A</a> <a id="726" class="Symbol">=</a> <a id="728" href="Data.Unit.NonEta.html#Unit" class="Datatype">Unit</a> <a id="733" class="Symbol">→</a> <a id="735" href="Data.Unit.NonEta.html#724" class="Bound">A</a>
 
-<a name="738" class="Comment"
-      >-- The hide function can be used to hide function applications. Note</a
-      >
-<a name="807" class="Comment"
-      >-- that the type-checker doesn't see that &quot;hide f x&quot; contains the</a
-      >
-<a name="873" class="Comment"
-      >-- application &quot;f&#160;x&quot;.</a
-      >
+<a id="738" class="Comment">-- The hide function can be used to hide function applications. Note</a>
+<a id="807" class="Comment">-- that the type-checker doesn&#39;t see that &quot;hide f x&quot; contains the</a>
+<a id="873" class="Comment">-- application &quot;f x&quot;.</a>
 
-<a name="hide" href="Data.Unit.NonEta.html#hide" class="Function"
-      >hide</a
-      > <a name="901" class="Symbol"
-      >:</a
-      > <a name="903" class="Symbol"
-      >&#8704;</a
-      > <a name="905" class="Symbol"
-      >{</a
-      ><a name="906" href="Data.Unit.NonEta.html#906" class="Bound"
-      >a</a
-      > <a name="908" href="Data.Unit.NonEta.html#908" class="Bound"
-      >b</a
-      ><a name="909" class="Symbol"
-      >}</a
-      > <a name="911" class="Symbol"
-      >{</a
-      ><a name="912" href="Data.Unit.NonEta.html#912" class="Bound"
-      >A</a
-      > <a name="914" class="Symbol"
-      >:</a
-      > <a name="916" class="PrimitiveType"
-      >Set</a
-      > <a name="920" href="Data.Unit.NonEta.html#906" class="Bound"
-      >a</a
-      ><a name="921" class="Symbol"
-      >}</a
-      > <a name="923" class="Symbol"
-      >{</a
-      ><a name="924" href="Data.Unit.NonEta.html#924" class="Bound"
-      >B</a
-      > <a name="926" class="Symbol"
-      >:</a
-      > <a name="928" href="Data.Unit.NonEta.html#912" class="Bound"
-      >A</a
-      > <a name="930" class="Symbol"
-      >&#8594;</a
-      > <a name="932" class="PrimitiveType"
-      >Set</a
-      > <a name="936" href="Data.Unit.NonEta.html#908" class="Bound"
-      >b</a
-      ><a name="937" class="Symbol"
-      >}</a
-      > <a name="939" class="Symbol"
-      >&#8594;</a
-      >
-       <a name="948" class="Symbol"
-      >((</a
-      ><a name="950" href="Data.Unit.NonEta.html#950" class="Bound"
-      >x</a
-      > <a name="952" class="Symbol"
-      >:</a
-      > <a name="954" href="Data.Unit.NonEta.html#912" class="Bound"
-      >A</a
-      ><a name="955" class="Symbol"
-      >)</a
-      > <a name="957" class="Symbol"
-      >&#8594;</a
-      > <a name="959" href="Data.Unit.NonEta.html#924" class="Bound"
-      >B</a
-      > <a name="961" href="Data.Unit.NonEta.html#950" class="Bound"
-      >x</a
-      ><a name="962" class="Symbol"
-      >)</a
-      > <a name="964" class="Symbol"
-      >&#8594;</a
-      > <a name="966" class="Symbol"
-      >((</a
-      ><a name="968" href="Data.Unit.NonEta.html#968" class="Bound"
-      >x</a
-      > <a name="970" class="Symbol"
-      >:</a
-      > <a name="972" href="Data.Unit.NonEta.html#912" class="Bound"
-      >A</a
-      ><a name="973" class="Symbol"
-      >)</a
-      > <a name="975" class="Symbol"
-      >&#8594;</a
-      > <a name="977" href="Data.Unit.NonEta.html#Hidden" class="Function"
-      >Hidden</a
-      > <a name="984" class="Symbol"
-      >(</a
-      ><a name="985" href="Data.Unit.NonEta.html#924" class="Bound"
-      >B</a
-      > <a name="987" href="Data.Unit.NonEta.html#968" class="Bound"
-      >x</a
-      ><a name="988" class="Symbol"
-      >))</a
-      >
-<a name="991" href="Data.Unit.NonEta.html#hide" class="Function"
-      >hide</a
-      > <a name="996" href="Data.Unit.NonEta.html#996" class="Bound"
-      >f</a
-      > <a name="998" href="Data.Unit.NonEta.html#998" class="Bound"
-      >x</a
-      > <a name="1000" href="Data.Unit.NonEta.html#Unit.unit" class="InductiveConstructor"
-      >unit</a
-      > <a name="1005" class="Symbol"
-      >=</a
-      > <a name="1007" href="Data.Unit.NonEta.html#996" class="Bound"
-      >f</a
-      > <a name="1009" href="Data.Unit.NonEta.html#998" class="Bound"
-      >x</a
-      >
+<a id="hide" href="Data.Unit.NonEta.html#hide" class="Function">hide</a> <a id="901" class="Symbol">:</a> <a id="903" class="Symbol">∀</a> <a id="905" class="Symbol">{</a><a id="906" href="Data.Unit.NonEta.html#906" class="Bound">a</a> <a id="908" href="Data.Unit.NonEta.html#908" class="Bound">b</a><a id="909" class="Symbol">}</a> <a id="911" class="Symbol">{</a><a id="912" href="Data.Unit.NonEta.html#912" class="Bound">A</a> <a id="914" class="Symbol">:</a> <a id="916" class="PrimitiveType">Set</a> <a id="920" href="Data.Unit.NonEta.html#906" class="Bound">a</a><a id="921" class="Symbol">}</a> <a id="923" class="Symbol">{</a><a id="924" href="Data.Unit.NonEta.html#924" class="Bound">B</a> <a id="926" class="Symbol">:</a> <a id="928" href="Data.Unit.NonEta.html#912" class="Bound">A</a> <a id="930" class="Symbol">→</a> <a id="932" class="PrimitiveType">Set</a> <a id="936" href="Data.Unit.NonEta.html#908" class="Bound">b</a><a id="937" class="Symbol">}</a> <a id="939" class="Symbol">→</a>
+       <a id="948" class="Symbol">((</a><a id="950" href="Data.Unit.NonEta.html#950" class="Bound">x</a> <a id="952" class="Symbol">:</a> <a id="954" href="Data.Unit.NonEta.html#912" class="Bound">A</a><a id="955" class="Symbol">)</a> <a id="957" class="Symbol">→</a> <a id="959" href="Data.Unit.NonEta.html#924" class="Bound">B</a> <a id="961" href="Data.Unit.NonEta.html#950" class="Bound">x</a><a id="962" class="Symbol">)</a> <a id="964" class="Symbol">→</a> <a id="966" class="Symbol">((</a><a id="968" href="Data.Unit.NonEta.html#968" class="Bound">x</a> <a id="970" class="Symbol">:</a> <a id="972" href="Data.Unit.NonEta.html#912" class="Bound">A</a><a id="973" class="Symbol">)</a> <a id="975" class="Symbol">→</a> <a id="977" href="Data.Unit.NonEta.html#Hidden" class="Function">Hidden</a> <a id="984" class="Symbol">(</a><a id="985" href="Data.Unit.NonEta.html#924" class="Bound">B</a> <a id="987" href="Data.Unit.NonEta.html#968" class="Bound">x</a><a id="988" class="Symbol">))</a>
+<a id="991" href="Data.Unit.NonEta.html#hide" class="Function">hide</a> <a id="996" href="Data.Unit.NonEta.html#996" class="Bound">f</a> <a id="998" href="Data.Unit.NonEta.html#998" class="Bound">x</a> <a id="1000" href="Data.Unit.NonEta.html#Unit.unit" class="InductiveConstructor">unit</a> <a id="1005" class="Symbol">=</a> <a id="1007" href="Data.Unit.NonEta.html#996" class="Bound">f</a> <a id="1009" href="Data.Unit.NonEta.html#998" class="Bound">x</a>
 
-<a name="1012" class="Comment"
-      >-- Reveals a hidden value.</a
-      >
+<a id="1012" class="Comment">-- Reveals a hidden value.</a>
 
-<a name="reveal" href="Data.Unit.NonEta.html#reveal" class="Function"
-      >reveal</a
-      > <a name="1047" class="Symbol"
-      >:</a
-      > <a name="1049" class="Symbol"
-      >&#8704;</a
-      > <a name="1051" class="Symbol"
-      >{</a
-      ><a name="1052" href="Data.Unit.NonEta.html#1052" class="Bound"
-      >a</a
-      ><a name="1053" class="Symbol"
-      >}</a
-      > <a name="1055" class="Symbol"
-      >{</a
-      ><a name="1056" href="Data.Unit.NonEta.html#1056" class="Bound"
-      >A</a
-      > <a name="1058" class="Symbol"
-      >:</a
-      > <a name="1060" class="PrimitiveType"
-      >Set</a
-      > <a name="1064" href="Data.Unit.NonEta.html#1052" class="Bound"
-      >a</a
-      ><a name="1065" class="Symbol"
-      >}</a
-      > <a name="1067" class="Symbol"
-      >&#8594;</a
-      > <a name="1069" href="Data.Unit.NonEta.html#Hidden" class="Function"
-      >Hidden</a
-      > <a name="1076" href="Data.Unit.NonEta.html#1056" class="Bound"
-      >A</a
-      > <a name="1078" class="Symbol"
-      >&#8594;</a
-      > <a name="1080" href="Data.Unit.NonEta.html#1056" class="Bound"
-      >A</a
-      >
-<a name="1082" href="Data.Unit.NonEta.html#reveal" class="Function"
-      >reveal</a
-      > <a name="1089" href="Data.Unit.NonEta.html#1089" class="Bound"
-      >f</a
-      > <a name="1091" class="Symbol"
-      >=</a
-      > <a name="1093" href="Data.Unit.NonEta.html#1089" class="Bound"
-      >f</a
-      > <a name="1095" href="Data.Unit.NonEta.html#Unit.unit" class="InductiveConstructor"
-      >unit</a
-      >
-</pre
-    ></body
-  ></html
->
+<a id="reveal" href="Data.Unit.NonEta.html#reveal" class="Function">reveal</a> <a id="1047" class="Symbol">:</a> <a id="1049" class="Symbol">∀</a> <a id="1051" class="Symbol">{</a><a id="1052" href="Data.Unit.NonEta.html#1052" class="Bound">a</a><a id="1053" class="Symbol">}</a> <a id="1055" class="Symbol">{</a><a id="1056" href="Data.Unit.NonEta.html#1056" class="Bound">A</a> <a id="1058" class="Symbol">:</a> <a id="1060" class="PrimitiveType">Set</a> <a id="1064" href="Data.Unit.NonEta.html#1052" class="Bound">a</a><a id="1065" class="Symbol">}</a> <a id="1067" class="Symbol">→</a> <a id="1069" href="Data.Unit.NonEta.html#Hidden" class="Function">Hidden</a> <a id="1076" href="Data.Unit.NonEta.html#1056" class="Bound">A</a> <a id="1078" class="Symbol">→</a> <a id="1080" href="Data.Unit.NonEta.html#1056" class="Bound">A</a>
+<a id="1082" href="Data.Unit.NonEta.html#reveal" class="Function">reveal</a> <a id="1089" href="Data.Unit.NonEta.html#1089" class="Bound">f</a> <a id="1091" class="Symbol">=</a> <a id="1093" href="Data.Unit.NonEta.html#1089" class="Bound">f</a> <a id="1095" href="Data.Unit.NonEta.html#Unit.unit" class="InductiveConstructor">unit</a>
+</pre></body></html>

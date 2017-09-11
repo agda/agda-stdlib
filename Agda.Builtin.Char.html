@@ -1,146 +1,19 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-><head
-  ><title
-    >Agda.Builtin.Char</title
-    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-     /><meta http-equiv="Content-Style-Type" content="text/css"
-     /><link href="Agda.css" rel="stylesheet" type="text/css"
-     /></head
-  ><body
-  ><pre
-    ><a name="1" class="Symbol"
-      >{-#</a
-      > <a name="5" class="Keyword"
-      >OPTIONS</a
-      > <a name="13" class="Option"
-      >--without-K</a
-      > <a name="25" class="Symbol"
-      >#-}</a
-      >
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Agda.Builtin.Char</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Option">--without-K</a> <a id="25" class="Symbol">#-}</a>
 
-<a name="30" class="Keyword"
-      >module</a
-      > <a name="37" href="Agda.Builtin.Char.html" class="Module"
-      >Agda.Builtin.Char</a
-      > <a name="55" class="Keyword"
-      >where</a
-      >
+<a id="30" class="Keyword">module</a> <a id="37" href="Agda.Builtin.Char.html" class="Module">Agda.Builtin.Char</a> <a id="55" class="Keyword">where</a>
 
-<a name="62" class="Keyword"
-      >open</a
-      > <a name="67" class="Keyword"
-      >import</a
-      > <a name="74" href="Agda.Builtin.Nat.html" class="Module"
-      >Agda.Builtin.Nat</a
-      >
-<a name="91" class="Keyword"
-      >open</a
-      > <a name="96" class="Keyword"
-      >import</a
-      > <a name="103" href="Agda.Builtin.Bool.html" class="Module"
-      >Agda.Builtin.Bool</a
-      >
+<a id="62" class="Keyword">open</a> <a id="67" class="Keyword">import</a> <a id="74" href="Agda.Builtin.Nat.html" class="Module">Agda.Builtin.Nat</a>
+<a id="91" class="Keyword">open</a> <a id="96" class="Keyword">import</a> <a id="103" href="Agda.Builtin.Bool.html" class="Module">Agda.Builtin.Bool</a>
 
-<a name="122" class="Keyword"
-      >postulate</a
-      > <a name="Char" href="Agda.Builtin.Char.html#Char" class="Postulate"
-      >Char</a
-      > <a name="137" class="Symbol"
-      >:</a
-      > <a name="139" class="PrimitiveType"
-      >Set</a
-      >
-<a name="143" class="Symbol"
-      >{-#</a
-      > <a name="147" class="Keyword"
-      >BUILTIN</a
-      > CHAR <a name="160" href="Agda.Builtin.Char.html#Char" class="Postulate"
-      >Char</a
-      > <a name="165" class="Symbol"
-      >#-}</a
-      >
+<a id="122" class="Keyword">postulate</a> <a id="Char" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="137" class="Symbol">:</a> <a id="139" class="PrimitiveType">Set</a>
+<a id="143" class="Symbol">{-#</a> <a id="147" class="Keyword">BUILTIN</a> CHAR <a id="160" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="165" class="Symbol">#-}</a>
 
-<a name="170" class="Keyword"
-      >primitive</a
-      >
-  <a name="primIsLower" href="Agda.Builtin.Char.html#primIsLower" class="Primitive"
-      >primIsLower</a
-      > <a name="primIsDigit" href="Agda.Builtin.Char.html#primIsDigit" class="Primitive"
-      >primIsDigit</a
-      > <a name="primIsAlpha" href="Agda.Builtin.Char.html#primIsAlpha" class="Primitive"
-      >primIsAlpha</a
-      > <a name="primIsSpace" href="Agda.Builtin.Char.html#primIsSpace" class="Primitive"
-      >primIsSpace</a
-      > <a name="primIsAscii" href="Agda.Builtin.Char.html#primIsAscii" class="Primitive"
-      >primIsAscii</a
-      >
-    <a name="primIsLatin1" href="Agda.Builtin.Char.html#primIsLatin1" class="Primitive"
-      >primIsLatin1</a
-      > <a name="primIsPrint" href="Agda.Builtin.Char.html#primIsPrint" class="Primitive"
-      >primIsPrint</a
-      > <a name="primIsHexDigit" href="Agda.Builtin.Char.html#primIsHexDigit" class="Primitive"
-      >primIsHexDigit</a
-      > <a name="286" class="Symbol"
-      >:</a
-      > <a name="288" href="Agda.Builtin.Char.html#Char" class="Postulate"
-      >Char</a
-      > <a name="293" class="Symbol"
-      >&#8594;</a
-      > <a name="295" href="Agda.Builtin.Bool.html#Bool" class="Datatype"
-      >Bool</a
-      >
-  <a name="primToUpper" href="Agda.Builtin.Char.html#primToUpper" class="Primitive"
-      >primToUpper</a
-      > <a name="primToLower" href="Agda.Builtin.Char.html#primToLower" class="Primitive"
-      >primToLower</a
-      > <a name="326" class="Symbol"
-      >:</a
-      > <a name="328" href="Agda.Builtin.Char.html#Char" class="Postulate"
-      >Char</a
-      > <a name="333" class="Symbol"
-      >&#8594;</a
-      > <a name="335" href="Agda.Builtin.Char.html#Char" class="Postulate"
-      >Char</a
-      >
-  <a name="primCharToNat" href="Agda.Builtin.Char.html#primCharToNat" class="Primitive"
-      >primCharToNat</a
-      > <a name="356" class="Symbol"
-      >:</a
-      > <a name="358" href="Agda.Builtin.Char.html#Char" class="Postulate"
-      >Char</a
-      > <a name="363" class="Symbol"
-      >&#8594;</a
-      > <a name="365" href="Agda.Builtin.Nat.html#Nat" class="Datatype"
-      >Nat</a
-      >
-  <a name="primNatToChar" href="Agda.Builtin.Char.html#primNatToChar" class="Primitive"
-      >primNatToChar</a
-      > <a name="385" class="Symbol"
-      >:</a
-      > <a name="387" href="Agda.Builtin.Nat.html#Nat" class="Datatype"
-      >Nat</a
-      > <a name="391" class="Symbol"
-      >&#8594;</a
-      > <a name="393" href="Agda.Builtin.Char.html#Char" class="Postulate"
-      >Char</a
-      >
-  <a name="primCharEquality" href="Agda.Builtin.Char.html#primCharEquality" class="Primitive"
-      >primCharEquality</a
-      > <a name="417" class="Symbol"
-      >:</a
-      > <a name="419" href="Agda.Builtin.Char.html#Char" class="Postulate"
-      >Char</a
-      > <a name="424" class="Symbol"
-      >&#8594;</a
-      > <a name="426" href="Agda.Builtin.Char.html#Char" class="Postulate"
-      >Char</a
-      > <a name="431" class="Symbol"
-      >&#8594;</a
-      > <a name="433" href="Agda.Builtin.Bool.html#Bool" class="Datatype"
-      >Bool</a
-      >
-</pre
-    ></body
-  ></html
->
+<a id="170" class="Keyword">primitive</a>
+  <a id="primIsLower" href="Agda.Builtin.Char.html#primIsLower" class="Primitive">primIsLower</a> <a id="primIsDigit" href="Agda.Builtin.Char.html#primIsDigit" class="Primitive">primIsDigit</a> <a id="primIsAlpha" href="Agda.Builtin.Char.html#primIsAlpha" class="Primitive">primIsAlpha</a> <a id="primIsSpace" href="Agda.Builtin.Char.html#primIsSpace" class="Primitive">primIsSpace</a> <a id="primIsAscii" href="Agda.Builtin.Char.html#primIsAscii" class="Primitive">primIsAscii</a>
+    <a id="primIsLatin1" href="Agda.Builtin.Char.html#primIsLatin1" class="Primitive">primIsLatin1</a> <a id="primIsPrint" href="Agda.Builtin.Char.html#primIsPrint" class="Primitive">primIsPrint</a> <a id="primIsHexDigit" href="Agda.Builtin.Char.html#primIsHexDigit" class="Primitive">primIsHexDigit</a> <a id="286" class="Symbol">:</a> <a id="288" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="293" class="Symbol">→</a> <a id="295" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a>
+  <a id="primToUpper" href="Agda.Builtin.Char.html#primToUpper" class="Primitive">primToUpper</a> <a id="primToLower" href="Agda.Builtin.Char.html#primToLower" class="Primitive">primToLower</a> <a id="326" class="Symbol">:</a> <a id="328" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="333" class="Symbol">→</a> <a id="335" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a>
+  <a id="primCharToNat" href="Agda.Builtin.Char.html#primCharToNat" class="Primitive">primCharToNat</a> <a id="356" class="Symbol">:</a> <a id="358" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="363" class="Symbol">→</a> <a id="365" href="Agda.Builtin.Nat.html#Nat" class="Datatype">Nat</a>
+  <a id="primNatToChar" href="Agda.Builtin.Char.html#primNatToChar" class="Primitive">primNatToChar</a> <a id="385" class="Symbol">:</a> <a id="387" href="Agda.Builtin.Nat.html#Nat" class="Datatype">Nat</a> <a id="391" class="Symbol">→</a> <a id="393" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a>
+  <a id="primCharEquality" href="Agda.Builtin.Char.html#primCharEquality" class="Primitive">primCharEquality</a> <a id="417" class="Symbol">:</a> <a id="419" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="424" class="Symbol">→</a> <a id="426" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="431" class="Symbol">→</a> <a id="433" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a>
+</pre></body></html>

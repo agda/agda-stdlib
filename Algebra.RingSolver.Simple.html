@@ -1,135 +1,20 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-><head
-  ><title
-    >Algebra.RingSolver.Simple</title
-    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-     /><meta http-equiv="Content-Style-Type" content="text/css"
-     /><link href="Agda.css" rel="stylesheet" type="text/css"
-     /></head
-  ><body
-  ><pre
-    ><a name="1" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="74" class="Comment"
-      >-- The Agda standard library</a
-      >
-<a name="103" class="Comment"
-      >--</a
-      >
-<a name="106" class="Comment"
-      >-- Instantiates the ring solver with two copies of the same ring with</a
-      >
-<a name="176" class="Comment"
-      >-- decidable equality</a
-      >
-<a name="198" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.RingSolver.Simple</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Instantiates the ring solver with two copies of the same ring with</a>
+<a id="176" class="Comment">-- decidable equality</a>
+<a id="198" class="Comment">------------------------------------------------------------------------</a>
 
-<a name="272" class="Keyword"
-      >open</a
-      > <a name="277" class="Keyword"
-      >import</a
-      > <a name="284" href="Algebra.RingSolver.AlmostCommutativeRing.html" class="Module"
-      >Algebra.RingSolver.AlmostCommutativeRing</a
-      >
-<a name="325" class="Keyword"
-      >open</a
-      > <a name="330" class="Keyword"
-      >import</a
-      > <a name="337" href="Relation.Binary.html" class="Module"
-      >Relation.Binary</a
-      >
+<a id="272" class="Keyword">open</a> <a id="277" class="Keyword">import</a> <a id="284" href="Algebra.RingSolver.AlmostCommutativeRing.html" class="Module">Algebra.RingSolver.AlmostCommutativeRing</a>
+<a id="325" class="Keyword">open</a> <a id="330" class="Keyword">import</a> <a id="337" href="Relation.Binary.html" class="Module">Relation.Binary</a>
 
-<a name="354" class="Keyword"
-      >module</a
-      > <a name="361" href="Algebra.RingSolver.Simple.html" class="Module"
-      >Algebra.RingSolver.Simple</a
-      >
-         <a name="396" class="Symbol"
-      >{</a
-      ><a name="397" href="Algebra.RingSolver.Simple.html#397" class="Bound"
-      >r&#8321;</a
-      > <a name="400" href="Algebra.RingSolver.Simple.html#400" class="Bound"
-      >r&#8322;</a
-      ><a name="402" class="Symbol"
-      >}</a
-      > <a name="404" class="Symbol"
-      >(</a
-      ><a name="405" href="Algebra.RingSolver.Simple.html#405" class="Bound"
-      >R</a
-      > <a name="407" class="Symbol"
-      >:</a
-      > <a name="409" href="Algebra.RingSolver.AlmostCommutativeRing.html#AlmostCommutativeRing" class="Record"
-      >AlmostCommutativeRing</a
-      > <a name="431" href="Algebra.RingSolver.Simple.html#397" class="Bound"
-      >r&#8321;</a
-      > <a name="434" href="Algebra.RingSolver.Simple.html#400" class="Bound"
-      >r&#8322;</a
-      ><a name="436" class="Symbol"
-      >)</a
-      >
-         <a name="447" class="Symbol"
-      >(</a
-      ><a name="448" href="Algebra.RingSolver.Simple.html#448" class="Bound Operator"
-      >_&#8799;_</a
-      > <a name="452" class="Symbol"
-      >:</a
-      > <a name="454" href="Relation.Binary.Core.html#Decidable" class="Function"
-      >Decidable</a
-      > <a name="464" class="Symbol"
-      >(</a
-      ><a name="465" href="Algebra.RingSolver.AlmostCommutativeRing.html#AlmostCommutativeRing._&#8776;_" class="Field Operator"
-      >AlmostCommutativeRing._&#8776;_</a
-      > <a name="491" href="Algebra.RingSolver.Simple.html#405" class="Bound"
-      >R</a
-      ><a name="492" class="Symbol"
-      >))</a
-      >
-         <a name="504" class="Keyword"
-      >where</a
-      >
+<a id="354" class="Keyword">module</a> <a id="361" href="Algebra.RingSolver.Simple.html" class="Module">Algebra.RingSolver.Simple</a>
+         <a id="396" class="Symbol">{</a><a id="397" href="Algebra.RingSolver.Simple.html#397" class="Bound">r₁</a> <a id="400" href="Algebra.RingSolver.Simple.html#400" class="Bound">r₂</a><a id="402" class="Symbol">}</a> <a id="404" class="Symbol">(</a><a id="405" href="Algebra.RingSolver.Simple.html#405" class="Bound">R</a> <a id="407" class="Symbol">:</a> <a id="409" href="Algebra.RingSolver.AlmostCommutativeRing.html#AlmostCommutativeRing" class="Record">AlmostCommutativeRing</a> <a id="431" href="Algebra.RingSolver.Simple.html#397" class="Bound">r₁</a> <a id="434" href="Algebra.RingSolver.Simple.html#400" class="Bound">r₂</a><a id="436" class="Symbol">)</a>
+         <a id="447" class="Symbol">(</a><a id="448" href="Algebra.RingSolver.Simple.html#448" class="Bound Operator">_≟_</a> <a id="452" class="Symbol">:</a> <a id="454" href="Relation.Binary.Core.html#Decidable" class="Function">Decidable</a> <a id="464" class="Symbol">(</a><a id="465" href="Algebra.RingSolver.AlmostCommutativeRing.html#AlmostCommutativeRing._%E2%89%88_" class="Field Operator">AlmostCommutativeRing._≈_</a> <a id="491" href="Algebra.RingSolver.Simple.html#405" class="Bound">R</a><a id="492" class="Symbol">))</a>
+         <a id="504" class="Keyword">where</a>
 
-<a name="511" class="Keyword"
-      >open</a
-      > <a name="516" href="Algebra.RingSolver.AlmostCommutativeRing.html#AlmostCommutativeRing" class="Module"
-      >AlmostCommutativeRing</a
-      > <a name="538" href="Algebra.RingSolver.Simple.html#405" class="Bound"
-      >R</a
-      >
-<a name="540" class="Keyword"
-      >import</a
-      > <a name="547" href="Algebra.RingSolver.html" class="Module"
-      >Algebra.RingSolver</a
-      > <a name="566" class="Symbol"
-      >as</a
-      > <a name="569" class="Module"
-      >RS</a
-      >
-<a name="572" class="Keyword"
-      >open</a
-      > <a name="577" href="Algebra.RingSolver.html" class="Module"
-      >RS</a
-      > <a name="580" href="Algebra.RingSolver.AlmostCommutativeRing.html#2027" class="Function"
-      >rawRing</a
-      > <a name="588" href="Algebra.RingSolver.Simple.html#405" class="Bound"
-      >R</a
-      > <a name="590" class="Symbol"
-      >(</a
-      ><a name="591" href="Algebra.RingSolver.AlmostCommutativeRing.html#-raw-almostCommutative&#10230;" class="Function"
-      >-raw-almostCommutative&#10230;</a
-      > <a name="615" href="Algebra.RingSolver.Simple.html#405" class="Bound"
-      >R</a
-      ><a name="616" class="Symbol"
-      >)</a
-      > <a name="618" href="Algebra.RingSolver.Simple.html#448" class="Bound Operator"
-      >_&#8799;_</a
-      > <a name="622" class="Keyword"
-      >public</a
-      >
-</pre
-    ></body
-  ></html
->
+<a id="511" class="Keyword">open</a> <a id="516" href="Algebra.RingSolver.AlmostCommutativeRing.html#AlmostCommutativeRing" class="Module">AlmostCommutativeRing</a> <a id="538" href="Algebra.RingSolver.Simple.html#405" class="Bound">R</a>
+<a id="540" class="Keyword">import</a> <a id="547" href="Algebra.RingSolver.html" class="Module">Algebra.RingSolver</a> <a id="566" class="Symbol">as</a> <a id="569" class="Module">RS</a>
+<a id="572" class="Keyword">open</a> <a id="577" href="Algebra.RingSolver.html" class="Module">RS</a> <a id="580" href="Algebra.RingSolver.AlmostCommutativeRing.html#2027" class="Function">rawRing</a> <a id="588" href="Algebra.RingSolver.Simple.html#405" class="Bound">R</a> <a id="590" class="Symbol">(</a><a id="591" href="Algebra.RingSolver.AlmostCommutativeRing.html#-raw-almostCommutative%E2%9F%B6" class="Function">-raw-almostCommutative⟶</a> <a id="615" href="Algebra.RingSolver.Simple.html#405" class="Bound">R</a><a id="616" class="Symbol">)</a> <a id="618" href="Algebra.RingSolver.Simple.html#448" class="Bound Operator">_≟_</a> <a id="622" class="Keyword">public</a>
+</pre></body></html>

@@ -1,167 +1,24 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-><head
-  ><title
-    >Relation.Binary.Properties.TotalOrder</title
-    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-     /><meta http-equiv="Content-Style-Type" content="text/css"
-     /><link href="Agda.css" rel="stylesheet" type="text/css"
-     /></head
-  ><body
-  ><pre
-    ><a name="1" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="74" class="Comment"
-      >-- The Agda standard library</a
-      >
-<a name="103" class="Comment"
-      >--</a
-      >
-<a name="106" class="Comment"
-      >-- Properties satisfied by total orders</a
-      >
-<a name="146" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.Properties.TotalOrder</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Properties satisfied by total orders</a>
+<a id="146" class="Comment">------------------------------------------------------------------------</a>
 
-<a name="220" class="Keyword"
-      >open</a
-      > <a name="225" class="Keyword"
-      >import</a
-      > <a name="232" href="Relation.Binary.html" class="Module"
-      >Relation.Binary</a
-      >
+<a id="220" class="Keyword">open</a> <a id="225" class="Keyword">import</a> <a id="232" href="Relation.Binary.html" class="Module">Relation.Binary</a>
 
-<a name="249" class="Keyword"
-      >module</a
-      > <a name="256" href="Relation.Binary.Properties.TotalOrder.html" class="Module"
-      >Relation.Binary.Properties.TotalOrder</a
-      >
-         <a name="303" class="Symbol"
-      >{</a
-      ><a name="304" href="Relation.Binary.Properties.TotalOrder.html#304" class="Bound"
-      >t&#8321;</a
-      > <a name="307" href="Relation.Binary.Properties.TotalOrder.html#307" class="Bound"
-      >t&#8322;</a
-      > <a name="310" href="Relation.Binary.Properties.TotalOrder.html#310" class="Bound"
-      >t&#8323;</a
-      ><a name="312" class="Symbol"
-      >}</a
-      > <a name="314" class="Symbol"
-      >(</a
-      ><a name="315" href="Relation.Binary.Properties.TotalOrder.html#315" class="Bound"
-      >T</a
-      > <a name="317" class="Symbol"
-      >:</a
-      > <a name="319" href="Relation.Binary.html#TotalOrder" class="Record"
-      >TotalOrder</a
-      > <a name="330" href="Relation.Binary.Properties.TotalOrder.html#304" class="Bound"
-      >t&#8321;</a
-      > <a name="333" href="Relation.Binary.Properties.TotalOrder.html#307" class="Bound"
-      >t&#8322;</a
-      > <a name="336" href="Relation.Binary.Properties.TotalOrder.html#310" class="Bound"
-      >t&#8323;</a
-      ><a name="338" class="Symbol"
-      >)</a
-      > <a name="340" class="Keyword"
-      >where</a
-      >
+<a id="249" class="Keyword">module</a> <a id="256" href="Relation.Binary.Properties.TotalOrder.html" class="Module">Relation.Binary.Properties.TotalOrder</a>
+         <a id="303" class="Symbol">{</a><a id="304" href="Relation.Binary.Properties.TotalOrder.html#304" class="Bound">t₁</a> <a id="307" href="Relation.Binary.Properties.TotalOrder.html#307" class="Bound">t₂</a> <a id="310" href="Relation.Binary.Properties.TotalOrder.html#310" class="Bound">t₃</a><a id="312" class="Symbol">}</a> <a id="314" class="Symbol">(</a><a id="315" href="Relation.Binary.Properties.TotalOrder.html#315" class="Bound">T</a> <a id="317" class="Symbol">:</a> <a id="319" href="Relation.Binary.html#TotalOrder" class="Record">TotalOrder</a> <a id="330" href="Relation.Binary.Properties.TotalOrder.html#304" class="Bound">t₁</a> <a id="333" href="Relation.Binary.Properties.TotalOrder.html#307" class="Bound">t₂</a> <a id="336" href="Relation.Binary.Properties.TotalOrder.html#310" class="Bound">t₃</a><a id="338" class="Symbol">)</a> <a id="340" class="Keyword">where</a>
 
-<a name="347" class="Keyword"
-      >open</a
-      > <a name="352" href="Relation.Binary.html#TotalOrder" class="Module"
-      >Relation.Binary.TotalOrder</a
-      > <a name="379" href="Relation.Binary.Properties.TotalOrder.html#315" class="Bound"
-      >T</a
-      >
-<a name="381" class="Keyword"
-      >open</a
-      > <a name="386" class="Keyword"
-      >import</a
-      > <a name="393" href="Relation.Binary.Consequences.html" class="Module"
-      >Relation.Binary.Consequences</a
-      >
+<a id="347" class="Keyword">open</a> <a id="352" href="Relation.Binary.html#TotalOrder" class="Module">Relation.Binary.TotalOrder</a> <a id="379" href="Relation.Binary.Properties.TotalOrder.html#315" class="Bound">T</a>
+<a id="381" class="Keyword">open</a> <a id="386" class="Keyword">import</a> <a id="393" href="Relation.Binary.Consequences.html" class="Module">Relation.Binary.Consequences</a>
 
-<a name="decTotalOrder" href="Relation.Binary.Properties.TotalOrder.html#decTotalOrder" class="Function"
-      >decTotalOrder</a
-      > <a name="437" class="Symbol"
-      >:</a
-      > <a name="439" href="Relation.Binary.Core.html#Decidable" class="Function"
-      >Decidable</a
-      > <a name="449" href="Relation.Binary.html#8253" class="Field Operator"
-      >_&#8776;_</a
-      > <a name="453" class="Symbol"
-      >&#8594;</a
-      > <a name="455" href="Relation.Binary.html#DecTotalOrder" class="Record"
-      >DecTotalOrder</a
-      > <a name="469" class="Symbol"
-      >_</a
-      > <a name="471" class="Symbol"
-      >_</a
-      > <a name="473" class="Symbol"
-      >_</a
-      >
-<a name="475" href="Relation.Binary.Properties.TotalOrder.html#decTotalOrder" class="Function"
-      >decTotalOrder</a
-      > <a name="489" href="Relation.Binary.Properties.TotalOrder.html#489" class="Bound"
-      >&#8799;</a
-      > <a name="491" class="Symbol"
-      >=</a
-      > <a name="493" class="Keyword"
-      >record</a
-      >
-  <a name="502" class="Symbol"
-      >{</a
-      > <a name="504" class="Field"
-      >isDecTotalOrder</a
-      > <a name="520" class="Symbol"
-      >=</a
-      > <a name="522" class="Keyword"
-      >record</a
-      >
-      <a name="535" class="Symbol"
-      >{</a
-      > <a name="537" class="Field"
-      >isTotalOrder</a
-      > <a name="550" class="Symbol"
-      >=</a
-      > <a name="552" href="Relation.Binary.html#8321" class="Field"
-      >isTotalOrder</a
-      >
-      <a name="571" class="Symbol"
-      >;</a
-      > <a name="573" class="Field Operator"
-      >_&#8799;_</a
-      >          <a name="586" class="Symbol"
-      >=</a
-      > <a name="588" href="Relation.Binary.Properties.TotalOrder.html#489" class="Bound"
-      >&#8799;</a
-      >
-      <a name="596" class="Symbol"
-      >;</a
-      > <a name="598" class="Field Operator"
-      >_&#8804;?_</a
-      >         <a name="611" class="Symbol"
-      >=</a
-      > <a name="613" href="Relation.Binary.Consequences.html#total+dec&#10230;dec" class="Function"
-      >total+dec&#10230;dec</a
-      > <a name="627" href="Relation.Binary.html#1160" class="Function"
-      >reflexive</a
-      > <a name="637" href="Relation.Binary.html#3608" class="Function"
-      >antisym</a
-      > <a name="645" href="Relation.Binary.html#8067" class="Function"
-      >total</a
-      > <a name="651" href="Relation.Binary.Properties.TotalOrder.html#489" class="Bound"
-      >&#8799;</a
-      >
-      <a name="659" class="Symbol"
-      >}</a
-      >
-  <a name="663" class="Symbol"
-      >}</a
-      >
-</pre
-    ></body
-  ></html
->
+<a id="decTotalOrder" href="Relation.Binary.Properties.TotalOrder.html#decTotalOrder" class="Function">decTotalOrder</a> <a id="437" class="Symbol">:</a> <a id="439" href="Relation.Binary.Core.html#Decidable" class="Function">Decidable</a> <a id="449" href="Relation.Binary.html#8253" class="Field Operator">_≈_</a> <a id="453" class="Symbol">→</a> <a id="455" href="Relation.Binary.html#DecTotalOrder" class="Record">DecTotalOrder</a> <a id="469" class="Symbol">_</a> <a id="471" class="Symbol">_</a> <a id="473" class="Symbol">_</a>
+<a id="475" href="Relation.Binary.Properties.TotalOrder.html#decTotalOrder" class="Function">decTotalOrder</a> <a id="489" href="Relation.Binary.Properties.TotalOrder.html#489" class="Bound">≟</a> <a id="491" class="Symbol">=</a> <a id="493" class="Keyword">record</a>
+  <a id="502" class="Symbol">{</a> <a id="504" class="Field">isDecTotalOrder</a> <a id="520" class="Symbol">=</a> <a id="522" class="Keyword">record</a>
+      <a id="535" class="Symbol">{</a> <a id="537" class="Field">isTotalOrder</a> <a id="550" class="Symbol">=</a> <a id="552" href="Relation.Binary.html#8321" class="Field">isTotalOrder</a>
+      <a id="571" class="Symbol">;</a> <a id="573" class="Field Operator">_≟_</a>          <a id="586" class="Symbol">=</a> <a id="588" href="Relation.Binary.Properties.TotalOrder.html#489" class="Bound">≟</a>
+      <a id="596" class="Symbol">;</a> <a id="598" class="Field Operator">_≤?_</a>         <a id="611" class="Symbol">=</a> <a id="613" href="Relation.Binary.Consequences.html#total%2Bdec%E2%9F%B6dec" class="Function">total+dec⟶dec</a> <a id="627" href="Relation.Binary.html#1160" class="Function">reflexive</a> <a id="637" href="Relation.Binary.html#3608" class="Function">antisym</a> <a id="645" href="Relation.Binary.html#8067" class="Function">total</a> <a id="651" href="Relation.Binary.Properties.TotalOrder.html#489" class="Bound">≟</a>
+      <a id="659" class="Symbol">}</a>
+  <a id="663" class="Symbol">}</a>
+</pre></body></html>

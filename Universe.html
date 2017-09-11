@@ -1,293 +1,44 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-><head
-  ><title
-    >Universe</title
-    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-     /><meta http-equiv="Content-Style-Type" content="text/css"
-     /><link href="Agda.css" rel="stylesheet" type="text/css"
-     /></head
-  ><body
-  ><pre
-    ><a name="1" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="74" class="Comment"
-      >-- The Agda standard library</a
-      >
-<a name="103" class="Comment"
-      >--</a
-      >
-<a name="106" class="Comment"
-      >-- Universes</a
-      >
-<a name="119" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Universe</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Universes</a>
+<a id="119" class="Comment">------------------------------------------------------------------------</a>
 
-<a name="193" class="Keyword"
-      >module</a
-      > <a name="200" href="Universe.html" class="Module"
-      >Universe</a
-      > <a name="209" class="Keyword"
-      >where</a
-      >
+<a id="193" class="Keyword">module</a> <a id="200" href="Universe.html" class="Module">Universe</a> <a id="209" class="Keyword">where</a>
 
-<a name="216" class="Keyword"
-      >open</a
-      > <a name="221" class="Keyword"
-      >import</a
-      > <a name="228" href="Data.Product.html" class="Module"
-      >Data.Product</a
-      >
-<a name="241" class="Keyword"
-      >open</a
-      > <a name="246" class="Keyword"
-      >import</a
-      > <a name="253" href="Function.html" class="Module"
-      >Function</a
-      >
-<a name="262" class="Keyword"
-      >open</a
-      > <a name="267" class="Keyword"
-      >import</a
-      > <a name="274" href="Level.html" class="Module"
-      >Level</a
-      >
+<a id="216" class="Keyword">open</a> <a id="221" class="Keyword">import</a> <a id="228" href="Data.Product.html" class="Module">Data.Product</a>
+<a id="241" class="Keyword">open</a> <a id="246" class="Keyword">import</a> <a id="253" href="Function.html" class="Module">Function</a>
+<a id="262" class="Keyword">open</a> <a id="267" class="Keyword">import</a> <a id="274" href="Level.html" class="Module">Level</a>
 
-<a name="281" class="Comment"
-      >-- Universes.</a
-      >
+<a id="281" class="Comment">-- Universes.</a>
 
-<a name="296" class="Keyword"
-      >record</a
-      > <a name="Universe" href="Universe.html#Universe" class="Record"
-      >Universe</a
-      > <a name="312" href="Universe.html#312" class="Bound"
-      >u</a
-      > <a name="314" href="Universe.html#314" class="Bound"
-      >e</a
-      > <a name="316" class="Symbol"
-      >:</a
-      > <a name="318" class="PrimitiveType"
-      >Set</a
-      > <a name="322" class="Symbol"
-      >(</a
-      ><a name="323" href="Agda.Primitive.html#suc" class="Primitive"
-      >suc</a
-      > <a name="327" class="Symbol"
-      >(</a
-      ><a name="328" href="Universe.html#312" class="Bound"
-      >u</a
-      > <a name="330" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
-      >&#8852;</a
-      > <a name="332" href="Universe.html#314" class="Bound"
-      >e</a
-      ><a name="333" class="Symbol"
-      >))</a
-      > <a name="336" class="Keyword"
-      >where</a
-      >
-  <a name="344" class="Keyword"
-      >field</a
-      >
-    <a name="354" class="Comment"
-      >-- Codes.</a
-      >
-    <a name="Universe.U" href="Universe.html#Universe.U" class="Field"
-      >U</a
-      > <a name="370" class="Symbol"
-      >:</a
-      > <a name="372" class="PrimitiveType"
-      >Set</a
-      > <a name="376" href="Universe.html#312" class="Bound"
-      >u</a
-      >
+<a id="296" class="Keyword">record</a> <a id="Universe" href="Universe.html#Universe" class="Record">Universe</a> <a id="312" href="Universe.html#312" class="Bound">u</a> <a id="314" href="Universe.html#314" class="Bound">e</a> <a id="316" class="Symbol">:</a> <a id="318" class="PrimitiveType">Set</a> <a id="322" class="Symbol">(</a><a id="323" href="Agda.Primitive.html#suc" class="Primitive">suc</a> <a id="327" class="Symbol">(</a><a id="328" href="Universe.html#312" class="Bound">u</a> <a id="330" href="Agda.Primitive.html#_%E2%8A%94_" class="Primitive Operator">⊔</a> <a id="332" href="Universe.html#314" class="Bound">e</a><a id="333" class="Symbol">))</a> <a id="336" class="Keyword">where</a>
+  <a id="344" class="Keyword">field</a>
+    <a id="354" class="Comment">-- Codes.</a>
+    <a id="Universe.U" href="Universe.html#Universe.U" class="Field">U</a> <a id="370" class="Symbol">:</a> <a id="372" class="PrimitiveType">Set</a> <a id="376" href="Universe.html#312" class="Bound">u</a>
 
-    <a name="383" class="Comment"
-      >-- Decoding function.</a
-      >
-    <a name="Universe.El" href="Universe.html#Universe.El" class="Field"
-      >El</a
-      > <a name="412" class="Symbol"
-      >:</a
-      > <a name="414" href="Universe.html#Universe.U" class="Field"
-      >U</a
-      > <a name="416" class="Symbol"
-      >&#8594;</a
-      > <a name="418" class="PrimitiveType"
-      >Set</a
-      > <a name="422" href="Universe.html#314" class="Bound"
-      >e</a
-      >
+    <a id="383" class="Comment">-- Decoding function.</a>
+    <a id="Universe.El" href="Universe.html#Universe.El" class="Field">El</a> <a id="412" class="Symbol">:</a> <a id="414" href="Universe.html#Universe.U" class="Field">U</a> <a id="416" class="Symbol">→</a> <a id="418" class="PrimitiveType">Set</a> <a id="422" href="Universe.html#314" class="Bound">e</a>
 
-<a name="425" class="Comment"
-      >-- Indexed universes.</a
-      >
+<a id="425" class="Comment">-- Indexed universes.</a>
 
-<a name="448" class="Keyword"
-      >record</a
-      > <a name="Indexed-universe" href="Universe.html#Indexed-universe" class="Record"
-      >Indexed-universe</a
-      > <a name="472" href="Universe.html#472" class="Bound"
-      >i</a
-      > <a name="474" href="Universe.html#474" class="Bound"
-      >u</a
-      > <a name="476" href="Universe.html#476" class="Bound"
-      >e</a
-      > <a name="478" class="Symbol"
-      >:</a
-      > <a name="480" class="PrimitiveType"
-      >Set</a
-      > <a name="484" class="Symbol"
-      >(</a
-      ><a name="485" href="Agda.Primitive.html#suc" class="Primitive"
-      >suc</a
-      > <a name="489" class="Symbol"
-      >(</a
-      ><a name="490" href="Universe.html#472" class="Bound"
-      >i</a
-      > <a name="492" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
-      >&#8852;</a
-      > <a name="494" href="Universe.html#474" class="Bound"
-      >u</a
-      > <a name="496" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
-      >&#8852;</a
-      > <a name="498" href="Universe.html#476" class="Bound"
-      >e</a
-      ><a name="499" class="Symbol"
-      >))</a
-      > <a name="502" class="Keyword"
-      >where</a
-      >
-  <a name="510" class="Keyword"
-      >field</a
-      >
-    <a name="520" class="Comment"
-      >-- Index set.</a
-      >
-    <a name="Indexed-universe.I" href="Universe.html#Indexed-universe.I" class="Field"
-      >I</a
-      > <a name="540" class="Symbol"
-      >:</a
-      > <a name="542" class="PrimitiveType"
-      >Set</a
-      > <a name="546" href="Universe.html#472" class="Bound"
-      >i</a
-      >
+<a id="448" class="Keyword">record</a> <a id="Indexed-universe" href="Universe.html#Indexed-universe" class="Record">Indexed-universe</a> <a id="472" href="Universe.html#472" class="Bound">i</a> <a id="474" href="Universe.html#474" class="Bound">u</a> <a id="476" href="Universe.html#476" class="Bound">e</a> <a id="478" class="Symbol">:</a> <a id="480" class="PrimitiveType">Set</a> <a id="484" class="Symbol">(</a><a id="485" href="Agda.Primitive.html#suc" class="Primitive">suc</a> <a id="489" class="Symbol">(</a><a id="490" href="Universe.html#472" class="Bound">i</a> <a id="492" href="Agda.Primitive.html#_%E2%8A%94_" class="Primitive Operator">⊔</a> <a id="494" href="Universe.html#474" class="Bound">u</a> <a id="496" href="Agda.Primitive.html#_%E2%8A%94_" class="Primitive Operator">⊔</a> <a id="498" href="Universe.html#476" class="Bound">e</a><a id="499" class="Symbol">))</a> <a id="502" class="Keyword">where</a>
+  <a id="510" class="Keyword">field</a>
+    <a id="520" class="Comment">-- Index set.</a>
+    <a id="Indexed-universe.I" href="Universe.html#Indexed-universe.I" class="Field">I</a> <a id="540" class="Symbol">:</a> <a id="542" class="PrimitiveType">Set</a> <a id="546" href="Universe.html#472" class="Bound">i</a>
 
-    <a name="553" class="Comment"
-      >-- Codes.</a
-      >
-    <a name="Indexed-universe.U" href="Universe.html#Indexed-universe.U" class="Field"
-      >U</a
-      > <a name="569" class="Symbol"
-      >:</a
-      > <a name="571" href="Universe.html#Indexed-universe.I" class="Field"
-      >I</a
-      > <a name="573" class="Symbol"
-      >&#8594;</a
-      > <a name="575" class="PrimitiveType"
-      >Set</a
-      > <a name="579" href="Universe.html#474" class="Bound"
-      >u</a
-      >
+    <a id="553" class="Comment">-- Codes.</a>
+    <a id="Indexed-universe.U" href="Universe.html#Indexed-universe.U" class="Field">U</a> <a id="569" class="Symbol">:</a> <a id="571" href="Universe.html#Indexed-universe.I" class="Field">I</a> <a id="573" class="Symbol">→</a> <a id="575" class="PrimitiveType">Set</a> <a id="579" href="Universe.html#474" class="Bound">u</a>
 
-    <a name="586" class="Comment"
-      >-- Decoding function.</a
-      >
-    <a name="Indexed-universe.El" href="Universe.html#Indexed-universe.El" class="Field"
-      >El</a
-      > <a name="615" class="Symbol"
-      >:</a
-      > <a name="617" class="Symbol"
-      >&#8704;</a
-      > <a name="619" class="Symbol"
-      >{</a
-      ><a name="620" href="Universe.html#620" class="Bound"
-      >i</a
-      ><a name="621" class="Symbol"
-      >}</a
-      > <a name="623" class="Symbol"
-      >&#8594;</a
-      > <a name="625" href="Universe.html#Indexed-universe.U" class="Field"
-      >U</a
-      > <a name="627" href="Universe.html#620" class="Bound"
-      >i</a
-      > <a name="629" class="Symbol"
-      >&#8594;</a
-      > <a name="631" class="PrimitiveType"
-      >Set</a
-      > <a name="635" href="Universe.html#476" class="Bound"
-      >e</a
-      >
+    <a id="586" class="Comment">-- Decoding function.</a>
+    <a id="Indexed-universe.El" href="Universe.html#Indexed-universe.El" class="Field">El</a> <a id="615" class="Symbol">:</a> <a id="617" class="Symbol">∀</a> <a id="619" class="Symbol">{</a><a id="620" href="Universe.html#620" class="Bound">i</a><a id="621" class="Symbol">}</a> <a id="623" class="Symbol">→</a> <a id="625" href="Universe.html#Indexed-universe.U" class="Field">U</a> <a id="627" href="Universe.html#620" class="Bound">i</a> <a id="629" class="Symbol">→</a> <a id="631" class="PrimitiveType">Set</a> <a id="635" href="Universe.html#476" class="Bound">e</a>
 
-  <a name="640" class="Comment"
-      >-- An indexed universe can be turned into an unindexed one.</a
-      >
+  <a id="640" class="Comment">-- An indexed universe can be turned into an unindexed one.</a>
 
-  <a name="Indexed-universe.unindexed-universe" href="Universe.html#Indexed-universe.unindexed-universe" class="Function"
-      >unindexed-universe</a
-      > <a name="722" class="Symbol"
-      >:</a
-      > <a name="724" href="Universe.html#Universe" class="Record"
-      >Universe</a
-      > <a name="733" class="Symbol"
-      >(</a
-      ><a name="734" href="Universe.html#472" class="Bound"
-      >i</a
-      > <a name="736" href="Agda.Primitive.html#_&#8852;_" class="Primitive Operator"
-      >&#8852;</a
-      > <a name="738" href="Universe.html#474" class="Bound"
-      >u</a
-      ><a name="739" class="Symbol"
-      >)</a
-      > <a name="741" href="Universe.html#476" class="Bound"
-      >e</a
-      >
-  <a name="745" href="Universe.html#Indexed-universe.unindexed-universe" class="Function"
-      >unindexed-universe</a
-      > <a name="764" class="Symbol"
-      >=</a
-      > <a name="766" class="Keyword"
-      >record</a
-      >
-    <a name="777" class="Symbol"
-      >{</a
-      > <a name="779" class="Field"
-      >U</a
-      >  <a name="782" class="Symbol"
-      >=</a
-      > <a name="784" href="Data.Product.html#&#8707;" class="Function"
-      >&#8707;</a
-      > <a name="786" class="Symbol"
-      >&#955;</a
-      > <a name="788" href="Universe.html#788" class="Bound"
-      >i</a
-      > <a name="790" class="Symbol"
-      >&#8594;</a
-      > <a name="792" href="Universe.html#Indexed-universe.U" class="Field"
-      >U</a
-      > <a name="794" href="Universe.html#788" class="Bound"
-      >i</a
-      >
-    <a name="800" class="Symbol"
-      >;</a
-      > <a name="802" class="Field"
-      >El</a
-      > <a name="805" class="Symbol"
-      >=</a
-      > <a name="807" href="Universe.html#Indexed-universe.El" class="Field"
-      >El</a
-      > <a name="810" href="Function.html#_&#8728;_" class="Function Operator"
-      >&#8728;</a
-      > <a name="812" href="Data.Product.html#&#931;.proj&#8322;" class="Field"
-      >proj&#8322;</a
-      >
-    <a name="822" class="Symbol"
-      >}</a
-      >
-</pre
-    ></body
-  ></html
->
+  <a id="Indexed-universe.unindexed-universe" href="Universe.html#Indexed-universe.unindexed-universe" class="Function">unindexed-universe</a> <a id="722" class="Symbol">:</a> <a id="724" href="Universe.html#Universe" class="Record">Universe</a> <a id="733" class="Symbol">(</a><a id="734" href="Universe.html#472" class="Bound">i</a> <a id="736" href="Agda.Primitive.html#_%E2%8A%94_" class="Primitive Operator">⊔</a> <a id="738" href="Universe.html#474" class="Bound">u</a><a id="739" class="Symbol">)</a> <a id="741" href="Universe.html#476" class="Bound">e</a>
+  <a id="745" href="Universe.html#Indexed-universe.unindexed-universe" class="Function">unindexed-universe</a> <a id="764" class="Symbol">=</a> <a id="766" class="Keyword">record</a>
+    <a id="777" class="Symbol">{</a> <a id="779" class="Field">U</a>  <a id="782" class="Symbol">=</a> <a id="784" href="Data.Product.html#%E2%88%83" class="Function">∃</a> <a id="786" class="Symbol">λ</a> <a id="788" href="Universe.html#788" class="Bound">i</a> <a id="790" class="Symbol">→</a> <a id="792" href="Universe.html#Indexed-universe.U" class="Field">U</a> <a id="794" href="Universe.html#788" class="Bound">i</a>
+    <a id="800" class="Symbol">;</a> <a id="802" class="Field">El</a> <a id="805" class="Symbol">=</a> <a id="807" href="Universe.html#Indexed-universe.El" class="Field">El</a> <a id="810" href="Function.html#_%E2%88%98_" class="Function Operator">∘</a> <a id="812" href="Data.Product.html#%CE%A3.proj%E2%82%82" class="Field">proj₂</a>
+    <a id="822" class="Symbol">}</a>
+</pre></body></html>

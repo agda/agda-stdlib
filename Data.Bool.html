@@ -1,122 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-><head
-  ><title
-    >Data.Bool</title
-    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-     /><meta http-equiv="Content-Style-Type" content="text/css"
-     /><link href="Agda.css" rel="stylesheet" type="text/css"
-     /></head
-  ><body
-  ><pre
-    ><a name="1" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="74" class="Comment"
-      >-- The Agda standard library</a
-      >
-<a name="103" class="Comment"
-      >--</a
-      >
-<a name="106" class="Comment"
-      >-- Booleans</a
-      >
-<a name="118" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Bool</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Booleans</a>
+<a id="118" class="Comment">------------------------------------------------------------------------</a>
 
-<a name="192" class="Keyword"
-      >module</a
-      > <a name="199" href="Data.Bool.html" class="Module"
-      >Data.Bool</a
-      > <a name="209" class="Keyword"
-      >where</a
-      >
+<a id="192" class="Keyword">module</a> <a id="199" href="Data.Bool.html" class="Module">Data.Bool</a> <a id="209" class="Keyword">where</a>
 
-<a name="216" class="Keyword"
-      >open</a
-      > <a name="221" class="Keyword"
-      >import</a
-      > <a name="228" href="Relation.Nullary.html" class="Module"
-      >Relation.Nullary</a
-      >
-<a name="245" class="Keyword"
-      >open</a
-      > <a name="250" class="Keyword"
-      >import</a
-      > <a name="257" href="Relation.Binary.html" class="Module"
-      >Relation.Binary</a
-      >
-<a name="273" class="Keyword"
-      >open</a
-      > <a name="278" class="Keyword"
-      >import</a
-      > <a name="285" href="Relation.Binary.PropositionalEquality.html" class="Module"
-      >Relation.Binary.PropositionalEquality</a
-      > <a name="323" class="Symbol"
-      >as</a
-      > <a name="326" class="Module"
-      >PropEq</a
-      >
-  <a name="335" class="Keyword"
-      >using</a
-      > <a name="341" class="Symbol"
-      >(</a
-      ><a name="342" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
-      >_&#8801;_</a
-      ><a name="345" class="Symbol"
-      >;</a
-      > <a name="347" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
-      >refl</a
-      ><a name="351" class="Symbol"
-      >)</a
-      >
+<a id="216" class="Keyword">open</a> <a id="221" class="Keyword">import</a> <a id="228" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+<a id="245" class="Keyword">open</a> <a id="250" class="Keyword">import</a> <a id="257" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="273" class="Keyword">open</a> <a id="278" class="Keyword">import</a> <a id="285" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="323" class="Symbol">as</a> <a id="326" class="Module">PropEq</a>
+  <a id="335" class="Keyword">using</a> <a id="341" class="Symbol">(</a><a id="342" href="Agda.Builtin.Equality.html#_%E2%89%A1_" class="Datatype Operator">_≡_</a><a id="345" class="Symbol">;</a> <a id="347" href="Agda.Builtin.Equality.html#_%E2%89%A1_.refl" class="InductiveConstructor">refl</a><a id="351" class="Symbol">)</a>
 
-<a name="354" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="427" class="Comment"
-      >-- The boolean type and some operations</a
-      >
+<a id="354" class="Comment">------------------------------------------------------------------------</a>
+<a id="427" class="Comment">-- The boolean type and some operations</a>
 
-<a name="468" class="Keyword"
-      >open</a
-      > <a name="473" class="Keyword"
-      >import</a
-      > <a name="480" href="Data.Bool.Base.html" class="Module"
-      >Data.Bool.Base</a
-      > <a name="495" class="Keyword"
-      >public</a
-      >
+<a id="468" class="Keyword">open</a> <a id="473" class="Keyword">import</a> <a id="480" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a> <a id="495" class="Keyword">public</a>
 
-<a name="503" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="576" class="Comment"
-      >-- Some properties</a
-      >
+<a id="503" class="Comment">------------------------------------------------------------------------</a>
+<a id="576" class="Comment">-- Some properties</a>
 
-<a name="decSetoid" href="Data.Bool.html#decSetoid" class="Function"
-      >decSetoid</a
-      > <a name="606" class="Symbol"
-      >:</a
-      > <a name="608" href="Relation.Binary.html#DecSetoid" class="Record"
-      >DecSetoid</a
-      > <a name="618" class="Symbol"
-      >_</a
-      > <a name="620" class="Symbol"
-      >_</a
-      >
-<a name="622" href="Data.Bool.html#decSetoid" class="Function"
-      >decSetoid</a
-      > <a name="632" class="Symbol"
-      >=</a
-      > <a name="634" href="Relation.Binary.PropositionalEquality.html#decSetoid" class="Function"
-      >PropEq.decSetoid</a
-      > <a name="651" href="Data.Bool.Base.html#_&#8799;_" class="Function Operator"
-      >_&#8799;_</a
-      >
-</pre
-    ></body
-  ></html
->
+<a id="decSetoid" href="Data.Bool.html#decSetoid" class="Function">decSetoid</a> <a id="606" class="Symbol">:</a> <a id="608" href="Relation.Binary.html#DecSetoid" class="Record">DecSetoid</a> <a id="618" class="Symbol">_</a> <a id="620" class="Symbol">_</a>
+<a id="622" href="Data.Bool.html#decSetoid" class="Function">decSetoid</a> <a id="632" class="Symbol">=</a> <a id="634" href="Relation.Binary.PropositionalEquality.html#decSetoid" class="Function">PropEq.decSetoid</a> <a id="651" href="Data.Bool.Base.html#_%E2%89%9F_" class="Function Operator">_≟_</a>
+</pre></body></html>

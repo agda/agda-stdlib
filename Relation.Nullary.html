@@ -1,188 +1,27 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-><head
-  ><title
-    >Relation.Nullary</title
-    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-     /><meta http-equiv="Content-Style-Type" content="text/css"
-     /><link href="Agda.css" rel="stylesheet" type="text/css"
-     /></head
-  ><body
-  ><pre
-    ><a name="1" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="74" class="Comment"
-      >-- The Agda standard library</a
-      >
-<a name="103" class="Comment"
-      >--</a
-      >
-<a name="106" class="Comment"
-      >-- Operations on nullary relations (like negation and decidability)</a
-      >
-<a name="174" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Nullary</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Operations on nullary relations (like negation and decidability)</a>
+<a id="174" class="Comment">------------------------------------------------------------------------</a>
 
-<a name="248" class="Comment"
-      >-- Some operations on/properties of nullary relations, i.e. sets.</a
-      >
+<a id="248" class="Comment">-- Some operations on/properties of nullary relations, i.e. sets.</a>
 
-<a name="315" class="Keyword"
-      >module</a
-      > <a name="322" href="Relation.Nullary.html" class="Module"
-      >Relation.Nullary</a
-      > <a name="339" class="Keyword"
-      >where</a
-      >
+<a id="315" class="Keyword">module</a> <a id="322" href="Relation.Nullary.html" class="Module">Relation.Nullary</a> <a id="339" class="Keyword">where</a>
 
-<a name="346" class="Keyword"
-      >open</a
-      > <a name="351" class="Keyword"
-      >import</a
-      > <a name="358" href="Data.Empty.html" class="Module"
-      >Data.Empty</a
-      >
-<a name="369" class="Keyword"
-      >open</a
-      > <a name="374" class="Keyword"
-      >import</a
-      > <a name="381" href="Level.html" class="Module"
-      >Level</a
-      >
+<a id="346" class="Keyword">open</a> <a id="351" class="Keyword">import</a> <a id="358" href="Data.Empty.html" class="Module">Data.Empty</a>
+<a id="369" class="Keyword">open</a> <a id="374" class="Keyword">import</a> <a id="381" href="Level.html" class="Module">Level</a>
 
-<a name="388" class="Comment"
-      >-- Negation.</a
-      >
+<a id="388" class="Comment">-- Negation.</a>
 
-<a name="402" class="Keyword"
-      >infix</a
-      > <a name="408" class="Number"
-      >3</a
-      > <a name="410" href="Relation.Nullary.html#&#172;_" class="Function Operator"
-      >&#172;_</a
-      >
+<a id="402" class="Keyword">infix</a> <a id="408" class="Number">3</a> <a id="410" href="Relation.Nullary.html#%C2%AC_" class="Function Operator">¬_</a>
 
-<a name="&#172;_" href="Relation.Nullary.html#&#172;_" class="Function Operator"
-      >&#172;_</a
-      > <a name="417" class="Symbol"
-      >:</a
-      > <a name="419" class="Symbol"
-      >&#8704;</a
-      > <a name="421" class="Symbol"
-      >{</a
-      ><a name="422" href="Relation.Nullary.html#422" class="Bound"
-      >&#8467;</a
-      ><a name="423" class="Symbol"
-      >}</a
-      > <a name="425" class="Symbol"
-      >&#8594;</a
-      > <a name="427" class="PrimitiveType"
-      >Set</a
-      > <a name="431" href="Relation.Nullary.html#422" class="Bound"
-      >&#8467;</a
-      > <a name="433" class="Symbol"
-      >&#8594;</a
-      > <a name="435" class="PrimitiveType"
-      >Set</a
-      > <a name="439" href="Relation.Nullary.html#422" class="Bound"
-      >&#8467;</a
-      >
-<a name="441" href="Relation.Nullary.html#&#172;_" class="Function Operator"
-      >&#172;</a
-      > <a name="443" href="Relation.Nullary.html#443" class="Bound"
-      >P</a
-      > <a name="445" class="Symbol"
-      >=</a
-      > <a name="447" href="Relation.Nullary.html#443" class="Bound"
-      >P</a
-      > <a name="449" class="Symbol"
-      >&#8594;</a
-      > <a name="451" href="Data.Empty.html#&#8869;" class="Datatype"
-      >&#8869;</a
-      >
+<a id="¬_" href="Relation.Nullary.html#%C2%AC_" class="Function Operator">¬_</a> <a id="417" class="Symbol">:</a> <a id="419" class="Symbol">∀</a> <a id="421" class="Symbol">{</a><a id="422" href="Relation.Nullary.html#422" class="Bound">ℓ</a><a id="423" class="Symbol">}</a> <a id="425" class="Symbol">→</a> <a id="427" class="PrimitiveType">Set</a> <a id="431" href="Relation.Nullary.html#422" class="Bound">ℓ</a> <a id="433" class="Symbol">→</a> <a id="435" class="PrimitiveType">Set</a> <a id="439" href="Relation.Nullary.html#422" class="Bound">ℓ</a>
+<a id="441" href="Relation.Nullary.html#%C2%AC_" class="Function Operator">¬</a> <a id="443" href="Relation.Nullary.html#443" class="Bound">P</a> <a id="445" class="Symbol">=</a> <a id="447" href="Relation.Nullary.html#443" class="Bound">P</a> <a id="449" class="Symbol">→</a> <a id="451" href="Data.Empty.html#%E2%8A%A5" class="Datatype">⊥</a>
 
-<a name="454" class="Comment"
-      >-- Decidable relations.</a
-      >
+<a id="454" class="Comment">-- Decidable relations.</a>
 
-<a name="479" class="Keyword"
-      >data</a
-      > <a name="Dec" href="Relation.Nullary.html#Dec" class="Datatype"
-      >Dec</a
-      > <a name="488" class="Symbol"
-      >{</a
-      ><a name="489" href="Relation.Nullary.html#489" class="Bound"
-      >p</a
-      ><a name="490" class="Symbol"
-      >}</a
-      > <a name="492" class="Symbol"
-      >(</a
-      ><a name="493" href="Relation.Nullary.html#493" class="Bound"
-      >P</a
-      > <a name="495" class="Symbol"
-      >:</a
-      > <a name="497" class="PrimitiveType"
-      >Set</a
-      > <a name="501" href="Relation.Nullary.html#489" class="Bound"
-      >p</a
-      ><a name="502" class="Symbol"
-      >)</a
-      > <a name="504" class="Symbol"
-      >:</a
-      > <a name="506" class="PrimitiveType"
-      >Set</a
-      > <a name="510" href="Relation.Nullary.html#489" class="Bound"
-      >p</a
-      > <a name="512" class="Keyword"
-      >where</a
-      >
-  <a name="Dec.yes" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor"
-      >yes</a
-      > <a name="524" class="Symbol"
-      >:</a
-      > <a name="526" class="Symbol"
-      >(</a
-      > <a name="528" href="Relation.Nullary.html#528" class="Bound"
-      >p</a
-      > <a name="530" class="Symbol"
-      >:</a
-      >   <a name="534" href="Relation.Nullary.html#493" class="Bound"
-      >P</a
-      ><a name="535" class="Symbol"
-      >)</a
-      > <a name="537" class="Symbol"
-      >&#8594;</a
-      > <a name="539" href="Relation.Nullary.html#Dec" class="Datatype"
-      >Dec</a
-      > <a name="543" href="Relation.Nullary.html#493" class="Bound"
-      >P</a
-      >
-  <a name="Dec.no" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor"
-      >no</a
-      >  <a name="551" class="Symbol"
-      >:</a
-      > <a name="553" class="Symbol"
-      >(</a
-      ><a name="554" href="Relation.Nullary.html#554" class="Bound"
-      >&#172;p</a
-      > <a name="557" class="Symbol"
-      >:</a
-      > <a name="559" href="Relation.Nullary.html#&#172;_" class="Function Operator"
-      >&#172;</a
-      > <a name="561" href="Relation.Nullary.html#493" class="Bound"
-      >P</a
-      ><a name="562" class="Symbol"
-      >)</a
-      > <a name="564" class="Symbol"
-      >&#8594;</a
-      > <a name="566" href="Relation.Nullary.html#Dec" class="Datatype"
-      >Dec</a
-      > <a name="570" href="Relation.Nullary.html#493" class="Bound"
-      >P</a
-      >
-</pre
-    ></body
-  ></html
->
+<a id="479" class="Keyword">data</a> <a id="Dec" href="Relation.Nullary.html#Dec" class="Datatype">Dec</a> <a id="488" class="Symbol">{</a><a id="489" href="Relation.Nullary.html#489" class="Bound">p</a><a id="490" class="Symbol">}</a> <a id="492" class="Symbol">(</a><a id="493" href="Relation.Nullary.html#493" class="Bound">P</a> <a id="495" class="Symbol">:</a> <a id="497" class="PrimitiveType">Set</a> <a id="501" href="Relation.Nullary.html#489" class="Bound">p</a><a id="502" class="Symbol">)</a> <a id="504" class="Symbol">:</a> <a id="506" class="PrimitiveType">Set</a> <a id="510" href="Relation.Nullary.html#489" class="Bound">p</a> <a id="512" class="Keyword">where</a>
+  <a id="Dec.yes" href="Relation.Nullary.html#Dec.yes" class="InductiveConstructor">yes</a> <a id="524" class="Symbol">:</a> <a id="526" class="Symbol">(</a> <a id="528" href="Relation.Nullary.html#528" class="Bound">p</a> <a id="530" class="Symbol">:</a>   <a id="534" href="Relation.Nullary.html#493" class="Bound">P</a><a id="535" class="Symbol">)</a> <a id="537" class="Symbol">→</a> <a id="539" href="Relation.Nullary.html#Dec" class="Datatype">Dec</a> <a id="543" href="Relation.Nullary.html#493" class="Bound">P</a>
+  <a id="Dec.no" href="Relation.Nullary.html#Dec.no" class="InductiveConstructor">no</a>  <a id="551" class="Symbol">:</a> <a id="553" class="Symbol">(</a><a id="554" href="Relation.Nullary.html#554" class="Bound">¬p</a> <a id="557" class="Symbol">:</a> <a id="559" href="Relation.Nullary.html#%C2%AC_" class="Function Operator">¬</a> <a id="561" href="Relation.Nullary.html#493" class="Bound">P</a><a id="562" class="Symbol">)</a> <a id="564" class="Symbol">→</a> <a id="566" href="Relation.Nullary.html#Dec" class="Datatype">Dec</a> <a id="570" href="Relation.Nullary.html#493" class="Bound">P</a>
+</pre></body></html>

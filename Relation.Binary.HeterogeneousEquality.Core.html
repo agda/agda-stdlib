@@ -1,221 +1,28 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-><head
-  ><title
-    >Relation.Binary.HeterogeneousEquality.Core</title
-    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-     /><meta http-equiv="Content-Style-Type" content="text/css"
-     /><link href="Agda.css" rel="stylesheet" type="text/css"
-     /></head
-  ><body
-  ><pre
-    ><a name="1" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="74" class="Comment"
-      >-- The Agda standard library</a
-      >
-<a name="103" class="Comment"
-      >--</a
-      >
-<a name="106" class="Comment"
-      >-- Heterogeneous equality</a
-      >
-<a name="132" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.HeterogeneousEquality.Core</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Heterogeneous equality</a>
+<a id="132" class="Comment">------------------------------------------------------------------------</a>
 
-<a name="206" class="Comment"
-      >-- This file contains some core definitions which are reexported by</a
-      >
-<a name="274" class="Comment"
-      >-- Relation.Binary.HeterogeneousEquality.</a
-      >
+<a id="206" class="Comment">-- This file contains some core definitions which are reexported by</a>
+<a id="274" class="Comment">-- Relation.Binary.HeterogeneousEquality.</a>
 
-<a name="317" class="Keyword"
-      >module</a
-      > <a name="324" href="Relation.Binary.HeterogeneousEquality.Core.html" class="Module"
-      >Relation.Binary.HeterogeneousEquality.Core</a
-      > <a name="367" class="Keyword"
-      >where</a
-      >
+<a id="317" class="Keyword">module</a> <a id="324" href="Relation.Binary.HeterogeneousEquality.Core.html" class="Module">Relation.Binary.HeterogeneousEquality.Core</a> <a id="367" class="Keyword">where</a>
 
-<a name="374" class="Keyword"
-      >open</a
-      > <a name="379" class="Keyword"
-      >import</a
-      > <a name="386" href="Relation.Binary.Core.html" class="Module"
-      >Relation.Binary.Core</a
-      > <a name="407" class="Keyword"
-      >using</a
-      > <a name="413" class="Symbol"
-      >(</a
-      ><a name="414" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
-      >_&#8801;_</a
-      ><a name="417" class="Symbol"
-      >;</a
-      > <a name="419" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
-      >refl</a
-      ><a name="423" class="Symbol"
-      >)</a
-      >
+<a id="374" class="Keyword">open</a> <a id="379" class="Keyword">import</a> <a id="386" href="Relation.Binary.Core.html" class="Module">Relation.Binary.Core</a> <a id="407" class="Keyword">using</a> <a id="413" class="Symbol">(</a><a id="414" href="Agda.Builtin.Equality.html#_%E2%89%A1_" class="Datatype Operator">_≡_</a><a id="417" class="Symbol">;</a> <a id="419" href="Agda.Builtin.Equality.html#_%E2%89%A1_.refl" class="InductiveConstructor">refl</a><a id="423" class="Symbol">)</a>
 
-<a name="426" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="499" class="Comment"
-      >-- Heterogeneous equality</a
-      >
+<a id="426" class="Comment">------------------------------------------------------------------------</a>
+<a id="499" class="Comment">-- Heterogeneous equality</a>
 
-<a name="526" class="Keyword"
-      >infix</a
-      > <a name="532" class="Number"
-      >4</a
-      > <a name="534" href="Relation.Binary.HeterogeneousEquality.Core.html#_&#8773;_" class="Datatype Operator"
-      >_&#8773;_</a
-      >
+<a id="526" class="Keyword">infix</a> <a id="532" class="Number">4</a> <a id="534" href="Relation.Binary.HeterogeneousEquality.Core.html#_%E2%89%85_" class="Datatype Operator">_≅_</a>
 
-<a name="539" class="Keyword"
-      >data</a
-      > <a name="_&#8773;_" href="Relation.Binary.HeterogeneousEquality.Core.html#_&#8773;_" class="Datatype Operator"
-      >_&#8773;_</a
-      > <a name="548" class="Symbol"
-      >{</a
-      ><a name="549" href="Relation.Binary.HeterogeneousEquality.Core.html#549" class="Bound"
-      >&#8467;</a
-      ><a name="550" class="Symbol"
-      >}</a
-      > <a name="552" class="Symbol"
-      >{</a
-      ><a name="553" href="Relation.Binary.HeterogeneousEquality.Core.html#553" class="Bound"
-      >A</a
-      > <a name="555" class="Symbol"
-      >:</a
-      > <a name="557" class="PrimitiveType"
-      >Set</a
-      > <a name="561" href="Relation.Binary.HeterogeneousEquality.Core.html#549" class="Bound"
-      >&#8467;</a
-      ><a name="562" class="Symbol"
-      >}</a
-      > <a name="564" class="Symbol"
-      >(</a
-      ><a name="565" href="Relation.Binary.HeterogeneousEquality.Core.html#565" class="Bound"
-      >x</a
-      > <a name="567" class="Symbol"
-      >:</a
-      > <a name="569" href="Relation.Binary.HeterogeneousEquality.Core.html#553" class="Bound"
-      >A</a
-      ><a name="570" class="Symbol"
-      >)</a
-      > <a name="572" class="Symbol"
-      >:</a
-      > <a name="574" class="Symbol"
-      >{</a
-      ><a name="575" href="Relation.Binary.HeterogeneousEquality.Core.html#575" class="Bound"
-      >B</a
-      > <a name="577" class="Symbol"
-      >:</a
-      > <a name="579" class="PrimitiveType"
-      >Set</a
-      > <a name="583" href="Relation.Binary.HeterogeneousEquality.Core.html#549" class="Bound"
-      >&#8467;</a
-      ><a name="584" class="Symbol"
-      >}</a
-      > <a name="586" class="Symbol"
-      >&#8594;</a
-      > <a name="588" href="Relation.Binary.HeterogeneousEquality.Core.html#575" class="Bound"
-      >B</a
-      > <a name="590" class="Symbol"
-      >&#8594;</a
-      > <a name="592" class="PrimitiveType"
-      >Set</a
-      > <a name="596" href="Relation.Binary.HeterogeneousEquality.Core.html#549" class="Bound"
-      >&#8467;</a
-      > <a name="598" class="Keyword"
-      >where</a
-      >
-   <a name="_&#8773;_.refl" href="Relation.Binary.HeterogeneousEquality.Core.html#_&#8773;_.refl" class="InductiveConstructor"
-      >refl</a
-      > <a name="612" class="Symbol"
-      >:</a
-      > <a name="614" href="Relation.Binary.HeterogeneousEquality.Core.html#565" class="Bound"
-      >x</a
-      > <a name="616" href="Relation.Binary.HeterogeneousEquality.Core.html#_&#8773;_" class="Datatype Operator"
-      >&#8773;</a
-      > <a name="618" href="Relation.Binary.HeterogeneousEquality.Core.html#565" class="Bound"
-      >x</a
-      >
+<a id="539" class="Keyword">data</a> <a id="_≅_" href="Relation.Binary.HeterogeneousEquality.Core.html#_%E2%89%85_" class="Datatype Operator">_≅_</a> <a id="548" class="Symbol">{</a><a id="549" href="Relation.Binary.HeterogeneousEquality.Core.html#549" class="Bound">ℓ</a><a id="550" class="Symbol">}</a> <a id="552" class="Symbol">{</a><a id="553" href="Relation.Binary.HeterogeneousEquality.Core.html#553" class="Bound">A</a> <a id="555" class="Symbol">:</a> <a id="557" class="PrimitiveType">Set</a> <a id="561" href="Relation.Binary.HeterogeneousEquality.Core.html#549" class="Bound">ℓ</a><a id="562" class="Symbol">}</a> <a id="564" class="Symbol">(</a><a id="565" href="Relation.Binary.HeterogeneousEquality.Core.html#565" class="Bound">x</a> <a id="567" class="Symbol">:</a> <a id="569" href="Relation.Binary.HeterogeneousEquality.Core.html#553" class="Bound">A</a><a id="570" class="Symbol">)</a> <a id="572" class="Symbol">:</a> <a id="574" class="Symbol">{</a><a id="575" href="Relation.Binary.HeterogeneousEquality.Core.html#575" class="Bound">B</a> <a id="577" class="Symbol">:</a> <a id="579" class="PrimitiveType">Set</a> <a id="583" href="Relation.Binary.HeterogeneousEquality.Core.html#549" class="Bound">ℓ</a><a id="584" class="Symbol">}</a> <a id="586" class="Symbol">→</a> <a id="588" href="Relation.Binary.HeterogeneousEquality.Core.html#575" class="Bound">B</a> <a id="590" class="Symbol">→</a> <a id="592" class="PrimitiveType">Set</a> <a id="596" href="Relation.Binary.HeterogeneousEquality.Core.html#549" class="Bound">ℓ</a> <a id="598" class="Keyword">where</a>
+   <a id="_≅_.refl" href="Relation.Binary.HeterogeneousEquality.Core.html#_%E2%89%85_.refl" class="InductiveConstructor">refl</a> <a id="612" class="Symbol">:</a> <a id="614" href="Relation.Binary.HeterogeneousEquality.Core.html#565" class="Bound">x</a> <a id="616" href="Relation.Binary.HeterogeneousEquality.Core.html#_%E2%89%85_" class="Datatype Operator">≅</a> <a id="618" href="Relation.Binary.HeterogeneousEquality.Core.html#565" class="Bound">x</a>
 
-<a name="621" class="Comment"
-      >------------------------------------------------------------------------</a
-      >
-<a name="694" class="Comment"
-      >-- Conversion</a
-      >
+<a id="621" class="Comment">------------------------------------------------------------------------</a>
+<a id="694" class="Comment">-- Conversion</a>
 
-<a name="&#8773;-to-&#8801;" href="Relation.Binary.HeterogeneousEquality.Core.html#&#8773;-to-&#8801;" class="Function"
-      >&#8773;-to-&#8801;</a
-      > <a name="716" class="Symbol"
-      >:</a
-      > <a name="718" class="Symbol"
-      >&#8704;</a
-      > <a name="720" class="Symbol"
-      >{</a
-      ><a name="721" href="Relation.Binary.HeterogeneousEquality.Core.html#721" class="Bound"
-      >a</a
-      ><a name="722" class="Symbol"
-      >}</a
-      > <a name="724" class="Symbol"
-      >{</a
-      ><a name="725" href="Relation.Binary.HeterogeneousEquality.Core.html#725" class="Bound"
-      >A</a
-      > <a name="727" class="Symbol"
-      >:</a
-      > <a name="729" class="PrimitiveType"
-      >Set</a
-      > <a name="733" href="Relation.Binary.HeterogeneousEquality.Core.html#721" class="Bound"
-      >a</a
-      ><a name="734" class="Symbol"
-      >}</a
-      > <a name="736" class="Symbol"
-      >{</a
-      ><a name="737" href="Relation.Binary.HeterogeneousEquality.Core.html#737" class="Bound"
-      >x</a
-      > <a name="739" href="Relation.Binary.HeterogeneousEquality.Core.html#739" class="Bound"
-      >y</a
-      > <a name="741" class="Symbol"
-      >:</a
-      > <a name="743" href="Relation.Binary.HeterogeneousEquality.Core.html#725" class="Bound"
-      >A</a
-      ><a name="744" class="Symbol"
-      >}</a
-      > <a name="746" class="Symbol"
-      >&#8594;</a
-      > <a name="748" href="Relation.Binary.HeterogeneousEquality.Core.html#737" class="Bound"
-      >x</a
-      > <a name="750" href="Relation.Binary.HeterogeneousEquality.Core.html#_&#8773;_" class="Datatype Operator"
-      >&#8773;</a
-      > <a name="752" href="Relation.Binary.HeterogeneousEquality.Core.html#739" class="Bound"
-      >y</a
-      > <a name="754" class="Symbol"
-      >&#8594;</a
-      > <a name="756" href="Relation.Binary.HeterogeneousEquality.Core.html#737" class="Bound"
-      >x</a
-      > <a name="758" href="Agda.Builtin.Equality.html#_&#8801;_" class="Datatype Operator"
-      >&#8801;</a
-      > <a name="760" href="Relation.Binary.HeterogeneousEquality.Core.html#739" class="Bound"
-      >y</a
-      >
-<a name="762" href="Relation.Binary.HeterogeneousEquality.Core.html#&#8773;-to-&#8801;" class="Function"
-      >&#8773;-to-&#8801;</a
-      > <a name="769" href="Relation.Binary.HeterogeneousEquality.Core.html#_&#8773;_.refl" class="InductiveConstructor"
-      >refl</a
-      > <a name="774" class="Symbol"
-      >=</a
-      > <a name="776" href="Agda.Builtin.Equality.html#_&#8801;_.refl" class="InductiveConstructor"
-      >refl</a
-      >
-</pre
-    ></body
-  ></html
->
+<a id="≅-to-≡" href="Relation.Binary.HeterogeneousEquality.Core.html#%E2%89%85-to-%E2%89%A1" class="Function">≅-to-≡</a> <a id="716" class="Symbol">:</a> <a id="718" class="Symbol">∀</a> <a id="720" class="Symbol">{</a><a id="721" href="Relation.Binary.HeterogeneousEquality.Core.html#721" class="Bound">a</a><a id="722" class="Symbol">}</a> <a id="724" class="Symbol">{</a><a id="725" href="Relation.Binary.HeterogeneousEquality.Core.html#725" class="Bound">A</a> <a id="727" class="Symbol">:</a> <a id="729" class="PrimitiveType">Set</a> <a id="733" href="Relation.Binary.HeterogeneousEquality.Core.html#721" class="Bound">a</a><a id="734" class="Symbol">}</a> <a id="736" class="Symbol">{</a><a id="737" href="Relation.Binary.HeterogeneousEquality.Core.html#737" class="Bound">x</a> <a id="739" href="Relation.Binary.HeterogeneousEquality.Core.html#739" class="Bound">y</a> <a id="741" class="Symbol">:</a> <a id="743" href="Relation.Binary.HeterogeneousEquality.Core.html#725" class="Bound">A</a><a id="744" class="Symbol">}</a> <a id="746" class="Symbol">→</a> <a id="748" href="Relation.Binary.HeterogeneousEquality.Core.html#737" class="Bound">x</a> <a id="750" href="Relation.Binary.HeterogeneousEquality.Core.html#_%E2%89%85_" class="Datatype Operator">≅</a> <a id="752" href="Relation.Binary.HeterogeneousEquality.Core.html#739" class="Bound">y</a> <a id="754" class="Symbol">→</a> <a id="756" href="Relation.Binary.HeterogeneousEquality.Core.html#737" class="Bound">x</a> <a id="758" href="Agda.Builtin.Equality.html#_%E2%89%A1_" class="Datatype Operator">≡</a> <a id="760" href="Relation.Binary.HeterogeneousEquality.Core.html#739" class="Bound">y</a>
+<a id="762" href="Relation.Binary.HeterogeneousEquality.Core.html#%E2%89%85-to-%E2%89%A1" class="Function">≅-to-≡</a> <a id="769" href="Relation.Binary.HeterogeneousEquality.Core.html#_%E2%89%85_.refl" class="InductiveConstructor">refl</a> <a id="774" class="Symbol">=</a> <a id="776" href="Agda.Builtin.Equality.html#_%E2%89%A1_.refl" class="InductiveConstructor">refl</a>
+</pre></body></html>
