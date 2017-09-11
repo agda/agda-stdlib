@@ -36,14 +36,14 @@ Backwards compatible changes
   +-semigroup           : Semigroup _ _
   +-0-monoid            : Monoid _ _
   +-0-commutativeMonoid : CommutativeMonoid _ _
-  
+
   *-semigroup           : Semigroup _ _
   *-1-monoid            : Monoid _ _
   *-1-commutativeMonoid : CommutativeMonoid _ _
   *-+-semiring          : Semiring _ _
-  
+
   ^-semigroup-morphism  : (x ^_) Is +-semigroup -Semigroup⟶ *-semigroup
-  ^-monoid-morphism     : (x ^_) Is +-0-monoid -Monoid⟶ *-1-monoid  
+  ^-monoid-morphism     : (x ^_) Is +-0-monoid -Monoid⟶ *-1-monoid
   ```
 
 * Added new combinators to `Relation.Unary`:
