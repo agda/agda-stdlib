@@ -8,6 +8,16 @@ Important changes since 0.14:
 Non-backwards compatible changes
 --------------------------------
 
+#### Overhaul of `Algebra.Morphism`
+
+* Currently `Algebra.Morphism` only gives an example of a `Ring` homomorphism which
+  packs the homomorphism and all the proofs that it behaves the right way.
+
+  Instead we have adopted and `Algebra.Structures`-like approach with proof-only
+  records parametrised by the homomorphism and the structures it acts on. This make
+  it possible to define the proof requirement for e.g. a ring in terms of the proof
+  requirements for its additive abelian group and multiplicative monoid.
+
 #### Other
 
 * Changed the fixity of `⋃` and `⋂` in `Relation.Unary` to make space for `_⊢_`.
@@ -17,6 +27,12 @@ Deprecated features
 
 Backwards compatible changes
 ----------------------------
+
+* Added new proofs to `Data.Nat.Properties`:
+  ```agda
+  ^-semigroup-morphism  : (x ^_) Is +-semigroup -Semigroup⟶ *-semigroup
+  ^-monoid-morphism     : (x ^_) Is +-0-monoid -Monoid⟶ *-1-monoid  
+  ```
 
 * Added new combinators to `Relation.Unary`:
   ```agda
@@ -83,16 +99,6 @@ Non-backwards compatible changes
   Therefore `<-Rec` and `<-well-founded` have been renamed to `<′-Rec` and `<′-well-founded`
   respectively. The original names `<-Rec` and `<-well-founded` now refer to new
   corresponding proofs for `_<_`.
-
-#### Overhaul of `Algebra.Morphism`
-
-* Currently `Algebra.Morphism` only gives an example of a `Ring` homomorphism which
-  packs the homomorphism and all the proofs that it behaves the right way.
-
-  Instead we have adopted and `Algebra.Structures`-like approach with proof-only
-  records parametrised by the homomorphism and the structures it acts on. This make
-  it possible to define the proof requirement for e.g. a ring in terms of the proof
-  requirements for its additive abelian group and multiplicative monoid.
 
 #### Other
 
@@ -627,8 +633,6 @@ Backwards compatible changes
   ^-distribˡ-+-*        : m ^ (n + p) ≡ m ^ n * m ^ p
   i^j≡0⇒i≡0             : i ^ j ≡ 0 → i ≡ 0
   i^j≡1⇒j≡0∨i≡1         : i ^ j ≡ 1 → j ≡ 0 ⊎ i ≡ 1
-  ^-semigroup-morphism  : (x ^_) Is +-semigroup -Semigroup⟶ *-semigroup
-  ^-monoid-morphism     : (x ^_) Is +-0-monoid -Monoid⟶ *-1-monoid
 
   ⊔-assoc               : Associative _⊔_
   ⊔-comm                : Commutative _⊔_
