@@ -14,8 +14,7 @@ module README where
 -- Noam Zeilberger and some anonymous contributors.
 -- ----------------------------------------------------------------------
 
--- The development version of the library often requires the latest
--- development version of Agda.
+-- This version of the library has been tested using Agda 2.5.3.
 
 -- Note that no guarantees are currently made about forwards or
 -- backwards compatibility, the library is still at an experimental
