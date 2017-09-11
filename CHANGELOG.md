@@ -25,11 +25,23 @@ Non-backwards compatible changes
 Deprecated features
 -------------------
 
+Deprecated features still exist and therefore existing code should still work
+but they may be removed in some future release of the library.
+
 Backwards compatible changes
 ----------------------------
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
+  +-semigroup           : Semigroup _ _
+  +-0-monoid            : Monoid _ _
+  +-0-commutativeMonoid : CommutativeMonoid _ _
+  
+  *-semigroup           : Semigroup _ _
+  *-1-monoid            : Monoid _ _
+  *-1-commutativeMonoid : CommutativeMonoid _ _
+  *-+-semiring          : Semiring _ _
+  
   ^-semigroup-morphism  : (x ^_) Is +-semigroup -Semigroup⟶ *-semigroup
   ^-monoid-morphism     : (x ^_) Is +-0-monoid -Monoid⟶ *-1-monoid  
   ```
@@ -604,9 +616,6 @@ Backwards compatible changes
   +-cancelʳ-≤           : RightCancellative _≤_ _+_
   +-cancel-≤            : Cancellative _≤_ _+_
   +-isSemigroup         : IsSemigroup _≡_ _+_
-  +-semigroup           : Semigroup _ _
-  +-0-monoid            : Monoid _ _
-  +-0-commutativeMonoid : CommutativeMonoid _ _
   +-monoˡ-<             : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
   +-monoʳ-<             : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
   +-mono-<              : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
@@ -622,9 +631,6 @@ Backwards compatible changes
   *-distribˡ-+          : _*_ DistributesOverˡ _+_
   *-distrib-+           : _*_ DistributesOver _+_
   *-isSemigroup         : IsSemigroup _≡_ _*_
-  *-semigroup           : Semigroup _ _
-  *-1-monoid            : Monoid _ _
-  *-1-commutativeMonoid : CommutativeMonoid _ _
   *-mono-<              : _*_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
   *-monoˡ-<             : (_* suc n) Preserves _<_ ⟶ _<_
   *-monoʳ-<             : (suc n *_) Preserves _<_ ⟶ _<_
