@@ -55,3 +55,9 @@ all p []       = yes []
 all p (x ∷ xs) with p x
 all p (x ∷ xs) | yes px = Dec.map′ (_∷_ px) tail (all p xs)
 all p (x ∷ xs) | no ¬px = no (¬px ∘ head)
+
+data All₂ {a b p} {A : Set a} {B : Set b} (P : A → B → Set p) :
+          List A → List B → Set (a ⊔ b ⊔ p) where
+    [] : All₂ P [] []
+    _∷_ : ∀ {x xs y ys} (p : P x y) (ps : All₂ P xs ys) →
+          All₂ P (x ∷ xs) (y ∷ ys)
