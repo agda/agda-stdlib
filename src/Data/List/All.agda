@@ -15,6 +15,7 @@ open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary using (Decidable) renaming (_⊆_ to _⋐_)
 open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.List.Pointwise using ([]; _∷_) renaming (Rel to All₂) public
 
 -- All P xs means that all elements in xs satisfy P.
 
@@ -55,9 +56,3 @@ all p []       = yes []
 all p (x ∷ xs) with p x
 all p (x ∷ xs) | yes px = Dec.map′ (_∷_ px) tail (all p xs)
 all p (x ∷ xs) | no ¬px = no (¬px ∘ head)
-
-data All₂ {a b p} {A : Set a} {B : Set b} (P : A → B → Set p) :
-          List A → List B → Set (a ⊔ b ⊔ p) where
-    [] : All₂ P [] []
-    _∷_ : ∀ {x xs y ys} (p : P x y) (ps : All₂ P xs ys) →
-          All₂ P (x ∷ xs) (y ∷ ys)
