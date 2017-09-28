@@ -54,6 +54,37 @@ Backwards compatible changes
   _⊢_  : (A → B) → Pred B ℓ → Pred A ℓ
   ```
 
+* Added new function to `Data.List`:
+  ```agda
+  dfilter P? xs : Decidable P → List A → List A 
+  ```
+  
+* Added new proofs to `Data.List.All`:
+  ```agda
+  dfilter-all    : All P xs → dfilter P? xs ≡ xs
+  dfilter-none   : All (¬_ ∘ P) xs → dfilter P? xs ≡ []
+  length-dfilter : length (dfilter P? xs) ≤ length xs
+  ```
+  
+* Added proofs to `Data.List.Properties`
+  ```agda
+  map-id₂        : All (λ x → f x ≡ x) xs → map f xs ≡ xs
+  map-cong₂      : All (λ x → f x ≡ g x) xs → map f xs ≡ map g xs
+  foldr-++       : foldr f x (ys ++ zs) ≡ foldr f (foldr f x zs) ys
+  foldl-++       : foldl f x (ys ++ zs) ≡ foldl f (foldl f x ys) zs
+  foldr-∷ʳ       : foldr f x (ys ∷ʳ y) ≡ foldr f (f y x) ys
+  foldl-∷ʳ       : foldl f x (ys ∷ʳ y) ≡ f (foldl f x ys) y
+  reverse-foldr  : foldr f x (reverse ys) ≡ foldl (flip f) x ys
+  reverse-foldr  : foldl f x (reverse ys) ≡ foldr (flip f) x ys
+  length-reverse : length (reverse xs) ≡ length xs
+  ```
+
+* Added proofs to `Data.List.All.Properties`
+  ```agda
+  dfilter⁺₁     : All P (dfilter P? xs)
+  dfilter⁺₂     : All Q xs → All Q (dfilter P? xs)
+  ```
+
 Version 0.14
 ============
 
@@ -476,8 +507,6 @@ Backwards compatible changes
   applyDownFrom f n ≈ f[n-1] ∷ f[n-2] ∷ ... ∷ f[0]   ∷ []
   tabulate f        ≈ f[0]   ∷ f[1]   ∷ ... ∷ f[n-1] ∷ []
   allFin n          ≈ 0f     ∷ 1f     ∷ ... ∷ n-1f   ∷ []
-
-  dfilter P? xs     : Decidable P → List A → List A
   ```
 
 * Added proofs to `Data.List.Properties`
@@ -491,10 +520,6 @@ Backwards compatible changes
   reverse-foldr  : foldr f x (reverse ys) ≡ foldl (flip f) x ys
   reverse-foldr  : foldl f x (reverse ys) ≡ foldr (flip f) x ys
   length-reverse : length (reverse xs) ≡ length xs
-
-  dfilter-all    : All P xs → dfilter P? xs ≡ xs
-  dfilter-none   : All (¬_ ∘ P) xs → dfilter P? xs ≡ []
-  length-dfilter : length (dfilter P? xs) ≤ length xs
   ```
 
 * Added proofs to `Data.List.All.Properties`
