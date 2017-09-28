@@ -287,12 +287,10 @@ finite {A = A} inj (x ∷ xs) ∈x∷xs = excluded-middle helper
       ; injective = injective′
       }
 
-
-
 ------------------------------------------------------------------------
 -- DEPRECATED
 ------------------------------------------------------------------------
--- Please use the new `filter` instead of `boolFilter`
+-- Please use `filter` instead of `boolFilter`
 
 boolFilter-∈ : ∀ {a} {A : Set a} (p : A → Bool) (xs : List A) {x} →
            x ∈ xs → p x ≡ true → x ∈ boolFilter p xs

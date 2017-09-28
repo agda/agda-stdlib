@@ -26,8 +26,8 @@ Non-backwards compatible changes
   `boolFilter` and `boolPartition`, and have been replaced by new functions
   `filter` and `partition` which use decidable predicates instead of boolean-valued
   functions.  The former encouraged poor programming style in a dependantly-typed 
-  language such as Agda. Proofs for `boolFilter` and `boolPartition` have also been
-  renamed accordingly.
+  language such as Agda. Proofs for `filter` and `partition` have also been
+  updated and Prenamed accordingly.
 
 Deprecated features
 -------------------
@@ -544,9 +544,6 @@ Backwards compatible changes
   applyUpTo⁺₁   : (∀ {i} → i < n → P (f i)) → All P (applyUpTo f n)
   applyUpTo⁺₂   : (∀ i → P (f i)) → All P (applyUpTo f n)
   applyUpTo⁻    : All P (applyUpTo f n) → ∀ {i} → i < n → P (f i)
-
-  dfilter⁺₁     : All P (dfilter P? xs)
-  dfilter⁺₂     : All Q xs → All Q (dfilter P? xs)
   ```
 
 * Added proofs to `Data.List.Any.Properties`
