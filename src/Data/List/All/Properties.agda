@@ -255,16 +255,16 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 
 module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
 
-  dfilter⁺₁ : ∀ xs → All P (dfilter P? xs)
-  dfilter⁺₁ []       = []
-  dfilter⁺₁ (x ∷ xs) with P? x
-  ... | yes Px = Px ∷ dfilter⁺₁ xs
-  ... | no  _  = dfilter⁺₁ xs
+  filter⁺₁ : ∀ xs → All P (filter P? xs)
+  filter⁺₁ []       = []
+  filter⁺₁ (x ∷ xs) with P? x
+  ... | yes Px = Px ∷ filter⁺₁ xs
+  ... | no  _  = filter⁺₁ xs
 
-  dfilter⁺₂ : ∀ {q} {Q : A → Set q} {xs} →
-                  All Q xs → All Q (dfilter P? xs)
-  dfilter⁺₂ {xs = _}     [] = []
-  dfilter⁺₂ {xs = x ∷ _} (Qx ∷ Qxs) with P? x
-  ... | no  _ = dfilter⁺₂ Qxs
-  ... | yes _ = Qx ∷ dfilter⁺₂ Qxs
+  filter⁺₂ : ∀ {q} {Q : A → Set q} {xs} →
+                  All Q xs → All Q (filter P? xs)
+  filter⁺₂ {xs = _}     [] = []
+  filter⁺₂ {xs = x ∷ _} (Qx ∷ Qxs) with P? x
+  ... | no  _ = filter⁺₂ Qxs
+  ... | yes _ = Qx ∷ filter⁺₂ Qxs
 

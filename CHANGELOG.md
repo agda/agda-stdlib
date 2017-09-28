@@ -22,11 +22,27 @@ Non-backwards compatible changes
 
 * Changed the fixity of `⋃` and `⋂` in `Relation.Unary` to make space for `_⊢_`.
 
+* The functions `filter` and `partition` in `Data.List.Base` have been renamed
+  `boolFilter` and `boolPartition`, and have been replaced by new functions
+  `filter` and `partition` which use decidable predicates instead of boolean-valued
+  functions.  The former encouraged poor programming style in a dependantly-typed 
+  language such as Agda. Proofs for `boolFilter` and `boolPartition` have also been
+  renamed accordingly.
+
 Deprecated features
 -------------------
 
 Deprecated features still exist and therefore existing code should still work
 but they may be removed in some future release of the library.
+
+* The following renaming has occured in `Data.List.Base`:
+  ```agda
+  gfilter   ↦  mapMaybe
+  ```
+  bringing it into line with the equivalent function in Haskell.
+
+* The functions `boolFilter` and `boolPartition` in `Data.List.Base` have
+  been deprecated in favour of the new `filter` and `partition`.
 
 Backwards compatible changes
 ----------------------------
@@ -54,35 +70,16 @@ Backwards compatible changes
   _⊢_  : (A → B) → Pred B ℓ → Pred A ℓ
   ```
 
-* Added new function to `Data.List`:
-  ```agda
-  dfilter P? xs : Decidable P → List A → List A 
-  ```
-  
 * Added new proofs to `Data.List.All`:
   ```agda
-  dfilter-all    : All P xs → dfilter P? xs ≡ xs
-  dfilter-none   : All (¬_ ∘ P) xs → dfilter P? xs ≡ []
-  length-dfilter : length (dfilter P? xs) ≤ length xs
-  ```
-  
-* Added proofs to `Data.List.Properties`
-  ```agda
-  map-id₂        : All (λ x → f x ≡ x) xs → map f xs ≡ xs
-  map-cong₂      : All (λ x → f x ≡ g x) xs → map f xs ≡ map g xs
-  foldr-++       : foldr f x (ys ++ zs) ≡ foldr f (foldr f x zs) ys
-  foldl-++       : foldl f x (ys ++ zs) ≡ foldl f (foldl f x ys) zs
-  foldr-∷ʳ       : foldr f x (ys ∷ʳ y) ≡ foldr f (f y x) ys
-  foldl-∷ʳ       : foldl f x (ys ∷ʳ y) ≡ f (foldl f x ys) y
-  reverse-foldr  : foldr f x (reverse ys) ≡ foldl (flip f) x ys
-  reverse-foldr  : foldl f x (reverse ys) ≡ foldr (flip f) x ys
-  length-reverse : length (reverse xs) ≡ length xs
+  filter-all    : All P xs → dfilter P? xs ≡ xs
+  filter-none   : All (¬_ ∘ P) xs → dfilter P? xs ≡ []
   ```
 
 * Added proofs to `Data.List.All.Properties`
   ```agda
-  dfilter⁺₁     : All P (dfilter P? xs)
-  dfilter⁺₂     : All Q xs → All Q (dfilter P? xs)
+  filter⁺₁     : All P (filter P? xs)
+  filter⁺₂     : All Q xs → All Q (filter P? xs)
   ```
 
 Version 0.14

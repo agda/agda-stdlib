@@ -240,31 +240,43 @@ initLast (x ∷ xs)         with initLast xs
 initLast (x ∷ .[])        | []       = [] ∷ʳ' x
 initLast (x ∷ .(ys ∷ʳ y)) | ys ∷ʳ' y = (x ∷ ys) ∷ʳ' y
 
+mapMaybe : ∀ {a b} {A : Set a} {B : Set b} →
+          (A → Maybe B) → List A → List B
+mapMaybe p []       = []
+mapMaybe p (x ∷ xs) with p x
+... | just y  = y ∷ mapMaybe p xs
+... | nothing =     mapMaybe p xs
+
 -- * Searching lists
 
--- ** Searching with a predicate
+filter : ∀ {a p} {A : Set a} {P : A → Set p} →
+         Decidable P → List A → List A
+filter P? [] = []
+filter P? (x ∷ xs) with P? x
+... | no  _ = filter P? xs
+... | yes _ = x ∷ filter P? xs
 
--- A generalised variant of filter.
+partition : ∀ {a p} {A : Set a} {P : A → Set p} →
+            Decidable P → List A → (List A × List A)
+partition P? []       = ([] , [])
+partition P? (x ∷ xs) with P? x | partition P? xs
+... | yes _ | (ys , zs) = (x ∷ ys , zs)
+... | no  _ | (ys , zs) = (ys , x ∷ zs)
 
-gfilter : ∀ {a b} {A : Set a} {B : Set b} →
-          (A → Maybe B) → List A → List B
-gfilter p []       = []
-gfilter p (x ∷ xs) with p x
-... | just y  = y ∷ gfilter p xs
-... | nothing =     gfilter p xs
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
 
-dfilter : ∀ {a p} {A : Set a} {P : A → Set p} → Decidable P →
-          List A → List A
-dfilter P? [] = []
-dfilter P? (x ∷ xs) with P? x
-... | no  _ = dfilter P? xs
-... | yes _ = x ∷ dfilter P? xs
+gfilter = mapMaybe
 
-filter : ∀ {a} {A : Set a} → (A → Bool) → List A → List A
-filter p = gfilter (λ x → if p x then just x else nothing)
+-- Please use `filter` instead
+boolFilter : ∀ {a} {A : Set a} → (A → Bool) → List A → List A
+boolFilter p = mapMaybe (λ x → if p x then just x else nothing)
 
-partition : ∀ {a} {A : Set a} → (A → Bool) → List A → (List A × List A)
-partition p []       = ([] , [])
-partition p (x ∷ xs) with p x | partition p xs
+-- Please use `partition` instead
+boolPartition : ∀ {a} {A : Set a} → (A → Bool) → List A → (List A × List A)
+boolPartition p []       = ([] , [])
+boolPartition p (x ∷ xs) with p x | boolPartition p xs
 ... | true  | (ys , zs) = (x ∷ ys , zs)
 ... | false | (ys , zs) = (ys , x ∷ zs)
+
