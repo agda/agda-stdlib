@@ -90,21 +90,6 @@ erase : ∀ {m n} → m ≤″ n → m ≤″ n
 erase (less-than-or-equal eq) = less-than-or-equal (TrustMe.erase eq)
 
 ------------------------------------------------------------------------
--- A generalisation of the arithmetic operations
-
-fold : ∀{ℓ} {a : Set ℓ} → a → (a → a) → ℕ → a
-fold z s zero    = z
-fold z s (suc n) = s (fold z s n)
-
-module GeneralisedArithmetic {ℓ} {a : Set ℓ} (0# : a) (1+ : a → a) where
-
-  add : ℕ → a → a
-  add n z = fold z 1+ n
-
-  mul : (+ : a → a → a) → (ℕ → a → a)
-  mul _+_ n x = fold 0# (λ s → x + s) n
-
-------------------------------------------------------------------------
 -- Arithmetic
 
 pred : ℕ → ℕ
@@ -145,6 +130,12 @@ suc m ⊓ suc n = suc (m ⊓ n)
 
 ⌈_/2⌉ : ℕ → ℕ
 ⌈ n /2⌉ = ⌊ suc n /2⌋
+
+-- Naïve exponentiation
+
+_^_ : ℕ → ℕ → ℕ
+x ^ zero  = 1
+x ^ suc n = x * x ^ n
 
 ------------------------------------------------------------------------
 -- Queries

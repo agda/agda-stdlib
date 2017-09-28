@@ -22,8 +22,8 @@ open import Relation.Binary.List.Pointwise as ListEq using ([]; _∷_)
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_)
 
-open module M {a} {A : Set a} = Membership (PropEq.setoid A) public
-  hiding (lift-resp; lose; ⊆-preorder; module ⊆-Reasoning)
+private module M {a} {A : Set a} = Membership (PropEq.setoid A)
+open M public hiding (lose)
 
 lose : ∀ {a p} {A : Set a} {P : A → Set p} {x xs} →
        x ∈ xs → P x → Any P xs

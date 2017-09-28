@@ -20,7 +20,6 @@ open import Algebra
 open import Relation.Binary
 private
   module P  = Poset Div.poset
-  module CS = CommutativeSemiring NatProp.commutativeSemiring
 
 ------------------------------------------------------------------------
 -- Least common multiple (lcm).
@@ -91,7 +90,7 @@ lcm .(q₁ * d) .(q₂ * d) | (d , gcd-* q₁ q₂ q₁-q₂-coprime) =
 
     q₂∣q₃ : q₂ ∣ q₃
     q₂∣q₃ = coprime-divisor (Coprime.sym q₁-q₂-coprime)
-              (divides q₄ $ NatProp.cancel-*-right _ _ (begin
+              (divides q₄ $ NatProp.*-cancelʳ-≡ _ _ (begin
                  q₁ * q₃ * d′    ≡⟨ lem₁ q₁ q₃ d′ ⟩
                  q₃ * (q₁ * d′)  ≡⟨ PropEq.sym eq₃ ⟩
                  m               ≡⟨ eq₄ ⟩
@@ -116,10 +115,10 @@ lcm .(q₁ * d) .(q₂ * d) | (d , gcd-* q₁ q₂ q₁-q₂-coprime) =
 gcd*lcm : ∀ {i j d m} → GCD i j d → LCM i j m → i * j ≡ d * m
 gcd*lcm  {i}        {j}       {d}  {m}               g l with LCM.unique l (proj₂ (lcm i j))
 gcd*lcm  {i}        {j}       {d} .{proj₁ (lcm i j)} g l | refl with gcd′ i j
-gcd*lcm .{q₁ * d′} .{q₂ * d′} {d} .{q₁ * q₂ * d′}    g l | refl | (d′ , gcd-* q₁ q₂ q₁-q₂-coprime)
+gcd*lcm .{q₁ * d′} .{q₂ * d′} {d}                    g l | refl | (d′ , gcd-* q₁ q₂ q₁-q₂-coprime)
                                                            with GCD.unique g
                                                                   (gcd′-gcd (gcd-* q₁ q₂ q₁-q₂-coprime))
-gcd*lcm .{q₁ * d}  .{q₂ * d}  {d} .{q₁ * q₂ * d}     g l | refl | (.d , gcd-* q₁ q₂ q₁-q₂-coprime) | refl =
+gcd*lcm .{q₁ * d}  .{q₂ * d}  {d}                    g l | refl | (.d , gcd-* q₁ q₂ q₁-q₂-coprime) | refl =
   solve 3 (λ q₁ q₂ d → q₁ :* d :* (q₂ :* d)
                    :=  d :* (q₁ :* q₂ :* d))
           refl q₁ q₂ d
