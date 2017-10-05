@@ -31,6 +31,13 @@ but they may be removed in some future release of the library.
 Backwards compatible changes
 ----------------------------
 
+* Added new functions to `Data.W`:
+  ```agda
+  map       : (f : A → C) → ∀[ D ∘ f ⇒ B ] → W A B → W C D
+  induction : (∀ a {f} (hf : ∀ (b : B a) → P (f b)) → (w : W A B) → P w
+  foldr     : (∀ a → (B a → P) → P) → W A B → P
+  ```
+
 * The contents of `Data.Covec' is now polymorphic with respect to levels
 
 * Added new proofs to `Data.Nat.Properties`:
