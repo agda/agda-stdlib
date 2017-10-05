@@ -27,7 +27,7 @@ Non-backwards compatible changes
   `filter` and `partition` which use decidable predicates instead of boolean-valued
   functions.  The former encouraged poor programming style in a dependantly-typed 
   language such as Agda. Proofs for `filter` and `partition` have also been
-  updated and Prenamed accordingly.
+  updated and renamed accordingly.
 
 Deprecated features
 -------------------
