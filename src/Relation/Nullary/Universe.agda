@@ -13,9 +13,9 @@ open import Relation.Binary.Simple
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl)
 open import Data.Sum     as Sum  hiding (map)
-open import Data.Sum.Relation.General
+open import Data.Sum.Relations.General
 open import Data.Product as Prod hiding (map)
-open import Data.Product.Relation.Pointwise
+open import Data.Product.Relations.Pointwise
 open import Function
 import Function.Equality as FunS
 open import Data.Empty

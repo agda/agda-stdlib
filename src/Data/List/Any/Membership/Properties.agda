@@ -8,7 +8,7 @@ open import Data.List
 open import Data.List.Any as Any using (here; there)
 open import Data.List.Any.Properties
 import Data.List.Any.Membership as Membership
-open import Data.List.Relation.Pointwise as ListEq
+open import Data.List.Relations.Pointwise as ListEq
   using () renaming (Rel to ListRel)
 open import Data.Product using (∃; _×_; _,_)
 open import Function using (flip)

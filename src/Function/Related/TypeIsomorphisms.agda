@@ -15,9 +15,9 @@ open import Algebra.Structures
 open import Data.Empty
 open import Data.Nat as Nat using (zero; suc)
 open import Data.Product as Prod hiding (swap)
-open import Data.Product.Relation.Pointwise
+open import Data.Product.Relations.Pointwise
 open import Data.Sum as Sum
-open import Data.Sum.Relation.General
+open import Data.Sum.Relations.General
 open import Data.Unit
 open import Level hiding (zero; suc)
 open import Function

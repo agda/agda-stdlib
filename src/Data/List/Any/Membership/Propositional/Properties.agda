@@ -29,7 +29,7 @@ import Data.List.Any.Membership.Properties as Membershipₚ
 open import Data.Nat as Nat
 open import Data.Nat.Properties
 open import Data.Product as Prod
-import Data.Product.Relation.DependentPointwise as Σ
+import Data.Product.Relations.DependentPointwise as Σ
 open import Data.Sum as Sum
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P

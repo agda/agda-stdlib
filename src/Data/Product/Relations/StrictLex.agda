@@ -7,7 +7,7 @@
 -- The definition of lexicographic product used here is suitable if
 -- the left-hand relation is a strict partial order.
 
-module Data.Product.Relation.StrictLex where
+module Data.Product.Relations.StrictLex where
 
 open import Function
 open import Data.Product
@@ -18,7 +18,7 @@ open import Relation.Nullary.Product
 open import Relation.Nullary.Sum
 open import Relation.Binary
 open import Relation.Binary.Consequences
-open import Data.Product.Relation.Pointwise as Pointwise
+open import Data.Product.Relations.Pointwise as Pointwise
   using (_×-Rel_)
 open import Relation.Nullary
 

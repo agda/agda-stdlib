@@ -11,7 +11,8 @@ open import Data.Container as C
 open import Data.Container.Combinator
   using (module Composition) renaming (_∘_ to _⟨∘⟩_)
 open import Data.Product as Prod hiding (swap)
-open import Data.Product.Relation.Pointwise
+open import Data.Product.Relations.Pointwise
+import Data.Product.Relations.DependentPointwise as Σ
 open import Data.Sum
 open import Function
 open import Function.Equality using (_⟨$⟩_)
@@ -21,7 +22,6 @@ open import Function.Related.TypeIsomorphisms
 import Relation.Binary.HeterogeneousEquality as H
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≗_; refl)
-import Data.Product.Relation.DependentPointwise as Σ
 
 open Related.EquationalReasoning
 private
