@@ -24,7 +24,7 @@ import Data.Vec.Properties as VecProp
 open import Function
 open import Relation.Binary.PropositionalEquality as P using (_≗_)
 import Relation.Binary.Reflection as Reflection
-open import Relation.Binary.Vec.Pointwise as PW
+open import Data.Vec.Relation.Pointwise as PW
   using (Pointwise; module Pointwise; ext)
 
 -- Expressions made up of variables and the operations of a boolean
