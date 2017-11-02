@@ -15,6 +15,7 @@ open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary using (Decidable) renaming (_⊆_ to _⋐_)
 open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.List.Pointwise using ([]; _∷_) renaming (Rel to All₂) public
 
 -- All P xs means that all elements in xs satisfy P.
 

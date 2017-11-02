@@ -31,24 +31,17 @@ record Pointwise {ℓ} {A B : Set ℓ} (_∼_ : REL A B ℓ)
 
 -- Inductive definition.
 
-infixr 5 _∷_
-
-data Pointwise′ {ℓ} {A B : Set ℓ} (_∼_ : REL A B ℓ) :
-                ∀ {n} (xs : Vec A n) (ys : Vec B n) → Set ℓ where
-  []  : Pointwise′ _∼_ [] []
-  _∷_ : ∀ {n x y} {xs : Vec A n} {ys : Vec B n}
-        (x∼y : x ∼ y) (xs∼ys : Pointwise′ _∼_ xs ys) →
-        Pointwise′ _∼_ (x ∷ xs) (y ∷ ys)
+open import Data.Vec.All using (All₂; []; _∷_) public
 
 -- The two definitions are equivalent.
 
 equivalent : ∀ {ℓ} {A B : Set ℓ} {_∼_ : REL A B ℓ} {n}
                {xs : Vec A n} {ys : Vec B n} →
-             Pointwise _∼_ xs ys ⇔ Pointwise′ _∼_ xs ys
+             Pointwise _∼_ xs ys ⇔ All₂ _∼_ xs ys
 equivalent {A = A} {B} {_∼_} = Equiv.equivalence (to _ _) from
   where
   to : ∀ {n} (xs : Vec A n) (ys : Vec B n) →
-       Pointwise _∼_ xs ys → Pointwise′ _∼_ xs ys
+       Pointwise _∼_ xs ys → All₂ _∼_ xs ys
   to []       []       xs∼ys = []
   to (x ∷ xs) (y ∷ ys) xs∼ys =
     Pointwise.app xs∼ys zero ∷
@@ -66,18 +59,18 @@ equivalent {A = A} {B} {_∼_} = Equiv.equivalence (to _ _) from
     helper (suc i) = Pointwise.app xs∼ys i
 
   from : ∀ {n} {xs : Vec A n} {ys : Vec B n} →
-         Pointwise′ _∼_ xs ys → Pointwise _∼_ xs ys
+         All₂ _∼_ xs ys → Pointwise _∼_ xs ys
   from []            = nil
   from (x∼y ∷ xs∼ys) = cons x∼y (from xs∼ys)
 
 -- Some destructors.
 
 head : ∀ {ℓ} {A B : Set ℓ} {_∼_ : REL A B ℓ} {n x y xs} {ys : Vec B n} →
-       Pointwise′ _∼_ (x ∷ xs) (y ∷ ys) → x ∼ y
+       All₂ _∼_ (x ∷ xs) (y ∷ ys) → x ∼ y
 head (x∼y ∷ xs∼ys) = x∼y
 
 tail : ∀ {ℓ} {A B : Set ℓ} {_∼_ : REL A B ℓ} {n x y xs} {ys : Vec B n} →
-       Pointwise′ _∼_ (x ∷ xs) (y ∷ ys) → Pointwise′ _∼_ xs ys
+       All₂ _∼_ (x ∷ xs) (y ∷ ys) → All₂ _∼_ xs ys
 tail (x∼y ∷ xs∼ys) = xs∼ys
 
 -- Pointwise preserves reflexivity.
@@ -119,7 +112,7 @@ decidable : ∀ {ℓ} {A B : Set ℓ} {_∼_ : REL A B ℓ} →
 decidable {_∼_ = _∼_} dec xs ys =
   Dec.map (Setoid.sym (⇔-setoid _) equivalent) (decidable′ xs ys)
   where
-  decidable′ : ∀ {n} → Decidable (Pointwise′ _∼_ {n = n})
+  decidable′ : ∀ {n} → Decidable (All₂ _∼_ {n = n})
   decidable′ []       []       = yes []
   decidable′ (x ∷ xs) (y ∷ ys) with dec x y
   ... | no ¬x∼y = no (¬x∼y ∘ head)
@@ -136,7 +129,7 @@ Pointwise-≡ {ℓ} {A} =
     (to ∘ _⟨$⟩_ {f₂ = ℓ} (Equivalence.to equivalent))
     (λ xs≡ys → P.subst (Pointwise _≡_ _) xs≡ys (refl P.refl))
   where
-  to : ∀ {n} {xs ys : Vec A n} → Pointwise′ _≡_ xs ys → xs ≡ ys
+  to : ∀ {n} {xs ys : Vec A n} → All₂ _≡_ xs ys → xs ≡ ys
   to []               = P.refl
   to (P.refl ∷ xs∼ys) = P.cong (_∷_ _) $ to xs∼ys
 
@@ -159,14 +152,14 @@ Pointwise-≡ {ℓ} {A} =
   _⟨$⟩_ {f₂ = ℓ} (Equivalence.to equivalent)
   where
   helper : ∀ {n} {xs ys : Vec A n} →
-           Pointwise′ (Plus _∼_) xs ys → Plus (Pointwise′ _∼_) xs ys
+           All₂ (Plus _∼_) xs ys → Plus (All₂ _∼_) xs ys
   helper []                                                  = [ [] ]
   helper (_∷_ {x = x} {y = y} {xs = xs} {ys = ys} x∼y xs∼ys) =
     x ∷ xs  ∼⁺⟨ Plus.map (λ x∼y   → x∼y ∷ xs∼xs) x∼y ⟩
     y ∷ xs  ∼⁺⟨ Plus.map (λ xs∼ys → x∼x ∷ xs∼ys) (helper xs∼ys) ⟩∎
     y ∷ ys  ∎
     where
-    xs∼xs : Pointwise′ _∼_ xs xs
+    xs∼xs : All₂ _∼_ xs xs
     xs∼xs = _⟨$⟩_ {f₂ = ℓ} (Equivalence.to equivalent) (refl x∼x)
 
 -- Note that ∙⁺⇒⁺∙ cannot be defined if the requirement of reflexivity
@@ -196,10 +189,10 @@ private
   jz : Vec D 2
   jz = j ∷ z ∷ []
 
-  ix∙⁺jz : Pointwise′ (Plus _R_) ix jz
+  ix∙⁺jz : All₂ (Plus _R_) ix jz
   ix∙⁺jz = [ iRj ] ∷ xR⁺z ∷ []
 
-  ¬ix⁺∙jz : ¬ Plus′ (Pointwise′ _R_) ix jz
+  ¬ix⁺∙jz : ¬ Plus′ (All₂ _R_) ix jz
   ¬ix⁺∙jz [ iRj ∷ () ∷ [] ]
   ¬ix⁺∙jz ((iRj ∷ xRy ∷ []) ∷ [ () ∷ yRz ∷ [] ])
   ¬ix⁺∙jz ((iRj ∷ xRy ∷ []) ∷ (() ∷ yRz ∷ []) ∷ _)
