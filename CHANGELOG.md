@@ -162,6 +162,10 @@ Backwards compatible changes
   sup-injective₂ : sup x f ≡ sup x g → f ≡ g
   ```
 
+* New module `Data.Word`
+
+  Decidable equality for new builtin type `Agda.Builtin.Word.Word64`.
+
 ### Other
 
 * The contents of `Data.Covec' is now polymorphic with respect to levels
