@@ -20,6 +20,8 @@ Non-backwards compatible changes
 
 #### Other
 
+* Removed support for GHC 7.8.4.
+
 * Renamed `Data.Container.FreeMonad.do` and
   `Data.Container.Indexed.FreeMonad.do` to `inn` in anticipation of Agda
   supporting proper 'do' notation.
