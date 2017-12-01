@@ -9,7 +9,7 @@
 -- lexicographic ordering itself can be either strict or non-strict,
 -- depending on the value of a parameter.
 
-module Data.List.Relations.NonStrictLex where
+module Data.List.Relation.NonStrictLex where
 
 open import Data.Empty
 open import Function
@@ -21,9 +21,9 @@ open import Relation.Nullary
 open import Relation.Binary
 
 import Relation.Binary.NonStrictToStrict as Conv
-import Data.List.Relations.StrictLex as Strict
+import Data.List.Relation.StrictLex as Strict
 
-open import Data.List.Relations.Pointwise as Pointwise using ([])
+open import Data.List.Relation.Pointwise as Pointwise using ([])
 
 module _ {A : Set} where
 

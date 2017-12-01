@@ -4,7 +4,7 @@
 -- Pointwise lifting of relations to lists
 ------------------------------------------------------------------------
 
-module Data.List.Relations.Pointwise where
+module Data.List.Relation.Pointwise where
 
 open import Function
 open import Function.Inverse using (Inverse)

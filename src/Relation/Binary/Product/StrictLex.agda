@@ -3,7 +3,7 @@
 --
 -- Lexicographic products of binary relations
 --
--- This module is DEPRECATED. Please use Data.Product.Relations.StrictLex
+-- This module is DEPRECATED. Please use Data.Product.Relation.StrictLex
 -- directly.
 ------------------------------------------------------------------------
 
@@ -12,4 +12,4 @@
 
 module Relation.Binary.Product.StrictLex where
 
-open import Data.Product.Relations.StrictLex public
+open import Data.Product.Relation.StrictLex public

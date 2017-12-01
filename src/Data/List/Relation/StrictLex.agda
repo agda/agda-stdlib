@@ -9,7 +9,7 @@
 -- ordering itself can be either strict or non-strict, depending on
 -- the value of a parameter.
 
-module Data.List.Relations.StrictLex where
+module Data.List.Relation.StrictLex where
 
 open import Data.Empty
 open import Data.Unit.Base using (⊤; tt)
@@ -21,7 +21,7 @@ open import Level
 open import Relation.Nullary
 open import Relation.Binary
 open import Relation.Binary.Consequences
-open import Data.List.Relations.Pointwise as Pointwise
+open import Data.List.Relation.Pointwise as Pointwise
    using ([]; _∷_; head; tail)
 
 module _ {A : Set} where

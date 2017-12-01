@@ -3,10 +3,10 @@
 --
 -- Sums of binary relations
 --
--- This module is DEPRECATED. Please use Data.Sum.Relations.General
+-- This module is DEPRECATED. Please use Data.Sum.Relation.General
 -- directly.
 ------------------------------------------------------------------------
 
 module Relation.Binary.Sum where
 
-open import Data.Sum.Relations.General public
+open import Data.Sum.Relation.General public

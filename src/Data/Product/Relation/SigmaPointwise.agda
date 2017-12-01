@@ -4,7 +4,7 @@
 -- Pointwise lifting of binary relations to sigma types
 ------------------------------------------------------------------------
 
-module Data.Product.Relations.DependentPointwise where
+module Data.Product.Relation.SigmaPointwise where
 
 open import Data.Product as Prod
 open import Level

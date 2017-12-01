@@ -4,7 +4,7 @@
 -- Sums of binary relations
 ------------------------------------------------------------------------
 
-module Data.Sum.Relations.General where
+module Data.Sum.Relation.General where
 
 open import Data.Sum as Sum
 open import Data.Product

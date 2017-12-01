@@ -4,9 +4,9 @@
 -- Pointwise lifting of binary relations to sigma types
 --
 -- This module is DEPRECATED. Please use
--- Data.Product.Relations.DependentPointwise directly.
+-- Data.Product.Relation.SigmaPointwise directly.
 ------------------------------------------------------------------------
 
 module Relation.Binary.Sigma.Pointwise where
 
-open import Data.Product.Relations.DependentPointwise public
+open import Data.Product.Relation.SigmaPointwise public

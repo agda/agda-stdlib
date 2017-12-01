@@ -4,7 +4,7 @@
 -- Pointwise lifting of relations to vectors
 ------------------------------------------------------------------------
 
-module Data.Vec.Relations.Pointwise where
+module Data.Vec.Relation.Pointwise where
 
 open import Category.Functor
 open import Data.Fin

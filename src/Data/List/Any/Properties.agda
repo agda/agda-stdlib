@@ -18,15 +18,15 @@ open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List as List
 open import Data.List.Any as Any using (Any; here; there)
 open import Data.List.Any.Membership.Propositional
-open import Data.List.Relations.Pointwise
+open import Data.List.Relation.Pointwise
   using ([]; _∷_) renaming (Rel to ListRel)
 open import Data.Nat using (zero; suc; _<_; z≤n; s≤s)
 open import Data.Product as Prod
   using (_×_; _,_; ∃; ∃₂; proj₁; proj₂; uncurry′)
-open import Data.Product.Relations.Pointwise
-import Data.Product.Relations.DependentPointwise as Σ
+open import Data.Product.Relation.Pointwise
+import Data.Product.Relation.SigmaPointwise as Σ
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Data.Sum.Relations.General
+open import Data.Sum.Relation.General
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Eq using (_⇔_; module Equivalence)

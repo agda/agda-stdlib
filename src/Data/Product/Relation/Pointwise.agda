@@ -4,7 +4,7 @@
 -- Pointwise products of binary relations
 ------------------------------------------------------------------------
 
-module Data.Product.Relations.Pointwise where
+module Data.Product.Relation.Pointwise where
 
 open import Data.Product as Prod
 open import Data.Sum
