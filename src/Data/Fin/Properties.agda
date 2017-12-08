@@ -163,6 +163,9 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (N.less-than-or-equal refl) =
   ; total          = ≤-total
   }
 
+≤-irrelevance : ∀ {n} → P.IrrelevantRel (_≤_ {n})
+≤-irrelevance = N.≤-irrelevance
+
 -- _<_ ordering
 
 <-trans : ∀ {n} → Transitive (_<_ {n})
@@ -194,6 +197,9 @@ strictTotalOrder n = record
   ; _<_                = _<_
   ; isStrictTotalOrder = <-isStrictTotalOrder
   }
+
+<-irrelevance : ∀ {n} → P.IrrelevantRel (_<_ {n})
+<-irrelevance = N.<-irrelevance
 
 ------------------------------------------------------------------------
 -- Injection properties

@@ -60,6 +60,13 @@ but they may be removed in some future release of the library.
   re-exports the contents of files' new location in `Data.X.Relation` but may be removed in some
   future release.
 
+* The following proofs of irrelevance have been renamed:
+  ```agda
+  Data.Bool.Properties                  : proof-irrelevance     ↦ T-irrelevance
+  Data.Vec.Properties                   : proof-irrelevance-[]= ↦ []=-irrelevance
+  Relation.Binary.PropositionalEquality : proof-irrelevance     ↦ ≡-irrelevance
+  ```
+
 Backwards compatible changes
 ----------------------------
 
@@ -146,7 +153,7 @@ Backwards compatible changes
   ∼⁺⟨⟩-injectiveʳ : (x [ _∼_ ]⁺ z ∋ x ∼⁺⟨ p ⟩ q) ≡ (x ∼⁺⟨ r ⟩ s) → q ≡ s
   ```
 
-* In `Data.Product`
+* In `Data.Product.Properties`
 
   ```agda
   ,-injectiveˡ : (a , b) ≡ (c , d) → a ≡ c
@@ -167,7 +174,7 @@ Backwards compatible changes
   ◅-injectiveʳ : (Star T i k ∋ x ◅ xs) ≡ y ◅ ys → xs ≡ ys
   ```
 
-* In `Data.Sum`
+* In `Data.Sum.Properties`
 
   ```agda
   inj₁-injective : (A ⊎ B ∋ inj₁ x) ≡ inj₁ y → x ≡ y
@@ -198,8 +205,28 @@ Backwards compatible changes
 
 * The contents of `Data.Covec` is now polymorphic with respect to levels
 
+* Added new proofs to `Data.Fin.Properties`:
+  ```agda
+  ≤-irrelevance : ∀ {n} → IrrelevantRel (_≤_ {n})
+  <-irrelevance : ∀ {n} → IrrelevantRel (_<_ {n})
+  ```
+
+* Added new proofs to `Data.Integer.Properties`:
+  ```agda
+  ≤-irrelevance : IrrelevantRel _≤_
+  <-irrelevance : IrrelevantRel _<_
+  ```
+
+* Added new proofs to `Data.List.All.Properties`:
+  ```agda
+  All-irrelevant : IrrelevantPred P → IrrelevantPred (All P)
+  ```
+
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
+  ≤-irrelevance         : IrrelevantRel _≤_
+  <-irrelevance         : IrrelevantRel _<_
+
   +-semigroup           : Semigroup _ _
   +-0-monoid            : Monoid _ _
   +-0-commutativeMonoid : CommutativeMonoid _ _
@@ -215,11 +242,28 @@ Backwards compatible changes
   m∸n+n≡m               : n ≤ m → (m ∸ n) + n ≡ m
   ```
 
+* Added new proofs to `Data.Rational.Properties`:
+  ```agda
+  ≤-irrelevance : IrrelevantRel _≤_
+  ```
+
 * Added new functions to `Data.W`:
   ```agda
   map       : (f : A → C) → ∀[ D ∘ f ⇒ B ] → W A B → W C D
   induction : (∀ a {f} (hf : ∀ (b : B a) → P (f b)) → (w : W A B) → P w
   foldr     : (∀ a → (B a → P) → P) → W A B → P
+  ```
+
+* Added new proofs to `Data.Vec.All.Properties`
+  ```agda
+  All-irrelevance : IrrelevantPred P → ∀ {n} → IrrelevantPred (All P {n})
+  ```
+
+* Added new properties to `Relation.Binary.PropositionalEquality`
+  ```agda
+  isPropositional A = (a b : A) → a ≡ b
+  IrrelevantPred P  = ∀ {x} → isPropositional (P x)
+  IrrelevantRel _~_ = ∀ {x y} → isPropositional (x ~ y)
   ```
 
 * Added new combinators to `Relation.Unary`:
