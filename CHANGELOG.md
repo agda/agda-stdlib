@@ -29,6 +29,8 @@ Non-backwards compatible changes
 * Giving ̀ map` a polymorphic type: it is now possible to change the type of
   values contained in a tree when mapping over it.
 
+* Moved `Data.Vec.Equality` to `Data.Vec.Relation.Equality`
+
 #### Other
 
 * Removed support for GHC 7.8.4.
@@ -55,10 +57,13 @@ but they may be removed in some future release of the library.
   - `Relation.Binary.Product.Pointwise`    ↦ `Data.Product.Relation.Pointwise`
   - `Relation.Binary.Product.StrictLex`    ↦ `Data.Product.Relation.StrictLex`
   - `Relation.Binary.Product.NonStrictLex` ↦ `Data.Product.Relation.NonStrictLex`
-  - `Relation.Binary.Vec.Pointwise`        ↦ `Data.Vec.Relation.Pointwise`
+  - `Relation.Binary.Vec.Pointwise`        ↦ `Data.Vec.Relation.InductivePointwise`
+                                           ↦ `Data.Vec.Relation.ExtensionalPointwise`
   The old files in `Relation.Binary.X` still exist for backwards compatability reasons and
   re-exports the contents of files' new location in `Data.X.Relation` but may be removed in some
   future release.
+
+* `Data.Vec.All.All₂` has been deprecated as it duplicated existing functionality in `Data.Vec.Relation.InductivePointwise`
 
 Backwards compatible changes
 ----------------------------
@@ -198,6 +203,10 @@ Backwards compatible changes
 
 * The contents of `Data.Covec` is now polymorphic with respect to levels
 
+* The contents of `Data.Vec.Relation.InductivePointwise` is now more polymorphic with respect to levels
+
+* The contents of `Data.Vec.Relation.ExtensionalPointwise` is now more polymorphic with respect to levels
+
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
   +-semigroup           : Semigroup _ _
@@ -213,6 +222,38 @@ Backwards compatible changes
   ^-monoid-morphism     : (x ^_) Is +-0-monoid -Monoid⟶ *-1-monoid
 
   m∸n+n≡m               : n ≤ m → (m ∸ n) + n ≡ m
+  ```
+
+* Added new proofs to `Data.Vec.Relation.ExtensionalPointwise`:
+  ```agda
+  symmetric  : Symmetric _~_ → Symmetric (Pointwise _~_)
+  transitive : Transitive _~_ → Transitive (Pointwise _~_)
+  isDecEquivalence : IsDecEquivalence _~_ → IsDecEquivalence (Pointwise _~_)
+  extensional⇒inductive : Pointwise _~_ xs ys → IPointwise _~_ xs ys
+  inductive⇒extensional : IPointwise _~_ xs ys → Pointwise _~_ xs ys
+
+  ≡⇒Pointwise-≡ : Pointwise _≡_ xs ys → xs ≡ ys
+  Pointwise-≡⇒≡ : xs ≡ ys → Pointwise _≡_ xs ys
+  ```
+
+* Added new proofs to `Data.Vec.Relation.InductivePointwise`:
+  ```agda
+  ++⁺           : Pointwise P xs → Pointwise P ys → Pointwise P (xs ++ ys)
+  ++⁻ˡ          : Pointwise P (xs ++ ys) → Pointwise P xs
+  ++⁻ʳ          : Pointwise P (xs ++ ys) → Pointwise P ys
+  ++⁻           : Pointwise P (xs ++ ys) → Pointwise P xs × Pointwise P ys
+
+  concat⁺       : Pointwise (Pointwise P) xss → Pointwise P (concat xss)
+  concat⁻       : Pointwise P (concat xss) → Pointwise (Pointwise P) xss
+
+  lookup     : Pointwise _~_ xs ys → ∀ i → lookup i xs ~ lookup i ys
+
+  symmetric  : Symmetric _~_ → Symmetric (Pointwise _~_)
+  transitive : Transitive _~_ → Transitive (Pointwise _~_)
+  isDecEquivalence : IsDecEquivalence _~_ → IsDecEquivalence (Pointwise _~_)
+
+  ≡⇒Pointwise-≡ : Pointwise _≡_ xs ys → xs ≡ ys
+  Pointwise-≡⇒≡ : xs ≡ ys → Pointwise _≡_ xs ys
   ```
 
 * Added new functions to `Data.W`:
