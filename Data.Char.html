@@ -8,7 +8,7 @@
 <a id="194" class="Keyword">module</a> <a id="201" href="Data.Char.html" class="Module">Data.Char</a> <a id="211" class="Keyword">where</a>
 
 <a id="218" class="Keyword">open</a> <a id="223" class="Keyword">import</a> <a id="230" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="244" class="Keyword">using</a> <a id="250" class="Symbol">(</a><a id="251" href="Agda.Builtin.Nat.html#97" class="Datatype">ℕ</a><a id="252" class="Symbol">)</a>
-<a id="254" class="Keyword">open</a> <a id="259" class="Keyword">import</a> <a id="266" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="286" class="Keyword">using</a> <a id="292" class="Symbol">(</a><a id="293" href="Data.Nat.Properties.html#5036" class="Function">&lt;-strictTotalOrder</a><a id="311" class="Symbol">)</a>
+<a id="254" class="Keyword">open</a> <a id="259" class="Keyword">import</a> <a id="266" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="286" class="Keyword">using</a> <a id="292" class="Symbol">(</a><a id="293" href="Data.Nat.Properties.html#5081" class="Function">&lt;-strictTotalOrder</a><a id="311" class="Symbol">)</a>
 <a id="313" class="Keyword">open</a> <a id="318" class="Keyword">import</a> <a id="325" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a> <a id="340" class="Keyword">using</a> <a id="346" class="Symbol">(</a><a id="347" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a><a id="351" class="Symbol">;</a> <a id="353" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor">true</a><a id="357" class="Symbol">;</a> <a id="359" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor">false</a><a id="364" class="Symbol">)</a>
 <a id="366" class="Keyword">open</a> <a id="371" class="Keyword">import</a> <a id="378" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
 <a id="395" class="Keyword">open</a> <a id="400" class="Keyword">import</a> <a id="407" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a>
@@ -55,13 +55,13 @@
   <a id="1518" href="Data.Char.html#1491" class="Function">unit-test</a> <a id="1528" class="Symbol">=</a> <a id="1530" href="Data.Char.html#1460" class="InductiveConstructor">p</a> <a id="1532" class="Symbol">_</a>
 
 <a id="1535" href="Data.Char.html#1535" class="Function">setoid</a> <a id="1542" class="Symbol">:</a> <a id="1544" href="Relation.Binary.html#1908" class="Record">Setoid</a> <a id="1551" class="Symbol">_</a> <a id="1553" class="Symbol">_</a>
-<a id="1555" href="Data.Char.html#1535" class="Function">setoid</a> <a id="1562" class="Symbol">=</a> <a id="1564" href="Relation.Binary.PropositionalEquality.html#1526" class="Function">PropEq.setoid</a> <a id="1578" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a>
+<a id="1555" href="Data.Char.html#1535" class="Function">setoid</a> <a id="1562" class="Symbol">=</a> <a id="1564" href="Relation.Binary.PropositionalEquality.html#1460" class="Function">PropEq.setoid</a> <a id="1578" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a>
 
 <a id="1584" href="Data.Char.html#1584" class="Function">decSetoid</a> <a id="1594" class="Symbol">:</a> <a id="1596" href="Relation.Binary.html#2977" class="Record">DecSetoid</a> <a id="1606" class="Symbol">_</a> <a id="1608" class="Symbol">_</a>
-<a id="1610" href="Data.Char.html#1584" class="Function">decSetoid</a> <a id="1620" class="Symbol">=</a> <a id="1622" href="Relation.Binary.PropositionalEquality.html#1665" class="Function">PropEq.decSetoid</a> <a id="1639" href="Data.Char.html#801" class="Function Operator">_≟_</a>
+<a id="1610" href="Data.Char.html#1584" class="Function">decSetoid</a> <a id="1620" class="Symbol">=</a> <a id="1622" href="Relation.Binary.PropositionalEquality.html#1599" class="Function">PropEq.decSetoid</a> <a id="1639" href="Data.Char.html#801" class="Function Operator">_≟_</a>
 
 <a id="1644" class="Comment">-- An ordering induced by the toNat function.</a>
 
 <a id="1691" href="Data.Char.html#1691" class="Function">strictTotalOrder</a> <a id="1708" class="Symbol">:</a> <a id="1710" href="Relation.Binary.html#10996" class="Record">StrictTotalOrder</a> <a id="1727" class="Symbol">_</a> <a id="1729" class="Symbol">_</a> <a id="1731" class="Symbol">_</a>
-<a id="1733" href="Data.Char.html#1691" class="Function">strictTotalOrder</a> <a id="1750" class="Symbol">=</a> <a id="1752" href="Relation.Binary.On.html#7015" class="Function">On.strictTotalOrder</a> <a id="1772" href="Data.Nat.Properties.html#5036" class="Function">&lt;-strictTotalOrder</a> <a id="1791" href="Data.Char.Base.html#815" class="Function">toNat</a>
+<a id="1733" href="Data.Char.html#1691" class="Function">strictTotalOrder</a> <a id="1750" class="Symbol">=</a> <a id="1752" href="Relation.Binary.On.html#7015" class="Function">On.strictTotalOrder</a> <a id="1772" href="Data.Nat.Properties.html#5081" class="Function">&lt;-strictTotalOrder</a> <a id="1791" href="Data.Char.Base.html#815" class="Function">toNat</a>
 </pre></body></html>
