@@ -4,11 +4,15 @@
 <a id="103" class="Comment">--</a>
 <a id="106" class="Comment">-- Pointwise lifting of relations to vectors</a>
 <a id="151" class="Comment">--</a>
-<a id="154" class="Comment">-- This module is DEPRECATED. Please use Data.Vec.Relation.Pointwise</a>
-<a id="223" class="Comment">-- directly.</a>
-<a id="236" class="Comment">------------------------------------------------------------------------</a>
+<a id="154" class="Comment">-- This module is DEPRECATED.</a>
+<a id="184" class="Comment">-- Please use Data.Vec.Relation.InductivePointwise</a>
+<a id="235" class="Comment">-- and Data.Vec.Relation.ExtensionalPointwise directly.</a>
+<a id="291" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="310" class="Keyword">module</a> <a id="317" href="Relation.Binary.Vec.Pointwise.html" class="Module">Relation.Binary.Vec.Pointwise</a> <a id="347" class="Keyword">where</a>
+<a id="365" class="Keyword">module</a> <a id="372" href="Relation.Binary.Vec.Pointwise.html" class="Module">Relation.Binary.Vec.Pointwise</a> <a id="402" class="Keyword">where</a>
 
-<a id="354" class="Keyword">open</a> <a id="359" class="Keyword">import</a> <a id="366" href="Data.Vec.Relation.Pointwise.html" class="Module">Data.Vec.Relation.Pointwise</a> <a id="394" class="Keyword">public</a>
+<a id="409" class="Keyword">open</a> <a id="414" class="Keyword">import</a> <a id="421" href="Data.Vec.Relation.InductivePointwise.html" class="Module">Data.Vec.Relation.InductivePointwise</a> <a id="458" class="Keyword">public</a>
+  <a id="467" class="Keyword">hiding</a> <a id="474" class="Symbol">(</a><a id="475" href="Data.Vec.Relation.InductivePointwise.html#1060" class="Function">head</a><a id="479" class="Symbol">;</a> <a id="481" href="Data.Vec.Relation.InductivePointwise.html#1227" class="Function">tail</a><a id="485" class="Symbol">)</a>
+<a id="487" class="Keyword">open</a> <a id="492" class="Keyword">import</a> <a id="499" href="Data.Vec.Relation.ExtensionalPointwise.html" class="Module">Data.Vec.Relation.ExtensionalPointwise</a> <a id="538" class="Keyword">public</a>
+  <a id="547" class="Keyword">using</a> <a id="553" class="Symbol">(</a><a id="554" href="Data.Vec.Relation.ExtensionalPointwise.html#1286" class="Function">head</a><a id="558" class="Symbol">;</a> <a id="560" href="Data.Vec.Relation.ExtensionalPointwise.html#1454" class="Function">tail</a><a id="564" class="Symbol">)</a> <a id="566" class="Keyword">renaming</a> <a id="575" class="Symbol">(</a><a id="576" href="Data.Vec.Relation.ExtensionalPointwise.html#1008" class="Record">Pointwise</a> <a id="586" class="Symbol">to</a> <a id="589" href="Data.Vec.Relation.ExtensionalPointwise.html#1008" class="Record">Pointwise′</a><a id="599" class="Symbol">)</a>
 </pre></body></html>
