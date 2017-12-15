@@ -67,6 +67,39 @@ but they may be removed in some future release of the library.
   Relation.Binary.PropositionalEquality : proof-irrelevance     ↦ ≡-irrelevance
   ```
 
+* The following renaming has occured in `Data.Fin.Properties`:
+  ```agda
+  <-cmp              ↦ <-cmp
+  <-strictTotalOrder ↦ <-strictTotalOrder
+  ```
+
+* The following renaming has occurred in `Data.Bool.Properties` to improve consistency across the library:
+  ```agda
+  ∧-∨-distˡ   ↦ ∧-distribˡ-∨
+  ∧-∨-distʳ   ↦ ∧-distribʳ-∨
+  distrib-∧-∨ ↦ ∧-distrib-∨
+  ∨-∧-distˡ   ↦ ∨-distribˡ-∧
+  ∨-∧-distʳ   ↦ ∨-distribʳ-∧
+  ∨-∧-distrib ↦ ∨-distrib-∧
+  ∨-∧-abs    ↦ ∨-abs-∧
+  ∧-∨-abs    ↦ ∧-abs-∨
+
+  not-∧-inverseˡ ↦ ∧-inverseˡ
+  not-∧-inverseʳ ↦ ∧-inverseʳ
+  not-∧-inverse ↦ ∧-inverse
+  not-∨-inverseˡ ↦ ∨-inverseˡ
+  not-∨-inverseʳ ↦ ∨-inverseʳ
+  not-∨-inverse ↦ ∨-inverse
+
+  isCommutativeSemiring-∨-∧ ↦ ∨-∧-isCommutativeSemiring
+  commutativeSemiring-∨-∧   ↦  ∨-∧-commutativeSemiring
+  isCommutativeSemiring-∧-∨ ↦ ∧-∨-isCommutativeSemiring
+  commutativeSemiring-∧-∨   ↦ ∧-∨-commutativeSemiring
+  isBooleanAlgebra           ↦ ∨-∧-isBooleanAlgebra
+  booleanAlgebra             ↦ ∨-∧-booleanAlgebra
+  commutativeRing-xor-∧     ↦ xor-∧-commutativeRing
+  ```agda
+
 Backwards compatible changes
 ----------------------------
 
@@ -205,6 +238,7 @@ Backwards compatible changes
 
 * The contents of `Data.Covec` is now polymorphic with respect to levels
 
+<<<<<<< HEAD
 * Added new proofs to `Data.Fin.Properties`:
   ```agda
   ≤-irrelevance : ∀ {n} → IrrelevantRel (_≤_ {n})
@@ -220,6 +254,42 @@ Backwards compatible changes
 * Added new proofs to `Data.List.All.Properties`:
   ```agda
   All-irrelevant : IrrelevantPred P → IrrelevantPred (All P)
+=======
+* Added new proofs to `Data.Bool.Properties`:
+  ```agda
+  ∨-identityˡ           : LeftIdentity false _∨_
+  ∨-identityʳ           : RightIdentity false _∨_
+  ∨-identity            : Identity false _∨_
+  ∨-zeroˡ               : LeftZero true _∨_
+  ∨-zeroʳ               : RightZero true _∨_
+  ∨-zero                : Zero true _∨_
+  ∨-idem                : Idempotent _∨_
+  ∨-sel                 : Selective _∨_
+  ∨-isSemigroup         : IsSemigroup _≡_ _∨_
+  ∨-isCommutativeMonoid : IsCommutativeMonoid _≡_ _∨_ false
+
+  ∧-identityˡ           : LeftIdentity true _∧_
+  ∧-identityʳ           : RightIdentity true _∧_
+  ∧-identity            : Identity true _∧_
+  ∧-zeroˡ               : LeftZero false _∧_
+  ∧-zeroʳ               : RightZero false _∧_
+  ∧-zero                : Zero false _∧_
+  ∧-idem                : Idempotent _∧_
+  ∧-sel                 : Selective _∧_
+  ∧-isSemigroup         : IsSemigroup _≡_ _∧_
+  ∧-isCommutativeMonoid : IsCommutativeMonoid _≡_ _∧_ true
+
+  ∨-∧-isLattice             : IsLattice _≡_ _∨_ _∧_
+  ∨-∧-isDistributiveLattice : IsDistributiveLattice _≡_ _∨_ _∧_
+  ```
+
+* Added new proofs to `Data.Fin.Properties`:
+  ```agda
+  ≤-isDecTotalOrder : ∀ {n} → IsDecTotalOrder _≡_ (_≤_ {n})
+
+  <-asym : ∀ {n} → Asymmetric (_<_ {n})
+  <-irrefl : ∀ {n} → Irreflexive _≡_ (_<_ {n})
+>>>>>>> master
   ```
 
 * Added new proofs to `Data.Nat.Properties`:
@@ -239,7 +309,8 @@ Backwards compatible changes
   ^-semigroup-morphism  : (x ^_) Is +-semigroup -Semigroup⟶ *-semigroup
   ^-monoid-morphism     : (x ^_) Is +-0-monoid -Monoid⟶ *-1-monoid
 
-  m∸n+n≡m               : n ≤ m → (m ∸ n) + n ≡ m
+  m∸n+n≡m              : n ≤ m → (m ∸ n) + n ≡ m
+  m∸[m∸n]≡n            : n ≤ m → m ∸ (m ∸ n) ≡ n
   ```
 
 * Added new proofs to `Data.Rational.Properties`:
