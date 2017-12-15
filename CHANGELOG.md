@@ -29,7 +29,8 @@ Non-backwards compatible changes
 * Giving ̀ map` a polymorphic type: it is now possible to change the type of
   values contained in a tree when mapping over it.
 
-* Moved `Data.Vec.Equality` to `Data.Vec.Relation.Equality`
+* Moved `Data.Vec.Equality` to `Data.Vec.Relation.Equality` (see "Deprecated
+  features" section for explanation)
 
 #### Other
 
