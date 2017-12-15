@@ -35,10 +35,10 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   All-universal u [] = []
   All-universal u (x ∷ xs) = u x ∷ All-universal u xs
 
-  All-irrelevant : P.IrrelevantPred P → P.IrrelevantPred (All P)
-  All-irrelevant irr []           []           = P.refl
-  All-irrelevant irr (px₁ ∷ pxs₁) (px₂ ∷ pxs₂) =
-    P.cong₂ _∷_ (irr px₁ px₂) (All-irrelevant irr pxs₁ pxs₂)
+  All-irrelevance : P.IrrelevantPred P → P.IrrelevantPred (All P)
+  All-irrelevance irr []           []           = P.refl
+  All-irrelevance irr (px₁ ∷ pxs₁) (px₂ ∷ pxs₂) =
+    P.cong₂ _∷_ (irr px₁ px₂) (All-irrelevance irr pxs₁ pxs₂)
 
 ------------------------------------------------------------------------
 -- Lemmas relating Any, All and negation.

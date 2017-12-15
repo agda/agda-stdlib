@@ -238,23 +238,6 @@ Backwards compatible changes
 
 * The contents of `Data.Covec` is now polymorphic with respect to levels
 
-<<<<<<< HEAD
-* Added new proofs to `Data.Fin.Properties`:
-  ```agda
-  ≤-irrelevance : ∀ {n} → IrrelevantRel (_≤_ {n})
-  <-irrelevance : ∀ {n} → IrrelevantRel (_<_ {n})
-  ```
-
-* Added new proofs to `Data.Integer.Properties`:
-  ```agda
-  ≤-irrelevance : IrrelevantRel _≤_
-  <-irrelevance : IrrelevantRel _<_
-  ```
-
-* Added new proofs to `Data.List.All.Properties`:
-  ```agda
-  All-irrelevant : IrrelevantPred P → IrrelevantPred (All P)
-=======
 * Added new proofs to `Data.Bool.Properties`:
   ```agda
   ∨-identityˡ           : LeftIdentity false _∨_
@@ -286,10 +269,22 @@ Backwards compatible changes
 * Added new proofs to `Data.Fin.Properties`:
   ```agda
   ≤-isDecTotalOrder : ∀ {n} → IsDecTotalOrder _≡_ (_≤_ {n})
+  ≤-irrelevance : ∀ {n} → IrrelevantRel (_≤_ {n})
 
   <-asym : ∀ {n} → Asymmetric (_<_ {n})
   <-irrefl : ∀ {n} → Irreflexive _≡_ (_<_ {n})
->>>>>>> master
+  <-irrelevance : ∀ {n} → IrrelevantRel (_<_ {n})
+  ```
+
+* Added new proofs to `Data.Integer.Properties`:
+  ```agda
+  ≤-irrelevance : IrrelevantRel _≤_
+  <-irrelevance : IrrelevantRel _<_
+  ```
+
+* Added new proofs to `Data.List.All.Properties`:
+  ```agda
+  All-irrelevance : IrrelevantPred P → IrrelevantPred (All P)
   ```
 
 * Added new proofs to `Data.Nat.Properties`:
