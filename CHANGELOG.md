@@ -29,9 +29,6 @@ Non-backwards compatible changes
 * Giving ̀ map` a polymorphic type: it is now possible to change the type of
   values contained in a tree when mapping over it.
 
-* Moved `Data.Vec.Equality` to `Data.Vec.Relation.Equality` (see "Deprecated
-  features" section for explanation)
-
 #### Other
 
 * Removed support for GHC 7.8.4.
@@ -41,6 +38,9 @@ Non-backwards compatible changes
   supporting proper 'do' notation.
 
 * Changed the fixity of `⋃` and `⋂` in `Relation.Unary` to make space for `_⊢_`.
+
+* Moved `Data.Vec.Equality` to `Data.Vec.Relation.Equality` (see "Deprecated
+  features" section for explanation)
 
 Deprecated features
 -------------------
