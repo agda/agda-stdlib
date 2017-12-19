@@ -8,7 +8,7 @@ module Data.Rational where
 
 import Algebra
 import Data.Sign as S
-open import Data.Empty using (⊥)
+open import Data.Empty
 open import Data.Unit using (⊤; tt)
 import Data.Bool.Properties as Bool
 open import Function
@@ -20,6 +20,7 @@ open import Data.Nat.GCD
 open import Data.Nat.Divisibility as ℕDiv using (_∣_; divides)
 import Data.Nat.Coprimality as C
 open import Data.Nat as ℕ using (ℕ; zero; suc)
+open import Data.Nat.Properties
 open import Data.Nat.Show renaming (show to ℕshow)
 open import Data.Sum
 open import Data.String using (String; _++_)
@@ -44,6 +45,7 @@ infixl 6 _-_ _+_
 -- suffice to use "isCoprime : Coprime numerator denominator".)
 
 record ℚ : Set where
+  constructor mkℚ
   field
     numerator     : ℤ
     denominator-1 : ℕ
@@ -56,13 +58,16 @@ record ℚ : Set where
   coprime = toWitness isCoprime
 
 -- Constructs rational numbers. The arguments have to be in reduced
--- form.
+-- form and the denominator has to be non-zero.
+
+infix 4 _≢0
+_≢0 : ℕ → Set
+n ≢0 = False (n ℕ.≟ 0)
 
 infixl 7 _÷_
-
 _÷_ : (numerator : ℤ) (denominator : ℕ)
       {coprime : True (C.coprime? ∣ numerator ∣ denominator)}
-      {≢0 : False (ℕ._≟_ denominator 0)} →
+      {≢0 : denominator ≢0} →
       ℚ
 (n ÷ zero) {≢0 = ()}
 (n ÷ suc d) {c} = record
@@ -85,159 +90,120 @@ private
 ------------------------------------------------------------------------
 -- Two useful lemmas to help with operations on rationals
 
-NonZero : ℕ → Set
-NonZero 0       = ⊥
-NonZero (suc _) = ⊤
-
 -- normalize takes two natural numbers, say 6 and 21 and their gcd 3, and
 -- returns them normalized as 2 and 7 and a proof that they are coprime
 
-normalize : ∀ {m n g} → {n≢0 : NonZero n} → {g≢0 : NonZero g} →
-            GCD m n g → Σ[ p ∈ ℕ ] Σ[ q ∈ ℕ ] False (q ℕ.≟ 0) × C.Coprime p q
-normalize {m} {n} {0} {_} {()} _
-normalize {m} {n} {ℕ.suc g} {_} {_} G with Bézout.identity G
-normalize {m} {.0} {ℕ.suc g} {()} {_}
-  (GCD.is (divides p m≡pg' , divides 0 refl) _) | _
-normalize {m} {n} {ℕ.suc g} {_} {_}
-  (GCD.is (divides p m≡pg' , divides (ℕ.suc q) n≡qg') _) | Bézout.+- x y eq =
-    (p , ℕ.suc q , tt , C.Bézout-coprime {p} {ℕ.suc q} {g} (Bézout.+- x y
-               (begin
-                 ℕ.suc g ℕ.+ y ℕ.* (ℕ.suc q ℕ.* ℕ.suc g)
-               ≡⟨ cong (λ h → ℕ.suc g ℕ.+ y ℕ.* h) (P.sym n≡qg') ⟩
-                 ℕ.suc g ℕ.+ y ℕ.* n
-               ≡⟨ eq ⟩
-                 x ℕ.* m
-               ≡⟨ cong (λ h → x ℕ.* h) m≡pg' ⟩
-                 x ℕ.* (p ℕ.* ℕ.suc g) ∎)))
-normalize {m} {n} {ℕ.suc g} {_} {_}
-  (GCD.is (divides p m≡pg' , divides (ℕ.suc q) n≡qg') _) | Bézout.-+ x y eq =
-    (p , ℕ.suc q , tt , C.Bézout-coprime {p} {ℕ.suc q} {g} (Bézout.-+ x y
-               (begin
-                 ℕ.suc g ℕ.+ x ℕ.* (p ℕ.* ℕ.suc g)
-               ≡⟨ cong (λ h → ℕ.suc g ℕ.+ x ℕ.* h) (P.sym m≡pg') ⟩
-                 ℕ.suc g ℕ.+ x ℕ.* m
-               ≡⟨ eq ⟩
-                 y ℕ.* n
-               ≡⟨ cong (λ h → y ℕ.* h) n≡qg' ⟩
-                 y ℕ.* (ℕ.suc q ℕ.* ℕ.suc g) ∎)))
+-- introducing a notation for that nasty pattern
+pattern ⟨_&_∧_&_⟩ p eqp q eqq = GCD.is (divides p eqp , divides q eqq) _
+
+normalize : ∀ m n g {m≢0 : m ≢0} {n≢0 : n ≢0} {g≢0 : g ≢0} → GCD m n g →
+            Σ[ p ∈ ℕ ] Σ[ q ∈ ℕ ] C.Coprime (suc p) (suc q) × m ℕ.* suc q ≡ n ℕ.* suc p
+normalize 0 n g {m≢0 = ()} _
+normalize m 0 g {n≢0 = ()} _
+normalize m n 0 {g≢0 = ()} _
+normalize (suc _) n g ⟨ 0 & () ∧ q & n≡qg' ⟩
+normalize m (suc _) g ⟨ p & m≡pg' ∧ 0 & () ⟩
+normalize m@(suc _) n@(suc _) (suc g) G@(⟨ suc p & m≡pg' ∧ suc q & n≡qg' ⟩)
+  with Bézout.identity G
+normalize m@(suc _) n@(suc _) (suc g) ⟨ suc p & m≡pg' ∧ suc q & n≡qg' ⟩
+  | Bézout.+- x y bezout-eq = p , q , pr , eq where
+
+  eq : m ℕ.* suc q ≡ n ℕ.* suc p
+  eq = begin
+    m ℕ.* suc q                 ≡⟨ cong (ℕ._* suc q) m≡pg' ⟩
+    suc p ℕ.* suc g ℕ.* suc q   ≡⟨ *-assoc (suc p) (suc g) (suc q) ⟩
+    suc p ℕ.* (suc g ℕ.* suc q) ≡⟨ cong (suc p ℕ.*_) (*-comm (suc g) (suc q)) ⟩
+    suc p ℕ.* (suc q ℕ.* suc g) ≡⟨ cong (suc p ℕ.*_) (P.sym n≡qg') ⟩
+    suc p ℕ.* n                 ≡⟨ *-comm (suc p) n ⟩
+    n ℕ.* suc p                 ∎
+
+  pr : C.Coprime (suc p) (suc q)
+  pr = C.Bézout-coprime {d = g} $ Bézout.+- x y $ begin
+    suc g ℕ.+ y ℕ.* (suc q ℕ.* suc g) ≡⟨ cong ((suc g ℕ.+_) ∘′ (y ℕ.*_)) (P.sym n≡qg') ⟩
+    suc g ℕ.+ y ℕ.* n                 ≡⟨ bezout-eq ⟩
+    x ℕ.* m                           ≡⟨ cong (x ℕ.*_) m≡pg' ⟩
+    x ℕ.* (suc p ℕ.* suc g)           ∎
+normalize m@(suc _) n@(suc _) (suc g) G@(⟨ suc p & m≡pg' ∧ suc q & n≡qg' ⟩)
+  | Bézout.-+ x y bezout-eq = p , q , pr , eq where
+
+  eq : m ℕ.* suc q ≡ n ℕ.* suc p
+  eq = begin
+    m ℕ.* suc q                 ≡⟨ cong (ℕ._* suc q) m≡pg' ⟩
+    suc p ℕ.* suc g ℕ.* suc q   ≡⟨ *-assoc (suc p) (suc g) (suc q) ⟩
+    suc p ℕ.* (suc g ℕ.* suc q) ≡⟨ cong (suc p ℕ.*_) (*-comm (suc g) (suc q)) ⟩
+    suc p ℕ.* (suc q ℕ.* suc g) ≡⟨ cong (suc p ℕ.*_) (P.sym n≡qg') ⟩
+    suc p ℕ.* n                 ≡⟨ *-comm (suc p) n ⟩
+    n ℕ.* suc p                 ∎
+
+  pr : C.Coprime (suc p) (suc q)
+  pr = C.Bézout-coprime {d = g} $′ Bézout.-+ x y $′ begin
+    suc g ℕ.+ x ℕ.* (suc p ℕ.* suc g) ≡⟨ cong (λ h → suc g ℕ.+ x ℕ.* h) (P.sym m≡pg') ⟩
+    suc g ℕ.+ x ℕ.* m             ≡⟨ bezout-eq ⟩
+    y ℕ.* n                       ≡⟨ cong (y ℕ.*_) n≡qg' ⟩
+    y ℕ.* (suc q ℕ.* suc g)       ∎
 
 -- a version of gcd that returns a proof that the result is non-zero given
 -- that one of the inputs is non-zero
 
-gcd≢0 : (m n : ℕ) → {m≢0 : NonZero m} → ∃ λ d → GCD m n d × NonZero d
+gcd≢0 : (m n : ℕ) {m≢0 : m ≢0} → Σ[ d ∈ ℕ ] GCD m n d × d ≢0
 gcd≢0 m  n {m≢0} with gcd m n
 gcd≢0 m  n {m≢0} | (0 , GCD.is (0|m , _) _) with ℕDiv.0∣⇒≡0 0|m
 gcd≢0 .0 n {()}  | (0 , GCD.is (0|m , _) _) | refl
-gcd≢0 m  n {_}   | (ℕ.suc d , G) = (ℕ.suc d , G , tt)
+gcd≢0 m  n       | (suc d , G)  = (suc d , G , tt)
+
+pattern +0       = + 0
+pattern +[1+_] n = + suc n
+
+norm-mkℚ : (n : ℤ) (d : ℕ) → d ≢0 → ℚ
+norm-mkℚ -[1+ n ] d d≢0 =
+  let (q , gcd , q≢0)      = gcd≢0 (suc n) d
+      (n′ , d′ , prf , eq) = normalize (suc n) d q {_} {d≢0} {q≢0} gcd
+  in mkℚ -[1+ n′ ] d′ (fromWitness (λ {i} → prf))
+norm-mkℚ +0       d d≢0 = 0/1
+norm-mkℚ +[1+ n ] d d≢0 =
+  let (q , gcd , q≢0)             = gcd≢0 (suc n) d
+      (n′ , d′ , prf , eq) = normalize (suc n) d q {_} {d≢0} {q≢0} gcd
+  in mkℚ (+ suc n′) d′ (fromWitness (λ {i} → prf))
 
 ------------------------------------------------------------------------------
 -- Operations on rationals: unary -, reciprocal, multiplication, addition
 
 -- unary negation
---
--- Andreas Abel says: Agda's type-checker is incomplete when it has to handle
--- types with leading hidden quantification, such as the ones of Coprime m n
--- and c.  A work around is to use hidden abstraction explicitly.  In your
--- case, giving λ {i} -> c works.  Not pretty, but unavoidable until we
--- improve on the current heuristics. I recorded this as a bug
--- http://code.google.com/p/agda/issues/detail?id=1079
 
 -_ : ℚ → ℚ
--_ p with ℚ.numerator p | ℚ.denominator-1 p | toWitness (ℚ.isCoprime p)
-... | -[1+ n ]  | d | c = (+ ℕ.suc n ÷ ℕ.suc d) {fromWitness (λ {i} → c)}
-... | + 0       | d | _ = p
-... | + ℕ.suc n | d | c = (-[1+ n ]  ÷ ℕ.suc d) {fromWitness (λ {i} → c)}
+- mkℚ -[1+ n ] d prf = mkℚ +[1+ n ] d prf
+- mkℚ +0       d prf = mkℚ +0       d prf
+- mkℚ +[1+ n ] d prf = mkℚ -[1+ n ] d prf
 
 -- reciprocal: requires a proof that the numerator is not zero
 
-1/_ : (p : ℚ) → {n≢0 : NonZero ∣ ℚ.numerator p ∣} → ℚ
-1/_ p {n≢0} with ℚ.numerator p | ℚ.denominator-1 p | toWitness (ℚ.isCoprime p)
-1/_ p {()} | + 0 | d | c
-... | + (ℕ.suc n) | d | c =
-  ((S.+ ◃ ℕ.suc d) ÷ ℕ.suc n)
-  {fromWitness (λ {i} →
-    subst (λ h → C.Coprime h (ℕ.suc n))
-          (P.sym (ℤ.abs-◃ S.+ (ℕ.suc d)))
-          (C.sym c))}
-... | -[1+ n ] | d | c =
-  ((S.- ◃ ℕ.suc d) ÷ ℕ.suc n)
-  {fromWitness (λ {i} →
-    subst (λ h → C.Coprime h (ℕ.suc n))
-          (P.sym (ℤ.abs-◃ S.- (ℕ.suc d)))
-          (C.sym c))}
+1/_ : (p : ℚ) → {n≢0 : ∣ ℚ.numerator p ∣ ≢0} → ℚ
+(1/ mkℚ +0 d prf) {()}
+1/ mkℚ +[1+ n ] d prf = mkℚ +[1+ d ] n $ fromWitness $ λ {i} → C.sym (toWitness prf)
+1/ mkℚ -[1+ n ] d prf = mkℚ -[1+ d ] n $ fromWitness $ λ {i} → C.sym (toWitness prf)
 
 -- multiplication
 
-private
-
-  helper* : (n₁ : ℤ) → (d₁ : ℕ) → (n₂ : ℤ) → (d₂ : ℕ) →
-            {n≢0 : NonZero ∣ n₁ ℤ.* n₂ ∣} →
-            {d≢0 : NonZero (d₁ ℕ.* d₂)} →
-            ℚ
-  helper* n₁ d₁ n₂ d₂ {n≢0} {d≢0} =
-    let n = n₁ ℤ.* n₂
-        d = d₁ ℕ.* d₂
-        (g , G , g≢0) = gcd≢0 ∣ n ∣ d {n≢0}
-        (nn , nd , nd≢0 , nc) = normalize {∣ n ∣} {d} {g} {d≢0} {g≢0} G
-    in ((sign n ◃ nn) ÷ nd)
-       {fromWitness (λ {i} →
-          subst (λ h → C.Coprime h nd) (P.sym (ℤ.abs-◃ (sign n) nn)) nc)}
-       {nd≢0}
-
 _*_ : ℚ → ℚ → ℚ
-p₁ * p₂ with ℚ.numerator p₁ | ℚ.numerator p₂
-... | + 0  | _    = + 0 ÷ 1
-... | _    | + 0  = + 0 ÷ 1
-... | + ℕ.suc n₁ | + ℕ.suc n₂ =
-  helper* (+ ℕ.suc n₁) (ℕ.suc (ℚ.denominator-1 p₁))
-          (+ ℕ.suc n₂) (ℕ.suc (ℚ.denominator-1 p₂))
-... | + ℕ.suc n₁ | -[1+ n₂ ] =
-  helper* (+ ℕ.suc n₁) (ℕ.suc (ℚ.denominator-1 p₁))
-          -[1+ n₂ ] (ℕ.suc (ℚ.denominator-1 p₂))
-... | -[1+ n₁ ] | + ℕ.suc n₂ =
-  helper* -[1+ n₁ ] (ℕ.suc (ℚ.denominator-1 p₁))
-          (+ ℕ.suc n₂) (ℕ.suc (ℚ.denominator-1 p₂))
-... | -[1+ n₁ ] | -[1+ n₂ ] =
-  helper* -[1+ n₁ ] (ℕ.suc (ℚ.denominator-1 p₁))
-          -[1+ n₂ ] (ℕ.suc (ℚ.denominator-1 p₂))
-
--- addition
-
-private
-
-  helper+ : (n : ℤ) → (d : ℕ) → {d≢0 : NonZero d} → ℚ
-  helper+ (+ 0) d {d≢0} = + 0 ÷ 1
-  helper+ (+ ℕ.suc n) d {d≢0} =
-    let (g , G , g≢0) = gcd≢0 ∣ + ℕ.suc n ∣ d {tt}
-        (nn , nd , nd≢0 , nc) = normalize {∣ + ℕ.suc n ∣} {d} {g} {d≢0} {g≢0} G
-    in ((S.+ ◃ nn) ÷ nd)
-       {fromWitness (λ {i} →
-          subst (λ h → C.Coprime h nd) (P.sym (ℤ.abs-◃ S.+ nn)) nc)}
-       {nd≢0}
-  helper+ -[1+ n ] d {d≢0} =
-    let (g , G , g≢0) = gcd≢0 ∣ -[1+ n ] ∣ d {tt}
-        (nn , nd , nd≢0 , nc) = normalize {∣ -[1+ n ] ∣} {d} {g} {d≢0} {g≢0} G
-    in ((S.- ◃ nn) ÷ nd)
-       {fromWitness (λ {i} →
-          subst (λ h → C.Coprime h nd) (P.sym (ℤ.abs-◃ S.- nn)) nc)}
-       {nd≢0}
+mkℚ +0 d₁ prf₁ * mkℚ n₂ d₂ prf₂ = 0/1
+mkℚ n₁ d₁ prf₁ * mkℚ +0 d₂ prf₂ = 0/1
+mkℚ n₁ d₁ prf₁ * mkℚ n₂ d₂ prf₂ = norm-mkℚ (n₁ ℤ.* n₂) (suc d₁ ℕ.* suc d₂) _
 
 _+_ : ℚ → ℚ → ℚ
-p₁ + p₂ =
-  let n₁ = ℚ.numerator p₁
-      d₁ = ℕ.suc (ℚ.denominator-1 p₁)
-      n₂ = ℚ.numerator p₂
-      d₂ = ℕ.suc (ℚ.denominator-1 p₂)
-      n = (n₁ ℤ.* + d₂) ℤ.+ (n₂ ℤ.* + d₁)
-      d = d₁ ℕ.* d₂
-  in helper+ n d
+mkℚ n₁ d₁ prf₁ + mkℚ n₂ d₂ prf₂
+  with (n₁ ℤ.* +[1+ d₂ ]) ℤ.+ (n₂ ℤ.* +[1+ d₁ ])
+     | (n₁ ℤ.* +[1+ d₂ ]) ℤ.+ (n₂ ℤ.* +[1+ d₁ ]) ℤ.≟ + 0
+... | p | yes p≡0 = 0/1
+... | p | no  p≢0 = norm-mkℚ p (suc d₁ ℕ.* suc d₂) _
 
--- subtraction and division
+-- subtraction
 
 _-_ : ℚ → ℚ → ℚ
 p₁ - p₂ = p₁ + (- p₂)
 
-_/_ : (p₁ p₂ : ℚ) → {n≢0 : NonZero ∣ ℚ.numerator p₂ ∣} → ℚ
+-- division
+
+_/_ : (p₁ p₂ : ℚ) → {n≢0 : ∣ ℚ.numerator p₂ ∣ ≢0} → ℚ
 _/_ p₁ p₂ {n≢0} = p₁ * (1/_ p₂ {n≢0})
 
 -- conventional printed representation
@@ -253,9 +219,8 @@ show p = ℤ.show (ℚ.numerator p) ++ "/" ++ ℕshow (ℕ.suc (ℚ.denominator-
 infix 4 _≃_
 
 _≃_ : Rel ℚ Level.zero
-p ≃ q = numerator p ℤ.* denominator q ≡
-        numerator q ℤ.* denominator p
-  where open ℚ
+p ≃ q = ℚ.numerator p ℤ.* ℚ.denominator q
+      ≡ ℚ.numerator q ℤ.* ℚ.denominator p
 
 -- _≃_ coincides with propositional equality.
 
@@ -373,15 +338,15 @@ decTotalOrder = record
             n₂ ℤ.* d₃ ℤ.* d₁ ℤ.≤ n₃ ℤ.* d₂ ℤ.* d₁ →
             n₁ ℤ.* d₃ ℤ.* d₂ ℤ.≤ n₃ ℤ.* d₁ ℤ.* d₂
     lemma n₁ d₁ n₂ d₂ n₃ d₃
-      rewrite *-assoc n₁ d₂ d₃
-            | *-comm d₂ d₃
-            | sym (*-assoc n₁ d₃ d₂)
-            | *-assoc n₃ d₂ d₁
-            | *-comm d₂ d₁
-            | sym (*-assoc n₃ d₁ d₂)
-            | *-assoc n₂ d₁ d₃
-            | *-comm d₁ d₃
-            | sym (*-assoc n₂ d₃ d₁)
+      rewrite ℤ.*-assoc n₁ d₂ d₃
+            | ℤ.*-comm d₂ d₃
+            | sym (ℤ.*-assoc n₁ d₃ d₂)
+            | ℤ.*-assoc n₃ d₂ d₁
+            | ℤ.*-comm d₂ d₁
+            | sym (ℤ.*-assoc n₃ d₁ d₂)
+            | ℤ.*-assoc n₂ d₁ d₃
+            | ℤ.*-comm d₁ d₃
+            | sym (ℤ.*-assoc n₂ d₃ d₁)
             = ℤO.trans
 
   antisym : Antisymmetric _≡_ _≤_
