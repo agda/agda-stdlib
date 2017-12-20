@@ -132,6 +132,11 @@ but they may be removed in some future release of the library.
   proof-irrelevance     ↦ ≡-irrelevance
   ```
 
+Removed features
+----------------
+
+* The modules `Deprecated-inspect` and `Deprecated-inspect-on-steroids` in `Relation.Binary.PropositionalEquality` which were deprecated in version 0.10 have been removed.
+
 Backwards compatible changes
 ----------------------------
 
