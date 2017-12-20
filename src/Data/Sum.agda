@@ -10,6 +10,7 @@ open import Function
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Level
+open import Agda.Builtin.Equality
 
 ------------------------------------------------------------------------
 -- Definition

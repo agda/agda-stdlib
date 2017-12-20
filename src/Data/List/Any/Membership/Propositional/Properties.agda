@@ -29,12 +29,12 @@ import Data.List.Any.Membership.Properties as Membershipₚ
 open import Data.Nat as Nat
 open import Data.Nat.Properties
 open import Data.Product as Prod
+import Data.Product.Relation.SigmaPointwise as Σ
 open import Data.Sum as Sum
 open import Relation.Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
-import Relation.Binary.Sigma.Pointwise as Σ
 open import Relation.Unary using (_⟨×⟩_; Decidable)
 open import Relation.Nullary
 open import Relation.Nullary.Negation
@@ -125,9 +125,9 @@ filter-∈ P? {xs = y ∷ xs} (there x∈xs) Px with P? y
     { to         = P.→-to-⟶ (uncurry $ P.cong₂ _,_)
     ; from       = P.→-to-⟶ < P.cong proj₁ , P.cong proj₂ >
     ; inverse-of = record
-      { left-inverse-of  = λ _ → P.cong₂ _,_ (P.proof-irrelevance _ _)
-                                             (P.proof-irrelevance _ _)
-      ; right-inverse-of = λ _ → P.proof-irrelevance _ _
+      { left-inverse-of  = λ _ → P.cong₂ _,_ (P.≡-irrelevance _ _)
+                                             (P.≡-irrelevance _ _)
+      ; right-inverse-of = λ _ → P.≡-irrelevance _ _
       }
     }
 

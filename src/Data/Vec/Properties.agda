@@ -29,7 +29,7 @@ module UsingVectorEquality {s₁ s₂} (S : Setoid s₁ s₂) where
 
   private module SS = Setoid S
   open SS using () renaming (Carrier to A)
-  import Data.Vec.Equality as VecEq
+  import Data.Vec.Relation.Equality as VecEq
   open VecEq.Equality S
 
   replicate-lemma : ∀ {m} n x (xs : Vec A m) →
@@ -52,9 +52,19 @@ open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; _≗_)
 open import Relation.Binary.HeterogeneousEquality using (_≅_; refl)
 
-∷-injective : ∀ {a n} {A : Set a} {x y : A} {xs ys : Vec A n} →
-              (x ∷ xs) ≡ (y ∷ ys) → x ≡ y × xs ≡ ys
-∷-injective refl = refl , refl
+------------------------------------------------------------------------
+-- Equality
+
+module _ {a} {A : Set a} {n} {x y : A} {xs ys : Vec A n} where
+
+ ∷-injectiveˡ : x ∷ xs ≡ y ∷ ys → x ≡ y
+ ∷-injectiveˡ refl = refl
+
+ ∷-injectiveʳ : x ∷ xs ≡ y ∷ ys → xs ≡ ys
+ ∷-injectiveʳ refl = refl
+
+ ∷-injective : (x ∷ xs) ≡ (y ∷ ys) → x ≡ y × xs ≡ ys
+ ∷-injective refl = refl , refl
 
 -- lookup is a functor morphism from Vec to Identity.
 
@@ -402,11 +412,11 @@ List-∈⇒∈ (there x∈)    = there (List-∈⇒∈ x∈)
 
 -- Proof irrelevance for _[_]=_.
 
-proof-irrelevance-[]= : ∀ {a} {A : Set a} {n} {xs : Vec A n} {i x} →
+[]=-irrelevance : ∀ {a} {A : Set a} {n} {xs : Vec A n} {i x} →
                         (p q : xs [ i ]= x) → p ≡ q
-proof-irrelevance-[]= here            here             = refl
-proof-irrelevance-[]= (there xs[i]=x) (there xs[i]=x') =
-  P.cong there (proof-irrelevance-[]= xs[i]=x xs[i]=x')
+[]=-irrelevance here            here             = refl
+[]=-irrelevance (there xs[i]=x) (there xs[i]=x') =
+  P.cong there ([]=-irrelevance xs[i]=x xs[i]=x')
 
 -- _[_]=_ can be expressed using lookup and _≡_.
 
@@ -416,8 +426,8 @@ proof-irrelevance-[]= (there xs[i]=x) (there xs[i]=x') =
   { to         = P.→-to-⟶ to
   ; from       = P.→-to-⟶ (from i xs)
   ; inverse-of = record
-    { left-inverse-of  = λ _ → proof-irrelevance-[]= _ _
-    ; right-inverse-of = λ _ → P.proof-irrelevance _ _
+    { left-inverse-of  = λ _ → []=-irrelevance _ _
+    ; right-inverse-of = λ _ → P.≡-irrelevance _ _
     }
   }
   where
@@ -567,3 +577,11 @@ lookup-zip i xs ys = begin
   lookup i xs , lookup i ys
     ∎
   where open P.≡-Reasoning
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+proof-irrelevance-[]= = []=-irrelevance

@@ -18,7 +18,6 @@ open import Data.Product using (uncurry; _,_; _×_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; refl; sym)
-open import Relation.Binary.List.StrictLex
 open import Relation.Nullary
 open import Relation.Nullary.Decidable
 
@@ -103,6 +102,9 @@ infix 4 _<_
 
 data _<_ (b₁ b₂ : Bin) : Set where
   less : (lt : (Nat._<_ on toℕ) b₁ b₂) → b₁ < b₂
+
+less-injective : ∀ {b₁ b₂} {lt₁ lt₂} → (b₁ < b₂ ∋ less lt₁) ≡ less lt₂ → lt₁ ≡ lt₂
+less-injective refl = refl
 
 ------------------------------------------------------------------------
 -- Arithmetic

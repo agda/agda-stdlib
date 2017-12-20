@@ -9,6 +9,7 @@ module Data.Product where
 open import Function
 open import Level
 open import Relation.Nullary
+open import Agda.Builtin.Equality
 
 infixr 4 _,_ _,′_
 infix  4 ,_
