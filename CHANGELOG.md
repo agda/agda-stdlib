@@ -137,7 +137,7 @@ Removed features
 
 * The modules `Deprecated-inspect` and `Deprecated-inspect-on-steroids` in `Relation.Binary.PropositionalEquality` which were deprecated in version 0.10 have been removed.
 
-* The modules `Deprecated-inspect-on-steroids` in `Relation.Binary.HeterogeneousEquality` which were deprecated in version 0.10 have been removed.
+* The module `Deprecated-inspect-on-steroids` in `Relation.Binary.HeterogeneousEquality` which were deprecated in version 0.10 have been removed.
 
 Backwards compatible changes
 ----------------------------
