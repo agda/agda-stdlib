@@ -271,6 +271,11 @@ import README.Case
 
 import README.Container.FreeMonad
 
+-- Some examples showing how combinators defined in Function can be
+-- used to emulate "Functional Reasoning"
+
+import README.FunctionalReasoning
+
 ------------------------------------------------------------------------
 -- Core modules
 ------------------------------------------------------------------------
