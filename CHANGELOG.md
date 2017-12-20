@@ -141,6 +141,8 @@ Backwards compatible changes
 
   Decidable equality for new builtin type `Agda.Builtin.Word.Word64`.
 
+* Added new module `Function.FunctionalReasoning` which provides the usual "reasoning" style syntax chains for proofs involving chains of dependant and non-dependant function applications.
+
 * The contents of `Data.Covec` is now polymorphic with respect to levels
 
 * The contents of `Data.Vec.Relation.InductivePointwise` is now more polymorphic with respect to levels
