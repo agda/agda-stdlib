@@ -39,6 +39,13 @@ Non-backwards compatible changes
 
 * Changed the fixity of `⋃` and `⋂` in `Relation.Unary` to make space for `_⊢_`.
 
+* The functions `filter` and `partition` in `Data.List.Base` have been renamed
+  `boolFilter` and `boolPartition`, and have been replaced by new functions
+  `filter` and `partition` which use decidable predicates instead of boolean-valued
+  functions.  The former encouraged poor programming style in a dependantly-typed
+  language such as Agda. Proofs for `filter` and `partition` have also been
+  updated and renamed accordingly.
+
 * Moved `Data.Vec.Equality` to `Data.Vec.Relation.Equality` (see "Deprecated
   features" section for explanation)
 
@@ -111,6 +118,14 @@ but they may be removed in some future release of the library.
   strictTotalOrder ↦ <-strictTotalOrder
   ```
 
+* The functions `boolFilter` and `boolPartition` in `Data.List.Base` have
+  been deprecated in favour of the new `filter` and `partition` and the following
+  renaming has occured in `Data.List.Base`:
+  ```agda
+  gfilter   ↦  mapMaybe
+  ```
+  bringing it into line with the equivalent function in Haskell.
+
 * The following renaming has occurred in `Data.Vec.Properties` to improve consistency across the library:
   ```agda
   proof-irrelevance-[]= ↦ []=-irrelevance
@@ -120,6 +135,13 @@ but they may be removed in some future release of the library.
   ```agda
   proof-irrelevance     ↦ ≡-irrelevance
   ```
+
+Removed features
+----------------
+
+* The modules `Deprecated-inspect` and `Deprecated-inspect-on-steroids` in `Relation.Binary.PropositionalEquality` which were deprecated in version 0.10 have been removed.
+
+* The module `Deprecated-inspect-on-steroids` in `Relation.Binary.HeterogeneousEquality` which was deprecated in version 0.10 has been removed.
 
 Backwards compatible changes
 ----------------------------
@@ -403,6 +425,23 @@ Backwards compatible changes
   ```agda
   ∀[_] : Pred A ℓ → Set _
   _⊢_  : (A → B) → Pred B ℓ → Pred A ℓ
+  ```
+
+* Added new proofs to `Data.List.All`:
+  ```agda
+  filter-all    : All P xs → dfilter P? xs ≡ xs
+  filter-none   : All (¬_ ∘ P) xs → dfilter P? xs ≡ []
+  ```
+
+* Added proofs to `Data.List.All.Properties`
+  ```agda
+  filter⁺₁     : All P (filter P? xs)
+  filter⁺₂     : All Q xs → All Q (filter P? xs)
+  ```
+
+* Added new combinator to ` Relation.Binary.PropositionalEquality.TrustMe`:
+  ```agda
+  postulate[_↦_] : (t : A) → B t → (x : A) → B x
   ```
 
 Version 0.14
