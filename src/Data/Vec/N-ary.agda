@@ -6,7 +6,7 @@
 
 module Data.Vec.N-ary where
 
-open import Data.Nat hiding (_⊔_)
+open import Data.Nat.Base hiding (_⊔_)
 open import Data.Product as Prod
 open import Data.Vec
 open import Function
@@ -82,7 +82,7 @@ Eqʰ n _∼_ f g = ∀ⁿʰ n (curryⁿ {n = n} λ xs → (f $ⁿ xs) ∼ (g $�
 -- The functions curryⁿ and _$ⁿ_ are inverses.
 
 left-inverse : ∀ {n a b} {A : Set a} {B : Set b} (f : Vec A n → B) →
-               ∀ xs → curryⁿ f $ⁿ xs ≡ f xs
+               ∀ xs → (curryⁿ f $ⁿ xs) ≡ f xs
 left-inverse f []       = refl
 left-inverse f (x ∷ xs) = left-inverse (f ∘ _∷_ x) xs
 

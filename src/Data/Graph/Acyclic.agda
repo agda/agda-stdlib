@@ -10,19 +10,19 @@
 
 module Data.Graph.Acyclic where
 
-open import Data.Nat as Nat using (ℕ; zero; suc; _<′_)
+open import Data.Nat.Base as Nat using (ℕ; zero; suc; _<′_)
 import Data.Nat.Properties as Nat
 open import Data.Fin as Fin
   using (Fin; Fin′; zero; suc; #_; toℕ) renaming (_ℕ-ℕ_ to _-_)
 open import Data.Fin.Properties as FP using (_≟_)
 open import Data.Product as Prod using (∃; _×_; _,_)
-open import Data.Maybe using (Maybe; nothing; just)
+open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Empty
-open import Data.Unit using (⊤; tt)
+open import Data.Unit.Base using (⊤; tt)
 open import Data.Vec as Vec using (Vec; []; _∷_)
-open import Data.List as List using (List; []; _∷_)
+open import Data.List.Base as List using (List; []; _∷_)
 open import Function
-open import Induction.Nat
+open import Induction.Nat using (<′-rec; <′-Rec)
 open import Relation.Nullary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
@@ -205,7 +205,7 @@ private
 
 sucs : ∀ {E N n} →
        Graph N E n → (i : Fin n) → List (E × Fin (n - suc i))
-sucs g i = successors $ head $ g [ i ]
+sucs g i = successors $ head (g [ i ])
 
 private
 
@@ -218,7 +218,7 @@ private
 preds : ∀ {E N n} → Graph N E n → (i : Fin n) → List (Fin′ i × E)
 preds g       zero    = []
 preds (c & g) (suc i) =
-  List._++_ (List.gfilter (p i) $ successors c)
+  List._++_ (List.mapMaybe (p i) $ successors c)
             (List.map (Prod.map suc id) $ preds g i)
   where
   p : ∀ {E : Set} {n} (i : Fin n) → E × Fin n → Maybe (Fin′ (suc i) × E)
@@ -286,11 +286,11 @@ data Tree (N E : Set) : Set where
   node : (label : N) (successors : List (E × Tree N E)) → Tree N E
 
 toTree : ∀ {N E n} → Graph N E n → Fin n → Tree N E
-toTree {N} {E} g i = <-rec Pred expand _ (g [ i ])
+toTree {N} {E} g i = <′-rec Pred expand _ (g [ i ])
   where
   Pred = λ n → Graph N E (suc n) → Tree N E
 
-  expand : (n : ℕ) → <-Rec Pred n → Pred n
+  expand : (n : ℕ) → <′-Rec Pred n → Pred n
   expand n rec (c & g) =
     node (label c)
          (List.map

@@ -6,23 +6,21 @@
 
 module Data.String where
 
-open import Data.List as List using (_∷_; []; List)
+open import Data.List.Base as List using (_∷_; []; List)
 open import Data.Vec as Vec using (Vec)
 open import Data.Colist as Colist using (Colist)
 open import Data.Char as Char using (Char)
-open import Data.Bool using (Bool; true; false)
+open import Data.Bool.Base using (Bool; true; false)
 open import Function
 open import Relation.Nullary
 open import Relation.Nullary.Decidable
 open import Relation.Binary
-open import Relation.Binary.List.StrictLex as StrictLex
+open import Data.List.Relation.StrictLex as StrictLex
 import Relation.Binary.On as On
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_)
 open import Relation.Binary.PropositionalEquality.TrustMe
 
-import Data.String.Core as Core
-open Core public using (String)
-open Core
+open import Data.String.Base public
 
 -- Possibly infinite strings.
 
@@ -32,37 +30,15 @@ Costring = Colist Char
 ------------------------------------------------------------------------
 -- Operations
 
-infixr 5 _++_
-
-_++_ : String → String → String
-_++_ = primStringAppend
-
-toList : String → List Char
-toList = primStringToList
-
-fromList : List Char → String
-fromList = primStringFromList
-
-toList∘fromList : ∀ s → toList (fromList s) ≡ s
-toList∘fromList s = trustMe
-
-fromList∘toList : ∀ s → fromList (toList s) ≡ s
-fromList∘toList s = trustMe
-
 toVec : (s : String) → Vec Char (List.length (toList s))
 toVec s = Vec.fromList (toList s)
 
 toCostring : String → Costring
 toCostring = Colist.fromList ∘ toList
 
-unlines : List String → String
-unlines []       = ""
-unlines (x ∷ xs) = x ++ "\n" ++ unlines xs
-
-show : String → String
-show = primShowString
-
 -- Informative equality test.
+
+infix 4 _≟_
 
 _≟_ : Decidable {A = String} _≡_
 s₁ ≟ s₂ with primStringEquality s₁ s₂

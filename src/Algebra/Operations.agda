@@ -10,7 +10,7 @@ open import Algebra
 module Algebra.Operations {s₁ s₂} (S : Semiring s₁ s₂) where
 
 open Semiring S renaming (zero to *-zero)
-open import Data.Nat
+open import Data.Nat.Base
   using (zero; suc; ℕ) renaming (_+_ to _ℕ+_; _*_ to _ℕ*_)
 open import Data.Product using (module Σ)
 open import Function
@@ -24,7 +24,7 @@ open EqR setoid
 
 -- Multiplication by natural number.
 
-infixr 7 _×_
+infixr 7 _×_ _×′_
 
 _×_ : ℕ → Carrier → Carrier
 0     × x = 0#

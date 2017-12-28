@@ -6,33 +6,25 @@ module README where
 -- Author: Nils Anders Danielsson, with contributions from Andreas
 -- Abel, Stevan Andjelkovic, Jean-Philippe Bernardy, Peter Berry,
 -- Joachim Breitner, Samuel Bronson, Daniel Brown, James Chapman,
--- Liang-Ting Chen, Dominique Devriese, Dan Doel, Érdi Gergő, Helmut
--- Grohne, Simon Foster, Liyang Hu, Patrik Jansson, Alan Jeffrey,
--- Pepijn Kokke, Evgeny Kotelnikov, Eric Mertens, Darin Morrison,
--- Guilhem Moulin, Shin-Cheng Mu, Ulf Norell, Noriyuki OHKAWA, Nicolas
--- Pouillard, Andrés Sicard-Ramírez and Noam Zeilberger.
-------------------------------------------------------------------------
+-- Liang-Ting Chen, Matthew Daggitt, Dominique Devriese, Dan Doel,
+-- Érdi Gergő, Helmut Grohne, Simon Foster, Liyang Hu, Patrik Jansson,
+-- Alan Jeffrey, Pepijn Kokke, Evgeny Kotelnikov, Sergei Meshveliani
+-- Eric Mertens, Darin Morrison, Guilhem Moulin, Shin-Cheng Mu,
+-- Ulf Norell, Noriyuki OHKAWA, Nicolas Pouillard, Andrés Sicard-Ramírez,
+-- Noam Zeilberger and some anonymous contributors.
+-- ----------------------------------------------------------------------
 
--- The development version of the library often requires the latest
--- development version of Agda.
+-- This version of the library has been tested using Agda 2.5.3.
 
 -- Note that no guarantees are currently made about forwards or
 -- backwards compatibility, the library is still at an experimental
 -- stage.
 
--- To make use of the library, add the path to the library’s root
--- directory (src) to the Agda search path, either using the
--- --include-path flag or by customising the Emacs mode variable
--- agda2-include-dirs (M-x customize-group RET agda2 RET).
+-- The library comes with a .agda-lib file, for use with the library
+-- management system.
 
--- To compile the library using the MAlonzo compiler you first need to
--- install some supporting Haskell code, for instance as follows:
---
---   cd ffi
---   cabal install
---
--- Currently the library does not support the Epic or JavaScript
--- compiler backends.
+-- Currently the library does not support the JavaScript compiler
+-- backend.
 
 -- Contributions to this library are welcome (but to avoid wasted work
 -- it is suggested that you discuss large changes before implementing
@@ -69,8 +61,6 @@ module README where
 --     well-founded induction).
 -- • IO
 --     Input/output-related functions.
--- • Irrelevance
---     Definitions related to (proscriptive) irrelevance.
 -- • Level
 --     Universe levels.
 -- • Record
@@ -82,6 +72,8 @@ module README where
 --     binary relations).
 -- • Size
 --     Sizes used by the sized types mechanism.
+-- • Strict
+--     Provides access to the builtins relating to strictness.
 -- • Universe
 --     A definition of universes.
 
@@ -273,6 +265,11 @@ import README.Record
 -- An example showing how the case expression can be used.
 
 import README.Case
+
+-- An example showing how the free monad construction on containers can be
+-- used
+
+import README.Container.FreeMonad
 
 ------------------------------------------------------------------------
 -- Core modules

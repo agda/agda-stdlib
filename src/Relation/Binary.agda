@@ -11,7 +11,7 @@ open import Data.Sum
 open import Function
 open import Level
 import Relation.Binary.PropositionalEquality.Core as PropEq
-open import Relation.Binary.Consequences
+open import Relation.Binary.Consequences as Consequences
 open import Relation.Binary.Core as Core using (_≡_)
 import Relation.Binary.Indexed.Core as I
 
@@ -19,6 +19,8 @@ import Relation.Binary.Indexed.Core as I
 -- Simple properties and equivalence relations
 
 open Core public hiding (_≡_; refl; _≢_)
+
+open Consequences public using (Total)
 
 ------------------------------------------------------------------------
 -- Preorders
@@ -205,6 +207,10 @@ record IsStrictPartialOrder {a ℓ₁ ℓ₂} {A : Set a}
 
   module Eq = IsEquivalence isEquivalence
 
+  asymmetric : Asymmetric _<_
+  asymmetric {x} {y} =
+    trans∧irr⟶asym Eq.refl trans irrefl {x = x} {y = y}
+
 record StrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _<_
   field
@@ -214,10 +220,6 @@ record StrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) 
     isStrictPartialOrder : IsStrictPartialOrder _≈_ _<_
 
   open IsStrictPartialOrder isStrictPartialOrder public
-
-  asymmetric : Asymmetric _<_
-  asymmetric {x} {y} =
-    trans∧irr⟶asym Eq.refl trans irrefl {x = x} {y = y}
 
 ------------------------------------------------------------------------
 -- Decidable strict partial orders
@@ -356,7 +358,6 @@ record IsStrictTotalOrder {a ℓ₁ ℓ₂} {A : Set a}
     isEquivalence : IsEquivalence _≈_
     trans         : Transitive _<_
     compare       : Trichotomous _≈_ _<_
-    <-resp-≈      : _<_ Respects₂ _≈_
 
   infix 4 _≟_ _<?_
 
@@ -374,10 +375,13 @@ record IsStrictTotalOrder {a ℓ₁ ℓ₂} {A : Set a}
 
   module Eq = IsDecEquivalence isDecEquivalence
 
+  <-resp-≈ : _<_ Respects₂ _≈_
+  <-resp-≈ = trans∧tri⟶resp≈ Eq.sym Eq.trans trans compare
+
   isStrictPartialOrder : IsStrictPartialOrder _≈_ _<_
   isStrictPartialOrder = record
     { isEquivalence = isEquivalence
-    ; irrefl        = tri⟶irr <-resp-≈ Eq.sym compare
+    ; irrefl        = tri⟶irr compare
     ; trans         = trans
     ; <-resp-≈      = <-resp-≈
     }

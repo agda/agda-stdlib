@@ -10,14 +10,18 @@
 
 module Data.Fin where
 
+open import Data.Empty using (⊥-elim)
 open import Data.Nat as Nat
   using (ℕ; zero; suc; z≤n; s≤s)
   renaming ( _+_ to _N+_; _∸_ to _N∸_
            ; _≤_ to _N≤_; _≥_ to _N≥_; _<_ to _N<_; _≤?_ to _N≤?_)
 open import Function
 import Level
+open import Relation.Nullary
 open import Relation.Nullary.Decidable
 open import Relation.Binary
+open import Relation.Binary.PropositionalEquality
+  using (_≡_; _≢_; refl; cong)
 
 ------------------------------------------------------------------------
 -- Types
@@ -56,7 +60,16 @@ fromℕ≤ : ∀ {m n} → m N< n → Fin n
 fromℕ≤ (Nat.s≤s Nat.z≤n)       = zero
 fromℕ≤ (Nat.s≤s (Nat.s≤s m≤n)) = suc (fromℕ≤ (Nat.s≤s m≤n))
 
+-- fromℕ≤″ m _ = "m".
+
+fromℕ≤″ : ∀ m {n} → m Nat.<″ n → Fin n
+fromℕ≤″ zero    (Nat.less-than-or-equal refl) = zero
+fromℕ≤″ (suc m) (Nat.less-than-or-equal refl) =
+  suc (fromℕ≤″ m (Nat.less-than-or-equal refl))
+
 -- # m = "m".
+
+infix 10 #_
 
 #_ : ∀ m {n} {m<n : True (suc m N≤? n)} → Fin n
 #_ _ {m<n = m<n} = fromℕ≤ (toWitness m<n)
@@ -98,6 +111,11 @@ inject₁ (suc i) = suc (inject₁ i)
 inject≤ : ∀ {m n} → Fin m → m N≤ n → Fin n
 inject≤ zero    (Nat.s≤s le) = zero
 inject≤ (suc i) (Nat.s≤s le) = suc (inject≤ i le)
+
+-- A strengthening injection into the minimal Fin fibre.
+strengthen : ∀ {n} (i : Fin n) → Fin′ (suc i)
+strengthen zero    = zero
+strengthen (suc i) = suc (strengthen i)
 
 ------------------------------------------------------------------------
 -- Operations
@@ -168,6 +186,25 @@ pred : ∀ {n} → Fin n → Fin n
 pred zero    = zero
 pred (suc i) = inject₁ i
 
+-- The function f(i,j) = if j>i then j-1 else j
+-- This is a variant of the thick function from Conor
+-- McBride's "First-order unification by structural recursion".
+
+punchOut : ∀ {m} {i j : Fin (suc m)} → i ≢ j → Fin m
+punchOut {_}     {zero}   {zero}  i≢j = ⊥-elim (i≢j refl)
+punchOut {_}     {zero}   {suc j} _   = j
+punchOut {zero}  {suc ()}
+punchOut {suc m} {suc i}  {zero}  _   = zero
+punchOut {suc m} {suc i}  {suc j} i≢j = suc (punchOut (i≢j ∘ cong suc))
+
+-- The function f(i,j) = if j≥i then j+1 else j
+
+punchIn : ∀ {m} → Fin (suc m) → Fin m → Fin (suc m)
+punchIn zero    j       = suc j
+punchIn (suc i) zero    = zero
+punchIn (suc i) (suc j) = suc (punchIn i j)
+
+
 ------------------------------------------------------------------------
 -- Order relations
 
@@ -175,6 +212,9 @@ infix 4 _≤_ _<_
 
 _≤_ : ∀ {n} → Rel (Fin n) Level.zero
 _≤_ = _N≤_ on toℕ
+
+_≤?_ : ∀ {n} → (a : Fin n) → (b : Fin n) → Dec (a ≤ b)
+a ≤? b = toℕ a N≤? toℕ b
 
 _<_ : ∀ {n} → Rel (Fin n) Level.zero
 _<_ = _N<_ on toℕ

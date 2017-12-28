@@ -17,13 +17,12 @@ import Data.AVL
 -- total order, and values, which are indexed by keys. Let us use
 -- natural numbers as keys and vectors of strings as values.
 
-import Data.Nat.Properties as ℕ
+open import Data.Nat.Properties using (<-isStrictTotalOrder)
 open import Data.String using (String)
 open import Data.Vec using (Vec; _∷_; [])
-open import Relation.Binary using (module StrictTotalOrder)
 
-open Data.AVL (Vec String)
-              (StrictTotalOrder.isStrictTotalOrder ℕ.strictTotalOrder)
+open Data.AVL <-isStrictTotalOrder renaming (Tree to Tree')
+Tree = Tree' (Vec String)
 
 ------------------------------------------------------------------------
 -- Construction of trees
@@ -60,6 +59,7 @@ t₃ = delete 2 t₂
 open import Data.List using (_∷_; [])
 open import Data.Product as Prod using (_,_; _,′_)
 
+t₄ : Tree
 t₄ = fromList ((2 , v₂) ∷ (1 , v₁) ∷ [])
 
 ------------------------------------------------------------------------
@@ -71,8 +71,8 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
 -- Searching for a key.
 
-open import Data.Bool using (true; false)
-open import Data.Maybe as Maybe using (just; nothing)
+open import Data.Bool.Base using (true; false)
+open import Data.Maybe.Base as Maybe using (just; nothing)
 
 q₀ : lookup 2 t₂ ≡ just v₂
 q₀ = refl
@@ -80,10 +80,10 @@ q₀ = refl
 q₁ : lookup 2 t₃ ≡ nothing
 q₁ = refl
 
-q₂ : 3 ∈? t₂ ≡ false
+q₂ : (3 ∈? t₂) ≡ false
 q₂ = refl
 
-q₃ : 1 ∈? t₄ ≡ true
+q₃ : (1 ∈? t₄) ≡ true
 q₃ = refl
 
 -- Turning a tree into a sorted list of key-value pairs.

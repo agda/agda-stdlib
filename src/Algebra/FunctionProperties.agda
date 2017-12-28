@@ -9,6 +9,7 @@
 
 open import Level
 open import Relation.Binary
+open import Data.Sum
 
 -- The properties are specified using the following relation as
 -- "equality".
@@ -51,7 +52,7 @@ Zero : A → Op₂ A → Set _
 Zero z ∙ = LeftZero z ∙ × RightZero z ∙
 
 LeftInverse : A → Op₁ A → Op₂ A → Set _
-LeftInverse e _⁻¹ _∙_ = ∀ x → (x ⁻¹ ∙ x) ≈ e
+LeftInverse e _⁻¹ _∙_ = ∀ x → ((x ⁻¹) ∙ x) ≈ e
 
 RightInverse : A → Op₁ A → Op₂ A → Set _
 RightInverse e _⁻¹ _∙_ = ∀ x → (x ∙ (x ⁻¹)) ≈ e
@@ -79,6 +80,9 @@ Idempotent ∙ = ∀ x → ∙ IdempotentOn x
 IdempotentFun : Op₁ A → Set _
 IdempotentFun f = ∀ x → f (f x) ≈ f x
 
+Selective : Op₂ A → Set _
+Selective _∙_ = ∀ x y → (x ∙ y) ≈ x ⊎ (x ∙ y) ≈ y
+
 _Absorbs_ : Op₂ A → Op₂ A → Set _
 _∙_ Absorbs _∘_ = ∀ x y → (x ∙ (x ∘ y)) ≈ x
 
@@ -87,3 +91,18 @@ Absorptive ∙ ∘ = (∙ Absorbs ∘) × (∘ Absorbs ∙)
 
 Involutive : Op₁ A → Set _
 Involutive f = ∀ x → f (f x) ≈ x
+
+LeftCancellative : Op₂ A → Set _
+LeftCancellative _•_ = ∀ x {y z} → (x • y) ≈ (x • z) → y ≈ z
+
+RightCancellative : Op₂ A → Set _
+RightCancellative _•_ = ∀ {x} y z → (y • x) ≈ (z • x) → y ≈ z
+
+Cancellative : Op₂ A → Set _
+Cancellative _•_ = LeftCancellative _•_ × RightCancellative _•_
+
+Congruent₁ : Op₁ A → Set _
+Congruent₁ f = f Preserves _≈_ ⟶ _≈_
+
+Congruent₂ : Op₂ A → Set _
+Congruent₂ ∙ = ∙ Preserves₂ _≈_ ⟶ _≈_ ⟶ _≈_

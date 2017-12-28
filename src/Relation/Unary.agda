@@ -8,12 +8,12 @@ module Relation.Unary where
 
 open import Data.Empty
 open import Function
-open import Data.Unit hiding (setoid)
+open import Data.Unit.Base using (⊤)
 open import Data.Product
 open import Data.Sum
 open import Level
 open import Relation.Nullary
-open import Relation.Binary using (Setoid; IsEquivalence)
+open import Relation.Binary.Core using (_≡_)
 
 ------------------------------------------------------------------------
 -- Unary relations
@@ -52,6 +52,10 @@ module _ {a} {A : Set a} -- The universe of discourse.
   ∅-Empty : Empty ∅
   ∅-Empty x ()
 
+  -- The singleton set.
+  ｛_｝ : A → Pred A a
+  ｛ x ｝ = _≡_ x
+
   -- The universe, i.e. the subset containing all elements in A.
 
   U : Pred A zero
@@ -59,8 +63,12 @@ module _ {a} {A : Set a} -- The universe of discourse.
 
   -- The property of being universal.
 
+  infix 10 Universal
+
   Universal : ∀ {ℓ} → Pred A ℓ → Set _
   Universal P = ∀ x → x ∈ P
+
+  syntax Universal P = ∀[ P ]
 
   U-Universal : Universal U
   U-Universal = λ _ → _
@@ -128,7 +136,7 @@ module _ {a} {A : Set a} -- The universe of discourse.
 
   -- Infinitary union and intersection.
 
-  infix 9 ⋃ ⋂
+  infix 10 ⋃ ⋂
 
   ⋃ : ∀ {ℓ i} (I : Set i) → (I → Pred A ℓ) → Pred A _
   ⋃ I P = λ x → Σ[ i ∈ I ] P i x
@@ -140,16 +148,24 @@ module _ {a} {A : Set a} -- The universe of discourse.
 
   syntax ⋂ I (λ i → P) = ⋂[ i ∶ I ] P
 
+-- Update.
+
+infixr 9 _⊢_
+
+_⊢_ : ∀ {a b} {A : Set a} {B : Set b} {ℓ} → (A → B) → Pred B ℓ → Pred A ℓ
+f ⊢ P = λ x → P (f x)
+
 ------------------------------------------------------------------------
 -- Unary relation combinators
 
-infixr 2 _⟨×⟩_
-infixr 2 _⟨⊙⟩_
-infixr 1 _⟨⊎⟩_
-infixr 0 _⟨→⟩_
-infixl 9 _⟨·⟩_
-infixr 9 _⟨∘⟩_
-infixr 2 _//_ _\\_
+infixr  2 _⟨×⟩_
+infixr  2 _⟨⊙⟩_
+infixr  1 _⟨⊎⟩_
+infixr  0 _⟨→⟩_
+infixl  9 _⟨·⟩_
+infix  10 _~
+infixr  9 _⟨∘⟩_
+infixr  2 _//_ _\\_
 
 _⟨×⟩_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} →
         Pred A ℓ₁ → Pred B ℓ₂ → Pred (A × B) _

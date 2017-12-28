@@ -7,10 +7,10 @@
 module Data.List.NonEmpty where
 
 open import Category.Monad
-open import Data.Bool
+open import Data.Bool.Base using (Bool; false; true; not; T)
 open import Data.Bool.Properties
 open import Data.List as List using (List; []; _∷_)
-open import Data.Maybe using (nothing; just)
+open import Data.Maybe.Base using (nothing; just)
 open import Data.Nat as Nat
 open import Data.Product using (∃; proj₁; proj₂; _,_; ,_)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
@@ -81,12 +81,22 @@ foldr {A = A} {B} c s (x ∷ xs) = foldr′ x xs
   foldr′ x []       = s x
   foldr′ x (y ∷ xs) = c x (foldr′ y xs)
 
+-- Right fold.
+
+foldr₁ : ∀ {a} {A : Set a} → (A → A → A) → List⁺ A → A
+foldr₁ f = foldr f id
+
 -- Left fold. Note that s is only applied to the first element (see
 -- the examples below).
 
 foldl : ∀ {a b} {A : Set a} {B : Set b} →
         (B → A → B) → (A → B) → List⁺ A → B
 foldl c s (x ∷ xs) = List.foldl c (s x) xs
+
+-- Left fold.
+
+foldl₁ : ∀ {a} {A : Set a} → (A → A → A) → List⁺ A → A
+foldl₁ f = foldl f id
 
 -- Append (several variants).
 
@@ -181,7 +191,7 @@ flatten-split p (x ∷ xs)
 
 wordsBy : ∀ {a} {A : Set a} → (A → Bool) → List A → List (List⁺ A)
 wordsBy p =
-  List.gfilter Sum.[ const nothing , just ∘′ map proj₁ ] ∘ split p
+  List.mapMaybe Sum.[ const nothing , just ∘′ map proj₁ ] ∘ split p
 
 ------------------------------------------------------------------------
 -- Examples
@@ -193,6 +203,7 @@ private
  module Examples {A B : Set}
                  (_⊕_ : A → B → B)
                  (_⊗_ : B → A → B)
+                 (_⊙_ : A → A → A)
                  (f : A → B)
                  (a b c : A)
                  where
@@ -206,11 +217,17 @@ private
   mp : map f (a ∷⁺ b ∷⁺ [ c ]) ≡ f a ∷⁺ f b ∷⁺ [ f c ]
   mp = refl
 
-  right : foldr _⊕_ f (a ∷⁺ b ∷⁺ [ c ]) ≡ a ⊕ (b ⊕ f c)
+  right : foldr _⊕_ f (a ∷⁺ b ∷⁺ [ c ]) ≡ (a ⊕ (b ⊕ f c))
   right = refl
 
-  left : foldl _⊗_ f (a ∷⁺ b ∷⁺ [ c ]) ≡ (f a ⊗ b) ⊗ c
+  right₁ : foldr₁ _⊙_ (a ∷⁺ b ∷⁺ [ c ]) ≡ (a ⊙ (b ⊙ c))
+  right₁ = refl
+
+  left : foldl _⊗_ f (a ∷⁺ b ∷⁺ [ c ]) ≡ ((f a ⊗ b) ⊗ c)
   left = refl
+
+  left₁ : foldl₁ _⊙_ (a ∷⁺ b ∷⁺ [ c ]) ≡ ((a ⊙ b) ⊙ c)
+  left₁ = refl
 
   ⁺app⁺ : (a ∷⁺ b ∷⁺ [ c ]) ⁺++⁺ (b ∷⁺ [ c ]) ≡
           a ∷⁺ b ∷⁺ c ∷⁺ b ∷⁺ [ c ]

@@ -28,6 +28,9 @@ record IsSemigroup {a ℓ} {A : Set a} (≈ : Rel A ℓ)
     assoc         : Associative ∙
     ∙-cong        : ∙ Preserves₂ ≈ ⟶ ≈ ⟶ ≈
 
+  setoid : Setoid a ℓ
+  setoid = record { isEquivalence = isEquivalence }
+
   open IsEquivalence isEquivalence public
 
 record IsMonoid {a ℓ} {A : Set a} (≈ : Rel A ℓ)
@@ -66,6 +69,15 @@ record IsCommutativeMonoid {a ℓ} {A : Set a} (≈ : Rel A ℓ)
     ; identity    = identity
     }
 
+record IsIdempotentCommutativeMonoid {a ℓ} {A : Set a} (≈ : Rel A ℓ)
+                                     (_∙_ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
+  open FunctionProperties ≈
+  field
+    isCommutativeMonoid : IsCommutativeMonoid ≈ _∙_ ε
+    idem                : Idempotent _∙_
+
+  open IsCommutativeMonoid isCommutativeMonoid public
+
 record IsGroup {a ℓ} {A : Set a} (≈ : Rel A ℓ)
                (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   open FunctionProperties ≈
@@ -79,6 +91,24 @@ record IsGroup {a ℓ} {A : Set a} (≈ : Rel A ℓ)
 
   _-_ : FunctionProperties.Op₂ A
   x - y = x ∙ (y ⁻¹)
+
+  uniqueˡ-⁻¹ : ∀ x y → ≈ (x ∙ y) ε → ≈ x (y ⁻¹)
+  uniqueˡ-⁻¹ x y eq = let open EqR setoid in begin
+    x                ≈⟨ sym (proj₂ identity x) ⟩
+    x ∙ ε            ≈⟨ ∙-cong refl (sym (proj₂ inverse y)) ⟩
+    x ∙ (y ∙ (y ⁻¹)) ≈⟨ sym (assoc x y (y ⁻¹)) ⟩
+    (x ∙ y) ∙ (y ⁻¹) ≈⟨ ∙-cong eq refl ⟩
+    ε ∙ (y ⁻¹)       ≈⟨ proj₁ identity (y ⁻¹) ⟩
+    y ⁻¹ ∎
+
+  uniqueʳ-⁻¹ : ∀ x y → ≈ (x ∙ y) ε → ≈ y (x ⁻¹)
+  uniqueʳ-⁻¹ x y eq = let open EqR setoid in begin
+    y                ≈⟨ sym (proj₁ identity y) ⟩
+    ε ∙ y            ≈⟨ ∙-cong (sym (proj₁ inverse x)) refl ⟩
+    ((x ⁻¹) ∙ x) ∙ y ≈⟨ assoc (x ⁻¹) x y ⟩
+    (x ⁻¹) ∙ (x ∙ y) ≈⟨ ∙-cong refl eq ⟩
+    (x ⁻¹) ∙ ε       ≈⟨ proj₂ identity (x ⁻¹) ⟩
+    x ⁻¹ ∎
 
 record IsAbelianGroup
          {a ℓ} {A : Set a} (≈ : Rel A ℓ)
@@ -308,27 +338,27 @@ record IsRing
 
     zeroˡ : LeftZero 0# _*_
     zeroˡ x = begin
-        0# * x                              ≈⟨ sym $ proj₂ +-identity _ ⟩
-       (0# * x) +            0#             ≈⟨ refl ⟨ +-cong ⟩ sym (proj₂ -‿inverse _) ⟩
-       (0# * x) + ((0# * x)  + - (0# * x))  ≈⟨ sym $ +-assoc _ _ _ ⟩
-      ((0# * x) +  (0# * x)) + - (0# * x)   ≈⟨ sym (proj₂ distrib _ _ _) ⟨ +-cong ⟩ refl ⟩
-             ((0# + 0#) * x) + - (0# * x)   ≈⟨ (proj₂ +-identity _ ⟨ *-cong ⟩ refl)
-                                                 ⟨ +-cong ⟩
-                                               refl ⟩
-                    (0# * x) + - (0# * x)   ≈⟨ proj₂ -‿inverse _ ⟩
-                             0#             ∎
+        (0# * x)                                ≈⟨ sym $ proj₂ +-identity _ ⟩
+       ((0# * x) +            0#)               ≈⟨ refl ⟨ +-cong ⟩ sym (proj₂ -‿inverse _) ⟩
+       ((0# * x) + ((0# * x)  + (- (0# * x))))  ≈⟨ sym $ +-assoc _ _ _ ⟩
+      (((0# * x) +  (0# * x)) + (- (0# * x)))   ≈⟨ sym (proj₂ distrib _ _ _) ⟨ +-cong ⟩ refl ⟩
+             (((0# + 0#) * x) + (- (0# * x)))   ≈⟨ (proj₂ +-identity _ ⟨ *-cong ⟩ refl)
+                                                     ⟨ +-cong ⟩
+                                                   refl ⟩
+                    ((0# * x) + (- (0# * x)))   ≈⟨ proj₂ -‿inverse _ ⟩
+                             0#                 ∎
 
     zeroʳ : RightZero 0# _*_
     zeroʳ x = begin
-      x * 0#                              ≈⟨ sym $ proj₂ +-identity _ ⟩
-      (x * 0#) + 0#                       ≈⟨ refl ⟨ +-cong ⟩ sym (proj₂ -‿inverse _) ⟩
-      (x * 0#) + ((x * 0#) + - (x * 0#))  ≈⟨ sym $ +-assoc _ _ _ ⟩
-      ((x * 0#) + (x * 0#)) + - (x * 0#)  ≈⟨ sym (proj₁ distrib _ _ _) ⟨ +-cong ⟩ refl ⟩
-      (x * (0# + 0#)) + - (x * 0#)        ≈⟨ (refl ⟨ *-cong ⟩ proj₂ +-identity _)
-                                               ⟨ +-cong ⟩
-                                             refl ⟩
-      (x * 0#) + - (x * 0#)               ≈⟨ proj₂ -‿inverse _ ⟩
-      0#                                  ∎
+      (x * 0#)                                ≈⟨ sym $ proj₂ +-identity _ ⟩
+      ((x * 0#) + 0#)                         ≈⟨ refl ⟨ +-cong ⟩ sym (proj₂ -‿inverse _) ⟩
+      ((x * 0#) + ((x * 0#) + (- (x * 0#))))  ≈⟨ sym $ +-assoc _ _ _ ⟩
+      (((x * 0#) + (x * 0#)) + (- (x * 0#)))  ≈⟨ sym (proj₁ distrib _ _ _) ⟨ +-cong ⟩ refl ⟩
+      ((x * (0# + 0#)) + (- (x * 0#)))        ≈⟨ (refl ⟨ *-cong ⟩ proj₂ +-identity _)
+                                                   ⟨ +-cong ⟩
+                                                 refl ⟩
+      ((x * 0#) + (- (x * 0#)))               ≈⟨ proj₂ -‿inverse _ ⟩
+      0#                                      ∎
 
   isSemiringWithoutAnnihilatingZero
     : IsSemiringWithoutAnnihilatingZero ≈ _+_ _*_ 0# 1#

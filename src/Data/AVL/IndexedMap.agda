@@ -17,8 +17,8 @@ module Data.AVL.IndexedMap
 
 import Data.AVL
 open import Data.Bool
-open import Data.List as List using (List)
-open import Data.Maybe as Maybe
+open import Data.List.Base as List using (List)
+open import Data.Maybe.Base as Maybe
 open import Function
 open import Level
 
@@ -41,8 +41,9 @@ private
 
 private
   open module AVL =
-    Data.AVL (λ ik → Value (proj₁ ik)) isStrictTotalOrder
-    public using () renaming (Tree to Map)
+    Data.AVL isStrictTotalOrder
+    public using () renaming (Tree to Map')
+  Map = Map' (Value ∘ proj₁)
 
 -- Repackaged functions.
 
@@ -60,6 +61,8 @@ delete k = AVL.delete (, k)
 
 lookup : ∀ {i} → Key i → Map → Maybe (Value i)
 lookup k m = AVL.lookup (, k) m
+
+infix 4 _∈?_
 
 _∈?_ : ∀ {i} → Key i → Map → Bool
 _∈?_ k = AVL._∈?_ (, k)

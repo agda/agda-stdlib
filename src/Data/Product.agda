@@ -9,6 +9,7 @@ module Data.Product where
 open import Function
 open import Level
 open import Relation.Nullary
+open import Agda.Builtin.Equality
 
 infixr 4 _,_ _,′_
 infix  4 ,_
@@ -28,6 +29,8 @@ open Σ public
 -- The syntax declaration below is attached to Σ-syntax, to make it
 -- easy to import Σ without the special syntax.
 
+infix 2 Σ-syntax
+
 Σ-syntax : ∀ {a b} (A : Set a) → (A → Set b) → Set (a ⊔ b)
 Σ-syntax = Σ
 
@@ -36,8 +39,18 @@ syntax Σ-syntax A (λ x → B) = Σ[ x ∈ A ] B
 ∃ : ∀ {a b} {A : Set a} → (A → Set b) → Set (a ⊔ b)
 ∃ = Σ _
 
+∃-syntax : ∀ {a b} {A : Set a} → (A → Set b) → Set (a ⊔ b)
+∃-syntax = ∃
+
+syntax ∃-syntax (λ x → B) = ∃[ x ] B
+
 ∄ : ∀ {a b} {A : Set a} → (A → Set b) → Set (a ⊔ b)
 ∄ P = ¬ ∃ P
+
+∄-syntax : ∀ {a b} {A : Set a} → (A → Set b) → Set (a ⊔ b)
+∄-syntax = ∄
+
+syntax ∄-syntax (λ x → B) = ∄[ x ] B
 
 ∃₂ : ∀ {a b c} {A : Set a} {B : A → Set b}
      (C : (x : A) → B x → Set c) → Set (a ⊔ b ⊔ c)
@@ -83,7 +96,7 @@ zip : ∀ {a b c p q r}
       (_∙_ : A → B → C) →
       (∀ {x y} → P x → Q y → R (x ∙ y)) →
       Σ A P → Σ B Q → Σ C R
-zip _∙_ _∘_ (a , p) (b , q) = (a ∙ b , p ∘ q)
+zip _∙_ _∘_ (a , p) (b , q) = ((a ∙ b) , (p ∘ q))
 
 swap : ∀ {a b} {A : Set a} {B : Set b} → A × B → B × A
 swap (x , y) = (y , x)

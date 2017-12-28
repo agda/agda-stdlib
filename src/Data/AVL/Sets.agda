@@ -14,8 +14,8 @@ module Data.AVL.Sets
 
 import Data.AVL as AVL
 open import Data.Bool
-open import Data.List as List using (List)
-open import Data.Maybe as Maybe
+open import Data.List.Base as List using (List)
+open import Data.Maybe.Base as Maybe
 open import Data.Product as Prod using (_×_; _,_; proj₁)
 open import Data.Unit
 open import Function
@@ -24,8 +24,9 @@ open import Level
 -- The set type. (Note that Set is a reserved word.)
 
 private
-  open module S = AVL (const ⊤) isStrictTotalOrder
-    public using () renaming (Tree to ⟨Set⟩)
+  open module S = AVL isStrictTotalOrder
+    public using () renaming (Tree to ⟨Set⟩')
+  ⟨Set⟩ = ⟨Set⟩' (const ⊤)
 
 -- Repackaged functions.
 
@@ -40,6 +41,8 @@ insert k = S.insert k _
 
 delete : Key → ⟨Set⟩ → ⟨Set⟩
 delete = S.delete
+
+infix 4 _∈?_
 
 _∈?_ : Key → ⟨Set⟩ → Bool
 _∈?_ = S._∈?_

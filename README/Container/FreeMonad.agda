@@ -10,7 +10,7 @@ module README.Container.FreeMonad where
 open import Category.Monad
 open import Data.Empty
 open import Data.Unit
-open import Data.Bool
+open import Data.Bool.Base using (Bool; true)
 open import Data.Nat
 open import Data.Sum using (inj₁; inj₂)
 open import Data.Product renaming (_×_ to _⟨×⟩_)
@@ -31,12 +31,12 @@ State S = ⊤ ⟶ S ⊎ S ⟶ ⊤
   I ⟶ O = I ▷ λ _ → O
 
 get : ∀ {S} → State S ⋆ S
-get = do (inj₁ _ , return)
+get = inn (inj₁ _ , return)
   where
   open RawMonad rawMonad
 
 put : ∀ {S} → S → State S ⋆ ⊤
-put s = do (inj₂ s , return)
+put s = inn (inj₂ s , return)
   where
   open RawMonad rawMonad
 
@@ -55,7 +55,7 @@ runState (sup (inj₁ x) _)        = λ s → x , s
 runState (sup (inj₂ (inj₁ _)) k) = λ s → runState (k s) s
 runState (sup (inj₂ (inj₂ s)) k) = λ _ → runState (k _) s
 
-test : runState prog 0 ≡ true , 1
+test : runState prog 0 ≡ (true , 1)
 test = refl
 
 -- It should be noted that @State S ⋆ X@ is not the state monad. If we

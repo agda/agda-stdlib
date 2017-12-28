@@ -15,8 +15,10 @@ open import Data.List as List
 import Data.List.Properties as LP
 open import Data.List.Any as Any using (Any); open Any.Any
 open import Data.List.Any.Properties
+open import Data.List.Any.Membership.Propositional
 open import Data.Product
 open import Data.Sum
+open import Data.Sum.Relation.General
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 import Function.Equivalence as FE
@@ -27,10 +29,9 @@ open import Relation.Binary
 import Relation.Binary.EqReasoning as EqR
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≗_)
-open import Relation.Binary.Sum
 open import Relation.Nullary
 
-open Any.Membership-≡
+open import Data.List.Any.Membership.Propositional.Properties
 private
   module Eq  {k a} {A : Set a} = Setoid ([ k ]-Equality A)
   module Ord {k a} {A : Set a} = Preorder ([ k ]-Order A)
@@ -70,8 +71,8 @@ map-cong {ℓ} {f₁ = f₁} {f₂} {xs₁} {xs₂} f₁≗f₂ xs₁≈xs₂ {x
     { to         = P.→-to-⟶ (λ x≡f₁y → P.trans x≡f₁y (        f₁≗f₂ y))
     ; from       = P.→-to-⟶ (λ x≡f₂y → P.trans x≡f₂y (P.sym $ f₁≗f₂ y))
     ; inverse-of = record
-      { left-inverse-of  = λ _ → P.proof-irrelevance _ _
-      ; right-inverse-of = λ _ → P.proof-irrelevance _ _
+      { left-inverse-of  = λ _ → P.≡-irrelevance _ _
+      ; right-inverse-of = λ _ → P.≡-irrelevance _ _
       }
     }
 
@@ -113,7 +114,8 @@ concat-cong {a} {xss₁ = xss₁} {xss₂} xss₁≈xss₂ {x} =
 -- _⊛_ is a congruence.
 
 ⊛-cong : ∀ {ℓ k} {A B : Set ℓ} {fs₁ fs₂ : List (A → B)} {xs₁ xs₂} →
-         fs₁ ∼[ k ] fs₂ → xs₁ ∼[ k ] xs₂ → fs₁ ⊛ xs₁ ∼[ k ] fs₂ ⊛ xs₂
+         fs₁ ∼[ k ] fs₂ → xs₁ ∼[ k ] xs₂ →
+         (fs₁ ⊛ xs₁) ∼[ k ] (fs₂ ⊛ xs₂)
 ⊛-cong fs₁≈fs₂ xs₁≈xs₂ =
   >>=-cong fs₁≈fs₂ λ f →
   >>=-cong xs₁≈xs₂ λ x →
@@ -195,7 +197,7 @@ empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here P.refl)
 
 ⊛-left-distributive :
   ∀ {ℓ} {A B : Set ℓ} (fs : List (A → B)) xs₁ xs₂ →
-  fs ⊛ (xs₁ ++ xs₂) ∼[ bag ] (fs ⊛ xs₁) ++ (fs ⊛ xs₂)
+  (fs ⊛ (xs₁ ++ xs₂)) ∼[ bag ] (fs ⊛ xs₁) ++ (fs ⊛ xs₂)
 ⊛-left-distributive {B = B} fs xs₁ xs₂ = begin
   fs ⊛ (xs₁ ++ xs₂)                         ≡⟨ P.refl ⟩
   (fs >>= λ f → xs₁ ++ xs₂ >>= return ∘ f)  ≡⟨ (LP.Monad.cong (P.refl {x = fs}) λ f →

@@ -8,12 +8,10 @@ module Relation.Binary.PropositionalEquality where
 
 open import Function
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
-open import Data.Product
-open import Data.Unit.Core
 open import Level
+open import Relation.Unary using (Pred)
 open import Relation.Binary
 import Relation.Binary.Indexed as I
-open import Relation.Binary.Consequences
 open import Relation.Binary.HeterogeneousEquality.Core as H using (_≅_)
 
 -- Some of the definitions can be found in the following modules:
@@ -39,9 +37,6 @@ cong-app refl x = refl
 cong₂ : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c}
         (f : A → B → C) {x y u v} → x ≡ y → u ≡ v → f x u ≡ f y v
 cong₂ f refl refl = refl
-
-proof-irrelevance : ∀ {a} {A : Set a} {x y : A} (p q : x ≡ y) → p ≡ q
-proof-irrelevance refl refl = refl
 
 setoid : ∀ {a} → Set a → Setoid _ _
 setoid A = record
@@ -99,45 +94,19 @@ _≗_ {A = A} {B} = Setoid._≈_ (A →-setoid B)
 →-to-⟶ = :→-to-Π
 
 ------------------------------------------------------------------------
--- The old inspect idiom
+-- Inspect
 
--- The old inspect idiom has been deprecated, and may be removed in
--- the future. Use inspect on steroids instead.
+-- Inspect can be used when you want to pattern match on the result r
+-- of some expression e, and you also need to "remember" that r ≡ e.
 
-module Deprecated-inspect where
-
-  -- The inspect idiom can be used when you want to pattern match on
-  -- the result r of some expression e, and you also need to
-  -- "remember" that r ≡ e.
-
-  -- The inspect idiom has a problem: sometimes you can only pattern
-  -- match on the p part of p with-≡ eq if you also pattern match on
-  -- the eq part, and then you no longer have access to the equality.
-  -- Inspect on steroids solves this problem.
-
-  data Inspect {a} {A : Set a} (x : A) : Set a where
-    _with-≡_ : (y : A) (eq : x ≡ y) → Inspect x
-
-  inspect : ∀ {a} {A : Set a} (x : A) → Inspect x
-  inspect x = x with-≡ refl
-
-  -- Example usage:
-
-  -- f x y with inspect (g x)
-  -- f x y | c z with-≡ eq = ...
-
-------------------------------------------------------------------------
--- Inspect on steroids
-
--- Inspect on steroids can be used when you want to pattern match on
--- the result r of some expression e, and you also need to "remember"
--- that r ≡ e.
-
-data Reveal_is_ {a} {A : Set a} (x : Hidden A) (y : A) : Set a where
-  [_] : (eq : reveal x ≡ y) → Reveal x is y
+record Reveal_·_is_ {a b} {A : Set a} {B : A → Set b}
+                    (f : (x : A) → B x) (x : A) (y : B x) :
+                    Set (a ⊔ b) where
+  constructor [_]
+  field eq : f x ≡ y
 
 inspect : ∀ {a b} {A : Set a} {B : A → Set b}
-          (f : (x : A) → B x) (x : A) → Reveal (hide f x) is (f x)
+          (f : (x : A) → B x) (x : A) → Reveal f · x is f x
 inspect f x = [ refl ]
 
 -- Example usage:
@@ -148,23 +117,31 @@ inspect f x = [ refl ]
 ------------------------------------------------------------------------
 -- Convenient syntax for equational reasoning
 
-import Relation.Binary.EqReasoning as EqR
+-- This is special instance of Relation.Binary.EqReasoning.
+-- Rather than instantiating the latter with (setoid A),
+-- we reimplement equation chains from scratch
+-- since then goals are printed much more readably.
 
--- Relation.Binary.EqReasoning is more convenient to use with _≡_ if
--- the combinators take the type argument (a) as a hidden argument,
--- instead of being locked to a fixed type at module instantiation
--- time.
+module ≡-Reasoning {a} {A : Set a} where
 
-module ≡-Reasoning where
-  module _ {a} {A : Set a} where
-    open EqR (setoid A) public
-      hiding (_≡⟨_⟩_) renaming (_≈⟨_⟩_ to _≡⟨_⟩_)
+  infix  3 _∎
+  infixr 2 _≡⟨⟩_ _≡⟨_⟩_ _≅⟨_⟩_
+  infix  1 begin_
 
-  infixr 2 _≅⟨_⟩_
+  begin_ : ∀{x y : A} → x ≡ y → x ≡ y
+  begin_ x≡y = x≡y
 
-  _≅⟨_⟩_ : ∀ {a} {A : Set a} (x : A) {y z : A} →
-           x ≅ y → y IsRelatedTo z → x IsRelatedTo z
-  _ ≅⟨ x≅y ⟩ y≡z = _ ≡⟨ H.≅-to-≡ x≅y ⟩ y≡z
+  _≡⟨⟩_ : ∀ (x {y} : A) → x ≡ y → x ≡ y
+  _ ≡⟨⟩ x≡y = x≡y
+
+  _≡⟨_⟩_ : ∀ (x {y z} : A) → x ≡ y → y ≡ z → x ≡ z
+  _ ≡⟨ x≡y ⟩ y≡z = trans x≡y y≡z
+
+  _≅⟨_⟩_ : ∀ (x {y z} : A) → x ≅ y → y ≡ z → x ≡ z
+  _ ≅⟨ x≅y ⟩ y≡z = trans (H.≅-to-≡ x≅y) y≡z
+
+  _∎ : ∀ (x : A) → x ≡ x
+  _∎ _ = refl
 
 ------------------------------------------------------------------------
 -- Functional extensionality
@@ -197,3 +174,27 @@ extensionality-for-lower-levels a₂ b₂ ext f≡g =
   (∀ x → B₁ x ≡ B₂ x) → (∀ x → B₁ x) ≡ (∀ x → B₂ x)
 ∀-extensionality ext B₁ B₂ B₁≡B₂ with ext B₁≡B₂
 ∀-extensionality ext B .B  B₁≡B₂ | refl = refl
+
+------------------------------------------------------------------------
+-- Proof irrelevance
+
+isPropositional : ∀ {a} → Set a → Set a
+isPropositional A = (a b : A) → a ≡ b
+
+IrrelevantPred : ∀ {a ℓ} {A : Set a} → Pred A ℓ → Set (ℓ ⊔ a)
+IrrelevantPred P = ∀ {x} → isPropositional (P x)
+
+IrrelevantRel : ∀ {a b ℓ} {A : Set a} {B : Set b} →
+                REL A B ℓ → Set (ℓ ⊔ a ⊔ b)
+IrrelevantRel _~_ = ∀ {x y} → isPropositional (x ~ y)
+
+≡-irrelevance : ∀ {a} {A : Set a} → IrrelevantRel (_≡_ {A = A})
+≡-irrelevance refl refl = refl
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+proof-irrelevance = ≡-irrelevance

@@ -8,7 +8,7 @@ module Category.Monad.Partiality where
 
 open import Coinduction
 open import Category.Monad
-open import Data.Bool
+open import Data.Bool.Base using (Bool; false; true)
 open import Data.Nat using (ℕ; zero; suc; _+_)
 open import Data.Product as Prod hiding (map)
 open import Data.Sum hiding (map)
@@ -76,6 +76,8 @@ data Kind : Set where
   other  : (k : OtherKind) → Kind
 
 -- Kind equality is decidable.
+
+infix 4 _≟-Kind_
 
 _≟-Kind_ : Decidable (_≡_ {A = Kind})
 _≟-Kind_ strong       strong       = yes P.refl
@@ -329,7 +331,7 @@ module _ {a ℓ} {A : Set a} {_∼_ : A → A → Set ℓ} where
       module Pre {k}  = Preorder (preorder′ isEquivalence k)
       module S {k eq} = Setoid (setoid isEquivalence k {eq})
 
-    infix  2 _∎
+    infix  3 _∎
     infixr 2 _≡⟨_⟩_ _≅⟨_⟩_ _≳⟨_⟩_ _≈⟨_⟩_
 
     _≡⟨_⟩_ : ∀ {k} x {y z : A ⊥} → x ≡ y → Rel k y z → Rel k x z
@@ -520,7 +522,7 @@ module _ {s ℓ} {A B : Set s}
 
     is-never : ∀ {x y} →
                x ⇓[ k≳ ]A y → (x >>= f) ⇑[ k≳ ]B →
-               ∃ λ z → y ∼A z × f z ⇑[ k≳ ]B
+               ∃ λ z → (y ∼A z) × f z ⇑[ k≳ ]B
     is-never (now    x∼y)  = λ fx⇑ → (_ , IsEqA.sym x∼y , fx⇑)
     is-never (laterˡ ≳now) = is-never ≳now ∘ later⁻¹
 
@@ -638,7 +640,7 @@ module AlternativeEquality {a ℓ} where
   open Equality.Rel
 
   infix  4 _∣_≅P_ _∣_≳P_ _∣_≈P_
-  infix  2 _∎
+  infix  3 _∎
   infixr 2 _≡⟨_⟩_ _≅⟨_⟩_ _≳⟨_⟩_ _≳⟨_⟩≅_ _≳⟨_⟩≈_ _≈⟨_⟩≅_ _≈⟨_⟩≲_
   infixl 1 _>>=_
 

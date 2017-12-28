@@ -8,9 +8,9 @@ module Data.Fin.Dec where
 
 open import Function
 import Data.Bool as Bool
-open import Data.Nat hiding (_<_)
+open import Data.Nat.Base hiding (_<_)
 open import Data.Vec hiding (_∈_)
-open import Data.Vec.Equality as VecEq
+open import Data.Vec.Relation.Equality as VecEq
   using () renaming (module PropositionalEquality to PropVecEq)
 open import Data.Fin
 open import Data.Fin.Subset
@@ -154,6 +154,14 @@ anySubset? {suc n} {P} dec with anySubset? (restrictS inside  dec)
             ((j : Fin′ (suc i)) → P (inject j))
   extend′ g zero    = P0
   extend′ g (suc j) = g j
+
+
+-- When P is a decidable predicate over a finite set the following
+-- lemma can be proved.
+
+¬∀⟶∃¬ : ∀ n {p} (P : Fin n → Set p) → U.Decidable P →
+        ¬ (∀ i → P i) → ∃ λ i → ¬ P i
+¬∀⟶∃¬ n P dec ¬P = Prod.map id proj₁ $ ¬∀⟶∃¬-smallest n P dec ¬P
 
 -- Decision procedure for _⊆_ (obtained via the natural lattice
 -- order).

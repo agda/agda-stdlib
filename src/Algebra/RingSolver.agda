@@ -31,14 +31,14 @@ open _-Raw-AlmostCommutative⟶_ morphism renaming (⟦_⟧ to ⟦_⟧′)
 import Algebra.Operations as Ops; open Ops semiring
 
 open import Relation.Binary
-open import Relation.Nullary.Core
+open import Relation.Nullary
 import Relation.Binary.EqReasoning as EqR; open EqR setoid
 import Relation.Binary.PropositionalEquality as PropEq
 import Relation.Binary.Reflection as Reflection
 
 open import Data.Empty
 open import Data.Product
-open import Data.Nat as Nat using (ℕ; suc; zero)
+open import Data.Nat.Base as Nat using (ℕ; suc; zero)
 open import Data.Fin as Fin using (Fin; zero; suc)
 open import Data.Vec
 open import Function

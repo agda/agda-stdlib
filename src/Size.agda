@@ -6,13 +6,9 @@
 
 module Size where
 
-postulate
-  Size   : Set
-  Size<_ : Size → Set
-  ↑_     : Size → Size
-  ∞      : Size
-
-{-# BUILTIN SIZE    Size   #-}
-{-# BUILTIN SIZELT  Size<_ #-}
-{-# BUILTIN SIZESUC ↑_     #-}
-{-# BUILTIN SIZEINF ∞      #-}
+open import Agda.Builtin.Size public
+  renaming ( SizeU to SizeUniv ) --  sort SizeUniv
+  using    ( Size                --  Size   : SizeUniv
+           ; Size<_              --  Size<_ : Size → SizeUniv
+           ; ↑_ )                --  ↑_     : Size → Size
+  renaming ( ω to ∞ )           --  ∞      : Size

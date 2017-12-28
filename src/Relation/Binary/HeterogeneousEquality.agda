@@ -9,7 +9,7 @@ module Relation.Binary.HeterogeneousEquality where
 open import Data.Product
 open import Function
 open import Function.Inverse using (Inverse)
-open import Data.Unit.Core
+open import Data.Unit.NonEta
 open import Level
 open import Relation.Nullary
 open import Relation.Binary
@@ -34,10 +34,18 @@ x ≇ y = ¬ x ≅ y
 ------------------------------------------------------------------------
 -- Conversion
 
+open Core public using (≅-to-≡)
+
 ≡-to-≅ : ∀ {a} {A : Set a} {x y : A} → x ≡ y → x ≅ y
 ≡-to-≅ refl = refl
 
-open Core public using (≅-to-≡)
+≅-to-type-≡ : ∀ {a} {A B : Set a} {x : A} {y : B} →
+                x ≅ y → A ≡ B
+≅-to-type-≡ refl = refl
+
+≅-to-subst-≡ : ∀ {a} {A B : Set a} {x : A} {y : B} → (p : x ≅ y) →
+                 P.subst (λ x → x) (≅-to-type-≡ p) x ≡ y
+≅-to-subst-≡ refl = refl
 
 ------------------------------------------------------------------------
 -- Some properties
@@ -170,7 +178,7 @@ module ≅-Reasoning where
   -- heterogeneous equalities, hence the code duplication here.
 
   infix  4 _IsRelatedTo_
-  infix  2 _∎
+  infix  3 _∎
   infixr 2 _≅⟨_⟩_ _≡⟨_⟩_ _≡⟨⟩_
   infix  1 begin_
 
@@ -219,21 +227,26 @@ Extensionality a b =
   ext′ : P.Extensionality ℓ₁ ℓ₂
   ext′ = P.extensionality-for-lower-levels ℓ₁ (suc ℓ₂) ext
 
-
 ------------------------------------------------------------------------
--- Inspect on steroids
+-- Inspect
 
--- Inspect on steroids can be used when you want to pattern match on
--- the result r of some expression e, and you also need to "remember"
--- that r ≡ e.
+-- Inspect can be used when you want to pattern match on the result r
+-- of some expression e, and you also need to "remember" that r ≡ e.
 
-data Reveal_is_ {a} {A : Set a} (x : Hidden A) (y : A) : Set a where
-  [_] : (eq : reveal x ≅ y) → Reveal x is y
+record Reveal_·_is_ {a b} {A : Set a} {B : A → Set b}
+                    (f : (x : A) → B x) (x : A) (y : B x) :
+                    Set (a ⊔ b) where
+  constructor [_]
+  field eq : f x ≅ y
 
 inspect : ∀ {a b} {A : Set a} {B : A → Set b}
-          (f : (x : A) → B x) (x : A) → Reveal (hide f x) is (f x)
+          (f : (x : A) → B x) (x : A) → Reveal f · x is f x
 inspect f x = [ refl ]
 
+-- Example usage:
+
+-- f x y with g x | inspect g x
+-- f x y | c z | [ eq ] = ...
 ------------------------------------------------------------------------
 -- Heterogeneous proof irrelevance
 
@@ -244,4 +257,3 @@ hir {p = refl} {refl} refl = refl
 hir' : ∀{ℓ}{A A₁ A₂ A₃ : Set ℓ}{a : A}{a₁ : A₁}{a₂ : A₂}{a₃ : A₃}
            {p : a ≅ a₁}{q : a₂ ≅ a₃} → a₁ ≅ a₃ → p ≅ q
 hir' {p = refl} {refl} refl = refl
-

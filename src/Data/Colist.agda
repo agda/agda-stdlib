@@ -8,15 +8,15 @@ module Data.Colist where
 
 open import Category.Monad
 open import Coinduction
-open import Data.Bool using (Bool; true; false)
+open import Data.Bool.Base using (Bool; true; false)
 open import Data.BoundedVec.Inefficient as BVec
   using (BoundedVec; []; _∷_)
 open import Data.Conat using (Coℕ; zero; suc)
 open import Data.Empty using (⊥)
-open import Data.Maybe using (Maybe; nothing; just; Is-just)
-open import Data.Nat using (ℕ; zero; suc; _≥′_; ≤′-refl; ≤′-step)
+open import Data.Maybe.Base using (Maybe; nothing; just; Is-just)
+open import Data.Nat.Base using (ℕ; zero; suc; _≥′_; ≤′-refl; ≤′-step)
 open import Data.Nat.Properties using (s≤′s)
-open import Data.List using (List; []; _∷_)
+open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_)
 open import Data.Product as Prod using (∃; _×_; _,_)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
@@ -43,18 +43,45 @@ data Colist {a} (A : Set a) : Set a where
   []  : Colist A
   _∷_ : (x : A) (xs : ∞ (Colist A)) → Colist A
 
-{-# IMPORT Data.FFI #-}
-{-# COMPILED_DATA Colist Data.FFI.AgdaList [] (:) #-}
+{-# FOREIGN GHC type AgdaColist a b = [b] #-}
+{-# COMPILE GHC Colist = data MAlonzo.Code.Data.Colist.AgdaColist ([] | (:)) #-}
+{-# COMPILE UHC Colist = data __LIST__ (__NIL__ | __CONS__) #-}
+
+module Colist-injective {a} {A : Set a} where
+
+ ∷-injectiveˡ : ∀ {x y : A} {xs ys} → (Colist A ∋ x ∷ xs) ≡ y ∷ ys → x ≡ y
+ ∷-injectiveˡ P.refl = P.refl
+
+ ∷-injectiveʳ : ∀ {x y : A} {xs ys} → (Colist A ∋ x ∷ xs) ≡ y ∷ ys → xs ≡ ys
+ ∷-injectiveʳ P.refl = P.refl
 
 data Any {a p} {A : Set a} (P : A → Set p) :
          Colist A → Set (a ⊔ p) where
   here  : ∀ {x xs} (px  : P x)          → Any P (x ∷ xs)
   there : ∀ {x xs} (pxs : Any P (♭ xs)) → Any P (x ∷ xs)
 
+module _  {a p} {A : Set a} {P : A → Set p} where
+
+ here-injective : ∀ {x xs p q} → (Any P (x ∷ xs) ∋ here p) ≡ here q → p ≡ q
+ here-injective P.refl = P.refl
+
+ there-injective : ∀ {x xs p q} → (Any P (x ∷ xs) ∋ there p) ≡ there q → p ≡ q
+ there-injective P.refl = P.refl
+
 data All {a p} {A : Set a} (P : A → Set p) :
          Colist A → Set (a ⊔ p) where
   []  : All P []
   _∷_ : ∀ {x xs} (px : P x) (pxs : ∞ (All P (♭ xs))) → All P (x ∷ xs)
+
+module All-injective {a p} {A : Set a} {P : A → Set p} where
+
+ ∷-injectiveˡ : ∀ {x xs} {px qx pxs qxs} →
+                (All P (x ∷ xs) ∋ px ∷ pxs) ≡ qx ∷ qxs → px ≡ qx
+ ∷-injectiveˡ P.refl = P.refl
+
+ ∷-injectiveʳ : ∀ {x xs} {px qx pxs qxs} →
+                (All P (x ∷ xs) ∋ px ∷ pxs) ≡ qx ∷ qxs → pxs ≡ qxs
+ ∷-injectiveʳ P.refl = P.refl
 
 ------------------------------------------------------------------------
 -- Some operations
@@ -120,7 +147,7 @@ concat ((x ∷ (y ∷ xs)) ∷ xss) = x ∷ ♯ concat ((y ∷ xs) ∷ xss)
 Any-map : ∀ {a b p} {A : Set a} {B : Set b} {P : B → Set p}
           {f : A → B} {xs} →
           Any P (map f xs) ↔ Any (P ∘ f) xs
-Any-map {P = P} {f} = λ {xs} → record
+Any-map {P = P} {f} {xs} = record
   { to         = P.→-to-⟶ (to xs)
   ; from       = P.→-to-⟶ (from xs)
   ; inverse-of = record
@@ -467,10 +494,20 @@ data Finite {a} {A : Set a} : Colist A → Set a where
   []  : Finite []
   _∷_ : ∀ x {xs} (fin : Finite (♭ xs)) → Finite (x ∷ xs)
 
+module Finite-injective {a} {A : Set a} where
+
+ ∷-injective : ∀ {x : A} {xs p q} → (Finite (x ∷ xs) ∋ x ∷ p) ≡ x ∷ q → p ≡ q
+ ∷-injective P.refl = P.refl
+
 -- Infinite xs means that xs has infinite length.
 
 data Infinite {a} {A : Set a} : Colist A → Set a where
   _∷_ : ∀ x {xs} (inf : ∞ (Infinite (♭ xs))) → Infinite (x ∷ xs)
+
+module Infinite-injective {a} {A : Set a} where
+
+ ∷-injective : ∀ {x : A} {xs p q} → (Infinite (x ∷ xs) ∋ x ∷ p) ≡ x ∷ q → p ≡ q
+ ∷-injective P.refl = P.refl
 
 -- Colists which are not finite are infinite.
 

@@ -6,9 +6,9 @@
 
 module Data.Char where
 
-open import Data.Nat using (ℕ)
-import Data.Nat.Properties as NatProp
-open import Data.Bool using (Bool; true; false)
+open import Data.Nat.Base using (ℕ)
+open import Data.Nat.Properties using (<-strictTotalOrder)
+open import Data.Bool.Base using (Bool; true; false)
 open import Relation.Nullary
 open import Relation.Nullary.Decidable
 open import Relation.Binary
@@ -16,18 +16,13 @@ import Relation.Binary.On as On
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_)
 open import Relation.Binary.PropositionalEquality.TrustMe
 
-open import Data.String.Core using (String; primShowChar)
-import Data.Char.Core as Core
-open Core public using (Char)
-open Core
-
-show : Char → String
-show = primShowChar
-
-toNat : Char → ℕ
-toNat = primCharToNat
+open import Data.String.Base using (String)
+open import Data.Char.Base
+open        Data.Char.Base public using (Char; show; toNat)
 
 -- Informative equality test.
+
+infix 4 _≟_
 
 _≟_ : Decidable {A = Char} _≡_
 s₁ ≟ s₂ with primCharEquality s₁ s₂
@@ -67,4 +62,4 @@ decSetoid = PropEq.decSetoid _≟_
 -- An ordering induced by the toNat function.
 
 strictTotalOrder : StrictTotalOrder _ _ _
-strictTotalOrder = On.strictTotalOrder NatProp.strictTotalOrder toNat
+strictTotalOrder = On.strictTotalOrder <-strictTotalOrder toNat

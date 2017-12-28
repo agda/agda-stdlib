@@ -6,34 +6,32 @@
 
 module Reflection where
 
-open import Data.Bool as Bool using (Bool); open Bool.Bool
-open import Data.List using (List); open Data.List.List
+open import Data.Unit.Base using (⊤)
+open import Data.Bool.Base using (Bool; false; true)
+open import Data.List.Base using (List); open Data.List.Base.List
 open import Data.Nat using (ℕ) renaming (_≟_ to _≟-ℕ_)
 open import Data.Nat.Show renaming (show to showNat)
 open import Data.Float using (Float) renaming (_≟_ to _≟f_; show to showFloat)
 open import Data.Char using (Char) renaming (_≟_ to _≟c_; show to showChar)
 open import Data.String using (String) renaming (_≟_ to _≟s_; show to showString)
+open import Data.Word using (Word64) renaming (_≟_ to _≟w_; toℕ to wordToℕ)
 open import Data.Product
 open import Function
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.PropositionalEquality.TrustMe
-open import Relation.Nullary
+open import Relation.Nullary hiding (module Dec)
 open import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product
+
+import Agda.Builtin.Reflection as Builtin
 
 ------------------------------------------------------------------------
 -- Names
 
 -- Names.
 
-postulate Name : Set
-
-{-# BUILTIN QNAME Name #-}
-
-private
-  primitive
-    primQNameEquality : Name → Name → Bool
+open Builtin public using (Name)
 
 -- Equality of names is decidable.
 
@@ -42,7 +40,7 @@ infix 4 _==_ _≟-Name_
 private
 
   _==_ : Name → Name → Bool
-  _==_ = primQNameEquality
+  _==_ = Builtin.primQNameEquality
 
 _≟-Name_ : Decidable {A = Name} _≡_
 s₁ ≟-Name s₂ with s₁ == s₂
@@ -52,40 +50,50 @@ s₁ ≟-Name s₂ with s₁ == s₂
 
 -- Names can be shown.
 
-private
-  primitive
-    primShowQName : Name → String
-
 showName : Name → String
-showName = primShowQName
+showName = Builtin.primShowQName
+
+------------------------------------------------------------------------
+-- Metavariables
+
+-- Metavariables.
+
+open Builtin public using (Meta)
+
+-- Equality of metavariables is decidable.
+
+infix 4 _==-Meta_ _≟-Meta_
+
+private
+
+  _==-Meta_ : Meta → Meta → Bool
+  _==-Meta_ = Builtin.primMetaEquality
+
+_≟-Meta_ : Decidable {A = Meta} _≡_
+s₁ ≟-Meta s₂ with s₁ ==-Meta s₂
+... | true  = yes trustMe
+... | false = no whatever
+  where postulate whatever : _
+
+-- Metas can be shown.
+
+showMeta : Meta → String
+showMeta = Builtin.primShowMeta
 
 ------------------------------------------------------------------------
 -- Terms
 
 -- Is the argument visible (explicit), hidden (implicit), or an
 -- instance argument?
-
-data Visibility : Set where
-  visible hidden instance′ : Visibility
-
-{-# BUILTIN HIDING   Visibility #-}
-{-# BUILTIN VISIBLE  visible    #-}
-{-# BUILTIN HIDDEN   hidden     #-}
-{-# BUILTIN INSTANCE instance′  #-}
+open Builtin public using (Visibility; visible; hidden; instance′)
 
 -- Arguments can be relevant or irrelevant.
-
-data Relevance : Set where
-  relevant irrelevant : Relevance
-
-{-# BUILTIN RELEVANCE  Relevance  #-}
-{-# BUILTIN RELEVANT   relevant   #-}
-{-# BUILTIN IRRELEVANT irrelevant #-}
+open Builtin public using (Relevance; relevant; irrelevant)
 
 -- Arguments.
-
-data Arg-info : Set where
-  arg-info : (v : Visibility) (r : Relevance) → Arg-info
+open Builtin public
+  renaming ( ArgInfo to Arg-info )
+  using    ( arg-info )
 
 visibility : Arg-info → Visibility
 visibility (arg-info v _) = v
@@ -93,180 +101,64 @@ visibility (arg-info v _) = v
 relevance : Arg-info → Relevance
 relevance (arg-info _ r) = r
 
-data Arg (A : Set) : Set where
-  arg : (i : Arg-info) (x : A) → Arg A
-
-{-# BUILTIN ARGINFO    Arg-info #-}
-{-# BUILTIN ARGARGINFO arg-info #-}
-{-# BUILTIN ARG        Arg      #-}
-{-# BUILTIN ARGARG     arg      #-}
-
-data Abs (A : Set) : Set where
-  -- The String here is just a hint to help display the variable.
-  -- The actual binding structure is with de Bruijn indices.
-  abs : (s : String) (x : A) → Abs A
-
-{-# BUILTIN ABS        Abs      #-}
-{-# BUILTIN ABSABS     abs      #-}
+open Builtin public using (Arg; arg)
+open Builtin public using (Abs; abs)
 
 -- Literals.
 
-data Literal : Set where
-  nat    : ℕ → Literal
-  float  : Float → Literal
-  char   : Char → Literal
-  string : String → Literal
-  name   : Name → Literal
+open Builtin public using (Literal; nat; word64; float; char; string; name; meta)
 
-{-# BUILTIN AGDALITERAL   Literal #-}
-{-# BUILTIN AGDALITNAT    nat     #-}
-{-# BUILTIN AGDALITFLOAT  float   #-}
-{-# BUILTIN AGDALITCHAR   char    #-}
-{-# BUILTIN AGDALITSTRING string  #-}
-{-# BUILTIN AGDALITQNAME  name    #-}
+-- Patterns.
 
-data Pattern : Set where
-  con  : (c : Name)(pats : List (Arg Pattern)) → Pattern
-  dot  : Pattern
-  var  : (s : String)  → Pattern
-  lit  : (l : Literal) → Pattern
-  proj : (p : Name) → Pattern
-  absurd : Pattern
-
-{-# BUILTIN AGDAPATTERN Pattern #-}
-{-# BUILTIN AGDAPATCON con #-}
-{-# BUILTIN AGDAPATDOT dot #-}
-{-# BUILTIN AGDAPATVAR var #-}
-{-# BUILTIN AGDAPATLIT lit #-}
-{-# BUILTIN AGDAPATPROJ proj #-}
-{-# BUILTIN AGDAPATABSURD absurd #-}
+open Builtin public using (Pattern; con; dot; var; lit; proj; absurd)
 
 -- Terms.
 
-mutual
-  data Term : Set where
-    -- Variable applied to arguments.
-    var     : (x : ℕ) (args : List (Arg Term)) → Term
-    -- Constructor applied to arguments.
-    con     : (c : Name) (args : List (Arg Term)) → Term
-    -- Identifier applied to arguments.
-    def     : (f : Name) (args : List (Arg Term)) → Term
-    -- Different kinds of λ-abstraction.
-    lam     : (v : Visibility) (t : Abs Term) → Term
-    -- Pattern matching λ-abstraction.
-    pat-lam : (cs : List Clause) (args : List (Arg Term)) → Term
-    -- Pi-type.
-    pi      : (t₁ : Arg Type) (t₂ : Abs Type) → Term
-    -- A sort.
-    sort    : (s : Sort) → Term
-    -- A literal.
-    lit     : (l : Literal) → Term
-    -- Anything else.
-    unknown : Term
-
-  data Type : Set where
-    el : (s : Sort) (t : Term) → Type
-
-  data Sort : Set where
-    -- A Set of a given (possibly neutral) level.
-    set     : (t : Term) → Sort
-    -- A Set of a given concrete level.
-    lit     : (n : ℕ) → Sort
-    -- Anything else.
-    unknown : Sort
-
-  data Clause : Set where
-    clause        : (pats : List (Arg Pattern))(body : Term) → Clause
-    absurd-clause : (pats : List (Arg Pattern)) → Clause
-
-{-# BUILTIN AGDASORT    Sort    #-}
-{-# BUILTIN AGDATYPE    Type    #-}
-{-# BUILTIN AGDATERM    Term    #-}
-{-# BUILTIN AGDACLAUSE  Clause  #-}
-
-{-# BUILTIN AGDATERMVAR         var     #-}
-{-# BUILTIN AGDATERMCON         con     #-}
-{-# BUILTIN AGDATERMDEF         def     #-}
-{-# BUILTIN AGDATERMLAM         lam     #-}
-{-# BUILTIN AGDATERMEXTLAM      pat-lam #-}
-{-# BUILTIN AGDATERMPI          pi      #-}
-{-# BUILTIN AGDATERMSORT        sort    #-}
-{-# BUILTIN AGDATERMLIT         lit     #-}
-{-# BUILTIN AGDATERMUNSUPPORTED unknown #-}
-{-# BUILTIN AGDATYPEEL          el      #-}
-{-# BUILTIN AGDASORTSET         set     #-}
-{-# BUILTIN AGDASORTLIT         lit     #-}
-{-# BUILTIN AGDASORTUNSUPPORTED unknown #-}
-
-{-# BUILTIN AGDACLAUSECLAUSE clause        #-}
-{-# BUILTIN AGDACLAUSEABSURD absurd-clause #-}
+open Builtin public
+  using    ( Type; Term; var; con; def; lam; pat-lam; pi; lit; meta; unknown
+           ; Sort; set
+           ; Clause; clause; absurd-clause )
+  renaming ( agda-sort to sort )
 
 Clauses = List Clause
 
 ------------------------------------------------------------------------
 -- Definitions
 
--- Function definition.
-data FunctionDef : Set where
-  fun-def : Type → Clauses → FunctionDef
-
-{-# BUILTIN AGDAFUNDEF    FunctionDef #-}
-{-# BUILTIN AGDAFUNDEFCON fun-def     #-}
-
-postulate
-  -- Data type definition.
-  Data-type : Set
-  -- Record type definition.
-  Record    : Set
-
-{-# BUILTIN AGDADATADEF   Data-type #-}
-{-# BUILTIN AGDARECORDDEF Record    #-}
-
--- Definitions.
-
-data Definition : Set where
-  function     : FunctionDef  → Definition
-  data-type    : Data-type → Definition
-  record′      : Record    → Definition
-  constructor′ : Definition
-  axiom        : Definition
-  primitive′   : Definition
-
-{-# BUILTIN AGDADEFINITION                Definition   #-}
-{-# BUILTIN AGDADEFINITIONFUNDEF          function     #-}
-{-# BUILTIN AGDADEFINITIONDATADEF         data-type    #-}
-{-# BUILTIN AGDADEFINITIONRECORDDEF       record′      #-}
-{-# BUILTIN AGDADEFINITIONDATACONSTRUCTOR constructor′ #-}
-{-# BUILTIN AGDADEFINITIONPOSTULATE       axiom        #-}
-{-# BUILTIN AGDADEFINITIONPRIMITIVE       primitive′   #-}
+open Builtin public
+  using    ( Definition
+           ; function
+           ; data-type
+           ; axiom
+           )
+  renaming ( record-type to record′
+           ; data-cons   to constructor′
+           ; prim-fun    to primitive′ )
 
 showLiteral : Literal → String
 showLiteral (nat x)    = showNat x
+showLiteral (word64 x) = showNat (wordToℕ x)
 showLiteral (float x)  = showFloat x
 showLiteral (char x)   = showChar x
 showLiteral (string x) = showString x
 showLiteral (name x)   = showName x
+showLiteral (meta x)   = showMeta x
 
-private
-  primitive
-    primQNameType        : Name → Type
-    primQNameDefinition  : Name → Definition
-    primDataConstructors : Data-type → List Name
+------------------------------------------------------------------------
+-- Type checking monad
 
--- The type of the thing with the given name.
+-- Type errors
+open Builtin public using (ErrorPart; strErr; termErr; nameErr)
 
-type : Name → Type
-type = primQNameType
+-- The monad
+open Builtin public
+  using ( TC; returnTC; bindTC; unify; typeError; inferType; checkType
+        ; normalise; catchTC; getContext; extendContext; inContext
+        ; freshName; declareDef; defineFun; getType; getDefinition
+        ; blockOnMeta; quoteTC; unquoteTC )
 
--- The definition of the thing with the given name.
-
-definition : Name → Definition
-definition = primQNameDefinition
-
--- The constructors of the given data type.
-
-constructors : Data-type → List Name
-constructors = primDataConstructors
+newMeta : Type → TC Term
+newMeta = checkType unknown
 
 ------------------------------------------------------------------------
 -- Term equality is decidable
@@ -325,6 +217,12 @@ private
   def₂ : ∀ {f f′ args args′} → def f args ≡ def f′ args′ → args ≡ args′
   def₂ refl = refl
 
+  meta₁ : ∀ {x x′ args args′} → Term.meta x args ≡ meta x′ args′ → x ≡ x′
+  meta₁ refl = refl
+
+  meta₂ : ∀ {x x′ args args′} → Term.meta x args ≡ meta x′ args′ → args ≡ args′
+  meta₂ refl = refl
+
   lam₁ : ∀ {v v′ t t′} → lam v t ≡ lam v′ t′ → v ≡ v′
   lam₁ refl = refl
 
@@ -370,14 +268,11 @@ private
   slit₁ : ∀ {x y} → Sort.lit x ≡ lit y → x ≡ y
   slit₁ refl = refl
 
-  el₁ : ∀ {s s′ t t′} → el s t ≡ el s′ t′ → s ≡ s′
-  el₁ refl = refl
-
-  el₂ : ∀ {s s′ t t′} → el s t ≡ el s′ t′ → t ≡ t′
-  el₂ refl = refl
-
   nat₁ : ∀ {x y} → nat x ≡ nat y → x ≡ y
   nat₁ refl = refl
+
+  word64₁ : ∀ {x y} → word64 x ≡ word64 y → x ≡ y
+  word64₁ refl = refl
 
   float₁ : ∀ {x y} → float x ≡ float y → x ≡ y
   float₁ refl = refl
@@ -391,6 +286,9 @@ private
   name₁ : ∀ {x y} → name x ≡ name y → x ≡ y
   name₁ refl = refl
 
+  lmeta₁ : ∀ {x y} → Literal.meta x ≡ meta y → x ≡ y
+  lmeta₁ refl = refl
+
   clause₁ : ∀ {ps ps′ b b′} → clause ps b ≡ clause ps′ b′ → ps ≡ ps′
   clause₁ refl = refl
 
@@ -399,6 +297,11 @@ private
 
   absurd-clause₁ : ∀ {ps ps′} → absurd-clause ps ≡ absurd-clause ps′ → ps ≡ ps′
   absurd-clause₁ refl = refl
+
+infix 4 _≟-Visibility_ _≟-Relevance_ _≟-Arg-info_ _≟-Lit_ _≟-AbsTerm_
+        _≟-AbsType_ _≟-ArgTerm_ _≟-ArgType_ _≟-ArgPattern_ _≟-Args_
+        _≟-Clause_ _≟-Clauses_ _≟-Pattern_ _≟-ArgPatterns_ _≟_
+        _≟-Sort_
 
 _≟-Visibility_ : Decidable (_≡_ {A = Visibility})
 visible   ≟-Visibility visible   = yes refl
@@ -425,34 +328,56 @@ arg-info v r ≟-Arg-info arg-info v′ r′ =
 
 _≟-Lit_ : Decidable (_≡_ {A = Literal})
 nat x ≟-Lit nat x₁ = Dec.map′ (cong nat) nat₁ (x ≟-ℕ x₁)
+nat x ≟-Lit word64 x₁ = no (λ ())
 nat x ≟-Lit float x₁ = no (λ ())
 nat x ≟-Lit char x₁ = no (λ ())
 nat x ≟-Lit string x₁ = no (λ ())
 nat x ≟-Lit name x₁ = no (λ ())
+nat x ≟-Lit meta x₁ = no (λ ())
+word64 x ≟-Lit word64 x₁ = Dec.map′ (cong word64) word64₁ (x ≟w x₁)
+word64 x ≟-Lit nat x₁ = no (λ ())
+word64 x ≟-Lit float x₁ = no (λ ())
+word64 x ≟-Lit char x₁ = no (λ ())
+word64 x ≟-Lit string x₁ = no (λ ())
+word64 x ≟-Lit name x₁ = no (λ ())
+word64 x ≟-Lit meta x₁ = no (λ ())
 float x ≟-Lit nat x₁ = no (λ ())
+float x ≟-Lit word64 x₁ = no (λ ())
 float x ≟-Lit float x₁ = Dec.map′ (cong float) float₁ (x ≟f x₁)
 float x ≟-Lit char x₁ = no (λ ())
 float x ≟-Lit string x₁ = no (λ ())
 float x ≟-Lit name x₁ = no (λ ())
+float x ≟-Lit meta x₁ = no (λ ())
 char x ≟-Lit nat x₁ = no (λ ())
+char x ≟-Lit word64 x₁ = no (λ ())
 char x ≟-Lit float x₁ = no (λ ())
 char x ≟-Lit char x₁ = Dec.map′ (cong char) char₁ (x ≟c x₁)
 char x ≟-Lit string x₁ = no (λ ())
 char x ≟-Lit name x₁ = no (λ ())
+char x ≟-Lit meta x₁ = no (λ ())
 string x ≟-Lit nat x₁ = no (λ ())
+string x ≟-Lit word64 x₁ = no (λ ())
 string x ≟-Lit float x₁ = no (λ ())
 string x ≟-Lit char x₁ = no (λ ())
 string x ≟-Lit string x₁ = Dec.map′ (cong string) string₁ (x ≟s x₁)
 string x ≟-Lit name x₁ = no (λ ())
+string x ≟-Lit meta x₁ = no (λ ())
 name x ≟-Lit nat x₁ = no (λ ())
+name x ≟-Lit word64 x₁ = no (λ ())
 name x ≟-Lit float x₁ = no (λ ())
 name x ≟-Lit char x₁ = no (λ ())
 name x ≟-Lit string x₁ = no (λ ())
 name x ≟-Lit name x₁ = Dec.map′ (cong name) name₁ (x ≟-Name x₁)
+name x ≟-Lit meta x₁ = no (λ ())
+meta x ≟-Lit nat x₁ = no (λ ())
+meta x ≟-Lit word64 x₁ = no (λ ())
+meta x ≟-Lit float x₁ = no (λ ())
+meta x ≟-Lit char x₁ = no (λ ())
+meta x ≟-Lit string x₁ = no (λ ())
+meta x ≟-Lit name x₁ = no (λ ())
+meta x ≟-Lit meta x₁ = Dec.map′ (cong meta) lmeta₁ (x ≟-Meta x₁)
 
 mutual
-  infix 4 _≟_ _≟-Args_ _≟-ArgType_
-
   _≟-AbsTerm_ : Decidable (_≡_ {A = Abs Term})
   abs s a ≟-AbsTerm abs s′ a′ =
     Dec.map′ (cong₂′ abs)
@@ -463,7 +388,7 @@ mutual
   abs s a ≟-AbsType abs s′ a′ =
     Dec.map′ (cong₂′ abs)
              < abs₁ , abs₂ >
-             (s ≟s s′ ×-dec a ≟-Type a′)
+             (s ≟s s′ ×-dec a ≟ a′)
 
   _≟-ArgTerm_ : Decidable (_≡_ {A = Arg Term})
   arg i a ≟-ArgTerm arg i′ a′ =
@@ -475,7 +400,7 @@ mutual
   arg i a ≟-ArgType arg i′ a′ =
     Dec.map′ (cong₂′ arg)
              < arg₁ , arg₂ >
-             (i ≟-Arg-info i′ ×-dec a ≟-Type a′)
+             (i ≟-Arg-info i′ ×-dec a ≟ a′)
 
   _≟-ArgPattern_ : Decidable (_≡_ {A = Arg Pattern})
   arg i a ≟-ArgPattern arg i′ a′ =
@@ -549,6 +474,7 @@ mutual
   var x args ≟ var x′ args′ = Dec.map′ (cong₂′ var) < var₁ , var₂ > (x ≟-ℕ x′          ×-dec args ≟-Args args′)
   con c args ≟ con c′ args′ = Dec.map′ (cong₂′ con) < con₁ , con₂ > (c ≟-Name c′       ×-dec args ≟-Args args′)
   def f args ≟ def f′ args′ = Dec.map′ (cong₂′ def) < def₁ , def₂ > (f ≟-Name f′       ×-dec args ≟-Args args′)
+  meta x args ≟ meta x′ args′ = Dec.map′ (cong₂′ meta) < meta₁ , meta₂ > (x ≟-Meta x′   ×-dec args ≟-Args args′)
   lam v t    ≟ lam v′ t′    = Dec.map′ (cong₂′ lam) < lam₁ , lam₂ > (v ≟-Visibility v′ ×-dec t ≟-AbsTerm t′)
   pat-lam cs args ≟ pat-lam cs′ args′ =
                               Dec.map′ (cong₂′ pat-lam) < pat-lam₁ , pat-lam₂ > (cs ≟-Clauses cs′ ×-dec args ≟-Args args′)
@@ -563,6 +489,7 @@ mutual
   var x args ≟ pi t₁ t₂    = no λ()
   var x args ≟ sort _      = no λ()
   var x args ≟ lit _      = no λ()
+  var x args ≟ meta _ _    = no λ()
   var x args ≟ unknown     = no λ()
   con c args ≟ var x args′ = no λ()
   con c args ≟ def f args′ = no λ()
@@ -570,6 +497,7 @@ mutual
   con c args ≟ pi t₁ t₂    = no λ()
   con c args ≟ sort _      = no λ()
   con c args ≟ lit _      = no λ()
+  con c args ≟ meta _ _    = no λ()
   con c args ≟ unknown     = no λ()
   def f args ≟ var x args′ = no λ()
   def f args ≟ con c args′ = no λ()
@@ -577,6 +505,7 @@ mutual
   def f args ≟ pi t₁ t₂    = no λ()
   def f args ≟ sort _      = no λ()
   def f args ≟ lit _      = no λ()
+  def f args ≟ meta _ _    = no λ()
   def f args ≟ unknown     = no λ()
   lam v t    ≟ var x args  = no λ()
   lam v t    ≟ con c args  = no λ()
@@ -584,6 +513,7 @@ mutual
   lam v t    ≟ pi t₁ t₂    = no λ()
   lam v t    ≟ sort _      = no λ()
   lam v t    ≟ lit _      = no λ()
+  lam v t    ≟ meta _ _    = no λ()
   lam v t    ≟ unknown     = no λ()
   pi t₁ t₂   ≟ var x args  = no λ()
   pi t₁ t₂   ≟ con c args  = no λ()
@@ -591,6 +521,7 @@ mutual
   pi t₁ t₂   ≟ lam v t     = no λ()
   pi t₁ t₂   ≟ sort _      = no λ()
   pi t₁ t₂   ≟ lit _      = no λ()
+  pi t₁ t₂   ≟ meta _ _    = no λ()
   pi t₁ t₂   ≟ unknown     = no λ()
   sort _     ≟ var x args  = no λ()
   sort _     ≟ con c args  = no λ()
@@ -598,6 +529,7 @@ mutual
   sort _     ≟ lam v t     = no λ()
   sort _     ≟ pi t₁ t₂    = no λ()
   sort _     ≟ lit _       = no λ()
+  sort _     ≟ meta _ _    = no λ()
   sort _     ≟ unknown     = no λ()
   lit _     ≟ var x args  = no λ()
   lit _     ≟ con c args  = no λ()
@@ -605,7 +537,16 @@ mutual
   lit _     ≟ lam v t     = no λ()
   lit _     ≟ pi t₁ t₂    = no λ()
   lit _     ≟ sort _      = no λ()
+  lit _     ≟ meta _ _    = no λ()
   lit _     ≟ unknown     = no λ()
+  meta _ _   ≟ var x args  = no λ()
+  meta _ _   ≟ con c args  = no λ()
+  meta _ _   ≟ def f args  = no λ()
+  meta _ _   ≟ lam v t     = no λ()
+  meta _ _   ≟ pi t₁ t₂    = no λ()
+  meta _ _   ≟ sort _      = no λ()
+  meta _ _   ≟ lit _       = no λ()
+  meta _ _   ≟ unknown     = no λ()
   unknown    ≟ var x args  = no λ()
   unknown    ≟ con c args  = no λ()
   unknown    ≟ def f args  = no λ()
@@ -613,6 +554,7 @@ mutual
   unknown    ≟ pi t₁ t₂    = no λ()
   unknown    ≟ sort _      = no λ()
   unknown    ≟ lit _       = no λ()
+  unknown    ≟ meta _ _    = no λ()
   pat-lam _ _ ≟ var x args  = no λ()
   pat-lam _ _ ≟ con c args  = no λ()
   pat-lam _ _ ≟ def f args  = no λ()
@@ -620,6 +562,7 @@ mutual
   pat-lam _ _ ≟ pi t₁ t₂    = no λ()
   pat-lam _ _ ≟ sort _      = no λ()
   pat-lam _ _ ≟ lit _       = no λ()
+  pat-lam _ _ ≟ meta _ _    = no λ()
   pat-lam _ _ ≟ unknown     = no λ()
   var x args  ≟ pat-lam _ _ = no λ()
   con c args  ≟ pat-lam _ _ = no λ()
@@ -628,10 +571,8 @@ mutual
   pi t₁ t₂    ≟ pat-lam _ _ = no λ()
   sort _      ≟ pat-lam _ _ = no λ()
   lit _       ≟ pat-lam _ _ = no λ()
+  meta _ _    ≟ pat-lam _ _ = no λ()
   unknown     ≟ pat-lam _ _ = no λ()
-
-  _≟-Type_ : Decidable (_≡_ {A = Type})
-  el s t ≟-Type el s′ t′ = Dec.map′ (cong₂′ el) < el₁ , el₂ > (s ≟-Sort s′ ×-dec t ≟ t′)
 
   _≟-Sort_ : Decidable (_≡_ {A = Sort})
   set t   ≟-Sort set t′  = Dec.map′ (cong set) set₁ (t ≟ t′)

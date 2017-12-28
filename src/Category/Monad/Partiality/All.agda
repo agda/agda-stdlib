@@ -68,7 +68,7 @@ module Reasoning {a p ℓ}
                  {_∼_ : A → A → Set ℓ}
                  (resp : P Respects flip _∼_) where
 
-  infix  2 finally
+  infix  3 finally
   infixr 2 _≡⟨_⟩_ _∼⟨_⟩_
 
   _≡⟨_⟩_ : ∀ x {y} → x ≡ y → All P y → All P x
@@ -95,8 +95,8 @@ module Reasoning-≡ {a p} {A : Set a} {P : A → Set p}
 
 module Alternative {a p : Level} where
 
+  infix  3 _⟨_⟩P
   infixr 2 _≅⟨_⟩P_ _≳⟨_⟩P_
-  infix  2 _⟨_⟩P
 
   -- All "programs".
 

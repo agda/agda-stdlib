@@ -8,42 +8,44 @@ module Data.Bin where
 
 open import Data.Nat as Nat
   using (ℕ; zero; z≤n; s≤s) renaming (suc to 1+_)
-open Nat.≤-Reasoning
-import Data.Nat.Properties as NP
-open import Data.Digit
-open import Data.Fin as Fin using (Fin; zero) renaming (suc to 1+_)
+open import Data.Digit  using (fromDigits; toDigits; Bit)
+open import Data.Fin as Fin using (Fin; zero)
+  renaming (suc to 1+_)
 open import Data.Fin.Properties as FP using (_+′_)
-open import Data.List as List hiding (downFrom)
+open import Data.List.Base as List hiding (downFrom)
 open import Function
-open import Data.Product
-open import Algebra
+open import Data.Product using (uncurry; _,_; _×_)
 open import Relation.Binary
-open import Relation.Binary.Consequences
-open import Relation.Binary.PropositionalEquality as PropEq
+open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; refl; sym)
 open import Relation.Nullary
-private
-  module BitOrd = StrictTotalOrder (FP.strictTotalOrder 2)
+open import Relation.Nullary.Decidable
+
+------------------------------------------------------------------------
+-- Bits
+
+pattern 0b = zero
+pattern 1b = 1+ zero
+pattern ⊥b = 1+ 1+ ()
 
 ------------------------------------------------------------------------
 -- The type
 
 -- A representation of binary natural numbers in which there is
--- exactly one representative for every number.
+-- exactly one representative for every number. The function toℕ below
+-- defines the meaning of Bin.
 
--- The function toℕ below defines the meaning of Bin.
-
-infix 8 _1#
-
--- bs stands for the binary number 1<reverse bs>, which is positive.
+-- `bs 1#` stands for the binary number "1<reverse bs>" e.g.
+-- `(0b ∷ [])           1#` represents "10"
+-- `(0b ∷ 1b ∷ 1b ∷ []) 1#` represents "1110"
 
 Bin⁺ : Set
 Bin⁺ = List Bit
 
+infix 8 _1#
+
 data Bin : Set where
-  -- Zero.
   0#  : Bin
-  -- bs 1# stands for the binary number 1<reverse bs>.
   _1# : (bs : Bin⁺) → Bin
 
 ------------------------------------------------------------------------
@@ -65,126 +67,44 @@ toℕ = fromDigits ∘ toBits
 -- significant one.
 
 fromBits : List Bit → Bin
-fromBits []              = 0#
-fromBits (b        ∷ bs) with fromBits bs
-fromBits (b        ∷ bs) | bs′ 1# = (b ∷ bs′) 1#
-fromBits (zero     ∷ bs) | 0#     = 0#
-fromBits (1+ zero  ∷ bs) | 0#     = [] 1#
-fromBits (1+ 1+ () ∷ bs) | _
+fromBits []        = 0#
+fromBits (b  ∷ bs) with fromBits bs
+fromBits (b  ∷ bs) | bs′ 1# = (b ∷ bs′) 1#
+fromBits (0b ∷ bs) | 0#     = 0#
+fromBits (1b ∷ bs) | 0#     = [] 1#
+fromBits (⊥b ∷ bs) | _
+
+private
+  pattern 2+_ n = 1+ 1+ n
+
+  ntoBits′ : ℕ → ℕ → List Bit
+  ntoBits′     0      _  = []
+  ntoBits′     1      0  = 0b ∷ 1b ∷ []
+  ntoBits′     1      1  = 1b ∷ []
+  ntoBits′ (2+ k)     0  = 0b ∷ ntoBits′ (1+ k) k
+  ntoBits′ (2+ k)     1  = 1b ∷ ntoBits′ (1+ k) (1+ k)
+  ntoBits′ (1+ k) (2+ n) = ntoBits′ k n
+
+  ntoBits : ℕ → List Bit
+  ntoBits n = ntoBits′ n n
 
 -- Converting from a natural number.
 
 fromℕ : ℕ → Bin
-fromℕ n = fromBits $ proj₁ $ toDigits 2 n
+fromℕ n = fromBits $ ntoBits n
 
 ------------------------------------------------------------------------
--- (Bin, _≡_, _<_) is a strict total order
+-- Order relation.
+
+-- Wrapped so that the parameters can be inferred.
 
 infix 4 _<_
-
--- Order relation. Wrapped so that the parameters can be inferred.
 
 data _<_ (b₁ b₂ : Bin) : Set where
   less : (lt : (Nat._<_ on toℕ) b₁ b₂) → b₁ < b₂
 
-private
-  <-trans : Transitive _<_
-  <-trans (less lt₁) (less lt₂) = less (NP.<-trans lt₁ lt₂)
-
-  asym : ∀ {b₁ b₂} → b₁ < b₂ → ¬ b₂ < b₁
-  asym {b₁} {b₂} (less lt) (less gt) = tri⟶asym cmp lt gt
-    where cmp = StrictTotalOrder.compare NP.strictTotalOrder
-
-  irr : ∀ {b₁ b₂} → b₁ < b₂ → b₁ ≢ b₂
-  irr lt eq = asym⟶irr (PropEq.resp₂ _<_) sym asym eq lt
-
-  irr′ : ∀ {b} → ¬ b < b
-  irr′ lt = irr lt refl
-
-  ∷∙ : ∀ {b₁ b₂ bs₁ bs₂} →
-       bs₁ 1# < bs₂ 1# → (b₁ ∷ bs₁) 1# < (b₂ ∷ bs₂) 1#
-  ∷∙ {b₁} {b₂} {bs₁} {bs₂} (less lt) = less (begin
-      1 + (m₁ + n₁ * 2)  ≤⟨ ≤-refl {x = 1} +-mono
-                              (≤-pred (FP.bounded b₁) +-mono ≤-refl) ⟩
-      1 + (1  + n₁ * 2)  ≡⟨ refl ⟩
-            suc n₁ * 2   ≤⟨ lt *-mono ≤-refl ⟩
-                n₂ * 2   ≤⟨ n≤m+n m₂ (n₂ * 2) ⟩
-           m₂ + n₂ * 2   ∎
-    )
-    where
-    open Nat; open NP
-    open DecTotalOrder decTotalOrder renaming (refl to ≤-refl)
-    m₁ = Fin.toℕ b₁;   m₂ = Fin.toℕ b₂
-    n₁ = toℕ (bs₁ 1#); n₂ = toℕ (bs₂ 1#)
-
-  ∙∷ : ∀ {b₁ b₂ bs} →
-       Fin._<_ b₁ b₂ → (b₁ ∷ bs) 1# < (b₂ ∷ bs) 1#
-  ∙∷ {b₁} {b₂} {bs} lt = less (begin
-    1 + (m₁  + n * 2)  ≡⟨ sym (+-assoc 1 m₁ (n * 2)) ⟩
-    (1 + m₁) + n * 2   ≤⟨ lt +-mono ≤-refl ⟩
-         m₂  + n * 2   ∎)
-    where
-    open Nat; open NP
-    open DecTotalOrder decTotalOrder renaming (refl to ≤-refl)
-    open CommutativeSemiring commutativeSemiring using (+-assoc)
-    m₁ = Fin.toℕ b₁; m₂ = Fin.toℕ b₂; n = toℕ (bs 1#)
-
-  1<[23] : ∀ {b} → [] 1# < (b ∷ []) 1#
-  1<[23] {b} = less (NP.n≤m+n (Fin.toℕ b) 2)
-
-  1<2+ : ∀ {bs b} → [] 1# < (b ∷ bs) 1#
-  1<2+ {[]}     = 1<[23]
-  1<2+ {b ∷ bs} = <-trans 1<[23] (∷∙ {b₁ = b} (1<2+ {bs}))
-
-  0<1 : 0# < [] 1#
-  0<1 = less (s≤s z≤n)
-
-  0<+ : ∀ {bs} → 0# < bs 1#
-  0<+ {[]}     = 0<1
-  0<+ {b ∷ bs} = <-trans 0<1 1<2+
-
-  compare⁺ : Trichotomous (_≡_ on _1#) (_<_ on _1#)
-  compare⁺ []         []         = tri≈ irr′ refl irr′
-  compare⁺ []         (b ∷ bs)   = tri<       1<2+  (irr 1<2+) (asym 1<2+)
-  compare⁺ (b ∷ bs)   []         = tri> (asym 1<2+) (irr 1<2+ ∘ sym) 1<2+
-  compare⁺ (b₁ ∷ bs₁) (b₂ ∷ bs₂) with compare⁺ bs₁ bs₂
-  ... | tri<  lt ¬eq ¬gt = tri<       (∷∙ lt)  (irr (∷∙ lt)) (asym (∷∙ lt))
-  ... | tri> ¬lt ¬eq  gt = tri> (asym (∷∙ gt)) (irr (∷∙ gt) ∘ sym) (∷∙ gt)
-  compare⁺ (b₁ ∷ bs) (b₂ ∷ .bs) | tri≈ ¬lt refl ¬gt with BitOrd.compare b₁ b₂
-  compare⁺ (b  ∷ bs) (.b ∷ .bs) | tri≈ ¬lt refl ¬gt | tri≈ ¬lt′ refl ¬gt′ =
-    tri≈ irr′ refl irr′
-  ... | tri<  lt′ ¬eq ¬gt′ = tri<       (∙∷ lt′)  (irr (∙∷ lt′)) (asym (∙∷ lt′))
-  ... | tri> ¬lt′ ¬eq  gt′ = tri> (asym (∙∷ gt′)) (irr (∙∷ gt′) ∘ sym) (∙∷ gt′)
-
-  compare : Trichotomous _≡_ _<_
-  compare 0#       0#       = tri≈ irr′ refl irr′
-  compare 0#       (bs₂ 1#) = tri<       0<+  (irr 0<+) (asym 0<+)
-  compare (bs₁ 1#) 0#       = tri> (asym 0<+) (irr 0<+ ∘ sym) 0<+
-  compare (bs₁ 1#) (bs₂ 1#) = compare⁺ bs₁ bs₂
-
-strictTotalOrder : StrictTotalOrder _ _ _
-strictTotalOrder = record
-  { Carrier            = Bin
-  ; _≈_                = _≡_
-  ; _<_                = _<_
-  ; isStrictTotalOrder = record
-    { isEquivalence = PropEq.isEquivalence
-    ; trans         = <-trans
-    ; compare       = compare
-    ; <-resp-≈      = PropEq.resp₂ _<_
-    }
-  }
-
-------------------------------------------------------------------------
--- (Bin, _≡_) is a decidable setoid
-
-decSetoid : DecSetoid _ _
-decSetoid = StrictTotalOrder.decSetoid strictTotalOrder
-
-infix 4 _≟_
-
-_≟_ : Decidable {A = Bin} _≡_
-_≟_ = DecSetoid._≟_ decSetoid
+less-injective : ∀ {b₁ b₂} {lt₁ lt₂} → (b₁ < b₂ ∋ less lt₁) ≡ less lt₂ → lt₁ ≡ lt₂
+less-injective refl = refl
 
 ------------------------------------------------------------------------
 -- Arithmetic
@@ -194,8 +114,8 @@ _≟_ = DecSetoid._≟_ decSetoid
 infixr 8 2^_
 
 2^_ : ℕ → Bin⁺
-2^ 0    = []
-2^ 1+ n = 0b ∷ 2^ n
+2^ 0      = []
+2^ (1+ n) = 0b ∷ 2^ n
 
 -- Base 2 logarithm (rounded downwards).
 
@@ -229,19 +149,19 @@ Carry = Bit
 
 addBits : Carry → Bit → Bit → Carry × Bit
 addBits c b₁ b₂ with c +′ (b₁ +′ b₂)
-... | zero          = (0b , 0b)
-... | 1+ zero       = (0b , 1b)
-... | 1+ 1+ zero    = (1b , 0b)
-... | 1+ 1+ 1+ zero = (1b , 1b)
+... | zero           = (0b , 0b)
+... | 1+ zero        = (0b , 1b)
+... | 1+ 1+ zero     = (1b , 0b)
+... | 1+ 1+ 1+ zero  = (1b , 1b)
 ... | 1+ 1+ 1+ 1+ ()
 
 addCarryToBitList : Carry → List Bit → List Bit
-addCarryToBitList zero      bs             = bs
-addCarryToBitList (1+ zero) []             = 1b ∷ []
-addCarryToBitList (1+ zero) (zero    ∷ bs) = 1b ∷ bs
-addCarryToBitList (1+ zero) (1+ zero ∷ bs) = 0b ∷ addCarryToBitList 1b bs
-addCarryToBitList (1+ 1+ ()) _
-addCarryToBitList _ ((1+ 1+ ()) ∷ _)
+addCarryToBitList 0b bs        = bs
+addCarryToBitList 1b []        = 1b ∷ []
+addCarryToBitList 1b (0b ∷ bs) = 1b ∷ bs
+addCarryToBitList 1b (1b ∷ bs) = 0b ∷ addCarryToBitList 1b bs
+addCarryToBitList ⊥b _
+addCarryToBitList _  (⊥b ∷ _)
 
 addBitLists : Carry → List Bit → List Bit → List Bit
 addBitLists c []         bs₂        = addCarryToBitList c bs₂
@@ -259,14 +179,14 @@ m + n = fromBits (addBitLists 0b (toBits m) (toBits n))
 infixl 7 _*_
 
 _*_ : Bin → Bin → Bin
-0#                 * n = 0#
-[]              1# * n = n
+0#                  * n = 0#
+[]               1# * n = n
 -- (b + 2 * bs 1#) * n = b * n + 2 * (bs 1# * n)
-(b        ∷ bs) 1# * n with bs 1# * n
-(b        ∷ bs) 1# * n | 0#     = 0#
-(zero     ∷ bs) 1# * n | bs' 1# = (0b ∷ bs') 1#
-(1+ zero  ∷ bs) 1# * n | bs' 1# = n + (0b ∷ bs') 1#
-((1+ 1+ ()) ∷ _) 1# * _ | _
+(b  ∷ bs) 1# * n with bs 1# * n
+(b  ∷ bs) 1# * n | 0#     = 0#
+(0b ∷ bs) 1# * n | bs' 1# = (0b ∷ bs') 1#
+(1b ∷ bs) 1# * n | bs' 1# = n + (0b ∷ bs') 1#
+(⊥b ∷ _)  1# * _ | _
 
 -- Successor.
 
@@ -281,10 +201,10 @@ suc n = [] 1# + n
 -- Predecessor.
 
 pred : Bin⁺ → Bin
-pred []              = 0#
-pred (zero     ∷ bs) = pred bs *2+1
-pred (1+ zero  ∷ bs) = (zero ∷ bs) 1#
-pred (1+ 1+ () ∷ bs)
+pred []        = 0#
+pred (0b ∷ bs) = pred bs *2+1
+pred (1b ∷ bs) = (zero ∷ bs) 1#
+pred (⊥b ∷ bs)
 
 -- downFrom n enumerates all numbers from n - 1 to 0. This function is
 -- linear in n. Analysis: fromℕ takes linear time, and the preds used
@@ -305,10 +225,6 @@ downFrom n = helper n (fromℕ n)
 ------------------------------------------------------------------------
 -- Tests
 
--- The tests below have been commented out since (at least one version
--- of) Agda is too slow or memory-hungry to type check them.
-
-{-
 -- The tests below are run when this module is type checked.
 
 -- First some test helpers:
@@ -322,17 +238,17 @@ private
   nats = List.downFrom testLimit
 
   nats⁺ : List ℕ
-  nats⁺ = filter (λ n → decToBool (Nat._≤?_ 1 n)) nats
+  nats⁺ = filter (1 Nat.≤?_) nats
 
   natPairs : List (ℕ × ℕ)
-  natPairs = zip nats (reverse nats)
+  natPairs = List.zip nats (reverse nats)
 
   _=[_]_ : (ℕ → ℕ) → List ℕ → (Bin → Bin) → Set
-  f =[ ns ] g = map f ns ≡ map (toℕ ∘ g ∘ fromℕ) ns
+  f =[ ns ] g = List.map f ns ≡ List.map (toℕ ∘ g ∘ fromℕ) ns
 
   _=[_]₂_ : (ℕ → ℕ → ℕ) → List (ℕ × ℕ) → (Bin → Bin → Bin) → Set
   f =[ ps ]₂ g =
-    map (uncurry f) ps ≡ map (toℕ ∘ uncurry (g on fromℕ)) ps
+    List.map (uncurry f) ps ≡ List.map (toℕ ∘ uncurry (g on fromℕ)) ps
 
 -- And then the tests:
 
@@ -366,7 +282,6 @@ private
   test-pred : Nat.pred =[ nats⁺ ] (pred ∘ drop-1#)
   test-pred = refl
 
-  test-downFrom : map toℕ (downFrom testLimit) ≡
+  test-downFrom : List.map toℕ (downFrom testLimit) ≡
                   List.downFrom testLimit
   test-downFrom = refl
--}
