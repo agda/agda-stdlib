@@ -247,3 +247,13 @@ inspect f x = [ refl ]
 
 -- f x y with g x | inspect g x
 -- f x y | c z | [ eq ] = ...
+------------------------------------------------------------------------
+-- Heterogeneous proof irrelevance
+
+hir : ∀{ℓ}{A A₁ A₂ A₃ : Set ℓ}{a : A}{a₁ : A₁}{a₂ : A₂}{a₃ : A₃}
+           {p : a ≅ a₁}{q : a₂ ≅ a₃} → a ≅ a₂ → p ≅ q
+hir {p = refl} {refl} refl = refl
+
+hir' : ∀{ℓ}{A A₁ A₂ A₃ : Set ℓ}{a : A}{a₁ : A₁}{a₂ : A₂}{a₃ : A₃}
+           {p : a ≅ a₁}{q : a₂ ≅ a₃} → a₁ ≅ a₃ → p ≅ q
+hir' {p = refl} {refl} refl = refl
