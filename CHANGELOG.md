@@ -135,6 +135,31 @@ but they may be removed in some future release of the library.
   proof-irrelevance-[]= ↦ []=-irrelevance
   ```
 
+* The following renaming has occured in `Induction.Nat` to improve consistency across the library:
+  ```agda
+  rec-builder      ↦ recBuilder
+  cRec-builder     ↦ cRecBuilder
+  <′-rec-builder   ↦ <′-recBuilder
+  <-rec-builder    ↦ <-recBuilder
+  ≺-rec-builder    ↦ ≺-recBuilder
+  <′-well-founded  ↦ <′-wellFounded
+  <′-well-founded′ ↦ <′-wellFounded′
+  <-well-founded   ↦ <-wellFounded
+  ≺-well-founded   ↦ ≺-wellFounded
+  ```
+
+* The following renaming has occured in `Induction.WellFounded` to improve consistency across the library:
+  ```agda
+  Well-founded                       ↦ WellFounded
+  Some.wfRec-builder                 ↦ Some.wfRecBuilder
+  All.wfRec-builder                  ↦ All.wfRecBuilder
+  Subrelation.well-founded           ↦ Subrelation.wellFounded
+  InverseImage.well-founded          ↦ InverseImage.wellFounded
+  TransitiveClosure.downwards-closed ↦ TransitiveClosure.downwardsClosed
+  TransitiveClosure.well-founded     ↦ TransitiveClosure.wellFounded
+  Lexicographic.well-founded         ↦ Lexicographic.wellFounded
+  ```
+
 * The following renaming has occurred in `Relation.Binary.PropositionalEquality` to improve consistency across the library:
   ```agda
   proof-irrelevance     ↦ ≡-irrelevance
