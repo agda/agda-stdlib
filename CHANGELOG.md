@@ -57,6 +57,8 @@ Non-backwards compatible changes
 
 * The proofs that were called `+-monoˡ-<` and `+-monoʳ-<` have been renamed `+-mono-<-≤` and `= +-mono-≤-<` respectively. The actual proofs of left and right monotonicity of `_+_` now use the original two names.
 
+* Moved `applicative` and `functor` from `Data.Vec` and `lookup-morphism` and `lookup-functor-morphism` from `Data.Vec.Properties` to new module `Data.Vec.Categorical`.
+
 Deprecated features
 -------------------
 
