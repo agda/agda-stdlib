@@ -136,10 +136,25 @@ but they may be removed in some future release of the library.
   ```
   bringing it into line with the equivalent function in Haskell.
 
+* The following renaming has occured in `Data.List.Properties` to improve consistency across the library:
+  ```agda
+  right-identity-unique ↦ ++-identityʳ-unique
+  left-identity-unique  ↦ ++-identityˡ-unique
+  ```
+
 * The following renaming has occurred in `Data.Nat.Properties` to improve consistency across the library:
   ```agda
   ¬i+1+j≤i ↦ i+1+j≰i
   ≤-steps  ↦ ≤-stepsˡ
+  ```
+
+* The following renaming has occurred in `Data.Sign.Properties` to improve consistency across the library:
+  ```agda
+  opposite-not-equal ↦ s≢opposite[s]
+  opposite-cong      ↦ opposite-injective
+  cancel-*-left      ↦ *-cancelˡ-≡
+  cancel-*-right     ↦ *-cancelʳ-≡
+  *-cancellative     ↦ *-cancel-≡
   ```
 
 * The following renaming has occurred in `Data.Vec.Properties` to improve consistency across the library:
@@ -276,6 +291,11 @@ Backwards compatible changes
   ∷-injectiveʳ  : x ∷ xs ≡ y List.∷ ys → xs ≡ ys
   ∷ʳ-injectiveˡ : xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
   ∷ʳ-injectiveʳ : xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
+
+  ++-identityˡ  : LeftIdentity _≡_ [] _++_
+  ++-identityʳ  : RightIdentity _≡_ [] _++_
+  ++-identity   : Identity _≡_ [] _++_
+
   filter-all    : All P xs → dfilter P? xs ≡ xs
   filter-none   : All (¬_ ∘ P) xs → dfilter P? xs ≡ []
   ```
@@ -380,6 +400,14 @@ Backwards compatible changes
   []-injective : (Refl _∼_ x y ∋ [ p ]) ≡ [ q ] → p ≡ q
   ```
 
+* Added new proofs to `Data.Sign`:
+  ```agda
+  *-isSemigroup : IsSemigroup _≡_ _*_
+  *-semigroup   : Semigroup _ _
+  *-isMonoid    : IsMonoid _≡_ _*_ +
+  *-monoid      : Monoid _ _
+  ```
+
 * Added new proofs to `Data.Star.Properties`:
   ```agda
   ◅-injectiveˡ : (Star T i k ∋ x ◅ xs) ≡ y ◅ ys → x ≡ y
@@ -471,7 +499,7 @@ Backwards compatible changes
   isDecTotalOrder : IsStrictTotalOrder _≈_ _<_ → IsDecTotalOrder _≈_ _≤_
   ```
 
-* Added new syntax and relations to `Relation.Unary`:
+* Added new syntax, relations and proofs to `Relation.Unary`:
   ```agda
   syntax Universal P = ∀[ P ]
 
@@ -488,7 +516,9 @@ Backwards compatible changes
   P ⊄′ Q = ¬ (P ⊂′ Q)
   P ⊅′ Q = ¬ (P ⊃′ Q)
 
-  f ⊢ P = λ x → P (f x)
+  f ⊢ P  = λ x → P (f x)
+
+  ∁? : Decidable P → Decidable (∁ P)
   ```
 
 Version 0.14
