@@ -113,7 +113,7 @@ Non-backwards compatible changes
 * Moved the proof `eq?` from `Data.Nat` to `Data.Nat.Properties`
 
 * The proofs that were called `+-monoˡ-<` and `+-monoʳ-<` in `Data.Nat.Properties`
-  have been renamed `+-mono-<-≤` and `= +-mono-≤-<` respectively. The original 
+  have been renamed `+-mono-<-≤` and `= +-mono-≤-<` respectively. The original
   names are now used for proofs of left and right monotonicity of `_+_`.
 
 * Moved the proof `monoid` from `Data.List` to `++-monoid` in `Data.List.Properties`.

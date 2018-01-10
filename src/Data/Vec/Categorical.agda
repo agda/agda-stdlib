@@ -16,15 +16,15 @@ open import Data.Fin using (Fin)
 open import Data.Vec
 open import Data.Vec.Properties
 
+functor : RawFunctor (λ (A : Set a) → Vec A n)
+functor = record
+  { _<$>_ = map
+  }
+
 applicative : RawApplicative (λ (A : Set a) → Vec A n)
 applicative = record
   { pure = replicate
   ; _⊛_  = _⊛_
-  }
-
-functor : RawFunctor (λ (A : Set a) → Vec A n)
-functor = record
-  { _<$>_ = map
   }
 
 -- lookup is a functor morphism from Vec to Identity.
