@@ -9,7 +9,6 @@
 
 module Data.List.Any.Properties where
 
-open import Algebra
 open import Category.Monad
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties
@@ -18,7 +17,7 @@ open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List as List
 open import Data.List.Categorical using (monad)
 open import Data.List.Any as Any using (Any; here; there)
-open import Data.List.Any.Membership.Propositional
+open import Data.List.Membership.Propositional
 open import Data.List.Relation.Pointwise
   using ([]; _∷_) renaming (Rel to ListRel)
 open import Data.Nat using (zero; suc; _<_; z≤n; s≤s)
@@ -38,8 +37,8 @@ open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; inspect)
 open import Relation.Unary
   using (Pred; _⟨×⟩_; _⟨→⟩_) renaming (_⊆_ to _⋐_)
-
 open Related.EquationalReasoning
+
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
 
@@ -129,14 +128,14 @@ Any↔ {P = P} {xs} = record
       }
   }
 
-------------------------------------------------------------------------
 -- Any is a congruence
 
 Any-cong : ∀ {k ℓ} {A : Set ℓ} {P₁ P₂ : A → Set ℓ} {xs₁ xs₂ : List A} →
-           (∀ x → Related k (P₁ x) (P₂ x)) → xs₁ ∼[ k ] xs₂ →
+           (∀ x → Related k (P₁ x) (P₂ x)) →
+           Preorder._∼_ (Related.InducedPreorder₂ k {A = A} _∈_) xs₁ xs₂ →
            Related k (Any P₁ xs₁) (Any P₂ xs₂)
 Any-cong {P₁ = P₁} {P₂} {xs₁} {xs₂} P₁↔P₂ xs₁≈xs₂ =
-  Any P₁ xs₁                ↔⟨ sym $ Any↔ {P = P₁} ⟩
+  Any P₁ xs₁                ↔⟨ sym (Any↔ {P = P₁}) ⟩
   (∃ λ x → x ∈ xs₁ × P₁ x)  ∼⟨ Σ.cong Inv.id (xs₁≈xs₂ ×-cong P₁↔P₂ _) ⟩
   (∃ λ x → x ∈ xs₂ × P₂ x)  ↔⟨ Any↔ {P = P₂} ⟩
   Any P₂ xs₂                ∎
@@ -627,6 +626,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   Any (λ f → Any P (xs >>= return ∘ f)) fs    ↔⟨ >>=↔ {ℓ = ℓ} {p = ℓ} ⟩
   Any P (fs ⊛ xs)                             ∎
 
+
 -- An alternative introduction rule for _⊛_.
 
 ⊛⁺′ : ∀ {ℓ} {A B : Set ℓ} {P : A → Set ℓ} {Q : B → Set ℓ}
@@ -635,6 +635,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ⊛⁺′ {ℓ} pq p =
   Inverse.to (⊛↔ {ℓ = ℓ}) ⟨$⟩
     Any.map (λ pq → Any.map (λ {x} → pq {x}) p) pq
+
 
 -- _⊗_.
 

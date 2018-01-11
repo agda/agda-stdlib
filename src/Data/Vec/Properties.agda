@@ -10,7 +10,7 @@ open import Data.Empty using (⊥-elim)
 open import Data.Fin as Fin using (Fin; zero; suc; toℕ; fromℕ)
 open import Data.Fin.Properties using (_+′_)
 open import Data.List.Any using (here; there)
-import Data.List.Any.Membership.Propositional as List
+import Data.List.Membership.Propositional as List
 open import Data.Nat
 open import Data.Nat.Properties using (+-assoc)
 open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂; <_,_>)

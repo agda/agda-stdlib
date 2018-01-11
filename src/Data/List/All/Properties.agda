@@ -11,7 +11,7 @@ open import Data.Bool.Properties
 open import Data.Empty
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base
-open import Data.List.Any.Membership.Propositional
+open import Data.List.Membership.Propositional
 open import Data.List.All as All using (All; []; _∷_)
 open import Data.List.Any using (Any; here; there)
 open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
