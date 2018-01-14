@@ -51,11 +51,18 @@ module _ {a b} {A : Set a} {B : Set b} where
   map ~⇒~′ []             = []
   map ~⇒~′ (x∼y ∷ xs~ys) = ~⇒~′ x∼y ∷ map ~⇒~′ xs~ys
 
+  gmap′ : ∀ {c d ℓ} {C : Set c} {D : Set d} {_~_ : REL A C ℓ} {_~′_ : REL B D ℓ}
+            {f : A → B} {g : C → D} →
+          (∀ {x y} → x ~ y → f x ~′ g y) →
+          ∀ {n xs ys} → Pointwise _~_ {n} xs ys →
+            Pointwise _~′_ (Vec.map f xs) (Vec.map g ys)
+  gmap′ ~⇒~′ []             = []
+  gmap′ ~⇒~′ (x∼y ∷ xs~ys) = ~⇒~′ x∼y ∷ gmap′ ~⇒~′ xs~ys
+
   gmap : ∀ {ℓ} {_~_ : Rel A ℓ} {_~′_ : Rel B ℓ} {f : A → B} {n} →
          _~_ =[ f ]⇒ _~′_ →
          Pointwise _~_ =[ Vec.map {n = n} f ]⇒ Pointwise _~′_
-  gmap ~⇒~′ []             = []
-  gmap ~⇒~′ (x∼y ∷ xs~ys) = ~⇒~′ x∼y ∷ gmap ~⇒~′ xs~ys
+  gmap ~⇒~′ xs~ys = gmap′ ~⇒~′ xs~ys
 
 -- Appending
 module _ {a b ℓ} {A : Set a} {B : Set b} {_~_ : REL A B ℓ} where
