@@ -3,7 +3,6 @@ module Data.Fin.Vec where
 open import Relation.Binary.PropositionalEquality
   as P using (_≡_; _→-setoid_; _≗_)
 open import Relation.Binary using (Setoid)
-open import Relation.Binary.Sigma.Propositional as OverΣ using (OverΣ)
 
 open import Function using (_∘_)
 open import Function.Inverse using (Inverse; _↔_)
@@ -14,6 +13,7 @@ private
     open import Data.List public
 open List using (List; _∷_; [])
 open import Data.Product as Product using (Σ; ∃; _,_; proj₁; proj₂)
+open import Data.Product.Relation.SigmaPropositional as OverΣ using (OverΣ)
 open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Data.Maybe using (Maybe; just; nothing; maybe)
 open import Data.Nat using (ℕ)

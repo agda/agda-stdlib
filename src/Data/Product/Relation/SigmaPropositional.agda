@@ -1,4 +1,4 @@
-module Relation.Binary.Sigma.Propositional where
+module Data.Product.Relation.SigmaPropositional where
 
 open import Level using (_⊔_)
 
