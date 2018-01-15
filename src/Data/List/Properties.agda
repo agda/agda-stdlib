@@ -18,6 +18,7 @@ open import Data.List.All using (All; []; _∷_)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat
 open import Data.Nat.Properties
+open import Data.Fin using (Fin)
 open import Data.Product as Prod hiding (map)
 open import Function
 open import Algebra.FunctionProperties
@@ -357,6 +358,13 @@ scanl-defn f e (x ∷ xs) = P.cong (e ∷_) (begin
      map (foldl f e) (map (x ∷_) (inits xs))
   ∎)
   where open P.≡-Reasoning
+
+------------------------------------------------------------------------
+-- tabulate
+
+tabulate-cong : ∀ {a} {A : Set a} {n} {f g : Fin n → A} → f ≗ g → tabulate f ≡ tabulate g
+tabulate-cong {n = ℕ.zero} p = P.refl
+tabulate-cong {n = ℕ.suc n} p = P.cong₂ _∷_ (p Fin.zero) (tabulate-cong (p ∘ Fin.suc))
 
 ------------------------------------------------------------------------
 -- reverse
