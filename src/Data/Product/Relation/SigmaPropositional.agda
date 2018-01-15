@@ -1,4 +1,4 @@
-module Relation.Binary.Sigma.Propositional where
+module Data.Product.Relation.SigmaPropositional where
 
 open import Level using (_⊔_)
 
@@ -6,7 +6,7 @@ open import Relation.Binary as B using (REL; Rel)
 open import Relation.Binary.PropositionalEquality
   as P
   using (_≡_; _→-setoid_; _≗_)
-import Relation.Binary.Sigma.Pointwise as PW
+import Data.Product.Relation.SigmaPointwise as PW
 
 open import Data.Product using (Σ; ∃; _,_)
 

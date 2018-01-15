@@ -12,11 +12,11 @@ open import Data.List.Any
 open import Data.List.Any.Membership.Propositional
 open import Data.Fin.Vec
 open import Data.Maybe using (Maybe; just; nothing; maybe)
+import Data.Product.Relation.SigmaPropositional as OverΣ
+open OverΣ using (OverΣ)
 
 open import Relation.Binary using (Setoid)
 import Relation.Binary.EqReasoning as EqReasoning
-import Relation.Binary.Sigma.Propositional as OverΣ
-open OverΣ using (OverΣ)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
 import Relation.Binary.Indexed as I
 import Function.Related as FR
