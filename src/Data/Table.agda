@@ -1,3 +1,11 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Fixed-size tables of values, implemented as functions from 'Fin n'.
+-- Similar to 'Data.Vec', but focusing on ease of retrieval instead of
+-- ease of adding and removing elements.
+------------------------------------------------------------------------
+
 module Data.Table where
 
 open import Relation.Binary.PropositionalEquality
