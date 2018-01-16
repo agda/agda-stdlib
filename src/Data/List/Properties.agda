@@ -341,9 +341,13 @@ module _ {a b} {A : Set a} {B : Set b} where
 
 -- tabulate
 
-tabulate-cong : ∀ {a} {A : Set a} {n} {f g : Fin n → A} → f ≗ g → tabulate f ≡ tabulate g
+tabulate-cong : ∀ {n a} {A : Set a} {f g : Fin n → A} → f ≗ g → tabulate f ≡ tabulate g
 tabulate-cong {n = ℕ.zero} p = P.refl
 tabulate-cong {n = ℕ.suc n} p = P.cong₂ _∷_ (p Fin.zero) (tabulate-cong (p ∘ Fin.suc))
+
+tabulate-lookup : ∀ {a} {A : Set a} {xs : List A} → tabulate (lookup xs) ≡ xs
+tabulate-lookup {xs = []} = refl
+tabulate-lookup {xs = x ∷ xs} = P.cong₂ _∷_ P.refl tabulate-lookup
 
 -- take, drop, splitAt
 
