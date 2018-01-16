@@ -560,6 +560,10 @@ Backwards compatible changes
   ∁? : Decidable P → Decidable (∁ P)
   ```
 
+* Added missing bindings to functions on Char - character class checks and conversion from Nat:
+  `isLower, isDigit, isAlpha, isSpace, isAscii, isLatin1, isPrint, isHexDigit, fromNat`.
+
+
 Version 0.14
 ============
 
