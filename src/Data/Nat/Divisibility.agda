@@ -118,48 +118,48 @@ n|m*n m = divides m refl
 ------------------------------------------------------------------------
 -- Operators and divisibility
 
-∣m∣n⇒∣m+n : ∀ {i m n} → i ∣ m → i ∣ n → i ∣ m + n
-∣m∣n⇒∣m+n (divides p refl) (divides q refl) =
-  divides (p + q) (sym (*-distribʳ-+ _ p q))
+module _ where
 
-∣m+n|m⇒|n : ∀ {i m n} → i ∣ m + n → i ∣ m → i ∣ n
-∣m+n|m⇒|n {i} {m} {n} (divides p m+n≡p*i) (divides q m≡q*i) =
-  divides (p ∸ q) (begin
-    n             ≡⟨ sym (m+n∸n≡m n m) ⟩
-    n + m ∸ m     ≡⟨ cong (_∸ m) (+-comm n m) ⟩
-    m + n ∸ m     ≡⟨ cong₂ _∸_ m+n≡p*i m≡q*i ⟩
-    p * i ∸ q * i ≡⟨ sym (*-distribʳ-∸ i p q) ⟩
-    (p ∸ q) * i   ∎)
-  where open PropEq.≡-Reasoning
+  open PropEq.≡-Reasoning
 
-∣m∸n∣n⇒∣m : ∀ i {m n} → n ≤ m → i ∣ m ∸ n → i ∣ n → i ∣ m
-∣m∸n∣n⇒∣m i {m} {n} n≤m (divides p m∸n≡p*i) (divides q n≡q*o) =
-  divides (p + q) (begin
-    m             ≡⟨ sym (m+n∸m≡n n≤m) ⟩
-    n + (m ∸ n)   ≡⟨ +-comm n (m ∸ n) ⟩
-    m ∸ n + n     ≡⟨ cong₂ _+_ m∸n≡p*i n≡q*o ⟩
-    p * i + q * i ≡⟨ sym (*-distribʳ-+ i p q)  ⟩
-    (p + q) * i   ∎)
-  where open PropEq.≡-Reasoning
+  ∣m∣n⇒∣m+n : ∀ {i m n} → i ∣ m → i ∣ n → i ∣ m + n
+  ∣m∣n⇒∣m+n (divides p refl) (divides q refl) =
+    divides (p + q) (sym (*-distribʳ-+ _ p q))
 
-*-cong : ∀ {i j} k → i ∣ j → k * i ∣ k * j
-*-cong {i} {j} k (divides q j≡q*i) = divides q (begin
-  k * j        ≡⟨ cong (_*_ k) j≡q*i ⟩
-  k * (q * i)  ≡⟨ sym (*-assoc k q i) ⟩
-  (k * q) * i  ≡⟨ cong (_* i) (*-comm k q) ⟩
-  (q * k) * i  ≡⟨ *-assoc q k i ⟩
-  q * (k * i)  ∎)
-  where open PropEq.≡-Reasoning
+  ∣m+n|m⇒|n : ∀ {i m n} → i ∣ m + n → i ∣ m → i ∣ n
+  ∣m+n|m⇒|n {i} {m} {n} (divides p m+n≡p*i) (divides q m≡q*i) =
+    divides (p ∸ q) $ begin
+      n             ≡⟨ sym (m+n∸n≡m n m) ⟩
+      n + m ∸ m     ≡⟨ cong (_∸ m) (+-comm n m) ⟩
+      m + n ∸ m     ≡⟨ cong₂ _∸_ m+n≡p*i m≡q*i ⟩
+      p * i ∸ q * i ≡⟨ sym (*-distribʳ-∸ i p q) ⟩
+      (p ∸ q) * i   ∎
 
-/-cong : ∀ {i j} k → suc k * i ∣ suc k * j → i ∣ j
-/-cong {i} {j} k (divides q eq) =
-  divides q (*-cancelʳ-≡ j (q * i) (begin
-    j * (suc k)        ≡⟨ *-comm j (suc k) ⟩
-    (suc k) * j        ≡⟨ eq ⟩
-    q * ((suc k) * i)  ≡⟨ cong (q *_) (*-comm (suc k) i) ⟩
-    q * (i * (suc k))  ≡⟨ sym (*-assoc q i (suc k)) ⟩
-    (q * i) * (suc k)  ∎))
-  where open PropEq.≡-Reasoning
+  ∣m∸n∣n⇒∣m : ∀ i {m n} → n ≤ m → i ∣ m ∸ n → i ∣ n → i ∣ m
+  ∣m∸n∣n⇒∣m i {m} {n} n≤m (divides p m∸n≡p*i) (divides q n≡q*o) =
+    divides (p + q) $ begin
+      m             ≡⟨ sym (m+n∸m≡n n≤m) ⟩
+      n + (m ∸ n)   ≡⟨ +-comm n (m ∸ n) ⟩
+      m ∸ n + n     ≡⟨ cong₂ _+_ m∸n≡p*i n≡q*o ⟩
+      p * i + q * i ≡⟨ sym (*-distribʳ-+ i p q)  ⟩
+      (p + q) * i   ∎
+
+  *-cong : ∀ {i j} k → i ∣ j → k * i ∣ k * j
+  *-cong {i} {j} k (divides q j≡q*i) = divides q $ begin
+    k * j        ≡⟨ cong (_*_ k) j≡q*i ⟩
+    k * (q * i)  ≡⟨ sym (*-assoc k q i) ⟩
+    (k * q) * i  ≡⟨ cong (_* i) (*-comm k q) ⟩
+    (q * k) * i  ≡⟨ *-assoc q k i ⟩
+    q * (k * i)  ∎
+
+  /-cong : ∀ {i j} k → suc k * i ∣ suc k * j → i ∣ j
+  /-cong {i} {j} k (divides q eq) =
+    divides q (*-cancelʳ-≡ j (q * i) (begin
+      j * (suc k)        ≡⟨ *-comm j (suc k) ⟩
+      (suc k) * j        ≡⟨ eq ⟩
+      q * ((suc k) * i)  ≡⟨ cong (q *_) (*-comm (suc k) i) ⟩
+      q * (i * (suc k))  ≡⟨ sym (*-assoc q i (suc k)) ⟩
+      (q * i) * (suc k)  ∎))
 
 -- If the remainder after division is non-zero, then the divisor does
 -- not divide the dividend.
