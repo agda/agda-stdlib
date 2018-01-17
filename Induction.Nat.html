@@ -9,7 +9,7 @@
 
 <a id="258" class="Keyword">open</a> <a id="263" class="Keyword">import</a> <a id="270" href="Function.html" class="Module">Function</a>
 <a id="279" class="Keyword">open</a> <a id="284" class="Keyword">import</a> <a id="291" href="Data.Nat.html" class="Module">Data.Nat</a>
-<a id="300" class="Keyword">open</a> <a id="305" class="Keyword">import</a> <a id="312" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="332" class="Keyword">using</a> <a id="338" class="Symbol">(</a><a id="339" href="Data.Nat.Properties.html#6797" class="Function">≤⇒≤′</a><a id="343" class="Symbol">)</a>
+<a id="300" class="Keyword">open</a> <a id="305" class="Keyword">import</a> <a id="312" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="332" class="Keyword">using</a> <a id="338" class="Symbol">(</a><a id="339" href="Data.Nat.Properties.html#6811" class="Function">≤⇒≤′</a><a id="343" class="Symbol">)</a>
 <a id="345" class="Keyword">open</a> <a id="350" class="Keyword">import</a> <a id="357" href="Data.Fin.html" class="Module">Data.Fin</a> <a id="366" class="Keyword">using</a> <a id="372" class="Symbol">(</a><a id="373" href="Data.Fin.html#5548" class="Datatype Operator">_≺_</a><a id="376" class="Symbol">)</a>
 <a id="378" class="Keyword">open</a> <a id="383" class="Keyword">import</a> <a id="390" href="Data.Fin.Properties.html" class="Module">Data.Fin.Properties</a>
 <a id="410" class="Keyword">open</a> <a id="415" class="Keyword">import</a> <a id="422" href="Data.Product.html" class="Module">Data.Product</a>
@@ -78,7 +78,7 @@
 <a id="2145" href="Induction.Nat.html#2113" class="Function">&lt;-Rec</a> <a id="2151" class="Symbol">=</a> <a id="2153" href="Induction.WellFounded.html#530" class="Function">WfRec</a> <a id="2159" href="Data.Nat.Base.html#920" class="Function Operator">_&lt;_</a>
 
 <a id="2164" href="Induction.Nat.html#2164" class="Function">&lt;-well-founded</a> <a id="2179" class="Symbol">:</a> <a id="2181" href="Induction.WellFounded.html#1012" class="Function">Well-founded</a> <a id="2194" href="Data.Nat.Base.html#920" class="Function Operator">_&lt;_</a>
-<a id="2198" href="Induction.Nat.html#2164" class="Function">&lt;-well-founded</a> <a id="2213" class="Symbol">=</a> <a id="2215" href="Induction.WellFounded.html#2302" class="Function">Subrelation.well-founded</a> <a id="2240" href="Data.Nat.Properties.html#6797" class="Function">≤⇒≤′</a> <a id="2245" href="Induction.Nat.html#1552" class="Function">&lt;′-well-founded</a>
+<a id="2198" href="Induction.Nat.html#2164" class="Function">&lt;-well-founded</a> <a id="2213" class="Symbol">=</a> <a id="2215" href="Induction.WellFounded.html#2302" class="Function">Subrelation.well-founded</a> <a id="2240" href="Data.Nat.Properties.html#6811" class="Function">≤⇒≤′</a> <a id="2245" href="Induction.Nat.html#1552" class="Function">&lt;′-well-founded</a>
 
 <a id="2262" class="Keyword">module</a> <a id="2269" href="Induction.Nat.html#2269" class="Module">_</a> <a id="2271" class="Symbol">{</a><a id="2272" href="Induction.Nat.html#2272" class="Bound">ℓ</a><a id="2273" class="Symbol">}</a> <a id="2275" class="Keyword">where</a>
   <a id="2283" class="Keyword">open</a> <a id="2288" href="Induction.WellFounded.html#1554" class="Module">WF.All</a> <a id="2295" href="Induction.Nat.html#2164" class="Function">&lt;-well-founded</a> <a id="2310" href="Induction.Nat.html#2272" class="Bound">ℓ</a> <a id="2312" class="Keyword">public</a>
