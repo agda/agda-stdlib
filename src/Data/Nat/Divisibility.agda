@@ -109,6 +109,9 @@ n∣n = ∣-refl
 n|m*n : ∀ m {n} → n ∣ m * n
 n|m*n m = divides m refl
 
+m|m*n : ∀ {m} n → m ∣ m * n
+m|m*n n = divides n (*-comm _ n)
+
 0∣⇒≡0 : ∀ {n} → 0 ∣ n → n ≡ 0
 0∣⇒≡0 {n} 0∣n = ∣-antisym (n ∣0) 0∣n
 
@@ -121,6 +124,20 @@ n|m*n m = divides m refl
 module _ where
 
   open PropEq.≡-Reasoning
+
+  ∣m⇒∣m*n : ∀ {i m} n → i ∣ m → i ∣ m * n
+  ∣m⇒∣m*n {i} {m} n (divides q eq) = divides (q * n) $ begin
+    m * n       ≡⟨ cong (_* n) eq ⟩
+    q * i * n   ≡⟨ *-assoc q i n ⟩
+    q * (i * n) ≡⟨ cong (q *_) (*-comm i n) ⟩
+    q * (n * i) ≡⟨ sym (*-assoc q n i) ⟩
+    q * n * i ∎
+
+  ∣n⇒∣m*n : ∀ {i} m {n} → i ∣ n → i ∣ m * n
+  ∣n⇒∣m*n {i} m {n} (divides q eq) = divides (m * q) $ begin
+    m * n       ≡⟨ cong (m *_) eq ⟩
+    m * (q * i) ≡⟨ sym (*-assoc m q i) ⟩
+    m * q * i ∎
 
   ∣m∣n⇒∣m+n : ∀ {i m n} → i ∣ m → i ∣ n → i ∣ m + n
   ∣m∣n⇒∣m+n (divides p refl) (divides q refl) =
