@@ -64,20 +64,30 @@
     Control.Exception.bracketOnError (return ()) (\_ -&gt; System.IO.hClose h)
                                                  (\_ -&gt; System.IO.hFileSize h)
     Data.Text.IO.hGetContents h
-<a id="2330" class="Symbol">#-}</a>
 
-<a id="2335" class="Symbol">{-#</a> <a id="2339" class="Keyword">COMPILE</a> GHC <a id="2351" href="IO.Primitive.html#1599" class="Postulate">getContents</a>    = getContents                           <a id="2406" class="Symbol">#-}</a>
-<a id="2410" class="Symbol">{-#</a> <a id="2414" class="Keyword">COMPILE</a> GHC <a id="2426" href="IO.Primitive.html#1627" class="Postulate">readFile</a>       = readFile . Data.Text.unpack           <a id="2481" class="Symbol">#-}</a>
-<a id="2485" class="Symbol">{-#</a> <a id="2489" class="Keyword">COMPILE</a> GHC <a id="2501" href="IO.Primitive.html#1664" class="Postulate">writeFile</a>      = \x -&gt; writeFile (Data.Text.unpack x)  <a id="2556" class="Symbol">#-}</a>
-<a id="2560" class="Symbol">{-#</a> <a id="2564" class="Keyword">COMPILE</a> GHC <a id="2576" href="IO.Primitive.html#1708" class="Postulate">appendFile</a>     = \x -&gt; appendFile (Data.Text.unpack x) <a id="2631" class="Symbol">#-}</a>
-<a id="2635" class="Symbol">{-#</a> <a id="2639" class="Keyword">COMPILE</a> GHC <a id="2651" href="IO.Primitive.html#1752" class="Postulate">putStr</a>         = putStr                                <a id="2706" class="Symbol">#-}</a>
-<a id="2710" class="Symbol">{-#</a> <a id="2714" class="Keyword">COMPILE</a> GHC <a id="2726" href="IO.Primitive.html#1787" class="Postulate">putStrLn</a>       = putStrLn                              <a id="2781" class="Symbol">#-}</a>
-<a id="2785" class="Symbol">{-#</a> <a id="2789" class="Keyword">COMPILE</a> GHC <a id="2801" href="IO.Primitive.html#1942" class="Postulate">readFiniteFile</a> = readFiniteFile                        <a id="2856" class="Symbol">#-}</a>
-<a id="2860" class="Symbol">{-#</a> <a id="2864" class="Keyword">COMPILE</a> UHC <a id="2876" href="IO.Primitive.html#1599" class="Postulate">getContents</a>    = UHC.Agda.Builtins.primGetContents     <a id="2931" class="Symbol">#-}</a>
-<a id="2935" class="Symbol">{-#</a> <a id="2939" class="Keyword">COMPILE</a> UHC <a id="2951" href="IO.Primitive.html#1627" class="Postulate">readFile</a>       = UHC.Agda.Builtins.primReadFile        <a id="3006" class="Symbol">#-}</a>
-<a id="3010" class="Symbol">{-#</a> <a id="3014" class="Keyword">COMPILE</a> UHC <a id="3026" href="IO.Primitive.html#1664" class="Postulate">writeFile</a>      = UHC.Agda.Builtins.primWriteFile       <a id="3081" class="Symbol">#-}</a>
-<a id="3085" class="Symbol">{-#</a> <a id="3089" class="Keyword">COMPILE</a> UHC <a id="3101" href="IO.Primitive.html#1708" class="Postulate">appendFile</a>     = UHC.Agda.Builtins.primAppendFile      <a id="3156" class="Symbol">#-}</a>
-<a id="3160" class="Symbol">{-#</a> <a id="3164" class="Keyword">COMPILE</a> UHC <a id="3176" href="IO.Primitive.html#1752" class="Postulate">putStr</a>         = UHC.Agda.Builtins.primPutStr          <a id="3231" class="Symbol">#-}</a>
-<a id="3235" class="Symbol">{-#</a> <a id="3239" class="Keyword">COMPILE</a> UHC <a id="3251" href="IO.Primitive.html#1787" class="Postulate">putStrLn</a>       = UHC.Agda.Builtins.primPutStrLn        <a id="3306" class="Symbol">#-}</a>
-<a id="3310" class="Symbol">{-#</a> <a id="3314" class="Keyword">COMPILE</a> UHC <a id="3326" href="IO.Primitive.html#1942" class="Postulate">readFiniteFile</a> = UHC.Agda.Builtins.primReadFiniteFile  <a id="3381" class="Symbol">#-}</a>
+  fromColist :: MAlonzo.Code.Data.Colist.AgdaColist a -&gt; [a]
+  fromColist MAlonzo.Code.Data.Colist.Nil         = []
+  fromColist (MAlonzo.Code.Data.Colist.Cons x xs) =
+    x : fromColist (MAlonzo.RTE.flat xs)
+
+  toColist :: [a] -&gt; MAlonzo.Code.Data.Colist.AgdaColist a
+  toColist []       = MAlonzo.Code.Data.Colist.Nil
+  toColist (x : xs) =
+    MAlonzo.Code.Data.Colist.Cons x (MAlonzo.RTE.Sharp (toColist xs))
+<a id="2743" class="Symbol">#-}</a>
+
+<a id="2748" class="Symbol">{-#</a> <a id="2752" class="Keyword">COMPILE</a> GHC <a id="2764" href="IO.Primitive.html#1599" class="Postulate">getContents</a>    = fmap toColist getContents                          <a id="2832" class="Symbol">#-}</a>
+<a id="2836" class="Symbol">{-#</a> <a id="2840" class="Keyword">COMPILE</a> GHC <a id="2852" href="IO.Primitive.html#1627" class="Postulate">readFile</a>       = fmap toColist . readFile . Data.Text.unpack        <a id="2920" class="Symbol">#-}</a>
+<a id="2924" class="Symbol">{-#</a> <a id="2928" class="Keyword">COMPILE</a> GHC <a id="2940" href="IO.Primitive.html#1664" class="Postulate">writeFile</a>      = \x -&gt; writeFile (Data.Text.unpack x) . fromColist  <a id="3008" class="Symbol">#-}</a>
+<a id="3012" class="Symbol">{-#</a> <a id="3016" class="Keyword">COMPILE</a> GHC <a id="3028" href="IO.Primitive.html#1708" class="Postulate">appendFile</a>     = \x -&gt; appendFile (Data.Text.unpack x) . fromColist <a id="3096" class="Symbol">#-}</a>
+<a id="3100" class="Symbol">{-#</a> <a id="3104" class="Keyword">COMPILE</a> GHC <a id="3116" href="IO.Primitive.html#1752" class="Postulate">putStr</a>         = putStr . fromColist                                <a id="3184" class="Symbol">#-}</a>
+<a id="3188" class="Symbol">{-#</a> <a id="3192" class="Keyword">COMPILE</a> GHC <a id="3204" href="IO.Primitive.html#1787" class="Postulate">putStrLn</a>       = putStrLn . fromColist                              <a id="3272" class="Symbol">#-}</a>
+<a id="3276" class="Symbol">{-#</a> <a id="3280" class="Keyword">COMPILE</a> GHC <a id="3292" href="IO.Primitive.html#1942" class="Postulate">readFiniteFile</a> = readFiniteFile                        <a id="3347" class="Symbol">#-}</a>
+<a id="3351" class="Symbol">{-#</a> <a id="3355" class="Keyword">COMPILE</a> UHC <a id="3367" href="IO.Primitive.html#1599" class="Postulate">getContents</a>    = UHC.Agda.Builtins.primGetContents     <a id="3422" class="Symbol">#-}</a>
+<a id="3426" class="Symbol">{-#</a> <a id="3430" class="Keyword">COMPILE</a> UHC <a id="3442" href="IO.Primitive.html#1627" class="Postulate">readFile</a>       = UHC.Agda.Builtins.primReadFile        <a id="3497" class="Symbol">#-}</a>
+<a id="3501" class="Symbol">{-#</a> <a id="3505" class="Keyword">COMPILE</a> UHC <a id="3517" href="IO.Primitive.html#1664" class="Postulate">writeFile</a>      = UHC.Agda.Builtins.primWriteFile       <a id="3572" class="Symbol">#-}</a>
+<a id="3576" class="Symbol">{-#</a> <a id="3580" class="Keyword">COMPILE</a> UHC <a id="3592" href="IO.Primitive.html#1708" class="Postulate">appendFile</a>     = UHC.Agda.Builtins.primAppendFile      <a id="3647" class="Symbol">#-}</a>
+<a id="3651" class="Symbol">{-#</a> <a id="3655" class="Keyword">COMPILE</a> UHC <a id="3667" href="IO.Primitive.html#1752" class="Postulate">putStr</a>         = UHC.Agda.Builtins.primPutStr          <a id="3722" class="Symbol">#-}</a>
+<a id="3726" class="Symbol">{-#</a> <a id="3730" class="Keyword">COMPILE</a> UHC <a id="3742" href="IO.Primitive.html#1787" class="Postulate">putStrLn</a>       = UHC.Agda.Builtins.primPutStrLn        <a id="3797" class="Symbol">#-}</a>
+<a id="3801" class="Symbol">{-#</a> <a id="3805" class="Keyword">COMPILE</a> UHC <a id="3817" href="IO.Primitive.html#1942" class="Postulate">readFiniteFile</a> = UHC.Agda.Builtins.primReadFiniteFile  <a id="3872" class="Symbol">#-}</a>
 </pre></body></html>
