@@ -8,12 +8,15 @@
 
 module Data.Table where
 
+open import Data.Table.Core public
+
 open import Relation.Binary.PropositionalEquality
   as P using (_≡_; _→-setoid_)
 open import Relation.Binary using (Setoid)
 
 open import Function using (_∘_; _on_; flip)
 open import Function.Inverse using (Inverse; _↔_)
+import Function.Equality as FE
 
 private
   module List where
@@ -38,42 +41,28 @@ open import Relation.Nullary.Decidable using (⌊_⌋)
 open import Data.Fin
 open import Data.Fin.Properties using (_≟_)
 
-record Table {a} (A : Set a) n : Set a where
-  constructor tabulate
-  field
-    lookup : Fin n → A
-
-open Table public
-
-setoid : ∀ {a} → Set a → ℕ → Setoid _ _
-setoid A n = record
-  { Carrier = Table A n
-  ; _≈_ = _≈_ on lookup
+setoid : ∀ {c p} → Setoid c p → ℕ → Setoid _ _
+setoid S n = record
+  { Carrier = Table Carrier n
+  ; _≈_ = λ t t′ → ∀ i → lookup t i ≈ lookup t′ i
   ; isEquivalence = record
-    { refl = refl
-    ; sym = sym
-    ; trans = trans
+    { refl = λ i → refl
+    ; sym = λ p → sym ∘ p
+    ; trans = λ p q i → trans (p i) (q i)
     }
   }
-  where
-    open Setoid (Fin n →-setoid A)
+  where open Setoid S
+
+≡-setoid : ∀ {a} → Set a → ℕ → Setoid _ _
+≡-setoid A = setoid (P.setoid A)
 
 module _ {a} {A : Set a} {n} where
-  open Setoid (setoid A n) public
+  open Setoid (≡-setoid A n) public
     using () renaming (_≈_ to _≗_)
 
 --------------------------------------------------------------------------------
 --  Combinators
 --------------------------------------------------------------------------------
-
-map : ∀ {n a b} {A : Set a} {B : Set b} → (A → B) → Table A n → Table B n
-map f t = tabulate (f ∘ lookup t)
-
-head : ∀ {n a} {A : Set a} → Table A (ℕ.suc n) → A
-head t = lookup t zero
-
-tail : ∀ {n a} {A : Set a} → Table A (ℕ.suc n) → Table A n
-tail t = tabulate (lookup t ∘ suc)
 
 foldr : ∀ {a b} {A : Set a} {B : Set b} {n} → (A → B → B) → B → Table A n → B
 foldr {n = ℕ.zero} f z t = z
@@ -89,17 +78,14 @@ pure x = tabulate (λ _ → x)
 _⊛_ : ∀ {n a b} {A : Set a} {B : Set b} → Table (A → B) n → Table A n → Table B n
 fs ⊛ xs = tabulate λ i → lookup fs i (lookup xs i)
 
+permute : ∀ {m n a} {A : Set a} → Fin m ↔ Fin n → Table A n → Table A m
+permute π = rearrange (Inverse.to π FE.⟨$⟩_)
+
 module _ {a} {A : Set a} where
 
 --------------------------------------------------------------------------------
 --  List conversion
 --------------------------------------------------------------------------------
-
-  toList : ∀ {n} → Table A n → List A
-  toList = List.tabulate ∘ lookup
-
-  fromList : (xs : List A) → Table A (List.length xs)
-  fromList = tabulate ∘ List.lookup
 
   private
     liftInj :
@@ -166,7 +152,7 @@ module _ {a} {A : Set a} where
     toVec-fromVec = Vec.tabulate∘lookup
 
   -- Isomorphism between tables and vectors.
-  ↔Vec : ∀ {n} → Inverse (setoid A n) (P.setoid (Vec A n))
+  ↔Vec : ∀ {n} → Inverse (≡-setoid A n) (P.setoid (Vec A n))
   ↔Vec = record
     { to = record { _⟨$⟩_ = toVec ; cong = Vec.tabulate-cong }
     ; from = P.→-to-⟶ fromVec
@@ -177,7 +163,7 @@ module _ {a} {A : Set a} where
     }
 
   -- Isomorphism between tables with existential length and lists.
-  ↔List : Inverse (OverΣ.setoid (setoid A)) (P.setoid (List A))
+  ↔List : Inverse (OverΣ.setoid (≡-setoid A)) (P.setoid (List A))
   ↔List = record
     { to = record
       { _⟨$⟩_ = toList′
