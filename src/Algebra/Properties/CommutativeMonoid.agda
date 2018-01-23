@@ -12,6 +12,7 @@ open CommutativeMonoid M renaming (ε to 0#; _∙_ to _+_; ∙-cong to +-cong; i
 open import Algebra.Operations.CommutativeMonoid M
 import Algebra.FunctionProperties as P; open P _≈_
 import Relation.Binary.EqReasoning as EqR; open EqR setoid
+import Relation.Binary as B
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse using (Inverse; _↔_)
@@ -19,47 +20,53 @@ open import Data.Product
 open import Data.Bool using (if_then_else_)
 open import Data.Nat using (ℕ)
 open import Data.Fin using (Fin; punchIn)
+import Data.List as List
 open import Data.Fin.Properties as FP using (removeIn↔; punchIn-permute′; swapFin)
-open import Data.Fin.Vec using (select; select-const)
+open import Data.Table as Table hiding (setoid)
 open import Relation.Binary.PropositionalEquality as PE using (_≡_)
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (⌊_⌋)
 
--- When summing over a function from a finite set, we can pull out any value and move it to the front.
-sumFin-punchIn : ∀ {n} f (i : Fin (ℕ.suc n)) → sumFin (ℕ.suc n) f ≈ f i + sumFin n (f ∘ punchIn i)
-sumFin-punchIn f Fin.zero = refl
-sumFin-punchIn {ℕ.zero} f (Fin.suc ())
-sumFin-punchIn {ℕ.suc n} f (Fin.suc i) =
-  begin
-    f Fin.zero + (sumFin (ℕ.suc n) (f ∘ Fin.suc))                       ≈⟨ +-cong refl (sumFin-punchIn (f ∘ Fin.suc) i) ⟩
-    f Fin.zero + (f (Fin.suc i) + sumFin n (f ∘ Fin.suc ∘ punchIn i))   ≈⟨ sym (+-assoc _ _ _) ⟩
-    (f Fin.zero + f (Fin.suc i)) + sumFin n (f ∘ Fin.suc ∘ punchIn i)   ≈⟨ +-cong (+-comm _ _) refl ⟩
-    (f (Fin.suc i) + f Fin.zero) + sumFin n (f ∘ Fin.suc ∘ punchIn i)   ≈⟨ +-assoc _ _ _ ⟩
-    f (Fin.suc i) + (f Fin.zero + sumFin n (f ∘ Fin.suc ∘ punchIn i))   ∎
+module _ {n} where
+  open B.Setoid (Table.setoid setoid n) public
+    using ()
+    renaming (_≈_ to _≋_)
 
--- '_≈_' is a congruence over 'sum n'.
-sumFin-cong : ∀ {n f g} → (∀ i → f i ≈ g i) → sumFin n f ≈ sumFin n g
-sumFin-cong {ℕ.zero} p = refl
-sumFin-cong {ℕ.suc n} p = +-cong (p _) (sumFin-cong (p ∘ Fin.suc))
+-- When summing over a function from a finite set, we can pull out any value and move it to the front.
+sumTable-punchIn : ∀ {n} t (i : Fin (ℕ.suc n)) → sumTable t ≈ lookup t i + sumTable (rearrange (punchIn i) t)
+sumTable-punchIn f Fin.zero = refl
+sumTable-punchIn {ℕ.zero} t (Fin.suc ())
+sumTable-punchIn {ℕ.suc n} t (Fin.suc i) =
+  begin
+    head t + sumTable (tail t)                                                    ≈⟨ +-cong refl (sumTable-punchIn (tail t) i) ⟩
+    head t + (lookup t (Fin.suc i) + sumTable (rearrange (punchIn i) (tail t)))   ≈⟨ sym (+-assoc _ _ _) ⟩
+    (head t + lookup t (Fin.suc i)) + sumTable (rearrange (punchIn i) (tail t))   ≈⟨ +-cong (+-comm _ _) refl ⟩
+    (lookup t (Fin.suc i) + head t) + sumTable (rearrange (punchIn i) (tail t))   ≈⟨ +-assoc _ _ _ ⟩
+    lookup t (Fin.suc i) + (head t + sumTable (rearrange (punchIn i) (tail t)))   ∎
+
+-- '_≈_' is a congruence over 'sumTable n'.
+sumTable-cong : ∀ {n} {t t′ : Table Carrier n} → t ≋ t′ → sumTable t ≈ sumTable t′
+sumTable-cong {ℕ.zero} p = refl
+sumTable-cong {ℕ.suc n} p = +-cong (p _) (sumTable-cong (p ∘ Fin.suc))
 
 -- '_≡_' is a congruence over 'sum n'.
-sumFin-cong≡ : ∀ {n f g} → (∀ i → f i ≡ g i) → sumFin n f ≡ sumFin n g
-sumFin-cong≡ {ℕ.zero} p = PE.refl
-sumFin-cong≡ {ℕ.suc n} p = PE.cong₂ _+_ (p _) (sumFin-cong≡ (p ∘ Fin.suc))
+sumTable-cong≡ : ∀ {n} {t t′ : Table Carrier n} → t ≗ t′ → sumTable t ≡ sumTable t′
+sumTable-cong≡ {ℕ.zero} p = PE.refl
+sumTable-cong≡ {ℕ.suc n} p = PE.cong₂ _+_ (p _) (sumTable-cong≡ (p ∘ Fin.suc))
 
--- The sumFin over the constantly zero function is zero.
-sumFin-zero : ∀ n → sumFin n (λ _ → 0#) ≈ 0#
-sumFin-zero (ℕ.zero) = refl
-sumFin-zero (ℕ.suc n) =
+-- The sumTable over the constantly zero function is zero.
+sumTable-zero : ∀ n → sumTable (pure {n} 0#) ≈ 0#
+sumTable-zero (ℕ.zero) = refl
+sumTable-zero (ℕ.suc n) =
   begin
-    0# + sumFin n (λ _ → 0#)   ≈⟨ proj₁ +-identity _ ⟩
-    sumFin n (λ _ → 0#)        ≈⟨ sumFin-zero n ⟩
-    0#                         ∎
+    0# + sumTable (pure {n} 0#)  ≈⟨ proj₁ +-identity _ ⟩
+    sumTable (pure {n} 0#)       ≈⟨ sumTable-zero n ⟩
+    0#                           ∎
 
--- The 'sum' operator distributes over addition.
-sumFin-+-hom : ∀ n (f g : Fin n → Carrier) → ∑[ i < n ] f i + ∑[ i < n ] g i ≈ ∑[ i < n ] (f i + g i)
-sumFin-+-hom ℕ.zero f g = proj₁ +-identity _
-sumFin-+-hom (ℕ.suc n) f g =
+-- The '∑' operator distributes over addition.
+∑-+-hom : ∀ n (f g : Fin n → Carrier) → ∑[ i < n ] f i + ∑[ i < n ] g i ≈ ∑[ i < n ] (f i + g i)
+∑-+-hom ℕ.zero f g = proj₁ +-identity _
+∑-+-hom (ℕ.suc n) f g =
   let fz = f Fin.zero
       gz = g Fin.zero
       ∑f  = ∑[ i < n ] f (Fin.suc i)
@@ -70,65 +77,85 @@ sumFin-+-hom (ℕ.suc n) f g =
     fz + (∑f + (gz + ∑g))      ≈⟨ +-cong refl (sym (+-assoc _ _ _)) ⟩
     fz + ((∑f + gz) + ∑g)      ≈⟨ +-cong refl (+-cong (+-comm _ _) refl) ⟩
     fz + ((gz + ∑f) + ∑g)      ≈⟨ +-cong refl (+-assoc _ _ _) ⟩
-    fz + (gz + (∑f + ∑g))      ≈⟨ +-cong refl (+-cong refl (sumFin-+-hom n _ _)) ⟩
+    fz + (gz + (∑f + ∑g))      ≈⟨ +-cong refl (+-cong refl (∑-+-hom n _ _)) ⟩
     fz + (gz + ∑fg)            ≈⟨ sym (+-assoc _ _ _) ⟩
     fz + gz + ∑fg              ∎
 
--- The 'sum' operator commutes with itself.
-sumFin-comm : ∀ n m (f : Fin n → Fin m → Carrier) → ∑[ i < n ] ∑[ j < m ] f i j ≈ ∑[ j < m ] ∑[ i < n ] f i j
-sumFin-comm ℕ.zero m f = sym (sumFin-zero m)
-sumFin-comm (ℕ.suc n) m f =
+-- The '∑' operator commutes with itself.
+∑-comm : ∀ n m (f : Fin n → Fin m → Carrier) → ∑[ i < n ] ∑[ j < m ] f i j ≈ ∑[ j < m ] ∑[ i < n ] f i j
+∑-comm ℕ.zero m f = sym (sumTable-zero m)
+∑-comm (ℕ.suc n) m f =
   begin
-    ∑[ j < m ] f Fin.zero j + ∑[ i < n ] ∑[ j < m ] f (Fin.suc i) j   ≈⟨ +-cong refl (sumFin-comm n m _) ⟩
-    ∑[ j < m ] f Fin.zero j + ∑[ j < m ] ∑[ i < n ] f (Fin.suc i) j   ≈⟨ sumFin-+-hom m _ _ ⟩
+    ∑[ j < m ] f Fin.zero j + ∑[ i < n ] ∑[ j < m ] f (Fin.suc i) j   ≈⟨ +-cong refl (∑-comm n m _) ⟩
+    ∑[ j < m ] f Fin.zero j + ∑[ j < m ] ∑[ i < n ] f (Fin.suc i) j   ≈⟨ ∑-+-hom m _ _ ⟩
     ∑[ j < m ] (f Fin.zero j + ∑[ i < n ] f (Fin.suc i) j)            ∎
 
--- Any permutation of a vector has the same sumFin as the original.
+-- Any permutation of a table has the same sum as the original.
 
-sumFin-permute : ∀ {n} (f : Fin n → Carrier) (π : Fin n ↔ Fin n) → ∑[ i < n ] f i ≈ ∑[ i < n ] f (Inverse.to π ⟨$⟩ i)
-sumFin-permute {ℕ.zero} _ π = refl
-sumFin-permute {ℕ.suc n} f π =
+sumTable-permute : ∀ {n} t (π : Fin n ↔ Fin n) → sumTable t ≈ sumTable (rearrange (Inverse.to π ⟨$⟩_) t)
+sumTable-permute {ℕ.zero} t π = refl
+sumTable-permute {ℕ.suc n} t π =
+  let f = lookup t
+  in
   begin
-    sumFin (ℕ.suc n) f                                                                          ≡⟨⟩
-    f 0i + sumFin n (f ∘ punchIn 0i)                                                            ≈⟨ +-cong refl (sumFin-permute _ (removeIn↔ (Inverse.from π ⟨$⟩ 0i) π)) ⟩
-    f 0i + sumFin n (f ∘ punchIn 0i ∘ (Inverse.to (removeIn↔ (Inverse.from π ⟨$⟩ 0i) π) ⟨$⟩_))  ≡⟨ PE.cong₂ _+_ PE.refl (sumFin-cong≡ (PE.cong f ∘ PE.sym ∘ punchIn-permute′ π 0i)) ⟩
-    f 0i + sumFin n (f ∘ (Inverse.to π ⟨$⟩_) ∘ punchIn (Inverse.from π ⟨$⟩ 0i))                 ≡⟨ PE.cong₂ _+_ (PE.cong f (PE.sym (Inverse.right-inverse-of π _))) PE.refl ⟩
-    f _  + sumFin n (f ∘ (Inverse.to π ⟨$⟩_) ∘ punchIn (Inverse.from π ⟨$⟩ 0i))                 ≈⟨ sym (sumFin-punchIn (f ∘ (Inverse.to π ⟨$⟩_)) (Inverse.from π ⟨$⟩ 0i)) ⟩
-    sumFin (ℕ.suc n) (f ∘ (Inverse.to π ⟨$⟩_))                                                  ∎
+    sumTable t                                                                                            ≡⟨⟩
+    f 0i + sumTable (rearrange (punchIn 0i) t)                                                            ≈⟨ +-cong refl (sumTable-permute _ (removeIn↔ (Inverse.from π ⟨$⟩ 0i) π)) ⟩
+    f 0i + sumTable (rearrange (punchIn 0i ∘ (Inverse.to (removeIn↔ (Inverse.from π ⟨$⟩ 0i) π) ⟨$⟩_)) t)  ≡⟨ PE.cong₂ _+_ PE.refl (sumTable-cong≡ (PE.cong f ∘ PE.sym ∘ punchIn-permute′ π 0i)) ⟩
+    f 0i + sumTable (rearrange ((Inverse.to π ⟨$⟩_) ∘ punchIn (Inverse.from π ⟨$⟩ 0i)) t)                 ≡⟨ PE.cong₂ _+_ (PE.cong f (PE.sym (Inverse.right-inverse-of π _))) PE.refl ⟩
+    f _  + sumTable (rearrange ((Inverse.to π ⟨$⟩_) ∘ punchIn (Inverse.from π ⟨$⟩ 0i)) t)                 ≈⟨ sym (sumTable-punchIn (rearrange (Inverse.to π ⟨$⟩_) t) (Inverse.from π ⟨$⟩ 0i)) ⟩
+    sumTable (rearrange (Inverse.to π ⟨$⟩_) t)                                                            ∎
   where
     0i = Fin.zero
     ππ0 = Inverse.to π ⟨$⟩ (Inverse.from π ⟨$⟩ 0i)
 
--- A version of 'sumFin-permute' allowing heterogeneous sum lengths.
+-- A version of 'sumTable-permute' allowing heterogeneous sum lengths.
 
-sumFin-permute′ : ∀ {m n} (f : Fin n → Carrier) (π : Fin m ↔ Fin n) → ∑[ i < n ] f i ≈ ∑[ i < m ] f (Inverse.to π ⟨$⟩ i)
-sumFin-permute′ f π with FP.↔-≡ π
-sumFin-permute′ f π | PE.refl = sumFin-permute f π
+sumTable-permute′ : ∀ {m n} t (π : Fin m ↔ Fin n) → sumTable t ≈ sumTable (rearrange (Inverse.to π ⟨$⟩_) t)
+sumTable-permute′ t π with FP.↔-≡ π
+sumTable-permute′ t π | PE.refl = sumTable-permute t π
+
+∑-permute : ∀ {n} (f : Fin n → Carrier) (π : Fin n ↔ Fin n) → ∑[ i < n ] f i ≈ ∑[ i < n ] f (Inverse.to π ⟨$⟩ i)
+∑-permute = sumTable-permute ∘ tabulate
+
+∑-permute′ : ∀ {m n} (f : Fin n → Carrier) (π : Fin m ↔ Fin n) → ∑[ i < n ] f i ≈ ∑[ i < m ] f (Inverse.to π ⟨$⟩ i)
+∑-permute′ = sumTable-permute′ ∘ tabulate
 
 -- If the function takes the same value at 'i' and 'j', then swapping 'i' and
 -- 'j' then selecting 'j' is the same as selecting 'i'.
-select-swap : ∀ {n} f (i j : Fin n) → f i ≈ f j → ∀ k → (select 0# j f ∘ swapFin i j) k ≈ select 0# i f k
+
+select-swap : ∀ {n} t (i j : Fin n) → lookup t i ≈ lookup t j → ∀ k → (lookup (select 0# j t) ∘ swapFin i j) k ≈ lookup (select 0# i t) k
 select-swap _ i j e k with k FP.≟ j
 select-swap _ i j e k | yes p with k FP.≟ i
 select-swap _ .k .k e k | yes PE.refl | yes PE.refl = reflexive (FP.if-dec-true k k PE.refl)
 select-swap _ i .k e k | yes PE.refl | no ¬q = reflexive (FP.if-dec-false i k (¬q ∘ PE.sym))
 select-swap _ i j e k | no ¬p with k FP.≟ i
-select-swap f i j e k | no ¬p | yes q =
+select-swap t i j e k | no ¬p | yes q =
   begin
-    (if ⌊ j FP.≟ j ⌋ then f j else 0#)    ≡⟨ FP.if-dec-true j j PE.refl ⟩
-    f j                                   ≈⟨ sym e ⟩
-    f i                                   ∎
+    (if ⌊ j FP.≟ j ⌋ then lookup t j else 0#)    ≡⟨ FP.if-dec-true j j PE.refl ⟩
+    lookup t j                            ≈⟨ sym e ⟩
+    lookup t i                            ∎
 select-swap _ i j e k | no ¬p | no ¬q = reflexive (FP.if-dec-false k j ¬p)
 
 -- Summing over a pulse gives you the single value picked out by the pulse.
-select-sum : ∀ {n i} f → sumFin n (select 0# i f) ≈ f i
-select-sum {ℕ.zero} {()} f
-select-sum {ℕ.suc n} {i} f =
+
+select-sum : ∀ {n i} (t : Table Carrier n) → sumTable (select 0# i t) ≈ lookup t i
+select-sum {ℕ.zero} {()} t
+select-sum {ℕ.suc n} {i} t =
+  let f = lookup t
+  in
   begin
-    sumFin _ (select 0# i f)                                               ≈⟨ sumFin-permute (select 0# i f) (FP.swapIndices Fin.zero i) ⟩
-    sumFin _ (select 0# i f ∘ swapFin Fin.zero i)                          ≡⟨ sumFin-cong≡ (select-const 0# i f ∘ swapFin Fin.zero i) ⟩
-    sumFin (ℕ.suc n) (select 0# i (λ _ → f i) ∘ swapFin Fin.zero i)        ≈⟨ sumFin-cong (select-swap (λ _ → f i) Fin.zero i refl) ⟩
-    sumFin (ℕ.suc n) (select 0# Fin.zero (λ _ → f i))                      ≡⟨⟩
-    f i + sumFin n (λ _ → 0#)                                              ≈⟨ +-cong refl (sumFin-zero n) ⟩
+    sumTable (select 0# i t)                                               ≈⟨ sumTable-permute (select 0# i t) (FP.swapIndices Fin.zero i) ⟩
+    sumTable (rearrange (swapFin Fin.zero i) (select 0# i t))              ≡⟨ sumTable-cong≡ (select-const 0# i t ∘ swapFin Fin.zero i) ⟩
+    sumTable (rearrange (swapFin Fin.zero i) (select 0# i (pure (f i))))   ≈⟨ sumTable-cong (select-swap (pure (f i)) Fin.zero i refl) ⟩
+    sumTable (select 0# Fin.zero (pure {ℕ.suc n} (f i)))                   ≡⟨⟩
+    f i + sumTable (pure {n} 0#)                                           ≈⟨ +-cong refl (sumTable-zero n) ⟩
     f i + 0#                                                               ≈⟨ proj₂ +-identity _ ⟩
     f i                                                                    ∎
+
+sumTable-fromList : ∀ xs → sumTable (fromList xs) ≡ sum xs
+sumTable-fromList List.[] = PE.refl
+sumTable-fromList (x List.∷ xs) = PE.cong₂ _+_ PE.refl (sumTable-fromList xs)
+
+sumTable-toList : ∀ n {t : Table Carrier n} → sumTable t ≡ sum (toList t)
+sumTable-toList ℕ.zero = PE.refl
+sumTable-toList (ℕ.suc n) = PE.cong₂ _+_ PE.refl (sumTable-toList n)

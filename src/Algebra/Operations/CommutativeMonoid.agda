@@ -15,6 +15,7 @@ open import Data.Nat.Base
 open import Data.List as List using (List; []; _∷_; _++_)
 open import Data.Fin as Fin using (Fin)
 open import Data.Product using (module Σ)
+open import Data.Table.Core as Table using (Table)
 open import Function
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_)
@@ -54,17 +55,18 @@ sum = List.foldr _+_ 0#
 
 -- A variant that sums every value of a function from a finite set.
 
-sumFin : ∀ n → (Fin n → Carrier) → Carrier
-sumFin zero _ = 0#
-sumFin (suc n) f = f Fin.zero + sumFin n (f ∘ Fin.suc)
+sumTable : ∀ {n} → Table Carrier n → Carrier
+sumTable {zero} _ = 0#
+sumTable {suc n} t = Table.lookup t Fin.zero + sumTable (Table.tail t)
 
--- An alternative mathematical-style syntax for sumFin
+-- An alternative mathematical-style syntax for sumTable
 
-infixl 10 sumFin-syntax
+infixl 10 sumTable-syntax
 
-sumFin-syntax = sumFin
+sumTable-syntax : ∀ n → (Fin n → Carrier) → Carrier
+sumTable-syntax _ = sumTable ∘ Table.tabulate
 
-syntax sumFin-syntax n (λ i → x) = ∑[ i < n ] x
+syntax sumTable-syntax n (λ i → x) = ∑[ i < n ] x
 
 ------------------------------------------------------------------------
 -- Some properties
