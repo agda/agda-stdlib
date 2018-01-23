@@ -14,7 +14,7 @@ open import Data.Product
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; subst)
 open import Relation.Nullary using (Dec; yes; no)
 open import Induction
-open import Induction.Nat using (<′-Rec; <′-rec-builder)
+open import Induction.Nat using (<′-Rec; <′-recBuilder)
 open import Induction.Lexicographic
 open import Function
 open import Data.Nat.GCD.Lemmas
@@ -68,7 +68,7 @@ module GCD where
   step {n} {k} {d} g | (d₁ , d₂) = is (d₁ , ∣m∣n⇒∣m+n d₁ d₂) greatest′
     where
     greatest′ : ∀ {d′} → d′ ∣ n × d′ ∣ n + k → d′ ∣ d
-    greatest′ (d₁ , d₂) = GCD.greatest g (d₁ , ∣m+n|m⇒|n d₂ d₁)
+    greatest′ (d₁ , d₂) = GCD.greatest g (d₁ , ∣m+n∣m⇒∣n d₂ d₁)
 
 open GCD public using (GCD) hiding (module GCD)
 
@@ -155,7 +155,7 @@ module Bézout where
   -- Euclidean algorithm.
 
   lemma : (m n : ℕ) → Lemma m n
-  lemma m n = build [ <′-rec-builder ⊗ <′-rec-builder ] P gcd (m , n)
+  lemma m n = build [ <′-recBuilder ⊗ <′-recBuilder ] P gcd (m , n)
     where
     P : ℕ × ℕ → Set
     P (m , n) = Lemma m n
