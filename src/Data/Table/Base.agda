@@ -1,12 +1,10 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Fixed-size tables of values, implemented as functions from 'Fin n'.
--- Similar to 'Data.Vec', but focusing on ease of retrieval instead of
--- ease of adding and removing elements.
+-- Tables, basic types and operations
 ------------------------------------------------------------------------
 
-module Data.Table.Core where
+module Data.Table.Base where
 
 open import Data.Fin
 open import Data.List as List using (List)

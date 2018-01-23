@@ -15,7 +15,7 @@ open import Data.Nat.Base
 open import Data.List as List using (List; []; _∷_; _++_)
 open import Data.Fin as Fin using (Fin)
 open import Data.Product using (module Σ)
-open import Data.Table.Core as Table using (Table)
+open import Data.Table.Base as Table using (Table)
 open import Function
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_)
