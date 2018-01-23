@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Table-related properties
+------------------------------------------------------------------------
+
 module Data.Table.Properties where
 
 open import Data.Table

@@ -8,7 +8,7 @@
 
 module Data.Table where
 
-open import Data.Table.Core public
+open import Data.Table.Base public
 
 open import Relation.Binary.PropositionalEquality
   as P using (_≡_; _→-setoid_)
