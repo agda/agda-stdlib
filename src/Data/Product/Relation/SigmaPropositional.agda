@@ -1,3 +1,12 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Lifting binary relations to the second parts of sigma types, while
+-- requiring the first parts to be propositionally equal. This is
+-- a special case of 'Data.Product.Relation.SigmaPointwise', which is
+-- easier to use when it applies.
+------------------------------------------------------------------------
+
 module Data.Product.Relation.SigmaPropositional where
 
 open import Level using (_⊔_)
