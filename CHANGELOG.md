@@ -349,6 +349,11 @@ Backwards compatible changes
   <-irrelevance : IrrelevantRel _<_
   ```
 
+* Added new combinators to `Data.List.Base`:
+  ```agda
+  lookup : ∀ {a} {A : Set a} (xs : List A) → Fin (length xs) → A
+  ```
+
 * Added new proofs to `Data.List.Properties`:
   ```agda
   ∷-injectiveˡ  : x ∷ xs ≡ y List.∷ ys → x ≡ y
@@ -367,6 +372,10 @@ Backwards compatible changes
 
   filter-all     : All P xs → dfilter P? xs ≡ xs
   filter-none    : All (¬_ ∘ P) xs → dfilter P? xs ≡ []
+
+  tabulate-cong : ∀ {n a} {A : Set a} {f g : Fin n → A} 
+                  → f ≗ g → tabulate f ≡ tabulate g
+  tabulate-lookup : ∀ {a} {A : Set a} {xs : List A} → tabulate (lookup xs) ≡ xs
   ```
 
 * Added new proofs to `Data.List.All.Properties`:
@@ -431,7 +440,7 @@ Backwards compatible changes
   *-semigroup           : Semigroup _ _
   *-1-monoid            : Monoid _ _
   *-1-commutativeMonoid : CommutativeMonoid _ _
-  *-+-semiring          : Semiring _ _
+  *-|-semiring          : Semiring _ _
 
   ^-identityʳ           : RightIdentity 1 _^_
   ^-zeroˡ               : LeftZero 1 _^_
@@ -505,6 +514,7 @@ Backwards compatible changes
   lookup⇒[]=       : lookup i xs ≡ x → xs [ i ]= x
   lookup-replicate : lookup i (replicate x) ≡ x
   lookup-⊛         : lookup i (fs ⊛ xs) ≡ (lookup i fs $ lookup i xs)
+  tabulate-cong : ∀ {n a} {A : Set a} {f g : Fin n → A} → f ≗ g → tabulate f ≡ tabulate g
   ```
 
 * Added new proofs to `Data.Vec.All.Properties`
@@ -727,14 +737,14 @@ but they may be removed in some future release of the library.
   *-right-zero      ↦  *-zeroʳ
   distribʳ-*-+      ↦  *-distribʳ-+
   *-distrib-∸ʳ      ↦  *-distribʳ-∸
-  cancel-+-left     ↦  +-cancelˡ-≡
-  cancel-+-left-≤   ↦  +-cancelˡ-≤
+  cancel-|-left     ↦  +-cancelˡ-≡
+  cancel-|-left-≤   ↦  +-cancelˡ-≤
   cancel-*-right    ↦  *-cancelʳ-≡
   cancel-*-right-≤  ↦  *-cancelʳ-≤
 
   strictTotalOrder                      ↦  <-strictTotalOrder
-  isCommutativeSemiring                 ↦  *-+-isCommutativeSemiring
-  commutativeSemiring                   ↦  *-+-commutativeSemiring
+  isCommutativeSemiring                 ↦  *-|-isCommutativeSemiring
+  commutativeSemiring                   ↦  *-|-commutativeSemiring
   isDistributiveLattice                 ↦  ⊓-⊔-isDistributiveLattice
   distributiveLattice                   ↦  ⊓-⊔-distributiveLattice
   ⊔-⊓-0-isSemiringWithoutOne            ↦  ⊔-⊓-isSemiringWithoutOne
@@ -916,6 +926,25 @@ Backwards compatible changes
   punchIn-injective    : punchIn i j ≡ punchIn i k → j ≡ k
   punchIn-punchOut     : punchIn i (punchOut i≢j) ≡ j
   punchInᵢ≢i           : punchIn i j ≢ i
+  punchOut-punchIn : ∀ {n} {i} {j : Fin n} (p : ¬ i ≡ punchIn i j) → punchOut p ≡ j
+  punchOut-cong : ∀ {n} (i : Fin (ℕ.suc n)) {j k} {i≢j : i ≢ j} {i≢k : i ≢ k} → j ≡ k → punchOut i≢j ≡ punchOut i≢k
+  punchOut-cong′ : ∀ {n} (i : Fin (ℕ.suc n)) {j k} {p : ¬ i ≡ j} (q : j ≡ k) → punchOut p ≡ punchOut (p ∘ P.sym ∘ P.trans q ∘ P.sym)
+
+  swapFin : ∀ {n} → Fin n → Fin n → Fin n → Fin n
+  swapIndices : ∀ {n} → Fin n → Fin n → Fin n ↔ Fin n
+  removeIn↔ : ∀ {m n} (i : Fin (ℕ.suc m)) → Fin (ℕ.suc m) ↔ Fin (ℕ.suc n) → Fin m ↔ Fin n
+
+  punchIn-permute :
+    ∀ {n} (π : Fin (ℕ.suc n) ↔ Fin (ℕ.suc n)) i (j : Fin n)
+    → Inverse.to π ⟨$⟩ (punchIn i j) ≡
+      punchIn (Inverse.to π ⟨$⟩ i) (Inverse.to (removeIn↔ i π) ⟨$⟩ j)
+  punchIn-permute′ :
+    ∀ {n} π i (j : Fin n)
+    → Inverse.to π ⟨$⟩ (punchIn (Inverse.from π ⟨$⟩ i) j) ≡
+      punchIn i (Inverse.to (removeIn↔ (Inverse.from π ⟨$⟩ i) π) ⟨$⟩ j)
+
+
+  ↔-≡ : ∀ {m n} → Fin m ↔ Fin n → m ≡ n
   ```
 
 * Added proofs to `Data.Fin.Subset.Properties`:
@@ -1190,7 +1219,7 @@ Backwards compatible changes
   *-monoʳ-<             : (suc n *_) Preserves _<_ ⟶ _<_
   *-cancelˡ-≡           : suc k * i ≡ suc k * j → i ≡ j
 
-  ^-distribˡ-+-*        : m ^ (n + p) ≡ m ^ n * m ^ p
+  ^-distribˡ-|-*        : m ^ (n + p) ≡ m ^ n * m ^ p
   i^j≡0⇒i≡0             : i ^ j ≡ 0 → i ≡ 0
   i^j≡1⇒j≡0∨i≡1         : i ^ j ≡ 1 → j ≡ 0 ⊎ i ≡ 1
 
@@ -1378,6 +1407,17 @@ Backwards compatible changes
   ≅-to-type-≡  : {x : A} {y : B} → x ≅ y → A ≡ B
   ≅-to-subst-≡ : (p : x ≅ y) → subst (λ x → x) (≅-to-type-≡ p) x ≡ y
   ```
+
+* Added new modules `Data.Table`, `Data.Table.Base` and `Data.Table.Properties`.
+  A `Table` is a fixed-length collection of objects similar to a `Vec` from
+  `Data.Vec`, but implemented as a function `Fin n → A`. This allows ease of
+  lookup as opposed to the ease of adding and removing elements in a `Vec`.
+
+* Added new module `Data.Product.Relation.SigmaPropositional`. This essentially
+  implements the special case of `Data.Product.Relation.SigmaPointwise` where
+  the relation over the first element is propositional equality. This makes it
+  much easier to work with at the cost of being less general.
+
 
 Version 0.13
 ============
