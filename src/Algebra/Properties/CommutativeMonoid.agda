@@ -156,6 +156,6 @@ sumTable-fromList : ∀ xs → sumTable (fromList xs) ≡ sum xs
 sumTable-fromList List.[] = PE.refl
 sumTable-fromList (x List.∷ xs) = PE.cong₂ _+_ PE.refl (sumTable-fromList xs)
 
-sumTable-toList : ∀ n {t : Table Carrier n} → sumTable t ≡ sum (toList t)
-sumTable-toList ℕ.zero = PE.refl
-sumTable-toList (ℕ.suc n) = PE.cong₂ _+_ PE.refl (sumTable-toList n)
+sumTable-toList : ∀ {n} (t : Table Carrier n) → sumTable t ≡ sum (toList t)
+sumTable-toList {ℕ.zero} _ = PE.refl
+sumTable-toList {ℕ.suc n} _ = PE.cong₂ _+_ PE.refl (sumTable-toList {n} _)
