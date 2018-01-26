@@ -15,6 +15,7 @@ private
 open List using (List; _∷_; [])
 open import Data.List.Any.Membership.Propositional using (_∈_)
 open import Data.List.Any using (here; there; index)
+open import Data.Nat using (ℕ)
 open import Data.Fin as Fin using (Fin)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Data.Product as Product using (Σ; ∃; _,_; proj₁; proj₂)
@@ -45,3 +46,7 @@ module _ {a} {A : Set a} where
       fromList-lookup∈ : ∀ {xs x} (x∈xs : x ∈ xs) → OverΣ _≡_ (lookup∈ (index x∈xs)) (x , x∈xs)
       fromList-lookup∈ (here P.refl) = P.refl , P.refl
       fromList-lookup∈ (there x∈xs) = OverΣ.hom (P.cong there) (fromList-lookup∈ x∈xs)
+
+map-toList-hom : ∀ {n} {a b} {A : Set a} {B : Set b} (f : A → B) (t : Table A n) → List.map f (toList t) ≡ toList (map f t)
+map-toList-hom {ℕ.zero} f t = P.refl
+map-toList-hom {ℕ.suc n} f t = P.cong₂ _∷_ P.refl (map-toList-hom f (tail t))
