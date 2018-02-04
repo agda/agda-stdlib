@@ -81,7 +81,7 @@ Non-backwards compatible changes
   The old boolean versions still exist as `boolFilter` and `boolPartition` for
   backwards compatibility reasons, but are deprecated and may be removed in some
   future release. The old versions can be implemented via the new versions
-  with the predicate `λ v → f v ≡ true`.
+  by passing the decidability proof `λ v → f v ≟ true` with `_≟_` from `Data.Bool`.
 
 #### Overhaul of categorical interpretations of List and Vec
 
@@ -168,6 +168,21 @@ anticipated any time soon, they may eventually be removed in some future release
   ```agda
   cmp              ↦ <-cmp
   strictTotalOrder ↦ <-strictTotalOrder
+  ```
+
+* In `Data.Integer.Properties`:
+  ```agda
+  inverseˡ              ↦ +-inverseˡ
+  inverseʳ              ↦ +-inverseʳ
+  distribʳ              ↦ *-distribʳ-+
+  isCommutativeSemiring ↦ +-*-isCommutativeSemiring
+  commutativeRing       ↦ +-*-commutativeRing
+  *-+-right-mono        ↦ *-monoʳ-≤-pos
+  cancel-*-+-right-≤    ↦ *-cancelʳ-≤-pos
+  cancel-*-right        ↦ *-cancelʳ-≡
+  doubleNeg             ↦ neg-involutive
+  -‿involutive          ↦ neg-involutive
+  +-⊖-left-cancel       ↦ +-cancelˡ-⊖
   ```
 
 * In `Data.List.Base`:
@@ -345,8 +360,15 @@ Backwards compatible changes
 
 * Added new proofs to `Data.Integer.Properties`:
   ```agda
-  ≤-irrelevance : IrrelevantRel _≤_
-  <-irrelevance : IrrelevantRel _<_
+  +-cancelˡ-⊖       : (a + b) ⊖ (a + c) ≡ b ⊖ c
+  neg-minus-pos     : -[1+ m ] - (+ n) ≡ -[1+ (m + n) ]
+  [+m]-[+n]≡m⊖n     : (+ m) - (+ n) ≡ m ⊖ n
+  ∣m-n∣≡∣n-m∣       : ∣ m - n ∣ ≡ ∣ n - m ∣
+  +-minus-telescope : (m - n) + (n - o) ≡ m - o
+  pos-distrib-*     : ∀ x y → (+ x) * (+ y) ≡ + (x * y)
+
+  ≤-irrelevance     : IrrelevantRel _≤_
+  <-irrelevance     : IrrelevantRel _<_
   ```
 
 * Added new proofs to `Data.List.Properties`:
