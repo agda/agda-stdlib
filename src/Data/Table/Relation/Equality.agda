@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Pointwise table equality
+------------------------------------------------------------------------
+
 module Data.Table.Relation.Equality where
 
 open import Relation.Binary using (Setoid)
