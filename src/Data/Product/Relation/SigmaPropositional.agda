@@ -14,6 +14,7 @@ open import Level using (Level; _⊔_)
 open import Relation.Binary as B using (REL; Rel)
 import Relation.Binary.Indexed as I
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
+import Data.Product.Relation.SigmaPointwise as PW
 
 open import Data.Product using (Σ; ∃; _,_)
 
@@ -116,8 +117,21 @@ module _ {a b} {A : Set a} {B : A → Set b} where
       → OverΣ _∼_ (x , h s) (y , h t)
     ≡-cong refl h p = hom (λ {P.refl → refl}) p
 
+
+-- OverΣ can be used to decompose _≡_
+
 to-≡ : ∀ {a b} {A : Set a} {B : A → Set b} {x y : ∃ B} → OverΣ _≡_ x y → x ≡ y
 to-≡ (P.refl , P.refl) = P.refl
 
 from-≡ : ∀ {a b} {A : Set a} {B : A → Set b} {x y : ∃ B} → x ≡ y → OverΣ _≡_ x y
 from-≡ P.refl = P.refl , P.refl
+
+
+-- OverΣ is a special case of REL from SigmaPointwise
+
+module _ {a b₁ b₂} {A : Set a} {B₁ : A → Set b₁} {B₂ : A → Set b₂} where
+  to-PW : ∀ {p} {_∼_ : IREL B₁ B₂ p} {x : ∃ B₁} {y : ∃ B₂} → OverΣ _∼_ x y → PW.REL B₁ B₂ _≡_ (IRel-hetRel {A₁ = B₁} _∼_) x y
+  to-PW {x = i , s} {.i , t} (P.refl , q) = P.refl PW., λ {P.refl → q}
+
+  from-PW : ∀ {p} {_∼_ : I.REL B₁ B₂ p} {x : ∃ B₁} {y : ∃ B₂} → PW.REL B₁ B₂ _≡_ _∼_ x y → OverΣ (hetRel-IRel {A₁ = B₁} {B₂} _∼_) x y
+  from-PW {x = i , s} {.i , t} (P.refl PW., q) = P.refl , q
