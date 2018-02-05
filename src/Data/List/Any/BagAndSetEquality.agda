@@ -22,11 +22,8 @@ open import Data.Sum
 open import Data.Sum.Relation.General
 open import Data.Fin as F using (Fin)
 import Data.Fin.Properties as FP
-private
-  module Tbl where
-    open import Data.Table public
-    open import Data.Table.Properties public
-open Tbl using (Table)
+open import Data.Table as T using (Table)
+import Data.Table.Properties as TP
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 import Function.Equivalence as FE
@@ -307,10 +304,10 @@ module _ {a} {A : Set a} where
   ∈-↔-length : (xs : List A) → (∃ λ x → x ∈ xs) ↔ (Fin (length xs))
   ∈-↔-length xs = record
     { to = P.→-to-⟶ (index ∘ proj₂)
-    ; from = P.→-to-⟶ Tbl.lookup∈
+    ; from = P.→-to-⟶ TP.lookup∈
     ; inverse-of = record
-      { left-inverse-of = Tbl.lookup∈-index ∘ proj₂
-      ; right-inverse-of = λ _ → Tbl.index-fromList-∈
+      { left-inverse-of = TP.lookup∈-index ∘ proj₂
+      ; right-inverse-of = λ _ → T.index-fromList-∈
       }
     }
 
@@ -336,13 +333,13 @@ module _ {a} {A : Set a} where
   -- The permutation between list element indices given by 'bag-permutation'
   -- correctly maps elements of each list to each other.
 
-  bag-permutation-correct : ∀ {xs ys : List A} (p : xs ∼[ bag ] ys) → Tbl.fromList xs Tbl.≗ (Tbl.permute (bag-permutation p) (Tbl.fromList ys))
+  bag-permutation-correct : ∀ {xs ys : List A} (p : xs ∼[ bag ] ys) → T.fromList xs T.≗ (T.permute (bag-permutation p) (T.fromList ys))
   bag-permutation-correct {xs} {ys} p i =
     begin
       lookup (fromList xs) i                                        ≡⟨ P.sym (fromList-index (Inverse.to p ⟨$⟩ fromList-∈ i)) ⟩
       lookup (fromList ys) (index (Inverse.to p ⟨$⟩ fromList-∈ i))  ≡⟨⟩
-      lookup (Tbl.permute (bag-permutation p) (fromList ys)) i      ∎
+      lookup (T.permute (bag-permutation p) (fromList ys)) i      ∎
     where
       open P.≡-Reasoning
-      open Tbl
+      open T
 
