@@ -13,20 +13,20 @@ open import Data.Bool using (true; false; if_then_else_)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Fin.Properties using (_≟_)
 open import Data.List as L using (List; _∷_; [])
-import Data.List.Properties as LP
 open import Data.List.Any using (here; there; index)
 open import Data.List.Any.Membership.Propositional using (_∈_)
-open import Data.Product using (Σ; ∃; _,_; proj₁; proj₂)
-open import Data.Sum using (_⊎_; inj₁; inj₂)
-open import Data.Nat using (ℕ)
+import Data.List.Properties as LP
 open import Data.Maybe using (Maybe; just; nothing; maybe)
+open import Data.Nat using (ℕ)
+open import Data.Product using (Σ; ∃; _,_; proj₁; proj₂)
+open import Data.Product.Relation.SigmaPropositional as OverΣ using (OverΣ)
+open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Data.Vec as V using (Vec; _∷_; [])
 import Data.Vec.Properties as VP
 open import Function using (_∘_; flip)
 open import Function.Inverse using (Inverse)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary.Decidable using (⌊_⌋)
-open import Data.Product.Relation.SigmaPropositional as OverΣ using (OverΣ)
 
 module _ {a} {A : Set a} where
 
