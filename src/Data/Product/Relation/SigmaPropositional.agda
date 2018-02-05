@@ -9,53 +9,89 @@
 
 module Data.Product.Relation.SigmaPropositional where
 
-open import Level using (_⊔_)
+open import Level using (Level; _⊔_)
 
 open import Relation.Binary as B using (REL; Rel)
-open import Relation.Binary.PropositionalEquality
-  as P
-  using (_≡_; _→-setoid_; _≗_)
-import Relation.Binary.Sigma.Pointwise as PW
+import Relation.Binary.Indexed as I
+open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 open import Data.Product using (Σ; ∃; _,_)
 
-module _ {a b} {A : Set a} {B : A → Set b} where
-  OverPath
-    : ∀ {p} → (∀ {x} → B x → B x → Set p)
-    → {x y : A} → x ≡ y → REL (B x) (B y) p
-  OverPath ∼ P.refl = ∼
+module HomogenouslyIndexed where
 
-  OverΣ
-    : ∀ {p} → (∀ {x} → B x → B x → Set p)
-    → Rel (∃ B) (a ⊔ p)
-  OverΣ ∼ (i , x) (j , y) = Σ (i ≡ j) (λ p → OverPath ∼ p x y)
+  -- Heterogenous, homogenously-indexed relations
 
-  module _ {p} {_∼_ : ∀ {x} → B x → B x → Set p} where
-    refl : (∀ {x} → B.Reflexive (_∼_ {x})) → B.Reflexive (OverΣ _∼_)
-    refl refl′ = P.refl , refl′
+  IREL : ∀ {i a₁ a₂} {I : Set i} → (I → Set a₁) → (I → Set a₂) → (ℓ : Level) → Set _
+  IREL A₁ A₂ ℓ = ∀ {i} → A₁ i → A₂ i → Set ℓ
 
-    symmetric : (∀ {x} → B.Symmetric (_∼_ {x})) → B.Symmetric (OverΣ _∼_)
-    symmetric sym (P.refl , p) = P.refl , sym p
+  -- Homogeneous, homogenously-indexed relations
 
-    transitive : (∀ {x} → B.Transitive (_∼_ {x})) → B.Transitive (OverΣ _∼_)
-    transitive trans (P.refl , p) (P.refl , q) = P.refl , trans p q
+  IRel : ∀ {i a} {I : Set i} → (I → Set a) → (ℓ : Level) → Set _
+  IRel A = IREL A A
 
-    isEquivalence : (∀ {x} → B.IsEquivalence (_∼_ {x})) → B.IsEquivalence (OverΣ _∼_)
-    isEquivalence isEquivalence′ = record
-      { refl = refl (B.IsEquivalence.refl isEquivalence′)
-      ; sym = symmetric (B.IsEquivalence.sym isEquivalence′)
-      ; trans = transitive (B.IsEquivalence.trans isEquivalence′)
-      }
+
+  module _ {i a₁ a₂} {I : Set i} {A₁ : I → Set a₁} {A₂ : I → Set a₂} where
+
+    OverPath
+      : ∀ {ℓ} → IREL A₁ A₂ ℓ
+      → {i j : I} → i ≡ j → REL (A₁ i) (A₂ j) ℓ
+    OverPath ∼ P.refl = ∼
+
+    OverΣ
+      : ∀ {ℓ} → IREL A₁ A₂ ℓ
+      → REL (Σ I A₁) (Σ I A₂) (i ⊔ ℓ)
+    OverΣ ∼ (i , x) (j , y) = Σ (i ≡ j) (λ p → OverPath ∼ p x y)
+
+    IRel-hetRel : ∀ {ℓ} → IREL A₁ A₂ ℓ → I.REL A₁ A₂ (i ⊔ ℓ)
+    IRel-hetRel _∼_ {i} {j} x y = (p : i ≡ j) → OverPath _∼_ p x y
+
+    hetRel-IRel : ∀ {ℓ} → I.REL A₁ A₂ ℓ → IREL A₁ A₂ ℓ
+    hetRel-IRel _∼_ {i} = _∼_ {i} {i}
+
+
+  module _ {i a} {I : Set i} (A : I → Set a) {ℓ} (_∼_ : IRel A ℓ) where
+    Reflexive : Set _
+    Reflexive = ∀ {i} → B.Reflexive (_∼_ {i})
+
+    Symmetric : Set _
+    Symmetric = ∀ {i} → B.Symmetric (_∼_ {i})
+
+    Transitive : Set _
+    Transitive = ∀ {i} → B.Transitive (_∼_ {i})
+
+    IsEquivalence : Set _
+    IsEquivalence = ∀ {i} → B.IsEquivalence (_∼_ {i})
+
+open HomogenouslyIndexed using (OverPath; OverΣ) public
+open HomogenouslyIndexed
+
+
+module _ {i a} {I : Set i} {A : I → Set a} {ℓ} {_∼_ : IRel A ℓ} where
+  refl : Reflexive A _∼_ → B.Reflexive (OverΣ {A₁ = A} _∼_)
+  refl refl′ = P.refl , refl′
+
+  symmetric : Symmetric A _∼_ → B.Symmetric (OverΣ {A₁ = A} _∼_)
+  symmetric sym (P.refl , p) = P.refl , sym p
+
+  transitive : Transitive A _∼_ → B.Transitive (OverΣ {A₁ = A} _∼_)
+  transitive trans (P.refl , p) (P.refl , q) = P.refl , trans p q
+
+  isEquivalence : IsEquivalence A _∼_ → B.IsEquivalence (OverΣ _∼_)
+  isEquivalence isEquivalence′ = record
+    { refl = refl (B.IsEquivalence.refl isEquivalence′)
+    ; sym = symmetric (B.IsEquivalence.sym isEquivalence′)
+    ; trans = transitive (B.IsEquivalence.trans isEquivalence′)
+    }
 
 setoid : ∀ {a b p} {A : Set a} → (A → B.Setoid b p) → B.Setoid (a ⊔ b) (a ⊔ p)
 setoid S = record
-  { isEquivalence = isEquivalence (λ {x} → B.Setoid.isEquivalence (S x))
+  { isEquivalence = isEquivalence λ {x} → B.Setoid.isEquivalence (S x)
   }
 
 module _ {a b} {A : Set a} {B : A → Set b} where
-  module _ {p} {_∼_ : ∀ {x} → B x → B x → Set p} where
+  module _ {p} {_∼_ : IRel B p} where
     hom
-      : ∀ {c q} {C : A → Set c} {_∼′_ : ∀ {x} → C x → C x → Set q}
+      : ∀ {c q} {C : A → Set c} {_∼′_ : IRel C q}
         {h : ∀ {x} → B x → C x}
       → (∀ {x} {y z : B x} → y ∼ z → h y ∼′ h z)
       → ∀ {x y} {s : B x} {t : B y}
@@ -69,10 +105,10 @@ module _ {a b} {A : Set a} {B : A → Set b} where
     subst P.refl p = (P.refl , p)
 
 module _ {a b} {A : Set a} {B : A → Set b} where
-  module _ {p} {_∼_ : ∀ {x} → B x → B x → Set p} where
+  module _ {p} {_∼_ : IRel B p} where
     ≡-cong :
       ∀ {c} {C : A → Set c}
-      → (∀ {x} → B.Reflexive (_∼_ {x}))
+      → Reflexive B _∼_
       → (h : ∀ {x} → C x → B x)
       → ∀ {x y}
       → {s : C x} {t : C y}
