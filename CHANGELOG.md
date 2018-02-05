@@ -365,6 +365,11 @@ Backwards compatible changes
   <-irrelevance     : IrrelevantRel _<_
   ```
 
+* Added new combinators to `Data.List.Base`:
+  ```agda
+  lookup : ∀ {a} {A : Set a} (xs : List A) → Fin (length xs) → A
+  ```
+
 * Added new proofs to `Data.List.Properties`:
   ```agda
   ∷-injectiveˡ  : x ∷ xs ≡ y List.∷ ys → x ≡ y
@@ -383,6 +388,10 @@ Backwards compatible changes
 
   filter-all     : All P xs → dfilter P? xs ≡ xs
   filter-none    : All (¬_ ∘ P) xs → dfilter P? xs ≡ []
+
+  tabulate-cong : ∀ {n a} {A : Set a} {f g : Fin n → A}
+                  → f ≗ g → tabulate f ≡ tabulate g
+  tabulate-lookup : ∀ {a} {A : Set a} {xs : List A} → tabulate (lookup xs) ≡ xs
   ```
 
 * Added new proofs to `Data.List.All.Properties`:
@@ -521,6 +530,7 @@ Backwards compatible changes
   lookup⇒[]=       : lookup i xs ≡ x → xs [ i ]= x
   lookup-replicate : lookup i (replicate x) ≡ x
   lookup-⊛         : lookup i (fs ⊛ xs) ≡ (lookup i fs $ lookup i xs)
+  tabulate-cong : ∀ {n a} {A : Set a} {f g : Fin n → A} → f ≗ g → tabulate f ≡ tabulate g
   ```
 
 * Added new proofs to `Data.Vec.All.Properties`
@@ -1394,6 +1404,13 @@ Backwards compatible changes
   ≅-to-type-≡  : {x : A} {y : B} → x ≅ y → A ≡ B
   ≅-to-subst-≡ : (p : x ≅ y) → subst (λ x → x) (≅-to-type-≡ p) x ≡ y
   ```
+
+* Added new modules `Data.Table`, `Data.Table.Base`,
+  `Data.Table.Relation.Equality` and `Data.Table.Properties`. A `Table` is a
+  fixed-length collection of objects similar to a `Vec` from `Data.Vec`, but
+  implemented as a function `Fin n → A`. This allows ease of lookup as opposed
+  to the ease of adding and removing elements in a `Vec`.
+
 
 Version 0.13
 ============
