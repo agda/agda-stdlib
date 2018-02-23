@@ -40,15 +40,21 @@ Non-backwards compatible changes
   `Data.List.Relation.NonStrictLex` into `Data.List.Relation.Lex.Core`. The public interface
   should not have changed as the content is publically re-exported by both files.
 
-* The contents of `Relation.Binary.Vec.Pointwise` has been split into
-  `Data.Vec.Relation.InductivePointwise` and `Data.Vec.Relation.ExtensionalPointwise`.
+* The contents of `Relation.Binary.Vec.Pointwise` has been split into two modules
+  `Data.Vec.Relation.Pointwise.Inductive` and `Data.Vec.Relation.Pointwise.Extensional`.
 
-* Moved `Data.Vec.Equality` to `Data.Vec.Relation.Equality`.
+* `Data.Vec.Equality` has been almost entirely reworked into four separate modules
+  inside `Data.Vec.Relation.Equality` (namely `Setoid`, `DecSetoid`, `Propositional`
+  and `DecPropositional`). All four of them now  use `Data.Vec.Relation.Pointwise.Inductive`
+  as a base. This should significantly improve the ease of use.
+
+  The proofs from the submodule `UsingVecEquality` in `Data.Vec.Properties` have been moved
+  to these four new modules.
 
 * The datatype `All₂` has been removed from `Data.Vec.All`, along with associated proofs
-  as it duplicates existing functionality in `Data.Vec.Relation.InductivePointwise`.
-  Unfortunately backwards compatability cannot be retained by re-exporting the `Pointwise`
-  definitions from `Data.Vec.All` due to dependancy cycles.
+  as it duplicates existing functionality in `Data.Vec.Relation.Pointwise.Inductive`.
+  Unfortunately it is not possible to maintain backwards compatability due to dependency
+  cycles.
 
 #### Upgrade of `Data.AVL`
 
@@ -106,7 +112,7 @@ Non-backwards compatible changes
 
 * Changed the fixity of `⋃` and `⋂` in `Relation.Unary` to make space for `_⊢_`.
 
-* Changed Data.Nat.Divisibility's `_|_` from data to record. As a consequence,
+* Changed Data.Nat.Divisibility's `_|_` from data to a record. As a consequence,
   the two parameters are not implicit arguments of the constructor anymore (but
   such values can be destructed using a let-binding rather than a with-clause).
 
@@ -210,6 +216,16 @@ anticipated any time soon, they may eventually be removed in some future release
   proof-irrelevance-[]= ↦ []=-irrelevance
   ```
 
+* In `Data.Vec.Relation.Pointwise.Inductive`:
+  ```agda
+  Pointwise-≡ ↦ ≡⇔Pointwise-≡
+  ```
+
+* In `Data.Vec.Relation.Pointwise.Extensional`:
+  ```agda
+  Pointwise-≡ ↦ ≡⇔Pointwise-≡
+  ```
+
 * In `Induction.Nat`:
   ```agda
   rec-builder      ↦ recBuilder
@@ -266,8 +282,8 @@ Backwards compatible changes
   Data.List.Relation.StrictLex
   Data.List.Relation.NonStrictLex
   Data.Vec.Properties
-  Data.Vec.Relation.InductivePointwise
-  Data.Vec.Relation.ExtensionalPointwise
+  Data.Vec.Relation.Pointwise.Inductive
+  Data.Vec.Relation.Pointwise.Extensional
   ```
 
 * Added new proof to `asymmetric : Asymmetric _<_` to the `IsStrictPartialOrder` record.
@@ -541,10 +557,8 @@ Backwards compatible changes
   All-irrelevance : IrrelevantPred P → ∀ {n} → IrrelevantPred (All P {n})
   ```
 
-* Added new proofs to `Data.Vec.Relation.ExtensionalPointwise`:
+* Added new proofs to `Data.Vec.Relation.Pointwise.Extensional`:
   ```agda
-  symmetric             : Symmetric _~_ → Symmetric (Pointwise _~_)
-  transitive            : Transitive _~_ → Transitive (Pointwise _~_)
   isDecEquivalence      : IsDecEquivalence _~_ → IsDecEquivalence (Pointwise _~_)
   extensional⇒inductive : Pointwise _~_ xs ys → IPointwise _~_ xs ys
   inductive⇒extensional : IPointwise _~_ xs ys → Pointwise _~_ xs ys
@@ -553,7 +567,7 @@ Backwards compatible changes
   Pointwise-≡⇒≡       : xs ≡ ys → Pointwise _≡_ xs ys
   ```
 
-* Added new proofs to `Data.Vec.Relation.InductivePointwise`:
+* Added new proofs to `Data.Vec.Relation.Pointwise.Inductive`:
   ```agda
   ++⁺              : Pointwise P xs → Pointwise P ys → Pointwise P (xs ++ ys)
   ++⁻ˡ             : Pointwise P (xs ++ ys) → Pointwise P xs
@@ -565,8 +579,6 @@ Backwards compatible changes
 
   lookup           : Pointwise _~_ xs ys → ∀ i → lookup i xs ~ lookup i ys
 
-  symmetric        : Symmetric _~_ → Symmetric (Pointwise _~_)
-  transitive       : Transitive _~_ → Transitive (Pointwise _~_)
   isDecEquivalence : IsDecEquivalence _~_ → IsDecEquivalence (Pointwise _~_)
 
   ≡⇒Pointwise-≡    : Pointwise _≡_ xs ys → xs ≡ ys
