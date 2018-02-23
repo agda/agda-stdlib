@@ -372,14 +372,6 @@ Backwards compatible changes
   []-injective : (Refl _∼_ x y ∋ [ p ]) ≡ [ q ] → p ≡ q
   ```
 
-* Added new proofs to `Data.Sign`:
-  ```agda
-  *-isSemigroup : IsSemigroup _≡_ _*_
-  *-semigroup   : Semigroup _ _
-  *-isMonoid    : IsMonoid _≡_ _*_ +
-  *-monoid      : Monoid _ _
-  ```
-
 * Added new proofs to `Data.Star.Properties`:
   ```agda
   ◅-injectiveˡ : (Star T i k ∋ x ◅ xs) ≡ y ◅ ys → x ≡ y

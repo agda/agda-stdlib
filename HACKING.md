@@ -39,15 +39,9 @@ How to make changes
     cabal install
     ```
 
-    **Fixing whitespace**: the tests require the use of a tool called
-    `fix-agda-whitespace`. This can be installed by entering the
-    folder of your Agda installation (i.e. the version obtained by
-    following the instructions in the section above) and running the
-    commands
-
+    **Fixing whitespace**: the tests require the use of a tool called `fix-agda-whitespace`. This can be installed by entering the folder of your agda installation (either your main one, or the version obtained by following the instructions in the section above) and running the command
     ```
-    cd src/fix-agda-whitespace
-    cabal install
+    make build-fix-agda-whitespace
     ```
 
 ### Upload your changes
