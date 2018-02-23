@@ -62,7 +62,7 @@ script:
   # generating index.agda
   - ./index.sh
   # building the docs
-  - agda -i . -i src/ --html src/index.agda
+  - agda -i . -i src/ --html index.agda
   # moving everything at the root
   - mv html/* .
 
@@ -75,7 +75,9 @@ after_success:
   - git fetch upstream && git reset upstream/gh-pages
   - git add -f \*.html
   - git commit -m "Automatic HTML update via Travis"
-  - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then git push -q upstream HEAD:gh-pages &>/dev/null; fi
+  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "master" ];
+    then git push -q upstream HEAD:gh-pages &>/dev/null;
+    fi
 
 notifications:
   email: false
