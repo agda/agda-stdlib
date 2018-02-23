@@ -26,24 +26,20 @@ Non-backwards compatible changes
   ```
 
   This move aims to increase the ease of use of the library as:
-          1. it keeps all the definitions about particular data types in the same directory
-      2. it provides a location to reason about how operations on the data types affects the
-          relations over them (e.g. how `Pointwise` is affected by `map`)
-      3. there is anecdotal evidence that many people were not aware of the existence
-          of the modules in their old location. The new location should be far more discoverable.
+    1. it keeps all the definitions about particular data types in the same directory
+    2. it provides a location to reason about how operations on the data types affects the
+       relations over them (e.g. how `Pointwise` is affected by `map`)
+    3. there is anecdotal evidence that many people were not aware of the existence
+       of the modules in their old location. The new location should be more discoverable.
 
   The old files in `Relation.Binary.X` still exist for backwards compatability reasons and
   re-export the contents of files' new location in `Data.X.Relation` but may be removed in some
   future release.
 
-* Some shared content has been moved out of `Data.List.Relation.StrictLex` and
-  `Data.List.Relation.NonStrictLex` into `Data.List.Relation.Lex.Core`. The public interface
-  should not have changed as the content is publically re-exported by both files.
+* Moved `Data.Vec.Equality` to `Data.Vec.Relation.Equality`.
 
 * The contents of `Relation.Binary.Vec.Pointwise` has been split into
   `Data.Vec.Relation.InductivePointwise` and `Data.Vec.Relation.ExtensionalPointwise`.
-
-* Moved `Data.Vec.Equality` to `Data.Vec.Relation.Equality`.
 
 * The datatype `All₂` has been removed from `Data.Vec.All`, along with associated proofs
   as it duplicates existing functionality in `Data.Vec.Relation.InductivePointwise`.
@@ -154,7 +150,7 @@ anticipated any time soon, they may eventually be removed in some future release
   not-∨-inverse  ↦ ∨-inverse
 
   isCommutativeSemiring-∨-∧ ↦ ∨-∧-isCommutativeSemiring
-  commutativeSemiring-∨-∧   ↦  ∨-∧-commutativeSemiring
+  commutativeSemiring-∨-∧   ↦ ∨-∧-commutativeSemiring
   isCommutativeSemiring-∧-∨ ↦ ∧-∨-isCommutativeSemiring
   commutativeSemiring-∧-∨   ↦ ∧-∨-commutativeSemiring
   isBooleanAlgebra          ↦ ∨-∧-isBooleanAlgebra
@@ -194,6 +190,14 @@ anticipated any time soon, they may eventually be removed in some future release
   ```agda
   right-identity-unique ↦ ++-identityʳ-unique
   left-identity-unique  ↦ ++-identityˡ-unique
+  ```
+
+* In `Data.List.Relation.Pointwise`:
+  ```agda
+  Rel    ↦ Pointwise
+  Rel≡⇒≡ ↦ Pointwise≡⇒≡
+  ≡⇒Rel≡ ↦ ≡⇒Pointwise≡
+  Rel↔≡  ↦ Pointwise≡↔≡
   ```
 
 * In `Data.Nat.Properties`:
@@ -262,11 +266,12 @@ Backwards compatible changes
 
 * New module `Data.Word` for new builtin type `Agda.Builtin.Word.Word64`.
 
-* New modules `Data.Table`, `Data.Table.Base`,
-  `Data.Table.Relation.Equality` and `Data.Table.Properties`. A `Table` is a
-  fixed-length collection of objects similar to a `Vec` from `Data.Vec`, but
-  implemented as a function `Fin n → A`. This prioritises ease of lookup as opposed
-  to `Vec` which prioritises the ease of adding and removing elements.
+* New module `Data.Table`. A `Table` is a fixed-length collection of objects
+  similar to a `Vec` from `Data.Vec`, but implemented as a function `Fin n → A`.
+  This prioritises ease of lookup as opposed to `Vec` which prioritises the ease
+  of adding and removing elements.
+
+* New modules `Data.List.Relation.Equality` and `Data.List.Relation.DecidableEquality`
 
 * The contents of the following modules are now more polymorphic with respect to levels:
   ```agda
@@ -423,6 +428,14 @@ Backwards compatible changes
   ≤-resp₂         : IsEquivalence _≈_ → _≼_ Respects₂ _≈_ → _≤_ Respects₂ _≋_
   ```
 
+* Added new proofs to `Data.List.Relation.Pointwise`:
+  ```agda
+  tabulate⁺ : (∀ i → f i ∼ g i) → Pointwise _∼_ (tabulate f) (tabulate g)
+  tabulate⁻ : Pointwise _∼_ (tabulate f) (tabulate g) → (∀ i → f i ∼ g i)
+  ++⁺       : Pointwise _∼_ ws xs → Pointwise _∼_ ys zs → Pointwise _∼_ (ws ++ ys) (xs ++ zs)
+  concat⁺   : Pointwise (Pointwise _∼_) xss yss → Pointwise _∼_ (concat xss) (concat yss)
+  ```
+
 * Added new proofs to `Data.List.Relation.StrictLex`:
   ```agda
   <-antisymmetric : Symmetric _≈_ → Irreflexive _≈_ _≺_ →  Asymmetric _≺_ → Antisymmetric _≋_ _<_
@@ -541,7 +554,7 @@ Backwards compatible changes
   lookup⇒[]=       : lookup i xs ≡ x → xs [ i ]= x
   lookup-replicate : lookup i (replicate x) ≡ x
   lookup-⊛         : lookup i (fs ⊛ xs) ≡ (lookup i fs $ lookup i xs)
-  tabulate-cong : ∀ {n a} {A : Set a} {f g : Fin n → A} → f ≗ g → tabulate f ≡ tabulate g
+  tabulate-cong    : f ≗ g → tabulate f ≡ tabulate g
   ```
 
 * Added new proofs to `Data.Vec.All.Properties`
@@ -557,8 +570,8 @@ Backwards compatible changes
   extensional⇒inductive : Pointwise _~_ xs ys → IPointwise _~_ xs ys
   inductive⇒extensional : IPointwise _~_ xs ys → Pointwise _~_ xs ys
 
-  ≡⇒Pointwise-≡       : Pointwise _≡_ xs ys → xs ≡ ys
-  Pointwise-≡⇒≡       : xs ≡ ys → Pointwise _≡_ xs ys
+  ≡⇒Pointwise-≡         : Pointwise _≡_ xs ys → xs ≡ ys
+  Pointwise-≡⇒≡         : xs ≡ ys → Pointwise _≡_ xs ys
   ```
 
 * Added new proofs to `Data.Vec.Relation.InductivePointwise`:

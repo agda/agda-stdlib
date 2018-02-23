@@ -18,6 +18,7 @@ open import Data.Nat.Base using (ℕ)
 open import Data.Product
 open import Data.Vec using (Vec; lookup)
 open import Function using (_∘_; _$_)
+open import Relation.Binary using (Decidable)
 import Relation.Binary.EqReasoning
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 import Relation.Binary.Reflection
@@ -111,8 +112,8 @@ open module R = Relation.Binary.Reflection
 
 infix 5 _≟_
 
-_≟_ : ∀ {n} (nf₁ nf₂ : Normal n) → Dec (nf₁ ≡ nf₂)
-nf₁ ≟ nf₂ = Dec.map′ Rel≡⇒≡ ≡⇒Rel≡ (decidable Fin._≟_ nf₁ nf₂)
+_≟_ : ∀ {n} → Decidable {A = Normal n} _≡_
+nf₁ ≟ nf₂ = Dec.map′ Pointwise≡⇒≡ ≡⇒Pointwise≡ (decidable Fin._≟_ nf₁ nf₂)
   where open Pointwise
 
 -- We can also give a sound, but not necessarily complete, procedure
