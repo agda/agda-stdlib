@@ -39,7 +39,7 @@ data _[_]=_ {a} {A : Set a} :
           (xs[i]=x : xs [ i ]= x) → y ∷ xs [ suc i ]= x
 
 ------------------------------------------------------------------------
--- Basic operations
+-- Some operations
 
 head : ∀ {a n} {A : Set a} → Vec A (1 + n) → A
 head (x ∷ xs) = x
@@ -47,27 +47,8 @@ head (x ∷ xs) = x
 tail : ∀ {a n} {A : Set a} → Vec A (1 + n) → Vec A n
 tail (x ∷ xs) = xs
 
-lookup : ∀ {a n} {A : Set a} → Fin n → Vec A n → A
-lookup zero    (x ∷ xs) = x
-lookup (suc i) (x ∷ xs) = lookup i xs
-
--- Update.
-
-infixl 6 _[_]≔_
-
-_[_]≔_ : ∀ {a n} {A : Set a} → Vec A n → Fin n → A → Vec A n
-(x ∷ xs) [ zero  ]≔ y = y ∷ xs
-(x ∷ xs) [ suc i ]≔ y = x ∷ xs [ i ]≔ y
-
-------------------------------------------------------------------------
--- Operations for transforming vectors
-
-map : ∀ {a b n} {A : Set a} {B : Set b} →
-      (A → B) → Vec A n → Vec B n
-map f []       = []
-map f (x ∷ xs) = f x ∷ map f xs
-
--- Concatenation.
+[_] : ∀ {a} {A : Set a} → A → Vec A 1
+[ x ] = x ∷ []
 
 infixr 5 _++_
 
@@ -75,10 +56,32 @@ _++_ : ∀ {a m n} {A : Set a} → Vec A m → Vec A n → Vec A (m + n)
 []       ++ ys = ys
 (x ∷ xs) ++ ys = x ∷ (xs ++ ys)
 
-concat : ∀ {a m n} {A : Set a} →
-         Vec (Vec A m) n → Vec A (n * m)
-concat []         = []
-concat (xs ∷ xss) = xs ++ concat xss
+infixl 4 _⊛_
+
+_⊛_ : ∀ {a b n} {A : Set a} {B : Set b} →
+      Vec (A → B) n → Vec A n → Vec B n
+[]       ⊛ _        = []
+(f ∷ fs) ⊛ (x ∷ xs) = f x ∷ (fs ⊛ xs)
+
+replicate : ∀ {a n} {A : Set a} → A → Vec A n
+replicate {n = zero}  x = []
+replicate {n = suc n} x = x ∷ replicate x
+
+applicative : ∀ {a n} → RawApplicative (λ (A : Set a) → Vec A n)
+applicative = record
+  { pure = replicate
+  ; _⊛_  = _⊛_
+  }
+
+map : ∀ {a b n} {A : Set a} {B : Set b} →
+      (A → B) → Vec A n → Vec B n
+map f []       = []
+map f (x ∷ xs) = f x ∷ map f xs
+
+functor :  ∀ {a n} → RawFunctor (λ (A : Set a) → Vec A n)
+functor = record
+  { _<$>_ = map
+  }
 
 zipWith : ∀ {a b c n} {A : Set a} {B : Set b} {C : Set c} →
           (A → B → C) → Vec A n → Vec B n → Vec C n
@@ -93,45 +96,6 @@ unzip : ∀ {a b n} {A : Set a} {B : Set b} →
         Vec (A × B) n → Vec A n × Vec B n
 unzip []              = [] , []
 unzip ((x , y) ∷ xys) = Prod.map (x ∷_) (y ∷_) (unzip xys)
-
--- Interleaving.
-
-infixr 5 _⋎_
-
-_⋎_ : ∀ {a m n} {A : Set a} →
-      Vec A m → Vec A n → Vec A (m +⋎ n)
-[]       ⋎ ys = ys
-(x ∷ xs) ⋎ ys = x ∷ (ys ⋎ xs)
-
--- Pointwise application
-
-infixl 4 _⊛_
-
-_⊛_ : ∀ {a b n} {A : Set a} {B : Set b} →
-      Vec (A → B) n → Vec A n → Vec B n
-[]       ⊛ _        = []
-(f ∷ fs) ⊛ (x ∷ xs) = f x ∷ (fs ⊛ xs)
-
--- Multiplication
-
-infixl 1 _>>=_
-
-_>>=_ : ∀ {a b m n} {A : Set a} {B : Set b} →
-        Vec A m → (A → Vec B n) → Vec B (m * n)
-xs >>= f = concat (map f xs)
-
-infixl 4 _⊛*_
-
-_⊛*_ : ∀ {a b m n} {A : Set a} {B : Set b} →
-       Vec (A → B) m → Vec A n → Vec B (m * n)
-fs ⊛* xs = fs >>= λ f → map f xs
-
-allPairs : ∀ {a b m n} {A : Set a} {B : Set b} →
-           Vec A m → Vec B n → Vec (A × B) (m * n)
-allPairs xs ys = map _,_ xs ⊛* ys
-
-------------------------------------------------------------------------
--- Operations for reducing vectors
 
 foldr : ∀ {a b} {A : Set a} (B : ℕ → Set b) {m} →
         (∀ {n} → A → B n → B (suc n)) →
@@ -156,30 +120,10 @@ foldl₁ : ∀ {a} {A : Set a} {m} →
          (A → A → A) → Vec A (suc m) → A
 foldl₁ _⊕_ (x ∷ xs) = foldl _ _⊕_ x xs
 
--- Special folds
-
-sum : ∀ {n} → Vec ℕ n → ℕ
-sum = foldr _ _+_ 0
-
-------------------------------------------------------------------------
--- Operations for building vectors
-
-[_] : ∀ {a} {A : Set a} → A → Vec A 1
-[ x ] = x ∷ []
-
-replicate : ∀ {a n} {A : Set a} → A → Vec A n
-replicate {n = zero}  x = []
-replicate {n = suc n} x = x ∷ replicate x
-
-tabulate : ∀ {n a} {A : Set a} → (Fin n → A) → Vec A n
-tabulate {zero}  f = []
-tabulate {suc n} f = f zero ∷ tabulate (f ∘ suc)
-
-allFin : ∀ n → Vec (Fin n) n
-allFin _ = tabulate id
-
-------------------------------------------------------------------------
--- Operations for dividing vectors
+concat : ∀ {a m n} {A : Set a} →
+         Vec (Vec A m) n → Vec A (n * m)
+concat []         = []
+concat (xs ∷ xss) = xs ++ concat xss
 
 splitAt : ∀ {a} {A : Set a} m {n} (xs : Vec A (m + n)) →
           ∃₂ λ (ys : Vec A m) (zs : Vec A n) → xs ≡ ys ++ zs
@@ -204,13 +148,18 @@ group (suc n) k .(ys ++ zs)         | (ys , zs , refl) with group n k zs
 group (suc n) k .(ys ++ concat zss) | (ys , ._ , refl) | (zss , refl) =
   ((ys ∷ zss) , refl)
 
+-- Splits a vector into two "halves".
+
 split : ∀ {a n} {A : Set a} → Vec A n → Vec A ⌈ n /2⌉ × Vec A ⌊ n /2⌋
 split []           = ([]     , [])
 split (x ∷ [])     = (x ∷ [] , [])
 split (x ∷ y ∷ xs) = Prod.map (_∷_ x) (_∷_ y) (split xs)
 
-------------------------------------------------------------------------
--- Operations for converting between lists
+reverse : ∀ {a n} {A : Set a} → Vec A n → Vec A n
+reverse {A = A} = foldl (Vec A) (λ rev x → x ∷ rev) []
+
+sum : ∀ {n} → Vec ℕ n → ℕ
+sum = foldr _ _+_ 0
 
 toList : ∀ {a n} {A : Set a} → Vec A n → List A
 toList []       = List.[]
@@ -220,11 +169,7 @@ fromList : ∀ {a} {A : Set a} → (xs : List A) → Vec A (List.length xs)
 fromList List.[]         = []
 fromList (List._∷_ x xs) = x ∷ fromList xs
 
-------------------------------------------------------------------------
--- Operations for reversing vectors
-
-reverse : ∀ {a n} {A : Set a} → Vec A n → Vec A n
-reverse {A = A} = foldl (Vec A) (λ rev x → x ∷ rev) []
+-- Snoc.
 
 infixl 5 _∷ʳ_
 
@@ -247,16 +192,58 @@ last : ∀ {a n} {A : Set a} → Vec A (1 + n) → A
 last xs         with initLast xs
 last .(ys ∷ʳ y) | (ys , y , refl) = y
 
-------------------------------------------------------------------------
--- A functorial view of vectors
+-- Multiplying vectors
 
-applicative : ∀ {a n} → RawApplicative (λ (A : Set a) → Vec A n)
-applicative = record
-  { pure = replicate
-  ; _⊛_  = _⊛_
-  }
+infixl 1 _>>=_
 
-functor :  ∀ {a n} → RawFunctor (λ (A : Set a) → Vec A n)
-functor = record
-  { _<$>_ = map
-  }
+_>>=_ : ∀ {a b m n} {A : Set a} {B : Set b} →
+        Vec A m → (A → Vec B n) → Vec B (m * n)
+xs >>= f = concat (map f xs)
+
+infixl 4 _⊛*_
+
+_⊛*_ : ∀ {a b m n} {A : Set a} {B : Set b} →
+       Vec (A → B) m → Vec A n → Vec B (m * n)
+fs ⊛* xs = fs >>= λ f → map f xs
+
+allPairs : ∀ {a b} {A : Set a} {B : Set b} {m n}
+           → Vec A m → Vec B n → Vec (A × B) (m * n)
+allPairs xs ys = map _,_ xs ⊛* ys
+
+-- Interleaves the two vectors.
+
+infixr 5 _⋎_
+
+_⋎_ : ∀ {a m n} {A : Set a} →
+      Vec A m → Vec A n → Vec A (m +⋎ n)
+[]       ⋎ ys = ys
+(x ∷ xs) ⋎ ys = x ∷ (ys ⋎ xs)
+
+-- A lookup function.
+
+lookup : ∀ {a n} {A : Set a} → Fin n → Vec A n → A
+lookup zero    (x ∷ xs) = x
+lookup (suc i) (x ∷ xs) = lookup i xs
+
+-- An inverse of flip lookup.
+
+tabulate : ∀ {n a} {A : Set a} → (Fin n → A) → Vec A n
+tabulate {zero}  f = []
+tabulate {suc n} f = f zero ∷ tabulate (f ∘ suc)
+
+-- Update.
+
+infixl 6 _[_]≔_
+
+_[_]≔_ : ∀ {a n} {A : Set a} → Vec A n → Fin n → A → Vec A n
+(x ∷ xs) [ zero  ]≔ y = y ∷ xs
+(x ∷ xs) [ suc i ]≔ y = x ∷ xs [ i ]≔ y
+
+-- Generates a vector containing all elements in Fin n. This function
+-- is not placed in Data.Fin because Data.Vec depends on Data.Fin.
+--
+-- The implementation was suggested by Conor McBride ("Fwd: how to
+-- count 0..n-1", http://thread.gmane.org/gmane.comp.lang.agda/2554).
+
+allFin : ∀ n → Vec (Fin n) n
+allFin _ = tabulate id

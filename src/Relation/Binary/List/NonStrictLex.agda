@@ -15,5 +15,3 @@
 module Relation.Binary.List.NonStrictLex where
 
 open import Data.List.Relation.NonStrictLex public
-  hiding (base; halt; this; next; ¬≤-this; ¬≤-next)
-open import Data.List.Relation.Lex.Core public

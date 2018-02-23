@@ -30,10 +30,8 @@ open import Function
 
 infix 4 _∣_ _∤_
 
-record _∣_ (m n : ℕ) : Set where
-  constructor divides
-  field quotient : ℕ
-        equality : n ≡ quotient * m
+data _∣_ : ℕ → ℕ → Set where
+  divides : {m n : ℕ} (q : ℕ) (eq : n ≡ q * m) → m ∣ n
 
 _∤_ : Rel ℕ _
 m ∤ n = ¬ (m ∣ n)
@@ -63,10 +61,11 @@ quotient (divides q _) = q
   divides (q * p) (sym (*-assoc q p _))
 
 ∣-antisym : Antisymmetric _≡_ _∣_
-∣-antisym {m} {0} _ (divides q eq) = trans eq (*-comm q 0)
-∣-antisym {0} {n} (divides p eq) _ = sym (trans eq (*-comm p 0))
-∣-antisym {suc m} {suc n} (divides p eq₁) (divides q eq₂) =
-  ≤-antisym (∣⇒≤ (divides p eq₁)) (∣⇒≤ (divides q eq₂))
+∣-antisym (divides {n = zero} _ _) (divides q refl) = *-comm q 0
+∣-antisym (divides p eq) (divides {n = zero} _ _) =
+  trans (*-comm 0 p) (sym eq)
+∣-antisym (divides {n = suc _} p eq₁) (divides {n = suc _} q eq₂) =
+    ≤-antisym (∣⇒≤ (divides p eq₁)) (∣⇒≤ (divides q eq₂))
 
 ∣-isPreorder : IsPreorder _≡_ _∣_
 ∣-isPreorder = record
@@ -173,7 +172,7 @@ nonZeroDivisor-lemma m zero r r≢zero (divides zero eq) = r≢zero $ begin
   0          ∎
   where open PropEq.≡-Reasoning
 nonZeroDivisor-lemma m zero r r≢zero (divides (suc q) eq) =
-  i+1+j≰i m $ begin
+  ¬i+1+j≤i m $ begin
     m + suc (q * suc m) ≡⟨ +-suc m (q * suc m) ⟩
     suc (m + q * suc m) ≡⟨ sym eq ⟩
     1 * toℕ r           ≡⟨ *-identityˡ (toℕ r) ⟩
