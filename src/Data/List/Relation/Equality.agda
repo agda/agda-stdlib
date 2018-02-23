@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Pointwise lifting of relations to lists
+-- Equality over lists parameterised by some setoid
 ------------------------------------------------------------------------
 
 open import Relation.Binary using (Setoid)

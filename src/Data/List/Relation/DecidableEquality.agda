@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Decidable equality over lists parameterised by some DecSetoid
+-- Decidable equality over lists parameterised by some decidable setoid
 ------------------------------------------------------------------------
 
 open import Relation.Binary using (DecSetoid)
