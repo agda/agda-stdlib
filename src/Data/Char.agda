@@ -16,10 +16,9 @@ import Relation.Binary.On as On
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_)
 open import Relation.Binary.PropositionalEquality.TrustMe
 
-open import Agda.Builtin.Char using (primCharEquality)
 open import Data.String.Base using (String)
 open import Data.Char.Base
-open        Data.Char.Base public using (Char; show; toNat; fromNat)
+open        Data.Char.Base public using (Char; show; toNat)
 
 -- Informative equality test.
 

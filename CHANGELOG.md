@@ -8,105 +8,46 @@ Important changes since 0.14:
 Non-backwards compatible changes
 --------------------------------
 
-#### Overhaul of organisation of relations over data
+#### Overhaul of `Algebra.Morphism`
 
-* Relations over data have been moved from the `Relation` subtree to the `Data`
-  subtree. In general the files have been moved from `Relation.Binary.X` to
-  `Data.X.Relation`. The full list of moves is as follows:
-  ```
-  `Relation.Binary.List.Pointwise`       ↦ `Data.List.Relation.Pointwise`
-  `Relation.Binary.List.StrictLex`       ↦ `Data.List.Relation.StrictLex`
-  `Relation.Binary.List.NonStrictLex`    ↦ `Data.List.Relation.NonStrictLex`
-  `Relation.Binary.Sigma.Pointwise`      ↦ `Data.Product.Relation.SigmaPointwise`
-  `Relation.Binary.Sum`                  ↦ `Data.Sum.Relation.General`
-  `Relation.Binary.Product.Pointwise`    ↦ `Data.Product.Relation.Pointwise`
-  `Relation.Binary.Product.StrictLex`    ↦ `Data.Product.Relation.StrictLex`
-  `Relation.Binary.Product.NonStrictLex` ↦ `Data.Product.Relation.NonStrictLex`
-  `Relation.Binary.Vec.Pointwise`        ↦ SPECIAL: See notes below
-  ```
-
-  This move aims to increase the ease of use of the library as:
-          1. it keeps all the definitions about particular data types in the same directory
-      2. it provides a location to reason about how operations on the data types affects the
-          relations over them (e.g. how `Pointwise` is affected by `map`)
-      3. there is anecdotal evidence that many people were not aware of the existence
-          of the modules in their old location. The new location should be far more discoverable.
-
-  The old files in `Relation.Binary.X` still exist for backwards compatability reasons and
-  re-export the contents of files' new location in `Data.X.Relation` but may be removed in some
-  future release.
-
-* Some shared content has been moved out of `Data.List.Relation.StrictLex` and
-  `Data.List.Relation.NonStrictLex` into `Data.List.Relation.Lex.Core`. The public interface
-  should not have changed as the content is publically re-exported by both files.
-
-* The contents of `Relation.Binary.Vec.Pointwise` has been split into
-  `Data.Vec.Relation.InductivePointwise` and `Data.Vec.Relation.ExtensionalPointwise`.
-
-* Moved `Data.Vec.Equality` to `Data.Vec.Relation.Equality`.
-
-* The datatype `All₂` has been removed from `Data.Vec.All`, along with associated proofs
-  as it duplicates existing functionality in `Data.Vec.Relation.InductivePointwise`.
-  Unfortunately backwards compatability cannot be retained by re-exporting the `Pointwise`
-  definitions from `Data.Vec.All` due to dependancy cycles.
-
-#### Upgrade of `Data.AVL`
-
-* `Data.AVL.Key` and `Data.AVL.Height` have been split out of `Data.AVL`
-  therefore ensuring they are independent on the type of `Value` the tree will contain.
-
-* `Indexed` has been put into its own core module `Data.AVL.Indexed` following the
-  example of `Category.Monad.Indexed` and `Data.Container.Indexed`.
-
-* The changes above allow `map` to have a polymorphic type and so it is now possible
-  to change the type of values contained in a tree when mapping over it.
-
-#### Upgrade of `Algebra.Morphism`
-
-* Previously `Algebra.Morphism` only provides an example of a `Ring` homomorphism which
-  packs the homomorphism and the proofs that it behaves the right way.
+* Currently `Algebra.Morphism` only gives an example of a `Ring` homomorphism which
+  packs the homomorphism and all the proofs that it behaves the right way.
 
   Instead we have adopted and `Algebra.Structures`-like approach with proof-only
   records parametrised by the homomorphism and the structures it acts on. This make
   it possible to define the proof requirement for e.g. a ring in terms of the proof
   requirements for its additive abelian group and multiplicative monoid.
 
-#### Upgrade of `filter` and `partition` in `Data.List`
+#### Overhaul of `Data.AVL`
 
-* The functions `filter` and `partition` in `Data.List.Base` now use decidable
-  predicates instead of boolean-valued functions. The boolean versions encouraged
-  the throwing away of type information, and hence were difficult to use and prove
-  properties about. Proofs have been updated and renamed accordingly.
+* Splitting out `Data.AVL.Key` and `Data.AVL.Height` which should not depend
+  on the type of `Value` the tree will contain.
 
-  The old boolean versions still exist as `boolFilter` and `boolPartition` for
-  backwards compatibility reasons, but are deprecated and may be removed in some
-  future release. The old versions can be implemented via the new versions
-  with the predicate `λ v → f v ≡ true`.
+* Putting `Indexed` into its own core module ̀`Data.AVL.Indexed` following the
+  example of e.g. `Category.Monad.Indexed` or `Data.Container.Indexed`
 
-#### Overhaul of categorical interpretations of List and Vec
-
-* New modules `Data.List.Categorical` and `Data.Vec.Categorical` have been added
-  for the categorical interpretations of `List` and `Vec`.
-
-  The following have been moved to `Data.List.Categorical`:
-
-  - The module `Monad` from `Data.List.Properties` (renamed to `MonadProperties`)
-  - The module `Applicative` from `Data.List.Properties`
-  - `monad`, `monadZero`, `monadPlus` and monadic operators from `Data.List`
-
-  The following has been moved to `Data.Vec.Categorical`:
-
-  - `applicative` and `functor` from `Data.Vec`
-  - `lookup-morphism` and `lookup-functor-morphism` from `Data.Vec.Properties`
+* Giving ̀ map` a polymorphic type: it is now possible to change the type of
+  values contained in a tree when mapping over it.
 
 #### Other
 
 * Removed support for GHC 7.8.4.
 
-* Renamed `Data.Container.FreeMonad.do` and `Data.Container.Indexed.FreeMonad.do`
-  to `inn` as Agda 2.5.4 now supports proper 'do' notation.
+* Renamed `Data.Container.FreeMonad.do` and
+  `Data.Container.Indexed.FreeMonad.do` to `inn` in anticipation of Agda
+  supporting proper 'do' notation.
 
 * Changed the fixity of `⋃` and `⋂` in `Relation.Unary` to make space for `_⊢_`.
+
+* The functions `filter` and `partition` in `Data.List.Base` have been renamed
+  `boolFilter` and `boolPartition`, and have been replaced by new functions
+  `filter` and `partition` which use decidable predicates instead of boolean-valued
+  functions.  The former encouraged poor programming style in a dependantly-typed
+  language such as Agda. Proofs for `filter` and `partition` have also been
+  updated and renamed accordingly.
+
+* Moved `Data.Vec.Equality` to `Data.Vec.Relation.Equality` (see "Deprecated
+  features" section for explanation)
 
 * Changed Data.Nat.Divisibility's `_|_` from data to record. As a consequence,
   the two parameters are not implicit arguments of the constructor anymore (but
@@ -114,21 +55,43 @@ Non-backwards compatible changes
 
 * Moved the proof `eq?` from `Data.Nat` to `Data.Nat.Properties`
 
-* The proofs that were called `+-monoˡ-<` and `+-monoʳ-<` in `Data.Nat.Properties`
-  have been renamed `+-mono-<-≤` and `= +-mono-≤-<` respectively. The original
-  names are now used for proofs of left and right monotonicity of `_+_`.
-
-* Moved the proof `monoid` from `Data.List` to `++-monoid` in `Data.List.Properties`.
+* The proofs that were called `+-monoˡ-<` and `+-monoʳ-<` have been renamed `+-mono-<-≤` and `= +-mono-≤-<` respectively. The actual proofs of left and right monotonicity of `_+_` now use the original two names.
 
 Deprecated features
 -------------------
 
-The following renaming has occurred as part of a drive to improve naming consistency across
-the library. The old names still exist and therefore all existing code should still
-work, however they have been deprecated and use of the new names is encouraged. Although not
-anticipated any time soon, eventually they may be removed in some future release of the library.
+Deprecated features still exist and therefore existing code should still work
+but they may be removed in some future release of the library.
 
-* In `Data.Bool.Properties`:
+* Relations over data have been moved from the `Relation` subtree to the `Data`
+  subtree. The full list of moves is as follows:
+  - `Relation.Binary.List.Pointwise`       ↦ `Data.List.Relation.Pointwise`
+  - `Relation.Binary.List.StrictLex`       ↦ `Data.List.Relation.StrictLex`
+  - `Relation.Binary.List.NonStrictLex`    ↦ `Data.List.Relation.NonStrictLex`
+  - `Relation.Binary.Sigma.Pointwise`      ↦ `Data.Product.Relation.SigmaPointwise`
+  - `Relation.Binary.Sum`                  ↦ `Data.Sum.Relation.General`
+  - `Relation.Binary.Product.Pointwise`    ↦ `Data.Product.Relation.Pointwise`
+  - `Relation.Binary.Product.StrictLex`    ↦ `Data.Product.Relation.StrictLex`
+  - `Relation.Binary.Product.NonStrictLex` ↦ `Data.Product.Relation.NonStrictLex`
+  - `Relation.Binary.Vec.Pointwise`        ↦ `Data.Vec.Relation.InductivePointwise`
+                                           ↦ `Data.Vec.Relation.ExtensionalPointwise`
+
+  This move aims to increase the navigability of the library as 1) there is evidence that many
+  people were not aware of the existence of the modules in their old location, 2) it keeps all
+  the definitions about particular data types in the same directory and 3) provides a location
+  to reason about how operations on the data types affects the relations over them.
+
+  Some shared content has been moved out of `Data.List.Relation.StrictLex` and `Data.List.Relation.NonStrictLex` into `Data.List.Relation.Lex.Core`
+
+  The contents of `Relation.Binary.Vec.Pointwise` has been split into `Data.Vec.Relation.InductivePointwise` and `Data.Vec.Relation.ExtensionalPointwise`.
+
+  The old files in `Relation.Binary.X` still exist for backwards compatability reasons and
+  re-exports the contents of files' new location in `Data.X.Relation` but may be removed in some
+  future release.
+
+* `Data.Vec.All.All₂` has been deprecated as it duplicates existing functionality in `Data.Vec.Relation.InductivePointwise`
+
+* The following renaming has occurred in `Data.Bool.Properties` to improve consistency across the library:
   ```agda
   ∧-∨-distˡ      ↦ ∧-distribˡ-∨
   ∧-∨-distʳ      ↦ ∧-distribʳ-∨
@@ -157,30 +120,33 @@ anticipated any time soon, eventually they may be removed in some future release
   proof-irrelevance         ↦ T-irrelevance
   ```
 
-* In `Data.Fin.Properties`:
+* The following renaming has occurred in `Data.Fin.Properties` to improve consistency across the library:
   ```agda
   cmp              ↦ <-cmp
   strictTotalOrder ↦ <-strictTotalOrder
   ```
 
-* In `Data.List.Base`:
+* The functions `boolFilter` and `boolPartition` in `Data.List.Base` have
+  been deprecated in favour of the new `filter` and `partition` and the following
+  renaming has occured in `Data.List.Base`:
   ```agda
   gfilter ↦  mapMaybe
   ```
+  bringing it into line with the equivalent function in Haskell.
 
-* In `Data.List.Properties`:
+* The following renaming has occured in `Data.List.Properties` to improve consistency across the library:
   ```agda
   right-identity-unique ↦ ++-identityʳ-unique
   left-identity-unique  ↦ ++-identityˡ-unique
   ```
 
-* In `Data.Nat.Properties`:
+* The following renaming has occurred in `Data.Nat.Properties` to improve consistency across the library:
   ```agda
   ¬i+1+j≤i ↦ i+1+j≰i
   ≤-steps  ↦ ≤-stepsˡ
   ```
 
-* In `Data.Sign.Properties`:
+* The following renaming has occurred in `Data.Sign.Properties` to improve consistency across the library:
   ```agda
   opposite-not-equal ↦ s≢opposite[s]
   opposite-cong      ↦ opposite-injective
@@ -189,12 +155,12 @@ anticipated any time soon, eventually they may be removed in some future release
   *-cancellative     ↦ *-cancel-≡
   ```
 
-* In `Data.Vec.Properties`:
+* The following renaming has occurred in `Data.Vec.Properties` to improve consistency across the library:
   ```agda
   proof-irrelevance-[]= ↦ []=-irrelevance
   ```
 
-* In `Relation.Binary.PropositionalEquality`:
+* The following renaming has occurred in `Relation.Binary.PropositionalEquality` to improve consistency across the library:
   ```agda
   proof-irrelevance     ↦ ≡-irrelevance
   ```
@@ -202,11 +168,9 @@ anticipated any time soon, eventually they may be removed in some future release
 Removed features
 ----------------
 
-#### Deprecated in version 0.10
+* The modules `Deprecated-inspect` and `Deprecated-inspect-on-steroids` in `Relation.Binary.PropositionalEquality` which were deprecated in version 0.10 have been removed.
 
-* Modules `Deprecated-inspect` and `Deprecated-inspect-on-steroids` in `Relation.Binary.PropositionalEquality`.
-
-* Module `Deprecated-inspect-on-steroids` in `Relation.Binary.HeterogeneousEquality`.
+* The module `Deprecated-inspect-on-steroids` in `Relation.Binary.HeterogeneousEquality` which was deprecated in version 0.10 has been removed.
 
 Backwards compatible changes
 ----------------------------
@@ -326,17 +290,12 @@ Backwards compatible changes
   ∷ʳ-injectiveˡ : xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
   ∷ʳ-injectiveʳ : xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
 
-  ++-assoc       : Associative {A = List A} _≡_ _++_
-  ++-identityˡ   : LeftIdentity _≡_ [] _++_
-  ++-identityʳ   : RightIdentity _≡_ [] _++_
-  ++-identity    : Identity _≡_ [] _++_
-  ++-isSemigroup : IsSemigroup {A = List A} _≡_ _++_
-  ++-isMonoid    : IsMonoid {A = List A} _≡_ _++_ []
-  ++-semigroup   : ∀ {a} (A : Set a) → Semigroup _ _
-  ++-monoid      : ∀ {a} (A : Set a) → Monoid _ _
+  ++-identityˡ  : LeftIdentity _≡_ [] _++_
+  ++-identityʳ  : RightIdentity _≡_ [] _++_
+  ++-identity   : Identity _≡_ [] _++_
 
-  filter-all     : All P xs → dfilter P? xs ≡ xs
-  filter-none    : All (¬_ ∘ P) xs → dfilter P? xs ≡ []
+  filter-all    : All P xs → dfilter P? xs ≡ xs
+  filter-none   : All (¬_ ∘ P) xs → dfilter P? xs ≡ []
   ```
 
 * Added new proofs to `Data.List.All.Properties`:
@@ -371,13 +330,6 @@ Backwards compatible changes
 * Added new proofs to `Data.Maybe.Base`:
   ```agda
   just-injective : (Maybe A ∋ just a) ≡ just b → a ≡ b
-  ```
-
-* Added new proofs to `Data.Nat.Divisibility`:
-  ```agda
-  m|m*n   : m ∣ m * n
-  ∣m⇒∣m*n : i ∣ m → i ∣ m * n
-  ∣n⇒∣m*n : i ∣ n → i ∣ m * n
   ```
 
 * Added new proofs to `Data.Nat.Properties`:
@@ -512,11 +464,6 @@ Backwards compatible changes
 
   ≡⇒Pointwise-≡    : Pointwise _≡_ xs ys → xs ≡ ys
   Pointwise-≡⇒≡    : xs ≡ ys → Pointwise _≡_ xs ys
-
-  Pointwiseˡ⇒All   : Pointwise (λ x y → P x) xs ys → All P xs
-  Pointwiseʳ⇒All   : Pointwise (λ x y → P y) xs ys → All P ys
-  All⇒Pointwiseˡ   : All P xs → Pointwise (λ x y → P x) xs ys
-  All⇒Pointwiseʳ   : All P ys → Pointwise (λ x y → P y) xs ys
   ```
 
 * Added new functions and proofs to `Data.W`:
@@ -571,10 +518,6 @@ Backwards compatible changes
 
   ∁? : Decidable P → Decidable (∁ P)
   ```
-
-* Added missing bindings to functions on Char - character class checks and conversion from Nat:
-  `isLower, isDigit, isAlpha, isSpace, isAscii, isLatin1, isPrint, isHexDigit, fromNat`.
-
 
 Version 0.14
 ============
