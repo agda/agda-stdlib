@@ -40,10 +40,13 @@ ex₄ = P.refl
 -- integers. Algebra defines what a commutative ring is, among other
 -- things.
 
-import Data.Integer.Properties as ℤₚ
+open import Algebra
+import Data.Integer.Properties as Integer
+private
+  module CR = CommutativeRing Integer.commutativeRing
 
 ex₅ : ∀ i j → i * j ≡ j * i
-ex₅ i j = ℤₚ.*-comm i j
+ex₅ i j = CR.*-comm i j
 
 -- The module ≡-Reasoning in Relation.Binary.PropositionalEquality
 -- provides some combinators for equational reasoning.
@@ -53,8 +56,8 @@ open import Data.Product
 
 ex₆ : ∀ i j → i * (j + + 0) ≡ j * i
 ex₆ i j = begin
-  i * (j + + 0)  ≡⟨ P.cong (i *_) (ℤₚ.+-identityʳ j) ⟩
-  i * j          ≡⟨ ℤₚ.*-comm i j ⟩
+  i * (j + + 0)  ≡⟨ P.cong (_*_ i) (proj₂ CR.+-identity j) ⟩
+  i * j          ≡⟨ CR.*-comm i j ⟩
   j * i          ∎
 
 -- The module RingSolver in Data.Integer.Properties contains a solver
@@ -64,4 +67,4 @@ ex₆ i j = begin
 ex₇ : ∀ i j → i * - j - j * i ≡ - + 2 * i * j
 ex₇ = solve 2 (λ i j → i :* :- j :- j :* i  :=  :- con (+ 2) :* i :* j)
               P.refl
-  where open ℤₚ.RingSolver
+  where open Integer.RingSolver
