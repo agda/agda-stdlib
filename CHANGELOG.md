@@ -101,8 +101,6 @@ Non-backwards compatible changes
 
 #### Other
 
-* Removed support for GHC 7.8.4.
-
 * Renamed `Data.Container.FreeMonad.do` and `Data.Container.Indexed.FreeMonad.do`
   to `inn` as Agda 2.5.4 now supports proper 'do' notation.
 
@@ -121,7 +119,7 @@ Non-backwards compatible changes
 * Moved the proof `monoid` from `Data.List` to `++-monoid` in `Data.List.Properties`.
 
 * Names in Data.Nat.Divisibility now use the `divides` symbol (typed \\|) consistently.
-  Previously a mixture of `\\|` and `|` was used.
+  Previously a mixture of \\| and | was used.
 
 Deprecated features
 -------------------
@@ -254,12 +252,6 @@ Removed features
 Backwards compatible changes
 ----------------------------
 
-<<<<<<< HEAD
-### Added new injectivity proofs for most of `Data` definitions
-
-* In `Data.AVL`
-
-=======
 * Added support for GHC 8.2.2.
 
 * New modules `Data.Table`, `Data.Table.Base`,
@@ -281,7 +273,6 @@ Backwards compatible changes
 * Added new proof to `asymmetric : Asymmetric _<_` to the `IsStrictPartialOrder` record.
 
 * Added new proofs to `Data.AVL`:
->>>>>>> origin/release-0.15
   ```agda
   leaf-injective     : leaf p ≡ leaf q → p ≡ q
   node-injective-key : node k₁ lk₁ ku₁ bal₁ ≡ node k₂ lk₂ ku₂ bal₂ → k₁ ≡ k₂
@@ -290,20 +281,11 @@ Backwards compatible changes
   node-injective-bal : node k lk₁ ku₁ bal₁ ≡ node k lk₂ ku₂ bal₂ → bal₁ ≡ bal₂
   ```
 
-<<<<<<< HEAD
-* In `Data.Bin`
-
-=======
 * Added new proofs to `Data.Bin`:
->>>>>>> origin/release-0.15
   ```agda
   less-injective : (b₁ < b₂ ∋ less lt₁) ≡ less lt₂ → lt₁ ≡ lt₂
   ```
 
-<<<<<<< HEAD
-* In `Data.Cofin`
-
-=======
 * Added new proofs to `Data.Bool.Properties`:
   ```agda
   ∨-identityˡ           : LeftIdentity false _∨_
@@ -333,17 +315,11 @@ Backwards compatible changes
   ```
 
 * Added new proofs to `Data.Cofin`:
->>>>>>> origin/release-0.15
   ```agda
   suc-injective : (Cofin (suc m) ∋ suc p) ≡ suc q → p ≡ q
   ```
 
-<<<<<<< HEAD
-* In `Data.Colist`
-
-=======
 * Added new proofs to `Data.Colist`:
->>>>>>> origin/release-0.15
   ```agda
   ∷-injectiveˡ    : (Colist A ∋ x ∷ xs) ≡ y ∷ ys → x ≡ y
   ∷-injectiveʳ    : (Colist A ∋ x ∷ xs) ≡ y ∷ ys → xs ≡ ys
@@ -355,111 +331,21 @@ Backwards compatible changes
   ∷-injective     : (Infinite (x ∷ xs) ∋ x ∷ p) ≡ x ∷ q → p ≡ q
   ```
 
-<<<<<<< HEAD
-* In `Data.Conat`, we additionally have a new definition: `pred`.
-
-  ```agda
-  suc-injective   : (Coℕ ∋ suc m) ≡ suc n → m ≡ n
-  pred            : Coℕ → Coℕ
-=======
 * Added new operations and proofs to `Data.Conat`:
   ```agda
   pred            : Coℕ → Coℕ
 
   suc-injective   : (Coℕ ∋ suc m) ≡ suc n → m ≡ n
->>>>>>> origin/release-0.15
   fromℕ-injective : fromℕ m ≡ fromℕ n → m ≡ n
   suc-injective   : (suc m ≈ suc n ∋ suc p) ≡ suc q → p ≡ q
   ```
 
-<<<<<<< HEAD
-* In `Data.Covec`
-
-=======
 * Added new proofs to `Data.Covec`:
->>>>>>> origin/release-0.15
   ```agda
   ∷-injectiveˡ : (Covec A (suc n) ∋ a ∷ as) ≡ b ∷ bs → a ≡ b
   ∷-injectiveʳ : (Covec A (suc n) ∋ a ∷ as) ≡ b ∷ bs → as ≡ bs
   ```
 
-<<<<<<< HEAD
-* In `Data.List.Properties`
-
-  ```agda
-  ∷-injectiveˡ  : x ∷ xs ≡ y List.∷ ys → x ≡ y
-  ∷-injectiveʳ  : x ∷ xs ≡ y List.∷ ys → xs ≡ ys
-  ∷ʳ-injectiveˡ : xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
-  ∷ʳ-injectiveʳ : xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
-  ```
-
-* In `Data.Maybe.Base`
-
-  ```agda
-  just-injective : (Maybe A ∋ just a) ≡ just b → a ≡ b
-  ```
-
-* In `Data.Nat.Properties`
-
-  ```agda
-  s≤s-injective     : s≤s p ≡ s≤s q → p ≡ q
-  ≤′-step-injective : ≤′-step p ≡ ≤′-step q → p ≡ q
-  ```
-
-* In `Data.Plus`
-
-  ```agda
-  []-injective    : (x [ _∼_ ]⁺ y ∋ [ p ]) ≡ [ q ] → p ≡ q
-  ∼⁺⟨⟩-injectiveˡ : (x [ _∼_ ]⁺ z ∋ x ∼⁺⟨ p ⟩ q) ≡ (x ∼⁺⟨ r ⟩ s) → p ≡ r
-  ∼⁺⟨⟩-injectiveʳ : (x [ _∼_ ]⁺ z ∋ x ∼⁺⟨ p ⟩ q) ≡ (x ∼⁺⟨ r ⟩ s) → q ≡ s
-  ```
-
-* In `Data.Product`
-
-  ```agda
-  ,-injectiveˡ : (a , b) ≡ (c , d) → a ≡ c
-  ,-injectiveʳ : (Σ A B ∋ (a , b)) ≡ (a , c) → b ≡ c
-  ```
-
-* In `Data.ReflexiveClosure`
-
-  ```agda
-  []-injective : (Refl _∼_ x y ∋ [ p ]) ≡ [ q ] → p ≡ q
-
-  ```
-
-* In `Data.Star.Properties`
-
-  ```agda
-  ◅-injectiveˡ : (Star T i k ∋ x ◅ xs) ≡ y ◅ ys → x ≡ y
-  ◅-injectiveʳ : (Star T i k ∋ x ◅ xs) ≡ y ◅ ys → xs ≡ ys
-  ```
-
-* In `Data.Sum`
-
-  ```agda
-  inj₁-injective : (A ⊎ B ∋ inj₁ x) ≡ inj₁ y → x ≡ y
-  inj₂-injective : (A ⊎ B ∋ inj₂ x) ≡ inj₂ y → x ≡ y
-  ```
-
-* In `Data.Vec.Properties`
-
-  ```agda
-  ∷-injectiveˡ : x ∷ xs ≡ y ∷ ys → x ≡ y
-  ∷-injectiveʳ : x ∷ xs ≡ y ∷ ys → xs ≡ ys
-  ```
-
-* In `Data.W`
-
-  ```agda
-  sup-injective₁ : sup x f ≡ sup y g → x ≡ y
-  sup-injective₂ : sup x f ≡ sup x g → f ≡ g
-  ```
-
-### Other
-
-* The contents of `Data.Covec' is now polymorphic with respect to levels
-=======
 * Added new proofs to `Data.Fin.Properties`:
   ```agda
   ≤-isDecTotalOrder : ∀ {n} → IsDecTotalOrder _≡_ (_≤_ {n})
@@ -551,7 +437,6 @@ Backwards compatible changes
   ∣m⇒∣m*n : i ∣ m → i ∣ m * n
   ∣n⇒∣m*n : i ∣ n → i ∣ m * n
   ```
->>>>>>> origin/release-0.15
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
@@ -1726,8 +1611,8 @@ Important changes since 0.9:
   different way than they used to.
 
 * The fixity of all `_∎` and `finally` operators, as well as
-  `Category.Monad.Partiality.All._⟨_⟩P`, was changed from `infix 2` to
-  `infix 3`.
+  `Category.Monad.Partiality.All._⟨_⟩P`, was changed from `infix 2` to
+  `infix 3`.
 
 * The fixity of `Category.Monad.Partiality._≟-Kind_`, `Data.AVL._∈?_`,
   `Data.AVL.IndexedMap._∈?_`, `Data.AVL.Sets._∈?_`, `Data.Bool._≟_`,
@@ -1735,28 +1620,28 @@ Important changes since 0.9:
   `Data.Nat.Divisibility._∣?_`, `Data.Sign._≟_`, `Data.String._≟_`,
   `Data.Unit._≟_`, `Data.Unit._≤?_` and
   `Data.Vec.Equality.DecidableEquality._≟_` was changed from the
-  default to `infix 4`.
+  default to `infix 4`.
 
 * The fixity of all `_≟<something>_` operators in `Reflection` is now
-  `infix 4` (some of them already had this fixity).
+  `infix 4` (some of them already had this fixity).
 
 * The fixity of `Algebra.Operations._×′_` was changed from the default
-  to `infixr 7`.
+  to `infixr 7`.
 
 * The fixity of `Data.Fin.#_` was changed from the default to
-  `infix 10`.
+  `infix 10`.
 
 * The fixity of `Data.Nat.Divisibility.1∣_` and `_∣0` was changed from
-  the default to `infix 10`.
+  the default to `infix 10`.
 
 * The fixity of `Data.Nat.DivMod._divMod_`, `_div_` and `_mod_` was
-  changed from the default to `infixl 7`.
+  changed from the default to `infixl 7`.
 
 * The fixity of `Data.Product.Σ-syntax` was changed from the default
-  to `infix 2`.
+  to `infix 2`.
 
 * The fixity of `Relation.Unary._~` was changed from the default to
-  `infix 10`.
+  `infix 10`.
 
 Version 0.9
 ===========
@@ -1774,12 +1659,12 @@ Important changes since 0.8.1:
 * Reflection API
 
   + Quoting levels was fixed. This fix could break some code (see Agda
-    Issue [#1207](https://github.com/agda/agda/issues/1269)).
+    Issue [#1207](https://github.com/agda/agda/issues/1269)).
 
   + The `Reflection.type` function returns a normalised
     `Reflection.Type` and `quoteTerm` returns an η-contracted
     `Reflection.Term` now. These changes could break some code (see
-    Agda Issue [#1269](https://github.com/agda/agda/issues/1269)).
+    Agda Issue [#1269](https://github.com/agda/agda/issues/1269)).
 
   + The primitive function for showing names, `primShowQName`, is now
     exposed as `Reflection.showName`.
