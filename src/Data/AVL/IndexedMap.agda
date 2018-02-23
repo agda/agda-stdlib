@@ -41,9 +41,8 @@ private
 
 private
   open module AVL =
-    Data.AVL isStrictTotalOrder
-    public using () renaming (Tree to Map')
-  Map = Map' (Value ∘ proj₁)
+    Data.AVL (λ ik → Value (proj₁ ik)) isStrictTotalOrder
+    public using () renaming (Tree to Map)
 
 -- Repackaged functions.
 

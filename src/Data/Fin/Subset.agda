@@ -9,13 +9,13 @@ module Data.Fin.Subset where
 open import Algebra
 import Algebra.Properties.BooleanAlgebra as BoolAlgProp
 import Algebra.Properties.BooleanAlgebra.Expression as BAExpr
-open import Data.Bool.Properties using (∨-∧-booleanAlgebra)
+import Data.Bool.Properties as BoolProp
 open import Data.Fin
 open import Data.List.Base using (List; foldr; foldl)
 open import Data.Nat
 open import Data.Product
 open import Data.Vec using (Vec; _∷_; _[_]=_)
-import Data.Vec.Relation.ExtensionalPointwise as Pointwise
+import Relation.Binary.Vec.Pointwise as Pointwise
 open import Relation.Nullary
 
 ------------------------------------------------------------------------
@@ -60,7 +60,7 @@ p₁ ⊈ p₂ = ¬ (p₁ ⊆ p₂)
 booleanAlgebra : ℕ → BooleanAlgebra _ _
 booleanAlgebra n =
   BoolAlgProp.replace-equality
-    (BAExpr.lift ∨-∧-booleanAlgebra n)
+    (BAExpr.lift BoolProp.booleanAlgebra n)
     Pointwise.Pointwise-≡
 
 private

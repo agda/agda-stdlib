@@ -18,7 +18,6 @@ open import Data.List.Any.Properties
 open import Data.List.Any.Membership.Propositional
 open import Data.Product
 open import Data.Sum
-open import Data.Sum.Relation.General
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 import Function.Equivalence as FE
@@ -29,6 +28,7 @@ open import Relation.Binary
 import Relation.Binary.EqReasoning as EqR
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≗_)
+open import Relation.Binary.Sum
 open import Relation.Nullary
 
 open import Data.List.Any.Membership.Propositional.Properties
@@ -71,8 +71,8 @@ map-cong {ℓ} {f₁ = f₁} {f₂} {xs₁} {xs₂} f₁≗f₂ xs₁≈xs₂ {x
     { to         = P.→-to-⟶ (λ x≡f₁y → P.trans x≡f₁y (        f₁≗f₂ y))
     ; from       = P.→-to-⟶ (λ x≡f₂y → P.trans x≡f₂y (P.sym $ f₁≗f₂ y))
     ; inverse-of = record
-      { left-inverse-of  = λ _ → P.≡-irrelevance _ _
-      ; right-inverse-of = λ _ → P.≡-irrelevance _ _
+      { left-inverse-of  = λ _ → P.proof-irrelevance _ _
+      ; right-inverse-of = λ _ → P.proof-irrelevance _ _
       }
     }
 

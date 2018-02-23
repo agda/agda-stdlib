@@ -12,7 +12,6 @@ open import Data.Nat
 open import Data.Nat.Properties
 open import Data.Product as Prod
 open import Data.Sum
-open import Data.Sum.Relation.General
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; module Inverse)
@@ -21,6 +20,7 @@ open import Function.Related.TypeIsomorphisms
 open import Induction.Nat using (<′-well-founded)
 import Induction.WellFounded as WF
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Sum
 
 -- Some code that is used to work around Agda's syntactic guardedness
 -- checker.

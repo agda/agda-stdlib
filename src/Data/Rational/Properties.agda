@@ -95,5 +95,3 @@ open import Relation.Binary.PropositionalEquality as P
   ; isDecTotalOrder = ≤-isDecTotalOrder
   }
 
-≤-irrelevance : P.IrrelevantRel _≤_
-≤-irrelevance (*≤* x₁) (*≤* x₂) = P.cong *≤* (ℤₚ.≤-irrelevance x₁ x₂)

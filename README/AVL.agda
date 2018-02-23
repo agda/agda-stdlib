@@ -21,8 +21,7 @@ open import Data.Nat.Properties using (<-isStrictTotalOrder)
 open import Data.String using (String)
 open import Data.Vec using (Vec; _∷_; [])
 
-open Data.AVL <-isStrictTotalOrder renaming (Tree to Tree')
-Tree = Tree' (Vec String)
+open Data.AVL (Vec String) (<-isStrictTotalOrder)
 
 ------------------------------------------------------------------------
 -- Construction of trees
@@ -59,7 +58,6 @@ t₃ = delete 2 t₂
 open import Data.List using (_∷_; [])
 open import Data.Product as Prod using (_,_; _,′_)
 
-t₄ : Tree
 t₄ = fromList ((2 , v₂) ∷ (1 , v₁) ∷ [])
 
 ------------------------------------------------------------------------
