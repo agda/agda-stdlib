@@ -31,44 +31,32 @@ data Acc {a ℓ} {A : Set a} (_<_ : Rel A ℓ) (x : A) : Set (a ⊔ ℓ) where
 -- well-founded; if all elements are accessible, then _<_ is
 -- well-founded.
 
-WellFounded : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
-WellFounded _<_ = ∀ x → Acc _<_ x
+Well-founded : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
+Well-founded _<_ = ∀ x → Acc _<_ x
 
--- DEPRECATED - please use WellFounded instead
-Well-founded = WellFounded
-
-------------------------------------------------------------------------
 -- Well-founded induction for the subset of accessible elements:
 
 module Some {a lt} {A : Set a} {_<_ : Rel A lt} {ℓ} where
 
-  wfRecBuilder : SubsetRecursorBuilder (Acc _<_) (WfRec _<_ {ℓ = ℓ})
-  wfRecBuilder P f x (acc rs) = λ y y<x →
-    f y (wfRecBuilder P f y (rs y y<x))
+  wfRec-builder : SubsetRecursorBuilder (Acc _<_) (WfRec _<_ {ℓ = ℓ})
+  wfRec-builder P f x (acc rs) = λ y y<x →
+    f y (wfRec-builder P f y (rs y y<x))
 
   wfRec : SubsetRecursor (Acc _<_) (WfRec _<_)
-  wfRec = subsetBuild wfRecBuilder
+  wfRec = subsetBuild wfRec-builder
 
-  -- DEPRECATED - please use WellFounded instead
-  wfRec-builder = wfRecBuilder
-
-------------------------------------------------------------------------
 -- Well-founded induction for all elements, assuming they are all
 -- accessible:
 
 module All {a lt} {A : Set a} {_<_ : Rel A lt}
-           (wf : WellFounded _<_) ℓ where
+           (wf : Well-founded _<_) ℓ where
 
-  wfRecBuilder : RecursorBuilder (WfRec _<_ {ℓ = ℓ})
-  wfRecBuilder P f x = Some.wfRecBuilder P f x (wf x)
+  wfRec-builder : RecursorBuilder (WfRec _<_ {ℓ = ℓ})
+  wfRec-builder P f x = Some.wfRec-builder P f x (wf x)
 
   wfRec : Recursor (WfRec _<_)
-  wfRec = build wfRecBuilder
+  wfRec = build wfRec-builder
 
-  -- DEPRECATED - please use WellFounded instead
-  wfRec-builder = wfRecBuilder
-
-------------------------------------------------------------------------
 -- It might be useful to establish proofs of Acc or Well-founded using
 -- combinators such as the ones below (see, for instance,
 -- "Constructing Recursion Operators in Intuitionistic Type Theory" by
@@ -81,11 +69,8 @@ module Subrelation {a ℓ₁ ℓ₂} {A : Set a}
   accessible : Acc _<₂_ ⊆ Acc _<₁_
   accessible (acc rs) = acc (λ y y<x → accessible (rs y (<₁⇒<₂ y<x)))
 
-  wellFounded : WellFounded _<₂_ → WellFounded _<₁_
-  wellFounded wf = λ x → accessible (wf x)
-
-  -- DEPRECATED - please use wellFounded instead
-  well-founded = wellFounded
+  well-founded : Well-founded _<₂_ → Well-founded _<₁_
+  well-founded wf = λ x → accessible (wf x)
 
 module Inverse-image {a b ℓ} {A : Set a} {B : Set b} {_<_ : Rel B ℓ}
                      (f : A → B) where
@@ -93,11 +78,8 @@ module Inverse-image {a b ℓ} {A : Set a} {B : Set b} {_<_ : Rel B ℓ}
   accessible : ∀ {x} → Acc _<_ (f x) → Acc (_<_ on f) x
   accessible (acc rs) = acc (λ y fy<fx → accessible (rs (f y) fy<fx))
 
-  wellFounded : WellFounded _<_ → WellFounded (_<_ on f)
-  wellFounded wf = λ x → accessible (wf (f x))
-
-  -- DEPRECATED - please use wellFounded instead
-  well-founded = wellFounded
+  well-founded : Well-founded _<_ → Well-founded (_<_ on f)
+  well-founded wf = λ x → accessible (wf (f x))
 
 module Transitive-closure {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
 
@@ -107,8 +89,8 @@ module Transitive-closure {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
     [_]   : ∀ {x y} (x<y : x < y) → x <⁺ y
     trans : ∀ {x y z} (x<y : x <⁺ y) (y<z : y <⁺ z) → x <⁺ z
 
-  downwardsClosed : ∀ {x y} → Acc _<⁺_ y → x <⁺ y → Acc _<⁺_ x
-  downwardsClosed (acc rs) x<y = acc (λ z z<x → rs z (trans z<x x<y))
+  downwards-closed : ∀ {x y} → Acc _<⁺_ y → x <⁺ y → Acc _<⁺_ x
+  downwards-closed (acc rs) x<y = acc (λ z z<x → rs z (trans z<x x<y))
 
   mutual
 
@@ -118,14 +100,10 @@ module Transitive-closure {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
     accessible′ : ∀ {x} → Acc _<_ x → WfRec _<⁺_ (Acc _<⁺_) x
     accessible′ (acc rs) y [ y<x ]         = accessible (rs y y<x)
     accessible′ acc-x    y (trans y<z z<x) =
-      downwardsClosed (accessible′ acc-x _ z<x) y<z
+      downwards-closed (accessible′ acc-x _ z<x) y<z
 
-  wellFounded : WellFounded _<_ → WellFounded _<⁺_
-  wellFounded wf = λ x → accessible (wf x)
-
-  -- DEPRECATED - please use wellFounded and downwardsClosed instead
-  downwards-closed = downwardsClosed
-  well-founded     = wellFounded
+  well-founded : Well-founded _<_ → Well-founded _<⁺_
+  well-founded wf = λ x → accessible (wf x)
 
 module Lexicographic {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
                      (RelA : Rel A ℓ₁)
@@ -138,21 +116,18 @@ module Lexicographic {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
   mutual
 
     accessible : ∀ {x y} →
-                 Acc RelA x → (∀ {x} → WellFounded (RelB x)) →
+                 Acc RelA x → (∀ {x} → Well-founded (RelB x)) →
                  Acc _<_ (x , y)
     accessible accA wfB = acc (accessible′ accA (wfB _) wfB)
 
     accessible′ :
       ∀ {x y} →
-      Acc RelA x → Acc (RelB x) y → (∀ {x} → WellFounded (RelB x)) →
+      Acc RelA x → Acc (RelB x) y → (∀ {x} → Well-founded (RelB x)) →
       WfRec _<_ (Acc _<_) (x , y)
     accessible′ (acc rsA) _    wfB ._ (left  x′<x) = accessible (rsA _ x′<x) wfB
     accessible′ accA (acc rsB) wfB ._ (right y′<y) =
       acc (accessible′ accA (rsB _ y′<y) wfB)
 
-  wellFounded : WellFounded RelA → (∀ {x} → WellFounded (RelB x)) →
-                WellFounded _<_
-  wellFounded wfA wfB p = accessible (wfA (proj₁ p)) wfB
-
-  -- DEPRECATED - please use wellFounded instead
-  well-founded = wellFounded
+  well-founded : Well-founded RelA → (∀ {x} → Well-founded (RelB x)) →
+                 Well-founded _<_
+  well-founded wfA wfB p = accessible (wfA (proj₁ p)) wfB

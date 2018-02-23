@@ -26,12 +26,12 @@ Rec : ∀ ℓ → RecStruct ℕ ℓ ℓ
 Rec _ P zero    = Lift ⊤
 Rec _ P (suc n) = P n
 
-recBuilder : ∀ {ℓ} → RecursorBuilder (Rec ℓ)
-recBuilder P f zero    = _
-recBuilder P f (suc n) = f n (recBuilder P f n)
+rec-builder : ∀ {ℓ} → RecursorBuilder (Rec ℓ)
+rec-builder P f zero    = _
+rec-builder P f (suc n) = f n (rec-builder P f n)
 
 rec : ∀ {ℓ} → Recursor (Rec ℓ)
-rec = build recBuilder
+rec = build rec-builder
 
 ------------------------------------------------------------------------
 -- Complete induction
@@ -40,13 +40,13 @@ CRec : ∀ ℓ → RecStruct ℕ ℓ ℓ
 CRec _ P zero    = Lift ⊤
 CRec _ P (suc n) = P n × CRec _ P n
 
-cRecBuilder : ∀ {ℓ} → RecursorBuilder (CRec ℓ)
-cRecBuilder P f zero    = _
-cRecBuilder P f (suc n) = f n ih , ih
-  where ih = cRecBuilder P f n
+cRec-builder : ∀ {ℓ} → RecursorBuilder (CRec ℓ)
+cRec-builder P f zero    = _
+cRec-builder P f (suc n) = f n ih , ih
+  where ih = cRec-builder P f n
 
 cRec : ∀ {ℓ} → Recursor (CRec ℓ)
-cRec = build cRecBuilder
+cRec = build cRec-builder
 
 ------------------------------------------------------------------------
 -- Complete induction based on _<′_
@@ -56,20 +56,19 @@ cRec = build cRecBuilder
 
 mutual
 
-  <′-wellFounded : WellFounded _<′_
-  <′-wellFounded n = acc (<′-wellFounded′ n)
+  <′-well-founded : Well-founded _<′_
+  <′-well-founded n = acc (<′-well-founded′ n)
 
-  <′-wellFounded′ : ∀ n → <′-Rec (Acc _<′_) n
-  <′-wellFounded′ zero     _ ()
-  <′-wellFounded′ (suc n) .n ≤′-refl       = <′-wellFounded n
-  <′-wellFounded′ (suc n)  m (≤′-step m<n) = <′-wellFounded′ n m m<n
+  <′-well-founded′ : ∀ n → <′-Rec (Acc _<′_) n
+  <′-well-founded′ zero     _ ()
+  <′-well-founded′ (suc n) .n ≤′-refl       = <′-well-founded n
+  <′-well-founded′ (suc n)  m (≤′-step m<n) = <′-well-founded′ n m m<n
 
 module _ {ℓ} where
-  open WF.All <′-wellFounded ℓ public
-    renaming ( wfRecBuilder to <′-recBuilder
-             ; wfRec        to <′-rec
+  open WF.All <′-well-founded ℓ public
+    renaming ( wfRec-builder to <′-rec-builder
+             ; wfRec to <′-rec
              )
-    hiding (wfRec-builder)
 
 ------------------------------------------------------------------------
 -- Complete induction based on _<_
@@ -77,15 +76,14 @@ module _ {ℓ} where
 <-Rec : ∀ {ℓ} → RecStruct ℕ ℓ ℓ
 <-Rec = WfRec _<_
 
-<-wellFounded : WellFounded _<_
-<-wellFounded = Subrelation.wellFounded ≤⇒≤′ <′-wellFounded
+<-well-founded : Well-founded _<_
+<-well-founded = Subrelation.well-founded ≤⇒≤′ <′-well-founded
 
 module _ {ℓ} where
-  open WF.All <-wellFounded ℓ public
-    renaming ( wfRecBuilder to <-recBuilder
-             ; wfRec        to <-rec
+  open WF.All <-well-founded ℓ public
+    renaming ( wfRec-builder to <-rec-builder
+             ; wfRec to <-rec
              )
-    hiding (wfRec-builder)
 
 ------------------------------------------------------------------------
 -- Complete induction based on _≺_
@@ -93,15 +91,14 @@ module _ {ℓ} where
 ≺-Rec : ∀ {ℓ} → RecStruct ℕ ℓ ℓ
 ≺-Rec = WfRec _≺_
 
-≺-wellFounded : WellFounded _≺_
-≺-wellFounded = Subrelation.wellFounded ≺⇒<′ <′-wellFounded
+≺-well-founded : Well-founded _≺_
+≺-well-founded = Subrelation.well-founded ≺⇒<′ <′-well-founded
 
 module _ {ℓ} where
-  open WF.All ≺-wellFounded ℓ public
-    renaming ( wfRecBuilder to ≺-recBuilder
-             ; wfRec        to ≺-rec
+  open WF.All ≺-well-founded ℓ public
+    renaming ( wfRec-builder to ≺-rec-builder
+             ; wfRec to ≺-rec
              )
-    hiding (wfRec-builder)
 
 ------------------------------------------------------------------------
 -- Examples
@@ -156,21 +153,21 @@ private
 
     half₁ (2 + n)                                                         ≡⟨⟩
 
-    cRec _ half₁-step (2 + n)                                             ≡⟨⟩
+    cRec (λ _ → ℕ) half₁-step (2 + n)                                     ≡⟨⟩
 
-    half₁-step (2 + n) (cRecBuilder _ half₁-step (2 + n))                 ≡⟨⟩
+    half₁-step (2 + n) (cRec-builder (λ _ → ℕ) half₁-step (2 + n))        ≡⟨⟩
 
     half₁-step (2 + n)
-      (let ih = cRecBuilder _ half₁-step (1 + n) in
+      (let ih = cRec-builder (λ _ → ℕ) half₁-step (1 + n) in
        half₁-step (1 + n) ih , ih)                                        ≡⟨⟩
 
     half₁-step (2 + n)
-      (let ih = cRecBuilder _ half₁-step n in
+      (let ih = cRec-builder (λ _ → ℕ) half₁-step n in
        half₁-step (1 + n) (half₁-step n ih , ih) , half₁-step n ih , ih)  ≡⟨⟩
 
-    1 + half₁-step n (cRecBuilder _ half₁-step n)                         ≡⟨⟩
+    1 + half₁-step n (cRec-builder (λ _ → ℕ) half₁-step n)                ≡⟨⟩
 
-    1 + cRec _ half₁-step n                                               ≡⟨⟩
+    1 + cRec (λ _ → ℕ) half₁-step n                                       ≡⟨⟩
 
     1 + half₁ n                                                           ∎
 
@@ -182,36 +179,36 @@ private
   half₂-2+ : ∀ n → half₂ (2 + n) ≡ 1 + half₂ n
   half₂-2+ n = begin
 
-    half₂ (2 + n)                                               ≡⟨⟩
+    half₂ (2 + n)                                                         ≡⟨⟩
 
-    <′-rec _ half₂-step (2 + n)                                 ≡⟨⟩
+    <′-rec (λ _ → ℕ) half₂-step (2 + n)                                   ≡⟨⟩
 
-    half₂-step (2 + n) (<′-recBuilder _ half₂-step (2 + n))     ≡⟨⟩
+    half₂-step (2 + n) (<′-rec-builder (λ _ → ℕ) half₂-step (2 + n))      ≡⟨⟩
 
-    1 + <′-recBuilder _ half₂-step (2 + n) n (≤′-step ≤′-refl)  ≡⟨⟩
+    1 + <′-rec-builder (λ _ → ℕ) half₂-step (2 + n) n (≤′-step ≤′-refl)   ≡⟨⟩
 
-    1 + Some.wfRecBuilder _ half₂-step (2 + n)
-          (<′-wellFounded (2 + n)) n (≤′-step ≤′-refl)          ≡⟨⟩
+    1 + Some.wfRec-builder (λ _ → ℕ) half₂-step (2 + n)
+          (<′-well-founded (2 + n)) n (≤′-step ≤′-refl)                   ≡⟨⟩
 
-    1 + Some.wfRecBuilder _ half₂-step (2 + n)
-          (acc (<′-wellFounded′ (2 + n))) n (≤′-step ≤′-refl)   ≡⟨⟩
-
-    1 + half₂-step n
-          (Some.wfRecBuilder _ half₂-step n
-             (<′-wellFounded′ (2 + n) n (≤′-step ≤′-refl)))     ≡⟨⟩
+    1 + Some.wfRec-builder (λ _ → ℕ) half₂-step (2 + n)
+          (acc (<′-well-founded′ (2 + n))) n (≤′-step ≤′-refl)            ≡⟨⟩
 
     1 + half₂-step n
-          (Some.wfRecBuilder _ half₂-step n
-             (<′-wellFounded′ (1 + n) n ≤′-refl))               ≡⟨⟩
+          (Some.wfRec-builder (λ _ → ℕ) half₂-step n
+             (<′-well-founded′ (2 + n) n (≤′-step ≤′-refl)))              ≡⟨⟩
 
     1 + half₂-step n
-          (Some.wfRecBuilder _ half₂-step n (<′-wellFounded n)) ≡⟨⟩
+          (Some.wfRec-builder (λ _ → ℕ) half₂-step n
+             (<′-well-founded′ (1 + n) n ≤′-refl))                        ≡⟨⟩
 
-    1 + half₂-step n (<′-recBuilder _ half₂-step n)             ≡⟨⟩
+    1 + half₂-step n
+          (Some.wfRec-builder (λ _ → ℕ) half₂-step n (<′-well-founded n)) ≡⟨⟩
 
-    1 + <′-rec _ half₂-step n                                   ≡⟨⟩
+    1 + half₂-step n (<′-rec-builder (λ _ → ℕ) half₂-step n)              ≡⟨⟩
 
-    1 + half₂ n                                                 ∎
+    1 + <′-rec (λ _ → ℕ) half₂-step n                                     ≡⟨⟩
+
+    1 + half₂ n                                                           ∎
 
     where open ≡-Reasoning
 
@@ -252,19 +249,3 @@ private
     ; (suc (suc n)) rec →
         cong (suc ∘ suc) (rec n (≤′-step ≤′-refl))
     }
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
-rec-builder      = recBuilder
-cRec-builder     = cRecBuilder
-<′-rec-builder   = <′-recBuilder
-<-rec-builder    = <-recBuilder
-≺-rec-builder    = ≺-recBuilder
-<′-well-founded  = <′-wellFounded
-<′-well-founded′ = <′-wellFounded′
-<-well-founded   = <-wellFounded
-≺-well-founded   = ≺-wellFounded
