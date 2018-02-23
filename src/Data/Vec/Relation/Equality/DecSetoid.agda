@@ -24,6 +24,8 @@ open Equality setoid public
 ------------------------------------------------------------------------
 -- Additional properties
 
+infix 4 _≋?_
+
 _≋?_ : ∀ {m n} → Decidable (_≋_ {m} {n})
 _≋?_ = PW.decidable _≟_
 
