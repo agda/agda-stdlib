@@ -192,9 +192,9 @@ anticipated any time soon, they may eventually be removed in some future release
 * In `Data.List.Relation.Pointwise`:
   ```agda
   Rel    ↦ Pointwise
-  Rel≡⇒≡ ↦ Pointwise≡⇒≡
-  ≡⇒Rel≡ ↦ ≡⇒Pointwise≡
-  Rel↔≡  ↦ Pointwise≡↔≡
+  Rel≡⇒≡ ↦ Pointwise-≡⇒≡
+  ≡⇒Rel≡ ↦ ≡⇒Pointwise-≡
+  Rel↔≡  ↦ Pointwise-≡⇔≡
   ```
 
 * In `Data.Nat.Properties`:
