@@ -46,6 +46,9 @@ Non-backwards compatible changes
   Unfortunately backwards compatability cannot be retained by re-exporting the `Pointwise`
   definitions from `Data.Vec.All` due to dependancy cycles.
 
+* Added new modules
+  `Data.List.Relation.Equality.Setoid/DecSetoid/Propositional/DecPropositional`.
+
 #### Upgrade of `Data.AVL`
 
 * `Data.AVL.Key` and `Data.AVL.Height` have been split out of `Data.AVL`
@@ -258,14 +261,10 @@ Backwards compatible changes
 
 * Added support for GHC 8.2.2.
 
-* New module `Data.Word` for new builtin type `Agda.Builtin.Word.Word64`.
-
 * New module `Data.Table`. A `Table` is a fixed-length collection of objects
   similar to a `Vec` from `Data.Vec`, but implemented as a function `Fin n → A`.
   This prioritises ease of lookup as opposed to `Vec` which prioritises the ease
   of adding and removing elements.
-
-* New modules `Data.List.Relation.Equality` and `Data.List.Relation.DecidableEquality`
 
 * The contents of the following modules are now more polymorphic with respect to levels:
   ```agda

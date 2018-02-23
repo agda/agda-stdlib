@@ -21,7 +21,7 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 infixr 5 _∷_
 
 data Pointwise {a b ℓ} {A : Set a} {B : Set b}
-         (_∼_ : REL A B ℓ) : List A → List B → Set (a ⊔ b ⊔ ℓ) where
+         (_∼_ : REL A B ℓ) : List A → List B → Set ℓ where
   []  : Pointwise _∼_ [] []
   _∷_ : ∀ {x xs y ys} (x∼y : x ∼ y) (xs∼ys : Pointwise _∼_ xs ys) →
         Pointwise _∼_ (x ∷ xs) (y ∷ ys)
@@ -210,18 +210,18 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
 
 module _ {a} {A : Set a} where
 
-  Pointwise≡⇒≡ : Pointwise {A = A} _≡_ ⇒ _≡_
-  Pointwise≡⇒≡ []               = P.refl
-  Pointwise≡⇒≡ (P.refl ∷ xs∼ys) with Pointwise≡⇒≡ xs∼ys
+  Pointwise-≡⇒≡ : Pointwise {A = A} _≡_ ⇒ _≡_
+  Pointwise-≡⇒≡ []               = P.refl
+  Pointwise-≡⇒≡ (P.refl ∷ xs∼ys) with Pointwise-≡⇒≡ xs∼ys
   ... | P.refl = P.refl
 
-  ≡⇒Pointwise≡ :  _≡_ ⇒ Pointwise {A = A} _≡_
-  ≡⇒Pointwise≡ P.refl = refl P.refl
+  ≡⇒Pointwise-≡ :  _≡_ ⇒ Pointwise {A = A} _≡_
+  ≡⇒Pointwise-≡ P.refl = refl P.refl
 
-  Pointwise≡↔≡ : Inverse (setoid (P.setoid A)) (P.setoid (List A))
-  Pointwise≡↔≡ = record
-    { to         = record { _⟨$⟩_ = id; cong = Pointwise≡⇒≡ }
-    ; from       = record { _⟨$⟩_ = id; cong = ≡⇒Pointwise≡ }
+  Pointwise-≡↔≡ : Inverse (setoid (P.setoid A)) (P.setoid (List A))
+  Pointwise-≡↔≡ = record
+    { to         = record { _⟨$⟩_ = id; cong = Pointwise-≡⇒≡ }
+    ; from       = record { _⟨$⟩_ = id; cong = ≡⇒Pointwise-≡ }
     ; inverse-of = record
       { left-inverse-of  = λ _ → refl P.refl
       ; right-inverse-of = λ _ → P.refl
@@ -229,11 +229,10 @@ module _ {a} {A : Set a} where
     }
 
   decidable-≡ : Decidable {A = A} _≡_ → Decidable {A = List A} _≡_
-  decidable-≡ dec xs ys = Dec.map′ Pointwise≡⇒≡ ≡⇒Pointwise≡ (xs ≟ ys)
+  decidable-≡ dec xs ys = Dec.map′ Pointwise-≡⇒≡ ≡⇒Pointwise-≡ (xs ≟ ys)
     where
     open DecSetoid (decSetoid (P.decSetoid dec))
 
-{-
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
@@ -241,7 +240,6 @@ module _ {a} {A : Set a} where
 -- not guaranteed.
 
 Rel    = Pointwise
-Rel≡⇒≡ = Pointwise≡⇒≡
-≡⇒Rel≡ = ≡⇒Pointwise≡
-Rel↔≡  = Pointwise≡↔≡
--}
+Rel≡⇒≡ = Pointwise-≡⇒≡
+≡⇒Rel≡ = ≡⇒Pointwise-≡
+Rel↔≡  = Pointwise-≡↔≡

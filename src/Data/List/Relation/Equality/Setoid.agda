@@ -6,7 +6,7 @@
 
 open import Relation.Binary using (Setoid)
 
-module Data.List.Relation.Equality {a ℓ} (S : Setoid a ℓ) where
+module Data.List.Relation.Equality.Setoid {a ℓ} (S : Setoid a ℓ) where
 
 open import Data.List.Base using (List)
 open import Level
@@ -21,7 +21,7 @@ open Setoid S renaming (Carrier to A)
 
 infix 4 _≋_
 
-_≋_ : Rel₂ (List A) (a ⊔ ℓ)
+_≋_ : Rel₂ (List A) ℓ
 _≋_ = Pointwise _≈_
 
 open Pointwise public using ([]; _∷_)
