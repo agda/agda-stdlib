@@ -43,9 +43,14 @@ Non-backwards compatible changes
 * The contents of `Relation.Binary.Vec.Pointwise` has been split into two modules
   `Data.Vec.Relation.Pointwise.Inductive` and `Data.Vec.Relation.Pointwise.Extensional`.
 
+  The inductive form of `Pointwise` has been generalised so that technically it can apply to two
+  vectors with different lengths (although in practice the lengths must turn out to be equal). This
+  allows a much wider range of proofs such as the fact that `[]` is a right identity for `_++_`
+  which was previously not possible to prove using the old definition.
+  
 * `Data.Vec.Equality` has been almost entirely reworked into four separate modules
   inside `Data.Vec.Relation.Equality` (namely `Setoid`, `DecSetoid`, `Propositional`
-  and `DecPropositional`). All four of them now  use `Data.Vec.Relation.Pointwise.Inductive`
+  and `DecPropositional`). All four of them now use `Data.Vec.Relation.Pointwise.Inductive`
   as a base. This should significantly improve the ease of use.
 
   The proofs from the submodule `UsingVecEquality` in `Data.Vec.Properties` have been moved
