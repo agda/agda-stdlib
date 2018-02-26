@@ -205,7 +205,7 @@ anticipated any time soon, they may eventually be removed in some future release
   Rel    ↦ Pointwise
   Rel≡⇒≡ ↦ Pointwise-≡⇒≡
   ≡⇒Rel≡ ↦ ≡⇒Pointwise-≡
-  Rel↔≡  ↦ Pointwise-≡⇔≡
+  Rel↔≡  ↦ Pointwise-≡↔≡
   ```
 
 * In `Data.Nat.Properties`:
@@ -255,12 +255,12 @@ anticipated any time soon, they may eventually be removed in some future release
 
 * In `Data.Vec.Relation.Pointwise.Inductive`:
   ```agda
-  Pointwise-≡ ↦ ≡⇔Pointwise-≡
+  Pointwise-≡ ↦ Pointwise-≡↔≡
   ```
 
 * In `Data.Vec.Relation.Pointwise.Extensional`:
   ```agda
-  Pointwise-≡ ↦ ≡⇔Pointwise-≡
+  Pointwise-≡ ↦ Pointwise-≡↔≡
   ```
 
 * In `Induction.Nat`:
