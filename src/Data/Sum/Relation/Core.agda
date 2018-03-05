@@ -4,30 +4,16 @@
 -- Sums of binary relations
 ------------------------------------------------------------------------
 
-module Data.Sum.Relation.General where
+module Data.Sum.Relation.Core where
 
-open import Data.Sum as Sum
-open import Data.Product
+open import Data.Sum
+open import Data.Product using (_,_; proj₁; proj₂)
 open import Data.Unit.Base using (⊤)
-open import Data.Empty
-open import Function
-open import Function.Equality as F using (_⟶_; _⟨$⟩_)
-open import Function.Equivalence as Eq
-  using (Equivalence; _⇔_; module Equivalence)
-open import Function.Injection as Inj
-  using (Injection; _↣_; module Injection)
-open import Function.Inverse as Inv
-  using (Inverse; _↔_; module Inverse)
-open import Function.LeftInverse as LeftInv
-  using (LeftInverse; _↞_; module LeftInverse)
-open import Function.Related
-open import Function.Surjection as Surj
-  using (Surjection; _↠_; module Surjection)
-open import Level
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
+open import Data.Empty using (⊥)
+open import Function using (_⟨_⟩_; _∘_; flip)
+open import Level using (_⊔_)
+open import Relation.Nullary using (Dec; yes; no)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂} where
 

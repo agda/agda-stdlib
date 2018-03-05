@@ -7,12 +7,11 @@
 module Data.Sum.Relation.Pointwise where
 
 open import Data.Sum as Sum
-import Data.Sum.Relation.General as General
-open import Data.Product
-open import Data.Unit.Base using (⊤)
-open import Data.Empty
+import Data.Sum.Relation.Core as Core
+open import Data.Empty using (⊥)
 open import Function
-open import Function.Equality as F using (_⟶_; _⟨$⟩_)
+open import Function.Equality as F
+  using (_⟶_; _⟨$⟩_)
 open import Function.Equivalence as Eq
   using (Equivalence; _⇔_; module Equivalence)
 open import Function.Injection as Inj
@@ -24,7 +23,6 @@ open import Function.LeftInverse as LeftInv
 open import Function.Related
 open import Function.Surjection as Surj
   using (Surjection; _↠_; module Surjection)
-open import Level
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
@@ -35,10 +33,10 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂} where
   ----------------------------------------------------------------------
   -- Pointwise sum
 
-  open General public using (₁∼₂; ₁∼₁; ₂∼₂)
+  open Core public using (₁∼₂; ₁∼₁; ₂∼₂)
 
   Pointwise : ∀ {ℓ₁ ℓ₂} → Rel A₁ ℓ₁ → Rel A₂ ℓ₂ → Rel (A₁ ⊎ A₂) _
-  Pointwise = General.⊎ʳ ⊥
+  Pointwise = Core.⊎ʳ ⊥
 
   ----------------------------------------------------------------------
   -- Helpers
@@ -54,7 +52,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂} where
 
     ⊎-refl : Reflexive ∼₁ → Reflexive ∼₂ →
              Reflexive (Pointwise ∼₁ ∼₂)
-    ⊎-refl refl₁ refl₂ = General._⊎-refl_ refl₁ refl₂
+    ⊎-refl refl₁ refl₂ = Core._⊎-refl_ refl₁ refl₂
 
     ⊎-symmetric : Symmetric ∼₁ → Symmetric ∼₂ →
                   Symmetric (Pointwise ∼₁ ∼₂)
@@ -67,11 +65,11 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂} where
 
     ⊎-transitive : Transitive ∼₁ → Transitive ∼₂ →
                    Transitive (Pointwise ∼₁ ∼₂)
-    ⊎-transitive trans₁ trans₂ = General._⊎-transitive_ trans₁ trans₂
+    ⊎-transitive trans₁ trans₂ = Core._⊎-transitive_ trans₁ trans₂
 
     ⊎-asymmetric : Asymmetric ∼₁ → Asymmetric ∼₂ →
                    Asymmetric (Pointwise ∼₁ ∼₂)
-    ⊎-asymmetric asym₁ asym₂ = General._⊎-asymmetric_ asym₁ asym₂
+    ⊎-asymmetric asym₁ asym₂ = Core._⊎-asymmetric_ asym₁ asym₂
 
     ⊎-substitutive : ∀ {ℓ₃} → Substitutive ∼₁ ℓ₃ → Substitutive ∼₂ ℓ₃ →
                      Substitutive (Pointwise ∼₁ ∼₂) ℓ₃
@@ -84,28 +82,28 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂} where
 
     ⊎-decidable : Decidable ∼₁ → Decidable ∼₂ →
                   Decidable (Pointwise ∼₁ ∼₂)
-    ⊎-decidable dec₁ dec₂ = General.⊎-decidable dec₁ dec₂ (no ₁≁₂)
+    ⊎-decidable dec₁ dec₂ = Core.⊎-decidable dec₁ dec₂ (no ₁≁₂)
 
   module _ {ℓ₁ ℓ₂} {∼₁ : Rel A₁ ℓ₁} {≈₁ : Rel A₁ ℓ₂}
            {ℓ₃ ℓ₄} {∼₂ : Rel A₂ ℓ₃} {≈₂ : Rel A₂ ℓ₄} where
 
     ⊎-reflexive : ≈₁ ⇒ ∼₁ → ≈₂ ⇒ ∼₂ →
                   (Pointwise ≈₁ ≈₂) ⇒ (Pointwise ∼₁ ∼₂)
-    ⊎-reflexive refl₁ refl₂ = General._⊎-reflexive_ refl₁ refl₂
+    ⊎-reflexive refl₁ refl₂ = Core._⊎-reflexive_ refl₁ refl₂
 
     ⊎-irreflexive : Irreflexive ≈₁ ∼₁ → Irreflexive ≈₂ ∼₂ →
                     Irreflexive (Pointwise ≈₁ ≈₂) (Pointwise ∼₁ ∼₂)
     ⊎-irreflexive irrefl₁ irrefl₂ =
-      General._⊎-irreflexive_ irrefl₁ irrefl₂
+      Core._⊎-irreflexive_ irrefl₁ irrefl₂
 
     ⊎-antisymmetric : Antisymmetric ≈₁ ∼₁ → Antisymmetric ≈₂ ∼₂ →
                       Antisymmetric (Pointwise ≈₁ ≈₂) (Pointwise ∼₁ ∼₂)
     ⊎-antisymmetric antisym₁ antisym₂ =
-      General._⊎-antisymmetric_ antisym₁ antisym₂
+      Core._⊎-antisymmetric_ antisym₁ antisym₂
 
     ⊎-respects₂ : ∼₁ Respects₂ ≈₁ → ∼₂ Respects₂ ≈₂ →
                   (Pointwise ∼₁ ∼₂) Respects₂ (Pointwise ≈₁ ≈₂)
-    ⊎-respects₂ resp₁ resp₂ = General._⊎-≈-respects₂_ resp₁ resp₂
+    ⊎-respects₂ resp₁ resp₂ = Core._⊎-≈-respects₂_ resp₁ resp₂
 
   ----------------------------------------------------------------------
   -- Some collections of properties which are preserved
@@ -143,21 +141,23 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂} where
       }
       where open IsPreorder
 
-    ⊎-isPartialOrder : IsPartialOrder ≈₁ ∼₁ → IsPartialOrder ≈₂ ∼₂ →
-                       IsPartialOrder (Pointwise ≈₁ ≈₂) (Pointwise ∼₁ ∼₂)
+    ⊎-isPartialOrder : IsPartialOrder ≈₁ ∼₁ →
+                       IsPartialOrder ≈₂ ∼₂ →
+                       IsPartialOrder
+                         (Pointwise ≈₁ ≈₂) (Pointwise ∼₁ ∼₂)
     ⊎-isPartialOrder po₁ po₂ = record
       { isPreorder = ⊎-isPreorder (isPreorder po₁) (isPreorder po₂)
       ; antisym    = ⊎-antisymmetric (antisym po₁) (antisym    po₂)
       }
       where open IsPartialOrder
 
-
     ⊎-isStrictPartialOrder : IsStrictPartialOrder ≈₁ ∼₁ →
                              IsStrictPartialOrder ≈₂ ∼₂ →
                              IsStrictPartialOrder
                                (Pointwise ≈₁ ≈₂) (Pointwise ∼₁ ∼₂)
     ⊎-isStrictPartialOrder spo₁ spo₂ = record
-      { isEquivalence = ⊎-isEquivalence (isEquivalence spo₁) (isEquivalence spo₂)
+      { isEquivalence =
+          ⊎-isEquivalence (isEquivalence spo₁) (isEquivalence spo₂)
       ; irrefl        = ⊎-irreflexive   (irrefl spo₁) (irrefl   spo₂)
       ; trans         = ⊎-transitive    (trans spo₁)  (trans    spo₂)
       ; <-resp-≈      = ⊎-respects₂   (<-resp-≈ spo₁) (<-resp-≈ spo₂)
@@ -291,7 +291,7 @@ module _ {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
   _⊎-left-inverse_ : LeftInverse A B → LeftInverse C D →
                      LeftInverse (A ⊎ₛ C) (B ⊎ₛ D)
   A↞B ⊎-left-inverse C↞D = record
-    { to              = Equivalence.to eq
+    { to              = Equivalence.to   eq
     ; from            = Equivalence.from eq
     ; left-inverse-of = [ ₁∼₁ ∘ left-inverse-of A↞B
                         , ₂∼₂ ∘ left-inverse-of C↞D
