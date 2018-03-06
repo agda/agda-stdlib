@@ -12,6 +12,7 @@ open import Data.Nat using (ℕ; suc)
 open import Data.Product using (_×_; _,_)
 open import Data.Vec as Vec hiding ([_]; head; tail; map; lookup)
 open import Data.Vec.All using (All; []; _∷_)
+open import Level using (_⊔_)
 open import Function using (_∘_)
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Relation.Binary
@@ -24,7 +25,8 @@ open import Relation.Nullary
 infixr 5 _∷_
 
 data Pointwise {a b ℓ} {A : Set a} {B : Set b} (_∼_ : REL A B ℓ) :
-               ∀ {m n} (xs : Vec A m) (ys : Vec B n) → Set ℓ where
+               ∀ {m n} (xs : Vec A m) (ys : Vec B n) → Set (a ⊔ b ⊔ ℓ)
+               where
   []  : Pointwise _∼_ [] []
   _∷_ : ∀ {m n x y} {xs : Vec A m} {ys : Vec B n}
         (x∼y : x ∼ y) (xs∼ys : Pointwise _∼_ xs ys) →
@@ -109,12 +111,12 @@ isDecEquivalence decEquiv n = record
   ; _≟_           = decidable (IsDecEquivalence._≟_ decEquiv)
   }
 
-setoid : ∀ {a ℓ} → Setoid a ℓ → ℕ → Setoid a ℓ
+setoid : ∀ {a ℓ} → Setoid a ℓ → ℕ → Setoid a (a ⊔ ℓ)
 setoid S n = record
    { isEquivalence = isEquivalence (Setoid.isEquivalence S) n
    }
 
-decSetoid : ∀ {a ℓ} → DecSetoid a ℓ → ℕ → DecSetoid a ℓ
+decSetoid : ∀ {a ℓ} → DecSetoid a ℓ → ℕ → DecSetoid a (a ⊔ ℓ)
 decSetoid S n = record
    { isDecEquivalence = isDecEquivalence (DecSetoid.isDecEquivalence S) n
    }
@@ -211,18 +213,18 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {P : A → Set ℓ} where
 
 module _ {a} {A : Set a} where
 
-  ≡⇒Pointwise-≡ : ∀ {n} {xs ys : Vec A n} →
-                  Pointwise _≡_ xs ys → xs ≡ ys
-  ≡⇒Pointwise-≡ []               = P.refl
-  ≡⇒Pointwise-≡ (P.refl ∷ xs~ys) = P.cong (_ ∷_) (≡⇒Pointwise-≡ xs~ys)
-
   Pointwise-≡⇒≡ : ∀ {n} {xs ys : Vec A n} →
+                  Pointwise _≡_ xs ys → xs ≡ ys
+  Pointwise-≡⇒≡ []               = P.refl
+  Pointwise-≡⇒≡ (P.refl ∷ xs~ys) = P.cong (_ ∷_) (Pointwise-≡⇒≡ xs~ys)
+
+  ≡⇒Pointwise-≡ : ∀ {n} {xs ys : Vec A n} →
                   xs ≡ ys → Pointwise _≡_ xs ys
-  Pointwise-≡⇒≡ P.refl = refl P.refl
+  ≡⇒Pointwise-≡ P.refl = refl P.refl
 
   Pointwise-≡↔≡ : ∀ {n} {xs ys : Vec A n} →
                   Pointwise _≡_ xs ys ⇔ xs ≡ ys
-  Pointwise-≡↔≡ = equivalence ≡⇒Pointwise-≡ Pointwise-≡⇒≡
+  Pointwise-≡↔≡ = equivalence Pointwise-≡⇒≡ ≡⇒Pointwise-≡
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
