@@ -33,14 +33,18 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 infixr 4 _,_
 
-data REL {a₁ a₂ b₁ b₂ ℓ₁ ℓ₂}
-         {A₁ : Set a₁} (B₁ : A₁ → Set b₁)
-         {A₂ : Set a₂} (B₂ : A₂ → Set b₂)
-         (_R₁_ : B.REL A₁ A₂ ℓ₁) (_R₂_ : I.REL B₁ B₂ ℓ₂) :
-         B.REL (Σ A₁ B₁) (Σ A₂ B₂) (a₁ ⊔ a₂ ⊔ b₁ ⊔ b₂ ⊔ ℓ₁ ⊔ ℓ₂) where
-  _,_ : {x₁ : A₁} {y₁ : B₁ x₁} {x₂ : A₂} {y₂ : B₂ x₂}
-        (x₁Rx₂ : x₁ R₁ x₂) (y₁Ry₂ : y₁ R₂ y₂) →
-        REL B₁ B₂ _R₁_ _R₂_ (x₁ , y₁) (x₂ , y₂)
+record REL {a₁ a₂ b₁ b₂ ℓ₁ ℓ₂}
+           {A₁ : Set a₁} (B₁ : A₁ → Set b₁)
+           {A₂ : Set a₂} (B₂ : A₂ → Set b₂)
+           (_R₁_ : B.REL A₁ A₂ ℓ₁) (_R₂_ : I.REL B₁ B₂ ℓ₂)
+           (xy₁ : Σ A₁ B₁) (xy₂ : Σ A₂ B₂)
+           : Set (a₁ ⊔ a₂ ⊔ b₁ ⊔ b₂ ⊔ ℓ₁ ⊔ ℓ₂) where
+  constructor _,_
+  field
+    proj₁ : (proj₁ xy₁) R₁ (proj₁ xy₂)
+    proj₂ : (proj₂ xy₁) R₂ (proj₂ xy₂)
+
+open REL public
 
 Pointwise : ∀ {a b ℓ₁ ℓ₂} {A : Set a} (B : A → Set b)
             (_R₁_ : B.Rel A ℓ₁) (_R₂_ : I.Rel B ℓ₂) → B.Rel (Σ A B) _
@@ -143,7 +147,7 @@ private
 
 module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a₂} where
 
-  equivalence : ∀ {B₁ : I.Setoid A₁ b₁ b₁′} {B₂ : I.Setoid A₂ b₂ b₂′}
+  equivalence : {B₁ : I.Setoid A₁ b₁ b₁′} {B₂ : I.Setoid A₂ b₂ b₂′}
     (A₁⇔A₂ : A₁ ⇔ A₂) →
     (∀ {x} → _⟶_ (B₁ at x) (B₂ at (Equivalence.to   A₁⇔A₂ ⟨$⟩ x))) →
     (∀ {y} → _⟶_ (B₂ at y) (B₁ at (Equivalence.from A₁⇔A₂ ⟨$⟩ y))) →
@@ -196,8 +200,7 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
                          (P.sym (Surjection.right-inverse-of A₁↠A₂ _))
       }
 
-  injection :
-    {B₁ : I.Setoid A₁ b₁ b₁′} (B₂ : I.Setoid A₂ b₂ b₂′) →
+  injection : {B₁ : I.Setoid A₁ b₁ b₁′} (B₂ : I.Setoid A₂ b₂ b₂′) →
     (A₁↣A₂ : A₁ ↣ A₂) →
     (∀ {x} → Injection (B₁ at x) (B₂ at (Injection.to A₁↣A₂ ⟨$⟩ x))) →
     Injection (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
@@ -222,8 +225,7 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
         I.Setoid._≈_ B₁ y y′
       lemma P.refl = Injection.injective B₁↣B₂
 
-  left-inverse :
-    (B₁ : I.Setoid A₁ b₁ b₁′) {B₂ : I.Setoid A₂ b₂ b₂′} →
+  left-inverse : (B₁ : I.Setoid A₁ b₁ b₁′) {B₂ : I.Setoid A₂ b₂ b₂′} →
     (A₁↞A₂ : A₁ ↞ A₂) →
     (∀ {x} → LeftInverse (B₁ at (LeftInverse.from A₁↞A₂ ⟨$⟩ x))
                          (B₂ at x)) →
@@ -248,8 +250,7 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
         I.Setoid._≈_ B₁ (P.subst (I.Setoid.Carrier B₁) eq y) y
       lemma P.refl = I.Setoid.refl B₁
 
-  surjection :
-    {B₁ : I.Setoid A₁ b₁ b₁′} (B₂ : I.Setoid A₂ b₂ b₂′) →
+  surjection : {B₁ : I.Setoid A₁ b₁ b₁′} (B₂ : I.Setoid A₂ b₂ b₂′) →
     (A₁↠A₂ : A₁ ↠ A₂) →
     (∀ {x} → Surjection (B₁ at x) (B₂ at (Surjection.to A₁↠A₂ ⟨$⟩ x))) →
     Surjection (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
@@ -274,8 +275,7 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
               I.Setoid._≈_ B₂ (P.subst (I.Setoid.Carrier B₂) eq y) y
       lemma P.refl = I.Setoid.refl B₂
 
-  inverse :
-    {B₁ : I.Setoid A₁ b₁ b₁′} (B₂ : I.Setoid A₂ b₂ b₂′) →
+  inverse : {B₁ : I.Setoid A₁ b₁ b₁′} (B₂ : I.Setoid A₂ b₂ b₂′) →
     (A₁↔A₂ : A₁ ↔ A₂) →
     (∀ {x} → Inverse (B₁ at x) (B₂ at (Inverse.to A₁↔A₂ ⟨$⟩ x))) →
     Inverse (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
@@ -336,8 +336,8 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
     Inverse.equivalence Pointwise-≡↔≡ ⟨∘⟩
     equivalence-↠ (H.indexedSetoid B₂) A₁↠A₂
       (Inverse.equivalence (H.≡↔≅ B₂) ⟨∘⟩
-         B₁⇔B₂ ⟨∘⟩
-         Inverse.equivalence (Inv.sym (H.≡↔≅ B₁))) ⟨∘⟩
+       B₁⇔B₂ ⟨∘⟩
+       Inverse.equivalence (Inv.sym (H.≡↔≅ B₁))) ⟨∘⟩
     Eq.sym (Inverse.equivalence Pointwise-≡↔≡)
     where open Eq using () renaming (_∘_ to _⟨∘⟩_)
 
@@ -347,9 +347,9 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
   ↣ A₁↣A₂ B₁↣B₂ =
     Inverse.injection Pointwise-≡↔≡ ⟨∘⟩
     injection (H.indexedSetoid B₂) A₁↣A₂
-      (λ {x} → Inverse.injection (H.≡↔≅ B₂) ⟨∘⟩
-               B₁↣B₂ {x} ⟨∘⟩
-               Inverse.injection (Inv.sym (H.≡↔≅ B₁))) ⟨∘⟩
+      (Inverse.injection (H.≡↔≅ B₂) ⟨∘⟩
+       B₁↣B₂ ⟨∘⟩
+       Inverse.injection (Inv.sym (H.≡↔≅ B₁))) ⟨∘⟩
     Inverse.injection (Inv.sym Pointwise-≡↔≡)
     where open Inj using () renaming (_∘_ to _⟨∘⟩_)
 
@@ -359,9 +359,9 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
   ↞ A₁↞A₂ B₁↞B₂ =
     Inverse.left-inverse Pointwise-≡↔≡ ⟨∘⟩
     left-inverse (H.indexedSetoid B₁) A₁↞A₂
-      (λ {x} → Inverse.left-inverse (H.≡↔≅ B₂) ⟨∘⟩
-               B₁↞B₂ {x} ⟨∘⟩
-               Inverse.left-inverse (Inv.sym (H.≡↔≅ B₁))) ⟨∘⟩
+      (Inverse.left-inverse (H.≡↔≅ B₂) ⟨∘⟩
+       B₁↞B₂ ⟨∘⟩
+       Inverse.left-inverse (Inv.sym (H.≡↔≅ B₁))) ⟨∘⟩
     Inverse.left-inverse (Inv.sym Pointwise-≡↔≡)
     where open LeftInv using () renaming (_∘_ to _⟨∘⟩_)
 
@@ -371,9 +371,9 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
   ↠ A₁↠A₂ B₁↠B₂ =
     Inverse.surjection Pointwise-≡↔≡ ⟨∘⟩
     surjection (H.indexedSetoid B₂) A₁↠A₂
-      (λ {x} → Inverse.surjection (H.≡↔≅ B₂) ⟨∘⟩
-               B₁↠B₂ {x} ⟨∘⟩
-               Inverse.surjection (Inv.sym (H.≡↔≅ B₁))) ⟨∘⟩
+      (Inverse.surjection (H.≡↔≅ B₂) ⟨∘⟩
+       B₁↠B₂ ⟨∘⟩
+       Inverse.surjection (Inv.sym (H.≡↔≅ B₁))) ⟨∘⟩
     Inverse.surjection (Inv.sym Pointwise-≡↔≡)
     where open Surj using () renaming (_∘_ to _⟨∘⟩_)
 
@@ -383,7 +383,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
   ↔ A₁↔A₂ B₁↔B₂ =
     Pointwise-≡↔≡ ⟨∘⟩
     inverse (H.indexedSetoid B₂) A₁↔A₂
-      (λ {x} → H.≡↔≅ B₂ ⟨∘⟩ B₁↔B₂ {x} ⟨∘⟩ Inv.sym (H.≡↔≅ B₁)) ⟨∘⟩
+      (H.≡↔≅ B₂ ⟨∘⟩ B₁↔B₂ ⟨∘⟩ Inv.sym (H.≡↔≅ B₁)) ⟨∘⟩
     Inv.sym Pointwise-≡↔≡
     where open Inv using () renaming (_∘_ to _⟨∘⟩_)
 
