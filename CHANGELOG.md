@@ -15,16 +15,16 @@ Non-backwards compatible changes
   `Data.X.Relation`. The full list of moves is as follows:
   ```
   `Relation.Binary.List.Pointwise`       ↦ `Data.List.Relation.Pointwise`
-  `Relation.Binary.List.StrictLex`       ↦ `Data.List.Relation.StrictLex`
-  `Relation.Binary.List.NonStrictLex`    ↦ `Data.List.Relation.NonStrictLex`
-  `Relation.Binary.Sigma.Pointwise`      ↦ `Data.Product.Relation.SigmaPointwise`
+  `Relation.Binary.List.StrictLex`       ↦ `Data.List.Relation.Lex.Strict`
+  `Relation.Binary.List.NonStrictLex`    ↦ `Data.List.Relation.Lex.NonStrict`
   `Relation.Binary.Sum`                  ↦ `Data.Sum.Relation.Pointwise`
                                          | `Data.Sum.Relation.LeftOrder`
-  `Relation.Binary.Product.Pointwise`    ↦ `Data.Product.Relation.Pointwise`
-  `Relation.Binary.Product.StrictLex`    ↦ `Data.Product.Relation.StrictLex`
-  `Relation.Binary.Product.NonStrictLex` ↦ `Data.Product.Relation.NonStrictLex`
+  `Relation.Binary.Sigma.Pointwise`      ↦ `Data.Product.Relation.Pointwise.Dependent'
+  `Relation.Binary.Product.Pointwise`    ↦ `Data.Product.Relation.Pointwise.NonDependent`
+  `Relation.Binary.Product.StrictLex`    ↦ `Data.Product.Relation.Lex.Strict`
+  `Relation.Binary.Product.NonStrictLex` ↦ `Data.Product.Relation.Lex.NonStrict`
   `Relation.Binary.Vec.Pointwise`        ↦ `Data.Vec.Relation.Pointwise.Inductive`
-		                                 | `Data.Vec.Relation.Pointwise.Extensional`
+		                                     | `Data.Vec.Relation.Pointwise.Extensional`
   ```
 
   This move aims to increase the ease of use of the library as:
@@ -219,6 +219,31 @@ anticipated any time soon, they may eventually be removed in some future release
   ≤-steps  ↦ ≤-stepsˡ
   ```
 
+* In all modules in the `Data.Product.Relation` folder all proofs with
+  names using infix notation have been deprecated in favour of identical
+  non-infix names: e.g.
+  ```
+  _×-isPreorder_ ↦ ×-isPreorder
+  ```
+
+* In `Data.Product.Relation.Lex.(Non)Strict`:
+  ```agda
+  ×-≈-respects₂ ↦ ×-respects₂
+  ```
+
+* In `Data.Product.Relation.Pointwise.Dependent`:
+  ```agda
+  Rel    ↦ Pointwise
+  Rel↔≡  ↦ Pointwise-≡↔≡
+  ```
+
+* In `Data.Product.Relation.Pointwise.NonDependent`:
+  ```agda
+  _×-Rel_         ↦ Pointwise
+  Rel↔≡           ↦ Pointwise-≡↔≡
+  _×-≈-respects₂_ ↦ ×-respects₂
+  ```
+
 * In `Data.Sign.Properties`:
   ```agda
   opposite-not-equal ↦ s≢opposite[s]
@@ -403,30 +428,41 @@ Backwards compatible changes
 
 * Added new combinators to `Data.List.Base`:
   ```agda
-  lookup : ∀ {a} {A : Set a} (xs : List A) → Fin (length xs) → A
+  lookup    : (xs : List A) → Fin (length xs) → A
+  unzipWith : (A → B × C) → List A → List B × List C
+  unzip     : List (A × B) → List A × List B
   ```
 
 * Added new proofs to `Data.List.Properties`:
   ```agda
-  ∷-injectiveˡ  : x ∷ xs ≡ y List.∷ ys → x ≡ y
-  ∷-injectiveʳ  : x ∷ xs ≡ y List.∷ ys → xs ≡ ys
-  ∷ʳ-injectiveˡ : xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
-  ∷ʳ-injectiveʳ : xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
+  ∷-injectiveˡ      : x ∷ xs ≡ y List.∷ ys → x ≡ y
+  ∷-injectiveʳ      : x ∷ xs ≡ y List.∷ ys → xs ≡ ys
+  ∷ʳ-injectiveˡ     : xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
+  ∷ʳ-injectiveʳ     : xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
 
-  ++-assoc       : Associative {A = List A} _≡_ _++_
-  ++-identityˡ   : LeftIdentity _≡_ [] _++_
-  ++-identityʳ   : RightIdentity _≡_ [] _++_
-  ++-identity    : Identity _≡_ [] _++_
-  ++-isSemigroup : IsSemigroup {A = List A} _≡_ _++_
-  ++-isMonoid    : IsMonoid {A = List A} _≡_ _++_ []
-  ++-semigroup   : ∀ {a} (A : Set a) → Semigroup _ _
-  ++-monoid      : ∀ {a} (A : Set a) → Monoid _ _
+  ++-assoc          : Associative {A = List A} _≡_ _++_
+  ++-identityˡ      : LeftIdentity _≡_ [] _++_
+  ++-identityʳ      : RightIdentity _≡_ [] _++_
+  ++-identity       : Identity _≡_ [] _++_
+  ++-isSemigroup    : IsSemigroup {A = List A} _≡_ _++_
+  ++-isMonoid       : IsMonoid {A = List A} _≡_ _++_ []
+  ++-semigroup      : ∀ {a} (A : Set a) → Semigroup _ _
+  ++-monoid         : ∀ {a} (A : Set a) → Monoid _ _
 
-  filter-all     : All P xs → dfilter P? xs ≡ xs
-  filter-none    : All (¬_ ∘ P) xs → dfilter P? xs ≡ []
+  filter-all        : All P xs → dfilter P? xs ≡ xs
+  filter-none       : All (¬_ ∘ P) xs → dfilter P? xs ≡ []
 
-  tabulate-cong   : f ≗ g → tabulate f ≡ tabulate g
-  tabulate-lookup : tabulate (lookup xs) ≡ xs
+  tabulate-cong     : f ≗ g → tabulate f ≡ tabulate g
+  tabulate-lookup   : tabulate (lookup xs) ≡ xs
+
+  zipWith-identityˡ : ∀ xs → zipWith f [] xs ≡ []
+  zipWith-identityʳ : ∀ xs → zipWith f xs [] ≡ []
+  zipWith-comm      : (∀ x y → f x y ≡ f y x) → zipWith f xs ys ≡ zipWith f ys xs
+  zipWith-unzipWith : uncurry′ g ∘ f ≗ id → uncurry′ (zipWith g) ∘ (unzipWith f)  ≗ id
+  length-zipWith    : length (zipWith f xs ys) ≡ length xs ⊓ length ys
+
+  length-unzipWith₁ : length (proj₁ (unzipWith f xys)) ≡ length xys
+  length-unzipWith₂ : length (proj₂ (unzipWith f xys)) ≡ length xys
   ```
 
 * Added new proofs to `Data.List.All.Properties`:
@@ -434,6 +470,13 @@ Backwards compatible changes
   All-irrelevance : IrrelevantPred P → IrrelevantPred (All P)
   filter⁺₁        : All P (filter P? xs)
   filter⁺₂        : All Q xs → All Q (filter P? xs)
+  mapMaybe⁺       : All (Maybe.All P) (map f xs) → All P (mapMaybe f xs)
+  zipWith⁺        : Pointwise (λ x y → P (f x y)) xs ys → All P (zipWith f xs ys)
+  ```
+
+* Added new proofs to `Data.List.Any.Properties`:
+  ```agda
+  mapMaybe⁺ : Any (Maybe.Any P) (map f xs) → Any P (mapMaybe f xs)
   ```
 
 * Added new proofs to `Data.List.Relation.NonStrictLex`:
@@ -528,10 +571,20 @@ Backwards compatible changes
   ∼⁺⟨⟩-injectiveʳ : (x [ _∼_ ]⁺ z ∋ x ∼⁺⟨ p ⟩ q) ≡ (x ∼⁺⟨ r ⟩ s) → q ≡ s
   ```
 
+* Added new combinator to `Data.Product`:
+  ```agda
+  curry′ : (A × B → C) → (A → B → C)
+  ```
+
 * Added new proofs to `Data.Product.Properties`:
   ```agda
   ,-injectiveˡ : (a , b) ≡ (c , d) → a ≡ c
   ,-injectiveʳ : (Σ A B ∋ (a , b)) ≡ (a , c) → b ≡ c
+  ```
+
+* Added new operator in `Data.Product.Relation.Pointwise.NonDependent`:
+  ```agda
+  _×ₛ_ : Setoid ℓ₁ ℓ₂ → Setoid ℓ₃ ℓ₄ → Setoid _ _
   ```
 
 * Added new proofs to `Data.Rational.Properties`:
