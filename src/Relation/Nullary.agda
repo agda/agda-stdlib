@@ -29,9 +29,5 @@ data Dec {p} (P : Set p) : Set p where
 -- be recomputed and subsequently used in relevant contexts.
 recompute : ∀ {a} {A : Set a} → Dec A → .A → A
 recompute (yes x) _ = x
-recompute {A = A} (no ¬p) x with ¬-i ¬p x
-  where
-    ¬-i : (A → ⊥) → .A → ⊥
-    ¬-i f x = ⊥-elim (f x)
-... | ()
+recompute {A = A} (no ¬p) x = ⊥-elim (¬p x)
 
