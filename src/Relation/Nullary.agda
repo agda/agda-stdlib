@@ -8,7 +8,8 @@
 
 module Relation.Nullary where
 
-open import Data.Empty
+open import Data.Empty hiding (⊥-elim)
+open import Data.Empty.Irrelevant
 open import Level
 
 -- Negation.
@@ -30,10 +31,7 @@ recompute : ∀ {a} {A : Set a} → Dec A → .A → A
 recompute (yes x) _ = x
 recompute {A = A} (no ¬p) x with ¬-i ¬p x
   where
-    ⊥-i : ∀ .(_ : ⊥) → ⊥
-    ⊥-i ()
-
     ¬-i : (A → ⊥) → .A → ⊥
-    ¬-i f x = ⊥-i (f x)
+    ¬-i f x = ⊥-elim (f x)
 ... | ()
 
