@@ -9,9 +9,47 @@ module Codata.Conat where
 open import Size
 open import Codata.Thunk
 
+open import Data.Nat.Base using (ℕ ; zero ; suc)
+open import Relation.Nullary
+
+------------------------------------------------------------------------
+-- Definition and first values
+
 data Conat (i : Size) : Set where
   zero : Conat i
   suc : Thunk Conat i → Conat i
+
+infinity : ∀ {i} → Conat i
+infinity = suc λ where .force → infinity
+
+fromℕ : ℕ → Conat ∞
+fromℕ zero    = zero
+fromℕ (suc n) = suc λ where .force → fromℕ n
+
+------------------------------------------------------------------------
+-- Arithmetic operations
+
+pred : ∀ {i} {j : Size< i} → Conat i → Conat j
+pred zero    = zero
+pred (suc n) = n .force
+
+infixl 6 _∸_ _+_
+infixl 7 _*_
+
+_∸_ : Conat ∞ → ℕ → Conat ∞
+m ∸ zero  = m
+m ∸ suc n = pred m ∸ n
+
+_+_ : ∀ {i} → Conat i → Conat i → Conat i
+zero  + n = n
+suc m + n = suc λ where .force → (m .force) + n
+
+_*_ : ∀ {i} → Conat i → Conat i → Conat i
+m     * zero  = zero
+zero  * n     = zero
+suc m * suc n = suc λ where .force → n .force + (m .force * suc n)
+
+-- Max and Min
 
 infixl 6 _⊔_
 infixl 7 _⊓_
@@ -26,14 +64,16 @@ zero  ⊓ n     = zero
 m     ⊓ zero  = zero
 suc m ⊓ suc n = suc λ where .force → m .force ⊔ n .force
 
-infixl 6 _+_
-infixl 7 _*_
+------------------------------------------------------------------------
+-- Finiteness
 
-_+_ : ∀ {i} → Conat i → Conat i → Conat i
-zero  + n = n
-suc m + n = suc λ where .force → (m .force) + n
+data Finite : Conat ∞ → Set where
+  zero : Finite zero
+  suc  : ∀ {n} → Finite (n .force) → Finite (suc n)
 
-_*_ : ∀ {i} → Conat i → Conat i → Conat i
-m     * zero  = zero
-zero  * n     = zero
-suc m * suc n = suc λ where .force → n .force + (m .force * suc n)
+extract : ∀ {n} → Finite n → ℕ
+extract zero    = zero
+extract (suc n) = suc (extract n)
+
+¬Finite∞ : ¬ (Finite infinity)
+¬Finite∞ (suc p) = ¬Finite∞ p
