@@ -15,7 +15,6 @@ open import Function.Injection using (_↣_)
 open import Algebra
 import Algebra.RingSolver.Simple as Solver
 import Algebra.RingSolver.AlmostCommutativeRing as ACR
-open import Algebra.Structures
 open import Data.Nat as Nat
 open import Data.Product
 open import Data.Sum
@@ -28,6 +27,7 @@ open import Algebra.FunctionProperties (_≡_ {A = ℕ})
 open import Algebra.FunctionProperties
   using (LeftCancellative; RightCancellative; Cancellative)
 open import Algebra.FunctionProperties.Consequences (setoid ℕ)
+open import Algebra.Structures (_≡_ {A = ℕ})
 open import Algebra.Morphism
 open ≡-Reasoning
 
@@ -313,7 +313,7 @@ s≤′s (≤′-step m≤′n) = ≤′-step (s≤′s m≤′n)
   suc (n + m) ≡⟨ sym (+-suc n m) ⟩
   n + suc m   ∎
 
-+-isSemigroup : IsSemigroup _≡_ _+_
++-isSemigroup : IsSemigroup _+_
 +-isSemigroup = record
   { isEquivalence = isEquivalence
   ; assoc         = +-assoc
@@ -323,15 +323,21 @@ s≤′s (≤′-step m≤′n) = ≤′-step (s≤′s m≤′n)
 +-semigroup : Semigroup _ _
 +-semigroup = record { isSemigroup = +-isSemigroup }
 
-+-0-isCommutativeMonoid : IsCommutativeMonoid _≡_ _+_ 0
++-0-isMonoid : IsMonoid _+_ 0
++-0-isMonoid = record
+  { isSemigroup = +-isSemigroup
+  ; identity    = +-identity
+  }
+
++-0-monoid : Monoid _ _
++-0-monoid = record { isMonoid = +-0-isMonoid }
+
++-0-isCommutativeMonoid : IsCommutativeMonoid _+_ 0
 +-0-isCommutativeMonoid = record
   { isSemigroup = +-isSemigroup
   ; identityˡ    = +-identityˡ
   ; comm        = +-comm
   }
-
-+-0-monoid : Monoid _ _
-+-0-monoid = record { isMonoid = IsCommutativeMonoid.isMonoid +-0-isCommutativeMonoid }
 
 +-0-commutativeMonoid : CommutativeMonoid _ _
 +-0-commutativeMonoid = record { isCommutativeMonoid = +-0-isCommutativeMonoid }
@@ -509,7 +515,7 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
   n * o + m * (n * o) ≡⟨⟩
   suc m * (n * o)     ∎
 
-*-isSemigroup : IsSemigroup _≡_ _*_
+*-isSemigroup : IsSemigroup _*_
 *-isSemigroup = record
   { isEquivalence = isEquivalence
   ; assoc         = *-assoc
@@ -519,20 +525,26 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 *-semigroup : Semigroup _ _
 *-semigroup = record { isSemigroup = *-isSemigroup }
 
-*-1-isCommutativeMonoid : IsCommutativeMonoid _≡_ _*_ 1
+*-1-isMonoid : IsMonoid _*_ 1
+*-1-isMonoid = record
+  { isSemigroup = *-isSemigroup
+  ; identity    = *-identity
+  }
+
+*-1-monoid : Monoid _ _
+*-1-monoid = record { isMonoid = *-1-isMonoid }
+
+*-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1
 *-1-isCommutativeMonoid = record
   { isSemigroup = *-isSemigroup
   ; identityˡ    = *-identityˡ
   ; comm        = *-comm
   }
 
-*-1-monoid : Monoid _ _
-*-1-monoid = record { isMonoid = IsCommutativeMonoid.isMonoid *-1-isCommutativeMonoid }
-
 *-1-commutativeMonoid : CommutativeMonoid _ _
 *-1-commutativeMonoid = record { isCommutativeMonoid = *-1-isCommutativeMonoid }
 
-*-+-isCommutativeSemiring : IsCommutativeSemiring _≡_ _+_ _*_ 0 1
+*-+-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ 0 1
 *-+-isCommutativeSemiring = record
   { +-isCommutativeMonoid = +-0-isCommutativeMonoid
   ; *-isCommutativeMonoid = *-1-isCommutativeMonoid
@@ -747,28 +759,28 @@ i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
 ⊓-⊔-absorptive : Absorptive _⊓_ _⊔_
 ⊓-⊔-absorptive = ⊓-abs-⊔ , ⊔-abs-⊓
 
-⊔-isSemigroup : IsSemigroup _≡_ _⊔_
+⊔-isSemigroup : IsSemigroup _⊔_
 ⊔-isSemigroup = record
   { isEquivalence = isEquivalence
   ; assoc         = ⊔-assoc
   ; ∙-cong        = cong₂ _⊔_
   }
 
-⊔-0-isCommutativeMonoid : IsCommutativeMonoid _≡_ _⊔_ 0
+⊔-0-isCommutativeMonoid : IsCommutativeMonoid _⊔_ 0
 ⊔-0-isCommutativeMonoid = record
   { isSemigroup = ⊔-isSemigroup
   ; identityˡ    = ⊔-identityˡ
   ; comm        = ⊔-comm
   }
 
-⊓-isSemigroup : IsSemigroup _≡_ _⊓_
+⊓-isSemigroup : IsSemigroup _⊓_
 ⊓-isSemigroup = record
   { isEquivalence = isEquivalence
   ; assoc         = ⊓-assoc
   ; ∙-cong        = cong₂ _⊓_
   }
 
-⊔-⊓-isSemiringWithoutOne : IsSemiringWithoutOne _≡_ _⊔_ _⊓_ 0
+⊔-⊓-isSemiringWithoutOne : IsSemiringWithoutOne _⊔_ _⊓_ 0
 ⊔-⊓-isSemiringWithoutOne = record
   { +-isCommutativeMonoid = ⊔-0-isCommutativeMonoid
   ; *-isSemigroup         = ⊓-isSemigroup
@@ -777,7 +789,7 @@ i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
   }
 
 ⊔-⊓-isCommutativeSemiringWithoutOne
-  : IsCommutativeSemiringWithoutOne _≡_ _⊔_ _⊓_ 0
+  : IsCommutativeSemiringWithoutOne _⊔_ _⊓_ 0
 ⊔-⊓-isCommutativeSemiringWithoutOne = record
   { isSemiringWithoutOne = ⊔-⊓-isSemiringWithoutOne
   ; *-comm               = ⊓-comm
@@ -789,7 +801,7 @@ i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
       ⊔-⊓-isCommutativeSemiringWithoutOne
   }
 
-⊓-⊔-isLattice : IsLattice _≡_ _⊓_ _⊔_
+⊓-⊔-isLattice : IsLattice _⊓_ _⊔_
 ⊓-⊔-isLattice = record
   { isEquivalence = isEquivalence
   ; ∨-comm        = ⊓-comm
@@ -801,7 +813,7 @@ i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
   ; absorptive    = ⊓-⊔-absorptive
   }
 
-⊓-⊔-isDistributiveLattice : IsDistributiveLattice _≡_ _⊓_ _⊔_
+⊓-⊔-isDistributiveLattice : IsDistributiveLattice _⊓_ _⊔_
 ⊓-⊔-isDistributiveLattice = record
   { isLattice   = ⊓-⊔-isLattice
   ; ∨-∧-distribʳ = ⊓-distribʳ-⊔

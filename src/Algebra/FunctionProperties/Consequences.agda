@@ -14,9 +14,10 @@ open Setoid S
 open import Algebra.FunctionProperties _≈_
 open import Relation.Binary.EqReasoning S
 open import Data.Sum using (inj₁; inj₂)
+open import Data.Product using (proj₁; proj₂)
 
 ------------------------------------------------------------------------
--- Transposing identity elements
+-- Existence of identity elements
 
 comm+idˡ⇒idʳ : ∀ {_•_} → Commutative _•_ →
               ∀ {e} → LeftIdentity e _•_ → RightIdentity e _•_
@@ -33,7 +34,7 @@ comm+idʳ⇒idˡ {_•_} comm {e} idʳ x = begin
   x     ∎
 
 ------------------------------------------------------------------------
--- Transposing zero elements
+-- Existence of zero elements
 
 comm+zeˡ⇒zeʳ : ∀ {_•_} → Commutative _•_ →
               ∀ {e} → LeftZero e _•_ → RightZero e _•_
@@ -49,8 +50,38 @@ comm+zeʳ⇒zeˡ {_•_} comm {e} zeʳ x = begin
   x • e ≈⟨ zeʳ x ⟩
   e     ∎
 
+assoc+distribʳ+idʳ+invʳ⇒zeˡ : ∀ {_+_ _*_ -_ 0#} →
+                            Congruent₂ _+_ → Congruent₂ _*_ →
+                            Associative _+_ → _*_ DistributesOverʳ _+_ →
+                            RightIdentity 0# _+_ → RightInverse 0# -_ _+_ →
+                            LeftZero 0# _*_
+assoc+distribʳ+idʳ+invʳ⇒zeˡ {_+_} {_*_} { -_ } {0#}
+  +-cong *-cong +-assoc distribʳ idʳ invʳ  x = begin
+   0# * x                                ≈⟨ sym (idʳ _) ⟩
+   (0# * x) + 0#                         ≈⟨ +-cong refl (sym (invʳ _)) ⟩
+   (0# * x) + ((0# * x)  + (-(0# * x)))  ≈⟨ sym (+-assoc _ _ _) ⟩
+   ((0# * x) +  (0# * x)) + (-(0# * x))  ≈⟨ +-cong (sym (distribʳ _ _ _)) refl ⟩
+   ((0# + 0#) * x) + (-(0# * x))         ≈⟨ +-cong (*-cong (idʳ _) refl) refl ⟩
+   (0# * x) + (-(0# * x))                ≈⟨ invʳ _ ⟩
+   0#                                    ∎
+
+assoc+distribˡ+idʳ+invʳ⇒zeʳ : ∀ {_+_ _*_ -_ 0#} →
+                            Congruent₂ _+_ → Congruent₂ _*_ →
+                            Associative _+_ → _*_ DistributesOverˡ _+_ →
+                            RightIdentity 0# _+_ → RightInverse 0# -_ _+_ →
+                            RightZero 0# _*_
+assoc+distribˡ+idʳ+invʳ⇒zeʳ {_+_} {_*_} { -_ } {0#}
+  +-cong *-cong +-assoc distribˡ idʳ invʳ  x = begin
+    x * 0#                               ≈⟨ sym (idʳ _) ⟩
+    (x * 0#) + 0#                        ≈⟨ +-cong refl (sym (invʳ _)) ⟩
+    (x * 0#) + ((x * 0#) + (-(x * 0#)))  ≈⟨ sym (+-assoc _ _ _) ⟩
+    ((x * 0#) + (x * 0#)) + (-(x * 0#))  ≈⟨ +-cong (sym (distribˡ _ _ _)) refl ⟩
+    (x * (0# + 0#)) + (-(x * 0#))        ≈⟨ +-cong (*-cong refl (idʳ _)) refl ⟩
+    ((x * 0#) + (-(x * 0#)))             ≈⟨ invʳ _ ⟩
+    0#                                   ∎
+
 ------------------------------------------------------------------------
--- Transposing inverse elements
+-- Existence of inverses
 
 comm+invˡ⇒invʳ : ∀ {e _⁻¹ _•_} → Commutative _•_ →
                 LeftInverse e _⁻¹ _•_ → RightInverse e _⁻¹ _•_
@@ -67,7 +98,36 @@ comm+invʳ⇒invˡ {e} {_⁻¹} {_•_} comm invʳ x = begin
   e          ∎
 
 ------------------------------------------------------------------------
--- Transposing distributivity
+-- Uniqueness of inverses
+
+assoc+id+invʳ⇒invˡ-unique : ∀ {_•_ _⁻¹ ε} →
+                           Congruent₂ _•_ → Associative _•_ →
+                           Identity ε _•_ → RightInverse ε _⁻¹ _•_ →
+                           ∀ x y → (x • y) ≈ ε → x ≈ (y ⁻¹)
+assoc+id+invʳ⇒invˡ-unique {_•_} {_⁻¹} {ε} cong assoc id invʳ x y eq =
+  begin
+    x                ≈⟨ sym (proj₂ id x) ⟩
+    x • ε            ≈⟨ cong refl (sym (invʳ y)) ⟩
+    x • (y • (y ⁻¹)) ≈⟨ sym (assoc x y (y ⁻¹)) ⟩
+    (x • y) • (y ⁻¹) ≈⟨ cong eq refl ⟩
+    ε • (y ⁻¹)       ≈⟨ proj₁ id (y ⁻¹) ⟩
+    y ⁻¹             ∎
+
+assoc+id+invˡ⇒invʳ-unique : ∀ {_•_ _⁻¹ ε} →
+                           Congruent₂ _•_ → Associative _•_ →
+                           Identity ε _•_ → LeftInverse ε _⁻¹ _•_ →
+                           ∀ x y → (x • y) ≈ ε → y ≈ (x ⁻¹)
+assoc+id+invˡ⇒invʳ-unique {_•_} {_⁻¹} {ε} cong assoc id invˡ x y eq =
+  begin
+    y                ≈⟨ sym (proj₁ id y) ⟩
+    ε • y            ≈⟨ cong (sym (invˡ x)) refl ⟩
+    ((x ⁻¹) • x) • y ≈⟨ assoc (x ⁻¹) x y ⟩
+    (x ⁻¹) • (x • y) ≈⟨ cong refl eq ⟩
+    (x ⁻¹) • ε       ≈⟨ proj₂ id (x ⁻¹) ⟩
+    x ⁻¹             ∎
+
+------------------------------------------------------------------------
+-- Distributivity
 
 comm+distrˡ⇒distrʳ : ∀ {_•_ _◦_} → Congruent₂ _◦_ → Commutative _•_ →
                    _•_ DistributesOverˡ _◦_ → _•_ DistributesOverʳ _◦_
@@ -86,7 +146,7 @@ comm+distrʳ⇒distrˡ {_•_} {_◦_} cong comm distrˡ x y z = begin
   (x • y) ◦ (x • z) ∎
 
 ------------------------------------------------------------------------
--- Transposing cancellativity
+-- Cancellativity
 
 comm+cancelˡ⇒cancelʳ : ∀ {_•_} → Commutative _•_ →
                      LeftCancellative _•_ →  RightCancellative _•_
