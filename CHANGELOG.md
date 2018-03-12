@@ -31,8 +31,18 @@ Backwards compatible changes
 
 * Added new proofs to `Data.Bool.Properties`:
   ```agda
-  ∨-isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid _∨_ false
+  ∧-semigroup                     : Semigroup _ _
+  ∧-commutativeMonoid             : CommutativeMonoid _
+  ∧-idempotentCommutativeMonoid   : IdempotentCommutativeMonoid _ _
   ∧-isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid _∧_ true
+
+  ∨-semigroup                     : Semigroup _ _
+  ∨-commutativeMonoid             : CommutativeMonoid _ _
+  ∨-idempotentCommutativeMonoid   : IdempotentCommutativeMonoid _ _
+  ∨-isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid _∨_ false
+
+  ∨-∧-lattice                     : Lattice _ _
+  ∨-∧-distributiveLattice         : DistributiveLattice _ _
   ```
 
 * Added new proofs to `Data.Nat.Properties`:
