@@ -7,20 +7,20 @@
 -- The definitions of lexicographic ordering used here are suitable if
 -- the argument order is a strict partial order.
 
-module Data.List.Relation.StrictLex where
+module Data.List.Relation.Lex.Strict where
 
-open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Empty using (⊥)
 open import Data.Unit.Base using (⊤; tt)
-open import Function using (_∘_; flip; id)
+open import Function using (_∘_; id)
 open import Data.Product using (_,_)
 open import Data.Sum using (inj₁; inj₂)
 open import Data.List.Base using (List; []; _∷_)
 open import Level using (_⊔_)
-open import Relation.Nullary using (Dec; yes; no; ¬_)
+open import Relation.Nullary using (yes; no; ¬_)
 open import Relation.Binary
 open import Relation.Binary.Consequences
 open import Data.List.Relation.Pointwise as Pointwise
-   using ([]; _∷_; head; tail)
+   using (Pointwise; []; _∷_; head; tail)
 
 open import Data.List.Relation.Lex.Core as Core public
   using (base; halt; this; next; ¬≤-this; ¬≤-next)
@@ -38,7 +38,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
   module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
 
     private
-      _≋_ = Pointwise.Rel _≈_
+      _≋_ = Pointwise _≈_
       _<_ = Lex-< _≈_ _≺_
 
     ¬[]<[] : ¬ [] < []
@@ -138,7 +138,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
   -- Properties
 
   ≤-reflexive : (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) →
-                Pointwise.Rel _≈_ ⇒ Lex-≤ _≈_ _≺_
+                Pointwise _≈_ ⇒ Lex-≤ _≈_ _≺_
   ≤-reflexive _≈_ _≺_ []            = base tt
   ≤-reflexive _≈_ _≺_ (x≈y ∷ xs≈ys) =
     next x≈y (≤-reflexive _≈_ _≺_ xs≈ys)
@@ -146,7 +146,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
   module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
 
     private
-      _≋_ = Pointwise.Rel _≈_
+      _≋_ = Pointwise _≈_
       _≤_ = Lex-≤ _≈_ _≺_
 
     ≤-antisymmetric : Symmetric _≈_ → Irreflexive _≈_ _≺_ →

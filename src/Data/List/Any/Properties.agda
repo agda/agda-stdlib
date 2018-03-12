@@ -19,14 +19,16 @@ open import Data.List.Categorical using (monad)
 open import Data.List.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
 open import Data.List.Relation.Pointwise
-  using ([]; _∷_) renaming (Rel to ListRel)
+  using (Pointwise; []; _∷_)
 open import Data.Nat using (zero; suc; _<_; z≤n; s≤s)
+open import Data.Maybe as Maybe using (Maybe; just; nothing)
 open import Data.Product as Prod
   using (_×_; _,_; ∃; ∃₂; proj₁; proj₂; uncurry′)
-open import Data.Product.Relation.Pointwise
-import Data.Product.Relation.SigmaPointwise as Σ
+open import Data.Product.Relation.Pointwise.NonDependent
+  using (_×-cong_)
+import Data.Product.Relation.Pointwise.Dependent as Σ
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Data.Sum.Relation.General
+open import Data.Sum.Relation.Pointwise using (_⊎-cong_)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Eq using (_⇔_; module Equivalence)
@@ -47,7 +49,7 @@ private
 -- respects the list equality.
 
 lift-resp : ∀ {a p ℓ} {A : Set a} {P : A → Set p} {_≈_ : Rel A ℓ} →
-            P Respects _≈_ → Any P Respects (ListRel _≈_)
+            P Respects _≈_ → (Any P) Respects (Pointwise _≈_)
 lift-resp resp []            ()
 lift-resp resp (x≈y ∷ xs≈ys) (here px)   = here (resp x≈y px)
 lift-resp resp (x≈y ∷ xs≈ys) (there pxs) =
@@ -360,6 +362,21 @@ module _ {a b} {A : Set a} {B : Set b} where
       ; right-inverse-of = map⁺∘map⁻
       }
     }
+
+------------------------------------------------------------------------
+-- mapMaybe
+
+module _ {a b p} {A : Set a} {B : Set b} {P : B → Set p}
+         (f : A → Maybe B) where
+
+  mapMaybe⁺ : ∀ xs → Any (Maybe.Any P) (map f xs) →
+              Any P (mapMaybe f xs)
+  mapMaybe⁺ []       ()
+  mapMaybe⁺ (x ∷ xs) ps with f x | ps
+  ... | nothing | here  ()
+  ... | nothing | there pxs      = mapMaybe⁺ xs pxs
+  ... | just _  | here (just py) = here py
+  ... | just _  | there pxs      = there (mapMaybe⁺ xs pxs)
 
 ------------------------------------------------------------------------
 -- _++_

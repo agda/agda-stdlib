@@ -14,6 +14,8 @@ open import Data.List.Base
 open import Data.List.Membership.Propositional
 open import Data.List.All as All using (All; []; _∷_)
 open import Data.List.Any using (Any; here; there)
+open import Data.List.Relation.Pointwise using (Pointwise; []; _∷_)
+open import Data.Maybe as Maybe using (Maybe; just; nothing)
 open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function
@@ -133,7 +135,7 @@ all-anti-mono p xs⊆ys = All-all p ∘ anti-mono xs⊆ys ∘ all-All p _
 ------------------------------------------------------------------------
 -- map
 
-module _{a b} {A : Set a} {B : Set b} where
+module _ {a b} {A : Set a} {B : Set b} where
 
   All-map : ∀ {p} {P : B → Set p} {f : A → B} {xs} →
             All (P ∘ f) xs → All P (map f xs)
@@ -150,6 +152,20 @@ module _{a b} {A : Set a} {B : Set b} where
   gmap : ∀ {p q} {P : A → Set p} {Q : B → Set q} {f : A → B} →
          P ⋐ Q ∘ f → All P ⋐ All Q ∘ map f
   gmap g = All-map ∘ All.map g
+
+------------------------------------------------------------------------
+-- mapMaybe
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+  mapMaybe⁺ : ∀ {p} (P : B → Set p) {f : A → Maybe B} {xs : List A} →
+               All (Maybe.All P) (map f xs) →
+               All P (mapMaybe f xs)
+  mapMaybe⁺ _ {f = _} {[]}     [] = []
+  mapMaybe⁺ P {f = f} {x ∷ xs} (px ∷ pxs) with f x
+  ... | nothing = mapMaybe⁺ P pxs
+  ... | just v with px
+  ...   | just pv = pv ∷ mapMaybe⁺ P pxs
 
 ------------------------------------------------------------------------
 -- _++_
@@ -256,7 +272,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   tabulate⁻ {suc n} (_ ∷ pf) (fsuc i) = tabulate⁻ pf i
 
 ------------------------------------------------------------------------
--- tabulate
+-- filter
 
 module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
 
@@ -273,3 +289,13 @@ module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
   ... | no  _ = filter⁺₂ Qxs
   ... | yes _ = Qx ∷ filter⁺₂ Qxs
 
+------------------------------------------------------------------------
+-- zipWith
+
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
+
+  zipWith⁺ : ∀ {p} (P : C → Set p) (f : A → B → C) {xs ys} →
+             Pointwise (λ x y → P (f x y)) xs ys →
+             All P (zipWith f xs ys)
+  zipWith⁺ P f []              = []
+  zipWith⁺ P f (Pfxy ∷ Pfxsys) = Pfxy ∷ zipWith⁺ P f Pfxsys

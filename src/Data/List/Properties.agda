@@ -16,10 +16,11 @@ import Algebra.Monoid-solver
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
 open import Data.List as List
 open import Data.List.All using (All; []; _∷_)
+open import Data.List.Any using (Any; here; there)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat
 open import Data.Nat.Properties
-open import Data.Product as Prod hiding (map)
+open import Data.Product as Prod hiding (map; zip)
 open import Function
 import Relation.Binary.EqReasoning as EqR
 open import Relation.Binary.PropositionalEquality as P
@@ -179,6 +180,77 @@ module _ {a} {A : Set a} where
   ; ε        = []
   ; isMonoid = ++-isMonoid
   }
+
+------------------------------------------------------------------------
+-- zipWith
+
+module _ {a b} {A : Set a} {B : Set b} (f : A → A → B) where
+
+  zipWith-comm : (∀ x y → f x y ≡ f y x) →
+                 ∀ xs ys → zipWith f xs ys ≡ zipWith f ys xs
+  zipWith-comm f-comm []       []       = refl
+  zipWith-comm f-comm []       (x ∷ ys) = refl
+  zipWith-comm f-comm (x ∷ xs) []       = refl
+  zipWith-comm f-comm (x ∷ xs) (y ∷ ys) =
+    P.cong₂ _∷_ (f-comm x y) (zipWith-comm f-comm xs ys)
+
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
+         (f : A → B → C) where
+
+  zipWith-identityˡ : ∀ xs → zipWith f [] xs ≡ []
+  zipWith-identityˡ []       = refl
+  zipWith-identityˡ (x ∷ xs) = refl
+
+  zipWith-identityʳ : ∀ xs → zipWith f xs [] ≡ []
+  zipWith-identityʳ []       = refl
+  zipWith-identityʳ (x ∷ xs) = refl
+
+  length-zipWith : ∀ xs ys →
+                   length (zipWith f xs ys) ≡ length xs ⊓ length ys
+  length-zipWith []       []       = refl
+  length-zipWith []       (y ∷ ys) = refl
+  length-zipWith (x ∷ xs) []       = refl
+  length-zipWith (x ∷ xs) (y ∷ ys) = P.cong suc (length-zipWith xs ys)
+
+  zipWith-map : ∀ {d e} {D : Set d} {E : Set e} (g : D → A) (h : E → B) →
+                ∀ xs ys → zipWith f (map g xs) (map h ys) ≡
+                          zipWith (λ x y → f (g x) (h y)) xs ys
+  zipWith-map g h []       []       = refl
+  zipWith-map g h []       (y ∷ ys) = refl
+  zipWith-map g h (x ∷ xs) []       = refl
+  zipWith-map g h (x ∷ xs) (y ∷ ys) =
+    P.cong₂ _∷_ refl (zipWith-map g h xs ys)
+
+  map-zipWith : ∀ {d} {D : Set d} (g : C → D) → ∀ xs ys →
+                map g (zipWith f xs ys) ≡
+                zipWith (λ x y → g (f x y)) xs ys
+  map-zipWith g []       []       = refl
+  map-zipWith g []       (y ∷ ys) = refl
+  map-zipWith g (x ∷ xs) []       = refl
+  map-zipWith g (x ∷ xs) (y ∷ ys) =
+    P.cong₂ _∷_ refl (map-zipWith g xs ys)
+
+------------------------------------------------------------------------
+-- unzipWith
+
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
+         (f : A → B × C) where
+
+  length-unzipWith₁ : ∀ xys →
+                     length (proj₁ (unzipWith f xys)) ≡ length xys
+  length-unzipWith₁ []        = refl
+  length-unzipWith₁ (x ∷ xys) = P.cong suc (length-unzipWith₁ xys)
+
+  length-unzipWith₂ : ∀ xys →
+                     length (proj₂ (unzipWith f xys)) ≡ length xys
+  length-unzipWith₂ []        = refl
+  length-unzipWith₂ (x ∷ xys) = P.cong suc (length-unzipWith₂ xys)
+
+  zipWith-unzipWith : (g : B → C → A) → uncurry′ g ∘ f ≗ id →
+                      uncurry′ (zipWith g) ∘ (unzipWith f)  ≗ id
+  zipWith-unzipWith g f∘g≗id []       = refl
+  zipWith-unzipWith g f∘g≗id (x ∷ xs) =
+    P.cong₂ _∷_ (f∘g≗id x) (zipWith-unzipWith g f∘g≗id xs)
 
 ------------------------------------------------------------------------
 -- foldr
@@ -376,23 +448,47 @@ module _ {a} {A : Set a} (p : A → Bool) where
 
 module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
 
-  filter-all : ∀ {xs} → All P xs → filter P? xs ≡ xs
-  filter-all {[]}     []         = refl
-  filter-all {x ∷ xs} (px ∷ pxs) with P? x
-  ... | no  ¬px = contradiction px ¬px
-  ... | yes _   = P.cong (x ∷_) (filter-all pxs)
-
-  filter-none : ∀ {xs} → All (∁ P) xs → filter P? xs ≡ []
-  filter-none {[]}     []           = refl
-  filter-none {x ∷ xs} (¬px ∷ ¬pxs) with P? x
-  ... | no  _  = filter-none ¬pxs
-  ... | yes px = contradiction px ¬px
-
   length-filter : ∀ xs → length (filter P? xs) ≤ length xs
   length-filter []       = z≤n
   length-filter (x ∷ xs) with P? x
   ... | no  _ = ≤-step (length-filter xs)
   ... | yes _ = s≤s (length-filter xs)
+
+  filter-none : ∀ {xs} → All P xs → filter P? xs ≡ xs
+  filter-none {[]}     []         = refl
+  filter-none {x ∷ xs} (px ∷ pxs) with P? x
+  ... | no  ¬px = contradiction px ¬px
+  ... | yes _   = P.cong (x ∷_) (filter-none pxs)
+
+  filter-some : ∀ xs → Any (∁ P) xs → length (filter P? xs) < length xs
+  filter-some [] ()
+  filter-some (x ∷ xs) (here ¬px) with P? x
+  ... | no  _  = s≤s (length-filter xs)
+  ... | yes px = contradiction px ¬px
+  filter-some (x ∷ xs) (there any) with P? x
+  ... | no  _ = ≤-step (filter-some xs any)
+  ... | yes _ = s≤s (filter-some xs any)
+
+  filter-notAll : ∀ {xs} → Any P xs → 0 < length (filter P? xs)
+  filter-notAll {x ∷ xs} (here px)   with P? x
+  ... | yes _  = s≤s z≤n
+  ... | no ¬px = contradiction px ¬px
+  filter-notAll {x ∷ xs} (there pxs) with P? x
+  ... | yes _ = ≤-step (filter-notAll pxs)
+  ... | no  _ = filter-notAll pxs
+
+  filter-all : ∀ {xs} → All (∁ P) xs → filter P? xs ≡ []
+  filter-all {[]}     []           = refl
+  filter-all {x ∷ xs} (¬px ∷ ¬pxs) with P? x
+  ... | no  _  = filter-all ¬pxs
+  ... | yes px = contradiction px ¬px
+
+  filter-complete : ∀ {xs} → length (filter P? xs) ≡ length xs →
+                    filter P? xs ≡ xs
+  filter-complete {[]}     eq = refl
+  filter-complete {x ∷ xs} eq with P? x
+  ... | no ¬px = contradiction eq (<⇒≢ (s≤s (length-filter xs)))
+  ... | yes px = P.cong (x ∷_) (filter-complete (suc-injective eq))
 
 ------------------------------------------------------------------------
 -- partition

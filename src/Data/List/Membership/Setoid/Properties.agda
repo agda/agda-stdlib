@@ -8,8 +8,9 @@ open import Data.List
 open import Data.List.Any as Any using (here; there)
 open import Data.List.Any.Properties
 import Data.List.Membership.Setoid as Membership
-open import Data.List.Relation.Pointwise as ListEq
-  using () renaming (Rel to ListRel)
+open import Data.List.Relation.Pointwise as Pointwise
+  using (Pointwise)
+import Data.List.Relation.Equality.Setoid as Equality
 open import Data.Product using (∃; _×_; _,_)
 open import Function using (flip)
 open import Relation.Binary
@@ -20,6 +21,7 @@ module Data.List.Membership.Setoid.Properties where
 module SingleSetoid {c ℓ} (S : Setoid c ℓ) where
 
   open Setoid S
+  open Equality S
   open import Data.List.Membership.Setoid S
 
   -- Equality is respected by the predicate which is used to define
@@ -30,13 +32,13 @@ module SingleSetoid {c ℓ} (S : Setoid c ℓ) where
 
   -- List equality is respected by _∈_.
 
-  ∈-resp-≋ : ∀ {x} → (x ∈_) Respects (ListRel _≈_)
+  ∈-resp-≋ : ∀ {x} → (x ∈_) Respects _≋_
   ∈-resp-≋ = lift-resp ∈-resp-≈
 
   -- _⊆_ is a preorder.
 
   ⊆-preorder : Preorder _ _ _
-  ⊆-preorder = InducedPreorder₂ (ListEq.setoid S) _∈_ ∈-resp-≋
+  ⊆-preorder = InducedPreorder₂ ≋-setoid _∈_ ∈-resp-≋
 
   module ⊆-Reasoning where
     import Relation.Binary.PreorderReasoning as PreR

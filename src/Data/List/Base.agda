@@ -42,13 +42,21 @@ _++_ : ∀ {a} {A : Set a} → List A → List A → List A
 []       ++ ys = ys
 (x ∷ xs) ++ ys = x ∷ (xs ++ ys)
 
-zipWith : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c}
-          → (A → B → C) → List A → List B → List C
+zipWith : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
+          (A → B → C) → List A → List B → List C
 zipWith f (x ∷ xs) (y ∷ ys) = f x y ∷ zipWith f xs ys
 zipWith f _        _        = []
 
 zip : ∀ {a b} {A : Set a} {B : Set b} → List A → List B → List (A × B)
 zip = zipWith (_,_)
+
+unzipWith : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
+            (A → B × C) → List A → List B × List C
+unzipWith f []         = [] , []
+unzipWith f (xy ∷ xys) = Prod.zip _∷_ _∷_ (f xy) (unzipWith f xys)
+
+unzip : ∀ {a b} {A : Set a} {B : Set b} → List (A × B) → List A × List B
+unzip = unzipWith id
 
 intersperse : ∀ {a} {A : Set a} → A → List A → List A
 intersperse x []           = []
@@ -135,6 +143,11 @@ applyDownFrom f (suc n) = f n ∷ applyDownFrom f n
 tabulate : ∀ {a n} {A : Set a} (f : Fin n → A) → List A
 tabulate {_} {zero}  f = []
 tabulate {_} {suc n} f = f fzero ∷ tabulate (f ∘ fsuc)
+
+lookup : ∀ {a} {A : Set a} (xs : List A) → Fin (length xs) → A
+lookup [] ()
+lookup (x ∷ xs) fzero = x
+lookup (x ∷ xs) (fsuc i) = lookup xs i
 
 -- Numerical
 
