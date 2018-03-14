@@ -14,7 +14,7 @@ open import Data.Fin using (Fin; suc; zero)
 open import Data.Fin.Properties using (_≟_)
 open import Data.List as L using (List; _∷_; [])
 open import Data.List.Any using (here; there; index)
-open import Data.List.Any.Membership.Propositional using (_∈_)
+open import Data.List.Membership.Propositional using (_∈_)
 open import Data.Product as Product using (Σ; ∃; _,_; proj₁; proj₂)
 open import Data.Vec as V using (Vec; _∷_; [])
 import Data.Vec.Properties as VP

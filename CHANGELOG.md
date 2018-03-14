@@ -8,6 +8,36 @@ Important changes since 0.15:
 Non-backwards compatible changes
 --------------------------------
 
+#### 2nd stage of overhaul of list membership
+
+* The following modules have been moved:
+  ```agda
+  Data.List.Any.BagAndSetEquality        ↦ Data.List.Relation.BagAndSetEquality
+  Data.List.Any.Membership               ↦ Data.List.Membership.Setoid
+  Data.List.Any.Membership.Propositional ↦ Data.List.Membership.Propositional
+  ```
+
+* The `_⊆_` relation has been moved out of the `Membership` modules to new
+  modules `Data.List.Relation.Sublist.(Setoid/Propositional)`.
+
+  Consequently the `mono` properties that were in `Membership.Propositional.Properties`
+  have been moved to `Relation.Sublist.Propositional.Properties`
+
+* The following have been moved out of `Membership.Propositional` into `Relation.BagAndSetEquality`
+  ```agda
+  Kind
+  Symmetric-kind
+  subset
+  superset
+  set
+  subbag
+  superbag
+  bag
+  [_]-Order
+  [_]-Equality
+  _∼[_]_
+  ```
+
 Deprecated features
 -------------------
 

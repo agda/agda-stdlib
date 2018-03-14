@@ -4,37 +4,31 @@
 -- List membership and some related definitions
 ------------------------------------------------------------------------
 
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary
 
 module Data.List.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 
 open import Function using (_∘_; id; flip)
-open import Data.List.Base as List using (List; []; _∷_)
+open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Any using (Any; map; here; there)
 open import Data.Product as Prod using (∃; _×_; _,_)
 open import Relation.Nullary using (¬_)
 
 open Setoid S renaming (Carrier to A)
 
--- List membership.
+------------------------------------------------------------------------
+-- Definitions
 
 infix 4 _∈_ _∉_
 
 _∈_ : A → List A → Set _
-x ∈ xs = Any (_≈_ x) xs
+x ∈ xs = Any (x ≈_) xs
 
 _∉_ : A → List A → Set _
 x ∉ xs = ¬ x ∈ xs
 
--- Subsets.
-
-infix 4 _⊆_ _⊈_
-
-_⊆_ : List A → List A → Set _
-xs ⊆ ys = ∀ {x} → x ∈ xs → x ∈ ys
-
-_⊈_ : List A → List A → Set _
-xs ⊈ ys = ¬ xs ⊆ ys
+------------------------------------------------------------------------
+-- Operations
 
 -- A variant of List.map.
 

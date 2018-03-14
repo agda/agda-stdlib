@@ -10,14 +10,14 @@
 
 module Data.List.Membership.Propositional.Properties where
 
-open import Algebra
-open import Category.Monad
+open import Algebra using (CommutativeSemiring)
+open import Category.Monad using (RawMonad)
 open import Data.Bool.Base using (Bool; false; true; T)
-open import Data.Empty
+open import Data.Empty using (⊥-elim)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (module Equivalence)
-import Function.Injection as Inj
+open import Function.Injection as Inj using (_↣_)
 open import Function.Inverse as Inv using (_↔_; module Inverse)
 import Function.Related as Related
 open import Function.Related.TypeIsomorphisms
@@ -27,17 +27,17 @@ open import Data.List.Any.Properties
 open import Data.List.Membership.Propositional
 import Data.List.Membership.Setoid.Properties as Membershipₚ
 open import Data.List.Categorical using (monad)
-open import Data.Nat as Nat
+open import Data.Nat using (ℕ; zero; suc; pred; _≤_)
 open import Data.Nat.Properties
-open import Data.Product as Prod
+open import Data.Product hiding (map)
 import Data.Product.Relation.Pointwise.Dependent as Σ
-open import Data.Sum as Sum
+open import Data.Sum as Sum hiding (map)
 open import Relation.Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Unary using (_⟨×⟩_; Decidable)
-open import Relation.Nullary
+open import Relation.Nullary using (¬_; Dec; yes; no)
 open import Relation.Nullary.Negation
 
 private
@@ -51,31 +51,31 @@ private
 
 module _ {a b} {A : Set a} {B : Set b} {f : A → B} where
 
-  ∈-map⁺ : ∀ {x xs} → x ∈ xs → f x ∈ List.map f xs
+  ∈-map⁺ : ∀ {x xs} → x ∈ xs → f x ∈ map f xs
   ∈-map⁺ = Membershipₚ.∈-map⁺ (P.setoid _) (P.setoid _) (P.cong f)
 
-  ∈-map⁻ : ∀ {y xs} → y ∈ List.map f xs → ∃ λ x → x ∈ xs × y ≡ f x
+  ∈-map⁻ : ∀ {y xs} → y ∈ map f xs → ∃ λ x → x ∈ xs × y ≡ f x
   ∈-map⁻ = Membershipₚ.∈-map⁻ (P.setoid _) (P.setoid _)
 
-  map-∈↔ : ∀ {y xs} →
-           (∃ λ x → x ∈ xs × y ≡ f x) ↔ y ∈ List.map f xs
+  map-∈↔ : ∀ {y xs} → (∃ λ x → x ∈ xs × y ≡ f x) ↔ y ∈ map f xs
   map-∈↔ {y} {xs} =
     (∃ λ x → x ∈ xs × y ≡ f x)   ↔⟨ Any↔ ⟩
     Any (λ x → y ≡ f x) xs       ↔⟨ map↔ ⟩
-    y ∈ List.map f xs             ∎
+    y ∈ List.map f xs            ∎
     where open Related.EquationalReasoning
 
 ------------------------------------------------------------------------
 -- concat
 
-concat-∈↔ : ∀ {a} {A : Set a} {x : A} {xss} →
-            (∃ λ xs → x ∈ xs × xs ∈ xss) ↔ x ∈ concat xss
-concat-∈↔ {a} {x = x} {xss} =
-  (∃ λ xs → x ∈ xs × xs ∈ xss)  ↔⟨ Σ.cong {a₁ = a} {b₁ = a} {b₂ = a} Inv.id $ ×⊎.*-comm _ _ ⟩
-  (∃ λ xs → xs ∈ xss × x ∈ xs)  ↔⟨ Any↔ {a = a} {p = a} ⟩
-  Any (Any (_≡_ x)) xss         ↔⟨ concat↔ {a = a} {p = a} ⟩
-  x ∈ concat xss                ∎
-  where open Related.EquationalReasoning
+module _ {a} {A : Set a} {x : A} {xss : List (List A)} where
+
+  concat-∈↔ : (∃ λ xs → x ∈ xs × xs ∈ xss) ↔ x ∈ concat xss
+  concat-∈↔ =
+    (∃ λ xs → x ∈ xs × xs ∈ xss)  ↔⟨ Σ.cong Inv.id $ ×⊎.*-comm _ _ ⟩
+    (∃ λ xs → xs ∈ xss × x ∈ xs)  ↔⟨ Any↔ ⟩
+    Any (Any (x ≡_)) xss          ↔⟨ concat↔ ⟩
+    x ∈ concat xss                ∎
+    where open Related.EquationalReasoning
 
 ------------------------------------------------------------------------
 -- filter
@@ -96,18 +96,17 @@ filter-∈ P? {xs = y ∷ xs} (there x∈xs) Px with P? y
 >>=-∈↔ : ∀ {ℓ} {A B : Set ℓ} {xs} {f : A → List B} {y} →
          (∃ λ x → x ∈ xs × y ∈ f x) ↔ y ∈ (xs >>= f)
 >>=-∈↔ {ℓ} {xs = xs} {f} {y} =
-  (∃ λ x → x ∈ xs × y ∈ f x)  ↔⟨ Any↔ {a = ℓ} {p = ℓ} ⟩
-  Any (Any (_≡_ y) ∘ f) xs    ↔⟨ >>=↔ {ℓ = ℓ} {p = ℓ} ⟩
+  (∃ λ x → x ∈ xs × y ∈ f x)  ↔⟨ Any↔ ⟩
+  Any (Any (y ≡_) ∘ f) xs     ↔⟨ >>=↔ ⟩
   y ∈ (xs >>= f)              ∎
   where open Related.EquationalReasoning
 
 ⊛-∈↔ : ∀ {ℓ} {A B : Set ℓ} (fs : List (A → B)) {xs y} →
        (∃₂ λ f x → f ∈ fs × x ∈ xs × y ≡ f x) ↔ y ∈ (fs ⊛ xs)
 ⊛-∈↔ {ℓ} fs {xs} {y} =
-  (∃₂ λ f x → f ∈ fs × x ∈ xs × y ≡ f x)       ↔⟨ Σ.cong {a₁ = ℓ} {b₁ = ℓ} {b₂ = ℓ} Inv.id (∃∃↔∃∃ {a = ℓ} {b = ℓ} {p = ℓ} _) ⟩
-  (∃ λ f → f ∈ fs × ∃ λ x → x ∈ xs × y ≡ f x)  ↔⟨ Σ.cong {a₁ = ℓ} {b₁ = ℓ} {b₂ = ℓ}
-                                                         Inv.id ((_ ∎) ⟨ ×⊎.*-cong {ℓ = ℓ} ⟩ Any↔ {a = ℓ} {p = ℓ}) ⟩
-  (∃ λ f → f ∈ fs × Any (_≡_ y ∘ f) xs)        ↔⟨ Any↔ {a = ℓ} {p = ℓ} ⟩
+  (∃₂ λ f x → f ∈ fs × x ∈ xs × y ≡ f x)       ↔⟨ Σ.cong Inv.id (∃∃↔∃∃ _) ⟩
+  (∃ λ f → f ∈ fs × ∃ λ x → x ∈ xs × y ≡ f x)  ↔⟨ Σ.cong Inv.id ((_ ∎) ⟨ ×⊎.*-cong ⟩ Any↔) ⟩
+  (∃ λ f → f ∈ fs × Any (_≡_ y ∘ f) xs)        ↔⟨ Any↔ ⟩
   Any (λ f → Any (_≡_ y ∘ f) xs) fs            ↔⟨ ⊛↔ ⟩
   y ∈ (fs ⊛ xs)                                ∎
   where open Related.EquationalReasoning
@@ -133,103 +132,12 @@ filter-∈ P? {xs = y ∷ xs} (there x∈xs) Px with P? y
     }
 
 ------------------------------------------------------------------------
--- Properties relating _∈_ to various list functions
-
--- Various functions are monotone.
-
-mono : ∀ {a p} {A : Set a} {P : A → Set p} {xs ys} →
-       xs ⊆ ys → Any P xs → Any P ys
-mono xs⊆ys =
-  _⟨$⟩_ (Inverse.to Any↔) ∘′
-  Prod.map id (Prod.map xs⊆ys id) ∘
-  _⟨$⟩_ (Inverse.from Any↔)
-
-map-mono : ∀ {a b} {A : Set a} {B : Set b} (f : A → B) {xs ys} →
-           xs ⊆ ys → List.map f xs ⊆ List.map f ys
-map-mono f xs⊆ys =
-  _⟨$⟩_ (Inverse.to map-∈↔) ∘
-  Prod.map id (Prod.map xs⊆ys id) ∘
-  _⟨$⟩_ (Inverse.from map-∈↔)
-
-_++-mono_ : ∀ {a} {A : Set a} {xs₁ xs₂ ys₁ ys₂ : List A} →
-            xs₁ ⊆ ys₁ → xs₂ ⊆ ys₂ → xs₁ ++ xs₂ ⊆ ys₁ ++ ys₂
-_++-mono_ xs₁⊆ys₁ xs₂⊆ys₂ =
-  _⟨$⟩_ (Inverse.to ++↔) ∘
-  Sum.map xs₁⊆ys₁ xs₂⊆ys₂ ∘
-  _⟨$⟩_ (Inverse.from ++↔)
-
-concat-mono : ∀ {a} {A : Set a} {xss yss : List (List A)} →
-              xss ⊆ yss → concat xss ⊆ concat yss
-concat-mono {a} xss⊆yss =
-  _⟨$⟩_ (Inverse.to $ concat-∈↔ {a = a}) ∘
-  Prod.map id (Prod.map id xss⊆yss) ∘
-  _⟨$⟩_ (Inverse.from $ concat-∈↔ {a = a})
-
->>=-mono : ∀ {ℓ} {A B : Set ℓ} (f g : A → List B) {xs ys} →
-           xs ⊆ ys → (∀ {x} → f x ⊆ g x) →
-           (xs >>= f) ⊆ (ys >>= g)
->>=-mono {ℓ} f g xs⊆ys f⊆g =
-  _⟨$⟩_ (Inverse.to $ >>=-∈↔ {ℓ = ℓ}) ∘
-  Prod.map id (Prod.map xs⊆ys f⊆g) ∘
-  _⟨$⟩_ (Inverse.from $ >>=-∈↔ {ℓ = ℓ})
-
-_⊛-mono_ : ∀ {ℓ} {A B : Set ℓ}
-             {fs gs : List (A → B)} {xs ys : List A} →
-           fs ⊆ gs → xs ⊆ ys → (fs ⊛ xs) ⊆ (gs ⊛ ys)
-_⊛-mono_ {fs = fs} {gs} fs⊆gs xs⊆ys =
-  _⟨$⟩_ (Inverse.to $ ⊛-∈↔ gs) ∘
-  Prod.map id (Prod.map id (Prod.map fs⊆gs (Prod.map xs⊆ys id))) ∘
-  _⟨$⟩_ (Inverse.from $ ⊛-∈↔ fs)
-
-_⊗-mono_ : {A B : Set} {xs₁ ys₁ : List A} {xs₂ ys₂ : List B} →
-           xs₁ ⊆ ys₁ → xs₂ ⊆ ys₂ → (xs₁ ⊗ xs₂) ⊆ (ys₁ ⊗ ys₂)
-xs₁⊆ys₁ ⊗-mono xs₂⊆ys₂ =
-  _⟨$⟩_ (Inverse.to ⊗-∈↔) ∘
-  Prod.map xs₁⊆ys₁ xs₂⊆ys₂ ∘
-  _⟨$⟩_ (Inverse.from ⊗-∈↔)
-
-any-mono : ∀ {a} {A : Set a} (p : A → Bool) →
-           ∀ {xs ys} → xs ⊆ ys → T (any p xs) → T (any p ys)
-any-mono {a} p xs⊆ys =
-  _⟨$⟩_ (Equivalence.to $ any⇔ {a = a}) ∘
-  mono xs⊆ys ∘
-  _⟨$⟩_ (Equivalence.from $ any⇔ {a = a})
-
-map-with-∈-mono :
-  ∀ {a b} {A : Set a} {B : Set b}
-    {xs : List A} {f : ∀ {x} → x ∈ xs → B}
-    {ys : List A} {g : ∀ {x} → x ∈ ys → B}
-  (xs⊆ys : xs ⊆ ys) → (∀ {x} → f {x} ≗ g ∘ xs⊆ys) →
-  map-with-∈ xs f ⊆ map-with-∈ ys g
-map-with-∈-mono {f = f} {g = g} xs⊆ys f≈g {x} =
-  _⟨$⟩_ (Inverse.to map-with-∈↔) ∘
-  Prod.map id (Prod.map xs⊆ys (λ {x∈xs} x≡fx∈xs → begin
-    x               ≡⟨ x≡fx∈xs ⟩
-    f x∈xs          ≡⟨ f≈g x∈xs ⟩
-    g (xs⊆ys x∈xs)  ∎)) ∘
-  _⟨$⟩_ (Inverse.from map-with-∈↔)
-  where open P.≡-Reasoning
-
--- Other properties.
-
-filter-⊆ : ∀ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) →
-             ∀ xs → filter P? xs ⊆ xs
-filter-⊆ _ []       = λ ()
-filter-⊆ P? (x ∷ xs) with P? x | filter-⊆ P? xs
-... | no  _ | hyp = there ∘ hyp
-... | yes _ | hyp =
-  λ { (here  eq)      → here eq
-    ; (there ∈filter) → there (hyp ∈filter)
-    }
-
-------------------------------------------------------------------------
 -- Other properties
 
 -- Only a finite number of distinct elements can be members of a
 -- given list.
 
-finite : ∀ {a} {A : Set a}
-         (f : Inj.Injection (P.setoid ℕ) (P.setoid A)) →
+finite : ∀ {a} {A : Set a} (f : ℕ ↣ A) →
          ∀ xs → ¬ (∀ i → Inj.Injection.to f ⟨$⟩ i ∈ xs)
 finite         inj []       ∈[]   with ∈[] zero
 ... | ()
@@ -300,13 +208,3 @@ boolFilter-∈ p (x ∷ xs) (here refl) px≡true rewrite px≡true = here refl
 boolFilter-∈ p (y ∷ xs) (there pxs) px≡true with p y
 ... | true  = there (boolFilter-∈ p xs pxs px≡true)
 ... | false =        boolFilter-∈ p xs pxs px≡true
-
-boolFilter-⊆ : ∀ {a} {A : Set a} (p : A → Bool) →
-           (xs : List A) → boolFilter p xs ⊆ xs
-boolFilter-⊆ _ []       = λ ()
-boolFilter-⊆ p (x ∷ xs) with p x | boolFilter-⊆ p xs
-... | false | hyp = there ∘ hyp
-... | true  | hyp =
-  λ { (here  eq)      → here eq
-    ; (there ∈boolFilter) → there (hyp ∈boolFilter)
-    }

@@ -8,24 +8,23 @@ open import Data.List
 open import Data.List.Any as Any using (here; there)
 open import Data.List.Any.Properties
 import Data.List.Membership.Setoid as Membership
-open import Data.List.Relation.Pointwise as Pointwise
-  using (Pointwise)
 import Data.List.Relation.Equality.Setoid as Equality
 open import Data.Product using (∃; _×_; _,_)
 open import Function using (flip)
 open import Relation.Binary
-open import Relation.Binary.InducedPreorders using (InducedPreorder₂)
 
 module Data.List.Membership.Setoid.Properties where
 
-module SingleSetoid {c ℓ} (S : Setoid c ℓ) where
+------------------------------------------------------------------------
+-- Equality properties
+
+module _ {c ℓ} (S : Setoid c ℓ) where
 
   open Setoid S
   open Equality S
   open import Data.List.Membership.Setoid S
 
-  -- Equality is respected by the predicate which is used to define
-  -- _∈_.
+  -- Equality is respected by the predicate which is used to define _∈_.
 
   ∈-resp-≈ : ∀ {x} → (x ≈_) Respects _≈_
   ∈-resp-≈ = flip trans
@@ -35,30 +34,13 @@ module SingleSetoid {c ℓ} (S : Setoid c ℓ) where
   ∈-resp-≋ : ∀ {x} → (x ∈_) Respects _≋_
   ∈-resp-≋ = lift-resp ∈-resp-≈
 
-  -- _⊆_ is a preorder.
+------------------------------------------------------------------------
+-- map
 
-  ⊆-preorder : Preorder _ _ _
-  ⊆-preorder = InducedPreorder₂ ≋-setoid _∈_ ∈-resp-≋
-
-  module ⊆-Reasoning where
-    import Relation.Binary.PreorderReasoning as PreR
-    open PreR ⊆-preorder public
-      renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
-
-    infix 1 _∈⟨_⟩_
-
-    _∈⟨_⟩_ : ∀ x {xs ys} → x ∈ xs → xs IsRelatedTo ys → x ∈ ys
-    x ∈⟨ x∈xs ⟩ xs⊆ys = (begin xs⊆ys) x∈xs
-
-open SingleSetoid public
-
-
-module DoubleSetoid {c₁ c₂ ℓ₁ ℓ₂}
-  (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) where
+module _ {c₁ c₂ ℓ₁ ℓ₂} (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) where
 
   open Setoid S₁ renaming (Carrier to A₁; _≈_ to _≈₁_; refl to refl₁)
   open Setoid S₂ renaming (Carrier to A₂; _≈_ to _≈₂_)
-
   open Membership S₁ using (find) renaming (_∈_ to _∈₁_)
   open Membership S₂ using () renaming (_∈_ to _∈₂_)
 
@@ -69,5 +51,3 @@ module DoubleSetoid {c₁ c₂ ℓ₁ ℓ₂}
   ∈-map⁻ : ∀ {y xs f} → y ∈₂ map f xs →
            ∃ λ x → x ∈₁ xs × y ≈₂ f x
   ∈-map⁻ x∈map = find (map⁻ x∈map)
-
-open DoubleSetoid public

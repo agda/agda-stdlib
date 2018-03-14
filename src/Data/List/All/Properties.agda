@@ -15,6 +15,7 @@ open import Data.List.Membership.Propositional
 open import Data.List.All as All using (All; []; _∷_)
 open import Data.List.Any using (Any; here; there)
 open import Data.List.Relation.Pointwise using (Pointwise; []; _∷_)
+open import Data.List.Relation.Sublist.Propositional using (_⊆_)
 open import Data.Maybe as Maybe using (Maybe; just; nothing)
 open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
@@ -28,7 +29,8 @@ open import Relation.Nullary
 open import Relation.Unary
   using (Decidable; Universal) renaming (_⊆_ to _⋐_)
 
------------------------------------------------------------------------- Basic properties of All
+----------------------------------------------------------------------
+-- Basic properties of All
 
 module _ {a p} {A : Set a} {P : A → Set p} where
 
@@ -258,7 +260,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ------------------------------------------------------------------------
 -- tabulate
 
-module _ {a p} {A : Set a} {P : A → Set p} where
+module _ {a p} {A : Set a} {P : A → Set p}  where
 
   tabulate⁺ : ∀ {n} {f : Fin n → A} →
               (∀ i → P (f i)) → All P (tabulate f)
