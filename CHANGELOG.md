@@ -8,6 +8,9 @@ Important changes since 0.15:
 Non-backwards compatible changes
 --------------------------------
 
+* `Relation.Binary.Consequences` no longer exports `Total`. The standard way of accessing it
+  through `Relation.Binary` remains unchanged.
+
 Deprecated features
 -------------------
 
@@ -17,8 +20,8 @@ Removed features
 Backwards compatible changes
 ----------------------------
 
-* The module `Algebra.Structures` can now be parameterised by equality in the same way 
-  as `Algebra.FunctionProperties`. The structures within also now export a greater selection 
+* The module `Algebra.Structures` can now be parameterised by equality in the same way
+  as `Algebra.FunctionProperties`. The structures within also now export a greater selection
   of "left" and "right" properties. For example (where applicable):
   ```agda
   identityˡ : LeftIdentity ε _∙_
