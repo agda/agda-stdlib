@@ -24,6 +24,7 @@ open import Data.Nat using (zero; suc; _<_; z≤n; s≤s)
 open import Data.Maybe as Maybe using (Maybe; just; nothing)
 open import Data.Product as Prod
   using (_×_; _,_; ∃; ∃₂; proj₁; proj₂; uncurry′)
+open import Data.Product.Properties
 open import Data.Product.Relation.Pointwise.NonDependent
   using (_×-cong_)
 import Data.Product.Relation.Pointwise.Dependent as Σ
@@ -39,21 +40,21 @@ open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; inspect)
 open import Relation.Unary
   using (Pred; _⟨×⟩_; _⟨→⟩_) renaming (_⊆_ to _⋐_)
-open Related.EquationalReasoning
+--open Related.EquationalReasoning
 
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
 
 ------------------------------------------------------------------------
--- If a predicate P respects the underlying equality then Any P
--- respects the list equality.
+-- Equality properties
 
-lift-resp : ∀ {a p ℓ} {A : Set a} {P : A → Set p} {_≈_ : Rel A ℓ} →
-            P Respects _≈_ → (Any P) Respects (Pointwise _≈_)
-lift-resp resp []            ()
-lift-resp resp (x≈y ∷ xs≈ys) (here px)   = here (resp x≈y px)
-lift-resp resp (x≈y ∷ xs≈ys) (there pxs) =
-  there (lift-resp resp xs≈ys pxs)
+module _ {a p ℓ} {A : Set a} {P : A → Set p} {_≈_ : Rel A ℓ} where
+
+  lift-resp : P Respects _≈_ → (Any P) Respects (Pointwise _≈_)
+  lift-resp resp []            ()
+  lift-resp resp (x≈y ∷ xs≈ys) (here px)   = here (resp x≈y px)
+  lift-resp resp (x≈y ∷ xs≈ys) (there pxs) =
+    there (lift-resp resp xs≈ys pxs)
 
 ------------------------------------------------------------------------
 -- Some lemmas related to map, find and lose
@@ -73,75 +74,22 @@ map-∘ : ∀ {a p q r}
 map-∘ f g (here  p) = refl
 map-∘ f g (there p) = P.cong there $ map-∘ f g p
 
--- Lemmas relating map and find.
-
-map∘find : ∀ {a p} {A : Set a} {P : A → Set p} {xs}
-           (p : Any P xs) → let p′ = find p in
-           {f : _≡_ (proj₁ p′) ⋐ P} →
-           f refl ≡ proj₂ (proj₂ p′) →
-           Any.map f (proj₁ (proj₂ p′)) ≡ p
-map∘find (here  p) hyp = P.cong here  hyp
-map∘find (there p) hyp = P.cong there (map∘find p hyp)
-
-find∘map : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q}
-           {xs : List A} (p : Any P xs) (f : P ⋐ Q) →
-           find (Any.map f p) ≡ Prod.map id (Prod.map id f) (find p)
-find∘map (here  p) f = refl
-find∘map (there p) f rewrite find∘map p f = refl
-
--- find satisfies a simple equality when the predicate is a
--- propositional equality.
-
-find-∈ : ∀ {a} {A : Set a} {x : A} {xs : List A} (x∈xs : x ∈ xs) →
-         find x∈xs ≡ (x , x∈xs , refl)
-find-∈ (here refl)  = refl
-find-∈ (there x∈xs) rewrite find-∈ x∈xs = refl
-
--- find and lose are inverses (more or less).
-
-lose∘find : ∀ {a p} {A : Set a} {P : A → Set p} {xs : List A}
-            (p : Any P xs) →
-            uncurry′ lose (proj₂ (find p)) ≡ p
-lose∘find p = map∘find p P.refl
-
-find∘lose : ∀ {a p} {A : Set a} (P : A → Set p) {x xs}
-            (x∈xs : x ∈ xs) (pp : P x) →
-            find {P = P} (lose x∈xs pp) ≡ (x , x∈xs , pp)
-find∘lose P x∈xs p
-  rewrite find∘map x∈xs (flip (P.subst P) p)
-        | find-∈ x∈xs
-        = refl
-
--- Any can be expressed using _∈_.
-
-∃∈-Any : ∀ {a p} {A : Set a} {P : A → Set p} {xs} →
-         (∃ λ x → x ∈ xs × P x) → Any P xs
-∃∈-Any = uncurry′ lose ∘ proj₂
-
-Any↔ : ∀ {a p} {A : Set a} {P : A → Set p} {xs} →
-       (∃ λ x → x ∈ xs × P x) ↔ Any P xs
-Any↔ {P = P} {xs} = record
-  { to         = P.→-to-⟶ ∃∈-Any
-  ; from       = P.→-to-⟶ (find {P = P})
-  ; inverse-of = record
-      { left-inverse-of  = λ p →
-          find∘lose P (proj₁ (proj₂ p)) (proj₂ (proj₂ p))
-      ; right-inverse-of = lose∘find
-      }
-  }
-
 -- Any is a congruence
 
-Any-cong : ∀ {k ℓ} {A : Set ℓ} {P₁ P₂ : A → Set ℓ} {xs₁ xs₂ : List A} →
-           (∀ x → Related k (P₁ x) (P₂ x)) →
-           Preorder._∼_ (Related.InducedPreorder₂ k {A = A} _∈_) xs₁ xs₂ →
-           Related k (Any P₁ xs₁) (Any P₂ xs₂)
-Any-cong {P₁ = P₁} {P₂} {xs₁} {xs₂} P₁↔P₂ xs₁≈xs₂ =
+module _ {k ℓ} {A : Set ℓ} {P Q : A → Set ℓ} where
+
+  Any-cong : ∀  {xs ys : List A} →
+             (∀ x → Related k (P x) (Q x)) →
+             Preorder._∼_ (Related.InducedPreorder₂ k {A = A} _∈_) xs ys →
+             Related k (Any P xs) (Any Q ys)
+  Any-cong {xs} {ys} P↔Q xs≈ys = Related.↔⇒ {!!}
+{-
   Any P₁ xs₁                ↔⟨ sym (Any↔ {P = P₁}) ⟩
   (∃ λ x → x ∈ xs₁ × P₁ x)  ∼⟨ Σ.cong Inv.id (xs₁≈xs₂ ×-cong P₁↔P₂ _) ⟩
   (∃ λ x → x ∈ xs₂ × P₂ x)  ↔⟨ Any↔ {P = P₂} ⟩
   Any P₂ xs₂                ∎
-
+-}
+{-
 ------------------------------------------------------------------------
 -- Swapping
 
@@ -273,13 +221,34 @@ module _ {a b p q} {A : Set a} {B : Set b}
 
   Any-×⁺ : ∀ {xs ys} → Any P xs × Any Q ys →
            Any (λ x → Any (λ y → P x × Q y) ys) xs
-  Any-×⁺ (p , q) = Any.map (λ p → Any.map (λ q → (p , q)) q) p
-
+  Any-×⁺ (here  px  , here  qy)  = here (here (px , qy))
+  Any-×⁺ (there pxs , qys)       = there (Any-×⁺ (pxs , qys))
+  Any-×⁺ (here  px  , there qys) =
+    Any.map there (Any-×⁺ (here px , qys))
+  
   Any-×⁻ : ∀ {xs ys} → Any (λ x → Any (λ y → P x × Q y) ys) xs →
            Any P xs × Any Q ys
-  Any-×⁻ pq with Prod.map id (Prod.map id find) (find pq)
-  ... | (x , x∈xs , y , y∈ys , p , q) = (lose x∈xs p , lose y∈ys q)
+  Any-×⁻ (here (here  (px , qx))) = here px , here qx
+  Any-×⁻ (there pq)               = Prod.map there id (Any-×⁻ pq)
+  Any-×⁻ (here (there pq))        =
+    Prod.map id there (Any-×⁻ (here pq))
 
+  Any-×⁻-there : ∀ {y xs ys}
+                 (pxys : Any (λ x → Any (λ y → P x × Q y) ys) xs) →
+                 Any-×⁻ (Any.map (there {x = y}) pxys) ≡
+                   Prod.map id there (Any-×⁻ pxys)
+  Any-×⁻-there (here  v) = refl
+  Any-×⁻-there (there v) with Any-×⁻-there v
+  ... | rec = P.cong₂ _,_
+    (P.cong there (proj₁-injective rec)) (proj₂-injective rec)
+
+  Any-×⁺-there : ∀ {x xs ys} (pxys : Any P xs × Any Q ys) →
+                 Any-×⁺ (Prod.map id (there {x = x}) pxys) ≡
+                   Any.map there (Any-×⁺ pxys)
+  Any-×⁺-there (here px   , pys) = refl
+  Any-×⁺-there (there pxs , pys) =
+    P.cong there (Any-×⁺-there (pxs , pys))
+  
   ×↔ : ∀ {xs ys} →
        (Any P xs × Any Q ys) ↔ Any (λ x → Any (λ y → P x × Q y) ys) xs
   ×↔ {xs} {ys} = record
@@ -291,36 +260,30 @@ module _ {a b p q} {A : Set a} {B : Set b}
       }
     }
     where
-    from∘to : ∀ pq → Any-×⁻ (Any-×⁺ pq) ≡ pq
-    from∘to (p , q)
-      rewrite find∘map {Q = λ x → Any (λ y → P x × Q y) ys}
-                       p (λ p → Any.map (λ q → (p , q)) q)
-              | find∘map {Q = λ y → P (proj₁ (find p)) × Q y}
-                         q (λ q → proj₂ (proj₂ (find p)) , q)
-              | lose∘find p
-            | lose∘find q
-            = refl
-
-    to∘from : ∀ pq → Any-×⁺ (Any-×⁻ pq) ≡ pq
-    to∘from pq
-      with find pq
-        | (λ (f : (proj₁ (find pq) ≡_) ⋐ _) → map∘find pq {f})
-    ... | (x , x∈xs , pq′) | lem₁
-      with find pq′
-        | (λ (f : (proj₁ (find pq′) ≡_) ⋐ _) → map∘find pq′ {f})
-    ... | (y , y∈ys , p , q) | lem₂
-      rewrite P.sym $ map-∘ {R = λ x → Any (λ y → P x × Q y) ys}
-                            (λ p → Any.map (λ q → p , q) (lose y∈ys q))
-                            (λ y → P.subst P y p)
-                            x∈xs
-              = lem₁ _ helper
-      where
-      helper : Any.map (λ q → p , q) (lose y∈ys q) ≡ pq′
-      helper rewrite P.sym $ map-∘ {R = λ y → P x × Q y}
-                                   (λ q → p , q)
-                                   (λ y → P.subst Q y q)
-                                   y∈ys
-             = lem₂ _ refl
+    from∘to : ∀ {xs ys} → (pq : Any P xs × Any Q ys) →
+              Any-×⁻ (Any-×⁺ pq) ≡ pq
+    from∘to (here  px  , here  qy)  = refl
+    from∘to (there pxs , qys) with from∘to (pxs , qys)
+    ... | ×⁻×⁺≡pq = P.cong₂ _,_
+      (P.cong there (proj₁-injective ×⁻×⁺≡pq))
+      (proj₂-injective ×⁻×⁺≡pq)
+    from∘to {ys = y ∷ ys} (here px , there qys) with from∘to (here px , qys)
+    ... | rec =
+      P.trans (Any-×⁻-there (Any-×⁺ (here px , qys)))
+        (P.cong₂ _,_ (proj₁-injective rec)
+          (P.cong there (proj₂-injective {B = λ _ → Any Q ys} rec)))
+    
+    to∘from : ∀ {xs ys} → (pq : Any (λ x → Any (λ y → P x × Q y) ys) xs) →
+              Any-×⁺ (Any-×⁻ pq) ≡ pq
+    to∘from (here (here (px , qx))) = refl
+    to∘from (here (there pq))       = P.trans
+      (Any-×⁺-there (Any-×⁻ (here pq)))
+      (P.cong (Any.map there) (to∘from (here pq)))
+    to∘from (there (here pq))  = P.cong there (P.trans
+      (P.cong Any-×⁺ (proj-injective (Any-×⁻ (here pq))))
+      (to∘from (here pq)))
+    to∘from (there (there pq)) = P.cong (there ∘ there) (P.trans
+      (P.cong Any-×⁺ (proj-injective (Any-×⁻ pq))) (to∘from pq))
 
 ------------------------------------------------------------------------
 -- Invertible introduction (⁺) and elimination (⁻) rules for various
@@ -672,3 +635,4 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   (Any P xs × Any Q ys)                    ↔⟨ ×↔ ⟩
   Any (λ x → Any (λ y → P x × Q y) ys) xs  ↔⟨ ⊗↔ ⟩
   Any (P ⟨×⟩ Q) (xs ⊗ ys)                  ∎
+-}
