@@ -11,11 +11,44 @@ Non-backwards compatible changes
 Deprecated features
 -------------------
 
+The following renaming has occurred as part of a drive to improve consistency across
+the library. The old names still exist and therefore all existing code should still
+work, however they have been deprecated and use of the new names is encouraged. Although not
+anticipated any time soon, they may eventually be removed in some future release of the library.
+
+* In `Relation.Binary.NonStrictToStrict`:
+  ```agda
+  irrefl         ↦ <-irrefl
+  trans          ↦ <-trans
+  antisym⟶asym ↦ <-asym
+  decidable      ↦ <-decidable
+  trichotomous   ↦ <-trichotomous
+
+  isPartialOrder⟶isStrictPartialOrder ↦ <-isStrictPartialOrder
+  isTotalOrder⟶isStrictTotalOrder     ↦ <-isStrictTotalOrder₁
+  isDecTotalOrder⟶isStrictTotalOrder  ↦ <-isStrictTotalOrder₂
+  ```
+
 Removed features
 ----------------
 
 Backwards compatible changes
 ----------------------------
+
+* Added new types to `Relation.Binary`:
+  ```agda
+  P Respectsʳ _∼_ = ∀ {x} → (P x)      Respects _∼_
+  P Respectsˡ _∼_ = ∀ {y} → (flip P y) Respects _∼_
+  ```
+
+* Added new proofs to `Relation.Binary.NonStrictToStrict`:
+  ```agda
+  <-respˡ-≈ : Transitive _≈_ → _≤_ Respectsˡ _≈_ → _<_ Respectsˡ _≈_
+  <-respʳ-≈ : Symmetric _≈_ → Transitive _≈_ → _≤_ Respectsʳ _≈_ → _<_ Respectsʳ _≈_
+
+  <≤-trans : Symmetric _≈_ → Transitive _≤_ → Antisymmetric _≈_ _≤_ → _≤_ Respectsʳ _≈_ → Trans _<_ _≤_ _<_
+  ≤<-trans : Transitive _≤_ → Antisymmetric _≈_ _≤_ → _≤_ Respectsˡ _≈_ → Trans _≤_ _<_ _<_
+  ```
 
 Version 0.15
 ============

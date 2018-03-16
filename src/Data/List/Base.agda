@@ -266,6 +266,8 @@ initLast (x ∷ .(ys ∷ʳ y)) | ys ∷ʳ' y = (x ∷ ys) ∷ʳ' y
 ------------------------------------------------------------------------
 -- DEPRECATED
 ------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
 gfilter = mapMaybe
 
