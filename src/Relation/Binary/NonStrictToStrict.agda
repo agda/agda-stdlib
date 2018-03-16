@@ -103,7 +103,7 @@ x < y = (x ≤ y) × ¬ (x ≈ y)
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
-{-
+
 irrefl         = <-irrefl
 trans          = <-trans
 antisym⟶asym = <-asym
@@ -113,4 +113,3 @@ trichotomous   = <-trichotomous
 isPartialOrder⟶isStrictPartialOrder = <-isStrictPartialOrder
 isTotalOrder⟶isStrictTotalOrder     = <-isStrictTotalOrder₁
 isDecTotalOrder⟶isStrictTotalOrder  = <-isStrictTotalOrder₂
--}
