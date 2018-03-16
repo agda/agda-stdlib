@@ -4,18 +4,14 @@
 -- Properties of functions, such as associativity and commutativity
 ------------------------------------------------------------------------
 
--- These properties can (for instance) be used to define algebraic
--- structures.
-
 open import Level
 open import Relation.Binary
 open import Data.Sum
 
--- The properties are specified using the following relation as
--- "equality".
+-- The properties are parameterised by the following "equality" relation
 
 module Algebra.FunctionProperties
-         {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
+  {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
 
 open import Data.Product
 

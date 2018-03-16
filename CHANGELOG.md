@@ -17,6 +17,42 @@ Removed features
 Backwards compatible changes
 ----------------------------
 
+* The module `Algebra.Structures` can now be parameterised by equality in the same way 
+  as `Algebra.FunctionProperties`. The structures within also now export a greater selection 
+  of "left" and "right" properties. For example (where applicable):
+  ```agda
+  identityˡ : LeftIdentity ε _∙_
+  identityʳ : RightIdentity ε _∙_
+  inverseˡ  : LeftInverse ε _⁻¹ _∙_
+  inverseʳ  : RightInverse ε _⁻¹ _∙_
+  zeroˡ     : LeftZero 0# _*_
+  zeroʳ     : RightZero 0# _*_
+  distribˡ  : _*_ DistributesOverˡ _+_
+  distribʳ  : _*_ DistributesOverʳ _+_
+  ```
+
+* Added new proofs to `Data.Bool.Properties`:
+  ```agda
+  ∧-semigroup                     : Semigroup _ _
+  ∧-commutativeMonoid             : CommutativeMonoid _
+  ∧-idempotentCommutativeMonoid   : IdempotentCommutativeMonoid _ _
+  ∧-isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid _∧_ true
+
+  ∨-semigroup                     : Semigroup _ _
+  ∨-commutativeMonoid             : CommutativeMonoid _ _
+  ∨-idempotentCommutativeMonoid   : IdempotentCommutativeMonoid _ _
+  ∨-isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid _∨_ false
+
+  ∨-∧-lattice                     : Lattice _ _
+  ∨-∧-distributiveLattice         : DistributiveLattice _ _
+  ```
+
+* Added new proofs to `Data.Nat.Properties`:
+  ```agda
+  +-0-isMonoid   : IsMonoid _+_ 0
+  *-1-isMonoid   : IsMonoid _*_ 1
+  ```
+
 Version 0.15
 ============
 

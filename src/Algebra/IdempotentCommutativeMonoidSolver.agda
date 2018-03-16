@@ -13,7 +13,7 @@ open import Data.Fin using (Fin; zero; suc)
 open import Data.Maybe as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_)
-open import Data.Product using (_×_; proj₁; proj₂; uncurry)
+open import Data.Product using (_×_; uncurry)
 open import Data.Vec using (Vec; []; _∷_; lookup; replicate)
 
 open import Function using (_∘_)
@@ -107,7 +107,7 @@ empty-correct (a ∷ ρ) = empty-correct ρ
 sg-correct : ∀{n} (x : Fin n) (ρ : Env n) →  ⟦ sg x ⟧⇓ ρ ≈ lookup x ρ
 sg-correct zero (x ∷ ρ) = begin
     x ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-cong refl (empty-correct ρ) ⟩
-    x ∙ ε              ≈⟨ proj₂ identity _ ⟩
+    x ∙ ε              ≈⟨ identityʳ _ ⟩
     x                  ∎
 sg-correct (suc x) (m ∷ ρ) = sg-correct x ρ
 
@@ -132,7 +132,7 @@ distr a b c = begin
 
 comp-correct : ∀ {n} (v w : Normal n) (ρ : Env n) →
               ⟦ v • w ⟧⇓ ρ ≈ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ)
-comp-correct [] [] ρ = sym (proj₁ identity _)
+comp-correct [] [] ρ = sym (identityˡ _)
 comp-correct (true ∷ v) (true ∷ w) (a ∷ ρ) =
   trans (∙-cong refl (comp-correct v w ρ)) (distr _ _ _)
 comp-correct (true ∷ v) (false ∷ w) (a ∷ ρ) =

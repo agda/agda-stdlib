@@ -11,14 +11,11 @@
 module Data.Fin where
 
 open import Data.Empty using (⊥-elim)
-open import Data.Nat as Nat
+open import Data.Nat as ℕ
   using (ℕ; zero; suc; z≤n; s≤s)
-  renaming ( _+_ to _N+_; _∸_ to _N∸_
-           ; _≤_ to _N≤_; _≥_ to _N≥_; _<_ to _N<_; _≤?_ to _N≤?_)
-open import Function
-import Level
-open import Relation.Nullary
-open import Relation.Nullary.Decidable
+open import Function using (_∘_; _on_)
+open import Level using () renaming (zero to ℓ₀)
+open import Relation.Nullary.Decidable using (True; toWitness)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; refl; cong)
@@ -56,33 +53,33 @@ fromℕ (suc n) = suc (fromℕ n)
 
 -- fromℕ≤ {m} _ = "m".
 
-fromℕ≤ : ∀ {m n} → m N< n → Fin n
-fromℕ≤ (Nat.s≤s Nat.z≤n)       = zero
-fromℕ≤ (Nat.s≤s (Nat.s≤s m≤n)) = suc (fromℕ≤ (Nat.s≤s m≤n))
+fromℕ≤ : ∀ {m n} → m ℕ.< n → Fin n
+fromℕ≤ (s≤s z≤n)       = zero
+fromℕ≤ (s≤s (s≤s m≤n)) = suc (fromℕ≤ (s≤s m≤n))
 
 -- fromℕ≤″ m _ = "m".
 
-fromℕ≤″ : ∀ m {n} → m Nat.<″ n → Fin n
-fromℕ≤″ zero    (Nat.less-than-or-equal refl) = zero
-fromℕ≤″ (suc m) (Nat.less-than-or-equal refl) =
-  suc (fromℕ≤″ m (Nat.less-than-or-equal refl))
+fromℕ≤″ : ∀ m {n} → m ℕ.<″ n → Fin n
+fromℕ≤″ zero    (ℕ.less-than-or-equal refl) = zero
+fromℕ≤″ (suc m) (ℕ.less-than-or-equal refl) =
+  suc (fromℕ≤″ m (ℕ.less-than-or-equal refl))
 
 -- # m = "m".
 
 infix 10 #_
 
-#_ : ∀ m {n} {m<n : True (suc m N≤? n)} → Fin n
+#_ : ∀ m {n} {m<n : True (suc m ℕ.≤? n)} → Fin n
 #_ _ {m<n = m<n} = fromℕ≤ (toWitness m<n)
 
 -- raise m "n" = "m + n".
 
-raise : ∀ {m} n → Fin m → Fin (n N+ m)
+raise : ∀ {m} n → Fin m → Fin (n ℕ.+ m)
 raise zero    i = i
 raise (suc n) i = suc (raise n i)
 
 -- reduce≥ "m + n" _ = "n".
 
-reduce≥ : ∀ {m n} (i : Fin (m N+ n)) (i≥m : toℕ i N≥ m) → Fin n
+reduce≥ : ∀ {m n} (i : Fin (m ℕ.+ n)) (i≥m : toℕ i ℕ.≥ m) → Fin n
 reduce≥ {zero}  i       i≥m       = i
 reduce≥ {suc m} zero    ()
 reduce≥ {suc m} (suc i) (s≤s i≥m) = reduce≥ i i≥m
@@ -100,7 +97,7 @@ inject!             {i = zero}   ()
 inject! {n = suc _} {i = suc _}  zero    = zero
 inject! {n = suc _} {i = suc _}  (suc j) = suc (inject! j)
 
-inject+ : ∀ {m} n → Fin m → Fin (m N+ n)
+inject+ : ∀ {m} n → Fin m → Fin (m ℕ.+ n)
 inject+ n zero    = zero
 inject+ n (suc i) = suc (inject+ n i)
 
@@ -108,9 +105,9 @@ inject₁ : ∀ {m} → Fin m → Fin (suc m)
 inject₁ zero    = zero
 inject₁ (suc i) = suc (inject₁ i)
 
-inject≤ : ∀ {m n} → Fin m → m N≤ n → Fin n
-inject≤ zero    (Nat.s≤s le) = zero
-inject≤ (suc i) (Nat.s≤s le) = suc (inject≤ i le)
+inject≤ : ∀ {m n} → Fin m → m ℕ.≤ n → Fin n
+inject≤ zero    (s≤s le) = zero
+inject≤ (suc i) (s≤s le) = suc (inject≤ i le)
 
 -- A strengthening injection into the minimal Fin fibre.
 strengthen : ∀ {n} (i : Fin n) → Fin′ (suc i)
@@ -140,7 +137,7 @@ fold′ {n = suc n} T f x (suc i)  =
 
 -- Lifts functions.
 
-lift : ∀ {m n} k → (Fin m → Fin n) → Fin (k N+ m) → Fin (k N+ n)
+lift : ∀ {m n} k → (Fin m → Fin n) → Fin (k ℕ.+ m) → Fin (k ℕ.+ n)
 lift zero    f i       = f i
 lift (suc k) f zero    = zero
 lift (suc k) f (suc i) = suc (lift k f i)
@@ -149,7 +146,7 @@ lift (suc k) f (suc i) = suc (lift k f i)
 
 infixl 6 _+_
 
-_+_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (toℕ i N+ n)
+_+_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (toℕ i ℕ.+ n)
 zero  + j = j
 suc i + j = suc (i + j)
 
@@ -157,7 +154,7 @@ suc i + j = suc (i + j)
 
 infixl 6 _-_
 
-_-_ : ∀ {m} (i : Fin m) (j : Fin′ (suc i)) → Fin (m N∸ toℕ j)
+_-_ : ∀ {m} (i : Fin m) (j : Fin′ (suc i)) → Fin (m ℕ.∸ toℕ j)
 i     - zero   = i
 zero  - suc ()
 suc i - suc j  = i - j
@@ -166,7 +163,7 @@ suc i - suc j  = i - j
 
 infixl 6 _ℕ-_
 
-_ℕ-_ : (n : ℕ) (j : Fin (suc n)) → Fin (suc n N∸ toℕ j)
+_ℕ-_ : (n : ℕ) (j : Fin (suc n)) → Fin (suc n ℕ.∸ toℕ j)
 n     ℕ- zero   = fromℕ n
 zero  ℕ- suc ()
 suc n ℕ- suc i  = n ℕ- i
@@ -204,23 +201,22 @@ punchIn zero    j       = suc j
 punchIn (suc i) zero    = zero
 punchIn (suc i) (suc j) = suc (punchIn i j)
 
-
 ------------------------------------------------------------------------
 -- Order relations
 
 infix 4 _≤_ _<_
 
-_≤_ : ∀ {n} → Rel (Fin n) Level.zero
-_≤_ = _N≤_ on toℕ
+_≤_ : ∀ {n} → Rel (Fin n) ℓ₀
+_≤_ = ℕ._≤_ on toℕ
 
-_≤?_ : ∀ {n} → (a : Fin n) → (b : Fin n) → Dec (a ≤ b)
-a ≤? b = toℕ a N≤? toℕ b
-
-_<_ : ∀ {n} → Rel (Fin n) Level.zero
-_<_ = _N<_ on toℕ
+_<_ : ∀ {n} → Rel (Fin n) ℓ₀
+_<_ = ℕ._<_ on toℕ
 
 data _≺_ : ℕ → ℕ → Set where
   _≻toℕ_ : ∀ n (i : Fin n) → toℕ i ≺ n
+
+_≤?_ : ∀ {n} → Decidable (_≤_ {n})
+a ≤? b = toℕ a ℕ.≤? toℕ b
 
 -- An ordering view.
 
@@ -237,7 +233,8 @@ compare zero    (suc j) = less    (suc j) zero
 compare (suc i) zero    = greater (suc i) zero
 compare (suc i) (suc j) with compare i j
 compare (suc .(inject least)) (suc .greatest) | less    greatest least =
-                                                  less    (suc greatest) (suc least)
+  less    (suc greatest) (suc least)
 compare (suc .greatest) (suc .(inject least)) | greater greatest least =
-                                                  greater (suc greatest) (suc least)
-compare (suc .i)        (suc .i)              | equal i = equal (suc i)
+  greater (suc greatest) (suc least)
+compare (suc .i)        (suc .i)              | equal i =
+  equal (suc i)
