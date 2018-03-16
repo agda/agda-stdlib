@@ -53,6 +53,9 @@ Backwards compatible changes
   *-1-isMonoid   : IsMonoid _*_ 1
   ```
 
+* The types `Maximum` and `Minimum` are now exported by `Relation.Binary` as well 
+  as `Relation.Binary.Lattice`.
+
 Version 0.15
 ============
 

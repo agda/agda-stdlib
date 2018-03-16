@@ -114,6 +114,12 @@ Substitutive {A = A} _∼_ p = (P : A → Set p) → P Respects _∼_
 Decidable : ∀ {a b ℓ} {A : Set a} {B : Set b} → REL A B ℓ → Set _
 Decidable _∼_ = ∀ x y → Dec (x ∼ y)
 
+Maximum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
+Maximum _≤_ ⊤ = ∀ x → x ≤ ⊤
+
+Minimum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
+Minimum _≤_ = Maximum (flip _≤_)
+
 data Tri {a b c} (A : Set a) (B : Set b) (C : Set c) :
          Set (a ⊔ b ⊔ c) where
   tri< : ( a :   A) (¬b : ¬ B) (¬c : ¬ C) → Tri A B C
