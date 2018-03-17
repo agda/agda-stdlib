@@ -14,6 +14,17 @@ Non-backwards compatible changes
 Deprecated features
 -------------------
 
+* Closures of binary relations have been centralised as follows:
+  ```agda
+  Data.ReflexiveClosure              ↦ Relation.Binary.Closure.Reflexive
+  Relation.Binary.SymmetricClosure   ↦ Relation.Binary.Closure.Symmetric
+  Data.Plus                          ↦ Relation.Binary.Closure.Transitive
+  Data.Star                          ↦ Relation.Binary.Closure.ReflexiveTransitive
+  Data.Star.Properties               ↦ Relation.Binary.Closure.ReflexiveTransitive.Properties
+  Relation.Binary.EquivalenceClosure ↦ Relation.Binary.Closure.Equivalence
+  ```
+  The old files still exist and re-export the contents of the new modules.
+
 Removed features
 ----------------
 
