@@ -22,10 +22,10 @@ module _ {A B C : Set} {A→B : A → B} {B→C : B → C} where
 -- functions whilst tracking the types of the intermediate results.
 
   A→C : A → C
-  A→C a = a
-    ∶ A |> A→B
-    ∶ B |> B→C
-    ∶ C
+  A→C a =
+       a    ∶ A
+    |> A→B  ∶ B
+    |> B→C  ∶ C
 
 ------------------------------------------------------------------------
 -- A more concrete example
@@ -45,7 +45,7 @@ open import Agda.Builtin.Equality
 
 subpalindromes : String → List String
 subpalindromes str = let Chars = List Char in
-  str                                      ∶ String
+     str                                   ∶ String
   -- first generate the substrings
   |> toList                                ∶ Chars
   |> inits                                 ∶ List Chars
