@@ -11,7 +11,7 @@ open import Category.Monad
 open import Data.Bool.Base using (Bool; false; true)
 open import Data.Nat using (ℕ; zero; suc; _+_)
 open import Data.Product as Prod hiding (map)
-open import Data.Sum hiding (map)
+open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Function
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Level using (_⊔_)

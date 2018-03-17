@@ -9,18 +9,18 @@
 
 module Data.Product.Relation.Lex.Strict where
 
-open import Function
 open import Data.Product
-open import Data.Sum
+open import Data.Product.Relation.Pointwise.NonDependent as Pointwise
+  using (Pointwise)
+open import Data.Sum using (inj₁; inj₂; _-⊎-_; [_,_])
 open import Data.Empty
+open import Function
 open import Level
+open import Relation.Nullary
 open import Relation.Nullary.Product
 open import Relation.Nullary.Sum
 open import Relation.Binary
 open import Relation.Binary.Consequences
-open import Data.Product.Relation.Pointwise.NonDependent as Pointwise
-  using (Pointwise)
-open import Relation.Nullary
 
 module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
 

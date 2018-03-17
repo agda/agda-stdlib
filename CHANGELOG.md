@@ -11,6 +11,9 @@ Non-backwards compatible changes
 * `Relation.Binary.Consequences` no longer exports `Total`. The standard way of accessing it
   through `Relation.Binary` remains unchanged.
 
+* Added `flip : A ⊎ B → B ⊎ A` to `Data.Sum`. This may conflict with `flip` in `Data.Product`.
+  If so then you may need to qualify your imports either with `using` or `hiding`.
+
 Deprecated features
 -------------------
 
