@@ -64,6 +64,11 @@ Backwards compatible changes
   ∨-∧-distributiveLattice         : DistributiveLattice _ _
   ```
 
+* Added new function to `Data.List.All`:
+  ```agda
+  product : All P xs → All Q xs → All (P ∩ Q) xs
+  ```
+
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
   m+n≮m          : m + n ≮ m

@@ -6,14 +6,15 @@
 
 module Data.List.All where
 
-open import Data.List.Base as List hiding (map; tabulate; lookup; all)
+open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Any as Any using (here; there)
 open import Data.List.Any.Membership.Propositional using (_∈_)
+open import Data.Product using (_,_)
 open import Function
 open import Level
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
-open import Relation.Unary using (Decidable) renaming (_⊆_ to _⋐_)
+open import Relation.Unary using (Decidable; _∩_; _⊆_)
 open import Relation.Binary.PropositionalEquality
 
 -- All P xs means that all elements in xs satisfy P.
@@ -45,9 +46,14 @@ tabulate {xs = []}     hyp = []
 tabulate {xs = x ∷ xs} hyp = hyp (here refl) ∷ tabulate (hyp ∘ there)
 
 map : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} →
-      P ⋐ Q → All P ⋐ All Q
+      P ⊆ Q → All P ⊆ All Q
 map g []         = []
 map g (px ∷ pxs) = g px ∷ map g pxs
+
+product : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} →
+          ∀ {xs} → All P xs → All Q xs → All (P ∩ Q) xs
+product [] [] = []
+product (px ∷ pxs) (qx ∷ qxs) = (px , qx) ∷ product pxs qxs
 
 all : ∀ {a p} {A : Set a} {P : A → Set p} →
       Decidable P → Decidable (All P)
