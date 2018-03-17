@@ -45,6 +45,9 @@ Backwards compatible changes
   distribʳ  : _*_ DistributesOverʳ _+_
   ```
 
+* Added a new module `Function.Reasoning` for creating multi-stage function pipelines.
+  See README.Function.Reasoning for examples.
+
 * Added new proofs to `Data.Bool.Properties`:
   ```agda
   ∧-semigroup                     : Semigroup _ _

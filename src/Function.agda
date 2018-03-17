@@ -14,7 +14,7 @@ infixl 8 _ˢ_
 infixl 1 _on_
 infixl 1 _⟨_⟩_
 infixr 0 _-[_]-_ _$_ _$′_ _$!_ _$!′_
-infixl 0 _|>_ _|>′_ _∋_ ∋-syntax
+infixl 0 _|>_ _|>′_ _∋_
 
 ------------------------------------------------------------------------
 -- Types
@@ -116,12 +116,6 @@ f -[ _*_ ]- g = λ x y → f x y * g x y
 
 _∋_ : ∀ {a} (A : Set a) → A → A
 A ∋ x = x
-
--- We also provide a flipped version defined as syntactic sugar.
--- See e.g. README.FunctionalReasoning for a use case.
-
-∋-syntax = _∋_
-syntax ∋-syntax A a = a ∶ A
 
 -- Case expressions (to be used with pattern-matching lambdas, see
 -- README.Case).
