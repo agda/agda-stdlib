@@ -8,8 +8,14 @@ Important changes since 0.15:
 Non-backwards compatible changes
 --------------------------------
 
-* `Relation.Binary.Consequences` no longer exports `Total`. The standard way of accessing it
-  through `Relation.Binary` remains unchanged.
+* `Relation.Binary.Consequences` no longer exports `Total`. The standard way of
+  accessing it through `Relation.Binary` remains unchanged.
+
+* Added new module `Relation.Unary.Properties`. The following proofs have been moved
+  to the new module from `Relation.Unary`:
+  ```agda
+  ∅-Empty, ∁∅-Universal, U-Universal, ∁U-Empty, ∅-⊆, ⊆-U, ∁?
+  ```
 
 Deprecated features
 -------------------
@@ -65,6 +71,20 @@ Backwards compatible changes
   ```agda
   +-0-isMonoid   : IsMonoid _+_ 0
   *-1-isMonoid   : IsMonoid _*_ 1
+  ```
+
+* Added new proofs to `Relation.Unary.Properties`:
+  ```agda
+  ⊆-refl  : Reflexive _⊆_
+  ⊆-trans : Transitive _⊆_
+  ⊂-asym  : Asymmetric _⊂_
+
+  _∪?_ : Decidable P → Decidable Q → Decidable (P ∪ Q)
+  _∩?_ : Decidable P → Decidable Q → Decidable (P ∩ Q)
+  _×?_ : Decidable P → Decidable Q → Decidable (P ⟨×⟩ Q)
+  _⊙?_ : Decidable P → Decidable Q → Decidable (P ⟨⊙⟩ Q)
+  _⊎?_ : Decidable P → Decidable Q → Decidable (P ⟨⊎⟩ Q)
+  _~?  : Decidable P → Decidable (P ~)
   ```
 
 Version 0.15
