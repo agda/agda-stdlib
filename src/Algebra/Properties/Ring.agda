@@ -9,7 +9,6 @@ open import Algebra
 module Algebra.Properties.Ring {r₁ r₂} (R : Ring r₁ r₂) where
 
 import Algebra.Properties.AbelianGroup as AGP
-open import Data.Product
 open import Function
 import Relation.Binary.EqReasoning as EqR
 
@@ -28,24 +27,24 @@ open AGP +-abelianGroup public
 
 -‿*-distribˡ : ∀ x y → - x * y ≈ - (x * y)
 -‿*-distribˡ x y = begin
-  - x * y                        ≈⟨ sym $ proj₂ +-identity _ ⟩
-  - x * y + 0#                   ≈⟨ refl ⟨ +-cong ⟩ sym (proj₂ -‿inverse _) ⟩
+  - x * y                        ≈⟨ sym $ +-identityʳ _ ⟩
+  - x * y + 0#                   ≈⟨ refl ⟨ +-cong ⟩ sym (-‿inverseʳ _) ⟩
   - x * y + (x * y + - (x * y))  ≈⟨ sym $ +-assoc _ _ _  ⟩
-  - x * y + x * y + - (x * y)    ≈⟨ sym (proj₂ distrib _ _ _) ⟨ +-cong ⟩ refl ⟩
-  (- x + x) * y + - (x * y)      ≈⟨ (proj₁ -‿inverse _ ⟨ *-cong ⟩ refl)
+  - x * y + x * y + - (x * y)    ≈⟨ sym (distribʳ _ _ _) ⟨ +-cong ⟩ refl ⟩
+  (- x + x) * y + - (x * y)      ≈⟨ (-‿inverseˡ _ ⟨ *-cong ⟩ refl)
                                       ⟨ +-cong ⟩
                                     refl ⟩
-  0# * y + - (x * y)             ≈⟨ proj₁ zero _ ⟨ +-cong ⟩ refl ⟩
-  0# + - (x * y)                 ≈⟨ proj₁ +-identity _ ⟩
+  0# * y + - (x * y)             ≈⟨ zeroˡ _ ⟨ +-cong ⟩ refl ⟩
+  0# + - (x * y)                 ≈⟨ +-identityˡ _ ⟩
   - (x * y)                      ∎
 
 -‿*-distribʳ : ∀ x y → x * - y ≈ - (x * y)
 -‿*-distribʳ x y = begin
-  x * - y                        ≈⟨ sym $ proj₁ +-identity _ ⟩
-  0# + x * - y                   ≈⟨ sym (proj₁ -‿inverse _) ⟨ +-cong ⟩ refl ⟩
+  x * - y                        ≈⟨ sym $ +-identityˡ _ ⟩
+  0# + x * - y                   ≈⟨ sym (-‿inverseˡ _) ⟨ +-cong ⟩ refl ⟩
   - (x * y) + x * y + x * - y    ≈⟨ +-assoc _ _ _  ⟩
-  - (x * y) + (x * y + x * - y)  ≈⟨ refl ⟨ +-cong ⟩ sym (proj₁ distrib _ _ _)  ⟩
-  - (x * y) + x * (y + - y)      ≈⟨ refl ⟨ +-cong ⟩ (refl ⟨ *-cong ⟩ proj₂ -‿inverse _) ⟩
-  - (x * y) + x * 0#             ≈⟨ refl ⟨ +-cong ⟩ proj₂ zero _ ⟩
-  - (x * y) + 0#                 ≈⟨ proj₂ +-identity _ ⟩
+  - (x * y) + (x * y + x * - y)  ≈⟨ refl ⟨ +-cong ⟩ sym (distribˡ _ _ _)  ⟩
+  - (x * y) + x * (y + - y)      ≈⟨ refl ⟨ +-cong ⟩ (refl ⟨ *-cong ⟩ -‿inverseʳ _) ⟩
+  - (x * y) + x * 0#             ≈⟨ refl ⟨ +-cong ⟩ zeroʳ _ ⟩
+  - (x * y) + 0#                 ≈⟨ +-identityʳ _ ⟩
   - (x * y)                      ∎

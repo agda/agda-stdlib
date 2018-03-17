@@ -13,7 +13,7 @@ open import Data.Maybe as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Nat.GeneralisedArithmetic using (fold)
-open import Data.Product using (_×_; proj₁; proj₂; uncurry)
+open import Data.Product using (_×_; uncurry)
 open import Data.Vec using (Vec; []; _∷_; lookup; replicate)
 
 open import Function using (_∘_)
@@ -21,7 +21,7 @@ open import Function using (_∘_)
 import Relation.Binary.EqReasoning  as EqReasoning
 import Relation.Binary.Reflection   as Reflection
 import Relation.Nullary.Decidable   as Dec
-import Data.Vec.Relation.InductivePointwise as Pointwise
+import Data.Vec.Relation.Pointwise.Inductive as Pointwise
 
 open import Relation.Binary.PropositionalEquality as P using (_≡_; decSetoid)
 open import Relation.Nullary using (Dec)
@@ -106,7 +106,7 @@ empty-correct (a ∷ ρ) = empty-correct ρ
 sg-correct : ∀{n} (x : Fin n) (ρ : Env n) →  ⟦ sg x ⟧⇓ ρ ≈ lookup x ρ
 sg-correct zero (x ∷ ρ) = begin
     x ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-cong refl (empty-correct ρ) ⟩
-    x ∙ ε              ≈⟨ proj₂ identity _ ⟩
+    x ∙ ε              ≈⟨ identityʳ _ ⟩
     x                  ∎
 sg-correct (suc x) (m ∷ ρ) = sg-correct x ρ
 
@@ -114,7 +114,7 @@ sg-correct (suc x) (m ∷ ρ) = sg-correct x ρ
 
 comp-correct : ∀ {n} (v w : Normal n) (ρ : Env n) →
               ⟦ v • w ⟧⇓ ρ ≈ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ)
-comp-correct [] [] ρ =  sym (proj₁ identity _)
+comp-correct [] [] ρ =  sym (identityˡ _)
 comp-correct (l ∷ v) (m ∷ w) (a ∷ ρ) = lemma l m (comp-correct v w ρ)
   where
     flip12 : ∀ a b c → a ∙ (b ∙ c) ≈ b ∙ (a ∙ c)

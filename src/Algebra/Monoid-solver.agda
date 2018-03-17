@@ -10,14 +10,15 @@ module Algebra.Monoid-solver {m₁ m₂} (M : Monoid m₁ m₂) where
 
 open import Data.Fin
 import Data.Fin.Properties as Fin
-open import Data.List.Base
-import Data.List.Relation.Pointwise as Pointwise
+open import Data.List.Base hiding (lookup)
+import Data.List.Relation.Equality.DecPropositional as ListEq
 open import Data.Maybe as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product
 open import Data.Vec using (Vec; lookup)
 open import Function using (_∘_; _$_)
+open import Relation.Binary using (Decidable)
 import Relation.Binary.EqReasoning
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 import Relation.Binary.Reflection
@@ -79,7 +80,7 @@ normalise (e₁ ⊕ e₂) = normalise e₁ ++ normalise e₂
 homomorphic : ∀ {n} (nf₁ nf₂ : Normal n) (ρ : Env n) →
               ⟦ nf₁ ++ nf₂ ⟧⇓ ρ ≈ (⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ)
 homomorphic [] nf₂ ρ = begin
-  ⟦ nf₂ ⟧⇓ ρ      ≈⟨ sym $ proj₁ identity _ ⟩
+  ⟦ nf₂ ⟧⇓ ρ      ≈⟨ sym $ identityˡ _ ⟩
   ε ∙ ⟦ nf₂ ⟧⇓ ρ  ∎
 homomorphic (x ∷ nf₁) nf₂ ρ = begin
   lookup x ρ ∙ ⟦ nf₁ ++ nf₂ ⟧⇓ ρ          ≈⟨ ∙-cong refl (homomorphic nf₁ nf₂ ρ) ⟩
@@ -91,7 +92,7 @@ homomorphic (x ∷ nf₁) nf₂ ρ = begin
 normalise-correct :
   ∀ {n} (e : Expr n) (ρ : Env n) → ⟦ normalise e ⟧⇓ ρ ≈ ⟦ e ⟧ ρ
 normalise-correct (var x) ρ = begin
-  lookup x ρ ∙ ε  ≈⟨ proj₂ identity _ ⟩
+  lookup x ρ ∙ ε  ≈⟨ identityʳ _ ⟩
   lookup x ρ      ∎
 normalise-correct id ρ = begin
   ε  ∎
@@ -111,9 +112,9 @@ open module R = Relation.Binary.Reflection
 
 infix 5 _≟_
 
-_≟_ : ∀ {n} (nf₁ nf₂ : Normal n) → Dec (nf₁ ≡ nf₂)
-nf₁ ≟ nf₂ = Dec.map′ Rel≡⇒≡ ≡⇒Rel≡ (decidable Fin._≟_ nf₁ nf₂)
-  where open Pointwise
+_≟_ : ∀ {n} → Decidable {A = Normal n} _≡_
+nf₁ ≟ nf₂ = Dec.map′ ≋⇒≡ ≡⇒≋ (nf₁ ≋? nf₂)
+  where open ListEq Fin._≟_
 
 -- We can also give a sound, but not necessarily complete, procedure
 -- for determining if two expressions have the same semantics.

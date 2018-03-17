@@ -26,10 +26,11 @@ open import Data.List.Any as Any using (Any; here; there)
 open import Data.List.Any.Properties
 open import Data.List.Any.Membership.Propositional
 import Data.List.Any.Membership.Properties as Membershipₚ
+open import Data.List.Categorical using (monad)
 open import Data.Nat as Nat
 open import Data.Nat.Properties
 open import Data.Product as Prod
-import Data.Product.Relation.SigmaPointwise as Σ
+import Data.Product.Relation.Pointwise.Dependent as Σ
 open import Data.Sum as Sum
 open import Relation.Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
@@ -41,7 +42,7 @@ open import Relation.Nullary.Negation
 
 private
   module ×⊎ {k ℓ} = CommutativeSemiring (×⊎-CommutativeSemiring k ℓ)
-  open module ListMonad {ℓ} = RawMonad (List.monad {ℓ = ℓ})
+  open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
 
 ------------------------------------------------------------------------
 -- Properties relating _∈_ to various list functions

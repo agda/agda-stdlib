@@ -53,7 +53,7 @@ x ^ suc n = x * x ^ n
 
 1+×′ : ∀ n x → suc n ×′ x ≈ x + n ×′ x
 1+×′ 0 x = begin
-  x       ≈⟨ sym $ Σ.proj₂ +-identity x ⟩
+  x       ≈⟨ sym $ +-identityʳ x ⟩
   x + 0#  ∎
 1+×′ (suc n) x = begin
   x + suc n ×′ x  ≡⟨⟩
@@ -73,7 +73,7 @@ x ^ suc n = x * x ^ n
 
 ×-homo-+ : ∀ c m n → (m ℕ+ n) × c ≈ m × c + n × c
 ×-homo-+ c 0 n = begin
-  n × c       ≈⟨ sym $ Σ.proj₁ +-identity (n × c) ⟩
+  n × c       ≈⟨ sym $ +-identityˡ (n × c) ⟩
   0# + n × c  ∎
 ×-homo-+ c (suc m) n = begin
   c + (m ℕ+ n) × c     ≈⟨ +-cong refl (×-homo-+ c m n) ⟩
@@ -98,8 +98,8 @@ x ^ suc n = x * x ^ n
 ×1-homo-* (suc m) n = begin
   (n ℕ+ m ℕ* n) × 1#                   ≈⟨ ×-homo-+ 1# n (m ℕ* n) ⟩
   n × 1# + (m ℕ* n) × 1#               ≈⟨ +-cong refl (×1-homo-* m n) ⟩
-  n × 1# + (m × 1#) * (n × 1#)         ≈⟨ sym $ +-cong (Σ.proj₁ *-identity (n × 1#)) refl ⟩
-  1# * (n × 1#) + (m × 1#) * (n × 1#)  ≈⟨ sym $ Σ.proj₂ distrib (n × 1#) 1# (m × 1#) ⟩
+  n × 1# + (m × 1#) * (n × 1#)         ≈⟨ sym $ +-cong (*-identityˡ (n × 1#)) refl ⟩
+  1# * (n × 1#) + (m × 1#) * (n × 1#)  ≈⟨ sym $ distribʳ (n × 1#) 1# (m × 1#) ⟩
   (1# + m × 1#) * (n × 1#)             ∎
 
 -- _×′ 1# is homomorphic with respect to _ℕ*_/_*_.
@@ -119,7 +119,7 @@ x ^ suc n = x * x ^ n
   n′ × x   ≈⟨ ×-congʳ n′ x≈x′ ⟩
   n′ × x′  ∎
   where
-  ×-congʳ : ∀ n → (_×_ n) Preserves _≈_ ⟶ _≈_
+  ×-congʳ : ∀ n → (n ×_) Preserves _≈_ ⟶ _≈_
   ×-congʳ 0       x≈x′ = refl
   ×-congʳ (suc n) x≈x′ = x≈x′ ⟨ +-cong ⟩ ×-congʳ n x≈x′
 
@@ -140,6 +140,6 @@ x ^ suc n = x * x ^ n
   x  ^ n'  ≈⟨ ^-congˡ n' x≈x' ⟩
   x' ^ n'  ∎
   where
-  ^-congˡ : ∀ n → (λ x → x ^ n) Preserves _≈_ ⟶ _≈_
+  ^-congˡ : ∀ n → (_^ n) Preserves _≈_ ⟶ _≈_
   ^-congˡ zero    x≈x' = refl
   ^-congˡ (suc n) x≈x' = x≈x' ⟨ *-cong ⟩ ^-congˡ n x≈x'

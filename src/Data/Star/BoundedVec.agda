@@ -8,16 +8,16 @@
 
 module Data.Star.BoundedVec where
 
-open import Data.Star
+import Data.Maybe.Base as Maybe
 open import Data.Star.Nat
 open import Data.Star.Decoration
 open import Data.Star.Pointer
 open import Data.Star.List using (List)
 open import Data.Unit
 open import Function
-import Data.Maybe.Base as Maybe
 open import Relation.Binary
 open import Relation.Binary.Consequences
+open import Relation.Binary.Closure.ReflexiveTransitive
 
 ------------------------------------------------------------------------
 -- The type
