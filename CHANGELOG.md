@@ -63,8 +63,21 @@ Backwards compatible changes
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
+  m+n≮m          : m + n ≮ m
+  m≮m∸n          : m ≮ m ∸ n
+
   +-0-isMonoid   : IsMonoid _+_ 0
   *-1-isMonoid   : IsMonoid _*_ 1
+
+  ⊓-triangulate  : x ⊓ y ⊓ z ≡ (x ⊓ y) ⊓ (y ⊓ z)
+  ⊔-triangulate  : x ⊔ y ⊔ z ≡ (x ⊔ y) ⊔ (y ⊔ z)
+
+  m∸n≡0⇒m≤n      : m ∸ n ≡ 0 → m ≤ n
+  m≤n⇒m∸n≡0      : m ≤ n → m ∸ n ≡ 0
+  ∸-monoˡ-≤      : m ≤ n → m ∸ o ≤ n ∸ o
+  ∸-monoʳ-≤      : m ≤ n → o ∸ m ≥ o ∸ n
+  ∸-distribˡ-⊓-⊔ : x ∸ (y ⊓ z) ≡ (x ∸ y) ⊔ (x ∸ z)
+  ∸-distribˡ-⊔-⊓ : x ∸ (y ⊔ z) ≡ (x ∸ y) ⊓ (x ∸ z)
   ```
 
 Version 0.15

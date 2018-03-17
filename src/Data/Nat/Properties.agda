@@ -441,6 +441,9 @@ m+n≮n : ∀ m n → m + n ≮ n
 m+n≮n zero    n                   = n≮n n
 m+n≮n (suc m) (suc n) (s≤s m+n<n) = m+n≮n m (suc n) (≤-step m+n<n)
 
+m+n≮m : ∀ m n → m + n ≮ m
+m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
+
 m≤′m+n : ∀ m n → m ≤′ m + n
 m≤′m+n m n = ≤⇒≤′ (m≤m+n m n)
 
@@ -919,6 +922,23 @@ m⊓n≤m+n m n with ⊓-sel m n
 +-distrib-⊓ : _+_ DistributesOver _⊓_
 +-distrib-⊓ = +-distribˡ-⊓ , +-distribʳ-⊓
 
+-- Other properties
+⊓-triangulate : ∀ x y z → x ⊓ y ⊓ z ≡ (x ⊓ y) ⊓ (y ⊓ z)
+⊓-triangulate x y z = begin
+  x ⊓ y ⊓ z           ≡⟨ cong (λ v → x ⊓ v ⊓ z) (sym (⊓-idem y)) ⟩
+  x ⊓ (y ⊓ y) ⊓ z     ≡⟨ ⊓-assoc x _ _ ⟩
+  x ⊓ ((y ⊓ y) ⊓ z)   ≡⟨ cong (x ⊓_) (⊓-assoc y _ _) ⟩
+  x ⊓ (y ⊓ (y ⊓ z))   ≡⟨ sym (⊓-assoc x _ _) ⟩
+  (x ⊓ y) ⊓ (y ⊓ z)   ∎
+
+⊔-triangulate : ∀ x y z → x ⊔ y ⊔ z ≡ (x ⊔ y) ⊔ (y ⊔ z)
+⊔-triangulate x y z = begin
+  x ⊔ y ⊔ z           ≡⟨ cong (λ v → x ⊔ v ⊔ z) (sym (⊔-idem y)) ⟩
+  x ⊔ (y ⊔ y) ⊔ z     ≡⟨ ⊔-assoc x _ _ ⟩
+  x ⊔ ((y ⊔ y) ⊔ z)   ≡⟨ cong (x ⊔_) (⊔-assoc y _ _) ⟩
+  x ⊔ (y ⊔ (y ⊔ z))   ≡⟨ sym (⊔-assoc x _ _) ⟩
+  (x ⊔ y) ⊔ (y ⊔ z)   ∎
+
 ------------------------------------------------------------------------
 -- Properties of _∸_
 
@@ -930,6 +950,38 @@ n∸n≡0 : ∀ n → n ∸ n ≡ 0
 n∸n≡0 zero    = refl
 n∸n≡0 (suc n) = n∸n≡0 n
 
+-- Ordering properties of _∸_
+n∸m≤n : ∀ m n → n ∸ m ≤ n
+n∸m≤n zero    n       = ≤-refl
+n∸m≤n (suc m) zero    = ≤-refl
+n∸m≤n (suc m) (suc n) = ≤-trans (n∸m≤n m n) (n≤1+n n)
+
+m≮m∸n : ∀ m n → m ≮ m ∸ n
+m≮m∸n zero    (suc n) ()
+m≮m∸n m       zero    = n≮n m
+m≮m∸n (suc m) (suc n) = m≮m∸n m n ∘ ≤-trans (n≤1+n (suc m))
+
+∸-mono : _∸_ Preserves₂ _≤_ ⟶ _≥_ ⟶ _≤_
+∸-mono z≤n         (s≤s n₁≥n₂)    = z≤n
+∸-mono (s≤s m₁≤m₂) (s≤s n₁≥n₂)    = ∸-mono m₁≤m₂ n₁≥n₂
+∸-mono m₁≤m₂       (z≤n {n = n₁}) = ≤-trans (n∸m≤n n₁ _) m₁≤m₂
+
+∸-monoˡ-≤ : ∀ {m n} o → m ≤ n → m ∸ o ≤ n ∸ o
+∸-monoˡ-≤ o m≤n = ∸-mono {u = o} m≤n ≤-refl
+
+∸-monoʳ-≤ : ∀ {m n} o → m ≤ n → o ∸ m ≥ o ∸ n
+∸-monoʳ-≤ _ m≤n = ∸-mono ≤-refl m≤n
+
+m∸n≡0⇒m≤n : ∀ {m n} → m ∸ n ≡ 0 → m ≤ n
+m∸n≡0⇒m≤n {zero}  {_}    _   = z≤n
+m∸n≡0⇒m≤n {suc m} {zero} ()
+m∸n≡0⇒m≤n {suc m} {suc n} eq = s≤s (m∸n≡0⇒m≤n eq)
+
+m≤n⇒m∸n≡0 : ∀ {m n} → m ≤ n → m ∸ n ≡ 0
+m≤n⇒m∸n≡0 {n = n} z≤n      = 0∸n≡0 n
+m≤n⇒m∸n≡0 {_}    (s≤s m≤n) = m≤n⇒m∸n≡0 m≤n
+
+-- Properties of _∸_ and _+_
 +-∸-comm : ∀ {m} n {o} → o ≤ m → (m + n) ∸ o ≡ (m ∸ o) + n
 +-∸-comm {zero}  _ {suc o} ()
 +-∸-comm {zero}  _ {zero}  _         = refl
@@ -951,11 +1003,6 @@ n∸n≡0 (suc n) = n∸n≡0 n
   (m + n) ∸ o          ≡⟨ +-∸-assoc m o≤n ⟩
   m + (n ∸ o)          ∎
 
-n∸m≤n : ∀ m n → n ∸ m ≤ n
-n∸m≤n zero    n       = ≤-refl
-n∸m≤n (suc m) zero    = ≤-refl
-n∸m≤n (suc m) (suc n) = ≤-trans (n∸m≤n m n) (n≤1+n n)
-
 n≤m+n∸m : ∀ m n → n ≤ m + (n ∸ m)
 n≤m+n∸m m       zero    = z≤n
 n≤m+n∸m zero    (suc n) = ≤-refl
@@ -976,7 +1023,10 @@ m+n∸m≡n {m} {n} m≤n = begin
   n            ∎
 
 m∸n+n≡m : ∀ {m n} → n ≤ m → (m ∸ n) + n ≡ m
-m∸n+n≡m {m} {n} n≤m = trans (sym (+-∸-comm n n≤m)) (m+n∸n≡m m n)
+m∸n+n≡m {m} {n} n≤m = begin
+  (m ∸ n) + n ≡⟨ sym (+-∸-comm n n≤m) ⟩
+  (m + n) ∸ n ≡⟨ m+n∸n≡m m n ⟩
+  m           ∎
 
 m∸[m∸n]≡n : ∀ {m n} → n ≤ m → m ∸ (m ∸ n) ≡ n
 m∸[m∸n]≡n {m}     {_}     z≤n       = n∸n≡0 m
@@ -985,6 +1035,22 @@ m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin
   suc (m ∸ (m ∸ n)) ≡⟨ cong suc (m∸[m∸n]≡n n≤m) ⟩
   suc n             ∎
 
+[i+j]∸[i+k]≡j∸k : ∀ i j k → (i + j) ∸ (i + k) ≡ j ∸ k
+[i+j]∸[i+k]≡j∸k zero    j k = refl
+[i+j]∸[i+k]≡j∸k (suc i) j k = [i+j]∸[i+k]≡j∸k i j k
+
+-- Properties of _∸_ and _*_
+*-distribʳ-∸ : _*_ DistributesOverʳ _∸_
+*-distribʳ-∸ i       zero    zero    = refl
+*-distribʳ-∸ zero    zero    (suc k) = sym (0∸n≡0 (k * zero))
+*-distribʳ-∸ (suc i) zero    (suc k) = refl
+*-distribʳ-∸ i       (suc j) zero    = refl
+*-distribʳ-∸ i       (suc j) (suc k) = begin
+  (j ∸ k) * i             ≡⟨ *-distribʳ-∸ i j k ⟩
+  j * i ∸ k * i           ≡⟨ sym $ [i+j]∸[i+k]≡j∸k i _ _ ⟩
+  i + j * i ∸ (i + k * i) ∎
+
+-- Properties of _∸_ and _⊓_ and _⊔_
 m⊓n+n∸m≡n : ∀ m n → (m ⊓ n) + (n ∸ m) ≡ n
 m⊓n+n∸m≡n zero    n       = refl
 m⊓n+n∸m≡n (suc m) zero    = refl
@@ -996,20 +1062,14 @@ m⊓n+n∸m≡n (suc m) (suc n) = cong suc $ m⊓n+n∸m≡n m n
 [m∸n]⊓[n∸m]≡0 (suc m) zero    = refl
 [m∸n]⊓[n∸m]≡0 (suc m) (suc n) = [m∸n]⊓[n∸m]≡0 m n
 
-[i+j]∸[i+k]≡j∸k : ∀ i j k → (i + j) ∸ (i + k) ≡ j ∸ k
-[i+j]∸[i+k]≡j∸k zero    j k = refl
-[i+j]∸[i+k]≡j∸k (suc i) j k = [i+j]∸[i+k]≡j∸k i j k
-
-*-distribʳ-∸ : _*_ DistributesOverʳ _∸_
-*-distribʳ-∸ i zero k = begin
-  (0 ∸ k) * i  ≡⟨ cong (_* i) (0∸n≡0 k) ⟩
-  0            ≡⟨ sym $ 0∸n≡0 (k * i) ⟩
-  0 ∸ (k * i)  ∎
-*-distribʳ-∸ i (suc j) zero    = refl
-*-distribʳ-∸ i (suc j) (suc k) = begin
-  (j ∸ k) * i             ≡⟨ *-distribʳ-∸ i j k ⟩
-  j * i ∸ k * i           ≡⟨ sym $ [i+j]∸[i+k]≡j∸k i _ _ ⟩
-  i + j * i ∸ (i + k * i) ∎
+∸-distribˡ-⊓-⊔ : ∀ x y z → x ∸ (y ⊓ z) ≡ (x ∸ y) ⊔ (x ∸ z)
+∸-distribˡ-⊓-⊔ x       zero    zero    = sym (⊔-idem x)
+∸-distribˡ-⊓-⊔ zero    zero    (suc z) = refl
+∸-distribˡ-⊓-⊔ zero    (suc y) zero    = refl
+∸-distribˡ-⊓-⊔ zero    (suc y) (suc z) = refl
+∸-distribˡ-⊓-⊔ (suc x) (suc y) zero    = sym (m≤n⇒m⊔n≡n (≤-step (n∸m≤n y x)))
+∸-distribˡ-⊓-⊔ (suc x) zero    (suc z) = sym (m≤n⇒n⊔m≡n (≤-step (n∸m≤n z x)))
+∸-distribˡ-⊓-⊔ (suc x) (suc y) (suc z) = ∸-distribˡ-⊓-⊔ x y z
 
 ∸-distribʳ-⊓ : _∸_ DistributesOverʳ _⊓_
 ∸-distribʳ-⊓ zero    y       z       = refl
@@ -1017,17 +1077,21 @@ m⊓n+n∸m≡n (suc m) (suc n) = cong suc $ m⊓n+n∸m≡n m n
 ∸-distribʳ-⊓ (suc x) (suc y) zero    = sym (⊓-zeroʳ (y ∸ x))
 ∸-distribʳ-⊓ (suc x) (suc y) (suc z) = ∸-distribʳ-⊓ x y z
 
+∸-distribˡ-⊔-⊓ : ∀ x y z → x ∸ (y ⊔ z) ≡ (x ∸ y) ⊓ (x ∸ z)
+∸-distribˡ-⊔-⊓ x       zero    zero    = sym (⊓-idem x)
+∸-distribˡ-⊔-⊓ zero    zero    z       = 0∸n≡0 z
+∸-distribˡ-⊔-⊓ zero    (suc y) z       = 0∸n≡0 (suc y ⊔ z)
+∸-distribˡ-⊔-⊓ (suc x) (suc y) zero    = sym (m≤n⇒m⊓n≡m (≤-step (n∸m≤n y x)))
+∸-distribˡ-⊔-⊓ (suc x) zero    (suc z) = sym (m≤n⇒n⊓m≡m (≤-step (n∸m≤n z x)))
+∸-distribˡ-⊔-⊓ (suc x) (suc y) (suc z) = ∸-distribˡ-⊔-⊓ x y z
+
 ∸-distribʳ-⊔ : _∸_ DistributesOverʳ _⊔_
 ∸-distribʳ-⊔ zero    y       z       = refl
 ∸-distribʳ-⊔ (suc x) zero    z       = refl
 ∸-distribʳ-⊔ (suc x) (suc y) zero    = sym (⊔-identityʳ (y ∸ x))
 ∸-distribʳ-⊔ (suc x) (suc y) (suc z) = ∸-distribʳ-⊔ x y z
 
-∸-mono : _∸_ Preserves₂ _≤_ ⟶ _≥_ ⟶ _≤_
-∸-mono z≤n         (s≤s n₁≥n₂)    = z≤n
-∸-mono (s≤s m₁≤m₂) (s≤s n₁≥n₂)    = ∸-mono m₁≤m₂ n₁≥n₂
-∸-mono m₁≤m₂       (z≤n {n = n₁}) = ≤-trans (n∸m≤n n₁ _) m₁≤m₂
-
+-- Other properties
 -- TODO: Can this proof be simplified? An automatic solver which can
 -- handle ∸ would be nice...
 i∸k∸j+j∸k≡i+j∸k : ∀ i j k → i ∸ (k ∸ j) + (j ∸ k) ≡ i + j ∸ k
