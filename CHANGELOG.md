@@ -64,9 +64,10 @@ Backwards compatible changes
   ∨-∧-distributiveLattice         : DistributiveLattice _ _
   ```
 
-* Added new function to `Data.List.All`:
+* Added new functions to `Data.List.All`:
   ```agda
-  product : All P xs → All Q xs → All (P ∩ Q) xs
+  zip   : All P ∩ All Q ⊆ All (P ∩ Q)
+  unzip : All (P ∩ Q) ⊆ All P ∩ All Q
   ```
 
 * Added new proofs to `Data.Nat.Properties`:

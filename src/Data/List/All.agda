@@ -9,7 +9,7 @@ module Data.List.All where
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Any as Any using (here; there)
 open import Data.List.Any.Membership.Propositional using (_∈_)
-open import Data.Product using (_,_)
+open import Data.Product as Prod using (_,_)
 open import Function
 open import Level
 open import Relation.Nullary
@@ -50,10 +50,15 @@ map : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} →
 map g []         = []
 map g (px ∷ pxs) = g px ∷ map g pxs
 
-product : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} →
-          ∀ {xs} → All P xs → All Q xs → All (P ∩ Q) xs
-product [] [] = []
-product (px ∷ pxs) (qx ∷ qxs) = (px , qx) ∷ product pxs qxs
+zip : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} →
+      All P ∩ All Q ⊆ All (P ∩ Q)
+zip ([] , [])             = []
+zip (px ∷ pxs , qx ∷ qxs) = (px , qx) ∷ zip (pxs , qxs)
+
+unzip : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} →
+        All (P ∩ Q) ⊆ All P ∩ All Q
+unzip []           = [] , []
+unzip (pqx ∷ pqxs) = Prod.zip _∷_ _∷_ pqx (unzip pqxs)
 
 all : ∀ {a p} {A : Set a} {P : A → Set p} →
       Decidable P → Decidable (All P)
