@@ -40,6 +40,14 @@ _∸_ : Conat ∞ → ℕ → Conat ∞
 m ∸ zero  = m
 m ∸ suc n = pred m ∸ n
 
+_ℕ+_ : ℕ → ∀ {i} → Conat i → Conat i
+zero  ℕ+ n = n
+suc m ℕ+ n = suc λ where .force → m ℕ+ n
+
+_+ℕ_ : ∀ {i} → Conat i → ℕ → Conat i
+zero  +ℕ n = fromℕ n
+suc m +ℕ n = suc λ where .force → (m .force) +ℕ n
+
 _+_ : ∀ {i} → Conat i → Conat i → Conat i
 zero  + n = n
 suc m + n = suc λ where .force → (m .force) + n
