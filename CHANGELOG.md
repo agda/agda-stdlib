@@ -11,8 +11,8 @@ Non-backwards compatible changes
 * `Relation.Binary.Consequences` no longer exports `Total`. The standard way of accessing it
   through `Relation.Binary` remains unchanged.
 
-* Added `flip : A ⊎ B → B ⊎ A` to `Data.Sum`. This may conflict with `flip` in `Data.Product`.
-  If so then you may need to qualify your imports either with `using` or `hiding`.
+* Added `swap : A ⊎ B → B ⊎ A` to `Data.Sum`. This may conflict with `swap` in `Data.Product`.
+  If so then it may be necessary to qualify imports with either `using` or `hiding`.
 
 Deprecated features
 -------------------
@@ -86,6 +86,11 @@ Backwards compatible changes
   ∸-monoʳ-≤      : m ≤ n → o ∸ m ≥ o ∸ n
   ∸-distribˡ-⊓-⊔ : x ∸ (y ⊓ z) ≡ (x ∸ y) ⊔ (x ∸ z)
   ∸-distribˡ-⊔-⊓ : x ∸ (y ⊔ z) ≡ (x ∸ y) ⊓ (x ∸ z)
+  ```
+
+* Added new proof to `Data.Sum`:
+  ```agda
+  swap-involutive : swap ∘ swap ≗ id
   ```
 
 Version 0.15
