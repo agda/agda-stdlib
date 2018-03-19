@@ -11,6 +11,7 @@ open import Codata.Thunk
 open import Codata.Conat
 open import Relation.Binary
 
+infix 1 _≈_
 data _≈_ {i} : (m n : Conat i) → Set where
   zero : zero ≈ zero
   suc  : ∀ {m n} → Thunk^R (λ i → _≈_ {i}) i m n → suc m ≈ suc n
@@ -31,9 +32,12 @@ data _≤_ {i} : (m n : Conat i) → Set where
   z≤n : ∀ {n : Conat i} → zero ≤ n
   s≤s : ∀ {m n} → Thunk^R (λ i → _≤_ {i}) i m n → suc m ≤ suc n
 
+≈⇒≤ : ∀ {i} {m n : Conat i} → m ≈ n → m ≤ n
+≈⇒≤ zero     = z≤n
+≈⇒≤ (suc eq) = s≤s λ where .force → ≈⇒≤ (eq .force)
+
 ≤-refl : ∀ {i} {m : Conat i} → m ≤ m
-≤-refl {m = zero}  = z≤n
-≤-refl {m = suc m} = s≤s λ where .force → ≤-refl
+≤-refl = ≈⇒≤ refl
 
 ≤-antisym : ∀ {i} {m n : Conat i} → m ≤ n → n ≤ m → m ≈ n
 ≤-antisym z≤n      z≤n      = zero
