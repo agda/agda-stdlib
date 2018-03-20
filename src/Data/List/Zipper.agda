@@ -64,8 +64,8 @@ module _ {a} {A : Set a} where
 
  -- The following 4 functions implement these 4 insertions.
 
- -- `xs ˢ++ ys` inserts `xs` on the `s` side of the context of `ys`
- -- `xs ++ˢ ys` insert `ys` on the `s` side of the value in focus of `ys`
+ -- `xs ˢ++ zp` inserts `xs` on the `s` side of the context of the Zipper `zp`
+ -- `zp ++ˢ xs` insert `xs` on the `s` side of the value in focus of the Zipper `zp`
 
  infixr 5 _ˡ++_ _ʳ++_
  infixl 5 _++ˡ_ _++ʳ_
