@@ -1,12 +1,11 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Finite sets defined in terms of Data.Star
+-- Finite sets defined using the reflexive-transitive closure, Star
 ------------------------------------------------------------------------
 
 module Data.Star.Fin where
 
-open import Data.Star
 open import Data.Star.Nat as ℕ using (ℕ)
 open import Data.Star.Pointer
 open import Data.Unit

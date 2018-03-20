@@ -11,7 +11,6 @@ open import Algebra
 open import Algebra.FunctionProperties
 import Algebra.Properties.Group as GroupP
 open import Function
-open import Data.Product
 open import Level
 import Relation.Binary.EqReasoning as EqR
 
@@ -131,7 +130,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
     ⁻¹-homo : Homomorphic₁ ⟦_⟧ F._⁻¹ T._⁻¹
     ⁻¹-homo x = let open EqR T.setoid in T.uniqueˡ-⁻¹ ⟦ x F.⁻¹ ⟧ ⟦ x ⟧ $ begin
       ⟦ x F.⁻¹ ⟧ T.∙ ⟦ x ⟧ ≈⟨ T.sym (∙-homo (x F.⁻¹) x) ⟩
-      ⟦ x F.⁻¹ F.∙ x ⟧     ≈⟨ ⟦⟧-cong (proj₁ F.inverse x) ⟩
+      ⟦ x F.⁻¹ F.∙ x ⟧     ≈⟨ ⟦⟧-cong (F.inverseˡ x) ⟩
       ⟦ F.ε ⟧              ≈⟨ ε-homo ⟩
       T.ε ∎
 

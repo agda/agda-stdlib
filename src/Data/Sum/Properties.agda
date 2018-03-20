@@ -17,3 +17,6 @@ module _ {a b} {A : Set a} {B : Set b} where
 
  inj₂-injective : ∀ {x y} → (A ⊎ B ∋ inj₂ x) ≡ inj₂ y → x ≡ y
  inj₂-injective refl = refl
+
+ swap-involutive : swap {A = A} {B} ∘ swap ≗ id
+ swap-involutive = [ (λ _ → refl) , (λ _ → refl) ]

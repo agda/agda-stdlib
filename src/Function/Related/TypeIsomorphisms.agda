@@ -15,9 +15,10 @@ open import Algebra.Structures
 open import Data.Empty
 open import Data.Nat as Nat using (zero; suc)
 open import Data.Product as Prod hiding (swap)
-open import Data.Product.Relation.Pointwise
+open import Data.Product.Relation.Pointwise.NonDependent
 open import Data.Sum as Sum
-open import Data.Sum.Relation.General
+open import Data.Sum.Properties using (swap-involutive)
+open import Data.Sum.Relation.Pointwise
 open import Data.Unit
 open import Level hiding (zero; suc)
 open import Function
@@ -134,16 +135,10 @@ open import Relation.Nullary.Decidable as Dec using (True)
     { to         = P.→-to-⟶ swap
     ; from       = P.→-to-⟶ swap
     ; inverse-of = record
-      { left-inverse-of  = inv
-      ; right-inverse-of = inv
+      { left-inverse-of  = swap-involutive
+      ; right-inverse-of = swap-involutive
       }
     }
-    where
-    swap : {A B : Set ℓ} → A ⊎ B → B ⊎ A
-    swap = [ inj₂ , inj₁ ]
-
-    inv : ∀ {A B} → swap ∘ swap {A} {B} ≗ id
-    inv = [ (λ _ → P.refl) , (λ _ → P.refl) ]
 
 ×⊎-CommutativeSemiring : Symmetric-kind → (ℓ : Level) →
                          CommutativeSemiring (Level.suc ℓ) ℓ

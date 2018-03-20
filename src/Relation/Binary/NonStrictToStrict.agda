@@ -19,7 +19,7 @@ open import Relation.Nullary
 open import Relation.Binary.Consequences
 open import Function
 open import Data.Product
-open import Data.Sum
+open import Data.Sum using (inj₁; inj₂)
 
 ------------------------------------------------------------------------
 -- Conversion

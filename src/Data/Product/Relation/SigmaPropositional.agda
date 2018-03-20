@@ -14,7 +14,7 @@ open import Level using (Level; _⊔_)
 open import Relation.Binary as B using (REL; Rel)
 import Relation.Binary.Indexed as I
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
-import Data.Product.Relation.SigmaPointwise as PW
+import Data.Product.Relation.Pointwise.Dependent as PW
 
 open import Data.Product using (Σ; ∃; _,_)
 

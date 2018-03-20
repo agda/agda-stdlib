@@ -16,7 +16,7 @@ private
   open module DL = Algebra.Properties.DistributiveLattice
                      distributiveLattice public
     hiding (replace-equality)
-open import Algebra.Structures
+open import Algebra.Structures _≈_
 open import Algebra.FunctionProperties _≈_
 open import Algebra.FunctionProperties.Consequences
   record {isEquivalence = isEquivalence}
@@ -45,7 +45,7 @@ open import Data.Product
 ------------------------------------------------------------------------
 -- The dual construction is also a boolean algebra
 
-∧-∨-isBooleanAlgebra : IsBooleanAlgebra _≈_ _∧_ _∨_ ¬_ ⊥ ⊤
+∧-∨-isBooleanAlgebra : IsBooleanAlgebra _∧_ _∨_ ¬_ ⊥ ⊤
 ∧-∨-isBooleanAlgebra = record
   { isDistributiveLattice = ∧-∨-isDistributiveLattice
   ; ∨-complementʳ         = ∧-complementʳ
@@ -117,47 +117,47 @@ open import Data.Product
 ∨-zero : Zero ⊤ _∨_
 ∨-zero = ∨-zeroˡ , ∨-zeroʳ
 
-∨-isSemigroup : IsSemigroup _≈_ _∨_
+∨-isSemigroup : IsSemigroup _∨_
 ∨-isSemigroup = record
   { isEquivalence = isEquivalence
   ; assoc         = ∨-assoc
   ; ∙-cong        = ∨-cong
   }
 
-∧-isSemigroup : IsSemigroup _≈_ _∧_
+∧-isSemigroup : IsSemigroup _∧_
 ∧-isSemigroup = record
   { isEquivalence = isEquivalence
   ; assoc         = ∧-assoc
   ; ∙-cong        = ∧-cong
   }
 
-∨-⊥-isMonoid : IsMonoid _≈_ _∨_ ⊥
+∨-⊥-isMonoid : IsMonoid _∨_ ⊥
 ∨-⊥-isMonoid = record
   { isSemigroup = ∨-isSemigroup
   ; identity    = ∨-identity
   }
 
-∧-⊤-isMonoid : IsMonoid _≈_ _∧_ ⊤
+∧-⊤-isMonoid : IsMonoid _∧_ ⊤
 ∧-⊤-isMonoid = record
   { isSemigroup = ∧-isSemigroup
   ; identity    = ∧-identity
   }
 
-∨-⊥-isCommutativeMonoid : IsCommutativeMonoid _≈_ _∨_ ⊥
+∨-⊥-isCommutativeMonoid : IsCommutativeMonoid _∨_ ⊥
 ∨-⊥-isCommutativeMonoid = record
   { isSemigroup = ∨-isSemigroup
   ; identityˡ = ∨-identityˡ
   ; comm      = ∨-comm
   }
 
-∧-⊤-isCommutativeMonoid : IsCommutativeMonoid _≈_ _∧_ ⊤
+∧-⊤-isCommutativeMonoid : IsCommutativeMonoid _∧_ ⊤
 ∧-⊤-isCommutativeMonoid = record
   { isSemigroup = ∧-isSemigroup
   ; identityˡ = ∧-identityˡ
   ; comm      = ∧-comm
   }
 
-∨-∧-isCommutativeSemiring : IsCommutativeSemiring _≈_ _∨_ _∧_ ⊥ ⊤
+∨-∧-isCommutativeSemiring : IsCommutativeSemiring _∨_ _∧_ ⊥ ⊤
 ∨-∧-isCommutativeSemiring = record
   { +-isCommutativeMonoid = ∨-⊥-isCommutativeMonoid
   ; *-isCommutativeMonoid = ∧-⊤-isCommutativeMonoid
@@ -174,7 +174,7 @@ open import Data.Product
   ; isCommutativeSemiring = ∨-∧-isCommutativeSemiring
   }
 
-∧-∨-isCommutativeSemiring : IsCommutativeSemiring _≈_ _∧_ _∨_ ⊤ ⊥
+∧-∨-isCommutativeSemiring : IsCommutativeSemiring _∧_ _∨_ ⊤ ⊥
 ∧-∨-isCommutativeSemiring = record
   { +-isCommutativeMonoid = ∧-⊤-isCommutativeMonoid
   ; *-isCommutativeMonoid = ∨-⊥-isCommutativeMonoid
@@ -314,7 +314,7 @@ module XorRing
   ⊕-¬-distribˡ : ∀ x y → ¬ (x ⊕ y) ≈ ¬ x ⊕ y
   ⊕-¬-distribˡ x y = begin
     ¬ (x ⊕ y)                              ≈⟨ ¬-cong $ ⊕-def _ _ ⟩
-    ¬ ((x ∨ y) ∧ (¬ (x ∧ y)))              ≈⟨ ¬-cong (proj₂ ∧-∨-distrib _ _ _) ⟩
+    ¬ ((x ∨ y) ∧ (¬ (x ∧ y)))              ≈⟨ ¬-cong (∧-∨-distribʳ _ _ _) ⟩
     ¬ ((x ∧ ¬ (x ∧ y)) ∨ (y ∧ ¬ (x ∧ y)))  ≈⟨ ¬-cong $
                                                 refl ⟨ ∨-cong ⟩
                                                   (refl ⟨ ∧-cong ⟩
@@ -330,7 +330,7 @@ module XorRing
     lem : ∀ x y → x ∧ ¬ (x ∧ y) ≈ x ∧ ¬ y
     lem x y = begin
       x ∧ ¬ (x ∧ y)          ≈⟨ refl ⟨ ∧-cong ⟩ deMorgan₁ _ _ ⟩
-      x ∧ (¬ x ∨ ¬ y)        ≈⟨ proj₁ ∧-∨-distrib _ _ _ ⟩
+      x ∧ (¬ x ∨ ¬ y)        ≈⟨ ∧-∨-distribˡ _ _ _ ⟩
       (x ∧ ¬ x) ∨ (x ∧ ¬ y)  ≈⟨ ∧-complementʳ _ ⟨ ∨-cong ⟩ refl ⟩
       ⊥ ∨ (x ∧ ¬ y)          ≈⟨ ∨-identityˡ _ ⟩
       x ∧ ¬ y                ∎
@@ -388,7 +388,7 @@ module XorRing
     (¬ y ∨ ¬ z))               ≈⟨ lem₃ ⟨ ∨-cong ⟩ refl ⟩
     ((x ∧ (y ∨ z)) ∧ ¬ x) ∨
     ((x ∧ (y ∨ z)) ∧
-    (¬ y ∨ ¬ z))               ≈⟨ sym $ proj₁ ∧-∨-distrib _ _ _ ⟩
+    (¬ y ∨ ¬ z))               ≈⟨ sym $ ∧-∨-distribˡ _ _ _ ⟩
     (x ∧ (y ∨ z)) ∧
     (¬ x ∨ (¬ y ∨ ¬ z))        ≈⟨  refl ⟨ ∧-cong ⟩
                                   (refl ⟨ ∨-cong ⟩ sym (deMorgan₁ _ _)) ⟩
@@ -397,7 +397,7 @@ module XorRing
     (x ∧ (y ∨ z)) ∧
     ¬ (x ∧ (y ∧ z))            ≈⟨ helper refl lem₁ ⟩
     (x ∧ (y ∨ z)) ∧
-    ¬ ((x ∧ y) ∧ (x ∧ z))      ≈⟨ proj₁ ∧-∨-distrib _ _ _ ⟨ ∧-cong ⟩
+    ¬ ((x ∧ y) ∧ (x ∧ z))      ≈⟨ ∧-∨-distribˡ _ _ _ ⟨ ∧-cong ⟩
                                       refl ⟩
     ((x ∧ y) ∨ (x ∧ z)) ∧
     ¬ ((x ∧ y) ∧ (x ∧ z))      ≈⟨ sym $ ⊕-def _ _ ⟩
@@ -436,10 +436,10 @@ module XorRing
              ((x ∨ u) ∧ (y ∨ u)) ∧
              ((x ∨ v) ∧ (y ∨ v))
     lemma₂ x y u v = begin
-        (x ∧ y) ∨ (u ∧ v)              ≈⟨ proj₁ ∨-∧-distrib _ _ _ ⟩
-        ((x ∧ y) ∨ u) ∧ ((x ∧ y) ∨ v)  ≈⟨ proj₂ ∨-∧-distrib _ _ _
+        (x ∧ y) ∨ (u ∧ v)              ≈⟨ ∨-∧-distribˡ _ _ _ ⟩
+        ((x ∧ y) ∨ u) ∧ ((x ∧ y) ∨ v)  ≈⟨ ∨-∧-distribʳ _ _ _
                                             ⟨ ∧-cong ⟩
-                                          proj₂ ∨-∧-distrib _ _ _ ⟩
+                                          ∨-∧-distribʳ _ _ _ ⟩
         ((x ∨ u) ∧ (y ∨ u)) ∧
         ((x ∨ v) ∧ (y ∨ v))            ∎
 
@@ -465,7 +465,7 @@ module XorRing
     (x ⊕ y) ⊕ z                                ∎
     where
     lem₁ = begin
-      ((x ∨ y) ∨ z) ∧ ((¬ x ∨ ¬ y) ∨ z)  ≈⟨ sym $ proj₂ ∨-∧-distrib _ _ _ ⟩
+      ((x ∨ y) ∨ z) ∧ ((¬ x ∨ ¬ y) ∨ z)  ≈⟨ sym $ ∨-∧-distribʳ _ _ _ ⟩
       ((x ∨ y) ∧ (¬ x ∨ ¬ y)) ∨ z        ≈⟨ (refl ⟨ ∧-cong ⟩ sym (deMorgan₁ _ _))
                                                   ⟨ ∨-cong ⟩ refl ⟩
       ((x ∨ y) ∧ ¬ (x ∧ y)) ∨ z          ∎
@@ -483,7 +483,7 @@ module XorRing
       ¬ ((x ∨ y) ∧ ¬ (x ∧ y))            ∎
 
     lem₂ = begin
-      ((x ∨ ¬ y) ∨ ¬ z) ∧ ((¬ x ∨ y) ∨ ¬ z)  ≈⟨ sym $ proj₂ ∨-∧-distrib _ _ _ ⟩
+      ((x ∨ ¬ y) ∨ ¬ z) ∧ ((¬ x ∨ y) ∨ ¬ z)  ≈⟨ sym $ ∨-∧-distribʳ _ _ _ ⟩
       ((x ∨ ¬ y) ∧ (¬ x ∨ y)) ∨ ¬ z          ≈⟨ lem₂' ⟨ ∨-cong ⟩ refl ⟩
       ¬ ((x ∨ y) ∧ ¬ (x ∧ y)) ∨ ¬ z          ≈⟨ sym $ deMorgan₁ _ _ ⟩
       ¬ (((x ∨ y) ∧ ¬ (x ∧ y)) ∧ z)          ∎
@@ -491,7 +491,7 @@ module XorRing
     lem₃ = begin
       x ∨ ((y ∨ z) ∧ ¬ (y ∧ z))          ≈⟨ refl ⟨ ∨-cong ⟩
                                               (refl ⟨ ∧-cong ⟩ deMorgan₁ _ _) ⟩
-      x ∨ ((y ∨ z) ∧ (¬ y ∨ ¬ z))        ≈⟨ proj₁ ∨-∧-distrib _ _ _ ⟩
+      x ∨ ((y ∨ z) ∧ (¬ y ∨ ¬ z))        ≈⟨ ∨-∧-distribˡ _ _ _ ⟩
       (x ∨ (y ∨ z)) ∧ (x ∨ (¬ y ∨ ¬ z))  ≈⟨ sym (∨-assoc _ _ _) ⟨ ∧-cong ⟩
                                             sym (∨-assoc _ _ _) ⟩
       ((x ∨ y) ∨ z) ∧ ((x ∨ ¬ y) ∨ ¬ z)  ∎
@@ -511,7 +511,7 @@ module XorRing
     lem₄ = begin
       ¬ (x ∧ ((y ∨ z) ∧ ¬ (y ∧ z)))  ≈⟨ deMorgan₁ _ _ ⟩
       ¬ x ∨ ¬ ((y ∨ z) ∧ ¬ (y ∧ z))  ≈⟨ refl ⟨ ∨-cong ⟩ lem₄' ⟩
-      ¬ x ∨ ((y ∨ ¬ z) ∧ (¬ y ∨ z))  ≈⟨ proj₁ ∨-∧-distrib _ _ _ ⟩
+      ¬ x ∨ ((y ∨ ¬ z) ∧ (¬ y ∨ z))  ≈⟨ ∨-∧-distribˡ _ _ _ ⟩
       (¬ x ∨ (y     ∨ ¬ z)) ∧
       (¬ x ∨ (¬ y ∨ z))              ≈⟨ sym (∨-assoc _ _ _) ⟨ ∧-cong ⟩
                                         sym (∨-assoc _ _ _) ⟩
@@ -530,40 +530,40 @@ module XorRing
       ((¬ x ∨ ¬ y) ∨ z) ∧
       (((x ∨ ¬ y) ∨ ¬ z) ∧ ((¬ x ∨ y) ∨ ¬ z))    ∎
 
-  ⊕-isSemigroup : IsSemigroup _≈_ _⊕_
+  ⊕-isSemigroup : IsSemigroup _⊕_
   ⊕-isSemigroup = record
     { isEquivalence = isEquivalence
     ; assoc         = ⊕-assoc
     ; ∙-cong        = ⊕-cong
     }
 
-  ⊕-⊥-isMonoid : IsMonoid _≈_ _⊕_ ⊥
+  ⊕-⊥-isMonoid : IsMonoid _⊕_ ⊥
   ⊕-⊥-isMonoid = record
     { isSemigroup = ⊕-isSemigroup
     ; identity    = ⊕-identity
     }
 
-  ⊕-⊥-isGroup : IsGroup _≈_ _⊕_ ⊥ id
+  ⊕-⊥-isGroup : IsGroup _⊕_ ⊥ id
   ⊕-⊥-isGroup = record
     { isMonoid = ⊕-⊥-isMonoid
     ; inverse  = ⊕-inverse
     ; ⁻¹-cong  = id
     }
 
-  ⊕-⊥-isAbelianGroup : IsAbelianGroup _≈_ _⊕_ ⊥ id
+  ⊕-⊥-isAbelianGroup : IsAbelianGroup _⊕_ ⊥ id
   ⊕-⊥-isAbelianGroup = record
     { isGroup = ⊕-⊥-isGroup
     ; comm    = ⊕-comm
     }
 
-  ⊕-∧-isRing : IsRing _≈_ _⊕_ _∧_ id ⊥ ⊤
+  ⊕-∧-isRing : IsRing _⊕_ _∧_ id ⊥ ⊤
   ⊕-∧-isRing = record
     { +-isAbelianGroup = ⊕-⊥-isAbelianGroup
     ; *-isMonoid = ∧-⊤-isMonoid
     ; distrib = ∧-distrib-⊕
     }
 
-  isCommutativeRing : IsCommutativeRing _≈_ _⊕_ _∧_ id ⊥ ⊤
+  isCommutativeRing : IsCommutativeRing _⊕_ _∧_ id ⊥ ⊤
   isCommutativeRing = record
     { isRing = ⊕-∧-isRing
     ; *-comm = ∧-comm

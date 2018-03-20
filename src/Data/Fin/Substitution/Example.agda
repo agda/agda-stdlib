@@ -15,7 +15,8 @@ open import Data.Vec
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl; sym; cong; cong₂)
 open PropEq.≡-Reasoning
-open import Data.Star using (Star; ε; _◅_)
+open import Relation.Binary.Closure.ReflexiveTransitive
+  using (Star; ε; _◅_)
 
 -- A representation of the untyped λ-calculus. Uses de Bruijn indices.
 
