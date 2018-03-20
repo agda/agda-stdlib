@@ -24,6 +24,7 @@ open import Data.Fin as F using (Fin)
 import Data.Fin.Properties as FP
 open import Data.Table as T using (Table)
 import Data.Table.Properties as TP
+import Data.Table.Relation.Equality as TR
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 import Function.Equivalence as FE
@@ -307,7 +308,7 @@ module _ {a} {A : Set a} where
     ; from = P.→-to-⟶ TP.lookup∈
     ; inverse-of = record
       { left-inverse-of = TP.lookup∈-index ∘ proj₂
-      ; right-inverse-of = λ _ → T.index-fromList-∈
+      ; right-inverse-of = λ _ → TP.index-fromList-∈
       }
     }
 
@@ -333,11 +334,11 @@ module _ {a} {A : Set a} where
   -- The permutation between list element indices given by 'bag-permutation'
   -- correctly maps elements of each list to each other.
 
-  bag-permutation-correct : ∀ {xs ys : List A} (p : xs ∼[ bag ] ys) → T.fromList xs T.≗ (T.permute (bag-permutation p) (T.fromList ys))
+  bag-permutation-correct : ∀ {xs ys : List A} (p : xs ∼[ bag ] ys) → T.fromList xs TR.≗ (T.permute (bag-permutation p) (T.fromList ys))
   bag-permutation-correct {xs} {ys} p i =
     begin
-      lookup (fromList xs) i                                        ≡⟨ P.sym (fromList-index (Inverse.to p ⟨$⟩ fromList-∈ i)) ⟩
-      lookup (fromList ys) (index (Inverse.to p ⟨$⟩ fromList-∈ i))  ≡⟨⟩
+      lookup (fromList xs) i                                        ≡⟨ P.sym (TP.fromList-index (Inverse.to p ⟨$⟩ TP.fromList-∈ i)) ⟩
+      lookup (fromList ys) (index (Inverse.to p ⟨$⟩ TP.fromList-∈ i))  ≡⟨⟩
       lookup (T.permute (bag-permutation p) (fromList ys)) i      ∎
     where
       open P.≡-Reasoning

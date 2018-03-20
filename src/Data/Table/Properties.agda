@@ -47,6 +47,13 @@ module _ {a} {A : Set a} where
   lookup∈ : ∀ {xs : List A} (i : Fin (L.length xs)) → ∃ λ x → x ∈ xs
   lookup∈ i = _ , fromList-∈ i
 
+  lookup∈-index : ∀ {x} {xs : List A} (p : x ∈ xs) → lookup∈ (index p) ≡ (x , p)
+  lookup∈-index {x} = OverΣ.to-≡ ∘ go
+    where
+    go : ∀ {xs : List A} (p : x ∈ xs) → OverΣ _≡_ (lookup∈ (index p)) (x , p)
+    go (here P.refl) = P.refl , P.refl
+    go (there p) = OverΣ.≡-cong P.refl there (go p)
+
   private
     fromVec : ∀ {n} → Vec A n → Table A n
     fromVec = tabulate ∘ flip V.lookup
