@@ -58,15 +58,30 @@ module _ {a} {A : Set a} where
  reverse : Zipper A → Zipper A
  reverse (mkZipper ctx val) = mkZipper val ctx
 
- _ˡ++_ : List A → Zipper A → Zipper A
- xs ˡ++ mkZipper ctx val = mkZipper (ctx List.++ List.reverse xs ) val
+ -- If we think of a List [x₁⋯xₘ] split into a List [xₙ₊₁⋯xₘ] in focus
+ -- of another list [x₁⋯xₙ] then there are 4 places (marked {k} here) in
+ -- which we can insert new values: [{1}x₁⋯xₙ{2}][{3}xₙ₊₁⋯xₘ{4}]
 
+ -- The following 4 functions implement these 4 insertions.
+
+ -- `xs ˢ++ ys` inserts `xs` on the `s` side of the context of `ys`
+ -- `xs ++ˢ ys` insert `ys` on the `s` side of the value in focus of `ys`
+
+ infixr 5 _ˡ++_ _ʳ++_
+ infixl 5 _++ˡ_ _++ʳ_
+ -- {1}
+ _ˡ++_ : List A → Zipper A → Zipper A
+ xs ˡ++ mkZipper ctx val = mkZipper (ctx List.++ List.reverse xs) val
+
+ -- {2}
  _ʳ++_ : List A → Zipper A → Zipper A
  xs ʳ++ mkZipper ctx val = mkZipper (List.reverse xs List.++ ctx) val
 
+ -- {3}
  _++ˡ_ : Zipper A → List A → Zipper A
  mkZipper ctx val ++ˡ xs = mkZipper ctx (xs List.++ val)
 
+ -- {4}
  _++ʳ_ : Zipper A → List A → Zipper A
  mkZipper ctx val ++ʳ xs = mkZipper ctx (val List.++ xs)
 

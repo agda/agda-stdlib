@@ -14,34 +14,12 @@ open import Relation.Binary.PropositionalEquality
 open ≡-Reasoning
 open import Function
 
+-- Invariant: Zipper represents a given list
+------------------------------------------------------------------------
+
 module _ {a} {A : Set a} where
 
- toList-ˡ++-commute : ∀ xs (zp : Zipper A) → toList (xs ˡ++ zp) ≡ xs List.++ toList zp
- toList-ˡ++-commute xs (mkZipper ctx val) = begin
-   List.reverse (ctx List.++ List.reverse xs) List.++ val
-     ≡⟨ cong (List._++ _) (reverse-++-commute ctx (List.reverse xs)) ⟩
-   (List.reverse (List.reverse xs) List.++ List.reverse ctx) List.++ val
-     ≡⟨ ++-assoc (List.reverse (List.reverse xs)) (List.reverse ctx) val ⟩
-   List.reverse (List.reverse xs) List.++ List.reverse ctx List.++ val
-     ≡⟨ cong (List._++ _) (reverse-involutive xs) ⟩
-   xs List.++ List.reverse ctx List.++ val
-     ∎
-
- toList-++ʳ-commute : ∀ (zp : Zipper A) xs → toList (zp ++ʳ xs) ≡ toList zp List.++ xs
- toList-++ʳ-commute (mkZipper ctx val) xs = begin
-   List.reverse ctx List.++ val List.++ xs
-     ≡⟨ sym (++-assoc (List.reverse ctx) val xs) ⟩
-   (List.reverse ctx List.++ val) List.++ xs
-     ∎
-
- toList-reverse-commute : (zp : Zipper A) → toList (reverse zp) ≡ List.reverse (toList zp)
- toList-reverse-commute (mkZipper ctx val) = begin
-   List.reverse val List.++ ctx
-     ≡⟨ cong (_ List.++_) (sym (reverse-involutive ctx)) ⟩
-   List.reverse val List.++ List.reverse (List.reverse ctx)
-     ≡⟨ sym (reverse-++-commute (List.reverse ctx) val) ⟩
-   List.reverse (List.reverse ctx List.++ val)
-     ∎
+ -- Stability under moving left or right
 
  toList-left-identity : (zp : Zipper A) → Maybe.All ((_≡_ on toList) zp) (left zp)
  toList-left-identity (mkZipper []        val) = nothing
@@ -62,6 +40,75 @@ module _ {a} {A : Set a} where
      ≡⟨ cong (List._++ val) (sym (unfold-reverse x ctx)) ⟩
    List.reverse (x ∷ ctx) List.++ val
      ∎
+
+ -- Applying reverse does correspond to reversing the represented list
+
+ toList-reverse-commute : (zp : Zipper A) → toList (reverse zp) ≡ List.reverse (toList zp)
+ toList-reverse-commute (mkZipper ctx val) = begin
+   List.reverse val List.++ ctx
+     ≡⟨ cong (_ List.++_) (sym (reverse-involutive ctx)) ⟩
+   List.reverse val List.++ List.reverse (List.reverse ctx)
+     ≡⟨ sym (reverse-++-commute (List.reverse ctx) val) ⟩
+   List.reverse (List.reverse ctx List.++ val)
+     ∎
+
+
+-- Properties of the insertion functions
+------------------------------------------------------------------------
+
+ -- _ˡ++_ properties
+
+ toList-ˡ++-commute : ∀ xs (zp : Zipper A) → toList (xs ˡ++ zp) ≡ xs List.++ toList zp
+ toList-ˡ++-commute xs (mkZipper ctx val) = begin
+   List.reverse (ctx List.++ List.reverse xs) List.++ val
+     ≡⟨ cong (List._++ _) (reverse-++-commute ctx (List.reverse xs)) ⟩
+   (List.reverse (List.reverse xs) List.++ List.reverse ctx) List.++ val
+     ≡⟨ ++-assoc (List.reverse (List.reverse xs)) (List.reverse ctx) val ⟩
+   List.reverse (List.reverse xs) List.++ List.reverse ctx List.++ val
+     ≡⟨ cong (List._++ _) (reverse-involutive xs) ⟩
+   xs List.++ List.reverse ctx List.++ val
+     ∎
+
+ ˡ++-assoc : ∀ xs ys (zp : Zipper A) → xs ˡ++ (ys ˡ++ zp) ≡ (xs List.++ ys) ˡ++ zp
+ ˡ++-assoc xs ys (mkZipper ctx val) = cong (λ ctx → mkZipper ctx val) $ begin
+   (ctx List.++ List.reverse ys) List.++ List.reverse xs
+     ≡⟨ ++-assoc ctx _ _ ⟩
+   ctx List.++ List.reverse ys List.++ List.reverse xs
+     ≡⟨ cong (ctx List.++_) (sym (reverse-++-commute xs ys)) ⟩
+   ctx List.++ List.reverse (xs List.++ ys)
+     ∎
+
+ -- _ʳ++_ properties
+
+ ʳ++-assoc : ∀ xs ys (zp : Zipper A) → xs ʳ++ (ys ʳ++ zp) ≡ (ys List.++ xs) ʳ++ zp
+ ʳ++-assoc xs ys (mkZipper ctx val) =  cong (λ ctx → mkZipper ctx val) $ begin
+   List.reverse xs List.++ List.reverse ys List.++ ctx
+     ≡⟨ sym (++-assoc (List.reverse xs) (List.reverse ys) ctx) ⟩
+   (List.reverse xs List.++ List.reverse ys) List.++ ctx
+     ≡⟨ cong (List._++ ctx) (sym (reverse-++-commute ys xs)) ⟩
+   List.reverse (ys List.++ xs) List.++ ctx
+     ∎
+
+ -- _++ˡ_ properties
+
+ ++ˡ-assoc : ∀ xs ys (zp : Zipper A) → zp ++ˡ xs ++ˡ ys ≡ zp ++ˡ (ys List.++ xs)
+ ++ˡ-assoc xs ys (mkZipper ctx val) =  cong (mkZipper ctx) $ sym $ ++-assoc ys xs val
+
+ -- _++ʳ_ properties
+
+ toList-++ʳ-commute : ∀ (zp : Zipper A) xs → toList (zp ++ʳ xs) ≡ toList zp List.++ xs
+ toList-++ʳ-commute (mkZipper ctx val) xs = begin
+   List.reverse ctx List.++ val List.++ xs
+     ≡⟨ sym (++-assoc (List.reverse ctx) val xs) ⟩
+   (List.reverse ctx List.++ val) List.++ xs
+     ∎
+
+ ++ʳ-assoc : ∀ xs ys (zp : Zipper A) → zp ++ʳ xs ++ʳ ys ≡ zp ++ʳ (xs List.++ ys)
+ ++ʳ-assoc xs ys (mkZipper ctx val) = cong (mkZipper ctx) $ ++-assoc val xs ys
+
+
+-- List-like operations indeed correspond to their counterparts
+------------------------------------------------------------------------
 
 module _ {a b} {A : Set a} {B : Set b} where
 
