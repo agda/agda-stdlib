@@ -136,7 +136,7 @@ private
 select-swap : ∀ {n} t (i j : Fin n) → lookup t i ≈ lookup t j → ∀ k → (lookup (select 0# j t) ∘ swapFin i j) k ≈ lookup (select 0# i t) k
 select-swap _ i j e k with k FP.≟ j
 select-swap _ i j e k | yes p with k FP.≟ i
-select-swap _ .k .k e k | yes PE.refl | yes PE.refl rewrite ⌊i≟i⌋ k = e
+select-swap _ .k .k e k | yes PE.refl | yes PE.refl rewrite ⌊i≟i⌋ k = refl
 select-swap _ i .k e k | yes PE.refl | no ¬q with i FP.≟ k
 select-swap _ i .k e k | yes PE.refl | no ¬q | yes p = ⊥-elim (¬q (PE.sym p))
 select-swap _ i .k e k | yes PE.refl | no ¬q | no ¬p = refl
