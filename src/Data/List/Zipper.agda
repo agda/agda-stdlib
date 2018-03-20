@@ -11,6 +11,18 @@ open import Data.Maybe.Base as Maybe using (Maybe ; just ; nothing)
 open import Data.List.Base as List using (List ; [] ; _∷_)
 open import Function
 
+
+-- Definition
+------------------------------------------------------------------------
+
+-- A List Zipper represents a List together with a particular sub-List
+-- in focus. The user can attempt to move the focus left or right, with
+-- a risk of failure if one has already reached the corresponding end.
+
+-- To make these operations efficient, the `context` the sub List in
+-- focus lives in is stored *backwards*. This is made formal by `toList`
+-- which returns the List a Zipper represents.
+
 record Zipper {a} (A : Set a) : Set a where
   constructor mkZipper
   field context : List A
@@ -20,13 +32,28 @@ record Zipper {a} (A : Set a) : Set a where
   toList = List.reverse context List.++ value
 open Zipper public
 
+-- Embedding Lists as Zippers without any context
+fromList : ∀ {a} {A : Set a} → List A → Zipper A
+fromList = mkZipper []
+
+-- Fundamental operations of a Zipper: Moving around
+------------------------------------------------------------------------
+
 module _ {a} {A : Set a} where
 
- length : Zipper A → ℕ
- length (mkZipper ctx val) = List.length ctx + List.length val
+ left : Zipper A → Maybe (Zipper A)
+ left (mkZipper []        val) = nothing
+ left (mkZipper (x ∷ ctx) val) = just (mkZipper ctx (x ∷ val))
 
- fromList : List A → Zipper A
- fromList = mkZipper []
+ right : Zipper A → Maybe (Zipper A)
+ right (mkZipper ctx [])        = nothing
+ right (mkZipper ctx (x ∷ val)) = just (mkZipper (x ∷ ctx) val)
+
+
+-- Focus-respecting operations
+------------------------------------------------------------------------
+
+module _ {a} {A : Set a} where
 
  reverse : Zipper A → Zipper A
  reverse (mkZipper ctx val) = mkZipper val ctx
@@ -43,20 +70,14 @@ module _ {a} {A : Set a} where
  _++ʳ_ : Zipper A → List A → Zipper A
  mkZipper ctx val ++ʳ xs = mkZipper ctx (val List.++ xs)
 
- left : Zipper A → Maybe (Zipper A)
- left (mkZipper []        val) = nothing
- left (mkZipper (x ∷ ctx) val) = just (mkZipper ctx (x ∷ val))
 
- right : Zipper A → Maybe (Zipper A)
- right (mkZipper ctx [])        = nothing
- right (mkZipper ctx (x ∷ val)) = just (mkZipper (x ∷ ctx) val)
+-- List-like operations
+------------------------------------------------------------------------
 
- allFociIn : List A → List A → List (Zipper A)
- allFociIn ctx []           = List.[ mkZipper ctx [] ]
- allFociIn ctx xxs@(x ∷ xs) = mkZipper ctx xxs ∷ allFociIn (x ∷ ctx) xs
+module _ {a} {A : Set a} where
 
- allFoci : List A → List (Zipper A)
- allFoci = allFociIn []
+ length : Zipper A → ℕ
+ length (mkZipper ctx val) = List.length ctx + List.length val
 
 module _ {a b} {A : Set a} {B : Set b} where
 
@@ -65,3 +86,16 @@ module _ {a b} {A : Set a} {B : Set b} where
 
  foldr : (A → B → B) → B → Zipper A → B
  foldr c n (mkZipper ctx val) = List.foldl (flip c) (List.foldr c n val) ctx
+
+
+-- Generating all the possible foci of a list
+------------------------------------------------------------------------
+
+module _ {a} {A : Set a} where
+
+ allFociIn : List A → List A → List (Zipper A)
+ allFociIn ctx []           = List.[ mkZipper ctx [] ]
+ allFociIn ctx xxs@(x ∷ xs) = mkZipper ctx xxs ∷ allFociIn (x ∷ ctx) xs
+
+ allFoci : List A → List (Zipper A)
+ allFoci = allFociIn []
