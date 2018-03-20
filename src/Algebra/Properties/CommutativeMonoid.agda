@@ -169,3 +169,12 @@ sumTable-fromList (x List.∷ xs) = PE.cong₂ _+_ PE.refl (sumTable-fromList xs
 sumTable-toList : ∀ {n} (t : Table Carrier n) → sumTable t ≡ sum (toList t)
 sumTable-toList {ℕ.zero} _ = PE.refl
 sumTable-toList {ℕ.suc n} _ = PE.cong₂ _+_ PE.refl (sumTable-toList {n} _)
+
+
+sumTable-idem-replicate : ∀ n {x : Carrier} → _+_ IdempotentOn x → sumTable (Table.replicate {ℕ.suc n} x) ≈ x
+sumTable-idem-replicate ℕ.zero idem = proj₂ +-identity _
+sumTable-idem-replicate (ℕ.suc n) {x} idem = begin
+  x + (x + sumTable (Table.replicate {n} x))   ≈⟨ sym (+-assoc _ _ _) ⟩
+  (x + x) + sumTable (Table.replicate {n} x)   ≈⟨ +-cong idem refl ⟩
+  x + sumTable (Table.replicate {n} x)         ≈⟨ sumTable-idem-replicate n idem ⟩
+  x ∎
