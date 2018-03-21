@@ -3,16 +3,16 @@
 
 <a id="30" class="Keyword">module</a> <a id="37" href="Agda.Builtin.Bool.html" class="Module">Agda.Builtin.Bool</a> <a id="55" class="Keyword">where</a>
 
-<a id="62" class="Keyword">data</a> <a id="67" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a> <a id="72" class="Symbol">:</a> <a id="74" class="PrimitiveType">Set</a> <a id="78" class="Keyword">where</a>
-  <a id="86" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor">false</a> <a id="92" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor">true</a> <a id="97" class="Symbol">:</a> <a id="99" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a>
+<a id="62" class="Keyword">data</a> <a id="Bool" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a> <a id="72" class="Symbol">:</a> <a id="74" class="PrimitiveType">Set</a> <a id="78" class="Keyword">where</a>
+  <a id="Bool.false" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor">false</a> <a id="Bool.true" href="Agda.Builtin.Bool.html#Bool.true" class="InductiveConstructor">true</a> <a id="97" class="Symbol">:</a> <a id="99" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a>
 
-<a id="105" class="Symbol">{-#</a> <a id="109" class="Keyword">BUILTIN</a> BOOL  <a id="123" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a>  <a id="129" class="Symbol">#-}</a>
-<a id="133" class="Symbol">{-#</a> <a id="137" class="Keyword">BUILTIN</a> FALSE <a id="151" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor">false</a> <a id="157" class="Symbol">#-}</a>
-<a id="161" class="Symbol">{-#</a> <a id="165" class="Keyword">BUILTIN</a> TRUE  <a id="179" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor">true</a>  <a id="185" class="Symbol">#-}</a>
+<a id="105" class="Symbol">{-#</a> <a id="109" class="Keyword">BUILTIN</a> BOOL  <a id="123" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a>  <a id="129" class="Symbol">#-}</a>
+<a id="133" class="Symbol">{-#</a> <a id="137" class="Keyword">BUILTIN</a> FALSE <a id="151" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor">false</a> <a id="157" class="Symbol">#-}</a>
+<a id="161" class="Symbol">{-#</a> <a id="165" class="Keyword">BUILTIN</a> TRUE  <a id="179" href="Agda.Builtin.Bool.html#Bool.true" class="InductiveConstructor">true</a>  <a id="185" class="Symbol">#-}</a>
 
-<a id="190" class="Symbol">{-#</a> <a id="194" class="Keyword">COMPILE</a> UHC <a id="206" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a> = data __BOOL__ (__FALSE__ | __TRUE__) <a id="250" class="Symbol">#-}</a>
+<a id="190" class="Symbol">{-#</a> <a id="194" class="Keyword">COMPILE</a> UHC <a id="206" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a> = data __BOOL__ (__FALSE__ | __TRUE__) <a id="250" class="Symbol">#-}</a>
 
-<a id="255" class="Symbol">{-#</a> <a id="259" class="Keyword">COMPILE</a> JS <a id="270" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a>  = function (x,v) { return ((x)? v[&quot;true&quot;]() : v[&quot;false&quot;]()); } <a id="339" class="Symbol">#-}</a>
-<a id="343" class="Symbol">{-#</a> <a id="347" class="Keyword">COMPILE</a> JS <a id="358" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor">false</a> = false <a id="372" class="Symbol">#-}</a>
-<a id="376" class="Symbol">{-#</a> <a id="380" class="Keyword">COMPILE</a> JS <a id="391" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor">true</a>  = true  <a id="405" class="Symbol">#-}</a>
+<a id="255" class="Symbol">{-#</a> <a id="259" class="Keyword">COMPILE</a> JS <a id="270" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a>  = function (x,v) { return ((x)? v[&quot;true&quot;]() : v[&quot;false&quot;]()); } <a id="339" class="Symbol">#-}</a>
+<a id="343" class="Symbol">{-#</a> <a id="347" class="Keyword">COMPILE</a> JS <a id="358" href="Agda.Builtin.Bool.html#Bool.false" class="InductiveConstructor">false</a> = false <a id="372" class="Symbol">#-}</a>
+<a id="376" class="Symbol">{-#</a> <a id="380" class="Keyword">COMPILE</a> JS <a id="391" href="Agda.Builtin.Bool.html#Bool.true" class="InductiveConstructor">true</a>  = true  <a id="405" class="Symbol">#-}</a>
 </pre></body></html>

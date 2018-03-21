@@ -6,51 +6,51 @@
 <a id="142" class="Comment">------------------------------------------------------------------------</a>
 <a id="215" class="Keyword">module</a> <a id="222" href="Data.Char.Base.html" class="Module">Data.Char.Base</a> <a id="237" class="Keyword">where</a>
 
-<a id="244" class="Keyword">open</a> <a id="249" class="Keyword">import</a> <a id="256" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>    <a id="273" class="Keyword">using</a> <a id="279" class="Symbol">(</a><a id="280" href="Agda.Builtin.Nat.html#97" class="Datatype">ℕ</a><a id="281" class="Symbol">)</a>
-<a id="283" class="Keyword">open</a> <a id="288" class="Keyword">import</a> <a id="295" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a>   <a id="312" class="Keyword">using</a> <a id="318" class="Symbol">(</a><a id="319" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a><a id="323" class="Symbol">)</a>
-<a id="325" class="Keyword">open</a> <a id="330" class="Keyword">import</a> <a id="337" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="354" class="Keyword">using</a> <a id="360" class="Symbol">(</a><a id="361" href="Agda.Builtin.String.html#165" class="Postulate">String</a><a id="367" class="Symbol">)</a>
+<a id="244" class="Keyword">open</a> <a id="249" class="Keyword">import</a> <a id="256" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>    <a id="273" class="Keyword">using</a> <a id="279" class="Symbol">(</a><a id="280" href="Agda.Builtin.Nat.html#Nat" class="Datatype">ℕ</a><a id="281" class="Symbol">)</a>
+<a id="283" class="Keyword">open</a> <a id="288" class="Keyword">import</a> <a id="295" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a>   <a id="312" class="Keyword">using</a> <a id="318" class="Symbol">(</a><a id="319" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a><a id="323" class="Symbol">)</a>
+<a id="325" class="Keyword">open</a> <a id="330" class="Keyword">import</a> <a id="337" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="354" class="Keyword">using</a> <a id="360" class="Symbol">(</a><a id="361" href="Agda.Builtin.String.html#String" class="Postulate">String</a><a id="367" class="Symbol">)</a>
 
 <a id="370" class="Comment">------------------------------------------------------------------------</a>
 <a id="443" class="Comment">-- Re-export the type from the Core module</a>
 
-<a id="487" class="Keyword">open</a> <a id="492" class="Keyword">import</a> <a id="499" href="Data.Char.Core.html" class="Module">Data.Char.Core</a> <a id="514" class="Keyword">using</a> <a id="520" class="Symbol">(</a><a id="521" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a><a id="525" class="Symbol">)</a> <a id="527" class="Keyword">public</a>
+<a id="487" class="Keyword">open</a> <a id="492" class="Keyword">import</a> <a id="499" href="Data.Char.Core.html" class="Module">Data.Char.Core</a> <a id="514" class="Keyword">using</a> <a id="520" class="Symbol">(</a><a id="521" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a><a id="525" class="Symbol">)</a> <a id="527" class="Keyword">public</a>
 
 <a id="535" class="Comment">------------------------------------------------------------------------</a>
 <a id="608" class="Comment">-- Primitive operations</a>
 
 <a id="633" class="Keyword">open</a> <a id="638" class="Keyword">import</a> <a id="645" href="Agda.Builtin.Char.html" class="Module">Agda.Builtin.Char</a>
-<a id="663" class="Keyword">open</a> <a id="668" class="Keyword">import</a> <a id="675" href="Agda.Builtin.String.html" class="Module">Agda.Builtin.String</a> <a id="695" class="Keyword">using</a> <a id="701" class="Symbol">(</a><a id="702" href="Agda.Builtin.String.html#399" class="Primitive">primShowChar</a><a id="714" class="Symbol">)</a>
+<a id="663" class="Keyword">open</a> <a id="668" class="Keyword">import</a> <a id="675" href="Agda.Builtin.String.html" class="Module">Agda.Builtin.String</a> <a id="695" class="Keyword">using</a> <a id="701" class="Symbol">(</a><a id="702" href="Agda.Builtin.String.html#primShowChar" class="Primitive">primShowChar</a><a id="714" class="Symbol">)</a>
 
-<a id="717" href="Data.Char.Base.html#717" class="Function">show</a> <a id="722" class="Symbol">:</a> <a id="724" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="729" class="Symbol">→</a> <a id="731" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
-<a id="738" href="Data.Char.Base.html#717" class="Function">show</a> <a id="743" class="Symbol">=</a> <a id="745" href="Agda.Builtin.String.html#399" class="Primitive">primShowChar</a>
+<a id="show" href="Data.Char.Base.html#show" class="Function">show</a> <a id="722" class="Symbol">:</a> <a id="724" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="729" class="Symbol">→</a> <a id="731" href="Agda.Builtin.String.html#String" class="Postulate">String</a>
+<a id="738" href="Data.Char.Base.html#show" class="Function">show</a> <a id="743" class="Symbol">=</a> <a id="745" href="Agda.Builtin.String.html#primShowChar" class="Primitive">primShowChar</a>
 
-<a id="759" href="Data.Char.Base.html#759" class="Function">isLower</a> <a id="767" class="Symbol">:</a> <a id="769" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="774" class="Symbol">→</a> <a id="776" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a>
-<a id="781" href="Data.Char.Base.html#759" class="Function">isLower</a> <a id="789" class="Symbol">=</a> <a id="791" href="Agda.Builtin.Char.html#182" class="Primitive">primIsLower</a>
+<a id="isLower" href="Data.Char.Base.html#isLower" class="Function">isLower</a> <a id="767" class="Symbol">:</a> <a id="769" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="774" class="Symbol">→</a> <a id="776" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a>
+<a id="781" href="Data.Char.Base.html#isLower" class="Function">isLower</a> <a id="789" class="Symbol">=</a> <a id="791" href="Agda.Builtin.Char.html#primIsLower" class="Primitive">primIsLower</a>
 
-<a id="804" href="Data.Char.Base.html#804" class="Function">isDigit</a> <a id="812" class="Symbol">:</a> <a id="814" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="819" class="Symbol">→</a> <a id="821" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a>
-<a id="826" href="Data.Char.Base.html#804" class="Function">isDigit</a> <a id="834" class="Symbol">=</a> <a id="836" href="Agda.Builtin.Char.html#194" class="Primitive">primIsDigit</a>
+<a id="isDigit" href="Data.Char.Base.html#isDigit" class="Function">isDigit</a> <a id="812" class="Symbol">:</a> <a id="814" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="819" class="Symbol">→</a> <a id="821" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a>
+<a id="826" href="Data.Char.Base.html#isDigit" class="Function">isDigit</a> <a id="834" class="Symbol">=</a> <a id="836" href="Agda.Builtin.Char.html#primIsDigit" class="Primitive">primIsDigit</a>
 
-<a id="849" href="Data.Char.Base.html#849" class="Function">isAlpha</a> <a id="857" class="Symbol">:</a> <a id="859" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="864" class="Symbol">→</a> <a id="866" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a>
-<a id="871" href="Data.Char.Base.html#849" class="Function">isAlpha</a> <a id="879" class="Symbol">=</a> <a id="881" href="Agda.Builtin.Char.html#206" class="Primitive">primIsAlpha</a>
+<a id="isAlpha" href="Data.Char.Base.html#isAlpha" class="Function">isAlpha</a> <a id="857" class="Symbol">:</a> <a id="859" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="864" class="Symbol">→</a> <a id="866" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a>
+<a id="871" href="Data.Char.Base.html#isAlpha" class="Function">isAlpha</a> <a id="879" class="Symbol">=</a> <a id="881" href="Agda.Builtin.Char.html#primIsAlpha" class="Primitive">primIsAlpha</a>
 
-<a id="894" href="Data.Char.Base.html#894" class="Function">isSpace</a> <a id="902" class="Symbol">:</a> <a id="904" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="909" class="Symbol">→</a> <a id="911" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a>
-<a id="916" href="Data.Char.Base.html#894" class="Function">isSpace</a> <a id="924" class="Symbol">=</a> <a id="926" href="Agda.Builtin.Char.html#218" class="Primitive">primIsSpace</a>
+<a id="isSpace" href="Data.Char.Base.html#isSpace" class="Function">isSpace</a> <a id="902" class="Symbol">:</a> <a id="904" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="909" class="Symbol">→</a> <a id="911" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a>
+<a id="916" href="Data.Char.Base.html#isSpace" class="Function">isSpace</a> <a id="924" class="Symbol">=</a> <a id="926" href="Agda.Builtin.Char.html#primIsSpace" class="Primitive">primIsSpace</a>
 
-<a id="939" href="Data.Char.Base.html#939" class="Function">isAscii</a> <a id="947" class="Symbol">:</a> <a id="949" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="954" class="Symbol">→</a> <a id="956" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a>
-<a id="961" href="Data.Char.Base.html#939" class="Function">isAscii</a> <a id="969" class="Symbol">=</a> <a id="971" href="Agda.Builtin.Char.html#230" class="Primitive">primIsAscii</a>
+<a id="isAscii" href="Data.Char.Base.html#isAscii" class="Function">isAscii</a> <a id="947" class="Symbol">:</a> <a id="949" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="954" class="Symbol">→</a> <a id="956" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a>
+<a id="961" href="Data.Char.Base.html#isAscii" class="Function">isAscii</a> <a id="969" class="Symbol">=</a> <a id="971" href="Agda.Builtin.Char.html#primIsAscii" class="Primitive">primIsAscii</a>
 
-<a id="984" href="Data.Char.Base.html#984" class="Function">isLatin1</a> <a id="993" class="Symbol">:</a> <a id="995" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="1000" class="Symbol">→</a> <a id="1002" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a>
-<a id="1007" href="Data.Char.Base.html#984" class="Function">isLatin1</a> <a id="1016" class="Symbol">=</a> <a id="1018" href="Agda.Builtin.Char.html#246" class="Primitive">primIsLatin1</a>
+<a id="isLatin1" href="Data.Char.Base.html#isLatin1" class="Function">isLatin1</a> <a id="993" class="Symbol">:</a> <a id="995" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="1000" class="Symbol">→</a> <a id="1002" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a>
+<a id="1007" href="Data.Char.Base.html#isLatin1" class="Function">isLatin1</a> <a id="1016" class="Symbol">=</a> <a id="1018" href="Agda.Builtin.Char.html#primIsLatin1" class="Primitive">primIsLatin1</a>
 
-<a id="1032" href="Data.Char.Base.html#1032" class="Function">isPrint</a> <a id="1040" class="Symbol">:</a> <a id="1042" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="1047" class="Symbol">→</a> <a id="1049" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a>
-<a id="1054" href="Data.Char.Base.html#1032" class="Function">isPrint</a> <a id="1062" class="Symbol">=</a> <a id="1064" href="Agda.Builtin.Char.html#259" class="Primitive">primIsPrint</a>
+<a id="isPrint" href="Data.Char.Base.html#isPrint" class="Function">isPrint</a> <a id="1040" class="Symbol">:</a> <a id="1042" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="1047" class="Symbol">→</a> <a id="1049" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a>
+<a id="1054" href="Data.Char.Base.html#isPrint" class="Function">isPrint</a> <a id="1062" class="Symbol">=</a> <a id="1064" href="Agda.Builtin.Char.html#primIsPrint" class="Primitive">primIsPrint</a>
 
-<a id="1077" href="Data.Char.Base.html#1077" class="Function">isHexDigit</a> <a id="1088" class="Symbol">:</a> <a id="1090" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="1095" class="Symbol">→</a> <a id="1097" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a>
-<a id="1102" href="Data.Char.Base.html#1077" class="Function">isHexDigit</a> <a id="1113" class="Symbol">=</a> <a id="1115" href="Agda.Builtin.Char.html#271" class="Primitive">primIsHexDigit</a>
+<a id="isHexDigit" href="Data.Char.Base.html#isHexDigit" class="Function">isHexDigit</a> <a id="1088" class="Symbol">:</a> <a id="1090" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="1095" class="Symbol">→</a> <a id="1097" href="Agda.Builtin.Bool.html#Bool" class="Datatype">Bool</a>
+<a id="1102" href="Data.Char.Base.html#isHexDigit" class="Function">isHexDigit</a> <a id="1113" class="Symbol">=</a> <a id="1115" href="Agda.Builtin.Char.html#primIsHexDigit" class="Primitive">primIsHexDigit</a>
 
-<a id="1131" href="Data.Char.Base.html#1131" class="Function">toNat</a> <a id="1137" class="Symbol">:</a> <a id="1139" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="1144" class="Symbol">→</a> <a id="1146" href="Agda.Builtin.Nat.html#97" class="Datatype">ℕ</a>
-<a id="1148" href="Data.Char.Base.html#1131" class="Function">toNat</a> <a id="1154" class="Symbol">=</a> <a id="1156" href="Agda.Builtin.Char.html#342" class="Primitive">primCharToNat</a>
+<a id="toNat" href="Data.Char.Base.html#toNat" class="Function">toNat</a> <a id="1137" class="Symbol">:</a> <a id="1139" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a> <a id="1144" class="Symbol">→</a> <a id="1146" href="Agda.Builtin.Nat.html#%E2%84%95" class="Datatype">ℕ</a>
+<a id="1148" href="Data.Char.Base.html#toNat" class="Function">toNat</a> <a id="1154" class="Symbol">=</a> <a id="1156" href="Agda.Builtin.Char.html#primCharToNat" class="Primitive">primCharToNat</a>
 
-<a id="1171" href="Data.Char.Base.html#1171" class="Function">fromNat</a> <a id="1179" class="Symbol">:</a> <a id="1181" href="Agda.Builtin.Nat.html#97" class="Datatype">ℕ</a> <a id="1183" class="Symbol">→</a> <a id="1185" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a>
-<a id="1190" href="Data.Char.Base.html#1171" class="Function">fromNat</a> <a id="1198" class="Symbol">=</a> <a id="1200" href="Agda.Builtin.Char.html#371" class="Primitive">primNatToChar</a>
+<a id="fromNat" href="Data.Char.Base.html#fromNat" class="Function">fromNat</a> <a id="1179" class="Symbol">:</a> <a id="1181" href="Agda.Builtin.Nat.html#%E2%84%95" class="Datatype">ℕ</a> <a id="1183" class="Symbol">→</a> <a id="1185" href="Agda.Builtin.Char.html#Char" class="Postulate">Char</a>
+<a id="1190" href="Data.Char.Base.html#fromNat" class="Function">fromNat</a> <a id="1198" class="Symbol">=</a> <a id="1200" href="Agda.Builtin.Char.html#primNatToChar" class="Primitive">primNatToChar</a>
 </pre></body></html>

@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Relation.Equality.Propositional</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Equality over lists using propositional equality</a>
+<a id="158" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="232" class="Keyword">open</a> <a id="237" class="Keyword">import</a> <a id="244" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+
+<a id="261" class="Keyword">module</a> <a id="268" href="Data.List.Relation.Equality.Propositional.html" class="Module">Data.List.Relation.Equality.Propositional</a> <a id="310" class="Symbol">{</a><a id="311" href="Data.List.Relation.Equality.Propositional.html#311" class="Bound">a</a><a id="312" class="Symbol">}</a> <a id="314" class="Symbol">{</a><a id="315" href="Data.List.Relation.Equality.Propositional.html#315" class="Bound">A</a> <a id="317" class="Symbol">:</a> <a id="319" class="PrimitiveType">Set</a> <a id="323" href="Data.List.Relation.Equality.Propositional.html#311" class="Bound">a</a><a id="324" class="Symbol">}</a> <a id="326" class="Keyword">where</a>
+
+<a id="333" class="Keyword">open</a> <a id="338" class="Keyword">import</a> <a id="345" href="Data.List.html" class="Module">Data.List</a>
+<a id="355" class="Keyword">import</a> <a id="362" href="Data.List.Relation.Equality.Setoid.html" class="Module">Data.List.Relation.Equality.Setoid</a> <a id="397" class="Symbol">as</a> <a id="400" class="Module">SetoidEquality</a>
+<a id="415" class="Keyword">open</a> <a id="420" class="Keyword">import</a> <a id="427" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+
+<a id="466" class="Comment">------------------------------------------------------------------------</a>
+<a id="539" class="Comment">-- Publically re-export everything from setoid equality</a>
+
+<a id="596" class="Keyword">open</a> <a id="601" href="Data.List.Relation.Equality.Setoid.html" class="Module">SetoidEquality</a> <a id="616" class="Symbol">(</a><a id="617" href="Relation.Binary.PropositionalEquality.html#setoid" class="Function">setoid</a> <a id="624" href="Data.List.Relation.Equality.Propositional.html#315" class="Bound">A</a><a id="625" class="Symbol">)</a> <a id="627" class="Keyword">public</a>
+
+<a id="635" class="Comment">------------------------------------------------------------------------</a>
+<a id="708" class="Comment">-- ≋ is propositional</a>
+
+<a id="≋⇒≡" href="Data.List.Relation.Equality.Propositional.html#%E2%89%8B%E2%87%92%E2%89%A1" class="Function">≋⇒≡</a> <a id="735" class="Symbol">:</a> <a id="737" href="Data.List.Relation.Equality.Setoid.html#742" class="Function Operator">_≋_</a> <a id="741" href="Relation.Binary.Core.html#_%E2%87%92_" class="Function Operator">⇒</a> <a id="743" href="Agda.Builtin.Equality.html#_%E2%89%A1_" class="Datatype Operator">_≡_</a>
+<a id="747" href="Data.List.Relation.Equality.Propositional.html#%E2%89%8B%E2%87%92%E2%89%A1" class="Function">≋⇒≡</a> <a id="751" href="Data.List.Relation.Pointwise.html#865" class="InductiveConstructor">[]</a>             <a id="766" class="Symbol">=</a> <a id="768" href="Agda.Builtin.Equality.html#_%E2%89%A1_.refl" class="InductiveConstructor">refl</a>
+<a id="773" href="Data.List.Relation.Equality.Propositional.html#%E2%89%8B%E2%87%92%E2%89%A1" class="Function">≋⇒≡</a> <a id="777" class="Symbol">(</a><a id="778" href="Agda.Builtin.Equality.html#_%E2%89%A1_.refl" class="InductiveConstructor">refl</a> <a id="783" href="Data.List.Relation.Pointwise.html#893" class="InductiveConstructor Operator">∷</a> <a id="785" href="Data.List.Relation.Equality.Propositional.html#785" class="Bound">xs≈ys</a><a id="790" class="Symbol">)</a> <a id="792" class="Symbol">=</a> <a id="794" href="Relation.Binary.PropositionalEquality.html#cong" class="Function">cong</a> <a id="799" class="Symbol">(_</a> <a id="802" href="Agda.Builtin.List.html#List._%E2%88%B7_" class="InductiveConstructor Operator">∷_</a><a id="804" class="Symbol">)</a> <a id="806" class="Symbol">(</a><a id="807" href="Data.List.Relation.Equality.Propositional.html#%E2%89%8B%E2%87%92%E2%89%A1" class="Function">≋⇒≡</a> <a id="811" href="Data.List.Relation.Equality.Propositional.html#785" class="Bound">xs≈ys</a><a id="816" class="Symbol">)</a>
+
+<a id="≡⇒≋" href="Data.List.Relation.Equality.Propositional.html#%E2%89%A1%E2%87%92%E2%89%8B" class="Function">≡⇒≋</a> <a id="823" class="Symbol">:</a> <a id="825" href="Agda.Builtin.Equality.html#_%E2%89%A1_" class="Datatype Operator">_≡_</a> <a id="829" href="Relation.Binary.Core.html#_%E2%87%92_" class="Function Operator">⇒</a> <a id="831" href="Data.List.Relation.Equality.Setoid.html#742" class="Function Operator">_≋_</a>
+<a id="835" href="Data.List.Relation.Equality.Propositional.html#%E2%89%A1%E2%87%92%E2%89%8B" class="Function">≡⇒≋</a> <a id="839" href="Agda.Builtin.Equality.html#_%E2%89%A1_.refl" class="InductiveConstructor">refl</a> <a id="844" class="Symbol">=</a> <a id="846" href="Data.List.Relation.Equality.Setoid.html#923" class="Function">≋-refl</a>
+</pre></body></html>
