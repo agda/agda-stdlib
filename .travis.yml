@@ -54,6 +54,7 @@ install:
     cp -a $HOME/.ghc $HOME/.cabsnap/ghc;
     cp -a $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin $HOME/installplan.txt $HOME/.cabsnap/;
   # generating Everything.agda
+  - cabal install lib.cabal
   - runghc GenerateEverything.hs
 
 script:
