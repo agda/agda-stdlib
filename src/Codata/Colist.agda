@@ -32,6 +32,11 @@ module _ {ℓ} {A : Set ℓ} where
  replicate zero    a = []
  replicate (suc n) a = a ∷ λ where .force → replicate (n .force) a
 
+ infixr 5 _++_
+ _++_ : ∀ {i} → Colist A i → Colist A i → Colist A i
+ []       ++ ys = ys
+ (x ∷ xs) ++ ys = x ∷ λ where .force → xs .force ++ ys
+
  lookup : ℕ → Colist A ∞ → Maybe A
  lookup n       []       = nothing
  lookup zero    (a ∷ as) = just a
