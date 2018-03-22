@@ -91,6 +91,9 @@ Backwards compatible changes
   unzip : All (P ∩ Q) ⊆ All P ∩ All Q
   ```
 
+* Added new module `Data.List.Zipper`
+* Added new module `Data.List.Zipper.Properties`
+
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
   m+n≮m          : m + n ≮ m
