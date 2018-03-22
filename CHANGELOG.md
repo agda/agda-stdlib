@@ -8,7 +8,7 @@ Important changes since 0.15:
 Non-backwards compatible changes
 --------------------------------
 
-# Upgrade of `Algebra.Operations`
+#### Upgrade of `Algebra.Operations`
 
 * Previously `Algebra.Operations` was parameterised by a semiring, however several of the
   operators it defined depended only on the additive component. Therefore the modules have been
@@ -23,7 +23,7 @@ Non-backwards compatible changes
   
   Also the fixity of `_×_`, `_×′_` and `_^_` have all been increased by 1.
 
-# Other
+#### Other
 
 * `Relation.Binary.Consequences` no longer exports `Total`. The standard way of accessing it
   through `Relation.Binary` remains unchanged.
