@@ -8,6 +8,23 @@ Important changes since 0.15:
 Non-backwards compatible changes
 --------------------------------
 
+# Upgrade of `Algebra.Operations`
+
+* Previously `Algebra.Operations` was parameterised by a semiring, however several of the
+  operators it defined depended only on the additive component. Therefore the modules have been
+  rearranged to allow more fine-grained use depending on the current position in the algebra
+  heirarchy. Currently there exist two modules:
+  ```
+  Algebra.Operations.CommutativeMonoid
+  Algebra.Operations.Semiring
+  ```
+  where `Algebra.Operations.Semiring` exports all the definitions previously exported
+  by `Algebra.Operations`. More modules may be added in future as required.
+  
+  Also the fixity of `_×_`, `_×′_` and `_^_` have all been increased by 1.
+
+# Other
+
 * `Relation.Binary.Consequences` no longer exports `Total`. The standard way of accessing it
   through `Relation.Binary` remains unchanged.
 
@@ -69,6 +86,12 @@ Backwards compatible changes
   zeroʳ     : RightZero 0# _*_
   distribˡ  : _*_ DistributesOverˡ _+_
   distribʳ  : _*_ DistributesOverʳ _+_
+  ```
+
+* Added new functions to `Algebra.Operations.CommutativeMonoid`:
+  ```agda
+  sumₗ = List.foldr _+_ 0#
+  sumₜ = Table.foldr _+_ 0#
   ```
 
 * Added a new module `Function.Reasoning` for creating multi-stage function pipelines.
