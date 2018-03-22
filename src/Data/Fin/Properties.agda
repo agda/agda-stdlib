@@ -400,18 +400,21 @@ punchOut-cong′ i q = punchOut-cong i q
 --  Bijections on finite sets
 --------------------------------------------------------------------------------
 
-private
-  swap-lem₁ : ∀ {n} i (j : Fin n) → swap i j j ≡ i
-  swap-lem₁ i j with j ≟ i
-  swap-lem₁ i j | yes p = p
-  swap-lem₁ i j | no ¬p rewrite Dec.diag (j ≟ j) refl = refl
+-- A permuation that swaps the two given indices.
 
-  swap-lem₂ : ∀ {n} i (j : Fin n) → swap i j i ≡ j
-  swap-lem₂ i j rewrite Dec.diag (i ≟ i) refl = refl
-
-  swap-inverse : ∀ {n} (i j : Fin n) {k} → swap i j (swap j i k) ≡ k
+swap-perm : ∀ {n} → Fin n → Fin n → Fin n ↔ Fin n
+swap-perm {n} i j = record
+  { to = P.→-to-⟶ (swap i j)
+  ; from = P.→-to-⟶ (swap j i)
+  ; inverse-of = record
+    { left-inverse-of = λ _ → swap-inverse _ _
+    ; right-inverse-of = λ _ → swap-inverse _ _
+    }
+  }
+  where
+  swap-inverse : ∀ (i j : Fin n) {k} → swap i j (swap j i k) ≡ k
   swap-inverse i j {k} with k ≟ j
-  swap-inverse i j {.j} | yes P.refl rewrite Dec.diag (i ≟ i) refl = refl
+  swap-inverse i j {.j} | yes refl rewrite Dec.diag (i ≟ i) refl = refl
   swap-inverse i j {k} | no ¬p with k ≟ i
   swap-inverse i j {k} | no ¬p | yes q
     rewrite Dec.diag (j ≟ j) refl
@@ -421,18 +424,6 @@ private
     rewrite Dec.antidiag (k ≟ i) ¬q
           | Dec.antidiag (k ≟ j) ¬p
           = refl
-
--- A permuation that swaps the two given indices.
-
-swap-perm : ∀ {n} → Fin n → Fin n → Fin n ↔ Fin n
-swap-perm i j = record
-  { to = P.→-to-⟶ (swap i j)
-  ; from = P.→-to-⟶ (swap j i)
-  ; inverse-of = record
-    { left-inverse-of = λ _ → swap-inverse _ _
-    ; right-inverse-of = λ _ → swap-inverse _ _
-    }
-  }
 
 -- Given a permutation
 --
@@ -455,76 +446,83 @@ removeIn↔ {m}{n} i π = record
     }
   }
   where
+    πR = Inverse.to π ⟨$⟩_
+    πL = Inverse.from π ⟨$⟩_
+
     πi : Fin (ℕ.suc n)
-    πi = Inverse.to π ⟨$⟩ i
+    πi = πR i
 
     open P.≡-Reasoning
 
-    permute-≢ : ∀ {i j} → ¬ i ≡ j → (Inverse.to π ⟨$⟩ i) ≢ (Inverse.to π ⟨$⟩ j)
+    permute-≢ : ∀ {i j} → ¬ i ≡ j → πR i ≢ πR j
     permute-≢ p q = p (Inverse.injective π q)
 
-    to-punchOut : ∀ {j : Fin m} → πi ≢ (Inverse.to π ⟨$⟩ punchIn i j)
+    to-punchOut : ∀ {j : Fin m} → πi ≢ πR (punchIn i j)
     to-punchOut = permute-≢ (punchInᵢ≢i _ _) ∘ P.sym
 
-    from-punchOut : ∀ {j : Fin n} → i ≢ (Inverse.from π ⟨$⟩ punchIn πi j)
+    from-punchOut : ∀ {j : Fin n} → i ≢ πL (punchIn πi j)
     from-punchOut {j} p = punchInᵢ≢i πi j (
       begin
-        punchIn πi j                                        ≡⟨ P.sym (Inverse.right-inverse-of π _) ⟩
-        Inverse.to π ⟨$⟩ (Inverse.from π ⟨$⟩ punchIn πi j)  ≡⟨ P.cong (Inverse.to π ⟨$⟩_) (P.sym p) ⟩
-        πi                                                  ∎)
+        punchIn πi j            ≡⟨ P.sym (Inverse.right-inverse-of π _) ⟩
+        πR (πL (punchIn πi j))  ≡⟨ P.cong πR (P.sym p) ⟩
+        πi                      ∎)
 
     to : Fin m → Fin n
     to j = punchOut to-punchOut
 
     from : Fin n → Fin m
-    from j = punchOut {i = i} {Inverse.from π ⟨$⟩ punchIn πi j} from-punchOut
+    from j = punchOut {i = i} {πL (punchIn πi j)} from-punchOut
 
     left-inverse-of : ∀ j → from (to j) ≡ j
     left-inverse-of j =
       begin
-        from (to j)                                                                ≡⟨⟩
-        punchOut {i = i} {Inverse.from π ⟨$⟩ punchIn πi (punchOut to-punchOut)} _  ≡⟨ punchOut-cong′ i (P.cong (Inverse.from π ⟨$⟩_) (punchIn-punchOut {i = πi} _)) ⟩
-        punchOut {i = i} {Inverse.from π ⟨$⟩ (Inverse.to π ⟨$⟩ punchIn i j)}    _  ≡⟨ punchOut-cong′ i (Inverse.left-inverse-of π _) ⟩
-        punchOut {i = i} {punchIn i j}                                          _  ≡⟨ punchOut-punchIn {i = i} _ ⟩
-        j                                                                          ∎
+        from (to j)                                                  ≡⟨⟩
+        punchOut {i = i} {πL (punchIn πi (punchOut to-punchOut))} _  ≡⟨ punchOut-cong′ i (P.cong πL (punchIn-punchOut {i = πi} _)) ⟩
+        punchOut {i = i} {πL (πR (punchIn i j))}                  _  ≡⟨ punchOut-cong′ i (Inverse.left-inverse-of π _) ⟩
+        punchOut {i = i} {punchIn i j}                            _  ≡⟨ punchOut-punchIn {i = i} _ ⟩
+        j                                                            ∎
 
     right-inverse-of : ∀ j → to (from j) ≡ j
     right-inverse-of j =
       begin
-        to (from j)                                                                ≡⟨⟩
-        punchOut {i = πi} {Inverse.to π ⟨$⟩ punchIn i (punchOut from-punchOut)} _  ≡⟨ punchOut-cong′ πi (P.cong (Inverse.to π ⟨$⟩_) (punchIn-punchOut {i = i} _)) ⟩
-        punchOut {i = πi} {Inverse.to π ⟨$⟩ (Inverse.from π ⟨$⟩ punchIn πi j)}  _  ≡⟨ punchOut-cong′ πi (Inverse.right-inverse-of π _) ⟩
-        punchOut {i = πi} {punchIn πi j}                                        _  ≡⟨ punchOut-punchIn {i = πi} _ ⟩
-        j                                                                          ∎
+        to (from j)                                                    ≡⟨⟩
+        punchOut {i = πi} {πR (punchIn i (punchOut from-punchOut))} _  ≡⟨ punchOut-cong′ πi (P.cong πR (punchIn-punchOut {i = i} _)) ⟩
+        punchOut {i = πi} {πR (πL (punchIn πi j))}                  _  ≡⟨ punchOut-cong′ πi (Inverse.right-inverse-of π _) ⟩
+        punchOut {i = πi} {punchIn πi j}                            _  ≡⟨ punchOut-punchIn {i = πi} _ ⟩
+        j                                                              ∎
 
-punchIn-permute :
-  ∀ {n} (π : Fin (ℕ.suc n) ↔ Fin (ℕ.suc n)) i (j : Fin n)
-  → Inverse.to π ⟨$⟩ (punchIn i j) ≡
-    punchIn (Inverse.to π ⟨$⟩ i) (Inverse.to (removeIn↔ i π) ⟨$⟩ j)
-punchIn-permute π i j =
-  begin
-    Inverse.to π ⟨$⟩ (punchIn i j)                                       ≡⟨ P.sym (punchIn-punchOut {i = πi} _) ⟩
-    punchIn πi (punchOut {i = πi} {Inverse.to π ⟨$⟩ (punchIn i j)} lem)  ≡⟨⟩
-    punchIn πi (Inverse.to (removeIn↔ i π) ⟨$⟩ j)                        ∎
-  where
-    open P.≡-Reasoning
+module _ {n} (π : Fin (ℕ.suc n) ↔ Fin (ℕ.suc n)) where
+  private
+    πR = Inverse.to π ⟨$⟩_
+    πL = Inverse.from π ⟨$⟩_
 
-    πi = Inverse.to π ⟨$⟩ i
+  punchIn-permute :
+    ∀ i (j : Fin n)
+    → πR (punchIn i j) ≡ punchIn (πR i) (Inverse.to (removeIn↔ i π) ⟨$⟩ j)
+  punchIn-permute i j =
+    begin
+      πR (punchIn i j)                                       ≡⟨ P.sym (punchIn-punchOut {i = πi} _) ⟩
+      punchIn πi (punchOut {i = πi} {πR (punchIn i j)} lem)  ≡⟨⟩
+      punchIn πi (Inverse.to (removeIn↔ i π) ⟨$⟩ j)          ∎
+    where
+      open P.≡-Reasoning
 
-    lem : ¬ πi ≡ Inverse.to π ⟨$⟩ punchIn i j
-    lem p = punchInᵢ≢i i j (Inverse.injective π (P.sym p))
+      πi = πR i
 
-punchIn-permute′ :
-  ∀ {n} π i (j : Fin n)
-  → Inverse.to π ⟨$⟩ (punchIn (Inverse.from π ⟨$⟩ i) j) ≡
-    punchIn i (Inverse.to (removeIn↔ (Inverse.from π ⟨$⟩ i) π) ⟨$⟩ j)
-punchIn-permute′ π i j =
-  begin
-    Inverse.to π ⟨$⟩ (punchIn (Inverse.from π ⟨$⟩ i) j)                                                         ≡⟨ punchIn-permute π _ _ ⟩
-    punchIn (Inverse.to π ⟨$⟩ (Inverse.from π ⟨$⟩ i)) (Inverse.to (removeIn↔ (Inverse.from π ⟨$⟩ i) π) ⟨$⟩ j)   ≡⟨ P.cong₂ punchIn (Inverse.right-inverse-of π i) P.refl ⟩
-    punchIn i (Inverse.to (removeIn↔ (Inverse.from π ⟨$⟩ i) π) ⟨$⟩ j)                                           ∎
-  where
-    open P.≡-Reasoning
+      lem : ¬ πi ≡ πR (punchIn i j)
+      lem p = punchInᵢ≢i i j (Inverse.injective π (P.sym p))
+
+  punchIn-permute′ :
+    ∀ i (j : Fin n)
+    → πR (punchIn (πL i) j) ≡
+      punchIn i (Inverse.to (removeIn↔ (πL i) π) ⟨$⟩ j)
+  punchIn-permute′ i j =
+    begin
+      πR (punchIn (πL i) j)                                         ≡⟨ punchIn-permute _ _ ⟩
+      punchIn (πR (πL i)) (Inverse.to (removeIn↔ (πL i) π) ⟨$⟩ j)   ≡⟨ P.cong₂ punchIn (Inverse.right-inverse-of π i) P.refl ⟩
+      punchIn i (Inverse.to (removeIn↔ (πL i) π) ⟨$⟩ j)             ∎
+    where
+      open P.≡-Reasoning
 
 -- If there is a bijection between finite sets of size 'm' and 'n', then
 -- 'm' = 'n'.
