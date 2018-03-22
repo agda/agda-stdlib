@@ -46,6 +46,11 @@ anticipated any time soon, they may eventually be removed in some future release
   isDecTotalOrder⟶isStrictTotalOrder  ↦ <-isStrictTotalOrder₂
   ```
 
+* In `IsStrictPartialOrder` in `Relation.Binary`:
+  ```agda
+  asymmetric ↦ asym
+  ```
+
 Removed features
 ----------------
 
@@ -91,8 +96,7 @@ Backwards compatible changes
   unzip : All (P ∩ Q) ⊆ All P ∩ All Q
   ```
 
-* Added new module `Data.List.Zipper`
-* Added new module `Data.List.Zipper.Properties`
+* Added new modules `Data.List.Zipper` and `Data.List.Zipper.Properties`.
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
@@ -118,10 +122,21 @@ Backwards compatible changes
   swap-involutive : swap ∘ swap ≗ id
   ```
 
-* Added new types to `Relation.Binary`:
+* Added new types to `Relation.Binary.Core`:
   ```agda
   P Respectsʳ _∼_ = ∀ {x} → (P x)      Respects _∼_
   P Respectsˡ _∼_ = ∀ {y} → (flip P y) Respects _∼_
+  ```
+  Records in `Relation.Binary` export these in addition to the standard `Respects₂` proofs.
+  e.g. `IsStrictPartialOrder` exports:
+  ```agda
+  <-respˡ-≈ : _<_ Respectsˡ _≈_
+  <-respʳ-≈ : _<_ Respectsʳ _≈_
+  ```
+
+* Added new proof to `IsStrictTotalOrder` and `StrictTotalOrder` in `Relation.Binary`:
+  ```agda
+  asym : Asymmetric _<_
   ```
 
 * Added new proofs to `Relation.Binary.NonStrictToStrict`:
@@ -137,12 +152,12 @@ Backwards compatible changes
   ```agda
   subst⟶respˡ : Substitutive _∼_ p → P Respectsˡ _∼_
   subst⟶respʳ : Substitutive _∼_ p → P Respectsʳ _∼_
-  
+
   trans∧tri⟶respʳ≈ : Transitive _<_ → Trichotomous _≈_ _<_ → _<_ Respectsʳ _≈_
   trans∧tri⟶respˡ≈ : Transitive _<_ → Trichotomous _≈_ _<_ → _<_ Respectsˡ _≈_
   ```
 
-* The types `Maximum` and `Minimum` are now exported by `Relation.Binary` as well 
+* The types `Maximum` and `Minimum` are now exported by `Relation.Binary` as well
   as `Relation.Binary.Lattice`.
 
 Version 0.15
