@@ -46,7 +46,7 @@ module _ {a} {A : Set a} where
  toList-reverse-commute : (zp : Zipper A) → toList (reverse zp) ≡ List.reverse (toList zp)
  toList-reverse-commute (mkZipper ctx val) = begin
    List.reverse val List.++ ctx
-     ≡⟨ cong (_ List.++_) (sym (reverse-involutive ctx)) ⟩
+     ≡⟨ cong ((List.foldl (flip _∷_) [] val) List.++_) (sym (reverse-involutive ctx)) ⟩
    List.reverse val List.++ List.reverse (List.reverse ctx)
      ≡⟨ sym (reverse-++-commute (List.reverse ctx) val) ⟩
    List.reverse (List.reverse ctx List.++ val)
@@ -117,7 +117,7 @@ module _ {a b} {A : Set a} {B : Set b} where
    List.reverse (List.map f ctx) List.++ List.map f val
      ≡⟨ cong (List._++ _) (sym (reverse-map-commute f ctx)) ⟩
    List.map f (List.reverse ctx) List.++ List.map f val
-     ≡⟨ sym (map-++-commute f _ val) ⟩
+     ≡⟨ sym (map-++-commute f (List.foldl (flip _∷_) [] ctx) val) ⟩
    List.map f (List.reverse ctx List.++ val)
      ∎
 
