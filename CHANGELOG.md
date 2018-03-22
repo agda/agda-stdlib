@@ -52,21 +52,6 @@ Removed features
 Backwards compatible changes
 ----------------------------
 
-<<<<<<< HEAD
-* Added new types to `Relation.Binary`:
-  ```agda
-  P Respectsʳ _∼_ = ∀ {x} → (P x)      Respects _∼_
-  P Respectsˡ _∼_ = ∀ {y} → (flip P y) Respects _∼_
-  ```
-
-* Added new proofs to `Relation.Binary.NonStrictToStrict`:
-  ```agda
-  <-respˡ-≈ : Transitive _≈_ → _≤_ Respectsˡ _≈_ → _<_ Respectsˡ _≈_
-  <-respʳ-≈ : Symmetric _≈_ → Transitive _≈_ → _≤_ Respectsʳ _≈_ → _<_ Respectsʳ _≈_
-
-  <≤-trans : Symmetric _≈_ → Transitive _≤_ → Antisymmetric _≈_ _≤_ → _≤_ Respectsʳ _≈_ → Trans _<_ _≤_ _<_
-  ≤<-trans : Transitive _≤_ → Antisymmetric _≈_ _≤_ → _≤_ Respectsˡ _≈_ → Trans _≤_ _<_ _<_
-=======
 * The module `Algebra.Structures` can now be parameterised by equality in the same way
   as `Algebra.FunctionProperties`. The structures within also now export a greater selection
   of "left" and "right" properties. For example (where applicable):
@@ -128,7 +113,30 @@ Backwards compatible changes
 * Added new proof to `Data.Sum`:
   ```agda
   swap-involutive : swap ∘ swap ≗ id
->>>>>>> master
+  ```
+
+* Added new types to `Relation.Binary`:
+  ```agda
+  P Respectsʳ _∼_ = ∀ {x} → (P x)      Respects _∼_
+  P Respectsˡ _∼_ = ∀ {y} → (flip P y) Respects _∼_
+  ```
+
+* Added new proofs to `Relation.Binary.NonStrictToStrict`:
+  ```agda
+  <-respˡ-≈ : _≤_ Respectsˡ _≈_ → _<_ Respectsˡ _≈_
+  <-respʳ-≈ : _≤_ Respectsʳ _≈_ → _<_ Respectsʳ _≈_
+
+  <≤-trans : Transitive _≤_ → Antisymmetric _≈_ _≤_ → _≤_ Respectsʳ _≈_ → Trans _<_ _≤_ _<_
+  ≤<-trans : Transitive _≤_ → Antisymmetric _≈_ _≤_ → _≤_ Respectsˡ _≈_ → Trans _≤_ _<_ _<_
+  ```
+
+* Added new proofs to `Relation.Binary.Consequences`:
+  ```agda
+  subst⟶respˡ : Substitutive _∼_ p → P Respectsˡ _∼_
+  subst⟶respʳ : Substitutive _∼_ p → P Respectsʳ _∼_
+  
+  trans∧tri⟶respʳ≈ : Transitive _<_ → Trichotomous _≈_ _<_ → _<_ Respectsʳ _≈_
+  trans∧tri⟶respˡ≈ : Transitive _<_ → Trichotomous _≈_ _<_ → _<_ Respectsˡ _≈_
   ```
 
 Version 0.15
