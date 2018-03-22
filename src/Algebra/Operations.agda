@@ -9,8 +9,6 @@ open import Algebra
 
 module Algebra.Operations {s₁ s₂} (S : Semiring s₁ s₂) where
 
-open Semiring S renaming (zero to *-zero)
-open import Algebra.Operations.CommutativeMonoid +-commutativeMonoid public
 open import Data.Nat.Base
   using (zero; suc; ℕ) renaming (_+_ to _ℕ+_; _*_ to _ℕ*_)
 open import Data.Product using (module Σ)
@@ -18,7 +16,11 @@ open import Function
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_)
 import Relation.Binary.EqReasoning as EqR
+
+open Semiring S renaming (zero to *-zero)
 open EqR setoid
+
+open import Algebra.Operations.CommutativeMonoid +-commutativeMonoid public
 
 ------------------------------------------------------------------------
 -- Operations

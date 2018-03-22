@@ -9,17 +9,25 @@ open import Algebra
 
 module Algebra.Operations.CommutativeMonoid {s₁ s₂} (M : CommutativeMonoid s₁ s₂) where
 
-open CommutativeMonoid M renaming (ε to 0#; ∙-cong to +-cong; identity to +-identity; assoc to +-assoc; comm to +-comm)
 open import Data.Nat.Base
   using (zero; suc; ℕ) renaming (_+_ to _ℕ+_; _*_ to _ℕ*_)
-open import Data.List as List using (List; []; _∷_; _++_)
-open import Data.Fin as Fin using (Fin)
-open import Data.Product using (module Σ)
-open import Data.Table.Base as Table using (Table)
+open import Data.List as L using (List; []; _∷_; _++_)
+open import Data.Fin using (Fin; zero)
+open import Data.Table.Base as T using (Table; tabulate)
 open import Function
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_)
 import Relation.Binary.EqReasoning as EqR
+
+open CommutativeMonoid M
+  renaming
+    ( ε to 0#
+    ; ∙-cong to +-cong
+    ; identityʳ to +-identityʳ
+    ; identityˡ to +-identityˡ
+    ; assoc to +-assoc
+    ; comm to +-comm
+    )
 open EqR setoid
 
 ------------------------------------------------------------------------
@@ -51,20 +59,20 @@ suc n ×′ x = x + n ×′ x
 -- Summation over a list
 
 sum : List Carrier → Carrier
-sum = List.foldr _+_ 0#
+sum = L.foldr _+_ 0#
 
 -- A variant that sums every value of a function from a finite set.
 
 sumTable : ∀ {n} → Table Carrier n → Carrier
 sumTable {zero} _ = 0#
-sumTable {suc n} t = Table.lookup t Fin.zero + sumTable (Table.tail t)
+sumTable {suc n} t = Table.lookup t zero + sumTable (T.tail t)
 
 -- An alternative mathematical-style syntax for sumTable
 
 infixl 10 sumTable-syntax
 
 sumTable-syntax : ∀ n → (Fin n → Carrier) → Carrier
-sumTable-syntax _ = sumTable ∘ Table.tabulate
+sumTable-syntax _ = sumTable ∘ tabulate
 
 syntax sumTable-syntax n (λ i → x) = ∑[ i < n ] x
 
@@ -75,7 +83,7 @@ syntax sumTable-syntax n (λ i → x) = ∑[ i < n ] x
 
 1+×′ : ∀ n x → suc n ×′ x ≈ x + n ×′ x
 1+×′ 0 x = begin
-  x       ≈⟨ sym $ Σ.proj₂ +-identity x ⟩
+  x       ≈⟨ sym $ +-identityʳ x ⟩
   x + 0#  ∎
 1+×′ (suc n) x = begin
   x + suc n ×′ x  ≡⟨⟩
@@ -95,7 +103,7 @@ syntax sumTable-syntax n (λ i → x) = ∑[ i < n ] x
 
 ×-homo-+ : ∀ c m n → (m ℕ+ n) × c ≈ m × c + n × c
 ×-homo-+ c 0 n = begin
-  n × c       ≈⟨ sym $ Σ.proj₁ +-identity (n × c) ⟩
+  n × c       ≈⟨ sym $ +-identityˡ (n × c) ⟩
   0# + n × c  ∎
 ×-homo-+ c (suc m) n = begin
   c + (m ℕ+ n) × c     ≈⟨ +-cong refl (×-homo-+ c m n) ⟩
