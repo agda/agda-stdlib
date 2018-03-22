@@ -20,7 +20,7 @@ Non-backwards compatible changes
   ```
   where `Algebra.Operations.Semiring` exports all the definitions previously exported
   by `Algebra.Operations`. More modules may be added in future as required.
-  
+
   Also the fixity of `_×_`, `_×′_` and `_^_` have all been increased by 1.
 
 #### Other
@@ -30,6 +30,11 @@ Non-backwards compatible changes
 
 * Added `swap : A ⊎ B → B ⊎ A` to `Data.Sum`. This may conflict with `swap` in `Data.Product`.
   If so then it may be necessary to qualify imports with either `using` or `hiding`.
+
+* The decidability proofs `_≟_` and `_<?_` are now exported by `Data.Fin` as well as
+  `Data.Fin.Properties` to improve consistency across the library. They may conflict with
+  `_≟_` and `_<?_` in `Data.Nat` or others. If so then it may be necessary to qualify imports
+  with either `using` or `hiding`.
 
 Deprecated features
 -------------------

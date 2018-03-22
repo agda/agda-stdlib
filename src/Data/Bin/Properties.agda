@@ -36,7 +36,7 @@ _≟ₑ_ : ∀ {base} → Decidable (_≡_ {A = Expansion base})
 _≟ₑ_ []       []       = yes refl
 _≟ₑ_ []       (_ ∷ _)  = no λ()
 _≟ₑ_ (_ ∷ _) []        = no λ()
-_≟ₑ_ (x ∷ xs) (y ∷ ys) with x 𝔽ₚ.≟ y | xs ≟ₑ ys
+_≟ₑ_ (x ∷ xs) (y ∷ ys) with x Fin.≟ y | xs ≟ₑ ys
 ... | _        | no xs≢ys = no (xs≢ys ∘ proj₂ ∘ ∷-injective)
 ... | no  x≢y  | _        = no (x≢y   ∘ proj₁ ∘ ∷-injective)
 ... | yes refl | yes refl = yes refl
