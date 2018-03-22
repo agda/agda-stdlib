@@ -139,6 +139,9 @@ Backwards compatible changes
   trans∧tri⟶respˡ≈ : Transitive _<_ → Trichotomous _≈_ _<_ → _<_ Respectsˡ _≈_
   ```
 
+* The types `Maximum` and `Minimum` are now exported by `Relation.Binary` as well 
+  as `Relation.Binary.Lattice`.
+
 Version 0.15
 ============
 

@@ -132,6 +132,12 @@ Trichotomous : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ�
 Trichotomous _≈_ _<_ = ∀ x y → Tri (x < y) (x ≈ y) (x > y)
   where _>_ = flip _<_
 
+Maximum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
+Maximum _≤_ ⊤ = ∀ x → x ≤ ⊤
+
+Minimum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
+Minimum _≤_ = Maximum (flip _≤_)
+
 record NonEmpty {a b ℓ} {A : Set a} {B : Set b}
                 (T : REL A B ℓ) : Set (a ⊔ b ⊔ ℓ) where
   constructor nonEmpty
