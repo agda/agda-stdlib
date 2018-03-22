@@ -37,8 +37,8 @@ import Relation.Binary.EqReasoning as EqR
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≗_)
 open import Relation.Nullary
-import Data.Product.Relation.SigmaPropositional as OverΣ
-open OverΣ using (OverΣ)
+-- import Data.Product.Relation.SigmaPropositional as OverΣ
+-- open OverΣ using (OverΣ)
 
 open import Data.List.Any.Membership.Propositional.Properties
 private
@@ -294,8 +294,8 @@ module _ {a} {A : Set a} where
     { to = P.→-to-⟶ λ {(x , x∈xs) → x , Inverse.to p ⟨$⟩ x∈xs}
     ; from = P.→-to-⟶ λ {(y , y∈ys) → y , Inverse.from p ⟨$⟩ y∈ys}
     ; inverse-of = record
-      { left-inverse-of = λ _ → OverΣ.to-≡ (P.refl , Inverse.left-inverse-of p _)
-      ; right-inverse-of = λ _ → OverΣ.to-≡ (P.refl , Inverse.right-inverse-of p _)
+      { left-inverse-of = λ _ → P.cong (,_) (Inverse.left-inverse-of p _)
+      ; right-inverse-of = λ _ → P.cong (,_) (Inverse.right-inverse-of p _)
       }
     }
 

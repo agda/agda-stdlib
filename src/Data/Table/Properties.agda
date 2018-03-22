@@ -20,13 +20,21 @@ open import Data.Maybe using (Maybe; just; nothing; maybe)
 open import Data.Nat using (ℕ)
 open import Data.Product using (Σ; ∃; _,_; proj₁; proj₂)
 open import Data.Product.Relation.SigmaPropositional as OverΣ using (OverΣ)
+open import Data.Product.Relation.Pointwise.Dependent as ΣR using (_,_)
 open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Data.Vec as V using (Vec; _∷_; [])
 import Data.Vec.Properties as VP
 open import Function using (_∘_; flip)
 open import Function.Inverse using (Inverse)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.HeterogeneousEquality as H using (_≅_)
 open import Relation.Nullary using (yes; no)
+
+map-toList-hom :
+  ∀ {n a b} {A : Set a} {B : Set b} {f : A → B} (t : Table A n)
+  → L.map f (toList t) ≡ toList (map f t)
+map-toList-hom {ℕ.zero} t = P.refl
+map-toList-hom {ℕ.suc n} t = P.cong₂ _∷_ P.refl (map-toList-hom (tail t))
 
 module _ {a} {A : Set a} where
 
@@ -48,11 +56,15 @@ module _ {a} {A : Set a} where
   lookup∈ i = _ , fromList-∈ i
 
   lookup∈-index : ∀ {x} {xs : List A} (p : x ∈ xs) → lookup∈ (index p) ≡ (x , p)
-  lookup∈-index {x} = OverΣ.to-≡ ∘ go
+  lookup∈-index {_} (here P.refl) = P.refl
+  lookup∈-index {x} (there p) with ΣR.≡⇒Pointwise-≡ (lookup∈-index p)
+  lookup∈-index {x} (there p) | q , r = ΣR.Pointwise-≡⇒≡ (q , helper q r)
     where
-    go : ∀ {xs : List A} (p : x ∈ xs) → OverΣ _≡_ (lookup∈ (index p)) (x , p)
-    go (here P.refl) = P.refl , P.refl
-    go (there p) = OverΣ.≡-cong P.refl there (go p)
+    helper :
+      ∀ {x y} {xs : List A} {i} {p : x ∈ xs}
+      → L.lookup xs i ≡ x → fromList-∈ {xs} i ≅ p
+      → there {x = y} (fromList-∈ i) ≅ there {x = y} p
+    helper P.refl _≅_.refl = _≅_.refl
 
   -- Isomorphism between tables and vectors.
 
