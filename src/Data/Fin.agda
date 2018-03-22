@@ -13,10 +13,11 @@ module Data.Fin where
 open import Data.Empty using (⊥-elim)
 open import Data.Nat as ℕ
   using (ℕ; zero; suc; z≤n; s≤s)
+open import Data.Bool using (if_then_else_)
 open import Function using (_∘_; _on_)
 open import Level using () renaming (zero to ℓ₀)
 open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Decidable using (True; toWitness)
+open import Relation.Nullary.Decidable using (True; toWitness; ⌊_⌋)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; refl; cong)
@@ -214,6 +215,24 @@ suc x ≟ zero  = no λ()
 suc x ≟ suc y with x ≟ y
 ... | yes x≡y = yes (cong suc x≡y)
 ... | no  x≢y = no (λ {refl → x≢y refl})
+
+------------------------------------------------------------------------
+-- Permutations
+
+-- 'swap i j' is a function 'Fin n → Fin n' which behaves like the identity
+-- function, except it swaps the positions of 'i' and 'j'.
+--
+-- * swap i j i = j
+-- * swap i j j = i
+-- * swap i j k = k (when k ≠ i and k ≠ j)
+
+swap : ∀ {n} → Fin n → Fin n → Fin n → Fin n
+swap i j k =
+  if ⌊ k ≟ i ⌋
+  then j
+  else (if ⌊ k ≟ j ⌋
+        then i
+        else k)
 
 ------------------------------------------------------------------------
 -- Order relations

@@ -15,15 +15,15 @@ open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_) renaming
   ; _<_ to _ℕ<_
   ; _+_ to _ℕ+_)
 import Data.Nat.Properties as ℕₚ
-open import Data.Product
-open import Data.Bool using (if_then_else_)
+open import Data.Product hiding (swap)
+open import Data.Bool using (true; false; if_then_else_)
 open import Function
 open import Function.Equality as FunS using (_⟨$⟩_)
 open import Function.Injection using (_↣_)
 open import Function.Inverse using (Inverse; _↔_)
 open import Algebra.FunctionProperties
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary hiding (module Dec)
+open import Relation.Nullary.Decidable as Dec using (⌊_⌋)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; cong; subst)
@@ -400,60 +400,37 @@ punchOut-cong′ i q = punchOut-cong i q
 --  Bijections on finite sets
 --------------------------------------------------------------------------------
 
-swapFin : ∀ {n} → Fin n → Fin n → Fin n → Fin n
-swapFin i j k =
-  if Dec.⌊ k ≟ i ⌋
-  then j
-  else (if Dec.⌊ k ≟ j ⌋
-        then i
-        else k)
-
-if-dec-true : ∀ {a}{A : Set a} {n} (i j : Fin n) {x y : A} → i ≡ j → (if Dec.⌊ i ≟ j ⌋ then x else y) ≡ x
-if-dec-true i j p with i ≟ j
-... | yes _ = P.refl
-... | no ¬p = ⊥-elim (¬p p)
-
-if-dec-false : ∀ {a}{A : Set a} {n} (i j : Fin n) {x y : A} → ¬ (i ≡ j) → (if Dec.⌊ i ≟ j ⌋ then x else y) ≡ y
-if-dec-false i j ¬p with i ≟ j
-... | yes p = ⊥-elim (¬p p)
-... | no _ = P.refl
-
 private
-  swap-lem₁ : ∀ {n} i (j : Fin n) → swapFin i j j ≡ i
+  swap-lem₁ : ∀ {n} i (j : Fin n) → swap i j j ≡ i
   swap-lem₁ i j with j ≟ i
   swap-lem₁ i j | yes p = p
-  swap-lem₁ i j | no ¬p = if-dec-true j j P.refl
+  swap-lem₁ i j | no ¬p rewrite Dec.diag (j ≟ j) refl = refl
 
-  swap-lem₂ : ∀ {n} i (j : Fin n) → swapFin i j i ≡ j
-  swap-lem₂ i j = if-dec-true i i P.refl
+  swap-lem₂ : ∀ {n} i (j : Fin n) → swap i j i ≡ j
+  swap-lem₂ i j rewrite Dec.diag (i ≟ i) refl = refl
 
-  swapFin-inverse : ∀ {n} (i j : Fin n) {k} → swapFin i j (swapFin j i k) ≡ k
-  swapFin-inverse i j {k} with k ≟ j
-  swapFin-inverse i j {.j} | yes P.refl = if-dec-true i i P.refl
-  swapFin-inverse i j {k} | no ¬p with k ≟ i
-  swapFin-inverse i j {k} | no ¬p | yes q =
-    begin
-      (if Dec.⌊ j ≟ i ⌋ then j else (if Dec.⌊ j ≟ j ⌋ then i else j))  ≡⟨ if-dec-false j i (¬p ∘ P.trans q ∘ P.sym) ⟩
-      (if Dec.⌊ j ≟ j ⌋ then i else j)                                 ≡⟨ if-dec-true j j P.refl  ⟩
-      i                                                                ≡⟨ P.sym q ⟩
-      k                                                                ∎
-    where open P.≡-Reasoning
-  swapFin-inverse i j {k} | no ¬p | no ¬q =
-    begin
-      (if Dec.⌊ k ≟ i ⌋ then j else (if Dec.⌊ k ≟ j ⌋ then i else k))  ≡⟨ if-dec-false k i ¬q ⟩
-      (if Dec.⌊ k ≟ j ⌋ then i else k)                                 ≡⟨ if-dec-false k j ¬p ⟩
-      k                                                                ∎
-    where open P.≡-Reasoning
+  swap-inverse : ∀ {n} (i j : Fin n) {k} → swap i j (swap j i k) ≡ k
+  swap-inverse i j {k} with k ≟ j
+  swap-inverse i j {.j} | yes P.refl rewrite Dec.diag (i ≟ i) refl = refl
+  swap-inverse i j {k} | no ¬p with k ≟ i
+  swap-inverse i j {k} | no ¬p | yes q
+    rewrite Dec.diag (j ≟ j) refl
+          | Dec.antidiag (j ≟ i) (¬p ∘ P.trans q ∘ P.sym)
+          = P.sym q
+  swap-inverse i j {k} | no ¬p | no ¬q
+    rewrite Dec.antidiag (k ≟ i) ¬q
+          | Dec.antidiag (k ≟ j) ¬p
+          = refl
 
 -- A permuation that swaps the two given indices.
 
-swapIndices : ∀ {n} → Fin n → Fin n → Fin n ↔ Fin n
-swapIndices i j = record
-  { to = P.→-to-⟶ (swapFin i j)
-  ; from = P.→-to-⟶ (swapFin j i)
+swap-perm : ∀ {n} → Fin n → Fin n → Fin n ↔ Fin n
+swap-perm i j = record
+  { to = P.→-to-⟶ (swap i j)
+  ; from = P.→-to-⟶ (swap j i)
   ; inverse-of = record
-    { left-inverse-of = λ _ → swapFin-inverse _ _
-    ; right-inverse-of = λ _ → swapFin-inverse _ _
+    { left-inverse-of = λ _ → swap-inverse _ _
+    ; right-inverse-of = λ _ → swap-inverse _ _
     }
   }
 

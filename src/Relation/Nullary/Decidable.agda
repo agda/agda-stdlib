@@ -52,6 +52,16 @@ fromWitnessFalse : ∀ {p} {P : Set p} {Q : Dec P} → ¬ P → False Q
 fromWitnessFalse {Q = yes p} = flip _$_ p
 fromWitnessFalse {Q = no ¬p} = const _
 
+-- Variants that use propositional equality instead of 'T'
+
+diag : ∀ {p} {P : Set p} (Q : Dec P) (witness : P) → ⌊ Q ⌋ ≡ true
+diag (yes _) _ = refl
+diag (no ¬p) witness = ⊥-elim (¬p witness)
+
+antidiag : ∀ {p} {P : Set p} (Q : Dec P) (¬p : ¬ P) → ⌊ Q ⌋ ≡ false
+antidiag (yes p) ¬p = ⊥-elim (¬p p)
+antidiag (no _) _ = refl
+
 map : ∀ {p q} {P : Set p} {Q : Set q} → P ⇔ Q → Dec P → Dec Q
 map P⇔Q (yes p) = yes (Equivalence.to P⇔Q ⟨$⟩ p)
 map P⇔Q (no ¬p) = no (¬p ∘ _⟨$⟩_ (Equivalence.from P⇔Q))
