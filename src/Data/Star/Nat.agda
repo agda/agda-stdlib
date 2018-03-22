@@ -1,15 +1,15 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Natural numbers defined in terms of Data.Star
+-- Natural numbers defined using the reflexive-transitive closure, Star
 ------------------------------------------------------------------------
 
 module Data.Star.Nat where
 
-open import Data.Star
 open import Data.Unit
 open import Function
 open import Relation.Binary
+open import Relation.Binary.Closure.ReflexiveTransitive
 open import Relation.Binary.Simple
 
 -- Natural numbers.

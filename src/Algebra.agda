@@ -14,7 +14,7 @@ open import Function
 open import Level
 
 ------------------------------------------------------------------------
--- Semigroups, (commutative) monoids and (abelian) groups
+-- Semigroups
 
 record Semigroup c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
@@ -26,6 +26,9 @@ record Semigroup c ℓ : Set (suc (c ⊔ ℓ)) where
     isSemigroup : IsSemigroup _≈_ _∙_
 
   open IsSemigroup isSemigroup public
+
+------------------------------------------------------------------------
+-- Monoids
 
 -- A raw monoid is a monoid without any laws.
 
@@ -94,6 +97,9 @@ record IdempotentCommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open CommutativeMonoid commutativeMonoid public
     using (semigroup; rawMonoid; monoid)
+
+------------------------------------------------------------------------
+-- Groups
 
 record Group c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹

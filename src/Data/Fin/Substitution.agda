@@ -17,7 +17,8 @@ open import Data.Nat
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Vec
 open import Function as Fun using (flip)
-open import Data.Star as Star using (Star; ε; _◅_)
+open import Relation.Binary.Closure.ReflexiveTransitive as Star
+  using (Star; ε; _◅_)
 
 ------------------------------------------------------------------------
 -- General functionality

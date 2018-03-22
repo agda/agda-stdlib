@@ -13,7 +13,7 @@ open import Data.Container.Combinator
 open import Data.Product as Prod hiding (swap)
 open import Data.Product.Relation.Pointwise.NonDependent
 import Data.Product.Relation.Pointwise.Dependent as Σ
-open import Data.Sum
+open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (equivalence)
