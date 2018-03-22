@@ -97,6 +97,10 @@ Backwards compatible changes
   swap-involutive : swap ∘ swap ≗ id
   ```
 
+* Added new module `Algebra.Operations.CommutativeMonoid`. This contains the
+  definitions from `Algebra.Operations` (now re-exported from there) that don't
+  rely on the existence of the multiplication half of the semiring structure.
+
 Version 0.15
 ============
 
