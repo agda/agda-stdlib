@@ -11,7 +11,7 @@ module Relation.Binary.PropositionalEquality.Core where
 
 open import Level
 open import Relation.Binary.Core
-open import Relation.Binary.Consequences.Core
+open import Relation.Binary.Consequences
 
 ------------------------------------------------------------------------
 -- Some properties

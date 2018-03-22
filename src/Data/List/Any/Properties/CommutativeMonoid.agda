@@ -25,13 +25,13 @@ module B = Setoid ([ bag ]-Equality Carrier)
 -- In a commutative monoid, if you add up everything in two lists that contain
 -- the same elements, you get the same result.
 
-sum-bag : ∀ {xs ys} → xs ∼[ bag ] ys → sum xs ≈ sum ys
+sum-bag : ∀ {xs ys} → xs ∼[ bag ] ys → sumₗ xs ≈ sumₗ ys
 sum-bag {xs} {ys} p =
   begin
-    sum xs                                                         ≡⟨ P.sym (sumTable-fromList xs) ⟩
-    sumTable (Tbl.fromList xs)                                     ≡⟨ sumTable-cong≡ (bag-permutation-correct p) ⟩
-    sumTable (Tbl.permute (bag-permutation p) (Tbl.fromList ys))   ≈⟨ sym (sumTable-permute′ (Tbl.fromList ys) (bag-permutation p)) ⟩
-    sumTable (Tbl.fromList ys)                                     ≡⟨ sumTable-fromList ys ⟩
-    sum ys                                                         ∎
+    sumₗ xs                                                    ≡⟨ P.sym (sumₜ-fromList xs) ⟩
+    sumₜ (Tbl.fromList xs)                                     ≡⟨ sumₜ-cong≡ (bag-permutation-correct p) ⟩
+    sumₜ (Tbl.permute (bag-permutation p) (Tbl.fromList ys))   ≈⟨ sym (sumₜ-permute′ (Tbl.fromList ys) (bag-permutation p)) ⟩
+    sumₜ (Tbl.fromList ys)                                     ≡⟨ sumₜ-fromList ys ⟩
+    sumₗ ys                                                    ∎
   where
     open EqReasoning setoid

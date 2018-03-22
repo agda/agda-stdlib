@@ -11,10 +11,10 @@ module Data.Table where
 open import Data.Table.Base public
 
 open import Data.Bool using (if_then_else_)
-open import Data.Fin using (Fin)
-open import Data.Fin.Properties using (_≟_)
+open import Data.Fin using (Fin; _≟_)
 import Function.Equality as FE
 open import Function.Inverse using (Inverse; _↔_)
+open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (⌊_⌋)
 
 --------------------------------------------------------------------------------
