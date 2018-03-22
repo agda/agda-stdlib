@@ -1,15 +1,15 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Lists defined in terms of Data.Star
+-- Lists defined in terms of the reflexive-transitive closure, Star
 ------------------------------------------------------------------------
 
 module Data.Star.List where
 
-open import Data.Star
+open import Data.Star.Nat
 open import Data.Unit
 open import Relation.Binary.Simple
-open import Data.Star.Nat
+open import Relation.Binary.Closure.ReflexiveTransitive
 
 -- Lists.
 

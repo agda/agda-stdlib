@@ -1,12 +1,11 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Vectors defined in terms of Data.Star
+-- Vectors defined in terms of the reflexive-transitive closure, Star
 ------------------------------------------------------------------------
 
 module Data.Star.Vec where
 
-open import Data.Star
 open import Data.Star.Nat
 open import Data.Star.Fin using (Fin)
 open import Data.Star.Decoration
@@ -14,6 +13,7 @@ open import Data.Star.Pointer as Pointer hiding (lookup)
 open import Data.Star.List using (List)
 open import Relation.Binary
 open import Relation.Binary.Consequences
+open import Relation.Binary.Closure.ReflexiveTransitive
 open import Function
 open import Data.Unit
 

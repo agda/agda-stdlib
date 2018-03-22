@@ -6,13 +6,13 @@
 
 module Data.Star.Pointer where
 
-open import Data.Star
-open import Data.Star.Decoration
-open import Relation.Binary
 open import Data.Maybe.Base using (Maybe; nothing; just)
+open import Data.Star.Decoration
 open import Data.Unit
 open import Function
 open import Level
+open import Relation.Binary
+open import Relation.Binary.Closure.ReflexiveTransitive
 
 -- Pointers into star-lists. The edge pointed to is decorated with Q,
 -- while other edges are decorated with P.

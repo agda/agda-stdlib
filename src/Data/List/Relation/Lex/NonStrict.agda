@@ -44,27 +44,27 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
       _<_ = Lex-< _≈_ _≼_
 
     <-irreflexive : Irreflexive _≋_ _<_
-    <-irreflexive = Strict.<-irreflexive (Conv.irrefl _≈_ _≼_)
+    <-irreflexive = Strict.<-irreflexive (Conv.<-irrefl _≈_ _≼_)
 
     <-asymmetric : IsEquivalence _≈_ → _≼_ Respects₂ _≈_ →
                    Antisymmetric _≈_ _≼_ → Asymmetric _<_
     <-asymmetric eq resp antisym  =
       Strict.<-asymmetric sym (Conv.<-resp-≈ _ _ eq resp)
-                        (Conv.antisym⟶asym _≈_ _ antisym)
+                        (Conv.<-asym _≈_ _ antisym)
                         where open IsEquivalence eq
 
     <-antisymmetric : Symmetric _≈_ → Antisymmetric _≈_ _≼_ →
                       Antisymmetric _≋_ _<_
     <-antisymmetric sym antisym =
       Core.antisymmetric sym
-        (Conv.irrefl _≈_ _≼_)
-        (Conv.antisym⟶asym _ _≼_ antisym)
+        (Conv.<-irrefl _≈_ _≼_)
+        (Conv.<-asym _ _≼_ antisym)
 
     <-transitive : IsPartialOrder _≈_ _≼_ → Transitive _<_
     <-transitive po =
       Core.transitive isEquivalence
         (Conv.<-resp-≈ _ _ isEquivalence ≤-resp-≈)
-        (Conv.trans _ _≼_ po)
+        (Conv.<-trans _ _≼_ po)
       where open IsPartialOrder po
 
     <-resp₂ : IsEquivalence _≈_ → _≼_ Respects₂ _≈_ → _<_ Respects₂ _≋_
@@ -73,23 +73,23 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
     <-compare : Symmetric _≈_ → Decidable _≈_ → Antisymmetric _≈_ _≼_ →
                 Total _≼_ → Trichotomous _≋_ _<_
     <-compare sym _≟_ antisym tot =
-      Strict.<-compare sym (Conv.trichotomous _ _ sym _≟_ antisym tot)
+      Strict.<-compare sym (Conv.<-trichotomous _ _ sym _≟_ antisym tot)
 
     <-decidable : Decidable _≈_ → Decidable _≼_ → Decidable _<_
     <-decidable _≟_ _≼?_ =
-      Core.decidable (no id) _≟_ (Conv.decidable _ _ _≟_ _≼?_)
+      Core.decidable (no id) _≟_ (Conv.<-decidable _ _ _≟_ _≼?_)
 
     <-isStrictPartialOrder : IsPartialOrder _≈_ _≼_ →
                              IsStrictPartialOrder _≋_ _<_
     <-isStrictPartialOrder po =
       Strict.<-isStrictPartialOrder
-        (Conv.isPartialOrder⟶isStrictPartialOrder _ _ po)
+        (Conv.<-isStrictPartialOrder _ _ po)
 
     <-isStrictTotalOrder : Decidable _≈_ → IsTotalOrder _≈_ _≼_ →
                            IsStrictTotalOrder _≋_ _<_
     <-isStrictTotalOrder dec tot =
       Strict.<-isStrictTotalOrder
-        (Conv.isTotalOrder⟶isStrictTotalOrder _ _ dec tot)
+        (Conv.<-isStrictTotalOrder₁ _ _ dec tot)
 
 <-strictPartialOrder : ∀ {a ℓ₁ ℓ₂} → Poset a ℓ₁ ℓ₂ →
                        StrictPartialOrder _ _ _
@@ -101,7 +101,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
                      StrictTotalOrder _ _ _
 <-strictTotalOrder dtot = record
   { isStrictTotalOrder = <-isStrictTotalOrder _≟_ isTotalOrder
-  } where open IsDecTotalOrder (DecTotalOrder.isDecTotalOrder dtot)
+  } where open DecTotalOrder dtot
 
 ------------------------------------------------------------------------
 -- Non-strict lexicographic ordering.
@@ -125,14 +125,14 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
                       Antisymmetric _≋_ _≤_
     ≤-antisymmetric sym antisym =
       Core.antisymmetric sym
-        (Conv.irrefl _≈_ _≼_)
-        (Conv.antisym⟶asym _ _≼_ antisym)
+        (Conv.<-irrefl _≈_ _≼_)
+        (Conv.<-asym _ _≼_ antisym)
 
     ≤-transitive : IsPartialOrder _≈_ _≼_ → Transitive _≤_
     ≤-transitive po =
       Core.transitive isEquivalence
         (Conv.<-resp-≈ _ _ isEquivalence ≤-resp-≈)
-        (Conv.trans _ _≼_ po)
+        (Conv.<-trans _ _≼_ po)
       where open IsPartialOrder po
 
     ≤-resp₂ : IsEquivalence _≈_ → _≼_ Respects₂ _≈_ → _≤_ Respects₂ _≋_
@@ -140,36 +140,36 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
 
     ≤-decidable : Decidable _≈_ → Decidable _≼_ → Decidable _≤_
     ≤-decidable _≟_ _≼?_ =
-      Core.decidable (yes tt) _≟_ (Conv.decidable _ _ _≟_ _≼?_)
+      Core.decidable (yes tt) _≟_ (Conv.<-decidable _ _ _≟_ _≼?_)
 
     ≤-total : Symmetric _≈_ → Decidable _≈_ → Antisymmetric _≈_ _≼_ →
               Total _≼_ → Total _≤_
     ≤-total sym dec-≈ antisym tot =
-      Strict.≤-total sym (Conv.trichotomous _ _ sym dec-≈ antisym tot)
+      Strict.≤-total sym (Conv.<-trichotomous _ _ sym dec-≈ antisym tot)
 
     ≤-isPreorder : IsPartialOrder _≈_ _≼_ → IsPreorder _≋_ _≤_
     ≤-isPreorder po =
       Strict.≤-isPreorder
-        isEquivalence (Conv.trans _ _ po)
+        isEquivalence (Conv.<-trans _ _ po)
         (Conv.<-resp-≈ _ _ isEquivalence ≤-resp-≈)
       where open IsPartialOrder po
 
     ≤-isPartialOrder : IsPartialOrder _≈_ _≼_ → IsPartialOrder _≋_ _≤_
     ≤-isPartialOrder po =
       Strict.≤-isPartialOrder
-        (Conv.isPartialOrder⟶isStrictPartialOrder _ _ po)
+        (Conv.<-isStrictPartialOrder _ _ po)
 
     ≤-isTotalOrder : Decidable _≈_ → IsTotalOrder _≈_ _≼_ →
                      IsTotalOrder _≋_ _≤_
     ≤-isTotalOrder dec tot =
       Strict.≤-isTotalOrder
-        (Conv.isTotalOrder⟶isStrictTotalOrder _ _ dec tot)
+        (Conv.<-isStrictTotalOrder₁ _ _ dec tot)
 
     ≤-isDecTotalOrder : IsDecTotalOrder _≈_ _≼_ →
                         IsDecTotalOrder _≋_ _≤_
     ≤-isDecTotalOrder dtot =
       Strict.≤-isDecTotalOrder
-        (Conv.isDecTotalOrder⟶isStrictTotalOrder _ _ dtot)
+        (Conv.<-isStrictTotalOrder₂ _ _ dtot)
 
 ≤-preorder : ∀ {a ℓ₁ ℓ₂} → Poset a ℓ₁ ℓ₂ → Preorder _ _ _
 ≤-preorder po = record

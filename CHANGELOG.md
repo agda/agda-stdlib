@@ -8,8 +8,43 @@ Important changes since 0.15:
 Non-backwards compatible changes
 --------------------------------
 
+* `Relation.Binary.Consequences` no longer exports `Total`. The standard way of accessing it
+  through `Relation.Binary` remains unchanged.
+
+* Added `swap : A ⊎ B → B ⊎ A` to `Data.Sum`. This may conflict with `swap` in `Data.Product`.
+  If so then it may be necessary to qualify imports with either `using` or `hiding`.
+
 Deprecated features
 -------------------
+
+The following renaming has occurred as part of a drive to improve consistency across
+the library. The old names still exist and therefore all existing code should still
+work, however they have been deprecated and use of the new names is encouraged. Although not
+anticipated any time soon, they may eventually be removed in some future release of the library.
+
+* Closures of binary relations have been centralised as follows:
+  ```agda
+  Data.ReflexiveClosure              ↦ Relation.Binary.Closure.Reflexive
+  Relation.Binary.SymmetricClosure   ↦ Relation.Binary.Closure.Symmetric
+  Data.Plus                          ↦ Relation.Binary.Closure.Transitive
+  Data.Star                          ↦ Relation.Binary.Closure.ReflexiveTransitive
+  Data.Star.Properties               ↦ Relation.Binary.Closure.ReflexiveTransitive.Properties
+  Relation.Binary.EquivalenceClosure ↦ Relation.Binary.Closure.Equivalence
+  ```
+  The old files still exist and re-export the contents of the new modules.
+
+* In `Relation.Binary.NonStrictToStrict`:
+  ```agda
+  irrefl         ↦ <-irrefl
+  trans          ↦ <-trans
+  antisym⟶asym ↦ <-asym
+  decidable      ↦ <-decidable
+  trichotomous   ↦ <-trichotomous
+
+  isPartialOrder⟶isStrictPartialOrder ↦ <-isStrictPartialOrder
+  isTotalOrder⟶isStrictTotalOrder     ↦ <-isStrictTotalOrder₁
+  isDecTotalOrder⟶isStrictTotalOrder  ↦ <-isStrictTotalOrder₂
+  ```
 
 Removed features
 ----------------
@@ -17,8 +52,8 @@ Removed features
 Backwards compatible changes
 ----------------------------
 
-* The module `Algebra.Structures` can now be parameterised by equality in the same way 
-  as `Algebra.FunctionProperties`. The structures within also now export a greater selection 
+* The module `Algebra.Structures` can now be parameterised by equality in the same way
+  as `Algebra.FunctionProperties`. The structures within also now export a greater selection
   of "left" and "right" properties. For example (where applicable):
   ```agda
   identityˡ : LeftIdentity ε _∙_
@@ -30,6 +65,9 @@ Backwards compatible changes
   distribˡ  : _*_ DistributesOverˡ _+_
   distribʳ  : _*_ DistributesOverʳ _+_
   ```
+
+* Added a new module `Function.Reasoning` for creating multi-stage function pipelines.
+  See README.Function.Reasoning for examples.
 
 * Added new proofs to `Data.Bool.Properties`:
   ```agda
@@ -47,10 +85,58 @@ Backwards compatible changes
   ∨-∧-distributiveLattice         : DistributiveLattice _ _
   ```
 
+* Added new functions to `Data.List.All`:
+  ```agda
+  zip   : All P ∩ All Q ⊆ All (P ∩ Q)
+  unzip : All (P ∩ Q) ⊆ All P ∩ All Q
+  ```
+
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
+  m+n≮m          : m + n ≮ m
+  m≮m∸n          : m ≮ m ∸ n
+
   +-0-isMonoid   : IsMonoid _+_ 0
   *-1-isMonoid   : IsMonoid _*_ 1
+
+  ⊓-triangulate  : x ⊓ y ⊓ z ≡ (x ⊓ y) ⊓ (y ⊓ z)
+  ⊔-triangulate  : x ⊔ y ⊔ z ≡ (x ⊔ y) ⊔ (y ⊔ z)
+
+  m∸n≡0⇒m≤n      : m ∸ n ≡ 0 → m ≤ n
+  m≤n⇒m∸n≡0      : m ≤ n → m ∸ n ≡ 0
+  ∸-monoˡ-≤      : m ≤ n → m ∸ o ≤ n ∸ o
+  ∸-monoʳ-≤      : m ≤ n → o ∸ m ≥ o ∸ n
+  ∸-distribˡ-⊓-⊔ : x ∸ (y ⊓ z) ≡ (x ∸ y) ⊔ (x ∸ z)
+  ∸-distribˡ-⊔-⊓ : x ∸ (y ⊔ z) ≡ (x ∸ y) ⊓ (x ∸ z)
+  ```
+
+* Added new proof to `Data.Sum`:
+  ```agda
+  swap-involutive : swap ∘ swap ≗ id
+  ```
+
+* Added new types to `Relation.Binary`:
+  ```agda
+  P Respectsʳ _∼_ = ∀ {x} → (P x)      Respects _∼_
+  P Respectsˡ _∼_ = ∀ {y} → (flip P y) Respects _∼_
+  ```
+
+* Added new proofs to `Relation.Binary.NonStrictToStrict`:
+  ```agda
+  <-respˡ-≈ : _≤_ Respectsˡ _≈_ → _<_ Respectsˡ _≈_
+  <-respʳ-≈ : _≤_ Respectsʳ _≈_ → _<_ Respectsʳ _≈_
+
+  <≤-trans : Transitive _≤_ → Antisymmetric _≈_ _≤_ → _≤_ Respectsʳ _≈_ → Trans _<_ _≤_ _<_
+  ≤<-trans : Transitive _≤_ → Antisymmetric _≈_ _≤_ → _≤_ Respectsˡ _≈_ → Trans _≤_ _<_ _<_
+  ```
+
+* Added new proofs to `Relation.Binary.Consequences`:
+  ```agda
+  subst⟶respˡ : Substitutive _∼_ p → P Respectsˡ _∼_
+  subst⟶respʳ : Substitutive _∼_ p → P Respectsʳ _∼_
+  
+  trans∧tri⟶respʳ≈ : Transitive _<_ → Trichotomous _≈_ _<_ → _<_ Respectsʳ _≈_
+  trans∧tri⟶respˡ≈ : Transitive _<_ → Trichotomous _≈_ _<_ → _<_ Respectsˡ _≈_
   ```
 
 * The types `Maximum` and `Minimum` are now exported by `Relation.Binary` as well 

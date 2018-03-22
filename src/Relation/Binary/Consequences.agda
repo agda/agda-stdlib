@@ -7,135 +7,127 @@
 module Relation.Binary.Consequences where
 
 open import Relation.Binary.Core hiding (refl)
-open import Relation.Nullary
-open import Relation.Binary.PropositionalEquality.Core
-open import Function
-open import Data.Sum
-open import Data.Product
-open import Data.Empty
+open import Relation.Nullary using (yes; no)
+open import Relation.Unary using (∁)
+open import Function using (_∘_; flip)
+open import Data.Sum using (inj₁; inj₂)
+open import Data.Product using (_,_)
+open import Data.Empty using (⊥-elim)
 
--- Some of the definitions can be found in the following module:
+------------------------------------------------------------------------
+-- Substitutive properties
 
-open import Relation.Binary.Consequences.Core public
+module _ {a ℓ p} {A : Set a} {_∼_ : Rel A ℓ} (P : Rel A p) where
 
-Total : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
-Total _∼_ = ∀ x y → (x ∼ y) ⊎ (y ∼ x)
+  subst⟶respˡ : Substitutive _∼_ p → P Respectsˡ _∼_
+  subst⟶respˡ subst {y} x'∼x Px'y = subst (flip P y) x'∼x Px'y
 
-trans∧irr⟶asym :
-  ∀ {a ℓ₁ ℓ₂} {A : Set a} → {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} →
-  Reflexive _≈_ →
-  Transitive _<_ → Irreflexive _≈_ _<_ → Asymmetric _<_
-trans∧irr⟶asym refl trans irrefl = λ x<y y<x →
-  irrefl refl (trans x<y y<x)
+  subst⟶respʳ : Substitutive _∼_ p → P Respectsʳ _∼_
+  subst⟶respʳ subst {x} y'∼y Pxy' = subst (P x) y'∼y Pxy'
 
-irr∧antisym⟶asym :
-  ∀ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} →
-  Irreflexive _≈_ _<_ → Antisymmetric _≈_ _<_ → Asymmetric _<_
-irr∧antisym⟶asym irrefl antisym = λ x<y y<x →
-  irrefl (antisym x<y y<x) x<y
+  subst⟶resp₂ : Substitutive _∼_ p → P Respects₂ _∼_
+  subst⟶resp₂ subst = subst⟶respʳ subst , subst⟶respˡ subst
 
-asym⟶antisym :
-  ∀ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} →
-  Asymmetric _<_ → Antisymmetric _≈_ _<_
-asym⟶antisym asym x<y y<x = ⊥-elim (asym x<y y<x)
+module _ {a ℓ p} {A : Set a} {∼ : Rel A ℓ} {P : A → Set p} where
 
-asym⟶irr :
-  ∀ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} →
-  _<_ Respects₂ _≈_ → Symmetric _≈_ →
-  Asymmetric _<_ → Irreflexive _≈_ _<_
-asym⟶irr {_<_ = _<_} resp sym asym {x} {y} x≈y x<y = asym x<y y<x
-  where
-  y<y : y < y
-  y<y = proj₂ resp x≈y x<y
-  y<x : y < x
-  y<x = proj₁ resp (sym x≈y) y<y
+  P-resp⟶¬P-resp : Symmetric ∼ → P Respects ∼ → (∁ P) Respects ∼
+  P-resp⟶¬P-resp sym resp x∼y ¬Px Py = ¬Px (resp (sym x∼y) Py)
 
-total⟶refl :
-  ∀ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_∼_ : Rel A ℓ₂} →
-  _∼_ Respects₂ _≈_ → Symmetric _≈_ →
-  Total _∼_ → _≈_ ⇒ _∼_
-total⟶refl {_≈_ = _≈_} {_∼_ = _∼_} resp sym total = refl
-  where
-  refl : _≈_ ⇒ _∼_
-  refl {x} {y} x≈y with total x y
-  ...              | inj₁ x∼y = x∼y
-  ...              | inj₂ y∼x =
-    proj₁ resp x≈y (proj₂ resp (sym x≈y) y∼x)
+------------------------------------------------------------------------
+-- Proofs for non-strict orders
 
-total+dec⟶dec :
-  ∀ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} →
-  _≈_ ⇒ _≤_ → Antisymmetric _≈_ _≤_ →
-  Total _≤_ → Decidable _≈_ → Decidable _≤_
-total+dec⟶dec {_≈_ = _≈_} {_≤_ = _≤_} refl antisym total _≟_ = dec
-  where
-  dec : Decidable _≤_
-  dec x y with total x y
+module _ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} where
+
+  total⟶refl : _≤_ Respects₂ _≈_ → Symmetric _≈_ →
+                 Total _≤_ → _≈_ ⇒ _≤_
+  total⟶refl (respʳ , respˡ) sym total {x} {y} x≈y with total x y
+  ... | inj₁ x∼y = x∼y
+  ... | inj₂ y∼x = respʳ x≈y (respˡ (sym x≈y) y∼x)
+
+  total+dec⟶dec : _≈_ ⇒ _≤_ → Antisymmetric _≈_ _≤_ →
+                    Total _≤_ → Decidable _≈_ → Decidable _≤_
+  total+dec⟶dec refl antisym total _≟_ x y with total x y
   ... | inj₁ x≤y = yes x≤y
   ... | inj₂ y≤x with x ≟ y
-  ...   | yes  x≈y = yes (refl x≈y)
-  ...   | no  ¬x≈y = no (λ x≤y → ¬x≈y (antisym x≤y y≤x))
+  ...   | yes x≈y = yes (refl x≈y)
+  ...   | no  x≉y = no (λ x≤y → x≉y (antisym x≤y y≤x))
 
-tri⟶asym :
-  ∀ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} →
-  Trichotomous _≈_ _<_ → Asymmetric _<_
-tri⟶asym tri {x} {y} x<y x>y with tri x y
-... | tri< _   _ x≯y = x≯y x>y
-... | tri≈ _   _ x≯y = x≯y x>y
-... | tri> x≮y _ _   = x≮y x<y
+------------------------------------------------------------------------
+-- Proofs for strict orders
 
-tri⟶irr :
-  ∀ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} →
-  Trichotomous _≈_ _<_ → Irreflexive _≈_ _<_
-tri⟶irr {_≈_ = _≈_} {_<_} compare = irr
-  where
-  irr : ∀ {x y} → x ≈ y → ¬ (x < y)
-  irr {x} {y} x≈y x<y with compare x y
+module _ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
+
+  trans∧irr⟶asym : Reflexive _≈_ → Transitive _<_ →
+                     Irreflexive _≈_ _<_ → Asymmetric _<_
+  trans∧irr⟶asym refl trans irrefl x<y y<x =
+    irrefl refl (trans x<y y<x)
+
+  irr∧antisym⟶asym : Irreflexive _≈_ _<_ → Antisymmetric _≈_ _<_ →
+                       Asymmetric _<_
+  irr∧antisym⟶asym irrefl antisym x<y y<x =
+    irrefl (antisym x<y y<x) x<y
+
+  asym⟶antisym : Asymmetric _<_ → Antisymmetric _≈_ _<_
+  asym⟶antisym asym x<y y<x = ⊥-elim (asym x<y y<x)
+
+  asym⟶irr : _<_ Respects₂ _≈_ → Symmetric _≈_ →
+               Asymmetric _<_ → Irreflexive _≈_ _<_
+  asym⟶irr (respʳ , respˡ) sym asym {x} {y} x≈y x<y =
+    asym x<y (respʳ (sym x≈y) (respˡ x≈y x<y))
+
+  tri⟶asym : Trichotomous _≈_ _<_ → Asymmetric _<_
+  tri⟶asym tri {x} {y} x<y x>y with tri x y
+  ... | tri< _   _ x≯y = x≯y x>y
+  ... | tri≈ _   _ x≯y = x≯y x>y
+  ... | tri> x≮y _ _   = x≮y x<y
+
+  tri⟶irr : Trichotomous _≈_ _<_ → Irreflexive _≈_ _<_
+  tri⟶irr compare {x} {y} x≈y x<y with compare x y
   ... | tri< _   x≉y y≮x = x≉y x≈y
   ... | tri> x≮y x≉y y<x = x≉y x≈y
   ... | tri≈ x≮y _   y≮x = x≮y x<y
 
-trans∧tri⟶resp≈ :
-  ∀ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} →
-  Symmetric _≈_ → Transitive _≈_ →
-  Transitive _<_ → Trichotomous _≈_ _<_ →
-  _<_ Respects₂ _≈_
-trans∧tri⟶resp≈ {_≈_ = _≈_} {_<_} sym trans <-trans tri =
-  respʳ , respˡ
-  where
-  respʳ : ∀ {x y z} → y ≈ z → x < y → x < z
-  respʳ {x} {z = z} y≈z x<y with tri x z
+  tri⟶dec≈ : Trichotomous _≈_ _<_ → Decidable _≈_
+  tri⟶dec≈ compare x y with compare x y
+  ... | tri< _ x≉y _ = no  x≉y
+  ... | tri≈ _ x≈y _ = yes x≈y
+  ... | tri> _ x≉y _ = no  x≉y
+
+  tri⟶dec< : Trichotomous _≈_ _<_ → Decidable _<_
+  tri⟶dec< compare x y with compare x y
+  ... | tri< x<y _ _ = yes x<y
+  ... | tri≈ x≮y _ _ = no  x≮y
+  ... | tri> x≮y _ _ = no  x≮y
+
+  trans∧tri⟶respʳ≈ : Symmetric _≈_ → Transitive _≈_ →
+                       Transitive _<_ → Trichotomous _≈_ _<_ →
+                       _<_ Respectsʳ _≈_
+  trans∧tri⟶respʳ≈ sym ≈-tr <-tr tri {x} {y} {z} y≈z x<y with tri x z
   ... | tri< x<z _ _ = x<z
-  ... | tri≈ _ x≈z _ = ⊥-elim (tri⟶irr tri (trans x≈z (sym y≈z)) x<y)
-  ... | tri> _ _ z<x = ⊥-elim (tri⟶irr tri (sym y≈z) (<-trans z<x x<y))
+  ... | tri≈ _ x≈z _ = ⊥-elim (tri⟶irr tri (≈-tr x≈z (sym y≈z)) x<y)
+  ... | tri> _ _ z<x = ⊥-elim (tri⟶irr tri (sym y≈z) (<-tr z<x x<y))
 
-  respˡ : ∀ {z x y} → x ≈ y → x < z → y < z
-  respˡ {z} {y = y} x≈y x<z with tri y z
+  trans∧tri⟶respˡ≈ : Transitive _≈_ →
+                       Transitive _<_ → Trichotomous _≈_ _<_ →
+                       _<_ Respectsˡ _≈_
+  trans∧tri⟶respˡ≈ ≈-tr <-tr tri {z} {_} {y} x≈y x<z with tri y z
   ... | tri< y<z _ _ = y<z
-  ... | tri≈ _ y≈z _ = ⊥-elim (tri⟶irr tri (trans x≈y y≈z) x<z)
-  ... | tri> _ _ z<y = ⊥-elim (tri⟶irr tri x≈y (<-trans x<z z<y))
+  ... | tri≈ _ y≈z _ = ⊥-elim (tri⟶irr tri (≈-tr x≈y y≈z) x<z)
+  ... | tri> _ _ z<y = ⊥-elim (tri⟶irr tri x≈y (<-tr x<z z<y))
 
-P-resp⟶¬P-resp :
-  ∀ {a p ℓ} {A : Set a} {_≈_ : Rel A ℓ} {P : A → Set p} →
-  Symmetric _≈_ → P Respects _≈_ → (¬_ ∘ P) Respects _≈_
-P-resp⟶¬P-resp sym resp x≈y ¬Px Py = ¬Px (resp (sym x≈y) Py)
+  trans∧tri⟶resp≈ : Symmetric _≈_ → Transitive _≈_ →
+                      Transitive _<_ → Trichotomous _≈_ _<_ →
+                      _<_ Respects₂ _≈_
+  trans∧tri⟶resp≈ sym ≈-tr <-tr tri =
+    trans∧tri⟶respʳ≈ sym ≈-tr <-tr tri ,
+    trans∧tri⟶respˡ≈ ≈-tr <-tr tri
 
-tri⟶dec≈ :
-  ∀ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} →
-  Trichotomous _≈_ _<_ → Decidable _≈_
-tri⟶dec≈ compare x y with compare x y
-... | tri< _ x≉y _ = no  x≉y
-... | tri≈ _ x≈y _ = yes x≈y
-... | tri> _ x≉y _ = no  x≉y
+------------------------------------------------------------------------
+-- Other proofs
 
-tri⟶dec< :
-  ∀ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} →
-  Trichotomous _≈_ _<_ → Decidable _<_
-tri⟶dec< compare x y with compare x y
-... | tri< x<y _ _ = yes x<y
-... | tri≈ x≮y _ _ = no  x≮y
-... | tri> x≮y _ _ = no  x≮y
+module _ {a b p q} {A : Set a} {B : Set b }
+         {P : REL A B p} {Q : REL A B q}
+         where
 
-map-NonEmpty : ∀ {a b p q} {A : Set a} {B : Set b}
-                 {P : REL A B p} {Q : REL A B q} →
-               P ⇒ Q → NonEmpty P → NonEmpty Q
-map-NonEmpty f x = nonEmpty (f (NonEmpty.proof x))
+  map-NonEmpty : P ⇒ Q → NonEmpty P → NonEmpty Q
+  map-NonEmpty f x = nonEmpty (f (NonEmpty.proof x))
