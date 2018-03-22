@@ -71,6 +71,10 @@ Backwards compatible changes
   distribʳ  : _*_ DistributesOverʳ _+_
   ```
 
+* Added new module `Algebra.Operations.CommutativeMonoid`. This contains the
+  definitions from `Algebra.Operations` (now re-exported from there) that don't
+  rely on the existence of the multiplication half of the semiring structure.
+  
 * Added a new module `Function.Reasoning` for creating multi-stage function pipelines.
   See README.Function.Reasoning for examples.
 
