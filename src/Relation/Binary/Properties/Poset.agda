@@ -33,8 +33,8 @@ strictPartialOrder : StrictPartialOrder _ _ _
 strictPartialOrder = record
   { isStrictPartialOrder = record
     { isEquivalence = isEquivalence
-    ; irrefl        = irrefl
-    ; trans         = trans isPartialOrder
+    ; irrefl        = <-irrefl
+    ; trans         = <-trans isPartialOrder
     ; <-resp-≈      = <-resp-≈ isEquivalence ≤-resp-≈
     }
   }
