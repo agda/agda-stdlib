@@ -1,43 +1,43 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Universe-sensitive functor and monad instances for the Sum type, in the
--- style of Haskell's Either.
+-- Universe-sensitive functor and monad instances for the Sum type.
 ------------------------------------------------------------------------
 
-module Data.Sum.Instances where
-
--- Following Haskell convention, the inj₁ part of the sum is reserved
--- for "error" values, where as inj₂ represents a "normal" value.
+module Data.Sum.Categorical where
 
 open import Level
 open import Data.Sum
 open import Category.Functor
 open import Category.Monad
+open import Function using (id; _∘_; _$_)
 
 -- To minimize the universe level of the RawFunctor, we require that elements of
 -- B are "lifted" to a copy of B at a higher universe level (a ⊔ b). See the
 -- examples for how this is done.
-functor : ∀ {a} (A : Set a) → (b : Level)
+functorₗ : ∀ {a} (A : Set a) → (b : Level)
         → RawFunctor {a ⊔ b} (λ (B : Set (a ⊔ b)) → A ⊎ B)
-functor A b = record
-  { _<$>_ = λ f x → helper f x }
-  where
-    helper : ∀ {B C} → (B → C) → A ⊎ B → A ⊎ C
-    helper f (inj₁ x) = (inj₁ x)
-    helper f (inj₂ y) = (inj₂ (f y))
+functorₗ A b = record { _<$>_ = λ f → map id f }
 
 -- The monad instance also requires some mucking about with universe levels.
-monad : ∀ {a} (A : Set a) → (b : Level)
+monadₗ : ∀ {a} (A : Set a) → (b : Level)
       → RawMonad {a ⊔ b} (λ (B : Set (a ⊔ b)) → A ⊎ B)
-monad A b = record
+monadₗ A b = record
   { return = λ x → inj₂ x
-  ; _>>=_  = λ x f → helper x f
+  ; _>>=_  = λ x f → [ inj₁ , f ]′ x
   }
-  where
-    helper : ∀ {B C} → A ⊎ B → (B → A ⊎ C) → A ⊎ C
-    helper (inj₁ x) f = inj₁ x
-    helper (inj₂ y) f = f y
+
+-- The following are the "right-handed" versions
+functorᵣ : ∀ {a} (A : Set a) → (b : Level)
+         → RawFunctor {a ⊔ b} (λ (B : Set (a ⊔ b)) → B ⊎ A)
+functorᵣ A b = record { _<$>_ = λ f → map f id }
+
+monadᵣ : ∀ {a} (A : Set a) → (b : Level)
+       → RawMonad {a ⊔ b} (λ (B : Set (a ⊔ b)) → B ⊎ A)
+monadᵣ A b = record
+  { return = λ x → inj₁ x
+  ; _>>=_  = λ x f → [ f , inj₂ ]′ x
+  }
 
 ------------------------------------------------------------------------
 -- Examples
@@ -46,20 +46,21 @@ monad A b = record
 -- checker verifies them.
 
 private
-  module Examples {a b} {A : Set a} {B : Set b} where
+  module Examplesₗ {a b} {A : Set a} {B : Set b} where
 
     open import Agda.Builtin.Equality
     open import Function
 
-    open RawFunctor {a ⊔ b} (functor A b)
+    open RawFunctor {a ⊔ b} (functorₗ A b)
 
     -- This type to the right of ⊎ needs to be a "lifted" version of (B : Set b)
     -- that lives in the universe (Set (a ⊔ b)).
-    fmapId : (x : A ⊎ (Lift {ℓ = a} B)) → (id <$> x) ≡ x
-    fmapId (inj₁ x) = refl
-    fmapId (inj₂ y) = refl
+    fmapIdₗ : (x : A ⊎ (Lift {ℓ = a} B)) → (id <$> x) ≡ x
+    fmapIdₗ (inj₁ x) = refl
+    fmapIdₗ (inj₂ y) = refl
 
-    open RawMonad   {a ⊔ b} (monad A b)
+
+    open RawMonad   {a ⊔ b} (monadₗ A b)
 
     -- Now, let's show that "return" is a unit for >>=. We use Lift in exactly
     -- the same way as above. The data (x : B) then needs to be "lifted" to
