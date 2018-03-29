@@ -36,6 +36,8 @@ Non-backwards compatible changes
   `_≟_` and `_<?_` in `Data.Nat` or others. If so then it may be necessary to qualify imports
   with either `using` or `hiding`.
 
+* Changed the associativity of `Relation.Unary`'s `_⇒_` from left to right.
+
 Deprecated features
 -------------------
 
