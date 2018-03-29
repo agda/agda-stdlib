@@ -145,6 +145,37 @@ Backwards compatible changes
   ∸-distribˡ-⊔-⊓ : x ∸ (y ⊔ z) ≡ (x ∸ y) ⊓ (x ∸ z)
   ```
 
+* Added new functions to `Data.Product.N-ary`:
+  ```agda
+  _∈[_]_	: A → ∀ n → A ^ n → Set a
+  cons		: ∀ n → A → A ^ n → A ^ suc n
+  head		: ∀ n → A ^ suc n → A
+  tail		: ∀ n → A ^ suc n → A ^ n
+  lookup	: ∀ (k : Fin n) → A ^ n → A
+  replicate	: ∀ n → A → A ^ n
+  tabulate	: ∀ n → (Fin n → A) → A ^ n
+  append	: ∀ m n → A ^ m → A ^ n → A ^ (m + n)
+  splitAt	: ∀ m n → A ^ (m + n) → A ^ m × A ^ n
+  map		: (A → B) → ∀ n → A ^ n → B ^ n
+  ap		: ∀ n → (A → B) ^ n → A ^ n → B ^ n
+  foldr		: P 0 → (A → P 1) → (∀ n → A → P (suc n) → P (2+ n)) → ∀ n → A ^ n → P n
+  foldl		: P 0 → (A → P 1) → (∀ n → A → P (suc n) → P (2+ n)) → ∀ n → A ^ n → P n
+  reverse	: ∀ n → A ^ n → A ^ n
+  zipWith	: (A → B → C) → ∀ n → A ^ n → B ^ n → C ^ n
+  unzipWith	: (A → B × C) → ∀ n → A ^ n → B ^ n × C ^ n
+  zip		: ∀ n → A ^ n → B ^ n → (A × B) ^ n
+  unzip		: ∀ n → (A × B) ^ n → A ^ n × B ^ n
+  ```
+
+* Added new proofs to `Data.Product.N-ary`:
+  ```agda
+  cons-head-tail-identity : cons n (head n as) (tail n as) ≡ as
+  head-cons-identity      : head n (cons n a as) ≡ a
+  tail-cons-identity      : tail n (cons n a as) ≡ as
+  append-cons-commute     : append (suc m) n (cons m a xs) ys ≡ cons (m + n) a (append m n xs ys)
+  append-splitAt-identity : uncurry (append m n) (splitAt m n as) ≡ as
+  ```
+
 * Added new proof to `Data.Sum`:
   ```agda
   swap-involutive : swap ∘ swap ≗ id
