@@ -28,11 +28,10 @@ before_install:
   - export PATH=/opt/ghc/$GHC_VER/bin:/opt/cabal/$CABAL_VER/bin:/opt/alex/3.1.7/bin:/opt/happy/1.19.5/bin:~/.cabal/bin/:$PATH;
 
 install:
-  - git clone https://github.com/agda/agda --depth=1 --single-branch
   - cabal update
   - sed -i 's/^jobs:/-- jobs:/' $HOME/.cabal/config
   # checking whether .ghc is still valid
-  - cabal install --only-dependencies --dry -v > $HOME/installplan.txt
+  - cabal install --only-dependencies --dry -v agda > $HOME/installplan.txt
   - sed -i -e '1,/^Resolving /d' $HOME/installplan.txt; cat $HOME/installplan.txt
   - touch $HOME/.cabsnap/intallplan.txt
   - mkdir -p $HOME/.cabsnap/ghc $HOME/.cabsnap/lib $HOME/.cabsnap/share $HOME/.cabsnap/bin
@@ -48,14 +47,14 @@ install:
       mkdir -p $HOME/.ghc $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin;
     fi
   - cabal install cpphs
-  - cd agda && cabal install --only-dependencies && make CABAL_OPTS=-v2 install-bin
+  - cabal install agda
   # snapshot package-db on cache miss
   - echo "snapshotting package-db to build-cache";
     mkdir $HOME/.cabsnap;
     cp -a $HOME/.ghc $HOME/.cabsnap/ghc;
     cp -a $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin $HOME/installplan.txt $HOME/.cabsnap/;
   # generating Everything.agda
-  - cd $HOME/build/agda/agda-stdlib
+  - cabal install lib.cabal
   - runghc GenerateEverything.hs
 
 script:
