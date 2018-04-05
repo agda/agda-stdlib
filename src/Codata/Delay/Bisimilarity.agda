@@ -13,7 +13,7 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 data Bisim {a b r} {A : Set a} {B : Set b} (R : A → B → Set r) i :
-           (xs : Delay A i) (ys : Delay B i) → Set r where
+           (xs : Delay A ∞) (ys : Delay B ∞) → Set r where
   now   : ∀ {x y} → R x y → Bisim R i (now x) (now y)
   later : ∀ {xs ys} → Thunk^R (Bisim R) i xs ys → Bisim R i (later xs) (later ys)
 
@@ -44,15 +44,15 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
 
 module _ {ℓ} {A : Set ℓ} where
 
- infix 1 _≈_
- _≈_ : ∀ {i} → Delay A i → Delay A i → Set ℓ
- _≈_ = Bisim _≡_ _
+ infix 1 _⊢_≈_
+ _⊢_≈_ : ∀ i → Delay A ∞ → Delay A ∞ → Set ℓ
+ _⊢_≈_ = Bisim _≡_
 
- refl : Reflexive _≈_
+ refl : ∀ {i} → Reflexive (i ⊢_≈_)
  refl = reflexive Eq.refl
 
- sym : Symmetric _≈_
+ sym : ∀ {i} → Symmetric (i ⊢_≈_)
  sym = symmetric Eq.sym
 
- trans : Transitive _≈_
+ trans : ∀ {i} → Transitive (i ⊢_≈_)
  trans = transitive Eq.trans

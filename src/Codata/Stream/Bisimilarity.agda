@@ -13,7 +13,7 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 data Bisim {a b r} {A : Set a} {B : Set b} (R : A → B → Set r) i :
-           (xs : Stream A i) (ys : Stream B i) → Set r where
+           (xs : Stream A ∞) (ys : Stream B ∞) → Set r where
   _∷_ : ∀ {x y xs ys} → R x y → Thunk^R (Bisim R) i xs ys →
         Bisim R i (x ∷ xs) (y ∷ ys)
 
@@ -41,14 +41,15 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
 
 module _ {ℓ} {A : Set ℓ} where
 
- _≈_ : ∀ {i} → Stream A i → Stream A i → Set ℓ
- _≈_ = Bisim _≡_ _
+ infix 1 _⊢_≈_
+ _⊢_≈_ : ∀ i → Stream A ∞ → Stream A ∞ → Set ℓ
+ _⊢_≈_ = Bisim _≡_
 
- refl : Reflexive _≈_
+ refl : ∀ {i} → Reflexive (i ⊢_≈_)
  refl = reflexive Eq.refl
 
- sym : Symmetric _≈_
+ sym : ∀ {i} → Symmetric (i ⊢_≈_)
  sym = symmetric Eq.sym
 
- trans : Transitive _≈_
+ trans : ∀ {i} → Transitive (i ⊢_≈_)
  trans = transitive Eq.trans

@@ -10,6 +10,8 @@ open import Size
 
 open import Codata.Thunk
 open import Codata.Conat
+open import Codata.Conat.Bisimilarity
+open import Codata.Conat.Properties
 open import Codata.Colist as Colist using (Colist ; [] ; _∷_)
 open import Codata.Stream as Stream using (Stream ; _∷_)
 
@@ -43,6 +45,10 @@ module _ {ℓ} {A : Set ℓ} where
  fromStream : ∀ {i} → Stream A i → Covec A i infinity
  fromStream = cotake infinity
 
+ cast : ∀ {i} {m n} → i ⊢ m ≈ n → Covec A i m → Covec A i n
+ cast zero     []       = []
+ cast (suc eq) (a ∷ as) = a ∷ λ where .force → cast (eq .force) (as .force)
+
 module _ {a b} {A : Set a} {B : Set b} where
 
  map : ∀ (f : A → B) → ∀ {i n} → Covec A i n → Covec B i n
@@ -52,6 +58,12 @@ module _ {a b} {A : Set a} {B : Set b} where
  ap : ∀ {i n} → Covec (A → B) i n → Covec A i n → Covec B i n
  ap []       []       = []
  ap (f ∷ fs) (a ∷ as) = (f a) ∷ λ where .force → ap (fs .force) (as .force)
+
+ scanl : (B → A → B) → B → ∀ {i n} → Covec A i n → Covec B i (1 ℕ+ n)
+ scanl c n []       = n ∷ λ where .force → []
+ scanl c n (a ∷ as) = n ∷ λ where
+   .force → cast (suc λ where .force → 0ℕ+-identity)
+                 (scanl c (c n a) (as .force))
 
 module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 

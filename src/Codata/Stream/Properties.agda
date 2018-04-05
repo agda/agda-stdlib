@@ -27,20 +27,20 @@ module _ {a b} {A : Set a} {B : Set b} where
 
 module _ {a b} {A : Set a} {B : Set b} where
 
- map-repeat-commute : ∀ (f : A → B) a {i} → map f (Stream A i ∋ repeat a) ≈ repeat (f a)
+ map-repeat-commute : ∀ (f : A → B) a {i} → i ⊢ map f (repeat a) ≈ repeat (f a)
  map-repeat-commute f a = Eq.refl ∷ λ where .force → map-repeat-commute f a
 
- repeat-ap-identity : ∀ (f : A → B) {i} (as : Stream A i) → ap (repeat f) as ≈ map f as
+ repeat-ap-identity : ∀ (f : A → B) as {i} → i ⊢ ap (repeat f) as ≈ map f as
  repeat-ap-identity f (a ∷ as) = Eq.refl ∷ λ where .force → repeat-ap-identity f (as .force)
 
- ap-repeat-identity : ∀ {i} (fs : Stream (A → B) i) (a : A) → ap fs (repeat a) ≈ map (_$ a) fs
+ ap-repeat-identity : ∀ (fs : Stream (A → B) ∞) (a : A) {i} → i ⊢ ap fs (repeat a) ≈ map (_$ a) fs
  ap-repeat-identity (f ∷ fs) a = Eq.refl ∷ λ where .force → ap-repeat-identity (fs .force) a
 
- ap-repeat-commute : ∀ (f : A → B) a {i} → ap (repeat f) (Stream A i ∋ repeat a) ≈ repeat (f a)
+ ap-repeat-commute : ∀ (f : A → B) a {i} → i ⊢ ap (repeat f) (repeat a) ≈ repeat (f a)
  ap-repeat-commute f a = Eq.refl ∷ λ where .force → ap-repeat-commute f a
 
 module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
- map-map-fusion : ∀ f (g : B → C) {i} (as : Stream A i) → map g (map f as) ≈ map (g ∘ f) as
+ map-map-fusion : ∀ (f : A → B) (g : B → C) as {i} → i ⊢ map g (map f as) ≈ map (g ∘ f) as
  map-map-fusion f g (a ∷ as) = Eq.refl ∷ λ where .force → map-map-fusion f g (as .force)
 
