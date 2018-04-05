@@ -178,7 +178,7 @@ module _ {a} {A : Set a} -- The universe of discourse.
 
   -- Implication.
 
-  infixl 8 _⇒_
+  infixr 8 _⇒_
 
   _⇒_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
   P ⇒ Q = λ x → x ∈ P → x ∈ Q
