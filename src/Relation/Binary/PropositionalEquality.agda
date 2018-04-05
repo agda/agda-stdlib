@@ -9,6 +9,8 @@ module Relation.Binary.PropositionalEquality where
 open import Function
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
 open import Level
+open import Data.Empty
+open import Relation.Nullary using (yes ; no)
 open import Relation.Unary using (Pred)
 open import Relation.Binary
 import Relation.Binary.Indexed as I
@@ -190,6 +192,12 @@ IrrelevantRel _~_ = ∀ {x y} → isPropositional (x ~ y)
 
 ≡-irrelevance : ∀ {a} {A : Set a} → IrrelevantRel (_≡_ {A = A})
 ≡-irrelevance refl refl = refl
+
+≡-≟-identity : ∀ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) →
+               ∀ a b (eq : a ≡ b) → a ≟ b ≡ yes eq
+≡-≟-identity _≟_ a b eq with a ≟ b
+... | yes p = cong yes (≡-irrelevance p eq)
+... | no ¬p = ⊥-elim (¬p eq)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
