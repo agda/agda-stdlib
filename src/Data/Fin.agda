@@ -11,9 +11,9 @@
 module Data.Fin where
 
 open import Data.Empty using (⊥-elim)
+open import Data.Bool using (true; false)
 open import Data.Nat as ℕ
   using (ℕ; zero; suc; z≤n; s≤s)
-open import Data.Bool using (if_then_else_)
 open import Function using (_∘_; _on_)
 open import Level using () renaming (zero to ℓ₀)
 open import Relation.Nullary using (yes; no)
@@ -227,12 +227,11 @@ suc x ≟ suc y with x ≟ y
 -- * swap i j k = k (when k ≠ i and k ≠ j)
 
 swap : ∀ {n} → Fin n → Fin n → Fin n → Fin n
-swap i j k =
-  if ⌊ k ≟ i ⌋
-  then j
-  else (if ⌊ k ≟ j ⌋
-        then i
-        else k)
+swap i j k with k ≟ i
+... | yes _ = j
+... | no _ with k ≟ j
+... | yes _ = i
+... | no _ = k
 
 ------------------------------------------------------------------------
 -- Order relations

@@ -414,16 +414,21 @@ swap-perm {n} i j = record
   where
   swap-inverse : ∀ (i j : Fin n) {k} → swap i j (swap j i k) ≡ k
   swap-inverse i j {k} with k ≟ j
-  swap-inverse i j {.j} | yes refl rewrite Dec.diag (i ≟ i) refl = refl
+  swap-inverse i j {k} | yes p with i ≟ i
+  swap-inverse i j {k} | yes p | yes q = P.sym p
+  swap-inverse i j {k} | yes p | no ¬q = ⊥-elim (¬q refl)
   swap-inverse i j {k} | no ¬p with k ≟ i
-  swap-inverse i j {k} | no ¬p | yes q
-    rewrite Dec.diag (j ≟ j) refl
-          | Dec.antidiag (j ≟ i) (¬p ∘ P.trans q ∘ P.sym)
-          = P.sym q
-  swap-inverse i j {k} | no ¬p | no ¬q
-    rewrite Dec.antidiag (k ≟ i) ¬q
-          | Dec.antidiag (k ≟ j) ¬p
-          = refl
+  swap-inverse i j {k} | no ¬p | yes q with j ≟ i
+  swap-inverse i j {k} | no ¬p | yes q | yes r = ⊥-elim (¬p (P.trans q (P.sym r)))
+  swap-inverse i j {k} | no ¬p | yes q | no ¬r with j ≟ j
+  swap-inverse i j {k} | no ¬p | yes q | no ¬r | yes _ = P.sym q
+  swap-inverse i j {k} | no ¬p | yes q | no ¬r | no ¬s = ⊥-elim (¬s refl)
+  swap-inverse i j {k} | no ¬p | no ¬q with k ≟ i
+  swap-inverse i j {k} | no ¬p | no ¬q | yes q = ⊥-elim (¬q q)
+  swap-inverse i j {k} | no ¬p | no ¬q | no _ with k ≟ j
+  swap-inverse i j {k} | no ¬p | no ¬q | no _ | yes p = ⊥-elim (¬p p)
+  swap-inverse i j {k} | no ¬p | no ¬q | no _ | no _ = refl
+
 
 -- Given a permutation
 --
