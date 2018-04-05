@@ -17,8 +17,8 @@ strictTotalOrder : StrictTotalOrder _ _ _
 strictTotalOrder = record
   { isStrictTotalOrder = record
       { isEquivalence = isEquivalence
-      ; trans         = trans isPartialOrder
-      ; compare       = trichotomous Eq.sym _≟_ antisym total
+      ; trans         = <-trans isPartialOrder
+      ; compare       = <-trichotomous Eq.sym _≟_ antisym total
       }
   }
 

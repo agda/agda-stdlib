@@ -14,7 +14,7 @@ infixl 8 _ˢ_
 infixl 1 _on_
 infixl 1 _⟨_⟩_
 infixr 0 _-[_]-_ _$_ _$′_ _$!_ _$!′_
-infixl 0 _∋_
+infixl 0 _|>_ _|>′_ _∋_
 
 ------------------------------------------------------------------------
 -- Types
@@ -85,6 +85,17 @@ _$!_ = flip force
 _$!′_ : ∀ {a b} {A : Set a} {B : Set b} →
         (A → B) → (A → B)
 _$!′_ = _$!_
+
+-- flipped application aka pipe-forward
+
+_|>_ : ∀ {a b} {A : Set a} {B : A → Set b} →
+       (a : A) → (∀ a → B a) → B a
+_|>_ = flip _$_
+
+
+_|>′_ : ∀ {a b} {A : Set a} {B : Set b} →
+        A → (A → B) → B
+_|>′_ = _|>_
 
 
 _⟨_⟩_ : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →

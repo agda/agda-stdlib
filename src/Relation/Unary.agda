@@ -7,10 +7,10 @@
 module Relation.Unary where
 
 open import Data.Empty
-open import Function
 open import Data.Unit.Base using (⊤)
 open import Data.Product
-open import Data.Sum
+open import Data.Sum using (_⊎_; [_,_])
+open import Function
 open import Level
 open import Relation.Nullary
 open import Relation.Binary.Core using (_≡_)
@@ -54,7 +54,7 @@ module _ {a} {A : Set a} -- The universe of discourse.
 
   -- The singleton set.
   ｛_｝ : A → Pred A a
-  ｛ x ｝ = _≡_ x
+  ｛ x ｝ = x ≡_
 
   ----------------------------------------------------------------------
   -- The universe, i.e. the subset containing all elements in A.
@@ -178,7 +178,7 @@ module _ {a} {A : Set a} -- The universe of discourse.
 
   -- Implication.
 
-  infixl 8 _⇒_
+  infixr 8 _⇒_
 
   _⇒_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
   P ⇒ Q = λ x → x ∈ P → x ∈ Q

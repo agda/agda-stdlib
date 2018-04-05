@@ -38,14 +38,199 @@ Non-backwards compatible changes
   _∼[_]_
   ```
 
+#### Upgrade of `Algebra.Operations`
+
+* Previously `Algebra.Operations` was parameterised by a semiring, however several of the
+  operators it defined depended only on the additive component. Therefore the modules have been
+  rearranged to allow more fine-grained use depending on the current position in the algebra
+  heirarchy. Currently there exist two modules:
+  ```
+  Algebra.Operations.CommutativeMonoid
+  Algebra.Operations.Semiring
+  ```
+  where `Algebra.Operations.Semiring` exports all the definitions previously exported
+  by `Algebra.Operations`. More modules may be added in future as required.
+
+  Also the fixity of `_×_`, `_×′_` and `_^_` have all been increased by 1.
+
+#### Upgrade of `takeWhile`, `dropWhile`, `span` and `break` in `Data.List`
+
+* These functions in `Data.List.Base` now use decidable
+  predicates instead of boolean-valued functions. The boolean versions discarded
+  type information, and hence were difficult to use and prove
+  properties about. The proofs have been updated and renamed accordingly.
+
+  The old boolean versions still exist as `boolTakeWhile`, `boolSpan` etc. for
+  backwards compatibility reasons, but are deprecated and may be removed in some
+  future release. The old versions can be implemented via the new versions
+  by passing the decidability proof `λ v → f v ≟ true` with `_≟_` from `Data.Bool`.
+
+#### Other
+
+* `Relation.Binary.Consequences` no longer exports `Total`. The standard way of accessing it
+  through `Relation.Binary` remains unchanged.
+
+* Added `swap : A ⊎ B → B ⊎ A` to `Data.Sum`. This may conflict with `swap` in `Data.Product`.
+  If so then it may be necessary to qualify imports with either `using` or `hiding`.
+
+* The decidability proofs `_≟_` and `_<?_` are now exported by `Data.Fin` as well as
+  `Data.Fin.Properties` to improve consistency across the library. They may conflict with
+  `_≟_` and `_<?_` in `Data.Nat` or others. If so then it may be necessary to qualify imports
+  with either `using` or `hiding`.
+
+* Changed the associativity of `Relation.Unary`'s `_⇒_` from left to right.
+
 Deprecated features
 -------------------
+
+The following renaming has occurred as part of a drive to improve consistency across
+the library. The old names still exist and therefore all existing code should still
+work, however they have been deprecated and use of the new names is encouraged. Although not
+anticipated any time soon, they may eventually be removed in some future release of the library.
+
+* Closures of binary relations have been centralised as follows:
+  ```agda
+  Data.ReflexiveClosure              ↦ Relation.Binary.Closure.Reflexive
+  Relation.Binary.SymmetricClosure   ↦ Relation.Binary.Closure.Symmetric
+  Data.Plus                          ↦ Relation.Binary.Closure.Transitive
+  Data.Star                          ↦ Relation.Binary.Closure.ReflexiveTransitive
+  Data.Star.Properties               ↦ Relation.Binary.Closure.ReflexiveTransitive.Properties
+  Relation.Binary.EquivalenceClosure ↦ Relation.Binary.Closure.Equivalence
+  ```
+  The old files still exist and re-export the contents of the new modules.
+
+* In `Relation.Binary.NonStrictToStrict`:
+  ```agda
+  irrefl         ↦ <-irrefl
+  trans          ↦ <-trans
+  antisym⟶asym ↦ <-asym
+  decidable      ↦ <-decidable
+  trichotomous   ↦ <-trichotomous
+
+  isPartialOrder⟶isStrictPartialOrder ↦ <-isStrictPartialOrder
+  isTotalOrder⟶isStrictTotalOrder     ↦ <-isStrictTotalOrder₁
+  isDecTotalOrder⟶isStrictTotalOrder  ↦ <-isStrictTotalOrder₂
+  ```
+
+* In `IsStrictPartialOrder` in `Relation.Binary`:
+  ```agda
+  asymmetric ↦ asym
+  ```
 
 Removed features
 ----------------
 
 Backwards compatible changes
 ----------------------------
+
+* The module `Algebra.Structures` can now be parameterised by equality in the same way
+  as `Algebra.FunctionProperties`. The structures within also now export a greater selection
+  of "left" and "right" properties. For example (where applicable):
+  ```agda
+  identityˡ : LeftIdentity ε _∙_
+  identityʳ : RightIdentity ε _∙_
+  inverseˡ  : LeftInverse ε _⁻¹ _∙_
+  inverseʳ  : RightInverse ε _⁻¹ _∙_
+  zeroˡ     : LeftZero 0# _*_
+  zeroʳ     : RightZero 0# _*_
+  distribˡ  : _*_ DistributesOverˡ _+_
+  distribʳ  : _*_ DistributesOverʳ _+_
+  ```
+
+* Added new functions to `Algebra.Operations.CommutativeMonoid`:
+  ```agda
+  sumₗ = List.foldr _+_ 0#
+  sumₜ = Table.foldr _+_ 0#
+  ```
+
+* Added a new module `Function.Reasoning` for creating multi-stage function pipelines.
+  See README.Function.Reasoning for examples.
+
+* Added new proofs to `Data.Bool.Properties`:
+  ```agda
+  ∧-semigroup                     : Semigroup _ _
+  ∧-commutativeMonoid             : CommutativeMonoid _
+  ∧-idempotentCommutativeMonoid   : IdempotentCommutativeMonoid _ _
+  ∧-isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid _∧_ true
+
+  ∨-semigroup                     : Semigroup _ _
+  ∨-commutativeMonoid             : CommutativeMonoid _ _
+  ∨-idempotentCommutativeMonoid   : IdempotentCommutativeMonoid _ _
+  ∨-isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid _∨_ false
+
+  ∨-∧-lattice                     : Lattice _ _
+  ∨-∧-distributiveLattice         : DistributiveLattice _ _
+  ```
+
+* Added new functions to `Data.List.All`:
+  ```agda
+  zip   : All P ∩ All Q ⊆ All (P ∩ Q)
+  unzip : All (P ∩ Q) ⊆ All P ∩ All Q
+  ```
+
+* Added new modules `Data.List.Zipper` and `Data.List.Zipper.Properties`.
+
+* Added new proofs to `Data.Nat.Properties`:
+  ```agda
+  m+n≮m          : m + n ≮ m
+  m≮m∸n          : m ≮ m ∸ n
+
+  +-0-isMonoid   : IsMonoid _+_ 0
+  *-1-isMonoid   : IsMonoid _*_ 1
+
+  ⊓-triangulate  : x ⊓ y ⊓ z ≡ (x ⊓ y) ⊓ (y ⊓ z)
+  ⊔-triangulate  : x ⊔ y ⊔ z ≡ (x ⊔ y) ⊔ (y ⊔ z)
+
+  m∸n≡0⇒m≤n      : m ∸ n ≡ 0 → m ≤ n
+  m≤n⇒m∸n≡0      : m ≤ n → m ∸ n ≡ 0
+  ∸-monoˡ-≤      : m ≤ n → m ∸ o ≤ n ∸ o
+  ∸-monoʳ-≤      : m ≤ n → o ∸ m ≥ o ∸ n
+  ∸-distribˡ-⊓-⊔ : x ∸ (y ⊓ z) ≡ (x ∸ y) ⊔ (x ∸ z)
+  ∸-distribˡ-⊔-⊓ : x ∸ (y ⊔ z) ≡ (x ∸ y) ⊓ (x ∸ z)
+  ```
+
+* Added new proof to `Data.Sum`:
+  ```agda
+  swap-involutive : swap ∘ swap ≗ id
+  ```
+
+* Added new types to `Relation.Binary.Core`:
+  ```agda
+  P Respectsʳ _∼_ = ∀ {x} → (P x)      Respects _∼_
+  P Respectsˡ _∼_ = ∀ {y} → (flip P y) Respects _∼_
+  ```
+  Records in `Relation.Binary` export these in addition to the standard `Respects₂` proofs.
+  e.g. `IsStrictPartialOrder` exports:
+  ```agda
+  <-respˡ-≈ : _<_ Respectsˡ _≈_
+  <-respʳ-≈ : _<_ Respectsʳ _≈_
+  ```
+
+* Added new proof to `IsStrictTotalOrder` and `StrictTotalOrder` in `Relation.Binary`:
+  ```agda
+  asym : Asymmetric _<_
+  ```
+
+* Added new proofs to `Relation.Binary.NonStrictToStrict`:
+  ```agda
+  <-respˡ-≈ : _≤_ Respectsˡ _≈_ → _<_ Respectsˡ _≈_
+  <-respʳ-≈ : _≤_ Respectsʳ _≈_ → _<_ Respectsʳ _≈_
+
+  <≤-trans : Transitive _≤_ → Antisymmetric _≈_ _≤_ → _≤_ Respectsʳ _≈_ → Trans _<_ _≤_ _<_
+  ≤<-trans : Transitive _≤_ → Antisymmetric _≈_ _≤_ → _≤_ Respectsˡ _≈_ → Trans _≤_ _<_ _<_
+  ```
+
+* Added new proofs to `Relation.Binary.Consequences`:
+  ```agda
+  subst⟶respˡ : Substitutive _∼_ p → P Respectsˡ _∼_
+  subst⟶respʳ : Substitutive _∼_ p → P Respectsʳ _∼_
+
+  trans∧tri⟶respʳ≈ : Transitive _<_ → Trichotomous _≈_ _<_ → _<_ Respectsʳ _≈_
+  trans∧tri⟶respˡ≈ : Transitive _<_ → Trichotomous _≈_ _<_ → _<_ Respectsˡ _≈_
+  ```
+
+* The types `Maximum` and `Minimum` are now exported by `Relation.Binary` as well
+  as `Relation.Binary.Lattice`.
 
 Version 0.15
 ============

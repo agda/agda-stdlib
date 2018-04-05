@@ -9,10 +9,11 @@
 
 module Relation.Binary.Core where
 
-open import Data.Product
-open import Function
+open import Data.Product using (_×_)
+open import Data.Sum.Base using (_⊎_)
+open import Function using (_on_; flip)
 open import Level
-open import Relation.Nullary
+open import Relation.Nullary using (Dec; ¬_)
 
 ------------------------------------------------------------------------
 -- Binary relations
@@ -103,16 +104,23 @@ Asymmetric _<_ = ∀ {x y} → x < y → ¬ (y < x)
 _Respects_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → (A → Set ℓ₁) → Rel A ℓ₂ → Set _
 P Respects _∼_ = ∀ {x y} → x ∼ y → P x → P y
 
+_Respectsʳ_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
+P Respectsʳ _∼_ = ∀ {x} → (P x) Respects _∼_
+
+_Respectsˡ_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
+P Respectsˡ _∼_ = ∀ {y} → (flip P y) Respects _∼_
+
 _Respects₂_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
-P Respects₂ _∼_ =
-  (∀ {x} → P x      Respects _∼_) ×
-  (∀ {y} → flip P y Respects _∼_)
+P Respects₂ _∼_ = (P Respectsʳ _∼_) × (P Respectsˡ _∼_)
 
 Substitutive : ∀ {a ℓ₁} {A : Set a} → Rel A ℓ₁ → (ℓ₂ : Level) → Set _
 Substitutive {A = A} _∼_ p = (P : A → Set p) → P Respects _∼_
 
 Decidable : ∀ {a b ℓ} {A : Set a} {B : Set b} → REL A B ℓ → Set _
 Decidable _∼_ = ∀ x y → Dec (x ∼ y)
+
+Total : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
+Total _∼_ = ∀ x y → (x ∼ y) ⊎ (y ∼ x)
 
 data Tri {a b c} (A : Set a) (B : Set b) (C : Set c) :
          Set (a ⊔ b ⊔ c) where
@@ -123,6 +131,12 @@ data Tri {a b c} (A : Set a) (B : Set b) (C : Set c) :
 Trichotomous : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
 Trichotomous _≈_ _<_ = ∀ x y → Tri (x < y) (x ≈ y) (x > y)
   where _>_ = flip _<_
+
+Maximum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
+Maximum _≤_ ⊤ = ∀ x → x ≤ ⊤
+
+Minimum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
+Minimum _≤_ = Maximum (flip _≤_)
 
 record NonEmpty {a b ℓ} {A : Set a} {B : Set b}
                 (T : REL A B ℓ) : Set (a ⊔ b ⊔ ℓ) where

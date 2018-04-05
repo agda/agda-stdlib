@@ -8,7 +8,6 @@ module Data.Vec.Relation.Pointwise.Extensional where
 
 open import Data.Fin using (zero; suc)
 open import Data.Nat using (zero; suc)
-open import Data.Plus as Plus hiding (equivalent; map)
 open import Data.Vec as Vec hiding ([_]; head; tail; map)
 open import Data.Vec.Relation.Pointwise.Inductive as Inductive
   using ([]; _∷_)
@@ -21,6 +20,8 @@ open import Function.Equivalence as Equiv
 open import Level using (_⊔_) renaming (zero to ℓ₀)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Closure.Transitive as Plus
+  hiding (equivalent; map)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 

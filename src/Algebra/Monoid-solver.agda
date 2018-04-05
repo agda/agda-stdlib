@@ -8,7 +8,7 @@ open import Algebra
 
 module Algebra.Monoid-solver {m₁ m₂} (M : Monoid m₁ m₂) where
 
-open import Data.Fin
+open import Data.Fin as Fin hiding (_≟_)
 import Data.Fin.Properties as Fin
 open import Data.List.Base hiding (lookup)
 import Data.List.Relation.Equality.DecPropositional as ListEq
@@ -80,7 +80,7 @@ normalise (e₁ ⊕ e₂) = normalise e₁ ++ normalise e₂
 homomorphic : ∀ {n} (nf₁ nf₂ : Normal n) (ρ : Env n) →
               ⟦ nf₁ ++ nf₂ ⟧⇓ ρ ≈ (⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ)
 homomorphic [] nf₂ ρ = begin
-  ⟦ nf₂ ⟧⇓ ρ      ≈⟨ sym $ proj₁ identity _ ⟩
+  ⟦ nf₂ ⟧⇓ ρ      ≈⟨ sym $ identityˡ _ ⟩
   ε ∙ ⟦ nf₂ ⟧⇓ ρ  ∎
 homomorphic (x ∷ nf₁) nf₂ ρ = begin
   lookup x ρ ∙ ⟦ nf₁ ++ nf₂ ⟧⇓ ρ          ≈⟨ ∙-cong refl (homomorphic nf₁ nf₂ ρ) ⟩
@@ -92,7 +92,7 @@ homomorphic (x ∷ nf₁) nf₂ ρ = begin
 normalise-correct :
   ∀ {n} (e : Expr n) (ρ : Env n) → ⟦ normalise e ⟧⇓ ρ ≈ ⟦ e ⟧ ρ
 normalise-correct (var x) ρ = begin
-  lookup x ρ ∙ ε  ≈⟨ proj₂ identity _ ⟩
+  lookup x ρ ∙ ε  ≈⟨ identityʳ _ ⟩
   lookup x ρ      ∎
 normalise-correct id ρ = begin
   ε  ∎
