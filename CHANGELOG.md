@@ -204,8 +204,8 @@ Backwards compatible changes
 
 * Added new proofs to `Data.List.Properties`:
   ```agda
-  tabulate-cong : ∀ {n a} {A : Set a} {f g : Fin n → A} → f ≗ g → tabulate f ≡ tabulate g
-  tabulate-lookup : ∀ {a} {A : Set a} {xs : List A} → tabulate (lookup xs) ≡ xs
+  tabulate-cong : f ≗ g → tabulate f ≡ tabulate g
+  tabulate-lookup : tabulate (lookup xs) ≡ xs
   ```
 
 Version 0.15
