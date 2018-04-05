@@ -202,6 +202,10 @@ Backwards compatible changes
 * The types `Maximum` and `Minimum` are now exported by `Relation.Binary` as well
   as `Relation.Binary.Lattice`.
 
+* Added new module `Relation.Binary.Indexed.Homogeneous`. This module defines
+  homogeneously-indexed binary relations, as opposed to the
+  heterogeneously-indexed binary relations found in `Relation.Binary.Indexed`.
+
 Version 0.15
 ============
 
