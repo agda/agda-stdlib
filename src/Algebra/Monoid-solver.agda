@@ -8,7 +8,7 @@ open import Algebra
 
 module Algebra.Monoid-solver {m₁ m₂} (M : Monoid m₁ m₂) where
 
-open import Data.Fin
+open import Data.Fin as Fin hiding (_≟_)
 import Data.Fin.Properties as Fin
 open import Data.List.Base hiding (lookup)
 import Data.List.Relation.Equality.DecPropositional as ListEq

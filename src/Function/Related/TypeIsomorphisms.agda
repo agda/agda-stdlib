@@ -9,7 +9,7 @@ module Function.Related.TypeIsomorphisms where
 
 open import Algebra
 import Algebra.FunctionProperties as FP
-import Algebra.Operations
+import Algebra.Operations.Semiring as SemiringOperations
 import Algebra.RingSolver.Natural-coefficients
 open import Algebra.Structures
 open import Data.Empty
@@ -186,8 +186,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
     -- writing, on a given system, using certain Agda options).
 
     isCommutativeSemiring :
-      IsCommutativeSemiring
-        {ℓ = ℓ} (Related ⌊ k ⌋) _⊎_ _×_ (Lift ⊥) (Lift ⊤)
+      IsCommutativeSemiring (Related ⌊ k ⌋) _⊎_ _×_ (Lift ⊥) (Lift ⊤)
     isCommutativeSemiring = record
       { +-isCommutativeMonoid = isCommutativeMonoid $
                                   ⊎-CommutativeMonoid k ℓ
@@ -204,7 +203,7 @@ private
   coefficient-dec :
     ∀ s ℓ →
     let open CommutativeSemiring (×⊎-CommutativeSemiring s ℓ)
-        open Algebra.Operations semiring renaming (_×_ to Times)
+        open SemiringOperations semiring renaming (_×_ to Times)
     in
 
     ∀ m n → Dec (Times m 1# ∼[ ⌊ s ⌋ ] Times n 1#)
@@ -218,7 +217,7 @@ private
     where
     open CommutativeSemiring (×⊎-CommutativeSemiring bijection ℓ)
       using (1#; semiring)
-    open Algebra.Operations semiring renaming (_×_ to Times)
+    open SemiringOperations semiring renaming (_×_ to Times)
 
     to : ∀ {m n} → m ≡ n → Times m 1# ↔ Times n 1#
     to {m} P.refl = Times m 1# ∎

@@ -29,7 +29,7 @@ open import Relation.Binary.PropositionalEquality as P
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable using (⌊_⌋)
-open import Relation.Unary using (Decidable; ∁; ∁?)
+open import Relation.Unary using (Pred; Decidable; ∁; ∁?)
 
 ------------------------------------------------------------------------
 -- _∷_
@@ -81,7 +81,7 @@ module _ {a b} {A : Set a} {B : Set b} where
 module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
   map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
-  map-compose [] = refl
+  map-compose []       = refl
   map-compose (x ∷ xs) = P.cong (_ ∷_) (map-compose xs)
 
 ------------------------------------------------------------------------
@@ -441,19 +441,19 @@ module _ {a} {A : Set a} where
 ------------------------------------------------------------------------
 -- takeWhile, dropWhile, and span
 
-module _ {a} {A : Set a} (p : A → Bool) where
+module _ {a p} {A : Set a} {P : Pred A p} (P? : Decidable P) where
 
-  takeWhile++dropWhile : ∀ xs → takeWhile p xs ++ dropWhile p xs ≡ xs
+  takeWhile++dropWhile : ∀ xs → takeWhile P? xs ++ dropWhile P? xs ≡ xs
   takeWhile++dropWhile []       = refl
-  takeWhile++dropWhile (x ∷ xs) with p x
-  ... | true  = P.cong (x ∷_) (takeWhile++dropWhile xs)
-  ... | false = refl
+  takeWhile++dropWhile (x ∷ xs) with P? x
+  ... | yes _ = P.cong (x ∷_) (takeWhile++dropWhile xs)
+  ... | no  _ = refl
 
-  span-defn : span p ≗ < takeWhile p , dropWhile p >
+  span-defn : span P? ≗ < takeWhile P? , dropWhile P? >
   span-defn []       = refl
-  span-defn (x ∷ xs) with p x
-  ... | true  = P.cong (Prod.map (x ∷_) id) (span-defn xs)
-  ... | false = refl
+  span-defn (x ∷ xs) with P? x
+  ... | yes _ = P.cong (Prod.map (x ∷_) id) (span-defn xs)
+  ... | no  _ = refl
 
 ------------------------------------------------------------------------
 -- filter
@@ -624,28 +624,8 @@ module List-solver {a} {A : Set a} =
 ------------------------------------------------------------------------
 -- DEPRECATED
 ------------------------------------------------------------------------
--- Please use `filter` and `partition` instead of `boolFilter` and
--- `boolPartition`
-
-boolFilter-filters : ∀ {a p} {A : Set a} →
-                 (P : A → Set p) (dec : Decidable P) (xs : List A) →
-                 All P (boolFilter (⌊_⌋ ∘ dec) xs)
-boolFilter-filters P dec []       = []
-boolFilter-filters P dec (x ∷ xs) with dec x
-... | yes px = px ∷ boolFilter-filters P dec xs
-... | no ¬px = boolFilter-filters P dec xs
-
-length-boolFilter : ∀ {a} {A : Set a} (p : A → Bool) xs →
-                length (boolFilter p xs) ≤ length xs
-length-boolFilter p xs =
-  length-mapMaybe (λ x → if p x then just x else nothing) xs
-
-boolPartition-defn : ∀ {a} {A : Set a} (p : A → Bool) →
-                 boolPartition p ≗ < boolFilter p , boolFilter (not ∘ p) >
-boolPartition-defn p []       = refl
-boolPartition-defn p (x ∷ xs) with p x
-...  | true  = P.cong (Prod.map (x ∷_) id) (boolPartition-defn p xs)
-...  | false = P.cong (Prod.map id (x ∷_)) (boolPartition-defn p xs)
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
 gfilter-just      = mapMaybe-just
 gfilter-nothing   = mapMaybe-nothing
@@ -654,3 +634,36 @@ length-gfilter    = length-mapMaybe
 
 right-identity-unique = ++-identityʳ-unique
 left-identity-unique  = ++-identityˡ-unique
+
+-- Please use the predicate versions of the proofs below
+module _ {a} {A : Set a} (p : A → Bool) where
+
+  boolTakeWhile++boolDropWhile : ∀ xs → boolTakeWhile p xs ++ boolDropWhile p xs ≡ xs
+  boolTakeWhile++boolDropWhile []       = refl
+  boolTakeWhile++boolDropWhile (x ∷ xs) with p x
+  ... | true  = P.cong (x ∷_) (boolTakeWhile++boolDropWhile xs)
+  ... | false = refl
+
+  boolSpan-defn : boolSpan p ≗ < boolTakeWhile p , boolDropWhile p >
+  boolSpan-defn []       = refl
+  boolSpan-defn (x ∷ xs) with p x
+  ... | true  = P.cong (Prod.map (x ∷_) id) (boolSpan-defn xs)
+  ... | false = refl
+
+  length-boolFilter : ∀ xs → length (boolFilter p xs) ≤ length xs
+  length-boolFilter xs =
+    length-mapMaybe (λ x → if p x then just x else nothing) xs
+
+  boolPartition-defn : boolPartition p ≗ < boolFilter p , boolFilter (not ∘ p) >
+  boolPartition-defn []       = refl
+  boolPartition-defn (x ∷ xs) with p x
+  ...  | true  = P.cong (Prod.map (x ∷_) id) (boolPartition-defn xs)
+  ...  | false = P.cong (Prod.map id (x ∷_)) (boolPartition-defn xs)
+
+module _ {a p} {A : Set a} (P : A → Set p) (P? : Decidable P) where
+
+  boolFilter-filters : ∀ xs → All P (boolFilter (⌊_⌋ ∘ P?) xs)
+  boolFilter-filters []       = []
+  boolFilter-filters (x ∷ xs) with P? x
+  ... | yes px = px ∷ boolFilter-filters xs
+  ... | no ¬px = boolFilter-filters xs

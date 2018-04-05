@@ -15,7 +15,7 @@ open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Product as Prod using (_×_; _,_)
 open import Function using (id; _∘_)
 open import Relation.Nullary using (yes; no)
-open import Relation.Unary using (Decidable)
+open import Relation.Unary using (Pred; Decidable; ∁?)
 
 ------------------------------------------------------------------------
 -- Types
@@ -42,12 +42,18 @@ _++_ : ∀ {a} {A : Set a} → List A → List A → List A
 []       ++ ys = ys
 (x ∷ xs) ++ ys = x ∷ (xs ++ ys)
 
+intersperse : ∀ {a} {A : Set a} → A → List A → List A
+intersperse x []           = []
+intersperse x (y ∷ [])     = y ∷ []
+intersperse x (y ∷ z ∷ zs) = y ∷ x ∷ intersperse x (z ∷ zs)
+
 zipWith : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
           (A → B → C) → List A → List B → List C
 zipWith f (x ∷ xs) (y ∷ ys) = f x y ∷ zipWith f xs ys
 zipWith f _        _        = []
 
-zip : ∀ {a b} {A : Set a} {B : Set b} → List A → List B → List (A × B)
+zip : ∀ {a b} {A : Set a} {B : Set b} →
+      List A → List B → List (A × B)
 zip = zipWith (_,_)
 
 unzipWith : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
@@ -55,13 +61,9 @@ unzipWith : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
 unzipWith f []         = [] , []
 unzipWith f (xy ∷ xys) = Prod.zip _∷_ _∷_ (f xy) (unzipWith f xys)
 
-unzip : ∀ {a b} {A : Set a} {B : Set b} → List (A × B) → List A × List B
+unzip : ∀ {a b} {A : Set a} {B : Set b} →
+        List (A × B) → List A × List B
 unzip = unzipWith id
-
-intersperse : ∀ {a} {A : Set a} → A → List A → List A
-intersperse x []           = []
-intersperse x (y ∷ [])     = y ∷ []
-intersperse x (y ∷ z ∷ zs) = y ∷ x ∷ intersperse x (z ∷ zs)
 
 ------------------------------------------------------------------------
 -- Operations for reducing lists
@@ -112,9 +114,21 @@ length = foldr (λ _ → suc) 0
 [_] : ∀ {a} {A : Set a} → A → List A
 [ x ] = x ∷ []
 
+fromMaybe : ∀ {a} {A : Set a} → Maybe A → List A
+fromMaybe (just x) = [ x ]
+fromMaybe nothing  = []
+
 replicate : ∀ {a} {A : Set a} → (n : ℕ) → A → List A
 replicate zero    x = []
 replicate (suc n) x = x ∷ replicate n x
+
+inits : ∀ {a} {A : Set a} → List A → List (List A)
+inits []       = [] ∷ []
+inits (x ∷ xs) = [] ∷ map (x ∷_) (inits xs)
+
+tails : ∀ {a} {A : Set a} → List A → List (List A)
+tails []       = [] ∷ []
+tails (x ∷ xs) = (x ∷ xs) ∷ tails xs
 
 -- Scans
 
@@ -170,10 +184,6 @@ unfold B f {n = suc n} s with f s
 ... | nothing       = []
 ... | just (x , s') = x ∷ unfold B f s'
 
-fromMaybe : ∀ {a} {A : Set a} → Maybe A → List A
-fromMaybe (just x) = [ x ]
-fromMaybe nothing  = []
-
 ------------------------------------------------------------------------
 -- Operations for deconstructing lists
 
@@ -193,48 +203,44 @@ splitAt (suc n) []       = ([] , [])
 splitAt (suc n) (x ∷ xs) with splitAt n xs
 ... | (ys , zs) = (x ∷ ys , zs)
 
-takeWhile : ∀ {a} {A : Set a} → (A → Bool) → List A → List A
-takeWhile p []       = []
-takeWhile p (x ∷ xs) with p x
-... | true  = x ∷ takeWhile p xs
-... | false = []
+takeWhile : ∀ {a p} {A : Set a} {P : Pred A p} →
+            Decidable P → List A → List A
+takeWhile P? []       = []
+takeWhile P? (x ∷ xs) with P? x
+... | yes _ = x ∷ takeWhile P? xs
+... | no  _ = []
 
-dropWhile : ∀ {a} {A : Set a} → (A → Bool) → List A → List A
-dropWhile p []       = []
-dropWhile p (x ∷ xs) with p x
-... | true  = dropWhile p xs
-... | false = x ∷ xs
+dropWhile : ∀ {a p} {A : Set a} {P : Pred A p} →
+            Decidable P → List A → List A
+dropWhile P? []       = []
+dropWhile P? (x ∷ xs) with P? x
+... | yes _ = dropWhile P? xs
+... | no  _ = x ∷ xs
 
-span : ∀ {a} {A : Set a} → (A → Bool) → List A → (List A × List A)
-span p []       = ([] , [])
-span p (x ∷ xs) with p x
-... | true  = Prod.map (x ∷_) id (span p xs)
-... | false = ([] , x ∷ xs)
-
-break : ∀ {a} {A : Set a} → (A → Bool) → List A → (List A × List A)
-break p = span (not ∘ p)
-
-inits : ∀ {a} {A : Set a} → List A → List (List A)
-inits []       = [] ∷ []
-inits (x ∷ xs) = [] ∷ map (x ∷_) (inits xs)
-
-tails : ∀ {a} {A : Set a} → List A → List (List A)
-tails []       = [] ∷ []
-tails (x ∷ xs) = (x ∷ xs) ∷ tails xs
-
-filter : ∀ {a p} {A : Set a} {P : A → Set p} →
+filter : ∀ {a p} {A : Set a} {P : Pred A p} →
          Decidable P → List A → List A
 filter P? [] = []
 filter P? (x ∷ xs) with P? x
 ... | no  _ = filter P? xs
 ... | yes _ = x ∷ filter P? xs
 
-partition : ∀ {a p} {A : Set a} {P : A → Set p} →
+partition : ∀ {a p} {A : Set a} {P : Pred A p} →
             Decidable P → List A → (List A × List A)
 partition P? []       = ([] , [])
 partition P? (x ∷ xs) with P? x | partition P? xs
 ... | yes _ | (ys , zs) = (x ∷ ys , zs)
 ... | no  _ | (ys , zs) = (ys , x ∷ zs)
+
+span : ∀ {a p} {A : Set a} {P : Pred A p} →
+       Decidable P → List A → (List A × List A)
+span P? []       = ([] , [])
+span P? (x ∷ xs) with P? x
+... | yes _ = Prod.map (x ∷_) id (span P? xs)
+... | no  _ = ([] , x ∷ xs)
+
+break : ∀ {a p} {A : Set a} {P : Pred A p} →
+        Decidable P → List A → (List A × List A)
+break P? = span (∁? P?)
 
 ------------------------------------------------------------------------
 -- Operations for reversing lists
@@ -257,7 +263,7 @@ data InitLast {a} {A : Set a} : List A → Set a where
   []    : InitLast []
   _∷ʳ'_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
 
-initLast : ∀ {a} {A : Set a} (xs : List A) → InitLast xs
+initLast : ∀ {a} {A : Set a} → (xs : List A) → InitLast xs
 initLast []               = []
 initLast (x ∷ xs)         with initLast xs
 initLast (x ∷ .[])        | []       = [] ∷ʳ' x
@@ -266,17 +272,45 @@ initLast (x ∷ .(ys ∷ʳ y)) | ys ∷ʳ' y = (x ∷ ys) ∷ʳ' y
 ------------------------------------------------------------------------
 -- DEPRECATED
 ------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
 gfilter = mapMaybe
 
--- Please use `filter` instead
-boolFilter : ∀ {a} {A : Set a} → (A → Bool) → List A → List A
-boolFilter p = mapMaybe (λ x → if p x then just x else nothing)
+module _ {a} {A : Set a} where
 
--- Please use `partition` instead
-boolPartition : ∀ {a} {A : Set a} → (A → Bool) → List A → (List A × List A)
-boolPartition p []       = ([] , [])
-boolPartition p (x ∷ xs) with p x | boolPartition p xs
-... | true  | (ys , zs) = (x ∷ ys , zs)
-... | false | (ys , zs) = (ys , x ∷ zs)
+  -- Please use `filter` instead
+  boolFilter : (A → Bool) → List A → List A
+  boolFilter p = mapMaybe (λ x → if p x then just x else nothing)
 
+  -- Please use `partition` instead
+  boolPartition : (A → Bool) → List A → (List A × List A)
+  boolPartition p []       = ([] , [])
+  boolPartition p (x ∷ xs) with p x | boolPartition p xs
+  ... | true  | (ys , zs) = (x ∷ ys , zs)
+  ... | false | (ys , zs) = (ys , x ∷ zs)
+
+  -- Please use `takeWhile` instead
+  boolTakeWhile : (A → Bool) → List A → List A
+  boolTakeWhile p []       = []
+  boolTakeWhile p (x ∷ xs) with p x
+  ... | true  = x ∷ boolTakeWhile p xs
+  ... | false = []
+
+  -- Please use `dropWhile` instead
+  boolDropWhile : (A → Bool) → List A → List A
+  boolDropWhile p []       = []
+  boolDropWhile p (x ∷ xs) with p x
+  ... | true  = boolDropWhile p xs
+  ... | false = x ∷ xs
+
+  -- Please use `span` instead
+  boolSpan : (A → Bool) → List A → (List A × List A)
+  boolSpan p []       = ([] , [])
+  boolSpan p (x ∷ xs) with p x
+  ... | true  = Prod.map (x ∷_) id (boolSpan p xs)
+  ... | false = ([] , x ∷ xs)
+
+  -- Please use `break` instead
+  boolBreak : (A → Bool) → List A → (List A × List A)
+  boolBreak p = boolSpan (not ∘ p)

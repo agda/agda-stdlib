@@ -9,9 +9,8 @@
 
 module Data.Product.Relation.Lex.NonStrict where
 
-open import Data.Product
-open import Data.Sum
-open import Level
+open import Data.Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Sum using (inj₁; inj₂)
 open import Relation.Binary
 open import Relation.Binary.Consequences
 import Relation.Binary.NonStrictToStrict as Conv
@@ -44,7 +43,7 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
     Strict.×-transitive
       {_<₁_ = Conv._<_ _≈₁_ _≤₁_}
       isEquivalence (Conv.<-resp-≈ _ _ isEquivalence ≤-resp-≈)
-      (Conv.trans _ _ po₁)
+      (Conv.<-trans _ _ po₁)
       {_≤₂_} trans₂
     where open IsPartialOrder po₁
 
@@ -62,11 +61,11 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
     open Eq renaming (refl to ≈-refl₁; sym to ≈-sym₁)
 
     irrefl₁ : Irreflexive _≈₁_ (Conv._<_ _≈₁_ _≤₁_)
-    irrefl₁ = Conv.irrefl _≈₁_ _≤₁_
+    irrefl₁ = Conv.<-irrefl _≈₁_ _≤₁_
 
     asym₁ : Asymmetric (Conv._<_ _≈₁_ _≤₁_)
     asym₁ = trans∧irr⟶asym {_≈_ = _≈₁_}
-                           ≈-refl₁ (Conv.trans _ _ po₁) irrefl₁
+                           ≈-refl₁ (Conv.<-trans _ _ po₁) irrefl₁
 
   ×-respects₂ :
     ∀ {_≈₁_ _≤₁_} → IsEquivalence _≈₁_ → _≤₁_ Respects₂ _≈₁_ →
@@ -79,7 +78,7 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
                 ∀ {_≤₂_} → Decidable _≤₂_ →
                 Decidable (×-Lex _≈₁_ _≤₁_ _≤₂_)
   ×-decidable dec-≈₁ dec-≤₁ dec-≤₂ =
-    Strict.×-decidable dec-≈₁ (Conv.decidable _ _ dec-≈₁ dec-≤₁)
+    Strict.×-decidable dec-≈₁ (Conv.<-decidable _ _ dec-≈₁ dec-≤₁)
                        dec-≤₂
 
   ×-total : ∀ {_≈₁_ _≤₁_} → Symmetric _≈₁_ → Decidable _≈₁_ →
@@ -90,7 +89,7 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
     total
     where
     tri₁ : Trichotomous _≈₁_ (Conv._<_ _≈₁_ _≤₁_)
-    tri₁ = Conv.trichotomous _ _ sym₁ dec₁ antisym₁ total₁
+    tri₁ = Conv.<-trichotomous _ _ sym₁ dec₁ antisym₁ total₁
 
     total : Total (×-Lex _≈₁_ _≤₁_ _≤₂_)
     total x y with tri₁ (proj₁ x) (proj₁ y)
