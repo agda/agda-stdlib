@@ -48,29 +48,32 @@ module _ {a} {A : Set a} where
   ⊆-trans : Transitive (_⊆_ {A = A})
   ⊆-trans xs⊆ys ys⊆zs x∈xs = ys⊆zs (xs⊆ys x∈xs)
 
-  ⊆-isPreorder : IsPreorder _≡_ _⊆_
+module _ {a} (A : Set a) where
+
+  ⊆-isPreorder : IsPreorder _≡_ (_⊆_ {A = A})
   ⊆-isPreorder = record
     { isEquivalence = isEquivalence
     ; reflexive     = ⊆-reflexive
     ; trans         = ⊆-trans
     }
 
-module _ {a} (A : Set a) where
-
   ⊆-preorder : Preorder _ _ _
   ⊆-preorder = record
-    { isPreorder = ⊆-isPreorder {A = A}
+    { isPreorder = ⊆-isPreorder
     }
 
-  -- Reasoning over subsets
-  module ⊆-Reasoning where
+------------------------------------------------------------------------
+-- Reasoning over subsets
 
-    open PreorderReasoning ⊆-preorder public renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
+module ⊆-Reasoning {a} (A : Set a) where
 
-    infix 1 _∈⟨_⟩_
+  open PreorderReasoning (⊆-preorder A) public
+    renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
 
-    _∈⟨_⟩_ : ∀ x {xs ys} → x ∈ xs → xs IsRelatedTo ys → x ∈ ys
-    x ∈⟨ x∈xs ⟩ xs⊆ys = (begin xs⊆ys) x∈xs
+  infix 1 _∈⟨_⟩_
+
+  _∈⟨_⟩_ : ∀ x {xs ys} → x ∈ xs → xs IsRelatedTo ys → x ∈ ys
+  x ∈⟨ x∈xs ⟩ xs⊆ys = (begin xs⊆ys) x∈xs
 
 ------------------------------------------------------------------------
 -- Properties relating _⊆_ to various list functions
@@ -158,9 +161,9 @@ module _ {a} {A : Set a} (p : A → Bool) {xs ys} where
 
   any-mono : xs ⊆ ys → T (any p xs) → T (any p ys)
   any-mono xs⊆ys =
-    _⟨$⟩_ (Equivalence.to $ any⇔ {a = a}) ∘
+    _⟨$⟩_ (Equivalence.to any⇔) ∘
     mono xs⊆ys ∘
-    _⟨$⟩_ (Equivalence.from $ any⇔ {a = a})
+    _⟨$⟩_ (Equivalence.from any⇔)
 
 ------------------------------------------------------------------------
 -- map-with-∈
@@ -193,7 +196,12 @@ module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
 ------------------------------------------------------------------------
 -- Please use `filter` instead of `boolFilter`
 
-module _ {a} {A : Set a} (p : A → Bool) where
-
-  boolFilter-⊆ : ∀ xs → boolFilter p xs ⊆ xs
-  boolFilter-⊆ = Setoidₚ.boolFilter-⊆ (setoid A) p
+boolFilter-⊆ : ∀ {a} {A : Set a} (p : A → Bool) →
+               (xs : List A) → boolFilter p xs ⊆ xs
+boolFilter-⊆ _ []       = λ ()
+boolFilter-⊆ p (x ∷ xs) with p x | boolFilter-⊆ p xs
+... | false | hyp = there ∘ hyp
+... | true  | hyp =
+  λ { (here  eq)      → here eq
+    ; (there ∈boolFilter) → there (hyp ∈boolFilter)
+    }

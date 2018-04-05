@@ -8,13 +8,23 @@ Important changes since 0.15:
 Non-backwards compatible changes
 --------------------------------
 
-#### 2nd stage of overhaul of list membership
+#### Final overhaul of list membership
 
-* The following modules have been moved:
+* The aim of this final rearrangement of list membership is to create a better interface for
+  the different varieties of membership, and make it easier to predict where certain
+  proofs are found. Each of the new membership modules are parameterised by the relevant types
+  so as to allow easy access to the infix  `_∈_` and `_∈?_` operators. It also increases
+  the discoverability of the modules by new users of the library.
+
+* The following re-organisation of list membership modules has occurred:
   ```agda
   Data.List.Any.BagAndSetEquality        ↦ Data.List.Relation.BagAndSetEquality
   Data.List.Any.Membership               ↦ Data.List.Membership.Setoid
+                                         ↘ Data.List.Membership.DecSetoid
+                                                                                 ↘ Data.List.Relation.Sublist.Setoid
   Data.List.Any.Membership.Propositional ↦ Data.List.Membership.Propositional
+                                         ↘ Data.List.Membership.DecPropositional
+                                                                                 ↘ Data.List.Relation.Sublist.Propositional
   ```
 
 * The `_⊆_` relation has been moved out of the `Membership` modules to new
@@ -23,19 +33,27 @@ Non-backwards compatible changes
   Consequently the `mono` properties that were in `Membership.Propositional.Properties`
   have been moved to `Relation.Sublist.Propositional.Properties`
 
-* The following have been moved out of `Membership.Propositional` into `Relation.BagAndSetEquality`
+* The following proofs have been moved from `Data.List.Any.Properties` to
+  `Data.List.Membership.Propositional.Properties.Core`:
   ```agda
-  Kind
-  Symmetric-kind
-  subset
-  superset
-  set
-  subbag
-  superbag
-  bag
-  [_]-Order
-  [_]-Equality
-  _∼[_]_
+  map∘find, find∘map, find-∈, lose∘find, find∘lose, ∃∈-Any, Any↔
+  ```
+
+* The following terms have been moved out of `Membership.Propositional` into
+  `Relation.BagAndSetEquality`:
+  ```agda
+  Kind, Symmetric-kind
+  set, subset, superset, bag, subbag, superbag
+  [_]-Order, [_]-Equality, _∼[_]_
+  ```
+
+* The type of the proof of `∈-resp-≈` in `Data.List.Membership.Properties` has changed from:
+  ```agda
+  ∈-resp-≈ : ∀ {x} → (x ≈_) Respects _≈_
+  ```
+  to
+  ```agda
+  ∈-resp-≈ : ∀ {xs} → (_∈ xs) Respects _≈_
   ```
 
 #### Upgrade of `Algebra.Operations`
@@ -112,9 +130,14 @@ anticipated any time soon, they may eventually be removed in some future release
   isDecTotalOrder⟶isStrictTotalOrder  ↦ <-isStrictTotalOrder₂
   ```
 
-* In `IsStrictPartialOrder` in `Relation.Binary`:
+* In `IsStrictPartialOrder` record in `Relation.Binary`:
   ```agda
   asymmetric ↦ asym
+  ```
+
+* In `Data.List.Membership.Propositional`:
+  ```agda
+  filter-∈ ↦ ∈-filter⁺
   ```
 
 Removed features
@@ -166,6 +189,45 @@ Backwards compatible changes
   ```agda
   zip   : All P ∩ All Q ⊆ All (P ∩ Q)
   unzip : All (P ∩ Q) ⊆ All P ∩ All Q
+  ```
+
+* Added new proofs to `Data.List.Membership.(Setoid/Propositional).Properties`:
+  ```agda
+  ∉-resp-≈     : ∀ {xs} → (_∉ xs) Respects _≈_
+  ∉-resp-≋     : ∀ {x}  → (x ∉_)  Respects _≋_
+
+  ∈-++⁺ˡ       : v ∈ xs → v ∈ xs ++ ys
+  ∈-++⁺ʳ       : v ∈ ys → v ∈ xs ++ ys
+  ∈-++⁻        : v ∈ xs ++ ys → (v ∈ xs) ⊎ (v ∈ ys)
+
+  ∈-concat⁺    : Any (v ∈_) xss → v ∈ concat xss
+  ∈-concat⁻    : v ∈ concat xss → Any (v ∈_) xss
+  ∈-concat⁺′   : v ∈ vs → vs ∈ xss → v ∈ concat xss
+  ∈-concat⁻′   : v ∈ concat xss → ∃ λ xs → v ∈ xs × xs ∈ xss
+
+  ∈-applyUpTo⁺ : i < n → f i ∈ applyUpTo f n
+  ∈-applyUpTo⁻ : v ∈ applyUpTo f n → ∃ λ i → i < n × v ≈ f i
+
+  ∈-tabulate⁺  : f i ∈ tabulate f
+  ∈-tabulate⁻  : v ∈ tabulate f → ∃ λ i → v ≈ f i
+
+  ∈-filter⁺    : P v → v ∈ xs → v ∈ filter P? xs
+  ∈-filter⁻    : v ∈ filter P? xs → v ∈ xs × P v
+
+  ∈-length     : x ∈ xs → 1 ≤ length xs
+  ∈-lookup     : lookup xs i ∈ xs
+
+  foldr-selective : Selective _≈_ _•_ → (foldr _•_ e xs ≈ e) ⊎ (foldr _•_ e xs ∈ xs)
+  ```
+
+* Added new proofs to `Data.List.Relation.Sublist.(Setoid/Propositional).Properties`:
+  ```agda
+  ⊆-reflexive  : _≋_ ⇒ _⊆_
+  ⊆-refl       : Reflexive _⊆_
+  ⊆-trans      : Transitive _⊆_
+  ⊆-isPreorder : IsPreorder _≋_ _⊆_
+
+  filter⁺      : ∀ xs → filter P? xs ⊆ xs
   ```
 
 * Added new modules `Data.List.Zipper` and `Data.List.Zipper.Properties`.

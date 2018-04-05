@@ -303,7 +303,7 @@ module _ {a b} {A : Set a} {B : Set b} where
     { to         = P.→-to-⟶ $ map⁺ {P = P} {f = f}
     ; from       = P.→-to-⟶ $ map⁻ {P = P} {f = f}
     ; inverse-of = record
-      { left-inverse-of  = map⁻∘map⁺ P
+      { left-inverse-of  = map⁻∘map⁺ _
       ; right-inverse-of = map⁺∘map⁻
       }
     }

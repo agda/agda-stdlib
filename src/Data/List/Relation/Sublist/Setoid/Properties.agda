@@ -82,21 +82,3 @@ module _ {a p ℓ} (S : Setoid a ℓ)
   ... | yes _ with y∈f[x∷xs]
   ...   | here  y≈x     = here y≈x
   ...   | there y∈f[xs] = there (filter⁺ xs y∈f[xs])
-
-------------------------------------------------------------------------
--- DEPRECATED
-------------------------------------------------------------------------
--- Please use `filter` instead of `boolFilter`
-
-module _ {a ℓ} (S : Setoid a ℓ) (p : Setoid.Carrier S → Bool) where
-
-  open Setoid S renaming (Carrier to A)
-  open Sublist S
-
-  boolFilter-⊆ : ∀ xs → boolFilter p xs ⊆ xs
-  boolFilter-⊆ []       ()
-  boolFilter-⊆ (x ∷ xs) y∈f[x∷xs] with p x
-  ... | false = there (boolFilter-⊆ xs y∈f[x∷xs])
-  ... | true  with y∈f[x∷xs]
-  ...   | here  y≈x     = here y≈x
-  ...   | there y∈f[xs] = there (boolFilter-⊆ xs y∈f[xs])

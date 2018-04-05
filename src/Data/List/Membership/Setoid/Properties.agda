@@ -1,23 +1,30 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties related to propositional list membership
+-- Properties related to setoid list membership
 ------------------------------------------------------------------------
 
+module Data.List.Membership.Setoid.Properties where
+
+open import Algebra.FunctionProperties using (Op₂; Selective)
 open import Data.List
 open import Data.List.Any as Any using (here; there)
-open import Data.Fin using (Fin)
+open import Data.Fin using (Fin; zero; suc)
+open import Data.List.Any using (Any)
 import Data.List.Any.Properties as Any
 open import Data.Maybe using (Maybe)
-open import Data.Nat using (_<_)
+open import Data.Nat using (z≤n; s≤s; _≤_; _<_)
+open import Data.Nat.Properties using (≤-trans; n≤1+n)
 import Data.List.Membership.Setoid as Membership
 import Data.List.Relation.Equality.Setoid as Equality
-open import Data.Product using (∃; _×_; _,_)
-open import Data.Sum using (_⊎_)
-open import Function using (flip)
-open import Relation.Binary
-
-module Data.List.Membership.Setoid.Properties where
+open import Data.Product as Prod using (∃; _×_; _,_)
+open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Function using (flip; _∘_; id)
+open import Relation.Binary hiding (Decidable)
+open import Relation.Unary using (Decidable; Pred)
+open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Negation using (contradiction)
+open Setoid using (Carrier)
 
 ------------------------------------------------------------------------
 -- Equality properties
@@ -26,17 +33,21 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 
   open Setoid S
   open Equality S
-  open import Data.List.Membership.Setoid S
+  open Membership S
 
-  -- Equality is respected by the predicate which is used to define _∈_.
+  -- _∈_ respects the underlying equality
 
-  ∈-resp-≈ : ∀ {x} → (x ≈_) Respects _≈_
-  ∈-resp-≈ = flip trans
+  ∈-resp-≈ : ∀ {xs} → (_∈ xs) Respects _≈_
+  ∈-resp-≈ x≈y x∈xs = Any.map (trans (sym x≈y)) x∈xs
 
-  -- List equality is respected by _∈_.
+  ∉-resp-≈ : ∀ {xs} → (_∉ xs) Respects _≈_
+  ∉-resp-≈ v≈w v∉xs w∈xs = v∉xs (∈-resp-≈ (sym v≈w) w∈xs)
 
   ∈-resp-≋ : ∀ {x} → (x ∈_) Respects _≋_
-  ∈-resp-≋ = Any.lift-resp ∈-resp-≈
+  ∈-resp-≋ = Any.lift-resp (flip trans)
+
+  ∉-resp-≋ : ∀ {x} → (x ∉_) Respects _≋_
+  ∉-resp-≋ xs≋ys v∉xs v∈ys = v∉xs (∈-resp-≋ (≋-sym xs≋ys) v∈ys)
 
 ------------------------------------------------------------------------
 -- map
@@ -48,18 +59,13 @@ module _ {c₁ c₂ ℓ₁ ℓ₂} (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c�
   open Membership S₁ using (find) renaming (_∈_ to _∈₁_)
   open Membership S₂ using () renaming (_∈_ to _∈₂_)
 
-  ∈-map⁺ : ∀ {f} → f Preserves _≈₁_ ⟶ _≈₂_ → ∀ {x xs} →
-            x ∈₁ xs → f x ∈₂ map f xs
+  ∈-map⁺ : ∀ {f} → f Preserves _≈₁_ ⟶ _≈₂_ → ∀ {v xs} →
+            v ∈₁ xs → f v ∈₂ map f xs
   ∈-map⁺ pres x∈xs = Any.map⁺ (Any.map pres x∈xs)
 
-  ∈-map⁻ : ∀ {y xs f} → y ∈₂ map f xs →
-           ∃ λ x → x ∈₁ xs × y ≈₂ f x
+  ∈-map⁻ : ∀ {v xs f} → v ∈₂ map f xs →
+           ∃ λ x → x ∈₁ xs × v ≈₂ f x
   ∈-map⁻ x∈map = find (Any.map⁻ x∈map)
-
-------------------------------------------------------------------------
--- mapMaybe
-
--- ?
 
 ------------------------------------------------------------------------
 -- _++_
@@ -82,9 +88,23 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 
 module _ {c ℓ} (S : Setoid c ℓ) where
 
+  open Setoid S using (_≈_)
   open Membership S using (_∈_)
+  open Equality S using (≋-setoid)
+  open Membership ≋-setoid using (find) renaming (_∈_ to _∈≋_)
 
-  -- ?
+  ∈-concat⁺ : ∀ {v xss} → Any (v ∈_) xss → v ∈ concat xss
+  ∈-concat⁺ = Any.concat⁺
+
+  ∈-concat⁻ : ∀ {v} xss → v ∈ concat xss → Any (v ∈_) xss
+  ∈-concat⁻ = Any.concat⁻
+
+  ∈-concat⁺′ : ∀ {v vs xss} → v ∈ vs → vs ∈≋ xss → v ∈ concat xss
+  ∈-concat⁺′ v∈vs = ∈-concat⁺ ∘ Any.map (flip (∈-resp-≋ S) v∈vs)
+
+  ∈-concat⁻′ : ∀ {v} xss → v ∈ concat xss → ∃ λ xs → v ∈ xs × xs ∈≋ xss
+  ∈-concat⁻′ xss v∈c[xss] with find (∈-concat⁻ xss v∈c[xss])
+  ... | xs , t , s = xs , s , t
 
 ------------------------------------------------------------------------
 -- applyUpTo
@@ -109,9 +129,78 @@ module _ {c ℓ} (S : Setoid c ℓ) where
   open Setoid S using (_≈_; refl) renaming (Carrier to A)
   open Membership S using (_∈_)
 
-  tabulate⁺ : ∀ {n} {f : Fin n → A} i → f i ∈ tabulate f
-  tabulate⁺ i = Any.tabulate⁺ i refl
+  ∈-tabulate⁺ : ∀ {n} {f : Fin n → A} i → f i ∈ tabulate f
+  ∈-tabulate⁺ i = Any.tabulate⁺ i refl
 
-  tabulate⁻ : ∀ {n} {f : Fin n → A} {v} →
-              v ∈ tabulate f → ∃ λ i → v ≈ f i
-  tabulate⁻ = Any.tabulate⁻
+  ∈-tabulate⁻ : ∀ {n} {f : Fin n → A} {v} →
+                v ∈ tabulate f → ∃ λ i → v ≈ f i
+  ∈-tabulate⁻ = Any.tabulate⁻
+
+------------------------------------------------------------------------
+-- filter
+
+module _ {c ℓ p} (S : Setoid c ℓ) {P : Pred (Carrier S) p} where
+
+  open Setoid S using (_≈_; sym)
+  open Membership S using (_∈_)
+
+  ∈-filter⁺ : (P? : Decidable P) → P Respects _≈_ →
+              ∀ {v xs} → v ∈ xs → P v → v ∈ filter P? xs
+  ∈-filter⁺ P? resp {v} {x ∷ _} (here v≈x)   Pv with P? x
+  ... | yes _   = here v≈x
+  ... | no  ¬Px = contradiction (resp v≈x Pv) ¬Px
+  ∈-filter⁺ P? resp {v} {x ∷ _} (there v∈xs) Pv with P? x
+  ... | yes _ = there (∈-filter⁺ P? resp v∈xs Pv)
+  ... | no  _ = ∈-filter⁺ P? resp v∈xs Pv
+
+  ∈-filter⁻ : (P? : Decidable P) → P Respects _≈_ →
+              ∀ {v xs} → v ∈ filter P? xs → v ∈ xs × P v
+  ∈-filter⁻ P? resp {v} {[]}     ()
+  ∈-filter⁻ P? resp {v} {x ∷ xs} v∈f[x∷xs] with P? x
+  ... | no  _  = Prod.map there id (∈-filter⁻ P? resp v∈f[x∷xs])
+  ... | yes Px with v∈f[x∷xs]
+  ...   | here  v≈x     = here v≈x , resp (sym v≈x) Px
+  ...   | there v∈fxs = Prod.map there id (∈-filter⁻ P? resp v∈fxs)
+
+------------------------------------------------------------------------
+-- length
+
+module _ {c ℓ} (S : Setoid c ℓ) where
+
+  open Membership S using (_∈_)
+
+  ∈-length : ∀ {x xs} → x ∈ xs → 1 ≤ length xs
+  ∈-length {_} {_ ∷ xs} (here px)    = s≤s z≤n
+  ∈-length {_} {_ ∷ xs} (there x∈xs) =
+    ≤-trans (∈-length x∈xs) (n≤1+n (length xs))
+
+------------------------------------------------------------------------
+-- lookup
+
+module _ {c ℓ} (S : Setoid c ℓ) where
+
+  open Setoid S using (refl)
+  open Membership S using (_∈_)
+
+  ∈-lookup : ∀ xs i → lookup xs i ∈ xs
+  ∈-lookup []       ()
+  ∈-lookup (x ∷ xs) zero    = here refl
+  ∈-lookup (x ∷ xs) (suc i) = there (∈-lookup xs i)
+
+------------------------------------------------------------------------
+-- foldr
+
+module _ {c ℓ} (S : Setoid c ℓ) {_•_ : Op₂ (Carrier S)} where
+
+  open Setoid S using (_≈_; refl; sym; trans)
+  open Membership S using (_∈_)
+  open Equality S using (≋-refl)
+
+  foldr-selective : Selective _≈_ _•_ → ∀ e xs →
+                    (foldr _•_ e xs ≈ e) ⊎ (foldr _•_ e xs ∈ xs)
+  foldr-selective •-sel i [] = inj₁ refl
+  foldr-selective •-sel i (x ∷ xs) with •-sel x (foldr _•_ i xs)
+  ... | inj₁ x•f≈x = inj₂ (here x•f≈x)
+  ... | inj₂ x•f≈f with foldr-selective •-sel i xs
+  ...   | inj₁ f≈i  = inj₁ (trans x•f≈f f≈i)
+  ...   | inj₂ f∈xs = inj₂ (∈-resp-≈ S (sym x•f≈f) (there f∈xs))
