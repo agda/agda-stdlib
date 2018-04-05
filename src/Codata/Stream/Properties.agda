@@ -39,6 +39,15 @@ module _ {a b} {A : Set a} {B : Set b} where
  ap-repeat-commute : ∀ (f : A → B) a {i} → i ⊢ ap (repeat f) (repeat a) ≈ repeat (f a)
  ap-repeat-commute f a = Eq.refl ∷ λ where .force → ap-repeat-commute f a
 
+
+-- Functor laws
+
+module _ {a} {A : Set a} where
+
+ map-identity : ∀ (as : Stream A ∞) {i} → i ⊢ map id as ≈ as
+ map-identity (a ∷ as) = Eq.refl ∷ λ where .force → map-identity (as .force)
+
+
 module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
  map-map-fusion : ∀ (f : A → B) (g : B → C) as {i} → i ⊢ map g (map f as) ≈ map (g ∘ f) as
