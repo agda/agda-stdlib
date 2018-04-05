@@ -23,6 +23,18 @@ Non-backwards compatible changes
 
   Also the fixity of `_×_`, `_×′_` and `_^_` have all been increased by 1.
 
+#### Upgrade of `takeWhile`, `dropWhile`, `span` and `break` in `Data.List`
+
+* These functions in `Data.List.Base` now use decidable
+  predicates instead of boolean-valued functions. The boolean versions discarded
+  type information, and hence were difficult to use and prove
+  properties about. The proofs have been updated and renamed accordingly.
+
+  The old boolean versions still exist as `boolTakeWhile`, `boolSpan` etc. for
+  backwards compatibility reasons, but are deprecated and may be removed in some
+  future release. The old versions can be implemented via the new versions
+  by passing the decidability proof `λ v → f v ≟ true` with `_≟_` from `Data.Bool`.
+
 #### Other
 
 * `Relation.Binary.Consequences` no longer exports `Total`. The standard way of accessing it
