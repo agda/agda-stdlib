@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Homogeneously-indexed binary relations
+------------------------------------------------------------------------
+
 module Relation.Binary.Indexed.Homogeneous where
 
 open import Level using (Level; _⊔_)
