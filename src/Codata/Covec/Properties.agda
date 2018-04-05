@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of operations on the Stream type
+-- Properties of operations on the Covec type
 ------------------------------------------------------------------------
 
 module Codata.Covec.Properties where

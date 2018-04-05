@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Bisimilarity for Streams
+-- Bisimilarity for Covecs
 ------------------------------------------------------------------------
 
 module Codata.Covec.Bisimilarity where
