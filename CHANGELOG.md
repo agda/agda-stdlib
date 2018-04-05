@@ -202,6 +202,12 @@ Backwards compatible changes
 * The types `Maximum` and `Minimum` are now exported by `Relation.Binary` as well
   as `Relation.Binary.Lattice`.
 
+* Added new proofs to `Data.List.Properties`:
+  ```agda
+  tabulate-cong : f ≗ g → tabulate f ≡ tabulate g
+  tabulate-lookup : tabulate (lookup xs) ≡ xs
+  ```
+
 Version 0.15
 ============
 

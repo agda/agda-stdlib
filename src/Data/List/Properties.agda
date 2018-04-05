@@ -20,6 +20,7 @@ open import Data.List.Any using (Any; here; there)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat
 open import Data.Nat.Properties
+open import Data.Fin as Fin using (Fin)
 open import Data.Product as Prod hiding (map; zip)
 open import Function
 import Relation.Binary.EqReasoning as EqR
@@ -409,6 +410,17 @@ module _ {a b} {A : Set a} {B : Set b} where
      map (foldl f e) (map (x ∷_) (inits xs))
    ∎)
    where open P.≡-Reasoning
+
+------------------------------------------------------------------------
+-- tabulate
+
+tabulate-cong : ∀ {n a} {A : Set a} {f g : Fin n → A} → f ≗ g → tabulate f ≡ tabulate g
+tabulate-cong {n = ℕ.zero} p = P.refl
+tabulate-cong {n = ℕ.suc n} p = P.cong₂ _∷_ (p Fin.zero) (tabulate-cong (p ∘ Fin.suc))
+
+tabulate-lookup : ∀ {a} {A : Set a} {xs : List A} → tabulate (lookup xs) ≡ xs
+tabulate-lookup {xs = []} = refl
+tabulate-lookup {xs = x ∷ xs} = P.cong₂ _∷_ P.refl tabulate-lookup
 
 ------------------------------------------------------------------------
 -- take, drop, splitAt
