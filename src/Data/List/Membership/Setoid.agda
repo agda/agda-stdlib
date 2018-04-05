@@ -30,14 +30,10 @@ x ∉ xs = ¬ x ∈ xs
 ------------------------------------------------------------------------
 -- Operations
 
--- A variant of List.map.
-
 map-with-∈ : ∀ {b} {B : Set b}
              (xs : List A) → (∀ {x} → x ∈ xs → B) → List B
 map-with-∈ []       f = []
 map-with-∈ (x ∷ xs) f = f (here refl) ∷ map-with-∈ xs (f ∘ there)
-
--- Finds an element satisfying the predicate.
 
 find : ∀ {p} {P : A → Set p} {xs} →
        Any P xs → ∃ λ x → x ∈ xs × P x

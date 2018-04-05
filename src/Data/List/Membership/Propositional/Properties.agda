@@ -44,62 +44,10 @@ private
   module ×⊎ {k ℓ} = CommutativeSemiring (×⊎-CommutativeSemiring k ℓ)
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
 
--- Lemmas relating map and find.
+------------------------------------------------------------------------
+-- Publicly re-export properties from Core
 
-map∘find : ∀ {a p} {A : Set a} {P : A → Set p} {xs}
-           (p : Any P xs) → let p′ = find p in
-           {f : _≡_ (proj₁ p′) ⋐ P} →
-           f refl ≡ proj₂ (proj₂ p′) →
-           Any.map f (proj₁ (proj₂ p′)) ≡ p
-map∘find (here  p) hyp = P.cong here  hyp
-map∘find (there p) hyp = P.cong there (map∘find p hyp)
-
-find∘map : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q}
-           {xs : List A} (p : Any P xs) (f : P ⋐ Q) →
-           find (Any.map f p) ≡ Prod.map id (Prod.map id f) (find p)
-find∘map (here  p) f = refl
-find∘map (there p) f rewrite find∘map p f = refl
-
--- find satisfies a simple equality when the predicate is a
--- propositional equality.
-
-find-∈ : ∀ {a} {A : Set a} {x : A} {xs : List A} (x∈xs : x ∈ xs) →
-         find x∈xs ≡ (x , x∈xs , refl)
-find-∈ (here refl)  = refl
-find-∈ (there x∈xs) rewrite find-∈ x∈xs = refl
-
--- find and lose are inverses (more or less).
-
-lose∘find : ∀ {a p} {A : Set a} {P : A → Set p} {xs : List A}
-            (p : Any P xs) →
-            uncurry′ lose (proj₂ (find p)) ≡ p
-lose∘find p = map∘find p P.refl
-
-find∘lose : ∀ {a p} {A : Set a} (P : A → Set p) {x xs}
-            (x∈xs : x ∈ xs) (pp : P x) →
-            find {P = P} (lose x∈xs pp) ≡ (x , x∈xs , pp)
-find∘lose P x∈xs p
-  rewrite find∘map x∈xs (flip (P.subst P) p)
-        | find-∈ x∈xs
-        = refl
-
--- Any can be expressed using _∈_.
-
-∃∈-Any : ∀ {a p} {A : Set a} {P : A → Set p} {xs} →
-         (∃ λ x → x ∈ xs × P x) → Any P xs
-∃∈-Any = uncurry′ lose ∘ proj₂
-
-Any↔ : ∀ {a p} {A : Set a} {P : A → Set p} {xs} →
-       (∃ λ x → x ∈ xs × P x) ↔ Any P xs
-Any↔ {P = P} {xs} = record
-  { to         = P.→-to-⟶ ∃∈-Any
-  ; from       = P.→-to-⟶ (find {P = P})
-  ; inverse-of = record
-      { left-inverse-of  = λ p →
-          find∘lose P (proj₁ (proj₂ p)) (proj₂ (proj₂ p))
-      ; right-inverse-of = lose∘find
-      }
-  }
+open import Data.List.Membership.Propositional.Properties.Core public
 
 ------------------------------------------------------------------------
 -- Properties relating _∈_ to various list functions
@@ -137,15 +85,16 @@ module _ {a} {A : Set a} {x : A} {xss : List (List A)} where
 ------------------------------------------------------------------------
 -- filter
 
-filter-∈ : ∀ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) →
-           ∀ {x xs} → x ∈ xs → P x → x ∈ filter P? xs
-filter-∈ P? {xs = []}      ()          _
-filter-∈ P? {xs = x ∷ xs} (here refl) Px with P? x
-... | yes _  = here refl
-... | no ¬Px = contradiction Px ¬Px
-filter-∈ P? {xs = y ∷ xs} (there x∈xs) Px with P? y
-... | yes _ = there (filter-∈ P? x∈xs Px)
-... | no  _ = filter-∈ P? x∈xs Px
+module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
+
+  filter-∈ : ∀ {x xs} → x ∈ xs → P x → x ∈ filter P? xs
+  filter-∈ {xs = []}      ()          _
+  filter-∈ {xs = x ∷ xs} (here refl) Px with P? x
+  ... | yes _  = here refl
+  ... | no ¬Px = contradiction Px ¬Px
+  filter-∈ {xs = y ∷ xs} (there x∈xs) Px with P? y
+  ... | yes _ = there (filter-∈ x∈xs Px)
+  ... | no  _ = filter-∈ x∈xs Px
 
 ------------------------------------------------------------------------
 -- Other monad functions
@@ -218,9 +167,9 @@ finite {A = A} inj (x ∷ xs) ∈x∷xs = excluded-middle helper
 
     f : ℕ → A
     f j with STO.compare i j
-    f j | tri< _ _ _ = to ⟨$⟩ suc j
-    f j | tri≈ _ _ _ = to ⟨$⟩ suc j
-    f j | tri> _ _ _ = to ⟨$⟩ j
+    ... | tri< _ _ _ = to ⟨$⟩ suc j
+    ... | tri≈ _ _ _ = to ⟨$⟩ suc j
+    ... | tri> _ _ _ = to ⟨$⟩ j
 
     ∈-if-not-i : ∀ {j} → i ≢ j → to ⟨$⟩ j ∈ xs
     ∈-if-not-i i≢j = not-x (i≢j ∘ injective ∘ trans ≡x ∘ sym)
@@ -230,23 +179,22 @@ finite {A = A} inj (x ∷ xs) ∈x∷xs = excluded-middle helper
 
     ∈xs : ∀ j → f j ∈ xs
     ∈xs j with STO.compare i j
-    ∈xs j  | tri< (i≤j , _) _ _ = ∈-if-not-i (lemma i≤j ∘ sym)
-    ∈xs j  | tri> _ i≢j _       = ∈-if-not-i i≢j
-    ∈xs .i | tri≈ _ refl _      =
-      ∈-if-not-i (m≢1+m+n i ∘
-                  subst (_≡_ i ∘ suc) (sym (+-identityʳ i)))
+    ... | tri< (i≤j , _) _ _ = ∈-if-not-i (lemma i≤j ∘ sym)
+    ... | tri> _ i≢j _       = ∈-if-not-i i≢j
+    ... | tri≈ _ refl _      = ∈-if-not-i (m≢1+m+n i ∘
+      subst (_≡_ i ∘ suc) (sym (+-identityʳ i)))
 
     injective′ : Inj.Injective {B = P.setoid A} (→-to-⟶ f)
     injective′ {j} {k} eq with STO.compare i j | STO.compare i k
-    ... | tri< _ _ _         | tri< _ _ _         = cong pred                                   $ injective eq
-    ... | tri< _ _ _         | tri≈ _ _ _         = cong pred                                   $ injective eq
-    ... | tri< (i≤j , _) _ _ | tri> _ _ (k≤i , _) = ⊥-elim (lemma (≤-trans k≤i i≤j)           $ injective eq)
-    ... | tri≈ _ _ _         | tri< _ _ _         = cong pred                                   $ injective eq
-    ... | tri≈ _ _ _         | tri≈ _ _ _         = cong pred                                   $ injective eq
-    ... | tri≈ _ i≡j _       | tri> _ _ (k≤i , _) = ⊥-elim (lemma (subst (_≤_ k) i≡j k≤i)       $ injective eq)
-    ... | tri> _ _ (j≤i , _) | tri< (i≤k , _) _ _ = ⊥-elim (lemma (≤-trans j≤i i≤k)     $ sym $ injective eq)
-    ... | tri> _ _ (j≤i , _) | tri≈ _ i≡k _       = ⊥-elim (lemma (subst (_≤_ j) i≡k j≤i) $ sym $ injective eq)
-    ... | tri> _ _ (j≤i , _) | tri> _ _ (k≤i , _) =                                               injective eq
+    ... | tri< _ _ _         | tri< _ _ _         = cong pred (injective eq)
+    ... | tri< _ _ _         | tri≈ _ _ _         = cong pred (injective eq)
+    ... | tri< (i≤j , _) _ _ | tri> _ _ (k≤i , _) = ⊥-elim (lemma (≤-trans k≤i i≤j) (injective eq))
+    ... | tri≈ _ _ _         | tri< _ _ _         = cong pred (injective eq)
+    ... | tri≈ _ _ _         | tri≈ _ _ _         = cong pred (injective eq)
+    ... | tri≈ _ refl _      | tri> _ _ (k≤i , _) = ⊥-elim (lemma k≤i (injective eq))
+    ... | tri> _ _ (j≤i , _) | tri< (i≤k , _) _ _ = ⊥-elim (lemma (≤-trans j≤i i≤k) (sym (injective eq)))
+    ... | tri> _ _ (j≤i , _) | tri≈ _ refl _      = ⊥-elim (lemma j≤i (sym (injective eq)))
+    ... | tri> _ _ (j≤i , _) | tri> _ _ (k≤i , _) = injective eq
 
     inj′ = record
       { to        = →-to-⟶ {B = P.setoid A} f
