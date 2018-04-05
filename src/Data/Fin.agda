@@ -15,6 +15,7 @@ open import Data.Nat as ℕ
   using (ℕ; zero; suc; z≤n; s≤s)
 open import Function using (_∘_; _on_)
 open import Level using () renaming (zero to ℓ₀)
+open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (True; toWitness)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
@@ -202,6 +203,19 @@ punchIn (suc i) zero    = zero
 punchIn (suc i) (suc j) = suc (punchIn i j)
 
 ------------------------------------------------------------------------
+-- Equality relation
+
+infix 4 _≟_
+
+_≟_ : {n : ℕ} → Decidable {A = Fin n} _≡_
+zero  ≟ zero  = yes refl
+zero  ≟ suc y = no λ()
+suc x ≟ zero  = no λ()
+suc x ≟ suc y with x ≟ y
+... | yes x≡y = yes (cong suc x≡y)
+... | no  x≢y = no (λ {refl → x≢y refl})
+
+------------------------------------------------------------------------
 -- Order relations
 
 infix 4 _≤_ _<_
@@ -217,6 +231,9 @@ data _≺_ : ℕ → ℕ → Set where
 
 _≤?_ : ∀ {n} → Decidable (_≤_ {n})
 a ≤? b = toℕ a ℕ.≤? toℕ b
+
+_<?_ : ∀ {n} → Decidable (_<_ {n})
+m <? n = suc (toℕ m) ℕ.≤? toℕ n
 
 -- An ordering view.
 

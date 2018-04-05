@@ -10,8 +10,7 @@ open import Data.Table
 open import Data.Table.Relation.Equality
 
 open import Data.Bool using (true; false; if_then_else_)
-open import Data.Fin using (Fin; suc; zero)
-open import Data.Fin.Properties using (_≟_)
+open import Data.Fin using (Fin; suc; zero; _≟_)
 open import Data.List as L using (List; _∷_; [])
 open import Data.List.Any using (here; there; index)
 open import Data.List.Any.Membership.Propositional using (_∈_)
@@ -52,12 +51,6 @@ module _ {a} {A : Set a} where
 
     toVec : ∀ {n} → Table A n → Vec A n
     toVec = V.tabulate ∘ lookup
-
-    fromVec-toVec : ∀ {n} (t : Table A n) → fromVec (toVec t) ≗ t
-    fromVec-toVec _ = VP.lookup∘tabulate _
-
-    toVec-fromVec : ∀ {n} (v : Vec A n) → toVec (fromVec v) ≡ v
-    toVec-fromVec = VP.tabulate∘lookup
 
   ↔Vec : ∀ {n} → Inverse (≡-setoid A n) (P.setoid (Vec A n))
   ↔Vec = record

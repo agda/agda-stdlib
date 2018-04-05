@@ -190,7 +190,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
                        IsPartialOrder _≋_ _≤_
     ≤-isPartialOrder  spo = record
       { isPreorder = ≤-isPreorder isEquivalence trans <-resp-≈
-      ; antisym    = Core.antisymmetric Eq.sym irrefl asymmetric
+      ; antisym    = Core.antisymmetric Eq.sym irrefl asym
       }
       where open IsStrictPartialOrder spo
 
