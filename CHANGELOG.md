@@ -36,6 +36,8 @@ Non-backwards compatible changes
   `_≟_` and `_<?_` in `Data.Nat` or others. If so then it may be necessary to qualify imports
   with either `using` or `hiding`.
 
+* Refactored and moved `↔Vec` from `Data.Product.N-ary` to `Data.Product.N-ary.Properties`.
+
 Deprecated features
 -------------------
 
@@ -149,6 +151,7 @@ Backwards compatible changes
   ```agda
   _∈[_]_     : A → ∀ n → A ^ n → Set a
   cons       : ∀ n → A → A ^ n → A ^ suc n
+  uncons     : ∀ n → A ^ suc n → A × A ^ n
   head       : ∀ n → A ^ suc n → A
   tail       : ∀ n → A ^ suc n → A ^ n
   lookup     : ∀ (k : Fin n) → A ^ n → A
@@ -167,7 +170,7 @@ Backwards compatible changes
   unzip      : ∀ n → (A × B) ^ n → A ^ n × B ^ n
   ```
 
-* Added new proofs to `Data.Product.N-ary`:
+* Added new proofs to `Data.Product.N-ary.Properties`:
   ```agda
   cons-head-tail-identity : cons n (head n as) (tail n as) ≡ as
   head-cons-identity      : head n (cons n a as) ≡ a

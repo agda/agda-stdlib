@@ -14,16 +14,13 @@ module Data.Product.N-ary where
 
 open import Data.Nat as Nat hiding (_^_)
 open import Data.Fin hiding (lift)
-open import Data.Product using (_×_ ; _,_ ; ∃₂ ; uncurry)
-open import Data.Sum hiding (map)
+open import Data.Product as P using (_×_ ; _,_ ; ∃₂ ; uncurry)
+open import Data.Sum using (_⊎_)
 open import Data.Unit
 open import Data.Empty
-open import Data.Vec as Vec using (Vec)
 open import Function
-import Function.Inverse as I
 open import Level using (Lift; lift)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
-open P.≡-Reasoning
+open import Relation.Binary.PropositionalEquality using (_≡_)
 
 -- Types and patterns
 ------------------------------------------------------------------------
@@ -55,13 +52,15 @@ module _  {a} {A : Set a} where
  cons 0       a _  = a
  cons (suc n) a as = a , as
 
+ uncons : ∀ n → A ^ suc n → A × A ^ n
+ uncons 0        a        = a , lift tt
+ uncons (suc n)  (a , as) = a , as
+
  head : ∀ n → A ^ suc n → A
- head 0       a       = a
- head (suc n) (a , _) = a
+ head n as = P.proj₁ (uncons n as)
 
  tail : ∀ n → A ^ suc n → A ^ n
- tail 0       _        = lift tt
- tail (suc n) (_ , as) = as
+ tail n as = P.proj₂ (uncons n as)
 
  lookup : ∀ {n} (k : Fin n) → A ^ n → A
  lookup {suc n} zero    = head n
@@ -146,84 +145,3 @@ module _ {a b} {A : Set a} {B : Set b} where
 
  unzip : ∀ n → (A × B) ^ n → A ^ n × B ^ n
  unzip = unzipWith id
-
--- Basic proofs
-------------------------------------------------------------------------
-
-module _ {a} {A : Set a} where
-
- cons-head-tail-identity : ∀ n (as : A ^ suc n) → cons n (head n as) (tail n as) ≡ as
- cons-head-tail-identity 0       as = P.refl
- cons-head-tail-identity (suc n) as = P.refl
-
- head-cons-identity : ∀ n a (as : A ^ n) → head n (cons n a as) ≡ a
- head-cons-identity 0       a as = P.refl
- head-cons-identity (suc n) a as = P.refl
-
- tail-cons-identity : ∀ n a (as : A ^ n) → tail n (cons n a as) ≡ as
- tail-cons-identity 0       a as = P.refl
- tail-cons-identity (suc n) a as = P.refl
-
- append-cons-commute : ∀ m n a (xs : A ^ m) ys →
-   append (suc m) n (cons m a xs) ys ≡ cons (m Nat.+ n) a (append m n xs ys)
- append-cons-commute 0       n a xs ys = P.refl
- append-cons-commute (suc m) n a xs ys = P.refl
-
- append-splitAt-identity : ∀ m n (as : A ^ (m Nat.+ n)) → uncurry (append m n) (splitAt m n as) ≡ as
- append-splitAt-identity 0       n as = P.refl
- append-splitAt-identity (suc m) n as = begin
-   let x         = head (m Nat.+ n) as in
-   let (xs , ys) = splitAt m n (tail (m Nat.+ n) as) in
-   append (suc m) n (cons m (head (m Nat.+ n) as) xs) ys
-     ≡⟨ append-cons-commute m n x xs ys ⟩
-   cons (m Nat.+ n) x (append m n xs ys)
-     ≡⟨ P.cong (cons (m Nat.+ n) x) (append-splitAt-identity m n (tail (m Nat.+ n) as)) ⟩
-   cons (m Nat.+ n) x (tail (m Nat.+ n) as)
-     ≡⟨ cons-head-tail-identity (m Nat.+ n) as ⟩
-   as
-     ∎
-
--- Conversion to and from Vec
-------------------------------------------------------------------------
-
-module _ {a} {A : Set a} where
-
- toVec : ∀ n → A ^ n → Vec A n
- toVec 0       _  = Vec.[]
- toVec (suc n) xs = head n xs Vec.∷ toVec n (tail n xs)
-
- fromVec : ∀ {n} → Vec A n → A ^ n
- fromVec         Vec.[]       = []
- fromVec {suc n} (x Vec.∷ xs) = cons n x (fromVec xs)
-
- fromVec∘toVec : ∀ n (xs : A ^ n) → fromVec (toVec n xs) ≡ xs
- fromVec∘toVec 0       _  = P.refl
- fromVec∘toVec (suc n) xs = begin
-   cons n (head n xs) (fromVec (toVec n (tail n xs)))
-     ≡⟨ P.cong (cons n (head n xs)) (fromVec∘toVec n (tail n xs)) ⟩
-   cons n (head n xs) (tail n xs)
-     ≡⟨ cons-head-tail-identity n xs ⟩
-   xs ∎
-
- toVec∘fromVec : ∀ {n} (xs : Vec A n) → toVec n (fromVec xs) ≡ xs
- toVec∘fromVec         Vec.[]       = P.refl
- toVec∘fromVec {suc n} (x Vec.∷ xs) = begin
-   head n (cons n x (fromVec xs)) Vec.∷ toVec n (tail n (cons n x (fromVec xs)))
-     ≡⟨ P.cong₂ (λ x xs → x Vec.∷ toVec n xs) hd-prf tl-prf ⟩
-   x Vec.∷ toVec n (fromVec xs)
-     ≡⟨ P.cong (x Vec.∷_) (toVec∘fromVec xs) ⟩
-   x Vec.∷ xs
-     ∎ where
-
-     hd-prf = head-cons-identity n x (fromVec xs)
-     tl-prf = tail-cons-identity n x (fromVec xs)
-
-↔Vec : ∀ {a} {A : Set a} n → A ^ n I.↔ Vec A n
-↔Vec n = record
-  { to         = P.→-to-⟶ (toVec n)
-  ; from       = P.→-to-⟶ fromVec
-  ; inverse-of = record
-    { left-inverse-of  = fromVec∘toVec n
-    ; right-inverse-of = toVec∘fromVec
-    }
-  }
