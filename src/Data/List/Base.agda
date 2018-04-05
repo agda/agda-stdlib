@@ -43,9 +43,9 @@ _++_ : ∀ {a} {A : Set a} → List A → List A → List A
 (x ∷ xs) ++ ys = x ∷ (xs ++ ys)
 
 intersperse : ∀ {a} {A : Set a} → A → List A → List A
-intersperse x []           = []
-intersperse x (y ∷ [])     = y ∷ []
-intersperse x (y ∷ z ∷ zs) = y ∷ x ∷ intersperse x (z ∷ zs)
+intersperse x []       = []
+intersperse x (y ∷ []) = y ∷ []
+intersperse x (y ∷ ys) = y ∷ x ∷ intersperse x ys
 
 zipWith : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
           (A → B → C) → List A → List B → List C
