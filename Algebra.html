@@ -187,7 +187,7 @@
   <a id="4885" class="Keyword">open</a> <a id="4890" href="Algebra.Structures.html#IsSemiringWithoutOne" class="Module">IsSemiringWithoutOne</a> <a id="4911" href="Algebra.html#SemiringWithoutOne.isSemiringWithoutOne" class="Field">isSemiringWithoutOne</a> <a id="4932" class="Keyword">public</a>
 
   <a id="SemiringWithoutOne.nearSemiring" href="Algebra.html#SemiringWithoutOne.nearSemiring" class="Function">nearSemiring</a> <a id="4955" class="Symbol">:</a> <a id="4957" href="Algebra.html#NearSemiring" class="Record">NearSemiring</a> <a id="4970" class="Symbol">_</a> <a id="4972" class="Symbol">_</a>
-  <a id="4976" href="Algebra.html#SemiringWithoutOne.nearSemiring" class="Function">nearSemiring</a> <a id="4989" class="Symbol">=</a> <a id="4991" class="Keyword">record</a> <a id="4998" class="Symbol">{</a> <a id="5000" class="Field">isNearSemiring</a> <a id="5015" class="Symbol">=</a> <a id="5017" href="Algebra.Structures.html#4517" class="Function">isNearSemiring</a> <a id="5032" class="Symbol">}</a>
+  <a id="4976" href="Algebra.html#SemiringWithoutOne.nearSemiring" class="Function">nearSemiring</a> <a id="4989" class="Symbol">=</a> <a id="4991" class="Keyword">record</a> <a id="4998" class="Symbol">{</a> <a id="5000" class="Field">isNearSemiring</a> <a id="5015" class="Symbol">=</a> <a id="5017" href="Algebra.Structures.html#4608" class="Function">isNearSemiring</a> <a id="5032" class="Symbol">}</a>
 
   <a id="5037" class="Keyword">open</a> <a id="5042" href="Algebra.html#NearSemiring" class="Module">NearSemiring</a> <a id="5055" href="Algebra.html#SemiringWithoutOne.nearSemiring" class="Function">nearSemiring</a> <a id="5068" class="Keyword">public</a>
          <a id="5084" class="Keyword">using</a> <a id="5090" class="Symbol">(</a> +-semigroup<a id="5103" class="Symbol">;</a> +-rawMonoid<a id="5116" class="Symbol">;</a> +-monoid
@@ -196,7 +196,7 @@
 
   <a id="SemiringWithoutOne.+-commutativeMonoid" href="Algebra.html#SemiringWithoutOne.%2B-commutativeMonoid" class="Function">+-commutativeMonoid</a> <a id="5196" class="Symbol">:</a> <a id="5198" href="Algebra.html#CommutativeMonoid" class="Record">CommutativeMonoid</a> <a id="5216" class="Symbol">_</a> <a id="5218" class="Symbol">_</a>
   <a id="5222" href="Algebra.html#SemiringWithoutOne.%2B-commutativeMonoid" class="Function">+-commutativeMonoid</a> <a id="5242" class="Symbol">=</a>
-    <a id="5248" class="Keyword">record</a> <a id="5255" class="Symbol">{</a> <a id="5257" class="Field">isCommutativeMonoid</a> <a id="5277" class="Symbol">=</a> <a id="5279" href="Algebra.Structures.html#4058" class="Function">+-isCommutativeMonoid</a> <a id="5301" class="Symbol">}</a>
+    <a id="5248" class="Keyword">record</a> <a id="5255" class="Symbol">{</a> <a id="5257" class="Field">isCommutativeMonoid</a> <a id="5277" class="Symbol">=</a> <a id="5279" href="Algebra.Structures.html#4056" class="Function">+-isCommutativeMonoid</a> <a id="5301" class="Symbol">}</a>
 
 <a id="5304" class="Keyword">record</a> <a id="SemiringWithoutAnnihilatingZero" href="Algebra.html#SemiringWithoutAnnihilatingZero" class="Record">SemiringWithoutAnnihilatingZero</a> <a id="5343" href="Algebra.html#5343" class="Bound">c</a> <a id="5345" href="Algebra.html#5345" class="Bound">ℓ</a> <a id="5347" class="Symbol">:</a> <a id="5349" class="PrimitiveType">Set</a> <a id="5353" class="Symbol">(</a><a id="5354" href="Agda.Primitive.html#suc" class="Primitive">suc</a> <a id="5358" class="Symbol">(</a><a id="5359" href="Algebra.html#5343" class="Bound">c</a> <a id="5361" href="Agda.Primitive.html#_%E2%8A%94_" class="Primitive Operator">⊔</a> <a id="5363" href="Algebra.html#5345" class="Bound">ℓ</a><a id="5364" class="Symbol">))</a> <a id="5367" class="Keyword">where</a>
   <a id="5375" class="Keyword">infixl</a> <a id="5382" class="Number">7</a> <a id="5384" href="Algebra.html#SemiringWithoutAnnihilatingZero._%2A_" class="Field Operator">_*_</a>
@@ -217,7 +217,7 @@
 
   <a id="SemiringWithoutAnnihilatingZero.+-commutativeMonoid" href="Algebra.html#SemiringWithoutAnnihilatingZero.%2B-commutativeMonoid" class="Function">+-commutativeMonoid</a> <a id="5939" class="Symbol">:</a> <a id="5941" href="Algebra.html#CommutativeMonoid" class="Record">CommutativeMonoid</a> <a id="5959" class="Symbol">_</a> <a id="5961" class="Symbol">_</a>
   <a id="5965" href="Algebra.html#SemiringWithoutAnnihilatingZero.%2B-commutativeMonoid" class="Function">+-commutativeMonoid</a> <a id="5985" class="Symbol">=</a>
-    <a id="5991" class="Keyword">record</a> <a id="5998" class="Symbol">{</a> <a id="6000" class="Field">isCommutativeMonoid</a> <a id="6020" class="Symbol">=</a> <a id="6022" href="Algebra.Structures.html#5065" class="Function">+-isCommutativeMonoid</a> <a id="6044" class="Symbol">}</a>
+    <a id="5991" class="Keyword">record</a> <a id="5998" class="Symbol">{</a> <a id="6000" class="Field">isCommutativeMonoid</a> <a id="6020" class="Symbol">=</a> <a id="6022" href="Algebra.Structures.html#5158" class="Function">+-isCommutativeMonoid</a> <a id="6044" class="Symbol">}</a>
 
   <a id="6049" class="Keyword">open</a> <a id="6054" href="Algebra.html#CommutativeMonoid" class="Module">CommutativeMonoid</a> <a id="6072" href="Algebra.html#SemiringWithoutAnnihilatingZero.%2B-commutativeMonoid" class="Function">+-commutativeMonoid</a> <a id="6092" class="Keyword">public</a>
          <a id="6108" class="Keyword">using</a> <a id="6114" class="Symbol">()</a>
@@ -227,7 +227,7 @@
                   <a id="6267" class="Symbol">)</a>
 
   <a id="SemiringWithoutAnnihilatingZero.*-monoid" href="Algebra.html#SemiringWithoutAnnihilatingZero.%2A-monoid" class="Function">*-monoid</a> <a id="6281" class="Symbol">:</a> <a id="6283" href="Algebra.html#Monoid" class="Record">Monoid</a> <a id="6290" class="Symbol">_</a> <a id="6292" class="Symbol">_</a>
-  <a id="6296" href="Algebra.html#SemiringWithoutAnnihilatingZero.%2A-monoid" class="Function">*-monoid</a> <a id="6305" class="Symbol">=</a> <a id="6307" class="Keyword">record</a> <a id="6314" class="Symbol">{</a> <a id="6316" class="Field">isMonoid</a> <a id="6325" class="Symbol">=</a> <a id="6327" href="Algebra.Structures.html#5118" class="Function">*-isMonoid</a> <a id="6338" class="Symbol">}</a>
+  <a id="6296" href="Algebra.html#SemiringWithoutAnnihilatingZero.%2A-monoid" class="Function">*-monoid</a> <a id="6305" class="Symbol">=</a> <a id="6307" class="Keyword">record</a> <a id="6314" class="Symbol">{</a> <a id="6316" class="Field">isMonoid</a> <a id="6325" class="Symbol">=</a> <a id="6327" href="Algebra.Structures.html#5211" class="Function">*-isMonoid</a> <a id="6338" class="Symbol">}</a>
 
   <a id="6343" class="Keyword">open</a> <a id="6348" href="Algebra.html#Monoid" class="Module">Monoid</a> <a id="6355" href="Algebra.html#SemiringWithoutAnnihilatingZero.%2A-monoid" class="Function">*-monoid</a> <a id="6364" class="Keyword">public</a>
          <a id="6380" class="Keyword">using</a> <a id="6386" class="Symbol">()</a>
@@ -253,7 +253,7 @@
   <a id="Semiring.semiringWithoutAnnihilatingZero" href="Algebra.html#Semiring.semiringWithoutAnnihilatingZero" class="Function">semiringWithoutAnnihilatingZero</a> <a id="6879" class="Symbol">:</a> <a id="6881" href="Algebra.html#SemiringWithoutAnnihilatingZero" class="Record">SemiringWithoutAnnihilatingZero</a> <a id="6913" class="Symbol">_</a> <a id="6915" class="Symbol">_</a>
   <a id="6919" href="Algebra.html#Semiring.semiringWithoutAnnihilatingZero" class="Function">semiringWithoutAnnihilatingZero</a> <a id="6951" class="Symbol">=</a> <a id="6953" class="Keyword">record</a>
     <a id="6964" class="Symbol">{</a> <a id="6966" class="Field">isSemiringWithoutAnnihilatingZero</a> <a id="7000" class="Symbol">=</a>
-        <a id="7010" href="Algebra.Structures.html#5992" class="Function">isSemiringWithoutAnnihilatingZero</a>
+        <a id="7010" href="Algebra.Structures.html#6081" class="Function">isSemiringWithoutAnnihilatingZero</a>
     <a id="7048" class="Symbol">}</a>
 
   <a id="7053" class="Keyword">open</a> <a id="7058" href="Algebra.html#SemiringWithoutAnnihilatingZero" class="Module">SemiringWithoutAnnihilatingZero</a>
@@ -265,7 +265,7 @@
 
   <a id="Semiring.semiringWithoutOne" href="Algebra.html#Semiring.semiringWithoutOne" class="Function">semiringWithoutOne</a> <a id="7318" class="Symbol">:</a> <a id="7320" href="Algebra.html#SemiringWithoutOne" class="Record">SemiringWithoutOne</a> <a id="7339" class="Symbol">_</a> <a id="7341" class="Symbol">_</a>
   <a id="7345" href="Algebra.html#Semiring.semiringWithoutOne" class="Function">semiringWithoutOne</a> <a id="7364" class="Symbol">=</a>
-    <a id="7370" class="Keyword">record</a> <a id="7377" class="Symbol">{</a> <a id="7379" class="Field">isSemiringWithoutOne</a> <a id="7400" class="Symbol">=</a> <a id="7402" href="Algebra.Structures.html#6194" class="Function">isSemiringWithoutOne</a> <a id="7423" class="Symbol">}</a>
+    <a id="7370" class="Keyword">record</a> <a id="7377" class="Symbol">{</a> <a id="7379" class="Field">isSemiringWithoutOne</a> <a id="7400" class="Symbol">=</a> <a id="7402" href="Algebra.Structures.html#6283" class="Function">isSemiringWithoutOne</a> <a id="7423" class="Symbol">}</a>
 
   <a id="7428" class="Keyword">open</a> <a id="7433" href="Algebra.html#SemiringWithoutOne" class="Module">SemiringWithoutOne</a> <a id="7452" href="Algebra.html#Semiring.semiringWithoutOne" class="Function">semiringWithoutOne</a> <a id="7471" class="Keyword">public</a>
          <a id="7487" class="Keyword">using</a> <a id="7493" class="Symbol">(</a>nearSemiring<a id="7506" class="Symbol">)</a>
@@ -288,7 +288,7 @@
 
   <a id="CommutativeSemiringWithoutOne.semiringWithoutOne" href="Algebra.html#CommutativeSemiringWithoutOne.semiringWithoutOne" class="Function">semiringWithoutOne</a> <a id="8072" class="Symbol">:</a> <a id="8074" href="Algebra.html#SemiringWithoutOne" class="Record">SemiringWithoutOne</a> <a id="8093" class="Symbol">_</a> <a id="8095" class="Symbol">_</a>
   <a id="8099" href="Algebra.html#CommutativeSemiringWithoutOne.semiringWithoutOne" class="Function">semiringWithoutOne</a> <a id="8118" class="Symbol">=</a>
-    <a id="8124" class="Keyword">record</a> <a id="8131" class="Symbol">{</a> <a id="8133" class="Field">isSemiringWithoutOne</a> <a id="8154" class="Symbol">=</a> <a id="8156" href="Algebra.Structures.html#6640" class="Function">isSemiringWithoutOne</a> <a id="8177" class="Symbol">}</a>
+    <a id="8124" class="Keyword">record</a> <a id="8131" class="Symbol">{</a> <a id="8133" class="Field">isSemiringWithoutOne</a> <a id="8154" class="Symbol">=</a> <a id="8156" href="Algebra.Structures.html#6763" class="Function">isSemiringWithoutOne</a> <a id="8177" class="Symbol">}</a>
 
   <a id="8182" class="Keyword">open</a> <a id="8187" href="Algebra.html#SemiringWithoutOne" class="Module">SemiringWithoutOne</a> <a id="8206" href="Algebra.html#CommutativeSemiringWithoutOne.semiringWithoutOne" class="Function">semiringWithoutOne</a> <a id="8225" class="Keyword">public</a>
          <a id="8241" class="Keyword">using</a> <a id="8247" class="Symbol">(</a> +-semigroup<a id="8260" class="Symbol">;</a> +-rawMonoid<a id="8273" class="Symbol">;</a> +-monoid
@@ -313,7 +313,7 @@
   <a id="8807" class="Keyword">open</a> <a id="8812" href="Algebra.Structures.html#IsCommutativeSemiring" class="Module">IsCommutativeSemiring</a> <a id="8834" href="Algebra.html#CommutativeSemiring.isCommutativeSemiring" class="Field">isCommutativeSemiring</a> <a id="8856" class="Keyword">public</a>
 
   <a id="CommutativeSemiring.semiring" href="Algebra.html#CommutativeSemiring.semiring" class="Function">semiring</a> <a id="8875" class="Symbol">:</a> <a id="8877" href="Algebra.html#Semiring" class="Record">Semiring</a> <a id="8886" class="Symbol">_</a> <a id="8888" class="Symbol">_</a>
-  <a id="8892" href="Algebra.html#CommutativeSemiring.semiring" class="Function">semiring</a> <a id="8901" class="Symbol">=</a> <a id="8903" class="Keyword">record</a> <a id="8910" class="Symbol">{</a> <a id="8912" class="Field">isSemiring</a> <a id="8923" class="Symbol">=</a> <a id="8925" href="Algebra.Structures.html#7595" class="Function">isSemiring</a> <a id="8936" class="Symbol">}</a>
+  <a id="8892" href="Algebra.html#CommutativeSemiring.semiring" class="Function">semiring</a> <a id="8901" class="Symbol">=</a> <a id="8903" class="Keyword">record</a> <a id="8910" class="Symbol">{</a> <a id="8912" class="Field">isSemiring</a> <a id="8923" class="Symbol">=</a> <a id="8925" href="Algebra.Structures.html#7718" class="Function">isSemiring</a> <a id="8936" class="Symbol">}</a>
 
   <a id="8941" class="Keyword">open</a> <a id="8946" href="Algebra.html#Semiring" class="Module">Semiring</a> <a id="8955" href="Algebra.html#CommutativeSemiring.semiring" class="Function">semiring</a> <a id="8964" class="Keyword">public</a>
          <a id="8980" class="Keyword">using</a> <a id="8986" class="Symbol">(</a> +-semigroup<a id="8999" class="Symbol">;</a> +-rawMonoid<a id="9012" class="Symbol">;</a> +-monoid
@@ -325,11 +325,11 @@
 
   <a id="CommutativeSemiring.*-commutativeMonoid" href="Algebra.html#CommutativeSemiring.%2A-commutativeMonoid" class="Function">*-commutativeMonoid</a> <a id="9251" class="Symbol">:</a> <a id="9253" href="Algebra.html#CommutativeMonoid" class="Record">CommutativeMonoid</a> <a id="9271" class="Symbol">_</a> <a id="9273" class="Symbol">_</a>
   <a id="9277" href="Algebra.html#CommutativeSemiring.%2A-commutativeMonoid" class="Function">*-commutativeMonoid</a> <a id="9297" class="Symbol">=</a>
-    <a id="9303" class="Keyword">record</a> <a id="9310" class="Symbol">{</a> <a id="9312" class="Field">isCommutativeMonoid</a> <a id="9332" class="Symbol">=</a> <a id="9334" href="Algebra.Structures.html#6930" class="Function">*-isCommutativeMonoid</a> <a id="9356" class="Symbol">}</a>
+    <a id="9303" class="Keyword">record</a> <a id="9310" class="Symbol">{</a> <a id="9312" class="Field">isCommutativeMonoid</a> <a id="9332" class="Symbol">=</a> <a id="9334" href="Algebra.Structures.html#7053" class="Function">*-isCommutativeMonoid</a> <a id="9356" class="Symbol">}</a>
 
   <a id="CommutativeSemiring.commutativeSemiringWithoutOne" href="Algebra.html#CommutativeSemiring.commutativeSemiringWithoutOne" class="Function">commutativeSemiringWithoutOne</a> <a id="9391" class="Symbol">:</a> <a id="9393" href="Algebra.html#CommutativeSemiringWithoutOne" class="Record">CommutativeSemiringWithoutOne</a> <a id="9423" class="Symbol">_</a> <a id="9425" class="Symbol">_</a>
   <a id="9429" href="Algebra.html#CommutativeSemiring.commutativeSemiringWithoutOne" class="Function">commutativeSemiringWithoutOne</a> <a id="9459" class="Symbol">=</a> <a id="9461" class="Keyword">record</a>
-    <a id="9472" class="Symbol">{</a> <a id="9474" class="Field">isCommutativeSemiringWithoutOne</a> <a id="9506" class="Symbol">=</a> <a id="9508" href="Algebra.Structures.html#8016" class="Function">isCommutativeSemiringWithoutOne</a>
+    <a id="9472" class="Symbol">{</a> <a id="9474" class="Field">isCommutativeSemiringWithoutOne</a> <a id="9506" class="Symbol">=</a> <a id="9508" href="Algebra.Structures.html#8158" class="Function">isCommutativeSemiringWithoutOne</a>
     <a id="9544" class="Symbol">}</a>
 
 <a id="9547" class="Comment">------------------------------------------------------------------------</a>
@@ -367,10 +367,10 @@
   <a id="10243" class="Keyword">open</a> <a id="10248" href="Algebra.Structures.html#IsRing" class="Module">IsRing</a> <a id="10255" href="Algebra.html#Ring.isRing" class="Field">isRing</a> <a id="10262" class="Keyword">public</a>
 
   <a id="Ring.+-abelianGroup" href="Algebra.html#Ring.%2B-abelianGroup" class="Function">+-abelianGroup</a> <a id="10287" class="Symbol">:</a> <a id="10289" href="Algebra.html#AbelianGroup" class="Record">AbelianGroup</a> <a id="10302" class="Symbol">_</a> <a id="10304" class="Symbol">_</a>
-  <a id="10308" href="Algebra.html#Ring.%2B-abelianGroup" class="Function">+-abelianGroup</a> <a id="10323" class="Symbol">=</a> <a id="10325" class="Keyword">record</a> <a id="10332" class="Symbol">{</a> <a id="10334" class="Field">isAbelianGroup</a> <a id="10349" class="Symbol">=</a> <a id="10351" href="Algebra.Structures.html#8400" class="Function">+-isAbelianGroup</a> <a id="10368" class="Symbol">}</a>
+  <a id="10308" href="Algebra.html#Ring.%2B-abelianGroup" class="Function">+-abelianGroup</a> <a id="10323" class="Symbol">=</a> <a id="10325" class="Keyword">record</a> <a id="10332" class="Symbol">{</a> <a id="10334" class="Field">isAbelianGroup</a> <a id="10349" class="Symbol">=</a> <a id="10351" href="Algebra.Structures.html#8542" class="Function">+-isAbelianGroup</a> <a id="10368" class="Symbol">}</a>
 
   <a id="Ring.semiring" href="Algebra.html#Ring.semiring" class="Function">semiring</a> <a id="10382" class="Symbol">:</a> <a id="10384" href="Algebra.html#Semiring" class="Record">Semiring</a> <a id="10393" class="Symbol">_</a> <a id="10395" class="Symbol">_</a>
-  <a id="10399" href="Algebra.html#Ring.semiring" class="Function">semiring</a> <a id="10408" class="Symbol">=</a> <a id="10410" class="Keyword">record</a> <a id="10417" class="Symbol">{</a> <a id="10419" class="Field">isSemiring</a> <a id="10430" class="Symbol">=</a> <a id="10432" href="Algebra.Structures.html#10032" class="Function">isSemiring</a> <a id="10443" class="Symbol">}</a>
+  <a id="10399" href="Algebra.html#Ring.semiring" class="Function">semiring</a> <a id="10408" class="Symbol">=</a> <a id="10410" class="Keyword">record</a> <a id="10417" class="Symbol">{</a> <a id="10419" class="Field">isSemiring</a> <a id="10430" class="Symbol">=</a> <a id="10432" href="Algebra.Structures.html#10174" class="Function">isSemiring</a> <a id="10443" class="Symbol">}</a>
 
   <a id="10448" class="Keyword">open</a> <a id="10453" href="Algebra.html#Semiring" class="Module">Semiring</a> <a id="10462" href="Algebra.html#Ring.semiring" class="Function">semiring</a> <a id="10471" class="Keyword">public</a>
          <a id="10487" class="Keyword">using</a> <a id="10493" class="Symbol">(</a> +-semigroup<a id="10506" class="Symbol">;</a> +-rawMonoid<a id="10519" class="Symbol">;</a> +-monoid
@@ -410,11 +410,11 @@
   <a id="11376" class="Keyword">open</a> <a id="11381" href="Algebra.Structures.html#IsCommutativeRing" class="Module">IsCommutativeRing</a> <a id="11399" href="Algebra.html#CommutativeRing.isCommutativeRing" class="Field">isCommutativeRing</a> <a id="11417" class="Keyword">public</a>
 
   <a id="CommutativeRing.ring" href="Algebra.html#CommutativeRing.ring" class="Function">ring</a> <a id="11432" class="Symbol">:</a> <a id="11434" href="Algebra.html#Ring" class="Record">Ring</a> <a id="11439" class="Symbol">_</a> <a id="11441" class="Symbol">_</a>
-  <a id="11445" href="Algebra.html#CommutativeRing.ring" class="Function">ring</a> <a id="11450" class="Symbol">=</a> <a id="11452" class="Keyword">record</a> <a id="11459" class="Symbol">{</a> <a id="11461" class="Field">isRing</a> <a id="11468" class="Symbol">=</a> <a id="11470" href="Algebra.Structures.html#10407" class="Function">isRing</a> <a id="11477" class="Symbol">}</a>
+  <a id="11445" href="Algebra.html#CommutativeRing.ring" class="Function">ring</a> <a id="11450" class="Symbol">=</a> <a id="11452" class="Keyword">record</a> <a id="11459" class="Symbol">{</a> <a id="11461" class="Field">isRing</a> <a id="11468" class="Symbol">=</a> <a id="11470" href="Algebra.Structures.html#10549" class="Function">isRing</a> <a id="11477" class="Symbol">}</a>
 
   <a id="CommutativeRing.commutativeSemiring" href="Algebra.html#CommutativeRing.commutativeSemiring" class="Function">commutativeSemiring</a> <a id="11502" class="Symbol">:</a> <a id="11504" href="Algebra.html#CommutativeSemiring" class="Record">CommutativeSemiring</a> <a id="11524" class="Symbol">_</a> <a id="11526" class="Symbol">_</a>
   <a id="11530" href="Algebra.html#CommutativeRing.commutativeSemiring" class="Function">commutativeSemiring</a> <a id="11550" class="Symbol">=</a>
-    <a id="11556" class="Keyword">record</a> <a id="11563" class="Symbol">{</a> <a id="11565" class="Field">isCommutativeSemiring</a> <a id="11587" class="Symbol">=</a> <a id="11589" href="Algebra.Structures.html#10494" class="Function">isCommutativeSemiring</a> <a id="11611" class="Symbol">}</a>
+    <a id="11556" class="Keyword">record</a> <a id="11563" class="Symbol">{</a> <a id="11565" class="Field">isCommutativeSemiring</a> <a id="11587" class="Symbol">=</a> <a id="11589" href="Algebra.Structures.html#10636" class="Function">isCommutativeSemiring</a> <a id="11611" class="Symbol">}</a>
 
   <a id="11616" class="Keyword">open</a> <a id="11621" href="Algebra.html#Ring" class="Module">Ring</a> <a id="11626" href="Algebra.html#CommutativeRing.ring" class="Function">ring</a> <a id="11631" class="Keyword">public</a> <a id="11638" class="Keyword">using</a> <a id="11644" class="Symbol">(</a>rawRing<a id="11652" class="Symbol">;</a> +-group<a id="11661" class="Symbol">;</a> +-abelianGroup<a id="11677" class="Symbol">)</a>
   <a id="11681" class="Keyword">open</a> <a id="11686" href="Algebra.html#CommutativeSemiring" class="Module">CommutativeSemiring</a> <a id="11706" href="Algebra.html#CommutativeRing.commutativeSemiring" class="Function">commutativeSemiring</a> <a id="11726" class="Keyword">public</a>
@@ -442,7 +442,7 @@
   <a id="12422" class="Keyword">open</a> <a id="12427" href="Algebra.Structures.html#IsLattice" class="Module">IsLattice</a> <a id="12437" href="Algebra.html#Lattice.isLattice" class="Field">isLattice</a> <a id="12447" class="Keyword">public</a>
 
   <a id="Lattice.setoid" href="Algebra.html#Lattice.setoid" class="Function">setoid</a> <a id="12464" class="Symbol">:</a> <a id="12466" href="Relation.Binary.html#Setoid" class="Record">Setoid</a> <a id="12473" class="Symbol">_</a> <a id="12475" class="Symbol">_</a>
-  <a id="12479" href="Algebra.html#Lattice.setoid" class="Function">setoid</a> <a id="12486" class="Symbol">=</a> <a id="12488" class="Keyword">record</a> <a id="12495" class="Symbol">{</a> <a id="12497" class="Field">isEquivalence</a> <a id="12511" class="Symbol">=</a> <a id="12513" href="Algebra.Structures.html#11161" class="Function">isEquivalence</a> <a id="12527" class="Symbol">}</a>
+  <a id="12479" href="Algebra.html#Lattice.setoid" class="Function">setoid</a> <a id="12486" class="Symbol">=</a> <a id="12488" class="Keyword">record</a> <a id="12495" class="Symbol">{</a> <a id="12497" class="Field">isEquivalence</a> <a id="12511" class="Symbol">=</a> <a id="12513" href="Algebra.Structures.html#11303" class="Function">isEquivalence</a> <a id="12527" class="Symbol">}</a>
 
 <a id="12530" class="Keyword">record</a> <a id="DistributiveLattice" href="Algebra.html#DistributiveLattice" class="Record">DistributiveLattice</a> <a id="12557" href="Algebra.html#12557" class="Bound">c</a> <a id="12559" href="Algebra.html#12559" class="Bound">ℓ</a> <a id="12561" class="Symbol">:</a> <a id="12563" class="PrimitiveType">Set</a> <a id="12567" class="Symbol">(</a><a id="12568" href="Agda.Primitive.html#suc" class="Primitive">suc</a> <a id="12572" class="Symbol">(</a><a id="12573" href="Algebra.html#12557" class="Bound">c</a> <a id="12575" href="Agda.Primitive.html#_%E2%8A%94_" class="Primitive Operator">⊔</a> <a id="12577" href="Algebra.html#12559" class="Bound">ℓ</a><a id="12578" class="Symbol">))</a> <a id="12581" class="Keyword">where</a>
   <a id="12589" class="Keyword">infixr</a> <a id="12596" class="Number">7</a> <a id="12598" href="Algebra.html#DistributiveLattice._%E2%88%A7_" class="Field Operator">_∧_</a>
@@ -458,7 +458,7 @@
   <a id="12861" class="Keyword">open</a> <a id="12866" href="Algebra.Structures.html#IsDistributiveLattice" class="Module">IsDistributiveLattice</a> <a id="12888" href="Algebra.html#DistributiveLattice.isDistributiveLattice" class="Field">isDistributiveLattice</a> <a id="12910" class="Keyword">public</a>
 
   <a id="DistributiveLattice.lattice" href="Algebra.html#DistributiveLattice.lattice" class="Function">lattice</a> <a id="12928" class="Symbol">:</a> <a id="12930" href="Algebra.html#Lattice" class="Record">Lattice</a> <a id="12938" class="Symbol">_</a> <a id="12940" class="Symbol">_</a>
-  <a id="12944" href="Algebra.html#DistributiveLattice.lattice" class="Function">lattice</a> <a id="12952" class="Symbol">=</a> <a id="12954" class="Keyword">record</a> <a id="12961" class="Symbol">{</a> <a id="12963" class="Field">isLattice</a> <a id="12973" class="Symbol">=</a> <a id="12975" href="Algebra.Structures.html#11551" class="Function">isLattice</a> <a id="12985" class="Symbol">}</a>
+  <a id="12944" href="Algebra.html#DistributiveLattice.lattice" class="Function">lattice</a> <a id="12952" class="Symbol">=</a> <a id="12954" class="Keyword">record</a> <a id="12961" class="Symbol">{</a> <a id="12963" class="Field">isLattice</a> <a id="12973" class="Symbol">=</a> <a id="12975" href="Algebra.Structures.html#11693" class="Function">isLattice</a> <a id="12985" class="Symbol">}</a>
 
   <a id="12990" class="Keyword">open</a> <a id="12995" href="Algebra.html#Lattice" class="Module">Lattice</a> <a id="13003" href="Algebra.html#DistributiveLattice.lattice" class="Function">lattice</a> <a id="13011" class="Keyword">public</a> <a id="13018" class="Keyword">using</a> <a id="13024" class="Symbol">(</a>setoid<a id="13031" class="Symbol">)</a>
 
@@ -481,7 +481,7 @@
 
   <a id="BooleanAlgebra.distributiveLattice" href="Algebra.html#BooleanAlgebra.distributiveLattice" class="Function">distributiveLattice</a> <a id="13517" class="Symbol">:</a> <a id="13519" href="Algebra.html#DistributiveLattice" class="Record">DistributiveLattice</a> <a id="13539" class="Symbol">_</a> <a id="13541" class="Symbol">_</a>
   <a id="13545" href="Algebra.html#BooleanAlgebra.distributiveLattice" class="Function">distributiveLattice</a> <a id="13565" class="Symbol">=</a>
-    <a id="13571" class="Keyword">record</a> <a id="13578" class="Symbol">{</a> <a id="13580" class="Field">isDistributiveLattice</a> <a id="13602" class="Symbol">=</a> <a id="13604" href="Algebra.Structures.html#11757" class="Function">isDistributiveLattice</a> <a id="13626" class="Symbol">}</a>
+    <a id="13571" class="Keyword">record</a> <a id="13578" class="Symbol">{</a> <a id="13580" class="Field">isDistributiveLattice</a> <a id="13602" class="Symbol">=</a> <a id="13604" href="Algebra.Structures.html#11899" class="Function">isDistributiveLattice</a> <a id="13626" class="Symbol">}</a>
 
   <a id="13631" class="Keyword">open</a> <a id="13636" href="Algebra.html#DistributiveLattice" class="Module">DistributiveLattice</a> <a id="13656" href="Algebra.html#BooleanAlgebra.distributiveLattice" class="Function">distributiveLattice</a> <a id="13676" class="Keyword">public</a>
          <a id="13692" class="Keyword">using</a> <a id="13698" class="Symbol">(</a>setoid<a id="13705" class="Symbol">;</a> lattice<a id="13714" class="Symbol">)</a>
