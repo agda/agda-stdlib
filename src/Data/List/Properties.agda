@@ -29,7 +29,8 @@ open import Relation.Binary.PropositionalEquality as P
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable using (⌊_⌋)
-open import Relation.Unary using (Pred; Decidable; ∁; ∁?)
+open import Relation.Unary using (Pred; Decidable; ∁)
+open import Relation.Unary.Properties using (∁?)
 
 ------------------------------------------------------------------------
 -- _∷_

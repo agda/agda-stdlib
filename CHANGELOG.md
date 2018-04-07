@@ -40,6 +40,14 @@ Non-backwards compatible changes
 * `Relation.Binary.Consequences` no longer exports `Total`. The standard way of accessing it
   through `Relation.Binary` remains unchanged.
 
+* Changed the associativity of `Relation.Unary`'s `_⇒_` from left to right.
+
+* Added new module `Relation.Unary.Properties`. The following proofs have been moved
+  to the new module from `Relation.Unary`:
+  ```agda
+  ∅-Empty, ∁∅-Universal, U-Universal, ∁U-Empty, ∅-⊆, ⊆-U, ∁?
+  ```
+
 * Added `swap : A ⊎ B → B ⊎ A` to `Data.Sum`. This may conflict with `swap` in `Data.Product`.
   If so then it may be necessary to qualify imports with either `using` or `hiding`.
 
@@ -47,8 +55,6 @@ Non-backwards compatible changes
   `Data.Fin.Properties` to improve consistency across the library. They may conflict with
   `_≟_` and `_<?_` in `Data.Nat` or others. If so then it may be necessary to qualify imports
   with either `using` or `hiding`.
-
-* Changed the associativity of `Relation.Unary`'s `_⇒_` from left to right.
 
 Deprecated features
 -------------------
@@ -138,6 +144,12 @@ Backwards compatible changes
   unzip : All (P ∩ Q) ⊆ All P ∩ All Q
   ```
 
+* Added new proofs to `Data.List.Properties`:
+  ```agda
+  tabulate-cong : f ≗ g → tabulate f ≡ tabulate g
+  tabulate-lookup : tabulate (lookup xs) ≡ xs
+  ```
+
 * Added new modules `Data.List.Zipper` and `Data.List.Zipper.Properties`.
 
 * Added new proofs to `Data.Nat.Properties`:
@@ -202,10 +214,18 @@ Backwards compatible changes
 * The types `Maximum` and `Minimum` are now exported by `Relation.Binary` as well
   as `Relation.Binary.Lattice`.
 
-* Added new proofs to `Data.List.Properties`:
+* Added new proofs to `Relation.Unary.Properties`:
   ```agda
-  tabulate-cong : f ≗ g → tabulate f ≡ tabulate g
-  tabulate-lookup : tabulate (lookup xs) ≡ xs
+  ⊆-refl  : Reflexive _⊆_
+  ⊆-trans : Transitive _⊆_
+  ⊂-asym  : Asymmetric _⊂_
+
+  _∪?_ : Decidable P → Decidable Q → Decidable (P ∪ Q)
+  _∩?_ : Decidable P → Decidable Q → Decidable (P ∩ Q)
+  _×?_ : Decidable P → Decidable Q → Decidable (P ⟨×⟩ Q)
+  _⊙?_ : Decidable P → Decidable Q → Decidable (P ⟨⊙⟩ Q)
+  _⊎?_ : Decidable P → Decidable Q → Decidable (P ⟨⊎⟩ Q)
+  _~?  : Decidable P → Decidable (P ~)
   ```
 
 Version 0.15

@@ -15,7 +15,8 @@ open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Product as Prod using (_×_; _,_)
 open import Function using (id; _∘_)
 open import Relation.Nullary using (yes; no)
-open import Relation.Unary using (Pred; Decidable; ∁?)
+open import Relation.Unary using (Pred; Decidable)
+open import Relation.Unary.Properties using (∁?)
 
 ------------------------------------------------------------------------
 -- Types
