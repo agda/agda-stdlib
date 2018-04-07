@@ -134,9 +134,7 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
   unzipWith : (A → B × C) → ∀ n → A ^ n → B ^ n × C ^ n
   unzipWith f 0      as       = [] , []
   unzipWith f 1      a        = f a
-  unzipWith f (2+ n) (a , as) =
-    let (b , c) = f a; (bs , cs) = unzipWith f (suc n) as in
-    (b , bs) , (c , cs)
+  unzipWith f (2+ n) (a , as) = P.zip _,_ _,_ (f a) (unzipWith f (suc n) as)
 
 module _ {a b} {A : Set a} {B : Set b} where
 
