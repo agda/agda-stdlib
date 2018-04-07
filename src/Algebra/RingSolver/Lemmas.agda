@@ -21,7 +21,7 @@ private
 open AlmostCommutativeRing r
 open import Algebra.Morphism
 open _-Raw-AlmostCommutative⟶_ morphism
-import Relation.Binary.EqReasoning as EqR; open EqR setoid
+open import Relation.Binary.EqReasoning setoid
 open import Function
 
 lemma₀ : ∀ a b c x →
