@@ -9,7 +9,7 @@ module Data.Fin.Properties where
 
 open import Algebra
 open import Data.Empty using (⊥-elim)
-open import Data.Fin
+open import Data.Fin as Fin
 open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_) renaming
   (_≤_ to _ℕ≤_
   ; _<_ to _ℕ<_
@@ -31,18 +31,8 @@ open import Category.Applicative
 ------------------------------------------------------------------------
 -- Properties of _≡_
 
-infix 4 _≟_
-
 suc-injective : ∀ {o} {m n : Fin o} → Fin.suc m ≡ suc n → m ≡ n
 suc-injective refl = refl
-
-_≟_ : {n : ℕ} → Decidable {A = Fin n} _≡_
-zero  ≟ zero  = yes refl
-zero  ≟ suc y = no λ()
-suc x ≟ zero  = no λ()
-suc x ≟ suc y with x ≟ y
-... | yes x≡y = yes (cong suc x≡y)
-... | no  x≢y = no (x≢y ∘ suc-injective)
 
 preorder : ℕ → Preorder _ _ _
 preorder n = P.preorder (Fin n)
@@ -190,9 +180,6 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
 ... | tri<  lt ¬eq ¬gt = tri< (s≤s lt)         (¬eq ∘ suc-injective) (¬gt ∘ ℕ.≤-pred)
 ... | tri> ¬lt ¬eq  gt = tri> (¬lt ∘ ℕ.≤-pred) (¬eq ∘ suc-injective) (s≤s gt)
 ... | tri≈ ¬lt  eq ¬gt = tri≈ (¬lt ∘ ℕ.≤-pred) (cong suc eq)    (¬gt ∘ ℕ.≤-pred)
-
-_<?_ : ∀ {n} → Decidable (_<_ {n})
-m <? n = suc (toℕ m) ℕ.≤? toℕ n
 
 <-isStrictTotalOrder : ∀ {n} → IsStrictTotalOrder _≡_ (_<_ {n})
 <-isStrictTotalOrder = record
@@ -390,3 +377,5 @@ punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
 
 cmp              = <-cmp
 strictTotalOrder = <-strictTotalOrder
+
+open import Data.Fin public using (_≟_; _<?_)

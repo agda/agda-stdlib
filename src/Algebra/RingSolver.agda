@@ -25,14 +25,14 @@ module Algebra.RingSolver
 import Algebra.RingSolver.Lemmas as L; open L Coeff R morphism
 private module C = RawRing Coeff
 open AlmostCommutativeRing R renaming (zero to zero*)
-import Algebra.FunctionProperties as P; open P _≈_
+open import Algebra.FunctionProperties _≈_
 open import Algebra.Morphism
 open _-Raw-AlmostCommutative⟶_ morphism renaming (⟦_⟧ to ⟦_⟧′)
-import Algebra.Operations as Ops; open Ops semiring
+open import Algebra.Operations.Semiring semiring
 
 open import Relation.Binary
 open import Relation.Nullary
-import Relation.Binary.EqReasoning as EqR; open EqR setoid
+open import Relation.Binary.EqReasoning setoid
 import Relation.Binary.PropositionalEquality as PropEq
 import Relation.Binary.Reflection as Reflection
 
@@ -359,8 +359,8 @@ mutual
 
   +H-homo : ∀ {n} (p₁ p₂ : HNF (suc n)) →
             ∀ ρ → ⟦ p₁ +H p₂ ⟧H ρ ≈ ⟦ p₁ ⟧H ρ + ⟦ p₂ ⟧H ρ
-  +H-homo ∅           p₂          ρ       = sym (proj₁ +-identity _)
-  +H-homo (p₁ *x+ x₁) ∅           ρ       = sym (proj₂ +-identity _)
+  +H-homo ∅           p₂          ρ       = sym (+-identityˡ _)
+  +H-homo (p₁ *x+ x₁) ∅           ρ       = sym (+-identityʳ _)
   +H-homo (p₁ *x+ c₁) (p₂ *x+ c₂) (x ∷ ρ) = begin
     ⟦ (p₁ +H p₂) *x+HN (c₁ +N c₂) ⟧H (x ∷ ρ)                           ≈⟨ *x+HN≈*x+ (p₁ +H p₂) (c₁ +N c₂) (x ∷ ρ) ⟩
 

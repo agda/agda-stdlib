@@ -34,6 +34,10 @@ data _⊎_ {a b} (A : Set a) (B : Set b) : Set (a ⊔ b) where
          (A → C) → (B → C) → (A ⊎ B → C)
 [_,_]′ = [_,_]
 
+swap : ∀ {a b} {A : Set a} {B : Set b} → A ⊎ B → B ⊎ A
+swap (inj₁ x) = inj₂ x
+swap (inj₂ x) = inj₁ x
+
 map : ∀ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} →
       (A → C) → (B → D) → (A ⊎ B → C ⊎ D)
 map f g = [ inj₁ ∘ f , inj₂ ∘ g ]
