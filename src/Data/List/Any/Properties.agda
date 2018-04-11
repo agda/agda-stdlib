@@ -42,6 +42,7 @@ open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; inspect)
 open import Relation.Unary
   using (Pred; _⟨×⟩_; _⟨→⟩_) renaming (_⊆_ to _⋐_)
+open import Relation.Nullary using (¬_)
 open Related.EquationalReasoning
 
 private
@@ -57,6 +58,14 @@ module _ {a p ℓ} {A : Set a} {P : A → Set p} {_≈_ : Rel A ℓ} where
   lift-resp resp (x≈y ∷ xs≈ys) (here px)   = here (resp x≈y px)
   lift-resp resp (x≈y ∷ xs≈ys) (there pxs) =
     there (lift-resp resp xs≈ys pxs)
+
+------------------------------------------------------------------------
+-- Misc
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+  ¬Any[] : ¬ Any P []
+  ¬Any[] ()
 
 ------------------------------------------------------------------------
 -- Any is a congruence

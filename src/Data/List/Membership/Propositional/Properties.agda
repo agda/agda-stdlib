@@ -14,12 +14,11 @@ open import Algebra using (CommutativeSemiring)
 open import Algebra.FunctionProperties using (Op₂; Selective)
 open import Category.Monad using (RawMonad)
 open import Data.Bool.Base using (Bool; false; true; T)
-open import Data.Empty using (⊥-elim)
 open import Data.Fin using (Fin)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (module Equivalence)
-open import Function.Injection as Inj using (_↣_)
+open import Function.Injection using (Injection; Injective; _↣_)
 open import Function.Inverse as Inv using (_↔_; module Inverse)
 import Function.Related as Related
 open import Function.Related.TypeIsomorphisms
@@ -31,14 +30,14 @@ import Data.List.Membership.Setoid.Properties as Membershipₛ
 open import Data.List.Relation.Equality.Propositional
   using (_≋_; ≡⇒≋; ≋⇒≡)
 open import Data.List.Categorical using (monad)
-open import Data.Nat using (ℕ; zero; suc; pred; _≤_; _<_)
+open import Data.Nat using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤?_)
 open import Data.Nat.Properties
 open import Data.Product hiding (map)
 import Data.Product.Relation.Pointwise.Dependent as Σ
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Relation.Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; refl; _≗_)
+  using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Unary using (_⟨×⟩_; Decidable)
 open import Relation.Nullary using (¬_; Dec; yes; no)
@@ -243,63 +242,53 @@ module _ {a} {A : Set a} {_•_ : Op₂ A} where
 -- Only a finite number of distinct elements can be members of a
 -- given list.
 
-finite : ∀ {a} {A : Set a} (f : ℕ ↣ A) →
-         ∀ xs → ¬ (∀ i → Inj.Injection.to f ⟨$⟩ i ∈ xs)
-finite         inj []       ∈[]   with ∈[] zero
-... | ()
-finite {A = A} inj (x ∷ xs) ∈x∷xs = excluded-middle helper
-  where
-  open Inj.Injection inj
+module _ {a} {A : Set a} where
 
-  module STO = StrictTotalOrder
-                 (DTOProperties.strictTotalOrder ≤-decTotalOrder)
-
-  not-x : ∀ {i} → ¬ (to ⟨$⟩ i ≡ x) → to ⟨$⟩ i ∈ xs
-  not-x {i} ≢x with ∈x∷xs i
-  ... | here  ≡x  = ⊥-elim (≢x ≡x)
-  ... | there ∈xs = ∈xs
-
-  helper : ¬ Dec (∃ λ i → to ⟨$⟩ i ≡ x)
-  helper (no ≢x)        = finite inj  xs (λ i → not-x (≢x ∘ _,_ i))
-  helper (yes (i , ≡x)) = finite inj′ xs ∈xs
+  finite : (f : ℕ ↣ A) → ∀ xs → ¬ (∀ i → Injection.to f ⟨$⟩ i ∈ xs)
+  finite inj []       fᵢ∈[]   = ¬Any[] (fᵢ∈[] 0)
+  finite inj (x ∷ xs) fᵢ∈x∷xs = excluded-middle helper
     where
-    open P
+    open Injection inj renaming (injective to f-inj)
 
     f : ℕ → A
-    f j with STO.compare i j
-    ... | tri< _ _ _ = to ⟨$⟩ suc j
-    ... | tri≈ _ _ _ = to ⟨$⟩ suc j
-    ... | tri> _ _ _ = to ⟨$⟩ j
+    f = to ⟨$⟩_
 
-    ∈-if-not-i : ∀ {j} → i ≢ j → to ⟨$⟩ j ∈ xs
-    ∈-if-not-i i≢j = not-x (i≢j ∘ injective ∘ trans ≡x ∘ sym)
+    not-x : ∀ {i} → f i ≢ x → f i ∈ xs
+    not-x {i} fᵢ≢x with fᵢ∈x∷xs i
+    ... | here  fᵢ≡x  = contradiction fᵢ≡x fᵢ≢x
+    ... | there fᵢ∈xs = fᵢ∈xs
 
-    lemma : ∀ {k j} → k ≤ j → suc j ≢ k
-    lemma 1+j≤j refl = 1+n≰n 1+j≤j
+    helper : ¬ Dec (∃ λ i → f i ≡ x)
+    helper (no fᵢ≢x)        = finite inj  xs (λ i → not-x (fᵢ≢x ∘ _,_ i))
+    helper (yes (i , fᵢ≡x)) = finite f′-inj xs f′ⱼ∈xs
+      where
+      f′ : ℕ → A
+      f′ j with i ≤? j
+      ... | yes i≤j = f (suc j)
+      ... | no  i≰j = f j
 
-    ∈xs : ∀ j → f j ∈ xs
-    ∈xs j with STO.compare i j
-    ... | tri< (i≤j , _) _ _ = ∈-if-not-i (lemma i≤j ∘ sym)
-    ... | tri> _ i≢j _       = ∈-if-not-i i≢j
-    ... | tri≈ _ refl _      = ∈-if-not-i (m≢1+m+n i ∘
-      subst (_≡_ i ∘ suc) (sym (+-identityʳ i)))
+      ∈-if-not-i : ∀ {j} → i ≢ j → f j ∈ xs
+      ∈-if-not-i i≢j = not-x (i≢j ∘ f-inj ∘ trans fᵢ≡x ∘ sym)
 
-    injective′ : Inj.Injective {B = P.setoid A} (→-to-⟶ f)
-    injective′ {j} {k} eq with STO.compare i j | STO.compare i k
-    ... | tri< _ _ _         | tri< _ _ _         = cong pred (injective eq)
-    ... | tri< _ _ _         | tri≈ _ _ _         = cong pred (injective eq)
-    ... | tri< (i≤j , _) _ _ | tri> _ _ (k≤i , _) = ⊥-elim (lemma (≤-trans k≤i i≤j) (injective eq))
-    ... | tri≈ _ _ _         | tri< _ _ _         = cong pred (injective eq)
-    ... | tri≈ _ _ _         | tri≈ _ _ _         = cong pred (injective eq)
-    ... | tri≈ _ refl _      | tri> _ _ (k≤i , _) = ⊥-elim (lemma k≤i (injective eq))
-    ... | tri> _ _ (j≤i , _) | tri< (i≤k , _) _ _ = ⊥-elim (lemma (≤-trans j≤i i≤k) (sym (injective eq)))
-    ... | tri> _ _ (j≤i , _) | tri≈ _ refl _      = ⊥-elim (lemma j≤i (sym (injective eq)))
-    ... | tri> _ _ (j≤i , _) | tri> _ _ (k≤i , _) = injective eq
+      lemma : ∀ {k j} → i ≤ j → ¬ (i ≤ k) → suc j ≢ k
+      lemma i≤j i≰1+j refl = i≰1+j (≤-step i≤j)
 
-    inj′ = record
-      { to        = →-to-⟶ {B = P.setoid A} f
-      ; injective = injective′
-      }
+      f′ⱼ∈xs : ∀ j → f′ j ∈ xs
+      f′ⱼ∈xs j with i ≤? j
+      ... | yes i≤j = ∈-if-not-i (<⇒≢ (s≤s i≤j))
+      ... | no  i≰j = ∈-if-not-i (<⇒≢ (≰⇒> i≰j) ∘ sym)
+
+      f′-injective′ : Injective {B = P.setoid A} (→-to-⟶ f′)
+      f′-injective′ {j} {k} eq with i ≤? j | i ≤? k
+      ... | yes _   | yes _   = cong pred (f-inj eq)
+      ... | yes i≤j | no  i≰k = contradiction (f-inj eq) (lemma i≤j i≰k)
+      ... | no  i≰j | yes i≤k = contradiction (f-inj eq) (lemma i≤k i≰j ∘ sym)
+      ... | no  _   | no  _   = f-inj eq
+
+      f′-inj = record
+        { to        = →-to-⟶ f′
+        ; injective = f′-injective′
+        }
 
 ------------------------------------------------------------------------
 -- DEPRECATED
