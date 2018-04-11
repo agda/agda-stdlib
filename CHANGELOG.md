@@ -264,6 +264,13 @@ Backwards compatible changes
   _~?  : Decidable P → Decidable (P ~)
   ```
 
+* Added indexed variants of functions to `Relation.Binary.HeterogeneousEquality`:
+  ```agda
+  icong                   :
+  icong₂                  :
+  icong-≡-subst-removable :
+  ```
+
 Version 0.15
 ============
 

@@ -93,6 +93,34 @@ cong₂ f refl refl = refl
 resp₂ : ∀ {a ℓ} {A : Set a} (∼ : Rel A ℓ) → ∼ Respects₂ (λ x y → x ≅ y)
 resp₂ _∼_ = subst⟶resp₂ _∼_ subst
 
+icong : ∀ {a b ℓ} {I : Set ℓ} {i j : I}
+        (A : I → Set a) {B : {k : I} → A k → Set b} {x : A i} {y : A j} →
+        i ≡ j →
+        (f : {k : I} → (z : A k) → B z) →
+        x ≅ y →
+        f x ≅ f y
+icong _ refl _ refl = refl
+
+icong₂ : ∀ {a b c ℓ} {I : Set ℓ} {i j : I}
+         (A : I → Set a)
+         {B : {k : I} → A k → Set b}
+         {C : {k : I} → (a : A k) → B a → Set c}
+         {x : A i} {y : A j} {u : B x} {v : B y} →
+         i ≡ j →
+         (f : {k : I} → (z : A k) → (w : B z) → C z w) →
+         x ≅ y → u ≅ v →
+         f x u ≅ f y v
+icong₂ _ refl _ refl refl = refl
+
+icong-≡-subst-removable : ∀ {a b ℓ}
+                          {I : Set ℓ} {i j : I}
+                          (A : I → Set a) {B : {k : I} → A k → Set b}
+                          (eq : i ≡ j)
+                          (f : {k : I} → (z : A k) → B z)
+                          (x : A i) →
+                          f (P.subst A eq x) ≅ f x
+icong-≡-subst-removable _ refl _ _ = refl
+
 ------------------------------------------------------------------------
 -- (Heterogeneous) Proof irrelevance
 
