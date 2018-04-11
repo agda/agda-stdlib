@@ -22,25 +22,24 @@ module Algebra.RingSolver
   (_coeff≟_ : Decidable (Induced-equivalence morphism))
   where
 
-import Algebra.RingSolver.Lemmas as L; open L Coeff R morphism
+open import Algebra.RingSolver.Lemmas Coeff R morphism
 private module C = RawRing Coeff
-open AlmostCommutativeRing R renaming (zero to zero*)
+open AlmostCommutativeRing R
+  renaming (zero to *-zero; zeroˡ to *-zeroˡ; zeroʳ to *-zeroʳ)
 open import Algebra.FunctionProperties _≈_
 open import Algebra.Morphism
 open _-Raw-AlmostCommutative⟶_ morphism renaming (⟦_⟧ to ⟦_⟧′)
 open import Algebra.Operations.Semiring semiring
 
 open import Relation.Binary
-open import Relation.Nullary
+open import Relation.Nullary using (yes; no)
 open import Relation.Binary.EqReasoning setoid
 import Relation.Binary.PropositionalEquality as PropEq
 import Relation.Binary.Reflection as Reflection
 
-open import Data.Empty
-open import Data.Product
-open import Data.Nat.Base as Nat using (ℕ; suc; zero)
-open import Data.Fin as Fin using (Fin; zero; suc)
-open import Data.Vec
+open import Data.Nat.Base using (ℕ; suc; zero)
+open import Data.Fin using (Fin; zero; suc)
+open import Data.Vec using (Vec; []; _∷_; lookup)
 open import Function
 open import Level using (_⊔_)
 
@@ -395,10 +394,10 @@ mutual
   *NH-homo :
     ∀ {n} (c : Normal n) (p : HNF (suc n)) x ρ →
     ⟦ c *NH p ⟧H (x ∷ ρ) ≈ ⟦ c ⟧N ρ * ⟦ p ⟧H (x ∷ ρ)
-  *NH-homo c ∅          x ρ = sym (proj₂ zero* _)
+  *NH-homo c ∅          x ρ = sym (*-zeroʳ _)
   *NH-homo c (p *x+ c′) x ρ with c ≟N 0N
   ... | yes c≈0 = begin
-    0#                                            ≈⟨ sym (proj₁ zero* _) ⟩
+    0#                                            ≈⟨ sym (*-zeroˡ _) ⟩
     0# * (⟦ p ⟧H (x ∷ ρ) * x + ⟦ c′ ⟧N ρ)         ≈⟨ 0≈⟦0⟧ c≈0 ρ ⟨ *-cong ⟩ refl ⟩
     ⟦ c ⟧N ρ  * (⟦ p ⟧H (x ∷ ρ) * x + ⟦ c′ ⟧N ρ)  ∎
   ... | no c≉0 = begin
@@ -409,10 +408,10 @@ mutual
   *HN-homo :
     ∀ {n} (p : HNF (suc n)) (c : Normal n) x ρ →
     ⟦ p *HN c ⟧H (x ∷ ρ) ≈ ⟦ p ⟧H (x ∷ ρ) * ⟦ c ⟧N ρ
-  *HN-homo ∅          c x ρ = sym (proj₁ zero* _)
+  *HN-homo ∅          c x ρ = sym (*-zeroˡ _)
   *HN-homo (p *x+ c′) c x ρ with c ≟N 0N
   ... | yes c≈0 = begin
-    0#                                           ≈⟨ sym (proj₂ zero* _) ⟩
+    0#                                           ≈⟨ sym (*-zeroʳ _) ⟩
     (⟦ p ⟧H (x ∷ ρ) * x + ⟦ c′ ⟧N ρ) * 0#        ≈⟨ refl ⟨ *-cong ⟩ 0≈⟦0⟧ c≈0 ρ ⟩
     (⟦ p ⟧H (x ∷ ρ) * x + ⟦ c′ ⟧N ρ) * ⟦ c ⟧N ρ  ∎
   ... | no c≉0 = begin
@@ -422,8 +421,8 @@ mutual
 
   *H-homo : ∀ {n} (p₁ p₂ : HNF (suc n)) →
             ∀ ρ → ⟦ p₁ *H p₂ ⟧H ρ ≈ ⟦ p₁ ⟧H ρ * ⟦ p₂ ⟧H ρ
-  *H-homo ∅           p₂          ρ       = sym $ proj₁ zero* _
-  *H-homo (p₁ *x+ c₁) ∅           ρ       = sym $ proj₂ zero* _
+  *H-homo ∅           p₂          ρ       = sym $ *-zeroˡ _
+  *H-homo (p₁ *x+ c₁) ∅           ρ       = sym $ *-zeroʳ _
   *H-homo (p₁ *x+ c₁) (p₂ *x+ c₂) (x ∷ ρ) = begin
     ⟦ ((p₁ *H p₂) *x+H ((p₁ *HN c₂) +H (c₁ *NH p₂))) *x+HN
       (c₁ *N c₂) ⟧H (x ∷ ρ)                                              ≈⟨ *x+HN≈*x+ ((p₁ *H p₂) *x+H ((p₁ *HN c₂) +H (c₁ *NH p₂)))

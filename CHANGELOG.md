@@ -40,6 +40,14 @@ Non-backwards compatible changes
 * `Relation.Binary.Consequences` no longer exports `Total`. The standard way of accessing it
   through `Relation.Binary` remains unchanged.
 
+* Changed the associativity of `Relation.Unary`'s `_⇒_` from left to right.
+
+* Added new module `Relation.Unary.Properties`. The following proofs have been moved
+  to the new module from `Relation.Unary`:
+  ```agda
+  ∅-Empty, ∁∅-Universal, U-Universal, ∁U-Empty, ∅-⊆, ⊆-U, ∁?
+  ```
+
 * Added `swap : A ⊎ B → B ⊎ A` to `Data.Sum`. This may conflict with `swap` in `Data.Product`.
   If so then it may be necessary to qualify imports with either `using` or `hiding`.
 
@@ -49,6 +57,8 @@ Non-backwards compatible changes
   with either `using` or `hiding`.
 
 * Changed the associativity of `Relation.Unary`'s `_⇒_` from left to right.
+
+* Refactored and moved `↔Vec` from `Data.Product.N-ary` to `Data.Product.N-ary.Properties`.
 
 Deprecated features
 -------------------
@@ -138,6 +148,12 @@ Backwards compatible changes
   unzip : All (P ∩ Q) ⊆ All P ∩ All Q
   ```
 
+* Added new proofs to `Data.List.Properties`:
+  ```agda
+  tabulate-cong : f ≗ g → tabulate f ≡ tabulate g
+  tabulate-lookup : tabulate (lookup xs) ≡ xs
+  ```
+
 * Added new modules `Data.List.Zipper` and `Data.List.Zipper.Properties`.
 
 * Added new proofs to `Data.Nat.Properties`:
@@ -157,6 +173,38 @@ Backwards compatible changes
   ∸-monoʳ-≤      : m ≤ n → o ∸ m ≥ o ∸ n
   ∸-distribˡ-⊓-⊔ : x ∸ (y ⊓ z) ≡ (x ∸ y) ⊔ (x ∸ z)
   ∸-distribˡ-⊔-⊓ : x ∸ (y ⊔ z) ≡ (x ∸ y) ⊓ (x ∸ z)
+  ```
+
+* Added new functions to `Data.Product.N-ary`:
+  ```agda
+  _∈[_]_     : A → ∀ n → A ^ n → Set a
+  cons       : ∀ n → A → A ^ n → A ^ suc n
+  uncons     : ∀ n → A ^ suc n → A × A ^ n
+  head       : ∀ n → A ^ suc n → A
+  tail       : ∀ n → A ^ suc n → A ^ n
+  lookup     : ∀ (k : Fin n) → A ^ n → A
+  replicate  : ∀ n → A → A ^ n
+  tabulate   : ∀ n → (Fin n → A) → A ^ n
+  append     : ∀ m n → A ^ m → A ^ n → A ^ (m + n)
+  splitAt    : ∀ m n → A ^ (m + n) → A ^ m × A ^ n
+  map        : (A → B) → ∀ n → A ^ n → B ^ n
+  ap         : ∀ n → (A → B) ^ n → A ^ n → B ^ n
+  foldr      : P 0 → (A → P 1) → (∀ n → A → P (suc n) → P (2+ n)) → ∀ n → A ^ n → P n
+  foldl      : P 0 → (A → P 1) → (∀ n → A → P (suc n) → P (2+ n)) → ∀ n → A ^ n → P n
+  reverse    : ∀ n → A ^ n → A ^ n
+  zipWith    : (A → B → C) → ∀ n → A ^ n → B ^ n → C ^ n
+  unzipWith  : (A → B × C) → ∀ n → A ^ n → B ^ n × C ^ n
+  zip        : ∀ n → A ^ n → B ^ n → (A × B) ^ n
+  unzip      : ∀ n → (A × B) ^ n → A ^ n × B ^ n
+  ```
+
+* Added new proofs to `Data.Product.N-ary.Properties`:
+  ```agda
+  cons-head-tail-identity : cons n (head n as) (tail n as) ≡ as
+  head-cons-identity      : head n (cons n a as) ≡ a
+  tail-cons-identity      : tail n (cons n a as) ≡ as
+  append-cons-commute     : append (suc m) n (cons m a xs) ys ≡ cons (m + n) a (append m n xs ys)
+  append-splitAt-identity : uncurry (append m n) (splitAt m n as) ≡ as
   ```
 
 * Added new proof to `Data.Sum`:
@@ -205,6 +253,20 @@ Backwards compatible changes
 * Added new module `Relation.Binary.Indexed.Homogeneous`. This module defines
   homogeneously-indexed binary relations, as opposed to the
   heterogeneously-indexed binary relations found in `Relation.Binary.Indexed`.
+
+* Added new proofs to `Relation.Unary.Properties`:
+  ```agda
+  ⊆-refl  : Reflexive _⊆_
+  ⊆-trans : Transitive _⊆_
+  ⊂-asym  : Asymmetric _⊂_
+
+  _∪?_ : Decidable P → Decidable Q → Decidable (P ∪ Q)
+  _∩?_ : Decidable P → Decidable Q → Decidable (P ∩ Q)
+  _×?_ : Decidable P → Decidable Q → Decidable (P ⟨×⟩ Q)
+  _⊙?_ : Decidable P → Decidable Q → Decidable (P ⟨⊙⟩ Q)
+  _⊎?_ : Decidable P → Decidable Q → Decidable (P ⟨⊎⟩ Q)
+  _~?  : Decidable P → Decidable (P ~)
+  ```
 
 Version 0.15
 ============
