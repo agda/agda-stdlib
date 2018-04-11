@@ -266,12 +266,6 @@ Backwards compatible changes
   ∸-distribˡ-⊔-⊓ : x ∸ (y ⊔ z) ≡ (x ∸ y) ⊓ (x ∸ z)
   ```
 
-* Added new proofs to `Data.Product.Properties`:
-  ```agda
-  proj₁-injective : c ≡ (a , b) → proj₁ c ≡ a
-  proj₂-injective : c ≡ (a , b) → proj₂ c ≡ b
-  ```
-
 * Added new functions to `Data.Product.N-ary`:
   ```agda
   _∈[_]_     : A → ∀ n → A ^ n → Set a
