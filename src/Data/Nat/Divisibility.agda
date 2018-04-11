@@ -90,7 +90,8 @@ poset = record
   }
 
 module ∣-Reasoning = PartialOrderReasoning poset
-  renaming (_≤⟨_⟩_ to _∣⟨_⟩_; _≈⟨_⟩_ to _≡⟨_⟩_)
+  hiding   (_≈⟨_⟩_)
+  renaming (_≤⟨_⟩_ to _∣⟨_⟩_)
 
 ------------------------------------------------------------------------
 -- Simple properties of _∣_

@@ -229,6 +229,8 @@ Backwards compatible changes
   asym : Asymmetric _<_
   ```
 
+* Added `_≡⟨_⟩_` combinator  to `Relation.Binary.PreorderReasoning`.
+
 * Added new proofs to `Relation.Binary.NonStrictToStrict`:
   ```agda
   <-respˡ-≈ : _≤_ Respectsˡ _≈_ → _<_ Respectsˡ _≈_

@@ -865,7 +865,7 @@ module RingSolver =
   Solver (ACR.fromCommutativeRing +-*-commutativeRing) _≟_
 
 -- A module for reasoning about the _≤_ relation
-module ≤-Reasoning = POR ≤-poset renaming (_≈⟨_⟩_ to _≡⟨_⟩_)
+module ≤-Reasoning = POR ≤-poset hiding (_≈⟨_⟩_)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
