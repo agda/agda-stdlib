@@ -17,13 +17,3 @@ module _ {a b} {A : Set a} {B : A → Set b} where
 
  ,-injectiveʳ : ∀ {a} {b c : B a} → (Σ A B ∋ (a , b)) ≡ (a , c) → b ≡ c
  ,-injectiveʳ refl = refl
-
- proj₁-injective : ∀ {a} {b : B a} {c : Σ A B} → c ≡ (a , b) → proj₁ c ≡ a
- proj₁-injective refl = refl
-
- proj₂-injective : ∀ {a} {b : B a} {c} → c ≡ (a , b) → proj₂ c ≡ b
- proj₂-injective refl = refl
-{-
- proj-injective : ∀ (ab : Σ A B) → ab ≡ (proj₁ ab , proj₂ ab)
- proj-injective _ = refl
--}

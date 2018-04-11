@@ -28,8 +28,8 @@ Non-backwards compatible changes
   ```
 
 * The `_⊆_` relation has been moved out of the `Membership` modules to new
-  modules `List.Relation.Sublist.(Setoid/Propositional)`. Consequently the `mono` 
-  proofs that were in `Membership.Propositional.Properties` have been moved to 
+  modules `List.Relation.Sublist.(Setoid/Propositional)`. Consequently the `mono`
+  proofs that were in `Membership.Propositional.Properties` have been moved to
   `Relation.Sublist.Propositional.Properties`.
 
 * The following proofs have been moved from `Any.Properties` to
@@ -232,7 +232,7 @@ Backwards compatible changes
 * Added new proofs to `Data.List.Properties`:
   ```agda
   tabulate-cong   : f ≗ g → tabulate f ≡ tabulate g
-  tabulate-lookup : tabulate (lookup xs) ≡ xs 
+  tabulate-lookup : tabulate (lookup xs) ≡ xs
   ```
 
 * Added new proofs to `Data.List.Relation.Sublist.(Setoid/Propositional).Properties`:
@@ -264,6 +264,12 @@ Backwards compatible changes
   ∸-monoʳ-≤      : m ≤ n → o ∸ m ≥ o ∸ n
   ∸-distribˡ-⊓-⊔ : x ∸ (y ⊓ z) ≡ (x ∸ y) ⊔ (x ∸ z)
   ∸-distribˡ-⊔-⊓ : x ∸ (y ⊔ z) ≡ (x ∸ y) ⊓ (x ∸ z)
+  ```
+
+* Added new proofs to `Data.Product.Properties`:
+  ```agda
+  proj₁-injective : c ≡ (a , b) → proj₁ c ≡ a
+  proj₂-injective : c ≡ (a , b) → proj₂ c ≡ b
   ```
 
 * Added new functions to `Data.Product.N-ary`:
