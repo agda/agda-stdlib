@@ -15,7 +15,8 @@ open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Product as Prod using (_×_; _,_)
 open import Function using (id; _∘_)
 open import Relation.Nullary using (yes; no)
-open import Relation.Unary using (Pred; Decidable; ∁?)
+open import Relation.Unary using (Pred; Decidable)
+open import Relation.Unary.Properties using (∁?)
 
 ------------------------------------------------------------------------
 -- Types
@@ -43,9 +44,9 @@ _++_ : ∀ {a} {A : Set a} → List A → List A → List A
 (x ∷ xs) ++ ys = x ∷ (xs ++ ys)
 
 intersperse : ∀ {a} {A : Set a} → A → List A → List A
-intersperse x []           = []
-intersperse x (y ∷ [])     = y ∷ []
-intersperse x (y ∷ z ∷ zs) = y ∷ x ∷ intersperse x (z ∷ zs)
+intersperse x []       = []
+intersperse x (y ∷ []) = y ∷ []
+intersperse x (y ∷ ys) = y ∷ x ∷ intersperse x ys
 
 zipWith : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
           (A → B → C) → List A → List B → List C

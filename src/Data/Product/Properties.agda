@@ -23,6 +23,7 @@ module _ {a b} {A : Set a} {B : A → Set b} where
 
  proj₂-injective : ∀ {a} {b : B a} {c} → c ≡ (a , b) → proj₂ c ≡ b
  proj₂-injective refl = refl
-
+{-
  proj-injective : ∀ (ab : Σ A B) → ab ≡ (proj₁ ab , proj₂ ab)
- proj-injective (_ , _) = refl
+ proj-injective _ = refl
+-}

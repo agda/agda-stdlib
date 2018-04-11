@@ -7,16 +7,14 @@
 module Data.List.Membership.Setoid.Properties where
 
 open import Algebra.FunctionProperties using (Op₂; Selective)
-open import Data.List
-open import Data.List.Any as Any using (here; there)
 open import Data.Fin using (Fin; zero; suc)
-open import Data.List.Any using (Any)
+open import Data.List
+open import Data.List.Any as Any using (Any; here; there)
 import Data.List.Any.Properties as Any
-open import Data.Maybe using (Maybe)
-open import Data.Nat using (z≤n; s≤s; _≤_; _<_)
-open import Data.Nat.Properties using (≤-trans; n≤1+n)
 import Data.List.Membership.Setoid as Membership
 import Data.List.Relation.Equality.Setoid as Equality
+open import Data.Nat using (z≤n; s≤s; _≤_; _<_)
+open import Data.Nat.Properties using (≤-trans; n≤1+n)
 open import Data.Product as Prod using (∃; _×_; _,_)
 open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Function using (flip; _∘_; id)
@@ -139,28 +137,27 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 ------------------------------------------------------------------------
 -- filter
 
-module _ {c ℓ p} (S : Setoid c ℓ) {P : Pred (Carrier S) p} where
+module _ {c ℓ p} (S : Setoid c ℓ) {P : Pred (Carrier S) p}
+         (P? : Decidable P) (resp : P Respects (Setoid._≈_ S)) where
 
   open Setoid S using (_≈_; sym)
   open Membership S using (_∈_)
 
-  ∈-filter⁺ : (P? : Decidable P) → P Respects _≈_ →
-              ∀ {v xs} → v ∈ xs → P v → v ∈ filter P? xs
-  ∈-filter⁺ P? resp {v} {x ∷ _} (here v≈x)   Pv with P? x
+  ∈-filter⁺ : ∀ {v xs} → v ∈ xs → P v → v ∈ filter P? xs
+  ∈-filter⁺ {xs = x ∷ _} (here v≈x) Pv with P? x
   ... | yes _   = here v≈x
   ... | no  ¬Px = contradiction (resp v≈x Pv) ¬Px
-  ∈-filter⁺ P? resp {v} {x ∷ _} (there v∈xs) Pv with P? x
-  ... | yes _ = there (∈-filter⁺ P? resp v∈xs Pv)
-  ... | no  _ = ∈-filter⁺ P? resp v∈xs Pv
+  ∈-filter⁺ {xs = x ∷ _} (there v∈xs) Pv with P? x
+  ... | yes _ = there (∈-filter⁺ v∈xs Pv)
+  ... | no  _ = ∈-filter⁺ v∈xs Pv
 
-  ∈-filter⁻ : (P? : Decidable P) → P Respects _≈_ →
-              ∀ {v xs} → v ∈ filter P? xs → v ∈ xs × P v
-  ∈-filter⁻ P? resp {v} {[]}     ()
-  ∈-filter⁻ P? resp {v} {x ∷ xs} v∈f[x∷xs] with P? x
-  ... | no  _  = Prod.map there id (∈-filter⁻ P? resp v∈f[x∷xs])
+  ∈-filter⁻ : ∀ {v xs} → v ∈ filter P? xs → v ∈ xs × P v
+  ∈-filter⁻ {xs = []}     ()
+  ∈-filter⁻ {xs = x ∷ xs} v∈f[x∷xs] with P? x
+  ... | no  _  = Prod.map there id (∈-filter⁻ v∈f[x∷xs])
   ... | yes Px with v∈f[x∷xs]
-  ...   | here  v≈x     = here v≈x , resp (sym v≈x) Px
-  ...   | there v∈fxs = Prod.map there id (∈-filter⁻ P? resp v∈fxs)
+  ...   | here  v≈x   = here v≈x , resp (sym v≈x) Px
+  ...   | there v∈fxs = Prod.map there id (∈-filter⁻ v∈fxs)
 
 ------------------------------------------------------------------------
 -- length
@@ -170,9 +167,8 @@ module _ {c ℓ} (S : Setoid c ℓ) where
   open Membership S using (_∈_)
 
   ∈-length : ∀ {x xs} → x ∈ xs → 1 ≤ length xs
-  ∈-length {_} {_ ∷ xs} (here px)    = s≤s z≤n
-  ∈-length {_} {_ ∷ xs} (there x∈xs) =
-    ≤-trans (∈-length x∈xs) (n≤1+n (length xs))
+  ∈-length (here px)    = s≤s z≤n
+  ∈-length (there x∈xs) = ≤-trans (∈-length x∈xs) (n≤1+n _)
 
 ------------------------------------------------------------------------
 -- lookup

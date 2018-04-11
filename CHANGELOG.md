@@ -21,20 +21,19 @@ Non-backwards compatible changes
   Data.List.Any.BagAndSetEquality        ↦ Data.List.Relation.BagAndSetEquality
   Data.List.Any.Membership               ↦ Data.List.Membership.Setoid
                                          ↘ Data.List.Membership.DecSetoid
-                                                                                 ↘ Data.List.Relation.Sublist.Setoid
+                                         ↘ Data.List.Relation.Sublist.Setoid
   Data.List.Any.Membership.Propositional ↦ Data.List.Membership.Propositional
                                          ↘ Data.List.Membership.DecPropositional
-                                                                                 ↘ Data.List.Relation.Sublist.Propositional
+                                         ↘ Data.List.Relation.Sublist.Propositional
   ```
 
 * The `_⊆_` relation has been moved out of the `Membership` modules to new
-  modules `Data.List.Relation.Sublist.(Setoid/Propositional)`.
+  modules `List.Relation.Sublist.(Setoid/Propositional)`. Consequently the `mono` 
+  proofs that were in `Membership.Propositional.Properties` have been moved to 
+  `Relation.Sublist.Propositional.Properties`.
 
-  Consequently the `mono` properties that were in `Membership.Propositional.Properties`
-  have been moved to `Relation.Sublist.Propositional.Properties`
-
-* The following proofs have been moved from `Data.List.Any.Properties` to
-  `Data.List.Membership.Propositional.Properties.Core`:
+* The following proofs have been moved from `Any.Properties` to
+  `Membership.Propositional.Properties.Core`:
   ```agda
   map∘find, find∘map, find-∈, lose∘find, find∘lose, ∃∈-Any, Any↔
   ```
@@ -47,7 +46,7 @@ Non-backwards compatible changes
   [_]-Order, [_]-Equality, _∼[_]_
   ```
 
-* The type of the proof of `∈-resp-≈` in `Data.List.Membership.Properties` has changed from:
+* The type of the proof of `∈-resp-≈` in `Membership.Setoid.Properties` has changed from:
   ```agda
   ∈-resp-≈ : ∀ {x} → (x ≈_) Respects _≈_
   ```
@@ -88,6 +87,14 @@ Non-backwards compatible changes
 * `Relation.Binary.Consequences` no longer exports `Total`. The standard way of accessing it
   through `Relation.Binary` remains unchanged.
 
+* Changed the associativity of `Relation.Unary`'s `_⇒_` from left to right.
+
+* Added new module `Relation.Unary.Properties`. The following proofs have been moved
+  to the new module from `Relation.Unary`:
+  ```agda
+  ∅-Empty, ∁∅-Universal, U-Universal, ∁U-Empty, ∅-⊆, ⊆-U, ∁?
+  ```
+
 * Added `swap : A ⊎ B → B ⊎ A` to `Data.Sum`. This may conflict with `swap` in `Data.Product`.
   If so then it may be necessary to qualify imports with either `using` or `hiding`.
 
@@ -97,6 +104,8 @@ Non-backwards compatible changes
   with either `using` or `hiding`.
 
 * Changed the associativity of `Relation.Unary`'s `_⇒_` from left to right.
+
+* Refactored and moved `↔Vec` from `Data.Product.N-ary` to `Data.Product.N-ary.Properties`.
 
 Deprecated features
 -------------------
@@ -220,6 +229,12 @@ Backwards compatible changes
   foldr-selective : Selective _≈_ _•_ → (foldr _•_ e xs ≈ e) ⊎ (foldr _•_ e xs ∈ xs)
   ```
 
+* Added new proofs to `Data.List.Properties`:
+  ```agda
+  tabulate-cong   : f ≗ g → tabulate f ≡ tabulate g
+  tabulate-lookup : tabulate (lookup xs) ≡ xs 
+  ```
+
 * Added new proofs to `Data.List.Relation.Sublist.(Setoid/Propositional).Properties`:
   ```agda
   ⊆-reflexive  : _≋_ ⇒ _⊆_
@@ -251,6 +266,38 @@ Backwards compatible changes
   ∸-distribˡ-⊔-⊓ : x ∸ (y ⊔ z) ≡ (x ∸ y) ⊓ (x ∸ z)
   ```
 
+* Added new functions to `Data.Product.N-ary`:
+  ```agda
+  _∈[_]_     : A → ∀ n → A ^ n → Set a
+  cons       : ∀ n → A → A ^ n → A ^ suc n
+  uncons     : ∀ n → A ^ suc n → A × A ^ n
+  head       : ∀ n → A ^ suc n → A
+  tail       : ∀ n → A ^ suc n → A ^ n
+  lookup     : ∀ (k : Fin n) → A ^ n → A
+  replicate  : ∀ n → A → A ^ n
+  tabulate   : ∀ n → (Fin n → A) → A ^ n
+  append     : ∀ m n → A ^ m → A ^ n → A ^ (m + n)
+  splitAt    : ∀ m n → A ^ (m + n) → A ^ m × A ^ n
+  map        : (A → B) → ∀ n → A ^ n → B ^ n
+  ap         : ∀ n → (A → B) ^ n → A ^ n → B ^ n
+  foldr      : P 0 → (A → P 1) → (∀ n → A → P (suc n) → P (2+ n)) → ∀ n → A ^ n → P n
+  foldl      : P 0 → (A → P 1) → (∀ n → A → P (suc n) → P (2+ n)) → ∀ n → A ^ n → P n
+  reverse    : ∀ n → A ^ n → A ^ n
+  zipWith    : (A → B → C) → ∀ n → A ^ n → B ^ n → C ^ n
+  unzipWith  : (A → B × C) → ∀ n → A ^ n → B ^ n × C ^ n
+  zip        : ∀ n → A ^ n → B ^ n → (A × B) ^ n
+  unzip      : ∀ n → (A × B) ^ n → A ^ n × B ^ n
+  ```
+
+* Added new proofs to `Data.Product.N-ary.Properties`:
+  ```agda
+  cons-head-tail-identity : cons n (head n as) (tail n as) ≡ as
+  head-cons-identity      : head n (cons n a as) ≡ a
+  tail-cons-identity      : tail n (cons n a as) ≡ as
+  append-cons-commute     : append (suc m) n (cons m a xs) ys ≡ cons (m + n) a (append m n xs ys)
+  append-splitAt-identity : uncurry (append m n) (splitAt m n as) ≡ as
+  ```
+
 * Added new proof to `Data.Sum`:
   ```agda
   swap-involutive : swap ∘ swap ≗ id
@@ -261,7 +308,7 @@ Backwards compatible changes
   P Respectsʳ _∼_ = ∀ {x} → (P x)      Respects _∼_
   P Respectsˡ _∼_ = ∀ {y} → (flip P y) Respects _∼_
   ```
-  Records in `Relation.Binary` export these in addition to the standard `Respects₂` proofs.
+  Records in `Relation.Binary` now export these in addition to the standard `Respects₂` proofs.
   e.g. `IsStrictPartialOrder` exports:
   ```agda
   <-respˡ-≈ : _<_ Respectsˡ _≈_
@@ -293,6 +340,20 @@ Backwards compatible changes
 
 * The types `Maximum` and `Minimum` are now exported by `Relation.Binary` as well
   as `Relation.Binary.Lattice`.
+
+* Added new proofs to `Relation.Unary.Properties`:
+  ```agda
+  ⊆-refl  : Reflexive _⊆_
+  ⊆-trans : Transitive _⊆_
+  ⊂-asym  : Asymmetric _⊂_
+
+  _∪?_ : Decidable P → Decidable Q → Decidable (P ∪ Q)
+  _∩?_ : Decidable P → Decidable Q → Decidable (P ∩ Q)
+  _×?_ : Decidable P → Decidable Q → Decidable (P ⟨×⟩ Q)
+  _⊙?_ : Decidable P → Decidable Q → Decidable (P ⟨⊙⟩ Q)
+  _⊎?_ : Decidable P → Decidable Q → Decidable (P ⟨⊎⟩ Q)
+  _~?  : Decidable P → Decidable (P ~)
+  ```
 
 Version 0.15
 ============

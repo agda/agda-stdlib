@@ -260,7 +260,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ------------------------------------------------------------------------
 -- tabulate
 
-module _ {a p} {A : Set a} {P : A → Set p}  where
+module _ {a p} {A : Set a} {P : A → Set p} where
 
   tabulate⁺ : ∀ {n} {f : Fin n → A} →
               (∀ i → P (f i)) → All P (tabulate f)

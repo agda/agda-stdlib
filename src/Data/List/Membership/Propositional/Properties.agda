@@ -196,7 +196,7 @@ module _ {ℓ} {A B : Set ℓ} where
          (x ∈ xs × y ∈ ys) ↔ (x , y) ∈ (xs ⊗ ys)
   ⊗-∈↔ {xs} {ys} {x} {y} =
     (x ∈ xs × y ∈ ys)             ↔⟨ ⊗↔′ ⟩
-    Any (x ≡_ ⟨×⟩ y ≡_) (xs ⊗ ys)  ↔⟨ Any-cong helper (_ ∎) ⟩
+    Any (x ≡_ ⟨×⟩ y ≡_) (xs ⊗ ys) ↔⟨ Any-cong helper (_ ∎) ⟩
     (x , y) ∈ (xs ⊗ ys)           ∎
     where
     open Related.EquationalReasoning
