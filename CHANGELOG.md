@@ -201,7 +201,8 @@ Backwards compatible changes
 
 * Added new proof to `Relation.Binary.PropositionalEquality`:
   ```agda
-  ≡-≟-identity : ∀ _≟_ a b (eq : a ≡ b) → a ≟ b ≡ yes eq
+  ≡-≟-identity : (eq : a ≡ b) → a ≟ b ≡ yes eq
+  ≢-≟-identity : a ≢ b → ∃ λ ¬eq → a ≟ b ≡ no ¬eq
   ```
 
 * The types `Maximum` and `Minimum` are now exported by `Relation.Binary` as well
