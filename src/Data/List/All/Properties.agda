@@ -11,10 +11,11 @@ open import Data.Bool.Properties
 open import Data.Empty
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base
-open import Data.List.Any.Membership.Propositional
+open import Data.List.Membership.Propositional
 open import Data.List.All as All using (All; []; _∷_)
 open import Data.List.Any using (Any; here; there)
 open import Data.List.Relation.Pointwise using (Pointwise; []; _∷_)
+open import Data.List.Relation.Sublist.Propositional using (_⊆_)
 open import Data.Maybe as Maybe using (Maybe; just; nothing)
 open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
@@ -28,7 +29,8 @@ open import Relation.Nullary
 open import Relation.Unary
   using (Decidable; Universal) renaming (_⊆_ to _⋐_)
 
------------------------------------------------------------------------- Basic properties of All
+----------------------------------------------------------------------
+-- Basic properties of All
 
 module _ {a p} {A : Set a} {P : A → Set p} where
 
