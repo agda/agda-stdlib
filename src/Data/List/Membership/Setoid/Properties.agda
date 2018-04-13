@@ -48,6 +48,33 @@ module _ {c ℓ} (S : Setoid c ℓ) where
   ∉-resp-≋ xs≋ys v∉xs v∈ys = v∉xs (∈-resp-≋ (≋-sym xs≋ys) v∈ys)
 
 ------------------------------------------------------------------------
+-- mapWith∈
+
+module _ {c₁ c₂ ℓ₁ ℓ₂} (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) where
+
+  open Setoid S₁ renaming (Carrier to A₁; _≈_ to _≈₁_; refl to refl₁)
+  open Setoid S₂ renaming (Carrier to A₂; _≈_ to _≈₂_; refl to refl₂)
+  open Equality S₁ using ([]; _∷_) renaming (_≋_ to _≋₁_)
+  open Equality S₂ using () renaming (_≋_ to _≋₂_)
+  open Membership S₁
+
+  mapWith∈-cong : ∀ {xs ys} → xs ≋₁ ys →
+                  (f : ∀ {x} → x ∈ xs → A₂) →
+                  (g : ∀ {y} → y ∈ ys → A₂) →
+                  (∀ {x y} → x ≈₁ y → (x∈xs : x ∈ xs) (y∈ys : y ∈ ys) →
+                     f x∈xs ≈₂ g y∈ys) →
+                  mapWith∈ xs f ≋₂ mapWith∈ ys g
+  mapWith∈-cong []            f g cong = []
+  mapWith∈-cong (x≈y ∷ xs≋ys) f g cong =
+    cong x≈y (here refl₁) (here refl₁) ∷
+    mapWith∈-cong xs≋ys (f ∘ there) (g ∘ there)
+      (λ x≈y x∈xs y∈ys → cong x≈y (there x∈xs) (there y∈ys))
+
+  mapWith∈≗map : ∀ f xs → mapWith∈ xs (λ {x} _ → f x) ≋₂ map f xs
+  mapWith∈≗map f []       = []
+  mapWith∈≗map f (x ∷ xs) = refl₂ ∷ mapWith∈≗map f xs
+
+------------------------------------------------------------------------
 -- map
 
 module _ {c₁ c₂ ℓ₁ ℓ₂} (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) where
@@ -89,7 +116,7 @@ module _ {c ℓ} (S : Setoid c ℓ) where
   open Setoid S using (_≈_)
   open Membership S using (_∈_)
   open Equality S using (≋-setoid)
-  open Membership ≋-setoid using (find) renaming (_∈_ to _∈≋_)
+  open Membership ≋-setoid using (find) renaming (_∈_ to _∈ₗ_)
 
   ∈-concat⁺ : ∀ {v xss} → Any (v ∈_) xss → v ∈ concat xss
   ∈-concat⁺ = Any.concat⁺
@@ -97,10 +124,10 @@ module _ {c ℓ} (S : Setoid c ℓ) where
   ∈-concat⁻ : ∀ {v} xss → v ∈ concat xss → Any (v ∈_) xss
   ∈-concat⁻ = Any.concat⁻
 
-  ∈-concat⁺′ : ∀ {v vs xss} → v ∈ vs → vs ∈≋ xss → v ∈ concat xss
+  ∈-concat⁺′ : ∀ {v vs xss} → v ∈ vs → vs ∈ₗ xss → v ∈ concat xss
   ∈-concat⁺′ v∈vs = ∈-concat⁺ ∘ Any.map (flip (∈-resp-≋ S) v∈vs)
 
-  ∈-concat⁻′ : ∀ {v} xss → v ∈ concat xss → ∃ λ xs → v ∈ xs × xs ∈≋ xss
+  ∈-concat⁻′ : ∀ {v} xss → v ∈ concat xss → ∃ λ xs → v ∈ xs × xs ∈ₗ xss
   ∈-concat⁻′ xss v∈c[xss] with find (∈-concat⁻ xss v∈c[xss])
   ... | xs , t , s = xs , s , t
 
@@ -190,7 +217,6 @@ module _ {c ℓ} (S : Setoid c ℓ) {_•_ : Op₂ (Carrier S)} where
 
   open Setoid S using (_≈_; refl; sym; trans)
   open Membership S using (_∈_)
-  open Equality S using (≋-refl)
 
   foldr-selective : Selective _≈_ _•_ → ∀ e xs →
                     (foldr _•_ e xs ≈ e) ⊎ (foldr _•_ e xs ∈ xs)

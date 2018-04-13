@@ -149,6 +149,11 @@ anticipated any time soon, they may eventually be removed in some future release
   filter-∈ ↦ ∈-filter⁺
   ```
 
+* In `Data.List.Membership.Setoid`:
+  ```agda
+  map-with-∈ ↦ mapWith∈
+  ```
+
 Removed features
 ----------------
 
@@ -202,29 +207,32 @@ Backwards compatible changes
 
 * Added new proofs to `Data.List.Membership.(Setoid/Propositional).Properties`:
   ```agda
-  ∉-resp-≈     : ∀ {xs} → (_∉ xs) Respects _≈_
-  ∉-resp-≋     : ∀ {x}  → (x ∉_)  Respects _≋_
+  ∉-resp-≈      : ∀ {xs} → (_∉ xs) Respects _≈_
+  ∉-resp-≋      : ∀ {x}  → (x ∉_)  Respects _≋_
 
-  ∈-++⁺ˡ       : v ∈ xs → v ∈ xs ++ ys
-  ∈-++⁺ʳ       : v ∈ ys → v ∈ xs ++ ys
-  ∈-++⁻        : v ∈ xs ++ ys → (v ∈ xs) ⊎ (v ∈ ys)
+  mapWith∈≗map  : mapWith∈ xs (λ {x} _ → f x) ≡ map f xs
+  mapWith∈-cong : (∀ x∈xs → f x∈xs ≡ g x∈xs) → mapWith∈ xs f ≡ map-with-∈ xs g
 
-  ∈-concat⁺    : Any (v ∈_) xss → v ∈ concat xss
-  ∈-concat⁻    : v ∈ concat xss → Any (v ∈_) xss
-  ∈-concat⁺′   : v ∈ vs → vs ∈ xss → v ∈ concat xss
-  ∈-concat⁻′   : v ∈ concat xss → ∃ λ xs → v ∈ xs × xs ∈ xss
+  ∈-++⁺ˡ        : v ∈ xs → v ∈ xs ++ ys
+  ∈-++⁺ʳ        : v ∈ ys → v ∈ xs ++ ys
+  ∈-++⁻         : v ∈ xs ++ ys → (v ∈ xs) ⊎ (v ∈ ys)
 
-  ∈-applyUpTo⁺ : i < n → f i ∈ applyUpTo f n
-  ∈-applyUpTo⁻ : v ∈ applyUpTo f n → ∃ λ i → i < n × v ≈ f i
+  ∈-concat⁺     : Any (v ∈_) xss → v ∈ concat xss
+  ∈-concat⁻     : v ∈ concat xss → Any (v ∈_) xss
+  ∈-concat⁺′    : v ∈ vs → vs ∈ xss → v ∈ concat xss
+  ∈-concat⁻′    : v ∈ concat xss → ∃ λ xs → v ∈ xs × xs ∈ xss
 
-  ∈-tabulate⁺  : f i ∈ tabulate f
-  ∈-tabulate⁻  : v ∈ tabulate f → ∃ λ i → v ≈ f i
+  ∈-applyUpTo⁺  : i < n → f i ∈ applyUpTo f n
+  ∈-applyUpTo⁻  : v ∈ applyUpTo f n → ∃ λ i → i < n × v ≈ f i
 
-  ∈-filter⁺    : P v → v ∈ xs → v ∈ filter P? xs
-  ∈-filter⁻    : v ∈ filter P? xs → v ∈ xs × P v
+  ∈-tabulate⁺   : f i ∈ tabulate f
+  ∈-tabulate⁻   : v ∈ tabulate f → ∃ λ i → v ≈ f i
 
-  ∈-length     : x ∈ xs → 1 ≤ length xs
-  ∈-lookup     : lookup xs i ∈ xs
+  ∈-filter⁺     : P v → v ∈ xs → v ∈ filter P? xs
+  ∈-filter⁻     : v ∈ filter P? xs → v ∈ xs × P v
+
+  ∈-length      : x ∈ xs → 1 ≤ length xs
+  ∈-lookup      : lookup xs i ∈ xs
 
   foldr-selective : Selective _≈_ _•_ → (foldr _•_ e xs ≈ e) ⊎ (foldr _•_ e xs ∈ xs)
   ```

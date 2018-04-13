@@ -64,6 +64,22 @@ module _ {a} {A : Set a} where
   ∉-resp-≋ = Membershipₛ.∉-resp-≋ (P.setoid A)
 
 ------------------------------------------------------------------------
+-- mapWith∈
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+  mapWith∈-cong : ∀ (xs : List A) → (f g : ∀ {x} → x ∈ xs → B) →
+                  (∀ {x} → (x∈xs : x ∈ xs) → f x∈xs ≡ g x∈xs) →
+                  mapWith∈ xs f ≡ mapWith∈ xs g
+  mapWith∈-cong []       f g cong = refl
+  mapWith∈-cong (x ∷ xs) f g cong = P.cong₂ _∷_ (cong (here refl))
+    (mapWith∈-cong xs (f ∘ there) (g ∘ there) (cong ∘ there))
+
+  mapWith∈≗map : ∀ f xs → mapWith∈ xs (λ {x} _ → f x) ≡ map f xs
+  mapWith∈≗map f xs =
+    ≋⇒≡ (Membershipₛ.mapWith∈≗map (P.setoid A) (P.setoid B) f xs)
+
+------------------------------------------------------------------------
 -- map
 
 module _ {a b} {A : Set a} {B : Set b} {f : A → B} where
