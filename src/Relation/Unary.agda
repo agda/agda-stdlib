@@ -39,6 +39,7 @@ module _ {a} {A : Set a} -- The universe of discourse.
   _∉_ : ∀ {ℓ} → A → Pred A ℓ → Set _
   x ∉ P = ¬ x ∈ P
 
+  ----------------------------------------------------------------------
   -- The empty set.
 
   ∅ : Pred A zero
@@ -49,10 +50,9 @@ module _ {a} {A : Set a} -- The universe of discourse.
   Empty : ∀ {ℓ} → Pred A ℓ → Set _
   Empty P = ∀ x → x ∉ P
 
-  ∅-Empty : Empty ∅
-  ∅-Empty x ()
-
+  ----------------------------------------------------------------------
   -- The singleton set.
+
   ｛_｝ : A → Pred A a
   ｛ x ｝ = x ≡_
 
@@ -71,20 +71,11 @@ module _ {a} {A : Set a} -- The universe of discourse.
 
   syntax Universal P = ∀[ P ]
 
-  U-Universal : Universal U
-  U-Universal = λ _ → _
-
   ----------------------------------------------------------------------
   -- Set complement.
 
   ∁ : ∀ {ℓ} → Pred A ℓ → Pred A ℓ
   ∁ P = λ x → x ∉ P
-
-  ∁∅-Universal : Universal (∁ ∅)
-  ∁∅-Universal = λ x x∈∅ → x∈∅
-
-  ∁U-Empty : Empty (∁ U)
-  ∁U-Empty = λ x x∈∁U → x∈∁U _
 
   ----------------------------------------------------------------------
   -- Subsets
@@ -143,14 +134,6 @@ module _ {a} {A : Set a} -- The universe of discourse.
   _⊅′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
   P ⊅′ Q = ¬ (P ⊃′ Q)
 
-  -- Properties of subset
-
-  ∅-⊆ : ∀ {ℓ} → (P : Pred A ℓ) → ∅ ⊆ P
-  ∅-⊆ P ()
-
-  ⊆-U : ∀ {ℓ} → (P : Pred A ℓ) → P ⊆ U
-  ⊆-U P _ = _
-
   ----------------------------------------------------------------------
   -- Positive version of non-disjointness, dual to inclusion.
 
@@ -178,7 +161,7 @@ module _ {a} {A : Set a} -- The universe of discourse.
 
   -- Implication.
 
-  infixl 8 _⇒_
+  infixr 8 _⇒_
 
   _⇒_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
   P ⇒ Q = λ x → x ∈ P → x ∈ Q
@@ -264,8 +247,3 @@ P \\ Q = (P ~ // Q ~) ~
 
 Decidable : ∀ {a ℓ} {A : Set a} (P : Pred A ℓ) → Set _
 Decidable P = ∀ x → Dec (P x)
-
-∁? : ∀ {a ℓ} {A : Set a} {P : Pred A ℓ} → Decidable P → Decidable (∁ P)
-∁? P? x with P? x
-... | yes Px = no (λ ¬¬Px → ¬¬Px Px)
-... | no ¬Px = yes ¬Px

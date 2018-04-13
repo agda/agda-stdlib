@@ -1154,7 +1154,7 @@ module SemiringSolver =
 module ≤-Reasoning where
   open import Relation.Binary.PartialOrderReasoning
     (DecTotalOrder.poset ≤-decTotalOrder) public
-    renaming (_≈⟨_⟩_ to _≡⟨_⟩_)
+    hiding (_≈⟨_⟩_)
 
   infixr 2 _<⟨_⟩_
 
