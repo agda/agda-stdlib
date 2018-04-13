@@ -249,6 +249,12 @@ Backwards compatible changes
   trans∧tri⟶respˡ≈ : Transitive _<_ → Trichotomous _≈_ _<_ → _<_ Respectsˡ _≈_
   ```
 
+* Added new proof to `Relation.Binary.PropositionalEquality`:
+  ```agda
+  ≡-≟-identity : (eq : a ≡ b) → a ≟ b ≡ yes eq
+  ≢-≟-identity : a ≢ b → ∃ λ ¬eq → a ≟ b ≡ no ¬eq
+  ```
+
 * The types `Maximum` and `Minimum` are now exported by `Relation.Binary` as well
   as `Relation.Binary.Lattice`.
 
