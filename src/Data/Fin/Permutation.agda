@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Bijections on finite sets, i.e. permutations.
+------------------------------------------------------------------------
+
 module Data.Fin.Permutation where
 
 open import Data.Fin
@@ -15,10 +21,6 @@ open import Function using (_∘_)
 
 open ≡-Reasoning
 
---------------------------------------------------------------------------------
---  Bijections on finite sets
---------------------------------------------------------------------------------
-
 -- A permuation that swaps the two given indices.
 
 swap-perm : ∀ {n} → Fin n → Fin n → Fin n ↔ Fin n
@@ -30,17 +32,6 @@ swap-perm {n} i j = record
     ; right-inverse-of = λ _ → swap-inverse _ _
     }
   }
-  where
-  swap-inverse : ∀ {n} (i j : Fin n) {k} → swap i j (swap j i k) ≡ k
-  swap-inverse i j {k} with k ≟ j
-  ... | yes p rewrite ≡-≟-identity _≟_ {a = i} refl = sym p
-  ... | no ¬p with k ≟ i
-  swap-inverse i j {k} | no ¬p | yes q with j ≟ i
-  ... | yes r = trans r (sym q)
-  ... | no ¬r rewrite ≡-≟-identity _≟_ {a = j} refl = sym q
-  swap-inverse i j {k} | no ¬p | no ¬q
-    rewrite proj₂ (≢-≟-identity _≟_ ¬q)
-          | proj₂ (≢-≟-identity _≟_ ¬p) = refl
 
 -- Given a permutation
 --

@@ -333,6 +333,17 @@ private
   sequence⁻¹ RF F∀iPi i = (λ f → f i) <$> F∀iPi
     where open RawFunctor RF
 
+swap-inverse : ∀ {n} (i j : Fin n) {k} → swap i j (swap j i k) ≡ k
+swap-inverse i j {k} with k ≟ j
+... | yes p rewrite P.≡-≟-identity _≟_ {a = i} refl = sym p
+... | no ¬p with k ≟ i
+swap-inverse i j {k} | no ¬p | yes q with j ≟ i
+... | yes r = trans r (sym q)
+... | no ¬r rewrite P.≡-≟-identity _≟_ {a = j} refl = sym q
+swap-inverse i j {k} | no ¬p | no ¬q
+  rewrite proj₂ (P.≢-≟-identity _≟_ ¬q)
+        | proj₂ (P.≢-≟-identity _≟_ ¬p) = refl
+
 ------------------------------------------------------------------------
 
 punchOut-injective : ∀ {m} {i j k : Fin (suc m)}
