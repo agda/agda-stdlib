@@ -194,15 +194,15 @@ IrrelevantRel _~_ = ∀ {x y} → isPropositional (x ~ y)
 ≡-irrelevance : ∀ {a} {A : Set a} → IrrelevantRel (_≡_ {A = A})
 ≡-irrelevance refl refl = refl
 
-module _ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) where
+module _ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) {a b : A} where
 
-  ≡-≟-identity : ∀ a b (eq : a ≡ b) → a ≟ b ≡ yes eq
-  ≡-≟-identity a b eq with a ≟ b
+  ≡-≟-identity : (eq : a ≡ b) → a ≟ b ≡ yes eq
+  ≡-≟-identity eq with a ≟ b
   ... | yes p = cong yes (≡-irrelevance p eq)
   ... | no ¬p = ⊥-elim (¬p eq)
 
-  ≢-≟-identity : ∀ a b → a ≢ b → ∃ λ ¬eq → a ≟ b ≡ no ¬eq
-  ≢-≟-identity a b ¬eq with a ≟ b
+  ≢-≟-identity : a ≢ b → ∃ λ ¬eq → a ≟ b ≡ no ¬eq
+  ≢-≟-identity ¬eq with a ≟ b
   ... | yes p = ⊥-elim (¬eq p)
   ... | no ¬p = ¬p , refl
 
