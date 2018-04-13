@@ -320,6 +320,8 @@ Backwards compatible changes
   asym : Asymmetric _<_
   ```
 
+* Added `_≡⟨_⟩_` combinator  to `Relation.Binary.PreorderReasoning`.
+
 * Added new proofs to `Relation.Binary.NonStrictToStrict`:
   ```agda
   <-respˡ-≈ : _≤_ Respectsˡ _≈_ → _<_ Respectsˡ _≈_
@@ -338,8 +340,18 @@ Backwards compatible changes
   trans∧tri⟶respˡ≈ : Transitive _<_ → Trichotomous _≈_ _<_ → _<_ Respectsˡ _≈_
   ```
 
+* Added new proof to `Relation.Binary.PropositionalEquality`:
+  ```agda
+  ≡-≟-identity : (eq : a ≡ b) → a ≟ b ≡ yes eq
+  ≢-≟-identity : a ≢ b → ∃ λ ¬eq → a ≟ b ≡ no ¬eq
+  ```
+
 * The types `Maximum` and `Minimum` are now exported by `Relation.Binary` as well
   as `Relation.Binary.Lattice`.
+
+* Added new module `Relation.Binary.Indexed.Homogeneous`. This module defines
+  homogeneously-indexed binary relations, as opposed to the
+  heterogeneously-indexed binary relations found in `Relation.Binary.Indexed`.
 
 * Added new proofs to `Relation.Unary.Properties`:
   ```agda
