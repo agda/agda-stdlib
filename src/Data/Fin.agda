@@ -217,23 +217,6 @@ suc x ≟ suc y with x ≟ y
 ... | no  x≢y = no (λ {refl → x≢y refl})
 
 ------------------------------------------------------------------------
--- Permutations
-
--- 'swap i j' is a function 'Fin n → Fin n' which behaves like the identity
--- function, except it swaps the positions of 'i' and 'j'.
---
--- * swap i j i = j
--- * swap i j j = i
--- * swap i j k = k (when k ≠ i and k ≠ j)
-
-swap : ∀ {n} → Fin n → Fin n → Fin n → Fin n
-swap i j k with k ≟ i
-... | yes _ = j
-... | no _ with k ≟ j
-... | yes _ = i
-... | no _ = k
-
-------------------------------------------------------------------------
 -- Order relations
 
 infix 4 _≤_ _<_

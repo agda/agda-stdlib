@@ -15,15 +15,13 @@ open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_) renaming
   ; _<_ to _ℕ<_
   ; _+_ to _ℕ+_)
 import Data.Nat.Properties as ℕₚ
-open import Data.Product hiding (swap)
-open import Data.Bool using (true; false; if_then_else_)
+open import Data.Product
 open import Function
 open import Function.Equality as FunS using (_⟨$⟩_)
 open import Function.Injection using (_↣_)
-open import Function.Inverse using (Inverse; _↔_)
 open import Algebra.FunctionProperties
-open import Relation.Nullary hiding (module Dec)
-open import Relation.Nullary.Decidable as Dec using (⌊_⌋)
+open import Relation.Nullary
+import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst)
@@ -332,17 +330,6 @@ private
                F (∀ i → P i) → ∀ i → F (P i)
   sequence⁻¹ RF F∀iPi i = (λ f → f i) <$> F∀iPi
     where open RawFunctor RF
-
-swap-inverse : ∀ {n} (i j : Fin n) {k} → swap i j (swap j i k) ≡ k
-swap-inverse i j {k} with k ≟ j
-... | yes p rewrite P.≡-≟-identity _≟_ {a = i} refl = sym p
-... | no ¬p with k ≟ i
-swap-inverse i j {k} | no ¬p | yes q with j ≟ i
-... | yes r = trans r (sym q)
-... | no ¬r rewrite P.≡-≟-identity _≟_ {a = j} refl = sym q
-swap-inverse i j {k} | no ¬p | no ¬q
-  rewrite proj₂ (P.≢-≟-identity _≟_ ¬q)
-        | proj₂ (P.≢-≟-identity _≟_ ¬p) = refl
 
 ------------------------------------------------------------------------
 
