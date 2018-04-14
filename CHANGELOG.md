@@ -375,6 +375,21 @@ Backwards compatible changes
   _~?  : Decidable P → Decidable (P ~)
   ```
 
+* Added indexed variants of functions to `Relation.Binary.HeterogeneousEquality`:
+  ```agda
+  icong                   : i ≡ j → (f : {k : I} → (z : A k) → B z) →
+                            x ≅ y → f x ≅ f y
+
+  icong₂                  : i ≡ j → (f : {k : I} → (z : A k) → (w : B z) → C z w) →
+                            x ≅ y → u ≅ v → f x u ≅ f y v
+
+  icong-subst-removable   : (eq : i ≅ j) (f : {k : I} → (z : A k) → B z) (x : A i) →
+                            f (subst A eq x) ≅ f x
+
+  icong-≡-subst-removable : (eq : i ≡ j) (f : {k : I} → (z : A k) → B z) (x : A i) →
+                            f (P.subst A eq x) ≅ f x
+  ```
+
 Version 0.15
 ============
 
