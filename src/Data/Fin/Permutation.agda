@@ -152,7 +152,7 @@ module _ {n} (π : Permutation (suc n)) where
 -- If there is a bijection between finite sets of size 'm' and 'n', then
 -- 'm' = 'n'.
 
-↔-≡ : ∀ {m n} → Fin m ↔ Fin n → m ≡ n
+↔-≡ : ∀ {m n} → Permutation′ m n → m ≡ n
 ↔-≡ {zero} {zero} π = refl
 ↔-≡ {zero} {suc n} π with π ⟨$⟩ˡ zero
 ↔-≡ {zero} {suc n} π | ()
