@@ -390,6 +390,13 @@ Backwards compatible changes
                             f (P.subst A eq x) ≅ f x
   ```
 
+* Added new proofs to `Data.Vec.Properties`
+  ```agda
+  ++-injectiveˡ : (xs xs' : Vec A n) → xs ++ ys ≡ xs' ++ ys' → xs ≡ xs'
+  ++-injectiveʳ : (xs xs' : Vec A n) → xs ++ ys ≡ xs' ++ ys' → ys ≡ ys'
+  ++-injective  : (xs xs' : Vec A n) → xs ++ ys ≡ xs' ++ ys' → xs ≡ xs' × ys ≡ ys'
+  ```
+
 Version 0.15
 ============
 

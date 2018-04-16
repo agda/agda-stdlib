@@ -161,6 +161,25 @@ map-[]≔ f (x ∷ xs) (suc i) = P.cong (_ ∷_) $ map-[]≔ f xs i
 ------------------------------------------------------------------------
 -- _++_
 
+module _ {a} {A : Set a} {m} {ys ys' : Vec A m} where
+
+  ++-injectiveˡ : ∀ {n} (xs xs' : Vec A n) →
+                  xs ++ ys ≡ xs' ++ ys' → xs ≡ xs'
+  ++-injectiveˡ []       []         _  = refl
+  ++-injectiveˡ (x ∷ xs) (x' ∷ xs') eq =
+    P.cong₂ _∷_ (∷-injectiveˡ eq) (++-injectiveˡ _ _ (∷-injectiveʳ eq))
+
+  ++-injectiveʳ : ∀ {n} (xs xs' : Vec A n) →
+                  xs ++ ys ≡ xs' ++ ys' → ys ≡ ys'
+  ++-injectiveʳ []       []         eq = eq
+  ++-injectiveʳ (x ∷ xs) (x' ∷ xs') eq =
+    ++-injectiveʳ xs xs' (∷-injectiveʳ eq)
+
+  ++-injective  : ∀ {n} (xs xs' : Vec A n) →
+                  xs ++ ys ≡ xs' ++ ys' → xs ≡ xs' × ys ≡ ys'
+  ++-injective xs xs' eq =
+    (++-injectiveˡ xs xs' eq , ++-injectiveʳ xs xs' eq)
+
 module _ {a} {A : Set a} where
 
   lookup-++-< : ∀ {m n} (xs : Vec A m) (ys : Vec A n) →
