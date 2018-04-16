@@ -20,7 +20,8 @@ open import Function.Inverse using (_↔_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; _≗_)
-open import Relation.Binary.HeterogeneousEquality using (_≅_; refl)
+open import Relation.Binary.HeterogeneousEquality as H
+  using (_≅_; refl)
 
 ------------------------------------------------------------------------
 -- Properties of propositional equality over vectors
@@ -181,6 +182,12 @@ module _ {a} {A : Set a} {m} {ys ys' : Vec A m} where
     (++-injectiveˡ xs xs' eq , ++-injectiveʳ xs xs' eq)
 
 module _ {a} {A : Set a} where
+
+  ++-assoc : ∀ {m n k} (xs : Vec A m) (ys : Vec A n) (zs : Vec A k) →
+             (xs ++ ys) ++ zs ≅ xs ++ (ys ++ zs)
+  ++-assoc         []       ys zs = refl
+  ++-assoc {suc m} (x ∷ xs) ys zs =
+    H.icong (Vec A) (+-assoc m _ _) (x ∷_) (++-assoc xs ys zs)
 
   lookup-++-< : ∀ {m n} (xs : Vec A m) (ys : Vec A n) →
                 ∀ i (i<m : toℕ i < m) →
