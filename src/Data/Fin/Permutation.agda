@@ -107,7 +107,7 @@ removeMember {m}{n} i π = record
       punchIn (πʳ i) j            ∎))
 
   to : Fin m → Fin n
-  to j = punchOut to-punchOut
+  to j = punchOut (to-punchOut {j})
 
   from : Fin n → Fin m
   from j = punchOut {j = πˡ (punchIn (πʳ i) j)} from-punchOut
@@ -116,7 +116,7 @@ removeMember {m}{n} i π = record
   left-inverse-of j =
     begin
       from (to j)                                                      ≡⟨⟩
-      punchOut {i = i} {πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _  ≡⟨ punchOut-cong′ i (cong πˡ (punchIn-punchOut _)) ⟩
+      punchOut {i = i} {πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _  ≡⟨ punchOut-cong′ i (cong πˡ (punchIn-punchOut {i = πʳ i} _)) ⟩
       punchOut {i = i} {πˡ (πʳ (punchIn i j))}                      _  ≡⟨ punchOut-cong i (inverseˡ π) ⟩
       punchOut {i = i} {punchIn i j}                                _  ≡⟨ punchOut-punchIn i ⟩
       j                                                                ∎
@@ -125,7 +125,7 @@ removeMember {m}{n} i π = record
   right-inverse-of j =
     begin
       to (from j)                                                      ≡⟨⟩
-      punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))} _  ≡⟨ punchOut-cong′ (πʳ i) (cong πʳ (punchIn-punchOut _)) ⟩
+      punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))} _  ≡⟨ punchOut-cong′ (πʳ i) (cong πʳ (punchIn-punchOut {i = i} _)) ⟩
       punchOut {i = πʳ i} {πʳ (πˡ (punchIn (πʳ i) j))}              _  ≡⟨ punchOut-cong (πʳ i) (inverseʳ π) ⟩
       punchOut {i = πʳ i} {punchIn (πʳ i) j}                        _  ≡⟨ punchOut-punchIn (πʳ i) ⟩
       j                                                                ∎
@@ -138,7 +138,7 @@ module _ {n} (π : Permutation (suc n)) where
   punchIn-permute : ∀ i j → πʳ (punchIn i j) ≡ punchIn (πʳ i) (removeMember i π ⟨$⟩ʳ j)
   punchIn-permute i j =
     begin
-      πʳ (punchIn i j)                                             ≡⟨ sym (punchIn-punchOut _) ⟩
+      πʳ (punchIn i j)                                             ≡⟨ sym (punchIn-punchOut {i = πʳ i} _) ⟩
       punchIn (πʳ i) (punchOut {i = πʳ i} {πʳ (punchIn i j)} _)    ≡⟨⟩
       punchIn (πʳ i) (removeMember i π ⟨$⟩ʳ j)                     ∎
 
