@@ -159,3 +159,6 @@ module _ {n} (π : Permutation (suc n)) where
 ↔-≡ {suc m} {zero} π with π ⟨$⟩ʳ zero
 ↔-≡ {suc m} {zero} π | ()
 ↔-≡ {suc m} {suc n} π = cong suc (↔-≡ (removeMember zero π))
+
+fromPermutation′ : ∀ {m n} → Permutation′ m n → Permutation m
+fromPermutation′ π = P.subst (Permutation′ _) (sym (↔-≡ π)) π
