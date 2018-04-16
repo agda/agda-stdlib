@@ -167,5 +167,11 @@ anySubset? {suc n} {P} dec with anySubset? (restrictS inside  dec)
 infix 4 _⊆?_
 
 _⊆?_ : ∀ {n} → B.Decidable (_⊆_ {n = n})
-p₁ ⊆? p₂ = Dec.map (Eq.sym NaturalPoset.orders-equivalent) $
-  Dec.map′ ≋⇒≡ ≡⇒≋ (p₁ ≋? (p₁ ∩ p₂))
+[]          ⊆? []          = yes id
+outside ∷ p ⊆? y ∷ q with p ⊆? q
+... | yes p⊆q = yes λ { (there v∈p) → there (p⊆q v∈p)}
+... | no  p⊈q = no (p⊈q ∘ drop-∷-⊆)
+inside  ∷ p ⊆? outside ∷ q = no (λ p⊆q → case (p⊆q here) of λ())
+inside  ∷ p ⊆? inside  ∷ q with p ⊆? q
+... | yes p⊆q = yes λ { here → here ; (there v) → there (p⊆q v)}
+... | no  p⊈q = no (p⊈q ∘ drop-∷-⊆)
