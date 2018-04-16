@@ -97,14 +97,14 @@ removeMember {m}{n} i π = record
   permute-≢ p q = p (Inverse.injective π q)
 
   to-punchOut : ∀ {j : Fin m} → πʳ i ≢ πʳ (punchIn i j)
-  to-punchOut = permute-≢ (i≢punchInᵢ _ _)
+  to-punchOut = permute-≢ (punchInᵢ≢i _ _ ∘ sym)
 
   from-punchOut : ∀ {j : Fin n} → i ≢ πˡ (punchIn (πʳ i) j)
-  from-punchOut {j} p = i≢punchInᵢ (πʳ i) j (
-    begin
+  from-punchOut {j} p = punchInᵢ≢i (πʳ i) j (sym (
+     begin
       πʳ i                        ≡⟨ cong πʳ p ⟩
       πʳ (πˡ (punchIn (πʳ i) j))  ≡⟨ inverseʳ π ⟩
-      punchIn (πʳ i) j            ∎)
+      punchIn (πʳ i) j            ∎))
 
   to : Fin m → Fin n
   to j = punchOut to-punchOut

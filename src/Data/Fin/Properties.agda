@@ -364,10 +364,10 @@ punchIn-punchOut {suc m} {suc i}  {zero}  i≢j = refl
 punchIn-punchOut {suc m} {suc i}  {suc j} i≢j =
   cong suc (punchIn-punchOut (i≢j ∘ cong suc))
 
-i≢punchInᵢ : ∀ {m} i (j : Fin m) → i ≢ punchIn i j
-i≢punchInᵢ zero    _    ()
-i≢punchInᵢ (suc i) zero ()
-i≢punchInᵢ (suc i) (suc j) = i≢punchInᵢ i j ∘ suc-injective
+punchInᵢ≢i : ∀ {m} i (j : Fin m) → punchIn i j ≢ i
+punchInᵢ≢i zero    _    ()
+punchInᵢ≢i (suc i) zero ()
+punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
 
 -- A version of 'cong' for 'punchOut' in which the inequality argument can be
 -- changed out arbitrarily (reflecting the proof-irrelevance of that argument).
@@ -389,14 +389,14 @@ punchOut-cong {suc n} (suc i) {suc j} {suc k} = cong suc ∘ punchOut-cong i ∘
 punchOut-cong′ : ∀ {n} (i : Fin (suc n)) {j k} {p : i ≢ j} (q : j ≡ k) → punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
 punchOut-cong′ i q = punchOut-cong i q
 
-punchOut-punchIn : ∀ {n} i {j : Fin n} → punchOut {i = i} {j = punchIn i j} (i≢punchInᵢ i j) ≡ j
+punchOut-punchIn : ∀ {n} i {j : Fin n} → punchOut {i = i} {j = punchIn i j} (punchInᵢ≢i i j ∘ sym) ≡ j
 punchOut-punchIn zero {j} = refl
 punchOut-punchIn (suc i) {zero} = refl
 punchOut-punchIn (suc i) {suc j} = cong suc (
   begin
-    punchOut (i≢punchInᵢ i j ∘ suc-injective ∘ cong suc)   ≡⟨ punchOut-cong i refl ⟩
-    punchOut (i≢punchInᵢ i j)                              ≡⟨ punchOut-punchIn i ⟩
-    j                                                      ∎)
+    punchOut (punchInᵢ≢i i j ∘ suc-injective ∘ sym ∘ cong suc)  ≡⟨ punchOut-cong i refl ⟩
+    punchOut (punchInᵢ≢i i j ∘ sym)                             ≡⟨ punchOut-punchIn i ⟩
+    j                                                           ∎)
   where open P.≡-Reasoning
 
 ------------------------------------------------------------------------
