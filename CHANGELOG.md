@@ -395,6 +395,7 @@ Backwards compatible changes
   ++-injectiveˡ : (xs xs' : Vec A n) → xs ++ ys ≡ xs' ++ ys' → xs ≡ xs'
   ++-injectiveʳ : (xs xs' : Vec A n) → xs ++ ys ≡ xs' ++ ys' → ys ≡ ys'
   ++-injective  : (xs xs' : Vec A n) → xs ++ ys ≡ xs' ++ ys' → xs ≡ xs' × ys ≡ ys'
+  ++-assoc      : (xs ++ ys) ++ zs ≅ xs ++ (ys ++ zs)
   ```
 
 Version 0.15
