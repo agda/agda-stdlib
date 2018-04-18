@@ -21,8 +21,18 @@ open import Function using (_∘_)
 
 open P.≡-Reasoning
 
+
+-- A bijection between finite sets of potentially different sizes. Obviously the
+-- only inhabits of this type in fact have m = n, however it is often easier to
+-- prove the existence of a bijection without first proving that the sets have
+-- the same size. Indeed such a bijection is a useful way to prove that the sets
+-- are in fact the same size. See '↔-≡' below.
+
 Permutation′ : ℕ → ℕ → Set
 Permutation′ m n = Fin m ↔ Fin n
+
+
+-- A permutation of size 'n' is a bijection between finite sets of size 'n'.
 
 Permutation : ℕ → Set
 Permutation n = Permutation′ n n
@@ -148,6 +158,7 @@ module _ {n} (π : Permutation (suc n)) where
       πʳ (punchIn (πˡ i) j)                                ≡⟨ punchIn-permute _ _ ⟩
       punchIn (πʳ (πˡ i)) (removeMember (πˡ i) π ⟨$⟩ʳ j)   ≡⟨ cong₂ punchIn (inverseʳ π) refl ⟩
       punchIn i (removeMember (πˡ i) π ⟨$⟩ʳ j)             ∎
+
 
 -- If there is a bijection between finite sets of size 'm' and 'n', then
 -- 'm' = 'n'.
