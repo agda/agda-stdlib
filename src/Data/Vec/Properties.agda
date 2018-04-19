@@ -489,6 +489,50 @@ map-lookup-allFin {n = n} xs = begin
   where open P.≡-Reasoning
 
 ------------------------------------------------------------------------
+-- insert and remove
+
+module _ {a} {A : Set a} where
+  insert-lookup : ∀ {n} (i : Fin (suc n)) (x : A)
+                  (xs : Vec A n) → lookup i (insert i x xs) ≡ x
+  insert-lookup zero x xs = refl
+  insert-lookup (suc ()) x []
+  insert-lookup (suc i) x (y ∷ xs) = insert-lookup i x xs
+
+  insert-punchIn : ∀ {n} (i : Fin (suc n)) (x : A) (xs : Vec A n)
+                   (j : Fin n) →
+                   lookup (Fin.punchIn i j) (insert i x xs) ≡ lookup j xs
+  insert-punchIn zero x xs j = refl
+  insert-punchIn (suc ()) x [] j
+  insert-punchIn (suc i) x (y ∷ xs) zero = refl
+  insert-punchIn (suc i) x (y ∷ xs) (suc j) = insert-punchIn i x xs j
+
+  remove-punchOut : ∀ {n} (xs : Vec A (suc n))
+                    {i : Fin (suc n)} {j : Fin (suc n)} (i≢j : i ≢ j) →
+                    lookup (Fin.punchOut i≢j) (remove i xs) ≡ lookup j xs
+  remove-punchOut (x ∷ xs) {zero} {zero} i≢j = ⊥-elim (i≢j refl)
+  remove-punchOut (x ∷ xs) {zero} {suc j} i≢j = refl
+  remove-punchOut (x ∷ []) {suc ()} {j} i≢j
+  remove-punchOut (x ∷ y ∷ xs) {suc i} {zero} i≢j = refl
+  remove-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =
+    remove-punchOut (y ∷ xs) (i≢j ∘ P.cong suc)
+
+  remove-insert : ∀ {n} (i : Fin (suc n)) (x : A) (xs : Vec A n) →
+                  remove i (insert i x xs) ≡ xs
+  remove-insert zero x xs = refl
+  remove-insert (suc ()) x []
+  remove-insert (suc zero) x (y ∷ xs) = refl
+  remove-insert (suc (suc ())) x (y ∷ [])
+  remove-insert (suc (suc i)) x (y ∷ z ∷ xs) =
+    P.cong (y ∷_) (remove-insert (suc i) x (z ∷ xs))
+
+  insert-remove : ∀ {n} (i : Fin (suc n)) (xs : Vec A (suc n)) →
+                  insert i (lookup i xs) (remove i xs) ≡ xs
+  insert-remove zero (x ∷ xs) = refl
+  insert-remove (suc ()) (x ∷ [])
+  insert-remove (suc i) (x ∷ y ∷ xs) =
+    P.cong (x ∷_) (insert-remove i (y ∷ xs))
+
+------------------------------------------------------------------------
 -- Properties of _∈_
 
 ∈-++ₗ : ∀ {a m n} {A : Set a} {x : A} {xs : Vec A m} {ys : Vec A n} →

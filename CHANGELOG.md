@@ -398,6 +398,22 @@ Backwards compatible changes
   ++-assoc      : (xs ++ ys) ++ zs ≅ xs ++ (ys ++ zs)
   ```
 
+* Added new functions to `Data.Vec`
+  ```agda
+  insert : Fin (suc n) → A → Vec A n → Vec A (suc n)
+  remove : Fin (suc n) → Vec A (suc n) → Vec A n
+  ```
+
+* Added new proofs to `Data.Vec.Properties`
+  ```agda
+  insert-lookup   : lookup i (insert i x xs) ≡ x
+  insert-punchIn  : lookup (punchIn i j) (insert i x xs) ≡ lookup j xs
+  remove-punchOut : (i≢j : i ≢ j) →
+                    lookup (punchOut i≢j) (remove i xs) ≡ lookup j xs
+  remove-insert   : remove i (insert i x xs) ≡ xs
+  insert-remove   : insert i (lookup i xs) (remove i xs) ≡ xs
+  ```
+
 Version 0.15
 ============
 

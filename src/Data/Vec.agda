@@ -244,3 +244,16 @@ init .(ys ∷ʳ y) | (ys , y , refl) = ys
 last : ∀ {a n} {A : Set a} → Vec A (1 + n) → A
 last xs         with initLast xs
 last .(ys ∷ʳ y) | (ys , y , refl) = y
+
+------------------------------------------------------------------------
+-- Inserting into and removing from vectors
+
+insert : ∀ {a n} {A : Set a} → Fin (suc n) → A → Vec A n → Vec A (suc n)
+insert zero x xs = x ∷ xs
+insert (suc ()) x []
+insert (suc i) x (y ∷ xs) = y ∷ insert i x xs
+
+remove : ∀ {a n} {A : Set a} → Fin (suc n) → Vec A (suc n) → Vec A n
+remove zero (_ ∷ xs) = xs
+remove (suc ()) (x ∷ [])
+remove (suc i) (x ∷ y ∷ xs) = x ∷ remove i (y ∷ xs)
