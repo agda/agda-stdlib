@@ -9,7 +9,7 @@ module Function.Related.TypeIsomorphisms where
 
 open import Algebra
 import Algebra.FunctionProperties as FP
-import Algebra.Operations
+import Algebra.Operations.Semiring as SemiringOperations
 import Algebra.RingSolver.Natural-coefficients
 open import Algebra.Structures
 open import Data.Empty
@@ -17,6 +17,7 @@ open import Data.Nat as Nat using (zero; suc)
 open import Data.Product as Prod hiding (swap)
 open import Data.Product.Relation.Pointwise.NonDependent
 open import Data.Sum as Sum
+open import Data.Sum.Properties using (swap-involutive)
 open import Data.Sum.Relation.Pointwise
 open import Data.Unit
 open import Level hiding (zero; suc)
@@ -134,16 +135,10 @@ open import Relation.Nullary.Decidable as Dec using (True)
     { to         = P.→-to-⟶ swap
     ; from       = P.→-to-⟶ swap
     ; inverse-of = record
-      { left-inverse-of  = inv
-      ; right-inverse-of = inv
+      { left-inverse-of  = swap-involutive
+      ; right-inverse-of = swap-involutive
       }
     }
-    where
-    swap : {A B : Set ℓ} → A ⊎ B → B ⊎ A
-    swap = [ inj₂ , inj₁ ]
-
-    inv : ∀ {A B} → swap ∘ swap {A} {B} ≗ id
-    inv = [ (λ _ → P.refl) , (λ _ → P.refl) ]
 
 ×⊎-CommutativeSemiring : Symmetric-kind → (ℓ : Level) →
                          CommutativeSemiring (Level.suc ℓ) ℓ
@@ -191,8 +186,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
     -- writing, on a given system, using certain Agda options).
 
     isCommutativeSemiring :
-      IsCommutativeSemiring
-        {ℓ = ℓ} (Related ⌊ k ⌋) _⊎_ _×_ (Lift ⊥) (Lift ⊤)
+      IsCommutativeSemiring (Related ⌊ k ⌋) _⊎_ _×_ (Lift ⊥) (Lift ⊤)
     isCommutativeSemiring = record
       { +-isCommutativeMonoid = isCommutativeMonoid $
                                   ⊎-CommutativeMonoid k ℓ
@@ -209,7 +203,7 @@ private
   coefficient-dec :
     ∀ s ℓ →
     let open CommutativeSemiring (×⊎-CommutativeSemiring s ℓ)
-        open Algebra.Operations semiring renaming (_×_ to Times)
+        open SemiringOperations semiring renaming (_×_ to Times)
     in
 
     ∀ m n → Dec (Times m 1# ∼[ ⌊ s ⌋ ] Times n 1#)
@@ -223,7 +217,7 @@ private
     where
     open CommutativeSemiring (×⊎-CommutativeSemiring bijection ℓ)
       using (1#; semiring)
-    open Algebra.Operations semiring renaming (_×_ to Times)
+    open SemiringOperations semiring renaming (_×_ to Times)
 
     to : ∀ {m n} → m ≡ n → Times m 1# ↔ Times n 1#
     to {m} P.refl = Times m 1# ∎

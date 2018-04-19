@@ -11,7 +11,6 @@ import Algebra.Morphism as Morphism
 import Algebra.Properties.AbelianGroup
 import Algebra.RingSolver.Simple as Solver
 import Algebra.RingSolver.AlmostCommutativeRing as ACR
-open import Algebra.Structures
 open import Data.Integer renaming (suc to sucℤ)
 open import Data.Nat
   using (ℕ; suc; zero; _∸_; s≤s; z≤n; ≤-pred)
@@ -32,6 +31,7 @@ open import Relation.Nullary.Negation using (contradiction)
 
 open import Algebra.FunctionProperties (_≡_ {A = ℤ})
 open import Algebra.FunctionProperties.Consequences (setoid ℤ)
+open import Algebra.Structures (_≡_ {A = ℤ})
 open Morphism.Definitions ℤ ℕ _≡_
 open ℕₚ.SemiringSolver
 open ≡-Reasoning
@@ -288,20 +288,20 @@ distribʳ-⊖-+-neg a b c = begin
 +-inverse : Inverse (+ 0) -_ _+_
 +-inverse = +-inverseˡ , +-inverseʳ
 
-+-isSemigroup : IsSemigroup _≡_ _+_
++-isSemigroup : IsSemigroup _+_
 +-isSemigroup = record
   { isEquivalence = isEquivalence
   ; assoc         = +-assoc
   ; ∙-cong        = cong₂ _+_
   }
 
-+-0-isMonoid : IsMonoid _≡_ _+_ (+ 0)
++-0-isMonoid : IsMonoid _+_ (+ 0)
 +-0-isMonoid = record
   { isSemigroup = +-isSemigroup
   ; identity    = +-identity
   }
 
-+-0-isCommutativeMonoid : IsCommutativeMonoid _≡_ _+_ (+ 0)
++-0-isCommutativeMonoid : IsCommutativeMonoid _+_ (+ 0)
 +-0-isCommutativeMonoid = record
   { isSemigroup = +-isSemigroup
   ; identityˡ   = +-identityˡ
@@ -317,14 +317,14 @@ distribʳ-⊖-+-neg a b c = begin
   ; isCommutativeMonoid = +-0-isCommutativeMonoid
   }
 
-+-0-isGroup : IsGroup _≡_ _+_ (+ 0) (-_)
++-0-isGroup : IsGroup _+_ (+ 0) (-_)
 +-0-isGroup = record
   { isMonoid = +-0-isMonoid
   ; inverse  = +-inverse
   ; ⁻¹-cong  = cong (-_)
   }
 
-+-isAbelianGroup : IsAbelianGroup _≡_ _+_ (+ 0) (-_)
++-isAbelianGroup : IsAbelianGroup _+_ (+ 0) (-_)
 +-isAbelianGroup = record
   { isGroup = +-0-isGroup
   ; comm    = +-comm
@@ -533,20 +533,20 @@ private
         | ℕₚ.*-distribʳ-∸ (suc c) b a
         = refl
 
-*-isSemigroup : IsSemigroup _ _
+*-isSemigroup : IsSemigroup _*_
 *-isSemigroup = record
   { isEquivalence = isEquivalence
   ; assoc         = *-assoc
   ; ∙-cong        = cong₂ _*_
   }
 
-*-1-isMonoid : IsMonoid _≡_ _*_ (+ 1)
+*-1-isMonoid : IsMonoid _*_ (+ 1)
 *-1-isMonoid = record
   { isSemigroup = *-isSemigroup
   ; identity    = *-identity
   }
 
-*-1-isCommutativeMonoid : IsCommutativeMonoid _≡_ _*_ (+ 1)
+*-1-isCommutativeMonoid : IsCommutativeMonoid _*_ (+ 1)
 *-1-isCommutativeMonoid = record
   { isSemigroup = *-isSemigroup
   ; identityˡ   = *-identityˡ
@@ -562,7 +562,7 @@ private
   ; isCommutativeMonoid = *-1-isCommutativeMonoid
   }
 
-+-*-isCommutativeSemiring : IsCommutativeSemiring _≡_ _+_ _*_ (+ 0) (+ 1)
++-*-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ (+ 0) (+ 1)
 +-*-isCommutativeSemiring = record
   { +-isCommutativeMonoid = +-0-isCommutativeMonoid
   ; *-isCommutativeMonoid = *-1-isCommutativeMonoid
@@ -570,7 +570,7 @@ private
   ; zeroˡ                 = *-zeroˡ
   }
 
-+-*-isRing : IsRing _≡_ _+_ _*_ -_ (+ 0) (+ 1)
++-*-isRing : IsRing _+_ _*_ -_ (+ 0) (+ 1)
 +-*-isRing = record
   { +-isAbelianGroup = +-isAbelianGroup
   ; *-isMonoid       = *-1-isMonoid
@@ -578,7 +578,7 @@ private
                          +-*-isCommutativeSemiring
   }
 
-+-*-isCommutativeRing : IsCommutativeRing _≡_ _+_ _*_ -_ (+ 0) (+ 1)
++-*-isCommutativeRing : IsCommutativeRing _+_ _*_ -_ (+ 0) (+ 1)
 +-*-isCommutativeRing = record
   { isRing = +-*-isRing
   ; *-comm = *-comm
@@ -865,7 +865,7 @@ module RingSolver =
   Solver (ACR.fromCommutativeRing +-*-commutativeRing) _≟_
 
 -- A module for reasoning about the _≤_ relation
-module ≤-Reasoning = POR ≤-poset renaming (_≈⟨_⟩_ to _≡⟨_⟩_)
+module ≤-Reasoning = POR ≤-poset hiding (_≈⟨_⟩_)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

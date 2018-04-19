@@ -1,7 +1,7 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, v0.15
+-- The Agda standard library, development version
 --
 -- Authors: Nils Anders Danielsson, with contributions from Andreas
 -- Abel, Stevan Andjelkovic, Jean-Philippe Bernardy, Peter Berry,
@@ -271,6 +271,11 @@ import README.Case
 -- used
 
 import README.Container.FreeMonad
+
+-- Some examples showing how combinators can be used to emulate
+-- "functional reasoning"
+
+import README.Function.Reasoning
 
 ------------------------------------------------------------------------
 -- Core modules

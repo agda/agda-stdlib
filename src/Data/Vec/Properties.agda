@@ -10,7 +10,7 @@ open import Data.Empty using (⊥-elim)
 open import Data.Fin as Fin using (Fin; zero; suc; toℕ; fromℕ)
 open import Data.Fin.Properties using (_+′_)
 open import Data.List.Any using (here; there)
-import Data.List.Any.Membership.Propositional as List
+import Data.List.Membership.Propositional as List
 open import Data.Nat
 open import Data.Nat.Properties using (+-assoc)
 open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂; <_,_>)
@@ -20,7 +20,8 @@ open import Function.Inverse using (_↔_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; _≗_)
-open import Relation.Binary.HeterogeneousEquality using (_≅_; refl)
+open import Relation.Binary.HeterogeneousEquality as H
+  using (_≅_; refl)
 
 ------------------------------------------------------------------------
 -- Properties of propositional equality over vectors
@@ -161,7 +162,32 @@ map-[]≔ f (x ∷ xs) (suc i) = P.cong (_ ∷_) $ map-[]≔ f xs i
 ------------------------------------------------------------------------
 -- _++_
 
+module _ {a} {A : Set a} {m} {ys ys' : Vec A m} where
+
+  ++-injectiveˡ : ∀ {n} (xs xs' : Vec A n) →
+                  xs ++ ys ≡ xs' ++ ys' → xs ≡ xs'
+  ++-injectiveˡ []       []         _  = refl
+  ++-injectiveˡ (x ∷ xs) (x' ∷ xs') eq =
+    P.cong₂ _∷_ (∷-injectiveˡ eq) (++-injectiveˡ _ _ (∷-injectiveʳ eq))
+
+  ++-injectiveʳ : ∀ {n} (xs xs' : Vec A n) →
+                  xs ++ ys ≡ xs' ++ ys' → ys ≡ ys'
+  ++-injectiveʳ []       []         eq = eq
+  ++-injectiveʳ (x ∷ xs) (x' ∷ xs') eq =
+    ++-injectiveʳ xs xs' (∷-injectiveʳ eq)
+
+  ++-injective  : ∀ {n} (xs xs' : Vec A n) →
+                  xs ++ ys ≡ xs' ++ ys' → xs ≡ xs' × ys ≡ ys'
+  ++-injective xs xs' eq =
+    (++-injectiveˡ xs xs' eq , ++-injectiveʳ xs xs' eq)
+
 module _ {a} {A : Set a} where
+
+  ++-assoc : ∀ {m n k} (xs : Vec A m) (ys : Vec A n) (zs : Vec A k) →
+             (xs ++ ys) ++ zs ≅ xs ++ (ys ++ zs)
+  ++-assoc         []       ys zs = refl
+  ++-assoc {suc m} (x ∷ xs) ys zs =
+    H.icong (Vec A) (+-assoc m _ _) (x ∷_) (++-assoc xs ys zs)
 
   lookup-++-< : ∀ {m n} (xs : Vec A m) (ys : Vec A n) →
                 ∀ i (i<m : toℕ i < m) →

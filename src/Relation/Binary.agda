@@ -11,7 +11,7 @@ open import Data.Sum
 open import Function
 open import Level
 import Relation.Binary.PropositionalEquality.Core as PropEq
-open import Relation.Binary.Consequences as Consequences
+open import Relation.Binary.Consequences
 open import Relation.Binary.Core as Core using (_≡_)
 import Relation.Binary.Indexed.Core as I
 
@@ -19,8 +19,6 @@ import Relation.Binary.Indexed.Core as I
 -- Simple properties and equivalence relations
 
 open Core public hiding (_≡_; refl; _≢_)
-
-open Consequences public using (Total)
 
 ------------------------------------------------------------------------
 -- Preorders
@@ -40,9 +38,14 @@ record IsPreorder {a ℓ₁ ℓ₂} {A : Set a}
   refl : Reflexive _∼_
   refl = reflexive Eq.refl
 
+  ∼-respˡ-≈ : _∼_ Respectsˡ _≈_
+  ∼-respˡ-≈ x≈y x∼z = trans (reflexive (Eq.sym x≈y)) x∼z
+
+  ∼-respʳ-≈ : _∼_ Respectsʳ _≈_
+  ∼-respʳ-≈ x≈y z∼x = trans z∼x (reflexive x≈y)
+
   ∼-resp-≈ : _∼_ Respects₂ _≈_
-  ∼-resp-≈ = (λ x≈y z∼x → trans z∼x (reflexive x≈y))
-           , (λ x≈y x∼z → trans (reflexive $ Eq.sym x≈y) x∼z)
+  ∼-resp-≈ = ∼-respʳ-≈ , ∼-respˡ-≈
 
 record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _∼_
@@ -128,7 +131,11 @@ record IsPartialOrder {a ℓ₁ ℓ₂} {A : Set a}
     antisym    : Antisymmetric _≈_ _≤_
 
   open IsPreorder isPreorder public
-         renaming (∼-resp-≈ to ≤-resp-≈)
+    renaming
+    ( ∼-respˡ-≈ to ≤-respˡ-≈
+    ; ∼-respʳ-≈ to ≤-respʳ-≈
+    ; ∼-resp-≈  to ≤-resp-≈
+    )
 
 record Poset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _≤_
@@ -207,9 +214,11 @@ record IsStrictPartialOrder {a ℓ₁ ℓ₂} {A : Set a}
 
   module Eq = IsEquivalence isEquivalence
 
-  asymmetric : Asymmetric _<_
-  asymmetric {x} {y} =
-    trans∧irr⟶asym Eq.refl trans irrefl {x = x} {y = y}
+  asym : Asymmetric _<_
+  asym {x} {y} = trans∧irr⟶asym Eq.refl trans irrefl {x = x} {y}
+
+  -- DEPRECATED, please use `asym` directly
+  asymmetric = asym
 
 record StrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _<_
@@ -308,15 +317,13 @@ record IsDecTotalOrder {a ℓ₁ ℓ₂} {A : Set a}
     _≟_          : Decidable _≈_
     _≤?_         : Decidable _≤_
 
-  private
-    module TO = IsTotalOrder isTotalOrder
-  open TO public hiding (module Eq)
+  open IsTotalOrder isTotalOrder public hiding (module Eq)
 
   module Eq where
 
     isDecEquivalence : IsDecEquivalence _≈_
     isDecEquivalence = record
-      { isEquivalence = TO.isEquivalence
+      { isEquivalence = isEquivalence
       ; _≟_           = _≟_
       }
 
@@ -375,8 +382,14 @@ record IsStrictTotalOrder {a ℓ₁ ℓ₂} {A : Set a}
 
   module Eq = IsDecEquivalence isDecEquivalence
 
+  <-respˡ-≈ : _<_ Respectsˡ _≈_
+  <-respˡ-≈ = trans∧tri⟶respˡ≈ Eq.trans trans compare
+
+  <-respʳ-≈ : _<_ Respectsʳ _≈_
+  <-respʳ-≈ = trans∧tri⟶respʳ≈ Eq.sym Eq.trans trans compare
+
   <-resp-≈ : _<_ Respects₂ _≈_
-  <-resp-≈ = trans∧tri⟶resp≈ Eq.sym Eq.trans trans compare
+  <-resp-≈ = <-respʳ-≈ , <-respˡ-≈
 
   isStrictPartialOrder : IsStrictPartialOrder _≈_ _<_
   isStrictPartialOrder = record
@@ -386,7 +399,8 @@ record IsStrictTotalOrder {a ℓ₁ ℓ₂} {A : Set a}
     ; <-resp-≈      = <-resp-≈
     }
 
-  open IsStrictPartialOrder isStrictPartialOrder public using (irrefl)
+  open IsStrictPartialOrder isStrictPartialOrder public
+    using (irrefl; asym)
 
 record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _<_

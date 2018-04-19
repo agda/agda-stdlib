@@ -7,14 +7,15 @@
 module Relation.Binary.Lattice where
 
 open import Algebra.FunctionProperties
-open import Data.Product
+open import Data.Product using (_×_)
 open import Function using (flip)
-open import Level
+open import Level using (suc; _⊔_)
 open import Relation.Binary
-import Relation.Binary.PropositionalEquality as PropEq
 
 ------------------------------------------------------------------------
 -- Bounds and extrema
+
+open import Relation.Binary public using (Maximum; Minimum)
 
 Supremum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Op₂ A → Set _
 Supremum _≤_ _∨_ =
@@ -22,13 +23,6 @@ Supremum _≤_ _∨_ =
 
 Infimum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Op₂ A → Set _
 Infimum _≤_ = Supremum (flip _≤_)
-
-Maximum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
-Maximum _≤_ ⊤ = ∀ x → x ≤ ⊤
-
-Minimum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
-Minimum _≤_ = Maximum (flip _≤_)
-
 
 ------------------------------------------------------------------------
 -- Semilattices

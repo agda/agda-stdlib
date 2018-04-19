@@ -6,14 +6,14 @@
 ------------------------------------------------------------------------
 
 open import Algebra
-import Algebra.Operations
+import Algebra.Operations.Semiring as SemiringOps
 open import Relation.Nullary
 
 module Algebra.RingSolver.Natural-coefficients
          {r₁ r₂}
          (R : CommutativeSemiring r₁ r₂)
          (dec : let open CommutativeSemiring R
-                    open Algebra.Operations semiring in
+                    open SemiringOps semiring in
                 ∀ m n → Dec (m × 1# ≈ n × 1#)) where
 
 import Algebra.RingSolver
@@ -25,7 +25,7 @@ import Relation.Binary.EqReasoning
 import Relation.Nullary.Decidable as Dec
 
 open CommutativeSemiring R
-open Algebra.Operations semiring
+open SemiringOps semiring
 open Relation.Binary.EqReasoning setoid
 
 private

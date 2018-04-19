@@ -6,12 +6,12 @@
 
 module Data.Star.Environment (Ty : Set) where
 
-open import Data.Star
 open import Data.Star.List
 open import Data.Star.Decoration
 open import Data.Star.Pointer as Pointer hiding (lookup)
 open import Data.Unit
 open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.Closure.ReflexiveTransitive
 
 -- Contexts, listing the types of all the elements in an environment.
 
