@@ -328,6 +328,11 @@ Backwards compatible changes
   length-take : length (take n xs) ≡ n ⊓ (length xs)
   ```
 
+* Added new proof to `Data.List.Relation.Pointwise`
+  ```agda
+  Pointwise-length : Pointwise _∼_ xs ys → length xs ≡ length ys
+  ```
+
 * Added new proofs to `Data.List.Relation.Sublist.(Setoid/Propositional).Properties`:
   ```agda
   ⊆-reflexive  : _≋_ ⇒ _⊆_
