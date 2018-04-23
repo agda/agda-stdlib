@@ -70,7 +70,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ------------------------------------------------------------------------
 -- Any is a congruence
 
-module _ {k ℓ} {A : Set ℓ} {P Q : A → Set ℓ} where
+module _ {a k p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 
   Any-cong : ∀ {xs ys : List A} →
              (∀ x → Related k (P x) (Q x)) →
