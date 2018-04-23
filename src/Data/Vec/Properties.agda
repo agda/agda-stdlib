@@ -6,22 +6,24 @@
 
 module Data.Vec.Properties where
 
+open import Algebra.FunctionProperties
 open import Data.Empty using (⊥-elim)
 open import Data.Fin as Fin using (Fin; zero; suc; toℕ; fromℕ)
 open import Data.Fin.Properties using (_+′_)
 open import Data.List.Any using (here; there)
 import Data.List.Membership.Propositional as List
 open import Data.Nat
-open import Data.Nat.Properties using (+-assoc)
+open import Data.Nat.Properties using (+-assoc; ≤-step)
 open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂; <_,_>)
 open import Data.Vec
 open import Function
 open import Function.Inverse using (_↔_)
-open import Relation.Binary
+open import Relation.Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; _≗_)
-open import Relation.Binary.HeterogeneousEquality as H
-  using (_≅_; refl)
+open import Relation.Binary.HeterogeneousEquality as H using (_≅_; refl)
+open import Relation.Unary using (Pred; Decidable)
+open import Relation.Nullary using (yes; no)
 
 ------------------------------------------------------------------------
 -- Properties of propositional equality over vectors
@@ -41,6 +43,11 @@ module _ {a} {A : Set a} {n} {x y : A} {xs ys : Vec A n} where
 -- _[_]=_
 
 module _ {a} {A : Set a} where
+
+  []=-injective : ∀ {n} {xs : Vec A n} {i x y} →
+                  xs [ i ]= x → xs [ i ]= y → x ≡ y
+  []=-injective here          here          = refl
+  []=-injective (there xsᵢ≡x) (there xsᵢ≡y) = []=-injective xsᵢ≡x xsᵢ≡y
 
   []=-irrelevance : ∀ {n} {xs : Vec A n} {i x} →
                     (p q : xs [ i ]= x) → p ≡ q
@@ -226,6 +233,82 @@ module _ {a} {A : Set a} where
 ------------------------------------------------------------------------
 -- zipWith
 
+module _ {a} {A : Set a} {f : A → A → A} where
+
+  zipWith-assoc : Associative _≡_ f → ∀ {n} →
+                  Associative _≡_ (zipWith {n = n} f)
+  zipWith-assoc assoc []       []       []       = refl
+  zipWith-assoc assoc (x ∷ xs) (y ∷ ys) (z ∷ zs) =
+    P.cong₂ _∷_ (assoc x y z) (zipWith-assoc assoc xs ys zs)
+
+  zipWith-idem : Idempotent _≡_ f → ∀ {n} →
+                 Idempotent _≡_ (zipWith {n = n} f)
+  zipWith-idem idem []       = refl
+  zipWith-idem idem (x ∷ xs) =
+    P.cong₂ _∷_ (idem x) (zipWith-idem idem xs)
+
+  zipWith-identityˡ : ∀ {1#} → LeftIdentity _≡_ 1# f → ∀ {n} →
+                      LeftIdentity _≡_ (replicate 1#) (zipWith {n = n} f)
+  zipWith-identityˡ idˡ []       = refl
+  zipWith-identityˡ idˡ (x ∷ xs) =
+    P.cong₂ _∷_ (idˡ x) (zipWith-identityˡ idˡ xs)
+
+  zipWith-identityʳ : ∀ {1#} → RightIdentity _≡_ 1# f → ∀ {n} →
+                      RightIdentity _≡_ (replicate 1#) (zipWith {n = n} f)
+  zipWith-identityʳ idʳ []       = refl
+  zipWith-identityʳ idʳ (x ∷ xs) =
+    P.cong₂ _∷_ (idʳ x) (zipWith-identityʳ idʳ xs)
+
+  zipWith-zeroˡ : ∀ {0#} → LeftZero _≡_ 0# f → ∀ {n} →
+                  LeftZero _≡_ (replicate 0#) (zipWith {n = n} f)
+  zipWith-zeroˡ zeˡ []       = refl
+  zipWith-zeroˡ zeˡ (x ∷ xs) =
+    P.cong₂ _∷_ (zeˡ x) (zipWith-zeroˡ zeˡ xs)
+
+  zipWith-zeroʳ : ∀ {0#} → RightZero _≡_ 0# f → ∀ {n} →
+                  RightZero _≡_ (replicate 0#) (zipWith {n = n} f)
+  zipWith-zeroʳ zeʳ []       = refl
+  zipWith-zeroʳ zeʳ (x ∷ xs) =
+    P.cong₂ _∷_ (zeʳ x) (zipWith-zeroʳ zeʳ xs)
+
+  zipWith-inverseˡ : ∀ {⁻¹ 0#} → LeftInverse _≡_ 0# ⁻¹ f → ∀ {n} →
+                     LeftInverse _≡_ (replicate {n = n} 0#) (map ⁻¹) (zipWith f)
+  zipWith-inverseˡ invˡ []       = refl
+  zipWith-inverseˡ invˡ (x ∷ xs) =
+    P.cong₂ _∷_ (invˡ x) (zipWith-inverseˡ invˡ xs)
+
+  zipWith-inverseʳ : ∀ {⁻¹ 0#} → RightInverse _≡_ 0# ⁻¹ f → ∀ {n} →
+                     RightInverse _≡_ (replicate {n = n} 0#) (map ⁻¹) (zipWith f)
+  zipWith-inverseʳ invʳ []       = refl
+  zipWith-inverseʳ invʳ (x ∷ xs) =
+    P.cong₂ _∷_ (invʳ x) (zipWith-inverseʳ invʳ xs)
+
+  zipWith-distribˡ : ∀ {g} → _DistributesOverˡ_ _≡_ f g → ∀ {n} →
+                     _DistributesOverˡ_ _≡_ (zipWith {n = n} f) (zipWith g)
+  zipWith-distribˡ distribˡ []        []      []       = refl
+  zipWith-distribˡ distribˡ (x ∷ xs) (y ∷ ys) (z ∷ zs) =
+    P.cong₂ _∷_ (distribˡ x y z) (zipWith-distribˡ distribˡ xs ys zs)
+
+  zipWith-distribʳ : ∀ {g} → _DistributesOverʳ_ _≡_ f g → ∀ {n} →
+                     _DistributesOverʳ_ _≡_ (zipWith {n = n} f) (zipWith g)
+  zipWith-distribʳ distribʳ []        []      []       = refl
+  zipWith-distribʳ distribʳ (x ∷ xs) (y ∷ ys) (z ∷ zs) =
+    P.cong₂ _∷_ (distribʳ x y z) (zipWith-distribʳ distribʳ xs ys zs)
+
+  zipWith-absorbs : ∀ {g} → _Absorbs_ _≡_ f g → ∀ {n} →
+                   _Absorbs_ _≡_ (zipWith {n = n} f) (zipWith g)
+  zipWith-absorbs abs []       []       = refl
+  zipWith-absorbs abs (x ∷ xs) (y ∷ ys) =
+    P.cong₂ _∷_ (abs x y) (zipWith-absorbs abs xs ys)
+
+module _ {a b} {A : Set a} {B : Set b} {f : A → A → B} where
+
+  zipWith-comm : (∀ x y → f x y ≡ f y x) → ∀ {n}
+                 (xs ys : Vec A n) → zipWith f xs ys ≡ zipWith f ys xs
+  zipWith-comm comm []       []       = refl
+  zipWith-comm comm (x ∷ xs) (y ∷ ys) =
+    P.cong₂ _∷_ (comm x y) (zipWith-comm comm xs ys)
+
 module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
 
   zipWith-map₁ : ∀ {n} (_⊕_ : B → C → D) (f : A → B)
@@ -246,7 +329,6 @@ module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
 -- zip
 
 module _ {a b} {A : Set a} {B : Set b} where
-
 
   lookup-zip : ∀ {n} (i : Fin n) (xs : Vec A n) (ys : Vec B n) →
                lookup i (zip xs ys) ≡ (lookup i xs , lookup i ys)
@@ -489,9 +571,21 @@ map-lookup-allFin {n = n} xs = begin
   where open P.≡-Reasoning
 
 ------------------------------------------------------------------------
--- insert and remove
+-- count
+
+module _ {a p} {A : Set a} {P : Pred A p} (P? : Decidable P) where
+
+  count≤n : ∀ {n} (xs : Vec A n) → count P? xs ≤ n
+  count≤n []       = z≤n
+  count≤n (x ∷ xs) with P? x
+  ... | yes _ = s≤s (count≤n xs)
+  ... | no  _ = ≤-step (count≤n xs)
+
+------------------------------------------------------------------------
+-- insert
 
 module _ {a} {A : Set a} where
+
   insert-lookup : ∀ {n} (i : Fin (suc n)) (x : A)
                   (xs : Vec A n) → lookup i (insert i x xs) ≡ x
   insert-lookup zero x xs = refl
@@ -515,6 +609,9 @@ module _ {a} {A : Set a} where
   remove-punchOut (x ∷ y ∷ xs) {suc i} {zero} i≢j = refl
   remove-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =
     remove-punchOut (y ∷ xs) (i≢j ∘ P.cong suc)
+
+------------------------------------------------------------------------
+-- remove
 
   remove-insert : ∀ {n} (i : Fin (suc n)) (x : A) (xs : Vec A n) →
                   remove i (insert i x xs) ≡ xs

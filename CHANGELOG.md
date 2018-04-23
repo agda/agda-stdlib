@@ -90,10 +90,12 @@ Non-backwards compatible changes
 * Changed the associativity of `Relation.Unary`'s `_⇒_` from left to right.
 
 * Added new module `Relation.Unary.Properties`. The following proofs have been moved
-  to the new module from `Relation.Unary`:
-  ```agda
-  ∅-Empty, ∁∅-Universal, U-Universal, ∁U-Empty, ∅-⊆, ⊆-U, ∁?
-  ```
+  to the new module from `Relation.Unary`: `∅-Empty`, `∁∅-Universal`, `U-Universal`,
+  `∁U-Empty`, `∅-⊆`, `⊆-U` and `∁?`.
+
+* The set operations `_∩/∪_` in `Data.Fin.Subset` are now implemented more efficiently
+  using `zipWith _∧/∨_ p q` rather than `replicate _∧/∨_ ⊛ p ⊛ q`. The proof
+  `booleanAlgebra` has been moved to `∩-∪-booleanAlgebra` in `Data.Fin.Subset.Properties`.
 
 * Added `swap : A ⊎ B → B ⊎ A` to `Data.Sum`. This may conflict with `swap` in `Data.Product`.
   If so then it may be necessary to qualify imports with either `using` or `hiding`.
@@ -102,8 +104,6 @@ Non-backwards compatible changes
   `Data.Fin.Properties` to improve consistency across the library. They may conflict with
   `_≟_` and `_<?_` in `Data.Nat` or others. If so then it may be necessary to qualify imports
   with either `using` or `hiding`.
-
-* Changed the associativity of `Relation.Unary`'s `_⇒_` from left to right.
 
 * Refactored and moved `↔Vec` from `Data.Product.N-ary` to `Data.Product.N-ary.Properties`.
 
@@ -197,6 +197,88 @@ Backwards compatible changes
 
   ∨-∧-lattice                     : Lattice _ _
   ∨-∧-distributiveLattice         : DistributiveLattice _ _
+  ```
+
+* Added new functions to `Data.Fin.Subset`:
+  ```agda
+  ∣ p ∣ = count (_≟ inside) p
+  ```
+
+* Added new proofs to `Data.Fin.Subset.Properties`:
+  ```agda
+  ∣p∣≤n   : ∣ p ∣ ≤ n
+  ∣⊥∣≡0   : ∣ ⊥ ∣ ≡ 0
+  ∣⊤∣≡n   : ∣ ⊤ ∣ ≡ n
+  ∣⁅x⁆∣≡1 : ∣ ⁅ i ⁆ ∣ ≡ 1
+
+  ⊆-refl           : Reflexive _⊆_
+  ⊆-reflexive      : _≡_ ⇒ _⊆_
+  ⊆-trans          : Transitive _⊆_
+  ⊆-antisym        : Antisymmetric _≡_ _⊆_
+  ⊆-min            : Minimum _⊆_ ⊥
+  ⊆-max            : Maximum _⊆_ ⊤
+  ⊆-isPreorder     : IsPreorder _≡_ _⊆_
+  ⊆-preorder       : Preorder _ _ _
+  ⊆-isPartialOrder : IsPartialOrder _≡_ _⊆_
+  p⊆q⇒∣p∣<∣q∣      : ∀ {n} {p q : Subset n} → p ⊆ q → ∣ p ∣ ≤ ∣ q ∣
+
+  ∩-idem       : Idempotent _∩_
+  ∩-identityˡ  : LeftIdentity ⊤ _∩_
+  ∩-identityʳ  : RightIdentity ⊤ _∩_
+  ∩-identity   : Identity ⊤ _∩_
+  ∩-zeroˡ      : LeftZero ⊥ _∩_
+  ∩-zeroʳ      : RightZero ⊥ _∩_
+  ∩-zero       : Zero ⊥ _∩_
+  ∩-inverseˡ   : LeftInverse ⊥ ∁ _∩_
+  ∩-inverseʳ   : RightInverse ⊥ ∁ _∩_
+  ∩-inverse    : Inverse ⊥ ∁ _∩_
+  ∪-idem       : Idempotent _∪_
+  ∪-identityˡ  : LeftIdentity ⊥ _∪_
+  ∪-identityʳ  : RightIdentity ⊥ _∪_
+  ∪-identity   : Identity ⊥ _∪_
+  ∪-zeroˡ      : LeftZero ⊤ _∪_
+  ∪-zeroʳ      : RightZero ⊤ _∪_
+  ∪-zero       : Zero ⊤ _∪_
+  ∪-inverseˡ   : LeftInverse ⊤ ∁ _∪_
+  ∪-inverseʳ   : RightInverse ⊤ ∁ _∪_
+  ∪-inverse    : Inverse ⊤ ∁ _∪_
+  ∪-distribˡ-∩ : _∪_ DistributesOverˡ _∩_
+  ∪-distribʳ-∩ : _∪_ DistributesOverʳ _∩_
+  ∪-distrib-∩  : _∪_ DistributesOver _∩_
+  ∩-distribˡ-∪ : _∩_ DistributesOverˡ _∪_
+  ∩-distribʳ-∪ : _∩_ DistributesOverʳ _∪_
+  ∩-distrib-∪  : _∩_ DistributesOver _∪_
+  ∪-abs-∩      : _∪_ Absorbs _∩_
+  ∩-abs-∪      : _∩_ Absorbs _∪_
+
+  ∩-isSemigroup                   : IsSemigroup _∩_
+  ∩-semigroup                     : Semigroup _ _
+  ∩-isMonoid                      : IsMonoid _∩_ ⊤
+  ∩-monoid                        : Monoid _ _
+  ∩-isCommutativeMonoid           : IsCommutativeMonoid _∩_ ⊤
+  ∩-commutativeMonoid             : CommutativeMonoid _ _
+  ∩-isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid _∩_ ⊤
+  ∩-idempotentCommutativeMonoid   : IdempotentCommutativeMonoid _ _
+  ∪-isSemigroup                   : IsSemigroup _∪_
+  ∪-semigroup                     : Semigroup _ _
+  ∪-isMonoid                      : IsMonoid _∪_ ⊥
+  ∪-monoid                        : Monoid _ _
+  ∪-isCommutativeMonoid           : IsCommutativeMonoid _∪_ ⊥
+  ∪-commutativeMonoid             : CommutativeMonoid _ _
+  ∪-isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid _∪_ ⊥
+  ∪-idempotentCommutativeMonoid   : IdempotentCommutativeMonoid _ _
+  ∪-∩-isLattice                   : IsLattice _∪_ _∩_
+  ∪-∩-lattice                     : Lattice _ _
+  ∪-∩-isDistributiveLattice       : IsDistributiveLattice _∪_ _∩_
+  ∪-∩-distributiveLattice         : DistributiveLattice _ _
+  ∪-∩-isBooleanAlgebra            : IsBooleanAlgebra _∪_ _∩_ ∁ ⊤ ⊥
+  ∪-∩-booleanAlgebra              : BooleanAlgebra _ _
+  ∩-∪-isLattice                   : IsLattice _∩_ _∪_
+  ∩-∪-lattice                     : Lattice _ _
+  ∩-∪-isDistributiveLattice       : IsDistributiveLattice _∩_ _∪_
+  ∩-∪-distributiveLattice         : DistributiveLattice _ _
+  ∩-∪-isBooleanAlgebra            : IsBooleanAlgebra _∩_ _∪_ ∁ ⊥ ⊤
+  ∩-∪-booleanAlgebra              : BooleanAlgebra _ _
   ```
 
 * Added new functions to `Data.List.All`:
@@ -309,6 +391,30 @@ Backwards compatible changes
 * Added new proof to `Data.Sum`:
   ```agda
   swap-involutive : swap ∘ swap ≗ id
+  ```
+
+* Added new function to `Data.Vec`:
+  ```agda
+  count : Decidable P → Vec A n → ℕ
+  ```
+
+* Added new proofs to `Data.Vec.Properties`:
+  ```agda
+  []=-injective     : xs [ i ]= x → xs [ i ]= y → x ≡ y
+  count≤n           : ∀ {n} (xs : Vec A n) → count P? xs ≤ n
+
+  zipWith-assoc     : Associative _≡_ f → Associative _≡_ (zipWith f)
+  zipWith-comm      : (∀ x y → f x y ≡ f y x) → zipWith f xs ys ≡ zipWith f ys xs
+  zipWith-idem      : Idempotent _≡_ f → Idempotent _≡_ (zipWith f)
+  zipWith-identityˡ : LeftIdentity _≡_ 1# f → LeftIdentity _≡_ (replicate 1#) (zipWith f)
+  zipWith-identityʳ : RightIdentity _≡_ 1# f → RightIdentity _≡_ (replicate 1#) (zipWith f)
+  zipWith-zeroˡ     : LeftZero _≡_ 0# f → LeftZero _≡_ (replicate 0#) (zipWith f)
+  zipWith-zeroʳ     : RightZero _≡_ 0# f →  RightZero _≡_ (replicate 0#) (zipWith f)
+  zipWith-inverseˡ  : LeftInverse _≡_ 0# ⁻¹ f →  LeftInverse _≡_ (replicate 0#) (map ⁻¹) (zipWith f)
+  zipWith-inverseʳ  : RightInverse _≡_ 0# ⁻¹ f → RightInverse _≡_ (replicate 0#) (map ⁻¹) (zipWith f)
+  zipWith-distribˡ  : DistributesOverˡ_ _≡_ f g →  _DistributesOverˡ_ _≡_ (zipWith f) (zipWith g)
+  zipWith-distribʳ  : DistributesOverʳ_ _≡_ f g → _DistributesOverʳ_ _≡_ (zipWith f) (zipWith g)
+  zipWith-absorbs   : _Absorbs_ _≡_ f g →  _Absorbs_ _≡_ (zipWith f) (zipWith g)
   ```
 
 * Added new types to `Relation.Binary.Core`:

@@ -12,6 +12,8 @@ open import Data.List.Base as List using (List)
 open import Data.Product as Prod using (∃; ∃₂; _×_; _,_)
 open import Function
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Nullary using (yes; no)
+open import Relation.Unary using (Pred; Decidable)
 
 ------------------------------------------------------------------------
 -- Types
@@ -158,6 +160,13 @@ foldl₁ _⊕_ (x ∷ xs) = foldl _ _⊕_ x xs
 
 sum : ∀ {n} → Vec ℕ n → ℕ
 sum = foldr _ _+_ 0
+
+count : ∀ {a p} {A : Set a} {P : Pred A p} → Decidable P →
+        ∀ {n} → Vec A n → ℕ
+count P? []       = zero
+count P? (x ∷ xs) with P? x
+... | yes _ = suc (count P? xs)
+... | no  _ = count P? xs
 
 ------------------------------------------------------------------------
 -- Operations for building vectors
