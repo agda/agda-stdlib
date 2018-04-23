@@ -323,6 +323,9 @@ Backwards compatible changes
   ```agda
   tabulate-cong   : f ≗ g → tabulate f ≡ tabulate g
   tabulate-lookup : tabulate (lookup xs) ≡ xs
+
+  length-drop : length (drop n xs) ≡ length xs ∸ n
+  length-take : length (take n xs) ≡ n ⊓ (length xs)
   ```
 
 * Added new proofs to `Data.List.Relation.Sublist.(Setoid/Propositional).Properties`:
