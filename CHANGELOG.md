@@ -205,6 +205,11 @@ Backwards compatible changes
   unzip : All (P ∩ Q) ⊆ All P ∩ All Q
   ```
 
+* Added new function to `Data.List.Base`:
+  ```agda
+  maximum : List ℕ → ℕ
+  ```
+
 * Added new proofs to `Data.List.Membership.(Setoid/Propositional).Properties`:
   ```agda
   ∉-resp-≈      : ∀ {xs} → (_∉ xs) Respects _≈_

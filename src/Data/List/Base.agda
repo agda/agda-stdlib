@@ -6,7 +6,7 @@
 
 module Data.List.Base where
 
-open import Data.Nat.Base using (ℕ; zero; suc; _+_; _*_)
+open import Data.Nat.Base using (ℕ; zero; suc; _+_; _*_ ; _⊔_)
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Bool.Base
@@ -99,6 +99,9 @@ any p = or ∘ map p
 
 all : ∀ {a} {A : Set a} → (A → Bool) → List A → Bool
 all p = and ∘ map p
+
+maximum : List ℕ → ℕ
+maximum = foldr _⊔_ 0
 
 sum : List ℕ → ℕ
 sum = foldr _+_ 0
