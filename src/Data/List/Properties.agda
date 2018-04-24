@@ -20,7 +20,7 @@ open import Data.List.Any using (Any; here; there)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat
 open import Data.Nat.Properties
-open import Data.Fin as Fin using (Fin)
+open import Data.Fin using (Fin; zero; suc)
 open import Data.Product as Prod hiding (map; zip)
 open import Function
 import Relation.Binary.EqReasoning as EqR
@@ -415,23 +415,46 @@ module _ {a b} {A : Set a} {B : Set b} where
 ------------------------------------------------------------------------
 -- tabulate
 
-tabulate-cong : ∀ {n a} {A : Set a} {f g : Fin n → A} → f ≗ g → tabulate f ≡ tabulate g
-tabulate-cong {n = ℕ.zero} p = P.refl
-tabulate-cong {n = ℕ.suc n} p = P.cong₂ _∷_ (p Fin.zero) (tabulate-cong (p ∘ Fin.suc))
+module _ {a} {A : Set a} where
 
-tabulate-lookup : ∀ {a} {A : Set a} {xs : List A} → tabulate (lookup xs) ≡ xs
-tabulate-lookup {xs = []} = refl
-tabulate-lookup {xs = x ∷ xs} = P.cong₂ _∷_ P.refl tabulate-lookup
+  tabulate-cong : ∀ {n} {f g : Fin n → A} →
+                  f ≗ g → tabulate f ≡ tabulate g
+  tabulate-cong {zero}  p = P.refl
+  tabulate-cong {suc n} p = P.cong₂ _∷_ (p zero) (tabulate-cong (p ∘ suc))
+
+  tabulate-lookup : ∀ (xs : List A) → tabulate (lookup xs) ≡ xs
+  tabulate-lookup []       = refl
+  tabulate-lookup (x ∷ xs) = P.cong (_ ∷_) (tabulate-lookup xs)
 
 ------------------------------------------------------------------------
--- take, drop, splitAt
+-- take
 
 module _ {a} {A : Set a} where
+
+  length-take : ∀ n (xs : List A) → length (take n xs) ≡ n ⊓ (length xs)
+  length-take zero    xs       = refl
+  length-take (suc n) []       = refl
+  length-take (suc n) (x ∷ xs) = P.cong suc (length-take n xs)
+
+------------------------------------------------------------------------
+-- drop
+
+module _ {a} {A : Set a} where
+
+  length-drop : ∀ n (xs : List A) → length (drop n xs) ≡ length xs ∸ n
+  length-drop zero    xs       = refl
+  length-drop (suc n) []       = refl
+  length-drop (suc n) (x ∷ xs) = length-drop n xs
 
   take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
   take++drop zero    xs       = refl
   take++drop (suc n) []       = refl
   take++drop (suc n) (x ∷ xs) = P.cong (x ∷_) (take++drop n xs)
+
+------------------------------------------------------------------------
+-- splitAt
+
+module _ {a} {A : Set a} where
 
   splitAt-defn : ∀ n → splitAt {A = A} n ≗ < take n , drop n >
   splitAt-defn zero    xs       = refl

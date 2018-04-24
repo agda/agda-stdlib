@@ -25,6 +25,7 @@ import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst)
+open import Relation.Unary using (Pred)
 open import Category.Functor
 open import Category.Applicative
 
@@ -266,31 +267,29 @@ eq? inj = Dec.via-injection inj _≟_
 
 -- Quantification over finite sets commutes with applicative functors.
 
-sequence : ∀ {F n} {P : Fin n → Set} → RawApplicative F →
+sequence : ∀ {p F n} {P : Pred (Fin n) p} → RawApplicative F →
            (∀ i → F (P i)) → F (∀ i → P i)
-sequence {F} RA = helper _ _
+sequence {p} {F} RA = helper _ _
   where
   open RawApplicative RA
 
-  helper : ∀ n (P : Fin n → Set) → (∀ i → F (P i)) → F (∀ i → P i)
+  helper : ∀ n (P : Fin n → Set p) → (∀ i → F (P i)) → F (∀ i → P i)
   helper zero    P ∀iPi = pure (λ())
   helper (suc n) P ∀iPi =
-    combine <$> ∀iPi zero ⊛ helper n (λ n → P (suc n)) (∀iPi ∘ suc)
+    combine <$> ∀iPi zero ⊛ helper n (P ∘ suc) (∀iPi ∘ suc)
     where
     combine : P zero → (∀ i → P (suc i)) → ∀ i → P i
     combine z s zero    = z
     combine z s (suc i) = s i
 
-private
+-- Included just to show that sequence above has an inverse (under
+-- an equivalence relation with two equivalence classes, one with
+-- all inhabited sets and the other with all uninhabited sets).
 
-  -- Included just to show that sequence above has an inverse (under
-  -- an equivalence relation with two equivalence classes, one with
-  -- all inhabited sets and the other with all uninhabited sets).
-
-  sequence⁻¹ : ∀ {F}{A} {P : A → Set} → RawFunctor F →
-               F (∀ i → P i) → ∀ i → F (P i)
-  sequence⁻¹ RF F∀iPi i = (λ f → f i) <$> F∀iPi
-    where open RawFunctor RF
+sequence⁻¹ : ∀ {p} {A : Set} {P : Pred A p} {F} →
+             RawFunctor F → F (∀ i → P i) → ∀ i → F (P i)
+sequence⁻¹ RF F∀iPi i = (λ f → f i) <$> F∀iPi
+  where open RawFunctor RF
 
 ------------------------------------------------------------------------
 

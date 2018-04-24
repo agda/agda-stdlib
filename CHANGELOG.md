@@ -8,6 +8,53 @@ Important changes since 0.15:
 Non-backwards compatible changes
 --------------------------------
 
+#### Final overhaul of list membership
+
+* The aim of this final rearrangement of list membership is to create a better interface for
+  the different varieties of membership, and make it easier to predict where certain
+  proofs are found. Each of the new membership modules are parameterised by the relevant types
+  so as to allow easy access to the infix  `_∈_` and `_∈?_` operators. It also increases
+  the discoverability of the modules by new users of the library.
+
+* The following re-organisation of list membership modules has occurred:
+  ```agda
+  Data.List.Any.BagAndSetEquality        ↦ Data.List.Relation.BagAndSetEquality
+  Data.List.Any.Membership               ↦ Data.List.Membership.Setoid
+                                         ↘ Data.List.Membership.DecSetoid
+                                         ↘ Data.List.Relation.Sublist.Setoid
+  Data.List.Any.Membership.Propositional ↦ Data.List.Membership.Propositional
+                                         ↘ Data.List.Membership.DecPropositional
+                                         ↘ Data.List.Relation.Sublist.Propositional
+  ```
+
+* The `_⊆_` relation has been moved out of the `Membership` modules to new
+  modules `List.Relation.Sublist.(Setoid/Propositional)`. Consequently the `mono`
+  proofs that were in `Membership.Propositional.Properties` have been moved to
+  `Relation.Sublist.Propositional.Properties`.
+
+* The following proofs have been moved from `Any.Properties` to
+  `Membership.Propositional.Properties.Core`:
+  ```agda
+  map∘find, find∘map, find-∈, lose∘find, find∘lose, ∃∈-Any, Any↔
+  ```
+
+* The following terms have been moved out of `Membership.Propositional` into
+  `Relation.BagAndSetEquality`:
+  ```agda
+  Kind, Symmetric-kind
+  set, subset, superset, bag, subbag, superbag
+  [_]-Order, [_]-Equality, _∼[_]_
+  ```
+
+* The type of the proof of `∈-resp-≈` in `Membership.Setoid.Properties` has changed from:
+  ```agda
+  ∈-resp-≈ : ∀ {x} → (x ≈_) Respects _≈_
+  ```
+  to
+  ```agda
+  ∈-resp-≈ : ∀ {xs} → (_∈ xs) Respects _≈_
+  ```
+
 #### Upgrade of `Algebra.Operations`
 
 * Previously `Algebra.Operations` was parameterised by a semiring, however several of the
@@ -43,10 +90,12 @@ Non-backwards compatible changes
 * Changed the associativity of `Relation.Unary`'s `_⇒_` from left to right.
 
 * Added new module `Relation.Unary.Properties`. The following proofs have been moved
-  to the new module from `Relation.Unary`:
-  ```agda
-  ∅-Empty, ∁∅-Universal, U-Universal, ∁U-Empty, ∅-⊆, ⊆-U, ∁?
-  ```
+  to the new module from `Relation.Unary`: `∅-Empty`, `∁∅-Universal`, `U-Universal`,
+  `∁U-Empty`, `∅-⊆`, `⊆-U` and `∁?`.
+
+* The set operations `_∩/∪_` in `Data.Fin.Subset` are now implemented more efficiently
+  using `zipWith _∧/∨_ p q` rather than `replicate _∧/∨_ ⊛ p ⊛ q`. The proof
+  `booleanAlgebra` has been moved to `∩-∪-booleanAlgebra` in `Data.Fin.Subset.Properties`.
 
 * Added `swap : A ⊎ B → B ⊎ A` to `Data.Sum`. This may conflict with `swap` in `Data.Product`.
   If so then it may be necessary to qualify imports with either `using` or `hiding`.
@@ -55,8 +104,6 @@ Non-backwards compatible changes
   `Data.Fin.Properties` to improve consistency across the library. They may conflict with
   `_≟_` and `_<?_` in `Data.Nat` or others. If so then it may be necessary to qualify imports
   with either `using` or `hiding`.
-
-* Changed the associativity of `Relation.Unary`'s `_⇒_` from left to right.
 
 * Refactored and moved `↔Vec` from `Data.Product.N-ary` to `Data.Product.N-ary.Properties`.
 
@@ -92,9 +139,19 @@ anticipated any time soon, they may eventually be removed in some future release
   isDecTotalOrder⟶isStrictTotalOrder  ↦ <-isStrictTotalOrder₂
   ```
 
-* In `IsStrictPartialOrder` in `Relation.Binary`:
+* In `IsStrictPartialOrder` record in `Relation.Binary`:
   ```agda
   asymmetric ↦ asym
+  ```
+
+* In `Data.List.Membership.Propositional`:
+  ```agda
+  filter-∈ ↦ ∈-filter⁺
+  ```
+
+* In `Data.List.Membership.Setoid`:
+  ```agda
+  map-with-∈ ↦ mapWith∈
   ```
 
 Removed features
@@ -142,16 +199,148 @@ Backwards compatible changes
   ∨-∧-distributiveLattice         : DistributiveLattice _ _
   ```
 
+* Added new functions to `Data.Fin.Subset`:
+  ```agda
+  ∣ p ∣ = count (_≟ inside) p
+  ```
+
+* Added new proofs to `Data.Fin.Subset.Properties`:
+  ```agda
+  ∣p∣≤n   : ∣ p ∣ ≤ n
+  ∣⊥∣≡0   : ∣ ⊥ ∣ ≡ 0
+  ∣⊤∣≡n   : ∣ ⊤ ∣ ≡ n
+  ∣⁅x⁆∣≡1 : ∣ ⁅ i ⁆ ∣ ≡ 1
+
+  ⊆-refl           : Reflexive _⊆_
+  ⊆-reflexive      : _≡_ ⇒ _⊆_
+  ⊆-trans          : Transitive _⊆_
+  ⊆-antisym        : Antisymmetric _≡_ _⊆_
+  ⊆-min            : Minimum _⊆_ ⊥
+  ⊆-max            : Maximum _⊆_ ⊤
+  ⊆-isPreorder     : IsPreorder _≡_ _⊆_
+  ⊆-preorder       : Preorder _ _ _
+  ⊆-isPartialOrder : IsPartialOrder _≡_ _⊆_
+  p⊆q⇒∣p∣<∣q∣      : ∀ {n} {p q : Subset n} → p ⊆ q → ∣ p ∣ ≤ ∣ q ∣
+
+  ∩-idem       : Idempotent _∩_
+  ∩-identityˡ  : LeftIdentity ⊤ _∩_
+  ∩-identityʳ  : RightIdentity ⊤ _∩_
+  ∩-identity   : Identity ⊤ _∩_
+  ∩-zeroˡ      : LeftZero ⊥ _∩_
+  ∩-zeroʳ      : RightZero ⊥ _∩_
+  ∩-zero       : Zero ⊥ _∩_
+  ∩-inverseˡ   : LeftInverse ⊥ ∁ _∩_
+  ∩-inverseʳ   : RightInverse ⊥ ∁ _∩_
+  ∩-inverse    : Inverse ⊥ ∁ _∩_
+  ∪-idem       : Idempotent _∪_
+  ∪-identityˡ  : LeftIdentity ⊥ _∪_
+  ∪-identityʳ  : RightIdentity ⊥ _∪_
+  ∪-identity   : Identity ⊥ _∪_
+  ∪-zeroˡ      : LeftZero ⊤ _∪_
+  ∪-zeroʳ      : RightZero ⊤ _∪_
+  ∪-zero       : Zero ⊤ _∪_
+  ∪-inverseˡ   : LeftInverse ⊤ ∁ _∪_
+  ∪-inverseʳ   : RightInverse ⊤ ∁ _∪_
+  ∪-inverse    : Inverse ⊤ ∁ _∪_
+  ∪-distribˡ-∩ : _∪_ DistributesOverˡ _∩_
+  ∪-distribʳ-∩ : _∪_ DistributesOverʳ _∩_
+  ∪-distrib-∩  : _∪_ DistributesOver _∩_
+  ∩-distribˡ-∪ : _∩_ DistributesOverˡ _∪_
+  ∩-distribʳ-∪ : _∩_ DistributesOverʳ _∪_
+  ∩-distrib-∪  : _∩_ DistributesOver _∪_
+  ∪-abs-∩      : _∪_ Absorbs _∩_
+  ∩-abs-∪      : _∩_ Absorbs _∪_
+
+  ∩-isSemigroup                   : IsSemigroup _∩_
+  ∩-semigroup                     : Semigroup _ _
+  ∩-isMonoid                      : IsMonoid _∩_ ⊤
+  ∩-monoid                        : Monoid _ _
+  ∩-isCommutativeMonoid           : IsCommutativeMonoid _∩_ ⊤
+  ∩-commutativeMonoid             : CommutativeMonoid _ _
+  ∩-isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid _∩_ ⊤
+  ∩-idempotentCommutativeMonoid   : IdempotentCommutativeMonoid _ _
+  ∪-isSemigroup                   : IsSemigroup _∪_
+  ∪-semigroup                     : Semigroup _ _
+  ∪-isMonoid                      : IsMonoid _∪_ ⊥
+  ∪-monoid                        : Monoid _ _
+  ∪-isCommutativeMonoid           : IsCommutativeMonoid _∪_ ⊥
+  ∪-commutativeMonoid             : CommutativeMonoid _ _
+  ∪-isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid _∪_ ⊥
+  ∪-idempotentCommutativeMonoid   : IdempotentCommutativeMonoid _ _
+  ∪-∩-isLattice                   : IsLattice _∪_ _∩_
+  ∪-∩-lattice                     : Lattice _ _
+  ∪-∩-isDistributiveLattice       : IsDistributiveLattice _∪_ _∩_
+  ∪-∩-distributiveLattice         : DistributiveLattice _ _
+  ∪-∩-isBooleanAlgebra            : IsBooleanAlgebra _∪_ _∩_ ∁ ⊤ ⊥
+  ∪-∩-booleanAlgebra              : BooleanAlgebra _ _
+  ∩-∪-isLattice                   : IsLattice _∩_ _∪_
+  ∩-∪-lattice                     : Lattice _ _
+  ∩-∪-isDistributiveLattice       : IsDistributiveLattice _∩_ _∪_
+  ∩-∪-distributiveLattice         : DistributiveLattice _ _
+  ∩-∪-isBooleanAlgebra            : IsBooleanAlgebra _∩_ _∪_ ∁ ⊥ ⊤
+  ∩-∪-booleanAlgebra              : BooleanAlgebra _ _
+  ```
+
 * Added new functions to `Data.List.All`:
   ```agda
   zip   : All P ∩ All Q ⊆ All (P ∩ Q)
   unzip : All (P ∩ Q) ⊆ All P ∩ All Q
   ```
 
+* Added new proofs to `Data.List.Membership.(Setoid/Propositional).Properties`:
+  ```agda
+  ∉-resp-≈      : ∀ {xs} → (_∉ xs) Respects _≈_
+  ∉-resp-≋      : ∀ {x}  → (x ∉_)  Respects _≋_
+
+  mapWith∈≗map  : mapWith∈ xs (λ {x} _ → f x) ≡ map f xs
+  mapWith∈-cong : (∀ x∈xs → f x∈xs ≡ g x∈xs) → mapWith∈ xs f ≡ map-with-∈ xs g
+
+  ∈-++⁺ˡ        : v ∈ xs → v ∈ xs ++ ys
+  ∈-++⁺ʳ        : v ∈ ys → v ∈ xs ++ ys
+  ∈-++⁻         : v ∈ xs ++ ys → (v ∈ xs) ⊎ (v ∈ ys)
+
+  ∈-concat⁺     : Any (v ∈_) xss → v ∈ concat xss
+  ∈-concat⁻     : v ∈ concat xss → Any (v ∈_) xss
+  ∈-concat⁺′    : v ∈ vs → vs ∈ xss → v ∈ concat xss
+  ∈-concat⁻′    : v ∈ concat xss → ∃ λ xs → v ∈ xs × xs ∈ xss
+
+  ∈-applyUpTo⁺  : i < n → f i ∈ applyUpTo f n
+  ∈-applyUpTo⁻  : v ∈ applyUpTo f n → ∃ λ i → i < n × v ≈ f i
+
+  ∈-tabulate⁺   : f i ∈ tabulate f
+  ∈-tabulate⁻   : v ∈ tabulate f → ∃ λ i → v ≈ f i
+
+  ∈-filter⁺     : P v → v ∈ xs → v ∈ filter P? xs
+  ∈-filter⁻     : v ∈ filter P? xs → v ∈ xs × P v
+
+  ∈-length      : x ∈ xs → 1 ≤ length xs
+  ∈-lookup      : lookup xs i ∈ xs
+
+  foldr-selective : Selective _≈_ _•_ → (foldr _•_ e xs ≈ e) ⊎ (foldr _•_ e xs ∈ xs)
+  ```
+
 * Added new proofs to `Data.List.Properties`:
   ```agda
-  tabulate-cong : f ≗ g → tabulate f ≡ tabulate g
+  tabulate-cong   : f ≗ g → tabulate f ≡ tabulate g
   tabulate-lookup : tabulate (lookup xs) ≡ xs
+
+  length-drop : length (drop n xs) ≡ length xs ∸ n
+  length-take : length (take n xs) ≡ n ⊓ (length xs)
+  ```
+
+* Added new proof to `Data.List.Relation.Pointwise`
+  ```agda
+  Pointwise-length : Pointwise _∼_ xs ys → length xs ≡ length ys
+  ```
+
+* Added new proofs to `Data.List.Relation.Sublist.(Setoid/Propositional).Properties`:
+  ```agda
+  ⊆-reflexive  : _≋_ ⇒ _⊆_
+  ⊆-refl       : Reflexive _⊆_
+  ⊆-trans      : Transitive _⊆_
+  ⊆-isPreorder : IsPreorder _≋_ _⊆_
+
+  filter⁺      : ∀ xs → filter P? xs ⊆ xs
   ```
 
 * Added new modules `Data.List.Zipper` and `Data.List.Zipper.Properties`.
@@ -212,12 +401,36 @@ Backwards compatible changes
   swap-involutive : swap ∘ swap ≗ id
   ```
 
+* Added new function to `Data.Vec`:
+  ```agda
+  count : Decidable P → Vec A n → ℕ
+  ```
+
+* Added new proofs to `Data.Vec.Properties`:
+  ```agda
+  []=-injective     : xs [ i ]= x → xs [ i ]= y → x ≡ y
+  count≤n           : ∀ {n} (xs : Vec A n) → count P? xs ≤ n
+
+  zipWith-assoc     : Associative _≡_ f → Associative _≡_ (zipWith f)
+  zipWith-comm      : (∀ x y → f x y ≡ f y x) → zipWith f xs ys ≡ zipWith f ys xs
+  zipWith-idem      : Idempotent _≡_ f → Idempotent _≡_ (zipWith f)
+  zipWith-identityˡ : LeftIdentity _≡_ 1# f → LeftIdentity _≡_ (replicate 1#) (zipWith f)
+  zipWith-identityʳ : RightIdentity _≡_ 1# f → RightIdentity _≡_ (replicate 1#) (zipWith f)
+  zipWith-zeroˡ     : LeftZero _≡_ 0# f → LeftZero _≡_ (replicate 0#) (zipWith f)
+  zipWith-zeroʳ     : RightZero _≡_ 0# f →  RightZero _≡_ (replicate 0#) (zipWith f)
+  zipWith-inverseˡ  : LeftInverse _≡_ 0# ⁻¹ f →  LeftInverse _≡_ (replicate 0#) (map ⁻¹) (zipWith f)
+  zipWith-inverseʳ  : RightInverse _≡_ 0# ⁻¹ f → RightInverse _≡_ (replicate 0#) (map ⁻¹) (zipWith f)
+  zipWith-distribˡ  : DistributesOverˡ_ _≡_ f g →  _DistributesOverˡ_ _≡_ (zipWith f) (zipWith g)
+  zipWith-distribʳ  : DistributesOverʳ_ _≡_ f g → _DistributesOverʳ_ _≡_ (zipWith f) (zipWith g)
+  zipWith-absorbs   : _Absorbs_ _≡_ f g →  _Absorbs_ _≡_ (zipWith f) (zipWith g)
+  ```
+
 * Added new types to `Relation.Binary.Core`:
   ```agda
   P Respectsʳ _∼_ = ∀ {x} → (P x)      Respects _∼_
   P Respectsˡ _∼_ = ∀ {y} → (flip P y) Respects _∼_
   ```
-  Records in `Relation.Binary` export these in addition to the standard `Respects₂` proofs.
+  Records in `Relation.Binary` now export these in addition to the standard `Respects₂` proofs.
   e.g. `IsStrictPartialOrder` exports:
   ```agda
   <-respˡ-≈ : _<_ Respectsˡ _≈_
@@ -274,6 +487,45 @@ Backwards compatible changes
   _⊙?_ : Decidable P → Decidable Q → Decidable (P ⟨⊙⟩ Q)
   _⊎?_ : Decidable P → Decidable Q → Decidable (P ⟨⊎⟩ Q)
   _~?  : Decidable P → Decidable (P ~)
+  ```
+
+* Added indexed variants of functions to `Relation.Binary.HeterogeneousEquality`:
+  ```agda
+  icong                   : i ≡ j → (f : {k : I} → (z : A k) → B z) →
+                            x ≅ y → f x ≅ f y
+
+  icong₂                  : i ≡ j → (f : {k : I} → (z : A k) → (w : B z) → C z w) →
+                            x ≅ y → u ≅ v → f x u ≅ f y v
+
+  icong-subst-removable   : (eq : i ≅ j) (f : {k : I} → (z : A k) → B z) (x : A i) →
+                            f (subst A eq x) ≅ f x
+
+  icong-≡-subst-removable : (eq : i ≡ j) (f : {k : I} → (z : A k) → B z) (x : A i) →
+                            f (P.subst A eq x) ≅ f x
+  ```
+
+* Added new proofs to `Data.Vec.Properties`
+  ```agda
+  ++-injectiveˡ : (xs xs' : Vec A n) → xs ++ ys ≡ xs' ++ ys' → xs ≡ xs'
+  ++-injectiveʳ : (xs xs' : Vec A n) → xs ++ ys ≡ xs' ++ ys' → ys ≡ ys'
+  ++-injective  : (xs xs' : Vec A n) → xs ++ ys ≡ xs' ++ ys' → xs ≡ xs' × ys ≡ ys'
+  ++-assoc      : (xs ++ ys) ++ zs ≅ xs ++ (ys ++ zs)
+  ```
+
+* Added new functions to `Data.Vec`
+  ```agda
+  insert : Fin (suc n) → A → Vec A n → Vec A (suc n)
+  remove : Fin (suc n) → Vec A (suc n) → Vec A n
+  ```
+
+* Added new proofs to `Data.Vec.Properties`
+  ```agda
+  insert-lookup   : lookup i (insert i x xs) ≡ x
+  insert-punchIn  : lookup (punchIn i j) (insert i x xs) ≡ lookup j xs
+  remove-punchOut : (i≢j : i ≢ j) →
+                    lookup (punchOut i≢j) (remove i xs) ≡ lookup j xs
+  remove-insert   : remove i (insert i x xs) ≡ xs
+  insert-remove   : insert i (lookup i xs) (remove i xs) ≡ xs
   ```
 
 Version 0.15
