@@ -7,28 +7,26 @@
 
 module Data.Fin.Properties where
 
-open import Algebra
-open import Data.Empty using (⊥-elim)
-open import Data.Fin as Fin
-open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_) renaming
-  (_≤_ to _ℕ≤_
+open import Algebra.FunctionProperties using (Involutive)
+open import Category.Applicative using (RawApplicative)
+open import Category.Functor using (RawFunctor)
+open import Data.Fin
+open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
+  renaming
+  ( _≤_ to _ℕ≤_
   ; _<_ to _ℕ<_
-  ; _+_ to _ℕ+_)
+  ; _+_ to _ℕ+_
+  )
 import Data.Nat.Properties as ℕₚ
-open import Data.Product
-open import Function
-open import Function.Equality as FunS using (_⟨$⟩_)
+open import Data.Product using (_,_)
+open import Function using (_∘_)
 open import Function.Injection using (_↣_)
-open import Algebra.FunctionProperties
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
-open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; cong; subst)
+import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
-open import Category.Functor
-open import Category.Applicative
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
@@ -371,8 +369,8 @@ punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
 punchOut-injective : ∀ {m} {i j k : Fin (suc m)}
                      (i≢j : i ≢ j) (i≢k : i ≢ k) →
                      punchOut i≢j ≡ punchOut i≢k → j ≡ k
-punchOut-injective {_}     {zero}   {zero}  {_}     i≢j _   _     = ⊥-elim (i≢j refl)
-punchOut-injective {_}     {zero}   {_}     {zero}  _   i≢k _     = ⊥-elim (i≢k refl)
+punchOut-injective {_}     {zero}   {zero}  {_}     0≢0 _   _     = contradiction refl 0≢0
+punchOut-injective {_}     {zero}   {_}     {zero}  _   0≢0 _     = contradiction refl 0≢0
 punchOut-injective {_}     {zero}   {suc j} {suc k} _   _   pⱼ≡pₖ = cong suc pⱼ≡pₖ
 punchOut-injective {zero}  {suc ()}
 punchOut-injective {suc n} {suc i}  {zero}  {zero}  _   _    _    = refl
@@ -383,7 +381,7 @@ punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
 
 punchIn-punchOut : ∀ {m} {i j : Fin (suc m)} (i≢j : i ≢ j) →
                    punchIn i (punchOut i≢j) ≡ j
-punchIn-punchOut {_}     {zero}   {zero}  0≢0 = ⊥-elim (0≢0 refl)
+punchIn-punchOut {_}     {zero}   {zero}  0≢0 = contradiction refl 0≢0
 punchIn-punchOut {_}     {zero}   {suc j} _   = refl
 punchIn-punchOut {zero}  {suc ()}
 punchIn-punchOut {suc m} {suc i}  {zero}  i≢j = refl
@@ -478,11 +476,11 @@ strictTotalOrder = <-strictTotalOrder
 
 to-from          = toℕ-fromℕ
 from-to          = fromℕ-toℕ
-{-
+
 bounded          = toℕ<n
 prop-toℕ-≤      = toℕ≤pred[n]
 prop-toℕ-≤′     = toℕ≤pred[n]′
--}
+
 inject-lemma     = toℕ-inject
 inject+-lemma    = toℕ-inject+
 inject₁-lemma    = toℕ-inject₁

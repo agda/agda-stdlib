@@ -115,16 +115,6 @@ the library. The old names still exist and therefore all existing code should st
 work, however they have been deprecated and use of the new names is encouraged. Although not
 anticipated any time soon, they may eventually be removed in some future release of the library.
 
-* In `Data.List.Membership.Propositional`:
-  ```agda
-  filter-∈ ↦ ∈-filter⁺
-  ```
-
-* In `Data.List.Membership.Setoid`:
-  ```agda
-  map-with-∈ ↦ mapWith∈
-  ```
-
 * In `Data.Fin.Properties`:
   ```agda
   to-from       ↦ toℕ-fromℕ
@@ -138,6 +128,16 @@ anticipated any time soon, they may eventually be removed in some future release
   inject+-lemma ↦ toℕ-inject+
   inject₁-lemma ↦ toℕ-inject₁
   inject≤-lemma ↦ toℕ-inject≤
+  ```
+
+* In `Data.List.Membership.Propositional`:
+  ```agda
+  filter-∈ ↦ ∈-filter⁺
+  ```
+
+* In `Data.List.Membership.Setoid`:
+  ```agda
+  map-with-∈ ↦ mapWith∈
   ```
 
 * Closures of binary relations have been centralised as follows:
