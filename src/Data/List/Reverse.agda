@@ -17,25 +17,27 @@ open import Relation.Binary.PropositionalEquality
 
 infixl 5 _∶_∶ʳ_
 
-data Reverse {A : Set} : List A → Set where
+data Reverse {a} {A : Set a} : List A → Set a where
   []     : Reverse []
   _∶_∶ʳ_ : ∀ xs (rs : Reverse xs) (x : A) → Reverse (xs ∷ʳ x)
 
-reverseView : ∀ {A} (xs : List A) → Reverse xs
-reverseView {A} xs = <′-rec Pred rev (length xs) xs refl
-  where
-  Pred : ℕ → Set
-  Pred n = (xs : List A) → length xs ≡ n → Reverse xs
+module _ {a} {A : Set a} where
 
-  lem : ∀ xs {x : A} → length xs <′ length (xs ∷ʳ x)
-  lem []       = ≤′-refl
-  lem (x ∷ xs) = Nat.s≤′s (lem xs)
+  reverseView : (xs : List A) → Reverse xs
+  reverseView xs = <′-rec Pred rev (length xs) xs refl where
 
-  rev : (n : ℕ) → <′-Rec Pred n → Pred n
-  rev n                   rec xs         eq   with initLast xs
-  rev n                   rec .[]        eq   | []       = []
-  rev .(length (xs ∷ʳ x)) rec .(xs ∷ʳ x) refl | xs ∷ʳ' x
-    with rec (length xs) (lem xs) xs refl
-  rev ._ rec .([]      ∷ʳ x) refl | ._ ∷ʳ' x | [] = _ ∶ [] ∶ʳ x
-  rev ._ rec .(ys ∷ʳ y ∷ʳ x) refl | ._ ∷ʳ' x | ys ∶ rs ∶ʳ y =
-    _ ∶ (_ ∶ rs ∶ʳ y) ∶ʳ x
+    Pred : ℕ → Set a
+    Pred n = (xs : List A) → length xs ≡ n → Reverse xs
+
+    lem : ∀ xs {x : A} → length xs <′ length (xs ∷ʳ x)
+    lem []       = ≤′-refl
+    lem (x ∷ xs) = Nat.s≤′s (lem xs)
+
+    rev : (n : ℕ) → <′-Rec Pred n → Pred n
+    rev n                   rec xs         eq   with initLast xs
+    rev n                   rec .[]        eq   | []       = []
+    rev .(length (xs ∷ʳ x)) rec .(xs ∷ʳ x) refl | xs ∷ʳ' x
+      with rec (length xs) (lem xs) xs refl
+    rev ._ rec .([]      ∷ʳ x) refl | ._ ∷ʳ' x | [] = _ ∶ [] ∶ʳ x
+    rev ._ rec .(ys ∷ʳ y ∷ʳ x) refl | ._ ∷ʳ' x | ys ∶ rs ∶ʳ y =
+      _ ∶ (_ ∶ rs ∶ʳ y) ∶ʳ x
