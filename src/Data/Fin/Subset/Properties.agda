@@ -16,18 +16,21 @@ open import Data.Bool.Base using (_≟_)
 open import Data.Bool.Properties
 open import Data.Fin using (Fin; suc; zero)
 open import Data.Fin.Subset
+open import Data.Fin.Properties using (any?; decFinSubset)
 open import Data.Nat.Base using (ℕ; zero; suc; z≤n; s≤s; _≤_)
 open import Data.Nat.Properties using (≤-step)
-open import Data.Product as Product using (_×_; _,_)
+open import Data.Product as Product using (∃; ∄; _×_; _,_)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Vec hiding (_∈_)
 open import Data.Vec.Properties
-open import Function using (const; id)
+open import Function using (_∘_; const; id; case_of_)
 open import Function.Equivalence using (_⇔_; equivalence)
-open import Relation.Binary
+open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; subst; isEquivalence)
 open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Unary using (Pred; Decidable)
 
 ------------------------------------------------------------------------
 -- Constructor mangling
@@ -102,6 +105,17 @@ x∈⁅y⁆⇔x≡y {_} {x} {y} = equivalence
 ∣⁅x⁆∣≡1 {_}     (suc i) = ∣⁅x⁆∣≡1 i
 
 ------------------------------------------------------------------------
+-- _∈_
+
+infix 4 _∈?_
+_∈?_ : ∀ {n} x (p : Subset n) → Dec (x ∈ p)
+zero  ∈? inside  ∷ p = yes here
+zero  ∈? outside ∷ p = no  λ()
+suc n ∈? s       ∷ p with n ∈? p
+... | yes n∈p = yes (there n∈p)
+... | no  n∉p = no  (n∉p ∘ drop-there)
+
+------------------------------------------------------------------------
 -- _⊆_
 
 ⊆-refl : ∀ {n} → Reflexive (_⊆_ {n})
@@ -129,6 +143,17 @@ x∈⁅y⁆⇔x≡y {_} {x} {y} = equivalence
 ⊆-max []            ()
 ⊆-max (inside ∷ xs) here         = here
 ⊆-max (x      ∷ xs) (there v∈xs) = there (⊆-max xs v∈xs)
+
+infix 4 _⊆?_
+_⊆?_ : ∀ {n} → B.Decidable (_⊆_ {n = n})
+[]          ⊆? []          = yes id
+outside ∷ p ⊆? y ∷ q with p ⊆? q
+... | yes p⊆q = yes λ { (there v∈p) → there (p⊆q v∈p)}
+... | no  p⊈q = no (p⊈q ∘ drop-∷-⊆)
+inside  ∷ p ⊆? outside ∷ q = no (λ p⊆q → case (p⊆q here) of λ())
+inside  ∷ p ⊆? inside  ∷ q with p ⊆? q
+... | yes p⊆q = yes λ { here → here ; (there v) → there (p⊆q v)}
+... | no  p⊈q = no (p⊈q ∘ drop-∷-⊆)
 
 module _ (n : ℕ) where
 
@@ -474,3 +499,35 @@ x∈p∪q⁺ (inj₂ x∈q) = q⊆p∪q _ _ x∈q
 
 ∪⇔⊎ : ∀ {n} {p q : Subset n} {x} → x ∈ p ∪ q ⇔ (x ∈ p ⊎ x ∈ q)
 ∪⇔⊎ = equivalence (x∈p∪q⁻ _ _) x∈p∪q⁺
+
+------------------------------------------------------------------------
+-- Nonempty
+
+nonempty? : ∀ {n} → Decidable (Nonempty {n})
+nonempty? p = any? (_∈? p)
+
+------------------------------------------------------------------------
+-- Lift
+
+Lift? : ∀ {n p} {P : Pred (Fin n) p} →
+        Decidable P → Decidable (Lift P)
+Lift? P? p = decFinSubset (_∈? p) (λ {x} _ → P? x)
+
+------------------------------------------------------------------------
+-- Other
+
+anySubset? : ∀ {n} {P : Subset n → Set} →
+             Decidable P → Dec (∃ P)
+anySubset? {zero}  {_} P? with P? []
+... | yes P[] = yes (_ , P[])
+... | no ¬P[] = no (λ {([] , P[]) → ¬P[] P[]})
+anySubset? {suc n} {P} P?
+  with anySubset? (P? ∘ (inside ∷_)) | anySubset? (P? ∘ (outside ∷_))
+... | yes (_ , Pp) | _            = yes (_ , Pp)
+... | _            | yes (_ , Pp) = yes (_ , Pp)
+... | no ¬Pp       | no ¬Pp'      = no helper
+  where
+  helper : ∄ P
+  helper (inside  ∷ p , Pp)  = ¬Pp  (_ , Pp)
+  helper (outside ∷ p , Pp') = ¬Pp' (_ , Pp')
+

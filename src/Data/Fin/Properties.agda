@@ -10,6 +10,7 @@ module Data.Fin.Properties where
 open import Algebra.FunctionProperties using (Involutive)
 open import Category.Applicative using (RawApplicative)
 open import Category.Functor using (RawFunctor)
+open import Data.Empty using (⊥-elim)
 open import Data.Fin
 open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
   renaming
@@ -18,15 +19,18 @@ open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
   ; _+_ to _ℕ+_
   )
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (_,_)
-open import Function using (_∘_)
+open import Data.Product using (∃; ∄; _×_; _,_; map; proj₁)
+open import Data.Unit using (tt)
+open import Function using (_∘_; id)
 open import Function.Injection using (_↣_)
-open import Relation.Binary
+open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; cong; subst)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Unary using (Pred)
+open import Relation.Nullary using (Dec; yes; no; ¬_)
+open import Relation.Unary using (U; Pred; Decidable; _⊆_)
+open import Relation.Unary.Properties using (U?)
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
@@ -462,7 +466,7 @@ module _ {f} {F : Set f → Set f} (RF : RawFunctor F) where
 
 module _ {a} {A : Set a} where
 
-  eq? : ∀ {n} → A ↣ Fin n → Decidable {A = A} _≡_
+  eq? : ∀ {n} → A ↣ Fin n → B.Decidable {A = A} _≡_
   eq? inj = Dec.via-injection inj _≟_
 
 ------------------------------------------------------------------------
@@ -487,3 +491,68 @@ inject₁-lemma    = toℕ-inject₁
 inject≤-lemma    = toℕ-inject≤
 
 open import Data.Fin public using (_≟_; _<?_)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+any? : ∀ {n} {P : Fin n → Set} → Decidable P → Dec (∃ P)
+any? {zero}      P? = no λ { (() , _) }
+any? {suc n} {P} P? with P? zero | any? (P? ∘ suc)
+... | yes P₀ | _              = yes (_ , P₀)
+... | _      | yes (_ , P₁₊ᵢ) = yes (_ , P₁₊ᵢ)
+... | no ¬P₀ | no ¬P₁₊ᵢ       = no helper
+  where
+  helper : ∄ P
+  helper (zero  , P₀)  = ¬P₀ P₀
+  helper (suc f , P₁₊ᵢ) = ¬P₁₊ᵢ (_ , P₁₊ᵢ)
+
+decFinSubset : ∀ {n p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
+               Decidable Q → (∀ {f} → Q f → Dec (P f)) → Dec (Q ⊆ P)
+decFinSubset {zero}        _    _    = yes λ{}
+decFinSubset {suc n} {P = P} {Q} Q? P? with decFinSubset (Q? ∘ suc) P?
+... | no ¬q⟶p = no (λ q⟶p → ¬q⟶p (q⟶p))
+... | yes q⟶p with Q? zero
+...   | no ¬q₀ = yes (λ {_} → hlpr _)
+  where
+  hlpr : ∀ f → Q f → P f
+  hlpr = ∀-cons (⊥-elim ∘ ¬q₀) (λ _ → q⟶p)
+...   | yes q₀ with P? q₀
+...     | no ¬p₀ = no (λ q⟶p → ¬p₀ (q⟶p q₀))
+...     | yes p₀ = yes (λ {_} → hlpr _)
+  where
+  hlpr : ∀ f → Q f → P f
+  hlpr = ∀-cons (λ _ → p₀) (λ _ → q⟶p)
+
+all? : ∀ {n p} {P : Pred (Fin n) p} →
+       Decidable P → Dec (∀ f → P f)
+all? P? with decFinSubset U? (λ {f} _ → P? f)
+... | yes ∀p = yes (λ f → ∀p tt)
+... | no ¬∀p = no  (λ ∀p → ¬∀p (λ _ → ∀p _))
+
+-- If a decidable predicate P over a finite set is sometimes false,
+-- then we can find the smallest value for which this is the case.
+
+¬∀⟶∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
+                   ¬ (∀ i → P i) → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
+¬∀⟶∃¬-smallest zero    P P? ¬∀P = contradiction (λ()) ¬∀P
+¬∀⟶∃¬-smallest (suc n) P P? ¬∀P with P? zero
+... | no ¬P₀ = (zero , ¬P₀ , λ ())
+... | yes P₀ = map suc (map id (∀-cons P₀))
+  (¬∀⟶∃¬-smallest n (P ∘ suc) (P? ∘ suc) (¬∀P ∘ (∀-cons P₀)))
+
+-- When P is a decidable predicate over a finite set the following
+-- lemma can be proved.
+
+¬∀⟶∃¬ : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
+          ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
+¬∀⟶∃¬ n P P? ¬P = map id proj₁ (¬∀⟶∃¬-smallest n P P? ¬P)
