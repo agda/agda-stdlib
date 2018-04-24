@@ -10,11 +10,11 @@ module Data.Table where
 
 open import Data.Table.Base public
 
-open import Data.Bool using (if_then_else_)
-open import Data.Fin using (Fin)
-open import Data.Fin.Properties using (_≟_)
+open import Data.Bool using (true; false)
+open import Data.Fin using (Fin; _≟_)
 import Function.Equality as FE
 open import Function.Inverse using (Inverse; _↔_)
+open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (⌊_⌋)
 
 --------------------------------------------------------------------------------
@@ -32,4 +32,6 @@ permute π = rearrange (Inverse.to π FE.⟨$⟩_)
 -- and 'z' everywhere else.
 
 select : ∀ {n} {a} {A : Set a} → A → Fin n → Table A n → Table A n
-lookup (select z i t) j = if ⌊ j ≟ i ⌋ then lookup t i else z
+lookup (select z i t) j with j ≟ i
+... | yes _ = lookup t i
+... | no  _ = z

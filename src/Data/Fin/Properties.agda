@@ -9,42 +9,31 @@ module Data.Fin.Properties where
 
 open import Algebra
 open import Data.Empty using (⊥-elim)
-open import Data.Fin
+open import Data.Fin as Fin
 open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_) renaming
   (_≤_ to _ℕ≤_
   ; _<_ to _ℕ<_
   ; _+_ to _ℕ+_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Product
-open import Data.Bool using (if_then_else_)
 open import Function
 open import Function.Equality as FunS using (_⟨$⟩_)
 open import Function.Injection using (_↣_)
-open import Function.Inverse using (Inverse; _↔_)
 open import Algebra.FunctionProperties
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; cong; subst)
+  using (_≡_; _≢_; refl; sym; trans; cong; subst)
+open import Relation.Unary using (Pred)
 open import Category.Functor
 open import Category.Applicative
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
 
-infix 4 _≟_
-
 suc-injective : ∀ {o} {m n : Fin o} → Fin.suc m ≡ suc n → m ≡ n
 suc-injective refl = refl
-
-_≟_ : {n : ℕ} → Decidable {A = Fin n} _≡_
-zero  ≟ zero  = yes refl
-zero  ≟ suc y = no λ()
-suc x ≟ zero  = no λ()
-suc x ≟ suc y with x ≟ y
-... | yes x≡y = yes (cong suc x≡y)
-... | no  x≢y = no (x≢y ∘ suc-injective)
 
 preorder : ℕ → Preorder _ _ _
 preorder n = P.preorder (Fin n)
@@ -193,9 +182,6 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
 ... | tri> ¬lt ¬eq  gt = tri> (¬lt ∘ ℕ.≤-pred) (¬eq ∘ suc-injective) (s≤s gt)
 ... | tri≈ ¬lt  eq ¬gt = tri≈ (¬lt ∘ ℕ.≤-pred) (cong suc eq)    (¬gt ∘ ℕ.≤-pred)
 
-_<?_ : ∀ {n} → Decidable (_<_ {n})
-m <? n = suc (toℕ m) ℕ.≤? toℕ n
-
 <-isStrictTotalOrder : ∀ {n} → IsStrictTotalOrder _≡_ (_<_ {n})
 <-isStrictTotalOrder = record
   { isEquivalence = P.isEquivalence
@@ -273,45 +259,6 @@ infixl 6 _+′_
 _+′_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (ℕ.pred m ℕ+ n)
 i +′ j = inject≤ (i + j) (ℕₚ.+-mono-≤ (prop-toℕ-≤ i) ℕₚ.≤-refl)
 
--- reverse {n} "i" = "n ∸ 1 ∸ i".
-
-reverse : ∀ {n} → Fin n → Fin n
-reverse {zero}  ()
-reverse {suc n} i  = inject≤ (n ℕ- i) (ℕₚ.n∸m≤n (toℕ i) (suc n))
-
-reverse-prop : ∀ {n} → (i : Fin n) → toℕ (reverse i) ≡ n ∸ suc (toℕ i)
-reverse-prop {zero} ()
-reverse-prop {suc n} i = begin
-  toℕ (inject≤ (n ℕ- i) _)  ≡⟨ inject≤-lemma _ _ ⟩
-  toℕ (n ℕ- i)              ≡⟨ toℕ‿ℕ- n i ⟩
-  n ∸ toℕ i                 ∎
-  where
-  open P.≡-Reasoning
-
-  toℕ‿ℕ- : ∀ n i → toℕ (n ℕ- i) ≡ n ∸ toℕ i
-  toℕ‿ℕ- n       zero     = to-from n
-  toℕ‿ℕ- zero    (suc ())
-  toℕ‿ℕ- (suc n) (suc i)  = toℕ‿ℕ- n i
-
-reverse-involutive : ∀ {n} → Involutive _≡_ (reverse {n})
-reverse-involutive {zero}  ()
-reverse-involutive {suc n} i = toℕ-injective (begin
-  toℕ (reverse (reverse i)) ≡⟨ reverse-prop (reverse i) ⟩
-  n ∸ (toℕ (reverse i))     ≡⟨ P.cong (n ∸_) (reverse-prop i) ⟩
-  n ∸ (n ∸ (toℕ i))         ≡⟨ ℕₚ.m∸[m∸n]≡n (ℕ.≤-pred (bounded i)) ⟩
-  toℕ i                     ∎)
-  where open P.≡-Reasoning
-
-reverse-suc : ∀{n}{i : Fin n} → toℕ (reverse (suc i)) ≡ toℕ (reverse i)
-reverse-suc {n}{i} = begin
-  toℕ (reverse (suc i))      ≡⟨ reverse-prop (suc i) ⟩
-  suc n ∸ suc (toℕ (suc i))  ≡⟨⟩
-  n ∸ toℕ (suc i)            ≡⟨⟩
-  n ∸ suc (toℕ i)            ≡⟨ P.sym (reverse-prop i) ⟩
-  toℕ (reverse i)            ∎
-  where
-  open P.≡-Reasoning
-
 -- If there is an injection from a type to a finite set, then the type
 -- has decidable equality.
 
@@ -320,31 +267,29 @@ eq? inj = Dec.via-injection inj _≟_
 
 -- Quantification over finite sets commutes with applicative functors.
 
-sequence : ∀ {F n} {P : Fin n → Set} → RawApplicative F →
+sequence : ∀ {p F n} {P : Pred (Fin n) p} → RawApplicative F →
            (∀ i → F (P i)) → F (∀ i → P i)
-sequence {F} RA = helper _ _
+sequence {p} {F} RA = helper _ _
   where
   open RawApplicative RA
 
-  helper : ∀ n (P : Fin n → Set) → (∀ i → F (P i)) → F (∀ i → P i)
+  helper : ∀ n (P : Fin n → Set p) → (∀ i → F (P i)) → F (∀ i → P i)
   helper zero    P ∀iPi = pure (λ())
   helper (suc n) P ∀iPi =
-    combine <$> ∀iPi zero ⊛ helper n (λ n → P (suc n)) (∀iPi ∘ suc)
+    combine <$> ∀iPi zero ⊛ helper n (P ∘ suc) (∀iPi ∘ suc)
     where
     combine : P zero → (∀ i → P (suc i)) → ∀ i → P i
     combine z s zero    = z
     combine z s (suc i) = s i
 
-private
+-- Included just to show that sequence above has an inverse (under
+-- an equivalence relation with two equivalence classes, one with
+-- all inhabited sets and the other with all uninhabited sets).
 
-  -- Included just to show that sequence above has an inverse (under
-  -- an equivalence relation with two equivalence classes, one with
-  -- all inhabited sets and the other with all uninhabited sets).
-
-  sequence⁻¹ : ∀ {F}{A} {P : A → Set} → RawFunctor F →
-               F (∀ i → P i) → ∀ i → F (P i)
-  sequence⁻¹ RF F∀iPi i = (λ f → f i) <$> F∀iPi
-    where open RawFunctor RF
+sequence⁻¹ : ∀ {p} {A : Set} {P : Pred A p} {F} →
+             RawFunctor F → F (∀ i → P i) → ∀ i → F (P i)
+sequence⁻¹ RF F∀iPi i = (λ f → f i) <$> F∀iPi
+  where open RawFunctor RF
 
 ------------------------------------------------------------------------
 
@@ -379,11 +324,6 @@ punchIn-punchOut {suc m} {suc i}  {zero}  i≢j = refl
 punchIn-punchOut {suc m} {suc i}  {suc j} i≢j =
   cong suc (punchIn-punchOut (i≢j ∘ cong suc))
 
-punchOut-punchIn : ∀ {n} {i} {j : Fin n} (p : ¬ i ≡ punchIn i j) → punchOut p ≡ j
-punchOut-punchIn {i = zero} p = refl
-punchOut-punchIn {i = suc i} {zero} p = refl
-punchOut-punchIn {i = suc i} {suc j} p = cong suc (punchOut-punchIn (p ∘ cong suc))
-
 punchInᵢ≢i : ∀ {m} i (j : Fin m) → punchIn i j ≢ i
 punchInᵢ≢i zero    _    ()
 punchInᵢ≢i (suc i) zero ()
@@ -392,186 +332,32 @@ punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
 -- A version of 'cong' for 'punchOut' in which the inequality argument can be
 -- changed out arbitrarily (reflecting the proof-irrelevance of that argument).
 
-punchOut-cong : ∀ {n} (i : Fin (ℕ.suc n)) {j k} {i≢j : i ≢ j} {i≢k : i ≢ k} → j ≡ k → punchOut i≢j ≡ punchOut i≢k
+punchOut-cong : ∀ {n} (i : Fin (suc n)) {j k} {i≢j : i ≢ j} {i≢k : i ≢ k} → j ≡ k → punchOut i≢j ≡ punchOut i≢k
 punchOut-cong zero {zero} {i≢j = i≢j} = ⊥-elim (i≢j refl)
 punchOut-cong zero {suc j} {zero} {i≢k = i≢k} = ⊥-elim (i≢k refl)
 punchOut-cong zero {suc j} {suc k} = suc-injective
-punchOut-cong {ℕ.zero} (suc ())
-punchOut-cong {ℕ.suc n} (suc i) {zero} {zero} _ = refl
-punchOut-cong {ℕ.suc n} (suc i) {zero} {suc k} ()
-punchOut-cong {ℕ.suc n} (suc i) {suc j} {zero} ()
-punchOut-cong {ℕ.suc n} (suc i) {suc j} {suc k} = cong suc ∘ punchOut-cong i ∘ suc-injective
+punchOut-cong {zero} (suc ())
+punchOut-cong {suc n} (suc i) {zero} {zero} _ = refl
+punchOut-cong {suc n} (suc i) {zero} {suc k} ()
+punchOut-cong {suc n} (suc i) {suc j} {zero} ()
+punchOut-cong {suc n} (suc i) {suc j} {suc k} = cong suc ∘ punchOut-cong i ∘ suc-injective
 
 -- An alternative to 'punchOut-cong' in the which the new inequality argument is
 -- specific. Useful for enabling the omission of that argument during equational
 -- reasoning.
 
-punchOut-cong′ : ∀ {n} (i : Fin (ℕ.suc n)) {j k} {p : ¬ i ≡ j} (q : j ≡ k) → punchOut p ≡ punchOut (p ∘ P.sym ∘ P.trans q ∘ P.sym)
+punchOut-cong′ : ∀ {n} (i : Fin (suc n)) {j k} {p : i ≢ j} (q : j ≡ k) → punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
 punchOut-cong′ i q = punchOut-cong i q
 
---------------------------------------------------------------------------------
---  Bijections on finite sets
---------------------------------------------------------------------------------
-
-swapFin : ∀ {n} → Fin n → Fin n → Fin n → Fin n
-swapFin i j k =
-  if Dec.⌊ k ≟ i ⌋
-  then j
-  else (if Dec.⌊ k ≟ j ⌋
-        then i
-        else k)
-
-if-dec-true : ∀ {a}{A : Set a} {n} (i j : Fin n) {x y : A} → i ≡ j → (if Dec.⌊ i ≟ j ⌋ then x else y) ≡ x
-if-dec-true i j p with i ≟ j
-... | yes _ = P.refl
-... | no ¬p = ⊥-elim (¬p p)
-
-if-dec-false : ∀ {a}{A : Set a} {n} (i j : Fin n) {x y : A} → ¬ (i ≡ j) → (if Dec.⌊ i ≟ j ⌋ then x else y) ≡ y
-if-dec-false i j ¬p with i ≟ j
-... | yes p = ⊥-elim (¬p p)
-... | no _ = P.refl
-
-private
-  swap-lem₁ : ∀ {n} i (j : Fin n) → swapFin i j j ≡ i
-  swap-lem₁ i j with j ≟ i
-  swap-lem₁ i j | yes p = p
-  swap-lem₁ i j | no ¬p = if-dec-true j j P.refl
-
-  swap-lem₂ : ∀ {n} i (j : Fin n) → swapFin i j i ≡ j
-  swap-lem₂ i j = if-dec-true i i P.refl
-
-  swapFin-inverse : ∀ {n} (i j : Fin n) {k} → swapFin i j (swapFin j i k) ≡ k
-  swapFin-inverse i j {k} with k ≟ j
-  swapFin-inverse i j {.j} | yes P.refl = if-dec-true i i P.refl
-  swapFin-inverse i j {k} | no ¬p with k ≟ i
-  swapFin-inverse i j {k} | no ¬p | yes q =
-    begin
-      (if Dec.⌊ j ≟ i ⌋ then j else (if Dec.⌊ j ≟ j ⌋ then i else j))  ≡⟨ if-dec-false j i (¬p ∘ P.trans q ∘ P.sym) ⟩
-      (if Dec.⌊ j ≟ j ⌋ then i else j)                                 ≡⟨ if-dec-true j j P.refl  ⟩
-      i                                                                ≡⟨ P.sym q ⟩
-      k                                                                ∎
-    where open P.≡-Reasoning
-  swapFin-inverse i j {k} | no ¬p | no ¬q =
-    begin
-      (if Dec.⌊ k ≟ i ⌋ then j else (if Dec.⌊ k ≟ j ⌋ then i else k))  ≡⟨ if-dec-false k i ¬q ⟩
-      (if Dec.⌊ k ≟ j ⌋ then i else k)                                 ≡⟨ if-dec-false k j ¬p ⟩
-      k                                                                ∎
-    where open P.≡-Reasoning
-
--- A permuation that swaps the two given indices.
-
-swapIndices : ∀ {n} → Fin n → Fin n → Fin n ↔ Fin n
-swapIndices i j = record
-  { to = P.→-to-⟶ (swapFin i j)
-  ; from = P.→-to-⟶ (swapFin j i)
-  ; inverse-of = record
-    { left-inverse-of = λ _ → swapFin-inverse _ _
-    ; right-inverse-of = λ _ → swapFin-inverse _ _
-    }
-  }
-
--- Given a permutation
---
--- [0 ↦ i₀, …, k ↦ iₖ, …, n ↦ iₙ]
---
--- yields a permutation
---
--- [0 ↦ i₀, …, k-1 ↦ i_{k-1}, k ↦ i_{k+1}, k+1 ↦ i_{k+2}, …, n-1 ↦ iₙ]
---
--- Intuitively, 'removeIn↔ k π' removes the element at index 'k' from the
--- permutation 'π'.
-
-removeIn↔ : ∀ {m n} (i : Fin (ℕ.suc m)) → Fin (ℕ.suc m) ↔ Fin (ℕ.suc n) → Fin m ↔ Fin n
-removeIn↔ {m}{n} i π = record
-  { to = P.→-to-⟶ to
-  ; from = P.→-to-⟶ from
-  ; inverse-of = record
-    { left-inverse-of = left-inverse-of
-    ; right-inverse-of = right-inverse-of
-    }
-  }
-  where
-    πi : Fin (ℕ.suc n)
-    πi = Inverse.to π ⟨$⟩ i
-
-    open P.≡-Reasoning
-
-    permute-≢ : ∀ {i j} → ¬ i ≡ j → (Inverse.to π ⟨$⟩ i) ≢ (Inverse.to π ⟨$⟩ j)
-    permute-≢ p q = p (Inverse.injective π q)
-
-    to-punchOut : ∀ {j : Fin m} → πi ≢ (Inverse.to π ⟨$⟩ punchIn i j)
-    to-punchOut = permute-≢ (punchInᵢ≢i _ _) ∘ P.sym
-
-    from-punchOut : ∀ {j : Fin n} → i ≢ (Inverse.from π ⟨$⟩ punchIn πi j)
-    from-punchOut {j} p = punchInᵢ≢i πi j (
-      begin
-        punchIn πi j                                        ≡⟨ P.sym (Inverse.right-inverse-of π _) ⟩
-        Inverse.to π ⟨$⟩ (Inverse.from π ⟨$⟩ punchIn πi j)  ≡⟨ P.cong (Inverse.to π ⟨$⟩_) (P.sym p) ⟩
-        πi                                                  ∎)
-
-    to : Fin m → Fin n
-    to j = punchOut to-punchOut
-
-    from : Fin n → Fin m
-    from j = punchOut {i = i} {Inverse.from π ⟨$⟩ punchIn πi j} from-punchOut
-
-    left-inverse-of : ∀ j → from (to j) ≡ j
-    left-inverse-of j =
-      begin
-        from (to j)                                                                ≡⟨⟩
-        punchOut {i = i} {Inverse.from π ⟨$⟩ punchIn πi (punchOut to-punchOut)} _  ≡⟨ punchOut-cong′ i (P.cong (Inverse.from π ⟨$⟩_) (punchIn-punchOut {i = πi} _)) ⟩
-        punchOut {i = i} {Inverse.from π ⟨$⟩ (Inverse.to π ⟨$⟩ punchIn i j)}    _  ≡⟨ punchOut-cong′ i (Inverse.left-inverse-of π _) ⟩
-        punchOut {i = i} {punchIn i j}                                          _  ≡⟨ punchOut-punchIn {i = i} _ ⟩
-        j                                                                          ∎
-
-    right-inverse-of : ∀ j → to (from j) ≡ j
-    right-inverse-of j =
-      begin
-        to (from j)                                                                ≡⟨⟩
-        punchOut {i = πi} {Inverse.to π ⟨$⟩ punchIn i (punchOut from-punchOut)} _  ≡⟨ punchOut-cong′ πi (P.cong (Inverse.to π ⟨$⟩_) (punchIn-punchOut {i = i} _)) ⟩
-        punchOut {i = πi} {Inverse.to π ⟨$⟩ (Inverse.from π ⟨$⟩ punchIn πi j)}  _  ≡⟨ punchOut-cong′ πi (Inverse.right-inverse-of π _) ⟩
-        punchOut {i = πi} {punchIn πi j}                                        _  ≡⟨ punchOut-punchIn {i = πi} _ ⟩
-        j                                                                          ∎
-
-punchIn-permute :
-  ∀ {n} (π : Fin (ℕ.suc n) ↔ Fin (ℕ.suc n)) i (j : Fin n)
-  → Inverse.to π ⟨$⟩ (punchIn i j) ≡
-    punchIn (Inverse.to π ⟨$⟩ i) (Inverse.to (removeIn↔ i π) ⟨$⟩ j)
-punchIn-permute π i j =
+punchOut-punchIn : ∀ {n} i {j : Fin n} → punchOut {i = i} {j = punchIn i j} (punchInᵢ≢i i j ∘ sym) ≡ j
+punchOut-punchIn zero {j} = refl
+punchOut-punchIn (suc i) {zero} = refl
+punchOut-punchIn (suc i) {suc j} = cong suc (
   begin
-    Inverse.to π ⟨$⟩ (punchIn i j)                                       ≡⟨ P.sym (punchIn-punchOut {i = πi} _) ⟩
-    punchIn πi (punchOut {i = πi} {Inverse.to π ⟨$⟩ (punchIn i j)} lem)  ≡⟨⟩
-    punchIn πi (Inverse.to (removeIn↔ i π) ⟨$⟩ j)                        ∎
-  where
-    open P.≡-Reasoning
-
-    πi = Inverse.to π ⟨$⟩ i
-
-    lem : ¬ πi ≡ Inverse.to π ⟨$⟩ punchIn i j
-    lem p = punchInᵢ≢i i j (Inverse.injective π (P.sym p))
-
-punchIn-permute′ :
-  ∀ {n} π i (j : Fin n)
-  → Inverse.to π ⟨$⟩ (punchIn (Inverse.from π ⟨$⟩ i) j) ≡
-    punchIn i (Inverse.to (removeIn↔ (Inverse.from π ⟨$⟩ i) π) ⟨$⟩ j)
-punchIn-permute′ π i j =
-  begin
-    Inverse.to π ⟨$⟩ (punchIn (Inverse.from π ⟨$⟩ i) j)                                                         ≡⟨ punchIn-permute π _ _ ⟩
-    punchIn (Inverse.to π ⟨$⟩ (Inverse.from π ⟨$⟩ i)) (Inverse.to (removeIn↔ (Inverse.from π ⟨$⟩ i) π) ⟨$⟩ j)   ≡⟨ P.cong₂ punchIn (Inverse.right-inverse-of π i) P.refl ⟩
-    punchIn i (Inverse.to (removeIn↔ (Inverse.from π ⟨$⟩ i) π) ⟨$⟩ j)                                           ∎
-  where
-    open P.≡-Reasoning
-
--- If there is a bijection between finite sets of size 'm' and 'n', then
--- 'm' = 'n'.
-
-↔-≡ : ∀ {m n} → Fin m ↔ Fin n → m ≡ n
-↔-≡ {ℕ.zero} {ℕ.zero} p = P.refl
-↔-≡ {ℕ.zero} {ℕ.suc n} p with Inverse.from p ⟨$⟩ zero
-↔-≡ {ℕ.zero} {ℕ.suc n} p | ()
-↔-≡ {ℕ.suc m} {ℕ.zero} p with Inverse.to p ⟨$⟩ zero
-↔-≡ {ℕ.suc m} {ℕ.zero} p | ()
-↔-≡ {ℕ.suc m} {ℕ.suc n} p = P.cong ℕ.suc (↔-≡ (removeIn↔ zero p))
+    punchOut (punchInᵢ≢i i j ∘ suc-injective ∘ sym ∘ cong suc)  ≡⟨ punchOut-cong i refl ⟩
+    punchOut (punchInᵢ≢i i j ∘ sym)                             ≡⟨ punchOut-punchIn i ⟩
+    j                                                           ∎)
+  where open P.≡-Reasoning
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
@@ -581,3 +367,5 @@ punchIn-permute′ π i j =
 
 cmp              = <-cmp
 strictTotalOrder = <-strictTotalOrder
+
+open import Data.Fin public using (_≟_; _<?_)
