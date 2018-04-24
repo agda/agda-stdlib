@@ -8,6 +8,7 @@ module Data.Fin.Permutation where
 
 open import Data.Fin
 open import Data.Fin.Properties
+import Data.Fin.Permutation.Components as PC
 
 open import Data.Nat using (ℕ; suc; zero)
 open import Data.Empty using (⊥-elim)
@@ -15,7 +16,7 @@ open import Data.Product using (proj₂)
 open import Relation.Nullary using (yes; no)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; trans; sym; →-to-⟶; cong; cong₂)
-open import Function.Inverse using (_↔_; Inverse)
+open import Function.Inverse using (_↔_; Inverse; _InverseOf_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function using (_∘_)
 
@@ -49,35 +50,31 @@ inverseˡ π = Inverse.left-inverse-of π _
 inverseʳ : ∀ {m n} (π : Permutation′ m n) {i} → π ⟨$⟩ʳ (π ⟨$⟩ˡ i) ≡ i
 inverseʳ π = Inverse.right-inverse-of π _
 
+-- Build a permutation from two functions and a proof that they are inverses of
+-- each other.
+
+permutation :
+  ∀ {m n} (f : Fin m → Fin n) (g : Fin n → Fin m) →
+  (→-to-⟶ g) InverseOf (→-to-⟶ f) → Permutation′ m n
+permutation f g inv = record { to = →-to-⟶ f ; from = →-to-⟶ g ; inverse-of = inv }
+
 -- A permuation that swaps the two given indices.
 
 swap : ∀ {n} → Fin n → Fin n → Permutation n
-swap {n} i j = record
-  { to = →-to-⟶ (swap′ i j)
-  ; from = →-to-⟶ (swap′ j i)
-  ; inverse-of = record
-    { left-inverse-of = λ _ → inverse _ _
-    ; right-inverse-of = λ _ → inverse _ _
-    }
+swap {n} i j = permutation (PC.swap i j) (PC.swap j i)
+  record
+  { left-inverse-of = λ _ → PC.swap-inverse _ _
+  ; right-inverse-of = λ _ → PC.swap-inverse _ _
   }
-  where
-  swap′ : ∀ {n} → Fin n → Fin n → Fin n → Fin n
-  swap′ i j k with k ≟ i
-  ... | yes _ = j
-  ... | no _ with k ≟ j
-  ... | yes _ = i
-  ... | no _ = k
 
-  inverse : ∀ {n} (i j : Fin n) {k} → swap′ i j (swap′ j i k) ≡ k
-  inverse i j {k} with k ≟ j
-  ... | yes p rewrite P.≡-≟-identity _≟_ {a = i} refl = sym p
-  ... | no ¬p with k ≟ i
-  inverse i j {k} | no ¬p | yes q with j ≟ i
-  ... | yes r = trans r (sym q)
-  ... | no ¬r rewrite P.≡-≟-identity _≟_ {a = j} refl = sym q
-  inverse i j {k} | no ¬p | no ¬q
-    rewrite proj₂ (P.≢-≟-identity _≟_ ¬q)
-          | proj₂ (P.≢-≟-identity _≟_ ¬p) = refl
+-- A permutation that reverses the order of indices
+
+reverse : ∀ {n} → Permutation n
+reverse {n} = permutation PC.reverse PC.reverse
+  record
+  { left-inverse-of = PC.reverse-involutive
+  ; right-inverse-of = PC.reverse-involutive
+  }
 
 -- Given a permutation
 --
@@ -91,13 +88,10 @@ swap {n} i j = record
 -- permutation 'π'.
 
 removeMember : ∀ {m n} (i : Fin (suc m)) → Permutation′ (suc m) (suc n) → Permutation′ m n
-removeMember {m}{n} i π = record
-  { to = →-to-⟶ to
-  ; from = →-to-⟶ from
-  ; inverse-of = record
-    { left-inverse-of = left-inverse-of
-    ; right-inverse-of = right-inverse-of
-    }
+removeMember {m}{n} i π = permutation to from
+  record
+  { left-inverse-of = left-inverse-of
+  ; right-inverse-of = right-inverse-of
   }
   where
   πʳ = π ⟨$⟩ʳ_
