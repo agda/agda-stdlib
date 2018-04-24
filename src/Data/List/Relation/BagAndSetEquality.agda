@@ -349,8 +349,8 @@ module _ {a} {A : Set a} where
     { to = P.→-to-⟶ λ {(x , x∈xs) → x , Inverse.to p ⟨$⟩ x∈xs}
     ; from = P.→-to-⟶ λ {(y , y∈ys) → y , Inverse.from p ⟨$⟩ y∈ys}
     ; inverse-of = record
-      { left-inverse-of = λ _ → ΣR.Pointwise-≡⇒≡ (P.refl , H.≡-to-≅ (Inverse.left-inverse-of p _))
-      ; right-inverse-of = λ _ → ΣR.Pointwise-≡⇒≡ (P.refl , H.≡-to-≅ (Inverse.right-inverse-of p _))
+      { left-inverse-of = λ _ → P.cong (,_) (Inverse.left-inverse-of p _)
+      ; right-inverse-of = λ _ → P.cong (,_) (Inverse.right-inverse-of p _)
       }
     }
 

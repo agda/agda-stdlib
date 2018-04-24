@@ -10,6 +10,7 @@ open import Data.Table
 open import Data.Table.Relation.Equality
 
 open import Data.Bool using (true; false; if_then_else_)
+open import Data.Nat using (zero; suc)
 open import Data.Fin using (Fin; suc; zero; _≟_)
 open import Data.List as L using (List; _∷_; [])
 open import Data.List.Any using (here; there; index)
@@ -24,6 +25,12 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_)
 open import Relation.Nullary using (yes; no)
 
+map-toList-hom :
+  ∀ {n a b} {A : Set a} {B : Set b} {f : A → B} (t : Table A n)
+  → L.map f (toList t) ≡ toList (map f t)
+map-toList-hom {zero} t = P.refl
+map-toList-hom {suc n} t = P.cong₂ _∷_ P.refl (map-toList-hom (tail t))
+
 module _ {a} {A : Set a} where
 
   fromList-∈ : ∀ {xs : List A} (i : Fin (L.length xs)) → lookup (fromList xs) i ∈ xs
@@ -34,7 +41,7 @@ module _ {a} {A : Set a} where
   index-fromList-∈ : ∀ {xs i} → index (fromList-∈ {xs} i) ≡ i
   index-fromList-∈ {[]}     {()}
   index-fromList-∈ {x ∷ xs} {zero}  = P.refl
-  index-fromList-∈ {x ∷ xs} {suc i} = P.cong suc index-fromList-∈
+  index-fromList-∈ {x ∷ xs} {suc i} = P.cong Fin.suc index-fromList-∈
 
   fromList-index : ∀ {xs} {x : A} (x∈xs : x ∈ xs) → lookup (fromList xs) (index x∈xs) ≡ x
   fromList-index (here px)    = P.sym px
@@ -44,7 +51,7 @@ module _ {a} {A : Set a} where
   lookup∈ i = _ , fromList-∈ i
 
   lookup∈-index : ∀ {x} {xs : List A} (p : x ∈ xs) → lookup∈ (index p) ≡ (x , p)
-  lookup∈-index {x} (here P.refl) = P.refl
+  lookup∈-index (here P.refl) = P.refl
   lookup∈-index (there {xs = xs} p) =
     let q , r = ΣR.≡⇒Pointwise-≡ (lookup∈-index p)
     in ΣR.Pointwise-≡⇒≡ (q , H.icong (λ y → y ∈ xs) q there r)
