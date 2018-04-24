@@ -7,7 +7,7 @@
 module Data.Fin.Permutation where
 
 open import Data.Fin
-open import Data.Fin.Properties
+open import Data.Fin.Properties hiding (setoid)
 import Data.Fin.Permutation.Components as PC
 
 open import Data.Nat using (ℕ; suc; zero)
@@ -15,10 +15,11 @@ open import Data.Empty using (⊥-elim)
 open import Data.Product using (proj₂)
 open import Relation.Nullary using (yes; no)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; trans; sym; →-to-⟶; cong; cong₂)
-open import Function.Inverse using (_↔_; Inverse; _InverseOf_)
+  using (_≡_; _≢_; refl; trans; →-to-⟶; cong; cong₂)
+open import Function.Inverse as Inverse using (_↔_; Inverse; _InverseOf_)
 open import Function.Equality using (_⟨$⟩_)
-open import Function using (_∘_)
+import Function.Related as FR
+open import Function renaming (_∘_ to _⟨∘⟩_)
 
 open P.≡-Reasoning
 
@@ -39,10 +40,10 @@ Permutation : ℕ → Set
 Permutation n = Permutation′ n n
 
 _⟨$⟩ʳ_ : ∀ {m n} → Permutation′ m n → Fin m → Fin n
-_⟨$⟩ʳ_ = _⟨$⟩_ ∘ Inverse.to
+_⟨$⟩ʳ_ = _⟨$⟩_ ⟨∘⟩ Inverse.to
 
 _⟨$⟩ˡ_ : ∀ {m n} → Permutation′ m n → Fin n → Fin m
-_⟨$⟩ˡ_ = _⟨$⟩_ ∘ Inverse.from
+_⟨$⟩ˡ_ = _⟨$⟩_ ⟨∘⟩ Inverse.from
 
 inverseˡ : ∀ {m n} (π : Permutation′ m n) {i} → π ⟨$⟩ˡ (π ⟨$⟩ʳ i) ≡ i
 inverseˡ π = Inverse.left-inverse-of π _
@@ -57,6 +58,17 @@ permutation :
   ∀ {m n} (f : Fin m → Fin n) (g : Fin n → Fin m) →
   (→-to-⟶ g) InverseOf (→-to-⟶ f) → Permutation′ m n
 permutation f g inv = record { to = →-to-⟶ f ; from = →-to-⟶ g ; inverse-of = inv }
+
+-- Equational reasoning for permutations
+
+module EquationalReasoning = FR.EquationalReasoning using (_↔⟨_⟩_; _∎)
+
+setoid = FR.setoid FR.bijection
+
+_∘_ : ∀ {m n o} → Permutation′ n o → Permutation′ m n → Permutation′ m o
+_∘_ = Inverse._∘_
+
+sym = Inverse.sym
 
 -- A permutation that transposes the two given indices.
 
@@ -101,10 +113,10 @@ removeMember {m}{n} i π = permutation to from
   permute-≢ p q = p (Inverse.injective π q)
 
   to-punchOut : ∀ {j : Fin m} → πʳ i ≢ πʳ (punchIn i j)
-  to-punchOut = permute-≢ (punchInᵢ≢i _ _ ∘ sym)
+  to-punchOut = permute-≢ (punchInᵢ≢i _ _ ⟨∘⟩ P.sym)
 
   from-punchOut : ∀ {j : Fin n} → i ≢ πˡ (punchIn (πʳ i) j)
-  from-punchOut {j} p = punchInᵢ≢i (πʳ i) j (sym (
+  from-punchOut {j} p = punchInᵢ≢i (πʳ i) j (P.sym (
      begin
       πʳ i                        ≡⟨ cong πʳ p ⟩
       πʳ (πˡ (punchIn (πʳ i) j))  ≡⟨ inverseʳ π ⟩
@@ -142,7 +154,7 @@ module _ {n} (π : Permutation (suc n)) where
   punchIn-permute : ∀ i j → πʳ (punchIn i j) ≡ punchIn (πʳ i) (removeMember i π ⟨$⟩ʳ j)
   punchIn-permute i j =
     begin
-      πʳ (punchIn i j)                                             ≡⟨ sym (punchIn-punchOut {i = πʳ i} _) ⟩
+      πʳ (punchIn i j)                                             ≡⟨ P.sym (punchIn-punchOut {i = πʳ i} _) ⟩
       punchIn (πʳ i) (punchOut {i = πʳ i} {πʳ (punchIn i j)} _)    ≡⟨⟩
       punchIn (πʳ i) (removeMember i π ⟨$⟩ʳ j)                     ∎
 
@@ -166,4 +178,4 @@ module _ {n} (π : Permutation (suc n)) where
 ↔-≡ {suc m} {suc n} π = cong suc (↔-≡ (removeMember zero π))
 
 fromPermutation′ : ∀ {m n} → Permutation′ m n → Permutation m
-fromPermutation′ π = P.subst (Permutation′ _) (sym (↔-≡ π)) π
+fromPermutation′ π = P.subst (Permutation′ _) (P.sym (↔-≡ π)) π
