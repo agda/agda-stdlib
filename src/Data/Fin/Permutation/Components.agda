@@ -19,8 +19,15 @@ open import Algebra.FunctionProperties using (Involutive)
 --  Functions
 --------------------------------------------------------------------------------
 
-swap : ∀ {n} → Fin n → Fin n → Fin n → Fin n
-swap i j k with k ≟ i
+-- 'tranpose i j' acts like the identity function, except it swaps the places of
+-- 'i' and 'j'.
+--
+-- swap i j i ≡ j
+-- swap i j j ≡ i
+-- swap i j k ≡ k if k ≠ i and k ≠ j
+
+transpose : ∀ {n} → Fin n → Fin n → Fin n → Fin n
+transpose i j k with k ≟ i
 ... | yes _ = j
 ... | no _ with k ≟ j
 ... | yes _ = i
@@ -36,14 +43,14 @@ reverse {suc n} i  = inject≤ (n ℕ- i) (ℕₚ.n∸m≤n (toℕ i) (suc n))
 --  Properties
 --------------------------------------------------------------------------------
 
-swap-inverse : ∀ {n} (i j : Fin n) {k} → swap i j (swap j i k) ≡ k
-swap-inverse i j {k} with k ≟ j
+transpose-inverse : ∀ {n} (i j : Fin n) {k} → transpose i j (transpose j i k) ≡ k
+transpose-inverse i j {k} with k ≟ j
 ... | yes p rewrite P.≡-≟-identity _≟_ {a = i} refl = sym p
 ... | no ¬p with k ≟ i
-swap-inverse i j {k} | no ¬p | yes q with j ≟ i
+transpose-inverse i j {k} | no ¬p | yes q with j ≟ i
 ... | yes r = trans r (sym q)
 ... | no ¬r rewrite P.≡-≟-identity _≟_ {a = j} refl = sym q
-swap-inverse i j {k} | no ¬p | no ¬q
+transpose-inverse i j {k} | no ¬p | no ¬q
   rewrite proj₂ (P.≢-≟-identity _≟_ ¬q)
         | proj₂ (P.≢-≟-identity _≟_ ¬p) = refl
 

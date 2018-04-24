@@ -58,13 +58,13 @@ permutation :
   (→-to-⟶ g) InverseOf (→-to-⟶ f) → Permutation′ m n
 permutation f g inv = record { to = →-to-⟶ f ; from = →-to-⟶ g ; inverse-of = inv }
 
--- A permuation that swaps the two given indices.
+-- A permutation that transposes the two given indices.
 
-swap : ∀ {n} → Fin n → Fin n → Permutation n
-swap {n} i j = permutation (PC.swap i j) (PC.swap j i)
+transpose : ∀ {n} → Fin n → Fin n → Permutation n
+transpose {n} i j = permutation (PC.transpose i j) (PC.transpose j i)
   record
-  { left-inverse-of = λ _ → PC.swap-inverse _ _
-  ; right-inverse-of = λ _ → PC.swap-inverse _ _
+  { left-inverse-of = λ _ → PC.transpose-inverse _ _
+  ; right-inverse-of = λ _ → PC.transpose-inverse _ _
   }
 
 -- A permutation that reverses the order of indices
