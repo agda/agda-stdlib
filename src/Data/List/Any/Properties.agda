@@ -152,7 +152,7 @@ swap↔ {P = P} = record
   from (here ())
   from (there p) = from p
 
-⊥↔Any[] : ∀ {a} {A : Set a} {P : A → Set} → ⊥ ↔ Any P []
+⊥↔Any[] : ∀ {a p} {A : Set a} {P : A → Set p} → ⊥ ↔ Any P []
 ⊥↔Any[] = record
   { to         = P.→-to-⟶ (λ ())
   ; from       = P.→-to-⟶ (λ ())
