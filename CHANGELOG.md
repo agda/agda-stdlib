@@ -408,6 +408,13 @@ Backwards compatible changes
   append-splitAt-identity : uncurry (append m n) (splitAt m n as) ≡ as
   ```
 
+* Added new functions to `Data.String.Base`:
+  ```agda
+  length    : String → ℕ
+  replicate : ℕ → Char → String
+  concat    : List String → String
+  ```
+
 * Added new proof to `Data.Sum`:
   ```agda
   swap-involutive : swap ∘ swap ≗ id
