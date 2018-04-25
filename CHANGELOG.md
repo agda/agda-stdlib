@@ -323,6 +323,11 @@ Backwards compatible changes
   foldr-selective : Selective _≈_ _•_ → (foldr _•_ e xs ≈ e) ⊎ (foldr _•_ e xs ∈ xs)
   ```
 
+* Added new function to `Data.List.NonEmpty`:
+  ```agda
+  fromList : List A → Maybe (List⁺ A)
+  ```
+
 * Added new proofs to `Data.List.Properties`:
   ```agda
   tabulate-cong   : f ≗ g → tabulate f ≡ tabulate g
@@ -368,6 +373,13 @@ Backwards compatible changes
   ∸-distribˡ-⊔-⊓ : x ∸ (y ⊔ z) ≡ (x ∸ y) ⊓ (x ∸ z)
   ```
 
+* Added new functions to `Data.Product`:
+
+  ```agda
+  map₁ : (A → B) → A × C → B × C
+  map₂ : (∀ {x} → B x → C x) → Σ A B → Σ A C
+  ```
+
 * Added new functions to `Data.Product.N-ary`:
   ```agda
   _∈[_]_     : A → ∀ n → A ^ n → Set a
@@ -398,6 +410,13 @@ Backwards compatible changes
   tail-cons-identity      : tail n (cons n a as) ≡ as
   append-cons-commute     : append (suc m) n (cons m a xs) ys ≡ cons (m + n) a (append m n xs ys)
   append-splitAt-identity : uncurry (append m n) (splitAt m n as) ≡ as
+  ```
+
+* Added new functions to `Data.String.Base`:
+  ```agda
+  length    : String → ℕ
+  replicate : ℕ → Char → String
+  concat    : List String → String
   ```
 
 * Added new proof to `Data.Sum`:
