@@ -384,7 +384,7 @@ module _ {a} {A : Set a} where
   -- If two lists are bag-equal, then they have the same length.
 
   bag-length-≡ : ∀ {xs ys : List A} → xs ∼[ bag ] ys → length xs ≡ length ys
-  bag-length-≡ p = Perm.↔-≡ (bag-permutation p)
+  bag-length-≡ p = Perm.↔⇒≡ (bag-permutation p)
 
 
   -- The permutation between list element indices given by 'bag-permutation'

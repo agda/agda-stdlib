@@ -11,13 +11,12 @@
 module Data.Fin where
 
 open import Data.Empty using (⊥-elim)
-open import Data.Bool using (true; false)
 open import Data.Nat as ℕ
   using (ℕ; zero; suc; z≤n; s≤s)
 open import Function using (_∘_; _on_)
 open import Level using () renaming (zero to ℓ₀)
 open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Decidable using (True; toWitness; ⌊_⌋)
+open import Relation.Nullary.Decidable using (True; toWitness)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; refl; cong)

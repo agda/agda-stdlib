@@ -22,9 +22,9 @@ open import Algebra.FunctionProperties using (Involutive)
 -- 'tranpose i j' acts like the identity function, except it swaps the places of
 -- 'i' and 'j'.
 --
--- swap i j i ≡ j
--- swap i j j ≡ i
--- swap i j k ≡ k if k ≠ i and k ≠ j
+-- transpose i j i ≡ j
+-- transpose i j j ≡ i
+-- transpose i j k ≡ k if k ≠ i and k ≠ j
 
 transpose : ∀ {n} → Fin n → Fin n → Fin n → Fin n
 transpose i j k with k ≟ i
