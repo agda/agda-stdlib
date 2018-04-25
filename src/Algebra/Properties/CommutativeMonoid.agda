@@ -43,12 +43,15 @@ sumₜ-punchIn : ∀ {n} t (i : Fin (suc n)) → sumₜ t ≈ lookup t i + sum�
 sumₜ-punchIn f zero = refl
 sumₜ-punchIn {zero} t (suc ())
 sumₜ-punchIn {suc n} t (suc i) =
-  begin
-    head t + sumₜ (tail t)                                                ≈⟨ +-cong refl (sumₜ-punchIn (tail t) i) ⟩
-    head t + (lookup t (suc i) + sumₜ (rearrange (punchIn i) (tail t)))   ≈⟨ sym (+-assoc _ _ _) ⟩
-    (head t + lookup t (suc i)) + sumₜ (rearrange (punchIn i) (tail t))   ≈⟨ +-cong (+-comm _ _) refl ⟩
-    (lookup t (suc i) + head t) + sumₜ (rearrange (punchIn i) (tail t))   ≈⟨ +-assoc _ _ _ ⟩
-    lookup t (suc i) + (head t + sumₜ (rearrange (punchIn i) (tail t)))   ∎
+  let x = head t
+      y = lookup t (suc i)
+      z = sumₜ (rearrange (punchIn i) (tail t))
+  in begin
+    x + sumₜ (tail t)  ≈⟨ +-cong refl (sumₜ-punchIn (tail t) i) ⟩
+    x + (y + z)        ≈⟨ sym (+-assoc _ _ _) ⟩
+    (x + y) + z        ≈⟨ +-cong (+-comm _ _) refl ⟩
+    (y + x) + z        ≈⟨ +-assoc _ _ _ ⟩
+    y + (x + z)        ∎
 
 -- '_≈_' is a congruence over 'sumTable n'.
 
@@ -107,17 +110,15 @@ sumₜ-permute : ∀ {n} t (π : Permutation n) → sumₜ t ≈ sumₜ (rearran
 sumₜ-permute {zero} t π = refl
 sumₜ-permute {suc n} t π =
   let f = lookup t
-  in
-  begin
+      0i = zero
+      ππ0 = π ⟨$⟩ʳ (π ⟨$⟩ˡ 0i)
+  in begin
     sumₜ t                                                                            ≡⟨⟩
     f 0i + sumₜ (rearrange (punchIn 0i) t)                                            ≈⟨ +-cong refl (sumₜ-permute _ (Perm.removeMember (π ⟨$⟩ˡ 0i) π)) ⟩
     f 0i + sumₜ (rearrange (punchIn 0i ∘ (Perm.removeMember (π ⟨$⟩ˡ 0i) π ⟨$⟩ʳ_)) t)  ≡⟨ P.cong₂ _+_ P.refl (sumₜ-cong≡ (P.cong f ∘ P.sym ∘ Perm.punchIn-permute′ π 0i)) ⟩
     f 0i + sumₜ (rearrange ((π ⟨$⟩ʳ_) ∘ punchIn (π ⟨$⟩ˡ 0i)) t)                       ≡⟨ P.cong₂ _+_ (P.cong f (P.sym (Perm.inverseʳ π))) P.refl ⟩
     f _  + sumₜ (rearrange ((π ⟨$⟩ʳ_) ∘ punchIn (π ⟨$⟩ˡ 0i)) t)                       ≈⟨ sym (sumₜ-punchIn (rearrange (π ⟨$⟩ʳ_) t) (π ⟨$⟩ˡ 0i)) ⟩
     sumₜ (rearrange (π ⟨$⟩ʳ_) t)                                                      ∎
-  where
-    0i = zero
-    ππ0 = π ⟨$⟩ʳ (π ⟨$⟩ˡ 0i)
 
 -- A version of 'sumₜ-permute' allowing heterogeneous sum lengths.
 
