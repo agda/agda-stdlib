@@ -157,13 +157,13 @@ module _ {n} (π : Permutation (suc n)) where
 -- If there is a bijection between finite sets of size 'm' and 'n', then
 -- 'm' = 'n'.
 
-↔-≡ : ∀ {m n} → Permutation′ m n → m ≡ n
-↔-≡ {zero} {zero} π = refl
-↔-≡ {zero} {suc n} π with π ⟨$⟩ˡ zero
-↔-≡ {zero} {suc n} π | ()
-↔-≡ {suc m} {zero} π with π ⟨$⟩ʳ zero
-↔-≡ {suc m} {zero} π | ()
-↔-≡ {suc m} {suc n} π = cong suc (↔-≡ (removeMember zero π))
+↔⇒≡ : ∀ {m n} → Permutation′ m n → m ≡ n
+↔⇒≡ {zero} {zero} π = refl
+↔⇒≡ {zero} {suc n} π with π ⟨$⟩ˡ zero
+↔⇒≡ {zero} {suc n} π | ()
+↔⇒≡ {suc m} {zero} π with π ⟨$⟩ʳ zero
+↔⇒≡ {suc m} {zero} π | ()
+↔⇒≡ {suc m} {suc n} π = cong suc (↔⇒≡ (removeMember zero π))
 
 fromPermutation′ : ∀ {m n} → Permutation′ m n → Permutation m
-fromPermutation′ π = P.subst (Permutation′ _) (sym (↔-≡ π)) π
+fromPermutation′ π = P.subst (Permutation′ _) (sym (↔⇒≡ π)) π
