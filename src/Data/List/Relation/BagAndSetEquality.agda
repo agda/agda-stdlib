@@ -9,17 +9,23 @@ module Data.List.Relation.BagAndSetEquality where
 open import Algebra using (CommutativeSemiring; CommutativeMonoid)
 open import Algebra.FunctionProperties using (Idempotent)
 open import Category.Monad using (RawMonad)
-open import Data.List
+open import Data.List hiding (lookup)
 open import Data.List.Categorical using (monad; module MonadProperties)
 import Data.List.Properties as LP
-open import Data.List.Any using (Any; here; there)
+open import Data.List.Any using (Any; here; there; index)
 open import Data.List.Any.Properties
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Sublist.Propositional.Properties
   using (⊆-preorder)
 open import Data.Product hiding (map)
+open import Data.Product.Relation.Pointwise.Dependent as ΣR using (_,_)
 open import Data.Sum hiding (map)
 open import Data.Sum.Relation.Pointwise using (_⊎-cong_)
+open import Data.Fin using (Fin)
+import Data.Fin.Permutation as Perm
+open import Data.Table as T using (lookup)
+import Data.Table.Properties as TP
+import Data.Table.Relation.Equality as TR
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 import Function.Equivalence as FE
@@ -30,6 +36,7 @@ open import Relation.Binary
 import Relation.Binary.EqReasoning as EqR
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≗_)
+import Relation.Binary.HeterogeneousEquality as H
 open import Relation.Nullary
 open import Data.List.Membership.Propositional.Properties
 
@@ -330,3 +337,65 @@ drop-cons {A = A} {x} {xs} {ys} x∷xs≈x∷ys {z} = record
     from inv ⟨$⟩ here P.refl  ≡⟨ left⁺ ⟩
     there z∈xs                ∎
   ... | ()
+
+
+-- Some properties connecting permutations on finite sets to bag equality
+module _ {a} {A : Set a} where
+  -- If two lists are bag-equal, then there is a bijection between distinct
+  -- elements of each list.
+
+  bag-∈-↔ : ∀ {xs ys : List A} → xs ∼[ bag ] ys → (∃ λ x → x ∈ xs) ↔ (∃ λ y → y ∈ ys)
+  bag-∈-↔ {xs}{ys} p = record
+    { to = P.→-to-⟶ λ {(x , x∈xs) → x , Inverse.to p ⟨$⟩ x∈xs}
+    ; from = P.→-to-⟶ λ {(y , y∈ys) → y , Inverse.from p ⟨$⟩ y∈ys}
+    ; inverse-of = record
+      { left-inverse-of = λ _ → P.cong (,_) (Inverse.left-inverse-of p _)
+      ; right-inverse-of = λ _ → P.cong (,_) (Inverse.right-inverse-of p _)
+      }
+    }
+
+
+  -- There is a bijection between distinct elements of a list and a set the size
+  -- of the list's length.
+
+  ∈-↔-length : (xs : List A) → (∃ λ x → x ∈ xs) ↔ (Fin (length xs))
+  ∈-↔-length xs = record
+    { to = P.→-to-⟶ (index ∘ proj₂)
+    ; from = P.→-to-⟶ TP.lookup∈
+    ; inverse-of = record
+      { left-inverse-of = TP.lookup∈-index ∘ proj₂
+      ; right-inverse-of = λ _ → TP.index-fromList-∈
+      }
+    }
+
+
+  -- A bag-equality between two lists induces a permutation between the indices of
+  -- their elements.
+
+  bag-permutation : ∀ {xs ys : List A} → xs ∼[ bag ] ys → Fin (length xs) ↔ Fin (length ys)
+  bag-permutation {xs} {ys} p =
+    Fin (length xs)    ↔⟨ fr-sym (∈-↔-length xs) ⟩
+    (∃ λ x → x ∈ xs)   ↔⟨ bag-∈-↔ p ⟩
+    (∃ λ y → y ∈ ys)   ↔⟨ ∈-↔-length ys ⟩
+    Fin (length ys)    ∎
+    where open Related.EquationalReasoning renaming (sym to fr-sym)
+
+
+  -- If two lists are bag-equal, then they have the same length.
+
+  bag-length-≡ : ∀ {xs ys : List A} → xs ∼[ bag ] ys → length xs ≡ length ys
+  bag-length-≡ p = Perm.↔⇒≡ (bag-permutation p)
+
+
+  -- The permutation between list element indices given by 'bag-permutation'
+  -- correctly maps elements of each list to each other.
+
+  bag-permutation-correct : ∀ {xs ys : List A} (p : xs ∼[ bag ] ys) → T.fromList xs TR.≗ (T.permute (bag-permutation p) (T.fromList ys))
+  bag-permutation-correct {xs} {ys} p i =
+    begin
+      lookup (fromList xs) i                                        ≡⟨ P.sym (TP.fromList-index (Inverse.to p ⟨$⟩ TP.fromList-∈ i)) ⟩
+      lookup (fromList ys) (index (Inverse.to p ⟨$⟩ TP.fromList-∈ i))  ≡⟨⟩
+      lookup (T.permute (bag-permutation p) (fromList ys)) i      ∎
+    where
+      open P.≡-Reasoning
+      open T
