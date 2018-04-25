@@ -364,6 +364,13 @@ Backwards compatible changes
   ∸-distribˡ-⊔-⊓ : x ∸ (y ⊔ z) ≡ (x ∸ y) ⊓ (x ∸ z)
   ```
 
+* Added new functions to `Data.Product`:
+
+  ```agda
+  map₁ : (A → B) → A × C → B × C
+  map₂ : (∀ {x} → B x → C x) → Σ A B → Σ A C
+  ```
+
 * Added new functions to `Data.Product.N-ary`:
   ```agda
   _∈[_]_     : A → ∀ n → A ^ n → Set a
