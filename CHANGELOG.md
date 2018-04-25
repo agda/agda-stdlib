@@ -319,6 +319,11 @@ Backwards compatible changes
   foldr-selective : Selective _≈_ _•_ → (foldr _•_ e xs ≈ e) ⊎ (foldr _•_ e xs ∈ xs)
   ```
 
+* Added new function to `Data.List.NonEmpty`:
+  ```agda
+  fromList : List A → Maybe (List⁺ A)
+  ```
+
 * Added new proofs to `Data.List.Properties`:
   ```agda
   tabulate-cong   : f ≗ g → tabulate f ≡ tabulate g
