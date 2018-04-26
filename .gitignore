@@ -4,6 +4,7 @@
 .*.swp
 *.agdai
 *.agda.el
+.DS_Store
 *.lagda.el
 *.hi
 *.o
