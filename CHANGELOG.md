@@ -442,6 +442,8 @@ Backwards compatible changes
   zipWith-distribˡ  : DistributesOverˡ_ _≡_ f g →  _DistributesOverˡ_ _≡_ (zipWith f) (zipWith g)
   zipWith-distribʳ  : DistributesOverʳ_ _≡_ f g → _DistributesOverʳ_ _≡_ (zipWith f) (zipWith g)
   zipWith-absorbs   : _Absorbs_ _≡_ f g →  _Absorbs_ _≡_ (zipWith f) (zipWith g)
+
+  toList∘fromList : toList (fromList xs) ≡ xs
   ```
 
 * Added new types to `Relation.Binary.Core`:
