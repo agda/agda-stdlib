@@ -107,6 +107,9 @@ Non-backwards compatible changes
 
 * Refactored and moved `↔Vec` from `Data.Product.N-ary` to `Data.Product.N-ary.Properties`.
 
+* Refactored `Data.List.Reverse`'s `reverseView` in a direct style instead of the well-founded
+  induction on the list's length we were using so far
+
 Deprecated features
 -------------------
 
