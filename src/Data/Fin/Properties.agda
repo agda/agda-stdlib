@@ -23,7 +23,7 @@ open import Function using (_∘_)
 open import Function.Injection using (_↣_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; sym; cong; subst)
+  using (_≡_; _≢_; refl; sym; trans; cong; subst)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
@@ -379,6 +379,26 @@ punchOut-injective {suc n} {suc i}  {suc j} {zero}  _   _   ()
 punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
   cong suc (punchOut-injective (i≢j ∘ cong suc) (i≢k ∘ cong suc) (suc-injective pⱼ≡pₖ))
 
+-- A version of 'cong' for 'punchOut' in which the inequality argument can be
+-- changed out arbitrarily (reflecting the proof-irrelevance of that argument).
+
+punchOut-cong : ∀ {n} (i : Fin (suc n)) {j k} {i≢j : i ≢ j} {i≢k : i ≢ k} → j ≡ k → punchOut i≢j ≡ punchOut i≢k
+punchOut-cong zero {zero} {i≢j = 0≢0} = contradiction refl 0≢0
+punchOut-cong zero {suc j} {zero} {i≢k = 0≢0} = contradiction refl 0≢0
+punchOut-cong zero {suc j} {suc k} = suc-injective
+punchOut-cong {zero} (suc ())
+punchOut-cong {suc n} (suc i) {zero} {zero} _ = refl
+punchOut-cong {suc n} (suc i) {zero} {suc k} ()
+punchOut-cong {suc n} (suc i) {suc j} {zero} ()
+punchOut-cong {suc n} (suc i) {suc j} {suc k} = cong suc ∘ punchOut-cong i ∘ suc-injective
+
+-- An alternative to 'punchOut-cong' in the which the new inequality argument is
+-- specific. Useful for enabling the omission of that argument during equational
+-- reasoning.
+
+punchOut-cong′ : ∀ {n} (i : Fin (suc n)) {j k} {p : i ≢ j} (q : j ≡ k) → punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
+punchOut-cong′ i q = punchOut-cong i q
+
 punchIn-punchOut : ∀ {m} {i j : Fin (suc m)} (i≢j : i ≢ j) →
                    punchIn i (punchOut i≢j) ≡ j
 punchIn-punchOut {_}     {zero}   {zero}  0≢0 = contradiction refl 0≢0
@@ -388,6 +408,15 @@ punchIn-punchOut {suc m} {suc i}  {zero}  i≢j = refl
 punchIn-punchOut {suc m} {suc i}  {suc j} i≢j =
   cong suc (punchIn-punchOut (i≢j ∘ cong suc))
 
+punchOut-punchIn : ∀ {n} i {j : Fin n} → punchOut {i = i} {j = punchIn i j} (punchInᵢ≢i i j ∘ sym) ≡ j
+punchOut-punchIn zero {j} = refl
+punchOut-punchIn (suc i) {zero} = refl
+punchOut-punchIn (suc i) {suc j} = cong suc (begin
+  punchOut (punchInᵢ≢i i j ∘ suc-injective ∘ sym ∘ cong suc)  ≡⟨ punchOut-cong i refl ⟩
+  punchOut (punchInᵢ≢i i j ∘ sym)                             ≡⟨ punchOut-punchIn i ⟩
+  j                                                           ∎)
+  where open P.≡-Reasoning
+
 ------------------------------------------------------------------------
 -- _+′_
 
@@ -395,41 +424,6 @@ infixl 6 _+′_
 
 _+′_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (ℕ.pred m ℕ+ n)
 i +′ j = inject≤ (i + j) (ℕₚ.+-mono-≤ (toℕ≤pred[n] i) ℕₚ.≤-refl)
-
-------------------------------------------------------------------------
--- reverse
-
--- reverse {n} "i" = "n ∸ 1 ∸ i".
-
-reverse : ∀ {n} → Fin n → Fin n
-reverse {zero}  ()
-reverse {suc n} i  = inject≤ (n ℕ- i) (ℕₚ.n∸m≤n (toℕ i) (suc n))
-
-reverse-prop : ∀ {n} → (i : Fin n) → toℕ (reverse i) ≡ n ∸ suc (toℕ i)
-reverse-prop {zero} ()
-reverse-prop {suc n} i = begin
-  toℕ (inject≤ (n ℕ- i) _)  ≡⟨ toℕ-inject≤ _ _ ⟩
-  toℕ (n ℕ- i)              ≡⟨ toℕ‿ℕ- n i ⟩
-  n ∸ toℕ i                 ∎
-  where open P.≡-Reasoning
-
-reverse-involutive : ∀ {n} → Involutive _≡_ (reverse {n})
-reverse-involutive {zero}  ()
-reverse-involutive {suc n} i = toℕ-injective (begin
-  toℕ (reverse (reverse i)) ≡⟨ reverse-prop (reverse i) ⟩
-  n ∸ (toℕ (reverse i))     ≡⟨ P.cong (n ∸_) (reverse-prop i) ⟩
-  n ∸ (n ∸ (toℕ i))         ≡⟨ ℕₚ.m∸[m∸n]≡n (ℕ.≤-pred (toℕ<n i)) ⟩
-  toℕ i                     ∎)
-  where open P.≡-Reasoning
-
-reverse-suc : ∀{n}{i : Fin n} → toℕ (reverse (suc i)) ≡ toℕ (reverse i)
-reverse-suc {n}{i} = begin
-  toℕ (reverse (suc i))      ≡⟨ reverse-prop (suc i) ⟩
-  suc n ∸ suc (toℕ (suc i))  ≡⟨⟩
-  n ∸ toℕ (suc i)            ≡⟨⟩
-  n ∸ suc (toℕ i)            ≡⟨ P.sym (reverse-prop i) ⟩
-  toℕ (reverse i)            ∎
-  where open P.≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Quantification

@@ -107,6 +107,13 @@ Non-backwards compatible changes
 
 * Refactored and moved `↔Vec` from `Data.Product.N-ary` to `Data.Product.N-ary.Properties`.
 
+* Moved the function `reverse` and related proofs `reverse-prop`
+  `reverse-involutive` and `reverse-suc` from `Data.Fin.Properties` to the new
+  module `Data.Fin.Permutation.Components`.
+
+* Refactored `Data.List.Reverse`'s `reverseView` in a direct style instead of the well-founded
+  induction on the list's length we were using so far.
+
 Deprecated features
 -------------------
 
@@ -358,6 +365,11 @@ Backwards compatible changes
   foldr-selective : Selective _≈_ _•_ → (foldr _•_ e xs ≈ e) ⊎ (foldr _•_ e xs ∈ xs)
   ```
 
+* Added new function to `Data.List.NonEmpty`:
+  ```agda
+  fromList : List A → Maybe (List⁺ A)
+  ```
+
 * Added new proofs to `Data.List.Properties`:
   ```agda
   tabulate-cong   : f ≗ g → tabulate f ≡ tabulate g
@@ -403,6 +415,13 @@ Backwards compatible changes
   ∸-distribˡ-⊔-⊓ : x ∸ (y ⊔ z) ≡ (x ∸ y) ⊓ (x ∸ z)
   ```
 
+* Added new functions to `Data.Product`:
+
+  ```agda
+  map₁ : (A → B) → A × C → B × C
+  map₂ : (∀ {x} → B x → C x) → Σ A B → Σ A C
+  ```
+
 * Added new functions to `Data.Product.N-ary`:
   ```agda
   _∈[_]_     : A → ∀ n → A ^ n → Set a
@@ -435,6 +454,13 @@ Backwards compatible changes
   append-splitAt-identity : uncurry (append m n) (splitAt m n as) ≡ as
   ```
 
+* Added new functions to `Data.String.Base`:
+  ```agda
+  length    : String → ℕ
+  replicate : ℕ → Char → String
+  concat    : List String → String
+  ```
+
 * Added new proof to `Data.Sum`:
   ```agda
   swap-involutive : swap ∘ swap ≗ id
@@ -462,6 +488,8 @@ Backwards compatible changes
   zipWith-distribˡ  : DistributesOverˡ_ _≡_ f g →  _DistributesOverˡ_ _≡_ (zipWith f) (zipWith g)
   zipWith-distribʳ  : DistributesOverʳ_ _≡_ f g → _DistributesOverʳ_ _≡_ (zipWith f) (zipWith g)
   zipWith-absorbs   : _Absorbs_ _≡_ f g →  _Absorbs_ _≡_ (zipWith f) (zipWith g)
+
+  toList∘fromList : toList (fromList xs) ≡ xs
   ```
 
 * Added new types to `Relation.Binary.Core`:
@@ -566,6 +594,19 @@ Backwards compatible changes
   remove-insert   : remove i (insert i x xs) ≡ xs
   insert-remove   : insert i (lookup i xs) (remove i xs) ≡ xs
   ```
+
+* Added new proofs to `Data.Fin.Properties`
+  ```agda
+  punchOut-cong : (i : Fin (suc n)) → j ≡ k → punchOut i≢j ≡ punchOut i≢k
+  punchOut-cong′ : (i : Fin (suc n)) (q : j ≡ k) → punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
+  punchOut-punchIn : i → punchOut {i = i} {j = punchIn i j} (punchInᵢ≢i i j ∘ sym) ≡ j
+  ```
+
+* Added new modules `Data.Fin.Permutation` and
+  `Data.Fin.Permutation.Components`. `Data.Fin.Permutation` is a library of
+  permutations implemented as bijective functions `Fin m → Fin n`.
+  `Data.Fin.Permutation.Components` contains functions and proofs used to
+  implement these bijections.
 
 Version 0.15
 ============

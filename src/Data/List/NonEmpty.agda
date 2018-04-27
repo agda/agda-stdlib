@@ -10,7 +10,7 @@ open import Category.Monad
 open import Data.Bool.Base using (Bool; false; true; not; T)
 open import Data.Bool.Properties
 open import Data.List as List using (List; []; _∷_)
-open import Data.Maybe.Base using (nothing; just)
+open import Data.Maybe.Base using (Maybe ; nothing; just)
 open import Data.Nat as Nat
 open import Data.Product using (∃; proj₁; proj₂; _,_; ,_)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
@@ -50,14 +50,20 @@ length (x ∷ xs) = suc (List.length xs)
 ------------------------------------------------------------------------
 -- Conversion
 
-toList : ∀ {a} {A : Set a} → List⁺ A → List A
-toList (x ∷ xs) = x ∷ xs
+module _ {a} {A : Set a} where
 
-fromVec : ∀ {n a} {A : Set a} → Vec A (suc n) → List⁺ A
-fromVec (x ∷ xs) = x ∷ Vec.toList xs
+  toList : List⁺ A → List A
+  toList (x ∷ xs) = x ∷ xs
 
-toVec : ∀ {a} {A : Set a} (xs : List⁺ A) → Vec A (length xs)
-toVec (x ∷ xs) = x ∷ Vec.fromList xs
+  fromList : List A → Maybe (List⁺ A)
+  fromList []       = nothing
+  fromList (x ∷ xs) = just (x ∷ xs)
+
+  fromVec : ∀ {n} → Vec A (suc n) → List⁺ A
+  fromVec (x ∷ xs) = x ∷ Vec.toList xs
+
+  toVec : (xs : List⁺ A) → Vec A (length xs)
+  toVec (x ∷ xs) = x ∷ Vec.fromList xs
 
 lift : ∀ {a b} {A : Set a} {B : Set b} →
        (∀ {m} → Vec A (suc m) → ∃ λ n → Vec B (suc n)) →
