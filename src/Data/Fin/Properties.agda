@@ -24,9 +24,16 @@ open import Function.Injection using (_↣_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst)
+open import Relation.Nullary using (¬_)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
+
+------------------------------------------------------------------------
+-- Fin
+
+¬Fin0 : ¬ Fin 0
+¬Fin0 ()
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
