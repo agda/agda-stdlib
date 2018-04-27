@@ -60,13 +60,7 @@ reverse-prop {suc n} i = begin
   toℕ (inject≤ (n ℕ- i) _)  ≡⟨ inject≤-lemma _ _ ⟩
   toℕ (n ℕ- i)              ≡⟨ toℕ‿ℕ- n i ⟩
   n ∸ toℕ i                 ∎
-  where
-  open P.≡-Reasoning
-
-  toℕ‿ℕ- : ∀ n i → toℕ (n ℕ- i) ≡ n ∸ toℕ i
-  toℕ‿ℕ- n       zero     = to-from n
-  toℕ‿ℕ- zero    (suc ())
-  toℕ‿ℕ- (suc n) (suc i)  = toℕ‿ℕ- n i
+  where open P.≡-Reasoning
 
 reverse-involutive : ∀ {n} → Involutive _≡_ (reverse {n})
 reverse-involutive {zero}  ()

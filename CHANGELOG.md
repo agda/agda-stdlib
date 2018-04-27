@@ -122,6 +122,31 @@ the library. The old names still exist and therefore all existing code should st
 work, however they have been deprecated and use of the new names is encouraged. Although not
 anticipated any time soon, they may eventually be removed in some future release of the library.
 
+* In `Data.Fin.Properties`:
+  ```agda
+  to-from       ↦ toℕ-fromℕ
+  from-to       ↦ fromℕ-toℕ
+
+  bounded       ↦ toℕ<n
+  prop-toℕ-≤    ↦ toℕ≤pred[n]
+  prop-toℕ-≤′   ↦ toℕ≤pred[n]′
+
+  inject-lemma  ↦ toℕ-inject
+  inject+-lemma ↦ toℕ-inject+
+  inject₁-lemma ↦ toℕ-inject₁
+  inject≤-lemma ↦ toℕ-inject≤
+  ```
+
+* In `Data.List.Membership.Propositional`:
+  ```agda
+  filter-∈ ↦ ∈-filter⁺
+  ```
+
+* In `Data.List.Membership.Setoid`:
+  ```agda
+  map-with-∈ ↦ mapWith∈
+  ```
+
 * Closures of binary relations have been centralised as follows:
   ```agda
   Data.ReflexiveClosure              ↦ Relation.Binary.Closure.Reflexive
@@ -149,16 +174,6 @@ anticipated any time soon, they may eventually be removed in some future release
 * In `IsStrictPartialOrder` record in `Relation.Binary`:
   ```agda
   asymmetric ↦ asym
-  ```
-
-* In `Data.List.Membership.Propositional`:
-  ```agda
-  filter-∈ ↦ ∈-filter⁺
-  ```
-
-* In `Data.List.Membership.Setoid`:
-  ```agda
-  map-with-∈ ↦ mapWith∈
   ```
 
 Removed features
@@ -204,6 +219,30 @@ Backwards compatible changes
 
   ∨-∧-lattice                     : Lattice _ _
   ∨-∧-distributiveLattice         : DistributiveLattice _ _
+  ```
+
+* Added new proofs to `Data.Fin.Properties`:
+  ```agda
+  ≤-preorder             : ℕ → Preorder _ _ _
+  ≤-poset                : ℕ → Poset _ _ _
+  ≤-totalOrder           : ℕ → TotalOrder _ _ _
+  ≤-decTotalOrder        : ℕ → DecTotalOrder _ _ _
+
+  <-respˡ-≡              : _<_ Respectsˡ _≡_
+  <-respʳ-≡              : _<_ Respectsʳ _≡_
+  <-resp₂-≡              : _<_ Respects₂ _≡_
+  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+  <-strictPartialOrder   : ℕ → StrictPartialOrder _ _ _
+  <⇒≢                    : i < j → i ≢ j
+  ≤+≢⇒<                  : i ≤ j → i ≢ j → i < j
+  <⇒≤pred                : j < i → j ≤ pred i
+
+  toℕ‿ℕ-                 : toℕ (n ℕ- i) ≡ n ∸ toℕ i
+
+  inject₁-injective      : inject₁ i ≡ inject₁ j → i ≡ j
+
+  ∀-cons                 : P zero → (∀ i → P (suc i)) → (∀ i → P i)
+  sequence⁻¹             : RawFunctor F → F (∀ i → P i) → (∀ i → F (P i))
   ```
 
 * Added new functions to `Data.Fin.Subset`:
