@@ -111,6 +111,9 @@ Non-backwards compatible changes
   `reverse-involutive` and `reverse-suc` from `Data.Fin.Properties` to the new
   module `Data.Fin.Permutation.Components`.
 
+* Refactored `Data.List.Reverse`'s `reverseView` in a direct style instead of the well-founded
+  induction on the list's length we were using so far.
+
 Deprecated features
 -------------------
 
@@ -446,6 +449,8 @@ Backwards compatible changes
   zipWith-distribˡ  : DistributesOverˡ_ _≡_ f g →  _DistributesOverˡ_ _≡_ (zipWith f) (zipWith g)
   zipWith-distribʳ  : DistributesOverʳ_ _≡_ f g → _DistributesOverʳ_ _≡_ (zipWith f) (zipWith g)
   zipWith-absorbs   : _Absorbs_ _≡_ f g →  _Absorbs_ _≡_ (zipWith f) (zipWith g)
+
+  toList∘fromList : toList (fromList xs) ≡ xs
   ```
 
 * Added new types to `Relation.Binary.Core`:
