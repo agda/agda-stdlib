@@ -107,8 +107,12 @@ Non-backwards compatible changes
 
 * Refactored and moved `↔Vec` from `Data.Product.N-ary` to `Data.Product.N-ary.Properties`.
 
+* Moved the function `reverse` and related proofs `reverse-prop`
+  `reverse-involutive` and `reverse-suc` from `Data.Fin.Properties` to the new
+  module `Data.Fin.Permutation.Components`.
+
 * Refactored `Data.List.Reverse`'s `reverseView` in a direct style instead of the well-founded
-  induction on the list's length we were using so far
+  induction on the list's length we were using so far.
 
 Deprecated features
 -------------------
@@ -551,6 +555,19 @@ Backwards compatible changes
   remove-insert   : remove i (insert i x xs) ≡ xs
   insert-remove   : insert i (lookup i xs) (remove i xs) ≡ xs
   ```
+
+* Added new proofs to `Data.Fin.Properties`
+  ```agda
+  punchOut-cong : (i : Fin (suc n)) → j ≡ k → punchOut i≢j ≡ punchOut i≢k
+  punchOut-cong′ : (i : Fin (suc n)) (q : j ≡ k) → punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
+  punchOut-punchIn : i → punchOut {i = i} {j = punchIn i j} (punchInᵢ≢i i j ∘ sym) ≡ j
+  ```
+
+* Added new modules `Data.Fin.Permutation` and
+  `Data.Fin.Permutation.Components`. `Data.Fin.Permutation` is a library of
+  permutations implemented as bijective functions `Fin m → Fin n`.
+  `Data.Fin.Permutation.Components` contains functions and proofs used to
+  implement these bijections.
 
 Version 0.15
 ============

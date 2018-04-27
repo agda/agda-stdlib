@@ -24,7 +24,7 @@ open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; cong; subst)
+  using (_≡_; _≢_; refl; sym; trans; cong; subst)
 open import Relation.Unary using (Pred)
 open import Category.Functor
 open import Category.Applicative
@@ -259,45 +259,6 @@ infixl 6 _+′_
 _+′_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (ℕ.pred m ℕ+ n)
 i +′ j = inject≤ (i + j) (ℕₚ.+-mono-≤ (prop-toℕ-≤ i) ℕₚ.≤-refl)
 
--- reverse {n} "i" = "n ∸ 1 ∸ i".
-
-reverse : ∀ {n} → Fin n → Fin n
-reverse {zero}  ()
-reverse {suc n} i  = inject≤ (n ℕ- i) (ℕₚ.n∸m≤n (toℕ i) (suc n))
-
-reverse-prop : ∀ {n} → (i : Fin n) → toℕ (reverse i) ≡ n ∸ suc (toℕ i)
-reverse-prop {zero} ()
-reverse-prop {suc n} i = begin
-  toℕ (inject≤ (n ℕ- i) _)  ≡⟨ inject≤-lemma _ _ ⟩
-  toℕ (n ℕ- i)              ≡⟨ toℕ‿ℕ- n i ⟩
-  n ∸ toℕ i                 ∎
-  where
-  open P.≡-Reasoning
-
-  toℕ‿ℕ- : ∀ n i → toℕ (n ℕ- i) ≡ n ∸ toℕ i
-  toℕ‿ℕ- n       zero     = to-from n
-  toℕ‿ℕ- zero    (suc ())
-  toℕ‿ℕ- (suc n) (suc i)  = toℕ‿ℕ- n i
-
-reverse-involutive : ∀ {n} → Involutive _≡_ (reverse {n})
-reverse-involutive {zero}  ()
-reverse-involutive {suc n} i = toℕ-injective (begin
-  toℕ (reverse (reverse i)) ≡⟨ reverse-prop (reverse i) ⟩
-  n ∸ (toℕ (reverse i))     ≡⟨ P.cong (n ∸_) (reverse-prop i) ⟩
-  n ∸ (n ∸ (toℕ i))         ≡⟨ ℕₚ.m∸[m∸n]≡n (ℕ.≤-pred (bounded i)) ⟩
-  toℕ i                     ∎)
-  where open P.≡-Reasoning
-
-reverse-suc : ∀{n}{i : Fin n} → toℕ (reverse (suc i)) ≡ toℕ (reverse i)
-reverse-suc {n}{i} = begin
-  toℕ (reverse (suc i))      ≡⟨ reverse-prop (suc i) ⟩
-  suc n ∸ suc (toℕ (suc i))  ≡⟨⟩
-  n ∸ toℕ (suc i)            ≡⟨⟩
-  n ∸ suc (toℕ i)            ≡⟨ P.sym (reverse-prop i) ⟩
-  toℕ (reverse i)            ∎
-  where
-  open P.≡-Reasoning
-
 -- If there is an injection from a type to a finite set, then the type
 -- has decidable equality.
 
@@ -367,6 +328,36 @@ punchInᵢ≢i : ∀ {m} i (j : Fin m) → punchIn i j ≢ i
 punchInᵢ≢i zero    _    ()
 punchInᵢ≢i (suc i) zero ()
 punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
+
+-- A version of 'cong' for 'punchOut' in which the inequality argument can be
+-- changed out arbitrarily (reflecting the proof-irrelevance of that argument).
+
+punchOut-cong : ∀ {n} (i : Fin (suc n)) {j k} {i≢j : i ≢ j} {i≢k : i ≢ k} → j ≡ k → punchOut i≢j ≡ punchOut i≢k
+punchOut-cong zero {zero} {i≢j = i≢j} = ⊥-elim (i≢j refl)
+punchOut-cong zero {suc j} {zero} {i≢k = i≢k} = ⊥-elim (i≢k refl)
+punchOut-cong zero {suc j} {suc k} = suc-injective
+punchOut-cong {zero} (suc ())
+punchOut-cong {suc n} (suc i) {zero} {zero} _ = refl
+punchOut-cong {suc n} (suc i) {zero} {suc k} ()
+punchOut-cong {suc n} (suc i) {suc j} {zero} ()
+punchOut-cong {suc n} (suc i) {suc j} {suc k} = cong suc ∘ punchOut-cong i ∘ suc-injective
+
+-- An alternative to 'punchOut-cong' in the which the new inequality argument is
+-- specific. Useful for enabling the omission of that argument during equational
+-- reasoning.
+
+punchOut-cong′ : ∀ {n} (i : Fin (suc n)) {j k} {p : i ≢ j} (q : j ≡ k) → punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
+punchOut-cong′ i q = punchOut-cong i q
+
+punchOut-punchIn : ∀ {n} i {j : Fin n} → punchOut {i = i} {j = punchIn i j} (punchInᵢ≢i i j ∘ sym) ≡ j
+punchOut-punchIn zero {j} = refl
+punchOut-punchIn (suc i) {zero} = refl
+punchOut-punchIn (suc i) {suc j} = cong suc (
+  begin
+    punchOut (punchInᵢ≢i i j ∘ suc-injective ∘ sym ∘ cong suc)  ≡⟨ punchOut-cong i refl ⟩
+    punchOut (punchInᵢ≢i i j ∘ sym)                             ≡⟨ punchOut-punchIn i ⟩
+    j                                                           ∎)
+  where open P.≡-Reasoning
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
