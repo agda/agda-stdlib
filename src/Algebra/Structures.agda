@@ -30,10 +30,10 @@ record IsSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
 
   open IsEquivalence isEquivalence public
 
-record IsBand (• : Op₂ A) : Set (a ⊔ ℓ) where
+record IsBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
-    isSemigroup : IsSemigroup •
-    idem        : Idempotent •
+    isSemigroup : IsSemigroup ∙
+    idem        : Idempotent ∙
 
   open IsSemigroup isSemigroup public
 
