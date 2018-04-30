@@ -38,6 +38,9 @@ record Band c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsBand isBand public
 
+  semigroup : Semigroup c ℓ
+  semigroup = record { isSemigroup = isSemigroup }
+  
 ------------------------------------------------------------------------
 -- Monoids
 
@@ -449,6 +452,11 @@ record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsSemilattice isSemilattice public
 
+  band : Band c ℓ
+  band = record { isBand = isBand }
+
+  open Band band public using (semigroup)
+  
 record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∧_
   infixr 6 _∨_
