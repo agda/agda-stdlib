@@ -335,6 +335,19 @@ Backwards compatible changes
   unzip : All (P ∩ Q) ⊆ All P ∩ All Q
   ```
 
+* Added new proofs to `Data.List.All.Properties`:
+  ```agda
+  []⁻        : All P [ x ] → P x
+  fromMaybe⁺ : Maybe.All P mx → All P (fromMaybe mx)
+  fromMaybe⁻ : All P (fromMaybe mx) → Maybe.All P mx
+  replicate⁺ : P x → All P (replicate n x)
+  replicate⁻ : All P (replicate (suc n) x) → P x
+  inits⁺     : All P xs → All (All P) (inits xs)
+  inits⁻     : All (All P) (inits xs) → All P xs
+  tails⁺     : All P xs → All (All P) (tails xs)
+  tails⁻     : All (All P) (tails xs) → All P xs
+  ```
+
 * Added new proofs to `Data.List.Membership.(Setoid/Propositional).Properties`:
   ```agda
   ∉-resp-≈      : ∀ {xs} → (_∉ xs) Respects _≈_
