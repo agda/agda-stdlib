@@ -182,6 +182,12 @@ Removed features
 Backwards compatible changes
 ----------------------------
 
+* Added new records to `Algebra`:
+  ```agda
+  record Band c ℓ        : Set (suc (c ⊔ ℓ))
+  record Semilattice c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
 * The module `Algebra.Structures` can now be parameterised by equality in the same way
   as `Algebra.FunctionProperties`. The structures within also now export a greater selection
   of "left" and "right" properties. For example (where applicable):
@@ -194,6 +200,11 @@ Backwards compatible changes
   zeroʳ     : RightZero 0# _*_
   distribˡ  : _*_ DistributesOverˡ _+_
   distribʳ  : _*_ DistributesOverʳ _+_
+  ```
+  Also added the following record types:
+  ```agda
+  record IsBand        (• : Op₂ A) : Set (a ⊔ ℓ)
+  record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ)
   ```
 
 * Added new functions to `Algebra.Operations.CommutativeMonoid`:
@@ -224,7 +235,7 @@ Backwards compatible changes
 * Added new proofs to `Data.Fin.Properties`:
   ```agda
   ¬Fin0                  : ¬ Fin 0
-  
+
   ≤-preorder             : ℕ → Preorder _ _ _
   ≤-poset                : ℕ → Poset _ _ _
   ≤-totalOrder           : ℕ → TotalOrder _ _ _
