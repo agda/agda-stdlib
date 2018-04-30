@@ -412,7 +412,7 @@ record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
     isBand : IsBand ∧
     comm   : Commutative ∧
 
-  open IsBand isBand
+  open IsBand isBand public
 
 record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field
