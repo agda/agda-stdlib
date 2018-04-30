@@ -224,7 +224,7 @@ Backwards compatible changes
 * Added new proofs to `Data.Fin.Properties`:
   ```agda
   ¬Fin0                  : ¬ Fin 0
-  
+
   ≤-preorder             : ℕ → Preorder _ _ _
   ≤-poset                : ℕ → Poset _ _ _
   ≤-totalOrder           : ℕ → TotalOrder _ _ _
@@ -529,6 +529,32 @@ Backwards compatible changes
 
   trans∧tri⟶respʳ≈ : Transitive _<_ → Trichotomous _≈_ _<_ → _<_ Respectsʳ _≈_
   trans∧tri⟶respˡ≈ : Transitive _<_ → Trichotomous _≈_ _<_ → _<_ Respectsˡ _≈_
+  ```
+
+* Added new proofs to `Relation.Binary.Flip`:
+  ```agda
+  max            : Minimum ∼ ⊥ → Maximum (flip ∼) ⊥
+  min            : Maximum ∼ ⊥ → Minimum (flip ∼) ⊥
+
+  impliesᵘ       : Symmetric ≈ → ≈ ⇒ ∼ → ≈ ⇒ flip ∼
+  irreflexiveᵘ   : Symmetric ≈ → Irreflexive ≈ ∼ → Irreflexive ≈ (flip ∼)
+  antisymmetricᵘ : Antisymmetric ≈ ∼ → Antisymmetric ≈ (flip ∼)
+  trichotomousᵘ  : Trichotomous ≈ ∼ → Trichotomous ≈ (flip ∼)
+  respects₂ᵘ     : ∼₁ Respects₂ ∼₂ → (flip ∼₁) Respects₂ ∼₂
+
+  isPreorderᵘ           : IsPreorder ≈ ∼ → IsPreorder ≈ (flip ∼)
+  isPartialOrderᵘ       : IsPartialOrder ≈ ∼ → IsPartialOrder ≈ (flip ∼)
+  isTotalOrderᵘ         : IsTotalOrder ≈ ∼ → IsTotalOrder ≈ (flip ∼)
+  isDecTotalOrderᵘ      : IsDecTotalOrder ≈ ∼ → IsDecTotalOrder ≈ (flip ∼)
+  isStrictPartialOrderᵘ : IsStrictPartialOrder ≈ ∼ → IsStrictPartialOrder ≈ (flip ∼)
+  isStrictTotalOrderᵘ   : IsStrictTotalOrder ≈ ∼ → IsStrictTotalOrder ≈ (flip ∼)
+
+  preorderᵘ             : Preorder a ℓ₁ ℓ₂ → Preorder a ℓ₁ ℓ₂
+  posetᵘ                : Poset a ℓ₁ ℓ₂ → Poset a ℓ₁ ℓ₂
+  totalOrderᵘ           : TotalOrder a ℓ₁ ℓ₂ → TotalOrder a ℓ₁ ℓ₂
+  decTotalOrderᵘ        : DecTotalOrder a ℓ₁ ℓ₂ → DecTotalOrder a ℓ₁ ℓ₂
+  strictPartialOrderᵘ   : StrictPartialOrder a ℓ₁ ℓ₂ → StrictPartialOrder a ℓ₁ ℓ₂
+  strictTotalOrderᵘ     : StrictTotalOrder a ℓ₁ ℓ₂ → StrictTotalOrder a ℓ₁ ℓ₂
   ```
 
 * Added new proof to `Relation.Binary.PropositionalEquality`:
