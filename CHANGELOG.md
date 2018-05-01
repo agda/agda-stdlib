@@ -798,8 +798,8 @@ anticipated any time soon, they may eventually be removed in some future release
   distribʳ              ↦ *-distribʳ-+
   isCommutativeSemiring ↦ +-*-isCommutativeSemiring
   commutativeRing       ↦ +-*-commutativeRing
-  *-|-right-mono        ↦ *-monoʳ-≤-pos
-  cancel-*-|-right-≤    ↦ *-cancelʳ-≤-pos
+  *-+-right-mono        ↦ *-monoʳ-≤-pos
+  cancel-*-+-right-≤    ↦ *-cancelʳ-≤-pos
   cancel-*-right        ↦ *-cancelʳ-≡
   doubleNeg             ↦ neg-involutive
   -‿involutive          ↦ neg-involutive
@@ -1173,7 +1173,7 @@ Backwards compatible changes
   *-semigroup           : Semigroup _ _
   *-1-monoid            : Monoid _ _
   *-1-commutativeMonoid : CommutativeMonoid _ _
-  *-|-semiring          : Semiring _ _
+  *-+-semiring          : Semiring _ _
 
   ^-identityʳ           : RightIdentity 1 _^_
   ^-zeroˡ               : LeftZero 1 _^_
@@ -1482,14 +1482,14 @@ but they may be removed in some future release of the library.
   *-right-zero      ↦  *-zeroʳ
   distribʳ-*-+      ↦  *-distribʳ-+
   *-distrib-∸ʳ      ↦  *-distribʳ-∸
-  cancel-|-left     ↦  +-cancelˡ-≡
-  cancel-|-left-≤   ↦  +-cancelˡ-≤
+  cancel-+-left     ↦  +-cancelˡ-≡
+  cancel-+-left-≤   ↦  +-cancelˡ-≤
   cancel-*-right    ↦  *-cancelʳ-≡
   cancel-*-right-≤  ↦  *-cancelʳ-≤
 
   strictTotalOrder                      ↦  <-strictTotalOrder
-  isCommutativeSemiring                 ↦  *-|-isCommutativeSemiring
-  commutativeSemiring                   ↦  *-|-commutativeSemiring
+  isCommutativeSemiring                 ↦  *-+-isCommutativeSemiring
+  commutativeSemiring                   ↦  *-+-commutativeSemiring
   isDistributiveLattice                 ↦  ⊓-⊔-isDistributiveLattice
   distributiveLattice                   ↦  ⊓-⊔-distributiveLattice
   ⊔-⊓-0-isSemiringWithoutOne            ↦  ⊔-⊓-isSemiringWithoutOne
@@ -1945,7 +1945,7 @@ Backwards compatible changes
   *-monoʳ-<             : (suc n *_) Preserves _<_ ⟶ _<_
   *-cancelˡ-≡           : suc k * i ≡ suc k * j → i ≡ j
 
-  ^-distribˡ-|-*        : m ^ (n + p) ≡ m ^ n * m ^ p
+  ^-distribˡ-+-*        : m ^ (n + p) ≡ m ^ n * m ^ p
   i^j≡0⇒i≡0             : i ^ j ≡ 0 → i ≡ 0
   i^j≡1⇒j≡0∨i≡1         : i ^ j ≡ 1 → j ≡ 0 ⊎ i ≡ 1
 
