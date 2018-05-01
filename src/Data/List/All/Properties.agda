@@ -301,3 +301,62 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
              All P (zipWith f xs ys)
   zipWith⁺ P f []              = []
   zipWith⁺ P f (Pfxy ∷ Pfxsys) = Pfxy ∷ zipWith⁺ P f Pfxsys
+
+
+
+------------------------------------------------------------------------
+-- Operations for constructing lists
+------------------------------------------------------------------------
+-- singleton
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+  singleton⁻ : ∀ {x} → All P [ x ] → P x
+  singleton⁻ (px ∷ []) = px
+
+------------------------------------------------------------------------
+-- fromMaybe
+
+  fromMaybe⁺ : ∀ {mx} → Maybe.All P mx → All P (fromMaybe mx)
+  fromMaybe⁺ (just px) = px ∷ []
+  fromMaybe⁺ nothing   = []
+
+  fromMaybe⁻ : ∀ mx → All P (fromMaybe mx) → Maybe.All P mx
+  fromMaybe⁻ (just x) (px ∷ []) = just px
+  fromMaybe⁻ nothing  p         = nothing
+
+------------------------------------------------------------------------
+-- replicate
+
+  replicate⁺ : ∀ n {x} → P x → All P (replicate n x)
+  replicate⁺ zero    px = []
+  replicate⁺ (suc n) px = px ∷ replicate⁺ n px
+
+  replicate⁻ : ∀ {n x} → All P (replicate (suc n) x) → P x
+  replicate⁻ (px ∷ _) = px
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+------------------------------------------------------------------------
+-- inits
+
+  inits⁺ : ∀ {xs} → All P xs → All (All P) (inits xs)
+  inits⁺ []         = [] ∷ []
+  inits⁺ (px ∷ pxs) = [] ∷ gmap (px ∷_) (inits⁺ pxs)
+
+  inits⁻ : ∀ xs → All (All P) (inits xs) → All P xs
+  inits⁻ []               pxs                   = []
+  inits⁻ (x ∷ [])         ([] ∷ p[x] ∷ [])      = p[x]
+  inits⁻ (x ∷ xs@(_ ∷ _)) ([] ∷ pxs@(p[x] ∷ _)) =
+    singleton⁻ p[x] ∷ inits⁻ xs (All.map (drop⁺ 1) (map-All pxs))
+
+------------------------------------------------------------------------
+-- tails
+
+  tails⁺ : ∀ {xs} → All P xs → All (All P) (tails xs)
+  tails⁺ []             = [] ∷ []
+  tails⁺ pxxs@(_ ∷ pxs) = pxxs ∷ tails⁺ pxs
+
+  tails⁻ : ∀ xs → All (All P) (tails xs) → All P xs
+  tails⁻ []       pxs        = []
+  tails⁻ (x ∷ xs) (pxxs ∷ _) = pxxs
