@@ -195,7 +195,7 @@ nonZeroDivisor-lemma m zero r r≢zero (divides (suc q) eq) =
     m + suc (q * suc m) ≡⟨ +-suc m (q * suc m) ⟩
     suc (m + q * suc m) ≡⟨ sym eq ⟩
     1 * toℕ r           ≡⟨ *-identityˡ (toℕ r) ⟩
-    toℕ r               ≤⟨ ≤-pred $ FP.bounded r ⟩
+    toℕ r               ≤⟨ FP.toℕ≤pred[n] r ⟩
     m                   ∎
   where open ≤-Reasoning
 nonZeroDivisor-lemma m (suc q) r r≢zero d =

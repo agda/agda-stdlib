@@ -106,30 +106,30 @@ sumₜ-zero (suc n) =
 
 -- Any permutation of a table has the same sum as the original.
 
-sumₜ-permute : ∀ {n} t (π : Permutation n) → sumₜ t ≈ sumₜ (rearrange (π ⟨$⟩ʳ_) t)
+sumₜ-permute : ∀ {n} t (π : Permutation′ n) → sumₜ t ≈ sumₜ (rearrange (π ⟨$⟩ʳ_) t)
 sumₜ-permute {zero} t π = refl
 sumₜ-permute {suc n} t π =
   let f = lookup t
       0i = zero
       ππ0 = π ⟨$⟩ʳ (π ⟨$⟩ˡ 0i)
   in begin
-    sumₜ t                                                                            ≡⟨⟩
-    f 0i + sumₜ (rearrange (punchIn 0i) t)                                            ≈⟨ +-cong refl (sumₜ-permute _ (Perm.removeMember (π ⟨$⟩ˡ 0i) π)) ⟩
-    f 0i + sumₜ (rearrange (punchIn 0i ∘ (Perm.removeMember (π ⟨$⟩ˡ 0i) π ⟨$⟩ʳ_)) t)  ≡⟨ P.cong₂ _+_ P.refl (sumₜ-cong≡ (P.cong f ∘ P.sym ∘ Perm.punchIn-permute′ π 0i)) ⟩
-    f 0i + sumₜ (rearrange ((π ⟨$⟩ʳ_) ∘ punchIn (π ⟨$⟩ˡ 0i)) t)                       ≡⟨ P.cong₂ _+_ (P.cong f (P.sym (Perm.inverseʳ π))) P.refl ⟩
-    f _  + sumₜ (rearrange ((π ⟨$⟩ʳ_) ∘ punchIn (π ⟨$⟩ˡ 0i)) t)                       ≈⟨ sym (sumₜ-punchIn (rearrange (π ⟨$⟩ʳ_) t) (π ⟨$⟩ˡ 0i)) ⟩
-    sumₜ (rearrange (π ⟨$⟩ʳ_) t)                                                      ∎
+    sumₜ t                                                                      ≡⟨⟩
+    f 0i + sumₜ (rearrange (punchIn 0i) t)                                      ≈⟨ +-cong refl (sumₜ-permute _ (Perm.remove (π ⟨$⟩ˡ 0i) π)) ⟩
+    f 0i + sumₜ (rearrange (punchIn 0i ∘ (Perm.remove (π ⟨$⟩ˡ 0i) π ⟨$⟩ʳ_)) t)  ≡⟨ P.cong₂ _+_ P.refl (sumₜ-cong≡ (P.cong f ∘ P.sym ∘ Perm.punchIn-permute′ π 0i)) ⟩
+    f 0i + sumₜ (rearrange ((π ⟨$⟩ʳ_) ∘ punchIn (π ⟨$⟩ˡ 0i)) t)                 ≡⟨ P.cong₂ _+_ (P.cong f (P.sym (Perm.inverseʳ π))) P.refl ⟩
+    f _  + sumₜ (rearrange ((π ⟨$⟩ʳ_) ∘ punchIn (π ⟨$⟩ˡ 0i)) t)                 ≈⟨ sym (sumₜ-punchIn (rearrange (π ⟨$⟩ʳ_) t) (π ⟨$⟩ˡ 0i)) ⟩
+    sumₜ (rearrange (π ⟨$⟩ʳ_) t)                                                ∎
 
 -- A version of 'sumₜ-permute' allowing heterogeneous sum lengths.
 
-sumₜ-permute′ : ∀ {m n} t (π : Permutation′ m n) → sumₜ t ≈ sumₜ (rearrange (π ⟨$⟩ʳ_) t)
+sumₜ-permute′ : ∀ {m n} t (π : Permutation m n) → sumₜ t ≈ sumₜ (rearrange (π ⟨$⟩ʳ_) t)
 sumₜ-permute′ t π with Perm.↔⇒≡ π
 sumₜ-permute′ t π | P.refl = sumₜ-permute t π
 
-∑-permute : ∀ {n} f (π : Permutation n) → ∑[ i < n ] f i ≈ ∑[ i < n ] f (π ⟨$⟩ʳ i)
+∑-permute : ∀ {n} f (π : Permutation′ n) → ∑[ i < n ] f i ≈ ∑[ i < n ] f (π ⟨$⟩ʳ i)
 ∑-permute = sumₜ-permute ∘ tabulate
 
-∑-permute′ : ∀ {m n} f (π : Permutation′ m n) → ∑[ i < n ] f i ≈ ∑[ i < m ] f (π ⟨$⟩ʳ i)
+∑-permute′ : ∀ {m n} f (π : Permutation m n) → ∑[ i < n ] f i ≈ ∑[ i < m ] f (π ⟨$⟩ʳ i)
 ∑-permute′ = sumₜ-permute′ ∘ tabulate
 
 -- If the function takes the same value at 'i' and 'j', then transposing 'i' and

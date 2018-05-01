@@ -7,27 +7,33 @@
 
 module Data.Fin.Properties where
 
-open import Algebra
-open import Data.Empty using (⊥-elim)
-open import Data.Fin as Fin
-open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_) renaming
-  (_≤_ to _ℕ≤_
+open import Algebra.FunctionProperties using (Involutive)
+open import Category.Applicative using (RawApplicative)
+open import Category.Functor using (RawFunctor)
+open import Data.Fin
+open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
+  renaming
+  ( _≤_ to _ℕ≤_
   ; _<_ to _ℕ<_
-  ; _+_ to _ℕ+_)
+  ; _+_ to _ℕ+_
+  )
 import Data.Nat.Properties as ℕₚ
-open import Data.Product
-open import Function
-open import Function.Equality as FunS using (_⟨$⟩_)
+open import Data.Product using (_,_)
+open import Function using (_∘_)
 open import Function.Injection using (_↣_)
-open import Algebra.FunctionProperties
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst)
+open import Relation.Nullary using (¬_)
+import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
-open import Category.Functor
-open import Category.Applicative
+
+------------------------------------------------------------------------
+-- Fin
+
+¬Fin0 : ¬ Fin 0
+¬Fin0 ()
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
@@ -55,19 +61,7 @@ decSetoid n = record
   }
 
 ------------------------------------------------------------------------
--- Converting between Fin n and Nat
-
-to-from : ∀ n → toℕ (fromℕ n) ≡ n
-to-from zero    = refl
-to-from (suc n) = cong suc (to-from n)
-
-from-to : ∀ {n} (i : Fin n) → fromℕ (toℕ i) ≡ strengthen i
-from-to zero    = refl
-from-to (suc i) = cong suc (from-to i)
-
-toℕ-strengthen : ∀ {n} (i : Fin n) → toℕ (strengthen i) ≡ toℕ i
-toℕ-strengthen zero    = refl
-toℕ-strengthen (suc i) = cong suc (toℕ-strengthen i)
+-- toℕ
 
 toℕ-injective : ∀ {n} {i j : Fin n} → toℕ i ≡ toℕ j → i ≡ j
 toℕ-injective {zero}  {}      {}      _
@@ -77,21 +71,43 @@ toℕ-injective {suc n} {suc i} {zero}  ()
 toℕ-injective {suc n} {suc i} {suc j} eq =
   cong suc (toℕ-injective (cong ℕ.pred eq))
 
-bounded : ∀ {n} (i : Fin n) → toℕ i ℕ< n
-bounded zero    = s≤s z≤n
-bounded (suc i) = s≤s (bounded i)
+toℕ-strengthen : ∀ {n} (i : Fin n) → toℕ (strengthen i) ≡ toℕ i
+toℕ-strengthen zero    = refl
+toℕ-strengthen (suc i) = cong suc (toℕ-strengthen i)
 
-prop-toℕ-≤ : ∀ {n} (i : Fin n) → toℕ i ℕ≤ ℕ.pred n
-prop-toℕ-≤ zero                 = z≤n
-prop-toℕ-≤ (suc {n = zero}  ())
-prop-toℕ-≤ (suc {n = suc n} i)  = s≤s (prop-toℕ-≤ i)
+toℕ-raise : ∀ {m} n (i : Fin m) → toℕ (raise n i) ≡ n ℕ+ toℕ i
+toℕ-raise zero    i = refl
+toℕ-raise (suc n) i = cong suc (toℕ-raise n i)
 
--- A simpler implementation of prop-toℕ-≤,
+toℕ<n : ∀ {n} (i : Fin n) → toℕ i ℕ< n
+toℕ<n zero    = s≤s z≤n
+toℕ<n (suc i) = s≤s (toℕ<n i)
+
+toℕ≤pred[n] : ∀ {n} (i : Fin n) → toℕ i ℕ≤ ℕ.pred n
+toℕ≤pred[n] zero                 = z≤n
+toℕ≤pred[n] (suc {n = zero}  ())
+toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
+
+-- A simpler implementation of toℕ≤pred[n],
 -- however, with a different reduction behavior.
--- If no one needs the reduction behavior of prop-toℕ-≤,
--- it can be removed in favor of prop-toℕ-≤′.
-prop-toℕ-≤′ : ∀ {n} (i : Fin n) → toℕ i ℕ≤ ℕ.pred n
-prop-toℕ-≤′ i = ℕₚ.<⇒≤pred (bounded i)
+-- If no one needs the reduction behavior of toℕ≤pred[n],
+-- it can be removed in favor of toℕ≤pred[n]′.
+toℕ≤pred[n]′ : ∀ {n} (i : Fin n) → toℕ i ℕ≤ ℕ.pred n
+toℕ≤pred[n]′ i = ℕₚ.<⇒≤pred (toℕ<n i)
+
+------------------------------------------------------------------------
+-- fromℕ
+
+toℕ-fromℕ : ∀ n → toℕ (fromℕ n) ≡ n
+toℕ-fromℕ zero    = refl
+toℕ-fromℕ (suc n) = cong suc (toℕ-fromℕ n)
+
+fromℕ-toℕ : ∀ {n} (i : Fin n) → fromℕ (toℕ i) ≡ strengthen i
+fromℕ-toℕ zero    = refl
+fromℕ-toℕ (suc i) = cong suc (fromℕ-toℕ i)
+
+------------------------------------------------------------------------
+-- fromℕ≤
 
 fromℕ≤-toℕ : ∀ {m} (i : Fin m) (i<m : toℕ i ℕ< m) → fromℕ≤ i<m ≡ i
 fromℕ≤-toℕ zero    (s≤s z≤n)       = refl
@@ -106,10 +122,11 @@ fromℕ-def : ∀ n → fromℕ n ≡ fromℕ≤ ℕₚ.≤-refl
 fromℕ-def zero    = refl
 fromℕ-def (suc n) = cong suc (fromℕ-def n)
 
--- fromℕ≤ and fromℕ≤″ give the same result.
-fromℕ≤≡fromℕ≤″ :
-  ∀ {m n} (m<n : m ℕ< n) (m<″n : m ℕ.<″ n) →
-  fromℕ≤ m<n ≡ fromℕ≤″ m m<″n
+------------------------------------------------------------------------
+-- fromℕ≤″
+
+fromℕ≤≡fromℕ≤″ : ∀ {m n} (m<n : m ℕ< n) (m<″n : m ℕ.<″ n) →
+                  fromℕ≤ m<n ≡ fromℕ≤″ m m<″n
 fromℕ≤≡fromℕ≤″ (s≤s z≤n)       (ℕ.less-than-or-equal refl) = refl
 fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
   cong suc (fromℕ≤≡fromℕ≤″ (s≤s m<n) (ℕ.less-than-or-equal refl))
@@ -117,6 +134,7 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
 ------------------------------------------------------------------------
 -- Properties of _≤_
 
+-- Relational properties
 ≤-reflexive : ∀ {n} → _≡_ ⇒ (_≤_ {n})
 ≤-reflexive refl = ℕₚ.≤-refl
 
@@ -139,10 +157,20 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
   ; trans         = ≤-trans
   }
 
+≤-preorder : ℕ → Preorder _ _ _
+≤-preorder n = record
+  { isPreorder = ≤-isPreorder {n}
+  }
+
 ≤-isPartialOrder : ∀ {n} → IsPartialOrder _≡_ (_≤_ {n})
 ≤-isPartialOrder = record
   { isPreorder = ≤-isPreorder
   ; antisym    = ≤-antisym
+  }
+
+≤-poset : ℕ → Poset _ _ _
+≤-poset n = record
+  { isPartialOrder = ≤-isPartialOrder {n}
   }
 
 ≤-isTotalOrder : ∀ {n} → IsTotalOrder _≡_ (_≤_ {n})
@@ -151,8 +179,10 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
   ; total          = ≤-total
   }
 
-≤-irrelevance : ∀ {n} → P.IrrelevantRel (_≤_ {n})
-≤-irrelevance = ℕₚ.≤-irrelevance
+≤-totalOrder : ℕ → TotalOrder _ _ _
+≤-totalOrder n = record
+  { isTotalOrder = ≤-isTotalOrder {n}
+  }
 
 ≤-isDecTotalOrder : ∀ {n} → IsDecTotalOrder _≡_ (_≤_ {n})
 ≤-isDecTotalOrder = record
@@ -161,9 +191,19 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
   ; _≤?_         = _≤?_
   }
 
+≤-decTotalOrder : ℕ → DecTotalOrder _ _ _
+≤-decTotalOrder n = record
+  { isDecTotalOrder = ≤-isDecTotalOrder {n}
+  }
+
+-- Other properties
+≤-irrelevance : ∀ {n} → P.IrrelevantRel (_≤_ {n})
+≤-irrelevance = ℕₚ.≤-irrelevance
+
 ------------------------------------------------------------------------
 -- Properties of _<_
 
+-- Relational properties
 <-irrefl : ∀ {n} → Irreflexive _≡_ (_<_ {n})
 <-irrefl refl = ℕₚ.<-irrefl refl
 
@@ -178,9 +218,31 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
 <-cmp zero    (suc j) = tri< (s≤s z≤n) (λ()) (λ())
 <-cmp (suc i) zero    = tri> (λ())     (λ()) (s≤s z≤n)
 <-cmp (suc i) (suc j) with <-cmp i j
-... | tri<  lt ¬eq ¬gt = tri< (s≤s lt)         (¬eq ∘ suc-injective) (¬gt ∘ ℕ.≤-pred)
-... | tri> ¬lt ¬eq  gt = tri> (¬lt ∘ ℕ.≤-pred) (¬eq ∘ suc-injective) (s≤s gt)
-... | tri≈ ¬lt  eq ¬gt = tri≈ (¬lt ∘ ℕ.≤-pred) (cong suc eq)    (¬gt ∘ ℕ.≤-pred)
+... | tri< i<j i≢j j≮i = tri< (s≤s i<j)         (i≢j ∘ suc-injective) (j≮i ∘ ℕ.≤-pred)
+... | tri> i≮j i≢j j<i = tri> (i≮j ∘ ℕ.≤-pred) (i≢j ∘ suc-injective) (s≤s j<i)
+... | tri≈ i≮j i≡j j≮i = tri≈ (i≮j ∘ ℕ.≤-pred) (cong suc i≡j)        (j≮i ∘ ℕ.≤-pred)
+
+<-respˡ-≡ : ∀ {n} → (_<_ {n}) Respectsˡ _≡_
+<-respˡ-≡ refl x≤y = x≤y
+
+<-respʳ-≡ : ∀ {n} → (_<_ {n}) Respectsʳ _≡_
+<-respʳ-≡ refl x≤y = x≤y
+
+<-resp₂-≡ : ∀ {n} → (_<_ {n}) Respects₂ _≡_
+<-resp₂-≡ = <-respʳ-≡ , <-respˡ-≡
+
+<-isStrictPartialOrder : ∀ {n} → IsStrictPartialOrder _≡_ (_<_ {n})
+<-isStrictPartialOrder = record
+  { isEquivalence = P.isEquivalence
+  ; irrefl        = <-irrefl
+  ; trans         = <-trans
+  ; <-resp-≈      = <-resp₂-≡
+  }
+
+<-strictPartialOrder : ℕ → StrictPartialOrder _ _ _
+<-strictPartialOrder n = record
+  { isStrictPartialOrder = <-isStrictPartialOrder {n}
+  }
 
 <-isStrictTotalOrder : ∀ {n} → IsStrictTotalOrder _≡_ (_<_ {n})
 <-isStrictTotalOrder = record
@@ -191,120 +253,108 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
 
 <-strictTotalOrder : ℕ → StrictTotalOrder _ _ _
 <-strictTotalOrder n = record
-  { Carrier            = Fin n
-  ; _≈_                = _≡_
-  ; _<_                = _<_
-  ; isStrictTotalOrder = <-isStrictTotalOrder
+  { isStrictTotalOrder = <-isStrictTotalOrder {n}
   }
 
+-- Other properties
 <-irrelevance : ∀ {n} → P.IrrelevantRel (_<_ {n})
 <-irrelevance = ℕₚ.<-irrelevance
 
-------------------------------------------------------------------------
--- Injection properties
+<⇒≢ : ∀ {n} {i j : Fin n} → i < j → i ≢ j
+<⇒≢ i<i refl = ℕₚ.n≮n _ i<i
 
--- Lemma:  n - i ≤ n.
+≤+≢⇒< : ∀ {n} {i j : Fin n} → i ≤ j → i ≢ j → i < j
+≤+≢⇒< {i = zero}  {zero}  _         0≢0     = contradiction refl 0≢0
+≤+≢⇒< {i = zero}  {suc j} _         _       = s≤s z≤n
+≤+≢⇒< {i = suc i} {zero}  ()
+≤+≢⇒< {i = suc i} {suc j} (s≤s i≤j) 1+i≢1+j =
+  s≤s (≤+≢⇒< i≤j (1+i≢1+j ∘ (cong suc)))
+
+------------------------------------------------------------------------
+-- inject
+
+toℕ-inject : ∀ {n} {i : Fin n} (j : Fin′ i) →
+               toℕ (inject j) ≡ toℕ j
+toℕ-inject {i = zero}  ()
+toℕ-inject {i = suc i} zero    = refl
+toℕ-inject {i = suc i} (suc j) = cong suc (toℕ-inject j)
+
+------------------------------------------------------------------------
+-- inject+
+
+toℕ-inject+ : ∀ {m} n (i : Fin m) → toℕ i ≡ toℕ (inject+ n i)
+toℕ-inject+ n zero    = refl
+toℕ-inject+ n (suc i) = cong suc (toℕ-inject+ n i)
+
+------------------------------------------------------------------------
+-- inject₁
+
+inject₁-injective : ∀ {n} {i j : Fin n} → inject₁ i ≡ inject₁ j → i ≡ j
+inject₁-injective {i = zero}  {zero}  i≡j = refl
+inject₁-injective {i = zero}  {suc j} ()
+inject₁-injective {i = suc i} {zero}  ()
+inject₁-injective {i = suc i} {suc j} i≡j =
+  cong suc (inject₁-injective (suc-injective i≡j))
+
+toℕ-inject₁ : ∀ {n} (i : Fin n) → toℕ (inject₁ i) ≡ toℕ i
+toℕ-inject₁ zero    = refl
+toℕ-inject₁ (suc i) = cong suc (toℕ-inject₁ i)
+
+------------------------------------------------------------------------
+-- inject≤
+
+toℕ-inject≤ : ∀ {m n} (i : Fin m) (le : m ℕ≤ n) →
+                toℕ (inject≤ i le) ≡ toℕ i
+toℕ-inject≤ zero    (s≤s le) = refl
+toℕ-inject≤ (suc i) (s≤s le) = cong suc (toℕ-inject≤ i le)
+
+inject≤-refl : ∀ {n} (i : Fin n) (n≤n : n ℕ≤ n) → inject≤ i n≤n ≡ i
+inject≤-refl zero    (s≤s _  ) = refl
+inject≤-refl (suc i) (s≤s n≤n) = cong suc (inject≤-refl i n≤n)
+
+------------------------------------------------------------------------
+-- _≺_
+
+≺⇒<′ : _≺_ ⇒ ℕ._<′_
+≺⇒<′ (n ≻toℕ i) = ℕₚ.≤⇒≤′ (toℕ<n i)
+
+<′⇒≺ : ℕ._<′_ ⇒ _≺_
+<′⇒≺ {n} ℕ.≤′-refl = subst (_≺ suc n) (toℕ-fromℕ n)
+                              (suc n ≻toℕ fromℕ n)
+<′⇒≺ (ℕ.≤′-step m≤′n) with <′⇒≺ m≤′n
+... | n ≻toℕ i = subst (_≺ suc n) (toℕ-inject₁ i) (suc n ≻toℕ _)
+
+------------------------------------------------------------------------
+-- pred
+
+<⇒≤pred : ∀ {n} {i j : Fin n} → j < i → j ≤ pred i
+<⇒≤pred {i = zero}  {_}     ()
+<⇒≤pred {i = suc i} {zero}  j<i       = z≤n
+<⇒≤pred {i = suc i} {suc j} (s≤s j<i) =
+  subst (_ ℕ≤_) (sym (toℕ-inject₁ i)) j<i
+
+------------------------------------------------------------------------
+-- ℕ-
+
+toℕ‿ℕ- : ∀ n i → toℕ (n ℕ- i) ≡ n ∸ toℕ i
+toℕ‿ℕ- n       zero     = toℕ-fromℕ n
+toℕ‿ℕ- zero    (suc ())
+toℕ‿ℕ- (suc n) (suc i)  = toℕ‿ℕ- n i
+
+------------------------------------------------------------------------
+-- ℕ-ℕ
+
 nℕ-ℕi≤n : ∀ n i → n ℕ-ℕ i ℕ≤ n
 nℕ-ℕi≤n n       zero     = ℕₚ.≤-refl
 nℕ-ℕi≤n zero    (suc ())
 nℕ-ℕi≤n (suc n) (suc i)  = begin
   n ℕ-ℕ i  ≤⟨ nℕ-ℕi≤n n i ⟩
-  n        ≤⟨ ℕₚ.n≤1+n n ⟩
-  suc n    ∎
+  n         ≤⟨ ℕₚ.n≤1+n n ⟩
+  suc n     ∎
   where open ℕₚ.≤-Reasoning
 
-inject-lemma : ∀ {n} {i : Fin n} (j : Fin′ i) →
-               toℕ (inject j) ≡ toℕ j
-inject-lemma {i = zero}  ()
-inject-lemma {i = suc i} zero    = refl
-inject-lemma {i = suc i} (suc j) = cong suc (inject-lemma j)
-
-inject+-lemma : ∀ {m} n (i : Fin m) → toℕ i ≡ toℕ (inject+ n i)
-inject+-lemma n zero    = refl
-inject+-lemma n (suc i) = cong suc (inject+-lemma n i)
-
-inject₁-lemma : ∀ {m} (i : Fin m) → toℕ (inject₁ i) ≡ toℕ i
-inject₁-lemma zero    = refl
-inject₁-lemma (suc i) = cong suc (inject₁-lemma i)
-
-inject≤-lemma : ∀ {m n} (i : Fin m) (le : m ℕ≤ n) →
-                toℕ (inject≤ i le) ≡ toℕ i
-inject≤-lemma zero    (s≤s le) = refl
-inject≤-lemma (suc i) (s≤s le) = cong suc (inject≤-lemma i le)
-
--- Lemma:  inject≤ i n≤n ≡ i.
-inject≤-refl : ∀ {n} (i : Fin n) (n≤n : n ℕ≤ n) → inject≤ i n≤n ≡ i
-inject≤-refl zero    (s≤s _  ) = refl
-inject≤-refl (suc i) (s≤s n≤n) = cong suc (inject≤-refl i n≤n)
-
-≺⇒<′ : _≺_ ⇒ ℕ._<′_
-≺⇒<′ (n ≻toℕ i) = ℕₚ.≤⇒≤′ (bounded i)
-
-<′⇒≺ : ℕ._<′_ ⇒ _≺_
-<′⇒≺ {n} ℕ.≤′-refl    = subst (λ i → i ≺ suc n) (to-from n)
-                              (suc n ≻toℕ fromℕ n)
-<′⇒≺ (ℕ.≤′-step m≤′n) with <′⇒≺ m≤′n
-<′⇒≺ (ℕ.≤′-step m≤′n) | n ≻toℕ i =
-  subst (λ i → i ≺ suc n) (inject₁-lemma i) (suc n ≻toℕ (inject₁ i))
-
-toℕ-raise : ∀ {m} n (i : Fin m) → toℕ (raise n i) ≡ n ℕ+ toℕ i
-toℕ-raise zero    i = refl
-toℕ-raise (suc n) i = cong suc (toℕ-raise n i)
-
 ------------------------------------------------------------------------
--- Operations
-
-infixl 6 _+′_
-
-_+′_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (ℕ.pred m ℕ+ n)
-i +′ j = inject≤ (i + j) (ℕₚ.+-mono-≤ (prop-toℕ-≤ i) ℕₚ.≤-refl)
-
--- If there is an injection from a type to a finite set, then the type
--- has decidable equality.
-
-eq? : ∀ {a n} {A : Set a} → A ↣ Fin n → Decidable {A = A} _≡_
-eq? inj = Dec.via-injection inj _≟_
-
--- Quantification over finite sets commutes with applicative functors.
-
-sequence : ∀ {p F n} {P : Pred (Fin n) p} → RawApplicative F →
-           (∀ i → F (P i)) → F (∀ i → P i)
-sequence {p} {F} RA = helper _ _
-  where
-  open RawApplicative RA
-
-  helper : ∀ n (P : Fin n → Set p) → (∀ i → F (P i)) → F (∀ i → P i)
-  helper zero    P ∀iPi = pure (λ())
-  helper (suc n) P ∀iPi =
-    combine <$> ∀iPi zero ⊛ helper n (P ∘ suc) (∀iPi ∘ suc)
-    where
-    combine : P zero → (∀ i → P (suc i)) → ∀ i → P i
-    combine z s zero    = z
-    combine z s (suc i) = s i
-
--- Included just to show that sequence above has an inverse (under
--- an equivalence relation with two equivalence classes, one with
--- all inhabited sets and the other with all uninhabited sets).
-
-sequence⁻¹ : ∀ {p} {A : Set} {P : Pred A p} {F} →
-             RawFunctor F → F (∀ i → P i) → ∀ i → F (P i)
-sequence⁻¹ RF F∀iPi i = (λ f → f i) <$> F∀iPi
-  where open RawFunctor RF
-
-------------------------------------------------------------------------
-
-punchOut-injective : ∀ {m} {i j k : Fin (suc m)}
-                     (i≢j : i ≢ j) (i≢k : i ≢ k) →
-                     punchOut i≢j ≡ punchOut i≢k → j ≡ k
-punchOut-injective {_}     {zero}   {zero}  {_}     i≢j _   _     = ⊥-elim (i≢j refl)
-punchOut-injective {_}     {zero}   {_}     {zero}  _   i≢k _     = ⊥-elim (i≢k refl)
-punchOut-injective {_}     {zero}   {suc j} {suc k} _   _   pⱼ≡pₖ = cong suc pⱼ≡pₖ
-punchOut-injective {zero}  {suc ()}
-punchOut-injective {suc n} {suc i}  {zero}  {zero}  _   _    _    = refl
-punchOut-injective {suc n} {suc i}  {zero}  {suc k} _   _   ()
-punchOut-injective {suc n} {suc i}  {suc j} {zero}  _   _   ()
-punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
-  cong suc (punchOut-injective (i≢j ∘ cong suc) (i≢k ∘ cong suc) (suc-injective pⱼ≡pₖ))
+-- punchIn
 
 punchIn-injective : ∀ {m} i (j k : Fin m) →
                     punchIn i j ≡ punchIn i k → j ≡ k
@@ -315,26 +365,33 @@ punchIn-injective (suc i) (suc j) zero    ()
 punchIn-injective (suc i) (suc j) (suc k) ↑j+1≡↑k+1 =
   cong suc (punchIn-injective i j k (suc-injective ↑j+1≡↑k+1))
 
-punchIn-punchOut : ∀ {m} {i j : Fin (suc m)} (i≢j : i ≢ j) →
-                   punchIn i (punchOut i≢j) ≡ j
-punchIn-punchOut {_}     {zero}   {zero}  0≢0 = ⊥-elim (0≢0 refl)
-punchIn-punchOut {_}     {zero}   {suc j} _   = refl
-punchIn-punchOut {zero}  {suc ()}
-punchIn-punchOut {suc m} {suc i}  {zero}  i≢j = refl
-punchIn-punchOut {suc m} {suc i}  {suc j} i≢j =
-  cong suc (punchIn-punchOut (i≢j ∘ cong suc))
-
 punchInᵢ≢i : ∀ {m} i (j : Fin m) → punchIn i j ≢ i
 punchInᵢ≢i zero    _    ()
 punchInᵢ≢i (suc i) zero ()
 punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
 
+------------------------------------------------------------------------
+-- punchOut
+
+punchOut-injective : ∀ {m} {i j k : Fin (suc m)}
+                     (i≢j : i ≢ j) (i≢k : i ≢ k) →
+                     punchOut i≢j ≡ punchOut i≢k → j ≡ k
+punchOut-injective {_}     {zero}   {zero}  {_}     0≢0 _   _     = contradiction refl 0≢0
+punchOut-injective {_}     {zero}   {_}     {zero}  _   0≢0 _     = contradiction refl 0≢0
+punchOut-injective {_}     {zero}   {suc j} {suc k} _   _   pⱼ≡pₖ = cong suc pⱼ≡pₖ
+punchOut-injective {zero}  {suc ()}
+punchOut-injective {suc n} {suc i}  {zero}  {zero}  _   _    _    = refl
+punchOut-injective {suc n} {suc i}  {zero}  {suc k} _   _   ()
+punchOut-injective {suc n} {suc i}  {suc j} {zero}  _   _   ()
+punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
+  cong suc (punchOut-injective (i≢j ∘ cong suc) (i≢k ∘ cong suc) (suc-injective pⱼ≡pₖ))
+
 -- A version of 'cong' for 'punchOut' in which the inequality argument can be
 -- changed out arbitrarily (reflecting the proof-irrelevance of that argument).
 
 punchOut-cong : ∀ {n} (i : Fin (suc n)) {j k} {i≢j : i ≢ j} {i≢k : i ≢ k} → j ≡ k → punchOut i≢j ≡ punchOut i≢k
-punchOut-cong zero {zero} {i≢j = i≢j} = ⊥-elim (i≢j refl)
-punchOut-cong zero {suc j} {zero} {i≢k = i≢k} = ⊥-elim (i≢k refl)
+punchOut-cong zero {zero} {i≢j = 0≢0} = contradiction refl 0≢0
+punchOut-cong zero {suc j} {zero} {i≢k = 0≢0} = contradiction refl 0≢0
 punchOut-cong zero {suc j} {suc k} = suc-injective
 punchOut-cong {zero} (suc ())
 punchOut-cong {suc n} (suc i) {zero} {zero} _ = refl
@@ -349,15 +406,65 @@ punchOut-cong {suc n} (suc i) {suc j} {suc k} = cong suc ∘ punchOut-cong i ∘
 punchOut-cong′ : ∀ {n} (i : Fin (suc n)) {j k} {p : i ≢ j} (q : j ≡ k) → punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
 punchOut-cong′ i q = punchOut-cong i q
 
+punchIn-punchOut : ∀ {m} {i j : Fin (suc m)} (i≢j : i ≢ j) →
+                   punchIn i (punchOut i≢j) ≡ j
+punchIn-punchOut {_}     {zero}   {zero}  0≢0 = contradiction refl 0≢0
+punchIn-punchOut {_}     {zero}   {suc j} _   = refl
+punchIn-punchOut {zero}  {suc ()}
+punchIn-punchOut {suc m} {suc i}  {zero}  i≢j = refl
+punchIn-punchOut {suc m} {suc i}  {suc j} i≢j =
+  cong suc (punchIn-punchOut (i≢j ∘ cong suc))
+
 punchOut-punchIn : ∀ {n} i {j : Fin n} → punchOut {i = i} {j = punchIn i j} (punchInᵢ≢i i j ∘ sym) ≡ j
 punchOut-punchIn zero {j} = refl
 punchOut-punchIn (suc i) {zero} = refl
-punchOut-punchIn (suc i) {suc j} = cong suc (
-  begin
-    punchOut (punchInᵢ≢i i j ∘ suc-injective ∘ sym ∘ cong suc)  ≡⟨ punchOut-cong i refl ⟩
-    punchOut (punchInᵢ≢i i j ∘ sym)                             ≡⟨ punchOut-punchIn i ⟩
-    j                                                           ∎)
+punchOut-punchIn (suc i) {suc j} = cong suc (begin
+  punchOut (punchInᵢ≢i i j ∘ suc-injective ∘ sym ∘ cong suc)  ≡⟨ punchOut-cong i refl ⟩
+  punchOut (punchInᵢ≢i i j ∘ sym)                             ≡⟨ punchOut-punchIn i ⟩
+  j                                                           ∎)
   where open P.≡-Reasoning
+
+------------------------------------------------------------------------
+-- _+′_
+
+infixl 6 _+′_
+
+_+′_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (ℕ.pred m ℕ+ n)
+i +′ j = inject≤ (i + j) (ℕₚ.+-mono-≤ (toℕ≤pred[n] i) ℕₚ.≤-refl)
+
+------------------------------------------------------------------------
+-- Quantification
+
+∀-cons : ∀ {n p} {P : Pred (Fin (suc n)) p} →
+        P zero → (∀ i → P (suc i)) → (∀ i → P i)
+∀-cons z s zero    = z
+∀-cons z s (suc i) = s i
+
+module _ {f} {F : Set f → Set f} (RA : RawApplicative F) where
+
+  open RawApplicative RA
+
+  sequence : ∀ {n} {P : Pred (Fin n) f} →
+             (∀ i → F (P i)) → F (∀ i → P i)
+  sequence {zero}  ∀iPi = pure λ()
+  sequence {suc n} ∀iPi = ∀-cons <$> ∀iPi zero ⊛ sequence (∀iPi ∘ suc)
+
+module _ {f} {F : Set f → Set f} (RF : RawFunctor F) where
+
+  open RawFunctor RF
+
+  sequence⁻¹ : ∀ {A : Set f} {P : Pred A f} →
+               F (∀ i → P i) → (∀ i → F (P i))
+  sequence⁻¹ F∀iPi i = (λ f → f i) <$> F∀iPi
+
+------------------------------------------------------------------------
+-- If there is an injection from a type to a finite set, then the type
+-- has decidable equality.
+
+module _ {a} {A : Set a} where
+
+  eq? : ∀ {n} → A ↣ Fin n → Decidable {A = A} _≡_
+  eq? inj = Dec.via-injection inj _≟_
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
@@ -367,5 +474,17 @@ punchOut-punchIn (suc i) {suc j} = cong suc (
 
 cmp              = <-cmp
 strictTotalOrder = <-strictTotalOrder
+
+to-from          = toℕ-fromℕ
+from-to          = fromℕ-toℕ
+
+bounded          = toℕ<n
+prop-toℕ-≤      = toℕ≤pred[n]
+prop-toℕ-≤′     = toℕ≤pred[n]′
+
+inject-lemma     = toℕ-inject
+inject+-lemma    = toℕ-inject+
+inject₁-lemma    = toℕ-inject₁
+inject≤-lemma    = toℕ-inject≤
 
 open import Data.Fin public using (_≟_; _<?_)

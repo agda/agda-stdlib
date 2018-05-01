@@ -111,6 +111,9 @@ Non-backwards compatible changes
   `reverse-involutive` and `reverse-suc` from `Data.Fin.Properties` to the new
   module `Data.Fin.Permutation.Components`.
 
+* Refactored `Data.List.Reverse`'s `reverseView` in a direct style instead of the well-founded
+  induction on the list's length we were using so far.
+
 Deprecated features
 -------------------
 
@@ -118,6 +121,31 @@ The following renaming has occurred as part of a drive to improve consistency ac
 the library. The old names still exist and therefore all existing code should still
 work, however they have been deprecated and use of the new names is encouraged. Although not
 anticipated any time soon, they may eventually be removed in some future release of the library.
+
+* In `Data.Fin.Properties`:
+  ```agda
+  to-from       ↦ toℕ-fromℕ
+  from-to       ↦ fromℕ-toℕ
+
+  bounded       ↦ toℕ<n
+  prop-toℕ-≤    ↦ toℕ≤pred[n]
+  prop-toℕ-≤′   ↦ toℕ≤pred[n]′
+
+  inject-lemma  ↦ toℕ-inject
+  inject+-lemma ↦ toℕ-inject+
+  inject₁-lemma ↦ toℕ-inject₁
+  inject≤-lemma ↦ toℕ-inject≤
+  ```
+
+* In `Data.List.Membership.Propositional`:
+  ```agda
+  filter-∈ ↦ ∈-filter⁺
+  ```
+
+* In `Data.List.Membership.Setoid`:
+  ```agda
+  map-with-∈ ↦ mapWith∈
+  ```
 
 * Closures of binary relations have been centralised as follows:
   ```agda
@@ -146,16 +174,6 @@ anticipated any time soon, they may eventually be removed in some future release
 * In `IsStrictPartialOrder` record in `Relation.Binary`:
   ```agda
   asymmetric ↦ asym
-  ```
-
-* In `Data.List.Membership.Propositional`:
-  ```agda
-  filter-∈ ↦ ∈-filter⁺
-  ```
-
-* In `Data.List.Membership.Setoid`:
-  ```agda
-  map-with-∈ ↦ mapWith∈
   ```
 
 Removed features
@@ -201,6 +219,32 @@ Backwards compatible changes
 
   ∨-∧-lattice                     : Lattice _ _
   ∨-∧-distributiveLattice         : DistributiveLattice _ _
+  ```
+
+* Added new proofs to `Data.Fin.Properties`:
+  ```agda
+  ¬Fin0                  : ¬ Fin 0
+  
+  ≤-preorder             : ℕ → Preorder _ _ _
+  ≤-poset                : ℕ → Poset _ _ _
+  ≤-totalOrder           : ℕ → TotalOrder _ _ _
+  ≤-decTotalOrder        : ℕ → DecTotalOrder _ _ _
+
+  <-respˡ-≡              : _<_ Respectsˡ _≡_
+  <-respʳ-≡              : _<_ Respectsʳ _≡_
+  <-resp₂-≡              : _<_ Respects₂ _≡_
+  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+  <-strictPartialOrder   : ℕ → StrictPartialOrder _ _ _
+  <⇒≢                    : i < j → i ≢ j
+  ≤+≢⇒<                  : i ≤ j → i ≢ j → i < j
+  <⇒≤pred                : j < i → j ≤ pred i
+
+  toℕ‿ℕ-                 : toℕ (n ℕ- i) ≡ n ∸ toℕ i
+
+  inject₁-injective      : inject₁ i ≡ inject₁ j → i ≡ j
+
+  ∀-cons                 : P zero → (∀ i → P (suc i)) → (∀ i → P i)
+  sequence⁻¹             : RawFunctor F → F (∀ i → P i) → (∀ i → F (P i))
   ```
 
 * Added new functions to `Data.Fin.Subset`:
@@ -446,6 +490,8 @@ Backwards compatible changes
   zipWith-distribˡ  : DistributesOverˡ_ _≡_ f g →  _DistributesOverˡ_ _≡_ (zipWith f) (zipWith g)
   zipWith-distribʳ  : DistributesOverʳ_ _≡_ f g → _DistributesOverʳ_ _≡_ (zipWith f) (zipWith g)
   zipWith-absorbs   : _Absorbs_ _≡_ f g →  _Absorbs_ _≡_ (zipWith f) (zipWith g)
+
+  toList∘fromList : toList (fromList xs) ≡ xs
   ```
 
 * Added new types to `Relation.Binary.Core`:
@@ -752,8 +798,8 @@ anticipated any time soon, they may eventually be removed in some future release
   distribʳ              ↦ *-distribʳ-+
   isCommutativeSemiring ↦ +-*-isCommutativeSemiring
   commutativeRing       ↦ +-*-commutativeRing
-  *-+-right-mono        ↦ *-monoʳ-≤-pos
-  cancel-*-+-right-≤    ↦ *-cancelʳ-≤-pos
+  *-|-right-mono        ↦ *-monoʳ-≤-pos
+  cancel-*-|-right-≤    ↦ *-cancelʳ-≤-pos
   cancel-*-right        ↦ *-cancelʳ-≡
   doubleNeg             ↦ neg-involutive
   -‿involutive          ↦ neg-involutive
@@ -1127,7 +1173,7 @@ Backwards compatible changes
   *-semigroup           : Semigroup _ _
   *-1-monoid            : Monoid _ _
   *-1-commutativeMonoid : CommutativeMonoid _ _
-  *-+-semiring          : Semiring _ _
+  *-|-semiring          : Semiring _ _
 
   ^-identityʳ           : RightIdentity 1 _^_
   ^-zeroˡ               : LeftZero 1 _^_
@@ -1436,14 +1482,14 @@ but they may be removed in some future release of the library.
   *-right-zero      ↦  *-zeroʳ
   distribʳ-*-+      ↦  *-distribʳ-+
   *-distrib-∸ʳ      ↦  *-distribʳ-∸
-  cancel-+-left     ↦  +-cancelˡ-≡
-  cancel-+-left-≤   ↦  +-cancelˡ-≤
+  cancel-|-left     ↦  +-cancelˡ-≡
+  cancel-|-left-≤   ↦  +-cancelˡ-≤
   cancel-*-right    ↦  *-cancelʳ-≡
   cancel-*-right-≤  ↦  *-cancelʳ-≤
 
   strictTotalOrder                      ↦  <-strictTotalOrder
-  isCommutativeSemiring                 ↦  *-+-isCommutativeSemiring
-  commutativeSemiring                   ↦  *-+-commutativeSemiring
+  isCommutativeSemiring                 ↦  *-|-isCommutativeSemiring
+  commutativeSemiring                   ↦  *-|-commutativeSemiring
   isDistributiveLattice                 ↦  ⊓-⊔-isDistributiveLattice
   distributiveLattice                   ↦  ⊓-⊔-distributiveLattice
   ⊔-⊓-0-isSemiringWithoutOne            ↦  ⊔-⊓-isSemiringWithoutOne
@@ -1899,7 +1945,7 @@ Backwards compatible changes
   *-monoʳ-<             : (suc n *_) Preserves _<_ ⟶ _<_
   *-cancelˡ-≡           : suc k * i ≡ suc k * j → i ≡ j
 
-  ^-distribˡ-+-*        : m ^ (n + p) ≡ m ^ n * m ^ p
+  ^-distribˡ-|-*        : m ^ (n + p) ≡ m ^ n * m ^ p
   i^j≡0⇒i≡0             : i ^ j ≡ 0 → i ≡ 0
   i^j≡1⇒j≡0∨i≡1         : i ^ j ≡ 1 → j ≡ 0 ⊎ i ≡ 1
 
