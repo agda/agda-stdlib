@@ -137,6 +137,14 @@ anticipated any time soon, they may eventually be removed in some future release
   inject≤-lemma ↦ toℕ-inject≤
   ```
 
+* In `Data.List.All.Properties`:
+  ```agda
+  All-all ↦ all⁻
+  all-All ↦ all⁺
+  All-map ↦ map⁺
+  map-All ↦ map⁻
+  ```
+
 * In `Data.List.Membership.Propositional`:
   ```agda
   filter-∈ ↦ ∈-filter⁺
@@ -145,6 +153,22 @@ anticipated any time soon, they may eventually be removed in some future release
 * In `Data.List.Membership.Setoid`:
   ```agda
   map-with-∈ ↦ mapWith∈
+  ```
+
+* In `Data.Vec.All.Properties`:
+  ```agda
+  All-map     ↦ map⁺
+  map-All     ↦ map⁻
+
+  All-++⁺     ↦ ++⁺
+  All-++ˡ⁻    ↦ ++ˡ⁻
+  All-++ʳ⁻    ↦ ++ʳ⁻
+  All-++⁻     ↦ ++⁻
+  All-++⁺∘++⁻ ↦ ++⁺∘++⁻
+  All-++⁻∘++⁺ ↦ ++⁻∘++⁺
+
+  All-concat⁺ ↦ concat⁺
+  All-concat⁻ ↦ concat⁻
   ```
 
 * Closures of binary relations have been centralised as follows:
@@ -224,7 +248,7 @@ Backwards compatible changes
 * Added new proofs to `Data.Fin.Properties`:
   ```agda
   ¬Fin0                  : ¬ Fin 0
-  
+
   ≤-preorder             : ℕ → Preorder _ _ _
   ≤-poset                : ℕ → Poset _ _ _
   ≤-totalOrder           : ℕ → TotalOrder _ _ _
