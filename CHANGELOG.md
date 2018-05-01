@@ -337,7 +337,7 @@ Backwards compatible changes
 
 * Added new proofs to `Data.List.All.Properties`:
   ```agda
-  []⁻        : All P [ x ] → P x
+  singleton⁻ : All P [ x ] → P x
   fromMaybe⁺ : Maybe.All P mx → All P (fromMaybe mx)
   fromMaybe⁻ : All P (fromMaybe mx) → Maybe.All P mx
   replicate⁺ : P x → All P (replicate n x)

@@ -311,8 +311,8 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
 module _ {a p} {A : Set a} {P : A → Set p} where
 
-  []⁻ : ∀ {x} → All P [ x ] → P x
-  []⁻ (px ∷ []) = px
+  singleton⁻ : ∀ {x} → All P [ x ] → P x
+  singleton⁻ (px ∷ []) = px
 
 ------------------------------------------------------------------------
 -- fromMaybe
@@ -348,7 +348,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   inits⁻ []               pxs                   = []
   inits⁻ (x ∷ [])         ([] ∷ p[x] ∷ [])      = p[x]
   inits⁻ (x ∷ xs@(_ ∷ _)) ([] ∷ pxs@(p[x] ∷ _)) =
-    []⁻ p[x] ∷ inits⁻ xs (All.map (drop⁺ 1) (map-All pxs))
+    singleton⁻ p[x] ∷ inits⁻ xs (All.map (drop⁺ 1) (map-All pxs))
 
 ------------------------------------------------------------------------
 -- tails
