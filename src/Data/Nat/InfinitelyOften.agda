@@ -18,12 +18,12 @@ open import Data.Sum hiding (map)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary
 open import Relation.Nullary.Negation
-open import Relation.Unary using (_∪_; _⊆_)
+open import Relation.Unary using (Pred; _∪_; _⊆_)
 open RawMonad (¬¬-Monad {p = Level.zero})
 
 -- Only true finitely often.
 
-Fin : ∀ {ℓ} → (ℕ → Set ℓ) → Set ℓ
+Fin : ∀ {ℓ} → Pred ℕ ℓ → Set ℓ
 Fin P = ∃ λ i → ∀ j → i ≤ j → ¬ P j
 
 -- Fin is preserved by binary sums.
@@ -46,7 +46,7 @@ _∪-Fin_ {P = P} {Q} (i , ¬p) (j , ¬q) = (i ⊔ j , helper)
 
 -- A non-constructive definition of "true infinitely often".
 
-Inf : ∀ {ℓ} → (ℕ → Set ℓ) → Set ℓ
+Inf : ∀ {ℓ} → Pred ℕ ℓ → Set ℓ
 Inf P = ¬ Fin P
 
 -- Inf commutes with binary sums (in the double-negation monad).
