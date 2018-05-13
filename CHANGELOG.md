@@ -224,7 +224,7 @@ Backwards compatible changes
 * Added new proofs to `Data.Fin.Properties`:
   ```agda
   ¬Fin0                  : ¬ Fin 0
-  
+
   ≤-preorder             : ℕ → Preorder _ _ _
   ≤-poset                : ℕ → Poset _ _ _
   ≤-totalOrder           : ℕ → TotalOrder _ _ _
