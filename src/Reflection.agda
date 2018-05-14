@@ -16,6 +16,7 @@ open import Data.Char using (Char) renaming (_≟_ to _≟c_; show to showChar)
 open import Data.String using (String) renaming (_≟_ to _≟s_; show to showString)
 open import Data.Product
 open import Function
+open import Level
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.PropositionalEquality.TrustMe
@@ -165,11 +166,13 @@ newMeta = checkType unknown
 
 private
 
-  cong₂′ : ∀ {A B C : Set} (f : A → B → C) {x y u v} →
+  cong₂′ : ∀ {a b c : Level} {A : Set a} {B : Set b} {C : Set c}
+          (f : A → B → C) {x y u v} →
           x ≡ y × u ≡ v → f x u ≡ f y v
   cong₂′ f = uncurry (cong₂ f)
 
-  cong₃′ : ∀ {A B C D : Set} (f : A → B → C → D) {x y u v r s} →
+  cong₃′ : ∀ {a b c d : Level} {A : Set a} {B : Set b} {C : Set c}
+             {D : Set d} (f : A → B → C → D) {x y u v r s} →
            x ≡ y × u ≡ v × r ≡ s → f x u r ≡ f y v s
   cong₃′ f (refl , refl , refl) = refl
 
@@ -191,10 +194,10 @@ private
   arg-info₂ : ∀ {v v′ r r′} → arg-info v r ≡ arg-info v′ r′ → r ≡ r′
   arg-info₂ refl = refl
 
-  cons₁ : ∀ {A : Set} {x y} {xs ys : List A} → x ∷ xs ≡ y ∷ ys → x ≡ y
+  cons₁ : ∀ {a} {A : Set a} {x y} {xs ys : List A} → x ∷ xs ≡ y ∷ ys → x ≡ y
   cons₁ refl = refl
 
-  cons₂ : ∀ {A : Set} {x y} {xs ys : List A} → x ∷ xs ≡ y ∷ ys → xs ≡ ys
+  cons₂ : ∀ {a} {A : Set a} {x y} {xs ys : List A} → x ∷ xs ≡ y ∷ ys → xs ≡ ys
   cons₂ refl = refl
 
   var₁ : ∀ {x x′ args args′} → Term.var x args ≡ var x′ args′ → x ≡ x′
