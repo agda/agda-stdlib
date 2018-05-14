@@ -120,7 +120,7 @@ strengthen (suc i) = suc (strengthen i)
 
 -- Folds.
 
-fold : ∀ (T : ℕ → Set) {m} →
+fold : ∀ {t} (T : ℕ → Set t) {m} →
        (∀ {n} → T n → T (suc n)) →
        (∀ {n} → T (suc n)) →
        Fin m → T m
