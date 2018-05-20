@@ -39,7 +39,7 @@ private
 ------------------------------------------------------------------------
 -- Relational properties
 
-module _ {a} {A : Set a} where
+module _ {a} (A : Set a) where
   open PWSets (setoid A) public
 
 ------------------------------------------------------------------------
