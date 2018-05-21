@@ -13,6 +13,8 @@ open Setoid S renaming (Carrier to A)
 
 open import Data.List.Base using (List ; [] ; _∷_ ; filter)
 open import Data.List.Relation.Pointwise as PW using (Pointwise ; [] ; _∷_)
+open import Data.List.Relation.Equality.Setoid S using (_≋_ ; ≋-isEquivalence) public
+
 open import Data.List.All
 open import Data.List.Any
 
@@ -24,20 +26,12 @@ import Data.List.Membership.Setoid as Membership
 
 open Membership S
 
-infix 4 _≋_
-
-_≋_ : Rel (List A) ℓ
-_≋_ = Pointwise _≈_
-
 ⊆-reflexive : _≋_ ⇒ _⊆_
 ⊆-reflexive xs≋ys = ∈-resp-≋ S xs≋ys
 
 ⊆′-reflexive : _≋_ ⇒ _⊆′_
 ⊆′-reflexive []            = []
 ⊆′-reflexive (x∼y ∷ xs≋ys) = here x∼y ∷ ⊆′-growʳ S (⊆′-reflexive xs≋ys)
-
-≋-isEquivalence : IsEquivalence _≋_
-≋-isEquivalence = PW.isEquivalence isEquivalence
 
 open ⊆-Structs S ≋-isEquivalence ⊆-reflexive public
 open ⊆′-Structs S ≋-isEquivalence ⊆′-reflexive public

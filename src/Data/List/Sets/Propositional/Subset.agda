@@ -71,7 +71,7 @@ module ∈⊆′-Reasoning (a : Level) where
          )
          hiding (_≡⟨_⟩_) public
 
-  open ⊆-Reasoning′
+  open ⊆-Reasoning′ public
 
   infix  3 _∎
   infixr 2 _∈⟨_⟩_ enlarge
