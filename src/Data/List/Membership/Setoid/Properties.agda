@@ -15,7 +15,7 @@ import Data.List.Membership.Setoid as Membership
 import Data.List.Relation.Equality.Setoid as Equality
 open import Data.Nat using (z≤n; s≤s; _≤_; _<_)
 open import Data.Nat.Properties using (≤-trans; n≤1+n)
-open import Data.Product as Prod using (∃; _×_; _,_)
+open import Data.Product as Prod using (∃; _×_; _,_ ; ∃₂)
 open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Function using (flip; _∘_; id)
 open import Relation.Binary hiding (Decidable)
@@ -107,6 +107,16 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 
   ∈-++⁻ : ∀ {v} xs {ys} → v ∈ xs ++ ys → (v ∈ xs) ⊎ (v ∈ ys)
   ∈-++⁻ = Any.++⁻
+
+  ∈-witness : ∀ xs {v v′ ys} → Setoid._≈_ S v v′ → v ∈ xs ++ v′ ∷ ys
+  ∈-witness xs = Any.++-witness xs
+
+  open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
+
+  ∈-∃++ : ∀ {v xs} → v ∈ xs → ∃₂ λ ys zs → ∃ λ v′ → Setoid._≈_ S v v′ × xs ≡ ys ++ v′ ∷ zs
+  ∈-∃++ (here px)                  = [] , _ , _ , px , refl
+  ∈-∃++ (there {d} v∈xs) with ∈-∃++ v∈xs
+  ... | hs , _ , _ , v≈v′ , refl = d ∷ hs , _ , _ , v≈v′ , refl
 
 ------------------------------------------------------------------------
 -- concat

@@ -350,6 +350,10 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   ++⁻ (x ∷ xs) (here p)  = inj₁ (here p)
   ++⁻ (x ∷ xs) (there p) = Sum.map there id (++⁻ xs p)
 
+  ++-witness : ∀ xs {ys x} → P x → Any P (xs ++ x ∷ ys)
+  ++-witness [] Px       = here Px
+  ++-witness (x ∷ xs) Px = there (++-witness xs Px)
+
   ++⁺∘++⁻ : ∀ xs {ys} (p : Any P (xs ++ ys)) →
             [ ++⁺ˡ , ++⁺ʳ xs ]′ (++⁻ xs p) ≡ p
   ++⁺∘++⁻ []       p         = refl
