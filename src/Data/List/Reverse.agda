@@ -6,10 +6,9 @@
 
 module Data.List.Reverse where
 
-open import Data.List.Base
-open import Data.Nat
-import Data.Nat.Properties as Nat
-open import Induction.Nat using (<′-Rec; <′-rec)
+open import Data.List.Base as L hiding (reverse)
+open import Data.List.Properties
+open import Function
 open import Relation.Binary.PropositionalEquality
 
 -- If you want to traverse a list from the end, then you can use the
@@ -21,21 +20,13 @@ data Reverse {A : Set} : List A → Set where
   []     : Reverse []
   _∶_∶ʳ_ : ∀ xs (rs : Reverse xs) (x : A) → Reverse (xs ∷ʳ x)
 
-reverseView : ∀ {A} (xs : List A) → Reverse xs
-reverseView {A} xs = <′-rec Pred rev (length xs) xs refl
-  where
-  Pred : ℕ → Set
-  Pred n = (xs : List A) → length xs ≡ n → Reverse xs
+module _ {A : Set} where
 
-  lem : ∀ xs {x : A} → length xs <′ length (xs ∷ʳ x)
-  lem []       = ≤′-refl
-  lem (x ∷ xs) = Nat.s≤′s (lem xs)
+  reverse : (xs : List A) → Reverse (L.reverse xs)
+  reverse []       = []
+  reverse (x ∷ xs) = cast $ _ ∶ reverse xs ∶ʳ x where
+    cast = subst Reverse (sym $ unfold-reverse x xs)
 
-  rev : (n : ℕ) → <′-Rec Pred n → Pred n
-  rev n                   rec xs         eq   with initLast xs
-  rev n                   rec .[]        eq   | []       = []
-  rev .(length (xs ∷ʳ x)) rec .(xs ∷ʳ x) refl | xs ∷ʳ' x
-    with rec (length xs) (lem xs) xs refl
-  rev ._ rec .([]      ∷ʳ x) refl | ._ ∷ʳ' x | [] = _ ∶ [] ∶ʳ x
-  rev ._ rec .(ys ∷ʳ y ∷ʳ x) refl | ._ ∷ʳ' x | ys ∶ rs ∶ʳ y =
-    _ ∶ (_ ∶ rs ∶ʳ y) ∶ʳ x
+  reverseView : (xs : List A) → Reverse xs
+  reverseView xs = cast $ reverse (L.reverse xs) where
+    cast = subst Reverse (reverse-involutive xs)

@@ -107,6 +107,13 @@ Non-backwards compatible changes
 
 * Refactored and moved `↔Vec` from `Data.Product.N-ary` to `Data.Product.N-ary.Properties`.
 
+* Moved the function `reverse` and related proofs `reverse-prop`
+  `reverse-involutive` and `reverse-suc` from `Data.Fin.Properties` to the new
+  module `Data.Fin.Permutation.Components`.
+
+* Refactored `Data.List.Reverse`'s `reverseView` in a direct style instead of the well-founded
+  induction on the list's length we were using so far.
+
 Deprecated features
 -------------------
 
@@ -114,6 +121,55 @@ The following renaming has occurred as part of a drive to improve consistency ac
 the library. The old names still exist and therefore all existing code should still
 work, however they have been deprecated and use of the new names is encouraged. Although not
 anticipated any time soon, they may eventually be removed in some future release of the library.
+
+* In `Data.Fin.Properties`:
+  ```agda
+  to-from       ↦ toℕ-fromℕ
+  from-to       ↦ fromℕ-toℕ
+
+  bounded       ↦ toℕ<n
+  prop-toℕ-≤    ↦ toℕ≤pred[n]
+  prop-toℕ-≤′   ↦ toℕ≤pred[n]′
+
+  inject-lemma  ↦ toℕ-inject
+  inject+-lemma ↦ toℕ-inject+
+  inject₁-lemma ↦ toℕ-inject₁
+  inject≤-lemma ↦ toℕ-inject≤
+  ```
+
+* In `Data.List.All.Properties`:
+  ```agda
+  All-all ↦ all⁻
+  all-All ↦ all⁺
+  All-map ↦ map⁺
+  map-All ↦ map⁻
+  ```
+
+* In `Data.List.Membership.Propositional`:
+  ```agda
+  filter-∈ ↦ ∈-filter⁺
+  ```
+
+* In `Data.List.Membership.Setoid`:
+  ```agda
+  map-with-∈ ↦ mapWith∈
+  ```
+
+* In `Data.Vec.All.Properties`:
+  ```agda
+  All-map     ↦ map⁺
+  map-All     ↦ map⁻
+
+  All-++⁺     ↦ ++⁺
+  All-++ˡ⁻    ↦ ++ˡ⁻
+  All-++ʳ⁻    ↦ ++ʳ⁻
+  All-++⁻     ↦ ++⁻
+  All-++⁺∘++⁻ ↦ ++⁺∘++⁻
+  All-++⁻∘++⁺ ↦ ++⁻∘++⁺
+
+  All-concat⁺ ↦ concat⁺
+  All-concat⁻ ↦ concat⁻
+  ```
 
 * Closures of binary relations have been centralised as follows:
   ```agda
@@ -144,21 +200,17 @@ anticipated any time soon, they may eventually be removed in some future release
   asymmetric ↦ asym
   ```
 
-* In `Data.List.Membership.Propositional`:
-  ```agda
-  filter-∈ ↦ ∈-filter⁺
-  ```
-
-* In `Data.List.Membership.Setoid`:
-  ```agda
-  map-with-∈ ↦ mapWith∈
-  ```
-
 Removed features
 ----------------
 
 Backwards compatible changes
 ----------------------------
+
+* Added new records to `Algebra`:
+  ```agda
+  record Band c ℓ        : Set (suc (c ⊔ ℓ))
+  record Semilattice c ℓ : Set (suc (c ⊔ ℓ))
+  ```
 
 * The module `Algebra.Structures` can now be parameterised by equality in the same way
   as `Algebra.FunctionProperties`. The structures within also now export a greater selection
@@ -172,6 +224,11 @@ Backwards compatible changes
   zeroʳ     : RightZero 0# _*_
   distribˡ  : _*_ DistributesOverˡ _+_
   distribʳ  : _*_ DistributesOverʳ _+_
+  ```
+  Also added the following record types:
+  ```agda
+  record IsBand        (• : Op₂ A) : Set (a ⊔ ℓ)
+  record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ)
   ```
 
 * Added new functions to `Algebra.Operations.CommutativeMonoid`:
@@ -197,6 +254,32 @@ Backwards compatible changes
 
   ∨-∧-lattice                     : Lattice _ _
   ∨-∧-distributiveLattice         : DistributiveLattice _ _
+  ```
+
+* Added new proofs to `Data.Fin.Properties`:
+  ```agda
+  ¬Fin0                  : ¬ Fin 0
+
+  ≤-preorder             : ℕ → Preorder _ _ _
+  ≤-poset                : ℕ → Poset _ _ _
+  ≤-totalOrder           : ℕ → TotalOrder _ _ _
+  ≤-decTotalOrder        : ℕ → DecTotalOrder _ _ _
+
+  <-respˡ-≡              : _<_ Respectsˡ _≡_
+  <-respʳ-≡              : _<_ Respectsʳ _≡_
+  <-resp₂-≡              : _<_ Respects₂ _≡_
+  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+  <-strictPartialOrder   : ℕ → StrictPartialOrder _ _ _
+  <⇒≢                    : i < j → i ≢ j
+  ≤+≢⇒<                  : i ≤ j → i ≢ j → i < j
+  <⇒≤pred                : j < i → j ≤ pred i
+
+  toℕ‿ℕ-                 : toℕ (n ℕ- i) ≡ n ∸ toℕ i
+
+  inject₁-injective      : inject₁ i ≡ inject₁ j → i ≡ j
+
+  ∀-cons                 : P zero → (∀ i → P (suc i)) → (∀ i → P i)
+  sequence⁻¹             : RawFunctor F → F (∀ i → P i) → (∀ i → F (P i))
   ```
 
 * Added new functions to `Data.Fin.Subset`:
@@ -287,6 +370,19 @@ Backwards compatible changes
   unzip : All (P ∩ Q) ⊆ All P ∩ All Q
   ```
 
+* Added new proofs to `Data.List.All.Properties`:
+  ```agda
+  singleton⁻ : All P [ x ] → P x
+  fromMaybe⁺ : Maybe.All P mx → All P (fromMaybe mx)
+  fromMaybe⁻ : All P (fromMaybe mx) → Maybe.All P mx
+  replicate⁺ : P x → All P (replicate n x)
+  replicate⁻ : All P (replicate (suc n) x) → P x
+  inits⁺     : All P xs → All (All P) (inits xs)
+  inits⁻     : All (All P) (inits xs) → All P xs
+  tails⁺     : All P xs → All (All P) (tails xs)
+  tails⁻     : All (All P) (tails xs) → All P xs
+  ```
+
 * Added new proofs to `Data.List.Membership.(Setoid/Propositional).Properties`:
   ```agda
   ∉-resp-≈      : ∀ {xs} → (_∉ xs) Respects _≈_
@@ -319,10 +415,23 @@ Backwards compatible changes
   foldr-selective : Selective _≈_ _•_ → (foldr _•_ e xs ≈ e) ⊎ (foldr _•_ e xs ∈ xs)
   ```
 
+* Added new function to `Data.List.NonEmpty`:
+  ```agda
+  fromList : List A → Maybe (List⁺ A)
+  ```
+
 * Added new proofs to `Data.List.Properties`:
   ```agda
   tabulate-cong   : f ≗ g → tabulate f ≡ tabulate g
   tabulate-lookup : tabulate (lookup xs) ≡ xs
+
+  length-drop : length (drop n xs) ≡ length xs ∸ n
+  length-take : length (take n xs) ≡ n ⊓ (length xs)
+  ```
+
+* Added new proof to `Data.List.Relation.Pointwise`
+  ```agda
+  Pointwise-length : Pointwise _∼_ xs ys → length xs ≡ length ys
   ```
 
 * Added new proofs to `Data.List.Relation.Sublist.(Setoid/Propositional).Properties`:
@@ -354,6 +463,13 @@ Backwards compatible changes
   ∸-monoʳ-≤      : m ≤ n → o ∸ m ≥ o ∸ n
   ∸-distribˡ-⊓-⊔ : x ∸ (y ⊓ z) ≡ (x ∸ y) ⊔ (x ∸ z)
   ∸-distribˡ-⊔-⊓ : x ∸ (y ⊔ z) ≡ (x ∸ y) ⊓ (x ∸ z)
+  ```
+
+* Added new functions to `Data.Product`:
+
+  ```agda
+  map₁ : (A → B) → A × C → B × C
+  map₂ : (∀ {x} → B x → C x) → Σ A B → Σ A C
   ```
 
 * Added new functions to `Data.Product.N-ary`:
@@ -388,6 +504,13 @@ Backwards compatible changes
   append-splitAt-identity : uncurry (append m n) (splitAt m n as) ≡ as
   ```
 
+* Added new functions to `Data.String.Base`:
+  ```agda
+  length    : String → ℕ
+  replicate : ℕ → Char → String
+  concat    : List String → String
+  ```
+
 * Added new proof to `Data.Sum`:
   ```agda
   swap-involutive : swap ∘ swap ≗ id
@@ -415,6 +538,8 @@ Backwards compatible changes
   zipWith-distribˡ  : DistributesOverˡ_ _≡_ f g →  _DistributesOverˡ_ _≡_ (zipWith f) (zipWith g)
   zipWith-distribʳ  : DistributesOverʳ_ _≡_ f g → _DistributesOverʳ_ _≡_ (zipWith f) (zipWith g)
   zipWith-absorbs   : _Absorbs_ _≡_ f g →  _Absorbs_ _≡_ (zipWith f) (zipWith g)
+
+  toList∘fromList : toList (fromList xs) ≡ xs
   ```
 
 * Added new types to `Relation.Binary.Core`:
@@ -519,6 +644,19 @@ Backwards compatible changes
   remove-insert   : remove i (insert i x xs) ≡ xs
   insert-remove   : insert i (lookup i xs) (remove i xs) ≡ xs
   ```
+
+* Added new proofs to `Data.Fin.Properties`
+  ```agda
+  punchOut-cong : (i : Fin (suc n)) → j ≡ k → punchOut i≢j ≡ punchOut i≢k
+  punchOut-cong′ : (i : Fin (suc n)) (q : j ≡ k) → punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
+  punchOut-punchIn : i → punchOut {i = i} {j = punchIn i j} (punchInᵢ≢i i j ∘ sym) ≡ j
+  ```
+
+* Added new modules `Data.Fin.Permutation` and
+  `Data.Fin.Permutation.Components`. `Data.Fin.Permutation` is a library of
+  permutations implemented as bijective functions `Fin m → Fin n`.
+  `Data.Fin.Permutation.Components` contains functions and proofs used to
+  implement these bijections.
 
 Version 0.15
 ============

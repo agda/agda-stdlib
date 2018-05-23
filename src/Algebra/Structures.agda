@@ -30,6 +30,15 @@ record IsSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
 
   open IsEquivalence isEquivalence public
 
+record IsBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isSemigroup : IsSemigroup ∙
+    idem        : Idempotent ∙
+
+  open IsSemigroup isSemigroup public
+
+-- Commutative idempotent semigroups are semilattices (see Lattices)
+
 ------------------------------------------------------------------------
 -- Monoids
 
@@ -397,6 +406,13 @@ record IsCommutativeRing
 
 ------------------------------------------------------------------------
 -- Lattices
+
+record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isBand : IsBand ∧
+    comm   : Commutative ∧
+
+  open IsBand isBand public
 
 record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field

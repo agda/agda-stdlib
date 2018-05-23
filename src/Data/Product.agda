@@ -81,10 +81,18 @@ _,′_ = _,_
 < f , g > x = (f x , g x)
 
 map : ∀ {a b p q}
-        {A : Set a} {B : Set b} {P : A → Set p} {Q : B → Set q} →
+      {A : Set a} {B : Set b} {P : A → Set p} {Q : B → Set q} →
       (f : A → B) → (∀ {x} → P x → Q (f x)) →
       Σ A P → Σ B Q
 map f g (x , y) = (f x , g y)
+
+map₁ : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
+       (A → B) → A × C → B × C
+map₁ f = map f id
+
+map₂ : ∀ {a b c} {A : Set a} {B : A → Set b} {C : A → Set c} →
+       (∀ {x} → B x → C x) → Σ A B → Σ A C
+map₂ f = map id f
 
 zip : ∀ {a b c p q r}
         {A : Set a} {B : Set b} {C : Set c}
