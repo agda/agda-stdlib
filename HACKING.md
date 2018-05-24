@@ -16,7 +16,7 @@ How to make changes
    ```
 
    where `USER_NAME` is your Git username. The folder `agda-stdlib-fork` should now contain a copy of the standard library.
-   
+
 3. Enter the folder `agda-stdlib-fork` and choose the correct branch of the library to make your changes on by running the
    command
    ```
@@ -27,9 +27,9 @@ How to make changes
 
 ### Make your changes
 
-4. Make your proposed changes. Please try to obey existing conventions in the library. 
+4. Make your proposed changes. Please try to obey existing conventions in the library.
    See `agda-stdlib-fork/notes/style-guide.md` for a selection of the most important ones.
-   
+
 5. Document your changes in `agda-stdlib-fork/CHANGELOG.md`.
 
 6. Ensure your changes are compatible with the rest of the library by running the commands
@@ -39,7 +39,7 @@ How to make changes
    ```
    inside the `agda-stdlib-fork` folder. Continue to correct any bugs thrown up until the tests are passed.
 
-   Your proposed changes MUST pass these tests. Note that the tests require the use of a tool called 
+   Your proposed changes MUST pass these tests. Note that the tests require the use of a tool called
    `fix-agda-whitespace`. See the instructions at the end of this file for how to install this.
 
 ### Upload your changes
@@ -51,15 +51,15 @@ How to make changes
    git commit
    ```
    and enter a meaningful description for your changes.
-   
+
 8. Upload your changes to your fork by running the command:
    ```
    git push
    ```
-   
-9. Go to your fork on Github at `https://github.com/USER_NAME/agda-stdlib` and click the 
+
+9. Go to your fork on Github at `https://github.com/USER_NAME/agda-stdlib` and click the
    green `Compare & pull request` button to open a pull request.
-   
+
 10. The standard library maintainers will then be made aware of your requested changes and should be in touch soon.
 
 
@@ -72,4 +72,4 @@ This tool is kept in the main agda repository. It can be installed by following 
    cd agda/src/fix-agda-whitespace
    cabal install
    ```
-    
+

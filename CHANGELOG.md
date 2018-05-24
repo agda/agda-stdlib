@@ -123,7 +123,7 @@ Other major changes
   ```
 
 * Added new modules `Data.Fin.Permutation` and `Data.Fin.Permutation.Components` for
-  reasoning about permutations. Permutations are implemented as bijections 
+  reasoning about permutations. Permutations are implemented as bijections
   `Fin m → Fin n`. `Permutation.Components` contains functions and proofs used to
   implement these bijections.
 
@@ -285,11 +285,11 @@ Other minor additions
   punchOut-cong          : j ≡ k → punchOut i≢j ≡ punchOut i≢k
   punchOut-cong′         : punchOut i≢j ≡ punchOut (i≢j ∘ sym ∘ trans j≡k ∘ sym)
   punchOut-punchIn       : punchOut (punchInᵢ≢i i j ∘ sym) ≡ j
-  
+
   ∀-cons                 : P zero → (∀ i → P (suc i)) → (∀ i → P i)
   sequence⁻¹             : RawFunctor F → F (∀ i → P i) → (∀ i → F (P i))
   ```
-  
+
 * Added new functions to `Data.Fin.Subset`:
   ```agda
   ∣ p ∣ = count (_≟ inside) p
@@ -519,11 +519,11 @@ Other minor additions
 
 * Added operator to `Data.Sum`:
   ```agda
-  swap : A ⊎ B → B ⊎ A 
+  swap : A ⊎ B → B ⊎ A
   ```
-  This may conflict with `swap` in `Data.Product`. If so then it may be necessary to 
+  This may conflict with `swap` in `Data.Product`. If so then it may be necessary to
   qualify imports with either `using` or `hiding`.
-  
+
 * Added new proof to `Data.Sum.Properties`:
   ```agda
   swap-involutive : swap ∘ swap ≗ id
@@ -545,13 +545,13 @@ Other minor additions
   ++-injectiveʳ     : (xs xs' : Vec A n) → xs ++ ys ≡ xs' ++ ys' → ys ≡ ys'
   ++-injective      : (xs xs' : Vec A n) → xs ++ ys ≡ xs' ++ ys' → xs ≡ xs' × ys ≡ ys'
   ++-assoc          : (xs ++ ys) ++ zs ≅ xs ++ (ys ++ zs)
-  
+
   insert-lookup     : lookup i (insert i x xs) ≡ x
   insert-punchIn    : lookup (punchIn i j) (insert i x xs) ≡ lookup j xs
   remove-punchOut   : (i≢j : i ≢ j) → lookup (punchOut i≢j) (remove i xs) ≡ lookup j xs
   remove-insert     : remove i (insert i x xs) ≡ xs
   insert-remove     : insert i (lookup i xs) (remove i xs) ≡ xs
-  
+
   zipWith-assoc     : Associative _≡_ f → Associative _≡_ (zipWith f)
   zipWith-comm      : (∀ x y → f x y ≡ f y x) → zipWith f xs ys ≡ zipWith f ys xs
   zipWith-idem      : Idempotent _≡_ f → Idempotent _≡_ (zipWith f)
