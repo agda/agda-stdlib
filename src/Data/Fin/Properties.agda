@@ -19,18 +19,25 @@ open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
   ; _+_ to _ℕ+_
   )
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (∃; ∄; _×_; _,_; map; proj₁)
 open import Data.Unit using (tt)
+open import Data.Product using (∃; ∄; _×_; _,_; map; proj₁)
 open import Function using (_∘_; id)
 open import Function.Injection using (_↣_)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; sym; cong; subst)
+  using (_≡_; _≢_; refl; sym; trans; cong; subst)
+open import Relation.Nullary using (¬_)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary using (Dec; yes; no; ¬_)
 open import Relation.Unary using (U; Pred; Decidable; _⊆_)
 open import Relation.Unary.Properties using (U?)
+
+------------------------------------------------------------------------
+-- Fin
+
+¬Fin0 : ¬ Fin 0
+¬Fin0 ()
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
@@ -370,6 +377,26 @@ punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
 ------------------------------------------------------------------------
 -- punchOut
 
+-- A version of 'cong' for 'punchOut' in which the inequality argument can be
+-- changed out arbitrarily (reflecting the proof-irrelevance of that argument).
+
+punchOut-cong : ∀ {n} (i : Fin (suc n)) {j k} {i≢j : i ≢ j} {i≢k : i ≢ k} → j ≡ k → punchOut i≢j ≡ punchOut i≢k
+punchOut-cong zero {zero} {i≢j = 0≢0} = contradiction refl 0≢0
+punchOut-cong zero {suc j} {zero} {i≢k = 0≢0} = contradiction refl 0≢0
+punchOut-cong zero {suc j} {suc k} = suc-injective
+punchOut-cong {zero} (suc ())
+punchOut-cong {suc n} (suc i) {zero} {zero} _ = refl
+punchOut-cong {suc n} (suc i) {zero} {suc k} ()
+punchOut-cong {suc n} (suc i) {suc j} {zero} ()
+punchOut-cong {suc n} (suc i) {suc j} {suc k} = cong suc ∘ punchOut-cong i ∘ suc-injective
+
+-- An alternative to 'punchOut-cong' in the which the new inequality argument is
+-- specific. Useful for enabling the omission of that argument during equational
+-- reasoning.
+
+punchOut-cong′ : ∀ {n} (i : Fin (suc n)) {j k} {p : i ≢ j} (q : j ≡ k) → punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
+punchOut-cong′ i q = punchOut-cong i q
+
 punchOut-injective : ∀ {m} {i j k : Fin (suc m)}
                      (i≢j : i ≢ j) (i≢k : i ≢ k) →
                      punchOut i≢j ≡ punchOut i≢k → j ≡ k
@@ -392,6 +419,15 @@ punchIn-punchOut {suc m} {suc i}  {zero}  i≢j = refl
 punchIn-punchOut {suc m} {suc i}  {suc j} i≢j =
   cong suc (punchIn-punchOut (i≢j ∘ cong suc))
 
+punchOut-punchIn : ∀ {n} i {j : Fin n} → punchOut {i = i} {j = punchIn i j} (punchInᵢ≢i i j ∘ sym) ≡ j
+punchOut-punchIn zero {j} = refl
+punchOut-punchIn (suc i) {zero} = refl
+punchOut-punchIn (suc i) {suc j} = cong suc (begin
+  punchOut (punchInᵢ≢i i j ∘ suc-injective ∘ sym ∘ cong suc)  ≡⟨ punchOut-cong i refl ⟩
+  punchOut (punchInᵢ≢i i j ∘ sym)                             ≡⟨ punchOut-punchIn i ⟩
+  j                                                           ∎)
+  where open P.≡-Reasoning
+
 ------------------------------------------------------------------------
 -- _+′_
 
@@ -401,47 +437,66 @@ _+′_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (ℕ.pred m ℕ+ n)
 i +′ j = inject≤ (i + j) (ℕₚ.+-mono-≤ (toℕ≤pred[n] i) ℕₚ.≤-refl)
 
 ------------------------------------------------------------------------
--- reverse
-
--- reverse {n} "i" = "n ∸ 1 ∸ i".
-
-reverse : ∀ {n} → Fin n → Fin n
-reverse {zero}  ()
-reverse {suc n} i  = inject≤ (n ℕ- i) (ℕₚ.n∸m≤n (toℕ i) (suc n))
-
-reverse-prop : ∀ {n} → (i : Fin n) → toℕ (reverse i) ≡ n ∸ suc (toℕ i)
-reverse-prop {zero} ()
-reverse-prop {suc n} i = begin
-  toℕ (inject≤ (n ℕ- i) _)  ≡⟨ toℕ-inject≤ _ _ ⟩
-  toℕ (n ℕ- i)              ≡⟨ toℕ‿ℕ- n i ⟩
-  n ∸ toℕ i                 ∎
-  where open P.≡-Reasoning
-
-reverse-involutive : ∀ {n} → Involutive _≡_ (reverse {n})
-reverse-involutive {zero}  ()
-reverse-involutive {suc n} i = toℕ-injective (begin
-  toℕ (reverse (reverse i)) ≡⟨ reverse-prop (reverse i) ⟩
-  n ∸ (toℕ (reverse i))     ≡⟨ P.cong (n ∸_) (reverse-prop i) ⟩
-  n ∸ (n ∸ (toℕ i))         ≡⟨ ℕₚ.m∸[m∸n]≡n (ℕ.≤-pred (toℕ<n i)) ⟩
-  toℕ i                     ∎)
-  where open P.≡-Reasoning
-
-reverse-suc : ∀{n}{i : Fin n} → toℕ (reverse (suc i)) ≡ toℕ (reverse i)
-reverse-suc {n}{i} = begin
-  toℕ (reverse (suc i))      ≡⟨ reverse-prop (suc i) ⟩
-  suc n ∸ suc (toℕ (suc i))  ≡⟨⟩
-  n ∸ toℕ (suc i)            ≡⟨⟩
-  n ∸ suc (toℕ i)            ≡⟨ P.sym (reverse-prop i) ⟩
-  toℕ (reverse i)            ∎
-  where open P.≡-Reasoning
-
-------------------------------------------------------------------------
 -- Quantification
 
 ∀-cons : ∀ {n p} {P : Pred (Fin (suc n)) p} →
-        P zero → (∀ i → P (suc i)) → (∀ i → P i)
+         P zero → (∀ i → P (suc i)) → (∀ i → P i)
 ∀-cons z s zero    = z
 ∀-cons z s (suc i) = s i
+
+decFinSubset : ∀ {n p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
+               Decidable Q → (∀ {f} → Q f → Dec (P f)) → Dec (Q ⊆ P)
+decFinSubset {zero}  {_}     {_} _  _  = yes λ{}
+decFinSubset {suc n} {P = P} {Q} Q? P? with decFinSubset (Q? ∘ suc) P?
+... | no ¬q⟶p = no (λ q⟶p → ¬q⟶p (q⟶p))
+... | yes q⟶p with Q? zero
+...   | no ¬q₀ = yes (λ {_} → hlpr _)
+  where
+  hlpr : ∀ f → Q f → P f
+  hlpr = ∀-cons (⊥-elim ∘ ¬q₀) (λ _ → q⟶p)
+...   | yes q₀ with P? q₀
+...     | no ¬p₀ = no (λ q⟶p → ¬p₀ (q⟶p q₀))
+...     | yes p₀ = yes (λ {_} → hlpr _)
+  where
+  hlpr : ∀ f → Q f → P f
+  hlpr = ∀-cons (λ _ → p₀) (λ _ → q⟶p)
+
+any? : ∀ {n p} {P : Fin n → Set p} → Decidable P → Dec (∃ P)
+any? {zero}  {_} P? = no λ { (() , _) }
+any? {suc n} {P} P? with P? zero | any? (P? ∘ suc)
+... | yes P₀ | _              = yes (_ , P₀)
+... | no  _  | yes (_ , P₁₊ᵢ) = yes (_ , P₁₊ᵢ)
+... | no ¬P₀ | no ¬P₁₊ᵢ       = no λ
+  { (zero  , P₀)   → ¬P₀ P₀
+  ; (suc f , P₁₊ᵢ) → ¬P₁₊ᵢ (_ , P₁₊ᵢ)
+  }
+
+all? : ∀ {n p} {P : Pred (Fin n) p} →
+       Decidable P → Dec (∀ f → P f)
+all? P? with decFinSubset U? (λ {f} _ → P? f)
+... | yes ∀p = yes (λ f → ∀p tt)
+... | no ¬∀p = no  (λ ∀p → ¬∀p (λ _ → ∀p _))
+
+-- If a decidable predicate P over a finite set is sometimes false,
+-- then we can find the smallest value for which this is the case.
+
+¬∀⟶∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
+                 ¬ (∀ i → P i) → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
+¬∀⟶∃¬-smallest zero    P P? ¬∀P = contradiction (λ()) ¬∀P
+¬∀⟶∃¬-smallest (suc n) P P? ¬∀P with P? zero
+... | no ¬P₀ = (zero , ¬P₀ , λ ())
+... | yes P₀ = map suc (map id (∀-cons P₀))
+  (¬∀⟶∃¬-smallest n (P ∘ suc) (P? ∘ suc) (¬∀P ∘ (∀-cons P₀)))
+
+-- When P is a decidable predicate over a finite set the following
+-- lemma can be proved.
+
+¬∀⟶∃¬ : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
+          ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
+¬∀⟶∃¬ n P P? ¬P = map id proj₁ (¬∀⟶∃¬-smallest n P P? ¬P)
+
+------------------------------------------------------------------------
+-- Categorical
 
 module _ {f} {F : Set f → Set f} (RA : RawApplicative F) where
 
@@ -491,68 +546,3 @@ inject₁-lemma    = toℕ-inject₁
 inject≤-lemma    = toℕ-inject≤
 
 open import Data.Fin public using (_≟_; _<?_)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-any? : ∀ {n} {P : Fin n → Set} → Decidable P → Dec (∃ P)
-any? {zero}      P? = no λ { (() , _) }
-any? {suc n} {P} P? with P? zero | any? (P? ∘ suc)
-... | yes P₀ | _              = yes (_ , P₀)
-... | _      | yes (_ , P₁₊ᵢ) = yes (_ , P₁₊ᵢ)
-... | no ¬P₀ | no ¬P₁₊ᵢ       = no helper
-  where
-  helper : ∄ P
-  helper (zero  , P₀)  = ¬P₀ P₀
-  helper (suc f , P₁₊ᵢ) = ¬P₁₊ᵢ (_ , P₁₊ᵢ)
-
-decFinSubset : ∀ {n p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
-               Decidable Q → (∀ {f} → Q f → Dec (P f)) → Dec (Q ⊆ P)
-decFinSubset {zero}        _    _    = yes λ{}
-decFinSubset {suc n} {P = P} {Q} Q? P? with decFinSubset (Q? ∘ suc) P?
-... | no ¬q⟶p = no (λ q⟶p → ¬q⟶p (q⟶p))
-... | yes q⟶p with Q? zero
-...   | no ¬q₀ = yes (λ {_} → hlpr _)
-  where
-  hlpr : ∀ f → Q f → P f
-  hlpr = ∀-cons (⊥-elim ∘ ¬q₀) (λ _ → q⟶p)
-...   | yes q₀ with P? q₀
-...     | no ¬p₀ = no (λ q⟶p → ¬p₀ (q⟶p q₀))
-...     | yes p₀ = yes (λ {_} → hlpr _)
-  where
-  hlpr : ∀ f → Q f → P f
-  hlpr = ∀-cons (λ _ → p₀) (λ _ → q⟶p)
-
-all? : ∀ {n p} {P : Pred (Fin n) p} →
-       Decidable P → Dec (∀ f → P f)
-all? P? with decFinSubset U? (λ {f} _ → P? f)
-... | yes ∀p = yes (λ f → ∀p tt)
-... | no ¬∀p = no  (λ ∀p → ¬∀p (λ _ → ∀p _))
-
--- If a decidable predicate P over a finite set is sometimes false,
--- then we can find the smallest value for which this is the case.
-
-¬∀⟶∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
-                   ¬ (∀ i → P i) → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
-¬∀⟶∃¬-smallest zero    P P? ¬∀P = contradiction (λ()) ¬∀P
-¬∀⟶∃¬-smallest (suc n) P P? ¬∀P with P? zero
-... | no ¬P₀ = (zero , ¬P₀ , λ ())
-... | yes P₀ = map suc (map id (∀-cons P₀))
-  (¬∀⟶∃¬-smallest n (P ∘ suc) (P? ∘ suc) (¬∀P ∘ (∀-cons P₀)))
-
--- When P is a decidable predicate over a finite set the following
--- lemma can be proved.
-
-¬∀⟶∃¬ : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
-          ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
-¬∀⟶∃¬ n P P? ¬P = map id proj₁ (¬∀⟶∃¬-smallest n P P? ¬P)

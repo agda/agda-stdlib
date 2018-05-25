@@ -41,8 +41,31 @@ drop-there (there x∈p) = x∈p
 drop-∷-⊆ : ∀ {n s₁ s₂} {p₁ p₂ : Subset n} → s₁ ∷ p₁ ⊆ s₂ ∷ p₂ → p₁ ⊆ p₂
 drop-∷-⊆ p₁s₁⊆p₂s₂ x∈p₁ = drop-there (p₁s₁⊆p₂s₂ (there x∈p₁))
 
+------------------------------------------------------------------------
+-- _∈_
+
+infix 4 _∈?_
+_∈?_ : ∀ {n} x (p : Subset n) → Dec (x ∈ p)
+zero  ∈? inside  ∷ p = yes here
+zero  ∈? outside ∷ p = no  λ()
+suc n ∈? s       ∷ p with n ∈? p
+... | yes n∈p = yes (there n∈p)
+... | no  n∉p = no  (n∉p ∘ drop-there)
+
+------------------------------------------------------------------------
+-- Empty
+
 drop-∷-Empty : ∀ {n s} {p : Subset n} → Empty (s ∷ p) → Empty p
 drop-∷-Empty ¬∃∈ (x , x∈p) = ¬∃∈ (suc x , there x∈p)
+
+Empty-unique : ∀ {n} {p : Subset n} → Empty p → p ≡ ⊥
+Empty-unique {_} {[]}          ¬∃∈ = refl
+Empty-unique {_} {inside  ∷ p} ¬∃∈ = contradiction (zero , here) ¬∃∈
+Empty-unique {_} {outside ∷ p} ¬∃∈ =
+  cong (outside ∷_) (Empty-unique (drop-∷-Empty ¬∃∈))
+
+nonempty? : ∀ {n} → Decidable (Nonempty {n})
+nonempty? p = any? (_∈? p)
 
 ------------------------------------------------------------------------
 -- ∣_∣
@@ -62,12 +85,6 @@ drop-∷-Empty ¬∃∈ (x , x∈p) = ¬∃∈ (suc x , there x∈p)
 ∣⊥∣≡0 : ∀ n → ∣ ⊥ {n = n} ∣ ≡ 0
 ∣⊥∣≡0 zero    = refl
 ∣⊥∣≡0 (suc n) = ∣⊥∣≡0 n
-
-Empty-unique : ∀ {n} {p : Subset n} → Empty p → p ≡ ⊥
-Empty-unique {_} {[]}          ¬∃∈ = refl
-Empty-unique {_} {inside  ∷ p} ¬∃∈ = contradiction (zero , here) ¬∃∈
-Empty-unique {_} {outside ∷ p} ¬∃∈ =
-  cong (outside ∷_) (Empty-unique (drop-∷-Empty ¬∃∈))
 
 ------------------------------------------------------------------------
 -- ⊤
@@ -103,17 +120,6 @@ x∈⁅y⁆⇔x≡y {_} {x} {y} = equivalence
 ∣⁅x⁆∣≡1 : ∀ {n} (i : Fin n) → ∣ ⁅ i ⁆ ∣ ≡ 1
 ∣⁅x⁆∣≡1 {suc n} zero    = cong suc (∣⊥∣≡0 n)
 ∣⁅x⁆∣≡1 {_}     (suc i) = ∣⁅x⁆∣≡1 i
-
-------------------------------------------------------------------------
--- _∈_
-
-infix 4 _∈?_
-_∈?_ : ∀ {n} x (p : Subset n) → Dec (x ∈ p)
-zero  ∈? inside  ∷ p = yes here
-zero  ∈? outside ∷ p = no  λ()
-suc n ∈? s       ∷ p with n ∈? p
-... | yes n∈p = yes (there n∈p)
-... | no  n∉p = no  (n∉p ∘ drop-there)
 
 ------------------------------------------------------------------------
 -- _⊆_
@@ -501,33 +507,24 @@ x∈p∪q⁺ (inj₂ x∈q) = q⊆p∪q _ _ x∈q
 ∪⇔⊎ = equivalence (x∈p∪q⁻ _ _) x∈p∪q⁺
 
 ------------------------------------------------------------------------
--- Nonempty
-
-nonempty? : ∀ {n} → Decidable (Nonempty {n})
-nonempty? p = any? (_∈? p)
-
-------------------------------------------------------------------------
 -- Lift
 
-Lift? : ∀ {n p} {P : Pred (Fin n) p} →
-        Decidable P → Decidable (Lift P)
+Lift? : ∀ {n p} {P : Pred (Fin n) p} → Decidable P → Decidable (Lift P)
 Lift? P? p = decFinSubset (_∈? p) (λ {x} _ → P? x)
 
 ------------------------------------------------------------------------
 -- Other
 
-anySubset? : ∀ {n} {P : Subset n → Set} →
-             Decidable P → Dec (∃ P)
-anySubset? {zero}  {_} P? with P? []
+anySubset? : ∀ {n} {P : Subset n → Set} → Decidable P → Dec (∃ P)
+anySubset? {zero}  P? with P? []
 ... | yes P[] = yes (_ , P[])
 ... | no ¬P[] = no (λ {([] , P[]) → ¬P[] P[]})
-anySubset? {suc n} {P} P?
-  with anySubset? (P? ∘ (inside ∷_)) | anySubset? (P? ∘ (outside ∷_))
-... | yes (_ , Pp) | _            = yes (_ , Pp)
-... | _            | yes (_ , Pp) = yes (_ , Pp)
-... | no ¬Pp       | no ¬Pp'      = no helper
-  where
-  helper : ∄ P
-  helper (inside  ∷ p , Pp)  = ¬Pp  (_ , Pp)
-  helper (outside ∷ p , Pp') = ¬Pp' (_ , Pp')
+anySubset? {suc n} P? with anySubset? (P? ∘ (inside ∷_))
+... | yes (_ , Pp) = yes (_ , Pp)
+... | no  ¬Pp      with anySubset? (P? ∘ (outside ∷_))
+...   | yes (_ , Pp) = yes (_ , Pp)
+...   | no ¬Pp'      = no λ
+  { (inside  ∷ p , Pp)  → ¬Pp  (_ , Pp)
+  ; (outside ∷ p , Pp') → ¬Pp' (_ , Pp')
+  }
 
