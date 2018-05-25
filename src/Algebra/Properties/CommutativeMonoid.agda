@@ -10,9 +10,7 @@ module Algebra.Properties.CommutativeMonoid {g₁ g₂} (M : CommutativeMonoid g
 
 open import Algebra.Operations.CommutativeMonoid M
 open import Algebra.CommutativeMonoidSolver M
-import Algebra.FunctionProperties as Props
-import Relation.Binary.EqReasoning as EqR
-import Relation.Binary as B
+open import Relation.Binary as B using (_Preserves_⟶_)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Data.Product
@@ -40,8 +38,8 @@ open CommutativeMonoid M
   ; assoc to +-assoc
   ; comm to +-comm
   )
-open Props _≈_
-open EqR setoid
+open import Algebra.FunctionProperties _≈_
+open import Relation.Binary.EqReasoning setoid
 
 module _ {n} where
   open B.Setoid (TE.setoid setoid n) public
@@ -65,13 +63,13 @@ sumₜ-punchIn {suc n} t (suc i) =
 
 -- '_≈_' is a congruence over 'sumTable n'.
 
-sumₜ-cong-≈ : ∀ {n} {t t′ : Table Carrier n} → t ≋ t′ → sumₜ t ≈ sumₜ t′
+sumₜ-cong-≈ : ∀ {n} → sumₜ {n} Preserves _≋_ ⟶ _≈_
 sumₜ-cong-≈ {zero} p = refl
 sumₜ-cong-≈ {suc n} p = +-cong (p _) (sumₜ-cong-≈ (p ∘ suc))
 
 -- '_≡_' is a congruence over 'sum n'.
 
-sumₜ-cong-≡ : ∀ {n} {t t′ : Table Carrier n} → t ≗ t′ → sumₜ t ≡ sumₜ t′
+sumₜ-cong-≡ : ∀ {n} → sumₜ {n} Preserves _≗_ ⟶ _≡_
 sumₜ-cong-≡ {zero} p = P.refl
 sumₜ-cong-≡ {suc n} p = P.cong₂ _+_ (p _) (sumₜ-cong-≡ (p ∘ suc))
 
