@@ -25,7 +25,7 @@ open import Data.Table.Relation.Equality as TE using (_≗_)
 open import Data.Unit using (tt)
 open import Data.Empty using (⊥-elim)
 import Data.Table.Properties as TP
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_)
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (⌊_⌋)
 
@@ -35,6 +35,8 @@ open CommutativeMonoid M
   ; _∙_ to _+_
   ; ∙-cong to +-cong
   ; identity to +-identity
+  ; identityˡ to +-identityˡ
+  ; identityʳ to +-identityʳ
   ; assoc to +-assoc
   ; comm to +-comm
   )
@@ -73,15 +75,24 @@ sumₜ-cong-≡ : ∀ {n} → sumₜ {n} Preserves _≗_ ⟶ _≡_
 sumₜ-cong-≡ {zero} p = P.refl
 sumₜ-cong-≡ {suc n} p = P.cong₂ _+_ (p _) (sumₜ-cong-≡ (p ∘ suc))
 
+-- If addition is idempotent on a particular value 'x', then summing over a
+-- nonzero number of copies of 'x' gives back 'x'.
+
+sumₜ-idem-replicate : ∀ n {x} → _+_ IdempotentOn x → sumₜ (replicate {suc n} x) ≈ x
+sumₜ-idem-replicate zero idem = proj₂ +-identity _
+sumₜ-idem-replicate (suc n) {x} idem = begin
+  x + (x + sumₜ (replicate {n} x))   ≈⟨ sym (+-assoc _ _ _) ⟩
+  (x + x) + sumₜ (replicate {n} x)   ≈⟨ +-cong idem refl ⟩
+  x + sumₜ (replicate {n} x)         ≈⟨ sumₜ-idem-replicate n idem ⟩
+  x                                  ∎
+
 -- The sum over the constantly zero function is zero.
 
 sumₜ-zero : ∀ n → sumₜ (replicate {n} 0#) ≈ 0#
-sumₜ-zero (zero) = refl
-sumₜ-zero (suc n) =
-  begin
-    0# + sumₜ (replicate {n} 0#)  ≈⟨ proj₁ +-identity _ ⟩
-    sumₜ (replicate {n} 0#)       ≈⟨ sumₜ-zero n ⟩
-    0#                            ∎
+sumₜ-zero n = begin
+  sumₜ (replicate {n} 0#)      ≈⟨ sym (+-identityˡ _) ⟩
+  0# + sumₜ (replicate {n} 0#) ≈⟨ sumₜ-idem-replicate n {0#} (+-identityˡ 0#) ⟩
+  0#                           ∎
 
 -- The '∑' operator distributes over addition.
 
@@ -153,17 +164,12 @@ select-transpose _ i j e k with k FP.≟ i
 
 sumₜ-select : ∀ {n i} (t : Table Carrier n) → sumₜ (select 0# i t) ≈ lookup t i
 sumₜ-select {zero} {()} t
-sumₜ-select {suc n} {i} t =
-  begin
-    sumₜ (select 0# i t)                                                        ≈⟨ sumₜ-permute (select 0# i t) (Perm.transpose zero i) ⟩
-    sumₜ (rearrange (PermC.transpose zero i) (select 0# i t))                   ≡⟨ sumₜ-cong-≡ (TP.select-const 0# i t ∘ PermC.transpose zero i) ⟩
-    sumₜ (rearrange (PermC.transpose zero i) (select 0# i (replicate (f i))))   ≈⟨ sumₜ-cong-≈ (select-transpose (replicate (f i)) zero i refl) ⟩
-    sumₜ (select 0# zero (replicate {suc n} (f i)))                             ≡⟨⟩
-    f i + sumₜ (replicate {n} 0#)                                               ≈⟨ +-cong refl (sumₜ-zero n) ⟩
-    f i + 0#                                                                    ≈⟨ proj₂ +-identity _ ⟩
-    f i                                                                         ∎
-  where
-  f = lookup t
+sumₜ-select {suc n} {i} t = begin
+  sumₜ (select 0# i t)                                                    ≈⟨ sumₜ-punchIn (select 0# i t) i ⟩
+  lookup (select 0# i t) i + sumₜ (rearrange (punchIn i) (select 0# i t)) ≡⟨ P.cong₂ _+_ (TP.select-lookup t) (sumₜ-cong-≡ (TP.select-punchIn i t)) ⟩
+  lookup t i + sumₜ (replicate {n} 0#)                                    ≈⟨ +-cong refl (sumₜ-zero n) ⟩
+  lookup t i + 0#                                                         ≈⟨ +-identityʳ _ ⟩
+  lookup t i                                                              ∎
 
 -- Converting to a table then summing is the same as summing the original list
 
@@ -176,14 +182,3 @@ sumₜ-fromList (x ∷ xs) = P.cong₂ _+_ P.refl (sumₜ-fromList xs)
 sumₜ-toList : ∀ {n} (t : Table Carrier n) → sumₜ t ≡ sumₗ (toList t)
 sumₜ-toList {zero} _ = P.refl
 sumₜ-toList {suc n} _ = P.cong₂ _+_ P.refl (sumₜ-toList {n} _)
-
--- If addition is idempotent on a particular value 'x', then summing over any
--- arbitrary number of copies of 'x' gives back 'x'.
-
-sumₜ-idem-replicate : ∀ n {x} → _+_ IdempotentOn x → sumₜ (Table.replicate {suc n} x) ≈ x
-sumₜ-idem-replicate zero idem = proj₂ +-identity _
-sumₜ-idem-replicate (suc n) {x} idem = begin
-  x + (x + sumₜ (Table.replicate {n} x))   ≈⟨ sym (+-assoc _ _ _) ⟩
-  (x + x) + sumₜ (Table.replicate {n} x)   ≈⟨ +-cong idem refl ⟩
-  x + sumₜ (Table.replicate {n} x)         ≈⟨ sumₜ-idem-replicate n idem ⟩
-  x ∎

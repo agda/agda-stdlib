@@ -10,7 +10,10 @@ open import Data.Table
 open import Data.Table.Relation.Equality
 
 open import Data.Bool using (true; false; if_then_else_)
-open import Data.Fin using (Fin; suc; zero; _≟_)
+open import Data.Nat using (suc)
+open import Data.Empty using (⊥-elim)
+open import Data.Fin using (Fin; suc; zero; _≟_; punchIn)
+import Data.Fin.Properties as FP
 open import Data.List as L using (List; _∷_; [])
 open import Data.List.Any using (here; there; index)
 open import Data.List.Membership.Propositional using (_∈_)
@@ -19,7 +22,7 @@ open import Data.Vec as V using (Vec; _∷_; [])
 import Data.Vec.Properties as VP
 open import Function using (_∘_; flip)
 open import Function.Inverse using (Inverse)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_)
 open import Relation.Nullary using (yes; no)
 
 module _ {a} {A : Set a} where
@@ -69,3 +72,23 @@ module _ {a} {A : Set a} where
   select-const z i t j with j ≟ i
   ... | yes _ = P.refl
   ... | no  _ = P.refl
+
+  -- Selecting an element from a table then looking it up is the same as looking
+  -- up the index in the original table
+
+  select-lookup :
+    ∀ {n x i} (t : Table A n) →
+    lookup (select x i t) i ≡ lookup t i
+  select-lookup {i = i} t with i ≟ i
+  select-lookup t | yes p = P.refl
+  select-lookup t | no ¬p = ⊥-elim (¬p P.refl)
+
+  -- Selecting an element from a table then removing the same element produces a
+  -- constant table
+
+  select-punchIn :
+    ∀ {n x} i (t : Table A (suc n)) →
+    rearrange (punchIn i) (select x i t) ≗ replicate {n} x
+  select-punchIn i t j with punchIn i j ≟ i
+  select-punchIn i t j | yes p = ⊥-elim (FP.punchInᵢ≢i _ _ p)
+  select-punchIn i t j | no ¬p = P.refl
