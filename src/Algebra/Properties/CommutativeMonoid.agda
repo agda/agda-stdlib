@@ -136,7 +136,6 @@ sumₜ-permute {suc n} t π =
     lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (remove (π ⟨$⟩ˡ 0i) πt)                              ≈⟨ sym (sumₜ-remove (permute π t)) ⟩
     sumₜ πt                                                                           ∎
   where
-  f = lookup t
   0i = zero
   πt = permute π t
 
