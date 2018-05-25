@@ -15,7 +15,7 @@ open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Data.Product
 open import Data.Nat using (ℕ; zero; suc)
-open import Data.Fin using (Fin; zero; suc; punchIn)
+open import Data.Fin using (Fin; zero; suc)
 open import Data.List as List using ([]; _∷_)
 import Data.Fin.Properties as FP
 open import Data.Fin.Permutation as Perm using (Permutation; Permutation′; _⟨$⟩ˡ_; _⟨$⟩ʳ_)
@@ -138,7 +138,6 @@ sumₜ-permute {suc n} t π =
   where
   f = lookup t
   0i = zero
-  ππ0 = π ⟨$⟩ʳ (π ⟨$⟩ˡ 0i)
   πt = permute π t
 
 -- -- A version of 'sumₜ-permute' allowing heterogeneous sum lengths.
@@ -169,7 +168,7 @@ sumₜ-select : ∀ {n i} (t : Table Carrier n) → sumₜ (select 0# i t) ≈ l
 sumₜ-select {zero}  {()}
 sumₜ-select {suc n} {i} t = begin
   sumₜ (select 0# i t)                                         ≈⟨ sumₜ-remove {i = i} (select 0# i t) ⟩
-  lookup (select 0# i t) i + sumₜ (remove i (select 0# i t))   ≡⟨ P.cong₂ _+_ (TP.select-lookup t) (sumₜ-cong-≡ (TP.select-punchIn i t)) ⟩
+  lookup (select 0# i t) i + sumₜ (remove i (select 0# i t))   ≡⟨ P.cong₂ _+_ (TP.select-lookup t) (sumₜ-cong-≡ (TP.select-remove i t)) ⟩
   lookup t i + sumₜ (replicate {n} 0#)                         ≈⟨ +-cong refl (sumₜ-zero n) ⟩
   lookup t i + 0#                                              ≈⟨ +-identityʳ _ ⟩
   lookup t i                                                   ∎
