@@ -6,6 +6,7 @@
 
 module Data.Fin.Permutation where
 
+open import Data.Empty using (⊥-elim)
 open import Data.Fin
 open import Data.Fin.Properties
 import Data.Fin.Permutation.Components as PC
@@ -14,7 +15,7 @@ open import Data.Product using (proj₂)
 open import Function.Inverse as Inverse using (_↔_; Inverse; _InverseOf_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function using (_∘_)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; trans; sym; →-to-⟶; cong; cong₂)
@@ -177,3 +178,6 @@ module _ {m n} (π : Permutation (suc m) (suc n)) where
 
 fromPermutation : ∀ {m n} → Permutation m n → Permutation′ m
 fromPermutation π = P.subst (Permutation _) (sym (↔⇒≡ π)) π
+
+refute : ∀ {m n} → m ≢ n → ¬ Permutation m n
+refute m≢n = ⊥-elim ∘ m≢n ∘ ↔⇒≡

@@ -125,9 +125,11 @@ sumₜ-zero n = begin
 
 -- Any permutation of a table has the same sum as the original.
 
-sumₜ-permute : ∀ {n} t (π : Permutation′ n) → sumₜ t ≈ sumₜ (permute π t)
-sumₜ-permute {zero}  t π = refl
-sumₜ-permute {suc n} t π =
+sumₜ-permute : ∀ {m n} t (π : Permutation m n) → sumₜ t ≈ sumₜ (permute π t)
+sumₜ-permute {zero} {zero} t π = refl
+sumₜ-permute {zero} {suc n} t π = ⊥-elim (Perm.refute (λ ()) π)
+sumₜ-permute {suc m} {zero} t π = ⊥-elim (Perm.refute (λ ()) π)
+sumₜ-permute {suc m} {suc n} t π =
   begin
     sumₜ t                                                                            ≡⟨⟩
     lookup t 0i           + sumₜ (remove 0i t)                                        ≡⟨ P.cong₂ _+_ (P.cong (lookup t) (P.sym (Perm.inverseʳ π))) P.refl ⟩
@@ -139,17 +141,8 @@ sumₜ-permute {suc n} t π =
   0i = zero
   πt = permute π t
 
--- -- A version of 'sumₜ-permute' allowing heterogeneous sum lengths.
-
-sumₜ-permute′ : ∀ {m n} t (π : Permutation m n) → sumₜ t ≈ sumₜ (permute π t)
-sumₜ-permute′ t π with Perm.↔⇒≡ π
-sumₜ-permute′ t π | P.refl = sumₜ-permute t π
-
-∑-permute : ∀ {n} f (π : Permutation′ n) → ∑[ i < n ] f i ≈ ∑[ i < n ] f (π ⟨$⟩ʳ i)
+∑-permute : ∀ {m n} f (π : Permutation m n) → ∑[ i < n ] f i ≈ ∑[ i < m ] f (π ⟨$⟩ʳ i)
 ∑-permute = sumₜ-permute ∘ tabulate
-
-∑-permute′ : ∀ {m n} f (π : Permutation m n) → ∑[ i < n ] f i ≈ ∑[ i < m ] f (π ⟨$⟩ʳ i)
-∑-permute′ = sumₜ-permute′ ∘ tabulate
 
 -- If the function takes the same value at 'i' and 'j', then transposing 'i' and
 -- 'j' then selecting 'j' is the same as selecting 'i'.
