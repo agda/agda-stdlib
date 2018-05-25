@@ -77,7 +77,7 @@ module ⊆-Reasoning where
   import Relation.Binary.PreorderReasoning as PreR
   private
     open module PR {a} {A : Set a} = PreR (⊆-preorder A) public
-      renaming (_∼⟨_⟩_ to _⊆⟨_⟩_; _≈⟨_⟩_ to _≡⟨_⟩_)
+      hiding (_≈⟨_⟩_) renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
 
   infixr 2 _∼⟨_⟩_
   infix  1 _∈⟨_⟩_
