@@ -108,66 +108,40 @@ module _ {a p} {A : Set a} {P : A → Set p} where
     to∘from ext ¬∀ = ext (⊥-elim ∘ ¬∀)
 
 ------------------------------------------------------------------------
--- Lemmas relating All to ⊤
-
-All-all : ∀ {a} {A : Set a} (p : A → Bool) {xs} →
-          All (T ∘ p) xs → T (all p xs)
-All-all p []         = _
-All-all p (px ∷ pxs) = Equivalence.from T-∧ ⟨$⟩ (px , All-all p pxs)
-
-all-All : ∀ {a} {A : Set a} (p : A → Bool) xs →
-          T (all p xs) → All (T ∘ p) xs
-all-All p []       _     = []
-all-All p (x ∷ xs) px∷xs with Equivalence.to (T-∧ {p x}) ⟨$⟩ px∷xs
-all-All p (x ∷ xs) px∷xs | (px , pxs) = px ∷ all-All p xs pxs
-
-------------------------------------------------------------------------
--- All is anti-monotone.
-
-anti-mono : ∀ {a p} {A : Set a} {P : A → Set p} {xs ys} →
-            xs ⊆ ys → All P ys → All P xs
-anti-mono xs⊆ys pys = All.tabulate (All.lookup pys ∘ xs⊆ys)
-
-all-anti-mono : ∀ {a} {A : Set a} (p : A → Bool) {xs ys} →
-                xs ⊆ ys → T (all p ys) → T (all p xs)
-all-anti-mono p xs⊆ys = All-all p ∘ anti-mono xs⊆ys ∘ all-All p _
-
-------------------------------------------------------------------------
--- Introduction (⁺) and elimination (⁻) rules for various list functions
+-- Introduction (⁺) and elimination (⁻) rules for list operations
 ------------------------------------------------------------------------
 -- map
 
-module _ {a b} {A : Set a} {B : Set b} where
+module _ {a b p} {A : Set a} {B : Set b} {P : B → Set p} {f : A → B} where
 
-  All-map : ∀ {p} {P : B → Set p} {f : A → B} {xs} →
-            All (P ∘ f) xs → All P (map f xs)
-  All-map []       = []
-  All-map (p ∷ ps) = p ∷ All-map ps
+  map⁺ : ∀ {xs} → All (P ∘ f) xs → All P (map f xs)
+  map⁺ []       = []
+  map⁺ (p ∷ ps) = p ∷ map⁺ ps
 
-  map-All : ∀ {p} {P : B → Set p} {f : A → B} {xs} →
-            All P (map f xs) → All (P ∘ f) xs
-  map-All {xs = []}    []       = []
-  map-All {xs = _ ∷ _} (p ∷ ps) = p ∷ map-All ps
+  map⁻ : ∀ {xs} → All P (map f xs) → All (P ∘ f) xs
+  map⁻ {xs = []}    []       = []
+  map⁻ {xs = _ ∷ _} (p ∷ ps) = p ∷ map⁻ ps
 
-  -- A variant of All.map.
+-- A variant of All.map.
 
-  gmap : ∀ {p q} {P : A → Set p} {Q : B → Set q} {f : A → B} →
-         P ⋐ Q ∘ f → All P ⋐ All Q ∘ map f
-  gmap g = All-map ∘ All.map g
+module _ {a b p q} {A : Set a} {B : Set b} {f : A → B}
+         {P : A → Set p} {Q : B → Set q} where
+
+  gmap : P ⋐ Q ∘ f → All P ⋐ All Q ∘ map f
+  gmap g = map⁺ ∘ All.map g
 
 ------------------------------------------------------------------------
 -- mapMaybe
 
-module _ {a b} {A : Set a} {B : Set b} where
+module _ {a b p} {A : Set a} {B : Set b}
+         (P : B → Set p) {f : A → Maybe B} where
 
-  mapMaybe⁺ : ∀ {p} (P : B → Set p) {f : A → Maybe B} {xs : List A} →
-               All (Maybe.All P) (map f xs) →
-               All P (mapMaybe f xs)
-  mapMaybe⁺ _ {f = _} {[]}     [] = []
-  mapMaybe⁺ P {f = f} {x ∷ xs} (px ∷ pxs) with f x
-  ... | nothing = mapMaybe⁺ P pxs
+  mapMaybe⁺ : ∀ {xs} → All (Maybe.All P) (map f xs) → All P (mapMaybe f xs)
+  mapMaybe⁺ {[]}     [] = []
+  mapMaybe⁺ {x ∷ xs} (px ∷ pxs) with f x
+  ... | nothing = mapMaybe⁺ pxs
   ... | just v with px
-  ...   | just pv = pv ∷ mapMaybe⁺ P pxs
+  ...   | just pv = pv ∷ mapMaybe⁺ pxs
 
 ------------------------------------------------------------------------
 -- _++_
@@ -285,7 +259,7 @@ module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
   ... | no  _  = filter⁺₁ xs
 
   filter⁺₂ : ∀ {q} {Q : A → Set q} {xs} →
-                  All Q xs → All Q (filter P? xs)
+             All Q xs → All Q (filter P? xs)
   filter⁺₂ {xs = _}     [] = []
   filter⁺₂ {xs = x ∷ _} (Qx ∷ Qxs) with P? x
   ... | no  _ = filter⁺₂ Qxs
@@ -301,8 +275,6 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
              All P (zipWith f xs ys)
   zipWith⁺ P f []              = []
   zipWith⁺ P f (Pfxy ∷ Pfxsys) = Pfxy ∷ zipWith⁺ P f Pfxsys
-
-
 
 ------------------------------------------------------------------------
 -- Operations for constructing lists
@@ -348,7 +320,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   inits⁻ []               pxs                   = []
   inits⁻ (x ∷ [])         ([] ∷ p[x] ∷ [])      = p[x]
   inits⁻ (x ∷ xs@(_ ∷ _)) ([] ∷ pxs@(p[x] ∷ _)) =
-    singleton⁻ p[x] ∷ inits⁻ xs (All.map (drop⁺ 1) (map-All pxs))
+    singleton⁻ p[x] ∷ inits⁻ xs (All.map (drop⁺ 1) (map⁻ pxs))
 
 ------------------------------------------------------------------------
 -- tails
@@ -360,3 +332,41 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   tails⁻ : ∀ xs → All (All P) (tails xs) → All P xs
   tails⁻ []       pxs        = []
   tails⁻ (x ∷ xs) (pxxs ∷ _) = pxxs
+
+------------------------------------------------------------------------
+-- all
+
+module _ {a} {A : Set a} (p : A → Bool) where
+
+  all⁺ : ∀ xs → T (all p xs) → All (T ∘ p) xs
+  all⁺ []       _     = []
+  all⁺ (x ∷ xs) px∷xs with Equivalence.to (T-∧ {p x}) ⟨$⟩ px∷xs
+  ... | (px , pxs) = px ∷ all⁺ xs pxs
+
+  all⁻ : ∀ {xs} → All (T ∘ p) xs → T (all p xs)
+  all⁻ []         = _
+  all⁻ (px ∷ pxs) = Equivalence.from T-∧ ⟨$⟩ (px , all⁻ pxs)
+
+------------------------------------------------------------------------
+-- All is anti-monotone.
+
+anti-mono : ∀ {a p} {A : Set a} {P : A → Set p} {xs ys} →
+            xs ⊆ ys → All P ys → All P xs
+anti-mono xs⊆ys pys = All.tabulate (All.lookup pys ∘ xs⊆ys)
+
+all-anti-mono : ∀ {a} {A : Set a} (p : A → Bool) {xs ys} →
+                xs ⊆ ys → T (all p ys) → T (all p xs)
+all-anti-mono p xs⊆ys = all⁻ p ∘ anti-mono xs⊆ys ∘ all⁺ p _
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+All-all = all⁻
+all-All = all⁺
+
+All-map = map⁺
+map-All = map⁻
+
