@@ -117,6 +117,10 @@ _⁺++_ : ∀ {a} {A : Set a} → List⁺ A → List A → List⁺ A
 _++⁺_ : ∀ {a} {A : Set a} → List A → List⁺ A → List⁺ A
 xs ++⁺ ys = List.foldr _∷⁺_ ys xs
 
+_++⁺′_ : ∀ {a} {A : Set a} → List A → List⁺ A → List⁺ A
+[] ++⁺′ ys       = ys
+(x ∷ xs) ++⁺′ ys = (x ∷ xs) ⁺++⁺ ys
+
 concat : ∀ {a} {A : Set a} → List⁺ (List⁺ A) → List⁺ A
 concat (xs ∷ xss) = xs ⁺++ List.concat (List.map toList xss)
 
