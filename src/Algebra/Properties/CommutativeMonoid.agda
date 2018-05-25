@@ -51,8 +51,8 @@ module _ {n} where
 -- When summing over a function from a finite set, we can pull out any value and move it to the front.
 
 sumₜ-punchIn : ∀ {n} t (i : Fin (suc n)) → sumₜ t ≈ lookup t i + sumₜ (rearrange (punchIn i) t)
-sumₜ-punchIn f zero = refl
-sumₜ-punchIn {zero} t (suc ())
+sumₜ-punchIn         t zero = refl
+sumₜ-punchIn {zero}  t (suc ())
 sumₜ-punchIn {suc n} t (suc i) =
   begin
     x + sumₜ (tail t)  ≈⟨ +-cong refl (sumₜ-punchIn (tail t) i) ⟩
@@ -66,20 +66,20 @@ sumₜ-punchIn {suc n} t (suc i) =
 -- '_≈_' is a congruence over 'sumTable n'.
 
 sumₜ-cong-≈ : ∀ {n} → sumₜ {n} Preserves _≋_ ⟶ _≈_
-sumₜ-cong-≈ {zero} p = refl
+sumₜ-cong-≈ {zero}  p = refl
 sumₜ-cong-≈ {suc n} p = +-cong (p _) (sumₜ-cong-≈ (p ∘ suc))
 
 -- '_≡_' is a congruence over 'sum n'.
 
 sumₜ-cong-≡ : ∀ {n} → sumₜ {n} Preserves _≗_ ⟶ _≡_
-sumₜ-cong-≡ {zero} p = P.refl
+sumₜ-cong-≡ {zero}  p = P.refl
 sumₜ-cong-≡ {suc n} p = P.cong₂ _+_ (p _) (sumₜ-cong-≡ (p ∘ suc))
 
 -- If addition is idempotent on a particular value 'x', then summing over a
 -- nonzero number of copies of 'x' gives back 'x'.
 
 sumₜ-idem-replicate : ∀ n {x} → _+_ IdempotentOn x → sumₜ (replicate {suc n} x) ≈ x
-sumₜ-idem-replicate zero idem = proj₂ +-identity _
+sumₜ-idem-replicate zero        idem = proj₂ +-identity _
 sumₜ-idem-replicate (suc n) {x} idem = begin
   x + (x + sumₜ (replicate {n} x))   ≈⟨ sym (+-assoc _ _ _) ⟩
   (x + x) + sumₜ (replicate {n} x)   ≈⟨ +-cong idem refl ⟩
@@ -97,7 +97,7 @@ sumₜ-zero n = begin
 -- The '∑' operator distributes over addition.
 
 ∑-distrib-+ : ∀ n (f g : Fin n → Carrier) → ∑[ i < n ] f i + ∑[ i < n ] g i ≈ ∑[ i < n ] (f i + g i)
-∑-distrib-+ zero f g = proj₁ +-identity _
+∑-distrib-+ zero    f g = proj₁ +-identity _
 ∑-distrib-+ (suc n) f g =
   begin
     (fz + ∑f) + (gz + ∑g)      ≈⟨ solve 4 (λ a b c d → (a ⊕ b) ⊕ (c ⊕ d) ⊜ a ⊕ (c ⊕ (b ⊕ d))) refl fz ∑f gz ∑g ⟩
@@ -114,7 +114,7 @@ sumₜ-zero n = begin
 -- The '∑' operator commutes with itself.
 
 ∑-comm : ∀ n m (f : Fin n → Fin m → Carrier) → ∑[ i < n ] ∑[ j < m ] f i j ≈ ∑[ j < m ] ∑[ i < n ] f i j
-∑-comm zero m f = sym (sumₜ-zero m)
+∑-comm zero    m f = sym (sumₜ-zero m)
 ∑-comm (suc n) m f =
   begin
     ∑[ j < m ] f zero j + ∑[ i < n ] ∑[ j < m ] f (suc i) j   ≈⟨ +-cong refl (∑-comm n m _) ⟩
@@ -124,7 +124,7 @@ sumₜ-zero n = begin
 -- Any permutation of a table has the same sum as the original.
 
 sumₜ-permute : ∀ {n} t (π : Permutation′ n) → sumₜ t ≈ sumₜ (rearrange (π ⟨$⟩ʳ_) t)
-sumₜ-permute {zero} t π = refl
+sumₜ-permute {zero}  t π = refl
 sumₜ-permute {suc n} t π =
   begin
     sumₜ t                                                                      ≡⟨⟩
@@ -157,13 +157,13 @@ select-transpose : ∀ {n} t (i j : Fin n) → lookup t i ≈ lookup t j → ∀
 select-transpose _ i j e k with k FP.≟ i
 ... | yes p rewrite P.≡-≟-identity FP._≟_ {j} P.refl = sym e
 ... | no ¬p with k FP.≟ j
-... | yes q rewrite proj₂ (P.≢-≟-identity FP._≟_ (¬p ∘ P.trans q ∘ P.sym)) = refl
-... | no ¬q rewrite proj₂ (P.≢-≟-identity FP._≟_ ¬q) = refl
+...   | yes q rewrite proj₂ (P.≢-≟-identity FP._≟_ (¬p ∘ P.trans q ∘ P.sym)) = refl
+...   | no ¬q rewrite proj₂ (P.≢-≟-identity FP._≟_ ¬q) = refl
 
 -- Summing over a pulse gives you the single value picked out by the pulse.
 
 sumₜ-select : ∀ {n i} (t : Table Carrier n) → sumₜ (select 0# i t) ≈ lookup t i
-sumₜ-select {zero} {()} t
+sumₜ-select {zero}  {()}
 sumₜ-select {suc n} {i} t = begin
   sumₜ (select 0# i t)                                                    ≈⟨ sumₜ-punchIn (select 0# i t) i ⟩
   lookup (select 0# i t) i + sumₜ (rearrange (punchIn i) (select 0# i t)) ≡⟨ P.cong₂ _+_ (TP.select-lookup t) (sumₜ-cong-≡ (TP.select-punchIn i t)) ⟩
@@ -174,11 +174,11 @@ sumₜ-select {suc n} {i} t = begin
 -- Converting to a table then summing is the same as summing the original list
 
 sumₜ-fromList : ∀ xs → sumₜ (fromList xs) ≡ sumₗ xs
-sumₜ-fromList [] = P.refl
+sumₜ-fromList []       = P.refl
 sumₜ-fromList (x ∷ xs) = P.cong₂ _+_ P.refl (sumₜ-fromList xs)
 
 -- Converting to a list then summing is the same as summing the original table
 
 sumₜ-toList : ∀ {n} (t : Table Carrier n) → sumₜ t ≡ sumₗ (toList t)
-sumₜ-toList {zero} _ = P.refl
+sumₜ-toList {zero}  _ = P.refl
 sumₜ-toList {suc n} _ = P.cong₂ _+_ P.refl (sumₜ-toList {n} _)
