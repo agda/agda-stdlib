@@ -98,6 +98,6 @@ module _ {a} {A : Set a} where
   -- removing the element, then permuting with 'π' minus 'i'.
 
   remove-permute :
-    ∀ {n} (π : Permutation (suc n) (suc n)) i (t : Table A (suc n)) →
+    ∀ {m n} (π : Permutation (suc m) (suc n)) i (t : Table A (suc n)) →
     remove (π ⟨$⟩ˡ i) (permute π t) ≗ permute (Perm.remove (π ⟨$⟩ˡ i) π) (remove i t)
   remove-permute π i t j = P.cong (lookup t) (Perm.punchIn-permute′ π i j)

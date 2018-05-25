@@ -123,9 +123,9 @@ remove {m} {n} i π = permutation to from
 
   from-punchOut : ∀ {j : Fin n} → i ≢ πˡ (punchIn (πʳ i) j)
   from-punchOut {j} p = punchInᵢ≢i (πʳ i) j (sym (begin
-    πʳ i                       ≡⟨ cong πʳ p ⟩
+    πʳ i                        ≡⟨ cong πʳ p ⟩
     πʳ (πˡ (punchIn (πʳ i) j))  ≡⟨ inverseʳ π ⟩
-    punchIn (πʳ i) j           ∎))
+    punchIn (πʳ i) j            ∎))
 
   to : Fin m → Fin n
   to j = punchOut (to-punchOut {j})
@@ -135,39 +135,39 @@ remove {m} {n} i π = permutation to from
 
   left-inverse-of : ∀ j → from (to j) ≡ j
   left-inverse-of j = begin
-    from (to j)                                                     ≡⟨⟩
+    from (to j)                                                      ≡⟨⟩
     punchOut {i = i} {πˡ (punchIn (πʳ i) (punchOut to-punchOut))} _  ≡⟨ punchOut-cong′ i (cong πˡ (punchIn-punchOut {i = πʳ i} _)) ⟩
     punchOut {i = i} {πˡ (πʳ (punchIn i j))}                      _  ≡⟨ punchOut-cong i (inverseˡ π) ⟩
-    punchOut {i = i} {punchIn i j}                               _  ≡⟨ punchOut-punchIn i ⟩
-    j                                                               ∎
+    punchOut {i = i} {punchIn i j}                                _  ≡⟨ punchOut-punchIn i ⟩
+    j                                                                ∎
 
   right-inverse-of : ∀ j → to (from j) ≡ j
   right-inverse-of j = begin
-    to (from j)                                                     ≡⟨⟩
-    punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))} _  ≡⟨ punchOut-cong′ (πʳ i) (cong πʳ (punchIn-punchOut {i = i} _)) ⟩
+    to (from j)                                                       ≡⟨⟩
+    punchOut {i = πʳ i} {πʳ (punchIn i (punchOut from-punchOut))}  _  ≡⟨ punchOut-cong′ (πʳ i) (cong πʳ (punchIn-punchOut {i = i} _)) ⟩
     punchOut {i = πʳ i} {πʳ (πˡ (punchIn (πʳ i) j))}               _  ≡⟨ punchOut-cong (πʳ i) (inverseʳ π) ⟩
-    punchOut {i = πʳ i} {punchIn (πʳ i) j}                        _  ≡⟨ punchOut-punchIn (πʳ i) ⟩
-    j                                                               ∎
+    punchOut {i = πʳ i} {punchIn (πʳ i) j}                         _  ≡⟨ punchOut-punchIn (πʳ i) ⟩
+    j                                                                 ∎
 
 ------------------------------------------------------------------------
 -- Other properties
 
-module _ {n} (π : Permutation′ (suc n)) where
+module _ {m n} (π : Permutation (suc m) (suc n)) where
   private
     πʳ = π ⟨$⟩ʳ_
     πˡ = π ⟨$⟩ˡ_
 
   punchIn-permute : ∀ i j → πʳ (punchIn i j) ≡ punchIn (πʳ i) (remove i π ⟨$⟩ʳ j)
   punchIn-permute i j = begin
-    πʳ (punchIn i j)                                          ≡⟨ sym (punchIn-punchOut {i = πʳ i} _) ⟩
+    πʳ (punchIn i j)                                           ≡⟨ sym (punchIn-punchOut {i = πʳ i} _) ⟩
     punchIn (πʳ i) (punchOut {i = πʳ i} {πʳ (punchIn i j)} _)  ≡⟨⟩
     punchIn (πʳ i) (remove i π ⟨$⟩ʳ j)                         ∎
 
   punchIn-permute′ : ∀ i j → πʳ (punchIn (πˡ i) j) ≡ punchIn i (remove (πˡ i) π ⟨$⟩ʳ j)
   punchIn-permute′ i j = begin
-    πʳ (punchIn (πˡ i) j)                       ≡⟨ punchIn-permute _ _ ⟩
+    πʳ (punchIn (πˡ i) j)                         ≡⟨ punchIn-permute _ _ ⟩
     punchIn (πʳ (πˡ i)) (remove (πˡ i) π ⟨$⟩ʳ j)  ≡⟨ cong₂ punchIn (inverseʳ π) refl ⟩
-    punchIn i (remove (πˡ i) π ⟨$⟩ʳ j)           ∎
+    punchIn i (remove (πˡ i) π ⟨$⟩ʳ j)            ∎
 
 ↔⇒≡ : ∀ {m n} → Permutation m n → m ≡ n
 ↔⇒≡ {zero}  {zero}  π = refl
