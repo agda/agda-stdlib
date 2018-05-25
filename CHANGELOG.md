@@ -27,18 +27,19 @@ Non-backwards compatible changes
                                          ↘ Data.List.Relation.Sublist.Propositional
   ```
 
-* The `_⊆_` relation has been moved out of the `Membership` modules to new
-  modules `List.Relation.Sublist.(Setoid/Propositional)`. Consequently the `mono`
-  proofs that were in `Membership.Propositional.Properties` have been moved to
-  `Relation.Sublist.Propositional.Properties`.
 
-* The following proofs have been moved from `Any.Properties` to
-  `Membership.Propositional.Properties.Core`:
+* The `_⊆_` relation has been moved out of the `Membership` modules to new
+  modules `Data.List.Relation.Sublist.(Setoid/Propositional)`. Consequently the `mono`
+  proofs that were in `Data.List.Membership.Propositional.Properties` have been moved to
+  `Data.List.Relation.Sublist.Propositional.Properties`.
+
+* The following proofs have been moved from `Data.List.Any.Properties` to
+  `Data.List.Membership.Propositional.Properties.Core`:
   ```agda
   map∘find, find∘map, find-∈, lose∘find, find∘lose, ∃∈-Any, Any↔
   ```
 
-* The following terms have been moved from `Membership.Propositional` into
+* The following terms have been moved from `Data.List.Membership.Propositional` into
   `Relation.BagAndSetEquality`:
   ```agda
   Kind, Symmetric-kind
@@ -46,7 +47,7 @@ Non-backwards compatible changes
   [_]-Order, [_]-Equality, _∼[_]_
   ```
 
-* The type of the proof of `∈-resp-≈` in `Membership.Setoid.Properties` has changed from
+* The type of the proof of `∈-resp-≈` in `Data.List.Membership.Setoid.Properties` has changed from
   `∀ {x} → (x ≈_) Respects _≈_` to `∀ {xs} → (_∈ xs) Respects _≈_`.
 
 #### Upgrade of `Algebra.Operations`
