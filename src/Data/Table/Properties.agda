@@ -14,6 +14,7 @@ open import Data.Nat using (suc)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin using (Fin; suc; zero; _≟_; punchIn)
 import Data.Fin.Properties as FP
+open import Data.Fin.Permutation as Perm using (Permutation; _⟨$⟩ʳ_; _⟨$⟩ˡ_)
 open import Data.List as L using (List; _∷_; [])
 open import Data.List.Any using (here; there; index)
 open import Data.List.Membership.Propositional using (_∈_)
@@ -86,9 +87,17 @@ module _ {a} {A : Set a} where
   -- Selecting an element from a table then removing the same element produces a
   -- constant table
 
-  select-punchIn :
+  select-remove :
     ∀ {n x} i (t : Table A (suc n)) →
-    rearrange (punchIn i) (select x i t) ≗ replicate {n} x
-  select-punchIn i t j with punchIn i j ≟ i
-  select-punchIn i t j | yes p = ⊥-elim (FP.punchInᵢ≢i _ _ p)
-  select-punchIn i t j | no ¬p = P.refl
+    remove i (select x i t) ≗ replicate {n} x
+  select-remove i t j with punchIn i j ≟ i
+  select-remove i t j | yes p = ⊥-elim (FP.punchInᵢ≢i _ _ p)
+  select-remove i t j | no ¬p = P.refl
+
+  -- Removing an index 'i' from a table permuted with 'π' is the same as
+  -- removing the element, then permuting with 'π' minus 'i'.
+
+  remove-permute :
+    ∀ {n} (π : Permutation (suc n) (suc n)) i (t : Table A (suc n)) →
+    remove (π ⟨$⟩ˡ i) (permute π t) ≗ permute (Perm.remove (π ⟨$⟩ˡ i) π) (remove i t)
+  remove-permute π i t j = P.cong (lookup t) (Perm.punchIn-permute′ π i j)

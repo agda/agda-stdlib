@@ -41,6 +41,9 @@ module _ {a} {A : Set a} {n : ℕ} where
 fromList : ∀ {a} {A : Set a} (xs : List A) → Table A (List.length xs)
 fromList = tabulate ∘ List.lookup
 
+remove : ∀ {n a} {A : Set a} (i : Fin (suc n)) → Table A (suc n) → Table A n
+remove i = rearrange (punchIn i)
+
 module _ {a b} {A : Set a} {B : Set b} where
 
 -- Folds

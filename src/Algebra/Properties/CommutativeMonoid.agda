@@ -15,7 +15,7 @@ open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Data.Product
 open import Data.Nat using (ℕ; zero; suc)
-open import Data.Fin using (Fin; punchIn; zero; suc)
+open import Data.Fin using (Fin; zero; suc; punchIn)
 open import Data.List as List using ([]; _∷_)
 import Data.Fin.Properties as FP
 open import Data.Fin.Permutation as Perm using (Permutation; Permutation′; _⟨$⟩ˡ_; _⟨$⟩ʳ_)
@@ -50,18 +50,20 @@ module _ {n} where
 
 -- When summing over a function from a finite set, we can pull out any value and move it to the front.
 
-sumₜ-punchIn : ∀ {n} t (i : Fin (suc n)) → sumₜ t ≈ lookup t i + sumₜ (rearrange (punchIn i) t)
-sumₜ-punchIn         t zero = refl
-sumₜ-punchIn {zero}  t (suc ())
-sumₜ-punchIn {suc n} t (suc i) =
+sumₜ-remove : ∀ {n} {i : Fin (suc n)} t → sumₜ t ≈ lookup t i + sumₜ (remove i t)
+sumₜ-remove {_}     {zero}     t = refl
+sumₜ-remove {zero}  {suc ()} t
+sumₜ-remove {suc n} {suc i}  t′ =
   begin
-    x + sumₜ (tail t)  ≈⟨ +-cong refl (sumₜ-punchIn (tail t) i) ⟩
-    x + (y + z)        ≈⟨ solve 3 (λ x y z → x ⊕ (y ⊕ z) ⊜ y ⊕ (x ⊕ z)) refl x y z ⟩
-    y + (x + z)        ∎
+    t₀ + ∑t           ≈⟨ +-cong refl (sumₜ-remove t) ⟩
+    t₀ + (tᵢ + ∑t′)   ≈⟨ solve 3 (λ x y z → x ⊕ (y ⊕ z) ⊜ y ⊕ (x ⊕ z)) refl t₀ tᵢ ∑t′ ⟩
+    tᵢ + (t₀ + ∑t′)   ∎
   where
-  x = head t
-  y = lookup t (suc i)
-  z = sumₜ (rearrange (punchIn i) (tail t))
+  t = tail t′
+  t₀ = head t′
+  tᵢ = lookup t i
+  ∑t = sumₜ t
+  ∑t′ = sumₜ (remove i t)
 
 -- '_≈_' is a congruence over 'sumTable n'.
 
@@ -123,24 +125,25 @@ sumₜ-zero n = begin
 
 -- Any permutation of a table has the same sum as the original.
 
-sumₜ-permute : ∀ {n} t (π : Permutation′ n) → sumₜ t ≈ sumₜ (rearrange (π ⟨$⟩ʳ_) t)
+sumₜ-permute : ∀ {n} t (π : Permutation′ n) → sumₜ t ≈ sumₜ (permute π t)
 sumₜ-permute {zero}  t π = refl
 sumₜ-permute {suc n} t π =
   begin
-    sumₜ t                                                                      ≡⟨⟩
-    f 0i + sumₜ (rearrange (punchIn 0i) t)                                      ≈⟨ +-cong refl (sumₜ-permute _ (Perm.remove (π ⟨$⟩ˡ 0i) π)) ⟩
-    f 0i + sumₜ (rearrange (punchIn 0i ∘ (Perm.remove (π ⟨$⟩ˡ 0i) π ⟨$⟩ʳ_)) t)  ≡⟨ P.cong₂ _+_ P.refl (sumₜ-cong-≡ (P.cong f ∘ P.sym ∘ Perm.punchIn-permute′ π 0i)) ⟩
-    f 0i + sumₜ (rearrange ((π ⟨$⟩ʳ_) ∘ punchIn (π ⟨$⟩ˡ 0i)) t)                 ≡⟨ P.cong₂ _+_ (P.cong f (P.sym (Perm.inverseʳ π))) P.refl ⟩
-    f _  + sumₜ (rearrange ((π ⟨$⟩ʳ_) ∘ punchIn (π ⟨$⟩ˡ 0i)) t)                 ≈⟨ sym (sumₜ-punchIn (rearrange (π ⟨$⟩ʳ_) t) (π ⟨$⟩ˡ 0i)) ⟩
-    sumₜ (rearrange (π ⟨$⟩ʳ_) t)                                                ∎
+    sumₜ t                                                                            ≡⟨⟩
+    lookup t 0i           + sumₜ (remove 0i t)                                        ≡⟨ P.cong₂ _+_ (P.cong f (P.sym (Perm.inverseʳ π))) P.refl ⟩
+    lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (remove 0i t)                                        ≈⟨ +-cong refl (sumₜ-permute (remove 0i t) (Perm.remove (π ⟨$⟩ˡ 0i) π)) ⟩
+    lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (permute (Perm.remove (π ⟨$⟩ˡ 0i) π) (remove 0i t))  ≡⟨ P.cong₂ _+_ P.refl (sumₜ-cong-≡ (P.sym ∘ TP.remove-permute π 0i t)) ⟩
+    lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (remove (π ⟨$⟩ˡ 0i) πt)                              ≈⟨ sym (sumₜ-remove (permute π t)) ⟩
+    sumₜ πt                                                                           ∎
   where
   f = lookup t
   0i = zero
   ππ0 = π ⟨$⟩ʳ (π ⟨$⟩ˡ 0i)
+  πt = permute π t
 
--- A version of 'sumₜ-permute' allowing heterogeneous sum lengths.
+-- -- A version of 'sumₜ-permute' allowing heterogeneous sum lengths.
 
-sumₜ-permute′ : ∀ {m n} t (π : Permutation m n) → sumₜ t ≈ sumₜ (rearrange (π ⟨$⟩ʳ_) t)
+sumₜ-permute′ : ∀ {m n} t (π : Permutation m n) → sumₜ t ≈ sumₜ (permute π t)
 sumₜ-permute′ t π with Perm.↔⇒≡ π
 sumₜ-permute′ t π | P.refl = sumₜ-permute t π
 
@@ -165,11 +168,11 @@ select-transpose _ i j e k with k FP.≟ i
 sumₜ-select : ∀ {n i} (t : Table Carrier n) → sumₜ (select 0# i t) ≈ lookup t i
 sumₜ-select {zero}  {()}
 sumₜ-select {suc n} {i} t = begin
-  sumₜ (select 0# i t)                                                    ≈⟨ sumₜ-punchIn (select 0# i t) i ⟩
-  lookup (select 0# i t) i + sumₜ (rearrange (punchIn i) (select 0# i t)) ≡⟨ P.cong₂ _+_ (TP.select-lookup t) (sumₜ-cong-≡ (TP.select-punchIn i t)) ⟩
-  lookup t i + sumₜ (replicate {n} 0#)                                    ≈⟨ +-cong refl (sumₜ-zero n) ⟩
-  lookup t i + 0#                                                         ≈⟨ +-identityʳ _ ⟩
-  lookup t i                                                              ∎
+  sumₜ (select 0# i t)                                         ≈⟨ sumₜ-remove {i = i} (select 0# i t) ⟩
+  lookup (select 0# i t) i + sumₜ (remove i (select 0# i t))   ≡⟨ P.cong₂ _+_ (TP.select-lookup t) (sumₜ-cong-≡ (TP.select-punchIn i t)) ⟩
+  lookup t i + sumₜ (replicate {n} 0#)                         ≈⟨ +-cong refl (sumₜ-zero n) ⟩
+  lookup t i + 0#                                              ≈⟨ +-identityʳ _ ⟩
+  lookup t i                                                   ∎
 
 -- Converting to a table then summing is the same as summing the original list
 
