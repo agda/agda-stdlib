@@ -23,10 +23,10 @@ open import Data.Fin.Permutation.Components as PermC
 open import Data.Table as Table
 open import Data.Table.Relation.Equality as TE using (_≗_)
 open import Data.Unit using (tt)
-open import Data.Empty using (⊥-elim)
 import Data.Table.Properties as TP
-open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_)
+open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable using (⌊_⌋)
 
 open CommutativeMonoid M
@@ -93,7 +93,7 @@ sumₜ-idem-replicate (suc n) {x} idem = begin
 sumₜ-zero : ∀ n → sumₜ (replicate {n} 0#) ≈ 0#
 sumₜ-zero n = begin
   sumₜ (replicate {n} 0#)      ≈⟨ sym (+-identityˡ _) ⟩
-  0# + sumₜ (replicate {n} 0#) ≈⟨ sumₜ-idem-replicate n {0#} (+-identityˡ 0#) ⟩
+  0# + sumₜ (replicate {n} 0#) ≈⟨ sumₜ-idem-replicate n (+-identityˡ 0#) ⟩
   0#                           ∎
 
 -- The '∑' operator distributes over addition.
@@ -127,8 +127,8 @@ sumₜ-zero n = begin
 
 sumₜ-permute : ∀ {m n} t (π : Permutation m n) → sumₜ t ≈ sumₜ (permute π t)
 sumₜ-permute {zero} {zero} t π = refl
-sumₜ-permute {zero} {suc n} t π = ⊥-elim (Perm.refute (λ ()) π)
-sumₜ-permute {suc m} {zero} t π = ⊥-elim (Perm.refute (λ ()) π)
+sumₜ-permute {zero} {suc n} t π = contradiction π (Perm.refute (λ ()))
+sumₜ-permute {suc m} {zero} t π = contradiction π (Perm.refute (λ ()))
 sumₜ-permute {suc m} {suc n} t π =
   begin
     sumₜ t                                                                            ≡⟨⟩

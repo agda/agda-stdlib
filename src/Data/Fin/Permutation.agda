@@ -180,4 +180,4 @@ fromPermutation : ∀ {m n} → Permutation m n → Permutation′ m
 fromPermutation π = P.subst (Permutation _) (sym (↔⇒≡ π)) π
 
 refute : ∀ {m n} → m ≢ n → ¬ Permutation m n
-refute m≢n = ⊥-elim ∘ m≢n ∘ ↔⇒≡
+refute m≢n π = contradiction (↔⇒≡ π) m≢n
