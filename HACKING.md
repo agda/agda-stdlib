@@ -15,7 +15,7 @@ How to make changes
    git config --global core.autocrlf input
    ```
    If you are on Windows, make sure that your editor can deal with Unix format files.
-   
+
 3. On the command line, and in a suitable folder, download your fork by running the command
    ```
    git clone https://github.com/USER_NAME/agda-stdlib agda-stdlib-fork
