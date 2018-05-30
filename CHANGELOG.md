@@ -137,31 +137,6 @@ Other major changes
   homogeneously-indexed binary relations, as opposed to the
   heterogeneously-indexed binary relations found in `Relation.Binary.Indexed`.
 
-* In `Data.Fin.Properties`:
-  ```agda
-  to-from       ↦ toℕ-fromℕ
-  from-to       ↦ fromℕ-toℕ
-
-  bounded       ↦ toℕ<n
-  prop-toℕ-≤    ↦ toℕ≤pred[n]
-  prop-toℕ-≤′   ↦ toℕ≤pred[n]′
-
-  inject-lemma  ↦ toℕ-inject
-  inject+-lemma ↦ toℕ-inject+
-  inject₁-lemma ↦ toℕ-inject₁
-  inject≤-lemma ↦ toℕ-inject≤
-  ```
-
-* In `Data.List.Membership.Propositional`:
-  ```agda
-  filter-∈ ↦ ∈-filter⁺
-  ```
-
-* In `Data.List.Membership.Setoid`:
-  ```agda
-  map-with-∈ ↦ mapWith∈
-  ```
-
 * Closures of binary relations have been centralised as follows:
   ```agda
   Data.ReflexiveClosure              ↦ Relation.Binary.Closure.Reflexive
@@ -249,17 +224,6 @@ anticipated any time soon, they may eventually be removed in some future release
   asymmetric ↦ asym
   ```
 
-<<<<<<< HEAD
-Removed features
-----------------
-
-Backwards compatible changes
-----------------------------
-
-* The module `Algebra.Structures` can now be parameterised by equality in the same way
-  as `Algebra.FunctionProperties`. The structures within also now export a greater selection
-  of "left" and "right" properties. For example (where applicable):
-=======
 Other minor additions
 ---------------------
 
@@ -270,7 +234,6 @@ Other minor additions
   ```
 
 * Added new records to `Algebra.Structures`:
->>>>>>> master
   ```agda
   record IsBand        (• : Op₂ A) : Set (a ⊔ ℓ)
   record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ)
@@ -300,11 +263,8 @@ Other minor additions
 
 * Added new proofs to `Data.Fin.Properties`:
   ```agda
-<<<<<<< HEAD
-=======
   ¬Fin0                  : ¬ Fin 0
 
->>>>>>> master
   ≤-preorder             : ℕ → Preorder _ _ _
   ≤-poset                : ℕ → Poset _ _ _
   ≤-totalOrder           : ℕ → TotalOrder _ _ _
@@ -323,13 +283,10 @@ Other minor additions
 
   inject₁-injective      : inject₁ i ≡ inject₁ j → i ≡ j
 
-<<<<<<< HEAD
-=======
   punchOut-cong          : j ≡ k → punchOut i≢j ≡ punchOut i≢k
   punchOut-cong′         : punchOut i≢j ≡ punchOut (i≢j ∘ sym ∘ trans j≡k ∘ sym)
   punchOut-punchIn       : punchOut (punchInᵢ≢i i j ∘ sym) ≡ j
 
->>>>>>> master
   ∀-cons                 : P zero → (∀ i → P (suc i)) → (∀ i → P i)
   sequence⁻¹             : RawFunctor F → F (∀ i → P i) → (∀ i → F (P i))
   ```
@@ -664,12 +621,15 @@ Other minor additions
   ⊆-trans : Transitive _⊆_
   ⊂-asym  : Asymmetric _⊂_
 
-  _∪?_ : Decidable P → Decidable Q → Decidable (P ∪ Q)
-  _∩?_ : Decidable P → Decidable Q → Decidable (P ∩ Q)
-  _×?_ : Decidable P → Decidable Q → Decidable (P ⟨×⟩ Q)
-  _⊙?_ : Decidable P → Decidable Q → Decidable (P ⟨⊙⟩ Q)
-  _⊎?_ : Decidable P → Decidable Q → Decidable (P ⟨⊎⟩ Q)
-  _~?  : Decidable P → Decidable (P ~)
+  _∪?_    : Decidable P → Decidable Q → Decidable (P ∪ Q)
+  _∩?_    : Decidable P → Decidable Q → Decidable (P ∩ Q)
+  _×?_    : Decidable P → Decidable Q → Decidable (P ⟨×⟩ Q)
+  _⊙?_    : Decidable P → Decidable Q → Decidable (P ⟨⊙⟩ Q)
+  _⊎?_    : Decidable P → Decidable Q → Decidable (P ⟨⊎⟩ Q)
+  _~?     : Decidable P → Decidable (P ~)
+
+  U?      : Decidable U
+  ∅?      : Decidable ∅
   ```
 
 * Added indexed variants of functions to `Relation.Binary.HeterogeneousEquality`:
