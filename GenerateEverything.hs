@@ -64,6 +64,10 @@ extractHeader mod = fmap (extract . lines) $ readFileUTF8 mod
     , (info, d2 : rest) <- span ("-- " `List.isPrefixOf`) ss
     , delimiter d2
     = info
+  extract (d1 : _)
+    | not (delimiter d1)
+    , last d1 == '\r'
+    = error $ mod ++ " contains \\r, probably due to git misconfiguration; maybe set autocrf to input?"
   extract _ = error $ mod ++ " is malformed."
 
 -- | Formats the extracted module information.

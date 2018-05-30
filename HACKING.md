@@ -10,14 +10,20 @@ How to make changes
 
 1. Create a fork by clicking `Fork` button at the top right of the [repository](https://github.com/agda/agda-stdlib).
 
-2. On the command line, and in a suitable folder, download your fork by running the command
+2. If you are on a Mac, make sure that your git options has `autocrlf` set to `input`.  This can be done by executing
+   ```
+   git config --global core.autocrlf input
+   ```
+   If you are on Windows, make sure that your editor can deal with Unix format files.
+
+3. On the command line, and in a suitable folder, download your fork by running the command
    ```
    git clone https://github.com/USER_NAME/agda-stdlib agda-stdlib-fork
    ```
 
    where `USER_NAME` is your Git username. The folder `agda-stdlib-fork` should now contain a copy of the standard library.
 
-3. Enter the folder `agda-stdlib-fork` and choose the correct branch of the library to make your changes on by running the
+4. Enter the folder `agda-stdlib-fork` and choose the correct branch of the library to make your changes on by running the
    command
    ```
    git checkout X
@@ -27,12 +33,12 @@ How to make changes
 
 ### Make your changes
 
-4. Make your proposed changes. Please try to obey existing conventions in the library.
+5. Make your proposed changes. Please try to obey existing conventions in the library.
    See `agda-stdlib-fork/notes/style-guide.md` for a selection of the most important ones.
 
-5. Document your changes in `agda-stdlib-fork/CHANGELOG.md`.
+6. Document your changes in `agda-stdlib-fork/CHANGELOG.md`.
 
-6. Ensure your changes are compatible with the rest of the library by running the commands
+7. Ensure your changes are compatible with the rest of the library by running the commands
    ```
    make clean
    make test
@@ -44,24 +50,21 @@ How to make changes
 
 ### Upload your changes
 
-6. Use the `git add` command to add the files you have changed to your proposed commit.
+8. Use the `git add` command to add the files you have changed to your proposed commit.
 
-7. Run the command:
+9. Run the command:
    ```
    git commit
    ```
    and enter a meaningful description for your changes.
 
-8. Upload your changes to your fork by running the command:
+10. Upload your changes to your fork by running the command:
    ```
    git push
    ```
+11. Go to your fork on Github at `https://github.com/USER_NAME/agda-stdlib` and click the green `Compare & pull request` button to open a pull request.
 
-9. Go to your fork on Github at `https://github.com/USER_NAME/agda-stdlib` and click the
-   green `Compare & pull request` button to open a pull request.
-
-10. The standard library maintainers will then be made aware of your requested changes and should be in touch soon.
-
+12. The standard library maintainers will then be made aware of your requested changes and should be in touch soon.
 
 Installing `fix-agda-whitespace`
 --------------------------------

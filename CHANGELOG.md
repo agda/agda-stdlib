@@ -27,6 +27,7 @@ Non-backwards compatible changes
                                          ↘ Data.List.Relation.Sublist.Propositional
   ```
 
+
 * The `_⊆_` relation has been moved out of the `Membership` modules to new
   modules `Data.List.Relation.Sublist.(Setoid/Propositional)`. Consequently the `mono`
   proofs that were in `Data.List.Membership.Propositional.Properties` have been moved to
