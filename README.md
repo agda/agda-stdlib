@@ -49,3 +49,13 @@ Find the full story at [readthedocs](http://agda.readthedocs.io/en/latest/tools/
 If you would like to suggest improvements, feel free to use the `Issues` tab.
 If you would like to make improvements yourself, follow the instructions in
 [HACKING](https://github.com/agda/agda-stdlib/blob/master/HACKING.md).
+
+## Non-standard versions of Agda
+
+If you're using an old version of Agda, you can download the corresponding version
+of the standard library on the [Agda wiki](http://wiki.portal.chalmers.se/agda/pmwiki.php?n=Libraries.StandardLibrary).
+
+If you're using a development version of Agda rather than the latest official release
+you should use the `experimental` branch of the standard library rather than `master`.
+The `experimental` branch contains non-backwards compatible patches for upcoming
+changes to the language.
