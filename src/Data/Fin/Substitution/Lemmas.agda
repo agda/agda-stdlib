@@ -8,7 +8,7 @@ module Data.Fin.Substitution.Lemmas where
 
 import Category.Applicative.Indexed as Applicative
 open import Data.Fin.Substitution
-open import Data.Nat
+open import Data.Nat hiding (_⊔_)
 open import Data.Fin using (Fin; zero; suc; lift)
 open import Data.Vec
 import Data.Vec.Properties as VecProp
@@ -18,6 +18,8 @@ open import Relation.Binary.PropositionalEquality as PropEq
 open import Relation.Binary.Closure.ReflexiveTransitive
   using (Star; ε; _◅_; _▻_)
 open PropEq.≡-Reasoning
+open import Level using (Level; _⊔_)
+open import Relation.Unary using (Pred)
 
 -- A lemma which does not refer to any substitutions.
 
@@ -32,7 +34,7 @@ lift-commutes k (suc j) (suc x) = cong suc (lift-commutes k j x)
 -- assumption that the underlying substitution machinery satisfies
 -- certain properties.
 
-record Lemmas₀ (T : ℕ → Set) : Set where
+record Lemmas₀ {ℓ : Level} (T : Pred ℕ ℓ) : Set ℓ where
   field simple : Simple T
 
   open Simple simple
@@ -61,7 +63,7 @@ record Lemmas₀ (T : ℕ → Set) : Set where
     weaken (lookup (lift k suc x) ((ρ ↑) ↑⋆ k))      ≡⟨ sym $ VecProp.lookup-map (lift k suc x) _ _ ⟩
     lookup (lift k suc x) (map weaken ((ρ ↑) ↑⋆ k))  ∎
 
-record Lemmas₁ (T : ℕ → Set) : Set where
+record Lemmas₁ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
   field lemmas₀ : Lemmas₀ T
 
   open Lemmas₀ lemmas₀
@@ -118,7 +120,7 @@ record Lemmas₁ (T : ℕ → Set) : Set where
 
   open Lemmas₀ lemmas₀ public
 
-record Lemmas₂ (T : ℕ → Set) : Set where
+record Lemmas₂ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
   field
     lemmas₁     : Lemmas₁ T
     application : Application T T
@@ -203,7 +205,7 @@ record Lemmas₂ (T : ℕ → Set) : Set where
   open Subst   subst   public hiding (simple; application)
   open Lemmas₁ lemmas₁ public
 
-record Lemmas₃ (T : ℕ → Set) : Set where
+record Lemmas₃ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
   field lemmas₂ : Lemmas₂ T
 
   open Lemmas₂ lemmas₂
@@ -233,7 +235,7 @@ record Lemmas₃ (T : ℕ → Set) : Set where
 
   open Lemmas₂ lemmas₂ public hiding (wk-⊙-sub′)
 
-record Lemmas₄ (T : ℕ → Set) : Set where
+record Lemmas₄ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
   field lemmas₃ : Lemmas₃ T
 
   open Lemmas₃ lemmas₃
@@ -349,7 +351,7 @@ record Lemmas₄ (T : ℕ → Set) : Set where
 -- For an example of how AppLemmas can be used, see
 -- Data.Fin.Substitution.List.
 
-record AppLemmas (T₁ T₂ : ℕ → Set) : Set where
+record AppLemmas {ℓ₁ ℓ₂} (T₁ : Pred ℕ ℓ₁) (T₂ : Pred ℕ ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
   field
     application : Application T₁ T₂
     lemmas₄     : Lemmas₄ T₂
@@ -402,7 +404,7 @@ record AppLemmas (T₁ T₂ : ℕ → Set) : Set where
     hiding (application; _⊙_; _/_; _/✶_;
             id-vanishes; /-⊙; wk-commutes)
 
-record Lemmas₅ (T : ℕ → Set) : Set where
+record Lemmas₅ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
   field lemmas₄ : Lemmas₄ T
 
   private module L₄ = Lemmas₄ lemmas₄
