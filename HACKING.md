@@ -1,7 +1,10 @@
 Contributing to the library
 ===========================
 
-Thank you for your interest in contributing to the Agda standard library. Hopefully this guide should make it easy to do so! Feel free to ask any questions on the Agda mailing list.
+Thank you for your interest in contributing to the Agda standard library.
+Hopefully this guide should make it easy to do so! Feel free to ask any
+questions on the Agda mailing list. Before you start please read the
+[style-guide](https://github.com/agda/agda-stdlib/blob/master/notes/style-guide.md).
 
 How to make changes
 -------------------
