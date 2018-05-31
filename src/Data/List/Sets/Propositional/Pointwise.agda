@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of the sublist relation over setoid equality.
+-- Properties of the sublist relation over propositional equality.
 ------------------------------------------------------------------------
 
 open import Relation.Binary hiding (Decidable)
 
-module Data.List.Relation.Sublist.Propositional.Properties where
+module Data.List.Sets.Propositional.Pointwise where
 
 open import Category.Monad
 open import Data.Bool.Base using (Bool; true; false; T)
@@ -14,10 +14,12 @@ open import Data.List
 open import Data.List.Any using (Any; here; there)
 open import Data.List.Any.Properties as AnyP
 open import Data.List.Categorical
-open import Data.List.Membership.Propositional
-import Data.List.Relation.Sublist.Setoid.Properties as Setoidₚ
 open import Data.List.Membership.Propositional.Properties
-open import Data.List.Relation.Sublist.Propositional
+
+open import Data.List.Sets.Propositional public
+
+import Data.List.Sets.Setoid.Pointwise as PWSets
+
 import Data.Product as Prod
 import Data.Sum as Sum
 open import Function using (_∘_; _∘′_; id; _$_)
@@ -37,43 +39,8 @@ private
 ------------------------------------------------------------------------
 -- Relational properties
 
-module _ {a} {A : Set a} where
-
-  ⊆-reflexive : _≡_ ⇒ (_⊆_ {A = A})
-  ⊆-reflexive refl = id
-
-  ⊆-refl : Reflexive (_⊆_ {A = A})
-  ⊆-refl x∈xs = x∈xs
-
-  ⊆-trans : Transitive (_⊆_ {A = A})
-  ⊆-trans xs⊆ys ys⊆zs x∈xs = ys⊆zs (xs⊆ys x∈xs)
-
 module _ {a} (A : Set a) where
-
-  ⊆-isPreorder : IsPreorder _≡_ (_⊆_ {A = A})
-  ⊆-isPreorder = record
-    { isEquivalence = isEquivalence
-    ; reflexive     = ⊆-reflexive
-    ; trans         = ⊆-trans
-    }
-
-  ⊆-preorder : Preorder _ _ _
-  ⊆-preorder = record
-    { isPreorder = ⊆-isPreorder
-    }
-
-------------------------------------------------------------------------
--- Reasoning over subsets
-
-module ⊆-Reasoning {a} (A : Set a) where
-
-  open PreorderReasoning (⊆-preorder A) public
-    renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
-
-  infix 1 _∈⟨_⟩_
-
-  _∈⟨_⟩_ : ∀ x {xs ys} → x ∈ xs → xs IsRelatedTo ys → x ∈ ys
-  x ∈⟨ x∈xs ⟩ xs⊆ys = (begin xs⊆ys) x∈xs
+  open PWSets (setoid A) public
 
 ------------------------------------------------------------------------
 -- Properties relating _⊆_ to various list functions
@@ -182,14 +149,6 @@ module _ {a b} {A : Set a} {B : Set b}
       g (xs⊆ys x∈xs)  ∎)) ∘
     _⟨$⟩_ (Inverse.from map-with-∈↔)
     where open ≡-Reasoning
-
-------------------------------------------------------------------------
--- filter
-
-module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
-
-  filter⁺ : ∀ xs → filter P? xs ⊆ xs
-  filter⁺ = Setoidₚ.filter⁺ (setoid A) P?
 
 ------------------------------------------------------------------------
 -- DEPRECATED
