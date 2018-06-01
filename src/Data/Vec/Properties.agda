@@ -10,6 +10,7 @@ open import Algebra.FunctionProperties
 open import Data.Empty using (⊥-elim)
 open import Data.Fin as Fin using (Fin; zero; suc; toℕ; fromℕ)
 open import Data.Fin.Properties using (_+′_)
+open import Data.List.Base as List using (List)
 open import Data.List.Any using (here; there)
 import Data.List.Membership.Propositional as List
 open import Data.Nat
@@ -671,6 +672,15 @@ List-∈⇒∈ : ∀ {a} {A : Set a} {x : A} {xs} →
            x List.∈ xs → x ∈ fromList xs
 List-∈⇒∈ (here P.refl) = here
 List-∈⇒∈ (there x∈)    = there (List-∈⇒∈ x∈)
+
+------------------------------------------------------------------------
+-- Conversion function
+
+module _ {a} {A : Set a} where
+
+  toList∘fromList : (xs : List A) → toList (fromList xs) ≡ xs
+  toList∘fromList List.[]       = refl
+  toList∘fromList (x List.∷ xs) = P.cong (x List.∷_) (toList∘fromList xs)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

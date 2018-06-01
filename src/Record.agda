@@ -22,7 +22,7 @@ open import Relation.Nullary.Decidable
 -- The module is parametrised by the type of labels, which should come
 -- with decidable equality.
 
-module Record (Label : Set) (_≟_ : Decidable (_≡_ {A = Label})) where
+module Record {ℓ : Level} (Label : Set ℓ) (_≟_ : Decidable (_≡_ {A = Label})) where
 
 ------------------------------------------------------------------------
 -- A Σ-type with a manifest field
@@ -47,7 +47,7 @@ mutual
 
   infixl 5 _,_∶_ _,_≔_
 
-  data Signature s : Set (suc s) where
+  data Signature s : Set (suc s ⊔ ℓ) where
     ∅     : Signature s
     _,_∶_ : (Sig : Signature s)
             (ℓ : Label)

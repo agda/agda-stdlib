@@ -303,7 +303,7 @@ private
 
   -- A test of the solver above.
 
-  test : (A B C : Set) →
+  test : {ℓ : Level} (A B C : Set ℓ) →
          (Lift ⊤ × A × (B ⊎ C)) ↔ (A × B ⊎ C × (Lift ⊥ ⊎ A))
   test = solve 3 (λ A B C → con 1 :* (A :* (B :+ C)) :=
                             A :* B :+ C :* (con 0 :+ A))

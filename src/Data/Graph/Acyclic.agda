@@ -16,6 +16,7 @@ import Data.Nat.Properties as Nat
 open import Data.Fin as Fin
   using (Fin; Fin′; zero; suc; #_; toℕ; _≟_) renaming (_ℕ-ℕ_ to _-_)
 import Data.Fin.Properties as FP
+import Data.Fin.Permutation.Components as PC
 open import Data.Product as Prod using (∃; _×_; _,_)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Empty
@@ -282,7 +283,7 @@ reverse {N = N} {E} g =
   foldl (Graph N E)
         (λ i g' c →
            context (label c)
-                   (List.map (Prod.swap ∘ Prod.map FP.reverse id) $
+                   (List.map (Prod.swap ∘ Prod.map PC.reverse id) $
                              preds g i)
            & g')
         ∅ g

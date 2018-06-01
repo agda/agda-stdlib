@@ -13,12 +13,15 @@
 
 module Data.Fin.Substitution where
 
-open import Data.Nat
+open import Data.Nat hiding (_⊔_)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Vec
 open import Function as Fun using (flip)
 open import Relation.Binary.Closure.ReflexiveTransitive as Star
   using (Star; ε; _◅_)
+open import Level using (Level; _⊔_)
+import Level as L
+open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
 -- General functionality
@@ -26,17 +29,17 @@ open import Relation.Binary.Closure.ReflexiveTransitive as Star
 -- A Sub T m n is a substitution which, when applied to something with
 -- at most m variables, yields something with at most n variables.
 
-Sub : (ℕ → Set) → ℕ → ℕ → Set
+Sub : ∀ {ℓ} → Pred ℕ ℓ → ℕ → ℕ → Set ℓ
 Sub T m n = Vec (T n) m
 
 -- A /reversed/ sequence of matching substitutions.
 
-Subs : (ℕ → Set) → ℕ → ℕ → Set
+Subs : ∀ {ℓ} → Pred ℕ ℓ → ℕ → ℕ → Set ℓ
 Subs T = flip (Star (flip (Sub T)))
 
 -- Some simple substitutions.
 
-record Simple (T : ℕ → Set) : Set where
+record Simple {ℓ : Level} (T : Pred ℕ ℓ) : Set ℓ where
   infix  10 _↑
   infixl 10 _↑⋆_ _↑✶_
 
@@ -78,7 +81,8 @@ record Simple (T : ℕ → Set) : Set where
 
 -- Application of substitutions.
 
-record Application (T₁ T₂ : ℕ → Set) : Set where
+record Application {ℓ₁ ℓ₂ : Level} (T₁ : Pred ℕ ℓ₁) (T₂ : Pred ℕ ℓ₂) :
+    Set (ℓ₁ ⊔ ℓ₂) where
   infixl 8 _/_ _/✶_
   infixl 9 _⊙_
 
@@ -98,7 +102,7 @@ record Application (T₁ T₂ : ℕ → Set) : Set where
 
 -- A combination of the two records above.
 
-record Subst (T : ℕ → Set) : Set where
+record Subst {ℓ : Level} (T : Pred ℕ ℓ) : Set ℓ where
   field
     simple      : Simple      T
     application : Application T T
@@ -118,7 +122,8 @@ record Subst (T : ℕ → Set) : Set where
 
 -- Liftings from T₁ to T₂.
 
-record Lift (T₁ T₂ : ℕ → Set) : Set where
+record Lift {ℓ₁ ℓ₂ : Level} (T₁ : Pred ℕ ℓ₁) (T₂ : Pred ℕ ℓ₂) :
+    Set (ℓ₁ ⊔ ℓ₂) where
   field
     simple : Simple T₁
     lift   : ∀ {n} → T₁ n → T₂ n
@@ -139,12 +144,12 @@ module VarSubst where
 
 -- "Term" substitutions.
 
-record TermSubst (T : ℕ → Set) : Set₁ where
+record TermSubst (T : Pred ℕ L.zero) : Set₁ where
   field
     var : ∀ {n} → Fin n → T n
-    app : ∀ {T′} → Lift T′ T → ∀ {m n} → T m → Sub T′ m n → T n
+    app : ∀ {T′ : Pred ℕ L.zero} → Lift T′ T → ∀ {m n} → T m → Sub T′ m n → T n
 
-  module Lifted {T′} (lift : Lift T′ T) where
+  module Lifted {T′ : Pred ℕ L.zero} (lift : Lift T′ T) where
     application : Application T T′
     application = record { _/_ = app lift }
 

@@ -13,17 +13,17 @@ open import Relation.Binary.Closure.ReflexiveTransitive
 
 -- Lists.
 
-List : Set → Set
-List a = Star (Const a) tt tt
+List : ∀ {a} → Set a → Set a
+List A = Star (Const A) tt tt
 
 -- Nil and cons.
 
-[] : ∀ {a} → List a
+[] : ∀ {a} {A : Set a} → List A
 [] = ε
 
 infixr 5 _∷_
 
-_∷_ : ∀ {a} → a → List a → List a
+_∷_ : ∀ {a} {A : Set a} → A → List A → List A
 _∷_ = _◅_
 
 -- The sum of the elements in a list containing natural numbers.
