@@ -130,6 +130,8 @@ Other major changes
 
 * Added new modules `Data.List.Zipper` and `Data.List.Zipper.Properties`.
 
+* Added new module `Data.List.Relation.OrderPreservingEmbedding`.
+
 * Added a new module `Function.Reasoning` for creating multi-stage function pipelines.
   See README.Function.Reasoning for examples.
 
