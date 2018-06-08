@@ -11,6 +11,21 @@ Non-backwards compatible changes
 Other major changes
 -------------------
 
+* Added new experimental `Codata` modules using copatterns and sized types
+  rather than the musical notations. The whole library is built around a
+  generic notion of coinductive `Thunk` and provides basic data types:
+  ```agda
+  Codata.Thunk
+  Codata.Colist
+  Codata.Conat
+  Codata.Covec
+  Codata.Delay
+  Codata.Stream
+  ```
+  Each coinductive type comes with a notion of bisimilarity in the corresponding
+  `Codata.X.Bisimilarity` module and at least a couple of proofs demonstrating
+  how they can be used in `Codata.X.Properties`.
+
 Deprecated features
 -------------------
 
