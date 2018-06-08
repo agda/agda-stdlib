@@ -1,7 +1,7 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, development version
+-- The Agda standard library, version 0.16
 --
 -- Authors: Nils Anders Danielsson, with contributions from Andreas
 -- Abel, Stevan Andjelkovic, Jean-Philippe Bernardy, Peter Berry,
@@ -15,7 +15,7 @@ module README where
 -- contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.5.3.
+-- This version of the library has been tested using Agda 2.5.4.
 
 -- Note that no guarantees are currently made about forwards or
 -- backwards compatibility, the library is still at an experimental

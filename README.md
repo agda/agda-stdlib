@@ -11,7 +11,7 @@ html [here](https://agda.github.io/agda-stdlib/README.html).
 
 ## Quick installation instructions
 
-Use version v0.15 of the standard library with Agda 2.5.3.
+Use version v0.16 of the standard library with Agda 2.5.4.
 
 Install it as follows. Say you are in directory `$HERE` (replace appropriately).
 ```
