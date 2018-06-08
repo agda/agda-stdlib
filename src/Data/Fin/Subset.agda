@@ -105,5 +105,5 @@ Empty : ∀ {n} (p : Subset n) → Set
 Empty p = ¬ Nonempty p
 
 -- Point-wise lifting of properties.
-Lift : ∀ {n} → (Fin n → Set) → (Subset n → Set)
+Lift : ∀ {n ℓ} → (Fin n → Set ℓ) → (Subset n → Set ℓ)
 Lift P p = ∀ {x} → x ∈ p → P x
