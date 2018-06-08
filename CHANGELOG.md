@@ -1,6 +1,26 @@
 Version 0.16
 ============
 
+The library has been tested using Agda version TODO.
+
+Important changes since 0.16:
+
+Non-backwards compatible changes
+--------------------------------
+
+Other major changes
+-------------------
+
+Deprecated features
+-------------------
+
+Other minor additions
+---------------------
+
+
+Version 0.16
+============
+
 The library has been tested using Agda version 2.5.4.
 
 Important changes since 0.15:
