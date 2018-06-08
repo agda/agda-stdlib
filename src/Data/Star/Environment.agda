@@ -23,7 +23,7 @@ Ctxt = List Ty
 infix 4 _∋_
 
 _∋_ : Ctxt → Ty → Set
-Γ ∋ σ = Any (λ _ → ⊤) (_≡_ σ) Γ
+Γ ∋ σ = Any (λ _ → ⊤) (σ ≡_) Γ
 
 vz : ∀ {Γ σ} → Γ ▻ σ ∋ σ
 vz = this refl

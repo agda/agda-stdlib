@@ -15,7 +15,7 @@ module README where
 -- contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.5.3.
+-- This version of the library has been tested using Agda 2.5.4.
 
 -- Note that no guarantees are currently made about forwards or
 -- backwards compatibility, the library is still at an experimental

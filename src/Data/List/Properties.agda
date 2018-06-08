@@ -20,6 +20,7 @@ open import Data.List.Any using (Any; here; there)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat
 open import Data.Nat.Properties
+open import Data.Fin using (Fin; zero; suc)
 open import Data.Product as Prod hiding (map; zip)
 open import Function
 import Relation.Binary.EqReasoning as EqR
@@ -28,7 +29,8 @@ open import Relation.Binary.PropositionalEquality as P
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable using (⌊_⌋)
-open import Relation.Unary using (Pred; Decidable; ∁; ∁?)
+open import Relation.Unary using (Pred; Decidable; ∁)
+open import Relation.Unary.Properties using (∁?)
 
 ------------------------------------------------------------------------
 -- _∷_
@@ -411,14 +413,48 @@ module _ {a b} {A : Set a} {B : Set b} where
    where open P.≡-Reasoning
 
 ------------------------------------------------------------------------
--- take, drop, splitAt
+-- tabulate
 
 module _ {a} {A : Set a} where
+
+  tabulate-cong : ∀ {n} {f g : Fin n → A} →
+                  f ≗ g → tabulate f ≡ tabulate g
+  tabulate-cong {zero}  p = P.refl
+  tabulate-cong {suc n} p = P.cong₂ _∷_ (p zero) (tabulate-cong (p ∘ suc))
+
+  tabulate-lookup : ∀ (xs : List A) → tabulate (lookup xs) ≡ xs
+  tabulate-lookup []       = refl
+  tabulate-lookup (x ∷ xs) = P.cong (_ ∷_) (tabulate-lookup xs)
+
+------------------------------------------------------------------------
+-- take
+
+module _ {a} {A : Set a} where
+
+  length-take : ∀ n (xs : List A) → length (take n xs) ≡ n ⊓ (length xs)
+  length-take zero    xs       = refl
+  length-take (suc n) []       = refl
+  length-take (suc n) (x ∷ xs) = P.cong suc (length-take n xs)
+
+------------------------------------------------------------------------
+-- drop
+
+module _ {a} {A : Set a} where
+
+  length-drop : ∀ n (xs : List A) → length (drop n xs) ≡ length xs ∸ n
+  length-drop zero    xs       = refl
+  length-drop (suc n) []       = refl
+  length-drop (suc n) (x ∷ xs) = length-drop n xs
 
   take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
   take++drop zero    xs       = refl
   take++drop (suc n) []       = refl
   take++drop (suc n) (x ∷ xs) = P.cong (x ∷_) (take++drop n xs)
+
+------------------------------------------------------------------------
+-- splitAt
+
+module _ {a} {A : Set a} where
 
   splitAt-defn : ∀ n → splitAt {A = A} n ≗ < take n , drop n >
   splitAt-defn zero    xs       = refl
@@ -454,33 +490,33 @@ module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
   ... | no  _ = ≤-step (length-filter xs)
   ... | yes _ = s≤s (length-filter xs)
 
-  filter-none : ∀ {xs} → All P xs → filter P? xs ≡ xs
-  filter-none {[]}     []         = refl
-  filter-none {x ∷ xs} (px ∷ pxs) with P? x
+  filter-all : ∀ {xs} → All P xs → filter P? xs ≡ xs
+  filter-all {[]}     []         = refl
+  filter-all {x ∷ xs} (px ∷ pxs) with P? x
   ... | no  ¬px = contradiction px ¬px
-  ... | yes _   = P.cong (x ∷_) (filter-none pxs)
+  ... | yes _   = P.cong (x ∷_) (filter-all pxs)
 
-  filter-some : ∀ xs → Any (∁ P) xs → length (filter P? xs) < length xs
-  filter-some [] ()
-  filter-some (x ∷ xs) (here ¬px) with P? x
+  filter-notAll : ∀ xs → Any (∁ P) xs → length (filter P? xs) < length xs
+  filter-notAll [] ()
+  filter-notAll (x ∷ xs) (here ¬px) with P? x
   ... | no  _  = s≤s (length-filter xs)
   ... | yes px = contradiction px ¬px
-  filter-some (x ∷ xs) (there any) with P? x
-  ... | no  _ = ≤-step (filter-some xs any)
-  ... | yes _ = s≤s (filter-some xs any)
+  filter-notAll (x ∷ xs) (there any) with P? x
+  ... | no  _ = ≤-step (filter-notAll xs any)
+  ... | yes _ = s≤s (filter-notAll xs any)
 
-  filter-notAll : ∀ {xs} → Any P xs → 0 < length (filter P? xs)
-  filter-notAll {x ∷ xs} (here px)   with P? x
+  filter-some : ∀ {xs} → Any P xs → 0 < length (filter P? xs)
+  filter-some {x ∷ xs} (here px)   with P? x
   ... | yes _  = s≤s z≤n
   ... | no ¬px = contradiction px ¬px
-  filter-notAll {x ∷ xs} (there pxs) with P? x
-  ... | yes _ = ≤-step (filter-notAll pxs)
-  ... | no  _ = filter-notAll pxs
+  filter-some {x ∷ xs} (there pxs) with P? x
+  ... | yes _ = ≤-step (filter-some pxs)
+  ... | no  _ = filter-some pxs
 
-  filter-all : ∀ {xs} → All (∁ P) xs → filter P? xs ≡ []
-  filter-all {[]}     []           = refl
-  filter-all {x ∷ xs} (¬px ∷ ¬pxs) with P? x
-  ... | no  _  = filter-all ¬pxs
+  filter-none : ∀ {xs} → All (∁ P) xs → filter P? xs ≡ []
+  filter-none {[]}     []           = refl
+  filter-none {x ∷ xs} (¬px ∷ ¬pxs) with P? x
+  ... | no  _  = filter-none ¬pxs
   ... | yes px = contradiction px ¬px
 
   filter-complete : ∀ {xs} → length (filter P? xs) ≡ length xs →

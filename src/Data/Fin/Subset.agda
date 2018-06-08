@@ -7,14 +7,15 @@
 module Data.Fin.Subset where
 
 open import Algebra
+open import Algebra.FunctionProperties using (Op₁; Op₂)
 import Algebra.Properties.BooleanAlgebra as BoolAlgProp
 import Algebra.Properties.BooleanAlgebra.Expression as BAExpr
-open import Data.Bool.Properties using (∨-∧-booleanAlgebra)
-open import Data.Fin
+open import Data.Bool using (not; _∧_; _∨_; _≟_)
+open import Data.Fin using (Fin; zero; suc)
 open import Data.List.Base using (List; foldr; foldl)
-open import Data.Nat
-open import Data.Product
-open import Data.Vec using (Vec; _∷_; _[_]=_)
+open import Data.Nat using (ℕ)
+open import Data.Product using (∃)
+open import Data.Vec hiding (_∈_; foldr; foldl)
 import Data.Vec.Relation.Pointwise.Extensional as Pointwise
 open import Relation.Nullary
 
@@ -32,6 +33,22 @@ Subset : ℕ → Set
 Subset = Vec Side
 
 ------------------------------------------------------------------------
+-- Special subsets
+
+-- The empty subset
+⊥ : ∀ {n} → Subset n
+⊥ = replicate outside
+
+-- The full subset
+⊤ : ∀ {n} → Subset n
+⊤ = replicate inside
+
+-- A singleton subset, containing just the given element.
+⁅_⁆ : ∀ {n} → Fin n → Subset n
+⁅ zero  ⁆ = inside  ∷ ⊥
+⁅ suc i ⁆ = outside ∷ ⁅ i ⁆
+
+------------------------------------------------------------------------
 -- Membership and subset predicates
 
 infix 4 _∈_ _∉_ _⊆_ _⊈_
@@ -43,53 +60,40 @@ _∉_ : ∀ {n} → Fin n → Subset n → Set
 x ∉ p = ¬ (x ∈ p)
 
 _⊆_ : ∀ {n} → Subset n → Subset n → Set
-p₁ ⊆ p₂ = ∀ {x} → x ∈ p₁ → x ∈ p₂
+p ⊆ q = ∀ {x} → x ∈ p → x ∈ q
 
 _⊈_ : ∀ {n} → Subset n → Subset n → Set
-p₁ ⊈ p₂ = ¬ (p₁ ⊆ p₂)
+p ⊈ q = ¬ (p ⊆ q)
 
 ------------------------------------------------------------------------
 -- Set operations
 
--- Pointwise lifting of the usual boolean algebra for booleans gives
--- us a boolean algebra for subsets.
---
--- The underlying equality of the returned boolean algebra is
--- propositional equality.
+infixr 7 _∩_
+infixr 6 _∪_
 
-booleanAlgebra : ℕ → BooleanAlgebra _ _
-booleanAlgebra n =
-  BoolAlgProp.replace-equality
-    (BAExpr.lift ∨-∧-booleanAlgebra n)
-    Pointwise.Pointwise-≡
+-- Complement
+∁ : ∀ {n} → Op₁ (Subset n)
+∁ p = map not p
 
-private
-  open module BA {n} = BooleanAlgebra (booleanAlgebra n) public
-    using
-      ( ⊥  -- The empty subset.
-      ; ⊤  -- The subset containing all elements.
-      )
-    renaming
-      ( _∨_ to _∪_  -- Binary union.
-      ; _∧_ to _∩_  -- Binary intersection.
-      ; ¬_  to ∁    -- Complement.
-      )
+-- Union
+_∩_ : ∀ {n} → Op₂ (Subset n)
+p ∩ q = zipWith _∧_ p q
 
--- A singleton subset, containing just the given element.
+-- Intersection
+_∪_ : ∀ {n} → Op₂ (Subset n)
+p ∪ q = zipWith _∨_ p q
 
-⁅_⁆ : ∀ {n} → Fin n → Subset n
-⁅ zero  ⁆ = inside  ∷ ⊥
-⁅ suc i ⁆ = outside ∷ ⁅ i ⁆
-
--- N-ary union.
-
+-- N-ary union
 ⋃ : ∀ {n} → List (Subset n) → Subset n
 ⋃ = foldr _∪_ ⊥
 
--- N-ary intersection.
-
+-- N-ary intersection
 ⋂ : ∀ {n} → List (Subset n) → Subset n
 ⋂ = foldr _∩_ ⊤
+
+-- Size
+∣_∣ : ∀ {n} → Subset n → ℕ
+∣ p ∣ = count (_≟ inside) p
 
 ------------------------------------------------------------------------
 -- Properties
@@ -101,6 +105,5 @@ Empty : ∀ {n} (p : Subset n) → Set
 Empty p = ¬ Nonempty p
 
 -- Point-wise lifting of properties.
-
-Lift : ∀ {n} → (Fin n → Set) → (Subset n → Set)
+Lift : ∀ {n ℓ} → (Fin n → Set ℓ) → (Subset n → Set ℓ)
 Lift P p = ∀ {x} → x ∈ p → P x

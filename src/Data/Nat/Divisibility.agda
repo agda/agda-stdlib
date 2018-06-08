@@ -90,7 +90,8 @@ poset = record
   }
 
 module ∣-Reasoning = PartialOrderReasoning poset
-  renaming (_≤⟨_⟩_ to _∣⟨_⟩_; _≈⟨_⟩_ to _≡⟨_⟩_)
+  hiding   (_≈⟨_⟩_)
+  renaming (_≤⟨_⟩_ to _∣⟨_⟩_)
 
 ------------------------------------------------------------------------
 -- Simple properties of _∣_
@@ -194,7 +195,7 @@ nonZeroDivisor-lemma m zero r r≢zero (divides (suc q) eq) =
     m + suc (q * suc m) ≡⟨ +-suc m (q * suc m) ⟩
     suc (m + q * suc m) ≡⟨ sym eq ⟩
     1 * toℕ r           ≡⟨ *-identityˡ (toℕ r) ⟩
-    toℕ r               ≤⟨ ≤-pred $ FP.bounded r ⟩
+    toℕ r               ≤⟨ FP.toℕ≤pred[n] r ⟩
     m                   ∎
   where open ≤-Reasoning
 nonZeroDivisor-lemma m (suc q) r r≢zero d =

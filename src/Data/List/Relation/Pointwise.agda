@@ -206,6 +206,16 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
   concat⁺ (xs∼ys ∷ xss∼yss) = ++⁺ xs∼ys (concat⁺ xss∼yss)
 
 ------------------------------------------------------------------------
+-- length
+
+module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
+
+  Pointwise-length : ∀ {xs ys} → Pointwise _∼_ xs ys →
+                     length xs ≡ length ys
+  Pointwise-length []            = P.refl
+  Pointwise-length (x∼y ∷ xs∼ys) = P.cong ℕ.suc (Pointwise-length xs∼ys)
+
+------------------------------------------------------------------------
 -- Properties of propositional pointwise
 
 module _ {a} {A : Set a} where

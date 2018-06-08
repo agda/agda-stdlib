@@ -8,7 +8,7 @@ module Data.List.All where
 
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Any as Any using (here; there)
-open import Data.List.Any.Membership.Propositional using (_∈_)
+open import Data.List.Membership.Propositional using (_∈_)
 open import Data.Product as Prod using (_,_)
 open import Function
 open import Level

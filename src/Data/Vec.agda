@@ -12,6 +12,8 @@ open import Data.List.Base as List using (List)
 open import Data.Product as Prod using (∃; ∃₂; _×_; _,_)
 open import Function
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Nullary using (yes; no)
+open import Relation.Unary using (Pred; Decidable)
 
 ------------------------------------------------------------------------
 -- Types
@@ -159,6 +161,13 @@ foldl₁ _⊕_ (x ∷ xs) = foldl _ _⊕_ x xs
 sum : ∀ {n} → Vec ℕ n → ℕ
 sum = foldr _ _+_ 0
 
+count : ∀ {a p} {A : Set a} {P : Pred A p} → Decidable P →
+        ∀ {n} → Vec A n → ℕ
+count P? []       = zero
+count P? (x ∷ xs) with P? x
+... | yes _ = suc (count P? xs)
+... | no  _ = count P? xs
+
 ------------------------------------------------------------------------
 -- Operations for building vectors
 
@@ -244,3 +253,16 @@ init .(ys ∷ʳ y) | (ys , y , refl) = ys
 last : ∀ {a n} {A : Set a} → Vec A (1 + n) → A
 last xs         with initLast xs
 last .(ys ∷ʳ y) | (ys , y , refl) = y
+
+------------------------------------------------------------------------
+-- Inserting into and removing from vectors
+
+insert : ∀ {a n} {A : Set a} → Fin (suc n) → A → Vec A n → Vec A (suc n)
+insert zero x xs = x ∷ xs
+insert (suc ()) x []
+insert (suc i) x (y ∷ xs) = y ∷ insert i x xs
+
+remove : ∀ {a n} {A : Set a} → Fin (suc n) → Vec A (suc n) → Vec A n
+remove zero (_ ∷ xs) = xs
+remove (suc ()) (x ∷ [])
+remove (suc i) (x ∷ y ∷ xs) = x ∷ remove i (y ∷ xs)

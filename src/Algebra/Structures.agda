@@ -7,7 +7,7 @@
 
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
 
--- The properties are parameterised by the following "equality" relation
+-- The structures are parameterised by the following "equality" relation
 
 module Algebra.Structures {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
 
@@ -29,6 +29,15 @@ record IsSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   setoid = record { isEquivalence = isEquivalence }
 
   open IsEquivalence isEquivalence public
+
+record IsBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isSemigroup : IsSemigroup ∙
+    idem        : Idempotent ∙
+
+  open IsSemigroup isSemigroup public
+
+-- Commutative idempotent semigroups are semilattices (see Lattices)
 
 ------------------------------------------------------------------------
 -- Monoids
@@ -134,8 +143,8 @@ record IsNearSemiring (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     ; ∙-cong      to +-cong
     ; isSemigroup to +-isSemigroup
     ; identity    to +-identity
-    ; identityˡ    to +-identityˡ
-    ; identityʳ    to +-identityʳ
+    ; identityˡ   to +-identityˡ
+    ; identityʳ   to +-identityʳ
     )
 
   open IsSemigroup *-isSemigroup public
@@ -166,16 +175,22 @@ record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     ; ∙-cong      to *-cong
     )
 
+  zeroˡ : LeftZero 0# *
+  zeroˡ = proj₁ zero
+
+  zeroʳ : RightZero 0# *
+  zeroʳ = proj₂ zero
+
   isNearSemiring : IsNearSemiring + * 0#
   isNearSemiring = record
     { +-isMonoid    = +-isMonoid
     ; *-isSemigroup = *-isSemigroup
     ; distribʳ      = proj₂ distrib
-    ; zeroˡ         = proj₁ zero
+    ; zeroˡ         = zeroˡ
     }
 
   open IsNearSemiring isNearSemiring public
-    hiding (+-isMonoid)
+    hiding (+-isMonoid; zeroˡ)
 
 record IsSemiringWithoutAnnihilatingZero (+ * : Op₂ A)
                                          (0# 1# : A) : Set (a ⊔ ℓ) where
@@ -198,8 +213,8 @@ record IsSemiringWithoutAnnihilatingZero (+ * : Op₂ A)
     ; ∙-cong      to +-cong
     ; isSemigroup to +-isSemigroup
     ; identity    to +-identity
-    ; identityˡ    to +-identityˡ
-    ; identityʳ    to +-identityʳ
+    ; identityˡ   to +-identityˡ
+    ; identityʳ   to +-identityʳ
     ; isMonoid    to +-isMonoid
     ; comm        to +-comm
     )
@@ -211,8 +226,8 @@ record IsSemiringWithoutAnnihilatingZero (+ * : Op₂ A)
     ; ∙-cong      to *-cong
     ; isSemigroup to *-isSemigroup
     ; identity    to *-identity
-    ; identityˡ    to *-identityˡ
-    ; identityʳ    to *-identityʳ
+    ; identityˡ   to *-identityˡ
+    ; identityʳ   to *-identityʳ
     )
 
 record IsSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
@@ -233,7 +248,11 @@ record IsSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     }
 
   open IsSemiringWithoutOne isSemiringWithoutOne public
-    using (isNearSemiring)
+    using
+    ( isNearSemiring
+    ; zeroˡ
+    ; zeroʳ
+    )
 
 record IsCommutativeSemiringWithoutOne
          (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
@@ -275,11 +294,15 @@ record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
       ; *-isMonoid            = *-CM.isMonoid
       ; distrib               = distrib
       }
-    ; zero                              = zero
+    ; zero                    = zero
     }
 
   open IsSemiring isSemiring public
-         hiding (distrib; distribʳ; distribˡ; zero; +-isCommutativeMonoid)
+    hiding
+    ( distrib; distribʳ; distribˡ
+    ; zero; zeroˡ; zeroʳ
+    ; +-isCommutativeMonoid
+    )
 
   isCommutativeSemiringWithoutOne :
     IsCommutativeSemiringWithoutOne + * 0#
@@ -383,6 +406,13 @@ record IsCommutativeRing
 
 ------------------------------------------------------------------------
 -- Lattices
+
+record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isBand : IsBand ∧
+    comm   : Commutative ∧
+
+  open IsBand isBand public
 
 record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field

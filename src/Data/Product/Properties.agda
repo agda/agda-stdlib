@@ -17,4 +17,3 @@ module _ {a b} {A : Set a} {B : A → Set b} where
 
  ,-injectiveʳ : ∀ {a} {b c : B a} → (Σ A B ∋ (a , b)) ≡ (a , c) → b ≡ c
  ,-injectiveʳ refl = refl
-
