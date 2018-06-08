@@ -27,7 +27,6 @@ Non-backwards compatible changes
                                          ↘ Data.List.Relation.Sublist.Propositional
   ```
 
-
 * The `_⊆_` relation has been moved out of the `Membership` modules to new
   modules `Data.List.Relation.Sublist.(Setoid/Propositional)`. Consequently the `mono`
   proofs that were in `Data.List.Membership.Propositional.Properties` have been moved to
@@ -39,7 +38,7 @@ Non-backwards compatible changes
   map∘find, find∘map, find-∈, lose∘find, find∘lose, ∃∈-Any, Any↔
   ```
 
-* The following terms have been moved from `Data.List.Membership.Propositional` into
+* The following types and terms have been moved from `Data.List.Membership.Propositional` into
   `Relation.BagAndSetEquality`:
   ```agda
   Kind, Symmetric-kind
@@ -82,7 +81,7 @@ Non-backwards compatible changes
 * `Relation.Binary.Consequences` no longer exports `Total`. The standard way of accessing it
   through `Relation.Binary` remains unchanged.
 
-* Changed the associativity of `Relation.Unary`'s `_⇒_` from left to right.
+* `_⇒_` in `Relation.Unary` is now right associative instead of left associative.
 
 * Added new module `Relation.Unary.Properties`. The following proofs have been moved
   to the new module from `Relation.Unary`: `∅-Empty`, `∁∅-Universal`, `U-Universal`,
@@ -103,8 +102,18 @@ Non-backwards compatible changes
   `reverse-involutive` and `reverse-suc` from `Data.Fin.Properties` to the new
   module `Data.Fin.Permutation.Components`.
 
-* Refactored `Data.List.Reverse`'s `reverseView` in a direct style instead of the well-founded
-  induction on the list's length we were using so far.
+* Refactored `reverseView` in `Data.List.Reverse` to use a direct style instead
+  of the well-founded induction on the list's length that was used previously.
+
+* The function `filter` as implemented in `Data.List` has the semantics of _filter through_ rather
+  than _filter out_. The naming of proofs in `Data.List.Properties` used the latter rather than
+  the former and therefore the names of the proofs have been switched as follows:
+  ```agda
+  filter-none   ↦ filter-all
+  filter-some   ↦ filter-notAll
+  filter-notAll ↦ filter-some
+  filter-all    ↦ filter-none
+  ```
 
 Other major changes
 -------------------
@@ -131,7 +140,7 @@ Other major changes
 * Added new modules `Data.List.Zipper` and `Data.List.Zipper.Properties`.
 
 * Added a new module `Function.Reasoning` for creating multi-stage function pipelines.
-  See README.Function.Reasoning for examples.
+  See `README.Function.Reasoning` for examples.
 
 * Added new module `Relation.Binary.Indexed.Homogeneous`. This module defines
   homogeneously-indexed binary relations, as opposed to the
@@ -562,8 +571,8 @@ Other minor additions
   zipWith-zeroʳ     : RightZero _≡_ 0# f →  RightZero _≡_ (replicate 0#) (zipWith f)
   zipWith-inverseˡ  : LeftInverse _≡_ 0# ⁻¹ f →  LeftInverse _≡_ (replicate 0#) (map ⁻¹) (zipWith f)
   zipWith-inverseʳ  : RightInverse _≡_ 0# ⁻¹ f → RightInverse _≡_ (replicate 0#) (map ⁻¹) (zipWith f)
-  zipWith-distribˡ  : DistributesOverˡ_ _≡_ f g →  _DistributesOverˡ_ _≡_ (zipWith f) (zipWith g)
-  zipWith-distribʳ  : DistributesOverʳ_ _≡_ f g → _DistributesOverʳ_ _≡_ (zipWith f) (zipWith g)
+  zipWith-distribˡ  : _DistributesOverˡ_ _≡_ f g → _DistributesOverˡ_ _≡_ (zipWith f) (zipWith g)
+  zipWith-distribʳ  : _DistributesOverʳ_ _≡_ f g → _DistributesOverʳ_ _≡_ (zipWith f) (zipWith g)
   zipWith-absorbs   : _Absorbs_ _≡_ f g →  _Absorbs_ _≡_ (zipWith f) (zipWith g)
 
   toList∘fromList   : toList (fromList xs) ≡ xs
