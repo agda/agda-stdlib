@@ -49,10 +49,12 @@ module README where
 -- • Category
 --     Category theory-inspired idioms used to structure functional
 --     programs (functors and monads, for instance).
+-- • Codata
+--     Coinductive data types and properties.
 -- • Coinduction
 --     Support for coinduction.
 -- • Data
---     Data types and properties about data types.
+--     Data types and properties.
 -- • Function
 --     Combinators and properties related to functions.
 -- • Foreign
@@ -69,8 +71,7 @@ module README where
 -- • Reflection
 --     Support for reflection.
 -- • Relation
---     Properties of and proofs about relations (mostly homogeneous
---     binary relations).
+--     Properties of and proofs about relations.
 -- • Size
 --     Sizes used by the sized types mechanism.
 -- • Strict
@@ -96,11 +97,15 @@ import Data.List     -- Lists.
 import Data.Maybe    -- The maybe type.
 import Data.Nat      -- Natural numbers.
 import Data.Product  -- Products.
-import Data.Stream   -- Streams.
 import Data.String   -- Strings.
 import Data.Sum      -- Disjoint sums.
 import Data.Unit     -- The unit type.
 import Data.Vec      -- Fixed-length vectors.
+
+-- • Some co-inductive data types
+
+import Codata.Stream -- Streams.
+import Codata.Colist -- Colists.
 
 -- • Some types used to structure computations
 
