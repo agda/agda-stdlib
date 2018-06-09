@@ -21,7 +21,7 @@ data Covec {ℓ} (A : Set ℓ) (i : Size) : Conat ∞ → Set ℓ where
 
 module _ {ℓ} {A : Set ℓ} where
 
- replicate : (n : Conat ∞) → A → Covec A ∞ n
+ replicate : (n : Conat ∞) → A → ∀ {i} → Covec A i n
  replicate zero    a = []
  replicate (suc n) a = a ∷ λ where .force → replicate (n .force) a
 
@@ -34,7 +34,7 @@ module _ {ℓ} {A : Set ℓ} where
  []       ++ ys = ys
  (x ∷ xs) ++ ys = x ∷ λ where .force → xs .force ++ ys
 
- fromColist : (xs : Colist A ∞) → Covec A ∞ (Colist.length xs)
+ fromColist : (xs : Colist A ∞) → ∀ {i} → Covec A i (Colist.length xs)
  fromColist []       = []
  fromColist (x ∷ xs) = x ∷ λ where .force → fromColist (xs .force)
 
