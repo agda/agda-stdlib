@@ -50,7 +50,10 @@ module README where
 --     Category theory-inspired idioms used to structure functional
 --     programs (functors and monads, for instance).
 -- • Codata
---     Coinductive data types and properties.
+--     Coinductive data types and properties. There are two different
+--     approaches taken. The `Codata` folder contains the new more
+--     standard approach using sized types. The `Codata.Musical`
+--     folder contains modules using the old musical notation.
 -- • Coinduction
 --     Support for coinduction.
 -- • Data

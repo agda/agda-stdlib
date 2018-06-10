@@ -8,12 +8,11 @@ Important changes since 0.16:
 Non-backwards compatible changes
 --------------------------------
 
-Other major changes
--------------------
+#### New codata library
 
-* Added new experimental `Codata` modules using copatterns and sized types
-  rather than the musical notations. The whole library is built around a
-  generic notion of coinductive `Thunk` and provides basic data types:
+* New experimental `Codata` modules using copatterns and sized types rather
+  than the musical notations have been added. The whole library is built around
+  a generic notion of coinductive `Thunk` and provides the basic data types:
   ```agda
   Codata.Thunk
   Codata.Colist
@@ -25,6 +24,23 @@ Other major changes
   Each coinductive type comes with a notion of bisimilarity in the corresponding
   `Codata.X.Bisimilarity` module and at least a couple of proofs demonstrating
   how they can be used in `Codata.X.Properties`.
+
+* The old codata modules that previously lived in the `Data` directory have
+  been moved to the folder `Codata.Musical`
+  ```agda
+  Data.Cofin  ↦ Codata.Musical.Cofin
+  Data.Colist ↦ Codata.Musical.Colist
+  Data.Conat  ↦ Codata.Musical.Conat
+  Data.Covec  ↦ Codata.Musical.Covec
+  Data.M      ↦ Codata.Musical.M
+  Data.Stream ↦ Codata.Musical.Stream
+  ```
+
+* The type `Costring` and method `toCostring` have been moved from `Data.String`
+  to a new module `Codata.Musical.Costring`.
+
+Other major changes
+-------------------
 
 Deprecated features
 -------------------
