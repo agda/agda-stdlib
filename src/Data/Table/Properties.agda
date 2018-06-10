@@ -10,7 +10,7 @@ open import Data.Table
 open import Data.Table.Relation.Equality
 
 open import Data.Bool using (true; false; if_then_else_)
-open import Data.Nat using (suc)
+import Data.Nat as ℕ
 open import Data.Empty using (⊥-elim)
 open import Data.Fin using (Fin; suc; zero; _≟_; punchIn)
 import Data.Fin.Properties as FP
@@ -88,7 +88,7 @@ module _ {a} {A : Set a} where
   -- constant table
 
   select-remove :
-    ∀ {n x} i (t : Table A (suc n)) →
+    ∀ {n x} i (t : Table A (ℕ.suc n)) →
     remove i (select x i t) ≗ replicate {n} x
   select-remove i t j with punchIn i j ≟ i
   select-remove i t j | yes p = ⊥-elim (FP.punchInᵢ≢i _ _ p)
@@ -98,6 +98,6 @@ module _ {a} {A : Set a} where
   -- removing the element, then permuting with 'π' minus 'i'.
 
   remove-permute :
-    ∀ {m n} (π : Permutation (suc m) (suc n)) i (t : Table A (suc n)) →
+    ∀ {m n} (π : Permutation (ℕ.suc m) (ℕ.suc n)) i (t : Table A (ℕ.suc n)) →
     remove (π ⟨$⟩ˡ i) (permute π t) ≗ permute (Perm.remove (π ⟨$⟩ˡ i) π) (remove i t)
   remove-permute π i t j = P.cong (lookup t) (Perm.punchIn-permute′ π i j)
