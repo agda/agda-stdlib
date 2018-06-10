@@ -96,7 +96,8 @@ readFileUTF8 :: FilePath -> IO String
 readFileUTF8 f = do
   h <- openFile f ReadMode
   hSetEncoding h utf8
-  hGetContents h
+  s <- hGetContents h
+  length s `seq` return s
 
 -- | A variant of 'writeFile' which uses the 'utf8' encoding.
 

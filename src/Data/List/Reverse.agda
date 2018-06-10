@@ -16,11 +16,11 @@ open import Relation.Binary.PropositionalEquality
 
 infixl 5 _∶_∶ʳ_
 
-data Reverse {A : Set} : List A → Set where
+data Reverse {a} {A : Set a} : List A → Set a where
   []     : Reverse []
   _∶_∶ʳ_ : ∀ xs (rs : Reverse xs) (x : A) → Reverse (xs ∷ʳ x)
 
-module _ {A : Set} where
+module _ {a} {A : Set a} where
 
   reverse : (xs : List A) → Reverse (L.reverse xs)
   reverse []       = []
