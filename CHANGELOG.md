@@ -32,6 +32,32 @@ Deprecated features
 Other minor additions
 ---------------------
 
+* Added new module `Algebra.Properties.CommutativeMonoid`. This contains proofs
+  of lots of properties of summation, including 'big summation'.
+
+* In `Data.Fin.Permutation`:
+  * Generalized the definitions `punchIn-permute` and
+    `punchIn-permute′` to work with heterogeneous permutations.
+  * Added new definition:
+    ```agda
+    refute : m ≢ n → ¬ Permutation m n
+    ```
+
+* In `Data.Table.Base`, added new definition:
+  ```agda
+  remove : (i : Fin (suc n)) → Table A (suc n) → Table A n
+  ```
+
+* In `Data.Table.Properties`, added new definitions:
+  ```agda
+  select-lookup : (t : Table A n) → lookup (select x i t) i ≡ lookup t i
+  select-remove :
+    i (t : Table A (suc n)) → remove i (select x i t) ≗ replicate {n} x
+  remove-permute :
+    (π : Permutation (suc m) (suc n)) i (t : Table A (suc n)) →
+    remove (π ⟨$⟩ˡ i) (permute π t) ≗
+    permute (Perm.remove (π ⟨$⟩ˡ i) π) (remove i t)
+  ```
 
 Version 0.16
 ============
