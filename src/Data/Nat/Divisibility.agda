@@ -223,5 +223,17 @@ suc m ∣? .(1 + toℕ r + q * suc m) | result q (suc r) refl =
 -- names is not guaranteed.
 
 ∣-+ = ∣m∣n⇒∣m+n
+{-# WARNING_ON_USAGE ∣-+
+"Warning: ∣-+ was deprecated in v0.14.
+Please use ∣m∣n⇒∣m+n instead."
+#-}
 ∣-∸ = ∣m+n∣m⇒∣n
+{-# WARNING_ON_USAGE ∣-∸
+"Warning: ∣-∸ was deprecated in v0.14.
+Please use ∣m+n∣m⇒∣n instead."
+#-}
 ∣-* = n∣m*n
+{-# WARNING_ON_USAGE ∣-*
+"Warning: ∣-* was deprecated in v0.14.
+Please use n∣m*n instead."
+#-}
