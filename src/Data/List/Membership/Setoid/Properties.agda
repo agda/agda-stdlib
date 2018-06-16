@@ -23,6 +23,7 @@ open import Relation.Unary using (Decidable; Pred)
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open Setoid using (Carrier)
+open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 
 ------------------------------------------------------------------------
 -- Equality properties
@@ -98,6 +99,7 @@ module _ {c₁ c₂ ℓ₁ ℓ₂} (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c�
 module _ {c ℓ} (S : Setoid c ℓ) where
 
   open Membership S using (_∈_)
+  open Setoid S
 
   ∈-++⁺ˡ : ∀ {v xs ys} → v ∈ xs → v ∈ xs ++ ys
   ∈-++⁺ˡ = Any.++⁺ˡ
@@ -108,15 +110,13 @@ module _ {c ℓ} (S : Setoid c ℓ) where
   ∈-++⁻ : ∀ {v} xs {ys} → v ∈ xs ++ ys → (v ∈ xs) ⊎ (v ∈ ys)
   ∈-++⁻ = Any.++⁻
 
-  ∈-witness : ∀ xs {v v′ ys} → Setoid._≈_ S v v′ → v ∈ xs ++ v′ ∷ ys
-  ∈-witness xs = Any.++-witness xs
+  ∈-insert : ∀ xs {v v′ ys} → v ≈ v′ → v ∈ xs ++ [ v′ ] ++ ys
+  ∈-insert xs = Any.++-insert xs
 
-  open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
-
-  ∈-∃++ : ∀ {v xs} → v ∈ xs → ∃₂ λ ys zs → ∃ λ v′ → Setoid._≈_ S v v′ × xs ≡ ys ++ v′ ∷ zs
-  ∈-∃++ (here px)                  = [] , _ , _ , px , refl
+  ∈-∃++ : ∀ {v xs} → v ∈ xs → ∃₂ λ ys zs → ∃ λ v′ → v ≈ v′ × xs ≡ ys ++ [ v′ ] ++ zs
+  ∈-∃++ (here px)                  = [] , _ , _ , px , ≡.refl
   ∈-∃++ (there {d} v∈xs) with ∈-∃++ v∈xs
-  ... | hs , _ , _ , v≈v′ , refl = d ∷ hs , _ , _ , v≈v′ , refl
+  ... | hs , _ , _ , v≈v′ , ≡.refl = d ∷ hs , _ , _ , v≈v′ , ≡.refl
 
 ------------------------------------------------------------------------
 -- concat
