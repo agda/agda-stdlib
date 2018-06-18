@@ -17,7 +17,7 @@ Install it as follows. Say you are in directory `$HERE` (replace appropriately).
 ```
   git clone https://github.com/agda/agda-stdlib.git
   cd agda-stdlib
-  git checkout v0.15
+  git checkout v0.16
   cabal install
 ```
 The last comment is optional, omit it if you are lacking [cabal](https://www.haskell.org/cabal/).
