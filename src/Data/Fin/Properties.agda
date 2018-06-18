@@ -472,19 +472,66 @@ module _ {a} {A : Set a} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
-cmp              = <-cmp
-strictTotalOrder = <-strictTotalOrder
-
-to-from          = toℕ-fromℕ
-from-to          = fromℕ-toℕ
-
-bounded          = toℕ<n
-prop-toℕ-≤      = toℕ≤pred[n]
-prop-toℕ-≤′     = toℕ≤pred[n]′
-
-inject-lemma     = toℕ-inject
-inject+-lemma    = toℕ-inject+
-inject₁-lemma    = toℕ-inject₁
-inject≤-lemma    = toℕ-inject≤
-
 open import Data.Fin public using (_≟_; _<?_)
+
+-- Version 0.15
+
+cmp              = <-cmp
+{-# WARNING_ON_USAGE cmp
+"Warning: cmp was deprecated in v0.15.
+Please use <-cmp instead."
+#-}
+strictTotalOrder = <-strictTotalOrder
+{-# WARNING_ON_USAGE strictTotalOrder
+"Warning: strictTotalOrder was deprecated in v0.15.
+Please use <-strictTotalOrder instead."
+#-}
+
+-- Version 0.16
+
+to-from = toℕ-fromℕ
+{-# WARNING_ON_USAGE to-from
+"Warning: to-from was deprecated in v0.16.
+Please use toℕ-fromℕ instead."
+#-}
+from-to          = fromℕ-toℕ
+{-# WARNING_ON_USAGE from-to
+"Warning: from-to was deprecated in v0.16.
+Please use fromℕ-toℕ instead."
+#-}
+bounded = toℕ<n
+{-# WARNING_ON_USAGE bounded
+"Warning: bounded was deprecated in v0.16.
+Please use toℕ<n instead."
+#-}
+prop-toℕ-≤ = toℕ≤pred[n]
+{-# WARNING_ON_USAGE prop-toℕ-≤
+"Warning: prop-toℕ-≤ was deprecated in v0.16.
+Please use toℕ≤pred[n] instead."
+#-}
+prop-toℕ-≤′ = toℕ≤pred[n]′
+{-# WARNING_ON_USAGE prop-toℕ-≤′
+"Warning: prop-toℕ-≤′ was deprecated in v0.16.
+Please use toℕ≤pred[n]′ instead."
+#-}
+inject-lemma = toℕ-inject
+{-# WARNING_ON_USAGE inject-lemma
+"Warning: inject-lemma was deprecated in v0.16.
+Please use toℕ-inject instead."
+#-}
+inject+-lemma = toℕ-inject+
+{-# WARNING_ON_USAGE inject+-lemma
+"Warning: inject+-lemma was deprecated in v0.16.
+Please use toℕ-inject+ instead."
+#-}
+inject₁-lemma = toℕ-inject₁
+{-# WARNING_ON_USAGE inject₁-lemma
+"Warning: inject₁-lemma was deprecated in v0.16.
+Please use toℕ-inject₁ instead."
+#-}
+inject≤-lemma = toℕ-inject≤
+{-# WARNING_ON_USAGE inject≤-lemma
+"Warning: inject≤-lemma was deprecated in v0.16.
+Please use toℕ-inject≤ instead."
+#-}
+
