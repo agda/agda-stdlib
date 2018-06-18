@@ -8,6 +8,15 @@ Important changes since 0.16:
 Non-backwards compatible changes
 --------------------------------
 
+* Rearranged `Data.List.Relation.Sublist` hierarchy:
+  ```agda
+  Data.List.Relation.Sublist.Setoid                   ↦ Data.List.Relation.Sublist.Extensional.Setoid
+  Data.List.Relation.Sublist.Setoid.Properties        ↦ Data.List.Relation.Sublist.Extensional.Setoid.Properties
+  Data.List.Relation.Sublist.Propositional            ↦ Data.List.Relation.Sublist.Extensional.Propositional
+  Data.List.Relation.Sublist.Propositional.Properties ↦ Data.List.Relation.Sublist.Extensional.Propositional.Properties
+  ```
+  and added new module `Data.List.Relation.Sublist.Inductive`.
+
 Other major changes
 -------------------
 
@@ -173,8 +182,6 @@ Other major changes
   implement these bijections.
 
 * Added new modules `Data.List.Zipper` and `Data.List.Zipper.Properties`.
-
-* Added new module `Data.List.Relation.OrderPreservingEmbedding`.
 
 * Added a new module `Function.Reasoning` for creating multi-stage function pipelines.
   See `README.Function.Reasoning` for examples.
