@@ -147,13 +147,13 @@ module _ {ℓ} {A B : Set ℓ} {fs gs : List (A → B)} {xs ys : List A} where
 ------------------------------------------------------------------------
 -- _⊗_
 
-module _ {A B : Set} {xs₁ ys₁ : List A} {xs₂ ys₂ : List B} where
+module _ {ℓ} {A B : Set ℓ} {xs₁ ys₁ : List A} {xs₂ ys₂ : List B} where
 
   _⊗-mono_ : xs₁ ⊆ ys₁ → xs₂ ⊆ ys₂ → (xs₁ ⊗ xs₂) ⊆ (ys₁ ⊗ ys₂)
   xs₁⊆ys₁ ⊗-mono xs₂⊆ys₂ =
-    _⟨$⟩_ (Inverse.to ⊗-∈↔) ∘
+    _⟨$⟩_ (Inverse.to $ ⊗-∈↔ {ℓ = ℓ}) ∘
     Prod.map xs₁⊆ys₁ xs₂⊆ys₂ ∘
-    _⟨$⟩_ (Inverse.from ⊗-∈↔)
+    _⟨$⟩_ (Inverse.from $ ⊗-∈↔ {ℓ = ℓ})
 
 ------------------------------------------------------------------------
 -- any

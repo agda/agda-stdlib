@@ -11,13 +11,13 @@ html [here](https://agda.github.io/agda-stdlib/README.html).
 
 ## Quick installation instructions
 
-Use version v0.15 of the standard library with Agda 2.5.3.
+Use version v0.16 of the standard library with Agda 2.5.4.
 
 Install it as follows. Say you are in directory `$HERE` (replace appropriately).
 ```
   git clone https://github.com/agda/agda-stdlib.git
   cd agda-stdlib
-  git checkout v0.15
+  git checkout v0.16
   cabal install
 ```
 The last comment is optional, omit it if you are lacking [cabal](https://www.haskell.org/cabal/).

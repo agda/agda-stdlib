@@ -32,14 +32,14 @@ x < y = (x ≤ y) × ¬ (x ≈ y)
   (trans x≤y y≤z , x≉y ∘ antisym x≤y ∘ trans y≤z ∘ reflexive ∘ Eq.sym)
   where open IsPartialOrder po
 
-<≤-trans : Symmetric _≈_ → Transitive _≤_ → Antisymmetric _≈_ _≤_ →
+<-≤-trans : Symmetric _≈_ → Transitive _≤_ → Antisymmetric _≈_ _≤_ →
            _≤_ Respectsʳ _≈_ → Trans _<_ _≤_ _<_
-<≤-trans sym trans antisym respʳ (x≤y , x≉y) y≤z =
+<-≤-trans sym trans antisym respʳ (x≤y , x≉y) y≤z =
   trans x≤y y≤z , (λ x≈z → x≉y (antisym x≤y (respʳ (sym x≈z) y≤z)))
 
-≤<-trans : Transitive _≤_ → Antisymmetric _≈_ _≤_ →
+≤-<-trans : Transitive _≤_ → Antisymmetric _≈_ _≤_ →
            _≤_ Respectsˡ _≈_ → Trans _≤_ _<_ _<_
-≤<-trans trans antisym respʳ x≤y (y≤z , y≉z) =
+≤-<-trans trans antisym respʳ x≤y (y≤z , y≉z) =
   trans x≤y y≤z , (λ x≈z → y≉z (antisym y≤z (respʳ x≈z x≤y)))
 
 <-asym : Antisymmetric _≈_ _≤_ → Asymmetric _<_

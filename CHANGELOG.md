@@ -3,6 +3,41 @@ Version TODO
 
 The library has been tested using Agda version TODO.
 
+Important changes since 0.16:
+
+Non-backwards compatible changes
+--------------------------------
+
+Other major changes
+-------------------
+
+* Added new experimental `Codata` modules using copatterns and sized types
+  rather than the musical notations. The whole library is built around a
+  generic notion of coinductive `Thunk` and provides basic data types:
+  ```agda
+  Codata.Thunk
+  Codata.Colist
+  Codata.Conat
+  Codata.Covec
+  Codata.Delay
+  Codata.Stream
+  ```
+  Each coinductive type comes with a notion of bisimilarity in the corresponding
+  `Codata.X.Bisimilarity` module and at least a couple of proofs demonstrating
+  how they can be used in `Codata.X.Properties`.
+
+Deprecated features
+-------------------
+
+Other minor additions
+---------------------
+
+
+Version 0.16
+============
+
+The library has been tested using Agda version 2.5.4.
+
 Important changes since 0.15:
 
 Non-backwards compatible changes
@@ -27,7 +62,6 @@ Non-backwards compatible changes
                                          ↘ Data.List.Relation.Sublist.Propositional
   ```
 
-
 * The `_⊆_` relation has been moved out of the `Membership` modules to new
   modules `Data.List.Relation.Sublist.(Setoid/Propositional)`. Consequently the `mono`
   proofs that were in `Data.List.Membership.Propositional.Properties` have been moved to
@@ -39,7 +73,7 @@ Non-backwards compatible changes
   map∘find, find∘map, find-∈, lose∘find, find∘lose, ∃∈-Any, Any↔
   ```
 
-* The following terms have been moved from `Data.List.Membership.Propositional` into
+* The following types and terms have been moved from `Data.List.Membership.Propositional` into
   `Relation.BagAndSetEquality`:
   ```agda
   Kind, Symmetric-kind
@@ -82,7 +116,7 @@ Non-backwards compatible changes
 * `Relation.Binary.Consequences` no longer exports `Total`. The standard way of accessing it
   through `Relation.Binary` remains unchanged.
 
-* Changed the associativity of `Relation.Unary`'s `_⇒_` from left to right.
+* `_⇒_` in `Relation.Unary` is now right associative instead of left associative.
 
 * Added new module `Relation.Unary.Properties`. The following proofs have been moved
   to the new module from `Relation.Unary`: `∅-Empty`, `∁∅-Universal`, `U-Universal`,
@@ -103,8 +137,18 @@ Non-backwards compatible changes
   `reverse-involutive` and `reverse-suc` from `Data.Fin.Properties` to the new
   module `Data.Fin.Permutation.Components`.
 
-* Refactored `Data.List.Reverse`'s `reverseView` in a direct style instead of the well-founded
-  induction on the list's length we were using so far.
+* Refactored `reverseView` in `Data.List.Reverse` to use a direct style instead
+  of the well-founded induction on the list's length that was used previously.
+
+* The function `filter` as implemented in `Data.List` has the semantics of _filter through_ rather
+  than _filter out_. The naming of proofs in `Data.List.Properties` used the latter rather than
+  the former and therefore the names of the proofs have been switched as follows:
+  ```agda
+  filter-none   ↦ filter-all
+  filter-some   ↦ filter-notAll
+  filter-notAll ↦ filter-some
+  filter-all    ↦ filter-none
+  ```
 
 Other major changes
 -------------------
@@ -133,7 +177,7 @@ Other major changes
 * Added new module `Data.List.Relation.OrderPreservingEmbedding`.
 
 * Added a new module `Function.Reasoning` for creating multi-stage function pipelines.
-  See README.Function.Reasoning for examples.
+  See `README.Function.Reasoning` for examples.
 
 * Added new module `Relation.Binary.Indexed.Homogeneous`. This module defines
   homogeneously-indexed binary relations, as opposed to the
@@ -564,8 +608,8 @@ Other minor additions
   zipWith-zeroʳ     : RightZero _≡_ 0# f →  RightZero _≡_ (replicate 0#) (zipWith f)
   zipWith-inverseˡ  : LeftInverse _≡_ 0# ⁻¹ f →  LeftInverse _≡_ (replicate 0#) (map ⁻¹) (zipWith f)
   zipWith-inverseʳ  : RightInverse _≡_ 0# ⁻¹ f → RightInverse _≡_ (replicate 0#) (map ⁻¹) (zipWith f)
-  zipWith-distribˡ  : DistributesOverˡ_ _≡_ f g →  _DistributesOverˡ_ _≡_ (zipWith f) (zipWith g)
-  zipWith-distribʳ  : DistributesOverʳ_ _≡_ f g → _DistributesOverʳ_ _≡_ (zipWith f) (zipWith g)
+  zipWith-distribˡ  : _DistributesOverˡ_ _≡_ f g → _DistributesOverˡ_ _≡_ (zipWith f) (zipWith g)
+  zipWith-distribʳ  : _DistributesOverʳ_ _≡_ f g → _DistributesOverʳ_ _≡_ (zipWith f) (zipWith g)
   zipWith-absorbs   : _Absorbs_ _≡_ f g →  _Absorbs_ _≡_ (zipWith f) (zipWith g)
 
   toList∘fromList   : toList (fromList xs) ≡ xs
@@ -595,8 +639,8 @@ Other minor additions
   <-respˡ-≈ : _≤_ Respectsˡ _≈_ → _<_ Respectsˡ _≈_
   <-respʳ-≈ : _≤_ Respectsʳ _≈_ → _<_ Respectsʳ _≈_
 
-  <≤-trans : Transitive _≤_ → Antisymmetric _≈_ _≤_ → _≤_ Respectsʳ _≈_ → Trans _<_ _≤_ _<_
-  ≤<-trans : Transitive _≤_ → Antisymmetric _≈_ _≤_ → _≤_ Respectsˡ _≈_ → Trans _≤_ _<_ _<_
+  <-≤-trans : Transitive _≤_ → Antisymmetric _≈_ _≤_ → _≤_ Respectsʳ _≈_ → Trans _<_ _≤_ _<_
+  ≤-<-trans : Transitive _≤_ → Antisymmetric _≈_ _≤_ → _≤_ Respectsˡ _≈_ → Trans _≤_ _<_ _<_
   ```
 
 * Added new proofs to `Relation.Binary.Consequences`:
@@ -761,6 +805,8 @@ Non-backwards compatible changes
 
 #### Other
 
+* Removed support for GHC 7.8.4.
+
 * Renamed `Data.Container.FreeMonad.do` and `Data.Container.Indexed.FreeMonad.do`
   to `inn` as Agda 2.5.4 now supports proper 'do' notation.
 
@@ -780,6 +826,13 @@ Non-backwards compatible changes
   names are now used for proofs of left and right monotonicity of `_+_`.
 
 * Moved the proof `monoid` from `Data.List` to `++-monoid` in `Data.List.Properties`.
+
+* Names in Data.Nat.Divisibility now use the `divides` symbol (typed \\|) consistently.
+  Previously a mixture of \\| and | was used.
+
+* Starting from Agda 2.5.4 the GHC backend compiles `Coinduction.∞` in
+  a different way, and for this reason the GHC backend pragmas for
+  `Data.Colist.Colist` and `Data.Stream.Stream` have been modified.
 
 Deprecated features
 -------------------
@@ -957,10 +1010,13 @@ Backwards compatible changes
 
 * Added support for GHC 8.2.2.
 
-* Added new module `Data.Table`. A `Table` is a fixed-length collection of objects
-  similar to a `Vec` from `Data.Vec`, but implemented as a function `Fin n → A`.
-  This prioritises ease of lookup as opposed to `Vec` which prioritises the ease
-  of adding and removing elements.
+* New module `Data.Word` for new builtin type `Agda.Builtin.Word.Word64`.
+
+* New modules `Data.Table`, `Data.Table.Base`,
+  `Data.Table.Relation.Equality` and `Data.Table.Properties`. A `Table` is a
+  fixed-length collection of objects similar to a `Vec` from `Data.Vec`, but
+  implemented as a function `Fin n → A`. This prioritises ease of lookup as opposed
+  to `Vec` which prioritises the ease of adding and removing elements.
 
 * The contents of the following modules are now more polymorphic with respect to levels:
   ```agda
