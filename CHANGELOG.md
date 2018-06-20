@@ -48,6 +48,10 @@ Deprecated features
 Other minor additions
 ---------------------
 
+* Added the following types in `Relation.Unary`:
+  ```agda
+  Satisfiable P = ∃ λ x → x ∈ P
+  ```
 
 Version 0.16
 ============
