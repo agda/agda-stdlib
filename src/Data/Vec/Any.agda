@@ -8,12 +8,13 @@ module Data.Vec.Any {a} {A : Set a} where
 
 open import Data.Empty
 open import Data.Fin
-open import Data.Vec as Vec using (Vec; []; _∷_)
+open import Data.Nat using (zero; suc)
+open import Data.Vec as Vec using (Vec; []; [_]; _∷_)
 open import Data.Product as Prod using (∃; _,_)
 open import Level using (_⊔_)
 open import Relation.Nullary using (¬_; yes; no)
 import Relation.Nullary.Decidable as Dec
-open import Relation.Unary using (Decidable; _⊆_)
+open import Relation.Unary
 
 ------------------------------------------------------------------------
 -- Any P xs means that at least one element in xs satisfies P.
@@ -55,3 +56,7 @@ module _ {p} {P : A → Set p} where
   any P? (x ∷ xs) with P? x
   ... | yes px = yes (here px)
   ... | no ¬px = Dec.map′ there (tail ¬px) (any P? xs)
+
+  satisfiable : Satisfiable P → ∀ {n} → Satisfiable (Any P {suc n})
+  satisfiable (x , p) {zero}  = x ∷ [] , here p
+  satisfiable (x , p) {suc n} = Prod.map (x ∷_) there (satisfiable (x , p))

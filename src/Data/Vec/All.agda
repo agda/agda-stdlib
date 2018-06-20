@@ -6,6 +6,7 @@
 
 module Data.Vec.All where
 
+open import Data.Nat using (zero; suc)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Product as Prod using (_,_)
 open import Data.Vec as Vec using (Vec; []; _∷_)
@@ -13,8 +14,8 @@ open import Function using (_∘_)
 open import Level using (_⊔_)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
-open import Relation.Unary using (Decidable; Universal; _∩_; _⊆_)
-open import Relation.Binary.PropositionalEquality as P using (subst) 
+open import Relation.Unary
+open import Relation.Binary.PropositionalEquality as P using (subst)
 
 ------------------------------------------------------------------------
 -- All P xs means that all elements in xs satisfy P.
@@ -46,7 +47,7 @@ lookup (suc i) (px ∷ pxs) = lookup i pxs
 tabulate : ∀ {a p} {A : Set a} {P : A → Set p} {k xs} →
            (∀ i → P (Vec.lookup i xs)) → All P {k} xs
 tabulate {xs = []}    pxs = []
-tabulate {xs = _ ∷ _} pxs = pxs zero ∷ tabulate (pxs ∘ suc) 
+tabulate {xs = _ ∷ _} pxs = pxs zero ∷ tabulate (pxs ∘ suc)
 
 map : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} {k} →
       P ⊆ Q → All P {k} ⊆ All Q {k}
@@ -83,11 +84,15 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   ... | yes px = Dec.map′ (px ∷_) tail (all P? xs)
   ... | no ¬px = no (¬px ∘ head)
 
-  universal : ∀ {k} → Universal P → Universal (All P {k})
+  universal : Universal P → ∀ {k} → Universal (All P {k})
   universal u []       = []
   universal u (x ∷ xs) = u x ∷ universal u xs
 
-  irrelevant : ∀ {k} → P.IrrelevantPred P → P.IrrelevantPred (All P {k})
+  irrelevant : P.IrrelevantPred P → ∀ {k} → P.IrrelevantPred (All P {k})
   irrelevant irr []           []           = P.refl
   irrelevant irr (px₁ ∷ pxs₁) (px₂ ∷ pxs₂) =
     P.cong₂ _∷_ (irr px₁ px₂) (irrelevant irr pxs₁ pxs₂)
+
+  satisfiable : Satisfiable P → ∀ {k} → Satisfiable (All P {k})
+  satisfiable (x , p) {zero}  = [] , []
+  satisfiable (x , p) {suc k} = Prod.map (x ∷_) (p ∷_) (satisfiable (x , p))

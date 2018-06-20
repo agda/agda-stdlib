@@ -631,49 +631,6 @@ module _ {a} {A : Set a} where
     P.cong (x ∷_) (insert-remove i (y ∷ xs))
 
 ------------------------------------------------------------------------
--- Properties of _∈_
-
-∈-++ₗ : ∀ {a m n} {A : Set a} {x : A} {xs : Vec A m} {ys : Vec A n} →
-        x ∈ xs → x ∈ xs ++ ys
-∈-++ₗ here         = here
-∈-++ₗ (there x∈xs) = there (∈-++ₗ x∈xs)
-
-∈-++ᵣ : ∀ {a m n} {A : Set a} {x : A} (xs : Vec A m) {ys : Vec A n} →
-        x ∈ ys → x ∈ xs ++ ys
-∈-++ᵣ []       x∈ys = x∈ys
-∈-++ᵣ (x ∷ xs) x∈ys = there (∈-++ᵣ xs x∈ys)
-
-∈-map : ∀ {a b m} {A : Set a} {B : Set b} {x : A} {xs : Vec A m}
-        (f : A → B) → x ∈ xs → f x ∈ map f xs
-∈-map f here         = here
-∈-map f (there x∈xs) = there (∈-map f x∈xs)
-
-∈-tabulate : ∀ {n a} {A : Set a} (f : Fin n → A) i → f i ∈ tabulate f
-∈-tabulate f zero    = here
-∈-tabulate f (suc i) = there (∈-tabulate (f ∘ suc) i)
-
-∈-allFin : ∀ {n} (i : Fin n) → i ∈ allFin n
-∈-allFin = ∈-tabulate id
-
-∈-allPairs : ∀ {a b} {A : Set a} {B : Set b} {m n : ℕ}
-             {xs : Vec A m} {ys : Vec B n}
-             {x y} → x ∈ xs → y ∈ ys → (x , y) ∈ allPairs xs ys
-∈-allPairs {xs = x ∷ xs} {ys} here         y∈ys =
-  ∈-++ₗ (∈-map (x ,_) y∈ys)
-∈-allPairs {xs = x ∷ xs} {ys} (there x∈xs) y∈ys =
-  ∈-++ᵣ (map (x ,_) ys) (∈-allPairs x∈xs y∈ys)
-
-∈⇒List-∈ : ∀ {a} {A : Set a} {n x} {xs : Vec A n} →
-           x ∈ xs → x List.∈ toList xs
-∈⇒List-∈ here       = here P.refl
-∈⇒List-∈ (there x∈) = there (∈⇒List-∈ x∈)
-
-List-∈⇒∈ : ∀ {a} {A : Set a} {x : A} {xs} →
-           x List.∈ xs → x ∈ fromList xs
-List-∈⇒∈ (here P.refl) = here
-List-∈⇒∈ (there x∈)    = there (List-∈⇒∈ x∈)
-
-------------------------------------------------------------------------
 -- Conversion function
 
 module _ {a} {A : Set a} where

@@ -8,12 +8,12 @@ module Data.List.Any {a} {A : Set a} where
 
 open import Data.Empty
 open import Data.Fin
-open import Data.List.Base as List using (List; []; _∷_)
+open import Data.List.Base as List using (List; []; [_]; _∷_)
 open import Data.Product as Prod using (∃; _,_)
 open import Level using (_⊔_)
 open import Relation.Nullary using (¬_; yes; no)
 import Relation.Nullary.Decidable as Dec
-open import Relation.Unary using (Decidable; _⊆_)
+open import Relation.Unary hiding (_∈_)
 
 ------------------------------------------------------------------------
 -- Any P xs means that at least one element in xs satisfies P.
@@ -55,4 +55,5 @@ module _ {p} {P : A → Set p} where
   ... | yes px = yes (here px)
   ... | no ¬px = Dec.map′ there (tail ¬px) (any P? xs)
 
-
+  satisfiable : Satisfiable P → Satisfiable (Any P)
+  satisfiable (x , Px) = [ x ] , here Px

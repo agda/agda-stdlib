@@ -8,21 +8,38 @@ Important changes since 0.16:
 Non-backwards compatible changes
 --------------------------------
 
-#### Improved consistency between `Data.(List/Vec).(Any/All)`
+#### Improved consistency between `Data.(List/Vec).(Any/All/Membership)`
 
-* New module `Data.Vec.Any`
+* Added new module `Data.Vec.Any`.
+
+* The type `_∈_` has been moved from `Data.Vec` to the new module
+  `Data.Vec.Membership.Propositional` and has been reimplemented using
+  `Any` from `Data.Vec.Any`. In particular this means that you must now
+  pass a `refl` proof to the `here` constructor.
+
+* The proofs associated with `_∈_` have been moved from `Data.Vec.Properties`
+  to the new module  `Data.Vec.Membership.Propositional.Properties`
+  and have been renamed as follows:
+  ```agda
+  ∈-++ₗ      ↦ ∈-++⁺ˡ
+  ∈-++ᵣ      ↦ ∈-++⁺ʳ
+  ∈-map      ↦ ∈-map⁺
+  ∈-tabulate ↦ ∈-tabulate⁺
+  ∈-allFin   ↦ ∈-allFin⁺
+  ∈-allPairs ↦ ∈-allPairs⁺
+  ∈⇒List-∈   ↦ ∈-toList⁺
+  List-∈⇒∈   ↦ ∈-fromList⁺
+  ```
 
 * The proofs `All-universal` and `All-irrelevance` have been moved from
   `Data.List.All.Properties` and renamed `universal` and `irrelevant` in
   `Data.List.All`.
-  
-* The existing `tabulate` in `Data.Vec.All` has been renamed `universal`.
-  A new function `tabulate` has been added with the following type:
+
+* The existing function `tabulate` in `Data.Vec.All` has been renamed
+  `universal`. The name `tabulate` now refers to a function with following type:
   ```agda
   tabulate : (∀ i → P (Vec.lookup i xs)) → All P {k} xs
   ```
-
-* Added various missing functions to the modules (see `Minor additions`).
 
 Other major changes
 -------------------

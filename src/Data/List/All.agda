@@ -14,7 +14,7 @@ open import Function
 open import Level
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
-open import Relation.Unary using (Decidable; Universal; _∩_; _⊆_)
+open import Relation.Unary hiding (_∈_)
 open import Relation.Binary.PropositionalEquality as P
 
 ------------------------------------------------------------------------
@@ -83,3 +83,6 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   irrelevant irr []           []           = P.refl
   irrelevant irr (px₁ ∷ pxs₁) (px₂ ∷ pxs₂) =
     P.cong₂ _∷_ (irr px₁ px₂) (irrelevant irr pxs₁ pxs₂)
+
+  satisfiable : Satisfiable (All P)
+  satisfiable = [] , []
