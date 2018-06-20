@@ -1,14 +1,14 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Lists where at least one element satisfies a given property
+-- Vectors where at least one element satisfies a given property
 ------------------------------------------------------------------------
 
-module Data.List.Any {a} {A : Set a} where
+module Data.Vec.Any {a} {A : Set a} where
 
 open import Data.Empty
 open import Data.Fin
-open import Data.List.Base as List using (List; []; _∷_)
+open import Data.Vec as Vec using (Vec; []; _∷_)
 open import Data.Product as Prod using (∃; _,_)
 open import Level using (_⊔_)
 open import Relation.Nullary using (¬_; yes; no)
@@ -18,30 +18,31 @@ open import Relation.Unary using (Decidable; _⊆_)
 ------------------------------------------------------------------------
 -- Any P xs means that at least one element in xs satisfies P.
 
-data Any {p} (P : A → Set p) : List A → Set (a ⊔ p) where
-  here  : ∀ {x xs} (px  : P x)      → Any P (x ∷ xs)
-  there : ∀ {x xs} (pxs : Any P xs) → Any P (x ∷ xs)
+data Any {p} (P : A → Set p) : ∀ {n} → Vec A n → Set (a ⊔ p) where
+  here  : ∀ {n x} {xs : Vec A n} (px  : P x)      → Any P (x ∷ xs)
+  there : ∀ {n x} {xs : Vec A n} (pxs : Any P xs) → Any P (x ∷ xs)
 
 ------------------------------------------------------------------------
 -- Operations on Any
 
 -- If the head does not satisfy the predicate, then the tail will.
-tail : ∀ {p} {P : A → Set p} {x xs} → ¬ P x → Any P (x ∷ xs) → Any P xs
+tail : ∀ {p} {P : A → Set p} {n x} {xs : Vec A n} →
+       ¬ P x → Any P (x ∷ xs) → Any P xs
 tail ¬px (here  px)  = ⊥-elim (¬px px)
 tail ¬px (there pxs) = pxs
 
-map : ∀ {p q} {P : A → Set p} {Q : A → Set q} → P ⊆ Q → Any P ⊆ Any Q
+map : ∀ {p q} {P : A → Set p} {Q : A → Set q} →
+      P ⊆ Q → ∀ {n} → Any P {n} ⊆ Any Q {n}
 map g (here px)   = here (g px)
 map g (there pxs) = there (map g pxs)
 
--- `index x∈xs` is the list position (zero-based) which `x∈xs` points to.
-index : ∀ {p} {P : A → Set p} {xs} → Any P xs → Fin (List.length xs)
+index : ∀ {p} {P : A → Set p} {n} {xs : Vec A n} → Any P xs → Fin n
 index (here  px)  = zero
 index (there pxs) = suc (index pxs)
 
 -- If any element satisfies P, then P is satisfied.
-satisfied : ∀ {p} {P : A → Set p} {xs} → Any P xs → ∃ P
-satisfied (here px) = _ , px
+satisfied : ∀ {p} {P : A → Set p} {n} {xs : Vec A n} → Any P xs → ∃ P
+satisfied (here px)   = _ , px
 satisfied (there pxs) = satisfied pxs
 
 ------------------------------------------------------------------------
@@ -49,10 +50,8 @@ satisfied (there pxs) = satisfied pxs
 
 module _ {p} {P : A → Set p} where
 
-  any : Decidable P → Decidable (Any P)
+  any : Decidable P → ∀ {n} → Decidable (Any P {n})
   any P? []       = no λ()
   any P? (x ∷ xs) with P? x
   ... | yes px = yes (here px)
   ... | no ¬px = Dec.map′ there (tail ¬px) (any P? xs)
-
-

@@ -8,6 +8,22 @@ Important changes since 0.16:
 Non-backwards compatible changes
 --------------------------------
 
+#### Improved consistency between `Data.(List/Vec).(Any/All)`
+
+* New module `Data.Vec.Any`
+
+* The proofs `All-universal` and `All-irrelevance` have been moved from
+  `Data.List.All.Properties` and renamed `universal` and `irrelevant` in
+  `Data.List.All`.
+  
+* The existing `tabulate` in `Data.Vec.All` has been renamed `universal`.
+  A new function `tabulate` has been added with the following type:
+  ```agda
+  tabulate : (∀ i → P (Vec.lookup i xs)) → All P {k} xs
+  ```
+
+* Added various missing functions to the modules (see `Minor additions`).
+
 Other major changes
 -------------------
 
