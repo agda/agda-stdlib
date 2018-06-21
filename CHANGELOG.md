@@ -43,6 +43,11 @@ Deprecated features
 Other minor additions
 ---------------------
 
+* Added new function to `Function`:
+  ```agda
+  typeOf : {A : Set a} → A → Set a
+  ```
+
 * Added the following types in `Relation.Unary`:
   ```agda
   Satisfiable P = ∃ λ x → x ∈ P
