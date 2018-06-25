@@ -111,6 +111,13 @@ module _ {a} (A : Set a) {v : A} where
   ∈-++⁻ : ∀ xs {ys} → v ∈ xs ++ ys → (v ∈ xs) ⊎ (v ∈ ys)
   ∈-++⁻ = Membershipₛ.∈-++⁻ (P.setoid A)
 
+  ∈-insert : ∀ xs {ys} → v ∈ xs ++ [ v ] ++ ys
+  ∈-insert xs = Membershipₛ.∈-insert (P.setoid A) xs refl
+
+  ∈-∃++ : ∀ {xs} → v ∈ xs → ∃₂ λ ys zs → xs ≡ ys ++ v ∷ zs
+  ∈-∃++ v∈xs with Membershipₛ.∈-∃++ (P.setoid A) v∈xs
+  ... | ys , zs , _ , refl , refl = ys , zs , refl
+
 ------------------------------------------------------------------------
 -- concat
 

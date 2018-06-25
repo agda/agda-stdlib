@@ -8,6 +8,19 @@ Important changes since 0.16:
 Non-backwards compatible changes
 --------------------------------
 
+#### An inductive definition for permutation
+
+* The current list permutation defined over bag equality has several limitations. This
+  definition is a more direct approach which allows both point of induction and more
+  auxiliary lemmas.
+
+* The main entry point is `Data.List.Relation.Permutation.Inductive`, which gives the
+  definition as `_⇿_` and a reasoning API.
+  `Data.List.Relation.Permutation.Inductive.Properties` gives further properties
+  associated with the given definition.
+
+#### Other
+
 * Rearranged `Data.List.Relation.Sublist` hierarchy:
   ```agda
   Data.List.Relation.Sublist.Setoid                   ↦ Data.List.Relation.Sublist.Extensional.Setoid
@@ -41,6 +54,15 @@ Deprecated features
 Other minor additions
 ---------------------
 
+* Added new function to `Function`:
+  ```agda
+  typeOf : {A : Set a} → A → Set a
+  ```
+
+* Added the following types in `Relation.Unary`:
+  ```agda
+  Satisfiable P = ∃ λ x → x ∈ P
+  ```
 
 Version 0.16
 ============
