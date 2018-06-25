@@ -117,6 +117,12 @@ f -[ _*_ ]- g = λ x y → f x y * g x y
 _∋_ : ∀ {a} (A : Set a) → A → A
 A ∋ x = x
 
+-- Conversely it is sometimes useful to be able to extract the
+-- type of a given expression:
+
+typeOf : ∀ {a} {A : Set a} → A → Set a
+typeOf {A = A} _ = A
+
 -- Case expressions (to be used with pattern-matching lambdas, see
 -- README.Case).
 

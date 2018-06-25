@@ -48,7 +48,12 @@ Other minor additions
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
   ```
 
-* Added new type to `Relation.Unary`:
+* Added new function to `Function`:
+  ```agda
+  typeOf : {A : Set a} → A → Set a
+  ```
+
+* Added the following types in `Relation.Unary`:
   ```agda
   Satisfiable P = ∃ λ x → x ∈ P
   ```
