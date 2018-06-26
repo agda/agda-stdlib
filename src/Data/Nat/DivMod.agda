@@ -49,6 +49,13 @@ a%n<n a n = s≤s (mod-lemma 0 a n)
 a≡a%n+[a/n]*n : ∀ a n → a ≡ a % suc n + (a div (suc n)) * suc n
 a≡a%n+[a/n]*n a n = division-lemma 0 0 a n
 
+[n+k]%n≡k%n : ∀ k n → (suc n + k) % suc n ≡ k % suc n
+[n+k]%n≡k%n k n = {!!}
+
+[k*n]%n≡0 : ∀ k n → k * (suc n) % (suc n) ≡ 0
+[k*n]%n≡0 zero    n = refl
+[k*n]%n≡0 (suc k) n = trans ([n+k]%n≡k%n (k * suc n) n) ([k*n]%n≡0 k n)
+
 ------------------------------------------------------------------------
 -- Certified operations (i.e. operations with proofs)
 
@@ -65,7 +72,7 @@ infixl 7 _mod_ _divMod_
 
 -- Certified modulus
 
-_mod_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → Fin divisor
+_mod_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → Fin divisor
 (a mod 0) {}
 (a mod suc n) = fromℕ≤″ (a % suc n) (Nat.erase (≤⇒≤″ (a%n<n a n)))
 

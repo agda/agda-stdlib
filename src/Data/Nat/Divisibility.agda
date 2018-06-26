@@ -6,20 +6,23 @@
 
 module Data.Nat.Divisibility where
 
+open import Algebra
 open import Data.Nat as Nat
-open import Data.Nat.DivMod using (_divMod_; result)
+open import Data.Nat.DivMod
 open import Data.Nat.Properties
 open import Data.Fin using (Fin; zero; suc; toℕ)
 import Data.Fin.Properties as FP
-open SemiringSolver
-open import Algebra
 open import Data.Product
+open import Function
+open import Function.Equivalence using (_⇔_)
 open import Relation.Nullary
+import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
 import Relation.Binary.PartialOrderReasoning as PartialOrderReasoning
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)
-open import Function
+
+open SemiringSolver
 
 ------------------------------------------------------------------------
 -- m ∣ n is inhabited iff m divides n. Some sources, like Hardy and
@@ -179,6 +182,33 @@ module _ where
       q * (i * (suc k))  ≡⟨ sym (*-assoc q i (suc k)) ⟩
       (q * i) * (suc k)  ∎))
 
+  m%n≡0⇒n∣m : ∀ m n → m % (suc n) ≡ 0 → suc n ∣ m
+  m%n≡0⇒n∣m m n eq = divides (m div (suc n)) (begin
+    m                                     ≡⟨ a≡a%n+[a/n]*n m n ⟩
+    m % (suc n) + m div (suc n) * (suc n) ≡⟨ cong₂ _+_ eq refl ⟩
+    m div (suc n) * (suc n)               ∎)
+
+  n∣m⇒m%n≡0 : ∀ m n → suc n ∣ m → m % (suc n) ≡ 0
+  n∣m⇒m%n≡0 m n (divides v eq) = begin
+    m           % (suc n) ≡⟨ cong (_% (suc n)) eq ⟩
+    (v * suc n) % (suc n) ≡⟨ [k*n]%n≡0 v n ⟩
+    0                     ∎
+
+  m%n≡0⇔n∣m : ∀ m n → m % (suc n) ≡ 0 ⇔ suc n ∣ m
+  m%n≡0⇔n∣m m n = record
+    { to   = PropEq.→-to-⟶ (m%n≡0⇒n∣m m n)
+    ; from = PropEq.→-to-⟶ (n∣m⇒m%n≡0 m n)
+    }
+
+-- Divisibility is decidable.
+
+infix 4 _∣?_
+
+_∣?_ : Decidable _∣_
+zero  ∣? zero   = yes (0 ∣0)
+zero  ∣? suc m  = no ((λ()) ∘′ 0∣⇒≡0)
+suc n ∣? m      = Dec.map (m%n≡0⇔n∣m m n) (m % (suc n) ≟ 0)
+
 -- If the remainder after division is non-zero, then the divisor does
 -- not divide the dividend.
 
@@ -204,19 +234,6 @@ nonZeroDivisor-lemma m (suc q) r r≢zero d =
   lem = solve 3 (λ m r q → r :+ (m :+ q)  :=  m :+ (r :+ q))
                 refl (suc m) (toℕ r) (q * suc m)
   d' = subst (1 + m ∣_) lem d
-
--- Divisibility is decidable.
-
-infix 4 _∣?_
-
-_∣?_ : Decidable _∣_
-zero  ∣? zero                     = yes (0 ∣0)
-zero  ∣? suc n                    = no ((λ()) ∘′ 0∣⇒≡0)
-suc m ∣? n                        with n divMod suc m
-suc m ∣? .(q * suc m)             | result q zero    refl =
-  yes $ divides q refl
-suc m ∣? .(1 + toℕ r + q * suc m) | result q (suc r) refl =
-  no $ nonZeroDivisor-lemma m q (suc r) (λ())
 
 ------------------------------------------------------------------------
 -- DEPRECATED - please use new names as continuing support for the old
