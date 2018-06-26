@@ -7,7 +7,7 @@
 module Data.Nat.Divisibility where
 
 open import Data.Nat as Nat
-open import Data.Nat.DivMod
+open import Data.Nat.DivMod using (_divMod_; result)
 open import Data.Nat.Properties
 open import Data.Fin using (Fin; zero; suc; toℕ)
 import Data.Fin.Properties as FP

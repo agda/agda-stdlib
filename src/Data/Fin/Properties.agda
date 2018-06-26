@@ -131,6 +131,13 @@ fromℕ≤≡fromℕ≤″ (s≤s z≤n)       (ℕ.less-than-or-equal refl) = r
 fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
   cong suc (fromℕ≤≡fromℕ≤″ (s≤s m<n) (ℕ.less-than-or-equal refl))
 
+toℕ-fromℕ≤″ : ∀ {m n} (m<n : m ℕ.<″ n) → toℕ (fromℕ≤″ m m<n) ≡ m
+toℕ-fromℕ≤″ {m} {n} m<n = begin
+  toℕ (fromℕ≤″ m m<n)  ≡⟨ cong toℕ (sym (fromℕ≤≡fromℕ≤″ _ m<n)) ⟩
+  toℕ (fromℕ≤ _)       ≡⟨ toℕ-fromℕ≤ (ℕₚ.≤″⇒≤ m<n) ⟩
+  m ∎
+  where open P.≡-Reasoning
+
 ------------------------------------------------------------------------
 -- Properties of _≤_
 

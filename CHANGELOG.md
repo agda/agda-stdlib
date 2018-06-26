@@ -48,6 +48,20 @@ Other minor additions
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
   ```
 
+* Added new proof to `Data.Fin.Properties`:
+  ```agda
+  toℕ-fromℕ≤″ : toℕ (fromℕ≤″ m m<n) ≡ m
+  ```
+
+* Added new operations and proofs to `Data.Nat.DivMod`:
+  ```agda
+  _%_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → ℕ
+
+  a%1≡0         : a % 1 ≡ 0
+  a%n<n         : a % (suc n) < (suc n)
+  a≡a%n+[a/n]*n : a ≡ a % suc n + (a div (suc n)) * suc n
+  ```
+
 * Added new function to `Function`:
   ```agda
   typeOf : {A : Set a} → A → Set a
