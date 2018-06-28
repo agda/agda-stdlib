@@ -85,6 +85,10 @@ Non-backwards compatible changes
   ```
   and added new module `Data.List.Relation.Sublist.Inductive`.
 
+* Made the `Set` argument implicit in `Data.Maybe.Base`'s `From-just`
+  to be consistent with the definition of `Data.Sum`'s `From-injₙ`.
+
+
 Other major changes
 -------------------
 
