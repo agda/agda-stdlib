@@ -8,7 +8,7 @@ module README where
 -- Bradley Hardy Joachim Breitner, Samuel Bronson, Daniel Brown,
 -- James Chapman, Liang-Ting Chen, Matthew Daggitt, Dominique Devriese,
 -- Dan Doel, Érdi Gergő, Helmut Grohne, Simon Foster, Liyang Hu,
--- Patrik Jansson, Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov,
+-- Jason Hu, Patrik Jansson, Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov,
 -- Sergei Meshveliani, Eric Mertens, Darin Morrison, Guilhem Moulin,
 -- Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
 -- Andrés Sicard-Ramírez, Noam Zeilberger and some anonymous

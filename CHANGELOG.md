@@ -8,17 +8,6 @@ Important changes since 0.16:
 Non-backwards compatible changes
 --------------------------------
 
-#### An inductive definition for permutation
-
-* The current list permutation defined over bag equality has several limitations. This
-  definition is a more direct approach which allows both point of induction and more
-  auxiliary lemmas.
-
-* The main entry point is `Data.List.Relation.Permutation.Inductive`, which gives the
-  definition as `_⇿_` and a reasoning API.
-  `Data.List.Relation.Permutation.Inductive.Properties` gives further properties
-  associated with the given definition.
-
 #### Other
 
 * Rearranged `Data.List.Relation.Sublist` hierarchy:
@@ -48,11 +37,27 @@ Other major changes
   `Codata.X.Bisimilarity` module and at least a couple of proofs demonstrating
   how they can be used in `Codata.X.Properties`.
 
+* Added new modules `Data.List.Relation.Permutation.Inductive(.Properties)`,
+  which give an inductive definition of permutations over lists.
+
 Deprecated features
 -------------------
 
 Other minor additions
 ---------------------
+
+* Added new proofs to `Data.List.Any.Properties`:
+  ```agda
+  singleton⁺ : ∀ {x} → P x → Any P [ x ]
+  singleton⁻ : ∀ {x} → Any P [ x ] → P x
+  ++-insert  : P x → Any P (xs ++ [ x ] ++ ys)
+  ```
+
+* Added new proofs to `Data.List.Membership.(Setoid/Propositional).Properties`:
+  ```agda
+  ∈-insert : v ≈ v′ → v ∈ xs ++ [ v′ ] ++ ys
+  ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
+  ```
 
 * Added new function to `Function`:
   ```agda

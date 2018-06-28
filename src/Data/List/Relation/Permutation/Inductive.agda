@@ -1,61 +1,78 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A term lanague for permutation
+-- An inductive definition for the permutation relation
 ------------------------------------------------------------------------
 
-module Data.List.Relation.Permutation.Inductive where
+module Data.List.Relation.Permutation.Inductive {a} {A : Set a} where
 
-open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_ ; refl ; _≢_)
+open import Data.List using (List; []; _∷_)
 open import Relation.Binary
-open import Data.List
-open import Function
+open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+import Relation.Binary.EqReasoning as EqReasoning
 
-module _ {a} {A : Set a} where
+------------------------------------------------------------------------
+-- An inductive definition of permutation
 
-  infix 3 _⤖_
+infix 3 _↭_
 
-  -- an inductive definition of permutation
+data _↭_ : Rel (List A) a where
+  refl  : ∀ {xs}        → xs ↭ xs
+  prep  : ∀ {xs ys} x   → xs ↭ ys → x ∷ xs ↭ x ∷ ys
+  swap  : ∀ {xs ys} x y → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
+  trans : ∀ {xs ys zs}  → xs ↭ ys → ys ↭ zs → xs ↭ zs
 
-  data _⤖_ : Rel (List A) a where
-    refl  : ∀ {l} → l ⤖ l
-    prep  : ∀ {l₁ l₂} x → l₁ ⤖ l₂ → x ∷ l₁ ⤖ x ∷ l₂
-    swap  : ∀ {l₁ l₂} x y → l₁ ⤖ l₂ → x ∷ y ∷ l₁ ⤖ y ∷ x ∷ l₂
-    trans : ∀ {l₁ l₂ l₃} → l₁ ⤖ l₂ → l₂ ⤖ l₃ → l₁ ⤖ l₃
+------------------------------------------------------------------------
+-- _↭_ is an equivalence
 
-  sym : ∀ {l₁ l₂} → l₁ ⤖ l₂ → l₂ ⤖ l₁
-  sym refl         = refl
-  sym (prep x p)   = prep x (sym p)
-  sym (swap x y p) = swap y x (sym p)
-  sym (trans p p₁) = trans (sym p₁) (sym p)
+↭-reflexive : _≡_ ⇒ _↭_
+↭-reflexive refl = refl
 
-  isEquivalence : IsEquivalence _⤖_
-  isEquivalence = record
-    { refl  = refl
-    ; sym   = sym
-    ; trans = trans
-    }
+↭-refl : Reflexive _↭_
+↭-refl = refl
 
-  setoid : Setoid _ _
-  setoid = record { isEquivalence = isEquivalence }
+↭-sym : ∀ {xs ys} → xs ↭ ys → ys ↭ xs
+↭-sym refl                = refl
+↭-sym (prep x xs↭ys)      = prep x (↭-sym xs↭ys)
+↭-sym (swap x y xs↭ys)    = swap y x (↭-sym xs↭ys)
+↭-sym (trans xs↭ys ys↭zs) = trans (↭-sym ys↭zs) (↭-sym xs↭ys)
 
-  -- A reasoning API to manipulate permutation based on the setoid we just defined.
+↭-trans : Transitive _↭_
+↭-trans = trans
 
-  module PermutationReasoning where
-    open import Relation.Binary.EqReasoning setoid
-      using (begin_ ; _∎ ; _≡⟨⟩_ ; _IsRelatedTo_ ; relTo)
-      renaming (_≈⟨_⟩_ to _p⟨_⟩_)
-      public
+↭-isEquivalence : IsEquivalence _↭_
+↭-isEquivalence = record
+  { refl  = refl
+  ; sym   = ↭-sym
+  ; trans = trans
+  }
 
-    infixr 2 _∷_<⟨_⟩_  _∷_∷_<<⟨_⟩_
+↭-setoid : Setoid _ _
+↭-setoid = record
+  { isEquivalence = ↭-isEquivalence
+  }
 
-    -- following APIs allow to "zoom in" to localize reasoning
+------------------------------------------------------------------------
+-- A reasoning API to chain permutation proofs and allow "zooming in"
+-- to localised reasoning.
 
-    _∷_<⟨_⟩_ : ∀ x (l : List A) {l₁ l₂ : List A} → l ⤖ l₁ →
-                 (x ∷ l₁) IsRelatedTo l₂ → (x ∷ l) IsRelatedTo l₂
-    x ∷ l <⟨ r ⟩ rel = relTo (trans (prep x r) $ begin rel)
+module PermutationReasoning where
 
-    _∷_∷_<<⟨_⟩_ : ∀ x y (l : List A) {l₁ l₂ : List A} → l ⤖ l₁ →
-                    (y ∷ x ∷ l₁) IsRelatedTo l₂ → (x ∷ y ∷ l) IsRelatedTo l₂
-    x ∷ y ∷ l <<⟨ r ⟩ rel = relTo (trans (swap x y r) $ begin rel)
+  open EqReasoning ↭-setoid
+    using (_IsRelatedTo_; relTo)
+
+  open EqReasoning ↭-setoid public
+    using (begin_ ; _∎ ; _≡⟨⟩_; _≡⟨_⟩_)
+    renaming (_≈⟨_⟩_ to _↭⟨_⟩_)
+
+  infixr 2 _∷_<⟨_⟩_  _∷_∷_<<⟨_⟩_
+
+  -- Skip reasoning on the first element
+  _∷_<⟨_⟩_ : ∀ x xs {ys zs : List A} → xs ↭ ys →
+               (x ∷ ys) IsRelatedTo zs → (x ∷ xs) IsRelatedTo zs
+  x ∷ xs <⟨ xs↭ys ⟩ rel = relTo (trans (prep x xs↭ys) (begin rel))
+
+  -- Skip reasoning about the first two elements
+  _∷_∷_<<⟨_⟩_ : ∀ x y xs {ys zs : List A} → xs ↭ ys →
+                  (y ∷ x ∷ ys) IsRelatedTo zs → (x ∷ y ∷ xs) IsRelatedTo zs
+  x ∷ y ∷ xs <<⟨ xs↭ys ⟩ rel = relTo (trans (swap x y xs↭ys) (begin rel))

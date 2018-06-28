@@ -6,221 +6,253 @@
 
 module Data.List.Relation.Permutation.Inductive.Properties where
 
+open import Algebra
+open import Algebra.FunctionProperties
+open import Algebra.Structures
 open import Data.List.Base as List
 open import Data.List.Relation.Permutation.Inductive
-open import Data.List.Any
-open import Data.List.All
+open import Data.List.Any using (Any; here; there)
+open import Data.List.All using (All; []; _∷_)
 open import Data.List.Membership.Propositional
-open import Data.Product using (Σ ; _,_ ; proj₁ ; proj₂ ; _×_ ; ∃ ; ∃₂)
-
+open import Data.List.Membership.Propositional.Properties
+open import Data.List.Relation.BagAndSetEquality using (bag; _∼[_]_)
+import Data.List.Properties as Lₚ
+open import Data.Product using (_,_; _×_; ∃; ∃₂)
+open import Function using (_∘_)
+open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_ ; refl ; _≢_)
-open import Function
+  using (_≡_ ; refl ; cong; cong₂; _≢_; inspect)
 
-open import Data.List.Membership.Propositional.Properties
-open import Data.List.Properties as Listₚ hiding (map-cong)
+open PermutationReasoning
 
-open import Data.List.Relation.BagAndSetEquality using (bag ; _∼[_]_)
-open import Algebra.FunctionProperties
+------------------------------------------------------------------------
+-- sym
 
 module _ {a} {A : Set a} where
 
-  sym-involutive : ∀ {l₁ l₂ : List A} (p : l₁ ⤖ l₂) → sym (sym p) ≡ p
-  sym-involutive refl         = refl
-  sym-involutive (prep x p)
-    rewrite sym-involutive p  = refl
-  sym-involutive (swap x y p)
-    rewrite sym-involutive p  = refl
-  sym-involutive (trans p₁ p₂)
-    rewrite sym-involutive p₁
-          | sym-involutive p₂ = refl
+  ↭-sym-involutive : ∀ {xs ys : List A} (p : xs ↭ ys) → ↭-sym (↭-sym p) ≡ p
+  ↭-sym-involutive refl          = refl
+  ↭-sym-involutive (prep x ↭)    = cong (prep x) (↭-sym-involutive ↭)
+  ↭-sym-involutive (swap x y ↭)  = cong (swap x y) (↭-sym-involutive ↭)
+  ↭-sym-involutive (trans ↭₁ ↭₂) =
+    cong₂ trans (↭-sym-involutive ↭₁) (↭-sym-involutive ↭₂)
 
-  -------------------------------------------------------------------------------------
-  -- _++_
+------------------------------------------------------------------------
+-- Relationships to other predicates and relations
 
-  ++⁺ʳ : ∀ {l₁ l₂ : List A} l → l₁ ⤖ l₂ → l₁ ++ l ⤖ l₂ ++ l
-  ++⁺ʳ l refl         = refl
-  ++⁺ʳ l (prep x p)   = prep x (++⁺ʳ l p)
-  ++⁺ʳ l (swap x y p) = swap x y (++⁺ʳ l p)
-  ++⁺ʳ l (trans p p₁) = trans (++⁺ʳ l p) (++⁺ʳ l p₁)
+module _ {a} {A : Set a} where
 
-  ++⁺ˡ : ∀ {l₁ l₂ : List A} l → l₁ ⤖ l₂ → l ++ l₁ ⤖ l ++ l₂
-  ++⁺ˡ [] p      = p
-  ++⁺ˡ (x ∷ l) p = prep x (++⁺ˡ l p)
+  All-resp-↭ : ∀ {ℓ} {P : Pred A ℓ} → (All P) Respects _↭_
+  All-resp-↭ refl wit                     = wit
+  All-resp-↭ (prep x p) (px ∷ wit)        = px ∷ All-resp-↭ p wit
+  All-resp-↭ (swap x y p) (px ∷ py ∷ wit) = py ∷ px ∷ All-resp-↭ p wit
+  All-resp-↭ (trans p₁ p₂) wit            = All-resp-↭ p₂ (All-resp-↭ p₁ wit)
 
-  ++⁺ : ∀ {l₁ l₂ j₁ j₂ : List A} → l₁ ⤖ l₂ → j₁ ⤖ j₂ → l₁ ++ j₁ ⤖ l₂ ++ j₂
-  ++⁺ {l₁} {l₂} {j₁} {j₂} pl pj = begin
-    l₁ ++ j₁ p⟨ ++⁺ˡ l₁ pj ⟩
-    l₁ ++ j₂ p⟨ ++⁺ʳ _ pl ⟩
-    l₂ ++ j₂ ∎
-    where open PermutationReasoning
+  Any-resp-↭ : ∀ {ℓ} {P : Pred A ℓ} → (Any P) Respects _↭_
+  Any-resp-↭ refl         wit                 = wit
+  Any-resp-↭ (prep x p)   (here px)           = here px
+  Any-resp-↭ (prep x p)   (there wit)         = there (Any-resp-↭ p wit)
+  Any-resp-↭ (swap x y p) (here px)           = there (here px)
+  Any-resp-↭ (swap x y p) (there (here px))   = here px
+  Any-resp-↭ (swap x y p) (there (there wit)) = there (there (Any-resp-↭ p wit))
+  Any-resp-↭ (trans p p₁) wit                 = Any-resp-↭ p₁ (Any-resp-↭ p wit)
 
-  -- this lemma allows focusing on a small portion of the lists
-  zoom : ∀ h {t l₁ l₂ : List A} → l₁ ⤖ l₂ → h ++ l₁ ++ t ⤖ h ++ l₂ ++ t
-  zoom h {t} = ++⁺ˡ h ∘ ++⁺ʳ t
+  ∈-resp-↭ : ∀ {x : A} → (x ∈_) Respects _↭_
+  ∈-resp-↭ = Any-resp-↭
 
-  inject : ∀ l₁ l₂ {j₁ j₂ : List A} x → l₁ ⤖ l₂ → j₁ ⤖ j₂ → l₁ ++ x ∷ j₁ ⤖ l₂ ++ x ∷ j₂
-  inject l₁ _ x pl pj = trans (++⁺ˡ l₁ (prep x pj)) (++⁺ʳ _ pl)
-
-  shift : ∀ (l₁ l₂ : List A) x → l₁ ++ x ∷ l₂ ⤖ x ∷ l₁ ++ l₂
-  shift [] l₂ x        = refl
-  shift (x₁ ∷ l₁) l₂ x = begin
-    x₁ ∷ (l₁ ++ x ∷ l₂) <⟨ shift l₁ l₂ x ⟩
-    x₁ ∷ x ∷ l₁ ++ l₂   <<⟨ refl ⟩
-    x ∷ x₁ ∷ l₁ ++ l₂   ∎
-    where open PermutationReasoning
-
-  ∷⇒∷ʳ : ∀ (x : A) l → x ∷ l ⤖ l ∷ʳ x
-  ∷⇒∷ʳ x l with sym $ shift l [] x
-  ... | res rewrite ++-identityʳ l = res
-
-  ++-swap : ∀ (l₁ l₂ : List A) → l₁ ++ l₂ ⤖ l₂ ++ l₁
-  ++-swap [] l₂ rewrite ++-identityʳ l₂ = refl
-  ++-swap (x ∷ l₁) l₂ with ++⁺ʳ l₁ $ ∷⇒∷ʳ x l₂
-  ... | res rewrite ++-assoc l₂ [ x ] l₁  = trans (prep x (++-swap l₁ l₂)) res
-
-  -------------------------------------------------------------------------------------
-  -- respectful lemmas
-
-  Any-resp-⤖ : ∀ {ℓ} {P : A → Set ℓ} → (Any P) Respects _⤖_
-  Any-resp-⤖ refl         wit                 = wit
-  Any-resp-⤖ (prep x p)   (here px)           = here px
-  Any-resp-⤖ (prep x p)   (there wit)         = there (Any-resp-⤖ p wit)
-  Any-resp-⤖ (swap x y p) (here px)           = there (here px)
-  Any-resp-⤖ (swap x y p) (there (here px))   = here px
-  Any-resp-⤖ (swap x y p) (there (there wit)) = there (there (Any-resp-⤖ p wit))
-  Any-resp-⤖ (trans p p₁) wit                 = Any-resp-⤖ p₁ (Any-resp-⤖ p wit)
-
-  All-resp-⤖ : ∀ {ℓ} {P : A → Set ℓ} → (All P) Respects _⤖_
-  All-resp-⤖ refl wit                     = wit
-  All-resp-⤖ (prep x p) (px ∷ wit)        = px ∷ All-resp-⤖ p wit
-  All-resp-⤖ (swap x y p) (px ∷ py ∷ wit) = py ∷ px ∷ All-resp-⤖ p wit
-  All-resp-⤖ (trans p₁ p₂) wit            = All-resp-⤖ p₂ (All-resp-⤖ p₁ wit)
-
-  ⤖⇒∈ : ∀ l₁ {x l₂ l} → l₁ ++ x ∷ l₂ ⤖ l → x ∈ l
-  ⤖⇒∈ l₁ p = Any-resp-⤖ p (∈-insert _ l₁)
-
-  --------------------------------------------------------------------------------------
-  -- inversion lemmas
-
-  private
-    -- the helper to prove the main inversion lemmas
-    -- this lemma is massive because we need to perform a dependent induction.
-
-    drop-mid′ : ∀ l₁ l₂ {l₃ l₄ : List A} {x : A}
-                     {l′ l″ : List A} →
-                     l′ ⤖ l″ →
-                     l₁ ++ x ∷ l₃ ≡ l′ → l₂ ++ x ∷ l₄ ≡ l″ → l₁ ++ l₃ ⤖ l₂ ++ l₄
-    drop-mid′ l₁ l₂ refl eq₁ eq₂         = ++-≡-inv l₁ l₂ (≡.trans eq₁ $ ≡.sym eq₂)
-      where ++-≡-inv : ∀ l₁ l₂ {l₃ l₄ : List A} {x : A} →
-                         l₁ ++ x ∷ l₃ ≡ l₂ ++ x ∷ l₄ → l₁ ++ l₃ ⤖ l₂ ++ l₄
-            ++-≡-inv []       []       refl = refl
-            ++-≡-inv []       (x ∷ l₂) refl = shift l₂ _ _
-            ++-≡-inv (x ∷ l₁) []       refl = sym $ shift l₁ _ _
-            ++-≡-inv (x ∷ l₁) (x₁ ∷ l₂) eq with ∷-injective eq
-            ... | refl , eq′                = prep x (++-≡-inv l₁ l₂ eq′)
-
-    drop-mid′ l₁ l₂ (prep x p) eq₁ eq₂   = helper l₁ l₂ p eq₁ eq₂
-      where helper : ∀ {x : A} {l₁ l₂ l₃ l₄ : List A}
-                       {x₁ : A} (l₅ l₆ : List A) →
-                       l₁ ⤖ l₂ →
-                       l₅ ++ x₁ ∷ l₃ ≡ x ∷ l₁ →
-                       l₆ ++ x₁ ∷ l₄ ≡ x ∷ l₂ → l₅ ++ l₃ ⤖ l₆ ++ l₄
-            helper []       []        p refl refl = p
-            helper []       (x ∷ l₆)  p refl refl = trans p (shift l₆ _ _)
-            helper (x ∷ l₅) []        p refl refl = trans (sym $ shift l₅ _ _) p
-            helper (x ∷ l₅) (.x ∷ l₆) p refl refl = prep x (drop-mid′ l₅ l₆ p refl refl)
-
-    drop-mid′ l₁ l₂ (swap x y p) eq₁ eq₂ = helper l₁ l₂ p eq₁ eq₂
-      where open PermutationReasoning
-            helper : ∀ {x y : A} {l₁ l₂ l₃ l₄ : List A}
-                       {x₁ : A} (l₅ l₆ : List A) →
-                       l₁ ⤖ l₂ →
-                       l₅ ++ x₁ ∷ l₃ ≡ x ∷ y ∷ l₁ →
-                       l₆ ++ x₁ ∷ l₄ ≡ y ∷ x ∷ l₂ → l₅ ++ l₃ ⤖ l₆ ++ l₄
-            helper []            []              p refl refl = prep _ p
-            helper []            (x ∷ [])        p refl refl = prep x p
-            helper []            (x ∷ x₁ ∷ l₆)   p refl refl = prep x (trans p $ shift l₆ _ _)
-            helper (x ∷ [])      []              p refl refl = prep x p
-            helper (x ∷ x₁ ∷ l₅) []              p refl refl = prep x (trans (sym $ shift l₅ _ _) p)
-            helper (x ∷ [])      (.x ∷ [])       p refl refl = prep x p
-            helper {l₁ = l₁} {l₂} {l₃} {l₄}
-                   (x ∷ [])      (y ∷ .x ∷ l₆)   p refl refl = begin
-              x ∷ l₁             <⟨ p ⟩
-              x ∷ (l₆ ++ y ∷ l₄) <⟨ shift l₆ _ _ ⟩
-              x ∷ y ∷ l₆ ++ l₄   <<⟨ refl ⟩
-              y ∷ x ∷ l₆ ++ l₄   ∎
-            helper {l₁ = l₁} {l₂} {l₃} {l₄}
-                   (x ∷ y ∷ l₅)  (.y ∷ [])       p refl refl = begin
-              x ∷ y ∷ l₅ ++ l₃   <<⟨ refl ⟩
-              y ∷ (x ∷ l₅ ++ l₃) <⟨ sym $ shift l₅ _ _ ⟩
-              y ∷ (l₅ ++ x ∷ l₃) <⟨ p ⟩
-              y ∷ l₂             ∎
-            helper (x ∷ x₂ ∷ l₅) (.x₂ ∷ .x ∷ l₆) p refl refl = swap _ _ (drop-mid′ l₅ l₆ p refl refl)
-
-    drop-mid′ l₁ l₂ {l₃} {l₄} {x}
-                   (trans {l₂ = l′} p₁ p₂) eq₁ eq₂ = helper $ ∈-∃++ _ $ ⇒x∈l′ eq₁ p₁
-      where ⇒x∈l′ : ∀ {l} → l₁ ++ x ∷ l₃ ≡ l → l ⤖ l′ → x ∈ l′
-            ⇒x∈l′ refl p = ⤖⇒∈ l₁ p
-            helper : ∃₂ (λ h t → l′ ≡ h ++ x ∷ t) → l₁ ++ l₃ ⤖ l₂ ++ l₄
-            helper (h , t , eq₃) = trans (drop-mid′ l₁ h p₁ eq₁ (≡.sym eq₃))
-                                         (drop-mid′ h l₂ p₂ (≡.sym eq₃) eq₂)
-
-  -- the main inversion lemmas
-
-  drop-mid : ∀ l₁ l₂ {l₃ l₄ x} → l₁ ++ x ∷ l₃ ⤖ l₂ ++ x ∷ l₄ → l₁ ++ l₃ ⤖ l₂ ++ l₄
-  drop-mid l₁ l₂ {l₃} {l₄} {x} p
-    with l₁ ++ x ∷ l₃ | l₂ ++ x ∷ l₄ | ≡.inspect (l₁ ++_) (x ∷ l₃) | ≡.inspect (l₂ ++_) (x ∷ l₄)
-  ... | l′ | l″ | ≡.[ eq₁ ] | ≡.[ eq₂ ] = drop-mid′ l₁ l₂ p eq₁ eq₂
-
-  drop-one-side : ∀ l₁ {l₂ l x} → x ∷ l ⤖ l₁ ++ x ∷ l₂ → l ⤖ l₁ ++ l₂
-  drop-one-side l₁ = drop-mid [] l₁
-
-  drop-∷ : ∀ {l₁ l₂ x} → x ∷ l₁ ⤖ x ∷ l₂ → l₁ ⤖ l₂
-  drop-∷ = drop-one-side []
-
-  -----------------------------------------------------------------------------------------------
-  --- equivalence to bag equality
-
-  ⤖⇒bag-equality : ∀ {l₁ l₂} → l₁ ⤖ l₂ → l₁ ∼[ bag ] l₂
-  ⤖⇒bag-equality p = record
-    { to         = ≡.→-to-⟶ (Any-resp-⤖ p)
-    ; from       = ≡.→-to-⟶ (Any-resp-⤖ (sym p))
+  ↭⇒~bag : _↭_ ⇒ _∼[ bag ]_
+  ↭⇒~bag xs↭ys = record
+    { to         = ≡.→-to-⟶ (Any-resp-↭ xs↭ys)
+    ; from       = ≡.→-to-⟶ (Any-resp-↭ (↭-sym xs↭ys))
     ; inverse-of = record
-      { left-inverse-of  = inverse p
-      ; right-inverse-of = right-inv p
+      { left-inverse-of  = inverseˡ xs↭ys
+      ; right-inverse-of = inverseʳ xs↭ys
       }
     }
-    where inverse : ∀ {l₁ l₂ : List A} (p : l₁ ⤖ l₂)
-                       {z : A} (x : z ∈ l₁) →
-                       Any-resp-⤖ (sym p) (Any-resp-⤖ p x) ≡ x
-          inverse refl x∈l₁                         = refl
-          inverse (prep _ _) (here refl)            = refl
-          inverse (prep _ p) (there x∈l₁)
-            rewrite inverse p x∈l₁                  = refl
-          inverse (swap x y p) (here refl)          = refl
-          inverse (swap x y p) (there (here refl))  = refl
-          inverse (swap x y p) (there (there x∈l₁))
-            rewrite inverse p x∈l₁                  = refl
-          inverse (trans p₁ p₂) x∈l₁
-            rewrite inverse p₂ (Any-resp-⤖ p₁ x∈l₁)
-                  | inverse p₁ x∈l₁                 = refl
+    where
+    inverseˡ : ∀ {xs ys : List A} (p : xs ↭ ys) {z : A} (x : z ∈ xs) →
+              Any-resp-↭ (↭-sym p) (Any-resp-↭ p x) ≡ x
+    inverseˡ refl          x∈xs                 = refl
+    inverseˡ (prep _ _)    (here refl)          = refl
+    inverseˡ (prep _ p)    (there x∈xs)         = cong there (inverseˡ p x∈xs)
+    inverseˡ (swap x y p)  (here refl)          = refl
+    inverseˡ (swap x y p)  (there (here refl))  = refl
+    inverseˡ (swap x y p)  (there (there x∈xs)) = cong (there ∘ there) (inverseˡ p x∈xs)
+    inverseˡ (trans p₁ p₂) x∈xs
+      rewrite inverseˡ p₂ (Any-resp-↭ p₁ x∈xs)
+            | inverseˡ p₁ x∈xs                 = refl
 
-          right-inv : ∀ {l₁ l₂ : List A} (p : l₁ ⤖ l₂)
-                        {z : A} (x : Any (_≡_ z) l₂) →
-                        Any-resp-⤖ p (Any-resp-⤖ (sym p) x) ≡ x
-          right-inv p with inverse $ sym p
-          ... | res rewrite sym-involutive p = res
+    inverseʳ : ∀ {xs ys : List A} (p : xs ↭ ys)
+              {z : A} (z∈ys : z ∈ ys) →
+              Any-resp-↭ p (Any-resp-↭ (↭-sym p) z∈ys) ≡ z∈ys
+    inverseʳ p with inverseˡ (↭-sym p)
+    ... | res rewrite ↭-sym-involutive p = res
 
-
--------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- map
 
-module _ {a b} {A : Set a} {B : Set b} where
+module _ {a b} {A : Set a} {B : Set b} (f : A → B) where
 
-  map-cong : ∀ {l₁ l₂} → (f : A → B) → l₁ ⤖ l₂ → List.map f l₁ ⤖ List.map f l₂
-  map-cong f refl          = refl
-  map-cong f (prep x p)    = prep _ (map-cong f p)
-  map-cong f (swap x y p)  = swap _ _ (map-cong f p)
-  map-cong f (trans p₁ p₂) = trans (map-cong f p₁) (map-cong f p₂)
+  map⁺ : ∀ {xs ys} → xs ↭ ys → map f xs ↭ map f ys
+  map⁺ refl          = refl
+  map⁺ (prep x p)    = prep _ (map⁺ p)
+  map⁺ (swap x y p)  = swap _ _ (map⁺ p)
+  map⁺ (trans p₁ p₂) = trans (map⁺ p₁) (map⁺ p₂)
+
+------------------------------------------------------------------------
+-- _++_
+
+module _ {a} {A : Set a} where
+
+
+  ++⁺ˡ : ∀ xs {ys zs : List A} → ys ↭ zs → xs ++ ys ↭ xs ++ zs
+  ++⁺ˡ []       ys↭zs = ys↭zs
+  ++⁺ˡ (x ∷ xs) ys↭zs = prep x (++⁺ˡ xs ys↭zs)
+
+  ++⁺ʳ : ∀ {xs ys : List A} zs → xs ↭ ys → xs ++ zs ↭ ys ++ zs
+  ++⁺ʳ zs refl          = refl
+  ++⁺ʳ zs (prep x ↭)    = prep x (++⁺ʳ zs ↭)
+  ++⁺ʳ zs (swap x y ↭)  = swap x y (++⁺ʳ zs ↭)
+  ++⁺ʳ zs (trans ↭₁ ↭₂) = trans (++⁺ʳ zs ↭₁) (++⁺ʳ zs ↭₂)
+
+  ++⁺ : _++_ Preserves₂ _↭_ ⟶ _↭_ ⟶ _↭_
+  ++⁺ ws↭xs ys↭zs = trans (++⁺ʳ _ ws↭xs) (++⁺ˡ _ ys↭zs)
+
+  -- Some useful lemmas
+
+  zoom : ∀ h {t xs ys : List A} → xs ↭ ys → h ++ xs ++ t ↭ h ++ ys ++ t
+  zoom h {t} = ++⁺ˡ h ∘ ++⁺ʳ t
+
+  inject : ∀  (v : A) {ws xs ys zs} → ws ↭ ys → xs ↭ zs →
+           ws ++ [ v ] ++ xs ↭ ys ++ [ v ] ++ zs
+  inject v ws↭ys xs↭zs = trans (++⁺ˡ _ (prep v xs↭zs)) (++⁺ʳ _ ws↭ys)
+
+  shift : ∀ v (xs ys : List A) → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
+  shift v []       ys = refl
+  shift v (x ∷ xs) ys = begin
+    x ∷ (xs ++ [ v ] ++ ys) <⟨ shift v xs ys ⟩
+    x ∷ v ∷ xs ++ ys        <<⟨ refl ⟩
+    v ∷ x ∷ xs ++ ys        ∎
+
+  drop-mid-≡ : ∀ {x} ws xs {ys} {zs} →
+               ws ++ [ x ] ++ ys ≡ xs ++ [ x ] ++ zs →
+               ws ++ ys ↭ xs ++ zs
+  drop-mid-≡ []       []       refl = refl
+  drop-mid-≡ []       (x ∷ xs) refl = shift _ xs _
+  drop-mid-≡ (w ∷ ws) []       refl = ↭-sym (shift _ ws _)
+  drop-mid-≡ (w ∷ ws) (x ∷ xs) eq with Lₚ.∷-injective eq
+  ... | refl , eq′ = prep w (drop-mid-≡ ws xs eq′)
+
+  drop-mid : ∀ {x} ws xs {ys zs} →
+             ws ++ [ x ] ++ ys ↭ xs ++ [ x ] ++ zs →
+             ws ++ ys ↭ xs ++ zs
+  drop-mid {x} ws xs p = drop-mid′ p ws xs refl refl
+    where
+    drop-mid′ : ∀ {l′ l″ : List A} → l′ ↭ l″ →
+                ∀ ws xs {ys zs : List A} →
+                ws ++ [ x ] ++ ys ≡ l′ →
+                xs ++ [ x ] ++ zs ≡ l″ →
+                ws ++ ys ↭ xs ++ zs
+    drop-mid′ refl         ws           xs           refl eq   = drop-mid-≡ ws xs (≡.sym eq)
+    drop-mid′ (prep x p)   []           []           refl refl = p
+    drop-mid′ (prep x p)   []           (x ∷ xs)     refl refl = trans p (shift _ _ _)
+    drop-mid′ (prep x p)   (w ∷ ws)     []           refl refl = trans (↭-sym (shift _ _ _)) p
+    drop-mid′ (prep x p)   (w ∷ ws)     (x ∷ xs)     refl refl = prep _ (drop-mid′ p ws xs refl refl)
+    drop-mid′ (swap y z p) []           []           refl refl = prep _ p
+    drop-mid′ (swap y z p) []           (x ∷ [])     refl refl = prep _ p
+    drop-mid′ (swap y z p) []           (x ∷ _ ∷ xs) refl refl = prep _ (trans p (shift _ _ _))
+    drop-mid′ (swap y z p) (w ∷ [])     []           refl refl = prep _ p
+    drop-mid′ (swap y z p) (w ∷ x ∷ ws) []           refl refl = prep _ (trans (↭-sym (shift _ _ _)) p)
+    drop-mid′ (swap y y p) (y ∷ [])     (y ∷ [])     refl refl = prep _ p
+    drop-mid′ (swap y z p) (y ∷ [])     (z ∷ y ∷ xs) refl refl = begin
+        _ ∷ _             <⟨ p ⟩
+        _ ∷ (xs ++ _ ∷ _) <⟨ shift _ _ _ ⟩
+        _ ∷ _ ∷ xs ++ _   <<⟨ refl ⟩
+        _ ∷ _ ∷ xs ++ _   ∎
+    drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ [])     refl refl = begin
+        _ ∷ _ ∷ ws ++ _   <<⟨ refl ⟩
+        _ ∷ (_ ∷ ws ++ _) <⟨ ↭-sym (shift _ _ _) ⟩
+        _ ∷ (ws ++ _ ∷ _) <⟨ p ⟩
+        _ ∷ _             ∎
+    drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ y ∷ xs) refl refl = swap y z (drop-mid′ p _ _ refl refl)
+    drop-mid′ (trans p₁ p₂) ws  xs refl refl with ∈-∃++ _ (∈-resp-↭ p₁ (∈-insert A ws))
+    ... | (h , t , refl) = trans (drop-mid′ p₁ ws h refl refl) (drop-mid′ p₂ h xs refl refl)
+
+  -- Algebraic properties
+
+  ++-identityˡ : LeftIdentity {A = List A} _↭_ [] _++_
+  ++-identityˡ xs = refl
+
+  ++-identityʳ : RightIdentity {A = List A} _↭_ [] _++_
+  ++-identityʳ xs = ↭-reflexive (Lₚ.++-identityʳ xs)
+
+  ++-identity : Identity {A = List A} _↭_ [] _++_
+  ++-identity = ++-identityˡ , ++-identityʳ
+
+  ++-assoc : Associative {A = List A} _↭_ _++_
+  ++-assoc xs ys zs = ↭-reflexive (Lₚ.++-assoc xs ys zs)
+
+  ++-comm : Commutative _↭_ _++_
+  ++-comm []       ys = ↭-sym (++-identityʳ ys)
+  ++-comm (x ∷ xs) ys = begin
+    x ∷ xs ++ ys         ↭⟨ prep x (++-comm xs ys) ⟩
+    x ∷ ys ++ xs         ≡⟨ cong (λ v → x ∷ v ++ xs) (≡.sym (Lₚ.++-identityʳ _)) ⟩
+    (x ∷ ys ++ []) ++ xs ↭⟨ ++⁺ʳ xs (↭-sym (shift x ys [])) ⟩
+    (ys ++ [ x ]) ++ xs  ↭⟨ ++-assoc ys [ x ] xs ⟩
+    ys ++ ([ x ] ++ xs)  ≡⟨⟩
+    ys ++ (x ∷ xs)       ∎
+
+  ++-isSemigroup : IsSemigroup _↭_ _++_
+  ++-isSemigroup = record
+    { isEquivalence = ↭-isEquivalence
+    ; assoc         = ++-assoc
+    ; ∙-cong        = ++⁺
+    }
+
+  ++-semigroup : Semigroup a _
+  ++-semigroup = record
+    { isSemigroup = ++-isSemigroup
+    }
+
+  ++-isMonoid : IsMonoid _↭_ _++_ []
+  ++-isMonoid = record
+    { isSemigroup = ++-isSemigroup
+    ; identity    = ++-identity
+    }
+
+  ++-monoid : Monoid a _
+  ++-monoid = record
+    { isMonoid = ++-isMonoid
+    }
+
+  ++-isCommutativeMonoid : IsCommutativeMonoid _↭_ _++_ []
+  ++-isCommutativeMonoid = record
+    { isSemigroup = ++-isSemigroup
+    ; identityˡ   = ++-identityˡ
+    ; comm        = ++-comm
+    }
+
+  ++-commutativeMonoid : CommutativeMonoid _ _
+  ++-commutativeMonoid = record
+    { isCommutativeMonoid = ++-isCommutativeMonoid
+    }
+
+------------------------------------------------------------------------
+-- _∷_
+
+module _ {a} {A : Set a} where
+
+  drop-∷ : ∀ {x : A} {xs ys} → x ∷ xs ↭ x ∷ ys → xs ↭ ys
+  drop-∷ = drop-mid [] []
+
+------------------------------------------------------------------------
+-- _∷ʳ_
+
+module _ {a} {A : Set a} where
+
+  ∷↭∷ʳ : ∀ (x : A) xs → x ∷ xs ↭ xs ∷ʳ x
+  ∷↭∷ʳ x xs = ↭-sym (begin
+    xs ++ [ x ]   ↭⟨ shift x xs [] ⟩
+    x ∷ xs ++ []  ≡⟨ Lₚ.++-identityʳ _ ⟩
+    x ∷ xs        ∎)
