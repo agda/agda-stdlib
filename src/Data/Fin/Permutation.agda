@@ -103,7 +103,7 @@ flip = Inverse.sym
 --
 -- `remove k [0 ↦ i₀, …, k ↦ iₖ, …, n ↦ iₙ]` yields
 --
--- [0 ↦ i₀, …, k-1 ↦ i_{k-1}, k ↦ i_{k+1}, k+1 ↦ i_{k+2}, …, n-1 ↦ iₙ]
+-- [0 ↦ i₀, …, k-1 ↦ iₖ₋₁, k ↦ iₖ₊₁, k+1 ↦ iₖ₊₂, …, n-1 ↦ iₙ]
 
 remove : ∀ {m n} → Fin (suc m) →
          Permutation (suc m) (suc n) → Permutation m n
