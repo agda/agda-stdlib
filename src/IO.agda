@@ -7,9 +7,10 @@
 module IO where
 
 open import Coinduction
+open import Codata.Musical.Colist
+open import Codata.Musical.Costring
 open import Data.Unit
 open import Data.String
-open import Data.Colist
 open import Function
 import IO.Primitive as Prim
 open import Level

@@ -11,17 +11,17 @@
 module Data.Container.Indexed where
 
 open import Level
+open import Codata.Musical.M.Indexed
+open import Data.Product as Prod hiding (map)
+open import Data.W.Indexed
 open import Function renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse using (_↔_; module Inverse)
-open import Data.Product as Prod hiding (map)
 open import Relation.Unary using (Pred; _⊆_)
 open import Relation.Binary as B using (Preorder; module Preorder)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_; refl)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_; refl)
 open import Relation.Binary.Indexed
-open import Data.W.Indexed
-open import Data.M.Indexed
 
 ------------------------------------------------------------------------
 

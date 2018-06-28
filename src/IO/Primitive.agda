@@ -6,8 +6,9 @@
 
 module IO.Primitive where
 
+open import Codata.Musical.Costring
 open import Data.Char.Base
-open import Data.String
+open import Data.String.Base
 open import Foreign.Haskell
 
 ------------------------------------------------------------------------

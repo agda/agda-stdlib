@@ -4,14 +4,14 @@
 -- Coinductive vectors
 ------------------------------------------------------------------------
 
-module Data.Covec where
+module Codata.Musical.Covec where
 
 open import Coinduction
+open import Codata.Musical.Conat as Coℕ using (Coℕ; zero; suc; _+_)
+open import Codata.Musical.Cofin using (Cofin; zero; suc)
+open import Codata.Musical.Colist as Colist using (Colist; []; _∷_)
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Conat as Coℕ using (Coℕ; zero; suc; _+_)
-open import Data.Cofin using (Cofin; zero; suc)
 open import Data.Vec using (Vec; []; _∷_)
-open import Data.Colist as Colist using (Colist; []; _∷_)
 open import Data.Product using (_,_)
 open import Function using (_∋_)
 open import Relation.Binary
