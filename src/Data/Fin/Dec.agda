@@ -9,7 +9,7 @@ module Data.Fin.Dec where
 open import Function
 import Data.Bool as Bool
 open import Data.Nat.Base hiding (_<_)
-open import Data.Vec hiding (_∈_)
+open import Data.Vec
 open import Data.Vec.Relation.Equality.DecPropositional Bool._≟_
 open import Data.Fin
 open import Data.Fin.Subset

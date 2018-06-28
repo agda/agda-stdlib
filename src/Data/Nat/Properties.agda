@@ -122,7 +122,7 @@ suc-injective refl = refl
 s≤s-injective : ∀ {m n} {p q : m ≤ n} → s≤s p ≡ s≤s q → p ≡ q
 s≤s-injective refl = refl
 
-≤-irrelevance : IrrelevantRel _≤_
+≤-irrelevance : Irrelevant _≤_
 ≤-irrelevance z≤n        z≤n        = refl
 ≤-irrelevance (s≤s m≤n₁) (s≤s m≤n₂) = cong s≤s (≤-irrelevance m≤n₁ m≤n₂)
 
@@ -194,7 +194,7 @@ x <? y = suc x ≤? y
   }
 
 -- Other properties of _<_
-<-irrelevance : IrrelevantRel _<_
+<-irrelevance : Irrelevant _<_
 <-irrelevance = ≤-irrelevance
 
 <⇒≤pred : ∀ {m n} → m < n → m ≤ pred n

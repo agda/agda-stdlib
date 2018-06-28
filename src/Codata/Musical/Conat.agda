@@ -4,7 +4,7 @@
 -- Coinductive "natural" numbers
 ------------------------------------------------------------------------
 
-module Data.Conat where
+module Codata.Musical.Conat where
 
 open import Coinduction
 open import Data.Nat.Base using (ℕ; zero; suc)

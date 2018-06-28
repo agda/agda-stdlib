@@ -12,7 +12,7 @@ open import Data.Table.Base public
 
 open import Data.Bool using (true; false)
 open import Data.Fin using (Fin; _≟_)
-import Function.Equality as FE
+open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse using (Inverse; _↔_)
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (⌊_⌋)
@@ -25,8 +25,7 @@ open import Relation.Nullary.Decidable using (⌊_⌋)
 -- an 'Inverse' object on the indices).
 
 permute : ∀ {m n a} {A : Set a} → Fin m ↔ Fin n → Table A n → Table A m
-permute π = rearrange (Inverse.to π FE.⟨$⟩_)
-
+permute π = rearrange (Inverse.to π ⟨$⟩_)
 
 -- The result of 'select z i t' takes the value of 'lookup t i' at index 'i',
 -- and 'z' everywhere else.
