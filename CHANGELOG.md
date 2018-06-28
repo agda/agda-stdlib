@@ -85,6 +85,9 @@ Non-backwards compatible changes
   ```
   and added new module `Data.List.Relation.Sublist.Inductive`.
 
+* Renamed `Data.Product`'s `,_` to `-,_` to avoid conflict with the right
+  section of `_,_`.
+
 Other major changes
 -------------------
 
