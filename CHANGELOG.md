@@ -106,7 +106,7 @@ Other minor additions
   ```
   Additionally the definitions `punchIn-permute` and `punchIn-permute′`
   have been generalised to work with heterogeneous permutations.
-  
+
 * Added new proofs to `Data.List.Any.Properties`:
   ```agda
   singleton⁺ : ∀ {x} → P x → Any P [ x ]
@@ -120,9 +120,11 @@ Other minor additions
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
   ```
 
-* Added new function in `Data.Table.Base`:
+* Added new functions in `Data.Table.Base`:
   ```agda
-  remove : (i : Fin (suc n)) → Table A (suc n) → Table A n
+  remove  : Fin (suc n) → Table A (suc n) → Table A n
+  fromVec : Vec A n → Table A n
+  toVec   : Table A n → Vec A n
   ```
 
 * Added new proofs in `Data.Table.Properties`:

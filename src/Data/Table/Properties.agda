@@ -48,14 +48,6 @@ module _ {a} {A : Set a} where
 
   -- Isomorphism between tables and vectors.
 
-  private
-
-    fromVec : ∀ {n} → Vec A n → Table A n
-    fromVec = tabulate ∘ flip V.lookup
-
-    toVec : ∀ {n} → Table A n → Vec A n
-    toVec = V.tabulate ∘ lookup
-
   ↔Vec : ∀ {n} → Inverse (≡-setoid A n) (P.setoid (Vec A n))
   ↔Vec = record
     { to = record { _⟨$⟩_ = toVec ; cong = VP.tabulate-cong }
@@ -89,7 +81,7 @@ module _ {a} {A : Set a} where
 
   select-remove :
     ∀ {n x} i (t : Table A (ℕ.suc n)) →
-    remove i (select x i t) ≗ replicate {n} x
+    remove i (select x i t) ≗ replicate {n = n} x
   select-remove i t j with punchIn i j ≟ i
   select-remove i t j | yes p = ⊥-elim (FP.punchInᵢ≢i _ _ p)
   select-remove i t j | no ¬p = P.refl

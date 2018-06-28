@@ -31,14 +31,13 @@ open import Relation.Nullary.Decidable using (⌊_⌋)
 
 open CommutativeMonoid M
   renaming
-  ( ε to 0#
-  ; _∙_ to _+_
-  ; ∙-cong to +-cong
-  ; identity to +-identity
+  ( ε         to 0#
+  ; _∙_       to _+_
+  ; ∙-cong    to +-cong
   ; identityˡ to +-identityˡ
   ; identityʳ to +-identityʳ
-  ; assoc to +-assoc
-  ; comm to +-comm
+  ; assoc     to +-assoc
+  ; comm      to +-comm
   )
 open import Algebra.FunctionProperties _≈_
 open import Relation.Binary.EqReasoning setoid
@@ -51,7 +50,7 @@ module _ {n} where
 -- When summing over a function from a finite set, we can pull out any value and move it to the front.
 
 sumₜ-remove : ∀ {n} {i : Fin (suc n)} t → sumₜ t ≈ lookup t i + sumₜ (remove i t)
-sumₜ-remove {_}     {zero}     t = refl
+sumₜ-remove {_}     {zero}   t = refl
 sumₜ-remove {zero}  {suc ()} t
 sumₜ-remove {suc n} {suc i}  t′ =
   begin
@@ -80,35 +79,34 @@ sumₜ-cong-≡ {suc n} p = P.cong₂ _+_ (p _) (sumₜ-cong-≡ (p ∘ suc))
 -- If addition is idempotent on a particular value 'x', then summing over a
 -- nonzero number of copies of 'x' gives back 'x'.
 
-sumₜ-idem-replicate : ∀ n {x} → _+_ IdempotentOn x → sumₜ (replicate {suc n} x) ≈ x
-sumₜ-idem-replicate zero        idem = proj₂ +-identity _
+sumₜ-idem-replicate : ∀ n {x} → _+_ IdempotentOn x → sumₜ (replicate {n = suc n} x) ≈ x
+sumₜ-idem-replicate zero        idem = +-identityʳ _
 sumₜ-idem-replicate (suc n) {x} idem = begin
-  x + (x + sumₜ (replicate {n} x))   ≈⟨ sym (+-assoc _ _ _) ⟩
-  (x + x) + sumₜ (replicate {n} x)   ≈⟨ +-cong idem refl ⟩
-  x + sumₜ (replicate {n} x)         ≈⟨ sumₜ-idem-replicate n idem ⟩
-  x                                  ∎
+  x + (x + sumₜ (replicate {n = n} x))  ≈⟨ sym (+-assoc _ _ _) ⟩
+  (x + x) + sumₜ (replicate {n = n} x)  ≈⟨ +-cong idem refl ⟩
+  x + sumₜ (replicate {n = n} x)        ≈⟨ sumₜ-idem-replicate n idem ⟩
+  x                                 ∎
 
 -- The sum over the constantly zero function is zero.
 
-sumₜ-zero : ∀ n → sumₜ (replicate {n} 0#) ≈ 0#
+sumₜ-zero : ∀ n → sumₜ (replicate {n = n} 0#) ≈ 0#
 sumₜ-zero n = begin
-  sumₜ (replicate {n} 0#)      ≈⟨ sym (+-identityˡ _) ⟩
-  0# + sumₜ (replicate {n} 0#) ≈⟨ sumₜ-idem-replicate n (+-identityˡ 0#) ⟩
-  0#                           ∎
+  sumₜ (replicate {n = n} 0#)      ≈⟨ sym (+-identityˡ _) ⟩
+  0# + sumₜ (replicate {n = n} 0#) ≈⟨ sumₜ-idem-replicate n (+-identityˡ 0#) ⟩
+  0#                               ∎
 
 -- The '∑' operator distributes over addition.
 
-∑-distrib-+ : ∀ n (f g : Fin n → Carrier) → ∑[ i < n ] f i + ∑[ i < n ] g i ≈ ∑[ i < n ] (f i + g i)
-∑-distrib-+ zero    f g = proj₁ +-identity _
-∑-distrib-+ (suc n) f g =
-  begin
-    (fz + ∑f) + (gz + ∑g)      ≈⟨ solve 4 (λ a b c d → (a ⊕ b) ⊕ (c ⊕ d) ⊜ a ⊕ (c ⊕ (b ⊕ d))) refl fz ∑f gz ∑g ⟩
-    fz + (gz + (∑f + ∑g))      ≈⟨ +-cong refl (+-cong refl (∑-distrib-+ n _ _)) ⟩
-    fz + (gz + ∑fg)            ≈⟨ sym (+-assoc _ _ _) ⟩
-    fz + gz + ∑fg              ∎
+∑-distrib-+ : ∀ n (f g : Fin n → Carrier) → ∑[ i < n ] (f i + g i) ≈ ∑[ i < n ] f i + ∑[ i < n ] g i
+∑-distrib-+ zero    f g = sym (+-identityˡ _)
+∑-distrib-+ (suc n) f g = begin
+  f₀ + g₀ + ∑fg          ≈⟨ +-assoc _ _ _ ⟩
+  f₀ + (g₀ + ∑fg)        ≈⟨ +-cong refl (+-cong refl (∑-distrib-+ n _ _)) ⟩
+  f₀ + (g₀ + (∑f + ∑g))  ≈⟨ solve 4 (λ a b c d → a ⊕ (c ⊕ (b ⊕ d)) ⊜ (a ⊕ b) ⊕ (c ⊕ d)) refl f₀ ∑f g₀ ∑g ⟩
+  (f₀ + ∑f) + (g₀ + ∑g)  ∎
   where
-  fz = f zero
-  gz = g zero
+  f₀ = f zero
+  g₀ = g zero
   ∑f  = ∑[ i < n ] f (suc i)
   ∑g  = ∑[ i < n ] g (suc i)
   ∑fg = ∑[ i < n ] (f (suc i) + g (suc i))
@@ -117,26 +115,24 @@ sumₜ-zero n = begin
 
 ∑-comm : ∀ n m (f : Fin n → Fin m → Carrier) → ∑[ i < n ] ∑[ j < m ] f i j ≈ ∑[ j < m ] ∑[ i < n ] f i j
 ∑-comm zero    m f = sym (sumₜ-zero m)
-∑-comm (suc n) m f =
-  begin
-    ∑[ j < m ] f zero j + ∑[ i < n ] ∑[ j < m ] f (suc i) j   ≈⟨ +-cong refl (∑-comm n m _) ⟩
-    ∑[ j < m ] f zero j + ∑[ j < m ] ∑[ i < n ] f (suc i) j   ≈⟨ ∑-distrib-+ m _ _ ⟩
-    ∑[ j < m ] (f zero j + ∑[ i < n ] f (suc i) j)            ∎
+∑-comm (suc n) m f = begin
+  ∑[ j < m ] f zero j + ∑[ i < n ] ∑[ j < m ] f (suc i) j  ≈⟨ +-cong refl (∑-comm n m _) ⟩
+  ∑[ j < m ] f zero j + ∑[ j < m ] ∑[ i < n ] f (suc i) j  ≈⟨ sym (∑-distrib-+ m _ _) ⟩
+  ∑[ j < m ] (f zero j + ∑[ i < n ] f (suc i) j)           ∎
 
 -- Any permutation of a table has the same sum as the original.
 
 sumₜ-permute : ∀ {m n} t (π : Permutation m n) → sumₜ t ≈ sumₜ (permute π t)
-sumₜ-permute {zero} {zero} t π = refl
-sumₜ-permute {zero} {suc n} t π = contradiction π (Perm.refute (λ ()))
-sumₜ-permute {suc m} {zero} t π = contradiction π (Perm.refute (λ ()))
-sumₜ-permute {suc m} {suc n} t π =
-  begin
-    sumₜ t                                                                            ≡⟨⟩
-    lookup t 0i           + sumₜ (remove 0i t)                                        ≡⟨ P.cong₂ _+_ (P.cong (lookup t) (P.sym (Perm.inverseʳ π))) P.refl ⟩
-    lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (remove 0i t)                                        ≈⟨ +-cong refl (sumₜ-permute (remove 0i t) (Perm.remove (π ⟨$⟩ˡ 0i) π)) ⟩
-    lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (permute (Perm.remove (π ⟨$⟩ˡ 0i) π) (remove 0i t))  ≡⟨ P.cong₂ _+_ P.refl (sumₜ-cong-≡ (P.sym ∘ TP.remove-permute π 0i t)) ⟩
-    lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (remove (π ⟨$⟩ˡ 0i) πt)                              ≈⟨ sym (sumₜ-remove (permute π t)) ⟩
-    sumₜ πt                                                                           ∎
+sumₜ-permute {zero}  {zero}  t π = refl
+sumₜ-permute {zero}  {suc n} t π = contradiction π (Perm.refute λ())
+sumₜ-permute {suc m} {zero}  t π = contradiction π (Perm.refute λ())
+sumₜ-permute {suc m} {suc n} t π = begin
+  sumₜ t                                                                            ≡⟨⟩
+  lookup t 0i           + sumₜ (remove 0i t)                                        ≡⟨ P.cong₂ _+_ (P.cong (lookup t) (P.sym (Perm.inverseʳ π))) P.refl ⟩
+  lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (remove 0i t)                                        ≈⟨ +-cong refl (sumₜ-permute (remove 0i t) (Perm.remove (π ⟨$⟩ˡ 0i) π)) ⟩
+  lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (permute (Perm.remove (π ⟨$⟩ˡ 0i) π) (remove 0i t))  ≡⟨ P.cong₂ _+_ P.refl (sumₜ-cong-≡ (P.sym ∘ TP.remove-permute π 0i t)) ⟩
+  lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (remove (π ⟨$⟩ˡ 0i) πt)                              ≈⟨ sym (sumₜ-remove (permute π t)) ⟩
+  sumₜ πt                                                                           ∎
   where
   0i = zero
   πt = permute π t
@@ -159,20 +155,20 @@ select-transpose _ i j e k with k FP.≟ i
 sumₜ-select : ∀ {n i} (t : Table Carrier n) → sumₜ (select 0# i t) ≈ lookup t i
 sumₜ-select {zero}  {()}
 sumₜ-select {suc n} {i} t = begin
-  sumₜ (select 0# i t)                                         ≈⟨ sumₜ-remove {i = i} (select 0# i t) ⟩
-  lookup (select 0# i t) i + sumₜ (remove i (select 0# i t))   ≡⟨ P.cong₂ _+_ (TP.select-lookup t) (sumₜ-cong-≡ (TP.select-remove i t)) ⟩
-  lookup t i + sumₜ (replicate {n} 0#)                         ≈⟨ +-cong refl (sumₜ-zero n) ⟩
-  lookup t i + 0#                                              ≈⟨ +-identityʳ _ ⟩
-  lookup t i                                                   ∎
+  sumₜ (select 0# i t)                                        ≈⟨ sumₜ-remove {i = i} (select 0# i t) ⟩
+  lookup (select 0# i t) i + sumₜ (remove i (select 0# i t))  ≡⟨ P.cong₂ _+_ (TP.select-lookup t) (sumₜ-cong-≡ (TP.select-remove i t)) ⟩
+  lookup t i + sumₜ (replicate {n = n} 0#)                    ≈⟨ +-cong refl (sumₜ-zero n) ⟩
+  lookup t i + 0#                                             ≈⟨ +-identityʳ _ ⟩
+  lookup t i                                                  ∎
 
 -- Converting to a table then summing is the same as summing the original list
 
 sumₜ-fromList : ∀ xs → sumₜ (fromList xs) ≡ sumₗ xs
 sumₜ-fromList []       = P.refl
-sumₜ-fromList (x ∷ xs) = P.cong₂ _+_ P.refl (sumₜ-fromList xs)
+sumₜ-fromList (x ∷ xs) = P.cong (_ +_) (sumₜ-fromList xs)
 
 -- Converting to a list then summing is the same as summing the original table
 
 sumₜ-toList : ∀ {n} (t : Table Carrier n) → sumₜ t ≡ sumₗ (toList t)
 sumₜ-toList {zero}  _ = P.refl
-sumₜ-toList {suc n} _ = P.cong₂ _+_ P.refl (sumₜ-toList {n} _)
+sumₜ-toList {suc n} _ = P.cong (_ +_) (sumₜ-toList {n} _)
