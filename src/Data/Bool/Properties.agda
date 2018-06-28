@@ -6,22 +6,24 @@
 
 module Data.Bool.Properties where
 
+open import Algebra
+import Algebra.RingSolver.Simple as Solver
+import Algebra.RingSolver.AlmostCommutativeRing as ACR
 open import Data.Bool
+open import Data.Empty
+open import Data.Product
+open import Data.Sum
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
-open import Algebra
-import Algebra.RingSolver.Simple as Solver
-import Algebra.RingSolver.AlmostCommutativeRing as ACR
 open import Relation.Binary.PropositionalEquality
   hiding ([_]; proof-irrelevance)
-open ≡-Reasoning
+open import Relation.Unary using (Irrelevant)
+
 open import Algebra.FunctionProperties (_≡_ {A = Bool})
 open import Algebra.Structures (_≡_ {A = Bool})
-open import Data.Product
-open import Data.Sum
-open import Data.Empty
+open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _∨_
@@ -370,7 +372,7 @@ T-∨ {true}  {b₂}    = equivalence inj₁ (const _)
 T-∨ {false} {true}  = equivalence inj₂ (const _)
 T-∨ {false} {false} = equivalence inj₁ [ id , id ]
 
-T-irrelevance : IrrelevantPred T
+T-irrelevance : Irrelevant T
 T-irrelevance {true}  _  _  = refl
 T-irrelevance {false} () ()
 

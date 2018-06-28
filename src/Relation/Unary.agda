@@ -139,6 +139,11 @@ module _ {a} {A : Set a} where
   Decidable : ∀ {ℓ} → Pred A ℓ → Set _
   Decidable P = ∀ x → Dec (P x)
 
+  -- Irrelevance
+
+  Irrelevant : ∀ {ℓ} → Pred A ℓ → Set _
+  Irrelevant P = ∀ {x} (a : P x) (b : P x) → a ≡ b
+
   ----------------------------------------------------------------------
   -- Operations on sets
 

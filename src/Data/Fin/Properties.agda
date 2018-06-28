@@ -197,7 +197,7 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
   }
 
 -- Other properties
-≤-irrelevance : ∀ {n} → P.IrrelevantRel (_≤_ {n})
+≤-irrelevance : ∀ {n} → Irrelevant (_≤_ {n})
 ≤-irrelevance = ℕₚ.≤-irrelevance
 
 ------------------------------------------------------------------------
@@ -257,7 +257,7 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
   }
 
 -- Other properties
-<-irrelevance : ∀ {n} → P.IrrelevantRel (_<_ {n})
+<-irrelevance : ∀ {n} → Irrelevant (_<_ {n})
 <-irrelevance = ℕₚ.<-irrelevance
 
 <⇒≢ : ∀ {n} {i j : Fin n} → i < j → i ≢ j

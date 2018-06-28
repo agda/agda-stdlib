@@ -13,18 +13,7 @@ open import Function using (_∘_; id)
 open import Function.Inverse using (_↔_)
 open import Relation.Unary using (Pred) renaming (_⊆_ to _⋐_)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; cong; cong₂; IrrelevantPred; →-to-⟶)
-
-------------------------------------------------------------------------
--- If P is an irrelevant predicate then All P is also irrelevant
-
-module _ {a p} {A : Set a} {P : Pred A p} where
-
-  All-irrelevance : IrrelevantPred P →
-                    ∀ {n} → IrrelevantPred (All P {n})
-  All-irrelevance irr []           []             = refl
-  All-irrelevance irr (px₁ ∷ pxs₁) (px₂ ∷ pxs₂) =
-    cong₂ _∷_ (irr px₁ px₂) (All-irrelevance irr pxs₁ pxs₂)
+  using (_≡_; refl; cong; cong₂; →-to-⟶)
 
 ------------------------------------------------------------------------
 -- map

@@ -79,7 +79,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   universal u []       = []
   universal u (x ∷ xs) = u x ∷ universal u xs
 
-  irrelevant : P.IrrelevantPred P → P.IrrelevantPred (All P)
+  irrelevant : Irrelevant P → Irrelevant (All P)
   irrelevant irr []           []           = P.refl
   irrelevant irr (px₁ ∷ pxs₁) (px₂ ∷ pxs₂) =
     P.cong₂ _∷_ (irr px₁ px₂) (irrelevant irr pxs₁ pxs₂)

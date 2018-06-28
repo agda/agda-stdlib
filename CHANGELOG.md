@@ -65,8 +65,8 @@ Non-backwards compatible changes
   ```
 
 * The proofs `All-universal` and `All-irrelevance` have been moved from
-  `Data.List.All.Properties` and renamed `universal` and `irrelevant` in
-  `Data.List.All`.
+  `Data.(List/Vec).All.Properties` and renamed `universal` and `irrelevant` in
+  `Data.(List/Vec).All`.
 
 * The existing function `tabulate` in `Data.Vec.All` has been renamed
   `universal`. The name `tabulate` now refers to a function with following type:
@@ -76,14 +76,14 @@ Non-backwards compatible changes
 
 #### Other
 
-* Rearranged `Data.List.Relation.Sublist` hierarchy:
-  ```agda
-  Data.List.Relation.Sublist.Setoid                   ↦ Data.List.Relation.Sublist.Extensional.Setoid
-  Data.List.Relation.Sublist.Setoid.Properties        ↦ Data.List.Relation.Sublist.Extensional.Setoid.Properties
-  Data.List.Relation.Sublist.Propositional            ↦ Data.List.Relation.Sublist.Extensional.Propositional
-  Data.List.Relation.Sublist.Propositional.Properties ↦ Data.List.Relation.Sublist.Extensional.Propositional.Properties
-  ```
-  and added new module `Data.List.Relation.Sublist.Inductive`.
+* The `Data.List.Relation.Sublist` directory has been moved to
+  `Data.List.Relation.Sublist.Extensional` to make room for the
+  new `Data.List.Relation.Sublist.Inductive` hierarchy.
+
+* The types `IrrelevantPred` and `IrrelevantRel` in
+  `Relation.Binary.PropositionalEquality` have both been renamed to
+  `Irrelevant` and have been moved to `Relation.Unary` and
+  `Relation.Binary` respectively.
 
 * Made the `Set` argument implicit in `Data.Maybe.Base`'s `From-just`
   to be consistent with the definition of `Data.Sum`'s `From-injₙ`.
@@ -93,6 +93,9 @@ Non-backwards compatible changes
 
 Other major changes
 -------------------
+
+* Added new modules `Data.List.Relation.Sublist.Inductive(.Properties)` which give
+  an inductive definition of the sublist relation (i.e. order-preserving embeddings).
 
 * Added new modules `Data.List.Relation.Permutation.Inductive(.Properties)`,
   which give an inductive definition of permutations over lists.
