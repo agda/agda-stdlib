@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of the sublist relation over setoid equality.
+-- Properties of the extensional sublist relation over setoid equality.
 ------------------------------------------------------------------------
 
 open import Relation.Binary hiding (Decidable)
 
-module Data.List.Relation.Sublist.Setoid.Properties where
+module Data.List.Relation.Sublist.Extensional.Setoid.Properties where
 
 open import Data.Bool using (Bool; true; false)
 open import Data.List
@@ -15,7 +15,7 @@ import Data.List.Any.Properties as AnyP
 import Data.List.Membership.Setoid as Membership
 import Data.List.Membership.Setoid.Properties as MembershipP
 open import Data.List.Membership.Setoid.Properties
-import Data.List.Relation.Sublist.Setoid as Sublist
+import Data.List.Relation.Sublist.Extensional.Setoid as Sublist
 import Data.List.Relation.Equality.Setoid as Equality
 open import Data.Product as Prod using ()
 open import Function using (_∘_; _∘′_; id)

@@ -1,4 +1,4 @@
-Version 0.16
+Version TODO
 ============
 
 The library has been tested using Agda version TODO.
@@ -10,9 +10,9 @@ Non-backwards compatible changes
 
 #### New codata library
 
-* New experimental `Codata` modules using copatterns and sized types rather
-  than the musical notations have been added. The whole library is built around
-  a generic notion of coinductive `Thunk` and provides the basic data types:
+* A new experimental `Codata` library using copatterns and sized types rather
+  than musical notation has been added. The library is built around a generic
+  notion of coinductive `Thunk` and provides the basic data types:
   ```agda
   Codata.Thunk
   Codata.Colist
@@ -25,8 +25,8 @@ Non-backwards compatible changes
   `Codata.X.Bisimilarity` module and at least a couple of proofs demonstrating
   how they can be used in `Codata.X.Properties`.
 
-* The old codata modules that previously lived in the `Data` directory have
-  been moved to the folder `Codata.Musical`
+* To avoid confusion, the old codata modules that previously lived in the `Data`
+  directory have been moved to the folder `Codata.Musical`
   ```agda
   Data.Cofin  ↦ Codata.Musical.Cofin
   Data.Colist ↦ Codata.Musical.Colist
@@ -39,8 +39,22 @@ Non-backwards compatible changes
 * The type `Costring` and method `toCostring` have been moved from `Data.String`
   to a new module `Codata.Musical.Costring`.
 
+#### Other
+
+* Rearranged `Data.List.Relation.Sublist` hierarchy:
+  ```agda
+  Data.List.Relation.Sublist.Setoid                   ↦ Data.List.Relation.Sublist.Extensional.Setoid
+  Data.List.Relation.Sublist.Setoid.Properties        ↦ Data.List.Relation.Sublist.Extensional.Setoid.Properties
+  Data.List.Relation.Sublist.Propositional            ↦ Data.List.Relation.Sublist.Extensional.Propositional
+  Data.List.Relation.Sublist.Propositional.Properties ↦ Data.List.Relation.Sublist.Extensional.Propositional.Properties
+  ```
+  and added new module `Data.List.Relation.Sublist.Inductive`.
+
 Other major changes
 -------------------
+
+* Added new modules `Data.List.Relation.Permutation.Inductive(.Properties)`,
+  which give an inductive definition of permutations over lists.
 
 Deprecated features
 -------------------
@@ -48,6 +62,28 @@ Deprecated features
 Other minor additions
 ---------------------
 
+* Added new proofs to `Data.List.Any.Properties`:
+  ```agda
+  singleton⁺ : ∀ {x} → P x → Any P [ x ]
+  singleton⁻ : ∀ {x} → Any P [ x ] → P x
+  ++-insert  : P x → Any P (xs ++ [ x ] ++ ys)
+  ```
+
+* Added new proofs to `Data.List.Membership.(Setoid/Propositional).Properties`:
+  ```agda
+  ∈-insert : v ≈ v′ → v ∈ xs ++ [ v′ ] ++ ys
+  ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
+  ```
+
+* Added new function to `Function`:
+  ```agda
+  typeOf : {A : Set a} → A → Set a
+  ```
+
+* Added the following types in `Relation.Unary`:
+  ```agda
+  Satisfiable P = ∃ λ x → x ∈ P
+  ```
 
 Version 0.16
 ============

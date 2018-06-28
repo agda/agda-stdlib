@@ -279,6 +279,19 @@ module _ {a b p q} {A : Set a} {B : Set b}
 ------------------------------------------------------------------------
 -- Invertible introduction (⁺) and elimination (⁻) rules for various
 -- list functions
+
+------------------------------------------------------------------------
+-- map
+
+module _ {a p} {A : Set a} {P : Pred A p} where
+
+  singleton⁺ : ∀ {x} → P x → Any P [ x ]
+  singleton⁺ Px = here Px
+
+  singleton⁻ : ∀ {x} → Any P [ x ] → P x
+  singleton⁻ (here Px) = Px
+  singleton⁻ (there ())
+
 ------------------------------------------------------------------------
 -- map
 
@@ -404,6 +417,9 @@ module _ {a p} {A : Set a} {P : A → Set p} where
       ; right-inverse-of = ++-comm∘++-comm ys
       }
     }
+
+  ++-insert : ∀ xs {ys x} → P x → Any P (xs ++ [ x ] ++ ys)
+  ++-insert xs Px = ++⁺ʳ xs (++⁺ˡ (singleton⁺ Px))
 
 ------------------------------------------------------------------------
 -- concat
