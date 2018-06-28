@@ -24,12 +24,6 @@ data Vec {a} (A : Set a) : ℕ → Set a where
   []  : Vec A zero
   _∷_ : ∀ {n} (x : A) (xs : Vec A n) → Vec A (suc n)
 
-infix 4 _∈_
-
-data _∈_ {a} {A : Set a} : A → {n : ℕ} → Vec A n → Set a where
-  here  : ∀ {n} {x}   {xs : Vec A n} → x ∈ x ∷ xs
-  there : ∀ {n} {x y} {xs : Vec A n} (x∈xs : x ∈ xs) → x ∈ y ∷ xs
-
 infix 4 _[_]=_
 
 data _[_]=_ {a} {A : Set a} :
@@ -50,6 +44,16 @@ tail (x ∷ xs) = xs
 lookup : ∀ {a n} {A : Set a} → Fin n → Vec A n → A
 lookup zero    (x ∷ xs) = x
 lookup (suc i) (x ∷ xs) = lookup i xs
+
+insert : ∀ {a n} {A : Set a} → Fin (suc n) → A → Vec A n → Vec A (suc n)
+insert zero     x xs       = x ∷ xs
+insert (suc ()) x []
+insert (suc i)  x (y ∷ xs) = y ∷ insert i x xs
+
+remove : ∀ {a n} {A : Set a} → Fin (suc n) → Vec A (suc n) → Vec A n
+remove zero     (_ ∷ xs)     = xs
+remove (suc ()) (x ∷ [])
+remove (suc i)  (x ∷ y ∷ xs) = x ∷ remove i (y ∷ xs)
 
 -- Update.
 
@@ -253,16 +257,3 @@ init .(ys ∷ʳ y) | (ys , y , refl) = ys
 last : ∀ {a n} {A : Set a} → Vec A (1 + n) → A
 last xs         with initLast xs
 last .(ys ∷ʳ y) | (ys , y , refl) = y
-
-------------------------------------------------------------------------
--- Inserting into and removing from vectors
-
-insert : ∀ {a n} {A : Set a} → Fin (suc n) → A → Vec A n → Vec A (suc n)
-insert zero x xs = x ∷ xs
-insert (suc ()) x []
-insert (suc i) x (y ∷ xs) = y ∷ insert i x xs
-
-remove : ∀ {a n} {A : Set a} → Fin (suc n) → Vec A (suc n) → Vec A n
-remove zero (_ ∷ xs) = xs
-remove (suc ()) (x ∷ [])
-remove (suc i) (x ∷ y ∷ xs) = x ∷ remove i (y ∷ xs)

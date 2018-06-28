@@ -10,7 +10,7 @@ Non-backwards compatible changes
 
 #### New codata library
 
-* A new experimental `Codata` library using copatterns and sized types rather
+* A new `Codata` library using copatterns and sized types rather
   than musical notation has been added. The library is built around a generic
   notion of coinductive `Thunk` and provides the basic data types:
   ```agda
@@ -23,7 +23,8 @@ Non-backwards compatible changes
   ```
   Each coinductive type comes with a notion of bisimilarity in the corresponding
   `Codata.X.Bisimilarity` module and at least a couple of proofs demonstrating
-  how they can be used in `Codata.X.Properties`.
+  how they can be used in `Codata.X.Properties`. This library is somewhat
+  experimental and may undergo minor changes in later versions.
 
 * To avoid confusion, the old codata modules that previously lived in the `Data`
   directory have been moved to the folder `Codata.Musical`
@@ -38,6 +39,40 @@ Non-backwards compatible changes
 
 * The type `Costring` and method `toCostring` have been moved from `Data.String`
   to a new module `Codata.Musical.Costring`.
+
+
+#### Improved consistency between `Data.(List/Vec).(Any/All/Membership)`
+
+* Added new module `Data.Vec.Any`.
+
+* The type `_∈_` has been moved from `Data.Vec` to the new module
+  `Data.Vec.Membership.Propositional` and has been reimplemented using
+  `Any` from `Data.Vec.Any`. In particular this means that you must now
+  pass a `refl` proof to the `here` constructor.
+
+* The proofs associated with `_∈_` have been moved from `Data.Vec.Properties`
+  to the new module  `Data.Vec.Membership.Propositional.Properties`
+  and have been renamed as follows:
+  ```agda
+  ∈-++ₗ      ↦ ∈-++⁺ˡ
+  ∈-++ᵣ      ↦ ∈-++⁺ʳ
+  ∈-map      ↦ ∈-map⁺
+  ∈-tabulate ↦ ∈-tabulate⁺
+  ∈-allFin   ↦ ∈-allFin⁺
+  ∈-allPairs ↦ ∈-allPairs⁺
+  ∈⇒List-∈   ↦ ∈-toList⁺
+  List-∈⇒∈   ↦ ∈-fromList⁺
+  ```
+
+* The proofs `All-universal` and `All-irrelevance` have been moved from
+  `Data.List.All.Properties` and renamed `universal` and `irrelevant` in
+  `Data.List.All`.
+
+* The existing function `tabulate` in `Data.Vec.All` has been renamed
+  `universal`. The name `tabulate` now refers to a function with following type:
+  ```agda
+  tabulate : (∀ i → P (Vec.lookup i xs)) → All P {k} xs
+  ```
 
 #### Other
 
