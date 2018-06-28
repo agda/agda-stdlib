@@ -373,7 +373,7 @@ module _ {a ℓ} {A : Set a} {_∼_ : A → A → Set ℓ} where
     open RawMonad ¬¬-Monad
 
     not-now-is-never : (x : A ⊥) → (∄ λ y → x ≳ now y) → x ≳ never
-    not-now-is-never (now x)   hyp with hyp (, now refl)
+    not-now-is-never (now x)   hyp with hyp (-, now refl)
     ... | ()
     not-now-is-never (later x) hyp =
       later (♯ not-now-is-never (♭ x) (hyp ∘ Prod.map id laterˡ))

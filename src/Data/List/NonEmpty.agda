@@ -12,7 +12,7 @@ open import Data.Bool.Properties
 open import Data.List as List using (List; []; _∷_)
 open import Data.Maybe.Base using (Maybe ; nothing; just)
 open import Data.Nat as Nat
-open import Data.Product using (∃; proj₁; proj₂; _,_; ,_)
+open import Data.Product using (∃; proj₁; proj₂; _,_; -,_)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Unit
 open import Data.Vec as Vec using (Vec; []; _∷_)
@@ -127,7 +127,7 @@ monad = record
   }
 
 reverse : ∀ {a} {A : Set a} → List⁺ A → List⁺ A
-reverse = lift (,_ ∘′ Vec.reverse)
+reverse = lift (-,_ ∘′ Vec.reverse)
 
 -- Snoc.
 
