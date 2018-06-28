@@ -94,7 +94,7 @@ Non-backwards compatible changes
 Other major changes
 -------------------
 
-* Added new modules `Data.List.Relation.Sublist.Inductive(.Properties)` which give
+* Added new module `Data.List.Relation.Sublist.Inductive` which gives
   an inductive definition of the sublist relation (i.e. order-preserving embeddings).
 
 * Added new modules `Data.List.Relation.Permutation.Inductive(.Properties)`,
