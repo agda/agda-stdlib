@@ -4,10 +4,10 @@
 -- M-types (the dual of W-types)
 ------------------------------------------------------------------------
 
-module Data.M where
+module Codata.Musical.M where
 
-open import Level
 open import Coinduction
+open import Level
 
 -- The family of M-types.
 

@@ -15,7 +15,7 @@ import Data.List.Membership.Setoid as Membership
 import Data.List.Relation.Equality.Setoid as Equality
 open import Data.Nat using (z≤n; s≤s; _≤_; _<_)
 open import Data.Nat.Properties using (≤-trans; n≤1+n)
-open import Data.Product as Prod using (∃; _×_; _,_)
+open import Data.Product as Prod using (∃; _×_; _,_ ; ∃₂)
 open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Function using (flip; _∘_; id)
 open import Relation.Binary hiding (Decidable)
@@ -98,6 +98,8 @@ module _ {c₁ c₂ ℓ₁ ℓ₂} (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c�
 module _ {c ℓ} (S : Setoid c ℓ) where
 
   open Membership S using (_∈_)
+  open Setoid S
+  open Equality S using (_≋_; _∷_; ≋-refl)
 
   ∈-++⁺ˡ : ∀ {v xs ys} → v ∈ xs → v ∈ xs ++ ys
   ∈-++⁺ˡ = Any.++⁺ˡ
@@ -107,6 +109,15 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 
   ∈-++⁻ : ∀ {v} xs {ys} → v ∈ xs ++ ys → (v ∈ xs) ⊎ (v ∈ ys)
   ∈-++⁻ = Any.++⁻
+
+  ∈-insert : ∀ xs {ys v w} → v ≈ w → v ∈ xs ++ [ w ] ++ ys
+  ∈-insert xs = Any.++-insert xs
+
+  ∈-∃++ : ∀ {v xs} → v ∈ xs → ∃₂ λ ys zs → ∃ λ w →
+          v ≈ w × xs ≋ ys ++ [ w ] ++ zs
+  ∈-∃++ (here px)                  = [] , _ , _ , px , ≋-refl
+  ∈-∃++ (there {d} v∈xs) with ∈-∃++ v∈xs
+  ... | hs , _ , _ , v≈v′ , eq = d ∷ hs , _ , _ , v≈v′ , refl ∷ eq
 
 ------------------------------------------------------------------------
 -- concat

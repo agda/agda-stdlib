@@ -5,7 +5,7 @@
 -- trees).
 ------------------------------------------------------------------------
 
-module Data.M.Indexed where
+module Codata.Musical.M.Indexed where
 
 open import Level
 open import Coinduction

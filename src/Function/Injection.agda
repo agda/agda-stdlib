@@ -10,7 +10,7 @@ open import Function as Fun using () renaming (_∘_ to _⟨∘⟩_)
 open import Level
 open import Relation.Binary
 open import Function.Equality as F
-  using (_⟶_; _⟨$⟩_) renaming (_∘_ to _⟪∘⟫_)
+  using (_⟶_; _⟨$⟩_ ; Π) renaming (_∘_ to _⟪∘⟫_)
 import Relation.Binary.PropositionalEquality as P
 
 -- Injective functions.
@@ -30,6 +30,8 @@ record Injection {f₁ f₂ t₁ t₂}
   field
     to        : From ⟶ To
     injective : Injective to
+
+  open Π to public
 
 -- The set of all injections from one set to another.
 

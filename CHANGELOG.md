@@ -8,6 +8,39 @@ Important changes since 0.16:
 Non-backwards compatible changes
 --------------------------------
 
+#### New codata library
+
+* A new `Codata` library using copatterns and sized types rather
+  than musical notation has been added. The library is built around a generic
+  notion of coinductive `Thunk` and provides the basic data types:
+  ```agda
+  Codata.Thunk
+  Codata.Colist
+  Codata.Conat
+  Codata.Covec
+  Codata.Delay
+  Codata.Stream
+  ```
+  Each coinductive type comes with a notion of bisimilarity in the corresponding
+  `Codata.X.Bisimilarity` module and at least a couple of proofs demonstrating
+  how they can be used in `Codata.X.Properties`. This library is somewhat
+  experimental and may undergo minor changes in later versions.
+
+* To avoid confusion, the old codata modules that previously lived in the `Data`
+  directory have been moved to the folder `Codata.Musical`
+  ```agda
+  Data.Cofin  ↦ Codata.Musical.Cofin
+  Data.Colist ↦ Codata.Musical.Colist
+  Data.Conat  ↦ Codata.Musical.Conat
+  Data.Covec  ↦ Codata.Musical.Covec
+  Data.M      ↦ Codata.Musical.M
+  Data.Stream ↦ Codata.Musical.Stream
+  ```
+
+* The type `Costring` and method `toCostring` have been moved from `Data.String`
+  to a new module `Codata.Musical.Costring`.
+
+
 #### Improved consistency between `Data.(List/Vec).(Any/All/Membership)`
 
 * Added new module `Data.Vec.Any`.
@@ -41,29 +74,46 @@ Non-backwards compatible changes
   tabulate : (∀ i → P (Vec.lookup i xs)) → All P {k} xs
   ```
 
+#### Other
+
+* Rearranged `Data.List.Relation.Sublist` hierarchy:
+  ```agda
+  Data.List.Relation.Sublist.Setoid                   ↦ Data.List.Relation.Sublist.Extensional.Setoid
+  Data.List.Relation.Sublist.Setoid.Properties        ↦ Data.List.Relation.Sublist.Extensional.Setoid.Properties
+  Data.List.Relation.Sublist.Propositional            ↦ Data.List.Relation.Sublist.Extensional.Propositional
+  Data.List.Relation.Sublist.Propositional.Properties ↦ Data.List.Relation.Sublist.Extensional.Propositional.Properties
+  ```
+  and added new module `Data.List.Relation.Sublist.Inductive`.
+
 Other major changes
 -------------------
 
-* Added new experimental `Codata` modules using copatterns and sized types
-  rather than the musical notations. The whole library is built around a
-  generic notion of coinductive `Thunk` and provides basic data types:
-  ```agda
-  Codata.Thunk
-  Codata.Colist
-  Codata.Conat
-  Codata.Covec
-  Codata.Delay
-  Codata.Stream
-  ```
-  Each coinductive type comes with a notion of bisimilarity in the corresponding
-  `Codata.X.Bisimilarity` module and at least a couple of proofs demonstrating
-  how they can be used in `Codata.X.Properties`.
+* Added new modules `Data.List.Relation.Permutation.Inductive(.Properties)`,
+  which give an inductive definition of permutations over lists.
 
 Deprecated features
 -------------------
 
 Other minor additions
 ---------------------
+
+* Added new proofs to `Data.List.Any.Properties`:
+  ```agda
+  singleton⁺ : ∀ {x} → P x → Any P [ x ]
+  singleton⁻ : ∀ {x} → Any P [ x ] → P x
+  ++-insert  : P x → Any P (xs ++ [ x ] ++ ys)
+  ```
+
+* Added new proofs to `Data.List.Membership.(Setoid/Propositional).Properties`:
+  ```agda
+  ∈-insert : v ≈ v′ → v ∈ xs ++ [ v′ ] ++ ys
+  ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
+  ```
+
+* Added new function to `Function`:
+  ```agda
+  typeOf : {A : Set a} → A → Set a
+  ```
 
 * Added the following types in `Relation.Unary`:
   ```agda

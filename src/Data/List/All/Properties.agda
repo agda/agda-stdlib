@@ -15,7 +15,7 @@ open import Data.List.Membership.Propositional
 open import Data.List.All as All using (All; []; _∷_)
 open import Data.List.Any using (Any; here; there)
 open import Data.List.Relation.Pointwise using (Pointwise; []; _∷_)
-open import Data.List.Relation.Sublist.Propositional using (_⊆_)
+open import Data.List.Relation.Sublist.Extensional.Propositional using (_⊆_)
 open import Data.Maybe as Maybe using (Maybe; just; nothing)
 open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)

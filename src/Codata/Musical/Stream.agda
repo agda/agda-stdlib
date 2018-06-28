@@ -4,10 +4,10 @@
 -- Streams
 ------------------------------------------------------------------------
 
-module Data.Stream where
+module Codata.Musical.Stream where
 
 open import Coinduction
-open import Data.Colist using (Colist; []; _∷_)
+open import Codata.Musical.Colist using (Colist; []; _∷_)
 open import Data.Vec    using (Vec;    []; _∷_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Relation.Binary
