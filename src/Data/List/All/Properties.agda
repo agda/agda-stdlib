@@ -15,7 +15,7 @@ open import Data.List.Membership.Propositional
 open import Data.List.All as All using (All; []; _∷_)
 open import Data.List.Any using (Any; here; there)
 open import Data.List.Relation.Pointwise using (Pointwise; []; _∷_)
-open import Data.List.Relation.Sublist.Propositional using (_⊆_)
+open import Data.List.Relation.Sublist.Extensional.Propositional using (_⊆_)
 open import Data.Maybe as Maybe using (Maybe; just; nothing)
 open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
@@ -28,21 +28,6 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
 open import Relation.Unary
   using (Decidable; Universal) renaming (_⊆_ to _⋐_)
-
-----------------------------------------------------------------------
--- Basic properties of All
-
-module _ {a p} {A : Set a} {P : A → Set p} where
-
-  -- When P is universal All P holds
-  All-universal : Universal P → ∀ xs → All P xs
-  All-universal u [] = []
-  All-universal u (x ∷ xs) = u x ∷ All-universal u xs
-
-  All-irrelevance : P.IrrelevantPred P → P.IrrelevantPred (All P)
-  All-irrelevance irr []           []           = P.refl
-  All-irrelevance irr (px₁ ∷ pxs₁) (px₂ ∷ pxs₂) =
-    P.cong₂ _∷_ (irr px₁ px₂) (All-irrelevance irr pxs₁ pxs₂)
 
 ------------------------------------------------------------------------
 -- Lemmas relating Any, All and negation.

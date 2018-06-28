@@ -128,4 +128,3 @@ All-++⁻∘++⁺ = ++⁻∘++⁺
 
 All-concat⁺ = concat⁺
 All-concat⁻ = concat⁻
-

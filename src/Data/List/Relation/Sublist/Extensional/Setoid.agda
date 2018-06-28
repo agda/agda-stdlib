@@ -1,12 +1,13 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The sublist relation over setoid equality.
+-- The extensional sublist relation over setoid equality.
 ------------------------------------------------------------------------
 
 open import Relation.Binary
 
-module Data.List.Relation.Sublist.Setoid {c ℓ} (S : Setoid c ℓ) where
+module Data.List.Relation.Sublist.Extensional.Setoid
+  {c ℓ} (S : Setoid c ℓ) where
 
 open import Data.Bool using (Bool; true; false)
 open import Data.List

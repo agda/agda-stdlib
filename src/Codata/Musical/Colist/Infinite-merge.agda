@@ -4,10 +4,10 @@
 -- Infinite merge operation for coinductive lists
 ------------------------------------------------------------------------
 
-module Data.Colist.Infinite-merge where
+module Codata.Musical.Colist.Infinite-merge where
 
 open import Coinduction
-open import Data.Colist as Colist hiding (_⋎_)
+open import Codata.Musical.Colist as Colist hiding (_⋎_)
 open import Data.Nat
 open import Data.Nat.Properties
 open import Data.Product as Prod
