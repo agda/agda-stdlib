@@ -8,7 +8,7 @@
 <a id="237" class="Keyword">module</a> <a id="244" href="README.Case.html" class="Module">README.Case</a> <a id="256" class="Keyword">where</a>
 
 <a id="263" class="Keyword">open</a> <a id="268" class="Keyword">import</a> <a id="275" href="Data.Fin.html" class="Module">Data.Fin</a>   <a id="286" class="Keyword">hiding</a> <a id="293" class="Symbol">(</a><a id="294" href="Data.Fin.html#4460" class="Function">pred</a><a id="298" class="Symbol">)</a>
-<a id="300" class="Keyword">open</a> <a id="305" class="Keyword">import</a> <a id="312" href="Data.Maybe.html" class="Module">Data.Maybe</a> <a id="323" class="Keyword">hiding</a> <a id="330" class="Symbol">(</a><a id="331" href="Data.Maybe.Base.html#1840" class="Function">from-just</a><a id="340" class="Symbol">)</a>
+<a id="300" class="Keyword">open</a> <a id="305" class="Keyword">import</a> <a id="312" href="Data.Maybe.html" class="Module">Data.Maybe</a> <a id="323" class="Keyword">hiding</a> <a id="330" class="Symbol">(</a><a id="331" href="Data.Maybe.Base.html#1856" class="Function">from-just</a><a id="340" class="Symbol">)</a>
 <a id="342" class="Keyword">open</a> <a id="347" class="Keyword">import</a> <a id="354" href="Data.Nat.html" class="Module">Data.Nat</a>   <a id="365" class="Keyword">hiding</a> <a id="372" class="Symbol">(</a><a id="373" href="Data.Nat.Base.html#2100" class="Function">pred</a><a id="377" class="Symbol">)</a>
 <a id="379" class="Keyword">open</a> <a id="384" class="Keyword">import</a> <a id="391" href="Function.html" class="Module">Function</a>
 
@@ -23,18 +23,18 @@
   <a id="545" class="Symbol">;</a> <a id="547" class="Symbol">(</a><a id="548" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor">suc</a> <a id="552" href="README.Case.html#552" class="Bound">n</a><a id="553" class="Symbol">)</a> <a id="555" class="Symbol">→</a> <a id="557" href="README.Case.html#552" class="Bound">n</a>
   <a id="561" class="Symbol">}</a>
 
-<a id="from-just"></a><a id="564" href="README.Case.html#564" class="Function">from-just</a> <a id="574" class="Symbol">:</a> <a id="576" class="Symbol">∀</a> <a id="578" class="Symbol">{</a><a id="579" href="README.Case.html#579" class="Bound">a</a><a id="580" class="Symbol">}</a> <a id="582" class="Symbol">{</a><a id="583" href="README.Case.html#583" class="Bound">A</a> <a id="585" class="Symbol">:</a> <a id="587" class="PrimitiveType">Set</a> <a id="591" href="README.Case.html#579" class="Bound">a</a><a id="592" class="Symbol">}</a> <a id="594" class="Symbol">(</a><a id="595" href="README.Case.html#595" class="Bound">x</a> <a id="597" class="Symbol">:</a> <a id="599" href="Data.Maybe.Base.html#335" class="Datatype">Maybe</a> <a id="605" href="README.Case.html#583" class="Bound">A</a><a id="606" class="Symbol">)</a> <a id="608" class="Symbol">→</a> <a id="610" href="Data.Maybe.Base.html#1736" class="Function">From-just</a> <a id="620" href="README.Case.html#583" class="Bound">A</a> <a id="622" href="README.Case.html#595" class="Bound">x</a>
-<a id="624" href="README.Case.html#564" class="Function">from-just</a> <a id="634" href="README.Case.html#634" class="Bound">x</a> <a id="636" class="Symbol">=</a> <a id="638" href="Function.html#3369" class="Function Operator">case</a> <a id="643" href="README.Case.html#634" class="Bound">x</a> <a id="645" href="Function.html#3369" class="Function Operator">return</a> <a id="652" href="Data.Maybe.Base.html#1736" class="Function">From-just</a> <a id="662" class="Symbol">_</a> <a id="664" href="Function.html#3369" class="Function Operator">of</a> <a id="667" class="Symbol">λ</a>
-  <a id="671" class="Symbol">{</a> <a id="673" class="Symbol">(</a><a id="674" href="Data.Maybe.Base.html#373" class="InductiveConstructor">just</a> <a id="679" href="README.Case.html#679" class="Bound">x</a><a id="680" class="Symbol">)</a> <a id="682" class="Symbol">→</a> <a id="684" href="README.Case.html#679" class="Bound">x</a>
-  <a id="688" class="Symbol">;</a> <a id="690" href="Data.Maybe.Base.html#403" class="InductiveConstructor">nothing</a>  <a id="699" class="Symbol">→</a> <a id="701" class="Symbol">_</a>
-  <a id="705" class="Symbol">}</a>
+<a id="from-just"></a><a id="564" href="README.Case.html#564" class="Function">from-just</a> <a id="574" class="Symbol">:</a> <a id="576" class="Symbol">∀</a> <a id="578" class="Symbol">{</a><a id="579" href="README.Case.html#579" class="Bound">a</a><a id="580" class="Symbol">}</a> <a id="582" class="Symbol">{</a><a id="583" href="README.Case.html#583" class="Bound">A</a> <a id="585" class="Symbol">:</a> <a id="587" class="PrimitiveType">Set</a> <a id="591" href="README.Case.html#579" class="Bound">a</a><a id="592" class="Symbol">}</a> <a id="594" class="Symbol">(</a><a id="595" href="README.Case.html#595" class="Bound">x</a> <a id="597" class="Symbol">:</a> <a id="599" href="Data.Maybe.Base.html#335" class="Datatype">Maybe</a> <a id="605" href="README.Case.html#583" class="Bound">A</a><a id="606" class="Symbol">)</a> <a id="608" class="Symbol">→</a> <a id="610" href="Data.Maybe.Base.html#1770" class="Function">From-just</a> <a id="620" href="README.Case.html#595" class="Bound">x</a>
+<a id="622" href="README.Case.html#564" class="Function">from-just</a> <a id="632" href="README.Case.html#632" class="Bound">x</a> <a id="634" class="Symbol">=</a> <a id="636" href="Function.html#3369" class="Function Operator">case</a> <a id="641" href="README.Case.html#632" class="Bound">x</a> <a id="643" href="Function.html#3369" class="Function Operator">return</a> <a id="650" href="Data.Maybe.Base.html#1770" class="Function">From-just</a> <a id="660" href="Function.html#3369" class="Function Operator">of</a> <a id="663" class="Symbol">λ</a>
+  <a id="667" class="Symbol">{</a> <a id="669" class="Symbol">(</a><a id="670" href="Data.Maybe.Base.html#373" class="InductiveConstructor">just</a> <a id="675" href="README.Case.html#675" class="Bound">x</a><a id="676" class="Symbol">)</a> <a id="678" class="Symbol">→</a> <a id="680" href="README.Case.html#675" class="Bound">x</a>
+  <a id="684" class="Symbol">;</a> <a id="686" href="Data.Maybe.Base.html#403" class="InductiveConstructor">nothing</a>  <a id="695" class="Symbol">→</a> <a id="697" class="Symbol">_</a>
+  <a id="701" class="Symbol">}</a>
 
-<a id="708" class="Comment">-- Note that some natural uses of case are rejected by the termination</a>
-<a id="779" class="Comment">-- checker:</a>
-<a id="791" class="Comment">--</a>
-<a id="794" class="Comment">-- plus : ℕ → ℕ → ℕ</a>
-<a id="814" class="Comment">-- plus m n = case m of λ</a>
-<a id="840" class="Comment">--   { zero    → n</a>
-<a id="859" class="Comment">--   ; (suc m) → suc (plus m n)</a>
-<a id="891" class="Comment">--   }</a>
+<a id="704" class="Comment">-- Note that some natural uses of case are rejected by the termination</a>
+<a id="775" class="Comment">-- checker:</a>
+<a id="787" class="Comment">--</a>
+<a id="790" class="Comment">-- plus : ℕ → ℕ → ℕ</a>
+<a id="810" class="Comment">-- plus m n = case m of λ</a>
+<a id="836" class="Comment">--   { zero    → n</a>
+<a id="855" class="Comment">--   ; (suc m) → suc (plus m n)</a>
+<a id="887" class="Comment">--   }</a>
 </pre></body></html>
