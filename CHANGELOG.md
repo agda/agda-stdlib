@@ -88,6 +88,8 @@ Non-backwards compatible changes
 * Made the `Set` argument implicit in `Data.Maybe.Base`'s `From-just`
   to be consistent with the definition of `Data.Sum`'s `From-injₙ`.
 
+* Renamed `Data.Product`'s `,_` to `-,_` to avoid conflict with the right
+  section of `_,_`.
 
 Other major changes
 -------------------
@@ -95,11 +97,21 @@ Other major changes
 * Added new modules `Data.List.Relation.Permutation.Inductive(.Properties)`,
   which give an inductive definition of permutations over lists.
 
+* Added new module `Algebra.Properties.CommutativeMonoid`. This contains proofs
+  of lots of properties of summation, including 'big summation'.
+
 Deprecated features
 -------------------
 
 Other minor additions
 ---------------------
+
+* Added new proof in `Data.Fin.Permutation`:
+  ```agda
+  refute : m ≢ n → ¬ Permutation m n
+  ```
+  Additionally the definitions `punchIn-permute` and `punchIn-permute′`
+  have been generalised to work with heterogeneous permutations.
 
 * Added new proofs to `Data.List.Any.Properties`:
   ```agda
@@ -112,6 +124,20 @@ Other minor additions
   ```agda
   ∈-insert : v ≈ v′ → v ∈ xs ++ [ v′ ] ++ ys
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
+  ```
+
+* Added new functions in `Data.Table.Base`:
+  ```agda
+  remove  : Fin (suc n) → Table A (suc n) → Table A n
+  fromVec : Vec A n → Table A n
+  toVec   : Table A n → Vec A n
+  ```
+
+* Added new proofs in `Data.Table.Properties`:
+  ```agda
+  select-lookup  : lookup (select x i t) i ≡ lookup t i
+  select-remove  : remove i (select x i t) ≗ replicate {n} x
+  remove-permute : remove (π ⟨$⟩ˡ i) (permute π t) ≗ permute (Perm.remove (π ⟨$⟩ˡ i) π) (remove i t)
   ```
 
 * Added new function to `Function`:
