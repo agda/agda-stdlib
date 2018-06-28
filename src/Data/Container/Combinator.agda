@@ -23,12 +23,12 @@ open import Relation.Binary.PropositionalEquality as P
 -- Identity.
 
 id : ∀ {c} → Container c
-id = Lift ⊤ ▷ F.const (Lift ⊤)
+id = Lift _ ⊤ ▷ F.const (Lift _ ⊤)
 
 -- Constant.
 
 const : ∀ {c} → Set c → Container c
-const X = X ▷ F.const (Lift ⊥)
+const X = X ▷ F.const (Lift _ ⊥)
 
 -- Composition.
 
