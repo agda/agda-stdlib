@@ -85,3 +85,14 @@ extract (suc n) = suc (extract n)
 
 ¬Finite∞ : ¬ (Finite infinity)
 ¬Finite∞ (suc p) = ¬Finite∞ p
+
+
+------------------------------------------------------------------------
+-- Legacy
+
+open import Coinduction
+import Codata.Musical.Conat as M
+
+fromMusical : M.Coℕ → ∀ {i} → Conat i
+fromMusical M.zero    = zero
+fromMusical (M.suc n) = suc λ where .force → fromMusical (♭ n)

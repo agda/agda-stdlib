@@ -37,6 +37,9 @@ Non-backwards compatible changes
   Data.Stream ↦ Codata.Musical.Stream
   ```
 
+* Each new-style coinduction type comes with a `fromMusical` function converting
+  old-style coinduction values to new-style ones.
+
 * The type `Costring` and method `toCostring` have been moved from `Data.String`
   to a new module `Codata.Musical.Costring`.
 
