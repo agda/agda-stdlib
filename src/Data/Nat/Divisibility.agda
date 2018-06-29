@@ -191,7 +191,7 @@ module _ where
   n∣m⇒m%n≡0 : ∀ m n → suc n ∣ m → m % (suc n) ≡ 0
   n∣m⇒m%n≡0 m n (divides v eq) = begin
     m           % (suc n) ≡⟨ cong (_% (suc n)) eq ⟩
-    (v * suc n) % (suc n) ≡⟨ [k*n]%n≡0 v n ⟩
+    (v * suc n) % (suc n) ≡⟨ kn%n≡0 v n ⟩
     0                     ∎
 
   m%n≡0⇔n∣m : ∀ m n → m % (suc n) ≡ 0 ⇔ suc n ∣ m

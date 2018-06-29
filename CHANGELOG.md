@@ -134,13 +134,26 @@ Other minor additions
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
   ```
 
+* Added new proofs to `Data.Nat.Divisibility`:
+  ```agda
+  n∣m⇒m%n≡0 : suc n ∣ m → m % (suc n) ≡ 0
+  m%n≡0⇒n∣m : m % (suc n) ≡ 0 → suc n ∣ m
+  m%n≡0⇔n∣m : m % (suc n) ≡ 0 ⇔ suc n ∣ m
+  ```
+
 * Added new operations and proofs to `Data.Nat.DivMod`:
   ```agda
   _%_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → ℕ
 
+  a≡a%n+[a/n]*n : a ≡ a % suc n + (a div (suc n)) * suc n
   a%1≡0         : a % 1 ≡ 0
   a%n<n         : a % (suc n) < (suc n)
-  a≡a%n+[a/n]*n : a ≡ a % suc n + (a div (suc n)) * suc n
+  n%n≡0         : suc n % suc n ≡ 0
+  a%n%n≡a%n     : a % suc n % suc n ≡ a % suc n
+  [a+n]%n≡a%n   : (a + suc n) % suc n ≡ a % suc n
+  [a+kn]%n≡a%n  : (a + k * (suc n)) % suc n ≡ a % suc n
+  kn%n≡0        : k * (suc n) % (suc n) ≡ 0
+  %-distribˡ-+  : (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
   ```
 
 * Added new functions in `Data.Table.Base`:
