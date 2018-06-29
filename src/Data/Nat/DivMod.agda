@@ -46,15 +46,28 @@ a%1≡0 = a[modₕ]1≡0
 a%n<n : ∀ a n → a % (suc n) < (suc n)
 a%n<n a n = s≤s (mod-lemma 0 a n)
 
-a≡a%n+[a/n]*n : ∀ a n → a ≡ a % suc n + (a div (suc n)) * suc n
-a≡a%n+[a/n]*n a n = division-lemma 0 0 a n
+n%n≡0 : ∀ n → suc n % suc n ≡ 0
+n%n≡0 n = n[modₕ]n≡0 0 n
+
+a%n%n≡a%n : ∀ a n → a % suc n % suc n ≡ a % suc n
+a%n%n≡a%n a n = modₕ-absorb 0 a n
+
+%-distribˡ-+ : ∀ a b n → (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
+%-distribˡ-+ a b n = {!!}
 
 [n+k]%n≡k%n : ∀ k n → (suc n + k) % suc n ≡ k % suc n
-[n+k]%n≡k%n k n = {!!}
+[n+k]%n≡k%n k n = begin
+  (suc n + k) % suc n                 ≡⟨ %-distribˡ-+ (suc n) k n ⟩
+  (suc n % suc n + k % suc n) % suc n ≡⟨ cong (λ v → (v + k % suc n) % suc n) (n%n≡0 n) ⟩
+  k % suc n % suc n                   ≡⟨ a%n%n≡a%n k n ⟩
+  k % suc n                           ∎
 
 [k*n]%n≡0 : ∀ k n → k * (suc n) % (suc n) ≡ 0
 [k*n]%n≡0 zero    n = refl
 [k*n]%n≡0 (suc k) n = trans ([n+k]%n≡k%n (k * suc n) n) ([k*n]%n≡0 k n)
+
+a≡a%n+[a/n]*n : ∀ a n → a ≡ a % suc n + (a div (suc n)) * suc n
+a≡a%n+[a/n]*n a n = division-lemma 0 0 a n
 
 ------------------------------------------------------------------------
 -- Certified operations (i.e. operations with proofs)
