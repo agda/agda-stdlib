@@ -8,12 +8,11 @@ Important changes since 0.16:
 Non-backwards compatible changes
 --------------------------------
 
-Other major changes
--------------------
+#### New codata library
 
-* Added new experimental `Codata` modules using copatterns and sized types
-  rather than the musical notations. The whole library is built around a
-  generic notion of coinductive `Thunk` and provides basic data types:
+* A new `Codata` library using copatterns and sized types rather
+  than musical notation has been added. The library is built around a generic
+  notion of coinductive `Thunk` and provides the basic data types:
   ```agda
   Codata.Thunk
   Codata.Colist
@@ -24,16 +23,103 @@ Other major changes
   ```
   Each coinductive type comes with a notion of bisimilarity in the corresponding
   `Codata.X.Bisimilarity` module and at least a couple of proofs demonstrating
-  how they can be used in `Codata.X.Properties`.
+  how they can be used in `Codata.X.Properties`. This library is somewhat
+  experimental and may undergo minor changes in later versions.
+
+* To avoid confusion, the old codata modules that previously lived in the `Data`
+  directory have been moved to the folder `Codata.Musical`
+  ```agda
+  Data.Cofin  ↦ Codata.Musical.Cofin
+  Data.Colist ↦ Codata.Musical.Colist
+  Data.Conat  ↦ Codata.Musical.Conat
+  Data.Covec  ↦ Codata.Musical.Covec
+  Data.M      ↦ Codata.Musical.M
+  Data.Stream ↦ Codata.Musical.Stream
+  ```
+
+* The type `Costring` and method `toCostring` have been moved from `Data.String`
+  to a new module `Codata.Musical.Costring`.
+
+
+#### Improved consistency between `Data.(List/Vec).(Any/All/Membership)`
+
+* Added new module `Data.Vec.Any`.
+
+* The type `_∈_` has been moved from `Data.Vec` to the new module
+  `Data.Vec.Membership.Propositional` and has been reimplemented using
+  `Any` from `Data.Vec.Any`. In particular this means that you must now
+  pass a `refl` proof to the `here` constructor.
+
+* The proofs associated with `_∈_` have been moved from `Data.Vec.Properties`
+  to the new module  `Data.Vec.Membership.Propositional.Properties`
+  and have been renamed as follows:
+  ```agda
+  ∈-++ₗ      ↦ ∈-++⁺ˡ
+  ∈-++ᵣ      ↦ ∈-++⁺ʳ
+  ∈-map      ↦ ∈-map⁺
+  ∈-tabulate ↦ ∈-tabulate⁺
+  ∈-allFin   ↦ ∈-allFin⁺
+  ∈-allPairs ↦ ∈-allPairs⁺
+  ∈⇒List-∈   ↦ ∈-toList⁺
+  List-∈⇒∈   ↦ ∈-fromList⁺
+  ```
+
+* The proofs `All-universal` and `All-irrelevance` have been moved from
+  `Data.(List/Vec).All.Properties` and renamed `universal` and `irrelevant` in
+  `Data.(List/Vec).All`.
+
+* The existing function `tabulate` in `Data.Vec.All` has been renamed
+  `universal`. The name `tabulate` now refers to a function with following type:
+  ```agda
+  tabulate : (∀ i → P (Vec.lookup i xs)) → All P {k} xs
+  ```
+
+#### Other
+
+* The `Data.List.Relation.Sublist` directory has been moved to
+  `Data.List.Relation.Sublist.Extensional` to make room for the
+  new `Data.List.Relation.Sublist.Inductive` hierarchy.
+
+* The types `IrrelevantPred` and `IrrelevantRel` in
+  `Relation.Binary.PropositionalEquality` have both been renamed to
+  `Irrelevant` and have been moved to `Relation.Unary` and
+  `Relation.Binary` respectively.
+
+* Made the `Set` argument implicit in `Data.Maybe.Base`'s `From-just`
+  to be consistent with the definition of `Data.Sum`'s `From-injₙ`.
+
+* Renamed `Data.Product`'s `,_` to `-,_` to avoid conflict with the right
+  section of `_,_`.
+
+Other major changes
+-------------------
+
+* Added new module `Data.List.Relation.Sublist.Inductive` which gives
+  an inductive definition of the sublist relation (i.e. order-preserving embeddings).
 
 * Added new modules `Data.List.Relation.Permutation.Inductive(.Properties)`,
   which give an inductive definition of permutations over lists.
+
+* Added new module `Algebra.Properties.CommutativeMonoid`. This contains proofs
+  of lots of properties of summation, including 'big summation'.
 
 Deprecated features
 -------------------
 
 Other minor additions
 ---------------------
+
+* Added new proof to `Data.Fin.Permutation`:
+  ```agda
+  refute : m ≢ n → ¬ Permutation m n
+  ```
+  Additionally the definitions `punchIn-permute` and `punchIn-permute′`
+  have been generalised to work with heterogeneous permutations.
+
+* Added new proof to `Data.Fin.Properties`:
+  ```agda
+  toℕ-fromℕ≤″ : toℕ (fromℕ≤″ m m<n) ≡ m
+  ```
 
 * Added new proofs to `Data.List.Any.Properties`:
   ```agda
@@ -48,11 +134,6 @@ Other minor additions
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
   ```
 
-* Added new proof to `Data.Fin.Properties`:
-  ```agda
-  toℕ-fromℕ≤″ : toℕ (fromℕ≤″ m m<n) ≡ m
-  ```
-
 * Added new operations and proofs to `Data.Nat.DivMod`:
   ```agda
   _%_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → ℕ
@@ -60,6 +141,20 @@ Other minor additions
   a%1≡0         : a % 1 ≡ 0
   a%n<n         : a % (suc n) < (suc n)
   a≡a%n+[a/n]*n : a ≡ a % suc n + (a div (suc n)) * suc n
+  ```
+
+* Added new functions in `Data.Table.Base`:
+  ```agda
+  remove  : Fin (suc n) → Table A (suc n) → Table A n
+  fromVec : Vec A n → Table A n
+  toVec   : Table A n → Vec A n
+  ```
+
+* Added new proofs in `Data.Table.Properties`:
+  ```agda
+  select-lookup  : lookup (select x i t) i ≡ lookup t i
+  select-remove  : remove i (select x i t) ≗ replicate {n} x
+  remove-permute : remove (π ⟨$⟩ˡ i) (permute π t) ≗ permute (Perm.remove (π ⟨$⟩ˡ i) π) (remove i t)
   ```
 
 * Added new function to `Function`:

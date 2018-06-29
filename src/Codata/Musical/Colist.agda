@@ -4,14 +4,14 @@
 -- Coinductive lists
 ------------------------------------------------------------------------
 
-module Data.Colist where
+module Codata.Musical.Colist where
 
 open import Category.Monad
 open import Coinduction
+open import Codata.Musical.Conat using (Coℕ; zero; suc)
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.BoundedVec.Inefficient as BVec
   using (BoundedVec; []; _∷_)
-open import Data.Conat using (Coℕ; zero; suc)
 open import Data.Empty using (⊥)
 open import Data.Maybe.Base using (Maybe; nothing; just; Is-just)
 open import Data.Nat.Base using (ℕ; zero; suc; _≥′_; ≤′-refl; ≤′-step)

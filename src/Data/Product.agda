@@ -12,7 +12,7 @@ open import Relation.Nullary
 open import Agda.Builtin.Equality
 
 infixr 4 _,′_
-infix  4 ,_
+infix  4 -,_
 infixr 2 _×_ _-×-_ _-,-_
 
 ------------------------------------------------------------------------
@@ -72,8 +72,8 @@ _,′_ = _,_
 
 -- Sometimes the first component can be inferred.
 
-,_ : ∀ {a b} {A : Set a} {B : A → Set b} {x} → B x → ∃ B
-, y = _ , y
+-,_ : ∀ {a b} {A : Set a} {B : A → Set b} {x} → B x → ∃ B
+-, y = _ , y
 
 <_,_> : ∀ {a b c} {A : Set a} {B : A → Set b} {C : ∀ {x} → B x → Set c}
         (f : (x : A) → B x) → ((x : A) → C (f x)) →

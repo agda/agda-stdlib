@@ -4,10 +4,10 @@
 -- "Finite" sets indexed on coinductive "natural" numbers
 ------------------------------------------------------------------------
 
-module Data.Cofin where
+module Codata.Musical.Cofin where
 
 open import Coinduction
-open import Data.Conat as Conat using (Coℕ; suc; ∞ℕ)
+open import Codata.Musical.Conat as Conat using (Coℕ; suc; ∞ℕ)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Fin using (Fin; zero; suc)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)

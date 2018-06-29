@@ -15,7 +15,7 @@ import Data.List.Properties as LP
 open import Data.List.Any using (Any; here; there)
 open import Data.List.Any.Properties
 open import Data.List.Membership.Propositional using (_∈_)
-open import Data.List.Relation.Sublist.Propositional.Properties
+open import Data.List.Relation.Sublist.Extensional.Propositional.Properties
   using (⊆-preorder)
 open import Data.Product hiding (map)
 open import Data.Sum hiding (map)

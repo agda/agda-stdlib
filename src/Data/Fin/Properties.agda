@@ -204,7 +204,7 @@ toℕ-fromℕ≤″ {m} {n} m<n = begin
   }
 
 -- Other properties
-≤-irrelevance : ∀ {n} → P.IrrelevantRel (_≤_ {n})
+≤-irrelevance : ∀ {n} → Irrelevant (_≤_ {n})
 ≤-irrelevance = ℕₚ.≤-irrelevance
 
 ------------------------------------------------------------------------
@@ -264,7 +264,7 @@ toℕ-fromℕ≤″ {m} {n} m<n = begin
   }
 
 -- Other properties
-<-irrelevance : ∀ {n} → P.IrrelevantRel (_<_ {n})
+<-irrelevance : ∀ {n} → Irrelevant (_<_ {n})
 <-irrelevance = ℕₚ.<-irrelevance
 
 <⇒≢ : ∀ {n} {i j : Fin n} → i < j → i ≢ j

@@ -14,9 +14,10 @@ open import Function
 open import Level
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
-open import Relation.Unary using (Decidable; _∩_; _⊆_)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Unary hiding (_∈_)
+open import Relation.Binary.PropositionalEquality as P
 
+------------------------------------------------------------------------
 -- All P xs means that all elements in xs satisfy P.
 
 infixr 5 _∷_
@@ -25,6 +26,9 @@ data All {a p} {A : Set a}
          (P : A → Set p) : List A → Set (p ⊔ a) where
   []  : All P []
   _∷_ : ∀ {x xs} (px : P x) (pxs : All P xs) → All P (x ∷ xs)
+
+------------------------------------------------------------------------
+-- Operations on All
 
 head : ∀ {a p} {A : Set a} {P : A → Set p} {x xs} →
        All P (x ∷ xs) → P x
@@ -35,7 +39,7 @@ tail : ∀ {a p} {A : Set a} {P : A → Set p} {x xs} →
 tail (px ∷ pxs) = pxs
 
 lookup : ∀ {a p} {A : Set a} {P : A → Set p} {xs : List A} →
-         All P xs → (∀ {x : A} → x ∈ xs → P x)
+         All P xs → (∀ {x} → x ∈ xs → P x)
 lookup []         ()
 lookup (px ∷ pxs) (here refl)  = px
 lookup (px ∷ pxs) (there x∈xs) = lookup pxs x∈xs
@@ -60,9 +64,25 @@ unzip : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} →
 unzip []           = [] , []
 unzip (pqx ∷ pqxs) = Prod.zip _∷_ _∷_ pqx (unzip pqxs)
 
-all : ∀ {a p} {A : Set a} {P : A → Set p} →
-      Decidable P → Decidable (All P)
-all p []       = yes []
-all p (x ∷ xs) with p x
-all p (x ∷ xs) | yes px = Dec.map′ (_∷_ px) tail (all p xs)
-all p (x ∷ xs) | no ¬px = no (¬px ∘ head)
+------------------------------------------------------------------------
+-- Properties of predicates preserved by All
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+  all : Decidable P → Decidable (All P)
+  all p []       = yes []
+  all p (x ∷ xs) with p x
+  ... | yes px = Dec.map′ (px ∷_) tail (all p xs)
+  ... | no ¬px = no (¬px ∘ head)
+
+  universal : Universal P → Universal (All P)
+  universal u []       = []
+  universal u (x ∷ xs) = u x ∷ universal u xs
+
+  irrelevant : Irrelevant P → Irrelevant (All P)
+  irrelevant irr []           []           = P.refl
+  irrelevant irr (px₁ ∷ pxs₁) (px₂ ∷ pxs₂) =
+    P.cong₂ _∷_ (irr px₁ px₂) (irrelevant irr pxs₁ pxs₂)
+
+  satisfiable : Satisfiable (All P)
+  satisfiable = [] , []
