@@ -62,4 +62,4 @@ module _ {ℓ ℓ₁ ℓ₂} {A : Set ℓ} {B : Set ℓ₁} {C : Set ℓ₂} whe
 module _ {ℓ} {A : Set ℓ} where
 
  iterate : ∀ {i} → (A → A) → A → Stream A i
- iterate f a = a ∷ λ where .force → map f (iterate f a)
+ iterate f a = a ∷ λ where .force → iterate f (f a)
