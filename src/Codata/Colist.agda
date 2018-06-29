@@ -86,3 +86,14 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
  zipWith f as       []       = []
  zipWith f (a ∷ as) (b ∷ bs) =
    f a b ∷ λ where .force → zipWith f (as .force) (bs .force)
+
+
+------------------------------------------------------------------------
+-- Legacy
+
+open import Coinduction
+import Codata.Musical.Colist as M
+
+fromMusical : ∀ {a} {A : Set a} → M.Colist A → ∀ {i} → Colist A i
+fromMusical M.[]       = []
+fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
