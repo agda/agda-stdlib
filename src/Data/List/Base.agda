@@ -11,8 +11,8 @@ open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Bool.Base
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
-open import Data.Maybe.Base using (Maybe; nothing; just)
-open import Data.Product as Prod using (_×_; _,_)
+open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
+open import Data.Product as Prod using (_×_; _,_ ; proj₁ ; proj₂)
 open import Function using (id; _∘_)
 open import Relation.Nullary using (yes; no)
 open import Relation.Unary using (Pred; Decidable)
@@ -187,6 +187,22 @@ unfold B f {n = suc n} s with f s
 
 ------------------------------------------------------------------------
 -- Operations for deconstructing lists
+
+-- Note that although these combinators can be useful for programming, when
+-- proving it is often a better idea to manually destruct a list argument:
+-- each branch of the pattern-matching will have a refined type.
+
+module _ {a} {A : Set a} where
+
+  uncons : List A → Maybe (A × List A)
+  uncons []       = nothing
+  uncons (x ∷ xs) = just (x , xs)
+
+  head : List A → Maybe A
+  head = Maybe.map proj₁ ∘ uncons
+
+  tail : List A → Maybe (List A)
+  tail = Maybe.map proj₂ ∘ uncons
 
 take : ∀ {a} {A : Set a} → ℕ → List A → List A
 take zero    xs       = []
