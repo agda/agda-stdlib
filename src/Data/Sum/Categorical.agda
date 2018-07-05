@@ -9,35 +9,56 @@ module Data.Sum.Categorical where
 open import Level
 open import Data.Sum
 open import Category.Functor
+open import Category.Applicative
 open import Category.Monad
-open import Function using (id; _∘_; _$_)
+open import Function
 
 -- To minimize the universe level of the RawFunctor, we require that elements of
 -- B are "lifted" to a copy of B at a higher universe level (a ⊔ b). See the
 -- examples for how this is done.
-functorₗ : ∀ {a} (A : Set a) → (b : Level)
-        → RawFunctor {a ⊔ b} (λ (B : Set (a ⊔ b)) → A ⊎ B)
-functorₗ A b = record { _<$>_ = λ f → map id f }
 
--- The monad instance also requires some mucking about with universe levels.
-monadₗ : ∀ {a} (A : Set a) → (b : Level)
-      → RawMonad {a ⊔ b} (λ (B : Set (a ⊔ b)) → A ⊎ B)
-monadₗ A b = record
-  { return = λ x → inj₂ x
-  ; _>>=_  = λ x f → [ inj₁ , f ]′ x
-  }
+module _ {a} (A : Set a) (b : Level) where
+
+  Sumₗ : Set (a ⊔ b) → Set (a ⊔ b)
+  Sumₗ B = A ⊎ B
+
+  functorₗ : RawFunctor Sumₗ
+  functorₗ = record { _<$>_ = map id }
+
+  applicativeₗ : RawApplicative Sumₗ
+  applicativeₗ = record
+    { pure = inj₂
+    ; _⊛_ = [ const ∘ inj₁ , map id ]′
+    }
+
+  -- The monad instance also requires some mucking about with universe levels.
+  monadₗ : RawMonad Sumₗ
+  monadₗ = record
+    { return = inj₂
+    ; _>>=_  = λ x f → [ inj₁ , f ]′ x
+    }
 
 -- The following are the "right-handed" versions
-functorᵣ : ∀ {a} (A : Set a) → (b : Level)
-         → RawFunctor {a ⊔ b} (λ (B : Set (a ⊔ b)) → B ⊎ A)
-functorᵣ A b = record { _<$>_ = λ f → map f id }
 
-monadᵣ : ∀ {a} (A : Set a) → (b : Level)
-       → RawMonad {a ⊔ b} (λ (B : Set (a ⊔ b)) → B ⊎ A)
-monadᵣ A b = record
-  { return = λ x → inj₁ x
-  ; _>>=_  = λ x f → [ f , inj₂ ]′ x
-  }
+module _ (a : Level) {b} (B : Set b) where
+
+  Sumᵣ : Set (a ⊔ b) → Set (a ⊔ b)
+  Sumᵣ A = A ⊎ B
+
+  functorᵣ : RawFunctor Sumᵣ
+  functorᵣ = record { _<$>_ = λ f → map f id }
+
+  applicativeᵣ : RawApplicative Sumᵣ
+  applicativeᵣ = record
+    { pure = inj₁
+    ; _⊛_ = [ flip map id , const ∘ inj₂ ]′
+    }
+
+  monadᵣ : RawMonad Sumᵣ
+  monadᵣ = record
+    { return = inj₁
+    ; _>>=_  = λ x f → [ f , inj₂ ]′ x
+    }
 
 ------------------------------------------------------------------------
 -- Examples
