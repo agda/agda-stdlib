@@ -146,6 +146,11 @@ Other minor additions
   remove-permute : remove (π ⟨$⟩ˡ i) (permute π t) ≗ permute (Perm.remove (π ⟨$⟩ˡ i) π) (remove i t)
   ```
 
+* Added new type to `Foreign.Haskell`:
+  ```agda
+  Pair : (A : Set ℓ) (B : Set ℓ′) : Set (ℓ ⊔ ℓ′)
+  ```
+
 * Added new function to `Function`:
   ```agda
   typeOf : {A : Set a} → A → Set a
