@@ -13,6 +13,7 @@ open import Data.Fin.Properties using (toℕ-fromℕ≤″)
 open import Data.Nat as Nat
 open import Data.Nat.DivMod.Core
 open import Data.Nat.Properties using (≤⇒≤″; +-assoc; +-comm; +-identityʳ)
+open import Function using (_$_)
 open import Relation.Nullary.Decidable using (False)
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.PropositionalEquality.TrustMe as TrustMe
@@ -49,7 +50,7 @@ a≡a%n+[a/n]*n a n = division-lemma 0 0 a n
 a%1≡0 : ∀ a → a % 1 ≡ 0
 a%1≡0 = a[modₕ]1≡0
 
-a%n<n : ∀ a n → a % (suc n) < (suc n)
+a%n<n : ∀ a n → a % suc n < suc n
 a%n<n a n = s≤s (mod-lemma 0 a n)
 
 n%n≡0 : ∀ n → suc n % suc n ≡ 0
@@ -70,7 +71,7 @@ a%n%n≡a%n a n = modₕ-absorb 0 a n
   a                 % m ∎
   where m = suc n
 
-kn%n≡0 : ∀ k n → k * (suc n) % (suc n) ≡ 0
+kn%n≡0 : ∀ k n → k * (suc n) % suc n ≡ 0
 kn%n≡0 = [a+kn]%n≡a%n 0
 
 %-distribˡ-+ : ∀ a b n → (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
@@ -111,10 +112,10 @@ _mod_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → Fin divisor
 _divMod_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} →
            DivMod dividend divisor
 (a divMod 0) {}
-(a divMod suc n) = result (a div suc n) (a mod suc n)
-  (TrustMe.erase (begin
-    a                                                ≡⟨ a≡a%n+[a/n]*n a n ⟩
-    (a % suc n)             + (a div suc n) * suc n  ≡⟨ cong₂ _+_ (sym (toℕ-fromℕ≤″ lemma′)) refl ⟩
-    toℕ (fromℕ≤″ _ lemma′) + (a div suc n) * suc n  ∎))
+(a divMod suc n) = result (a div suc n) (a mod suc n) $ TrustMe.erase $ begin
+  a                                       ≡⟨ a≡a%n+[a/n]*n a n ⟩
+  a % suc n              + a/1+n * suc n  ≡⟨ cong₂ _+_ (sym (toℕ-fromℕ≤″ lemma′)) refl ⟩
+  toℕ (fromℕ≤″ _ lemma′) + a/1+n * suc n  ∎
   where
   lemma′ = Nat.erase (≤⇒≤″ (a%n<n a n))
+  a/1+n = a div suc n

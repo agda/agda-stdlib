@@ -14,7 +14,7 @@ open import Data.Fin using (Fin; zero; suc; toℕ)
 import Data.Fin.Properties as FP
 open import Data.Product
 open import Function
-open import Function.Equivalence using (_⇔_)
+open import Function.Equivalence using (_⇔_; equivalence)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
@@ -195,10 +195,8 @@ module _ where
     0                     ∎
 
   m%n≡0⇔n∣m : ∀ m n → m % (suc n) ≡ 0 ⇔ suc n ∣ m
-  m%n≡0⇔n∣m m n = record
-    { to   = PropEq.→-to-⟶ (m%n≡0⇒n∣m m n)
-    ; from = PropEq.→-to-⟶ (n∣m⇒m%n≡0 m n)
-    }
+  m%n≡0⇔n∣m m n = equivalence (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
+
 
 -- Divisibility is decidable.
 

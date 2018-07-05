@@ -37,6 +37,9 @@ Non-backwards compatible changes
   Data.Stream ↦ Codata.Musical.Stream
   ```
 
+* Each new-style coinduction type comes with a `fromMusical` function converting
+  old-style coinduction values to new-style ones.
+
 * The type `Costring` and method `toCostring` have been moved from `Data.String`
   to a new module `Codata.Musical.Costring`.
 
@@ -123,8 +126,8 @@ Other minor additions
 
 * Added new proofs to `Data.List.Any.Properties`:
   ```agda
-  singleton⁺ : ∀ {x} → P x → Any P [ x ]
-  singleton⁻ : ∀ {x} → Any P [ x ] → P x
+  singleton⁺ : P x → Any P [ x ]
+  singleton⁻ : Any P [ x ] → P x
   ++-insert  : P x → Any P (xs ++ [ x ] ++ ys)
   ```
 
@@ -147,13 +150,19 @@ Other minor additions
 
   a≡a%n+[a/n]*n : a ≡ a % suc n + (a div (suc n)) * suc n
   a%1≡0         : a % 1 ≡ 0
-  a%n<n         : a % (suc n) < (suc n)
+  a%n<n         : a % suc n < suc n
   n%n≡0         : suc n % suc n ≡ 0
   a%n%n≡a%n     : a % suc n % suc n ≡ a % suc n
   [a+n]%n≡a%n   : (a + suc n) % suc n ≡ a % suc n
   [a+kn]%n≡a%n  : (a + k * (suc n)) % suc n ≡ a % suc n
-  kn%n≡0        : k * (suc n) % (suc n) ≡ 0
+  kn%n≡0        : k * (suc n) % suc n ≡ 0
   %-distribˡ-+  : (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
+  ```
+
+* Added new functions to `Data.Sum`:
+  ```agda
+  map₁ : (A → B) → A ⊎ C → B ⊎ C
+  map₂ : (B → C) → A ⊎ B → A ⊎ C
   ```
 
 * Added new functions in `Data.Table.Base`:
