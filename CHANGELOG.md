@@ -139,8 +139,11 @@ Other minor additions
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
   ```
 
+* Added new function to `Data.Maybe.Base`:
+  ```agda
+  fromMaybe : A → Maybe A → A
+  
 * Added new functions to `Data.Sum`:
-
   ```agda
   map₁ : (A → B) → A ⊎ C → B ⊎ C
   map₂ : (B → C) → A ⊎ B → A ⊎ C

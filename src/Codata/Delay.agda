@@ -13,7 +13,7 @@ open import Codata.Conat hiding (extract)
 open import Data.Empty
 open import Relation.Nullary
 open import Data.Nat.Base
-open import Data.Maybe.Base hiding (map)
+open import Data.Maybe.Base hiding (map ; fromMaybe)
 open import Data.Product as P hiding (map)
 open import Data.Sum as S hiding (map)
 
