@@ -135,6 +135,11 @@ Other minor additions
 * Added new function to `Data.Maybe.Base`:
   ```agda
   fromMaybe : A → Maybe A → A
+  
+* Added new functions to `Data.Sum`:
+  ```agda
+  map₁ : (A → B) → A ⊎ C → B ⊎ C
+  map₂ : (B → C) → A ⊎ B → A ⊎ C
   ```
 
 * Added new functions in `Data.Table.Base`:
