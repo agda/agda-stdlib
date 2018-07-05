@@ -51,13 +51,13 @@ a%1≡0 : ∀ a → a % 1 ≡ 0
 a%1≡0 = a[modₕ]1≡0
 
 a%n<n : ∀ a n → a % suc n < suc n
-a%n<n a n = s≤s (mod-lemma 0 a n)
+a%n<n a n = s≤s (a[modₕ]n<n 0 a n)
 
 n%n≡0 : ∀ n → suc n % suc n ≡ 0
 n%n≡0 n = n[modₕ]n≡0 0 n
 
 a%n%n≡a%n : ∀ a n → a % suc n % suc n ≡ a % suc n
-a%n%n≡a%n a n = modₕ-absorb 0 a n
+a%n%n≡a%n a n = modₕ-idem 0 a n
 
 [a+n]%n≡a%n : ∀ a n → (a + suc n) % suc n ≡ a % suc n
 [a+n]%n≡a%n a n = a+n[modₕ]n≡a[modₕ]n 0 a n

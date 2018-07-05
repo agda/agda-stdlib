@@ -109,6 +109,16 @@ Other major changes
 Deprecated features
 -------------------
 
+The following deprecations have occurred as part of a drive to improve consistency across
+the library. The deprecated names still exist and therefore all existing code should still
+work, however they have been deprecated and use of any new names is encouraged. Although not
+anticipated any time soon, they may eventually be removed in some future release of the library.
+
+* In `Data.Nat.Divisibility`:
+  ```
+  nonZeroDivisor-lemma
+  ```
+
 Other minor additions
 ---------------------
 

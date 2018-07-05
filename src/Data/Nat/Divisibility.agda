@@ -197,7 +197,6 @@ module _ where
   m%n≡0⇔n∣m : ∀ m n → m % (suc n) ≡ 0 ⇔ suc n ∣ m
   m%n≡0⇔n∣m m n = equivalence (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
 
-
 -- Divisibility is decidable.
 
 infix 4 _∣?_
@@ -207,12 +206,19 @@ zero  ∣? zero   = yes (0 ∣0)
 zero  ∣? suc m  = no ((λ()) ∘′ 0∣⇒≡0)
 suc n ∣? m      = Dec.map (m%n≡0⇔n∣m m n) (m % (suc n) ≟ 0)
 
+------------------------------------------------------------------------
+-- DEPRECATED - please use new names as continuing support for the old
+-- names is not guaranteed.
+
+∣-+ = ∣m∣n⇒∣m+n
+∣-∸ = ∣m+n∣m⇒∣n
+∣-* = n∣m*n
+
 -- If the remainder after division is non-zero, then the divisor does
 -- not divide the dividend.
 
-nonZeroDivisor-lemma
-  : ∀ m q (r : Fin (1 + m)) → toℕ r ≢ 0 →
-    1 + m ∤ toℕ r + q * (1 + m)
+nonZeroDivisor-lemma : ∀ m q (r : Fin (1 + m)) → toℕ r ≢ 0 →
+                       1 + m ∤ toℕ r + q * (1 + m)
 nonZeroDivisor-lemma m zero r r≢zero (divides zero eq) = r≢zero $ begin
   toℕ r      ≡⟨ sym (*-identityˡ (toℕ r)) ⟩
   1 * toℕ r  ≡⟨ eq ⟩
@@ -232,11 +238,3 @@ nonZeroDivisor-lemma m (suc q) r r≢zero d =
   lem = solve 3 (λ m r q → r :+ (m :+ q)  :=  m :+ (r :+ q))
                 refl (suc m) (toℕ r) (q * suc m)
   d' = subst (1 + m ∣_) lem d
-
-------------------------------------------------------------------------
--- DEPRECATED - please use new names as continuing support for the old
--- names is not guaranteed.
-
-∣-+ = ∣m∣n⇒∣m+n
-∣-∸ = ∣m+n∣m⇒∣n
-∣-* = n∣m*n
