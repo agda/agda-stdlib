@@ -139,6 +139,13 @@ Other minor additions
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
   ```
 
+* Added new functions to `Data.Sum`:
+
+  ```agda
+  map₁ : (A → B) → A ⊎ C → B ⊎ C
+  map₂ : (B → C) → A ⊎ B → A ⊎ C
+  ```
+
 * Added new functions in `Data.Table.Base`:
   ```agda
   remove  : Fin (suc n) → Table A (suc n) → Table A n
