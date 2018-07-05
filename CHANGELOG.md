@@ -97,14 +97,24 @@ Non-backwards compatible changes
 Other major changes
 -------------------
 
-* Added new module `Data.List.Relation.Sublist.Inductive` which gives
-  an inductive definition of the sublist relation (i.e. order-preserving embeddings).
+* Added new module `Algebra.Properties.CommutativeMonoid`. This contains proofs
+  of lots of properties of summation, including 'big summation'.
 
 * Added new modules `Data.List.Relation.Permutation.Inductive(.Properties)`,
   which give an inductive definition of permutations over lists.
 
-* Added new module `Algebra.Properties.CommutativeMonoid`. This contains proofs
-  of lots of properties of summation, including 'big summation'.
+* Added new module `Data.List.Relation.Sublist.Inductive` which gives
+  an inductive definition of the sublist relation (i.e. order-preserving embeddings).
+
+* Added new module `Data.Sum.Categorical`:
+  ```agda
+  functorₗ     : RawFunctor (A ⊎_)
+  applicativeₗ : RawApplicative (A ⊎_)
+  monadₗ       : RawMonad (A ⊎_)
+  functorᵣ     : RawFunctor (_⊎ B)
+  applicativeᵣ : RawApplicative (_⊎ B)
+  monadᵣ       : RawMonad (_⊎ B)
+  ```
 
 Deprecated features
 -------------------
