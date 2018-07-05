@@ -132,6 +132,11 @@ Other minor additions
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
   ```
 
+* Added new function to `Data.Maybe.Base`:
+  ```agda
+  fromMaybe : A → Maybe A → A
+  ```
+
 * Added new functions in `Data.Table.Base`:
   ```agda
   remove  : Fin (suc n) → Table A (suc n) → Table A n

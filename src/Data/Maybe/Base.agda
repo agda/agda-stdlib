@@ -57,6 +57,11 @@ maybe j n nothing  = n
 maybe′ : ∀ {a b} {A : Set a} {B : Set b} → (A → B) → B → Maybe A → B
 maybe′ = maybe
 
+-- A defaulting mechanism
+
+fromMaybe : ∀ {a} {A : Set a} → A → Maybe A → A
+fromMaybe = maybe′ id
+
 -- A safe variant of "fromJust". If the value is nothing, then the
 -- return type is the unit type.
 
