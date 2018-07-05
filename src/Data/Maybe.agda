@@ -15,6 +15,7 @@ open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary as B
 open import Relation.Unary as U
+open import Data.List using (List ; [] ; _∷_ ; [_])
 
 ------------------------------------------------------------------------
 -- The base type and some operations
@@ -55,6 +56,29 @@ monadPlus {f} = record
   _∣_ : {A : Set f} → Maybe A → Maybe A → Maybe A
   nothing ∣ y = y
   just x  ∣ y = just x
+
+
+------------------------------------------------------------------------
+-- Other associated operations
+
+fromMaybe : {ℓ : Level} {A : Set ℓ} (default : A) (try : Maybe A) → A
+fromMaybe def (just x) = x
+fromMaybe def nothing  = def
+
+listToMaybe : {ℓ : Level} {A : Set ℓ} → List A → Maybe A
+listToMaybe []       = nothing
+listToMaybe (x ∷ xs) = just x
+
+maybeToList : {ℓ : Level} {A : Set ℓ} → Maybe A → List A
+maybeToList (just x) = [ x ]
+maybeToList nothing  = []
+
+catMaybes : {ℓ : Level} {A : Set ℓ} → List (Maybe A) → List A
+catMaybes []             = []
+catMaybes (just x ∷ xs)  = x ∷ catMaybes xs
+catMaybes (nothing ∷ xs) = catMaybes xs
+
+-- Haskell's `Data.mapMaybe` lives as Agda's `List.mapMaybe`.
 
 ------------------------------------------------------------------------
 -- Equality
