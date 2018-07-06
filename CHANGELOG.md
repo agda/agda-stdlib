@@ -181,6 +181,11 @@ Other minor additions
   %-distribˡ-+  : (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
   ```
 
+* Added new function to `Data.String.Base`:
+  ```agda
+  fromList⁺ : List⁺ Char → String
+  ```
+
 * Added new functions to `Data.Sum`:
   ```agda
   map₁ : (A → B) → A ⊎ C → B ⊎ C
