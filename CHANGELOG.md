@@ -3,6 +3,12 @@ Version TODO
 
 The library has been tested using Agda version TODO.
 
+Minor Additions
+---------------
+* Added new operations to `Data.Maybe`: `fromMaybe, listToMaybe, catMaybes`.
+  These additions could not be inserted into `Data.Maybe.Base` without
+  producing a cyclic dependency with `Data.List`.
+
 Important changes since 0.16:
 
 Non-backwards compatible changes
