@@ -109,20 +109,35 @@ Other major changes
 Deprecated features
 -------------------
 
+The following deprecations have occurred as part of a drive to improve consistency across
+the library. The deprecated names still exist and therefore all existing code should still
+work, however they have been deprecated and use of any new names is encouraged. Although not
+anticipated any time soon, they may eventually be removed in some future release of the library.
+
+* In `Data.Nat.Divisibility`:
+  ```
+  nonZeroDivisor-lemma
+  ```
+
 Other minor additions
 ---------------------
 
-* Added new proof in `Data.Fin.Permutation`:
+* Added new proof to `Data.Fin.Permutation`:
   ```agda
   refute : m ≢ n → ¬ Permutation m n
   ```
   Additionally the definitions `punchIn-permute` and `punchIn-permute′`
   have been generalised to work with heterogeneous permutations.
 
+* Added new proof to `Data.Fin.Properties`:
+  ```agda
+  toℕ-fromℕ≤″ : toℕ (fromℕ≤″ m m<n) ≡ m
+  ```
+
 * Added new proofs to `Data.List.Any.Properties`:
   ```agda
-  singleton⁺ : ∀ {x} → P x → Any P [ x ]
-  singleton⁻ : ∀ {x} → Any P [ x ] → P x
+  singleton⁺ : P x → Any P [ x ]
+  singleton⁻ : Any P [ x ] → P x
   ++-insert  : P x → Any P (xs ++ [ x ] ++ ys)
   ```
 
@@ -142,6 +157,29 @@ Other minor additions
 * Added new function to `Data.Maybe.Base`:
   ```agda
   fromMaybe : A → Maybe A → A
+  ```
+
+* Added new proofs to `Data.Nat.Divisibility`:
+  ```agda
+  n∣m⇒m%n≡0 : suc n ∣ m → m % (suc n) ≡ 0
+  m%n≡0⇒n∣m : m % (suc n) ≡ 0 → suc n ∣ m
+  m%n≡0⇔n∣m : m % (suc n) ≡ 0 ⇔ suc n ∣ m
+  ```
+
+* Added new operations and proofs to `Data.Nat.DivMod`:
+  ```agda
+  _%_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → ℕ
+
+  a≡a%n+[a/n]*n : a ≡ a % suc n + (a div (suc n)) * suc n
+  a%1≡0         : a % 1 ≡ 0
+  a%n<n         : a % suc n < suc n
+  n%n≡0         : suc n % suc n ≡ 0
+  a%n%n≡a%n     : a % suc n % suc n ≡ a % suc n
+  [a+n]%n≡a%n   : (a + suc n) % suc n ≡ a % suc n
+  [a+kn]%n≡a%n  : (a + k * (suc n)) % suc n ≡ a % suc n
+  kn%n≡0        : k * (suc n) % suc n ≡ 0
+  %-distribˡ-+  : (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
+  ```
 
 * Added new functions to `Data.Sum`:
   ```agda
