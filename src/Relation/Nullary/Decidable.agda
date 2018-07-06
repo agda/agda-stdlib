@@ -78,21 +78,23 @@ module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} whe
 -- If a decision procedure returns "yes", then we can extract the
 -- proof using from-yes.
 
-From-yes : ∀ {p} {P : Set p} → Dec P → Set p
-From-yes {P = P} (yes _) = P
-From-yes         (no  _) = Lift ⊤
+module _ {p} {P : Set p} where
 
-from-yes : ∀ {p} {P : Set p} (p : Dec P) → From-yes p
-from-yes (yes p) = p
-from-yes (no  _) = _
+  From-yes : Dec P → Set p
+  From-yes (yes _) = P
+  From-yes (no  _) = Lift p ⊤
+
+  from-yes : (p : Dec P) → From-yes p
+  from-yes (yes p) = p
+  from-yes (no  _) = _
 
 -- If a decision procedure returns "no", then we can extract the proof
 -- using from-no.
 
-From-no : ∀ {p} {P : Set p} → Dec P → Set p
-From-no {P = P} (no  _) = ¬ P
-From-no         (yes _) = Lift ⊤
+  From-no : Dec P → Set p
+  From-no (no  _) = ¬ P
+  From-no (yes _) = Lift p ⊤
 
-from-no : ∀ {p} {P : Set p} (p : Dec P) → From-no p
-from-no (no ¬p) = ¬p
-from-no (yes _) = _
+  from-no : (p : Dec P) → From-no p
+  from-no (no ¬p) = ¬p
+  from-no (yes _) = _

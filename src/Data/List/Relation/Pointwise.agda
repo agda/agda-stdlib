@@ -9,7 +9,7 @@ module Data.List.Relation.Pointwise where
 open import Function
 open import Function.Inverse using (Inverse)
 open import Data.Product hiding (map)
-open import Data.List.Base hiding (map)
+open import Data.List.Base hiding (map ; head ; tail)
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.Nat using (ℕ; zero; suc)
 open import Level

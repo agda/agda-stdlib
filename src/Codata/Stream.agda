@@ -63,3 +63,14 @@ module _ {ℓ} {A : Set ℓ} where
 
  iterate : ∀ {i} → (A → A) → A → Stream A i
  iterate f a = a ∷ λ where .force → map f (iterate f a)
+
+
+
+------------------------------------------------------------------------
+-- Legacy
+
+open import Coinduction
+import Codata.Musical.Stream as M
+
+fromMusical : ∀ {a} {A : Set a} → M.Stream A → ∀ {i} → Stream A i
+fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)

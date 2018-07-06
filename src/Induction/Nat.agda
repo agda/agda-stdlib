@@ -23,8 +23,8 @@ open import Relation.Unary
 -- Ordinary induction
 
 Rec : ∀ ℓ → RecStruct ℕ ℓ ℓ
-Rec _ P zero    = Lift ⊤
-Rec _ P (suc n) = P n
+Rec ℓ P zero    = Lift ℓ ⊤
+Rec ℓ P (suc n) = P n
 
 recBuilder : ∀ {ℓ} → RecursorBuilder (Rec ℓ)
 recBuilder P f zero    = _
@@ -37,8 +37,8 @@ rec = build recBuilder
 -- Complete induction
 
 CRec : ∀ ℓ → RecStruct ℕ ℓ ℓ
-CRec _ P zero    = Lift ⊤
-CRec _ P (suc n) = P n × CRec _ P n
+CRec ℓ P zero    = Lift ℓ ⊤
+CRec ℓ P (suc n) = P n × CRec ℓ P n
 
 cRecBuilder : ∀ {ℓ} → RecursorBuilder (CRec ℓ)
 cRecBuilder P f zero    = _
