@@ -138,12 +138,6 @@ module _ {a p} {A : Set a} {P : A → Set p} where
     from (here (inj₂ p))        = there (Inverse.from (Any-⋎P _)  ⟨$⟩ inj₁ p)
     from (there {x = _ , xs} p) = there (Inverse.from (Any-⋎P xs) ⟨$⟩ inj₂ (from p))
 
-    -- Some lemmas.
-
-    drop-there : ∀ {x xs} {p q : Any P _} →
-                 _≡_ {A = Any P (x ∷ xs)} (there p) (there q) → p ≡ q
-    drop-there P.refl = P.refl
-
     -- The from function is injective.
 
     from-injective : ∀ {xss} (p₁ p₂ : Any Q xss) →
@@ -155,18 +149,18 @@ module _ {a p} {A : Set a} {P : A → Set p} where
       P.cong (here ∘ inj₂) $
       inj₁-injective $
       Inverse.injective (Inv.sym (Any-⋎P _)) {x = inj₁ p₁} {y = inj₁ p₂} $
-      drop-there eq
+      there-injective eq
     from-injective (here (inj₁ _))  (there _)  ()
     from-injective (here (inj₂ p₁)) (there p₂) eq
       with Inverse.injective (Inv.sym (Any-⋎P _))
                              {x = inj₁ p₁} {y = inj₂ (from p₂)}
-                             (drop-there eq)
+                             (there-injective eq)
     ... | ()
     from-injective (there _)  (here (inj₁ _))  ()
     from-injective (there p₁) (here (inj₂ p₂)) eq
       with Inverse.injective (Inv.sym (Any-⋎P _))
                              {x = inj₂ (from p₁)} {y = inj₁ p₂}
-                             (drop-there eq)
+                             (there-injective eq)
     ... | ()
     from-injective (there {x = _ , xs} p₁) (there p₂) eq =
       P.cong there $
@@ -174,7 +168,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
       inj₂-injective $
       Inverse.injective (Inv.sym (Any-⋎P xs))
                         {x = inj₂ (from p₁)} {y = inj₂ (from p₂)} $
-      drop-there eq
+      there-injective eq
 
     -- The to function (defined as a right inverse of from).
 
@@ -198,8 +192,8 @@ module _ {a p} {A : Set a} {P : A → Set p} where
         with Inverse.to (Any-⋎P xs) ⟨$⟩ p
            | Inverse.left-inverse-of (Any-⋎P xs) p
            | index-Any-⋎P xs p
-      step ((x , xs) ∷ xss , there .(Inverse.from (Any-⋎P xs) ⟨$⟩ inj₁ q)) rec | inj₁ q | P.refl | _   = here (inj₂ q) , P.refl
-      step ((x , xs) ∷ xss , there .(Inverse.from (Any-⋎P xs) ⟨$⟩ inj₂ q)) rec | inj₂ q | P.refl | q≤p =
+      ... | inj₁ q | P.refl | _   = here (inj₂ q) , P.refl
+      ... | inj₂ q | P.refl | q≤p =
         Prod.map there
                  (P.cong (there ∘ _⟨$⟩_ (Inverse.from (Any-⋎P xs)) ∘ inj₂))
                  (rec (♭ xss , q) (s≤′s q≤p))

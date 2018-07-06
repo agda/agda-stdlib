@@ -258,14 +258,14 @@ empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here refl)
   ∀ {ℓ} {A B : Set ℓ} (fs : List (A → B)) xs₁ xs₂ →
   (fs ⊛ (xs₁ ++ xs₂)) ∼[ bag ] (fs ⊛ xs₁) ++ (fs ⊛ xs₂)
 ⊛-left-distributive {B = B} fs xs₁ xs₂ = begin
-  fs ⊛ (xs₁ ++ xs₂)                         ≡⟨ refl ⟩
+  fs ⊛ (xs₁ ++ xs₂)                         ≡⟨⟩
   (fs >>= λ f → xs₁ ++ xs₂ >>= return ∘ f)  ≡⟨ (MP.cong (refl {x = fs}) λ f →
                                                 MP.right-distributive xs₁ xs₂ (return ∘ f)) ⟩
   (fs >>= λ f → (xs₁ >>= return ∘ f) ++
                 (xs₂ >>= return ∘ f))       ≈⟨ >>=-left-distributive fs ⟩
 
   (fs >>= λ f → xs₁ >>= return ∘ f) ++
-  (fs >>= λ f → xs₂ >>= return ∘ f)         ≡⟨ refl ⟩
+  (fs >>= λ f → xs₂ >>= return ∘ f)         ≡⟨⟩
 
   (fs ⊛ xs₁) ++ (fs ⊛ xs₂)                  ∎
   where open EqR ([ bag ]-Equality B)
