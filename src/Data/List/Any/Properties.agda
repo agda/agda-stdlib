@@ -69,7 +69,6 @@ module _ {a p} {A : Set a} {P : A → Set p} where
                     there {x = x} p ≡ there q → p ≡ q
   there-injective refl = refl
 
-{-
 ------------------------------------------------------------------------
 -- Misc
 
@@ -579,5 +578,3 @@ module _ {ℓ} {A B : Set ℓ} where
     (Any P xs × Any Q ys)                    ↔⟨ ×↔ ⟩
     Any (λ x → Any (λ y → P x × Q y) ys) xs  ↔⟨ ⊗↔ ⟩
     Any (P ⟨×⟩ Q) (xs ⊗ ys)                  ∎
-
--}
