@@ -136,8 +136,8 @@ Other minor additions
 
 * Added new proofs to `Data.List.Any.Properties`:
   ```agda
-  here-injective  : here p ≡ here q → p ≡ q
-  there-injective : there {x = x} p ≡ there q → p ≡ q
+  here-injective  : here  p ≡ here  q → p ≡ q
+  there-injective : there p ≡ there q → p ≡ q
 
   singleton⁺      : P x → Any P [ x ]
   singleton⁻      : Any P [ x ] → P x
