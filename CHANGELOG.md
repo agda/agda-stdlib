@@ -141,10 +141,22 @@ Other minor additions
   ++-insert  : P x → Any P (xs ++ [ x ] ++ ys)
   ```
 
+* Added new functions to `Data.List.Base`:
+  ```agda
+  uncons : List A → Maybe (A × List A)
+  head   : List A → Maybe A
+  tail   : List A → Maybe (List A)
+  ```
+
 * Added new proofs to `Data.List.Membership.(Setoid/Propositional).Properties`:
   ```agda
   ∈-insert : v ≈ v′ → v ∈ xs ++ [ v′ ] ++ ys
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
+  ```
+
+* Added new function to `Data.Maybe.Base`:
+  ```agda
+  fromMaybe : A → Maybe A → A
   ```
 
 * Added new proofs to `Data.Nat.Divisibility`:

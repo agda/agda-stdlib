@@ -5,8 +5,11 @@ AGDA=agda
 #
 #   cd agda-development-version-path/src/fix-agda-whitespace
 #   cabal install
-test: Everything.agda
+
+check-whitespace:
 	cabal exec -- fix-agda-whitespace --check
+
+test: Everything.agda check-whitespace
 	$(AGDA) -i. -isrc README.agda
 
 setup: Everything.agda
