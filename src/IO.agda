@@ -53,18 +53,19 @@ sequence (c ∷ cs) = ♯ c                  >>= λ x  →
 -- The reason for not defining sequence′ in terms of sequence is
 -- efficiency (the unused results could cause unnecessary memory use).
 
-sequence′ : ∀ {a} {A : Set a} → Colist (IO A) → IO (Lift ⊤)
+sequence′ : ∀ {a} {A : Set a} → Colist (IO A) → IO (Lift a ⊤)
 sequence′ []       = return _
 sequence′ (c ∷ cs) = ♯ c                   >>
                      ♯ (♯ sequence′ (♭ cs) >>
                      ♯ return _)
 
-mapM : ∀ {a b} {A : Set a} {B : Set b} →
-       (A → IO B) → Colist A → IO (Colist B)
-mapM f = sequence ∘ map f
+module _ {a b} {A : Set a} {B : Set b} where
 
-mapM′ : {A B : Set} → (A → IO B) → Colist A → IO (Lift ⊤)
-mapM′ f = sequence′ ∘ map f
+  mapM : (A → IO B) → Colist A → IO (Colist B)
+  mapM f = sequence ∘ map f
+
+  mapM′ : (A → IO B) → Colist A → IO (Lift b ⊤)
+  mapM′ f = sequence′ ∘ map f
 
 ------------------------------------------------------------------------
 -- Simple lazy IO

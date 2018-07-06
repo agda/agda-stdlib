@@ -14,7 +14,7 @@ open import Agda.Primitive public
 
 -- Lifting.
 
-record Lift {a ℓ} (A : Set a) : Set (a ⊔ ℓ) where
+record Lift {a} ℓ (A : Set a) : Set (a ⊔ ℓ) where
   constructor lift
   field lower : A
 
