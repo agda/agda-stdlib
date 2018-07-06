@@ -722,7 +722,7 @@ module _ {a} {A : Set a} (p : A → Bool) where
   "Warning: boolPartition and boolFilter were deprecated in v0.16.
   Please use partition and filter instead."
   #-}
-  
+
 module _ {a p} {A : Set a} (P : A → Set p) (P? : Decidable P) where
 
   boolFilter-filters : ∀ xs → All P (boolFilter (⌊_⌋ ∘ P?) xs)
