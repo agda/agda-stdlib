@@ -76,7 +76,7 @@ private
 
     -- This type to the right of ⊎ needs to be a "lifted" version of (B : Set b)
     -- that lives in the universe (Set (a ⊔ b)).
-    fmapIdₗ : (x : A ⊎ (Lift {ℓ = a} B)) → (id <$> x) ≡ x
+    fmapIdₗ : (x : A ⊎ (Lift a B)) → (id <$> x) ≡ x
     fmapIdₗ (inj₁ x) = refl
     fmapIdₗ (inj₂ y) = refl
 
@@ -86,17 +86,17 @@ private
     -- Now, let's show that "return" is a unit for >>=. We use Lift in exactly
     -- the same way as above. The data (x : B) then needs to be "lifted" to
     -- this new type (Lift B).
-    returnUnitL : ∀ {x : B} {f : Lift {ℓ = a} B → A ⊎ (Lift {ℓ = a} B)}
+    returnUnitL : ∀ {x : B} {f : Lift a B → A ⊎ (Lift a B)}
                   → ((return (lift x)) >>= f) ≡ f (lift x)
     returnUnitL = refl
 
-    returnUnitR : (x : A ⊎ (Lift {ℓ = a} B)) → (x >>= return) ≡ x
+    returnUnitR : (x : A ⊎ (Lift a B)) → (x >>= return) ≡ x
     returnUnitR (inj₁ _) = refl
     returnUnitR (inj₂ _) = refl
 
     -- And another (limited version of a) monad law...
-    bindCompose : ∀ {f g : Lift {ℓ = a} B → A ⊎ (Lift {ℓ = a} B)}
-                → (x : A ⊎ (Lift {ℓ = a} B))
+    bindCompose : ∀ {f g : Lift a B → A ⊎ (Lift a B)}
+                → (x : A ⊎ (Lift a B))
                 → ((x >>= f) >>= g) ≡ (x >>= (λ y → (f y >>= g)))
     bindCompose (inj₁ x) = refl
     bindCompose (inj₂ y) = refl
