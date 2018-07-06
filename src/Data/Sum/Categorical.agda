@@ -23,12 +23,12 @@ module _ {a} (A : Set a) (b : Level) where
   Sumₗ B = A ⊎ B
 
   functorₗ : RawFunctor Sumₗ
-  functorₗ = record { _<$>_ = map id }
+  functorₗ = record { _<$>_ = map₂ }
 
   applicativeₗ : RawApplicative Sumₗ
   applicativeₗ = record
     { pure = inj₂
-    ; _⊛_ = [ const ∘ inj₁ , map id ]′
+    ; _⊛_ = [ const ∘ inj₁ , map₂ ]′
     }
 
   -- The monad instance also requires some mucking about with universe levels.
@@ -46,18 +46,18 @@ module _ (a : Level) {b} (B : Set b) where
   Sumᵣ A = A ⊎ B
 
   functorᵣ : RawFunctor Sumᵣ
-  functorᵣ = record { _<$>_ = λ f → map f id }
+  functorᵣ = record { _<$>_ = map₁ }
 
   applicativeᵣ : RawApplicative Sumᵣ
   applicativeᵣ = record
     { pure = inj₁
-    ; _⊛_ = [ flip map id , const ∘ inj₂ ]′
+    ; _⊛_ = [ map₁ , const ∘ inj₂ ]′
     }
 
   monadᵣ : RawMonad Sumᵣ
   monadᵣ = record
     { return = inj₁
-    ; _>>=_  = λ x f → [ f , inj₂ ]′ x
+    ; _>>=_  = [ _|>′_ , const ∘ inj₂ ]′
     }
 
 ------------------------------------------------------------------------
