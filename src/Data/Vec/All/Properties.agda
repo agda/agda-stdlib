@@ -10,7 +10,7 @@ open import Data.Vec as Vec using (Vec; []; _∷_; zip; map; concat; _++_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Data.Vec.All as All using (All; []; _∷_)
 open import Function using (_∘_; id)
-open import Function.Inverse using (_↔_)
+open import Function.Inverse using (_↔_; inverse)
 open import Relation.Unary using (Pred) renaming (_⊆_ to _⋐_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; →-to-⟶)
@@ -75,14 +75,7 @@ module _ {a n p} {A : Set a} {P : Pred A p} where
 
   ++↔ : ∀ {m} {xs : Vec A m} {ys : Vec A n} →
         (All P xs × All P ys) ↔ All P (xs ++ ys)
-  ++↔ {xs = xs} = record
-    { to         = →-to-⟶ (uncurry ++⁺)
-    ; from       = →-to-⟶ (++⁻ xs)
-    ; inverse-of = record
-      { left-inverse-of  = ++⁻∘++⁺
-      ; right-inverse-of = ++⁺∘++⁻ xs
-      }
-    }
+  ++↔ {xs = xs} = inverse (uncurry ++⁺) (++⁻ xs) ++⁻∘++⁺ (++⁺∘++⁻ xs)
 
 ------------------------------------------------------------------------
 -- concat

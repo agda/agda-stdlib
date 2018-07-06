@@ -10,12 +10,13 @@ open import Level
 open import Function.Equality as F
   using (_⟶_) renaming (_∘_ to _⟪∘⟫_)
 open import Function.Equivalence using (Equivalence)
-open import Function.Injection           hiding (id; _∘_)
+open import Function.Injection           hiding (id; _∘_; injection)
 open import Function.LeftInverse as Left hiding (id; _∘_)
 open import Data.Product
 open import Relation.Binary
-import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
+------------------------------------------------------------------------
 -- Surjective functions.
 
 record Surjective {f₁ f₂ t₁ t₂}
@@ -26,6 +27,7 @@ record Surjective {f₁ f₂ t₁ t₂}
     from             : To ⟶ From
     right-inverse-of : from RightInverseOf to
 
+------------------------------------------------------------------------
 -- The set of all surjections from one setoid to another.
 
 record Surjection {f₁ f₂ t₁ t₂}
@@ -72,13 +74,28 @@ fromRightInverse r = record
     }
   } where open LeftInverse r
 
--- The set of all surjections from one set to another.
+------------------------------------------------------------------------
+-- The set of all surjections from one set to another (i.e. sujections
+-- with propositional equality)
 
 infix 3 _↠_
 
 _↠_ : ∀ {f t} → Set f → Set t → Set _
 From ↠ To = Surjection (P.setoid From) (P.setoid To)
 
+surjection : ∀ {f t} {From : Set f} {To : Set t} →
+             (to : From → To) (from : To → From) →
+             (∀ x → to (from x) ≡ x) →
+             From ↠ To
+surjection to from surjective = record
+  { to         = P.→-to-⟶ to
+  ; surjective = record
+    { from             = P.→-to-⟶ from
+    ; right-inverse-of = surjective
+    }
+  }
+
+------------------------------------------------------------------------
 -- Identity and composition.
 
 id : ∀ {s₁ s₂} {S : Setoid s₁ s₂} → Surjection S S

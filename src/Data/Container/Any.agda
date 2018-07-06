@@ -17,7 +17,7 @@ open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (equivalence)
-open import Function.Inverse as Inv using (_↔_; module Inverse)
+open import Function.Inverse as Inv using (_↔_; inverse; module Inverse)
 open import Function.Related as Related using (Related)
 open import Function.Related.TypeIsomorphisms
 import Relation.Binary.HeterogeneousEquality as H
@@ -33,14 +33,7 @@ private
 ↔∈ : ∀ {c} (C : Container c) {X : Set c}
        {P : X → Set c} {xs : ⟦ C ⟧ X} →
      ◇ P xs ↔ (∃ λ x → x ∈ xs × P x)
-↔∈ _ {P = P} {xs} = record
-  { to         = P.→-to-⟶ to
-  ; from       = P.→-to-⟶ from
-  ; inverse-of = record
-    { left-inverse-of  = λ _ → refl
-    ; right-inverse-of = to∘from
-    }
-  }
+↔∈ _ {P = P} {xs} = inverse to from (λ _ → refl) (to∘from)
   where
   to : ◇ P xs → ∃ λ x → x ∈ xs × P x
   to (p , Px) = (proj₂ xs p , (p , refl) , Px)
@@ -91,14 +84,7 @@ flatten : ∀ {c} {C₁ C₂ : Container c} {X}
           P (xss : ⟦ C₁ ⟧ (⟦ C₂ ⟧ X)) →
           ◇ (◇ P) xss ↔
           ◇ P (Inverse.from (Composition.correct C₁ C₂) ⟨$⟩ xss)
-flatten {C₁ = C₁} {C₂} {X} P xss = record
-  { to         = P.→-to-⟶ t
-  ; from       = P.→-to-⟶ f
-  ; inverse-of = record
-    { left-inverse-of  = λ _ → refl
-    ; right-inverse-of = λ _ → refl
-    }
-  }
+flatten {_} {C₁} {C₂} {X} P xss = inverse t f (λ _ → refl) (λ _ → refl)
   where
   open Inverse
 
@@ -113,14 +99,7 @@ flatten {C₁ = C₁} {C₂} {X} P xss = record
 ◇⊎↔⊎◇ : ∀ {c} {C : Container c} {X : Set c} {xs : ⟦ C ⟧ X}
           {P Q : X → Set c} →
         ◇ (λ x → P x ⊎ Q x) xs ↔ (◇ P xs ⊎ ◇ Q xs)
-◇⊎↔⊎◇ {xs = xs} {P} {Q} = record
-  { to         = P.→-to-⟶ to
-  ; from       = P.→-to-⟶ from
-  ; inverse-of = record
-    { left-inverse-of  = from∘to
-    ; right-inverse-of = [ (λ _ → refl) , (λ _ → refl) ]
-    }
-  }
+◇⊎↔⊎◇ {xs = xs} {P} {Q} = inverse to from from∘to to∘from
   where
   to : ◇ (λ x → P x ⊎ Q x) xs → ◇ P xs ⊎ ◇ Q xs
   to (pos , inj₁ p) = inj₁ (pos , p)
@@ -133,20 +112,17 @@ flatten {C₁ = C₁} {C₂} {X} P xss = record
   from∘to (pos , inj₁ p) = refl
   from∘to (pos , inj₂ q) = refl
 
+  to∘from : to ∘ from ≗ id
+  to∘from = [ (λ _ → refl) , (λ _ → refl) ]
+
 -- Products "commute" with ◇.
 
 ×◇↔◇◇× : ∀ {c} {C₁ C₂ : Container c}
            {X Y} {P : X → Set c} {Q : Y → Set c}
            {xs : ⟦ C₁ ⟧ X} {ys : ⟦ C₂ ⟧ Y} →
          ◇ (λ x → ◇ (λ y → P x × Q y) ys) xs ↔ (◇ P xs × ◇ Q ys)
-×◇↔◇◇× {C₁ = C₁} {C₂} {P = P} {Q} {xs} {ys} = record
-  { to         = P.→-to-⟶ to
-  ; from       = P.→-to-⟶ from
-  ; inverse-of = record
-    { left-inverse-of  = λ _ → refl
-    ; right-inverse-of = λ _ → refl
-    }
-  }
+×◇↔◇◇× {_} {C₁} {C₂} {P = P} {Q} {xs} {ys} =
+  inverse to from (λ _ → refl) (λ _ → refl)
   where
   to : ◇ (λ x → ◇ (λ y → P x × Q y) ys) xs → ◇ P xs × ◇ Q ys
   to (p₁ , p₂ , p , q) = ((p₁ , p) , (p₂ , q))
@@ -200,14 +176,7 @@ remove-linear :
   ∀ {c} {C₁ C₂ : Container c} {X} {xs : ⟦ C₁ ⟧ X}
   (P : X → Set c) (m : C₁ ⊸ C₂) →
   ◇ P (⟪ m ⟫⊸ xs) ↔ ◇ P xs
-remove-linear {xs = xs} P m = record
-  { to         = P.→-to-⟶ t
-  ; from       = P.→-to-⟶ f
-  ; inverse-of = record
-    { left-inverse-of  = f∘t
-    ; right-inverse-of = t∘f
-    }
-  }
+remove-linear {xs = xs} P m = inverse t f f∘t t∘f
   where
   open Inverse
 

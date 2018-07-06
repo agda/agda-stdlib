@@ -23,8 +23,8 @@ open import Data.Unit
 open import Level hiding (zero; suc)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence as Eq using (_⇔_; module Equivalence)
-open import Function.Inverse as Inv using (_↔_; module Inverse)
+open import Function.Equivalence as Eq using (_⇔_; Equivalence)
+open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
 open import Function.Related as Related
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
@@ -32,7 +32,7 @@ open import Relation.Nullary hiding (module Dec)
 open import Relation.Nullary.Decidable as Dec using (True)
 
 ------------------------------------------------------------------------
--- Σ is "associative"
+-- Properties of Σ and _×_
 
 Σ-assoc : ∀ {a b c}
             {A : Set a} {B : A → Set b} {C : (a : A) → B a → Set c} →
@@ -63,32 +63,18 @@ open import Relation.Nullary.Decidable as Dec using (True)
       ; assoc         = λ _ _ _ → ↔⇒ Σ-assoc
       ; ∙-cong        = _×-cong_
       }
-    ; identityˡ = λ A → ↔⇒ $ left-identity A
-    ; comm      = λ A B → ↔⇒ $ comm A B
+    ; identityˡ = λ A → ↔⇒ $ ×-identityˡ A
+    ; comm      = λ A B → ↔⇒ $ ×-comm A B
     }
   }
   where
   open FP _↔_
 
-  left-identity : LeftIdentity (Lift {ℓ = ℓ} ⊤) _×_
-  left-identity _ = record
-    { to         = P.→-to-⟶ proj₂
-    ; from       = P.→-to-⟶ λ y → _ , y
-    ; inverse-of = record
-      { left-inverse-of  = λ _ → P.refl
-      ; right-inverse-of = λ _ → P.refl
-      }
-    }
+  ×-identityˡ : LeftIdentity (Lift {ℓ = ℓ} ⊤) _×_
+  ×-identityˡ _ = inverse proj₂ (_ ,_) (λ _ → P.refl) (λ _ → P.refl)
 
-  comm : Commutative _×_
-  comm _ _ = record
-    { to         = P.→-to-⟶ Prod.swap
-    ; from       = P.→-to-⟶ Prod.swap
-    ; inverse-of = record
-      { left-inverse-of  = λ _ → P.refl
-      ; right-inverse-of = λ _ → P.refl
-      }
-    }
+  ×-comm : Commutative _×_
+  ×-comm _ _ = inverse Prod.swap Prod.swap (λ _ → P.refl) (λ _ → P.refl)
 
 ⊎-CommutativeMonoid : Symmetric-kind → (ℓ : Level) →
                       CommutativeMonoid _ _
@@ -100,18 +86,18 @@ open import Relation.Nullary.Decidable as Dec using (True)
   ; isCommutativeMonoid = record
     { isSemigroup   = record
       { isEquivalence = Setoid.isEquivalence $ Related.setoid k ℓ
-      ; assoc         = λ A B C → ↔⇒ $ assoc A B C
+      ; assoc         = λ A B C → ↔⇒ $ ⊎-assoc A B C
       ; ∙-cong        = _⊎-cong_
       }
-    ; identityˡ = λ A → ↔⇒ $ left-identity A
-    ; comm      = λ A B → ↔⇒ $ comm A B
+    ; identityˡ = λ A → ↔⇒ $ ⊎-identityˡ A
+    ; comm      = λ A B → ↔⇒ $ ⊎-comm A B
     }
   }
   where
   open FP _↔_
 
-  left-identity : LeftIdentity (Lift ⊥) (_⊎_ {a = ℓ} {b = ℓ})
-  left-identity A = record
+  ⊎-identityˡ : LeftIdentity (Lift ⊥) (_⊎_ {a = ℓ} {b = ℓ})
+  ⊎-identityˡ A = record
     { to         = P.→-to-⟶ [ (λ ()) ∘′ lower , id ]
     ; from       = P.→-to-⟶ inj₂
     ; inverse-of = record
@@ -120,8 +106,8 @@ open import Relation.Nullary.Decidable as Dec using (True)
       }
     }
 
-  assoc : Associative _⊎_
-  assoc A B C = record
+  ⊎-assoc : Associative _⊎_
+  ⊎-assoc A B C = record
     { to         = P.→-to-⟶ [ [ inj₁ , inj₂ ∘ inj₁ ] , inj₂ ∘ inj₂ ]
     ; from       = P.→-to-⟶ [ inj₁ ∘ inj₁ , [ inj₁ ∘ inj₂ , inj₂ ] ]
     ; inverse-of = record
@@ -130,15 +116,8 @@ open import Relation.Nullary.Decidable as Dec using (True)
       }
     }
 
-  comm : Commutative _⊎_
-  comm _ _ = record
-    { to         = P.→-to-⟶ swap
-    ; from       = P.→-to-⟶ swap
-    ; inverse-of = record
-      { left-inverse-of  = swap-involutive
-      ; right-inverse-of = swap-involutive
-      }
-    }
+  ⊎-comm : Commutative _⊎_
+  ⊎-comm _ _ = inverse swap swap swap-involutive swap-involutive
 
 ×⊎-CommutativeSemiring : Symmetric-kind → (ℓ : Level) →
                          CommutativeSemiring (Level.suc ℓ) ℓ
@@ -155,29 +134,24 @@ open import Relation.Nullary.Decidable as Dec using (True)
   open CommutativeMonoid
   open FP _↔_
 
-  left-zero : LeftZero (Lift ⊥) (_×_ {a = ℓ} {b = ℓ})
-  left-zero A = record
-    { to         = P.→-to-⟶ proj₁
-    ; from       = P.→-to-⟶ (⊥-elim ∘′ lower)
-    ; inverse-of = record
-      { left-inverse-of  = λ p → ⊥-elim (lower $ proj₁ p)
-      ; right-inverse-of = λ x → ⊥-elim (lower x)
-      }
-    }
+  ×-zeroˡ : LeftZero (Lift ⊥) (_×_ {a = ℓ} {b = ℓ})
+  ×-zeroˡ A = inverse proj₁ (⊥-elim ∘′ lower)
+                     (⊥-elim ∘ lower ∘ proj₁) (⊥-elim ∘ lower)
 
-  right-distrib : _×_ DistributesOverʳ _⊎_
-  right-distrib A B C = record
-    { to         = P.→-to-⟶ $ uncurry [ curry inj₁ , curry inj₂ ]
-    ; from       = P.→-to-⟶ from
-    ; inverse-of = record
-      { right-inverse-of = [ (λ _ → P.refl) , (λ _ → P.refl) ]
-      ; left-inverse-of  =
-          uncurry [ (λ _ _ → P.refl) , (λ _ _ → P.refl) ]
-      }
-    }
+  ×-distribʳ-⊎ : _×_ DistributesOverʳ _⊎_
+  ×-distribʳ-⊎ A B C = inverse to from from∘to to∘from
     where
+    to : (B ⊎ C) × A → B × A ⊎ C × A
+    to = uncurry [ curry inj₁ , curry inj₂ ]
+
     from : B × A ⊎ C × A → (B ⊎ C) × A
     from = [ Prod.map inj₁ id , Prod.map inj₂ id ]
+
+    from∘to : ∀ x → from (to x) ≡ x
+    from∘to = uncurry [ (λ _ _ → P.refl) , (λ _ _ → P.refl) ]
+
+    to∘from : ∀ x → to (from x) ≡ x
+    to∘from = [ (λ _ → P.refl) , (λ _ → P.refl) ]
 
   abstract
 
@@ -192,8 +166,8 @@ open import Relation.Nullary.Decidable as Dec using (True)
                                   ⊎-CommutativeMonoid k ℓ
       ; *-isCommutativeMonoid = isCommutativeMonoid $
                                   ×-CommutativeMonoid k ℓ
-      ; distribʳ              = λ A B C → ↔⇒ $ right-distrib A B C
-      ; zeroˡ                 = λ A → ↔⇒ $ left-zero A
+      ; distribʳ              = λ A B C → ↔⇒ $ ×-distribʳ-⊎ A B C
+      ; zeroˡ                 = λ A → ↔⇒ $ ×-zeroˡ A
       }
 
 private
@@ -285,14 +259,8 @@ private
       g∘g f x = g′∘g′ f x _ _ _ _ P.refl P.refl P.refl P.refl
 
       pred↔pred : {A B : Set ℓ} → (↑⊤ ⊎ A) ↔ (↑⊤ ⊎ B) → A ↔ B
-      pred↔pred X⊎↔X⊎ = record
-        { to         = P.→-to-⟶ $ g          X⊎↔X⊎
-        ; from       = P.→-to-⟶ $ g (reverse X⊎↔X⊎)
-        ; inverse-of = record
-          { left-inverse-of  = g∘g          X⊎↔X⊎
-          ; right-inverse-of = g∘g (reverse X⊎↔X⊎)
-          }
-        }
+      pred↔pred X⊎↔X⊎ = inverse (g X⊎↔X⊎) (g (reverse X⊎↔X⊎))
+                                (g∘g X⊎↔X⊎) (g∘g (reverse X⊎↔X⊎))
 
 module Solver s {ℓ} =
   Algebra.RingSolver.Natural-coefficients
@@ -315,39 +283,24 @@ private
 
 ΠΠ↔ΠΠ : ∀ {a b p} {A : Set a} {B : Set b} (P : A → B → Set p) →
         ((x : A) (y : B) → P x y) ↔ ((y : B) (x : A) → P x y)
-ΠΠ↔ΠΠ _ = record
-  { to         = P.→-to-⟶ λ f x y → f y x
-  ; from       = P.→-to-⟶ λ f y x → f x y
-  ; inverse-of = record
-    { left-inverse-of  = λ _ → P.refl
-    ; right-inverse-of = λ _ → P.refl
-    }
-  }
+ΠΠ↔ΠΠ _ = inverse flip flip (λ _ → P.refl) (λ _ → P.refl)
 
 ∃∃↔∃∃ : ∀ {a b p} {A : Set a} {B : Set b} (P : A → B → Set p) →
         (∃₂ λ x y → P x y) ↔ (∃₂ λ y x → P x y)
-∃∃↔∃∃ {a} {b} {p} _ = record
-  { to         = P.→-to-⟶ λ p → (proj₁ (proj₂ p) , proj₁ p , proj₂ (proj₂ p))
-  ; from       = P.→-to-⟶ λ p → (proj₁ (proj₂ p) , proj₁ p , proj₂ (proj₂ p))
-  ; inverse-of = record
-    { left-inverse-of  = λ _ → P.refl
-    ; right-inverse-of = λ _ → P.refl
-    }
-  }
+∃∃↔∃∃ P = inverse to from (λ _ → P.refl) (λ _ → P.refl)
+  where
+  to : (∃₂ λ x y → P x y) → (∃₂ λ y x → P x y)
+  to (x , y , Pxy) = (y , x , Pxy)
+
+  from : (∃₂ λ y x → P x y) → (∃₂ λ x y → P x y)
+  from (y , x , Pxy) = (x , y , Pxy)
 
 ------------------------------------------------------------------------
 -- Implicit and explicit function spaces are isomorphic
 
 Π↔Π : ∀ {a b} {A : Set a} {B : A → Set b} →
       ((x : A) → B x) ↔ ({x : A} → B x)
-Π↔Π = record
-  { to         = P.→-to-⟶ λ f {x} → f x
-  ; from       = P.→-to-⟶ λ f x → f {x}
-  ; inverse-of = record
-    { left-inverse-of  = λ _ → P.refl
-    ; right-inverse-of = λ _ → P.refl
-    }
-  }
+Π↔Π = inverse (λ f {x} → f x) (λ f x → f) (λ _ → P.refl) (λ _ → P.refl)
 
 ------------------------------------------------------------------------
 -- _→_ preserves the symmetric relations
@@ -355,12 +308,9 @@ private
 _→-cong-⇔_ :
   ∀ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} →
   A ⇔ B → C ⇔ D → (A → C) ⇔ (B → D)
-A⇔B →-cong-⇔ C⇔D = record
-  { to   = P.→-to-⟶ λ f x →
-             Equivalence.to   C⇔D ⟨$⟩ f (Equivalence.from A⇔B ⟨$⟩ x)
-  ; from = P.→-to-⟶ λ f x →
-             Equivalence.from C⇔D ⟨$⟩ f (Equivalence.to   A⇔B ⟨$⟩ x)
-  }
+A⇔B →-cong-⇔ C⇔D = Eq.equivalence
+  (λ f x → Equivalence.to   C⇔D ⟨$⟩ f (Equivalence.from A⇔B ⟨$⟩ x))
+  (λ f x → Equivalence.from C⇔D ⟨$⟩ f (Equivalence.to   A⇔B ⟨$⟩ x))
 
 →-cong :
   ∀ {a b c d} →
@@ -428,22 +378,8 @@ Related-cong {A = A} {B} {C} {D} A≈B C≈D =
 
 True↔ : ∀ {p} {P : Set p}
         (dec : Dec P) → ((p₁ p₂ : P) → p₁ ≡ p₂) → True dec ↔ P
-True↔ (yes p) irr = record
-  { to         = P.→-to-⟶ (λ _ → p)
-  ; from       = P.→-to-⟶ (λ _ → _)
-  ; inverse-of = record
-    { left-inverse-of  = λ _ → P.refl
-    ; right-inverse-of = irr p
-    }
-  }
-True↔ (no ¬p) _ = record
-  { to         = P.→-to-⟶ (λ ())
-  ; from       = P.→-to-⟶ (λ p → ¬p p)
-  ; inverse-of = record
-    { left-inverse-of  = λ ()
-    ; right-inverse-of = λ p → ⊥-elim (¬p p)
-    }
-  }
+True↔ (yes p) irr = inverse (λ _ → p) (λ _ → _) (λ _ → P.refl) (irr p)
+True↔ (no ¬p) _   = inverse (λ()) ¬p (λ()) (⊥-elim ∘ ¬p)
 
 ------------------------------------------------------------------------
 -- Equality between pairs can be expressed as a pair of equalities
@@ -452,14 +388,7 @@ True↔ (no ¬p) _ = record
           (∃ λ (p : proj₁ p₁ ≡ proj₁ p₂) →
              P.subst B p (proj₂ p₁) ≡ proj₂ p₂) ↔
           (p₁ ≡ p₂)
-Σ-≡,≡↔≡ {A = A} {B} = record
-  { to         = P.→-to-⟶ to
-  ; from       = P.→-to-⟶ from
-  ; inverse-of = record
-    { left-inverse-of  = left-inverse-of
-    ; right-inverse-of = right-inverse-of
-    }
-  }
+Σ-≡,≡↔≡ {A = A} {B} = inverse to from left-inverse-of right-inverse-of
   where
   to : {p₁ p₂ : Σ A B} →
        Σ (proj₁ p₁ ≡ proj₁ p₂)
@@ -483,16 +412,8 @@ True↔ (no ¬p) _ = record
   right-inverse-of P.refl = P.refl
 
 ×-≡,≡↔≡ : ∀ {a b} {A : Set a} {B : Set b} {p₁ p₂ : A × B} →
-          (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂) ↔
-          p₁ ≡ p₂
-×-≡,≡↔≡ {A = A} {B} = record
-  { to         = P.→-to-⟶ to
-  ; from       = P.→-to-⟶ from
-  ; inverse-of = record
-    { left-inverse-of  = left-inverse-of
-    ; right-inverse-of = right-inverse-of
-    }
-  }
+          (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂) ↔ p₁ ≡ p₂
+×-≡,≡↔≡ {A = A} {B} = inverse to from left-inverse-of right-inverse-of
   where
   to : {p₁ p₂ : A × B} →
        (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂) → p₁ ≡ p₂
@@ -509,3 +430,20 @@ True↔ (no ¬p) _ = record
 
   right-inverse-of : {p₁ p₂ : A × B} (p : p₁ ≡ p₂) → to (from p) ≡ p
   right-inverse-of P.refl = P.refl
+
+×-≡×≡↔≡,≡ : ∀ {a b} {A : Set a} {B : Set b} {x y} (p : A × B) →
+            (x ≡ proj₁ p × y ≡ proj₂ p) ↔ (x , y) ≡ p
+×-≡×≡↔≡,≡ {x = x} {y} p = inverse to from from∘to to∘from
+   where
+   to : (x ≡ proj₁ p × y ≡ proj₂ p) → (x , y) ≡ p
+   to = uncurry $ P.cong₂ _,_
+
+   from : (x , y) ≡ p → (x ≡ proj₁ p × y ≡ proj₂ p)
+   from = < P.cong proj₁ , P.cong proj₂ >
+
+   from∘to : ∀ v → from (to v) ≡ v
+   from∘to = λ _ → P.cong₂ _,_ (P.≡-irrelevance _ _) (P.≡-irrelevance _ _)
+
+   to∘from : ∀ v → to (from v) ≡ v
+   to∘from = λ _ → P.≡-irrelevance _ _
+

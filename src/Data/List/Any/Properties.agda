@@ -34,8 +34,8 @@ open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Relation.Pointwise using (_⊎-cong_)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence as Eq using (_⇔_; module Equivalence)
-open import Function.Inverse as Inv using (_↔_; module Inverse)
+open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
+open import Function.Inverse as Inv using (_↔_; inverse; Inverse)
 open import Function.Related as Related using (Related)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
@@ -59,6 +59,17 @@ module _ {a p ℓ} {A : Set a} {P : A → Set p} {_≈_ : Rel A ℓ} where
   lift-resp resp (x≈y ∷ xs≈ys) (there pxs) =
     there (lift-resp resp xs≈ys pxs)
 
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+  here-injective : ∀ {x xs} {p q : P x} →
+                   here {P = P} {xs = xs} p ≡ here q → p ≡ q
+  here-injective refl = refl
+
+  there-injective : ∀ {x xs} {p q : Any P xs} →
+                    there {x = x} p ≡ there q → p ≡ q
+  there-injective refl = refl
+
+{-
 ------------------------------------------------------------------------
 -- Misc
 
@@ -126,41 +137,20 @@ swap-invol (there pxys)       =
 
 swap↔ : ∀ {ℓ} {A B : Set ℓ} {P : A → B → Set ℓ} {xs ys} →
        Any (λ x → Any (P x) ys) xs ↔ Any (λ y → Any (flip P y) xs) ys
-swap↔ {P = P} = record
-  { to         = P.→-to-⟶ swap
-  ; from       = P.→-to-⟶ swap
-  ; inverse-of = record
-    { left-inverse-of  = swap-invol
-    ; right-inverse-of = swap-invol
-    }
-  }
+swap↔ {P = P} = inverse swap swap swap-invol swap-invol
 
 ------------------------------------------------------------------------
 -- Lemmas relating Any to ⊥
 
 ⊥↔Any⊥ : ∀ {a} {A : Set a} {xs : List A} → ⊥ ↔ Any (const ⊥) xs
-⊥↔Any⊥ {A = A} = record
-  { to         = P.→-to-⟶ (λ ())
-  ; from       = P.→-to-⟶ (λ p → from p)
-  ; inverse-of = record
-    { left-inverse-of  = λ ()
-    ; right-inverse-of = λ p → from p
-    }
-  }
+⊥↔Any⊥ {A = A} = inverse (λ()) (λ p → from p) (λ()) (λ p → from p)
   where
   from : {xs : List A} → Any (const ⊥) xs → ∀ {b} {B : Set b} → B
   from (here ())
   from (there p) = from p
 
 ⊥↔Any[] : ∀ {a p} {A : Set a} {P : A → Set p} → ⊥ ↔ Any P []
-⊥↔Any[] = record
-  { to         = P.→-to-⟶ (λ ())
-  ; from       = P.→-to-⟶ (λ ())
-  ; inverse-of = record
-    { left-inverse-of  = λ ()
-    ; right-inverse-of = λ ()
-    }
-  }
+⊥↔Any[] = inverse (λ()) (λ()) (λ()) (λ())
 
 ------------------------------------------------------------------------
 -- Lemmas relating Any to ⊤
@@ -182,7 +172,7 @@ module _ {a} {A : Set a} where
   any⁻ p (x ∷ xs) px∷xs | false | _       = there (any⁻ p xs px∷xs)
 
   any⇔ : ∀ {p : A → Bool} {xs} → Any (T ∘ p) xs ⇔ T (any p xs)
-  any⇔ = Eq.equivalence (any⁺ _) (any⁻ _ _)
+  any⇔ = equivalence (any⁺ _) (any⁻ _ _)
 
 ------------------------------------------------------------------------
 -- Sums commute with Any
@@ -198,29 +188,21 @@ module _ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} where
   Any-⊎⁻ (there p)       = Sum.map there there (Any-⊎⁻ p)
 
   ⊎↔ : ∀ {xs} → (Any P xs ⊎ Any Q xs) ↔ Any (λ x → P x ⊎ Q x) xs
-  ⊎↔ = record
-    { to         = P.→-to-⟶ Any-⊎⁺
-    ; from       = P.→-to-⟶ Any-⊎⁻
-    ; inverse-of = record
-      { left-inverse-of  = from∘to
-      ; right-inverse-of = to∘from
-      }
-    }
+  ⊎↔ = inverse Any-⊎⁺ Any-⊎⁻ from∘to to∘from
     where
-
     from∘to : ∀ {xs} (p : Any P xs ⊎ Any Q xs) → Any-⊎⁻ (Any-⊎⁺ p) ≡ p
-    from∘to (inj₁ (here  p)) = P.refl
-    from∘to (inj₁ (there p)) rewrite from∘to (inj₁ p) = P.refl
-    from∘to (inj₂ (here  q)) = P.refl
-    from∘to (inj₂ (there q)) rewrite from∘to (inj₂ q) = P.refl
+    from∘to (inj₁ (here  p)) = refl
+    from∘to (inj₁ (there p)) rewrite from∘to (inj₁ p) = refl
+    from∘to (inj₂ (here  q)) = refl
+    from∘to (inj₂ (there q)) rewrite from∘to (inj₂ q) = refl
 
     to∘from : ∀ {xs} (p : Any (λ x → P x ⊎ Q x) xs) →
               Any-⊎⁺ (Any-⊎⁻ p) ≡ p
-    to∘from (here (inj₁ p)) = P.refl
-    to∘from (here (inj₂ q)) = P.refl
+    to∘from (here (inj₁ p)) = refl
+    to∘from (here (inj₂ q)) = refl
     to∘from (there p) with Any-⊎⁻ p | to∘from p
-    to∘from (there .(Any.map inj₁ p)) | inj₁ p | P.refl = P.refl
-    to∘from (there .(Any.map inj₂ q)) | inj₂ q | P.refl = P.refl
+    to∘from (there .(Any.map inj₁ p)) | inj₁ p | refl = refl
+    to∘from (there .(Any.map inj₂ q)) | inj₂ q | refl = refl
 
 ------------------------------------------------------------------------
 -- Products "commute" with Any.
@@ -239,14 +221,7 @@ module _ {a b p q} {A : Set a} {B : Set b}
 
   ×↔ : ∀ {xs ys} →
        (Any P xs × Any Q ys) ↔ Any (λ x → Any (λ y → P x × Q y) ys) xs
-  ×↔ {xs} {ys} = record
-    { to         = P.→-to-⟶ Any-×⁺
-    ; from       = P.→-to-⟶ Any-×⁻
-    ; inverse-of = record
-      { left-inverse-of  = from∘to
-      ; right-inverse-of = to∘from
-      }
-    }
+  ×↔ {xs} {ys} = inverse Any-×⁺ Any-×⁻ from∘to to∘from
     where
     from∘to : ∀ pq → Any-×⁻ (Any-×⁺ pq) ≡ pq
     from∘to (p , q) rewrite
@@ -295,40 +270,33 @@ module _ {a p} {A : Set a} {P : Pred A p} where
 ------------------------------------------------------------------------
 -- map
 
-module _ {a b} {A : Set a} {B : Set b} where
+module _ {a b} {A : Set a} {B : Set b} {f : A → B} where
 
-  map⁺ : ∀ {p} {P : B → Set p} {f : A → B} {xs} →
+  map⁺ : ∀ {p} {P : B → Set p}  {xs} →
          Any (P ∘ f) xs → Any P (List.map f xs)
   map⁺ (here p)  = here p
   map⁺ (there p) = there $ map⁺ p
 
-  map⁻ : ∀ {p} {P : B → Set p} {f : A → B} {xs} →
+  map⁻ : ∀ {p} {P : B → Set p} {xs} →
          Any P (List.map f xs) → Any (P ∘ f) xs
   map⁻ {xs = []}     ()
   map⁻ {xs = x ∷ xs} (here p)  = here p
   map⁻ {xs = x ∷ xs} (there p) = there $ map⁻ p
 
-  map⁺∘map⁻ : ∀ {p} {P : B → Set p} {f : A → B} {xs} →
+  map⁺∘map⁻ : ∀ {p} {P : B → Set p} {xs} →
               (p : Any P (List.map f xs)) → map⁺ (map⁻ p) ≡ p
   map⁺∘map⁻ {xs = []}     ()
   map⁺∘map⁻ {xs = x ∷ xs} (here  p) = refl
   map⁺∘map⁻ {xs = x ∷ xs} (there p) = P.cong there (map⁺∘map⁻ p)
 
-  map⁻∘map⁺ : ∀ {p} (P : B → Set p) {f : A → B} {xs} →
+  map⁻∘map⁺ : ∀ {p} (P : B → Set p) {xs} →
               (p : Any (P ∘ f) xs) → map⁻ {P = P} (map⁺ p) ≡ p
   map⁻∘map⁺ P (here  p) = refl
   map⁻∘map⁺ P (there p) = P.cong there (map⁻∘map⁺ P p)
 
-  map↔ : ∀ {p} {P : B → Set p} {f : A → B} {xs} →
+  map↔ : ∀ {p} {P : B → Set p} {xs} →
          Any (P ∘ f) xs ↔ Any P (List.map f xs)
-  map↔ {P = P} {f = f} = record
-    { to         = P.→-to-⟶ $ map⁺ {P = P} {f = f}
-    ; from       = P.→-to-⟶ $ map⁻ {P = P} {f = f}
-    ; inverse-of = record
-      { left-inverse-of  = map⁻∘map⁺ _
-      ; right-inverse-of = map⁺∘map⁻
-      }
-    }
+  map↔ = inverse map⁺ map⁻ (map⁻∘map⁺ _) map⁺∘map⁻
 
 ------------------------------------------------------------------------
 -- mapMaybe
@@ -380,14 +348,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   ++⁻∘++⁺ (x ∷ xs)      (inj₂ p)         rewrite ++⁻∘++⁺ xs      (inj₂ p) = refl
 
   ++↔ : ∀ {xs ys} → (Any P xs ⊎ Any P ys) ↔ Any P (xs ++ ys)
-  ++↔ {xs = xs} = record
-    { to         = P.→-to-⟶ [ ++⁺ˡ , ++⁺ʳ xs ]′
-    ; from       = P.→-to-⟶ $ ++⁻ xs
-    ; inverse-of = record
-      { left-inverse-of  = ++⁻∘++⁺ xs
-      ; right-inverse-of = ++⁺∘++⁻ xs
-      }
-    }
+  ++↔ {xs = xs} = inverse [ ++⁺ˡ , ++⁺ʳ xs ]′ (++⁻ xs) (++⁻∘++⁺ xs) (++⁺∘++⁻ xs)
 
   ++-comm : ∀ xs ys → Any P (xs ++ ys) → Any P (ys ++ xs)
   ++-comm xs ys = [ ++⁺ʳ ys , ++⁺ˡ ]′ ∘ ++⁻ xs
@@ -395,28 +356,22 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   ++-comm∘++-comm : ∀ xs {ys} (p : Any P (xs ++ ys)) →
                     ++-comm ys xs (++-comm xs ys p) ≡ p
   ++-comm∘++-comm [] {ys} p
-    rewrite ++⁻∘++⁺ ys {ys = []} (inj₁ p) = P.refl
+    rewrite ++⁻∘++⁺ ys {ys = []} (inj₁ p) = refl
   ++-comm∘++-comm (x ∷ xs) {ys} (here p)
-    rewrite ++⁻∘++⁺ ys {ys = x ∷ xs} (inj₂ (here p)) = P.refl
+    rewrite ++⁻∘++⁺ ys {ys = x ∷ xs} (inj₂ (here p)) = refl
   ++-comm∘++-comm (x ∷ xs)      (there p) with ++⁻ xs p | ++-comm∘++-comm xs p
   ++-comm∘++-comm (x ∷ xs) {ys} (there .([ ++⁺ʳ xs , ++⁺ˡ ]′ (++⁻ ys (++⁺ʳ ys p))))
-    | inj₁ p | P.refl
+    | inj₁ p | refl
     rewrite ++⁻∘++⁺ ys (inj₂                 p)
-            | ++⁻∘++⁺ ys (inj₂ $ there {x = x} p) = P.refl
+            | ++⁻∘++⁺ ys (inj₂ $ there {x = x} p) = refl
   ++-comm∘++-comm (x ∷ xs) {ys} (there .([ ++⁺ʳ xs , ++⁺ˡ ]′ (++⁻ ys (++⁺ˡ p))))
-    | inj₂ p | P.refl
+    | inj₂ p | refl
     rewrite ++⁻∘++⁺ ys {ys =     xs} (inj₁ p)
-            | ++⁻∘++⁺ ys {ys = x ∷ xs} (inj₁ p) = P.refl
+            | ++⁻∘++⁺ ys {ys = x ∷ xs} (inj₁ p) = refl
 
   ++↔++ : ∀ xs ys → Any P (xs ++ ys) ↔ Any P (ys ++ xs)
-  ++↔++ xs ys = record
-    { to         = P.→-to-⟶ $ ++-comm xs ys
-    ; from       = P.→-to-⟶ $ ++-comm ys xs
-    ; inverse-of = record
-      { left-inverse-of  = ++-comm∘++-comm xs
-      ; right-inverse-of = ++-comm∘++-comm ys
-      }
-    }
+  ++↔++ xs ys = inverse (++-comm xs ys) (++-comm ys xs)
+                        (++-comm∘++-comm xs) (++-comm∘++-comm ys)
 
   ++-insert : ∀ xs {ys x} → P x → Any P (xs ++ [ x ] ++ ys)
   ++-insert xs Px = ++⁺ʳ xs (++⁺ˡ (singleton⁺ Px))
@@ -465,14 +420,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
       P.cong there $ concat⁻∘concat⁺ p
 
   concat↔ : ∀ {xss} → Any (Any P) xss ↔ Any P (concat xss)
-  concat↔ {xss = xss} = record
-    { to         = P.→-to-⟶ $ concat⁺
-    ; from       = P.→-to-⟶ $ concat⁻ xss
-    ; inverse-of = record
-      { left-inverse-of  = concat⁻∘concat⁺
-      ; right-inverse-of = concat⁺∘concat⁻ xss
-      }
-    }
+  concat↔ {xss} = inverse concat⁺ (concat⁻ xss) concat⁻∘concat⁺ (concat⁺∘concat⁻ xss)
 
 ------------------------------------------------------------------------
 -- applyUpTo
@@ -528,14 +476,7 @@ module _ {a b p} {A : Set a} {B : Set b} {P : B → Set p} where
 
   map-with-∈↔ : ∀  {xs : List A} {f : ∀ {x} → x ∈ xs → B} →
     (∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) ↔ Any P (map-with-∈ xs f)
-  map-with-∈↔ = record
-    { to         = P.→-to-⟶ (map-with-∈⁺ _)
-    ; from       = P.→-to-⟶ (map-with-∈⁻ _ _)
-    ; inverse-of = record
-      { left-inverse-of  = from∘to _
-      ; right-inverse-of = to∘from _ _
-      }
-    }
+  map-with-∈↔ = inverse (map-with-∈⁺ _) (map-with-∈⁻ _ _) (from∘to _) (to∘from _ _)
     where
     from∘to : ∀ {xs : List A} (f : ∀ {x} → x ∈ xs → B)
               (p : ∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) →
@@ -574,14 +515,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   return⁻∘return⁺ p = refl
 
   return↔ : ∀ {x} → P x ↔ Any P (return x)
-  return↔ = record
-    { to         = P.→-to-⟶ $ return⁺
-    ; from       = P.→-to-⟶ $ return⁻
-    ; inverse-of = record
-      { left-inverse-of  = return⁻∘return⁺
-      ; right-inverse-of = return⁺∘return⁻
-      }
-    }
+  return↔ = inverse return⁺ return⁻ return⁻∘return⁺ return⁺∘return⁻
 
 ------------------------------------------------------------------------
 -- _∷_
@@ -646,3 +580,4 @@ module _ {ℓ} {A B : Set ℓ} where
     Any (λ x → Any (λ y → P x × Q y) ys) xs  ↔⟨ ⊗↔ ⟩
     Any (P ⟨×⟩ Q) (xs ⊗ ys)                  ∎
 
+-}

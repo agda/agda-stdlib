@@ -13,7 +13,7 @@ open import Data.Unit.Base using (⊤)
 open import Data.Product as Prod hiding (Σ) renaming (_×_ to _⟨×⟩_)
 open import Data.Sum renaming (_⊎_ to _⟨⊎⟩_)
 open import Function as F hiding (id; const) renaming (_∘_ to _⟨∘⟩_)
-open import Function.Inverse using (_↔̇_)
+open import Function.Inverse using (_↔̇_; inverse)
 open import Relation.Unary using (Pred; _⊆_; _∪_; _∩_; ⋃; ⋂)
   renaming (_⟨×⟩_ to _⟪×⟫_; _⟨⊙⟩_ to _⟪⊙⟫_; _⟨⊎⟩_ to _⟪⊎⟫_)
 open import Relation.Binary.PropositionalEquality as P
@@ -137,14 +137,13 @@ module Identity where
 
   correct : ∀ {o ℓ c r} {O : Set o} {X : Pred O ℓ} →
             ⟦ id {c = c}{r} ⟧ X ↔̇ F.id X
-  correct = record
-    { to         = P.→-to-⟶ λ xs → proj₂ xs _
-    ; from       = P.→-to-⟶ λ x → (_ , λ _ → x)
-    ; inverse-of = record
-      { left-inverse-of  = λ _ → refl
-      ; right-inverse-of = λ _ → refl
-      }
-    }
+  correct {X = X} = inverse to from (λ _ → refl) (λ _ → refl)
+    where
+    to : ∀ {x} → ⟦ id ⟧ X x → F.id X x
+    to xs = proj₂ xs _
+
+    from : ∀ {x} → F.id X x → ⟦ id ⟧ X x
+    from x = (_ , λ _ → x)
 
 module Constant (ext : ∀ {ℓ} → P.Extensionality ℓ ℓ) where
 
@@ -155,8 +154,7 @@ module Constant (ext : ∀ {ℓ} → P.Extensionality ℓ ℓ) where
     ; from       = P.→-to-⟶ from
     ; inverse-of = record
       { right-inverse-of = λ _ → refl
-      ; left-inverse-of  =
-          λ xs → P.cong (_,_ (proj₁ xs)) (ext (⊥-elim ⟨∘⟩ lower))
+      ; left-inverse-of  = to∘from
       }
     }
     where
@@ -166,33 +164,23 @@ module Constant (ext : ∀ {ℓ} → P.Extensionality ℓ ℓ) where
     from : X ⊆ ⟦ const X ⟧ Y
     from = < F.id , F.const (⊥-elim ⟨∘⟩ lower) >
 
+    to∘from : _
+    to∘from xs = P.cong (proj₁ xs ,_) (ext (⊥-elim ⟨∘⟩ lower))
+
 module Duality where
 
   correct : ∀ {i o c r ℓ} {I : Set i} {O : Set o}
               (C : Container I O c r) (X : Pred I ℓ) →
             ⟦ C ^⊥ ⟧ X ↔̇ (λ o → (c : Command C o) → ∃ λ r → X (next C c r))
-  correct C X = record
-    { to         = P.→-to-⟶ λ { (f , g) → < f , g > }
-    ; from       = P.→-to-⟶ λ f → proj₁ ⟨∘⟩ f , proj₂ ⟨∘⟩ f
-    ; inverse-of = record
-      { left-inverse-of  = λ { (_ , _) → refl }
-      ; right-inverse-of = λ _ → refl
-      }
-    }
+  correct C X = inverse (λ { (f , g) → < f , g > }) (λ f → proj₁ ⟨∘⟩ f , proj₂ ⟨∘⟩ f)
+                        (λ _ → refl) (λ _ → refl)
 
 module Composition where
 
   correct : ∀ {i j k ℓ c r} {I : Set i} {J : Set j} {K : Set k}
               (C₁ : Container J K c r) (C₂ : Container I J c r) →
             {X : Pred I ℓ} → ⟦ C₁ ∘ C₂ ⟧ X ↔̇ (⟦ C₁ ⟧ ⟨∘⟩ ⟦ C₂ ⟧) X
-  correct C₁ C₂ {X} = record
-    { to         = P.→-to-⟶ to
-    ; from       = P.→-to-⟶ from
-    ; inverse-of = record
-      { left-inverse-of  = λ _ → refl
-      ; right-inverse-of = λ _ → refl
-      }
-    }
+  correct C₁ C₂ {X} = inverse to from (λ _ → refl) (λ _ → refl)
     where
     to : ⟦ C₁ ∘ C₂ ⟧ X ⊆ ⟦ C₁ ⟧ (⟦ C₂ ⟧ X)
     to ((c , f) , g) = (c , < f , curry g >)
@@ -205,14 +193,7 @@ module Product (ext : ∀ {ℓ} → P.Extensionality ℓ ℓ) where
   correct : ∀ {i o c r} {I : Set i} {O : Set o}
               (C₁ C₂ : Container I O c r) {X} →
             ⟦ C₁ × C₂ ⟧ X ↔̇ (⟦ C₁ ⟧ X ∩ ⟦ C₂ ⟧ X)
-  correct C₁ C₂ {X} = record
-    { to         = P.→-to-⟶ to
-    ; from       = P.→-to-⟶ from
-    ; inverse-of = record
-      { left-inverse-of  = from∘to
-      ; right-inverse-of = λ _ → refl
-      }
-    }
+  correct C₁ C₂ {X} = inverse to from from∘to (λ _ → refl)
     where
     to : ⟦ C₁ × C₂ ⟧ X ⊆ ⟦ C₁ ⟧ X ∩ ⟦ C₂ ⟧ X
     to ((c₁ , c₂) , k) = ((c₁ , k ⟨∘⟩ inj₁) , (c₂ , k ⟨∘⟩ inj₂))
@@ -222,21 +203,14 @@ module Product (ext : ∀ {ℓ} → P.Extensionality ℓ ℓ) where
 
     from∘to : from ⟨∘⟩ to ≗ F.id
     from∘to (c , _) =
-      P.cong (_,_ c) (ext [ (λ _ → refl) , (λ _ → refl) ])
+      P.cong (c ,_) (ext [ (λ _ → refl) , (λ _ → refl) ])
 
 module IndexedProduct where
 
   correct : ∀ {x i o c r ℓ} {X : Set x} {I : Set i} {O : Set o}
               (C : X → Container I O c r) {Y : Pred I ℓ} →
             ⟦ Π C ⟧ Y ↔̇ ⋂[ x ∶ X ] ⟦ C x ⟧ Y
-  correct {X = X} C {Y} = record
-    { to         = P.→-to-⟶ to
-    ; from       = P.→-to-⟶ from
-    ; inverse-of = record
-      { left-inverse-of  = λ _ → refl
-      ; right-inverse-of = λ _ → refl
-      }
-    }
+  correct {X = X} C {Y} = inverse to from (λ _ → refl) (λ _ → refl)
     where
     to : ⟦ Π C ⟧ Y ⊆ ⋂[ x ∶ X ] ⟦ C x ⟧ Y
     to (c , k) = λ x → (c x , λ r → k (x , r))
@@ -249,14 +223,7 @@ module Sum where
   correct : ∀ {i o c r ℓ} {I : Set i} {O : Set o}
               (C₁ C₂ : Container I O c r) {X : Pred I ℓ} →
             ⟦ C₁ ⊎ C₂ ⟧ X ↔̇ (⟦ C₁ ⟧ X ∪ ⟦ C₂ ⟧ X)
-  correct C₁ C₂ {X} = record
-    { to         = P.→-to-⟶ to
-    ; from       = P.→-to-⟶ from
-    ; inverse-of = record
-      { left-inverse-of  = from∘to
-      ; right-inverse-of = [ (λ _ → refl) , (λ _ → refl) ]
-      }
-    }
+  correct C₁ C₂ {X} = inverse to from from∘to to∘from
     where
     to : ⟦ C₁ ⊎ C₂ ⟧ X ⊆ ⟦ C₁ ⟧ X ∪ ⟦ C₂ ⟧ X
     to (inj₁ c₁ , k) = inj₁ (c₁ , k)
@@ -269,19 +236,15 @@ module Sum where
     from∘to (inj₁ _ , _) = refl
     from∘to (inj₂ _ , _) = refl
 
+    to∘from : to ⟨∘⟩ from ≗ F.id
+    to∘from = [ (λ _ → refl) , (λ _ → refl) ]
+
 module IndexedSum where
 
   correct : ∀ {x i o c r ℓ} {X : Set x} {I : Set i} {O : Set o}
               (C : X → Container I O c r) {Y : Pred I ℓ} →
             ⟦ Σ C ⟧ Y ↔̇ ⋃[ x ∶ X ] ⟦ C x ⟧ Y
-  correct {X = X} C {Y} = record
-    { to         = P.→-to-⟶ to
-    ; from       = P.→-to-⟶ from
-    ; inverse-of = record
-      { left-inverse-of  = λ _ → refl
-      ; right-inverse-of = λ _ → refl
-      }
-    }
+  correct {X = X} C {Y} = inverse to from (λ _ → refl) (λ _ → refl)
     where
     to : ⟦ Σ C ⟧ Y ⊆ ⋃[ x ∶ X ] ⟦ C x ⟧ Y
     to ((x , c) , k) = (x , (c , k))
