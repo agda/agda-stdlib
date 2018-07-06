@@ -69,7 +69,7 @@ module _ {a} {A : Set a} where
 
   From-just : Maybe A → Set a
   From-just (just _) = A
-  From-just nothing  = Lift ⊤
+  From-just nothing  = Lift a ⊤
 
   from-just : (x : Maybe A) → From-just x
   from-just (just x) = x

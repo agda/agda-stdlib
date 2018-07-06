@@ -94,6 +94,8 @@ Non-backwards compatible changes
 * Renamed `Data.Product`'s `,_` to `-,_` to avoid conflict with the right
   section of `_,_`.
 
+* Made the target level of `Level`'s `Lift` explicit.
+
 Other major changes
 -------------------
 
