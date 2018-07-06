@@ -35,7 +35,7 @@ module _ {a} (A : Set a) (b : Level) where
   monadₗ : RawMonad Sumₗ
   monadₗ = record
     { return = inj₂
-    ; _>>=_  = λ x f → [ inj₁ , f ]′ x
+    ; _>>=_  = [ const ∘ inj₁ , _|>′_ ]′
     }
 
 -- The following are the "right-handed" versions
