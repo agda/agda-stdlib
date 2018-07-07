@@ -6,7 +6,8 @@
 
 module Data.List.Categorical where
 
-open import Algebra
+open import Category.Functor
+open import Category.Applicative
 open import Category.Monad
 open import Data.Bool.Base using (false; true)
 open import Data.List
@@ -17,21 +18,33 @@ open import Relation.Binary.PropositionalEquality as P
 open P.≡-Reasoning
 
 ------------------------------------------------------------------------
--- List monad
+-- List applicative functor
 
-monad : ∀ {ℓ} → RawMonad (List {ℓ})
-monad = record
-  { return = λ x → x ∷ []
-  ; _>>=_  = λ xs f → concat (map f xs)
+functor : ∀ {ℓ} → RawFunctor {ℓ} List
+functor = record { _<$>_ = map }
+
+applicative : ∀ {ℓ} → RawApplicative {ℓ} List
+applicative = record
+  { pure = [_]
+  ; _⊛_  = λ fs as → concatMap (λ f → map f as) fs
   }
 
-monadZero : ∀ {ℓ} → RawMonadZero (List {ℓ})
+------------------------------------------------------------------------
+-- List monad
+
+monad : ∀ {ℓ} → RawMonad {ℓ} List
+monad = record
+  { return = [_]
+  ; _>>=_  = flip concatMap
+  }
+
+monadZero : ∀ {ℓ} → RawMonadZero {ℓ} List
 monadZero = record
   { monad = monad
   ; ∅     = []
   }
 
-monadPlus : ∀ {ℓ} → RawMonadPlus (List {ℓ})
+monadPlus : ∀ {ℓ} → RawMonadPlus {ℓ} List
 monadPlus = record
   { monadZero = monadZero
   ; _∣_       = _++_
@@ -53,6 +66,15 @@ private
   mapM f = sequence ∘ map f
 
 open Monadic public
+
+------------------------------------------------------------------------
+-- List monad transformer
+
+monadT : ∀ {ℓ M} → RawMonad {ℓ} M → RawMonad (M ∘′ List)
+monadT M = record
+  { return = pure ∘′ [_]
+  ; _>>=_  = λ mas f → mas >>= λ as → concat <$> mapM M f as
+  } where open RawMonad M
 
 ------------------------------------------------------------------------
 -- The list monad.

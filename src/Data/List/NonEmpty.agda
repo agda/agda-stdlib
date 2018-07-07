@@ -120,11 +120,8 @@ xs ++⁺ ys = List.foldr _∷⁺_ ys xs
 concat : ∀ {a} {A : Set a} → List⁺ (List⁺ A) → List⁺ A
 concat (xs ∷ xss) = xs ⁺++ List.concat (List.map toList xss)
 
-monad : ∀ {f} → RawMonad (List⁺ {a = f})
-monad = record
-  { return = [_]
-  ; _>>=_  = λ xs f → concat (map f xs)
-  }
+concatMap : ∀ {a b} {A : Set a} {B : Set b} → (A → List⁺ B) → List⁺ A → List⁺ B
+concatMap f = concat ∘′ map f
 
 reverse : ∀ {a} {A : Set a} → List⁺ A → List⁺ A
 reverse = lift (-,_ ∘′ Vec.reverse)

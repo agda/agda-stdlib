@@ -77,6 +77,32 @@ Non-backwards compatible changes
   tabulate : (∀ i → P (Vec.lookup i xs)) → All P {k} xs
   ```
 
+### Overhaul of `Data.X.Categorical`
+
+* Added new functions to `Data.List.Categorical`:
+  ```agda
+  functor     : RawFunctor List
+  applicative : RawApplicative List
+  monadT      : RawMonad M → RawMonad (M ∘′ List)
+  ```
+
+* Moved `monad` from `Data.List.NonEmpty` to `Data.List.NonEmpty.Categorical`
+  and added new functions:
+  ```agda
+  functor     : RawFunctor List⁺
+  applicative : RawApplicative List⁺
+  monadT      : RawMonad M → RawMonad (M ∘′ List⁺)
+  sequence    : List⁺ (M A) → M (List⁺ A)
+  mapM        : (A → M B) → List⁺ A → M (List⁺ B)
+  ```
+
+* Moved `functor`, `monadT`, `monad`, `monadZero` and `monadPlus` from
+  `Data.Maybe` to `Data.Maybe.Categorical` and added the following functions:
+  ```agda
+  sequence : Maybe (M A) → M (Maybe A)
+  mapM     : (A → M B) → Maybe A → M (Maybe B)
+  ```
+
 #### Other
 
 * The `Data.List.Relation.Sublist` directory has been moved to
@@ -154,6 +180,11 @@ Other minor additions
   ```agda
   ∈-insert : v ≈ v′ → v ∈ xs ++ [ v′ ] ++ ys
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
+  ```
+
+* Added new function to `Data.List.NonEmpty`:
+  ```agda
+  concatMap : (A → List⁺ B) → List⁺ A → List⁺ B
   ```
 
 * Added new function to `Data.Maybe.Base`:
