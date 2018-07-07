@@ -58,16 +58,24 @@ monadPlus {f} = record
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
-private
- module Monadic {m} {M : Set m → Set m} (Mon : RawMonad M) where
+module _ {f F} (App : RawApplicative {f} F) where
 
-  open RawMonad Mon
+  open RawApplicative App
 
-  sequence : ∀ {A} → Maybe (M A) → M (Maybe A)
-  sequence nothing  = return nothing
-  sequence (just x) = just <$> x
+  sequenceA : ∀ {A} → Maybe (F A) → F (Maybe A)
+  sequenceA nothing  = pure nothing
+  sequenceA (just x) = just <$> x
 
-  mapM : ∀ {a} {A : Set a} {B} → (A → M B) → Maybe A → M (Maybe B)
-  mapM f = sequence ∘ map f
+  mapA : ∀ {a} {A : Set a} {B} → (A → F B) → Maybe A → F (Maybe B)
+  mapA f = sequenceA ∘ map f
 
-open Monadic public
+  forA : ∀ {a} {A : Set a} {B} → Maybe A → (A → F B) → F (Maybe B)
+  forA = flip mapA
+
+module _ {m M} (Mon : RawMonad {m} M) where
+
+  private App = RawMonad.rawIApplicative Mon
+
+  sequenceM = sequenceA App
+  mapM = mapA App
+  forM = forA App

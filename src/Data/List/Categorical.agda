@@ -53,19 +53,27 @@ monadPlus = record
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
-private
- module Monadic {m} {M : Set m → Set m} (Mon : RawMonad M) where
+module _ {f F} (App : RawApplicative {f} F) where
 
-  open RawMonad Mon
+  open RawApplicative App
 
-  sequence : ∀ {A} → List (M A) → M (List A)
-  sequence []       = return []
-  sequence (x ∷ xs) = _∷_ <$> x ⊛ sequence xs
+  sequenceA : ∀ {A} → List (F A) → F (List A)
+  sequenceA []       = pure []
+  sequenceA (x ∷ xs) = _∷_ <$> x ⊛ sequenceA xs
 
-  mapM : ∀ {a} {A : Set a} {B} → (A → M B) → List A → M (List B)
-  mapM f = sequence ∘ map f
+  mapA : ∀ {a} {A : Set a} {B} → (A → F B) → List A → F (List B)
+  mapA f = sequenceA ∘ map f
 
-open Monadic public
+  forA : ∀ {a} {A : Set a} {B} → List A → (A → F B) → F (List B)
+  forA = flip mapA
+
+module _ {m M} (Mon : RawMonad {m} M) where
+
+  private App = RawMonad.rawIApplicative Mon
+
+  sequenceM = sequenceA App
+  mapM = mapA App
+  forM = forA App
 
 ------------------------------------------------------------------------
 -- List monad transformer

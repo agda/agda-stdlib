@@ -79,28 +79,42 @@ Non-backwards compatible changes
 
 ### Overhaul of `Data.X.Categorical`
 
-* Added new functions to `Data.List.Categorical`:
+* In `Data.List.Categorical` renamed `sequence` to `sequenceM` and added
+  new functions:
   ```agda
   functor     : RawFunctor List
   applicative : RawApplicative List
   monadT      : RawMonad M → RawMonad (M ∘′ List)
+  sequenceA   : RawApplicative F → List (F A) → F (List A)
+  mapA        : RawApplicative F → (A → F B) → List A → F (List B)
+  forA        : RawApplicative F → List A → (A → F B) → F (List B)
+  forM        : RawMonad M → List A → (A → M B) → M (List B)
   ```
 
-* Moved `monad` from `Data.List.NonEmpty` to `Data.List.NonEmpty.Categorical`
-  and added new functions:
+* Created `Data.List.NonEmpty.Categorical`, moved `monad` into it
+  from `Data.List.NonEmpty` and added new functions:
   ```agda
   functor     : RawFunctor List⁺
   applicative : RawApplicative List⁺
   monadT      : RawMonad M → RawMonad (M ∘′ List⁺)
-  sequence    : List⁺ (M A) → M (List⁺ A)
-  mapM        : (A → M B) → List⁺ A → M (List⁺ B)
+  sequenceA   : RawApplicative F → List⁺ (F A) → F (List⁺ A)
+  mapA        : RawApplicative F → (A → F B) → List⁺ A → F (List⁺ B)
+  forA        : RawApplicative F → List⁺ A → (A → F B) → F (List⁺ B)
+  sequenceM   : RawMonad M → List⁺ (M A) → M (List⁺ A)
+  mapM        : RawMonad M → (A → M B) → List⁺ A → M (List⁺ B)
+  forM        : RawMonad M → List⁺ A → (A → M B) → M (List⁺ B)
   ```
 
-* Moved `functor`, `monadT`, `monad`, `monadZero` and `monadPlus` from
-  `Data.Maybe` to `Data.Maybe.Categorical` and added the following functions:
+* Created `Data.Maybe.Categorical`, moved `functor`, `monadT`, `monad`,
+  `monadZero` and `monadPlus` into it from `Data.Maybe` and added the
+  following functions:
   ```agda
-  sequence : Maybe (M A) → M (Maybe A)
-  mapM     : (A → M B) → Maybe A → M (Maybe B)
+  sequenceA : RawApplicative F → Maybe (F A) → F (Maybe A)
+  mapA      : RawApplicative F → (A → F B) → Maybe A → F (Maybe B)
+  forA      : RawApplicative F → Maybe A → (A → F B) → F (Maybe B)
+  sequenceM : RawMonad M → Maybe (M A) → M (Maybe A)
+  mapM      : RawMonad M → (A → M B) → Maybe A → M (Maybe B)
+  forM      : RawMonad M → Maybe A → (A → M B) → M (Maybe B)
   ```
 
 #### Other
