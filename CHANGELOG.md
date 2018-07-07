@@ -79,8 +79,7 @@ Non-backwards compatible changes
 
 ### Overhaul of `Data.X.Categorical`
 
-* In `Data.List.Categorical` renamed `sequence` to `sequenceM` and added
-  new functions:
+* In `Data.List.Categorical` renamed and added functions:
   ```agda
   functor     : RawFunctor List
   applicative : RawApplicative List
@@ -88,6 +87,7 @@ Non-backwards compatible changes
   sequenceA   : RawApplicative F → List (F A) → F (List A)
   mapA        : RawApplicative F → (A → F B) → List A → F (List B)
   forA        : RawApplicative F → List A → (A → F B) → F (List B)
+  sequence    ↦ sequenceM
   forM        : RawMonad M → List A → (A → M B) → M (List B)
   ```
 
