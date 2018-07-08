@@ -70,7 +70,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
   { Carrier             = Set ℓ
   ; _≈_                 = Related ⌊ k ⌋
   ; _∙_                 = _×_
-  ; ε                   = Lift ⊤
+  ; ε                   = Lift ℓ ⊤
   ; isCommutativeMonoid = record
     { isSemigroup   = record
       { isEquivalence = Setoid.isEquivalence $ Related.setoid k ℓ
@@ -84,7 +84,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
   where
   open FP _↔_
 
-  left-identity : LeftIdentity (Lift {ℓ = ℓ} ⊤) _×_
+  left-identity : LeftIdentity (Lift ℓ ⊤) _×_
   left-identity _ = record
     { to         = P.→-to-⟶ proj₂
     ; from       = P.→-to-⟶ λ y → _ , y
@@ -103,7 +103,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
   { Carrier             = Set ℓ
   ; _≈_                 = Related ⌊ k ⌋
   ; _∙_                 = _⊎_
-  ; ε                   = Lift ⊥
+  ; ε                   = Lift ℓ ⊥
   ; isCommutativeMonoid = record
     { isSemigroup   = record
       { isEquivalence = Setoid.isEquivalence $ Related.setoid k ℓ
@@ -117,7 +117,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
   where
   open FP _↔_
 
-  left-identity : LeftIdentity (Lift ⊥) (_⊎_ {a = ℓ} {b = ℓ})
+  left-identity : LeftIdentity (Lift ℓ ⊥) _⊎_
   left-identity A = record
     { to         = P.→-to-⟶ [ (λ ()) ∘′ lower , id ]
     ; from       = P.→-to-⟶ inj₂
@@ -154,15 +154,15 @@ open import Relation.Nullary.Decidable as Dec using (True)
   ; _≈_                   = Related ⌊ k ⌋
   ; _+_                   = _⊎_
   ; _*_                   = _×_
-  ; 0#                    = Lift ⊥
-  ; 1#                    = Lift ⊤
+  ; 0#                    = Lift ℓ ⊥
+  ; 1#                    = Lift ℓ ⊤
   ; isCommutativeSemiring = isCommutativeSemiring
   }
   where
   open CommutativeMonoid
   open FP _↔_
 
-  left-zero : LeftZero (Lift ⊥) (_×_ {a = ℓ} {b = ℓ})
+  left-zero : LeftZero (Lift ℓ ⊥) _×_
   left-zero A = record
     { to         = P.→-to-⟶ proj₁
     ; from       = P.→-to-⟶ (⊥-elim ∘′ lower)
@@ -193,7 +193,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
     -- writing, on a given system, using certain Agda options).
 
     isCommutativeSemiring :
-      IsCommutativeSemiring (Related ⌊ k ⌋) _⊎_ _×_ (Lift ⊥) (Lift ⊤)
+      IsCommutativeSemiring (Related ⌊ k ⌋) _⊎_ _×_ (Lift ℓ ⊥) (Lift ℓ ⊤)
     isCommutativeSemiring = record
       { +-isCommutativeMonoid = isCommutativeMonoid $
                                   ⊎-CommutativeMonoid k ℓ
@@ -239,7 +239,7 @@ private
       open P.≡-Reasoning
 
       ↑⊤ : Set ℓ
-      ↑⊤ = Lift ⊤
+      ↑⊤ = Lift _ ⊤
 
       inj₁≢inj₂ : ∀ {A : Set ℓ} {x : ↑⊤ ⊎ A} {y} →
                   x ≡ inj₂ y → x ≡ inj₁ _ → ⊥
@@ -311,7 +311,7 @@ private
   -- A test of the solver above.
 
   test : {ℓ : Level} (A B C : Set ℓ) →
-         (Lift ⊤ × A × (B ⊎ C)) ↔ (A × B ⊎ C × (Lift ⊥ ⊎ A))
+         (Lift ℓ ⊤ × A × (B ⊎ C)) ↔ (A × B ⊎ C × (Lift ℓ ⊥ ⊎ A))
   test = solve 3 (λ A B C → con 1 :* (A :* (B :+ C)) :=
                             A :* B :+ C :* (con 0 :+ A))
                  Inv.id

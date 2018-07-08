@@ -20,15 +20,17 @@ open import Relation.Binary.PropositionalEquality as P
 ------------------------------------------------------------------------
 -- Combinators
 
+module _ {s p : Level} where
+
 -- Identity.
 
-id : ∀ {s p} → Container s p
-id = Lift ⊤ ▷ F.const (Lift ⊤)
+  id : Container s p
+  id = Lift s ⊤ ▷ F.const (Lift p ⊤)
 
 -- Constant.
 
-const : ∀ {s p} → Set s → Container s p
-const X = X ▷ F.const (Lift ⊥)
+  const : Set s → Container s p
+  const X = X ▷ F.const (Lift p ⊥)
 
 -- Composition.
 

@@ -91,7 +91,7 @@ map-∘ (¬¬ F)    f g x        = _
 -- A variant of sequence can be implemented for ⟦ F ⟧.
 
 sequence : ∀ {p AF} → RawApplicative AF →
-           (AF (Lift ⊥) → ⊥) →
+           (AF (Lift p ⊥) → ⊥) →
            ({A B : Set p} → (A → AF B) → AF (A → B)) →
            ∀ F {P} → ⟦ F ⟧ (AF P) → AF (⟦ F ⟧ P)
 sequence {AF = AF} A extract-⊥ sequence-⇒ = helper

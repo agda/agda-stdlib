@@ -65,15 +65,15 @@ postulate
                                                  (\_ -> System.IO.hFileSize h)
     Data.Text.IO.hGetContents h
 
-  fromColist :: MAlonzo.Code.Data.Colist.AgdaColist a -> [a]
-  fromColist MAlonzo.Code.Data.Colist.Nil         = []
-  fromColist (MAlonzo.Code.Data.Colist.Cons x xs) =
+  fromColist :: MAlonzo.Code.Codata.Musical.Colist.AgdaColist a -> [a]
+  fromColist MAlonzo.Code.Codata.Musical.Colist.Nil         = []
+  fromColist (MAlonzo.Code.Codata.Musical.Colist.Cons x xs) =
     x : fromColist (MAlonzo.RTE.flat xs)
 
-  toColist :: [a] -> MAlonzo.Code.Data.Colist.AgdaColist a
-  toColist []       = MAlonzo.Code.Data.Colist.Nil
+  toColist :: [a] -> MAlonzo.Code.Codata.Musical.Colist.AgdaColist a
+  toColist []       = MAlonzo.Code.Codata.Musical.Colist.Nil
   toColist (x : xs) =
-    MAlonzo.Code.Data.Colist.Cons x (MAlonzo.RTE.Sharp (toColist xs))
+    MAlonzo.Code.Codata.Musical.Colist.Cons x (MAlonzo.RTE.Sharp (toColist xs))
 #-}
 
 {-# COMPILE GHC getContents    = fmap toColist getContents                          #-}

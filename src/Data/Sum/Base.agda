@@ -6,7 +6,7 @@
 
 module Data.Sum.Base where
 
-open import Function using (_∘_; _-[_]-_)
+open import Function using (_∘_; _-[_]-_ ; id)
 open import Level using (_⊔_)
 
 ------------------------------------------------------------------------
@@ -42,8 +42,15 @@ map : ∀ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} →
       (A → C) → (B → D) → (A ⊎ B → C ⊎ D)
 map f g = [ inj₁ ∘ f , inj₂ ∘ g ]
 
-infixr 1 _-⊎-_
+map₁ : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c}→
+       (A → C) → (A ⊎ B → C ⊎ B)
+map₁ f = map f id
 
+map₂ : ∀ {a b d} {A : Set a} {B : Set b} {D : Set d} →
+       (B → D) → (A ⊎ B → A ⊎ D)
+map₂ = map id
+
+infixr 1 _-⊎-_
 _-⊎-_ : ∀ {a b c d} {A : Set a} {B : Set b} →
         (A → B → Set c) → (A → B → Set d) → (A → B → Set (c ⊔ d))
 f -⊎- g = f -[ _⊎_ ]- g
