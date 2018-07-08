@@ -213,6 +213,12 @@ Other minor additions
   typeOf : {A : Set a} → A → Set a
   ```
 
+* Added new functions to `Level`:
+  ```agda
+  _ℕ+_ : Nat → Level → Level
+  #_   : Nat → Level
+  ```
+
 * Added the following types in `Relation.Unary`:
   ```agda
   Satisfiable P = ∃ λ x → x ∈ P
