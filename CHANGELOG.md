@@ -43,7 +43,6 @@ Non-backwards compatible changes
 * The type `Costring` and method `toCostring` have been moved from `Data.String`
   to a new module `Codata.Musical.Costring`.
 
-
 #### Improved consistency between `Data.(List/Vec).(Any/All/Membership)`
 
 * Added new module `Data.Vec.Any`.
@@ -76,6 +75,23 @@ Non-backwards compatible changes
   ```agda
   tabulate : (∀ i → P (Vec.lookup i xs)) → All P {k} xs
   ```
+
+#### Deprecating `Data.Fin.Dec`:
+
+* This module has been deprecated as it's non-standard position
+  is causing dependency cycles. The move also makes finding
+  subset properties easier.
+
+* The following have been moved to `Data.Fin.Properties`:
+  `decFinSubset`, `any?`, `all?`, `¬∀⟶∃¬-smallest`, `¬∀⟶∃¬`.
+
+* The following proofs have been moved to `Data.Fin.Subset.Properties`:
+  `_∈?_`, `_⊆?_`, `nonempty?`, `anySubset?` and `decLift`. The latter
+  has been renamed to `Lift?`.
+
+* The file `Data.Fin.Dec` still exists for backwards compatability
+  and exports all the old names, but may be removed in some
+  future version.
 
 #### Other
 
@@ -229,6 +245,12 @@ Other minor additions
 * Added the following types in `Relation.Unary`:
   ```agda
   Satisfiable P = ∃ λ x → x ∈ P
+  ```
+
+* Added the following proofs in `Relation.Unary.Properties`:
+  ```agda
+  ∅? : Decidable ∅
+  U? : Decidable U
   ```
 
 Version 0.16
@@ -863,15 +885,15 @@ Other minor additions
   ⊆-trans : Transitive _⊆_
   ⊂-asym  : Asymmetric _⊂_
 
-  _∪?_    : Decidable P → Decidable Q → Decidable (P ∪ Q)
-  _∩?_    : Decidable P → Decidable Q → Decidable (P ∩ Q)
-  _×?_    : Decidable P → Decidable Q → Decidable (P ⟨×⟩ Q)
-  _⊙?_    : Decidable P → Decidable Q → Decidable (P ⟨⊙⟩ Q)
-  _⊎?_    : Decidable P → Decidable Q → Decidable (P ⟨⊎⟩ Q)
-  _~?     : Decidable P → Decidable (P ~)
+  _∪?_ : Decidable P → Decidable Q → Decidable (P ∪ Q)
+  _∩?_ : Decidable P → Decidable Q → Decidable (P ∩ Q)
+  _×?_ : Decidable P → Decidable Q → Decidable (P ⟨×⟩ Q)
+  _⊙?_ : Decidable P → Decidable Q → Decidable (P ⟨⊙⟩ Q)
+  _⊎?_ : Decidable P → Decidable Q → Decidable (P ⟨⊎⟩ Q)
+  _~?  : Decidable P → Decidable (P ~)
 
-  U?      : Decidable U
-  ∅?      : Decidable ∅
+  U?   : Decidable U
+  ∅?   : Decidable ∅
   ```
 
 * Added indexed variants of functions to `Relation.Binary.HeterogeneousEquality`:
