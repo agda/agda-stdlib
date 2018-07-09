@@ -96,6 +96,9 @@ Non-backwards compatible changes
 
 * Made the target level of `Level`'s `Lift` explicit.
 
+* Made `Data.Container` (and associated modules) more level-polymorphic and
+  moved the core definitions to `Data.Container.Core`.
+
 Other major changes
 -------------------
 
@@ -183,6 +186,18 @@ Other minor additions
   %-distribˡ-+  : (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
   ```
 
+* Added new functions to `Data.Nat.Properties`:
+  ```agda
+  *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
+  *-distrib-∸  : _*_ DistributesOver _∸_
+  ^-*-assoc    : (m ^ n) ^ p ≡ m ^ (n * p)
+  ```
+
+* Added new function to `Data.String.Base`:
+  ```agda
+  fromList⁺ : List⁺ Char → String
+  ```
+
 * Added new functions to `Data.Sum`:
   ```agda
   map₁ : (A → B) → A ⊎ C → B ⊎ C
@@ -211,6 +226,12 @@ Other minor additions
 * Added new function to `Function`:
   ```agda
   typeOf : {A : Set a} → A → Set a
+  ```
+
+
+* Added new result to `Function.Relation.TypeIsomorphisms`:
+  ```agda
+  ×-comm : (A × B) ↔ (B × A)
   ```
 
 * Added new functions to `Level`:

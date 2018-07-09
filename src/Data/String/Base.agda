@@ -7,8 +7,8 @@
 module Data.String.Base where
 
 open import Data.Nat.Base as Nat using (ℕ)
-open import Data.List.Base as List using (_∷_; []; List)
-open import Data.Bool.Base using (Bool)
+open import Data.List.Base as List using (List)
+open import Data.List.NonEmpty as NE using (List⁺)
 open import Data.Char.Core using (Char)
 open import Function
 open import Relation.Binary.Core using (_≡_)
@@ -35,6 +35,9 @@ toList = primStringToList
 
 fromList : List Char → String
 fromList = primStringFromList
+
+fromList⁺ : List⁺ Char → String
+fromList⁺ = fromList ∘ NE.toList
 
 -- List-like functions
 
