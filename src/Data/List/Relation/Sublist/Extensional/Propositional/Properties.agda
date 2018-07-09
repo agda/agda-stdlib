@@ -41,6 +41,7 @@ private
 open import Data.List.Relation.Sublist.Extensional.Setoid.Properties using (module OrderDefinitions)
 module _ {a} (A : Set a) where
   open OrderDefinitions (setoid A) public
+  -- Note that _≋⟨_⟩_ is for pointwise `_≡_`.
 
 ------------------------------------------------------------------------
 -- Properties relating _⊆_ to various list functions
