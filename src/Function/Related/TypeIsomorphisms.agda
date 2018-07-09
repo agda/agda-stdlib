@@ -47,6 +47,20 @@ open import Relation.Nullary.Decidable as Dec using (True)
     }
   }
 
+
+------------------------------------------------------------------------
+-- × is "commutative"
+
+×-comm : ∀ {a b} {A : Set a} {B : Set b} → (A × B) ↔ (B × A)
+×-comm = record
+  { to         = P.→-to-⟶ Prod.swap
+  ; from       = P.→-to-⟶ Prod.swap
+  ; inverse-of = record
+      { left-inverse-of  = λ _ → P.refl
+      ; right-inverse-of = λ _ → P.refl
+      }
+  }
+
 ------------------------------------------------------------------------
 -- ⊥, ⊤, _×_ and _⊎_ form a commutative semiring
 
@@ -81,14 +95,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
     }
 
   comm : Commutative _×_
-  comm _ _ = record
-    { to         = P.→-to-⟶ Prod.swap
-    ; from       = P.→-to-⟶ Prod.swap
-    ; inverse-of = record
-      { left-inverse-of  = λ _ → P.refl
-      ; right-inverse-of = λ _ → P.refl
-      }
-    }
+  comm _ _ = ×-comm
 
 ⊎-CommutativeMonoid : Symmetric-kind → (ℓ : Level) →
                       CommutativeMonoid _ _
