@@ -187,7 +187,7 @@ Other minor additions
   ```agda
   *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
   *-distrib-∸  : _*_ DistributesOver _∸_
-  ^-assoc-^-*  : (m ^ n) ^ p ≡ m ^ (n * p)
+  ^-*-assoc    : (m ^ n) ^ p ≡ m ^ (n * p)
   ```
 
 * Added new functions to `Data.Sum`:

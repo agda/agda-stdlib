@@ -587,7 +587,7 @@ i*j≡1⇒i≡1 zero          j             ()
 i*j≡1⇒i≡1 (suc (suc i)) (suc (suc j)) ()
 i*j≡1⇒i≡1 (suc (suc i)) (suc zero)    ()
 i*j≡1⇒i≡1 (suc (suc i)) zero          eq =
-  contradiction (trans (*-comm 0 i) eq) λ()
+  contradiction (trans (sym $ *-zeroʳ i) eq) λ()
 
 i*j≡1⇒j≡1 : ∀ i j → i * j ≡ 1 → j ≡ 1
 i*j≡1⇒j≡1 i j eq = i*j≡1⇒i≡1 j i (trans (*-comm j i) eq)
@@ -657,13 +657,13 @@ i*j≡1⇒j≡1 i j eq = i*j≡1⇒i≡1 j i (trans (*-comm j i) eq)
   ; ε-homo  = refl
   }
 
-^-assoc-^-* : ∀ m n p → (m ^ n) ^ p ≡ m ^ (n * p)
-^-assoc-^-* m n zero    = begin
+^-*-assoc : ∀ m n p → (m ^ n) ^ p ≡ m ^ (n * p)
+^-*-assoc m n zero    = begin
   1           ≡⟨⟩
-  m ^ 0       ≡⟨ cong (m ^_) (*-comm 0 n) ⟩
+  m ^ 0       ≡⟨ cong (m ^_) (sym $ *-zeroʳ n) ⟩
   m ^ (n * 0) ∎
-^-assoc-^-* m n (suc p) = begin
-  (m ^ n) * ((m ^ n) ^ p) ≡⟨ cong ((m ^ n) *_) (^-assoc-^-* m n p) ⟩
+^-*-assoc m n (suc p) = begin
+  (m ^ n) * ((m ^ n) ^ p) ≡⟨ cong ((m ^ n) *_) (^-*-assoc m n p) ⟩
   (m ^ n) * (m ^ (n * p)) ≡⟨ sym (^-distribˡ-+-* m n (n * p)) ⟩
   m ^ (n + n * p)         ≡⟨ cong (m ^_) (sym (+-*-suc n p)) ⟩
   m ^ (n * (suc p)) ∎
