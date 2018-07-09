@@ -183,6 +183,13 @@ Other minor additions
   %-distribˡ-+  : (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
   ```
 
+* Added new functions to `Data.Nat.Properties`:
+  ```agda
+  *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
+  *-distrib-∸  : _*_ DistributesOver _∸_
+  ^-assoc-^-*  : (m ^ n) ^ p ≡ m ^ (n * p)
+  ```
+
 * Added new functions to `Data.Sum`:
   ```agda
   map₁ : (A → B) → A ⊎ C → B ⊎ C

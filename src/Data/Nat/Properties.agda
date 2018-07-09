@@ -657,6 +657,17 @@ i*j≡1⇒j≡1 i j eq = i*j≡1⇒i≡1 j i (trans (*-comm j i) eq)
   ; ε-homo  = refl
   }
 
+^-assoc-^-* : ∀ m n p → (m ^ n) ^ p ≡ m ^ (n * p)
+^-assoc-^-* m n zero    = begin
+  1           ≡⟨⟩
+  m ^ 0       ≡⟨ cong (m ^_) (*-comm 0 n) ⟩
+  m ^ (n * 0) ∎
+^-assoc-^-* m n (suc p) = begin
+  (m ^ n) * ((m ^ n) ^ p) ≡⟨ cong ((m ^ n) *_) (^-assoc-^-* m n p) ⟩
+  (m ^ n) * (m ^ (n * p)) ≡⟨ sym (^-distribˡ-+-* m n (n * p)) ⟩
+  m ^ (n + n * p)         ≡⟨ cong (m ^_) (sym (+-*-suc n p)) ⟩
+  m ^ (n * (suc p)) ∎
+
 i^j≡0⇒i≡0 : ∀ i j → i ^ j ≡ 0 → i ≡ 0
 i^j≡0⇒i≡0 i zero    ()
 i^j≡0⇒i≡0 i (suc j) eq = [ id , i^j≡0⇒i≡0 i j ]′ (i*j≡0⇒i≡0∨j≡0 i eq)
@@ -1049,6 +1060,12 @@ m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin
   (j ∸ k) * i             ≡⟨ *-distribʳ-∸ i j k ⟩
   j * i ∸ k * i           ≡⟨ sym $ [i+j]∸[i+k]≡j∸k i _ _ ⟩
   i + j * i ∸ (i + k * i) ∎
+
+*-distribˡ-∸ : _*_ DistributesOverˡ _∸_
+*-distribˡ-∸ = comm+distrʳ⇒distrˡ (cong₂ _∸_) *-comm *-distribʳ-∸
+
+*-distrib-∸ : _*_ DistributesOver _∸_
+*-distrib-∸ = *-distribˡ-∸ , *-distribʳ-∸
 
 -- Properties of _∸_ and _⊓_ and _⊔_
 m⊓n+n∸m≡n : ∀ m n → (m ⊓ n) + (n ∸ m) ≡ n
