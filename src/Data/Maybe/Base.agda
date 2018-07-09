@@ -57,16 +57,23 @@ maybe j n nothing  = n
 maybe′ : ∀ {a b} {A : Set a} {B : Set b} → (A → B) → B → Maybe A → B
 maybe′ = maybe
 
+-- A defaulting mechanism
+
+fromMaybe : ∀ {a} {A : Set a} → A → Maybe A → A
+fromMaybe = maybe′ id
+
 -- A safe variant of "fromJust". If the value is nothing, then the
 -- return type is the unit type.
 
-From-just : ∀ {a} (A : Set a) → Maybe A → Set a
-From-just A (just _) = A
-From-just A nothing  = Lift ⊤
+module _ {a} {A : Set a} where
 
-from-just : ∀ {a} {A : Set a} (x : Maybe A) → From-just A x
-from-just (just x) = x
-from-just nothing  = _
+  From-just : Maybe A → Set a
+  From-just (just _) = A
+  From-just nothing  = Lift a ⊤
+
+  from-just : (x : Maybe A) → From-just x
+  from-just (just x) = x
+  from-just nothing  = _
 
 -- Functoriality: map.
 

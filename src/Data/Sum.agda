@@ -20,26 +20,28 @@ open import Data.Sum.Base public
 ------------------------------------------------------------------------
 -- Additional functions
 
-isInj₁ : ∀ {a b} {A : Set a} {B : Set b} → A ⊎ B → Maybe A
-isInj₁ (inj₁ x) = just x
-isInj₁ (inj₂ y) = nothing
+module _ {a b} {A : Set a} {B : Set b} where
 
-isInj₂ : ∀ {a b} {A : Set a} {B : Set b} → A ⊎ B → Maybe B
-isInj₂ (inj₁ x) = nothing
-isInj₂ (inj₂ y) = just y
+  isInj₁ : A ⊎ B → Maybe A
+  isInj₁ (inj₁ x) = just x
+  isInj₁ (inj₂ y) = nothing
 
-From-inj₁ : ∀ {a b} {A : Set a} {B : Set b} → A ⊎ B → Set a
-From-inj₁ {A = A} (inj₁ _) = A
-From-inj₁         (inj₂ _) = Lift ⊤
+  isInj₂ : A ⊎ B → Maybe B
+  isInj₂ (inj₁ x) = nothing
+  isInj₂ (inj₂ y) = just y
 
-from-inj₁ : ∀ {a b} {A : Set a} {B : Set b} (x : A ⊎ B) → From-inj₁ x
-from-inj₁ (inj₁ x) = x
-from-inj₁ (inj₂ _) = lift tt
+  From-inj₁ : A ⊎ B → Set a
+  From-inj₁ (inj₁ _) = A
+  From-inj₁ (inj₂ _) = Lift a ⊤
 
-From-inj₂ : ∀ {a b} {A : Set a} {B : Set b} → A ⊎ B → Set b
-From-inj₂         (inj₁ _) = Lift ⊤
-From-inj₂ {B = B} (inj₂ _) = B
+  from-inj₁ : (x : A ⊎ B) → From-inj₁ x
+  from-inj₁ (inj₁ x) = x
+  from-inj₁ (inj₂ _) = _
 
-from-inj₂ : ∀ {a b} {A : Set a} {B : Set b} (x : A ⊎ B) → From-inj₂ x
-from-inj₂ (inj₁ _) = lift tt
-from-inj₂ (inj₂ x) = x
+  From-inj₂ : A ⊎ B → Set b
+  From-inj₂ (inj₁ _) = Lift b ⊤
+  From-inj₂ (inj₂ _) = B
+
+  from-inj₂ : (x : A ⊎ B) → From-inj₂ x
+  from-inj₂ (inj₁ _) = _
+  from-inj₂ (inj₂ x) = x

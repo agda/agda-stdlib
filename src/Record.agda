@@ -69,7 +69,7 @@ mutual
     field fun : Record-fun Sig
 
   Record-fun : ∀ {s} → Signature s → Set s
-  Record-fun ∅             = Lift ⊤
+  Record-fun ∅             = Lift _ ⊤
   Record-fun (Sig , ℓ ∶ A) =          Σ (Record Sig) A
   Record-fun (Sig , ℓ ≔ a) = Manifest-Σ (Record Sig) a
 

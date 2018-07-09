@@ -132,6 +132,5 @@ prove′ e₁ e₂ =
 -- This procedure can be combined with from-just.
 
 prove : ∀ n (es : Expr n × Expr n) →
-        From-just (∀ ρ → ⟦ proj₁ es ⟧ ρ ≈ ⟦ proj₂ es ⟧ ρ)
-                  (uncurry prove′ es)
+        From-just (uncurry prove′ es)
 prove _ = from-just ∘ uncurry prove′

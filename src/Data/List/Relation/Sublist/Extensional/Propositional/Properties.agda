@@ -6,7 +6,8 @@
 
 open import Relation.Binary hiding (Decidable)
 
-module Data.List.Relation.Sublist.Propositional.Properties where
+module Data.List.Relation.Sublist.Extensional.Propositional.Properties
+  where
 
 open import Category.Monad
 open import Data.Bool.Base using (Bool; true; false; T)
@@ -15,9 +16,9 @@ open import Data.List.Any using (Any; here; there)
 open import Data.List.Any.Properties as AnyP
 open import Data.List.Categorical
 open import Data.List.Membership.Propositional
-import Data.List.Relation.Sublist.Setoid.Properties as Setoidₚ
 open import Data.List.Membership.Propositional.Properties
-open import Data.List.Relation.Sublist.Propositional
+import Data.List.Relation.Sublist.Extensional.Setoid.Properties as Setoidₚ
+open import Data.List.Relation.Sublist.Extensional.Propositional
 import Data.Product as Prod
 import Data.Sum as Sum
 open import Function using (_∘_; _∘′_; id; _$_)
@@ -146,13 +147,13 @@ module _ {ℓ} {A B : Set ℓ} {fs gs : List (A → B)} {xs ys : List A} where
 ------------------------------------------------------------------------
 -- _⊗_
 
-module _ {A B : Set} {xs₁ ys₁ : List A} {xs₂ ys₂ : List B} where
+module _ {ℓ} {A B : Set ℓ} {xs₁ ys₁ : List A} {xs₂ ys₂ : List B} where
 
   _⊗-mono_ : xs₁ ⊆ ys₁ → xs₂ ⊆ ys₂ → (xs₁ ⊗ xs₂) ⊆ (ys₁ ⊗ ys₂)
   xs₁⊆ys₁ ⊗-mono xs₂⊆ys₂ =
-    _⟨$⟩_ (Inverse.to ⊗-∈↔) ∘
+    _⟨$⟩_ (Inverse.to $ ⊗-∈↔ {ℓ = ℓ}) ∘
     Prod.map xs₁⊆ys₁ xs₂⊆ys₂ ∘
-    _⟨$⟩_ (Inverse.from ⊗-∈↔)
+    _⟨$⟩_ (Inverse.from $ ⊗-∈↔ {ℓ = ℓ})
 
 ------------------------------------------------------------------------
 -- any

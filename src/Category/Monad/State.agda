@@ -53,11 +53,11 @@ record RawIMonadState {i f} {I : Set i} (S : I → Set f)
   field
     monad : RawIMonad M
     get   : ∀ {i} → M i i (S i)
-    put   : ∀ {i j} → S j → M i j (Lift ⊤)
+    put   : ∀ {i j} → S j → M i j (Lift f ⊤)
 
   open RawIMonad monad public
 
-  modify : ∀ {i j} → (S i → S j) → M i j (Lift ⊤)
+  modify : ∀ {i j} → (S i → S j) → M i j (Lift f ⊤)
   modify f = get >>= put ∘ f
 
 StateTIMonadState : ∀ {i f} {I : Set i} (S : I → Set f) {M} →

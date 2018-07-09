@@ -26,13 +26,13 @@ open import Relation.Binary.PropositionalEquality as P
 -- Identity.
 
 id : ∀ {o c r} {O : Set o} → Container O O c r
-id = F.const (Lift ⊤) ◃ (λ _ → Lift ⊤) / (λ {o} _ _ → o)
+id = F.const (Lift _ ⊤) ◃ (λ _ → Lift _ ⊤) / (λ {o} _ _ → o)
 
 -- Constant.
 
 const : ∀ {i o c r} {I : Set i} {O : Set o} →
         Pred O c → Container I O c r
-const X = X ◃ (λ _ → Lift ⊥) / λ _ → ⊥-elim ⟨∘⟩ lower
+const X = X ◃ (λ _ → Lift _ ⊥) / λ _ → ⊥-elim ⟨∘⟩ lower
 
 -- Duality.
 

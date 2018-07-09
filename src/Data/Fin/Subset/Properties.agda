@@ -21,7 +21,7 @@ open import Data.Nat.Base using (ℕ; zero; suc; z≤n; s≤s; _≤_)
 open import Data.Nat.Properties using (≤-step)
 open import Data.Product as Product using (∃; ∄; _×_; _,_)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
-open import Data.Vec hiding (_∈_)
+open import Data.Vec
 open import Data.Vec.Properties
 open import Function using (_∘_; const; id; case_of_)
 open import Function.Equivalence using (_⇔_; equivalence)

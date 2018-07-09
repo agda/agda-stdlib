@@ -15,7 +15,7 @@ open import Data.Fin using (Fin; zero; suc)
 open import Data.List.Base using (List; foldr; foldl)
 open import Data.Nat using (ℕ)
 open import Data.Product using (∃)
-open import Data.Vec hiding (_∈_; foldr; foldl)
+open import Data.Vec hiding (foldr; foldl)
 import Data.Vec.Relation.Pointwise.Extensional as Pointwise
 open import Relation.Nullary
 
@@ -104,6 +104,5 @@ Nonempty p = ∃ λ f → f ∈ p
 Empty : ∀ {n} (p : Subset n) → Set
 Empty p = ¬ Nonempty p
 
--- Point-wise lifting of properties.
-Lift : ∀ {n p} → (Fin n → Set p) → (Subset n → Set p)
+Lift : ∀ {n ℓ} → (Fin n → Set ℓ) → (Subset n → Set ℓ)
 Lift P p = ∀ {x} → x ∈ p → P x

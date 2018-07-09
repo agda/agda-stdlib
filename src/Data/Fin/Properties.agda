@@ -25,7 +25,7 @@ open import Function using (_∘_; id)
 open import Function.Injection using (_↣_)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; sym; trans; cong; subst)
+  using (_≡_; _≢_; refl; sym; trans; cong; subst; module ≡-Reasoning)
 open import Relation.Nullary using (¬_)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
@@ -135,6 +135,13 @@ fromℕ≤≡fromℕ≤″ (s≤s z≤n)       (ℕ.less-than-or-equal refl) = r
 fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
   cong suc (fromℕ≤≡fromℕ≤″ (s≤s m<n) (ℕ.less-than-or-equal refl))
 
+toℕ-fromℕ≤″ : ∀ {m n} (m<n : m ℕ.<″ n) → toℕ (fromℕ≤″ m m<n) ≡ m
+toℕ-fromℕ≤″ {m} {n} m<n = begin
+  toℕ (fromℕ≤″ m m<n)  ≡⟨ cong toℕ (sym (fromℕ≤≡fromℕ≤″ _ m<n)) ⟩
+  toℕ (fromℕ≤ _)       ≡⟨ toℕ-fromℕ≤ (ℕₚ.≤″⇒≤ m<n) ⟩
+  m ∎
+  where open ≡-Reasoning
+
 ------------------------------------------------------------------------
 -- Properties of _≤_
 
@@ -201,7 +208,7 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
   }
 
 -- Other properties
-≤-irrelevance : ∀ {n} → P.IrrelevantRel (_≤_ {n})
+≤-irrelevance : ∀ {n} → Irrelevant (_≤_ {n})
 ≤-irrelevance = ℕₚ.≤-irrelevance
 
 ------------------------------------------------------------------------
@@ -261,7 +268,7 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
   }
 
 -- Other properties
-<-irrelevance : ∀ {n} → P.IrrelevantRel (_<_ {n})
+<-irrelevance : ∀ {n} → Irrelevant (_<_ {n})
 <-irrelevance = ℕₚ.<-irrelevance
 
 <⇒≢ : ∀ {n} {i j : Fin n} → i < j → i ≢ j
@@ -353,8 +360,8 @@ nℕ-ℕi≤n n       zero     = ℕₚ.≤-refl
 nℕ-ℕi≤n zero    (suc ())
 nℕ-ℕi≤n (suc n) (suc i)  = begin
   n ℕ-ℕ i  ≤⟨ nℕ-ℕi≤n n i ⟩
-  n         ≤⟨ ℕₚ.n≤1+n n ⟩
-  suc n     ∎
+  n        ≤⟨ ℕₚ.n≤1+n n ⟩
+  suc n    ∎
   where open ℕₚ.≤-Reasoning
 
 ------------------------------------------------------------------------
@@ -426,7 +433,7 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
   punchOut (punchInᵢ≢i i j ∘ suc-injective ∘ sym ∘ cong suc)  ≡⟨ punchOut-cong i refl ⟩
   punchOut (punchInᵢ≢i i j ∘ sym)                             ≡⟨ punchOut-punchIn i ⟩
   j                                                           ∎)
-  where open P.≡-Reasoning
+  where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- _+′_

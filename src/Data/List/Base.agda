@@ -188,6 +188,24 @@ unfold B f {n = suc n} s with f s
 ------------------------------------------------------------------------
 -- Operations for deconstructing lists
 
+-- Note that although these combinators can be useful for programming, when
+-- proving it is often a better idea to manually destruct a list argument:
+-- each branch of the pattern-matching will have a refined type.
+
+module _ {a} {A : Set a} where
+
+  uncons : List A → Maybe (A × List A)
+  uncons []       = nothing
+  uncons (x ∷ xs) = just (x , xs)
+
+  head : List A → Maybe A
+  head []      = nothing
+  head (x ∷ _) = just x
+
+  tail : List A → Maybe (List A)
+  tail []       = nothing
+  tail (_ ∷ xs) = just xs
+
 take : ∀ {a} {A : Set a} → ℕ → List A → List A
 take zero    xs       = []
 take (suc n) []       = []
