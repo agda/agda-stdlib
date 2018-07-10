@@ -99,6 +99,9 @@ Non-backwards compatible changes
 * Made `Data.Container` (and associated modules) more level-polymorphic and
   moved the core definitions to `Data.Container.Core`.
 
+* Changed the precedence level of `_$_` (and variants) to `-1`. This makes
+  it interact well with `_∋_` in e.g. `f $ Maybe A ∋ do (...)`.
+
 Other major changes
 -------------------
 
