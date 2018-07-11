@@ -60,6 +60,16 @@ Non-backwards compatible changes
   unfold : (S → ⟦ C ⟧ S) → S → M C
   ```
 
+* Added new module `Codata.M` using sized types and copatterns containing:
+  ```agda
+  M      : Container s p → Size → Set (s ⊔ p)
+  head   : M C i → Shape
+  tail   : (x : M C ∞) → Position (head x) → M C ∞
+  map    : (C₁ ⇒ C₂) → M C₁ i → M C₂ i
+  unfold : (S → ⟦ C ⟧ S) → S → M C i
+  ```
+
+
 #### Improved consistency between `Data.(List/Vec).(Any/All/Membership)`
 
 * Added new module `Data.Vec.Any`.
