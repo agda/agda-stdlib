@@ -7,7 +7,7 @@
 module Data.Rational.Properties where
 
 import Algebra
-open import Function using (_∘_)
+open import Function using (_∘_ ; _$_)
 import Data.Integer as ℤ
 import Data.Integer.Properties as ℤₚ
 open import Data.Rational
@@ -27,30 +27,21 @@ open import Relation.Binary.PropositionalEquality as P
 ≤-refl = ≤-reflexive refl
 
 ≤-trans : Transitive _≤_
-≤-trans {i = p} {j = q} {k = r} (*≤* le₁) (*≤* le₂)
-  = *≤* (ℤₚ.*-cancelʳ-≤-pos _ _ _
-          (lemma
-            (ℚ.numerator p) (ℚ.denominator p)
-            (ℚ.numerator q) (ℚ.denominator q)
-            (ℚ.numerator r) (ℚ.denominator r)
-            (ℤₚ.*-monoʳ-≤-pos (ℚ.denominator-1 r) le₁)
-            (ℤₚ.*-monoʳ-≤-pos (ℚ.denominator-1 p) le₂)))
-  where
-  lemma : ∀ n₁ d₁ n₂ d₂ n₃ d₃ →
-          n₁ ℤ.* d₂ ℤ.* d₃ ℤ.≤ n₂ ℤ.* d₁ ℤ.* d₃ →
-          n₂ ℤ.* d₃ ℤ.* d₁ ℤ.≤ n₃ ℤ.* d₂ ℤ.* d₁ →
-          n₁ ℤ.* d₃ ℤ.* d₂ ℤ.≤ n₃ ℤ.* d₁ ℤ.* d₂
-  lemma n₁ d₁ n₂ d₂ n₃ d₃
-    rewrite ℤₚ.*-assoc n₁ d₂ d₃
-          | ℤₚ.*-comm d₂ d₃
-          | sym (ℤₚ.*-assoc n₁ d₃ d₂)
-          | ℤₚ.*-assoc n₃ d₂ d₁
-          | ℤₚ.*-comm d₂ d₁
-          | sym (ℤₚ.*-assoc n₃ d₁ d₂)
-          | ℤₚ.*-assoc n₂ d₁ d₃
-          | ℤₚ.*-comm d₁ d₃
-          | sym (ℤₚ.*-assoc n₂ d₃ d₁)
-          = ℤₚ.≤-trans
+≤-trans {i = mkℚ n₁ d₁ c₁} {j = mkℚ n₂ d₂ c₂} {k = mkℚ n₃ d₃ c₃} (*≤* eq₁) (*≤* eq₂)
+  = *≤* $ ℤₚ.*-cancelʳ-≤-pos (n₁ ℤ.* ℤ.+ suc d₃) (n₃ ℤ.* ℤ.+ suc d₁) d₂ $ begin
+  let sd₁ = ℤ.+ suc d₁; sd₂ = ℤ.+ suc d₂; sd₃ = ℤ.+ suc d₃ in
+  (n₁ ℤ.* sd₃) ℤ.* sd₂ ≡⟨ ℤₚ.*-assoc n₁ sd₃ sd₂ ⟩
+  n₁ ℤ.* (sd₃ ℤ.* sd₂) ≡⟨ cong (n₁ ℤ.*_) (ℤₚ.*-comm sd₃ sd₂) ⟩
+  n₁ ℤ.* (sd₂ ℤ.* sd₃) ≡⟨ P.sym (ℤₚ.*-assoc n₁ sd₂ sd₃) ⟩
+  (n₁ ℤ.* sd₂) ℤ.* sd₃ ≤⟨ ℤₚ.*-monoʳ-≤-pos d₃ eq₁ ⟩
+  (n₂ ℤ.* sd₁) ℤ.* sd₃ ≡⟨ cong (ℤ._* sd₃) (ℤₚ.*-comm n₂ sd₁) ⟩
+  (sd₁ ℤ.* n₂) ℤ.* sd₃ ≡⟨ ℤₚ.*-assoc sd₁ n₂ sd₃ ⟩
+  sd₁ ℤ.* (n₂ ℤ.* sd₃) ≤⟨ ℤₚ.*-monoˡ-≤-pos d₁ eq₂ ⟩
+  sd₁ ℤ.* (n₃ ℤ.* sd₂) ≡⟨ P.sym (ℤₚ.*-assoc sd₁ n₃ sd₂) ⟩
+  (sd₁ ℤ.* n₃) ℤ.* sd₂ ≡⟨ cong (ℤ._* sd₂) (ℤₚ.*-comm sd₁ n₃) ⟩
+  (n₃ ℤ.* sd₁) ℤ.* sd₂ ∎
+
+  where open ℤₚ.≤-Reasoning
 
 ≤-antisym : Antisymmetric _≡_ _≤_
 ≤-antisym (*≤* le₁) (*≤* le₂) = ≃⇒≡ (ℤₚ.≤-antisym le₁ le₂)
