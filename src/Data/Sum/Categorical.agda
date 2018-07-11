@@ -17,45 +17,45 @@ open import Function
 -- B are "lifted" to a copy of B at a higher universe level (a ⊔ b). See the
 -- examples for how this is done.
 
-module _ {a} (A : Set a) (b : Level) where
+module Sumₗ {a} (A : Set a) (b : Level) where
 
   Sumₗ : Set (a ⊔ b) → Set (a ⊔ b)
   Sumₗ B = A ⊎ B
 
-  functorₗ : RawFunctor Sumₗ
-  functorₗ = record { _<$>_ = map₂ }
+  functor : RawFunctor Sumₗ
+  functor = record { _<$>_ = map₂ }
 
-  applicativeₗ : RawApplicative Sumₗ
-  applicativeₗ = record
+  applicative : RawApplicative Sumₗ
+  applicative = record
     { pure = inj₂
     ; _⊛_ = [ const ∘ inj₁ , map₂ ]′
     }
 
   -- The monad instance also requires some mucking about with universe levels.
-  monadₗ : RawMonad Sumₗ
-  monadₗ = record
+  monad : RawMonad Sumₗ
+  monad = record
     { return = inj₂
     ; _>>=_  = [ const ∘ inj₁ , _|>′_ ]′
     }
 
 -- The following are the "right-handed" versions
 
-module _ (a : Level) {b} (B : Set b) where
+module Sumᵣ (a : Level) {b} (B : Set b) where
 
   Sumᵣ : Set (a ⊔ b) → Set (a ⊔ b)
   Sumᵣ A = A ⊎ B
 
-  functorᵣ : RawFunctor Sumᵣ
-  functorᵣ = record { _<$>_ = map₁ }
+  functor : RawFunctor Sumᵣ
+  functor = record { _<$>_ = map₁ }
 
-  applicativeᵣ : RawApplicative Sumᵣ
-  applicativeᵣ = record
+  applicative : RawApplicative Sumᵣ
+  applicative = record
     { pure = inj₁
     ; _⊛_ = [ map₁ , const ∘ inj₂ ]′
     }
 
-  monadᵣ : RawMonad Sumᵣ
-  monadᵣ = record
+  monad : RawMonad Sumᵣ
+  monad = record
     { return = inj₁
     ; _>>=_  = [ _|>′_ , const ∘ inj₂ ]′
     }
@@ -67,21 +67,22 @@ module _ (a : Level) {b} (B : Set b) where
 -- checker verifies them.
 
 private
-  module Examplesₗ {a b} {A : Set a} {B : Set b} where
+  module Examples {a b} {A : Set a} {B : Set b} where
 
     open import Agda.Builtin.Equality
     open import Function
+    module Sₗ = Sumₗ A b
 
-    open RawFunctor {a ⊔ b} (functorₗ A b)
+    open RawFunctor Sₗ.functor
 
     -- This type to the right of ⊎ needs to be a "lifted" version of (B : Set b)
     -- that lives in the universe (Set (a ⊔ b)).
-    fmapIdₗ : (x : A ⊎ (Lift a B)) → (id <$> x) ≡ x
-    fmapIdₗ (inj₁ x) = refl
-    fmapIdₗ (inj₂ y) = refl
+    fmapId : (x : A ⊎ (Lift a B)) → (id <$> x) ≡ x
+    fmapId (inj₁ x) = refl
+    fmapId (inj₂ y) = refl
 
 
-    open RawMonad   {a ⊔ b} (monadₗ A b)
+    open RawMonad   Sₗ.monad
 
     -- Now, let's show that "return" is a unit for >>=. We use Lift in exactly
     -- the same way as above. The data (x : B) then needs to be "lifted" to
