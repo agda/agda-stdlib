@@ -44,6 +44,22 @@ Non-backwards compatible changes
   to a new module `Codata.Musical.Costring`.
 
 
+#### Overhaul of `Data.Container`, `Data.W` and `Codata.(Musical.)M`
+
+* Made `Data.Container` (and associated modules) more level-polymorphic
+
+* Created `Data.Container.Core` for the core definition of `Container`,
+  container morphism, All, and Any. This breaks the dependency cycle
+  with `Data.W` and `Codata.Musical.M`.
+
+* Refactored `Data.W` and `Codata.Musical.M` to use `Container`.
+
+* Added new functions to `Codata.Musical.M`:
+  ```agda
+  map    : (C₁ ⇒ C₂) → M C₁ → M C₂
+  unfold : (S → ⟦ C ⟧ S) → S → M C
+  ```
+
 #### Improved consistency between `Data.(List/Vec).(Any/All/Membership)`
 
 * Added new module `Data.Vec.Any`.
@@ -77,6 +93,7 @@ Non-backwards compatible changes
   tabulate : (∀ i → P (Vec.lookup i xs)) → All P {k} xs
   ```
 
+
 #### Other
 
 * The `Data.List.Relation.Sublist` directory has been moved to
@@ -95,9 +112,6 @@ Non-backwards compatible changes
   section of `_,_`.
 
 * Made the target level of `Level`'s `Lift` explicit.
-
-* Made `Data.Container` (and associated modules) more level-polymorphic and
-  moved the core definitions to `Data.Container.Core`.
 
 Other major changes
 -------------------
