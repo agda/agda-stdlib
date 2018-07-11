@@ -193,6 +193,18 @@ Other minor additions
   ^-*-assoc    : (m ^ n) ^ p ≡ m ^ (n * p)
   ```
 
+* Added new functions to `Data.Rational`:
+  ```agda
+  norm-mkℚ : (n : ℤ) (d : ℕ) → d ≢0 → ℚ
+  -_       : ℚ → ℚ
+  1/_      : (p : ℚ) → .{n≢0 : ∣ ℚ.numerator p ∣ ≢0} → ℚ
+  _*_      : ℚ → ℚ → ℚ
+  _+_      : ℚ → ℚ → ℚ
+  _-_      : ℚ → ℚ → ℚ
+  _/_      : (p₁ p₂ : ℚ) → {n≢0 : ∣ ℚ.numerator p₂ ∣ ≢0} → ℚ
+  show     : ℚ → String
+  ```
+
 * Added new function to `Data.String.Base`:
   ```agda
   fromList⁺ : List⁺ Char → String
