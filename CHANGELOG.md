@@ -139,6 +139,11 @@ Other minor additions
   toℕ-fromℕ≤″ : toℕ (fromℕ≤″ m m<n) ≡ m
   ```
 
+* Added new proof to `Data.Integer.Properties`:
+  ```agda
+  *-monoˡ-≤-pos : (+ suc n *_) Preserves _≤_ ⟶ _≤_
+  ```
+
 * Added new proofs to `Data.List.Any.Properties`:
   ```agda
   singleton⁺ : P x → Any P [ x ]
