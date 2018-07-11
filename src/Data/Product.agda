@@ -11,20 +11,16 @@ open import Level
 open import Relation.Nullary
 open import Agda.Builtin.Equality
 
-infixr 4 _,_ _,′_
-infix  4 ,_
+infixr 4 _,′_
+infix  4 -,_
 infixr 2 _×_ _-×-_ _-,-_
 
 ------------------------------------------------------------------------
 -- Definition
 
-record Σ {a b} (A : Set a) (B : A → Set b) : Set (a ⊔ b) where
-  constructor _,_
-  field
-    proj₁ : A
-    proj₂ : B proj₁
+open import Agda.Builtin.Sigma hiding (module Σ) public renaming (fst to proj₁; snd to proj₂)
 
-open Σ public
+module Σ = Agda.Builtin.Sigma.Σ renaming (fst to proj₁; snd to proj₂)
 
 -- The syntax declaration below is attached to Σ-syntax, to make it
 -- easy to import Σ without the special syntax.
@@ -76,8 +72,8 @@ _,′_ = _,_
 
 -- Sometimes the first component can be inferred.
 
-,_ : ∀ {a b} {A : Set a} {B : A → Set b} {x} → B x → ∃ B
-, y = _ , y
+-,_ : ∀ {a b} {A : Set a} {B : A → Set b} {x} → B x → ∃ B
+-, y = _ , y
 
 <_,_> : ∀ {a b c} {A : Set a} {B : A → Set b} {C : ∀ {x} → B x → Set c}
         (f : (x : A) → B x) → ((x : A) → C (f x)) →
@@ -85,10 +81,18 @@ _,′_ = _,_
 < f , g > x = (f x , g x)
 
 map : ∀ {a b p q}
-        {A : Set a} {B : Set b} {P : A → Set p} {Q : B → Set q} →
+      {A : Set a} {B : Set b} {P : A → Set p} {Q : B → Set q} →
       (f : A → B) → (∀ {x} → P x → Q (f x)) →
       Σ A P → Σ B Q
 map f g (x , y) = (f x , g y)
+
+map₁ : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
+       (A → B) → A × C → B × C
+map₁ f = map f id
+
+map₂ : ∀ {a b c} {A : Set a} {B : A → Set b} {C : A → Set c} →
+       (∀ {x} → B x → C x) → Σ A B → Σ A C
+map₂ f = map id f
 
 zip : ∀ {a b c p q r}
         {A : Set a} {B : Set b} {C : Set c}
@@ -113,6 +117,10 @@ curry : ∀ {a b c} {A : Set a} {B : A → Set b} {C : Σ A B → Set c} →
         ((p : Σ A B) → C p) →
         ((x : A) → (y : B x) → C (x , y))
 curry f x y = f (x , y)
+
+curry′ : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
+         (A × B → C) → (A → B → C)
+curry′ = curry
 
 uncurry : ∀ {a b c} {A : Set a} {B : A → Set b} {C : Σ A B → Set c} →
           ((x : A) → (y : B x) → C (x , y)) →

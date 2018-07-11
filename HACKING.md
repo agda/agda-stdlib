@@ -1,45 +1,81 @@
-Testing and documenting your changes
-------------------------------------
+Contributing to the library
+===========================
 
-When you implement a new feature of fix a bug:
+Thank you for your interest in contributing to the Agda standard library.
+Hopefully this guide should make it easy to do so! Feel free to ask any
+questions on the Agda mailing list. Before you start please read the
+[style-guide](https://github.com/agda/agda-stdlib/blob/master/notes/style-guide.md).
 
-1. Document it in `CHANGELOG.md`.
+How to make changes
+-------------------
 
-2. Test your changes by running
+### Fork and download the repository
 
+1. Create a fork by clicking `Fork` button at the top right of the [repository](https://github.com/agda/agda-stdlib).
+
+2. If you are on a Mac, make sure that your git options has `autocrlf` set to `input`.  This can be done by executing
+   ```
+   git config --global core.autocrlf input
+   ```
+   If you are on Windows, make sure that your editor can deal with Unix format files.
+
+3. On the command line, and in a suitable folder, download your fork by running the command
+   ```
+   git clone https://github.com/USER_NAME/agda-stdlib agda-stdlib-fork
+   ```
+
+   where `USER_NAME` is your Git username. The folder `agda-stdlib-fork` should now contain a copy of the standard library.
+
+4. Enter the folder `agda-stdlib-fork` and choose the correct branch of the library to make your changes on by running the
+   command
+   ```
+   git checkout X
+   ```
+   where `X` should be `master` if your changes are compatible with the current released version of Agda, and `experimental`
+   if your changes require the development version of Agda.
+
+### Make your changes
+
+5. Make your proposed changes. Please try to obey existing conventions in the library.
+   See `agda-stdlib-fork/notes/style-guide.md` for a selection of the most important ones.
+
+6. Document your changes in `agda-stdlib-fork/CHANGELOG.md`.
+
+7. Ensure your changes are compatible with the rest of the library by running the commands
    ```
    make clean
    make test
    ```
+   inside the `agda-stdlib-fork` folder. Continue to correct any bugs thrown up until the tests are passed.
 
-Where to commit changes
------------------------
+   Your proposed changes MUST pass these tests. Note that the tests require the use of a tool called
+   `fix-agda-whitespace`. See the instructions at the end of this file for how to install this.
 
-    CURRENT_AGDA = current released Agda version, e.g. 2.4.2.5
-    AGDA_MAINT   = Agda maintenance version, e.g. 2.4.2.6
+### Upload your changes
 
-A. Your change is independent of Agda
+8. Use the `git add` command to add the files you have changed to your proposed commit.
 
-   1. Push your commit in the `CURRENT_AGDA` branch
-   2. Merge the `CURRENT_AGDA` branch into the `AGDA_MAINT` branch
-   3. Merge the `AGDA_MAINT` branch into the master branch
+9. Run the command:
+   ```
+   git commit
+   ```
+   and enter a meaningful description for your changes.
 
-B. Your change is due to a change in the `AGDA_MAINT` version of Agda
+10. Upload your changes to your fork by running the command:
+   ```
+   git push
+   ```
+11. Go to your fork on Github at `https://github.com/USER_NAME/agda-stdlib` and click the green `Compare & pull request` button to open a pull request.
 
-   1. Push your commit in the `AGDA_MAINT` branch
-   2. Merge the `AGDA_MAINT` branch into the master branch
+12. The standard library maintainers will then be made aware of your requested changes and should be in touch soon.
 
-C. Your change is due to a change in the master version of Agda
+Installing `fix-agda-whitespace`
+--------------------------------
 
-   1. Push your commit in the master branch
+This tool is kept in the main agda repository. It can be installed by following these instructions:
+   ```
+   git clone https://github.com/agda/agda
+   cd agda/src/fix-agda-whitespace
+   cabal install
+   ```
 
-This scheme should guarantee that:
-
-  a. the stdlib `CURRENT_AGDA` branch always builds with the current
-     released Agda version,
-
-  b. the stdlib `AGDA_MAINT` branch always build with the Agda maint
-     branch and
-
-  c. the stdlib master branch always builds with the Agda master
-     branch.

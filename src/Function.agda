@@ -14,7 +14,7 @@ infixl 8 _ˢ_
 infixl 1 _on_
 infixl 1 _⟨_⟩_
 infixr 0 _-[_]-_ _$_ _$′_ _$!_ _$!′_
-infixl 0 _∋_
+infixl 0 _|>_ _|>′_ _∋_
 
 ------------------------------------------------------------------------
 -- Types
@@ -86,6 +86,17 @@ _$!′_ : ∀ {a b} {A : Set a} {B : Set b} →
         (A → B) → (A → B)
 _$!′_ = _$!_
 
+-- flipped application aka pipe-forward
+
+_|>_ : ∀ {a b} {A : Set a} {B : A → Set b} →
+       (a : A) → (∀ a → B a) → B a
+_|>_ = flip _$_
+
+
+_|>′_ : ∀ {a b} {A : Set a} {B : Set b} →
+        A → (A → B) → B
+_|>′_ = _|>_
+
 
 _⟨_⟩_ : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
         A → (A → B → C) → B → C
@@ -105,6 +116,12 @@ f -[ _*_ ]- g = λ x y → f x y * g x y
 
 _∋_ : ∀ {a} (A : Set a) → A → A
 A ∋ x = x
+
+-- Conversely it is sometimes useful to be able to extract the
+-- type of a given expression:
+
+typeOf : ∀ {a} {A : Set a} → A → Set a
+typeOf {A = A} _ = A
 
 -- Case expressions (to be used with pattern-matching lambdas, see
 -- README.Case).

@@ -6,16 +6,16 @@
 
 module Data.Vec.All where
 
-open import Data.Vec as Vec using (Vec; []; _∷_; zip)
-open import Data.Vec.Properties using (lookup-zip)
+open import Data.Nat using (zero; suc)
 open import Data.Fin using (Fin; zero; suc)
+open import Data.Product as Prod using (_,_)
+open import Data.Vec as Vec using (Vec; []; _∷_)
 open import Function using (_∘_)
 open import Level using (_⊔_)
-open import Data.Product using (uncurry)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
-open import Relation.Unary using (Decidable) renaming (_⊆_ to _⋐_)
-open import Relation.Binary.PropositionalEquality using (subst)
+open import Relation.Unary
+open import Relation.Binary.PropositionalEquality as P using (subst)
 
 ------------------------------------------------------------------------
 -- All P xs means that all elements in xs satisfy P.
@@ -26,6 +26,9 @@ data All {a p} {A : Set a}
          (P : A → Set p) : ∀ {k} → Vec A k → Set (p ⊔ a) where
   []  : All P []
   _∷_ : ∀ {k x} {xs : Vec A k} (px : P x) (pxs : All P xs) → All P (x ∷ xs)
+
+------------------------------------------------------------------------
+-- Operations on All
 
 head : ∀ {a p} {A : Set a} {P : A → Set p} {k x} {xs : Vec A k} →
        All P (x ∷ xs) → P x
@@ -41,22 +44,15 @@ lookup ()      []
 lookup zero    (px ∷ pxs) = px
 lookup (suc i) (px ∷ pxs) = lookup i pxs
 
-tabulate : ∀ {a p} {A : Set a} {P : A → Set p} {k} {xs : Vec A k} →
-           (∀ x → P x) → All P xs
-tabulate {xs = []}     hyp = []
-tabulate {xs = x ∷ xs} hyp = hyp x ∷ tabulate hyp
+tabulate : ∀ {a p} {A : Set a} {P : A → Set p} {k xs} →
+           (∀ i → P (Vec.lookup i xs)) → All P {k} xs
+tabulate {xs = []}    pxs = []
+tabulate {xs = _ ∷ _} pxs = pxs zero ∷ tabulate (pxs ∘ suc)
 
 map : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} {k} →
-      P ⋐ Q → All P {k} ⋐ All Q {k}
+      P ⊆ Q → All P {k} ⊆ All Q {k}
 map g []         = []
 map g (px ∷ pxs) = g px ∷ map g pxs
-
-all : ∀ {a p} {A : Set a} {P : A → Set p} {k} →
-      Decidable P → Decidable (All P {k})
-all p []       = yes []
-all p (x ∷ xs) with p x
-all p (x ∷ xs) | yes px = Dec.map′ (_∷_ px) tail (all p xs)
-all p (x ∷ xs) | no ¬px = no (¬px ∘ head)
 
 zipWith : ∀ {a b c p q r} {A : Set a} {B : Set b} {C : Set c} {_⊕_ : A → B → C}
           {P : A → Set p} {Q : B → Set q} {R : C → Set r} →
@@ -67,12 +63,36 @@ zipWith _⊕_ {xs = []}     {[]}     []         []         = []
 zipWith _⊕_ {xs = x ∷ xs} {y ∷ ys} (px ∷ pxs) (qy ∷ qys) =
   px ⊕ qy ∷ zipWith _⊕_ pxs qys
 
-------------------------------------------------------------------------
--- All₂ is DEPRECATED. Please use Data.Vec.Relation.InductivePointwise
--- directly.
+zip : ∀ {a p q k} {A : Set a} {P : A → Set p} {Q : A → Set q} →
+      All P ∩ All Q ⊆ All (P ∩ Q) {k}
+zip ([] , [])             = []
+zip (px ∷ pxs , qx ∷ qxs) = (px , qx) ∷ zip (pxs , qxs)
 
-open import Data.Vec.Relation.InductivePointwise using () renaming
-  ( Pointwise to All₂
-  ; lookup    to lookup₂
-  ; map       to map₂
-  ) public
+unzip : ∀ {a p q k} {A : Set a} {P : A → Set p} {Q : A → Set q} →
+        All (P ∩ Q) {k} ⊆ All P ∩ All Q
+unzip []           = [] , []
+unzip (pqx ∷ pqxs) = Prod.zip _∷_ _∷_ pqx (unzip pqxs)
+
+------------------------------------------------------------------------
+-- Properties of predicates preserved by All
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+  all : ∀ {k} → Decidable P → Decidable (All P {k})
+  all P? []       = yes []
+  all P? (x ∷ xs) with P? x
+  ... | yes px = Dec.map′ (px ∷_) tail (all P? xs)
+  ... | no ¬px = no (¬px ∘ head)
+
+  universal : Universal P → ∀ {k} → Universal (All P {k})
+  universal u []       = []
+  universal u (x ∷ xs) = u x ∷ universal u xs
+
+  irrelevant : Irrelevant P → ∀ {k} → Irrelevant (All P {k})
+  irrelevant irr []           []           = P.refl
+  irrelevant irr (px₁ ∷ pxs₁) (px₂ ∷ pxs₂) =
+    P.cong₂ _∷_ (irr px₁ px₂) (irrelevant irr pxs₁ pxs₂)
+
+  satisfiable : Satisfiable P → ∀ {k} → Satisfiable (All P {k})
+  satisfiable (x , p) {zero}  = [] , []
+  satisfiable (x , p) {suc k} = Prod.map (x ∷_) (p ∷_) (satisfiable (x , p))

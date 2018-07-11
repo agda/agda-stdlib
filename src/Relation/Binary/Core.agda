@@ -9,10 +9,13 @@
 
 module Relation.Binary.Core where
 
-open import Data.Product
-open import Function
+open import Agda.Builtin.Equality using (_≡_) renaming (refl to ≡-refl)
+
+open import Data.Product using (_×_)
+open import Data.Sum.Base using (_⊎_)
+open import Function using (_on_; flip)
 open import Level
-open import Relation.Nullary
+open import Relation.Nullary using (Dec; ¬_)
 
 ------------------------------------------------------------------------
 -- Binary relations
@@ -38,8 +41,7 @@ _⇒_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} →
       REL A B ℓ₁ → REL A B ℓ₂ → Set _
 P ⇒ Q = ∀ {i j} → P i j → Q i j
 
--- Generalised implication. If P ≡ Q it can be read as "f preserves
--- P".
+-- Generalised implication. If P ≡ Q it can be read as "f preserves P".
 
 _=[_]⇒_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} →
           Rel A ℓ₁ → (A → B) → Rel B ℓ₂ → Set _
@@ -100,19 +102,8 @@ Antisymmetric _≈_ _≤_ = ∀ {x y} → x ≤ y → y ≤ x → x ≈ y
 Asymmetric : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
 Asymmetric _<_ = ∀ {x y} → x < y → ¬ (y < x)
 
-_Respects_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → (A → Set ℓ₁) → Rel A ℓ₂ → Set _
-P Respects _∼_ = ∀ {x y} → x ∼ y → P x → P y
-
-_Respects₂_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
-P Respects₂ _∼_ =
-  (∀ {x} → P x      Respects _∼_) ×
-  (∀ {y} → flip P y Respects _∼_)
-
-Substitutive : ∀ {a ℓ₁} {A : Set a} → Rel A ℓ₁ → (ℓ₂ : Level) → Set _
-Substitutive {A = A} _∼_ p = (P : A → Set p) → P Respects _∼_
-
-Decidable : ∀ {a b ℓ} {A : Set a} {B : Set b} → REL A B ℓ → Set _
-Decidable _∼_ = ∀ x y → Dec (x ∼ y)
+Total : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
+Total _∼_ = ∀ x y → (x ∼ y) ⊎ (y ∼ x)
 
 data Tri {a b c} (A : Set a) (B : Set b) (C : Set c) :
          Set (a ⊔ b ⊔ c) where
@@ -124,6 +115,33 @@ Trichotomous : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ�
 Trichotomous _≈_ _<_ = ∀ x y → Tri (x < y) (x ≈ y) (x > y)
   where _>_ = flip _<_
 
+Maximum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
+Maximum _≤_ ⊤ = ∀ x → x ≤ ⊤
+
+Minimum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
+Minimum _≤_ = Maximum (flip _≤_)
+
+_Respects_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → (A → Set ℓ₁) → Rel A ℓ₂ → Set _
+P Respects _∼_ = ∀ {x y} → x ∼ y → P x → P y
+
+_Respectsʳ_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
+P Respectsʳ _∼_ = ∀ {x} → (P x) Respects _∼_
+
+_Respectsˡ_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
+P Respectsˡ _∼_ = ∀ {y} → (flip P y) Respects _∼_
+
+_Respects₂_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
+P Respects₂ _∼_ = (P Respectsʳ _∼_) × (P Respectsˡ _∼_)
+
+Substitutive : ∀ {a ℓ₁} {A : Set a} → Rel A ℓ₁ → (ℓ₂ : Level) → Set _
+Substitutive {A = A} _∼_ p = (P : A → Set p) → P Respects _∼_
+
+Decidable : ∀ {a b ℓ} {A : Set a} {B : Set b} → REL A B ℓ → Set _
+Decidable _∼_ = ∀ x y → Dec (x ∼ y)
+
+Irrelevant : ∀ {a b ℓ} {A : Set a} {B : Set b} → REL A B ℓ → Set _
+Irrelevant _∼_ = ∀ {x y} (a : x ∼ y) (b : x ∼ y) → a ≡ b
+
 record NonEmpty {a b ℓ} {A : Set a} {B : Set b}
                 (T : REL A B ℓ) : Set (a ⊔ b ⊔ ℓ) where
   constructor nonEmpty
@@ -131,19 +149,6 @@ record NonEmpty {a b ℓ} {A : Set a} {B : Set b}
     {x}   : A
     {y}   : B
     proof : T x y
-
-------------------------------------------------------------------------
--- Propositional equality
-
--- This dummy module is used to avoid shadowing of the field named
--- refl defined in IsEquivalence below. The module is opened publicly
--- at the end of this file.
-
-import Agda.Builtin.Equality as Dummy
-
-infix 4 _≢_
-_≢_ : ∀ {a} {A : Set a} → A → A → Set a
-x ≢ y = ¬ x Dummy.≡ y
 
 ------------------------------------------------------------------------
 -- Equivalence relations
@@ -159,7 +164,15 @@ record IsEquivalence {a ℓ} {A : Set a}
     sym   : Symmetric _≈_
     trans : Transitive _≈_
 
-  reflexive : Dummy._≡_ ⇒ _≈_
-  reflexive Dummy.refl = refl
+  reflexive : _≡_ ⇒ _≈_
+  reflexive ≡-refl = refl
 
-open Dummy public
+------------------------------------------------------------------------
+-- Propositional equality
+
+open import Agda.Builtin.Equality public
+
+infix 4 _≢_
+_≢_ : ∀ {a} {A : Set a} → A → A → Set a
+x ≢ y = ¬ x ≡ y
+

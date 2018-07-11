@@ -17,10 +17,10 @@ open import Data.Integer as ℤ using (ℤ; ∣_∣; +_; -[1+_]; _◃_; sign)
 open import Data.Integer.Divisibility as ℤDiv using (Coprime)
 import Data.Integer.Properties as ℤ
 open import Data.Nat.GCD
-open import Data.Nat.Divisibility as ℕDiv using (_∣_; divides)
+open import Data.Nat.Divisibility as ℕDiv using (_∣_ ; divides ; ∣-antisym)
 import Data.Nat.Coprimality as C
 open import Data.Nat as ℕ using (ℕ; zero; suc)
-open import Data.Nat.Properties
+open import Data.Nat.Properties using (*-assoc ; *-comm)
 open import Data.Nat.Show renaming (show to ℕshow)
 open import Data.Sum
 open import Data.String using (String; _++_)
@@ -30,7 +30,7 @@ open import Relation.Nullary
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; subst; cong; cong₂)
-open P.≡-Reasoning
+-- open P.≡-Reasoning
 
 infix  8 -_ 1/_
 infixl 7 _*_ _/_
@@ -49,13 +49,10 @@ record ℚ : Set where
   field
     numerator     : ℤ
     denominator-1 : ℕ
-    isCoprime     : True (C.coprime? ∣ numerator ∣ (suc denominator-1))
+    .isCoprime    : C.Coprime ∣ numerator ∣ (suc denominator-1)
 
   denominator : ℤ
   denominator = + suc denominator-1
-
-  coprime : Coprime numerator denominator
-  coprime = toWitness isCoprime
 
 -- Constructs rational numbers. The arguments have to be in reduced
 -- form and the denominator has to be non-zero.
@@ -66,14 +63,14 @@ n ≢0 = False (n ℕ.≟ 0)
 
 infixl 7 _÷_
 _÷_ : (numerator : ℤ) (denominator : ℕ)
-      {coprime : True (C.coprime? ∣ numerator ∣ denominator)}
+      .{coprime : True (C.coprime? ∣ numerator ∣ denominator)}
       {≢0 : denominator ≢0} →
       ℚ
-(n ÷ zero) {≢0 = ()}
+(n ÷ zero)  {≢0 = ()}
 (n ÷ suc d) {c} = record
   { numerator     = n
   ; denominator-1 = d
-  ; isCoprime     = c
+  ; isCoprime     = toWitness c
   }
 
 private
@@ -108,6 +105,8 @@ normalize m@(suc _) n@(suc _) (suc g) G@(⟨ suc p & m≡pg' ∧ suc q & n≡qg'
 normalize m@(suc _) n@(suc _) (suc g) ⟨ suc p & m≡pg' ∧ suc q & n≡qg' ⟩
   | Bézout.+- x y bezout-eq = p , q , pr , eq where
 
+  open P.≡-Reasoning
+
   eq : m ℕ.* suc q ≡ n ℕ.* suc p
   eq = begin
     m ℕ.* suc q                 ≡⟨ cong (ℕ._* suc q) m≡pg' ⟩
@@ -125,6 +124,8 @@ normalize m@(suc _) n@(suc _) (suc g) ⟨ suc p & m≡pg' ∧ suc q & n≡qg' �
     x ℕ.* (suc p ℕ.* suc g)           ∎
 normalize m@(suc _) n@(suc _) (suc g) G@(⟨ suc p & m≡pg' ∧ suc q & n≡qg' ⟩)
   | Bézout.-+ x y bezout-eq = p , q , pr , eq where
+
+  open P.≡-Reasoning
 
   eq : m ℕ.* suc q ≡ n ℕ.* suc p
   eq = begin
@@ -158,12 +159,12 @@ norm-mkℚ : (n : ℤ) (d : ℕ) → d ≢0 → ℚ
 norm-mkℚ -[1+ n ] d d≢0 =
   let (q , gcd , q≢0)      = gcd≢0 (suc n) d
       (n′ , d′ , prf , eq) = normalize (suc n) d q {_} {d≢0} {q≢0} gcd
-  in mkℚ -[1+ n′ ] d′ (fromWitness (λ {i} → prf))
+  in mkℚ -[1+ n′ ] d′ prf
 norm-mkℚ +0       d d≢0 = 0/1
 norm-mkℚ +[1+ n ] d d≢0 =
   let (q , gcd , q≢0)             = gcd≢0 (suc n) d
       (n′ , d′ , prf , eq) = normalize (suc n) d q {_} {d≢0} {q≢0} gcd
-  in mkℚ (+ suc n′) d′ (fromWitness (λ {i} → prf))
+  in mkℚ (+ suc n′) d′ prf
 
 ------------------------------------------------------------------------------
 -- Operations on rationals: unary -, reciprocal, multiplication, addition
@@ -177,10 +178,10 @@ norm-mkℚ +[1+ n ] d d≢0 =
 
 -- reciprocal: requires a proof that the numerator is not zero
 
-1/_ : (p : ℚ) → {n≢0 : ∣ ℚ.numerator p ∣ ≢0} → ℚ
+1/_ : (p : ℚ) → .{n≢0 : ∣ ℚ.numerator p ∣ ≢0} → ℚ
 (1/ mkℚ +0 d prf) {()}
-1/ mkℚ +[1+ n ] d prf = mkℚ +[1+ d ] n $ fromWitness $ λ {i} → C.sym (toWitness prf)
-1/ mkℚ -[1+ n ] d prf = mkℚ -[1+ d ] n $ fromWitness $ λ {i} → C.sym (toWitness prf)
+1/ mkℚ +[1+ n ] d prf = mkℚ +[1+ d ] n (C.sym prf)
+1/ mkℚ -[1+ n ] d prf = mkℚ -[1+ d ] n (C.sym prf)
 
 -- multiplication
 
@@ -229,37 +230,45 @@ p ≃ q = ℚ.numerator p ℤ.* ℚ.denominator q
 
 ≃⇒≡ : _≃_ ⇒ _≡_
 ≃⇒≡ {i = p} {j = q} =
-  helper (numerator p) (denominator-1 p) (isCoprime p)
-         (numerator q) (denominator-1 q) (isCoprime q)
+  (helper (numerator p) (numerator q)
+         (denominator-1 p) (denominator-1 q)
+         (isCoprime p) (isCoprime q))
   where
-  open ℚ
+    open ℚ
 
-  helper : ∀ n₁ d₁ c₁ n₂ d₂ c₂ →
-           n₁ ℤ.* + suc d₂ ≡ n₂ ℤ.* + suc d₁ →
-           (n₁ ÷ suc d₁) {c₁} ≡ (n₂ ÷ suc d₂) {c₂}
-  helper n₁ d₁ c₁ n₂ d₂ c₂ eq
-    with Poset.antisym ℕDiv.poset 1+d₁∣1+d₂ 1+d₂∣1+d₁
-    where
-    1+d₁∣1+d₂ : suc d₁ ∣ suc d₂
-    1+d₁∣1+d₂ = ℤDiv.coprime-divisor (+ suc d₁) n₁ (+ suc d₂)
-                  (C.sym $ toWitness c₁) $
-                  ℕDiv.divides ∣ n₂ ∣ (begin
+    module _ (n₁ n₂ : ℤ) (d₁ d₂ : ℕ)
+             .(c₁ : C.Coprime ∣ n₁ ∣ (suc d₁))
+             .(c₂ : C.Coprime ∣ n₂ ∣ (suc d₂))
+             (eq : n₁ ℤ.* + suc d₂ ≡ n₂ ℤ.* + suc d₁) where
+
+      open P.≡-Reasoning
+
+      1+d₁∣1+d₂ : suc d₁ ∣ suc d₂
+      1+d₁∣1+d₂ = ℤDiv.coprime-divisor (+ suc d₁) n₁ (+ suc d₂)
+                  (C.sym (recompute (C.coprime? ∣ n₁ ∣ (suc d₁)) c₁)) $
+                  ℕDiv.divides ∣ n₂ ∣ $ begin
                     ∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ cong ∣_∣ eq ⟩
                     ∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ ℤ.abs-*-commute n₂ (+ suc d₁) ⟩
-                    ∣ n₂ ∣ ℕ.* suc d₁    ∎)
+                    ∣ n₂ ∣ ℕ.* suc d₁    ∎
 
-    1+d₂∣1+d₁ : suc d₂ ∣ suc d₁
-    1+d₂∣1+d₁ = ℤDiv.coprime-divisor (+ suc d₂) n₂ (+ suc d₁)
-                  (C.sym $ toWitness c₂) $
+      1+d₂∣1+d₁ : suc d₂ ∣ suc d₁
+      1+d₂∣1+d₁ = ℤDiv.coprime-divisor (+ suc d₂) n₂ (+ suc d₁)
+                  (C.sym (recompute (C.coprime? ∣ n₂ ∣ (suc d₂)) c₂)) $
                   ℕDiv.divides ∣ n₁ ∣ (begin
                     ∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ cong ∣_∣ (P.sym eq) ⟩
                     ∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ ℤ.abs-*-commute n₁ (+ suc d₂) ⟩
                     ∣ n₁ ∣ ℕ.* suc d₂    ∎)
 
-  helper n₁ d c₁ n₂ .d c₂ eq | refl with ℤ.cancel-*-right
-                                           n₁ n₂ (+ suc d) (λ ()) eq
-  helper n  d c₁ .n .d c₂ eq | refl | refl with Bool.proof-irrelevance c₁ c₂
-  helper n  d c  .n .d .c eq | refl | refl | refl = refl
+      .c₁′ : True (C.coprime? ∣ n₁ ∣ (suc d₁))
+      c₁′ = fromWitness {P = C.Coprime ∣ n₁ ∣ (suc d₁)} c₁
+
+      .c₂′ : True (C.coprime? ∣ n₂ ∣ (suc d₂))
+      c₂′ = fromWitness {P = C.Coprime ∣ n₂ ∣ (suc d₂)} c₂
+
+      helper : (n₁ ÷ suc d₁) {c₁′} ≡ (n₂ ÷ suc d₂) {c₂′}
+      helper     with ∣-antisym 1+d₁∣1+d₂ 1+d₂∣1+d₁
+      ... | refl with ℤ.*-cancelʳ-≡ n₁ n₂ (+ suc d₁) (λ ()) eq
+      ... | refl = refl
 
 ------------------------------------------------------------------------
 -- Equality is decidable
@@ -269,8 +278,8 @@ infix 4 _≟_
 _≟_ : Decidable {A = ℚ} _≡_
 p ≟ q with ℚ.numerator p ℤ.* ℚ.denominator q ℤ.≟
            ℚ.numerator q ℤ.* ℚ.denominator p
-p ≟ q | yes pq≃qp = yes (≃⇒≡ pq≃qp)
-p ≟ q | no ¬pq≃qp = no (¬pq≃qp ∘ ≡⇒≃)
+... | yes pq≃qp = yes (≃⇒≡ pq≃qp)
+... | no ¬pq≃qp = no (¬pq≃qp ∘ ≡⇒≃)
 
 ------------------------------------------------------------------------
 -- Ordering
@@ -294,69 +303,73 @@ p ≤? q with ℚ.numerator p ℤ.* ℚ.denominator q ℤ.≤?
 p ≤? q | yes pq≤qp = yes (*≤* pq≤qp)
 p ≤? q | no ¬pq≤qp = no (λ { (*≤* pq≤qp) → ¬pq≤qp pq≤qp })
 
-decTotalOrder : DecTotalOrder _ _ _
-decTotalOrder = record
-  { Carrier         = ℚ
-  ; _≈_             = _≡_
-  ; _≤_             = _≤_
-  ; isDecTotalOrder = record
-      { isTotalOrder = record
-          { isPartialOrder = record
-              { isPreorder = record
-                  { isEquivalence = P.isEquivalence
-                  ; reflexive     = refl′
-                  ; trans         = trans
-                  }
-                ; antisym = antisym
-              }
-          ; total = total
-          }
-      ; _≟_  = _≟_
-      ; _≤?_ = _≤?_
-      }
-  }
-  where
-  module ℤO = DecTotalOrder ℤ.≤-decTotalOrder
+≤-reflexive : _≡_ ⇒ _≤_
+≤-reflexive refl = *≤* ℤ.≤-refl
 
-  refl′ : _≡_ ⇒ _≤_
-  refl′ refl = *≤* ℤO.refl
+≤-refl : Reflexive _≤_
+≤-refl = ≤-reflexive refl
 
-  trans : Transitive _≤_
-  trans {i = p} {j = q} {k = r} (*≤* le₁) (*≤* le₂)
-    = *≤* (ℤ.cancel-*-+-right-≤ _ _ _
-            (lemma
-              (ℚ.numerator p) (ℚ.denominator p)
-              (ℚ.numerator q) (ℚ.denominator q)
-              (ℚ.numerator r) (ℚ.denominator r)
-              (ℤ.*-+-right-mono (ℚ.denominator-1 r) le₁)
-              (ℤ.*-+-right-mono (ℚ.denominator-1 p) le₂)))
-    where
-    open Algebra.CommutativeRing ℤ.commutativeRing
+≤-trans : Transitive _≤_
+≤-trans {i = mkℚ n₁ d₁ c₁} {j = mkℚ n₂ d₂ c₂} {k = mkℚ n₃ d₃ c₃} (*≤* eq₁) (*≤* eq₂)
+  = *≤* $ ℤ.*-cancelʳ-≤-pos (n₁ ℤ.* + suc d₃) (n₃ ℤ.* + suc d₁) d₂ $ begin
+  let sd₁ = + suc d₁; sd₂ = + suc d₂; sd₃ = + suc d₃ in
+  (n₁ ℤ.* sd₃) ℤ.* sd₂ ≡⟨ ℤ.*-assoc n₁ sd₃ sd₂ ⟩
+  n₁ ℤ.* (sd₃ ℤ.* sd₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm sd₃ sd₂) ⟩
+  n₁ ℤ.* (sd₂ ℤ.* sd₃) ≡⟨ P.sym (ℤ.*-assoc n₁ sd₂ sd₃) ⟩
+  (n₁ ℤ.* sd₂) ℤ.* sd₃ ≤⟨ ℤ.*-monoʳ-≤-pos d₃ eq₁ ⟩
+  (n₂ ℤ.* sd₁) ℤ.* sd₃ ≡⟨ cong (ℤ._* sd₃) (ℤ.*-comm n₂ sd₁) ⟩
+  (sd₁ ℤ.* n₂) ℤ.* sd₃ ≡⟨ ℤ.*-assoc sd₁ n₂ sd₃ ⟩
+  sd₁ ℤ.* (n₂ ℤ.* sd₃) ≤⟨ ℤ.*-monoˡ-≤-pos d₁ eq₂ ⟩
+  sd₁ ℤ.* (n₃ ℤ.* sd₂) ≡⟨ P.sym (ℤ.*-assoc sd₁ n₃ sd₂) ⟩
+  (sd₁ ℤ.* n₃) ℤ.* sd₂ ≡⟨ cong (ℤ._* sd₂) (ℤ.*-comm sd₁ n₃) ⟩
+  (n₃ ℤ.* sd₁) ℤ.* sd₂ ∎
 
-    lemma : ∀ n₁ d₁ n₂ d₂ n₃ d₃ →
-            n₁ ℤ.* d₂ ℤ.* d₃ ℤ.≤ n₂ ℤ.* d₁ ℤ.* d₃ →
-            n₂ ℤ.* d₃ ℤ.* d₁ ℤ.≤ n₃ ℤ.* d₂ ℤ.* d₁ →
-            n₁ ℤ.* d₃ ℤ.* d₂ ℤ.≤ n₃ ℤ.* d₁ ℤ.* d₂
-    lemma n₁ d₁ n₂ d₂ n₃ d₃
-      rewrite ℤ.*-assoc n₁ d₂ d₃
-            | ℤ.*-comm d₂ d₃
-            | sym (ℤ.*-assoc n₁ d₃ d₂)
-            | ℤ.*-assoc n₃ d₂ d₁
-            | ℤ.*-comm d₂ d₁
-            | sym (ℤ.*-assoc n₃ d₁ d₂)
-            | ℤ.*-assoc n₂ d₁ d₃
-            | ℤ.*-comm d₁ d₃
-            | sym (ℤ.*-assoc n₂ d₃ d₁)
-            = ℤO.trans
+  where open ℤ.≤-Reasoning
 
-  antisym : Antisymmetric _≡_ _≤_
-  antisym (*≤* le₁) (*≤* le₂) = ≃⇒≡ (ℤO.antisym le₁ le₂)
+≤-antisym : Antisymmetric _≡_ _≤_
+≤-antisym (*≤* le₁) (*≤* le₂) = ≃⇒≡ (ℤ.≤-antisym le₁ le₂)
 
-  total : Total _≤_
-  total p q =
+≤-total : Total _≤_
+≤-total p q =
     [ inj₁ ∘′ *≤* , inj₂ ∘′ *≤* ]′
-      (ℤO.total (ℚ.numerator p ℤ.* ℚ.denominator q)
-                (ℚ.numerator q ℤ.* ℚ.denominator p))
+      (ℤ.≤-total (ℚ.numerator p ℤ.* ℚ.denominator q)
+                 (ℚ.numerator q ℤ.* ℚ.denominator p))
+
+≤-isPreorder : IsPreorder _≡_ _≤_
+≤-isPreorder = record
+  { isEquivalence = P.isEquivalence
+  ; reflexive     = ≤-reflexive
+  ; trans         = ≤-trans
+  }
+
+≤-preorder : Preorder _ _ _
+≤-preorder = record
+  { isPreorder = ≤-isPreorder
+  }
+
+≤-isPartialOrder : IsPartialOrder _≡_ _≤_
+≤-isPartialOrder = record
+  { isPreorder = ≤-isPreorder
+  ; antisym    = ≤-antisym
+  }
+
+≤-isTotalOrder : IsTotalOrder _≡_ _≤_
+≤-isTotalOrder = record
+  { isPartialOrder = ≤-isPartialOrder
+  ; total          = ≤-total
+  }
+
+≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
+≤-isDecTotalOrder = record
+  { isTotalOrder = ≤-isTotalOrder
+  ; _≟_          = _≟_
+  ; _≤?_         = _≤?_
+  }
+
+≤-decTotalOrder : DecTotalOrder _ _ _
+≤-decTotalOrder = record
+  { isDecTotalOrder = ≤-isDecTotalOrder
+  }
 
 ------------------------------------------------------------------------------
 -- A few constants and some small tests

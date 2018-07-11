@@ -7,21 +7,26 @@
 module Data.Fin.Subset.Properties where
 
 open import Algebra
-import Algebra.Properties.BooleanAlgebra as BoolProp
-open import Data.Empty using (⊥-elim)
+import Algebra.FunctionProperties as AlgebraicProperties
+import Algebra.Structures as AlgebraicStructures
+import Algebra.Properties.Lattice as L
+import Algebra.Properties.DistributiveLattice as DL
+import Algebra.Properties.BooleanAlgebra as BA
+open import Data.Bool.Base using (_≟_)
+open import Data.Bool.Properties
 open import Data.Fin using (Fin; suc; zero)
 open import Data.Fin.Subset
-open import Data.Nat.Base using (ℕ)
-open import Data.Product as Product
-open import Data.Sum as Sum
-open import Data.Vec hiding (_∈_)
-open import Function
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence
-  using (_⇔_; equivalence; module Equivalence)
+open import Data.Nat.Base using (ℕ; zero; suc; z≤n; s≤s; _≤_)
+open import Data.Nat.Properties using (≤-step)
+open import Data.Product as Product using (_×_; _,_)
+open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Vec
+open import Data.Vec.Properties
+open import Function using (const; id)
+open import Function.Equivalence using (_⇔_; equivalence)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; cong; subst)
+  using (_≡_; refl; cong; cong₂; subst; isEquivalence)
 open import Relation.Nullary.Negation using (contradiction)
 
 ------------------------------------------------------------------------
@@ -31,19 +36,29 @@ drop-there : ∀ {s n x} {p : Subset n} → suc x ∈ s ∷ p → x ∈ p
 drop-there (there x∈p) = x∈p
 
 drop-∷-⊆ : ∀ {n s₁ s₂} {p₁ p₂ : Subset n} → s₁ ∷ p₁ ⊆ s₂ ∷ p₂ → p₁ ⊆ p₂
-drop-∷-⊆ p₁s₁⊆p₂s₂ x∈p₁ = drop-there $ p₁s₁⊆p₂s₂ (there x∈p₁)
+drop-∷-⊆ p₁s₁⊆p₂s₂ x∈p₁ = drop-there (p₁s₁⊆p₂s₂ (there x∈p₁))
 
 drop-∷-Empty : ∀ {n s} {p : Subset n} → Empty (s ∷ p) → Empty p
 drop-∷-Empty ¬∃∈ (x , x∈p) = ¬∃∈ (suc x , there x∈p)
 
 ------------------------------------------------------------------------
--- Properties involving ⊥
+-- ∣_∣
+
+∣p∣≤n : ∀ {n} (p : Subset n) → ∣ p ∣ ≤ n
+∣p∣≤n = count≤n (_≟ inside)
+
+------------------------------------------------------------------------
+-- ⊥
 
 ∉⊥ : ∀ {n} {x : Fin n} → x ∉ ⊥
 ∉⊥ (there p) = ∉⊥ p
 
 ⊥⊆ : ∀ {n} {p : Subset n} → ⊥ ⊆ p
 ⊥⊆ x∈⊥ = contradiction x∈⊥ ∉⊥
+
+∣⊥∣≡0 : ∀ n → ∣ ⊥ {n = n} ∣ ≡ 0
+∣⊥∣≡0 zero    = refl
+∣⊥∣≡0 (suc n) = ∣⊥∣≡0 n
 
 Empty-unique : ∀ {n} {p : Subset n} → Empty p → p ≡ ⊥
 Empty-unique {_} {[]}          ¬∃∈ = refl
@@ -52,7 +67,7 @@ Empty-unique {_} {outside ∷ p} ¬∃∈ =
   cong (outside ∷_) (Empty-unique (drop-∷-Empty ¬∃∈))
 
 ------------------------------------------------------------------------
--- Properties involving ⊤
+-- ⊤
 
 ∈⊤ : ∀ {n} {x : Fin n} → x ∈ ⊤
 ∈⊤ {x = zero}  = here
@@ -61,8 +76,12 @@ Empty-unique {_} {outside ∷ p} ¬∃∈ =
 ⊆⊤ : ∀ {n} {p : Subset n} → p ⊆ ⊤
 ⊆⊤ = const ∈⊤
 
+∣⊤∣≡n : ∀ n → ∣ ⊤ {n = n} ∣ ≡ n
+∣⊤∣≡n zero    = refl
+∣⊤∣≡n (suc n) = cong suc (∣⊤∣≡n n)
+
 ------------------------------------------------------------------------
--- Properties involving ⁅_⁆
+-- ⁅_⁆
 
 x∈⁅x⁆ : ∀ {n} (x : Fin n) → x ∈ ⁅ x ⁆
 x∈⁅x⁆ zero    = here
@@ -78,19 +97,361 @@ x∈⁅y⁆⇔x≡y {_} {x} {y} = equivalence
   (x∈⁅y⁆⇒x≡y y)
   (λ x≡y → subst (λ y → x ∈ ⁅ y ⁆) x≡y (x∈⁅x⁆ x))
 
+∣⁅x⁆∣≡1 : ∀ {n} (i : Fin n) → ∣ ⁅ i ⁆ ∣ ≡ 1
+∣⁅x⁆∣≡1 {suc n} zero    = cong suc (∣⊥∣≡0 n)
+∣⁅x⁆∣≡1 {_}     (suc i) = ∣⁅x⁆∣≡1 i
+
 ------------------------------------------------------------------------
--- Properties involving _∪_ and _∩_
+-- _⊆_
+
+⊆-refl : ∀ {n} → Reflexive (_⊆_ {n})
+⊆-refl = id
+
+⊆-reflexive : ∀ {n} → _≡_ ⇒ (_⊆_ {n})
+⊆-reflexive refl = ⊆-refl
+
+⊆-trans : ∀ {n} → Transitive (_⊆_ {n})
+⊆-trans p⊆q q⊆r x∈p = q⊆r (p⊆q x∈p)
+
+⊆-antisym : ∀ {n} → Antisymmetric _≡_ (_⊆_ {n})
+⊆-antisym {x = []}           {[]}           p⊆q q⊆p = refl
+⊆-antisym {x = x ∷ xs} {y ∷ ys} p⊆q q⊆p with x | y
+... | inside  | inside  = cong₂ _∷_ refl (⊆-antisym (drop-∷-⊆ p⊆q) (drop-∷-⊆ q⊆p))
+... | inside  | outside = contradiction (p⊆q here) λ()
+... | outside | inside  = contradiction (q⊆p here) λ()
+... | outside | outside = cong₂ _∷_ refl (⊆-antisym (drop-∷-⊆ p⊆q) (drop-∷-⊆ q⊆p))
+
+⊆-min : ∀ {n} → Minimum (_⊆_ {n}) ⊥
+⊆-min []       ()
+⊆-min (x ∷ xs) (there v∈⊥) = there (⊆-min xs v∈⊥)
+
+⊆-max : ∀ {n} → Maximum (_⊆_ {n}) ⊤
+⊆-max []            ()
+⊆-max (inside ∷ xs) here         = here
+⊆-max (x      ∷ xs) (there v∈xs) = there (⊆-max xs v∈xs)
+
+module _ (n : ℕ) where
+
+  ⊆-isPreorder : IsPreorder _≡_ (_⊆_ {n})
+  ⊆-isPreorder = record
+    { isEquivalence = isEquivalence
+    ; reflexive     = ⊆-reflexive
+    ; trans         = ⊆-trans
+    }
+
+  ⊆-preorder : Preorder _ _ _
+  ⊆-preorder = record
+    { isPreorder = ⊆-isPreorder
+    }
+
+  ⊆-isPartialOrder : IsPartialOrder _≡_ (_⊆_ {n})
+  ⊆-isPartialOrder = record
+    { isPreorder = ⊆-isPreorder
+    ; antisym    = ⊆-antisym
+    }
+
+  ⊆-poset : Poset _ _ _
+  ⊆-poset = record
+    { isPartialOrder = ⊆-isPartialOrder
+    }
+
+p⊆q⇒∣p∣<∣q∣ : ∀ {n} {p q : Subset n} → p ⊆ q → ∣ p ∣ ≤ ∣ q ∣
+p⊆q⇒∣p∣<∣q∣ {p = []}          {[]}          p⊆q = z≤n
+p⊆q⇒∣p∣<∣q∣ {p = outside ∷ p} {outside ∷ q} p⊆q = p⊆q⇒∣p∣<∣q∣ (drop-∷-⊆ p⊆q)
+p⊆q⇒∣p∣<∣q∣ {p = outside ∷ p} {inside  ∷ q} p⊆q = ≤-step (p⊆q⇒∣p∣<∣q∣ (drop-∷-⊆ p⊆q))
+p⊆q⇒∣p∣<∣q∣ {p = inside  ∷ p} {outside ∷ q} p⊆q = contradiction (p⊆q here) λ()
+p⊆q⇒∣p∣<∣q∣ {p = inside  ∷ p} {inside  ∷ q} p⊆q = s≤s (p⊆q⇒∣p∣<∣q∣ (drop-∷-⊆ p⊆q))
+
+------------------------------------------------------------------------
+-- _∩_
 
 module _ {n : ℕ} where
-  open BooleanAlgebra (booleanAlgebra n) public using  ()
-    renaming
-    ( ∨-assoc to ∪-assoc
-    ; ∨-comm  to ∪-comm
-    ; ∧-assoc to ∩-assoc
-    ; ∧-comm  to ∩-comm
-    )
 
+  open AlgebraicProperties {A = Subset n} _≡_
+
+  ∩-assoc : Associative _∩_
+  ∩-assoc = zipWith-assoc ∧-assoc
+
+  ∩-comm : Commutative _∩_
+  ∩-comm = zipWith-comm ∧-comm
+
+  ∩-idem : Idempotent _∩_
+  ∩-idem = zipWith-idem ∧-idem
+
+  ∩-identityˡ : LeftIdentity ⊤ _∩_
+  ∩-identityˡ = zipWith-identityˡ ∧-identityˡ
+
+  ∩-identityʳ : RightIdentity ⊤ _∩_
+  ∩-identityʳ = zipWith-identityʳ ∧-identityʳ
+
+  ∩-identity : Identity ⊤ _∩_
+  ∩-identity = ∩-identityˡ , ∩-identityʳ
+
+  ∩-zeroˡ : LeftZero ⊥ _∩_
+  ∩-zeroˡ = zipWith-zeroˡ ∧-zeroˡ
+
+  ∩-zeroʳ : RightZero ⊥ _∩_
+  ∩-zeroʳ = zipWith-zeroʳ ∧-zeroʳ
+
+  ∩-zero : Zero ⊥ _∩_
+  ∩-zero = ∩-zeroˡ , ∩-zeroʳ
+
+  ∩-inverseˡ : LeftInverse ⊥ ∁ _∩_
+  ∩-inverseˡ = zipWith-inverseˡ ∧-inverseˡ
+
+  ∩-inverseʳ : RightInverse ⊥ ∁ _∩_
+  ∩-inverseʳ = zipWith-inverseʳ ∧-inverseʳ
+
+  ∩-inverse : Inverse ⊥ ∁ _∩_
+  ∩-inverse = ∩-inverseˡ , ∩-inverseʳ
+
+module _ (n : ℕ) where
+
+  open AlgebraicStructures {A = Subset n} _≡_
+
+  ∩-isSemigroup : IsSemigroup _∩_
+  ∩-isSemigroup = record
+    { isEquivalence = isEquivalence
+    ; assoc         = ∩-assoc
+    ; ∙-cong        = cong₂ _∩_
+    }
+
+  ∩-semigroup : Semigroup _ _
+  ∩-semigroup = record
+    { isSemigroup = ∩-isSemigroup
+    }
+
+  ∩-isMonoid : IsMonoid _∩_ ⊤
+  ∩-isMonoid = record
+    { isSemigroup = ∩-isSemigroup
+    ; identity    = ∩-identity
+    }
+
+  ∩-monoid : Monoid _ _
+  ∩-monoid = record
+    { isMonoid = ∩-isMonoid
+    }
+
+  ∩-isCommutativeMonoid : IsCommutativeMonoid _∩_ ⊤
+  ∩-isCommutativeMonoid = record
+    { isSemigroup = ∩-isSemigroup
+    ; identityˡ   = ∩-identityˡ
+    ; comm        = ∩-comm
+    }
+
+  ∩-commutativeMonoid : CommutativeMonoid _ _
+  ∩-commutativeMonoid = record
+    { isCommutativeMonoid = ∩-isCommutativeMonoid
+    }
+
+  ∩-isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid _∩_ ⊤
+  ∩-isIdempotentCommutativeMonoid = record
+    { isCommutativeMonoid = ∩-isCommutativeMonoid
+    ; idem                = ∩-idem
+    }
+
+  ∩-idempotentCommutativeMonoid : IdempotentCommutativeMonoid _ _
+  ∩-idempotentCommutativeMonoid = record
+    { isIdempotentCommutativeMonoid = ∩-isIdempotentCommutativeMonoid
+    }
+
+p∩q⊆p : ∀ {n} (p q : Subset n) → p ∩ q ⊆ p
+p∩q⊆p []            []           x∈p∩q        = x∈p∩q
+p∩q⊆p (inside  ∷ p) (inside ∷ q) here         = here
+p∩q⊆p (inside  ∷ p) (_      ∷ q) (there ∈p∩q) = there (p∩q⊆p p q ∈p∩q)
+p∩q⊆p (outside ∷ p) (_      ∷ q) (there ∈p∩q) = there (p∩q⊆p p q ∈p∩q)
+
+p∩q⊆q : ∀ {n} (p q : Subset n) → p ∩ q ⊆ q
+p∩q⊆q p q rewrite ∩-comm p q = p∩q⊆p q p
+
+x∈p∩q⁺ : ∀ {n} {p q : Subset n} {x} → x ∈ p × x ∈ q → x ∈ p ∩ q
+x∈p∩q⁺ (here      , here)      = here
+x∈p∩q⁺ (there x∈p , there x∈q) = there (x∈p∩q⁺ (x∈p , x∈q))
+
+x∈p∩q⁻ : ∀ {n} (p q : Subset n) {x} → x ∈ p ∩ q → x ∈ p × x ∈ q
+x∈p∩q⁻ []           []           ()
+x∈p∩q⁻ (inside ∷ p) (inside ∷ q) here          = here , here
+x∈p∩q⁻ (s      ∷ p) (t      ∷ q) (there x∈p∩q) =
+  Product.map there there (x∈p∩q⁻ p q x∈p∩q)
+
+∩⇔× : ∀ {n} {p q : Subset n} {x} → x ∈ p ∩ q ⇔ (x ∈ p × x ∈ q)
+∩⇔× = equivalence (x∈p∩q⁻ _ _) x∈p∩q⁺
+
+------------------------------------------------------------------------
 -- _∪_
+
+module _ {n : ℕ} where
+
+  open AlgebraicProperties {A = Subset n} _≡_
+
+  ∪-assoc : Associative _∪_
+  ∪-assoc = zipWith-assoc ∨-assoc
+
+  ∪-comm : Commutative _∪_
+  ∪-comm = zipWith-comm ∨-comm
+
+  ∪-idem : Idempotent _∪_
+  ∪-idem = zipWith-idem ∨-idem
+
+  ∪-identityˡ : LeftIdentity ⊥ _∪_
+  ∪-identityˡ = zipWith-identityˡ ∨-identityˡ
+
+  ∪-identityʳ : RightIdentity ⊥ _∪_
+  ∪-identityʳ = zipWith-identityʳ ∨-identityʳ
+
+  ∪-identity : Identity ⊥ _∪_
+  ∪-identity = ∪-identityˡ , ∪-identityʳ
+
+  ∪-zeroˡ : LeftZero ⊤ _∪_
+  ∪-zeroˡ = zipWith-zeroˡ ∨-zeroˡ
+
+  ∪-zeroʳ : RightZero ⊤ _∪_
+  ∪-zeroʳ = zipWith-zeroʳ ∨-zeroʳ
+
+  ∪-zero : Zero ⊤ _∪_
+  ∪-zero = ∪-zeroˡ , ∪-zeroʳ
+
+  ∪-inverseˡ : LeftInverse ⊤ ∁ _∪_
+  ∪-inverseˡ = zipWith-inverseˡ ∨-inverseˡ
+
+  ∪-inverseʳ : RightInverse ⊤ ∁ _∪_
+  ∪-inverseʳ = zipWith-inverseʳ ∨-inverseʳ
+
+  ∪-inverse : Inverse ⊤ ∁ _∪_
+  ∪-inverse = ∪-inverseˡ , ∪-inverseʳ
+
+  ∪-distribˡ-∩ : _∪_ DistributesOverˡ _∩_
+  ∪-distribˡ-∩ = zipWith-distribˡ ∨-distribˡ-∧
+
+  ∪-distribʳ-∩ : _∪_ DistributesOverʳ _∩_
+  ∪-distribʳ-∩ = zipWith-distribʳ ∨-distribʳ-∧
+
+  ∪-distrib-∩ : _∪_ DistributesOver _∩_
+  ∪-distrib-∩ = ∪-distribˡ-∩ , ∪-distribʳ-∩
+
+  ∩-distribˡ-∪ : _∩_ DistributesOverˡ _∪_
+  ∩-distribˡ-∪ = zipWith-distribˡ ∧-distribˡ-∨
+
+  ∩-distribʳ-∪ : _∩_ DistributesOverʳ _∪_
+  ∩-distribʳ-∪ = zipWith-distribʳ ∧-distribʳ-∨
+
+  ∩-distrib-∪ : _∩_ DistributesOver _∪_
+  ∩-distrib-∪ = ∩-distribˡ-∪ , ∩-distribʳ-∪
+
+  ∪-abs-∩ : _∪_ Absorbs _∩_
+  ∪-abs-∩ = zipWith-absorbs ∨-abs-∧
+
+  ∩-abs-∪ : _∩_ Absorbs _∪_
+  ∩-abs-∪ = zipWith-absorbs ∧-abs-∨
+
+module _ (n : ℕ) where
+
+  open AlgebraicStructures {A = Subset n} _≡_
+
+  ∪-isSemigroup : IsSemigroup _∪_
+  ∪-isSemigroup = record
+    { isEquivalence = isEquivalence
+    ; assoc         = ∪-assoc
+    ; ∙-cong        = cong₂ _∪_
+    }
+
+  ∪-semigroup : Semigroup _ _
+  ∪-semigroup = record
+    { isSemigroup = ∪-isSemigroup
+    }
+
+  ∪-isMonoid : IsMonoid _∪_ ⊥
+  ∪-isMonoid = record
+    { isSemigroup = ∪-isSemigroup
+    ; identity    = ∪-identity
+    }
+
+  ∪-monoid : Monoid _ _
+  ∪-monoid = record
+    { isMonoid = ∪-isMonoid
+    }
+
+  ∪-isCommutativeMonoid : IsCommutativeMonoid _∪_ ⊥
+  ∪-isCommutativeMonoid = record
+    { isSemigroup = ∪-isSemigroup
+    ; identityˡ   = ∪-identityˡ
+    ; comm        = ∪-comm
+    }
+
+  ∪-commutativeMonoid : CommutativeMonoid _ _
+  ∪-commutativeMonoid = record
+    { isCommutativeMonoid = ∪-isCommutativeMonoid
+    }
+
+  ∪-isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid _∪_ ⊥
+  ∪-isIdempotentCommutativeMonoid = record
+    { isCommutativeMonoid = ∪-isCommutativeMonoid
+    ; idem                = ∪-idem
+    }
+
+  ∪-idempotentCommutativeMonoid : IdempotentCommutativeMonoid _ _
+  ∪-idempotentCommutativeMonoid = record
+    { isIdempotentCommutativeMonoid = ∪-isIdempotentCommutativeMonoid
+    }
+
+  ∪-∩-isLattice : IsLattice _∪_ _∩_
+  ∪-∩-isLattice = record
+    { isEquivalence = isEquivalence
+    ; ∨-comm        = ∪-comm
+    ; ∨-assoc       = ∪-assoc
+    ; ∨-cong        = cong₂ _∪_
+    ; ∧-comm        = ∩-comm
+    ; ∧-assoc       = ∩-assoc
+    ; ∧-cong        = cong₂ _∩_
+    ; absorptive    = ∪-abs-∩ , ∩-abs-∪
+    }
+
+  ∪-∩-lattice : Lattice _ _
+  ∪-∩-lattice = record
+    { isLattice = ∪-∩-isLattice
+    }
+
+  ∪-∩-isDistributiveLattice : IsDistributiveLattice _∪_ _∩_
+  ∪-∩-isDistributiveLattice = record
+    { isLattice    = ∪-∩-isLattice
+    ; ∨-∧-distribʳ = ∪-distribʳ-∩
+    }
+
+  ∪-∩-distributiveLattice : DistributiveLattice _ _
+  ∪-∩-distributiveLattice = record
+    { isDistributiveLattice = ∪-∩-isDistributiveLattice
+    }
+
+  ∪-∩-isBooleanAlgebra : IsBooleanAlgebra _∪_ _∩_ ∁ ⊤ ⊥
+  ∪-∩-isBooleanAlgebra = record
+    { isDistributiveLattice = ∪-∩-isDistributiveLattice
+    ; ∨-complementʳ         = ∪-inverseʳ
+    ; ∧-complementʳ         = ∩-inverseʳ
+    ; ¬-cong                = cong ∁
+    }
+
+  ∪-∩-booleanAlgebra : BooleanAlgebra _ _
+  ∪-∩-booleanAlgebra = record
+    { isBooleanAlgebra = ∪-∩-isBooleanAlgebra
+    }
+
+  ∩-∪-isLattice : IsLattice _∩_ _∪_
+  ∩-∪-isLattice = L.∧-∨-isLattice ∪-∩-lattice
+
+  ∩-∪-lattice : Lattice _ _
+  ∩-∪-lattice = L.∧-∨-lattice ∪-∩-lattice
+
+  ∩-∪-isDistributiveLattice : IsDistributiveLattice _∩_ _∪_
+  ∩-∪-isDistributiveLattice = DL.∧-∨-isDistributiveLattice ∪-∩-distributiveLattice
+
+  ∩-∪-distributiveLattice : DistributiveLattice _ _
+  ∩-∪-distributiveLattice = DL.∧-∨-distributiveLattice ∪-∩-distributiveLattice
+
+  ∩-∪-isBooleanAlgebra : IsBooleanAlgebra _∩_ _∪_ ∁ ⊥ ⊤
+  ∩-∪-isBooleanAlgebra = BA.∧-∨-isBooleanAlgebra ∪-∩-booleanAlgebra
+
+  ∩-∪-booleanAlgebra : BooleanAlgebra _ _
+  ∩-∪-booleanAlgebra = BA.∧-∨-booleanAlgebra ∪-∩-booleanAlgebra
 
 p⊆p∪q : ∀ {n p} (q : Subset n) → p ⊆ p ∪ q
 p⊆p∪q []      ()
@@ -113,78 +474,3 @@ x∈p∪q⁺ (inj₂ x∈q) = q⊆p∪q _ _ x∈q
 
 ∪⇔⊎ : ∀ {n} {p q : Subset n} {x} → x ∈ p ∪ q ⇔ (x ∈ p ⊎ x ∈ q)
 ∪⇔⊎ = equivalence (x∈p∪q⁻ _ _) x∈p∪q⁺
-
--- _∩_
-
-p∩q⊆p : ∀ {n} (p q : Subset n) → p ∩ q ⊆ p
-p∩q⊆p [] [] x∈p∩q = x∈p∩q
-p∩q⊆p (inside  ∷ p) (inside  ∷ q) here = here
-p∩q⊆p (inside  ∷ p) (inside  ∷ q) (there ∈p∩q) = there (p∩q⊆p p q ∈p∩q)
-p∩q⊆p (outside ∷ p) (inside  ∷ q) (there ∈p∩q) = there (p∩q⊆p p q ∈p∩q)
-p∩q⊆p (inside  ∷ p) (outside ∷ q) (there ∈p∩q) = there (p∩q⊆p p q ∈p∩q)
-p∩q⊆p (outside ∷ p) (outside ∷ q) (there ∈p∩q) = there (p∩q⊆p p q ∈p∩q)
-
-p∩q⊆q : ∀ {n} (p q : Subset n) → p ∩ q ⊆ q
-p∩q⊆q p q rewrite ∩-comm p q = p∩q⊆p q p
-
-x∈p∩q⁺ : ∀ {n} {p q : Subset n} {x} → x ∈ p × x ∈ q → x ∈ p ∩ q
-x∈p∩q⁺ (here , here) = here
-x∈p∩q⁺ (there x∈p , there x∈q) = there (x∈p∩q⁺ (x∈p , x∈q))
-
-x∈p∩q⁻ : ∀ {n} (p q : Subset n) {x} → x ∈ p ∩ q → x ∈ p × x ∈ q
-x∈p∩q⁻ [] [] ()
-x∈p∩q⁻ (inside ∷ p) (inside ∷ q) here = here , here
-x∈p∩q⁻ (s      ∷ p) (t      ∷ q) (there x∈p∩q) =
-  Product.map there there (x∈p∩q⁻ p q x∈p∩q)
-
-∩⇔× : ∀ {n} {p q : Subset n} {x} → x ∈ p ∩ q ⇔ (x ∈ p × x ∈ q)
-∩⇔× = equivalence (x∈p∩q⁻ _ _) x∈p∩q⁺
-
-------------------------------------------------------------------------
--- _⊆_ is a partial order
-
--- The "natural poset" associated with the boolean algebra.
-
-module NaturalPoset where
-  private
-    open module BA {n} = BoolProp (booleanAlgebra n) public
-      using (poset)
-    open module Po {n} = Poset (poset {n = n}) public hiding (refl)
-
-  -- _⊆_ is equivalent to the natural lattice order.
-
-  orders-equivalent : ∀ {n} {p₁ p₂ : Subset n} → p₁ ⊆ p₂ ⇔ p₁ ≤ p₂
-  orders-equivalent = equivalence (to _ _) (from _ _)
-    where
-    to : ∀ {n} (p₁ p₂ : Subset n) → p₁ ⊆ p₂ → p₁ ≤ p₂
-    to []             []             p₁⊆p₂ = refl
-    to (inside  ∷ p₁) (_       ∷ p₂) p₁⊆p₂ with p₁⊆p₂ here
-    to (inside  ∷ p₁) (.inside ∷ p₂) p₁⊆p₂ | here = cong (_∷_ inside)  (to p₁ p₂ (drop-∷-⊆ p₁⊆p₂))
-    to (outside ∷ p₁) (_       ∷ p₂) p₁⊆p₂        = cong (_∷_ outside) (to p₁ p₂ (drop-∷-⊆ p₁⊆p₂))
-
-    from : ∀ {n} (p₁ p₂ : Subset n) → p₁ ≤ p₂ → p₁ ⊆ p₂
-    from []             []       p₁≤p₂ x               = x
-    from (.inside ∷ _)  (_ ∷ _)  p₁≤p₂ here            rewrite cong head p₁≤p₂ = here
-    from (_       ∷ p₁) (_ ∷ p₂) p₁≤p₂ (there xs[i]=x) =
-      there (from p₁ p₂ (cong tail p₁≤p₂) xs[i]=x)
-
--- _⊆_ is a partial order.
-
-poset : ℕ → Poset _ _ _
-poset n = record
-  { Carrier        = Subset n
-  ; _≈_            = _≡_
-  ; _≤_            = _⊆_
-  ; isPartialOrder = record
-    { isPreorder = record
-      { isEquivalence = isEquivalence
-      ; reflexive     = λ i≡j → from ⟨$⟩ reflexive i≡j
-      ; trans         = λ x⊆y y⊆z → from ⟨$⟩ trans (to ⟨$⟩ x⊆y) (to ⟨$⟩ y⊆z)
-      }
-    ; antisym = λ x⊆y y⊆x → antisym (to ⟨$⟩ x⊆y) (to ⟨$⟩ y⊆x)
-    }
-  }
-  where
-  open NaturalPoset
-  open module E {p₁ p₂} =
-    Equivalence (orders-equivalent {n = n} {p₁ = p₁} {p₂ = p₂})

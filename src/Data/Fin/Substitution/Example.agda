@@ -15,7 +15,8 @@ open import Data.Vec
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl; sym; cong; cong₂)
 open PropEq.≡-Reasoning
-open import Data.Star using (Star; ε; _◅_)
+open import Relation.Binary.Closure.ReflexiveTransitive
+  using (Star; ε; _◅_)
 
 -- A representation of the untyped λ-calculus. Uses de Bruijn indices.
 
@@ -28,7 +29,7 @@ data Tm (n : ℕ) : Set where
 
 -- Code for applying substitutions.
 
-module TmApp {T} (l : Lift T Tm) where
+module TmApp {ℓ} {T : ℕ → Set ℓ} (l : Lift T Tm) where
   open Lift l hiding (var)
 
   -- Applies a substitution to a term.

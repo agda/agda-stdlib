@@ -44,7 +44,10 @@ procedure can be followed:
 
     cd agda
     make fast-forward-std-lib
-    record-the-changes-and-push
+
+  Record the changes and push
+
+* Submit a pull request to update the version of standard library on Homebrew (https://github.com/Homebrew/homebrew-core/blob/master/Formula/agda.rb)
 
 * Update the Agda wiki:
 

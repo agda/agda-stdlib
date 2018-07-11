@@ -9,15 +9,16 @@ module Function.Related.TypeIsomorphisms where
 
 open import Algebra
 import Algebra.FunctionProperties as FP
-import Algebra.Operations
+import Algebra.Operations.Semiring as SemiringOperations
 import Algebra.RingSolver.Natural-coefficients
 open import Algebra.Structures
 open import Data.Empty
 open import Data.Nat as Nat using (zero; suc)
 open import Data.Product as Prod hiding (swap)
-open import Data.Product.Relation.Pointwise
+open import Data.Product.Relation.Pointwise.NonDependent
 open import Data.Sum as Sum
-open import Data.Sum.Relation.General
+open import Data.Sum.Properties using (swap-involutive)
+open import Data.Sum.Relation.Pointwise
 open import Data.Unit
 open import Level hiding (zero; suc)
 open import Function
@@ -46,6 +47,20 @@ open import Relation.Nullary.Decidable as Dec using (True)
     }
   }
 
+
+------------------------------------------------------------------------
+-- × is "commutative"
+
+×-comm : ∀ {a b} {A : Set a} {B : Set b} → (A × B) ↔ (B × A)
+×-comm = record
+  { to         = P.→-to-⟶ Prod.swap
+  ; from       = P.→-to-⟶ Prod.swap
+  ; inverse-of = record
+      { left-inverse-of  = λ _ → P.refl
+      ; right-inverse-of = λ _ → P.refl
+      }
+  }
+
 ------------------------------------------------------------------------
 -- ⊥, ⊤, _×_ and _⊎_ form a commutative semiring
 
@@ -55,7 +70,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
   { Carrier             = Set ℓ
   ; _≈_                 = Related ⌊ k ⌋
   ; _∙_                 = _×_
-  ; ε                   = Lift ⊤
+  ; ε                   = Lift ℓ ⊤
   ; isCommutativeMonoid = record
     { isSemigroup   = record
       { isEquivalence = Setoid.isEquivalence $ Related.setoid k ℓ
@@ -69,7 +84,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
   where
   open FP _↔_
 
-  left-identity : LeftIdentity (Lift {ℓ = ℓ} ⊤) _×_
+  left-identity : LeftIdentity (Lift ℓ ⊤) _×_
   left-identity _ = record
     { to         = P.→-to-⟶ proj₂
     ; from       = P.→-to-⟶ λ y → _ , y
@@ -80,14 +95,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
     }
 
   comm : Commutative _×_
-  comm _ _ = record
-    { to         = P.→-to-⟶ Prod.swap
-    ; from       = P.→-to-⟶ Prod.swap
-    ; inverse-of = record
-      { left-inverse-of  = λ _ → P.refl
-      ; right-inverse-of = λ _ → P.refl
-      }
-    }
+  comm _ _ = ×-comm
 
 ⊎-CommutativeMonoid : Symmetric-kind → (ℓ : Level) →
                       CommutativeMonoid _ _
@@ -95,7 +103,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
   { Carrier             = Set ℓ
   ; _≈_                 = Related ⌊ k ⌋
   ; _∙_                 = _⊎_
-  ; ε                   = Lift ⊥
+  ; ε                   = Lift ℓ ⊥
   ; isCommutativeMonoid = record
     { isSemigroup   = record
       { isEquivalence = Setoid.isEquivalence $ Related.setoid k ℓ
@@ -109,7 +117,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
   where
   open FP _↔_
 
-  left-identity : LeftIdentity (Lift ⊥) (_⊎_ {a = ℓ} {b = ℓ})
+  left-identity : LeftIdentity (Lift ℓ ⊥) _⊎_
   left-identity A = record
     { to         = P.→-to-⟶ [ (λ ()) ∘′ lower , id ]
     ; from       = P.→-to-⟶ inj₂
@@ -134,16 +142,10 @@ open import Relation.Nullary.Decidable as Dec using (True)
     { to         = P.→-to-⟶ swap
     ; from       = P.→-to-⟶ swap
     ; inverse-of = record
-      { left-inverse-of  = inv
-      ; right-inverse-of = inv
+      { left-inverse-of  = swap-involutive
+      ; right-inverse-of = swap-involutive
       }
     }
-    where
-    swap : {A B : Set ℓ} → A ⊎ B → B ⊎ A
-    swap = [ inj₂ , inj₁ ]
-
-    inv : ∀ {A B} → swap ∘ swap {A} {B} ≗ id
-    inv = [ (λ _ → P.refl) , (λ _ → P.refl) ]
 
 ×⊎-CommutativeSemiring : Symmetric-kind → (ℓ : Level) →
                          CommutativeSemiring (Level.suc ℓ) ℓ
@@ -152,15 +154,15 @@ open import Relation.Nullary.Decidable as Dec using (True)
   ; _≈_                   = Related ⌊ k ⌋
   ; _+_                   = _⊎_
   ; _*_                   = _×_
-  ; 0#                    = Lift ⊥
-  ; 1#                    = Lift ⊤
+  ; 0#                    = Lift ℓ ⊥
+  ; 1#                    = Lift ℓ ⊤
   ; isCommutativeSemiring = isCommutativeSemiring
   }
   where
   open CommutativeMonoid
   open FP _↔_
 
-  left-zero : LeftZero (Lift ⊥) (_×_ {a = ℓ} {b = ℓ})
+  left-zero : LeftZero (Lift ℓ ⊥) _×_
   left-zero A = record
     { to         = P.→-to-⟶ proj₁
     ; from       = P.→-to-⟶ (⊥-elim ∘′ lower)
@@ -191,8 +193,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
     -- writing, on a given system, using certain Agda options).
 
     isCommutativeSemiring :
-      IsCommutativeSemiring
-        {ℓ = ℓ} (Related ⌊ k ⌋) _⊎_ _×_ (Lift ⊥) (Lift ⊤)
+      IsCommutativeSemiring (Related ⌊ k ⌋) _⊎_ _×_ (Lift ℓ ⊥) (Lift ℓ ⊤)
     isCommutativeSemiring = record
       { +-isCommutativeMonoid = isCommutativeMonoid $
                                   ⊎-CommutativeMonoid k ℓ
@@ -209,7 +210,7 @@ private
   coefficient-dec :
     ∀ s ℓ →
     let open CommutativeSemiring (×⊎-CommutativeSemiring s ℓ)
-        open Algebra.Operations semiring renaming (_×_ to Times)
+        open SemiringOperations semiring renaming (_×_ to Times)
     in
 
     ∀ m n → Dec (Times m 1# ∼[ ⌊ s ⌋ ] Times n 1#)
@@ -223,7 +224,7 @@ private
     where
     open CommutativeSemiring (×⊎-CommutativeSemiring bijection ℓ)
       using (1#; semiring)
-    open Algebra.Operations semiring renaming (_×_ to Times)
+    open SemiringOperations semiring renaming (_×_ to Times)
 
     to : ∀ {m n} → m ≡ n → Times m 1# ↔ Times n 1#
     to {m} P.refl = Times m 1# ∎
@@ -238,7 +239,7 @@ private
       open P.≡-Reasoning
 
       ↑⊤ : Set ℓ
-      ↑⊤ = Lift ⊤
+      ↑⊤ = Lift _ ⊤
 
       inj₁≢inj₂ : ∀ {A : Set ℓ} {x : ↑⊤ ⊎ A} {y} →
                   x ≡ inj₂ y → x ≡ inj₁ _ → ⊥
@@ -309,8 +310,8 @@ private
 
   -- A test of the solver above.
 
-  test : (A B C : Set) →
-         (Lift ⊤ × A × (B ⊎ C)) ↔ (A × B ⊎ C × (Lift ⊥ ⊎ A))
+  test : {ℓ : Level} (A B C : Set ℓ) →
+         (Lift ℓ ⊤ × A × (B ⊎ C)) ↔ (A × B ⊎ C × (Lift ℓ ⊥ ⊎ A))
   test = solve 3 (λ A B C → con 1 :* (A :* (B :+ C)) :=
                             A :* B :+ C :* (con 0 :+ A))
                  Inv.id

@@ -3,7 +3,7 @@
 --
 -- Lexicographic ordering of lists
 --
--- This module is DEPRECATED. Please use Data.List.Relation.StrictLex
+-- This module is DEPRECATED. Please use Data.List.Relation.Lex.Strict
 -- directly.
 ------------------------------------------------------------------------
 
@@ -14,4 +14,6 @@
 
 module Relation.Binary.List.StrictLex where
 
-open import Data.List.Relation.StrictLex
+open import Data.List.Relation.Lex.Core public
+open import Data.List.Relation.Lex.Strict public
+  hiding (base; halt; this; next; ¬≤-this; ¬≤-next)

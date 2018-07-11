@@ -7,10 +7,10 @@
 module Relation.Unary where
 
 open import Data.Empty
-open import Function
 open import Data.Unit.Base using (⊤)
 open import Data.Product
-open import Data.Sum
+open import Data.Sum using (_⊎_; [_,_])
+open import Function
 open import Level
 open import Relation.Nullary
 open import Relation.Binary.Core using (_≡_)
@@ -23,13 +23,30 @@ Pred A ℓ = A → Set ℓ
 
 ------------------------------------------------------------------------
 -- Unary relations can be seen as sets
+-- i.e. they can be seen as subsets of the universe of discourse.
 
--- I.e., they can be seen as subsets of the universe of discourse.
+module _ {a} {A : Set a} where
 
-module _ {a} {A : Set a} -- The universe of discourse.
-         where
+  ----------------------------------------------------------------------
+  -- Special sets
 
-  -- Set membership.
+  -- The empty set
+
+  ∅ : Pred A zero
+  ∅ = λ _ → ⊥
+
+  -- The singleton set
+
+  ｛_｝ : A → Pred A a
+  ｛ x ｝ = x ≡_
+
+  -- The universe
+
+  U : Pred A zero
+  U = λ _ → ⊤
+
+  ----------------------------------------------------------------------
+  -- Membership
 
   infix 4 _∈_ _∉_
 
@@ -39,72 +56,101 @@ module _ {a} {A : Set a} -- The universe of discourse.
   _∉_ : ∀ {ℓ} → A → Pred A ℓ → Set _
   x ∉ P = ¬ x ∈ P
 
-  -- The empty set.
+  ----------------------------------------------------------------------
+  -- Subsets
 
-  ∅ : Pred A zero
-  ∅ = λ _ → ⊥
+  infix 4 _⊆_ _⊇_ _⊈_ _⊉_ _⊂_ _⊃_ _⊄_ _⊅_
 
-  -- The property of being empty.
+  _⊆_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  P ⊆ Q = ∀ {x} → x ∈ P → x ∈ Q
+
+  _⊇_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  P ⊇ Q = Q ⊆ P
+
+  _⊈_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  P ⊈ Q = ¬ (P ⊆ Q)
+
+  _⊉_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  P ⊉ Q = ¬ (P ⊇ Q)
+
+  _⊂_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  P ⊂ Q = P ⊆ Q × Q ⊈ P
+
+  _⊃_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  P ⊃ Q = Q ⊂ P
+
+  _⊄_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  P ⊄ Q = ¬ (P ⊂ Q)
+
+  _⊅_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  P ⊅ Q = ¬ (P ⊃ Q)
+
+  -- Dashed variants of _⊆_ for when 'x' can't be inferred from 'x ∈ P'.
+
+  infix 4 _⊆′_ _⊇′_ _⊈′_ _⊉′_ _⊂′_ _⊃′_ _⊄′_ _⊅′_
+
+  _⊆′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  P ⊆′ Q = ∀ x → x ∈ P → x ∈ Q
+
+  _⊇′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  Q ⊇′ P = P ⊆′ Q
+
+  _⊈′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  P ⊈′ Q = ¬ (P ⊆′ Q)
+
+  _⊉′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  P ⊉′ Q = ¬ (P ⊇′ Q)
+
+  _⊂′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  P ⊂′ Q = P ⊆′ Q × Q ⊈′ P
+
+  _⊃′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  P ⊃′ Q = Q ⊂′ P
+
+  _⊄′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  P ⊄′ Q = ¬ (P ⊂′ Q)
+
+  _⊅′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  P ⊅′ Q = ¬ (P ⊃′ Q)
+
+  ----------------------------------------------------------------------
+  -- Properties of sets
+
+  -- Emptiness
 
   Empty : ∀ {ℓ} → Pred A ℓ → Set _
   Empty P = ∀ x → x ∉ P
 
-  ∅-Empty : Empty ∅
-  ∅-Empty x ()
+  -- Satisfiable
 
-  -- The singleton set.
-  ｛_｝ : A → Pred A a
-  ｛ x ｝ = _≡_ x
+  Satisfiable : ∀ {ℓ} → Pred A ℓ → Set _
+  Satisfiable P = ∃ λ x → x ∈ P
 
-  -- The universe, i.e. the subset containing all elements in A.
-
-  U : Pred A zero
-  U = λ _ → ⊤
-
-  -- The property of being universal.
+  -- Universality
 
   infix 10 Universal
-
   Universal : ∀ {ℓ} → Pred A ℓ → Set _
   Universal P = ∀ x → x ∈ P
 
   syntax Universal P = ∀[ P ]
 
-  U-Universal : Universal U
-  U-Universal = λ _ → _
+  -- Decidability
+
+  Decidable : ∀ {ℓ} → Pred A ℓ → Set _
+  Decidable P = ∀ x → Dec (P x)
+
+  -- Irrelevance
+
+  Irrelevant : ∀ {ℓ} → Pred A ℓ → Set _
+  Irrelevant P = ∀ {x} (a : P x) (b : P x) → a ≡ b
+
+  ----------------------------------------------------------------------
+  -- Operations on sets
 
   -- Set complement.
 
   ∁ : ∀ {ℓ} → Pred A ℓ → Pred A ℓ
   ∁ P = λ x → x ∉ P
-
-  ∁∅-Universal : Universal (∁ ∅)
-  ∁∅-Universal = λ x x∈∅ → x∈∅
-
-  ∁U-Empty : Empty (∁ U)
-  ∁U-Empty = λ x x∈∁U → x∈∁U _
-
-  -- P ⊆ Q means that P is a subset of Q. _⊆′_ is a variant of _⊆_.
-
-  infix 4 _⊆_ _⊇_ _⊆′_ _⊇′_
-
-  _⊆_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊆ Q = ∀ {x} → x ∈ P → x ∈ Q
-
-  _⊆′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊆′ Q = ∀ x → x ∈ P → x ∈ Q
-
-  _⊇_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  Q ⊇ P = P ⊆ Q
-
-  _⊇′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  Q ⊇′ P = P ⊆′ Q
-
-  ∅-⊆ : ∀ {ℓ} → (P : Pred A ℓ) → ∅ ⊆ P
-  ∅-⊆ P ()
-
-  ⊆-U : ∀ {ℓ} → (P : Pred A ℓ) → P ⊆ U
-  ⊆-U P _ = _
 
   -- Positive version of non-disjointness, dual to inclusion.
 
@@ -129,7 +175,7 @@ module _ {a} {A : Set a} -- The universe of discourse.
 
   -- Implication.
 
-  infixl 8 _⇒_
+  infixr 8 _⇒_
 
   _⇒_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
   P ⇒ Q = λ x → x ∈ P → x ∈ Q
@@ -209,9 +255,3 @@ _//_ : ∀ {a b c ℓ₁ ℓ₂} {A : Set a} {B : Set b} {C : Set c} →
 _\\_ : ∀ {a b c ℓ₁ ℓ₂} {A : Set a} {B : Set b} {C : Set c} →
        Pred (A × C) ℓ₁ → Pred (A × B) ℓ₂ → Pred (B × C) _
 P \\ Q = (P ~ // Q ~) ~
-
-------------------------------------------------------------------------
--- Properties of unary relations
-
-Decidable : ∀ {a ℓ} {A : Set a} (P : Pred A ℓ) → Set _
-Decidable P = ∀ x → Dec (P x)

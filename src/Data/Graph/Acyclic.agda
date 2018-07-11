@@ -10,11 +10,13 @@
 
 module Data.Graph.Acyclic where
 
+open import Level using (_⊔_)
 open import Data.Nat.Base as Nat using (ℕ; zero; suc; _<′_)
 import Data.Nat.Properties as Nat
 open import Data.Fin as Fin
-  using (Fin; Fin′; zero; suc; #_; toℕ) renaming (_ℕ-ℕ_ to _-_)
-open import Data.Fin.Properties as FP using (_≟_)
+  using (Fin; Fin′; zero; suc; #_; toℕ; _≟_) renaming (_ℕ-ℕ_ to _-_)
+import Data.Fin.Properties as FP
+import Data.Fin.Permutation.Components as PC
 open import Data.Product as Prod using (∃; _×_; _,_)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Empty
@@ -38,7 +40,7 @@ private
 ------------------------------------------------------------------------
 -- Node contexts
 
-record Context (Node Edge : Set) (n : ℕ) : Set where
+record Context {ℓ e} (Node : Set ℓ) (Edge : Set e) (n : ℕ) : Set (ℓ ⊔ e) where
   constructor context
   field
     label      : Node
@@ -48,10 +50,12 @@ open Context public
 
 -- Map for contexts.
 
-cmap : ∀ {N₁ N₂ E₁ E₂ n} →
-       (N₁ → N₂) → (List (E₁ × Fin n) → List (E₂ × Fin n)) →
-       Context N₁ E₁ n → Context N₂ E₂ n
-cmap f g c = context (f (label c)) (g (successors c))
+module _ {ℓ₁ e₁} {N₁ : Set ℓ₁} {E₁ : Set e₁}
+         {ℓ₂ e₂} {N₂ : Set ℓ₂} {E₂ : Set e₂} where
+
+  cmap : ∀ {n} → (N₁ → N₂) → (List (E₁ × Fin n) → List (E₂ × Fin n)) →
+         Context N₁ E₁ n → Context N₂ E₂ n
+  cmap f g c = context (f (label c)) (g (successors c))
 
 ------------------------------------------------------------------------
 -- Graphs
@@ -60,7 +64,7 @@ infixr 3 _&_
 
 -- The DAGs are indexed on the number of nodes.
 
-data Graph (Node Edge : Set) : ℕ → Set where
+data Graph {ℓ e} (Node : Set ℓ) (Edge : Set e) : ℕ → Set (ℓ ⊔ e) where
   ∅   : Graph Node Edge 0
   _&_ : ∀ {n} (c : Context Node Edge n) (g : Graph Node Edge n) →
         Graph Node Edge (suc n)
@@ -78,48 +82,54 @@ private
 ------------------------------------------------------------------------
 -- Higher-order functions
 
+module _ {ℓ e} {N : Set ℓ} {E : Set e} {t} where
+
 -- "Fold right".
 
-foldr : ∀ {N E m} (T : ℕ → Set) →
-        (∀ {n} → Context N E n → T n → T (suc n)) →
-        T 0 →
-        Graph N E m → T m
-foldr T _∙_ x ∅       = x
-foldr T _∙_ x (c & g) = c ∙ foldr T _∙_ x g
+  foldr : (T : ℕ → Set t) →
+          (∀ {n} → Context N E n → T n → T (suc n)) →
+          T 0 →
+          ∀ {m} → Graph N E m → T m
+  foldr T _∙_ x ∅       = x
+  foldr T _∙_ x (c & g) = c ∙ foldr T _∙_ x g
 
 -- "Fold left".
 
-foldl : ∀ {N E n} (T : ℕ → Set) →
-        ((i : Fin n) → T (toℕ i) → Context N E (n - suc i) →
-         T (suc (toℕ i))) →
-        T 0 →
-        Graph N E n → T n
-foldl T f x ∅       = x
-foldl T f x (c & g) =
-  foldl (λ n → T (suc n)) (λ i → f (suc i)) (f zero x c) g
+  foldl : ∀ {n} (T : ℕ → Set t) →
+          ((i : Fin n) → T (toℕ i) → Context N E (n - suc i) →
+          T (suc (toℕ i))) →
+          T 0 →
+          Graph N E n → T n
+  foldl T f x ∅       = x
+  foldl T f x (c & g) = foldl (T ∘′ suc) (f ∘ suc) (f zero x c) g
+
+
+module _ {ℓ₁ e₁} {N₁ : Set ℓ₁} {E₁ : Set e₁}
+         {ℓ₂ e₂} {N₂ : Set ℓ₂} {E₂ : Set e₂} where
 
 -- Maps over node contexts.
 
-map : ∀ {N₁ N₂ E₁ E₂ n} →
-      (∀ {n} → Context N₁ E₁ n → Context N₂ E₂ n) →
-      Graph N₁ E₁ n → Graph N₂ E₂ n
-map f = foldr _ (λ c g → f c & g) ∅
+  map : (∀ {n} → Context N₁ E₁ n → Context N₂ E₂ n) →
+        ∀ {n} → Graph N₁ E₁ n → Graph N₂ E₂ n
+  map f = foldr _ (λ c → f c &_) ∅
 
 -- Maps over node labels.
 
-nmap : ∀ {N₁ N₂ E n} → (N₁ → N₂) → Graph N₁ E n → Graph N₂ E n
+nmap : ∀ {ℓ₁ ℓ₂ e} {N₁ : Set ℓ₁} {N₂ : Set ℓ₂} {E : Set e} →
+       ∀ {n} → (N₁ → N₂) → Graph N₁ E n → Graph N₂ E n
 nmap f = map (cmap f id)
 
 -- Maps over edge labels.
 
-emap : ∀ {N E₁ E₂ n} → (E₁ → E₂) → Graph N E₁ n → Graph N E₂ n
+emap : ∀ {ℓ e₁ e₂} {N : Set ℓ} {E₁ : Set e₁} {E₂ : Set e₂} →
+       ∀ {n} → (E₁ → E₂) → Graph N E₁ n → Graph N E₂ n
 emap f = map (cmap id (List.map (Prod.map f id)))
 
 -- Zips two graphs with the same number of nodes. Note that one of the
 -- graphs has a type which restricts it to be completely disconnected.
 
-zipWith : ∀ {N₁ N₂ N E n} → (N₁ → N₂ → N) →
-          Graph N₁ ⊥ n → Graph N₂ E n → Graph N E n
+zipWith : ∀ {ℓ₁ ℓ₂ ℓ e} {N₁ : Set ℓ₁} {N₂ : Set ℓ₂} {N : Set ℓ} {E : Set e} →
+          ∀ {n} → (N₁ → N₂ → N) → Graph N₁ ⊥ n → Graph N₂ E n → Graph N E n
 zipWith _∙_ ∅         ∅         = ∅
 zipWith _∙_ (c₁ & g₁) (c₂ & g₂) =
   context (label c₁ ∙ label c₂) (successors c₂) & zipWith _∙_ g₁ g₂
@@ -138,37 +148,38 @@ disconnected (suc n) = context tt [] & disconnected n
 complete : ∀ n → Graph ⊤ ⊤ n
 complete zero    = ∅
 complete (suc n) =
-  context tt (List.map (_,_ tt) $ Vec.toList (Vec.allFin n)) &
+  context tt (List.map (tt ,_) $ Vec.toList (Vec.allFin n)) &
   complete n
 
 ------------------------------------------------------------------------
 -- Queries
 
+module _ {ℓ e} {N : Set ℓ} {E : Set e} where
+
 -- The top-most context.
 
-head : ∀ {N E n} → Graph N E (suc n) → Context N E n
-head (c & g) = c
+  head : ∀ {n} → Graph N E (suc n) → Context N E n
+  head (c & g) = c
 
 -- The remaining graph.
 
-tail : ∀ {N E n} → Graph N E (suc n) → Graph N E n
-tail (c & g) = g
+  tail : ∀ {n} → Graph N E (suc n) → Graph N E n
+  tail (c & g) = g
 
 -- Finds the context and remaining graph corresponding to a given node
 -- index.
 
-_[_] : ∀ {N E n} →
-       Graph N E n → (i : Fin n) → Graph N E (suc (n - suc i))
-∅       [ () ]
-(c & g) [ zero ]  = c & g
-(c & g) [ suc i ] = g [ i ]
+  _[_] : ∀ {n} → Graph N E n → (i : Fin n) → Graph N E (suc (n - suc i))
+  ∅       [ () ]
+  (c & g) [ zero ]  = c & g
+  (c & g) [ suc i ] = g [ i ]
 
 -- The nodes of the graph (node number relative to "topmost" node ×
 -- node label).
 
-nodes : ∀ {N E n} → Graph N E n → Vec (Fin n × N) n
-nodes {N} = Vec.zip (Vec.allFin _) ∘
-            foldr (Vec N) (λ c ns → label c ∷ ns) []
+  nodes : ∀ {n} → Graph N E n → Vec (Fin n × N) n
+  nodes = Vec.zip (Vec.allFin _) ∘
+          foldr (Vec N) (λ c → label c ∷_) []
 
 private
 
@@ -176,11 +187,14 @@ private
                                (# 3 , 3) ∷ (# 4 , 4) ∷ []
   test-nodes = P.refl
 
+
+module _ {ℓ e} {N : Set ℓ} {E : Set e} where
+
 -- Topological sort. Gives a vector where earlier nodes are never
 -- successors of later nodes.
 
-topSort : ∀ {N E n} → Graph N E n → Vec (Fin n × N) n
-topSort = nodes
+  topSort : ∀ {n} → Graph N E n → Vec (Fin n × N) n
+  topSort = nodes
 
 -- The edges of the graph (predecessor × edge label × successor).
 --
@@ -188,11 +202,11 @@ topSort = nodes
 -- the graph, and the successor is a node number relative to the
 -- predecessor.
 
-edges : ∀ {E N n} → Graph N E n → List (∃ λ i → E × Fin (n - suc i))
-edges {E} {N} {n} =
-  foldl (λ _ → List (∃ λ i → E × Fin (n - suc i)))
-        (λ i es c → List._++_ es (List.map (_,_ i) (successors c)))
-        []
+  edges : ∀ {n} → Graph N E n → List (∃ λ i → E × Fin (n - suc i))
+  edges {n} =
+    foldl (λ _ → List (∃ λ i → E × Fin (n - suc i)))
+          (λ i es c → es List.++ List.map (i ,_) (successors c))
+          []
 
 private
 
@@ -203,8 +217,8 @@ private
 -- The successors of a given node i (edge label × node number relative
 -- to i).
 
-sucs : ∀ {E N n} →
-       Graph N E n → (i : Fin n) → List (E × Fin (n - suc i))
+sucs : ∀ {ℓ e} {N : Set ℓ} {E : Set e} →
+       ∀ {n} → Graph N E n → (i : Fin n) → List (E × Fin (n - suc i))
 sucs g i = successors $ head (g [ i ])
 
 private
@@ -215,13 +229,14 @@ private
 -- The predecessors of a given node i (node number relative to i ×
 -- edge label).
 
-preds : ∀ {E N n} → Graph N E n → (i : Fin n) → List (Fin′ i × E)
+preds : ∀ {ℓ e} {N : Set ℓ} {E : Set e} →
+        ∀ {n} → Graph N E n → (i : Fin n) → List (Fin′ i × E)
 preds g       zero    = []
 preds (c & g) (suc i) =
-  List._++_ (List.gfilter (p i) $ successors c)
+  List._++_ (List.mapMaybe (p i) $ successors c)
             (List.map (Prod.map suc id) $ preds g i)
   where
-  p : ∀ {E : Set} {n} (i : Fin n) → E × Fin n → Maybe (Fin′ (suc i) × E)
+  p : ∀ {e} {E : Set e} {n} (i : Fin n) → E × Fin n → Maybe (Fin′ (suc i) × E)
   p i (e , j)  with i ≟ j
   p i (e , .i) | yes P.refl = just (zero , e)
   p i (e , j)  | no _       = nothing
@@ -242,10 +257,11 @@ weaken {n} {i} j = Fin.inject≤ j (FP.nℕ-ℕi≤n n (suc i))
 
 -- Labels each node with its node number.
 
-number : ∀ {N E n} → Graph N E n → Graph (Fin n × N) E n
-number {N} {E} =
+number : ∀ {ℓ e} {N : Set ℓ} {E : Set e} →
+         ∀ {n} → Graph N E n → Graph (Fin n × N) E n
+number {N = N} {E} =
   foldr (λ n → Graph (Fin n × N) E n)
-        (λ c g → cmap (_,_ zero) id c & nmap (Prod.map suc id) g)
+        (λ c g → cmap (zero ,_) id c & nmap (Prod.map suc id) g)
         ∅
 
 private
@@ -261,12 +277,13 @@ private
 
 -- Reverses all the edges in the graph.
 
-reverse : ∀ {N E n} → Graph N E n → Graph N E n
-reverse {N} {E} g =
+reverse : ∀ {ℓ e} {N : Set ℓ} {E : Set e} →
+          ∀ {n} → Graph N E n → Graph N E n
+reverse {N = N} {E} g =
   foldl (Graph N E)
         (λ i g' c →
            context (label c)
-                   (List.map (Prod.swap ∘ Prod.map FP.reverse id) $
+                   (List.map (Prod.swap ∘ Prod.map PC.reverse id) $
                              preds g i)
            & g')
         ∅ g
@@ -282,25 +299,27 @@ private
 -- Expands the subgraph induced by a given node into a tree (thus
 -- losing all sharing).
 
-data Tree (N E : Set) : Set where
+data Tree {ℓ e} (N : Set ℓ) (E : Set e) : Set (ℓ ⊔ e) where
   node : (label : N) (successors : List (E × Tree N E)) → Tree N E
 
-toTree : ∀ {N E n} → Graph N E n → Fin n → Tree N E
-toTree {N} {E} g i = <′-rec Pred expand _ (g [ i ])
-  where
-  Pred = λ n → Graph N E (suc n) → Tree N E
+module _ {ℓ e} {N : Set ℓ} {E : Set e} where
 
-  expand : (n : ℕ) → <′-Rec Pred n → Pred n
-  expand n rec (c & g) =
-    node (label c)
-         (List.map
-            (Prod.map id (λ i → rec (n - suc i) (lemma n i) (g [ i ])))
-            (successors c))
+  toTree : ∀ {n} → Graph N E n → Fin n → Tree N E
+  toTree g i = <′-rec Pred expand _ (g [ i ])
+    where
+    Pred = λ n → Graph N E (suc n) → Tree N E
+
+    expand : (n : ℕ) → <′-Rec Pred n → Pred n
+    expand n rec (c & g) =
+      node (label c)
+           (List.map
+              (Prod.map id (λ i → rec (n - suc i) (lemma n i) (g [ i ])))
+              (successors c))
 
 -- Performs the toTree expansion once for each node.
 
-toForest : ∀ {N E n} → Graph N E n → Vec (Tree N E) n
-toForest g = Vec.map (toTree g) (Vec.allFin _)
+  toForest : ∀ {n} → Graph N E n → Vec (Tree N E) n
+  toForest g = Vec.map (toTree g) (Vec.allFin _)
 
 private
 

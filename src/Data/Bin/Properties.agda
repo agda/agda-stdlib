@@ -36,7 +36,7 @@ _≟ₑ_ : ∀ {base} → Decidable (_≡_ {A = Expansion base})
 _≟ₑ_ []       []       = yes refl
 _≟ₑ_ []       (_ ∷ _)  = no λ()
 _≟ₑ_ (_ ∷ _) []        = no λ()
-_≟ₑ_ (x ∷ xs) (y ∷ ys) with x 𝔽ₚ.≟ y | xs ≟ₑ ys
+_≟ₑ_ (x ∷ xs) (y ∷ ys) with x Fin.≟ y | xs ≟ₑ ys
 ... | _        | no xs≢ys = no (xs≢ys ∘ proj₂ ∘ ∷-injective)
 ... | no  x≢y  | _        = no (x≢y   ∘ proj₁ ∘ ∷-injective)
 ... | yes refl | yes refl = yes refl
@@ -72,7 +72,7 @@ as 1# ≟ bs 1# with as ≟ₑ bs
 
 ∷ʳ-mono-< : ∀ {a b as bs} → as 1# < bs 1# → (a ∷ as) 1# < (b ∷ bs) 1#
 ∷ʳ-mono-< {a} {b} {as} {bs} (less lt) = less (begin
-  1+ (m₁ +ℕ n₁ *ℕ 2) ≤⟨ s≤s (ℕₚ.+-mono-≤ (≤-pred (𝔽ₚ.bounded a)) ℕₚ.≤-refl) ⟩
+  1+ (m₁ +ℕ n₁ *ℕ 2) ≤⟨ s≤s (ℕₚ.+-monoˡ-≤ _ (𝔽ₚ.toℕ≤pred[n] a)) ⟩
   1+ (1 +ℕ n₁ *ℕ 2)  ≡⟨ refl ⟩
   1+ n₁ *ℕ 2         ≤⟨ ℕₚ.*-mono-≤ lt ℕₚ.≤-refl ⟩
   n₂ *ℕ 2            ≤⟨ ℕₚ.n≤m+n m₂ (n₂ *ℕ 2) ⟩
@@ -85,7 +85,7 @@ as 1# ≟ bs 1# with as ≟ₑ bs
 ∷ˡ-mono-< : ∀ {a b bs} → a Fin.< b → (a ∷ bs) 1# < (b ∷ bs) 1#
 ∷ˡ-mono-< {a} {b} {bs} lt = less (begin
   1 +ℕ (m₁  +ℕ n *ℕ 2)  ≡⟨ sym (ℕₚ.+-assoc 1 m₁ (n *ℕ 2)) ⟩
-  (1 +ℕ m₁) +ℕ n *ℕ 2   ≤⟨ ℕₚ.+-mono-≤ lt ℕₚ.≤-refl ⟩
+  (1 +ℕ m₁) +ℕ n *ℕ 2   ≤⟨ ℕₚ.+-monoˡ-≤ _ lt ⟩
   m₂  +ℕ n *ℕ 2   ∎)
   where
   open ℕₚ.≤-Reasoning

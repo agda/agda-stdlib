@@ -11,9 +11,12 @@ open import Data.Bool.Properties
 open import Data.Empty
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base
-open import Data.List.Any.Membership.Propositional
+open import Data.List.Membership.Propositional
 open import Data.List.All as All using (All; []; _∷_)
 open import Data.List.Any using (Any; here; there)
+open import Data.List.Relation.Pointwise using (Pointwise; []; _∷_)
+open import Data.List.Relation.Sublist.Extensional.Propositional using (_⊆_)
+open import Data.Maybe as Maybe using (Maybe; just; nothing)
 open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function
@@ -25,20 +28,6 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
 open import Relation.Unary
   using (Decidable; Universal) renaming (_⊆_ to _⋐_)
-
------------------------------------------------------------------------- Basic properties of All
-
-module _ {a p} {A : Set a} {P : A → Set p} where
-
-  -- When P is universal All P holds
-  All-universal : Universal P → ∀ xs → All P xs
-  All-universal u [] = []
-  All-universal u (x ∷ xs) = u x ∷ All-universal u xs
-
-  All-irrelevance : P.IrrelevantPred P → P.IrrelevantPred (All P)
-  All-irrelevance irr []           []           = P.refl
-  All-irrelevance irr (px₁ ∷ pxs₁) (px₂ ∷ pxs₂) =
-    P.cong₂ _∷_ (irr px₁ px₂) (All-irrelevance irr pxs₁ pxs₂)
 
 ------------------------------------------------------------------------
 -- Lemmas relating Any, All and negation.
@@ -104,52 +93,40 @@ module _ {a p} {A : Set a} {P : A → Set p} where
     to∘from ext ¬∀ = ext (⊥-elim ∘ ¬∀)
 
 ------------------------------------------------------------------------
--- Lemmas relating All to ⊤
-
-All-all : ∀ {a} {A : Set a} (p : A → Bool) {xs} →
-          All (T ∘ p) xs → T (all p xs)
-All-all p []         = _
-All-all p (px ∷ pxs) = Equivalence.from T-∧ ⟨$⟩ (px , All-all p pxs)
-
-all-All : ∀ {a} {A : Set a} (p : A → Bool) xs →
-          T (all p xs) → All (T ∘ p) xs
-all-All p []       _     = []
-all-All p (x ∷ xs) px∷xs with Equivalence.to (T-∧ {p x}) ⟨$⟩ px∷xs
-all-All p (x ∷ xs) px∷xs | (px , pxs) = px ∷ all-All p xs pxs
-
-------------------------------------------------------------------------
--- All is anti-monotone.
-
-anti-mono : ∀ {a p} {A : Set a} {P : A → Set p} {xs ys} →
-            xs ⊆ ys → All P ys → All P xs
-anti-mono xs⊆ys pys = All.tabulate (All.lookup pys ∘ xs⊆ys)
-
-all-anti-mono : ∀ {a} {A : Set a} (p : A → Bool) {xs ys} →
-                xs ⊆ ys → T (all p ys) → T (all p xs)
-all-anti-mono p xs⊆ys = All-all p ∘ anti-mono xs⊆ys ∘ all-All p _
-
-------------------------------------------------------------------------
--- Introduction (⁺) and elimination (⁻) rules for various list functions
+-- Introduction (⁺) and elimination (⁻) rules for list operations
 ------------------------------------------------------------------------
 -- map
 
-module _{a b} {A : Set a} {B : Set b} where
+module _ {a b p} {A : Set a} {B : Set b} {P : B → Set p} {f : A → B} where
 
-  All-map : ∀ {p} {P : B → Set p} {f : A → B} {xs} →
-            All (P ∘ f) xs → All P (map f xs)
-  All-map []       = []
-  All-map (p ∷ ps) = p ∷ All-map ps
+  map⁺ : ∀ {xs} → All (P ∘ f) xs → All P (map f xs)
+  map⁺ []       = []
+  map⁺ (p ∷ ps) = p ∷ map⁺ ps
 
-  map-All : ∀ {p} {P : B → Set p} {f : A → B} {xs} →
-            All P (map f xs) → All (P ∘ f) xs
-  map-All {xs = []}    []       = []
-  map-All {xs = _ ∷ _} (p ∷ ps) = p ∷ map-All ps
+  map⁻ : ∀ {xs} → All P (map f xs) → All (P ∘ f) xs
+  map⁻ {xs = []}    []       = []
+  map⁻ {xs = _ ∷ _} (p ∷ ps) = p ∷ map⁻ ps
 
-  -- A variant of All.map.
+-- A variant of All.map.
 
-  gmap : ∀ {p q} {P : A → Set p} {Q : B → Set q} {f : A → B} →
-         P ⋐ Q ∘ f → All P ⋐ All Q ∘ map f
-  gmap g = All-map ∘ All.map g
+module _ {a b p q} {A : Set a} {B : Set b} {f : A → B}
+         {P : A → Set p} {Q : B → Set q} where
+
+  gmap : P ⋐ Q ∘ f → All P ⋐ All Q ∘ map f
+  gmap g = map⁺ ∘ All.map g
+
+------------------------------------------------------------------------
+-- mapMaybe
+
+module _ {a b p} {A : Set a} {B : Set b}
+         (P : B → Set p) {f : A → Maybe B} where
+
+  mapMaybe⁺ : ∀ {xs} → All (Maybe.All P) (map f xs) → All P (mapMaybe f xs)
+  mapMaybe⁺ {[]}     [] = []
+  mapMaybe⁺ {x ∷ xs} (px ∷ pxs) with f x
+  ... | nothing = mapMaybe⁺ pxs
+  ... | just v with px
+  ...   | just pv = pv ∷ mapMaybe⁺ pxs
 
 ------------------------------------------------------------------------
 -- _++_
@@ -254,3 +231,127 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   tabulate⁻ {zero}  pf       ()
   tabulate⁻ {suc n} (px ∷ _) fzero    = px
   tabulate⁻ {suc n} (_ ∷ pf) (fsuc i) = tabulate⁻ pf i
+
+------------------------------------------------------------------------
+-- filter
+
+module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
+
+  filter⁺₁ : ∀ xs → All P (filter P? xs)
+  filter⁺₁ []       = []
+  filter⁺₁ (x ∷ xs) with P? x
+  ... | yes Px = Px ∷ filter⁺₁ xs
+  ... | no  _  = filter⁺₁ xs
+
+  filter⁺₂ : ∀ {q} {Q : A → Set q} {xs} →
+             All Q xs → All Q (filter P? xs)
+  filter⁺₂ {xs = _}     [] = []
+  filter⁺₂ {xs = x ∷ _} (Qx ∷ Qxs) with P? x
+  ... | no  _ = filter⁺₂ Qxs
+  ... | yes _ = Qx ∷ filter⁺₂ Qxs
+
+------------------------------------------------------------------------
+-- zipWith
+
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
+
+  zipWith⁺ : ∀ {p} (P : C → Set p) (f : A → B → C) {xs ys} →
+             Pointwise (λ x y → P (f x y)) xs ys →
+             All P (zipWith f xs ys)
+  zipWith⁺ P f []              = []
+  zipWith⁺ P f (Pfxy ∷ Pfxsys) = Pfxy ∷ zipWith⁺ P f Pfxsys
+
+------------------------------------------------------------------------
+-- Operations for constructing lists
+------------------------------------------------------------------------
+-- singleton
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+  singleton⁻ : ∀ {x} → All P [ x ] → P x
+  singleton⁻ (px ∷ []) = px
+
+------------------------------------------------------------------------
+-- fromMaybe
+
+  fromMaybe⁺ : ∀ {mx} → Maybe.All P mx → All P (fromMaybe mx)
+  fromMaybe⁺ (just px) = px ∷ []
+  fromMaybe⁺ nothing   = []
+
+  fromMaybe⁻ : ∀ mx → All P (fromMaybe mx) → Maybe.All P mx
+  fromMaybe⁻ (just x) (px ∷ []) = just px
+  fromMaybe⁻ nothing  p         = nothing
+
+------------------------------------------------------------------------
+-- replicate
+
+  replicate⁺ : ∀ n {x} → P x → All P (replicate n x)
+  replicate⁺ zero    px = []
+  replicate⁺ (suc n) px = px ∷ replicate⁺ n px
+
+  replicate⁻ : ∀ {n x} → All P (replicate (suc n) x) → P x
+  replicate⁻ (px ∷ _) = px
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+------------------------------------------------------------------------
+-- inits
+
+  inits⁺ : ∀ {xs} → All P xs → All (All P) (inits xs)
+  inits⁺ []         = [] ∷ []
+  inits⁺ (px ∷ pxs) = [] ∷ gmap (px ∷_) (inits⁺ pxs)
+
+  inits⁻ : ∀ xs → All (All P) (inits xs) → All P xs
+  inits⁻ []               pxs                   = []
+  inits⁻ (x ∷ [])         ([] ∷ p[x] ∷ [])      = p[x]
+  inits⁻ (x ∷ xs@(_ ∷ _)) ([] ∷ pxs@(p[x] ∷ _)) =
+    singleton⁻ p[x] ∷ inits⁻ xs (All.map (drop⁺ 1) (map⁻ pxs))
+
+------------------------------------------------------------------------
+-- tails
+
+  tails⁺ : ∀ {xs} → All P xs → All (All P) (tails xs)
+  tails⁺ []             = [] ∷ []
+  tails⁺ pxxs@(_ ∷ pxs) = pxxs ∷ tails⁺ pxs
+
+  tails⁻ : ∀ xs → All (All P) (tails xs) → All P xs
+  tails⁻ []       pxs        = []
+  tails⁻ (x ∷ xs) (pxxs ∷ _) = pxxs
+
+------------------------------------------------------------------------
+-- all
+
+module _ {a} {A : Set a} (p : A → Bool) where
+
+  all⁺ : ∀ xs → T (all p xs) → All (T ∘ p) xs
+  all⁺ []       _     = []
+  all⁺ (x ∷ xs) px∷xs with Equivalence.to (T-∧ {p x}) ⟨$⟩ px∷xs
+  ... | (px , pxs) = px ∷ all⁺ xs pxs
+
+  all⁻ : ∀ {xs} → All (T ∘ p) xs → T (all p xs)
+  all⁻ []         = _
+  all⁻ (px ∷ pxs) = Equivalence.from T-∧ ⟨$⟩ (px , all⁻ pxs)
+
+------------------------------------------------------------------------
+-- All is anti-monotone.
+
+anti-mono : ∀ {a p} {A : Set a} {P : A → Set p} {xs ys} →
+            xs ⊆ ys → All P ys → All P xs
+anti-mono xs⊆ys pys = All.tabulate (All.lookup pys ∘ xs⊆ys)
+
+all-anti-mono : ∀ {a} {A : Set a} (p : A → Bool) {xs ys} →
+                xs ⊆ ys → T (all p ys) → T (all p xs)
+all-anti-mono p xs⊆ys = all⁻ p ∘ anti-mono xs⊆ys ∘ all⁺ p _
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+All-all = all⁻
+all-All = all⁺
+
+All-map = map⁺
+map-All = map⁻
+

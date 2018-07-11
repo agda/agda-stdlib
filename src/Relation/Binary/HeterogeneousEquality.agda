@@ -93,9 +93,63 @@ cong₂ f refl refl = refl
 resp₂ : ∀ {a ℓ} {A : Set a} (∼ : Rel A ℓ) → ∼ Respects₂ (λ x y → x ≅ y)
 resp₂ _∼_ = subst⟶resp₂ _∼_ subst
 
-proof-irrelevance : ∀ {ℓ} {A B : Set ℓ} {x : A} {y : B}
-                    (p q : x ≅ y) → p ≡ q
-proof-irrelevance refl refl = refl
+icong : ∀ {a b ℓ} {I : Set ℓ}
+        (A : I → Set a) {B : {k : I} → A k → Set b}
+        {i j : I} {x : A i} {y : A j} →
+        i ≡ j →
+        (f : {k : I} → (z : A k) → B z) →
+        x ≅ y →
+        f x ≅ f y
+icong _ refl _ refl = refl
+
+icong₂ : ∀ {a b c ℓ} {I : Set ℓ}
+         (A : I → Set a)
+         {B : {k : I} → A k → Set b}
+         {C : {k : I} → (a : A k) → B a → Set c}
+         {i j : I} {x : A i} {y : A j} {u : B x} {v : B y} →
+         i ≡ j →
+         (f : {k : I} → (z : A k) → (w : B z) → C z w) →
+         x ≅ y → u ≅ v →
+         f x u ≅ f y v
+icong₂ _ refl _ refl refl = refl
+
+icong-subst-removable : ∀ {a b ℓ}
+                        {I : Set ℓ}
+                        (A : I → Set a) {B : {k : I} → A k → Set b}
+                        {i j : I} (eq : i ≅ j)
+                        (f : {k : I} → (z : A k) → B z)
+                        (x : A i) →
+                        f (subst A eq x) ≅ f x
+icong-subst-removable _ refl _ _ = refl
+
+icong-≡-subst-removable : ∀ {a b ℓ}
+                          {I : Set ℓ}
+                          (A : I → Set a) {B : {k : I} → A k → Set b}
+                          {i j : I} (eq : i ≡ j)
+                          (f : {k : I} → (z : A k) → B z)
+                          (x : A i) →
+                          f (P.subst A eq x) ≅ f x
+icong-≡-subst-removable _ refl _ _ = refl
+
+------------------------------------------------------------------------
+--Proof irrelevance
+
+≅-irrelevance : ∀ {ℓ} {A B : Set ℓ} → Irrelevant ((A → B → Set ℓ) ∋ λ a → a ≅_)
+≅-irrelevance refl refl = refl
+
+module _ {ℓ} {A₁ A₂ A₃ A₄ : Set ℓ} {a₁ : A₁} {a₂ : A₂} {a₃ : A₃} {a₄ : A₄} where
+
+ ≅-heterogeneous-irrelevance : (p : a₁ ≅ a₂) (q : a₃ ≅ a₄) → a₂ ≅ a₃ → p ≅ q
+ ≅-heterogeneous-irrelevance refl refl refl = refl
+
+ ≅-heterogeneous-irrelevanceˡ : (p : a₁ ≅ a₂) (q : a₃ ≅ a₄) → a₁ ≅ a₃ → p ≅ q
+ ≅-heterogeneous-irrelevanceˡ refl refl refl = refl
+
+ ≅-heterogeneous-irrelevanceʳ : (p : a₁ ≅ a₂) (q : a₃ ≅ a₄) → a₂ ≅ a₄ → p ≅ q
+ ≅-heterogeneous-irrelevanceʳ refl refl refl = refl
+
+------------------------------------------------------------------------
+-- Structures
 
 isEquivalence : ∀ {a} {A : Set a} →
                 IsEquivalence {A = A} (λ x y → x ≅ y)
@@ -227,37 +281,11 @@ Extensionality a b =
   ext′ : P.Extensionality ℓ₁ ℓ₂
   ext′ = P.extensionality-for-lower-levels ℓ₁ (suc ℓ₂) ext
 
-
 ------------------------------------------------------------------------
--- The old inspect on steroids
+-- Inspect
 
--- The old inspect on steroids idiom has been deprecated, and may be
--- removed in the future. Use simplified inspect on steroids instead.
-
-module Deprecated-inspect-on-steroids where
-
-  -- Inspect on steroids can be used when you want to pattern match on
-  -- the result r of some expression e, and you also need to "remember"
-  -- that r ≡ e.
-
-  data Reveal_is_ {a} {A : Set a} (x : Hidden A) (y : A) : Set a where
-    [_] : (eq : reveal x ≡ y) → Reveal x is y
-
-  inspect : ∀ {a b} {A : Set a} {B : A → Set b}
-            (f : (x : A) → B x) (x : A) → Reveal (hide f x) is (f x)
-  inspect f x = [ refl ]
-
-  -- Example usage:
-
-  -- f x y with g x | inspect g x
-  -- f x y | c z | [ eq ] = ...
-
-------------------------------------------------------------------------
--- Simplified inspect on steroids
-
--- Simplified inspect on steroids can be used when you want to pattern
--- match on the result r of some expression e, and you also need to
--- "remember" that r ≡ e.
+-- Inspect can be used when you want to pattern match on the result r
+-- of some expression e, and you also need to "remember" that r ≡ e.
 
 record Reveal_·_is_ {a b} {A : Set a} {B : A → Set b}
                     (f : (x : A) → B x) (x : A) (y : B x) :
@@ -273,3 +301,12 @@ inspect f x = [ refl ]
 
 -- f x y with g x | inspect g x
 -- f x y | c z | [ eq ] = ...
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+proof-irrelevance = ≅-irrelevance

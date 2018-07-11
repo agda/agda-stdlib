@@ -6,22 +6,24 @@
 
 module Data.Bool.Properties where
 
+open import Algebra
+import Algebra.RingSolver.Simple as Solver
+import Algebra.RingSolver.AlmostCommutativeRing as ACR
 open import Data.Bool
+open import Data.Empty
+open import Data.Product
+open import Data.Sum
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
-open import Algebra
-open import Algebra.Structures
-import Algebra.RingSolver.Simple as Solver
-import Algebra.RingSolver.AlmostCommutativeRing as ACR
 open import Relation.Binary.PropositionalEquality
   hiding ([_]; proof-irrelevance)
-open ≡-Reasoning
+open import Relation.Unary using (Irrelevant)
+
 open import Algebra.FunctionProperties (_≡_ {A = Bool})
-open import Data.Product
-open import Data.Sum
-open import Data.Empty
+open import Algebra.Structures (_≡_ {A = Bool})
+open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _∨_
@@ -74,18 +76,40 @@ open import Data.Empty
 ∨-sel false y = inj₂ refl
 ∨-sel true y  = inj₁ refl
 
-∨-isSemigroup : IsSemigroup _≡_ _∨_
+∨-isSemigroup : IsSemigroup _∨_
 ∨-isSemigroup = record
   { isEquivalence = isEquivalence
   ; assoc         = ∨-assoc
   ; ∙-cong        = cong₂ _∨_
   }
 
-∨-isCommutativeMonoid : IsCommutativeMonoid _≡_ _∨_ false
+∨-semigroup : Semigroup _ _
+∨-semigroup = record
+  { isSemigroup = ∨-isSemigroup
+  }
+
+∨-isCommutativeMonoid : IsCommutativeMonoid _∨_ false
 ∨-isCommutativeMonoid = record
   { isSemigroup = ∨-isSemigroup
-  ; identityˡ   = λ _ → refl
+  ; identityˡ   = ∨-identityˡ
   ; comm        = ∨-comm
+  }
+
+∨-commutativeMonoid : CommutativeMonoid _ _
+∨-commutativeMonoid = record
+  { isCommutativeMonoid = ∨-isCommutativeMonoid
+  }
+
+∨-isIdempotentCommutativeMonoid :
+  IsIdempotentCommutativeMonoid _∨_ false
+∨-isIdempotentCommutativeMonoid = record
+    { isCommutativeMonoid = ∨-isCommutativeMonoid
+   ; idem = ∨-idem
+   }
+
+∨-idempotentCommutativeMonoid : IdempotentCommutativeMonoid _ _
+∨-idempotentCommutativeMonoid = record
+  { isIdempotentCommutativeMonoid = ∨-isIdempotentCommutativeMonoid
   }
 
 ------------------------------------------------------------------------
@@ -159,8 +183,8 @@ open import Data.Empty
 
 ∨-distribʳ-∧ : _∨_ DistributesOverʳ _∧_
 ∨-distribʳ-∧ x y z = begin
-  (y ∧ z) ∨ x         ≡⟨ ∨-comm (y ∧ z) x ⟩
-  x ∨ (y ∧ z)         ≡⟨ ∨-distribˡ-∧ x y z ⟩
+  (y ∧ z) ∨ x        ≡⟨ ∨-comm (y ∧ z) x ⟩
+  x ∨ (y ∧ z)        ≡⟨ ∨-distribˡ-∧ x y z ⟩
   (x ∨ y) ∧ (x ∨ z)  ≡⟨ cong₂ _∧_ (∨-comm x y) (∨-comm x z) ⟩
   (y ∨ x) ∧ (z ∨ x)  ∎
 
@@ -178,27 +202,49 @@ open import Data.Empty
 ∨-∧-absorptive : Absorptive _∨_ _∧_
 ∨-∧-absorptive = ∨-abs-∧ , ∧-abs-∨
 
-∧-isSemigroup : IsSemigroup _≡_ _∧_
+∧-isSemigroup : IsSemigroup _∧_
 ∧-isSemigroup = record
   { isEquivalence = isEquivalence
   ; assoc         = ∧-assoc
   ; ∙-cong        = cong₂ _∧_
   }
 
-∧-isCommutativeMonoid : IsCommutativeMonoid _≡_ _∧_ true
+∧-semigroup : Semigroup _ _
+∧-semigroup = record
+  { isSemigroup = ∧-isSemigroup
+  }
+
+∧-isCommutativeMonoid : IsCommutativeMonoid _∧_ true
 ∧-isCommutativeMonoid = record
   { isSemigroup = ∧-isSemigroup
-  ; identityˡ   = λ _ → refl
+  ; identityˡ   = ∧-identityˡ
   ; comm        = ∧-comm
   }
 
+∧-commutativeMonoid : CommutativeMonoid _ _
+∧-commutativeMonoid = record
+  { isCommutativeMonoid = ∧-isCommutativeMonoid
+  }
+
+∧-isIdempotentCommutativeMonoid :
+  IsIdempotentCommutativeMonoid _∧_ true
+∧-isIdempotentCommutativeMonoid = record
+  { isCommutativeMonoid = ∧-isCommutativeMonoid
+  ; idem = ∧-idem
+  }
+
+∧-idempotentCommutativeMonoid : IdempotentCommutativeMonoid _ _
+∧-idempotentCommutativeMonoid = record
+  { isIdempotentCommutativeMonoid = ∧-isIdempotentCommutativeMonoid
+  }
+
 ∨-∧-isCommutativeSemiring
-  : IsCommutativeSemiring _≡_ _∨_ _∧_ false true
+  : IsCommutativeSemiring _∨_ _∧_ false true
 ∨-∧-isCommutativeSemiring = record
   { +-isCommutativeMonoid = ∨-isCommutativeMonoid
   ; *-isCommutativeMonoid = ∧-isCommutativeMonoid
   ; distribʳ = ∧-distribʳ-∨
-  ; zeroˡ    = λ _ → refl
+  ; zeroˡ    = ∧-zeroˡ
   }
 
 ∨-∧-commutativeSemiring : CommutativeSemiring _ _
@@ -211,12 +257,12 @@ open import Data.Empty
   }
 
 ∧-∨-isCommutativeSemiring
-  : IsCommutativeSemiring _≡_ _∧_ _∨_ true false
+  : IsCommutativeSemiring _∧_ _∨_ true false
 ∧-∨-isCommutativeSemiring = record
   { +-isCommutativeMonoid = ∧-isCommutativeMonoid
   ; *-isCommutativeMonoid = ∨-isCommutativeMonoid
   ; distribʳ = ∨-distribʳ-∧
-  ; zeroˡ    = λ _ → refl
+  ; zeroˡ    = ∨-zeroˡ
   }
 
 ∧-∨-commutativeSemiring : CommutativeSemiring _ _
@@ -228,7 +274,7 @@ open import Data.Empty
   ; isCommutativeSemiring = ∧-∨-isCommutativeSemiring
   }
 
-∨-∧-isLattice : IsLattice _≡_ _∨_ _∧_
+∨-∧-isLattice : IsLattice _∨_ _∧_
 ∨-∧-isLattice = record
   { isEquivalence = isEquivalence
   ; ∨-comm        = ∨-comm
@@ -240,13 +286,23 @@ open import Data.Empty
   ; absorptive    = ∨-∧-absorptive
   }
 
-∨-∧-isDistributiveLattice : IsDistributiveLattice _≡_ _∨_ _∧_
+∨-∧-lattice : Lattice _ _
+∨-∧-lattice = record
+  { isLattice = ∨-∧-isLattice
+  }
+
+∨-∧-isDistributiveLattice : IsDistributiveLattice _∨_ _∧_
 ∨-∧-isDistributiveLattice = record
   { isLattice     = ∨-∧-isLattice
   ; ∨-∧-distribʳ = ∨-distribʳ-∧
   }
 
-∨-∧-isBooleanAlgebra : IsBooleanAlgebra _≡_ _∨_ _∧_ not true false
+∨-∧-distributiveLattice : DistributiveLattice _ _
+∨-∧-distributiveLattice = record
+  { isDistributiveLattice = ∨-∧-isDistributiveLattice
+  }
+
+∨-∧-isBooleanAlgebra : IsBooleanAlgebra _∨_ _∧_ not true false
 ∨-∧-isBooleanAlgebra = record
   { isDistributiveLattice = ∨-∧-isDistributiveLattice
   ; ∨-complementʳ = ∨-inverseʳ
@@ -256,12 +312,7 @@ open import Data.Empty
 
 ∨-∧-booleanAlgebra : BooleanAlgebra _ _
 ∨-∧-booleanAlgebra = record
-  { _∨_              = _∨_
-  ; _∧_              = _∧_
-  ; ¬_               = not
-  ; ⊤                = true
-  ; ⊥                = false
-  ; isBooleanAlgebra = ∨-∧-isBooleanAlgebra
+  { isBooleanAlgebra = ∨-∧-isBooleanAlgebra
   }
 
 ------------------------------------------------------------------------
@@ -321,7 +372,7 @@ T-∨ {true}  {b₂}    = equivalence inj₁ (const _)
 T-∨ {false} {true}  = equivalence inj₂ (const _)
 T-∨ {false} {false} = equivalence inj₁ [ id , id ]
 
-T-irrelevance : IrrelevantPred T
+T-irrelevance : Irrelevant T
 T-irrelevance {true}  _  _  = refl
 T-irrelevance {false} () ()
 
