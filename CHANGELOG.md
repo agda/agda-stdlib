@@ -103,6 +103,46 @@ Non-backwards compatible changes
   tabulate : (∀ i → P (Vec.lookup i xs)) → All P {k} xs
   ```
 
+### Overhaul of `Data.X.Categorical`
+
+* In `Data.List.Categorical` renamed and added functions:
+  ```agda
+  functor     : RawFunctor List
+  applicative : RawApplicative List
+  monadT      : RawMonad M → RawMonad (M ∘′ List)
+  sequenceA   : RawApplicative F → List (F A) → F (List A)
+  mapA        : RawApplicative F → (A → F B) → List A → F (List B)
+  forA        : RawApplicative F → List A → (A → F B) → F (List B)
+  sequence    ↦ sequenceM
+  forM        : RawMonad M → List A → (A → M B) → M (List B)
+  ```
+
+* Created `Data.List.NonEmpty.Categorical`, moved `monad` into it
+  from `Data.List.NonEmpty` and added new functions:
+  ```agda
+  functor     : RawFunctor List⁺
+  applicative : RawApplicative List⁺
+  monadT      : RawMonad M → RawMonad (M ∘′ List⁺)
+  sequenceA   : RawApplicative F → List⁺ (F A) → F (List⁺ A)
+  mapA        : RawApplicative F → (A → F B) → List⁺ A → F (List⁺ B)
+  forA        : RawApplicative F → List⁺ A → (A → F B) → F (List⁺ B)
+  sequenceM   : RawMonad M → List⁺ (M A) → M (List⁺ A)
+  mapM        : RawMonad M → (A → M B) → List⁺ A → M (List⁺ B)
+  forM        : RawMonad M → List⁺ A → (A → M B) → M (List⁺ B)
+  ```
+
+* Created `Data.Maybe.Categorical`, moved `functor`, `monadT`, `monad`,
+  `monadZero` and `monadPlus` into it from `Data.Maybe` and added the
+  following functions:
+  ```agda
+  sequenceA : RawApplicative F → Maybe (F A) → F (Maybe A)
+  mapA      : RawApplicative F → (A → F B) → Maybe A → F (Maybe B)
+  forA      : RawApplicative F → Maybe A → (A → F B) → F (Maybe B)
+  sequenceM : RawMonad M → Maybe (M A) → M (Maybe A)
+  mapM      : RawMonad M → (A → M B) → Maybe A → M (Maybe B)
+  forM      : RawMonad M → Maybe A → (A → M B) → M (Maybe B)
+  ```
+
 
 #### Other
 
@@ -122,6 +162,9 @@ Non-backwards compatible changes
   section of `_,_`.
 
 * Made the target level of `Level`'s `Lift` explicit.
+
+* Changed the precedence level of `_$_` (and variants) to `-1`. This makes
+  it interact well with `_∋_` in e.g. `f $ Maybe A ∋ do (...)`.
 
 Other major changes
 -------------------
@@ -165,9 +208,12 @@ Other minor additions
 
 * Added new proofs to `Data.List.Any.Properties`:
   ```agda
-  singleton⁺ : P x → Any P [ x ]
-  singleton⁻ : Any P [ x ] → P x
-  ++-insert  : P x → Any P (xs ++ [ x ] ++ ys)
+  here-injective  : here  p ≡ here  q → p ≡ q
+  there-injective : there p ≡ there q → p ≡ q
+
+  singleton⁺      : P x → Any P [ x ]
+  singleton⁻      : Any P [ x ] → P x
+  ++-insert       : P x → Any P (xs ++ [ x ] ++ ys)
   ```
 
 * Added new functions to `Data.List.Base`:
@@ -181,6 +227,11 @@ Other minor additions
   ```agda
   ∈-insert : v ≈ v′ → v ∈ xs ++ [ v′ ] ++ ys
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
+  ```
+
+* Added new function to `Data.List.NonEmpty`:
+  ```agda
+  concatMap : (A → List⁺ B) → List⁺ A → List⁺ B
   ```
 
 * Added new function to `Data.Maybe.Base`:
@@ -252,9 +303,37 @@ Other minor additions
   typeOf : {A : Set a} → A → Set a
   ```
 
-* Added new result to `Function.Relation.TypeIsomorphisms`:
+* Added new type and function to `Function.Bijection`:
   ```agda
-  ×-comm : (A × B) ↔ (B × A)
+  From ⤖ To = Bijection (P.setoid From) (P.setoid To)
+
+  bijection : (∀ {x y} → to x ≡ to y → x ≡ y) → (∀ x → to (from x) ≡ x) → From ⤖ To
+  ```
+
+* Added new function to `Function.Injection`:
+  ```agda
+  injection : (∀ {x y} → to x ≡ to y → x ≡ y) → From ↣ To
+  ```
+
+* Added new function to `Function.Inverse`:
+  ```agda
+  inverse : (∀ x → from (to x) ≡ x) → (∀ x → to (from x) ≡ x) → From ↔ To
+  ```
+
+* Added new function to `Function.LeftInverse`:
+  ```agda
+  leftInverse : (∀ x → from (to x) ≡ x) → From ↞ To
+  ```
+
+* Added new proof to `Function.Related.TypeIsomorphisms`:
+  ```agda
+  ×-≡×≡↔≡,≡ : (x ≡ proj₁ p × y ≡ proj₂ p) ↔ (x , y) ≡ p
+  ×-comm    : (A × B) ↔ (B × A)
+  ```
+
+* Added new function to `Function.Surjection`:
+  ```agda
+  surjection : (∀ x → to (from x) ≡ x) → From ↠ To
   ```
 
 * Added the following types in `Relation.Unary`:

@@ -14,8 +14,9 @@ open import Function.Equality as Eq
   using (_⟶_; _⟨$⟩_) renaming (_∘_ to _⟪∘⟫_)
 open import Function.Equivalence using (Equivalence)
 open import Function.Injection using (Injective; Injection)
-import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
+------------------------------------------------------------------------
 -- Left and right inverses.
 
 _LeftInverseOf_ :
@@ -29,6 +30,7 @@ _RightInverseOf_ :
   To ⟶ From → From ⟶ To → Set _
 f RightInverseOf g = g LeftInverseOf f
 
+------------------------------------------------------------------------
 -- The set of all left inverses between two setoids.
 
 record LeftInverse {f₁ f₂ t₁ t₂}
@@ -72,14 +74,28 @@ RightInverse : ∀ {f₁ f₂ t₁ t₂}
                (From : Setoid f₁ f₂) (To : Setoid t₁ t₂) → Set _
 RightInverse From To = LeftInverse To From
 
--- The set of all left inverses from one set to another. (Read A ↞ B
--- as "surjection from B to A".)
+------------------------------------------------------------------------
+-- The set of all left inverses from one set to another (i.e. left
+-- inverses with propositional equality).
+--
+-- Read A ↞ B as "surjection from B to A".
 
 infix 3 _↞_
 
 _↞_ : ∀ {f t} → Set f → Set t → Set _
 From ↞ To = LeftInverse (P.setoid From) (P.setoid To)
 
+leftInverse : ∀ {f t} {From : Set f} {To : Set t} →
+              (to : From → To) (from : To → From) →
+              (∀ x → from (to x) ≡ x) →
+              From ↞ To
+leftInverse to from invˡ = record
+  { to              = P.→-to-⟶ to
+  ; from            = P.→-to-⟶ from
+  ; left-inverse-of = invˡ
+  }
+
+------------------------------------------------------------------------
 -- Identity and composition.
 
 id : ∀ {s₁ s₂} {S : Setoid s₁ s₂} → LeftInverse S S

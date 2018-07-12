@@ -23,13 +23,13 @@ open import Data.Sum.Relation.Pointwise using (_⊎-cong_)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 import Function.Equivalence as FE
-open import Function.Inverse as Inv using (_↔_; module Inverse)
+open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
 open import Function.Related as Related using (↔⇒; ⌊_⌋; ⌊_⌋→; ⇒→)
 open import Function.Related.TypeIsomorphisms
 open import Relation.Binary
 import Relation.Binary.EqReasoning as EqR
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≗_)
+  using (_≡_; _≗_; refl)
 open import Relation.Nullary
 open import Data.List.Membership.Propositional.Properties
 
@@ -98,7 +98,7 @@ module ⊆-Reasoning where
 module _ {a k} {A : Set a} {x y : A} {xs ys} where
 
   ∷-cong : x ≡ y → xs ∼[ k ] ys → x ∷ xs ∼[ k ] y ∷ ys
-  ∷-cong P.refl xs≈ys {y} =
+  ∷-cong refl xs≈ys {y} =
     y ∈ x ∷ xs        ↔⟨ sym $ ∷↔ (y ≡_) ⟩
     (y ≡ x ⊎ y ∈ xs)  ∼⟨ (y ≡ x ∎) ⊎-cong xs≈ys ⟩
     (y ≡ x ⊎ y ∈ ys)  ↔⟨ ∷↔ (y ≡_) ⟩
@@ -225,13 +225,13 @@ commutativeMonoid {a} k A = record
 
 empty-unique : ∀ {k a} {A : Set a} {xs : List A} →
                xs ∼[ ⌊ k ⌋→ ] [] → xs ≡ []
-empty-unique {xs = []}    _    = P.refl
-empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here P.refl)
+empty-unique {xs = []}    _    = refl
+empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here refl)
 ... | ()
 
 -- _++_ is idempotent (under set equality).
 
-++-idempotent : ∀ {a} {A : Set a} → Idempotent (_∼[ set ]_) (_++_ {A = A})
+++-idempotent : ∀ {a} {A : Set a} → Idempotent {A = List A} _∼[ set ]_ _++_
 ++-idempotent {a} xs {x} =
   x ∈ xs ++ xs  ∼⟨ FE.equivalence ([ id , id ]′ ∘ _⟨$⟩_ (Inverse.from $ ++↔))
                                   (_⟨$⟩_ (Inverse.to $ ++↔) ∘ inj₁) ⟩
@@ -258,14 +258,14 @@ empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here P.refl)
   ∀ {ℓ} {A B : Set ℓ} (fs : List (A → B)) xs₁ xs₂ →
   (fs ⊛ (xs₁ ++ xs₂)) ∼[ bag ] (fs ⊛ xs₁) ++ (fs ⊛ xs₂)
 ⊛-left-distributive {B = B} fs xs₁ xs₂ = begin
-  fs ⊛ (xs₁ ++ xs₂)                         ≡⟨ P.refl ⟩
-  (fs >>= λ f → xs₁ ++ xs₂ >>= return ∘ f)  ≡⟨ (MP.cong (P.refl {x = fs}) λ f →
+  fs ⊛ (xs₁ ++ xs₂)                         ≡⟨⟩
+  (fs >>= λ f → xs₁ ++ xs₂ >>= return ∘ f)  ≡⟨ (MP.cong (refl {x = fs}) λ f →
                                                 MP.right-distributive xs₁ xs₂ (return ∘ f)) ⟩
   (fs >>= λ f → (xs₁ >>= return ∘ f) ++
                 (xs₂ >>= return ∘ f))       ≈⟨ >>=-left-distributive fs ⟩
 
   (fs >>= λ f → xs₁ >>= return ∘ f) ++
-  (fs >>= λ f → xs₂ >>= return ∘ f)         ≡⟨ P.refl ⟩
+  (fs >>= λ f → xs₂ >>= return ∘ f)         ≡⟨⟩
 
   (fs ⊛ xs₁) ++ (fs ⊛ xs₂)                  ∎
   where open EqR ([ bag ]-Equality B)
@@ -278,7 +278,7 @@ private
   ¬-drop-cons : ∀ {a} {A : Set a} {x : A} →
     ¬ (∀ {xs ys} → x ∷ xs ∼[ set ] x ∷ ys → xs ∼[ set ] ys)
   ¬-drop-cons {x = x} drop-cons
-    with FE.Equivalence.to x∼[] ⟨$⟩ here P.refl
+    with FE.Equivalence.to x∼[] ⟨$⟩ here refl
     where
     x,x≈x :  (x ∷ x ∷ []) ∼[ set ] [ x ]
     x,x≈x = ++-idempotent [ x ]
@@ -291,42 +291,34 @@ private
 
 drop-cons : ∀ {a} {A : Set a} {x : A} {xs ys} →
             x ∷ xs ∼[ bag ] x ∷ ys → xs ∼[ bag ] ys
-drop-cons {A = A} {x} {xs} {ys} x∷xs≈x∷ys {z} = record
-  { to         = P.→-to-⟶ $ f           x∷xs≈x∷ys
-  ; from       = P.→-to-⟶ $ f $ Inv.sym x∷xs≈x∷ys
-  ; inverse-of = record
-    { left-inverse-of  = f∘f           x∷xs≈x∷ys
-    ; right-inverse-of = f∘f $ Inv.sym x∷xs≈x∷ys
-    }
-  }
+drop-cons {x = x} eq = inverse (f eq) (f $ Inv.sym eq) (f∘f eq) (f∘f $ Inv.sym eq)
   where
   open Inverse
   open P.≡-Reasoning
 
   f : ∀ {xs ys z} → (z ∈ x ∷ xs) ↔ (z ∈ x ∷ ys) → z ∈ xs → z ∈ ys
   f inv z∈xs with to inv ⟨$⟩ there z∈xs | left-inverse-of inv (there z∈xs)
-  f inv z∈xs | there z∈ys   | left⁺ = z∈ys
-  f inv z∈xs | here  z≡x    | left⁺ with to inv ⟨$⟩ here z≡x | left-inverse-of inv (here z≡x)
-  f inv z∈xs | here  z≡x    | left⁺ | there z∈ys   | left⁰ = z∈ys
-  f inv z∈xs | here  P.refl | left⁺ | here  P.refl | left⁰ with begin
-    here P.refl               ≡⟨ P.sym left⁰ ⟩
-    from inv ⟨$⟩ here P.refl  ≡⟨ left⁺ ⟩
-    there z∈xs                ∎
+  ... | there z∈ys | left⁺ = z∈ys
+  ... | here  refl | left⁺ with to inv ⟨$⟩ here refl | left-inverse-of inv (here refl)
+  ...   | there z∈ys | left⁰ = z∈ys
+  ...   | here  refl | left⁰ with begin
+    here refl               ≡⟨ P.sym left⁰ ⟩
+    from inv ⟨$⟩ here refl  ≡⟨ left⁺ ⟩
+    there z∈xs              ∎
   ... | ()
 
-  f∘f : ∀ {xs ys z}
-        (inv : (z ∈ x ∷ xs) ↔ (z ∈ x ∷ ys)) (p : z ∈ xs) →
+  f∘f : ∀ {xs ys z} (inv : (z ∈ x ∷ xs) ↔ (z ∈ x ∷ ys)) (p : z ∈ xs) →
         f (Inv.sym inv) (f inv p) ≡ p
   f∘f inv z∈xs with to inv ⟨$⟩ there z∈xs | left-inverse-of inv (there z∈xs)
   f∘f inv z∈xs | there z∈ys  | left⁺ with from inv ⟨$⟩ there z∈ys | right-inverse-of inv (there z∈ys)
-  f∘f inv z∈xs | there z∈ys  | P.refl | .(there z∈xs) | _ = P.refl
-  f∘f inv z∈xs | here z≡x    | left⁺ with to inv ⟨$⟩ here z≡x | left-inverse-of inv (here z≡x)
-  f∘f inv z∈xs | here z≡x    | left⁺  | there z∈ys   | left⁰ with from inv ⟨$⟩ there z∈ys | right-inverse-of inv (there z∈ys)
-  f∘f inv z∈xs | here z≡x    | left⁺  | there z∈ys   | P.refl | .(here z≡x) | _ with from inv ⟨$⟩ here z≡x
-                                                                                   | right-inverse-of inv (here z≡x)
-  f∘f inv z∈xs | here z≡x    | P.refl | there z∈ys   | P.refl | .(here z≡x) | _ | .(there z∈xs) | _ = P.refl
-  f∘f inv z∈xs | here P.refl | left⁺  | here  P.refl | left⁰ with begin
-    here P.refl               ≡⟨ P.sym left⁰ ⟩
-    from inv ⟨$⟩ here P.refl  ≡⟨ left⁺ ⟩
+  f∘f inv z∈xs | there z∈ys  | refl | .(there z∈xs) | _ = refl
+  f∘f inv z∈xs | here refl   | left⁺ with to inv ⟨$⟩ here refl | left-inverse-of inv (here refl)
+  f∘f inv z∈xs | here refl   | left⁺  | there z∈ys  | left⁰ with from inv ⟨$⟩ there z∈ys | right-inverse-of inv (there z∈ys)
+  f∘f inv z∈xs | here refl   | left⁺  | there z∈ys  | refl | .(here refl) | _ with from inv ⟨$⟩ here refl
+                                                                                   | right-inverse-of inv (here refl)
+  f∘f inv z∈xs | here refl   | refl   | there z∈ys  | refl | .(here refl) | _ | .(there z∈xs) | _ = refl
+  f∘f inv z∈xs | here refl   | left⁺  | here  refl  | left⁰ with begin
+    here refl               ≡⟨ P.sym left⁰ ⟩
+    from inv ⟨$⟩ here refl  ≡⟨ left⁺ ⟩
     there z∈xs                ∎
   ... | ()
