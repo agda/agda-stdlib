@@ -9,6 +9,7 @@ module Data.List.NonEmpty.Properties where
 open import Category.Monad
 open import Data.List as List using (List; []; _∷_; _++_)
 open import Data.List.Categorical using () renaming (monad to listMonad)
+open import Data.List.NonEmpty.Categorical using () renaming (monad to list⁺Monad)
 open import Data.List.NonEmpty as List⁺
 open import Data.List.Properties
 open import Function
@@ -20,7 +21,7 @@ private
          RawMonad {f = a} listMonad
            using () renaming (_>>=_ to _⋆>>=_)
   open module L⁺Mo {a} =
-         RawMonad {f = a} List⁺.monad
+         RawMonad {f = a} list⁺Monad
 
 η : ∀ {a} {A : Set a}
     (xs : List⁺ A) → head xs ∷ tail xs ≡ List⁺.toList xs
@@ -45,5 +46,7 @@ toList->>= : ∀ {ℓ} {A B : Set ℓ}
              (List⁺.toList xs ⋆>>= List⁺.toList ∘ f) ≡
              (List⁺.toList (xs >>= f))
 toList->>= f (x ∷ xs) = begin
-  List.concat (List.map (List⁺.toList ∘ f) (x ∷ xs))         ≡⟨ cong List.concat $ map-compose {g = List⁺.toList} {f = f} (x ∷ xs) ⟩
-  List.concat (List.map List⁺.toList (List.map f (x ∷ xs)))  ∎
+  List.concat (List.map (List⁺.toList ∘ f) (x ∷ xs))
+    ≡⟨ cong List.concat $ map-compose {g = List⁺.toList} (x ∷ xs) ⟩
+  List.concat (List.map List⁺.toList (List.map f (x ∷ xs)))
+    ∎

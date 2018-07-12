@@ -22,41 +22,6 @@ open import Relation.Unary as U
 open import Data.Maybe.Base public
 
 ------------------------------------------------------------------------
--- Maybe monad
-
-functor : ∀ {f} → RawFunctor (Maybe {a = f})
-functor = record
-  { _<$>_ = map
-  }
-
-monadT : ∀ {f} {M : Set f → Set f} →
-         RawMonad M → RawMonad (λ A → M (Maybe A))
-monadT M = record
-  { return = M.return ∘ just
-  ; _>>=_  = λ m f → M._>>=_ m (maybe f (M.return nothing))
-  }
-  where module M = RawMonad M
-
-monad : ∀ {f} → RawMonad (Maybe {a = f})
-monad = monadT IdentityMonad
-
-monadZero : ∀ {f} → RawMonadZero (Maybe {a = f})
-monadZero = record
-  { monad = monad
-  ; ∅     = nothing
-  }
-
-monadPlus : ∀ {f} → RawMonadPlus (Maybe {a = f})
-monadPlus {f} = record
-  { monadZero = monadZero
-  ; _∣_       = _∣_
-  }
-  where
-  _∣_ : {A : Set f} → Maybe A → Maybe A → Maybe A
-  nothing ∣ y = y
-  just x  ∣ y = just x
-
-------------------------------------------------------------------------
 -- Equality
 
 data Eq {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) : Rel (Maybe A) (a ⊔ ℓ) where

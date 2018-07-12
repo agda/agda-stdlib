@@ -77,6 +77,46 @@ Non-backwards compatible changes
   tabulate : (∀ i → P (Vec.lookup i xs)) → All P {k} xs
   ```
 
+### Overhaul of `Data.X.Categorical`
+
+* In `Data.List.Categorical` renamed and added functions:
+  ```agda
+  functor     : RawFunctor List
+  applicative : RawApplicative List
+  monadT      : RawMonad M → RawMonad (M ∘′ List)
+  sequenceA   : RawApplicative F → List (F A) → F (List A)
+  mapA        : RawApplicative F → (A → F B) → List A → F (List B)
+  forA        : RawApplicative F → List A → (A → F B) → F (List B)
+  sequence    ↦ sequenceM
+  forM        : RawMonad M → List A → (A → M B) → M (List B)
+  ```
+
+* Created `Data.List.NonEmpty.Categorical`, moved `monad` into it
+  from `Data.List.NonEmpty` and added new functions:
+  ```agda
+  functor     : RawFunctor List⁺
+  applicative : RawApplicative List⁺
+  monadT      : RawMonad M → RawMonad (M ∘′ List⁺)
+  sequenceA   : RawApplicative F → List⁺ (F A) → F (List⁺ A)
+  mapA        : RawApplicative F → (A → F B) → List⁺ A → F (List⁺ B)
+  forA        : RawApplicative F → List⁺ A → (A → F B) → F (List⁺ B)
+  sequenceM   : RawMonad M → List⁺ (M A) → M (List⁺ A)
+  mapM        : RawMonad M → (A → M B) → List⁺ A → M (List⁺ B)
+  forM        : RawMonad M → List⁺ A → (A → M B) → M (List⁺ B)
+  ```
+
+* Created `Data.Maybe.Categorical`, moved `functor`, `monadT`, `monad`,
+  `monadZero` and `monadPlus` into it from `Data.Maybe` and added the
+  following functions:
+  ```agda
+  sequenceA : RawApplicative F → Maybe (F A) → F (Maybe A)
+  mapA      : RawApplicative F → (A → F B) → Maybe A → F (Maybe B)
+  forA      : RawApplicative F → Maybe A → (A → F B) → F (Maybe B)
+  sequenceM : RawMonad M → Maybe (M A) → M (Maybe A)
+  mapM      : RawMonad M → (A → M B) → Maybe A → M (Maybe B)
+  forM      : RawMonad M → Maybe A → (A → M B) → M (Maybe B)
+  ```
+
 #### Other
 
 * The `Data.List.Relation.Sublist` directory has been moved to
@@ -157,6 +197,11 @@ Other minor additions
   ```agda
   ∈-insert : v ≈ v′ → v ∈ xs ++ [ v′ ] ++ ys
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
+  ```
+
+* Added new function to `Data.List.NonEmpty`:
+  ```agda
+  concatMap : (A → List⁺ B) → List⁺ A → List⁺ B
   ```
 
 * Added new function to `Data.Maybe.Base`:
