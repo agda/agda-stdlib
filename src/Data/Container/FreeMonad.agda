@@ -35,21 +35,23 @@ infix  1 _⋆_
 -- up in a leaf (element of the set) -- hence the Kleene star notation
 -- (the type can be read as a regular expression).
 
-_⋆C_ : ∀ {c} → Container c → Set c → Container c
+_⋆C_ : ∀ {x s p} → Container s p → Set x → Container (s ⊔ x) p
 C ⋆C X = const X ⊎ C
 
-_⋆_ : ∀ {c} → Container c → Set c → Set c
+_⋆_ : ∀ {x s p} → Container s p → Set x → Set (x ⊔ s ⊔ p)
 C ⋆ X = μ (C ⋆C X)
 
-inn : ∀ {c} {C : Container c} {X} → ⟦ C ⟧ (C ⋆ X) → C ⋆ X
-inn (s , k) = sup (inj₂ s) k
+module _ {s p} {C : Container s p} where
 
-rawMonad : ∀ {c} {C : Container c} → RawMonad (_⋆_ C)
-rawMonad = record { return = return; _>>=_ = _>>=_ }
-  where
-  return : ∀ {c} {C : Container c} {X} → X → C ⋆ X
-  return x = sup (inj₁ x) (⊥-elim ∘ lower)
+  inn : ∀ {x} {X : Set x} → ⟦ C ⟧ (C ⋆ X) → C ⋆ X
+  inn (s , k) = sup (inj₂ s) k
 
-  _>>=_ : ∀ {c} {C : Container c} {X Y} → C ⋆ X → (X → C ⋆ Y) → C ⋆ Y
-  sup (inj₁ x) _ >>= k = k x
-  sup (inj₂ s) f >>= k = inn (s , λ p → f p >>= k)
+  rawMonad : ∀ {x} → RawMonad {s ⊔ p ⊔ x} (C ⋆_)
+  rawMonad = record { return = return; _>>=_ = _>>=_ }
+    where
+    return : ∀ {X} → X → C ⋆ X
+    return x = sup (inj₁ x) (⊥-elim ∘ lower)
+
+    _>>=_ : ∀ {X Y} → C ⋆ X → (X → C ⋆ Y) → C ⋆ Y
+    sup (inj₁ x) _ >>= k = k x
+    sup (inj₂ s) f >>= k = inn (s , λ p → f p >>= k)

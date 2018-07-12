@@ -15,10 +15,10 @@ open import Function.Inverse using (_↔_; module Inverse)
 import Function.Related as Related
 open import Level
 open import Relation.Binary
-  using (Setoid; module Setoid; Preorder; module Preorder)
+  using (REL ; IsEquivalence; Setoid; module Setoid; Preorder; module Preorder)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≗_; refl)
-open import Relation.Unary using (_⊆_)
+open import Relation.Unary using (Pred ; _⊆_)
 
 ------------------------------------------------------------------------
 -- Containers
@@ -26,34 +26,22 @@ open import Relation.Unary using (_⊆_)
 -- A container is a set of shapes, and for every shape a set of
 -- positions.
 
-infix 5 _▷_
-
-record Container (ℓ : Level) : Set (suc ℓ) where
-  constructor _▷_
-  field
-    Shape    : Set ℓ
-    Position : Shape → Set ℓ
-
+open import Data.Container.Core public
 open Container public
-
--- The semantics ("extension") of a container.
-
-⟦_⟧ : ∀ {ℓ₁ ℓ₂} → Container ℓ₁ → Set ℓ₂ → Set (ℓ₁ ⊔ ℓ₂)
-⟦ C ⟧ X = Σ[ s ∈ Shape C ] (Position C s → X)
 
 -- The least and greatest fixpoints of a container.
 
-μ : ∀ {ℓ} → Container ℓ → Set ℓ
+μ : ∀ {s p} → Container s p → Set (s ⊔ p)
 μ C = W (Shape C) (Position C)
 
-ν : ∀ {ℓ} → Container ℓ → Set ℓ
+ν : ∀ {s p} → Container s p → Set (s ⊔ p)
 ν C = M (Shape C) (Position C)
 
 -- Equality, parametrised on an underlying relation.
 
-Eq : ∀ {c ℓ} {C : Container c} {X Y : Set c} →
-     (X → Y → Set ℓ) → ⟦ C ⟧ X → ⟦ C ⟧ Y → Set (c ⊔ ℓ)
-Eq {C = C} _≈_ (s , f) (s′ , f′) =
+Eq : ∀ {s p x y e} (C : Container s p) {X : Set x} {Y : Set y} →
+     (REL X Y e) → ⟦ C ⟧ X → ⟦ C ⟧ Y → Set (s ⊔ p ⊔ e)
+Eq C _≈_ (s , f) (s′ , f′) =
   Σ[ eq ∈ s ≡ s′ ] (∀ p → f p ≈ f′ (P.subst (Position C) eq p))
 
 private
@@ -61,52 +49,57 @@ private
   -- Note that, if propositional equality were extensional, then
   -- Eq _≡_ and _≡_ would coincide.
 
-  Eq⇒≡ : ∀ {c} {C : Container c} {X : Set c} {xs ys : ⟦ C ⟧ X} →
-         P.Extensionality c c → Eq _≡_ xs ys → xs ≡ ys
-  Eq⇒≡ {xs = s , f} {ys = .s , f′} ext (refl , f≈f′) =
-    P.cong (_,_ s) (ext f≈f′)
+  Eq⇒≡ : ∀ {s p x} {C : Container s p} {X : Set x} {xs ys : ⟦ C ⟧ X} →
+         P.Extensionality p x → Eq C _≡_ xs ys → xs ≡ ys
+  Eq⇒≡ ext (refl , f≈f′) = P.cong -,_ (ext f≈f′)
 
-setoid : ∀ {ℓ} → Container ℓ → Setoid ℓ ℓ → Setoid ℓ ℓ
-setoid C X = record
-  { Carrier       = ⟦ C ⟧ X.Carrier
-  ; _≈_           = _≈_
-  ; isEquivalence = record
-    { refl  = (refl , λ _ → X.refl)
+
+module _ {s p x e} (C : Container s p) (X : Setoid x e) where
+
+  private
+    module X = Setoid X
+    _≈_ = Eq C X._≈_
+
+  isEquivalence : IsEquivalence _≈_
+  isEquivalence = record
+    { refl  = refl , λ p → X.refl
     ; sym   = sym
     ; trans = λ {_ _ zs} → trans zs
+    } where
+
+    sym : ∀ {xs ys} → xs ≈ ys → ys ≈ xs
+    sym (refl , f) = (refl , X.sym ⟨∘⟩ f)
+
+    trans : ∀ {xs ys} zs → xs ≈ ys → ys ≈ zs → xs ≈ zs
+    trans _ (refl , f₁) (refl , f₂) = refl , λ p → X.trans (f₁ p) (f₂ p)
+
+  setoid : Setoid (s ⊔ p ⊔ x) (s ⊔ p ⊔ e)
+  setoid = record
+    { Carrier       = ⟦ C ⟧ X.Carrier
+    ; _≈_           = _≈_
+    ; isEquivalence = isEquivalence
     }
-  }
-  where
-  module X = Setoid X
-
-  _≈_ = Eq X._≈_
-
-  sym : {xs ys : ⟦ C ⟧ X.Carrier} → xs ≈ ys → ys ≈ xs
-  sym {_ , _} {._ , _} (refl , f) = (refl , X.sym ⟨∘⟩ f)
-
-  trans : ∀ {xs ys : ⟦ C ⟧ X.Carrier} zs → xs ≈ ys → ys ≈ zs → xs ≈ zs
-  trans {_ , _} {._ , _} (._ , _) (refl , f₁) (refl , f₂) =
-    (refl , λ p → X.trans (f₁ p) (f₂ p))
 
 ------------------------------------------------------------------------
 -- Functoriality
 
 -- Containers are functors.
 
-map : ∀ {c ℓ} {C : Container c} {X Y : Set ℓ} → (X → Y) → ⟦ C ⟧ X → ⟦ C ⟧ Y
-map f = Prod.map ⟨id⟩ (λ g → f ⟨∘⟩ g)
+map : ∀ {s p x y} {C : Container s p} {X : Set x} {Y : Set y} → (X → Y) → ⟦ C ⟧ X → ⟦ C ⟧ Y
+map f = Prod.map₂ (f ⟨∘⟩_)
 
 module Map where
 
-  identity : ∀ {c} {C : Container c} X →
-             let module X = Setoid X in
-             (xs : ⟦ C ⟧ X.Carrier) → Eq X._≈_ (map ⟨id⟩ xs) xs
+  identity :
+    ∀ {s p x e} {C : Container s p} (X : Setoid x e) →
+    let module X = Setoid X in (xs : ⟦ C ⟧ X.Carrier) → Eq C X._≈_ (map ⟨id⟩ xs) xs
   identity {C = C} X xs = Setoid.refl (setoid C X)
 
-  composition : ∀ {c} {C : Container c} {X Y : Set c} Z →
-                let module Z = Setoid Z in
-                (f : Y → Z.Carrier) (g : X → Y) (xs : ⟦ C ⟧ X) →
-                Eq Z._≈_ (map f (map g xs)) (map (f ⟨∘⟩ g) xs)
+  composition :
+    ∀ {s p x y z e} {C : Container s p} {X : Set x} {Y : Set y} (Z : Setoid z e) →
+    let module Z = Setoid Z in
+    (f : Y → Z.Carrier) (g : X → Y) (xs : ⟦ C ⟧ X) →
+    Eq C Z._≈_ (map f (map g xs)) (map (f ⟨∘⟩ g) xs)
   composition {C = C} Z f g xs = Setoid.refl (setoid C Z)
 
 ------------------------------------------------------------------------
@@ -114,7 +107,9 @@ module Map where
 
 -- Representation of container morphisms.
 
-record _⇒_ {c} (C₁ C₂ : Container c) : Set c where
+record _⇒_ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂)
+           : Set (s₁ ⊔ s₂ ⊔ p₁ ⊔ p₂) where
+  constructor _▷_
   field
     shape    : Shape C₁ → Shape C₂
     position : ∀ {s} → Position C₂ (shape s) → Position C₁ s
@@ -123,78 +118,80 @@ open _⇒_ public
 
 -- Interpretation of _⇒_.
 
-⟪_⟫ : ∀ {c ℓ} {C₁ C₂ : Container c} →
-      C₁ ⇒ C₂ → {X : Set ℓ} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X
-⟪ m ⟫ xs = (shape m (proj₁ xs) , proj₂ xs ⟨∘⟩ position m)
+⟪_⟫ : ∀ {s₁ s₂ p₁ p₂ x} {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂} →
+      C₁ ⇒ C₂ → {X : Set x} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X
+⟪ m ⟫ = Prod.map (shape m) (_⟨∘⟩ position m)
 
 module Morphism where
 
   -- Naturality.
 
-  Natural : ∀ {c} {C₁ C₂ : Container c} →
-            (∀ {X} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X) → Set (suc c)
-  Natural {c} {C₁} m =
-    ∀ {X} (Y : Setoid c c) → let module Y = Setoid Y in
+  Natural : ∀ {s₁ s₂ p₁ p₂} x e {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂} →
+            (∀ {X : Set x} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X) →
+            Set (s₁ ⊔ s₂ ⊔ p₁ ⊔ p₂ ⊔ suc (x ⊔ e))
+  Natural x e {C₁ = C₁} {C₂} m =
+    ∀ {X : Set x} (Y : Setoid x e) → let module Y = Setoid Y in
     (f : X → Y.Carrier) (xs : ⟦ C₁ ⟧ X) →
-    Eq Y._≈_ (m $ map f xs) (map f $ m xs)
+    Eq C₂ Y._≈_ (m $ map f xs) (map f $ m xs)
 
   -- Natural transformations.
 
-  NT : ∀ {c} (C₁ C₂ : Container c) → Set (suc c)
-  NT C₁ C₂ = ∃ λ (m : ∀ {X} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X) → Natural m
+  NT : ∀ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) x e →
+       Set (s₁ ⊔ s₂ ⊔ p₁ ⊔ p₂ ⊔ suc (x ⊔ e))
+  NT C₁ C₂ x e = ∃ λ (m : ∀ {X : Set x} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X) → Natural x e m
 
   -- Container morphisms are natural.
 
-  natural : ∀ {c} {C₁ C₂ : Container c}
-            (m : C₁ ⇒ C₂) → Natural ⟪ m ⟫
-  natural {C₂ = C₂} m Y f xs = Setoid.refl (setoid C₂ Y)
+  natural : ∀ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂}
+            (m : C₁ ⇒ C₂) x e → Natural x e ⟪ m ⟫
+  natural m x e Y f xs = Setoid.refl (setoid _ Y)
 
   -- In fact, all natural functions of the right type are container
   -- morphisms.
 
-  complete : ∀ {c} {C₁ C₂ : Container c} →
-             (nt : NT C₁ C₂) →
-             ∃ λ m → (X : Setoid c c) →
-                     let module X = Setoid X in
-                     (xs : ⟦ C₁ ⟧ X.Carrier) →
-                     Eq X._≈_ (proj₁ nt xs) (⟪ m ⟫ xs)
-  complete (nt , nat) =
-    (m , λ X xs → nat X (proj₂ xs) (proj₁ xs , ⟨id⟩))
-    where
-    m = record { shape    = λ  s  → proj₁ (nt (s , ⟨id⟩))
-               ; position = λ {s} → proj₂ (nt (s , ⟨id⟩))
-               }
+  complete : ∀ {s₁ s₂ p₁ p₂ e} {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂}
+    (nt : NT C₁ C₂ p₁ e) →
+      ∃ λ m → (X : Setoid p₁ e) → let module X = Setoid X in
+      ∀ xs → Eq C₂ X._≈_ (proj₁ nt xs) (⟪ m ⟫ xs)
+  complete {p₁ = p₁} {C₁ = C₁} {C₂} (nt , nat) =
+    (m , λ X xs → nat X (proj₂ xs) (proj₁ xs , ⟨id⟩)) where
+
+    m : C₁ ⇒ C₂
+    m .shape    = λ s → proj₁ (nt (s , ⟨id⟩))
+    m .position = proj₂ (nt (_ , ⟨id⟩))
+
+
+  -- Combinators which commute with ⟪_⟫.
 
   -- Identity.
 
-  id : ∀ {c} (C : Container c) → C ⇒ C
-  id _ = record {shape = ⟨id⟩; position = ⟨id⟩}
+  module _ {s p} (C : Container s p) where
+
+    id : C ⇒ C
+    id = ⟨id⟩ ▷ ⟨id⟩
+
+
+    id-correct : ∀ {x} {X : Set x} → ⟪ id ⟫ {X} ≗ ⟨id⟩
+    id-correct x = refl
 
   -- Composition.
 
-  infixr 9 _∘_
+  module _ {s₁ s₂ s₃ p₁ p₂ p₃}
+    {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂} {C₃ : Container s₃ p₃} where
 
-  _∘_ : ∀ {c} {C₁ C₂ C₃ : Container c} → C₂ ⇒ C₃ → C₁ ⇒ C₂ → C₁ ⇒ C₃
-  f ∘ g = record
-    { shape    = shape    f ⟨∘⟩ shape    g
-    ; position = position g ⟨∘⟩ position f
-    }
+    infixr 9 _∘_
+    _∘_ : C₂ ⇒ C₃ → C₁ ⇒ C₂ → C₁ ⇒ C₃
+    (f ∘ g) .shape    = shape    f ⟨∘⟩ shape    g
+    (f ∘ g) .position = position g ⟨∘⟩ position f
 
-  -- Identity and composition commute with ⟪_⟫.
-
-  id-correct : ∀ {c} {C : Container c} {X : Set c} →
-               ⟪ id C ⟫ {X} ≗ ⟨id⟩
-  id-correct xs = refl
-
-  ∘-correct : ∀ {c} {C₁ C₂ C₃ : Container c}
-              (f : C₂ ⇒ C₃) (g : C₁ ⇒ C₂) {X : Set c} →
-              ⟪ f ∘ g ⟫ {X} ≗ (⟪ f ⟫ ⟨∘⟩ ⟪ g ⟫)
-  ∘-correct f g xs = refl
+    ∘-correct : ∀ f g {x} {X : Set x} → ⟪ f ∘ g ⟫ {X} ≗ (⟪ f ⟫ ⟨∘⟩ ⟪ g ⟫)
+    ∘-correct f g xs = refl
 
 ------------------------------------------------------------------------
 -- Linear container morphisms
 
-record _⊸_ {c} (C₁ C₂ : Container c) : Set c where
+record _⊸_ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂)
+  : Set (s₁ ⊔ s₂ ⊔ p₁ ⊔ p₂) where
   field
     shape⊸    : Shape C₁ → Shape C₂
     position⊸ : ∀ {s} → Position C₂ (shape⊸ s) ↔ Position C₁ s
@@ -213,33 +210,30 @@ open _⊸_ public using (shape⊸; position⊸; ⟪_⟫⊸)
 ------------------------------------------------------------------------
 -- All and any
 
+module _ {s p x} {C : Container s p} {X : Set x} where
+
 -- All.
 
-□ : ∀ {c} {C : Container c} {X : Set c} →
-    (X → Set c) → (⟦ C ⟧ X → Set c)
-□ P (s , f) = ∀ p → P (f p)
+  □ : ∀ {ℓ} → Pred X ℓ → Pred (⟦ C ⟧ X) (p ⊔ ℓ)
+  □ P (s , f) = ∀ p → P (f p)
 
-□-map : ∀ {c} {C : Container c} {X : Set c} {P Q : X → Set c} →
-        P ⊆ Q → □ {C = C} P ⊆ □ Q
-□-map P⊆Q = _⟨∘⟩_ P⊆Q
+  □-map : ∀ {ℓ ℓ′} {P : Pred X ℓ} {Q : Pred X ℓ′} → P ⊆ Q → □ P ⊆ □ Q
+  □-map P⊆Q = _⟨∘⟩_ P⊆Q
 
 -- Any.
 
-◇ : ∀ {c} {C : Container c} {X : Set c} →
-    (X → Set c) → (⟦ C ⟧ X → Set c)
-◇ P (s , f) = ∃ λ p → P (f p)
+  ◇ : ∀ {ℓ} → Pred X ℓ → Pred (⟦ C ⟧ X) (p ⊔ ℓ)
+  ◇ P (s , f) = ∃ λ p → P (f p)
 
-◇-map : ∀ {c} {C : Container c} {X : Set c} {P Q : X → Set c} →
-        P ⊆ Q → ◇ {C = C} P ⊆ ◇ Q
-◇-map P⊆Q = Prod.map ⟨id⟩ P⊆Q
+  ◇-map : ∀ {ℓ ℓ′} {P : Pred X ℓ} {Q : Pred X ℓ′} → P ⊆ Q → ◇ P ⊆ ◇ Q
+  ◇-map P⊆Q = Prod.map ⟨id⟩ P⊆Q
 
 -- Membership.
 
-infix 4 _∈_
+  infix 4 _∈_
 
-_∈_ : ∀ {c} {C : Container c} {X : Set c} →
-      X → ⟦ C ⟧ X → Set c
-x ∈ xs = ◇ (_≡_ x) xs
+  _∈_ : X → ⟦ C ⟧ X → Set (p ⊔ x)
+  x ∈ xs = ◇ (_≡_ x) xs
 
 -- Bag and set equality and related preorders. Two containers xs and
 -- ys are equal when viewed as sets if, whenever x ∈ xs, we also have
@@ -256,14 +250,16 @@ open Related public
            ; bijection           to bag
            )
 
-[_]-Order : ∀ {ℓ} → Kind → Container ℓ → Set ℓ → Preorder ℓ ℓ ℓ
+[_]-Order : ∀ {s p ℓ} → Kind → Container s p → Set ℓ →
+            Preorder (s ⊔ p ⊔ ℓ) (s ⊔ p ⊔ ℓ) (p ⊔ ℓ)
 [ k ]-Order C X = Related.InducedPreorder₂ k (_∈_ {C = C} {X = X})
 
-[_]-Equality : ∀ {ℓ} → Symmetric-kind → Container ℓ → Set ℓ → Setoid ℓ ℓ
+[_]-Equality : ∀ {s p ℓ} → Symmetric-kind → Container s p → Set ℓ →
+               Setoid (s ⊔ p ⊔ ℓ) (p ⊔ ℓ)
 [ k ]-Equality C X = Related.InducedEquivalence₂ k (_∈_ {C = C} {X = X})
 
 infix 4 _∼[_]_
 
-_∼[_]_ : ∀ {c} {C : Container c} {X : Set c} →
-         ⟦ C ⟧ X → Kind → ⟦ C ⟧ X → Set c
+_∼[_]_ : ∀ {s p x} {C : Container s p} {X : Set x} →
+         ⟦ C ⟧ X → Kind → ⟦ C ⟧ X → Set (p ⊔ x)
 _∼[_]_ {C = C} {X} xs k ys = Preorder._∼_ ([ k ]-Order C X) xs ys
