@@ -11,6 +11,7 @@ open import Data.Sum
 open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
+open import Category.Monad.Identity
 open import Function
 
 -- To minimize the universe level of the RawFunctor, we require that elements of
@@ -32,11 +33,14 @@ module Sumₗ {a} (A : Set a) (b : Level) where
     }
 
   -- The monad instance also requires some mucking about with universe levels.
+  monadT : ∀ {M} → RawMonad M → RawMonad (M ∘′ Sumₗ)
+  monadT M = record
+    { return = M.pure ∘ inj₂
+    ; _>>=_  = λ ma f → ma M.>>= [ M.pure ∘′ inj₁ , f ]′
+    } where module M = RawMonad M
+
   monad : RawMonad Sumₗ
-  monad = record
-    { return = inj₂
-    ; _>>=_  = [ const ∘ inj₁ , _|>′_ ]′
-    }
+  monad = monadT IdentityMonad
 
 -- The following are the "right-handed" versions
 
@@ -54,11 +58,14 @@ module Sumᵣ (a : Level) {b} (B : Set b) where
     ; _⊛_ = [ map₁ , const ∘ inj₂ ]′
     }
 
+  monadT : ∀ {M} → RawMonad M → RawMonad (M ∘′ Sumᵣ)
+  monadT M = record
+    { return = M.pure ∘′ inj₁
+    ; _>>=_  = λ ma f → ma M.>>= [ f , M.pure ∘′ inj₂ ]′
+    } where module M = RawMonad M
+
   monad : RawMonad Sumᵣ
-  monad = record
-    { return = inj₁
-    ; _>>=_  = [ _|>′_ , const ∘ inj₂ ]′
-    }
+  monad = monadT IdentityMonad
 
 ------------------------------------------------------------------------
 -- Examples
@@ -67,7 +74,7 @@ module Sumᵣ (a : Level) {b} (B : Set b) where
 -- checker verifies them.
 
 private
-  module Examples {a b} {A : Set a} {B : Set b} where
+  module Examplesₗ {a b} {A : Set a} {B : Set b} where
 
     open import Agda.Builtin.Equality
     open import Function

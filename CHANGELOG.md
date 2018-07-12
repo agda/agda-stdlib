@@ -110,12 +110,14 @@ Other major changes
 
 * Added new module `Data.Sum.Categorical`:
   ```agda
-  functorₗ     : RawFunctor (A ⊎_)
-  applicativeₗ : RawApplicative (A ⊎_)
-  monadₗ       : RawMonad (A ⊎_)
-  functorᵣ     : RawFunctor (_⊎ B)
-  applicativeᵣ : RawApplicative (_⊎ B)
-  monadᵣ       : RawMonad (_⊎ B)
+  Sumₗ.functor     : RawFunctor (A ⊎_)
+  Sumₗ.applicative : RawApplicative (A ⊎_)
+  Sumₗ.monadT      : RawMonad M → RawMonad (M ∘′ (A ⊎_))
+  Sumₗ.monad       : RawMonad (A ⊎_)
+  Sumᵣ.functor     : RawFunctor (_⊎ B)
+  Sumᵣ.applicative : RawApplicative (_⊎ B)
+  Sumᵣ.monadT      : RawMonad M → RawMonad (M ∘′ (_⊎ B))
+  Sumᵣ.monad       : RawMonad (_⊎ B)
   ```
 
 Deprecated features
