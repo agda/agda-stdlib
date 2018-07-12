@@ -38,7 +38,7 @@
 <a id="1034" href="Data.String.Base.html#1004" class="Function">fromList</a> <a id="1043" class="Symbol">=</a> <a id="1045" href="Agda.Builtin.String.html#263" class="Primitive">primStringFromList</a>
 
 <a id="fromList⁺"></a><a id="1065" href="Data.String.Base.html#1065" class="Function">fromList⁺</a> <a id="1075" class="Symbol">:</a> <a id="1077" href="Data.List.NonEmpty.html#1057" class="Record">List⁺</a> <a id="1083" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="1088" class="Symbol">→</a> <a id="1090" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
-<a id="1097" href="Data.String.Base.html#1065" class="Function">fromList⁺</a> <a id="1107" class="Symbol">=</a> <a id="1109" href="Data.String.Base.html#1004" class="Function">fromList</a> <a id="1118" href="Function.html#759" class="Function Operator">∘</a> <a id="1120" href="Data.List.NonEmpty.html#1517" class="Function">NE.toList</a>
+<a id="1097" href="Data.String.Base.html#1065" class="Function">fromList⁺</a> <a id="1107" class="Symbol">=</a> <a id="1109" href="Data.String.Base.html#1004" class="Function">fromList</a> <a id="1118" href="Function.html#769" class="Function Operator">∘</a> <a id="1120" href="Data.List.NonEmpty.html#1517" class="Function">NE.toList</a>
 
 <a id="1131" class="Comment">-- List-like functions</a>
 
@@ -47,10 +47,10 @@
 <a id="1201" href="Data.String.Base.html#1169" class="Function Operator">_++_</a> <a id="1206" class="Symbol">=</a> <a id="1208" href="Agda.Builtin.String.html#305" class="Primitive">primStringAppend</a>
 
 <a id="length"></a><a id="1226" href="Data.String.Base.html#1226" class="Function">length</a> <a id="1233" class="Symbol">:</a> <a id="1235" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="1242" class="Symbol">→</a> <a id="1244" href="Agda.Builtin.Nat.html#97" class="Datatype">ℕ</a>
-<a id="1246" href="Data.String.Base.html#1226" class="Function">length</a> <a id="1253" class="Symbol">=</a> <a id="1255" href="Data.List.Base.html#3242" class="Function">List.length</a> <a id="1267" href="Function.html#759" class="Function Operator">∘</a> <a id="1269" href="Data.String.Base.html#949" class="Function">toList</a>
+<a id="1246" href="Data.String.Base.html#1226" class="Function">length</a> <a id="1253" class="Symbol">=</a> <a id="1255" href="Data.List.Base.html#3242" class="Function">List.length</a> <a id="1267" href="Function.html#769" class="Function Operator">∘</a> <a id="1269" href="Data.String.Base.html#949" class="Function">toList</a>
 
 <a id="replicate"></a><a id="1277" href="Data.String.Base.html#1277" class="Function">replicate</a> <a id="1287" class="Symbol">:</a> <a id="1289" href="Agda.Builtin.Nat.html#97" class="Datatype">ℕ</a> <a id="1291" class="Symbol">→</a> <a id="1293" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="1298" class="Symbol">→</a> <a id="1300" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
-<a id="1307" href="Data.String.Base.html#1277" class="Function">replicate</a> <a id="1317" href="Data.String.Base.html#1317" class="Bound">n</a> <a id="1319" class="Symbol">=</a> <a id="1321" href="Data.String.Base.html#1004" class="Function">fromList</a> <a id="1330" href="Function.html#759" class="Function Operator">∘</a> <a id="1332" href="Data.List.Base.html#3577" class="Function">List.replicate</a> <a id="1347" href="Data.String.Base.html#1317" class="Bound">n</a>
+<a id="1307" href="Data.String.Base.html#1277" class="Function">replicate</a> <a id="1317" href="Data.String.Base.html#1317" class="Bound">n</a> <a id="1319" class="Symbol">=</a> <a id="1321" href="Data.String.Base.html#1004" class="Function">fromList</a> <a id="1330" href="Function.html#769" class="Function Operator">∘</a> <a id="1332" href="Data.List.Base.html#3577" class="Function">List.replicate</a> <a id="1347" href="Data.String.Base.html#1317" class="Bound">n</a>
 
 <a id="concat"></a><a id="1350" href="Data.String.Base.html#1350" class="Function">concat</a> <a id="1357" class="Symbol">:</a> <a id="1359" href="Agda.Builtin.List.html#80" class="Datatype">List</a> <a id="1364" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="1371" class="Symbol">→</a> <a id="1373" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
 <a id="1380" href="Data.String.Base.html#1350" class="Function">concat</a> <a id="1387" class="Symbol">=</a> <a id="1389" href="Data.List.Base.html#2376" class="Function">List.foldr</a> <a id="1400" href="Data.String.Base.html#1169" class="Function Operator">_++_</a> <a id="1405" class="String">&quot;&quot;</a>
@@ -61,7 +61,7 @@
 <a id="1462" href="Data.String.Base.html#1439" class="Function">show</a> <a id="1467" class="Symbol">=</a> <a id="1469" href="Agda.Builtin.String.html#436" class="Primitive">primShowString</a>
 
 <a id="unlines"></a><a id="1485" href="Data.String.Base.html#1485" class="Function">unlines</a> <a id="1493" class="Symbol">:</a> <a id="1495" href="Agda.Builtin.List.html#80" class="Datatype">List</a> <a id="1500" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="1507" class="Symbol">→</a> <a id="1509" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
-<a id="1516" href="Data.String.Base.html#1485" class="Function">unlines</a> <a id="1524" class="Symbol">=</a> <a id="1526" href="Data.String.Base.html#1350" class="Function">concat</a> <a id="1533" href="Function.html#759" class="Function Operator">∘</a> <a id="1535" href="Data.List.Base.html#1496" class="Function">List.intersperse</a> <a id="1552" class="String">&quot;\n&quot;</a>
+<a id="1516" href="Data.String.Base.html#1485" class="Function">unlines</a> <a id="1524" class="Symbol">=</a> <a id="1526" href="Data.String.Base.html#1350" class="Function">concat</a> <a id="1533" href="Function.html#769" class="Function Operator">∘</a> <a id="1535" href="Data.List.Base.html#1496" class="Function">List.intersperse</a> <a id="1552" class="String">&quot;\n&quot;</a>
 
 <a id="1558" class="Comment">------------------------------------------------------------------------</a>
 <a id="1631" class="Comment">-- Properties</a>
