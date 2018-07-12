@@ -111,6 +111,18 @@ Other major changes
 * Added new module `Algebra.Properties.CommutativeMonoid`. This contains proofs
   of lots of properties of summation, including 'big summation'.
 
+* Added new module `Data.Product.Categorical`:
+  ```agda
+  Productₗ.functor     : (A : RawMonoid a e) → RawFunctor (A ×_)
+  Productₗ.applicative : (A : RawMonoid a e) → RawApplicative (A ×_)
+  Productₗ.monadT      : (A : RawMonoid a e) → RawMonad M → RawMonad (M ∘′ (A ×_))
+  Productₗ.monad       : (A : RawMonoid a e) → RawMonad (A ×_)
+  Productᵣ.functor     : (B : RawMonoid b e) → RawFunctor (_× B)
+  Productᵣ.applicative : (B : RawMonoid b e) → RawApplicative (_× B)
+  Productᵣ.monadT      : (B : RawMonoid b e) → RawMonad M → RawMonad (M ∘′ (_× B))
+  Productᵣ.monad       : (B : RawMonoid b e) → RawMonad (_× B)
+  ```
+
 Deprecated features
 -------------------
 
