@@ -9,13 +9,13 @@ module Data.Product.N-ary.Properties where
 open import Data.Nat.Base hiding (_^_)
 open import Data.Product
 open import Data.Product.N-ary
-open import Data.Vec using (Vec ; _∷_)
-import Function.Inverse as I
+open import Data.Vec using (Vec; _∷_)
+open import Function.Inverse using (_↔_; inverse)
 open import Relation.Binary.PropositionalEquality as P
 open ≡-Reasoning
 
--- Basic proofs
 ------------------------------------------------------------------------
+-- Basic proofs
 
 module _ {a} {A : Set a} where
 
@@ -50,8 +50,8 @@ module _ {a} {A : Set a} where
     as
       ∎
 
--- Conversion to and from Vec
 ------------------------------------------------------------------------
+-- Conversion to and from Vec
 
 module _ {a} {A : Set a} where
 
@@ -85,12 +85,5 @@ module _ {a} {A : Set a} where
       hd-prf = head-cons-identity n x (fromVec xs)
       tl-prf = tail-cons-identity n x (fromVec xs)
 
-↔Vec : ∀ {a} {A : Set a} n → A ^ n I.↔ Vec A n
-↔Vec n = record
-  { to         = P.→-to-⟶ (toVec n)
-  ; from       = P.→-to-⟶ fromVec
-  ; inverse-of = record
-    { left-inverse-of  = fromVec∘toVec n
-    ; right-inverse-of = toVec∘fromVec
-    }
-  }
+  ↔Vec : ∀ n → A ^ n ↔ Vec A n
+  ↔Vec n = inverse (toVec n) fromVec (fromVec∘toVec n) toVec∘fromVec

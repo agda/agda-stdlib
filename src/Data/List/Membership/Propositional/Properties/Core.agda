@@ -11,14 +11,14 @@
 module Data.List.Membership.Propositional.Properties.Core where
 
 open import Function using (flip; id; _∘_)
-open import Function.Inverse as Inv using (_↔_)
+open import Function.Inverse using (_↔_; inverse)
 open import Data.List.Base using (List)
 open import Data.List.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
 open import Data.Product as Prod
   using (_,_; proj₁; proj₂; uncurry′; ∃; _×_)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; refl; _≗_)
+  using (_≡_; refl)
 open import Relation.Unary using (_⊆_)
 
 -- Lemmas relating map and find.
@@ -68,12 +68,7 @@ find∘lose P x∈xs p
 
 Any↔ : ∀ {a p} {A : Set a} {P : A → Set p} {xs} →
        (∃ λ x → x ∈ xs × P x) ↔ Any P xs
-Any↔ {P = P} {xs} = record
-  { to         = P.→-to-⟶ ∃∈-Any
-  ; from       = P.→-to-⟶ find
-  ; inverse-of = record
-    { left-inverse-of  = λ p →
-        find∘lose P (proj₁ (proj₂ p)) (proj₂ (proj₂ p))
-    ; right-inverse-of = lose∘find
-    }
-  }
+Any↔ = inverse ∃∈-Any find from∘to lose∘find
+  where
+  from∘to : ∀ v → find (∃∈-Any v) ≡ v
+  from∘to p = find∘lose _ (proj₁ (proj₂ p)) (proj₂ (proj₂ p))

@@ -184,9 +184,12 @@ Other minor additions
 
 * Added new proofs to `Data.List.Any.Properties`:
   ```agda
-  singleton⁺ : P x → Any P [ x ]
-  singleton⁻ : Any P [ x ] → P x
-  ++-insert  : P x → Any P (xs ++ [ x ] ++ ys)
+  here-injective  : here  p ≡ here  q → p ≡ q
+  there-injective : there p ≡ there q → p ≡ q
+
+  singleton⁺      : P x → Any P [ x ]
+  singleton⁻      : Any P [ x ] → P x
+  ++-insert       : P x → Any P (xs ++ [ x ] ++ ys)
   ```
 
 * Added new functions to `Data.List.Base`:
@@ -276,9 +279,37 @@ Other minor additions
   typeOf : {A : Set a} → A → Set a
   ```
 
-* Added new result to `Function.Relation.TypeIsomorphisms`:
+* Added new type and function to `Function.Bijection`:
   ```agda
-  ×-comm : (A × B) ↔ (B × A)
+  From ⤖ To = Bijection (P.setoid From) (P.setoid To)
+
+  bijection : (∀ {x y} → to x ≡ to y → x ≡ y) → (∀ x → to (from x) ≡ x) → From ⤖ To
+  ```
+
+* Added new function to `Function.Injection`:
+  ```agda
+  injection : (∀ {x y} → to x ≡ to y → x ≡ y) → From ↣ To
+  ```
+
+* Added new function to `Function.Inverse`:
+  ```agda
+  inverse : (∀ x → from (to x) ≡ x) → (∀ x → to (from x) ≡ x) → From ↔ To
+  ```
+
+* Added new function to `Function.LeftInverse`:
+  ```agda
+  leftInverse : (∀ x → from (to x) ≡ x) → From ↞ To
+  ```
+
+* Added new proof to `Function.Related.TypeIsomorphisms`:
+  ```agda
+  ×-≡×≡↔≡,≡ : (x ≡ proj₁ p × y ≡ proj₂ p) ↔ (x , y) ≡ p
+  ×-comm    : (A × B) ↔ (B × A)
+  ```
+
+* Added new function to `Function.Surjection`:
+  ```agda
+  surjection : (∀ x → to (from x) ≡ x) → From ↠ To
   ```
 
 * Added the following types in `Relation.Unary`:
