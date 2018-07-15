@@ -21,9 +21,9 @@ open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence using (_⇔_; module Equivalence)
-open import Function.Inverse using (_↔_)
-open import Function.Surjection using (_↠_)
+open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
+open import Function.Inverse using (_↔_; inverse)
+open import Function.Surjection using (_↠_; surjection)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
 open import Relation.Unary
@@ -54,15 +54,8 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   Any¬→¬All (there ¬p) = Any¬→¬All ¬p ∘ All.tail
 
   ¬Any↠All¬ : ∀ {xs} → (¬ Any P xs) ↠ All (¬_ ∘ P) xs
-  ¬Any↠All¬ = record
-    { to         = P.→-to-⟶ (¬Any⇒All¬ _)
-    ; surjective = record
-      { from             = P.→-to-⟶ All¬⇒¬Any
-      ; right-inverse-of = to∘from
-      }
-    }
+  ¬Any↠All¬ = surjection (¬Any⇒All¬ _) All¬⇒¬Any to∘from
     where
-
     to∘from : ∀ {xs} (¬p : All (¬_ ∘ P) xs) → ¬Any⇒All¬ xs (All¬⇒¬Any ¬p) ≡ ¬p
     to∘from []         = P.refl
     to∘from (¬p ∷ ¬ps) = P.cong₂ _∷_ P.refl (to∘from ¬ps)
@@ -79,15 +72,10 @@ module _ {a p} {A : Set a} {P : A → Set p} where
       }
 
   Any¬⇔¬All : ∀ {xs} → Decidable P → Any (¬_ ∘ P) xs ⇔ (¬ All P xs)
-  Any¬⇔¬All dec = record
-    { to   = P.→-to-⟶ Any¬→¬All
-    ; from = P.→-to-⟶ (¬All⇒Any¬ dec _)
-    }
+  Any¬⇔¬All dec = equivalence Any¬→¬All (¬All⇒Any¬ dec _)
     where
-
     -- If equality of functions were extensional, then the logical
     -- equivalence could be strengthened to a surjection.
-
     to∘from : P.Extensionality _ _ →
               ∀ {xs} (¬∀ : ¬ All P xs) → Any¬→¬All (¬All⇒Any¬ dec xs ¬∀) ≡ ¬∀
     to∘from ext ¬∀ = ext (⊥-elim ∘ ¬∀)
@@ -150,16 +138,8 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   ++⁻ (x ∷ xs) (px ∷ pxs) = Prod.map (px ∷_) id (++⁻ _ pxs)
 
   ++↔ : ∀ {xs ys} → (All P xs × All P ys) ↔ All P (xs ++ ys)
-  ++↔ {xs} = record
-    { to         = P.→-to-⟶ $ uncurry ++⁺
-    ; from       = P.→-to-⟶ $ ++⁻ xs
-    ; inverse-of = record
-      { left-inverse-of  = ++⁻∘++⁺
-      ; right-inverse-of = ++⁺∘++⁻ xs
-      }
-    }
+  ++↔ {xs} = inverse (uncurry ++⁺) (++⁻ xs) ++⁻∘++⁺ (++⁺∘++⁻ xs)
     where
-
     ++⁺∘++⁻ : ∀ xs {ys} (p : All P (xs ++ ys)) →
               uncurry′ ++⁺ (++⁻ xs p) ≡ p
     ++⁺∘++⁻ []       p          = P.refl
