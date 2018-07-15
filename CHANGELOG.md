@@ -285,6 +285,34 @@ Other minor additions
   remove-permute : remove (π ⟨$⟩ˡ i) (permute π t) ≗ permute (Perm.remove (π ⟨$⟩ˡ i) π) (remove i t)
   ```
 
+* Added new proofs to `Data.Vec.Properties.All`:
+  ```agda
+  toList⁺   : All P (toList xs) → All P xs
+  toList⁻   : All P xs → All P (toList xs)
+
+  fromList⁺ : All P xs → All P (fromList xs)
+  fromList⁻ : All P (fromList xs) → All P xs
+  ```
+
+* Added new proof to `Data.Vec.Membership.Propositional.Properties`:
+  ```agda
+  ∈-lookup    : lookup i xs ∈ xs
+
+  ∈-toList⁻   : v ∈ toList xs   → v ∈ xs
+  ∈-fromList⁻ : v ∈ fromList xs → v ∈ xs
+  ```
+
+* Added new proof to `Data.Vec.Properties`:
+  ```agda
+  lookup-zipWith : lookup i (zipWith f xs ys) ≡ f (lookup i xs) (lookup i ys)
+  ```
+
+* Added new proofs to `Data.Vec.Relation.Pointwise.Inductive`:
+  ```agda
+  tabulate⁺ : (∀ i → f i ~ g i) → Pointwise _~_ (tabulate f) (tabulate g)
+  tabulate⁻ : Pointwise _~_ (tabulate f) (tabulate g) → (∀ i → f i ~ g i)
+  ```
+
 * Added new type to `Foreign.Haskell`:
   ```agda
   Pair : (A : Set ℓ) (B : Set ℓ′) : Set (ℓ ⊔ ℓ′)
