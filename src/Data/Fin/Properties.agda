@@ -30,7 +30,7 @@ open import Relation.Nullary using (¬_)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary using (Dec; yes; no; ¬_)
-open import Relation.Unary using (U; Pred; Decidable; _⊆_)
+open import Relation.Unary as U using (U; Pred; Decidable; _⊆_)
 open import Relation.Unary.Properties using (U?)
 
 ------------------------------------------------------------------------
@@ -457,16 +457,10 @@ decFinSubset {zero}  {_}     {_} _  _  = yes λ{}
 decFinSubset {suc n} {P = P} {Q} Q? P? with decFinSubset (Q? ∘ suc) P?
 ... | no ¬q⟶p = no (λ q⟶p → ¬q⟶p (q⟶p))
 ... | yes q⟶p with Q? zero
-...   | no ¬q₀ = yes (λ {_} → hlpr _)
-  where
-  hlpr : ∀ f → Q f → P f
-  hlpr = ∀-cons (⊥-elim ∘ ¬q₀) (λ _ → q⟶p)
+...   | no ¬q₀ = yes (∀-cons {P = Q U.⇒ P} (⊥-elim ∘ ¬q₀) (λ _ → q⟶p) _)
 ...   | yes q₀ with P? q₀
 ...     | no ¬p₀ = no (λ q⟶p → ¬p₀ (q⟶p q₀))
-...     | yes p₀ = yes (λ {_} → hlpr _)
-  where
-  hlpr : ∀ f → Q f → P f
-  hlpr = ∀-cons (λ _ → p₀) (λ _ → q⟶p)
+...     | yes p₀ = yes (∀-cons {P = Q U.⇒ P} (λ _ → p₀) (λ _ → q⟶p) _)
 
 any? : ∀ {n p} {P : Fin n → Set p} → Decidable P → Dec (∃ P)
 any? {zero}  {_} P? = no λ { (() , _) }

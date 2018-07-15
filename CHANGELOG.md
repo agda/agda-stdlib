@@ -89,7 +89,7 @@ Non-backwards compatible changes
   `_∈?_`, `_⊆?_`, `nonempty?`, `anySubset?` and `decLift`. The latter
   has been renamed to `Lift?`.
 
-* The file `Data.Fin.Dec` still exists for backwards compatability
+* The file `Data.Fin.Dec` still exists for backwards compatibility
   and exports all the old names, but may be removed in some
   future version.
 
