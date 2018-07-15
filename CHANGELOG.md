@@ -312,6 +312,12 @@ Other minor additions
   surjection : (∀ x → to (from x) ≡ x) → From ↠ To
   ```
 
+* Added new functions to `Level`:
+  ```agda
+  _ℕ+_ : Nat → Level → Level
+  #_   : Nat → Level  
+  ```
+
 * Added the following types in `Relation.Unary`:
   ```agda
   Satisfiable P = ∃ λ x → x ∈ P
