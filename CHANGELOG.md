@@ -336,7 +336,7 @@ Other minor additions
 * Added new functions to `Level`:
   ```agda
   _ℕ+_ : Nat → Level → Level
-  #_   : Nat → Level  
+  #_   : Nat → Level
   ```
 
 * Added the following types in `Relation.Unary`:
