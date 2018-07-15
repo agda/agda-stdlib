@@ -43,7 +43,6 @@ Non-backwards compatible changes
 * The type `Costring` and method `toCostring` have been moved from `Data.String`
   to a new module `Codata.Musical.Costring`.
 
-
 #### Improved consistency between `Data.(List/Vec).(Any/All/Membership)`
 
 * Added new module `Data.Vec.Any`.
@@ -76,6 +75,23 @@ Non-backwards compatible changes
   ```agda
   tabulate : (∀ i → P (Vec.lookup i xs)) → All P {k} xs
   ```
+
+#### Deprecating `Data.Fin.Dec`:
+
+* This module has been deprecated as it's non-standard position
+  is causing dependency cycles. The move also makes finding
+  subset properties easier.
+
+* The following have been moved to `Data.Fin.Properties`:
+  `decFinSubset`, `any?`, `all?`, `¬∀⟶∃¬-smallest`, `¬∀⟶∃¬`.
+
+* The following proofs have been moved to `Data.Fin.Subset.Properties`:
+  `_∈?_`, `_⊆?_`, `nonempty?`, `anySubset?` and `decLift`. The latter
+  has been renamed to `Lift?`.
+
+* The file `Data.Fin.Dec` still exists for backwards compatibility
+  and exports all the old names, but may be removed in some
+  future version.
 
 ### Overhaul of `Data.X.Categorical`
 
@@ -279,6 +295,11 @@ Other minor additions
   typeOf : {A : Set a} → A → Set a
   ```
 
+* Added new result to `Function.Relation.TypeIsomorphisms`:
+  ```agda
+  ×-comm : (A × B) ↔ (B × A)
+  ```
+
 * Added new type and function to `Function.Bijection`:
   ```agda
   From ⤖ To = Bijection (P.setoid From) (P.setoid To)
@@ -321,4 +342,10 @@ Other minor additions
 * Added the following types in `Relation.Unary`:
   ```agda
   Satisfiable P = ∃ λ x → x ∈ P
+  ```
+
+* Added the following proofs in `Relation.Unary.Properties`:
+  ```agda
+  ∅? : Decidable ∅
+  U? : Decidable U
   ```
