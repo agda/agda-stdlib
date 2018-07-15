@@ -13,8 +13,9 @@ open import Category.Functor.Identity using (IdentityFunctor)
 open import Category.Monad using (RawMonad)
 open import Category.Monad.Identity using (IdentityMonad)
 open import Data.Fin using (Fin)
-open import Data.Vec
+open import Data.Vec as Vec hiding (_⊛_)
 open import Data.Vec.Properties
+open import Function
 
 functor : RawFunctor (λ (A : Set a) → Vec A n)
 functor = record
@@ -24,8 +25,33 @@ functor = record
 applicative : RawApplicative (λ (A : Set a) → Vec A n)
 applicative = record
   { pure = replicate
-  ; _⊛_  = _⊛_
+  ; _⊛_  = Vec._⊛_
   }
+
+------------------------------------------------------------------------
+-- Get access to other monadic functions
+
+module _ {f F} (App : RawApplicative {f} F) where
+
+  open RawApplicative App
+
+  sequenceA : ∀ {A n} → Vec (F A) n → F (Vec A n)
+  sequenceA []       = pure []
+  sequenceA (x ∷ xs) = _∷_ <$> x ⊛ sequenceA xs
+
+  mapA : ∀ {a} {A : Set a} {B n} → (A → F B) → Vec A n → F (Vec B n)
+  mapA f = sequenceA ∘ map f
+
+  forA : ∀ {a} {A : Set a} {B n} → Vec A n → (A → F B) → F (Vec B n)
+  forA = flip mapA
+
+module _ {m M} (Mon : RawMonad {m} M) where
+
+  private App = RawMonad.rawIApplicative Mon
+
+  sequenceM = sequenceA App
+  mapM = mapA App
+  forM = forA App
 
 -- lookup is a functor morphism from Vec to Identity.
 
