@@ -33,6 +33,7 @@ open import Data.List.Categorical using (monad)
 open import Data.Nat using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤?_)
 open import Data.Nat.Properties
 open import Data.Product hiding (map)
+open import Function.Related.TypeIsomorphisms using (×-≡×≡↔≡,≡)
 import Data.Product.Relation.Pointwise.Dependent as Σ
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Relation.Binary hiding (Decidable)
@@ -218,21 +219,10 @@ module _ {ℓ} {A B : Set ℓ} where
          (x ∈ xs × y ∈ ys) ↔ (x , y) ∈ (xs ⊗ ys)
   ⊗-∈↔ {xs} {ys} {x} {y} =
     (x ∈ xs × y ∈ ys)             ↔⟨ ⊗↔′ ⟩
-    Any (x ≡_ ⟨×⟩ y ≡_) (xs ⊗ ys) ↔⟨ Any-cong helper (_ ∎) ⟩
+    Any (x ≡_ ⟨×⟩ y ≡_) (xs ⊗ ys) ↔⟨ Any-cong ×-≡×≡↔≡,≡ (_ ∎) ⟩
     (x , y) ∈ (xs ⊗ ys)           ∎
     where
     open Related.EquationalReasoning
-
-    helper : (p : A × B) → (x ≡ proj₁ p × y ≡ proj₂ p) ↔ (x , y) ≡ p
-    helper _ = record
-      { to         = P.→-to-⟶ (uncurry $ P.cong₂ _,_)
-      ; from       = P.→-to-⟶ < P.cong proj₁ , P.cong proj₂ >
-      ; inverse-of = record
-        { left-inverse-of  = λ _ → P.cong₂ _,_ (P.≡-irrelevance _ _)
-                                               (P.≡-irrelevance _ _)
-        ; right-inverse-of = λ _ → P.≡-irrelevance _ _
-        }
-      }
 
 ------------------------------------------------------------------------
 -- length

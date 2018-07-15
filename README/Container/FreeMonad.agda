@@ -24,10 +24,10 @@ open import Relation.Binary.PropositionalEquality
 
 -- The signature of state and its (generic) operations.
 
-State : Set → Container _
+State : Set → Container _ _
 State S = ⊤ ⟶ S ⊎ S ⟶ ⊤
   where
-  _⟶_ : Set → Set → Container _
+  _⟶_ : Set → Set → Container _ _
   I ⟶ O = I ▷ λ _ → O
 
 get : ∀ {S} → State S ⋆ S
@@ -50,7 +50,7 @@ prog =
   where
   open RawMonad rawMonad
 
-runState : ∀ {S X} → State S ⋆ X → (S → X ⟨×⟩ S)
+runState : {S X : Set} → State S ⋆ X → (S → X ⟨×⟩ S)
 runState (sup (inj₁ x) _)        = λ s → x , s
 runState (sup (inj₂ (inj₁ _)) k) = λ s → runState (k s) s
 runState (sup (inj₂ (inj₂ s)) k) = λ _ → runState (k _) s

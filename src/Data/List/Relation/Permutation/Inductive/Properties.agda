@@ -19,6 +19,7 @@ open import Data.List.Relation.BagAndSetEquality using (bag; _∼[_]_)
 import Data.List.Properties as Lₚ
 open import Data.Product using (_,_; _×_; ∃; ∃₂)
 open import Function using (_∘_)
+open import Function.Inverse using (inverse)
 open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as ≡
@@ -62,31 +63,27 @@ module _ {a} {A : Set a} where
   ∈-resp-↭ = Any-resp-↭
 
   ↭⇒~bag : _↭_ ⇒ _∼[ bag ]_
-  ↭⇒~bag xs↭ys = record
-    { to         = ≡.→-to-⟶ (Any-resp-↭ xs↭ys)
-    ; from       = ≡.→-to-⟶ (Any-resp-↭ (↭-sym xs↭ys))
-    ; inverse-of = record
-      { left-inverse-of  = inverseˡ xs↭ys
-      ; right-inverse-of = inverseʳ xs↭ys
-      }
-    }
+  ↭⇒~bag xs↭ys {v} = inverse (to xs↭ys) (from xs↭ys) (from∘to xs↭ys) (to∘from xs↭ys)
     where
-    inverseˡ : ∀ {xs ys : List A} (p : xs ↭ ys) {z : A} (x : z ∈ xs) →
-              Any-resp-↭ (↭-sym p) (Any-resp-↭ p x) ≡ x
-    inverseˡ refl          x∈xs                 = refl
-    inverseˡ (prep _ _)    (here refl)          = refl
-    inverseˡ (prep _ p)    (there x∈xs)         = cong there (inverseˡ p x∈xs)
-    inverseˡ (swap x y p)  (here refl)          = refl
-    inverseˡ (swap x y p)  (there (here refl))  = refl
-    inverseˡ (swap x y p)  (there (there x∈xs)) = cong (there ∘ there) (inverseˡ p x∈xs)
-    inverseˡ (trans p₁ p₂) x∈xs
-      rewrite inverseˡ p₂ (Any-resp-↭ p₁ x∈xs)
-            | inverseˡ p₁ x∈xs                 = refl
+    to : ∀ {xs ys} → xs ↭ ys → v ∈ xs → v ∈ ys
+    to xs↭ys = Any-resp-↭ xs↭ys
 
-    inverseʳ : ∀ {xs ys : List A} (p : xs ↭ ys)
-              {z : A} (z∈ys : z ∈ ys) →
-              Any-resp-↭ p (Any-resp-↭ (↭-sym p) z∈ys) ≡ z∈ys
-    inverseʳ p with inverseˡ (↭-sym p)
+    from : ∀ {xs ys} → xs ↭ ys → v ∈ ys → v ∈ xs
+    from xs↭ys = Any-resp-↭ (↭-sym xs↭ys)
+
+    from∘to : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ xs) → from p (to p q) ≡ q
+    from∘to refl          v∈xs                 = refl
+    from∘to (prep _ _)    (here refl)          = refl
+    from∘to (prep _ p)    (there v∈xs)         = cong there (from∘to p v∈xs)
+    from∘to (swap x y p)  (here refl)          = refl
+    from∘to (swap x y p)  (there (here refl))  = refl
+    from∘to (swap x y p)  (there (there v∈xs)) = cong (there ∘ there) (from∘to p v∈xs)
+    from∘to (trans p₁ p₂) v∈xs
+      rewrite from∘to p₂ (Any-resp-↭ p₁ v∈xs)
+            | from∘to p₁ v∈xs                  = refl
+
+    to∘from : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ ys) → to p (from p q) ≡ q
+    to∘from p with from∘to (↭-sym p)
     ... | res rewrite ↭-sym-involutive p = res
 
 ------------------------------------------------------------------------

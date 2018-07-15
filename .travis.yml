@@ -69,6 +69,8 @@ script:
   - ./index.sh
   # detecting whitespace violations
   - make check-whitespace
+  # detecting basic compilation errors
+  - agda -i . -i src -c --no-main Everything.agda
   # building the docs
   - agda -i . -i src/ --html index.agda
   # moving everything at the root
