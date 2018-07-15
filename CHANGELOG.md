@@ -294,7 +294,7 @@ Other minor additions
   fromList⁻ : All P (fromList xs) → All P xs
   ```
 
-* Added new proof to `Data.Vec.Membership.Propositional.Properties`:
+* Added new proofs to `Data.Vec.Membership.Propositional.Properties`:
   ```agda
   ∈-lookup    : lookup i xs ∈ xs
 
@@ -350,7 +350,7 @@ Other minor additions
   leftInverse : (∀ x → from (to x) ≡ x) → From ↞ To
   ```
 
-* Added new proof to `Function.Related.TypeIsomorphisms`:
+* Added new proofs to `Function.Related.TypeIsomorphisms`:
   ```agda
   ×-≡×≡↔≡,≡ : (x ≡ proj₁ p × y ≡ proj₂ p) ↔ (x , y) ≡ p
   ×-comm    : (A × B) ↔ (B × A)
