@@ -8,15 +8,16 @@ module Function.Inverse where
 
 open import Level
 open import Function using (flip)
-open import Function.Bijection hiding (id; _∘_)
+open import Function.Bijection hiding (id; _∘_; bijection)
 open import Function.Equality as F
   using (_⟶_) renaming (_∘_ to _⟪∘⟫_)
 open import Function.LeftInverse as Left hiding (id; _∘_)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≗_)
+open import Relation.Binary.PropositionalEquality as P using (_≗_; _≡_)
 open import Relation.Unary using (Pred)
 
--- Inverses.
+------------------------------------------------------------------------
+-- Inverses
 
 record _InverseOf_ {f₁ f₂ t₁ t₂}
                    {From : Setoid f₁ f₂} {To : Setoid t₁ t₂}
@@ -26,7 +27,8 @@ record _InverseOf_ {f₁ f₂ t₁ t₂}
     left-inverse-of  : from LeftInverseOf  to
     right-inverse-of : from RightInverseOf to
 
--- The set of all inverses between two setoids.
+------------------------------------------------------------------------
+-- The set of all inverses between two setoids
 
 record Inverse {f₁ f₂ t₁ t₂}
                (From : Setoid f₁ f₂) (To : Setoid t₁ t₂) :
@@ -64,7 +66,9 @@ record Inverse {f₁ f₂ t₁ t₂}
     using (equivalence; surjective; surjection; right-inverse;
            to-from; from-to)
 
--- The set of all inverses between two sets.
+------------------------------------------------------------------------
+-- The set of all inverses between two sets (i.e. inverses with
+-- propositional equality)
 
 infix 3 _↔_ _↔̇_
 
@@ -74,8 +78,23 @@ From ↔ To = Inverse (P.setoid From) (P.setoid To)
 _↔̇_ : ∀ {i f t} {I : Set i} → Pred I f → Pred I t → Set _
 From ↔̇ To = ∀ {i} → From i ↔ To i
 
+inverse : ∀ {f t} {From : Set f} {To : Set t} →
+          (to : From → To) (from : To → From) →
+          (∀ x → from (to x) ≡ x) →
+          (∀ x → to (from x) ≡ x) →
+          From ↔ To
+inverse to from from∘to to∘from = record
+  { to   = P.→-to-⟶ to
+  ; from = P.→-to-⟶ from
+  ; inverse-of = record
+    { left-inverse-of  = from∘to
+    ; right-inverse-of = to∘from
+    }
+  }
+
+------------------------------------------------------------------------
 -- If two setoids are in bijective correspondence, then there is an
--- inverse between them.
+-- inverse between them
 
 fromBijection :
   ∀ {f₁ f₂ t₁ t₂} {From : Setoid f₁ f₂} {To : Setoid t₁ t₂} →
@@ -90,7 +109,52 @@ fromBijection b = record
   }
 
 ------------------------------------------------------------------------
--- Map and zip
+-- Inverse is an equivalence relation
+
+-- Reflexivity
+
+id : ∀ {s₁ s₂} → Reflexive (Inverse {s₁} {s₂})
+id {x = S} = record
+  { to         = F.id
+  ; from       = F.id
+  ; inverse-of = record
+    { left-inverse-of  = LeftInverse.left-inverse-of id′
+    ; right-inverse-of = LeftInverse.left-inverse-of id′
+    }
+  } where id′ = Left.id {S = S}
+
+-- Transitivity
+
+infixr 9 _∘_
+
+_∘_ : ∀ {f₁ f₂ m₁ m₂ t₁ t₂} →
+      TransFlip (Inverse {f₁} {f₂} {m₁} {m₂})
+                (Inverse {m₁} {m₂} {t₁} {t₂})
+                (Inverse {f₁} {f₂} {t₁} {t₂})
+f ∘ g = record
+  { to         = to   f ⟪∘⟫ to   g
+  ; from       = from g ⟪∘⟫ from f
+  ; inverse-of = record
+    { left-inverse-of  = LeftInverse.left-inverse-of (Left._∘_ (left-inverse  f) (left-inverse  g))
+    ; right-inverse-of = LeftInverse.left-inverse-of (Left._∘_ (right-inverse g) (right-inverse f))
+    }
+  } where open Inverse
+
+-- Symmetry.
+
+sym : ∀ {f₁ f₂ t₁ t₂} →
+      Sym (Inverse {f₁} {f₂} {t₁} {t₂}) (Inverse {t₁} {t₂} {f₁} {f₂})
+sym inv = record
+  { from       = to
+  ; to         = from
+  ; inverse-of = record
+    { left-inverse-of  = right-inverse-of
+    ; right-inverse-of = left-inverse-of
+    }
+  } where open Inverse inv
+
+------------------------------------------------------------------------
+-- Transformations
 
 map : ∀ {f₁ f₂ t₁ t₂} {From : Setoid f₁ f₂} {To : Setoid t₁ t₂}
         {f₁′ f₂′ t₁′ t₂′}
@@ -121,46 +185,3 @@ zip t f pres eq₁ eq₂ = record
   ; from       = f (from eq₁) (from eq₂)
   ; inverse-of = pres (inverse-of eq₁) (inverse-of eq₂)
   } where open Inverse
-
-------------------------------------------------------------------------
--- Inverse is an equivalence relation
-
--- Identity and composition (reflexivity and transitivity).
-
-id : ∀ {s₁ s₂} → Reflexive (Inverse {s₁} {s₂})
-id {x = S} = record
-  { to         = F.id
-  ; from       = F.id
-  ; inverse-of = record
-    { left-inverse-of  = LeftInverse.left-inverse-of id′
-    ; right-inverse-of = LeftInverse.left-inverse-of id′
-    }
-  } where id′ = Left.id {S = S}
-
-infixr 9 _∘_
-
-_∘_ : ∀ {f₁ f₂ m₁ m₂ t₁ t₂} →
-      TransFlip (Inverse {f₁} {f₂} {m₁} {m₂})
-                (Inverse {m₁} {m₂} {t₁} {t₂})
-                (Inverse {f₁} {f₂} {t₁} {t₂})
-f ∘ g = record
-  { to         = to   f ⟪∘⟫ to   g
-  ; from       = from g ⟪∘⟫ from f
-  ; inverse-of = record
-    { left-inverse-of  = LeftInverse.left-inverse-of (Left._∘_ (left-inverse  f) (left-inverse  g))
-    ; right-inverse-of = LeftInverse.left-inverse-of (Left._∘_ (right-inverse g) (right-inverse f))
-    }
-  } where open Inverse
-
--- Symmetry.
-
-sym : ∀ {f₁ f₂ t₁ t₂} →
-      Sym (Inverse {f₁} {f₂} {t₁} {t₂}) (Inverse {t₁} {t₂} {f₁} {f₂})
-sym inv = record
-  { from       = to
-  ; to         = from
-  ; inverse-of = record
-    { left-inverse-of  = right-inverse-of
-    ; right-inverse-of = left-inverse-of
-    }
-  } where open Inverse inv
