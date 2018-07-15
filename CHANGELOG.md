@@ -117,10 +117,22 @@ Other major changes
   Productₗ.applicative : (A : RawMonoid a e) → RawApplicative (A ×_)
   Productₗ.monadT      : (A : RawMonoid a e) → RawMonad M → RawMonad (M ∘′ (A ×_))
   Productₗ.monad       : (A : RawMonoid a e) → RawMonad (A ×_)
+  Productₗ.sequenceA   : RawApplicative F → Productₗ (F A) → F (Productₗ A)
+  Productₗ.mapA        : RawApplicative F → (A → F B) → Productₗ A → F (Productₗ B)
+  Productₗ.forA        : RawApplicative F → Productₗ A → (A → F B) → F (Productₗ B)
+  Productₗ.sequenceM   : RawMonad M → Productₗ (M A) → M (Productₗ A)
+  Productₗ.mapM        : RawMonad M → (A → M B) → Productₗ A → M (Productₗ B)
+  Productₗ.forM        : RawMonad M → Productₗ A → (A → M B) → M (Productₗ B)
   Productᵣ.functor     : (B : RawMonoid b e) → RawFunctor (_× B)
   Productᵣ.applicative : (B : RawMonoid b e) → RawApplicative (_× B)
   Productᵣ.monadT      : (B : RawMonoid b e) → RawMonad M → RawMonad (M ∘′ (_× B))
   Productᵣ.monad       : (B : RawMonoid b e) → RawMonad (_× B)
+  Productᵣ.sequenceA   : RawApplicative F → Productᵣ (F A) → F (Productᵣ A)
+  Productᵣ.mapA        : RawApplicative F → (A → F B) → Productᵣ A → F (Productᵣ B)
+  Productᵣ.forA        : RawApplicative F → Productᵣ A → (A → F B) → F (Productᵣ B)
+  Productᵣ.sequenceM   : RawMonad M → Productᵣ (M A) → M (Productᵣ A)
+  Productᵣ.mapM        : RawMonad M → (A → M B) → Productᵣ A → M (Productᵣ B)
+  Productᵣ.forM        : RawMonad M → Productᵣ A → (A → M B) → M (Productᵣ B)
   ```
 
 Deprecated features
