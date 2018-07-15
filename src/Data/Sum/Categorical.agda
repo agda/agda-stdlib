@@ -18,6 +18,9 @@ open import Function
 -- B are "lifted" to a copy of B at a higher universe level (a ⊔ b). See the
 -- examples for how this is done.
 
+------------------------------------------------------------------------
+-- Left-biased monad instance for _⊎_
+
 module Sumₗ {a} (A : Set a) (b : Level) where
 
   Sumₗ : Set (a ⊔ b) → Set (a ⊔ b)
@@ -42,7 +45,33 @@ module Sumₗ {a} (A : Set a) (b : Level) where
   monad : RawMonad Sumₗ
   monad = monadT IdentityMonad
 
--- The following are the "right-handed" versions
+------------------------------------------------------------------------
+-- Get access to other monadic functions
+
+  module _ {F} (App : RawApplicative {a ⊔ b} F) where
+
+    open RawApplicative App
+
+    sequenceA : ∀ {A} → Sumₗ (F A) → F (Sumₗ A)
+    sequenceA (inj₁ a) = pure (inj₁ a)
+    sequenceA (inj₂ x) = inj₂ <$> x
+
+    mapA : ∀ {A B} → (A → F B) → Sumₗ A → F (Sumₗ B)
+    mapA f = sequenceA ∘ map₂ f
+
+    forA : ∀ {A B} → Sumₗ A → (A → F B) → F (Sumₗ B)
+    forA = flip mapA
+
+  module _ {M} (Mon : RawMonad {a ⊔ b} M) where
+
+    private App = RawMonad.rawIApplicative Mon
+
+    sequenceM = sequenceA App
+    mapM = mapA App
+    forM = forA App
+
+------------------------------------------------------------------------
+-- Right-biased monad instance for _⊎_
 
 module Sumᵣ (a : Level) {b} (B : Set b) where
 
@@ -66,6 +95,31 @@ module Sumᵣ (a : Level) {b} (B : Set b) where
 
   monad : RawMonad Sumᵣ
   monad = monadT IdentityMonad
+
+------------------------------------------------------------------------
+-- Get access to other monadic functions
+
+  module _ {F} (App : RawApplicative {a ⊔ b} F) where
+
+    open RawApplicative App
+
+    sequenceA : ∀ {A} → Sumᵣ (F A) → F (Sumᵣ A)
+    sequenceA (inj₂ a) = pure (inj₂ a)
+    sequenceA (inj₁ x) = inj₁ <$> x
+
+    mapA : ∀ {A B} → (A → F B) → Sumᵣ A → F (Sumᵣ B)
+    mapA f = sequenceA ∘ map₁ f
+
+    forA : ∀ {A B} → Sumᵣ A → (A → F B) → F (Sumᵣ B)
+    forA = flip mapA
+
+  module _ {M} (Mon : RawMonad {a ⊔ b} M) where
+
+    private App = RawMonad.rawIApplicative Mon
+
+    sequenceM = sequenceA App
+    mapM = mapA App
+    forM = forA App
 
 ------------------------------------------------------------------------
 -- Examples
