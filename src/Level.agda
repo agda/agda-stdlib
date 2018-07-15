@@ -16,12 +16,13 @@ open import Agda.Primitive as Prim public
 -- Increase a Level by a number of sucs.
 
 _ℕ+_ : Nat → Level → Level
-Nat.zero  ℕ+ ℓ = ℓ
-Nat.suc m ℕ+ ℓ = Prim.lsuc (m ℕ+ ℓ)
+zero  ℕ+ ℓ = ℓ
+suc n ℕ+ ℓ = Prim.lsuc (n ℕ+ ℓ)
 
 -- Nat-computed Level.
 
 infix 10 #_
+
 #_ : Nat → Level
 #_ = _ℕ+ Prim.lzero
 
