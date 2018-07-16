@@ -34,151 +34,169 @@ open import Relation.Nullary.Decidable as Dec using (True)
 ------------------------------------------------------------------------
 -- Properties of Σ and _×_
 
+-- Σ is associative
 Σ-assoc : ∀ {a b c}
             {A : Set a} {B : A → Set b} {C : (a : A) → B a → Set c} →
           Σ (Σ A B) (uncurry C) ↔ Σ A (λ a → Σ (B a) (C a))
-Σ-assoc = record
-  { to         = P.→-to-⟶ λ p →
-                   proj₁ (proj₁ p) , (proj₂ (proj₁ p) , proj₂ p)
-  ; from       = P.→-to-⟶ _
-  ; inverse-of = record
-    { left-inverse-of  = λ _ → P.refl
-    ; right-inverse-of = λ _ → P.refl
-    }
-  }
+Σ-assoc = inverse (λ where ((a , b) , c) → (a , b , c))
+                  (λ where (a , b , c) → ((a , b) , c))
+                  (λ _ → P.refl) (λ _ → P.refl)
+
+-- × is commutative
+
+×-comm : ∀ {a b} (A : Set a) (B : Set b) → (A × B) ↔ (B × A)
+×-comm _ _ = inverse Prod.swap Prod.swap (λ _ → P.refl) λ _ → P.refl
+
+-- × has ⊤ as its identity
+
+×-identityˡ : ∀ ℓ → FP.LeftIdentity _↔_ (Lift ℓ ⊤) _×_
+×-identityˡ _ _ = inverse proj₂ -,_ (λ _ → P.refl) (λ _ → P.refl)
+
+×-identityʳ : ∀ ℓ → FP.RightIdentity _↔_ (Lift ℓ ⊤) _×_
+×-identityʳ _ _ = inverse proj₁ (_, _) (λ _ → P.refl) (λ _ → P.refl)
+
+×-identity : ∀ ℓ → FP.Identity _↔_ (Lift ℓ ⊤) _×_
+×-identity ℓ = ×-identityˡ ℓ , ×-identityʳ ℓ
+
+-- × has ⊥ has its zero
+
+×-zeroˡ : ∀ ℓ → FP.LeftZero _↔_ (Lift ℓ ⊥) _×_
+×-zeroˡ ℓ A = inverse proj₁ (⊥-elim ∘′ lower)
+                      (⊥-elim ∘ lower ∘ proj₁) (⊥-elim ∘ lower)
+
+×-zeroʳ : ∀ ℓ → FP.RightZero _↔_ (Lift ℓ ⊥) _×_
+×-zeroʳ ℓ A = inverse proj₂ (⊥-elim ∘′ lower)
+                     (⊥-elim ∘ lower ∘ proj₂) (⊥-elim ∘ lower)
+
+×-zero : ∀ ℓ → FP.Zero _↔_ (Lift ℓ ⊥) _×_
+×-zero ℓ  = ×-zeroˡ ℓ , ×-zeroʳ ℓ
 
 ------------------------------------------------------------------------
--- × is "commutative"
+-- Properties of ⊎
 
-×-comm : ∀ {a b} {A : Set a} {B : Set b} → (A × B) ↔ (B × A)
-×-comm = record
-  { to         = P.→-to-⟶ Prod.swap
-  ; from       = P.→-to-⟶ Prod.swap
-  ; inverse-of = record
-      { left-inverse-of  = λ _ → P.refl
-      ; right-inverse-of = λ _ → P.refl
-      }
-  }
+-- ⊎ is associative
+
+⊎-assoc : ∀ ℓ → FP.Associative {ℓ = ℓ} _↔_ _⊎_
+⊎-assoc ℓ _ _ _ = inverse
+  [ [ inj₁ , inj₂ ∘′ inj₁ ]′ , inj₂ ∘′ inj₂ ]′
+  [ inj₁ ∘′ inj₁ , [ inj₁ ∘′ inj₂ , inj₂ ]′ ]′
+  [ [ (λ _ → P.refl) , (λ _ → P.refl) ] , (λ _ → P.refl) ]
+  [ (λ _ → P.refl) , [ (λ _ → P.refl) , (λ _ → P.refl) ] ]
+
+-- ⊎ is commutative
+
+⊎-comm : ∀ {a b} (A : Set a) (B : Set b) → (A ⊎ B) ↔ (B ⊎ A)
+⊎-comm _ _ = inverse swap swap swap-involutive swap-involutive
+
+-- ⊎ has ⊥ as its identity
+
+⊎-identityˡ : ∀ ℓ → FP.LeftIdentity _↔_ (Lift ℓ ⊥) _⊎_
+⊎-identityˡ _ _ = inverse [ (λ ()) , id ]′ inj₂
+                          [ (λ ()) , (λ _ → P.refl) ] (λ _ → P.refl)
+
+⊎-identityʳ : ∀ ℓ → FP.RightIdentity _↔_ (Lift ℓ ⊥) _⊎_
+⊎-identityʳ _ _ = inverse [ id , (λ ()) ]′ inj₁
+                          [ (λ _ → P.refl) , (λ ()) ] (λ _ → P.refl)
+
+⊎-identity : ∀ ℓ → FP.Identity _↔_ (Lift ℓ ⊥) _⊎_
+⊎-identity ℓ = ⊎-identityˡ ℓ , ⊎-identityʳ ℓ
+
+
+------------------------------------------------------------------------
+-- Properties of × and ⊎
+
+-- × distributes over ⊎
+
+×-distribˡ : ∀ ℓ → FP._DistributesOverˡ_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distribˡ ℓ _ _ _ = inverse
+  (uncurry λ x → [ inj₁ ∘′ (x ,_) , inj₂ ∘′ (x ,_) ]′)
+  [ Prod.map₂ inj₁ , Prod.map₂ inj₂ ]′
+  (uncurry λ _ → [ (λ _ → P.refl) , (λ _ → P.refl) ])
+  [ (λ _ → P.refl) , (λ _ → P.refl) ]
+
+×-distribʳ : ∀ ℓ → FP._DistributesOverʳ_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distribʳ ℓ _ _ _ = inverse
+  (uncurry [ curry inj₁ , curry inj₂ ]′)
+  [ Prod.map₁ inj₁ , Prod.map₁ inj₂ ]′
+  (uncurry [ (λ _ _ → P.refl) , (λ _ _ → P.refl) ])
+  [ (λ _ → P.refl) , (λ _ → P.refl) ]
+
+×-distrib : ∀ ℓ → FP._DistributesOver_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distrib ℓ = ×-distribˡ ℓ , ×-distribʳ ℓ
 
 ------------------------------------------------------------------------
 -- ⊥, ⊤, _×_ and _⊎_ form a commutative semiring
 
-×-CommutativeMonoid : Symmetric-kind → (ℓ : Level) →
-                      CommutativeMonoid _ _
-×-CommutativeMonoid k ℓ = record
-  { Carrier             = Set ℓ
-  ; _≈_                 = Related ⌊ k ⌋
-  ; _∙_                 = _×_
-  ; ε                   = Lift ℓ ⊤
-  ; isCommutativeMonoid = record
-    { isSemigroup   = record
-      { isEquivalence = Setoid.isEquivalence $ Related.setoid k ℓ
-      ; assoc         = λ _ _ _ → ↔⇒ Σ-assoc
-      ; ∙-cong        = _×-cong_
-      }
-    ; identityˡ = λ A → ↔⇒ $ ×-identityˡ A
-    ; comm      = λ A B → ↔⇒ $ ×-comm
-    }
+-- ⊤, _×_ form a commutative monoid
+
+×-isSemigroup : ∀ k ℓ → IsSemigroup {Level.suc ℓ} (Related ⌊ k ⌋) _×_
+×-isSemigroup k ℓ = record
+  { isEquivalence = isEquivalence k ℓ
+  ; assoc         = λ _ _ _ → ↔⇒ Σ-assoc
+  ; ∙-cong        = _×-cong_
   }
-  where
-  open FP _↔_
 
-  ×-identityˡ : LeftIdentity (Lift ℓ ⊤) _×_
-  ×-identityˡ _ = inverse proj₂ (_ ,_) (λ _ → P.refl) (λ _ → P.refl)
-
-⊎-CommutativeMonoid : Symmetric-kind → (ℓ : Level) →
-                      CommutativeMonoid _ _
-⊎-CommutativeMonoid k ℓ = record
-  { Carrier             = Set ℓ
-  ; _≈_                 = Related ⌊ k ⌋
-  ; _∙_                 = _⊎_
-  ; ε                   = Lift ℓ ⊥
-  ; isCommutativeMonoid = record
-    { isSemigroup   = record
-      { isEquivalence = Setoid.isEquivalence $ Related.setoid k ℓ
-      ; assoc         = λ A B C → ↔⇒ $ ⊎-assoc A B C
-      ; ∙-cong        = _⊎-cong_
-      }
-    ; identityˡ = λ A → ↔⇒ $ ⊎-identityˡ A
-    ; comm      = λ A B → ↔⇒ $ ⊎-comm A B
-    }
+×-⊤-isMonoid : ∀ k ℓ → IsMonoid (Related ⌊ k ⌋) _×_ (Lift ℓ ⊤)
+×-⊤-isMonoid k ℓ = record
+  { isSemigroup = ×-isSemigroup k ℓ
+  ; identity    = (↔⇒ ∘ ×-identityˡ ℓ) , (↔⇒ ∘ ×-identityʳ ℓ)
   }
-  where
-  open FP _↔_
 
-  ⊎-identityˡ : LeftIdentity (Lift ℓ ⊥) _⊎_
-  ⊎-identityˡ A = record
-    { to         = P.→-to-⟶ [ (λ ()) ∘′ lower , id ]
-    ; from       = P.→-to-⟶ inj₂
-    ; inverse-of = record
-      { right-inverse-of = λ _ → P.refl
-      ; left-inverse-of  = [ ⊥-elim ∘ lower , (λ _ → P.refl) ]
-      }
-    }
-
-  ⊎-assoc : Associative _⊎_
-  ⊎-assoc A B C = record
-    { to         = P.→-to-⟶ [ [ inj₁ , inj₂ ∘ inj₁ ] , inj₂ ∘ inj₂ ]
-    ; from       = P.→-to-⟶ [ inj₁ ∘ inj₁ , [ inj₁ ∘ inj₂ , inj₂ ] ]
-    ; inverse-of = record
-      { left-inverse-of  = [ [ (λ _ → P.refl) , (λ _ → P.refl) ] , (λ _ → P.refl) ]
-      ; right-inverse-of = [ (λ _ → P.refl) , [ (λ _ → P.refl) , (λ _ → P.refl) ] ]
-      }
-    }
-
-  ⊎-comm : Commutative _⊎_
-  ⊎-comm _ _ = inverse swap swap swap-involutive swap-involutive
-
-×⊎-CommutativeSemiring : Symmetric-kind → (ℓ : Level) →
-                         CommutativeSemiring (Level.suc ℓ) ℓ
-×⊎-CommutativeSemiring k ℓ = record
-  { Carrier               = Set ℓ
-  ; _≈_                   = Related ⌊ k ⌋
-  ; _+_                   = _⊎_
-  ; _*_                   = _×_
-  ; 0#                    = Lift ℓ ⊥
-  ; 1#                    = Lift ℓ ⊤
-  ; isCommutativeSemiring = isCommutativeSemiring
+×-⊤-isCommutativeMonoid : ∀ k ℓ → IsCommutativeMonoid (Related ⌊ k ⌋) _×_ (Lift ℓ ⊤)
+×-⊤-isCommutativeMonoid k ℓ = record
+  { isSemigroup = ×-isSemigroup k ℓ
+  ; identityˡ   = ↔⇒ ∘ ×-identityˡ ℓ
+  ; comm        = λ _ _ → ↔⇒ (×-comm _ _)
   }
-  where
-  open CommutativeMonoid
-  open FP _↔_
 
-  ×-zeroˡ : LeftZero (Lift ℓ ⊥) _×_
-  ×-zeroˡ A = inverse proj₁ (⊥-elim ∘′ lower)
-                     (⊥-elim ∘ lower ∘ proj₁) (⊥-elim ∘ lower)
+×-⊤-CommutativeMonoid : Symmetric-kind → (ℓ : Level) →
+                        CommutativeMonoid _ _
+×-⊤-CommutativeMonoid k ℓ = record
+  { isCommutativeMonoid = ×-⊤-isCommutativeMonoid k ℓ
+  }
 
-  ×-distribʳ-⊎ : _×_ DistributesOverʳ _⊎_
-  ×-distribʳ-⊎ A B C = inverse to from from∘to to∘from
-    where
-    to : (B ⊎ C) × A → B × A ⊎ C × A
-    to = uncurry [ curry inj₁ , curry inj₂ ]
+-- ⊥, _⊎_ form a commutative monoid
 
-    from : B × A ⊎ C × A → (B ⊎ C) × A
-    from = [ Prod.map inj₁ id , Prod.map inj₂ id ]
+⊎-isSemigroup : ∀ k ℓ → IsSemigroup {Level.suc ℓ} (Related ⌊ k ⌋) _⊎_
+⊎-isSemigroup k ℓ = record
+  { isEquivalence = isEquivalence k ℓ
+  ; assoc         = λ A B C → ↔⇒ (⊎-assoc ℓ A B C)
+  ; ∙-cong        = _⊎-cong_
+  }
 
-    from∘to : ∀ x → from (to x) ≡ x
-    from∘to = uncurry [ (λ _ _ → P.refl) , (λ _ _ → P.refl) ]
+⊎-⊥-isMonoid : ∀ k ℓ → IsMonoid (Related ⌊ k ⌋) _⊎_ (Lift ℓ ⊥)
+⊎-⊥-isMonoid k ℓ = record
+  { isSemigroup = ⊎-isSemigroup k ℓ
+  ; identity    = (↔⇒ ∘ ⊎-identityˡ ℓ) , (↔⇒ ∘ ⊎-identityʳ ℓ)
+  }
 
-    to∘from : ∀ x → to (from x) ≡ x
-    to∘from = [ (λ _ → P.refl) , (λ _ → P.refl) ]
+⊎-⊥-isCommutativeMonoid : ∀ k ℓ → IsCommutativeMonoid (Related ⌊ k ⌋) _⊎_ (Lift ℓ ⊥)
+⊎-⊥-isCommutativeMonoid k ℓ = record
+  { isSemigroup = ⊎-isSemigroup k ℓ
+  ; identityˡ   = ↔⇒ ∘ ⊎-identityˡ ℓ
+  ; comm        = λ _ _ → ↔⇒ (⊎-comm _ _)
+  }
 
-  abstract
+⊎-⊥-CommutativeMonoid : Symmetric-kind → (ℓ : Level) →
+                        CommutativeMonoid _ _
+⊎-⊥-CommutativeMonoid k ℓ = record
+  { isCommutativeMonoid = ⊎-⊥-isCommutativeMonoid k ℓ
+  }
 
-    -- If isCommutativeSemiring is made concrete, then it takes much
-    -- more time to type-check coefficient-dec (at the time of
-    -- writing, on a given system, using certain Agda options).
+×-⊎-isCommutativeSemiring : ∀ k ℓ →
+  IsCommutativeSemiring (Related ⌊ k ⌋) _⊎_ _×_ (Lift ℓ ⊥) (Lift ℓ ⊤)
+×-⊎-isCommutativeSemiring k ℓ = record
+  { +-isCommutativeMonoid = ⊎-⊥-isCommutativeMonoid k ℓ
+  ; *-isCommutativeMonoid = ×-⊤-isCommutativeMonoid k ℓ
+  ; distribʳ              = λ A B C → ↔⇒ (×-distribʳ ℓ A B C)
+  ; zeroˡ                 = ↔⇒ ∘ ×-zeroˡ ℓ
+  }
 
-    isCommutativeSemiring :
-      IsCommutativeSemiring (Related ⌊ k ⌋) _⊎_ _×_ (Lift ℓ ⊥) (Lift ℓ ⊤)
-    isCommutativeSemiring = record
-      { +-isCommutativeMonoid = isCommutativeMonoid $
-                                  ⊎-CommutativeMonoid k ℓ
-      ; *-isCommutativeMonoid = isCommutativeMonoid $
-                                  ×-CommutativeMonoid k ℓ
-      ; distribʳ              = λ A B C → ↔⇒ $ ×-distribʳ-⊎ A B C
-      ; zeroˡ                 = λ A → ↔⇒ $ ×-zeroˡ A
-      }
+×-⊎-CommutativeSemiring : Symmetric-kind → (ℓ : Level) →
+                          CommutativeSemiring (Level.suc ℓ) ℓ
+×-⊎-CommutativeSemiring k ℓ = record
+  { isCommutativeSemiring = ×-⊎-isCommutativeSemiring k ℓ
+  }
 
 private
 
@@ -186,7 +204,7 @@ private
 
   coefficient-dec :
     ∀ s ℓ →
-    let open CommutativeSemiring (×⊎-CommutativeSemiring s ℓ)
+    let open CommutativeSemiring (×-⊎-CommutativeSemiring s ℓ)
         open SemiringOperations semiring renaming (_×_ to Times)
     in
 
@@ -199,7 +217,7 @@ private
   ... | suc _ | suc _ = yes (Eq.equivalence (λ _ → inj₁ _) (λ _ → inj₁ _))
   coefficient-dec bijection ℓ m n = Dec.map′ to (from m n) (Nat._≟_ m n)
     where
-    open CommutativeSemiring (×⊎-CommutativeSemiring bijection ℓ)
+    open CommutativeSemiring (×-⊎-CommutativeSemiring bijection ℓ)
       using (1#; semiring)
     open SemiringOperations semiring renaming (_×_ to Times)
 
@@ -274,7 +292,7 @@ private
 
 module Solver s {ℓ} =
   Algebra.RingSolver.Natural-coefficients
-    (×⊎-CommutativeSemiring s ℓ)
+    (×-⊎-CommutativeSemiring s ℓ)
     (coefficient-dec s ℓ)
 
 private
@@ -457,3 +475,12 @@ True↔ (no ¬p) _   = inverse (λ()) ¬p (λ()) (⊥-elim ∘ ¬p)
    to∘from : ∀ v → to (from v) ≡ v
    to∘from = λ _ → P.≡-irrelevance _ _
 
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+×-CommutativeMonoid = ×-⊤-CommutativeMonoid
+⊎-CommutativeMonoid = ⊎-⊥-CommutativeMonoid
+×⊎-CommutativeSemiring = ×-⊎-CommutativeSemiring

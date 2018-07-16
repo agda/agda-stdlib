@@ -310,28 +310,28 @@ module EquationalReasoning where
 -- For a symmetric kind and a fixed universe level we can construct a
 -- setoid.
 
-setoid : Symmetric-kind → (ℓ : Level) → Setoid _ _
-setoid k ℓ = record
-  { Carrier       = Set ℓ
-  ; _≈_           = Related ⌊ k ⌋
-  ; isEquivalence =
-      record {refl = _ ∎; sym = sym; trans = _∼⟨_⟩_ _}
+isEquivalence : ∀ k ℓ → IsEquivalence {ℓ = ℓ} (Related ⌊ k ⌋)
+isEquivalence k ℓ = record
+  { refl  = _ ∎
+  ; sym   = sym
+  ; trans = _ ∼⟨_⟩_
   } where open EquationalReasoning
+
+setoid : Symmetric-kind → (ℓ : Level) → Setoid _ _
+setoid k ℓ = record { isEquivalence = isEquivalence k ℓ }
 
 -- For an arbitrary kind and a fixed universe level we can construct a
 -- preorder.
 
-preorder : Kind → (ℓ : Level) → Preorder _ _ _
-preorder k ℓ = record
-  { Carrier    = Set ℓ
-  ; _≈_        = _↔_
-  ; _∼_        = Related k
-  ; isPreorder = record
-    { isEquivalence = Setoid.isEquivalence (setoid bijection ℓ)
+↔-isPreorder : ∀ k ℓ → IsPreorder _↔_ (Related k)
+↔-isPreorder k ℓ = record
+    { isEquivalence = isEquivalence bijection ℓ
     ; reflexive     = ↔⇒
     ; trans         = _∼⟨_⟩_ _
-    }
-  } where open EquationalReasoning
+    }  where open EquationalReasoning
+
+↔-preorder : Kind → (ℓ : Level) → Preorder _ _ _
+↔-preorder k ℓ = record { isPreorder = ↔-isPreorder k ℓ }
 
 ------------------------------------------------------------------------
 -- Some induced relations
@@ -355,7 +355,7 @@ InducedPreorder₁ k S = record
                       P.cong S
     ; trans         = trans
     }
-  } where open Preorder (preorder _ _)
+  } where open Preorder (↔-preorder _ _)
 
 InducedEquivalence₁ : Symmetric-kind → ∀ {a s} {A : Set a} →
                       (A → Set s) → Setoid _ _
@@ -385,7 +385,7 @@ InducedPreorder₂ k _S_ = record
 
     ; trans         = λ i↝j j↝k → trans i↝j j↝k
     }
-  } where open Preorder (preorder _ _)
+  } where open Preorder (↔-preorder _ _)
 
 InducedEquivalence₂ : Symmetric-kind →
                       ∀ {a b s} {A : Set a} {B : Set b} →
@@ -398,3 +398,12 @@ InducedEquivalence₂ k _S_ = record
     ; trans = λ i↝j j↝k → trans i↝j j↝k
     }
   } where open Setoid (setoid _ _)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+preorder = ↔-preorder

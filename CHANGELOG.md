@@ -158,6 +158,7 @@ Non-backwards compatible changes
 * Changed the precedence level of `_$_` (and variants) to `-1`. This makes
   it interact well with `_∋_` in e.g. `f $ Maybe A ∋ do (...)`.
 
+
 Other major changes
 -------------------
 
@@ -181,6 +182,17 @@ anticipated any time soon, they may eventually be removed in some future release
 * In `Data.Nat.Divisibility`:
   ```
   nonZeroDivisor-lemma
+  ```
+* In `Function.Related`
+  ```agda
+  preorder ↦ ↔-preorder
+  ```
+
+* In `Function.Related.TypeIsomorphisms`:
+  ```agda
+  ×-CommutativeMonoid    ↦ ×-⊤-CommutativeMonoid
+  ⊎-CommutativeMonoid    ↦ ⊎-⊥-CommutativeMonoid
+  ×⊎-CommutativeSemiring ↦ ×-⊎-CommutativeSemiring
   ```
 
 Other minor additions
@@ -295,9 +307,36 @@ Other minor additions
   typeOf : {A : Set a} → A → Set a
   ```
 
-* Added new result to `Function.Relation.TypeIsomorphisms`:
+* Added new functions to `Function.Related`:
   ```agda
-  ×-comm : (A × B) ↔ (B × A)
+  isEquivalence : IsEquivalence (Related ⌊ k ⌋)
+  ↔-isPreorder  : IsPreorder _↔_ (Related k)
+  ```
+
+* Added new result to `Function.Related.TypeIsomorphisms`:
+  ```agda
+  ×-comm                    : (A × B) ↔ (B × A)
+  ×-identityˡ               : LeftIdentity _↔_ (Lift ℓ ⊤) _×_
+  ×-identityʳ               : RightIdentity _↔_ (Lift ℓ ⊤) _×_
+  ×-identity                : Identity _↔_ (Lift ℓ ⊤) _×_
+  ×-zeroˡ                   : LeftZero _↔_ (Lift ℓ ⊥) _×_
+  ×-zeroʳ                   : RightZero _↔_ (Lift ℓ ⊥) _×_
+  ×-zero                    : Zero _↔_ (Lift ℓ ⊥) _×_
+  ⊎-assoc                   : Associative _↔_ _⊎_
+  ⊎-comm                    : (A ⊎ B) ↔ (B ⊎ A)
+  ⊎-identityˡ               : LeftIdentity _↔_ (Lift ℓ ⊥) _⊎_
+  ⊎-identityʳ               : RightIdentity _↔_ (Lift ℓ ⊥) _⊎_
+  ⊎-identity                : Identity _↔_ (Lift ℓ ⊥) _⊎_
+  ×-distribˡ                : _DistributesOverˡ_ _↔_ _×_ _⊎_
+  ×-distribʳ                : _DistributesOverʳ_ _↔_ _×_ _⊎_
+  ×-distrib                 : _DistributesOver_ _↔_ _×_ _⊎_
+  ×-isSemigroup             : IsSemigroup (Related ⌊ k ⌋) _×_
+  ×-⊤-isMonoid              : IsMonoid (Related ⌊ k ⌋) _×_ (Lift ℓ ⊤)
+  ×-⊤-isCommutativeMonoid   : IsCommutativeMonoid (Related ⌊ k ⌋) _×_ (Lift ℓ ⊤)
+  ⊎-isSemigroup             : IsSemigroup (Related ⌊ k ⌋) _⊎_
+  ⊎-⊥-isMonoid              : IsMonoid (Related ⌊ k ⌋) _⊎_ (Lift ℓ ⊥)
+  ⊎-⊥-isCommutativeMonoid   : IsCommutativeMonoid (Related ⌊ k ⌋) _⊎_ (Lift ℓ ⊥)
+  ×-⊎-isCommutativeSemiring : IsCommutativeSemiring (Related ⌊ k ⌋) _⊎_ _×_ (Lift ℓ ⊥) (Lift ℓ ⊤)
   ```
 
 * Added new type and function to `Function.Bijection`:

@@ -20,7 +20,7 @@ open import Function.Inverse as Inv
   using (Inverse; _↔_; module Inverse)
 open import Function.LeftInverse as LeftInv
   using (LeftInverse; _↞_; _LeftInverseOf_; module LeftInverse)
-open import Function.Related
+open import Function.Related hiding (isEquivalence)
 open import Function.Surjection as Surj
   using (Surjection; _↠_; module Surjection)
 import Relation.Nullary.Decidable as Dec

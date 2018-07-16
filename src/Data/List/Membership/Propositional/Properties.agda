@@ -45,7 +45,7 @@ open import Relation.Nullary using (¬_; Dec; yes; no)
 open import Relation.Nullary.Negation
 
 private
-  module ×⊎ {k ℓ} = CommutativeSemiring (×⊎-CommutativeSemiring k ℓ)
+  module ×⊎ {k ℓ} = CommutativeSemiring (×-⊎-CommutativeSemiring k ℓ)
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
 
 ------------------------------------------------------------------------

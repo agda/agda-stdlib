@@ -59,7 +59,7 @@ _∼[_]_ {A = A} xs k ys = Preorder._∼_ ([ k ]-Order A) xs ys
 private
   module Eq  {k a} {A : Set a} = Setoid ([ k ]-Equality A)
   module Ord {k a} {A : Set a} = Preorder ([ k ]-Order A)
-  module ×⊎ {k ℓ} = CommutativeSemiring (×⊎-CommutativeSemiring k ℓ)
+  module ×⊎ {k ℓ} = CommutativeSemiring (×-⊎-CommutativeSemiring k ℓ)
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
   module MP = MonadProperties
 
