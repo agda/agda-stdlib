@@ -161,14 +161,38 @@ Non-backwards compatible changes
 Other major changes
 -------------------
 
-* Added new module `Data.List.Relation.Sublist.Inductive` which gives
-  an inductive definition of the sublist relation (i.e. order-preserving embeddings).
+* Added new module `Algebra.Properties.CommutativeMonoid`. This contains proofs
+  of lots of properties of summation, including 'big summation'.
 
 * Added new modules `Data.List.Relation.Permutation.Inductive(.Properties)`,
   which give an inductive definition of permutations over lists.
 
-* Added new module `Algebra.Properties.CommutativeMonoid`. This contains proofs
-  of lots of properties of summation, including 'big summation'.
+* Added new module `Data.List.Relation.Sublist.Inductive` which gives
+  an inductive definition of the sublist relation (i.e. order-preserving embeddings).
+
+* Added new module `Data.Sum.Categorical`:
+  ```agda
+  Sumₗ.functor     : RawFunctor (A ⊎_)
+  Sumₗ.applicative : RawApplicative (A ⊎_)
+  Sumₗ.monadT      : RawMonad M → RawMonad (M ∘′ (A ⊎_))
+  Sumₗ.monad       : RawMonad (A ⊎_)
+  Sumₗ.sequenceA   : RawApplicative F → Sumₗ (F A) → F (Sumₗ A)
+  Sumₗ.mapA        : RawApplicative F → (A → F B) → Sumₗ A → F (Sumₗ B)
+  Sumₗ.forA        : RawApplicative F → Sumₗ A → (A → F B) → F (Sumₗ B)
+  Sumₗ.sequenceM   : RawMonad M → Sumₗ (M A) → M (Sumₗ A)
+  Sumₗ.mapM        : RawMonad M → (A → M B) → Sumₗ A → M (Sumₗ B)
+  Sumₗ.forM        : RawMonad M → Sumₗ A → (A → M B) → M (Sumₗ B)
+  Sumᵣ.functor     : RawFunctor (_⊎ B)
+  Sumᵣ.applicative : RawApplicative (_⊎ B)
+  Sumᵣ.monadT      : RawMonad M → RawMonad (M ∘′ (_⊎ B))
+  Sumᵣ.monad       : RawMonad (_⊎ B)
+  Sumᵣ.sequenceA   : RawApplicative F → Sumᵣ (F A) → F (Sumᵣ A)
+  Sumᵣ.mapA        : RawApplicative F → (A → F B) → Sumᵣ A → F (Sumᵣ B)
+  Sumᵣ.forA        : RawApplicative F → Sumᵣ A → (A → F B) → F (Sumᵣ B)
+  Sumᵣ.sequenceM   : RawMonad M → Sumᵣ (M A) → M (Sumᵣ A)
+  Sumᵣ.mapM        : RawMonad M → (A → M B) → Sumᵣ A → M (Sumᵣ B)
+  Sumᵣ.forM        : RawMonad M → Sumᵣ A → (A → M B) → M (Sumᵣ B)
+  ```
 
 Deprecated features
 -------------------
