@@ -43,7 +43,6 @@ Non-backwards compatible changes
 * The type `Costring` and method `toCostring` have been moved from `Data.String`
   to a new module `Codata.Musical.Costring`.
 
-
 #### Improved consistency between `Data.(List/Vec).(Any/All/Membership)`
 
 * Added new module `Data.Vec.Any`.
@@ -76,6 +75,23 @@ Non-backwards compatible changes
   ```agda
   tabulate : (∀ i → P (Vec.lookup i xs)) → All P {k} xs
   ```
+
+#### Deprecating `Data.Fin.Dec`:
+
+* This module has been deprecated as it's non-standard position
+  is causing dependency cycles. The move also makes finding
+  subset properties easier.
+
+* The following have been moved to `Data.Fin.Properties`:
+  `decFinSubset`, `any?`, `all?`, `¬∀⟶∃¬-smallest`, `¬∀⟶∃¬`.
+
+* The following proofs have been moved to `Data.Fin.Subset.Properties`:
+  `_∈?_`, `_⊆?_`, `nonempty?`, `anySubset?` and `decLift`. The latter
+  has been renamed to `Lift?`.
+
+* The file `Data.Fin.Dec` still exists for backwards compatibility
+  and exports all the old names, but may be removed in some
+  future version.
 
 ### Overhaul of `Data.X.Categorical`
 
@@ -160,8 +176,8 @@ Non-backwards compatible changes
 Other major changes
 -------------------
 
-* Added new module `Data.List.Relation.Sublist.Inductive` which gives
-  an inductive definition of the sublist relation (i.e. order-preserving embeddings).
+* Added new module `Algebra.Properties.CommutativeMonoid`. This contains proofs
+  of lots of properties of summation, including 'big summation'.
 
 * Added new modules `Data.List.Relation.Permutation.Inductive(.Properties)`,
   which give an inductive definition of permutations over lists.
@@ -171,6 +187,57 @@ Other major changes
 
 * Added new module `Algebra.Properties.CommutativeMonoid`. This contains proofs
   of lots of properties of summation, including 'big summation'.
+
+* Added new module `Data.List.Relation.Sublist.Inductive` which gives
+  an inductive definition of the sublist relation (i.e. order-preserving embeddings).
+
+* Added new module `Data.Sum.Categorical`:
+  ```agda
+  Sumₗ.functor     : RawFunctor (A ⊎_)
+  Sumₗ.applicative : RawApplicative (A ⊎_)
+  Sumₗ.monadT      : RawMonad M → RawMonad (M ∘′ (A ⊎_))
+  Sumₗ.monad       : RawMonad (A ⊎_)
+  Sumₗ.sequenceA   : RawApplicative F → Sumₗ (F A) → F (Sumₗ A)
+  Sumₗ.mapA        : RawApplicative F → (A → F B) → Sumₗ A → F (Sumₗ B)
+  Sumₗ.forA        : RawApplicative F → Sumₗ A → (A → F B) → F (Sumₗ B)
+  Sumₗ.sequenceM   : RawMonad M → Sumₗ (M A) → M (Sumₗ A)
+  Sumₗ.mapM        : RawMonad M → (A → M B) → Sumₗ A → M (Sumₗ B)
+  Sumₗ.forM        : RawMonad M → Sumₗ A → (A → M B) → M (Sumₗ B)
+  Sumᵣ.functor     : RawFunctor (_⊎ B)
+  Sumᵣ.applicative : RawApplicative (_⊎ B)
+  Sumᵣ.monadT      : RawMonad M → RawMonad (M ∘′ (_⊎ B))
+  Sumᵣ.monad       : RawMonad (_⊎ B)
+  Sumᵣ.sequenceA   : RawApplicative F → Sumᵣ (F A) → F (Sumᵣ A)
+  Sumᵣ.mapA        : RawApplicative F → (A → F B) → Sumᵣ A → F (Sumᵣ B)
+  Sumᵣ.forA        : RawApplicative F → Sumᵣ A → (A → F B) → F (Sumᵣ B)
+  Sumᵣ.sequenceM   : RawMonad M → Sumᵣ (M A) → M (Sumᵣ A)
+  Sumᵣ.mapM        : RawMonad M → (A → M B) → Sumᵣ A → M (Sumᵣ B)
+  Sumᵣ.forM        : RawMonad M → Sumᵣ A → (A → M B) → M (Sumᵣ B)
+  ```
+
+* Added new module `Data.Product.Categorical`:
+  ```agda
+  Productₗ.functor     : (A : RawMonoid a e) → RawFunctor (A ×_)
+  Productₗ.applicative : (A : RawMonoid a e) → RawApplicative (A ×_)
+  Productₗ.monadT      : (A : RawMonoid a e) → RawMonad M → RawMonad (M ∘′ (A ×_))
+  Productₗ.monad       : (A : RawMonoid a e) → RawMonad (A ×_)
+  Productₗ.sequenceA   : RawApplicative F → Productₗ (F A) → F (Productₗ A)
+  Productₗ.mapA        : RawApplicative F → (A → F B) → Productₗ A → F (Productₗ B)
+  Productₗ.forA        : RawApplicative F → Productₗ A → (A → F B) → F (Productₗ B)
+  Productₗ.sequenceM   : RawMonad M → Productₗ (M A) → M (Productₗ A)
+  Productₗ.mapM        : RawMonad M → (A → M B) → Productₗ A → M (Productₗ B)
+  Productₗ.forM        : RawMonad M → Productₗ A → (A → M B) → M (Productₗ B)
+  Productᵣ.functor     : (B : RawMonoid b e) → RawFunctor (_× B)
+  Productᵣ.applicative : (B : RawMonoid b e) → RawApplicative (_× B)
+  Productᵣ.monadT      : (B : RawMonoid b e) → RawMonad M → RawMonad (M ∘′ (_× B))
+  Productᵣ.monad       : (B : RawMonoid b e) → RawMonad (_× B)
+  Productᵣ.sequenceA   : RawApplicative F → Productᵣ (F A) → F (Productᵣ A)
+  Productᵣ.mapA        : RawApplicative F → (A → F B) → Productᵣ A → F (Productᵣ B)
+  Productᵣ.forA        : RawApplicative F → Productᵣ A → (A → F B) → F (Productᵣ B)
+  Productᵣ.sequenceM   : RawMonad M → Productᵣ (M A) → M (Productᵣ A)
+  Productᵣ.mapM        : RawMonad M → (A → M B) → Productᵣ A → M (Productᵣ B)
+  Productᵣ.forM        : RawMonad M → Productᵣ A → (A → M B) → M (Productᵣ B)
+  ```
 
 Deprecated features
 -------------------
@@ -304,6 +371,11 @@ Other minor additions
   typeOf : {A : Set a} → A → Set a
   ```
 
+* Added new result to `Function.Relation.TypeIsomorphisms`:
+  ```agda
+  ×-comm : (A × B) ↔ (B × A)
+  ```
+
 * Added new type and function to `Function.Bijection`:
   ```agda
   From ⤖ To = Bijection (P.setoid From) (P.setoid To)
@@ -337,7 +409,19 @@ Other minor additions
   surjection : (∀ x → to (from x) ≡ x) → From ↠ To
   ```
 
+* Added new functions to `Level`:
+  ```agda
+  _ℕ+_ : Nat → Level → Level
+  #_   : Nat → Level
+  ```
+
 * Added the following types in `Relation.Unary`:
   ```agda
   Satisfiable P = ∃ λ x → x ∈ P
+  ```
+
+* Added the following proofs in `Relation.Unary.Properties`:
+  ```agda
+  ∅? : Decidable ∅
+  U? : Decidable U
   ```
