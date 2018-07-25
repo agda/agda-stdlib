@@ -8,8 +8,10 @@ module Relation.Unary.Properties where
 
 open import Data.Product using (_×_; _,_; swap; proj₁)
 open import Data.Sum.Base using (inj₁; inj₂)
+open import Data.Unit using (tt)
 open import Relation.Binary.Core hiding (Decidable)
 open import Relation.Unary
+open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Nullary.Sum using (_⊎-dec_)
 open import Relation.Nullary.Negation using (¬?)
@@ -19,6 +21,9 @@ open import Function using (_$_; _∘_)
 -- The empty set
 
 module _ {a} {A : Set a} where
+
+  ∅? : Decidable {A = A} ∅
+  ∅? _ = no λ()
 
   ∅-Empty : Empty {A = A} ∅
   ∅-Empty x ()
@@ -30,6 +35,9 @@ module _ {a} {A : Set a} where
 -- The universe
 
 module _ {a} {A : Set a} where
+
+  U? : Decidable {A = A} U
+  U? _ = yes tt
 
   U-Universal : Universal {A = A} U
   U-Universal = λ _ → _
