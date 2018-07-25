@@ -6,8 +6,10 @@
 
 module Data.Vec.All.Properties where
 
-open import Data.Vec as Vec using (Vec; []; _∷_; zip; map; concat; _++_)
+open import Data.List using ([]; _∷_)
+open import Data.List.All as List using ([]; _∷_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
+open import Data.Vec as Vec
 open import Data.Vec.All as All using (All; []; _∷_)
 open import Function using (_∘_; id)
 open import Function.Inverse using (_↔_; inverse)
@@ -91,6 +93,32 @@ module _ {a m p} {A : Set a} {P : Pred A p} where
             All P (concat xss) → All (All P) xss
   concat⁻ []         []   = []
   concat⁻ (xs ∷ xss) pxss = ++ˡ⁻ xs pxss ∷ concat⁻ xss (++ʳ⁻ xs pxss)
+
+------------------------------------------------------------------------
+-- toList
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+  toList⁺ : ∀ {n} {xs : Vec A n} → List.All P (toList xs) → All P xs
+  toList⁺ {xs = []}     []         = []
+  toList⁺ {xs = x ∷ xs} (px ∷ pxs) = px ∷ toList⁺ pxs
+
+  toList⁻ : ∀ {n} {xs : Vec A n} → All P xs → List.All P (toList xs)
+  toList⁻ []         = []
+  toList⁻ (px ∷ pxs) = px ∷ toList⁻ pxs
+
+------------------------------------------------------------------------
+-- fromList
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+  fromList⁺ : ∀ {xs} → List.All P xs → All P (fromList xs)
+  fromList⁺ []         = []
+  fromList⁺ (px ∷ pxs) = px ∷ fromList⁺ pxs
+
+  fromList⁻ : ∀ {xs} → All P (fromList xs) → List.All P xs
+  fromList⁻ {[]}     []         = []
+  fromList⁻ {x ∷ xs} (px ∷ pxs) = px ∷ (fromList⁻ pxs)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
