@@ -18,7 +18,7 @@ open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (equivalence)
-open import Function.Inverse as Inv using (_↔_; module Inverse)
+open import Function.Inverse as Inv using (_↔_; inverse; module Inverse)
 open import Function.Related as Related using (Related)
 open import Function.Related.TypeIsomorphisms
 open import Relation.Unary using (Pred ; _∪_ ; _∩_)
@@ -36,14 +36,7 @@ module _ {s p} (C : Container s p) {x} {X : Set x} {ℓ} {P : Pred X ℓ} where
 -- ◇ can be expressed using _∈_.
 
   ↔∈ : ∀ {xs : ⟦ C ⟧ X} → ◇ P xs ↔ (∃ λ x → x ∈ xs × P x)
-  ↔∈ {xs} = record
-    { to         = P.→-to-⟶ to
-    ; from       = P.→-to-⟶ from
-    ; inverse-of = record
-      { left-inverse-of  = λ _ → refl
-      ; right-inverse-of = to∘from
-      }
-    }
+  ↔∈ {xs} = inverse to from (λ _ → refl) (to∘from)
     where
 
     to : ◇ P xs → ∃ λ x → x ∈ xs × P x
@@ -100,14 +93,7 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
   flatten : ∀ (xss : ⟦ C₁ ⟧ (⟦ C₂ ⟧ X)) →
             ◇ (◇ P) xss ↔
             ◇ P (Inverse.from (Composition.correct C₁ C₂) ⟨$⟩ xss)
-  flatten xss = record
-    { to         = P.→-to-⟶ t
-    ; from       = P.→-to-⟶ f
-    ; inverse-of = record
-      { left-inverse-of  = λ _ → refl
-      ; right-inverse-of = λ _ → refl
-      }
-    }
+  flatten xss = inverse t f (λ _ → refl) (λ _ → refl)
     where
     open Inverse
 
@@ -123,14 +109,7 @@ module _ {s p} {C : Container s p} {x} {X : Set x}
          {ℓ ℓ′} {P : Pred X ℓ} {Q : Pred X ℓ′} where
 
   ◇⊎↔⊎◇ : ∀ {xs : ⟦ C ⟧ X} → ◇ (P ∪ Q) xs ↔ (◇ P xs ⊎ ◇ Q xs)
-  ◇⊎↔⊎◇ {xs} = record
-    { to         = P.→-to-⟶ to
-    ; from       = P.→-to-⟶ from
-    ; inverse-of = record
-      { left-inverse-of  = from∘to
-      ; right-inverse-of = [ (λ _ → refl) , (λ _ → refl) ]
-      }
-    }
+  ◇⊎↔⊎◇ {xs} = inverse to from from∘to to∘from
     where
     to : ◇ (λ x → P x ⊎ Q x) xs → ◇ P xs ⊎ ◇ Q xs
     to (pos , inj₁ p) = inj₁ (pos , p)
@@ -143,6 +122,9 @@ module _ {s p} {C : Container s p} {x} {X : Set x}
     from∘to (pos , inj₁ p) = refl
     from∘to (pos , inj₂ q) = refl
 
+    to∘from : to ∘ from ≗ id
+    to∘from = [ (λ _ → refl) , (λ _ → refl) ]
+
 -- Products "commute" with ◇.
 
 module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂}
@@ -150,14 +132,7 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
 
   ×◇↔◇◇× : ∀ {xs : ⟦ C₁ ⟧ X} {ys : ⟦ C₂ ⟧ Y} →
            ◇ (λ x → ◇ (λ y → P x × Q y) ys) xs ↔ (◇ P xs × ◇ Q ys)
-  ×◇↔◇◇× {xs} {ys} = record
-    { to         = P.→-to-⟶ to
-    ; from       = P.→-to-⟶ from
-    ; inverse-of = record
-      { left-inverse-of  = λ _ → refl
-      ; right-inverse-of = λ _ → refl
-      }
-    }
+  ×◇↔◇◇× {xs} {ys} = inverse to from (λ _ → refl) (λ _ → refl)
     where
     to : ◇ (λ x → ◇ (λ y → P x × Q y) ys) xs → ◇ P xs × ◇ Q ys
     to (p₁ , p₂ , p , q) = ((p₁ , p) , (p₂ , q))
@@ -182,12 +157,11 @@ module _ {s p} (C : Container s p) {x y} {X : Set x} {Y : Set y}
   ∈map↔∈×≡ : ∀ {f : X → Y} {xs : ⟦ C ⟧ X} {y} →
              y ∈ C.map f xs ↔ (∃ λ x → x ∈ xs × y ≡ f x)
   ∈map↔∈×≡ {f = f} {xs} {y} =
-    y ∈ C.map f xs              ↔⟨ map↔∘ C (_≡_ y) f ⟩
+    y ∈ C.map f xs              ↔⟨ map↔∘ C (y ≡_) f ⟩
     ◇ (λ x → y ≡ f x) xs        ↔⟨ ↔∈ C ⟩
     (∃ λ x → x ∈ xs × y ≡ f x)  ∎
 
 -- map is a congruence for bag and set equality and related preorders.
-
 
 module _ {s p} (C : Container s p) {x y} {X : Set x} {Y : Set y}
          {ℓ} (P : Pred Y ℓ) where
@@ -217,22 +191,15 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
          {x} {X : Set x} {ℓ} (P : Pred X ℓ) where
 
   remove-linear : ∀ {xs : ⟦ C₁ ⟧ X} (m : C₁ ⊸ C₂) → ◇ P (⟪ m ⟫⊸ xs) ↔ ◇ P xs
-  remove-linear {xs} m = record
-    { to         = P.→-to-⟶ t
-    ; from       = P.→-to-⟶ f
-    ; inverse-of = record
-      { left-inverse-of  = f∘t
-      ; right-inverse-of = t∘f
-      }
-    }
+  remove-linear {xs} m = inverse t f f∘t t∘f
     where
     open Inverse
 
     t : ◇ P (⟪ m ⟫⊸ xs) → ◇ P xs
-    t = Prod.map (_⟨$⟩_ (to (position⊸ m))) id
+    t = Prod.map (to (position⊸ m) ⟨$⟩_) id
 
     f : ◇ P xs → ◇ P (⟪ m ⟫⊸ xs)
-    f = Prod.map (_⟨$⟩_ (from (position⊸ m)))
+    f = Prod.map (from (position⊸ m) ⟨$⟩_)
                  (P.subst (P ∘ proj₂ xs)
                           (P.sym $ right-inverse-of (position⊸ m) _))
 
@@ -278,5 +245,5 @@ module _ {s₁ s₂ s₃ p₁ p₂ p₃}
   join↔◇ join xss =
     ◇ P (⟪ join ⟫⊸ xss′)  ↔⟨ remove-linear P join ⟩
     ◇ P            xss′   ↔⟨ sym $ flatten P xss ⟩
-   ◇ (◇ P) xss           ∎
+    ◇ (◇ P) xss           ∎
     where xss′ = Inverse.from (Composition.correct C₁ C₂) ⟨$⟩ xss

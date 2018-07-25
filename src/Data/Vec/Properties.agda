@@ -15,10 +15,11 @@ open import Data.List.Any using (here; there)
 import Data.List.Membership.Propositional as List
 open import Data.Nat
 open import Data.Nat.Properties using (+-assoc; ≤-step)
-open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂; <_,_>)
+open import Data.Product as Prod
+  using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Vec
 open import Function
-open import Function.Inverse using (_↔_)
+open import Function.Inverse using (_↔_; inverse)
 open import Relation.Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; _≗_)
@@ -73,14 +74,8 @@ module _ {a} {A : Set a} where
 
   []=↔lookup : ∀ {n i} {x} {xs : Vec A n} →
                xs [ i ]= x ↔ lookup i xs ≡ x
-  []=↔lookup = record
-    { to         = P.→-to-⟶ []=⇒lookup
-    ; from       = P.→-to-⟶ (lookup⇒[]= _ _)
-    ; inverse-of = record
-      { left-inverse-of  = λ _ → []=-irrelevance _ _
-      ; right-inverse-of = λ _ → P.≡-irrelevance _ _
-      }
-    }
+  []=↔lookup = inverse []=⇒lookup (lookup⇒[]= _ _)
+     (λ _ → []=-irrelevance _ _) (λ _ → P.≡-irrelevance _ _)
 
 ------------------------------------------------------------------------
 -- _[_]≔_ (update)
@@ -391,19 +386,12 @@ module _ {a b} {A : Set a} {B : Set b} where
     P.cong (Prod.map (x ∷_) (y ∷_)) (unzip∘zip xs ys)
 
   zip∘unzip : ∀ {n} (xys : Vec (A × B) n) →
-              (Prod.uncurry zip) (unzip xys) ≡ xys
+              uncurry zip (unzip xys) ≡ xys
   zip∘unzip []              = refl
   zip∘unzip ((x , y) ∷ xys) = P.cong ((x , y) ∷_) (zip∘unzip xys)
 
   ×v↔v× : ∀ {n} → (Vec A n × Vec B n) ↔ Vec (A × B) n
-  ×v↔v× = record
-    { to         = P.→-to-⟶ (Prod.uncurry zip)
-    ; from       = P.→-to-⟶ unzip
-    ; inverse-of = record
-      { left-inverse-of  = Prod.uncurry unzip∘zip
-      ; right-inverse-of = zip∘unzip
-      }
-    }
+  ×v↔v× = inverse (uncurry zip) unzip (uncurry unzip∘zip) zip∘unzip
 
 ------------------------------------------------------------------------
 -- _⊛_

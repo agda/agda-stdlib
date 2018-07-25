@@ -31,6 +31,7 @@ infixr 0 _⟶_
 _⟶_ : ∀ {f₁ f₂ t₁ t₂} → B.Setoid f₁ f₂ → B.Setoid t₁ t₂ → Set _
 From ⟶ To = Π From (B.Setoid.indexedSetoid To)
 
+------------------------------------------------------------------------
 -- Identity and composition.
 
 id : ∀ {a₁ a₂} {A : B.Setoid a₁ a₂} → A ⟶ A

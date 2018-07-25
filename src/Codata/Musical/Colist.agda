@@ -22,7 +22,7 @@ open import Data.Product as Prod using (∃; _×_; _,_)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
-open import Function.Inverse as Inv using (_↔_; module Inverse)
+open import Function.Inverse as Inv using (_↔_; _↔̇_; Inverse; inverse)
 open import Level using (_⊔_)
 open import Relation.Binary
 import Relation.Binary.InducedPreorders as Ind
@@ -150,34 +150,25 @@ concat ((x ∷ (y ∷ xs)) ∷ xss) = x ∷ ♯ concat ((y ∷ xs) ∷ xss)
 Any-map : ∀ {a b p} {A : Set a} {B : Set b} {P : B → Set p}
           {f : A → B} {xs} →
           Any P (map f xs) ↔ Any (P ∘ f) xs
-Any-map {P = P} {f} {xs} = record
-  { to         = P.→-to-⟶ (to xs)
-  ; from       = P.→-to-⟶ (from xs)
-  ; inverse-of = record
-    { left-inverse-of  = from∘to xs
-    ; right-inverse-of = to∘from xs
-    }
-  }
+Any-map {P = P} {f} {xs} = inverse to from from∘to to∘from
   where
-  to : ∀ xs → Any P (map f xs) → Any (P ∘ f) xs
-  to []       ()
-  to (x ∷ xs) (here px) = here px
-  to (x ∷ xs) (there p) = there (to (♭ xs) p)
+  to : ∀ {xs} → Any P (map f xs) → Any (P ∘ f) xs
+  to {[]}     ()
+  to {x ∷ xs} (here px) = here px
+  to {x ∷ xs} (there p) = there (to p)
 
-  from : ∀ xs → Any (P ∘ f) xs → Any P (map f xs)
-  from []       ()
-  from (x ∷ xs) (here px) = here px
-  from (x ∷ xs) (there p) = there (from (♭ xs) p)
+  from : ∀ {xs} → Any (P ∘ f) xs → Any P (map f xs)
+  from (here px) = here px
+  from (there p) = there (from p)
 
-  from∘to : ∀ xs (p : Any P (map f xs)) → from xs (to xs p) ≡ p
-  from∘to []       ()
-  from∘to (x ∷ xs) (here px) = P.refl
-  from∘to (x ∷ xs) (there p) = P.cong there (from∘to (♭ xs) p)
+  from∘to : ∀ {xs} (p : Any P (map f xs)) → from (to p) ≡ p
+  from∘to {[]}     ()
+  from∘to {x ∷ xs} (here px) = P.refl
+  from∘to {x ∷ xs} (there p) = P.cong there (from∘to p)
 
-  to∘from : ∀ xs (p : Any (P ∘ f) xs) → to xs (from xs p) ≡ p
-  to∘from []       ()
-  to∘from (x ∷ xs) (here px) = P.refl
-  to∘from (x ∷ xs) (there p) = P.cong there (to∘from (♭ xs) p)
+  to∘from : ∀ {xs} (p : Any (P ∘ f) xs) → to (from p) ≡ p
+  to∘from (here px) = P.refl
+  to∘from (there p) = P.cong there (to∘from p)
 
 -- Any lemma for _⋎_. This lemma implies that every member of xs or ys
 -- is a member of xs ⋎ ys, and vice versa.
@@ -286,21 +277,20 @@ map-cong f (x ∷ xs≈) = f x ∷ ♯ map-cong f (♭ xs≈)
 -- Any respects pointwise implication (for the predicate) and equality
 -- (for the colist).
 
-Any-resp :
-  ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} {xs ys} →
-  (∀ {x} → P x → Q x) → xs ≈ ys → Any P xs → Any Q ys
+Any-resp : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q}
+           {xs ys} → (∀ {x} → P x → Q x) → xs ≈ ys →
+           Any P xs → Any Q ys
 Any-resp f (x ∷ xs≈) (here px) = here (f px)
 Any-resp f (x ∷ xs≈) (there p) = there (Any-resp f (♭ xs≈) p)
 
 -- Any maps pointwise isomorphic predicates and equal colists to
 -- isomorphic types.
 
-Any-cong :
-  ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} {xs ys} →
-  (∀ {x} → P x ↔ Q x) → xs ≈ ys → Any P xs ↔ Any Q ys
-Any-cong {A = A} P↔Q xs≈ys = record
-  { to         = P.→-to-⟶ (Any-resp (_⟨$⟩_ (Inverse.to   P↔Q)) xs≈ys)
-  ; from       = P.→-to-⟶ (Any-resp (_⟨$⟩_ (Inverse.from P↔Q)) (sym xs≈ys))
+Any-cong : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q}
+           {xs ys} → P ↔̇ Q → xs ≈ ys → Any P xs ↔ Any Q ys
+Any-cong {A = A} {P} {Q} {xs} {ys} P↔Q xs≈ys = record
+  { to         = P.→-to-⟶ (to xs≈ys)
+  ; from       = P.→-to-⟶ (from xs≈ys)
   ; inverse-of = record
     { left-inverse-of  = resp∘resp          P↔Q       xs≈ys (sym xs≈ys)
     ; right-inverse-of = resp∘resp (Inv.sym P↔Q) (sym xs≈ys)     xs≈ys
@@ -309,15 +299,21 @@ Any-cong {A = A} P↔Q xs≈ys = record
   where
   open Setoid (setoid _) using (sym)
 
+  to : ∀ {xs ys} → xs ≈ ys → Any P xs → Any Q ys
+  to xs≈ys = Any-resp (Inverse.to P↔Q ⟨$⟩_) xs≈ys
+
+  from : ∀ {xs ys} → xs ≈ ys → Any Q ys → Any P xs
+  from xs≈ys = Any-resp (Inverse.from P↔Q ⟨$⟩_) (sym xs≈ys)
+
   resp∘resp : ∀ {p q} {P : A → Set p} {Q : A → Set q} {xs ys}
-              (P↔Q : ∀ {x} → P x ↔ Q x)
-              (xs≈ys : xs ≈ ys) (ys≈xs : ys ≈ xs) (p : Any P xs) →
-              Any-resp (_⟨$⟩_ (Inverse.from P↔Q)) ys≈xs
-                (Any-resp (_⟨$⟩_ (Inverse.to P↔Q)) xs≈ys p) ≡ p
-  resp∘resp P↔Q (x ∷ xs≈) (.x ∷ ys≈) (here px) =
-    P.cong here (Inverse.left-inverse-of P↔Q px)
-  resp∘resp P↔Q (x ∷ xs≈) (.x ∷ ys≈) (there p) =
-    P.cong there (resp∘resp P↔Q (♭ xs≈) (♭ ys≈) p)
+              (P↔̇Q : P ↔̇ Q) (xs≈ys : xs ≈ ys) (ys≈xs : ys ≈ xs)
+              (p : Any P xs) →
+              Any-resp (Inverse.from P↔̇Q ⟨$⟩_) ys≈xs
+                (Any-resp (Inverse.to P↔̇Q ⟨$⟩_) xs≈ys p) ≡ p
+  resp∘resp P↔̇Q (x ∷ xs≈) (.x ∷ ys≈) (here px) =
+    P.cong here (Inverse.left-inverse-of P↔̇Q px)
+  resp∘resp P↔̇Q (x ∷ xs≈) (.x ∷ ys≈) (there p) =
+    P.cong there (resp∘resp P↔̇Q (♭ xs≈) (♭ ys≈) p)
 
 ------------------------------------------------------------------------
 -- Indices
