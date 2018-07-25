@@ -133,6 +133,16 @@ Non-backwards compatible changes
   forM      : RawMonad M → Maybe A → (A → M B) → M (Maybe B)
   ```
 
+* Added new functions to `Data.Vec.Categorical`:
+  ```
+  sequenceA : RawApplicative F → Vec (F A) n → F (Vec A n)
+  mapA      : RawApplicative F → (A → F B) → Vec A n → F (Vec B n)
+  forA      : RawApplicative F → Vec A n → (A → F B) → F (Vec B n)
+  sequenceM : RawMonad M → Vec (M A) n → M (Vec A n)
+  mapM      : RawMonad M → (A → M B) → Vec A n → M (Vec B n)
+  forM      : RawMonad M → Vec A n → (A → M B) → M (Vec B n)
+  ```
+
 #### Other
 
 * The `Data.List.Relation.Sublist` directory has been moved to
