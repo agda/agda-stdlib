@@ -17,6 +17,9 @@ open import Data.Vec as Vec hiding (_⊛_)
 open import Data.Vec.Properties
 open import Function
 
+------------------------------------------------------------------------
+-- Functor and applicative
+
 functor : RawFunctor (λ (A : Set a) → Vec A n)
 functor = record
   { _<$>_ = map
@@ -49,9 +52,17 @@ module _ {m M} (Mon : RawMonad {m} M) where
 
   private App = RawMonad.rawIApplicative Mon
 
+  sequenceM : ∀ {A n} → Vec (M A) n → M (Vec A n)
   sequenceM = sequenceA App
+
+  mapM : ∀ {a} {A : Set a} {B n} → (A → M B) → Vec A n → M (Vec B n)
   mapM = mapA App
+
+  forM : ∀ {a} {A : Set a} {B n} → Vec A n → (A → M B) → M (Vec B n)
   forM = forA App
+
+------------------------------------------------------------------------
+-- Other
 
 -- lookup is a functor morphism from Vec to Identity.
 
