@@ -304,9 +304,13 @@ Other minor additions
 
 * Added new functions to `Data.List.Base`:
   ```agda
-  uncons : List A → Maybe (A × List A)
-  head   : List A → Maybe A
-  tail   : List A → Maybe (List A)
+  uncons      : List A → Maybe (A × List A)
+  head        : List A → Maybe A
+  tail        : List A → Maybe (List A)
+  alignWith   : (These A B → C) → List A → List B → List C
+  unalignWith : (A → These B C) → List A → List B × List C
+  align       : List A → List B → List (These A B)
+  unalign     : List (These A B) → List A × List B
   ```
 
 * Added new proofs to `Data.List.Membership.(Setoid/Propositional).Properties`:
@@ -320,9 +324,27 @@ Other minor additions
   concatMap : (A → List⁺ B) → List⁺ A → List⁺ B
   ```
 
+* Added new functions to `Data.List.Properties`:
+  ```agda
+  alignWith-cong        : f ≗ g → alignWith f as ≗ alignWith g as
+  length-alignWith      : length (alignWith f xs ys) ≡ length xs ⊔ length ys
+  alignWith-map         : alignWith f (map g xs) (map h ys) ≡ alignWith (f ∘′ These.map g h) xs ys
+  map-alignWith         : map g (alignWith f xs ys) ≡ alignWith (g ∘′ f) xs ys
+  unalignWith-this      : unalignWith this ≗ (_, [])
+  unalignWith-that      : unalignWith that ≗ ([] ,_)
+  unalignWith-cong      : f ≗ g → unalignWith f ≗ unalignWith g
+  unalignWith-map       : unalignWith f (map g ds) ≡ unalignWith (f ∘′ g) ds
+  map-unalignWith       : Prod.map (map g) (map h) ∘′ unalignWith f ≗ unalignWith (These.map g h ∘′ f)
+  unalignWith-alignWith : f ∘′ g ≗ id → unalignWith f (alignWith g as bs) ≡ (as , bs) 
+  ```
+
 * Added new function to `Data.Maybe.Base`:
   ```agda
   fromMaybe : A → Maybe A → A
+  alignWith : (These A B → C) → Maybe A → Maybe B → Maybe C
+  zipWith   : (A → B → C) → Maybe A → Maybe B → Maybe C
+  align     : Maybe A → Maybe B → Maybe (These A B)
+  zip       : Maybe A → Maybe B → Maybe (A × B)
   ```
 
 * Added new proofs to `Data.Nat.Divisibility`:

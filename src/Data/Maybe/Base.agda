@@ -105,3 +105,29 @@ to-witness (just {x = p} _) = p
 to-witness-T : ∀ {p} {P : Set p} (m : Maybe P) → T (is-just m) → P
 to-witness-T (just p) _  = p
 to-witness-T nothing  ()
+
+------------------------------------------------------------------------
+-- Aligning and Zipping
+
+open import Data.These
+open import Data.Product hiding (zip)
+
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
+
+  alignWith : (These A B → C) → Maybe A → Maybe B → Maybe C
+  alignWith f (just a) (just b) = just (f (these a b))
+  alignWith f (just a) nothing  = just (f (this a))
+  alignWith f nothing  (just b) = just (f (that b))
+  alignWith f nothing  nothing  = nothing
+
+  zipWith : (A → B → C) → Maybe A → Maybe B → Maybe C
+  zipWith f (just a) (just b) = just (f a b)
+  zipWith _ _ _ = nothing
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+  align : Maybe A → Maybe B → Maybe (These A B)
+  align = alignWith id
+
+  zip : Maybe A → Maybe B → Maybe (A × B)
+  zip = zipWith _,_
