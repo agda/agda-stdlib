@@ -185,9 +185,6 @@ Other major changes
 * Added a very barebones new module `Data.These` for the classic either-or-both
   Haskell datatype.
 
-* Added new module `Algebra.Properties.CommutativeMonoid`. This contains proofs
-  of lots of properties of summation, including 'big summation'.
-
 * Added new module `Data.List.Relation.Sublist.Inductive` which gives
   an inductive definition of the sublist relation (i.e. order-preserving embeddings).
 
