@@ -95,6 +95,21 @@ Non-backwards compatible changes
 
 ### Overhaul of `Data.X.Categorical`
 
+* Created `Codata.Delay.Categorical`:
+  ```agda
+  functor                : RawFunctor (λ A → Delay A i)
+  Sequential.applicative : RawApplicative (λ A → Delay A i)
+  Sequential.monad       : RawMonad (λ A → Delay A i)
+  Sequential.monadZero   : RawMonadZero (λ A → Delay A i)
+  Zippy.applicative      : RawApplicative (λ A → Delay A i)
+  ```
+
+* Created `Codata.Stream.Categorical`:
+  ```agda
+  functor     : RawFunctor (λ A → Stream A i)
+  applicative : RawApplicative (λ A → Stream A i)
+  ```
+
 * In `Data.List.Categorical` renamed and added functions:
   ```agda
   functor     : RawFunctor List
@@ -188,6 +203,9 @@ Other major changes
 * Added new modules `Data.List.Relation.Permutation.Inductive(.Properties)`,
   which give an inductive definition of permutations over lists.
 
+* Added a very barebones new module `Data.These` for the classic either-or-both
+  Haskell datatype.
+
 * Added new module `Data.List.Relation.Sublist.Inductive` which gives
   an inductive definition of the sublist relation (i.e. order-preserving embeddings).
 
@@ -254,6 +272,13 @@ anticipated any time soon, they may eventually be removed in some future release
 
 Other minor additions
 ---------------------
+
+* Added new functions to `Codata.Delay`:
+  ```agda
+  alignWith : (These A B → C) → Delay A i → Delay B i → Delay C i
+  zip       : Delay A i → Delay B i → Delay (A × B) i
+  align     : Delay A i → Delay B i → Delay (These A B) i
+  ```
 
 * Added new proof to `Data.Fin.Permutation`:
   ```agda
