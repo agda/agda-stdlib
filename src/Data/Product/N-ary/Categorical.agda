@@ -15,6 +15,9 @@ open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
 
+------------------------------------------------------------------------
+-- Functor and applicative
+
 functor : ∀ {ℓ} n → RawFunctor {ℓ} (_^ n)
 functor n = record { _<$>_ = λ f → map f n }
 
@@ -46,6 +49,11 @@ module _ {m M} (Mon : RawMonad {m} M) where
 
   private App = RawMonad.rawIApplicative Mon
 
+  sequenceM : ∀ {n A} → M A ^ n → M (A ^ n)
   sequenceM = sequenceA App
+
+  mapM : ∀ {n a} {A : Set a} {B} → (A → M B) → A ^ n → M (B ^ n)
   mapM = mapA App
+
+  forM : ∀ {n a} {A : Set a} {B} → A ^ n → (A → M B) → M (B ^ n)
   forM = forA App
