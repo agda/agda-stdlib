@@ -7,8 +7,6 @@
 module Data.Bool.Properties where
 
 open import Algebra
-import Algebra.RingSolver.Simple as Solver
-import Algebra.RingSolver.AlmostCommutativeRing as ACR
 open import Data.Bool
 open import Data.Empty
 open import Data.Product
@@ -381,15 +379,6 @@ push-function-into-if :
   f (if x then y else z) ≡ (if x then f y else f z)
 push-function-into-if _ true  = refl
 push-function-into-if _ false = refl
-
-------------------------------------------------------------------------
--- Modules for reasoning about boolean operations
-
-module RingSolver =
-  Solver (ACR.fromCommutativeSemiring ∨-∧-commutativeSemiring) _≟_
-
-module XorRingSolver =
-  Solver (ACR.fromCommutativeRing xor-∧-commutativeRing) _≟_
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

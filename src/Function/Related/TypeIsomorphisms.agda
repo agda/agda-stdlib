@@ -10,7 +10,7 @@ module Function.Related.TypeIsomorphisms where
 open import Algebra
 import Algebra.FunctionProperties as FP
 import Algebra.Operations.Semiring as SemiringOperations
-import Algebra.RingSolver.Natural-coefficients
+import Algebra.Solver.Ring.NaturalCoefficients
 open import Algebra.Structures
 open import Data.Empty
 open import Data.Nat as Nat using (zero; suc)
@@ -273,7 +273,7 @@ private
                                 (g∘g X⊎↔X⊎) (g∘g (reverse X⊎↔X⊎))
 
 module Solver s {ℓ} =
-  Algebra.RingSolver.Natural-coefficients
+  Algebra.Solver.Ring.NaturalCoefficients
     (×⊎-CommutativeSemiring s ℓ)
     (coefficient-dec s ℓ)
 

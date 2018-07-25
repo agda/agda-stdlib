@@ -9,8 +9,6 @@ module Data.Integer.Properties where
 open import Algebra
 import Algebra.Morphism as Morphism
 import Algebra.Properties.AbelianGroup
-import Algebra.RingSolver.Simple as Solver
-import Algebra.RingSolver.AlmostCommutativeRing as ACR
 open import Data.Integer renaming (suc to sucℤ)
 open import Data.Nat
   using (ℕ; suc; zero; _∸_; s≤s; z≤n; ≤-pred)
@@ -18,6 +16,7 @@ open import Data.Nat
   renaming (_+_ to _ℕ+_; _*_ to _ℕ*_;
     _<_ to _ℕ<_; _≥_ to _ℕ≥_; _≰_ to _ℕ≰_; _≤?_ to _ℕ≤?_)
 import Data.Nat.Properties as ℕₚ
+open import Data.Nat.Solver
 open import Data.Product using (proj₁; proj₂; _,_)
 open import Data.Sum using (inj₁; inj₂)
 open import Data.Sign as Sign using () renaming (_*_ to _𝕊*_)
@@ -33,8 +32,8 @@ open import Algebra.FunctionProperties (_≡_ {A = ℤ})
 open import Algebra.FunctionProperties.Consequences (setoid ℤ)
 open import Algebra.Structures (_≡_ {A = ℤ})
 open Morphism.Definitions ℤ ℕ _≡_
-open ℕₚ.SemiringSolver
 open ≡-Reasoning
+open SemiringSolver
 
 ------------------------------------------------------------------------
 -- Equality
@@ -420,7 +419,7 @@ private
                     := c :+ b :* (con 1 :+ c) :+
                        a :* (con 1 :+ (c :+ b :* (con 1 :+ c))))
             refl
-    where open ℕₚ.SemiringSolver
+    where open SemiringSolver
 
 *-assoc : Associative _*_
 *-assoc (+ zero) _ _ = refl
@@ -859,10 +858,6 @@ n≮n { -[1+ suc n ]} (-≤- n<n) =  contradiction n<n ℕₚ.1+n≰n
 
 ------------------------------------------------------------------------
 -- Modules for reasoning about integer number relations
-
--- A module for automatically solving propositional equivalences
-module RingSolver =
-  Solver (ACR.fromCommutativeRing +-*-commutativeRing) _≟_
 
 -- A module for reasoning about the _≤_ relation
 module ≤-Reasoning = POR ≤-poset hiding (_≈⟨_⟩_)

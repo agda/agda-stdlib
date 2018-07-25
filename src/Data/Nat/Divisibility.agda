@@ -10,6 +10,7 @@ open import Algebra
 open import Data.Nat as Nat
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
+open import Data.Nat.Solver
 open import Data.Fin using (Fin; zero; suc; toℕ)
 import Data.Fin.Properties as FP
 open import Data.Product

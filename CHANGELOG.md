@@ -93,6 +93,24 @@ Non-backwards compatible changes
   and exports all the old names, but may be removed in some
   future version.
 
+### Rearrangement of algebraic Solvers
+
+* Standardised and moved the generic solver modules as follows:
+  ```agda
+  Algebra.RingSolver                        ↦ Algebra.Solver.Ring
+  Algebra.Monoid-solver                     ↦ Algebra.Solver.Monoid
+  Algebra.CommutativeMonoidSolver           ↦ Algebra.Solver.CommutativeMonoidx
+  Algebra.IdempotentCommutativeMonoidSolver ↦ Algebra.Solver.IdempotentCommutativeMonoid
+  ```
+
+* Renamed `Algebra.Solver.Ring.Natural-coefficients` to `Algebra.Solver.Ring.NaturalCoefficients`.
+
+* In order to avoid dependency cycles, special instances of solvers for the following
+  data types have been moved from `Data.X.Properties` to new modules `Data.X.Solver`.
+  ```agda
+  Bool, Nat, Integer, List
+  ```
+
 ### Overhaul of `Data.X.Categorical`
 
 * Created `Codata.Delay.Categorical`:

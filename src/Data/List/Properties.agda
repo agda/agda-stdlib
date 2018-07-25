@@ -12,7 +12,6 @@ module Data.List.Properties where
 open import Algebra
 open import Algebra.Structures
 open import Algebra.FunctionProperties
-import Algebra.Monoid-solver
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
 open import Data.List as List
 open import Data.List.All using (All; []; _∷_)
@@ -637,13 +636,6 @@ module _ {a} {A : Set a} where
 
   ∷ʳ-injectiveʳ : ∀ {x y : A} (xs ys : List A) → xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
   ∷ʳ-injectiveʳ xs ys eq = proj₂ (∷ʳ-injective xs ys eq)
-
-------------------------------------------------------------------------
--- Modules for reasoning about propositional equality of lists
-
--- A module for automatically solving propositional equivalences
-module List-solver {a} {A : Set a} =
-  Algebra.Monoid-solver (++-monoid A) renaming (id to nil)
 
 ------------------------------------------------------------------------
 -- DEPRECATED

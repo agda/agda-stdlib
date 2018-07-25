@@ -7,9 +7,9 @@
 -- Note that these proofs use all "almost commutative ring" properties.
 
 open import Algebra
-open import Algebra.RingSolver.AlmostCommutativeRing
+open import Algebra.Solver.Ring.AlmostCommutativeRing
 
-module Algebra.RingSolver.Lemmas
+module Algebra.Solver.Ring.Lemmas
   {r₁ r₂ r₃}
   (coeff : RawRing r₁)
   (r : AlmostCommutativeRing r₂ r₃)

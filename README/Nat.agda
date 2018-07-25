@@ -42,11 +42,12 @@ ex₄ m n = begin
   m * n        ≡⟨ Nat.*-comm m n ⟩
   n * m        ∎
 
--- The module SemiringSolver in Data.Nat.Properties contains a solver
+-- The module SemiringSolver in Data.Nat.Solver contains a solver
 -- for natural number equalities involving variables, constants, _+_
 -- and _*_.
 
-open Nat.SemiringSolver
+open import Data.Nat.Solver
+open SemiringSolver
 
 ex₅ : ∀ m n → m * (n + 0) ≡ n * m
 ex₅ = solve 2 (λ m n → m :* (n :+ con 0)  :=  n :* m) refl

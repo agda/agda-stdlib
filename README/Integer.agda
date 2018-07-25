@@ -57,11 +57,13 @@ ex₆ i j = begin
   i * j          ≡⟨ ℤₚ.*-comm i j ⟩
   j * i          ∎
 
--- The module RingSolver in Data.Integer.Properties contains a solver
+-- The module RingSolver in Data.Integer.Solver contains a solver
 -- for integer equalities involving variables, constants, _+_, _*_, -_
 -- and _-_.
+
+open import Data.Integer.Solver
+open RingSolver
 
 ex₇ : ∀ i j → i * - j - j * i ≡ - + 2 * i * j
 ex₇ = solve 2 (λ i j → i :* :- j :- j :* i  :=  :- con (+ 2) :* i :* j)
               P.refl
-  where open ℤₚ.RingSolver

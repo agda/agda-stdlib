@@ -8,7 +8,7 @@ module Data.Digit where
 
 open import Data.Nat using (ℕ; zero; suc; pred; _+_; _*_; _≤?_; _≤′_)
 open import Data.Nat.Properties
-open SemiringSolver
+open import Data.Nat.Solver
 open import Data.Fin as Fin using (Fin; zero; suc; toℕ)
 open import Data.Char using (Char)
 open import Data.List.Base
@@ -21,6 +21,8 @@ open import Relation.Nullary.Decidable
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 open import Function
+
+open SemiringSolver
 
 ------------------------------------------------------------------------
 -- Digits

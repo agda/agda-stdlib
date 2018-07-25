@@ -13,7 +13,7 @@ open import Data.List.Base as List using (List)
 open import Data.Vec as Vec using (Vec)
 import Data.BoundedVec.Inefficient as Ineff
 open import Relation.Binary.PropositionalEquality
-open import Data.Nat.Properties
+open import Data.Nat.Solver
 open SemiringSolver
 
 ------------------------------------------------------------------------

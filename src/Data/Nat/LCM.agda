@@ -6,9 +6,10 @@
 
 module Data.Nat.LCM where
 
+open import Algebra
 open import Data.Nat
-import Data.Nat.Properties as NatProp
-open NatProp.SemiringSolver
+open import Data.Nat.Properties
+open import Data.Nat.Solver
 open import Data.Nat.GCD
 open import Data.Nat.Divisibility as Div
 open import Data.Nat.Coprimality as Coprime
@@ -16,8 +17,10 @@ open import Data.Product
 open import Function
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl)
-open import Algebra
 open import Relation.Binary
+
+open SemiringSolver
+
 private
   module P  = Poset Div.poset
 
@@ -90,7 +93,7 @@ lcm .(q₁ * d) .(q₂ * d) | (d , gcd-* q₁ q₂ q₁-q₂-coprime) =
 
     q₂∣q₃ : q₂ ∣ q₃
     q₂∣q₃ = coprime-divisor (Coprime.sym q₁-q₂-coprime)
-              (divides q₄ $ NatProp.*-cancelʳ-≡ _ _ (begin
+              (divides q₄ $ *-cancelʳ-≡ _ _ (begin
                  q₁ * q₃ * d′    ≡⟨ lem₁ q₁ q₃ d′ ⟩
                  q₃ * (q₁ * d′)  ≡⟨ PropEq.sym eq₃ ⟩
                  m               ≡⟨ eq₄ ⟩
