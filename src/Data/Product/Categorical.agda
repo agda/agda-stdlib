@@ -68,8 +68,13 @@ module Productₗ {a e} (A : RawMonoid a e) (b : Level) where
 
     private App = RawMonad.rawIApplicative Mon
 
+    sequenceM : ∀ {A} → Productₗ (M A) → M (Productₗ A)
     sequenceM = sequenceA App
+
+    mapM : ∀ {A B} → (A → M B) → Productₗ A → M (Productₗ B)
     mapM = mapA App
+
+    forM : ∀ {A B} → Productₗ A → (A → M B) → M (Productₗ B)
     forM = forA App
 
 ------------------------------------------------------------------------
@@ -120,8 +125,13 @@ module Productᵣ (a : Level) {b e} (B : RawMonoid b e) where
 
     private App = RawMonad.rawIApplicative Mon
 
+    sequenceM : ∀ {A} → Productᵣ (M A) → M (Productᵣ A)
     sequenceM = sequenceA App
+
+    mapM : ∀ {A B} → (A → M B) → Productᵣ A → M (Productᵣ B)
     mapM = mapA App
+
+    forM : ∀ {A B} → Productᵣ A → (A → M B) → M (Productᵣ B)
     forM = forA App
 
 ------------------------------------------------------------------------
