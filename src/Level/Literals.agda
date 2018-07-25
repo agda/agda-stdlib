@@ -4,7 +4,7 @@
 -- Conversion from naturals to universe levels
 ------------------------------------------------------------------------
 
-module Level.FromNat where
+module Level.Literals where
 
 open import Agda.Builtin.Nat
 open import Level using (Level)
