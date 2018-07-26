@@ -110,6 +110,7 @@ Non-backwards compatible changes
 * Created `Category.Comonad.Identity`:
   ```agda
   comonad : RawComonad Identity
+  ```
 
 * Created `Codata.Delay.Categorical`:
   ```agda
