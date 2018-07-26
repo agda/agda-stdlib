@@ -152,15 +152,15 @@ Non-backwards compatible changes
   ```agda
   functor     : RawFunctor (_^ n)
   applicative : RawApplicative (_^ n)
-  sequenceA : RawApplicative F → Vec (F A) n → F (A ^ n)
-  mapA      : RawApplicative F → (A → F B) → A ^ n → F (B ^ n)
-  forA      : RawApplicative F → A ^ n → (A → F B) → F (B ^ n)
-  sequenceM : RawMonad M → Vec (M A) n → M (A ^ n)
-  mapM      : RawMonad M → (A → M B) → A ^ n → M (B ^ n)
-  forM      : RawMonad M → A ^ n → (A → M B) → M (B ^ n)
+  sequenceA   : RawApplicative F → Vec (F A) n → F (A ^ n)
+  mapA        : RawApplicative F → (A → F B) → A ^ n → F (B ^ n)
+  forA        : RawApplicative F → A ^ n → (A → F B) → F (B ^ n)
+  sequenceM   : RawMonad M → Vec (M A) n → M (A ^ n)
+  mapM        : RawMonad M → (A → M B) → A ^ n → M (B ^ n)
+  forM        : RawMonad M → A ^ n → (A → M B) → M (B ^ n)
 
 * Added new functions to `Data.Vec.Categorical`:
-  ```
+  ```agda
   sequenceA : RawApplicative F → Vec (F A) n → F (Vec A n)
   mapA      : RawApplicative F → (A → F B) → Vec A n → F (Vec B n)
   forA      : RawApplicative F → Vec A n → (A → F B) → F (Vec B n)
