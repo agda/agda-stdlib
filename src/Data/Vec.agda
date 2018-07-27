@@ -10,6 +10,7 @@ open import Data.Nat
 open import Data.Fin using (Fin; zero; suc)
 open import Data.List.Base as List using (List)
 open import Data.Product as Prod using (∃; ∃₂; _×_; _,_)
+open import Data.These as These hiding (map)
 open import Function
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 open import Relation.Nullary using (yes; no)
@@ -84,19 +85,33 @@ concat : ∀ {a m n} {A : Set a} →
 concat []         = []
 concat (xs ∷ xss) = xs ++ concat xss
 
-zipWith : ∀ {a b c n} {A : Set a} {B : Set b} {C : Set c} →
-          (A → B → C) → Vec A n → Vec B n → Vec C n
-zipWith f []       []       = []
-zipWith f (x ∷ xs) (y ∷ ys) = f x y ∷ zipWith f xs ys
+-- Align and Zip.
 
-zip : ∀ {a b n} {A : Set a} {B : Set b} →
-      Vec A n → Vec B n → Vec (A × B) n
-zip = zipWith _,_
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
-unzip : ∀ {a b n} {A : Set a} {B : Set b} →
-        Vec (A × B) n → Vec A n × Vec B n
-unzip []              = [] , []
-unzip ((x , y) ∷ xys) = Prod.map (x ∷_) (y ∷_) (unzip xys)
+  alignWith : ∀ {m n} → (These A B → C) → Vec A m → Vec B n → Vec C (m ⊔ n)
+  alignWith f []         bs       = map (f ∘′ that) bs
+  alignWith f as@(_ ∷ _) []       = map (f ∘′ this) as
+  alignWith f (a ∷ as)   (b ∷ bs) = f (these a b) ∷ alignWith f as bs
+
+  zipWith : ∀ {n} → (A → B → C) → Vec A n → Vec B n → Vec C n
+  zipWith f []       []       = []
+  zipWith f (x ∷ xs) (y ∷ ys) = f x y ∷ zipWith f xs ys
+
+  unzipWith : ∀ {n} → (A → B × C) → Vec A n → Vec B n × Vec C n
+  unzipWith f []       = [] , []
+  unzipWith f (a ∷ as) = Prod.zip _∷_ _∷_ (f a) (unzipWith f as)
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+  align : ∀ {m n} → Vec A m → Vec B n → Vec (These A B) (m ⊔ n)
+  align = alignWith id
+
+  zip : ∀ {n} → Vec A n → Vec B n → Vec (A × B) n
+  zip = zipWith _,_
+
+  unzip : ∀ {n} → Vec (A × B) n → Vec A n × Vec B n
+  unzip = unzipWith id
 
 -- Interleaving.
 

@@ -401,6 +401,13 @@ Other minor additions
   remove-permute : remove (π ⟨$⟩ˡ i) (permute π t) ≗ permute (Perm.remove (π ⟨$⟩ˡ i) π) (remove i t)
   ```
 
+* Added new functions to `Data.Vec`:
+  ```agda
+  alignWith : (These A B → C) → Vec A m → Vec B n → Vec C (m ⊔ n)
+  align     : Vec A m → Vec B n → Vec (These A B) (m ⊔ n)
+  unzipWith : (A → B × C) → Vec A n → Vec B n × Vec C n
+  ```
+
 * Added new proofs to `Data.Vec.Properties.All`:
   ```agda
   toList⁺   : All P (toList xs) → All P xs
