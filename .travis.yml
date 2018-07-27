@@ -3,6 +3,7 @@ branches:
   only:
   - master
   - travis
+  - align
 
 sudo: false
 
