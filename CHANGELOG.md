@@ -335,7 +335,7 @@ Other minor additions
   unalignWith-cong      : f ≗ g → unalignWith f ≗ unalignWith g
   unalignWith-map       : unalignWith f (map g ds) ≡ unalignWith (f ∘′ g) ds
   map-unalignWith       : Prod.map (map g) (map h) ∘′ unalignWith f ≗ unalignWith (These.map g h ∘′ f)
-  unalignWith-alignWith : f ∘′ g ≗ id → unalignWith f (alignWith g as bs) ≡ (as , bs) 
+  unalignWith-alignWith : f ∘′ g ≗ id → unalignWith f (alignWith g as bs) ≡ (as , bs)
   ```
 
 * Added new function to `Data.Maybe.Base`:
