@@ -322,6 +322,12 @@ Other minor additions
 * Added new function to `Data.List.NonEmpty`:
   ```agda
   concatMap : (A → List⁺ B) → List⁺ A → List⁺ B
+  alignWith : (These A B → C) → List⁺ A → List⁺ B → List⁺ C
+  zipWith   : (A → B → C) → List⁺ A → List⁺ B → List⁺ C
+  unzipWith : (A → B × C) → List⁺ A → List⁺ B × List⁺ C
+  align     : List⁺ A → List⁺ B → List⁺ (These A B)
+  zip       : List⁺ A → List⁺ B → List⁺ (A × B)
+  unzip     : List⁺ (A × B) → List⁺ A × List⁺ B
   ```
 
 * Added new functions to `Data.List.Properties`:
