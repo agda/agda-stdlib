@@ -31,3 +31,9 @@ monad = record
   { return = id
   ; _>>=_  = _|>′_
   }
+
+comonad : RawComonad Identity
+comonad = record
+  { extract = id
+  ; extend  = id
+  }
