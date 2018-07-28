@@ -17,10 +17,9 @@ open import Relation.Binary.Closure.ReflexiveTransitive
 EdgePred : {ℓ r : Level} (p : Level) {I : Set ℓ} → Rel I r → Set (suc p ⊔ ℓ ⊔ r)
 EdgePred p T = ∀ {i j} → T i j → Set p
 
-module _  where
 
 data NonEmptyEdgePred {ℓ r p : Level} {I : Set ℓ} (T : Rel I r)
-    (P : EdgePred p T) : Set (ℓ ⊔ r ⊔ p) where
+                      (P : EdgePred p T) : Set (ℓ ⊔ r ⊔ p) where
   nonEmptyEdgePred : ∀ {i j} {x : T i j}
                      (p : P x) → NonEmptyEdgePred T P
 
