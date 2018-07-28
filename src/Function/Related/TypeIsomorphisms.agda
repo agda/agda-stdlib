@@ -101,28 +101,27 @@ open import Relation.Nullary.Decidable as Dec using (True)
 ⊎-identity : ∀ ℓ → FP.Identity _↔_ (Lift ℓ ⊥) _⊎_
 ⊎-identity ℓ = ⊎-identityˡ ℓ , ⊎-identityʳ ℓ
 
-
 ------------------------------------------------------------------------
 -- Properties of × and ⊎
 
 -- × distributes over ⊎
 
-×-distribˡ : ∀ ℓ → FP._DistributesOverˡ_ {ℓ = ℓ} _↔_ _×_ _⊎_
-×-distribˡ ℓ _ _ _ = inverse
+×-distribˡ-⊎ : ∀ ℓ → FP._DistributesOverˡ_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distribˡ-⊎ ℓ _ _ _ = inverse
   (uncurry λ x → [ inj₁ ∘′ (x ,_) , inj₂ ∘′ (x ,_) ]′)
   [ Prod.map₂ inj₁ , Prod.map₂ inj₂ ]′
   (uncurry λ _ → [ (λ _ → P.refl) , (λ _ → P.refl) ])
   [ (λ _ → P.refl) , (λ _ → P.refl) ]
 
-×-distribʳ : ∀ ℓ → FP._DistributesOverʳ_ {ℓ = ℓ} _↔_ _×_ _⊎_
-×-distribʳ ℓ _ _ _ = inverse
+×-distribʳ-⊎ : ∀ ℓ → FP._DistributesOverʳ_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distribʳ-⊎ ℓ _ _ _ = inverse
   (uncurry [ curry inj₁ , curry inj₂ ]′)
   [ Prod.map₁ inj₁ , Prod.map₁ inj₂ ]′
   (uncurry [ (λ _ _ → P.refl) , (λ _ _ → P.refl) ])
   [ (λ _ → P.refl) , (λ _ → P.refl) ]
 
-×-distrib : ∀ ℓ → FP._DistributesOver_ {ℓ = ℓ} _↔_ _×_ _⊎_
-×-distrib ℓ = ×-distribˡ ℓ , ×-distribʳ ℓ
+×-distrib-⊎ : ∀ ℓ → FP._DistributesOver_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distrib-⊎ ℓ = ×-distribˡ-⊎ ℓ , ×-distribʳ-⊎ ℓ
 
 ------------------------------------------------------------------------
 -- ⊥, ⊤, _×_ and _⊎_ form a commutative semiring
@@ -136,23 +135,32 @@ open import Relation.Nullary.Decidable as Dec using (True)
   ; ∙-cong        = _×-cong_
   }
 
-×-⊤-isMonoid : ∀ k ℓ → IsMonoid (Related ⌊ k ⌋) _×_ (Lift ℓ ⊤)
-×-⊤-isMonoid k ℓ = record
+×-semigroup : Symmetric-kind → (ℓ : Level) → Semigroup _ _
+×-semigroup k ℓ = record
+  { isSemigroup = ×-isSemigroup k ℓ
+  }
+
+×-isMonoid : ∀ k ℓ → IsMonoid (Related ⌊ k ⌋) _×_ (Lift ℓ ⊤)
+×-isMonoid k ℓ = record
   { isSemigroup = ×-isSemigroup k ℓ
   ; identity    = (↔⇒ ∘ ×-identityˡ ℓ) , (↔⇒ ∘ ×-identityʳ ℓ)
   }
 
-×-⊤-isCommutativeMonoid : ∀ k ℓ → IsCommutativeMonoid (Related ⌊ k ⌋) _×_ (Lift ℓ ⊤)
-×-⊤-isCommutativeMonoid k ℓ = record
+×-monoid : Symmetric-kind → (ℓ : Level) → Monoid _ _
+×-monoid k ℓ = record
+  { isMonoid = ×-isMonoid k ℓ
+  }
+
+×-isCommutativeMonoid : ∀ k ℓ → IsCommutativeMonoid (Related ⌊ k ⌋) _×_ (Lift ℓ ⊤)
+×-isCommutativeMonoid k ℓ = record
   { isSemigroup = ×-isSemigroup k ℓ
   ; identityˡ   = ↔⇒ ∘ ×-identityˡ ℓ
   ; comm        = λ _ _ → ↔⇒ (×-comm _ _)
   }
 
-×-⊤-CommutativeMonoid : Symmetric-kind → (ℓ : Level) →
-                        CommutativeMonoid _ _
-×-⊤-CommutativeMonoid k ℓ = record
-  { isCommutativeMonoid = ×-⊤-isCommutativeMonoid k ℓ
+×-commutativeMonoid : Symmetric-kind → (ℓ : Level) → CommutativeMonoid _ _
+×-commutativeMonoid k ℓ = record
+  { isCommutativeMonoid = ×-isCommutativeMonoid k ℓ
   }
 
 -- ⊥, _⊎_ form a commutative monoid
@@ -164,37 +172,47 @@ open import Relation.Nullary.Decidable as Dec using (True)
   ; ∙-cong        = _⊎-cong_
   }
 
-⊎-⊥-isMonoid : ∀ k ℓ → IsMonoid (Related ⌊ k ⌋) _⊎_ (Lift ℓ ⊥)
-⊎-⊥-isMonoid k ℓ = record
+⊎-semigroup : Symmetric-kind → (ℓ : Level) → Semigroup _ _
+⊎-semigroup k ℓ = record
+  { isSemigroup = ⊎-isSemigroup k ℓ
+  }
+
+⊎-isMonoid : ∀ k ℓ → IsMonoid (Related ⌊ k ⌋) _⊎_ (Lift ℓ ⊥)
+⊎-isMonoid k ℓ = record
   { isSemigroup = ⊎-isSemigroup k ℓ
   ; identity    = (↔⇒ ∘ ⊎-identityˡ ℓ) , (↔⇒ ∘ ⊎-identityʳ ℓ)
   }
 
-⊎-⊥-isCommutativeMonoid : ∀ k ℓ → IsCommutativeMonoid (Related ⌊ k ⌋) _⊎_ (Lift ℓ ⊥)
-⊎-⊥-isCommutativeMonoid k ℓ = record
+⊎-monoid : Symmetric-kind → (ℓ : Level) → Monoid _ _
+⊎-monoid k ℓ = record
+  { isMonoid = ⊎-isMonoid k ℓ
+  }
+
+⊎-isCommutativeMonoid : ∀ k ℓ → IsCommutativeMonoid (Related ⌊ k ⌋) _⊎_ (Lift ℓ ⊥)
+⊎-isCommutativeMonoid k ℓ = record
   { isSemigroup = ⊎-isSemigroup k ℓ
   ; identityˡ   = ↔⇒ ∘ ⊎-identityˡ ℓ
   ; comm        = λ _ _ → ↔⇒ (⊎-comm _ _)
   }
 
-⊎-⊥-CommutativeMonoid : Symmetric-kind → (ℓ : Level) →
-                        CommutativeMonoid _ _
-⊎-⊥-CommutativeMonoid k ℓ = record
-  { isCommutativeMonoid = ⊎-⊥-isCommutativeMonoid k ℓ
+⊎-commutativeMonoid : Symmetric-kind → (ℓ : Level) →
+                      CommutativeMonoid _ _
+⊎-commutativeMonoid k ℓ = record
+  { isCommutativeMonoid = ⊎-isCommutativeMonoid k ℓ
   }
 
 ×-⊎-isCommutativeSemiring : ∀ k ℓ →
   IsCommutativeSemiring (Related ⌊ k ⌋) _⊎_ _×_ (Lift ℓ ⊥) (Lift ℓ ⊤)
 ×-⊎-isCommutativeSemiring k ℓ = record
-  { +-isCommutativeMonoid = ⊎-⊥-isCommutativeMonoid k ℓ
-  ; *-isCommutativeMonoid = ×-⊤-isCommutativeMonoid k ℓ
-  ; distribʳ              = λ A B C → ↔⇒ (×-distribʳ ℓ A B C)
+  { +-isCommutativeMonoid = ⊎-isCommutativeMonoid k ℓ
+  ; *-isCommutativeMonoid = ×-isCommutativeMonoid k ℓ
+  ; distribʳ              = λ A B C → ↔⇒ (×-distribʳ-⊎ ℓ A B C)
   ; zeroˡ                 = ↔⇒ ∘ ×-zeroˡ ℓ
   }
 
-×-⊎-CommutativeSemiring : Symmetric-kind → (ℓ : Level) →
+×-⊎-commutativeSemiring : Symmetric-kind → (ℓ : Level) →
                           CommutativeSemiring (Level.suc ℓ) ℓ
-×-⊎-CommutativeSemiring k ℓ = record
+×-⊎-commutativeSemiring k ℓ = record
   { isCommutativeSemiring = ×-⊎-isCommutativeSemiring k ℓ
   }
 
@@ -204,7 +222,7 @@ private
 
   coefficient-dec :
     ∀ s ℓ →
-    let open CommutativeSemiring (×-⊎-CommutativeSemiring s ℓ)
+    let open CommutativeSemiring (×-⊎-commutativeSemiring s ℓ)
         open SemiringOperations semiring renaming (_×_ to Times)
     in
 
@@ -217,7 +235,7 @@ private
   ... | suc _ | suc _ = yes (Eq.equivalence (λ _ → inj₁ _) (λ _ → inj₁ _))
   coefficient-dec bijection ℓ m n = Dec.map′ to (from m n) (Nat._≟_ m n)
     where
-    open CommutativeSemiring (×-⊎-CommutativeSemiring bijection ℓ)
+    open CommutativeSemiring (×-⊎-commutativeSemiring bijection ℓ)
       using (1#; semiring)
     open SemiringOperations semiring renaming (_×_ to Times)
 
@@ -292,7 +310,7 @@ private
 
 module Solver s {ℓ} =
   Algebra.RingSolver.Natural-coefficients
-    (×-⊎-CommutativeSemiring s ℓ)
+    (×-⊎-commutativeSemiring s ℓ)
     (coefficient-dec s ℓ)
 
 private
@@ -481,6 +499,6 @@ True↔ (no ¬p) _   = inverse (λ()) ¬p (λ()) (⊥-elim ∘ ¬p)
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
-×-CommutativeMonoid = ×-⊤-CommutativeMonoid
-⊎-CommutativeMonoid = ⊎-⊥-CommutativeMonoid
-×⊎-CommutativeSemiring = ×-⊎-CommutativeSemiring
+×-CommutativeMonoid = ×-commutativeMonoid
+⊎-CommutativeMonoid = ⊎-commutativeMonoid
+×⊎-CommutativeSemiring = ×-⊎-commutativeSemiring

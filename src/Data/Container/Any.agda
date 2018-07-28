@@ -29,7 +29,7 @@ open import Relation.Binary.PropositionalEquality as P
 
 open Related.EquationalReasoning
 private
-  module ×⊎ {k ℓ} = CommutativeSemiring (×-⊎-CommutativeSemiring k ℓ)
+  module ×⊎ {k ℓ} = CommutativeSemiring (×-⊎-commutativeSemiring k ℓ)
 
 module _ {s p} (C : Container s p) {x} {X : Set x} {ℓ} {P : Pred X ℓ} where
 
