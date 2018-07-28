@@ -8,12 +8,12 @@
 
 module Data.List.Solver where
 
-open import Algebra.Solver.Monoid
+import Algebra.Solver.Monoid as Solver
 open import Data.List.Properties using (++-monoid)
 
 ------------------------------------------------------------------------
 -- A module for automatically solving propositional equivalences
 -- containing _++_
 
-module List-solver {a} {A : Set a} =
-  Algebra.Solver.Monoid (++-monoid A) renaming (id to nil)
+module ++-Solver {a} {A : Set a} =
+  Solver (++-monoid A) renaming (id to nil)

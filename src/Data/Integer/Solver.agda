@@ -4,7 +4,7 @@
 -- Automatic solvers for equations over integers
 ------------------------------------------------------------------------
 
--- See README.Nat for examples of how to use similar solvers
+-- See README.Integer for examples of how to use this solver
 
 module Data.Integer.Solver where
 
@@ -18,5 +18,5 @@ open import Data.Integer.Properties using (+-*-commutativeRing)
 -- containing _+_ and _*_
 
 -- A module for automatically solving propositional equivalences
-module RingSolver =
+module +-*-Solver =
   Solver (ACR.fromCommutativeRing +-*-commutativeRing) _≟_

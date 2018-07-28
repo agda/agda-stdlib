@@ -23,7 +23,7 @@ import Relation.Binary.PartialOrderReasoning as PartialOrderReasoning
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)
 
-open SemiringSolver
+open +-*-Solver
 
 ------------------------------------------------------------------------
 -- m ∣ n is inhabited iff m divides n. Some sources, like Hardy and

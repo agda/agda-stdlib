@@ -19,7 +19,7 @@ open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl)
 open import Relation.Binary
 
-open SemiringSolver
+open +-*-Solver
 
 private
   module P  = Poset Div.poset

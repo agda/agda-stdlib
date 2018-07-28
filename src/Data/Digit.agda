@@ -22,7 +22,7 @@ open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 open import Function
 
-open SemiringSolver
+open +-*-Solver
 
 ------------------------------------------------------------------------
 -- Digits

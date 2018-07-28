@@ -46,8 +46,8 @@ ex₄ m n = begin
 -- for natural number equalities involving variables, constants, _+_
 -- and _*_.
 
-open import Data.Nat.Solver
-open SemiringSolver
+open import Data.Nat.Solver using (module +-*-Solver)
+open +-*-Solver
 
 ex₅ : ∀ m n → m * (n + 0) ≡ n * m
 ex₅ = solve 2 (λ m n → m :* (n :+ con 0)  :=  n :* m) refl

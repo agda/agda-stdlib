@@ -12,7 +12,7 @@ open import Data.Nat.Solver
 open import Function
 open import Relation.Binary.PropositionalEquality
 
-open SemiringSolver
+open +-*-Solver
 open ≡-Reasoning
 
 lem₀ = solve 2 (λ n k → n :+ (con 1 :+ k)  :=  con 1 :+ n :+ k) refl

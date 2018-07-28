@@ -17,12 +17,12 @@ open import Data.Bool.Properties
 -- A module for automatically solving propositional equivalences
 -- containing _∨_ and _∧_
 
-module RingSolver =
+module ∨-∧-Solver =
   Solver (ACR.fromCommutativeSemiring ∨-∧-commutativeSemiring) _≟_
 
 ------------------------------------------------------------------------
 -- A module for automatically solving propositional equivalences
 -- containing _xor_ and _∧_
 
-module XorRingSolver =
+module xor-∧-Solver =
   Solver (ACR.fromCommutativeRing xor-∧-commutativeRing) _≟_

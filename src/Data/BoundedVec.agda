@@ -14,7 +14,7 @@ open import Data.Vec as Vec using (Vec)
 import Data.BoundedVec.Inefficient as Ineff
 open import Relation.Binary.PropositionalEquality
 open import Data.Nat.Solver
-open SemiringSolver
+open +-*-Solver
 
 ------------------------------------------------------------------------
 -- The type

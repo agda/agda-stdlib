@@ -103,13 +103,18 @@ Non-backwards compatible changes
   Algebra.IdempotentCommutativeMonoidSolver ↦ Algebra.Solver.IdempotentCommutativeMonoid
   ```
 
-* Renamed `Algebra.Solver.Ring.Natural-coefficients` to `Algebra.Solver.Ring.NaturalCoefficients`.
-
 * In order to avoid dependency cycles, special instances of solvers for the following
   data types have been moved from `Data.X.Properties` to new modules `Data.X.Solver`.
+  The naming conventions for these solver modules have also been standardised.
   ```agda
-  Bool, Nat, Integer, List
+  Data.Bool.Properties.RingSolver     ↦  Data.Bool.Solver.∨-∧-Solver
+  Data.Bool.Properties.XorRingSolver  ↦  Data.Bool.Solver.xor-∧-Solver
+  Data.Integer.Properties.RingSolver  ↦  Data.Integer.Solver.+-*-Solver
+  Data.List.Properties.List-solver    ↦  Data.List.Solver.++-Solver
+  Data.Nat.Properties.SemiringSolver  ↦  Data.Nat.Solver.+-*-Solver
   ```
+
+* Renamed `Algebra.Solver.Ring.Natural-coefficients` to `Algebra.Solver.Ring.NaturalCoefficients`.
 
 ### Overhaul of `Data.X.Categorical`
 

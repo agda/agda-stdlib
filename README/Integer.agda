@@ -61,8 +61,8 @@ ex₆ i j = begin
 -- for integer equalities involving variables, constants, _+_, _*_, -_
 -- and _-_.
 
-open import Data.Integer.Solver
-open RingSolver
+open import Data.Integer.Solver using (module +-*-Solver)
+open +-*-Solver
 
 ex₇ : ∀ i j → i * - j - j * i ≡ - + 2 * i * j
 ex₇ = solve 2 (λ i j → i :* :- j :- j :* i  :=  :- con (+ 2) :* i :* j)

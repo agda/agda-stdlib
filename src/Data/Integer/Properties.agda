@@ -33,7 +33,7 @@ open import Algebra.FunctionProperties.Consequences (setoid ℤ)
 open import Algebra.Structures (_≡_ {A = ℤ})
 open Morphism.Definitions ℤ ℕ _≡_
 open ≡-Reasoning
-open SemiringSolver
+open +-*-Solver
 
 ------------------------------------------------------------------------
 -- Equality
@@ -419,7 +419,6 @@ private
                     := c :+ b :* (con 1 :+ c) :+
                        a :* (con 1 :+ (c :+ b :* (con 1 :+ c))))
             refl
-    where open SemiringSolver
 
 *-assoc : Associative _*_
 *-assoc (+ zero) _ _ = refl
