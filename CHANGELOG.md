@@ -194,6 +194,9 @@ Non-backwards compatible changes
 * Changed the precedence level of `_$_` (and variants) to `-1`. This makes
   it interact well with `_∋_` in e.g. `f $ Maybe A ∋ do (...)`.
 
+* Made `Data.Star.Decoration`, `Data.Star.Environment` and `Data.Star.Pointer`
+  more level polymorphic.
+
 Other major changes
 -------------------
 
