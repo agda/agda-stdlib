@@ -9,29 +9,15 @@
 
 <a id="219" class="Comment">-- Levels.</a>
 
-<a id="231" class="Keyword">open</a> <a id="236" class="Keyword">import</a> <a id="243" href="Agda.Builtin.Nat.html" class="Module">Agda.Builtin.Nat</a>
-<a id="260" class="Keyword">open</a> <a id="265" class="Keyword">import</a> <a id="272" href="Agda.Primitive.html" class="Module">Agda.Primitive</a> <a id="287" class="Symbol">as</a> <a id="290" class="Module">Prim</a> <a id="295" class="Keyword">public</a>
-  <a id="304" class="Keyword">using</a>    <a id="313" class="Symbol">(</a><a id="314" href="Agda.Primitive.html#408" class="Postulate">Level</a><a id="319" class="Symbol">;</a> <a id="321" href="Agda.Primitive.html#657" class="Primitive Operator">_⊔_</a><a id="324" class="Symbol">)</a>
-  <a id="328" class="Keyword">renaming</a> <a id="337" class="Symbol">(</a><a id="338" href="Agda.Primitive.html#611" class="Primitive">lzero</a> <a id="344" class="Symbol">to</a> <a id="347" href="Agda.Primitive.html#611" class="Primitive">zero</a><a id="351" class="Symbol">;</a> <a id="353" href="Agda.Primitive.html#627" class="Primitive">lsuc</a> <a id="358" class="Symbol">to</a> <a id="361" href="Agda.Primitive.html#627" class="Primitive">suc</a><a id="364" class="Symbol">)</a>
+<a id="231" class="Keyword">open</a> <a id="236" class="Keyword">import</a> <a id="243" href="Agda.Primitive.html" class="Module">Agda.Primitive</a> <a id="258" class="Symbol">as</a> <a id="261" class="Module">Prim</a> <a id="266" class="Keyword">public</a>
+  <a id="275" class="Keyword">using</a>    <a id="284" class="Symbol">(</a><a id="285" href="Agda.Primitive.html#408" class="Postulate">Level</a><a id="290" class="Symbol">;</a> <a id="292" href="Agda.Primitive.html#657" class="Primitive Operator">_⊔_</a><a id="295" class="Symbol">)</a>
+  <a id="299" class="Keyword">renaming</a> <a id="308" class="Symbol">(</a><a id="309" href="Agda.Primitive.html#611" class="Primitive">lzero</a> <a id="315" class="Symbol">to</a> <a id="318" href="Agda.Primitive.html#611" class="Primitive">zero</a><a id="322" class="Symbol">;</a> <a id="324" href="Agda.Primitive.html#627" class="Primitive">lsuc</a> <a id="329" class="Symbol">to</a> <a id="332" href="Agda.Primitive.html#627" class="Primitive">suc</a><a id="335" class="Symbol">)</a>
 
-<a id="367" class="Comment">-- Increase a Level by a number of sucs.</a>
+<a id="338" class="Comment">-- Lifting.</a>
 
-<a id="_ℕ+_"></a><a id="409" href="Level.html#409" class="Function Operator">_ℕ+_</a> <a id="414" class="Symbol">:</a> <a id="416" href="Agda.Builtin.Nat.html#97" class="Datatype">Nat</a> <a id="420" class="Symbol">→</a> <a id="422" href="Agda.Primitive.html#408" class="Postulate">Level</a> <a id="428" class="Symbol">→</a> <a id="430" href="Agda.Primitive.html#408" class="Postulate">Level</a>
-<a id="436" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor">zero</a>  <a id="442" href="Level.html#409" class="Function Operator">ℕ+</a> <a id="445" href="Level.html#445" class="Bound">ℓ</a> <a id="447" class="Symbol">=</a> <a id="449" href="Level.html#445" class="Bound">ℓ</a>
-<a id="451" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor">suc</a> <a id="455" href="Level.html#455" class="Bound">n</a> <a id="457" href="Level.html#409" class="Function Operator">ℕ+</a> <a id="460" href="Level.html#460" class="Bound">ℓ</a> <a id="462" class="Symbol">=</a> <a id="464" href="Agda.Primitive.html#627" class="Primitive">Prim.lsuc</a> <a id="474" class="Symbol">(</a><a id="475" href="Level.html#455" class="Bound">n</a> <a id="477" href="Level.html#409" class="Function Operator">ℕ+</a> <a id="480" href="Level.html#460" class="Bound">ℓ</a><a id="481" class="Symbol">)</a>
+<a id="351" class="Keyword">record</a> <a id="Lift"></a><a id="358" href="Level.html#358" class="Record">Lift</a> <a id="363" class="Symbol">{</a><a id="364" href="Level.html#364" class="Bound">a</a><a id="365" class="Symbol">}</a> <a id="367" href="Level.html#367" class="Bound">ℓ</a> <a id="369" class="Symbol">(</a><a id="370" href="Level.html#370" class="Bound">A</a> <a id="372" class="Symbol">:</a> <a id="374" class="PrimitiveType">Set</a> <a id="378" href="Level.html#364" class="Bound">a</a><a id="379" class="Symbol">)</a> <a id="381" class="Symbol">:</a> <a id="383" class="PrimitiveType">Set</a> <a id="387" class="Symbol">(</a><a id="388" href="Level.html#364" class="Bound">a</a> <a id="390" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="392" href="Level.html#367" class="Bound">ℓ</a><a id="393" class="Symbol">)</a> <a id="395" class="Keyword">where</a>
+  <a id="403" class="Keyword">constructor</a> <a id="Lift.lift"></a><a id="415" href="Level.html#415" class="InductiveConstructor">lift</a>
+  <a id="422" class="Keyword">field</a> <a id="Lift.lower"></a><a id="428" href="Level.html#428" class="Field">lower</a> <a id="434" class="Symbol">:</a> <a id="436" href="Level.html#370" class="Bound">A</a>
 
-<a id="484" class="Comment">-- Nat-computed Level.</a>
-
-<a id="508" class="Keyword">infix</a> <a id="514" class="Number">10</a> <a id="517" href="Level.html#521" class="Function Operator">#_</a>
-
-<a id="#_"></a><a id="521" href="Level.html#521" class="Function Operator">#_</a> <a id="524" class="Symbol">:</a> <a id="526" href="Agda.Builtin.Nat.html#97" class="Datatype">Nat</a> <a id="530" class="Symbol">→</a> <a id="532" href="Agda.Primitive.html#408" class="Postulate">Level</a>
-<a id="538" href="Level.html#521" class="Function Operator">#_</a> <a id="541" class="Symbol">=</a> <a id="543" href="Level.html#409" class="Function Operator">_ℕ+</a> <a id="547" href="Agda.Primitive.html#611" class="Primitive">Prim.lzero</a>
-
-<a id="559" class="Comment">-- Lifting.</a>
-
-<a id="572" class="Keyword">record</a> <a id="Lift"></a><a id="579" href="Level.html#579" class="Record">Lift</a> <a id="584" class="Symbol">{</a><a id="585" href="Level.html#585" class="Bound">a</a><a id="586" class="Symbol">}</a> <a id="588" href="Level.html#588" class="Bound">ℓ</a> <a id="590" class="Symbol">(</a><a id="591" href="Level.html#591" class="Bound">A</a> <a id="593" class="Symbol">:</a> <a id="595" class="PrimitiveType">Set</a> <a id="599" href="Level.html#585" class="Bound">a</a><a id="600" class="Symbol">)</a> <a id="602" class="Symbol">:</a> <a id="604" class="PrimitiveType">Set</a> <a id="608" class="Symbol">(</a><a id="609" href="Level.html#585" class="Bound">a</a> <a id="611" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="613" href="Level.html#588" class="Bound">ℓ</a><a id="614" class="Symbol">)</a> <a id="616" class="Keyword">where</a>
-  <a id="624" class="Keyword">constructor</a> <a id="Lift.lift"></a><a id="636" href="Level.html#636" class="InductiveConstructor">lift</a>
-  <a id="643" class="Keyword">field</a> <a id="Lift.lower"></a><a id="649" href="Level.html#649" class="Field">lower</a> <a id="655" class="Symbol">:</a> <a id="657" href="Level.html#591" class="Bound">A</a>
-
-<a id="660" class="Keyword">open</a> <a id="665" href="Level.html#579" class="Module">Lift</a> <a id="670" class="Keyword">public</a>
+<a id="439" class="Keyword">open</a> <a id="444" href="Level.html#358" class="Module">Lift</a> <a id="449" class="Keyword">public</a>
 </pre></body></html>

@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Level.Literals</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Conversion from naturals to universe levels</a>
+<a id="153" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="227" class="Keyword">module</a> <a id="234" href="Level.Literals.html" class="Module">Level.Literals</a> <a id="249" class="Keyword">where</a>
+
+<a id="256" class="Keyword">open</a> <a id="261" class="Keyword">import</a> <a id="268" href="Agda.Builtin.Nat.html" class="Module">Agda.Builtin.Nat</a>
+<a id="285" class="Keyword">open</a> <a id="290" class="Keyword">import</a> <a id="297" href="Agda.Builtin.FromNat.html" class="Module">Agda.Builtin.FromNat</a>
+<a id="318" class="Keyword">open</a> <a id="323" class="Keyword">import</a> <a id="330" href="Agda.Builtin.Unit.html" class="Module">Agda.Builtin.Unit</a>
+<a id="348" class="Keyword">open</a> <a id="353" class="Keyword">import</a> <a id="360" href="Level.html" class="Module">Level</a> <a id="366" class="Keyword">using</a> <a id="372" class="Symbol">(</a><a id="373" href="Agda.Primitive.html#408" class="Postulate">Level</a><a id="378" class="Symbol">)</a>
+
+<a id="381" class="Comment">-- Increase a Level by a number of sucs.</a>
+
+<a id="_ℕ+_"></a><a id="423" href="Level.Literals.html#423" class="Function Operator">_ℕ+_</a> <a id="428" class="Symbol">:</a> <a id="430" href="Agda.Builtin.Nat.html#97" class="Datatype">Nat</a> <a id="434" class="Symbol">→</a> <a id="436" href="Agda.Primitive.html#408" class="Postulate">Level</a> <a id="442" class="Symbol">→</a> <a id="444" href="Agda.Primitive.html#408" class="Postulate">Level</a>
+<a id="450" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor">zero</a>  <a id="456" href="Level.Literals.html#423" class="Function Operator">ℕ+</a> <a id="459" href="Level.Literals.html#459" class="Bound">ℓ</a> <a id="461" class="Symbol">=</a> <a id="463" href="Level.Literals.html#459" class="Bound">ℓ</a>
+<a id="465" href="Agda.Builtin.Nat.html#128" class="InductiveConstructor">suc</a> <a id="469" href="Level.Literals.html#469" class="Bound">n</a> <a id="471" href="Level.Literals.html#423" class="Function Operator">ℕ+</a> <a id="474" href="Level.Literals.html#474" class="Bound">ℓ</a> <a id="476" class="Symbol">=</a> <a id="478" href="Agda.Primitive.html#627" class="Primitive">Level.suc</a> <a id="488" class="Symbol">(</a><a id="489" href="Level.Literals.html#469" class="Bound">n</a> <a id="491" href="Level.Literals.html#423" class="Function Operator">ℕ+</a> <a id="494" href="Level.Literals.html#474" class="Bound">ℓ</a><a id="495" class="Symbol">)</a>
+
+<a id="498" class="Comment">-- Nat-computed Level.</a>
+
+<a id="522" class="Keyword">infix</a> <a id="528" class="Number">10</a> <a id="531" href="Level.Literals.html#535" class="Function Operator">#_</a>
+
+<a id="#_"></a><a id="535" href="Level.Literals.html#535" class="Function Operator">#_</a> <a id="538" class="Symbol">:</a> <a id="540" href="Agda.Builtin.Nat.html#97" class="Datatype">Nat</a> <a id="544" class="Symbol">→</a> <a id="546" href="Agda.Primitive.html#408" class="Postulate">Level</a>
+<a id="552" href="Level.Literals.html#535" class="Function Operator">#_</a> <a id="555" class="Symbol">=</a> <a id="557" href="Level.Literals.html#423" class="Function Operator">_ℕ+</a> <a id="561" href="Agda.Primitive.html#611" class="Primitive">Level.zero</a>
+
+<a id="573" class="Comment">-- Literal overloading for levels.</a>
+
+<a id="LevelNat"></a><a id="609" href="Level.Literals.html#609" class="Function">LevelNat</a> <a id="618" class="Symbol">:</a> <a id="620" href="Agda.Builtin.FromNat.html#129" class="Record">Number</a> <a id="627" href="Agda.Primitive.html#408" class="Postulate">Level</a>
+<a id="633" href="Level.Literals.html#609" class="Function">LevelNat</a> <a id="642" class="Symbol">.</a><a id="643" href="Agda.Builtin.FromNat.html#185" class="Field">Number.Constraint</a> <a id="661" class="Symbol">_</a> <a id="663" class="Symbol">=</a> <a id="665" href="Agda.Builtin.Unit.html#69" class="Record">⊤</a>
+<a id="667" href="Level.Literals.html#609" class="Function">LevelNat</a> <a id="676" class="Symbol">.</a><a id="677" href="Agda.Builtin.FromNat.html#214" class="Field">Number.fromNat</a>    <a id="695" href="Level.Literals.html#695" class="Bound">n</a> <a id="697" class="Symbol">=</a> <a id="699" href="Level.Literals.html#535" class="Function Operator">#</a> <a id="701" href="Level.Literals.html#695" class="Bound">n</a>
+</pre></body></html>
