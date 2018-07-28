@@ -476,10 +476,11 @@ Other minor additions
   surjection : (∀ x → to (from x) ≡ x) → From ↠ To
   ```
 
-* Added new functions to `Level`:
+* Added new module `Level.Literals` with functions:
   ```agda
-  _ℕ+_ : Nat → Level → Level
-  #_   : Nat → Level
+  _ℕ+_     : Nat → Level → Level
+  #_       : Nat → Level
+  LevelNat : Agda.Builtin.FromNat.Number Level
   ```
 
 * Added the following types in `Relation.Unary`:
