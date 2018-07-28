@@ -11,7 +11,7 @@ open import Data.Sum
 open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
-open import Category.Monad.Identity
+import Function.Identity.Categorical as Id
 open import Function
 
 -- To minimize the universe level of the RawFunctor, we require that elements of
@@ -43,7 +43,7 @@ module Sumₗ {a} (A : Set a) (b : Level) where
     } where module M = RawMonad M
 
   monad : RawMonad Sumₗ
-  monad = monadT IdentityMonad
+  monad = monadT Id.monad
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
@@ -94,7 +94,7 @@ module Sumᵣ (a : Level) {b} (B : Set b) where
     } where module M = RawMonad M
 
   monad : RawMonad Sumᵣ
-  monad = monadT IdentityMonad
+  monad = monadT Id.monad
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
