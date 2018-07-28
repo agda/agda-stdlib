@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Category.Comonad.Identity</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The identity comonad</a>
+<a id="130" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="204" class="Keyword">module</a> <a id="211" href="Category.Comonad.Identity.html" class="Module">Category.Comonad.Identity</a> <a id="237" class="Keyword">where</a>
+
+<a id="244" class="Keyword">open</a> <a id="249" class="Keyword">import</a> <a id="256" href="Category.Comonad.html" class="Module">Category.Comonad</a>
+<a id="273" class="Keyword">open</a> <a id="278" class="Keyword">import</a> <a id="285" href="Category.Monad.Identity.html" class="Module">Category.Monad.Identity</a> <a id="309" class="Keyword">using</a> <a id="315" class="Symbol">(</a><a id="316" href="Category.Monad.Identity.html#307" class="Function">Identity</a><a id="324" class="Symbol">)</a>
+<a id="326" class="Keyword">open</a> <a id="331" class="Keyword">import</a> <a id="338" href="Function.html" class="Module">Function</a> <a id="347" class="Keyword">using</a> <a id="353" class="Symbol">(</a><a id="354" href="Function.html#1068" class="Function">id</a><a id="356" class="Symbol">)</a>
+
+<a id="comonad"></a><a id="359" href="Category.Comonad.Identity.html#359" class="Function">comonad</a> <a id="367" class="Symbol">:</a> <a id="369" class="Symbol">∀</a> <a id="371" class="Symbol">{</a><a id="372" href="Category.Comonad.Identity.html#372" class="Bound">f</a><a id="373" class="Symbol">}</a> <a id="375" class="Symbol">→</a> <a id="377" href="Category.Comonad.html#332" class="Record">RawComonad</a> <a id="388" class="Symbol">{</a><a id="389" href="Category.Comonad.Identity.html#372" class="Bound">f</a><a id="390" class="Symbol">}</a> <a id="392" href="Category.Monad.Identity.html#307" class="Function">Identity</a>
+<a id="401" href="Category.Comonad.Identity.html#359" class="Function">comonad</a> <a id="409" class="Symbol">=</a> <a id="411" class="Keyword">record</a>
+  <a id="420" class="Symbol">{</a> <a id="422" class="Field">extract</a> <a id="430" class="Symbol">=</a> <a id="432" href="Function.html#1068" class="Function">id</a>
+  <a id="437" class="Symbol">;</a> <a id="439" class="Field">extend</a>  <a id="447" class="Symbol">=</a> <a id="449" href="Function.html#1068" class="Function">id</a>
+  <a id="454" class="Symbol">}</a>
+</pre></body></html>
