@@ -308,6 +308,8 @@ Other minor additions
 * Added new proof to `Data.Fin.Properties`:
   ```agda
   toℕ-fromℕ≤″ : toℕ (fromℕ≤″ m m<n) ≡ m
+
+  pigeonhole  : m < n → (f : Fin n → Fin m) → ∃₂ λ i j → i ≢ j × f i ≡ f j
   ```
 
 * Added new proofs to `Data.List.Any.Properties`:
