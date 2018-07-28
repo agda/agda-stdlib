@@ -478,9 +478,9 @@ Other minor additions
 
 * Added new module `Level.Literals` with functions:
   ```agda
-  _ℕ+_     : Nat → Level → Level
-  #_       : Nat → Level
-  LevelNat : Agda.Builtin.FromNat.Number Level
+  _ℕ+_   : Nat → Level → Level
+  #_     : Nat → Level
+  Levelℕ : Number Level
   ```
 
 * Added the following types in `Relation.Unary`:

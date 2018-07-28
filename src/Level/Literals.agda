@@ -6,14 +6,14 @@
 
 module Level.Literals where
 
-open import Agda.Builtin.Nat
+open import Agda.Builtin.Nat renaming (Nat to ℕ)
 open import Agda.Builtin.FromNat
 open import Agda.Builtin.Unit
 open import Level using (Level)
 
 -- Increase a Level by a number of sucs.
 
-_ℕ+_ : Nat → Level → Level
+_ℕ+_ : ℕ → Level → Level
 zero  ℕ+ ℓ = ℓ
 suc n ℕ+ ℓ = Level.suc (n ℕ+ ℓ)
 
@@ -21,11 +21,11 @@ suc n ℕ+ ℓ = Level.suc (n ℕ+ ℓ)
 
 infix 10 #_
 
-#_ : Nat → Level
+#_ : ℕ → Level
 #_ = _ℕ+ Level.zero
 
 -- Literal overloading for levels.
 
-LevelNat : Number Level
-LevelNat .Number.Constraint _ = ⊤
-LevelNat .Number.fromNat    n = # n
+Levelℕ : Number Level
+Levelℕ .Number.Constraint _ = ⊤
+Levelℕ .Number.fromNat    n = # n
