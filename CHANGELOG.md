@@ -95,6 +95,23 @@ Non-backwards compatible changes
 
 ### Overhaul of `Data.X.Categorical`
 
+* Created `Category.Comonad`:
+  ```agda
+  RawComonad : (W : Set f → Set f) → Set (suc f)
+  extract    : W A → A
+  duplicate  : W A → W (W A)
+  liftW      : (A → B) → W A → W B
+  _=>>_      : W A → (W A → B) → W B
+  _=>=       : (W A → B) → (W B → C) → W A → C
+  _<<=_      : (W A → B) → W A → W B
+  _=<=_      : (W B → C) → (W A → B) → W A → C
+  ```
+
+* Created `Category.Comonad.Identity`:
+  ```agda
+  comonad : RawComonad Identity
+  ```
+
 * Created `Codata.Delay.Categorical`:
   ```agda
   functor                : RawFunctor (λ A → Delay A i)
@@ -128,6 +145,7 @@ Non-backwards compatible changes
   functor     : RawFunctor List⁺
   applicative : RawApplicative List⁺
   monadT      : RawMonad M → RawMonad (M ∘′ List⁺)
+  comonad     : RawComonad List⁺
   sequenceA   : RawApplicative F → List⁺ (F A) → F (List⁺ A)
   mapA        : RawApplicative F → (A → F B) → List⁺ A → F (List⁺ B)
   forA        : RawApplicative F → List⁺ A → (A → F B) → F (List⁺ B)
@@ -315,8 +333,9 @@ Other minor additions
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
   ```
 
-* Added new function to `Data.List.NonEmpty`:
+* Added new functions to `Data.List.NonEmpty`:
   ```agda
+  uncons    : List⁺ A → A × List A
   concatMap : (A → List⁺ B) → List⁺ A → List⁺ B
   ```
 
