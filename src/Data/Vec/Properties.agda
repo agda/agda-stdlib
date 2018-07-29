@@ -310,16 +310,23 @@ module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
   zipWith-map₁ : ∀ {n} (_⊕_ : B → C → D) (f : A → B)
                  (xs : Vec A n) (ys : Vec C n) →
                  zipWith _⊕_ (map f xs) ys ≡ zipWith (λ x y → f x ⊕ y) xs ys
-  zipWith-map₁ _⊕_ f [] [] = refl
+  zipWith-map₁ _⊕_ f []       []       = refl
   zipWith-map₁ _⊕_ f (x ∷ xs) (y ∷ ys) =
     P.cong (f x ⊕ y ∷_) (zipWith-map₁ _⊕_ f xs ys)
 
   zipWith-map₂ : ∀ {n} (_⊕_ : A → C → D) (f : B → C)
                  (xs : Vec A n) (ys : Vec B n) →
                  zipWith _⊕_ xs (map f ys) ≡ zipWith (λ x y → x ⊕ f y) xs ys
-  zipWith-map₂ _⊕_ f [] [] = refl
+  zipWith-map₂ _⊕_ f []       []       = refl
   zipWith-map₂ _⊕_ f (x ∷ xs) (y ∷ ys) =
     P.cong (x ⊕ f y ∷_) (zipWith-map₂ _⊕_ f xs ys)
+
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
+
+  lookup-zipWith : ∀ (f : A → B → C) {n} (i : Fin n) xs ys →
+                   lookup i (zipWith f xs ys) ≡ f (lookup i xs) (lookup i ys)
+  lookup-zipWith _ zero    (x ∷ _)  (y ∷ _)   = refl
+  lookup-zipWith _ (suc i) (_ ∷ xs) (_ ∷ ys)  = lookup-zipWith _ i xs ys
 
 ------------------------------------------------------------------------
 -- zip
@@ -328,8 +335,7 @@ module _ {a b} {A : Set a} {B : Set b} where
 
   lookup-zip : ∀ {n} (i : Fin n) (xs : Vec A n) (ys : Vec B n) →
                lookup i (zip xs ys) ≡ (lookup i xs , lookup i ys)
-  lookup-zip zero    (x ∷ xs) (y ∷ ys) = refl
-  lookup-zip (suc i) (x ∷ xs) (y ∷ ys) = lookup-zip i xs ys
+  lookup-zip = lookup-zipWith _,_
 
   -- map lifts projections to vectors of products.
 

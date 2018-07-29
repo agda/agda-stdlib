@@ -6,12 +6,15 @@
 
 module Data.List.NonEmpty.Categorical where
 
+open import Agda.Builtin.List
 import Data.List.Categorical as List
 open import Data.List.NonEmpty
+open import Data.Product using (uncurry)
 open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
 open import Category.Monad.Identity
+open import Category.Comonad
 open import Function
 
 ------------------------------------------------------------------------
@@ -36,6 +39,20 @@ monad = record
   { return = [_]
   ; _>>=_  = flip concatMap
   }
+
+------------------------------------------------------------------------
+-- List⁺ comonad
+
+comonad : ∀ {f} → RawComonad {f} List⁺
+comonad = record
+  { extract = head
+  ; extend  = λ f → uncurry (extend f) ∘′ uncons
+  } where
+
+  extend : ∀ {A B} → (List⁺ A → B) → A → List A → List⁺ B
+  extend f x xs@[]       = f (x ∷ xs) ∷ []
+  extend f x xs@(y ∷ ys) = f (x ∷ xs) ∷⁺ extend f y ys
+
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions

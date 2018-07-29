@@ -20,7 +20,7 @@ open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
   )
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
-open import Data.Product using (∃; ∄; _×_; _,_; map; proj₁)
+open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁)
 open import Function using (_∘_; id)
 open import Function.Injection using (_↣_)
 open import Relation.Binary as B hiding (Decidable)
@@ -495,6 +495,18 @@ all? P? with decFinSubset U? (λ {f} _ → P? f)
 ¬∀⟶∃¬ : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
           ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
 ¬∀⟶∃¬ n P P? ¬P = map id proj₁ (¬∀⟶∃¬-smallest n P P? ¬P)
+
+-- The pigeonhole principle.
+
+pigeonhole : ∀ {m n} → m ℕ.< n → (f : Fin n → Fin m) →
+             ∃₂ λ i j → i ≢ j × f i ≡ f j
+pigeonhole (s≤s z≤n)       f = contradiction (f zero) λ()
+pigeonhole (s≤s (s≤s m≤n)) f with any? (λ k → f zero ≟ f (suc k))
+... | yes (j , f₀≡fⱼ) = zero , suc j , (λ()) , f₀≡fⱼ
+... | no  f₀≢fₖ with pigeonhole (s≤s m≤n) (λ j → punchOut (f₀≢fₖ ∘ (j ,_ )))
+...   | (i , j , i≢j , fᵢ≡fⱼ) =
+  suc i , suc j , i≢j ∘ suc-injective ,
+  punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
 
 ------------------------------------------------------------------------
 -- Categorical

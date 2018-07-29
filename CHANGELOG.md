@@ -95,6 +95,38 @@ Non-backwards compatible changes
 
 ### Overhaul of `Data.X.Categorical`
 
+* Created `Category.Comonad`:
+  ```agda
+  RawComonad : (W : Set f → Set f) → Set (suc f)
+  extract    : W A → A
+  duplicate  : W A → W (W A)
+  liftW      : (A → B) → W A → W B
+  _=>>_      : W A → (W A → B) → W B
+  _=>=       : (W A → B) → (W B → C) → W A → C
+  _<<=_      : (W A → B) → W A → W B
+  _=<=_      : (W B → C) → (W A → B) → W A → C
+  ```
+
+* Created `Category.Comonad.Identity`:
+  ```agda
+  comonad : RawComonad Identity
+  ```
+
+* Created `Codata.Delay.Categorical`:
+  ```agda
+  functor                : RawFunctor (λ A → Delay A i)
+  Sequential.applicative : RawApplicative (λ A → Delay A i)
+  Sequential.monad       : RawMonad (λ A → Delay A i)
+  Sequential.monadZero   : RawMonadZero (λ A → Delay A i)
+  Zippy.applicative      : RawApplicative (λ A → Delay A i)
+  ```
+
+* Created `Codata.Stream.Categorical`:
+  ```agda
+  functor     : RawFunctor (λ A → Stream A i)
+  applicative : RawApplicative (λ A → Stream A i)
+  ```
+
 * In `Data.List.Categorical` renamed and added functions:
   ```agda
   functor     : RawFunctor List
@@ -113,6 +145,7 @@ Non-backwards compatible changes
   functor     : RawFunctor List⁺
   applicative : RawApplicative List⁺
   monadT      : RawMonad M → RawMonad (M ∘′ List⁺)
+  comonad     : RawComonad List⁺
   sequenceA   : RawApplicative F → List⁺ (F A) → F (List⁺ A)
   mapA        : RawApplicative F → (A → F B) → List⁺ A → F (List⁺ B)
   forA        : RawApplicative F → List⁺ A → (A → F B) → F (List⁺ B)
@@ -137,15 +170,15 @@ Non-backwards compatible changes
   ```agda
   functor     : RawFunctor (_^ n)
   applicative : RawApplicative (_^ n)
-  sequenceA : RawApplicative F → Vec (F A) n → F (A ^ n)
-  mapA      : RawApplicative F → (A → F B) → A ^ n → F (B ^ n)
-  forA      : RawApplicative F → A ^ n → (A → F B) → F (B ^ n)
-  sequenceM : RawMonad M → Vec (M A) n → M (A ^ n)
-  mapM      : RawMonad M → (A → M B) → A ^ n → M (B ^ n)
-  forM      : RawMonad M → A ^ n → (A → M B) → M (B ^ n)
+  sequenceA   : RawApplicative F → Vec (F A) n → F (A ^ n)
+  mapA        : RawApplicative F → (A → F B) → A ^ n → F (B ^ n)
+  forA        : RawApplicative F → A ^ n → (A → F B) → F (B ^ n)
+  sequenceM   : RawMonad M → Vec (M A) n → M (A ^ n)
+  mapM        : RawMonad M → (A → M B) → A ^ n → M (B ^ n)
+  forM        : RawMonad M → A ^ n → (A → M B) → M (B ^ n)
 
 * Added new functions to `Data.Vec.Categorical`:
-  ```
+  ```agda
   sequenceA : RawApplicative F → Vec (F A) n → F (Vec A n)
   mapA      : RawApplicative F → (A → F B) → Vec A n → F (Vec B n)
   forA      : RawApplicative F → Vec A n → (A → F B) → F (Vec B n)
@@ -187,6 +220,9 @@ Other major changes
 
 * Added new modules `Data.List.Relation.Permutation.Inductive(.Properties)`,
   which give an inductive definition of permutations over lists.
+
+* Added a very barebones new module `Data.These` for the classic either-or-both
+  Haskell datatype.
 
 * Added new module `Data.List.Relation.Sublist.Inductive` which gives
   an inductive definition of the sublist relation (i.e. order-preserving embeddings).
@@ -255,6 +291,13 @@ anticipated any time soon, they may eventually be removed in some future release
 Other minor additions
 ---------------------
 
+* Added new functions to `Codata.Delay`:
+  ```agda
+  alignWith : (These A B → C) → Delay A i → Delay B i → Delay C i
+  zip       : Delay A i → Delay B i → Delay (A × B) i
+  align     : Delay A i → Delay B i → Delay (These A B) i
+  ```
+
 * Added new proof to `Data.Fin.Permutation`:
   ```agda
   refute : m ≢ n → ¬ Permutation m n
@@ -265,6 +308,8 @@ Other minor additions
 * Added new proof to `Data.Fin.Properties`:
   ```agda
   toℕ-fromℕ≤″ : toℕ (fromℕ≤″ m m<n) ≡ m
+
+  pigeonhole  : m < n → (f : Fin n → Fin m) → ∃₂ λ i j → i ≢ j × f i ≡ f j
   ```
 
 * Added new proofs to `Data.List.Any.Properties`:
@@ -290,8 +335,9 @@ Other minor additions
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
   ```
 
-* Added new function to `Data.List.NonEmpty`:
+* Added new functions to `Data.List.NonEmpty`:
   ```agda
+  uncons    : List⁺ A → A × List A
   concatMap : (A → List⁺ B) → List⁺ A → List⁺ B
   ```
 
@@ -354,6 +400,34 @@ Other minor additions
   remove-permute : remove (π ⟨$⟩ˡ i) (permute π t) ≗ permute (Perm.remove (π ⟨$⟩ˡ i) π) (remove i t)
   ```
 
+* Added new proofs to `Data.Vec.Properties.All`:
+  ```agda
+  toList⁺   : All P (toList xs) → All P xs
+  toList⁻   : All P xs → All P (toList xs)
+
+  fromList⁺ : All P xs → All P (fromList xs)
+  fromList⁻ : All P (fromList xs) → All P xs
+  ```
+
+* Added new proofs to `Data.Vec.Membership.Propositional.Properties`:
+  ```agda
+  ∈-lookup    : lookup i xs ∈ xs
+
+  ∈-toList⁻   : v ∈ toList xs   → v ∈ xs
+  ∈-fromList⁻ : v ∈ fromList xs → v ∈ xs
+  ```
+
+* Added new proof to `Data.Vec.Properties`:
+  ```agda
+  lookup-zipWith : lookup i (zipWith f xs ys) ≡ f (lookup i xs) (lookup i ys)
+  ```
+
+* Added new proofs to `Data.Vec.Relation.Pointwise.Inductive`:
+  ```agda
+  tabulate⁺ : (∀ i → f i ~ g i) → Pointwise _~_ (tabulate f) (tabulate g)
+  tabulate⁻ : Pointwise _~_ (tabulate f) (tabulate g) → (∀ i → f i ~ g i)
+  ```
+
 * Added new type to `Foreign.Haskell`:
   ```agda
   Pair : (A : Set ℓ) (B : Set ℓ′) : Set (ℓ ⊔ ℓ′)
@@ -391,7 +465,7 @@ Other minor additions
   leftInverse : (∀ x → from (to x) ≡ x) → From ↞ To
   ```
 
-* Added new proof to `Function.Related.TypeIsomorphisms`:
+* Added new proofs to `Function.Related.TypeIsomorphisms`:
   ```agda
   ×-≡×≡↔≡,≡ : (x ≡ proj₁ p × y ≡ proj₂ p) ↔ (x , y) ≡ p
   ×-comm    : (A × B) ↔ (B × A)
@@ -402,10 +476,11 @@ Other minor additions
   surjection : (∀ x → to (from x) ≡ x) → From ↠ To
   ```
 
-* Added new functions to `Level`:
+* Added new module `Level.Literals` with functions:
   ```agda
-  _ℕ+_ : Nat → Level → Level
-  #_   : Nat → Level
+  _ℕ+_   : Nat → Level → Level
+  #_     : Nat → Level
+  Levelℕ : Number Level
   ```
 
 * Added the following types in `Relation.Unary`:

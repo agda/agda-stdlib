@@ -8,7 +8,7 @@ module Data.Vec.Relation.Pointwise.Inductive where
 
 open import Algebra.FunctionProperties
 open import Data.Fin using (Fin; zero; suc)
-open import Data.Nat using (ℕ; suc)
+open import Data.Nat using (ℕ; zero; suc)
 open import Data.Product using (_×_; _,_)
 open import Data.Vec as Vec hiding ([_]; head; tail; map; lookup)
 open import Data.Vec.All using (All; []; _∷_)
@@ -182,6 +182,23 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {_~_ : REL A B ℓ} where
   concat⁻ []         []         [] = []
   concat⁻ (xs ∷ xss) (ys ∷ yss) ps =
     ++ˡ⁻ xs ys ps ∷ concat⁻ xss yss (++ʳ⁻ xs ys ps)
+
+------------------------------------------------------------------------
+-- tabulate
+
+module _ {a b ℓ} {A : Set a} {B : Set b} {_~_ : REL A B ℓ} where
+
+  tabulate⁺ : ∀ {n} {f : Fin n → A} {g : Fin n → B} →
+              (∀ i → f i ~ g i) →
+              Pointwise _~_ (tabulate f) (tabulate g)
+  tabulate⁺ {zero}  f~g = []
+  tabulate⁺ {suc n} f~g = f~g zero ∷ tabulate⁺ (f~g ∘ suc)
+
+  tabulate⁻ : ∀ {n} {f : Fin n → A} {g : Fin n → B} →
+              Pointwise _~_ (tabulate f) (tabulate g) →
+              (∀ i → f i ~ g i)
+  tabulate⁻ (f₀~g₀ ∷ _)   zero    = f₀~g₀
+  tabulate⁻ (_     ∷ f~g) (suc i) = tabulate⁻ f~g i
 
 ------------------------------------------------------------------------
 -- Degenerate pointwise relations
