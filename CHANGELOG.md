@@ -226,6 +226,7 @@ Other major changes
 
 * Added new module `Data.List.Relation.Sublist.Inductive` which gives
   an inductive definition of the sublist relation (i.e. order-preserving embeddings).
+  We also provide a solver for this order in `Data.List.Relation.Sublist.Inductive.Solver`.
 
 * Added new module `Data.Sum.Categorical`:
   ```agda

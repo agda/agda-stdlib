@@ -14,7 +14,7 @@ open ≤-Reasoning
 open import Data.List.Base
 open import Function
 import Function.Injection as F
-open import Function.Equivalence using (_⇔_ ; equivalence)
+open import Function.Equivalence as Equiv using (_⇔_ ; equivalence)
 open import Relation.Nullary
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
@@ -139,7 +139,7 @@ module _ {a b} {A : Set a} {B : Set b} where
     rewrite eq refl = keep (map⁻ inj p)
 
 ------------------------------------------------------------------------
--- _++_
+-- Combinators
 
 module _ {a} {A : Set a} where
 
@@ -148,20 +148,32 @@ module _ {a} {A : Set a} where
   ++⁺ (skip p) q = skip (++⁺ p q)
   ++⁺ (keep p) q = keep (++⁺ p q)
 
+  skips : ∀ {xs ys} (zs : List A) → xs ⊆ ys → xs ⊆ zs ++ ys
+  skips zs = ++⁺ ([]⊆ zs)
+
+  ∷⁻ : ∀ x {us vs : List A} → x ∷ us ⊆ x ∷ vs → us ⊆ vs
+  ∷⁻ x (skip p) = ⊆-trans (skip ⊆-refl) p
+  ∷⁻ x (keep p) = p
+
+  ++⁻ : ∀ xs {us vs : List A} → xs ++ us ⊆ xs ++ vs → us ⊆ vs
+  ++⁻ []       p = p
+  ++⁻ (x ∷ xs) p = ++⁻ xs (∷⁻ x p)
+
 ------------------------------------------------------------------------
 -- Inversion lemmas
 
 module _ {a} {A : Set a} where
 
   keep⁻¹ : ∀ (x : A) {xs ys} → (xs ⊆ ys) ⇔ (x ∷ xs ⊆ x ∷ ys)
-  keep⁻¹ x = equivalence keep $ λ where
-    (skip p) → ⊆-trans (skip ⊆-refl) p
-    (keep p) → p
+  keep⁻¹ x = equivalence keep (∷⁻ x)
 
   skip⁻¹ : ∀ {x y : A} {xs ys} → x ≢ y → (x ∷ xs ⊆ ys) ⇔ (x ∷ xs ⊆ y ∷ ys)
   skip⁻¹ ¬eq = equivalence skip $ λ where
     (skip p) → p
     (keep p) → ⊥-elim (¬eq refl)
+
+  ++⁻¹ : ∀ (ps : List A) {xs ys} → (xs ⊆ ys) ⇔ (ps ++ xs ⊆ ps ++ ys)
+  ++⁻¹ ps = equivalence (++⁺ ⊆-refl) (++⁻ ps)
 
 ------------------------------------------------------------------------
 -- Decidability of the order
