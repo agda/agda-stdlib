@@ -212,6 +212,8 @@ Non-backwards compatible changes
 * Changed the precedence level of `_$_` (and variants) to `-1`. This makes
   it interact well with `_∋_` in e.g. `f $ Maybe A ∋ do (...)`.
 
+* Removed `Data.Char.Core` which was doing nothing of interest.
+
 Other major changes
 -------------------
 
