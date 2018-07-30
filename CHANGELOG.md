@@ -253,7 +253,8 @@ Other major changes
 
 * Added new module `Data.Product.Categorical`:
   ```agda
-  Productₗ.functor     : (A : RawMonoid a e) → RawFunctor (A ×_)
+  Baseₗ.functor        : RawFunctor (A ×_)
+  Baseₗ.comonad        : RawComonad (A ×_)
   Productₗ.applicative : (A : RawMonoid a e) → RawApplicative (A ×_)
   Productₗ.monadT      : (A : RawMonoid a e) → RawMonad M → RawMonad (M ∘′ (A ×_))
   Productₗ.monad       : (A : RawMonoid a e) → RawMonad (A ×_)
@@ -263,7 +264,8 @@ Other major changes
   Productₗ.sequenceM   : RawMonad M → Productₗ (M A) → M (Productₗ A)
   Productₗ.mapM        : RawMonad M → (A → M B) → Productₗ A → M (Productₗ B)
   Productₗ.forM        : RawMonad M → Productₗ A → (A → M B) → M (Productₗ B)
-  Productᵣ.functor     : (B : RawMonoid b e) → RawFunctor (_× B)
+  Baseᵣ.functor        : RawFunctor (_× B)
+  Baseᵣ.comonad        : RawComonad (_× B)
   Productᵣ.applicative : (B : RawMonoid b e) → RawApplicative (_× B)
   Productᵣ.monadT      : (B : RawMonoid b e) → RawMonad M → RawMonad (M ∘′ (_× B))
   Productᵣ.monad       : (B : RawMonoid b e) → RawMonad (_× B)

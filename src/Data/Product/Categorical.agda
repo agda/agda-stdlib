@@ -13,6 +13,7 @@ open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
 open import Category.Monad.Identity
+open import Category.Comonad
 open import Function
 
 -- To minimize the universe level of the RawFunctor, we require that elements of
@@ -22,15 +23,24 @@ open import Function
 ------------------------------------------------------------------------
 -- Left-biased monad
 
-module Productₗ {a e} (A : RawMonoid a e) (b : Level) where
-
-  private module A = RawMonoid A
+module Baseₗ {a} (A : Set a) (b : Level) where
 
   Productₗ : Set (a ⊔ b) → Set (a ⊔ b)
-  Productₗ B = A.Carrier × B
+  Productₗ B = A × B
 
   functor : RawFunctor Productₗ
   functor = record { _<$>_ = λ f → map₂ f }
+
+  comonad : RawComonad Productₗ
+  comonad = record
+    { extract = proj₂
+    ; extend  = < proj₁ ,_>
+    }
+
+module Productₗ {a e} (A : RawMonoid a e) (b : Level) where
+
+  private module A = RawMonoid A
+  open Baseₗ A.Carrier b public
 
   applicative : RawApplicative Productₗ
   applicative = record
@@ -77,18 +87,28 @@ module Productₗ {a e} (A : RawMonoid a e) (b : Level) where
     forM : ∀ {A B} → Productₗ A → (A → M B) → M (Productₗ B)
     forM = forA App
 
+
 ------------------------------------------------------------------------
 -- Right-biased monad
+
+module Baseᵣ (a : Level) {b} (B : Set b) where
+
+  Productᵣ : Set (a ⊔ b) → Set (a ⊔ b)
+  Productᵣ A = A × B
+
+  functor : RawFunctor Productᵣ
+  functor = record { _<$>_ = map₁ }
+
+  comonad : RawComonad Productᵣ
+  comonad = record
+    { extract = proj₁
+    ; extend  = <_, proj₂ >
+    }
 
 module Productᵣ (a : Level) {b e} (B : RawMonoid b e) where
 
   private module B = RawMonoid B
-
-  Productᵣ : Set (a ⊔ b) → Set (a ⊔ b)
-  Productᵣ A = A × B.Carrier
-
-  functor : RawFunctor Productᵣ
-  functor = record { _<$>_ = map₁ }
+  open Baseᵣ a B.Carrier public
 
   applicative : RawApplicative Productᵣ
   applicative = record
