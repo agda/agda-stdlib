@@ -15,8 +15,6 @@ open import Data.List.Properties
 open import Data.List.Relation.Sublist.Inductive
 open import Function
 open import Relation.Nullary
-import Relation.Binary.PreorderReasoning as PO-Reasoning
-module ⊆-Reasoning {a} (A : Set a) = PO-Reasoning (⊆-preorder A)
 open import Relation.Binary.PropositionalEquality hiding ([_])
 
 ------------------------------------------------------------------------
@@ -52,7 +50,6 @@ module _ {n a} {A : Set a} where
 
   ⟦_⟧R : RList n A → Vec (List A) n → List A
   ⟦ []     ⟧R ρ = []
-  ⟦ x ∷ [] ⟧R ρ = ⟦ x ⟧I ρ
   ⟦ x ∷ xs ⟧R ρ = ⟦ x ⟧I ρ ++ ⟦ xs ⟧R ρ
 
 -- Orders
@@ -66,10 +63,8 @@ module _ {n a} {A : Set a} where
   open ≡-Reasoning
 
   ⟦++⟧R : ∀ xs ys ρ → ⟦ xs ++ ys ⟧R ρ ≡ ⟦ xs ⟧R ρ ++ ⟦ ys ⟧R ρ
-  ⟦++⟧R []               ys         ρ = refl
-  ⟦++⟧R (x ∷ [])         []         ρ = sym (++-identityʳ (⟦ x ⟧I ρ))
-  ⟦++⟧R (x ∷ [])         ys@(_ ∷ _) ρ = refl
-  ⟦++⟧R (x ∷ xs@(_ ∷ _)) ys         ρ = begin
+  ⟦++⟧R []       ys         ρ = refl
+  ⟦++⟧R (x ∷ xs) ys         ρ = begin
     ⟦ x ⟧I ρ ++ ⟦ xs ++ ys ⟧R ρ
       ≡⟨ cong (⟦ x ⟧I ρ ++_) (⟦++⟧R xs ys ρ) ⟩
     ⟦ x ⟧I ρ ++ ⟦ xs ⟧R ρ ++ ⟦ ys ⟧R ρ
@@ -79,7 +74,7 @@ module _ {n a} {A : Set a} where
 
   flatten : ∀ (t : TList n A) → Σ[ r ∈ RList n A ] (∀ ρ → ⟦ t ⟧T ρ ≡ ⟦ r ⟧R ρ)
   flatten []       = [] , λ _ → refl
-  flatten (It it)  = it ∷ [] , λ _ → refl
+  flatten (It it)  = it ∷ [] , λ ρ → sym $ ++-identityʳ (⟦ It it ⟧T ρ)
   flatten (t <> u) =
     let (rt , eqt) = flatten t
         (ru , equ) = flatten u
@@ -89,7 +84,6 @@ module _ {n a} {A : Set a} where
       ⟦ rt ⟧R ρ ++ ⟦ ru ⟧R ρ ≡⟨ sym $ ⟦++⟧R rt ru ρ ⟩
       ⟦ rt ++ ru ⟧R ρ        ∎
 
-
 ------------------------------------------------------------------------
 -- Solver for the sublist problem
 
@@ -98,32 +92,21 @@ open import Relation.Binary
 
 module _ {n : ℕ} {a} {A : Set a} (eq? : Decidable {A = A} _≡_) where
 
-  open ⊆-Reasoning A
-
 -- auxiliary lemmas
 
   private
 
     keep-it : ∀ it (xs ys : RList n A) → xs ⊆R ys → (it ∷ xs) ⊆R (it ∷ ys)
-    keep-it it []         []         hyp ρ = ⊆-refl
-    keep-it it []         ys@(_ ∷ _) hyp ρ = begin
-      ⟦ it ⟧I ρ       ≈⟨ sym $ ++-identityʳ _ ⟩
-      ⟦ it ⟧I ρ ++ [] ∼⟨ ++⁺ ⊆-refl (hyp ρ) ⟩
-      ⟦ it ⟧I ρ ++ ⟦ ys ⟧R ρ ∎
-    keep-it it xs@(_ ∷ _) []         hyp ρ = begin
-      ⟦ it ⟧I ρ ++ ⟦ xs ⟧R ρ ∼⟨ ++⁺ ⊆-refl (hyp ρ) ⟩
-      ⟦ it ⟧I ρ ++ []        ≈⟨ ++-identityʳ _ ⟩
-      ⟦ it ⟧I ρ              ∎
-    keep-it it (_ ∷ _)    (_ ∷ _)    hyp ρ = ++⁺ ⊆-refl (hyp ρ)
+    keep-it it xs ys hyp ρ = ++⁺ ⊆-refl (hyp ρ)
 
     skip-it : ∀ it (d e : RList n A) → d ⊆R e → d ⊆R (it ∷ e)
-    skip-it it d []         hyp ρ = ⊆-trans (hyp ρ) ([]⊆ _)
-    skip-it it d ys@(_ ∷ _) hyp ρ = skips _ (hyp ρ)
+    skip-it it d ys hyp ρ = skips (⟦ it ⟧I ρ) (hyp ρ)
 
   solveR : (d e : RList n A) → Maybe (d ⊆R e)
+  -- trivial
   solveR []          e           = just (λ ρ → []⊆ ⟦ e ⟧R ρ)
   solveR (it ∷ d)    []          = nothing
-
+  -- actual work
   solveR (var k ∷ d) (var l ∷ e) with k Fin.≟ l
   ... | yes refl = M.map (keep-it (var k) d e) (solveR d e)
   ... | no ¬eq   = M.map (skip-it (var l) (var k ∷ d) e) (solveR (var k ∷ d) e)
@@ -131,7 +114,6 @@ module _ {n : ℕ} {a} {A : Set a} (eq? : Decidable {A = A} _≡_) where
   ... | yes refl = M.map (keep-it (val a) d e) (solveR d e)
   ... | no ¬eq   = M.map (skip-it (val b) (val a ∷ d) e) (solveR (val a ∷ d) e)
   solveR d (x ∷ e)               = M.map (skip-it x d e) (solveR d e)
-
 
 -- Coming back to ASTs
 
@@ -145,7 +127,6 @@ module _ {n : ℕ} {a} {A : Set a} (eq? : Decidable {A = A} _≡_) where
 
   prove : ∀ d e → From-just (solveT d e)
   prove d e = from-just (solveT d e)
-
 
 
 ------------------------------------------------------------------------
