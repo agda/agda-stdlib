@@ -1,8 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- An inductive definition of sublist. This commonly known as an Order
--- Preserving Embedding (OPE).
+-- A solver for proving that one list is a sublist of the other.
 ------------------------------------------------------------------------
 
 module Data.List.Relation.Sublist.Inductive.Solver where
@@ -28,14 +27,14 @@ data Item {a} (n : ℕ) (A : Set a) : Set a where
   var : Fin n → Item n A
   val : A → Item n A
 
--- Trees
+-- Abstract Syntax Trees
 infixr 5 _<>_
 data TList {a} (n : ℕ) (A : Set a) : Set a where
   It   : Item n A → TList n A
   _<>_ : TList n A → TList n A → TList n A
   []   : TList n A
 
--- Linearised
+-- Equivalent linearised representation
 RList : ∀ {a} n → Set a → Set a
 RList n A = List (Item n A)
 
@@ -63,8 +62,7 @@ module _ {n a} {A : Set a} where
   _⊆R_ : (d e : RList n A) → Set a
   d ⊆R e = ∀ ρ → ⟦ d ⟧R ρ ⊆ ⟦ e ⟧R ρ
 
--- Flattening
-
+-- Flattening in a semantics-respecting manner
   open ≡-Reasoning
 
   ⟦++⟧R : ∀ xs ys ρ → ⟦ xs ++ ys ⟧R ρ ≡ ⟦ xs ⟧R ρ ++ ⟦ ys ⟧R ρ
@@ -92,12 +90,17 @@ module _ {n a} {A : Set a} where
       ⟦ rt ++ ru ⟧R ρ        ∎
 
 
+------------------------------------------------------------------------
+-- Solver for the sublist problem
+
 open import Data.Maybe as M
 open import Relation.Binary
 
 module _ {n : ℕ} {a} {A : Set a} (eq? : Decidable {A = A} _≡_) where
 
   open ⊆-Reasoning A
+
+-- auxiliary lemmas
 
   private
 
@@ -129,6 +132,9 @@ module _ {n : ℕ} {a} {A : Set a} (eq? : Decidable {A = A} _≡_) where
   ... | no ¬eq   = M.map (skip-it (val b) (val a ∷ d) e) (solveR (val a ∷ d) e)
   solveR d (x ∷ e)               = M.map (skip-it x d e) (solveR d e)
 
+
+-- Coming back to ASTs
+
   solveT : (t u : TList n A) → Maybe (t ⊆T u)
   solveT t u =
     let (rt , eqt) = flatten t
@@ -139,6 +145,11 @@ module _ {n : ℕ} {a} {A : Set a} (eq? : Decidable {A = A} _≡_) where
 
   prove : ∀ d e → From-just (solveT d e)
   prove d e = from-just (solveT d e)
+
+
+
+------------------------------------------------------------------------
+-- Test
 
 open import Data.Nat as Nat
 
