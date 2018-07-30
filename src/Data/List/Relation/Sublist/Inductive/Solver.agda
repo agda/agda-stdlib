@@ -63,8 +63,8 @@ module _ {n a} {A : Set a} where
   open ≡-Reasoning
 
   ⟦++⟧R : ∀ xs ys ρ → ⟦ xs ++ ys ⟧R ρ ≡ ⟦ xs ⟧R ρ ++ ⟦ ys ⟧R ρ
-  ⟦++⟧R []       ys         ρ = refl
-  ⟦++⟧R (x ∷ xs) ys         ρ = begin
+  ⟦++⟧R []       ys ρ = refl
+  ⟦++⟧R (x ∷ xs) ys ρ = begin
     ⟦ x ⟧I ρ ++ ⟦ xs ++ ys ⟧R ρ
       ≡⟨ cong (⟦ x ⟧I ρ ++_) (⟦++⟧R xs ys ρ) ⟩
     ⟦ x ⟧I ρ ++ ⟦ xs ⟧R ρ ++ ⟦ ys ⟧R ρ
@@ -102,6 +102,8 @@ module _ {n : ℕ} {a} {A : Set a} (eq? : Decidable {A = A} _≡_) where
     skip-it : ∀ it (d e : RList n A) → d ⊆R e → d ⊆R (it ∷ e)
     skip-it it d ys hyp ρ = skips (⟦ it ⟧I ρ) (hyp ρ)
 
+-- Solver for linearised expressions
+
   solveR : (d e : RList n A) → Maybe (d ⊆R e)
   -- trivial
   solveR []          e           = just (λ ρ → []⊆ ⟦ e ⟧R ρ)
@@ -115,7 +117,7 @@ module _ {n : ℕ} {a} {A : Set a} (eq? : Decidable {A = A} _≡_) where
   ... | no ¬eq   = M.map (skip-it (val b) (val a ∷ d) e) (solveR (val a ∷ d) e)
   solveR d (x ∷ e)               = M.map (skip-it x d e) (solveR d e)
 
--- Coming back to ASTs
+-- Coming back to ASTs thanks to flatten
 
   solveT : (t u : TList n A) → Maybe (t ⊆T u)
   solveT t u =
@@ -124,6 +126,8 @@ module _ {n : ℕ} {a} {A : Set a} (eq? : Decidable {A = A} _≡_) where
     in case solveR rt ru of λ where
       (just hyp) → just (λ ρ → subst₂ _⊆_ (sym (eqt ρ)) (sym (equ ρ)) (hyp ρ))
       nothing    → nothing
+
+-- Prover for ASTs
 
   prove : ∀ d e → From-just (solveT d e)
   prove d e = from-just (solveT d e)
