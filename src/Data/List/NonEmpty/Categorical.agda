@@ -81,7 +81,7 @@ module _ {m M} (Mon : RawMonad {m} M) where
 ------------------------------------------------------------------------
 -- List⁺ monad transformer
 
-monadT : ∀ {f M} → RawMonad {f} M → RawMonad (M ∘′ List⁺)
+monadT : ∀ {f} → RawMonadT {f} (_∘′ List⁺)
 monadT M = record
   { return = pure ∘′ [_]
   ; _>>=_  = λ mas f → mas >>= λ as → concat <$> mapM M f as

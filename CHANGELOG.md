@@ -112,6 +112,28 @@ Non-backwards compatible changes
   comonad : RawComonad Identity
   ```
 
+* Added new function to `Category.Monad.Indexed`:
+  ```agda
+  RawIMonadT : (T : IFun I f → IFun I f) → Set (i ⊔ suc f)
+  ```
+
+* Added new function to `Category.Monad`:
+  ```agda
+  RawMonadT : (T : (Set f → Set f) → (Set f → Set f)) → Set _
+  ```
+
+* Created `Codata.Colist.Categorical`:
+  ```agda
+  functor     : RawFunctor (λ A → Colist A i)
+  applicative : RawApplicative (λ A → Colist A i)
+  ```
+
+* Created `Codata.Covec.Categorical`:
+  ```agda
+  functor     : RawFunctor (λ A → Covec A n i)
+  applicative : RawApplicative (λ A → Covec A n i)
+  ```
+
 * Created `Codata.Delay.Categorical`:
   ```agda
   functor                : RawFunctor (λ A → Delay A i)
@@ -125,13 +147,14 @@ Non-backwards compatible changes
   ```agda
   functor     : RawFunctor (λ A → Stream A i)
   applicative : RawApplicative (λ A → Stream A i)
+  comonad     : RawComonad (λ A → Stream A _)
   ```
 
 * In `Data.List.Categorical` renamed and added functions:
   ```agda
   functor     : RawFunctor List
   applicative : RawApplicative List
-  monadT      : RawMonad M → RawMonad (M ∘′ List)
+  monadT      : RawMonadT (_∘′ List)
   sequenceA   : RawApplicative F → List (F A) → F (List A)
   mapA        : RawApplicative F → (A → F B) → List A → F (List B)
   forA        : RawApplicative F → List A → (A → F B) → F (List B)
@@ -144,7 +167,7 @@ Non-backwards compatible changes
   ```agda
   functor     : RawFunctor List⁺
   applicative : RawApplicative List⁺
-  monadT      : RawMonad M → RawMonad (M ∘′ List⁺)
+  monadT      : RawMonadT (_∘′ List⁺)
   comonad     : RawComonad List⁺
   sequenceA   : RawApplicative F → List⁺ (F A) → F (List⁺ A)
   mapA        : RawApplicative F → (A → F B) → List⁺ A → F (List⁺ B)
@@ -166,6 +189,30 @@ Non-backwards compatible changes
   forM      : RawMonad M → Maybe A → (A → M B) → M (Maybe B)
   ```
 
+* Added new module `Data.Product.Categorical`:
+  ```agda
+  Productₗ.functor     : (A : RawMonoid a e) → RawFunctor (A ×_)
+  Productₗ.applicative : (A : RawMonoid a e) → RawApplicative (A ×_)
+  Productₗ.monadT      : (A : RawMonoid a e) → RawMonadT (_∘′ (A ×_))
+  Productₗ.monad       : (A : RawMonoid a e) → RawMonad (A ×_)
+  Productₗ.sequenceA   : RawApplicative F → Productₗ (F A) → F (Productₗ A)
+  Productₗ.mapA        : RawApplicative F → (A → F B) → Productₗ A → F (Productₗ B)
+  Productₗ.forA        : RawApplicative F → Productₗ A → (A → F B) → F (Productₗ B)
+  Productₗ.sequenceM   : RawMonad M → Productₗ (M A) → M (Productₗ A)
+  Productₗ.mapM        : RawMonad M → (A → M B) → Productₗ A → M (Productₗ B)
+  Productₗ.forM        : RawMonad M → Productₗ A → (A → M B) → M (Productₗ B)
+  Productᵣ.functor     : (B : RawMonoid b e) → RawFunctor (_× B)
+  Productᵣ.applicative : (B : RawMonoid b e) → RawApplicative (_× B)
+  Productᵣ.monadT      : (B : RawMonoid b e) → RawMonadT (_∘′ (_× B))
+  Productᵣ.monad       : (B : RawMonoid b e) → RawMonad (_× B)
+  Productᵣ.sequenceA   : RawApplicative F → Productᵣ (F A) → F (Productᵣ A)
+  Productᵣ.mapA        : RawApplicative F → (A → F B) → Productᵣ A → F (Productᵣ B)
+  Productᵣ.forA        : RawApplicative F → Productᵣ A → (A → F B) → F (Productᵣ B)
+  Productᵣ.sequenceM   : RawMonad M → Productᵣ (M A) → M (Productᵣ A)
+  Productᵣ.mapM        : RawMonad M → (A → M B) → Productᵣ A → M (Productᵣ B)
+  Productᵣ.forM        : RawMonad M → Productᵣ A → (A → M B) → M (Productᵣ B)
+  ```
+
 * Created `Data.Product.N-ary.Categorical` and added:
   ```agda
   functor     : RawFunctor (_^ n)
@@ -176,6 +223,31 @@ Non-backwards compatible changes
   sequenceM   : RawMonad M → Vec (M A) n → M (A ^ n)
   mapM        : RawMonad M → (A → M B) → A ^ n → M (B ^ n)
   forM        : RawMonad M → A ^ n → (A → M B) → M (B ^ n)
+  ```
+
+* Added new module `Data.Sum.Categorical`:
+  ```agda
+  Sumₗ.functor     : RawFunctor (A ⊎_)
+  Sumₗ.applicative : RawApplicative (A ⊎_)
+  Sumₗ.monadT      : RawMonadT (_∘′ (A ⊎_))
+  Sumₗ.monad       : RawMonad (A ⊎_)
+  Sumₗ.sequenceA   : RawApplicative F → Sumₗ (F A) → F (Sumₗ A)
+  Sumₗ.mapA        : RawApplicative F → (A → F B) → Sumₗ A → F (Sumₗ B)
+  Sumₗ.forA        : RawApplicative F → Sumₗ A → (A → F B) → F (Sumₗ B)
+  Sumₗ.sequenceM   : RawMonad M → Sumₗ (M A) → M (Sumₗ A)
+  Sumₗ.mapM        : RawMonad M → (A → M B) → Sumₗ A → M (Sumₗ B)
+  Sumₗ.forM        : RawMonad M → Sumₗ A → (A → M B) → M (Sumₗ B)
+  Sumᵣ.functor     : RawFunctor (_⊎ B)
+  Sumᵣ.applicative : RawApplicative (_⊎ B)
+  Sumᵣ.monadT      : RawMonadT (_∘′ (_⊎ B))
+  Sumᵣ.monad       : RawMonad (_⊎ B)
+  Sumᵣ.sequenceA   : RawApplicative F → Sumᵣ (F A) → F (Sumᵣ A)
+  Sumᵣ.mapA        : RawApplicative F → (A → F B) → Sumᵣ A → F (Sumᵣ B)
+  Sumᵣ.forA        : RawApplicative F → Sumᵣ A → (A → F B) → F (Sumᵣ B)
+  Sumᵣ.sequenceM   : RawMonad M → Sumᵣ (M A) → M (Sumᵣ A)
+  Sumᵣ.mapM        : RawMonad M → (A → M B) → Sumᵣ A → M (Sumᵣ B)
+  Sumᵣ.forM        : RawMonad M → Sumᵣ A → (A → M B) → M (Sumᵣ B)
+  ```
 
 * Added new functions to `Data.Vec.Categorical`:
   ```agda
@@ -227,53 +299,6 @@ Other major changes
 * Added new module `Data.List.Relation.Sublist.Inductive` which gives
   an inductive definition of the sublist relation (i.e. order-preserving embeddings).
 
-* Added new module `Data.Sum.Categorical`:
-  ```agda
-  Sumₗ.functor     : RawFunctor (A ⊎_)
-  Sumₗ.applicative : RawApplicative (A ⊎_)
-  Sumₗ.monadT      : RawMonad M → RawMonad (M ∘′ (A ⊎_))
-  Sumₗ.monad       : RawMonad (A ⊎_)
-  Sumₗ.sequenceA   : RawApplicative F → Sumₗ (F A) → F (Sumₗ A)
-  Sumₗ.mapA        : RawApplicative F → (A → F B) → Sumₗ A → F (Sumₗ B)
-  Sumₗ.forA        : RawApplicative F → Sumₗ A → (A → F B) → F (Sumₗ B)
-  Sumₗ.sequenceM   : RawMonad M → Sumₗ (M A) → M (Sumₗ A)
-  Sumₗ.mapM        : RawMonad M → (A → M B) → Sumₗ A → M (Sumₗ B)
-  Sumₗ.forM        : RawMonad M → Sumₗ A → (A → M B) → M (Sumₗ B)
-  Sumᵣ.functor     : RawFunctor (_⊎ B)
-  Sumᵣ.applicative : RawApplicative (_⊎ B)
-  Sumᵣ.monadT      : RawMonad M → RawMonad (M ∘′ (_⊎ B))
-  Sumᵣ.monad       : RawMonad (_⊎ B)
-  Sumᵣ.sequenceA   : RawApplicative F → Sumᵣ (F A) → F (Sumᵣ A)
-  Sumᵣ.mapA        : RawApplicative F → (A → F B) → Sumᵣ A → F (Sumᵣ B)
-  Sumᵣ.forA        : RawApplicative F → Sumᵣ A → (A → F B) → F (Sumᵣ B)
-  Sumᵣ.sequenceM   : RawMonad M → Sumᵣ (M A) → M (Sumᵣ A)
-  Sumᵣ.mapM        : RawMonad M → (A → M B) → Sumᵣ A → M (Sumᵣ B)
-  Sumᵣ.forM        : RawMonad M → Sumᵣ A → (A → M B) → M (Sumᵣ B)
-  ```
-
-* Added new module `Data.Product.Categorical`:
-  ```agda
-  Productₗ.functor     : (A : RawMonoid a e) → RawFunctor (A ×_)
-  Productₗ.applicative : (A : RawMonoid a e) → RawApplicative (A ×_)
-  Productₗ.monadT      : (A : RawMonoid a e) → RawMonad M → RawMonad (M ∘′ (A ×_))
-  Productₗ.monad       : (A : RawMonoid a e) → RawMonad (A ×_)
-  Productₗ.sequenceA   : RawApplicative F → Productₗ (F A) → F (Productₗ A)
-  Productₗ.mapA        : RawApplicative F → (A → F B) → Productₗ A → F (Productₗ B)
-  Productₗ.forA        : RawApplicative F → Productₗ A → (A → F B) → F (Productₗ B)
-  Productₗ.sequenceM   : RawMonad M → Productₗ (M A) → M (Productₗ A)
-  Productₗ.mapM        : RawMonad M → (A → M B) → Productₗ A → M (Productₗ B)
-  Productₗ.forM        : RawMonad M → Productₗ A → (A → M B) → M (Productₗ B)
-  Productᵣ.functor     : (B : RawMonoid b e) → RawFunctor (_× B)
-  Productᵣ.applicative : (B : RawMonoid b e) → RawApplicative (_× B)
-  Productᵣ.monadT      : (B : RawMonoid b e) → RawMonad M → RawMonad (M ∘′ (_× B))
-  Productᵣ.monad       : (B : RawMonoid b e) → RawMonad (_× B)
-  Productᵣ.sequenceA   : RawApplicative F → Productᵣ (F A) → F (Productᵣ A)
-  Productᵣ.mapA        : RawApplicative F → (A → F B) → Productᵣ A → F (Productᵣ B)
-  Productᵣ.forA        : RawApplicative F → Productᵣ A → (A → F B) → F (Productᵣ B)
-  Productᵣ.sequenceM   : RawMonad M → Productᵣ (M A) → M (Productᵣ A)
-  Productᵣ.mapM        : RawMonad M → (A → M B) → Productᵣ A → M (Productᵣ B)
-  Productᵣ.forM        : RawMonad M → Productᵣ A → (A → M B) → M (Productᵣ B)
-  ```
 
 Deprecated features
 -------------------

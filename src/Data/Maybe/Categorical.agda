@@ -30,7 +30,7 @@ applicative = record
 ------------------------------------------------------------------------
 -- Maybe monad transformer
 
-monadT : ∀ {f M} → RawMonad {f} M → RawMonad (M ∘′ Maybe)
+monadT : ∀ {f} → RawMonadT {f} (_∘′ Maybe)
 monadT M = record
   { return = M.return ∘ just
   ; _>>=_  = λ m f → m M.>>= maybe f (M.return nothing)

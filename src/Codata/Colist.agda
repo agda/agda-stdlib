@@ -12,6 +12,7 @@ open import Data.Product using (_×_ ; _,_)
 open import Data.Maybe using (Maybe ; nothing ; just)
 open import Data.List.Base using (List ; [] ; _∷_)
 open import Data.BoundedVec as BVec using (BoundedVec)
+open import Function
 
 open import Codata.Thunk
 open import Codata.Conat as Conat using (Conat ; zero ; suc)
@@ -66,27 +67,31 @@ module _ {ℓ} {A : Set ℓ} where
 
 module _ {a b} {A : Set a} {B : Set b} where
 
- map : ∀ (f : A → B) → ∀ {i} → Colist A i → Colist B i
+ map : ∀ {i} (f : A → B) → Colist A i → Colist B i
  map f []       = []
  map f (a ∷ as) = f a ∷ λ where .force → map f (as .force)
 
- unfold : (A → Maybe (A × B)) → A → ∀ {i} → Colist B i
+ unfold :  ∀ {i} → (A → Maybe (A × B)) → A → Colist B i
  unfold next seed with next seed
  ... | nothing          = []
  ... | just (seed′ , b) = b ∷ λ where .force → unfold next seed′
 
- scanl : (B → A → B) → B → ∀ {i} → Colist A i → Colist B i
+ scanl : ∀ {i} → (B → A → B) → B → Colist A i → Colist B i
  scanl c n []       = n ∷ λ where .force → []
  scanl c n (a ∷ as) = n ∷ λ where .force → scanl c (c n a) (as .force)
 
 module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
- zipWith : (A → B → C) → ∀ {i} → Colist A i → Colist B i → Colist C i
+ zipWith : ∀ {i} → (A → B → C) → Colist A i → Colist B i → Colist C i
  zipWith f []       bs       = []
  zipWith f as       []       = []
  zipWith f (a ∷ as) (b ∷ bs) =
    f a b ∷ λ where .force → zipWith f (as .force) (bs .force)
 
+module _ {a b} {A : Set a} {B : Set b} where
+
+  ap : ∀ {i} → Colist (A → B) i → Colist A i → Colist B i
+  ap = zipWith _$′_
 
 ------------------------------------------------------------------------
 -- Legacy
