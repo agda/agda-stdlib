@@ -72,7 +72,7 @@ module _ {n a} {A : Set a} where
     (⟦ x ⟧I ρ ++ ⟦ xs ⟧R ρ) ++ ⟦ ys ⟧R ρ
       ∎
 
-  flatten : ∀ (t : TList n A) → Σ[ r ∈ RList n A ] (∀ ρ → ⟦ t ⟧T ρ ≡ ⟦ r ⟧R ρ)
+  flatten : ∀ (t : TList n A) → Σ[ r ∈ RList n A ] ⟦ t ⟧T ≗ ⟦ r ⟧R
   flatten []       = [] , λ _ → refl
   flatten (It it)  = it ∷ [] , λ ρ → sym $ ++-identityʳ (⟦ It it ⟧T ρ)
   flatten (t <> u) =
