@@ -14,8 +14,11 @@ open ≤-Reasoning
 open import Data.List.Base
 open import Function
 import Function.Injection as F
+open import Function.Equivalence using (_⇔_ ; equivalence)
+open import Relation.Nullary
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
+import Relation.Nullary.Decidable as D
 
 ------------------------------------------------------------------------
 -- Type and basic combinators
@@ -145,3 +148,31 @@ module _ {a} {A : Set a} where
   ++⁺ (skip p) q = skip (++⁺ p q)
   ++⁺ (keep p) q = keep (++⁺ p q)
 
+------------------------------------------------------------------------
+-- Inversion lemmas
+
+module _ {a} {A : Set a} where
+
+  keep⁻¹ : ∀ (x : A) {xs ys} → (xs ⊆ ys) ⇔ (x ∷ xs ⊆ x ∷ ys)
+  keep⁻¹ x = equivalence keep $ λ where
+    (skip p) → ⊆-trans (skip ⊆-refl) p
+    (keep p) → p
+
+  skip⁻¹ : ∀ {x y : A} {xs ys} → x ≢ y → (x ∷ xs ⊆ ys) ⇔ (x ∷ xs ⊆ y ∷ ys)
+  skip⁻¹ ¬eq = equivalence skip $ λ where
+    (skip p) → p
+    (keep p) → ⊥-elim (¬eq refl)
+
+------------------------------------------------------------------------
+-- Decidability of the order
+
+module Decidable
+       {a} {A : Set a} (eq? : Decidable {A = A} _≡_) where
+
+  infix 3 _⊆?_
+  _⊆?_ : Decidable {A = List A} _⊆_
+  []     ⊆? ys     = yes ([]⊆ ys)
+  x ∷ xs ⊆? []     = no λ ()
+  x ∷ xs ⊆? y ∷ ys with eq? x y
+  ... | yes refl = D.map (keep⁻¹ x) (xs ⊆? ys)
+  ... | no ¬eq   = D.map (skip⁻¹ ¬eq) (x ∷ xs ⊆? ys)
