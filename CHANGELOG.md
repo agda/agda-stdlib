@@ -285,6 +285,8 @@ the library. The deprecated names still exist and therefore all existing code sh
 work, however they have been deprecated and use of any new names is encouraged. Although not
 anticipated any time soon, they may eventually be removed in some future release of the library.
 
+* All deprecated names now give warnings at point-of-use when type-checked.
+
 * In `Data.Nat.Divisibility`:
   ```
   nonZeroDivisor-lemma

@@ -179,10 +179,35 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
-_×-isPartialOrder_  = ×-isPartialOrder
-_×-isDecTotalOrder_ = ×-isDecTotalOrder
-_×-poset_           = ×-poset
-_×-totalOrder_      = ×-totalOrder
-_×-decTotalOrder_   = ×-decTotalOrder
+-- Version 0.15
 
+_×-isPartialOrder_  = ×-isPartialOrder
+{-# WARNING_ON_USAGE _×-isPartialOrder_
+"Warning: _×-isPartialOrder_ was deprecated in v0.15.
+Please use ×-isPartialOrder instead."
+#-}
+_×-isDecTotalOrder_ = ×-isDecTotalOrder
+{-# WARNING_ON_USAGE _×-isDecTotalOrder_
+"Warning: _×-isDecTotalOrder_ was deprecated in v0.15.
+Please use ×-isDecTotalOrder instead."
+#-}
+_×-poset_           = ×-poset
+{-# WARNING_ON_USAGE _×-poset_
+"Warning: _×-poset_ was deprecated in v0.15.
+Please use ×-poset instead."
+#-}
+_×-totalOrder_      = ×-totalOrder
+{-# WARNING_ON_USAGE _×-totalOrder_
+"Warning: _×-totalOrder_ was deprecated in v0.15.
+Please use ×-totalOrder instead."
+#-}
+_×-decTotalOrder_   = ×-decTotalOrder
+{-# WARNING_ON_USAGE _×-decTotalOrder_
+"Warning: _×-decTotalOrder_ was deprecated in v0.15.
+Please use ×-decTotalOrder instead."
+#-}
 ×-≈-respects₂       = ×-respects₂
+{-# WARNING_ON_USAGE ×-≈-respects₂
+"Warning: ×-≈-respects₂ was deprecated in v0.15.
+Please use ×-respects₂ instead."
+#-}
