@@ -209,13 +209,13 @@
     <a id="8121" class="Symbol">}</a> <a id="8123" class="Keyword">where</a> <a id="8129" class="Keyword">open</a> <a id="8134" href="Relation.Binary.html#3828" class="Module">Poset</a>
 
   <a id="8143" href="Data.Product.Relation.Pointwise.NonDependent.html#8143" class="Function">×-strictPartialOrder</a> <a id="8164" class="Symbol">:</a>
-    <a id="8170" href="Relation.Binary.html#6136" class="Record">StrictPartialOrder</a> <a id="8189" href="Data.Product.Relation.Pointwise.NonDependent.html#7318" class="Bound">ℓ₁</a> <a id="8192" href="Data.Product.Relation.Pointwise.NonDependent.html#7321" class="Bound">ℓ₂</a> <a id="8195" class="Symbol">_</a> <a id="8197" class="Symbol">→</a> <a id="8199" href="Relation.Binary.html#6136" class="Record">StrictPartialOrder</a> <a id="8218" href="Data.Product.Relation.Pointwise.NonDependent.html#7324" class="Bound">ℓ₃</a> <a id="8221" href="Data.Product.Relation.Pointwise.NonDependent.html#7327" class="Bound">ℓ₄</a> <a id="8224" class="Symbol">_</a> <a id="8226" class="Symbol">→</a>
-    <a id="8232" href="Relation.Binary.html#6136" class="Record">StrictPartialOrder</a> <a id="8251" class="Symbol">_</a> <a id="8253" class="Symbol">_</a> <a id="8255" class="Symbol">_</a>
+    <a id="8170" href="Relation.Binary.html#6208" class="Record">StrictPartialOrder</a> <a id="8189" href="Data.Product.Relation.Pointwise.NonDependent.html#7318" class="Bound">ℓ₁</a> <a id="8192" href="Data.Product.Relation.Pointwise.NonDependent.html#7321" class="Bound">ℓ₂</a> <a id="8195" class="Symbol">_</a> <a id="8197" class="Symbol">→</a> <a id="8199" href="Relation.Binary.html#6208" class="Record">StrictPartialOrder</a> <a id="8218" href="Data.Product.Relation.Pointwise.NonDependent.html#7324" class="Bound">ℓ₃</a> <a id="8221" href="Data.Product.Relation.Pointwise.NonDependent.html#7327" class="Bound">ℓ₄</a> <a id="8224" class="Symbol">_</a> <a id="8226" class="Symbol">→</a>
+    <a id="8232" href="Relation.Binary.html#6208" class="Record">StrictPartialOrder</a> <a id="8251" class="Symbol">_</a> <a id="8253" class="Symbol">_</a> <a id="8255" class="Symbol">_</a>
   <a id="8259" href="Data.Product.Relation.Pointwise.NonDependent.html#8143" class="Function">×-strictPartialOrder</a> <a id="8280" href="Data.Product.Relation.Pointwise.NonDependent.html#8280" class="Bound">s₁</a> <a id="8283" href="Data.Product.Relation.Pointwise.NonDependent.html#8283" class="Bound">s₂</a> <a id="8286" class="Symbol">=</a> <a id="8288" class="Keyword">record</a>
     <a id="8299" class="Symbol">{</a> <a id="8301" class="Field">isStrictPartialOrder</a> <a id="8322" class="Symbol">=</a> <a id="8324" href="Data.Product.Relation.Pointwise.NonDependent.html#6453" class="Function">×-isStrictPartialOrder</a>
-                               <a id="8378" class="Symbol">(</a><a id="8379" href="Relation.Binary.html#6342" class="Field">isStrictPartialOrder</a> <a id="8400" href="Data.Product.Relation.Pointwise.NonDependent.html#8280" class="Bound">s₁</a><a id="8402" class="Symbol">)</a>
-                               <a id="8435" class="Symbol">(</a><a id="8436" href="Relation.Binary.html#6342" class="Field">isStrictPartialOrder</a> <a id="8457" href="Data.Product.Relation.Pointwise.NonDependent.html#8283" class="Bound">s₂</a><a id="8459" class="Symbol">)</a>
-    <a id="8465" class="Symbol">}</a> <a id="8467" class="Keyword">where</a> <a id="8473" class="Keyword">open</a> <a id="8478" href="Relation.Binary.html#6136" class="Module">StrictPartialOrder</a>
+                               <a id="8378" class="Symbol">(</a><a id="8379" href="Relation.Binary.html#6414" class="Field">isStrictPartialOrder</a> <a id="8400" href="Data.Product.Relation.Pointwise.NonDependent.html#8280" class="Bound">s₁</a><a id="8402" class="Symbol">)</a>
+                               <a id="8435" class="Symbol">(</a><a id="8436" href="Relation.Binary.html#6414" class="Field">isStrictPartialOrder</a> <a id="8457" href="Data.Product.Relation.Pointwise.NonDependent.html#8283" class="Bound">s₂</a><a id="8459" class="Symbol">)</a>
+    <a id="8465" class="Symbol">}</a> <a id="8467" class="Keyword">where</a> <a id="8473" class="Keyword">open</a> <a id="8478" href="Relation.Binary.html#6208" class="Module">StrictPartialOrder</a>
 
   <a id="8500" class="Comment">-- A piece of infix notation for combining setoids</a>
   <a id="8553" class="Keyword">infix</a> <a id="8559" class="Number">4</a> <a id="8561" href="Data.Product.Relation.Pointwise.NonDependent.html#8568" class="Function Operator">_×ₛ_</a>
@@ -395,26 +395,107 @@
 <a id="14499" class="Comment">-- Please use the new names as continuing support for the old names is</a>
 <a id="14570" class="Comment">-- not guaranteed.</a>
 
-<a id="14590" class="Keyword">infixr</a> <a id="14597" class="Number">2</a> <a id="14599" href="Data.Product.Relation.Pointwise.NonDependent.html#14607" class="Function Operator">_×-Rel_</a>
-<a id="_×-Rel_"></a><a id="14607" href="Data.Product.Relation.Pointwise.NonDependent.html#14607" class="Function Operator">_×-Rel_</a> <a id="14615" class="Symbol">=</a> <a id="14617" href="Data.Product.Relation.Pointwise.NonDependent.html#1302" class="Function">Pointwise</a>
+<a id="14590" class="Comment">-- Version 0.15</a>
 
-<a id="Rel↔≡"></a><a id="14628" href="Data.Product.Relation.Pointwise.NonDependent.html#14628" class="Function">Rel↔≡</a>                     <a id="14654" class="Symbol">=</a> <a id="14656" href="Data.Product.Relation.Pointwise.NonDependent.html#9005" class="Function">Pointwise-≡↔≡</a>
-<a id="_×-reflexive_"></a><a id="14670" href="Data.Product.Relation.Pointwise.NonDependent.html#14670" class="Function Operator">_×-reflexive_</a>             <a id="14696" class="Symbol">=</a> <a id="14698" href="Data.Product.Relation.Pointwise.NonDependent.html#1541" class="Function">×-reflexive</a>
-<a id="_×-refl_"></a><a id="14710" href="Data.Product.Relation.Pointwise.NonDependent.html#14710" class="Function Operator">_×-refl_</a>                  <a id="14736" class="Symbol">=</a> <a id="14738" href="Data.Product.Relation.Pointwise.NonDependent.html#1732" class="Function">×-refl</a>
-<a id="_×-symmetric_"></a><a id="14745" href="Data.Product.Relation.Pointwise.NonDependent.html#14745" class="Function Operator">_×-symmetric_</a>             <a id="14771" class="Symbol">=</a> <a id="14773" href="Data.Product.Relation.Pointwise.NonDependent.html#2253" class="Function">×-symmetric</a>
-<a id="_×-transitive_"></a><a id="14785" href="Data.Product.Relation.Pointwise.NonDependent.html#14785" class="Function Operator">_×-transitive_</a>            <a id="14811" class="Symbol">=</a> <a id="14813" href="Data.Product.Relation.Pointwise.NonDependent.html#2418" class="Function">×-transitive</a>
-<a id="_×-antisymmetric_"></a><a id="14826" href="Data.Product.Relation.Pointwise.NonDependent.html#14826" class="Function Operator">_×-antisymmetric_</a>         <a id="14852" class="Symbol">=</a> <a id="14854" href="Data.Product.Relation.Pointwise.NonDependent.html#2636" class="Function">×-antisymmetric</a>
-<a id="_×-≈-respects₂_"></a><a id="14870" href="Data.Product.Relation.Pointwise.NonDependent.html#14870" class="Function Operator">_×-≈-respects₂_</a>           <a id="14896" class="Symbol">=</a> <a id="14898" href="Data.Product.Relation.Pointwise.NonDependent.html#3217" class="Function">×-respects₂</a>
-<a id="_×-decidable_"></a><a id="14910" href="Data.Product.Relation.Pointwise.NonDependent.html#14910" class="Function Operator">_×-decidable_</a>             <a id="14936" class="Symbol">=</a> <a id="14938" href="Data.Product.Relation.Pointwise.NonDependent.html#4258" class="Function">×-decidable</a>
-<a id="_×-isEquivalence_"></a><a id="14950" href="Data.Product.Relation.Pointwise.NonDependent.html#14950" class="Function Operator">_×-isEquivalence_</a>         <a id="14976" class="Symbol">=</a> <a id="14978" href="Data.Product.Relation.Pointwise.NonDependent.html#4510" class="Function">×-isEquivalence</a>
-<a id="_×-isDecEquivalence_"></a><a id="14994" href="Data.Product.Relation.Pointwise.NonDependent.html#14994" class="Function Operator">_×-isDecEquivalence_</a>      <a id="15020" class="Symbol">=</a> <a id="15022" href="Data.Product.Relation.Pointwise.NonDependent.html#5055" class="Function">×-isDecEquivalence</a>
-<a id="_×-isPreorder_"></a><a id="15041" href="Data.Product.Relation.Pointwise.NonDependent.html#15041" class="Function Operator">_×-isPreorder_</a>            <a id="15067" class="Symbol">=</a> <a id="15069" href="Data.Product.Relation.Pointwise.NonDependent.html#5422" class="Function">×-isPreorder</a>
-<a id="_×-isPartialOrder_"></a><a id="15082" href="Data.Product.Relation.Pointwise.NonDependent.html#15082" class="Function Operator">_×-isPartialOrder_</a>        <a id="15108" class="Symbol">=</a> <a id="15110" href="Data.Product.Relation.Pointwise.NonDependent.html#6006" class="Function">×-isPartialOrder</a>
-<a id="_×-isStrictPartialOrder_"></a><a id="15127" href="Data.Product.Relation.Pointwise.NonDependent.html#15127" class="Function Operator">_×-isStrictPartialOrder_</a>  <a id="15153" class="Symbol">=</a> <a id="15155" href="Data.Product.Relation.Pointwise.NonDependent.html#6453" class="Function">×-isStrictPartialOrder</a>
-<a id="_×-preorder_"></a><a id="15178" href="Data.Product.Relation.Pointwise.NonDependent.html#15178" class="Function Operator">_×-preorder_</a>              <a id="15204" class="Symbol">=</a> <a id="15206" href="Data.Product.Relation.Pointwise.NonDependent.html#7340" class="Function">×-preorder</a>
-<a id="_×-setoid_"></a><a id="15217" href="Data.Product.Relation.Pointwise.NonDependent.html#15217" class="Function Operator">_×-setoid_</a>                <a id="15243" class="Symbol">=</a> <a id="15245" href="Data.Product.Relation.Pointwise.NonDependent.html#7527" class="Function">×-setoid</a>
-<a id="_×-decSetoid_"></a><a id="15254" href="Data.Product.Relation.Pointwise.NonDependent.html#15254" class="Function Operator">_×-decSetoid_</a>             <a id="15280" class="Symbol">=</a> <a id="15282" href="Data.Product.Relation.Pointwise.NonDependent.html#7716" class="Function">×-decSetoid</a>
-<a id="_×-poset_"></a><a id="15294" href="Data.Product.Relation.Pointwise.NonDependent.html#15294" class="Function Operator">_×-poset_</a>                 <a id="15320" class="Symbol">=</a> <a id="15322" href="Data.Product.Relation.Pointwise.NonDependent.html#7935" class="Function">×-poset</a>
-<a id="_×-strictPartialOrder_"></a><a id="15330" href="Data.Product.Relation.Pointwise.NonDependent.html#15330" class="Function Operator">_×-strictPartialOrder_</a>    <a id="15356" class="Symbol">=</a> <a id="15358" href="Data.Product.Relation.Pointwise.NonDependent.html#8143" class="Function">×-strictPartialOrder</a>
-<a id="_×-≟_"></a><a id="15379" href="Data.Product.Relation.Pointwise.NonDependent.html#15379" class="Function Operator">_×-≟_</a>                     <a id="15405" class="Symbol">=</a> <a id="15407" href="Data.Product.Relation.Pointwise.NonDependent.html#9380" class="Function">≡?×≡?⇒≡?</a>
+<a id="14607" class="Keyword">infixr</a> <a id="14614" class="Number">2</a> <a id="14616" href="Data.Product.Relation.Pointwise.NonDependent.html#14624" class="Function Operator">_×-Rel_</a>
+<a id="_×-Rel_"></a><a id="14624" href="Data.Product.Relation.Pointwise.NonDependent.html#14624" class="Function Operator">_×-Rel_</a> <a id="14632" class="Symbol">=</a> <a id="14634" href="Data.Product.Relation.Pointwise.NonDependent.html#1302" class="Function">Pointwise</a>
+<a id="14644" class="Symbol">{-#</a> <a id="14648" class="Keyword">WARNING_ON_USAGE</a> _×-Rel_
+<a id="14673" class="String">&quot;Warning: _×-Rel_ was deprecated in v0.15.
+Please use Pointwise instead.&quot;</a>
+<a id="14747" class="Symbol">#-}</a>
+<a id="Rel↔≡"></a><a id="14751" href="Data.Product.Relation.Pointwise.NonDependent.html#14751" class="Function">Rel↔≡</a>                     <a id="14777" class="Symbol">=</a> <a id="14779" href="Data.Product.Relation.Pointwise.NonDependent.html#9005" class="Function">Pointwise-≡↔≡</a>
+<a id="14793" class="Symbol">{-#</a> <a id="14797" class="Keyword">WARNING_ON_USAGE</a> Rel↔≡
+<a id="14820" class="String">&quot;Warning: Rel↔≡ was deprecated in v0.15.
+Please use Pointwise-≡↔≡ instead.&quot;</a>
+<a id="14896" class="Symbol">#-}</a>
+<a id="_×-reflexive_"></a><a id="14900" href="Data.Product.Relation.Pointwise.NonDependent.html#14900" class="Function Operator">_×-reflexive_</a>             <a id="14926" class="Symbol">=</a> <a id="14928" href="Data.Product.Relation.Pointwise.NonDependent.html#1541" class="Function">×-reflexive</a>
+<a id="14940" class="Symbol">{-#</a> <a id="14944" class="Keyword">WARNING_ON_USAGE</a> _×-reflexive_
+<a id="14975" class="String">&quot;Warning: _×-reflexive_ was deprecated in v0.15.
+Please use ×-reflexive instead.&quot;</a>
+<a id="15057" class="Symbol">#-}</a>
+<a id="_×-refl_"></a><a id="15061" href="Data.Product.Relation.Pointwise.NonDependent.html#15061" class="Function Operator">_×-refl_</a>                  <a id="15087" class="Symbol">=</a> <a id="15089" href="Data.Product.Relation.Pointwise.NonDependent.html#1732" class="Function">×-refl</a>
+<a id="15096" class="Symbol">{-#</a> <a id="15100" class="Keyword">WARNING_ON_USAGE</a> _×-refl_
+<a id="15126" class="String">&quot;Warning: _×-refl_ was deprecated in v0.15.
+Please use ×-refl instead.&quot;</a>
+<a id="15198" class="Symbol">#-}</a>
+<a id="_×-symmetric_"></a><a id="15202" href="Data.Product.Relation.Pointwise.NonDependent.html#15202" class="Function Operator">_×-symmetric_</a>             <a id="15228" class="Symbol">=</a> <a id="15230" href="Data.Product.Relation.Pointwise.NonDependent.html#2253" class="Function">×-symmetric</a>
+<a id="15242" class="Symbol">{-#</a> <a id="15246" class="Keyword">WARNING_ON_USAGE</a> _×-symmetric_
+<a id="15277" class="String">&quot;Warning: _×-symmetric_ was deprecated in v0.15.
+Please use ×-symmetric instead.&quot;</a>
+<a id="15359" class="Symbol">#-}</a>
+<a id="_×-transitive_"></a><a id="15363" href="Data.Product.Relation.Pointwise.NonDependent.html#15363" class="Function Operator">_×-transitive_</a>            <a id="15389" class="Symbol">=</a> <a id="15391" href="Data.Product.Relation.Pointwise.NonDependent.html#2418" class="Function">×-transitive</a>
+<a id="15404" class="Symbol">{-#</a> <a id="15408" class="Keyword">WARNING_ON_USAGE</a> _×-transitive_
+<a id="15440" class="String">&quot;Warning: _×-transitive_ was deprecated in v0.15.
+Please use ×-transitive instead.&quot;</a>
+<a id="15524" class="Symbol">#-}</a>
+<a id="_×-antisymmetric_"></a><a id="15528" href="Data.Product.Relation.Pointwise.NonDependent.html#15528" class="Function Operator">_×-antisymmetric_</a>         <a id="15554" class="Symbol">=</a> <a id="15556" href="Data.Product.Relation.Pointwise.NonDependent.html#2636" class="Function">×-antisymmetric</a>
+<a id="15572" class="Symbol">{-#</a> <a id="15576" class="Keyword">WARNING_ON_USAGE</a> _×-antisymmetric_
+<a id="15611" class="String">&quot;Warning: _×-antisymmetric_ was deprecated in v0.15.
+Please use ×-antisymmetric instead.&quot;</a>
+<a id="15701" class="Symbol">#-}</a>
+<a id="_×-≈-respects₂_"></a><a id="15705" href="Data.Product.Relation.Pointwise.NonDependent.html#15705" class="Function Operator">_×-≈-respects₂_</a>           <a id="15731" class="Symbol">=</a> <a id="15733" href="Data.Product.Relation.Pointwise.NonDependent.html#3217" class="Function">×-respects₂</a>
+<a id="15745" class="Symbol">{-#</a> <a id="15749" class="Keyword">WARNING_ON_USAGE</a> _×-≈-respects₂_
+<a id="15782" class="String">&quot;Warning: _×-≈-respects₂_ was deprecated in v0.15.
+Please use ×-respects₂ instead.&quot;</a>
+<a id="15866" class="Symbol">#-}</a>
+<a id="_×-decidable_"></a><a id="15870" href="Data.Product.Relation.Pointwise.NonDependent.html#15870" class="Function Operator">_×-decidable_</a>             <a id="15896" class="Symbol">=</a> <a id="15898" href="Data.Product.Relation.Pointwise.NonDependent.html#4258" class="Function">×-decidable</a>
+<a id="15910" class="Symbol">{-#</a> <a id="15914" class="Keyword">WARNING_ON_USAGE</a> _×-decidable_
+<a id="15945" class="String">&quot;Warning: _×-decidable_ was deprecated in v0.15.
+Please use ×-decidable instead.&quot;</a>
+<a id="16027" class="Symbol">#-}</a>
+<a id="_×-isEquivalence_"></a><a id="16031" href="Data.Product.Relation.Pointwise.NonDependent.html#16031" class="Function Operator">_×-isEquivalence_</a>         <a id="16057" class="Symbol">=</a> <a id="16059" href="Data.Product.Relation.Pointwise.NonDependent.html#4510" class="Function">×-isEquivalence</a>
+<a id="16075" class="Symbol">{-#</a> <a id="16079" class="Keyword">WARNING_ON_USAGE</a> _×-isEquivalence_
+<a id="16114" class="String">&quot;Warning: _×-isEquivalence_ was deprecated in v0.15.
+Please use ×-isEquivalence instead.&quot;</a>
+<a id="16204" class="Symbol">#-}</a>
+<a id="_×-isDecEquivalence_"></a><a id="16208" href="Data.Product.Relation.Pointwise.NonDependent.html#16208" class="Function Operator">_×-isDecEquivalence_</a>      <a id="16234" class="Symbol">=</a> <a id="16236" href="Data.Product.Relation.Pointwise.NonDependent.html#5055" class="Function">×-isDecEquivalence</a>
+<a id="16255" class="Symbol">{-#</a> <a id="16259" class="Keyword">WARNING_ON_USAGE</a> _×-isDecEquivalence_
+<a id="16297" class="String">&quot;Warning: _×-isDecEquivalence_ was deprecated in v0.15.
+Please use ×-isDecEquivalence instead.&quot;</a>
+<a id="16393" class="Symbol">#-}</a>
+<a id="_×-isPreorder_"></a><a id="16397" href="Data.Product.Relation.Pointwise.NonDependent.html#16397" class="Function Operator">_×-isPreorder_</a>            <a id="16423" class="Symbol">=</a> <a id="16425" href="Data.Product.Relation.Pointwise.NonDependent.html#5422" class="Function">×-isPreorder</a>
+<a id="16438" class="Symbol">{-#</a> <a id="16442" class="Keyword">WARNING_ON_USAGE</a> _×-isPreorder_
+<a id="16474" class="String">&quot;Warning: _×-isPreorder_ was deprecated in v0.15.
+Please use ×-isPreorder instead.&quot;</a>
+<a id="16558" class="Symbol">#-}</a>
+<a id="_×-isPartialOrder_"></a><a id="16562" href="Data.Product.Relation.Pointwise.NonDependent.html#16562" class="Function Operator">_×-isPartialOrder_</a>        <a id="16588" class="Symbol">=</a> <a id="16590" href="Data.Product.Relation.Pointwise.NonDependent.html#6006" class="Function">×-isPartialOrder</a>
+<a id="16607" class="Symbol">{-#</a> <a id="16611" class="Keyword">WARNING_ON_USAGE</a> _×-isPartialOrder_
+<a id="16647" class="String">&quot;Warning: _×-isPartialOrder_ was deprecated in v0.15.
+Please use ×-isPartialOrder instead.&quot;</a>
+<a id="16739" class="Symbol">#-}</a>
+<a id="_×-isStrictPartialOrder_"></a><a id="16743" href="Data.Product.Relation.Pointwise.NonDependent.html#16743" class="Function Operator">_×-isStrictPartialOrder_</a>  <a id="16769" class="Symbol">=</a> <a id="16771" href="Data.Product.Relation.Pointwise.NonDependent.html#6453" class="Function">×-isStrictPartialOrder</a>
+<a id="16794" class="Symbol">{-#</a> <a id="16798" class="Keyword">WARNING_ON_USAGE</a> _×-isStrictPartialOrder_
+<a id="16840" class="String">&quot;Warning: _×-isStrictPartialOrder_ was deprecated in v0.15.
+Please use ×-isStrictPartialOrder instead.&quot;</a>
+<a id="16944" class="Symbol">#-}</a>
+<a id="_×-preorder_"></a><a id="16948" href="Data.Product.Relation.Pointwise.NonDependent.html#16948" class="Function Operator">_×-preorder_</a>              <a id="16974" class="Symbol">=</a> <a id="16976" href="Data.Product.Relation.Pointwise.NonDependent.html#7340" class="Function">×-preorder</a>
+<a id="16987" class="Symbol">{-#</a> <a id="16991" class="Keyword">WARNING_ON_USAGE</a> _×-preorder_
+<a id="17021" class="String">&quot;Warning: _×-preorder_ was deprecated in v0.15.
+Please use ×-preorder instead.&quot;</a>
+<a id="17101" class="Symbol">#-}</a>
+<a id="_×-setoid_"></a><a id="17105" href="Data.Product.Relation.Pointwise.NonDependent.html#17105" class="Function Operator">_×-setoid_</a>                <a id="17131" class="Symbol">=</a> <a id="17133" href="Data.Product.Relation.Pointwise.NonDependent.html#7527" class="Function">×-setoid</a>
+<a id="17142" class="Symbol">{-#</a> <a id="17146" class="Keyword">WARNING_ON_USAGE</a> _×-setoid_
+<a id="17174" class="String">&quot;Warning: _×-setoid_ was deprecated in v0.15.
+Please use ×-setoid instead.&quot;</a>
+<a id="17250" class="Symbol">#-}</a>
+<a id="_×-decSetoid_"></a><a id="17254" href="Data.Product.Relation.Pointwise.NonDependent.html#17254" class="Function Operator">_×-decSetoid_</a>             <a id="17280" class="Symbol">=</a> <a id="17282" href="Data.Product.Relation.Pointwise.NonDependent.html#7716" class="Function">×-decSetoid</a>
+<a id="17294" class="Symbol">{-#</a> <a id="17298" class="Keyword">WARNING_ON_USAGE</a> _×-decSetoid_
+<a id="17329" class="String">&quot;Warning: _×-decSetoid_ was deprecated in v0.15.
+Please use ×-decSetoid instead.&quot;</a>
+<a id="17411" class="Symbol">#-}</a>
+<a id="_×-poset_"></a><a id="17415" href="Data.Product.Relation.Pointwise.NonDependent.html#17415" class="Function Operator">_×-poset_</a>                 <a id="17441" class="Symbol">=</a> <a id="17443" href="Data.Product.Relation.Pointwise.NonDependent.html#7935" class="Function">×-poset</a>
+<a id="17451" class="Symbol">{-#</a> <a id="17455" class="Keyword">WARNING_ON_USAGE</a> _×-poset_
+<a id="17482" class="String">&quot;Warning: _×-poset_ was deprecated in v0.15.
+Please use ×-poset instead.&quot;</a>
+<a id="17556" class="Symbol">#-}</a>
+<a id="_×-strictPartialOrder_"></a><a id="17560" href="Data.Product.Relation.Pointwise.NonDependent.html#17560" class="Function Operator">_×-strictPartialOrder_</a>    <a id="17586" class="Symbol">=</a> <a id="17588" href="Data.Product.Relation.Pointwise.NonDependent.html#8143" class="Function">×-strictPartialOrder</a>
+<a id="17609" class="Symbol">{-#</a> <a id="17613" class="Keyword">WARNING_ON_USAGE</a> _×-strictPartialOrder_
+<a id="17653" class="String">&quot;Warning: _×-strictPartialOrder_ was deprecated in v0.15.
+Please use ×-strictPartialOrder instead.&quot;</a>
+<a id="17753" class="Symbol">#-}</a>
+<a id="_×-≟_"></a><a id="17757" href="Data.Product.Relation.Pointwise.NonDependent.html#17757" class="Function Operator">_×-≟_</a>                     <a id="17783" class="Symbol">=</a> <a id="17785" href="Data.Product.Relation.Pointwise.NonDependent.html#9380" class="Function">≡?×≡?⇒≡?</a>
+<a id="17794" class="Symbol">{-#</a> <a id="17798" class="Keyword">WARNING_ON_USAGE</a> _×-≟_
+<a id="17821" class="String">&quot;Warning: _×-≟_ was deprecated in v0.15.
+Please use ≡?×≡?⇒≡? instead.&quot;</a>
+<a id="17892" class="Symbol">#-}</a>
 </pre></body></html>

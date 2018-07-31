@@ -732,20 +732,20 @@
   <a id="24242" class="Symbol">;</a> <a id="24244" class="Field">isPartialOrder</a> <a id="24259" class="Symbol">=</a> <a id="24261" href="Data.Integer.Properties.html#24029" class="Function">≤-isPartialOrder</a>
   <a id="24280" class="Symbol">}</a>
 
-<a id="≤-isTotalOrder"></a><a id="24283" href="Data.Integer.Properties.html#24283" class="Function">≤-isTotalOrder</a> <a id="24298" class="Symbol">:</a> <a id="24300" href="Relation.Binary.html#8020" class="Record">IsTotalOrder</a> <a id="24313" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a> <a id="24317" href="Data.Integer.Base.html#3173" class="Datatype Operator">_≤_</a>
+<a id="≤-isTotalOrder"></a><a id="24283" href="Data.Integer.Properties.html#24283" class="Function">≤-isTotalOrder</a> <a id="24298" class="Symbol">:</a> <a id="24300" href="Relation.Binary.html#8092" class="Record">IsTotalOrder</a> <a id="24313" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a> <a id="24317" href="Data.Integer.Base.html#3173" class="Datatype Operator">_≤_</a>
 <a id="24321" href="Data.Integer.Properties.html#24283" class="Function">≤-isTotalOrder</a> <a id="24336" class="Symbol">=</a> <a id="24338" class="Keyword">record</a>
   <a id="24347" class="Symbol">{</a> <a id="24349" class="Field">isPartialOrder</a> <a id="24364" class="Symbol">=</a> <a id="24366" href="Data.Integer.Properties.html#24029" class="Function">≤-isPartialOrder</a>
   <a id="24385" class="Symbol">;</a> <a id="24387" class="Field">total</a>          <a id="24402" class="Symbol">=</a> <a id="24404" href="Data.Integer.Properties.html#23543" class="Function">≤-total</a>
   <a id="24414" class="Symbol">}</a>
 
-<a id="≤-isDecTotalOrder"></a><a id="24417" href="Data.Integer.Properties.html#24417" class="Function">≤-isDecTotalOrder</a> <a id="24435" class="Symbol">:</a> <a id="24437" href="Relation.Binary.html#8772" class="Record">IsDecTotalOrder</a> <a id="24453" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a> <a id="24457" href="Data.Integer.Base.html#3173" class="Datatype Operator">_≤_</a>
+<a id="≤-isDecTotalOrder"></a><a id="24417" href="Data.Integer.Properties.html#24417" class="Function">≤-isDecTotalOrder</a> <a id="24435" class="Symbol">:</a> <a id="24437" href="Relation.Binary.html#8844" class="Record">IsDecTotalOrder</a> <a id="24453" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a> <a id="24457" href="Data.Integer.Base.html#3173" class="Datatype Operator">_≤_</a>
 <a id="24461" href="Data.Integer.Properties.html#24417" class="Function">≤-isDecTotalOrder</a> <a id="24479" class="Symbol">=</a> <a id="24481" class="Keyword">record</a>
   <a id="24490" class="Symbol">{</a> <a id="24492" class="Field">isTotalOrder</a> <a id="24505" class="Symbol">=</a> <a id="24507" href="Data.Integer.Properties.html#24283" class="Function">≤-isTotalOrder</a>
   <a id="24524" class="Symbol">;</a> <a id="24526" class="Field Operator">_≟_</a>          <a id="24539" class="Symbol">=</a> <a id="24541" href="Data.Integer.html#1671" class="Function Operator">_≟_</a>
   <a id="24547" class="Symbol">;</a> <a id="24549" class="Field Operator">_≤?_</a>         <a id="24562" class="Symbol">=</a> <a id="24564" href="Data.Integer.html#2044" class="Function Operator">_≤?_</a>
   <a id="24571" class="Symbol">}</a>
 
-<a id="≤-decTotalOrder"></a><a id="24574" href="Data.Integer.Properties.html#24574" class="Function">≤-decTotalOrder</a> <a id="24590" class="Symbol">:</a> <a id="24592" href="Relation.Binary.html#9336" class="Record">DecTotalOrder</a> <a id="24606" class="Symbol">_</a> <a id="24608" class="Symbol">_</a> <a id="24610" class="Symbol">_</a>
+<a id="≤-decTotalOrder"></a><a id="24574" href="Data.Integer.Properties.html#24574" class="Function">≤-decTotalOrder</a> <a id="24590" class="Symbol">:</a> <a id="24592" href="Relation.Binary.html#9408" class="Record">DecTotalOrder</a> <a id="24606" class="Symbol">_</a> <a id="24608" class="Symbol">_</a> <a id="24610" class="Symbol">_</a>
 <a id="24612" href="Data.Integer.Properties.html#24574" class="Function">≤-decTotalOrder</a> <a id="24628" class="Symbol">=</a> <a id="24630" class="Keyword">record</a>
   <a id="24639" class="Symbol">{</a> <a id="24641" class="Field">Carrier</a>         <a id="24657" class="Symbol">=</a> <a id="24659" href="Agda.Builtin.Int.html#178" class="Datatype">ℤ</a>
   <a id="24663" class="Symbol">;</a> <a id="24665" class="Field Operator">_≈_</a>             <a id="24681" class="Symbol">=</a> <a id="24683" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a>
@@ -822,14 +822,14 @@
 <a id="27467" class="Symbol">...</a> <a id="27471" class="Symbol">|</a> <a id="27473" href="Relation.Binary.Core.html#3519" class="InductiveConstructor">tri&gt;</a> <a id="27478" href="Data.Integer.Properties.html#27478" class="Bound">m≮n</a> <a id="27482" href="Data.Integer.Properties.html#27482" class="Bound">m≢n</a> <a id="27486" href="Data.Integer.Properties.html#27486" class="Bound">m&gt;n</a> <a id="27490" class="Symbol">=</a>
   <a id="27494" href="Relation.Binary.Core.html#3411" class="InductiveConstructor">tri&lt;</a> <a id="27499" class="Symbol">(</a><a id="27500" href="Data.Integer.Base.html#3232" class="InductiveConstructor">-≤-</a> <a id="27504" class="Symbol">(</a><a id="27505" href="Data.Nat.Base.html#3114" class="Function">≤-pred</a> <a id="27512" href="Data.Integer.Properties.html#27486" class="Bound">m&gt;n</a><a id="27515" class="Symbol">))</a> <a id="27518" class="Symbol">(</a><a id="27519" href="Data.Integer.Properties.html#27482" class="Bound">m≢n</a> <a id="27523" href="Function.html#769" class="Function Operator">∘</a> <a id="27525" href="Data.Integer.Properties.html#1559" class="Function">-[1+-injective</a><a id="27539" class="Symbol">)</a> <a id="27541" class="Symbol">(</a><a id="27542" href="Data.Integer.Properties.html#27478" class="Bound">m≮n</a> <a id="27546" href="Function.html#769" class="Function Operator">∘</a> <a id="27548" href="Data.Nat.Base.html#875" class="InductiveConstructor">s≤s</a> <a id="27552" href="Function.html#769" class="Function Operator">∘</a> <a id="27554" href="Data.Integer.Base.html#3625" class="Function">drop‿-≤-</a><a id="27562" class="Symbol">)</a>
 
-<a id="&lt;-isStrictTotalOrder"></a><a id="27565" href="Data.Integer.Properties.html#27565" class="Function">&lt;-isStrictTotalOrder</a> <a id="27586" class="Symbol">:</a> <a id="27588" href="Relation.Binary.html#10130" class="Record">IsStrictTotalOrder</a> <a id="27607" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a> <a id="27611" href="Data.Integer.Base.html#3362" class="Function Operator">_&lt;_</a>
+<a id="&lt;-isStrictTotalOrder"></a><a id="27565" href="Data.Integer.Properties.html#27565" class="Function">&lt;-isStrictTotalOrder</a> <a id="27586" class="Symbol">:</a> <a id="27588" href="Relation.Binary.html#10202" class="Record">IsStrictTotalOrder</a> <a id="27607" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a> <a id="27611" href="Data.Integer.Base.html#3362" class="Function Operator">_&lt;_</a>
 <a id="27615" href="Data.Integer.Properties.html#27565" class="Function">&lt;-isStrictTotalOrder</a> <a id="27636" class="Symbol">=</a> <a id="27638" class="Keyword">record</a>
   <a id="27647" class="Symbol">{</a> <a id="27649" class="Field">isEquivalence</a> <a id="27663" class="Symbol">=</a> <a id="27665" href="Relation.Binary.PropositionalEquality.Core.html#874" class="Function">isEquivalence</a>
   <a id="27681" class="Symbol">;</a> <a id="27683" class="Field">trans</a>         <a id="27697" class="Symbol">=</a> <a id="27699" class="Symbol">λ</a> <a id="27701" class="Symbol">{</a><a id="27702" href="Data.Integer.Properties.html#27702" class="Bound">i</a><a id="27703" class="Symbol">}</a> <a id="27705" class="Symbol">→</a> <a id="27707" href="Data.Integer.Properties.html#25981" class="Function">&lt;-trans</a> <a id="27715" class="Symbol">{</a><a id="27716" href="Data.Integer.Properties.html#27702" class="Bound">i</a><a id="27717" class="Symbol">}</a>
   <a id="27721" class="Symbol">;</a> <a id="27723" class="Field">compare</a>       <a id="27737" class="Symbol">=</a> <a id="27739" href="Data.Integer.Properties.html#26462" class="Function">&lt;-cmp</a>
   <a id="27747" class="Symbol">}</a>
 
-<a id="&lt;-strictTotalOrder"></a><a id="27750" href="Data.Integer.Properties.html#27750" class="Function">&lt;-strictTotalOrder</a> <a id="27769" class="Symbol">:</a> <a id="27771" href="Relation.Binary.html#11275" class="Record">StrictTotalOrder</a> <a id="27788" class="Symbol">_</a> <a id="27790" class="Symbol">_</a> <a id="27792" class="Symbol">_</a>
+<a id="&lt;-strictTotalOrder"></a><a id="27750" href="Data.Integer.Properties.html#27750" class="Function">&lt;-strictTotalOrder</a> <a id="27769" class="Symbol">:</a> <a id="27771" href="Relation.Binary.html#11347" class="Record">StrictTotalOrder</a> <a id="27788" class="Symbol">_</a> <a id="27790" class="Symbol">_</a> <a id="27792" class="Symbol">_</a>
 <a id="27794" href="Data.Integer.Properties.html#27750" class="Function">&lt;-strictTotalOrder</a> <a id="27813" class="Symbol">=</a> <a id="27815" class="Keyword">record</a>
   <a id="27824" class="Symbol">{</a> <a id="27826" class="Field">Carrier</a>            <a id="27845" class="Symbol">=</a> <a id="27847" href="Agda.Builtin.Int.html#178" class="Datatype">ℤ</a>
   <a id="27851" class="Symbol">;</a> <a id="27853" class="Field Operator">_≈_</a>                <a id="27872" class="Symbol">=</a> <a id="27874" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a>
@@ -874,15 +874,61 @@
 <a id="29279" class="Comment">-- Please use the new names as continuing support for the old names is</a>
 <a id="29350" class="Comment">-- not guaranteed.</a>
 
-<a id="29370" class="Comment">-- inverseˡ              = +-inverseˡ</a>
-<a id="29408" class="Comment">-- inverseʳ              = +-inverseʳ</a>
-<a id="29446" class="Comment">-- distribʳ              = *-distribʳ-+</a>
-<a id="29486" class="Comment">-- isCommutativeSemiring = +-*-isCommutativeSemiring</a>
-<a id="29539" class="Comment">-- commutativeRing       = +-*-commutativeRing</a>
-<a id="29586" class="Comment">-- *-+-right-mono        = *-monoʳ-≤-pos</a>
-<a id="29627" class="Comment">-- cancel-*-+-right-≤    = *-cancelʳ-≤-pos</a>
-<a id="29670" class="Comment">-- cancel-*-right        = *-cancelʳ-≡</a>
-<a id="29709" class="Comment">-- doubleNeg             = neg-involutive</a>
-<a id="29751" class="Comment">-- -‿involutive          = neg-involutive</a>
-<a id="29793" class="Comment">-- +-⊖-left-cancel       = +-cancelˡ-⊖</a>
+<a id="29370" class="Comment">-- Version 0.15</a>
+
+<a id="inverseˡ"></a><a id="29387" href="Data.Integer.Properties.html#29387" class="Function">inverseˡ</a> <a id="29396" class="Symbol">=</a> <a id="29398" href="Data.Integer.Properties.html#9050" class="Function">+-inverseˡ</a>
+<a id="29409" class="Symbol">{-#</a> <a id="29413" class="Keyword">WARNING_ON_USAGE</a> inverseˡ
+<a id="29439" class="String">&quot;Warning: inverseˡ was deprecated in v0.15.
+Please use +-inverseˡ instead.&quot;</a>
+<a id="29515" class="Symbol">#-}</a>
+<a id="inverseʳ"></a><a id="29519" href="Data.Integer.Properties.html#29519" class="Function">inverseʳ</a> <a id="29528" class="Symbol">=</a> <a id="29530" href="Data.Integer.Properties.html#9179" class="Function">+-inverseʳ</a>
+<a id="29541" class="Symbol">{-#</a> <a id="29545" class="Keyword">WARNING_ON_USAGE</a> inverseʳ
+<a id="29571" class="String">&quot;Warning: inverseʳ was deprecated in v0.15.
+Please use +-inverseʳ instead.&quot;</a>
+<a id="29647" class="Symbol">#-}</a>
+<a id="distribʳ"></a><a id="29651" href="Data.Integer.Properties.html#29651" class="Function">distribʳ</a> <a id="29660" class="Symbol">=</a> <a id="29662" href="Data.Integer.Properties.html#14959" class="Function">*-distribʳ-+</a>
+<a id="29675" class="Symbol">{-#</a> <a id="29679" class="Keyword">WARNING_ON_USAGE</a> distribʳ
+<a id="29705" class="String">&quot;Warning: distribʳ was deprecated in v0.15.
+Please use *-distribʳ-+ instead.&quot;</a>
+<a id="29783" class="Symbol">#-}</a>
+<a id="isCommutativeSemiring"></a><a id="29787" href="Data.Integer.Properties.html#29787" class="Function">isCommutativeSemiring</a> <a id="29809" class="Symbol">=</a> <a id="29811" href="Data.Integer.Properties.html#18281" class="Function">+-*-isCommutativeSemiring</a>
+<a id="29837" class="Symbol">{-#</a> <a id="29841" class="Keyword">WARNING_ON_USAGE</a> isCommutativeSemiring
+<a id="29880" class="String">&quot;Warning: isCommutativeSemiring was deprecated in v0.15.
+Please use +-*-isCommutativeSemiring instead.&quot;</a>
+<a id="29984" class="Symbol">#-}</a>
+<a id="commutativeRing"></a><a id="29988" href="Data.Integer.Properties.html#29988" class="Function">commutativeRing</a> <a id="30004" class="Symbol">=</a> <a id="30006" href="Data.Integer.Properties.html#18965" class="Function">+-*-commutativeRing</a>
+<a id="30026" class="Symbol">{-#</a> <a id="30030" class="Keyword">WARNING_ON_USAGE</a> commutativeRing
+<a id="30063" class="String">&quot;Warning: commutativeRing was deprecated in v0.15.
+Please use +-*-commutativeRing instead.&quot;</a>
+<a id="30155" class="Symbol">#-}</a>
+<a id="*-+-right-mono"></a><a id="30159" href="Data.Integer.Properties.html#30159" class="Function">*-+-right-mono</a> <a id="30174" class="Symbol">=</a> <a id="30176" href="Data.Integer.Properties.html#22164" class="Function">*-monoʳ-≤-pos</a>
+<a id="30190" class="Symbol">{-#</a> <a id="30194" class="Keyword">WARNING_ON_USAGE</a> *-+-right-mono
+<a id="30226" class="String">&quot;Warning: *-+-right-mono was deprecated in v0.15.
+Please use *-monoʳ-≤-pos instead.&quot;</a>
+<a id="30311" class="Symbol">#-}</a>
+<a id="cancel-*-+-right-≤"></a><a id="30315" href="Data.Integer.Properties.html#30315" class="Function">cancel-*-+-right-≤</a> <a id="30334" class="Symbol">=</a> <a id="30336" href="Data.Integer.Properties.html#21581" class="Function">*-cancelʳ-≤-pos</a>
+<a id="30352" class="Symbol">{-#</a> <a id="30356" class="Keyword">WARNING_ON_USAGE</a> cancel-*-+-right-≤
+<a id="30392" class="String">&quot;Warning: cancel-*-+-right-≤ was deprecated in v0.15.
+Please use *-cancelʳ-≤-pos instead.&quot;</a>
+<a id="30483" class="Symbol">#-}</a>
+<a id="cancel-*-right"></a><a id="30487" href="Data.Integer.Properties.html#30487" class="Function">cancel-*-right</a> <a id="30502" class="Symbol">=</a> <a id="30504" href="Data.Integer.Properties.html#19969" class="Function">*-cancelʳ-≡</a>
+<a id="30516" class="Symbol">{-#</a> <a id="30520" class="Keyword">WARNING_ON_USAGE</a> cancel-*-right
+<a id="30552" class="String">&quot;Warning: cancel-*-right was deprecated in v0.15.
+Please use *-cancelʳ-≡ instead.&quot;</a>
+<a id="30635" class="Symbol">#-}</a>
+<a id="doubleNeg"></a><a id="30639" href="Data.Integer.Properties.html#30639" class="Function">doubleNeg</a> <a id="30649" class="Symbol">=</a> <a id="30651" href="Data.Integer.Properties.html#1793" class="Function">neg-involutive</a>
+<a id="30666" class="Symbol">{-#</a> <a id="30670" class="Keyword">WARNING_ON_USAGE</a> doubleNeg
+<a id="30697" class="String">&quot;Warning: doubleNeg was deprecated in v0.15.
+Please use neg-involutive instead.&quot;</a>
+<a id="30778" class="Symbol">#-}</a>
+<a id="-‿involutive"></a><a id="30782" href="Data.Integer.Properties.html#30782" class="Function">-‿involutive</a> <a id="30795" class="Symbol">=</a> <a id="30797" href="Data.Integer.Properties.html#1793" class="Function">neg-involutive</a>
+<a id="30812" class="Symbol">{-#</a> <a id="30816" class="Keyword">WARNING_ON_USAGE</a> -‿involutive
+<a id="30846" class="String">&quot;Warning: -‿involutive was deprecated in v0.15.
+Please use neg-involutive instead.&quot;</a>
+<a id="30930" class="Symbol">#-}</a>
+<a id="+-⊖-left-cancel"></a><a id="30934" href="Data.Integer.Properties.html#30934" class="Function">+-⊖-left-cancel</a> <a id="30950" class="Symbol">=</a> <a id="30952" href="Data.Integer.Properties.html#4975" class="Function">+-cancelˡ-⊖</a>
+<a id="30964" class="Symbol">{-#</a> <a id="30968" class="Keyword">WARNING_ON_USAGE</a> +-⊖-left-cancel
+<a id="31001" class="String">&quot;Warning: +-⊖-left-cancel was deprecated in v0.15.
+Please use +-cancelˡ-⊖ instead.&quot;</a>
+<a id="31085" class="Symbol">#-}</a>
 </pre></body></html>

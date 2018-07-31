@@ -86,18 +86,18 @@
   <a id="3192" class="Symbol">;</a> <a id="3194" class="Field">&lt;-resp-≈</a>      <a id="3208" class="Symbol">=</a> <a id="3210" href="Relation.Binary.NonStrictToStrict.html#2054" class="Function">&lt;-resp-≈</a> <a id="3219" href="Relation.Binary.html#998" class="Function">isEquivalence</a> <a id="3233" href="Relation.Binary.html#1433" class="Function">≤-resp-≈</a>
   <a id="3244" class="Symbol">}</a> <a id="3246" class="Keyword">where</a> <a id="3252" class="Keyword">open</a> <a id="3257" href="Relation.Binary.html#3454" class="Module">IsPartialOrder</a> <a id="3272" href="Relation.Binary.NonStrictToStrict.html#3084" class="Bound">po</a>
 
-<a id="&lt;-isStrictTotalOrder₁"></a><a id="3276" href="Relation.Binary.NonStrictToStrict.html#3276" class="Function">&lt;-isStrictTotalOrder₁</a> <a id="3298" class="Symbol">:</a> <a id="3300" href="Relation.Binary.Core.html#4499" class="Function">Decidable</a> <a id="3310" href="Relation.Binary.NonStrictToStrict.html#303" class="Bound Operator">_≈_</a> <a id="3314" class="Symbol">→</a> <a id="3316" href="Relation.Binary.html#8020" class="Record">IsTotalOrder</a> <a id="3329" href="Relation.Binary.NonStrictToStrict.html#303" class="Bound Operator">_≈_</a> <a id="3333" href="Relation.Binary.NonStrictToStrict.html#320" class="Bound Operator">_≤_</a> <a id="3337" class="Symbol">→</a>
-                        <a id="3363" href="Relation.Binary.html#10130" class="Record">IsStrictTotalOrder</a> <a id="3382" href="Relation.Binary.NonStrictToStrict.html#303" class="Bound Operator">_≈_</a> <a id="3386" href="Relation.Binary.NonStrictToStrict.html#644" class="Function Operator">_&lt;_</a>
+<a id="&lt;-isStrictTotalOrder₁"></a><a id="3276" href="Relation.Binary.NonStrictToStrict.html#3276" class="Function">&lt;-isStrictTotalOrder₁</a> <a id="3298" class="Symbol">:</a> <a id="3300" href="Relation.Binary.Core.html#4499" class="Function">Decidable</a> <a id="3310" href="Relation.Binary.NonStrictToStrict.html#303" class="Bound Operator">_≈_</a> <a id="3314" class="Symbol">→</a> <a id="3316" href="Relation.Binary.html#8092" class="Record">IsTotalOrder</a> <a id="3329" href="Relation.Binary.NonStrictToStrict.html#303" class="Bound Operator">_≈_</a> <a id="3333" href="Relation.Binary.NonStrictToStrict.html#320" class="Bound Operator">_≤_</a> <a id="3337" class="Symbol">→</a>
+                        <a id="3363" href="Relation.Binary.html#10202" class="Record">IsStrictTotalOrder</a> <a id="3382" href="Relation.Binary.NonStrictToStrict.html#303" class="Bound Operator">_≈_</a> <a id="3386" href="Relation.Binary.NonStrictToStrict.html#644" class="Function Operator">_&lt;_</a>
 <a id="3390" href="Relation.Binary.NonStrictToStrict.html#3276" class="Function">&lt;-isStrictTotalOrder₁</a> <a id="3412" href="Relation.Binary.NonStrictToStrict.html#3412" class="Bound">≟</a> <a id="3414" href="Relation.Binary.NonStrictToStrict.html#3414" class="Bound">tot</a> <a id="3418" class="Symbol">=</a> <a id="3420" class="Keyword">record</a>
   <a id="3429" class="Symbol">{</a> <a id="3431" class="Field">isEquivalence</a> <a id="3445" class="Symbol">=</a> <a id="3447" href="Relation.Binary.html#998" class="Function">isEquivalence</a>
-  <a id="3463" class="Symbol">;</a> <a id="3465" class="Field">trans</a>         <a id="3479" class="Symbol">=</a> <a id="3481" href="Relation.Binary.NonStrictToStrict.html#938" class="Function">&lt;-trans</a> <a id="3489" href="Relation.Binary.html#8167" class="Field">isPartialOrder</a>
-  <a id="3506" class="Symbol">;</a> <a id="3508" class="Field">compare</a>       <a id="3522" class="Symbol">=</a> <a id="3524" href="Relation.Binary.NonStrictToStrict.html#2236" class="Function">&lt;-trichotomous</a> <a id="3539" href="Relation.Binary.Core.html#5313" class="Function">Eq.sym</a> <a id="3546" href="Relation.Binary.NonStrictToStrict.html#3412" class="Bound">≟</a> <a id="3548" href="Relation.Binary.html#3643" class="Function">antisym</a> <a id="3556" href="Relation.Binary.html#8211" class="Field">total</a>
-  <a id="3564" class="Symbol">}</a> <a id="3566" class="Keyword">where</a> <a id="3572" class="Keyword">open</a> <a id="3577" href="Relation.Binary.html#8020" class="Module">IsTotalOrder</a> <a id="3590" href="Relation.Binary.NonStrictToStrict.html#3414" class="Bound">tot</a>
+  <a id="3463" class="Symbol">;</a> <a id="3465" class="Field">trans</a>         <a id="3479" class="Symbol">=</a> <a id="3481" href="Relation.Binary.NonStrictToStrict.html#938" class="Function">&lt;-trans</a> <a id="3489" href="Relation.Binary.html#8239" class="Field">isPartialOrder</a>
+  <a id="3506" class="Symbol">;</a> <a id="3508" class="Field">compare</a>       <a id="3522" class="Symbol">=</a> <a id="3524" href="Relation.Binary.NonStrictToStrict.html#2236" class="Function">&lt;-trichotomous</a> <a id="3539" href="Relation.Binary.Core.html#5313" class="Function">Eq.sym</a> <a id="3546" href="Relation.Binary.NonStrictToStrict.html#3412" class="Bound">≟</a> <a id="3548" href="Relation.Binary.html#3643" class="Function">antisym</a> <a id="3556" href="Relation.Binary.html#8283" class="Field">total</a>
+  <a id="3564" class="Symbol">}</a> <a id="3566" class="Keyword">where</a> <a id="3572" class="Keyword">open</a> <a id="3577" href="Relation.Binary.html#8092" class="Module">IsTotalOrder</a> <a id="3590" href="Relation.Binary.NonStrictToStrict.html#3414" class="Bound">tot</a>
 
-<a id="&lt;-isStrictTotalOrder₂"></a><a id="3595" href="Relation.Binary.NonStrictToStrict.html#3595" class="Function">&lt;-isStrictTotalOrder₂</a> <a id="3617" class="Symbol">:</a> <a id="3619" href="Relation.Binary.html#8772" class="Record">IsDecTotalOrder</a> <a id="3635" href="Relation.Binary.NonStrictToStrict.html#303" class="Bound Operator">_≈_</a> <a id="3639" href="Relation.Binary.NonStrictToStrict.html#320" class="Bound Operator">_≤_</a> <a id="3643" class="Symbol">→</a>
-                        <a id="3669" href="Relation.Binary.html#10130" class="Record">IsStrictTotalOrder</a> <a id="3688" href="Relation.Binary.NonStrictToStrict.html#303" class="Bound Operator">_≈_</a> <a id="3692" href="Relation.Binary.NonStrictToStrict.html#644" class="Function Operator">_&lt;_</a>
-<a id="3696" href="Relation.Binary.NonStrictToStrict.html#3595" class="Function">&lt;-isStrictTotalOrder₂</a> <a id="3718" href="Relation.Binary.NonStrictToStrict.html#3718" class="Bound">dtot</a> <a id="3723" class="Symbol">=</a> <a id="3725" href="Relation.Binary.NonStrictToStrict.html#3276" class="Function">&lt;-isStrictTotalOrder₁</a> <a id="3747" href="Relation.Binary.html#8987" class="Field Operator">_≟_</a> <a id="3751" href="Relation.Binary.html#8947" class="Field">isTotalOrder</a>
-  <a id="3766" class="Keyword">where</a> <a id="3772" class="Keyword">open</a> <a id="3777" href="Relation.Binary.html#8772" class="Module">IsDecTotalOrder</a> <a id="3793" href="Relation.Binary.NonStrictToStrict.html#3718" class="Bound">dtot</a>
+<a id="&lt;-isStrictTotalOrder₂"></a><a id="3595" href="Relation.Binary.NonStrictToStrict.html#3595" class="Function">&lt;-isStrictTotalOrder₂</a> <a id="3617" class="Symbol">:</a> <a id="3619" href="Relation.Binary.html#8844" class="Record">IsDecTotalOrder</a> <a id="3635" href="Relation.Binary.NonStrictToStrict.html#303" class="Bound Operator">_≈_</a> <a id="3639" href="Relation.Binary.NonStrictToStrict.html#320" class="Bound Operator">_≤_</a> <a id="3643" class="Symbol">→</a>
+                        <a id="3669" href="Relation.Binary.html#10202" class="Record">IsStrictTotalOrder</a> <a id="3688" href="Relation.Binary.NonStrictToStrict.html#303" class="Bound Operator">_≈_</a> <a id="3692" href="Relation.Binary.NonStrictToStrict.html#644" class="Function Operator">_&lt;_</a>
+<a id="3696" href="Relation.Binary.NonStrictToStrict.html#3595" class="Function">&lt;-isStrictTotalOrder₂</a> <a id="3718" href="Relation.Binary.NonStrictToStrict.html#3718" class="Bound">dtot</a> <a id="3723" class="Symbol">=</a> <a id="3725" href="Relation.Binary.NonStrictToStrict.html#3276" class="Function">&lt;-isStrictTotalOrder₁</a> <a id="3747" href="Relation.Binary.html#9059" class="Field Operator">_≟_</a> <a id="3751" href="Relation.Binary.html#9019" class="Field">isTotalOrder</a>
+  <a id="3766" class="Keyword">where</a> <a id="3772" class="Keyword">open</a> <a id="3777" href="Relation.Binary.html#8844" class="Module">IsDecTotalOrder</a> <a id="3793" href="Relation.Binary.NonStrictToStrict.html#3718" class="Bound">dtot</a>
 
 <a id="3799" class="Comment">------------------------------------------------------------------------</a>
 <a id="3872" class="Comment">-- DEPRECATED NAMES</a>
@@ -105,13 +105,46 @@
 <a id="3965" class="Comment">-- Please use the new names as continuing support for the old names is</a>
 <a id="4036" class="Comment">-- not guaranteed.</a>
 
-<a id="irrefl"></a><a id="4056" href="Relation.Binary.NonStrictToStrict.html#4056" class="Function">irrefl</a>         <a id="4071" class="Symbol">=</a> <a id="4073" href="Relation.Binary.NonStrictToStrict.html#873" class="Function">&lt;-irrefl</a>
-<a id="trans"></a><a id="4082" href="Relation.Binary.NonStrictToStrict.html#4082" class="Function">trans</a>          <a id="4097" class="Symbol">=</a> <a id="4099" href="Relation.Binary.NonStrictToStrict.html#938" class="Function">&lt;-trans</a>
-<a id="antisym⟶asym"></a><a id="4107" href="Relation.Binary.NonStrictToStrict.html#4107" class="Function">antisym⟶asym</a> <a id="4120" class="Symbol">=</a> <a id="4122" href="Relation.Binary.NonStrictToStrict.html#1580" class="Function">&lt;-asym</a>
-<a id="decidable"></a><a id="4129" href="Relation.Binary.NonStrictToStrict.html#4129" class="Function">decidable</a>      <a id="4144" class="Symbol">=</a> <a id="4146" href="Relation.Binary.NonStrictToStrict.html#2720" class="Function">&lt;-decidable</a>
-<a id="trichotomous"></a><a id="4158" href="Relation.Binary.NonStrictToStrict.html#4158" class="Function">trichotomous</a>   <a id="4173" class="Symbol">=</a> <a id="4175" href="Relation.Binary.NonStrictToStrict.html#2236" class="Function">&lt;-trichotomous</a>
+<a id="4056" class="Comment">-- Version 0.16</a>
 
-<a id="isPartialOrder⟶isStrictPartialOrder"></a><a id="4191" href="Relation.Binary.NonStrictToStrict.html#4191" class="Function">isPartialOrder⟶isStrictPartialOrder</a> <a id="4227" class="Symbol">=</a> <a id="4229" href="Relation.Binary.NonStrictToStrict.html#2957" class="Function">&lt;-isStrictPartialOrder</a>
-<a id="isTotalOrder⟶isStrictTotalOrder"></a><a id="4252" href="Relation.Binary.NonStrictToStrict.html#4252" class="Function">isTotalOrder⟶isStrictTotalOrder</a>     <a id="4288" class="Symbol">=</a> <a id="4290" href="Relation.Binary.NonStrictToStrict.html#3276" class="Function">&lt;-isStrictTotalOrder₁</a>
-<a id="isDecTotalOrder⟶isStrictTotalOrder"></a><a id="4312" href="Relation.Binary.NonStrictToStrict.html#4312" class="Function">isDecTotalOrder⟶isStrictTotalOrder</a>  <a id="4348" class="Symbol">=</a> <a id="4350" href="Relation.Binary.NonStrictToStrict.html#3595" class="Function">&lt;-isStrictTotalOrder₂</a>
+<a id="irrefl"></a><a id="4073" href="Relation.Binary.NonStrictToStrict.html#4073" class="Function">irrefl</a>         <a id="4088" class="Symbol">=</a> <a id="4090" href="Relation.Binary.NonStrictToStrict.html#873" class="Function">&lt;-irrefl</a>
+<a id="4099" class="Symbol">{-#</a> <a id="4103" class="Keyword">WARNING_ON_USAGE</a> irrefl
+<a id="4127" class="String">&quot;Warning: irrefl was deprecated in v0.16.
+Please use &lt;-irrefl instead.&quot;</a>
+<a id="4199" class="Symbol">#-}</a>
+<a id="trans"></a><a id="4203" href="Relation.Binary.NonStrictToStrict.html#4203" class="Function">trans</a>          <a id="4218" class="Symbol">=</a> <a id="4220" href="Relation.Binary.NonStrictToStrict.html#938" class="Function">&lt;-trans</a>
+<a id="4228" class="Symbol">{-#</a> <a id="4232" class="Keyword">WARNING_ON_USAGE</a> trans
+<a id="4255" class="String">&quot;Warning: trans was deprecated in v0.16.
+Please use &lt;-trans instead.&quot;</a>
+<a id="4325" class="Symbol">#-}</a>
+<a id="antisym⟶asym"></a><a id="4329" href="Relation.Binary.NonStrictToStrict.html#4329" class="Function">antisym⟶asym</a> <a id="4342" class="Symbol">=</a> <a id="4344" href="Relation.Binary.NonStrictToStrict.html#1580" class="Function">&lt;-asym</a>
+<a id="4351" class="Symbol">{-#</a> <a id="4355" class="Keyword">WARNING_ON_USAGE</a> antisym⟶asym
+<a id="4385" class="String">&quot;Warning: antisym⟶asym was deprecated in v0.16.
+Please use &lt;-asym instead.&quot;</a>
+<a id="4461" class="Symbol">#-}</a>
+<a id="decidable"></a><a id="4465" href="Relation.Binary.NonStrictToStrict.html#4465" class="Function">decidable</a>      <a id="4480" class="Symbol">=</a> <a id="4482" href="Relation.Binary.NonStrictToStrict.html#2720" class="Function">&lt;-decidable</a>
+<a id="4494" class="Symbol">{-#</a> <a id="4498" class="Keyword">WARNING_ON_USAGE</a> decidable
+<a id="4525" class="String">&quot;Warning: decidable was deprecated in v0.16.
+Please use &lt;-decidable instead.&quot;</a>
+<a id="4603" class="Symbol">#-}</a>
+<a id="trichotomous"></a><a id="4607" href="Relation.Binary.NonStrictToStrict.html#4607" class="Function">trichotomous</a>   <a id="4622" class="Symbol">=</a> <a id="4624" href="Relation.Binary.NonStrictToStrict.html#2236" class="Function">&lt;-trichotomous</a>
+<a id="4639" class="Symbol">{-#</a> <a id="4643" class="Keyword">WARNING_ON_USAGE</a> trichotomous
+<a id="4673" class="String">&quot;Warning: trichotomous was deprecated in v0.16.
+Please use &lt;-trichotomous instead.&quot;</a>
+<a id="4757" class="Symbol">#-}</a>
+<a id="isPartialOrder⟶isStrictPartialOrder"></a><a id="4761" href="Relation.Binary.NonStrictToStrict.html#4761" class="Function">isPartialOrder⟶isStrictPartialOrder</a> <a id="4797" class="Symbol">=</a> <a id="4799" href="Relation.Binary.NonStrictToStrict.html#2957" class="Function">&lt;-isStrictPartialOrder</a>
+<a id="4822" class="Symbol">{-#</a> <a id="4826" class="Keyword">WARNING_ON_USAGE</a> isPartialOrder⟶isStrictPartialOrder
+<a id="4879" class="String">&quot;Warning: isPartialOrder⟶isStrictPartialOrder was deprecated in v0.16.
+Please use &lt;-isStrictPartialOrder instead.&quot;</a>
+<a id="4994" class="Symbol">#-}</a>
+<a id="isTotalOrder⟶isStrictTotalOrder"></a><a id="4998" href="Relation.Binary.NonStrictToStrict.html#4998" class="Function">isTotalOrder⟶isStrictTotalOrder</a>     <a id="5034" class="Symbol">=</a> <a id="5036" href="Relation.Binary.NonStrictToStrict.html#3276" class="Function">&lt;-isStrictTotalOrder₁</a>
+<a id="5058" class="Symbol">{-#</a> <a id="5062" class="Keyword">WARNING_ON_USAGE</a> isTotalOrder⟶isStrictTotalOrder
+<a id="5111" class="String">&quot;Warning: isTotalOrder⟶isStrictTotalOrder was deprecated in v0.16.
+Please use &lt;-isStrictTotalOrder₁ instead.&quot;</a>
+<a id="5221" class="Symbol">#-}</a>
+<a id="isDecTotalOrder⟶isStrictTotalOrder"></a><a id="5225" href="Relation.Binary.NonStrictToStrict.html#5225" class="Function">isDecTotalOrder⟶isStrictTotalOrder</a>  <a id="5261" class="Symbol">=</a> <a id="5263" href="Relation.Binary.NonStrictToStrict.html#3595" class="Function">&lt;-isStrictTotalOrder₂</a>
+<a id="5285" class="Symbol">{-#</a> <a id="5289" class="Keyword">WARNING_ON_USAGE</a> isDecTotalOrder⟶isStrictTotalOrder
+<a id="5341" class="String">&quot;Warning: isDecTotalOrder⟶isStrictTotalOrder was deprecated in v0.16.
+Please use &lt;-isStrictTotalOrder₂ instead.&quot;</a>
+<a id="5454" class="Symbol">#-}</a>
 </pre></body></html>
