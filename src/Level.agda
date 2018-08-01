@@ -19,3 +19,8 @@ record Lift {a} ℓ (A : Set a) : Set (a ⊔ ℓ) where
   field lower : A
 
 open Lift public
+
+-- Synonyms
+
+ℓ₀ : Level
+ℓ₀ = zero

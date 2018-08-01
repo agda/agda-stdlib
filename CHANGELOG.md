@@ -480,6 +480,11 @@ Other minor additions
   surjection : (∀ x → to (from x) ≡ x) → From ↠ To
   ```
 
+* Added new synonym to `Level`:
+  ```agda
+  ℓ₀ = zero
+  ```
+
 * Added new module `Level.Literals` with functions:
   ```agda
   _ℕ+_   : Nat → Level → Level
