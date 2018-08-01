@@ -406,4 +406,10 @@ InducedEquivalence₂ k _S_ = record
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 0.17
+
 preorder = ↔-preorder
+{-# WARNING_ON_USAGE preorder
+"Warning: preorder was deprecated in v0.17.
+Please use ↔-preorder instead."
+#-}

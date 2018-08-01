@@ -298,9 +298,9 @@ anticipated any time soon, they may eventually be removed in some future release
 
 * In `Function.Related.TypeIsomorphisms`:
   ```agda
-  ×-CommutativeMonoid    ↦ ×-⊤-CommutativeMonoid
-  ⊎-CommutativeMonoid    ↦ ⊎-⊥-CommutativeMonoid
-  ×⊎-CommutativeSemiring ↦ ×-⊎-CommutativeSemiring
+  ×-CommutativeMonoid    ↦ ×-commutativeMonoid
+  ⊎-CommutativeMonoid    ↦ ⊎-commutativeMonoid
+  ×⊎-CommutativeSemiring ↦ ×-⊎-commutativeSemiring
   ```
 
 Other minor additions
