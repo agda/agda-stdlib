@@ -212,6 +212,7 @@ Non-backwards compatible changes
 * Changed the precedence level of `_$_` (and variants) to `-1`. This makes
   it interact well with `_∋_` in e.g. `f $ Maybe A ∋ do (...)`.
 
+* Removed `Data.Char.Core` which was doing nothing of interest.
 
 Other major changes
 -------------------
@@ -283,6 +284,8 @@ The following deprecations have occurred as part of a drive to improve consisten
 the library. The deprecated names still exist and therefore all existing code should still
 work, however they have been deprecated and use of any new names is encouraged. Although not
 anticipated any time soon, they may eventually be removed in some future release of the library.
+
+* All deprecated names now give warnings at point-of-use when type-checked.
 
 * In `Data.Nat.Divisibility`:
   ```

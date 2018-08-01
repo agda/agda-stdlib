@@ -126,15 +126,55 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 0.16
+
 All-map     = map⁺
+{-# WARNING_ON_USAGE All-map
+"Warning: All-map was deprecated in v0.16.
+Please use map⁺ instead."
+#-}
 map-All     = map⁻
-
+{-# WARNING_ON_USAGE map-All
+"Warning: map-All was deprecated in v0.16.
+Please use map⁻ instead."
+#-}
 All-++⁺     = ++⁺
+{-# WARNING_ON_USAGE All-++⁺
+"Warning: All-++⁺ was deprecated in v0.16.
+Please use ++⁺ instead."
+#-}
 All-++ˡ⁻    = ++ˡ⁻
+{-# WARNING_ON_USAGE All-++ˡ⁻
+"Warning: All-++ˡ⁻ was deprecated in v0.16.
+Please use ++ˡ⁻ instead."
+#-}
 All-++ʳ⁻    = ++ʳ⁻
+{-# WARNING_ON_USAGE All-++ʳ⁻
+"Warning: All-++ʳ⁻ was deprecated in v0.16.
+Please use ++ʳ⁻ instead."
+#-}
 All-++⁻     = ++⁻
+{-# WARNING_ON_USAGE All-++⁻
+"Warning: All-++⁻ was deprecated in v0.16.
+Please use ++⁻ instead."
+#-}
 All-++⁺∘++⁻ = ++⁺∘++⁻
+{-# WARNING_ON_USAGE All-++⁺∘++⁻
+"Warning: All-++⁺∘++⁻ was deprecated in v0.16.
+Please use ++⁺∘++⁻ instead."
+#-}
 All-++⁻∘++⁺ = ++⁻∘++⁺
-
+{-# WARNING_ON_USAGE All-++⁻∘++⁺
+"Warning: All-++⁻∘++⁺ was deprecated in v0.16.
+Please use ++⁻∘++⁺ instead."
+#-}
 All-concat⁺ = concat⁺
+{-# WARNING_ON_USAGE All-concat⁺
+"Warning: All-concat⁺ was deprecated in v0.16.
+Please use concat⁺ instead."
+#-}
 All-concat⁻ = concat⁻
+{-# WARNING_ON_USAGE All-concat⁻
+"Warning: All-concat⁻ was deprecated in v0.16.
+Please use concat⁻ instead."
+#-}
