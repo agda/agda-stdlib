@@ -59,7 +59,6 @@ _∼[_]_ {A = A} xs k ys = Preorder._∼_ ([ k ]-Order A) xs ys
 private
   module Eq  {k a} {A : Set a} = Setoid ([ k ]-Equality A)
   module Ord {k a} {A : Set a} = Preorder ([ k ]-Order A)
-  module ×⊎ {k ℓ} = CommutativeSemiring (×⊎-CommutativeSemiring k ℓ)
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
   module MP = MonadProperties
 
@@ -247,7 +246,7 @@ empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here refl)
   y ∈ (xs >>= λ x → f x ++ g x)                      ↔⟨ sym $ >>=↔ ⟩
   Any (λ x → y ∈ f x ++ g x) xs                      ↔⟨ sym (Any-cong (λ _ → ++↔) (_ ∎)) ⟩
   Any (λ x → y ∈ f x ⊎ y ∈ g x) xs                   ↔⟨ sym $ ⊎↔ ⟩
-  (Any (λ x → y ∈ f x) xs ⊎ Any (λ x → y ∈ g x) xs)  ↔⟨ >>=↔ ⟨ ×⊎.+-cong ⟩ >>=↔ ⟩
+  (Any (λ x → y ∈ f x) xs ⊎ Any (λ x → y ∈ g x) xs)  ↔⟨ >>=↔ ⟨ _⊎-cong_ ⟩ >>=↔ ⟩
   (y ∈ (xs >>= f) ⊎ y ∈ (xs >>= g))                  ↔⟨ ++↔ ⟩
   y ∈ (xs >>= f) ++ (xs >>= g)                       ∎
   where open Related.EquationalReasoning
