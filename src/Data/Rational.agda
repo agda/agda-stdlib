@@ -80,7 +80,7 @@ private
 -- introducing a notation for that nasty pattern
 pattern ⟨_&_∧_&_⟩ p eqp q eqq = GCD.is (divides p eqp , divides q eqq) _
 
-normalize : ∀ m n g {m≢0 : m ≢0} {n≢0 : n ≢0} {g≢0 : g ≢0} → GCD m n g →
+normalize : ∀ m n g .{m≢0 : m ≢0} .{n≢0 : n ≢0} .{g≢0 : g ≢0} → GCD m n g →
             Σ[ p ∈ ℕ ] Σ[ q ∈ ℕ ] Coprime (suc p) (suc q) × m ℕ.* suc q ≡ n ℕ.* suc p
 normalize 0       n       g {m≢0 = ()} _
 normalize m       0       g {n≢0 = ()} _
@@ -106,13 +106,13 @@ gcd≢0 m  n       | (suc d , G)  = (suc d , G , tt)
 pattern +0       = + 0
 pattern +[1+_] n = + suc n
 
-norm-mkℚ : (n : ℤ) (d : ℕ) → d ≢0 → ℚ
-norm-mkℚ -[1+ n ] d d≢0 =
+norm-mkℚ : (n : ℤ) (d : ℕ) → .{d≢0 : d ≢0} → ℚ
+norm-mkℚ -[1+ n ] d {d≢0} =
   let (q , gcd , q≢0)      = gcd≢0 (suc n) d
       (n′ , d′ , prf , eq) = normalize (suc n) d q {_} {d≢0} {q≢0} gcd
   in mkℚ -[1+ n′ ] d′ prf
-norm-mkℚ +0       d d≢0 = 0/1
-norm-mkℚ +[1+ n ] d d≢0 =
+norm-mkℚ +0       d {d≢0} = 0/1
+norm-mkℚ +[1+ n ] d {d≢0} =
   let (q , gcd , q≢0)             = gcd≢0 (suc n) d
       (n′ , d′ , prf , eq) = normalize (suc n) d q {_} {d≢0} {q≢0} gcd
   in mkℚ (+ suc n′) d′ prf
@@ -141,16 +141,14 @@ infixl 6 _-_ _+_
 -- multiplication
 
 _*_ : ℚ → ℚ → ℚ
-mkℚ +0 d₁ prf₁ * mkℚ n₂ d₂ prf₂ = 0/1
-mkℚ n₁ d₁ prf₁ * mkℚ +0 d₂ prf₂ = 0/1
-mkℚ n₁ d₁ prf₁ * mkℚ n₂ d₂ prf₂ = norm-mkℚ (n₁ ℤ.* n₂) (suc d₁ ℕ.* suc d₂) _
+mkℚ n₁ d₁ prf₁ * mkℚ n₂ d₂ prf₂ = norm-mkℚ (n₁ ℤ.* n₂) (suc d₁ ℕ.* suc d₂)
+
+-- addition
 
 _+_ : ℚ → ℚ → ℚ
-mkℚ n₁ d₁ prf₁ + mkℚ n₂ d₂ prf₂
-  with (n₁ ℤ.* +[1+ d₂ ]) ℤ.+ (n₂ ℤ.* +[1+ d₁ ])
-     | (n₁ ℤ.* +[1+ d₂ ]) ℤ.+ (n₂ ℤ.* +[1+ d₁ ]) ℤ.≟ + 0
-... | p | yes p≡0 = 0/1
-... | p | no  p≢0 = norm-mkℚ p (suc d₁ ℕ.* suc d₂) _
+mkℚ n₁ d₁ prf₁ + mkℚ n₂ d₂ prf₂ = norm-mkℚ
+  (n₁ ℤ.* (+[1+ d₂ ]) ℤ.+ n₂ ℤ.* (+[1+ d₂ ]))
+  (suc d₁ ℕ.* suc d₂)
 
 -- subtraction
 
