@@ -277,6 +277,9 @@ Other major changes
   Productᵣ.forM        : RawMonad M → Productᵣ A → (A → M B) → M (Productᵣ B)
   ```
 
+* Added new module `Relation.Unary.Closure` providing closures of a predicate
+  with respect to either a preorder or a strict partial order.
+
 Deprecated features
 -------------------
 
