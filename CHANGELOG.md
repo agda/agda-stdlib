@@ -176,6 +176,7 @@ Non-backwards compatible changes
   sequenceM   : RawMonad M → Vec (M A) n → M (A ^ n)
   mapM        : RawMonad M → (A → M B) → A ^ n → M (B ^ n)
   forM        : RawMonad M → A ^ n → (A → M B) → M (B ^ n)
+  ```
 
 * Added new functions to `Data.Vec.Categorical`:
   ```agda
@@ -186,6 +187,9 @@ Non-backwards compatible changes
   mapM      : RawMonad M → (A → M B) → Vec A n → M (Vec B n)
   forM      : RawMonad M → Vec A n → (A → M B) → M (Vec B n)
   ```
+
+* Created `Function.Identity.Categorical` and merged `Category.Functor.Identity`,
+  `Category.Monad.Identity`, and `Category.Comonad.Identity` into it.
 
 #### Other
 

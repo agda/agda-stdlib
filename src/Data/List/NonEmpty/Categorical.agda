@@ -13,7 +13,6 @@ open import Data.Product using (uncurry)
 open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
-open import Category.Monad.Identity
 open import Category.Comonad
 open import Function
 
