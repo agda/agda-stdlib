@@ -12,7 +12,7 @@ open import Algebra
 open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
-open import Category.Monad.Identity
+import Function.Identity.Categorical as Id
 open import Function
 
 -- To minimize the universe level of the RawFunctor, we require that elements of
@@ -46,7 +46,7 @@ module Productₗ {a e} (A : RawMonoid a e) (b : Level) where
     } where module M = RawMonad M
 
   monad : RawMonad Productₗ
-  monad = monadT IdentityMonad
+  monad = monadT Id.monad
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
@@ -103,7 +103,7 @@ module Productᵣ (a : Level) {b e} (B : RawMonoid b e) where
     } where module M = RawMonad M
 
   monad : RawMonad Productᵣ
-  monad = monadT IdentityMonad
+  monad = monadT Id.monad
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
