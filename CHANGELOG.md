@@ -212,6 +212,10 @@ Non-backwards compatible changes
 * Changed the precedence level of `_$_` (and variants) to `-1`. This makes
   it interact well with `_∋_` in e.g. `f $ Maybe A ∋ do (...)`.
 
+* Made `Data.Star.Decoration`, `Data.Star.Environment` and `Data.Star.Pointer`
+  more level polymorphic. In particular `EdgePred` now takes an extra explicit
+  level parameter.
+
 * Removed `Data.Char.Core` which was doing nothing of interest.
 
 Other major changes
