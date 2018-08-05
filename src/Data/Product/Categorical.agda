@@ -12,9 +12,9 @@ open import Algebra
 open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
-open import Category.Monad.Identity
 open import Category.Comonad
 open import Function
+import Function.Identity.Categorical as Id
 
 -- To minimize the universe level of the RawFunctor, we require that elements of
 -- B are "lifted" to a copy of B at a higher universe level (a ⊔ b). See the
@@ -49,14 +49,14 @@ module Productₗ {a e} (A : RawMonoid a e) (b : Level) where
     }
 
   -- The monad instance also requires some mucking about with universe levels.
-  monadT : ∀ {M} → RawMonad M → RawMonad (M ∘′ Productₗ)
+  monadT : RawMonadT (_∘′ Productₗ)
   monadT M = record
     { return = M.pure ∘′ (A.ε ,_)
     ; _>>=_  = λ ma f → ma M.>>= uncurry λ a x → map₁ (a A.∙_) M.<$> f x
     } where module M = RawMonad M
 
   monad : RawMonad Productₗ
-  monad = monadT IdentityMonad
+  monad = monadT Id.monad
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
@@ -116,14 +116,14 @@ module Productᵣ (a : Level) {b e} (B : RawMonoid b e) where
     ; _⊛_  = zip id B._∙_
     }
 
-  monadT : ∀ {M} → RawMonad M → RawMonad (M ∘′ Productᵣ)
+  monadT : RawMonadT (_∘′ Productᵣ)
   monadT M = record
     { return = M.pure ∘′ (_, B.ε)
     ; _>>=_  = λ ma f → ma M.>>= uncurry λ x b → map₂ (b B.∙_) M.<$> f x
     } where module M = RawMonad M
 
   monad : RawMonad Productᵣ
-  monad = monadT IdentityMonad
+  monad = monadT Id.monad
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions

@@ -11,7 +11,7 @@ open import Data.Sum
 open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
-open import Category.Monad.Identity
+import Function.Identity.Categorical as Id
 open import Function
 
 -- To minimize the universe level of the RawFunctor, we require that elements of
@@ -36,14 +36,14 @@ module Sumₗ {a} (A : Set a) (b : Level) where
     }
 
   -- The monad instance also requires some mucking about with universe levels.
-  monadT : ∀ {M} → RawMonad M → RawMonad (M ∘′ Sumₗ)
+  monadT : RawMonadT (_∘′ Sumₗ)
   monadT M = record
     { return = M.pure ∘ inj₂
     ; _>>=_  = λ ma f → ma M.>>= [ M.pure ∘′ inj₁ , f ]′
     } where module M = RawMonad M
 
   monad : RawMonad Sumₗ
-  monad = monadT IdentityMonad
+  monad = monadT Id.monad
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
@@ -87,14 +87,14 @@ module Sumᵣ (a : Level) {b} (B : Set b) where
     ; _⊛_ = [ map₁ , const ∘ inj₂ ]′
     }
 
-  monadT : ∀ {M} → RawMonad M → RawMonad (M ∘′ Sumᵣ)
+  monadT : RawMonadT (_∘′ Sumᵣ)
   monadT M = record
     { return = M.pure ∘′ inj₁
     ; _>>=_  = λ ma f → ma M.>>= [ f , M.pure ∘′ inj₂ ]′
     } where module M = RawMonad M
 
   monad : RawMonad Sumᵣ
-  monad = monadT IdentityMonad
+  monad = monadT Id.monad
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions

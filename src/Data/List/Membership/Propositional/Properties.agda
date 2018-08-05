@@ -15,13 +15,6 @@ open import Algebra.FunctionProperties using (Op₂; Selective)
 open import Category.Monad using (RawMonad)
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Fin using (Fin)
-open import Function
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence using (module Equivalence)
-open import Function.Injection using (Injection; Injective; _↣_)
-open import Function.Inverse as Inv using (_↔_; module Inverse)
-import Function.Related as Related
-open import Function.Related.TypeIsomorphisms
 open import Data.List as List
 open import Data.List.Any as Any using (Any; here; there)
 open import Data.List.Any.Properties
@@ -33,9 +26,16 @@ open import Data.List.Categorical using (monad)
 open import Data.Nat using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤?_)
 open import Data.Nat.Properties
 open import Data.Product hiding (map)
-open import Function.Related.TypeIsomorphisms using (×-≡×≡↔≡,≡)
+open import Data.Product.Relation.Pointwise.NonDependent using (_×-cong_)
 import Data.Product.Relation.Pointwise.Dependent as Σ
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Function
+open import Function.Equality using (_⟨$⟩_)
+open import Function.Equivalence using (module Equivalence)
+open import Function.Injection using (Injection; Injective; _↣_)
+open import Function.Inverse as Inv using (_↔_; module Inverse)
+import Function.Related as Related
+open import Function.Related.TypeIsomorphisms
 open import Relation.Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
@@ -45,7 +45,6 @@ open import Relation.Nullary using (¬_; Dec; yes; no)
 open import Relation.Nullary.Negation
 
 private
-  module ×⊎ {k ℓ} = CommutativeSemiring (×⊎-CommutativeSemiring k ℓ)
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
 
 ------------------------------------------------------------------------
@@ -141,7 +140,7 @@ module _ {a} {A : Set a} {v : A} where
   concat-∈↔ : ∀ {xss : List (List A)} →
               (∃ λ xs → v ∈ xs × xs ∈ xss) ↔ v ∈ concat xss
   concat-∈↔ {xss} =
-    (∃ λ xs → v ∈ xs × xs ∈ xss)  ↔⟨ Σ.cong Inv.id $ ×⊎.*-comm _ _ ⟩
+    (∃ λ xs → v ∈ xs × xs ∈ xss)  ↔⟨ Σ.cong Inv.id $ ×-comm _ _ ⟩
     (∃ λ xs → xs ∈ xss × v ∈ xs)  ↔⟨ Any↔ ⟩
     Any (Any (v ≡_)) xss          ↔⟨ concat↔ ⟩
     v ∈ concat xss                ∎
@@ -204,7 +203,7 @@ module _ {ℓ} {A B : Set ℓ} where
          (∃₂ λ f x → f ∈ fs × x ∈ xs × y ≡ f x) ↔ y ∈ (fs ⊛ xs)
   ⊛-∈↔ fs {xs} {y} =
     (∃₂ λ f x → f ∈ fs × x ∈ xs × y ≡ f x)       ↔⟨ Σ.cong Inv.id (∃∃↔∃∃ _) ⟩
-    (∃ λ f → f ∈ fs × ∃ λ x → x ∈ xs × y ≡ f x)  ↔⟨ Σ.cong Inv.id ((_ ∎) ⟨ ×⊎.*-cong ⟩ Any↔) ⟩
+    (∃ λ f → f ∈ fs × ∃ λ x → x ∈ xs × y ≡ f x)  ↔⟨ Σ.cong Inv.id ((_ ∎) ⟨ _×-cong_ ⟩ Any↔) ⟩
     (∃ λ f → f ∈ fs × Any (_≡_ y ∘ f) xs)        ↔⟨ Any↔ ⟩
     Any (λ f → Any (_≡_ y ∘ f) xs) fs            ↔⟨ ⊛↔ ⟩
     y ∈ (fs ⊛ xs)                                ∎
@@ -309,9 +308,8 @@ module _ {a} {A : Set a} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
-filter-∈ = ∈-filter⁺
+-- Version 0.15
 
--- Please use `filter` instead of `boolFilter`
 boolFilter-∈ : ∀ {a} {A : Set a} (p : A → Bool) (xs : List A) {x} →
            x ∈ xs → p x ≡ true → x ∈ boolFilter p xs
 boolFilter-∈ p []       ()          _
@@ -319,3 +317,16 @@ boolFilter-∈ p (x ∷ xs) (here refl) px≡true rewrite px≡true = here refl
 boolFilter-∈ p (y ∷ xs) (there pxs) px≡true with p y
 ... | true  = there (boolFilter-∈ p xs pxs px≡true)
 ... | false =        boolFilter-∈ p xs pxs px≡true
+{-# WARNING_ON_USAGE boolFilter-∈
+"Warning: boolFilter was deprecated in v0.15.
+Please use filter instead."
+#-}
+
+-- Version 0.16
+
+filter-∈ = ∈-filter⁺
+{-# WARNING_ON_USAGE filter-∈
+"Warning: filter-∈ was deprecated in v0.16.
+Please use ∈-filter⁺ instead."
+#-}
+

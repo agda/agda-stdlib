@@ -259,12 +259,50 @@ private
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 0.15
+
 rec-builder      = recBuilder
+{-# WARNING_ON_USAGE rec-builder
+"Warning: rec-builder was deprecated in v0.15.
+Please use recBuilder instead."
+#-}
 cRec-builder     = cRecBuilder
+{-# WARNING_ON_USAGE cRec-builder
+"Warning: cRec-builder was deprecated in v0.15.
+Please use cRecBuilder instead."
+#-}
 <′-rec-builder   = <′-recBuilder
+{-# WARNING_ON_USAGE <′-rec-builder
+"Warning: <′-rec-builder was deprecated in v0.15.
+Please use <′-recBuilder instead."
+#-}
 <-rec-builder    = <-recBuilder
+{-# WARNING_ON_USAGE <-rec-builder
+"Warning: <-rec-builder was deprecated in v0.15.
+Please use <-recBuilder instead."
+#-}
 ≺-rec-builder    = ≺-recBuilder
+{-# WARNING_ON_USAGE ≺-rec-builder
+"Warning: ≺-rec-builder was deprecated in v0.15.
+Please use ≺-recBuilder instead."
+#-}
 <′-well-founded  = <′-wellFounded
+{-# WARNING_ON_USAGE <′-well-founded
+"Warning: <′-well-founded was deprecated in v0.15.
+Please use <′-wellFounded instead."
+#-}
 <′-well-founded′ = <′-wellFounded′
+{-# WARNING_ON_USAGE <′-well-founded′
+"Warning: <′-well-founded′ was deprecated in v0.15.
+Please use <′-wellFounded′ instead."
+#-}
 <-well-founded   = <-wellFounded
+{-# WARNING_ON_USAGE <-well-founded
+"Warning: <-well-founded was deprecated in v0.15.
+Please use <-wellFounded instead."
+#-}
 ≺-well-founded   = ≺-wellFounded
+{-# WARNING_ON_USAGE ≺-well-founded
+"Warning: ≺-well-founded was deprecated in v0.15.
+Please use ≺-wellFounded instead."
+#-}

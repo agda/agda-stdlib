@@ -13,7 +13,6 @@ open import Data.Product using (uncurry)
 open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
-open import Category.Monad.Identity
 open import Category.Comonad
 open import Function
 
@@ -81,7 +80,7 @@ module _ {m M} (Mon : RawMonad {m} M) where
 ------------------------------------------------------------------------
 -- List⁺ monad transformer
 
-monadT : ∀ {f M} → RawMonad {f} M → RawMonad (M ∘′ List⁺)
+monadT : ∀ {f} → RawMonadT {f} (_∘′ List⁺)
 monadT M = record
   { return = pure ∘′ [_]
   ; _>>=_  = λ mas f → mas >>= λ as → concat <$> mapM M f as
