@@ -22,5 +22,5 @@ open Lift public
 
 -- Synonyms
 
-ℓ₀ : Level
-ℓ₀ = zero
+0ℓ : Level
+0ℓ = zero

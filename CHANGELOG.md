@@ -482,7 +482,7 @@ Other minor additions
 
 * Added new synonym to `Level`:
   ```agda
-  ℓ₀ = zero
+  0ℓ = zero
   ```
 
 * Added new module `Level.Literals` with functions:
