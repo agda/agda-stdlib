@@ -525,13 +525,13 @@ Other minor additions
 
 * Added new proofs to `Function.Related`:
   ```agda
-  R-refl       : Reflexive (Related k {ℓ})
-  R-reflexive  : _≡_ ⇒ Related k {ℓ}
-  R-trans      : Trans (Related k) (Related k) (Related k)
-  R-isPreorder : IsPreorder _↔_ (Related k)
+  K-refl       : Reflexive (Related k)
+  K-reflexive  : _≡_ ⇒ Related k
+  K-trans      : Trans (Related k) (Related k) (Related k)
+  K-isPreorder : IsPreorder _↔_ (Related k)
 
-  SR-sym           : Sym (Related ⌊ k ⌋) (Related ⌊ k ⌋)
-  SR-isEquivalence : IsEquivalence (Related ⌊ k ⌋)
+  SK-sym           : Sym (Related ⌊ k ⌋) (Related ⌊ k ⌋)
+  SK-isEquivalence : IsEquivalence (Related ⌊ k ⌋)
   ```
 
 * Added new proofs to `Function.Related.TypeIsomorphisms`:
