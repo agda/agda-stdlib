@@ -398,7 +398,7 @@ private
     B₁ (Inverse.from A₁↔A₂ ⟨$⟩ x)
       ∼⟨ eq ⟩
     B₂ (Inverse.to A₁↔A₂ ⟨$⟩ (Inverse.from A₁↔A₂ ⟨$⟩ x))
-      ↔⟨ B.Setoid.reflexive (Related.setoid Related.bijection _)
+      ↔⟨ Related.K-reflexive
          (P.cong B₂ $ Inverse.right-inverse-of A₁↔A₂ x) ⟩
     B₂ x
       ∎

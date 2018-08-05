@@ -301,7 +301,9 @@ anticipated any time soon, they may eventually be removed in some future release
   ```
 * In `Function.Related`
   ```agda
-  preorder ↦ ↔-preorder
+  preorder              ↦ R-preorder
+  setoid                ↦ SR-setoid
+  EquationReasoning.sym ↦ SR-sym
   ```
 
 * In `Function.Related.TypeIsomorphisms`:
@@ -519,6 +521,17 @@ Other minor additions
 * Added new function to `Function.LeftInverse`:
   ```agda
   leftInverse : (∀ x → from (to x) ≡ x) → From ↞ To
+  ```
+
+* Added new proofs to `Function.Related`:
+  ```agda
+  R-refl       : Reflexive (Related k {ℓ})
+  R-reflexive  : _≡_ ⇒ Related k {ℓ}
+  R-trans      : Trans (Related k) (Related k) (Related k)
+  R-isPreorder : IsPreorder _↔_ (Related k)
+
+  SR-sym           : Sym (Related ⌊ k ⌋) (Related ⌊ k ⌋)
+  SR-isEquivalence : IsEquivalence (Related ⌊ k ⌋)
   ```
 
 * Added new proofs to `Function.Related.TypeIsomorphisms`:
