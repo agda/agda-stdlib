@@ -330,6 +330,12 @@ module EquationalReasoning where
   _∎ : ∀ {k x} (X : Set x) → X ∼[ k ] X
   X ∎ = K-refl
 
+  sym = SK-sym
+  {-# WARNING_ON_USAGE sym
+  "Warning: EquationalReasoning.sym was deprecated in v0.17.
+  Please use SK-sym instead."
+  #-}
+
 ------------------------------------------------------------------------
 -- Every unary relation induces a preorder and, for symmetric kinds,
 -- an equivalence. (No claim is made that these relations are unique.)
