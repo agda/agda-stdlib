@@ -36,7 +36,7 @@ module Sumₗ {a} (A : Set a) (b : Level) where
     }
 
   -- The monad instance also requires some mucking about with universe levels.
-  monadT : ∀ {M} → RawMonad M → RawMonad (M ∘′ Sumₗ)
+  monadT : RawMonadT (_∘′ Sumₗ)
   monadT M = record
     { return = M.pure ∘ inj₂
     ; _>>=_  = λ ma f → ma M.>>= [ M.pure ∘′ inj₁ , f ]′
@@ -87,7 +87,7 @@ module Sumᵣ (a : Level) {b} (B : Set b) where
     ; _⊛_ = [ map₁ , const ∘ inj₂ ]′
     }
 
-  monadT : ∀ {M} → RawMonad M → RawMonad (M ∘′ Sumᵣ)
+  monadT : RawMonadT (_∘′ Sumᵣ)
   monadT M = record
     { return = M.pure ∘′ inj₁
     ; _>>=_  = λ ma f → ma M.>>= [ f , M.pure ∘′ inj₂ ]′

@@ -39,7 +39,7 @@ module Productₗ {a e} (A : RawMonoid a e) (b : Level) where
     }
 
   -- The monad instance also requires some mucking about with universe levels.
-  monadT : ∀ {M} → RawMonad M → RawMonad (M ∘′ Productₗ)
+  monadT : RawMonadT (_∘′ Productₗ)
   monadT M = record
     { return = M.pure ∘′ (A.ε ,_)
     ; _>>=_  = λ ma f → ma M.>>= uncurry λ a x → map₁ (a A.∙_) M.<$> f x
@@ -96,7 +96,7 @@ module Productᵣ (a : Level) {b e} (B : RawMonoid b e) where
     ; _⊛_  = zip id B._∙_
     }
 
-  monadT : ∀ {M} → RawMonad M → RawMonad (M ∘′ Productᵣ)
+  monadT : RawMonadT (_∘′ Productᵣ)
   monadT M = record
     { return = M.pure ∘′ (_, B.ε)
     ; _>>=_  = λ ma f → ma M.>>= uncurry λ x b → map₂ (b B.∙_) M.<$> f x
