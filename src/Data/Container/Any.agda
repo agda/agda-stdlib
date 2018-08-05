@@ -29,7 +29,7 @@ open import Relation.Binary.PropositionalEquality as P
 
 open Related.EquationalReasoning
 private
-  module ×⊎ {k ℓ} = CommutativeSemiring (×⊎-CommutativeSemiring k ℓ)
+  module ×⊎ {k ℓ} = CommutativeSemiring (×-⊎-commutativeSemiring k ℓ)
 
 module _ {s p} (C : Container s p) {x} {X : Set x} {ℓ} {P : Pred X ℓ} where
 
@@ -77,7 +77,7 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
     (∃₂ λ x y → x ∈ xs × y ∈ ys × P x y)       ↔⟨ ∃∃↔∃∃ (λ x y → x ∈ xs × y ∈ ys × P x y) ⟩
     (∃₂ λ y x → x ∈ xs × y ∈ ys × P x y)       ↔⟨ Σ.cong Inv.id (λ {y} → Σ.cong Inv.id (λ {x} →
       (x ∈ xs × y ∈ ys × P x y)                     ↔⟨ sym Σ-assoc ⟩
-      ((x ∈ xs × y ∈ ys) × P x y)                   ↔⟨ Σ.cong ×-comm Inv.id ⟩
+      ((x ∈ xs × y ∈ ys) × P x y)                   ↔⟨ Σ.cong (×-comm _ _) Inv.id ⟩
       ((y ∈ ys × x ∈ xs) × P x y)                   ↔⟨ Σ-assoc ⟩
       (y ∈ ys × x ∈ xs × P x y)                     ∎)) ⟩
     (∃₂ λ y x → y ∈ ys × x ∈ xs × P x y)       ↔⟨ Σ.cong Inv.id (λ {y} → ∃∃↔∃∃ {B = y ∈ ys} (λ x _ → x ∈ xs × P x y)) ⟩

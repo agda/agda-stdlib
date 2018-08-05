@@ -249,4 +249,10 @@ module _ {a} {A : Set a} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 0.15
+
 Pointwise-≡ = Pointwise-≡↔≡
+{-# WARNING_ON_USAGE Pointwise-≡
+"Warning: Pointwise-≡ was deprecated in v0.15.
+Please use Pointwise-≡↔≡ instead."
+#-}

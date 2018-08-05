@@ -20,7 +20,7 @@ open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
   )
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
-open import Data.Product using (∃; ∄; _×_; _,_; map; proj₁)
+open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁)
 open import Function using (_∘_; id)
 open import Function.Injection using (_↣_)
 open import Relation.Binary as B hiding (Decidable)
@@ -496,6 +496,18 @@ all? P? with decFinSubset U? (λ {f} _ → P? f)
           ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
 ¬∀⟶∃¬ n P P? ¬P = map id proj₁ (¬∀⟶∃¬-smallest n P P? ¬P)
 
+-- The pigeonhole principle.
+
+pigeonhole : ∀ {m n} → m ℕ.< n → (f : Fin n → Fin m) →
+             ∃₂ λ i j → i ≢ j × f i ≡ f j
+pigeonhole (s≤s z≤n)       f = contradiction (f zero) λ()
+pigeonhole (s≤s (s≤s m≤n)) f with any? (λ k → f zero ≟ f (suc k))
+... | yes (j , f₀≡fⱼ) = zero , suc j , (λ()) , f₀≡fⱼ
+... | no  f₀≢fₖ with pigeonhole (s≤s m≤n) (λ j → punchOut (f₀≢fₖ ∘ (j ,_ )))
+...   | (i , j , i≢j , fᵢ≡fⱼ) =
+  suc i , suc j , i≢j ∘ suc-injective ,
+  punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
+
 ------------------------------------------------------------------------
 -- Categorical
 
@@ -531,19 +543,66 @@ module _ {a} {A : Set a} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
-cmp              = <-cmp
-strictTotalOrder = <-strictTotalOrder
-
-to-from          = toℕ-fromℕ
-from-to          = fromℕ-toℕ
-
-bounded          = toℕ<n
-prop-toℕ-≤      = toℕ≤pred[n]
-prop-toℕ-≤′     = toℕ≤pred[n]′
-
-inject-lemma     = toℕ-inject
-inject+-lemma    = toℕ-inject+
-inject₁-lemma    = toℕ-inject₁
-inject≤-lemma    = toℕ-inject≤
-
 open import Data.Fin public using (_≟_; _<?_)
+
+-- Version 0.15
+
+cmp              = <-cmp
+{-# WARNING_ON_USAGE cmp
+"Warning: cmp was deprecated in v0.15.
+Please use <-cmp instead."
+#-}
+strictTotalOrder = <-strictTotalOrder
+{-# WARNING_ON_USAGE strictTotalOrder
+"Warning: strictTotalOrder was deprecated in v0.15.
+Please use <-strictTotalOrder instead."
+#-}
+
+-- Version 0.16
+
+to-from = toℕ-fromℕ
+{-# WARNING_ON_USAGE to-from
+"Warning: to-from was deprecated in v0.16.
+Please use toℕ-fromℕ instead."
+#-}
+from-to          = fromℕ-toℕ
+{-# WARNING_ON_USAGE from-to
+"Warning: from-to was deprecated in v0.16.
+Please use fromℕ-toℕ instead."
+#-}
+bounded = toℕ<n
+{-# WARNING_ON_USAGE bounded
+"Warning: bounded was deprecated in v0.16.
+Please use toℕ<n instead."
+#-}
+prop-toℕ-≤ = toℕ≤pred[n]
+{-# WARNING_ON_USAGE prop-toℕ-≤
+"Warning: prop-toℕ-≤ was deprecated in v0.16.
+Please use toℕ≤pred[n] instead."
+#-}
+prop-toℕ-≤′ = toℕ≤pred[n]′
+{-# WARNING_ON_USAGE prop-toℕ-≤′
+"Warning: prop-toℕ-≤′ was deprecated in v0.16.
+Please use toℕ≤pred[n]′ instead."
+#-}
+inject-lemma = toℕ-inject
+{-# WARNING_ON_USAGE inject-lemma
+"Warning: inject-lemma was deprecated in v0.16.
+Please use toℕ-inject instead."
+#-}
+inject+-lemma = toℕ-inject+
+{-# WARNING_ON_USAGE inject+-lemma
+"Warning: inject+-lemma was deprecated in v0.16.
+Please use toℕ-inject+ instead."
+#-}
+inject₁-lemma = toℕ-inject₁
+{-# WARNING_ON_USAGE inject₁-lemma
+"Warning: inject₁-lemma was deprecated in v0.16.
+Please use toℕ-inject₁ instead."
+#-}
+inject≤-lemma = toℕ-inject≤
+{-# WARNING_ON_USAGE inject≤-lemma
+"Warning: inject≤-lemma was deprecated in v0.16.
+Please use toℕ-inject≤ instead."
+#-}
+

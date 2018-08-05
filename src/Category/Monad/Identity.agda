@@ -7,12 +7,13 @@
 module Category.Monad.Identity where
 
 open import Category.Monad
+open import Function using (id ; _|>_)
 
 Identity : ∀ {f} → Set f → Set f
 Identity A = A
 
-IdentityMonad : ∀ {f} → RawMonad (Identity {f})
+IdentityMonad : ∀ {f} → RawMonad {f} Identity
 IdentityMonad = record
-  { return = λ x → x
-  ; _>>=_  = λ x f → f x
+  { return = id
+  ; _>>=_  = _|>_
   }

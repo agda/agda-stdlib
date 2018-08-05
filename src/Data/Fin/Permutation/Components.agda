@@ -54,7 +54,7 @@ transpose-inverse i j {k} | no ¬p | no ¬q
 reverse-prop : ∀ {n} → (i : Fin n) → toℕ (reverse i) ≡ n ∸ suc (toℕ i)
 reverse-prop {zero} ()
 reverse-prop {suc n} i = begin
-  toℕ (inject≤ (n ℕ- i) _)  ≡⟨ inject≤-lemma _ _ ⟩
+  toℕ (inject≤ (n ℕ- i) _)  ≡⟨ toℕ-inject≤ _ _ ⟩
   toℕ (n ℕ- i)              ≡⟨ toℕ‿ℕ- n i ⟩
   n ∸ toℕ i                 ∎
 
