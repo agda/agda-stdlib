@@ -1178,26 +1178,108 @@ module ≤-Reasoning where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 0.14
+
 _*-mono_ = *-mono-≤
+{-# WARNING_ON_USAGE _*-mono_
+"Warning: _*-mono_ was deprecated in v0.14.
+Please use *-mono-≤ instead."
+#-}
 _+-mono_ = +-mono-≤
-
+{-# WARNING_ON_USAGE _+-mono_
+"Warning: _+-mono_ was deprecated in v0.14.
+Please use +-mono-≤ instead."
+#-}
 +-right-identity = +-identityʳ
+{-# WARNING_ON_USAGE +-right-identity
+"Warning: +-right-identity was deprecated in v0.14.
+Please use +-identityʳ instead."
+#-}
 *-right-zero     = *-zeroʳ
+{-# WARNING_ON_USAGE *-right-zero
+"Warning: *-right-zero was deprecated in v0.14.
+Please use *-zeroʳ instead."
+#-}
 distribʳ-*-+     = *-distribʳ-+
+{-# WARNING_ON_USAGE distribʳ-*-+
+"Warning: distribʳ-*-+ was deprecated in v0.14.
+Please use *-distribʳ-+ instead."
+#-}
 *-distrib-∸ʳ     = *-distribʳ-∸
+{-# WARNING_ON_USAGE *-distrib-∸ʳ
+"Warning: *-distrib-∸ʳ was deprecated in v0.14.
+Please use *-distribʳ-∸ instead."
+#-}
 cancel-+-left    = +-cancelˡ-≡
+{-# WARNING_ON_USAGE cancel-+-left
+"Warning: cancel-+-left was deprecated in v0.14.
+Please use +-cancelˡ-≡ instead."
+#-}
 cancel-+-left-≤  = +-cancelˡ-≤
+{-# WARNING_ON_USAGE cancel-+-left-≤
+"Warning: cancel-+-left-≤ was deprecated in v0.14.
+Please use +-cancelˡ-≤ instead."
+#-}
 cancel-*-right   = *-cancelʳ-≡
+{-# WARNING_ON_USAGE cancel-*-right
+"Warning: cancel-*-right was deprecated in v0.14.
+Please use *-cancelʳ-≡ instead."
+#-}
 cancel-*-right-≤ = *-cancelʳ-≤
-
+{-# WARNING_ON_USAGE cancel-*-right-≤
+"Warning: cancel-*-right-≤ was deprecated in v0.14.
+Please use *-cancelʳ-≤ instead."
+#-}
 strictTotalOrder                      = <-strictTotalOrder
+{-# WARNING_ON_USAGE strictTotalOrder
+"Warning: strictTotalOrder was deprecated in v0.14.
+Please use <-strictTotalOrder instead."
+#-}
 isCommutativeSemiring                 = *-+-isCommutativeSemiring
+{-# WARNING_ON_USAGE isCommutativeSemiring
+"Warning: isCommutativeSemiring was deprecated in v0.14.
+Please use *-+-isCommutativeSemiring instead."
+#-}
 commutativeSemiring                   = *-+-commutativeSemiring
+{-# WARNING_ON_USAGE commutativeSemiring
+"Warning: commutativeSemiring was deprecated in v0.14.
+Please use *-+-commutativeSemiring instead."
+#-}
 isDistributiveLattice                 = ⊓-⊔-isDistributiveLattice
+{-# WARNING_ON_USAGE isDistributiveLattice
+"Warning: isDistributiveLattice was deprecated in v0.14.
+Please use ⊓-⊔-isDistributiveLattice instead."
+#-}
 distributiveLattice                   = ⊓-⊔-distributiveLattice
+{-# WARNING_ON_USAGE distributiveLattice
+"Warning: distributiveLattice was deprecated in v0.14.
+Please use ⊓-⊔-distributiveLattice instead."
+#-}
 ⊔-⊓-0-isSemiringWithoutOne            = ⊔-⊓-isSemiringWithoutOne
+{-# WARNING_ON_USAGE ⊔-⊓-0-isSemiringWithoutOne
+"Warning: ⊔-⊓-0-isSemiringWithoutOne was deprecated in v0.14.
+Please use ⊔-⊓-isSemiringWithoutOne instead."
+#-}
 ⊔-⊓-0-isCommutativeSemiringWithoutOne = ⊔-⊓-isCommutativeSemiringWithoutOne
+{-# WARNING_ON_USAGE ⊔-⊓-0-isCommutativeSemiringWithoutOne
+"Warning: ⊔-⊓-0-isCommutativeSemiringWithoutOne was deprecated in v0.14.
+Please use ⊔-⊓-isCommutativeSemiringWithoutOne instead."
+#-}
 ⊔-⊓-0-commutativeSemiringWithoutOne   = ⊔-⊓-commutativeSemiringWithoutOne
+{-# WARNING_ON_USAGE ⊔-⊓-0-commutativeSemiringWithoutOne
+"Warning: ⊔-⊓-0-commutativeSemiringWithoutOne was deprecated in v0.14.
+Please use ⊔-⊓-commutativeSemiringWithoutOne instead."
+#-}
+
+-- Version 0.15
 
 ¬i+1+j≤i  = i+1+j≰i
+{-# WARNING_ON_USAGE ¬i+1+j≤i
+"Warning: ¬i+1+j≤i was deprecated in v0.15.
+Please use i+1+j≰i instead."
+#-}
 ≤-steps   = ≤-stepsˡ
+{-# WARNING_ON_USAGE ≤-steps
+"Warning: ≤-steps was deprecated in v0.15.
+Please use ≤-stepsˡ instead."
+#-}

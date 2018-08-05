@@ -639,4 +639,10 @@ module _ {a} {A : Set a} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 0.15
+
 proof-irrelevance-[]= = []=-irrelevance
+{-# WARNING_ON_USAGE proof-irrelevance-[]=
+"Warning: proof-irrelevance-[]= was deprecated in v0.15.
+Please use []=-irrelevance instead."
+#-}

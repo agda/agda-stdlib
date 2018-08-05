@@ -80,7 +80,7 @@ sym c = c ∘ swap
 -- If m and n are coprime, then n + m and n are also coprime.
 
 coprime-+ : ∀ {m n} → Coprime m n → Coprime (n + m) n
-coprime-+ c (d₁ , d₂) = c (∣-∸ d₁ d₂ , d₂)
+coprime-+ c (d₁ , d₂) = c (∣m+n∣m⇒∣n d₁ d₂ , d₂)
 
 -- If the "gcd" in Bézout's identity is non-zero, then the "other"
 -- divisors are coprime.
@@ -132,7 +132,7 @@ gcd-gcd′ {suc d} g | (divides q₁ refl , divides q₂ refl) =
   gcd-* q₁ q₂ (Bézout-coprime (Bézout.identity g))
 
 gcd′-gcd : ∀ {m n d} → GCD′ m n d → GCD m n d
-gcd′-gcd (gcd-* q₁ q₂ c) = GCD.is (∣-* q₁ , ∣-* q₂) (coprime-factors c)
+gcd′-gcd (gcd-* q₁ q₂ c) = GCD.is (n∣m*n q₁ , n∣m*n q₂) (coprime-factors c)
 
 -- Calculates (the alternative representation of) the gcd of the
 -- arguments.

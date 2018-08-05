@@ -10,14 +10,15 @@ open import Data.Bool.Base   using (Bool)
 open import Data.String.Base using (String)
 
 ------------------------------------------------------------------------
--- Re-export the type from the Core module
+-- Re-export the type
 
-open import Data.Char.Core using (Char) public
+import Agda.Builtin.Char as AgdaChar
+open AgdaChar using (Char) public
 
 ------------------------------------------------------------------------
 -- Primitive operations
 
-open import Agda.Builtin.Char
+open AgdaChar
 open import Agda.Builtin.String using (primShowChar)
 
 show : Char → String

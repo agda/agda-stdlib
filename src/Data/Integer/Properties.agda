@@ -867,14 +867,60 @@ module ≤-Reasoning = POR ≤-poset hiding (_≈⟨_⟩_)
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- inverseˡ              = +-inverseˡ
--- inverseʳ              = +-inverseʳ
--- distribʳ              = *-distribʳ-+
--- isCommutativeSemiring = +-*-isCommutativeSemiring
--- commutativeRing       = +-*-commutativeRing
--- *-+-right-mono        = *-monoʳ-≤-pos
--- cancel-*-+-right-≤    = *-cancelʳ-≤-pos
--- cancel-*-right        = *-cancelʳ-≡
--- doubleNeg             = neg-involutive
--- -‿involutive          = neg-involutive
--- +-⊖-left-cancel       = +-cancelˡ-⊖
+-- Version 0.15
+
+inverseˡ = +-inverseˡ
+{-# WARNING_ON_USAGE inverseˡ
+"Warning: inverseˡ was deprecated in v0.15.
+Please use +-inverseˡ instead."
+#-}
+inverseʳ = +-inverseʳ
+{-# WARNING_ON_USAGE inverseʳ
+"Warning: inverseʳ was deprecated in v0.15.
+Please use +-inverseʳ instead."
+#-}
+distribʳ = *-distribʳ-+
+{-# WARNING_ON_USAGE distribʳ
+"Warning: distribʳ was deprecated in v0.15.
+Please use *-distribʳ-+ instead."
+#-}
+isCommutativeSemiring = +-*-isCommutativeSemiring
+{-# WARNING_ON_USAGE isCommutativeSemiring
+"Warning: isCommutativeSemiring was deprecated in v0.15.
+Please use +-*-isCommutativeSemiring instead."
+#-}
+commutativeRing = +-*-commutativeRing
+{-# WARNING_ON_USAGE commutativeRing
+"Warning: commutativeRing was deprecated in v0.15.
+Please use +-*-commutativeRing instead."
+#-}
+*-+-right-mono = *-monoʳ-≤-pos
+{-# WARNING_ON_USAGE *-+-right-mono
+"Warning: *-+-right-mono was deprecated in v0.15.
+Please use *-monoʳ-≤-pos instead."
+#-}
+cancel-*-+-right-≤ = *-cancelʳ-≤-pos
+{-# WARNING_ON_USAGE cancel-*-+-right-≤
+"Warning: cancel-*-+-right-≤ was deprecated in v0.15.
+Please use *-cancelʳ-≤-pos instead."
+#-}
+cancel-*-right = *-cancelʳ-≡
+{-# WARNING_ON_USAGE cancel-*-right
+"Warning: cancel-*-right was deprecated in v0.15.
+Please use *-cancelʳ-≡ instead."
+#-}
+doubleNeg = neg-involutive
+{-# WARNING_ON_USAGE doubleNeg
+"Warning: doubleNeg was deprecated in v0.15.
+Please use neg-involutive instead."
+#-}
+-‿involutive = neg-involutive
+{-# WARNING_ON_USAGE -‿involutive
+"Warning: -‿involutive was deprecated in v0.15.
+Please use neg-involutive instead."
+#-}
++-⊖-left-cancel = +-cancelˡ-⊖
+{-# WARNING_ON_USAGE +-⊖-left-cancel
+"Warning: +-⊖-left-cancel was deprecated in v0.15.
+Please use +-cancelˡ-⊖ instead."
+#-}

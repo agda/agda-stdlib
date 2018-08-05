@@ -212,11 +212,20 @@ suc n ∣? m      = Dec.map (m%n≡0⇔n∣m m n) (m % (suc n) ≟ 0)
 -- names is not guaranteed.
 
 ∣-+ = ∣m∣n⇒∣m+n
+{-# WARNING_ON_USAGE ∣-+
+"Warning: ∣-+ was deprecated in v0.14.
+Please use ∣m∣n⇒∣m+n instead."
+#-}
 ∣-∸ = ∣m+n∣m⇒∣n
+{-# WARNING_ON_USAGE ∣-∸
+"Warning: ∣-∸ was deprecated in v0.14.
+Please use ∣m+n∣m⇒∣n instead."
+#-}
 ∣-* = n∣m*n
-
--- If the remainder after division is non-zero, then the divisor does
--- not divide the dividend.
+{-# WARNING_ON_USAGE ∣-*
+"Warning: ∣-* was deprecated in v0.14.
+Please use n∣m*n instead."
+#-}
 
 nonZeroDivisor-lemma : ∀ m q (r : Fin (1 + m)) → toℕ r ≢ 0 →
                        1 + m ∤ toℕ r + q * (1 + m)
@@ -239,3 +248,6 @@ nonZeroDivisor-lemma m (suc q) r r≢zero d =
   lem = solve 3 (λ m r q → r :+ (m :+ q)  :=  m :+ (r :+ q))
                 refl (suc m) (toℕ r) (q * suc m)
   d' = subst (1 + m ∣_) lem d
+{-# WARNING_ON_USAGE nonZeroDivisor-lemma
+"Warning: nonZeroDivisor-lemma was deprecated in v0.17."
+#-}

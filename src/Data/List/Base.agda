@@ -293,43 +293,46 @@ initLast (x ∷ .(ys ∷ʳ y)) | ys ∷ʳ' y = (x ∷ ys) ∷ʳ' y
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
+--
+-- Note that the `boolX` functions are not given warnings as they are
+-- used by other deprecated proofs throughout the library.
+
+-- Version 0.15
 
 gfilter = mapMaybe
+{-# WARNING_ON_USAGE gfilter
+"Warning: gfilter was deprecated in v0.15.
+Please use mapMaybe instead."
+#-}
 
-module _ {a} {A : Set a} where
+boolFilter : ∀ {a} {A : Set a} → (A → Bool) → List A → List A
+boolFilter p = mapMaybe (λ x → if p x then just x else nothing)
 
-  -- Please use `filter` instead
-  boolFilter : (A → Bool) → List A → List A
-  boolFilter p = mapMaybe (λ x → if p x then just x else nothing)
+boolPartition : ∀ {a} {A : Set a} → (A → Bool) → List A → (List A × List A)
+boolPartition p []       = ([] , [])
+boolPartition p (x ∷ xs) with p x | boolPartition p xs
+... | true  | (ys , zs) = (x ∷ ys , zs)
+... | false | (ys , zs) = (ys , x ∷ zs)
 
-  -- Please use `partition` instead
-  boolPartition : (A → Bool) → List A → (List A × List A)
-  boolPartition p []       = ([] , [])
-  boolPartition p (x ∷ xs) with p x | boolPartition p xs
-  ... | true  | (ys , zs) = (x ∷ ys , zs)
-  ... | false | (ys , zs) = (ys , x ∷ zs)
+-- Version 0.16
 
-  -- Please use `takeWhile` instead
-  boolTakeWhile : (A → Bool) → List A → List A
-  boolTakeWhile p []       = []
-  boolTakeWhile p (x ∷ xs) with p x
-  ... | true  = x ∷ boolTakeWhile p xs
-  ... | false = []
+boolTakeWhile : ∀ {a} {A : Set a} → (A → Bool) → List A → List A
+boolTakeWhile p []       = []
+boolTakeWhile p (x ∷ xs) with p x
+... | true  = x ∷ boolTakeWhile p xs
+... | false = []
 
-  -- Please use `dropWhile` instead
-  boolDropWhile : (A → Bool) → List A → List A
-  boolDropWhile p []       = []
-  boolDropWhile p (x ∷ xs) with p x
-  ... | true  = boolDropWhile p xs
-  ... | false = x ∷ xs
+boolDropWhile : ∀ {a} {A : Set a} → (A → Bool) → List A → List A
+boolDropWhile p []       = []
+boolDropWhile p (x ∷ xs) with p x
+... | true  = boolDropWhile p xs
+... | false = x ∷ xs
 
-  -- Please use `span` instead
-  boolSpan : (A → Bool) → List A → (List A × List A)
-  boolSpan p []       = ([] , [])
-  boolSpan p (x ∷ xs) with p x
-  ... | true  = Prod.map (x ∷_) id (boolSpan p xs)
-  ... | false = ([] , x ∷ xs)
+boolSpan : ∀ {a} {A : Set a} → (A → Bool) → List A → (List A × List A)
+boolSpan p []       = ([] , [])
+boolSpan p (x ∷ xs) with p x
+... | true  = Prod.map (x ∷_) id (boolSpan p xs)
+... | false = ([] , x ∷ xs)
 
-  -- Please use `break` instead
-  boolBreak : (A → Bool) → List A → (List A × List A)
-  boolBreak p = boolSpan (not ∘ p)
+boolBreak : ∀ {a} {A : Set a} → (A → Bool) → List A → (List A × List A)
+boolBreak p = boolSpan (not ∘ p)

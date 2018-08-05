@@ -9,7 +9,7 @@ module Category.Monad.Continuation where
 open import Category.Applicative
 open import Category.Applicative.Indexed
 open import Category.Monad
-open import Category.Monad.Identity
+open import Function.Identity.Categorical as Id using (Identity)
 open import Category.Monad.Indexed
 open import Function
 open import Level
@@ -32,7 +32,7 @@ DContTIMonad K Mon = record
   where open RawMonad Mon
 
 DContIMonad : ∀ {i f} {I : Set i} (K : I → Set f) → RawIMonad (DCont K)
-DContIMonad K = DContTIMonad K IdentityMonad
+DContIMonad K = DContTIMonad K Id.monad
 
 ------------------------------------------------------------------------
 -- Delimited continuation operations
@@ -59,4 +59,4 @@ DContTIMonadDCont K Mon = record
 
 DContIMonadDCont : ∀ {i f} {I : Set i}
                    (K : I → Set f) → RawIMonadDCont K (DCont K)
-DContIMonadDCont K = DContTIMonadDCont K IdentityMonad
+DContIMonadDCont K = DContTIMonadDCont K Id.monad

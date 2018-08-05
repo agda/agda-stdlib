@@ -199,6 +199,7 @@ Non-backwards compatible changes
   sequenceM   : RawMonad M → Vec (M A) n → M (A ^ n)
   mapM        : RawMonad M → (A → M B) → A ^ n → M (B ^ n)
   forM        : RawMonad M → A ^ n → (A → M B) → M (B ^ n)
+  ```
 
 * Added new functions to `Data.Vec.Categorical`:
   ```agda
@@ -209,6 +210,9 @@ Non-backwards compatible changes
   mapM      : RawMonad M → (A → M B) → Vec A n → M (Vec B n)
   forM      : RawMonad M → Vec A n → (A → M B) → M (Vec B n)
   ```
+
+* Created `Function.Identity.Categorical` and merged `Category.Functor.Identity`,
+  `Category.Monad.Identity`, and `Category.Comonad.Identity` into it.
 
 #### Other
 
@@ -234,6 +238,12 @@ Non-backwards compatible changes
 
 * Changed the precedence level of `_$_` (and variants) to `-1`. This makes
   it interact well with `_∋_` in e.g. `f $ Maybe A ∋ do (...)`.
+
+* Made `Data.Star.Decoration`, `Data.Star.Environment` and `Data.Star.Pointer`
+  more level polymorphic. In particular `EdgePred` now takes an extra explicit
+  level parameter.
+
+* Removed `Data.Char.Core` which was doing nothing of interest.
 
 Other major changes
 -------------------
@@ -306,9 +316,22 @@ the library. The deprecated names still exist and therefore all existing code sh
 work, however they have been deprecated and use of any new names is encouraged. Although not
 anticipated any time soon, they may eventually be removed in some future release of the library.
 
+* All deprecated names now give warnings at point-of-use when type-checked.
+
 * In `Data.Nat.Divisibility`:
   ```
   nonZeroDivisor-lemma
+  ```
+* In `Function.Related`
+  ```agda
+  preorder ↦ ↔-preorder
+  ```
+
+* In `Function.Related.TypeIsomorphisms`:
+  ```agda
+  ×-CommutativeMonoid    ↦ ×-commutativeMonoid
+  ⊎-CommutativeMonoid    ↦ ⊎-commutativeMonoid
+  ×⊎-CommutativeSemiring ↦ ×-⊎-commutativeSemiring
   ```
 
 Other minor additions
@@ -461,9 +484,42 @@ Other minor additions
   typeOf : {A : Set a} → A → Set a
   ```
 
-* Added new result to `Function.Relation.TypeIsomorphisms`:
+* Added new functions to `Function.Related`:
   ```agda
-  ×-comm : (A × B) ↔ (B × A)
+  isEquivalence : IsEquivalence (Related ⌊ k ⌋)
+  ↔-isPreorder  : IsPreorder _↔_ (Related k)
+  ```
+
+* Added new result to `Function.Related.TypeIsomorphisms`:
+  ```agda
+  ×-comm                    : (A × B) ↔ (B × A)
+  ×-identityˡ               : LeftIdentity _↔_ (Lift ℓ ⊤) _×_
+  ×-identityʳ               : RightIdentity _↔_ (Lift ℓ ⊤) _×_
+  ×-identity                : Identity _↔_ (Lift ℓ ⊤) _×_
+  ×-zeroˡ                   : LeftZero _↔_ (Lift ℓ ⊥) _×_
+  ×-zeroʳ                   : RightZero _↔_ (Lift ℓ ⊥) _×_
+  ×-zero                    : Zero _↔_ (Lift ℓ ⊥) _×_
+  ⊎-assoc                   : Associative _↔_ _⊎_
+  ⊎-comm                    : (A ⊎ B) ↔ (B ⊎ A)
+  ⊎-identityˡ               : LeftIdentity _↔_ (Lift ℓ ⊥) _⊎_
+  ⊎-identityʳ               : RightIdentity _↔_ (Lift ℓ ⊥) _⊎_
+  ⊎-identity                : Identity _↔_ (Lift ℓ ⊥) _⊎_
+  ×-distribˡ-⊎              : _DistributesOverˡ_ _↔_ _×_ _⊎_
+  ×-distribʳ-⊎              : _DistributesOverʳ_ _↔_ _×_ _⊎_
+  ×-distrib-⊎               : _DistributesOver_ _↔_ _×_ _⊎_
+  ×-isSemigroup             : IsSemigroup (Related ⌊ k ⌋) _×_
+  ×-semigroup               : Symmetric-kind → Level → Semigroup _ _
+  ×-isMonoid                : IsMonoid (Related ⌊ k ⌋) _×_ (Lift ℓ ⊤)
+  ×-monoid                  : Symmetric-kind → Level → Monoid _ _
+  ×-isCommutativeMonoid     : IsCommutativeMonoid (Related ⌊ k ⌋) _×_ (Lift ℓ ⊤)
+  ×-commutativeMonoid       : Symmetric-kind → Level → CommutativeMonoid _ _
+  ⊎-isSemigroup             : IsSemigroup (Related ⌊ k ⌋) _⊎_
+  ⊎-semigroup               : Symmetric-kind → Level → Semigroup _ _
+  ⊎-isMonoid                : IsMonoid (Related ⌊ k ⌋) _⊎_ (Lift ℓ ⊥)
+  ⊎-monoid                  : Symmetric-kind → Level → Monoid _ _
+  ⊎-isCommutativeMonoid     : IsCommutativeMonoid (Related ⌊ k ⌋) _⊎_ (Lift ℓ ⊥)
+  ⊎-commutativeMonoid       : Symmetric-kind → Level → CommutativeMonoid _ _
+  ×-⊎-isCommutativeSemiring : IsCommutativeSemiring (Related ⌊ k ⌋) _⊎_ _×_ (Lift ℓ ⊥) (Lift ℓ ⊤)
   ```
 
 * Added new type and function to `Function.Bijection`:
@@ -499,10 +555,11 @@ Other minor additions
   surjection : (∀ x → to (from x) ≡ x) → From ↠ To
   ```
 
-* Added new functions to `Level`:
+* Added new module `Level.Literals` with functions:
   ```agda
-  _ℕ+_ : Nat → Level → Level
-  #_   : Nat → Level
+  _ℕ+_   : Nat → Level → Level
+  #_     : Nat → Level
+  Levelℕ : Number Level
   ```
 
 * Added the following types in `Relation.Unary`:

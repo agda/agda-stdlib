@@ -170,7 +170,7 @@ open module R = Reflection
 infix 5 _≟_
 
 _≟_ : ∀ {n} (nf₁ nf₂ : Normal n) → Dec (nf₁ ≡ nf₂)
-nf₁ ≟ nf₂ = Dec.map Pointwise-≡ (decidable ℕ._≟_ nf₁ nf₂)
+nf₁ ≟ nf₂ = Dec.map Pointwise-≡↔≡ (decidable ℕ._≟_ nf₁ nf₂)
   where open Pointwise
 
 -- We can also give a sound, but not necessarily complete, procedure
