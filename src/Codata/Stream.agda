@@ -10,7 +10,9 @@ open import Size
 open import Codata.Thunk
 
 open import Data.Nat.Base
-open import Data.Vec using (Vec ; [] ; _∷_)
+open import Data.List.Base using (List; []; _∷_)
+open import Data.List.NonEmpty using (List⁺; _∷_)
+open import Data.Vec using (Vec; []; _∷_)
 open import Data.Product as P hiding (map)
 
 ------------------------------------------------------------------------
@@ -37,6 +39,14 @@ module _ {ℓ} {A : Set ℓ} where
  take : (n : ℕ) → Stream A ∞ → Vec A n
  take zero    xs = []
  take (suc n) xs = head xs ∷ take n (tail xs)
+
+ infixr 5 _++_ _⁺++_
+ _++_ : ∀ {i} → List A → Stream A i → Stream A i
+ []       ++ ys = ys
+ (x ∷ xs) ++ ys = x ∷ λ where .force → xs ++ ys
+
+ _⁺++_ : ∀ {i} → List⁺ A → Thunk (Stream A) i → Stream A i
+ (x ∷ xs) ⁺++ ys = x ∷ λ where .force → xs ++ ys .force
 
 module _ {ℓ ℓ′} {A : Set ℓ} {B : Set ℓ′} where
 
