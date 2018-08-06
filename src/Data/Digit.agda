@@ -110,4 +110,3 @@ toDigits (suc (suc k)) n = <′-rec Pred helper n
   helper .(toℕ r + 0     * base) rec | result zero    r refl = ([ r ] , refl)
   helper .(toℕ r + suc x * base) rec | result (suc x) r refl =
     cons r (rec (suc x) (lem (pred (suc x)) k (toℕ r)))
-
