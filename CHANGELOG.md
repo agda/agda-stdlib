@@ -260,28 +260,32 @@ Other major changes
 * Added new module `Data.List.Relation.Sublist.Inductive` which gives
   an inductive definition of the sublist relation (i.e. order-preserving embeddings).
 
-* Added new module `Data.Sum.Categorical`:
+* Added new module `Data.Sum.Categorical.Left`:
   ```agda
-  Sumₗ.functor     : RawFunctor (A ⊎_)
-  Sumₗ.applicative : RawApplicative (A ⊎_)
-  Sumₗ.monadT      : RawMonad M → RawMonad (M ∘′ (A ⊎_))
-  Sumₗ.monad       : RawMonad (A ⊎_)
-  Sumₗ.sequenceA   : RawApplicative F → Sumₗ (F A) → F (Sumₗ A)
-  Sumₗ.mapA        : RawApplicative F → (A → F B) → Sumₗ A → F (Sumₗ B)
-  Sumₗ.forA        : RawApplicative F → Sumₗ A → (A → F B) → F (Sumₗ B)
-  Sumₗ.sequenceM   : RawMonad M → Sumₗ (M A) → M (Sumₗ A)
-  Sumₗ.mapM        : RawMonad M → (A → M B) → Sumₗ A → M (Sumₗ B)
-  Sumₗ.forM        : RawMonad M → Sumₗ A → (A → M B) → M (Sumₗ B)
-  Sumᵣ.functor     : RawFunctor (_⊎ B)
-  Sumᵣ.applicative : RawApplicative (_⊎ B)
-  Sumᵣ.monadT      : RawMonad M → RawMonad (M ∘′ (_⊎ B))
-  Sumᵣ.monad       : RawMonad (_⊎ B)
-  Sumᵣ.sequenceA   : RawApplicative F → Sumᵣ (F A) → F (Sumᵣ A)
-  Sumᵣ.mapA        : RawApplicative F → (A → F B) → Sumᵣ A → F (Sumᵣ B)
-  Sumᵣ.forA        : RawApplicative F → Sumᵣ A → (A → F B) → F (Sumᵣ B)
-  Sumᵣ.sequenceM   : RawMonad M → Sumᵣ (M A) → M (Sumᵣ A)
-  Sumᵣ.mapM        : RawMonad M → (A → M B) → Sumᵣ A → M (Sumᵣ B)
-  Sumᵣ.forM        : RawMonad M → Sumᵣ A → (A → M B) → M (Sumᵣ B)
+  functor     : RawFunctor (A ⊎_)
+  applicative : RawApplicative (A ⊎_)
+  monadT      : RawMonad M → RawMonad (M ∘′ (A ⊎_))
+  monad       : RawMonad (A ⊎_)
+  sequenceA   : RawApplicative F → Sumₗ (F A) → F (Sumₗ A)
+  mapA        : RawApplicative F → (A → F B) → Sumₗ A → F (Sumₗ B)
+  forA        : RawApplicative F → Sumₗ A → (A → F B) → F (Sumₗ B)
+  sequenceM   : RawMonad M → Sumₗ (M A) → M (Sumₗ A)
+  mapM        : RawMonad M → (A → M B) → Sumₗ A → M (Sumₗ B)
+  forM        : RawMonad M → Sumₗ A → (A → M B) → M (Sumₗ B)
+  ```
+
+* Added new module `Data.Sum.Categorical.Right`:
+  ```agda
+  functor     : RawFunctor (_⊎ B)
+  applicative : RawApplicative (_⊎ B)
+  monadT      : RawMonad M → RawMonad (M ∘′ (_⊎ B))
+  monad       : RawMonad (_⊎ B)
+  sequenceA   : RawApplicative F → Sumᵣ (F A) → F (Sumᵣ A)
+  mapA        : RawApplicative F → (A → F B) → Sumᵣ A → F (Sumᵣ B)
+  forA        : RawApplicative F → Sumᵣ A → (A → F B) → F (Sumᵣ B)
+  sequenceM   : RawMonad M → Sumᵣ (M A) → M (Sumᵣ A)
+  mapM        : RawMonad M → (A → M B) → Sumᵣ A → M (Sumᵣ B)
+  forM        : RawMonad M → Sumᵣ A → (A → M B) → M (Sumᵣ B)
   ```
 
 * Added new module `Data.Product.Categorical`:
