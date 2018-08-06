@@ -69,8 +69,13 @@ module _ {ℓ} {A : Set ℓ} where
 ------------------------------------------------------------------------
 -- Legacy
 
-open import Coinduction
+open import Coinduction using (♭; ♯_)
 import Codata.Musical.Stream as M
 
-fromMusical : ∀ {a} {A : Set a} → M.Stream A → ∀ {i} → Stream A i
-fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
+module _ {a} {A : Set a} where
+
+  fromMusical : ∀ {i} → M.Stream A → Stream A i
+  fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
+
+  toMusical : Stream A ∞ → M.Stream A
+  toMusical (x ∷ xs) = x M.∷ ♯ toMusical (xs .force)

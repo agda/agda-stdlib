@@ -96,9 +96,15 @@ module _ {a b} {A : Set a} {B : Set b} where
 ------------------------------------------------------------------------
 -- Legacy
 
-open import Coinduction
+open import Coinduction using (♭; ♯_)
 import Codata.Musical.Colist as M
 
-fromMusical : ∀ {a} {A : Set a} → M.Colist A → ∀ {i} → Colist A i
-fromMusical M.[]       = []
-fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
+module _ {a} {A : Set a} where
+
+  fromMusical : ∀ {i} → M.Colist A → Colist A i
+  fromMusical M.[]       = []
+  fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
+
+  toMusical : Colist A ∞ → M.Colist A
+  toMusical []       = M.[]
+  toMusical (x ∷ xs) = x M.∷ ♯ toMusical (xs .force)

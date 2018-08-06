@@ -9,7 +9,7 @@ module Codata.Covec where
 open import Size
 
 open import Codata.Thunk
-open import Codata.Conat as Conat hiding (fromMusical)
+open import Codata.Conat as Conat hiding (fromMusical; toMusical)
 open import Codata.Conat.Bisimilarity
 open import Codata.Conat.Properties
 open import Codata.Colist as Colist using (Colist ; [] ; _∷_)
@@ -77,10 +77,15 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 ------------------------------------------------------------------------
 -- Legacy
 
-open import Coinduction
+open import Coinduction using (♭; ♯_)
 import Codata.Musical.Covec as M
 
-fromMusical : ∀ {a} {A : Set a} {n} →
-              M.Covec A n → ∀ {i} → Covec A i (Conat.fromMusical n)
-fromMusical M.[]       = []
-fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
+module _ {a} {A : Set a} where
+
+  fromMusical : ∀ {i n} → M.Covec A n → Covec A i (Conat.fromMusical n)
+  fromMusical M.[]       = []
+  fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
+
+  toMusical : ∀ {n} → Covec A ∞ n → M.Covec A (Conat.toMusical n)
+  toMusical []       = M.[]
+  toMusical (x ∷ xs) = x M.∷ ♯ toMusical (xs .force)
