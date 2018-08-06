@@ -65,12 +65,16 @@ install:
   - runghc GenerateEverything.hs
 
 script:
+  # setting up travis-specific scripts and files
+  - cp travis/* .
   # generating index.agda
   - ./index.sh
   # detecting whitespace violations
   - make check-whitespace
   # detecting basic compilation errors
-  - agda -i . -i src -c --no-main Everything.agda
+  - agda -i . -i src/ -c --no-main Everything.agda
+  # checking safe modules build with --safe
+  - agda -i . -i src/ --safe safe.agda
   # building the docs
   - agda -i . -i src/ --html index.agda
   # moving everything at the root
