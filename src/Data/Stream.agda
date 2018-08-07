@@ -23,8 +23,9 @@ data Stream {a} (A : Set a) : Set a where
 
 {-# FOREIGN GHC
   data AgdaStream a = Cons a (MAlonzo.RTE.Inf (AgdaStream a))
+  type AgdaStream' l a = AgdaStream a
   #-}
-{-# COMPILE GHC Stream = data AgdaStream (Cons) #-}
+{-# COMPILE GHC Stream = data AgdaStream' (Cons) #-}
 
 ------------------------------------------------------------------------
 -- Some operations
