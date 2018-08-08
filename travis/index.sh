@@ -6,5 +6,8 @@ for i in $( find src -name "*.agda" \
           | sort \
           ); do
   echo "import $i" >> index.agda;
-  if [[ ! $i == *Unsafe ]]; then echo "import $i" >> safe.agda; fi
+  if [[ ! $i == *Unsafe \
+     && ! $i == Reflection \
+     && ! $i == IO* \
+     && ! $i == *TrustMe ]]; then echo "import $i" >> safe.agda; fi
 done
