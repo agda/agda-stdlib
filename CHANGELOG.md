@@ -289,7 +289,7 @@ Other major changes
   ```
 
 * Added new module `Data.Product.Categorical.Left`:
-  ```
+  ```agda
   functor     : RawFunctor (A ×_)
   comonad     : RawComonad (A ×_)
   applicative : (A : RawMonoid a e) → RawApplicative (A ×_)
