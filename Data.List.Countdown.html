@@ -6,10 +6,10 @@
 <a id="176" class="Comment">-- of elements /not/ in a given list</a>
 <a id="213" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="287" class="Keyword">import</a> <a id="294" href="Level.html" class="Module">Level</a>
-<a id="300" class="Keyword">open</a> <a id="305" class="Keyword">import</a> <a id="312" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="287" class="Keyword">open</a> <a id="292" class="Keyword">import</a> <a id="299" href="Level.html" class="Module">Level</a> <a id="305" class="Keyword">using</a> <a id="311" class="Symbol">(</a><a id="312" href="Level.html#470" class="Function">0ℓ</a><a id="314" class="Symbol">)</a>
+<a id="316" class="Keyword">open</a> <a id="321" class="Keyword">import</a> <a id="328" href="Relation.Binary.html" class="Module">Relation.Binary</a>
 
-<a id="329" class="Keyword">module</a> <a id="336" href="Data.List.Countdown.html" class="Module">Data.List.Countdown</a> <a id="356" class="Symbol">(</a><a id="357" href="Data.List.Countdown.html#357" class="Bound">D</a> <a id="359" class="Symbol">:</a> <a id="361" href="Relation.Binary.html#3012" class="Record">DecSetoid</a> <a id="371" href="Agda.Primitive.html#611" class="Primitive">Level.zero</a> <a id="382" href="Agda.Primitive.html#611" class="Primitive">Level.zero</a><a id="392" class="Symbol">)</a> <a id="394" class="Keyword">where</a>
+<a id="345" class="Keyword">module</a> <a id="352" href="Data.List.Countdown.html" class="Module">Data.List.Countdown</a> <a id="372" class="Symbol">(</a><a id="373" href="Data.List.Countdown.html#373" class="Bound">D</a> <a id="375" class="Symbol">:</a> <a id="377" href="Relation.Binary.html#3012" class="Record">DecSetoid</a> <a id="387" href="Level.html#470" class="Function">0ℓ</a> <a id="390" href="Level.html#470" class="Function">0ℓ</a><a id="392" class="Symbol">)</a> <a id="394" class="Keyword">where</a>
 
 <a id="401" class="Keyword">open</a> <a id="406" class="Keyword">import</a> <a id="413" href="Data.Empty.html" class="Module">Data.Empty</a>
 <a id="424" class="Keyword">open</a> <a id="429" class="Keyword">import</a> <a id="436" href="Data.Fin.html" class="Module">Data.Fin</a> <a id="445" class="Keyword">using</a> <a id="451" class="Symbol">(</a><a id="452" href="Data.Fin.html#910" class="Datatype">Fin</a><a id="455" class="Symbol">;</a> <a id="457" href="Data.Fin.html#932" class="InductiveConstructor">zero</a><a id="461" class="Symbol">;</a> <a id="463" href="Data.Fin.html#963" class="InductiveConstructor">suc</a><a id="466" class="Symbol">;</a> <a id="468" href="Data.Fin.html#4702" class="Function">punchOut</a><a id="476" class="Symbol">)</a>
@@ -31,7 +31,7 @@
 <a id="1024" class="Keyword">open</a> <a id="1029" href="Relation.Binary.PropositionalEquality.html#3861" class="Module">PropEq.≡-Reasoning</a>
 
 <a id="1049" class="Keyword">private</a>
-  <a id="1059" class="Keyword">open</a> <a id="1064" class="Keyword">module</a> <a id="D"></a><a id="1071" href="Data.List.Countdown.html#1071" class="Module">D</a> <a id="1073" class="Symbol">=</a> <a id="1075" href="Relation.Binary.html#3012" class="Module">DecSetoid</a> <a id="1085" href="Data.List.Countdown.html#357" class="Bound">D</a>
+  <a id="1059" class="Keyword">open</a> <a id="1064" class="Keyword">module</a> <a id="D"></a><a id="1071" href="Data.List.Countdown.html#1071" class="Module">D</a> <a id="1073" class="Symbol">=</a> <a id="1075" href="Relation.Binary.html#3012" class="Module">DecSetoid</a> <a id="1085" href="Data.List.Countdown.html#373" class="Bound">D</a>
     <a id="1091" class="Keyword">hiding</a> <a id="1098" class="Symbol">(</a><a id="1099" href="Relation.Binary.Core.html#5287" class="Function">refl</a><a id="1103" class="Symbol">)</a> <a id="1105" class="Keyword">renaming</a> <a id="1114" class="Symbol">(</a><a id="1115" href="Relation.Binary.html#3078" class="Field">Carrier</a> <a id="1123" class="Symbol">to</a> <a id="1126" href="Relation.Binary.html#3078" class="Field">Elem</a><a id="1130" class="Symbol">)</a>
   <a id="1134" class="Keyword">open</a> <a id="1139" class="Keyword">import</a> <a id="1146" href="Data.List.Membership.Setoid.html" class="Module">Data.List.Membership.Setoid</a> <a id="1174" href="Relation.Binary.html#3236" class="Function">D.setoid</a>
 
