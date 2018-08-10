@@ -17,6 +17,7 @@ Non-backwards compatible changes
   Codata.Thunk
   Codata.Colist
   Codata.Conat
+  Codata.Cofin
   Codata.Covec
   Codata.Delay
   Codata.Stream

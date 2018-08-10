@@ -11,7 +11,7 @@ open import Codata.Thunk
 open import Codata.Conat as Conat hiding (fromℕ)
 open import Codata.Conat.Bisimilarity as Bisim using (_⊢_≲_ ; s≲s)
 open import Data.Nat
-open import Data.Fin as Fin hiding (fromℕ ; toℕ)
+open import Data.Fin as Fin hiding (fromℕ; fromℕ≤; toℕ)
 open import Function
 open import Relation.Binary.PropositionalEquality
 
@@ -32,9 +32,13 @@ suc-injective refl = refl
 ------------------------------------------------------------------------
 -- Some operations
 
+fromℕ< : ∀ {n k} → k ℕ< n → Cofin n
+fromℕ< {zero}  ()
+fromℕ< {suc n} {zero}  (sℕ≤s p) = zero
+fromℕ< {suc n} {suc k} (sℕ≤s p) = suc (fromℕ< p)
+
 fromℕ : ℕ → Cofin infinity
-fromℕ zero    = zero
-fromℕ (suc n) = suc (fromℕ n)
+fromℕ k = fromℕ< (suc k ℕ≤infinity)
 
 toℕ : ∀ {n} → Cofin n → ℕ
 toℕ zero    = zero
