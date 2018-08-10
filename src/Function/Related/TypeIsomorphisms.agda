@@ -357,8 +357,8 @@ A⇔B →-cong-⇔ C⇔D = Eq.equivalence
   where open Related.EquationalReasoning
 
 ¬-cong : ∀ {a b} →
-         P.Extensionality a Level.zero →
-         P.Extensionality b Level.zero →
+         P.Extensionality a 0ℓ →
+         P.Extensionality b 0ℓ →
          ∀ {k} {A : Set a} {B : Set b} →
          A ∼[ ⌊ k ⌋ ] B → (¬ A) ∼[ ⌊ k ⌋ ] (¬ B)
 ¬-cong extA extB A≈B = →-cong extA extB A≈B (⊥ ∎)
