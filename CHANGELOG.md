@@ -555,6 +555,11 @@ Other minor additions
   surjection : (∀ x → to (from x) ≡ x) → From ↠ To
   ```
 
+* Added new synonym to `Level`:
+  ```agda
+  0ℓ = zero
+  ```
+
 * Added new module `Level.Literals` with functions:
   ```agda
   _ℕ+_   : Nat → Level → Level
