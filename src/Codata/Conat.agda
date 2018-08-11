@@ -103,9 +103,13 @@ suc k ℕ≤infinity = sℕ≤s (k ℕ≤infinity)
 ------------------------------------------------------------------------
 -- Legacy
 
-open import Coinduction
+open import Coinduction using (♭; ♯_)
 import Codata.Musical.Conat as M
 
 fromMusical : M.Coℕ → ∀ {i} → Conat i
 fromMusical M.zero    = zero
 fromMusical (M.suc n) = suc λ where .force → fromMusical (♭ n)
+
+toMusical : Conat ∞ → M.Coℕ
+toMusical zero    = M.zero
+toMusical (suc n) = M.suc (♯ toMusical (n .force))
