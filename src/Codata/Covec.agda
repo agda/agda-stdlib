@@ -12,7 +12,7 @@ open import Codata.Thunk
 open import Codata.Conat as Conat hiding (fromMusical)
 open import Codata.Conat.Bisimilarity
 open import Codata.Conat.Properties
-open import Codata.Cofin
+open import Codata.Cofin as Cofin using (Cofin; zero; suc)
 open import Codata.Colist as Colist using (Colist ; [] ; _∷_)
 open import Codata.Stream as Stream using (Stream ; _∷_)
 open import Function
@@ -23,7 +23,7 @@ data Covec {ℓ} (A : Set ℓ) (i : Size) : Conat ∞ → Set ℓ where
 
 module _ {ℓ} {A : Set ℓ} where
 
- head : ∀ {n} → Covec A ∞ (suc n) → A
+ head : ∀ {n i} → Covec A i (suc n) → A
  head (x ∷ _) = x
 
  tail : ∀ {n} → Covec A ∞ (suc n) → Covec A ∞ (n .force)
