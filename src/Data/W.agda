@@ -38,7 +38,7 @@ tail (sup x f) = f
 -- map
 
 module _ {a b c d} {A : Set a} {B : A → Set b} {C : Set c} {D : C → Set d}
-         (A⇒C : A → C) (D⇒B : ∀[ D ∘ A⇒C ⇒ B ]) where
+         (A⇒C : A → C) (D⇒B : Π[ D ∘ A⇒C ⇒ B ]) where
 
  map : W A B → W C D
  map (sup x f) = sup (A⇒C x) $ λ d → map (f (D⇒B x d))
