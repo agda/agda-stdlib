@@ -292,6 +292,9 @@ Non-backwards compatible changes
 
 * Removed `Data.Char.Core` which was doing nothing of interest.
 
+* Repurposed `∀[_]` in `Relation.Nullary` for implicit universal quantifiers.
+  Added `Π[_]` for the explicit ones.
+
 Other major changes
 -------------------
 
