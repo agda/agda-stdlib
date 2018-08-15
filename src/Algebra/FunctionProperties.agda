@@ -70,6 +70,12 @@ _DistributesOver_ : Op₂ A → Op₂ A → Set _
 _IdempotentOn_ : Op₂ A → A → Set _
 _∙_ IdempotentOn x = (x ∙ x) ≈ x
 
+_ContravariantOn_ : Op₁ A → Op₂ A → Set _
+f ContravariantOn _∙_ = ∀ x y → f (x ∙ y) ≈ (f y ∙ f x)
+
+_NecessarilyIdempotentFor_ : A → Op₂ A → Set _
+z NecessarilyIdempotentFor _∙_ = ∀ x y → (x ∙ y) ≈ z → (x ≈ z) × (y ≈ z)
+
 Idempotent : Op₂ A → Set _
 Idempotent ∙ = ∀ x → ∙ IdempotentOn x
 
