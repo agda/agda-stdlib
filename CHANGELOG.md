@@ -95,6 +95,30 @@ Non-backwards compatible changes
   and exports all the old names, but may be removed in some
   future version.
 
+### Rearrangement of algebraic Solvers
+
+* Standardised and moved the generic solver modules as follows:
+  ```agda
+  Algebra.RingSolver                        ↦ Algebra.Solver.Ring
+  Algebra.Monoid-solver                     ↦ Algebra.Solver.Monoid
+  Algebra.CommutativeMonoidSolver           ↦ Algebra.Solver.CommutativeMonoidx
+  Algebra.IdempotentCommutativeMonoidSolver ↦ Algebra.Solver.IdempotentCommutativeMonoid
+  ```
+
+* In order to avoid dependency cycles, special instances of solvers for the following
+  data types have been moved from `Data.X.Properties` to new modules `Data.X.Solver`.
+  The naming conventions for these solver modules have also been standardised.
+  ```agda
+  Data.Bool.Properties.RingSolver          ↦  Data.Bool.Solver.∨-∧-Solver
+  Data.Bool.Properties.XorRingSolver       ↦  Data.Bool.Solver.xor-∧-Solver
+  Data.Integer.Properties.RingSolver       ↦  Data.Integer.Solver.+-*-Solver
+  Data.List.Properties.List-solver         ↦  Data.List.Solver.++-Solver
+  Data.Nat.Properties.SemiringSolver       ↦  Data.Nat.Solver.+-*-Solver
+  Function.Related.TypeIsomorphisms.Solver ↦ Function.Related.TypeIsomorphisms.Solver.×-⊎-Solver
+  ```
+
+* Renamed `Algebra.Solver.Ring.Natural-coefficients` to `Algebra.Solver.Ring.NaturalCoefficients`.
+
 ### Overhaul of `Data.X.Categorical`
 
 * Created `Category.Comonad`:

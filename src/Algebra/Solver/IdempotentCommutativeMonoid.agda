@@ -26,7 +26,7 @@ import Data.Vec.Relation.Pointwise.Inductive as Pointwise
 open import Relation.Binary.PropositionalEquality as P using (_≡_; decSetoid)
 open import Relation.Nullary using (Dec)
 
-module Algebra.IdempotentCommutativeMonoidSolver
+module Algebra.Solver.IdempotentCommutativeMonoid
   {m₁ m₂} (M : IdempotentCommutativeMonoid m₁ m₂) where
 
 open IdempotentCommutativeMonoid M

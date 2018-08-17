@@ -10,11 +10,11 @@
 -- Horner normal forms are not sparse).
 
 open import Algebra
-open import Algebra.RingSolver.AlmostCommutativeRing
+open import Algebra.Solver.Ring.AlmostCommutativeRing
 
 open import Relation.Binary
 
-module Algebra.RingSolver
+module Algebra.Solver.Ring
   {r₁ r₂ r₃}
   (Coeff : RawRing r₁)               -- Coefficient "ring".
   (R : AlmostCommutativeRing r₂ r₃)  -- Main "ring".
@@ -22,7 +22,7 @@ module Algebra.RingSolver
   (_coeff≟_ : Decidable (Induced-equivalence morphism))
   where
 
-open import Algebra.RingSolver.Lemmas Coeff R morphism
+open import Algebra.Solver.Ring.Lemmas Coeff R morphism
 private module C = RawRing Coeff
 open AlmostCommutativeRing R
   renaming (zero to *-zero; zeroˡ to *-zeroˡ; zeroʳ to *-zeroʳ)
