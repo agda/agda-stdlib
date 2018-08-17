@@ -9,27 +9,24 @@ module Function.Related.TypeIsomorphisms where
 
 open import Algebra
 import Algebra.FunctionProperties as FP
-import Algebra.Operations.Semiring as SemiringOperations
-import Algebra.RingSolver.Natural-coefficients
 open import Algebra.Structures
-open import Data.Empty
-open import Data.Nat as Nat using (zero; suc)
+open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Product as Prod hiding (swap)
 open import Data.Product.Relation.Pointwise.NonDependent
 open import Data.Sum as Sum
 open import Data.Sum.Properties using (swap-involutive)
-open import Data.Sum.Relation.Pointwise
-open import Data.Unit
-open import Level hiding (zero; suc)
+open import Data.Sum.Relation.Pointwise using (_⊎-cong_)
+open import Data.Unit using (⊤)
+open import Level using (Level; Lift; lower; 0ℓ; suc)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Eq using (_⇔_; Equivalence)
 open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
-open import Function.Related as Related
+open import Function.Related
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
-open import Relation.Nullary hiding (module Dec)
-open import Relation.Nullary.Decidable as Dec using (True)
+open import Relation.Nullary using (Dec; ¬_; yes; no)
+open import Relation.Nullary.Decidable using (True)
 
 ------------------------------------------------------------------------
 -- Properties of Σ and _×_
@@ -130,7 +127,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
 
 ×-isSemigroup : ∀ k ℓ → IsSemigroup {Level.suc ℓ} (Related ⌊ k ⌋) _×_
 ×-isSemigroup k ℓ = record
-  { isEquivalence = isEquivalence k ℓ
+  { isEquivalence = SK-isEquivalence k ℓ
   ; assoc         = λ _ _ _ → ↔⇒ Σ-assoc
   ; ∙-cong        = _×-cong_
   }
@@ -167,7 +164,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
 
 ⊎-isSemigroup : ∀ k ℓ → IsSemigroup {Level.suc ℓ} (Related ⌊ k ⌋) _⊎_
 ⊎-isSemigroup k ℓ = record
-  { isEquivalence = isEquivalence k ℓ
+  { isEquivalence = SK-isEquivalence k ℓ
   ; assoc         = λ A B C → ↔⇒ (⊎-assoc ℓ A B C)
   ; ∙-cong        = _⊎-cong_
   }
@@ -215,114 +212,6 @@ open import Relation.Nullary.Decidable as Dec using (True)
 ×-⊎-commutativeSemiring k ℓ = record
   { isCommutativeSemiring = ×-⊎-isCommutativeSemiring k ℓ
   }
-
-private
-
-  -- A decision procedure used by the solver below.
-
-  coefficient-dec :
-    ∀ s ℓ →
-    let open CommutativeSemiring (×-⊎-commutativeSemiring s ℓ)
-        open SemiringOperations semiring renaming (_×_ to Times)
-    in
-
-    ∀ m n → Dec (Times m 1# ∼[ ⌊ s ⌋ ] Times n 1#)
-
-  coefficient-dec equivalence ℓ m n with m | n
-  ... | zero  | zero  = yes (Eq.equivalence id id)
-  ... | zero  | suc _ = no  (λ eq → lower (Equivalence.from eq ⟨$⟩ inj₁ _))
-  ... | suc _ | zero  = no  (λ eq → lower (Equivalence.to   eq ⟨$⟩ inj₁ _))
-  ... | suc _ | suc _ = yes (Eq.equivalence (λ _ → inj₁ _) (λ _ → inj₁ _))
-  coefficient-dec bijection ℓ m n = Dec.map′ to (from m n) (Nat._≟_ m n)
-    where
-    open CommutativeSemiring (×-⊎-commutativeSemiring bijection ℓ)
-      using (1#; semiring)
-    open SemiringOperations semiring renaming (_×_ to Times)
-
-    to : ∀ {m n} → m ≡ n → Times m 1# ↔ Times n 1#
-    to {m} P.refl = Times m 1# ∎
-      where open Related.EquationalReasoning
-
-    from : ∀ m n → Times m 1# ↔ Times n 1# → m ≡ n
-    from zero    zero    _   = P.refl
-    from zero    (suc n) 0↔+ = ⊥-elim $ lower $ Inverse.from 0↔+ ⟨$⟩ inj₁ _
-    from (suc m) zero    +↔0 = ⊥-elim $ lower $ Inverse.to   +↔0 ⟨$⟩ inj₁ _
-    from (suc m) (suc n) +↔+ = P.cong suc $ from m n (pred↔pred +↔+)
-      where
-      open P.≡-Reasoning
-
-      ↑⊤ : Set ℓ
-      ↑⊤ = Lift _ ⊤
-
-      inj₁≢inj₂ : ∀ {A : Set ℓ} {x : ↑⊤ ⊎ A} {y} →
-                  x ≡ inj₂ y → x ≡ inj₁ _ → ⊥
-      inj₁≢inj₂ {x = x} {y} eq₁ eq₂ =
-        P.subst [ const ⊥ , const ⊤ ] (begin
-          inj₂ y  ≡⟨ P.sym eq₁ ⟩
-          x       ≡⟨ eq₂ ⟩
-          inj₁ _  ∎)
-          _
-
-      g′ : {A B : Set ℓ}
-           (f : (↑⊤ ⊎ A) ↔ (↑⊤ ⊎ B)) (x : A) (y z : ↑⊤ ⊎ B) →
-           Inverse.to f ⟨$⟩ inj₂ x ≡ y →
-           Inverse.to f ⟨$⟩ inj₁ _ ≡ z →
-           B
-      g′ _ _ (inj₂ y)       _  _   _   = y
-      g′ _ _ (inj₁ _) (inj₂ z) _   _   = z
-      g′ f _ (inj₁ _) (inj₁ _) eq₁ eq₂ = ⊥-elim $
-        inj₁≢inj₂ (Inverse.to-from f eq₁) (Inverse.to-from f eq₂)
-
-      g : {A B : Set ℓ} → (↑⊤ ⊎ A) ↔ (↑⊤ ⊎ B) → A → B
-      g f x = g′ f x _ _ P.refl P.refl
-
-      g′∘g′ : ∀ {A B} (f : (↑⊤ ⊎ A) ↔ (↑⊤ ⊎ B))
-              x y₁ z₁ y₂ z₂ eq₁₁ eq₂₁ eq₁₂ eq₂₂ →
-              g′ (reverse f) (g′ f x y₁ z₁ eq₁₁ eq₂₁) y₂ z₂ eq₁₂ eq₂₂ ≡
-              x
-      g′∘g′ f x (inj₂ y₁) _ (inj₂ y₂) _ eq₁₁ _ eq₁₂ _ =
-        P.cong [ const y₂ , id ] (begin
-          inj₂ y₂                     ≡⟨ P.sym eq₁₂ ⟩
-          Inverse.from f ⟨$⟩ inj₂ y₁  ≡⟨ Inverse.to-from f eq₁₁ ⟩
-          inj₂ x                      ∎)
-      g′∘g′ f x (inj₁ _) (inj₂ _) (inj₁ _) (inj₂ z₂) eq₁₁ _ _ eq₂₂ =
-        P.cong [ const z₂ , id ] (begin
-          inj₂ z₂                    ≡⟨ P.sym eq₂₂ ⟩
-          Inverse.from f ⟨$⟩ inj₁ _  ≡⟨ Inverse.to-from f eq₁₁ ⟩
-          inj₂ x                     ∎)
-      g′∘g′ f _ (inj₂ y₁) _ (inj₁ _) _ eq₁₁ _ eq₁₂ _ =
-        ⊥-elim $ inj₁≢inj₂ (Inverse.to-from f eq₁₁) eq₁₂
-      g′∘g′ f _ (inj₁ _) (inj₂ z₁) (inj₂ y₂) _ _ eq₂₁ eq₁₂ _ =
-        ⊥-elim $ inj₁≢inj₂ eq₁₂ (Inverse.to-from f eq₂₁)
-      g′∘g′ f _ (inj₁ _) (inj₂ _) (inj₁ _) (inj₁ _) eq₁₁ _ _ eq₂₂ =
-        ⊥-elim $ inj₁≢inj₂ (Inverse.to-from f eq₁₁) eq₂₂
-      g′∘g′ f _ (inj₁ _) (inj₁ _) _ _ eq₁₁ eq₂₁ _ _ =
-        ⊥-elim $ inj₁≢inj₂ (Inverse.to-from f eq₁₁)
-                           (Inverse.to-from f eq₂₁)
-
-      g∘g : ∀ {A B} (f : (↑⊤ ⊎ A) ↔ (↑⊤ ⊎ B)) x →
-            g (reverse f) (g f x) ≡ x
-      g∘g f x = g′∘g′ f x _ _ _ _ P.refl P.refl P.refl P.refl
-
-      pred↔pred : {A B : Set ℓ} → (↑⊤ ⊎ A) ↔ (↑⊤ ⊎ B) → A ↔ B
-      pred↔pred X⊎↔X⊎ = inverse (g X⊎↔X⊎) (g (reverse X⊎↔X⊎))
-                                (g∘g X⊎↔X⊎) (g∘g (reverse X⊎↔X⊎))
-
-module Solver s {ℓ} =
-  Algebra.RingSolver.Natural-coefficients
-    (×-⊎-commutativeSemiring s ℓ)
-    (coefficient-dec s ℓ)
-
-private
-
-  -- A test of the solver above.
-
-  test : {ℓ : Level} (A B C : Set ℓ) →
-         (Lift ℓ ⊤ × A × (B ⊎ C)) ↔ (A × B ⊎ C × (Lift ℓ ⊥ ⊎ A))
-  test = solve 3 (λ A B C → con 1 :* (A :* (B :+ C)) :=
-                            A :* B :+ C :* (con 0 :+ A))
-                 Inv.id
-    where open Solver bijection
 
 ------------------------------------------------------------------------
 -- Some reordering lemmas
@@ -390,15 +279,15 @@ A⇔B →-cong-⇔ C⇔D = Eq.equivalence
 ¬-cong-⇔ : ∀ {a b} {A : Set a} {B : Set b} →
            A ⇔ B → (¬ A) ⇔ (¬ B)
 ¬-cong-⇔ A⇔B = A⇔B →-cong-⇔ (⊥ ∎)
-  where open Related.EquationalReasoning
+  where open EquationalReasoning
 
 ¬-cong : ∀ {a b} →
-         P.Extensionality a Level.zero →
-         P.Extensionality b Level.zero →
+         P.Extensionality a 0ℓ →
+         P.Extensionality b 0ℓ →
          ∀ {k} {A : Set a} {B : Set b} →
          A ∼[ ⌊ k ⌋ ] B → (¬ A) ∼[ ⌊ k ⌋ ] (¬ B)
 ¬-cong extA extB A≈B = →-cong extA extB A≈B (⊥ ∎)
-  where open Related.EquationalReasoning
+  where open EquationalReasoning
 
 ------------------------------------------------------------------------
 -- _⇔_ preserves _⇔_
@@ -409,15 +298,15 @@ Related-cong :
   ∀ {k a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} →
   A ∼[ ⌊ k ⌋ ] B → C ∼[ ⌊ k ⌋ ] D → (A ∼[ ⌊ k ⌋ ] C) ⇔ (B ∼[ ⌊ k ⌋ ] D)
 Related-cong {A = A} {B} {C} {D} A≈B C≈D =
-  Eq.equivalence (λ A≈C → B  ∼⟨ sym A≈B ⟩
+  Eq.equivalence (λ A≈C → B  ∼⟨ SK-sym A≈B ⟩
                           A  ∼⟨ A≈C ⟩
                           C  ∼⟨ C≈D ⟩
                           D  ∎)
                  (λ B≈D → A  ∼⟨ A≈B ⟩
                           B  ∼⟨ B≈D ⟩
-                          D  ∼⟨ sym C≈D ⟩
+                          D  ∼⟨ SK-sym C≈D ⟩
                           C  ∎)
-  where open Related.EquationalReasoning
+  where open EquationalReasoning
 
 ------------------------------------------------------------------------
 -- A lemma relating True dec and P, where dec : Dec P
@@ -440,7 +329,7 @@ True↔ (no ¬p) _   = inverse (λ()) ¬p (λ()) (⊥-elim ∘ ¬p)
        Σ (proj₁ p₁ ≡ proj₁ p₂)
          (λ p → P.subst B p (proj₂ p₁) ≡ proj₂ p₂) →
        p₁ ≡ p₂
-  to {._ , ._} (P.refl , P.refl) = P.refl
+  to (P.refl , P.refl) = P.refl
 
   from : {p₁ p₂ : Σ A B} →
          p₁ ≡ p₂ →
@@ -452,7 +341,7 @@ True↔ (no ¬p) _   = inverse (λ()) ¬p (λ()) (⊥-elim ∘ ¬p)
                     (p : Σ (proj₁ p₁ ≡ proj₁ p₂)
                            (λ x → P.subst B x (proj₂ p₁) ≡ proj₂ p₂)) →
                     from (to p) ≡ p
-  left-inverse-of {._ , ._} (P.refl , P.refl) = P.refl
+  left-inverse-of (P.refl , P.refl) = P.refl
 
   right-inverse-of : {p₁ p₂ : Σ A B} (p : p₁ ≡ p₂) → to (from p) ≡ p
   right-inverse-of P.refl = P.refl
@@ -463,7 +352,7 @@ True↔ (no ¬p) _   = inverse (λ()) ¬p (λ()) (⊥-elim ∘ ¬p)
   where
   to : {p₁ p₂ : A × B} →
        (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂) → p₁ ≡ p₂
-  to {._ , ._} (P.refl , P.refl) = P.refl
+  to (P.refl , P.refl) = P.refl
 
   from : {p₁ p₂ : A × B} → p₁ ≡ p₂ →
          (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂)
@@ -472,7 +361,7 @@ True↔ (no ¬p) _   = inverse (λ()) ¬p (λ()) (⊥-elim ∘ ¬p)
   left-inverse-of : {p₁ p₂ : A × B} →
                     (p : (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂)) →
                     from (to p) ≡ p
-  left-inverse-of {._ , ._} (P.refl , P.refl) = P.refl
+  left-inverse-of (P.refl , P.refl) = P.refl
 
   right-inverse-of : {p₁ p₂ : A × B} (p : p₁ ≡ p₂) → to (from p) ≡ p
   right-inverse-of P.refl = P.refl
@@ -488,10 +377,10 @@ True↔ (no ¬p) _   = inverse (λ()) ¬p (λ()) (⊥-elim ∘ ¬p)
    from = < P.cong proj₁ , P.cong proj₂ >
 
    from∘to : ∀ v → from (to v) ≡ v
-   from∘to = λ _ → P.cong₂ _,_ (P.≡-irrelevance _ _) (P.≡-irrelevance _ _)
+   from∘to _ = P.cong₂ _,_ (P.≡-irrelevance _ _) (P.≡-irrelevance _ _)
 
    to∘from : ∀ v → to (from v) ≡ v
-   to∘from = λ _ → P.≡-irrelevance _ _
+   to∘from _ = P.≡-irrelevance _ _
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

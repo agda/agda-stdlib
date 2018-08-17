@@ -125,7 +125,7 @@ import Relation.Binary.PropositionalEquality
 import Relation.Binary.PreorderReasoning
 
 -- Solver for commutative ring or semiring equalities:
-import Algebra.RingSolver
+import Algebra.Solver.Ring
 
 -- • Properties of functions, sets and relations
 

@@ -24,7 +24,7 @@ open import Function
 open import Function.Equality using (_⟨$⟩_)
 import Function.Equivalence as FE
 open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
-open import Function.Related as Related using (↔⇒; ⌊_⌋; ⌊_⌋→; ⇒→)
+open import Function.Related as Related using (↔⇒; ⌊_⌋; ⌊_⌋→; ⇒→; SK-sym)
 open import Function.Related.TypeIsomorphisms
 open import Relation.Binary
 import Relation.Binary.EqReasoning as EqR
@@ -98,7 +98,7 @@ module _ {a k} {A : Set a} {x y : A} {xs ys} where
 
   ∷-cong : x ≡ y → xs ∼[ k ] ys → x ∷ xs ∼[ k ] y ∷ ys
   ∷-cong refl xs≈ys {y} =
-    y ∈ x ∷ xs        ↔⟨ sym $ ∷↔ (y ≡_) ⟩
+    y ∈ x ∷ xs        ↔⟨ SK-sym $ ∷↔ (y ≡_) ⟩
     (y ≡ x ⊎ y ∈ xs)  ∼⟨ (y ≡ x ∎) ⊎-cong xs≈ys ⟩
     (y ≡ x ⊎ y ∈ ys)  ↔⟨ ∷↔ (y ≡_) ⟩
     y ∈ x ∷ ys        ∎
@@ -111,7 +111,7 @@ module _ {ℓ k} {A B : Set ℓ} {f g : A → B} {xs ys} where
 
   map-cong : f ≗ g → xs ∼[ k ] ys → map f xs ∼[ k ] map g ys
   map-cong f≗g xs≈ys {x} =
-    x ∈ map f xs            ↔⟨ sym $ map↔ ⟩
+    x ∈ map f xs            ↔⟨ SK-sym $ map↔ ⟩
     Any (λ y → x ≡ f y) xs  ∼⟨ Any-cong (↔⇒ ∘ helper) xs≈ys ⟩
     Any (λ y → x ≡ g y) ys  ↔⟨ map↔ ⟩
     x ∈ map g ys            ∎
@@ -136,7 +136,7 @@ module _ {a k} {A : Set a} {xs₁ xs₂ ys₁ ys₂ : List A} where
   ++-cong : xs₁ ∼[ k ] xs₂ → ys₁ ∼[ k ] ys₂ →
             xs₁ ++ ys₁ ∼[ k ] xs₂ ++ ys₂
   ++-cong xs₁≈xs₂ ys₁≈ys₂ {x} =
-    x ∈ xs₁ ++ ys₁       ↔⟨ sym $ ++↔ ⟩
+    x ∈ xs₁ ++ ys₁       ↔⟨ SK-sym $ ++↔ ⟩
     (x ∈ xs₁ ⊎ x ∈ ys₁)  ∼⟨ xs₁≈xs₂ ⊎-cong ys₁≈ys₂ ⟩
     (x ∈ xs₂ ⊎ x ∈ ys₂)  ↔⟨ ++↔ ⟩
     x ∈ xs₂ ++ ys₂       ∎
@@ -149,7 +149,7 @@ module _ {a k} {A : Set a} {xss yss : List (List A)} where
 
   concat-cong : xss ∼[ k ] yss → concat xss ∼[ k ] concat yss
   concat-cong xss≈yss {x} =
-    x ∈ concat xss         ↔⟨ sym concat↔ ⟩
+    x ∈ concat xss        ↔⟨ SK-sym concat↔ ⟩
     Any (Any (x ≡_)) xss  ∼⟨ Any-cong (λ _ → _ ∎) xss≈yss ⟩
     Any (Any (x ≡_)) yss  ↔⟨ concat↔ ⟩
     x ∈ concat yss         ∎
@@ -163,7 +163,7 @@ module _ {ℓ k} {A B : Set ℓ} {xs ys} {f g : A → List B} where
   >>=-cong : xs ∼[ k ] ys → (∀ x → f x ∼[ k ] g x) →
              (xs >>= f) ∼[ k ] (ys >>= g)
   >>=-cong xs≈ys f≈g {x} =
-    x ∈ (xs >>= f)          ↔⟨ sym >>=↔ ⟩
+    x ∈ (xs >>= f)          ↔⟨ SK-sym >>=↔ ⟩
     Any (λ y → x ∈ f y) xs  ∼⟨ Any-cong (λ x → f≈g x) xs≈ys ⟩
     Any (λ y → x ∈ g y) ys  ↔⟨ >>=↔ ⟩
     x ∈ (ys >>= g)          ∎
@@ -243,9 +243,9 @@ empty-unique {xs = _ ∷ _} ∷∼[] with ⇒→ ∷∼[] (here refl)
   ∀ {ℓ} {A B : Set ℓ} (xs : List A) {f g : A → List B} →
   (xs >>= λ x → f x ++ g x) ∼[ bag ] (xs >>= f) ++ (xs >>= g)
 >>=-left-distributive {ℓ} xs {f} {g} {y} =
-  y ∈ (xs >>= λ x → f x ++ g x)                      ↔⟨ sym $ >>=↔ ⟩
-  Any (λ x → y ∈ f x ++ g x) xs                      ↔⟨ sym (Any-cong (λ _ → ++↔) (_ ∎)) ⟩
-  Any (λ x → y ∈ f x ⊎ y ∈ g x) xs                   ↔⟨ sym $ ⊎↔ ⟩
+  y ∈ (xs >>= λ x → f x ++ g x)                      ↔⟨ SK-sym $ >>=↔ ⟩
+  Any (λ x → y ∈ f x ++ g x) xs                      ↔⟨ SK-sym (Any-cong (λ _ → ++↔) (_ ∎)) ⟩
+  Any (λ x → y ∈ f x ⊎ y ∈ g x) xs                   ↔⟨ SK-sym $ ⊎↔ ⟩
   (Any (λ x → y ∈ f x) xs ⊎ Any (λ x → y ∈ g x) xs)  ↔⟨ >>=↔ ⟨ _⊎-cong_ ⟩ >>=↔ ⟩
   (y ∈ (xs >>= f) ⊎ y ∈ (xs >>= g))                  ↔⟨ ++↔ ⟩
   y ∈ (xs >>= f) ++ (xs >>= g)                       ∎

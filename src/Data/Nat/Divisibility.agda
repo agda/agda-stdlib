@@ -10,6 +10,7 @@ open import Algebra
 open import Data.Nat as Nat
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
+open import Data.Nat.Solver
 open import Data.Fin using (Fin; zero; suc; toℕ)
 import Data.Fin.Properties as FP
 open import Data.Product
@@ -22,7 +23,7 @@ import Relation.Binary.PartialOrderReasoning as PartialOrderReasoning
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)
 
-open SemiringSolver
+open +-*-Solver
 
 ------------------------------------------------------------------------
 -- m ∣ n is inhabited iff m divides n. Some sources, like Hardy and

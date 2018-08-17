@@ -6,7 +6,7 @@
 
 module Data.Nat.InfinitelyOften where
 
-import Level
+open import Level using (0ℓ)
 open import Algebra
 open import Category.Monad
 open import Data.Empty
@@ -19,7 +19,7 @@ open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary
 open import Relation.Nullary.Negation
 open import Relation.Unary using (Pred; _∪_; _⊆_)
-open RawMonad (¬¬-Monad {p = Level.zero})
+open RawMonad (¬¬-Monad {p = 0ℓ})
 
 -- Only true finitely often.
 

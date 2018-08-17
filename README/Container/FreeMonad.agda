@@ -51,9 +51,9 @@ prog =
   open RawMonad rawMonad
 
 runState : {S X : Set} → State S ⋆ X → (S → X ⟨×⟩ S)
-runState (sup (inj₁ x) _)        = λ s → x , s
-runState (sup (inj₂ (inj₁ _)) k) = λ s → runState (k s) s
-runState (sup (inj₂ (inj₂ s)) k) = λ _ → runState (k _) s
+runState (sup (inj₁ x , _))        = λ s → x , s
+runState (sup (inj₂ (inj₁ _) , k)) = λ s → runState (k s) s
+runState (sup (inj₂ (inj₂ s) , k)) = λ _ → runState (k _) s
 
 test : runState prog 0 ≡ (true , 1)
 test = refl
