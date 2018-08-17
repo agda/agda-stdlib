@@ -101,7 +101,7 @@ Non-backwards compatible changes
   and exports all the old names, but may be removed in some
   future version.
 
-### Rearrangement of algebraic Solvers
+#### Rearrangement of algebraic Solvers
 
 * Standardised and moved the generic solver modules as follows:
   ```agda
@@ -125,7 +125,7 @@ Non-backwards compatible changes
 
 * Renamed `Algebra.Solver.Ring.Natural-coefficients` to `Algebra.Solver.Ring.NaturalCoefficients`.
 
-### Overhaul of `Data.X.Categorical`
+#### Overhaul of `Data.X.Categorical`
 
 * Added new modules:
   ```
