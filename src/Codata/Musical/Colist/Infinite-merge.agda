@@ -6,7 +6,7 @@
 
 module Codata.Musical.Colist.Infinite-merge where
 
-open import Coinduction
+open import Codata.Musical.Notation
 open import Codata.Musical.Colist as Colist hiding (_⋎_)
 open import Data.Nat
 open import Data.Nat.Properties

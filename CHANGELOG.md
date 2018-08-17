@@ -30,6 +30,7 @@ Non-backwards compatible changes
 * To avoid confusion, the old codata modules that previously lived in the `Data`
   directory have been moved to the folder `Codata.Musical`
   ```agda
+  Coinduction ↦ Codata.Musical.Notation
   Data.Cofin  ↦ Codata.Musical.Cofin
   Data.Colist ↦ Codata.Musical.Colist
   Data.Conat  ↦ Codata.Musical.Conat
@@ -44,6 +45,10 @@ Non-backwards compatible changes
 
 * The type `Costring` and method `toCostring` have been moved from `Data.String`
   to a new module `Codata.Musical.Costring`.
+
+* The `Rec` construction has been dropped from `Codata.Musical.Notation` as the
+  `--guardedness-preserving-type-constructors` flag which made it useful has been
+  removed from Agda.
 
 #### Improved consistency between `Data.(List/Vec).(Any/All/Membership)`
 

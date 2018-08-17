@@ -100,7 +100,7 @@ module _ {a b} {A : Set a} {B : Set b} where
 ------------------------------------------------------------------------
 -- Legacy
 
-open import Coinduction using (♭; ♯_)
+open import Codata.Musical.Notation using (♭; ♯_)
 import Codata.Musical.Colist as M
 
 module _ {a} {A : Set a} where

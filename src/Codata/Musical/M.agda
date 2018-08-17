@@ -6,7 +6,7 @@
 
 module Codata.Musical.M where
 
-open import Coinduction
+open import Codata.Musical.Notation
 open import Level
 
 -- The family of M-types.
