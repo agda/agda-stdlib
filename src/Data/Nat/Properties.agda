@@ -13,8 +13,6 @@ open import Relation.Binary
 open import Function
 open import Function.Injection using (_↣_)
 open import Algebra
-import Algebra.RingSolver.Simple as Solver
-import Algebra.RingSolver.AlmostCommutativeRing as ACR
 open import Data.Nat as Nat
 open import Data.Product
 open import Data.Sum
@@ -1162,10 +1160,6 @@ eq? inj = via-injection inj _≟_
 
 ------------------------------------------------------------------------
 -- Modules for reasoning about natural number relations
-
--- A module for automatically solving propositional equivalences
-module SemiringSolver =
-  Solver (ACR.fromCommutativeSemiring *-+-commutativeSemiring) _≟_
 
 -- A module for reasoning about the _≤_ relation
 module ≤-Reasoning where
