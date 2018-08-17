@@ -48,6 +48,9 @@ module _ {ℓ} {A : Set ℓ} where
  _⁺++_ : ∀ {i} → List⁺ A → Thunk (Stream A) i → Stream A i
  (x ∷ xs) ⁺++ ys = x ∷ λ where .force → xs ++ ys .force
 
+ cycle : ∀ {i} → List⁺ A → Stream A i
+ cycle xs = xs ⁺++ λ where .force → cycle xs
+
 module _ {ℓ ℓ′} {A : Set ℓ} {B : Set ℓ′} where
 
  map : ∀ {i} → (A → B) → Stream A i → Stream B i
