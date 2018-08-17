@@ -15,7 +15,7 @@ Non-backwards compatible changes
   notion of coinductive `Thunk` and provides the basic data types:
   ```agda
   Codata.Thunk
-  
+
   Codata.Colist
   Codata.Conat
   Codata.Cofin
@@ -135,7 +135,7 @@ Non-backwards compatible changes
 * Added new modules:
   ```
   Category.Comonad
-  
+
   Data.List.NonEmpty.Categorical
   Data.Maybe.Categorical
   Data.Product.Categorical.Left
@@ -143,7 +143,7 @@ Non-backwards compatible changes
   Data.Product.N-ary.Categorical
   Data.Sum.Categorical.Left
   Data.Sum.Categorical.Right
-  
+
   Codata.Colist.Categorical
   Codata.Covec.Categorical
   Codata.Delay.Categorical
@@ -190,7 +190,7 @@ Non-backwards compatible changes
 * In `Data.Maybe.Base` the `Set` argument to `From-just` has been made implicit
   to be consistent with the definition of `Data.Sum`'s `From-injₙ`.
 
-* In `Data.Product` the function `,_` has been renamed to `-,_` to avoid 
+* In `Data.Product` the function `,_` has been renamed to `-,_` to avoid
   conflict with the right section of `_,_`.
 
 * Made `Data.Star.Decoration`, `Data.Star.Environment` and `Data.Star.Pointer`
@@ -249,7 +249,7 @@ anticipated any time soon, they may eventually be removed in some future release
 
 Other minor additions
 ---------------------
-  
+
 * Added new function to `Category.Monad.Indexed`:
   ```agda
   RawIMonadT : (T : IFun I f → IFun I f) → Set (i ⊔ suc f)
