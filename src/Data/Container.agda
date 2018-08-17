@@ -6,7 +6,7 @@
 
 module Data.Container where
 
-open import Codata.Musical.M
+open import Codata.Musical.M hiding (map)
 open import Data.Product as Prod hiding (map)
 open import Data.W hiding (map)
 open import Function renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
@@ -32,10 +32,10 @@ open Container public
 -- The least and greatest fixpoints of a container.
 
 μ : ∀ {s p} → Container s p → Set (s ⊔ p)
-μ C = W (Shape C) (Position C)
+μ = W
 
 ν : ∀ {s p} → Container s p → Set (s ⊔ p)
-ν C = M (Shape C) (Position C)
+ν = M
 
 -- Equality, parametrised on an underlying relation.
 
@@ -85,7 +85,8 @@ module _ {s p x e} (C : Container s p) (X : Setoid x e) where
 
 -- Containers are functors.
 
-map : ∀ {s p x y} {C : Container s p} {X : Set x} {Y : Set y} → (X → Y) → ⟦ C ⟧ X → ⟦ C ⟧ Y
+map : ∀ {s p x y} {C : Container s p} {X : Set x} {Y : Set y} →
+      (X → Y) → ⟦ C ⟧ X → ⟦ C ⟧ Y
 map f = Prod.map₂ (f ⟨∘⟩_)
 
 module Map where
@@ -104,23 +105,6 @@ module Map where
 
 ------------------------------------------------------------------------
 -- Container morphisms
-
--- Representation of container morphisms.
-
-record _⇒_ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂)
-           : Set (s₁ ⊔ s₂ ⊔ p₁ ⊔ p₂) where
-  constructor _▷_
-  field
-    shape    : Shape C₁ → Shape C₂
-    position : ∀ {s} → Position C₂ (shape s) → Position C₁ s
-
-open _⇒_ public
-
--- Interpretation of _⇒_.
-
-⟪_⟫ : ∀ {s₁ s₂ p₁ p₂ x} {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂} →
-      C₁ ⇒ C₂ → {X : Set x} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X
-⟪ m ⟫ = Prod.map (shape m) (_⟨∘⟩ position m)
 
 module Morphism where
 
@@ -214,18 +198,12 @@ module _ {s p x} {C : Container s p} {X : Set x} where
 
 -- All.
 
-  □ : ∀ {ℓ} → Pred X ℓ → Pred (⟦ C ⟧ X) (p ⊔ ℓ)
-  □ P (s , f) = ∀ p → P (f p)
-
-  □-map : ∀ {ℓ ℓ′} {P : Pred X ℓ} {Q : Pred X ℓ′} → P ⊆ Q → □ P ⊆ □ Q
+  □-map : ∀ {ℓ ℓ′} {P : Pred X ℓ} {Q : Pred X ℓ′} → P ⊆ Q → □ {C = C} P ⊆ □ Q
   □-map P⊆Q = _⟨∘⟩_ P⊆Q
 
 -- Any.
 
-  ◇ : ∀ {ℓ} → Pred X ℓ → Pred (⟦ C ⟧ X) (p ⊔ ℓ)
-  ◇ P (s , f) = ∃ λ p → P (f p)
-
-  ◇-map : ∀ {ℓ ℓ′} {P : Pred X ℓ} {Q : Pred X ℓ′} → P ⊆ Q → ◇ P ⊆ ◇ Q
+  ◇-map : ∀ {ℓ ℓ′} {P : Pred X ℓ} {Q : Pred X ℓ′} → P ⊆ Q → ◇ {C = C} P ⊆ ◇ Q
   ◇-map P⊆Q = Prod.map ⟨id⟩ P⊆Q
 
 -- Membership.

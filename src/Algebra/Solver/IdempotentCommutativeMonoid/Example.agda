@@ -5,7 +5,7 @@
 -- used
 ------------------------------------------------------------------------
 
-module Algebra.IdempotentCommutativeMonoidSolver.Example where
+module Algebra.Solver.IdempotentCommutativeMonoid.Example where
 
 open import Relation.Binary.PropositionalEquality using (_≡_)
 
@@ -15,7 +15,7 @@ open import Data.Bool.Properties using (∨-idempotentCommutativeMonoid)
 open import Data.Fin using (zero; suc)
 open import Data.Vec using ([]; _∷_)
 
-open import Algebra.IdempotentCommutativeMonoidSolver
+open import Algebra.Solver.IdempotentCommutativeMonoid
   ∨-idempotentCommutativeMonoid
 
 test : ∀ x y z → (x ∨ y) ∨ (x ∨ z) ≡ (z ∨ y) ∨ x

@@ -9,7 +9,7 @@ open import Algebra
 module Algebra.Properties.CommutativeMonoid {g₁ g₂} (M : CommutativeMonoid g₁ g₂) where
 
 open import Algebra.Operations.CommutativeMonoid M
-open import Algebra.CommutativeMonoidSolver M
+open import Algebra.Solver.CommutativeMonoid M
 open import Relation.Binary as B using (_Preserves_⟶_)
 open import Function
 open import Function.Equality using (_⟨$⟩_)

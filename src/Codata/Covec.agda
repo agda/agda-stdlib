@@ -9,17 +9,29 @@ module Codata.Covec where
 open import Size
 
 open import Codata.Thunk
-open import Codata.Conat as Conat hiding (fromMusical)
+open import Codata.Conat as Conat hiding (fromMusical; toMusical)
 open import Codata.Conat.Bisimilarity
 open import Codata.Conat.Properties
+open import Codata.Cofin as Cofin using (Cofin; zero; suc)
 open import Codata.Colist as Colist using (Colist ; [] ; _∷_)
 open import Codata.Stream as Stream using (Stream ; _∷_)
+open import Function
 
 data Covec {ℓ} (A : Set ℓ) (i : Size) : Conat ∞ → Set ℓ where
   []  : Covec A i zero
   _∷_ : ∀ {n} → A → Thunk (λ i → Covec A i (n .force)) i → Covec A i (suc n)
 
 module _ {ℓ} {A : Set ℓ} where
+
+ head : ∀ {n i} → Covec A i (suc n) → A
+ head (x ∷ _) = x
+
+ tail : ∀ {n} → Covec A ∞ (suc n) → Covec A ∞ (n .force)
+ tail (_ ∷ xs) = xs .force
+
+ lookup : ∀ {n} → Cofin n → Covec A ∞ n → A
+ lookup zero    = head
+ lookup (suc k) = lookup k ∘′ tail
 
  replicate : ∀ {i} → (n : Conat ∞) → A → Covec A i n
  replicate zero    a = []
@@ -77,10 +89,15 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 ------------------------------------------------------------------------
 -- Legacy
 
-open import Coinduction
+open import Coinduction using (♭; ♯_)
 import Codata.Musical.Covec as M
 
-fromMusical : ∀ {a} {A : Set a} {n} →
-              M.Covec A n → ∀ {i} → Covec A i (Conat.fromMusical n)
-fromMusical M.[]       = []
-fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
+module _ {a} {A : Set a} where
+
+  fromMusical : ∀ {i n} → M.Covec A n → Covec A i (Conat.fromMusical n)
+  fromMusical M.[]       = []
+  fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
+
+  toMusical : ∀ {n} → Covec A ∞ n → M.Covec A (Conat.toMusical n)
+  toMusical []       = M.[]
+  toMusical (x ∷ xs) = x M.∷ ♯ toMusical (xs .force)
