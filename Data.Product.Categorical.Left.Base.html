@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Product.Categorical.Left.Base</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Base definitions for the left-biased universe-sensitive functor and</a>
+<a id="177" class="Comment">-- monad instances for the Product type.</a>
+<a id="218" class="Comment">--</a>
+<a id="221" class="Comment">-- To minimize the universe level of the RawFunctor, we require that</a>
+<a id="290" class="Comment">-- elements of B are &quot;lifted&quot; to a copy of B at a higher universe level</a>
+<a id="362" class="Comment">-- (a ⊔ b). See the Data.Product.Categorical.Examples for how this is</a>
+<a id="432" class="Comment">-- done.</a>
+<a id="441" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="515" class="Keyword">open</a> <a id="520" class="Keyword">import</a> <a id="527" href="Level.html" class="Module">Level</a>
+
+<a id="534" class="Keyword">module</a> <a id="541" href="Data.Product.Categorical.Left.Base.html" class="Module">Data.Product.Categorical.Left.Base</a>
+  <a id="578" class="Symbol">{</a><a id="579" href="Data.Product.Categorical.Left.Base.html#579" class="Bound">a</a><a id="580" class="Symbol">}</a> <a id="582" class="Symbol">(</a><a id="583" href="Data.Product.Categorical.Left.Base.html#583" class="Bound">A</a> <a id="585" class="Symbol">:</a> <a id="587" class="PrimitiveType">Set</a> <a id="591" href="Data.Product.Categorical.Left.Base.html#579" class="Bound">a</a><a id="592" class="Symbol">)</a> <a id="594" class="Symbol">(</a><a id="595" href="Data.Product.Categorical.Left.Base.html#595" class="Bound">b</a> <a id="597" class="Symbol">:</a> <a id="599" href="Agda.Primitive.html#408" class="Postulate">Level</a><a id="604" class="Symbol">)</a> <a id="606" class="Keyword">where</a>
+
+<a id="613" class="Keyword">open</a> <a id="618" class="Keyword">import</a> <a id="625" href="Data.Product.html" class="Module">Data.Product</a> <a id="638" class="Keyword">using</a> <a id="644" class="Symbol">(</a><a id="645" href="Data.Product.html#1353" class="Function Operator">_×_</a><a id="648" class="Symbol">;</a> <a id="650" href="Data.Product.html#2438" class="Function">map₂</a><a id="654" class="Symbol">;</a> <a id="656" href="Agda.Builtin.Sigma.html#155" class="Field">proj₁</a><a id="661" class="Symbol">;</a> <a id="663" href="Agda.Builtin.Sigma.html#167" class="Field">proj₂</a><a id="668" class="Symbol">;</a> <a id="670" href="Data.Product.html#1973" class="Function Operator">&lt;_,_&gt;</a><a id="675" class="Symbol">)</a>
+<a id="677" class="Keyword">open</a> <a id="682" class="Keyword">import</a> <a id="689" href="Category.Functor.html" class="Module">Category.Functor</a> <a id="706" class="Keyword">using</a> <a id="712" class="Symbol">(</a><a id="713" href="Category.Functor.html#385" class="Record">RawFunctor</a><a id="723" class="Symbol">)</a>
+<a id="725" class="Keyword">open</a> <a id="730" class="Keyword">import</a> <a id="737" href="Category.Comonad.html" class="Module">Category.Comonad</a> <a id="754" class="Keyword">using</a> <a id="760" class="Symbol">(</a><a id="761" href="Category.Comonad.html#332" class="Record">RawComonad</a><a id="771" class="Symbol">)</a>
+
+<a id="774" class="Comment">------------------------------------------------------------------------</a>
+<a id="847" class="Comment">-- Definitions</a>
+
+<a id="Productₗ"></a><a id="863" href="Data.Product.Categorical.Left.Base.html#863" class="Function">Productₗ</a> <a id="872" class="Symbol">:</a> <a id="874" class="PrimitiveType">Set</a> <a id="878" class="Symbol">(</a><a id="879" href="Data.Product.Categorical.Left.Base.html#579" class="Bound">a</a> <a id="881" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="883" href="Data.Product.Categorical.Left.Base.html#595" class="Bound">b</a><a id="884" class="Symbol">)</a> <a id="886" class="Symbol">→</a> <a id="888" class="PrimitiveType">Set</a> <a id="892" class="Symbol">(</a><a id="893" href="Data.Product.Categorical.Left.Base.html#579" class="Bound">a</a> <a id="895" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="897" href="Data.Product.Categorical.Left.Base.html#595" class="Bound">b</a><a id="898" class="Symbol">)</a>
+<a id="900" href="Data.Product.Categorical.Left.Base.html#863" class="Function">Productₗ</a> <a id="909" href="Data.Product.Categorical.Left.Base.html#909" class="Bound">B</a> <a id="911" class="Symbol">=</a> <a id="913" href="Data.Product.Categorical.Left.Base.html#583" class="Bound">A</a> <a id="915" href="Data.Product.html#1353" class="Function Operator">×</a> <a id="917" href="Data.Product.Categorical.Left.Base.html#909" class="Bound">B</a>
+
+<a id="functor"></a><a id="920" href="Data.Product.Categorical.Left.Base.html#920" class="Function">functor</a> <a id="928" class="Symbol">:</a> <a id="930" href="Category.Functor.html#385" class="Record">RawFunctor</a> <a id="941" href="Data.Product.Categorical.Left.Base.html#863" class="Function">Productₗ</a>
+<a id="950" href="Data.Product.Categorical.Left.Base.html#920" class="Function">functor</a> <a id="958" class="Symbol">=</a> <a id="960" class="Keyword">record</a> <a id="967" class="Symbol">{</a> <a id="969" class="Field Operator">_&lt;$&gt;_</a> <a id="975" class="Symbol">=</a> <a id="977" class="Symbol">λ</a> <a id="979" href="Data.Product.Categorical.Left.Base.html#979" class="Bound">f</a> <a id="981" class="Symbol">→</a> <a id="983" href="Data.Product.html#2438" class="Function">map₂</a> <a id="988" href="Data.Product.Categorical.Left.Base.html#979" class="Bound">f</a> <a id="990" class="Symbol">}</a>
+
+<a id="comonad"></a><a id="993" href="Data.Product.Categorical.Left.Base.html#993" class="Function">comonad</a> <a id="1001" class="Symbol">:</a> <a id="1003" href="Category.Comonad.html#332" class="Record">RawComonad</a> <a id="1014" href="Data.Product.Categorical.Left.Base.html#863" class="Function">Productₗ</a>
+<a id="1023" href="Data.Product.Categorical.Left.Base.html#993" class="Function">comonad</a> <a id="1031" class="Symbol">=</a> <a id="1033" class="Keyword">record</a>
+  <a id="1042" class="Symbol">{</a> <a id="1044" class="Field">extract</a> <a id="1052" class="Symbol">=</a> <a id="1054" href="Agda.Builtin.Sigma.html#167" class="Field">proj₂</a>
+  <a id="1062" class="Symbol">;</a> <a id="1064" class="Field">extend</a>  <a id="1072" class="Symbol">=</a> <a id="1074" href="Data.Product.html#1973" class="Function Operator">&lt;</a> <a id="1076" href="Agda.Builtin.Sigma.html#155" class="Field">proj₁</a> <a id="1082" href="Data.Product.html#1973" class="Function Operator">,_&gt;</a>
+  <a id="1088" class="Symbol">}</a>
+</pre></body></html>
