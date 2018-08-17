@@ -109,11 +109,12 @@ Non-backwards compatible changes
   data types have been moved from `Data.X.Properties` to new modules `Data.X.Solver`.
   The naming conventions for these solver modules have also been standardised.
   ```agda
-  Data.Bool.Properties.RingSolver     ↦  Data.Bool.Solver.∨-∧-Solver
-  Data.Bool.Properties.XorRingSolver  ↦  Data.Bool.Solver.xor-∧-Solver
-  Data.Integer.Properties.RingSolver  ↦  Data.Integer.Solver.+-*-Solver
-  Data.List.Properties.List-solver    ↦  Data.List.Solver.++-Solver
-  Data.Nat.Properties.SemiringSolver  ↦  Data.Nat.Solver.+-*-Solver
+  Data.Bool.Properties.RingSolver          ↦  Data.Bool.Solver.∨-∧-Solver
+  Data.Bool.Properties.XorRingSolver       ↦  Data.Bool.Solver.xor-∧-Solver
+  Data.Integer.Properties.RingSolver       ↦  Data.Integer.Solver.+-*-Solver
+  Data.List.Properties.List-solver         ↦  Data.List.Solver.++-Solver
+  Data.Nat.Properties.SemiringSolver       ↦  Data.Nat.Solver.+-*-Solver
+  Function.Related.TypeIsomorphisms.Solver ↦ Function.Related.TypeIsomorphisms.Solver.×-⊎-Solver
   ```
 
 * Renamed `Algebra.Solver.Ring.Natural-coefficients` to `Algebra.Solver.Ring.NaturalCoefficients`.
