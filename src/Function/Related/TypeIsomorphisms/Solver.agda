@@ -8,30 +8,25 @@
 
 module Function.Related.TypeIsomorphisms.Solver where
 
-open import Algebra
-import Algebra.FunctionProperties as FP
+open import Algebra using (CommutativeSemiring)
 import Algebra.Operations.Semiring as SemiringOperations
 import Algebra.Solver.Ring.NaturalCoefficients
-open import Algebra.Structures
-open import Data.Empty
-open import Data.Nat as Nat using (zero; suc)
-open import Data.Product as Prod hiding (swap)
-open import Data.Product.Relation.Pointwise.NonDependent
-open import Data.Sum as Sum
-open import Data.Sum.Properties using (swap-involutive)
-open import Data.Sum.Relation.Pointwise
-open import Data.Unit
-open import Level hiding (zero; suc)
-open import Function
+open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Nat using (zero; suc; _≟_)
+open import Data.Product using (_×_)
+open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Unit using (⊤; tt)
+open import Level using (Level; Lift; lift; lower)
+open import Function using (id; _$_; const)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Eq using (_⇔_; Equivalence)
 open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
 open import Function.Related as Related
 open import Function.Related.TypeIsomorphisms
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
-open import Relation.Nullary hiding (module Dec)
-open import Relation.Nullary.Decidable as Dec using (True)
+open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Nullary.Decidable as Decidable using (True)
 
 ------------------------------------------------------------------------
 -- A decision procedure used by the solver below.
@@ -51,7 +46,7 @@ private
   ... | zero  | suc _ = no  (λ eq → lower (Equivalence.from eq ⟨$⟩ inj₁ _))
   ... | suc _ | zero  = no  (λ eq → lower (Equivalence.to   eq ⟨$⟩ inj₁ _))
   ... | suc _ | suc _ = yes (Eq.equivalence (λ _ → inj₁ _) (λ _ → inj₁ _))
-  coefficient-dec bijection ℓ m n = Dec.map′ to (from m n) (Nat._≟_ m n)
+  coefficient-dec bijection ℓ m n = Decidable.map′ to (from m n) (m ≟ n)
     where
     open CommutativeSemiring (×-⊎-commutativeSemiring bijection ℓ)
       using (1#; semiring)
