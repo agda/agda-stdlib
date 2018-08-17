@@ -51,6 +51,9 @@ module _ {ℓ} {A : Set ℓ} where
  cycle : ∀ {i} → List⁺ A → Stream A i
  cycle xs = xs ⁺++ λ where .force → cycle xs
 
+ concat : ∀ {i} → Stream (List⁺ A) i → Stream A i
+ concat (xs ∷ xss) = xs ⁺++ λ where .force → concat (xss .force)
+
 module _ {ℓ ℓ′} {A : Set ℓ} {B : Set ℓ′} where
 
  map : ∀ {i} → (A → B) → Stream A i → Stream B i
