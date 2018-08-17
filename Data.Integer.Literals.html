@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Integer.Literals</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Integer Literals</a>
+<a id="126" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="200" class="Keyword">module</a> <a id="207" href="Data.Integer.Literals.html" class="Module">Data.Integer.Literals</a> <a id="229" class="Keyword">where</a>
+
+<a id="236" class="Keyword">open</a> <a id="241" class="Keyword">import</a> <a id="248" href="Agda.Builtin.FromNat.html" class="Module">Agda.Builtin.FromNat</a>
+<a id="269" class="Keyword">open</a> <a id="274" class="Keyword">import</a> <a id="281" href="Agda.Builtin.FromNeg.html" class="Module">Agda.Builtin.FromNeg</a>
+<a id="302" class="Keyword">open</a> <a id="307" class="Keyword">import</a> <a id="314" href="Data.Unit.html" class="Module">Data.Unit</a>
+<a id="324" class="Keyword">open</a> <a id="329" class="Keyword">import</a> <a id="336" href="Data.Integer.html" class="Module">Data.Integer</a>
+
+<a id="number"></a><a id="350" href="Data.Integer.Literals.html#350" class="Function">number</a> <a id="357" class="Symbol">:</a> <a id="359" href="Agda.Builtin.FromNat.html#129" class="Record">Number</a> <a id="366" href="Agda.Builtin.Int.html#178" class="Datatype">ℤ</a>
+<a id="368" href="Data.Integer.Literals.html#350" class="Function">number</a> <a id="375" class="Symbol">=</a> <a id="377" class="Keyword">record</a>
+  <a id="386" class="Symbol">{</a> <a id="388" class="Field">Constraint</a> <a id="399" class="Symbol">=</a> <a id="401" class="Symbol">λ</a> <a id="403" href="Data.Integer.Literals.html#403" class="Bound">_</a> <a id="405" class="Symbol">→</a> <a id="407" href="Agda.Builtin.Unit.html#69" class="Record">⊤</a>
+  <a id="411" class="Symbol">;</a> <a id="413" class="Field">fromNat</a>    <a id="424" class="Symbol">=</a> <a id="426" class="Symbol">λ</a> <a id="428" href="Data.Integer.Literals.html#428" class="Bound">n</a> <a id="430" class="Symbol">→</a> <a id="432" href="Agda.Builtin.Int.html#196" class="InductiveConstructor Operator">+</a> <a id="434" href="Data.Integer.Literals.html#428" class="Bound">n</a>
+  <a id="438" class="Symbol">}</a>
+
+<a id="negative"></a><a id="441" href="Data.Integer.Literals.html#441" class="Function">negative</a> <a id="450" class="Symbol">:</a> <a id="452" href="Agda.Builtin.FromNeg.html#129" class="Record">Negative</a> <a id="461" href="Agda.Builtin.Int.html#178" class="Datatype">ℤ</a>
+<a id="463" href="Data.Integer.Literals.html#441" class="Function">negative</a> <a id="472" class="Symbol">=</a> <a id="474" class="Keyword">record</a>
+  <a id="483" class="Symbol">{</a> <a id="485" class="Field">Constraint</a> <a id="496" class="Symbol">=</a> <a id="498" class="Symbol">λ</a> <a id="500" href="Data.Integer.Literals.html#500" class="Bound">_</a> <a id="502" class="Symbol">→</a> <a id="504" href="Agda.Builtin.Unit.html#69" class="Record">⊤</a>
+  <a id="508" class="Symbol">;</a> <a id="510" class="Field">fromNeg</a>    <a id="521" class="Symbol">=</a> <a id="523" class="Symbol">λ</a> <a id="525" href="Data.Integer.Literals.html#525" class="Bound">n</a> <a id="527" class="Symbol">→</a> <a id="529" href="Data.Integer.Base.html#1819" class="Function Operator">-</a> <a id="531" class="Symbol">(</a><a id="532" href="Agda.Builtin.Int.html#196" class="InductiveConstructor Operator">+</a> <a id="534" href="Data.Integer.Literals.html#525" class="Bound">n</a><a id="535" class="Symbol">)</a>
+  <a id="539" class="Symbol">}</a>
+</pre></body></html>
