@@ -130,7 +130,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
 
 ×-isSemigroup : ∀ k ℓ → IsSemigroup {Level.suc ℓ} (Related ⌊ k ⌋) _×_
 ×-isSemigroup k ℓ = record
-  { isEquivalence = isEquivalence k ℓ
+  { isEquivalence = SK-isEquivalence k ℓ
   ; assoc         = λ _ _ _ → ↔⇒ Σ-assoc
   ; ∙-cong        = _×-cong_
   }
@@ -167,7 +167,7 @@ open import Relation.Nullary.Decidable as Dec using (True)
 
 ⊎-isSemigroup : ∀ k ℓ → IsSemigroup {Level.suc ℓ} (Related ⌊ k ⌋) _⊎_
 ⊎-isSemigroup k ℓ = record
-  { isEquivalence = isEquivalence k ℓ
+  { isEquivalence = SK-isEquivalence k ℓ
   ; assoc         = λ A B C → ↔⇒ (⊎-assoc ℓ A B C)
   ; ∙-cong        = _⊎-cong_
   }
@@ -393,8 +393,8 @@ A⇔B →-cong-⇔ C⇔D = Eq.equivalence
   where open Related.EquationalReasoning
 
 ¬-cong : ∀ {a b} →
-         P.Extensionality a Level.zero →
-         P.Extensionality b Level.zero →
+         P.Extensionality a 0ℓ →
+         P.Extensionality b 0ℓ →
          ∀ {k} {A : Set a} {B : Set b} →
          A ∼[ ⌊ k ⌋ ] B → (¬ A) ∼[ ⌊ k ⌋ ] (¬ B)
 ¬-cong extA extB A≈B = →-cong extA extB A≈B (⊥ ∎)
@@ -409,13 +409,13 @@ Related-cong :
   ∀ {k a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} →
   A ∼[ ⌊ k ⌋ ] B → C ∼[ ⌊ k ⌋ ] D → (A ∼[ ⌊ k ⌋ ] C) ⇔ (B ∼[ ⌊ k ⌋ ] D)
 Related-cong {A = A} {B} {C} {D} A≈B C≈D =
-  Eq.equivalence (λ A≈C → B  ∼⟨ sym A≈B ⟩
+  Eq.equivalence (λ A≈C → B  ∼⟨ SK-sym A≈B ⟩
                           A  ∼⟨ A≈C ⟩
                           C  ∼⟨ C≈D ⟩
                           D  ∎)
                  (λ B≈D → A  ∼⟨ A≈B ⟩
                           B  ∼⟨ B≈D ⟩
-                          D  ∼⟨ sym C≈D ⟩
+                          D  ∼⟨ SK-sym C≈D ⟩
                           C  ∎)
   where open Related.EquationalReasoning
 
