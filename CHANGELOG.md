@@ -1,5 +1,5 @@
-Version 0.16
-============
+Version 0.16.1
+==============
 
 The library has been tested using Agda version 2.5.4.
 
@@ -114,6 +114,8 @@ Non-backwards compatible changes
   filter-notAll ↦ filter-some
   filter-all    ↦ filter-none
   ```
+
+* Fixed compilation bug for `Data.Stream`.
 
 Other major changes
 -------------------
