@@ -36,7 +36,7 @@ open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse as Inv using (_↔_; inverse; Inverse)
-open import Function.Related as Related using (Related)
+open import Function.Related as Related using (Related; SK-sym)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; inspect)
@@ -87,7 +87,7 @@ module _ {a k p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
              Preorder._∼_ (Related.InducedPreorder₂ k {A = A} _∈_) xs ys →
              Related k (Any P xs) (Any Q ys)
   Any-cong {xs} {ys} P↔Q xs≈ys =
-    Any P xs                ↔⟨ sym Any↔ ⟩
+    Any P xs                ↔⟨ SK-sym Any↔ ⟩
     (∃ λ x → x ∈ xs × P x)  ∼⟨ Σ.cong Inv.id (xs≈ys ×-cong P↔Q _) ⟩
     (∃ λ x → x ∈ ys × Q x)  ↔⟨ Any↔ ⟩
     Any Q ys                ∎
