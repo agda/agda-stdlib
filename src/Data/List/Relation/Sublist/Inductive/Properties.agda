@@ -242,6 +242,19 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q}
   ... | no ¬px | yes qx = ⊥-elim $ ¬px (P⊇Q qx)
   ... | no ¬px | no ¬qx = ⊆-refl
 
+module _ {a p} {A : Set a} {P : Pred A p} (P? : U.Decidable P) where
+
+-- filter
+
+  filter⁺ : ∀ {xs ys : List A} → xs ⊆ ys → filter P? xs ⊆ filter P? ys
+  filter⁺                   base     = base
+  filter⁺ {xs}     {y ∷ ys} (skip p) with P? y
+  ... | yes py = skip (filter⁺ p)
+  ... | no ¬py = filter⁺ p
+  filter⁺ {x ∷ xs} {x ∷ ys} (keep p) with P? x
+  ... | yes px = keep (filter⁺ p)
+  ... | no ¬px = filter⁺ p
+
 -- reverse
 
 module _ {a} {A : Set a} where
