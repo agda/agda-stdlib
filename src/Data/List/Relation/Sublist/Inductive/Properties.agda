@@ -17,18 +17,19 @@ open import Data.Maybe as Maybe using (nothing; just)
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Function
-import Function.Injection as F
+import Function.Injection as Inj
+import Function.Bijection as Bij
 open import Relation.Nullary
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality as Eq hiding ([_])
 
 ------------------------------------------------------------------------
 -- The `loookup` function induced by a proof that `xs ⊆ ys` is injective
 
-module _ {a} {A : Set a} {x : A} where
+module _ {a} {A : Set a} where
 
-  lookup-injective : ∀ {xs ys} {p : xs ⊆ ys} {v w : x ∈ xs} →
+  lookup-injective : ∀ {x : A} {xs ys} {p : xs ⊆ ys} {v w : x ∈ xs} →
                      lookup p v ≡ lookup p w → v ≡ w
   lookup-injective {p = skip p} {v} {w} eq =
     lookup-injective (there-injective eq)
@@ -40,6 +41,26 @@ module _ {a} {A : Set a} {x : A} where
   lookup-injective {p = keep p} {here px} {there w} ()
   lookup-injective {p = keep p} {there v} {here qx} ()
   lookup-injective {p = base} {}
+
+  []∈-irrelevant : U.Irrelevant {A = List A} ([] ⊆_)
+  []∈-irrelevant base     base     = refl
+  []∈-irrelevant (skip p) (skip q) = cong skip ([]∈-irrelevant p q)
+
+  [x]⊆xs↔x∈xs : ∀ {x : A} {xs} → ([ x ] ⊆ xs) Bij.⤖ (x ∈ xs)
+  [x]⊆xs↔x∈xs {x} = Bij.bijection to∈ from∈ (to∈-injective _ _) to∈∘from∈≗id
+
+    where
+
+    to∈-injective : ∀ {xs x} (p q : [ x ] ⊆ xs) → to∈ p ≡ to∈ q → p ≡ q
+    to∈-injective (skip p) (skip q) eq =
+      cong skip (to∈-injective p q (there-injective eq))
+    to∈-injective (keep p) (keep q) eq = cong keep ([]∈-irrelevant p q)
+    to∈-injective (skip p) (keep q) ()
+    to∈-injective (keep p) (skip q) ()
+
+    to∈∘from∈≗id : ∀ {xs} (p : x ∈ xs) → to∈ (from∈ p) ≡ p
+    to∈∘from∈≗id (here refl) = refl
+    to∈∘from∈≗id (there p)   = cong there (to∈∘from∈≗id p)
 
 ------------------------------------------------------------------------
 -- Some properties
@@ -177,9 +198,9 @@ module _ {a b} {A : Set a} {B : Set b} where
   map⁺ f (skip p) = skip (map⁺ f p)
   map⁺ f (keep p) = keep (map⁺ f p)
 
-  open F.Injection
+  open Inj.Injection
 
-  map⁻ : ∀ {xs ys} (inj : A F.↣ B) →
+  map⁻ : ∀ {xs ys} (inj : A Inj.↣ B) →
          map (inj ⟨$⟩_) xs ⊆ map (inj ⟨$⟩_) ys → xs ⊆ ys
   map⁻ {[]}     {ys}     inj p = []⊆ ys
   map⁻ {x ∷ xs} {[]}     inj ()
@@ -188,7 +209,7 @@ module _ {a b} {A : Set a} {B : Set b} where
        | inj ⟨$⟩ y | inspect (inj ⟨$⟩_) y
        | injective inj {x} {y}
   map⁻ {x ∷ xs} {y ∷ ys} inj (skip p)
-    | fx | [ eq ] | fy | _ | _ = skip (map⁻ inj (coerce p))
+    | fx | Eq.[ eq ] | fy | _ | _ = skip (map⁻ inj (coerce p))
     where coerce = subst (λ fx → fx ∷ _ ⊆ _) (sym eq)
   map⁻ {x ∷ xs} {y ∷ ys} inj (keep p)
     | fx | _      | fx | _ | eq

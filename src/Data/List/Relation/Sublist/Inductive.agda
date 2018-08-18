@@ -7,10 +7,11 @@
 
 module Data.List.Relation.Sublist.Inductive where
 
-open import Data.List.Base using (List; []; _∷_)
+open import Data.List.Base using (List; []; _∷_; [_])
 open import Data.List.Any  using (here; there)
 open import Data.List.Membership.Propositional
 open import Relation.Binary using (Rel)
+open import Relation.Binary.PropositionalEquality using (refl)
 
 ------------------------------------------------------------------------
 -- Type and basic combinators
@@ -36,3 +37,12 @@ module _ {a} {A : Set a} where
   lookup (keep p) (here px) = here px
   lookup (keep p) (there v) = there (lookup p v)
   lookup base     ()
+
+-- Conversion between membership and proofs that a singleton is a sublist
+
+  from∈ : ∀ {xs x} → x ∈ xs → [ x ] ⊆ xs
+  from∈ (here refl) = keep ([]⊆ _)
+  from∈ (there p)   = skip (from∈ p)
+
+  to∈ : ∀ {xs x} → [ x ] ⊆ xs → x ∈ xs
+  to∈ p = lookup p (here refl)
