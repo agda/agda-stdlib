@@ -7,16 +7,19 @@
 module Data.List.Relation.Sublist.Inductive.Properties where
 
 open import Data.Empty
-open import Data.List.Base using (List; []; _∷_; length; map; _++_)
-open import Data.List.Any  using (here; there)
+open import Data.List.Base hiding (lookup)
+open import Data.List.Properties
+open import Data.List.Any using (here; there)
 open import Data.List.Any.Properties using (here-injective; there-injective)
 open import Data.List.Membership.Propositional
 open import Data.List.Relation.Sublist.Inductive
-open import Data.Nat.Base using (_≤_; s≤s)
+open import Data.Maybe as Maybe using (nothing; just)
+open import Data.Nat.Base
 open import Data.Nat.Properties
-open ≤-Reasoning
 open import Function
 import Function.Injection as F
+open import Relation.Nullary
+open import Relation.Unary as U using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 
@@ -66,6 +69,8 @@ module _ {a} {A : Set a} where
   ⊆-trans (skip p) (keep q) = skip (⊆-trans p q)
   ⊆-trans (keep p) (keep q) = keep (⊆-trans p q)
 
+  open ≤-Reasoning
+
   ⊆-antisym : Antisymmetric {A = List A} _≡_ _⊆_
   -- Positive cases
   ⊆-antisym base     base     = refl
@@ -113,6 +118,53 @@ module _ {a} (A : Set a) where
     { isPartialOrder = ⊆-isPartialOrder
     }
 
+import Relation.Binary.PartialOrderReasoning as PosetReasoning
+module ⊆-Reasoning {a} {A : Set a}  where
+  private module P = PosetReasoning (⊆-poset A)
+  open P public
+    renaming (_≤⟨_⟩_ to _⊆⟨_⟩_; _≈⟨⟩_ to _≡⟨⟩_)
+    hiding (_≈⟨_⟩_)
+
+
+------------------------------------------------------------------------
+-- Various functions' ouputs are sublists
+
+module _ {a} {A : Set a} where
+
+  tail-⊆ : (xs : List A) → Maybe.All (_⊆ xs) (tail xs)
+  tail-⊆ []       = nothing
+  tail-⊆ (x ∷ xs) = just (skip ⊆-refl)
+
+  take-⊆ : ∀ n (xs : List A) → take n xs ⊆ xs
+  take-⊆ zero    xs       = []⊆ xs
+  take-⊆ (suc n) []       = []⊆ []
+  take-⊆ (suc n) (x ∷ xs) = keep (take-⊆ n xs)
+
+  drop-⊆ : ∀ n (xs : List A) → drop n xs ⊆ xs
+  drop-⊆ zero    xs       = ⊆-refl
+  drop-⊆ (suc n) []       = []⊆ []
+  drop-⊆ (suc n) (x ∷ xs) = skip (drop-⊆ n xs)
+
+module _ {a p} {A : Set a} {P : Pred A p} (P? : U.Decidable P) where
+
+  takeWhile-⊆ : ∀ xs → takeWhile P? xs ⊆ xs
+  takeWhile-⊆ []       = []⊆ []
+  takeWhile-⊆ (x ∷ xs) with P? x
+  ... | yes p = keep (takeWhile-⊆ xs)
+  ... | no ¬p = []⊆ x ∷ xs
+
+  dropWhile-⊆ : ∀ xs → dropWhile P? xs ⊆ xs
+  dropWhile-⊆ []       = []⊆ []
+  dropWhile-⊆ (x ∷ xs) with P? x
+  ... | yes p = skip (dropWhile-⊆ xs)
+  ... | no ¬p = ⊆-refl
+
+  filter-⊆ : ∀ xs → filter P? xs ⊆ xs
+  filter-⊆ []       = []⊆ []
+  filter-⊆ (x ∷ xs) with P? x
+  ... | yes p = keep (filter-⊆ xs)
+  ... | no ¬p = skip (filter-⊆ xs)
+
 ------------------------------------------------------------------------
 -- map
 
@@ -149,3 +201,27 @@ module _ {a} {A : Set a} where
   ++⁺ base     q = q
   ++⁺ (skip p) q = skip (++⁺ p q)
   ++⁺ (keep p) q = keep (++⁺ p q)
+
+------------------------------------------------------------------------
+-- reverse
+
+module _ {a} {A : Set a} where
+
+  open ⊆-Reasoning
+
+  reverse⁺ : {xs ys : List A} → xs ⊆ ys → reverse xs ⊆ reverse ys
+  reverse⁺ base = []⊆ []
+  reverse⁺ {xs} {y ∷ ys} (skip p) = begin
+    reverse xs       ≡⟨ sym $ ++-identityʳ _ ⟩
+    reverse xs ++ [] ⊆⟨ ++⁺ (reverse⁺ p) ([]⊆ _) ⟩
+    reverse ys ∷ʳ y  ≡⟨ sym $ unfold-reverse y ys ⟩
+    reverse (y ∷ ys) ∎
+  reverse⁺ {x ∷ xs} {x ∷ ys} (keep p) = begin
+    reverse (x ∷ xs) ≡⟨ unfold-reverse x xs ⟩
+    reverse xs ∷ʳ x  ⊆⟨ ++⁺ (reverse⁺ p) ⊆-refl ⟩
+    reverse ys ∷ʳ x  ≡⟨ sym $ unfold-reverse x ys ⟩
+    reverse (x ∷ ys) ∎
+
+  reverse⁻ : {xs ys : List A} → reverse xs ⊆ reverse ys → xs ⊆ ys
+  reverse⁻ {xs} {ys} p = cast (reverse⁺ p) where
+    cast = subst₂ _⊆_ (reverse-involutive xs) (reverse-involutive ys)
