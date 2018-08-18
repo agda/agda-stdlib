@@ -127,7 +127,7 @@ module ⊆-Reasoning {a} {A : Set a}  where
 
 
 ------------------------------------------------------------------------
--- Various functions' ouputs are sublists
+-- Various functions' outputs are sublists
 
 module _ {a} {A : Set a} where
 
@@ -166,6 +166,8 @@ module _ {a p} {A : Set a} {P : Pred A p} (P? : U.Decidable P) where
   ... | no ¬p = skip (filter-⊆ xs)
 
 ------------------------------------------------------------------------
+-- Various functions are increasing wrt _⊆_
+
 -- map
 
 module _ {a b} {A : Set a} {B : Set b} where
@@ -192,7 +194,6 @@ module _ {a b} {A : Set a} {B : Set b} where
     | fx | _      | fx | _ | eq
     rewrite eq refl = keep (map⁻ inj p)
 
-------------------------------------------------------------------------
 -- _++_
 
 module _ {a} {A : Set a} where
@@ -202,7 +203,45 @@ module _ {a} {A : Set a} where
   ++⁺ (skip p) q = skip (++⁺ p q)
   ++⁺ (keep p) q = keep (++⁺ p q)
 
-------------------------------------------------------------------------
+-- take / drop
+
+  ≤-take-⊆ : ∀ {m n} → m ≤ n → (xs : List A) → take m xs ⊆ take n xs
+  ≤-take-⊆ z≤n     xs       = []⊆ take _ xs
+  ≤-take-⊆ (s≤s p) []       = []⊆ []
+  ≤-take-⊆ (s≤s p) (x ∷ xs) = keep (≤-take-⊆ p xs)
+
+  ≥-drop-⊆ : ∀ {m n} → m ≥ n → (xs : List A) → drop m xs ⊆ drop n xs
+  ≥-drop-⊆ {m} z≤n     xs       = drop-⊆ m xs
+  ≥-drop-⊆     (s≤s p) []       = []⊆ []
+  ≥-drop-⊆     (s≤s p) (x ∷ xs) = ≥-drop-⊆ p xs
+
+  drop⁺ : ∀ n {xs ys : List A} → xs ⊆ ys → drop n xs ⊆ drop n ys
+  drop⁺ zero    p        = p
+  drop⁺ (suc n) base     = []⊆ []
+  drop⁺ (suc n) (keep p) = drop⁺ n p
+  drop⁺ (suc n) {xs} {y ∷ ys} (skip p) = begin
+    drop (suc n) xs ⊆⟨ ≥-drop-⊆ (n≤1+n n) xs ⟩
+    drop n xs       ⊆⟨ drop⁺ n p ⟩
+    drop n ys       ∎ where open ⊆-Reasoning
+
+module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q}
+         (P? : U.Decidable P) (Q? : U.Decidable Q) where
+
+  ⊆-takeWhile-⊆ : (P U.⊆ Q) → ∀ xs → takeWhile P? xs ⊆ takeWhile Q? xs
+  ⊆-takeWhile-⊆ P⊆Q []       = []⊆ []
+  ⊆-takeWhile-⊆ P⊆Q (x ∷ xs) with P? x | Q? x
+  ... | yes px | yes qx = keep (⊆-takeWhile-⊆ P⊆Q xs)
+  ... | yes px | no ¬qx = ⊥-elim $ ¬qx (P⊆Q px)
+  ... | no ¬px | _      = []⊆ _
+
+  ⊇-dropWhile-⊆ : (P U.⊇ Q) → ∀ xs → dropWhile P? xs ⊆ dropWhile Q? xs
+  ⊇-dropWhile-⊆ P⊇Q []       = []⊆ []
+  ⊇-dropWhile-⊆ P⊇Q (x ∷ xs) with P? x | Q? x
+  ... | yes px | yes qx = ⊇-dropWhile-⊆ P⊇Q xs
+  ... | yes px | no ¬qx = skip (dropWhile-⊆ P? xs)
+  ... | no ¬px | yes qx = ⊥-elim $ ¬px (P⊇Q qx)
+  ... | no ¬px | no ¬qx = ⊆-refl
+
 -- reverse
 
 module _ {a} {A : Set a} where
