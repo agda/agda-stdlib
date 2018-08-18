@@ -23,7 +23,7 @@ open import Algebra
 module Data.These.Categorical.Left {c ℓ} (W : Semigroup c ℓ) (b : Level) where
 
 open Semigroup W
-open import Data.These.Categorical.Left.Base Carrier b
+open import Data.These.Categorical.Left.Base Carrier b public
 
 open import Data.These
 open import Category.Applicative
