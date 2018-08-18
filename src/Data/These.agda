@@ -11,8 +11,8 @@ open import Algebra using (Semigroup)
 open import Function
 
 data These {a b} (A : Set a) (B : Set b) : Set (a ⊔ b) where
-  this  : A → These A B
-  that  : B → These A B
+  this  : A     → These A B
+  that  :     B → These A B
   these : A → B → These A B
 
 -- map
@@ -31,12 +31,19 @@ map₂ : ∀ {a b₁ b₂} {A : Set a} {B₁ : Set b₁} {B₂ : Set b₂}
        (g : B₁ → B₂) → These A B₁ → These A B₂
 map₂ = map id
 
+module _ {a b} {A : Set a} {B : Set b} where
+
+-- fold
+
+  fold : ∀ {c} {C : Set c} → (A → C) → (B → C) → (A → B → C) → These A B → C
+  fold l r lr (this a)    = l a
+  fold l r lr (that b)    = r b
+  fold l r lr (these a b) = lr a b
+
 -- swap
 
-swap : ∀ {a b} {A : Set a} {B : Set b} → These A B → These B A
-swap (this a)    = that a
-swap (that b)    = this b
-swap (these a b) = these b a
+  swap : These A B → These B A
+  swap = fold that this (flip these)
 
 -- align
 
@@ -62,20 +69,14 @@ module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
 module _ {a} {A : Set a} where
 
   leftMost : These A A → A
-  leftMost (this a)    = a
-  leftMost (that a)    = a
-  leftMost (these a _) = a
+  leftMost = fold id id const
 
   rightMost : These A A → A
-  rightMost (this a)    = a
-  rightMost (that a)    = a
-  rightMost (these _ a) = a
+  rightMost = fold id id (flip const)
 
 module _ {c ℓ} (S : Semigroup c ℓ) where
 
   open Semigroup S renaming (Carrier to A)
 
   toSemigroup : These A A → A
-  toSemigroup (this a₁)     = a₁
-  toSemigroup (that a₂)     = a₂
-  toSemigroup (these a₁ a₂) = a₁ ∙ a₂
+  toSemigroup = fold id id _∙_
