@@ -7,6 +7,7 @@
 module Data.These where
 
 open import Level
+open import Algebra using (Semigroup)
 open import Function
 
 data These {a b} (A : Set a) (B : Set b) : Set (a ⊔ b) where
@@ -69,3 +70,12 @@ module _ {a} {A : Set a} where
   rightMost (this a)    = a
   rightMost (that a)    = a
   rightMost (these _ a) = a
+
+module _ {c ℓ} (S : Semigroup c ℓ) where
+
+  open Semigroup S renaming (Carrier to A)
+
+  toSemigroup : These A A → A
+  toSemigroup (this a₁)     = a₁
+  toSemigroup (that a₂)     = a₂
+  toSemigroup (these a₁ a₂) = a₁ ∙ a₂
