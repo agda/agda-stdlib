@@ -14,8 +14,11 @@ open ≤-Reasoning
 open import Data.List.Base
 open import Function
 import Function.Injection as F
+open import Function.Equivalence as Equiv using (_⇔_ ; equivalence)
+open import Relation.Nullary
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
+import Relation.Nullary.Decidable as D
 
 ------------------------------------------------------------------------
 -- Type and basic combinators
@@ -34,7 +37,7 @@ module _ {a} {A : Set a} where
   []⊆ x ∷ xs = skip ([]⊆ xs)
 
 ------------------------------------------------------------------------
--- Some properties
+-- Properties of length
 
 module _ {a} {A : Set a} where
 
@@ -80,12 +83,12 @@ module _ {a} {A : Set a} where
     length xs       ≤⟨ ⊆-length p ⟩
     length ys       ∎
 
-  ⊆-minimum : Minimum (_⊆_ {A = A}) []
+  ⊆-minimum : Minimum {A = List A} _⊆_ []
   ⊆-minimum = []⊆_
 
 module _ {a} (A : Set a) where
 
-  ⊆-isPreorder : IsPreorder _≡_ (_⊆_ {A = A})
+  ⊆-isPreorder : IsPreorder {A = List A} _≡_ _⊆_
   ⊆-isPreorder = record
     { isEquivalence = isEquivalence
     ; reflexive     = ⊆-reflexive
@@ -107,6 +110,15 @@ module _ {a} (A : Set a) where
   ⊆-poset = record
     { isPartialOrder = ⊆-isPartialOrder
     }
+
+------------------------------------------------------------------------
+-- _∷_
+
+module _ {a} {A : Set a} where
+
+  ∷⁻ : ∀ x {us vs : List A} → x ∷ us ⊆ x ∷ vs → us ⊆ vs
+  ∷⁻ x (skip p) = ⊆-trans (skip ⊆-refl) p
+  ∷⁻ x (keep p) = p
 
 ------------------------------------------------------------------------
 -- map
@@ -136,7 +148,7 @@ module _ {a b} {A : Set a} {B : Set b} where
     rewrite eq refl = keep (map⁻ inj p)
 
 ------------------------------------------------------------------------
--- _++_
+-- Combinators
 
 module _ {a} {A : Set a} where
 
@@ -145,3 +157,39 @@ module _ {a} {A : Set a} where
   ++⁺ (skip p) q = skip (++⁺ p q)
   ++⁺ (keep p) q = keep (++⁺ p q)
 
+  ++⁻ : ∀ xs {us vs : List A} → xs ++ us ⊆ xs ++ vs → us ⊆ vs
+  ++⁻ []       p = p
+  ++⁻ (x ∷ xs) p = ++⁻ xs (∷⁻ x p)
+
+  skips : ∀ {xs ys} (zs : List A) → xs ⊆ ys → xs ⊆ zs ++ ys
+  skips zs = ++⁺ ([]⊆ zs)
+
+------------------------------------------------------------------------
+-- Inversion lemmas
+
+module _ {a} {A : Set a} where
+
+  keep⁻¹ : ∀ (x : A) {xs ys} → (xs ⊆ ys) ⇔ (x ∷ xs ⊆ x ∷ ys)
+  keep⁻¹ x = equivalence keep (∷⁻ x)
+
+  skip⁻¹ : ∀ {x y : A} {xs ys} → x ≢ y → (x ∷ xs ⊆ ys) ⇔ (x ∷ xs ⊆ y ∷ ys)
+  skip⁻¹ ¬eq = equivalence skip $ λ where
+    (skip p) → p
+    (keep p) → ⊥-elim (¬eq refl)
+
+  ++⁻¹ : ∀ (ps : List A) {xs ys} → (xs ⊆ ys) ⇔ (ps ++ xs ⊆ ps ++ ys)
+  ++⁻¹ ps = equivalence (++⁺ ⊆-refl) (++⁻ ps)
+
+------------------------------------------------------------------------
+-- Decidability of the order
+
+module Decidable
+       {a} {A : Set a} (eq? : Decidable {A = A} _≡_) where
+
+  infix 3 _⊆?_
+  _⊆?_ : Decidable {A = List A} _⊆_
+  []     ⊆? ys     = yes ([]⊆ ys)
+  x ∷ xs ⊆? []     = no λ ()
+  x ∷ xs ⊆? y ∷ ys with eq? x y
+  ... | yes refl = D.map (keep⁻¹ x) (xs ⊆? ys)
+  ... | no ¬eq   = D.map (skip⁻¹ ¬eq) (x ∷ xs ⊆? ys)
