@@ -37,7 +37,7 @@ module _ {a} {A : Set a} where
   []⊆ x ∷ xs = skip ([]⊆ xs)
 
 ------------------------------------------------------------------------
--- Some properties
+-- Properties of length
 
 module _ {a} {A : Set a} where
 
@@ -83,12 +83,12 @@ module _ {a} {A : Set a} where
     length xs       ≤⟨ ⊆-length p ⟩
     length ys       ∎
 
-  ⊆-minimum : Minimum (_⊆_ {A = A}) []
+  ⊆-minimum : Minimum {A = List A} _⊆_ []
   ⊆-minimum = []⊆_
 
 module _ {a} (A : Set a) where
 
-  ⊆-isPreorder : IsPreorder _≡_ (_⊆_ {A = A})
+  ⊆-isPreorder : IsPreorder {A = List A} _≡_ _⊆_
   ⊆-isPreorder = record
     { isEquivalence = isEquivalence
     ; reflexive     = ⊆-reflexive
@@ -110,6 +110,15 @@ module _ {a} (A : Set a) where
   ⊆-poset = record
     { isPartialOrder = ⊆-isPartialOrder
     }
+
+------------------------------------------------------------------------
+-- _∷_
+
+module _ {a} {A : Set a} where
+
+  ∷⁻ : ∀ x {us vs : List A} → x ∷ us ⊆ x ∷ vs → us ⊆ vs
+  ∷⁻ x (skip p) = ⊆-trans (skip ⊆-refl) p
+  ∷⁻ x (keep p) = p
 
 ------------------------------------------------------------------------
 -- map
@@ -148,16 +157,12 @@ module _ {a} {A : Set a} where
   ++⁺ (skip p) q = skip (++⁺ p q)
   ++⁺ (keep p) q = keep (++⁺ p q)
 
-  skips : ∀ {xs ys} (zs : List A) → xs ⊆ ys → xs ⊆ zs ++ ys
-  skips zs = ++⁺ ([]⊆ zs)
-
-  ∷⁻ : ∀ x {us vs : List A} → x ∷ us ⊆ x ∷ vs → us ⊆ vs
-  ∷⁻ x (skip p) = ⊆-trans (skip ⊆-refl) p
-  ∷⁻ x (keep p) = p
-
   ++⁻ : ∀ xs {us vs : List A} → xs ++ us ⊆ xs ++ vs → us ⊆ vs
   ++⁻ []       p = p
   ++⁻ (x ∷ xs) p = ++⁻ xs (∷⁻ x p)
+
+  skips : ∀ {xs ys} (zs : List A) → xs ⊆ ys → xs ⊆ zs ++ ys
+  skips zs = ++⁺ ([]⊆ zs)
 
 ------------------------------------------------------------------------
 -- Inversion lemmas

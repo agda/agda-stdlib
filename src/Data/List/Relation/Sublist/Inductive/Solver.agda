@@ -6,16 +6,20 @@
 
 module Data.List.Relation.Sublist.Inductive.Solver where
 
-open import Data.Nat
 open import Data.Fin as Fin
+open import Data.Maybe as M
+open import Data.Nat as Nat
 open import Data.Product
 open import Data.Vec as Vec using (Vec ; lookup)
 open import Data.List hiding (lookup)
 open import Data.List.Properties
 open import Data.List.Relation.Sublist.Inductive
 open import Function
-open import Relation.Nullary
+open import Relation.Binary
 open import Relation.Binary.PropositionalEquality hiding ([_])
+open import Relation.Nullary
+
+open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Reified list expressions
@@ -60,7 +64,6 @@ module _ {n a} {A : Set a} where
   d ⊆R e = ∀ ρ → ⟦ d ⟧R ρ ⊆ ⟦ e ⟧R ρ
 
 -- Flattening in a semantics-respecting manner
-  open ≡-Reasoning
 
   ⟦++⟧R : ∀ xs ys ρ → ⟦ xs ++ ys ⟧R ρ ≡ ⟦ xs ⟧R ρ ++ ⟦ ys ⟧R ρ
   ⟦++⟧R []       ys ρ = refl
@@ -86,9 +89,6 @@ module _ {n a} {A : Set a} where
 
 ------------------------------------------------------------------------
 -- Solver for the sublist problem
-
-open import Data.Maybe as M
-open import Relation.Binary
 
 module _ {n : ℕ} {a} {A : Set a} (eq? : Decidable {A = A} _≡_) where
 
@@ -132,11 +132,8 @@ module _ {n : ℕ} {a} {A : Set a} (eq? : Decidable {A = A} _≡_) where
   prove : ∀ d e → From-just (solveT d e)
   prove d e = from-just (solveT d e)
 
-
 ------------------------------------------------------------------------
 -- Test
-
-open import Data.Nat as Nat
 
 _ : ∀ xs ys → xs ++ xs ⊆ (xs ++ 2 ∷ ys) ++ xs
 _ = λ xs ys →
