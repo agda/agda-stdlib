@@ -167,21 +167,21 @@ comm+cancelʳ⇒cancelˡ {_•_} comm cancelʳ x {y} {z} eq = cancelʳ y z (begi
 
 module InjectiveContravariantOperator {_•_ : Op₂ Carrier} (dual : Injection S S)
          (let open Injection dual renaming (_⟨$⟩_ to _˘))
-         (contravariant : _˘ ContravariantOn _•_)         
+         (contravariant : _˘ ContravariantOn _•_)
   where
 
     cancelʳ⇒cancelˡ : RightCancellative _•_ → LeftCancellative _•_
     cancelʳ⇒cancelˡ cancelʳ x {y} {z} xy≈xz = injective (cancelʳ _ _ (begin
       (y ˘) • (x ˘) ≈⟨ sym (contravariant _ _) ⟩
       (x • y) ˘     ≈⟨ cong xy≈xz              ⟩
-      (x • z) ˘     ≈⟨ contravariant _ _       ⟩            
+      (x • z) ˘     ≈⟨ contravariant _ _       ⟩
       (z ˘) • (x ˘) ∎))
 
     cancelˡ⇒cancelʳ : LeftCancellative _•_ → RightCancellative _•_
     cancelˡ⇒cancelʳ cancelˡ {x} y z yx≈zx = injective (cancelˡ _ ( begin
       (x ˘) • (y ˘) ≈⟨ sym (contravariant _ _) ⟩
       (y • x) ˘     ≈⟨ cong yx≈zx              ⟩
-      (z • x) ˘     ≈⟨ contravariant _ _       ⟩            
+      (z • x) ˘     ≈⟨ contravariant _ _       ⟩
       (x ˘) • (z ˘) ∎ ) )
 
 ------------------------------------------------------------------------
