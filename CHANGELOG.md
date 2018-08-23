@@ -8,6 +8,12 @@ Important changes since 0.16:
 Non-backwards compatible changes
 --------------------------------
 
+#### New results regarding cancellative operators
+
+* `Algebra.FunctionProperties.Consequences` now contains a proof of the
+  equi-provability of left and right cancellation for a binary operator,
+  provided we have access to an injective function that is contravariant on the operation.
+
 #### New codata library
 
 * A new `Codata` library using copatterns and sized types rather
