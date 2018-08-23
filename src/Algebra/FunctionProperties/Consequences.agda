@@ -165,7 +165,7 @@ comm+cancelʳ⇒cancelˡ {_•_} comm cancelʳ x {y} {z} eq = cancelʳ y z (begi
   x • z ≈⟨ comm x z ⟩
   z • x ∎)
 
-module InjectiveContravariantOperator {_•_ : Op₂ Carrier} {dual : Injection S S}
+module InjectiveContravariantOperator {_•_ : Op₂ Carrier} (dual : Injection S S)
          (let open Injection dual renaming (_⟨$⟩_ to _˘))
          (contravariant : _˘ ContravariantOn _•_)         
   where
