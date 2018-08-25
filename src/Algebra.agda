@@ -35,6 +35,12 @@ record Semigroup c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsSemigroup isSemigroup public
 
+  rawSemigroup : RawSemigroup _ _
+  rawSemigroup = record
+    { _≈_ = _≈_
+    ; _∙_ = _∙_
+    }
+
 record Band c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
   infix  4 _≈_
@@ -48,6 +54,8 @@ record Band c ℓ : Set (suc (c ⊔ ℓ)) where
 
   semigroup : Semigroup c ℓ
   semigroup = record { isSemigroup = isSemigroup }
+
+  open Semigroup semigroup public using (rawSemigroup)
 
 ------------------------------------------------------------------------
 -- Monoids
@@ -148,6 +156,14 @@ record Group c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsGroup isGroup public
 
+  rawGroup : RawGroup _ _
+  rawGroup = record
+    { _≈_ = _≈_
+    ; _∙_ = _∙_
+    ; ε   = ε
+    ; _⁻¹ = _⁻¹
+    }
+
   monoid : Monoid _ _
   monoid = record { isMonoid = isMonoid }
 
@@ -170,7 +186,8 @@ record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
   group : Group _ _
   group = record { isGroup = isGroup }
 
-  open Group group public using (semigroup; monoid; rawMonoid)
+  open Group group public
+    using (semigroup; monoid; rawMonoid; rawGroup)
 
   commutativeMonoid : CommutativeMonoid _ _
   commutativeMonoid =
@@ -294,6 +311,15 @@ record Semiring c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsSemiring isSemiring public
 
+  rawSemiring : RawSemiring _ _
+  rawSemiring = record
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; 0#  = 0#
+    ; 1#  = 1#
+    }
+
   semiringWithoutAnnihilatingZero : SemiringWithoutAnnihilatingZero _ _
   semiringWithoutAnnihilatingZero = record
     { isSemiringWithoutAnnihilatingZero =
@@ -365,6 +391,7 @@ record CommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
                ; *-semigroup; *-rawMonoid; *-monoid
                ; nearSemiring; semiringWithoutOne
                ; semiringWithoutAnnihilatingZero
+               ; rawSemiring
                )
 
   *-commutativeMonoid : CommutativeMonoid _ _
