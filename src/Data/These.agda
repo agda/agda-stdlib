@@ -74,9 +74,5 @@ module _ {a} {A : Set a} where
   rightMost : These A A → A
   rightMost = fold id id (flip const)
 
-module _ {c ℓ} (S : Semigroup c ℓ) where
-
-  open Semigroup S renaming (Carrier to A)
-
-  toSemigroup : These A A → A
-  toSemigroup = fold id id _∙_
+  mergeThese : (A → A → A) → These A A → A
+  mergeThese = fold id id
