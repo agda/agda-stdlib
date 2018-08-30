@@ -138,6 +138,8 @@ Non-backwards compatible changes
   Data.Product.N-ary.Categorical
   Data.Sum.Categorical.Left
   Data.Sum.Categorical.Right
+  Data.These.Categorical.Left
+  Data.These.Categorical.Right
 
   Codata.Colist.Categorical
   Codata.Covec.Categorical
@@ -207,8 +209,7 @@ Other major changes
 * Added new modules `Data.List.Relation.Permutation.Inductive(.Properties)`,
   which give an inductive definition of permutations over lists.
 
-* Added a very barebones new module `Data.These` for the classic either-or-both
-  Haskell datatype.
+* Added a new module `Data.These` for the classic either-or-both Haskell datatype.
 
 * Added new module `Data.List.Relation.Sublist.Inductive` which gives
   an inductive definition of the sublist relation (i.e. order-preserving embeddings).
