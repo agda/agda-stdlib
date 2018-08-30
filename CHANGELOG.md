@@ -215,7 +215,7 @@ Other major changes
   an inductive definition of the sublist relation (i.e. order-preserving embeddings).
   We also provide a solver for this order in `Data.List.Relation.Sublist.Inductive.Solver`.
 
-* Added new modules `Relation.Unary.Closure.(Preorder/StrictPartialOrder)` providing 
+* Added new modules `Relation.Unary.Closure.(Preorder/StrictPartialOrder)` providing
   closures of a predicate with respect to either a preorder or a strict partial order.
 
 Deprecated features
