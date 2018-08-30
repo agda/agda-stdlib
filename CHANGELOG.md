@@ -8,6 +8,47 @@ Important changes since 0.16:
 Non-backwards compatible changes
 --------------------------------
 
+#### Overhaul of safety of the library
+
+* Currently the library is very difficult to type check with the `--safe`
+  flag as there are unsafe functions scattered throughout the key modules.
+  This means that it is almost impossible to verify the safety of any code
+  depending on the standard library. The following reorganisation will fix
+  this problem after the NEXT full release of Agda. (Agda 2.5.4.1 uses
+  postulates in the `Agda.Builtin.X` that will be removed in the next release).
+
+* The following new modules `Unsafe` have been created. The contents of
+  these are  nearly all marked as unsafe as they use the `trustMe` functionality,
+  either for performance reasons or for informative decidable equality tests.
+  ```
+  Data.Char.Unsafe
+  Data.Float.Unsafe
+  Data.Nat.Unsafe
+  Data.Nat.DivMod.Unsafe
+  Data.String.Unsafe
+  Data.Word.Unsafe
+  ```
+
+* Another module affected is `Relation.Binary.HeterogeneousEquality.Quotients(.Examples)`
+  which previously postulated function extensionality. The relevant submodules
+  now take extensionality as a module parameter instead of postulating it. If you
+  want to use these results then you should postulate it yourself.
+
+* The full list of unsafe modules is:
+  ```
+  Data.Char.Unsafe
+  Data.Float.Unsafe
+  Data.Nat.Unsafe
+  Data.Nat.DivMod.Unsafe
+  Data.String.Unsafe
+  Data.Word.Unsafe
+  IO
+  IO.Primitives
+  Reflection
+  Relation.Binary.PropositionalEquality.TrustMe
+  ```
+
+
 #### New codata library
 
 * A new `Codata` library using copatterns and sized types rather
