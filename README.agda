@@ -298,13 +298,15 @@ import README.Function.Reasoning
 -- All library modules
 ------------------------------------------------------------------------
 
--- For short descriptions of every library module, see Everything:
+-- For short descriptions of every library module, see Everything;
+-- to exclude unsafe modules, see EverythingSafe:
 
 import Everything
+import EverythingSafe
 
--- Note that the Everything module is generated automatically. If you
--- have downloaded the library from its Git repository and want to
--- type check README then you can (try to) construct Everything by
+-- Note that the Everything* modules are generated automatically. If
+-- you have downloaded the library from its Git repository and want
+-- to type check README then you can (try to) construct Everything by
 -- running "cabal install && GenerateEverything".
 
 -- Note that all library sources are located under src or ffi. The

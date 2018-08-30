@@ -8,9 +8,31 @@ import System.Exit
 import System.FilePath
 import System.FilePath.Find
 
-headerFile = "Header"
-outputFile = "Everything.agda"
-srcDir     = "src"
+headerFile     = "Header"
+allOutputFile  = "Everything"
+safeOutputFile = "EverythingSafe"
+srcDir         = "src"
+
+unsafeModules :: [FilePath]
+unsafeModules = map toAgdaFilePath
+  [ "Data.Char.Unsafe"
+  , "Data.Float.Unsafe"
+  , "Data.Nat.Unsafe"
+  , "Data.Nat.DivMod.Unsafe"
+  , "Data.String.Unsafe"
+  , "Data.Word.Unsafe"
+  , "IO"
+  , "IO.Primitive"
+  , "Reflection"
+  , "Relation.Binary.PropositionalEquality.TrustMe"
+  ] where
+
+  toAgdaFilePath :: String -> FilePath
+  toAgdaFilePath name = concat
+    [ "src/"
+    , map (\ c -> if c == '.' then '/' else c) name
+    , ".agda"
+    ]
 
 main = do
   args <- getArgs
@@ -25,8 +47,20 @@ main = do
                     srcDir
   headers <- mapM extractHeader modules
 
-  writeFileUTF8 outputFile $
-    header ++ format (zip modules headers)
+  let mkModule str = "module " ++ str ++ " where"
+  let content = zip modules headers
+
+  writeFileUTF8 (allOutputFile ++ ".agda") $
+    unlines [ header
+            , mkModule allOutputFile
+            , format content
+            ]
+
+  writeFileUTF8 (safeOutputFile ++ ".agda") $
+    unlines [ header
+            , mkModule safeOutputFile
+            , format $ filter ((`notElem` unsafeModules) . fst) content
+            ]
 
 -- | Usage info.
 
@@ -40,7 +74,7 @@ usage = unlines
   , "the library."
   , ""
   , "The program generates documentation for the library by extracting"
-  , "headers from library modules. The output is written to " ++ outputFile
+  , "headers from library modules. The output is written to " ++ allOutputFile
   , "with the file " ++ headerFile ++ " inserted verbatim at the beginning."
   ]
 
@@ -50,7 +84,6 @@ isLibraryModule :: FilePath -> Bool
 isLibraryModule f =
   takeExtension f `elem` [".agda", ".lagda"]
   && dropExtension (takeFileName f) /= "Core"
-  && dropExtension (takeFileName f) /= "index"
 
 -- | Reads a module and extracts the header.
 

@@ -43,7 +43,7 @@ Non-backwards compatible changes
   Data.String.Unsafe
   Data.Word.Unsafe
   IO
-  IO.Primitives
+  IO.Primitive
   Reflection
   Relation.Binary.PropositionalEquality.TrustMe
   ```
