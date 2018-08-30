@@ -575,8 +575,15 @@ Other minor additions
   <-respˡ-≈ : _<_ Respectsˡ _≈_
   ```
 
+* Added new proofs to `Relation.Binary.NonStrictToStrict`:
+  ```agda
+  <⇒≤ : _<_ ⇒ _≤_
+  ```
+
 * Added new proofs to `Relation.Binary.StrictToNonStrict`:
   ```agda
+  <⇒≤ : _<_ ⇒ _≤_
+
   ≤-respʳ-≈ : Transitive _≈_ → _<_ Respectsʳ _≈_ → _≤_ Respectsʳ _≈_
   ≤-respˡ-≈ : Symmetric _≈_ → Transitive _≈_ → _<_ Respectsˡ _≈_ → _≤_ Respectsˡ _≈_
 

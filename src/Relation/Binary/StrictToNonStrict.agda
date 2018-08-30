@@ -34,6 +34,9 @@ x ≤ y = (x < y) ⊎ (x ≈ y)
 -- The converted relations have certain properties
 -- (if the original relations have certain other properties)
 
+<⇒≤ : _<_ ⇒ _≤_
+<⇒≤ = inj₁
+
 reflexive : _≈_ ⇒ _≤_
 reflexive = inj₂
 
