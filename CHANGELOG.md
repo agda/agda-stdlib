@@ -213,8 +213,8 @@ Other major changes
 * Added new module `Data.List.Relation.Sublist.Inductive` which gives
   an inductive definition of the sublist relation (i.e. order-preserving embeddings).
 
-* Added new module `Relation.Unary.Closure` providing closures of a predicate
-  with respect to either a preorder or a strict partial order.
+* Added new modules `Relation.Unary.Closure.(Preorder/StrictPartialOrder)` providing 
+  closures of a predicate with respect to either a preorder or a strict partial order.
 
 Deprecated features
 -------------------
