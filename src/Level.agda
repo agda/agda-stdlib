@@ -8,7 +8,7 @@ module Level where
 
 -- Levels.
 
-open import Agda.Primitive public
+open import Agda.Primitive as Prim public
   using    (Level; _⊔_)
   renaming (lzero to zero; lsuc to suc)
 
@@ -19,3 +19,8 @@ record Lift {a} ℓ (A : Set a) : Set (a ⊔ ℓ) where
   field lower : A
 
 open Lift public
+
+-- Synonyms
+
+0ℓ : Level
+0ℓ = zero

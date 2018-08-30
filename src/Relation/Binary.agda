@@ -217,8 +217,11 @@ record IsStrictPartialOrder {a ℓ₁ ℓ₂} {A : Set a}
   asym : Asymmetric _<_
   asym {x} {y} = trans∧irr⟶asym Eq.refl trans irrefl {x = x} {y}
 
-  -- DEPRECATED, please use `asym` directly
   asymmetric = asym
+  {-# WARNING_ON_USAGE asymmetric
+  "Warning: asymmetric was deprecated in v0.16.
+  Please use asym instead."
+  #-}
 
 record StrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _<_

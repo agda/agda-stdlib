@@ -63,15 +63,20 @@ install:
   # generating Everything.agda
   - cabal install lib.cabal
   - runghc GenerateEverything.hs
+  # setting up travis-specific scripts and files
+  - cp travis/* .
 
 script:
   # generating index.agda
   - ./index.sh
   # detecting whitespace violations
   - make check-whitespace
+  # checking safe modules build with --safe
+  # - agda -i . -i src/ --safe safe.agda
   # detecting basic compilation errors
-  - agda -i . -i src -c --no-main Everything.agda
+  - agda -i . -i src/ -c --no-main Everything.agda
   # building the docs
+  - agda -i . -i src/ --html safe.agda
   - agda -i . -i src/ --html index.agda
   # moving everything at the root
   - mv html/* .

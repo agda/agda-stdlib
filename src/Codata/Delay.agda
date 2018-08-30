@@ -14,8 +14,10 @@ open import Data.Empty
 open import Relation.Nullary
 open import Data.Nat.Base
 open import Data.Maybe.Base hiding (map ; fromMaybe)
-open import Data.Product as P hiding (map)
+open import Data.Product as P hiding (map ; zip)
 open import Data.Sum as S hiding (map)
+open import Data.These as T using (These; this; that; these)
+open import Function
 
 ------------------------------------------------------------------------
 -- Definition
@@ -56,12 +58,27 @@ module _ {ℓ ℓ′} {A : Set ℓ} {B : Set ℓ′} where
  ... | inj₁ seed′ = later λ where .force → unfold next seed′
  ... | inj₂ b     = now b
 
-module _ {ℓ ℓ₁ ℓ₂} {A : Set ℓ} {B : Set ℓ₁} {C : Set ℓ₂} where
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
  zipWith : (A → B → C) → ∀ {i} → Delay A i → Delay B i → Delay C i
  zipWith f (now a)   d         = map (f a) d
  zipWith f d         (now b)   = map (λ a → f a b) d
  zipWith f (later a) (later b) = later λ where .force → zipWith f (a .force) (b .force)
+
+ alignWith : (These A B → C) → ∀ {i} → Delay A i → Delay B i → Delay C i
+ alignWith f (now a)   (now b)   = now (f (these a b))
+ alignWith f (now a)   (later _) = now (f (this a))
+ alignWith f (later _) (now b)   = now (f (that b))
+ alignWith f (later a) (later b) = later λ where
+   .force → alignWith f (a .force) (b .force)
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+  zip : ∀ {i} → Delay A i → Delay B i → Delay (A × B) i
+  zip   = zipWith _,_
+
+  align : ∀ {i} → Delay A i → Delay B i → Delay (These A B) i
+  align = alignWith id
 
 ------------------------------------------------------------------------
 -- Finite Delays

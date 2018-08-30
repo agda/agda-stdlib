@@ -258,12 +258,45 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
-_×-irreflexive_          = ×-irreflexive
-_×-isPreorder_           = ×-isPreorder
-_×-isStrictPartialOrder_ = ×-isStrictPartialOrder
-_×-isStrictTotalOrder_   = ×-isStrictTotalOrder
-_×-preorder_             = ×-preorder
-_×-strictPartialOrder_   = ×-strictPartialOrder
-_×-strictTotalOrder_     = ×-strictTotalOrder
+-- Version 0.15
 
+_×-irreflexive_ = ×-irreflexive
+{-# WARNING_ON_USAGE _×-irreflexive_
+"Warning: _×-irreflexive_ was deprecated in v0.15.
+Please use ×-irreflexive instead."
+#-}
+_×-isPreorder_           = ×-isPreorder
+{-# WARNING_ON_USAGE _×-isPreorder_
+"Warning: _×-isPreorder_ was deprecated in v0.15.
+Please use ×-isPreorder instead."
+#-}
+_×-isStrictPartialOrder_ = ×-isStrictPartialOrder
+{-# WARNING_ON_USAGE _×-isStrictPartialOrder_
+"Warning: _×-isStrictPartialOrder_ was deprecated in v0.15.
+Please use ×-isStrictPartialOrder instead."
+#-}
+_×-isStrictTotalOrder_   = ×-isStrictTotalOrder
+{-# WARNING_ON_USAGE _×-isStrictTotalOrder_
+"Warning: _×-isStrictTotalOrder_ was deprecated in v0.15.
+Please use ×-isStrictTotalOrder instead."
+#-}
+_×-preorder_             = ×-preorder
+{-# WARNING_ON_USAGE _×-preorder_
+"Warning: _×-preorder_ was deprecated in v0.15.
+Please use ×-preorder instead."
+#-}
+_×-strictPartialOrder_   = ×-strictPartialOrder
+{-# WARNING_ON_USAGE _×-strictPartialOrder_
+"Warning: _×-strictPartialOrder_ was deprecated in v0.15.
+Please use ×-strictPartialOrder instead."
+#-}
+_×-strictTotalOrder_     = ×-strictTotalOrder
+{-# WARNING_ON_USAGE _×-strictTotalOrder_
+"Warning: _×-strictTotalOrder_ was deprecated in v0.15.
+Please use ×-strictTotalOrder instead."
+#-}
 ×-≈-respects₂            = ×-respects₂
+{-# WARNING_ON_USAGE ×-≈-respects₂
+"Warning: ×-≈-respects₂ was deprecated in v0.15.
+Please use ×-respects₂ instead."
+#-}

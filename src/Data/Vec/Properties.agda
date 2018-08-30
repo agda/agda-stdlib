@@ -15,10 +15,11 @@ open import Data.List.Any using (here; there)
 import Data.List.Membership.Propositional as List
 open import Data.Nat
 open import Data.Nat.Properties using (+-assoc; ≤-step)
-open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂; <_,_>)
+open import Data.Product as Prod
+  using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Vec
 open import Function
-open import Function.Inverse using (_↔_)
+open import Function.Inverse using (_↔_; inverse)
 open import Relation.Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; _≗_)
@@ -73,14 +74,8 @@ module _ {a} {A : Set a} where
 
   []=↔lookup : ∀ {n i} {x} {xs : Vec A n} →
                xs [ i ]= x ↔ lookup i xs ≡ x
-  []=↔lookup = record
-    { to         = P.→-to-⟶ []=⇒lookup
-    ; from       = P.→-to-⟶ (lookup⇒[]= _ _)
-    ; inverse-of = record
-      { left-inverse-of  = λ _ → []=-irrelevance _ _
-      ; right-inverse-of = λ _ → P.≡-irrelevance _ _
-      }
-    }
+  []=↔lookup = inverse []=⇒lookup (lookup⇒[]= _ _)
+     (λ _ → []=-irrelevance _ _) (λ _ → P.≡-irrelevance _ _)
 
 ------------------------------------------------------------------------
 -- _[_]≔_ (update)
@@ -315,16 +310,23 @@ module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
   zipWith-map₁ : ∀ {n} (_⊕_ : B → C → D) (f : A → B)
                  (xs : Vec A n) (ys : Vec C n) →
                  zipWith _⊕_ (map f xs) ys ≡ zipWith (λ x y → f x ⊕ y) xs ys
-  zipWith-map₁ _⊕_ f [] [] = refl
+  zipWith-map₁ _⊕_ f []       []       = refl
   zipWith-map₁ _⊕_ f (x ∷ xs) (y ∷ ys) =
     P.cong (f x ⊕ y ∷_) (zipWith-map₁ _⊕_ f xs ys)
 
   zipWith-map₂ : ∀ {n} (_⊕_ : A → C → D) (f : B → C)
                  (xs : Vec A n) (ys : Vec B n) →
                  zipWith _⊕_ xs (map f ys) ≡ zipWith (λ x y → x ⊕ f y) xs ys
-  zipWith-map₂ _⊕_ f [] [] = refl
+  zipWith-map₂ _⊕_ f []       []       = refl
   zipWith-map₂ _⊕_ f (x ∷ xs) (y ∷ ys) =
     P.cong (x ⊕ f y ∷_) (zipWith-map₂ _⊕_ f xs ys)
+
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
+
+  lookup-zipWith : ∀ (f : A → B → C) {n} (i : Fin n) xs ys →
+                   lookup i (zipWith f xs ys) ≡ f (lookup i xs) (lookup i ys)
+  lookup-zipWith _ zero    (x ∷ _)  (y ∷ _)   = refl
+  lookup-zipWith _ (suc i) (_ ∷ xs) (_ ∷ ys)  = lookup-zipWith _ i xs ys
 
 ------------------------------------------------------------------------
 -- zip
@@ -333,8 +335,7 @@ module _ {a b} {A : Set a} {B : Set b} where
 
   lookup-zip : ∀ {n} (i : Fin n) (xs : Vec A n) (ys : Vec B n) →
                lookup i (zip xs ys) ≡ (lookup i xs , lookup i ys)
-  lookup-zip zero    (x ∷ xs) (y ∷ ys) = refl
-  lookup-zip (suc i) (x ∷ xs) (y ∷ ys) = lookup-zip i xs ys
+  lookup-zip = lookup-zipWith _,_
 
   -- map lifts projections to vectors of products.
 
@@ -391,19 +392,12 @@ module _ {a b} {A : Set a} {B : Set b} where
     P.cong (Prod.map (x ∷_) (y ∷_)) (unzip∘zip xs ys)
 
   zip∘unzip : ∀ {n} (xys : Vec (A × B) n) →
-              (Prod.uncurry zip) (unzip xys) ≡ xys
+              uncurry zip (unzip xys) ≡ xys
   zip∘unzip []              = refl
   zip∘unzip ((x , y) ∷ xys) = P.cong ((x , y) ∷_) (zip∘unzip xys)
 
   ×v↔v× : ∀ {n} → (Vec A n × Vec B n) ↔ Vec (A × B) n
-  ×v↔v× = record
-    { to         = P.→-to-⟶ (Prod.uncurry zip)
-    ; from       = P.→-to-⟶ unzip
-    ; inverse-of = record
-      { left-inverse-of  = Prod.uncurry unzip∘zip
-      ; right-inverse-of = zip∘unzip
-      }
-    }
+  ×v↔v× = inverse (uncurry zip) unzip (uncurry unzip∘zip) zip∘unzip
 
 ------------------------------------------------------------------------
 -- _⊛_
@@ -645,4 +639,10 @@ module _ {a} {A : Set a} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 0.15
+
 proof-irrelevance-[]= = []=-irrelevance
+{-# WARNING_ON_USAGE proof-irrelevance-[]=
+"Warning: proof-irrelevance-[]= was deprecated in v0.15.
+Please use []=-irrelevance instead."
+#-}

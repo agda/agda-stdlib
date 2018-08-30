@@ -6,11 +6,13 @@
 
 module Data.Vec.All.Properties where
 
-open import Data.Vec as Vec using (Vec; []; _∷_; zip; map; concat; _++_)
+open import Data.List using ([]; _∷_)
+open import Data.List.All as List using ([]; _∷_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
+open import Data.Vec as Vec
 open import Data.Vec.All as All using (All; []; _∷_)
 open import Function using (_∘_; id)
-open import Function.Inverse using (_↔_)
+open import Function.Inverse using (_↔_; inverse)
 open import Relation.Unary using (Pred) renaming (_⊆_ to _⋐_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; →-to-⟶)
@@ -75,14 +77,7 @@ module _ {a n p} {A : Set a} {P : Pred A p} where
 
   ++↔ : ∀ {m} {xs : Vec A m} {ys : Vec A n} →
         (All P xs × All P ys) ↔ All P (xs ++ ys)
-  ++↔ {xs = xs} = record
-    { to         = →-to-⟶ (uncurry ++⁺)
-    ; from       = →-to-⟶ (++⁻ xs)
-    ; inverse-of = record
-      { left-inverse-of  = ++⁻∘++⁺
-      ; right-inverse-of = ++⁺∘++⁻ xs
-      }
-    }
+  ++↔ {xs = xs} = inverse (uncurry ++⁺) (++⁻ xs) ++⁻∘++⁺ (++⁺∘++⁻ xs)
 
 ------------------------------------------------------------------------
 -- concat
@@ -100,20 +95,86 @@ module _ {a m p} {A : Set a} {P : Pred A p} where
   concat⁻ (xs ∷ xss) pxss = ++ˡ⁻ xs pxss ∷ concat⁻ xss (++ʳ⁻ xs pxss)
 
 ------------------------------------------------------------------------
+-- toList
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+  toList⁺ : ∀ {n} {xs : Vec A n} → List.All P (toList xs) → All P xs
+  toList⁺ {xs = []}     []         = []
+  toList⁺ {xs = x ∷ xs} (px ∷ pxs) = px ∷ toList⁺ pxs
+
+  toList⁻ : ∀ {n} {xs : Vec A n} → All P xs → List.All P (toList xs)
+  toList⁻ []         = []
+  toList⁻ (px ∷ pxs) = px ∷ toList⁻ pxs
+
+------------------------------------------------------------------------
+-- fromList
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+  fromList⁺ : ∀ {xs} → List.All P xs → All P (fromList xs)
+  fromList⁺ []         = []
+  fromList⁺ (px ∷ pxs) = px ∷ fromList⁺ pxs
+
+  fromList⁻ : ∀ {xs} → All P (fromList xs) → List.All P xs
+  fromList⁻ {[]}     []         = []
+  fromList⁻ {x ∷ xs} (px ∷ pxs) = px ∷ (fromList⁻ pxs)
+
+------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 0.16
+
 All-map     = map⁺
+{-# WARNING_ON_USAGE All-map
+"Warning: All-map was deprecated in v0.16.
+Please use map⁺ instead."
+#-}
 map-All     = map⁻
-
+{-# WARNING_ON_USAGE map-All
+"Warning: map-All was deprecated in v0.16.
+Please use map⁻ instead."
+#-}
 All-++⁺     = ++⁺
+{-# WARNING_ON_USAGE All-++⁺
+"Warning: All-++⁺ was deprecated in v0.16.
+Please use ++⁺ instead."
+#-}
 All-++ˡ⁻    = ++ˡ⁻
+{-# WARNING_ON_USAGE All-++ˡ⁻
+"Warning: All-++ˡ⁻ was deprecated in v0.16.
+Please use ++ˡ⁻ instead."
+#-}
 All-++ʳ⁻    = ++ʳ⁻
+{-# WARNING_ON_USAGE All-++ʳ⁻
+"Warning: All-++ʳ⁻ was deprecated in v0.16.
+Please use ++ʳ⁻ instead."
+#-}
 All-++⁻     = ++⁻
+{-# WARNING_ON_USAGE All-++⁻
+"Warning: All-++⁻ was deprecated in v0.16.
+Please use ++⁻ instead."
+#-}
 All-++⁺∘++⁻ = ++⁺∘++⁻
+{-# WARNING_ON_USAGE All-++⁺∘++⁻
+"Warning: All-++⁺∘++⁻ was deprecated in v0.16.
+Please use ++⁺∘++⁻ instead."
+#-}
 All-++⁻∘++⁺ = ++⁻∘++⁺
-
+{-# WARNING_ON_USAGE All-++⁻∘++⁺
+"Warning: All-++⁻∘++⁺ was deprecated in v0.16.
+Please use ++⁻∘++⁺ instead."
+#-}
 All-concat⁺ = concat⁺
+{-# WARNING_ON_USAGE All-concat⁺
+"Warning: All-concat⁺ was deprecated in v0.16.
+Please use concat⁺ instead."
+#-}
 All-concat⁻ = concat⁻
+{-# WARNING_ON_USAGE All-concat⁻
+"Warning: All-concat⁻ was deprecated in v0.16.
+Please use concat⁻ instead."
+#-}

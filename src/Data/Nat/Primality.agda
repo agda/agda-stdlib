@@ -8,7 +8,7 @@ module Data.Nat.Primality where
 
 open import Data.Empty
 open import Data.Fin as Fin hiding (_+_)
-open import Data.Fin.Dec
+open import Data.Fin.Properties using (all?)
 open import Data.Nat
 open import Data.Nat.Divisibility
 open import Relation.Nullary
@@ -28,7 +28,7 @@ Prime (suc (suc n)) = (i : Fin n) → ¬ (2 + Fin.toℕ i ∣ 2 + n)
 prime? : Decidable Prime
 prime? 0             = no λ()
 prime? 1             = no λ()
-prime? (suc (suc n)) = all? λ _ → ¬? (_ ∣? _)
+prime? (suc (suc n)) = all? (λ _ → ¬? (_ ∣? _))
 
 private
 

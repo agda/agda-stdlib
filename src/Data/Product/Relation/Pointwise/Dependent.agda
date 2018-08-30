@@ -398,7 +398,7 @@ private
     B₁ (Inverse.from A₁↔A₂ ⟨$⟩ x)
       ∼⟨ eq ⟩
     B₂ (Inverse.to A₁↔A₂ ⟨$⟩ (Inverse.from A₁↔A₂ ⟨$⟩ x))
-      ↔⟨ B.Setoid.reflexive (Related.setoid Related.bijection _)
+      ↔⟨ Related.K-reflexive
          (P.cong B₂ $ Inverse.right-inverse-of A₁↔A₂ x) ⟩
     B₂ x
       ∎
@@ -431,5 +431,15 @@ cong {Related.bijection}                     = ↔
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 0.15
+
 Rel    = Pointwise
+{-# WARNING_ON_USAGE Rel
+"Warning: Rel was deprecated in v0.15.
+Please use Pointwise instead."
+#-}
 Rel↔≡  = Pointwise-≡↔≡
+{-# WARNING_ON_USAGE Rel↔≡
+"Warning: Rel↔≡ was deprecated in v0.15.
+Please use Pointwise-≡↔≡ instead."
+#-}
