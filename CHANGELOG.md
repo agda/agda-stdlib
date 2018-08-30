@@ -569,6 +569,21 @@ Other minor additions
   Levelℕ : Number Level
   ```
 
+* Added new proofs to record `IsStrictPartialOrder` in `Relation.Binary`:
+  ```agda
+  <-respʳ-≈ : _<_ Respectsʳ _≈_
+  <-respˡ-≈ : _<_ Respectsˡ _≈_
+  ```
+
+* Added new proofs to `Relation.Binary.StrictToNonStrict`:
+  ```agda
+  ≤-respʳ-≈ : Transitive _≈_ → _<_ Respectsʳ _≈_ → _≤_ Respectsʳ _≈_
+  ≤-respˡ-≈ : Symmetric _≈_ → Transitive _≈_ → _<_ Respectsˡ _≈_ → _≤_ Respectsˡ _≈_
+
+  <-≤-trans : Transitive _<_ → _<_ Respectsʳ _≈_ → Trans _<_ _≤_ _<_
+  ≤-<-trans : Symmetric _≈_ → Transitive _<_ → _<_ Respectsˡ _≈_ → Trans _≤_ _<_ _<_
+  ```
+
 * Added the following types in `Relation.Unary`:
   ```agda
   Satisfiable P = ∃ λ x → x ∈ P

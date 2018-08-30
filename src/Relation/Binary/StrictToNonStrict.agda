@@ -11,9 +11,9 @@
 open import Relation.Binary
 
 module Relation.Binary.StrictToNonStrict
-         {a ℓ₁ ℓ₂} {A : Set a}
-         (_≈_ : Rel A ℓ₁) (_<_ : Rel A ℓ₂)
-         where
+  {a ℓ₁ ℓ₂} {A : Set a}
+  (_≈_ : Rel A ℓ₁) (_<_ : Rel A ℓ₂)
+  where
 
 open import Relation.Nullary
 open import Relation.Binary.Consequences
@@ -51,28 +51,35 @@ antisym eq trans irrefl = as
 
 trans : IsEquivalence _≈_ → _<_ Respects₂ _≈_ → Transitive _<_ →
         Transitive _≤_
-trans eq <-resp-≈ <-trans = tr
+trans eq (respʳ , respˡ) <-trans = tr
   where
   module Eq = IsEquivalence eq
 
   tr : Transitive _≤_
   tr (inj₁ x<y) (inj₁ y<z) = inj₁ $ <-trans x<y y<z
-  tr (inj₁ x<y) (inj₂ y≈z) = inj₁ $ proj₁ <-resp-≈ y≈z x<y
-  tr (inj₂ x≈y) (inj₁ y<z) = inj₁ $ proj₂ <-resp-≈ (Eq.sym x≈y) y<z
+  tr (inj₁ x<y) (inj₂ y≈z) = inj₁ $ respʳ y≈z x<y
+  tr (inj₂ x≈y) (inj₁ y<z) = inj₁ $ respˡ (Eq.sym x≈y) y<z
   tr (inj₂ x≈y) (inj₂ y≈z) = inj₂ $ Eq.trans x≈y y≈z
 
+<-≤-trans : Transitive _<_ → _<_ Respectsʳ _≈_ → Trans _<_ _≤_ _<_
+<-≤-trans trans respʳ x<y (inj₁ y<z) = trans x<y y<z
+<-≤-trans trans respʳ x<y (inj₂ y≈z) = respʳ y≈z x<y
+
+≤-<-trans : Symmetric _≈_ → Transitive _<_ → _<_ Respectsˡ _≈_ → Trans _≤_ _<_ _<_
+≤-<-trans sym trans respˡ (inj₁ x<y) y<z = trans x<y y<z
+≤-<-trans sym trans respˡ (inj₂ x≈y) y<z = respˡ (sym x≈y) y<z
+
+≤-respʳ-≈ : Transitive _≈_ → _<_ Respectsʳ _≈_ → _≤_ Respectsʳ _≈_
+≤-respʳ-≈ trans respʳ y'≈y (inj₁ x<y') = inj₁ (respʳ y'≈y x<y')
+≤-respʳ-≈ trans respʳ y'≈y (inj₂ x≈y') = inj₂ (trans x≈y' y'≈y)
+
+≤-respˡ-≈ : Symmetric _≈_ → Transitive _≈_ → _<_ Respectsˡ _≈_ → _≤_ Respectsˡ _≈_
+≤-respˡ-≈ sym trans respˡ x'≈x (inj₁ x'<y) = inj₁ (respˡ x'≈x x'<y)
+≤-respˡ-≈ sym trans respˡ x'≈x (inj₂ x'≈y) = inj₂ (trans (sym x'≈x) x'≈y)
+
 ≤-resp-≈ : IsEquivalence _≈_ → _<_ Respects₂ _≈_ → _≤_ Respects₂ _≈_
-≤-resp-≈ eq <-resp-≈ = resp₁ , resp₂
-  where
-  module Eq = IsEquivalence eq
-
-  resp₁ : ∀ {x y' y} → y' ≈ y → x  ≤ y' → x ≤ y
-  resp₁ y'≈y (inj₁ x<y') = inj₁ (proj₁ <-resp-≈ y'≈y x<y')
-  resp₁ y'≈y (inj₂ x≈y') = inj₂ (Eq.trans x≈y' y'≈y)
-
-  resp₂ : ∀ {y x' x} → x' ≈ x → x' ≤ y  → x ≤ y
-  resp₂ x'≈x (inj₁ x'<y) = inj₁ (proj₂ <-resp-≈ x'≈x x'<y)
-  resp₂ x'≈x (inj₂ x'≈y) = inj₂ (Eq.trans (Eq.sym x'≈x) x'≈y)
+≤-resp-≈ eq (respʳ , respˡ) = ≤-respʳ-≈ Eq.trans respʳ , ≤-respˡ-≈ Eq.sym Eq.trans respˡ
+  where module Eq = IsEquivalence eq
 
 total : Trichotomous _≈_ _<_ → Total _≤_
 total <-tri x y with <-tri x y
