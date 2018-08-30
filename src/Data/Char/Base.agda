@@ -5,6 +5,7 @@
 ------------------------------------------------------------------------
 module Data.Char.Base where
 
+open import Agda.Builtin.String using (primShowChar)
 open import Data.Nat.Base    using (ℕ)
 open import Data.Bool.Base   using (Bool)
 open import Data.String.Base using (String)
@@ -19,7 +20,6 @@ open AgdaChar using (Char) public
 -- Primitive operations
 
 open AgdaChar
-open import Agda.Builtin.String using (primShowChar)
 
 show : Char → String
 show = primShowChar
