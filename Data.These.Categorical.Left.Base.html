@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.These.Categorical.Left.Base</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Base definitions for the left-biased universe-sensitive functor and</a>
+<a id="177" class="Comment">-- monad instances for These.</a>
+<a id="207" class="Comment">--</a>
+<a id="210" class="Comment">-- To minimize the universe level of the RawFunctor, we require that</a>
+<a id="279" class="Comment">-- elements of B are &quot;lifted&quot; to a copy of B at a higher universe level</a>
+<a id="351" class="Comment">-- (a ⊔ b).</a>
+<a id="363" class="Comment">-- See the Data.Product.Categorical.Examples for how this is done in a</a>
+<a id="434" class="Comment">-- Product-based similar setting.</a>
+<a id="468" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="542" class="Keyword">open</a> <a id="547" class="Keyword">import</a> <a id="554" href="Level.html" class="Module">Level</a>
+
+<a id="561" class="Keyword">module</a> <a id="568" href="Data.These.Categorical.Left.Base.html" class="Module">Data.These.Categorical.Left.Base</a> <a id="601" class="Symbol">{</a><a id="602" href="Data.These.Categorical.Left.Base.html#602" class="Bound">a</a><a id="603" class="Symbol">}</a> <a id="605" class="Symbol">(</a><a id="606" href="Data.These.Categorical.Left.Base.html#606" class="Bound">A</a> <a id="608" class="Symbol">:</a> <a id="610" class="PrimitiveType">Set</a> <a id="614" href="Data.These.Categorical.Left.Base.html#602" class="Bound">a</a><a id="615" class="Symbol">)</a> <a id="617" class="Symbol">(</a><a id="618" href="Data.These.Categorical.Left.Base.html#618" class="Bound">b</a> <a id="620" class="Symbol">:</a> <a id="622" href="Agda.Primitive.html#408" class="Postulate">Level</a><a id="627" class="Symbol">)</a> <a id="629" class="Keyword">where</a>
+
+<a id="636" class="Keyword">open</a> <a id="641" class="Keyword">import</a> <a id="648" href="Data.These.html" class="Module">Data.These</a>
+<a id="659" class="Keyword">open</a> <a id="664" class="Keyword">import</a> <a id="671" href="Category.Functor.html" class="Module">Category.Functor</a>
+
+<a id="Theseₗ"></a><a id="689" href="Data.These.Categorical.Left.Base.html#689" class="Function">Theseₗ</a> <a id="696" class="Symbol">:</a> <a id="698" class="PrimitiveType">Set</a> <a id="702" class="Symbol">(</a><a id="703" href="Data.These.Categorical.Left.Base.html#602" class="Bound">a</a> <a id="705" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="707" href="Data.These.Categorical.Left.Base.html#618" class="Bound">b</a><a id="708" class="Symbol">)</a> <a id="710" class="Symbol">→</a> <a id="712" class="PrimitiveType">Set</a> <a id="716" class="Symbol">(</a><a id="717" href="Data.These.Categorical.Left.Base.html#602" class="Bound">a</a> <a id="719" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="721" href="Data.These.Categorical.Left.Base.html#618" class="Bound">b</a><a id="722" class="Symbol">)</a>
+<a id="724" href="Data.These.Categorical.Left.Base.html#689" class="Function">Theseₗ</a> <a id="731" href="Data.These.Categorical.Left.Base.html#731" class="Bound">B</a> <a id="733" class="Symbol">=</a> <a id="735" href="Data.These.html#319" class="Datatype">These</a> <a id="741" href="Data.These.Categorical.Left.Base.html#606" class="Bound">A</a> <a id="743" href="Data.These.Categorical.Left.Base.html#731" class="Bound">B</a>
+
+<a id="functor"></a><a id="746" href="Data.These.Categorical.Left.Base.html#746" class="Function">functor</a> <a id="754" class="Symbol">:</a> <a id="756" href="Category.Functor.html#385" class="Record">RawFunctor</a> <a id="767" href="Data.These.Categorical.Left.Base.html#689" class="Function">Theseₗ</a>
+<a id="774" href="Data.These.Categorical.Left.Base.html#746" class="Function">functor</a> <a id="782" class="Symbol">=</a> <a id="784" class="Keyword">record</a> <a id="791" class="Symbol">{</a> <a id="793" class="Field Operator">_&lt;$&gt;_</a> <a id="799" class="Symbol">=</a> <a id="801" href="Data.These.html#840" class="Function">map₂</a> <a id="806" class="Symbol">}</a>
+</pre></body></html>
