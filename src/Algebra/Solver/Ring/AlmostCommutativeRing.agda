@@ -5,7 +5,7 @@
 -- commutative rings), used by the ring solver
 ------------------------------------------------------------------------
 
-module Algebra.RingSolver.AlmostCommutativeRing where
+module Algebra.Solver.Ring.AlmostCommutativeRing where
 
 open import Relation.Binary
 open import Algebra

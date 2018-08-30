@@ -11,6 +11,7 @@ open import Data.Nat.Base
 open import Data.Product using (_×_ ; _,_)
 open import Data.Maybe using (Maybe ; nothing ; just)
 open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.List.NonEmpty using (List⁺ ; _∷_)
 open import Data.BoundedVec as BVec using (BoundedVec)
 open import Function
 
@@ -33,7 +34,7 @@ module _ {ℓ} {A : Set ℓ} where
  replicate zero    a = []
  replicate (suc n) a = a ∷ λ where .force → replicate (n .force) a
 
- infixr 5 _++_
+ infixr 5 _++_ _⁺++_
  _++_ : ∀ {i} → Colist A i → Colist A i → Colist A i
  []       ++ ys = ys
  (x ∷ xs) ++ ys = x ∷ λ where .force → xs .force ++ ys
@@ -61,6 +62,9 @@ module _ {ℓ} {A : Set ℓ} where
  fromList : List A → Colist A ∞
  fromList []       = []
  fromList (x ∷ xs) = x ∷ λ where .force → fromList xs
+
+ _⁺++_ : ∀ {i} → List⁺ A → Thunk (Colist A) i → Colist A i
+ (x ∷ xs) ⁺++ ys = x ∷ λ where .force → fromList xs ++ ys .force
 
  fromStream : ∀ {i} → Stream A i → Colist A i
  fromStream = cotake Conat.infinity
@@ -96,9 +100,15 @@ module _ {a b} {A : Set a} {B : Set b} where
 ------------------------------------------------------------------------
 -- Legacy
 
-open import Coinduction
+open import Coinduction using (♭; ♯_)
 import Codata.Musical.Colist as M
 
-fromMusical : ∀ {a} {A : Set a} → M.Colist A → ∀ {i} → Colist A i
-fromMusical M.[]       = []
-fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
+module _ {a} {A : Set a} where
+
+  fromMusical : ∀ {i} → M.Colist A → Colist A i
+  fromMusical M.[]       = []
+  fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
+
+  toMusical : Colist A ∞ → M.Colist A
+  toMusical []       = M.[]
+  toMusical (x ∷ xs) = x M.∷ ♯ toMusical (xs .force)

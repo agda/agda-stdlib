@@ -7,16 +7,18 @@
 module Data.Nat.GCD.Lemmas where
 
 open import Data.Nat
-import Data.Nat.Properties as NatProp
-open NatProp.SemiringSolver
-open import Relation.Binary.PropositionalEquality
-open ≡-Reasoning
+open import Data.Nat.Properties
+open import Data.Nat.Solver
 open import Function
+open import Relation.Binary.PropositionalEquality
+
+open +-*-Solver
+open ≡-Reasoning
 
 lem₀ = solve 2 (λ n k → n :+ (con 1 :+ k)  :=  con 1 :+ n :+ k) refl
 
 lem₁ : ∀ i j → 2 + i ≤′ 2 + j + i
-lem₁ i j = NatProp.≤⇒≤′ $ s≤s $ s≤s $ NatProp.n≤m+n j i
+lem₁ i j = ≤⇒≤′ $ s≤s $ s≤s $ n≤m+n j i
 
 lem₂ : ∀ d x {k n} →
        d + x * k ≡ x * n → d + x * (n + k) ≡ 2 * x * n
@@ -99,7 +101,7 @@ lem₈ : ∀ {i j k q} x y →
        1 + y * j ≡ x * i → j * k ≡ q * i →
        k ≡ (x * k ∸ y * q) * i
 lem₈ {i} {j} {k} {q} x y eq eq′ =
-  sym (NatProp.im≡jm+n⇒[i∸j]m≡n (x * k) (y * q) i k lemma)
+  sym (im≡jm+n⇒[i∸j]m≡n (x * k) (y * q) i k lemma)
   where
   lemma = begin
     x * k * i        ≡⟨ solve 3 (λ x k i → x :* k :* i
@@ -119,7 +121,7 @@ lem₉ : ∀ {i j k q} x y →
        1 + x * i ≡ y * j → j * k ≡ q * i →
        k ≡ (y * q ∸ x * k) * i
 lem₉ {i} {j} {k} {q} x y eq eq′ =
-  sym (NatProp.im≡jm+n⇒[i∸j]m≡n (y * q) (x * k) i k lemma)
+  sym (im≡jm+n⇒[i∸j]m≡n (y * q) (x * k) i k lemma)
   where
   lem   = solve 3 (λ a b c → a :* b :* c  :=  b :* c :* a) refl
   lemma = begin
@@ -136,9 +138,9 @@ lem₁₀ : ∀ {a′} b c {d} e f → let a = suc a′ in
         a + b * (c * d * a) ≡ e * (f * d * a) →
         d ≡ 1
 lem₁₀ {a′} b c {d} e f eq =
-  NatProp.i*j≡1⇒j≡1 (e * f ∸ b * c) d
-    (NatProp.im≡jm+n⇒[i∸j]m≡n (e * f) (b * c) d 1
-       (NatProp.*-cancelʳ-≡ (e * f * d) (b * c * d + 1) (begin
+  i*j≡1⇒j≡1 (e * f ∸ b * c) d
+    (im≡jm+n⇒[i∸j]m≡n (e * f) (b * c) d 1
+       (*-cancelʳ-≡ (e * f * d) (b * c * d + 1) (begin
           e * f * d * a        ≡⟨ solve 4 (λ e f d a → e :* f :* d :* a
                                                    :=  e :* (f :* d :* a))
                                           refl e f d a ⟩
@@ -153,7 +155,7 @@ lem₁₁ : ∀ {i j m n k d} x y →
        1 + y * j ≡ x * i → i * k ≡ m * d → j * k ≡ n * d →
        k ≡ (x * m ∸ y * n) * d
 lem₁₁ {i} {j} {m} {n} {k} {d} x y eq eq₁ eq₂ =
-  sym (NatProp.im≡jm+n⇒[i∸j]m≡n (x * m) (y * n) d k lemma)
+  sym (im≡jm+n⇒[i∸j]m≡n (x * m) (y * n) d k lemma)
   where
   assoc = solve 3 (λ x y z → x :* y :* z  :=  x :* (y :* z)) refl
 

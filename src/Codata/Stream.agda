@@ -10,7 +10,9 @@ open import Size
 open import Codata.Thunk
 
 open import Data.Nat.Base
-open import Data.Vec using (Vec ; [] ; _∷_)
+open import Data.List.Base using (List; []; _∷_)
+open import Data.List.NonEmpty using (List⁺; _∷_)
+open import Data.Vec using (Vec; []; _∷_)
 open import Data.Product as P hiding (map)
 
 ------------------------------------------------------------------------
@@ -37,6 +39,20 @@ module _ {ℓ} {A : Set ℓ} where
  take : (n : ℕ) → Stream A ∞ → Vec A n
  take zero    xs = []
  take (suc n) xs = head xs ∷ take n (tail xs)
+
+ infixr 5 _++_ _⁺++_
+ _++_ : ∀ {i} → List A → Stream A i → Stream A i
+ []       ++ ys = ys
+ (x ∷ xs) ++ ys = x ∷ λ where .force → xs ++ ys
+
+ _⁺++_ : ∀ {i} → List⁺ A → Thunk (Stream A) i → Stream A i
+ (x ∷ xs) ⁺++ ys = x ∷ λ where .force → xs ++ ys .force
+
+ cycle : ∀ {i} → List⁺ A → Stream A i
+ cycle xs = xs ⁺++ λ where .force → cycle xs
+
+ concat : ∀ {i} → Stream (List⁺ A) i → Stream A i
+ concat (xs ∷ xss) = xs ⁺++ λ where .force → concat (xss .force)
 
 module _ {ℓ ℓ′} {A : Set ℓ} {B : Set ℓ′} where
 
@@ -69,8 +85,13 @@ module _ {ℓ} {A : Set ℓ} where
 ------------------------------------------------------------------------
 -- Legacy
 
-open import Coinduction
+open import Coinduction using (♭; ♯_)
 import Codata.Musical.Stream as M
 
-fromMusical : ∀ {a} {A : Set a} → M.Stream A → ∀ {i} → Stream A i
-fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
+module _ {a} {A : Set a} where
+
+  fromMusical : ∀ {i} → M.Stream A → Stream A i
+  fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
+
+  toMusical : Stream A ∞ → M.Stream A
+  toMusical (x ∷ xs) = x M.∷ ♯ toMusical (xs .force)

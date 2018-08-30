@@ -6,7 +6,7 @@
 
 module Data.Nat.Base where
 
-import Level using (zero)
+open import Level using (0ℓ)
 open import Function using (_∘_)
 open import Relation.Binary
 open import Relation.Binary.Core
@@ -24,29 +24,29 @@ open import Agda.Builtin.Nat public
   renaming ( Nat to ℕ
            ; _-_ to _∸_ )
 
-data _≤_ : Rel ℕ Level.zero where
+data _≤_ : Rel ℕ 0ℓ where
   z≤n : ∀ {n}                 → zero  ≤ n
   s≤s : ∀ {m n} (m≤n : m ≤ n) → suc m ≤ suc n
 
-_<_ : Rel ℕ Level.zero
+_<_ : Rel ℕ 0ℓ
 m < n = suc m ≤ n
 
-_≥_ : Rel ℕ Level.zero
+_≥_ : Rel ℕ 0ℓ
 m ≥ n = n ≤ m
 
-_>_ : Rel ℕ Level.zero
+_>_ : Rel ℕ 0ℓ
 m > n = n < m
 
-_≰_ : Rel ℕ Level.zero
+_≰_ : Rel ℕ 0ℓ
 a ≰ b = ¬ a ≤ b
 
-_≮_ : Rel ℕ Level.zero
+_≮_ : Rel ℕ 0ℓ
 a ≮ b = ¬ a < b
 
-_≱_ : Rel ℕ Level.zero
+_≱_ : Rel ℕ 0ℓ
 a ≱ b = ¬ a ≥ b
 
-_≯_ : Rel ℕ Level.zero
+_≯_ : Rel ℕ 0ℓ
 a ≯ b = ¬ a > b
 
 -- The following, alternative definition of _≤_ is more suitable for
@@ -58,13 +58,13 @@ data _≤′_ (m : ℕ) : ℕ → Set where
   ≤′-refl :                         m ≤′ m
   ≤′-step : ∀ {n} (m≤′n : m ≤′ n) → m ≤′ suc n
 
-_<′_ : Rel ℕ Level.zero
+_<′_ : Rel ℕ 0ℓ
 m <′ n = suc m ≤′ n
 
-_≥′_ : Rel ℕ Level.zero
+_≥′_ : Rel ℕ 0ℓ
 m ≥′ n = n ≤′ m
 
-_>′_ : Rel ℕ Level.zero
+_>′_ : Rel ℕ 0ℓ
 m >′ n = n <′ m
 
 -- Another alternative definition of _≤_.
@@ -77,13 +77,13 @@ record _≤″_ (m n : ℕ) : Set where
 
 infix 4 _≤″_ _<″_ _≥″_ _>″_
 
-_<″_ : Rel ℕ Level.zero
+_<″_ : Rel ℕ 0ℓ
 m <″ n = suc m ≤″ n
 
-_≥″_ : Rel ℕ Level.zero
+_≥″_ : Rel ℕ 0ℓ
 m ≥″ n = n ≤″ m
 
-_>″_ : Rel ℕ Level.zero
+_>″_ : Rel ℕ 0ℓ
 m >″ n = n <″ m
 
 ------------------------------------------------------------------------
@@ -160,7 +160,7 @@ suc m ≤? suc n with m ≤? n
 -- A comparison view. Taken from "View from the left"
 -- (McBride/McKinna); details may differ.
 
-data Ordering : Rel ℕ Level.zero where
+data Ordering : Rel ℕ 0ℓ where
   less    : ∀ m k → Ordering m (suc (m + k))
   equal   : ∀ m   → Ordering m m
   greater : ∀ m k → Ordering (suc (m + k)) m

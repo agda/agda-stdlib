@@ -6,7 +6,7 @@
 
 open import Algebra
 
-module Algebra.Monoid-solver {m₁ m₂} (M : Monoid m₁ m₂) where
+module Algebra.Solver.Monoid {m₁ m₂} (M : Monoid m₁ m₂) where
 
 open import Data.Fin as Fin hiding (_≟_)
 import Data.Fin.Properties as Fin
