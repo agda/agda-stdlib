@@ -72,7 +72,7 @@ script:
   # detecting whitespace violations
   - make check-whitespace
   # checking safe modules build with --safe
-  - agda -i . -i src/ --safe safe.agda
+  # - agda -i . -i src/ --safe safe.agda
   # detecting basic compilation errors
   - agda -i . -i src/ -c --no-main Everything.agda
   # building the docs
