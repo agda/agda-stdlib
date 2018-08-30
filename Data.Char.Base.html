@@ -6,21 +6,21 @@
 <a id="142" class="Comment">------------------------------------------------------------------------</a>
 <a id="215" class="Keyword">module</a> <a id="222" href="Data.Char.Base.html" class="Module">Data.Char.Base</a> <a id="237" class="Keyword">where</a>
 
-<a id="244" class="Keyword">open</a> <a id="249" class="Keyword">import</a> <a id="256" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>    <a id="273" class="Keyword">using</a> <a id="279" class="Symbol">(</a><a id="280" href="Agda.Builtin.Nat.html#97" class="Datatype">ℕ</a><a id="281" class="Symbol">)</a>
-<a id="283" class="Keyword">open</a> <a id="288" class="Keyword">import</a> <a id="295" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a>   <a id="312" class="Keyword">using</a> <a id="318" class="Symbol">(</a><a id="319" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a><a id="323" class="Symbol">)</a>
-<a id="325" class="Keyword">open</a> <a id="330" class="Keyword">import</a> <a id="337" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="354" class="Keyword">using</a> <a id="360" class="Symbol">(</a><a id="361" href="Agda.Builtin.String.html#165" class="Postulate">String</a><a id="367" class="Symbol">)</a>
+<a id="244" class="Keyword">open</a> <a id="249" class="Keyword">import</a> <a id="256" href="Agda.Builtin.String.html" class="Module">Agda.Builtin.String</a> <a id="276" class="Keyword">using</a> <a id="282" class="Symbol">(</a><a id="283" href="Agda.Builtin.String.html#399" class="Primitive">primShowChar</a><a id="295" class="Symbol">)</a>
+<a id="297" class="Keyword">open</a> <a id="302" class="Keyword">import</a> <a id="309" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>    <a id="326" class="Keyword">using</a> <a id="332" class="Symbol">(</a><a id="333" href="Agda.Builtin.Nat.html#97" class="Datatype">ℕ</a><a id="334" class="Symbol">)</a>
+<a id="336" class="Keyword">open</a> <a id="341" class="Keyword">import</a> <a id="348" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a>   <a id="365" class="Keyword">using</a> <a id="371" class="Symbol">(</a><a id="372" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a><a id="376" class="Symbol">)</a>
+<a id="378" class="Keyword">open</a> <a id="383" class="Keyword">import</a> <a id="390" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="407" class="Keyword">using</a> <a id="413" class="Symbol">(</a><a id="414" href="Agda.Builtin.String.html#165" class="Postulate">String</a><a id="420" class="Symbol">)</a>
 
-<a id="370" class="Comment">------------------------------------------------------------------------</a>
-<a id="443" class="Comment">-- Re-export the type</a>
+<a id="423" class="Comment">------------------------------------------------------------------------</a>
+<a id="496" class="Comment">-- Re-export the type</a>
 
-<a id="466" class="Keyword">import</a> <a id="473" href="Agda.Builtin.Char.html" class="Module">Agda.Builtin.Char</a> <a id="491" class="Symbol">as</a> <a id="494" class="Module">AgdaChar</a>
-<a id="503" class="Keyword">open</a> <a id="508" href="Agda.Builtin.Char.html" class="Module">AgdaChar</a> <a id="517" class="Keyword">using</a> <a id="523" class="Symbol">(</a><a id="524" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a><a id="528" class="Symbol">)</a> <a id="530" class="Keyword">public</a>
+<a id="519" class="Keyword">import</a> <a id="526" href="Agda.Builtin.Char.html" class="Module">Agda.Builtin.Char</a> <a id="544" class="Symbol">as</a> <a id="547" class="Module">AgdaChar</a>
+<a id="556" class="Keyword">open</a> <a id="561" href="Agda.Builtin.Char.html" class="Module">AgdaChar</a> <a id="570" class="Keyword">using</a> <a id="576" class="Symbol">(</a><a id="577" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a><a id="581" class="Symbol">)</a> <a id="583" class="Keyword">public</a>
 
-<a id="538" class="Comment">------------------------------------------------------------------------</a>
-<a id="611" class="Comment">-- Primitive operations</a>
+<a id="591" class="Comment">------------------------------------------------------------------------</a>
+<a id="664" class="Comment">-- Primitive operations</a>
 
-<a id="636" class="Keyword">open</a> <a id="641" href="Agda.Builtin.Char.html" class="Module">AgdaChar</a>
-<a id="650" class="Keyword">open</a> <a id="655" class="Keyword">import</a> <a id="662" href="Agda.Builtin.String.html" class="Module">Agda.Builtin.String</a> <a id="682" class="Keyword">using</a> <a id="688" class="Symbol">(</a><a id="689" href="Agda.Builtin.String.html#399" class="Primitive">primShowChar</a><a id="701" class="Symbol">)</a>
+<a id="689" class="Keyword">open</a> <a id="694" href="Agda.Builtin.Char.html" class="Module">AgdaChar</a>
 
 <a id="show"></a><a id="704" href="Data.Char.Base.html#704" class="Function">show</a> <a id="709" class="Symbol">:</a> <a id="711" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="716" class="Symbol">→</a> <a id="718" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
 <a id="725" href="Data.Char.Base.html#704" class="Function">show</a> <a id="730" class="Symbol">=</a> <a id="732" href="Agda.Builtin.String.html#399" class="Primitive">primShowChar</a>

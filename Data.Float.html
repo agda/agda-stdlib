@@ -7,24 +7,21 @@
 
 <a id="190" class="Keyword">module</a> <a id="197" href="Data.Float.html" class="Module">Data.Float</a> <a id="208" class="Keyword">where</a>
 
-<a id="215" class="Keyword">open</a> <a id="220" class="Keyword">import</a> <a id="227" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a> <a id="242" class="Keyword">using</a> <a id="248" class="Symbol">(</a><a id="249" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a><a id="253" class="Symbol">;</a> <a id="255" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor">false</a><a id="260" class="Symbol">;</a> <a id="262" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor">true</a><a id="266" class="Symbol">)</a>
-<a id="268" class="Keyword">open</a> <a id="273" class="Keyword">import</a> <a id="280" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a>
-<a id="307" class="Keyword">open</a> <a id="312" class="Keyword">import</a> <a id="319" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
-<a id="336" class="Keyword">open</a> <a id="341" class="Keyword">import</a> <a id="348" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="386" class="Symbol">as</a> <a id="389" class="Module">PropEq</a> <a id="396" class="Keyword">using</a> <a id="402" class="Symbol">(</a><a id="403" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a><a id="406" class="Symbol">)</a>
-<a id="408" class="Keyword">open</a> <a id="413" class="Keyword">import</a> <a id="420" href="Relation.Binary.PropositionalEquality.TrustMe.html" class="Module">Relation.Binary.PropositionalEquality.TrustMe</a>
-<a id="466" class="Keyword">open</a> <a id="471" class="Keyword">import</a> <a id="478" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="495" class="Keyword">using</a> <a id="501" class="Symbol">(</a><a id="502" href="Agda.Builtin.String.html#165" class="Postulate">String</a><a id="508" class="Symbol">)</a>
+<a id="215" class="Keyword">open</a> <a id="220" class="Keyword">import</a> <a id="227" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="244" class="Keyword">using</a> <a id="250" class="Symbol">(</a><a id="251" href="Agda.Builtin.String.html#165" class="Postulate">String</a><a id="257" class="Symbol">)</a>
 
-<a id="511" class="Keyword">open</a> <a id="516" class="Keyword">import</a> <a id="523" href="Agda.Builtin.Float.html" class="Module">Agda.Builtin.Float</a> <a id="542" class="Keyword">public</a>
-  <a id="551" class="Keyword">using</a> <a id="557" class="Symbol">(</a> <a id="559" href="Agda.Builtin.Float.html#194" class="Postulate">Float</a><a id="564" class="Symbol">;</a> <a id="566" href="Agda.Builtin.Float.html#247" class="Primitive">primFloatEquality</a><a id="583" class="Symbol">;</a> <a id="585" href="Agda.Builtin.Float.html#1153" class="Primitive">primShowFloat</a> <a id="599" class="Symbol">)</a>
+<a id="260" class="Comment">------------------------------------------------------------------------</a>
+<a id="333" class="Comment">-- Re-export built-ins publically</a>
 
-<a id="show"></a><a id="602" href="Data.Float.html#602" class="Function">show</a> <a id="607" class="Symbol">:</a> <a id="609" href="Agda.Builtin.Float.html#194" class="Postulate">Float</a> <a id="615" class="Symbol">→</a> <a id="617" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
-<a id="624" href="Data.Float.html#602" class="Function">show</a> <a id="629" class="Symbol">=</a> <a id="631" href="Agda.Builtin.Float.html#1153" class="Primitive">primShowFloat</a>
+<a id="368" class="Keyword">open</a> <a id="373" class="Keyword">import</a> <a id="380" href="Agda.Builtin.Float.html" class="Module">Agda.Builtin.Float</a> <a id="399" class="Keyword">public</a>
+  <a id="408" class="Keyword">using</a>
+  <a id="416" class="Symbol">(</a> <a id="418" href="Agda.Builtin.Float.html#194" class="Postulate">Float</a>
+  <a id="426" class="Symbol">;</a> <a id="428" href="Agda.Builtin.Float.html#247" class="Primitive">primFloatEquality</a>
+  <a id="448" class="Symbol">;</a> <a id="450" href="Agda.Builtin.Float.html#1153" class="Primitive">primShowFloat</a>
+  <a id="466" class="Symbol">)</a>
 
-<a id="646" class="Keyword">infix</a> <a id="652" class="Number">4</a> <a id="654" href="Data.Float.html#659" class="Function Operator">_≟_</a>
+<a id="469" class="Comment">------------------------------------------------------------------------</a>
+<a id="542" class="Comment">-- Operations</a>
 
-<a id="_≟_"></a><a id="659" href="Data.Float.html#659" class="Function Operator">_≟_</a> <a id="663" class="Symbol">:</a> <a id="665" class="Symbol">(</a><a id="666" href="Data.Float.html#666" class="Bound">x</a> <a id="668" href="Data.Float.html#668" class="Bound">y</a> <a id="670" class="Symbol">:</a> <a id="672" href="Agda.Builtin.Float.html#194" class="Postulate">Float</a><a id="677" class="Symbol">)</a> <a id="679" class="Symbol">→</a> <a id="681" href="Relation.Nullary.html#534" class="Datatype">Dec</a> <a id="685" class="Symbol">(</a><a id="686" href="Data.Float.html#666" class="Bound">x</a> <a id="688" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">≡</a> <a id="690" href="Data.Float.html#668" class="Bound">y</a><a id="691" class="Symbol">)</a>
-<a id="693" href="Data.Float.html#693" class="Bound">x</a> <a id="695" href="Data.Float.html#659" class="Function Operator">≟</a> <a id="697" href="Data.Float.html#697" class="Bound">y</a> <a id="699" class="Keyword">with</a> <a id="704" href="Agda.Builtin.Float.html#247" class="Primitive">primFloatEquality</a> <a id="722" href="Data.Float.html#693" class="Bound">x</a> <a id="724" href="Data.Float.html#697" class="Bound">y</a>
-<a id="726" class="Symbol">...</a> <a id="730" class="Symbol">|</a> <a id="732" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor">true</a>  <a id="738" class="Symbol">=</a> <a id="740" href="Relation.Nullary.html#570" class="InductiveConstructor">yes</a> <a id="744" href="Relation.Binary.PropositionalEquality.TrustMe.html#518" class="Function">trustMe</a>
-<a id="752" class="Symbol">...</a> <a id="756" class="Symbol">|</a> <a id="758" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor">false</a> <a id="764" class="Symbol">=</a> <a id="766" href="Relation.Nullary.html#597" class="InductiveConstructor">no</a> <a id="769" href="Data.Float.html#796" class="Postulate">whatever</a>
-  <a id="780" class="Keyword">where</a> <a id="786" class="Keyword">postulate</a> <a id="796" href="Data.Float.html#796" class="Postulate">whatever</a> <a id="805" class="Symbol">:</a> <a id="807" class="Symbol">_</a>
+<a id="show"></a><a id="557" href="Data.Float.html#557" class="Function">show</a> <a id="562" class="Symbol">:</a> <a id="564" href="Agda.Builtin.Float.html#194" class="Postulate">Float</a> <a id="570" class="Symbol">→</a> <a id="572" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
+<a id="579" href="Data.Float.html#557" class="Function">show</a> <a id="584" class="Symbol">=</a> <a id="586" href="Agda.Builtin.Float.html#1153" class="Primitive">primShowFloat</a>
 </pre></body></html>
