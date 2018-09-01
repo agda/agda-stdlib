@@ -19,7 +19,12 @@ import Data.DifferenceList as DiffList
 open import Function
 
 open IsStrictTotalOrder isStrictTotalOrder
-open import Data.AVL.Key Key isStrictTotalOrder public
+open import Data.AVL.Key Key public
+import Data.AVL.Key.Relation.StrictOrder Key _<_ as LT
+open LT using (_<⁺_; _<_<_) public
+open IsStrictTotalOrder (LT.<⁺-isStrictTotalOrder isStrictTotalOrder)
+  renaming (trans to trans⁺) using ()
+  public
 open import Data.AVL.Height public
 
 K&_ : ∀ {v} (Value : Key → Set v) → Set (k ⊔ v)
@@ -79,11 +84,11 @@ module _ {v} {V : Key → Set v} where
   -- worst-case time complexity of the operations below (up to Θ).
 
   castˡ : ∀ {l m u h} → l <⁺ m → Tree V m u h → Tree V l u h
-  castˡ {l} l<m (leaf m<u)         = leaf (trans⁺ l l<m m<u)
+  castˡ {l} l<m (leaf m<u)         = leaf (trans⁺ {l} l<m m<u)
   castˡ     l<m (node k mk ku bal) = node k (castˡ l<m mk) ku bal
 
   castʳ : ∀ {l m u h} → Tree V l m h → m <⁺ u → Tree V l u h
-  castʳ {l} (leaf l<m)         m<u = leaf (trans⁺ l l<m m<u)
+  castʳ {l} (leaf l<m)         m<u = leaf (trans⁺ {l} l<m m<u)
   castʳ     (node k lk km bal) m<u = node k lk (castʳ km m<u) bal
 
   -- Various constant-time functions which construct trees out of
