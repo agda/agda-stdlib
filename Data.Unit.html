@@ -40,7 +40,7 @@
 <a id="setoid"></a><a id="834" href="Data.Unit.html#834" class="Function">setoid</a> <a id="841" class="Symbol">:</a> <a id="843" href="Relation.Binary.html#1943" class="Record">Setoid</a> <a id="850" class="Symbol">_</a> <a id="852" class="Symbol">_</a>
 <a id="854" href="Data.Unit.html#834" class="Function">setoid</a> <a id="861" class="Symbol">=</a> <a id="863" href="Relation.Binary.PropositionalEquality.html#1459" class="Function">PropEq.setoid</a> <a id="877" href="Agda.Builtin.Unit.html#69" class="Record">⊤</a>
 
-<a id="decTotalOrder"></a><a id="880" href="Data.Unit.html#880" class="Function">decTotalOrder</a> <a id="894" class="Symbol">:</a> <a id="896" href="Relation.Binary.html#9408" class="Record">DecTotalOrder</a> <a id="910" class="Symbol">_</a> <a id="912" class="Symbol">_</a> <a id="914" class="Symbol">_</a>
+<a id="decTotalOrder"></a><a id="880" href="Data.Unit.html#880" class="Function">decTotalOrder</a> <a id="894" class="Symbol">:</a> <a id="896" href="Relation.Binary.html#9532" class="Record">DecTotalOrder</a> <a id="910" class="Symbol">_</a> <a id="912" class="Symbol">_</a> <a id="914" class="Symbol">_</a>
 <a id="916" href="Data.Unit.html#880" class="Function">decTotalOrder</a> <a id="930" class="Symbol">=</a> <a id="932" class="Keyword">record</a>
   <a id="941" class="Symbol">{</a> <a id="943" class="Field">Carrier</a>         <a id="959" class="Symbol">=</a> <a id="961" href="Agda.Builtin.Unit.html#69" class="Record">⊤</a>
   <a id="965" class="Symbol">;</a> <a id="967" class="Field Operator">_≈_</a>             <a id="983" class="Symbol">=</a> <a id="985" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a>
@@ -66,8 +66,8 @@
   <a id="1497" href="Data.Unit.html#1463" class="Function">antisym</a> <a id="1505" class="Symbol">_</a> <a id="1507" class="Symbol">_</a> <a id="1509" class="Symbol">=</a> <a id="1511" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor">refl</a>
 
 <a id="decSetoid"></a><a id="1517" href="Data.Unit.html#1517" class="Function">decSetoid</a> <a id="1527" class="Symbol">:</a> <a id="1529" href="Relation.Binary.html#3012" class="Record">DecSetoid</a> <a id="1539" class="Symbol">_</a> <a id="1541" class="Symbol">_</a>
-<a id="1543" href="Data.Unit.html#1517" class="Function">decSetoid</a> <a id="1553" class="Symbol">=</a> <a id="1555" href="Relation.Binary.html#9907" class="Function">DecTotalOrder.Eq.decSetoid</a> <a id="1582" href="Data.Unit.html#880" class="Function">decTotalOrder</a>
+<a id="1543" href="Data.Unit.html#1517" class="Function">decSetoid</a> <a id="1553" class="Symbol">=</a> <a id="1555" href="Relation.Binary.html#10031" class="Function">DecTotalOrder.Eq.decSetoid</a> <a id="1582" href="Data.Unit.html#880" class="Function">decTotalOrder</a>
 
 <a id="poset"></a><a id="1597" href="Data.Unit.html#1597" class="Function">poset</a> <a id="1603" class="Symbol">:</a> <a id="1605" href="Relation.Binary.html#3828" class="Record">Poset</a> <a id="1611" class="Symbol">_</a> <a id="1613" class="Symbol">_</a> <a id="1615" class="Symbol">_</a>
-<a id="1617" href="Data.Unit.html#1597" class="Function">poset</a> <a id="1623" class="Symbol">=</a> <a id="1625" href="Relation.Binary.html#8617" class="Function">DecTotalOrder.poset</a> <a id="1645" href="Data.Unit.html#880" class="Function">decTotalOrder</a>
+<a id="1617" href="Data.Unit.html#1597" class="Function">poset</a> <a id="1623" class="Symbol">=</a> <a id="1625" href="Relation.Binary.html#8741" class="Function">DecTotalOrder.poset</a> <a id="1645" href="Data.Unit.html#880" class="Function">decTotalOrder</a>
 </pre></body></html>
