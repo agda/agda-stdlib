@@ -291,6 +291,13 @@ anticipated any time soon, they may eventually be removed in some future release
 Other minor additions
 ---------------------
 
+* Added new records to `Algebra`:
+  ```agda
+  record RawSemigroup c ℓ : Set (suc (c ⊔ ℓ))
+  record RawGroup     c ℓ : Set (suc (c ⊔ ℓ))
+  record RawSemiring  c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
 * Added new function to `Category.Monad.Indexed`:
   ```agda
   RawIMonadT : (T : IFun I f → IFun I f) → Set (i ⊔ suc f)
