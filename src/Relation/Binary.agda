@@ -217,6 +217,12 @@ record IsStrictPartialOrder {a ℓ₁ ℓ₂} {A : Set a}
   asym : Asymmetric _<_
   asym {x} {y} = trans∧irr⟶asym Eq.refl trans irrefl {x = x} {y}
 
+  <-respʳ-≈ : _<_ Respectsʳ _≈_
+  <-respʳ-≈ = proj₁ <-resp-≈
+
+  <-respˡ-≈ : _<_ Respectsˡ _≈_
+  <-respˡ-≈ = proj₂ <-resp-≈
+
   asymmetric = asym
   {-# WARNING_ON_USAGE asymmetric
   "Warning: asymmetric was deprecated in v0.16.
