@@ -291,6 +291,11 @@ anticipated any time soon, they may eventually be removed in some future release
 Other minor additions
 ---------------------
 
+* Added a few more order theoretic definitions to `Relation.Binary.Lattice`,
+  including distributive lattice, Heyting algebra, and Boolean algebra.
+  Also added some properties to `Relation.Binary.Properties.DistributiveLattice`
+  and `Relation.Binary.Properties.HeytingAlgebra`.
+
 * Added new records to `Algebra`:
   ```agda
   record RawSemigroup c ℓ : Set (suc (c ⊔ ℓ))
