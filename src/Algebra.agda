@@ -16,6 +16,14 @@ open import Level
 ------------------------------------------------------------------------
 -- Semigroups
 
+record RawSemigroup c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+
 record Semigroup c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
   infix  4 _≈_
@@ -26,6 +34,28 @@ record Semigroup c ℓ : Set (suc (c ⊔ ℓ)) where
     isSemigroup : IsSemigroup _≈_ _∙_
 
   open IsSemigroup isSemigroup public
+
+  rawSemigroup : RawSemigroup _ _
+  rawSemigroup = record
+    { _≈_ = _≈_
+    ; _∙_ = _∙_
+    }
+
+record Band c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    isBand  : IsBand _≈_ _∙_
+
+  open IsBand isBand public
+
+  semigroup : Semigroup c ℓ
+  semigroup = record { isSemigroup = isSemigroup }
+
+  open Semigroup semigroup public using (rawSemigroup)
 
 ------------------------------------------------------------------------
 -- Monoids
@@ -101,6 +131,17 @@ record IdempotentCommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
 ------------------------------------------------------------------------
 -- Groups
 
+record RawGroup c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 _⁻¹
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    ε       : Carrier
+    _⁻¹     : Op₁ Carrier
+
 record Group c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
   infixl 7 _∙_
@@ -114,6 +155,14 @@ record Group c ℓ : Set (suc (c ⊔ ℓ)) where
     isGroup : IsGroup _≈_ _∙_ ε _⁻¹
 
   open IsGroup isGroup public
+
+  rawGroup : RawGroup _ _
+  rawGroup = record
+    { _≈_ = _≈_
+    ; _∙_ = _∙_
+    ; ε   = ε
+    ; _⁻¹ = _⁻¹
+    }
 
   monoid : Monoid _ _
   monoid = record { isMonoid = isMonoid }
@@ -137,7 +186,8 @@ record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
   group : Group _ _
   group = record { isGroup = isGroup }
 
-  open Group group public using (semigroup; monoid; rawMonoid)
+  open Group group public
+    using (semigroup; monoid; rawMonoid; rawGroup)
 
   commutativeMonoid : CommutativeMonoid _ _
   commutativeMonoid =
@@ -145,6 +195,18 @@ record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
 
 ------------------------------------------------------------------------
 -- Various kinds of semirings
+
+record RawSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier    : Set c
+    _≈_        : Rel Carrier ℓ
+    _+_        : Op₂ Carrier
+    _*_        : Op₂ Carrier
+    0#         : Carrier
+    1#         : Carrier
 
 record NearSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
@@ -249,6 +311,15 @@ record Semiring c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsSemiring isSemiring public
 
+  rawSemiring : RawSemiring _ _
+  rawSemiring = record
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; 0#  = 0#
+    ; 1#  = 1#
+    }
+
   semiringWithoutAnnihilatingZero : SemiringWithoutAnnihilatingZero _ _
   semiringWithoutAnnihilatingZero = record
     { isSemiringWithoutAnnihilatingZero =
@@ -320,6 +391,7 @@ record CommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
                ; *-semigroup; *-rawMonoid; *-monoid
                ; nearSemiring; semiringWithoutOne
                ; semiringWithoutAnnihilatingZero
+               ; rawSemiring
                )
 
   *-commutativeMonoid : CommutativeMonoid _ _
@@ -425,7 +497,23 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
                )
 
 ------------------------------------------------------------------------
--- (Distributive) lattices and boolean algebras
+-- Lattices and boolean algebras
+
+record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixr 7 _∧_
+  infix  4 _≈_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ
+    _∧_           : Op₂ Carrier
+    isSemilattice : IsSemilattice _≈_ _∧_
+
+  open IsSemilattice isSemilattice public
+
+  band : Band c ℓ
+  band = record { isBand = isBand }
+
+  open Band band public using (semigroup)
 
 record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∧_

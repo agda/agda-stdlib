@@ -9,7 +9,7 @@ module Data.List.Relation.Pointwise where
 open import Function
 open import Function.Inverse using (Inverse)
 open import Data.Product hiding (map)
-open import Data.List.Base hiding (map)
+open import Data.List.Base hiding (map ; head ; tail)
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.Nat using (ℕ; zero; suc)
 open import Level
@@ -249,7 +249,25 @@ module _ {a} {A : Set a} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 0.15
+
 Rel    = Pointwise
+{-# WARNING_ON_USAGE Rel
+"Warning: Rel was deprecated in v0.15.
+Please use Pointwise instead."
+#-}
 Rel≡⇒≡ = Pointwise-≡⇒≡
+{-# WARNING_ON_USAGE Rel≡⇒≡
+"Warning: Rel≡⇒≡ was deprecated in v0.15.
+Please use Pointwise-≡⇒≡ instead."
+#-}
 ≡⇒Rel≡ = ≡⇒Pointwise-≡
+{-# WARNING_ON_USAGE ≡⇒Rel≡
+"Warning: ≡⇒Rel≡ was deprecated in v0.15.
+Please use ≡⇒Pointwise-≡ instead."
+#-}
 Rel↔≡  = Pointwise-≡↔≡
+{-# WARNING_ON_USAGE Rel↔≡
+"Warning: Rel↔≡ was deprecated in v0.15.
+Please use Pointwise-≡↔≡ instead."
+#-}

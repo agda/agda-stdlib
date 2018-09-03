@@ -22,8 +22,8 @@ pred n = case n of λ
   ; (suc n) → n
   }
 
-from-just : ∀ {a} {A : Set a} (x : Maybe A) → From-just A x
-from-just x = case x return From-just _ of λ
+from-just : ∀ {a} {A : Set a} (x : Maybe A) → From-just x
+from-just x = case x return From-just of λ
   { (just x) → x
   ; nothing  → _
   }

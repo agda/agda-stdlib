@@ -6,4 +6,3 @@
 
 -- Note that core modules are not included.
 
-module Everything where

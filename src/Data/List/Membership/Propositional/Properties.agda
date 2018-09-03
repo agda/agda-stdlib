@@ -15,13 +15,6 @@ open import Algebra.FunctionProperties using (Op₂; Selective)
 open import Category.Monad using (RawMonad)
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Fin using (Fin)
-open import Function
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Equivalence using (module Equivalence)
-open import Function.Injection using (Injection; Injective; _↣_)
-open import Function.Inverse as Inv using (_↔_; module Inverse)
-import Function.Related as Related
-open import Function.Related.TypeIsomorphisms
 open import Data.List as List
 open import Data.List.Any as Any using (Any; here; there)
 open import Data.List.Any.Properties
@@ -33,8 +26,16 @@ open import Data.List.Categorical using (monad)
 open import Data.Nat using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤?_)
 open import Data.Nat.Properties
 open import Data.Product hiding (map)
+open import Data.Product.Relation.Pointwise.NonDependent using (_×-cong_)
 import Data.Product.Relation.Pointwise.Dependent as Σ
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Function
+open import Function.Equality using (_⟨$⟩_)
+open import Function.Equivalence using (module Equivalence)
+open import Function.Injection using (Injection; Injective; _↣_)
+open import Function.Inverse as Inv using (_↔_; module Inverse)
+import Function.Related as Related
+open import Function.Related.TypeIsomorphisms
 open import Relation.Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
@@ -44,7 +45,6 @@ open import Relation.Nullary using (¬_; Dec; yes; no)
 open import Relation.Nullary.Negation
 
 private
-  module ×⊎ {k ℓ} = CommutativeSemiring (×⊎-CommutativeSemiring k ℓ)
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
 
 ------------------------------------------------------------------------
@@ -111,6 +111,13 @@ module _ {a} (A : Set a) {v : A} where
   ∈-++⁻ : ∀ xs {ys} → v ∈ xs ++ ys → (v ∈ xs) ⊎ (v ∈ ys)
   ∈-++⁻ = Membershipₛ.∈-++⁻ (P.setoid A)
 
+  ∈-insert : ∀ xs {ys} → v ∈ xs ++ [ v ] ++ ys
+  ∈-insert xs = Membershipₛ.∈-insert (P.setoid A) xs refl
+
+  ∈-∃++ : ∀ {xs} → v ∈ xs → ∃₂ λ ys zs → xs ≡ ys ++ [ v ] ++ zs
+  ∈-∃++ v∈xs with Membershipₛ.∈-∃++ (P.setoid A) v∈xs
+  ... | ys , zs , _ , refl , eq = ys , zs , ≋⇒≡ eq
+
 ------------------------------------------------------------------------
 -- concat
 
@@ -133,7 +140,7 @@ module _ {a} {A : Set a} {v : A} where
   concat-∈↔ : ∀ {xss : List (List A)} →
               (∃ λ xs → v ∈ xs × xs ∈ xss) ↔ v ∈ concat xss
   concat-∈↔ {xss} =
-    (∃ λ xs → v ∈ xs × xs ∈ xss)  ↔⟨ Σ.cong Inv.id $ ×⊎.*-comm _ _ ⟩
+    (∃ λ xs → v ∈ xs × xs ∈ xss)  ↔⟨ Σ.cong Inv.id $ ×-comm _ _ ⟩
     (∃ λ xs → xs ∈ xss × v ∈ xs)  ↔⟨ Any↔ ⟩
     Any (Any (v ≡_)) xss          ↔⟨ concat↔ ⟩
     v ∈ concat xss                ∎
@@ -196,7 +203,7 @@ module _ {ℓ} {A B : Set ℓ} where
          (∃₂ λ f x → f ∈ fs × x ∈ xs × y ≡ f x) ↔ y ∈ (fs ⊛ xs)
   ⊛-∈↔ fs {xs} {y} =
     (∃₂ λ f x → f ∈ fs × x ∈ xs × y ≡ f x)       ↔⟨ Σ.cong Inv.id (∃∃↔∃∃ _) ⟩
-    (∃ λ f → f ∈ fs × ∃ λ x → x ∈ xs × y ≡ f x)  ↔⟨ Σ.cong Inv.id ((_ ∎) ⟨ ×⊎.*-cong ⟩ Any↔) ⟩
+    (∃ λ f → f ∈ fs × ∃ λ x → x ∈ xs × y ≡ f x)  ↔⟨ Σ.cong Inv.id ((_ ∎) ⟨ _×-cong_ ⟩ Any↔) ⟩
     (∃ λ f → f ∈ fs × Any (_≡_ y ∘ f) xs)        ↔⟨ Any↔ ⟩
     Any (λ f → Any (_≡_ y ∘ f) xs) fs            ↔⟨ ⊛↔ ⟩
     y ∈ (fs ⊛ xs)                                ∎
@@ -211,21 +218,10 @@ module _ {ℓ} {A B : Set ℓ} where
          (x ∈ xs × y ∈ ys) ↔ (x , y) ∈ (xs ⊗ ys)
   ⊗-∈↔ {xs} {ys} {x} {y} =
     (x ∈ xs × y ∈ ys)             ↔⟨ ⊗↔′ ⟩
-    Any (x ≡_ ⟨×⟩ y ≡_) (xs ⊗ ys) ↔⟨ Any-cong helper (_ ∎) ⟩
+    Any (x ≡_ ⟨×⟩ y ≡_) (xs ⊗ ys) ↔⟨ Any-cong ×-≡×≡↔≡,≡ (_ ∎) ⟩
     (x , y) ∈ (xs ⊗ ys)           ∎
     where
     open Related.EquationalReasoning
-
-    helper : (p : A × B) → (x ≡ proj₁ p × y ≡ proj₂ p) ↔ (x , y) ≡ p
-    helper _ = record
-      { to         = P.→-to-⟶ (uncurry $ P.cong₂ _,_)
-      ; from       = P.→-to-⟶ < P.cong proj₁ , P.cong proj₂ >
-      ; inverse-of = record
-        { left-inverse-of  = λ _ → P.cong₂ _,_ (P.≡-irrelevance _ _)
-                                               (P.≡-irrelevance _ _)
-        ; right-inverse-of = λ _ → P.≡-irrelevance _ _
-        }
-      }
 
 ------------------------------------------------------------------------
 -- length
@@ -296,7 +292,7 @@ module _ {a} {A : Set a} where
 
       f′-injective′ : Injective {B = P.setoid A} (→-to-⟶ f′)
       f′-injective′ {j} {k} eq with i ≤? j | i ≤? k
-      ... | yes _   | yes _   = cong pred (f-inj eq)
+      ... | yes _   | yes _   = P.cong pred (f-inj eq)
       ... | yes i≤j | no  i≰k = contradiction (f-inj eq) (lemma i≤j i≰k)
       ... | no  i≰j | yes i≤k = contradiction (f-inj eq) (lemma i≤k i≰j ∘ sym)
       ... | no  _   | no  _   = f-inj eq
@@ -312,9 +308,8 @@ module _ {a} {A : Set a} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
-filter-∈ = ∈-filter⁺
+-- Version 0.15
 
--- Please use `filter` instead of `boolFilter`
 boolFilter-∈ : ∀ {a} {A : Set a} (p : A → Bool) (xs : List A) {x} →
            x ∈ xs → p x ≡ true → x ∈ boolFilter p xs
 boolFilter-∈ p []       ()          _
@@ -322,3 +317,16 @@ boolFilter-∈ p (x ∷ xs) (here refl) px≡true rewrite px≡true = here refl
 boolFilter-∈ p (y ∷ xs) (there pxs) px≡true with p y
 ... | true  = there (boolFilter-∈ p xs pxs px≡true)
 ... | false =        boolFilter-∈ p xs pxs px≡true
+{-# WARNING_ON_USAGE boolFilter-∈
+"Warning: boolFilter was deprecated in v0.15.
+Please use filter instead."
+#-}
+
+-- Version 0.16
+
+filter-∈ = ∈-filter⁺
+{-# WARNING_ON_USAGE filter-∈
+"Warning: filter-∈ was deprecated in v0.16.
+Please use ∈-filter⁺ instead."
+#-}
+

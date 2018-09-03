@@ -8,14 +8,14 @@ module README where
 -- Bradley Hardy Joachim Breitner, Samuel Bronson, Daniel Brown,
 -- James Chapman, Liang-Ting Chen, Matthew Daggitt, Dominique Devriese,
 -- Dan Doel, Érdi Gergő, Helmut Grohne, Simon Foster, Liyang Hu,
--- Patrik Jansson, Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov,
+-- Jason Hu, Patrik Jansson, Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov,
 -- Sergei Meshveliani, Eric Mertens, Darin Morrison, Guilhem Moulin,
 -- Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
 -- Andrés Sicard-Ramírez, Noam Zeilberger and some anonymous
 -- contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.5.3.
+-- This version of the library has been tested using Agda 2.5.4.
 
 -- Note that no guarantees are currently made about forwards or
 -- backwards compatibility, the library is still at an experimental
@@ -49,10 +49,15 @@ module README where
 -- • Category
 --     Category theory-inspired idioms used to structure functional
 --     programs (functors and monads, for instance).
+-- • Codata
+--     Coinductive data types and properties. There are two different
+--     approaches taken. The `Codata` folder contains the new more
+--     standard approach using sized types. The `Codata.Musical`
+--     folder contains modules using the old musical notation.
 -- • Coinduction
 --     Support for coinduction.
 -- • Data
---     Data types and properties about data types.
+--     Data types and properties.
 -- • Function
 --     Combinators and properties related to functions.
 -- • Foreign
@@ -69,8 +74,7 @@ module README where
 -- • Reflection
 --     Support for reflection.
 -- • Relation
---     Properties of and proofs about relations (mostly homogeneous
---     binary relations).
+--     Properties of and proofs about relations.
 -- • Size
 --     Sizes used by the sized types mechanism.
 -- • Strict
@@ -96,11 +100,15 @@ import Data.List     -- Lists.
 import Data.Maybe    -- The maybe type.
 import Data.Nat      -- Natural numbers.
 import Data.Product  -- Products.
-import Data.Stream   -- Streams.
 import Data.String   -- Strings.
 import Data.Sum      -- Disjoint sums.
 import Data.Unit     -- The unit type.
 import Data.Vec      -- Fixed-length vectors.
+
+-- • Some co-inductive data types
+
+import Codata.Stream -- Streams.
+import Codata.Colist -- Colists.
 
 -- • Some types used to structure computations
 
@@ -117,7 +125,7 @@ import Relation.Binary.PropositionalEquality
 import Relation.Binary.PreorderReasoning
 
 -- Solver for commutative ring or semiring equalities:
-import Algebra.RingSolver
+import Algebra.Solver.Ring
 
 -- • Properties of functions, sets and relations
 
@@ -290,13 +298,15 @@ import README.Function.Reasoning
 -- All library modules
 ------------------------------------------------------------------------
 
--- For short descriptions of every library module, see Everything:
+-- For short descriptions of every library module, see Everything;
+-- to exclude unsafe modules, see EverythingSafe:
 
 import Everything
+import EverythingSafe
 
--- Note that the Everything module is generated automatically. If you
--- have downloaded the library from its Git repository and want to
--- type check README then you can (try to) construct Everything by
+-- Note that the Everything* modules are generated automatically. If
+-- you have downloaded the library from its Git repository and want
+-- to type check README then you can (try to) construct Everything by
 -- running "cabal install && GenerateEverything".
 
 -- Note that all library sources are located under src or ffi. The

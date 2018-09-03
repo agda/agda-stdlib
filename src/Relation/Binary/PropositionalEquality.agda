@@ -184,14 +184,7 @@ extensionality-for-lower-levels a₂ b₂ ext f≡g =
 isPropositional : ∀ {a} → Set a → Set a
 isPropositional A = (a b : A) → a ≡ b
 
-IrrelevantPred : ∀ {a ℓ} {A : Set a} → Pred A ℓ → Set (ℓ ⊔ a)
-IrrelevantPred P = ∀ {x} → isPropositional (P x)
-
-IrrelevantRel : ∀ {a b ℓ} {A : Set a} {B : Set b} →
-                REL A B ℓ → Set (ℓ ⊔ a ⊔ b)
-IrrelevantRel _~_ = ∀ {x y} → isPropositional (x ~ y)
-
-≡-irrelevance : ∀ {a} {A : Set a} → IrrelevantRel (_≡_ {A = A})
+≡-irrelevance : ∀ {a} {A : Set a} → Irrelevant (_≡_ {A = A})
 ≡-irrelevance refl refl = refl
 
 module _ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) {a b : A} where
@@ -212,4 +205,10 @@ module _ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) {a b : A} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 0.15
+
 proof-irrelevance = ≡-irrelevance
+{-# WARNING_ON_USAGE proof-irrelevance
+"Warning: proof-irrelevance was deprecated in v0.15.
+Please use ≡-irrelevance instead."
+#-}

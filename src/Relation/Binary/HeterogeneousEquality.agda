@@ -132,9 +132,9 @@ icong-≡-subst-removable : ∀ {a b ℓ}
 icong-≡-subst-removable _ refl _ _ = refl
 
 ------------------------------------------------------------------------
--- (Heterogeneous) Proof irrelevance
+--Proof irrelevance
 
-≅-irrelevance : ∀ {ℓ} {A B : Set ℓ} → P.IrrelevantRel ((A → B → Set ℓ) ∋ λ a → a ≅_)
+≅-irrelevance : ∀ {ℓ} {A B : Set ℓ} → Irrelevant ((A → B → Set ℓ) ∋ λ a → a ≅_)
 ≅-irrelevance refl refl = refl
 
 module _ {ℓ} {A₁ A₂ A₃ A₄ : Set ℓ} {a₁ : A₁} {a₂ : A₂} {a₃ : A₃} {a₄ : A₄} where
@@ -309,4 +309,10 @@ inspect f x = [ refl ]
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 0.15
+
 proof-irrelevance = ≅-irrelevance
+{-# WARNING_ON_USAGE proof-irrelevance
+"Warning: proof-irrelevance was deprecated in v0.15.
+Please use ≅-irrelevance instead."
+#-}

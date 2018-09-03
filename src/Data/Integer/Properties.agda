@@ -9,8 +9,6 @@ module Data.Integer.Properties where
 open import Algebra
 import Algebra.Morphism as Morphism
 import Algebra.Properties.AbelianGroup
-import Algebra.RingSolver.Simple as Solver
-import Algebra.RingSolver.AlmostCommutativeRing as ACR
 open import Data.Integer renaming (suc to sucℤ)
 open import Data.Nat
   using (ℕ; suc; zero; _∸_; s≤s; z≤n; ≤-pred)
@@ -18,6 +16,7 @@ open import Data.Nat
   renaming (_+_ to _ℕ+_; _*_ to _ℕ*_;
     _<_ to _ℕ<_; _≥_ to _ℕ≥_; _≰_ to _ℕ≰_; _≤?_ to _ℕ≤?_)
 import Data.Nat.Properties as ℕₚ
+open import Data.Nat.Solver
 open import Data.Product using (proj₁; proj₂; _,_)
 open import Data.Sum using (inj₁; inj₂)
 open import Data.Sign as Sign using () renaming (_*_ to _𝕊*_)
@@ -33,8 +32,8 @@ open import Algebra.FunctionProperties (_≡_ {A = ℤ})
 open import Algebra.FunctionProperties.Consequences (setoid ℤ)
 open import Algebra.Structures (_≡_ {A = ℤ})
 open Morphism.Definitions ℤ ℕ _≡_
-open ℕₚ.SemiringSolver
 open ≡-Reasoning
+open +-*-Solver
 
 ------------------------------------------------------------------------
 -- Equality
@@ -420,7 +419,6 @@ private
                     := c :+ b :* (con 1 :+ c) :+
                        a :* (con 1 :+ (c :+ b :* (con 1 :+ c))))
             refl
-    where open ℕₚ.SemiringSolver
 
 *-assoc : Associative _*_
 *-assoc (+ zero) _ _ = refl
@@ -761,7 +759,7 @@ pos-distrib-* (suc x) (suc y) = refl
 n≤1+n : ∀ n → n ≤ (+ 1) + n
 n≤1+n n = ≤-step ≤-refl
 
-≤-irrelevance : IrrelevantRel _≤_
+≤-irrelevance : Irrelevant _≤_
 ≤-irrelevance -≤+       -≤+         = refl
 ≤-irrelevance (-≤- n≤m₁) (-≤- n≤m₂) = cong -≤- (ℕₚ.≤-irrelevance n≤m₁ n≤m₂)
 ≤-irrelevance (+≤+ n≤m₁) (+≤+ n≤m₂) = cong +≤+ (ℕₚ.≤-irrelevance n≤m₁ n≤m₂)
@@ -854,15 +852,11 @@ n≮n { -[1+ suc n ]} (-≤- n<n) =  contradiction n<n ℕₚ.1+n≰n
 ... | yes m≤n  = -≤- m≤n
 ... | no  m≰n' = contradiction (-≤- (ℕₚ.≰⇒> m≰n')) m≰n
 
-<-irrelevance : IrrelevantRel _<_
+<-irrelevance : Irrelevant _<_
 <-irrelevance = ≤-irrelevance
 
 ------------------------------------------------------------------------
 -- Modules for reasoning about integer number relations
-
--- A module for automatically solving propositional equivalences
-module RingSolver =
-  Solver (ACR.fromCommutativeRing +-*-commutativeRing) _≟_
 
 -- A module for reasoning about the _≤_ relation
 module ≤-Reasoning = POR ≤-poset hiding (_≈⟨_⟩_)
@@ -873,14 +867,60 @@ module ≤-Reasoning = POR ≤-poset hiding (_≈⟨_⟩_)
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- inverseˡ              = +-inverseˡ
--- inverseʳ              = +-inverseʳ
--- distribʳ              = *-distribʳ-+
--- isCommutativeSemiring = +-*-isCommutativeSemiring
--- commutativeRing       = +-*-commutativeRing
--- *-+-right-mono        = *-monoʳ-≤-pos
--- cancel-*-+-right-≤    = *-cancelʳ-≤-pos
--- cancel-*-right        = *-cancelʳ-≡
--- doubleNeg             = neg-involutive
--- -‿involutive          = neg-involutive
--- +-⊖-left-cancel       = +-cancelˡ-⊖
+-- Version 0.15
+
+inverseˡ = +-inverseˡ
+{-# WARNING_ON_USAGE inverseˡ
+"Warning: inverseˡ was deprecated in v0.15.
+Please use +-inverseˡ instead."
+#-}
+inverseʳ = +-inverseʳ
+{-# WARNING_ON_USAGE inverseʳ
+"Warning: inverseʳ was deprecated in v0.15.
+Please use +-inverseʳ instead."
+#-}
+distribʳ = *-distribʳ-+
+{-# WARNING_ON_USAGE distribʳ
+"Warning: distribʳ was deprecated in v0.15.
+Please use *-distribʳ-+ instead."
+#-}
+isCommutativeSemiring = +-*-isCommutativeSemiring
+{-# WARNING_ON_USAGE isCommutativeSemiring
+"Warning: isCommutativeSemiring was deprecated in v0.15.
+Please use +-*-isCommutativeSemiring instead."
+#-}
+commutativeRing = +-*-commutativeRing
+{-# WARNING_ON_USAGE commutativeRing
+"Warning: commutativeRing was deprecated in v0.15.
+Please use +-*-commutativeRing instead."
+#-}
+*-+-right-mono = *-monoʳ-≤-pos
+{-# WARNING_ON_USAGE *-+-right-mono
+"Warning: *-+-right-mono was deprecated in v0.15.
+Please use *-monoʳ-≤-pos instead."
+#-}
+cancel-*-+-right-≤ = *-cancelʳ-≤-pos
+{-# WARNING_ON_USAGE cancel-*-+-right-≤
+"Warning: cancel-*-+-right-≤ was deprecated in v0.15.
+Please use *-cancelʳ-≤-pos instead."
+#-}
+cancel-*-right = *-cancelʳ-≡
+{-# WARNING_ON_USAGE cancel-*-right
+"Warning: cancel-*-right was deprecated in v0.15.
+Please use *-cancelʳ-≡ instead."
+#-}
+doubleNeg = neg-involutive
+{-# WARNING_ON_USAGE doubleNeg
+"Warning: doubleNeg was deprecated in v0.15.
+Please use neg-involutive instead."
+#-}
+-‿involutive = neg-involutive
+{-# WARNING_ON_USAGE -‿involutive
+"Warning: -‿involutive was deprecated in v0.15.
+Please use neg-involutive instead."
+#-}
++-⊖-left-cancel = +-cancelˡ-⊖
+{-# WARNING_ON_USAGE +-⊖-left-cancel
+"Warning: +-⊖-left-cancel was deprecated in v0.15.
+Please use +-cancelˡ-⊖ instead."
+#-}

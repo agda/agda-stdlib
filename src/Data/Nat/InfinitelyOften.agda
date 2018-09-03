@@ -6,7 +6,7 @@
 
 module Data.Nat.InfinitelyOften where
 
-import Level
+open import Level using (0ℓ)
 open import Algebra
 open import Category.Monad
 open import Data.Empty
@@ -18,18 +18,18 @@ open import Data.Sum hiding (map)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary
 open import Relation.Nullary.Negation
-open import Relation.Unary using (_∪_; _⊆_)
-open RawMonad (¬¬-Monad {p = Level.zero})
+open import Relation.Unary using (Pred; _∪_; _⊆_)
+open RawMonad (¬¬-Monad {p = 0ℓ})
 
 -- Only true finitely often.
 
-Fin : (ℕ → Set) → Set
+Fin : ∀ {ℓ} → Pred ℕ ℓ → Set ℓ
 Fin P = ∃ λ i → ∀ j → i ≤ j → ¬ P j
 
 -- Fin is preserved by binary sums.
 
-_∪-Fin_ : ∀ {P Q} → Fin P → Fin Q → Fin (P ∪ Q)
-_∪-Fin_ {P} {Q} (i , ¬p) (j , ¬q) = (i ⊔ j , helper)
+_∪-Fin_ : ∀ {ℓp ℓq P Q} → Fin {ℓp} P → Fin {ℓq} Q → Fin (P ∪ Q)
+_∪-Fin_ {P = P} {Q} (i , ¬p) (j , ¬q) = (i ⊔ j , helper)
   where
   open ≤-Reasoning
 
@@ -46,7 +46,7 @@ _∪-Fin_ {P} {Q} (i , ¬p) (j , ¬q) = (i ⊔ j , helper)
 
 -- A non-constructive definition of "true infinitely often".
 
-Inf : (ℕ → Set) → Set
+Inf : ∀ {ℓ} → Pred ℕ ℓ → Set ℓ
 Inf P = ¬ Fin P
 
 -- Inf commutes with binary sums (in the double-negation monad).
@@ -59,14 +59,14 @@ commutes-with-∪ p∪q =
 
 -- Inf is functorial.
 
-map : ∀ {P Q} → P ⊆ Q → Inf P → Inf Q
+map : ∀ {ℓp ℓq P Q} → P ⊆ Q → Inf {ℓp} P → Inf {ℓq} Q
 map P⊆Q ¬fin = ¬fin ∘ Prod.map id (λ fin j i≤j → fin j i≤j ∘ P⊆Q)
 
 -- Inf is upwards closed.
 
-up : ∀ {P} n → Inf P → Inf (P ∘ _+_ n)
+up : ∀ {ℓ P} n → Inf {ℓ} P → Inf (P ∘ _+_ n)
 up     zero    = id
-up {P} (suc n) = up n ∘ up₁
+up {P = P} (suc n) = up n ∘ up₁
   where
   up₁ : Inf P → Inf (P ∘ suc)
   up₁ ¬fin (i , fin) = ¬fin (suc i , helper)
@@ -76,7 +76,7 @@ up {P} (suc n) = up n ∘ up₁
 
 -- A witness.
 
-witness : ∀ {P} → Inf P → ¬ ¬ ∃ P
+witness : ∀ {ℓ P} → Inf {ℓ} P → ¬ ¬ ∃ P
 witness ¬fin ¬p = ¬fin (0 , λ i _ Pi → ¬p (i , Pi))
 
 -- Two different witnesses.

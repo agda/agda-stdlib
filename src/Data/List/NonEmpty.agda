@@ -12,7 +12,7 @@ open import Data.Bool.Properties
 open import Data.List as List using (List; []; _∷_)
 open import Data.Maybe.Base using (Maybe ; nothing; just)
 open import Data.Nat as Nat
-open import Data.Product using (∃; proj₁; proj₂; _,_; ,_)
+open import Data.Product using (_×_; ∃; proj₁; proj₂; _,_; -,_)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Unit
 open import Data.Vec as Vec using (Vec; []; _∷_)
@@ -36,16 +36,23 @@ record List⁺ {a} (A : Set a) : Set a where
 
 open List⁺ public
 
-[_] : ∀ {a} {A : Set a} → A → List⁺ A
-[ x ] = x ∷ []
+-- Basic combinators
 
-infixr 5 _∷⁺_
+module _ {a} {A : Set a} where
 
-_∷⁺_ : ∀ {a} {A : Set a} → A → List⁺ A → List⁺ A
-x ∷⁺ y ∷ xs = x ∷ y ∷ xs
+  uncons : List⁺ A → A × List A
+  uncons (hd ∷ tl) = hd , tl
 
-length : ∀ {a} {A : Set a} → List⁺ A → ℕ
-length (x ∷ xs) = suc (List.length xs)
+  [_] : A → List⁺ A
+  [ x ] = x ∷ []
+
+  infixr 5 _∷⁺_
+
+  _∷⁺_ : A → List⁺ A → List⁺ A
+  x ∷⁺ y ∷ xs = x ∷ y ∷ xs
+
+  length : List⁺ A → ℕ
+  length (x ∷ xs) = suc (List.length xs)
 
 ------------------------------------------------------------------------
 -- Conversion
@@ -120,14 +127,11 @@ xs ++⁺ ys = List.foldr _∷⁺_ ys xs
 concat : ∀ {a} {A : Set a} → List⁺ (List⁺ A) → List⁺ A
 concat (xs ∷ xss) = xs ⁺++ List.concat (List.map toList xss)
 
-monad : ∀ {f} → RawMonad (List⁺ {a = f})
-monad = record
-  { return = [_]
-  ; _>>=_  = λ xs f → concat (map f xs)
-  }
+concatMap : ∀ {a b} {A : Set a} {B : Set b} → (A → List⁺ B) → List⁺ A → List⁺ B
+concatMap f = concat ∘′ map f
 
 reverse : ∀ {a} {A : Set a} → List⁺ A → List⁺ A
-reverse = lift (,_ ∘′ Vec.reverse)
+reverse = lift (-,_ ∘′ Vec.reverse)
 
 -- Snoc.
 

@@ -19,7 +19,7 @@ Const I = λ _ _ → I
 -- The universally true relation.
 
 Always : ∀ {a ℓ} {A : Set a} → Rel A ℓ
-Always = Const (Lift ⊤)
+Always = Const (Lift _ ⊤)
 
 Always-setoid : ∀ {a ℓ} (A : Set a) → Setoid a ℓ
 Always-setoid A = record
@@ -31,4 +31,4 @@ Always-setoid A = record
 -- The universally false relation.
 
 Never : ∀ {a ℓ} {A : Set a} → Rel A ℓ
-Never = Const (Lift ⊥)
+Never = Const (Lift _ ⊥)

@@ -23,8 +23,8 @@ open import Relation.Unary
 -- Ordinary induction
 
 Rec : ∀ ℓ → RecStruct ℕ ℓ ℓ
-Rec _ P zero    = Lift ⊤
-Rec _ P (suc n) = P n
+Rec ℓ P zero    = Lift ℓ ⊤
+Rec ℓ P (suc n) = P n
 
 recBuilder : ∀ {ℓ} → RecursorBuilder (Rec ℓ)
 recBuilder P f zero    = _
@@ -37,8 +37,8 @@ rec = build recBuilder
 -- Complete induction
 
 CRec : ∀ ℓ → RecStruct ℕ ℓ ℓ
-CRec _ P zero    = Lift ⊤
-CRec _ P (suc n) = P n × CRec _ P n
+CRec ℓ P zero    = Lift ℓ ⊤
+CRec ℓ P (suc n) = P n × CRec ℓ P n
 
 cRecBuilder : ∀ {ℓ} → RecursorBuilder (CRec ℓ)
 cRecBuilder P f zero    = _
@@ -259,12 +259,50 @@ private
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 0.15
+
 rec-builder      = recBuilder
+{-# WARNING_ON_USAGE rec-builder
+"Warning: rec-builder was deprecated in v0.15.
+Please use recBuilder instead."
+#-}
 cRec-builder     = cRecBuilder
+{-# WARNING_ON_USAGE cRec-builder
+"Warning: cRec-builder was deprecated in v0.15.
+Please use cRecBuilder instead."
+#-}
 <′-rec-builder   = <′-recBuilder
+{-# WARNING_ON_USAGE <′-rec-builder
+"Warning: <′-rec-builder was deprecated in v0.15.
+Please use <′-recBuilder instead."
+#-}
 <-rec-builder    = <-recBuilder
+{-# WARNING_ON_USAGE <-rec-builder
+"Warning: <-rec-builder was deprecated in v0.15.
+Please use <-recBuilder instead."
+#-}
 ≺-rec-builder    = ≺-recBuilder
+{-# WARNING_ON_USAGE ≺-rec-builder
+"Warning: ≺-rec-builder was deprecated in v0.15.
+Please use ≺-recBuilder instead."
+#-}
 <′-well-founded  = <′-wellFounded
+{-# WARNING_ON_USAGE <′-well-founded
+"Warning: <′-well-founded was deprecated in v0.15.
+Please use <′-wellFounded instead."
+#-}
 <′-well-founded′ = <′-wellFounded′
+{-# WARNING_ON_USAGE <′-well-founded′
+"Warning: <′-well-founded′ was deprecated in v0.15.
+Please use <′-wellFounded′ instead."
+#-}
 <-well-founded   = <-wellFounded
+{-# WARNING_ON_USAGE <-well-founded
+"Warning: <-well-founded was deprecated in v0.15.
+Please use <-wellFounded instead."
+#-}
 ≺-well-founded   = ≺-wellFounded
+{-# WARNING_ON_USAGE ≺-well-founded
+"Warning: ≺-well-founded was deprecated in v0.15.
+Please use ≺-wellFounded instead."
+#-}

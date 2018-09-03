@@ -35,11 +35,11 @@ data Key⁺ : Set k where
 infix 4 _<⁺_
 
 _<⁺_ : Key⁺ → Key⁺ → Set r
-⊥⁺    <⁺ [ _ ] = Lift ⊤
-⊥⁺    <⁺ ⊤⁺    = Lift ⊤
+⊥⁺    <⁺ [ _ ] = Lift r ⊤
+⊥⁺    <⁺ ⊤⁺    = Lift r ⊤
 [ x ] <⁺ [ y ] = x < y
-[ _ ] <⁺ ⊤⁺    = Lift ⊤
-_     <⁺ _     = Lift ⊥
+[ _ ] <⁺ ⊤⁺    = Lift r ⊤
+_     <⁺ _     = Lift r ⊥
 
 -- A pair of ordering constraints.
 

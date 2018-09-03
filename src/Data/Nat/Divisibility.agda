@@ -6,20 +6,24 @@
 
 module Data.Nat.Divisibility where
 
+open import Algebra
 open import Data.Nat as Nat
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
+open import Data.Nat.Solver
 open import Data.Fin using (Fin; zero; suc; toℕ)
 import Data.Fin.Properties as FP
-open SemiringSolver
-open import Algebra
 open import Data.Product
+open import Function
+open import Function.Equivalence using (_⇔_; equivalence)
 open import Relation.Nullary
+import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
 import Relation.Binary.PartialOrderReasoning as PartialOrderReasoning
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)
-open import Function
+
+open +-*-Solver
 
 ------------------------------------------------------------------------
 -- m ∣ n is inhabited iff m divides n. Some sources, like Hardy and
@@ -179,12 +183,52 @@ module _ where
       q * (i * (suc k))  ≡⟨ sym (*-assoc q i (suc k)) ⟩
       (q * i) * (suc k)  ∎))
 
--- If the remainder after division is non-zero, then the divisor does
--- not divide the dividend.
+  m%n≡0⇒n∣m : ∀ m n → m % (suc n) ≡ 0 → suc n ∣ m
+  m%n≡0⇒n∣m m n eq = divides (m div (suc n)) (begin
+    m                                     ≡⟨ a≡a%n+[a/n]*n m n ⟩
+    m % (suc n) + m div (suc n) * (suc n) ≡⟨ cong₂ _+_ eq refl ⟩
+    m div (suc n) * (suc n)               ∎)
 
-nonZeroDivisor-lemma
-  : ∀ m q (r : Fin (1 + m)) → toℕ r ≢ 0 →
-    1 + m ∤ toℕ r + q * (1 + m)
+  n∣m⇒m%n≡0 : ∀ m n → suc n ∣ m → m % (suc n) ≡ 0
+  n∣m⇒m%n≡0 m n (divides v eq) = begin
+    m           % (suc n) ≡⟨ cong (_% (suc n)) eq ⟩
+    (v * suc n) % (suc n) ≡⟨ kn%n≡0 v n ⟩
+    0                     ∎
+
+  m%n≡0⇔n∣m : ∀ m n → m % (suc n) ≡ 0 ⇔ suc n ∣ m
+  m%n≡0⇔n∣m m n = equivalence (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
+
+-- Divisibility is decidable.
+
+infix 4 _∣?_
+
+_∣?_ : Decidable _∣_
+zero  ∣? zero   = yes (0 ∣0)
+zero  ∣? suc m  = no ((λ()) ∘′ 0∣⇒≡0)
+suc n ∣? m      = Dec.map (m%n≡0⇔n∣m m n) (m % (suc n) ≟ 0)
+
+------------------------------------------------------------------------
+-- DEPRECATED - please use new names as continuing support for the old
+-- names is not guaranteed.
+
+∣-+ = ∣m∣n⇒∣m+n
+{-# WARNING_ON_USAGE ∣-+
+"Warning: ∣-+ was deprecated in v0.14.
+Please use ∣m∣n⇒∣m+n instead."
+#-}
+∣-∸ = ∣m+n∣m⇒∣n
+{-# WARNING_ON_USAGE ∣-∸
+"Warning: ∣-∸ was deprecated in v0.14.
+Please use ∣m+n∣m⇒∣n instead."
+#-}
+∣-* = n∣m*n
+{-# WARNING_ON_USAGE ∣-*
+"Warning: ∣-* was deprecated in v0.14.
+Please use n∣m*n instead."
+#-}
+
+nonZeroDivisor-lemma : ∀ m q (r : Fin (1 + m)) → toℕ r ≢ 0 →
+                       1 + m ∤ toℕ r + q * (1 + m)
 nonZeroDivisor-lemma m zero r r≢zero (divides zero eq) = r≢zero $ begin
   toℕ r      ≡⟨ sym (*-identityˡ (toℕ r)) ⟩
   1 * toℕ r  ≡⟨ eq ⟩
@@ -204,24 +248,6 @@ nonZeroDivisor-lemma m (suc q) r r≢zero d =
   lem = solve 3 (λ m r q → r :+ (m :+ q)  :=  m :+ (r :+ q))
                 refl (suc m) (toℕ r) (q * suc m)
   d' = subst (1 + m ∣_) lem d
-
--- Divisibility is decidable.
-
-infix 4 _∣?_
-
-_∣?_ : Decidable _∣_
-zero  ∣? zero                     = yes (0 ∣0)
-zero  ∣? suc n                    = no ((λ()) ∘′ 0∣⇒≡0)
-suc m ∣? n                        with n divMod suc m
-suc m ∣? .(q * suc m)             | result q zero    refl =
-  yes $ divides q refl
-suc m ∣? .(1 + toℕ r + q * suc m) | result q (suc r) refl =
-  no $ nonZeroDivisor-lemma m q (suc r) (λ())
-
-------------------------------------------------------------------------
--- DEPRECATED - please use new names as continuing support for the old
--- names is not guaranteed.
-
-∣-+ = ∣m∣n⇒∣m+n
-∣-∸ = ∣m+n∣m⇒∣n
-∣-* = n∣m*n
+{-# WARNING_ON_USAGE nonZeroDivisor-lemma
+"Warning: nonZeroDivisor-lemma was deprecated in v0.17."
+#-}

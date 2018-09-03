@@ -10,6 +10,7 @@ module Data.Fin.Properties where
 open import Algebra.FunctionProperties using (Involutive)
 open import Category.Applicative using (RawApplicative)
 open import Category.Functor using (RawFunctor)
+open import Data.Empty using (⊥-elim)
 open import Data.Fin
 open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
   renaming
@@ -18,16 +19,19 @@ open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
   ; _+_ to _ℕ+_
   )
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (_,_)
-open import Function using (_∘_)
+open import Data.Unit using (tt)
+open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁)
+open import Function using (_∘_; id)
 open import Function.Injection using (_↣_)
-open import Relation.Binary
+open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; sym; trans; cong; subst)
+  using (_≡_; _≢_; refl; sym; trans; cong; subst; module ≡-Reasoning)
 open import Relation.Nullary using (¬_)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Unary using (Pred)
+open import Relation.Nullary using (Dec; yes; no; ¬_)
+open import Relation.Unary as U using (U; Pred; Decidable; _⊆_)
+open import Relation.Unary.Properties using (U?)
 
 ------------------------------------------------------------------------
 -- Fin
@@ -131,6 +135,13 @@ fromℕ≤≡fromℕ≤″ (s≤s z≤n)       (ℕ.less-than-or-equal refl) = r
 fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
   cong suc (fromℕ≤≡fromℕ≤″ (s≤s m<n) (ℕ.less-than-or-equal refl))
 
+toℕ-fromℕ≤″ : ∀ {m n} (m<n : m ℕ.<″ n) → toℕ (fromℕ≤″ m m<n) ≡ m
+toℕ-fromℕ≤″ {m} {n} m<n = begin
+  toℕ (fromℕ≤″ m m<n)  ≡⟨ cong toℕ (sym (fromℕ≤≡fromℕ≤″ _ m<n)) ⟩
+  toℕ (fromℕ≤ _)       ≡⟨ toℕ-fromℕ≤ (ℕₚ.≤″⇒≤ m<n) ⟩
+  m ∎
+  where open ≡-Reasoning
+
 ------------------------------------------------------------------------
 -- Properties of _≤_
 
@@ -197,7 +208,7 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
   }
 
 -- Other properties
-≤-irrelevance : ∀ {n} → P.IrrelevantRel (_≤_ {n})
+≤-irrelevance : ∀ {n} → Irrelevant (_≤_ {n})
 ≤-irrelevance = ℕₚ.≤-irrelevance
 
 ------------------------------------------------------------------------
@@ -257,7 +268,7 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
   }
 
 -- Other properties
-<-irrelevance : ∀ {n} → P.IrrelevantRel (_<_ {n})
+<-irrelevance : ∀ {n} → Irrelevant (_<_ {n})
 <-irrelevance = ℕₚ.<-irrelevance
 
 <⇒≢ : ∀ {n} {i j : Fin n} → i < j → i ≢ j
@@ -349,8 +360,8 @@ nℕ-ℕi≤n n       zero     = ℕₚ.≤-refl
 nℕ-ℕi≤n zero    (suc ())
 nℕ-ℕi≤n (suc n) (suc i)  = begin
   n ℕ-ℕ i  ≤⟨ nℕ-ℕi≤n n i ⟩
-  n         ≤⟨ ℕₚ.n≤1+n n ⟩
-  suc n     ∎
+  n        ≤⟨ ℕₚ.n≤1+n n ⟩
+  suc n    ∎
   where open ℕₚ.≤-Reasoning
 
 ------------------------------------------------------------------------
@@ -373,19 +384,6 @@ punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
 ------------------------------------------------------------------------
 -- punchOut
 
-punchOut-injective : ∀ {m} {i j k : Fin (suc m)}
-                     (i≢j : i ≢ j) (i≢k : i ≢ k) →
-                     punchOut i≢j ≡ punchOut i≢k → j ≡ k
-punchOut-injective {_}     {zero}   {zero}  {_}     0≢0 _   _     = contradiction refl 0≢0
-punchOut-injective {_}     {zero}   {_}     {zero}  _   0≢0 _     = contradiction refl 0≢0
-punchOut-injective {_}     {zero}   {suc j} {suc k} _   _   pⱼ≡pₖ = cong suc pⱼ≡pₖ
-punchOut-injective {zero}  {suc ()}
-punchOut-injective {suc n} {suc i}  {zero}  {zero}  _   _    _    = refl
-punchOut-injective {suc n} {suc i}  {zero}  {suc k} _   _   ()
-punchOut-injective {suc n} {suc i}  {suc j} {zero}  _   _   ()
-punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
-  cong suc (punchOut-injective (i≢j ∘ cong suc) (i≢k ∘ cong suc) (suc-injective pⱼ≡pₖ))
-
 -- A version of 'cong' for 'punchOut' in which the inequality argument can be
 -- changed out arbitrarily (reflecting the proof-irrelevance of that argument).
 
@@ -406,6 +404,19 @@ punchOut-cong {suc n} (suc i) {suc j} {suc k} = cong suc ∘ punchOut-cong i ∘
 punchOut-cong′ : ∀ {n} (i : Fin (suc n)) {j k} {p : i ≢ j} (q : j ≡ k) → punchOut p ≡ punchOut (p ∘ sym ∘ trans q ∘ sym)
 punchOut-cong′ i q = punchOut-cong i q
 
+punchOut-injective : ∀ {m} {i j k : Fin (suc m)}
+                     (i≢j : i ≢ j) (i≢k : i ≢ k) →
+                     punchOut i≢j ≡ punchOut i≢k → j ≡ k
+punchOut-injective {_}     {zero}   {zero}  {_}     0≢0 _   _     = contradiction refl 0≢0
+punchOut-injective {_}     {zero}   {_}     {zero}  _   0≢0 _     = contradiction refl 0≢0
+punchOut-injective {_}     {zero}   {suc j} {suc k} _   _   pⱼ≡pₖ = cong suc pⱼ≡pₖ
+punchOut-injective {zero}  {suc ()}
+punchOut-injective {suc n} {suc i}  {zero}  {zero}  _   _    _    = refl
+punchOut-injective {suc n} {suc i}  {zero}  {suc k} _   _   ()
+punchOut-injective {suc n} {suc i}  {suc j} {zero}  _   _   ()
+punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
+  cong suc (punchOut-injective (i≢j ∘ cong suc) (i≢k ∘ cong suc) (suc-injective pⱼ≡pₖ))
+
 punchIn-punchOut : ∀ {m} {i j : Fin (suc m)} (i≢j : i ≢ j) →
                    punchIn i (punchOut i≢j) ≡ j
 punchIn-punchOut {_}     {zero}   {zero}  0≢0 = contradiction refl 0≢0
@@ -422,7 +433,7 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
   punchOut (punchInᵢ≢i i j ∘ suc-injective ∘ sym ∘ cong suc)  ≡⟨ punchOut-cong i refl ⟩
   punchOut (punchInᵢ≢i i j ∘ sym)                             ≡⟨ punchOut-punchIn i ⟩
   j                                                           ∎)
-  where open P.≡-Reasoning
+  where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- _+′_
@@ -436,9 +447,69 @@ i +′ j = inject≤ (i + j) (ℕₚ.+-mono-≤ (toℕ≤pred[n] i) ℕₚ.≤-r
 -- Quantification
 
 ∀-cons : ∀ {n p} {P : Pred (Fin (suc n)) p} →
-        P zero → (∀ i → P (suc i)) → (∀ i → P i)
+         P zero → (∀ i → P (suc i)) → (∀ i → P i)
 ∀-cons z s zero    = z
 ∀-cons z s (suc i) = s i
+
+decFinSubset : ∀ {n p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
+               Decidable Q → (∀ {f} → Q f → Dec (P f)) → Dec (Q ⊆ P)
+decFinSubset {zero}  {_}     {_} _  _  = yes λ{}
+decFinSubset {suc n} {P = P} {Q} Q? P? with decFinSubset (Q? ∘ suc) P?
+... | no ¬q⟶p = no (λ q⟶p → ¬q⟶p (q⟶p))
+... | yes q⟶p with Q? zero
+...   | no ¬q₀ = yes (∀-cons {P = Q U.⇒ P} (⊥-elim ∘ ¬q₀) (λ _ → q⟶p) _)
+...   | yes q₀ with P? q₀
+...     | no ¬p₀ = no (λ q⟶p → ¬p₀ (q⟶p q₀))
+...     | yes p₀ = yes (∀-cons {P = Q U.⇒ P} (λ _ → p₀) (λ _ → q⟶p) _)
+
+any? : ∀ {n p} {P : Fin n → Set p} → Decidable P → Dec (∃ P)
+any? {zero}  {_} P? = no λ { (() , _) }
+any? {suc n} {P} P? with P? zero | any? (P? ∘ suc)
+... | yes P₀ | _              = yes (_ , P₀)
+... | no  _  | yes (_ , P₁₊ᵢ) = yes (_ , P₁₊ᵢ)
+... | no ¬P₀ | no ¬P₁₊ᵢ       = no λ
+  { (zero  , P₀)   → ¬P₀ P₀
+  ; (suc f , P₁₊ᵢ) → ¬P₁₊ᵢ (_ , P₁₊ᵢ)
+  }
+
+all? : ∀ {n p} {P : Pred (Fin n) p} →
+       Decidable P → Dec (∀ f → P f)
+all? P? with decFinSubset U? (λ {f} _ → P? f)
+... | yes ∀p = yes (λ f → ∀p tt)
+... | no ¬∀p = no  (λ ∀p → ¬∀p (λ _ → ∀p _))
+
+-- If a decidable predicate P over a finite set is sometimes false,
+-- then we can find the smallest value for which this is the case.
+
+¬∀⟶∃¬-smallest : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
+                 ¬ (∀ i → P i) → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
+¬∀⟶∃¬-smallest zero    P P? ¬∀P = contradiction (λ()) ¬∀P
+¬∀⟶∃¬-smallest (suc n) P P? ¬∀P with P? zero
+... | no ¬P₀ = (zero , ¬P₀ , λ ())
+... | yes P₀ = map suc (map id (∀-cons P₀))
+  (¬∀⟶∃¬-smallest n (P ∘ suc) (P? ∘ suc) (¬∀P ∘ (∀-cons P₀)))
+
+-- When P is a decidable predicate over a finite set the following
+-- lemma can be proved.
+
+¬∀⟶∃¬ : ∀ n {p} (P : Pred (Fin n) p) → Decidable P →
+          ¬ (∀ i → P i) → (∃ λ i → ¬ P i)
+¬∀⟶∃¬ n P P? ¬P = map id proj₁ (¬∀⟶∃¬-smallest n P P? ¬P)
+
+-- The pigeonhole principle.
+
+pigeonhole : ∀ {m n} → m ℕ.< n → (f : Fin n → Fin m) →
+             ∃₂ λ i j → i ≢ j × f i ≡ f j
+pigeonhole (s≤s z≤n)       f = contradiction (f zero) λ()
+pigeonhole (s≤s (s≤s m≤n)) f with any? (λ k → f zero ≟ f (suc k))
+... | yes (j , f₀≡fⱼ) = zero , suc j , (λ()) , f₀≡fⱼ
+... | no  f₀≢fₖ with pigeonhole (s≤s m≤n) (λ j → punchOut (f₀≢fₖ ∘ (j ,_ )))
+...   | (i , j , i≢j , fᵢ≡fⱼ) =
+  suc i , suc j , i≢j ∘ suc-injective ,
+  punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
+
+------------------------------------------------------------------------
+-- Categorical
 
 module _ {f} {F : Set f → Set f} (RA : RawApplicative F) where
 
@@ -463,7 +534,7 @@ module _ {f} {F : Set f → Set f} (RF : RawFunctor F) where
 
 module _ {a} {A : Set a} where
 
-  eq? : ∀ {n} → A ↣ Fin n → Decidable {A = A} _≡_
+  eq? : ∀ {n} → A ↣ Fin n → B.Decidable {A = A} _≡_
   eq? inj = Dec.via-injection inj _≟_
 
 ------------------------------------------------------------------------
@@ -472,19 +543,66 @@ module _ {a} {A : Set a} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
-cmp              = <-cmp
-strictTotalOrder = <-strictTotalOrder
-
-to-from          = toℕ-fromℕ
-from-to          = fromℕ-toℕ
-
-bounded          = toℕ<n
-prop-toℕ-≤      = toℕ≤pred[n]
-prop-toℕ-≤′     = toℕ≤pred[n]′
-
-inject-lemma     = toℕ-inject
-inject+-lemma    = toℕ-inject+
-inject₁-lemma    = toℕ-inject₁
-inject≤-lemma    = toℕ-inject≤
-
 open import Data.Fin public using (_≟_; _<?_)
+
+-- Version 0.15
+
+cmp              = <-cmp
+{-# WARNING_ON_USAGE cmp
+"Warning: cmp was deprecated in v0.15.
+Please use <-cmp instead."
+#-}
+strictTotalOrder = <-strictTotalOrder
+{-# WARNING_ON_USAGE strictTotalOrder
+"Warning: strictTotalOrder was deprecated in v0.15.
+Please use <-strictTotalOrder instead."
+#-}
+
+-- Version 0.16
+
+to-from = toℕ-fromℕ
+{-# WARNING_ON_USAGE to-from
+"Warning: to-from was deprecated in v0.16.
+Please use toℕ-fromℕ instead."
+#-}
+from-to          = fromℕ-toℕ
+{-# WARNING_ON_USAGE from-to
+"Warning: from-to was deprecated in v0.16.
+Please use fromℕ-toℕ instead."
+#-}
+bounded = toℕ<n
+{-# WARNING_ON_USAGE bounded
+"Warning: bounded was deprecated in v0.16.
+Please use toℕ<n instead."
+#-}
+prop-toℕ-≤ = toℕ≤pred[n]
+{-# WARNING_ON_USAGE prop-toℕ-≤
+"Warning: prop-toℕ-≤ was deprecated in v0.16.
+Please use toℕ≤pred[n] instead."
+#-}
+prop-toℕ-≤′ = toℕ≤pred[n]′
+{-# WARNING_ON_USAGE prop-toℕ-≤′
+"Warning: prop-toℕ-≤′ was deprecated in v0.16.
+Please use toℕ≤pred[n]′ instead."
+#-}
+inject-lemma = toℕ-inject
+{-# WARNING_ON_USAGE inject-lemma
+"Warning: inject-lemma was deprecated in v0.16.
+Please use toℕ-inject instead."
+#-}
+inject+-lemma = toℕ-inject+
+{-# WARNING_ON_USAGE inject+-lemma
+"Warning: inject+-lemma was deprecated in v0.16.
+Please use toℕ-inject+ instead."
+#-}
+inject₁-lemma = toℕ-inject₁
+{-# WARNING_ON_USAGE inject₁-lemma
+"Warning: inject₁-lemma was deprecated in v0.16.
+Please use toℕ-inject₁ instead."
+#-}
+inject≤-lemma = toℕ-inject≤
+{-# WARNING_ON_USAGE inject≤-lemma
+"Warning: inject≤-lemma was deprecated in v0.16.
+Please use toℕ-inject≤ instead."
+#-}
+

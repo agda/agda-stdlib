@@ -8,7 +8,7 @@ module Category.Monad.State where
 
 open import Category.Applicative.Indexed
 open import Category.Monad
-open import Category.Monad.Identity
+open import Function.Identity.Categorical as Id using (Identity)
 open import Category.Monad.Indexed
 open import Data.Product
 open import Data.Unit
@@ -53,11 +53,11 @@ record RawIMonadState {i f} {I : Set i} (S : I → Set f)
   field
     monad : RawIMonad M
     get   : ∀ {i} → M i i (S i)
-    put   : ∀ {i j} → S j → M i j (Lift ⊤)
+    put   : ∀ {i j} → S j → M i j (Lift f ⊤)
 
   open RawIMonad monad public
 
-  modify : ∀ {i j} → (S i → S j) → M i j (Lift ⊤)
+  modify : ∀ {i j} → (S i → S j) → M i j (Lift f ⊤)
   modify f = get >>= put ∘ f
 
 StateTIMonadState : ∀ {i f} {I : Set i} (S : I → Set f) {M} →
@@ -101,10 +101,10 @@ State : ∀ {f} → Set f → Set f → Set f
 State S = StateT S Identity
 
 StateMonad : ∀ {f} (S : Set f) → RawMonad (State S)
-StateMonad S = StateTMonad S IdentityMonad
+StateMonad S = StateTMonad S Id.monad
 
 StateMonadState : ∀ {f} (S : Set f) → RawMonadState S (State S)
-StateMonadState S = StateTMonadState S IdentityMonad
+StateMonadState S = StateTMonadState S Id.monad
 
 LiftMonadState : ∀ {f S₁} (S₂ : Set f) {M} →
                  RawMonadState S₁ M →

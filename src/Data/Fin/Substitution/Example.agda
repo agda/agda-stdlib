@@ -29,7 +29,7 @@ data Tm (n : ℕ) : Set where
 
 -- Code for applying substitutions.
 
-module TmApp {T} (l : Lift T Tm) where
+module TmApp {ℓ} {T : ℕ → Set ℓ} (l : Lift T Tm) where
   open Lift l hiding (var)
 
   -- Applies a substitution to a term.
