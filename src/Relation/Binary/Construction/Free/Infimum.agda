@@ -4,13 +4,9 @@
 -- Freely adding an Infimum to any Set
 ------------------------------------------------------------------------
 
-module Relation.Binary.Construction.Free.Infimum {k} (Key : Set k) where
+module Relation.Binary.Construction.Free.Infimum where
 
-open import Agda.Builtin.Equality
-
-data Key⁺ : Set k where
-  ⊥⁺  : Key⁺
-  [_] : Key → Key⁺
-
-[_]-injective : ∀ {k l} → [ k ] ≡ [ l ] → k ≡ l
-[_]-injective refl = refl
+open import Data.Maybe
+  renaming (Maybe to _₋; nothing to ⊥⁺; just to [_]; just-injective to [_]-injective)
+  using ()
+  public
