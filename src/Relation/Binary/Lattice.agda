@@ -7,7 +7,7 @@
 module Relation.Binary.Lattice where
 
 open import Algebra.FunctionProperties
-open import Data.Product using (_×_)
+open import Data.Product using (_×_; _,_)
 open import Function using (flip)
 open import Level using (suc; _⊔_)
 open import Relation.Binary
@@ -36,6 +36,15 @@ record IsJoinSemilattice {a ℓ₁ ℓ₂} {A : Set a}
     isPartialOrder : IsPartialOrder _≈_ _≤_
     supremum       : Supremum _≤_ _∨_
 
+  ∨-fst : ∀ x y → x ≤ (x ∨ y)
+  ∨-fst x y = let pf , _ , _ = supremum x y in pf
+
+  ∨-snd : ∀ x y → y ≤ (x ∨ y)
+  ∨-snd x y = let _ , pf , _ = supremum x y in pf
+
+  ∨-least : ∀ x y z → x ≤ z → y ≤ z → (x ∨ y) ≤ z
+  ∨-least x y z = let _ , _ , pf = supremum x y in pf z
+
   open IsPartialOrder isPartialOrder public
 
 record JoinSemilattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -63,6 +72,15 @@ record IsMeetSemilattice {a ℓ₁ ℓ₂} {A : Set a}
   field
     isPartialOrder : IsPartialOrder _≈_ _≤_
     infimum        : Infimum _≤_ _∧_
+
+  ∧-fst : ∀ x y → (x ∧ y) ≤ x
+  ∧-fst x y = let pf , _ , _ = infimum x y in pf
+
+  ∧-snd : ∀ x y → (x ∧ y) ≤ y
+  ∧-snd x y = let _ , pf , _ = infimum x y in pf
+
+  ∧-greatest : ∀ x y z → x ≤ y → x ≤ z → x ≤ (y ∧ z)
+  ∧-greatest x y z = let _ , _ , pf = infimum y z in pf x
 
   open IsPartialOrder isPartialOrder public
 
@@ -169,6 +187,10 @@ record IsLattice {a ℓ₁ ℓ₂} {A : Set a}
     ; infimum        = infimum
     }
 
+  open IsJoinSemilattice isJoinSemilattice
+    using (∨-fst; ∨-snd; ∨-least) public
+  open IsMeetSemilattice isMeetSemilattice
+    using (∧-fst; ∧-snd; ∧-greatest) public
   open IsPartialOrder isPartialOrder public
 
 record Lattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -307,6 +329,12 @@ record IsHeytingAlgebra {a ℓ₁ ℓ₂} {A : Set a}
     isBoundedLattice : IsBoundedLattice _≈_ _≤_ _∨_ _∧_ ⊤ ⊥
     exponential      : Exponential _≤_ _∧_ _⇨_
 
+  transposeˡ : ∀ w x y → (w ∧ x) ≤ y → w ≤ (x ⇨ y)
+  transposeˡ w x y = let pf , _ = exponential w x y in pf
+
+  transposeʳ : ∀ w x y → w ≤ (x ⇨ y) → (w ∧ x) ≤ y
+  transposeʳ w x y = let _ , pf = exponential w x y in pf
+
   open IsBoundedLattice isBoundedLattice public
 
 
@@ -330,8 +358,10 @@ record HeytingAlgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wher
   boundedLattice = record
     { isBoundedLattice = IsHeytingAlgebra.isBoundedLattice isHeytingAlgebra }
 
-  open IsHeytingAlgebra isHeytingAlgebra using (exponential) public
-  open BoundedLattice boundedLattice hiding (Carrier; _≈_; _≤_; _∨_; _∧_; ⊤; ⊥) public
+  open IsHeytingAlgebra isHeytingAlgebra
+    using (exponential; transposeˡ; transposeʳ) public
+  open BoundedLattice boundedLattice
+    hiding (Carrier; _≈_; _≤_; _∨_; _∧_; ⊤; ⊥) public
 
 -- Boolean algebra is a specialized Heyting algebra
 record IsBooleanAlgebra {a ℓ₁ ℓ₂} {A : Set a}
