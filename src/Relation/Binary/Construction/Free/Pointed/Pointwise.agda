@@ -1,8 +1,9 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Consequences on pointwise equality of freely adding an infimum to a Set
+-- Consequences on pointwise equality of freely adding a point to a Set
 ------------------------------------------------------------------------
+
 open import Relation.Binary
 
 module Relation.Binary.Construction.Free.Pointed.Pointwise

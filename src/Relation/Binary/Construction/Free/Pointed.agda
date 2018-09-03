@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Freely adding a Point to any Set
+------------------------------------------------------------------------
+
 module Relation.Binary.Construction.Free.Pointed where
 
 open import Data.Maybe
