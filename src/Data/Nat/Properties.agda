@@ -1130,6 +1130,36 @@ im≡jm+n⇒[i∸j]m≡n i j m n eq = begin
   n                      ∎
 
 ------------------------------------------------------------------------
+-- Properties of ∣_-_∣
+
+n≡m⇒∣n-m∣≡0 : ∀ {n m} → n ≡ m → ∣ n - m ∣ ≡ 0
+n≡m⇒∣n-m∣≡0 {zero}  refl = refl
+n≡m⇒∣n-m∣≡0 {suc n} refl = n≡m⇒∣n-m∣≡0 {n} refl
+
+∣n-m∣≡0⇒n≡m : ∀ {n m} → ∣ n - m ∣ ≡ 0 → n ≡ m
+∣n-m∣≡0⇒n≡m {zero}  {zero}  eq = refl
+∣n-m∣≡0⇒n≡m {zero}  {suc m} ()
+∣n-m∣≡0⇒n≡m {suc n} {zero}  ()
+∣n-m∣≡0⇒n≡m {suc n} {suc m} eq = cong suc (∣n-m∣≡0⇒n≡m eq)
+
+∣n-n∣≡0 : ∀ n → ∣ n - n ∣ ≡ 0
+∣n-n∣≡0 n = n≡m⇒∣n-m∣≡0 {n} refl
+
+∣n-n+m∣≡m : ∀ n m → ∣ n - n + m ∣ ≡ m
+∣n-n+m∣≡m zero    m = refl
+∣n-n+m∣≡m (suc n) m = ∣n-n+m∣≡m n m
+
+∣n+m-n+o∣≡∣m-o| : ∀ n m o → ∣ n + m - n + o ∣ ≡ ∣ m - o ∣
+∣n+m-n+o∣≡∣m-o| zero    m o = refl
+∣n+m-n+o∣≡∣m-o| (suc n) m o = ∣n+m-n+o∣≡∣m-o| n m o
+
+∣-∣-comm : Commutative ∣_-_∣
+∣-∣-comm zero    zero    = refl
+∣-∣-comm zero    (suc m) = refl
+∣-∣-comm (suc n) zero    = refl
+∣-∣-comm (suc n) (suc m) = ∣-∣-comm n m
+
+------------------------------------------------------------------------
 -- Properties of ⌊_/2⌋
 
 ⌊n/2⌋-mono : ⌊_/2⌋ Preserves _≤_ ⟶ _≤_
@@ -1283,3 +1313,4 @@ Please use i+1+j≰i instead."
 "Warning: ≤-steps was deprecated in v0.15.
 Please use ≤-stepsˡ instead."
 #-}
+
