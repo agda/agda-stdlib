@@ -108,10 +108,10 @@ record BoundedJoinSemilattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ�
 
   open IsBoundedJoinSemilattice isBoundedJoinSemilattice public
 
-  joinSemiLattice : JoinSemilattice c ℓ₁ ℓ₂
-  joinSemiLattice = record { isJoinSemilattice = isJoinSemilattice }
+  joinSemilattice : JoinSemilattice c ℓ₁ ℓ₂
+  joinSemilattice = record { isJoinSemilattice = isJoinSemilattice }
 
-  open JoinSemilattice joinSemiLattice public using (preorder; poset)
+  open JoinSemilattice joinSemilattice public using (preorder; poset)
 
 record IsBoundedMeetSemilattice {a ℓ₁ ℓ₂} {A : Set a}
                                 (_≈_ : Rel A ℓ₁) -- The underlying equality.
@@ -138,10 +138,10 @@ record BoundedMeetSemilattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ�
 
   open IsBoundedMeetSemilattice isBoundedMeetSemilattice public
 
-  meetSemiLattice : MeetSemilattice c ℓ₁ ℓ₂
-  meetSemiLattice = record { isMeetSemilattice = isMeetSemilattice }
+  meetSemilattice : MeetSemilattice c ℓ₁ ℓ₂
+  meetSemilattice = record { isMeetSemilattice = isMeetSemilattice }
 
-  open MeetSemilattice meetSemiLattice public using (preorder; poset)
+  open MeetSemilattice meetSemilattice public using (preorder; poset)
 
 ------------------------------------------------------------------------
 -- Lattices
@@ -193,6 +193,39 @@ record Lattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
   open JoinSemilattice joinSemilattice public using (poset; preorder)
 
+record IsDistributiveLattice {a ℓ₁ ℓ₂} {A : Set a}
+                             (_≈_ : Rel A ℓ₁) -- The underlying equality.
+                             (_≤_ : Rel A ℓ₂) -- The partial order.
+                             (_∨_ : Op₂ A)    -- The join operation.
+                             (_∧_ : Op₂ A)    -- The meet operation.
+                             : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    isLattice    : IsLattice _≈_ _≤_ _∨_ _∧_
+    ∧-∨-distribˡ : _DistributesOverˡ_ _≈_ _∧_ _∨_
+
+  open IsLattice isLattice public
+
+record DistributiveLattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix  4 _≈_ _≤_
+  infixr 6 _∨_
+  infixr 7 _∧_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ₁  -- The underlying equality.
+    _≤_     : Rel Carrier ℓ₂  -- The partial order.
+    _∨_     : Op₂ Carrier     -- The join operation.
+    _∧_     : Op₂ Carrier     -- The meet operation.
+    isDistributiveLattice : IsDistributiveLattice _≈_ _≤_ _∨_ _∧_
+
+  open IsDistributiveLattice isDistributiveLattice using (∧-∨-distribˡ) public
+  open IsDistributiveLattice isDistributiveLattice using (isLattice)
+
+  lattice : Lattice c ℓ₁ ℓ₂
+  lattice = record { isLattice = isLattice }
+
+  open Lattice lattice hiding (Carrier; _≈_; _≤_; _∨_; _∧_) public
+
+
 record IsBoundedLattice {a ℓ₁ ℓ₂} {A : Set a}
                         (_≈_ : Rel A ℓ₁) -- The underlying equality.
                         (_≤_ : Rel A ℓ₂) -- The partial order.
@@ -243,3 +276,100 @@ record BoundedLattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wher
   boundedMeetSemilattice : BoundedMeetSemilattice c ℓ₁ ℓ₂
   boundedMeetSemilattice = record
     { isBoundedMeetSemilattice = isBoundedMeetSemilattice }
+
+  lattice : Lattice c ℓ₁ ℓ₂
+  lattice = record { isLattice = isLattice }
+
+  open Lattice lattice
+    using (joinSemilattice; meetSemilattice; poset; preorder)
+    public
+
+------------------------------------------------------------------------
+-- exponential
+--
+-- Heyting algebra is bounded lattice with exponential.
+
+Exponential : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Op₂ A → Op₂ A → Set _
+Exponential _≤_ _∧_ _⇨_ =
+  ∀ w x y → ((w ∧ x) ≤ y → w ≤ (x ⇨ y)) × (w ≤ (x ⇨ y) → (w ∧ x) ≤ y)
+
+
+record IsHeytingAlgebra {a ℓ₁ ℓ₂} {A : Set a}
+                        (_≈_ : Rel A ℓ₁) -- The underlying equality.
+                        (_≤_ : Rel A ℓ₂) -- The partial order.
+                        (_∨_ : Op₂ A)    -- The join operation.
+                        (_∧_ : Op₂ A)    -- The meet operation.
+                        (_⇨_ : Op₂ A)    -- The exponential operation.
+                        (⊤   : A)        -- The maximum.
+                        (⊥   : A)        -- The minimum.
+                        : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    isBoundedLattice : IsBoundedLattice _≈_ _≤_ _∨_ _∧_ ⊤ ⊥
+    exponential      : Exponential _≤_ _∧_ _⇨_
+
+  open IsBoundedLattice isBoundedLattice public
+
+
+record HeytingAlgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix  4 _≈_ _≤_
+  infixr 5 _⇨_
+  infixr 6 _∨_
+  infixr 7 _∧_
+  field
+    Carrier          : Set c
+    _≈_              : Rel Carrier ℓ₁  -- The underlying equality.
+    _≤_              : Rel Carrier ℓ₂  -- The partial order.
+    _∨_              : Op₂ Carrier     -- The join operation.
+    _∧_              : Op₂ Carrier     -- The meet operation.
+    _⇨_              : Op₂ Carrier     -- The exponential operation.
+    ⊤                : Carrier         -- The maximum.
+    ⊥                : Carrier         -- The minimum.
+    isHeytingAlgebra : IsHeytingAlgebra _≈_ _≤_ _∨_ _∧_ _⇨_ ⊤ ⊥
+
+  boundedLattice : BoundedLattice c ℓ₁ ℓ₂
+  boundedLattice = record
+    { isBoundedLattice = IsHeytingAlgebra.isBoundedLattice isHeytingAlgebra }
+
+  open IsHeytingAlgebra isHeytingAlgebra using (exponential) public
+  open BoundedLattice boundedLattice hiding (Carrier; _≈_; _≤_; _∨_; _∧_; ⊤; ⊥) public
+
+-- Boolean algebra is a specialized Heyting algebra
+record IsBooleanAlgebra {a ℓ₁ ℓ₂} {A : Set a}
+                        (_≈_ : Rel A ℓ₁) -- The underlying equality.
+                        (_≤_ : Rel A ℓ₂) -- The partial order.
+                        (_∨_ : Op₂ A)    -- The join operation.
+                        (_∧_ : Op₂ A)    -- The meet operation.
+                        (¬_ : Op₁ A)     -- The negation operation.
+                        (⊤   : A)        -- The maximum.
+                        (⊥   : A)        -- The minimum.
+                        : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  _⇨_ : Op₂ A
+  x ⇨ y = (¬ x) ∨ y
+
+  field
+    isHeytingAlgebra : IsHeytingAlgebra _≈_ _≤_ _∨_ _∧_ _⇨_ ⊤ ⊥
+
+  open IsHeytingAlgebra isHeytingAlgebra public
+
+record BooleanAlgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix  4 _≈_ _≤_
+  infixr 6 _∨_
+  infixr 7 _∧_
+  infix 8 ¬_
+  field
+    Carrier          : Set c
+    _≈_              : Rel Carrier ℓ₁  -- The underlying equality.
+    _≤_              : Rel Carrier ℓ₂  -- The partial order.
+    _∨_              : Op₂ Carrier     -- The join operation.
+    _∧_              : Op₂ Carrier     -- The meet operation.
+    ¬_               : Op₁ Carrier     -- The negation operation.
+    ⊤                : Carrier         -- The maximum.
+    ⊥                : Carrier         -- The minimum.
+    isBooleanAlgebra : IsBooleanAlgebra _≈_ _≤_ _∨_ _∧_ ¬_ ⊤ ⊥
+
+  open IsBooleanAlgebra isBooleanAlgebra using (isHeytingAlgebra)
+
+  heytingAlgebra : HeytingAlgebra c ℓ₁ ℓ₂
+  heytingAlgebra = record { isHeytingAlgebra = isHeytingAlgebra }
+
+  open HeytingAlgebra heytingAlgebra hiding (Carrier; _≈_; _≤_; _∨_; _∧_; ⊤; ⊥) public
