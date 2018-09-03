@@ -9,6 +9,12 @@ module Relation.Binary.Construction.Free.Supremum.Pointwise
        {a e} {A : Set a} (_≈_ : Rel A e) where
 
 open import Relation.Binary.Construction.Free.Pointed.Pointwise _≈_
-  renaming (_≈∙_ to _≈⁺_; ∙≈∙ to ⊤⁺≈⊤⁺; ≈∙-dec to ≈⁺-dec
+  renaming (_≈∙_ to _≈⁺_; ∙≈∙ to ⊤⁺≈⊤⁺
+           ; ≈∙-refl to ≈⁺-refl
+           ; ≈∙-sym to ≈⁺-sym
+           ; ≈∙-trans to ≈⁺-trans
+           ; ≈∙-dec to ≈⁺-dec
+           ; ≈∙-irrelevance to ≈⁺-irrelevance
+           ; ≈∙-substitutive to ≈⁺-substitutive
            ; ≈∙-isEquivalence to ≈⁺-isEquivalence)
   public

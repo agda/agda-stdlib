@@ -1,0 +1,51 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Consequences on pointwise equality of freely adding a point to a Set
+------------------------------------------------------------------------
+
+open import Relation.Binary
+
+module Relation.Binary.Construction.Free.Extrema.Pointwise
+       {a e} {A : Set a} (_≈_ : Rel A e) where
+
+open import Function
+open import Function.Equivalence using (equivalence)
+open import Relation.Nullary
+import Relation.Nullary.Decidable as Dec
+import Relation.Binary.PropositionalEquality as P
+
+open import Relation.Binary.Construction.Free.Extrema
+import Relation.Binary.Construction.Free.Infimum.Pointwise _≈_ as Inf
+open import Relation.Binary.Construction.Free.Supremum.Pointwise Inf._≈₋_ as Sup
+  renaming (_≈⁺_ to _≈±_)
+  using ()
+  public
+
+pattern ⊥⁺≈⊥⁺   = Sup.[]≈[] Inf.⊥⁺≈⊥⁺
+pattern []≈[] p = Sup.[]≈[] (Inf.[]≈[] p)
+pattern ⊤⁺≈⊤⁺   = Sup.⊤⁺≈⊤⁺
+
+[]≈[]⁻¹ : ∀ {k l} → [ k ] ≈± [ l ] → k ≈ l
+[]≈[]⁻¹ = Inf.[]≈[]⁻¹ ∘′ Sup.[]≈[]⁻¹
+
+≈±-refl : Reflexive _≈_ → Reflexive _≈±_
+≈±-refl = Sup.≈⁺-refl ∘′ Inf.≈₋-refl
+
+≈±-sym : Symmetric _≈_ → Symmetric _≈±_
+≈±-sym = Sup.≈⁺-sym ∘′ Inf.≈₋-sym
+
+≈±-trans : Transitive _≈_ → Transitive _≈±_
+≈±-trans = Sup.≈⁺-trans ∘′ Inf.≈₋-trans
+
+≈±-dec : Decidable _≈_ → Decidable _≈±_
+≈±-dec = Sup.≈⁺-dec ∘′ Inf.≈₋-dec
+
+≈±-irrelevance : Irrelevant _≈_ → Irrelevant _≈±_
+≈±-irrelevance = Sup.≈⁺-irrelevance ∘′ Inf.≈₋-irrelevance
+
+≈±-substitutive : ∀ {ℓ} → Substitutive _≈_ ℓ → Substitutive _≈±_ ℓ
+≈±-substitutive = Sup.≈⁺-substitutive ∘′ Inf.≈₋-substitutive
+
+≈±-isEquivalence : IsEquivalence _≈_ → IsEquivalence _≈±_
+≈±-isEquivalence = Sup.≈⁺-isEquivalence ∘′ Inf.≈₋-isEquivalence
