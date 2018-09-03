@@ -13,6 +13,7 @@ open import Data.Sum as Sum
 open import Function.Equivalence using (equivalence)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
+import Relation.Binary.PropositionalEquality as P
 open import Relation.Binary.Construction.Free.Infimum
 
 infix 5 _≤₋_
@@ -51,6 +52,10 @@ module _ {e} {_≈_ : Rel A e} where
 ≤₋-total ≤-total ⊥⁺    l     = inj₁ (⊥⁺≤ l)
 ≤₋-total ≤-total k     ⊥⁺    = inj₂ (⊥⁺≤ k)
 ≤₋-total ≤-total [ k ] [ l ] = Sum.map [_] [_] (≤-total k l)
+
+≤₋-irrelevance : Irrelevant _≤_ → Irrelevant _≤₋_
+≤₋-irrelevance ≤-irrelevance (⊥⁺≤ k) (⊥⁺≤ .k) = P.refl
+≤₋-irrelevance ≤-irrelevance [ p ]   [ q ]    = P.cong _ (≤-irrelevance p q)
 
 module _ {e} {_≈_ : Rel A e} where
 
