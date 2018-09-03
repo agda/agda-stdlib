@@ -35,8 +35,8 @@ open Setoid ≈-setoid using () renaming (sym to ≈-sym; refl to ≈-refl)
 ⇨-eval x y = let _ , transposeʳ = exponential (x ⇨ y) x y
              in transposeʳ refl
 
-⇨-∧-distribʳ : _⇨_ DistributesOverˡ _∧_
-⇨-∧-distribʳ x y z = antisym
+⇨-∧-distribˡ : _⇨_ DistributesOverˡ _∧_
+⇨-∧-distribˡ x y z = antisym
   (let _     , _     , least = infimum (x ⇨ y) (x ⇨ z)
        app-y , _             = exponential (x ⇨ y ∧ z) x y
        app-z , _             = exponential (x ⇨ y ∧ z) x z
