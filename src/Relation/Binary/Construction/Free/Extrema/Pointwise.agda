@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Consequences on pointwise equality of freely adding a point to a Set
+-- Consequences on pointwise equality of freely adding extrema to a Set
 ------------------------------------------------------------------------
 
 open import Relation.Binary
@@ -22,12 +22,12 @@ open import Relation.Binary.Construction.Free.Supremum.Pointwise Inf._≈₋_ as
   using ()
   public
 
-pattern ⊥⁺≈⊥⁺   = Sup.[]≈[] Inf.⊥⁺≈⊥⁺
-pattern []≈[] p = Sup.[]≈[] (Inf.[]≈[] p)
-pattern ⊤⁺≈⊤⁺   = Sup.⊤⁺≈⊤⁺
+pattern ⊥⁺≈⊥⁺ = Sup.[ Inf.⊥⁺≈⊥⁺ ]
+pattern [_] p = Sup.[ Inf.[ p ] ]
+pattern ⊤⁺≈⊤⁺ = Sup.⊤⁺≈⊤⁺
 
-[]≈[]⁻¹ : ∀ {k l} → [ k ] ≈± [ l ] → k ≈ l
-[]≈[]⁻¹ = Inf.[]≈[]⁻¹ ∘′ Sup.[]≈[]⁻¹
+[_]⁻¹ : ∀ {k l} → [ k ] ≈± [ l ] → k ≈ l
+[_]⁻¹ = Inf.[_]⁻¹ ∘′ Sup.[_]⁻¹
 
 ≈±-refl : Reflexive _≈_ → Reflexive _≈±_
 ≈±-refl = Sup.≈⁺-refl ∘′ Inf.≈₋-refl
