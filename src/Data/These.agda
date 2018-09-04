@@ -8,6 +8,7 @@ module Data.These where
 
 open import Level
 open import Algebra using (Semigroup)
+open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Function
 
 data These {a b} (A : Set a) (B : Set b) : Set (a ⊔ b) where
@@ -44,6 +45,14 @@ module _ {a b} {A : Set a} {B : Set b} where
 
   swap : These A B → These B A
   swap = fold that this (flip these)
+
+-- Component extraction via Maybe
+
+  fromThis : These A B → Maybe A
+  fromThis = fold just (const nothing) (const ∘′ just)
+
+  fromThat : These A B → Maybe B
+  fromThat = fold (const nothing) just (const just)
 
 -- align
 

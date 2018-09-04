@@ -75,10 +75,26 @@ module _ {a} {A : Set a} where
   from-just (just x) = x
   from-just nothing  = _
 
+
+module _ {a b} {A : Set a} {B : Set b} where
+
 -- Functoriality: map.
 
-map : ∀ {a b} {A : Set a} {B : Set b} → (A → B) → Maybe A → Maybe B
-map f = maybe (just ∘ f) nothing
+  map : (A → B) → Maybe A → Maybe B
+  map f = maybe (just ∘ f) nothing
+
+-- Applicative: ap
+
+  ap : Maybe (A → B) → Maybe A → Maybe B
+  ap nothing  = const nothing
+  ap (just f) = map f
+
+-- Monad: bind
+
+  infixl 1 _>>=_
+  _>>=_ : Maybe A → (A → Maybe B) → Maybe B
+  nothing >>= f = nothing
+  just a  >>= f = f a
 
 ------------------------------------------------------------------------
 -- Any and All
