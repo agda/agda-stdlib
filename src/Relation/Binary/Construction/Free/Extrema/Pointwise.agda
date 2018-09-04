@@ -49,3 +49,6 @@ pattern ⊤⁺≈⊤⁺ = Sup.⊤⁺≈⊤⁺
 
 ≈±-isEquivalence : IsEquivalence _≈_ → IsEquivalence _≈±_
 ≈±-isEquivalence = Sup.≈⁺-isEquivalence ∘′ Inf.≈₋-isEquivalence
+
+≈±-isDecEquivalence : IsDecEquivalence _≈_ → IsDecEquivalence _≈±_
+≈±-isDecEquivalence = Sup.≈⁺-isDecEquivalence ∘′ Inf.≈₋-isDecEquivalence

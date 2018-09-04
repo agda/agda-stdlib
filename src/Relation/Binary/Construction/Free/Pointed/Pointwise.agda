@@ -50,8 +50,14 @@ data _≈∙_ : Rel (Pointed A) e where
 ≈∙-substitutive ≈-substitutive P [ p ] = ≈-substitutive (P ∘′ [_]) p
 
 ≈∙-isEquivalence : IsEquivalence _≈_ → IsEquivalence _≈∙_
-≈∙-isEquivalence isEquiv = record
+≈∙-isEquivalence ≈-isEquivalence = record
   { refl  = λ {x} → ≈∙-refl refl {x}
   ; sym   = λ {x} → ≈∙-sym sym {x}
   ; trans = λ {x} → ≈∙-trans trans {x}
-  } where open IsEquivalence isEquiv
+  } where open IsEquivalence ≈-isEquivalence
+
+≈∙-isDecEquivalence : IsDecEquivalence _≈_ → IsDecEquivalence _≈∙_
+≈∙-isDecEquivalence ≈-isDecEquivalence = record
+  { isEquivalence = ≈∙-isEquivalence isEquivalence
+  ; _≟_           = ≈∙-dec _≟_
+  } where open IsDecEquivalence ≈-isDecEquivalence

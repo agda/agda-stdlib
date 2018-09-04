@@ -16,5 +16,7 @@ open import Relation.Binary.Construction.Free.Pointed.Pointwise _≈_
            ; ≈∙-dec to ≈⁺-dec
            ; ≈∙-irrelevance to ≈⁺-irrelevance
            ; ≈∙-substitutive to ≈⁺-substitutive
-           ; ≈∙-isEquivalence to ≈⁺-isEquivalence)
+           ; ≈∙-isEquivalence to ≈⁺-isEquivalence
+           ; ≈∙-isDecEquivalence to ≈⁺-isDecEquivalence
+           )
   public
