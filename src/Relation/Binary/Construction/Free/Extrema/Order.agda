@@ -73,34 +73,16 @@ module _ {e} {_≈_ : Rel A e} where
   open import Relation.Binary.Construction.Free.Extrema.Pointwise _≈_
 
   ≤±-isPreorder : IsPreorder _≈_ _≤_ → IsPreorder _≈±_ _≤±_
-  ≤±-isPreorder ≤-isPreorder = record
-    { isEquivalence = ≈±-isEquivalence isEquivalence
-    ; reflexive     = λ {x} → ≤±-reflexive reflexive {x}
-    ; trans         = λ {x} → ≤±-trans trans {x}
-    } where open IsPreorder ≤-isPreorder
+  ≤±-isPreorder = Sup'.≤⁺-isPreorder ∘′ Inf'.≤₋-isPreorder
 
   ≤±-isPartialOrder : IsPartialOrder _≈_ _≤_ → IsPartialOrder _≈±_ _≤±_
-  ≤±-isPartialOrder ≤-isPartialOrder = record
-    { isPreorder = ≤±-isPreorder isPreorder
-    ; antisym    = λ {x} → ≤±-antisym antisym {x}
-    } where open IsPartialOrder ≤-isPartialOrder
+  ≤±-isPartialOrder = Sup'.≤⁺-isPartialOrder ∘′ Inf'.≤₋-isPartialOrder
 
   ≤±-isDecPartialOrder : IsDecPartialOrder _≈_ _≤_ → IsDecPartialOrder _≈±_ _≤±_
-  ≤±-isDecPartialOrder ≤-isDecPartialOrder = record
-    { isPartialOrder = ≤±-isPartialOrder isPartialOrder
-    ; _≟_            = ≈±-dec _≟_
-    ; _≤?_           = ≤±-dec _≤?_
-    } where open IsDecPartialOrder ≤-isDecPartialOrder
+  ≤±-isDecPartialOrder = Sup'.≤⁺-isDecPartialOrder ∘′ Inf'.≤₋-isDecPartialOrder
 
   ≤±-isTotalOrder : IsTotalOrder _≈_ _≤_ → IsTotalOrder _≈±_ _≤±_
-  ≤±-isTotalOrder ≤-isTotalOrder = record
-    { isPartialOrder = ≤±-isPartialOrder isPartialOrder
-    ; total          = ≤±-total total
-    } where open IsTotalOrder ≤-isTotalOrder
+  ≤±-isTotalOrder = Sup'.≤⁺-isTotalOrder ∘′ Inf'.≤₋-isTotalOrder
 
   ≤±-isDecTotalOrder : IsDecTotalOrder _≈_ _≤_ → IsDecTotalOrder _≈±_ _≤±_
-  ≤±-isDecTotalOrder ≤-isDecTotalOrder = record
-    { isTotalOrder = ≤±-isTotalOrder isTotalOrder
-    ; _≟_          = ≈±-dec _≟_
-    ; _≤?_         = ≤±-dec _≤?_
-    } where open IsDecTotalOrder ≤-isDecTotalOrder
+  ≤±-isDecTotalOrder = Sup'.≤⁺-isDecTotalOrder ∘′ Inf'.≤₋-isDecTotalOrder
