@@ -1180,8 +1180,8 @@ n∸m≤∣n-m∣ n m with ≤-total m n
 ∣-∣-comm (suc n) zero    = refl
 ∣-∣-comm (suc n) (suc m) = ∣-∣-comm n m
 
-∣n-m∣-case : ∀ m n → (∣ n - m ∣ ≡ n ∸ m) ⊎ (∣ n - m ∣ ≡ m ∸ n)
-∣n-m∣-case m n with ≤-total m n
+∣n-m∣≡[n∸m]∨[m∸n] : ∀ m n → (∣ n - m ∣ ≡ n ∸ m) ⊎ (∣ n - m ∣ ≡ m ∸ n)
+∣n-m∣≡[n∸m]∨[m∸n] m n with ≤-total m n
 ... | inj₁ m≤n = inj₁ $ m≤n⇒∣n-m∣≡n∸m m≤n
 ... | inj₂ n≤m = inj₂ $ begin
   ∣ n - m ∣ ≡⟨ ∣-∣-comm n m ⟩
@@ -1207,11 +1207,7 @@ private
 ... | inj₂ n≤m = *-distribˡ-∣-∣-aux a n m n≤m
 
 *-distribʳ-∣-∣ : _*_ DistributesOverʳ ∣_-_∣
-*-distribʳ-∣-∣ a m n = begin
-  ∣ m - n ∣ * a     ≡⟨ *-comm ∣ m - n ∣ a ⟩
-  a * ∣ m - n ∣     ≡⟨ *-distribˡ-∣-∣ a m n ⟩
-  ∣ a * m - a * n ∣ ≡⟨ cong₂ ∣_-_∣ (*-comm a m) (*-comm a n) ⟩
-  ∣ m * a - n * a ∣ ∎
+*-distribʳ-∣-∣ = comm+distrˡ⇒distrʳ (cong₂ ∣_-_∣) *-comm *-distribˡ-∣-∣
 
 *-distrib-∣-∣ : _*_ DistributesOver ∣_-_∣
 *-distrib-∣-∣ = *-distribˡ-∣-∣ , *-distribʳ-∣-∣
