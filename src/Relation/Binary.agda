@@ -6,19 +6,19 @@
 
 module Relation.Binary where
 
+open import Agda.Builtin.Equality using (_≡_)
 open import Data.Product
 open import Data.Sum
 open import Function
 open import Level
 import Relation.Binary.PropositionalEquality.Core as PropEq
 open import Relation.Binary.Consequences
-open import Relation.Binary.Core as Core using (_≡_)
 import Relation.Binary.Indexed.Core as I
 
 ------------------------------------------------------------------------
 -- Simple properties and equivalence relations
 
-open Core public hiding (_≡_; refl; _≢_)
+open import Relation.Binary.Core public
 
 ------------------------------------------------------------------------
 -- Preorders

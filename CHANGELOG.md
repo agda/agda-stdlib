@@ -244,6 +244,8 @@ Non-backwards compatible changes
 * In `Function` the precedence level of `_$_` (and variants) has been changed to `-1`
   in order to improve its interaction with `_∋_` (e.g. `f $ Maybe A ∋ do (...)`).
 
+* `Relation.Binary` now no longer exports `_≡_`, `_≢_` and `refl`. The standard
+  way of accessing them remains `Relation.Binary.PropositionalEquality`.
 
 Other major changes
 -------------------
@@ -593,6 +595,12 @@ Other minor additions
 * Added new proofs to `Relation.Binary.NonStrictToStrict`:
   ```agda
   <⇒≤ : _<_ ⇒ _≤_
+  ```
+
+* Added new proofs to `Relation.Binary.PropositionalEquality`:
+  ```agda
+  respˡ : ∼ Respectsˡ _≡_
+  respʳ : ∼ Respectsʳ _≡_
   ```
 
 * Added new proofs to `Relation.Binary.StrictToNonStrict`:
