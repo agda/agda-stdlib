@@ -6,12 +6,12 @@
 
 module Data.Nat.Base where
 
-import Level using (zero)
+open import Level using (0ℓ)
 open import Function using (_∘_)
 open import Relation.Binary
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core
-import Relation.Binary.PropositionalEquality.TrustMe as TrustMe
+
 open import Relation.Nullary using (¬_; Dec; yes; no)
 
 infix 4 _≤_ _<_ _≥_ _>_ _≰_ _≮_ _≱_ _≯_
@@ -24,29 +24,29 @@ open import Agda.Builtin.Nat public
   renaming ( Nat to ℕ
            ; _-_ to _∸_ )
 
-data _≤_ : Rel ℕ Level.zero where
+data _≤_ : Rel ℕ 0ℓ where
   z≤n : ∀ {n}                 → zero  ≤ n
   s≤s : ∀ {m n} (m≤n : m ≤ n) → suc m ≤ suc n
 
-_<_ : Rel ℕ Level.zero
+_<_ : Rel ℕ 0ℓ
 m < n = suc m ≤ n
 
-_≥_ : Rel ℕ Level.zero
+_≥_ : Rel ℕ 0ℓ
 m ≥ n = n ≤ m
 
-_>_ : Rel ℕ Level.zero
+_>_ : Rel ℕ 0ℓ
 m > n = n < m
 
-_≰_ : Rel ℕ Level.zero
+_≰_ : Rel ℕ 0ℓ
 a ≰ b = ¬ a ≤ b
 
-_≮_ : Rel ℕ Level.zero
+_≮_ : Rel ℕ 0ℓ
 a ≮ b = ¬ a < b
 
-_≱_ : Rel ℕ Level.zero
+_≱_ : Rel ℕ 0ℓ
 a ≱ b = ¬ a ≥ b
 
-_≯_ : Rel ℕ Level.zero
+_≯_ : Rel ℕ 0ℓ
 a ≯ b = ¬ a > b
 
 -- The following, alternative definition of _≤_ is more suitable for
@@ -58,13 +58,13 @@ data _≤′_ (m : ℕ) : ℕ → Set where
   ≤′-refl :                         m ≤′ m
   ≤′-step : ∀ {n} (m≤′n : m ≤′ n) → m ≤′ suc n
 
-_<′_ : Rel ℕ Level.zero
+_<′_ : Rel ℕ 0ℓ
 m <′ n = suc m ≤′ n
 
-_≥′_ : Rel ℕ Level.zero
+_≥′_ : Rel ℕ 0ℓ
 m ≥′ n = n ≤′ m
 
-_>′_ : Rel ℕ Level.zero
+_>′_ : Rel ℕ 0ℓ
 m >′ n = n <′ m
 
 -- Another alternative definition of _≤_.
@@ -77,17 +77,14 @@ record _≤″_ (m n : ℕ) : Set where
 
 infix 4 _≤″_ _<″_ _≥″_ _>″_
 
-_<″_ : Rel ℕ Level.zero
+_<″_ : Rel ℕ 0ℓ
 m <″ n = suc m ≤″ n
 
-_≥″_ : Rel ℕ Level.zero
+_≥″_ : Rel ℕ 0ℓ
 m ≥″ n = n ≤″ m
 
-_>″_ : Rel ℕ Level.zero
+_>″_ : Rel ℕ 0ℓ
 m >″ n = n <″ m
-
-erase : ∀ {m n} → m ≤″ n → m ≤″ n
-erase (less-than-or-equal eq) = less-than-or-equal (TrustMe.erase eq)
 
 ------------------------------------------------------------------------
 -- Arithmetic
@@ -144,11 +141,11 @@ infix 4 _≟_ _≤?_
 
 _≟_ : Decidable {A = ℕ} _≡_
 zero  ≟ zero   = yes refl
-suc m ≟ suc n  with m ≟ n
-suc m ≟ suc .m | yes refl = yes refl
-suc m ≟ suc n  | no prf   = no (prf ∘ (λ p → subst (λ x → m ≡ pred x) p refl))
 zero  ≟ suc n  = no λ()
 suc m ≟ zero   = no λ()
+suc m ≟ suc n  with m ≟ n
+... | yes refl = yes refl
+... | no m≢n   = no (m≢n ∘ (λ p → subst (λ x → m ≡ pred x) p refl))
 
 ≤-pred : ∀ {m n} → suc m ≤ suc n → m ≤ n
 ≤-pred (s≤s m≤n) = m≤n
@@ -157,13 +154,13 @@ _≤?_ : Decidable _≤_
 zero  ≤? _     = yes z≤n
 suc m ≤? zero  = no λ()
 suc m ≤? suc n with m ≤? n
-...            | yes m≤n = yes (s≤s m≤n)
-...            | no  m≰n = no  (m≰n ∘ ≤-pred)
+... | yes m≤n = yes (s≤s m≤n)
+... | no  m≰n = no  (m≰n ∘ ≤-pred)
 
 -- A comparison view. Taken from "View from the left"
 -- (McBride/McKinna); details may differ.
 
-data Ordering : Rel ℕ Level.zero where
+data Ordering : Rel ℕ 0ℓ where
   less    : ∀ m k → Ordering m (suc (m + k))
   equal   : ∀ m   → Ordering m m
   greater : ∀ m k → Ordering (suc (m + k)) m
@@ -173,6 +170,6 @@ compare zero    zero    = equal   zero
 compare (suc m) zero    = greater zero m
 compare zero    (suc n) = less    zero n
 compare (suc m) (suc n) with compare m n
-compare (suc .m)           (suc .(suc m + k)) | less    m k = less    (suc m) k
-compare (suc .m)           (suc .m)           | equal   m   = equal   (suc m)
-compare (suc .(suc m + k)) (suc .m)           | greater m k = greater (suc m) k
+... | less    m k = less (suc m) k
+... | equal   m   = equal (suc m)
+... | greater n k = greater (suc n) k

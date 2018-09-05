@@ -6,9 +6,6 @@
 
 module Data.Maybe where
 
-open import Category.Functor
-open import Category.Monad
-open import Category.Monad.Identity
 open import Function
 open import Level
 open import Relation.Nullary

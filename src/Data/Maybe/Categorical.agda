@@ -10,7 +10,7 @@ open import Data.Maybe.Base
 open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
-open import Category.Monad.Identity
+import Function.Identity.Categorical as Id
 open import Function
 
 ------------------------------------------------------------------------
@@ -30,7 +30,7 @@ applicative = record
 ------------------------------------------------------------------------
 -- Maybe monad transformer
 
-monadT : ∀ {f M} → RawMonad {f} M → RawMonad (M ∘′ Maybe)
+monadT : ∀ {f} → RawMonadT {f} (_∘′ Maybe)
 monadT M = record
   { return = M.return ∘ just
   ; _>>=_  = λ m f → m M.>>= maybe f (M.return nothing)
@@ -41,7 +41,7 @@ monadT M = record
 -- Maybe monad
 
 monad : ∀ {f} → RawMonad {f} Maybe
-monad = monadT IdentityMonad
+monad = monadT Id.monad
 
 monadZero : ∀ {f} → RawMonadZero {f} Maybe
 monadZero = record

@@ -15,12 +15,12 @@ open BooleanAlgebra B
 open import Category.Applicative
 import Category.Applicative.Indexed as Applicative
 open import Category.Monad
-open import Category.Monad.Identity
 open import Data.Fin using (Fin)
 open import Data.Nat
 open import Data.Product using (_,_; proj₁; proj₂)
 open import Data.Vec as Vec using (Vec)
 import Data.Vec.Categorical as VecCat
+import Function.Identity.Categorical as IdCat
 open import Data.Vec.Properties using (lookup-map)
 open import Data.Vec.Relation.Pointwise.Extensional as PW
   using (Pointwise; module Pointwise; ext)
@@ -171,7 +171,7 @@ lift n = record
     using (pure; zipWith) renaming (_<$>_ to map)
 
   ⟦_⟧Id : ∀ {n} → Expr n → Vec Carrier n → Carrier
-  ⟦_⟧Id = Semantics.⟦_⟧ (RawMonad.rawIApplicative IdentityMonad)
+  ⟦_⟧Id = Semantics.⟦_⟧ IdCat.applicative
 
   ⟦_⟧Vec : ∀ {m n} → Expr n → Vec (Vec Carrier m) n → Vec Carrier m
   ⟦_⟧Vec = Semantics.⟦_⟧ VecCat.applicative

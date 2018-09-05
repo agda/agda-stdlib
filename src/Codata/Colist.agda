@@ -11,7 +11,9 @@ open import Data.Nat.Base
 open import Data.Product using (_×_ ; _,_)
 open import Data.Maybe using (Maybe ; nothing ; just)
 open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.List.NonEmpty using (List⁺ ; _∷_)
 open import Data.BoundedVec as BVec using (BoundedVec)
+open import Function
 
 open import Codata.Thunk
 open import Codata.Conat as Conat using (Conat ; zero ; suc)
@@ -32,7 +34,7 @@ module _ {ℓ} {A : Set ℓ} where
  replicate zero    a = []
  replicate (suc n) a = a ∷ λ where .force → replicate (n .force) a
 
- infixr 5 _++_
+ infixr 5 _++_ _⁺++_
  _++_ : ∀ {i} → Colist A i → Colist A i → Colist A i
  []       ++ ys = ys
  (x ∷ xs) ++ ys = x ∷ λ where .force → xs .force ++ ys
@@ -61,39 +63,52 @@ module _ {ℓ} {A : Set ℓ} where
  fromList []       = []
  fromList (x ∷ xs) = x ∷ λ where .force → fromList xs
 
+ _⁺++_ : ∀ {i} → List⁺ A → Thunk (Colist A) i → Colist A i
+ (x ∷ xs) ⁺++ ys = x ∷ λ where .force → fromList xs ++ ys .force
+
  fromStream : ∀ {i} → Stream A i → Colist A i
  fromStream = cotake Conat.infinity
 
 module _ {a b} {A : Set a} {B : Set b} where
 
- map : ∀ (f : A → B) → ∀ {i} → Colist A i → Colist B i
+ map : ∀ {i} (f : A → B) → Colist A i → Colist B i
  map f []       = []
  map f (a ∷ as) = f a ∷ λ where .force → map f (as .force)
 
- unfold : (A → Maybe (A × B)) → A → ∀ {i} → Colist B i
+ unfold :  ∀ {i} → (A → Maybe (A × B)) → A → Colist B i
  unfold next seed with next seed
  ... | nothing          = []
  ... | just (seed′ , b) = b ∷ λ where .force → unfold next seed′
 
- scanl : (B → A → B) → B → ∀ {i} → Colist A i → Colist B i
+ scanl : ∀ {i} → (B → A → B) → B → Colist A i → Colist B i
  scanl c n []       = n ∷ λ where .force → []
  scanl c n (a ∷ as) = n ∷ λ where .force → scanl c (c n a) (as .force)
 
 module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
- zipWith : (A → B → C) → ∀ {i} → Colist A i → Colist B i → Colist C i
+ zipWith : ∀ {i} → (A → B → C) → Colist A i → Colist B i → Colist C i
  zipWith f []       bs       = []
  zipWith f as       []       = []
  zipWith f (a ∷ as) (b ∷ bs) =
    f a b ∷ λ where .force → zipWith f (as .force) (bs .force)
 
+module _ {a b} {A : Set a} {B : Set b} where
+
+  ap : ∀ {i} → Colist (A → B) i → Colist A i → Colist B i
+  ap = zipWith _$′_
 
 ------------------------------------------------------------------------
 -- Legacy
 
-open import Coinduction
+open import Codata.Musical.Notation using (♭; ♯_)
 import Codata.Musical.Colist as M
 
-fromMusical : ∀ {a} {A : Set a} → M.Colist A → ∀ {i} → Colist A i
-fromMusical M.[]       = []
-fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
+module _ {a} {A : Set a} where
+
+  fromMusical : ∀ {i} → M.Colist A → Colist A i
+  fromMusical M.[]       = []
+  fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
+
+  toMusical : Colist A ∞ → M.Colist A
+  toMusical []       = M.[]
+  toMusical (x ∷ xs) = x M.∷ ♯ toMusical (xs .force)

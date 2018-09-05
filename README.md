@@ -59,3 +59,21 @@ If you're using a development version of Agda rather than the latest official re
 you should use the `experimental` branch of the standard library rather than `master`.
 The `experimental` branch contains non-backwards compatible patches for upcoming
 changes to the language.
+
+## Type-checking with the `--safe` flag
+
+After the next full release of Agda, most of the library will be able to
+be type-checked with the `--safe` flag. Only the following modules are
+not compatible:
+```
+  Data.Char.Unsafe
+  Data.Float.Unsafe
+  Data.Nat.Unsafe
+  Data.Nat.DivMod.Unsafe
+  Data.String.Unsafe
+  Data.Word.Unsafe
+  IO
+  IO.Primitives
+  Reflection
+  Relation.Binary.PropositionalEquality.TrustMe
+```

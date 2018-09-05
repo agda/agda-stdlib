@@ -6,7 +6,7 @@
 
 module Codata.Musical.Stream where
 
-open import Coinduction
+open import Codata.Musical.Notation
 open import Codata.Musical.Colist using (Colist; []; _∷_)
 open import Data.Vec    using (Vec;    []; _∷_)
 open import Data.Nat.Base using (ℕ; zero; suc)
@@ -23,8 +23,9 @@ data Stream {a} (A : Set a) : Set a where
 
 {-# FOREIGN GHC
   data AgdaStream a = Cons a (MAlonzo.RTE.Inf (AgdaStream a))
+  type AgdaStream' l a = AgdaStream a
   #-}
-{-# COMPILE GHC Stream = data AgdaStream (Cons) #-}
+{-# COMPILE GHC Stream = data AgdaStream' (Cons) #-}
 
 ------------------------------------------------------------------------
 -- Some operations
