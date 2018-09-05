@@ -418,7 +418,12 @@ Other minor additions
   ∣n-n∣≡0         : ∣ n - n ∣ ≡ 0
   ∣n-n+m∣≡m       : ∣ n - n + m ∣ ≡ m
   ∣n+m-n+o∣≡∣m-o| : ∣ n + m - n + o ∣ ≡ ∣ m - o ∣
+  m≤n⇒∣n-m∣≡n∸m   : m ≤ n → ∣ n - m ∣ ≡ n ∸ m
   ∣-∣-comm        : Commutative ∣_-_∣
+  ∣n-m∣-case      : (∣ n - m ∣ ≡ n ∸ m) ⊎ (∣ n - m ∣ ≡ m ∸ n)
+  *-distribˡ-∣-∣  : _*_ DistributesOverˡ ∣_-_∣
+  *-distribʳ-∣-∣  : _*_ DistributesOverʳ ∣_-_∣
+  *-distrib-∣-∣   : _*_ DistributesOver ∣_-_∣
   ```
 
 * Added new function to `Data.String.Base`:

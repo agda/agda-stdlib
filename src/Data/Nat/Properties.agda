@@ -1153,11 +1153,52 @@ n≡m⇒∣n-m∣≡0 {suc n} refl = n≡m⇒∣n-m∣≡0 {n} refl
 ∣n+m-n+o∣≡∣m-o| zero    m o = refl
 ∣n+m-n+o∣≡∣m-o| (suc n) m o = ∣n+m-n+o∣≡∣m-o| n m o
 
+m≤n⇒∣n-m∣≡n∸m : ∀ {n m} → m ≤ n → ∣ n - m ∣ ≡ n ∸ m
+m≤n⇒∣n-m∣≡n∸m {zero}  z≤n       = refl
+m≤n⇒∣n-m∣≡n∸m {suc n} z≤n       = refl
+m≤n⇒∣n-m∣≡n∸m         (s≤s m≤n) = m≤n⇒∣n-m∣≡n∸m m≤n
+
 ∣-∣-comm : Commutative ∣_-_∣
 ∣-∣-comm zero    zero    = refl
 ∣-∣-comm zero    (suc m) = refl
 ∣-∣-comm (suc n) zero    = refl
 ∣-∣-comm (suc n) (suc m) = ∣-∣-comm n m
+
+∣n-m∣-case : ∀ m n → (∣ n - m ∣ ≡ n ∸ m) ⊎ (∣ n - m ∣ ≡ m ∸ n)
+∣n-m∣-case m n with ≤-total m n
+... | inj₁ m≤n = inj₁ $ m≤n⇒∣n-m∣≡n∸m m≤n
+... | inj₂ n≤m = inj₂ $ begin
+  ∣ n - m ∣ ≡⟨ ∣-∣-comm n m ⟩
+  ∣ m - n ∣ ≡⟨ m≤n⇒∣n-m∣≡n∸m n≤m ⟩
+  m ∸ n     ∎
+
+private
+
+  *-distribˡ-∣-∣-aux : ∀ a m n → m ≤ n → a * ∣ n - m ∣ ≡ ∣ a * n - a * m ∣
+  *-distribˡ-∣-∣-aux a m n m≤n = begin
+    a * ∣ n - m ∣     ≡⟨ cong (a *_) (m≤n⇒∣n-m∣≡n∸m m≤n) ⟩
+    a * (n ∸ m)       ≡⟨ *-distribˡ-∸ a n m ⟩
+    a * n ∸ a * m     ≡⟨ sym $′ m≤n⇒∣n-m∣≡n∸m (*-monoʳ-≤ a m≤n) ⟩
+    ∣ a * n - a * m ∣ ∎
+
+*-distribˡ-∣-∣ : _*_ DistributesOverˡ ∣_-_∣
+*-distribˡ-∣-∣ a m n with ≤-total m n
+... | inj₁ m≤n = begin
+  a * ∣ m - n ∣     ≡⟨ cong (a *_) (∣-∣-comm m n) ⟩
+  a * ∣ n - m ∣     ≡⟨ *-distribˡ-∣-∣-aux a m n m≤n ⟩
+  ∣ a * n - a * m ∣ ≡⟨ ∣-∣-comm (a * n) (a * m) ⟩
+  ∣ a * m - a * n ∣ ∎
+... | inj₂ n≤m = *-distribˡ-∣-∣-aux a n m n≤m
+
+*-distribʳ-∣-∣ : _*_ DistributesOverʳ ∣_-_∣
+*-distribʳ-∣-∣ a m n = begin
+  ∣ m - n ∣ * a     ≡⟨ *-comm ∣ m - n ∣ a ⟩
+  a * ∣ m - n ∣     ≡⟨ *-distribˡ-∣-∣ a m n ⟩
+  ∣ a * m - a * n ∣ ≡⟨ cong₂ ∣_-_∣ (*-comm a m) (*-comm a n) ⟩
+  ∣ m * a - n * a ∣ ∎
+
+*-distrib-∣-∣ : _*_ DistributesOver ∣_-_∣
+*-distrib-∣-∣ = *-distribˡ-∣-∣ , *-distribʳ-∣-∣
 
 ------------------------------------------------------------------------
 -- Properties of ⌊_/2⌋
