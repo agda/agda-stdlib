@@ -5,7 +5,7 @@
 -- commutativity
 ------------------------------------------------------------------------
 
-open import Relation.Binary using (Setoid)
+open import Relation.Binary using (Rel; Setoid; Substitutive; Symmetric; Total)
 
 module Algebra.FunctionProperties.Consequences
   {a ℓ} (S : Setoid a ℓ) where
@@ -145,6 +145,14 @@ comm+distrʳ⇒distrˡ {_•_} {_◦_} cong comm distrˡ x y z = begin
   (y • x) ◦ (z • x) ≈⟨ cong (comm y x) (comm z x) ⟩
   (x • y) ◦ (x • z) ∎
 
+comm⇒sym[distribˡ] : ∀ {_•_ _◦_} → Congruent₂ _•_ → Commutative _◦_ →
+                     ∀ x → Symmetric (λ y z → (x • (y ◦ z)) ≈ ((x • y) ◦ (x • z)))
+comm⇒sym[distribˡ] {_•_} {_◦_} •-cong₂ ◦-comm x {y} {z} prf = begin
+  x • (z ◦ y)       ≈⟨ •-cong₂ refl (◦-comm z y) ⟩
+  x • (y ◦ z)       ≈⟨ prf ⟩
+  (x • y) ◦ (x • z) ≈⟨ ◦-comm (x • y) (x • z) ⟩
+  (x • z) ◦ (x • y) ∎
+
 ------------------------------------------------------------------------
 -- Cancellativity
 
@@ -171,3 +179,19 @@ sel⇒idem : ∀ {_•_} → Selective _•_ → Idempotent _•_
 sel⇒idem sel x with sel x x
 ... | inj₁ x•x≈x = x•x≈x
 ... | inj₂ x•x≈x = x•x≈x
+
+------------------------------------------------------------------------
+-- Without Loss of Generality
+
+import Relation.Binary.Consequences as Bin
+
+module _ {p} {f : Op₂ Carrier} {P : Carrier → Set p}
+         (≈-subst : Substitutive _≈_ p) (f-comm : Commutative f) where
+
+  subst+comm⇒sym : Symmetric (λ a b → P (f a b))
+  subst+comm⇒sym = ≈-subst P (f-comm _ _)
+
+  wlog : ∀ {r} {_R_ : Rel _ r} → Total _R_ →
+         (∀ a b → a R b → P (f a b)) →
+         ∀ a b → P (f a b)
+  wlog r-total = Bin.wlog r-total subst+comm⇒sym
