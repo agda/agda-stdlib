@@ -9,6 +9,7 @@ open import Data.Unit.Base using (⊤)
 open import Data.Empty
 open import Relation.Nullary
 open import Relation.Binary.Core
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 infixr 6 _∧_
 infixr 5 _∨_ _xor_

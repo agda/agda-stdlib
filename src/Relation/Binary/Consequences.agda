@@ -6,7 +6,7 @@
 
 module Relation.Binary.Consequences where
 
-open import Relation.Binary.Core hiding (refl)
+open import Relation.Binary.Core
 open import Relation.Nullary using (yes; no)
 open import Relation.Unary using (∁)
 open import Function using (_∘_; flip)

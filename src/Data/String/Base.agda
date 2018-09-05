@@ -11,7 +11,7 @@ open import Data.List.Base as List using (List)
 open import Data.List.NonEmpty as NE using (List⁺)
 open import Agda.Builtin.Char using (Char)
 open import Function
-open import Relation.Binary.Core using (_≡_)
+open import Relation.Binary.PropositionalEquality using (_≡_)
 
 ------------------------------------------------------------------------
 -- From Agda.Builtin

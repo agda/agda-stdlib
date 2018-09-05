@@ -13,7 +13,7 @@ open import Data.Sum using (_⊎_; [_,_])
 open import Function
 open import Level
 open import Relation.Nullary
-open import Relation.Binary.Core using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 ------------------------------------------------------------------------
 -- Unary relations
