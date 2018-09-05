@@ -414,11 +414,12 @@ Other minor additions
   ^-*-assoc    : (m ^ n) ^ p ≡ m ^ (n * p)
 
   n≡m⇒∣n-m∣≡0     : n ≡ m → ∣ n - m ∣ ≡ 0
+  m≤n⇒∣n-m∣≡n∸m   : m ≤ n → ∣ n - m ∣ ≡ n ∸ m
   ∣n-m∣≡0⇒n≡m     : ∣ n - m ∣ ≡ 0 → n ≡ m
+  ∣n-m∣≡n∸m⇒m≤n   : ∣ n - m ∣ ≡ n ∸ m → m ≤ n
   ∣n-n∣≡0         : ∣ n - n ∣ ≡ 0
   ∣n-n+m∣≡m       : ∣ n - n + m ∣ ≡ m
   ∣n+m-n+o∣≡∣m-o| : ∣ n + m - n + o ∣ ≡ ∣ m - o ∣
-  m≤n⇒∣n-m∣≡n∸m   : m ≤ n → ∣ n - m ∣ ≡ n ∸ m
   n∸m≤∣n-m∣       : n ∸ m ≤ ∣ n - m ∣
   ∣n-m∣≤n⊔m       : ∣ n - m ∣ ≤ n ⊔ m
   ∣-∣-comm        : Commutative ∣_-_∣

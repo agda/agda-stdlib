@@ -1136,11 +1136,22 @@ n≡m⇒∣n-m∣≡0 : ∀ {n m} → n ≡ m → ∣ n - m ∣ ≡ 0
 n≡m⇒∣n-m∣≡0 {zero}  refl = refl
 n≡m⇒∣n-m∣≡0 {suc n} refl = n≡m⇒∣n-m∣≡0 {n} refl
 
+m≤n⇒∣n-m∣≡n∸m : ∀ {n m} → m ≤ n → ∣ n - m ∣ ≡ n ∸ m
+m≤n⇒∣n-m∣≡n∸m {zero}  z≤n       = refl
+m≤n⇒∣n-m∣≡n∸m {suc n} z≤n       = refl
+m≤n⇒∣n-m∣≡n∸m         (s≤s m≤n) = m≤n⇒∣n-m∣≡n∸m m≤n
+
 ∣n-m∣≡0⇒n≡m : ∀ {n m} → ∣ n - m ∣ ≡ 0 → n ≡ m
 ∣n-m∣≡0⇒n≡m {zero}  {zero}  eq = refl
 ∣n-m∣≡0⇒n≡m {zero}  {suc m} ()
 ∣n-m∣≡0⇒n≡m {suc n} {zero}  ()
 ∣n-m∣≡0⇒n≡m {suc n} {suc m} eq = cong suc (∣n-m∣≡0⇒n≡m eq)
+
+∣n-m∣≡n∸m⇒m≤n : ∀ {n m} → ∣ n - m ∣ ≡ n ∸ m → m ≤ n
+∣n-m∣≡n∸m⇒m≤n {zero}  {zero}  eq = z≤n
+∣n-m∣≡n∸m⇒m≤n {zero}  {suc m} ()
+∣n-m∣≡n∸m⇒m≤n {suc n} {zero}  eq = z≤n
+∣n-m∣≡n∸m⇒m≤n {suc n} {suc m} eq = s≤s (∣n-m∣≡n∸m⇒m≤n eq)
 
 ∣n-n∣≡0 : ∀ n → ∣ n - n ∣ ≡ 0
 ∣n-n∣≡0 n = n≡m⇒∣n-m∣≡0 {n} refl
@@ -1152,11 +1163,6 @@ n≡m⇒∣n-m∣≡0 {suc n} refl = n≡m⇒∣n-m∣≡0 {n} refl
 ∣n+m-n+o∣≡∣m-o| : ∀ n m o → ∣ n + m - n + o ∣ ≡ ∣ m - o ∣
 ∣n+m-n+o∣≡∣m-o| zero    m o = refl
 ∣n+m-n+o∣≡∣m-o| (suc n) m o = ∣n+m-n+o∣≡∣m-o| n m o
-
-m≤n⇒∣n-m∣≡n∸m : ∀ {n m} → m ≤ n → ∣ n - m ∣ ≡ n ∸ m
-m≤n⇒∣n-m∣≡n∸m {zero}  z≤n       = refl
-m≤n⇒∣n-m∣≡n∸m {suc n} z≤n       = refl
-m≤n⇒∣n-m∣≡n∸m         (s≤s m≤n) = m≤n⇒∣n-m∣≡n∸m m≤n
 
 n∸m≤∣n-m∣ : ∀ n m → n ∸ m ≤ ∣ n - m ∣
 n∸m≤∣n-m∣ n m with ≤-total m n
