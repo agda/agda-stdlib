@@ -1,3 +1,10 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Relations between properties of functions, such as associativity and
+-- commutativity (specialised to propositional equality)
+------------------------------------------------------------------------
+
 module Algebra.FunctionProperties.Consequences.Propositional
        {a} (A : Set a) where
 
