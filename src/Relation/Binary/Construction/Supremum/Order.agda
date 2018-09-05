@@ -5,7 +5,7 @@
 ------------------------------------------------------------------------
 open import Relation.Binary
 
-module Relation.Binary.Construction.Free.Supremum.Order
+module Relation.Binary.Construction.Supremum.Order
        {a r} {A : Set a} (_≤_ : Rel A r) where
 
 open import Level
@@ -14,7 +14,7 @@ open import Function.Equivalence using (equivalence)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 import Relation.Binary.PropositionalEquality as P
-open import Relation.Binary.Construction.Free.Supremum
+open import Relation.Binary.Construction.Supremum
 
 data _≤⁺_ : Rel (A ⁺) r where
   [_]  : {k l : A} → k ≤ l → [ k ] ≤⁺ [ l ]
@@ -25,7 +25,7 @@ data _≤⁺_ : Rel (A ⁺) r where
 
 module _ {e} {_≈_ : Rel A e} where
 
-  open import Relation.Binary.Construction.Free.Supremum.Pointwise _≈_
+  open import Relation.Binary.Construction.Supremum.Pointwise _≈_
 
   ≤⁺-reflexive : (_≈_ ⇒ _≤_) → (_≈⁺_ ⇒ _≤⁺_)
   ≤⁺-reflexive ≤-reflexive [ p ] = [ ≤-reflexive p ]
@@ -58,7 +58,7 @@ module _ {e} {_≈_ : Rel A e} where
 
 module _ {e} {_≈_ : Rel A e} where
 
-  open import Relation.Binary.Construction.Free.Supremum.Pointwise _≈_
+  open import Relation.Binary.Construction.Supremum.Pointwise _≈_
 
   ≤⁺-isPreorder : IsPreorder _≈_ _≤_ → IsPreorder _≈⁺_ _≤⁺_
   ≤⁺-isPreorder ≤-isPreorder = record

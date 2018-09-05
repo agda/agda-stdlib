@@ -4,10 +4,10 @@
 -- Freely adding Extrema to any Set
 ------------------------------------------------------------------------
 
-module Relation.Binary.Construction.Free.Extrema where
+module Relation.Binary.Construction.Extrema where
 
-open import Relation.Binary.Construction.Free.Infimum as Infimum   using (_₋)
-open import Relation.Binary.Construction.Free.Supremum as Supremum using (_⁺)
+open import Relation.Binary.Construction.Infimum as Infimum   using (_₋)
+open import Relation.Binary.Construction.Supremum as Supremum using (_⁺)
 
 _± : ∀ {a} → Set a → Set a
 A ± = A ₋ ⁺

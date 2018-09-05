@@ -6,19 +6,19 @@
 
 open import Relation.Binary
 
-module Relation.Binary.Construction.Free.Extrema.StrictOrder
+module Relation.Binary.Construction.Extrema.StrictOrder
        {a r} {A : Set a} (_<_ : Rel A r) where
 
 open import Level
 open import Function
 open import Relation.Nullary
 
-import Relation.Binary.Construction.Free.Infimum as Inf
-import Relation.Binary.Construction.Free.Supremum as Sup
-open import Relation.Binary.Construction.Free.Extrema
+import Relation.Binary.Construction.Infimum as Inf
+import Relation.Binary.Construction.Supremum as Sup
+open import Relation.Binary.Construction.Extrema
 
-import Relation.Binary.Construction.Free.Infimum.StrictOrder _<_ as Inf'
-open import Relation.Binary.Construction.Free.Supremum.StrictOrder Inf'._<₋_ as Sup'
+import Relation.Binary.Construction.Infimum.StrictOrder _<_ as Inf'
+open import Relation.Binary.Construction.Supremum.StrictOrder Inf'._<₋_ as Sup'
   renaming (_<⁺_ to _<±_)
   using ()
   public
@@ -45,7 +45,7 @@ pattern [_]<⊤⁺ k = Sup'.[ Inf.[ k ] ]<⊤⁺
 
 module _ {e} {_≈_ : Rel A e} where
 
-  open import Relation.Binary.Construction.Free.Extrema.Pointwise _≈_ as IP
+  open import Relation.Binary.Construction.Extrema.Pointwise _≈_ as IP
     hiding ([_]⁻¹)
 
   <±-tri : Trichotomous _≈_ _<_ → Trichotomous _≈±_ _<±_
@@ -79,7 +79,7 @@ module _ {e} {_≈_ : Rel A e} where
 
 module _ {r} {_≤_ : Rel A r} where
 
-  open import Relation.Binary.Construction.Free.Extrema.Order _≤_
+  open import Relation.Binary.Construction.Extrema.Order _≤_
 
   <±-transʳ : Trans _≤_ _<_ _<_ → Trans _≤±_ _<±_ _<±_
   <±-transʳ = Sup'.<⁺-transʳ ∘′ Inf'.<₋-transʳ

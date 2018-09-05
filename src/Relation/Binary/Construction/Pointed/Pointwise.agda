@@ -6,7 +6,7 @@
 
 open import Relation.Binary
 
-module Relation.Binary.Construction.Free.Pointed.Pointwise
+module Relation.Binary.Construction.Pointed.Pointwise
        {a e} {A : Set a} (_≈_ : Rel A e) where
 
 open import Function
@@ -14,7 +14,7 @@ open import Function.Equivalence using (equivalence)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 import Relation.Binary.PropositionalEquality as P
-open import Relation.Binary.Construction.Free.Pointed
+open import Relation.Binary.Construction.Pointed
 
 data _≈∙_ : Rel (Pointed A) e where
   ∙≈∙ :                     ∙     ≈∙ ∙

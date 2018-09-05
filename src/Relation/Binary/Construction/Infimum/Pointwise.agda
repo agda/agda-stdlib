@@ -6,10 +6,10 @@
 
 open import Relation.Binary
 
-module Relation.Binary.Construction.Free.Infimum.Pointwise
+module Relation.Binary.Construction.Infimum.Pointwise
        {a e} {A : Set a} (_≈_ : Rel A e) where
 
-open import Relation.Binary.Construction.Free.Pointed.Pointwise _≈_
+open import Relation.Binary.Construction.Pointed.Pointwise _≈_
   renaming (_≈∙_ to _≈₋_; ∙≈∙ to ⊥⁺≈⊥⁺
            ; ≈∙-refl to ≈₋-refl
            ; ≈∙-sym to ≈₋-sym

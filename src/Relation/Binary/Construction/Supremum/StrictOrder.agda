@@ -6,7 +6,7 @@
 
 open import Relation.Binary
 
-module Relation.Binary.Construction.Free.Supremum.StrictOrder
+module Relation.Binary.Construction.Supremum.StrictOrder
        {a r} {A : Set a} (_<_ : Rel A r) where
 
 open import Level
@@ -16,7 +16,7 @@ open import Function.Equivalence using (equivalence)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 import Relation.Binary.PropositionalEquality as P
-open import Relation.Binary.Construction.Free.Supremum
+open import Relation.Binary.Construction.Supremum
 
 data _<⁺_ : Rel (A ⁺) r where
   [_]  : {k l : A} → k < l → [ k ] <⁺ [ l ]
@@ -45,7 +45,7 @@ data _<⁺_ : Rel (A ⁺) r where
 
 module _ {e} {_≈_ : Rel A e} where
 
-  open import Relation.Binary.Construction.Free.Supremum.Pointwise _≈_ as IP
+  open import Relation.Binary.Construction.Supremum.Pointwise _≈_ as IP
     hiding ([_]⁻¹)
 
   <⁺-tri : Trichotomous _≈_ _<_ → Trichotomous _≈⁺_ _<⁺_
@@ -100,7 +100,7 @@ module _ {e} {_≈_ : Rel A e} where
 
 module _ {r} {_≤_ : Rel A r} where
 
-  open import Relation.Binary.Construction.Free.Supremum.Order _≤_
+  open import Relation.Binary.Construction.Supremum.Order _≤_
 
   <⁺-transʳ : Trans _≤_ _<_ _<_ → Trans _≤⁺_ _<⁺_ _<⁺_
   <⁺-transʳ <-transʳ [ p ] [ q ]    = [ <-transʳ p q ]

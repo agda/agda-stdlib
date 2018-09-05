@@ -5,7 +5,7 @@
 ------------------------------------------------------------------------
 open import Relation.Binary
 
-module Relation.Binary.Construction.Free.Infimum.Order
+module Relation.Binary.Construction.Infimum.Order
        {a r} {A : Set a} (_≤_ : Rel A r) where
 
 open import Level
@@ -14,7 +14,7 @@ open import Function.Equivalence using (equivalence)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 import Relation.Binary.PropositionalEquality as P
-open import Relation.Binary.Construction.Free.Infimum
+open import Relation.Binary.Construction.Infimum
 
 infix 5 _≤₋_
 data _≤₋_ : Rel (A ₋) r where
@@ -26,7 +26,7 @@ data _≤₋_ : Rel (A ₋) r where
 
 module _ {e} {_≈_ : Rel A e} where
 
-  open import Relation.Binary.Construction.Free.Infimum.Pointwise _≈_
+  open import Relation.Binary.Construction.Infimum.Pointwise _≈_
 
   ≤₋-reflexive : (_≈_ ⇒ _≤_) → (_≈₋_ ⇒ _≤₋_)
   ≤₋-reflexive ≤-reflexive ⊥⁺≈⊥⁺ = ⊥⁺≤ ⊥⁺
@@ -59,7 +59,7 @@ module _ {e} {_≈_ : Rel A e} where
 
 module _ {e} {_≈_ : Rel A e} where
 
-  open import Relation.Binary.Construction.Free.Infimum.Pointwise _≈_
+  open import Relation.Binary.Construction.Infimum.Pointwise _≈_
 
   ≤₋-isPreorder : IsPreorder _≈_ _≤_ → IsPreorder _≈₋_ _≤₋_
   ≤₋-isPreorder ≤-isPreorder = record

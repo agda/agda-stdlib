@@ -6,7 +6,7 @@
 
 open import Relation.Binary
 
-module Relation.Binary.Construction.Free.Extrema.Pointwise
+module Relation.Binary.Construction.Extrema.Pointwise
        {a e} {A : Set a} (_≈_ : Rel A e) where
 
 open import Function
@@ -15,9 +15,9 @@ open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 import Relation.Binary.PropositionalEquality as P
 
-open import Relation.Binary.Construction.Free.Extrema
-import Relation.Binary.Construction.Free.Infimum.Pointwise _≈_ as Inf
-open import Relation.Binary.Construction.Free.Supremum.Pointwise Inf._≈₋_ as Sup
+open import Relation.Binary.Construction.Extrema
+import Relation.Binary.Construction.Infimum.Pointwise _≈_ as Inf
+open import Relation.Binary.Construction.Supremum.Pointwise Inf._≈₋_ as Sup
   renaming (_≈⁺_ to _≈±_)
   using ()
   public

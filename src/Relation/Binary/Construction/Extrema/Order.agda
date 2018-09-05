@@ -5,17 +5,17 @@
 ------------------------------------------------------------------------
 open import Relation.Binary
 
-module Relation.Binary.Construction.Free.Extrema.Order
+module Relation.Binary.Construction.Extrema.Order
        {a r} {A : Set a} (_≤_ : Rel A r) where
 
-open import Relation.Binary.Construction.Free.Extrema
+open import Relation.Binary.Construction.Extrema
 
 open import Function
 
-import Relation.Binary.Construction.Free.Infimum as Inf
-import Relation.Binary.Construction.Free.Supremum as Sup
-import Relation.Binary.Construction.Free.Infimum.Order _≤_ as Inf'
-open import Relation.Binary.Construction.Free.Supremum.Order Inf'._≤₋_ as Sup'
+import Relation.Binary.Construction.Infimum as Inf
+import Relation.Binary.Construction.Supremum as Sup
+import Relation.Binary.Construction.Infimum.Order _≤_ as Inf'
+open import Relation.Binary.Construction.Supremum.Order Inf'._≤₋_ as Sup'
   renaming (_≤⁺_ to _≤±_)
   using ()
   public
@@ -42,7 +42,7 @@ _≤⊤⁺ : ∀ k → k ≤± ⊤⁺
 
 module _ {e} {_≈_ : Rel A e} where
 
-  open import Relation.Binary.Construction.Free.Extrema.Pointwise _≈_
+  open import Relation.Binary.Construction.Extrema.Pointwise _≈_
 
   ≤±-reflexive : (_≈_ ⇒ _≤_) → (_≈±_ ⇒ _≤±_)
   ≤±-reflexive = Sup'.≤⁺-reflexive ∘′ Inf'.≤₋-reflexive
@@ -70,7 +70,7 @@ module _ {e} {_≈_ : Rel A e} where
 
 module _ {e} {_≈_ : Rel A e} where
 
-  open import Relation.Binary.Construction.Free.Extrema.Pointwise _≈_
+  open import Relation.Binary.Construction.Extrema.Pointwise _≈_
 
   ≤±-isPreorder : IsPreorder _≈_ _≤_ → IsPreorder _≈±_ _≤±_
   ≤±-isPreorder = Sup'.≤⁺-isPreorder ∘′ Inf'.≤₋-isPreorder
