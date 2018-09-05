@@ -48,7 +48,6 @@ Non-backwards compatible changes
   Relation.Binary.PropositionalEquality.TrustMe
   ```
 
-
 #### New codata library
 
 * A new `Codata` library using copatterns and sized types rather
@@ -255,6 +254,10 @@ Other major changes
 * Added new module `Data.List.Relation.Sublist.Inductive` which gives
   an inductive definition of the sublist relation (i.e. order-preserving embeddings).
   We also provide a solver for this order in `Data.List.Relation.Sublist.Inductive.Solver`.
+
+* Added new module `Relation.Binary.Construction.Converse`. This is very similar
+  to the existing module `Relation.Binary.Flip` in that it flips the relation. However
+  unlike the existing module, the new module leaves the underlying equality unchanged.
 
 * Added new modules `Relation.Unary.Closure.(Preorder/StrictPartialOrder)` providing
   closures of a predicate with respect to either a preorder or a strict partial order.
