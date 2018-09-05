@@ -218,9 +218,22 @@ Non-backwards compatible changes
 
 #### Overhaul of `Relation.Binary.Indexed` subtree
 
-* The record `IsEquivalence` in `Relation.Binary.Indexed.Homogeneous` has been
-  replaced by `IsIndexedEquivalence`. This implemented as a record encapsulating
-  indexed versions of the required properties, rather than an indexed equivalence.
+* The records `IsEquivalence` and `Setoid` in `Relation.Binary.Indexed` and
+  `Relation.Binary.Indexed.Homogeneous` have been deprecated in favour of
+  `IsIndexedEquivalence` and `IndexedSetoid`. This should significantly improve
+  code readability.
+
+* The record `IsIndexedEquivalence` in `Relation.Binary.Indexed.Homogeneous`
+  is now implemented as a record encapsulating indexed versions of the required
+  properties, unlike the old version which directly indexed equivalences.
+
+* In order to avoid dependency cycles, the `Setoid` record in `Relation.Binary`
+  no longer exports `indexedSetoid`.  Instead the corresponding indexed setoid can
+  be constructed using the new `trivialIndexedSetoid` function in
+  `Relation.Binary.Indexed`.
+
+* The function `_at_` in `Relation.Binary.Indexed` has been deprecated in favour
+  of `indexedSetoidAt` to make room for others such as `indexedPreorderAt`.
 
 #### Other
 
@@ -616,6 +629,22 @@ Other minor additions
   record IndexedSetoid   {i} (I : Set i) c ℓ     : Set (suc (i ⊔ c ⊔ ℓ))
   record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
   record IndexedPoset    {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
+  ```
+
+* Added new functions and records to `Relation.Binary.Indexed`:
+  ```agda
+  record IsIndexedPreorder  (_≈_ : Rel A ℓ₁) (_∼_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
+
+  trivialIsIndexedEquivalence : IsEquivalence _≈_ → IsIndexedEquivalence (λ (_ : I) → A) _≈_
+  trivialIsIndexedPreorder    : IsPreorder _≈_ _∼_ → IsIndexedPreorder (λ (_ : I) → A) _≈_ _∼_
+  trivialIndexedSetoid        : Setoid a ℓ → ∀ {I} → IndexedSetoid I a ℓ
+  trivialIndexedPreorder      : Preorder a ℓ₁ ℓ₂ → ∀ {I} → IndexedPreorder I a ℓ₁ ℓ₂
+
+  isIndexedEquivalenceAt : IsIndexedEquivalence A _≈_ → (x : I) → B.IsEquivalence (_≈_ {x})
+  isIndexedPreorderAt : IsIndexedPreorder A _≈_ _∼_ → (x : I) → B.IsPreorder (_≈_ {x}) _∼_
+  indexedSetoidAt   : IndexedSetoid I a ℓ → I → B.Setoid a ℓ
+  indexedPreorderAt : IndexedPreorder I a ℓ₁ ℓ₂ → I → B.Preorder a ℓ₁ ℓ₂
   ```
 
 * Added new proofs to `Relation.Binary.NonStrictToStrict`:

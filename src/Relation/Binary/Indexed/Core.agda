@@ -9,7 +9,6 @@
 
 module Relation.Binary.Indexed.Core where
 
-open import Function
 open import Level
 import Relation.Binary.Core as B
 import Relation.Binary.PropositionalEquality.Core as P
@@ -31,39 +30,19 @@ Rel A ℓ = REL A A ℓ
 ------------------------------------------------------------------------
 -- Simple properties of indexed binary relations
 
--- Reflexivity.
-
 Reflexive : ∀ {i a ℓ} {I : Set i} (A : I → Set a) → Rel A ℓ → Set _
 Reflexive _ _∼_ = ∀ {i} → B.Reflexive (_∼_ {i})
-
--- Symmetry.
 
 Symmetric : ∀ {i a ℓ} {I : Set i} (A : I → Set a) → Rel A ℓ → Set _
 Symmetric _ _∼_ = ∀ {i j} → B.Sym (_∼_ {i} {j}) _∼_
 
--- Transitivity.
-
 Transitive : ∀ {i a ℓ} {I : Set i} (A : I → Set a) → Rel A ℓ → Set _
 Transitive _ _∼_ = ∀ {i j k} → B.Trans _∼_ (_∼_ {j}) (_∼_ {i} {k})
 
-------------------------------------------------------------------------
--- Setoids
+-- Generalised implication.
 
-record IsEquivalence {i a ℓ} {I : Set i} (A : I → Set a)
-                     (_≈_ : Rel A ℓ) : Set (i ⊔ a ⊔ ℓ) where
-  field
-    refl  : Reflexive A _≈_
-    sym   : Symmetric A _≈_
-    trans : Transitive A _≈_
+infixr 4 _=[_]⇒_
 
-  reflexive : ∀ {i} → P._≡_ ⟨ B._⇒_ ⟩ _≈_ {i}
-  reflexive P.refl = refl
-
-record Setoid {i} (I : Set i) c ℓ : Set (suc (i ⊔ c ⊔ ℓ)) where
-  infix 4 _≈_
-  field
-    Carrier       : I → Set c
-    _≈_           : Rel Carrier ℓ
-    isEquivalence : IsEquivalence Carrier _≈_
-
-  open IsEquivalence isEquivalence public
+_=[_]⇒_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b} →
+          B.Rel A ℓ₁ → ((x : A) → B x) → Rel B ℓ₂ → Set _
+P =[ f ]⇒ Q = ∀ {i j} → P i j → Q (f i) (f j)
