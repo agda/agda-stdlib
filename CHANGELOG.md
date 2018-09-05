@@ -216,6 +216,12 @@ Non-backwards compatible changes
 
 * Refactored `Data.W` and `Codata.Musical.M` to use `Container`.
 
+#### Overhaul of `Relation.Binary.Indexed` subtree
+
+* The record `IsEquivalence` in `Relation.Binary.Indexed.Homogeneous` has been
+  replaced by `IsIndexedEquivalence`. This implemented as a record encapsulating
+  indexed versions of the required properties, rather than an indexed equivalence.
+
 #### Other
 
 * The `Data.List.Relation.Sublist` directory has been moved to
@@ -588,6 +594,26 @@ Other minor additions
   ```agda
   <-respʳ-≈ : _<_ Respectsʳ _≈_
   <-respˡ-≈ : _<_ Respectsˡ _≈_
+  ```
+
+* Added new types, functions and records to `Relation.Binary.Indexed.Homogeneous`:
+  ```agda
+  Implies _∼₁_ _∼₂_      = ∀ {i} → _∼₁_ B.⇒ (_∼₂_ {i})
+  Antisymmetric _≈_ _∼_  = ∀ {i} → B.Antisymmetric _≈_ (_∼_ {i})
+  Decidable _∼_          = ∀ {i} → B.Decidable (_∼_ {i})
+  Respects P _∼_         = ∀ {i} {x y : A i} → x ∼ y → P x → P y
+  Respectsˡ P _∼_        = ∀ {i} {x y z : A i} → x ∼ y → P x z → P y z
+  Respectsʳ P _∼_        = ∀ {i} {x y z : A i} → x ∼ y → P z x → P z y
+  Respects₂ P _∼_        = (Respectsʳ P _∼_) × (Respectsˡ P _∼_)
+  Lift _∼_ x y           = ∀ i → x i ∼ y i
+
+  record IsIndexedEquivalence  (_≈ᵢ_ : Rel A ℓ)                   : Set (i ⊔ a ⊔ ℓ)
+  record IsIndexedPreorder     (_≈ᵢ_ : Rel A ℓ₁) (_∼ᵢ_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsIndexedPartialOrder (_≈ᵢ_ : Rel A ℓ₁) (_≤ᵢ_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
+
+  record IndexedSetoid   {i} (I : Set i) c ℓ     : Set (suc (i ⊔ c ⊔ ℓ))
+  record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
+  record IndexedPoset    {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
   ```
 
 * Added new proofs to `Relation.Binary.NonStrictToStrict`:
