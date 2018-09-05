@@ -7,7 +7,7 @@
 module Codata.Musical.Colist where
 
 open import Category.Monad
-open import Coinduction
+open import Codata.Musical.Notation
 open import Codata.Musical.Conat using (Coℕ; zero; suc)
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.BoundedVec.Inefficient as BVec

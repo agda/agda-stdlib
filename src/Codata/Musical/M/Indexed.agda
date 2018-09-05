@@ -8,7 +8,7 @@
 module Codata.Musical.M.Indexed where
 
 open import Level
-open import Coinduction
+open import Codata.Musical.Notation
 open import Data.Product
 open import Data.Container.Indexed.Core
 open import Function

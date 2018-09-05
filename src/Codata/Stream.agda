@@ -85,7 +85,7 @@ module _ {ℓ} {A : Set ℓ} where
 ------------------------------------------------------------------------
 -- Legacy
 
-open import Coinduction using (♭; ♯_)
+open import Codata.Musical.Notation using (♭; ♯_)
 import Codata.Musical.Stream as M
 
 module _ {a} {A : Set a} where
