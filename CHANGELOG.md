@@ -419,6 +419,8 @@ Other minor additions
   ∣n-n+m∣≡m       : ∣ n - n + m ∣ ≡ m
   ∣n+m-n+o∣≡∣m-o| : ∣ n + m - n + o ∣ ≡ ∣ m - o ∣
   m≤n⇒∣n-m∣≡n∸m   : m ≤ n → ∣ n - m ∣ ≡ n ∸ m
+  n∸m≤∣n-m∣       : n ∸ m ≤ ∣ n - m ∣
+  ∣n-m∣≤n⊔m       : ∣ n - m ∣ ≤ n ⊔ m
   ∣-∣-comm        : Commutative ∣_-_∣
   ∣n-m∣-case      : (∣ n - m ∣ ≡ n ∸ m) ⊎ (∣ n - m ∣ ≡ m ∸ n)
   *-distribˡ-∣-∣  : _*_ DistributesOverˡ ∣_-_∣

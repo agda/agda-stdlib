@@ -1158,6 +1158,16 @@ m≤n⇒∣n-m∣≡n∸m {zero}  z≤n       = refl
 m≤n⇒∣n-m∣≡n∸m {suc n} z≤n       = refl
 m≤n⇒∣n-m∣≡n∸m         (s≤s m≤n) = m≤n⇒∣n-m∣≡n∸m m≤n
 
+n∸m≤∣n-m∣ : ∀ n m → n ∸ m ≤ ∣ n - m ∣
+n∸m≤∣n-m∣ n m with ≤-total m n
+... | inj₁ m≤n = subst (n ∸ m ≤_) (sym (m≤n⇒∣n-m∣≡n∸m m≤n)) ≤-refl
+... | inj₂ n≤m = subst (_≤ ∣ n - m ∣) (sym (m≤n⇒m∸n≡0 n≤m)) z≤n
+
+∣n-m∣≤n⊔m : ∀ n m → ∣ n - m ∣ ≤ n ⊔ m
+∣n-m∣≤n⊔m zero    m       = ≤-refl
+∣n-m∣≤n⊔m (suc n) zero    = ≤-refl
+∣n-m∣≤n⊔m (suc n) (suc m) = ≤-step (∣n-m∣≤n⊔m n m)
+
 ∣-∣-comm : Commutative ∣_-_∣
 ∣-∣-comm zero    zero    = refl
 ∣-∣-comm zero    (suc m) = refl
