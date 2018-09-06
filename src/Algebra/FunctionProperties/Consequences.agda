@@ -127,6 +127,24 @@ assoc+id+invˡ⇒invʳ-unique {_•_} {_⁻¹} {ε} cong assoc id invˡ x y eq =
     x ⁻¹             ∎
 
 ------------------------------------------------------------------------
+-- Involution of inverses
+
+assoc+id+invʳ⇒invʳ-involutive : ∀ {_•_ _⁻¹ ε} →
+                                  Congruent₂ _•_ → Associative _•_ →
+                                  Identity ε _•_ → RightInverse ε _⁻¹ _•_ →
+                                  Involutive _⁻¹
+assoc+id+invʳ⇒invʳ-involutive {_•_} {_⁻¹} {ε} cong assoc id invʳ x =
+  sym (assoc+id+invʳ⇒invˡ-unique cong assoc id invʳ x (x ⁻¹) (invʳ _))
+
+assoc+id+invˡ⇒invˡ-involutive : ∀ {_•_ _⁻¹ ε} →
+                                  Congruent₂ _•_ → Associative _•_ →
+                                  Identity ε _•_ → LeftInverse ε _⁻¹ _•_ →
+                                  Involutive _⁻¹
+assoc+id+invˡ⇒invˡ-involutive {_•_} {_⁻¹} {ε} cong assoc id invˡ x =
+  sym (assoc+id+invˡ⇒invʳ-unique cong assoc id invˡ (x ⁻¹) x (invˡ _))
+
+
+------------------------------------------------------------------------
 -- Distributivity
 
 comm+distrˡ⇒distrʳ : ∀ {_•_ _◦_} → Congruent₂ _◦_ → Commutative _•_ →
@@ -163,6 +181,36 @@ comm+cancelʳ⇒cancelˡ {_•_} comm cancelʳ x {y} {z} eq = cancelʳ y z (begi
   x • y ≈⟨ eq ⟩
   x • z ≈⟨ comm x z ⟩
   z • x ∎)
+
+idˡ+invˡ+assoc⇒cancelˡ : ∀ {_•_ _⁻¹ ε} → Congruent₂ _•_ →
+                           LeftIdentity ε _•_ →
+                           LeftInverse ε _⁻¹ _•_ →
+                           Associative _•_ →
+                           LeftCancellative _•_
+idˡ+invˡ+assoc⇒cancelˡ {_•_} {_⁻¹} {ε} cong idˡ invˡ assoc x {y} {z} eq = begin
+  y                ≈⟨ sym (idˡ _) ⟩
+  ε • y            ≈⟨ cong (sym (invˡ _)) refl ⟩
+  ((x ⁻¹) • x) • y ≈⟨ assoc _ _ _ ⟩
+  (x ⁻¹) • (x • y) ≈⟨ cong refl eq ⟩
+  (x ⁻¹) • (x • z) ≈⟨ sym (assoc _ _ _) ⟩
+  ((x ⁻¹) • x) • z ≈⟨ cong (invˡ _) refl ⟩
+  ε • z            ≈⟨ idˡ _ ⟩
+  z                ∎
+
+idʳ+invʳ+assoc⇒cancelʳ : ∀ {_•_ _⁻¹ ε} → Congruent₂ _•_ →
+                           RightIdentity ε _•_ →
+                           RightInverse ε _⁻¹ _•_ →
+                           Associative _•_ →
+                           RightCancellative _•_
+idʳ+invʳ+assoc⇒cancelʳ {_•_} {_⁻¹} {ε} cong idʳ invʳ assoc {x} y z eq = begin
+  y                ≈⟨ sym (idʳ _) ⟩
+  y • ε            ≈⟨ cong refl (sym (invʳ _)) ⟩
+  y • (x • (x ⁻¹)) ≈⟨ sym (assoc _ _ _) ⟩
+  (y • x) • (x ⁻¹) ≈⟨ cong eq refl ⟩
+  (z • x) • (x ⁻¹) ≈⟨ assoc _ _ _ ⟩
+  z • (x • (x ⁻¹)) ≈⟨ cong refl (invʳ _) ⟩
+  z • ε            ≈⟨ idʳ _ ⟩
+  z                ∎
 
 ------------------------------------------------------------------------
 -- Selectivity implies idempotence

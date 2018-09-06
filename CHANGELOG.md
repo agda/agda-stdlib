@@ -308,6 +308,24 @@ Other minor additions
   record RawSemiring  c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
+* Added new consequences to `Algebra.FunctionProperties.Consequences`:
+  ```agda
+  assoc+id+invʳ⇒invʳ-involutive : ∀ {_•_ _⁻¹ ε} →
+                                    Congruent₂ _•_ → Associative _•_ →
+                                    Identity ε _•_ → RightInverse ε _⁻¹ _•_ →
+                                    Involutive _⁻¹
+  assoc+id+invˡ⇒invˡ-involutive : ∀ {_•_ _⁻¹ ε} →
+                                    Congruent₂ _•_ → Associative _•_ →
+                                    Identity ε _•_ → LeftInverse ε _⁻¹ _•_ →
+                                    Involutive _⁻¹
+  idˡ+invˡ+assoc⇒cancelˡ : ∀ {_•_ _⁻¹ ε} → Congruent₂ _•_ →
+                             LeftIdentity ε _•_ → LeftInverse ε _⁻¹ _•_ →
+                             Associative _•_ → LeftCancellative _•_
+  idʳ+invʳ+assoc⇒cancelʳ : ∀ {_•_ _⁻¹ ε} → Congruent₂ _•_ →
+                             RightIdentity ε _•_ → RightInverse ε _⁻¹ _•_ →
+                             Associative _•_ → RightCancellative _•_
+  ```
+
 * Added new function to `Category.Monad.Indexed`:
   ```agda
   RawIMonadT : (T : IFun I f → IFun I f) → Set (i ⊔ suc f)
