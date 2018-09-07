@@ -26,7 +26,7 @@ open import Function.Surjection as Surj
 open import Relation.Binary as B
   using (_⇒_; Setoid; IsEquivalence)
 open import Relation.Binary.Indexed as I
-  using (_at_; IndexedSetoid; IsIndexedEquivalence)
+  using (setoidAt; IndexedSetoid; IsIndexedEquivalence)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
@@ -128,7 +128,7 @@ private
 ⟶ : ∀ {a₁ a₂ b₁ b₁′ b₂ b₂′}
       {A₁ : Set a₁} {A₂ : Set a₂}
       {B₁ : IndexedSetoid A₁ b₁ b₁′} (B₂ : IndexedSetoid A₂ b₂ b₂′)
-    (f : A₁ → A₂) → (∀ {x} → (B₁ at x) ⟶ (B₂ at f x)) →
+    (f : A₁ → A₂) → (∀ {x} → (setoidAt B₁ x) ⟶ (setoidAt B₂ (f x))) →
     setoid (P.setoid A₁) B₁ ⟶ setoid (P.setoid A₂) B₂
 ⟶ {A₁ = A₁} {A₂} {B₁} B₂ f g = record
   { _⟨$⟩_ = fg
@@ -151,8 +151,8 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
 
   equivalence : {B₁ : IndexedSetoid A₁ b₁ b₁′} {B₂ : IndexedSetoid A₂ b₂ b₂′}
     (A₁⇔A₂ : A₁ ⇔ A₂) →
-    (∀ {x} → _⟶_ (B₁ at x) (B₂ at (Equivalence.to   A₁⇔A₂ ⟨$⟩ x))) →
-    (∀ {y} → _⟶_ (B₂ at y) (B₁ at (Equivalence.from A₁⇔A₂ ⟨$⟩ y))) →
+    (∀ {x} → _⟶_ (setoidAt B₁ x) (setoidAt B₂ (Equivalence.to   A₁⇔A₂ ⟨$⟩ x))) →
+    (∀ {y} → _⟶_ (setoidAt B₂ y) (setoidAt B₁ (Equivalence.from A₁⇔A₂ ⟨$⟩ y))) →
     Equivalence (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
   equivalence {B₁} {B₂} A₁⇔A₂ B-to B-from = record
     { to   = ⟶ B₂ (_⟨$⟩_ (to   A₁⇔A₂)) B-to
@@ -161,13 +161,13 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
 
   equivalence-↞ : (B₁ : IndexedSetoid A₁ b₁ b₁′) {B₂ : IndexedSetoid A₂ b₂ b₂′}
     (A₁↞A₂ : A₁ ↞ A₂) →
-    (∀ {x} → Equivalence (B₁ at (LeftInverse.from A₁↞A₂ ⟨$⟩ x))
-                         (B₂ at x)) →
+    (∀ {x} → Equivalence (setoidAt B₁ (LeftInverse.from A₁↞A₂ ⟨$⟩ x))
+                         (setoidAt B₂ x)) →
     Equivalence (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
   equivalence-↞ B₁ {B₂} A₁↞A₂ B₁⇔B₂ =
     equivalence (LeftInverse.equivalence A₁↞A₂) B-to B-from
     where
-    B-to : ∀ {x} → _⟶_ (B₁ at x) (B₂ at (LeftInverse.to A₁↞A₂ ⟨$⟩ x))
+    B-to : ∀ {x} → _⟶_ (setoidAt B₁ x) (setoidAt B₂ (LeftInverse.to A₁↞A₂ ⟨$⟩ x))
     B-to = record
       { _⟨$⟩_ = λ x → Equivalence.to B₁⇔B₂ ⟨$⟩
                       P.subst (IndexedSetoid.Carrier B₁)
@@ -178,20 +178,20 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
                          (P.sym (LeftInverse.left-inverse-of A₁↞A₂ _))
       }
 
-    B-from : ∀ {y} → _⟶_ (B₂ at y) (B₁ at (LeftInverse.from A₁↞A₂ ⟨$⟩ y))
+    B-from : ∀ {y} → _⟶_ (setoidAt B₂ y) (setoidAt B₁ (LeftInverse.from A₁↞A₂ ⟨$⟩ y))
     B-from = Equivalence.from B₁⇔B₂
 
   equivalence-↠ : {B₁ : IndexedSetoid A₁ b₁ b₁′} (B₂ : IndexedSetoid A₂ b₂ b₂′)
     (A₁↠A₂ : A₁ ↠ A₂) →
-    (∀ {x} → Equivalence (B₁ at x) (B₂ at (Surjection.to A₁↠A₂ ⟨$⟩ x))) →
+    (∀ {x} → Equivalence (setoidAt B₁ x) (setoidAt B₂ (Surjection.to A₁↠A₂ ⟨$⟩ x))) →
     Equivalence (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
   equivalence-↠ {B₁ = B₁} B₂ A₁↠A₂ B₁⇔B₂ =
     equivalence (Surjection.equivalence A₁↠A₂) B-to B-from
     where
-    B-to : ∀ {x} → _⟶_ (B₁ at x) (B₂ at (Surjection.to A₁↠A₂ ⟨$⟩ x))
+    B-to : ∀ {x} → _⟶_ (setoidAt B₁ x) (setoidAt B₂ (Surjection.to A₁↠A₂ ⟨$⟩ x))
     B-to = Equivalence.to B₁⇔B₂
 
-    B-from : ∀ {y} → _⟶_ (B₂ at y) (B₁ at (Surjection.from A₁↠A₂ ⟨$⟩ y))
+    B-from : ∀ {y} → _⟶_ (setoidAt B₂ y) (setoidAt B₁ (Surjection.from A₁↠A₂ ⟨$⟩ y))
     B-from = record
       { _⟨$⟩_ = λ x → Equivalence.from B₁⇔B₂ ⟨$⟩
                       P.subst (IndexedSetoid.Carrier B₂)
@@ -204,7 +204,7 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
 
   injection : {B₁ : IndexedSetoid A₁ b₁ b₁′} (B₂ : IndexedSetoid A₂ b₂ b₂′) →
     (A₁↣A₂ : A₁ ↣ A₂) →
-    (∀ {x} → Injection (B₁ at x) (B₂ at (Injection.to A₁↣A₂ ⟨$⟩ x))) →
+    (∀ {x} → Injection (setoidAt B₁ x) (setoidAt B₂ (Injection.to A₁↣A₂ ⟨$⟩ x))) →
     Injection (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
   injection {B₁ = B₁} B₂ A₁↣A₂ B₁↣B₂ = record
     { to        = to
@@ -229,8 +229,8 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
 
   left-inverse : (B₁ : IndexedSetoid A₁ b₁ b₁′) {B₂ : IndexedSetoid A₂ b₂ b₂′} →
     (A₁↞A₂ : A₁ ↞ A₂) →
-    (∀ {x} → LeftInverse (B₁ at (LeftInverse.from A₁↞A₂ ⟨$⟩ x))
-                         (B₂ at x)) →
+    (∀ {x} → LeftInverse (setoidAt B₁ (LeftInverse.from A₁↞A₂ ⟨$⟩ x))
+                         (setoidAt B₂ x)) →
     LeftInverse (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
   left-inverse B₁ {B₂} A₁↞A₂ B₁↞B₂ = record
     { to              = Equivalence.to   eq
@@ -254,7 +254,7 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
 
   surjection : {B₁ : IndexedSetoid A₁ b₁ b₁′} (B₂ : IndexedSetoid A₂ b₂ b₂′) →
     (A₁↠A₂ : A₁ ↠ A₂) →
-    (∀ {x} → Surjection (B₁ at x) (B₂ at (Surjection.to A₁↠A₂ ⟨$⟩ x))) →
+    (∀ {x} → Surjection (setoidAt B₁ x) (setoidAt B₂ (Surjection.to A₁↠A₂ ⟨$⟩ x))) →
     Surjection (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
   surjection B₂ A₁↠A₂ B₁↠B₂ = record
     { to         = Equivalence.to eq
@@ -279,7 +279,7 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
 
   inverse : {B₁ : IndexedSetoid A₁ b₁ b₁′} (B₂ : IndexedSetoid A₂ b₂ b₂′) →
     (A₁↔A₂ : A₁ ↔ A₂) →
-    (∀ {x} → Inverse (B₁ at x) (B₂ at (Inverse.to A₁↔A₂ ⟨$⟩ x))) →
+    (∀ {x} → Inverse (setoidAt B₁ x) (setoidAt B₂ (Inverse.to A₁↔A₂ ⟨$⟩ x))) →
     Inverse (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
   inverse {B₁} B₂ A₁↔A₂ B₁↔B₂ = record
     { to         = Surjection.to   surj

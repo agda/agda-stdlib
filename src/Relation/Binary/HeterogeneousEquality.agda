@@ -14,7 +14,7 @@ open import Level
 open import Relation.Nullary
 open import Relation.Binary
 open import Relation.Binary.Consequences
-open import Relation.Binary.Indexed as I using (IndexedSetoid; _at_)
+open import Relation.Binary.Indexed as I using (IndexedSetoid; setoidAt)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 
 import Relation.Binary.HeterogeneousEquality.Core as Core
@@ -178,7 +178,7 @@ indexedSetoid B = record
   }
 
 ≡↔≅ : ∀ {a b} {A : Set a} (B : A → Set b) {x : A} →
-      Inverse (P.setoid (B x)) (indexedSetoid B at x)
+      Inverse (P.setoid (B x)) (setoidAt (indexedSetoid B) x)
 ≡↔≅ B = record
   { to         = record { _⟨$⟩_ = id; cong = ≡-to-≅ }
   ; from       = record { _⟨$⟩_ = id; cong = ≅-to-≡ }

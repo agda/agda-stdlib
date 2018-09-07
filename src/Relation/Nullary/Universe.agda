@@ -12,7 +12,7 @@ open import Relation.Binary hiding (_⇒_)
 open import Relation.Binary.Simple
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl)
-open import Relation.Binary.Indexed using (triviallyIndexSetoid)
+open import Relation.Binary.Indexed using (trivialIndexedSetoid)
 open import Data.Sum     as Sum  hiding (map)
 open import Data.Sum.Relation.Pointwise
 open import Data.Product as Prod hiding (map)
@@ -50,7 +50,7 @@ mutual
   setoid (F₁ ∨ F₂) P = (setoid F₁ P) ⊎ₛ (setoid F₂ P)
   setoid (F₁ ∧ F₂) P = (setoid F₁ P) ×ₛ (setoid F₂ P)
   setoid (P₁ ⇒ F₂) P = FunS.≡-setoid P₁
-                         (triviallyIndexSetoid (setoid F₂ P))
+                         (trivialIndexedSetoid (setoid F₂ P))
   setoid (¬¬ F)    P = Always-setoid (¬ ¬ ⟦ F ⟧ P)
 
   ⟦_⟧ : ∀ {p} → PropF p → (Set p → Set p)

@@ -68,41 +68,41 @@ record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ :
 ------------------------------------------------------------------------
 -- Convert indexed structures to non-indexed structures
 
-isIndexedEquivalenceAt : ∀ {i a ℓ} {I : Set i} {A : I → Set a}
+isEquivalenceAt : ∀ {i a ℓ} {I : Set i} {A : I → Set a}
                          {_≈_ : Rel A ℓ} → IsIndexedEquivalence A _≈_ →
                          (x : I) → B.IsEquivalence (_≈_ {x})
-isIndexedEquivalenceAt isEq i = record
+isEquivalenceAt isEq i = record
   { refl  = refl
   ; sym   = sym
   ; trans = trans
   }
   where open IsIndexedEquivalence isEq
 
-indexedSetoidAt : ∀ {i a ℓ} {I : Set i} → IndexedSetoid I a ℓ → I → B.Setoid a ℓ
-indexedSetoidAt S i = record
+setoidAt : ∀ {i a ℓ} {I : Set i} → IndexedSetoid I a ℓ → I → B.Setoid a ℓ
+setoidAt S i = record
   { Carrier       = Carrier i
   ; _≈_           = _≈_
-  ; isEquivalence = isIndexedEquivalenceAt isEquivalence i
+  ; isEquivalence = isEquivalenceAt isEquivalence i
   }
   where open IndexedSetoid S
 
-isIndexedPreorderAt : ∀ {i a ℓ₁ ℓ₂} {I : Set i} {A : I → Set a} {_≈_ :
+isPreorderAt : ∀ {i a ℓ₁ ℓ₂} {I : Set i} {A : I → Set a} {_≈_ :
                       Rel A ℓ₁} {_∼_ : Rel A ℓ₂} → IsIndexedPreorder A
                       _≈_ _∼_ → (x : I) → B.IsPreorder (_≈_ {x}) _∼_
-isIndexedPreorderAt isPreorder i = record
-  { isEquivalence = isIndexedEquivalenceAt isEquivalence i
+isPreorderAt isPreorder i = record
+  { isEquivalence = isEquivalenceAt isEquivalence i
   ; reflexive     = reflexive
   ; trans         = trans
   }
   where open IsIndexedPreorder isPreorder
 
-indexedPreorderAt : ∀ {i a ℓ₁ ℓ₂} {I : Set i} → IndexedPreorder I a ℓ₁ ℓ₂ →
+preorderAt : ∀ {i a ℓ₁ ℓ₂} {I : Set i} → IndexedPreorder I a ℓ₁ ℓ₂ →
                     I → B.Preorder a ℓ₁ ℓ₂
-indexedPreorderAt O i = record
+preorderAt O i = record
   { Carrier    = Carrier i
   ; _≈_        = _≈_
   ; _∼_        = _∼_
-  ; isPreorder = isIndexedPreorderAt isPreorder i
+  ; isPreorder = isPreorderAt isPreorder i
   }
   where open IndexedPreorder O
 
@@ -165,9 +165,9 @@ IsEquivalence = IsIndexedEquivalence
 Please use IsIndexedEquivalence instead."
 #-}
 {-
-_at_ = trivialIndexedSetoid
+_at_ = indexedSetoidAt
 {-# WARNING_ON_USAGE _at_
 "Warning: _at_ was deprecated in v0.17.
-Please use trivialIndexedSetoid instead."
+Please use indexedSetoidAt instead."
 #-}
 -}

@@ -233,7 +233,7 @@ Non-backwards compatible changes
   `Relation.Binary.Indexed`.
 
 * The function `_at_` in `Relation.Binary.Indexed` has been deprecated in favour
-  of `indexedSetoidAt` to make room for others such as `indexedPreorderAt`.
+  of `setoidAt` to make room for others such as `preorderAt`.
 
 #### Other
 
@@ -641,10 +641,10 @@ Other minor additions
   trivialIndexedSetoid        : Setoid a ℓ → ∀ {I} → IndexedSetoid I a ℓ
   trivialIndexedPreorder      : Preorder a ℓ₁ ℓ₂ → ∀ {I} → IndexedPreorder I a ℓ₁ ℓ₂
 
-  isIndexedEquivalenceAt : IsIndexedEquivalence A _≈_ → (x : I) → B.IsEquivalence (_≈_ {x})
-  isIndexedPreorderAt : IsIndexedPreorder A _≈_ _∼_ → (x : I) → B.IsPreorder (_≈_ {x}) _∼_
-  indexedSetoidAt   : IndexedSetoid I a ℓ → I → B.Setoid a ℓ
-  indexedPreorderAt : IndexedPreorder I a ℓ₁ ℓ₂ → I → B.Preorder a ℓ₁ ℓ₂
+  isEquivalenceAt : IsIndexedEquivalence A _≈_  → (x : I) → B.IsEquivalence (_≈_ {x})
+  isPreorderAt    : IsIndexedPreorder A _≈_ _∼_ → (x : I) → B.IsPreorder (_≈_ {x}) _∼_
+  setoidAt   : IndexedSetoid I a ℓ → I → B.Setoid a ℓ
+  preorderAt : IndexedPreorder I a ℓ₁ ℓ₂ → I → B.Preorder a ℓ₁ ℓ₂
   ```
 
 * Added new proofs to `Relation.Binary.NonStrictToStrict`:

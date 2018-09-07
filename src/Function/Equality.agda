@@ -10,7 +10,7 @@ import Function as Fun
 open import Level
 open import Relation.Binary using (Setoid)
 open import Relation.Binary.Indexed
-  using (IndexedSetoid; _=[_]⇒_; triviallyIndexSetoid)
+  using (IndexedSetoid; _=[_]⇒_; trivialIndexedSetoid)
 
 ------------------------------------------------------------------------
 -- Functions which preserve equality
@@ -29,7 +29,7 @@ open Π public
 infixr 0 _⟶_
 
 _⟶_ : ∀ {f₁ f₂ t₁ t₂} → Setoid f₁ f₂ → Setoid t₁ t₂ → Set _
-From ⟶ To = Π From (triviallyIndexSetoid To)
+From ⟶ To = Π From (trivialIndexedSetoid To)
 
 ------------------------------------------------------------------------
 -- Identity and composition.
@@ -85,7 +85,7 @@ setoid From To = record
 infixr 0 _⇨_
 
 _⇨_ : ∀ {f₁ f₂ t₁ t₂} → Setoid f₁ f₂ → Setoid t₁ t₂ → Setoid _ _
-From ⇨ To = setoid From (triviallyIndexSetoid To)
+From ⇨ To = setoid From (trivialIndexedSetoid To)
 
 -- A variant of setoid which uses the propositional equality setoid
 -- for the domain, and a more convenient definition of _≈_.
