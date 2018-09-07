@@ -14,15 +14,27 @@ open import Function
 open import Level
 
 ------------------------------------------------------------------------
--- Semigroups
+-- Magmas
 
-record RawSemigroup c ℓ : Set (suc (c ⊔ ℓ)) where
+record RawMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
   infix  4 _≈_
   field
     Carrier : Set c
     _≈_     : Rel Carrier ℓ
     _∙_     : Op₂ Carrier
+
+record Magma c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    isMagma : IsMagma _≈_ _∙_
+
+------------------------------------------------------------------------
+-- Semigroups
 
 record Semigroup c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
@@ -35,8 +47,8 @@ record Semigroup c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsSemigroup isSemigroup public
 
-  rawSemigroup : RawSemigroup _ _
-  rawSemigroup = record
+  rawMagma : RawMagma _ _
+  rawMagma = record
     { _≈_ = _≈_
     ; _∙_ = _∙_
     }
@@ -55,7 +67,7 @@ record Band c ℓ : Set (suc (c ⊔ ℓ)) where
   semigroup : Semigroup c ℓ
   semigroup = record { isSemigroup = isSemigroup }
 
-  open Semigroup semigroup public using (rawSemigroup)
+  open Semigroup semigroup public using (rawMagma)
 
 ------------------------------------------------------------------------
 -- Monoids

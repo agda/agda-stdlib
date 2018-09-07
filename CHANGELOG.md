@@ -309,9 +309,15 @@ Other minor additions
 
 * Added new records to `Algebra`:
   ```agda
-  record RawSemigroup c ℓ : Set (suc (c ⊔ ℓ))
-  record RawGroup     c ℓ : Set (suc (c ⊔ ℓ))
-  record RawSemiring  c ℓ : Set (suc (c ⊔ ℓ))
+  record RawMagma    c ℓ : Set (suc (c ⊔ ℓ))
+  record Magma       c ℓ : Set (suc (c ⊔ ℓ))
+  record RawGroup    c ℓ : Set (suc (c ⊔ ℓ))
+  record RawSemiring c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* Added new records to `Algebra.Structures`:
+  ```agda
+  record IsMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
   ```
 
 * Added new function to `Category.Monad.Indexed`:
