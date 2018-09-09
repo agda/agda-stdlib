@@ -21,7 +21,7 @@ open import Relation.Unary using (Pred; _⊆_)
 open import Relation.Binary as B using (Preorder; module Preorder)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_; refl)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_; refl)
-open import Relation.Binary.Indexed
+open import Relation.Binary.Indexed.Heterogeneous hiding (Rel; REL)
 
 ------------------------------------------------------------------------
 
@@ -45,7 +45,7 @@ I ▷ O = Container I O zero zero
 -- Equality, parametrised on an underlying relation.
 
 Eq : ∀ {i o c r ℓ} {I : Set i} {O : Set o} (C : Container I O c r)
-     (X Y : Pred I ℓ) → REL X Y ℓ → REL (⟦ C ⟧ X) (⟦ C ⟧ Y) _
+     (X Y : Pred I ℓ) → IREL X Y ℓ → IREL (⟦ C ⟧ X) (⟦ C ⟧ Y) _
 Eq C _ _ _≈_ {o₁} {o₂} (c , k) (c′ , k′) =
   o₁ ≡ o₂ × c ≅ c′ × (∀ r r′ → r ≅ r′ → k r ≈ k′ r′)
 
@@ -75,7 +75,7 @@ setoid C X = record
   where
   module X = IndexedSetoid X
 
-  _≈_ : Rel (⟦ C ⟧ X.Carrier) _
+  _≈_ : IRel (⟦ C ⟧ X.Carrier) _
   _≈_ = Eq C X.Carrier X.Carrier X._≈_
 
   sym : Symmetric (⟦ C ⟧ X.Carrier) _≈_
@@ -347,5 +347,5 @@ module _ {i o c r ℓ₁ ℓ₂} {I : Set i} {O : Set o} (C : Container I O c r)
 infix 4 _∈_
 
 _∈_ : ∀ {i o c r ℓ} {I : Set i} {O : Set o}
-      {C : Container I O c r} {X : Pred I (i ⊔ ℓ)} → REL X (⟦ C ⟧ X) _
+      {C : Container I O c r} {X : Pred I (i ⊔ ℓ)} → IREL X (⟦ C ⟧ X) _
 _∈_ {C = C} {X} x xs = ◇ C {X = X} (_≅_ x) (-, xs)

@@ -14,8 +14,10 @@ open import Data.Product
 open import Relation.Nullary using (yes ; no)
 open import Relation.Unary using (Pred)
 open import Relation.Binary
-open import Relation.Binary.Indexed
-  using (IndexedSetoid; trivialIndexedSetoid)
+open import Relation.Binary.Indexed.Heterogeneous
+  using (IndexedSetoid)
+import Relation.Binary.Indexed.Heterogeneous.Construction.Trivial
+  as Trivial
 open import Relation.Binary.HeterogeneousEquality.Core as H using (_≅_)
 
 ------------------------------------------------------------------------
@@ -79,7 +81,7 @@ preorder A = record
 infix 4 _≗_
 
 _→-setoid_ : ∀ {a b} (A : Set a) (B : Set b) → Setoid _ _
-A →-setoid B = ≡-setoid A (trivialIndexedSetoid (setoid B))
+A →-setoid B = ≡-setoid A (Trivial.indexedSetoid (setoid B))
 
 _≗_ : ∀ {a b} {A : Set a} {B : Set b} (f g : A → B) → Set _
 _≗_ {A = A} {B} = Setoid._≈_ (A →-setoid B)

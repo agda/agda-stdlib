@@ -218,10 +218,14 @@ Non-backwards compatible changes
 
 #### Overhaul of `Relation.Binary.Indexed` subtree
 
-* The records `IsEquivalence` and `Setoid` in `Relation.Binary.Indexed` and
-  `Relation.Binary.Indexed.Homogeneous` have been deprecated in favour of
-  `IsIndexedEquivalence` and `IndexedSetoid`. This should significantly improve
-  code readability.
+* The module `Relation.Binary.Indexed` has been renamed
+  `Relation.Binary.Indexed.Heterogeneous`.
+
+* The names `REL`, `Rel`, `IsEquivalence` and `Setoid` in
+  `Relation.Binary.Indexed.Heterogeneous` and `Relation.Binary.Indexed.Homogeneous`
+  have been deprecated in favour of `IREL`, `IRel`, `IsIndexedEquivalence` and
+  `IndexedSetoid`. This should significantly improves code readability and avoid
+  confusion with the contents of `Relation.Binary`.
 
 * The record `IsIndexedEquivalence` in `Relation.Binary.Indexed.Homogeneous`
   is now implemented as a record encapsulating indexed versions of the required
@@ -229,11 +233,11 @@ Non-backwards compatible changes
 
 * In order to avoid dependency cycles, the `Setoid` record in `Relation.Binary`
   no longer exports `indexedSetoid`.  Instead the corresponding indexed setoid can
-  be constructed using the new `trivialIndexedSetoid` function in
-  `Relation.Binary.Indexed`.
+  be constructed using the `setoid` function in
+  `Relation.Binary.Indexed.Heterogeneous.Construction.Trivial`.
 
-* The function `_at_` in `Relation.Binary.Indexed` has been deprecated in favour
-  of `setoidAt` to make room for others such as `preorderAt`.
+* The function `_at_` in `Relation.Binary.Indexed.Heterogeneous` has been moved to
+  `Relation.Binary.Indexed.Heterogeneous.Construction.At` and renamed to `_atₛ_`.
 
 #### Other
 
