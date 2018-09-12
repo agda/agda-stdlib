@@ -10,6 +10,7 @@ open import Function
 open import Function.Inverse using (Inverse)
 open import Data.Product hiding (map)
 open import Data.List.Base hiding (map ; head ; tail)
+open import Data.List.Properties using (unfold-reverse)
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.Nat using (ℕ; zero; suc)
 open import Level
@@ -204,6 +205,19 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
             Pointwise _∼_ (concat xss) (concat yss)
   concat⁺ []                = []
   concat⁺ (xs∼ys ∷ xss∼yss) = ++⁺ xs∼ys (concat⁺ xss∼yss)
+
+
+------------------------------------------------------------------------
+-- reverse
+
+module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
+
+  reverse⁺ : ∀ {xs ys} → Pointwise _∼_ xs ys →
+             Pointwise _∼_ (reverse xs) (reverse ys)
+  reverse⁺ [] = []
+  reverse⁺ {x ∷ xs} {y ∷ ys} (x∼y ∷ xs∼ys)
+    rewrite unfold-reverse x xs | unfold-reverse y ys
+    = ++⁺ (reverse⁺ xs∼ys) (x∼y ∷ [])
 
 ------------------------------------------------------------------------
 -- length

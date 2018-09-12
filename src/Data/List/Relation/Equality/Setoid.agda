@@ -55,4 +55,5 @@ open PW public using
   ; tabulate⁻
   ; ++⁺
   ; concat⁺
+  ; reverse⁺
   )
