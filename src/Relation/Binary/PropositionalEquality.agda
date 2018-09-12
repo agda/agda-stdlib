@@ -17,9 +17,9 @@ open import Relation.Binary
 import Relation.Binary.Indexed as I
 open import Relation.Binary.HeterogeneousEquality.Core as H using (_≅_)
 
--- Some of the definitions can be found in the following modules:
+------------------------------------------------------------------------
+-- Re-export contents of core module
 
-open import Relation.Binary.Core public using (_≡_; refl; _≢_)
 open import Relation.Binary.PropositionalEquality.Core public
 
 ------------------------------------------------------------------------
@@ -48,7 +48,7 @@ setoid A = record
   ; isEquivalence = isEquivalence
   }
 
-decSetoid : ∀ {a} {A : Set a} → Decidable (_≡_ {A = A}) → DecSetoid _ _
+decSetoid : ∀ {a} {A : Set a} → Decidable {A = A} _≡_ → DecSetoid _ _
 decSetoid dec = record
   { _≈_              = _≡_
   ; isDecEquivalence = record

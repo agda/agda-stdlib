@@ -54,8 +54,10 @@ module README where
 --     approaches taken. The `Codata` folder contains the new more
 --     standard approach using sized types. The `Codata.Musical`
 --     folder contains modules using the old musical notation.
--- • Coinduction
---     Support for coinduction.
+-- • Codata.Musical.Notation
+--     Support for coinduction via musical notation.
+-- • Codata.Thunk
+--     Support for coinduction via sized types and copatterns
 -- • Data
 --     Data types and properties.
 -- • Function
@@ -151,7 +153,8 @@ import Induction.Nat
 
 -- • Support for coinduction
 
-import Coinduction
+import Codata.Musical.Notation
+import Codata.Thunk
 
 -- • IO
 

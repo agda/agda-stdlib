@@ -6,7 +6,7 @@
 
 module IO where
 
-open import Coinduction
+open import Codata.Musical.Notation
 open import Codata.Musical.Colist
 open import Codata.Musical.Costring
 open import Data.Unit
