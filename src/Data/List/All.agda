@@ -13,7 +13,6 @@ open import Data.List.Any as Any using (here; there)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.Product as Prod using (_,_)
 open import Function
-open import Level
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary hiding (_∈_)
@@ -24,44 +23,43 @@ open import Relation.Binary.PropositionalEquality as P
 
 infixr 5 _∷_
 
-data All {a p} {A : Set a}
-         (P : Pred A p) : List A → Set p where
+data All {a p} {A : Set a} (P : Pred A p) : Pred (List A) p where
   []  : All P []
   _∷_ : ∀ {x xs} (px : P x) (pxs : All P xs) → All P (x ∷ xs)
 
 ------------------------------------------------------------------------
 -- Operations on All
 
-head : ∀ {a p} {A : Set a} {P : A → Set p} {x xs} →
+head : ∀ {a p} {A : Set a} {P : Pred A p} {x xs} →
        All P (x ∷ xs) → P x
 head (px ∷ pxs) = px
 
-tail : ∀ {a p} {A : Set a} {P : A → Set p} {x xs} →
+tail : ∀ {a p} {A : Set a} {P : Pred A p} {x xs} →
        All P (x ∷ xs) → All P xs
 tail (px ∷ pxs) = pxs
 
-lookup : ∀ {a p} {A : Set a} {P : A → Set p} {xs : List A} →
+lookup : ∀ {a p} {A : Set a} {P : Pred A p} {xs : List A} →
          All P xs → (∀ {x} → x ∈ xs → P x)
 lookup []         ()
 lookup (px ∷ pxs) (here refl)  = px
 lookup (px ∷ pxs) (there x∈xs) = lookup pxs x∈xs
 
-tabulate : ∀ {a p} {A : Set a} {P : A → Set p} {xs} →
+tabulate : ∀ {a p} {A : Set a} {P : Pred A p} {xs} →
            (∀ {x} → x ∈ xs → P x) → All P xs
 tabulate {xs = []}     hyp = []
 tabulate {xs = x ∷ xs} hyp = hyp (here refl) ∷ tabulate (hyp ∘ there)
 
-map : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} →
+map : ∀ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} →
       P ⊆ Q → All P ⊆ All Q
 map g []         = []
 map g (px ∷ pxs) = g px ∷ map g pxs
 
-zip : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} →
+zip : ∀ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} →
       All P ∩ All Q ⊆ All (P ∩ Q)
 zip ([] , [])             = []
 zip (px ∷ pxs , qx ∷ qxs) = (px , qx) ∷ zip (pxs , qxs)
 
-unzip : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} →
+unzip : ∀ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} →
         All (P ∩ Q) ⊆ All P ∩ All Q
 unzip []           = [] , []
 unzip (pqx ∷ pqxs) = Prod.zip _∷_ _∷_ pqx (unzip pqxs)
@@ -99,7 +97,7 @@ module _ {a p} {A : Set a} {P : Pred A p} {M} (Mon : RawMonad {p} M) where
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by All
 
-module _ {a p} {A : Set a} {P : A → Set p} where
+module _ {a p} {A : Set a} {P : Pred A p} where
 
   all : Decidable P → Decidable (All P)
   all p []       = yes []
