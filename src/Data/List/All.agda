@@ -54,15 +54,26 @@ map : ∀ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} →
 map g []         = []
 map g (px ∷ pxs) = g px ∷ map g pxs
 
-zip : ∀ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} →
-      All P ∩ All Q ⊆ All (P ∩ Q)
-zip ([] , [])             = []
-zip (px ∷ pxs , qx ∷ qxs) = (px , qx) ∷ zip (pxs , qxs)
+------------------------------------------------------------------------
+-- (un/)zip(With/)
 
-unzip : ∀ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} →
-        All (P ∩ Q) ⊆ All P ∩ All Q
-unzip []           = [] , []
-unzip (pqx ∷ pqxs) = Prod.zip _∷_ _∷_ pqx (unzip pqxs)
+module _ {a p q r} {A : Set a} {P : Pred A p} {Q : Pred A q} {R : Pred A r} where
+
+  zipWith : P ∩ Q ⊆ R → All P ∩ All Q ⊆ All R
+  zipWith f ([] , [])             = []
+  zipWith f (px ∷ pxs , qx ∷ qxs) = f (px , qx) ∷ zipWith f (pxs , qxs)
+
+  unzipWith : R ⊆ P ∩ Q → All R ⊆ All P ∩ All Q
+  unzipWith f []         = [] , []
+  unzipWith f (rx ∷ rxs) = Prod.zip _∷_ _∷_ (f rx) (unzipWith f rxs)
+
+module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
+
+  zip : All P ∩ All Q ⊆ All (P ∩ Q)
+  zip = zipWith id
+
+  unzip : All (P ∩ Q) ⊆ All P ∩ All Q
+  unzip = unzipWith id
 
 ------------------------------------------------------------------------
 -- Traversable-like functions
