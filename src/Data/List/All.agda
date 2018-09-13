@@ -6,6 +6,8 @@
 
 module Data.List.All where
 
+open import Category.Applicative
+open import Category.Monad
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Any as Any using (here; there)
 open import Data.List.Membership.Propositional using (_∈_)
@@ -23,7 +25,7 @@ open import Relation.Binary.PropositionalEquality as P
 infixr 5 _∷_
 
 data All {a p} {A : Set a}
-         (P : A → Set p) : List A → Set (p ⊔ a) where
+         (P : Pred A p) : List A → Set p where
   []  : All P []
   _∷_ : ∀ {x xs} (px : P x) (pxs : All P xs) → All P (x ∷ xs)
 
@@ -63,6 +65,36 @@ unzip : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} →
         All (P ∩ Q) ⊆ All P ∩ All Q
 unzip []           = [] , []
 unzip (pqx ∷ pqxs) = Prod.zip _∷_ _∷_ pqx (unzip pqxs)
+
+------------------------------------------------------------------------
+-- Traversable-like functions
+
+module _ {a p} {A : Set a} {P : Pred A p} {F} (App : RawApplicative {p} F) where
+
+  open RawApplicative App
+
+  sequenceA : All (F ∘′ P) ⊆ F ∘′ All P
+  sequenceA []       = pure []
+  sequenceA (x ∷ xs) = _∷_ <$> x ⊛ sequenceA xs
+
+  mapA : ∀ {q} {Q : Pred A q} → (Q ⊆ F ∘′ P) → All Q ⊆ (F ∘′ All P)
+  mapA f = sequenceA ∘′ map f
+
+  forA : ∀ {q} {Q : Pred A q} {xs} → All Q xs → (Q ⊆ F ∘′ P) → F (All P xs)
+  forA qxs f = mapA f qxs
+
+module _ {a p} {A : Set a} {P : Pred A p} {M} (Mon : RawMonad {p} M) where
+
+  private App = RawMonad.rawIApplicative Mon
+
+  sequenceM : All (M ∘′ P) ⊆ M ∘′ All P
+  sequenceM = sequenceA App
+
+  mapM : ∀ {q} {Q : Pred A q} → (Q ⊆ M ∘′ P) → All Q ⊆ (M ∘′ All P)
+  mapM = mapA App
+
+  forM : ∀ {q} {Q : Pred A q} {xs} → All Q xs → (Q ⊆ M ∘′ P) → M (All P xs)
+  forM = forA App
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by All
