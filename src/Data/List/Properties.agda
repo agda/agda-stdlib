@@ -541,17 +541,17 @@ module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
 
 module _ {a} {A : Set a} where
 
-  unfold-reverse : ∀ (x : A) xs → reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
-  unfold-reverse x xs = helper [ x ] xs
-    where
-    open P.≡-Reasoning
-    helper : (xs ys : List A) → foldl (flip _∷_) xs ys ≡ reverse ys ++ xs
-    helper xs []       = refl
-    helper xs (y ∷ ys) = begin
-      foldl (flip _∷_) (y ∷ xs) ys  ≡⟨ helper (y ∷ xs) ys ⟩
-      reverse ys ++ y ∷ xs          ≡⟨ P.sym (++-assoc (reverse ys) _ _) ⟩
-      (reverse ys ∷ʳ y) ++ xs       ≡⟨ P.sym $ P.cong (_++ xs) (unfold-reverse y ys) ⟩
-      reverse (y ∷ ys) ++ xs        ∎
+  unfold-reverseAcc : (acc xs : List A) → reverseAcc acc xs ≡ reverse xs ++ acc
+  unfold-reverse    : ∀ (x : A) xs → reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
+
+  unfold-reverse x xs = unfold-reverseAcc [ x ] xs
+
+  unfold-reverseAcc xs []       = refl
+  unfold-reverseAcc xs (y ∷ ys) = begin
+    foldl (flip _∷_) (y ∷ xs) ys  ≡⟨ unfold-reverseAcc (y ∷ xs) ys ⟩
+    reverse ys ++ y ∷ xs          ≡⟨ P.sym (++-assoc (reverse ys) _ _) ⟩
+    (reverse ys ∷ʳ y) ++ xs       ≡⟨ P.sym $ P.cong (_++ xs) (unfold-reverse y ys) ⟩
+    reverse (y ∷ ys) ++ xs        ∎ where open P.≡-Reasoning
 
   reverse-++-commute : (xs ys : List A) →
                        reverse (xs ++ ys) ≡ reverse ys ++ reverse xs

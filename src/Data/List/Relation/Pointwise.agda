@@ -212,12 +212,14 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
 
 module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
 
+  reverseAcc⁺ : ∀ {xs ys us vs} → Pointwise _∼_ us vs → Pointwise _∼_ xs ys →
+                Pointwise _∼_ (reverseAcc us xs) (reverseAcc vs ys)
+  reverseAcc⁺ acc []            = acc
+  reverseAcc⁺ acc (x∼y ∷ xs∼ys) = reverseAcc⁺ (x∼y ∷ acc) xs∼ys
+
   reverse⁺ : ∀ {xs ys} → Pointwise _∼_ xs ys →
              Pointwise _∼_ (reverse xs) (reverse ys)
-  reverse⁺ [] = []
-  reverse⁺ {x ∷ xs} {y ∷ ys} (x∼y ∷ xs∼ys)
-    rewrite unfold-reverse x xs | unfold-reverse y ys
-    = ++⁺ (reverse⁺ xs∼ys) (x∼y ∷ [])
+  reverse⁺ = reverseAcc⁺ []
 
 ------------------------------------------------------------------------
 -- length
