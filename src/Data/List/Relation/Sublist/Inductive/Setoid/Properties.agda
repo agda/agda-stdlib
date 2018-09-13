@@ -279,18 +279,13 @@ module _ {p} {P : Pred A p} (P? : U.Decidable P) (P≈ : P Respects _≈_) where
 
 -- reverse
 
+reverseAcc⁺ : ∀ {us vs xs ys} → us ⊆ vs → xs ⊆ ys → reverseAcc us xs ⊆ reverseAcc vs ys
+reverseAcc⁺ acc base         = acc
+reverseAcc⁺ acc (skip p)     = reverseAcc⁺ (skip acc) p
+reverseAcc⁺ acc (keep x≈y p) = reverseAcc⁺ (keep x≈y acc) p
+
 reverse⁺ : ∀ {xs ys} → xs ⊆ ys → reverse xs ⊆ reverse ys
-reverse⁺ base = []⊆ []
-reverse⁺ {xs} {y ∷ ys} (skip p) = begin
-  reverse xs       ≡⟨ P.sym $ ++-identityʳ _ ⟩
-  reverse xs ++ [] ⊆⟨ ++⁺ (reverse⁺ p) ([]⊆ _) ⟩
-  reverse ys ∷ʳ y  ≡⟨ P.sym $ unfold-reverse y ys ⟩
-  reverse (y ∷ ys) ∎ where open ⊆-Reasoning
-reverse⁺ {x ∷ xs} {y ∷ ys} (keep x≈y p) = begin
-  reverse (x ∷ xs) ≡⟨ unfold-reverse x xs ⟩
-  reverse xs ∷ʳ x  ⊆⟨ ++⁺ (reverse⁺ p) (keep x≈y base) ⟩
-  reverse ys ∷ʳ y  ≡⟨ P.sym $ unfold-reverse y ys ⟩
-  reverse (y ∷ ys) ∎ where open ⊆-Reasoning
+reverse⁺ = reverseAcc⁺ base
 
 reverse⁻ : ∀ {xs ys} → reverse xs ⊆ reverse ys → xs ⊆ ys
 reverse⁻ {xs} {ys} p = cast (reverse⁺ p) where
