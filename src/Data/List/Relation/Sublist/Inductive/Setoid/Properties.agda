@@ -122,7 +122,7 @@ open S
 import Relation.Binary.PartialOrderReasoning as PosetReasoning
 module ⊆-Reasoning where
   private module PR = PosetReasoning ⊆-poset
-  open PR public renaming (_≤⟨_⟩_ to _⊆⟨_⟩_)
+  open PR public renaming (_≤⟨_⟩_ to _⊆⟨_⟩_; _≈⟨_⟩_ to _≋⟨_⟩_)
 
 ------------------------------------------------------------------------
 -- Various functions' outputs are sublists
