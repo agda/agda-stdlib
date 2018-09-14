@@ -14,6 +14,7 @@ open import Data.List.Any.Properties using (here-injective; there-injective)
 open import Data.List.Membership.Propositional
 open import Data.List.Relation.Sublist.Inductive
 open import Data.Maybe as Maybe using (nothing; just)
+open import Data.Maybe.All as MAll using (nothing; just)
 open import Data.Nat.Base
 open import Data.Nat.Properties
 
@@ -156,7 +157,7 @@ module ⊆-Reasoning {a} {A : Set a}  where
 
 module _ {a} {A : Set a} where
 
-  tail-⊆ : (xs : List A) → Maybe.All (_⊆ xs) (tail xs)
+  tail-⊆ : (xs : List A) → MAll.All (_⊆ xs) (tail xs)
   tail-⊆ []       = nothing
   tail-⊆ (x ∷ xs) = just (skip ⊆-refl)
 

@@ -17,6 +17,7 @@ open import Data.List.Any using (Any; here; there)
 open import Data.List.Relation.Pointwise using (Pointwise; []; _∷_)
 open import Data.List.Relation.Sublist.Extensional.Propositional using (_⊆_)
 open import Data.Maybe as Maybe using (Maybe; just; nothing)
+open import Data.Maybe.All as MAll using (just; nothing)
 open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function
@@ -109,7 +110,7 @@ module _ {a b p q} {A : Set a} {B : Set b} {f : A → B}
 module _ {a b p} {A : Set a} {B : Set b}
          (P : B → Set p) {f : A → Maybe B} where
 
-  mapMaybe⁺ : ∀ {xs} → All (Maybe.All P) (map f xs) → All P (mapMaybe f xs)
+  mapMaybe⁺ : ∀ {xs} → All (MAll.All P) (map f xs) → All P (mapMaybe f xs)
   mapMaybe⁺ {[]}     [] = []
   mapMaybe⁺ {x ∷ xs} (px ∷ pxs) with f x
   ... | nothing = mapMaybe⁺ pxs
@@ -254,11 +255,11 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ------------------------------------------------------------------------
 -- fromMaybe
 
-  fromMaybe⁺ : ∀ {mx} → Maybe.All P mx → All P (fromMaybe mx)
+  fromMaybe⁺ : ∀ {mx} → MAll.All P mx → All P (fromMaybe mx)
   fromMaybe⁺ (just px) = px ∷ []
   fromMaybe⁺ nothing   = []
 
-  fromMaybe⁻ : ∀ mx → All P (fromMaybe mx) → Maybe.All P mx
+  fromMaybe⁻ : ∀ mx → All P (fromMaybe mx) → MAll.All P mx
   fromMaybe⁻ (just x) (px ∷ []) = just px
   fromMaybe⁻ nothing  p         = nothing
 
