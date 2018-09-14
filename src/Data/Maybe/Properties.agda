@@ -58,6 +58,21 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
   map-compose nothing  = refl
 
 ------------------------------------------------------------------------
+-- maybe
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+  maybe-map : ∀ {c} {C : Maybe B → Set c}
+              (j : (x : B) → C (just x)) (n : C nothing) (f : A → B) ma →
+              maybe {B = C} j n (map f ma) ≡ maybe {B = C ∘ map f} (j ∘ f) n ma
+  maybe-map j n f (just x) = refl
+  maybe-map j n f nothing  = refl
+
+  maybe′-map : ∀ {c} {C : Set c} j (n : C) (f : A → B) ma →
+               maybe′ j n (map f ma) ≡ maybe′ (j ∘′ f) n ma
+  maybe′-map = maybe-map
+
+------------------------------------------------------------------------
 -- _<∣>_
 
 module _ {a} {A : Set a} where
