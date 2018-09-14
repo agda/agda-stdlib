@@ -426,6 +426,7 @@ Other minor additions
 * Added new function to `Data.Maybe.Base`:
   ```agda
   fromMaybe : A → Maybe A → A
+  _<∣>_     : Maybe A → Maybe A → Maybe A
   ```
 
 * Added new proofs to `Data.Maybe.All`:
@@ -438,9 +439,24 @@ Other minor additions
   unzipWith        : P ⊆ Q ∩ R → All P ⊆ All Q ∩ All R
   zip              : All P ∩ All Q ⊆ All (P ∩ Q)
   unzip            : All (P ∩ Q) ⊆ All P ∩ All Q
+  sequenceA        : RawApplicative F → All (F ∘′ P) ⊆ F ∘′ All P
+  mapA             : RawApplicative F → (Q ⊆ F ∘′ P) → All Q ⊆ (F ∘′ All P)
+  forA             : RawApplicative F → All Q xs → (Q ⊆ F ∘′ P) → F (All P xs)
+  sequenceM        : RawMonad M → All (M ∘′ P) ⊆ M ∘′ All P
+  mapM             : RawMonad M → (Q ⊆ M ∘′ P) → All Q ⊆ (M ∘′ All P)
+  forM             : RawMonad M → All Q xs → (Q ⊆ M ∘′ P) → M (All P xs)
   universal        : Universal P → Universal (All P)
   irrelevant       : Irrelevant P → Irrelevant (All P)
   satisfiable      : Satisfiable (All P)
+  ```
+
+* Created `Data.Maybe.All.Properties`:
+  ```agda
+  map⁺ : All (P ∘ f) mx → All P (map f mx)
+  map⁻ : All P (map f mx) → All (P ∘ f) mx
+  gmap : P ⊆ Q ∘ f → All P ⊆ All Q ∘ map f
+  <∣>⁺ : All P mx → All P my → All P (mx <∣> my)
+  <∣>⁻ : All P (mx <∣> my) → All P mx
   ```
 
 * Added new proofs to `Data.Maybe.Any`:

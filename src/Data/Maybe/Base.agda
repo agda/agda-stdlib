@@ -79,3 +79,9 @@ module _ {a} {A : Set a} where
 
 map : ∀ {a b} {A : Set a} {B : Set b} → (A → B) → Maybe A → Maybe B
 map f = maybe (just ∘ f) nothing
+
+-- Alternative: <∣>
+
+_<∣>_ : ∀ {a} {A : Set a} → Maybe A → Maybe A → Maybe A
+just x  <∣> my = just x
+nothing <∣> my = my
