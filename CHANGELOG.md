@@ -12,17 +12,9 @@ Non-backwards compatible changes
 
 Splitting up `Data.Maybe` into the standard hierarchy.
 
-* Moved `Data.Maybe`'s `Eq` to `Data.Maybe.Relation.Pointwise` and
-  renamed some proofs:
-  ```agda
-  Eq                  ↦ Pointwise
-  Eq-refl             ↦ refl
-  Eq-sym              ↦ sym
-  Eq-trans            ↦ trans
-  Eq-dec              ↦ dec
-  Eq-isEquivalence    ↦ isEquivalence
-  Eq-isDecEquivalence ↦ isDecEquivalence
-  ```
+* Moved `Data.Maybe.Base`'s `Is-just`, `Is-nothing`, `to-witness`,
+  and `to-witness-T` to `Data.Maybe` (they rely on `All` and `Any`
+  which are now outside of `Data.Maybe.Base`).
 
 * Moved `Data.Maybe.Base`'s `All` and `Data.Maybe`'s `allDec` to
   `Data.Maybe.All` and renamed some proofs:
@@ -36,9 +28,20 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   anyDec ↦ dec
   ```
 
-* Moved `Data.Maybe.Base`'s `Is-just`, `Is-nothing`, `to-witness`,
-  and `to-witness-T` to `Data.Maybe` (they rely on `All` and `Any`
-  which are now outside of `Data.Maybe.Base`).
+* Created `Data.Maybe.Properties`, moved `Data.Maybe.Base`'s `just-injective`
+  there and populated it with basic results.
+
+* Moved `Data.Maybe`'s `Eq` to `Data.Maybe.Relation.Pointwise` and
+  renamed some proofs:
+  ```agda
+  Eq                  ↦ Pointwise
+  Eq-refl             ↦ refl
+  Eq-sym              ↦ sym
+  Eq-trans            ↦ trans
+  Eq-dec              ↦ dec
+  Eq-isEquivalence    ↦ isEquivalence
+  Eq-isDecEquivalence ↦ isDecEquivalence
+  ```
 
 #### Overhaul of safety of the library
 
