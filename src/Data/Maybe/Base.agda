@@ -79,29 +79,3 @@ module _ {a} {A : Set a} where
 
 map : ∀ {a b} {A : Set a} {B : Set b} → (A → B) → Maybe A → Maybe B
 map f = maybe (just ∘ f) nothing
-
-------------------------------------------------------------------------
--- Any and All
-
-open Data.Bool.Base using (T)
-open import Data.Empty using (⊥)
-
-data Any {a p} {A : Set a} (P : A → Set p) : Maybe A → Set (a ⊔ p) where
-  just : ∀ {x} (px : P x) → Any P (just x)
-
-data All {a p} {A : Set a} (P : A → Set p) : Maybe A → Set (a ⊔ p) where
-  just    : ∀ {x} (px : P x) → All P (just x)
-  nothing : All P nothing
-
-Is-just : ∀ {a} {A : Set a} → Maybe A → Set a
-Is-just = Any (λ _ → ⊤)
-
-Is-nothing : ∀ {a} {A : Set a} → Maybe A → Set a
-Is-nothing = All (λ _ → ⊥)
-
-to-witness : ∀ {p} {P : Set p} {m : Maybe P} → Is-just m → P
-to-witness (just {x = p} _) = p
-
-to-witness-T : ∀ {p} {P : Set p} (m : Maybe P) → T (is-just m) → P
-to-witness-T (just p) _  = p
-to-witness-T nothing  ()
