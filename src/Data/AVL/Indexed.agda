@@ -15,6 +15,7 @@ open import Level using (_⊔_) -- ; Lift; lift)
 open import Data.Nat.Base hiding (_<_; _⊔_; compare)
 open import Data.Product hiding (map)
 open import Data.Maybe hiding (map)
+open import Data.List using (List)
 import Data.DifferenceList as DiffList
 open import Function
 
@@ -246,11 +247,14 @@ module _ {v} {V : Key → Set v} where
   -- Converts the tree to an ordered list. Linear in the size of the
   -- tree.
 
-  open DiffList
+  open DiffList using (DiffList; []; _∷_; _++_)
 
   toDiffList : ∀ {l u h} → Tree V l u h → DiffList (K& V)
   toDiffList (leaf _)       = []
   toDiffList (node k l r _) = toDiffList l ++ k ∷ toDiffList r
+
+  toList : ∀ {l u h} → Tree V l u h → List (K& V)
+  toList t = toDiffList t List.[]
 
 module _ {v w} {V : Key → Set v} {W : Key → Set w} where
 

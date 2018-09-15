@@ -19,7 +19,7 @@ module Data.AVL.NonEmpty
 
 open import Data.Bool.Base using (Bool)
 open import Data.Empty
-open import Data.List.NonEmpty as List⁺ using (List⁺)
+open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_; _++⁺_)
 open import Data.Maybe.Base hiding (map)
 open import Data.Nat.Base hiding (_<_; _⊔_; compare)
 open import Data.Product hiding (map)
@@ -29,7 +29,7 @@ open import Level using (_⊔_; Lift; lift)
 
 open IsStrictTotalOrder isStrictTotalOrder
 import Data.AVL.Indexed Key isStrictTotalOrder as Indexed
-open Indexed using (K&_ ; ⊥⁺ ; ⊤⁺)
+open Indexed using (K&_ ; ⊥⁺ ; ⊤⁺; node; toList)
 
 ------------------------------------------------------------------------
 -- Types and functions with hidden indices
@@ -79,3 +79,8 @@ module _ {v} {V : Key → Set v} where
 
   fromList : List⁺ (K& V) → Tree⁺ V
   fromList = List⁺.foldr (uncurry insert) (uncurry singleton)
+
+  -- The output is ordered
+
+  toList⁺ : Tree⁺ V → List⁺ (K& V)
+  toList⁺ (tree (node k&v l r bal)) = toList l ++⁺ k&v ∷ toList r

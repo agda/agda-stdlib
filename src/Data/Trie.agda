@@ -13,10 +13,10 @@ module Data.Trie
 
 open import Level
 open import Size
-open import Data.Product using (∃; uncurry)
+open import Data.Product as Prod using (∃; uncurry; -,_)
 open import Data.AVL.NonEmpty S as Tree⁺ using (Tree⁺)
-open import Data.List as List using (List; []; _∷_)
-open import Data.List.NonEmpty as List⁺ using (List⁺)
+open import Data.List as List using (List; []; _∷_; _++_)
+open import Data.List.NonEmpty as List⁺ using (List⁺; [_]; concatMap)
 open import Data.Maybe as Maybe using (Maybe; nothing; just) hiding (module Maybe)
 open import Data.These as These using (These; this; that; these)
 open import Function
@@ -40,12 +40,19 @@ Tries V j = Tree⁺ (λ k → Trie (V ∘′ (k ∷_)) j)
 
 -- Query
 
-lookup : ∀ {v} {V : Word → Set v} ks → Trie V ∞ → Maybe (V ks)
-lookup []       (Node nd) = These.fromThis nd
+lookup : ∀ {v} {V : Word → Set v} ks → Trie V ∞ →
+         Maybe (These (V ks) (Tries (V ∘′ (ks ++_)) ∞))
+lookup []       (Node nd) = just nd
 lookup (k ∷ ks) (Node nd) = let open Maybe in do
   ts ← These.fromThat nd
   t  ← Tree⁺.lookup k ts
   lookup ks t
+
+lookupValue : ∀ {v} {V : Word → Set v} ks → Trie V ∞ → Maybe (V ks)
+lookupValue ks t = lookup ks t Maybe.>>= These.fromThis
+
+lookupTries : ∀ {v} {V : Word → Set v} ks → Trie V ∞ → Maybe (Tries (V ∘′ (ks ++_)) ∞)
+lookupTries ks t = lookup ks t Maybe.>>= These.fromThat
 
 -- Construction
 
@@ -76,6 +83,16 @@ module _ {v} {V : Word → Set v} where
 
   fromList⁺ : List⁺ (∃ V) → Trie V ∞
   fromList⁺ = List⁺.foldr (uncurry insert) (uncurry singleton)
+
+toList⁺ : ∀ {v} {V : Word → Set v} {i} → Trie V i → List⁺ (∃ V)
+toList⁺ (Node nd) = These.mergeThese List⁺._⁺++⁺_
+                  $ These.map fromVal fromTries nd
+
+  where
+
+  fromVal   = [_] ∘′ -,_
+  fromTries = concatMap (uncurry λ k → List⁺.map (Prod.map (k ∷_) id) ∘′ toList⁺)
+            ∘′ Tree⁺.toList⁺
 
 -- modify
 
