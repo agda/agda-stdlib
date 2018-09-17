@@ -13,7 +13,7 @@ open import Level using (suc; _⊔_)
 open import Relation.Binary
 
 ------------------------------------------------------------------------
--- Bounds and extrema
+-- Relationships between orders and operators
 
 open import Relation.Binary public using (Maximum; Minimum)
 
@@ -24,15 +24,12 @@ Supremum _≤_ _∨_ =
 Infimum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Op₂ A → Set _
 Infimum _≤_ = Supremum (flip _≤_)
 
-------------------------------------------------------------------------
--- exponential
-
 Exponential : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Op₂ A → Op₂ A → Set _
 Exponential _≤_ _∧_ _⇨_ =
   ∀ w x y → ((w ∧ x) ≤ y → w ≤ (x ⇨ y)) × (w ≤ (x ⇨ y) → (w ∧ x) ≤ y)
 
 ------------------------------------------------------------------------
--- Semilattices
+-- Join semilattices
 
 record IsJoinSemilattice {a ℓ₁ ℓ₂} {A : Set a}
                          (_≈_ : Rel A ℓ₁) -- The underlying equality.
@@ -43,11 +40,11 @@ record IsJoinSemilattice {a ℓ₁ ℓ₂} {A : Set a}
     isPartialOrder : IsPartialOrder _≈_ _≤_
     supremum       : Supremum _≤_ _∨_
 
-  ∨-fst : ∀ {x y} → x ≤ (x ∨ y)
-  ∨-fst {x} {y} = let pf , _ , _ = supremum x y in pf
+  x≤x∨y : ∀ x y → x ≤ (x ∨ y)
+  x≤x∨y x y = let pf , _ , _ = supremum x y in pf
 
-  ∨-snd : ∀ {x y} → y ≤ (x ∨ y)
-  ∨-snd {x} {y} = let _ , pf , _ = supremum x y in pf
+  y≤x∨y : ∀ x y → y ≤ (x ∨ y)
+  y≤x∨y x y = let _ , pf , _ = supremum x y in pf
 
   ∨-least : ∀ {x y z} → x ≤ z → y ≤ z → (x ∨ y) ≤ z
   ∨-least {x} {y} {z} = let _ , _ , pf = supremum x y in pf z
@@ -65,43 +62,6 @@ record JoinSemilattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) whe
     isJoinSemilattice : IsJoinSemilattice _≈_ _≤_ _∨_
 
   open IsJoinSemilattice isJoinSemilattice public
-
-  poset : Poset c ℓ₁ ℓ₂
-  poset = record { isPartialOrder = isPartialOrder }
-
-  open Poset poset public using (preorder)
-
-record IsMeetSemilattice {a ℓ₁ ℓ₂} {A : Set a}
-                         (_≈_ : Rel A ℓ₁) -- The underlying equality.
-                         (_≤_ : Rel A ℓ₂) -- The partial order.
-                         (_∧_ : Op₂ A)    -- The meet operation.
-                         : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
-  field
-    isPartialOrder : IsPartialOrder _≈_ _≤_
-    infimum        : Infimum _≤_ _∧_
-
-  ∧-fst : ∀ {x y} → (x ∧ y) ≤ x
-  ∧-fst {x} {y} = let pf , _ , _ = infimum x y in pf
-
-  ∧-snd : ∀ {x y} → (x ∧ y) ≤ y
-  ∧-snd {x} {y} = let _ , pf , _ = infimum x y in pf
-
-  ∧-greatest : ∀ {x y z} → x ≤ y → x ≤ z → x ≤ (y ∧ z)
-  ∧-greatest {x} {y} {z} = let _ , _ , pf = infimum y z in pf x
-
-  open IsPartialOrder isPartialOrder public
-
-record MeetSemilattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
-  infix  4 _≈_ _≤_
-  infixr 7 _∧_
-  field
-    Carrier           : Set c
-    _≈_               : Rel Carrier ℓ₁  -- The underlying equality.
-    _≤_               : Rel Carrier ℓ₂  -- The partial order.
-    _∧_               : Op₂ Carrier     -- The meet operation.
-    isMeetSemilattice : IsMeetSemilattice _≈_ _≤_ _∧_
-
-  open IsMeetSemilattice isMeetSemilattice public
 
   poset : Poset c ℓ₁ ℓ₂
   poset = record { isPartialOrder = isPartialOrder }
@@ -142,8 +102,47 @@ record BoundedJoinSemilattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ�
   Please use joinSemilattice instead."
   #-}
 
-
   open JoinSemilattice joinSemilattice public using (preorder; poset)
+
+------------------------------------------------------------------------
+-- Meet semilattices
+
+record IsMeetSemilattice {a ℓ₁ ℓ₂} {A : Set a}
+                         (_≈_ : Rel A ℓ₁) -- The underlying equality.
+                         (_≤_ : Rel A ℓ₂) -- The partial order.
+                         (_∧_ : Op₂ A)    -- The meet operation.
+                         : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    isPartialOrder : IsPartialOrder _≈_ _≤_
+    infimum        : Infimum _≤_ _∧_
+
+  x∧y≤x : ∀ x y → (x ∧ y) ≤ x
+  x∧y≤x x y = let pf , _ , _ = infimum x y in pf
+
+  x∧y≤y : ∀ x y → (x ∧ y) ≤ y
+  x∧y≤y x y = let _ , pf , _ = infimum x y in pf
+
+  ∧-greatest : ∀ {x y z} → x ≤ y → x ≤ z → x ≤ (y ∧ z)
+  ∧-greatest {x} {y} {z} = let _ , _ , pf = infimum y z in pf x
+
+  open IsPartialOrder isPartialOrder public
+
+record MeetSemilattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix  4 _≈_ _≤_
+  infixr 7 _∧_
+  field
+    Carrier           : Set c
+    _≈_               : Rel Carrier ℓ₁  -- The underlying equality.
+    _≤_               : Rel Carrier ℓ₂  -- The partial order.
+    _∧_               : Op₂ Carrier     -- The meet operation.
+    isMeetSemilattice : IsMeetSemilattice _≈_ _≤_ _∧_
+
+  open IsMeetSemilattice isMeetSemilattice public
+
+  poset : Poset c ℓ₁ ℓ₂
+  poset = record { isPartialOrder = isPartialOrder }
+
+  open Poset poset public using (preorder)
 
 record IsBoundedMeetSemilattice {a ℓ₁ ℓ₂} {A : Set a}
                                 (_≈_ : Rel A ℓ₁) -- The underlying equality.
@@ -179,7 +178,6 @@ record BoundedMeetSemilattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ�
   Please use meetSemilattice instead."
   #-}
 
-
   open MeetSemilattice meetSemilattice public using (preorder; poset)
 
 ------------------------------------------------------------------------
@@ -208,10 +206,10 @@ record IsLattice {a ℓ₁ ℓ₂} {A : Set a}
     ; infimum        = infimum
     }
 
-  open IsJoinSemilattice isJoinSemilattice
-    using (∨-fst; ∨-snd; ∨-least) public
-  open IsMeetSemilattice isMeetSemilattice
-    using (∧-fst; ∧-snd; ∧-greatest) public
+  open IsJoinSemilattice isJoinSemilattice public
+    using (x≤x∨y; y≤x∨y; ∨-least)
+  open IsMeetSemilattice isMeetSemilattice public
+    using (x∧y≤x; x∧y≤y; ∧-greatest)
   open IsPartialOrder isPartialOrder public
 
 record Lattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -268,7 +266,6 @@ record DistributiveLattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂))
 
   open Lattice lattice hiding (Carrier; _≈_; _≤_; _∨_; _∧_) public
 
-
 record IsBoundedLattice {a ℓ₁ ℓ₂} {A : Set a}
                         (_≈_ : Rel A ℓ₁) -- The underlying equality.
                         (_≤_ : Rel A ℓ₂) -- The partial order.
@@ -323,11 +320,12 @@ record BoundedLattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wher
   lattice : Lattice c ℓ₁ ℓ₂
   lattice = record { isLattice = isLattice }
 
-  open Lattice lattice
+  open Lattice lattice public
     using (joinSemilattice; meetSemilattice; poset; preorder)
-    public
 
--- Heyting algebra is bounded lattice with exponential.
+------------------------------------------------------------------------
+-- Heyting algebras (a bounded lattice with exponential operator)
+
 record IsHeytingAlgebra {a ℓ₁ ℓ₂} {A : Set a}
                         (_≈_ : Rel A ℓ₁) -- The underlying equality.
                         (_≤_ : Rel A ℓ₂) -- The partial order.
@@ -348,7 +346,6 @@ record IsHeytingAlgebra {a ℓ₁ ℓ₂} {A : Set a}
   transpose-∧ {w} {x} {y} = let _ , pf = exponential w x y in pf
 
   open IsBoundedLattice isBoundedLattice public
-
 
 record HeytingAlgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix  4 _≈_ _≤_
@@ -375,7 +372,9 @@ record HeytingAlgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wher
   open BoundedLattice boundedLattice
     hiding (Carrier; _≈_; _≤_; _∨_; _∧_; ⊤; ⊥) public
 
--- Boolean algebra is a specialized Heyting algebra
+------------------------------------------------------------------------
+-- Boolean algebras (a specialized Heyting algebra)
+
 record IsBooleanAlgebra {a ℓ₁ ℓ₂} {A : Set a}
                         (_≈_ : Rel A ℓ₁) -- The underlying equality.
                         (_≤_ : Rel A ℓ₂) -- The partial order.
@@ -414,4 +413,5 @@ record BooleanAlgebra c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wher
   heytingAlgebra : HeytingAlgebra c ℓ₁ ℓ₂
   heytingAlgebra = record { isHeytingAlgebra = isHeytingAlgebra }
 
-  open HeytingAlgebra heytingAlgebra hiding (Carrier; _≈_; _≤_; _∨_; _∧_; ⊤; ⊥) public
+  open HeytingAlgebra heytingAlgebra public
+    hiding (Carrier; _≈_; _≤_; _∨_; _∧_; ⊤; ⊥)
