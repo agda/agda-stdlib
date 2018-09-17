@@ -24,7 +24,7 @@ open import Function
 -- A `Trie` is a tree branching over an alphabet of `Key`s. It stores values
 -- indexed over the word (i.e. `List Key`) that was read to reach them.
 
--- Each `Node` in the `Trie` contains either a value, a non-empty `Tree` of
+-- Each `node` in the `Trie` contains either a value, a non-empty `Tree` of
 -- sub-`Trie`s reached by reading an extra letter, or both.
 
 Word : Set k
@@ -34,7 +34,7 @@ data Trie {v} (V : Word → Set v) (i : Size) : Set (v ⊔ k ⊔ r)
 Tries : ∀ {v} (V : Word → Set v) → Size → Set (v ⊔ k ⊔ r)
 
 data Trie V i where
-  Node : {j : Size< i} → These (V []) (Tries V j) → Trie V i
+  node : {j : Size< i} → These (V []) (Tries V j) → Trie V i
 
 Tries V j = Tree⁺ (λ k → Trie (V ∘′ (k ∷_)) j)
 
@@ -42,8 +42,8 @@ Tries V j = Tree⁺ (λ k → Trie (V ∘′ (k ∷_)) j)
 
 lookup : ∀ {v} {V : Word → Set v} ks → Trie V ∞ →
          Maybe (These (V ks) (Tries (V ∘′ (ks ++_)) ∞))
-lookup []       (Node nd) = just nd
-lookup (k ∷ ks) (Node nd) = let open Maybe in do
+lookup []       (node nd) = just nd
+lookup (k ∷ ks) (node nd) = let open Maybe in do
   ts ← These.fromThat nd
   t  ← Tree⁺.lookup k ts
   lookup ks t
@@ -57,14 +57,14 @@ lookupTries ks t = lookup ks t Maybe.>>= These.fromThat
 -- Construction
 
 singleton : ∀ {v} {V : Word → Set v} ks → V ks → Trie V ∞
-singleton []       v = Node (this v)
-singleton (k ∷ ks) v = Node (that (Tree⁺.singleton k (singleton ks v)))
+singleton []       v = node (this v)
+singleton (k ∷ ks) v = node (that (Tree⁺.singleton k (singleton ks v)))
 
 insertWith : ∀ {v} {V : Word → Set v} ks →
              (Maybe (V ks) → V ks) → Trie V ∞ → Trie V ∞
-insertWith []       f (Node nd) =
-  Node (These.fold (this ∘ f ∘ just) (these (f nothing)) (these ∘ f ∘ just) nd)
-insertWith {v} {V} (k ∷ ks) f (Node nd) = Node $
+insertWith []       f (node nd) =
+  node (These.fold (this ∘ f ∘ just) (these (f nothing)) (these ∘ f ∘ just) nd)
+insertWith {v} {V} (k ∷ ks) f (node nd) = node $
   These.fold (λ v → these v (Tree⁺.singleton k end))
              (that ∘′ rec)
              (λ v → these v ∘′ rec)
@@ -85,9 +85,8 @@ module _ {v} {V : Word → Set v} where
   fromList⁺ = List⁺.foldr (uncurry insert) (uncurry singleton)
 
 toList⁺ : ∀ {v} {V : Word → Set v} {i} → Trie V i → List⁺ (∃ V)
-toList⁺ (Node nd) = These.mergeThese List⁺._⁺++⁺_
+toList⁺ (node nd) = These.mergeThese List⁺._⁺++⁺_
                   $ These.map fromVal fromTries nd
-
   where
 
   fromVal   = [_] ∘′ -,_
@@ -98,4 +97,4 @@ toList⁺ (Node nd) = These.mergeThese List⁺._⁺++⁺_
 
 map : ∀ {v w} {V : Word → Set v} {W : Word → Set w} {i} →
       (∀ {ks} → V ks → W ks) → Trie V i → Trie W i
-map f (Node nd) = Node (These.map f (Tree⁺.map (map f)) nd)
+map f (node nd) = node (These.map f (Tree⁺.map (map f)) nd)
