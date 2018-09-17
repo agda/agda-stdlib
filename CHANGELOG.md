@@ -253,6 +253,9 @@ Non-backwards compatible changes
 * `Relation.Binary` now no longer exports `_≡_`, `_≢_` and `refl`. The standard
   way of accessing them remains `Relation.Binary.PropositionalEquality`.
 
+* The syntax `∀[_]` in `Relation.Unary` has been renamed to `Π[_]`. The original
+  name is now used for for implicit universal quantifiers.
+
 Other major changes
 -------------------
 
@@ -648,6 +651,7 @@ Other minor additions
 * Added the following types in `Relation.Unary`:
   ```agda
   Satisfiable P = ∃ λ x → x ∈ P
+  IUniversal P  = ∀ {x} → x ∈ P
   ```
 
 * Added the following proofs in `Relation.Unary.Properties`:
