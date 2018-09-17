@@ -197,9 +197,8 @@ Non-backwards compatible changes
 * In `Function` the precedence level of `_$_` (and variants) has been changed to `-1`
   in order to improve its interaction with `_∋_` (e.g. `f $ Maybe A ∋ do (...)`).
 
-
-* Repurposed `∀[_]` in `Relation.Nullary` for implicit universal quantifiers.
-  Added `Π[_]` for the explicit ones.
+* In `Relation.Unary` the syntax `∀[_]` has been renamed to `Π[_]`. The original
+  name is now used for for implicit universal quantifiers.
 
 Other major changes
 -------------------
@@ -529,6 +528,7 @@ Other minor additions
 * Added the following types in `Relation.Unary`:
   ```agda
   Satisfiable P = ∃ λ x → x ∈ P
+  IUniversal P  = ∀ {x} → x ∈ P
   ```
 
 * Added the following proofs in `Relation.Unary.Properties`:
