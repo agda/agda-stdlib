@@ -7,8 +7,6 @@
 module Data.Bool.Properties where
 
 open import Algebra
-import Algebra.RingSolver.Simple as Solver
-import Algebra.RingSolver.AlmostCommutativeRing as ACR
 open import Data.Bool
 open import Data.Empty
 open import Data.Product
@@ -383,42 +381,120 @@ push-function-into-if _ true  = refl
 push-function-into-if _ false = refl
 
 ------------------------------------------------------------------------
--- Modules for reasoning about boolean operations
-
-module RingSolver =
-  Solver (ACR.fromCommutativeSemiring ∨-∧-commutativeSemiring) _≟_
-
-module XorRingSolver =
-  Solver (ACR.fromCommutativeRing xor-∧-commutativeRing) _≟_
-
-------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 0.15
+
 ∧-∨-distˡ   = ∧-distribˡ-∨
+{-# WARNING_ON_USAGE ∧-∨-distˡ
+"Warning: ∧-∨-distˡ was deprecated in v0.15.
+Please use ∧-distribˡ-∨ instead."
+#-}
 ∧-∨-distʳ   = ∧-distribʳ-∨
+{-# WARNING_ON_USAGE ∧-∨-distʳ
+"Warning: ∧-∨-distʳ was deprecated in v0.15.
+Please use ∧-distribʳ-∨ instead."
+#-}
 distrib-∧-∨ = ∧-distrib-∨
+{-# WARNING_ON_USAGE distrib-∧-∨
+"Warning: distrib-∧-∨ was deprecated in v0.15.
+Please use ∧-distrib-∨ instead."
+#-}
 ∨-∧-distˡ   = ∨-distribˡ-∧
+{-# WARNING_ON_USAGE ∨-∧-distˡ
+"Warning: ∨-∧-distˡ was deprecated in v0.15.
+Please use ∨-distribˡ-∧ instead."
+#-}
 ∨-∧-distʳ   = ∨-distribʳ-∧
+{-# WARNING_ON_USAGE ∨-∧-distʳ
+"Warning: ∨-∧-distʳ was deprecated in v0.15.
+Please use ∨-distribʳ-∧ instead."
+#-}
 ∨-∧-distrib = ∨-distrib-∧
+{-# WARNING_ON_USAGE ∨-∧-distrib
+"Warning: ∨-∧-distrib was deprecated in v0.15.
+Please use ∨-distrib-∧ instead."
+#-}
 ∨-∧-abs    = ∨-abs-∧
+{-# WARNING_ON_USAGE ∨-∧-abs
+"Warning: ∨-∧-abs was deprecated in v0.15.
+Please use ∨-abs-∧ instead."
+#-}
 ∧-∨-abs    = ∧-abs-∨
-
+{-# WARNING_ON_USAGE ∧-∨-abs
+"Warning: ∧-∨-abs was deprecated in v0.15.
+Please use ∧-abs-∨ instead."
+#-}
 not-∧-inverseˡ = ∧-inverseˡ
+{-# WARNING_ON_USAGE not-∧-inverseˡ
+"Warning: not-∧-inverseˡ was deprecated in v0.15.
+Please use ∧-inverseˡ instead."
+#-}
 not-∧-inverseʳ = ∧-inverseʳ
+{-# WARNING_ON_USAGE not-∧-inverseʳ
+"Warning: not-∧-inverseʳ was deprecated in v0.15.
+Please use ∧-inverseʳ instead."
+#-}
 not-∧-inverse = ∧-inverse
+{-# WARNING_ON_USAGE not-∧-inverse
+"Warning: not-∧-inverse was deprecated in v0.15.
+Please use ∧-inverse instead."
+#-}
 not-∨-inverseˡ = ∨-inverseˡ
+{-# WARNING_ON_USAGE not-∨-inverseˡ
+"Warning: not-∨-inverseˡ was deprecated in v0.15.
+Please use ∨-inverseˡ instead."
+#-}
 not-∨-inverseʳ = ∨-inverseʳ
+{-# WARNING_ON_USAGE not-∨-inverseʳ
+"Warning: not-∨-inverseʳ was deprecated in v0.15.
+Please use ∨-inverseʳ instead."
+#-}
 not-∨-inverse = ∨-inverse
-
+{-# WARNING_ON_USAGE not-∨-inverse
+"Warning: not-∨-inverse was deprecated in v0.15.
+Please use ∨-inverse instead."
+#-}
 isCommutativeSemiring-∨-∧ = ∨-∧-isCommutativeSemiring
+{-# WARNING_ON_USAGE isCommutativeSemiring-∨-∧
+"Warning: isCommutativeSemiring-∨-∧ was deprecated in v0.15.
+Please use ∨-∧-isCommutativeSemiring instead."
+#-}
 commutativeSemiring-∨-∧   =  ∨-∧-commutativeSemiring
+{-# WARNING_ON_USAGE commutativeSemiring-∨-∧
+"Warning: commutativeSemiring-∨-∧ was deprecated in v0.15.
+Please use ∨-∧-commutativeSemiring instead."
+#-}
 isCommutativeSemiring-∧-∨ = ∧-∨-isCommutativeSemiring
+{-# WARNING_ON_USAGE isCommutativeSemiring-∧-∨
+"Warning: isCommutativeSemiring-∧-∨ was deprecated in v0.15.
+Please use ∧-∨-isCommutativeSemiring instead."
+#-}
 commutativeSemiring-∧-∨   = ∧-∨-commutativeSemiring
-isBooleanAlgebra           = ∨-∧-isBooleanAlgebra
-booleanAlgebra             = ∨-∧-booleanAlgebra
+{-# WARNING_ON_USAGE commutativeSemiring-∧-∨
+"Warning: commutativeSemiring-∧-∨ was deprecated in v0.15.
+Please use ∧-∨-commutativeSemiring instead."
+#-}
+isBooleanAlgebra          = ∨-∧-isBooleanAlgebra
+{-# WARNING_ON_USAGE isBooleanAlgebra
+"Warning: isBooleanAlgebra was deprecated in v0.15.
+Please use ∨-∧-isBooleanAlgebra instead."
+#-}
+booleanAlgebra            = ∨-∧-booleanAlgebra
+{-# WARNING_ON_USAGE booleanAlgebra
+"Warning: booleanAlgebra was deprecated in v0.15.
+Please use ∨-∧-booleanAlgebra instead."
+#-}
 commutativeRing-xor-∧     = xor-∧-commutativeRing
-
+{-# WARNING_ON_USAGE commutativeRing-xor-∧
+"Warning: commutativeRing-xor-∧ was deprecated in v0.15.
+Please use xor-∧-commutativeRing instead."
+#-}
 proof-irrelevance = T-irrelevance
+{-# WARNING_ON_USAGE proof-irrelevance
+"Warning: proof-irrelevance was deprecated in v0.15.
+Please use T-irrelevance instead."
+#-}

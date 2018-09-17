@@ -6,19 +6,19 @@
 
 module Relation.Binary where
 
+open import Agda.Builtin.Equality using (_≡_)
 open import Data.Product
 open import Data.Sum
 open import Function
 open import Level
 import Relation.Binary.PropositionalEquality.Core as PropEq
 open import Relation.Binary.Consequences
-open import Relation.Binary.Core as Core using (_≡_)
 import Relation.Binary.Indexed.Core as I
 
 ------------------------------------------------------------------------
 -- Simple properties and equivalence relations
 
-open Core public hiding (_≡_; refl; _≢_)
+open import Relation.Binary.Core public
 
 ------------------------------------------------------------------------
 -- Preorders
@@ -217,8 +217,17 @@ record IsStrictPartialOrder {a ℓ₁ ℓ₂} {A : Set a}
   asym : Asymmetric _<_
   asym {x} {y} = trans∧irr⟶asym Eq.refl trans irrefl {x = x} {y}
 
-  -- DEPRECATED, please use `asym` directly
+  <-respʳ-≈ : _<_ Respectsʳ _≈_
+  <-respʳ-≈ = proj₁ <-resp-≈
+
+  <-respˡ-≈ : _<_ Respectsˡ _≈_
+  <-respˡ-≈ = proj₂ <-resp-≈
+
   asymmetric = asym
+  {-# WARNING_ON_USAGE asymmetric
+  "Warning: asymmetric was deprecated in v0.16.
+  Please use asym instead."
+  #-}
 
 record StrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _<_

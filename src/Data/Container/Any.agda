@@ -19,7 +19,7 @@ open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (equivalence)
 open import Function.Inverse as Inv using (_↔_; inverse; module Inverse)
-open import Function.Related as Related using (Related)
+open import Function.Related as Related using (Related; SK-sym)
 open import Function.Related.TypeIsomorphisms
 open import Relation.Unary using (Pred ; _∪_ ; _∩_)
 open import Relation.Binary using (REL)
@@ -29,7 +29,7 @@ open import Relation.Binary.PropositionalEquality as P
 
 open Related.EquationalReasoning
 private
-  module ×⊎ {k ℓ} = CommutativeSemiring (×⊎-CommutativeSemiring k ℓ)
+  module ×⊎ {k ℓ} = CommutativeSemiring (×-⊎-commutativeSemiring k ℓ)
 
 module _ {s p} (C : Container s p) {x} {X : Set x} {ℓ} {P : Pred X ℓ} where
 
@@ -58,7 +58,7 @@ module _ {s p} {C : Container s p} {x} {X : Set x}
   cong {k} {xs₁} {xs₂} P₁↔P₂ xs₁≈xs₂ =
     ◇ P₁ xs₁                  ↔⟨ ↔∈ C ⟩
     (∃ λ x → x ∈ xs₁ × P₁ x)  ∼⟨ Σ.cong Inv.id (xs₁≈xs₂ ×-cong P₁↔P₂ _) ⟩
-    (∃ λ x → x ∈ xs₂ × P₂ x)  ↔⟨ sym (↔∈ C) ⟩
+    (∃ λ x → x ∈ xs₂ × P₂ x)  ↔⟨ SK-sym (↔∈ C) ⟩
     ◇ P₂ xs₂                  ∎
 
 -- Nested occurrences of ◇ can sometimes be swapped.
@@ -76,13 +76,13 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
     (∃ λ x → x ∈ xs × ∃ λ y → y ∈ ys × P x y)  ↔⟨ Σ.cong Inv.id (λ {x} → ∃∃↔∃∃ (λ _ y → y ∈ ys × P x y)) ⟩
     (∃₂ λ x y → x ∈ xs × y ∈ ys × P x y)       ↔⟨ ∃∃↔∃∃ (λ x y → x ∈ xs × y ∈ ys × P x y) ⟩
     (∃₂ λ y x → x ∈ xs × y ∈ ys × P x y)       ↔⟨ Σ.cong Inv.id (λ {y} → Σ.cong Inv.id (λ {x} →
-      (x ∈ xs × y ∈ ys × P x y)                     ↔⟨ sym Σ-assoc ⟩
-      ((x ∈ xs × y ∈ ys) × P x y)                   ↔⟨ Σ.cong ×-comm Inv.id ⟩
+      (x ∈ xs × y ∈ ys × P x y)                     ↔⟨ SK-sym Σ-assoc ⟩
+      ((x ∈ xs × y ∈ ys) × P x y)                   ↔⟨ Σ.cong (×-comm _ _) Inv.id ⟩
       ((y ∈ ys × x ∈ xs) × P x y)                   ↔⟨ Σ-assoc ⟩
       (y ∈ ys × x ∈ xs × P x y)                     ∎)) ⟩
     (∃₂ λ y x → y ∈ ys × x ∈ xs × P x y)       ↔⟨ Σ.cong Inv.id (λ {y} → ∃∃↔∃∃ {B = y ∈ ys} (λ x _ → x ∈ xs × P x y)) ⟩
-    (∃ λ y → y ∈ ys × ∃ λ x → x ∈ xs × P x y)  ↔⟨ Σ.cong Inv.id (Σ.cong Inv.id (sym (↔∈ C₁))) ⟩
-    (∃ λ y → y ∈ ys × ◇ (flip P y) xs)         ↔⟨ sym (↔∈ C₂) ⟩
+    (∃ λ y → y ∈ ys × ∃ λ x → x ∈ xs × P x y)  ↔⟨ Σ.cong Inv.id (Σ.cong Inv.id (SK-sym (↔∈ C₁))) ⟩
+    (∃ λ y → y ∈ ys × ◇ (flip P y) xs)         ↔⟨ SK-sym (↔∈ C₂) ⟩
     ◇ (λ y → ◇ (flip P y) xs) ys               ∎
 
 -- Nested occurrences of ◇ can sometimes be flattened.
@@ -172,7 +172,7 @@ module _ {s p} (C : Container s p) {x y} {X : Set x} {Y : Set y}
   map-cong {f₁ = f₁} {f₂} {xs₁} {xs₂} f₁≗f₂ xs₁≈xs₂ {x} =
     x ∈ C.map f₁ xs₁        ↔⟨ map↔∘ C (_≡_ x) f₁ ⟩
     ◇ (λ y → x ≡ f₁ y) xs₁  ∼⟨ cong {xs₁ = xs₁} {xs₂ = xs₂} (Related.↔⇒ ∘ helper) xs₁≈xs₂ ⟩
-    ◇ (λ y → x ≡ f₂ y) xs₂  ↔⟨ sym (map↔∘ C (_≡_ x) f₂) ⟩
+    ◇ (λ y → x ≡ f₂ y) xs₂  ↔⟨ SK-sym (map↔∘ C (_≡_ x) f₂) ⟩
     x ∈ C.map f₂ xs₂        ∎
     where
     helper : ∀ y → (x ≡ f₁ y) ↔ (x ≡ f₂ y)
@@ -244,6 +244,6 @@ module _ {s₁ s₂ s₃ p₁ p₂ p₃}
            ◇ P (join xss) ↔ ◇ (◇ P) xss
   join↔◇ join xss =
     ◇ P (⟪ join ⟫⊸ xss′)  ↔⟨ remove-linear P join ⟩
-    ◇ P            xss′   ↔⟨ sym $ flatten P xss ⟩
+    ◇ P            xss′   ↔⟨ SK-sym $ flatten P xss ⟩
     ◇ (◇ P) xss           ∎
     where xss′ = Inverse.from (Composition.correct C₁ C₂) ⟨$⟩ xss

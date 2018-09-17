@@ -13,7 +13,7 @@ open import Data.List as List using (List; []; _∷_)
 open import Data.Maybe.Base using (Maybe ; nothing; just)
 open import Data.Nat as Nat
 open import Data.Product as Prod using (∃; _×_; proj₁; proj₂; _,_; -,_)
-open import Data.These as These hiding (map)
+open import Data.These as These using (These; this; that; these)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Unit
 open import Data.Vec as Vec using (Vec; []; _∷_)
@@ -37,16 +37,23 @@ record List⁺ {a} (A : Set a) : Set a where
 
 open List⁺ public
 
-[_] : ∀ {a} {A : Set a} → A → List⁺ A
-[ x ] = x ∷ []
+-- Basic combinators
 
-infixr 5 _∷⁺_
+module _ {a} {A : Set a} where
 
-_∷⁺_ : ∀ {a} {A : Set a} → A → List⁺ A → List⁺ A
-x ∷⁺ y ∷ xs = x ∷ y ∷ xs
+  uncons : List⁺ A → A × List A
+  uncons (hd ∷ tl) = hd , tl
 
-length : ∀ {a} {A : Set a} → List⁺ A → ℕ
-length (x ∷ xs) = suc (List.length xs)
+  [_] : A → List⁺ A
+  [ x ] = x ∷ []
+
+  infixr 5 _∷⁺_
+
+  _∷⁺_ : A → List⁺ A → List⁺ A
+  x ∷⁺ y ∷ xs = x ∷ y ∷ xs
+
+  length : List⁺ A → ℕ
+  length (x ∷ xs) = suc (List.length xs)
 
 ------------------------------------------------------------------------
 -- Conversion
@@ -141,6 +148,13 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
   zipWith : (A → B → C) → List⁺ A → List⁺ B → List⁺ C
   zipWith f (a ∷ as) (b ∷ bs) = f a b ∷ List.zipWith f as bs
 
+  unalignWith : (A → These B C) → List⁺ A → These (List⁺ B) (List⁺ C)
+  unalignWith f = foldr (These.alignWith mcons mcons ∘′ f)
+                        (These.map [_] [_] ∘′ f)
+
+    where mcons : ∀ {e} {E : Set e} → These E (List⁺ E) → List⁺ E
+          mcons = These.fold [_] id _∷⁺_
+
   unzipWith : (A → B × C) → List⁺ A → List⁺ B × List⁺ C
   unzipWith f (a ∷ as) = Prod.zip _∷_ _∷_ (f a) (List.unzipWith f as)
 
@@ -151,6 +165,9 @@ module _ {a b} {A : Set a} {B : Set b} where
 
   zip : List⁺ A → List⁺ B → List⁺ (A × B)
   zip = zipWith _,_
+
+  unalign : List⁺ (These A B) → These (List⁺ A) (List⁺ B)
+  unalign = unalignWith id
 
   unzip : List⁺ (A × B) → List⁺ A × List⁺ B
   unzip = unzipWith id

@@ -86,13 +86,30 @@ extract (suc n) = suc (extract n)
 ¬Finite∞ : ¬ (Finite infinity)
 ¬Finite∞ (suc p) = ¬Finite∞ p
 
+------------------------------------------------------------------------
+-- Order wrt to Nat
+
+data _ℕ≤_ : ℕ → Conat ∞ → Set where
+  zℕ≤n : ∀ {n} → zero ℕ≤ n
+  sℕ≤s : ∀ {k n} → k ℕ≤ n .force → suc k ℕ≤ suc n
+
+_ℕ<_ : ℕ → Conat ∞ → Set
+k ℕ< n = suc k ℕ≤ n
+
+_ℕ≤infinity : ∀ k → k ℕ≤ infinity
+zero  ℕ≤infinity = zℕ≤n
+suc k ℕ≤infinity = sℕ≤s (k ℕ≤infinity)
 
 ------------------------------------------------------------------------
 -- Legacy
 
-open import Coinduction
+open import Codata.Musical.Notation using (♭; ♯_)
 import Codata.Musical.Conat as M
 
-fromMusical : M.Coℕ → ∀ {i} → Conat i
+fromMusical : ∀ {i} → M.Coℕ → Conat i
 fromMusical M.zero    = zero
 fromMusical (M.suc n) = suc λ where .force → fromMusical (♭ n)
+
+toMusical : Conat ∞ → M.Coℕ
+toMusical zero    = M.zero
+toMusical (suc n) = M.suc (♯ toMusical (n .force))

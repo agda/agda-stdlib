@@ -24,6 +24,9 @@ x < y = (x ≤ y) × ¬ (x ≈ y)
 -- The converted relations have certain properties
 -- (if the original relations have certain other properties)
 
+<⇒≤ : _<_ ⇒ _≤_
+<⇒≤ = proj₁
+
 <-irrefl : Irreflexive _≈_ _<_
 <-irrefl x≈y (_ , x≉y) = x≉y x≈y
 
@@ -104,12 +107,45 @@ x < y = (x ≤ y) × ¬ (x ≈ y)
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
-irrefl         = <-irrefl
-trans          = <-trans
-antisym⟶asym = <-asym
-decidable      = <-decidable
-trichotomous   = <-trichotomous
+-- Version 0.16
 
+irrefl         = <-irrefl
+{-# WARNING_ON_USAGE irrefl
+"Warning: irrefl was deprecated in v0.16.
+Please use <-irrefl instead."
+#-}
+trans          = <-trans
+{-# WARNING_ON_USAGE trans
+"Warning: trans was deprecated in v0.16.
+Please use <-trans instead."
+#-}
+antisym⟶asym = <-asym
+{-# WARNING_ON_USAGE antisym⟶asym
+"Warning: antisym⟶asym was deprecated in v0.16.
+Please use <-asym instead."
+#-}
+decidable      = <-decidable
+{-# WARNING_ON_USAGE decidable
+"Warning: decidable was deprecated in v0.16.
+Please use <-decidable instead."
+#-}
+trichotomous   = <-trichotomous
+{-# WARNING_ON_USAGE trichotomous
+"Warning: trichotomous was deprecated in v0.16.
+Please use <-trichotomous instead."
+#-}
 isPartialOrder⟶isStrictPartialOrder = <-isStrictPartialOrder
+{-# WARNING_ON_USAGE isPartialOrder⟶isStrictPartialOrder
+"Warning: isPartialOrder⟶isStrictPartialOrder was deprecated in v0.16.
+Please use <-isStrictPartialOrder instead."
+#-}
 isTotalOrder⟶isStrictTotalOrder     = <-isStrictTotalOrder₁
+{-# WARNING_ON_USAGE isTotalOrder⟶isStrictTotalOrder
+"Warning: isTotalOrder⟶isStrictTotalOrder was deprecated in v0.16.
+Please use <-isStrictTotalOrder₁ instead."
+#-}
 isDecTotalOrder⟶isStrictTotalOrder  = <-isStrictTotalOrder₂
+{-# WARNING_ON_USAGE isDecTotalOrder⟶isStrictTotalOrder
+"Warning: isDecTotalOrder⟶isStrictTotalOrder was deprecated in v0.16.
+Please use <-isStrictTotalOrder₂ instead."
+#-}

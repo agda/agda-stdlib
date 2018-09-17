@@ -9,9 +9,8 @@ module Data.Vec.Categorical {a n} where
 open import Category.Applicative using (RawApplicative)
 open import Category.Applicative.Indexed using (Morphism)
 open import Category.Functor as Fun using (RawFunctor)
-open import Category.Functor.Identity using (IdentityFunctor)
+import Function.Identity.Categorical as Id
 open import Category.Monad using (RawMonad)
-open import Category.Monad.Identity using (IdentityMonad)
 open import Data.Fin using (Fin)
 open import Data.Vec as Vec hiding (_⊛_)
 open import Data.Vec.Properties
@@ -66,8 +65,7 @@ module _ {m M} (Mon : RawMonad {m} M) where
 
 -- lookup is a functor morphism from Vec to Identity.
 
-lookup-functor-morphism : (i : Fin n) →
-                          Fun.Morphism functor IdentityFunctor
+lookup-functor-morphism : (i : Fin n) → Fun.Morphism functor Id.functor
 lookup-functor-morphism i = record
   { op     = lookup i
   ; op-<$> = lookup-map i
@@ -75,8 +73,7 @@ lookup-functor-morphism i = record
 
 -- lookup is an applicative functor morphism.
 
-lookup-morphism : (i : Fin n) →
-                  Morphism applicative (RawMonad.rawIApplicative IdentityMonad)
+lookup-morphism : (i : Fin n) → Morphism applicative Id.applicative
 lookup-morphism i = record
   { op      = lookup i
   ; op-pure = lookup-replicate i

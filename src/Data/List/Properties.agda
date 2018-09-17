@@ -12,7 +12,6 @@ module Data.List.Properties where
 open import Algebra
 open import Algebra.Structures
 open import Algebra.FunctionProperties
-import Algebra.Monoid-solver
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
 open import Data.List as List
 open import Data.List.All using (All; []; _∷_)
@@ -736,27 +735,46 @@ module _ {a} {A : Set a} where
   ∷ʳ-injectiveʳ xs ys eq = proj₂ (∷ʳ-injective xs ys eq)
 
 ------------------------------------------------------------------------
--- Modules for reasoning about propositional equality of lists
-
--- A module for automatically solving propositional equivalences
-module List-solver {a} {A : Set a} =
-  Algebra.Monoid-solver (++-monoid A) renaming (id to nil)
-
-------------------------------------------------------------------------
 -- DEPRECATED
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 0.15
+
 gfilter-just      = mapMaybe-just
+{-# WARNING_ON_USAGE gfilter-just
+"Warning: gfilter-just was deprecated in v0.15.
+Please use mapMaybe-just instead."
+#-}
 gfilter-nothing   = mapMaybe-nothing
+{-# WARNING_ON_USAGE gfilter-nothing
+"Warning: gfilter-nothing was deprecated in v0.15.
+Please use mapMaybe-nothing instead."
+#-}
 gfilter-concatMap = mapMaybe-concatMap
+{-# WARNING_ON_USAGE gfilter-concatMap
+"Warning: gfilter-concatMap was deprecated in v0.15.
+Please use mapMaybe-concatMap instead."
+#-}
 length-gfilter    = length-mapMaybe
-
+{-# WARNING_ON_USAGE length-gfilter
+"Warning: length-gfilter was deprecated in v0.15.
+Please use length-mapMaybe instead."
+#-}
 right-identity-unique = ++-identityʳ-unique
+{-# WARNING_ON_USAGE right-identity-unique
+"Warning: right-identity-unique was deprecated in v0.15.
+Please use ++-identityʳ-unique instead."
+#-}
 left-identity-unique  = ++-identityˡ-unique
+{-# WARNING_ON_USAGE left-identity-unique
+"Warning: left-identity-unique was deprecated in v0.15.
+Please use ++-identityˡ-unique instead."
+#-}
 
--- Please use the predicate versions of the proofs below
+-- Version 0.16
+
 module _ {a} {A : Set a} (p : A → Bool) where
 
   boolTakeWhile++boolDropWhile : ∀ xs → boolTakeWhile p xs ++ boolDropWhile p xs ≡ xs
@@ -764,22 +782,35 @@ module _ {a} {A : Set a} (p : A → Bool) where
   boolTakeWhile++boolDropWhile (x ∷ xs) with p x
   ... | true  = P.cong (x ∷_) (boolTakeWhile++boolDropWhile xs)
   ... | false = refl
-
+  {-# WARNING_ON_USAGE boolTakeWhile++boolDropWhile
+  "Warning: boolTakeWhile and boolDropWhile were deprecated in v0.16.
+  Please use takeWhile and dropWhile instead."
+  #-}
   boolSpan-defn : boolSpan p ≗ < boolTakeWhile p , boolDropWhile p >
   boolSpan-defn []       = refl
   boolSpan-defn (x ∷ xs) with p x
   ... | true  = P.cong (Prod.map (x ∷_) id) (boolSpan-defn xs)
   ... | false = refl
-
+  {-# WARNING_ON_USAGE boolSpan-defn
+  "Warning: boolSpan, boolTakeWhile and boolDropWhile were deprecated in v0.16.
+  Please use span, takeWhile and dropWhile instead."
+  #-}
   length-boolFilter : ∀ xs → length (boolFilter p xs) ≤ length xs
   length-boolFilter xs =
     length-mapMaybe (λ x → if p x then just x else nothing) xs
-
+  {-# WARNING_ON_USAGE length-boolFilter
+  "Warning: boolFilter was deprecated in v0.16.
+  Please use filter instead."
+  #-}
   boolPartition-defn : boolPartition p ≗ < boolFilter p , boolFilter (not ∘ p) >
   boolPartition-defn []       = refl
   boolPartition-defn (x ∷ xs) with p x
   ...  | true  = P.cong (Prod.map (x ∷_) id) (boolPartition-defn xs)
   ...  | false = P.cong (Prod.map id (x ∷_)) (boolPartition-defn xs)
+  {-# WARNING_ON_USAGE boolPartition-defn
+  "Warning: boolPartition and boolFilter were deprecated in v0.16.
+  Please use partition and filter instead."
+  #-}
 
 module _ {a p} {A : Set a} (P : A → Set p) (P? : Decidable P) where
 
@@ -788,3 +819,7 @@ module _ {a p} {A : Set a} (P : A → Set p) (P? : Decidable P) where
   boolFilter-filters (x ∷ xs) with P? x
   ... | yes px = px ∷ boolFilter-filters xs
   ... | no ¬px = boolFilter-filters xs
+  {-# WARNING_ON_USAGE boolFilter-filters
+  "Warning: boolFilter was deprecated in v0.16.
+  Please use filter instead."
+  #-}

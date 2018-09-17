@@ -109,7 +109,7 @@ to-witness-T nothing  ()
 ------------------------------------------------------------------------
 -- Aligning and Zipping
 
-open import Data.These
+open import Data.These using (These; this; that; these)
 open import Data.Product hiding (zip)
 
 module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where

@@ -9,21 +9,22 @@ module Data.String.Base where
 open import Data.Nat.Base as Nat using (ℕ)
 open import Data.List.Base as List using (List)
 open import Data.List.NonEmpty as NE using (List⁺)
-open import Data.Char.Core using (Char)
+open import Agda.Builtin.Char using (Char)
 open import Function
-open import Relation.Binary.Core using (_≡_)
-open import Relation.Binary.PropositionalEquality.TrustMe using (trustMe)
+open import Relation.Binary.PropositionalEquality using (_≡_)
 
 ------------------------------------------------------------------------
 -- From Agda.Builtin
 
 open import Agda.Builtin.String public
-  using ( String
-        ; primStringAppend
-        ; primStringToList
-        ; primStringFromList
-        ; primStringEquality
-        ; primShowString )
+  using
+  ( String
+  ; primStringAppend
+  ; primStringToList
+  ; primStringFromList
+  ; primStringEquality
+  ; primShowString
+  )
 
 ------------------------------------------------------------------------
 -- Operations
@@ -61,12 +62,3 @@ show = primShowString
 
 unlines : List String → String
 unlines = concat ∘ List.intersperse "\n"
-
-------------------------------------------------------------------------
--- Properties
-
-toList∘fromList : ∀ s → toList (fromList s) ≡ s
-toList∘fromList s = trustMe
-
-fromList∘toList : ∀ s → fromList (toList s) ≡ s
-fromList∘toList s = trustMe

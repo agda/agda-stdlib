@@ -7,9 +7,7 @@
 module Data.Container.FreeMonad where
 
 open import Level
-open import Function using (_∘_)
-open import Data.Empty using (⊥-elim)
-open import Data.Sum using (inj₁; inj₂)
+open import Data.Sum using (inj₁; inj₂ ; [_,_]′)
 open import Data.Product
 open import Data.Container
 open import Data.Container.Combinator using (const; _⊎_)
@@ -44,14 +42,14 @@ C ⋆ X = μ (C ⋆C X)
 module _ {s p} {C : Container s p} where
 
   inn : ∀ {x} {X : Set x} → ⟦ C ⟧ (C ⋆ X) → C ⋆ X
-  inn (s , k) = sup (inj₂ s) k
+  inn (s , f) = sup (inj₂ s , f)
 
   rawMonad : ∀ {x} → RawMonad {s ⊔ p ⊔ x} (C ⋆_)
   rawMonad = record { return = return; _>>=_ = _>>=_ }
     where
     return : ∀ {X} → X → C ⋆ X
-    return x = sup (inj₁ x) (⊥-elim ∘ lower)
+    return x = sup (inj₁ x , λ ())
 
     _>>=_ : ∀ {X Y} → C ⋆ X → (X → C ⋆ Y) → C ⋆ Y
-    sup (inj₁ x) _ >>= k = k x
-    sup (inj₂ s) f >>= k = inn (s , λ p → f p >>= k)
+    sup (inj₁ x , _) >>= k = k x
+    sup (inj₂ s , f) >>= k = inn (s , λ p → f p >>= k)

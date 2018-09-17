@@ -1,21 +1,17 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- An inductive definition of sublist. This commonly known as an Order
+-- An inductive definition of sublist. This is commonly known as an Order
 -- Preserving Embedding (OPE).
 ------------------------------------------------------------------------
 
 module Data.List.Relation.Sublist.Inductive where
 
-open import Data.Empty
-open import Data.Nat.Base
-open import Data.Nat.Properties
-open ≤-Reasoning
-open import Data.List.Base
-open import Function
-import Function.Injection as F
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
+open import Data.List.Base using (List; []; _∷_; [_])
+open import Data.List.Any  using (here; there)
+open import Data.List.Membership.Propositional
+open import Relation.Binary using (Rel)
+open import Relation.Binary.PropositionalEquality using (refl)
 
 ------------------------------------------------------------------------
 -- Type and basic combinators
@@ -34,114 +30,19 @@ module _ {a} {A : Set a} where
   []⊆ x ∷ xs = skip ([]⊆ xs)
 
 ------------------------------------------------------------------------
--- Some properties
+-- A function induced by a sublist proof
 
-module _ {a} {A : Set a} where
+  lookup : ∀ {xs ys} → xs ⊆ ys → {x : A} → x ∈ xs → x ∈ ys
+  lookup (skip p) v         = there (lookup p v)
+  lookup (keep p) (here px) = here px
+  lookup (keep p) (there v) = there (lookup p v)
+  lookup base     ()
 
-  ⊆-length : ∀ {xs ys : List A} → xs ⊆ ys → length xs ≤ length ys
-  ⊆-length base     = ≤-refl
-  ⊆-length (skip p) = ≤-step (⊆-length p)
-  ⊆-length (keep p) = s≤s (⊆-length p)
+-- Conversion between membership and proofs that a singleton is a sublist
 
-------------------------------------------------------------------------
--- Relational properties
+  from∈ : ∀ {xs x} → x ∈ xs → [ x ] ⊆ xs
+  from∈ (here refl) = keep ([]⊆ _)
+  from∈ (there p)   = skip (from∈ p)
 
-module _ {a} {A : Set a} where
-
-  ⊆-reflexive : _≡_ ⇒ _⊆_ {A = A}
-  ⊆-reflexive {[]}     refl = base
-  ⊆-reflexive {x ∷ xs} refl = keep (⊆-reflexive refl)
-
-  ⊆-refl : Reflexive {A = List A} _⊆_
-  ⊆-refl = ⊆-reflexive refl
-
-  ⊆-trans : Transitive {A = List A} _⊆_
-  ⊆-trans p        base     = p
-  ⊆-trans p        (skip q) = skip (⊆-trans p q)
-  ⊆-trans (skip p) (keep q) = skip (⊆-trans p q)
-  ⊆-trans (keep p) (keep q) = keep (⊆-trans p q)
-
-  ⊆-antisym : Antisymmetric {A = List A} _≡_ _⊆_
-  -- Positive cases
-  ⊆-antisym base     base     = refl
-  ⊆-antisym (keep p) (keep q) = cong (_ ∷_) (⊆-antisym p q)
-  -- Dismissing the impossible cases
-  ⊆-antisym {x ∷ xs} {y ∷ ys} (skip p) (skip q) = ⊥-elim $ 1+n≰n $ begin
-    length (y ∷ ys) ≤⟨ ⊆-length q ⟩
-    length xs       ≤⟨ n≤1+n (length xs) ⟩
-    length (x ∷ xs) ≤⟨ ⊆-length p ⟩
-    length ys       ∎
-  ⊆-antisym {x ∷ xs} {y ∷ ys} (skip p) (keep q) = ⊥-elim $ 1+n≰n $ begin
-    length (x ∷ xs) ≤⟨ ⊆-length p ⟩
-    length ys       ≤⟨ ⊆-length q ⟩
-    length xs       ∎
-  ⊆-antisym {x ∷ xs} {y ∷ ys} (keep p) (skip q) =  ⊥-elim $ 1+n≰n $ begin
-    length (y ∷ ys) ≤⟨ ⊆-length q ⟩
-    length xs       ≤⟨ ⊆-length p ⟩
-    length ys       ∎
-
-  ⊆-minimum : Minimum (_⊆_ {A = A}) []
-  ⊆-minimum = []⊆_
-
-module _ {a} (A : Set a) where
-
-  ⊆-isPreorder : IsPreorder _≡_ (_⊆_ {A = A})
-  ⊆-isPreorder = record
-    { isEquivalence = isEquivalence
-    ; reflexive     = ⊆-reflexive
-    ; trans         = ⊆-trans
-    }
-
-  ⊆-preorder : Preorder _ _ _
-  ⊆-preorder = record
-    { isPreorder = ⊆-isPreorder
-    }
-
-  ⊆-isPartialOrder : IsPartialOrder _≡_ _⊆_
-  ⊆-isPartialOrder = record
-    { isPreorder = ⊆-isPreorder
-    ; antisym    = ⊆-antisym
-    }
-
-  ⊆-poset : Poset _ _ _
-  ⊆-poset = record
-    { isPartialOrder = ⊆-isPartialOrder
-    }
-
-------------------------------------------------------------------------
--- map
-
-module _ {a b} {A : Set a} {B : Set b} where
-
-  map⁺ : ∀ {xs ys} (f : A → B) → xs ⊆ ys → map f xs ⊆ map f ys
-  map⁺ f base     = base
-  map⁺ f (skip p) = skip (map⁺ f p)
-  map⁺ f (keep p) = keep (map⁺ f p)
-
-  open F.Injection
-
-  map⁻ : ∀ {xs ys} (inj : A F.↣ B) →
-         map (inj ⟨$⟩_) xs ⊆ map (inj ⟨$⟩_) ys → xs ⊆ ys
-  map⁻ {[]}     {ys}     inj p = []⊆ ys
-  map⁻ {x ∷ xs} {[]}     inj ()
-  map⁻ {x ∷ xs} {y ∷ ys} inj p
-    with inj ⟨$⟩ x | inspect (inj ⟨$⟩_) x
-       | inj ⟨$⟩ y | inspect (inj ⟨$⟩_) y
-       | injective inj {x} {y}
-  map⁻ {x ∷ xs} {y ∷ ys} inj (skip p)
-    | fx | [ eq ] | fy | _ | _ = skip (map⁻ inj (coerce p))
-    where coerce = subst (λ fx → fx ∷ _ ⊆ _) (sym eq)
-  map⁻ {x ∷ xs} {y ∷ ys} inj (keep p)
-    | fx | _      | fx | _ | eq
-    rewrite eq refl = keep (map⁻ inj p)
-
-------------------------------------------------------------------------
--- _++_
-
-module _ {a} {A : Set a} where
-
-  ++⁺ : ∀ {xs ys us vs : List A} → xs ⊆ ys → us ⊆ vs → xs ++ us ⊆ ys ++ vs
-  ++⁺ base     q = q
-  ++⁺ (skip p) q = skip (++⁺ p q)
-  ++⁺ (keep p) q = keep (++⁺ p q)
-
+  to∈ : ∀ {xs x} → [ x ] ⊆ xs → x ∈ xs
+  to∈ p = lookup p (here refl)

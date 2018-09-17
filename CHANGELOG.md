@@ -8,6 +8,46 @@ Important changes since 0.16:
 Non-backwards compatible changes
 --------------------------------
 
+#### Overhaul of safety of the library
+
+* Currently the library is very difficult to type check with the `--safe`
+  flag as there are unsafe functions scattered throughout the key modules.
+  This means that it is almost impossible to verify the safety of any code
+  depending on the standard library. The following reorganisation will fix
+  this problem after the NEXT full release of Agda. (Agda 2.5.4.1 uses
+  postulates in the `Agda.Builtin.X` that will be removed in the next release).
+
+* The following new modules `Unsafe` have been created. The contents of
+  these are  nearly all marked as unsafe as they use the `trustMe` functionality,
+  either for performance reasons or for informative decidable equality tests.
+  ```
+  Data.Char.Unsafe
+  Data.Float.Unsafe
+  Data.Nat.Unsafe
+  Data.Nat.DivMod.Unsafe
+  Data.String.Unsafe
+  Data.Word.Unsafe
+  ```
+
+* Another module affected is `Relation.Binary.HeterogeneousEquality.Quotients(.Examples)`
+  which previously postulated function extensionality. The relevant submodules
+  now take extensionality as a module parameter instead of postulating it. If you
+  want to use these results then you should postulate it yourself.
+
+* The full list of unsafe modules is:
+  ```
+  Data.Char.Unsafe
+  Data.Float.Unsafe
+  Data.Nat.Unsafe
+  Data.Nat.DivMod.Unsafe
+  Data.String.Unsafe
+  Data.Word.Unsafe
+  IO
+  IO.Primitive
+  Reflection
+  Relation.Binary.PropositionalEquality.TrustMe
+  ```
+
 #### New codata library
 
 * A new `Codata` library using copatterns and sized types rather
@@ -15,10 +55,13 @@ Non-backwards compatible changes
   notion of coinductive `Thunk` and provides the basic data types:
   ```agda
   Codata.Thunk
+
   Codata.Colist
   Codata.Conat
+  Codata.Cofin
   Codata.Covec
   Codata.Delay
+  Codata.M
   Codata.Stream
   ```
   Each coinductive type comes with a notion of bisimilarity in the corresponding
@@ -29,6 +72,7 @@ Non-backwards compatible changes
 * To avoid confusion, the old codata modules that previously lived in the `Data`
   directory have been moved to the folder `Codata.Musical`
   ```agda
+  Coinduction ↦ Codata.Musical.Notation
   Data.Cofin  ↦ Codata.Musical.Cofin
   Data.Colist ↦ Codata.Musical.Colist
   Data.Conat  ↦ Codata.Musical.Conat
@@ -37,11 +81,16 @@ Non-backwards compatible changes
   Data.Stream ↦ Codata.Musical.Stream
   ```
 
-* Each new-style coinduction type comes with a `fromMusical` function converting
-  old-style coinduction values to new-style ones.
+* Each new-style coinduction type comes with two functions (`fromMusical` and
+  `toMusical`) converting back and forth between old-style coinduction values
+  and new-style ones.
 
 * The type `Costring` and method `toCostring` have been moved from `Data.String`
   to a new module `Codata.Musical.Costring`.
+
+* The `Rec` construction has been dropped from `Codata.Musical.Notation` as the
+  `--guardedness-preserving-type-constructors` flag which made it useful has been
+  removed from Agda.
 
 #### Improved consistency between `Data.(List/Vec).(Any/All/Membership)`
 
@@ -78,96 +127,100 @@ Non-backwards compatible changes
 
 #### Deprecating `Data.Fin.Dec`:
 
-* This module has been deprecated as it's non-standard position
-  is causing dependency cycles. The move also makes finding
+* This module has been deprecated as its non-standard position
+  was causing dependency cycles. The move also makes finding
   subset properties easier.
 
-* The following have been moved to `Data.Fin.Properties`:
-  `decFinSubset`, `any?`, `all?`, `¬∀⟶∃¬-smallest`, `¬∀⟶∃¬`.
+* The following proofs have been moved to `Data.Fin.Properties`:
+  ```
+  decFinSubset, any?, all?, ¬∀⟶∃¬-smallest, ¬∀⟶∃¬
+  ```
 
 * The following proofs have been moved to `Data.Fin.Subset.Properties`:
-  `_∈?_`, `_⊆?_`, `nonempty?`, `anySubset?` and `decLift`. The latter
-  has been renamed to `Lift?`.
+  ```
+  _∈?_, _⊆?_, nonempty?, anySubset?, decLift
+  ```
+  The latter has been renamed to `Lift?`.
 
 * The file `Data.Fin.Dec` still exists for backwards compatibility
   and exports all the old names, but may be removed in some
   future version.
 
-### Overhaul of `Data.X.Categorical`
+#### Rearrangement of algebraic Solvers
 
-* Created `Codata.Delay.Categorical`:
+* Standardised and moved the generic solver modules as follows:
   ```agda
-  functor                : RawFunctor (λ A → Delay A i)
-  Sequential.applicative : RawApplicative (λ A → Delay A i)
-  Sequential.monad       : RawMonad (λ A → Delay A i)
-  Sequential.monadZero   : RawMonadZero (λ A → Delay A i)
-  Zippy.applicative      : RawApplicative (λ A → Delay A i)
+  Algebra.RingSolver                        ↦ Algebra.Solver.Ring
+  Algebra.Monoid-solver                     ↦ Algebra.Solver.Monoid
+  Algebra.CommutativeMonoidSolver           ↦ Algebra.Solver.CommutativeMonoid
+  Algebra.IdempotentCommutativeMonoidSolver ↦ Algebra.Solver.IdempotentCommutativeMonoid
   ```
 
-* Created `Codata.Stream.Categorical`:
+* In order to avoid dependency cycles, special instances of solvers for the following
+  data types have been moved from `Data.X.Properties` to new modules `Data.X.Solver`.
+  The naming conventions for these solver modules have also been standardised.
   ```agda
-  functor     : RawFunctor (λ A → Stream A i)
-  applicative : RawApplicative (λ A → Stream A i)
+  Data.Bool.Properties.RingSolver          ↦  Data.Bool.Solver.∨-∧-Solver
+  Data.Bool.Properties.XorRingSolver       ↦  Data.Bool.Solver.xor-∧-Solver
+  Data.Integer.Properties.RingSolver       ↦  Data.Integer.Solver.+-*-Solver
+  Data.List.Properties.List-solver         ↦  Data.List.Solver.++-Solver
+  Data.Nat.Properties.SemiringSolver       ↦  Data.Nat.Solver.+-*-Solver
+  Function.Related.TypeIsomorphisms.Solver ↦ Function.Related.TypeIsomorphisms.Solver.×-⊎-Solver
   ```
 
-* In `Data.List.Categorical` renamed and added functions:
+* Renamed `Algebra.Solver.Ring.Natural-coefficients` to `Algebra.Solver.Ring.NaturalCoefficients`.
+
+#### Overhaul of `Data.X.Categorical`
+
+* Added new modules:
+  ```
+  Category.Comonad
+
+  Data.List.NonEmpty.Categorical
+  Data.Maybe.Categorical
+  Data.Product.Categorical.Left
+  Data.Product.Categorical.Right
+  Data.Product.N-ary.Categorical
+  Data.Sum.Categorical.Left
+  Data.Sum.Categorical.Right
+  Data.These.Categorical.Left
+  Data.These.Categorical.Right
+
+  Codata.Colist.Categorical
+  Codata.Covec.Categorical
+  Codata.Delay.Categorical
+  Codata.Stream.Categorical
+  ```
+
+* In `Data.List.Categorical` renamed:
   ```agda
-  functor     : RawFunctor List
-  applicative : RawApplicative List
-  monadT      : RawMonad M → RawMonad (M ∘′ List)
-  sequenceA   : RawApplicative F → List (F A) → F (List A)
-  mapA        : RawApplicative F → (A → F B) → List A → F (List B)
-  forA        : RawApplicative F → List A → (A → F B) → F (List B)
-  sequence    ↦ sequenceM
-  forM        : RawMonad M → List A → (A → M B) → M (List B)
+  sequence ↦ sequenceM
   ```
 
-* Created `Data.List.NonEmpty.Categorical`, moved `monad` into it
-  from `Data.List.NonEmpty` and added new functions:
-  ```agda
-  functor     : RawFunctor List⁺
-  applicative : RawApplicative List⁺
-  monadT      : RawMonad M → RawMonad (M ∘′ List⁺)
-  sequenceA   : RawApplicative F → List⁺ (F A) → F (List⁺ A)
-  mapA        : RawApplicative F → (A → F B) → List⁺ A → F (List⁺ B)
-  forA        : RawApplicative F → List⁺ A → (A → F B) → F (List⁺ B)
-  sequenceM   : RawMonad M → List⁺ (M A) → M (List⁺ A)
-  mapM        : RawMonad M → (A → M B) → List⁺ A → M (List⁺ B)
-  forM        : RawMonad M → List⁺ A → (A → M B) → M (List⁺ B)
-  ```
+* Moved `monad` from `Data.List.NonEmpty` to `Data.List.NonEmpty.Categorical`.
 
-* Created `Data.Maybe.Categorical`, moved `functor`, `monadT`, `monad`,
-  `monadZero` and `monadPlus` into it from `Data.Maybe` and added the
-  following functions:
-  ```agda
-  sequenceA : RawApplicative F → Maybe (F A) → F (Maybe A)
-  mapA      : RawApplicative F → (A → F B) → Maybe A → F (Maybe B)
-  forA      : RawApplicative F → Maybe A → (A → F B) → F (Maybe B)
-  sequenceM : RawMonad M → Maybe (M A) → M (Maybe A)
-  mapM      : RawMonad M → (A → M B) → Maybe A → M (Maybe B)
-  forM      : RawMonad M → Maybe A → (A → M B) → M (Maybe B)
-  ```
+* Moved `functor`, `monadT`, `monad`, `monadZero` and `monadPlus` from `Data.Maybe`
+  to `Data.Maybe.Categorical`.
 
-* Created `Data.Product.N-ary.Categorical` and added:
-  ```agda
-  functor     : RawFunctor (_^ n)
-  applicative : RawApplicative (_^ n)
-  sequenceA : RawApplicative F → Vec (F A) n → F (A ^ n)
-  mapA      : RawApplicative F → (A → F B) → A ^ n → F (B ^ n)
-  forA      : RawApplicative F → A ^ n → (A → F B) → F (B ^ n)
-  sequenceM : RawMonad M → Vec (M A) n → M (A ^ n)
-  mapM      : RawMonad M → (A → M B) → A ^ n → M (B ^ n)
-  forM      : RawMonad M → A ^ n → (A → M B) → M (B ^ n)
+* Created new module `Function.Identity.Categorical` and merged the existing modules
+  `Category.Functor.Identity` and `Category.Monad.Identity` into it.
 
-* Added new functions to `Data.Vec.Categorical`:
-  ```
-  sequenceA : RawApplicative F → Vec (F A) n → F (Vec A n)
-  mapA      : RawApplicative F → (A → F B) → Vec A n → F (Vec B n)
-  forA      : RawApplicative F → Vec A n → (A → F B) → F (Vec B n)
-  sequenceM : RawMonad M → Vec (M A) n → M (Vec A n)
-  mapM      : RawMonad M → (A → M B) → Vec A n → M (Vec B n)
-  forM      : RawMonad M → Vec A n → (A → M B) → M (Vec B n)
-  ```
+
+#### Overhaul of `Data.Container`, `Data.W` and `Codata.(Musical.)M`
+
+* Made `Data.Container` (and associated modules) more level-polymorphic
+
+* Created `Data.Container.Core` for the core definition of `Container`,
+  container morphisms `_⇒_`, `All` and `Any`. This breaks the dependency cycle
+  with `Data.W` and `Codata.Musical.M`.
+
+* Refactored `Data.W` and `Codata.Musical.M` to use `Container`.
+
+#### Overhaul of `Relation.Binary.Indexed` subtree
+
+* The record `IsEquivalence` in `Relation.Binary.Indexed.Homogeneous` has been
+  replaced by `IsIndexedEquivalence`. This implemented as a record encapsulating
+  indexed versions of the required properties, rather than an indexed equivalence.
 
 #### Other
 
@@ -180,19 +233,25 @@ Non-backwards compatible changes
   `Irrelevant` and have been moved to `Relation.Unary` and
   `Relation.Binary` respectively.
 
-* Made the `Set` argument implicit in `Data.Maybe.Base`'s `From-just`
+* Removed `Data.Char.Core` which was doing nothing of interest.
+
+* In `Data.Maybe.Base` the `Set` argument to `From-just` has been made implicit
   to be consistent with the definition of `Data.Sum`'s `From-injₙ`.
 
-* Renamed `Data.Product`'s `,_` to `-,_` to avoid conflict with the right
-  section of `_,_`.
+* In `Data.Product` the function `,_` has been renamed to `-,_` to avoid
+  conflict with the right section of `_,_`.
 
-* Made the target level of `Level`'s `Lift` explicit.
+* Made `Data.Star.Decoration`, `Data.Star.Environment` and `Data.Star.Pointer`
+  more level polymorphic. In particular `EdgePred` now takes an extra explicit
+  level parameter.
 
-* Made `Data.Container` (and associated modules) more level-polymorphic and
-  moved the core definitions to `Data.Container.Core`.
+* In `Level` the target level of `Lift` is now explicit.
 
-* Changed the precedence level of `_$_` (and variants) to `-1`. This makes
-  it interact well with `_∋_` in e.g. `f $ Maybe A ∋ do (...)`.
+* In `Function` the precedence level of `_$_` (and variants) has been changed to `-1`
+  in order to improve its interaction with `_∋_` (e.g. `f $ Maybe A ∋ do (...)`).
+
+* `Relation.Binary` now no longer exports `_≡_`, `_≢_` and `refl`. The standard
+  way of accessing them remains `Relation.Binary.PropositionalEquality`.
 
 Other major changes
 -------------------
@@ -203,59 +262,18 @@ Other major changes
 * Added new modules `Data.List.Relation.Permutation.Inductive(.Properties)`,
   which give an inductive definition of permutations over lists.
 
-* Added a very barebones new module `Data.These` for the classic either-or-both
-  Haskell datatype.
+* Added a new module `Data.These` for the classic either-or-both Haskell datatype.
 
 * Added new module `Data.List.Relation.Sublist.Inductive` which gives
   an inductive definition of the sublist relation (i.e. order-preserving embeddings).
+  We also provide a solver for this order in `Data.List.Relation.Sublist.Inductive.Solver`.
 
-* Added new module `Data.Sum.Categorical`:
-  ```agda
-  Sumₗ.functor     : RawFunctor (A ⊎_)
-  Sumₗ.applicative : RawApplicative (A ⊎_)
-  Sumₗ.monadT      : RawMonad M → RawMonad (M ∘′ (A ⊎_))
-  Sumₗ.monad       : RawMonad (A ⊎_)
-  Sumₗ.sequenceA   : RawApplicative F → Sumₗ (F A) → F (Sumₗ A)
-  Sumₗ.mapA        : RawApplicative F → (A → F B) → Sumₗ A → F (Sumₗ B)
-  Sumₗ.forA        : RawApplicative F → Sumₗ A → (A → F B) → F (Sumₗ B)
-  Sumₗ.sequenceM   : RawMonad M → Sumₗ (M A) → M (Sumₗ A)
-  Sumₗ.mapM        : RawMonad M → (A → M B) → Sumₗ A → M (Sumₗ B)
-  Sumₗ.forM        : RawMonad M → Sumₗ A → (A → M B) → M (Sumₗ B)
-  Sumᵣ.functor     : RawFunctor (_⊎ B)
-  Sumᵣ.applicative : RawApplicative (_⊎ B)
-  Sumᵣ.monadT      : RawMonad M → RawMonad (M ∘′ (_⊎ B))
-  Sumᵣ.monad       : RawMonad (_⊎ B)
-  Sumᵣ.sequenceA   : RawApplicative F → Sumᵣ (F A) → F (Sumᵣ A)
-  Sumᵣ.mapA        : RawApplicative F → (A → F B) → Sumᵣ A → F (Sumᵣ B)
-  Sumᵣ.forA        : RawApplicative F → Sumᵣ A → (A → F B) → F (Sumᵣ B)
-  Sumᵣ.sequenceM   : RawMonad M → Sumᵣ (M A) → M (Sumᵣ A)
-  Sumᵣ.mapM        : RawMonad M → (A → M B) → Sumᵣ A → M (Sumᵣ B)
-  Sumᵣ.forM        : RawMonad M → Sumᵣ A → (A → M B) → M (Sumᵣ B)
-  ```
+* Added new module `Relation.Binary.Construction.Converse`. This is very similar
+  to the existing module `Relation.Binary.Flip` in that it flips the relation. However
+  unlike the existing module, the new module leaves the underlying equality unchanged.
 
-* Added new module `Data.Product.Categorical`:
-  ```agda
-  Productₗ.functor     : (A : RawMonoid a e) → RawFunctor (A ×_)
-  Productₗ.applicative : (A : RawMonoid a e) → RawApplicative (A ×_)
-  Productₗ.monadT      : (A : RawMonoid a e) → RawMonad M → RawMonad (M ∘′ (A ×_))
-  Productₗ.monad       : (A : RawMonoid a e) → RawMonad (A ×_)
-  Productₗ.sequenceA   : RawApplicative F → Productₗ (F A) → F (Productₗ A)
-  Productₗ.mapA        : RawApplicative F → (A → F B) → Productₗ A → F (Productₗ B)
-  Productₗ.forA        : RawApplicative F → Productₗ A → (A → F B) → F (Productₗ B)
-  Productₗ.sequenceM   : RawMonad M → Productₗ (M A) → M (Productₗ A)
-  Productₗ.mapM        : RawMonad M → (A → M B) → Productₗ A → M (Productₗ B)
-  Productₗ.forM        : RawMonad M → Productₗ A → (A → M B) → M (Productₗ B)
-  Productᵣ.functor     : (B : RawMonoid b e) → RawFunctor (_× B)
-  Productᵣ.applicative : (B : RawMonoid b e) → RawApplicative (_× B)
-  Productᵣ.monadT      : (B : RawMonoid b e) → RawMonad M → RawMonad (M ∘′ (_× B))
-  Productᵣ.monad       : (B : RawMonoid b e) → RawMonad (_× B)
-  Productᵣ.sequenceA   : RawApplicative F → Productᵣ (F A) → F (Productᵣ A)
-  Productᵣ.mapA        : RawApplicative F → (A → F B) → Productᵣ A → F (Productᵣ B)
-  Productᵣ.forA        : RawApplicative F → Productᵣ A → (A → F B) → F (Productᵣ B)
-  Productᵣ.sequenceM   : RawMonad M → Productᵣ (M A) → M (Productᵣ A)
-  Productᵣ.mapM        : RawMonad M → (A → M B) → Productᵣ A → M (Productᵣ B)
-  Productᵣ.forM        : RawMonad M → Productᵣ A → (A → M B) → M (Productᵣ B)
-  ```
+* Added new modules `Relation.Unary.Closure.(Preorder/StrictPartialOrder)` providing
+  closures of a predicate with respect to either a preorder or a strict partial order.
 
 Deprecated features
 -------------------
@@ -265,19 +283,63 @@ the library. The deprecated names still exist and therefore all existing code sh
 work, however they have been deprecated and use of any new names is encouraged. Although not
 anticipated any time soon, they may eventually be removed in some future release of the library.
 
+* All deprecated names now give warnings at point-of-use when type-checked.
+
 * In `Data.Nat.Divisibility`:
   ```
   nonZeroDivisor-lemma
   ```
 
+* In `Function.Related`
+  ```agda
+  preorder              ↦ R-preorder
+  setoid                ↦ SR-setoid
+  EquationReasoning.sym ↦ SR-sym
+  ```
+
+* In `Function.Related.TypeIsomorphisms`:
+  ```agda
+  ×-CommutativeMonoid    ↦ ×-commutativeMonoid
+  ⊎-CommutativeMonoid    ↦ ⊎-commutativeMonoid
+  ×⊎-CommutativeSemiring ↦ ×-⊎-commutativeSemiring
+  ```
+
 Other minor additions
 ---------------------
+
+* Added new records to `Algebra`:
+  ```agda
+  record RawSemigroup c ℓ : Set (suc (c ⊔ ℓ))
+  record RawGroup     c ℓ : Set (suc (c ⊔ ℓ))
+  record RawSemiring  c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* Added new function `Category.Functor`'s `RawFunctor`:
+  ```agda
+  _<&>_ : F A → (A → B) → F B
+  ```
+
+* Added new function to `Category.Monad.Indexed`:
+  ```agda
+  RawIMonadT : (T : IFun I f → IFun I f) → Set (i ⊔ suc f)
+  ```
+
+* Added new function to `Category.Monad`:
+  ```agda
+  RawMonadT : (T : (Set f → Set f) → (Set f → Set f)) → Set _
+  ```
 
 * Added new functions to `Codata.Delay`:
   ```agda
   alignWith : (These A B → C) → Delay A i → Delay B i → Delay C i
   zip       : Delay A i → Delay B i → Delay (A × B) i
   align     : Delay A i → Delay B i → Delay (These A B) i
+  ```
+
+* Added new functions to `Codata.Musical.M`:
+  ```agda
+  map    : (C₁ ⇒ C₂) → M C₁ → M C₂
+  unfold : (S → ⟦ C ⟧ S) → S → M C
   ```
 
 * Added new proof to `Data.Fin.Permutation`:
@@ -290,6 +352,8 @@ Other minor additions
 * Added new proof to `Data.Fin.Properties`:
   ```agda
   toℕ-fromℕ≤″ : toℕ (fromℕ≤″ m m<n) ≡ m
+
+  pigeonhole  : m < n → (f : Fin n → Fin m) → ∃₂ λ i j → i ≢ j × f i ≡ f j
   ```
 
 * Added new proofs to `Data.List.Any.Properties`:
@@ -313,21 +377,35 @@ Other minor additions
   unalign     : List (These A B) → List A × List B
   ```
 
+* Added new functions to `Data.List.Categorical`:
+  ```agda
+  functor     : RawFunctor List
+  applicative : RawApplicative List
+  monadT      : RawMonadT (_∘′ List)
+  sequenceA   : RawApplicative F → List (F A) → F (List A)
+  mapA        : RawApplicative F → (A → F B) → List A → F (List B)
+  forA        : RawApplicative F → List A → (A → F B) → F (List B)
+  forM        : RawMonad M → List A → (A → M B) → M (List B)
+  ```
+
 * Added new proofs to `Data.List.Membership.(Setoid/Propositional).Properties`:
   ```agda
   ∈-insert : v ≈ v′ → v ∈ xs ++ [ v′ ] ++ ys
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
   ```
 
-* Added new function to `Data.List.NonEmpty`:
+* Added new functions to `Data.List.NonEmpty`:
   ```agda
-  concatMap : (A → List⁺ B) → List⁺ A → List⁺ B
-  alignWith : (These A B → C) → List⁺ A → List⁺ B → List⁺ C
-  zipWith   : (A → B → C) → List⁺ A → List⁺ B → List⁺ C
-  unzipWith : (A → B × C) → List⁺ A → List⁺ B × List⁺ C
-  align     : List⁺ A → List⁺ B → List⁺ (These A B)
-  zip       : List⁺ A → List⁺ B → List⁺ (A × B)
-  unzip     : List⁺ (A × B) → List⁺ A × List⁺ B
+  uncons      : List⁺ A → A × List A
+  concatMap   : (A → List⁺ B) → List⁺ A → List⁺ B
+  alignWith   : (These A B → C) → List⁺ A → List⁺ B → List⁺ C
+  zipWith     : (A → B → C) → List⁺ A → List⁺ B → List⁺ C
+  unalignWith : (A → These B C) → List⁺ A → These (List⁺ B) (List⁺ C)
+  unzipWith   : (A → B × C) → List⁺ A → List⁺ B × List⁺ C
+  align       : List⁺ A → List⁺ B → List⁺ (These A B)
+  zip         : List⁺ A → List⁺ B → List⁺ (A × B)
+  unalign     : List⁺ (These A B) → These (List⁺ A) (List⁺ B)
+  unzip       : List⁺ (A × B) → List⁺ A × List⁺ B
   ```
 
 * Added new functions to `Data.List.Properties`:
@@ -414,6 +492,16 @@ Other minor additions
   unzipWith : (A → B × C) → Vec A n → Vec B n × Vec C n
   ```
 
+* Added new functions to `Data.Vec.Categorical`:
+  ```agda
+  sequenceA : RawApplicative F → Vec (F A) n → F (Vec A n)
+  mapA      : RawApplicative F → (A → F B) → Vec A n → F (Vec B n)
+  forA      : RawApplicative F → Vec A n → (A → F B) → F (Vec B n)
+  sequenceM : RawMonad M → Vec (M A) n → M (Vec A n)
+  mapM      : RawMonad M → (A → M B) → Vec A n → M (Vec B n)
+  forM      : RawMonad M → Vec A n → (A → M B) → M (Vec B n)
+  ```
+
 * Added new proofs to `Data.Vec.Properties.All`:
   ```agda
   toList⁺   : All P (toList xs) → All P xs
@@ -452,9 +540,42 @@ Other minor additions
   typeOf : {A : Set a} → A → Set a
   ```
 
-* Added new result to `Function.Relation.TypeIsomorphisms`:
+* Added new functions to `Function.Related`:
   ```agda
-  ×-comm : (A × B) ↔ (B × A)
+  isEquivalence : IsEquivalence (Related ⌊ k ⌋)
+  ↔-isPreorder  : IsPreorder _↔_ (Related k)
+  ```
+
+* Added new result to `Function.Related.TypeIsomorphisms`:
+  ```agda
+  ×-comm                    : (A × B) ↔ (B × A)
+  ×-identityˡ               : LeftIdentity _↔_ (Lift ℓ ⊤) _×_
+  ×-identityʳ               : RightIdentity _↔_ (Lift ℓ ⊤) _×_
+  ×-identity                : Identity _↔_ (Lift ℓ ⊤) _×_
+  ×-zeroˡ                   : LeftZero _↔_ (Lift ℓ ⊥) _×_
+  ×-zeroʳ                   : RightZero _↔_ (Lift ℓ ⊥) _×_
+  ×-zero                    : Zero _↔_ (Lift ℓ ⊥) _×_
+  ⊎-assoc                   : Associative _↔_ _⊎_
+  ⊎-comm                    : (A ⊎ B) ↔ (B ⊎ A)
+  ⊎-identityˡ               : LeftIdentity _↔_ (Lift ℓ ⊥) _⊎_
+  ⊎-identityʳ               : RightIdentity _↔_ (Lift ℓ ⊥) _⊎_
+  ⊎-identity                : Identity _↔_ (Lift ℓ ⊥) _⊎_
+  ×-distribˡ-⊎              : _DistributesOverˡ_ _↔_ _×_ _⊎_
+  ×-distribʳ-⊎              : _DistributesOverʳ_ _↔_ _×_ _⊎_
+  ×-distrib-⊎               : _DistributesOver_ _↔_ _×_ _⊎_
+  ×-isSemigroup             : IsSemigroup (Related ⌊ k ⌋) _×_
+  ×-semigroup               : Symmetric-kind → Level → Semigroup _ _
+  ×-isMonoid                : IsMonoid (Related ⌊ k ⌋) _×_ (Lift ℓ ⊤)
+  ×-monoid                  : Symmetric-kind → Level → Monoid _ _
+  ×-isCommutativeMonoid     : IsCommutativeMonoid (Related ⌊ k ⌋) _×_ (Lift ℓ ⊤)
+  ×-commutativeMonoid       : Symmetric-kind → Level → CommutativeMonoid _ _
+  ⊎-isSemigroup             : IsSemigroup (Related ⌊ k ⌋) _⊎_
+  ⊎-semigroup               : Symmetric-kind → Level → Semigroup _ _
+  ⊎-isMonoid                : IsMonoid (Related ⌊ k ⌋) _⊎_ (Lift ℓ ⊥)
+  ⊎-monoid                  : Symmetric-kind → Level → Monoid _ _
+  ⊎-isCommutativeMonoid     : IsCommutativeMonoid (Related ⌊ k ⌋) _⊎_ (Lift ℓ ⊥)
+  ⊎-commutativeMonoid       : Symmetric-kind → Level → CommutativeMonoid _ _
+  ×-⊎-isCommutativeSemiring : IsCommutativeSemiring (Related ⌊ k ⌋) _⊎_ _×_ (Lift ℓ ⊥) (Lift ℓ ⊤)
   ```
 
 * Added new type and function to `Function.Bijection`:
@@ -479,6 +600,17 @@ Other minor additions
   leftInverse : (∀ x → from (to x) ≡ x) → From ↞ To
   ```
 
+* Added new proofs to `Function.Related`:
+  ```agda
+  K-refl       : Reflexive (Related k)
+  K-reflexive  : _≡_ ⇒ Related k
+  K-trans      : Trans (Related k) (Related k) (Related k)
+  K-isPreorder : IsPreorder _↔_ (Related k)
+
+  SK-sym           : Sym (Related ⌊ k ⌋) (Related ⌊ k ⌋)
+  SK-isEquivalence : IsEquivalence (Related ⌊ k ⌋)
+  ```
+
 * Added new proofs to `Function.Related.TypeIsomorphisms`:
   ```agda
   ×-≡×≡↔≡,≡ : (x ≡ proj₁ p × y ≡ proj₂ p) ↔ (x , y) ≡ p
@@ -490,10 +622,64 @@ Other minor additions
   surjection : (∀ x → to (from x) ≡ x) → From ↠ To
   ```
 
-* Added new functions to `Level`:
+* Added new synonym to `Level`:
   ```agda
-  _ℕ+_ : Nat → Level → Level
-  #_   : Nat → Level
+  0ℓ = zero
+  ```
+
+* Added new module `Level.Literals` with functions:
+  ```agda
+  _ℕ+_   : Nat → Level → Level
+  #_     : Nat → Level
+  Levelℕ : Number Level
+  ```
+
+* Added new proofs to record `IsStrictPartialOrder` in `Relation.Binary`:
+  ```agda
+  <-respʳ-≈ : _<_ Respectsʳ _≈_
+  <-respˡ-≈ : _<_ Respectsˡ _≈_
+  ```
+
+* Added new types, functions and records to `Relation.Binary.Indexed.Homogeneous`:
+  ```agda
+  Implies _∼₁_ _∼₂_      = ∀ {i} → _∼₁_ B.⇒ (_∼₂_ {i})
+  Antisymmetric _≈_ _∼_  = ∀ {i} → B.Antisymmetric _≈_ (_∼_ {i})
+  Decidable _∼_          = ∀ {i} → B.Decidable (_∼_ {i})
+  Respects P _∼_         = ∀ {i} {x y : A i} → x ∼ y → P x → P y
+  Respectsˡ P _∼_        = ∀ {i} {x y z : A i} → x ∼ y → P x z → P y z
+  Respectsʳ P _∼_        = ∀ {i} {x y z : A i} → x ∼ y → P z x → P z y
+  Respects₂ P _∼_        = (Respectsʳ P _∼_) × (Respectsˡ P _∼_)
+  Lift _∼_ x y           = ∀ i → x i ∼ y i
+
+  record IsIndexedEquivalence  (_≈ᵢ_ : Rel A ℓ)                   : Set (i ⊔ a ⊔ ℓ)
+  record IsIndexedPreorder     (_≈ᵢ_ : Rel A ℓ₁) (_∼ᵢ_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsIndexedPartialOrder (_≈ᵢ_ : Rel A ℓ₁) (_≤ᵢ_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
+
+  record IndexedSetoid   {i} (I : Set i) c ℓ     : Set (suc (i ⊔ c ⊔ ℓ))
+  record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
+  record IndexedPoset    {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
+  ```
+
+* Added new proofs to `Relation.Binary.NonStrictToStrict`:
+  ```agda
+  <⇒≤ : _<_ ⇒ _≤_
+  ```
+
+* Added new proofs to `Relation.Binary.PropositionalEquality`:
+  ```agda
+  respˡ : ∼ Respectsˡ _≡_
+  respʳ : ∼ Respectsʳ _≡_
+  ```
+
+* Added new proofs to `Relation.Binary.StrictToNonStrict`:
+  ```agda
+  <⇒≤ : _<_ ⇒ _≤_
+
+  ≤-respʳ-≈ : Transitive _≈_ → _<_ Respectsʳ _≈_ → _≤_ Respectsʳ _≈_
+  ≤-respˡ-≈ : Symmetric _≈_ → Transitive _≈_ → _<_ Respectsˡ _≈_ → _≤_ Respectsˡ _≈_
+
+  <-≤-trans : Transitive _<_ → _<_ Respectsʳ _≈_ → Trans _<_ _≤_ _<_
+  ≤-<-trans : Symmetric _≈_ → Transitive _<_ → _<_ Respectsˡ _≈_ → Trans _≤_ _<_ _<_
   ```
 
 * Added the following types in `Relation.Unary`:
