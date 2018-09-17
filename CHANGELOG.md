@@ -8,6 +8,46 @@ Important changes since 0.16:
 Non-backwards compatible changes
 --------------------------------
 
+#### Overhaul of safety of the library
+
+* Currently the library is very difficult to type check with the `--safe`
+  flag as there are unsafe functions scattered throughout the key modules.
+  This means that it is almost impossible to verify the safety of any code
+  depending on the standard library. The following reorganisation will fix
+  this problem after the NEXT full release of Agda. (Agda 2.5.4.1 uses
+  postulates in the `Agda.Builtin.X` that will be removed in the next release).
+
+* The following new modules `Unsafe` have been created. The contents of
+  these are  nearly all marked as unsafe as they use the `trustMe` functionality,
+  either for performance reasons or for informative decidable equality tests.
+  ```
+  Data.Char.Unsafe
+  Data.Float.Unsafe
+  Data.Nat.Unsafe
+  Data.Nat.DivMod.Unsafe
+  Data.String.Unsafe
+  Data.Word.Unsafe
+  ```
+
+* Another module affected is `Relation.Binary.HeterogeneousEquality.Quotients(.Examples)`
+  which previously postulated function extensionality. The relevant submodules
+  now take extensionality as a module parameter instead of postulating it. If you
+  want to use these results then you should postulate it yourself.
+
+* The full list of unsafe modules is:
+  ```
+  Data.Char.Unsafe
+  Data.Float.Unsafe
+  Data.Nat.Unsafe
+  Data.Nat.DivMod.Unsafe
+  Data.String.Unsafe
+  Data.Word.Unsafe
+  IO
+  IO.Primitive
+  Reflection
+  Relation.Binary.PropositionalEquality.TrustMe
+  ```
+
 #### New codata library
 
 * A new `Codata` library using copatterns and sized types rather
@@ -32,6 +72,7 @@ Non-backwards compatible changes
 * To avoid confusion, the old codata modules that previously lived in the `Data`
   directory have been moved to the folder `Codata.Musical`
   ```agda
+  Coinduction ↦ Codata.Musical.Notation
   Data.Cofin  ↦ Codata.Musical.Cofin
   Data.Colist ↦ Codata.Musical.Colist
   Data.Conat  ↦ Codata.Musical.Conat
@@ -46,6 +87,10 @@ Non-backwards compatible changes
 
 * The type `Costring` and method `toCostring` have been moved from `Data.String`
   to a new module `Codata.Musical.Costring`.
+
+* The `Rec` construction has been dropped from `Codata.Musical.Notation` as the
+  `--guardedness-preserving-type-constructors` flag which made it useful has been
+  removed from Agda.
 
 #### Improved consistency between `Data.(List/Vec).(Any/All/Membership)`
 
@@ -138,6 +183,8 @@ Non-backwards compatible changes
   Data.Product.N-ary.Categorical
   Data.Sum.Categorical.Left
   Data.Sum.Categorical.Right
+  Data.These.Categorical.Left
+  Data.These.Categorical.Right
 
   Codata.Colist.Categorical
   Codata.Covec.Categorical
@@ -169,6 +216,12 @@ Non-backwards compatible changes
 
 * Refactored `Data.W` and `Codata.Musical.M` to use `Container`.
 
+#### Overhaul of `Relation.Binary.Indexed` subtree
+
+* The record `IsEquivalence` in `Relation.Binary.Indexed.Homogeneous` has been
+  replaced by `IsIndexedEquivalence`. This implemented as a record encapsulating
+  indexed versions of the required properties, rather than an indexed equivalence.
+
 #### Other
 
 * The `Data.List.Relation.Sublist` directory has been moved to
@@ -197,7 +250,10 @@ Non-backwards compatible changes
 * In `Function` the precedence level of `_$_` (and variants) has been changed to `-1`
   in order to improve its interaction with `_∋_` (e.g. `f $ Maybe A ∋ do (...)`).
 
-* In `Relation.Unary` the syntax `∀[_]` has been renamed to `Π[_]`. The original
+* `Relation.Binary` now no longer exports `_≡_`, `_≢_` and `refl`. The standard
+  way of accessing them remains `Relation.Binary.PropositionalEquality`.
+
+* The syntax `∀[_]` in `Relation.Unary` has been renamed to `Π[_]`. The original
   name is now used for for implicit universal quantifiers.
 
 Other major changes
@@ -209,11 +265,18 @@ Other major changes
 * Added new modules `Data.List.Relation.Permutation.Inductive(.Properties)`,
   which give an inductive definition of permutations over lists.
 
-* Added a very barebones new module `Data.These` for the classic either-or-both
-  Haskell datatype.
+* Added a new module `Data.These` for the classic either-or-both Haskell datatype.
 
 * Added new module `Data.List.Relation.Sublist.Inductive` which gives
   an inductive definition of the sublist relation (i.e. order-preserving embeddings).
+  We also provide a solver for this order in `Data.List.Relation.Sublist.Inductive.Solver`.
+
+* Added new module `Relation.Binary.Construction.Converse`. This is very similar
+  to the existing module `Relation.Binary.Flip` in that it flips the relation. However
+  unlike the existing module, the new module leaves the underlying equality unchanged.
+
+* Added new modules `Relation.Unary.Closure.(Preorder/StrictPartialOrder)` providing
+  closures of a predicate with respect to either a preorder or a strict partial order.
 
 Deprecated features
 -------------------
@@ -246,6 +309,18 @@ anticipated any time soon, they may eventually be removed in some future release
 
 Other minor additions
 ---------------------
+
+* Added new records to `Algebra`:
+  ```agda
+  record RawSemigroup c ℓ : Set (suc (c ⊔ ℓ))
+  record RawGroup     c ℓ : Set (suc (c ⊔ ℓ))
+  record RawSemiring  c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* Added new function `Category.Functor`'s `RawFunctor`:
+  ```agda
+  _<&>_ : F A → (A → B) → F B
+  ```
 
 * Added new function to `Category.Monad.Indexed`:
   ```agda
@@ -523,6 +598,54 @@ Other minor additions
   _ℕ+_   : Nat → Level → Level
   #_     : Nat → Level
   Levelℕ : Number Level
+  ```
+
+* Added new proofs to record `IsStrictPartialOrder` in `Relation.Binary`:
+  ```agda
+  <-respʳ-≈ : _<_ Respectsʳ _≈_
+  <-respˡ-≈ : _<_ Respectsˡ _≈_
+  ```
+
+* Added new types, functions and records to `Relation.Binary.Indexed.Homogeneous`:
+  ```agda
+  Implies _∼₁_ _∼₂_      = ∀ {i} → _∼₁_ B.⇒ (_∼₂_ {i})
+  Antisymmetric _≈_ _∼_  = ∀ {i} → B.Antisymmetric _≈_ (_∼_ {i})
+  Decidable _∼_          = ∀ {i} → B.Decidable (_∼_ {i})
+  Respects P _∼_         = ∀ {i} {x y : A i} → x ∼ y → P x → P y
+  Respectsˡ P _∼_        = ∀ {i} {x y z : A i} → x ∼ y → P x z → P y z
+  Respectsʳ P _∼_        = ∀ {i} {x y z : A i} → x ∼ y → P z x → P z y
+  Respects₂ P _∼_        = (Respectsʳ P _∼_) × (Respectsˡ P _∼_)
+  Lift _∼_ x y           = ∀ i → x i ∼ y i
+
+  record IsIndexedEquivalence  (_≈ᵢ_ : Rel A ℓ)                   : Set (i ⊔ a ⊔ ℓ)
+  record IsIndexedPreorder     (_≈ᵢ_ : Rel A ℓ₁) (_∼ᵢ_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsIndexedPartialOrder (_≈ᵢ_ : Rel A ℓ₁) (_≤ᵢ_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
+
+  record IndexedSetoid   {i} (I : Set i) c ℓ     : Set (suc (i ⊔ c ⊔ ℓ))
+  record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
+  record IndexedPoset    {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
+  ```
+
+* Added new proofs to `Relation.Binary.NonStrictToStrict`:
+  ```agda
+  <⇒≤ : _<_ ⇒ _≤_
+  ```
+
+* Added new proofs to `Relation.Binary.PropositionalEquality`:
+  ```agda
+  respˡ : ∼ Respectsˡ _≡_
+  respʳ : ∼ Respectsʳ _≡_
+  ```
+
+* Added new proofs to `Relation.Binary.StrictToNonStrict`:
+  ```agda
+  <⇒≤ : _<_ ⇒ _≤_
+
+  ≤-respʳ-≈ : Transitive _≈_ → _<_ Respectsʳ _≈_ → _≤_ Respectsʳ _≈_
+  ≤-respˡ-≈ : Symmetric _≈_ → Transitive _≈_ → _<_ Respectsˡ _≈_ → _≤_ Respectsˡ _≈_
+
+  <-≤-trans : Transitive _<_ → _<_ Respectsʳ _≈_ → Trans _<_ _≤_ _<_
+  ≤-<-trans : Symmetric _≈_ → Transitive _<_ → _<_ Respectsˡ _≈_ → Trans _≤_ _<_ _<_
   ```
 
 * Added the following types in `Relation.Unary`:

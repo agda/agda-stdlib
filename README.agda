@@ -54,8 +54,10 @@ module README where
 --     approaches taken. The `Codata` folder contains the new more
 --     standard approach using sized types. The `Codata.Musical`
 --     folder contains modules using the old musical notation.
--- • Coinduction
---     Support for coinduction.
+-- • Codata.Musical.Notation
+--     Support for coinduction via musical notation.
+-- • Codata.Thunk
+--     Support for coinduction via sized types and copatterns
 -- • Data
 --     Data types and properties.
 -- • Function
@@ -151,7 +153,8 @@ import Induction.Nat
 
 -- • Support for coinduction
 
-import Coinduction
+import Codata.Musical.Notation
+import Codata.Thunk
 
 -- • IO
 
@@ -298,13 +301,15 @@ import README.Function.Reasoning
 -- All library modules
 ------------------------------------------------------------------------
 
--- For short descriptions of every library module, see Everything:
+-- For short descriptions of every library module, see Everything;
+-- to exclude unsafe modules, see EverythingSafe:
 
 import Everything
+import EverythingSafe
 
--- Note that the Everything module is generated automatically. If you
--- have downloaded the library from its Git repository and want to
--- type check README then you can (try to) construct Everything by
+-- Note that the Everything* modules are generated automatically. If
+-- you have downloaded the library from its Git repository and want
+-- to type check README then you can (try to) construct Everything by
 -- running "cabal install && GenerateEverything".
 
 -- Note that all library sources are located under src or ffi. The

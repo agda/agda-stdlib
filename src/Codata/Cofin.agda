@@ -53,7 +53,7 @@ toFin zero    ()
 toFin (suc n) zero    = zero
 toFin (suc n) (suc i) = suc (toFin n i)
 
-open import Coinduction using (♭; ♯_)
+open import Codata.Musical.Notation using (♭; ♯_)
 import Codata.Musical.Cofin as M
 
 fromMusical : ∀ {n} → M.Cofin n → Cofin (Conat.fromMusical n)

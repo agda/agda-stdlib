@@ -24,6 +24,9 @@ x < y = (x ≤ y) × ¬ (x ≈ y)
 -- The converted relations have certain properties
 -- (if the original relations have certain other properties)
 
+<⇒≤ : _<_ ⇒ _≤_
+<⇒≤ = proj₁
+
 <-irrefl : Irreflexive _≈_ _<_
 <-irrefl x≈y (_ , x≉y) = x≉y x≈y
 
