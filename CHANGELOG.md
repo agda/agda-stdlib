@@ -278,7 +278,7 @@ Other major changes
 * Added new modules `Relation.Unary.Closure.(Preorder/StrictPartialOrder)` providing
   closures of a predicate with respect to either a preorder or a strict partial order.
 
-* Added new modules `Relation.Binary.Properties.(DistributiveLattice/HeytingAlgebra)`.
+* Added new modules `Relation.Binary.Properties.(BoundedLattice/DistributiveLattice/HeytingAlgebra)`.
 
 Deprecated features
 -------------------
@@ -645,6 +645,9 @@ Other minor additions
   IsMeetSemilattice.x∧y≤x      : x ∧ y ≤ x
   IsMeetSemilattice.x∧y≤y      : x ∧ y ≤ y
   IsMeetSemilattice.∧-greatest : x ≤ y → x ≤ z → x ≤ y ∧ z
+
+  Lattice.setoid               : Setoid c ℓ₁
+  BoundedLattice.setoid        : Setoid c ℓ₁
 
   record IsDistributiveLattice _≈_ _≤_ _∨_ _∧_
   record IsHeytingAlgebra      _≈_ _≤_ _∨_ _∧_ _⇨_ ⊤ ⊥

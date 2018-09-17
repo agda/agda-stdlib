@@ -20,6 +20,11 @@ open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
 import Relation.Binary.Properties.JoinSemilattice joinSemilattice as J
 import Relation.Binary.Properties.MeetSemilattice meetSemilattice as M
+open Setoid setoid hiding (_≈_; isEquivalence; reflexive) renaming (refl to ≈-refl)
+
+open import Relation.Binary.SetoidReasoning
+open import Relation.Binary.PartialOrderReasoning poset
+  hiding (_≈⟨_⟩_) renaming (_∎ to _▯)
 
 ∨-absorbs-∧ : _∨_ Absorbs _∧_
 ∨-absorbs-∧ x y =
@@ -35,6 +40,51 @@ import Relation.Binary.Properties.MeetSemilattice meetSemilattice as M
 
 absorptive : Absorptive _∨_ _∧_
 absorptive = ∨-absorbs-∧ , ∧-absorbs-∨
+
+∧≤∨ : ∀ {x y} → x ∧ y ≤ x ∨ y
+∧≤∨ {x} {y} = begin
+  x ∧ y ≤⟨ x∧y≤x _ _ ⟩
+  x     ≤⟨ x≤x∨y _ _ ⟩
+  x ∨ y ▯
+
+-- two quadrilateral arguments
+
+quadrilateral₁ : ∀ {x y} → x ∨ y ≈ x → x ∧ y ≈ y
+quadrilateral₁ {x} {y} x∨y≈x = begin⟨ setoid ⟩
+  x ∧ y       ≈⟨ M.∧-cong (sym x∨y≈x) ≈-refl ⟩
+  (x ∨ y) ∧ y ≈⟨ M.∧-comm _ _ ⟩
+  y ∧ (x ∨ y) ≈⟨ M.∧-cong ≈-refl (J.∨-comm _ _) ⟩
+  y ∧ (y ∨ x) ≈⟨ ∧-absorbs-∨ _ _ ⟩
+  y           ∎
+
+quadrilateral₂ : ∀ {x y} → x ∧ y ≈ y → x ∨ y ≈ x
+quadrilateral₂ {x} {y} x∧y≈y = begin⟨ setoid ⟩
+  x ∨ y       ≈⟨ J.∨-cong ≈-refl (sym x∧y≈y) ⟩
+  x ∨ (x ∧ y) ≈⟨ ∨-absorbs-∧ _ _ ⟩
+  x           ∎
+
+-- collapsing sublattice
+
+collapse₁ : ∀ {x y} → x ≈ y → x ∧ y ≈ x ∨ y
+collapse₁ {x} {y} x≈y = begin⟨ setoid ⟩
+  x ∧ y ≈⟨ M.y≤x⇒x∧y≈y y≤x ⟩
+  y     ≈⟨ sym x≈y ⟩
+  x     ≈⟨ sym (J.x≤y⇒x∨y≈y y≤x) ⟩
+  y ∨ x ≈⟨ J.∨-comm _ _ ⟩
+  x ∨ y ∎
+  where y≤x = reflexive (sym x≈y)
+
+-- this can also be proved by quadrilateral argument, but it's much less symmetric.
+collapse₂ : ∀ {x y} → x ∨ y ≤ x ∧ y → x ≈ y
+collapse₂ {x} {y} ∨≤∧ = antisym
+  (begin x     ≤⟨ x≤x∨y _ _ ⟩
+         x ∨ y ≤⟨ ∨≤∧ ⟩
+         x ∧ y ≤⟨ x∧y≤y _ _ ⟩
+         y     ▯)
+  (begin y     ≤⟨ y≤x∨y _ _ ⟩
+         x ∨ y ≤⟨ ∨≤∧ ⟩
+         x ∧ y ≤⟨ x∧y≤x _ _ ⟩
+         x     ▯)
 
 -- The dual construction is also a lattice.
 

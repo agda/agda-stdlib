@@ -32,11 +32,11 @@ dualJoinSemilattice = record
   ; isJoinSemilattice = dualIsJoinSemilattice
   }
 
-open J dualJoinSemilattice public renaming
+open J dualJoinSemilattice public using () renaming
   ( ∨-monotonic  to ∧-monotonic
   ; ∨-cong       to ∧-cong
   ; ∨-comm       to ∧-comm
   ; ∨-assoc      to ∧-assoc
   ; ∨-idempotent to ∧-idempotent
+  ; x≤y⇒x∨y≈y    to y≤x⇒x∧y≈y
   )
-
