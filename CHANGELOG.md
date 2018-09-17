@@ -216,6 +216,12 @@ Non-backwards compatible changes
 
 * Refactored `Data.W` and `Codata.Musical.M` to use `Container`.
 
+#### Overhaul of `Relation.Binary.Indexed` subtree
+
+* The record `IsEquivalence` in `Relation.Binary.Indexed.Homogeneous` has been
+  replaced by `IsIndexedEquivalence`. This implemented as a record encapsulating
+  indexed versions of the required properties, rather than an indexed equivalence.
+
 #### Other
 
 * The `Data.List.Relation.Sublist` directory has been moved to
@@ -244,6 +250,11 @@ Non-backwards compatible changes
 * In `Function` the precedence level of `_$_` (and variants) has been changed to `-1`
   in order to improve its interaction with `_∋_` (e.g. `f $ Maybe A ∋ do (...)`).
 
+* `Relation.Binary` now no longer exports `_≡_`, `_≢_` and `refl`. The standard
+  way of accessing them remains `Relation.Binary.PropositionalEquality`.
+
+* The syntax `∀[_]` in `Relation.Unary` has been renamed to `Π[_]`. The original
+  name is now used for for implicit universal quantifiers.
 
 Other major changes
 -------------------
@@ -266,6 +277,8 @@ Other major changes
 
 * Added new modules `Relation.Unary.Closure.(Preorder/StrictPartialOrder)` providing
   closures of a predicate with respect to either a preorder or a strict partial order.
+
+* Added new modules `Relation.Binary.Properties.(DistributiveLattice/HeytingAlgebra)`.
 
 Deprecated features
 -------------------
@@ -302,6 +315,12 @@ anticipated any time soon, they may eventually be removed in some future release
   ×⊎-CommutativeSemiring ↦ ×-⊎-commutativeSemiring
   ```
 
+* In `Relation.Binary.Lattice`:
+  ```agda
+  BoundedJoinSemilattice.joinSemiLattice ↦ BoundedJoinSemilattice.joinSemilattice
+  BoundedMeetSemilattice.meetSemiLattice ↦ BoundedMeetSemilattice.meetSemilattice
+  ```
+
 Other minor additions
 ---------------------
 
@@ -310,6 +329,11 @@ Other minor additions
   record RawSemigroup c ℓ : Set (suc (c ⊔ ℓ))
   record RawGroup     c ℓ : Set (suc (c ⊔ ℓ))
   record RawSemiring  c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* Added new function `Category.Functor`'s `RawFunctor`:
+  ```agda
+  _<&>_ : F A → (A → B) → F B
   ```
 
 * Added new function to `Category.Monad.Indexed`:
@@ -596,9 +620,56 @@ Other minor additions
   <-respˡ-≈ : _<_ Respectsˡ _≈_
   ```
 
+* Added new types, functions and records to `Relation.Binary.Indexed.Homogeneous`:
+  ```agda
+  Implies _∼₁_ _∼₂_      = ∀ {i} → _∼₁_ B.⇒ (_∼₂_ {i})
+  Antisymmetric _≈_ _∼_  = ∀ {i} → B.Antisymmetric _≈_ (_∼_ {i})
+  Decidable _∼_          = ∀ {i} → B.Decidable (_∼_ {i})
+  Respects P _∼_         = ∀ {i} {x y : A i} → x ∼ y → P x → P y
+  Respectsˡ P _∼_        = ∀ {i} {x y z : A i} → x ∼ y → P x z → P y z
+  Respectsʳ P _∼_        = ∀ {i} {x y z : A i} → x ∼ y → P z x → P z y
+  Respects₂ P _∼_        = (Respectsʳ P _∼_) × (Respectsˡ P _∼_)
+  Lift _∼_ x y           = ∀ i → x i ∼ y i
+
+  record IsIndexedEquivalence  (_≈ᵢ_ : Rel A ℓ)                   : Set (i ⊔ a ⊔ ℓ)
+  record IsIndexedPreorder     (_≈ᵢ_ : Rel A ℓ₁) (_∼ᵢ_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsIndexedPartialOrder (_≈ᵢ_ : Rel A ℓ₁) (_≤ᵢ_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
+
+  record IndexedSetoid   {i} (I : Set i) c ℓ     : Set (suc (i ⊔ c ⊔ ℓ))
+  record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
+  record IndexedPoset    {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
+  ```
+
+* Added new types, records and proofs to `Relation.Binary.Lattice`:
+  ```agda
+  Exponential _≤_ _∧_ _⇨_ = ∀ w x y → ((w ∧ x) ≤ y → w ≤ (x ⇨ y)) × (w ≤ (x ⇨ y) → (w ∧ x) ≤ y)
+
+  IsJoinSemilattice.x≤x∨y      : x ≤ x ∨ y
+  IsJoinSemilattice.y≤x∨y      : y ≤ x ∨ y
+  IsJoinSemilattice.∨-least    : x ≤ z → y ≤ z → x ∨ y ≤ z
+
+  IsMeetSemilattice.x∧y≤x      : x ∧ y ≤ x
+  IsMeetSemilattice.x∧y≤y      : x ∧ y ≤ y
+  IsMeetSemilattice.∧-greatest : x ≤ y → x ≤ z → x ≤ y ∧ z
+
+  record IsDistributiveLattice _≈_ _≤_ _∨_ _∧_
+  record IsHeytingAlgebra      _≈_ _≤_ _∨_ _∧_ _⇨_ ⊤ ⊥
+  record IsBooleanAlgebra      _≈_ _≤_ _∨_ _∧_ ¬_ ⊤ ⊥
+
+  record DistributiveLattice c ℓ₁ ℓ₂
+  record HeytingAlgebra      c ℓ₁ ℓ₂
+  record BooleanAlgebra      c ℓ₁ ℓ₂
+  ```
+
 * Added new proofs to `Relation.Binary.NonStrictToStrict`:
   ```agda
   <⇒≤ : _<_ ⇒ _≤_
+  ```
+
+* Added new proofs to `Relation.Binary.PropositionalEquality`:
+  ```agda
+  respˡ : ∼ Respectsˡ _≡_
+  respʳ : ∼ Respectsʳ _≡_
   ```
 
 * Added new proofs to `Relation.Binary.StrictToNonStrict`:
@@ -615,6 +686,7 @@ Other minor additions
 * Added the following types in `Relation.Unary`:
   ```agda
   Satisfiable P = ∃ λ x → x ∈ P
+  IUniversal P  = ∀ {x} → x ∈ P
   ```
 
 * Added the following proofs in `Relation.Unary.Properties`:
