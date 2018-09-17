@@ -7,7 +7,6 @@
 module Data.These where
 
 open import Level
-open import Algebra using (Semigroup)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Function
 
@@ -32,14 +31,19 @@ map₂ : ∀ {a b₁ b₂} {A : Set a} {B₁ : Set b₁} {B₂ : Set b₂}
        (g : B₁ → B₂) → These A B₁ → These A B₂
 map₂ = map id
 
-module _ {a b} {A : Set a} {B : Set b} where
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
 -- fold
 
-  fold : ∀ {c} {C : Set c} → (A → C) → (B → C) → (A → B → C) → These A B → C
+  fold : (A → C) → (B → C) → (A → B → C) → These A B → C
   fold l r lr (this a)    = l a
   fold l r lr (that b)    = r b
   fold l r lr (these a b) = lr a b
+
+  foldWithDefaults : A → B → (A → B → C) → These A B → C
+  foldWithDefaults a b lr = fold (flip lr b) (lr a) lr
+
+module _ {a b} {A : Set a} {B : Set b} where
 
 -- swap
 
