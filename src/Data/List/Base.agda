@@ -13,7 +13,7 @@ open import Data.Bool.Base
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Product as Prod using (_×_; _,_)
-open import Function using (id; _∘_)
+open import Function using (id; _∘_; flip)
 open import Relation.Nullary using (yes; no)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Unary.Properties using (∁?)
@@ -264,8 +264,13 @@ break P? = span (∁? P?)
 ------------------------------------------------------------------------
 -- Operations for reversing lists
 
-reverse : ∀ {a} {A : Set a} → List A → List A
-reverse = foldl (λ rev x → x ∷ rev) []
+module _ {a} {A : Set a} where
+
+  reverseAcc : List A → List A → List A
+  reverseAcc = foldl (flip _∷_)
+
+  reverse : List A → List A
+  reverse = reverseAcc []
 
 -- Snoc.
 
