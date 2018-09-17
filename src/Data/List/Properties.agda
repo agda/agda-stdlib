@@ -21,6 +21,7 @@ open import Data.Nat
 open import Data.Nat.Properties
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Product as Prod hiding (map; zip)
+open import Data.These as These using (These; this; that; these)
 open import Function
 import Relation.Binary.EqReasoning as EqR
 open import Relation.Binary.PropositionalEquality as P
@@ -184,8 +185,6 @@ module _ {a} {A : Set a} where
 
 ------------------------------------------------------------------------
 -- alignWith
-
-open import Data.These as These hiding (map)
 
 module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
          {f g : These A B → C} where
