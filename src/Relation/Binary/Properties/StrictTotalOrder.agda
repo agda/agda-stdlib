@@ -11,8 +11,7 @@ module Relation.Binary.Properties.StrictTotalOrder
        where
 
 open Relation.Binary.StrictTotalOrder STO
-import Relation.Binary.StrictToNonStrict as Conv
-open Conv _≈_ _<_
+open import Relation.Binary.Construction.StrictToNonStrict _≈_ _<_
 import Relation.Binary.Properties.StrictPartialOrder as SPO
 open import Relation.Binary.Consequences
 

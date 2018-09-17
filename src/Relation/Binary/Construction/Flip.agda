@@ -8,7 +8,7 @@
 
 open import Relation.Binary
 
-module Relation.Binary.Flip where
+module Relation.Binary.Construction.Flip where
 
 open import Function
 open import Data.Product

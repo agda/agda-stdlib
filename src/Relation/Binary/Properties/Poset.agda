@@ -10,8 +10,7 @@ module Relation.Binary.Properties.Poset
          {p₁ p₂ p₃} (P : Poset p₁ p₂ p₃) where
 
 open Relation.Binary.Poset P hiding (trans)
-import Relation.Binary.NonStrictToStrict as Conv
-open Conv _≈_ _≤_
+open import Relation.Binary.Construction.NonStrictToStrict _≈_ _≤_
 open import Relation.Binary.Properties.Preorder preorder
 open import Function using (flip)
 

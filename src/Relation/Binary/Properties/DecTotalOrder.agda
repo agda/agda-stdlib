@@ -10,8 +10,7 @@ module Relation.Binary.Properties.DecTotalOrder
          {d₁ d₂ d₃} (DT : DecTotalOrder d₁ d₂ d₃) where
 
 open Relation.Binary.DecTotalOrder DT hiding (trans)
-import Relation.Binary.NonStrictToStrict as Conv
-open Conv _≈_ _≤_
+open import Relation.Binary.Construction.NonStrictToStrict _≈_ _≤_
 
 strictTotalOrder : StrictTotalOrder _ _ _
 strictTotalOrder = record

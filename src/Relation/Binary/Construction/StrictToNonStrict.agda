@@ -10,7 +10,7 @@
 
 open import Relation.Binary
 
-module Relation.Binary.StrictToNonStrict
+module Relation.Binary.Construction.StrictToNonStrict
   {a ℓ₁ ℓ₂} {A : Set a}
   (_≈_ : Rel A ℓ₁) (_<_ : Rel A ℓ₂)
   where
