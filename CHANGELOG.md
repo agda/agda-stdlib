@@ -314,6 +314,11 @@ Other minor additions
   record RawSemiring  c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
+* Added new function `Category.Functor`'s `RawFunctor`:
+  ```agda
+  _<&>_ : F A → (A → B) → F B
+  ```
+
 * Added new function to `Category.Monad.Indexed`:
   ```agda
   RawIMonadT : (T : IFun I f → IFun I f) → Set (i ⊔ suc f)
