@@ -225,7 +225,8 @@ Non-backwards compatible changes
   `Relation.Binary.Indexed.Heterogeneous` and `Relation.Binary.Indexed.Homogeneous`
   have been deprecated in favour of `IREL`, `IRel`, `IsIndexedEquivalence` and
   `IndexedSetoid`. This should significantly improves code readability and avoid
-  confusion with the contents of `Relation.Binary`.
+  confusion with the contents of `Relation.Binary`. The old names still exist
+  but have been deprecated.
 
 * The record `IsIndexedEquivalence` in `Relation.Binary.Indexed.Homogeneous`
   is now implemented as a record encapsulating indexed versions of the required
