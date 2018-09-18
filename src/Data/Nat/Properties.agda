@@ -17,7 +17,7 @@ open import Data.Nat as Nat
 open import Data.Product
 open import Data.Sum
 open import Relation.Nullary
-open import Relation.Nullary.Decidable using (via-injection)
+open import Relation.Nullary.Decidable using (via-injection; map′)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary.PropositionalEquality
 open import Algebra.FunctionProperties (_≡_ {A = ℕ})
@@ -267,9 +267,7 @@ s≤′s (≤′-step m≤′n) = ≤′-step (s≤′s m≤′n)
 infixr 4 _≤′?_ _<′?_
 
 _≤′?_ : Decidable _≤′_
-x ≤′? y with x ≤? y
-(x ≤′? y) | yes p = yes (≤⇒≤′ p)
-(x ≤′? y) | no ¬p = no (¬p ∘ ≤′⇒≤)
+x ≤′? y = map′ ≤⇒≤′ ≤′⇒≤ (x ≤? y)
 
 _<′?_ : Decidable _<′_
 x <′? y = suc x ≤′? y
