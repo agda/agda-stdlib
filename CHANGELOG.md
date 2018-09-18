@@ -688,3 +688,9 @@ Other minor additions
   ∅? : Decidable ∅
   U? : Decidable U
   ```
+
+* Added the following proofs in `Data.Nat.Properties`:
+  ```agda
+  _≤′?_ : Decidable _≤′_
+  _<′?_ : Decidable _<′_
+  ```
