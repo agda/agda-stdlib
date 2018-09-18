@@ -12,12 +12,12 @@ open import Codata.Stream
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
-data Bisim {a b r} {A : Set a} {B : Set b} (R : A → B → Set r) i :
-           (xs : Stream A ∞) (ys : Stream B ∞) → Set r where
+data Bisim {a b r} {A : Set a} {B : Set b} (R : REL A B r) i :
+           REL (Stream A ∞) (Stream B ∞) r where
   _∷_ : ∀ {x y xs ys} → R x y → Thunk^R (Bisim R) i xs ys →
         Bisim R i (x ∷ xs) (y ∷ ys)
 
-module _ {a r} {A : Set a} {R : A → A → Set r} where
+module _ {a r} {A : Set a} {R : Rel A r} where
 
  reflexive : Reflexive R → ∀ {i} → Reflexive (Bisim R i)
  reflexive refl^R {i} {r ∷ rs} = refl^R ∷ λ where .force → reflexive refl^R
