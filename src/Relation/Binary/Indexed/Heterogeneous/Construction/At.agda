@@ -5,11 +5,11 @@
 -- non-indexed structures.
 ------------------------------------------------------------------------
 
+module Relation.Binary.Indexed.Heterogeneous.Construction.At where
+
 open import Relation.Binary
 open import Relation.Binary.Indexed.Heterogeneous
   hiding (IsEquivalence; Setoid)
-
-module Relation.Binary.Indexed.Heterogeneous.Construction.At where
 
 ------------------------------------------------------------------------
 -- Structures

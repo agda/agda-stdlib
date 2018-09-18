@@ -632,6 +632,28 @@ Other minor additions
   <-respˡ-≈ : _<_ Respectsˡ _≈_
   ```
 
+* Added new functions and records to `Relation.Binary.Indexed.Heterogeneous`:
+  ```agda
+  record IsIndexedPreorder  (_≈_ : Rel A ℓ₁) (_∼_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
+  ```
+
+* Added new proofs to `Relation.Binary.Indexed.Heterogeneous.Construction.At`:
+  ```agda
+  isEquivalence : IsIndexedEquivalence A _≈_  → (i : I) → B.IsEquivalence (_≈_ {i})
+  isPreorder    : IsIndexedPreorder A _≈_ _∼_ → (i : I) → B.IsPreorder (_≈_ {i}) _∼_
+  setoid        : IndexedSetoid I a ℓ → I → B.Setoid a ℓ
+  preorder      : IndexedPreorder I a ℓ₁ ℓ₂ → I → B.Preorder a ℓ₁ ℓ₂
+  ```
+
+* Added new proofs to `Relation.Binary.Indexed.Heterogeneous.Construction.Trivial`:
+  ```agda
+  isIndexedEquivalence : IsEquivalence _≈_ → IsIndexedEquivalence (λ (_ : I) → A) _≈_
+  isIndexedPreorder    : IsPreorder _≈_ _∼_ → IsIndexedPreorder (λ (_ : I) → A) _≈_ _∼_
+  indexedSetoid        : Setoid a ℓ → ∀ {I} → IndexedSetoid I a ℓ
+  indexedPreorder      : Preorder a ℓ₁ ℓ₂ → ∀ {I} → IndexedPreorder I a ℓ₁ ℓ₂
+  ```
+
 * Added new types, functions and records to `Relation.Binary.Indexed.Homogeneous`:
   ```agda
   Implies _∼₁_ _∼₂_      = ∀ {i} → _∼₁_ B.⇒ (_∼₂_ {i})
@@ -650,22 +672,6 @@ Other minor additions
   record IndexedSetoid   {i} (I : Set i) c ℓ     : Set (suc (i ⊔ c ⊔ ℓ))
   record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
   record IndexedPoset    {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
-  ```
-
-* Added new functions and records to `Relation.Binary.Indexed`:
-  ```agda
-  record IsIndexedPreorder  (_≈_ : Rel A ℓ₁) (_∼_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
-  record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
-
-  trivialIsIndexedEquivalence : IsEquivalence _≈_ → IsIndexedEquivalence (λ (_ : I) → A) _≈_
-  trivialIsIndexedPreorder    : IsPreorder _≈_ _∼_ → IsIndexedPreorder (λ (_ : I) → A) _≈_ _∼_
-  trivialIndexedSetoid        : Setoid a ℓ → ∀ {I} → IndexedSetoid I a ℓ
-  trivialIndexedPreorder      : Preorder a ℓ₁ ℓ₂ → ∀ {I} → IndexedPreorder I a ℓ₁ ℓ₂
-
-  isEquivalenceAt : IsIndexedEquivalence A _≈_  → (x : I) → B.IsEquivalence (_≈_ {x})
-  isPreorderAt    : IsIndexedPreorder A _≈_ _∼_ → (x : I) → B.IsPreorder (_≈_ {x}) _∼_
-  setoidAt   : IndexedSetoid I a ℓ → I → B.Setoid a ℓ
-  preorderAt : IndexedPreorder I a ℓ₁ ℓ₂ → I → B.Preorder a ℓ₁ ℓ₂
   ```
 
 * Added new types, records and proofs to `Relation.Binary.Lattice`:

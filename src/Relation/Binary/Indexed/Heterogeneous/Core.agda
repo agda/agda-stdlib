@@ -4,8 +4,8 @@
 -- Indexed binary relations
 ------------------------------------------------------------------------
 
--- This file contains some core definitions which are reexported by
--- Relation.Binary.Indexed.
+-- This file contains some core definitions which are re-exported by
+-- Relation.Binary.Indexed.Heterogeneous.
 
 module Relation.Binary.Indexed.Heterogeneous.Core where
 

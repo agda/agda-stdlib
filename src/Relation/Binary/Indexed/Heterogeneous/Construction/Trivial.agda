@@ -1,16 +1,15 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Takes a binary relation structures to their trivialy indexed
--- counterparts.
+-- Creates trivially indexed records from their non-indexed counterpart.
 ------------------------------------------------------------------------
+
+module Relation.Binary.Indexed.Heterogeneous.Construction.Trivial
+  {i} {I : Set i} where
 
 open import Relation.Binary
 open import Relation.Binary.Indexed.Heterogeneous hiding (Rel)
   hiding (IsEquivalence; Setoid)
-
-module Relation.Binary.Indexed.Heterogeneous.Construction.Trivial
-  {i} {I : Set i} where
 
 ------------------------------------------------------------------------
 -- Structures
