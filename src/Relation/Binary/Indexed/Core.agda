@@ -12,7 +12,7 @@ module Relation.Binary.Indexed.Core where
 open import Function
 open import Level
 import Relation.Binary.Core as B
-import Relation.Binary.Core as P
+import Relation.Binary.PropositionalEquality.Core as P
 
 ------------------------------------------------------------------------
 -- Indexed binary relations

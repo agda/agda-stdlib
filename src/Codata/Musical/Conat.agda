@@ -6,7 +6,7 @@
 
 module Codata.Musical.Conat where
 
-open import Coinduction
+open import Codata.Musical.Notation
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function
 open import Relation.Binary

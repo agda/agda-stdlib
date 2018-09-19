@@ -6,7 +6,7 @@
 
 module Category.Monad.Partiality where
 
-open import Coinduction
+open import Codata.Musical.Notation
 open import Category.Monad
 open import Data.Bool.Base using (Bool; false; true)
 open import Data.Nat using (ℕ; zero; suc; _+_)

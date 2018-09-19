@@ -6,10 +6,9 @@
 
 module Data.Sign where
 
-open import Relation.Nullary
-open import Relation.Binary
-open import Relation.Binary.Core using (_≡_; refl)
--- Importing Core here ^^^ to keep a small import list
+open import Relation.Binary using (Decidable)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Nullary using (yes; no)
 
 -- Signs.
 

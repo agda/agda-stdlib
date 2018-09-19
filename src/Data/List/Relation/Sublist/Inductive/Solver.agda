@@ -13,7 +13,8 @@ open import Data.Product
 open import Data.Vec as Vec using (Vec ; lookup)
 open import Data.List hiding (lookup)
 open import Data.List.Properties
-open import Data.List.Relation.Sublist.Inductive
+open import Data.List.Relation.Sublist.Inductive hiding (lookup)
+open import Data.List.Relation.Sublist.Inductive.Properties
 open import Function
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality hiding ([_])

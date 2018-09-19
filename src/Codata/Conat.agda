@@ -103,7 +103,7 @@ suc k ℕ≤infinity = sℕ≤s (k ℕ≤infinity)
 ------------------------------------------------------------------------
 -- Legacy
 
-open import Coinduction using (♭; ♯_)
+open import Codata.Musical.Notation using (♭; ♯_)
 import Codata.Musical.Conat as M
 
 fromMusical : ∀ {i} → M.Coℕ → Conat i

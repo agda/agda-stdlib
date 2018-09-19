@@ -2,35 +2,53 @@
 -- The Agda standard library
 --
 -- Propositional equality
-------------------------------------------------------------------------
-
--- This file contains some core definitions which are reexported by
+--
+-- This file contains some core definitions which are re-exported by
 -- Relation.Binary.PropositionalEquality.
+------------------------------------------------------------------------
 
 module Relation.Binary.PropositionalEquality.Core where
 
+open import Data.Product using (_,_)
 open import Level
 open import Relation.Binary.Core
-open import Relation.Binary.Consequences
+open import Relation.Nullary using (¬_)
+
+------------------------------------------------------------------------
+-- Propositional equality
+
+open import Agda.Builtin.Equality public
+
+infix 4 _≢_
+_≢_ : ∀ {a} {A : Set a} → Rel A a
+x ≢ y = ¬ x ≡ y
 
 ------------------------------------------------------------------------
 -- Some properties
 
-sym : ∀ {a} {A : Set a} → Symmetric (_≡_ {A = A})
-sym refl = refl
+module _ {a} {A : Set a} where
 
-trans : ∀ {a} {A : Set a} → Transitive (_≡_ {A = A})
-trans refl eq = eq
+  sym : Symmetric {A = A} _≡_
+  sym refl = refl
 
-subst : ∀ {a p} {A : Set a} → Substitutive (_≡_ {A = A}) p
-subst P refl p = p
+  trans : Transitive {A = A} _≡_
+  trans refl eq = eq
 
-resp₂ : ∀ {a ℓ} {A : Set a} (∼ : Rel A ℓ) → ∼ Respects₂ _≡_
-resp₂ _∼_ = subst⟶resp₂ _∼_ subst
+  subst : ∀ {p} → Substitutive {A = A} _≡_ p
+  subst P refl p = p
 
-isEquivalence : ∀ {a} {A : Set a} → IsEquivalence (_≡_ {A = A})
-isEquivalence = record
-  { refl  = refl
-  ; sym   = sym
-  ; trans = trans
-  }
+  respˡ : ∀ {ℓ} (∼ : Rel A ℓ) → ∼ Respectsˡ _≡_
+  respˡ _∼_ refl x∼y = x∼y
+
+  respʳ : ∀ {ℓ} (∼ : Rel A ℓ) → ∼ Respectsʳ _≡_
+  respʳ _∼_ refl x∼y = x∼y
+
+  resp₂ : ∀ {ℓ} (∼ : Rel A ℓ) → ∼ Respects₂ _≡_
+  resp₂ _∼_ = respʳ _∼_ , respˡ _∼_
+
+  isEquivalence : IsEquivalence {A = A} _≡_
+  isEquivalence = record
+    { refl  = refl
+    ; sym   = sym
+    ; trans = trans
+    }

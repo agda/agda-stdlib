@@ -6,19 +6,19 @@
 
 module Relation.Binary where
 
+open import Agda.Builtin.Equality using (_≡_)
 open import Data.Product
 open import Data.Sum
 open import Function
 open import Level
 import Relation.Binary.PropositionalEquality.Core as PropEq
 open import Relation.Binary.Consequences
-open import Relation.Binary.Core as Core using (_≡_)
 import Relation.Binary.Indexed.Core as I
 
 ------------------------------------------------------------------------
 -- Simple properties and equivalence relations
 
-open Core public hiding (_≡_; refl; _≢_)
+open import Relation.Binary.Core public
 
 ------------------------------------------------------------------------
 -- Preorders
@@ -365,7 +365,10 @@ record DecTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 ------------------------------------------------------------------------
 -- Strict total orders
 
--- Note that these orders are decidable (see compare).
+-- Note that these orders are decidable. The current implementation
+-- of `Trichotomous` subsumes irreflexivity and asymmetry. Any reasonable
+-- definition capturing these three properties implies decidability
+-- as `Trichotomous` necessarily separates out the equality case.
 
 record IsStrictTotalOrder {a ℓ₁ ℓ₂} {A : Set a}
                           (_≈_ : Rel A ℓ₁) (_<_ : Rel A ℓ₂) :

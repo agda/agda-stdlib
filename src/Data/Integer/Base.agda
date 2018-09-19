@@ -12,8 +12,7 @@ open import Data.Sign as Sign using (Sign) renaming (_*_ to _S*_)
 open import Function
 open import Relation.Nullary
 open import Relation.Binary
-open import Relation.Binary.Core using (_≡_; refl)
--- Importing Core here ^^^ to keep a small import list
+open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
 infix  8 -_
 infixl 7 _*_ _⊓_

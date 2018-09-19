@@ -21,9 +21,9 @@
 --       ≈⟨ y≈z ⟩
 --     z ∎
 
-open import Relation.Binary.EqReasoning as EqR using (_IsRelatedTo_)
 open import Relation.Binary
-open import Relation.Binary.Core
+open import Relation.Binary.EqReasoning as EqR using (_IsRelatedTo_)
+open import Relation.Binary.PropositionalEquality
 
 open Setoid
 
