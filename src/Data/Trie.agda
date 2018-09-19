@@ -4,7 +4,7 @@
 -- Trie, basic type and operations
 ------------------------------------------------------------------------
 
-open import Relation.Binary
+open import Relation.Binary using (Rel; IsStrictTotalOrder)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 
 module Data.Trie
@@ -13,88 +13,60 @@ module Data.Trie
 
 open import Level
 open import Size
-open import Data.Product as Prod using (∃; uncurry; -,_)
-open import Data.AVL.NonEmpty S as Tree⁺ using (Tree⁺)
-open import Data.List as List using (List; []; _∷_; _++_)
-open import Data.List.NonEmpty as List⁺ using (List⁺; [_]; concatMap)
-open import Data.Maybe as Maybe using (Maybe; nothing; just) hiding (module Maybe)
-open import Data.These as These using (These; this; that; these)
+open import Data.List.Base using (List; []; _++_)
+import Data.List.NonEmpty as List⁺
+open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
+open import Data.Product as Prod using (∃)
+open import Data.These as These using (These)
 open import Function
+open import Relation.Unary using (IUniversal; _⇒_)
 
--- A `Trie` is a tree branching over an alphabet of `Key`s. It stores values
--- indexed over the word (i.e. `List Key`) that was read to reach them.
+-- Trie is defined in terms of Trie⁺, the type of non-empty trie. This guarantees
+-- that the trie is minimal: each path in the tree leads to either a value or a
+-- number of non-empty sub-tries.
 
--- Each `node` in the `Trie` contains either a value, a non-empty `Tree` of
--- sub-`Trie`s reached by reading an extra letter, or both.
+open import Data.Trie.NonEmpty S as Trie⁺ using (Trie⁺; Tries⁺; Word) public
 
-Word : Set k
-Word = List Key
+Trie : ∀ {v} → (Word → Set v) → Size → Set (k ⊔ r ⊔ v)
+Trie V i = Maybe (Trie⁺ V i)
 
-data Trie {v} (V : Word → Set v) (i : Size) : Set (v ⊔ k ⊔ r)
-Tries : ∀ {v} (V : Word → Set v) → Size → Set (v ⊔ k ⊔ r)
+-- Functions acting on Trie are wrappers for functions acting on Tries.
+-- Sometimes the empty case is handled in a special way (e.g. insertWith
+-- calls singleton when faced with an empty Trie).
 
-data Trie V i where
-  node : {j : Size< i} → These (V []) (Tries V j) → Trie V i
+module _ {v} {V : Word → Set v} where
 
-Tries V j = Tree⁺ (λ k → Trie (V ∘′ (k ∷_)) j)
+-- Lookup
 
--- Query
+  lookup : ∀ ks → Trie V ∞ → Maybe (These (V ks) (Tries⁺ (V ∘′ (ks ++_)) ∞))
+  lookup ks t = t Maybe.>>= Trie⁺.lookup ks
 
-lookup : ∀ {v} {V : Word → Set v} ks → Trie V ∞ →
-         Maybe (These (V ks) (Tries (V ∘′ (ks ++_)) ∞))
-lookup []       (node nd) = just nd
-lookup (k ∷ ks) (node nd) = let open Maybe in do
-  ts ← These.fromThat nd
-  t  ← Tree⁺.lookup k ts
-  lookup ks t
+  lookupValue : ∀ ks → Trie V ∞ → Maybe (V ks)
+  lookupValue ks t = t Maybe.>>= Trie⁺.lookupValue ks
 
-lookupValue : ∀ {v} {V : Word → Set v} ks → Trie V ∞ → Maybe (V ks)
-lookupValue ks t = lookup ks t Maybe.>>= These.fromThis
-
-lookupTries : ∀ {v} {V : Word → Set v} ks → Trie V ∞ → Maybe (Tries (V ∘′ (ks ++_)) ∞)
-lookupTries ks t = lookup ks t Maybe.>>= These.fromThat
+  lookupTries⁺ : ∀ ks → Trie V ∞ → Maybe (Tries⁺ (V ∘′ (ks ++_)) ∞)
+  lookupTries⁺ ks t = t Maybe.>>= Trie⁺.lookupTries⁺ ks
 
 -- Construction
 
-singleton : ∀ {v} {V : Word → Set v} ks → V ks → Trie V ∞
-singleton []       v = node (this v)
-singleton (k ∷ ks) v = node (that (Tree⁺.singleton k (singleton ks v)))
+  empty : Trie V ∞
+  empty = nothing
 
-insertWith : ∀ {v} {V : Word → Set v} ks →
-             (Maybe (V ks) → V ks) → Trie V ∞ → Trie V ∞
-insertWith []       f (node nd) =
-  node (These.fold (this ∘ f ∘ just) (these (f nothing)) (these ∘ f ∘ just) nd)
-insertWith {v} {V} (k ∷ ks) f (node nd) = node $
-  These.fold (λ v → these v (Tree⁺.singleton k end))
-             (that ∘′ rec)
-             (λ v → these v ∘′ rec)
-  nd where
+  singleton : ∀ ks → V ks → Trie V ∞
+  singleton ks v = just (Trie⁺.singleton ks v)
 
-  end : Trie (V ∘′ (k ∷_)) ∞
-  end = singleton ks (f nothing)
-
-  rec : Tries V ∞ → Tries V ∞
-  rec = Tree⁺.insertWith k end (const $ insertWith ks f)
-
-module _ {v} {V : Word → Set v} where
+  insertWith : ∀ ks → (Maybe (V ks) → V ks) → Trie V ∞ → Trie V ∞
+  insertWith ks f (just t) = just (Trie⁺.insertWith ks f t)
+  insertWith ks f nothing  = singleton ks (f nothing)
 
   insert : ∀ ks → V ks → Trie V ∞ → Trie V ∞
   insert ks = insertWith ks ∘′ const
 
-  fromList⁺ : List⁺ (∃ V) → Trie V ∞
-  fromList⁺ = List⁺.foldr (uncurry insert) (uncurry singleton)
+  fromList : List (∃ V) → Trie V ∞
+  fromList = Maybe.map Trie⁺.fromList⁺ ∘′ List⁺.fromList
 
-toList⁺ : ∀ {v} {V : Word → Set v} {i} → Trie V i → List⁺ (∃ V)
-toList⁺ (node nd) = These.mergeThese List⁺._⁺++⁺_
-                  $ These.map fromVal fromTries nd
-  where
+  toList : ∀ {i} → Trie⁺ V i → List (∃ V)
+  toList = List⁺.toList ∘′ Trie⁺.toList⁺
 
-  fromVal   = [_] ∘′ -,_
-  fromTries = concatMap (uncurry λ k → List⁺.map (Prod.map (k ∷_) id) ∘′ toList⁺)
-            ∘′ Tree⁺.toList⁺
-
--- modify
-
-map : ∀ {v w} {V : Word → Set v} {W : Word → Set w} {i} →
-      (∀ {ks} → V ks → W ks) → Trie V i → Trie W i
-map f (node nd) = node (These.map f (Tree⁺.map (map f)) nd)
+  map : ∀ {w} {W : Word → Set w} {i} → ∀[ V ⇒ W ] → Trie V i → Trie W i
+  map = Maybe.map ∘′ Trie⁺.map

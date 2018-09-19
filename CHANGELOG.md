@@ -259,6 +259,9 @@ Non-backwards compatible changes
 Other major changes
 -------------------
 
+* Added new modules `Data.AVL.NonEmpty`, `Data.Trie` and `Data.Trie.NonEmpty`
+  for the classic prefix tree datastructure.
+
 * Added new module `Algebra.Properties.CommutativeMonoid`. This contains proofs
   of lots of properties of summation, including 'big summation'.
 
