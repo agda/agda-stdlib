@@ -362,6 +362,11 @@ Other minor additions
   unfold : (S → ⟦ C ⟧ S) → S → M C
   ```
 
+* Added new function to `Data.AVL.Indexed`:
+  ```agda
+  toList : Tree V l u h → List (K& V)
+  ```
+
 * Added new proof to `Data.Fin.Permutation`:
   ```agda
   refute : m ≢ n → ¬ Permutation m n
@@ -419,6 +424,8 @@ Other minor additions
 * Added new function to `Data.Maybe.Base`:
   ```agda
   fromMaybe : A → Maybe A → A
+  ap        : Maybe (A → B) → Maybe A → Maybe B
+  _>>=_     : Maybe A → (A → Maybe B) → Maybe B
   ```
 
 * Added new proofs to `Data.Nat.Divisibility`:
