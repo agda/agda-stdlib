@@ -50,6 +50,14 @@ module _ {a b} {A : Set a} {B : Set b} where
   swap : These A B → These B A
   swap = fold that this (flip these)
 
+-- Deletion
+
+  deleteThis : These A B → Maybe (These A B)
+  deleteThis = fold (const nothing) (just ∘′ that) (const (just ∘′ that))
+
+  deleteThat : These A B → Maybe (These A B)
+  deleteThat = fold (just ∘′ this) (const nothing) (const ∘′ just ∘′ this)
+
 -- Component extraction via Maybe
 
   fromThis : These A B → Maybe A

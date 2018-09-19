@@ -13,6 +13,7 @@ module Data.Trie.NonEmpty
 
 open import Level
 open import Size
+open import Category.Monad
 open import Data.Product as Prod using (∃; uncurry; -,_)
 open import Data.AVL.NonEmpty S as Tree⁺ using (Tree⁺)
 open import Data.List as List using (List; []; _∷_; _++_)
@@ -20,6 +21,7 @@ open import Data.List.NonEmpty as List⁺ using (List⁺; [_]; concatMap)
 open import Data.Maybe as Maybe using (Maybe; nothing; just) hiding (module Maybe)
 open import Data.These as These using (These; this; that; these)
 open import Function
+import Function.Identity.Categorical as Identity
 open import Relation.Unary using (_⇒_; IUniversal)
 
 -- A Trie⁺ is a tree branching over an alphabet of Keys. It stores values
@@ -93,8 +95,39 @@ toList⁺ (node nd) = These.mergeThese List⁺._⁺++⁺_
   fromTries⁺ = concatMap (uncurry λ k → List⁺.map (Prod.map (k ∷_) id) ∘′ toList⁺)
              ∘′ Tree⁺.toList⁺
 
--- modify
+-- Modification
 
 map : ∀ {v w} {V : Word → Set v} {W : Word → Set w} {i} →
       ∀[ V ⇒ W ] → Trie⁺ V i → Trie⁺ W i
 map f (node nd) = node (These.map f (Tree⁺.map (map f)) nd)
+
+
+-- Deletion
+
+deleteWith : ∀ {v} {V : Word → Set v} {i} ks →
+             (∀ {i} → Trie⁺ (V ∘′ (ks ++_)) i → Maybe (Trie⁺ (V ∘′ (ks ++_)) i)) →
+             Trie⁺ V i → Maybe (Trie⁺ V i)
+deleteWith []       f t           = f t
+deleteWith (k ∷ ks) f t@(node nd) = let open RawMonad Identity.monad in do
+  just ts ← These.fromThat nd where _ → just t
+  -- This would be a lot cleaner if we had
+  -- Tree⁺.updateWith : ∀ k → (Maybe (V k) → Maybe (V k)) → AVL → AVL
+  -- Instead we lookup the subtree, update it and either put it back in
+  -- or delete the corresponding leaf depending on whether the result is successful.
+  just t′ ← Tree⁺.lookup k ts where _ → just t
+  Maybe.map node ∘′ Maybe.align (These.fromThis nd) $′ case deleteWith ks f t′ of λ where
+    nothing  → Tree⁺.delete k ts
+    (just u) → just (Tree⁺.insert k u ts)
+
+module _ {v} {V : Word → Set v} where
+
+  deleteTrie⁺ : ∀ {i} (ks : Word) → Trie⁺ V i → Maybe (Trie⁺ V i)
+  deleteTrie⁺ ks = deleteWith ks (const nothing)
+
+  deleteValue : ∀ {i} (ks : Word) → Trie⁺ V i → Maybe (Trie⁺ V i)
+  deleteValue ks = deleteWith ks $ λ where
+    (node nd) → Maybe.map node $′ These.deleteThis nd
+
+  deleteTries⁺ : ∀ {i} (ks : Word) → Trie⁺ V i → Maybe (Trie⁺ V i)
+  deleteTries⁺ ks = deleteWith ks $ λ where
+    (node nd) → Maybe.map node $′ These.deleteThat nd

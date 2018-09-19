@@ -68,5 +68,23 @@ module _ {v} {V : Word → Set v} where
   toList : ∀ {i} → Trie⁺ V i → List (∃ V)
   toList = List⁺.toList ∘′ Trie⁺.toList⁺
 
+-- Modification
+
   map : ∀ {w} {W : Word → Set w} {i} → ∀[ V ⇒ W ] → Trie V i → Trie W i
   map = Maybe.map ∘′ Trie⁺.map
+
+-- Deletion
+
+  deleteWith : ∀ {i} ks →
+     (∀ {i} → Trie⁺ (V ∘′ (ks ++_)) i → Maybe (Trie⁺ (V ∘′ (ks ++_)) i)) →
+     Trie V i → Trie V i
+  deleteWith ks f t = t Maybe.>>= Trie⁺.deleteWith ks f
+
+  deleteTrie⁺ : ∀ {i} (ks : Word) → Trie V i → Trie V i
+  deleteTrie⁺ ks t = t Maybe.>>= Trie⁺.deleteTrie⁺ ks
+
+  deleteValue : ∀ {i} (ks : Word) → Trie V i → Trie V i
+  deleteValue ks t = t Maybe.>>= Trie⁺.deleteValue ks
+
+  deleteTries⁺ : ∀ {i} (ks : Word) → Trie V i → Trie V i
+  deleteTries⁺ ks t = t Maybe.>>= Trie⁺.deleteTries⁺ ks

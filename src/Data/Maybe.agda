@@ -6,6 +6,7 @@
 
 module Data.Maybe where
 
+open import Data.These using (These; this; that; these)
 open import Function
 open import Level
 open import Relation.Nullary
@@ -17,6 +18,13 @@ open import Relation.Unary as U
 -- The base type and some operations
 
 open import Data.Maybe.Base public
+
+------------------------------------------------------------------------
+-- Align
+
+align : ∀ {a b} {A : Set a} {B : Set b} → Maybe A → Maybe B → Maybe (These A B)
+align (just a) mb = maybe′ (just ∘′ these a) (just (this a)) mb
+align nothing  mb = map that mb
 
 ------------------------------------------------------------------------
 -- Equality
