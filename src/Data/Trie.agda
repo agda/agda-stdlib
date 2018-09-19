@@ -75,16 +75,21 @@ module _ {v} {V : Word → Set v} where
 
 -- Deletion
 
-  deleteWith : ∀ {i} ks →
+  -- Use a function to decide how to modify the sub-Trie⁺ whose root is
+  -- at the end of path ks.
+  deleteWith : ∀ {i} (ks : Word) →
      (∀ {i} → Trie⁺ (V ∘′ (ks ++_)) i → Maybe (Trie⁺ (V ∘′ (ks ++_)) i)) →
      Trie V i → Trie V i
   deleteWith ks f t = t Maybe.>>= Trie⁺.deleteWith ks f
 
+  -- Remove the whole node
   deleteTrie⁺ : ∀ {i} (ks : Word) → Trie V i → Trie V i
   deleteTrie⁺ ks t = t Maybe.>>= Trie⁺.deleteTrie⁺ ks
 
+  -- Remove the value and keep the sub-Tries (if any)
   deleteValue : ∀ {i} (ks : Word) → Trie V i → Trie V i
   deleteValue ks t = t Maybe.>>= Trie⁺.deleteValue ks
 
+  -- Remove the sub-Tries and keep the value (if any)
   deleteTries⁺ : ∀ {i} (ks : Word) → Trie V i → Trie V i
   deleteTries⁺ ks t = t Maybe.>>= Trie⁺.deleteTries⁺ ks
