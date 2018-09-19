@@ -689,8 +689,28 @@ Other minor additions
   U? : Decidable U
   ```
 
+* Moved the following proof from `Data.Nat.Properties` to `Data.Nat.Base`:
+  ```agda
+  _<?_ : Decidable _<_
+  ```
+
+* Added the following proofs in `Data.Nat`:
+  ```agda
+  _≥?_ : Decidable _≥_
+  _>?_ : Decidable _>_
+  _≰?_ : Decidable _≰_
+  _≮?_ : Decidable _≮_
+  _≱?_ : Decidable _≱_
+  _≯?_ : Decidable _≯_
+  ```
+
 * Added the following proofs in `Data.Nat.Properties`:
   ```agda
   _≤′?_ : Decidable _≤′_
   _<′?_ : Decidable _<′_
+
+  _≤″?_ : Decidable _≤″_
+  _<″?_ : Decidable _<″_
+  _≥″?_ : Decidable _≥″_
+  _>″?_ : Decidable _>″_
   ```
