@@ -9,7 +9,7 @@
 -- The search tree invariant is specified using the technique
 -- described by Conor McBride in his talk "Pivotal pragmatism".
 
-open import Relation.Binary
+open import Relation.Binary using (Rel; IsStrictTotalOrder)
 open import Relation.Binary.PropositionalEquality as P using (_≡_ ; refl)
 
 module Data.AVL.NonEmpty
@@ -26,6 +26,7 @@ open import Data.Product hiding (map)
 open import Data.Unit
 open import Function
 open import Level using (_⊔_; Lift; lift)
+open import Relation.Unary
 
 open IsStrictTotalOrder isStrictTotalOrder
 import Data.AVL.Indexed Key isStrictTotalOrder as Indexed
@@ -70,7 +71,7 @@ module _ {v} {V : Key → Set v} where
 
 module _ {v w} {V : Key → Set v} {W : Key → Set w} where
 
-  map : ({k : Key} → V k → W k) → Tree⁺ V → Tree⁺ W
+  map : ∀[ V ⇒ W ] → Tree⁺ V → Tree⁺ W
   map f (tree t) = tree $ Indexed.map f t
 
 module _ {v} {V : Key → Set v} where

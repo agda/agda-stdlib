@@ -4,7 +4,7 @@
 -- Indexed AVL trees
 ------------------------------------------------------------------------
 
-open import Relation.Binary
+open import Relation.Binary using (Rel; IsStrictTotalOrder; Tri); open Tri
 open import Relation.Binary.PropositionalEquality as P using (_≡_ ; refl)
 
 module Data.AVL.Indexed
@@ -18,6 +18,7 @@ open import Data.Maybe hiding (map)
 open import Data.List using (List)
 import Data.DifferenceList as DiffList
 open import Function
+open import Relation.Unary
 
 open IsStrictTotalOrder isStrictTotalOrder
 open import Data.AVL.Key Key isStrictTotalOrder public
@@ -260,7 +261,7 @@ module _ {v w} {V : Key → Set v} {W : Key → Set w} where
 
   -- Maps a function over all values in the tree.
 
-  map : (∀ {k} → V k → W k) → ∀ {l u h} → Tree V l u h → Tree W l u h
+  map : ∀[ V ⇒ W ] → ∀ {l u h} → Tree V l u h → Tree W l u h
   map f (leaf l<u)             = leaf l<u
   map f (node (k , v) l r bal) = node (k , f v) (map f l) (map f r) bal
 
