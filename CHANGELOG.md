@@ -295,7 +295,13 @@ anticipated any time soon, they may eventually be removed in some future release
   nonZeroDivisor-lemma
   ```
 
-* In `Function.Related`
+* In `Data.Nat.Properties`:
+  ```agda
+  i∸k∸j+j∸k≡i+j∸k
+  im≡jm+n⇒[i∸j]m≡n
+  ```
+
+* In `Function.Related`:
   ```agda
   preorder              ↦ R-preorder
   setoid                ↦ SR-setoid
