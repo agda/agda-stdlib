@@ -37,7 +37,7 @@ import Relation.Nullary.Decidable as D
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
-module S = Setoid S renaming (Carrier to A)
+private module S = Setoid S renaming (Carrier to A)
 open S
 
 ------------------------------------------------------------------------
