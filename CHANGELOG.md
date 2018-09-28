@@ -259,6 +259,10 @@ Non-backwards compatible changes
 Other major changes
 -------------------
 
+* Added new modules `Data.List.First` and `Data.List.First.Properties` for a
+  generalization of the notion of "first element in the list to satisfy a
+  predicate".
+
 * Added new module `Algebra.Properties.CommutativeMonoid`. This contains proofs
   of lots of properties of summation, including 'big summation'.
 
@@ -452,10 +456,12 @@ Other minor additions
   fromList⁺ : List⁺ Char → String
   ```
 
-* Added new functions to `Data.Sum`:
+* Added new functions to `Data.Sum.Base`:
   ```agda
-  map₁ : (A → B) → A ⊎ C → B ⊎ C
-  map₂ : (B → C) → A ⊎ B → A ⊎ C
+  map₁    : (A → B) → A ⊎ C → B ⊎ C
+  map₂    : (B → C) → A ⊎ B → A ⊎ C
+  fromDec : Dec P → P ⊎ ¬ P
+  toDec   : P ⊎ ¬ P → Dec P
   ```
 
 * Added new functions in `Data.Table.Base`:

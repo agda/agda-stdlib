@@ -1,0 +1,82 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- First generalizes the idea that an element is the first in a list to
+-- satisfy a predicate.
+------------------------------------------------------------------------
+
+module Data.List.First {a} {A : Set a} where
+
+open import Level using (_⊔_)
+open import Data.Empty
+open import Data.Fin as Fin using (Fin; zero; suc)
+open import Data.List.Base as List using (List; []; _∷_)
+open import Data.List.All as All using (All; []; _∷_)
+open import Data.List.Any as Any using (Any; here; there)
+open import Data.Product as Prod using (∃; -,_; _,_)
+open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Function
+open import Relation.Unary
+open import Relation.Nullary
+
+-----------------------------------------------------------------------
+-- Basic type.
+
+data First {p q} (P : Pred A p) (Q : Pred A q) : Pred (List A) (p ⊔ q) where
+  [_] : ∀ {x xs} → Q x                → First P Q (x ∷ xs)
+  _∷_ : ∀ {x xs} → P x → First P Q xs → First P Q (x ∷ xs)
+
+------------------------------------------------------------------------
+-- map
+
+module _ {p q r s} {P : Pred A p} {Q : Pred A q} {R : Pred A r} {S : Pred A s} where
+
+  map : P ⊆ R → Q ⊆ S → First P Q ⊆ First R S
+  map p⇒r q⇒r [ qx ]      = [ q⇒r qx ]
+  map p⇒r q⇒r (px ∷ pqxs) = p⇒r px ∷ map p⇒r q⇒r pqxs
+
+module _ {p q r} {P : Pred A p} {Q : Pred A q} {R : Pred A r} where
+
+  map₁ : P ⊆ R → First P Q ⊆ First R Q
+  map₁ p⇒r = map p⇒r id
+
+  map₂ : Q ⊆ R → First P Q ⊆ First P R
+  map₂ = map id
+
+module _ {p q} {P : Pred A p} {Q : Pred A q} where
+
+------------------------------------------------------------------------
+-- Operations
+
+  empty : ¬ First P Q []
+  empty ()
+
+  tail : ∀ {x xs} → ¬ Q x → First P Q (x ∷ xs) → First P Q xs
+  tail ¬qx [ qx ]      = ⊥-elim (¬qx qx)
+  tail ¬qx (px ∷ pqxs) = pqxs
+
+  index : First P Q ⊆ (Fin ∘′ List.length)
+  index [ qx ]     = zero
+  index (_ ∷ pqxs) = suc (index pqxs)
+
+  satisfied : ∀ {xs} → First P Q xs → ∃ Q
+  satisfied [ qx ]      = -, qx
+  satisfied (px ∷ pqxs) = satisfied pqxs
+
+  satisfiable : Satisfiable Q → Satisfiable (First P Q)
+  satisfiable (x , qx) = List.[ x ] , [ qx ]
+
+------------------------------------------------------------------------
+-- Decidability results
+
+  first : Π[ P ∪ Q ] → Π[ First P Q ∪ All P ]
+  first p⊎q []       = inj₂ []
+  first p⊎q (x ∷ xs) with p⊎q x
+  ... | inj₁ px = Sum.map (px ∷_) (px ∷_) (first p⊎q xs)
+  ... | inj₂ qx = inj₁ [ qx ]
+
+  fromAny : Π[ P ∪ Q ] → Any Q ⊆ First P Q
+  fromAny p⊎q (here qx)       = [ qx ]
+  fromAny p⊎q (there {x} any) with p⊎q x
+  ... | inj₁ px = px ∷ fromAny p⊎q any
+  ... | inj₂ qx = [ qx ]
