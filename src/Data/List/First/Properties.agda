@@ -7,11 +7,13 @@
 module Data.List.First.Properties where
 
 open import Data.Empty
+open import Data.Fin using (suc)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.All as All using (All; []; _∷_)
 open import Data.List.First
 import Data.Sum as Sum
 open import Function
+open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 open import Relation.Unary
 open import Relation.Nullary.Negation
 
@@ -43,7 +45,7 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
   ⁺++ (px ∷ pqxs) ys = px ∷ ⁺++ pqxs ys
 
 ------------------------------------------------------------------------
--- Decidability result
+-- Relationship to All
 
 module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 
@@ -55,6 +57,25 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
   First⇒¬All : Q ⊆ ∁ P → First P Q ⊆ ∁ (All P)
   First⇒¬All q⇒¬p [ qx ]     (px ∷ pxs) = q⇒¬p qx px
   First⇒¬All q⇒¬p (_ ∷ pqxs) (_ ∷ pxs)  = First⇒¬All q⇒¬p pqxs pxs
+
+------------------------------------------------------------------------
+-- Irrelevance
+
+  unique-index : ∀ {xs} → P ⊆ ∁ Q → (f₁ f₂ : First P Q xs) → index f₁ ≡ index f₂
+  unique-index p⇒¬q [ _ ]    [ _ ]    = refl
+  unique-index p⇒¬q [ qx ]   (px ∷ _) = ⊥-elim (p⇒¬q px qx)
+  unique-index p⇒¬q (px ∷ _) [ qx ]   = ⊥-elim (p⇒¬q px qx)
+  unique-index p⇒¬q (_ ∷ f₁) (_ ∷ f₂) = P.cong suc (unique-index p⇒¬q f₁ f₂)
+
+  irrelevance : P ⊆ ∁ Q → Irrelevant P → Irrelevant Q → Irrelevant (First P Q)
+  irrelevance p⇒¬q p-irr q-irr [ qx₁ ]    [ qx₂ ]    = P.cong [_] (q-irr qx₁ qx₂)
+  irrelevance p⇒¬q p-irr q-irr [ qx₁ ]    (px₂ ∷ f₂) = ⊥-elim (p⇒¬q px₂ qx₁)
+  irrelevance p⇒¬q p-irr q-irr (px₁ ∷ f₁) [ qx₂ ]    = ⊥-elim (p⇒¬q px₁ qx₂)
+  irrelevance p⇒¬q p-irr q-irr (px₁ ∷ f₁) (px₂ ∷ f₂) =
+    P.cong₂ _∷_ (p-irr px₁ px₂) (irrelevance p⇒¬q p-irr q-irr f₁ f₂)
+
+------------------------------------------------------------------------
+-- Decidability
 
 module _ {a p} {A : Set a} {P : Pred A p} where
 
