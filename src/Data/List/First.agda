@@ -43,6 +43,12 @@ module _ {p q r} {P : Pred A p} {Q : Pred A q} {R : Pred A r} where
   map₂ : Q ⊆ R → First P Q ⊆ First P R
   map₂ = map id
 
+  refine : P ⊆ Q ∪ R → First P Q ⊆ First R Q
+  refine f [ qx ]      = [ qx ]
+  refine f (px ∷ pqxs) with f px
+  ... | inj₁ qx = [ qx ]
+  ... | inj₂ rx = rx ∷ refine f pqxs
+
 module _ {p q} {P : Pred A p} {Q : Pred A q} where
 
 ------------------------------------------------------------------------
@@ -75,8 +81,15 @@ module _ {p q} {P : Pred A p} {Q : Pred A q} where
   ... | inj₁ px = Sum.map (px ∷_) (px ∷_) (first p⊎q xs)
   ... | inj₂ qx = inj₁ [ qx ]
 
-  fromAny : Π[ P ∪ Q ] → Any Q ⊆ First P Q
-  fromAny p⊎q (here qx)       = [ qx ]
-  fromAny p⊎q (there {x} any) with p⊎q x
-  ... | inj₁ px = px ∷ fromAny p⊎q any
-  ... | inj₂ qx = [ qx ]
+------------------------------------------------------------------------
+-- Relationship with Any
+
+module _ {q} {Q : Pred A q} where
+
+  fromAny : Any Q ⊆ First U Q
+  fromAny (here qx)   = [ qx ]
+  fromAny (there any) = _ ∷ fromAny any
+
+  toAny : ∀ {p} {P : Pred A p} → First P Q ⊆ Any Q
+  toAny [ qx ]     = here qx
+  toAny (_ ∷ pqxs) = there (toAny pqxs)
