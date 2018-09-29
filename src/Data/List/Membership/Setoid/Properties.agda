@@ -7,20 +7,22 @@
 module Data.List.Membership.Setoid.Properties where
 
 open import Algebra.FunctionProperties using (Op₂; Selective)
+open import Data.Empty
 open import Data.Fin using (Fin; zero; suc)
 open import Data.List
 open import Data.List.Any as Any using (Any; here; there)
 import Data.List.Any.Properties as Any
 import Data.List.Membership.Setoid as Membership
 import Data.List.Relation.Equality.Setoid as Equality
-open import Data.Nat using (z≤n; s≤s; _≤_; _<_)
+open import Data.Nat using (suc; z≤n; s≤s; _≤_; _<_)
 open import Data.Nat.Properties using (≤-trans; n≤1+n)
 open import Data.Product as Prod using (∃; _×_; _,_ ; ∃₂)
 open import Data.Sum using (_⊎_; inj₁; inj₂)
-open import Function using (flip; _∘_; id)
+open import Function using (_$_; flip; _∘_; id)
 open import Relation.Binary hiding (Decidable)
+open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Unary using (Decidable; Pred)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open Setoid using (Carrier)
 
@@ -74,6 +76,40 @@ module _ {c₁ c₂ ℓ₁ ℓ₂} (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c�
   mapWith∈≗map f []       = []
   mapWith∈≗map f (x ∷ xs) = refl₂ ∷ mapWith∈≗map f xs
 
+
+module _ {c ℓ} (S : Setoid c ℓ) where
+
+  open Setoid S
+  open Membership S
+
+  length-mapWith∈ : ∀ {a} {A : Set a} xs {f : ∀ {x} → x ∈ xs → A} →
+                    length (mapWith∈ xs f) ≡ length xs
+  length-mapWith∈ []       = P.refl
+  length-mapWith∈ (x ∷ xs) = P.cong suc (length-mapWith∈ xs)
+
+------------------------------------------------------------------------
+-- _∷=_
+
+  length-∷= : ∀ {xs x v} (pr : x ∈ xs) → length (pr ∷= v) ≡ length xs
+  length-∷= (here px)  = P.refl
+  length-∷= (there pr) = P.cong suc (length-∷= pr)
+
+  ∈-∷=⁺-updated : ∀ {xs x v} (pr : x ∈ xs) → v ∈ (pr ∷= v)
+  ∈-∷=⁺-updated (here px)  = here refl
+  ∈-∷=⁺-updated (there pr) = there (∈-∷=⁺-updated pr)
+
+  ∈-∷=⁺-untouched : ∀ {xs x y v} (pr : x ∈ xs) → (¬ x ≈ y) → y ∈ xs → y ∈ (pr ∷= v)
+  ∈-∷=⁺-untouched (here x≈z)   ¬x≈y (here y≈z)   = ⊥-elim $ ¬x≈y (trans x≈z (sym y≈z))
+  ∈-∷=⁺-untouched (here x≈z)   ¬x≈y (there y∈xs) = there y∈xs
+  ∈-∷=⁺-untouched (there x∈xs) ¬x≈y (here y≈z)   = here y≈z
+  ∈-∷=⁺-untouched (there x∈xs) ¬x≈y (there y∈xs) = there (∈-∷=⁺-untouched x∈xs ¬x≈y y∈xs)
+
+  ∈-∷=⁻ : ∀ {xs x y v} (pr : x ∈ xs) → (¬ y ≈ v) → y ∈ (pr ∷= v) → y ∈ xs
+  ∈-∷=⁻ (here x≈z) ¬y≈v (here y≈v) = ⊥-elim $ ¬y≈v y≈v
+  ∈-∷=⁻ (here x≈z) ¬y≈v (there y∈) = there y∈
+  ∈-∷=⁻ (there x∈) ¬y≈v (here y≈z) = here y≈z
+  ∈-∷=⁻ (there x∈) ¬y≈v (there y∈) = there (∈-∷=⁻ x∈ ¬y≈v y∈)
+
 ------------------------------------------------------------------------
 -- map
 
@@ -81,8 +117,8 @@ module _ {c₁ c₂ ℓ₁ ℓ₂} (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c�
 
   open Setoid S₁ renaming (Carrier to A₁; _≈_ to _≈₁_; refl to refl₁)
   open Setoid S₂ renaming (Carrier to A₂; _≈_ to _≈₂_)
-  open Membership S₁ using (find) renaming (_∈_ to _∈₁_)
-  open Membership S₂ using () renaming (_∈_ to _∈₂_)
+  private module M₁ = Membership S₁; open M₁ using (find) renaming (_∈_ to _∈₁_)
+  private module M₂ = Membership S₂; open M₂ using () renaming (_∈_ to _∈₂_)
 
   ∈-map⁺ : ∀ {f} → f Preserves _≈₁_ ⟶ _≈₂_ → ∀ {v xs} →
             v ∈₁ xs → f v ∈₂ map f xs
@@ -91,6 +127,11 @@ module _ {c₁ c₂ ℓ₁ ℓ₂} (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c�
   ∈-map⁻ : ∀ {v xs f} → v ∈₂ map f xs →
            ∃ λ x → x ∈₁ xs × v ≈₂ f x
   ∈-map⁻ x∈map = find (Any.map⁻ x∈map)
+
+  map-∷= : ∀ {f} (f≈ : f Preserves _≈₁_ ⟶ _≈₂_) {xs x v} →
+           (pr : x ∈₁ xs) → map f (pr M₁.∷= v) ≡ ∈-map⁺ f≈ pr M₂.∷= f v
+  map-∷= f≈ (here x≈y)   = P.refl
+  map-∷= f≈ (there x∈xs) = P.cong (_ ∷_) (map-∷= f≈ x∈xs)
 
 ------------------------------------------------------------------------
 -- _++_

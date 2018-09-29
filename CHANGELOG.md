@@ -401,10 +401,21 @@ Other minor additions
   forM        : RawMonad M → List A → (A → M B) → M (List B)
   ```
 
+* Added new function to `Data.List.Membership.(Setoid/Propositional)`:
+  ```agda
+  _∷=_ : x ∈ xs → A → List A
+  ```
+
 * Added new proofs to `Data.List.Membership.(Setoid/Propositional).Properties`:
   ```agda
-  ∈-insert : v ≈ v′ → v ∈ xs ++ [ v′ ] ++ ys
-  ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
+  ∈-insert        : v ≈ v′ → v ∈ xs ++ [ v′ ] ++ ys
+  ∈-∃++           : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
+  length-mapWith∈ : length (mapWith∈ xs f) ≡ length xs
+  length-∷=       : length (pr ∷= v) ≡ length xs
+  ∈-∷=⁺-updated   : v ∈ (pr ∷= v)
+  ∈-∷=⁺-untouched : (¬ x ≈ y) → y ∈ xs → y ∈ (pr ∷= v)
+  ∈-∷=⁻           : (¬ y ≈ v) → y ∈ (pr ∷= v) → y ∈ xs
+  map-∷=          : map f (pr ∷= v) ≡ ∈-map⁺ f≈ pr ∷= f v
   ```
 
 * Added new functions to `Data.List.NonEmpty`:

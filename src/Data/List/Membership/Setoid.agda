@@ -35,6 +35,10 @@ mapWith∈ : ∀ {b} {B : Set b}
 mapWith∈ []       f = []
 mapWith∈ (x ∷ xs) f = f (here refl) ∷ mapWith∈ xs (f ∘ there)
 
+_∷=_ : ∀ {xs x} → x ∈ xs → A → List A
+_∷=_ {_ ∷ xs} (here _)   v = v ∷ xs
+_∷=_ {x ∷ _}  (there pr) v = x ∷ (pr ∷= v)
+
 find : ∀ {p} {P : A → Set p} {xs} →
        Any P xs → ∃ λ x → x ∈ xs × P x
 find (here px)   = (_ , here refl , px)
