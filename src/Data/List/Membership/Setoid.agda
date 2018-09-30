@@ -9,7 +9,8 @@ open import Relation.Binary
 module Data.List.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 
 open import Function using (_∘_; id; flip)
-open import Data.List.Base using (List; []; _∷_)
+open import Data.Fin using (Fin; zero; suc)
+open import Data.List.Base using (List; []; _∷_; length; lookup)
 open import Data.List.Any using (Any; map; here; there)
 open import Data.Product as Prod using (∃; _×_; _,_)
 open import Relation.Nullary using (¬_)
@@ -38,6 +39,10 @@ mapWith∈ (x ∷ xs) f = f (here refl) ∷ mapWith∈ xs (f ∘ there)
 _∷=_ : ∀ {xs x} → x ∈ xs → A → List A
 _∷=_ {_ ∷ xs} (here _)   v = v ∷ xs
 _∷=_ {x ∷ _}  (there pr) v = x ∷ (pr ∷= v)
+
+fromFin : ∀ {xs} (k : Fin (length xs)) → lookup xs k ∈ xs
+fromFin {_ ∷ _} zero    = here refl
+fromFin {_ ∷ _} (suc k) = there (fromFin k)
 
 find : ∀ {p} {P : A → Set p} {xs} →
        Any P xs → ∃ λ x → x ∈ xs × P x
