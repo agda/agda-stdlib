@@ -46,6 +46,7 @@ _ ∷ xs ─ here px    = xs
 x ∷ xs ─ there x∈xs = x ∷ (xs ─ x∈xs)
 
 fromFin : ∀ {xs} (k : Fin (length xs)) → lookup xs k ∈ xs
+fromFin {[]}    ()
 fromFin {_ ∷ _} zero    = here refl
 fromFin {_ ∷ _} (suc k) = there (fromFin k)
 
