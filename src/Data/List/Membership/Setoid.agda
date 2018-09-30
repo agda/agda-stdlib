@@ -40,6 +40,11 @@ _∷=_ : ∀ {xs x} → x ∈ xs → A → List A
 _∷=_ {_ ∷ xs} (here _)   v = v ∷ xs
 _∷=_ {x ∷ _}  (there pr) v = x ∷ (pr ∷= v)
 
+infixl 4 _─_
+_─_ : ∀ xs {x} → x ∈ xs → List A
+_ ∷ xs ─ here px    = xs
+x ∷ xs ─ there x∈xs = x ∷ (xs ─ x∈xs)
+
 fromFin : ∀ {xs} (k : Fin (length xs)) → lookup xs k ∈ xs
 fromFin {_ ∷ _} zero    = here refl
 fromFin {_ ∷ _} (suc k) = there (fromFin k)

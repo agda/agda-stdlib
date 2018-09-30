@@ -404,6 +404,7 @@ Other minor additions
 * Added new function to `Data.List.Membership.(Setoid/Propositional)`:
   ```agda
   _∷=_    : x ∈ xs → A → List A
+  _─_     : (xs : List A) → x ∈ xs → List A
   fromFin : (k : Fin (length xs)) → lookup xs k ∈ xs
   ```
 
