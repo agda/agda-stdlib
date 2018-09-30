@@ -19,7 +19,7 @@ open import Data.List.Any using (Any; here; there)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat
 open import Data.Nat.Properties
-open import Data.Fin using (Fin; zero; suc)
+open import Data.Fin using (Fin; zero; suc; cast)
 open import Data.Product as Prod hiding (map; zip)
 open import Function
 import Relation.Binary.EqReasoning as EqR
@@ -424,6 +424,46 @@ module _ {a} {A : Set a} where
   tabulate-lookup : ∀ (xs : List A) → tabulate (lookup xs) ≡ xs
   tabulate-lookup []       = refl
   tabulate-lookup (x ∷ xs) = P.cong (_ ∷_) (tabulate-lookup xs)
+
+------------------------------------------------------------------------
+-- _at_(%/∷)=_
+
+  length-%= : ∀ xs k (f : A → A) → length (xs at k %= f) ≡ length xs
+  length-%= []       ()      f
+  length-%= (x ∷ xs) zero    f = refl
+  length-%= (x ∷ xs) (suc k) f = P.cong suc (length-%= xs k f)
+
+  length-∷= : ∀ xs k (v : A) → length (xs at k ∷= v) ≡ length xs
+  length-∷= xs k v = length-%= xs k (const v)
+
+  map-∷= : ∀ {b} {B : Set b} xs k (v : A) (f : A → B) →
+           let eq = P.sym (length-map f xs) in
+           map f (xs at k ∷= v) ≡ map f xs at cast eq k ∷= f v
+  map-∷= []       ()      v f
+  map-∷= (x ∷ xs) zero    v f = refl
+  map-∷= (x ∷ xs) (suc k) v f = P.cong (f x ∷_) $ begin
+    map f (xs at k ∷= v)        ≡⟨ map-∷= xs k v f ⟩
+    map f xs at cast _ k ∷= f v ≡⟨ P.cong (λ eq → map f xs at cast eq k ∷= _) (P.≡-irrelevance _ _) ⟩
+    map f xs at cast _ k ∷= f v ∎ where open P.≡-Reasoning
+
+------------------------------------------------------------------------
+-- _─_
+
+  length-─ : ∀ (xs : List A) k → length (xs ─ k) ≡ pred (length xs)
+  length-─ []       ()
+  length-─ (x ∷ xs) zero        = refl
+  length-─ (x ∷ []) (suc ())
+  length-─ (x ∷ y ∷ xs) (suc k) = P.cong suc (length-─ (y ∷ xs) k)
+
+  map-─ : ∀ {b} {B : Set b} xs k (f : A → B) →
+          let eq = P.sym (length-map f xs) in
+          map f (xs ─ k) ≡ map f xs ─ cast eq k
+  map-─ []       ()      f
+  map-─ (x ∷ xs) zero    f = refl
+  map-─ (x ∷ xs) (suc k) f = P.cong (f x ∷_) $ begin
+    map f (xs ─ k)      ≡⟨ map-─ xs k f ⟩
+    map f xs ─ cast _ k ≡⟨ P.cong (λ eq → map f xs ─ cast eq k) (P.≡-irrelevance _ _) ⟩
+    map f xs ─ cast _ k ∎ where open P.≡-Reasoning
 
 ------------------------------------------------------------------------
 -- take

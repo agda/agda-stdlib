@@ -10,8 +10,8 @@ module Data.List.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 
 open import Function using (_∘_; id; flip)
 open import Data.Fin using (Fin; zero; suc)
-open import Data.List.Base using (List; []; _∷_; length; lookup)
-open import Data.List.Any using (Any; map; here; there)
+open import Data.List.Base as List using (List; []; _∷_; length; lookup)
+open import Data.List.Any as Any using (Any; map; here; there)
 open import Data.Product as Prod using (∃; _×_; _,_)
 open import Relation.Nullary using (¬_)
 
@@ -37,13 +37,11 @@ mapWith∈ []       f = []
 mapWith∈ (x ∷ xs) f = f (here refl) ∷ mapWith∈ xs (f ∘ there)
 
 _∷=_ : ∀ {xs x} → x ∈ xs → A → List A
-_∷=_ {_ ∷ xs} (here _)   v = v ∷ xs
-_∷=_ {x ∷ _}  (there pr) v = x ∷ (pr ∷= v)
+_∷=_ {xs} x∈xs v = xs List.at Any.index x∈xs ∷= v
 
 infixl 4 _─_
 _─_ : ∀ xs {x} → x ∈ xs → List A
-_ ∷ xs ─ here px    = xs
-x ∷ xs ─ there x∈xs = x ∷ (xs ─ x∈xs)
+xs ─ x∈xs = xs List.─ Any.index x∈xs
 
 fromFin : ∀ {xs} (k : Fin (length xs)) → lookup xs k ∈ xs
 fromFin {[]}    ()

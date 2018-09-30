@@ -13,7 +13,7 @@ open import Data.Bool.Base
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Product as Prod using (_×_; _,_)
-open import Function using (id; _∘_)
+open import Function using (id; _∘_; const)
 open import Relation.Nullary using (yes; no)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Unary.Properties using (∁?)
@@ -107,7 +107,7 @@ product : List ℕ → ℕ
 product = foldr _*_ 1
 
 length : ∀ {a} {A : Set a} → List A → ℕ
-length = foldr (λ _ → suc) 0
+length = foldr (const suc) 0
 
 ------------------------------------------------------------------------
 -- Operations for constructing lists
@@ -145,24 +145,42 @@ scanl : ∀ {a b} {A : Set a} {B : Set b} →
 scanl f e []       = e ∷ []
 scanl f e (x ∷ xs) = e ∷ scanl f (f e x) xs
 
+module _ {a} {A : Set a} where
+
 -- Tabulation
 
-applyUpTo : ∀ {a} {A : Set a} → (ℕ → A) → ℕ → List A
-applyUpTo f zero    = []
-applyUpTo f (suc n) = f zero ∷ applyUpTo (f ∘ suc) n
+  applyUpTo : (ℕ → A) → ℕ → List A
+  applyUpTo f zero    = []
+  applyUpTo f (suc n) = f zero ∷ applyUpTo (f ∘ suc) n
 
-applyDownFrom : ∀ {a} {A : Set a} → (ℕ → A) → ℕ → List A
-applyDownFrom f zero = []
-applyDownFrom f (suc n) = f n ∷ applyDownFrom f n
+  applyDownFrom : (ℕ → A) → ℕ → List A
+  applyDownFrom f zero = []
+  applyDownFrom f (suc n) = f n ∷ applyDownFrom f n
 
-tabulate : ∀ {a n} {A : Set a} (f : Fin n → A) → List A
-tabulate {_} {zero}  f = []
-tabulate {_} {suc n} f = f fzero ∷ tabulate (f ∘ fsuc)
+  tabulate : ∀ {n} (f : Fin n → A) → List A
+  tabulate {zero}  f = []
+  tabulate {suc n} f = f fzero ∷ tabulate (f ∘ fsuc)
 
-lookup : ∀ {a} {A : Set a} (xs : List A) → Fin (length xs) → A
-lookup [] ()
-lookup (x ∷ xs) fzero = x
-lookup (x ∷ xs) (fsuc i) = lookup xs i
+  lookup : ∀ (xs : List A) → Fin (length xs) → A
+  lookup [] ()
+  lookup (x ∷ xs) fzero = x
+  lookup (x ∷ xs) (fsuc i) = lookup xs i
+
+-- Actions on single elements
+
+  infixl 5 _at_%=_ _at_∷=_ _─_
+  _at_%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
+  []       at ()     %= f
+  (x ∷ xs) at fzero  %= f = f x ∷ xs
+  (x ∷ xs) at fsuc k %= f = x ∷ (xs at k %= f)
+
+  _at_∷=_ : (xs : List A) → Fin (length xs) → A → List A
+  xs at k ∷= v = xs at k %= const v
+
+  _─_ : (xs : List A) → Fin (length xs) → List A
+  []       ─ ()
+  (x ∷ xs) ─ fzero  = xs
+  (x ∷ xs) ─ fsuc k = x ∷ (xs ─ k)
 
 -- Numerical
 

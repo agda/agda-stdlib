@@ -90,10 +90,6 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 ------------------------------------------------------------------------
 -- _∷=_
 
-  length-∷= : ∀ {xs x v} (pr : x ∈ xs) → length (pr ∷= v) ≡ length xs
-  length-∷= (here px)  = P.refl
-  length-∷= (there pr) = P.cong suc (length-∷= pr)
-
   ∈-∷=⁺-updated : ∀ {xs x v} (pr : x ∈ xs) → v ∈ (pr ∷= v)
   ∈-∷=⁺-updated (here px)  = here refl
   ∈-∷=⁺-updated (there pr) = there (∈-∷=⁺-updated pr)

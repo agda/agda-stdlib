@@ -42,6 +42,16 @@ Fin′ : ∀ {n} → Fin n → Set
 Fin′ i = Fin (toℕ i)
 
 ------------------------------------------------------------------------
+-- A cast that actually computes on constructors (as opposed to subst)
+
+cast : ∀ {m n} → m ≡ n → Fin m → Fin n
+cast {zero}  {zero}  eq k       = k
+cast {suc m} {suc n} eq zero    = zero
+cast {suc m} {suc n} eq (suc k) = suc (cast (cong ℕ.pred eq) k)
+cast {zero}  {suc n} ()
+cast {suc m} {zero}  ()
+
+------------------------------------------------------------------------
 -- Conversions
 
 -- toℕ is defined above.

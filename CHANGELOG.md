@@ -359,6 +359,11 @@ Other minor additions
   unfold : (S → ⟦ C ⟧ S) → S → M C
   ```
 
+* Added new function to `Data.Fin`:
+  ```agda
+  cast : m ≡ n → Fin m → Fin n
+  ```
+
 * Added new proof to `Data.Fin.Permutation`:
   ```agda
   refute : m ≢ n → ¬ Permutation m n
@@ -385,9 +390,12 @@ Other minor additions
 
 * Added new functions to `Data.List.Base`:
   ```agda
-  uncons : List A → Maybe (A × List A)
-  head   : List A → Maybe A
-  tail   : List A → Maybe (List A)
+  uncons  : List A → Maybe (A × List A)
+  head    : List A → Maybe A
+  tail    : List A → Maybe (List A)
+  _at_%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
+  _at_∷=_ : (xs : List A) → Fin (length xs) → A → List A
+  _─_     : (xs : List A) → Fin (length xs) → List A
   ```
 
 * Added new functions to `Data.List.Categorical`:
@@ -424,6 +432,15 @@ Other minor additions
   ```agda
   uncons    : List⁺ A → A × List A
   concatMap : (A → List⁺ B) → List⁺ A → List⁺ B
+  ```
+
+* Added new proofs to `Data.List.Properties`:
+  ```agda
+  length-%= : length (xs at k %= f) ≡ length xs
+  length-∷= : length (xs at k ∷= v) ≡ length xs
+  map-∷=    : map f (xs at k ∷= v) ≡ map f xs at cast eq k ∷= f v
+  length-─  : length (xs ─ k) ≡ pred (length xs)
+  map-─     : map f (xs ─ k) ≡ map f xs ─ cast eq k
   ```
 
 * Added new function to `Data.Maybe.Base`:
