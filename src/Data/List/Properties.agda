@@ -441,10 +441,7 @@ module _ {a} {A : Set a} where
            map f (xs at k ∷= v) ≡ map f xs at cast eq k ∷= f v
   map-∷= []       ()      v f
   map-∷= (x ∷ xs) zero    v f = refl
-  map-∷= (x ∷ xs) (suc k) v f = P.cong (f x ∷_) $ begin
-    map f (xs at k ∷= v)        ≡⟨ map-∷= xs k v f ⟩
-    map f xs at cast _ k ∷= f v ≡⟨ P.cong (λ eq → map f xs at cast eq k ∷= _) (P.≡-irrelevance _ _) ⟩
-    map f xs at cast _ k ∷= f v ∎ where open P.≡-Reasoning
+  map-∷= (x ∷ xs) (suc k) v f = P.cong (f x ∷_) (map-∷= xs k v f)
 
 ------------------------------------------------------------------------
 -- _─_
@@ -460,10 +457,7 @@ module _ {a} {A : Set a} where
           map f (xs ─ k) ≡ map f xs ─ cast eq k
   map-─ []       ()      f
   map-─ (x ∷ xs) zero    f = refl
-  map-─ (x ∷ xs) (suc k) f = P.cong (f x ∷_) $ begin
-    map f (xs ─ k)      ≡⟨ map-─ xs k f ⟩
-    map f xs ─ cast _ k ≡⟨ P.cong (λ eq → map f xs ─ cast eq k) (P.≡-irrelevance _ _) ⟩
-    map f xs ─ cast _ k ∎ where open P.≡-Reasoning
+  map-─ (x ∷ xs) (suc k) f = P.cong (f x ∷_) (map-─ xs k f)
 
 ------------------------------------------------------------------------
 -- take
