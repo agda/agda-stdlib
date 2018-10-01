@@ -26,6 +26,9 @@ data Colist {ℓ} (A : Set ℓ) (i : Size) : Set ℓ where
 
 module _ {ℓ} {A : Set ℓ} where
 
+ [_] : A → Colist A ∞
+ [ a ] = a ∷ λ where .force → []
+
  length : ∀ {i} → Colist A i → Conat i
  length []       = zero
  length (x ∷ xs) = suc λ where .force → length (xs .force)
@@ -68,6 +71,17 @@ module _ {ℓ} {A : Set ℓ} where
 
  fromStream : ∀ {i} → Stream A i → Colist A i
  fromStream = cotake Conat.infinity
+
+module _ {ℓ} {A : Set ℓ} where
+
+ chunksOf : (n : ℕ) → Colist A ∞ → Colist (BoundedVec A n) ∞
+ chunksOf n = chunksOfAcc n id module ChunksOf where
+
+   chunksOfAcc : ∀ {i} k (acc : BoundedVec A k → BoundedVec A n) →
+                 Colist A ∞ → Colist (BoundedVec A n) i
+   chunksOfAcc zero    acc as       = acc BVec.[] ∷ λ where .force → chunksOfAcc n id as
+   chunksOfAcc (suc k) acc []       = [ acc BVec.[] ]
+   chunksOfAcc (suc k) acc (a ∷ as) = chunksOfAcc k (acc ∘ (a BVec.∷_)) (as .force)
 
 module _ {a b} {A : Set a} {B : Set b} where
 
