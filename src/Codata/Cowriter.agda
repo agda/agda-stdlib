@@ -12,9 +12,13 @@ open import Codata.Thunk
 open import Codata.Conat
 open import Codata.Delay using (Delay; later; now)
 open import Codata.Stream as Stream using (Stream; _∷_)
+
 open import Data.Unit
-open import Data.Product using (_×_; _,_)
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Nat.Base as Nat using (ℕ; zero; suc)
+open import Data.Product as Prod using (_×_; _,_)
+open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Vec using (Vec; []; _∷_)
+open import Data.BoundedVec as BVec using (BoundedVec)
 open import Function
 
 data Cowriter {w a} (W : Set w) (A : Set a) (i : Size) : Set (a L.⊔ w) where
@@ -48,6 +52,12 @@ module _ {w a} {W : Set w} {A : Set a} where
   length : ∀ {i} → Cowriter W A i → Conat i
   length [ _ ]    = zero
   length (w ∷ cw) = suc λ where .force → length (cw .force)
+
+  take : ∀ (n : ℕ) → Cowriter W A ∞ → Vec W n ⊎ (BoundedVec W n × A)
+  take zero    cw       = inj₁ []
+  take (suc n) [ a ]    = inj₂ (BVec.[] , a)
+  take (suc n) (w ∷ cw) = Sum.map (w ∷_) (Prod.map₁ (w BVec.∷_))
+                        $ take n (cw .force)
 
 module _ {w x a b} {W : Set w} {X : Set x} {A : Set a} {B : Set b} where
 
