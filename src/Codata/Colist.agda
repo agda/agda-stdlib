@@ -15,7 +15,7 @@ open import Data.List.NonEmpty using (List⁺ ; _∷_)
 open import Data.BoundedVec as BVec using (BoundedVec)
 open import Function
 
-open import Codata.Thunk
+open import Codata.Thunk using (Thunk; force)
 open import Codata.Conat as Conat using (Conat ; zero ; suc)
 open import Codata.Delay as Delay using (Delay ; now ; later)
 open import Codata.Stream using (Stream ; _∷_)
