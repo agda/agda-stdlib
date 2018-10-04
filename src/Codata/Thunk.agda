@@ -50,8 +50,8 @@ module _ {p q} {P : Size → Set p} {Q : Size → Set q} where
   _<*>_ : ∀[ Thunk (P ⇒ Q) ⇒ Thunk P ⇒ Thunk Q ]
   (f <*> p) .force = f .force (p .force)
 
--- We can take fixpoints of functors making Thunk'd recursive calls
+-- We can take cofixpoints of functions only making Thunk'd recursive calls
 module _ {p} (P : Size → Set p) where
 
-  fix : ∀[ Thunk P ⇒ P ] → ∀[ P ]
-  fix f = f λ where .force → fix f
+  cofix : ∀[ Thunk P ⇒ P ] → ∀[ P ]
+  cofix f = f λ where .force → cofix f
