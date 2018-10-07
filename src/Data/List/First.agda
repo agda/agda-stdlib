@@ -65,9 +65,12 @@ module _ {p q} {P : Pred A p} {Q : Pred A q} where
   index [ qx ]     = zero
   index (_ ∷ pqxs) = suc (index pqxs)
 
+  index-satisfied : ∀ {xs} (pqxs : First P Q xs) → Q (List.lookup xs (index pqxs))
+  index-satisfied [ qx ]     = qx
+  index-satisfied (_ ∷ pqxs) = index-satisfied pqxs
+
   satisfied : ∀ {xs} → First P Q xs → ∃ Q
-  satisfied [ qx ]      = -, qx
-  satisfied (px ∷ pqxs) = satisfied pqxs
+  satisfied pqxs = -, index-satisfied pqxs
 
   satisfiable : Satisfiable Q → Satisfiable (First P Q)
   satisfiable (x , qx) = List.[ x ] , [ qx ]

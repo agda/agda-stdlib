@@ -10,10 +10,11 @@ open import Data.Empty
 open import Data.Fin using (suc)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.All as All using (All; []; _∷_)
+open import Data.List.Any as Any using (here; there)
 open import Data.List.First
 import Data.Sum as Sum
 open import Function
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality as P using (_≡_; refl; _≗_)
 open import Relation.Unary
 open import Relation.Nullary.Negation
 
@@ -84,3 +85,15 @@ module _ {a p} {A : Set a} {P : Pred A p} where
                $ Sum.map₂ (All⇒¬First contradiction)
                $ first (Sum.fromDec ∘ P?) xs
 
+------------------------------------------------------------------------
+-- Conversion to Any
+
+module _ {a p} {A : Set a} {P : Pred A p} where
+
+  fromAny∘toAny≗id : ∀ {xs} → fromAny {Q = P} {x = xs} ∘′ toAny ≗ id
+  fromAny∘toAny≗id [ qx ]      = refl
+  fromAny∘toAny≗id (px ∷ pqxs) = P.cong (_ ∷_) (fromAny∘toAny≗id pqxs)
+
+  toAny∘fromAny≗id : ∀ {xs} → toAny {Q = P} ∘′ fromAny {x = xs} ≗ id
+  toAny∘fromAny≗id (here px) = refl
+  toAny∘fromAny≗id (there v) = P.cong there (toAny∘fromAny≗id v)
