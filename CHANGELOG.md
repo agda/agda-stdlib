@@ -373,6 +373,15 @@ Other minor additions
   pigeonhole  : m < n → (f : Fin n → Fin m) → ∃₂ λ i j → i ≢ j × f i ≡ f j
   ```
 
+* Added new proofs to `Data.Integer.Properties`:
+  ```agda
+  0⊖m≤+     : 0 ⊖ m ≤ + n
+  0⊖-≤      : m ℕ.≤ n → 0 ⊖ n ≤ 0 ⊖ m
+  ≤-<-trans : Trans _≤_ _<_ _<_
+  <-≤-trans : Trans _<_ _≤_ _<_
+  >→≰       : x > y → x ≰ y
+  ```
+
 * Added new proofs to `Data.List.Any.Properties`:
   ```agda
   here-injective  : here  p ≡ here  q → p ≡ q

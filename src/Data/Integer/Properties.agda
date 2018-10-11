@@ -750,6 +750,14 @@ pos-distrib-* (suc x) (suc y) = refl
   ; isDecTotalOrder = ≤-isDecTotalOrder
   }
 
+0⊖m≤+ : ∀ m {n} → 0 ⊖ m ≤ + n
+0⊖m≤+ zero    = +≤+ z≤n
+0⊖m≤+ (suc m) = -≤+
+
+0⊖-≤ : ∀ {m n} → m ℕ.≤ n → 0 ⊖ n ≤ 0 ⊖ m
+0⊖-≤ (z≤n {n}) = 0⊖m≤+ n
+0⊖-≤ (s≤s p)   = -≤- p
+
 ≤-step : ∀ {n m} → n ≤ m → n ≤ sucℤ m
 ≤-step -≤+             = -≤+
 ≤-step (+≤+ m≤n)       = +≤+ (ℕₚ.≤-step m≤n)
@@ -786,15 +794,19 @@ n≤1+n n = ≤-step ≤-refl
 <-asym { -[1+ suc n ]} { -[1+ suc m ]} (-≤- n<m) (-≤- m<n) =
   ℕₚ.<-asym n<m m<n
 
+≤-<-trans : Trans _≤_ _<_ _<_
+≤-<-trans { -[1+ m ]} {+ n} {+ p} -≤+ (+≤+ 1+n≤p) = -<+ {m} {p}
+≤-<-trans {+ m} {+ n} {+ p} (+≤+ m≤n) (+≤+ 1+n≤p) = +≤+ (ℕₚ.≤-trans (s≤s m≤n) 1+n≤p)
+≤-<-trans { -[1+ m ]} { -[1+ n ]} (-≤- n≤m) n<p = ≤-trans (0⊖-≤ n≤m) n<p
+
+<-≤-trans : Trans _<_ _≤_ _<_
+<-≤-trans = ≤-trans
+
+<⇒≤ : ∀ {m n} → m < n → m ≤ n
+<⇒≤ m<n =  ≤-trans (n≤1+n _) m<n
+
 <-trans : Transitive _<_
-<-trans { + m}          {_}             (+≤+ m<n) (+≤+ n<o) =
-  +≤+ (ℕₚ.<-trans m<n n<o)
-<-trans { -[1+ 0     ]} {_}             (+≤+ m<n) (+≤+ n<o) = +≤+ z≤n
-<-trans { -[1+ suc m ]} {+ n}           m<n       (+≤+ m≤n) = -≤+
-<-trans { -[1+ suc m ]} { -[1+ 0 ]}     m<n       (+≤+ m≤n) = -≤+
-<-trans { -[1+ suc m ]} { -[1+ suc n ]} (-≤- n≤m) -≤+       = -≤+
-<-trans { -[1+ suc m ]} { -[1+ suc n ]} (-≤- n<m) (-≤- o≤n) =
-  -≤- (ℕₚ.≤-trans o≤n (ℕₚ.<⇒≤ n<m))
+<-trans {m} {n} {p} m<n n<p = ≤-<-trans {m} {n} {p} (<⇒≤ m<n) n<p
 
 <-cmp : Trichotomous _≡_ _<_
 <-cmp (+ m) (+ n) with ℕₚ.<-cmp m n
@@ -839,8 +851,8 @@ n≮n {+ n}           (+≤+ n<n) =  contradiction n<n ℕₚ.1+n≰n
 n≮n { -[1+ 0 ]}     ()
 n≮n { -[1+ suc n ]} (-≤- n<n) =  contradiction n<n ℕₚ.1+n≰n
 
-<⇒≤ : ∀ {m n} → m < n → m ≤ n
-<⇒≤ m<n =  ≤-trans (n≤1+n _) m<n
+>→≰ : ∀ {x y} → x > y → x ≰ y
+>→≰ {y = y} x>y x≤y = ⊥-elim $ n≮n (<-≤-trans {i = y} x>y x≤y)
 
 ≰→> : ∀ {x y} → x ≰ y → x > y
 ≰→> {+ m}           {+ n}           m≰n =  +≤+ (ℕₚ.≰⇒> (m≰n ∘ +≤+))
