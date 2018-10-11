@@ -405,6 +405,18 @@ minus-suc m n = begin
   m + pred (- (+ n)) ≡⟨ +-pred m (- + n) ⟩
   pred (m - + n)     ∎
 
+m≡n⇒m-n≡0 : ∀ m n → m ≡ n → m - n ≡ + 0
+m≡n⇒m-n≡0 m m refl = +-inverseʳ m
+
+m-n≡0⇒m≡n : ∀ m n → m - n ≡ + 0 → m ≡ n
+m-n≡0⇒m≡n m n m-n≡0 = begin
+  m             ≡⟨ sym (+-identityʳ m) ⟩
+  m + + 0       ≡⟨ cong (_+_ m) (sym (+-inverseˡ n)) ⟩
+  m + (- n + n) ≡⟨ sym (+-assoc m (- n) n) ⟩
+  (m - n) + n   ≡⟨ cong (_+ n) m-n≡0 ⟩
+  + 0 + n       ≡⟨ +-identityˡ n ⟩
+  n ∎
+
 ------------------------------------------------------------------------
 -- Properties of _*_
 

@@ -390,6 +390,8 @@ Other minor additions
   ≤-steps        : m ≤ n → m ≤ + p + n
   ≤-step-neg     : m ≤ n → pred m ≤ n
   ≤-steps-neg    : m ≤ n → m - + p ≤ n
+  m≡n⇒m-n≡0      : m ≡ n → m - n ≡ + 0
+  m-n≡0⇒m≡n      : m - n ≡ + 0 → m ≡ n
   ```
 
 * Added new proofs to `Data.List.Any.Properties`:
