@@ -677,6 +677,20 @@ pos-distrib-* (suc x) (suc y) = refl
 -1*n≡-n (+ suc n) = cong -[1+_] (ℕₚ.+-identityʳ n)
 -1*n≡-n -[1+ n ]  = cong (λ v → + suc v) (ℕₚ.+-identityʳ n)
 
+neg-distribˡ-* : ∀ x y → - (x * y) ≡ (- x) * y
+neg-distribˡ-* x y = begin
+  - (x * y)          ≡⟨ sym (-1*n≡-n (x * y)) ⟩
+  -[1+ 0 ] * (x * y) ≡⟨ sym (*-assoc -[1+ 0 ] x y) ⟩
+  -[1+ 0 ] * x * y   ≡⟨ cong (_* y) (-1*n≡-n x) ⟩
+  - x * y ∎
+
+neg-distribʳ-* : ∀ x y → - (x * y) ≡ x * (- y)
+neg-distribʳ-* x y = begin
+  - (x * y) ≡⟨ cong -_ (*-comm x y) ⟩
+  - (y * x) ≡⟨ neg-distribˡ-* y x ⟩
+  - y * x   ≡⟨ *-comm (- y) x ⟩
+  x * (- y) ∎
+
 ------------------------------------------------------------------------
 -- Properties _≤_
 
