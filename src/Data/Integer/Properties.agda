@@ -12,7 +12,7 @@ import Algebra.Properties.AbelianGroup
 open import Data.Integer renaming (suc to sucℤ)
 open import Data.Nat
   as ℕ
-  using (ℕ; suc; zero; _∸_; s≤s; z≤n; ≤-pred)
+  using (ℕ; suc; zero; _∸_; z≤n; ≤-pred)
   hiding (module ℕ)
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
@@ -134,26 +134,26 @@ n⊖n≡0 (suc n) = n⊖n≡0 n
 ⊖-swap (suc a) (suc b) = ⊖-swap a b
 
 ⊖-≥ : ∀ {m n} → m ℕ.≥ n → m ⊖ n ≡ + (m ∸ n)
-⊖-≥ z≤n       = refl
-⊖-≥ (s≤s n≤m) = ⊖-≥ n≤m
+⊖-≥ z≤n         = refl
+⊖-≥ (ℕ.s≤s n≤m) = ⊖-≥ n≤m
 
 ⊖-< : ∀ {m n} → m ℕ.< n → m ⊖ n ≡ - + (n ∸ m)
-⊖-< {zero}  (s≤s z≤n) = refl
-⊖-< {suc m} (s≤s m<n) = ⊖-< m<n
+⊖-< {zero}  (ℕ.s≤s z≤n) = refl
+⊖-< {suc m} (ℕ.s≤s m<n) = ⊖-< m<n
 
 ⊖-≰ : ∀ {m n} → n ℕ.≰ m → m ⊖ n ≡ - + (n ∸ m)
 ⊖-≰ = ⊖-< ∘ ℕₚ.≰⇒>
 
 ∣⊖∣-< : ∀ {m n} → m ℕ.< n → ∣ m ⊖ n ∣ ≡ n ∸ m
-∣⊖∣-< {zero}  (s≤s z≤n) = refl
-∣⊖∣-< {suc n} (s≤s m<n) = ∣⊖∣-< m<n
+∣⊖∣-< {zero}  (ℕ.s≤s z≤n) = refl
+∣⊖∣-< {suc n} (ℕ.s≤s m<n) = ∣⊖∣-< m<n
 
 ∣⊖∣-≰ : ∀ {m n} → n ℕ.≰ m → ∣ m ⊖ n ∣ ≡ n ∸ m
 ∣⊖∣-≰ = ∣⊖∣-< ∘ ℕₚ.≰⇒>
 
 sign-⊖-< : ∀ {m n} → m ℕ.< n → sign (m ⊖ n) ≡ Sign.-
-sign-⊖-< {zero}  (s≤s z≤n) = refl
-sign-⊖-< {suc n} (s≤s m<n) = sign-⊖-< m<n
+sign-⊖-< {zero}  (ℕ.s≤s z≤n) = refl
+sign-⊖-< {suc n} (ℕ.s≤s m<n) = sign-⊖-< m<n
 
 sign-⊖-≰ : ∀ {m n} → n ℕ.≰ m → sign (m ⊖ n) ≡ Sign.-
 sign-⊖-≰ = sign-⊖-< ∘ ℕₚ.≰⇒>
@@ -261,6 +261,13 @@ suc-+ m (-[1+ n ]) = sym (distribʳ-⊖-+-pos 1 m (suc n))
   m + -[1+ 0 ] + n   ≡⟨ cong (_+ n) (+-comm m -[1+ 0 ]) ⟩
   -[1+ 0 ] + m + n   ≡⟨ +-assoc -[1+ 0 ] m n ⟩
   -[1+ 0 ] + (m + n) ∎
+
+pred-+ : ∀ m n → pred m + n ≡ pred (m + n)
+pred-+ m n = begin
+  pred m + n   ≡⟨ +-comm (pred m) n ⟩
+  n + pred m   ≡⟨ +-pred n m ⟩
+  pred (n + m) ≡⟨ cong pred (+-comm n m) ⟩
+  pred (m + n) ∎
 
 +-inverseˡ : LeftInverse (+ 0) -_ _+_
 +-inverseˡ -[1+ n ]  = n⊖n≡0 n
@@ -689,7 +696,7 @@ pos-distrib-* (suc x) (suc y) = refl
 
 *-cancelʳ-≤-pos : ∀ m n o → m * + suc o ≤ n * + suc o → m ≤ n
 *-cancelʳ-≤-pos (-[1+ m ]) (-[1+ n ]) o (-≤- n≤m) =
-  -≤- (≤-pred (ℕₚ.*-cancelʳ-≤ (suc n) (suc m) o (s≤s n≤m)))
+  -≤- (≤-pred (ℕₚ.*-cancelʳ-≤ (suc n) (suc m) o (ℕ.s≤s n≤m)))
 *-cancelʳ-≤-pos -[1+ _ ]   (+ _)      _ _         = -≤+
 *-cancelʳ-≤-pos (+ 0)      -[1+ _ ]   _ ()
 *-cancelʳ-≤-pos (+ suc _)  -[1+ _ ]   _ ()
@@ -703,7 +710,7 @@ pos-distrib-* (suc x) (suc y) = refl
 *-monoʳ-≤-pos _ (-≤+             {n = 0})         = -≤+
 *-monoʳ-≤-pos _ (-≤+             {n = suc _})     = -≤+
 *-monoʳ-≤-pos x (-≤-                         n≤m) =
-  -≤- (≤-pred (ℕₚ.*-mono-≤ (s≤s n≤m) (ℕₚ.≤-refl {x = suc x})))
+  -≤- (≤-pred (ℕₚ.*-mono-≤ (ℕ.s≤s n≤m) (ℕₚ.≤-refl {x = suc x})))
 *-monoʳ-≤-pos _ (+≤+ {m = 0}     {n = 0}     m≤n) = +≤+ m≤n
 *-monoʳ-≤-pos _ (+≤+ {m = 0}     {n = suc _} m≤n) = +≤+ z≤n
 *-monoʳ-≤-pos _ (+≤+ {m = suc _} {n = 0}     ())
@@ -810,7 +817,7 @@ neg-distribʳ-* x y = begin
 ≤-step -≤+             = -≤+
 ≤-step (+≤+ m≤n)       = +≤+ (ℕₚ.≤-step m≤n)
 ≤-step (-≤- z≤n)       = -≤+
-≤-step (-≤- (s≤s n≤m)) = -≤- (ℕₚ.≤-step n≤m)
+≤-step (-≤- (ℕ.s≤s n≤m)) = -≤- (ℕₚ.≤-step n≤m)
 
 ≤-steps : ∀ {m n} p → m ≤ n → m ≤ + p + n
 ≤-steps {n = n} zero    m≤n rewrite +-identityˡ n = m≤n
@@ -820,18 +827,73 @@ neg-distribʳ-* x y = begin
 ≤-step-neg -≤+             = -≤+
 ≤-step-neg (-≤- n≤m)       = -≤- (ℕₚ.≤-step n≤m)
 ≤-step-neg (+≤+ z≤n)       = -≤+
-≤-step-neg (+≤+ (s≤s m≤n)) = +≤+ (ℕₚ.≤-step m≤n)
+≤-step-neg (+≤+ (ℕ.s≤s m≤n)) = +≤+ (ℕₚ.≤-step m≤n)
 
 ≤-steps-neg : ∀ {m n} p → m ≤ n → m - + p ≤ n
 ≤-steps-neg {m} zero    m≤n rewrite +-identityʳ m = m≤n
 ≤-steps-neg {m} (suc p) m≤n rewrite minus-suc m p = ≤-step-neg (≤-steps-neg p m≤n)
 
-⊖-≤ : ∀ {m n} p → m ℕ.≤ n → p ⊖ n ≤ p ⊖ m
-⊖-≤ zero    (z≤n {n})     = 0⊖m≤+ n
-⊖-≤ zero    (s≤s m≤n)     = -≤- m≤n
-⊖-≤ (suc p) (z≤n {zero})  = ≤-refl
-⊖-≤ (suc p) (z≤n {suc n}) = ≤-step (⊖-≤ p (z≤n {n}))
-⊖-≤ (suc p) (s≤s m≤n)     = ⊖-≤ p m≤n
+⊖-monoʳ-≥-≤ : ∀ p → (p ⊖_) Preserves ℕ._≥_ ⟶ _≤_
+⊖-monoʳ-≥-≤ zero    (z≤n {n})     = 0⊖m≤+ n
+⊖-monoʳ-≥-≤ zero    (ℕ.s≤s m≤n)   = -≤- m≤n
+⊖-monoʳ-≥-≤ (suc p) (z≤n {zero})  = ≤-refl
+⊖-monoʳ-≥-≤ (suc p) (z≤n {suc n}) = ≤-step (⊖-monoʳ-≥-≤ p (z≤n {n}))
+⊖-monoʳ-≥-≤ (suc p) (ℕ.s≤s m≤n)   = ⊖-monoʳ-≥-≤ p m≤n
+
+⊖-monoˡ-≤ : ∀ p → (_⊖ p) Preserves ℕ._≤_ ⟶ _≤_
+⊖-monoˡ-≤ zero    m≤n             = +≤+ m≤n
+⊖-monoˡ-≤ (suc p) (z≤n {0})       = ≤-refl
+⊖-monoˡ-≤ (suc p) (z≤n {(suc m)}) = ≤-trans (⊖-monoʳ-≥-≤ 0 (ℕₚ.n≤1+n p)) (⊖-monoˡ-≤ p z≤n)
+⊖-monoˡ-≤ (suc p) (ℕ.s≤s m≤n)     = ⊖-monoˡ-≤ p m≤n
+
+pred-mono : pred Preserves _≤_ ⟶ _≤_
+pred-mono (-≤+ {n = 0})     = -≤- z≤n
+pred-mono (-≤+ {n = suc n}) = -≤+
+pred-mono (-≤- n≤m)         = -≤- (ℕ.s≤s n≤m)
+pred-mono (+≤+ m≤n)         = ⊖-monoˡ-≤ 1 m≤n
+
+suc-mono : sucℤ Preserves _≤_ ⟶ _≤_
+suc-mono (-≤+ {m}) = 0⊖m≤+ m
+suc-mono (-≤- n≤m) = ⊖-monoʳ-≥-≤ zero n≤m
+suc-mono (+≤+ m≤n) = +≤+ (ℕ.s≤s m≤n)
+
++-monoʳ-≤ : ∀ n → (_+_ n) Preserves _≤_ ⟶ _≤_
++-monoʳ-≤ (+ 0) {i} {j} i≤j
+  rewrite +-identityˡ i
+        | +-identityˡ j
+        = i≤j
++-monoʳ-≤ (+ suc n) {i} {j} i≤j
+  rewrite suc-+ n i
+        | suc-+ n j
+        = suc-mono (+-monoʳ-≤ (+ n) i≤j)
++-monoʳ-≤ -[1+ 0 ] {i} {j} i≤j
+  = pred-mono i≤j
++-monoʳ-≤ -[1+ suc n ] {i} {j} i≤j
+  rewrite pred-+ -[1+ n ] i
+        | pred-+ -[1+ n ] j
+        = pred-mono (+-monoʳ-≤ -[1+ n ] i≤j)
+
++-monoˡ-≤ : ∀ n → (_+ n) Preserves _≤_ ⟶ _≤_
++-monoˡ-≤ n {i} {j} i≤j
+  rewrite +-comm i n
+        | +-comm j n
+        = +-monoʳ-≤ n i≤j
+
+m≤n⇒m-n≤0 : ∀ {m n} → m ≤ n → m - n ≤ + 0
+m≤n⇒m-n≤0 (-≤+ {n = n})         = ≤-steps-neg n -≤+
+m≤n⇒m-n≤0 (-≤- {n = n} n≤m)     = ≤-trans (⊖-monoʳ-≥-≤ n n≤m) (≤-reflexive (n⊖n≡0 n))
+m≤n⇒m-n≤0 (+≤+ {n = 0} z≤n)     = +≤+ z≤n
+m≤n⇒m-n≤0 (+≤+ {n = suc n} z≤n) = -≤+
+m≤n⇒m-n≤0 (+≤+ (ℕ.s≤s {m} m≤n)) = ≤-trans (⊖-monoʳ-≥-≤ m m≤n) (≤-reflexive (n⊖n≡0 m))
+
+m-n≤0⇒m≤n : ∀ {m n} → m - n ≤ + 0 → m ≤ n
+m-n≤0⇒m≤n {m} {n} m-n≤0 = let module P = POR ≤-poset in P.begin
+  m             P.≡⟨ sym (+-identityʳ m) ⟩
+  m + + 0       P.≡⟨ cong (_+_ m) (sym (+-inverseˡ n)) ⟩
+  m + (- n + n) P.≡⟨ sym (+-assoc m (- n) n) ⟩
+  (m - n) + n   P.≤⟨ +-monoˡ-≤ n m-n≤0 ⟩
+  + 0 + n       P.≡⟨ +-identityˡ n ⟩
+  n P.∎
 
 n≤1+n : ∀ n → n ≤ (+ 1) + n
 n≤1+n n = ≤-step ≤-refl
@@ -865,8 +927,8 @@ n≤1+n n = ≤-step ≤-refl
 
 ≤-<-trans : Trans _≤_ _<_ _<_
 ≤-<-trans { -[1+ m ]} {+ n} {+ p} -≤+ (+≤+ 1+n≤p) = -<+ {m} {p}
-≤-<-trans {+ m} {+ n} {+ p} (+≤+ m≤n) (+≤+ 1+n≤p) = +≤+ (ℕₚ.≤-trans (s≤s m≤n) 1+n≤p)
-≤-<-trans { -[1+ m ]} { -[1+ n ]} (-≤- n≤m) n<p = ≤-trans (⊖-≤ 0 n≤m) n<p
+≤-<-trans {+ m} {+ n} {+ p} (+≤+ m≤n) (+≤+ 1+n≤p) = +≤+ (ℕₚ.≤-trans (ℕ.s≤s m≤n) 1+n≤p)
+≤-<-trans { -[1+ m ]} { -[1+ n ]} (-≤- n≤m) n<p = ≤-trans (⊖-monoʳ-≥-≤ 0 n≤m) n<p
 
 <-≤-trans : Trans _<_ _≤_ _<_
 <-≤-trans = ≤-trans
@@ -894,11 +956,11 @@ n≤1+n n = ≤-step ≤-refl
 <-cmp -[1+ suc m ] -[1+ 0 ]     = tri< (-≤- z≤n) (λ()) (λ())
 <-cmp -[1+ suc m ] -[1+ suc n ] with ℕₚ.<-cmp (suc m) (suc n)
 ... | tri< m<n m≢n m≯n =
-  tri> (m≯n ∘ s≤s ∘ drop‿-≤-) (m≢n ∘ -[1+-injective) (-≤- (≤-pred m<n))
+  tri> (m≯n ∘ ℕ.s≤s ∘ drop‿-≤-) (m≢n ∘ -[1+-injective) (-≤- (≤-pred m<n))
 ... | tri≈ m≮n m≡n m≯n =
-  tri≈ (m≯n ∘ s≤s ∘ drop‿-≤-) (cong -[1+_] m≡n) (m≮n ∘ s≤s ∘ drop‿-≤-)
+  tri≈ (m≯n ∘ ℕ.s≤s ∘ drop‿-≤-) (cong -[1+_] m≡n) (m≮n ∘ ℕ.s≤s ∘ drop‿-≤-)
 ... | tri> m≮n m≢n m>n =
-  tri< (-≤- (≤-pred m>n)) (m≢n ∘ -[1+-injective) (m≮n ∘ s≤s ∘ drop‿-≤-)
+  tri< (-≤- (≤-pred m>n)) (m≢n ∘ -[1+-injective) (m≮n ∘ ℕ.s≤s ∘ drop‿-≤-)
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
 <-isStrictTotalOrder = record

@@ -376,7 +376,14 @@ Other minor additions
 * Added new proofs to `Data.Integer.Properties`:
   ```agda
   0⊖m≤+          : 0 ⊖ m ≤ + n
-  ⊖-≤            : m ℕ.≤ n → p ⊖ n ≤ p ⊖ m
+  ⊖-monoʳ-≥-≤    : (p ⊖_) Preserves ℕ._≥_ ⟶ _≤_
+  ⊖-monoˡ-≤      : (_⊖ p) Preserves ℕ._≤_ ⟶ _≤_
+  pred-mono      : pred Preserves _≤_ ⟶ _≤_
+  suc-mono       : sucℤ Preserves _≤_ ⟶ _≤_
+  +-monoʳ-≤      : (_+_ n) Preserves _≤_ ⟶ _≤_
+  +-monoˡ-≤      : (_+ n) Preserves _≤_ ⟶ _≤_
+  m≤n⇒m-n≤0      : m ≤ n → m - n ≤ + 0
+  m-n≤0⇒m≤n      : m - n ≤ + 0 → m ≤ n
   ≤-<-trans      : Trans _≤_ _<_ _<_
   <-≤-trans      : Trans _<_ _≤_ _<_
   >→≰            : x > y → x ≰ y
@@ -386,6 +393,7 @@ Other minor additions
   neg-suc        : - + suc m ≡ pred (- + m)
   suc-+          : + suc m + n ≡ sucℤ (+ m + n)
   +-pred         : m + pred n ≡ pred (m + n)
+  pred-+         : pred m + n ≡ pred (m + n)
   minus-suc      : m - + suc n ≡ pred (m - + n)
   ≤-steps        : m ≤ n → m ≤ + p + n
   ≤-step-neg     : m ≤ n → pred m ≤ n
