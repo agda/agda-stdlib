@@ -62,6 +62,10 @@ neg-injective {m} {n} -m≡-n = begin
   - - n ≡⟨ neg-involutive n ⟩
   n ∎
 
+neg-suc : ∀ m → - + suc m ≡ pred (- + m)
+neg-suc zero    = refl
+neg-suc (suc m) = refl
+
 ------------------------------------------------------------------------
 -- Properties of ∣_∣
 
@@ -170,35 +174,6 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕₚ.≰⇒>
 +-cancelˡ-⊖ zero    b c = refl
 +-cancelˡ-⊖ (suc a) b c = +-cancelˡ-⊖ a b c
 
-------------------------------------------------------------------------
--- Properties of _-_
-
-neg-minus-pos : ∀ x y → -[1+ x ] - (+ y) ≡ -[1+ (y ℕ.+ x) ]
-neg-minus-pos x       zero    = refl
-neg-minus-pos zero    (suc y) = cong (-[1+_] ∘ suc) (sym (ℕₚ.+-identityʳ y))
-neg-minus-pos (suc x) (suc y) = cong (-[1+_] ∘ suc) (ℕₚ.+-comm (suc x) y)
-
-[+m]-[+n]≡m⊖n : ∀ x y → (+ x) - (+ y) ≡ x ⊖ y
-[+m]-[+n]≡m⊖n zero    zero    = refl
-[+m]-[+n]≡m⊖n zero    (suc y) = refl
-[+m]-[+n]≡m⊖n (suc x) zero    = cong (+_ ∘ suc) (ℕₚ.+-identityʳ x)
-[+m]-[+n]≡m⊖n (suc x) (suc y) = refl
-
-∣m-n∣≡∣n-m∣ : (x y : ℤ) → ∣ x - y ∣ ≡ ∣ y - x ∣
-∣m-n∣≡∣n-m∣ -[1+ x ] -[1+ y ] = ∣m⊖n∣≡∣n⊖m∣ y x
-∣m-n∣≡∣n-m∣ -[1+ x ] (+ y)    = begin
-  ∣ -[1+ x ] - (+ y) ∣   ≡⟨ cong ∣_∣ (neg-minus-pos x y) ⟩
-  suc (y ℕ.+ x)          ≡⟨ sym (ℕₚ.+-suc y x) ⟩
-  y ℕ.+ suc x            ∎
-∣m-n∣≡∣n-m∣ (+ x)    -[1+ y ] = begin
-  x ℕ.+ suc y            ≡⟨ ℕₚ.+-suc x y ⟩
-  suc (x ℕ.+ y)          ≡⟨ cong ∣_∣ (sym (neg-minus-pos y x)) ⟩
-  ∣ -[1+ y ] + - (+ x) ∣ ∎
-∣m-n∣≡∣n-m∣ (+ x)     (+ y) = begin
-  ∣ (+ x) - (+ y) ∣ ≡⟨ cong ∣_∣ ([+m]-[+n]≡m⊖n x y) ⟩
-  ∣ x ⊖ y ∣         ≡⟨ ∣m⊖n∣≡∣n⊖m∣ x y ⟩
-  ∣ y ⊖ x ∣         ≡⟨ cong ∣_∣ (sym ([+m]-[+n]≡m⊖n y x)) ⟩
-  ∣ (+ y) - (+ x) ∣ ∎
 
 ------------------------------------------------------------------------
 -- Properties of _+_
@@ -245,6 +220,10 @@ distribʳ-⊖-+-neg a b c = begin
   b ⊖ suc (c ℕ.+ a)  ≡⟨ cong (λ x → b ⊖ suc x) (ℕₚ.+-comm c a) ⟩
   b ⊖ suc (a ℕ.+ c)  ∎
 
+suc-+ : ∀ m n → + suc m + n ≡ sucℤ (+ m + n)
+suc-+ m (+ n)      = refl
+suc-+ m (-[1+ n ]) = sym (distribʳ-⊖-+-pos 1 m (suc n))
+
 +-assoc : Associative _+_
 +-assoc (+ zero) y z rewrite +-identityˡ      y  | +-identityˡ (y + z) = refl
 +-assoc x (+ zero) z rewrite +-identityʳ  x      | +-identityˡ      z  = refl
@@ -275,6 +254,13 @@ distribʳ-⊖-+-neg a b c = begin
 +-assoc (+ suc a) (+ suc b) (+ suc c)
   rewrite ℕₚ.+-assoc (suc a) (suc b) (suc c)
         = refl
+
++-pred : ∀ m n → m + pred n ≡ pred (m + n)
++-pred m n = begin
+  m + (-[1+ 0 ] + n) ≡⟨ sym (+-assoc m -[1+ 0 ] n) ⟩
+  m + -[1+ 0 ] + n   ≡⟨ cong (_+ n) (+-comm m -[1+ 0 ]) ⟩
+  -[1+ 0 ] + m + n   ≡⟨ +-assoc -[1+ 0 ] m n ⟩
+  -[1+ 0 ] + (m + n) ∎
 
 +-inverseˡ : LeftInverse (+ 0) -_ _+_
 +-inverseˡ -[1+ n ]  = n⊖n≡0 n
@@ -381,6 +367,43 @@ neg-distrib-+ -[1+ m ]  (+   n)   =
   x + (- y + y) - z   ≡⟨ cong (λ a → x + a - z) (+-inverseˡ y) ⟩
   x + (+ 0) - z       ≡⟨ cong (_- z) (+-identityʳ x) ⟩
   x - z               ∎
+
+
+------------------------------------------------------------------------
+-- Properties of _-_
+
+neg-minus-pos : ∀ x y → -[1+ x ] - (+ y) ≡ -[1+ (y ℕ.+ x) ]
+neg-minus-pos x       zero    = refl
+neg-minus-pos zero    (suc y) = cong (-[1+_] ∘ suc) (sym (ℕₚ.+-identityʳ y))
+neg-minus-pos (suc x) (suc y) = cong (-[1+_] ∘ suc) (ℕₚ.+-comm (suc x) y)
+
+[+m]-[+n]≡m⊖n : ∀ x y → (+ x) - (+ y) ≡ x ⊖ y
+[+m]-[+n]≡m⊖n zero    zero    = refl
+[+m]-[+n]≡m⊖n zero    (suc y) = refl
+[+m]-[+n]≡m⊖n (suc x) zero    = cong (+_ ∘ suc) (ℕₚ.+-identityʳ x)
+[+m]-[+n]≡m⊖n (suc x) (suc y) = refl
+
+∣m-n∣≡∣n-m∣ : (x y : ℤ) → ∣ x - y ∣ ≡ ∣ y - x ∣
+∣m-n∣≡∣n-m∣ -[1+ x ] -[1+ y ] = ∣m⊖n∣≡∣n⊖m∣ y x
+∣m-n∣≡∣n-m∣ -[1+ x ] (+ y)    = begin
+  ∣ -[1+ x ] - (+ y) ∣   ≡⟨ cong ∣_∣ (neg-minus-pos x y) ⟩
+  suc (y ℕ.+ x)          ≡⟨ sym (ℕₚ.+-suc y x) ⟩
+  y ℕ.+ suc x            ∎
+∣m-n∣≡∣n-m∣ (+ x)    -[1+ y ] = begin
+  x ℕ.+ suc y            ≡⟨ ℕₚ.+-suc x y ⟩
+  suc (x ℕ.+ y)          ≡⟨ cong ∣_∣ (sym (neg-minus-pos y x)) ⟩
+  ∣ -[1+ y ] + - (+ x) ∣ ∎
+∣m-n∣≡∣n-m∣ (+ x)     (+ y) = begin
+  ∣ (+ x) - (+ y) ∣ ≡⟨ cong ∣_∣ ([+m]-[+n]≡m⊖n x y) ⟩
+  ∣ x ⊖ y ∣         ≡⟨ ∣m⊖n∣≡∣n⊖m∣ x y ⟩
+  ∣ y ⊖ x ∣         ≡⟨ cong ∣_∣ (sym ([+m]-[+n]≡m⊖n y x)) ⟩
+  ∣ (+ y) - (+ x) ∣ ∎
+
+minus-suc : ∀ m n → m - + suc n ≡ pred (m - + n)
+minus-suc m n = begin
+  m + - + suc n      ≡⟨ cong (_+_ m) (neg-suc n) ⟩
+  m + pred (- (+ n)) ≡⟨ +-pred m (- + n) ⟩
+  pred (m - + n)     ∎
 
 ------------------------------------------------------------------------
 -- Properties of _*_
@@ -771,15 +794,32 @@ neg-distribʳ-* x y = begin
 0⊖m≤+ zero    = +≤+ z≤n
 0⊖m≤+ (suc m) = -≤+
 
-0⊖-≤ : ∀ {m n} → m ℕ.≤ n → 0 ⊖ n ≤ 0 ⊖ m
-0⊖-≤ (z≤n {n}) = 0⊖m≤+ n
-0⊖-≤ (s≤s p)   = -≤- p
-
 ≤-step : ∀ {n m} → n ≤ m → n ≤ sucℤ m
 ≤-step -≤+             = -≤+
 ≤-step (+≤+ m≤n)       = +≤+ (ℕₚ.≤-step m≤n)
 ≤-step (-≤- z≤n)       = -≤+
 ≤-step (-≤- (s≤s n≤m)) = -≤- (ℕₚ.≤-step n≤m)
+
+≤-steps : ∀ {m n} p → m ≤ n → m ≤ + p + n
+≤-steps {n = n} zero    m≤n rewrite +-identityˡ n = m≤n
+≤-steps {n = n} (suc p) m≤n rewrite suc-+ p n     = ≤-step (≤-steps p m≤n)
+
+≤-step-neg : ∀ {m n} → m ≤ n → pred m ≤ n
+≤-step-neg -≤+             = -≤+
+≤-step-neg (-≤- n≤m)       = -≤- (ℕₚ.≤-step n≤m)
+≤-step-neg (+≤+ z≤n)       = -≤+
+≤-step-neg (+≤+ (s≤s m≤n)) = +≤+ (ℕₚ.≤-step m≤n)
+
+≤-steps-neg : ∀ {m n} p → m ≤ n → m - + p ≤ n
+≤-steps-neg {m} zero    m≤n rewrite +-identityʳ m = m≤n
+≤-steps-neg {m} (suc p) m≤n rewrite minus-suc m p = ≤-step-neg (≤-steps-neg p m≤n)
+
+⊖-≤ : ∀ {m n} p → m ℕ.≤ n → p ⊖ n ≤ p ⊖ m
+⊖-≤ zero    (z≤n {n})     = 0⊖m≤+ n
+⊖-≤ zero    (s≤s m≤n)     = -≤- m≤n
+⊖-≤ (suc p) (z≤n {zero})  = ≤-refl
+⊖-≤ (suc p) (z≤n {suc n}) = ≤-step (⊖-≤ p (z≤n {n}))
+⊖-≤ (suc p) (s≤s m≤n)     = ⊖-≤ p m≤n
 
 n≤1+n : ∀ n → n ≤ (+ 1) + n
 n≤1+n n = ≤-step ≤-refl
@@ -814,7 +854,7 @@ n≤1+n n = ≤-step ≤-refl
 ≤-<-trans : Trans _≤_ _<_ _<_
 ≤-<-trans { -[1+ m ]} {+ n} {+ p} -≤+ (+≤+ 1+n≤p) = -<+ {m} {p}
 ≤-<-trans {+ m} {+ n} {+ p} (+≤+ m≤n) (+≤+ 1+n≤p) = +≤+ (ℕₚ.≤-trans (s≤s m≤n) 1+n≤p)
-≤-<-trans { -[1+ m ]} { -[1+ n ]} (-≤- n≤m) n<p = ≤-trans (0⊖-≤ n≤m) n<p
+≤-<-trans { -[1+ m ]} { -[1+ n ]} (-≤- n≤m) n<p = ≤-trans (⊖-≤ 0 n≤m) n<p
 
 <-≤-trans : Trans _<_ _≤_ _<_
 <-≤-trans = ≤-trans

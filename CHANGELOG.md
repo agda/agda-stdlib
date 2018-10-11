@@ -376,13 +376,20 @@ Other minor additions
 * Added new proofs to `Data.Integer.Properties`:
   ```agda
   0⊖m≤+          : 0 ⊖ m ≤ + n
-  0⊖-≤           : m ℕ.≤ n → 0 ⊖ n ≤ 0 ⊖ m
+  ⊖-≤            : m ℕ.≤ n → p ⊖ n ≤ p ⊖ m
   ≤-<-trans      : Trans _≤_ _<_ _<_
   <-≤-trans      : Trans _<_ _≤_ _<_
   >→≰            : x > y → x ≰ y
   neg-distribˡ-* : - (x * y) ≡ (- x) * y
   neg-distribʳ-* : - (x * y) ≡ x * (- y)
   *-distribˡ-+   : _*_ DistributesOverˡ _+_
+  neg-suc        : - + suc m ≡ pred (- + m)
+  suc-+          : + suc m + n ≡ sucℤ (+ m + n)
+  +-pred         : m + pred n ≡ pred (m + n)
+  minus-suc      : m - + suc n ≡ pred (m - + n)
+  ≤-steps        : m ≤ n → m ≤ + p + n
+  ≤-step-neg     : m ≤ n → pred m ≤ n
+  ≤-steps-neg    : m ≤ n → m - + p ≤ n
   ```
 
 * Added new proofs to `Data.List.Any.Properties`:
