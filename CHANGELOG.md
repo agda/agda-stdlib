@@ -382,6 +382,7 @@ Other minor additions
   >→≰            : x > y → x ≰ y
   neg-distribˡ-* : - (x * y) ≡ (- x) * y
   neg-distribʳ-* : - (x * y) ≡ x * (- y)
+  *-distribˡ-+   : _*_ DistributesOverˡ _+_
   ```
 
 * Added new proofs to `Data.List.Any.Properties`:

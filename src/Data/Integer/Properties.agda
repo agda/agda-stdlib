@@ -531,6 +531,9 @@ private
         | ℕₚ.*-distribʳ-∸ (suc c) b a
         = refl
 
+*-distribˡ-+ : _*_ DistributesOverˡ _+_
+*-distribˡ-+ = comm+distrʳ⇒distrˡ (cong₂ _+_) *-comm *-distribʳ-+
+
 *-isSemigroup : IsSemigroup _*_
 *-isSemigroup = record
   { isEquivalence = isEquivalence
