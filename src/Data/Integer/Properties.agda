@@ -11,12 +11,12 @@ import Algebra.Morphism as Morphism
 import Algebra.Properties.AbelianGroup
 open import Data.Integer renaming (suc to sucℤ)
 open import Data.Nat
+  as ℕ
   using (ℕ; suc; zero; _∸_; s≤s; z≤n; ≤-pred)
   hiding (module ℕ)
-  renaming (_+_ to _ℕ+_; _*_ to _ℕ*_;
-    _<_ to _ℕ<_; _≥_ to _ℕ≥_; _≰_ to _ℕ≰_; _≤?_ to _ℕ≤?_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
+open import Data.Empty using (⊥-elim)
 open import Data.Product using (proj₁; proj₂; _,_)
 open import Data.Sum using (inj₁; inj₂)
 open import Data.Sign as Sign using () renaming (_*_ to _𝕊*_)
@@ -113,8 +113,8 @@ abs-cong {s₁} {s₂} {n₁} {n₂} eq = begin
   ∣ s₂ ◃ n₂ ∣  ≡⟨ abs-◃ s₂ n₂ ⟩
   n₂           ∎
 
-∣s◃m∣*∣t◃n∣≡m*n : ∀ s t m n → ∣ s ◃ m ∣ ℕ* ∣ t ◃ n ∣ ≡ m ℕ* n
-∣s◃m∣*∣t◃n∣≡m*n s t m n = cong₂ _ℕ*_ (abs-◃ s m) (abs-◃ t n)
+∣s◃m∣*∣t◃n∣≡m*n : ∀ s t m n → ∣ s ◃ m ∣ ℕ.* ∣ t ◃ n ∣ ≡ m ℕ.* n
+∣s◃m∣*∣t◃n∣≡m*n s t m n = cong₂ ℕ._*_ (abs-◃ s m) (abs-◃ t n)
 
 ------------------------------------------------------------------------
 -- Properties of _⊖_
@@ -129,29 +129,29 @@ n⊖n≡0 (suc n) = n⊖n≡0 n
 ⊖-swap zero    (suc _) = refl
 ⊖-swap (suc a) (suc b) = ⊖-swap a b
 
-⊖-≥ : ∀ {m n} → m ℕ≥ n → m ⊖ n ≡ + (m ∸ n)
+⊖-≥ : ∀ {m n} → m ℕ.≥ n → m ⊖ n ≡ + (m ∸ n)
 ⊖-≥ z≤n       = refl
 ⊖-≥ (s≤s n≤m) = ⊖-≥ n≤m
 
-⊖-< : ∀ {m n} → m ℕ< n → m ⊖ n ≡ - + (n ∸ m)
+⊖-< : ∀ {m n} → m ℕ.< n → m ⊖ n ≡ - + (n ∸ m)
 ⊖-< {zero}  (s≤s z≤n) = refl
 ⊖-< {suc m} (s≤s m<n) = ⊖-< m<n
 
-⊖-≰ : ∀ {m n} → n ℕ≰ m → m ⊖ n ≡ - + (n ∸ m)
+⊖-≰ : ∀ {m n} → n ℕ.≰ m → m ⊖ n ≡ - + (n ∸ m)
 ⊖-≰ = ⊖-< ∘ ℕₚ.≰⇒>
 
-∣⊖∣-< : ∀ {m n} → m ℕ< n → ∣ m ⊖ n ∣ ≡ n ∸ m
+∣⊖∣-< : ∀ {m n} → m ℕ.< n → ∣ m ⊖ n ∣ ≡ n ∸ m
 ∣⊖∣-< {zero}  (s≤s z≤n) = refl
 ∣⊖∣-< {suc n} (s≤s m<n) = ∣⊖∣-< m<n
 
-∣⊖∣-≰ : ∀ {m n} → n ℕ≰ m → ∣ m ⊖ n ∣ ≡ n ∸ m
+∣⊖∣-≰ : ∀ {m n} → n ℕ.≰ m → ∣ m ⊖ n ∣ ≡ n ∸ m
 ∣⊖∣-≰ = ∣⊖∣-< ∘ ℕₚ.≰⇒>
 
-sign-⊖-< : ∀ {m n} → m ℕ< n → sign (m ⊖ n) ≡ Sign.-
+sign-⊖-< : ∀ {m n} → m ℕ.< n → sign (m ⊖ n) ≡ Sign.-
 sign-⊖-< {zero}  (s≤s z≤n) = refl
 sign-⊖-< {suc n} (s≤s m<n) = sign-⊖-< m<n
 
-sign-⊖-≰ : ∀ {m n} → n ℕ≰ m → sign (m ⊖ n) ≡ Sign.-
+sign-⊖-≰ : ∀ {m n} → n ℕ.≰ m → sign (m ⊖ n) ≡ Sign.-
 sign-⊖-≰ = sign-⊖-< ∘ ℕₚ.≰⇒>
 
 -[n⊖m]≡-m+n : ∀ m n → - (m ⊖ n) ≡ (- (+ m)) + (+ n)
@@ -166,14 +166,14 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕₚ.≰⇒>
 ∣m⊖n∣≡∣n⊖m∣ (suc _) zero    = refl
 ∣m⊖n∣≡∣n⊖m∣ (suc x) (suc y) = ∣m⊖n∣≡∣n⊖m∣ x y
 
-+-cancelˡ-⊖ : ∀ a b c → (a ℕ+ b) ⊖ (a ℕ+ c) ≡ b ⊖ c
++-cancelˡ-⊖ : ∀ a b c → (a ℕ.+ b) ⊖ (a ℕ.+ c) ≡ b ⊖ c
 +-cancelˡ-⊖ zero    b c = refl
 +-cancelˡ-⊖ (suc a) b c = +-cancelˡ-⊖ a b c
 
 ------------------------------------------------------------------------
 -- Properties of _-_
 
-neg-minus-pos : ∀ x y → -[1+ x ] - (+ y) ≡ -[1+ (y ℕ+ x) ]
+neg-minus-pos : ∀ x y → -[1+ x ] - (+ y) ≡ -[1+ (y ℕ.+ x) ]
 neg-minus-pos x       zero    = refl
 neg-minus-pos zero    (suc y) = cong (-[1+_] ∘ suc) (sym (ℕₚ.+-identityʳ y))
 neg-minus-pos (suc x) (suc y) = cong (-[1+_] ∘ suc) (ℕₚ.+-comm (suc x) y)
@@ -188,11 +188,11 @@ neg-minus-pos (suc x) (suc y) = cong (-[1+_] ∘ suc) (ℕₚ.+-comm (suc x) y)
 ∣m-n∣≡∣n-m∣ -[1+ x ] -[1+ y ] = ∣m⊖n∣≡∣n⊖m∣ y x
 ∣m-n∣≡∣n-m∣ -[1+ x ] (+ y)    = begin
   ∣ -[1+ x ] - (+ y) ∣   ≡⟨ cong ∣_∣ (neg-minus-pos x y) ⟩
-  suc (y ℕ+ x)           ≡⟨ sym (ℕₚ.+-suc y x) ⟩
-  y ℕ+ suc x             ∎
+  suc (y ℕ.+ x)          ≡⟨ sym (ℕₚ.+-suc y x) ⟩
+  y ℕ.+ suc x            ∎
 ∣m-n∣≡∣n-m∣ (+ x)    -[1+ y ] = begin
-  x ℕ+ suc y             ≡⟨ ℕₚ.+-suc x y ⟩
-  suc (x ℕ+ y)           ≡⟨ cong ∣_∣ (sym (neg-minus-pos y x)) ⟩
+  x ℕ.+ suc y            ≡⟨ ℕₚ.+-suc x y ⟩
+  suc (x ℕ.+ y)          ≡⟨ cong ∣_∣ (sym (neg-minus-pos y x)) ⟩
   ∣ -[1+ y ] + - (+ x) ∣ ∎
 ∣m-n∣≡∣n-m∣ (+ x)     (+ y) = begin
   ∣ (+ x) - (+ y) ∣ ≡⟨ cong ∣_∣ ([+m]-[+n]≡m⊖n x y) ⟩
@@ -219,31 +219,31 @@ neg-minus-pos (suc x) (suc y) = cong (-[1+_] ∘ suc) (ℕₚ.+-comm (suc x) y)
 +-identity : Identity (+ 0) _+_
 +-identity = +-identityˡ , +-identityʳ
 
-distribˡ-⊖-+-pos : ∀ a b c → b ⊖ c + + a ≡ b ℕ+ a ⊖ c
+distribˡ-⊖-+-pos : ∀ a b c → b ⊖ c + + a ≡ b ℕ.+ a ⊖ c
 distribˡ-⊖-+-pos _ zero    zero    = refl
 distribˡ-⊖-+-pos _ zero    (suc _) = refl
 distribˡ-⊖-+-pos _ (suc _) zero    = refl
 distribˡ-⊖-+-pos a (suc b) (suc c) = distribˡ-⊖-+-pos a b c
 
-distribˡ-⊖-+-neg : ∀ a b c → b ⊖ c + -[1+ a ] ≡ b ⊖ (suc c ℕ+ a)
+distribˡ-⊖-+-neg : ∀ a b c → b ⊖ c + -[1+ a ] ≡ b ⊖ (suc c ℕ.+ a)
 distribˡ-⊖-+-neg _ zero    zero    = refl
 distribˡ-⊖-+-neg _ zero    (suc _) = refl
 distribˡ-⊖-+-neg _ (suc _) zero    = refl
 distribˡ-⊖-+-neg a (suc b) (suc c) = distribˡ-⊖-+-neg a b c
 
-distribʳ-⊖-+-pos : ∀ a b c → + a + (b ⊖ c) ≡ a ℕ+ b ⊖ c
+distribʳ-⊖-+-pos : ∀ a b c → + a + (b ⊖ c) ≡ a ℕ.+ b ⊖ c
 distribʳ-⊖-+-pos a b c = begin
   + a + (b ⊖ c) ≡⟨ +-comm (+ a) (b ⊖ c) ⟩
   (b ⊖ c) + + a ≡⟨ distribˡ-⊖-+-pos a b c ⟩
-  b ℕ+ a ⊖ c    ≡⟨ cong (_⊖ c) (ℕₚ.+-comm b a) ⟩
-  a ℕ+ b ⊖ c    ∎
+  b ℕ.+ a ⊖ c   ≡⟨ cong (_⊖ c) (ℕₚ.+-comm b a) ⟩
+  a ℕ.+ b ⊖ c   ∎
 
-distribʳ-⊖-+-neg : ∀ a b c → -[1+ a ] + (b ⊖ c) ≡ b ⊖ (suc a ℕ+ c)
+distribʳ-⊖-+-neg : ∀ a b c → -[1+ a ] + (b ⊖ c) ≡ b ⊖ (suc a ℕ.+ c)
 distribʳ-⊖-+-neg a b c = begin
   -[1+ a ] + (b ⊖ c) ≡⟨ +-comm -[1+ a ] (b ⊖ c) ⟩
   (b ⊖ c) + -[1+ a ] ≡⟨ distribˡ-⊖-+-neg a b c ⟩
-  b ⊖ suc (c ℕ+ a)   ≡⟨ cong (λ x → b ⊖ suc x) (ℕₚ.+-comm c a) ⟩
-  b ⊖ suc (a ℕ+ c)   ∎
+  b ⊖ suc (c ℕ.+ a)  ≡⟨ cong (λ x → b ⊖ suc x) (ℕₚ.+-comm c a) ⟩
+  b ⊖ suc (a ℕ.+ c)  ∎
 
 +-assoc : Associative _+_
 +-assoc (+ zero) y z rewrite +-identityˡ      y  | +-identityˡ (y + z) = refl
@@ -264,7 +264,7 @@ distribʳ-⊖-+-neg a b c = begin
         | ℕₚ.+-comm a 1
         = refl
 +-assoc -[1+ a ] -[1+ b ] -[1+ c ]
-  rewrite sym (ℕₚ.+-assoc a 1 (b ℕ+ c))
+  rewrite sym (ℕₚ.+-assoc a 1 (b ℕ.+ c))
         | ℕₚ.+-comm a 1
         | ℕₚ.+-assoc a b c
         = refl
@@ -360,16 +360,16 @@ neg-distrib-+ (+   m)   -[1+ n ]  = -[n⊖m]≡-m+n m (suc n)
 neg-distrib-+ -[1+ m ]  (+   n)   =
   trans (-[n⊖m]≡-m+n n (suc m)) (+-comm (- + n) (+ suc m))
 
-◃-distrib-+ : ∀ s m n → s ◃ (m ℕ+ n) ≡ (s ◃ m) + (s ◃ n)
+◃-distrib-+ : ∀ s m n → s ◃ (m ℕ.+ n) ≡ (s ◃ m) + (s ◃ n)
 ◃-distrib-+ Sign.- m n = begin
-  Sign.- ◃ (m ℕ+ n)           ≡⟨ -◃n≡-n (m ℕ+ n) ⟩
-  - (+ (m ℕ+ n))              ≡⟨⟩
+  Sign.- ◃ (m ℕ.+ n)          ≡⟨ -◃n≡-n (m ℕ.+ n) ⟩
+  - (+ (m ℕ.+ n))             ≡⟨⟩
   - ((+ m) + (+ n))           ≡⟨ neg-distrib-+ (+ m) (+ n) ⟩
   (- (+ m)) + (- (+ n))       ≡⟨ sym (cong₂ _+_ (-◃n≡-n m) (-◃n≡-n n)) ⟩
   (Sign.- ◃ m) + (Sign.- ◃ n) ∎
 ◃-distrib-+ Sign.+ m n = begin
-  Sign.+ ◃ (m ℕ+ n)           ≡⟨ +◃n≡+n (m ℕ+ n) ⟩
-  + (m ℕ+ n)                  ≡⟨⟩
+  Sign.+ ◃ (m ℕ.+ n)          ≡⟨ +◃n≡+n (m ℕ.+ n) ⟩
+  + (m ℕ.+ n)                 ≡⟨⟩
   (+ m) + (+ n)               ≡⟨ sym (cong₂ _+_ (+◃n≡+n m) (+◃n≡+n n)) ⟩
   (Sign.+ ◃ m) + (Sign.+ ◃ n) ∎
 
@@ -412,8 +412,8 @@ neg-distrib-+ -[1+ m ]  (+   n)   =
 *-zero = *-zeroˡ , *-zeroʳ
 
 private
-  lemma : ∀ a b c → c ℕ+ (b ℕ+ a ℕ* suc b) ℕ* suc c
-                  ≡ c ℕ+ b ℕ* suc c ℕ+ a ℕ* suc (c ℕ+ b ℕ* suc c)
+  lemma : ∀ a b c → c ℕ.+ (b ℕ.+ a ℕ.* suc b) ℕ.* suc c
+                  ≡ c ℕ.+ b ℕ.* suc c ℕ.+ a ℕ.* suc (c ℕ.+ b ℕ.* suc c)
   lemma =
     solve 3 (λ a b c → c :+ (b :+ a :* (con 1 :+ b)) :* (con 1 :+ c)
                     := c :+ b :* (con 1 :+ c) :+
@@ -426,7 +426,7 @@ private
 *-assoc x y (+ zero) rewrite
     ℕₚ.*-zeroʳ ∣ y ∣
   | ℕₚ.*-zeroʳ ∣ x ∣
-  | ℕₚ.*-zeroʳ ∣ sign x 𝕊* sign y ◃ ∣ x ∣ ℕ* ∣ y ∣ ∣
+  | ℕₚ.*-zeroʳ ∣ sign x 𝕊* sign y ◃ ∣ x ∣ ℕ.* ∣ y ∣ ∣
   = refl
 *-assoc -[1+ a  ] -[1+ b  ] (+ suc c) = cong (+_ ∘ suc) (lemma a b c)
 *-assoc -[1+ a  ] (+ suc b) -[1+ c  ] = cong (+_ ∘ suc) (lemma a b c)
@@ -441,23 +441,23 @@ private
 
   -- lemma used to prove distributivity.
   distrib-lemma :
-    ∀ a b c → (c ⊖ b) * -[1+ a ] ≡ a ℕ+ b ℕ* suc a ⊖ (a ℕ+ c ℕ* suc a)
+    ∀ a b c → (c ⊖ b) * -[1+ a ] ≡ a ℕ.+ b ℕ.* suc a ⊖ (a ℕ.+ c ℕ.* suc a)
   distrib-lemma a b c
-    rewrite +-cancelˡ-⊖ a (b ℕ* suc a) (c ℕ* suc a)
-          | ⊖-swap (b ℕ* suc a) (c ℕ* suc a)
-    with b ℕ≤? c
+    rewrite +-cancelˡ-⊖ a (b ℕ.* suc a) (c ℕ.* suc a)
+          | ⊖-swap (b ℕ.* suc a) (c ℕ.* suc a)
+    with b ℕ.≤? c
   ... | yes b≤c
     rewrite ⊖-≥ b≤c
           | ⊖-≥ (ℕₚ.*-mono-≤ b≤c (ℕₚ.≤-refl {x = suc a}))
-          | -◃n≡-n ((c ∸ b) ℕ* suc a)
+          | -◃n≡-n ((c ∸ b) ℕ.* suc a)
           | ℕₚ.*-distribʳ-∸ (suc a) c b
           = refl
   ... | no b≰c
     rewrite sign-⊖-≰ b≰c
           | ∣⊖∣-≰ b≰c
-          | +◃n≡+n ((b ∸ c) ℕ* suc a)
+          | +◃n≡+n ((b ∸ c) ℕ.* suc a)
           | ⊖-≰ (b≰c ∘ ℕₚ.*-cancelʳ-≤ b c a)
-          | neg-involutive (+ (b ℕ* suc a ∸ c ℕ* suc a))
+          | neg-involutive (+ (b ℕ.* suc a ∸ c ℕ.* suc a))
           | ℕₚ.*-distribʳ-∸ (suc a) b c
           = refl
 
@@ -469,11 +469,11 @@ private
         = refl
 *-distribʳ-+ x (+ zero) z
   rewrite +-identityˡ z
-        | +-identityˡ (sign z 𝕊* sign x ◃ ∣ z ∣ ℕ* ∣ x ∣)
+        | +-identityˡ (sign z 𝕊* sign x ◃ ∣ z ∣ ℕ.* ∣ x ∣)
         = refl
 *-distribʳ-+ x y (+ zero)
   rewrite +-identityʳ y
-        | +-identityʳ (sign y 𝕊* sign x ◃ ∣ y ∣ ℕ* ∣ x ∣)
+        | +-identityʳ (sign y 𝕊* sign x ◃ ∣ y ∣ ℕ.* ∣ x ∣)
         = refl
 *-distribʳ-+ -[1+ a ] -[1+ b ] -[1+ c ] = cong (+_) $
   solve 3 (λ a b c → (con 2 :+ b :+ c) :* (con 1 :+ a)
@@ -497,37 +497,37 @@ private
          refl a b c
 *-distribʳ-+ -[1+ a ] -[1+ b ] (+ suc c) = distrib-lemma a b c
 *-distribʳ-+ -[1+ a ] (+ suc b) -[1+ c ] = distrib-lemma a c b
-*-distribʳ-+ (+ suc a) -[1+ b ] (+ suc c) with b ℕ≤? c
+*-distribʳ-+ (+ suc a) -[1+ b ] (+ suc c) with b ℕ.≤? c
 ... | yes b≤c
-  rewrite +-cancelˡ-⊖ a (c ℕ* suc a) (b ℕ* suc a)
+  rewrite +-cancelˡ-⊖ a (c ℕ.* suc a) (b ℕ.* suc a)
         | ⊖-≥ b≤c
-        | +-comm (- (+ (a ℕ+ b ℕ* suc a))) (+ (a ℕ+ c ℕ* suc a))
+        | +-comm (- (+ (a ℕ.+ b ℕ.* suc a))) (+ (a ℕ.+ c ℕ.* suc a))
         | ⊖-≥ (ℕₚ.*-mono-≤ b≤c (ℕₚ.≤-refl {x = suc a}))
         | ℕₚ.*-distribʳ-∸ (suc a) c b
-        | +◃n≡+n (c ℕ* suc a ∸ b ℕ* suc a)
+        | +◃n≡+n (c ℕ.* suc a ∸ b ℕ.* suc a)
         = refl
 ... | no b≰c
-  rewrite +-cancelˡ-⊖ a (c ℕ* suc a) (b ℕ* suc a)
+  rewrite +-cancelˡ-⊖ a (c ℕ.* suc a) (b ℕ.* suc a)
         | sign-⊖-≰ b≰c
         | ∣⊖∣-≰ b≰c
-        | -◃n≡-n ((b ∸ c) ℕ* suc a)
+        | -◃n≡-n ((b ∸ c) ℕ.* suc a)
         | ⊖-≰ (b≰c ∘ ℕₚ.*-cancelʳ-≤ b c a)
         | ℕₚ.*-distribʳ-∸ (suc a) b c
         = refl
-*-distribʳ-+ (+ suc c) (+ suc a) -[1+ b ] with b ℕ≤? a
+*-distribʳ-+ (+ suc c) (+ suc a) -[1+ b ] with b ℕ.≤? a
 ... | yes b≤a
-  rewrite +-cancelˡ-⊖ c (a ℕ* suc c) (b ℕ* suc c)
+  rewrite +-cancelˡ-⊖ c (a ℕ.* suc c) (b ℕ.* suc c)
         | ⊖-≥ b≤a
         | ⊖-≥ (ℕₚ.*-mono-≤ b≤a (ℕₚ.≤-refl {x = suc c}))
-        | +◃n≡+n ((a ∸ b) ℕ* suc c)
+        | +◃n≡+n ((a ∸ b) ℕ.* suc c)
         | ℕₚ.*-distribʳ-∸ (suc c) a b
         = refl
 ... | no b≰a
-  rewrite +-cancelˡ-⊖ c (a ℕ* suc c) (b ℕ* suc c)
+  rewrite +-cancelˡ-⊖ c (a ℕ.* suc c) (b ℕ.* suc c)
         | sign-⊖-≰ b≰a
         | ∣⊖∣-≰ b≰a
         | ⊖-≰ (b≰a ∘ ℕₚ.*-cancelʳ-≤ b a c)
-        | -◃n≡-n ((b ∸ a) ℕ* suc c)
+        | -◃n≡-n ((b ∸ a) ℕ.* suc c)
         | ℕₚ.*-distribʳ-∸ (suc c) b a
         = refl
 
@@ -596,15 +596,15 @@ private
 
 -- Other properties of _*_
 
-abs-*-commute : Homomorphic₂ ∣_∣ _*_ _ℕ*_
+abs-*-commute : Homomorphic₂ ∣_∣ _*_ ℕ._*_
 abs-*-commute i j = abs-◃ _ _
 
-pos-distrib-* : ∀ x y → (+ x) * (+ y) ≡ + (x ℕ* y)
+pos-distrib-* : ∀ x y → (+ x) * (+ y) ≡ + (x ℕ.* y)
 pos-distrib-* zero    y       = refl
 pos-distrib-* (suc x) zero    = pos-distrib-* x zero
 pos-distrib-* (suc x) (suc y) = refl
 
-◃-distrib-* :  ∀ s t m n → (s 𝕊* t) ◃ (m ℕ* n) ≡ (s ◃ m) * (t ◃ n)
+◃-distrib-* :  ∀ s t m n → (s 𝕊* t) ◃ (m ℕ.* n) ≡ (s ◃ m) * (t ◃ n)
 ◃-distrib-* s t zero    zero    = refl
 ◃-distrib-* s t zero    (suc n) = refl
 ◃-distrib-* s t (suc m) zero    =
@@ -626,20 +626,20 @@ pos-distrib-* (suc x) (suc y) = refl
          ℕₚ.*-cancelʳ-≡ ∣ i ∣ ∣ j ∣ $ abs-cong eq
   where
   sign-i≡sign-j : ∀ i j →
-                  (sign i 𝕊* s) ◃ (∣ i ∣ ℕ* suc n) ≡
-                  (sign j 𝕊* s) ◃ (∣ j ∣ ℕ* suc n) →
+                  (sign i 𝕊* s) ◃ (∣ i ∣ ℕ.* suc n) ≡
+                  (sign j 𝕊* s) ◃ (∣ j ∣ ℕ.* suc n) →
                   sign i ≡ sign j
   sign-i≡sign-j i              j              eq with signAbs i | signAbs j
   sign-i≡sign-j .(+ 0)         .(+ 0)         eq | s₁ ◂ zero   | s₂ ◂ zero   = refl
   sign-i≡sign-j .(+ 0)         .(s₂ ◃ suc n₂) eq | s₁ ◂ zero   | s₂ ◂ suc n₂
     with ∣ s₂ ◃ suc n₂ ∣ | abs-◃ s₂ (suc n₂)
   ... | .(suc n₂) | refl
-    with abs-cong {s₁} {sign (s₂ ◃ suc n₂) 𝕊* s} {0} {suc n₂ ℕ* suc n} eq
+    with abs-cong {s₁} {sign (s₂ ◃ suc n₂) 𝕊* s} {0} {suc n₂ ℕ.* suc n} eq
   ...   | ()
   sign-i≡sign-j .(s₁ ◃ suc n₁) .(+ 0)         eq | s₁ ◂ suc n₁ | s₂ ◂ zero
     with ∣ s₁ ◃ suc n₁ ∣ | abs-◃ s₁ (suc n₁)
   ... | .(suc n₁) | refl
-    with abs-cong {sign (s₁ ◃ suc n₁) 𝕊* s} {s₁} {suc n₁ ℕ* suc n} {0} eq
+    with abs-cong {sign (s₁ ◃ suc n₁) 𝕊* s} {s₁} {suc n₁ ℕ.* suc n} {0} eq
   ...   | ()
   sign-i≡sign-j .(s₁ ◃ suc n₁) .(s₂ ◃ suc n₂) eq | s₁ ◂ suc n₁ | s₂ ◂ suc n₂
     with ∣ s₁ ◃ suc n₁ ∣ | abs-◃ s₁ (suc n₁)
@@ -848,7 +848,7 @@ n≮n { -[1+ suc n ]} (-≤- n<n) =  contradiction n<n ℕₚ.1+n≰n
 ≰→> { -[1+ m ]}     {+ _}           m≰n =  contradiction -≤+ m≰n
 ≰→> { -[1+ 0 ]}     { -[1+ 0 ]}     m≰n =  contradiction ≤-refl m≰n
 ≰→> { -[1+ suc _ ]} { -[1+ 0 ]}     m≰n =  contradiction (-≤- z≤n) m≰n
-≰→> { -[1+ m ]}     { -[1+ suc n ]} m≰n with m ℕ≤? n
+≰→> { -[1+ m ]}     { -[1+ suc n ]} m≰n with m ℕ.≤? n
 ... | yes m≤n  = -≤- m≤n
 ... | no  m≰n' = contradiction (-≤- (ℕₚ.≰⇒> m≰n')) m≰n
 
