@@ -17,15 +17,15 @@ open import Relation.Binary.PropositionalEquality
 
 open Ndiv.∣-Reasoning
 
-*-monoˡ-∣ : ∀ k → (k *_) Preserves _∣_ ⟶ _∣_
-*-monoˡ-∣ k {i} {j} i∣j = begin
+*-monoʳ-∣ : ∀ k → (k *_) Preserves _∣_ ⟶ _∣_
+*-monoʳ-∣ k {i} {j} i∣j = begin
   ∣ k * i ∣       ≡⟨ abs-*-commute k i ⟩
   ∣ k ∣ ℕ.* ∣ i ∣ ∣⟨ Ndiv.*-cong ∣ k ∣ i∣j ⟩
   ∣ k ∣ ℕ.* ∣ j ∣ ≡⟨ sym (abs-*-commute k j) ⟩
   ∣ k * j ∣ ∎
 
-*-monoʳ-∣ : ∀ k → (_* k) Preserves _∣_ ⟶ _∣_
-*-monoʳ-∣ k {i} {j}
+*-monoˡ-∣ : ∀ k → (_* k) Preserves _∣_ ⟶ _∣_
+*-monoˡ-∣ k {i} {j}
   rewrite *-comm i k
         | *-comm j k
-        = *-monoˡ-∣ k
+        = *-monoʳ-∣ k
