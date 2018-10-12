@@ -400,6 +400,7 @@ Other minor additions
   ≤-steps-neg    : m ≤ n → m - + p ≤ n
   m≡n⇒m-n≡0      : m ≡ n → m - n ≡ + 0
   m-n≡0⇒m≡n      : m - n ≡ + 0 → m ≡ n
+  ◃-≡            : sign m ≡ sign n → ∣ m ∣ ≡ ∣ n ∣ → m ≡ n
   ```
 
 * Added new proofs to `Data.List.Any.Properties`:

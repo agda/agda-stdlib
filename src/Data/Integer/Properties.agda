@@ -120,6 +120,13 @@ abs-cong {s₁} {s₂} {n₁} {n₂} eq = begin
 ∣s◃m∣*∣t◃n∣≡m*n : ∀ s t m n → ∣ s ◃ m ∣ ℕ.* ∣ t ◃ n ∣ ≡ m ℕ.* n
 ∣s◃m∣*∣t◃n∣≡m*n s t m n = cong₂ ℕ._*_ (abs-◃ s m) (abs-◃ t n)
 
+◃-≡ : ∀ {m n} → sign m ≡ sign n → ∣ m ∣ ≡ ∣ n ∣ → m ≡ n
+◃-≡ {+ m}       {+ n }      ≡-sign ≡-abs = cong ℤ.pos ≡-abs
+◃-≡ { -[1+ m ]} { -[1+ n ]} ≡-sign ≡-abs = cong -[1+_] (ℕₚ.suc-injective ≡-abs)
+◃-≡ {+ m}       { -[1+ n ]} ()     ≡-abs
+◃-≡ { -[1+ m ]} {+ n }      ()     ≡-abs
+
+
 ------------------------------------------------------------------------
 -- Properties of _⊖_
 
