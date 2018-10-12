@@ -724,6 +724,22 @@ pos-distrib-* (suc x) (suc y) = refl
 *-monoʳ-≤-pos x (+≤+ {m = suc _} {n = suc _} m≤n) =
   +≤+ ((ℕₚ.*-mono-≤ m≤n (ℕₚ.≤-refl {x = suc x})))
 
+*-monoʳ-≤-non-neg : ∀ n → (_* + n) Preserves _≤_ ⟶ _≤_
+*-monoʳ-≤-non-neg (suc n) = *-monoʳ-≤-pos n
+*-monoʳ-≤-non-neg zero {i} {j} i≤j
+  rewrite *-zeroʳ i
+        | *-zeroʳ j
+        = +≤+ z≤n
+
+*-monoˡ-≤-non-neg : ∀ n → (+ n *_) Preserves _≤_ ⟶ _≤_
+*-monoˡ-≤-non-neg n {i} {j} i≤j
+  rewrite *-comm (+ n) i
+        | *-comm (+ n) j
+        = *-monoʳ-≤-non-neg n i≤j
+
+*-monoˡ-≤-pos : ∀ n → (+ suc n *_) Preserves _≤_ ⟶ _≤_
+*-monoˡ-≤-pos n = *-monoˡ-≤-non-neg (suc n)
+
 -1*n≡-n : ∀ n → -[1+ 0 ] * n ≡ - n
 -1*n≡-n (+ zero)  = refl
 -1*n≡-n (+ suc n) = cong -[1+_] (ℕₚ.+-identityʳ n)
