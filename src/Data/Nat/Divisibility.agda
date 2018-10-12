@@ -79,6 +79,9 @@ quotient (divides q _) = q
   ; trans         = ∣-trans
   }
 
+∣-preorder : Preorder _ _ _
+∣-preorder = record { isPreorder = ∣-isPreorder }
+
 ∣-isPartialOrder : IsPartialOrder _≡_ _∣_
 ∣-isPartialOrder = record
   { isPreorder = ∣-isPreorder

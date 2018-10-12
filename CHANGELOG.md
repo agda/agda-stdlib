@@ -280,6 +280,8 @@ Other major changes
 
 * Added new modules `Relation.Binary.Properties.(DistributiveLattice/HeytingAlgebra)`.
 
+* Added new module `Data.Integer.Divisibility.Properties`.
+
 Deprecated features
 -------------------
 
@@ -460,9 +462,10 @@ Other minor additions
 
 * Added new proofs to `Data.Nat.Divisibility`:
   ```agda
-  n∣m⇒m%n≡0 : suc n ∣ m → m % (suc n) ≡ 0
-  m%n≡0⇒n∣m : m % (suc n) ≡ 0 → suc n ∣ m
-  m%n≡0⇔n∣m : m % (suc n) ≡ 0 ⇔ suc n ∣ m
+  n∣m⇒m%n≡0  : suc n ∣ m → m % (suc n) ≡ 0
+  m%n≡0⇒n∣m  : m % (suc n) ≡ 0 → suc n ∣ m
+  m%n≡0⇔n∣m  : m % (suc n) ≡ 0 ⇔ suc n ∣ m
+  ∣-preorder : Preorder _ _ _
   ```
 
 * Added new operations and proofs to `Data.Nat.DivMod`:
