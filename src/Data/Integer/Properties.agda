@@ -701,6 +701,12 @@ pos-distrib-* (suc x) (suc y) = refl
   ... | .(suc n₁) | refl | .s₁ | refl | .(suc n₂) | refl | .s₂ | refl =
     𝕊ₚ.*-cancelʳ-≡ s₁ s₂ (sign-cong eq)
 
+*-cancelˡ-≡ : ∀ i j k → i ≢ + 0 → i * j ≡ i * k → j ≡ k
+*-cancelˡ-≡ i j k
+  rewrite *-comm i j
+        | *-comm i k
+        = *-cancelʳ-≡ j k i
+
 *-cancelʳ-≤-pos : ∀ m n o → m * + suc o ≤ n * + suc o → m ≤ n
 *-cancelʳ-≤-pos (-[1+ m ]) (-[1+ n ]) o (-≤- n≤m) =
   -≤- (≤-pred (ℕₚ.*-cancelʳ-≤ (suc n) (suc m) o (ℕ.s≤s n≤m)))
@@ -712,6 +718,12 @@ pos-distrib-* (suc x) (suc y) = refl
 *-cancelʳ-≤-pos (+ suc _)  (+ 0)      _ (+≤+ ())
 *-cancelʳ-≤-pos (+ suc m)  (+ suc n)  o (+≤+ m≤n) =
   +≤+ (ℕₚ.*-cancelʳ-≤ (suc m) (suc n) o m≤n)
+
+*-cancelˡ-≤-pos : ∀ m n o → + suc m * n ≤ + suc m * o → n ≤ o
+*-cancelˡ-≤-pos m n o
+  rewrite *-comm (+ suc m) n
+        | *-comm (+ suc m) o
+        = *-cancelʳ-≤-pos n o m
 
 *-monoʳ-≤-pos : ∀ n → (_* + suc n) Preserves _≤_ ⟶ _≤_
 *-monoʳ-≤-pos _ (-≤+             {n = 0})         = -≤+

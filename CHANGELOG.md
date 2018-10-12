@@ -391,6 +391,9 @@ Other minor additions
   *-monoʳ-≤-non-neg : (_* + n) Preserves _≤_ ⟶ _≤
   *-monoˡ-≤-non-neg : (+ n *_) Preserves _≤_ ⟶ _≤_
 
+  *-cancelˡ-≡     : i ≢ + 0 → i * j ≡ i * k → j ≡ k
+  *-cancelˡ-≤-pos : + suc m * n ≤ + suc m * o → n ≤ o
+
   0⊖m≤+      : 0 ⊖ m ≤ + n
   m≤n⇒m-n≤0  : m ≤ n → m - n ≤ + 0
   m-n≤0⇒m≤n  : m - n ≤ + 0 → m ≤ n
