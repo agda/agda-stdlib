@@ -485,9 +485,10 @@ Other minor additions
 
 * Added new functions to `Data.Nat.Properties`:
   ```agda
-  *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
-  *-distrib-∸  : _*_ DistributesOver _∸_
-  ^-*-assoc    : (m ^ n) ^ p ≡ m ^ (n * p)
+  *-distribˡ-∸     : _*_ DistributesOverˡ _∸_
+  *-distrib-∸      : _*_ DistributesOver _∸_
+  ^-*-assoc        : (m ^ n) ^ p ≡ m ^ (n * p)
+  m≢0⇒m≡s[pred[m]] : m ≢ 0 → m ≡ suc (pred m)
   ```
 
 * Added new function to `Data.String.Base`:

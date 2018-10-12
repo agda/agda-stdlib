@@ -16,6 +16,7 @@ open import Algebra
 open import Data.Nat as Nat
 open import Data.Product
 open import Data.Sum
+open import Data.Empty
 open import Relation.Nullary
 open import Relation.Nullary.Decidable using (via-injection)
 open import Relation.Nullary.Negation using (contradiction)
@@ -366,6 +367,10 @@ i+j≡0⇒i≡0 (suc i) ()
 
 i+j≡0⇒j≡0 : ∀ i {j} → i + j ≡ 0 → j ≡ 0
 i+j≡0⇒j≡0 i {j} i+j≡0 = i+j≡0⇒i≡0 j (trans (+-comm j i) (i+j≡0))
+
+m≢0⇒m≡s[pred[m]] : ∀ {m} → m ≢ 0 → m ≡ suc (pred m)
+m≢0⇒m≡s[pred[m]] {zero}  m≢0 = ⊥-elim (m≢0 refl)
+m≢0⇒m≡s[pred[m]] {suc m} m≢0 = refl
 
 -- Properties of _+_ and orderings
 
