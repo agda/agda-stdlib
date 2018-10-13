@@ -10,6 +10,7 @@ open import Data.Empty
 open import Data.Fin
 open import Data.List.Base as List using (List; []; [_]; _∷_)
 open import Data.Product as Prod using (∃; _,_)
+open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Level using (_⊔_)
 open import Relation.Nullary using (¬_; yes; no)
 import Relation.Nullary.Decidable as Dec
@@ -25,10 +26,16 @@ data Any {p} (P : A → Set p) : List A → Set (a ⊔ p) where
 ------------------------------------------------------------------------
 -- Operations on Any
 
+module _ {p} {P : A → Set p} {x xs} where
+
+  toSum : Any P (x ∷ xs) → P x ⊎ Any P xs
+  toSum (here px)   = inj₁ px
+  toSum (there pxs) = inj₂ pxs
+
 -- If the head does not satisfy the predicate, then the tail will.
-tail : ∀ {p} {P : A → Set p} {x xs} → ¬ P x → Any P (x ∷ xs) → Any P xs
-tail ¬px (here  px)  = ⊥-elim (¬px px)
-tail ¬px (there pxs) = pxs
+  tail : ¬ P x → Any P (x ∷ xs) → Any P xs
+  tail ¬px (here  px)  = ⊥-elim (¬px px)
+  tail ¬px (there pxs) = pxs
 
 map : ∀ {p q} {P : A → Set p} {Q : A → Set q} → P ⊆ Q → Any P ⊆ Any Q
 map g (here px)   = here (g px)
