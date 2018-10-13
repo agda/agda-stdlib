@@ -772,6 +772,25 @@ neg-distribʳ-* x y = begin
   x * (- y) ∎
 
 ------------------------------------------------------------------------
+-- Properties _⊓_
+
+⊓-comm : Commutative _⊓_
+⊓-comm -[1+ m ] -[1+ n ] = cong -[1+_] (ℕₚ.⊔-comm m n)
+⊓-comm -[1+ m ] (+ n)    = refl
+⊓-comm (+ m)    -[1+ n ] = refl
+⊓-comm (+ m)    (+ n)    = cong +_ (ℕₚ.⊓-comm m n)
+
+m⊓n≤n : ∀ m n → m ⊓ n ≤ n
+m⊓n≤n -[1+ m ] -[1+ n ] = -≤- (ℕₚ.n≤m⊔n m n)
+m⊓n≤n -[1+ m ] (+ n)    = -≤+
+m⊓n≤n (+ m)    -[1+ n ] = -≤- ℕₚ.≤-refl
+m⊓n≤n (+ m)    (+ n)    = +≤+ (ℕₚ.m⊓n≤n m n)
+
+m⊓n≤m : ∀ m n → m ⊓ n ≤ m
+m⊓n≤m m n rewrite ⊓-comm m n = m⊓n≤n n m
+
+
+------------------------------------------------------------------------
 -- Properties _≤_
 
 ≤-reflexive : _≡_ ⇒ _≤_

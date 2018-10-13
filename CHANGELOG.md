@@ -383,6 +383,10 @@ Other minor additions
   pred-+    : pred m + n ≡ pred (m + n)
   minus-suc : m - + suc n ≡ pred (m - + n)
 
+  ⊓-comm : Commutative _⊓_
+  m⊓n≤n  : m ⊓ n ≤ n
+  m⊓n≤m  : m ⊓ n ≤ m
+
   pred-mono         : pred Preserves _≤_ ⟶ _≤_
   suc-mono          : sucℤ Preserves _≤_ ⟶ _≤_
   ⊖-monoʳ-≥-≤       : (p ⊖_) Preserves ℕ._≥_ ⟶ _≤_
