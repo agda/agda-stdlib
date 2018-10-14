@@ -282,6 +282,8 @@ Other major changes
 
 * Added new module `Data.Integer.Divisibility.Properties`.
 
+* Added new module `Relation.Binary.StrictPartialOrderReasoning`
+
 Deprecated features
 -------------------
 
@@ -400,13 +402,17 @@ Other minor additions
   *-cancelˡ-≡     : i ≢ + 0 → i * j ≡ i * k → j ≡ k
   *-cancelˡ-≤-pos : + suc m * n ≤ + suc m * o → n ≤ o
 
-  0⊖m≤+      : 0 ⊖ m ≤ + n
-  m≤n⇒m-n≤0  : m ≤ n → m - n ≤ + 0
-  m-n≤0⇒m≤n  : m - n ≤ + 0 → m ≤ n
+  0⊖m≤+         : 0 ⊖ m ≤ + n
+  m≤n⇒m-n≤0     : m ≤ n → m - n ≤ + 0
+  m-n≤0⇒m≤n     : m - n ≤ + 0 → m ≤ n
+  m≤pred[n]⇒m<n : m ≤ pred n → m < n
 
   ≤-<-trans      : Trans _≤_ _<_ _<_
   <-≤-trans      : Trans _<_ _≤_ _<_
   >→≰            : x > y → x ≰ y
+
+  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+  <-strictPartialOrder   : StrictPartialOrder _ _ _
 
   neg-distribˡ-* : - (x * y) ≡ (- x) * y
   neg-distribʳ-* : - (x * y) ≡ x * (- y)

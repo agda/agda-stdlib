@@ -25,6 +25,7 @@ open import Function using (_∘_; _$_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.PartialOrderReasoning as POR
+import Relation.Binary.StrictPartialOrderReasoning as SPOR
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 
@@ -1016,6 +1017,17 @@ n≤1+n n = ≤-step ≤-refl
 ... | tri> m≮n m≢n m>n =
   tri< (-≤- (≤-pred m>n)) (m≢n ∘ -[1+-injective) (m≮n ∘ ℕ.s≤s ∘ drop‿-≤-)
 
+<-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+<-isStrictPartialOrder = record
+  { isEquivalence = isEquivalence
+  ; irrefl        = <-irrefl
+  ; trans         = λ {i} → <-trans {i}
+  ; <-resp-≈      = (λ {x} → subst (x <_)) , subst (_< _)
+  }
+
+<-strictPartialOrder : StrictPartialOrder _ _ _
+<-strictPartialOrder = record { isStrictPartialOrder = <-isStrictPartialOrder }
+
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
 <-isStrictTotalOrder = record
   { isEquivalence = isEquivalence
@@ -1057,6 +1069,18 @@ n≮n { -[1+ suc n ]} (-≤- n<n) =  contradiction n<n ℕₚ.1+n≰n
 
 -- A module for reasoning about the _≤_ relation
 module ≤-Reasoning = POR ≤-poset hiding (_≈⟨_⟩_)
+module <-Reasoning = SPOR <-strictPartialOrder
+
+------------------------------------------------------------------------
+-- Extra properties
+
+m≤pred[n]⇒m<n : ∀ {m n} → m ≤ pred n → m < n
+m≤pred[n]⇒m<n {m} {n} m≤predn = R.begin
+  sucℤ m               R.≤⟨ +-monoʳ-≤ (+ 1) m≤predn ⟩
+  + 1 + pred n         R.≡⟨ sym (+-assoc (+ 1) -[1+ 0 ] n) ⟩
+  (+ 1 + -[1+ 0 ]) + n R.≡⟨ cong (_+ n) (+-inverseʳ (+ 1)) ⟩
+  + 0 + n              R.≡⟨ +-identityˡ n ⟩
+  n R.∎ where module R = ≤-Reasoning
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
