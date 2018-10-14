@@ -970,6 +970,9 @@ n≤1+n n = ≤-step ≤-refl
 <-irrefl { -[1+ zero  ]} refl ()
 <-irrefl { -[1+ suc n ]} refl (-≤- 1+n≤n) = ℕₚ.<-irrefl refl 1+n≤n
 
+>-irrefl : Irreflexive _≡_ _>_
+>-irrefl = <-irrefl ∘ sym
+
 <-asym : Asymmetric _<_
 <-asym {+ n}           {+ m}           (+≤+ n<m) (+≤+ m<n) =
   ℕₚ.<-asym n<m m<n
@@ -1063,6 +1066,17 @@ n≮n { -[1+ suc n ]} (-≤- n<n) =  contradiction n<n ℕₚ.1+n≰n
 
 <-irrelevance : Irrelevant _<_
 <-irrelevance = ≤-irrelevance
+
++-monoˡ-< : ∀ n → (_+ n) Preserves _<_ ⟶ _<_
++-monoˡ-< n {i} {j} i<j
+  rewrite sym (+-assoc (+ 1) i n)
+          = +-monoˡ-≤ n i<j
+
++-monoʳ-< : ∀ n → (_+_ n) Preserves _<_ ⟶ _<_
++-monoʳ-< n {i} {j} i<j
+  rewrite +-comm n i
+        | +-comm n j
+        = +-monoˡ-< n {i} {j} i<j
 
 ------------------------------------------------------------------------
 -- Modules for reasoning about integer number relations

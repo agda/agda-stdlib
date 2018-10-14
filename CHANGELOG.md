@@ -395,6 +395,8 @@ Other minor additions
   ⊖-monoˡ-≤         : (_⊖ p) Preserves ℕ._≤_ ⟶ _≤_
   +-monoʳ-≤         : (_+_ n) Preserves _≤_ ⟶ _≤_
   +-monoˡ-≤         : (_+ n) Preserves _≤_ ⟶ _≤_
+  +-monoˡ-<         : (_+ n) Preserves _<_ ⟶ _<_
+  +-monoʳ-<         : (_+_ n) Preserves _<_ ⟶ _<_
   *-monoˡ-≤-pos     : (+ suc n *_) Preserves _≤_ ⟶ _≤_
   *-monoʳ-≤-non-neg : (_* + n) Preserves _≤_ ⟶ _≤
   *-monoˡ-≤-non-neg : (+ n *_) Preserves _≤_ ⟶ _≤_
@@ -407,9 +409,10 @@ Other minor additions
   m-n≤0⇒m≤n     : m - n ≤ + 0 → m ≤ n
   m≤pred[n]⇒m<n : m ≤ pred n → m < n
 
-  ≤-<-trans      : Trans _≤_ _<_ _<_
-  <-≤-trans      : Trans _<_ _≤_ _<_
-  >→≰            : x > y → x ≰ y
+  ≤-<-trans : Trans _≤_ _<_ _<_
+  <-≤-trans : Trans _<_ _≤_ _<_
+  >→≰       : x > y → x ≰ y
+  >-irrefl  : Irreflexive _≡_ _>_
 
   <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
   <-strictPartialOrder   : StrictPartialOrder _ _ _
