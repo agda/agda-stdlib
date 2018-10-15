@@ -218,9 +218,9 @@ Non-backwards compatible changes
 
 #### Rearrangement of constructed relations in `Relation.Binary`
 
-* In order to improve the organisation of `Relation.Binary` and general
-  searchability, modules that build specific binary relations have been
-  moved from `Relation.Binary` to `Relation.Binary.Construct`.
+* In order to improve the organisation and general searchability of
+  `Relation.Binary`, modules that construct specific binary relations have
+  been moved from `Relation.Binary` to `Relation.Binary.Construct`.
 
 * The module `Relation.Binary.Simple` has been split into `Constant`,
   `Always` and `Never`.
