@@ -23,7 +23,6 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; module Inverse)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Unary using (Decidable)
-open import Relation.Binary.InducedPreorders using (InducedPreorder₂)
 import Relation.Binary.PreorderReasoning as PreorderReasoning
 
 open Setoid using (Carrier)

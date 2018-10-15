@@ -225,10 +225,15 @@ Non-backwards compatible changes
 * The module `Relation.Binary.Simple` has been split into `Constant`,
   `Always` and `Never`.
 
+* The module `Relation.Binary.InducedPreorders` has been split into
+  `Induced.ByPred` and `Induced.ByRel`.
+
 * The full list of changes is as follows:
   ```agda
   Relation.Binary.Closure           ↦ Relation.Binary.Construct.Closure
   Relation.Binary.Flip              ↦ Relation.Binary.Construct.Flip
+  Relation.Binary.InducedPreorders  ↦ Relation.Binary.Construct.Induced.ByPred
+                                    ↘ Relation.Binary.Construct.Induced.ByRel
   Relation.Binary.On                ↦ Relation.Binary.Construct.On
   Relation.Binary.Simple            ↦ Relation.Binary.Construct.Always
                                     ↘ Relation.Binary.Construct.Never
@@ -776,6 +781,27 @@ Other minor additions
   setoid        : C → Setoid a c
   ```
 
+* Added new definitions and proofs to `Relation.Binary.Construct.Induced.ByPred`:
+  ```agda
+  Resp x y = P x → P y
+
+  reflexive  : P Respects _≈_ → _≈_ ⇒ Resp
+  refl       : P Respects _≈_ → Reflexive Resp
+  trans      : Transitive Resp
+  isPreorder : P Respects _≈_ → IsPreorder _≈_ Resp
+  preorder   : P Respects _≈_ → Preorder _ _ _
+  ```
+
+* Added new definitions and proofs to `Relation.Binary.Construct.Induced.ByRel`:
+  ```agda
+  Resp x y = ∀ {a} → a R x → a R y
+
+  reflexive  : (∀ {a} → (a R_) Respects _≈_) → _≈_ ⇒ Resp
+  trans      : Transitive Resp
+  isPreorder : (∀ {a} → (a R_) Respects _≈_) → IsPreorder _≈_ Resp
+  preorder   : (∀ {a} → (a R_) Respects _≈_) → Preorder _ _ _
+  ```
+
 * Added new proofs to `Relation.Binary.Construct.StrictToNonStrict`:
   ```agda
   <⇒≤ : _<_ ⇒ _≤_
@@ -787,13 +813,13 @@ Other minor additions
   ≤-<-trans : Symmetric _≈_ → Transitive _<_ → _<_ Respectsˡ _≈_ → Trans _≤_ _<_ _<_
   ```
 
-* Added the following types in `Relation.Unary`:
+* Added new types in `Relation.Unary`:
   ```agda
   Satisfiable P = ∃ λ x → x ∈ P
   IUniversal P  = ∀ {x} → x ∈ P
   ```
 
-* Added the following proofs in `Relation.Unary.Properties`:
+* Added new proofs in `Relation.Unary.Properties`:
   ```agda
   ∅? : Decidable ∅
   U? : Decidable U

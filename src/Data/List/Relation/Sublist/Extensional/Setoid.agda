@@ -21,7 +21,6 @@ open import Function using (_∘_; _∘′_; id)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; module Inverse)
 open import Relation.Nullary using (¬_)
-open import Relation.Binary.InducedPreorders using (InducedPreorder₂)
 
 open Setoid S renaming (Carrier to A)
 
