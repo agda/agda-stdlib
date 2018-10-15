@@ -7,8 +7,8 @@
 module Codata.Delay where
 
 open import Size
-open import Codata.Thunk
-open import Codata.Conat hiding (extract)
+open import Codata.Thunk using (Thunk; force)
+open import Codata.Conat using (Conat; zero; suc; Finite)
 
 open import Data.Empty
 open import Relation.Nullary
