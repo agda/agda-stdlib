@@ -1106,29 +1106,6 @@ m⊓n+n∸m≡n (suc m) (suc n) = cong suc $ m⊓n+n∸m≡n m n
 ∸-distribʳ-⊔ (suc x) (suc y) zero    = sym (⊔-identityʳ (y ∸ x))
 ∸-distribʳ-⊔ (suc x) (suc y) (suc z) = ∸-distribʳ-⊔ x y z
 
--- Other properties
--- TODO: Can this proof be simplified? An automatic solver which can
--- handle ∸ would be nice...
-i∸k∸j+j∸k≡i+j∸k : ∀ i j k → i ∸ (k ∸ j) + (j ∸ k) ≡ i + j ∸ k
-i∸k∸j+j∸k≡i+j∸k zero    j k    = cong (_+ (j ∸ k)) (0∸n≡0 (k ∸ j))
-i∸k∸j+j∸k≡i+j∸k (suc i) j zero = cong (λ x → suc i ∸ x + j) (0∸n≡0 j)
-i∸k∸j+j∸k≡i+j∸k (suc i) zero (suc k) = begin
-  i ∸ k + 0  ≡⟨ +-identityʳ _ ⟩
-  i ∸ k      ≡⟨ cong (_∸ k) (sym (+-identityʳ _)) ⟩
-  i + 0 ∸ k  ∎
-i∸k∸j+j∸k≡i+j∸k (suc i) (suc j) (suc k) = begin
-  suc i ∸ (k ∸ j) + (j ∸ k) ≡⟨ i∸k∸j+j∸k≡i+j∸k (suc i) j k ⟩
-  suc i + j ∸ k             ≡⟨ cong (_∸ k) (sym (+-suc i j)) ⟩
-  i + suc j ∸ k             ∎
-
-im≡jm+n⇒[i∸j]m≡n : ∀ i j m n → i * m ≡ j * m + n → (i ∸ j) * m ≡ n
-im≡jm+n⇒[i∸j]m≡n i j m n eq = begin
-  (i ∸ j) * m            ≡⟨ *-distribʳ-∸ m i j ⟩
-  (i * m) ∸ (j * m)      ≡⟨ cong (_∸ j * m) eq ⟩
-  (j * m + n) ∸ (j * m)  ≡⟨ cong (_∸ j * m) (+-comm (j * m) n) ⟩
-  (n + j * m) ∸ (j * m)  ≡⟨ m+n∸n≡m n (j * m) ⟩
-  n                      ∎
-
 ------------------------------------------------------------------------
 -- Properties of ∣_-_∣
 
@@ -1367,3 +1344,29 @@ Please use i+1+j≰i instead."
 Please use ≤-stepsˡ instead."
 #-}
 
+-- Version 0.17
+
+i∸k∸j+j∸k≡i+j∸k : ∀ i j k → i ∸ (k ∸ j) + (j ∸ k) ≡ i + j ∸ k
+i∸k∸j+j∸k≡i+j∸k zero    j k    = cong (_+ (j ∸ k)) (0∸n≡0 (k ∸ j))
+i∸k∸j+j∸k≡i+j∸k (suc i) j zero = cong (λ x → suc i ∸ x + j) (0∸n≡0 j)
+i∸k∸j+j∸k≡i+j∸k (suc i) zero (suc k) = begin
+  i ∸ k + 0  ≡⟨ +-identityʳ _ ⟩
+  i ∸ k      ≡⟨ cong (_∸ k) (sym (+-identityʳ _)) ⟩
+  i + 0 ∸ k  ∎
+i∸k∸j+j∸k≡i+j∸k (suc i) (suc j) (suc k) = begin
+  suc i ∸ (k ∸ j) + (j ∸ k) ≡⟨ i∸k∸j+j∸k≡i+j∸k (suc i) j k ⟩
+  suc i + j ∸ k             ≡⟨ cong (_∸ k) (sym (+-suc i j)) ⟩
+  i + suc j ∸ k             ∎
+{-# WARNING_ON_USAGE i∸k∸j+j∸k≡i+j∸k
+"Warning: i∸k∸j+j∸k≡i+j∸k was deprecated in v0.17."
+#-}
+im≡jm+n⇒[i∸j]m≡n : ∀ i j m n → i * m ≡ j * m + n → (i ∸ j) * m ≡ n
+im≡jm+n⇒[i∸j]m≡n i j m n eq = begin
+  (i ∸ j) * m            ≡⟨ *-distribʳ-∸ m i j ⟩
+  (i * m) ∸ (j * m)      ≡⟨ cong (_∸ j * m) eq ⟩
+  (j * m + n) ∸ (j * m)  ≡⟨ cong (_∸ j * m) (+-comm (j * m) n) ⟩
+  (n + j * m) ∸ (j * m)  ≡⟨ m+n∸n≡m n (j * m) ⟩
+  n                      ∎
+{-# WARNING_ON_USAGE im≡jm+n⇒[i∸j]m≡n
+"Warning: im≡jm+n⇒[i∸j]m≡n was deprecated in v0.17."
+#-}
