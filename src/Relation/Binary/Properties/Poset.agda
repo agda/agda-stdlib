@@ -10,7 +10,7 @@ module Relation.Binary.Properties.Poset
          {p₁ p₂ p₃} (P : Poset p₁ p₂ p₃) where
 
 open Relation.Binary.Poset P hiding (trans)
-open import Relation.Binary.Construction.NonStrictToStrict _≈_ _≤_
+open import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_
 open import Relation.Binary.Properties.Preorder preorder
 open import Function using (flip)
 
@@ -30,12 +30,7 @@ invPoset = record { isPartialOrder = invIsPartialOrder }
 
 strictPartialOrder : StrictPartialOrder _ _ _
 strictPartialOrder = record
-  { isStrictPartialOrder = record
-    { isEquivalence = isEquivalence
-    ; irrefl        = <-irrefl
-    ; trans         = <-trans isPartialOrder
-    ; <-resp-≈      = <-resp-≈ isEquivalence ≤-resp-≈
-    }
+  { isStrictPartialOrder = <-isStrictPartialOrder isPartialOrder
   }
 
 open StrictPartialOrder strictPartialOrder

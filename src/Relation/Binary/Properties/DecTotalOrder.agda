@@ -10,15 +10,11 @@ module Relation.Binary.Properties.DecTotalOrder
          {d₁ d₂ d₃} (DT : DecTotalOrder d₁ d₂ d₃) where
 
 open Relation.Binary.DecTotalOrder DT hiding (trans)
-open import Relation.Binary.Construction.NonStrictToStrict _≈_ _≤_
+open import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_
 
 strictTotalOrder : StrictTotalOrder _ _ _
 strictTotalOrder = record
-  { isStrictTotalOrder = record
-      { isEquivalence = isEquivalence
-      ; trans         = <-trans isPartialOrder
-      ; compare       = <-trichotomous Eq.sym _≟_ antisym total
-      }
+  { isStrictTotalOrder = <-isStrictTotalOrder₂ isDecTotalOrder
   }
 
 open StrictTotalOrder strictTotalOrder public

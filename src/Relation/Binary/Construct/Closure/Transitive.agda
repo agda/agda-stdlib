@@ -4,7 +4,7 @@
 -- Transitive closures
 ------------------------------------------------------------------------
 
-module Relation.Binary.Closure.Transitive where
+module Relation.Binary.Construct.Closure.Transitive where
 
 open import Function
 open import Function.Equivalence as Equiv using (_⇔_)

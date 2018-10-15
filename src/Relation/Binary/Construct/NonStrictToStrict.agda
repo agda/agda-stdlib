@@ -6,7 +6,7 @@
 
 open import Relation.Binary
 
-module Relation.Binary.Construction.NonStrictToStrict
+module Relation.Binary.Construct.NonStrictToStrict
   {a ℓ₁ ℓ₂} {A : Set a} (_≈_ : Rel A ℓ₁) (_≤_ : Rel A ℓ₂) where
 
 open import Data.Product using (_×_; _,_; proj₁; proj₂)

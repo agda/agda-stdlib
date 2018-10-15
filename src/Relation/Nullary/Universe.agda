@@ -9,7 +9,7 @@ module Relation.Nullary.Universe where
 open import Relation.Nullary
 open import Relation.Nullary.Negation
 open import Relation.Binary hiding (_⇒_)
-open import Relation.Binary.Simple
+open import Relation.Binary.Construct.Simple
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl)
 open import Data.Sum     as Sum  hiding (map)

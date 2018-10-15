@@ -4,7 +4,7 @@
 -- Some simple binary relations
 ------------------------------------------------------------------------
 
-module Relation.Binary.Simple where
+module Relation.Binary.Construct.Simple where
 
 open import Relation.Binary
 open import Data.Unit

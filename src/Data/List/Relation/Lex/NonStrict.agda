@@ -19,7 +19,7 @@ import Data.List.Relation.Lex.Strict as Strict
 open import Level
 open import Relation.Nullary
 open import Relation.Binary
-import Relation.Binary.Construction.NonStrictToStrict as Conv
+import Relation.Binary.Construct.NonStrictToStrict as Conv
 
 ------------------------------------------------------------------------
 -- Publically re-export definitions from Core
