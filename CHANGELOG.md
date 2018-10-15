@@ -216,6 +216,27 @@ Non-backwards compatible changes
 
 * Refactored `Data.W` and `Codata.Musical.M` to use `Container`.
 
+#### Rearrangement of constructed relations in `Relation.Binary`
+
+* In order to improve the organisation of `Relation.Binary` and general
+  searchability, modules that build specific binary relations have been
+  moved from `Relation.Binary` to `Relation.Binary.Construct`.
+
+* The module `Relation.Binary.Simple` has been split into `Constant`,
+  `Always` and `Never`.
+
+* The full list of changes is as follows:
+  ```agda
+  Relation.Binary.Closure           ↦ Relation.Binary.Construct.Closure
+  Relation.Binary.Flip              ↦ Relation.Binary.Construct.Flip
+  Relation.Binary.On                ↦ Relation.Binary.Construct.On
+  Relation.Binary.Simple            ↦ Relation.Binary.Construct.Always
+                                    ↘ Relation.Binary.Construct.Never
+                                    ↘ Relation.Binary.Construct.Constant
+  Relation.Binary.NonStrictToStrict ↦ Relation.Binary.Construct.NonStrictToStrict
+  Relation.Binary.StrictToNonStrict ↦ Relation.Binary.Construct.StrictToNonStrict
+  ```
+
 #### Overhaul of `Relation.Binary.Indexed` subtree
 
 * The module `Relation.Binary.Indexed` has been renamed
@@ -235,10 +256,10 @@ Non-backwards compatible changes
 * In order to avoid dependency cycles, the `Setoid` record in `Relation.Binary`
   no longer exports `indexedSetoid`.  Instead the corresponding indexed setoid can
   be constructed using the `setoid` function in
-  `Relation.Binary.Indexed.Heterogeneous.Construction.Trivial`.
+  `Relation.Binary.Indexed.Heterogeneous.Construct.Trivial`.
 
 * The function `_at_` in `Relation.Binary.Indexed.Heterogeneous` has been moved to
-  `Relation.Binary.Indexed.Heterogeneous.Construction.At` and renamed to `_atₛ_`.
+  `Relation.Binary.Indexed.Heterogeneous.Construct.At` and renamed to `_atₛ_`.
 
 #### Other
 
@@ -289,9 +310,9 @@ Other major changes
   an inductive definition of the sublist relation (i.e. order-preserving embeddings).
   We also provide a solver for this order in `Data.List.Relation.Sublist.Inductive.Solver`.
 
-* Added new module `Relation.Binary.Construction.Converse`. This is very similar
-  to the existing module `Relation.Binary.Flip` in that it flips the relation. However
-  unlike the existing module, the new module leaves the underlying equality unchanged.
+* Added new module `Relation.Binary.Construct.Converse`. This is very similar
+  to the existing module `Relation.Binary.Construct.Flip` in that it flips the relation.
+  However unlike the existing module, the new module leaves the underlying equality unchanged.
 
 * Added new modules `Relation.Unary.Closure.(Preorder/StrictPartialOrder)` providing
   closures of a predicate with respect to either a preorder or a strict partial order.
@@ -337,6 +358,11 @@ anticipated any time soon, they may eventually be removed in some future release
   ```agda
   BoundedJoinSemilattice.joinSemiLattice ↦ BoundedJoinSemilattice.joinSemilattice
   BoundedMeetSemilattice.meetSemiLattice ↦ BoundedMeetSemilattice.meetSemilattice
+  ```
+
+* In `Relation.Binary.Construct.Always`
+  ```agda
+  Always-setoid ↦ setoid
   ```
 
 Other minor additions
@@ -733,7 +759,24 @@ Other minor additions
   respʳ : ∼ Respectsʳ _≡_
   ```
 
-* Added new proofs to `Relation.Binary.StrictToNonStrict`:
+* Added new proofs to `Relation.Binary.Construct.Always`:
+  ```agda
+  refl          : Reflexive Always
+  sym           : Symmetric Always
+  trans         : Transitive Always
+  isEquivalence : IsEquivalence Always
+  ```
+
+* Added new proofs to `Relation.Binary.Construct.Constant`:
+  ```agda
+  refl          : C → Reflexive (Const C)
+  sym           : Symmetric (Const C)
+  trans         : Transitive (Const C)
+  isEquivalence : C → IsEquivalence (Const C)
+  setoid        : C → Setoid a c
+  ```
+
+* Added new proofs to `Relation.Binary.Construct.StrictToNonStrict`:
   ```agda
   <⇒≤ : _<_ ⇒ _≤_
 

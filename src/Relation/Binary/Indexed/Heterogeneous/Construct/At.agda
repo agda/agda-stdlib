@@ -5,7 +5,7 @@
 -- non-indexed structures.
 ------------------------------------------------------------------------
 
-module Relation.Binary.Indexed.Heterogeneous.Construction.At where
+module Relation.Binary.Indexed.Heterogeneous.Construct.At where
 
 open import Relation.Binary
 open import Relation.Binary.Indexed.Heterogeneous

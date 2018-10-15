@@ -10,7 +10,7 @@ open import Data.Unit
 open import Function
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
-open import Relation.Binary.Construct.Simple
+open import Relation.Binary.Construct.Always using (Always)
 
 -- Natural numbers.
 
