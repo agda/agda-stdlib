@@ -14,12 +14,12 @@ Non-backwards compatible changes
   flag as there are unsafe functions scattered throughout the key modules.
   This means that it is almost impossible to verify the safety of any code
   depending on the standard library. The following reorganisation will fix
-  this problem after the NEXT full release of Agda. (Agda 2.5.4.1 uses
-  postulates in the `Agda.Builtin.X` that will be removed in the next release).
+  this problem after the **next** full release of Agda. (Agda 2.5.4.1 uses
+  `postulate`s in the `Agda.Builtin.X` that will be removed in the next release).
 
-* The following new modules `Unsafe` have been created. The contents of
-  these are  nearly all marked as unsafe as they use the `trustMe` functionality,
-  either for performance reasons or for informative decidable equality tests.
+* The following new `Unsafe` modules have been created. Nearly all of these
+  are all marked as unsafe as they use the `trustMe` functionality, either for
+  performance reasons or for informative decidable equality tests.
   ```
   Data.Char.Unsafe
   Data.Float.Unsafe
@@ -29,7 +29,7 @@ Non-backwards compatible changes
   Data.Word.Unsafe
   ```
 
-* Another module affected is `Relation.Binary.HeterogeneousEquality.Quotients(.Examples)`
+* The other modules affected are `Relation.Binary.HeterogeneousEquality.Quotients(.Examples)`
   which previously postulated function extensionality. The relevant submodules
   now take extensionality as a module parameter instead of postulating it. If you
   want to use these results then you should postulate it yourself.
@@ -50,8 +50,8 @@ Non-backwards compatible changes
 
 #### New codata library
 
-* A new `Codata` library using copatterns and sized types rather
-  than musical notation has been added. The library is built around a generic
+* A new `Codata` library has been added that is based on copatterns and sized
+  types rather than musical notation . The library is built around a generic
   notion of coinductive `Thunk` and provides the basic data types:
   ```agda
   Codata.Thunk
@@ -122,7 +122,7 @@ Non-backwards compatible changes
 * The existing function `tabulate` in `Data.Vec.All` has been renamed
   `universal`. The name `tabulate` now refers to a function with following type:
   ```agda
-  tabulate : (∀ i → P (Vec.lookup i xs)) → All P {k} xs
+  tabulate : (∀ i → P (lookup i xs)) → All P xs
   ```
 
 #### Deprecating `Data.Fin.Dec`:
