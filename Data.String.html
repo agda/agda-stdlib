@@ -9,7 +9,7 @@
 
 <a id="217" class="Keyword">open</a> <a id="222" class="Keyword">import</a> <a id="229" href="Data.Vec.html" class="Module">Data.Vec</a> <a id="238" class="Symbol">as</a> <a id="241" class="Module">Vec</a> <a id="245" class="Keyword">using</a> <a id="251" class="Symbol">(</a><a id="252" href="Data.Vec.html#672" class="Datatype">Vec</a><a id="255" class="Symbol">)</a>
 <a id="257" class="Keyword">open</a> <a id="262" class="Keyword">import</a> <a id="269" href="Data.Char.html" class="Module">Data.Char</a> <a id="279" class="Symbol">as</a> <a id="282" class="Module">Char</a> <a id="287" class="Keyword">using</a> <a id="293" class="Symbol">(</a><a id="294" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a><a id="298" class="Symbol">)</a>
-<a id="300" class="Keyword">open</a> <a id="305" class="Keyword">import</a> <a id="312" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="328" class="Keyword">using</a> <a id="334" class="Symbol">(</a><a id="335" href="Relation.Binary.html#1935" class="Record">Setoid</a><a id="341" class="Symbol">;</a> <a id="343" href="Relation.Binary.html#11684" class="Record">StrictTotalOrder</a><a id="359" class="Symbol">)</a>
+<a id="300" class="Keyword">open</a> <a id="305" class="Keyword">import</a> <a id="312" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="328" class="Keyword">using</a> <a id="334" class="Symbol">(</a><a id="335" href="Relation.Binary.html#1894" class="Record">Setoid</a><a id="341" class="Symbol">;</a> <a id="343" href="Relation.Binary.html#11374" class="Record">StrictTotalOrder</a><a id="359" class="Symbol">)</a>
 <a id="361" class="Keyword">open</a> <a id="366" class="Keyword">import</a> <a id="373" href="Data.List.Relation.Lex.Strict.html" class="Module">Data.List.Relation.Lex.Strict</a> <a id="403" class="Symbol">as</a> <a id="406" class="Module">StrictLex</a>
 <a id="416" class="Keyword">import</a> <a id="423" href="Relation.Binary.On.html" class="Module">Relation.Binary.On</a> <a id="442" class="Symbol">as</a> <a id="445" class="Module">On</a>
 <a id="448" class="Keyword">import</a> <a id="455" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="493" class="Symbol">as</a> <a id="496" class="Module">PropEq</a>
@@ -28,13 +28,13 @@
 <a id="822" class="Comment">------------------------------------------------------------------------</a>
 <a id="895" class="Comment">-- Equality over strings</a>
 
-<a id="setoid"></a><a id="921" href="Data.String.html#921" class="Function">setoid</a> <a id="928" class="Symbol">:</a> <a id="930" href="Relation.Binary.html#1935" class="Record">Setoid</a> <a id="937" class="Symbol">_</a> <a id="939" class="Symbol">_</a>
-<a id="941" href="Data.String.html#921" class="Function">setoid</a> <a id="948" class="Symbol">=</a> <a id="950" href="Relation.Binary.PropositionalEquality.html#1440" class="Function">PropEq.setoid</a> <a id="964" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
+<a id="setoid"></a><a id="921" href="Data.String.html#921" class="Function">setoid</a> <a id="928" class="Symbol">:</a> <a id="930" href="Relation.Binary.html#1894" class="Record">Setoid</a> <a id="937" class="Symbol">_</a> <a id="939" class="Symbol">_</a>
+<a id="941" href="Data.String.html#921" class="Function">setoid</a> <a id="948" class="Symbol">=</a> <a id="950" href="Relation.Binary.PropositionalEquality.html#1557" class="Function">PropEq.setoid</a> <a id="964" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
 
 <a id="972" class="Comment">------------------------------------------------------------------------</a>
 <a id="1045" class="Comment">-- A lexicographic ordering on strings.</a>
 
-<a id="strictTotalOrder"></a><a id="1086" href="Data.String.html#1086" class="Function">strictTotalOrder</a> <a id="1103" class="Symbol">:</a> <a id="1105" href="Relation.Binary.html#11684" class="Record">StrictTotalOrder</a> <a id="1122" class="Symbol">_</a> <a id="1124" class="Symbol">_</a> <a id="1126" class="Symbol">_</a>
+<a id="strictTotalOrder"></a><a id="1086" href="Data.String.html#1086" class="Function">strictTotalOrder</a> <a id="1103" class="Symbol">:</a> <a id="1105" href="Relation.Binary.html#11374" class="Record">StrictTotalOrder</a> <a id="1122" class="Symbol">_</a> <a id="1124" class="Symbol">_</a> <a id="1126" class="Symbol">_</a>
 <a id="1128" href="Data.String.html#1086" class="Function">strictTotalOrder</a> <a id="1145" class="Symbol">=</a>
   <a id="1149" href="Relation.Binary.On.html#7015" class="Function">On.strictTotalOrder</a>
     <a id="1173" class="Symbol">(</a><a id="1174" href="Data.List.Relation.Lex.Strict.html#4757" class="Function">StrictLex.&lt;-strictTotalOrder</a> <a id="1203" href="Data.Char.html#847" class="Function">Char.strictTotalOrder</a><a id="1224" class="Symbol">)</a>
