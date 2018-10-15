@@ -218,9 +218,27 @@ Non-backwards compatible changes
 
 #### Overhaul of `Relation.Binary.Indexed` subtree
 
-* The record `IsEquivalence` in `Relation.Binary.Indexed.Homogeneous` has been
-  replaced by `IsIndexedEquivalence`. This implemented as a record encapsulating
-  indexed versions of the required properties, rather than an indexed equivalence.
+* The module `Relation.Binary.Indexed` has been renamed
+  `Relation.Binary.Indexed.Heterogeneous`.
+
+* The names `REL`, `Rel`, `IsEquivalence` and `Setoid` in
+  `Relation.Binary.Indexed.Heterogeneous` and `Relation.Binary.Indexed.Homogeneous`
+  have been deprecated in favour of `IREL`, `IRel`, `IsIndexedEquivalence` and
+  `IndexedSetoid`. This should significantly improves code readability and avoid
+  confusion with the contents of `Relation.Binary`. The old names still exist
+  but have been deprecated.
+
+* The record `IsIndexedEquivalence` in `Relation.Binary.Indexed.Homogeneous`
+  is now implemented as a record encapsulating indexed versions of the required
+  properties, unlike the old version which directly indexed equivalences.
+
+* In order to avoid dependency cycles, the `Setoid` record in `Relation.Binary`
+  no longer exports `indexedSetoid`.  Instead the corresponding indexed setoid can
+  be constructed using the `setoid` function in
+  `Relation.Binary.Indexed.Heterogeneous.Construction.Trivial`.
+
+* The function `_at_` in `Relation.Binary.Indexed.Heterogeneous` has been moved to
+  `Relation.Binary.Indexed.Heterogeneous.Construction.At` and renamed to `_atₛ_`.
 
 #### Other
 
@@ -417,9 +435,9 @@ Other minor additions
   ```agda
   fromMaybe : A → Maybe A → A
   ```
-
 * Added new proofs to `Data.Nat.Divisibility`:
   ```agda
+
   n∣m⇒m%n≡0 : suc n ∣ m → m % (suc n) ≡ 0
   m%n≡0⇒n∣m : m % (suc n) ≡ 0 → suc n ∣ m
   m%n≡0⇔n∣m : m % (suc n) ≡ 0 ⇔ suc n ∣ m
@@ -618,6 +636,28 @@ Other minor additions
   ```agda
   <-respʳ-≈ : _<_ Respectsʳ _≈_
   <-respˡ-≈ : _<_ Respectsˡ _≈_
+  ```
+
+* Added new functions and records to `Relation.Binary.Indexed.Heterogeneous`:
+  ```agda
+  record IsIndexedPreorder  (_≈_ : Rel A ℓ₁) (_∼_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
+  ```
+
+* Added new proofs to `Relation.Binary.Indexed.Heterogeneous.Construction.At`:
+  ```agda
+  isEquivalence : IsIndexedEquivalence A _≈_  → (i : I) → B.IsEquivalence (_≈_ {i})
+  isPreorder    : IsIndexedPreorder A _≈_ _∼_ → (i : I) → B.IsPreorder (_≈_ {i}) _∼_
+  setoid        : IndexedSetoid I a ℓ → I → B.Setoid a ℓ
+  preorder      : IndexedPreorder I a ℓ₁ ℓ₂ → I → B.Preorder a ℓ₁ ℓ₂
+  ```
+
+* Added new proofs to `Relation.Binary.Indexed.Heterogeneous.Construction.Trivial`:
+  ```agda
+  isIndexedEquivalence : IsEquivalence _≈_ → IsIndexedEquivalence (λ (_ : I) → A) _≈_
+  isIndexedPreorder    : IsPreorder _≈_ _∼_ → IsIndexedPreorder (λ (_ : I) → A) _≈_ _∼_
+  indexedSetoid        : Setoid a ℓ → ∀ {I} → IndexedSetoid I a ℓ
+  indexedPreorder      : Preorder a ℓ₁ ℓ₂ → ∀ {I} → IndexedPreorder I a ℓ₁ ℓ₂
   ```
 
 * Added new types, functions and records to `Relation.Binary.Indexed.Homogeneous`:
