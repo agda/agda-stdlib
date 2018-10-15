@@ -435,6 +435,12 @@ Other minor additions
   ```agda
   fromMaybe : A → Maybe A → A
   ```
+
+* Added new operator to `Data.Nat.Base`:
+  ```agda
+  ∣_-_∣ : ℕ → ℕ → ℕ
+  ```
+
 * Added new proofs to `Data.Nat.Divisibility`:
   ```agda
 
@@ -458,11 +464,26 @@ Other minor additions
   %-distribˡ-+  : (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
   ```
 
-* Added new functions to `Data.Nat.Properties`:
+* Added new proofs to `Data.Nat.Properties`:
   ```agda
   *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
   *-distrib-∸  : _*_ DistributesOver _∸_
   ^-*-assoc    : (m ^ n) ^ p ≡ m ^ (n * p)
+
+  n≡m⇒∣n-m∣≡0       : n ≡ m → ∣ n - m ∣ ≡ 0
+  m≤n⇒∣n-m∣≡n∸m     : m ≤ n → ∣ n - m ∣ ≡ n ∸ m
+  ∣n-m∣≡0⇒n≡m       : ∣ n - m ∣ ≡ 0 → n ≡ m
+  ∣n-m∣≡n∸m⇒m≤n     : ∣ n - m ∣ ≡ n ∸ m → m ≤ n
+  ∣n-n∣≡0           : ∣ n - n ∣ ≡ 0
+  ∣n-n+m∣≡m         : ∣ n - n + m ∣ ≡ m
+  ∣n+m-n+o∣≡∣m-o|   : ∣ n + m - n + o ∣ ≡ ∣ m - o ∣
+  n∸m≤∣n-m∣         : n ∸ m ≤ ∣ n - m ∣
+  ∣n-m∣≤n⊔m         : ∣ n - m ∣ ≤ n ⊔ m
+  ∣-∣-comm          : Commutative ∣_-_∣
+  ∣n-m∣≡[n∸m]∨[m∸n] : (∣ n - m ∣ ≡ n ∸ m) ⊎ (∣ n - m ∣ ≡ m ∸ n)
+  *-distribˡ-∣-∣    : _*_ DistributesOverˡ ∣_-_∣
+  *-distribʳ-∣-∣    : _*_ DistributesOverʳ ∣_-_∣
+  *-distrib-∣-∣     : _*_ DistributesOver ∣_-_∣
   ```
 
 * Added new function to `Data.String.Base`:
