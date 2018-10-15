@@ -14,12 +14,12 @@ Non-backwards compatible changes
   flag as there are unsafe functions scattered throughout the key modules.
   This means that it is almost impossible to verify the safety of any code
   depending on the standard library. The following reorganisation will fix
-  this problem after the NEXT full release of Agda. (Agda 2.5.4.1 uses
-  postulates in the `Agda.Builtin.X` that will be removed in the next release).
+  this problem after the **next** full release of Agda. (Agda 2.5.4.1 uses
+  `postulate`s in the `Agda.Builtin.X` that will be removed in the next release).
 
-* The following new modules `Unsafe` have been created. The contents of
-  these are  nearly all marked as unsafe as they use the `trustMe` functionality,
-  either for performance reasons or for informative decidable equality tests.
+* The following new `Unsafe` modules have been created. Nearly all of these
+  are all marked as unsafe as they use the `trustMe` functionality, either for
+  performance reasons or for informative decidable equality tests.
   ```
   Data.Char.Unsafe
   Data.Float.Unsafe
@@ -29,7 +29,7 @@ Non-backwards compatible changes
   Data.Word.Unsafe
   ```
 
-* Another module affected is `Relation.Binary.HeterogeneousEquality.Quotients(.Examples)`
+* The other modules affected are `Relation.Binary.HeterogeneousEquality.Quotients(.Examples)`
   which previously postulated function extensionality. The relevant submodules
   now take extensionality as a module parameter instead of postulating it. If you
   want to use these results then you should postulate it yourself.
@@ -50,8 +50,8 @@ Non-backwards compatible changes
 
 #### New codata library
 
-* A new `Codata` library using copatterns and sized types rather
-  than musical notation has been added. The library is built around a generic
+* A new `Codata` library has been added that is based on copatterns and sized
+  types rather than musical notation . The library is built around a generic
   notion of coinductive `Thunk` and provides the basic data types:
   ```agda
   Codata.Thunk
@@ -122,7 +122,7 @@ Non-backwards compatible changes
 * The existing function `tabulate` in `Data.Vec.All` has been renamed
   `universal`. The name `tabulate` now refers to a function with following type:
   ```agda
-  tabulate : (∀ i → P (Vec.lookup i xs)) → All P {k} xs
+  tabulate : (∀ i → P (lookup i xs)) → All P xs
   ```
 
 #### Deprecating `Data.Fin.Dec`:
@@ -218,9 +218,27 @@ Non-backwards compatible changes
 
 #### Overhaul of `Relation.Binary.Indexed` subtree
 
-* The record `IsEquivalence` in `Relation.Binary.Indexed.Homogeneous` has been
-  replaced by `IsIndexedEquivalence`. This implemented as a record encapsulating
-  indexed versions of the required properties, rather than an indexed equivalence.
+* The module `Relation.Binary.Indexed` has been renamed
+  `Relation.Binary.Indexed.Heterogeneous`.
+
+* The names `REL`, `Rel`, `IsEquivalence` and `Setoid` in
+  `Relation.Binary.Indexed.Heterogeneous` and `Relation.Binary.Indexed.Homogeneous`
+  have been deprecated in favour of `IREL`, `IRel`, `IsIndexedEquivalence` and
+  `IndexedSetoid`. This should significantly improves code readability and avoid
+  confusion with the contents of `Relation.Binary`. The old names still exist
+  but have been deprecated.
+
+* The record `IsIndexedEquivalence` in `Relation.Binary.Indexed.Homogeneous`
+  is now implemented as a record encapsulating indexed versions of the required
+  properties, unlike the old version which directly indexed equivalences.
+
+* In order to avoid dependency cycles, the `Setoid` record in `Relation.Binary`
+  no longer exports `indexedSetoid`.  Instead the corresponding indexed setoid can
+  be constructed using the `setoid` function in
+  `Relation.Binary.Indexed.Heterogeneous.Construction.Trivial`.
+
+* The function `_at_` in `Relation.Binary.Indexed.Heterogeneous` has been moved to
+  `Relation.Binary.Indexed.Heterogeneous.Construction.At` and renamed to `_atₛ_`.
 
 #### Other
 
@@ -295,7 +313,13 @@ anticipated any time soon, they may eventually be removed in some future release
   nonZeroDivisor-lemma
   ```
 
-* In `Function.Related`
+* In `Data.Nat.Properties`:
+  ```agda
+  i∸k∸j+j∸k≡i+j∸k
+  im≡jm+n⇒[i∸j]m≡n
+  ```
+
+* In `Function.Related`:
   ```agda
   preorder              ↦ R-preorder
   setoid                ↦ SR-setoid
@@ -412,8 +436,14 @@ Other minor additions
   fromMaybe : A → Maybe A → A
   ```
 
+* Added new operator to `Data.Nat.Base`:
+  ```agda
+  ∣_-_∣ : ℕ → ℕ → ℕ
+  ```
+
 * Added new proofs to `Data.Nat.Divisibility`:
   ```agda
+
   n∣m⇒m%n≡0 : suc n ∣ m → m % (suc n) ≡ 0
   m%n≡0⇒n∣m : m % (suc n) ≡ 0 → suc n ∣ m
   m%n≡0⇔n∣m : m % (suc n) ≡ 0 ⇔ suc n ∣ m
@@ -434,11 +464,26 @@ Other minor additions
   %-distribˡ-+  : (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
   ```
 
-* Added new functions to `Data.Nat.Properties`:
+* Added new proofs to `Data.Nat.Properties`:
   ```agda
   *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
   *-distrib-∸  : _*_ DistributesOver _∸_
   ^-*-assoc    : (m ^ n) ^ p ≡ m ^ (n * p)
+
+  n≡m⇒∣n-m∣≡0       : n ≡ m → ∣ n - m ∣ ≡ 0
+  m≤n⇒∣n-m∣≡n∸m     : m ≤ n → ∣ n - m ∣ ≡ n ∸ m
+  ∣n-m∣≡0⇒n≡m       : ∣ n - m ∣ ≡ 0 → n ≡ m
+  ∣n-m∣≡n∸m⇒m≤n     : ∣ n - m ∣ ≡ n ∸ m → m ≤ n
+  ∣n-n∣≡0           : ∣ n - n ∣ ≡ 0
+  ∣n-n+m∣≡m         : ∣ n - n + m ∣ ≡ m
+  ∣n+m-n+o∣≡∣m-o|   : ∣ n + m - n + o ∣ ≡ ∣ m - o ∣
+  n∸m≤∣n-m∣         : n ∸ m ≤ ∣ n - m ∣
+  ∣n-m∣≤n⊔m         : ∣ n - m ∣ ≤ n ⊔ m
+  ∣-∣-comm          : Commutative ∣_-_∣
+  ∣n-m∣≡[n∸m]∨[m∸n] : (∣ n - m ∣ ≡ n ∸ m) ⊎ (∣ n - m ∣ ≡ m ∸ n)
+  *-distribˡ-∣-∣    : _*_ DistributesOverˡ ∣_-_∣
+  *-distribʳ-∣-∣    : _*_ DistributesOverʳ ∣_-_∣
+  *-distrib-∣-∣     : _*_ DistributesOver ∣_-_∣
   ```
 
 * Added new function to `Data.String.Base`:
@@ -612,6 +657,28 @@ Other minor additions
   ```agda
   <-respʳ-≈ : _<_ Respectsʳ _≈_
   <-respˡ-≈ : _<_ Respectsˡ _≈_
+  ```
+
+* Added new functions and records to `Relation.Binary.Indexed.Heterogeneous`:
+  ```agda
+  record IsIndexedPreorder  (_≈_ : Rel A ℓ₁) (_∼_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
+  ```
+
+* Added new proofs to `Relation.Binary.Indexed.Heterogeneous.Construction.At`:
+  ```agda
+  isEquivalence : IsIndexedEquivalence A _≈_  → (i : I) → B.IsEquivalence (_≈_ {i})
+  isPreorder    : IsIndexedPreorder A _≈_ _∼_ → (i : I) → B.IsPreorder (_≈_ {i}) _∼_
+  setoid        : IndexedSetoid I a ℓ → I → B.Setoid a ℓ
+  preorder      : IndexedPreorder I a ℓ₁ ℓ₂ → I → B.Preorder a ℓ₁ ℓ₂
+  ```
+
+* Added new proofs to `Relation.Binary.Indexed.Heterogeneous.Construction.Trivial`:
+  ```agda
+  isIndexedEquivalence : IsEquivalence _≈_ → IsIndexedEquivalence (λ (_ : I) → A) _≈_
+  isIndexedPreorder    : IsPreorder _≈_ _∼_ → IsIndexedPreorder (λ (_ : I) → A) _≈_ _∼_
+  indexedSetoid        : Setoid a ℓ → ∀ {I} → IndexedSetoid I a ℓ
+  indexedPreorder      : Preorder a ℓ₁ ℓ₂ → ∀ {I} → IndexedPreorder I a ℓ₁ ℓ₂
   ```
 
 * Added new types, functions and records to `Relation.Binary.Indexed.Homogeneous`:
