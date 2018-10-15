@@ -20,9 +20,10 @@ import Data.AVL
 open import Data.Nat.Properties using (<-isStrictTotalOrder)
 open import Data.String using (String)
 open import Data.Vec using (Vec; _∷_; [])
+open import Relation.Binary.PropositionalEquality
 
 open Data.AVL <-isStrictTotalOrder renaming (Tree to Tree')
-Tree = Tree' (Vec String)
+Tree = Tree' (MkValue (Vec String) (subst (Vec String)))
 
 ------------------------------------------------------------------------
 -- Construction of trees

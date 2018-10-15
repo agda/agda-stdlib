@@ -222,6 +222,25 @@ Non-backwards compatible changes
   replaced by `IsIndexedEquivalence`. This implemented as a record encapsulating
   indexed versions of the required properties, rather than an indexed equivalence.
 
+#### Overhaul of `Data.AVL`
+
+* The family of Values stored in the tree now needs to respect the
+  Key equivalence
+
+* We have noticed that Data.AVL.Indexed's lookup & delete didn't use
+  a range to guarantee that the recursive calls were performed in the
+  right subtree. The types have been made more precise.
+
+* (insert/union)With functions now take a function of type `Maybe Val -> Val`
+  rather than a value together with a merging function `Val -> Val -> Val`
+  to handle the case where a value is already present at that key.
+
+* Various functions have been made polymorphic which makes their biases
+  & limitations clearer. e.g. we have:
+  unionWith : (V -> Maybe W -> W) -> Tree V -> Tree W -> Tree W
+  but ideally we would like to have:
+  unionWith : (These V W -> X) -> Tree V -> Tree W -> Tree X
+
 #### Other
 
 * The `Data.List.Relation.Sublist` directory has been moved to

@@ -6,12 +6,11 @@
 -----------------------------------------------------------------------
 
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_ ; refl)
 
 module Data.AVL.Key
-       {k r} (Key : Set k)
-       {_<_ : Rel Key r}
-       (isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_)
+       {k e r} (Key : Set k)
+       {_≈_ : Rel Key e} {_<_ : Rel Key r}
+       (isStrictTotalOrder : IsStrictTotalOrder _≈_ _<_)
        where
 
 open IsStrictTotalOrder isStrictTotalOrder
@@ -20,6 +19,7 @@ open import Level
 open import Data.Empty
 open import Data.Unit
 open import Data.Product
+open import Relation.Binary.PropositionalEquality as P using (_≡_ ; refl)
 
 infix 5 [_]
 

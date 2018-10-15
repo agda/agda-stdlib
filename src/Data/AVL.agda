@@ -9,62 +9,76 @@
 -- The search tree invariant is specified using the technique
 -- described by Conor McBride in his talk "Pivotal pragmatism".
 
-open import Relation.Binary
+open import Relation.Binary using (Rel; IsStrictTotalOrder)
 open import Relation.Binary.PropositionalEquality as P using (_≡_ ; refl)
 
 module Data.AVL
-  {k r} {Key : Set k} {_<_ : Rel Key r}
-  (isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_)
+  {k e r} {Key : Set k} {_≈_ : Rel Key e} {_<_ : Rel Key r}
+  (isStrictTotalOrder : IsStrictTotalOrder _≈_ _<_)
   where
 
 open import Data.Bool.Base using (Bool)
 import Data.DifferenceList as DiffList
 open import Data.Empty
 open import Data.List.Base as List using (List)
-open import Data.Maybe.Base hiding (map)
+open import Data.Maybe.Base using (Maybe; nothing; just; is-just; Is-just)
 open import Data.Nat.Base hiding (_<_; _⊔_; compare)
 open import Data.Product hiding (map)
 open import Data.Unit
-open import Function
+open import Function as F
 open import Level using (_⊔_; Lift; lift)
+
+open import Relation.Unary
 
 open IsStrictTotalOrder isStrictTotalOrder
 import Data.AVL.Indexed Key isStrictTotalOrder as Indexed
+open Indexed using (Value; MkValue; const) public
 open Indexed using (K&_ ; ⊥⁺ ; ⊤⁺)
 
 ------------------------------------------------------------------------
 -- Types and functions with hidden indices
 
-data Tree {v} (V : Key → Set v) : Set (k ⊔ v ⊔ r) where
+data Tree {v} (V : Value v) : Set (k ⊔ v ⊔ r) where
   tree : ∀ {h} → Indexed.Tree V ⊥⁺ ⊤⁺ h → Tree V
 
-module _ {v} {V : Key → Set v} where
+module _ {v} {V : Value v} where
+
+  private
+    Val = Value.family V
 
   empty : Tree V
-  empty = tree (Indexed.empty _)
+  empty = tree $′ Indexed.empty _
 
-  singleton : (k : Key) → V k → Tree V
+  singleton : (k : Key) → Val k → Tree V
   singleton k v = tree (Indexed.singleton k v _)
 
-  insert : (k : Key) → V k → Tree V → Tree V
-  insert k v (tree t) = tree $ proj₂ $ Indexed.insert k v t _
+  insert : (k : Key) → Val k → Tree V → Tree V
+  insert k v (tree t) = tree $′ proj₂ $ Indexed.insert k v t _
 
-  insertWith : (k : Key) → V k → (V k → V k → V k) →
+  insertWith : (k : Key) → (Maybe (Val k) → Val k) →
                Tree V → Tree V
-  insertWith k v f (tree t) = tree $ proj₂ $ Indexed.insertWith k v f t _
+  insertWith k f (tree t) = tree $′ proj₂ $ Indexed.insertWith k f t _
 
   delete : Key → Tree V → Tree V
-  delete k (tree t) = tree $ proj₂ $ Indexed.delete k t
+  delete k (tree t) = tree $′ proj₂ $ Indexed.delete k t _
 
-  lookup : (k : Key) → Tree V → Maybe (V k)
-  lookup k (tree t) = Indexed.lookup k t
+  lookup : (k : Key) → Tree V → Maybe (Val k)
+  lookup k (tree t) = Indexed.lookup k t _
 
-module _ {v w} {V : Key → Set v} {W : Key → Set w} where
+module _ {v w} {V : Value v} {W : Value w} where
 
-  map : ({k : Key} → V k → W k) → Tree V → Tree W
+  private
+    Val = Value.family V
+    Wal = Value.family W
+
+  map : ∀[ Val ⇒ Wal ] → Tree V → Tree W
   map f (tree t) = tree $ Indexed.map f t
 
-module _ {v} {V : Key → Set v} where
+module _ {v} {V : Value v} where
+
+  private
+    Val = Value.family V
+
 
   infix 4 _∈?_
 
@@ -93,21 +107,30 @@ module _ {v} {V : Key → Set v} where
 
   -- Naive implementations of union.
 
-  unionWith : (∀ {k} → V k → V k → V k) →
+module _ {v w} {V : Value v} {W : Value w} where
+  private
+    Val = Value.family V
+    Wal = Value.family W
+
+  unionWith : (∀ {k} → Val k → Maybe (Wal k) → Wal k) →
               -- Left → right → result.
-              Tree V → Tree V → Tree V
+              Tree V → Tree W → Tree W
   unionWith f t₁ t₂ =
-    List.foldr (λ { (k , v) → insertWith k v f }) t₂ (toList t₁)
+    List.foldr (uncurry $ λ k v → insertWith k (f v)) t₂ (toList t₁)
 
   -- Left-biased.
 
-  union : Tree V → Tree V → Tree V
-  union = unionWith const
+module _ {v} {V : Value v} where
 
-  unionsWith : (∀ {k} → V k → V k → V k) → List (Tree V) → Tree V
+  private Val = Value.family V
+
+  union : Tree V → Tree V → Tree V
+  union = unionWith F.const
+
+  unionsWith : (∀ {k} → Val k → Maybe (Val k) → Val k) → List (Tree V) → Tree V
   unionsWith f ts = List.foldr (unionWith f) empty ts
 
   -- Left-biased.
 
   unions : List (Tree V) → Tree V
-  unions = unionsWith const
+  unions = unionsWith F.const

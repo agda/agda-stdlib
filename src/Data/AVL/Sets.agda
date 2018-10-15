@@ -8,11 +8,12 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality using (_≡_)
 
 module Data.AVL.Sets
-  {k ℓ} {Key : Set k} {_<_ : Rel Key ℓ}
-  (isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_)
+  {k e ℓ} {Key : Set k} {_≈_ : Rel Key e} {_<_ : Rel Key ℓ}
+  (isStrictTotalOrder : IsStrictTotalOrder _≈_ _<_)
   where
 
 import Data.AVL as AVL
+
 open import Data.Bool
 open import Data.List.Base as List using (List)
 open import Data.Maybe.Base as Maybe
@@ -26,7 +27,7 @@ open import Level
 private
   open module S = AVL isStrictTotalOrder
     public using () renaming (Tree to ⟨Set⟩')
-  ⟨Set⟩ = ⟨Set⟩' (const ⊤)
+  ⟨Set⟩ = ⟨Set⟩' (S.const ⊤)
 
 -- Repackaged functions.
 
