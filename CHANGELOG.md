@@ -253,6 +253,9 @@ Non-backwards compatible changes
 * `Relation.Binary` now no longer exports `_≡_`, `_≢_` and `refl`. The standard
   way of accessing them remains `Relation.Binary.PropositionalEquality`.
 
+* The syntax `∀[_]` in `Relation.Unary` has been renamed to `Π[_]`. The original
+  name is now used for for implicit universal quantifiers.
+
 Other major changes
 -------------------
 
@@ -274,6 +277,8 @@ Other major changes
 
 * Added new modules `Relation.Unary.Closure.(Preorder/StrictPartialOrder)` providing
   closures of a predicate with respect to either a preorder or a strict partial order.
+
+* Added new modules `Relation.Binary.Properties.(DistributiveLattice/HeytingAlgebra)`.
 
 Deprecated features
 -------------------
@@ -304,6 +309,12 @@ anticipated any time soon, they may eventually be removed in some future release
   ×⊎-CommutativeSemiring ↦ ×-⊎-commutativeSemiring
   ```
 
+* In `Relation.Binary.Lattice`:
+  ```agda
+  BoundedJoinSemilattice.joinSemiLattice ↦ BoundedJoinSemilattice.joinSemilattice
+  BoundedMeetSemilattice.meetSemiLattice ↦ BoundedMeetSemilattice.meetSemilattice
+  ```
+
 Other minor additions
 ---------------------
 
@@ -312,6 +323,11 @@ Other minor additions
   record RawSemigroup c ℓ : Set (suc (c ⊔ ℓ))
   record RawGroup     c ℓ : Set (suc (c ⊔ ℓ))
   record RawSemiring  c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* Added new function `Category.Functor`'s `RawFunctor`:
+  ```agda
+  _<&>_ : F A → (A → B) → F B
   ```
 
 * Added new function to `Category.Monad.Indexed`:
@@ -638,6 +654,27 @@ Other minor additions
   record IndexedPoset    {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
   ```
 
+* Added new types, records and proofs to `Relation.Binary.Lattice`:
+  ```agda
+  Exponential _≤_ _∧_ _⇨_ = ∀ w x y → ((w ∧ x) ≤ y → w ≤ (x ⇨ y)) × (w ≤ (x ⇨ y) → (w ∧ x) ≤ y)
+
+  IsJoinSemilattice.x≤x∨y      : x ≤ x ∨ y
+  IsJoinSemilattice.y≤x∨y      : y ≤ x ∨ y
+  IsJoinSemilattice.∨-least    : x ≤ z → y ≤ z → x ∨ y ≤ z
+
+  IsMeetSemilattice.x∧y≤x      : x ∧ y ≤ x
+  IsMeetSemilattice.x∧y≤y      : x ∧ y ≤ y
+  IsMeetSemilattice.∧-greatest : x ≤ y → x ≤ z → x ≤ y ∧ z
+
+  record IsDistributiveLattice _≈_ _≤_ _∨_ _∧_
+  record IsHeytingAlgebra      _≈_ _≤_ _∨_ _∧_ _⇨_ ⊤ ⊥
+  record IsBooleanAlgebra      _≈_ _≤_ _∨_ _∧_ ¬_ ⊤ ⊥
+
+  record DistributiveLattice c ℓ₁ ℓ₂
+  record HeytingAlgebra      c ℓ₁ ℓ₂
+  record BooleanAlgebra      c ℓ₁ ℓ₂
+  ```
+
 * Added new proofs to `Relation.Binary.NonStrictToStrict`:
   ```agda
   <⇒≤ : _<_ ⇒ _≤_
@@ -663,6 +700,7 @@ Other minor additions
 * Added the following types in `Relation.Unary`:
   ```agda
   Satisfiable P = ∃ λ x → x ∈ P
+  IUniversal P  = ∀ {x} → x ∈ P
   ```
 
 * Added the following proofs in `Relation.Unary.Properties`:
