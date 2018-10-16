@@ -36,45 +36,12 @@ private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
 
 ------------------------------------------------------------------------
--- Relational properties
+-- Relational properties and Reasoning over subsets
 
-module _ {a} {A : Set a} where
-
-  ⊆-reflexive : _≡_ ⇒ (_⊆_ {A = A})
-  ⊆-reflexive refl = id
-
-  ⊆-refl : Reflexive (_⊆_ {A = A})
-  ⊆-refl x∈xs = x∈xs
-
-  ⊆-trans : Transitive (_⊆_ {A = A})
-  ⊆-trans xs⊆ys ys⊆zs x∈xs = ys⊆zs (xs⊆ys x∈xs)
-
+open import Data.List.Relation.Sublist.Extensional.Setoid.Properties using (module OrderDefinitions)
 module _ {a} (A : Set a) where
-
-  ⊆-isPreorder : IsPreorder _≡_ (_⊆_ {A = A})
-  ⊆-isPreorder = record
-    { isEquivalence = isEquivalence
-    ; reflexive     = ⊆-reflexive
-    ; trans         = ⊆-trans
-    }
-
-  ⊆-preorder : Preorder _ _ _
-  ⊆-preorder = record
-    { isPreorder = ⊆-isPreorder
-    }
-
-------------------------------------------------------------------------
--- Reasoning over subsets
-
-module ⊆-Reasoning {a} (A : Set a) where
-
-  open PreorderReasoning (⊆-preorder A) public
-    renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
-
-  infix 1 _∈⟨_⟩_
-
-  _∈⟨_⟩_ : ∀ x {xs ys} → x ∈ xs → xs IsRelatedTo ys → x ∈ ys
-  x ∈⟨ x∈xs ⟩ xs⊆ys = (begin xs⊆ys) x∈xs
+  open OrderDefinitions (setoid A) public
+  -- Note that _≋⟨_⟩_ is for pointwise `_≡_`.
 
 ------------------------------------------------------------------------
 -- Properties relating _⊆_ to various list functions

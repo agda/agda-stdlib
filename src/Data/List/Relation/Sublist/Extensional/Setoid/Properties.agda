@@ -31,7 +31,7 @@ open Setoid using (Carrier)
 ------------------------------------------------------------------------
 -- Relational properties
 
-module _ {a ℓ} (S : Setoid a ℓ) where
+module OrderDefinitions {a ℓ} (S : Setoid a ℓ) where
 
   open Equality S
   open Sublist S
@@ -60,12 +60,14 @@ module _ {a ℓ} (S : Setoid a ℓ) where
 
   -- Reasoning over subsets
   module ⊆-Reasoning where
-    open PreorderReasoning ⊆-preorder public renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
+    open PreorderReasoning ⊆-preorder public
+      renaming (_∼⟨_⟩_ to _⊆⟨_⟩_ ; _≈⟨_⟩_ to _≋⟨_⟩_ ; _≈⟨⟩_ to _≋⟨⟩_)
 
     infix 1 _∈⟨_⟩_
     _∈⟨_⟩_ : ∀ x {xs ys} → x ∈ xs → xs IsRelatedTo ys → x ∈ ys
     x ∈⟨ x∈xs ⟩ xs⊆ys = (begin xs⊆ys) x∈xs
 
+open OrderDefinitions public
 ------------------------------------------------------------------------
 -- filter
 
