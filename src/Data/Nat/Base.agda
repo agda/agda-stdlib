@@ -7,12 +7,15 @@
 module Data.Nat.Base where
 
 open import Level using (0ℓ)
-open import Function using (_∘_)
+open import Function using (_∘_; flip)
 open import Relation.Binary
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality
 
 open import Relation.Nullary using (¬_; Dec; yes; no)
+open import Relation.Nullary.Decidable using (map′)
+open import Relation.Nullary.Negation using (¬?)
 
 infix 4 _≤_ _<_ _≥_ _>_ _≰_ _≮_ _≱_ _≯_
 
@@ -144,7 +147,7 @@ x ^ suc n = x * x ^ n
 ------------------------------------------------------------------------
 -- Queries
 
-infix 4 _≟_ _≤?_
+infix 4 _≟_ _≤?_ _<?_ _≥?_ _>?_ _≰?_ _≮?_ _≱?_ _≯?_
 
 _≟_ : Decidable {A = ℕ} _≡_
 zero  ≟ zero   = yes refl
@@ -163,6 +166,27 @@ suc m ≤? zero  = no λ()
 suc m ≤? suc n with m ≤? n
 ... | yes m≤n = yes (s≤s m≤n)
 ... | no  m≰n = no  (m≰n ∘ ≤-pred)
+
+_<?_ : Decidable _<_
+x <? y = suc x ≤? y
+
+_≥?_ : Decidable _≥_
+_≥?_ = flip _≤?_
+
+_>?_ : Decidable _>_
+_>?_ = flip _<?_
+
+_≰?_ : Decidable _≰_
+x ≰? y = ¬? (x ≤? y)
+
+_≮?_ : Decidable _≮_
+x ≮? y = ¬? (x <? y)
+
+_≱?_ : Decidable _≱_
+x ≱? y = ¬? (x ≥? y)
+
+_≯?_ : Decidable _≯_
+x ≯? y = ¬? (x >? y)
 
 -- A comparison view. Taken from "View from the left"
 -- (McBride/McKinna); details may differ.

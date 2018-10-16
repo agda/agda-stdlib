@@ -17,7 +17,7 @@ open import Data.Nat as Nat
 open import Data.Product
 open import Data.Sum
 open import Relation.Nullary
-open import Relation.Nullary.Decidable using (via-injection)
+open import Relation.Nullary.Decidable using (via-injection; map′)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary.PropositionalEquality
 open import Algebra.FunctionProperties (_≡_ {A = ℕ})
@@ -150,10 +150,6 @@ pred-mono (s≤s le) = le
 -- Properties of _<_
 
 -- Relation theoretic properties of _<_
-infix 4 _<?_
-
-_<?_ : Decidable _<_
-x <? y = suc x ≤? y
 
 <-irrefl : Irreflexive _≡_ _<_
 <-irrefl refl (s≤s n<n) = <-irrefl refl n<n
@@ -262,6 +258,23 @@ s≤′s (≤′-step m≤′n) = ≤′-step (s≤′s m≤′n)
 ≤′-step-injective refl = refl
 
 ------------------------------------------------------------------------
+-- Decidable for _≤'_
+
+infix 4 _≤′?_ _<′?_ _≥′?_ _>′?_
+
+_≤′?_ : Decidable _≤′_
+x ≤′? y = map′ ≤⇒≤′ ≤′⇒≤ (x ≤? y)
+
+_<′?_ : Decidable _<′_
+x <′? y = suc x ≤′? y
+
+_≥′?_ : Decidable _≥′_
+_≥′?_ = flip _≤′?_
+
+_>′?_ : Decidable _>′_
+_>′?_ = flip _<′?_
+
+------------------------------------------------------------------------
 -- Properties of _≤″_
 
 ≤″⇒≤ : _≤″_ ⇒ _≤_
@@ -280,6 +293,23 @@ s≤′s (≤′-step m≤′n) = ≤′-step (s≤′s m≤′n)
   proof : ∀ {m n} (m≤n : m ≤ n) → m + k m n m≤n ≡ n
   proof z≤n       = refl
   proof (s≤s m≤n) = cong suc (proof m≤n)
+
+------------------------------------------------------------------------
+-- Decidable for _≤″_
+
+infix 4 _≤″?_ _<″?_ _≥″?_ _>″?_
+
+_≤″?_ : Decidable _≤″_
+x ≤″? y = map′ ≤⇒≤″ ≤″⇒≤ (x ≤? y)
+
+_<″?_ : Decidable _<″_
+x <″? y = suc x ≤″? y
+
+_≥″?_ : Decidable _≥″_
+_≥″?_ = flip _≤″?_
+
+_>″?_ : Decidable _>″_
+_>″?_ = flip _<″?_
 
 ------------------------------------------------------------------------
 -- Properties of _+_
