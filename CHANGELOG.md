@@ -242,9 +242,10 @@ Non-backwards compatible changes
 
 #### Other
 
-* The `Data.List.Relation.Sublist` directory has been moved to
-  `Data.List.Relation.Sublist.Extensional` to make room for the
-  new `Data.List.Relation.Sublist.Inductive` hierarchy.
+* The `Data.List.Relation.Sublist` module was misnamed as it contained a subset
+  rather than a sublist relation. It has been correctly renamed to
+  `Data.List.Relation.Subset`. In its place a new module `Data.List.Relation.Sublist`
+  has been added that correctly implements the sublist relation.
 
 * The types `IrrelevantPred` and `IrrelevantRel` in
   `Relation.Binary.PropositionalEquality` have both been renamed to
