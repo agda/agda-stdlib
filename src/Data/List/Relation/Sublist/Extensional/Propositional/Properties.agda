@@ -36,12 +36,39 @@ private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
 
 ------------------------------------------------------------------------
--- Relational properties and Reasoning over subsets
+-- Relational properties
 
-open import Data.List.Relation.Sublist.Extensional.Setoid.Properties using (module OrderDefinitions)
+module _ {a} {A : Set a} where
+
+  ⊆-reflexive : _≡_ ⇒ (_⊆_ {A = A})
+  ⊆-reflexive refl = id
+
+  ⊆-refl : Reflexive {A = List A} _⊆_
+  ⊆-refl x∈xs = x∈xs
+
+  ⊆-trans : Transitive {A = List A} (_⊆_ {A = A})
+  ⊆-trans xs⊆ys ys⊆zs x∈xs = ys⊆zs (xs⊆ys x∈xs)
+
 module _ {a} (A : Set a) where
-  open OrderDefinitions (setoid A) public
-  -- Note that _≋⟨_⟩_ is for pointwise `_≡_`.
+
+  ⊆-isPreorder : IsPreorder {A = List A} _≡_ _⊆_
+  ⊆-isPreorder = record
+    { isEquivalence = isEquivalence
+    ; reflexive     = ⊆-reflexive
+    ; trans         = ⊆-trans
+    }
+
+  ⊆-preorder : Preorder _ _ _
+  ⊆-preorder = record
+    { isPreorder = ⊆-isPreorder
+    }
+
+------------------------------------------------------------------------
+-- Reasoning over subsets
+
+module ⊆-Reasoning {a} (A : Set a) where
+  open Setoidₚ.⊆-Reasoning public
+    hiding (_≋⟨_⟩_) renaming (_≋⟨⟩_ to _≡⟨⟩_)
 
 ------------------------------------------------------------------------
 -- Properties relating _⊆_ to various list functions
@@ -55,6 +82,7 @@ module _ {a p} {A : Set a} {P : A → Set p} {xs ys : List A} where
     _⟨$⟩_ (Inverse.to Any↔) ∘′
     Prod.map id (Prod.map xs⊆ys id) ∘
     _⟨$⟩_ (Inverse.from Any↔)
+
 
 ------------------------------------------------------------------------
 -- map

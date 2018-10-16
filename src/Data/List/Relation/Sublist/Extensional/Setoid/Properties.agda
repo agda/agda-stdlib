@@ -31,7 +31,7 @@ open Setoid using (Carrier)
 ------------------------------------------------------------------------
 -- Relational properties
 
-module OrderDefinitions {a ℓ} (S : Setoid a ℓ) where
+module _ {a ℓ} (S : Setoid a ℓ) where
 
   open Equality S
   open Sublist S
@@ -67,7 +67,6 @@ module OrderDefinitions {a ℓ} (S : Setoid a ℓ) where
     _∈⟨_⟩_ : ∀ x {xs ys} → x ∈ xs → xs IsRelatedTo ys → x ∈ ys
     x ∈⟨ x∈xs ⟩ xs⊆ys = (begin xs⊆ys) x∈xs
 
-open OrderDefinitions public
 ------------------------------------------------------------------------
 -- filter
 
