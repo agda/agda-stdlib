@@ -298,6 +298,8 @@ Other major changes
 
 * Added new modules `Relation.Binary.Properties.(DistributiveLattice/HeytingAlgebra)`.
 
+* Moved `_<?_` from `Data.Nat.Properties` to `Data.Nat.Base`.
+
 Deprecated features
 -------------------
 
@@ -439,6 +441,8 @@ Other minor additions
 * Added new operator to `Data.Nat.Base`:
   ```agda
   ∣_-_∣ : ℕ → ℕ → ℕ
+  _≥?_ : Decidable _≥_
+  _>?_ : Decidable _>_
   ```
 
 * Added new proofs to `Data.Nat.Divisibility`:
@@ -466,6 +470,13 @@ Other minor additions
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
+  _≤′?_ : Decidable _≤′_
+  _<′?_ : Decidable _<′_
+  _≤″?_ : Decidable _≤″_
+  _<″?_ : Decidable _<″_
+  _≥″?_ : Decidable _≥″_
+  _>″?_ : Decidable _>″_
+
   *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
   *-distrib-∸  : _*_ DistributesOver _∸_
   ^-*-assoc    : (m ^ n) ^ p ≡ m ^ (n * p)
@@ -754,30 +765,4 @@ Other minor additions
   ```agda
   ∅? : Decidable ∅
   U? : Decidable U
-  ```
-
-* Moved the following proof from `Data.Nat.Properties` to `Data.Nat.Base`:
-  ```agda
-  _<?_ : Decidable _<_
-  ```
-
-* Added the following proofs in `Data.Nat`:
-  ```agda
-  _≥?_ : Decidable _≥_
-  _>?_ : Decidable _>_
-  _≰?_ : Decidable _≰_
-  _≮?_ : Decidable _≮_
-  _≱?_ : Decidable _≱_
-  _≯?_ : Decidable _≯_
-  ```
-
-* Added the following proofs in `Data.Nat.Properties`:
-  ```agda
-  _≤′?_ : Decidable _≤′_
-  _<′?_ : Decidable _<′_
-
-  _≤″?_ : Decidable _≤″_
-  _<″?_ : Decidable _<″_
-  _≥″?_ : Decidable _≥″_
-  _>″?_ : Decidable _>″_
   ```
