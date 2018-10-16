@@ -102,6 +102,12 @@ module ∣′-Reasoning = PreorderReasoning ∣′-preorder
 ------------------------------------------------------------------------
 -- Properties of _∣′_
 
+m∣′∣m∣ : ∀ {m} → m ∣′ + ∣ m ∣
+m∣′∣m∣ = ∣m⇒∣′m Ndiv.∣-refl
+
+∣m∣∣′m : ∀ {m} → + ∣ m ∣ ∣′ m
+∣m∣∣′m = ∣m⇒∣′m Ndiv.∣-refl
+
 ∣′m∣′n⇒∣′m+n : ∀ {i m n} → i ∣′ m → i ∣′ n → i ∣′ m + n
 ∣′m∣′n⇒∣′m+n {i} {m} {n} (divides q eqq) (divides p eqp) = divides (q + p) $′ begin
   m + n         ≡⟨ cong₂ _+_ eqq eqp ⟩
@@ -127,10 +133,20 @@ module ∣′-Reasoning = PreorderReasoning ∣′-preorder
   n ∎ where open ∣′-Reasoning
 
 ∣′m+n∣′n⇒∣′m : ∀ {i m n} → i ∣′ m + n → i ∣′ n → i ∣′ m
-∣′m+n∣′n⇒∣′m {i} {m} {n} i|m+n i|n = flip ∣′m+n∣′m⇒∣′n i|n $′ begin
-  i     ∣′⟨ i|m+n ⟩
-  m + n ≡⟨ +-comm m n ⟩
-  n + m ∎ where open ∣′-Reasoning
+∣′m+n∣′n⇒∣′m {i} {m} {n} i|m+n i|n
+  rewrite +-comm m n
+        = ∣′m+n∣′m⇒∣′n i|m+n i|n
+
+∣′n⇒∣′m*n : ∀ {i} m {n} → i ∣′ n → i ∣′ m * n
+∣′n⇒∣′m*n {i} m {n} (divides q eq) = divides (m * q) $′ begin
+  m * n       ≡⟨ cong (m *_) eq ⟩
+  m * (q * i) ≡⟨ sym (*-assoc m q i) ⟩
+  m * q * i   ∎ where open ≡-Reasoning
+
+∣′m⇒∣′m*n : ∀ {i m} n → i ∣′ m → i ∣′ m * n
+∣′m⇒∣′m*n {i} {m} n i|m
+  rewrite *-comm m n
+        = ∣′n⇒∣′m*n {i} n {m} i|m
 
 *-monoʳ-∣ : ∀ k → (k *_) Preserves _∣_ ⟶ _∣_
 *-monoʳ-∣ k {i} {j} i∣j = begin
@@ -139,11 +155,17 @@ module ∣′-Reasoning = PreorderReasoning ∣′-preorder
   ∣ k ∣ ℕ.* ∣ j ∣ ≡⟨ sym (abs-*-commute k j) ⟩
   ∣ k * j ∣ ∎ where open Ndiv.∣-Reasoning
 
+*-monoʳ-∣′ : ∀ k → (k *_) Preserves _∣′_ ⟶ _∣′_
+*-monoʳ-∣′ k i∣j = ∣m⇒∣′m (*-monoʳ-∣ k (∣′m⇒∣m i∣j))
+
 *-monoˡ-∣ : ∀ k → (_* k) Preserves _∣_ ⟶ _∣_
 *-monoˡ-∣ k {i} {j}
   rewrite *-comm i k
         | *-comm j k
         = *-monoʳ-∣ k
+
+*-monoˡ-∣′ : ∀ k → (_* k) Preserves _∣′_ ⟶ _∣′_
+*-monoˡ-∣′ k {i} {j} i∣j = ∣m⇒∣′m (*-monoˡ-∣ k {i} {j} (∣′m⇒∣m i∣j))
 
 *-cancelˡ-∣ : ∀ k {i j} → k ≢ + 0 → k * i ∣ k * j → i ∣ j
 *-cancelˡ-∣ k {i} {j} k≢0 k*i∣k*j = Ndiv./-cong (ℕ.pred ∣ k ∣) $ begin
