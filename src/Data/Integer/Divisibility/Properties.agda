@@ -20,13 +20,17 @@ open import Function
 
 open import Relation.Nullary
 open import Relation.Binary
+import Relation.Binary.PreorderReasoning as PreorderReasoning
 open import Relation.Binary.PropositionalEquality
 
-signed-div : ∀ k i → k ∣ i → ∃ λ q → i ≡ q * k
-signed-div k i (Ndiv.divides 0 eq) = + 0 , ∣n∣≡0⇒n≡0 eq
-signed-div k i (Ndiv.divides q@(ℕ.suc q') eq) with k ≟ + 0
-... | yes refl = + 0 , ∣n∣≡0⇒n≡0 (trans eq (NProp.*-zeroʳ q))
-... | no ¬k≠0  = (S._*_ on sign) i k ◃ q , ◃-≡ sign-eq abs-eq  where
+------------------------------------------------------------------------
+-- _∣_ and _∣′_ are equivalent
+
+∣m⇒∣′m : ∀ {k i} → k ∣ i → k ∣′ i
+∣m⇒∣′m {k} {i} (Ndiv.divides 0 eq) = divides (+ 0) (∣n∣≡0⇒n≡0 eq)
+∣m⇒∣′m {k} {i} (Ndiv.divides q@(ℕ.suc q') eq) with k ≟ + 0
+... | yes refl = divides (+ 0) (∣n∣≡0⇒n≡0 (trans eq (NProp.*-zeroʳ q)))
+... | no ¬k≠0  = divides ((S._*_ on sign) i k ◃ q) (◃-≡ sign-eq abs-eq) where
 
   k'   = ℕ.suc (ℕ.pred ∣ k ∣)
   ikq' = sign i S.* sign k ◃ ℕ.suc q'
@@ -62,6 +66,71 @@ signed-div k i (Ndiv.divides q@(ℕ.suc q') eq) with k ≟ + 0
       ≡⟨ sym eq ⟩
     ∣ i ∣
       ∎ where open ≡-Reasoning
+
+∣′m⇒∣m : ∀ {k i} → k ∣′ i → k ∣ i
+∣′m⇒∣m {k} {i} (divides q eq) = Ndiv.divides ∣ q ∣ $′ begin
+  ∣ i ∣           ≡⟨ cong ∣_∣ eq ⟩
+  ∣ q * k ∣       ≡⟨ abs-*-commute q k ⟩
+  ∣ q ∣ ℕ.* ∣ k ∣ ∎ where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- _∣′_ is a preorder
+
+∣′-refl : Reflexive _∣′_
+∣′-refl = ∣m⇒∣′m Ndiv.∣-refl
+
+∣′-reflexive : _≡_ ⇒ _∣′_
+∣′-reflexive refl = ∣′-refl
+
+∣′-trans : Transitive _∣′_
+∣′-trans i∣j j∣k = ∣m⇒∣′m (Ndiv.∣-trans (∣′m⇒∣m i∣j) (∣′m⇒∣m j∣k))
+
+∣′-isPreorder : IsPreorder _≡_ _∣′_
+∣′-isPreorder = record
+  { isEquivalence = isEquivalence
+  ; reflexive     = ∣′-reflexive
+  ; trans         = ∣′-trans
+  }
+
+∣′-preorder : Preorder _ _ _
+∣′-preorder = record { isPreorder = ∣′-isPreorder }
+
+module ∣′-Reasoning = PreorderReasoning ∣′-preorder
+  hiding   (_≈⟨_⟩_)
+  renaming (_∼⟨_⟩_ to _∣′⟨_⟩_)
+
+------------------------------------------------------------------------
+-- Properties of _∣′_
+
+∣′m∣′n⇒∣′m+n : ∀ {i m n} → i ∣′ m → i ∣′ n → i ∣′ m + n
+∣′m∣′n⇒∣′m+n {i} {m} {n} (divides q eqq) (divides p eqp) = divides (q + p) $′ begin
+  m + n         ≡⟨ cong₂ _+_ eqq eqp ⟩
+  q * i + p * i ≡⟨ sym (*-distribʳ-+ i q p) ⟩
+  (q + p) * i   ∎ where open ≡-Reasoning
+
+∣′m⇒∣′-m : ∀ {i m} → i ∣′ m → i ∣′ - m
+∣′m⇒∣′-m {i} {m} i∣m = ∣m⇒∣′m $′ begin
+  ∣ i ∣   ∣⟨ ∣′m⇒∣m i∣m ⟩
+  ∣ m ∣   ≡⟨ sym (∣-n∣≡∣n∣ m) ⟩
+  ∣ - m ∣ ∎ where open Ndiv.∣-Reasoning
+
+∣′m∣′n⇒∣′m-n : ∀ {i m n} → i ∣′ m → i ∣′ n → i ∣′ m - n
+∣′m∣′n⇒∣′m-n i∣m i∣n = ∣′m∣′n⇒∣′m+n i∣m (∣′m⇒∣′-m i∣n)
+
+∣′m+n∣′m⇒∣′n : ∀ {i m n} → i ∣′ m + n → i ∣′ m → i ∣′ n
+∣′m+n∣′m⇒∣′n {i} {m} {n} i∣m+n i∣m = begin
+  i             ∣′⟨ ∣′m∣′n⇒∣′m-n i∣m+n i∣m ⟩
+  m + n - m     ≡⟨ +-comm (m + n) (- m) ⟩
+  - m + (m + n) ≡⟨ sym (+-assoc (- m) m n) ⟩
+  - m + m + n   ≡⟨ cong (_+ n) (+-inverseˡ m) ⟩
+  + 0 + n       ≡⟨ +-identityˡ n ⟩
+  n ∎ where open ∣′-Reasoning
+
+∣′m+n∣′n⇒∣′m : ∀ {i m n} → i ∣′ m + n → i ∣′ n → i ∣′ m
+∣′m+n∣′n⇒∣′m {i} {m} {n} i|m+n i|n = flip ∣′m+n∣′m⇒∣′n i|n $′ begin
+  i     ∣′⟨ i|m+n ⟩
+  m + n ≡⟨ +-comm m n ⟩
+  n + m ∎ where open ∣′-Reasoning
 
 *-monoʳ-∣ : ∀ k → (k *_) Preserves _∣_ ⟶ _∣_
 *-monoʳ-∣ k {i} {j} i∣j = begin

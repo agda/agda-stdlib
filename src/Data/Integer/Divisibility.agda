@@ -17,10 +17,15 @@ open import Relation.Binary.PropositionalEquality
 
 -- Divisibility.
 
-infix 4 _∣_
+infix 4 _∣_ _∣′_
 
 _∣_ : Rel ℤ zero
 _∣_ = ℕ._∣_ on ∣_∣
+
+record _∣′_ (k z : ℤ) : Set where
+  constructor divides
+  field quotient : ℤ
+        equality : z ≡ quotient * k
 
 -- Coprimality.
 
