@@ -101,7 +101,7 @@ extractHeader mod = fmap (extract . lines) $ readFileUTF8 mod
     | not (delimiter d1)
     , last d1 == '\r'
     = error $ mod ++ " contains \\r, probably due to git misconfiguration; maybe set autocrf to input?"
-  extract _ = error $ mod ++ " is malformed."
+  extract _ = error $ mod ++ " is malformed. It is required to have a module header. Please see other existing files or consult HACKING.md."
 
 -- | Formats the extracted module information.
 

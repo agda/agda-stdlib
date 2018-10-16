@@ -7,7 +7,6 @@
 module Data.These where
 
 open import Level
-open import Algebra using (Semigroup)
 open import Function
 
 data These {a b} (A : Set a) (B : Set b) : Set (a ⊔ b) where
