@@ -310,6 +310,13 @@ anticipated any time soon, they may eventually be removed in some future release
 
 * All deprecated names now give warnings at point-of-use when type-checked.
 
+* In `Data.List.Properties`:
+  ```agda
+  idIsFold   ↦  id-is-foldr
+  ++IsFold   ↦  ++-is-foldr
+  mapIsFold  ↦  map-is-foldr
+  ```
+
 * In `Data.Nat.Divisibility`:
   ```
   nonZeroDivisor-lemma
@@ -323,22 +330,22 @@ anticipated any time soon, they may eventually be removed in some future release
 
 * In `Function.Related`:
   ```agda
-  preorder              ↦ R-preorder
-  setoid                ↦ SR-setoid
-  EquationReasoning.sym ↦ SR-sym
+  preorder               ↦  R-preorder
+  setoid                 ↦  SR-setoid
+  EquationReasoning.sym  ↦  SR-sym
   ```
 
 * In `Function.Related.TypeIsomorphisms`:
   ```agda
-  ×-CommutativeMonoid    ↦ ×-commutativeMonoid
-  ⊎-CommutativeMonoid    ↦ ⊎-commutativeMonoid
-  ×⊎-CommutativeSemiring ↦ ×-⊎-commutativeSemiring
+  ×-CommutativeMonoid     ↦  ×-commutativeMonoid
+  ⊎-CommutativeMonoid     ↦  ⊎-commutativeMonoid
+  ×⊎-CommutativeSemiring  ↦  ×-⊎-commutativeSemiring
   ```
 
 * In `Relation.Binary.Lattice`:
   ```agda
-  BoundedJoinSemilattice.joinSemiLattice ↦ BoundedJoinSemilattice.joinSemilattice
-  BoundedMeetSemilattice.meetSemiLattice ↦ BoundedMeetSemilattice.meetSemilattice
+  BoundedJoinSemilattice.joinSemiLattice  ↦  BoundedJoinSemilattice.joinSemilattice
+  BoundedMeetSemilattice.meetSemiLattice  ↦  BoundedMeetSemilattice.meetSemilattice
   ```
 
 Other minor additions
