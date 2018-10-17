@@ -298,7 +298,8 @@ Other major changes
 
 * Added new modules `Relation.Binary.Properties.(DistributiveLattice/HeytingAlgebra)`.
 
-* Added new module `Data.Integer.Divisibility.Properties`.
+* Added new modules `Data.Integer.Divisibility.Properties`,
+  and `Data.Integer.DivMod`.
 
 * Added new module `Relation.Binary.StrictPartialOrderReasoning`
 
@@ -442,6 +443,7 @@ Other minor additions
   <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
   <-strictPartialOrder   : StrictPartialOrder _ _ _
 
+  pos-+-commute  : Homomorphic₂ +_ ℕ._+_ _+_
   neg-distribˡ-* : - (x * y) ≡ (- x) * y
   neg-distribʳ-* : - (x * y) ≡ x * (- y)
   *-distribˡ-+   : _*_ DistributesOverˡ _+_

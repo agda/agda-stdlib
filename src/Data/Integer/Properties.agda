@@ -32,7 +32,8 @@ open import Relation.Nullary.Negation using (contradiction)
 open import Algebra.FunctionProperties (_≡_ {A = ℤ})
 open import Algebra.FunctionProperties.Consequences (setoid ℤ)
 open import Algebra.Structures (_≡_ {A = ℤ})
-open Morphism.Definitions ℤ ℕ _≡_
+module ℤtoℕ = Morphism.Definitions ℤ ℕ _≡_
+module ℕtoℤ = Morphism.Definitions ℕ ℤ _≡_
 open ≡-Reasoning
 open +-*-Solver
 
@@ -231,6 +232,10 @@ distribʳ-⊖-+-neg a b c = begin
 suc-+ : ∀ m n → + suc m + n ≡ sucℤ (+ m + n)
 suc-+ m (+ n)      = refl
 suc-+ m (-[1+ n ]) = sym (distribʳ-⊖-+-pos 1 m (suc n))
+
+pos-+-commute : ℕtoℤ.Homomorphic₂ +_ ℕ._+_ _+_
+pos-+-commute zero    n = refl
+pos-+-commute (suc m) n = cong sucℤ (pos-+-commute m n)
 
 +-assoc : Associative _+_
 +-assoc (+ zero) y z rewrite +-identityˡ      y  | +-identityˡ (y + z) = refl
@@ -649,7 +654,7 @@ private
 
 -- Other properties of _*_
 
-abs-*-commute : Homomorphic₂ ∣_∣ _*_ ℕ._*_
+abs-*-commute : ℤtoℕ.Homomorphic₂ ∣_∣ _*_ ℕ._*_
 abs-*-commute i j = abs-◃ _ _
 
 pos-distrib-* : ∀ x y → (+ x) * (+ y) ≡ + (x ℕ.* y)
