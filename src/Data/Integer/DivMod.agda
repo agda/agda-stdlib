@@ -32,6 +32,12 @@ _modℕ_ : (dividend : ℤ) (divisor : ℕ) {≠0 : False (divisor ℕ.≟ 0)} �
 ... | NDM.result q Fin.zero    eq = 0
 ... | NDM.result q (Fin.suc r) eq = d ℕ.∸ ℕ.suc (Fin.toℕ r)
 
+n%d<d : ∀ n d → n modℕ ℕ.suc d ℕ.< ℕ.suc d
+n%d<d (+ n)    d = NDM.a%n<n n d
+n%d<d -[1+ n ] d with ℕ.suc n NDM.divMod ℕ.suc d
+... | NDM.result q Fin.zero    eq = ℕ.s≤s ℕ.z≤n
+... | NDM.result q (Fin.suc r) eq = ℕ.s≤s (NProp.n∸m≤n (Fin.toℕ r) d)
+
 a≡a%n+[a/n]*n : ∀ a n → let sn = ℕ.suc n in a ≡ + (a modℕ sn) + (a divℕ sn) * + sn
 a≡a%n+[a/n]*n (+ n) d = let sd = ℕ.suc d in begin
   + n
