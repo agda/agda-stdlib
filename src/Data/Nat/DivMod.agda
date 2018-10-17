@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Integer division
+-- Natural number division
 ------------------------------------------------------------------------
 
 module Data.Nat.DivMod where

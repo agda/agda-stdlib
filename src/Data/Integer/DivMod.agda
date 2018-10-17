@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Integer division
+------------------------------------------------------------------------
+
 module Data.Integer.DivMod where
 
 open import Data.Nat.Base as ℕ using (ℕ)
