@@ -26,6 +26,7 @@ record _∣′_ (k z : ℤ) : Set where
   constructor divides
   field quotient : ℤ
         equality : z ≡ quotient * k
+open _∣′_ using (quotient) public
 
 -- Coprimality.
 
