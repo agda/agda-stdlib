@@ -6,7 +6,7 @@
 
 module Data.Integer.DivMod where
 
-open import Data.Nat.Base as ℕ using (ℕ)
+open import Data.Nat as ℕ using (ℕ)
 import Data.Nat.Properties as NProp
 import Data.Nat.DivMod as NDM
 open import Data.Fin as Fin using (Fin)

@@ -146,7 +146,7 @@ Non-backwards compatible changes
   and exports all the old names, but may be removed in some
   future version.
 
-#### Rearrangement of algebraic Solvers
+#### Rearrangement of algebraic solvers
 
 * Standardised and moved the generic solver modules as follows:
   ```agda
@@ -240,6 +240,32 @@ Non-backwards compatible changes
 * The function `_at_` in `Relation.Binary.Indexed.Heterogeneous` has been moved to
   `Relation.Binary.Indexed.Heterogeneous.Construction.At` and renamed to `_atₛ_`.
 
+#### Overhaul of decidability proofs in numeric base modules
+
+* Several numeric datatypes such as `Nat/Integer/Fin` had decidability proofs in
+  `Data.X.Base`. This required several proofs to live in `Data.X.Base` that should
+  really have been living in `Data.X.Properties` . For example `≤-pred`
+  in `Data.Nat.Base`. This problem has been growing as more decidability proofs are
+  added.
+
+* To fix this all decidability proofs in `Data.X.Base` for `Nat`/`Integer`/`Fin`
+  have been moved to `Data.X.Properties` from `Data.X.Base`. Backwards compatibility
+  has been (nearly completely) preserved by having `Data.X` publicly re-export the
+  decidability proofs. If you were using the `Data.X.Base` module directly
+  and were using decidability queries you should probably switch to use `Data.X`.
+
+* The following proofs have therefore been moved to the `Properties` files.
+  The old versions remain in the original files but have been deprecated and
+  may be removed at some future version.
+  ```agda
+  Data.Nat.≤-pred             ↦ Data.Nat.Properties.≤-pred
+
+  Data.Integer.◃-cong         ↦ Data.Integer.Properties.◃-cong
+  Data.Integer.drop‿+≤+       ↦ Data.Integer.Properties.drop‿+≤+
+  Data.Integer.drop‿-≤-       ↦ Data.Integer.Properties.drop‿-≤-
+  Data.Integer.◃-left-inverse ↦ Data.Integer.Properties.◃-inverse
+  ```
+
 #### Other
 
 * The `Data.List.Relation.Sublist` directory has been moved to
@@ -303,8 +329,6 @@ Other major changes
 
 * Added new module `Relation.Binary.StrictPartialOrderReasoning`
 
-* Moved `_<?_` from `Data.Nat.Properties` to `Data.Nat.Base`.
-
 Deprecated features
 -------------------
 
@@ -314,6 +338,13 @@ work, however they have been deprecated and use of any new names is encouraged. 
 anticipated any time soon, they may eventually be removed in some future release of the library.
 
 * All deprecated names now give warnings at point-of-use when type-checked.
+
+* In `Data.List.Properties`:
+  ```agda
+  idIsFold   ↦  id-is-foldr
+  ++IsFold   ↦  ++-is-foldr
+  mapIsFold  ↦  map-is-foldr
+  ```
 
 * In `Data.Nat.Divisibility`:
   ```
@@ -328,22 +359,22 @@ anticipated any time soon, they may eventually be removed in some future release
 
 * In `Function.Related`:
   ```agda
-  preorder              ↦ R-preorder
-  setoid                ↦ SR-setoid
-  EquationReasoning.sym ↦ SR-sym
+  preorder               ↦  R-preorder
+  setoid                 ↦  SR-setoid
+  EquationReasoning.sym  ↦  SR-sym
   ```
 
 * In `Function.Related.TypeIsomorphisms`:
   ```agda
-  ×-CommutativeMonoid    ↦ ×-commutativeMonoid
-  ⊎-CommutativeMonoid    ↦ ⊎-commutativeMonoid
-  ×⊎-CommutativeSemiring ↦ ×-⊎-commutativeSemiring
+  ×-CommutativeMonoid     ↦  ×-commutativeMonoid
+  ⊎-CommutativeMonoid     ↦  ⊎-commutativeMonoid
+  ×⊎-CommutativeSemiring  ↦  ×-⊎-commutativeSemiring
   ```
 
 * In `Relation.Binary.Lattice`:
   ```agda
-  BoundedJoinSemilattice.joinSemiLattice ↦ BoundedJoinSemilattice.joinSemilattice
-  BoundedMeetSemilattice.meetSemiLattice ↦ BoundedMeetSemilattice.meetSemilattice
+  BoundedJoinSemilattice.joinSemiLattice  ↦  BoundedJoinSemilattice.joinSemilattice
+  BoundedMeetSemilattice.meetSemiLattice  ↦  BoundedMeetSemilattice.meetSemilattice
   ```
 
 Other minor additions
@@ -533,8 +564,6 @@ Other minor additions
 * Added new operator to `Data.Nat.Base`:
   ```agda
   ∣_-_∣ : ℕ → ℕ → ℕ
-  _≥?_ : Decidable _≥_
-  _>?_ : Decidable _>_
   ```
 
 * Added new proofs to `Data.Nat.Divisibility`:
@@ -562,12 +591,13 @@ Other minor additions
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
-
   *-distribˡ-∸     : _*_ DistributesOverˡ _∸_
   *-distrib-∸      : _*_ DistributesOver _∸_
   ^-*-assoc        : (m ^ n) ^ p ≡ m ^ (n * p)
   m≢0⇒m≡s[pred[m]] : m ≢ 0 → m ≡ suc (pred m)
 
+  _≥?_  : Decidable _≥_
+  _>?_  : Decidable _>_
   _≤′?_ : Decidable _≤′_
   _<′?_ : Decidable _<′_
   _≤″?_ : Decidable _≤″_
