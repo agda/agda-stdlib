@@ -9,7 +9,7 @@ module Codata.Stream.Properties where
 open import Size
 open import Data.Nat.Base
 import Data.Vec as Vec
-open import Codata.Thunk
+open import Codata.Thunk using (Thunk; force)
 open import Codata.Stream
 open import Codata.Stream.Bisimilarity
 open import Function

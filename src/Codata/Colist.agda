@@ -10,14 +10,15 @@ open import Size
 open import Data.Unit
 open import Data.Nat.Base
 open import Data.Product using (_×_ ; _,_)
-open import Data.Maybe using (Maybe ; nothing ; just)
-open import Data.List.Base using (List ; [] ; _∷_)
-open import Data.List.NonEmpty using (List⁺ ; _∷_)
+open import Data.These using (These; this; that; these)
+open import Data.Maybe using (Maybe; nothing; just)
+open import Data.List.Base using (List; []; _∷_)
+open import Data.List.NonEmpty using (List⁺; _∷_)
 open import Data.Vec as Vec using (Vec; []; _∷_)
 open import Data.BoundedVec as BVec using (BoundedVec)
 open import Function
 
-open import Codata.Thunk
+open import Codata.Thunk using (Thunk; force)
 open import Codata.Conat as Conat using (Conat ; zero ; suc)
 open import Codata.Cowriter as CW using (Cowriter; _∷_)
 open import Codata.Delay as Delay using (Delay ; now ; later)
@@ -126,13 +127,25 @@ module _ {a b} {A : Set a} {B : Set b} where
 
 module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
- zipWith : ∀ {i} → (A → B → C) → Colist A i → Colist B i → Colist C i
- zipWith f []       bs       = []
- zipWith f as       []       = []
- zipWith f (a ∷ as) (b ∷ bs) =
-   f a b ∷ λ where .force → zipWith f (as .force) (bs .force)
+  alignWith : ∀ {i} → (These A B → C) → Colist A i → Colist B i → Colist C i
+  alignWith f []         bs       = map (f ∘′ that) bs
+  alignWith f as@(_ ∷ _) []       = map (f ∘′ this) as
+  alignWith f (a ∷ as)   (b ∷ bs) =
+    f (these a b) ∷ λ where .force → alignWith f (as .force) (bs .force)
+
+  zipWith : ∀ {i} → (A → B → C) → Colist A i → Colist B i → Colist C i
+  zipWith f []       bs       = []
+  zipWith f as       []       = []
+  zipWith f (a ∷ as) (b ∷ bs) =
+    f a b ∷ λ where .force → zipWith f (as .force) (bs .force)
 
 module _ {a b} {A : Set a} {B : Set b} where
+
+  align : ∀ {i} → Colist A i → Colist B i → Colist (These A B) i
+  align = alignWith id
+
+  zip : ∀ {i} → Colist A i → Colist B i → Colist (A × B) i
+  zip = zipWith _,_
 
   ap : ∀ {i} → Colist (A → B) i → Colist A i → Colist B i
   ap = zipWith _$′_

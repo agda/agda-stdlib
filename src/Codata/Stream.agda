@@ -7,7 +7,7 @@
 module Codata.Stream where
 
 open import Size
-open import Codata.Thunk
+open import Codata.Thunk as Thunk using (Thunk; force)
 
 open import Data.Nat.Base
 open import Data.List.Base using (List; []; _∷_)

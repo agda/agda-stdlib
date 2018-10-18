@@ -8,7 +8,7 @@ module Codata.Delay.Properties where
 
 open import Size
 import Data.Sum as Sum
-open import Codata.Thunk
+open import Codata.Thunk using (Thunk; force)
 open import Codata.Conat
 open import Codata.Conat.Bisimilarity as Coℕ using (zero ; suc)
 open import Codata.Delay

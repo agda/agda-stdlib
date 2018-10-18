@@ -8,7 +8,7 @@ module Codata.Cowriter where
 
 open import Size
 import Level as L
-open import Codata.Thunk
+open import Codata.Thunk using (Thunk; force)
 open import Codata.Conat
 open import Codata.Delay using (Delay; later; now)
 open import Codata.Stream as Stream using (Stream; _∷_)
