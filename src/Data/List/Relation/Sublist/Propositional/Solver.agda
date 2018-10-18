@@ -4,7 +4,7 @@
 -- A solver for proving that one list is a sublist of the other.
 ------------------------------------------------------------------------
 
-module Data.List.Relation.Sublist.Inductive.Solver where
+module Data.List.Relation.Sublist.Propositional.Solver where
 
 open import Data.Fin as Fin
 open import Data.Maybe as M
@@ -13,8 +13,8 @@ open import Data.Product
 open import Data.Vec as Vec using (Vec ; lookup)
 open import Data.List hiding (lookup)
 open import Data.List.Properties
-open import Data.List.Relation.Sublist.Inductive hiding (lookup)
-open import Data.List.Relation.Sublist.Inductive.Properties
+open import Data.List.Relation.Sublist.Propositional hiding (lookup)
+open import Data.List.Relation.Sublist.Propositional.Properties
 open import Function
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality hiding ([_])

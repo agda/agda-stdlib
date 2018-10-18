@@ -4,13 +4,13 @@
 -- The sublist relation over propositional equality.
 ------------------------------------------------------------------------
 
-module Data.List.Relation.Sublist.Extensional.Propositional
+module Data.List.Relation.Subset.Propositional
   {a} {A : Set a} where
 
-import Data.List.Relation.Sublist.Extensional.Setoid as SetoidSublist
+import Data.List.Relation.Subset.Setoid as SetoidSubset
 open import Relation.Binary.PropositionalEquality using (setoid)
 
 ------------------------------------------------------------------------
 -- Re-export parameterised definitions from setoid sublists
 
-open SetoidSublist (setoid A) public
+open SetoidSubset (setoid A) public
