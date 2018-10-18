@@ -328,12 +328,12 @@ Other major changes
 Deprecated features
 -------------------
 
+* All deprecated names now give warnings at point-of-use when type-checked.
+
 The following deprecations have occurred as part of a drive to improve consistency across
 the library. The deprecated names still exist and therefore all existing code should still
 work, however they have been deprecated and use of any new names is encouraged. Although not
 anticipated any time soon, they may eventually be removed in some future release of the library.
-
-* All deprecated names now give warnings at point-of-use when type-checked.
 
 * In `Data.List.Properties`:
   ```agda
@@ -342,15 +342,9 @@ anticipated any time soon, they may eventually be removed in some future release
   mapIsFold  ↦  map-is-foldr
   ```
 
-* In `Data.Nat.Divisibility`:
-  ```
-  nonZeroDivisor-lemma
-  ```
-
 * In `Data.Nat.Properties`:
   ```agda
-  i∸k∸j+j∸k≡i+j∸k
-  im≡jm+n⇒[i∸j]m≡n
+  ≤+≢⇒<  ↦  ≤∧≢⇒<
   ```
 
 * In `Function.Related`:
@@ -371,6 +365,19 @@ anticipated any time soon, they may eventually be removed in some future release
   ```agda
   BoundedJoinSemilattice.joinSemiLattice  ↦  BoundedJoinSemilattice.joinSemilattice
   BoundedMeetSemilattice.meetSemiLattice  ↦  BoundedMeetSemilattice.meetSemilattice
+  ```
+
+The following have been deprecated without replacement:
+
+* In `Data.Nat.Divisibility`:
+  ```
+  nonZeroDivisor-lemma
+  ```
+
+* In `Data.Nat.Properties`:
+  ```agda
+  i∸k∸j+j∸k≡i+j∸k
+  im≡jm+n⇒[i∸j]m≡n
   ```
 
 Other minor additions
