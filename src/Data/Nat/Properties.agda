@@ -259,11 +259,11 @@ _>?_ = flip _<?_
 ≮⇒≥ {zero}  {suc j} 1≮j+1   = contradiction (s≤s z≤n) 1≮j+1
 ≮⇒≥ {suc i} {suc j} i+1≮j+1 = s≤s (≮⇒≥ (i+1≮j+1 ∘ s≤s))
 
-≤+≢⇒< : ∀ {m n} → m ≤ n → m ≢ n → m < n
-≤+≢⇒< {_} {zero}  z≤n       m≢n     = contradiction refl m≢n
-≤+≢⇒< {_} {suc n} z≤n       m≢n     = s≤s z≤n
-≤+≢⇒< {_} {suc n} (s≤s m≤n) 1+m≢1+n =
-  s≤s (≤+≢⇒< m≤n (1+m≢1+n ∘ cong suc))
+≤∧≢⇒< : ∀ {m n} → m ≤ n → m ≢ n → m < n
+≤∧≢⇒< {_} {zero}  z≤n       m≢n     = contradiction refl m≢n
+≤∧≢⇒< {_} {suc n} z≤n       m≢n     = s≤s z≤n
+≤∧≢⇒< {_} {suc n} (s≤s m≤n) 1+m≢1+n =
+  s≤s (≤∧≢⇒< m≤n (1+m≢1+n ∘ cong suc))
 
 n≮n : ∀ n → n ≮ n
 n≮n n = <-irrefl (refl {x = n})
@@ -1430,4 +1430,9 @@ im≡jm+n⇒[i∸j]m≡n i j m n eq = begin
   n                      ∎
 {-# WARNING_ON_USAGE im≡jm+n⇒[i∸j]m≡n
 "Warning: im≡jm+n⇒[i∸j]m≡n was deprecated in v0.17."
+#-}
+≤+≢⇒< = ≤∧≢⇒<
+{-# WARNING_ON_USAGE ≤+≢⇒<
+"Warning: ≤+≢⇒< was deprecated in v0.17.
+Please use ≤∧≢⇒< instead."
 #-}
