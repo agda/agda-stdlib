@@ -11,6 +11,8 @@ module Data.Maybe.Base where
 open import Level
 open import Data.Bool.Base using (Bool; true; false; not)
 open import Data.Unit.Base using (⊤)
+open import Data.These using (These; this; that; these)
+open import Data.Product as Prod using (_×_; _,_)
 open import Function
 open import Relation.Nullary
 
@@ -23,7 +25,6 @@ data Maybe {a} (A : Set a) : Set a where
 
 ------------------------------------------------------------------------
 -- Some operations
-
 
 boolToMaybe : Bool → Maybe ⊤
 boolToMaybe true  = just _
@@ -80,3 +81,26 @@ map f = maybe (just ∘ f) nothing
 _<∣>_ : ∀ {a} {A : Set a} → Maybe A → Maybe A → Maybe A
 just x  <∣> my = just x
 nothing <∣> my = my
+
+------------------------------------------------------------------------
+-- Aligning and Zipping
+
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
+
+  alignWith : (These A B → C) → Maybe A → Maybe B → Maybe C
+  alignWith f (just a) (just b) = just (f (these a b))
+  alignWith f (just a) nothing  = just (f (this a))
+  alignWith f nothing  (just b) = just (f (that b))
+  alignWith f nothing  nothing  = nothing
+
+  zipWith : (A → B → C) → Maybe A → Maybe B → Maybe C
+  zipWith f (just a) (just b) = just (f a b)
+  zipWith _ _ _ = nothing
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+  align : Maybe A → Maybe B → Maybe (These A B)
+  align = alignWith id
+
+  zip : Maybe A → Maybe B → Maybe (A × B)
+  zip = zipWith _,_

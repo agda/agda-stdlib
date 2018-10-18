@@ -60,7 +60,8 @@ module _ {a ℓ} (S : Setoid a ℓ) where
 
   -- Reasoning over subsets
   module ⊆-Reasoning where
-    open PreorderReasoning ⊆-preorder public renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
+    open PreorderReasoning ⊆-preorder public
+      renaming (_∼⟨_⟩_ to _⊆⟨_⟩_ ; _≈⟨_⟩_ to _≋⟨_⟩_ ; _≈⟨⟩_ to _≋⟨⟩_)
 
     infix 1 _∈⟨_⟩_
     _∈⟨_⟩_ : ∀ x {xs ys} → x ∈ xs → xs IsRelatedTo ys → x ∈ ys

@@ -128,11 +128,15 @@ module _ {a} {A : Set a} where
 
   -- Universality
 
-  infix 10 Universal
+  infix 10 Universal IUniversal
   Universal : ∀ {ℓ} → Pred A ℓ → Set _
   Universal P = ∀ x → x ∈ P
 
-  syntax Universal P = ∀[ P ]
+  IUniversal : ∀ {ℓ} → Pred A ℓ → Set _
+  IUniversal P = ∀ {x} → x ∈ P
+
+  syntax Universal  P = Π[ P ]
+  syntax IUniversal P = ∀[ P ]
 
   -- Decidability
 
