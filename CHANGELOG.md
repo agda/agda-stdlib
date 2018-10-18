@@ -324,6 +324,8 @@ Other major changes
 
 * Added new modules `Relation.Binary.Properties.(DistributiveLattice/HeytingAlgebra)`.
 
+* Added new module `Data.Vec.Any.Properties`
+
 Deprecated features
 -------------------
 
@@ -460,6 +462,11 @@ Other minor additions
   ```agda
   ∈-insert : v ≈ v′ → v ∈ xs ++ [ v′ ] ++ ys
   ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
+  ```
+
+* Added new proof to `Data.List.Membership.Propositional.Properties`:
+  ```agda
+  ∈-allFin : (k : Fin n) → k ∈ allFin n
   ```
 
 * Added new functions to `Data.List.NonEmpty`:
