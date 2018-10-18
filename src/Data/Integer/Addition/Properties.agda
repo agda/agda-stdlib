@@ -18,8 +18,8 @@ open import Data.Integer.Properties public
   )
   renaming
   ( +-comm                  to comm
-  ; +-identityˡ              to identityˡ
-  ; +-identityʳ              to identityʳ
+  ; +-identityˡ             to identityˡ
+  ; +-identityʳ             to identityʳ
   ; +-assoc                 to assoc
   ; +-isSemigroup           to isSemigroup
   ; +-0-isCommutativeMonoid to isCommutativeMonoid

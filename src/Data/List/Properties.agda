@@ -381,15 +381,15 @@ foldr-fusion h {f} {g} e fuse =
   foldr-universal (h ∘ foldr f e) g (h e) refl
                   (λ x xs → fuse x (foldr f e xs))
 
-idIsFold : ∀ {a} {A : Set a} → id {A = List A} ≗ foldr _∷_ []
-idIsFold = foldr-universal id _∷_ [] refl (λ _ _ → refl)
+id-is-foldr : ∀ {a} {A : Set a} → id {A = List A} ≗ foldr _∷_ []
+id-is-foldr = foldr-universal id _∷_ [] refl (λ _ _ → refl)
 
-++IsFold : ∀ {a} {A : Set a} (xs ys : List A) →
+++-is-foldr : ∀ {a} {A : Set a} (xs ys : List A) →
            xs ++ ys ≡ foldr _∷_ ys xs
-++IsFold xs ys =
+++-is-foldr xs ys =
   begin
     xs ++ ys
-  ≡⟨ P.cong (_++ ys) (idIsFold xs) ⟩
+  ≡⟨ P.cong (_++ ys) (id-is-foldr xs) ⟩
     foldr _∷_ [] xs ++ ys
   ≡⟨ foldr-fusion (_++ ys) [] (λ _ _ → refl) xs ⟩
     foldr _∷_ ([] ++ ys) xs
@@ -403,12 +403,12 @@ foldr-++ : ∀ {a b} {A : Set a} {B : Set b} (f : A → B → B) x ys zs →
 foldr-++ f x []       zs = refl
 foldr-++ f x (y ∷ ys) zs = P.cong (f y) (foldr-++ f x ys zs)
 
-mapIsFold : ∀ {a b} {A : Set a} {B : Set b} {f : A → B} →
+map-is-foldr : ∀ {a b} {A : Set a} {B : Set b} {f : A → B} →
             map f ≗ foldr (λ x ys → f x ∷ ys) []
-mapIsFold {f = f} =
+map-is-foldr {f = f} =
   begin
     map f
-  ≈⟨ P.cong (map f) ∘ idIsFold ⟩
+  ≈⟨ P.cong (map f) ∘ id-is-foldr ⟩
     map f ∘ foldr _∷_ []
   ≈⟨ foldr-fusion (map f) [] (λ _ _ → refl) ⟩
     foldr (λ x ys → f x ∷ ys) []
@@ -444,7 +444,7 @@ module _ {a b} {A : Set a} {B : Set b} where
   concat-map {f = f} =
     begin
       concat ∘ map (map f)
-    ≈⟨ P.cong concat ∘ mapIsFold ⟩
+    ≈⟨ P.cong concat ∘ map-is-foldr ⟩
       concat ∘ foldr (λ xs → map f xs ∷_) []
     ≈⟨ foldr-fusion concat [] (λ _ _ → refl) ⟩
       foldr (λ ys → map f ys ++_) []
@@ -856,3 +856,21 @@ module _ {a p} {A : Set a} (P : A → Set p) (P? : Decidable P) where
   "Warning: boolFilter was deprecated in v0.16.
   Please use filter instead."
   #-}
+
+-- Version 0.17
+
+idIsFold  = id-is-foldr
+{-# WARNING_ON_USAGE idIsFold
+"Warning: idIsFold was deprecated in v0.17.
+Please use id-is-foldr instead."
+#-}
+++IsFold  = ++-is-foldr
+{-# WARNING_ON_USAGE ++IsFold
+"Warning: ++IsFold was deprecated in v0.17.
+Please use ++-is-foldr instead."
+#-}
+mapIsFold = map-is-foldr
+{-# WARNING_ON_USAGE mapIsFold
+"Warning: mapIsFold was deprecated in v0.17.
+Please use map-is-foldr instead."
+#-}
