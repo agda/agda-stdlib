@@ -538,9 +538,29 @@ Other minor additions
   _≥″?_ : Decidable _≥″_
   _>″?_ : Decidable _>″_
 
+  n≤0⇒n≡0      : n ≤ 0 → n ≡ 0
+  m<n⇒n≢0      : m < n → n ≢ 0
+
+  m⊓n≡m⇒m≤n    : m ⊓ n ≡ m → m ≤ n
+  m⊓n≡n⇒n≤m    : m ⊓ n ≡ n → n ≤ m
+  n⊔m≡m⇒n≤m    : n ⊔ m ≡ m → n ≤ m
+  n⊔m≡n⇒m≤n    : n ⊔ m ≡ n → m ≤ n
+
   *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
   *-distrib-∸  : _*_ DistributesOver _∸_
   ^-*-assoc    : (m ^ n) ^ p ≡ m ^ (n * p)
+
+  ≤-poset                : Poset 0ℓ 0ℓ 0ℓ
+  <-resp₂-≡              : _<_ Respects₂ _≡_
+  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+  <-strictPartialOrder   : StrictPartialOrder 0ℓ 0ℓ 0ℓ
+
+  *-+-isSemiring         : IsSemiring _+_ _*_ 0 1
+
+  ⊓-semigroup            : Semigroup 0ℓ 0ℓ
+  ⊔-semigroup            : Semigroup 0ℓ 0ℓ
+  ⊔-0-commutativeMonoid  : CommutativeMonoid 0ℓ 0ℓ
+  ⊓-⊔-lattice            : Lattice 0ℓ 0ℓ
 
   n≡m⇒∣n-m∣≡0       : n ≡ m → ∣ n - m ∣ ≡ 0
   m≤n⇒∣n-m∣≡n∸m     : m ≤ n → ∣ n - m ∣ ≡ n ∸ m
