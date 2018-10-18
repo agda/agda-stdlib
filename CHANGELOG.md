@@ -432,6 +432,13 @@ Other minor additions
   pigeonhole  : m < n → (f : Fin n → Fin m) → ∃₂ λ i j → i ≢ j × f i ≡ f j
   ```
 
+* Added new function to `Data.List.Any`:
+  ```agda
+  head    : ¬ Any P xs → Any P (x ∷ xs) → P x
+  toSum   : Any P (x ∷ xs) → P x ⊎ Any P xs
+  fromSum : P x ⊎ Any P xs → Any P (x ∷ xs)
+  ```
+
 * Added new proofs to `Data.List.Any.Properties`:
   ```agda
   here-injective  : here  p ≡ here  q → p ≡ q
