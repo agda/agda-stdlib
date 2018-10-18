@@ -4,7 +4,7 @@
 -- Sublist-related properties
 ------------------------------------------------------------------------
 
-module Data.List.Relation.Sublist.Inductive.Properties where
+module Data.List.Relation.Sublist.Propositional.Properties where
 
 open import Data.Empty
 open import Data.List.Base hiding (lookup)
@@ -12,7 +12,7 @@ open import Data.List.Properties
 open import Data.List.Any using (here; there)
 open import Data.List.Any.Properties using (here-injective; there-injective)
 open import Data.List.Membership.Propositional
-open import Data.List.Relation.Sublist.Inductive
+open import Data.List.Relation.Sublist.Propositional
 open import Data.Maybe as Maybe using (nothing; just)
 open import Data.Nat.Base
 open import Data.Nat.Properties

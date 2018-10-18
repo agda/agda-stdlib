@@ -268,9 +268,10 @@ Non-backwards compatible changes
 
 #### Other
 
-* The `Data.List.Relation.Sublist` directory has been moved to
-  `Data.List.Relation.Sublist.Extensional` to make room for the
-  new `Data.List.Relation.Sublist.Inductive` hierarchy.
+* The `Data.List.Relation.Sublist` module was misnamed as it contained a subset
+  rather than a sublist relation. It has been correctly renamed to
+  `Data.List.Relation.Subset`. In its place a new module `Data.List.Relation.Sublist`
+  has been added that correctly implements the sublist relation.
 
 * The types `IrrelevantPred` and `IrrelevantRel` in
   `Relation.Binary.PropositionalEquality` have both been renamed to
@@ -605,9 +606,29 @@ Other minor additions
   _≥″?_ : Decidable _≥″_
   _>″?_ : Decidable _>″_
 
+  n≤0⇒n≡0      : n ≤ 0 → n ≡ 0
+  m<n⇒n≢0      : m < n → n ≢ 0
+
+  m⊓n≡m⇒m≤n    : m ⊓ n ≡ m → m ≤ n
+  m⊓n≡n⇒n≤m    : m ⊓ n ≡ n → n ≤ m
+  n⊔m≡m⇒n≤m    : n ⊔ m ≡ m → n ≤ m
+  n⊔m≡n⇒m≤n    : n ⊔ m ≡ n → m ≤ n
+
   *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
   *-distrib-∸  : _*_ DistributesOver _∸_
   ^-*-assoc    : (m ^ n) ^ p ≡ m ^ (n * p)
+
+  ≤-poset                : Poset 0ℓ 0ℓ 0ℓ
+  <-resp₂-≡              : _<_ Respects₂ _≡_
+  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+  <-strictPartialOrder   : StrictPartialOrder 0ℓ 0ℓ 0ℓ
+
+  *-+-isSemiring         : IsSemiring _+_ _*_ 0 1
+
+  ⊓-semigroup            : Semigroup 0ℓ 0ℓ
+  ⊔-semigroup            : Semigroup 0ℓ 0ℓ
+  ⊔-0-commutativeMonoid  : CommutativeMonoid 0ℓ 0ℓ
+  ⊓-⊔-lattice            : Lattice 0ℓ 0ℓ
 
   n≡m⇒∣n-m∣≡0       : n ≡ m → ∣ n - m ∣ ≡ 0
   m≤n⇒∣n-m∣≡n∸m     : m ≤ n → ∣ n - m ∣ ≡ n ∸ m
