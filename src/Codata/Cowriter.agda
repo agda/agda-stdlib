@@ -14,6 +14,8 @@ open import Codata.Delay using (Delay; later; now)
 open import Codata.Stream as Stream using (Stream; _∷_)
 
 open import Data.Unit
+open import Data.List using (List; []; _∷_)
+open import Data.List.NonEmpty using (List⁺; _∷_)
 open import Data.Nat.Base as Nat using (ℕ; zero; suc)
 open import Data.Product as Prod using (_×_; _,_)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
@@ -53,11 +55,26 @@ module _ {w a} {W : Set w} {A : Set a} where
   length [ _ ]    = zero
   length (w ∷ cw) = suc λ where .force → length (cw .force)
 
+  splitAt : ∀ (n : ℕ) → Cowriter W A ∞ → (Vec W n × Cowriter W A ∞) ⊎ (BoundedVec W n × A)
+  splitAt zero    cw       = inj₁ ([] , cw)
+  splitAt (suc n) [ a ]    = inj₂ (BVec.[] , a)
+  splitAt (suc n) (w ∷ cw) = Sum.map (Prod.map₁ (w ∷_)) (Prod.map₁ (w BVec.∷_))
+                           $ splitAt n (cw .force)
+
   take : ∀ (n : ℕ) → Cowriter W A ∞ → Vec W n ⊎ (BoundedVec W n × A)
-  take zero    cw       = inj₁ []
-  take (suc n) [ a ]    = inj₂ (BVec.[] , a)
-  take (suc n) (w ∷ cw) = Sum.map (w ∷_) (Prod.map₁ (w BVec.∷_))
-                        $ take n (cw .force)
+  take n = Sum.map₁ Prod.proj₁ ∘′ splitAt n
+
+  infixr 5 _++_ _⁺++_
+  _++_ : ∀ {i} → List W → Cowriter W A i → Cowriter W A i
+  []       ++ ca = ca
+  (w ∷ ws) ++ ca = w ∷ λ where .force → ws ++ ca
+
+  _⁺++_ : ∀ {i} → List⁺ W → Thunk (Cowriter W A) i → Cowriter W A i
+  (w ∷ ws) ⁺++ ca = w ∷ λ where .force → ws ++ ca .force
+
+  concat : ∀ {i} → Cowriter (List⁺ W) A i → Cowriter W A i
+  concat [ a ]    = [ a ]
+  concat (w ∷ ca) = w ⁺++ λ where .force → concat (ca .force)
 
 module _ {w x a b} {W : Set w} {X : Set x} {A : Set a} {B : Set b} where
 
