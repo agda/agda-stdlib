@@ -13,7 +13,10 @@ open import Data.Bool.Base
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Product as Prod using (_×_; _,_)
-open import Function using (id; _∘_; flip)
+open import Data.These using (These; this; that; these)
+open import Function using (id; _∘_; _∘′_; flip)
+open import Function using (id; _∘_ ; _∘′_)
+
 open import Relation.Nullary using (yes; no)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Unary.Properties using (∁?)
@@ -48,23 +51,44 @@ intersperse x []       = []
 intersperse x (y ∷ []) = y ∷ []
 intersperse x (y ∷ ys) = y ∷ x ∷ intersperse x ys
 
-zipWith : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
-          (A → B → C) → List A → List B → List C
-zipWith f (x ∷ xs) (y ∷ ys) = f x y ∷ zipWith f xs ys
-zipWith f _        _        = []
+------------------------------------------------------------------------
+-- Aligning and Zipping
 
-zip : ∀ {a b} {A : Set a} {B : Set b} →
-      List A → List B → List (A × B)
-zip = zipWith (_,_)
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
-unzipWith : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
-            (A → B × C) → List A → List B × List C
-unzipWith f []         = [] , []
-unzipWith f (xy ∷ xys) = Prod.zip _∷_ _∷_ (f xy) (unzipWith f xys)
+  alignWith : (These A B → C) → List A → List B → List C
+  alignWith f []       bs       = map (f ∘′ that) bs
+  alignWith f as       []       = map (f ∘′ this) as
+  alignWith f (a ∷ as) (b ∷ bs) = f (these a b) ∷ alignWith f as bs
 
-unzip : ∀ {a b} {A : Set a} {B : Set b} →
-        List (A × B) → List A × List B
-unzip = unzipWith id
+  zipWith : (A → B → C) → List A → List B → List C
+  zipWith f (x ∷ xs) (y ∷ ys) = f x y ∷ zipWith f xs ys
+  zipWith f _        _        = []
+
+  unalignWith : (A → These B C) → List A → List B × List C
+  unalignWith f []       = [] , []
+  unalignWith f (a ∷ as) with f a
+  ... | this b    = Prod.map₁ (b ∷_) (unalignWith f as)
+  ... | that c    = Prod.map₂ (c ∷_) (unalignWith f as)
+  ... | these b c = Prod.map (b ∷_) (c ∷_) (unalignWith f as)
+
+  unzipWith : (A → B × C) → List A → List B × List C
+  unzipWith f []         = [] , []
+  unzipWith f (xy ∷ xys) = Prod.zip _∷_ _∷_ (f xy) (unzipWith f xys)
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+  align : List A → List B → List (These A B)
+  align = alignWith id
+
+  zip : List A → List B → List (A × B)
+  zip = zipWith (_,_)
+
+  unalign : List (These A B) → List A × List B
+  unalign = unalignWith id
+
+  unzip : List (A × B) → List A × List B
+  unzip = unzipWith id
 
 ------------------------------------------------------------------------
 -- Operations for reducing lists

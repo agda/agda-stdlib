@@ -14,12 +14,12 @@ Non-backwards compatible changes
   flag as there are unsafe functions scattered throughout the key modules.
   This means that it is almost impossible to verify the safety of any code
   depending on the standard library. The following reorganisation will fix
-  this problem after the NEXT full release of Agda. (Agda 2.5.4.1 uses
-  postulates in the `Agda.Builtin.X` that will be removed in the next release).
+  this problem after the **next** full release of Agda. (Agda 2.5.4.1 uses
+  `postulate`s in the `Agda.Builtin.X` that will be removed in the next release).
 
-* The following new modules `Unsafe` have been created. The contents of
-  these are  nearly all marked as unsafe as they use the `trustMe` functionality,
-  either for performance reasons or for informative decidable equality tests.
+* The following new `Unsafe` modules have been created. Nearly all of these
+  are all marked as unsafe as they use the `trustMe` functionality, either for
+  performance reasons or for informative decidable equality tests.
   ```
   Data.Char.Unsafe
   Data.Float.Unsafe
@@ -29,7 +29,7 @@ Non-backwards compatible changes
   Data.Word.Unsafe
   ```
 
-* Another module affected is `Relation.Binary.HeterogeneousEquality.Quotients(.Examples)`
+* The other modules affected are `Relation.Binary.HeterogeneousEquality.Quotients(.Examples)`
   which previously postulated function extensionality. The relevant submodules
   now take extensionality as a module parameter instead of postulating it. If you
   want to use these results then you should postulate it yourself.
@@ -50,8 +50,8 @@ Non-backwards compatible changes
 
 #### New codata library
 
-* A new `Codata` library using copatterns and sized types rather
-  than musical notation has been added. The library is built around a generic
+* A new `Codata` library has been added that is based on copatterns and sized
+  types rather than musical notation . The library is built around a generic
   notion of coinductive `Thunk` and provides the basic data types:
   ```agda
   Codata.Thunk
@@ -122,7 +122,7 @@ Non-backwards compatible changes
 * The existing function `tabulate` in `Data.Vec.All` has been renamed
   `universal`. The name `tabulate` now refers to a function with following type:
   ```agda
-  tabulate : (∀ i → P (Vec.lookup i xs)) → All P {k} xs
+  tabulate : (∀ i → P (lookup i xs)) → All P xs
   ```
 
 #### Deprecating `Data.Fin.Dec`:
@@ -146,7 +146,7 @@ Non-backwards compatible changes
   and exports all the old names, but may be removed in some
   future version.
 
-#### Rearrangement of algebraic Solvers
+#### Rearrangement of algebraic solvers
 
 * Standardised and moved the generic solver modules as follows:
   ```agda
@@ -218,9 +218,53 @@ Non-backwards compatible changes
 
 #### Overhaul of `Relation.Binary.Indexed` subtree
 
-* The record `IsEquivalence` in `Relation.Binary.Indexed.Homogeneous` has been
-  replaced by `IsIndexedEquivalence`. This implemented as a record encapsulating
-  indexed versions of the required properties, rather than an indexed equivalence.
+* The module `Relation.Binary.Indexed` has been renamed
+  `Relation.Binary.Indexed.Heterogeneous`.
+
+* The names `REL`, `Rel`, `IsEquivalence` and `Setoid` in
+  `Relation.Binary.Indexed.Heterogeneous` and `Relation.Binary.Indexed.Homogeneous`
+  have been deprecated in favour of `IREL`, `IRel`, `IsIndexedEquivalence` and
+  `IndexedSetoid`. This should significantly improves code readability and avoid
+  confusion with the contents of `Relation.Binary`. The old names still exist
+  but have been deprecated.
+
+* The record `IsIndexedEquivalence` in `Relation.Binary.Indexed.Homogeneous`
+  is now implemented as a record encapsulating indexed versions of the required
+  properties, unlike the old version which directly indexed equivalences.
+
+* In order to avoid dependency cycles, the `Setoid` record in `Relation.Binary`
+  no longer exports `indexedSetoid`.  Instead the corresponding indexed setoid can
+  be constructed using the `setoid` function in
+  `Relation.Binary.Indexed.Heterogeneous.Construction.Trivial`.
+
+* The function `_at_` in `Relation.Binary.Indexed.Heterogeneous` has been moved to
+  `Relation.Binary.Indexed.Heterogeneous.Construction.At` and renamed to `_atₛ_`.
+
+#### Overhaul of decidability proofs in numeric base modules
+
+* Several numeric datatypes such as `Nat/Integer/Fin` had decidability proofs in
+  `Data.X.Base`. This required several proofs to live in `Data.X.Base` that should
+  really have been living in `Data.X.Properties` . For example `≤-pred`
+  in `Data.Nat.Base`. This problem has been growing as more decidability proofs are
+  added.
+
+* To fix this all decidability proofs in `Data.X.Base` for `Nat`/`Integer`/`Fin`
+  have been moved to `Data.X.Properties` from `Data.X.Base`. Backwards compatibility
+  has been (nearly completely) preserved by having `Data.X` publicly re-export the
+  decidability proofs. If you were using the `Data.X.Base` module directly
+  and were using decidability queries you should probably switch to use `Data.X`.
+
+* The following proofs have therefore been moved to the `Properties` files.
+  The old versions remain in the original files but have been deprecated and
+  may be removed at some future version.
+  ```agda
+  Data.Nat.≤-pred             ↦ Data.Nat.Properties.≤-pred
+
+  Data.Integer.◃-cong         ↦ Data.Integer.Properties.◃-cong
+  Data.Integer.drop‿+≤+       ↦ Data.Integer.Properties.drop‿+≤+
+  Data.Integer.drop‿-≤-       ↦ Data.Integer.Properties.drop‿-≤-
+  Data.Integer.◃-left-inverse ↦ Data.Integer.Properties.◃-inverse
+  ```
 
 #### Other
 
@@ -253,6 +297,9 @@ Non-backwards compatible changes
 * `Relation.Binary` now no longer exports `_≡_`, `_≢_` and `refl`. The standard
   way of accessing them remains `Relation.Binary.PropositionalEquality`.
 
+* The syntax `∀[_]` in `Relation.Unary` has been renamed to `Π[_]`. The original
+  name is now used for for implicit universal quantifiers.
+
 Other major changes
 -------------------
 
@@ -275,6 +322,8 @@ Other major changes
 * Added new modules `Relation.Unary.Closure.(Preorder/StrictPartialOrder)` providing
   closures of a predicate with respect to either a preorder or a strict partial order.
 
+* Added new modules `Relation.Binary.Properties.(DistributiveLattice/HeytingAlgebra)`.
+
 Deprecated features
 -------------------
 
@@ -285,23 +334,42 @@ anticipated any time soon, they may eventually be removed in some future release
 
 * All deprecated names now give warnings at point-of-use when type-checked.
 
+* In `Data.List.Properties`:
+  ```agda
+  idIsFold   ↦  id-is-foldr
+  ++IsFold   ↦  ++-is-foldr
+  mapIsFold  ↦  map-is-foldr
+  ```
+
 * In `Data.Nat.Divisibility`:
   ```
   nonZeroDivisor-lemma
   ```
 
-* In `Function.Related`
+* In `Data.Nat.Properties`:
   ```agda
-  preorder              ↦ R-preorder
-  setoid                ↦ SR-setoid
-  EquationReasoning.sym ↦ SR-sym
+  i∸k∸j+j∸k≡i+j∸k
+  im≡jm+n⇒[i∸j]m≡n
+  ```
+
+* In `Function.Related`:
+  ```agda
+  preorder               ↦  R-preorder
+  setoid                 ↦  SR-setoid
+  EquationReasoning.sym  ↦  SR-sym
   ```
 
 * In `Function.Related.TypeIsomorphisms`:
   ```agda
-  ×-CommutativeMonoid    ↦ ×-commutativeMonoid
-  ⊎-CommutativeMonoid    ↦ ⊎-commutativeMonoid
-  ×⊎-CommutativeSemiring ↦ ×-⊎-commutativeSemiring
+  ×-CommutativeMonoid     ↦  ×-commutativeMonoid
+  ⊎-CommutativeMonoid     ↦  ⊎-commutativeMonoid
+  ×⊎-CommutativeSemiring  ↦  ×-⊎-commutativeSemiring
+  ```
+
+* In `Relation.Binary.Lattice`:
+  ```agda
+  BoundedJoinSemilattice.joinSemiLattice  ↦  BoundedJoinSemilattice.joinSemilattice
+  BoundedMeetSemilattice.meetSemiLattice  ↦  BoundedMeetSemilattice.meetSemilattice
   ```
 
 Other minor additions
@@ -312,6 +380,11 @@ Other minor additions
   record RawSemigroup c ℓ : Set (suc (c ⊔ ℓ))
   record RawGroup     c ℓ : Set (suc (c ⊔ ℓ))
   record RawSemiring  c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* Added new function `Category.Functor`'s `RawFunctor`:
+  ```agda
+  _<&>_ : F A → (A → B) → F B
   ```
 
 * Added new function to `Category.Monad.Indexed`:
@@ -363,9 +436,13 @@ Other minor additions
 
 * Added new functions to `Data.List.Base`:
   ```agda
-  uncons : List A → Maybe (A × List A)
-  head   : List A → Maybe A
-  tail   : List A → Maybe (List A)
+  uncons      : List A → Maybe (A × List A)
+  head        : List A → Maybe A
+  tail        : List A → Maybe (List A)
+  alignWith   : (These A B → C) → List A → List B → List C
+  unalignWith : (A → These B C) → List A → List B × List C
+  align       : List A → List B → List (These A B)
+  unalign     : List (These A B) → List A × List B
   ```
 
 * Added new functions to `Data.List.Categorical`:
@@ -387,17 +464,49 @@ Other minor additions
 
 * Added new functions to `Data.List.NonEmpty`:
   ```agda
-  uncons    : List⁺ A → A × List A
-  concatMap : (A → List⁺ B) → List⁺ A → List⁺ B
+  uncons      : List⁺ A → A × List A
+  concatMap   : (A → List⁺ B) → List⁺ A → List⁺ B
+  alignWith   : (These A B → C) → List⁺ A → List⁺ B → List⁺ C
+  zipWith     : (A → B → C) → List⁺ A → List⁺ B → List⁺ C
+  unalignWith : (A → These B C) → List⁺ A → These (List⁺ B) (List⁺ C)
+  unzipWith   : (A → B × C) → List⁺ A → List⁺ B × List⁺ C
+  align       : List⁺ A → List⁺ B → List⁺ (These A B)
+  zip         : List⁺ A → List⁺ B → List⁺ (A × B)
+  unalign     : List⁺ (These A B) → These (List⁺ A) (List⁺ B)
+  unzip       : List⁺ (A × B) → List⁺ A × List⁺ B
+  ```
+
+* Added new functions to `Data.List.Properties`:
+  ```agda
+  alignWith-cong        : f ≗ g → alignWith f as ≗ alignWith g as
+  length-alignWith      : length (alignWith f xs ys) ≡ length xs ⊔ length ys
+  alignWith-map         : alignWith f (map g xs) (map h ys) ≡ alignWith (f ∘′ These.map g h) xs ys
+  map-alignWith         : map g (alignWith f xs ys) ≡ alignWith (g ∘′ f) xs ys
+  unalignWith-this      : unalignWith this ≗ (_, [])
+  unalignWith-that      : unalignWith that ≗ ([] ,_)
+  unalignWith-cong      : f ≗ g → unalignWith f ≗ unalignWith g
+  unalignWith-map       : unalignWith f (map g ds) ≡ unalignWith (f ∘′ g) ds
+  map-unalignWith       : Prod.map (map g) (map h) ∘′ unalignWith f ≗ unalignWith (These.map g h ∘′ f)
+  unalignWith-alignWith : f ∘′ g ≗ id → unalignWith f (alignWith g as bs) ≡ (as , bs)
   ```
 
 * Added new function to `Data.Maybe.Base`:
   ```agda
   fromMaybe : A → Maybe A → A
+  alignWith : (These A B → C) → Maybe A → Maybe B → Maybe C
+  zipWith   : (A → B → C) → Maybe A → Maybe B → Maybe C
+  align     : Maybe A → Maybe B → Maybe (These A B)
+  zip       : Maybe A → Maybe B → Maybe (A × B)
+  ```
+
+* Added new operator to `Data.Nat.Base`:
+  ```agda
+  ∣_-_∣ : ℕ → ℕ → ℕ
   ```
 
 * Added new proofs to `Data.Nat.Divisibility`:
   ```agda
+
   n∣m⇒m%n≡0 : suc n ∣ m → m % (suc n) ≡ 0
   m%n≡0⇒n∣m : m % (suc n) ≡ 0 → suc n ∣ m
   m%n≡0⇔n∣m : m % (suc n) ≡ 0 ⇔ suc n ∣ m
@@ -418,11 +527,35 @@ Other minor additions
   %-distribˡ-+  : (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
   ```
 
-* Added new functions to `Data.Nat.Properties`:
+* Added new proofs to `Data.Nat.Properties`:
   ```agda
+  _≥?_  : Decidable _≥_
+  _>?_  : Decidable _>_
+  _≤′?_ : Decidable _≤′_
+  _<′?_ : Decidable _<′_
+  _≤″?_ : Decidable _≤″_
+  _<″?_ : Decidable _<″_
+  _≥″?_ : Decidable _≥″_
+  _>″?_ : Decidable _>″_
+
   *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
   *-distrib-∸  : _*_ DistributesOver _∸_
   ^-*-assoc    : (m ^ n) ^ p ≡ m ^ (n * p)
+
+  n≡m⇒∣n-m∣≡0       : n ≡ m → ∣ n - m ∣ ≡ 0
+  m≤n⇒∣n-m∣≡n∸m     : m ≤ n → ∣ n - m ∣ ≡ n ∸ m
+  ∣n-m∣≡0⇒n≡m       : ∣ n - m ∣ ≡ 0 → n ≡ m
+  ∣n-m∣≡n∸m⇒m≤n     : ∣ n - m ∣ ≡ n ∸ m → m ≤ n
+  ∣n-n∣≡0           : ∣ n - n ∣ ≡ 0
+  ∣n-n+m∣≡m         : ∣ n - n + m ∣ ≡ m
+  ∣n+m-n+o∣≡∣m-o|   : ∣ n + m - n + o ∣ ≡ ∣ m - o ∣
+  n∸m≤∣n-m∣         : n ∸ m ≤ ∣ n - m ∣
+  ∣n-m∣≤n⊔m         : ∣ n - m ∣ ≤ n ⊔ m
+  ∣-∣-comm          : Commutative ∣_-_∣
+  ∣n-m∣≡[n∸m]∨[m∸n] : (∣ n - m ∣ ≡ n ∸ m) ⊎ (∣ n - m ∣ ≡ m ∸ n)
+  *-distribˡ-∣-∣    : _*_ DistributesOverˡ ∣_-_∣
+  *-distribʳ-∣-∣    : _*_ DistributesOverʳ ∣_-_∣
+  *-distrib-∣-∣     : _*_ DistributesOver ∣_-_∣
   ```
 
 * Added new function to `Data.String.Base`:
@@ -448,6 +581,13 @@ Other minor additions
   select-lookup  : lookup (select x i t) i ≡ lookup t i
   select-remove  : remove i (select x i t) ≗ replicate {n} x
   remove-permute : remove (π ⟨$⟩ˡ i) (permute π t) ≗ permute (Perm.remove (π ⟨$⟩ˡ i) π) (remove i t)
+  ```
+
+* Added new functions to `Data.Vec`:
+  ```agda
+  alignWith : (These A B → C) → Vec A m → Vec B n → Vec C (m ⊔ n)
+  align     : Vec A m → Vec B n → Vec (These A B) (m ⊔ n)
+  unzipWith : (A → B × C) → Vec A n → Vec B n × Vec C n
   ```
 
 * Added new functions to `Data.Vec.Categorical`:
@@ -598,6 +738,28 @@ Other minor additions
   <-respˡ-≈ : _<_ Respectsˡ _≈_
   ```
 
+* Added new functions and records to `Relation.Binary.Indexed.Heterogeneous`:
+  ```agda
+  record IsIndexedPreorder  (_≈_ : Rel A ℓ₁) (_∼_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
+  ```
+
+* Added new proofs to `Relation.Binary.Indexed.Heterogeneous.Construction.At`:
+  ```agda
+  isEquivalence : IsIndexedEquivalence A _≈_  → (i : I) → B.IsEquivalence (_≈_ {i})
+  isPreorder    : IsIndexedPreorder A _≈_ _∼_ → (i : I) → B.IsPreorder (_≈_ {i}) _∼_
+  setoid        : IndexedSetoid I a ℓ → I → B.Setoid a ℓ
+  preorder      : IndexedPreorder I a ℓ₁ ℓ₂ → I → B.Preorder a ℓ₁ ℓ₂
+  ```
+
+* Added new proofs to `Relation.Binary.Indexed.Heterogeneous.Construction.Trivial`:
+  ```agda
+  isIndexedEquivalence : IsEquivalence _≈_ → IsIndexedEquivalence (λ (_ : I) → A) _≈_
+  isIndexedPreorder    : IsPreorder _≈_ _∼_ → IsIndexedPreorder (λ (_ : I) → A) _≈_ _∼_
+  indexedSetoid        : Setoid a ℓ → ∀ {I} → IndexedSetoid I a ℓ
+  indexedPreorder      : Preorder a ℓ₁ ℓ₂ → ∀ {I} → IndexedPreorder I a ℓ₁ ℓ₂
+  ```
+
 * Added new types, functions and records to `Relation.Binary.Indexed.Homogeneous`:
   ```agda
   Implies _∼₁_ _∼₂_      = ∀ {i} → _∼₁_ B.⇒ (_∼₂_ {i})
@@ -616,6 +778,27 @@ Other minor additions
   record IndexedSetoid   {i} (I : Set i) c ℓ     : Set (suc (i ⊔ c ⊔ ℓ))
   record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
   record IndexedPoset    {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
+  ```
+
+* Added new types, records and proofs to `Relation.Binary.Lattice`:
+  ```agda
+  Exponential _≤_ _∧_ _⇨_ = ∀ w x y → ((w ∧ x) ≤ y → w ≤ (x ⇨ y)) × (w ≤ (x ⇨ y) → (w ∧ x) ≤ y)
+
+  IsJoinSemilattice.x≤x∨y      : x ≤ x ∨ y
+  IsJoinSemilattice.y≤x∨y      : y ≤ x ∨ y
+  IsJoinSemilattice.∨-least    : x ≤ z → y ≤ z → x ∨ y ≤ z
+
+  IsMeetSemilattice.x∧y≤x      : x ∧ y ≤ x
+  IsMeetSemilattice.x∧y≤y      : x ∧ y ≤ y
+  IsMeetSemilattice.∧-greatest : x ≤ y → x ≤ z → x ≤ y ∧ z
+
+  record IsDistributiveLattice _≈_ _≤_ _∨_ _∧_
+  record IsHeytingAlgebra      _≈_ _≤_ _∨_ _∧_ _⇨_ ⊤ ⊥
+  record IsBooleanAlgebra      _≈_ _≤_ _∨_ _∧_ ¬_ ⊤ ⊥
+
+  record DistributiveLattice c ℓ₁ ℓ₂
+  record HeytingAlgebra      c ℓ₁ ℓ₂
+  record BooleanAlgebra      c ℓ₁ ℓ₂
   ```
 
 * Added new proofs to `Relation.Binary.NonStrictToStrict`:
@@ -643,6 +826,7 @@ Other minor additions
 * Added the following types in `Relation.Unary`:
   ```agda
   Satisfiable P = ∃ λ x → x ∈ P
+  IUniversal P  = ∀ {x} → x ∈ P
   ```
 
 * Added the following proofs in `Relation.Unary.Properties`:

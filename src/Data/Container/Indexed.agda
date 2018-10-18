@@ -21,7 +21,7 @@ open import Relation.Unary using (Pred; _⊆_)
 open import Relation.Binary as B using (Preorder; module Preorder)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_; refl)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_; refl)
-open import Relation.Binary.Indexed
+open import Relation.Binary.Indexed.Heterogeneous hiding (Rel; REL)
 
 ------------------------------------------------------------------------
 
@@ -45,7 +45,7 @@ I ▷ O = Container I O zero zero
 -- Equality, parametrised on an underlying relation.
 
 Eq : ∀ {i o c r ℓ} {I : Set i} {O : Set o} (C : Container I O c r)
-     (X Y : Pred I ℓ) → REL X Y ℓ → REL (⟦ C ⟧ X) (⟦ C ⟧ Y) _
+     (X Y : Pred I ℓ) → IREL X Y ℓ → IREL (⟦ C ⟧ X) (⟦ C ⟧ Y) _
 Eq C _ _ _≈_ {o₁} {o₂} (c , k) (c′ , k′) =
   o₁ ≡ o₂ × c ≅ c′ × (∀ r r′ → r ≅ r′ → k r ≈ k′ r′)
 
@@ -62,7 +62,7 @@ private
     H.cong (_,_ c) (ext (λ _ → refl) (λ r → k≈k′ r r refl))
 
 setoid : ∀ {i o c r s} {I : Set i} {O : Set o} →
-         Container I O c r → Setoid I s _ → Setoid O _ _
+         Container I O c r → IndexedSetoid I s _ → IndexedSetoid O _ _
 setoid C X = record
   { Carrier       = ⟦ C ⟧ X.Carrier
   ; _≈_           = _≈_
@@ -73,9 +73,9 @@ setoid C X = record
     }
   }
   where
-  module X = Setoid X
+  module X = IndexedSetoid X
 
-  _≈_ : Rel (⟦ C ⟧ X.Carrier) _
+  _≈_ : IRel (⟦ C ⟧ X.Carrier) _
   _≈_ = Eq C X.Carrier X.Carrier X._≈_
 
   sym : Symmetric (⟦ C ⟧ X.Carrier) _≈_
@@ -100,19 +100,19 @@ map _ f = Prod.map ⟨id⟩ (λ g → f ⟨∘⟩ g)
 module Map where
 
   identity : ∀ {i o c r s} {I : Set i} {O : Set o} (C : Container I O c r)
-             (X : Setoid I s _) → let module X = Setoid X in
+             (X : IndexedSetoid I s _) → let module X = IndexedSetoid X in
              ∀ {o} {xs : ⟦ C ⟧ X.Carrier o} → Eq C X.Carrier X.Carrier
              X._≈_ xs (map C {X.Carrier} ⟨id⟩ xs)
-  identity C X = Setoid.refl (setoid C X)
+  identity C X = IndexedSetoid.refl (setoid C X)
 
   composition : ∀ {i o c r s ℓ₁ ℓ₂} {I : Set i} {O : Set o}
                 (C : Container I O c r) {X : Pred I ℓ₁} {Y : Pred I ℓ₂}
-                (Z : Setoid I s _) → let module Z = Setoid Z in
+                (Z : IndexedSetoid I s _) → let module Z = IndexedSetoid Z in
                 {f : Y ⊆ Z.Carrier} {g : X ⊆ Y} {o : O} {xs : ⟦ C ⟧ X o} →
                 Eq C Z.Carrier Z.Carrier Z._≈_
                   (map C {Y} f (map C {X} g xs))
                   (map C {X} (f ⟨∘⟩ g) xs)
-  composition C Z = Setoid.refl (setoid C Z)
+  composition C Z = IndexedSetoid.refl (setoid C Z)
 
 ------------------------------------------------------------------------
 -- Container morphisms
@@ -190,7 +190,7 @@ module PlainMorphism {i o c r} {I : Set i} {O : Set o} where
   Natural : ∀ {ℓ} {C₁ C₂ : Container I O c r} →
             ((X : Pred I ℓ) → ⟦ C₁ ⟧ X ⊆ ⟦ C₂ ⟧ X) → Set _
   Natural {C₁ = C₁} {C₂} m =
-    ∀ {X} Y → let module Y = Setoid Y in (f : X ⊆ Y.Carrier) →
+    ∀ {X} Y → let module Y = IndexedSetoid Y in (f : X ⊆ Y.Carrier) →
     ∀ {o} (xs : ⟦ C₁ ⟧ X o) →
       Eq C₂ Y.Carrier Y.Carrier Y._≈_
         (m Y.Carrier $ map C₁ {X} f xs) (map C₂ {X} f $ m X xs)
@@ -206,7 +206,7 @@ module PlainMorphism {i o c r} {I : Set i} {O : Set o} where
   natural : ∀ {ℓ} (C₁ C₂ : Container I O c r) (m : C₁ ⇒ C₂) → Natural {ℓ} ⟪ m ⟫
   natural _ _ m {X} Y f _ = refl , refl , λ { r .r refl → lemma (coherent m) }
     where
-    module Y = Setoid Y
+    module Y = IndexedSetoid Y
 
     lemma : ∀ {i j} (eq : i ≡ j) {x} →
             P.subst Y.Carrier eq (f x) Y.≈ f (P.subst X eq x)
@@ -216,13 +216,13 @@ module PlainMorphism {i o c r} {I : Set i} {O : Set o} where
   -- morphisms.
 
   complete : ∀ {C₁ C₂ : Container I O c r} (nt : NT C₁ C₂) →
-             ∃ λ m → (X : Setoid I _ _) →
-                     let module X = Setoid X in
+             ∃ λ m → (X : IndexedSetoid I _ _) →
+                     let module X = IndexedSetoid X in
                      ∀ {o} (xs : ⟦ C₁ ⟧ X.Carrier o) →
                      Eq C₂ X.Carrier X.Carrier X._≈_
                        (proj₁ nt X.Carrier xs) (⟪ m ⟫ X.Carrier {o} xs)
   complete {C₁} {C₂} (nt , nat) = m , (λ X xs → nat X
-    (λ { (r , eq) → P.subst (Setoid.Carrier X) eq (proj₂ xs r) })
+    (λ { (r , eq) → P.subst (IndexedSetoid.Carrier X) eq (proj₂ xs r) })
     (proj₁ xs , (λ r → r , refl)))
     where
 
@@ -267,8 +267,8 @@ module PlainMorphism {i o c r} {I : Set i} {O : Set o} where
   id-correct _ = refl
 
   ∘-correct : {C₁ C₂ C₃ : Container I O c r}
-              (f : C₂ ⇒ C₃) (g : C₁ ⇒ C₂) (X : Setoid I (c ⊔ r) _) →
-              let module X = Setoid X in
+              (f : C₂ ⇒ C₃) (g : C₁ ⇒ C₂) (X : IndexedSetoid I (c ⊔ r) _) →
+              let module X = IndexedSetoid X in
               ∀ {o} {xs : ⟦ C₁ ⟧ X.Carrier o} →
               Eq C₃ X.Carrier X.Carrier X._≈_
                 (⟪ f ∘ g ⟫ X.Carrier xs)
@@ -276,7 +276,7 @@ module PlainMorphism {i o c r} {I : Set i} {O : Set o} where
   ∘-correct f g X = refl , refl , λ { r .r refl → lemma (coherent g)
                                                         (coherent f) }
     where
-    module X = Setoid X
+    module X = IndexedSetoid X
 
     lemma : ∀ {i j k} (eq₁ : i ≡ j) (eq₂ : j ≡ k) {x} →
       P.subst X.Carrier (P.trans eq₁ eq₂) x
@@ -347,5 +347,5 @@ module _ {i o c r ℓ₁ ℓ₂} {I : Set i} {O : Set o} (C : Container I O c r)
 infix 4 _∈_
 
 _∈_ : ∀ {i o c r ℓ} {I : Set i} {O : Set o}
-      {C : Container I O c r} {X : Pred I (i ⊔ ℓ)} → REL X (⟦ C ⟧ X) _
+      {C : Container I O c r} {X : Pred I (i ⊔ ℓ)} → IREL X (⟦ C ⟧ X) _
 _∈_ {C = C} {X} x xs = ◇ C {X = X} (_≅_ x) (-, xs)

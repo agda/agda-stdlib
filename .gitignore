@@ -12,4 +12,5 @@
 *.vim
 dist
 Everything.agda
+EverythingSafe.agda
 html

@@ -6,22 +6,22 @@
 
 module Data.Nat.Primality where
 
-open import Data.Empty
-open import Data.Fin as Fin hiding (_+_)
+open import Data.Empty using (⊥)
+open import Data.Fin using (Fin; toℕ)
 open import Data.Fin.Properties using (all?)
-open import Data.Nat
-open import Data.Nat.Divisibility
-open import Relation.Nullary
-open import Relation.Nullary.Decidable
-open import Relation.Nullary.Negation
-open import Relation.Unary
+open import Data.Nat using (ℕ; suc; _+_)
+open import Data.Nat.Divisibility using (_∤_; _∣?_)
+open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (from-yes)
+open import Relation.Nullary.Negation using (¬?)
+open import Relation.Unary using (Decidable)
 
 -- Definition of primality.
 
 Prime : ℕ → Set
 Prime 0             = ⊥
 Prime 1             = ⊥
-Prime (suc (suc n)) = (i : Fin n) → ¬ (2 + Fin.toℕ i ∣ 2 + n)
+Prime (suc (suc n)) = (i : Fin n) → 2 + toℕ i ∤ 2 + n
 
 -- Decision procedure for primality.
 
