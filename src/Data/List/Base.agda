@@ -6,14 +6,16 @@
 
 module Data.List.Base where
 
-open import Data.Nat.Base using (ℕ; zero; suc; _+_; _*_)
-open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_)
+open import Data.Fin as Fin using (Fin)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
-open import Data.Bool.Base
+open import Data.Bool.Base as Bool
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
-open import Data.Maybe.Base using (Maybe; nothing; just)
+open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
 open import Data.Product as Prod using (_×_; _,_)
-open import Function using (id; _∘_; const)
+open import Data.These as These using (These; this; that; these)
+open import Function using (id; _∘_ ; _∘′_; const)
+
 open import Relation.Nullary using (yes; no)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Unary.Properties using (∁?)
@@ -48,23 +50,44 @@ intersperse x []       = []
 intersperse x (y ∷ []) = y ∷ []
 intersperse x (y ∷ ys) = y ∷ x ∷ intersperse x ys
 
-zipWith : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
-          (A → B → C) → List A → List B → List C
-zipWith f (x ∷ xs) (y ∷ ys) = f x y ∷ zipWith f xs ys
-zipWith f _        _        = []
+------------------------------------------------------------------------
+-- Aligning and Zipping
 
-zip : ∀ {a b} {A : Set a} {B : Set b} →
-      List A → List B → List (A × B)
-zip = zipWith (_,_)
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
-unzipWith : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
-            (A → B × C) → List A → List B × List C
-unzipWith f []         = [] , []
-unzipWith f (xy ∷ xys) = Prod.zip _∷_ _∷_ (f xy) (unzipWith f xys)
+  alignWith : (These A B → C) → List A → List B → List C
+  alignWith f []       bs       = map (f ∘′ that) bs
+  alignWith f as       []       = map (f ∘′ this) as
+  alignWith f (a ∷ as) (b ∷ bs) = f (these a b) ∷ alignWith f as bs
 
-unzip : ∀ {a b} {A : Set a} {B : Set b} →
-        List (A × B) → List A × List B
-unzip = unzipWith id
+  zipWith : (A → B → C) → List A → List B → List C
+  zipWith f (x ∷ xs) (y ∷ ys) = f x y ∷ zipWith f xs ys
+  zipWith f _        _        = []
+
+  unalignWith : (A → These B C) → List A → List B × List C
+  unalignWith f []       = [] , []
+  unalignWith f (a ∷ as) with f a
+  ... | this b    = Prod.map₁ (b ∷_) (unalignWith f as)
+  ... | that c    = Prod.map₂ (c ∷_) (unalignWith f as)
+  ... | these b c = Prod.map (b ∷_) (c ∷_) (unalignWith f as)
+
+  unzipWith : (A → B × C) → List A → List B × List C
+  unzipWith f []         = [] , []
+  unzipWith f (xy ∷ xys) = Prod.zip _∷_ _∷_ (f xy) (unzipWith f xys)
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+  align : List A → List B → List (These A B)
+  align = alignWith id
+
+  zip : List A → List B → List (A × B)
+  zip = zipWith (_,_)
+
+  unalign : List (These A B) → List A × List B
+  unalign = unalignWith id
+
+  unzip : List (A × B) → List A × List B
+  unzip = unzipWith id
 
 ------------------------------------------------------------------------
 -- Operations for reducing lists
@@ -159,28 +182,28 @@ module _ {a} {A : Set a} where
 
   tabulate : ∀ {n} (f : Fin n → A) → List A
   tabulate {zero}  f = []
-  tabulate {suc n} f = f fzero ∷ tabulate (f ∘ fsuc)
+  tabulate {suc n} f = f Fin.zero ∷ tabulate (f ∘ Fin.suc)
 
   lookup : ∀ (xs : List A) → Fin (length xs) → A
   lookup [] ()
-  lookup (x ∷ xs) fzero = x
-  lookup (x ∷ xs) (fsuc i) = lookup xs i
+  lookup (x ∷ xs) Fin.zero    = x
+  lookup (x ∷ xs) (Fin.suc i) = lookup xs i
 
 -- Actions on single elements
 
   infixl 5 _at_%=_ _at_∷=_ _─_
   _at_%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
-  []       at ()     %= f
-  (x ∷ xs) at fzero  %= f = f x ∷ xs
-  (x ∷ xs) at fsuc k %= f = x ∷ (xs at k %= f)
+  []       at ()        %= f
+  (x ∷ xs) at Fin.zero  %= f = f x ∷ xs
+  (x ∷ xs) at Fin.suc k %= f = x ∷ (xs at k %= f)
 
   _at_∷=_ : (xs : List A) → Fin (length xs) → A → List A
   xs at k ∷= v = xs at k %= const v
 
   _─_ : (xs : List A) → Fin (length xs) → List A
   []       ─ ()
-  (x ∷ xs) ─ fzero  = xs
-  (x ∷ xs) ─ fsuc k = x ∷ (xs ─ k)
+  (x ∷ xs) ─ Fin.zero  = xs
+  (x ∷ xs) ─ Fin.suc k = x ∷ (xs ─ k)
 
 -- Numerical
 

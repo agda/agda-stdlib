@@ -17,7 +17,7 @@ open import Data.Nat as Nat
 open import Data.Product
 open import Data.Sum
 open import Relation.Nullary
-open import Relation.Nullary.Decidable using (via-injection)
+open import Relation.Nullary.Decidable using (via-injection; map′)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary.PropositionalEquality
 open import Algebra.FunctionProperties (_≡_ {A = ℕ})
@@ -150,10 +150,6 @@ pred-mono (s≤s le) = le
 -- Properties of _<_
 
 -- Relation theoretic properties of _<_
-infix 4 _<?_
-
-_<?_ : Decidable _<_
-x <? y = suc x ≤? y
 
 <-irrefl : Irreflexive _≡_ _<_
 <-irrefl refl (s≤s n<n) = <-irrefl refl n<n
@@ -262,6 +258,23 @@ s≤′s (≤′-step m≤′n) = ≤′-step (s≤′s m≤′n)
 ≤′-step-injective refl = refl
 
 ------------------------------------------------------------------------
+-- Decidable for _≤'_
+
+infix 4 _≤′?_ _<′?_ _≥′?_ _>′?_
+
+_≤′?_ : Decidable _≤′_
+x ≤′? y = map′ ≤⇒≤′ ≤′⇒≤ (x ≤? y)
+
+_<′?_ : Decidable _<′_
+x <′? y = suc x ≤′? y
+
+_≥′?_ : Decidable _≥′_
+_≥′?_ = flip _≤′?_
+
+_>′?_ : Decidable _>′_
+_>′?_ = flip _<′?_
+
+------------------------------------------------------------------------
 -- Properties of _≤″_
 
 ≤″⇒≤ : _≤″_ ⇒ _≤_
@@ -280,6 +293,23 @@ s≤′s (≤′-step m≤′n) = ≤′-step (s≤′s m≤′n)
   proof : ∀ {m n} (m≤n : m ≤ n) → m + k m n m≤n ≡ n
   proof z≤n       = refl
   proof (s≤s m≤n) = cong suc (proof m≤n)
+
+------------------------------------------------------------------------
+-- Decidable for _≤″_
+
+infix 4 _≤″?_ _<″?_ _≥″?_ _>″?_
+
+_≤″?_ : Decidable _≤″_
+x ≤″? y = map′ ≤⇒≤″ ≤″⇒≤ (x ≤? y)
+
+_<″?_ : Decidable _<″_
+x <″? y = suc x ≤″? y
+
+_≥″?_ : Decidable _≥″_
+_≥″?_ = flip _≤″?_
+
+_>″?_ : Decidable _>″_
+_>″?_ = flip _<″?_
 
 ------------------------------------------------------------------------
 -- Properties of _+_
@@ -1105,6 +1135,89 @@ m⊓n+n∸m≡n (suc m) (suc n) = cong suc $ m⊓n+n∸m≡n m n
 ∸-distribʳ-⊔ (suc x) zero    z       = refl
 ∸-distribʳ-⊔ (suc x) (suc y) zero    = sym (⊔-identityʳ (y ∸ x))
 ∸-distribʳ-⊔ (suc x) (suc y) (suc z) = ∸-distribʳ-⊔ x y z
+
+------------------------------------------------------------------------
+-- Properties of ∣_-_∣
+
+n≡m⇒∣n-m∣≡0 : ∀ {n m} → n ≡ m → ∣ n - m ∣ ≡ 0
+n≡m⇒∣n-m∣≡0 {zero}  refl = refl
+n≡m⇒∣n-m∣≡0 {suc n} refl = n≡m⇒∣n-m∣≡0 {n} refl
+
+m≤n⇒∣n-m∣≡n∸m : ∀ {n m} → m ≤ n → ∣ n - m ∣ ≡ n ∸ m
+m≤n⇒∣n-m∣≡n∸m {zero}  z≤n       = refl
+m≤n⇒∣n-m∣≡n∸m {suc n} z≤n       = refl
+m≤n⇒∣n-m∣≡n∸m         (s≤s m≤n) = m≤n⇒∣n-m∣≡n∸m m≤n
+
+∣n-m∣≡0⇒n≡m : ∀ {n m} → ∣ n - m ∣ ≡ 0 → n ≡ m
+∣n-m∣≡0⇒n≡m {zero}  {zero}  eq = refl
+∣n-m∣≡0⇒n≡m {zero}  {suc m} ()
+∣n-m∣≡0⇒n≡m {suc n} {zero}  ()
+∣n-m∣≡0⇒n≡m {suc n} {suc m} eq = cong suc (∣n-m∣≡0⇒n≡m eq)
+
+∣n-m∣≡n∸m⇒m≤n : ∀ {n m} → ∣ n - m ∣ ≡ n ∸ m → m ≤ n
+∣n-m∣≡n∸m⇒m≤n {zero}  {zero}  eq = z≤n
+∣n-m∣≡n∸m⇒m≤n {zero}  {suc m} ()
+∣n-m∣≡n∸m⇒m≤n {suc n} {zero}  eq = z≤n
+∣n-m∣≡n∸m⇒m≤n {suc n} {suc m} eq = s≤s (∣n-m∣≡n∸m⇒m≤n eq)
+
+∣n-n∣≡0 : ∀ n → ∣ n - n ∣ ≡ 0
+∣n-n∣≡0 n = n≡m⇒∣n-m∣≡0 {n} refl
+
+∣n-n+m∣≡m : ∀ n m → ∣ n - n + m ∣ ≡ m
+∣n-n+m∣≡m zero    m = refl
+∣n-n+m∣≡m (suc n) m = ∣n-n+m∣≡m n m
+
+∣n+m-n+o∣≡∣m-o| : ∀ n m o → ∣ n + m - n + o ∣ ≡ ∣ m - o ∣
+∣n+m-n+o∣≡∣m-o| zero    m o = refl
+∣n+m-n+o∣≡∣m-o| (suc n) m o = ∣n+m-n+o∣≡∣m-o| n m o
+
+n∸m≤∣n-m∣ : ∀ n m → n ∸ m ≤ ∣ n - m ∣
+n∸m≤∣n-m∣ n m with ≤-total m n
+... | inj₁ m≤n = subst (n ∸ m ≤_) (sym (m≤n⇒∣n-m∣≡n∸m m≤n)) ≤-refl
+... | inj₂ n≤m = subst (_≤ ∣ n - m ∣) (sym (m≤n⇒m∸n≡0 n≤m)) z≤n
+
+∣n-m∣≤n⊔m : ∀ n m → ∣ n - m ∣ ≤ n ⊔ m
+∣n-m∣≤n⊔m zero    m       = ≤-refl
+∣n-m∣≤n⊔m (suc n) zero    = ≤-refl
+∣n-m∣≤n⊔m (suc n) (suc m) = ≤-step (∣n-m∣≤n⊔m n m)
+
+∣-∣-comm : Commutative ∣_-_∣
+∣-∣-comm zero    zero    = refl
+∣-∣-comm zero    (suc m) = refl
+∣-∣-comm (suc n) zero    = refl
+∣-∣-comm (suc n) (suc m) = ∣-∣-comm n m
+
+∣n-m∣≡[n∸m]∨[m∸n] : ∀ m n → (∣ n - m ∣ ≡ n ∸ m) ⊎ (∣ n - m ∣ ≡ m ∸ n)
+∣n-m∣≡[n∸m]∨[m∸n] m n with ≤-total m n
+... | inj₁ m≤n = inj₁ $ m≤n⇒∣n-m∣≡n∸m m≤n
+... | inj₂ n≤m = inj₂ $ begin
+  ∣ n - m ∣ ≡⟨ ∣-∣-comm n m ⟩
+  ∣ m - n ∣ ≡⟨ m≤n⇒∣n-m∣≡n∸m n≤m ⟩
+  m ∸ n     ∎
+
+private
+
+  *-distribˡ-∣-∣-aux : ∀ a m n → m ≤ n → a * ∣ n - m ∣ ≡ ∣ a * n - a * m ∣
+  *-distribˡ-∣-∣-aux a m n m≤n = begin
+    a * ∣ n - m ∣     ≡⟨ cong (a *_) (m≤n⇒∣n-m∣≡n∸m m≤n) ⟩
+    a * (n ∸ m)       ≡⟨ *-distribˡ-∸ a n m ⟩
+    a * n ∸ a * m     ≡⟨ sym $′ m≤n⇒∣n-m∣≡n∸m (*-monoʳ-≤ a m≤n) ⟩
+    ∣ a * n - a * m ∣ ∎
+
+*-distribˡ-∣-∣ : _*_ DistributesOverˡ ∣_-_∣
+*-distribˡ-∣-∣ a m n with ≤-total m n
+... | inj₁ m≤n = begin
+  a * ∣ m - n ∣     ≡⟨ cong (a *_) (∣-∣-comm m n) ⟩
+  a * ∣ n - m ∣     ≡⟨ *-distribˡ-∣-∣-aux a m n m≤n ⟩
+  ∣ a * n - a * m ∣ ≡⟨ ∣-∣-comm (a * n) (a * m) ⟩
+  ∣ a * m - a * n ∣ ∎
+... | inj₂ n≤m = *-distribˡ-∣-∣-aux a n m n≤m
+
+*-distribʳ-∣-∣ : _*_ DistributesOverʳ ∣_-_∣
+*-distribʳ-∣-∣ = comm+distrˡ⇒distrʳ (cong₂ ∣_-_∣) *-comm *-distribˡ-∣-∣
+
+*-distrib-∣-∣ : _*_ DistributesOver ∣_-_∣
+*-distrib-∣-∣ = *-distribˡ-∣-∣ , *-distribʳ-∣-∣
 
 ------------------------------------------------------------------------
 -- Properties of ⌊_/2⌋
