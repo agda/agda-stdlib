@@ -11,7 +11,7 @@ open import Algebra.FunctionProperties using (Involutive)
 open import Category.Applicative using (RawApplicative)
 open import Category.Functor using (RawFunctor)
 open import Data.Empty using (⊥-elim)
-open import Data.Fin
+open import Data.Fin.Base
 open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
   renaming
   ( _≤_ to _ℕ≤_
@@ -44,6 +44,16 @@ open import Relation.Unary.Properties using (U?)
 
 suc-injective : ∀ {o} {m n : Fin o} → Fin.suc m ≡ suc n → m ≡ n
 suc-injective refl = refl
+
+infix 4 _≟_
+
+_≟_ : ∀ {n} → B.Decidable {A = Fin n} _≡_
+zero  ≟ zero  = yes refl
+zero  ≟ suc y = no λ()
+suc x ≟ zero  = no λ()
+suc x ≟ suc y with x ≟ y
+... | yes x≡y = yes (cong suc x≡y)
+... | no  x≢y = no  (x≢y ∘ suc-injective)
 
 preorder : ℕ → Preorder _ _ _
 preorder n = P.preorder (Fin n)
@@ -161,6 +171,14 @@ toℕ-fromℕ≤″ {m} {n} m<n = begin
 ≤-total : ∀ {n} → Total (_≤_ {n})
 ≤-total x y = ℕₚ.≤-total (toℕ x) (toℕ y)
 
+infix 4 _≤?_ _<?_
+
+_≤?_ : ∀ {n} → B.Decidable (_≤_ {n})
+a ≤? b = toℕ a ℕ.≤? toℕ b
+
+_<?_ : ∀ {n} → B.Decidable (_<_ {n})
+m <? n = suc (toℕ m) ℕ.≤? toℕ n
+
 ≤-isPreorder : ∀ {n} → IsPreorder _≡_ (_≤_ {n})
 ≤-isPreorder = record
   { isEquivalence = P.isEquivalence
@@ -229,9 +247,9 @@ toℕ-fromℕ≤″ {m} {n} m<n = begin
 <-cmp zero    (suc j) = tri< (s≤s z≤n) (λ()) (λ())
 <-cmp (suc i) zero    = tri> (λ())     (λ()) (s≤s z≤n)
 <-cmp (suc i) (suc j) with <-cmp i j
-... | tri< i<j i≢j j≮i = tri< (s≤s i<j)         (i≢j ∘ suc-injective) (j≮i ∘ ℕ.≤-pred)
-... | tri> i≮j i≢j j<i = tri> (i≮j ∘ ℕ.≤-pred) (i≢j ∘ suc-injective) (s≤s j<i)
-... | tri≈ i≮j i≡j j≮i = tri≈ (i≮j ∘ ℕ.≤-pred) (cong suc i≡j)        (j≮i ∘ ℕ.≤-pred)
+... | tri< i<j i≢j j≮i = tri< (s≤s i<j)         (i≢j ∘ suc-injective) (j≮i ∘ ℕₚ.≤-pred)
+... | tri> i≮j i≢j j<i = tri> (i≮j ∘ ℕₚ.≤-pred) (i≢j ∘ suc-injective) (s≤s j<i)
+... | tri≈ i≮j i≡j j≮i = tri≈ (i≮j ∘ ℕₚ.≤-pred) (cong suc i≡j)        (j≮i ∘ ℕₚ.≤-pred)
 
 <-respˡ-≡ : ∀ {n} → (_<_ {n}) Respectsˡ _≡_
 <-respˡ-≡ refl x≤y = x≤y
@@ -542,8 +560,6 @@ module _ {a} {A : Set a} where
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
-
-open import Data.Fin public using (_≟_; _<?_)
 
 -- Version 0.15
 

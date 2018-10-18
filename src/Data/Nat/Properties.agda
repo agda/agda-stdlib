@@ -13,7 +13,7 @@ open import Relation.Binary
 open import Function
 open import Function.Injection using (_↣_)
 open import Algebra
-open import Data.Nat as Nat
+open import Data.Nat.Base
 open import Data.Product
 open import Data.Sum
 open import Relation.Nullary
@@ -35,6 +35,16 @@ open ≡-Reasoning
 suc-injective : ∀ {m n} → suc m ≡ suc n → m ≡ n
 suc-injective refl = refl
 
+infix 4 _≟_
+
+_≟_ : Decidable {A = ℕ} _≡_
+zero  ≟ zero   = yes refl
+zero  ≟ suc n  = no λ()
+suc m ≟ zero   = no λ()
+suc m ≟ suc n  with m ≟ n
+... | yes refl = yes refl
+... | no m≢n   = no (m≢n ∘ suc-injective)
+
 ≡-isDecEquivalence : IsDecEquivalence (_≡_ {A = ℕ})
 ≡-isDecEquivalence = record
   { isEquivalence = isEquivalence
@@ -50,6 +60,9 @@ suc-injective refl = refl
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
+
+≤-pred : ∀ {m n} → suc m ≤ suc n → m ≤ n
+≤-pred (s≤s m≤n) = m≤n
 
 -- Relation-theoretic properties of _≤_
 ≤-reflexive : _≡_ ⇒ _≤_
@@ -74,6 +87,18 @@ suc-injective refl = refl
 ≤-total (suc m) (suc n) with ≤-total m n
 ... | inj₁ m≤n = inj₁ (s≤s m≤n)
 ... | inj₂ n≤m = inj₂ (s≤s n≤m)
+
+infix 4 _≤?_ _≥?_
+
+_≤?_ : Decidable _≤_
+zero  ≤? _     = yes z≤n
+suc m ≤? zero  = no λ()
+suc m ≤? suc n with m ≤? n
+... | yes m≤n = yes (s≤s m≤n)
+... | no  m≰n = no  (m≰n ∘ ≤-pred)
+
+_≥?_ : Decidable _≥_
+_≥?_ = flip _≤?_
 
 ≤-isPreorder : IsPreorder _≡_ _≤_
 ≤-isPreorder = record
@@ -175,6 +200,14 @@ pred-mono (s≤s le) = le
 ... | tri≈ ≰ ≡ ≱ = tri≈ (≰ ∘ ≤-pred) (cong suc ≡)        (≱ ∘ ≤-pred)
 ... | tri> ≰ ≢ ≥ = tri> (≰ ∘ ≤-pred) (≢ ∘ suc-injective) (s≤s ≥)
 
+infix 4 _<?_ _>?_
+
+_<?_ : Decidable _<_
+x <? y = suc x ≤? y
+
+_>?_ : Decidable _>_
+_>?_ = flip _<?_
+
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
 <-isStrictTotalOrder = record
   { isEquivalence = isEquivalence
@@ -257,8 +290,7 @@ s≤′s (≤′-step m≤′n) = ≤′-step (s≤′s m≤′n)
 ≤′-step-injective : ∀ {m n} {p q : m ≤′ n} → ≤′-step p ≡ ≤′-step q → p ≡ q
 ≤′-step-injective refl = refl
 
-------------------------------------------------------------------------
--- Decidable for _≤'_
+-- Decidablity for _≤'_
 
 infix 4 _≤′?_ _<′?_ _≥′?_ _>′?_
 
@@ -294,8 +326,7 @@ _>′?_ = flip _<′?_
   proof z≤n       = refl
   proof (s≤s m≤n) = cong suc (proof m≤n)
 
-------------------------------------------------------------------------
--- Decidable for _≤″_
+-- Decidablity for _≤″_
 
 infix 4 _≤″?_ _<″?_ _≥″?_ _>″?_
 
