@@ -375,7 +375,9 @@ Other minor additions
 
 * Added new function to `Data.List.Any`:
   ```agda
-  toSum : Any P (x ∷ xs) → P x ⊎ Any P xs
+  head    : ¬ Any P xs → Any P (x ∷ xs) → P x
+  toSum   : Any P (x ∷ xs) → P x ⊎ Any P xs
+  fromSum : P x ⊎ Any P xs → Any P (x ∷ xs)
   ```
 
 * Added new proofs to `Data.List.Any.Properties`:

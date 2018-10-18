@@ -14,6 +14,7 @@ open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Level using (_⊔_)
 open import Relation.Nullary using (¬_; yes; no)
 import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary hiding (_∈_)
 
 ------------------------------------------------------------------------
@@ -28,11 +29,10 @@ data Any {p} (P : A → Set p) : List A → Set (a ⊔ p) where
 
 module _ {p} {P : A → Set p} {x xs} where
 
-  toSum : Any P (x ∷ xs) → P x ⊎ Any P xs
-  toSum (here px)   = inj₁ px
-  toSum (there pxs) = inj₂ pxs
+  head : ¬ Any P xs → Any P (x ∷ xs) → P x
+  head ¬pxs (here px)   = px
+  head ¬pxs (there pxs) = contradiction pxs ¬pxs
 
--- If the head does not satisfy the predicate, then the tail will.
   tail : ¬ P x → Any P (x ∷ xs) → Any P xs
   tail ¬px (here  px)  = ⊥-elim (¬px px)
   tail ¬px (there pxs) = pxs
@@ -50,6 +50,16 @@ index (there pxs) = suc (index pxs)
 satisfied : ∀ {p} {P : A → Set p} {xs} → Any P xs → ∃ P
 satisfied (here px) = _ , px
 satisfied (there pxs) = satisfied pxs
+
+module _ {p} {P : A → Set p} {x xs} where
+
+  toSum : Any P (x ∷ xs) → P x ⊎ Any P xs
+  toSum (here px)   = inj₁ px
+  toSum (there pxs) = inj₂ pxs
+
+  fromSum : P x ⊎ Any P xs → Any P (x ∷ xs)
+  fromSum (inj₁ px)  = here px
+  fromSum (inj₂ pxs) = there pxs
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by Any
