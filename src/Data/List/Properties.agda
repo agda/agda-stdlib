@@ -21,10 +21,11 @@ open import Data.Nat
 open import Data.Nat.Properties
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Product as Prod hiding (map; zip)
+open import Data.These as These using (These; this; that; these)
 open import Function
 import Relation.Binary.EqReasoning as EqR
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; _≗_; refl)
+  using (_≡_; _≢_; _≗_; refl ; sym)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable using (⌊_⌋)
@@ -183,6 +184,43 @@ module _ {a} {A : Set a} where
   }
 
 ------------------------------------------------------------------------
+-- alignWith
+
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
+         {f g : These A B → C} where
+
+  alignWith-cong : f ≗ g → ∀ as → alignWith f as ≗ alignWith g as
+  alignWith-cong f≗g []         bs       = map-cong (f≗g ∘ that) bs
+  alignWith-cong f≗g as@(_ ∷ _) []       = map-cong (f≗g ∘ this) as
+  alignWith-cong f≗g (a ∷ as)   (b ∷ bs) =
+    P.cong₂ _∷_ (f≗g (these a b)) (alignWith-cong f≗g as bs)
+
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
+         (f : These A B → C) where
+
+  length-alignWith : ∀ xs ys →
+                   length (alignWith f xs ys) ≡ length xs ⊔ length ys
+  length-alignWith []         ys       = length-map (f ∘′ that) ys
+  length-alignWith xs@(_ ∷ _) []       = length-map (f ∘′ this) xs
+  length-alignWith (x ∷ xs)   (y ∷ ys) = P.cong suc (length-alignWith xs ys)
+
+  alignWith-map : ∀ {d e} {D : Set d} {E : Set e} (g : D → A) (h : E → B) →
+                ∀ xs ys → alignWith f (map g xs) (map h ys) ≡
+                          alignWith (f ∘′ These.map g h) xs ys
+  alignWith-map g h []         ys     = sym (map-compose ys)
+  alignWith-map g h xs@(_ ∷ _) []     = sym (map-compose xs)
+  alignWith-map g h (x ∷ xs) (y ∷ ys) =
+    P.cong₂ _∷_ refl (alignWith-map g h xs ys)
+
+  map-alignWith : ∀ {d} {D : Set d} (g : C → D) → ∀ xs ys →
+                map g (alignWith f xs ys) ≡
+                alignWith (g ∘′ f) xs ys
+  map-alignWith g []         ys     = sym (map-compose ys)
+  map-alignWith g xs@(_ ∷ _) []     = sym (map-compose xs)
+  map-alignWith g (x ∷ xs) (y ∷ ys) =
+    P.cong₂ _∷_ refl (map-alignWith g xs ys)
+
+------------------------------------------------------------------------
 -- zipWith
 
 module _ {a b} {A : Set a} {B : Set b} (f : A → A → B) where
@@ -230,6 +268,64 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
   map-zipWith g (x ∷ xs) []       = refl
   map-zipWith g (x ∷ xs) (y ∷ ys) =
     P.cong₂ _∷_ refl (map-zipWith g xs ys)
+
+------------------------------------------------------------------------
+-- unalignWith
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+  unalignWith-this : unalignWith ((A → These A B) ∋ this) ≗ (_, [])
+  unalignWith-this []       = refl
+  unalignWith-this (a ∷ as) = P.cong (Prod.map₁ (a ∷_)) (unalignWith-this as)
+
+  unalignWith-that : unalignWith ((B → These A B) ∋ that) ≗ ([] ,_)
+  unalignWith-that []       = refl
+  unalignWith-that (b ∷ bs) = P.cong (Prod.map₂ (b ∷_)) (unalignWith-that bs)
+
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
+         {f g : C → These A B} where
+
+  unalignWith-cong : f ≗ g → unalignWith f ≗ unalignWith g
+  unalignWith-cong f≗g []       = refl
+  unalignWith-cong f≗g (c ∷ cs) with f c | g c | f≗g c
+  ... | this a    | ._ | refl = P.cong (Prod.map₁ (a ∷_)) (unalignWith-cong f≗g cs)
+  ... | that b    | ._ | refl = P.cong (Prod.map₂ (b ∷_)) (unalignWith-cong f≗g cs)
+  ... | these a b | ._ | refl = P.cong (Prod.map (a ∷_) (b ∷_)) (unalignWith-cong f≗g cs)
+
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
+         (f : C → These A B) where
+
+  unalignWith-map : ∀ {d} {D : Set d} (g : D → C) →
+    ∀ ds → unalignWith f (map g ds) ≡ unalignWith (f ∘′ g) ds
+  unalignWith-map g []       = refl
+  unalignWith-map g (d ∷ ds) with f (g d)
+  ... | this a    = P.cong (Prod.map₁ (a ∷_)) (unalignWith-map g ds)
+  ... | that b    = P.cong (Prod.map₂ (b ∷_)) (unalignWith-map g ds)
+  ... | these a b = P.cong (Prod.map (a ∷_) (b ∷_)) (unalignWith-map g ds)
+
+  map-unalignWith : ∀ {d e} {D : Set d} {E : Set e} (g : A → D) (h : B → E) →
+    Prod.map (map g) (map h) ∘′ unalignWith f ≗ unalignWith (These.map g h ∘′ f)
+  map-unalignWith g h []       = refl
+  map-unalignWith g h (c ∷ cs) with f c
+  ... | this a    = P.cong (Prod.map₁ (g a ∷_)) (map-unalignWith g h cs)
+  ... | that b    = P.cong (Prod.map₂ (h b ∷_)) (map-unalignWith g h cs)
+  ... | these a b = P.cong (Prod.map (g a ∷_) (h b ∷_)) (map-unalignWith g h cs)
+
+  unalignWith-alignWith : (g : These A B → C) → f ∘′ g ≗ id →
+                      ∀ as bs → unalignWith f (alignWith g as bs) ≡ (as , bs)
+  unalignWith-alignWith g g∘f≗id []         bs = begin
+    unalignWith f (map (g ∘′ that) bs) ≡⟨ unalignWith-map (g ∘′ that) bs ⟩
+    unalignWith (f ∘′ g ∘′ that) bs    ≡⟨ unalignWith-cong (g∘f≗id ∘ that) bs ⟩
+    unalignWith that bs                ≡⟨ unalignWith-that bs ⟩
+    [] , bs ∎ where open P.≡-Reasoning
+  unalignWith-alignWith g g∘f≗id as@(_ ∷ _) [] = begin
+    unalignWith f (map (g ∘′ this) as) ≡⟨ unalignWith-map (g ∘′ this) as ⟩
+    unalignWith (f ∘′ g ∘′ this) as    ≡⟨ unalignWith-cong (g∘f≗id ∘ this) as ⟩
+    unalignWith this as                ≡⟨ unalignWith-this as ⟩
+    as , [] ∎ where open P.≡-Reasoning
+  unalignWith-alignWith g g∘f≗id (a ∷ as)   (b ∷ bs)
+    rewrite g∘f≗id (these a b) = let ih = unalignWith-alignWith g g∘f≗id as bs in
+                                 P.cong (Prod.map (a ∷_) (b ∷_)) ih
 
 ------------------------------------------------------------------------
 -- unzipWith
@@ -285,15 +381,15 @@ foldr-fusion h {f} {g} e fuse =
   foldr-universal (h ∘ foldr f e) g (h e) refl
                   (λ x xs → fuse x (foldr f e xs))
 
-idIsFold : ∀ {a} {A : Set a} → id {A = List A} ≗ foldr _∷_ []
-idIsFold = foldr-universal id _∷_ [] refl (λ _ _ → refl)
+id-is-foldr : ∀ {a} {A : Set a} → id {A = List A} ≗ foldr _∷_ []
+id-is-foldr = foldr-universal id _∷_ [] refl (λ _ _ → refl)
 
-++IsFold : ∀ {a} {A : Set a} (xs ys : List A) →
+++-is-foldr : ∀ {a} {A : Set a} (xs ys : List A) →
            xs ++ ys ≡ foldr _∷_ ys xs
-++IsFold xs ys =
+++-is-foldr xs ys =
   begin
     xs ++ ys
-  ≡⟨ P.cong (_++ ys) (idIsFold xs) ⟩
+  ≡⟨ P.cong (_++ ys) (id-is-foldr xs) ⟩
     foldr _∷_ [] xs ++ ys
   ≡⟨ foldr-fusion (_++ ys) [] (λ _ _ → refl) xs ⟩
     foldr _∷_ ([] ++ ys) xs
@@ -307,12 +403,12 @@ foldr-++ : ∀ {a b} {A : Set a} {B : Set b} (f : A → B → B) x ys zs →
 foldr-++ f x []       zs = refl
 foldr-++ f x (y ∷ ys) zs = P.cong (f y) (foldr-++ f x ys zs)
 
-mapIsFold : ∀ {a b} {A : Set a} {B : Set b} {f : A → B} →
+map-is-foldr : ∀ {a b} {A : Set a} {B : Set b} {f : A → B} →
             map f ≗ foldr (λ x ys → f x ∷ ys) []
-mapIsFold {f = f} =
+map-is-foldr {f = f} =
   begin
     map f
-  ≈⟨ P.cong (map f) ∘ idIsFold ⟩
+  ≈⟨ P.cong (map f) ∘ id-is-foldr ⟩
     map f ∘ foldr _∷_ []
   ≈⟨ foldr-fusion (map f) [] (λ _ _ → refl) ⟩
     foldr (λ x ys → f x ∷ ys) []
@@ -348,7 +444,7 @@ module _ {a b} {A : Set a} {B : Set b} where
   concat-map {f = f} =
     begin
       concat ∘ map (map f)
-    ≈⟨ P.cong concat ∘ mapIsFold ⟩
+    ≈⟨ P.cong concat ∘ map-is-foldr ⟩
       concat ∘ foldr (λ xs → map f xs ∷_) []
     ≈⟨ foldr-fusion concat [] (λ _ _ → refl) ⟩
       foldr (λ ys → map f ys ++_) []
@@ -726,3 +822,21 @@ module _ {a p} {A : Set a} (P : A → Set p) (P? : Decidable P) where
   "Warning: boolFilter was deprecated in v0.16.
   Please use filter instead."
   #-}
+
+-- Version 0.17
+
+idIsFold  = id-is-foldr
+{-# WARNING_ON_USAGE idIsFold
+"Warning: idIsFold was deprecated in v0.17.
+Please use id-is-foldr instead."
+#-}
+++IsFold  = ++-is-foldr
+{-# WARNING_ON_USAGE ++IsFold
+"Warning: ++IsFold was deprecated in v0.17.
+Please use ++-is-foldr instead."
+#-}
+mapIsFold = map-is-foldr
+{-# WARNING_ON_USAGE mapIsFold
+"Warning: mapIsFold was deprecated in v0.17.
+Please use map-is-foldr instead."
+#-}
