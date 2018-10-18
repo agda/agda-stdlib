@@ -102,6 +102,9 @@ module ∣′-Reasoning = PreorderReasoning ∣′-preorder
 ------------------------------------------------------------------------
 -- Properties of _∣′_
 
+0∣′⇒≡0 : ∀ {m} → + 0 ∣′ m → m ≡ + 0
+0∣′⇒≡0 0|m = ∣n∣≡0⇒n≡0 (Ndiv.0∣⇒≡0 (∣′m⇒∣m 0|m))
+
 m∣′∣m∣ : ∀ {m} → m ∣′ + ∣ m ∣
 m∣′∣m∣ = ∣m⇒∣′m Ndiv.∣-refl
 
