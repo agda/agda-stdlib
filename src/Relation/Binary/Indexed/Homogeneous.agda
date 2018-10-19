@@ -76,6 +76,33 @@ record IndexedSetoid {i} (I : Set i) c ℓ : Set (suc (i ⊔ c ⊔ ℓ)) where
     }
 
 ------------------------------------------------------------------------
+-- Decidable equivalences
+
+record IsIndexedDecEquivalence {i a ℓ} {I : Set i} (A : I → Set a)
+                               (_≈ᵢ_ : IRel A ℓ) : Set (i ⊔ a ⊔ ℓ) where
+  infix 4 _≟ᵢ_
+  field
+    _≟ᵢ_           : Decidable A _≈ᵢ_
+    isEquivalenceᵢ : IsIndexedEquivalence A _≈ᵢ_
+
+  open IsIndexedEquivalence isEquivalenceᵢ public
+
+record IndexedDecSetoid {i} (I : Set i) c ℓ : Set (suc (i ⊔ c ⊔ ℓ)) where
+  infix 4 _≈ᵢ_
+  field
+    Carrierᵢ          : I → Set c
+    _≈ᵢ_              : IRel Carrierᵢ ℓ
+    isDecEquivalenceᵢ : IsIndexedDecEquivalence Carrierᵢ _≈ᵢ_
+
+  open IsIndexedDecEquivalence isDecEquivalenceᵢ public
+
+  indexedSetoid : IndexedSetoid I c ℓ
+  indexedSetoid = record { isEquivalenceᵢ = isEquivalenceᵢ }
+
+  open IndexedSetoid indexedSetoid public
+    using (Carrier; _≈_; _≉_; setoid)
+
+------------------------------------------------------------------------
 -- Preorders
 
 record IsIndexedPreorder {i a ℓ₁ ℓ₂} {I : Set i} (A : I → Set a)
