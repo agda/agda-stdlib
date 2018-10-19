@@ -656,6 +656,15 @@ Other minor additions
   unzipWith : (A → B × C) → Vec A n → Vec B n × Vec C n
   ```
 
+* Added new proofs to `Data.Vec.All.Properties`:
+  ```agda
+  toList⁺   : All P (toList xs) → All P xs
+  toList⁻   : All P xs → All P (toList xs)
+
+  fromList⁺ : All P xs → All P (fromList xs)
+  fromList⁻ : All P (fromList xs) → All P xs
+  ```
+
 * Added new functions to `Data.Vec.Any`:
   ```agda
   head    : ¬ Any P xs → Any P (x ∷ xs) → P x
@@ -671,15 +680,6 @@ Other minor additions
   sequenceM : RawMonad M → Vec (M A) n → M (Vec A n)
   mapM      : RawMonad M → (A → M B) → Vec A n → M (Vec B n)
   forM      : RawMonad M → Vec A n → (A → M B) → M (Vec B n)
-  ```
-
-* Added new proofs to `Data.Vec.Properties.All`:
-  ```agda
-  toList⁺   : All P (toList xs) → All P xs
-  toList⁻   : All P xs → All P (toList xs)
-
-  fromList⁺ : All P xs → All P (fromList xs)
-  fromList⁻ : All P (fromList xs) → All P xs
   ```
 
 * Added new proofs to `Data.Vec.Membership.Propositional.Properties`:
@@ -817,7 +817,7 @@ Other minor additions
   record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
   ```
 
-* Added new proofs to `Relation.Binary.Indexed.Heterogeneous.Construction.At`:
+* Added new proofs to `Relation.Binary.Indexed.Heterogeneous.Construct.At`:
   ```agda
   isEquivalence : IsIndexedEquivalence A _≈_  → (i : I) → B.IsEquivalence (_≈_ {i})
   isPreorder    : IsIndexedPreorder A _≈_ _∼_ → (i : I) → B.IsPreorder (_≈_ {i}) _∼_
@@ -825,7 +825,7 @@ Other minor additions
   preorder      : IndexedPreorder I a ℓ₁ ℓ₂ → I → B.Preorder a ℓ₁ ℓ₂
   ```
 
-* Added new proofs to `Relation.Binary.Indexed.Heterogeneous.Construction.Trivial`:
+* Added new proofs to `Relation.Binary.Indexed.Heterogeneous.Construct.Trivial`:
   ```agda
   isIndexedEquivalence : IsEquivalence _≈_ → IsIndexedEquivalence (λ (_ : I) → A) _≈_
   isIndexedPreorder    : IsPreorder _≈_ _∼_ → IsIndexedPreorder (λ (_ : I) → A) _≈_ _∼_
