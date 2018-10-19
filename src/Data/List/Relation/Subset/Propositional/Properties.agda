@@ -6,19 +6,19 @@
 
 open import Relation.Binary hiding (Decidable)
 
-module Data.List.Relation.Sublist.Extensional.Propositional.Properties
+module Data.List.Relation.Subset.Propositional.Properties
   where
 
 open import Category.Monad
 open import Data.Bool.Base using (Bool; true; false; T)
 open import Data.List
 open import Data.List.Any using (Any; here; there)
-open import Data.List.Any.Properties as AnyP
+open import Data.List.Any.Properties
 open import Data.List.Categorical
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
-import Data.List.Relation.Sublist.Extensional.Setoid.Properties as Setoidₚ
-open import Data.List.Relation.Sublist.Extensional.Propositional
+import Data.List.Relation.Subset.Setoid.Properties as Setoidₚ
+open import Data.List.Relation.Subset.Propositional
 import Data.Product as Prod
 import Data.Sum as Sum
 open import Function using (_∘_; _∘′_; id; _$_)
@@ -43,15 +43,15 @@ module _ {a} {A : Set a} where
   ⊆-reflexive : _≡_ ⇒ (_⊆_ {A = A})
   ⊆-reflexive refl = id
 
-  ⊆-refl : Reflexive (_⊆_ {A = A})
+  ⊆-refl : Reflexive {A = List A} _⊆_
   ⊆-refl x∈xs = x∈xs
 
-  ⊆-trans : Transitive (_⊆_ {A = A})
+  ⊆-trans : Transitive {A = List A} (_⊆_ {A = A})
   ⊆-trans xs⊆ys ys⊆zs x∈xs = ys⊆zs (xs⊆ys x∈xs)
 
 module _ {a} (A : Set a) where
 
-  ⊆-isPreorder : IsPreorder _≡_ (_⊆_ {A = A})
+  ⊆-isPreorder : IsPreorder {A = List A} _≡_ _⊆_
   ⊆-isPreorder = record
     { isEquivalence = isEquivalence
     ; reflexive     = ⊆-reflexive
@@ -67,14 +67,8 @@ module _ {a} (A : Set a) where
 -- Reasoning over subsets
 
 module ⊆-Reasoning {a} (A : Set a) where
-
-  open PreorderReasoning (⊆-preorder A) public
-    renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
-
-  infix 1 _∈⟨_⟩_
-
-  _∈⟨_⟩_ : ∀ x {xs ys} → x ∈ xs → xs IsRelatedTo ys → x ∈ ys
-  x ∈⟨ x∈xs ⟩ xs⊆ys = (begin xs⊆ys) x∈xs
+  open Setoidₚ.⊆-Reasoning public
+    hiding (_≋⟨_⟩_) renaming (_≋⟨⟩_ to _≡⟨⟩_)
 
 ------------------------------------------------------------------------
 -- Properties relating _⊆_ to various list functions
@@ -88,6 +82,7 @@ module _ {a p} {A : Set a} {P : A → Set p} {xs ys : List A} where
     _⟨$⟩_ (Inverse.to Any↔) ∘′
     Prod.map id (Prod.map xs⊆ys id) ∘
     _⟨$⟩_ (Inverse.from Any↔)
+
 
 ------------------------------------------------------------------------
 -- map

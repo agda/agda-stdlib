@@ -6,23 +6,17 @@
 
 open import Relation.Binary hiding (Decidable)
 
-module Data.List.Relation.Sublist.Extensional.Setoid.Properties where
+module Data.List.Relation.Subset.Setoid.Properties where
 
 open import Data.Bool using (Bool; true; false)
 open import Data.List
-open import Data.List.Any using (Any; here; there)
-import Data.List.Any.Properties as AnyP
+open import Data.List.Any using (here; there)
 import Data.List.Membership.Setoid as Membership
-import Data.List.Membership.Setoid.Properties as MembershipP
 open import Data.List.Membership.Setoid.Properties
-import Data.List.Relation.Sublist.Extensional.Setoid as Sublist
+import Data.List.Relation.Subset.Setoid as Sublist
 import Data.List.Relation.Equality.Setoid as Equality
-open import Data.Product as Prod using ()
-open import Function using (_∘_; _∘′_; id)
-open import Function.Equality using (_⟨$⟩_)
-open import Function.Inverse as Inv using (_↔_; module Inverse)
 open import Relation.Nullary using (¬_; yes; no)
-open import Relation.Unary using (Decidable)
+open import Relation.Unary using (Pred; Decidable)
 import Relation.Binary.PreorderReasoning as PreorderReasoning
 
 open Setoid using (Carrier)
@@ -59,7 +53,8 @@ module _ {a ℓ} (S : Setoid a ℓ) where
 
   -- Reasoning over subsets
   module ⊆-Reasoning where
-    open PreorderReasoning ⊆-preorder public renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
+    open PreorderReasoning ⊆-preorder public
+      renaming (_∼⟨_⟩_ to _⊆⟨_⟩_ ; _≈⟨_⟩_ to _≋⟨_⟩_ ; _≈⟨⟩_ to _≋⟨⟩_)
 
     infix 1 _∈⟨_⟩_
     _∈⟨_⟩_ : ∀ x {xs ys} → x ∈ xs → xs IsRelatedTo ys → x ∈ ys
@@ -69,7 +64,7 @@ module _ {a ℓ} (S : Setoid a ℓ) where
 -- filter
 
 module _ {a p ℓ} (S : Setoid a ℓ)
-         {P : Carrier S → Set p} (P? : Decidable P) where
+         {P : Pred (Carrier S) p} (P? : Decidable P) where
 
   open Setoid S renaming (Carrier to A)
   open Sublist S

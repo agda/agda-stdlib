@@ -7,22 +7,23 @@
 module Data.Nat.Base where
 
 open import Level using (0ℓ)
-open import Function using (_∘_)
+open import Function using (_∘_; flip)
 open import Relation.Binary
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core
-
-open import Relation.Nullary using (¬_; Dec; yes; no)
-
-infix 4 _≤_ _<_ _≥_ _>_ _≰_ _≮_ _≱_ _≯_
+open import Relation.Binary.PropositionalEquality
+open import Relation.Nullary using (¬_)
 
 ------------------------------------------------------------------------
 -- The types
 
 open import Agda.Builtin.Nat public
-  using    ( zero; suc; _+_; _*_ )
-  renaming ( Nat to ℕ
-           ; _-_ to _∸_ )
+  using (zero; suc) renaming (Nat to ℕ)
+
+------------------------------------------------------------------------
+-- Standard ordering relations
+
+infix 4 _≤_ _<_ _≥_ _>_ _≰_ _≮_ _≱_ _≯_
 
 data _≤_ : Rel ℕ 0ℓ where
   z≤n : ∀ {n}                 → zero  ≤ n
@@ -49,45 +50,11 @@ a ≱ b = ¬ a ≥ b
 _≯_ : Rel ℕ 0ℓ
 a ≯ b = ¬ a > b
 
--- The following, alternative definition of _≤_ is more suitable for
--- well-founded induction (see Induction.Nat).
-
-infix 4 _≤′_ _<′_ _≥′_ _>′_
-
-data _≤′_ (m : ℕ) : ℕ → Set where
-  ≤′-refl :                         m ≤′ m
-  ≤′-step : ∀ {n} (m≤′n : m ≤′ n) → m ≤′ suc n
-
-_<′_ : Rel ℕ 0ℓ
-m <′ n = suc m ≤′ n
-
-_≥′_ : Rel ℕ 0ℓ
-m ≥′ n = n ≤′ m
-
-_>′_ : Rel ℕ 0ℓ
-m >′ n = n <′ m
-
--- Another alternative definition of _≤_.
-
-record _≤″_ (m n : ℕ) : Set where
-  constructor less-than-or-equal
-  field
-    {k}   : ℕ
-    proof : m + k ≡ n
-
-infix 4 _≤″_ _<″_ _≥″_ _>″_
-
-_<″_ : Rel ℕ 0ℓ
-m <″ n = suc m ≤″ n
-
-_≥″_ : Rel ℕ 0ℓ
-m ≥″ n = n ≤″ m
-
-_>″_ : Rel ℕ 0ℓ
-m >″ n = n <″ m
-
 ------------------------------------------------------------------------
 -- Arithmetic
+
+open import Agda.Builtin.Nat public
+  using (_+_; _*_ ) renaming (_-_ to _∸_)
 
 pred : ℕ → ℕ
 pred zero    = zero
@@ -142,28 +109,45 @@ x ^ suc n = x * x ^ n
 ∣ suc x - suc y ∣ = ∣ x - y ∣
 
 ------------------------------------------------------------------------
--- Queries
+-- The following, alternative definition of _≤_ is more suitable for
+-- well-founded induction (see Induction.Nat).
 
-infix 4 _≟_ _≤?_
+infix 4 _≤′_ _<′_ _≥′_ _>′_
 
-_≟_ : Decidable {A = ℕ} _≡_
-zero  ≟ zero   = yes refl
-zero  ≟ suc n  = no λ()
-suc m ≟ zero   = no λ()
-suc m ≟ suc n  with m ≟ n
-... | yes refl = yes refl
-... | no m≢n   = no (m≢n ∘ (λ p → subst (λ x → m ≡ pred x) p refl))
+data _≤′_ (m : ℕ) : ℕ → Set where
+  ≤′-refl :                         m ≤′ m
+  ≤′-step : ∀ {n} (m≤′n : m ≤′ n) → m ≤′ suc n
 
-≤-pred : ∀ {m n} → suc m ≤ suc n → m ≤ n
-≤-pred (s≤s m≤n) = m≤n
+_<′_ : Rel ℕ 0ℓ
+m <′ n = suc m ≤′ n
 
-_≤?_ : Decidable _≤_
-zero  ≤? _     = yes z≤n
-suc m ≤? zero  = no λ()
-suc m ≤? suc n with m ≤? n
-... | yes m≤n = yes (s≤s m≤n)
-... | no  m≰n = no  (m≰n ∘ ≤-pred)
+_≥′_ : Rel ℕ 0ℓ
+m ≥′ n = n ≤′ m
 
+_>′_ : Rel ℕ 0ℓ
+m >′ n = n <′ m
+
+------------------------------------------------------------------------
+-- Another alternative definition of _≤_.
+
+record _≤″_ (m n : ℕ) : Set where
+  constructor less-than-or-equal
+  field
+    {k}   : ℕ
+    proof : m + k ≡ n
+
+infix 4 _≤″_ _<″_ _≥″_ _>″_
+
+_<″_ : Rel ℕ 0ℓ
+m <″ n = suc m ≤″ n
+
+_≥″_ : Rel ℕ 0ℓ
+m ≥″ n = n ≤″ m
+
+_>″_ : Rel ℕ 0ℓ
+m >″ n = n <″ m
+
+------------------------------------------------------------------------
 -- A comparison view. Taken from "View from the left"
 -- (McBride/McKinna); details may differ.
 

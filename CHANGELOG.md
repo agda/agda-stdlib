@@ -146,7 +146,7 @@ Non-backwards compatible changes
   and exports all the old names, but may be removed in some
   future version.
 
-#### Rearrangement of algebraic Solvers
+#### Rearrangement of algebraic solvers
 
 * Standardised and moved the generic solver modules as follows:
   ```agda
@@ -266,11 +266,38 @@ Non-backwards compatible changes
 * The function `_at_` in `Relation.Binary.Indexed.Heterogeneous` has been moved to
   `Relation.Binary.Indexed.Heterogeneous.Construct.At` and renamed to `_atₛ_`.
 
+#### Overhaul of decidability proofs in numeric base modules
+
+* Several numeric datatypes such as `Nat/Integer/Fin` had decidability proofs in
+  `Data.X.Base`. This required several proofs to live in `Data.X.Base` that should
+  really have been living in `Data.X.Properties` . For example `≤-pred`
+  in `Data.Nat.Base`. This problem has been growing as more decidability proofs are
+  added.
+
+* To fix this all decidability proofs in `Data.X.Base` for `Nat`/`Integer`/`Fin`
+  have been moved to `Data.X.Properties` from `Data.X.Base`. Backwards compatibility
+  has been (nearly completely) preserved by having `Data.X` publicly re-export the
+  decidability proofs. If you were using the `Data.X.Base` module directly
+  and were using decidability queries you should probably switch to use `Data.X`.
+
+* The following proofs have therefore been moved to the `Properties` files.
+  The old versions remain in the original files but have been deprecated and
+  may be removed at some future version.
+  ```agda
+  Data.Nat.≤-pred             ↦ Data.Nat.Properties.≤-pred
+
+  Data.Integer.◃-cong         ↦ Data.Integer.Properties.◃-cong
+  Data.Integer.drop‿+≤+       ↦ Data.Integer.Properties.drop‿+≤+
+  Data.Integer.drop‿-≤-       ↦ Data.Integer.Properties.drop‿-≤-
+  Data.Integer.◃-left-inverse ↦ Data.Integer.Properties.◃-inverse
+  ```
+
 #### Other
 
-* The `Data.List.Relation.Sublist` directory has been moved to
-  `Data.List.Relation.Sublist.Extensional` to make room for the
-  new `Data.List.Relation.Sublist.Inductive` hierarchy.
+* The `Data.List.Relation.Sublist` module was misnamed as it contained a subset
+  rather than a sublist relation. It has been correctly renamed to
+  `Data.List.Relation.Subset`. In its place a new module `Data.List.Relation.Sublist`
+  has been added that correctly implements the sublist relation.
 
 * The types `IrrelevantPred` and `IrrelevantRel` in
   `Relation.Binary.PropositionalEquality` have both been renamed to
@@ -327,12 +354,46 @@ Other major changes
 Deprecated features
 -------------------
 
+* All deprecated names now give warnings at point-of-use when type-checked.
+
 The following deprecations have occurred as part of a drive to improve consistency across
 the library. The deprecated names still exist and therefore all existing code should still
 work, however they have been deprecated and use of any new names is encouraged. Although not
 anticipated any time soon, they may eventually be removed in some future release of the library.
 
-* All deprecated names now give warnings at point-of-use when type-checked.
+* In `Data.List.Properties`:
+  ```agda
+  idIsFold   ↦  id-is-foldr
+  ++IsFold   ↦  ++-is-foldr
+  mapIsFold  ↦  map-is-foldr
+  ```
+
+* In `Data.Nat.Properties`:
+  ```agda
+  ≤+≢⇒<  ↦  ≤∧≢⇒<
+  ```
+
+* In `Function.Related`:
+  ```agda
+  preorder               ↦  R-preorder
+  setoid                 ↦  SR-setoid
+  EquationReasoning.sym  ↦  SR-sym
+  ```
+
+* In `Function.Related.TypeIsomorphisms`:
+  ```agda
+  ×-CommutativeMonoid     ↦  ×-commutativeMonoid
+  ⊎-CommutativeMonoid     ↦  ⊎-commutativeMonoid
+  ×⊎-CommutativeSemiring  ↦  ×-⊎-commutativeSemiring
+  ```
+
+* In `Relation.Binary.Lattice`:
+  ```agda
+  BoundedJoinSemilattice.joinSemiLattice  ↦  BoundedJoinSemilattice.joinSemilattice
+  BoundedMeetSemilattice.meetSemiLattice  ↦  BoundedMeetSemilattice.meetSemilattice
+  ```
+
+The following have been deprecated without replacement:
 
 * In `Data.Nat.Divisibility`:
   ```
@@ -343,26 +404,6 @@ anticipated any time soon, they may eventually be removed in some future release
   ```agda
   i∸k∸j+j∸k≡i+j∸k
   im≡jm+n⇒[i∸j]m≡n
-  ```
-
-* In `Function.Related`:
-  ```agda
-  preorder              ↦ R-preorder
-  setoid                ↦ SR-setoid
-  EquationReasoning.sym ↦ SR-sym
-  ```
-
-* In `Function.Related.TypeIsomorphisms`:
-  ```agda
-  ×-CommutativeMonoid    ↦ ×-commutativeMonoid
-  ⊎-CommutativeMonoid    ↦ ⊎-commutativeMonoid
-  ×⊎-CommutativeSemiring ↦ ×-⊎-commutativeSemiring
-  ```
-
-* In `Relation.Binary.Lattice`:
-  ```agda
-  BoundedJoinSemilattice.joinSemiLattice ↦ BoundedJoinSemilattice.joinSemilattice
-  BoundedMeetSemilattice.meetSemiLattice ↦ BoundedMeetSemilattice.meetSemilattice
   ```
 
 * In `Relation.Binary.Construct.Always`
@@ -422,6 +463,13 @@ Other minor additions
   pigeonhole  : m < n → (f : Fin n → Fin m) → ∃₂ λ i j → i ≢ j × f i ≡ f j
   ```
 
+* Added new function to `Data.List.Any`:
+  ```agda
+  head    : ¬ Any P xs → Any P (x ∷ xs) → P x
+  toSum   : Any P (x ∷ xs) → P x ⊎ Any P xs
+  fromSum : P x ⊎ Any P xs → Any P (x ∷ xs)
+  ```
+
 * Added new proofs to `Data.List.Any.Properties`:
   ```agda
   here-injective  : here  p ≡ here  q → p ≡ q
@@ -434,9 +482,13 @@ Other minor additions
 
 * Added new functions to `Data.List.Base`:
   ```agda
-  uncons : List A → Maybe (A × List A)
-  head   : List A → Maybe A
-  tail   : List A → Maybe (List A)
+  uncons      : List A → Maybe (A × List A)
+  head        : List A → Maybe A
+  tail        : List A → Maybe (List A)
+  alignWith   : (These A B → C) → List A → List B → List C
+  unalignWith : (A → These B C) → List A → List B × List C
+  align       : List A → List B → List (These A B)
+  unalign     : List (These A B) → List A × List B
   ```
 
 * Added new functions to `Data.List.Categorical`:
@@ -458,13 +510,39 @@ Other minor additions
 
 * Added new functions to `Data.List.NonEmpty`:
   ```agda
-  uncons    : List⁺ A → A × List A
-  concatMap : (A → List⁺ B) → List⁺ A → List⁺ B
+  uncons      : List⁺ A → A × List A
+  concatMap   : (A → List⁺ B) → List⁺ A → List⁺ B
+  alignWith   : (These A B → C) → List⁺ A → List⁺ B → List⁺ C
+  zipWith     : (A → B → C) → List⁺ A → List⁺ B → List⁺ C
+  unalignWith : (A → These B C) → List⁺ A → These (List⁺ B) (List⁺ C)
+  unzipWith   : (A → B × C) → List⁺ A → List⁺ B × List⁺ C
+  align       : List⁺ A → List⁺ B → List⁺ (These A B)
+  zip         : List⁺ A → List⁺ B → List⁺ (A × B)
+  unalign     : List⁺ (These A B) → These (List⁺ A) (List⁺ B)
+  unzip       : List⁺ (A × B) → List⁺ A × List⁺ B
+  ```
+
+* Added new functions to `Data.List.Properties`:
+  ```agda
+  alignWith-cong        : f ≗ g → alignWith f as ≗ alignWith g as
+  length-alignWith      : length (alignWith f xs ys) ≡ length xs ⊔ length ys
+  alignWith-map         : alignWith f (map g xs) (map h ys) ≡ alignWith (f ∘′ These.map g h) xs ys
+  map-alignWith         : map g (alignWith f xs ys) ≡ alignWith (g ∘′ f) xs ys
+  unalignWith-this      : unalignWith this ≗ (_, [])
+  unalignWith-that      : unalignWith that ≗ ([] ,_)
+  unalignWith-cong      : f ≗ g → unalignWith f ≗ unalignWith g
+  unalignWith-map       : unalignWith f (map g ds) ≡ unalignWith (f ∘′ g) ds
+  map-unalignWith       : Prod.map (map g) (map h) ∘′ unalignWith f ≗ unalignWith (These.map g h ∘′ f)
+  unalignWith-alignWith : f ∘′ g ≗ id → unalignWith f (alignWith g as bs) ≡ (as , bs)
   ```
 
 * Added new function to `Data.Maybe.Base`:
   ```agda
   fromMaybe : A → Maybe A → A
+  alignWith : (These A B → C) → Maybe A → Maybe B → Maybe C
+  zipWith   : (A → B → C) → Maybe A → Maybe B → Maybe C
+  align     : Maybe A → Maybe B → Maybe (These A B)
+  zip       : Maybe A → Maybe B → Maybe (A × B)
   ```
 
 * Added new operator to `Data.Nat.Base`:
@@ -497,9 +575,38 @@ Other minor additions
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
+  _≥?_  : Decidable _≥_
+  _>?_  : Decidable _>_
+  _≤′?_ : Decidable _≤′_
+  _<′?_ : Decidable _<′_
+  _≤″?_ : Decidable _≤″_
+  _<″?_ : Decidable _<″_
+  _≥″?_ : Decidable _≥″_
+  _>″?_ : Decidable _>″_
+
+  n≤0⇒n≡0      : n ≤ 0 → n ≡ 0
+  m<n⇒n≢0      : m < n → n ≢ 0
+
+  m⊓n≡m⇒m≤n    : m ⊓ n ≡ m → m ≤ n
+  m⊓n≡n⇒n≤m    : m ⊓ n ≡ n → n ≤ m
+  n⊔m≡m⇒n≤m    : n ⊔ m ≡ m → n ≤ m
+  n⊔m≡n⇒m≤n    : n ⊔ m ≡ n → m ≤ n
+
   *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
   *-distrib-∸  : _*_ DistributesOver _∸_
   ^-*-assoc    : (m ^ n) ^ p ≡ m ^ (n * p)
+
+  ≤-poset                : Poset 0ℓ 0ℓ 0ℓ
+  <-resp₂-≡              : _<_ Respects₂ _≡_
+  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+  <-strictPartialOrder   : StrictPartialOrder 0ℓ 0ℓ 0ℓ
+
+  *-+-isSemiring         : IsSemiring _+_ _*_ 0 1
+
+  ⊓-semigroup            : Semigroup 0ℓ 0ℓ
+  ⊔-semigroup            : Semigroup 0ℓ 0ℓ
+  ⊔-0-commutativeMonoid  : CommutativeMonoid 0ℓ 0ℓ
+  ⊓-⊔-lattice            : Lattice 0ℓ 0ℓ
 
   n≡m⇒∣n-m∣≡0       : n ≡ m → ∣ n - m ∣ ≡ 0
   m≤n⇒∣n-m∣≡n∸m     : m ≤ n → ∣ n - m ∣ ≡ n ∸ m
@@ -540,6 +647,20 @@ Other minor additions
   select-lookup  : lookup (select x i t) i ≡ lookup t i
   select-remove  : remove i (select x i t) ≗ replicate {n} x
   remove-permute : remove (π ⟨$⟩ˡ i) (permute π t) ≗ permute (Perm.remove (π ⟨$⟩ˡ i) π) (remove i t)
+  ```
+
+* Added new functions to `Data.Vec`:
+  ```agda
+  alignWith : (These A B → C) → Vec A m → Vec B n → Vec C (m ⊔ n)
+  align     : Vec A m → Vec B n → Vec (These A B) (m ⊔ n)
+  unzipWith : (A → B × C) → Vec A n → Vec B n × Vec C n
+  ```
+
+* Added new functions to `Data.Vec.Any`:
+  ```agda
+  head    : ¬ Any P xs → Any P (x ∷ xs) → P x
+  toSum   : Any P (x ∷ xs) → P x ⊎ Any P xs
+  fromSum : P x ⊎ Any P xs → Any P (x ∷ xs)
   ```
 
 * Added new functions to `Data.Vec.Categorical`:
@@ -723,13 +844,15 @@ Other minor additions
   Respects₂ P _∼_        = (Respectsʳ P _∼_) × (Respectsˡ P _∼_)
   Lift _∼_ x y           = ∀ i → x i ∼ y i
 
-  record IsIndexedEquivalence  (_≈ᵢ_ : Rel A ℓ)                   : Set (i ⊔ a ⊔ ℓ)
-  record IsIndexedPreorder     (_≈ᵢ_ : Rel A ℓ₁) (_∼ᵢ_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
-  record IsIndexedPartialOrder (_≈ᵢ_ : Rel A ℓ₁) (_≤ᵢ_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsIndexedEquivalence    (_≈ᵢ_ : Rel A ℓ)                   : Set (i ⊔ a ⊔ ℓ)
+  record IsIndexedDecEquivalence (_≈ᵢ_ : Rel A ℓ)                   : Set (i ⊔ a ⊔ ℓ)
+  record IsIndexedPreorder       (_≈ᵢ_ : Rel A ℓ₁) (_∼ᵢ_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsIndexedPartialOrder   (_≈ᵢ_ : Rel A ℓ₁) (_≤ᵢ_ : Rel A ℓ₂) : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂)
 
-  record IndexedSetoid   {i} (I : Set i) c ℓ     : Set (suc (i ⊔ c ⊔ ℓ))
-  record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
-  record IndexedPoset    {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
+  record IndexedSetoid    {i} (I : Set i) c ℓ     : Set (suc (i ⊔ c ⊔ ℓ))
+  record IndexedDecSetoid {i} (I : Set i) c ℓ     : Set (suc (i ⊔ c ⊔ ℓ))
+  record IndexedPreorder  {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
+  record IndexedPoset     {i} (I : Set i) c ℓ₁ ℓ₂ : Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂))
   ```
 
 * Added new types, records and proofs to `Relation.Binary.Lattice`:
