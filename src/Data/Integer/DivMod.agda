@@ -111,6 +111,7 @@ div-neg-is-neg-divℕ : ∀ n d → n div -[1+ d ] ≡ - (n divℕ ℕ.suc d)
 div-neg-is-neg-divℕ n d = -1*n≡-n (n divℕ ℕ.suc d)
 
 [n/d]*d≤n : ∀ n d {d≢0} → (n div d) {d≢0} ℤ.* d ℤ.≤ n
+[n/d]*d≤n n (+ 0) {()}
 [n/d]*d≤n n (+ ℕ.suc d) = begin let sd = ℕ.suc d in
   n div + sd * + sd ≡⟨ cong (_* (+ sd)) (div-pos-is-divℕ n d) ⟩
   n divℕ sd * + sd  ≤⟨ [n/ℕd]*d≤n n d ⟩
@@ -132,6 +133,7 @@ n<s[n/ℕd]*d n d = begin
   open <-Reasoning
 
 a≡a%n+[a/n]*n : ∀ a n {≢0} → a ≡ + (a mod n) {≢0} + (a div n) {≢0} * n
+a≡a%n+[a/n]*n n (+ 0) {()}
 a≡a%n+[a/n]*n n (+ ℕ.suc d) = begin
   let sd = ℕ.suc d; r = n modℕ sd; q = n divℕ sd; qsd = q * + sd in
   n                       ≡⟨ a≡a%ℕn+[a/ℕn]*n n d ⟩
