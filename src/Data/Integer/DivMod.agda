@@ -50,6 +50,7 @@ n%ℕd<d -[1+ n ] d with ℕ.suc n NDM.divMod ℕ.suc d
 ... | NDM.result q (Fin.suc r) eq = ℕ.s≤s (NProp.n∸m≤n (Fin.toℕ r) d)
 
 n%d<d : ∀ n d {d≢0} → (n mod d) {d≢0} ℕ.< ℤ.∣ d ∣
+n%d<d n (+ 0) {()}
 n%d<d n (+ ℕ.suc d) = n%ℕd<d n d
 n%d<d n -[1+ d ]    = n%ℕd<d n d
 
