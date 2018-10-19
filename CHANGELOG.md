@@ -445,11 +445,12 @@ Other minor additions
 
 * Added new proofs to `Data.Integer.Properties`:
   ```agda
-  neg-suc   : - + suc m ≡ pred (- + m)
-  suc-+     : + suc m + n ≡ sucℤ (+ m + n)
-  +-pred    : m + pred n ≡ pred (m + n)
-  pred-+    : pred m + n ≡ pred (m + n)
-  minus-suc : m - + suc n ≡ pred (m - + n)
+  neg-suc    : - + suc m ≡ pred (- + m)
+  suc-+      : + suc m + n ≡ sucℤ (+ m + n)
+  +-pred     : m + pred n ≡ pred (m + n)
+  pred-+     : pred m + n ≡ pred (m + n)
+  minus-suc  : m - + suc n ≡ pred (m - + n)
+  sm*n≡n+m*n : sucℤ m * n ≡ n + m * n
 
   ⊓-comm : Commutative _⊓_
   m⊓n≤n  : m ⊓ n ≤ n
@@ -466,6 +467,10 @@ Other minor additions
   *-monoˡ-≤-pos     : (+ suc n *_) Preserves _≤_ ⟶ _≤_
   *-monoʳ-≤-non-neg : (_* + n) Preserves _≤_ ⟶ _≤
   *-monoˡ-≤-non-neg : (+ n *_) Preserves _≤_ ⟶ _≤_
+  +-mono-≤          : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
+  +-mono-<          : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
+  +-mono-≤-<        : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
+  +-mono-<-≤        : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
 
   *-cancelˡ-≡     : i ≢ + 0 → i * j ≡ i * k → j ≡ k
   *-cancelˡ-≤-pos : + suc m * n ≤ + suc m * o → n ≤ o
@@ -474,6 +479,9 @@ Other minor additions
   m≤n⇒m-n≤0     : m ≤ n → m - n ≤ + 0
   m-n≤0⇒m≤n     : m - n ≤ + 0 → m ≤ n
   m≤pred[n]⇒m<n : m ≤ pred n → m < n
+  m≤m+n         : m ≤ m + + n
+  n≤m+n         : n ≤ + m + n
+
 
   ≤-<-trans : Trans _≤_ _<_ _<_
   <-≤-trans : Trans _<_ _≤_ _<_

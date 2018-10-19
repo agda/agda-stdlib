@@ -34,7 +34,6 @@ open import Algebra.FunctionProperties.Consequences (setoid ℤ)
 open import Algebra.Structures (_≡_ {A = ℤ})
 module ℤtoℕ = Morphism.Definitions ℤ ℕ _≡_
 module ℕtoℤ = Morphism.Definitions ℕ ℤ _≡_
-open ≡-Reasoning
 open +-*-Solver
 
 ------------------------------------------------------------------------
@@ -69,7 +68,7 @@ neg-injective {m} {n} -m≡-n = begin
   m     ≡⟨ sym (neg-involutive m) ⟩
   - - m ≡⟨ cong -_ -m≡-n ⟩
   - - n ≡⟨ neg-involutive n ⟩
-  n ∎
+  n ∎ where open ≡-Reasoning
 
 neg-suc : ∀ m → - + suc m ≡ pred (- + m)
 neg-suc zero    = refl
@@ -100,7 +99,7 @@ neg-suc (suc m) = refl
   i               ≡⟨ sym $ ◃-inverse i ⟩
   sign i ◃ ∣ i ∣  ≡⟨ cong₂ _◃_ sign-≡ abs-≡ ⟩
   sign j ◃ ∣ j ∣  ≡⟨ ◃-inverse j ⟩
-  j               ∎
+  j               ∎ where open ≡-Reasoning
 
 +◃n≡+n : ∀ n → Sign.+ ◃ n ≡ + n
 +◃n≡+n zero    = refl
@@ -129,14 +128,14 @@ sign-cong {s₁} {s₂} {n₁} {n₂} eq = begin
   s₁                  ≡⟨ sym $ sign-◃ s₁ n₁ ⟩
   sign (s₁ ◃ suc n₁)  ≡⟨ cong sign eq ⟩
   sign (s₂ ◃ suc n₂)  ≡⟨ sign-◃ s₂ n₂ ⟩
-  s₂                  ∎
+  s₂                  ∎ where open ≡-Reasoning
 
 abs-cong : ∀ {s₁ s₂ n₁ n₂} → s₁ ◃ n₁ ≡ s₂ ◃ n₂ → n₁ ≡ n₂
 abs-cong {s₁} {s₂} {n₁} {n₂} eq = begin
   n₁           ≡⟨ sym $ abs-◃ s₁ n₁ ⟩
   ∣ s₁ ◃ n₁ ∣  ≡⟨ cong ∣_∣ eq ⟩
   ∣ s₂ ◃ n₂ ∣  ≡⟨ abs-◃ s₂ n₂ ⟩
-  n₂           ∎
+  n₂           ∎ where open ≡-Reasoning
 
 ∣s◃m∣*∣t◃n∣≡m*n : ∀ s t m n → ∣ s ◃ m ∣ ℕ.* ∣ t ◃ n ∣ ≡ m ℕ.* n
 ∣s◃m∣*∣t◃n∣≡m*n s t m n = cong₂ ℕ._*_ (abs-◃ s m) (abs-◃ t n)
@@ -239,14 +238,14 @@ distribʳ-⊖-+-pos a b c = begin
   + a + (b ⊖ c) ≡⟨ +-comm (+ a) (b ⊖ c) ⟩
   (b ⊖ c) + + a ≡⟨ distribˡ-⊖-+-pos a b c ⟩
   b ℕ.+ a ⊖ c   ≡⟨ cong (_⊖ c) (ℕₚ.+-comm b a) ⟩
-  a ℕ.+ b ⊖ c   ∎
+  a ℕ.+ b ⊖ c   ∎ where open ≡-Reasoning
 
 distribʳ-⊖-+-neg : ∀ a b c → -[1+ a ] + (b ⊖ c) ≡ b ⊖ (suc a ℕ.+ c)
 distribʳ-⊖-+-neg a b c = begin
   -[1+ a ] + (b ⊖ c) ≡⟨ +-comm -[1+ a ] (b ⊖ c) ⟩
   (b ⊖ c) + -[1+ a ] ≡⟨ distribˡ-⊖-+-neg a b c ⟩
   b ⊖ suc (c ℕ.+ a)  ≡⟨ cong (λ x → b ⊖ suc x) (ℕₚ.+-comm c a) ⟩
-  b ⊖ suc (a ℕ.+ c)  ∎
+  b ⊖ suc (a ℕ.+ c)  ∎ where open ≡-Reasoning
 
 suc-+ : ∀ m n → + suc m + n ≡ sucℤ (+ m + n)
 suc-+ m (+ n)      = refl
@@ -292,14 +291,14 @@ pos-+-commute (suc m) n = cong sucℤ (pos-+-commute m n)
   m + (-[1+ 0 ] + n) ≡⟨ sym (+-assoc m -[1+ 0 ] n) ⟩
   m + -[1+ 0 ] + n   ≡⟨ cong (_+ n) (+-comm m -[1+ 0 ]) ⟩
   -[1+ 0 ] + m + n   ≡⟨ +-assoc -[1+ 0 ] m n ⟩
-  -[1+ 0 ] + (m + n) ∎
+  -[1+ 0 ] + (m + n) ∎ where open ≡-Reasoning
 
 pred-+ : ∀ m n → pred m + n ≡ pred (m + n)
 pred-+ m n = begin
   pred m + n   ≡⟨ +-comm (pred m) n ⟩
   n + pred m   ≡⟨ +-pred n m ⟩
   pred (n + m) ≡⟨ cong pred (+-comm n m) ⟩
-  pred (m + n) ∎
+  pred (m + n) ∎ where open ≡-Reasoning
 
 +-inverseˡ : LeftInverse (+ 0) -_ _+_
 +-inverseˡ -[1+ n ]  = n⊖n≡0 n
@@ -391,12 +390,12 @@ neg-distrib-+ -[1+ m ]  (+   n)   =
   - (+ (m ℕ.+ n))             ≡⟨⟩
   - ((+ m) + (+ n))           ≡⟨ neg-distrib-+ (+ m) (+ n) ⟩
   (- (+ m)) + (- (+ n))       ≡⟨ sym (cong₂ _+_ (-◃n≡-n m) (-◃n≡-n n)) ⟩
-  (Sign.- ◃ m) + (Sign.- ◃ n) ∎
+  (Sign.- ◃ m) + (Sign.- ◃ n) ∎ where open ≡-Reasoning
 ◃-distrib-+ Sign.+ m n = begin
   Sign.+ ◃ (m ℕ.+ n)          ≡⟨ +◃n≡+n (m ℕ.+ n) ⟩
   + (m ℕ.+ n)                 ≡⟨⟩
   (+ m) + (+ n)               ≡⟨ sym (cong₂ _+_ (+◃n≡+n m) (+◃n≡+n n)) ⟩
-  (Sign.+ ◃ m) + (Sign.+ ◃ n) ∎
+  (Sign.+ ◃ m) + (Sign.+ ◃ n) ∎ where open ≡-Reasoning
 
 +-minus-telescope : ∀ x y z → (x - y) + (y - z) ≡ x - z
 +-minus-telescope x y z = begin
@@ -405,7 +404,7 @@ neg-distrib-+ -[1+ m ]  (+   n)   =
   x + ((- y + y) - z) ≡⟨ sym (+-assoc x (- y + y) (- z)) ⟩
   x + (- y + y) - z   ≡⟨ cong (λ a → x + a - z) (+-inverseˡ y) ⟩
   x + (+ 0) - z       ≡⟨ cong (_- z) (+-identityʳ x) ⟩
-  x - z               ∎
+  x - z               ∎ where open ≡-Reasoning
 
 
 ------------------------------------------------------------------------
@@ -427,22 +426,22 @@ neg-minus-pos (suc x) (suc y) = cong (-[1+_] ∘ suc) (ℕₚ.+-comm (suc x) y)
 ∣m-n∣≡∣n-m∣ -[1+ x ] (+ y)    = begin
   ∣ -[1+ x ] - (+ y) ∣   ≡⟨ cong ∣_∣ (neg-minus-pos x y) ⟩
   suc (y ℕ.+ x)          ≡⟨ sym (ℕₚ.+-suc y x) ⟩
-  y ℕ.+ suc x            ∎
+  y ℕ.+ suc x            ∎ where open ≡-Reasoning
 ∣m-n∣≡∣n-m∣ (+ x)    -[1+ y ] = begin
   x ℕ.+ suc y            ≡⟨ ℕₚ.+-suc x y ⟩
   suc (x ℕ.+ y)          ≡⟨ cong ∣_∣ (sym (neg-minus-pos y x)) ⟩
-  ∣ -[1+ y ] + - (+ x) ∣ ∎
+  ∣ -[1+ y ] + - (+ x) ∣ ∎ where open ≡-Reasoning
 ∣m-n∣≡∣n-m∣ (+ x)     (+ y) = begin
   ∣ (+ x) - (+ y) ∣ ≡⟨ cong ∣_∣ ([+m]-[+n]≡m⊖n x y) ⟩
   ∣ x ⊖ y ∣         ≡⟨ ∣m⊖n∣≡∣n⊖m∣ x y ⟩
   ∣ y ⊖ x ∣         ≡⟨ cong ∣_∣ (sym ([+m]-[+n]≡m⊖n y x)) ⟩
-  ∣ (+ y) - (+ x) ∣ ∎
+  ∣ (+ y) - (+ x) ∣ ∎ where open ≡-Reasoning
 
 minus-suc : ∀ m n → m - + suc n ≡ pred (m - + n)
 minus-suc m n = begin
   m + - + suc n      ≡⟨ cong (_+_ m) (neg-suc n) ⟩
   m + pred (- (+ n)) ≡⟨ +-pred m (- + n) ⟩
-  pred (m - + n)     ∎
+  pred (m - + n)     ∎ where open ≡-Reasoning
 
 m≡n⇒m-n≡0 : ∀ m n → m ≡ n → m - n ≡ + 0
 m≡n⇒m-n≡0 m m refl = +-inverseʳ m
@@ -454,7 +453,7 @@ m-n≡0⇒m≡n m n m-n≡0 = begin
   m + (- n + n) ≡⟨ sym (+-assoc m (- n) n) ⟩
   (m - n) + n   ≡⟨ cong (_+ n) m-n≡0 ⟩
   + 0 + n       ≡⟨ +-identityˡ n ⟩
-  n ∎
+  n ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _*_
@@ -607,6 +606,12 @@ private
 
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
 *-distribˡ-+ = comm+distrʳ⇒distrˡ (cong₂ _+_) *-comm *-distribʳ-+
+
+sm*n≡n+m*n : ∀ m n → sucℤ m * n ≡ n + m * n
+sm*n≡n+m*n m n = begin
+  sucℤ m * n      ≡⟨ *-distribʳ-+ n (+ 1) m ⟩
+  + 1 * n + m * n ≡⟨ cong (_+ m * n) (*-identityˡ n) ⟩
+  n + m * n       ∎ where open ≡-Reasoning
 
 *-isSemigroup : IsSemigroup _*_
 *-isSemigroup = record
@@ -787,14 +792,14 @@ neg-distribˡ-* x y = begin
   - (x * y)          ≡⟨ sym (-1*n≡-n (x * y)) ⟩
   -[1+ 0 ] * (x * y) ≡⟨ sym (*-assoc -[1+ 0 ] x y) ⟩
   -[1+ 0 ] * x * y   ≡⟨ cong (_* y) (-1*n≡-n x) ⟩
-  - x * y ∎
+  - x * y ∎ where open ≡-Reasoning
 
 neg-distribʳ-* : ∀ x y → - (x * y) ≡ x * (- y)
 neg-distribʳ-* x y = begin
   - (x * y) ≡⟨ cong -_ (*-comm x y) ⟩
   - (y * x) ≡⟨ neg-distribˡ-* y x ⟩
   - y * x   ≡⟨ *-comm (- y) x ⟩
-  x * (- y) ∎
+  x * (- y) ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties _⊓_
@@ -901,6 +906,11 @@ _≤?_ : Decidable _≤_
   ; isDecTotalOrder = ≤-isDecTotalOrder
   }
 
+-- A module for reasoning about the _≤_ relation
+module ≤-Reasoning = POR ≤-poset hiding (_≈⟨_⟩_)
+
+-- Other properties of _≤_
+
 0⊖m≤+ : ∀ m {n} → 0 ⊖ m ≤ + n
 0⊖m≤+ zero    = +≤+ z≤n
 0⊖m≤+ (suc m) = -≤+
@@ -971,6 +981,21 @@ suc-mono (+≤+ m≤n) = +≤+ (ℕ.s≤s m≤n)
         | +-comm j n
         = +-monoʳ-≤ n i≤j
 
++-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
++-mono-≤ {m} {n} {i} {j} m≤n i≤j = begin
+  m + i ≤⟨ +-monoˡ-≤ i m≤n ⟩
+  n + i  ≤⟨ +-monoʳ-≤ n i≤j ⟩
+  n + j ∎ where open ≤-Reasoning
+
+m≤m+n : ∀ {m} n → m ≤ m + + n
+m≤m+n {m} n = begin
+  m       ≡⟨ sym (+-identityʳ m) ⟩
+  m + + 0 ≤⟨ +-monoʳ-≤ m (+≤+ z≤n) ⟩
+  m + + n ∎ where open ≤-Reasoning
+
+n≤m+n : ∀ m {n} → n ≤ + m + n
+n≤m+n m {n} rewrite +-comm (+ m) n = m≤m+n m
+
 m≤n⇒m-n≤0 : ∀ {m n} → m ≤ n → m - n ≤ + 0
 m≤n⇒m-n≤0 (-≤+ {n = n})         = ≤-steps-neg n -≤+
 m≤n⇒m-n≤0 (-≤- {n = n} n≤m)     = ≤-trans (⊖-monoʳ-≥-≤ n n≤m) (≤-reflexive (n⊖n≡0 n))
@@ -985,7 +1010,7 @@ m-n≤0⇒m≤n {m} {n} m-n≤0 = let module P = POR ≤-poset in P.begin
   m + (- n + n) P.≡⟨ sym (+-assoc m (- n) n) ⟩
   (m - n) + n   P.≤⟨ +-monoˡ-≤ n m-n≤0 ⟩
   + 0 + n       P.≡⟨ +-identityˡ n ⟩
-  n P.∎
+  n P.∎ where open ≡-Reasoning
 
 n≤1+n : ∀ n → n ≤ (+ 1) + n
 n≤1+n n = ≤-step ≤-refl
@@ -1083,6 +1108,11 @@ n≤1+n n = ≤-step ≤-refl
   ; isStrictTotalOrder = <-isStrictTotalOrder
   }
 
+-- A module for reasoning about the _<_ relation
+module <-Reasoning = SPOR <-strictPartialOrder
+
+-- Other properties of _<_
+
 n≮n : ∀ {n} → n ≮ n
 n≮n {+ n}           (+≤+ n<n) =  contradiction n<n ℕₚ.1+n≰n
 n≮n { -[1+ 0 ]}     ()
@@ -1115,23 +1145,29 @@ n≮n { -[1+ suc n ]} (-≤- n<n) =  contradiction n<n ℕₚ.1+n≰n
         | +-comm n j
         = +-monoˡ-< n {i} {j} i<j
 
-------------------------------------------------------------------------
--- Modules for reasoning about integer number relations
++-mono-< : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
++-mono-< {m} {n} {i} {j} m<n i<j = begin
+  m + i <⟨ +-monoˡ-< i {m} {n} m<n ⟩
+  n + i <⟨ +-monoʳ-< n i<j ⟩
+  n + j ∎ where open <-Reasoning
 
--- A module for reasoning about the _≤_ relation
-module ≤-Reasoning = POR ≤-poset hiding (_≈⟨_⟩_)
-module <-Reasoning = SPOR <-strictPartialOrder
++-mono-≤-< : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
++-mono-≤-< {m} {n} {i} {j} m≤n i<j = ≤-<-trans (+-monoˡ-≤ i m≤n) (+-monoʳ-< n i<j)
+
++-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
++-mono-<-≤ {m} {n} {i} {j} m<n i≤j =
+  <-≤-trans {m + i} {n + i} {n + j} (+-monoˡ-< i {m} {n} m<n) (+-monoʳ-≤ n i≤j)
 
 ------------------------------------------------------------------------
 -- Extra properties
 
 m≤pred[n]⇒m<n : ∀ {m n} → m ≤ pred n → m < n
-m≤pred[n]⇒m<n {m} {n} m≤predn = R.begin
-  sucℤ m               R.≤⟨ +-monoʳ-≤ (+ 1) m≤predn ⟩
-  + 1 + pred n         R.≡⟨ sym (+-assoc (+ 1) -[1+ 0 ] n) ⟩
-  (+ 1 + -[1+ 0 ]) + n R.≡⟨ cong (_+ n) (+-inverseʳ (+ 1)) ⟩
-  + 0 + n              R.≡⟨ +-identityˡ n ⟩
-  n R.∎ where module R = ≤-Reasoning
+m≤pred[n]⇒m<n {m} {n} m≤predn = begin
+  sucℤ m               ≤⟨ +-monoʳ-≤ (+ 1) m≤predn ⟩
+  + 1 + pred n         ≡⟨ sym (+-assoc (+ 1) -[1+ 0 ] n) ⟩
+  (+ 1 + -[1+ 0 ]) + n ≡⟨ cong (_+ n) (+-inverseʳ (+ 1)) ⟩
+  + 0 + n              ≡⟨ +-identityˡ n ⟩
+  n ∎ where open ≤-Reasoning
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
