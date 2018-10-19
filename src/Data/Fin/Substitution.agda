@@ -17,8 +17,8 @@ open import Data.Nat hiding (_⊔_)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Vec
 open import Function as Fun using (flip)
-open import Relation.Binary.Closure.ReflexiveTransitive as Star
-  using (Star; ε; _◅_)
+open import Relation.Binary.Construct.Closure.ReflexiveTransitive
+  as Star using (Star; ε; _◅_)
 open import Level using (Level; _⊔_)
 import Level as L
 open import Relation.Unary using (Pred)

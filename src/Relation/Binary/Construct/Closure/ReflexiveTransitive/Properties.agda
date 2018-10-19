@@ -1,14 +1,14 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Some properties related to Data.Star
+-- Some properties of reflexive transitive closures.
 ------------------------------------------------------------------------
 
-module Relation.Binary.Closure.ReflexiveTransitive.Properties where
+module Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties where
 
 open import Function
 open import Relation.Binary
-open import Relation.Binary.Closure.ReflexiveTransitive
+open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl; sym; cong; cong₂)
 import Relation.Binary.PreorderReasoning as PreR
@@ -25,14 +25,18 @@ module _ {i t} {I : Set i} {T : Rel I t} {i j k} {x y : T i j} {xs ys} where
  ◅-injectiveʳ refl = refl
 
 ------------------------------------------------------------------------
--- Properties about combinators
+-- _◅◅_
 
-◅◅-assoc : ∀ {i t} {I : Set i} {T : Rel I t} {i j k l}
-           (xs : Star T i j) (ys : Star T j k)
-           (zs : Star T k l) →
-           (xs ◅◅ ys) ◅◅ zs ≡ xs ◅◅ (ys ◅◅ zs)
-◅◅-assoc ε        ys zs = refl
-◅◅-assoc (x ◅ xs) ys zs = cong (_◅_ x) (◅◅-assoc xs ys zs)
+module _ {i t} {I : Set i} {T : Rel I t} where
+
+  ◅◅-assoc : ∀ {i j k l}
+             (xs : Star T i j) (ys : Star T j k) (zs : Star T k l) →
+             (xs ◅◅ ys) ◅◅ zs ≡ xs ◅◅ (ys ◅◅ zs)
+  ◅◅-assoc ε        ys zs = refl
+  ◅◅-assoc (x ◅ xs) ys zs = cong (_◅_ x) (◅◅-assoc xs ys zs)
+
+------------------------------------------------------------------------
+-- gmap
 
 gmap-id : ∀ {i t} {I : Set i} {T : Rel I t} {i j} (xs : Star T i j) →
           gmap id id xs ≡ xs
@@ -66,6 +70,9 @@ gmap-cong : ∀ {i t j u}
 gmap-cong f g g′ eq ε        = refl
 gmap-cong f g g′ eq (x ◅ xs) = cong₂ _◅_ (eq x) (gmap-cong f g g′ eq xs)
 
+------------------------------------------------------------------------
+-- fold
+
 fold-◅◅ : ∀ {i p} {I : Set i}
           (P : Rel I p) (_⊕_ : Transitive P) (∅ : Reflexive P) →
           (∀ {i j} (x : P i j) → (∅ ⊕ x) ≡ x) →
@@ -81,23 +88,33 @@ fold-◅◅ P _⊕_ ∅ left-unit assoc (x ◅ xs) ys = begin
   ((x ⊕ fold P _⊕_ ∅ xs) ⊕ fold P _⊕_ ∅ ys)   ∎
   where open PropEq.≡-Reasoning
 
--- Reflexive transitive closures are preorders.
+------------------------------------------------------------------------
+-- Relational properties
 
-preorder : ∀ {i t} {I : Set i} (T : Rel I t) → Preorder _ _ _
-preorder T = record
-  { _≈_        = _≡_
-  ; _∼_        = Star T
-  ; isPreorder = record
-    { isEquivalence = PropEq.isEquivalence
-    ; reflexive     = reflexive
-    ; trans         = _◅◅_
-    }
-  }
-  where
+module _ {i t} {I : Set i} (T : Rel I t) where
+
   reflexive : _≡_ ⇒ Star T
   reflexive refl = ε
 
--- Preorder reasoning for Star.
+  trans : Transitive (Star T)
+  trans = _◅◅_
+
+  isPreorder : IsPreorder _≡_ (Star T)
+  isPreorder = record
+    { isEquivalence = PropEq.isEquivalence
+    ; reflexive     = reflexive
+    ; trans         = trans
+    }
+
+  preorder : Preorder _ _ _
+  preorder = record
+    { _≈_        = _≡_
+    ; _∼_        = Star T
+    ; isPreorder = isPreorder
+    }
+
+------------------------------------------------------------------------
+-- Preorder reasoning for Star
 
 module StarReasoning {i t} {I : Set i} (T : Rel I t) where
   open PreR (preorder T) public

@@ -11,7 +11,7 @@ open import Level
 open import Relation.Binary using (Setoid)
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid; _=[_]⇒_)
-import Relation.Binary.Indexed.Heterogeneous.Construction.Trivial
+import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   as Trivial
 
 ------------------------------------------------------------------------

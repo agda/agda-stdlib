@@ -4,7 +4,7 @@
 -- The reflexive transitive closures of McBride, Norell and Jansson
 ------------------------------------------------------------------------
 
-module Relation.Binary.Closure.ReflexiveTransitive where
+module Relation.Binary.Construct.Closure.ReflexiveTransitive where
 
 open import Relation.Binary
 open import Function

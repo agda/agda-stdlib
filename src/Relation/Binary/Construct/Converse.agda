@@ -2,13 +2,13 @@
 -- The Agda standard library
 --
 -- Many properties which hold for `∼` also hold for `flip ∼`. Unlike
--- the module `Relation.Binary.Construction.Converse` this module flips
--- both the relation and the underlying equality.
+-- the module `Relation.Binary.Construct.Flip` this module does not
+-- flip the underlying equality.
 ------------------------------------------------------------------------
 
 open import Relation.Binary
 
-module Relation.Binary.Flip where
+module Relation.Binary.Construct.Converse where
 
 open import Function
 open import Data.Product
@@ -34,7 +34,7 @@ module _ {a ℓ} {A : Set a} (∼ : Rel A ℓ) where
   total total x y = total y x
 
   respects : ∀ {p} (P : A → Set p) → Symmetric ∼ →
-             P Respects ∼ → P Respects flip ∼
+             P Respects ∼ → P Respects (flip ∼)
   respects _ sym resp ∼ = resp (sym ∼)
 
   max : ∀ {⊥} → Minimum ∼ ⊥ → Maximum (flip ∼) ⊥
@@ -43,32 +43,35 @@ module _ {a ℓ} {A : Set a} (∼ : Rel A ℓ) where
   min : ∀ {⊤} → Maximum ∼ ⊤ → Minimum (flip ∼) ⊤
   min max = max
 
-module _ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b}
-         (≈ : REL A B ℓ₁) (∼ : REL A B ℓ₂) where
-
-  implies : ≈ ⇒ ∼ → flip ≈ ⇒ flip ∼
-  implies impl = impl
-
-  irreflexive : Irreflexive ≈ ∼ → Irreflexive (flip ≈) (flip ∼)
-  irreflexive irrefl = irrefl
-
 module _ {a ℓ₁ ℓ₂} {A : Set a} (≈ : Rel A ℓ₁) (∼ : Rel A ℓ₂) where
 
-  antisymmetric : Antisymmetric ≈ ∼ → Antisymmetric (flip ≈) (flip ∼)
-  antisymmetric antisym = antisym
+  implies : Symmetric ≈ → (≈ ⇒ ∼) → (≈ ⇒ flip ∼)
+  implies sym impl = impl ∘ sym
 
-  trichotomous : Trichotomous ≈ ∼ → Trichotomous (flip ≈) (flip ∼)
-  trichotomous compare x y = compare y x
+  irreflexive : Symmetric ≈ → Irreflexive ≈ ∼ → Irreflexive ≈ (flip ∼)
+  irreflexive sym irrefl x≈y y∼x = irrefl (sym x≈y) y∼x
+
+  antisymmetric : Antisymmetric ≈ ∼ → Antisymmetric ≈ (flip ∼)
+  antisymmetric antisym = flip antisym
+
+  trichotomous : Trichotomous ≈ ∼ → Trichotomous ≈ (flip ∼)
+  trichotomous compare x y with compare x y
+  ... | tri< x<y x≉y y≮x = tri> y≮x x≉y x<y
+  ... | tri≈ x≮y x≈y y≮x = tri≈ y≮x x≈y x≮y
+  ... | tri> x≮y x≉y y<x = tri< y<x x≉y x≮y
 
 module _ {a ℓ₁ ℓ₂} {A : Set a} (∼₁ : Rel A ℓ₁) (∼₂ : Rel A ℓ₂) where
 
-  respects₂ : Symmetric ∼₂ → ∼₁ Respects₂ ∼₂ → flip ∼₁ Respects₂ flip ∼₂
-  respects₂ sym (resp₁ , resp₂) = (resp₂ ∘ sym , resp₁ ∘ sym)
+  respects₂ : ∼₁ Respects₂ ∼₂ → (flip ∼₁) Respects₂ ∼₂
+  respects₂ (resp₁ , resp₂) = resp₂ , resp₁
 
 module _ {a b ℓ} {A : Set a} {B : Set b} (∼ : REL A B ℓ) where
 
   decidable : Decidable ∼ → Decidable (flip ∼)
   decidable dec x y = dec y x
+
+------------------------------------------------------------------------
+-- Structures
 
 module _ {a ℓ} {A : Set a} {≈ : Rel A ℓ} where
 
@@ -87,72 +90,68 @@ module _ {a ℓ} {A : Set a} {≈ : Rel A ℓ} where
     }
     where module Dec = IsDecEquivalence dec
 
-------------------------------------------------------------------------
--- Structures
-
 module _ {a ℓ₁ ℓ₂} {A : Set a} {≈ : Rel A ℓ₁} {∼ : Rel A ℓ₂} where
 
-  isPreorder : IsPreorder ≈ ∼ → IsPreorder (flip ≈) (flip ∼)
+  isPreorder : IsPreorder ≈ ∼ → IsPreorder ≈ (flip ∼)
   isPreorder O = record
-    { isEquivalence = isEquivalence O.isEquivalence
-    ; reflexive     = implies ≈ ∼ O.reflexive
+    { isEquivalence = O.isEquivalence
+    ; reflexive     = implies ≈ ∼ O.Eq.sym O.reflexive
     ; trans         = transitive ∼ O.trans
     }
     where module O = IsPreorder O
 
-  isPartialOrder : IsPartialOrder ≈ ∼ → IsPartialOrder (flip ≈) (flip ∼)
+  isPartialOrder : IsPartialOrder ≈ ∼ → IsPartialOrder ≈ (flip ∼)
   isPartialOrder O = record
     { isPreorder = isPreorder O.isPreorder
     ; antisym    = antisymmetric ≈ ∼ O.antisym
     }
     where module O = IsPartialOrder O
 
-  isTotalOrder : IsTotalOrder ≈ ∼ → IsTotalOrder (flip ≈) (flip ∼)
+  isTotalOrder : IsTotalOrder ≈ ∼ → IsTotalOrder ≈ (flip ∼)
   isTotalOrder O = record
     { isPartialOrder = isPartialOrder O.isPartialOrder
     ; total          = total ∼ O.total
     }
     where module O = IsTotalOrder O
 
-  isDecTotalOrder : IsDecTotalOrder ≈ ∼ → IsDecTotalOrder (flip ≈) (flip ∼)
+  isDecTotalOrder : IsDecTotalOrder ≈ ∼ → IsDecTotalOrder ≈ (flip ∼)
   isDecTotalOrder O = record
     { isTotalOrder = isTotalOrder O.isTotalOrder
-    ; _≟_          = decidable ≈ O._≟_
+    ; _≟_          = O._≟_
     ; _≤?_         = decidable ∼ O._≤?_
     }
     where module O = IsDecTotalOrder O
 
   isStrictPartialOrder : IsStrictPartialOrder ≈ ∼ →
-                         IsStrictPartialOrder (flip ≈) (flip ∼)
+                         IsStrictPartialOrder ≈ (flip ∼)
   isStrictPartialOrder O = record
-    { isEquivalence = isEquivalence O.isEquivalence
-    ; irrefl        = irreflexive ≈ ∼ O.irrefl
+    { isEquivalence = O.isEquivalence
+    ; irrefl        = irreflexive ≈ ∼ O.Eq.sym O.irrefl
     ; trans         = transitive ∼ O.trans
-    ; <-resp-≈      = respects₂ ∼ ≈ O.Eq.sym O.<-resp-≈
+    ; <-resp-≈      = respects₂ ∼ ≈ O.<-resp-≈
     }
     where module O = IsStrictPartialOrder O
 
   isStrictTotalOrder : IsStrictTotalOrder ≈ ∼ →
-                       IsStrictTotalOrder (flip ≈) (flip ∼)
+                       IsStrictTotalOrder ≈ (flip ∼)
   isStrictTotalOrder O = record
-    { isEquivalence = isEquivalence O.isEquivalence
+    { isEquivalence = O.isEquivalence
     ; trans         = transitive ∼ O.trans
     ; compare       = trichotomous ≈ ∼ O.compare
-    } where module O = IsStrictTotalOrder O
+    }
+    where module O = IsStrictTotalOrder O
 
 module _ {a ℓ} where
 
   setoid : Setoid a ℓ → Setoid a ℓ
   setoid S = record
-    { _≈_           = flip S._≈_
-    ; isEquivalence = isEquivalence S.isEquivalence
+    { isEquivalence = isEquivalence S.isEquivalence
     }
     where module S = Setoid S
 
   decSetoid : DecSetoid a ℓ → DecSetoid a ℓ
   decSetoid S = record
-    { _≈_              = flip S._≈_
-    ; isDecEquivalence = isDecEquivalence S.isDecEquivalence
+    { isDecEquivalence = isDecEquivalence S.isDecEquivalence
     }
     where module S = DecSetoid S
 
