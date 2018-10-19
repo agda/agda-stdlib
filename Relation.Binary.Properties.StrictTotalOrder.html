@@ -12,25 +12,17 @@
        <a id="368" class="Keyword">where</a>
 
 <a id="375" class="Keyword">open</a> <a id="380" href="Relation.Binary.html#11374" class="Module">Relation.Binary.StrictTotalOrder</a> <a id="413" href="Relation.Binary.Properties.StrictTotalOrder.html#328" class="Bound">STO</a>
-<a id="417" class="Keyword">import</a> <a id="424" href="Relation.Binary.StrictToNonStrict.html" class="Module">Relation.Binary.StrictToNonStrict</a> <a id="458" class="Symbol">as</a> <a id="461" class="Module">Conv</a>
-<a id="466" class="Keyword">open</a> <a id="471" href="Relation.Binary.StrictToNonStrict.html" class="Module">Conv</a> <a id="476" href="Relation.Binary.html#11492" class="Field Operator">_≈_</a> <a id="480" href="Relation.Binary.html#11532" class="Field Operator">_&lt;_</a>
-<a id="484" class="Keyword">import</a> <a id="491" href="Relation.Binary.Properties.StrictPartialOrder.html" class="Module">Relation.Binary.Properties.StrictPartialOrder</a> <a id="537" class="Symbol">as</a> <a id="540" class="Module">SPO</a>
-<a id="544" class="Keyword">open</a> <a id="549" class="Keyword">import</a> <a id="556" href="Relation.Binary.Consequences.html" class="Module">Relation.Binary.Consequences</a>
+<a id="417" class="Keyword">open</a> <a id="422" class="Keyword">import</a> <a id="429" href="Relation.Binary.Construct.StrictToNonStrict.html" class="Module">Relation.Binary.Construct.StrictToNonStrict</a> <a id="473" href="Relation.Binary.html#11492" class="Field Operator">_≈_</a> <a id="477" href="Relation.Binary.html#11532" class="Field Operator">_&lt;_</a>
+<a id="481" class="Keyword">import</a> <a id="488" href="Relation.Binary.Properties.StrictPartialOrder.html" class="Module">Relation.Binary.Properties.StrictPartialOrder</a> <a id="534" class="Symbol">as</a> <a id="537" class="Module">SPO</a>
+<a id="541" class="Keyword">open</a> <a id="546" class="Keyword">import</a> <a id="553" href="Relation.Binary.Consequences.html" class="Module">Relation.Binary.Consequences</a>
 
-<a id="586" class="Comment">------------------------------------------------------------------------</a>
-<a id="659" class="Comment">-- Strict total orders can be converted to decidable total orders</a>
+<a id="583" class="Comment">------------------------------------------------------------------------</a>
+<a id="656" class="Comment">-- Strict total orders can be converted to decidable total orders</a>
 
-<a id="decTotalOrder"></a><a id="726" href="Relation.Binary.Properties.StrictTotalOrder.html#726" class="Function">decTotalOrder</a> <a id="740" class="Symbol">:</a> <a id="742" href="Relation.Binary.html#9214" class="Record">DecTotalOrder</a> <a id="756" class="Symbol">_</a> <a id="758" class="Symbol">_</a> <a id="760" class="Symbol">_</a>
-<a id="762" href="Relation.Binary.Properties.StrictTotalOrder.html#726" class="Function">decTotalOrder</a> <a id="776" class="Symbol">=</a> <a id="778" class="Keyword">record</a>
-  <a id="787" class="Symbol">{</a> <a id="789" class="Field">isDecTotalOrder</a> <a id="805" class="Symbol">=</a> <a id="807" class="Keyword">record</a>
-    <a id="818" class="Symbol">{</a> <a id="820" class="Field">isTotalOrder</a> <a id="833" class="Symbol">=</a> <a id="835" class="Keyword">record</a>
-      <a id="848" class="Symbol">{</a> <a id="850" class="Field">isPartialOrder</a> <a id="865" class="Symbol">=</a> <a id="867" href="Relation.Binary.html#3685" class="Function">SPO.isPartialOrder</a> <a id="886" href="Relation.Binary.html#11699" class="Function">strictPartialOrder</a>
-      <a id="911" class="Symbol">;</a> <a id="913" class="Field">total</a>          <a id="928" class="Symbol">=</a> <a id="930" href="Relation.Binary.StrictToNonStrict.html#2875" class="Function">total</a> <a id="936" href="Relation.Binary.html#10467" class="Function">compare</a>
-      <a id="950" class="Symbol">}</a>
-    <a id="956" class="Symbol">;</a> <a id="958" class="Field Operator">_≟_</a>  <a id="963" class="Symbol">=</a> <a id="965" href="Relation.Binary.html#10527" class="Function Operator">_≟_</a>
-    <a id="973" class="Symbol">;</a> <a id="975" class="Field Operator">_≤?_</a> <a id="980" class="Symbol">=</a> <a id="982" href="Relation.Binary.StrictToNonStrict.html#3309" class="Function">decidable&#39;</a> <a id="993" href="Relation.Binary.html#10467" class="Function">compare</a>
-    <a id="1005" class="Symbol">}</a>
-  <a id="1009" class="Symbol">}</a>
+<a id="decTotalOrder"></a><a id="723" href="Relation.Binary.Properties.StrictTotalOrder.html#723" class="Function">decTotalOrder</a> <a id="737" class="Symbol">:</a> <a id="739" href="Relation.Binary.html#9214" class="Record">DecTotalOrder</a> <a id="753" class="Symbol">_</a> <a id="755" class="Symbol">_</a> <a id="757" class="Symbol">_</a>
+<a id="759" href="Relation.Binary.Properties.StrictTotalOrder.html#723" class="Function">decTotalOrder</a> <a id="773" class="Symbol">=</a> <a id="775" class="Keyword">record</a>
+  <a id="784" class="Symbol">{</a> <a id="786" class="Field">isDecTotalOrder</a> <a id="802" class="Symbol">=</a> <a id="804" href="Relation.Binary.Construct.StrictToNonStrict.html#4607" class="Function">isDecTotalOrder</a> <a id="820" href="Relation.Binary.html#11572" class="Field">isStrictTotalOrder</a>
+  <a id="841" class="Symbol">}</a>
 
-<a id="1012" class="Keyword">open</a> <a id="1017" href="Relation.Binary.html#9214" class="Module">DecTotalOrder</a> <a id="1031" href="Relation.Binary.Properties.StrictTotalOrder.html#726" class="Function">decTotalOrder</a> <a id="1045" class="Keyword">public</a>
+<a id="844" class="Keyword">open</a> <a id="849" href="Relation.Binary.html#9214" class="Module">DecTotalOrder</a> <a id="863" href="Relation.Binary.Properties.StrictTotalOrder.html#723" class="Function">decTotalOrder</a> <a id="877" class="Keyword">public</a>
 </pre></body></html>
