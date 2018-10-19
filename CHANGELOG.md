@@ -481,7 +481,7 @@ Other minor additions
   m≤pred[n]⇒m<n : m ≤ pred n → m < n
   m≤m+n         : m ≤ m + + n
   n≤m+n         : n ≤ + m + n
-
+  m-n≤m         : m - + n ≤ m
 
   ≤-<-trans : Trans _≤_ _<_ _<_
   <-≤-trans : Trans _<_ _≤_ _<_
