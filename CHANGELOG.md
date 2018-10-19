@@ -437,7 +437,6 @@ Other minor additions
   pigeonhole  : m < n → (f : Fin n → Fin m) → ∃₂ λ i j → i ≢ j × f i ≡ f j
   ```
 
-<<<<<<< HEAD
 * Added new type to `Data.Integer.Divisibility`
   ```agda
   record k ∣′ z = (quotient : ℤ) ** (z ≡ quotient * k)
