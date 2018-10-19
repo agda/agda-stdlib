@@ -85,3 +85,18 @@ a≡a%n+[a/n]*n -[1+ n ] d with (ℕ.suc n) NDM.divMod (ℕ.suc d)
     fin-inv : ∀ d (k : Fin d) → + (ℕ.suc d) - + ℕ.suc (Fin.toℕ k) ≡ + (d ℕ.∸ Fin.toℕ k)
     fin-inv (ℕ.suc n) Fin.zero    = refl
     fin-inv (ℕ.suc n) (Fin.suc k) = ⊖-≥ {n} {Fin.toℕ k} (NProp.<⇒≤ (FProp.toℕ<n k))
+
+[n/d]*d≤n : ∀ n d → (n divℕ ℕ.suc d) ℤ.* ℤ.+ (ℕ.suc d) ℤ.≤ n
+[n/d]*d≤n n d = let q = n divℕ ℕ.suc d; r = n modℕ ℕ.suc d in begin
+  q ℤ.* ℤ.+ (ℕ.suc d)           ≤⟨ n≤m+n r ⟩
+  ℤ.+ r ℤ.+ q ℤ.* ℤ.+ (ℕ.suc d) ≡⟨ sym (a≡a%n+[a/n]*n n d) ⟩
+  n                             ∎ where open ≤-Reasoning
+
+n<s[n/d]*d : ∀ n d → n ℤ.< ℤ.suc (n divℕ ℕ.suc d) ℤ.* ℤ.+ (ℕ.suc d)
+n<s[n/d]*d n d = begin
+  n                   ≡⟨ a≡a%n+[a/n]*n n d ⟩
+  ℤ.+ r ℤ.+ q ℤ.* +sd <⟨ +-monoˡ-< (q ℤ.* +sd) {ℤ.+ r} (ℤ.+≤+ (n%d<d n d)) ⟩
+  +sd ℤ.+ q ℤ.* +sd   ≡⟨ sym (sm*n≡n+m*n q +sd) ⟩
+  ℤ.suc q ℤ.* +sd     ∎ where
+  q = n divℕ ℕ.suc d; sd = ℕ.suc d; +sd = ℤ.+ sd; r = n modℕ ℕ.suc d
+  open <-Reasoning

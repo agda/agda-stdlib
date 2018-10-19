@@ -993,6 +993,9 @@ m≤m+n {m} n = begin
   m + + 0 ≤⟨ +-monoʳ-≤ m (+≤+ z≤n) ⟩
   m + + n ∎ where open ≤-Reasoning
 
+m-n≤m : ∀ m n → m - + n ≤ m
+m-n≤m m n = ≤-steps-neg n ≤-refl
+
 n≤m+n : ∀ m {n} → n ≤ + m + n
 n≤m+n m {n} rewrite +-comm (+ m) n = m≤m+n m
 
