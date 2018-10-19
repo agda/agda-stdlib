@@ -552,7 +552,6 @@ Other minor additions
 
 * Added new proofs to `Data.Nat.Divisibility`:
   ```agda
-
   n∣m⇒m%n≡0 : suc n ∣ m → m % (suc n) ≡ 0
   m%n≡0⇒n∣m : m % (suc n) ≡ 0 → suc n ∣ m
   m%n≡0⇔n∣m : m % (suc n) ≡ 0 ⇔ suc n ∣ m
