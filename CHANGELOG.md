@@ -226,14 +226,14 @@ Non-backwards compatible changes
   `Always` and `Never`.
 
 * The module `Relation.Binary.InducedPreorders` has been split into
-  `Induced.ByPred` and `Induced.ByRel`.
+  `Relation.Binary.Construct.FromPred` and `Relation.Binary.Construct.FromRel`.
 
 * The full list of changes is as follows:
   ```agda
   Relation.Binary.Closure           ↦ Relation.Binary.Construct.Closure
   Relation.Binary.Flip              ↦ Relation.Binary.Construct.Flip
-  Relation.Binary.InducedPreorders  ↦ Relation.Binary.Construct.Induced.ByPred
-                                    ↘ Relation.Binary.Construct.Induced.ByRel
+  Relation.Binary.InducedPreorders  ↦ Relation.Binary.Construct.FromPred
+                                    ↘ Relation.Binary.Construct.FromRel
   Relation.Binary.On                ↦ Relation.Binary.Construct.On
   Relation.Binary.Simple            ↦ Relation.Binary.Construct.Always
                                     ↘ Relation.Binary.Construct.Never
@@ -781,7 +781,7 @@ Other minor additions
   setoid        : C → Setoid a c
   ```
 
-* Added new definitions and proofs to `Relation.Binary.Construct.Induced.ByPred`:
+* Added new definitions and proofs to `Relation.Binary.Construct.FromPred`:
   ```agda
   Resp x y = P x → P y
 
@@ -792,7 +792,7 @@ Other minor additions
   preorder   : P Respects _≈_ → Preorder _ _ _
   ```
 
-* Added new definitions and proofs to `Relation.Binary.Construct.Induced.ByRel`:
+* Added new definitions and proofs to `Relation.Binary.Construct.FromRel`:
   ```agda
   Resp x y = ∀ {a} → a R x → a R y
 
