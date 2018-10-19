@@ -625,6 +625,13 @@ Other minor additions
   unzipWith : (A → B × C) → Vec A n → Vec B n × Vec C n
   ```
 
+* Added new functions to `Data.Vec.Any`:
+  ```agda
+  head    : ¬ Any P xs → Any P (x ∷ xs) → P x
+  toSum   : Any P (x ∷ xs) → P x ⊎ Any P xs
+  fromSum : P x ⊎ Any P xs → Any P (x ∷ xs)
+  ```
+
 * Added new functions to `Data.Vec.Categorical`:
   ```agda
   sequenceA : RawApplicative F → Vec (F A) n → F (Vec A n)
