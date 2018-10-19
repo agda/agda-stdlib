@@ -49,6 +49,10 @@ n%ℕd<d -[1+ n ] d with ℕ.suc n NDM.divMod ℕ.suc d
 ... | NDM.result q Fin.zero    eq = ℕ.s≤s ℕ.z≤n
 ... | NDM.result q (Fin.suc r) eq = ℕ.s≤s (NProp.n∸m≤n (Fin.toℕ r) d)
 
+n%d<d : ∀ n d {d≢0} → (n mod d) {d≢0} ℕ.< ℤ.∣ d ∣
+n%d<d n (+ ℕ.suc d) = n%ℕd<d n d
+n%d<d n -[1+ d ]    = n%ℕd<d n d
+
 a≡a%ℕn+[a/ℕn]*n : ∀ a n → let sn = ℕ.suc n in a ≡ + (a modℕ sn) + (a divℕ sn) * + sn
 a≡a%ℕn+[a/ℕn]*n (+ n) d = let sd = ℕ.suc d; q = n NDM.div sd; r = n NDM.% sd in begin
   + n                ≡⟨ cong +_ (NDM.a≡a%n+[a/n]*n n d) ⟩
@@ -100,6 +104,24 @@ a≡a%ℕn+[a/ℕn]*n -[1+ n ] d with (ℕ.suc n) NDM.divMod (ℕ.suc d)
   ℤ.+ r ℤ.+ q ℤ.* ℤ.+ (ℕ.suc d) ≡⟨ sym (a≡a%ℕn+[a/ℕn]*n n d) ⟩
   n                             ∎ where open ≤-Reasoning
 
+div-pos-is-divℕ : ∀ n d → n div + (ℕ.suc d) ≡ n divℕ ℕ.suc d
+div-pos-is-divℕ n d = *-identityˡ (n divℕ ℕ.suc d)
+
+div-neg-is-neg-divℕ : ∀ n d → n div -[1+ d ] ≡ - (n divℕ ℕ.suc d)
+div-neg-is-neg-divℕ n d = -1*n≡-n (n divℕ ℕ.suc d)
+
+[n/d]*d≤n : ∀ n d {d≢0} → (n div d) {d≢0} ℤ.* d ℤ.≤ n
+[n/d]*d≤n n (+ ℕ.suc d) = begin let sd = ℕ.suc d in
+  n div + sd * + sd ≡⟨ cong (_* (+ sd)) (div-pos-is-divℕ n d) ⟩
+  n divℕ sd * + sd  ≤⟨ [n/ℕd]*d≤n n d ⟩
+  n ∎ where open ≤-Reasoning
+[n/d]*d≤n n -[1+ d ]    = begin let sd = ℕ.suc d in
+  n div (- + sd) * - + sd ≡⟨ cong (_* (- + sd)) (div-neg-is-neg-divℕ n d) ⟩
+  - (n divℕ sd) * - + sd  ≡⟨ sym (neg-distribˡ-* (n divℕ sd) (- + sd)) ⟩
+  - (n divℕ sd * - + sd)  ≡⟨ neg-distribʳ-* (n divℕ sd) (- + sd) ⟩
+  n divℕ sd * + sd        ≤⟨ [n/ℕd]*d≤n n d ⟩
+  n ∎ where open ≤-Reasoning
+
 n<s[n/ℕd]*d : ∀ n d → n ℤ.< ℤ.suc (n divℕ ℕ.suc d) ℤ.* ℤ.+ (ℕ.suc d)
 n<s[n/ℕd]*d n d = begin
   n                   ≡⟨ a≡a%ℕn+[a/ℕn]*n n d ⟩
@@ -112,10 +134,9 @@ n<s[n/ℕd]*d n d = begin
 a≡a%n+[a/n]*n : ∀ a n {≢0} → a ≡ + (a mod n) {≢0} + (a div n) {≢0} * n
 a≡a%n+[a/n]*n n (+ ℕ.suc d) = begin
   let sd = ℕ.suc d; r = n modℕ sd; q = n divℕ sd; qsd = q * + sd in
-  n                         ≡⟨ a≡a%ℕn+[a/ℕn]*n n d ⟩
-  + r + qsd                 ≡⟨ cong (_+_ (+ r)) (sym (*-identityˡ qsd)) ⟩
-  + r + (+ 1) * qsd         ≡⟨ cong (_+_ (+ r)) (sym (*-assoc (+ 1) q (+ sd))) ⟩
-  + r + (n div + sd) * + sd ∎ where open ≡-Reasoning
+  n                       ≡⟨ a≡a%ℕn+[a/ℕn]*n n d ⟩
+  + r + qsd               ≡⟨ cong (λ p → + r + p * + sd) (sym (div-pos-is-divℕ n d)) ⟩
+  + r + n div + sd * + sd ∎ where open ≡-Reasoning
 a≡a%n+[a/n]*n n -[1+ d ]    = begin
   let sd = ℕ.suc d; r = n modℕ sd; q = n divℕ sd; qsd = q * + sd in
   n ≡⟨ a≡a%ℕn+[a/ℕn]*n n d ⟩
