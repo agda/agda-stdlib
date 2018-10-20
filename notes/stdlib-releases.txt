@@ -1,5 +1,7 @@
 When releasing a new version of Agda standard library, the following
-procedure can be followed:
+procedure should be followed:
+
+#### Pre-release changes
 
 * Update README.agda:
 
@@ -16,29 +18,15 @@ procedure can be followed:
 
 * Update the lib.cabal version to X.Y.
 
-* Ensure that the library type-checks using Agda A.B.C:
-
-    make test
-
-* If necessary, copy the contents of notes/future-version.txt to
-  CHANGELOG. Remove the contents from notes/future-version.txt
-
 * Finish the CHANGELOG.
 
 * Update the copyright year range in the LICENSE file, if necessary.
 
-* Tag version X.Y (do not forget to record the changes above first):
+#### Pre-release tests
 
-    VERSION=X.Y
-    git tag -a v$VERSION -m "Agda standard library version $VERSION"
+* Ensure that the library type-checks using Agda A.B.C:
 
-* Removed release-specific information from README.agda.
-
-* Add a new header to CHANGELOG (do not forget to record the changes).
-
-* Push all the changes and the new tag (requires Git >= 1.8.3):
-
-    git push --follow-tags
+    make test
 
 * Update submodule commit for the stable library in Agda:
 
@@ -46,6 +34,19 @@ procedure can be followed:
     make fast-forward-std-lib
 
   Record the changes and push
+
+#### Release
+
+* Tag version X.Y (do not forget to record the changes above first):
+
+    VERSION=X.Y
+    git tag -a v$VERSION -m "Agda standard library version $VERSION"
+
+* Push all the changes and the new tag (requires Git >= 1.8.3):
+
+    git push --follow-tags
+
+* Add a new header to CHANGELOG (do not forget to record the changes).
 
 * Submit a pull request to update the version of standard library on Homebrew (https://github.com/Homebrew/homebrew-core/blob/master/Formula/agda.rb)
 
@@ -57,3 +58,11 @@ procedure can be followed:
 
 * Announce the release of the new version on the Agda mailing lists
   (users and developers).
+
+#### Post-release
+
+* Move the CHANGELOG.md into the old CHANGELOG folders
+
+* Create new CHANGELOG.md file
+
+* Revert changes in README.md to reference development version
