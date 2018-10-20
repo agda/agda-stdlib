@@ -22,7 +22,7 @@ open import Function
 open import Function.Inverse using (_↔_; inverse)
 open import Relation.Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; _≗_)
+  using (_≡_; _≢_; refl; _≗_; _≡_↾¹_)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_; refl)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary using (yes; no)
@@ -70,7 +70,7 @@ module _ {a} {A : Set a} where
   lookup⇒[]= : ∀ {n} (i : Fin n) {x : A} xs →
                lookup i xs ≡ x → xs [ i ]= x
   lookup⇒[]= zero    (_ ∷ _)  refl = here
-  lookup⇒[]= (suc i) (_  ∷ xs) p    = there (lookup⇒[]= i xs p)
+  lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
 
   []=↔lookup : ∀ {n i} {x} {xs : Vec A n} →
                xs [ i ]= x ↔ lookup i xs ≡ x
@@ -78,58 +78,158 @@ module _ {a} {A : Set a} where
      (λ _ → []=-irrelevance _ _) (λ _ → P.≡-irrelevance _ _)
 
 ------------------------------------------------------------------------
+-- updateAt (_[_]%=_)
+
+module _ {a} {A : Set a} where
+
+  -- Defining properties of updateAt:
+
+  -- (+) updateAt i actually updates the element at index i.
+
+  updateAt-updates : ∀ {n} (i : Fin n) {f : A → A} (xs : Vec A n) {x : A}
+    → xs              [ i ]= x
+    → updateAt i f xs [ i ]= f x
+  updateAt-updates zero    (x ∷ xs) here        = here
+  updateAt-updates (suc i) (x ∷ xs) (there loc) = there (updateAt-updates i xs loc)
+
+  -- (-) updateAt i does not touch the elements at other indices.
+
+  updateAt-minimal : ∀ {n} (i j : Fin n) {f : A → A} {x : A} (xs : Vec A n)
+    → i ≢ j
+    → xs              [ i ]= x
+    → updateAt j f xs [ i ]= x
+  updateAt-minimal zero    zero    (x ∷ xs) 0≢0 here        = ⊥-elim (0≢0 refl)
+  updateAt-minimal zero    (suc j) (x ∷ xs) _   here        = here
+  updateAt-minimal (suc i) zero    (x ∷ xs) _   (there loc) = there loc
+  updateAt-minimal (suc i) (suc j) (x ∷ xs) i≢j (there loc) =
+    there (updateAt-minimal i j xs (i≢j ∘ P.cong suc) loc)
+
+  -- The other properties are consequences of (+) and (-).
+  -- We spell the most natural properties out.
+  -- Direct inductive proofs are in most cases easier than just using
+  -- the defining properties.
+
+  -- updateAt i  is a morphism from the monoid of endofunctions A → A
+  -- to the monoid of endofunctions Vec A n → Vec A n
+
+  -- 1a. relative identity:  f = id ↾ (lookup i xs)
+  --                implies  updateAt i f = id ↾ xs
+
+  updateAt-id-relative : ∀ {n} (i : Fin n) (xs : Vec A n) {f : A → A}
+    → f ≡ id ↾¹ lookup i xs
+    → updateAt i f xs ≡ xs
+  updateAt-id-relative zero    (x ∷ xs) eq = P.cong (_∷ xs) eq
+  updateAt-id-relative (suc i) (x ∷ xs) eq = P.cong (x ∷_) (updateAt-id-relative i xs eq)
+
+  -- 1b. identity:  updateAt i id ≗ id
+
+  updateAt-id : ∀ {n} (i : Fin n) (xs : Vec A n) →
+    updateAt i id xs ≡ xs
+  updateAt-id i xs = updateAt-id-relative i xs refl
+
+  -- 2. composition:  updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
+
+  updateAt-compose : ∀ {n} (i : Fin n) {f g : A → A} →
+    updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
+  updateAt-compose zero    (x ∷ xs) = refl
+  updateAt-compose (suc i) (x ∷ xs) = P.cong (x ∷_) (updateAt-compose i xs)
+
+  -- 3. congruence:  updateAt i  is a congruence wrt. extensional equality.
+
+  -- 3a.  If    f = g ↾ (lookup i xs)
+  --      then  updateAt i f = updateAt i g ↾ xs
+
+  updateAt-cong-relative : ∀ {n} (i : Fin n) {f g : A → A} (xs : Vec A n)
+    → f ≡ g ↾¹ lookup i xs
+    → updateAt i f xs ≡ updateAt i g xs
+  updateAt-cong-relative zero    (x ∷ xs) f=g = P.cong (_∷ xs) f=g
+  updateAt-cong-relative (suc i) (x ∷ xs) f=g = P.cong (x ∷_) (updateAt-cong-relative i xs f=g)
+
+  -- 3b. congruence:  f ≗ g → updateAt i f ≗ updateAt i g
+
+  updateAt-cong : ∀ {n} (i : Fin n) {f g : A → A}
+    → f ≗ g
+    → updateAt i f ≗ updateAt i g
+  updateAt-cong i f≗g xs = updateAt-cong-relative i xs (f≗g (lookup i xs))
+
+  -- The order of updates at different indices i ≢ j does not matter.
+
+  -- This a consequence of updateAt-updates and updateAt-minimal
+  -- but easier to prove inductively.
+
+  updateAt-commutes : ∀ {n} (i j : Fin n) {f g : A → A}
+    → i ≢ j
+    → updateAt i f ∘ updateAt j g ≗ updateAt j g ∘ updateAt i f
+  updateAt-commutes zero    zero    0≢0 (x ∷ xs) = ⊥-elim (0≢0 refl)
+  updateAt-commutes zero    (suc j) i≢j (x ∷ xs) = refl
+  updateAt-commutes (suc i) zero    i≢j (x ∷ xs) = refl
+  updateAt-commutes (suc i) (suc j) i≢j (x ∷ xs) =
+    P.cong (x ∷_) (updateAt-commutes i j (i≢j ∘ P.cong suc) xs)
+
+  -- lookup after updateAt reduces.
+
+  -- For same index this is an easy consequence of updateAt-updates
+  -- using []=↔lookup.
+
+  lookup∘updateAt : ∀ {n} (i : Fin n) {f : A → A} →
+    lookup i ∘ updateAt i f ≗ f ∘ lookup i
+  lookup∘updateAt i xs =
+    []=⇒lookup (updateAt-updates i xs (lookup⇒[]= i _ refl))
+
+  -- For different indices it easily follows from updateAt-minimal.
+
+  lookup∘updateAt′ : ∀ {n} (i j : Fin n) {f : A → A}
+    → i ≢ j
+    → lookup i ∘ updateAt j f ≗ lookup i
+  lookup∘updateAt′ i j xs i≢j =
+    []=⇒lookup (updateAt-minimal i j i≢j xs (lookup⇒[]= i _ refl))
+
+  -- Aliases for notation _[_]%=_
+
+  []%=-id : ∀ {n} (xs : Vec A n) (i : Fin n) → xs [ i ]%= id ≡ xs
+  []%=-id xs i = updateAt-id i xs
+
+  []%=-compose : ∀ {n} (xs : Vec A n) (i : Fin n) {f g : A → A} →
+       xs [ i ]%= f
+          [ i ]%= g
+     ≡ xs [ i ]%= g ∘ f
+  []%=-compose xs i = updateAt-compose i xs
+
+------------------------------------------------------------------------
 -- _[_]≔_ (update)
+--
+-- _[_]≔_ is defined in terms of updateAt, and all of its properties
+-- are special cases of the ones for updateAt.
 
 module _ {a} {A : Set a} where
 
   []≔-idempotent : ∀ {n} (xs : Vec A n) (i : Fin n) {x₁ x₂ : A} →
                    (xs [ i ]≔ x₁) [ i ]≔ x₂ ≡ xs [ i ]≔ x₂
-  []≔-idempotent []       ()
-  []≔-idempotent (x ∷ xs) zero    = refl
-  []≔-idempotent (x ∷ xs) (suc i) = P.cong (x ∷_) ([]≔-idempotent xs i)
+  []≔-idempotent xs i = updateAt-compose i xs
 
   []≔-commutes : ∀ {n} (xs : Vec A n) (i j : Fin n) {x y : A} → i ≢ j →
                  (xs [ i ]≔ x) [ j ]≔ y ≡ (xs [ j ]≔ y) [ i ]≔ x
-  []≔-commutes []       ()      ()      _
-  []≔-commutes (x ∷ xs) zero    zero    0≢0 = ⊥-elim $ 0≢0 refl
-  []≔-commutes (x ∷ xs) zero    (suc i) _   = refl
-  []≔-commutes (x ∷ xs) (suc i) zero    _   = refl
-  []≔-commutes (x ∷ xs) (suc i) (suc j) i≢j =
-    P.cong (x ∷_) $ []≔-commutes xs i j (i≢j ∘ P.cong suc)
+  []≔-commutes xs i j i≢j = updateAt-commutes j i (i≢j ∘ P.sym) xs
 
   []≔-updates : ∀ {n} (xs : Vec A n) (i : Fin n) {x : A} →
                 (xs [ i ]≔ x) [ i ]= x
-  []≔-updates []       ()
-  []≔-updates (x ∷ xs) zero    = here
-  []≔-updates (x ∷ xs) (suc i) = there ([]≔-updates xs i)
+  []≔-updates xs i = updateAt-updates i xs (lookup⇒[]= i xs refl)
 
   []≔-minimal : ∀ {n} (xs : Vec A n) (i j : Fin n) {x y : A} → i ≢ j →
                 xs [ i ]= x → (xs [ j ]≔ y) [ i ]= x
-  []≔-minimal []       ()      ()      _   _
-  []≔-minimal (x ∷ xs) .zero   zero    0≢0 here        = ⊥-elim (0≢0 refl)
-  []≔-minimal (x ∷ xs) .zero   (suc j) _   here        = here
-  []≔-minimal (x ∷ xs) (suc i) zero    _   (there loc) = there loc
-  []≔-minimal (x ∷ xs) (suc i) (suc j) i≢j (there loc) =
-    there ([]≔-minimal xs i j (i≢j ∘ P.cong suc) loc)
+  []≔-minimal xs i j i≢j loc = updateAt-minimal i j xs i≢j loc
 
   []≔-lookup : ∀ {n} (xs : Vec A n) (i : Fin n) →
                xs [ i ]≔ lookup i xs ≡ xs
-  []≔-lookup []       ()
-  []≔-lookup (x ∷ xs) zero    = refl
-  []≔-lookup (x ∷ xs) (suc i) = P.cong (_∷_ x) $ []≔-lookup xs i
+  []≔-lookup xs i = updateAt-id-relative i xs refl
 
   lookup∘update : ∀ {n} (i : Fin n) (xs : Vec A n) x →
                   lookup i (xs [ i ]≔ x) ≡ x
-  lookup∘update zero    (_ ∷ xs) x = refl
-  lookup∘update (suc i) (_ ∷ xs) x = lookup∘update i xs x
+  lookup∘update i xs x = lookup∘updateAt i xs
 
   lookup∘update′ : ∀ {n} {i j : Fin n} → i ≢ j → ∀ (xs : Vec A n) y →
                    lookup i (xs [ j ]≔ y) ≡ lookup i xs
-  lookup∘update′ {i = zero}  {zero}  i≢j      xs  y = ⊥-elim (i≢j refl)
-  lookup∘update′ {i = zero}  {suc j} i≢j (x ∷ xs) y = refl
-  lookup∘update′ {i = suc i} {zero}  i≢j (x ∷ xs) y = refl
-  lookup∘update′ {i = suc i} {suc j} i≢j (x ∷ xs) y =
-    lookup∘update′ (i≢j ∘ P.cong suc) xs y
+  lookup∘update′ {n} {i} {j} i≢j xs y = lookup∘updateAt′ i j i≢j xs
 
 ------------------------------------------------------------------------
 -- map
@@ -155,12 +255,17 @@ lookup-map : ∀ {a b n} {A : Set a} {B : Set b}
 lookup-map zero    f (x ∷ xs) = refl
 lookup-map (suc i) f (x ∷ xs) = lookup-map i f xs
 
+map-updateAt : ∀ {n a b} {A : Set a} {B : Set b} →
+  ∀ {f : A → B} {g : A → A} {h : B → B} (xs : Vec A n) (i : Fin n)
+  → f ∘ g ≡ h ∘ f ↾¹ lookup i xs
+  → map f (updateAt i g xs) ≡ updateAt i h (map f xs)
+map-updateAt (x ∷ xs) zero    eq = P.cong (_∷ _) eq
+map-updateAt (x ∷ xs) (suc i) eq = P.cong (_ ∷_) (map-updateAt xs i eq)
+
 map-[]≔ : ∀ {n a b} {A : Set a} {B : Set b}
           (f : A → B) (xs : Vec A n) (i : Fin n) {x : A} →
           map f (xs [ i ]≔ x) ≡ map f xs [ i ]≔ f x
-map-[]≔ f []       ()
-map-[]≔ f (x ∷ xs) zero    = refl
-map-[]≔ f (x ∷ xs) (suc i) = P.cong (_ ∷_) $ map-[]≔ f xs i
+map-[]≔ f xs i = map-updateAt xs i refl
 
 ------------------------------------------------------------------------
 -- _++_

@@ -659,6 +659,13 @@ Other minor additions
   align     : Vec A m → Vec B n → Vec (These A B) (m ⊔ n)
   unzipWith : (A → B × C) → Vec A n → Vec B n × Vec C n
   ```
+  A generalization of single point overwrite `_[_]≔_`
+  to single-point modification `_[_]%=_`
+  (alias with different argument order: `updateAt`):
+  ```agda
+  _[_]%=_   : Vec A n → Fin n → (A → A) → Vec A n
+  updateAt  : Fin n → (A → A) → Vec A n → Vec A n
+  ```
 
 * Added new proofs to `Data.Vec.All.Properties`:
   ```agda
@@ -698,6 +705,8 @@ Other minor additions
   ```agda
   lookup-zipWith : lookup i (zipWith f xs ys) ≡ f (lookup i xs) (lookup i ys)
   ```
+  Added laws for `updateAt`.
+  Now laws for `_[_]≔_` are special instances of these.
 
 * Added new proofs to `Data.Vec.Relation.Pointwise.Inductive`:
   ```agda
@@ -884,6 +893,10 @@ Other minor additions
   ```agda
   <⇒≤ : _<_ ⇒ _≤_
   ```
+
+* Added new definitions to `Relation.Binary.PropositionalEquality`:
+  - `_≡_↾¹_` equality of functions at a single point
+  - `_≡_↾_` equality of functions at a subset of the domain
 
 * Added new proofs to `Relation.Binary.PropositionalEquality`:
   ```agda
