@@ -10,6 +10,7 @@
 
 module Relation.Binary.Indexed.Homogeneous where
 
+open import Function using (_⟨_⟩_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary as B using (_⇒_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -30,6 +31,9 @@ record IsIndexedEquivalence {i a ℓ} {I : Set i} (A : I → Set a)
     reflᵢ  : Reflexive  A _≈ᵢ_
     symᵢ   : Symmetric  A _≈ᵢ_
     transᵢ : Transitive A _≈ᵢ_
+
+  reflexiveᵢ : ∀ {i} → _≡_ ⟨ _⇒_ ⟩ _≈ᵢ_ {i}
+  reflexiveᵢ P.refl = reflᵢ
 
   -- Lift properties
 
