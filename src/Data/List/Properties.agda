@@ -398,27 +398,27 @@ id-is-foldr = foldr-universal id _∷_ [] refl (λ _ _ → refl)
   ∎
   where open P.≡-Reasoning
 
-foldr-++ : ∀ {a b} {A : Set a} {B : Set b} (f : A → B → B) x ys zs →
-           foldr f x (ys ++ zs) ≡ foldr f (foldr f x zs) ys
-foldr-++ f x []       zs = refl
-foldr-++ f x (y ∷ ys) zs = P.cong (f y) (foldr-++ f x ys zs)
+module _ {a b} {A : Set a} {B : Set b} where
 
-map-is-foldr : ∀ {a b} {A : Set a} {B : Set b} {f : A → B} →
-            map f ≗ foldr (λ x ys → f x ∷ ys) []
-map-is-foldr {f = f} =
-  begin
-    map f
-  ≈⟨ P.cong (map f) ∘ id-is-foldr ⟩
-    map f ∘ foldr _∷_ []
-  ≈⟨ foldr-fusion (map f) [] (λ _ _ → refl) ⟩
-    foldr (λ x ys → f x ∷ ys) []
-  ∎
-  where open EqR (P._→-setoid_ _ _)
+  foldr-++ : ∀ (f : A → B → B) x ys zs →
+             foldr f x (ys ++ zs) ≡ foldr f (foldr f x zs) ys
+  foldr-++ f x []       zs = refl
+  foldr-++ f x (y ∷ ys) zs = P.cong (f y) (foldr-++ f x ys zs)
 
-foldr-∷ʳ : ∀ {a b} {A : Set a} {B : Set b} (f : A → B → B) x y ys →
-           foldr f x (ys ∷ʳ y) ≡ foldr f (f y x) ys
-foldr-∷ʳ f x y []       = refl
-foldr-∷ʳ f x y (z ∷ ys) = P.cong (f z) (foldr-∷ʳ f x y ys)
+  map-is-foldr : {f : A → B} → map f ≗ foldr (λ x ys → f x ∷ ys) []
+  map-is-foldr {f = f} =
+    begin
+      map f
+    ≈⟨ P.cong (map f) ∘ id-is-foldr ⟩
+      map f ∘ foldr _∷_ []
+    ≈⟨ foldr-fusion (map f) [] (λ _ _ → refl) ⟩
+      foldr (λ x ys → f x ∷ ys) []
+    ∎  where open EqR (P._→-setoid_ _ _)
+
+  foldr-∷ʳ : ∀ (f : A → B → B) x y ys →
+             foldr f x (ys ∷ʳ y) ≡ foldr f (f y x) ys
+  foldr-∷ʳ f x y []       = refl
+  foldr-∷ʳ f x y (z ∷ ys) = P.cong (f z) (foldr-∷ʳ f x y ys)
 
 ------------------------------------------------------------------------
 -- foldl
