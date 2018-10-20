@@ -361,6 +361,11 @@ the library. The deprecated names still exist and therefore all existing code sh
 work, however they have been deprecated and use of any new names is encouraged. Although not
 anticipated any time soon, they may eventually be removed in some future release of the library.
 
+* In `Data.Fin.Properties`:
+  ```agda
+  ≤+≢⇒<  ↦  ≤∧≢⇒<
+  ```
+
 * In `Data.List.Properties`:
   ```agda
   idIsFold   ↦  id-is-foldr
