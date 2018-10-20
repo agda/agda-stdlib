@@ -191,14 +191,14 @@ module _ {a} {A : Set a} where
 
 -- Actions on single elements
 
-  infixl 5 _at_%=_ _at_∷=_ _─_
-  _at_%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
-  []       at ()        %= f
-  (x ∷ xs) at Fin.zero  %= f = f x ∷ xs
-  (x ∷ xs) at Fin.suc k %= f = x ∷ (xs at k %= f)
+  infixl 5 _[_]%=_ _[_]∷=_ _─_
+  _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
+  []       [ ()        ]%= f
+  (x ∷ xs) [ Fin.zero  ]%= f = f x ∷ xs
+  (x ∷ xs) [ Fin.suc k ]%= f = x ∷ (xs [ k ]%= f)
 
-  _at_∷=_ : (xs : List A) → Fin (length xs) → A → List A
-  xs at k ∷= v = xs at k %= const v
+  _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
+  xs [ k ]∷= v = xs [ k ]%= const v
 
   _─_ : (xs : List A) → Fin (length xs) → List A
   []       ─ ()

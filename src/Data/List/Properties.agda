@@ -524,17 +524,17 @@ module _ {a} {A : Set a} where
 ------------------------------------------------------------------------
 -- _at_(%/∷)=_
 
-  length-%= : ∀ xs k (f : A → A) → length (xs at k %= f) ≡ length xs
+  length-%= : ∀ xs k (f : A → A) → length (xs [ k ]%= f) ≡ length xs
   length-%= []       ()      f
   length-%= (x ∷ xs) zero    f = refl
   length-%= (x ∷ xs) (suc k) f = P.cong suc (length-%= xs k f)
 
-  length-∷= : ∀ xs k (v : A) → length (xs at k ∷= v) ≡ length xs
+  length-∷= : ∀ xs k (v : A) → length (xs [ k ]∷= v) ≡ length xs
   length-∷= xs k v = length-%= xs k (const v)
 
   map-∷= : ∀ {b} {B : Set b} xs k (v : A) (f : A → B) →
            let eq = P.sym (length-map f xs) in
-           map f (xs at k ∷= v) ≡ map f xs at cast eq k ∷= f v
+           map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
   map-∷= []       ()      v f
   map-∷= (x ∷ xs) zero    v f = refl
   map-∷= (x ∷ xs) (suc k) v f = P.cong (f x ∷_) (map-∷= xs k v f)

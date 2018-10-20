@@ -37,7 +37,7 @@ mapWith∈ []       f = []
 mapWith∈ (x ∷ xs) f = f (here refl) ∷ mapWith∈ xs (f ∘ there)
 
 _∷=_ : ∀ {xs x} → x ∈ xs → A → List A
-_∷=_ {xs} x∈xs v = xs List.at Any.index x∈xs ∷= v
+_∷=_ {xs} x∈xs v = xs List.[ Any.index x∈xs ]∷= v
 
 infixl 4 _─_
 _─_ : ∀ xs {x} → x ∈ xs → List A

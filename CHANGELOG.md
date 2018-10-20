@@ -445,8 +445,8 @@ Other minor additions
   head   : List A → Maybe A
   tail   : List A → Maybe (List A)
 
-  _at_%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
-  _at_∷=_ : (xs : List A) → Fin (length xs) → A → List A
+  _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
+  _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
   _─_     : (xs : List A) → Fin (length xs) → List A
 
   alignWith   : (These A B → C) → List A → List B → List C
