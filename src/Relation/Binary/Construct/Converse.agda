@@ -43,7 +43,7 @@ module _ {a ℓ} {A : Set a} (∼ : Rel A ℓ) where
   min : ∀ {⊤} → Maximum ∼ ⊤ → Minimum (flip ∼) ⊤
   min max = max
 
-module _ {a ℓ₁ ℓ₂} {A : Set a} (≈ : Rel A ℓ₁) (∼ : Rel A ℓ₂) where
+module _ {a ℓ₁ ℓ₂} {A : Set a} {≈ : Rel A ℓ₁} (∼ : Rel A ℓ₂) where
 
   reflexive : Symmetric ≈ → (≈ ⇒ ∼) → (≈ ⇒ flip ∼)
   reflexive sym impl = impl ∘ sym
@@ -95,7 +95,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {≈ : Rel A ℓ₁} {∼ : Rel A ℓ₂}
   isPreorder : IsPreorder ≈ ∼ → IsPreorder ≈ (flip ∼)
   isPreorder O = record
     { isEquivalence = O.isEquivalence
-    ; reflexive     = reflexive ≈ ∼ O.Eq.sym O.reflexive
+    ; reflexive     = reflexive ∼ O.Eq.sym O.reflexive
     ; trans         = trans ∼ O.trans
     }
     where module O = IsPreorder O
@@ -103,7 +103,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {≈ : Rel A ℓ₁} {∼ : Rel A ℓ₂}
   isPartialOrder : IsPartialOrder ≈ ∼ → IsPartialOrder ≈ (flip ∼)
   isPartialOrder O = record
     { isPreorder = isPreorder O.isPreorder
-    ; antisym    = antisym ≈ ∼ O.antisym
+    ; antisym    = antisym ∼ O.antisym
     }
     where module O = IsPartialOrder O
 
@@ -126,7 +126,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {≈ : Rel A ℓ₁} {∼ : Rel A ℓ₂}
                          IsStrictPartialOrder ≈ (flip ∼)
   isStrictPartialOrder O = record
     { isEquivalence = O.isEquivalence
-    ; irrefl        = irrefl ≈ ∼ O.Eq.sym O.irrefl
+    ; irrefl        = irrefl ∼ O.Eq.sym O.irrefl
     ; trans         = trans ∼ O.trans
     ; <-resp-≈      = resp₂ ∼ ≈ O.<-resp-≈
     }
@@ -137,7 +137,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {≈ : Rel A ℓ₁} {∼ : Rel A ℓ₂}
   isStrictTotalOrder O = record
     { isEquivalence = O.isEquivalence
     ; trans         = trans ∼ O.trans
-    ; compare       = compare ≈ ∼ O.compare
+    ; compare       = compare ∼ O.compare
     }
     where module O = IsStrictTotalOrder O
 
