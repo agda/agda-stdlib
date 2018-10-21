@@ -7,7 +7,7 @@
 module Data.Bool.Properties where
 
 open import Algebra
-open import Data.Bool
+open import Data.Bool.Base
 open import Data.Empty
 open import Data.Product
 open import Data.Sum
@@ -15,13 +15,26 @@ open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
+open import Relation.Binary.Core using (Decidable)
 open import Relation.Binary.PropositionalEquality
   hiding ([_]; proof-irrelevance)
+open import Relation.Nullary using (yes; no)
 open import Relation.Unary using (Irrelevant)
 
 open import Algebra.FunctionProperties (_≡_ {A = Bool})
 open import Algebra.Structures (_≡_ {A = Bool})
 open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- Queries
+
+infix 4 _≟_
+
+_≟_ : Decidable {A = Bool} _≡_
+true  ≟ true  = yes refl
+false ≟ false = yes refl
+true  ≟ false = no λ()
+false ≟ true  = no λ()
 
 ------------------------------------------------------------------------
 -- Properties of _∨_
