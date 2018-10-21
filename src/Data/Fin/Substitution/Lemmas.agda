@@ -15,7 +15,7 @@ import Data.Vec.Properties as VecProp
 open import Function as Fun using (_∘_; _$_)
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl; sym; cong; cong₂)
-open import Relation.Binary.Closure.ReflexiveTransitive
+open import Relation.Binary.Construct.Closure.ReflexiveTransitive
   using (Star; ε; _◅_; _▻_)
 open PropEq.≡-Reasoning
 open import Level using (Level; _⊔_)

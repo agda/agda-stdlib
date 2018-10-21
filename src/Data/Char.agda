@@ -8,7 +8,7 @@ module Data.Char where
 
 open import Data.Nat.Properties using (<-strictTotalOrder)
 open import Relation.Binary using (Setoid; StrictTotalOrder)
-import Relation.Binary.On as On
+import Relation.Binary.Construct.On as On
 import Relation.Binary.PropositionalEquality as PropEq
 
 ------------------------------------------------------------------------
