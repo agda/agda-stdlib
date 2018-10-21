@@ -9,10 +9,10 @@ module Relation.Nullary.Universe where
 open import Relation.Nullary
 open import Relation.Nullary.Negation
 open import Relation.Binary hiding (_⇒_)
-open import Relation.Binary.Simple
+import Relation.Binary.Construct.Always as Always
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl)
-import Relation.Binary.Indexed.Heterogeneous.Construction.Trivial
+import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   as Trivial
 open import Data.Sum     as Sum  hiding (map)
 open import Data.Sum.Relation.Pointwise
@@ -52,7 +52,7 @@ mutual
   setoid (F₁ ∧ F₂) P = (setoid F₁ P) ×ₛ (setoid F₂ P)
   setoid (P₁ ⇒ F₂) P = FunS.≡-setoid P₁
                          (Trivial.indexedSetoid (setoid F₂ P))
-  setoid (¬¬ F)    P = Always-setoid (¬ ¬ ⟦ F ⟧ P)
+  setoid (¬¬ F)    P = Always.setoid (¬ ¬ ⟦ F ⟧ P) _
 
   ⟦_⟧ : ∀ {p} → PropF p → (Set p → Set p)
   ⟦ F ⟧ P = Setoid.Carrier (setoid F P)

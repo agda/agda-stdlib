@@ -26,7 +26,7 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; _↔̇_; Inverse; inverse)
 open import Level using (_⊔_)
 open import Relation.Binary
-import Relation.Binary.InducedPreorders as Ind
+import Relation.Binary.Construct.FromRel as Ind
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
 open import Relation.Nullary.Negation
@@ -459,9 +459,8 @@ module ⊑-Reasoning where
 -- The subset relation forms a preorder.
 
 ⊆-Preorder : ∀ {ℓ} → Set ℓ → Preorder _ _ _
-⊆-Preorder A =
-  Ind.InducedPreorder₂ (setoid A) _∈_
-                       (λ xs≈ys → ⊑⇒⊆ (⊑P.reflexive xs≈ys))
+⊆-Preorder A = Ind.preorder (setoid A) _∈_
+                 (λ xs≈ys → ⊑⇒⊆ (⊑P.reflexive xs≈ys))
   where module ⊑P = Poset (⊑-Poset A)
 
 module ⊆-Reasoning where

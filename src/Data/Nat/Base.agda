@@ -12,12 +12,7 @@ open import Relation.Binary
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality
-
-open import Relation.Nullary using (¬_; Dec; yes; no)
-open import Relation.Nullary.Decidable using (map′)
-open import Relation.Nullary.Negation using (¬?)
-
-infix 4 _≤_ _<_ _≥_ _>_ _≰_ _≮_ _≱_ _≯_
+open import Relation.Nullary using (¬_)
 
 ------------------------------------------------------------------------
 -- The types
@@ -27,6 +22,8 @@ open import Agda.Builtin.Nat public
 
 ------------------------------------------------------------------------
 -- Standard ordering relations
+
+infix 4 _≤_ _<_ _≥_ _>_ _≰_ _≮_ _≱_ _≯_
 
 data _≤_ : Rel ℕ 0ℓ where
   z≤n : ∀ {n}                 → zero  ≤ n
@@ -110,38 +107,6 @@ x ^ suc n = x * x ^ n
 ∣ zero  - y     ∣ = y
 ∣ x     - zero  ∣ = x
 ∣ suc x - suc y ∣ = ∣ x - y ∣
-
-------------------------------------------------------------------------
--- Queries
-
-infix 4 _≟_ _≤?_ _<?_ _≥?_ _>?_
-
-_≟_ : Decidable {A = ℕ} _≡_
-zero  ≟ zero   = yes refl
-zero  ≟ suc n  = no λ()
-suc m ≟ zero   = no λ()
-suc m ≟ suc n  with m ≟ n
-... | yes refl = yes refl
-... | no m≢n   = no (m≢n ∘ (λ p → subst (λ x → m ≡ pred x) p refl))
-
-≤-pred : ∀ {m n} → suc m ≤ suc n → m ≤ n
-≤-pred (s≤s m≤n) = m≤n
-
-_≤?_ : Decidable _≤_
-zero  ≤? _     = yes z≤n
-suc m ≤? zero  = no λ()
-suc m ≤? suc n with m ≤? n
-... | yes m≤n = yes (s≤s m≤n)
-... | no  m≰n = no  (m≰n ∘ ≤-pred)
-
-_<?_ : Decidable _<_
-x <? y = suc x ≤? y
-
-_≥?_ : Decidable _≥_
-_≥?_ = flip _≤?_
-
-_>?_ : Decidable _>_
-_>?_ = flip _<?_
 
 ------------------------------------------------------------------------
 -- The following, alternative definition of _≤_ is more suitable for

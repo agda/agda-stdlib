@@ -13,7 +13,7 @@ open import Data.Star.Pointer as Pointer hiding (lookup)
 open import Data.Unit
 open import Function hiding (_∋_)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Binary.Closure.ReflexiveTransitive
+open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 
 -- Contexts, listing the types of all the elements in an environment.
 

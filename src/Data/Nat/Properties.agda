@@ -9,24 +9,26 @@
 
 module Data.Nat.Properties where
 
-open import Relation.Binary
+open import Algebra
+open import Algebra.Morphism
 open import Function
 open import Function.Injection using (_↣_)
-open import Algebra
-open import Data.Nat as Nat
+open import Data.Nat.Base
 open import Data.Product
 open import Data.Sum
+open import Level using (0ℓ)
+open import Relation.Binary
+open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary
 open import Relation.Nullary.Decidable using (via-injection; map′)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary.PropositionalEquality
+
 open import Algebra.FunctionProperties (_≡_ {A = ℕ})
   hiding (LeftCancellative; RightCancellative; Cancellative)
 open import Algebra.FunctionProperties
   using (LeftCancellative; RightCancellative; Cancellative)
 open import Algebra.FunctionProperties.Consequences (setoid ℕ)
 open import Algebra.Structures (_≡_ {A = ℕ})
-open import Algebra.Morphism
 open ≡-Reasoning
 
 ------------------------------------------------------------------------
@@ -35,13 +37,23 @@ open ≡-Reasoning
 suc-injective : ∀ {m n} → suc m ≡ suc n → m ≡ n
 suc-injective refl = refl
 
+infix 4 _≟_
+
+_≟_ : Decidable {A = ℕ} _≡_
+zero  ≟ zero   = yes refl
+zero  ≟ suc n  = no λ()
+suc m ≟ zero   = no λ()
+suc m ≟ suc n  with m ≟ n
+... | yes refl = yes refl
+... | no m≢n   = no (m≢n ∘ suc-injective)
+
 ≡-isDecEquivalence : IsDecEquivalence (_≡_ {A = ℕ})
 ≡-isDecEquivalence = record
   { isEquivalence = isEquivalence
   ; _≟_           = _≟_
   }
 
-≡-decSetoid : DecSetoid _ _
+≡-decSetoid : DecSetoid 0ℓ 0ℓ
 ≡-decSetoid = record
   { Carrier          = ℕ
   ; _≈_              = _≡_
@@ -50,6 +62,9 @@ suc-injective refl = refl
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
+
+≤-pred : ∀ {m n} → suc m ≤ suc n → m ≤ n
+≤-pred (s≤s m≤n) = m≤n
 
 -- Relation-theoretic properties of _≤_
 ≤-reflexive : _≡_ ⇒ _≤_
@@ -75,6 +90,18 @@ suc-injective refl = refl
 ... | inj₁ m≤n = inj₁ (s≤s m≤n)
 ... | inj₂ n≤m = inj₂ (s≤s n≤m)
 
+infix 4 _≤?_ _≥?_
+
+_≤?_ : Decidable _≤_
+zero  ≤? _     = yes z≤n
+suc m ≤? zero  = no λ()
+suc m ≤? suc n with m ≤? n
+... | yes m≤n = yes (s≤s m≤n)
+... | no  m≰n = no  (m≰n ∘ ≤-pred)
+
+_≥?_ : Decidable _≥_
+_≥?_ = flip _≤?_
+
 ≤-isPreorder : IsPreorder _≡_ _≤_
 ≤-isPreorder = record
   { isEquivalence = isEquivalence
@@ -82,7 +109,7 @@ suc-injective refl = refl
   ; trans         = ≤-trans
   }
 
-≤-preorder : Preorder _ _ _
+≤-preorder : Preorder 0ℓ 0ℓ 0ℓ
 ≤-preorder = record
   { isPreorder = ≤-isPreorder
   }
@@ -93,13 +120,18 @@ suc-injective refl = refl
   ; antisym    = ≤-antisym
   }
 
+≤-poset : Poset 0ℓ 0ℓ 0ℓ
+≤-poset = record
+  { isPartialOrder = ≤-isPartialOrder
+  }
+
 ≤-isTotalOrder : IsTotalOrder _≡_ _≤_
 ≤-isTotalOrder = record
   { isPartialOrder = ≤-isPartialOrder
   ; total          = ≤-total
   }
 
-≤-totalOrder : TotalOrder _ _ _
+≤-totalOrder : TotalOrder 0ℓ 0ℓ 0ℓ
 ≤-totalOrder = record
   { isTotalOrder = ≤-isTotalOrder
   }
@@ -111,7 +143,7 @@ suc-injective refl = refl
   ; _≤?_         = _≤?_
   }
 
-≤-decTotalOrder : DecTotalOrder _ _ _
+≤-decTotalOrder : DecTotalOrder 0ℓ 0ℓ 0ℓ
 ≤-decTotalOrder = record
   { isDecTotalOrder = ≤-isDecTotalOrder
   }
@@ -133,6 +165,9 @@ n≤1+n _ = ≤-step ≤-refl
 
 1+n≰n : ∀ {n} → 1 + n ≰ n
 1+n≰n (s≤s le) = 1+n≰n le
+
+n≤0⇒n≡0 : ∀ {n} → n ≤ 0 → n ≡ 0
+n≤0⇒n≡0 z≤n = refl
 
 pred-mono : pred Preserves _≤_ ⟶ _≤_
 pred-mono z≤n      = z≤n
@@ -175,6 +210,30 @@ pred-mono (s≤s le) = le
 ... | tri≈ ≰ ≡ ≱ = tri≈ (≰ ∘ ≤-pred) (cong suc ≡)        (≱ ∘ ≤-pred)
 ... | tri> ≰ ≢ ≥ = tri> (≰ ∘ ≤-pred) (≢ ∘ suc-injective) (s≤s ≥)
 
+infix 4 _<?_ _>?_
+
+_<?_ : Decidable _<_
+x <? y = suc x ≤? y
+
+_>?_ : Decidable _>_
+_>?_ = flip _<?_
+
+<-resp₂-≡ : _<_ Respects₂ _≡_
+<-resp₂-≡ = subst (_ <_) , subst (_< _)
+
+<-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+<-isStrictPartialOrder = record
+  { isEquivalence = isEquivalence
+  ; irrefl        = <-irrefl
+  ; trans         = <-trans
+  ; <-resp-≈      = <-resp₂-≡
+  }
+
+<-strictPartialOrder : StrictPartialOrder 0ℓ 0ℓ 0ℓ
+<-strictPartialOrder = record
+  { isStrictPartialOrder = <-isStrictPartialOrder
+  }
+
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
 <-isStrictTotalOrder = record
   { isEquivalence = isEquivalence
@@ -182,7 +241,7 @@ pred-mono (s≤s le) = le
   ; compare       = <-cmp
   }
 
-<-strictTotalOrder : StrictTotalOrder _ _ _
+<-strictTotalOrder : StrictTotalOrder 0ℓ 0ℓ 0ℓ
 <-strictTotalOrder = record
   { isStrictTotalOrder = <-isStrictTotalOrder
   }
@@ -226,14 +285,17 @@ pred-mono (s≤s le) = le
 ≮⇒≥ {zero}  {suc j} 1≮j+1   = contradiction (s≤s z≤n) 1≮j+1
 ≮⇒≥ {suc i} {suc j} i+1≮j+1 = s≤s (≮⇒≥ (i+1≮j+1 ∘ s≤s))
 
-≤+≢⇒< : ∀ {m n} → m ≤ n → m ≢ n → m < n
-≤+≢⇒< {_} {zero}  z≤n       m≢n     = contradiction refl m≢n
-≤+≢⇒< {_} {suc n} z≤n       m≢n     = s≤s z≤n
-≤+≢⇒< {_} {suc n} (s≤s m≤n) 1+m≢1+n =
-  s≤s (≤+≢⇒< m≤n (1+m≢1+n ∘ cong suc))
+≤∧≢⇒< : ∀ {m n} → m ≤ n → m ≢ n → m < n
+≤∧≢⇒< {_} {zero}  z≤n       m≢n     = contradiction refl m≢n
+≤∧≢⇒< {_} {suc n} z≤n       m≢n     = s≤s z≤n
+≤∧≢⇒< {_} {suc n} (s≤s m≤n) 1+m≢1+n =
+  s≤s (≤∧≢⇒< m≤n (1+m≢1+n ∘ cong suc))
 
 n≮n : ∀ n → n ≮ n
 n≮n n = <-irrefl (refl {x = n})
+
+m<n⇒n≢0 : ∀ {m n} → m < n → n ≢ 0
+m<n⇒n≢0 (s≤s m≤n) ()
 
 ------------------------------------------------------------------------
 -- Properties of _≤′_
@@ -257,8 +319,7 @@ s≤′s (≤′-step m≤′n) = ≤′-step (s≤′s m≤′n)
 ≤′-step-injective : ∀ {m n} {p q : m ≤′ n} → ≤′-step p ≡ ≤′-step q → p ≡ q
 ≤′-step-injective refl = refl
 
-------------------------------------------------------------------------
--- Decidable for _≤'_
+-- Decidablity for _≤'_
 
 infix 4 _≤′?_ _<′?_ _≥′?_ _>′?_
 
@@ -294,8 +355,7 @@ _>′?_ = flip _<′?_
   proof z≤n       = refl
   proof (s≤s m≤n) = cong suc (proof m≤n)
 
-------------------------------------------------------------------------
--- Decidable for _≤″_
+-- Decidablity for _≤″_
 
 infix 4 _≤″?_ _<″?_ _≥″?_ _>″?_
 
@@ -348,8 +408,10 @@ _>″?_ = flip _<″?_
   ; ∙-cong        = cong₂ _+_
   }
 
-+-semigroup : Semigroup _ _
-+-semigroup = record { isSemigroup = +-isSemigroup }
++-semigroup : Semigroup 0ℓ 0ℓ
++-semigroup = record
+  { isSemigroup = +-isSemigroup
+  }
 
 +-0-isMonoid : IsMonoid _+_ 0
 +-0-isMonoid = record
@@ -357,8 +419,10 @@ _>″?_ = flip _<″?_
   ; identity    = +-identity
   }
 
-+-0-monoid : Monoid _ _
-+-0-monoid = record { isMonoid = +-0-isMonoid }
++-0-monoid : Monoid 0ℓ 0ℓ
++-0-monoid = record
+  { isMonoid = +-0-isMonoid
+  }
 
 +-0-isCommutativeMonoid : IsCommutativeMonoid _+_ 0
 +-0-isCommutativeMonoid = record
@@ -367,8 +431,10 @@ _>″?_ = flip _<″?_
   ; comm        = +-comm
   }
 
-+-0-commutativeMonoid : CommutativeMonoid _ _
-+-0-commutativeMonoid = record { isCommutativeMonoid = +-0-isCommutativeMonoid }
++-0-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
++-0-commutativeMonoid = record
+  { isCommutativeMonoid = +-0-isCommutativeMonoid
+  }
 
 -- Other properties of _+_ and _≡_
 
@@ -553,8 +619,10 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
   ; ∙-cong        = cong₂ _*_
   }
 
-*-semigroup : Semigroup _ _
-*-semigroup = record { isSemigroup = *-isSemigroup }
+*-semigroup : Semigroup 0ℓ 0ℓ
+*-semigroup = record
+  { isSemigroup = *-isSemigroup
+  }
 
 *-1-isMonoid : IsMonoid _*_ 1
 *-1-isMonoid = record
@@ -562,8 +630,10 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
   ; identity    = *-identity
   }
 
-*-1-monoid : Monoid _ _
-*-1-monoid = record { isMonoid = *-1-isMonoid }
+*-1-monoid : Monoid 0ℓ 0ℓ
+*-1-monoid = record
+  { isMonoid = *-1-isMonoid
+  }
 
 *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1
 *-1-isCommutativeMonoid = record
@@ -572,8 +642,24 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
   ; comm        = *-comm
   }
 
-*-1-commutativeMonoid : CommutativeMonoid _ _
-*-1-commutativeMonoid = record { isCommutativeMonoid = *-1-isCommutativeMonoid }
+*-1-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
+*-1-commutativeMonoid = record
+  { isCommutativeMonoid = *-1-isCommutativeMonoid
+  }
+
+*-+-isSemiring : IsSemiring _+_ _*_ 0 1
+*-+-isSemiring = record
+  { isSemiringWithoutAnnihilatingZero = record
+    { +-isCommutativeMonoid = +-0-isCommutativeMonoid
+    ; *-isMonoid            = *-1-isMonoid
+    ; distrib               = *-distrib-+ }
+  ; zero = *-zero
+  }
+
+*-+-semiring : Semiring 0ℓ 0ℓ
+*-+-semiring = record
+  { isSemiring = *-+-isSemiring
+  }
 
 *-+-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ 0 1
 *-+-isCommutativeSemiring = record
@@ -583,10 +669,7 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
   ; zeroˡ                 = *-zeroˡ
   }
 
-*-+-semiring : Semiring _ _
-*-+-semiring = record { isSemiring = IsCommutativeSemiring.isSemiring *-+-isCommutativeSemiring }
-
-*-+-commutativeSemiring : CommutativeSemiring _ _
+*-+-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
 *-+-commutativeSemiring = record
   { isCommutativeSemiring = *-+-isCommutativeSemiring
   }
@@ -808,11 +891,21 @@ i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
   ; ∙-cong        = cong₂ _⊔_
   }
 
+⊔-semigroup : Semigroup 0ℓ 0ℓ
+⊔-semigroup = record
+  { isSemigroup = ⊔-isSemigroup
+  }
+
 ⊔-0-isCommutativeMonoid : IsCommutativeMonoid _⊔_ 0
 ⊔-0-isCommutativeMonoid = record
   { isSemigroup = ⊔-isSemigroup
-  ; identityˡ    = ⊔-identityˡ
+  ; identityˡ   = ⊔-identityˡ
   ; comm        = ⊔-comm
+  }
+
+⊔-0-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
+⊔-0-commutativeMonoid = record
+  { isCommutativeMonoid = ⊔-0-isCommutativeMonoid
   }
 
 ⊓-isSemigroup : IsSemigroup _⊓_
@@ -820,6 +913,11 @@ i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
   { isEquivalence = isEquivalence
   ; assoc         = ⊓-assoc
   ; ∙-cong        = cong₂ _⊓_
+  }
+
+⊓-semigroup : Semigroup 0ℓ 0ℓ
+⊓-semigroup = record
+  { isSemigroup = ⊔-isSemigroup
   }
 
 ⊔-⊓-isSemiringWithoutOne : IsSemiringWithoutOne _⊔_ _⊓_ 0
@@ -837,7 +935,7 @@ i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
   ; *-comm               = ⊓-comm
   }
 
-⊔-⊓-commutativeSemiringWithoutOne : CommutativeSemiringWithoutOne _ _
+⊔-⊓-commutativeSemiringWithoutOne : CommutativeSemiringWithoutOne 0ℓ 0ℓ
 ⊔-⊓-commutativeSemiringWithoutOne = record
   { isCommutativeSemiringWithoutOne =
       ⊔-⊓-isCommutativeSemiringWithoutOne
@@ -855,13 +953,18 @@ i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
   ; absorptive    = ⊓-⊔-absorptive
   }
 
+⊓-⊔-lattice : Lattice 0ℓ 0ℓ
+⊓-⊔-lattice = record
+  { isLattice = ⊓-⊔-isLattice
+  }
+
 ⊓-⊔-isDistributiveLattice : IsDistributiveLattice _⊓_ _⊔_
 ⊓-⊔-isDistributiveLattice = record
   { isLattice   = ⊓-⊔-isLattice
   ; ∨-∧-distribʳ = ⊓-distribʳ-⊔
   }
 
-⊓-⊔-distributiveLattice : DistributiveLattice _ _
+⊓-⊔-distributiveLattice : DistributiveLattice 0ℓ 0ℓ
 ⊓-⊔-distributiveLattice = record
   { isDistributiveLattice = ⊓-⊔-isDistributiveLattice
   }
@@ -895,12 +998,24 @@ m≤n⇒m⊓n≡m (s≤s m≤n) = cong suc (m≤n⇒m⊓n≡m m≤n)
 m≤n⇒n⊓m≡m : ∀ {m n} → m ≤ n → n ⊓ m ≡ m
 m≤n⇒n⊓m≡m {m} m≤n = trans (⊓-comm _ m) (m≤n⇒m⊓n≡m m≤n)
 
+m⊓n≡m⇒m≤n : ∀ {m n} → m ⊓ n ≡ m → m ≤ n
+m⊓n≡m⇒m≤n m⊓n≡m = subst (_≤ _) m⊓n≡m (m⊓n≤n _ _)
+
+m⊓n≡n⇒n≤m : ∀ {m n} → m ⊓ n ≡ n → n ≤ m
+m⊓n≡n⇒n≤m m⊓n≡n = subst (_≤ _) m⊓n≡n (m⊓n≤m _ _)
+
 m≤n⇒n⊔m≡n : ∀ {m n} → m ≤ n → n ⊔ m ≡ n
 m≤n⇒n⊔m≡n z≤n       = ⊔-identityʳ _
 m≤n⇒n⊔m≡n (s≤s m≤n) = cong suc (m≤n⇒n⊔m≡n m≤n)
 
 m≤n⇒m⊔n≡n : ∀ {m n} → m ≤ n → m ⊔ n ≡ n
 m≤n⇒m⊔n≡n {m} m≤n = trans (⊔-comm m _) (m≤n⇒n⊔m≡n m≤n)
+
+n⊔m≡m⇒n≤m : ∀ {m n} → n ⊔ m ≡ m → n ≤ m
+n⊔m≡m⇒n≤m n⊔m≡m = subst (_ ≤_) n⊔m≡m (m≤m⊔n _ _)
+
+n⊔m≡n⇒m≤n : ∀ {m n} → n ⊔ m ≡ n → m ≤ n
+n⊔m≡n⇒m≤n n⊔m≡n = subst (_ ≤_) n⊔m≡n (n≤m⊔n _ _)
 
 ⊔-mono-≤ : _⊔_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
 ⊔-mono-≤ {x} {y} {u} {v} x≤y u≤v with ⊔-sel x u
@@ -1399,4 +1514,9 @@ im≡jm+n⇒[i∸j]m≡n i j m n eq = begin
   n                      ∎
 {-# WARNING_ON_USAGE im≡jm+n⇒[i∸j]m≡n
 "Warning: im≡jm+n⇒[i∸j]m≡n was deprecated in v0.17."
+#-}
+≤+≢⇒< = ≤∧≢⇒<
+{-# WARNING_ON_USAGE ≤+≢⇒<
+"Warning: ≤+≢⇒< was deprecated in v0.17.
+Please use ≤∧≢⇒< instead."
 #-}

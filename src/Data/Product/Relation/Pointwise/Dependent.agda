@@ -27,7 +27,7 @@ open import Relation.Binary as B
   using (_⇒_; Setoid; IsEquivalence)
 open import Relation.Binary.Indexed.Heterogeneous as I
   using (IREL; IRel; IndexedSetoid; IsIndexedEquivalence)
-open import Relation.Binary.Indexed.Heterogeneous.Construction.At
+open import Relation.Binary.Indexed.Heterogeneous.Construct.At
   using (_atₛ_)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
