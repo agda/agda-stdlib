@@ -515,9 +515,9 @@ Other minor additions
 
 * Added new proofs to `Data.List.Properties`:
   ```agda
-  length-%= : length (xs at k %= f) ≡ length xs
-  length-∷= : length (xs at k ∷= v) ≡ length xs
-  map-∷=    : map f (xs at k ∷= v) ≡ map f xs at cast eq k ∷= f v
+  length-%= : length (xs [ k ]%= f) ≡ length xs
+  length-∷= : length (xs [ k ]∷= v) ≡ length xs
+  map-∷=    : map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
   length-─  : length (xs ─ k) ≡ pred (length xs)
   map-─     : map f (xs ─ k) ≡ map f xs ─ cast eq k
   ```
