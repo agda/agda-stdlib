@@ -13,9 +13,15 @@ open import Relation.Binary
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 
+------------------------------------------------------------------------
+-- Definition
+
 data Pointwise {a r} {A : Set a} (R : Rel A r) : Rel (Maybe A) r where
   just    : ∀ {x y} → R x y → Pointwise R (just x) (just y)
   nothing : Pointwise R nothing nothing
+
+------------------------------------------------------------------------
+-- Properties
 
 module _ {a r} {A : Set a} {R : Rel A r} where
 

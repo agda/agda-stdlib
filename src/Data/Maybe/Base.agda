@@ -16,6 +16,9 @@ open import Data.Product as Prod using (_×_; _,_)
 open import Function
 open import Relation.Nullary
 
+------------------------------------------------------------------------
+-- Definition
+
 data Maybe {a} (A : Set a) : Set a where
   just    : (x : A) → Maybe A
   nothing : Maybe A
@@ -83,7 +86,7 @@ just x  <∣> my = just x
 nothing <∣> my = my
 
 ------------------------------------------------------------------------
--- Aligning and Zipping
+-- Aligning and zipping
 
 module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 

@@ -18,6 +18,9 @@ open import Relation.Unary
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 
+------------------------------------------------------------------------
+-- Definition
+
 data All {a p} {A : Set a} (P : Pred A p) : Pred (Maybe A) p where
   just    : ∀ {x} → P x → All P (just x)
   nothing : All P nothing
