@@ -52,6 +52,24 @@ Deprecated features
 Other minor additions
 ---------------------
 
+* Added new operations to `Data.List.All`:
+  ```agda
+  zipWith   : P ∩ Q ⊆ R → All P ∩ All Q ⊆ All R
+  unzipWith : R ⊆ P ∩ Q → All R ⊆ All P ∩ All Q
+
+  sequenceA : All (F ∘′ P) ⊆ F ∘′ All P
+  sequenceM : All (M ∘′ P) ⊆ M ∘′ All P
+  mapA      : (Q ⊆ F ∘′ P) → All Q ⊆ (F ∘′ All P)
+  mapM      : (Q ⊆ M ∘′ P) → All Q ⊆ (M ∘′ All P)
+  forA      : All Q xs → (Q ⊆ F ∘′ P) → F (All P xs)
+  forM      : All Q xs → (Q ⊆ M ∘′ P) → M (All P xs)
+  ```
+
+* Added new proofs to `Data.List.All.Properties`:
+  ```agda
+  respects : P Respects _≈_ → (All P) Respects _≋_
+  ```
+
 * Added new proofs to `Data.Maybe.All`:
   ```agda
   drop-just        : All P (just x) → P x

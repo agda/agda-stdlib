@@ -14,6 +14,7 @@ open import Data.List.Base
 open import Data.List.Membership.Propositional
 open import Data.List.All as All using (All; []; _∷_)
 open import Data.List.Any using (Any; here; there)
+import Data.List.Relation.Equality.Setoid as ListEq using (_≋_; []; _∷_)
 open import Data.List.Relation.Pointwise using (Pointwise; []; _∷_)
 open import Data.List.Relation.Subset.Propositional using (_⊆_)
 open import Data.Maybe as Maybe using (Maybe; just; nothing)
@@ -25,10 +26,11 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse using (_↔_; inverse)
 open import Function.Surjection using (_↠_; surjection)
+open import Relation.Binary using (Setoid; _Respects_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
 open import Relation.Unary
-  using (Decidable; Universal) renaming (_⊆_ to _⋐_)
+  using (Decidable; Pred; Universal) renaming (_⊆_ to _⋐_)
 
 ------------------------------------------------------------------------
 -- Lemmas relating Any, All and negation.
@@ -323,6 +325,19 @@ anti-mono xs⊆ys pys = All.tabulate (All.lookup pys ∘ xs⊆ys)
 all-anti-mono : ∀ {a} {A : Set a} (p : A → Bool) {xs ys} →
                 xs ⊆ ys → T (all p ys) → T (all p xs)
 all-anti-mono p xs⊆ys = all⁻ p ∘ anti-mono xs⊆ys ∘ all⁺ p _
+
+------------------------------------------------------------------------
+-- Interactions with pointwise equality
+------------------------------------------------------------------------
+
+module _ {c ℓ} (S : Setoid c ℓ) where
+
+  open Setoid S renaming (Carrier to A)
+  open ListEq S
+
+  respects : ∀ {p} {P : Pred A p} → P Respects _≈_ → (All P) Respects _≋_
+  respects p≈ []            []         = []
+  respects p≈ (x≈y ∷ xs≈ys) (px ∷ pxs) = p≈ x≈y px ∷ respects p≈ xs≈ys pxs
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
