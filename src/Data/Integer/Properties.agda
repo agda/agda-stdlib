@@ -658,6 +658,9 @@ sm*n≡n+m*n m n = begin
                          +-*-isCommutativeSemiring
   }
 
++-*-ring : Ring _ _
++-*-ring = record { isRing = +-*-isRing }
+
 +-*-isCommutativeRing : IsCommutativeRing _+_ _*_ -_ (+ 0) (+ 1)
 +-*-isCommutativeRing = record
   { isRing = +-*-isRing

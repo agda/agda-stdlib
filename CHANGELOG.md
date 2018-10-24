@@ -500,6 +500,8 @@ Other minor additions
   m≡n⇒m-n≡0      : m ≡ n → m - n ≡ + 0
   m-n≡0⇒m≡n      : m - n ≡ + 0 → m ≡ n
   ◃-≡            : sign m ≡ sign n → ∣ m ∣ ≡ ∣ n ∣ → m ≡ n
+
+  +-*-ring : Ring _ _
   ```
 
 * Added new function to `Data.List.Any`:
