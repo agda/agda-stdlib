@@ -6,7 +6,7 @@
 
 open import Relation.Binary
 
-module Relation.Binary.On where
+module Relation.Binary.Construct.On where
 
 open import Function
 open import Data.Product

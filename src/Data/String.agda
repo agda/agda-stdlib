@@ -10,7 +10,7 @@ open import Data.Vec as Vec using (Vec)
 open import Data.Char as Char using (Char)
 open import Relation.Binary using (Setoid; StrictTotalOrder)
 open import Data.List.Relation.Lex.Strict as StrictLex
-import Relation.Binary.On as On
+import Relation.Binary.Construct.On as On
 import Relation.Binary.PropositionalEquality as PropEq
 
 ------------------------------------------------------------------------

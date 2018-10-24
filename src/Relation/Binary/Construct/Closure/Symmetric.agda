@@ -4,7 +4,7 @@
 -- Symmetric closures of binary relations
 ------------------------------------------------------------------------
 
-module Relation.Binary.Closure.Symmetric where
+module Relation.Binary.Construct.Closure.Symmetric where
 
 open import Data.Sum as Sum using (_⊎_)
 open import Function using (id)
