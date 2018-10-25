@@ -119,6 +119,7 @@ Other minor additions
   ≤-steps-neg    : m ≤ n → m - + p ≤ n
   m≡n⇒m-n≡0      : m ≡ n → m - n ≡ + 0
   m-n≡0⇒m≡n      : m - n ≡ + 0 → m ≡ n
+  0≤n⇒+∣n∣≡n     : + 0 ≤ n → + ∣ n ∣ ≡ n
   ◃-≡            : sign m ≡ sign n → ∣ m ∣ ≡ ∣ n ∣ → m ≡ n
 
   +-*-ring : Ring _ _
