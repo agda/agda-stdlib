@@ -6,7 +6,6 @@
 
 module Data.Integer.DivMod where
 
-open import Data.Empty
 open import Data.Nat as ℕ using (ℕ)
 import Data.Nat.Properties as NProp
 import Data.Nat.DivMod as NDM
