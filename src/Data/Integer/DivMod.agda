@@ -6,6 +6,7 @@
 
 module Data.Integer.DivMod where
 
+open import Data.Empty
 open import Data.Nat as ℕ using (ℕ)
 import Data.Nat.Properties as NProp
 import Data.Nat.DivMod as NDM
@@ -43,25 +44,26 @@ _modℕ_ : (dividend : ℤ) (divisor : ℕ) {≠0 : False (divisor ℕ.≟ 0)} �
 _mod_ : (dividend divisor : ℤ) {≠0 : False (∣ divisor ∣ ℕ.≟ 0)} → ℕ
 (n mod d) {d≢0} = (n modℕ ∣ d ∣) {d≢0}
 
-n%ℕd<d : ∀ n d → n modℕ ℕ.suc d ℕ.< ℕ.suc d
-n%ℕd<d (+ n)    d = NDM.a%n<n n d
-n%ℕd<d -[1+ n ] d with ℕ.suc n NDM.divMod ℕ.suc d
+n%ℕd<d : ∀ n d {d≢0} → (n modℕ d) {d≢0} ℕ.< d
+n%ℕd<d n ℕ.zero {()}
+n%ℕd<d (+ n)    sd@(ℕ.suc d) = NDM.a%n<n n d
+n%ℕd<d -[1+ n ] sd@(ℕ.suc d) with ℕ.suc n NDM.divMod sd
 ... | NDM.result q Fin.zero    eq = ℕ.s≤s ℕ.z≤n
 ... | NDM.result q (Fin.suc r) eq = ℕ.s≤s (NProp.n∸m≤n (Fin.toℕ r) d)
 
 n%d<d : ∀ n d {d≢0} → (n mod d) {d≢0} ℕ.< ℤ.∣ d ∣
 n%d<d n (+ 0) {()}
-n%d<d n (+ ℕ.suc d) = n%ℕd<d n d
-n%d<d n -[1+ d ]    = n%ℕd<d n d
+n%d<d n (+ ℕ.suc d) = n%ℕd<d n (ℕ.suc d)
+n%d<d n -[1+ d ]    = n%ℕd<d n (ℕ.suc d)
 
-a≡a%ℕn+[a/ℕn]*n : ∀ a n → let sn = ℕ.suc n in a ≡ + (a modℕ sn) + (a divℕ sn) * + sn
-a≡a%ℕn+[a/ℕn]*n (+ n) d = let sd = ℕ.suc d; q = n NDM.div sd; r = n NDM.% sd in begin
+a≡a%ℕn+[a/ℕn]*n : ∀ n d {d≢0} → n ≡ + (n modℕ d) {d≢0} + (n divℕ d) {d≢0} * + d
+a≡a%ℕn+[a/ℕn]*n (+ n) sd@(ℕ.suc d) = let q = n NDM.div sd; r = n NDM.% sd in begin
   + n                ≡⟨ cong +_ (NDM.a≡a%n+[a/n]*n n d) ⟩
   + (r ℕ.+ q ℕ.* sd) ≡⟨ pos-+-commute r (q ℕ.* sd) ⟩
   + r + + (q ℕ.* sd) ≡⟨ cong (_+_ (+ (+ n modℕ sd))) (sym (pos-distrib-* q sd)) ⟩
   + r + + q * + sd   ∎ where open ≡-Reasoning
-a≡a%ℕn+[a/ℕn]*n -[1+ n ] d with (ℕ.suc n) NDM.divMod (ℕ.suc d)
-... | NDM.result q Fin.zero    eq = let sd = ℕ.suc d in begin
+a≡a%ℕn+[a/ℕn]*n -[1+ n ] sd@(ℕ.suc d) with (ℕ.suc n) NDM.divMod (ℕ.suc d)
+... | NDM.result q Fin.zero    eq = begin
   -[1+ n ]            ≡⟨ cong (-_ ∘′ +_) eq ⟩
   - + (q ℕ.* sd)      ≡⟨ cong -_ (sym (pos-distrib-* q sd)) ⟩
   - (+ q * + sd)      ≡⟨ neg-distribˡ-* (+ q) (+ sd) ⟩
@@ -99,50 +101,54 @@ a≡a%ℕn+[a/ℕn]*n -[1+ n ] d with (ℕ.suc n) NDM.divMod (ℕ.suc d)
     fin-inv (ℕ.suc n) Fin.zero    = refl
     fin-inv (ℕ.suc n) (Fin.suc k) = ⊖-≥ {n} {Fin.toℕ k} (NProp.<⇒≤ (FProp.toℕ<n k))
 
-[n/ℕd]*d≤n : ∀ n d → (n divℕ ℕ.suc d) ℤ.* ℤ.+ (ℕ.suc d) ℤ.≤ n
-[n/ℕd]*d≤n n d = let q = n divℕ ℕ.suc d; r = n modℕ ℕ.suc d in begin
+[n/ℕd]*d≤n : ∀ n d {d≢0} → (n divℕ d) {d≢0} ℤ.* ℤ.+ d ℤ.≤ n
+[n/ℕd]*d≤n n ℕ.zero {()}
+[n/ℕd]*d≤n n (ℕ.suc d) = let q = n divℕ ℕ.suc d; r = n modℕ ℕ.suc d in begin
   q ℤ.* ℤ.+ (ℕ.suc d)           ≤⟨ n≤m+n r ⟩
-  ℤ.+ r ℤ.+ q ℤ.* ℤ.+ (ℕ.suc d) ≡⟨ sym (a≡a%ℕn+[a/ℕn]*n n d) ⟩
+  ℤ.+ r ℤ.+ q ℤ.* ℤ.+ (ℕ.suc d) ≡⟨ sym (a≡a%ℕn+[a/ℕn]*n n (ℕ.suc d)) ⟩
   n                             ∎ where open ≤-Reasoning
 
-div-pos-is-divℕ : ∀ n d → n div + (ℕ.suc d) ≡ n divℕ ℕ.suc d
-div-pos-is-divℕ n d = *-identityˡ (n divℕ ℕ.suc d)
+div-pos-is-divℕ : ∀ n d {d≢0} → (n div + d) {d≢0} ≡ (n divℕ d) {d≢0}
+div-pos-is-divℕ n ℕ.zero {()}
+div-pos-is-divℕ n (ℕ.suc d) = *-identityˡ (n divℕ ℕ.suc d)
 
-div-neg-is-neg-divℕ : ∀ n d → n div -[1+ d ] ≡ - (n divℕ ℕ.suc d)
-div-neg-is-neg-divℕ n d = -1*n≡-n (n divℕ ℕ.suc d)
+div-neg-is-neg-divℕ : ∀ n d {d≢0} {∣d∣≢0} → (n div (- ℤ.+ d)) {∣d∣≢0} ≡ - (n divℕ d) {d≢0}
+div-neg-is-neg-divℕ n ℕ.zero {()}
+div-neg-is-neg-divℕ n (ℕ.suc d) = -1*n≡-n (n divℕ ℕ.suc d)
 
 [n/d]*d≤n : ∀ n d {d≢0} → (n div d) {d≢0} ℤ.* d ℤ.≤ n
 [n/d]*d≤n n (+ 0) {()}
 [n/d]*d≤n n (+ ℕ.suc d) = begin let sd = ℕ.suc d in
-  n div + sd * + sd ≡⟨ cong (_* (+ sd)) (div-pos-is-divℕ n d) ⟩
-  n divℕ sd * + sd  ≤⟨ [n/ℕd]*d≤n n d ⟩
+  n div + sd * + sd ≡⟨ cong (_* (+ sd)) (div-pos-is-divℕ n sd) ⟩
+  n divℕ sd * + sd  ≤⟨ [n/ℕd]*d≤n n sd ⟩
   n ∎ where open ≤-Reasoning
 [n/d]*d≤n n -[1+ d ]    = begin let sd = ℕ.suc d in
-  n div (- + sd) * - + sd ≡⟨ cong (_* (- + sd)) (div-neg-is-neg-divℕ n d) ⟩
+  n div (- + sd) * - + sd ≡⟨ cong (_* (- + sd)) (div-neg-is-neg-divℕ n sd) ⟩
   - (n divℕ sd) * - + sd  ≡⟨ sym (neg-distribˡ-* (n divℕ sd) (- + sd)) ⟩
   - (n divℕ sd * - + sd)  ≡⟨ neg-distribʳ-* (n divℕ sd) (- + sd) ⟩
-  n divℕ sd * + sd        ≤⟨ [n/ℕd]*d≤n n d ⟩
+  n divℕ sd * + sd        ≤⟨ [n/ℕd]*d≤n n sd ⟩
   n ∎ where open ≤-Reasoning
 
-n<s[n/ℕd]*d : ∀ n d → n ℤ.< ℤ.suc (n divℕ ℕ.suc d) ℤ.* ℤ.+ (ℕ.suc d)
-n<s[n/ℕd]*d n d = begin
-  n                   ≡⟨ a≡a%ℕn+[a/ℕn]*n n d ⟩
-  ℤ.+ r ℤ.+ q ℤ.* +sd <⟨ +-monoˡ-< (q ℤ.* +sd) {ℤ.+ r} (ℤ.+≤+ (n%ℕd<d n d)) ⟩
+n<s[n/ℕd]*d : ∀ n d {d≢0} → n ℤ.< ℤ.suc ((n divℕ d) {d≢0}) ℤ.* ℤ.+ d
+n<s[n/ℕd]*d n ℕ.zero {()}
+n<s[n/ℕd]*d n sd@(ℕ.suc d) = begin
+  n                   ≡⟨ a≡a%ℕn+[a/ℕn]*n n sd ⟩
+  ℤ.+ r ℤ.+ q ℤ.* +sd <⟨ +-monoˡ-< (q ℤ.* +sd) {ℤ.+ r} (ℤ.+≤+ (n%ℕd<d n sd)) ⟩
   +sd ℤ.+ q ℤ.* +sd   ≡⟨ sym (sm*n≡n+m*n q +sd) ⟩
   ℤ.suc q ℤ.* +sd     ∎ where
-  q = n divℕ ℕ.suc d; sd = ℕ.suc d; +sd = ℤ.+ sd; r = n modℕ ℕ.suc d
+  q = n divℕ sd; +sd = ℤ.+ sd; r = n modℕ sd
   open <-Reasoning
 
 a≡a%n+[a/n]*n : ∀ a n {≢0} → a ≡ + (a mod n) {≢0} + (a div n) {≢0} * n
 a≡a%n+[a/n]*n n (+ 0) {()}
 a≡a%n+[a/n]*n n (+ ℕ.suc d) = begin
   let sd = ℕ.suc d; r = n modℕ sd; q = n divℕ sd; qsd = q * + sd in
-  n                       ≡⟨ a≡a%ℕn+[a/ℕn]*n n d ⟩
-  + r + qsd               ≡⟨ cong (λ p → + r + p * + sd) (sym (div-pos-is-divℕ n d)) ⟩
+  n                       ≡⟨ a≡a%ℕn+[a/ℕn]*n n sd ⟩
+  + r + qsd               ≡⟨ cong (λ p → + r + p * + sd) (sym (div-pos-is-divℕ n sd)) ⟩
   + r + n div + sd * + sd ∎ where open ≡-Reasoning
 a≡a%n+[a/n]*n n -[1+ d ]    = begin
   let sd = ℕ.suc d; r = n modℕ sd; q = n divℕ sd; qsd = q * + sd in
-  n ≡⟨ a≡a%ℕn+[a/ℕn]*n n d ⟩
+  n                      ≡⟨ a≡a%ℕn+[a/ℕn]*n n sd ⟩
   + r + q * + sd         ≡⟨⟩
   + r + q * - -[1+ d ]   ≡⟨ cong (_+_ (+ r)) (sym (neg-distribʳ-* q -[1+ d ])) ⟩
   + r + - (q * -[1+ d ]) ≡⟨ cong (_+_ (+ r)) (neg-distribˡ-* q -[1+ d ]) ⟩
