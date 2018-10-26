@@ -116,6 +116,14 @@ div-neg-is-neg-divℕ : ∀ n d {d≢0} {∣d∣≢0} → (n div (- ℤ.+ d)) {�
 div-neg-is-neg-divℕ n ℕ.zero {()}
 div-neg-is-neg-divℕ n (ℕ.suc d) = -1*n≡-n (n divℕ ℕ.suc d)
 
+0≤n⇒0≤n/ℕd : ∀ n d {d≢0} → + 0 ℤ.≤ n → + 0 ℤ.≤ (n divℕ d) {d≢0}
+0≤n⇒0≤n/ℕd (+ n) d (+≤+ m≤n) = +≤+ ℕ.z≤n
+
+0≤n⇒0≤n/d : ∀ n d {d≢0} → + 0 ℤ.≤ n → + 0 ℤ.≤ d → + 0 ℤ.≤ (n div d) {d≢0}
+0≤n⇒0≤n/d n (+ d) {d≢0} 0≤n (+≤+ 0≤d)
+  rewrite div-pos-is-divℕ n d {d≢0}
+        = 0≤n⇒0≤n/ℕd n d 0≤n
+
 [n/d]*d≤n : ∀ n d {d≢0} → (n div d) {d≢0} ℤ.* d ℤ.≤ n
 [n/d]*d≤n n (+ 0) {()}
 [n/d]*d≤n n (+ ℕ.suc d) = begin let sd = ℕ.suc d in
