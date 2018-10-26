@@ -56,6 +56,7 @@ n%d<d n (+ ℕ.suc d) = n%ℕd<d n (ℕ.suc d)
 n%d<d n -[1+ d ]    = n%ℕd<d n (ℕ.suc d)
 
 a≡a%ℕn+[a/ℕn]*n : ∀ n d {d≢0} → n ≡ + (n modℕ d) {d≢0} + (n divℕ d) {d≢0} * + d
+a≡a%ℕn+[a/ℕn]*n _ ℕ.zero {()}
 a≡a%ℕn+[a/ℕn]*n (+ n) sd@(ℕ.suc d) = let q = n NDM.div sd; r = n NDM.% sd in begin
   + n                ≡⟨ cong +_ (NDM.a≡a%n+[a/n]*n n d) ⟩
   + (r ℕ.+ q ℕ.* sd) ≡⟨ pos-+-commute r (q ℕ.* sd) ⟩
