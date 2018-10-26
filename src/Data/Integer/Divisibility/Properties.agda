@@ -19,6 +19,7 @@ open import Data.Product
 open import Function
 
 open import Relation.Nullary
+import Relation.Nullary.Decidable as DEC
 open import Relation.Binary
 import Relation.Binary.PreorderReasoning as PreorderReasoning
 open import Relation.Binary.PropositionalEquality
@@ -101,6 +102,9 @@ module ∣′-Reasoning = PreorderReasoning ∣′-preorder
 
 ------------------------------------------------------------------------
 -- Properties of _∣′_
+
+_∣′?_ : Decidable _∣′_
+k ∣′? m = DEC.map′ ∣m⇒∣′m ∣′m⇒∣m (∣ k ∣ Ndiv.∣? ∣ m ∣)
 
 0∣′⇒≡0 : ∀ {m} → + 0 ∣′ m → m ≡ + 0
 0∣′⇒≡0 0|m = ∣n∣≡0⇒n≡0 (Ndiv.0∣⇒≡0 (∣′m⇒∣m 0|m))
