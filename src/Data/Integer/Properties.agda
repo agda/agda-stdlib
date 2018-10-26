@@ -289,6 +289,18 @@ pos-+-commute (suc m) n = cong sucℤ (pos-+-commute m n)
   rewrite ℕₚ.+-assoc (suc a) (suc b) (suc c)
         = refl
 
+suc-pred : ∀ m → sucℤ (pred m) ≡ m
+suc-pred m = begin
+  sucℤ (pred m) ≡⟨ sym (+-assoc (+ 1) (- + 1) m) ⟩
+  + 0 + m       ≡⟨ +-identityˡ m ⟩
+  m ∎ where open ≡-Reasoning
+
+pred-suc : ∀ m → pred (sucℤ m) ≡ m
+pred-suc m = begin
+  pred (sucℤ m) ≡⟨ sym (+-assoc (- + 1) (+ 1) m) ⟩
+  + 0 + m       ≡⟨ +-identityˡ m ⟩
+  m ∎ where open ≡-Reasoning
+
 +-pred : ∀ m n → m + pred n ≡ pred (m + n)
 +-pred m n = begin
   m + (-[1+ 0 ] + n) ≡⟨ sym (+-assoc m -[1+ 0 ] n) ⟩
@@ -993,6 +1005,16 @@ suc-mono (+≤+ m≤n) = +≤+ (ℕ.s≤s m≤n)
   n + i  ≤⟨ +-monoʳ-≤ n i≤j ⟩
   n + j ∎ where open ≤-Reasoning
 
+neg-≤-pos : ∀ {m n} → - (+ m) ≤ + n
+neg-≤-pos {zero}  = +≤+ z≤n
+neg-≤-pos {suc m} = -≤+
+
+neg-mono-≤-≥ : -_ Preserves _≤_ ⟶ _≥_
+neg-mono-≤-≥ -≤+             = neg-≤-pos
+neg-mono-≤-≥ (-≤- n≤m)       = +≤+ (s≤s n≤m)
+neg-mono-≤-≥ (+≤+ z≤n)       = neg-≤-pos
+neg-mono-≤-≥ (+≤+ (s≤s m≤n)) = -≤- m≤n
+
 m≤m+n : ∀ {m} n → m ≤ m + + n
 m≤m+n {m} n = begin
   m       ≡⟨ sym (+-identityʳ m) ⟩
@@ -1192,6 +1214,19 @@ m≤pred[n]⇒m<n {m} {n} m≤predn = begin
   (+ 1 + -[1+ 0 ]) + n ≡⟨ cong (_+ n) (+-inverseʳ (+ 1)) ⟩
   + 0 + n              ≡⟨ +-identityˡ n ⟩
   n ∎ where open ≤-Reasoning
+
+m<n⇒m≤pred[n] : ∀ {m n} → m < n → m ≤ pred n
+m<n⇒m≤pred[n] {m} {n} m<n = begin
+  m             ≡⟨ sym (pred-suc m) ⟩
+  pred (sucℤ m) ≤⟨ pred-mono m<n ⟩
+  pred n ∎ where open ≤-Reasoning
+
+neg-mono-<-> : -_ Preserves _<_ ⟶ _>_
+neg-mono-<-> {i} {j} i<j = begin
+  + 1 - j       ≡⟨ cong (_- j) (neg-involutive (+ 1)) ⟩
+  - - + 1 - j   ≡⟨ sym (neg-distrib-+ (- + 1) j) ⟩
+  - (- + 1 + j) ≤⟨ neg-mono-≤-≥ (m<n⇒m≤pred[n] i<j) ⟩
+  - i           ∎ where open ≤-Reasoning
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

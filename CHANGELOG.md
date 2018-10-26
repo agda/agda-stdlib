@@ -64,6 +64,8 @@ Other minor additions
 
 * Added new proofs to `Data.Integer.Properties`:
   ```agda
+  suc-pred   : sucℤ (pred m) ≡ m
+  pred-suc   : pred (sucℤ m) ≡ m
   neg-suc    : - + suc m ≡ pred (- + m)
   suc-+      : + suc m + n ≡ sucℤ (+ m + n)
   +-pred     : m + pred n ≡ pred (m + n)
@@ -90,16 +92,20 @@ Other minor additions
   +-mono-<          : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
   +-mono-≤-<        : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
   +-mono-<-≤        : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
+  neg-mono-≤-≥      : -_ Preserves _≤_ ⟶ _≥_
+  neg-mono-<->      : -_ Preserves _<_ ⟶ _>_
 
   *-cancelˡ-≡     : i ≢ + 0 → i * j ≡ i * k → j ≡ k
   *-cancelˡ-≤-pos : + suc m * n ≤ + suc m * o → n ≤ o
 
+  neg-≤-pos     : - (+ m) ≤ + n
   0⊖m≤+         : 0 ⊖ m ≤ + n
   m≤n⇒m-n≤0     : m ≤ n → m - n ≤ + 0
   m-n≤0⇒m≤n     : m - n ≤ + 0 → m ≤ n
   m≤n⇒0≤n-m     : m ≤ n → + 0 ≤ n - m
   0≤n-m⇒m≤n     : + 0 ≤ n - m → m ≤ n
   m≤pred[n]⇒m<n : m ≤ pred n → m < n
+  m<n⇒m≤pred[n] : m < n → m ≤ pred n
   m≤m+n         : m ≤ m + + n
   n≤m+n         : n ≤ + m + n
   m-n≤m         : m - + n ≤ m
