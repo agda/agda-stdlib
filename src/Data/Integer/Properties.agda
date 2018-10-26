@@ -1013,13 +1013,28 @@ m≤n⇒m-n≤0 (+≤+ {n = suc n} z≤n) = -≤+
 m≤n⇒m-n≤0 (+≤+ (ℕ.s≤s {m} m≤n)) = ≤-trans (⊖-monoʳ-≥-≤ m m≤n) (≤-reflexive (n⊖n≡0 m))
 
 m-n≤0⇒m≤n : ∀ {m n} → m - n ≤ + 0 → m ≤ n
-m-n≤0⇒m≤n {m} {n} m-n≤0 = let module P = POR ≤-poset in P.begin
-  m             P.≡⟨ sym (+-identityʳ m) ⟩
-  m + + 0       P.≡⟨ cong (_+_ m) (sym (+-inverseˡ n)) ⟩
-  m + (- n + n) P.≡⟨ sym (+-assoc m (- n) n) ⟩
-  (m - n) + n   P.≤⟨ +-monoˡ-≤ n m-n≤0 ⟩
-  + 0 + n       P.≡⟨ +-identityˡ n ⟩
-  n P.∎ where open ≡-Reasoning
+m-n≤0⇒m≤n {m} {n} m-n≤0 = begin
+  m             ≡⟨ sym (+-identityʳ m) ⟩
+  m + + 0       ≡⟨ cong (_+_ m) (sym (+-inverseˡ n)) ⟩
+  m + (- n + n) ≡⟨ sym (+-assoc m (- n) n) ⟩
+  (m - n) + n   ≤⟨ +-monoˡ-≤ n m-n≤0 ⟩
+  + 0 + n       ≡⟨ +-identityˡ n ⟩
+  n ∎ where open POR ≤-poset
+
+m≤n⇒0≤n-m : ∀ {m n} → m ≤ n → + 0 ≤ n - m
+m≤n⇒0≤n-m {m} {n} m≤n = begin
+  + 0   ≡⟨ sym (+-inverseʳ m) ⟩
+  m - m ≤⟨ +-monoˡ-≤ (- m) m≤n ⟩
+  n - m ∎ where open POR ≤-poset
+
+0≤n-m⇒m≤n : ∀ {m n} → + 0 ≤ n - m → m ≤ n
+0≤n-m⇒m≤n {m} {n} 0≤n-m = begin
+  m             ≡⟨ sym (+-identityˡ m) ⟩
+  + 0 + m       ≤⟨ +-monoˡ-≤ m 0≤n-m ⟩
+  n - m + m     ≡⟨ +-assoc n (- m) m ⟩
+  n + (- m + m) ≡⟨ cong (_+_ n) (+-inverseˡ m) ⟩
+  n + + 0       ≡⟨ +-identityʳ n ⟩
+  n ∎ where open POR ≤-poset
 
 n≤1+n : ∀ n → n ≤ (+ 1) + n
 n≤1+n n = ≤-step ≤-refl

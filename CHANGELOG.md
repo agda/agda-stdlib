@@ -97,6 +97,8 @@ Other minor additions
   0⊖m≤+         : 0 ⊖ m ≤ + n
   m≤n⇒m-n≤0     : m ≤ n → m - n ≤ + 0
   m-n≤0⇒m≤n     : m - n ≤ + 0 → m ≤ n
+  m≤n⇒0≤n-m     : m ≤ n → + 0 ≤ n - m
+  0≤n-m⇒m≤n     : + 0 ≤ n - m → m ≤ n
   m≤pred[n]⇒m<n : m ≤ pred n → m < n
   m≤m+n         : m ≤ m + + n
   n≤m+n         : n ≤ + m + n
