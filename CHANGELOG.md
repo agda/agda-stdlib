@@ -151,8 +151,10 @@ Other minor additions
 * Added new functions to `Data.Vec.Any.Properties`:
   ```agda
   lookup-index : (p : Any P xs) → P (lookup (index p) xs)
-  fromList     : List.Any P xs → Any P (Vec.fromList xs)
-  toList       : Any P xs → List.Any P (Vec.toList xs)
+  fromList⁺    : List.Any P xs → Any P (Vec.fromList xs)
+  fromList⁻    : Any P (Vec.fromList xs) → LAny.Any P xs
+  toList⁺      : Any P xs → List.Any P (Vec.toList xs)
+  toList⁻      : LAny.Any P (Vec.toList xs) → Any P xs
   ```
 
 * Added new functions to `Data.Vec.Membership.Propositional.Properties`:
