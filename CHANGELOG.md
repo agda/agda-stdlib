@@ -46,28 +46,6 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 Other major changes
 -------------------
 
-<<<<<<< HEAD
-* Added new module `Algebra.Properties.CommutativeMonoid`. This contains proofs
-  of lots of properties of summation, including 'big summation'.
-
-* Added new modules `Data.List.Relation.Permutation.Inductive(.Properties)`,
-  which give an inductive definition of permutations over lists.
-
-* Added a new module `Data.These` for the classic either-or-both Haskell datatype.
-
-* Added new module `Data.List.Relation.Sublist.Inductive` which gives
-  an inductive definition of the sublist relation (i.e. order-preserving embeddings).
-  We also provide a solver for this order in `Data.List.Relation.Sublist.Inductive.Solver`.
-
-* Added new module `Relation.Binary.Construction.Converse`. This is very similar
-  to the existing module `Relation.Binary.Flip` in that it flips the relation. However
-  unlike the existing module, the new module leaves the underlying equality unchanged.
-
-* Added new modules `Relation.Unary.Closure.(Preorder/StrictPartialOrder)` providing
-  closures of a predicate with respect to either a preorder or a strict partial order.
-
-* Added new modules `Relation.Binary.Properties.(DistributiveLattice/HeytingAlgebra)`.
-
 * Added new module `Data.Vec.Any.Properties`
 
 Deprecated features
