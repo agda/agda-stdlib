@@ -17,7 +17,7 @@ import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
 open import Data.Empty using (⊥-elim)
 open import Data.Product using (proj₁; proj₂; _,_)
-open import Data.Sum using (inj₁; inj₂)
+open import Data.Sum as Sum using (inj₁; inj₂)
 open import Data.Sign as Sign using () renaming (_*_ to _𝕊*_)
 import Data.Sign.Properties as 𝕊ₚ
 open import Function using (_∘_; _$_)
@@ -828,6 +828,34 @@ neg-distribʳ-* x y = begin
 ⊓-comm (+ m)    -[1+ n ] = refl
 ⊓-comm (+ m)    (+ n)    = cong +_ (ℕₚ.⊓-comm m n)
 
+⊓-assoc : Associative _⊓_
+⊓-assoc -[1+ m ] -[1+ n ] -[1+ p ] = cong -[1+_] (ℕₚ.⊔-assoc m n p)
+⊓-assoc -[1+ m ] -[1+ n ] (+ p)    = refl
+⊓-assoc -[1+ m ] (+ n)    -[1+ p ] = refl
+⊓-assoc -[1+ m ] (+ n)    (+ p)    = refl
+⊓-assoc (+ m)    -[1+ n ] -[1+ p ] = refl
+⊓-assoc (+ m)    -[1+ n ] (+ p)    = refl
+⊓-assoc (+ m)    (+ n)    -[1+ p ] = refl
+⊓-assoc (+ m)    (+ n)    (+ p)    = cong +_ (ℕₚ.⊓-assoc m n p)
+
+⊓-idem : Idempotent _⊓_
+⊓-idem (+ m)    = cong +_ (ℕₚ.⊓-idem m)
+⊓-idem -[1+ m ] = cong -[1+_] (ℕₚ.⊔-idem m)
+
+⊓-sel : Selective _⊓_
+⊓-sel -[1+ m ] -[1+ n ] = Sum.map (cong -[1+_]) (cong -[1+_]) $ ℕₚ.⊔-sel m n
+⊓-sel -[1+ m ] (+ n)    = inj₁ refl
+⊓-sel (+ m)    -[1+ n ] = inj₂ refl
+⊓-sel (+ m)    (+ n)    = Sum.map (cong ℤ.pos) (cong ℤ.pos) $ ℕₚ.⊓-sel m n
+
+m≤n⇒m⊓n≡m : ∀ {m n} → m ≤ n → m ⊓ n ≡ m
+m≤n⇒m⊓n≡m -≤+       = refl
+m≤n⇒m⊓n≡m (-≤- n≤m) = cong -[1+_] (ℕₚ.m≤n⇒n⊔m≡n n≤m)
+m≤n⇒m⊓n≡m (+≤+ m≤n) = cong +_ (ℕₚ.m≤n⇒m⊓n≡m m≤n)
+
+m≥n⇒m⊓n≡n : ∀ {m n} → m ≥ n → m ⊓ n ≡ n
+m≥n⇒m⊓n≡n {m} {n} pr rewrite ⊓-comm m n = m≤n⇒m⊓n≡m pr
+
 m⊓n≤n : ∀ m n → m ⊓ n ≤ n
 m⊓n≤n -[1+ m ] -[1+ n ] = -≤- (ℕₚ.n≤m⊔n m n)
 m⊓n≤n -[1+ m ] (+ n)    = -≤+
@@ -837,6 +865,73 @@ m⊓n≤n (+ m)    (+ n)    = +≤+ (ℕₚ.m⊓n≤n m n)
 m⊓n≤m : ∀ m n → m ⊓ n ≤ m
 m⊓n≤m m n rewrite ⊓-comm m n = m⊓n≤n n m
 
+------------------------------------------------------------------------
+-- Properties _⊔_
+
+⊔-comm : Commutative _⊔_
+⊔-comm -[1+ m ] -[1+ n ] = cong -[1+_] (ℕₚ.⊓-comm m n)
+⊔-comm -[1+ m ] (+ n)    = refl
+⊔-comm (+ m)    -[1+ n ] = refl
+⊔-comm (+ m)    (+ n)    = cong +_ (ℕₚ.⊔-comm m n)
+
+⊔-assoc : Associative _⊔_
+⊔-assoc -[1+ m ] -[1+ n ] -[1+ p ] = cong -[1+_] (ℕₚ.⊓-assoc m n p)
+⊔-assoc -[1+ m ] -[1+ n ] (+ p)    = refl
+⊔-assoc -[1+ m ] (+ n)    -[1+ p ] = refl
+⊔-assoc -[1+ m ] (+ n)    (+ p)    = refl
+⊔-assoc (+ m)    -[1+ n ] -[1+ p ] = refl
+⊔-assoc (+ m)    -[1+ n ] (+ p)    = refl
+⊔-assoc (+ m)    (+ n)    -[1+ p ] = refl
+⊔-assoc (+ m)    (+ n)    (+ p)    = cong +_ (ℕₚ.⊔-assoc m n p)
+
+⊔-idem : Idempotent _⊔_
+⊔-idem (+ m)    = cong +_ (ℕₚ.⊔-idem m)
+⊔-idem -[1+ m ] = cong -[1+_] (ℕₚ.⊓-idem m)
+
+⊔-sel : Selective _⊔_
+⊔-sel -[1+ m ] -[1+ n ] = Sum.map (cong -[1+_]) (cong -[1+_]) $ ℕₚ.⊓-sel m n
+⊔-sel -[1+ m ] (+ n)    = inj₂ refl
+⊔-sel (+ m)    -[1+ n ] = inj₁ refl
+⊔-sel (+ m)    (+ n)    = Sum.map (cong ℤ.pos) (cong ℤ.pos) $ ℕₚ.⊔-sel m n
+
+m≤n⇒m⊔n≡n : ∀ {m n} → m ≤ n → m ⊔ n ≡ n
+m≤n⇒m⊔n≡n -≤+       = refl
+m≤n⇒m⊔n≡n (-≤- n≤m) = cong -[1+_] (ℕₚ.m≤n⇒n⊓m≡m n≤m)
+m≤n⇒m⊔n≡n (+≤+ m≤n) = cong +_ (ℕₚ.m≤n⇒m⊔n≡n m≤n)
+
+m≥n⇒m⊔n≡m : ∀ {m n} → m ≥ n → m ⊔ n ≡ m
+m≥n⇒m⊔n≡m {m} {n} pr rewrite ⊔-comm m n = m≤n⇒m⊔n≡n pr
+
+m≤m⊔n : ∀ m n → m ≤ m ⊔ n
+m≤m⊔n -[1+ m ] -[1+ n ] = -≤- (ℕₚ.m⊓n≤m m n)
+m≤m⊔n -[1+ m ] (+ n)    = -≤+
+m≤m⊔n (+ m)    -[1+ n ] = +≤+ ℕₚ.≤-refl
+m≤m⊔n (+ m)    (+ n)    = +≤+ (ℕₚ.m≤m⊔n m n)
+
+n≤m⊔n : ∀ m n → n ≤ m ⊔ n
+n≤m⊔n m n rewrite ⊔-comm m n = m≤m⊔n n m
+
+neg-distrib-⊔-⊓ : ∀ m n → - (m ⊔ n) ≡ - m ⊓ - n
+neg-distrib-⊔-⊓ -[1+ m ]  -[1+ n ]  = refl
+neg-distrib-⊔-⊓ -[1+ m ]  (+ zero)  = refl
+neg-distrib-⊔-⊓ -[1+ m ]  (+ suc n) = refl
+neg-distrib-⊔-⊓ (+ zero)  -[1+ n ]  = refl
+neg-distrib-⊔-⊓ (+ suc m) -[1+ n ]  = refl
+neg-distrib-⊔-⊓ (+ zero)  (+ zero)  = refl
+neg-distrib-⊔-⊓ (+ zero)  (+ suc n) = refl
+neg-distrib-⊔-⊓ (+ suc m) (+ zero)  = refl
+neg-distrib-⊔-⊓ (+ suc m) (+ suc n) = refl
+
+neg-distrib-⊓-⊔ : ∀ m n → - (m ⊓ n) ≡ - m ⊔ - n
+neg-distrib-⊓-⊔ -[1+ m ]  -[1+ n ]  = refl
+neg-distrib-⊓-⊔ -[1+ m ]  (+ zero)  = refl
+neg-distrib-⊓-⊔ -[1+ m ]  (+ suc n) = refl
+neg-distrib-⊓-⊔ (+ zero)  -[1+ n ]  = refl
+neg-distrib-⊓-⊔ (+ suc m) -[1+ n ]  = refl
+neg-distrib-⊓-⊔ (+ zero)  (+ zero)  = refl
+neg-distrib-⊓-⊔ (+ zero)  (+ suc n) = refl
+neg-distrib-⊓-⊔ (+ suc m) (+ zero)  = refl
+neg-distrib-⊓-⊔ (+ suc m) (+ suc n) = refl
 
 ------------------------------------------------------------------------
 -- Properties _≤_

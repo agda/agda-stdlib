@@ -73,9 +73,26 @@ Other minor additions
   minus-suc  : m - + suc n ≡ pred (m - + n)
   sm*n≡n+m*n : sucℤ m * n ≡ n + m * n
 
-  ⊓-comm : Commutative _⊓_
-  m⊓n≤n  : m ⊓ n ≤ n
-  m⊓n≤m  : m ⊓ n ≤ m
+  ⊓-comm    : Commutative _⊓_
+  ⊓-assoc   : Associative _⊓_
+  ⊓-idem    : Idempotent _⊓_
+  ⊓-sel     : Selective _⊓_
+  m≤n⇒m⊓n≡m : m ≤ n → m ⊓ n ≡ m
+  m≥n⇒m⊓n≡n : m ≥ n → m ⊓ n ≡ n
+  m⊓n≤n     : m ⊓ n ≤ n
+  m⊓n≤m     : m ⊓ n ≤ m
+
+  ⊔-comm    : Commutative _⊔_
+  ⊔-assoc   : Associative _⊔_
+  ⊔-idem    : Idempotent _⊔_
+  ⊔-sel     : Selective _⊔_
+  m≤n⇒m⊔n≡n : m ≤ n → m ⊔ n ≡ n
+  m≥n⇒m⊔n≡m : m ≥ n → m ⊔ n ≡ m
+  m≤m⊔n     : m ≤ m ⊔ n
+  n≤m⊔n     : n ≤ m ⊔ n
+
+  neg-distrib-⊔-⊓ : - (m ⊔ n) ≡ - m ⊓ - n
+  neg-distrib-⊓-⊔ : - (m ⊓ n) ≡ - m ⊔ - n
 
   pred-mono         : pred Preserves _≤_ ⟶ _≤_
   suc-mono          : sucℤ Preserves _≤_ ⟶ _≤_
