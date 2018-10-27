@@ -9,6 +9,15 @@
 module Data.Maybe.Base where
 
 open import Level
+open import Data.Bool.Base using (Bool; true; false; not)
+open import Data.Unit.Base using (⊤)
+open import Data.These using (These; this; that; these)
+open import Data.Product as Prod using (_×_; _,_)
+open import Function
+open import Relation.Nullary
+
+------------------------------------------------------------------------
+-- Definition
 
 data Maybe {a} (A : Set a) : Set a where
   just    : (x : A) → Maybe A
@@ -17,18 +26,8 @@ data Maybe {a} (A : Set a) : Set a where
 {-# FOREIGN GHC type AgdaMaybe a b = Maybe b #-}
 {-# COMPILE GHC Maybe = data MAlonzo.Code.Data.Maybe.Base.AgdaMaybe (Just | Nothing) #-}
 
-open import Function
-open import Agda.Builtin.Equality using (_≡_ ; refl)
-
-just-injective : ∀ {a} {A : Set a} {a b} → (Maybe A ∋ just a) ≡ just b → a ≡ b
-just-injective refl = refl
-
 ------------------------------------------------------------------------
 -- Some operations
-
-open import Data.Bool.Base using (Bool; true; false; not)
-open import Data.Unit.Base using (⊤)
-open import Relation.Nullary
 
 boolToMaybe : Bool → Maybe ⊤
 boolToMaybe true  = just _
@@ -80,37 +79,14 @@ module _ {a} {A : Set a} where
 map : ∀ {a b} {A : Set a} {B : Set b} → (A → B) → Maybe A → Maybe B
 map f = maybe (just ∘ f) nothing
 
-------------------------------------------------------------------------
--- Any and All
+-- Alternative: <∣>
 
-open Data.Bool.Base using (T)
-open import Data.Empty using (⊥)
-
-data Any {a p} {A : Set a} (P : A → Set p) : Maybe A → Set (a ⊔ p) where
-  just : ∀ {x} (px : P x) → Any P (just x)
-
-data All {a p} {A : Set a} (P : A → Set p) : Maybe A → Set (a ⊔ p) where
-  just    : ∀ {x} (px : P x) → All P (just x)
-  nothing : All P nothing
-
-Is-just : ∀ {a} {A : Set a} → Maybe A → Set a
-Is-just = Any (λ _ → ⊤)
-
-Is-nothing : ∀ {a} {A : Set a} → Maybe A → Set a
-Is-nothing = All (λ _ → ⊥)
-
-to-witness : ∀ {p} {P : Set p} {m : Maybe P} → Is-just m → P
-to-witness (just {x = p} _) = p
-
-to-witness-T : ∀ {p} {P : Set p} (m : Maybe P) → T (is-just m) → P
-to-witness-T (just p) _  = p
-to-witness-T nothing  ()
+_<∣>_ : ∀ {a} {A : Set a} → Maybe A → Maybe A → Maybe A
+just x  <∣> my = just x
+nothing <∣> my = my
 
 ------------------------------------------------------------------------
--- Aligning and Zipping
-
-open import Data.These using (These; this; that; these)
-open import Data.Product hiding (zip)
+-- Aligning and zipping
 
 module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 

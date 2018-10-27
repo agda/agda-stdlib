@@ -1,5 +1,5 @@
 name:            lib
-version:         0.16
+version:         0.17
 cabal-version:   >= 1.10
 build-type:      Simple
 description:     Helper programs.

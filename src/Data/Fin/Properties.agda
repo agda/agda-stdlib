@@ -292,12 +292,12 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
 <⇒≢ : ∀ {n} {i j : Fin n} → i < j → i ≢ j
 <⇒≢ i<i refl = ℕₚ.n≮n _ i<i
 
-≤+≢⇒< : ∀ {n} {i j : Fin n} → i ≤ j → i ≢ j → i < j
-≤+≢⇒< {i = zero}  {zero}  _         0≢0     = contradiction refl 0≢0
-≤+≢⇒< {i = zero}  {suc j} _         _       = s≤s z≤n
-≤+≢⇒< {i = suc i} {zero}  ()
-≤+≢⇒< {i = suc i} {suc j} (s≤s i≤j) 1+i≢1+j =
-  s≤s (≤+≢⇒< i≤j (1+i≢1+j ∘ (cong suc)))
+≤∧≢⇒< : ∀ {n} {i j : Fin n} → i ≤ j → i ≢ j → i < j
+≤∧≢⇒< {i = zero}  {zero}  _         0≢0     = contradiction refl 0≢0
+≤∧≢⇒< {i = zero}  {suc j} _         _       = s≤s z≤n
+≤∧≢⇒< {i = suc i} {zero}  ()
+≤∧≢⇒< {i = suc i} {suc j} (s≤s i≤j) 1+i≢1+j =
+  s≤s (≤∧≢⇒< i≤j (1+i≢1+j ∘ (cong suc)))
 
 ------------------------------------------------------------------------
 -- inject
@@ -622,3 +622,10 @@ inject≤-lemma = toℕ-inject≤
 Please use toℕ-inject≤ instead."
 #-}
 
+-- Version 0.17
+
+≤+≢⇒< = ≤∧≢⇒<
+{-# WARNING_ON_USAGE ≤+≢⇒<
+"Warning: ≤+≢⇒< was deprecated in v0.17.
+Please use ≤∧≢⇒< instead."
+#-}

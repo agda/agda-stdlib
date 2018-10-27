@@ -10,6 +10,7 @@
 
 module Relation.Binary.Indexed.Homogeneous where
 
+open import Function using (_⟨_⟩_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary as B using (_⇒_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -30,6 +31,9 @@ record IsIndexedEquivalence {i a ℓ} {I : Set i} (A : I → Set a)
     reflᵢ  : Reflexive  A _≈ᵢ_
     symᵢ   : Symmetric  A _≈ᵢ_
     transᵢ : Transitive A _≈ᵢ_
+
+  reflexiveᵢ : ∀ {i} → _≡_ ⟨ _⇒_ ⟩ _≈ᵢ_ {i}
+  reflexiveᵢ P.refl = reflᵢ
 
   -- Lift properties
 
@@ -74,6 +78,33 @@ record IndexedSetoid {i} (I : Set i) c ℓ : Set (suc (i ⊔ c ⊔ ℓ)) where
   setoid = record
     { isEquivalence = isEquivalence
     }
+
+------------------------------------------------------------------------
+-- Decidable equivalences
+
+record IsIndexedDecEquivalence {i a ℓ} {I : Set i} (A : I → Set a)
+                               (_≈ᵢ_ : IRel A ℓ) : Set (i ⊔ a ⊔ ℓ) where
+  infix 4 _≟ᵢ_
+  field
+    _≟ᵢ_           : Decidable A _≈ᵢ_
+    isEquivalenceᵢ : IsIndexedEquivalence A _≈ᵢ_
+
+  open IsIndexedEquivalence isEquivalenceᵢ public
+
+record IndexedDecSetoid {i} (I : Set i) c ℓ : Set (suc (i ⊔ c ⊔ ℓ)) where
+  infix 4 _≈ᵢ_
+  field
+    Carrierᵢ          : I → Set c
+    _≈ᵢ_              : IRel Carrierᵢ ℓ
+    isDecEquivalenceᵢ : IsIndexedDecEquivalence Carrierᵢ _≈ᵢ_
+
+  open IsIndexedDecEquivalence isDecEquivalenceᵢ public
+
+  indexedSetoid : IndexedSetoid I c ℓ
+  indexedSetoid = record { isEquivalenceᵢ = isEquivalenceᵢ }
+
+  open IndexedSetoid indexedSetoid public
+    using (Carrier; _≈_; _≉_; setoid)
 
 ------------------------------------------------------------------------
 -- Preorders
