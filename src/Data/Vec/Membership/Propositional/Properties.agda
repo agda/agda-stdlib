@@ -7,14 +7,16 @@
 module Data.Vec.Membership.Propositional.Properties where
 
 open import Data.Fin using (Fin; zero; suc)
-open import Data.Product using (_,_)
+open import Data.Product as Prod using (_,_; ∃; _×_; -,_)
 open import Data.Vec hiding (here; there)
 open import Data.Vec.Any using (here; there)
 open import Data.List using ([]; _∷_)
 open import Data.List.Any using (here; there)
+import Data.Vec.Any as VAny
 open import Data.Vec.Membership.Propositional
 import Data.List.Membership.Propositional as List
 open import Function using (_∘_; id)
+open import Relation.Unary using (Pred)
 open import Relation.Binary.PropositionalEquality using (refl)
 
 ------------------------------------------------------------------------
@@ -101,3 +103,16 @@ module _ {a} {A : Set a} {v : A} where
   ∈-fromList⁻ {[]}    ()
   ∈-fromList⁻ {_ ∷ _} (here refl)  = here refl
   ∈-fromList⁻ {_ ∷ _} (there v∈xs) = there (∈-fromList⁻ v∈xs)
+
+------------------------------------------------------------------------
+-- Relationship to Any
+
+module _ {a p} {A : Set a} {P : Pred A p} where
+
+  fromAny : ∀ {n} {xs : Vec A n} → VAny.Any P xs → ∃ λ x → x ∈ xs × P x
+  fromAny (here px) = -, here refl , px
+  fromAny (there v) = Prod.map₂ (Prod.map₁ there) (fromAny v)
+
+  toAny : ∀ {n x} {xs : Vec A n} → x ∈ xs → P x → VAny.Any P xs
+  toAny (here refl) px = here px
+  toAny (there v)   px = there (toAny v px)
