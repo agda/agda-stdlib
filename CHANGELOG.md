@@ -149,6 +149,7 @@ Other minor additions
   m≡n⇒m-n≡0      : m ≡ n → m - n ≡ + 0
   m-n≡0⇒m≡n      : m - n ≡ + 0 → m ≡ n
   0≤n⇒+∣n∣≡n     : + 0 ≤ n → + ∣ n ∣ ≡ n
+  +∣n∣≡n⇒0≤n     : + ∣ n ∣ ≡ n → + 0 ≤ n
   ◃-≡            : sign m ≡ sign n → ∣ m ∣ ≡ ∣ n ∣ → m ≡ n
 
   +-*-ring : Ring _ _
