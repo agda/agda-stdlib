@@ -853,8 +853,17 @@ m≤n⇒m⊓n≡m -≤+       = refl
 m≤n⇒m⊓n≡m (-≤- n≤m) = cong -[1+_] (ℕₚ.m≤n⇒n⊔m≡n n≤m)
 m≤n⇒m⊓n≡m (+≤+ m≤n) = cong +_ (ℕₚ.m≤n⇒m⊓n≡m m≤n)
 
+m⊓n≡m⇒m≤n : ∀ {m n} → m ⊓ n ≡ m → m ≤ n
+m⊓n≡m⇒m≤n { -[1+ m ]} { -[1+ n ]} eq = -≤- (ℕₚ.n⊔m≡n⇒m≤n (-[1+-injective eq))
+m⊓n≡m⇒m≤n { -[1+ m ]} {+ n}       eq = -≤+
+m⊓n≡m⇒m≤n {+ m}       { -[1+ n ]} ()
+m⊓n≡m⇒m≤n {+ m}       {+ n}       eq = +≤+ (ℕₚ.m⊓n≡m⇒m≤n (+-injective eq))
+
 m≥n⇒m⊓n≡n : ∀ {m n} → m ≥ n → m ⊓ n ≡ n
 m≥n⇒m⊓n≡n {m} {n} pr rewrite ⊓-comm m n = m≤n⇒m⊓n≡m pr
+
+m⊓n≡n⇒m≥n : ∀ {m n} → m ⊓ n ≡ n → m ≥ n
+m⊓n≡n⇒m≥n {m} {n} eq rewrite ⊓-comm m n = m⊓n≡m⇒m≤n eq
 
 m⊓n≤n : ∀ m n → m ⊓ n ≤ n
 m⊓n≤n -[1+ m ] -[1+ n ] = -≤- (ℕₚ.n≤m⊔n m n)
@@ -899,8 +908,17 @@ m≤n⇒m⊔n≡n -≤+       = refl
 m≤n⇒m⊔n≡n (-≤- n≤m) = cong -[1+_] (ℕₚ.m≤n⇒n⊓m≡m n≤m)
 m≤n⇒m⊔n≡n (+≤+ m≤n) = cong +_ (ℕₚ.m≤n⇒m⊔n≡n m≤n)
 
+m⊔n≡n⇒m≤n : ∀ {m n} → m ⊔ n ≡ n → m ≤ n
+m⊔n≡n⇒m≤n { -[1+ m ]} { -[1+ n ]} eq = -≤- (ℕₚ.m⊓n≡n⇒n≤m (-[1+-injective eq))
+m⊔n≡n⇒m≤n { -[1+ m ]} {+ n}       eq = -≤+
+m⊔n≡n⇒m≤n {+ m}       { -[1+ n ]} ()
+m⊔n≡n⇒m≤n {+ m}       {+ n}       eq = +≤+ (ℕₚ.n⊔m≡m⇒n≤m (+-injective eq))
+
 m≥n⇒m⊔n≡m : ∀ {m n} → m ≥ n → m ⊔ n ≡ m
 m≥n⇒m⊔n≡m {m} {n} pr rewrite ⊔-comm m n = m≤n⇒m⊔n≡n pr
+
+m⊔n≡m⇒m≥n : ∀ {m n} → m ⊔ n ≡ m → m ≥ n
+m⊔n≡m⇒m≥n {m} {n} eq rewrite ⊔-comm m n = m⊔n≡n⇒m≤n eq
 
 m≤m⊔n : ∀ m n → m ≤ m ⊔ n
 m≤m⊔n -[1+ m ] -[1+ n ] = -≤- (ℕₚ.m⊓n≤m m n)

@@ -78,7 +78,9 @@ Other minor additions
   ⊓-idem    : Idempotent _⊓_
   ⊓-sel     : Selective _⊓_
   m≤n⇒m⊓n≡m : m ≤ n → m ⊓ n ≡ m
+  m⊓n≡m⇒m≤n : m ⊓ n ≡ m → m ≤ n
   m≥n⇒m⊓n≡n : m ≥ n → m ⊓ n ≡ n
+  m⊓n≡n⇒m≥n : m ⊓ n ≡ n → m ≥ n
   m⊓n≤n     : m ⊓ n ≤ n
   m⊓n≤m     : m ⊓ n ≤ m
 
@@ -87,7 +89,9 @@ Other minor additions
   ⊔-idem    : Idempotent _⊔_
   ⊔-sel     : Selective _⊔_
   m≤n⇒m⊔n≡n : m ≤ n → m ⊔ n ≡ n
+  m⊔n≡n⇒m≤n : m ⊔ n ≡ n → m ≤ n
   m≥n⇒m⊔n≡m : m ≥ n → m ⊔ n ≡ m
+  m⊔n≡m⇒m≥n : m ⊔ n ≡ m → m ≥ n
   m≤m⊔n     : m ≤ m ⊔ n
   n≤m⊔n     : n ≤ m ⊔ n
 
