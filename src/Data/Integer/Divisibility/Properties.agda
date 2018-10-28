@@ -189,3 +189,9 @@ m∣′∣m∣ = ∣m⇒∣′m Ndiv.∣-refl
   rewrite *-comm i k
         | *-comm j k
         = *-cancelˡ-∣ k
+
+*-cancelˡ-∣′ : ∀ k {i j} → k ≢ + 0 → k * i ∣′ k * j → i ∣′ j
+*-cancelˡ-∣′ k k≢0 = ∣m⇒∣′m ∘ *-cancelˡ-∣ k k≢0 ∘ ∣′m⇒∣m
+
+*-cancelʳ-∣′ : ∀ k {i j} → k ≢ + 0 → i * k ∣′ j * k → i ∣′ j
+*-cancelʳ-∣′ k {i} {j} k≢0 = ∣m⇒∣′m ∘′ *-cancelʳ-∣ k {i} {j} k≢0 ∘′ ∣′m⇒∣m
