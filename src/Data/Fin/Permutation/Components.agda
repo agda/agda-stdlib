@@ -63,7 +63,7 @@ reverse-involutive {zero}  ()
 reverse-involutive {suc n} i = toℕ-injective (begin
   toℕ (reverse (reverse i)) ≡⟨ reverse-prop (reverse i) ⟩
   n ∸ (toℕ (reverse i))     ≡⟨ cong (n ∸_) (reverse-prop i) ⟩
-  n ∸ (n ∸ (toℕ i))         ≡⟨ ℕₚ.m∸[m∸n]≡n (ℕ.≤-pred (toℕ<n i)) ⟩
+  n ∸ (n ∸ (toℕ i))         ≡⟨ ℕₚ.m∸[m∸n]≡n (ℕₚ.≤-pred (toℕ<n i)) ⟩
   toℕ i                     ∎)
 
 reverse-suc : ∀ {n}{i : Fin n} → toℕ (reverse (suc i)) ≡ toℕ (reverse i)

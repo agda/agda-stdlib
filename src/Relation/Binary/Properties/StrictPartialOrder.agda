@@ -11,22 +11,14 @@ module Relation.Binary.Properties.StrictPartialOrder
 
 open Relation.Binary.StrictPartialOrder SPO
   renaming (trans to <-trans)
-import Relation.Binary.StrictToNonStrict as Conv
-open Conv _≈_ _<_
+open import Relation.Binary.Construct.StrictToNonStrict _≈_ _<_
 
 ------------------------------------------------------------------------
 -- Strict partial orders can be converted to posets
 
 poset : Poset _ _ _
 poset = record
-  { isPartialOrder = record
-    { isPreorder = record
-        { isEquivalence = isEquivalence
-        ; reflexive     = reflexive
-        ; trans         = trans isEquivalence <-resp-≈ <-trans
-        }
-    ; antisym = antisym isEquivalence <-trans irrefl
-    }
+  { isPartialOrder = isPartialOrder isStrictPartialOrder
   }
 
 open Poset poset public
