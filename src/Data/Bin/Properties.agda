@@ -13,7 +13,7 @@ import Data.Fin.Properties as 𝔽ₚ
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Properties using (∷-injective)
 open import Data.Nat
-  using (ℕ; zero; z≤n; s≤s; ≤-pred)
+  using (ℕ; zero; z≤n; s≤s)
   renaming (suc to 1+_; _+_ to _+ℕ_; _*_ to _*ℕ_; _≤_ to _≤ℕ_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Product using (proj₁; proj₂)

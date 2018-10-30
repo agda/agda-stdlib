@@ -15,7 +15,7 @@ import Data.List.Properties as LP
 open import Data.List.Any using (Any; here; there)
 open import Data.List.Any.Properties
 open import Data.List.Membership.Propositional using (_∈_)
-open import Data.List.Relation.Sublist.Extensional.Propositional.Properties
+open import Data.List.Relation.Subset.Propositional.Properties
   using (⊆-preorder)
 open import Data.Product hiding (map)
 open import Data.Sum hiding (map)
@@ -28,6 +28,7 @@ open import Function.Related as Related using (↔⇒; ⌊_⌋; ⌊_⌋→; ⇒�
 open import Function.Related.TypeIsomorphisms
 open import Relation.Binary
 import Relation.Binary.EqReasoning as EqR
+import Relation.Binary.PreorderReasoning as PreorderReasoning
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≗_; refl)
 open import Relation.Nullary
@@ -73,9 +74,10 @@ bag-=⇒ xs≈ys = ↔⇒ xs≈ys
 -- "Equational" reasoning for _⊆_ along with an additional relatedness
 
 module ⊆-Reasoning where
-  import Relation.Binary.PreorderReasoning as PreR
   private
-    open module PR {a} {A : Set a} = PreR (⊆-preorder A) public
+    module PreOrder {a} {A : Set a} = PreorderReasoning (⊆-preorder A)
+
+    open PreOrder public
       hiding (_≈⟨_⟩_) renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
 
   infixr 2 _∼⟨_⟩_
