@@ -249,6 +249,12 @@ module _ {a} {A : Set a} {_•_ : Op₂ A} where
   foldr-selective = Membershipₛ.foldr-selective (P.setoid A)
 
 ------------------------------------------------------------------------
+-- allFin
+
+∈-allFin : ∀ {n} (k : Fin n) → k ∈ allFin n
+∈-allFin = ∈-tabulate⁺
+
+------------------------------------------------------------------------
 -- Other properties
 
 -- Only a finite number of distinct elements can be members of a
