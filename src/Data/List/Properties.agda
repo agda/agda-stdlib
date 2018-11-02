@@ -522,12 +522,19 @@ module _ {a} {A : Set a} where
   tabulate-lookup (x ∷ xs) = P.cong (_ ∷_) (tabulate-lookup xs)
 
 ------------------------------------------------------------------------
--- _at_(%/∷)=_
+-- _[_]%=_
+
+module _ {a} {A : Set a} where
 
   length-%= : ∀ xs k (f : A → A) → length (xs [ k ]%= f) ≡ length xs
   length-%= []       ()      f
   length-%= (x ∷ xs) zero    f = refl
   length-%= (x ∷ xs) (suc k) f = P.cong suc (length-%= xs k f)
+
+------------------------------------------------------------------------
+-- _[_]∷=_
+
+module _ {a} {A : Set a} where
 
   length-∷= : ∀ xs k (v : A) → length (xs [ k ]∷= v) ≡ length xs
   length-∷= xs k v = length-%= xs k (const v)
@@ -541,6 +548,8 @@ module _ {a} {A : Set a} where
 
 ------------------------------------------------------------------------
 -- _─_
+
+module _ {a} {A : Set a} where
 
   length-─ : ∀ (xs : List A) k → length (xs ─ k) ≡ pred (length xs)
   length-─ []       ()
@@ -694,7 +703,7 @@ module _ {a} {A : Set a} where
     reverse ys ++ reverse (x ∷ xs)       ∎
     where open P.≡-Reasoning
 
-  reverse-involutive : Involutive _≡_ (reverse {A = A})
+  reverse-involutive : Involutive {A = List A} _≡_ reverse
   reverse-involutive [] = refl
   reverse-involutive (x ∷ xs) = begin
     reverse (reverse (x ∷ xs))   ≡⟨ P.cong reverse $ unfold-reverse x xs ⟩
