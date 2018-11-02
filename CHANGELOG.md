@@ -100,14 +100,15 @@ Other minor additions
   _─_     : (xs : List A) → x ∈ xs → List A
   ```
 
-* Added new proofs to `Data.List.Membership.(Setoid/Propositional).Properties`:
+* Added new proofs to `Data.List.Membership.Setoid.Properties`:
   ```agda
   length-mapWith∈ : length (mapWith∈ xs f) ≡ length xs
-  length-∷=       : length (pr ∷= v) ≡ length xs
-  ∈-∷=⁺-updated   : v ∈ (pr ∷= v)
-  ∈-∷=⁺-untouched : (¬ x ≈ y) → y ∈ xs → y ∈ (pr ∷= v)
-  ∈-∷=⁻           : (¬ y ≈ v) → y ∈ (pr ∷= v) → y ∈ xs
-  map-∷=          : map f (pr ∷= v) ≡ ∈-map⁺ f≈ pr ∷= f v
+
+  ∈-∷=⁺-updated   : v ∈ (x∈xs ∷= v)
+  ∈-∷=⁺-untouched : x ≉ y → y ∈ xs → y ∈ (x∈xs ∷= v)
+  ∈-∷=⁻           : y ≉ v → y ∈ (x∈xs ∷= v) → y ∈ xs
+
+  map-∷=          : map f (x∈xs ∷= v) ≡ ∈-map⁺ f≈ pr ∷= f v
   ```
 
 * Added new proofs to `Data.List.Properties`:
