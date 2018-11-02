@@ -54,6 +54,16 @@ Deprecated features
 Other minor additions
 ---------------------
 
+* Added new function to `Data.Fin.Base`:
+  ```agda
+  cast : m ≡ n → Fin m → Fin n
+  ```
+
+* Added new proof to `Data.Fin.Properties`:
+  ```agda
+  toℕ-cast    : toℕ (cast eq k) ≡ toℕ k
+  ```
+
 * Added new operations to `Data.List.All`:
   ```agda
   zipWith   : P ∩ Q ⊆ R → All P ∩ All Q ⊆ All R
@@ -67,6 +77,13 @@ Other minor additions
   forM      : All Q xs → (Q ⊆ M ∘′ P) → M (All P xs)
   ```
 
+* Added new operators to `Data.List.Base`:
+  ```agda
+  _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
+  _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
+  _─_     : (xs : List A) → Fin (length xs) → List A
+  ```
+
 * Added new proofs to `Data.List.All.Properties`:
   ```agda
   respects : P Respects _≈_ → (All P) Respects _≋_
@@ -75,6 +92,32 @@ Other minor additions
 * Added new proof to `Data.List.Membership.Propositional.Properties`:
   ```agda
   ∈-allFin : (k : Fin n) → k ∈ allFin n
+  ```
+
+* Added new function to `Data.List.Membership.(Setoid/Propositional)`:
+  ```agda
+  _∷=_    : x ∈ xs → A → List A
+  _─_     : (xs : List A) → x ∈ xs → List A
+  ```
+
+* Added new proofs to `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  length-mapWith∈ : length (mapWith∈ xs f) ≡ length xs
+
+  ∈-∷=⁺-updated   : v ∈ (x∈xs ∷= v)
+  ∈-∷=⁺-untouched : x ≉ y → y ∈ xs → y ∈ (x∈xs ∷= v)
+  ∈-∷=⁻           : y ≉ v → y ∈ (x∈xs ∷= v) → y ∈ xs
+
+  map-∷=          : map f (x∈xs ∷= v) ≡ ∈-map⁺ f≈ pr ∷= f v
+  ```
+
+* Added new proofs to `Data.List.Properties`:
+  ```agda
+  length-%= : length (xs [ k ]%= f) ≡ length xs
+  length-∷= : length (xs [ k ]∷= v) ≡ length xs
+  map-∷=    : map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
+  length-─  : length (xs ─ k) ≡ pred (length xs)
+  map-─     : map f (xs ─ k) ≡ map f xs ─ cast eq k
   ```
 
 * Added new proofs to `Data.Maybe.All`:
