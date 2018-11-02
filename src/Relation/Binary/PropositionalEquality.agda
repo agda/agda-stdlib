@@ -16,7 +16,7 @@ open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
-import Relation.Binary.Indexed.Heterogeneous.Construction.Trivial
+import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   as Trivial
 open import Relation.Binary.HeterogeneousEquality.Core as H using (_≅_)
 

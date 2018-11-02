@@ -13,7 +13,8 @@ open import Data.Bool.Base using (Bool; true; false)
 open import Data.BoundedVec.Inefficient as BVec
   using (BoundedVec; []; _∷_)
 open import Data.Empty using (⊥)
-open import Data.Maybe.Base using (Maybe; nothing; just; Is-just)
+open import Data.Maybe using (Maybe; nothing; just; Is-just)
+open import Data.Maybe.Any using (just)
 open import Data.Nat.Base using (ℕ; zero; suc; _≥′_; ≤′-refl; ≤′-step)
 open import Data.Nat.Properties using (s≤′s)
 open import Data.List.Base using (List; []; _∷_)
@@ -25,7 +26,7 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; _↔̇_; Inverse; inverse)
 open import Level using (_⊔_)
 open import Relation.Binary
-import Relation.Binary.InducedPreorders as Ind
+import Relation.Binary.Construct.FromRel as Ind
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
 open import Relation.Nullary.Negation
@@ -458,9 +459,8 @@ module ⊑-Reasoning where
 -- The subset relation forms a preorder.
 
 ⊆-Preorder : ∀ {ℓ} → Set ℓ → Preorder _ _ _
-⊆-Preorder A =
-  Ind.InducedPreorder₂ (setoid A) _∈_
-                       (λ xs≈ys → ⊑⇒⊆ (⊑P.reflexive xs≈ys))
+⊆-Preorder A = Ind.preorder (setoid A) _∈_
+                 (λ xs≈ys → ⊑⇒⊆ (⊑P.reflexive xs≈ys))
   where module ⊑P = Poset (⊑-Poset A)
 
 module ⊆-Reasoning where

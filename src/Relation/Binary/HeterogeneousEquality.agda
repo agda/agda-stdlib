@@ -16,7 +16,7 @@ open import Relation.Binary
 open import Relation.Binary.Consequences
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
-open import Relation.Binary.Indexed.Heterogeneous.Construction.At
+open import Relation.Binary.Indexed.Heterogeneous.Construct.At
   using (_atₛ_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 
