@@ -70,6 +70,13 @@ Other minor additions
   respects : P Respects _≈_ → (All P) Respects _≋_
   ```
 
+* Added new functions to `Data.List.Base`:
+  ```agda
+  intercalate       : List A → List (List A) → List A
+  partitionSumsWith : (A → B ⊎ C) → List A → List B × List C
+  partitionSums     : List (A ⊎ B) → List A × List B
+  ```
+
 * Added new proofs to `Data.Maybe.All`:
   ```agda
   drop-just        : All P (just x) → P x
@@ -117,4 +124,9 @@ Other minor additions
 * Added new function to `Data.Maybe.Base`:
   ```agda
   _<∣>_     : Maybe A → Maybe A → Maybe A
+  ```
+
+* Added new function to `Data.These`:
+  ```agda
+  fromSum : A ⊎ B → These A B
   ```

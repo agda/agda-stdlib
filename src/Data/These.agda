@@ -7,12 +7,18 @@
 module Data.These where
 
 open import Level
+open import Data.Sum.Base using (_⊎_; [_,_]′)
 open import Function
 
 data These {a b} (A : Set a) (B : Set b) : Set (a ⊔ b) where
   this  : A     → These A B
   that  :     B → These A B
   these : A → B → These A B
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+  fromSum : A ⊎ B → These A B
+  fromSum = [ this , that ]′
 
 -- map
 
