@@ -70,7 +70,7 @@ Other minor additions
 * Added new proofs to `Data.List.All.Properties`:
   ```agda
   respects : P Respects _≈_ → (All P) Respects _≋_
-  ``
+  ```
 
 * Added new proof to `Data.List.Membership.Propositional.Properties`:
   ```agda
@@ -129,14 +129,14 @@ Other minor additions
 * Added new functions to `Data.Vec.Any.Properties`:
   ```agda
   lookup-index : (p : Any P xs) → P (lookup (index p) xs)
-  fromList⁺    : List.Any P xs → Any P (Vec.fromList xs)
-  fromList⁻    : Any P (Vec.fromList xs) → LAny.Any P xs
-  toList⁺      : Any P xs → List.Any P (Vec.toList xs)
-  toList⁻      : LAny.Any P (Vec.toList xs) → Any P xs
+  fromList⁺    : List.Any P xs → Any P (fromList xs)
+  fromList⁻    : Any P (fromList xs) → List.Any P xs
+  toList⁺      : Any P xs → List.Any P (toList xs)
+  toList⁻      : List.Any P (toList xs) → Any P xs
   ```
 
 * Added new functions to `Data.Vec.Membership.Propositional.Properties`:
   ```agda
-  fromAny : Vec.Any P xs → ∃ λ x → x ∈ xs × P x
-￼ toAny   : x ∈ xs → P x → Vec.Any P xs
+  fromAny : Any P xs → ∃ λ x → x ∈ xs × P x
+  toAny   : x ∈ xs → P x → Any P xs
   ```

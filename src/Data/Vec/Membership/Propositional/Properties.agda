@@ -12,9 +12,10 @@ open import Data.Vec hiding (here; there)
 open import Data.Vec.Any using (here; there)
 open import Data.List using ([]; _∷_)
 open import Data.List.Any using (here; there)
-import Data.Vec.Any as VAny
+open import Data.Vec.Any using (Any; here; there)
 open import Data.Vec.Membership.Propositional
-import Data.List.Membership.Propositional as List
+open import Data.List.Membership.Propositional
+  using () renaming (_∈_ to _∈ₗ_)
 open import Function using (_∘_; id)
 open import Relation.Unary using (Pred)
 open import Relation.Binary.PropositionalEquality using (refl)
@@ -81,11 +82,11 @@ module _ {a b} {A : Set a} {B : Set b} where
 
 module _ {a} {A : Set a} {v : A} where
 
-  ∈-toList⁺ : ∀ {n} {xs : Vec A n} → v ∈ xs → v List.∈ toList xs
+  ∈-toList⁺ : ∀ {n} {xs : Vec A n} → v ∈ xs → v ∈ₗ toList xs
   ∈-toList⁺ (here refl) = here refl
   ∈-toList⁺ (there x∈)  = there (∈-toList⁺ x∈)
 
-  ∈-toList⁻ : ∀ {n} {xs : Vec A n} → v List.∈ toList xs → v ∈ xs
+  ∈-toList⁻ : ∀ {n} {xs : Vec A n} → v ∈ₗ toList xs → v ∈ xs
   ∈-toList⁻ {xs = []}     ()
   ∈-toList⁻ {xs = x ∷ xs} (here refl)  = here refl
   ∈-toList⁻ {xs = x ∷ xs} (there v∈xs) = there (∈-toList⁻ v∈xs)
@@ -95,11 +96,11 @@ module _ {a} {A : Set a} {v : A} where
 
 module _ {a} {A : Set a} {v : A} where
 
-  ∈-fromList⁺ : ∀ {xs} → v List.∈ xs → v ∈ fromList xs
+  ∈-fromList⁺ : ∀ {xs} → v ∈ₗ xs → v ∈ fromList xs
   ∈-fromList⁺ (here refl) = here refl
   ∈-fromList⁺ (there x∈)  = there (∈-fromList⁺ x∈)
 
-  ∈-fromList⁻ : ∀ {xs} → v ∈ fromList xs → v List.∈ xs
+  ∈-fromList⁻ : ∀ {xs} → v ∈ fromList xs → v ∈ₗ xs
   ∈-fromList⁻ {[]}    ()
   ∈-fromList⁻ {_ ∷ _} (here refl)  = here refl
   ∈-fromList⁻ {_ ∷ _} (there v∈xs) = there (∈-fromList⁻ v∈xs)
@@ -109,10 +110,10 @@ module _ {a} {A : Set a} {v : A} where
 
 module _ {a p} {A : Set a} {P : Pred A p} where
 
-  fromAny : ∀ {n} {xs : Vec A n} → VAny.Any P xs → ∃ λ x → x ∈ xs × P x
+  fromAny : ∀ {n} {xs : Vec A n} → Any P xs → ∃ λ x → x ∈ xs × P x
   fromAny (here px) = -, here refl , px
   fromAny (there v) = Prod.map₂ (Prod.map₁ there) (fromAny v)
 
-  toAny : ∀ {n x} {xs : Vec A n} → x ∈ xs → P x → VAny.Any P xs
+  toAny : ∀ {n x} {xs : Vec A n} → x ∈ xs → P x → Any P xs
   toAny (here refl) px = here px
   toAny (there v)   px = there (toAny v px)
