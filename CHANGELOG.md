@@ -52,6 +52,17 @@ Deprecated features
 Other minor additions
 ---------------------
 
+* Added new functions to `Codata.Stream`:
+  ```agda
+  splitAt : (n : ℕ) → Stream A ∞ → Vec A n × Stream A ∞
+  drop    : ℕ → Stream A ∞ → Stream A ∞
+  ```
+
+* Added new proof to `Codata.Stream.Properties`:
+  ```agda
+  splitAt-map : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
+  ```
+
 * Added new operations to `Data.List.All`:
   ```agda
   zipWith   : P ∩ Q ⊆ R → All P ∩ All Q ⊆ All R
