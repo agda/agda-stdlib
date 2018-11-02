@@ -46,6 +46,8 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 Other major changes
 -------------------
 
+* Added new module `Data.Vec.Any.Properties`
+
 Deprecated features
 -------------------
 
@@ -75,6 +77,11 @@ Other minor additions
   intercalate       : List A → List (List A) → List A
   partitionSumsWith : (A → B ⊎ C) → List A → List B × List C
   partitionSums     : List (A ⊎ B) → List A × List B
+  ```
+
+* Added new proof to `Data.List.Membership.Propositional.Properties`:
+  ```agda
+  ∈-allFin : (k : Fin n) → k ∈ allFin n
   ```
 
 * Added new proofs to `Data.Maybe.All`:
@@ -129,4 +136,19 @@ Other minor additions
 * Added new function to `Data.These`:
   ```agda
   fromSum : A ⊎ B → These A B
+  ```
+
+* Added new functions to `Data.Vec.Any.Properties`:
+  ```agda
+  lookup-index : (p : Any P xs) → P (lookup (index p) xs)
+  fromList⁺    : List.Any P xs → Any P (fromList xs)
+  fromList⁻    : Any P (fromList xs) → List.Any P xs
+  toList⁺      : Any P xs → List.Any P (toList xs)
+  toList⁻      : List.Any P (toList xs) → Any P xs
+  ```
+
+* Added new functions to `Data.Vec.Membership.Propositional.Properties`:
+  ```agda
+  fromAny : Any P xs → ∃ λ x → x ∈ xs × P x
+  toAny   : x ∈ xs → P x → Any P xs
   ```
