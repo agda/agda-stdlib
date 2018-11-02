@@ -11,8 +11,9 @@ module Data.List.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 open import Function using (_∘_; id; flip)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.List.Base as List using (List; []; _∷_; length; lookup)
-open import Data.List.Any as Any using (Any; map; here; there)
+open import Data.List.Any as Any using (Any; index; map; here; there)
 open import Data.Product as Prod using (∃; _×_; _,_)
+open import Relation.Unary using (Pred)
 open import Relation.Nullary using (¬_)
 
 open Setoid S renaming (Carrier to A)
@@ -37,25 +38,23 @@ mapWith∈ []       f = []
 mapWith∈ (x ∷ xs) f = f (here refl) ∷ mapWith∈ xs (f ∘ there)
 
 _∷=_ : ∀ {xs x} → x ∈ xs → A → List A
-_∷=_ {xs} x∈xs v = xs List.[ Any.index x∈xs ]∷= v
+_∷=_ {xs} x∈xs v = xs List.[ index x∈xs ]∷= v
 
 infixl 4 _─_
 _─_ : ∀ xs {x} → x ∈ xs → List A
-xs ─ x∈xs = xs List.─ Any.index x∈xs
+xs ─ x∈xs = xs List.─ index x∈xs
 
-fromFin : ∀ {xs} (k : Fin (length xs)) → lookup xs k ∈ xs
-fromFin {[]}    ()
-fromFin {_ ∷ _} zero    = here refl
-fromFin {_ ∷ _} (suc k) = there (fromFin k)
+------------------------------------------------------------------------
+-- Finding and losing witnesses
 
-find : ∀ {p} {P : A → Set p} {xs} →
-       Any P xs → ∃ λ x → x ∈ xs × P x
-find (here px)   = (_ , here refl , px)
-find (there pxs) = Prod.map id (Prod.map there id) (find pxs)
+module _ {p} {P : Pred A p} where
 
-lose : ∀ {p} {P : A → Set p} {x xs} →
-       P Respects _≈_ → x ∈ xs → P x → Any P xs
-lose resp x∈xs px = map (flip resp px) x∈xs
+  find : ∀ {xs} → Any P xs → ∃ λ x → x ∈ xs × P x
+  find (here px)   = (_ , here refl , px)
+  find (there pxs) = Prod.map id (Prod.map there id) (find pxs)
+
+  lose : P Respects _≈_ →  ∀ {x xs} → x ∈ xs → P x → Any P xs
+  lose resp x∈xs px = map (flip resp px) x∈xs
 
 ------------------------------------------------------------------------
 -- DEPRECATED

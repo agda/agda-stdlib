@@ -61,7 +61,7 @@ Other minor additions
 
 * Added new proof to `Data.Fin.Properties`:
   ```agda
-  toℕ-cast    : toℕ (cast eq k) ≡ k
+  toℕ-cast    : toℕ (cast eq k) ≡ toℕ k
   ```
 
 * Added new operations to `Data.List.All`:
@@ -98,13 +98,10 @@ Other minor additions
   ```agda
   _∷=_    : x ∈ xs → A → List A
   _─_     : (xs : List A) → x ∈ xs → List A
-  fromFin : (k : Fin (length xs)) → lookup xs k ∈ xs
   ```
 
 * Added new proofs to `Data.List.Membership.(Setoid/Propositional).Properties`:
   ```agda
-  ∈-insert        : v ≈ v′ → v ∈ xs ++ [ v′ ] ++ ys
-  ∈-∃++           : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
   length-mapWith∈ : length (mapWith∈ xs f) ≡ length xs
   length-∷=       : length (pr ∷= v) ≡ length xs
   ∈-∷=⁺-updated   : v ∈ (pr ∷= v)

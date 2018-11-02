@@ -7,7 +7,7 @@
 module Data.List.Base where
 
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_)
-open import Data.Fin as Fin using (Fin)
+open import Data.Fin using (Fin; zero; suc)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Bool.Base as Bool
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
@@ -51,7 +51,7 @@ intersperse x (y ∷ []) = y ∷ []
 intersperse x (y ∷ ys) = y ∷ x ∷ intersperse x ys
 
 ------------------------------------------------------------------------
--- Aligning and Zipping
+-- Aligning and zipping
 
 module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
@@ -189,22 +189,6 @@ module _ {a} {A : Set a} where
   lookup (x ∷ xs) Fin.zero    = x
   lookup (x ∷ xs) (Fin.suc i) = lookup xs i
 
--- Actions on single elements
-
-  infixl 5 _[_]%=_ _[_]∷=_ _─_
-  _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
-  []       [ ()        ]%= f
-  (x ∷ xs) [ Fin.zero  ]%= f = f x ∷ xs
-  (x ∷ xs) [ Fin.suc k ]%= f = x ∷ (xs [ k ]%= f)
-
-  _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
-  xs [ k ]∷= v = xs [ k ]%= const v
-
-  _─_ : (xs : List A) → Fin (length xs) → List A
-  []       ─ ()
-  (x ∷ xs) ─ Fin.zero  = xs
-  (x ∷ xs) ─ Fin.suc k = x ∷ (xs ─ k)
-
 -- Numerical
 
 upTo : ℕ → List ℕ
@@ -301,6 +285,26 @@ span P? (x ∷ xs) with P? x
 break : ∀ {a p} {A : Set a} {P : Pred A p} →
         Decidable P → List A → (List A × List A)
 break P? = span (∁? P?)
+
+------------------------------------------------------------------------
+-- Actions on single elements
+
+module _ {a} {A : Set a} where
+
+  infixl 5 _[_]%=_ _[_]∷=_ _─_
+
+  _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
+  []       [ ()    ]%= f
+  (x ∷ xs) [ zero  ]%= f = f x ∷ xs
+  (x ∷ xs) [ suc k ]%= f = x ∷ (xs [ k ]%= f)
+
+  _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
+  xs [ k ]∷= v = xs [ k ]%= const v
+
+  _─_ : (xs : List A) → Fin (length xs) → List A
+  []       ─ ()
+  (x ∷ xs) ─ zero  = xs
+  (x ∷ xs) ─ suc k = x ∷ (xs ─ k)
 
 ------------------------------------------------------------------------
 -- Operations for reversing lists
