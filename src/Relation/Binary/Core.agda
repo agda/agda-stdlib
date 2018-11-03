@@ -96,8 +96,12 @@ TransFlip P Q R = ∀ {i j k} → Q j k → P i j → R i k
 Transitive : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
 Transitive _∼_ = Trans _∼_ _∼_ _∼_
 
+Antisym : ∀ {a b ℓ₁ ℓ₂ ℓ₃} {A : Set a} {B : Set b} →
+          REL A B ℓ₁ → REL B A ℓ₂ → REL A B ℓ₃ → Set _
+Antisym R S E = ∀ {i j} → R i j → S j i → E i j
+
 Antisymmetric : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
-Antisymmetric _≈_ _≤_ = ∀ {x y} → x ≤ y → y ≤ x → x ≈ y
+Antisymmetric _≈_ _≤_ = Antisym _≤_ _≤_ _≈_
 
 Asymmetric : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
 Asymmetric _<_ = ∀ {x y} → x < y → ¬ (y < x)

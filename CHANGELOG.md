@@ -190,6 +190,11 @@ Other minor additions
   toAny   : x ∈ xs → P x → Any P xs
   ```
 
+* Added new definition to `Relation.Binary.Core`:
+  ```agda
+  Antisym R S E = ∀ {i j} → R i j → S j i → E i j
+  ```
+
 * Added new proofs to `Relation.Binary.Lattice`:
   ```agda
   Lattice.setoid        : Setoid c ℓ
