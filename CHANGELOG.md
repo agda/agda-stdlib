@@ -46,9 +46,13 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 Other major changes
 -------------------
 
-* Added new module `Relation.Binary.Properties.BoundedLattice`
+* Added new module `Algebra.FunctionProperties.Consequences.Propositional`
+
+* Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
 
 * Added new module `Data.Vec.Any.Properties`
+
+* Added new module `Relation.Binary.Properties.BoundedLattice`
 
 Deprecated features
 -------------------
@@ -66,6 +70,11 @@ Other minor additions
 * Added new proof to `Codata.Stream.Properties`:
   ```agda
   splitAt-map : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
+  ```
+
+* Added new proof to `Algebra.FunctionProperties.Consequences`:
+  ```agda
+  wlog : Commutative f → Total _R_ → (∀ a b → a R b → P (f a b)) → ∀ a b → P (f a b)
   ```
 
 * Added new function to `Data.Fin.Base`:
@@ -196,6 +205,11 @@ Other minor additions
   ```agda
   fromAny : Any P xs → ∃ λ x → x ∈ xs × P x
   toAny   : x ∈ xs → P x → Any P xs
+  ```
+
+* Added new proofs to `Relation.Binary.Consequences`:
+  ```agda
+  wlog : Total _R_ → Symmetric Q → (∀ a b → a R b → Q a b) → ∀ a b → Q a b
   ```
 
 * Added new proofs to `Relation.Binary.Lattice`:
