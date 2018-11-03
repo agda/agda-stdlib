@@ -36,17 +36,17 @@ module _ {s p} (C : Container s p) {x} {X : Set x} {ℓ} {P : Pred X ℓ} where
 -- ◇ can be expressed using _∈_.
 
   ↔∈ : ∀ {xs : ⟦ C ⟧ X} → ◇ P xs ↔ (∃ λ x → x ∈ xs × P x)
-  ↔∈ {xs} = inverse to from (λ _ → refl) (to∘from)
+  ↔∈ {xs} = inverse to from (λ _ → P.refl) (to∘from)
     where
 
     to : ◇ P xs → ∃ λ x → x ∈ xs × P x
-    to (p , Px) = (proj₂ xs p , (p , refl) , Px)
+    to (p , Px) = (proj₂ xs p , (p , P.refl) , Px)
 
     from : (∃ λ x → x ∈ xs × P x) → ◇ P xs
     from (.(proj₂ xs p) , (p , refl) , Px) = (p , Px)
 
     to∘from : to ∘ from ≗ id
-    to∘from (.(proj₂ xs p) , (p , refl) , Px) = refl
+    to∘from (.(proj₂ xs p) , (p , refl) , Px) = P.refl
 
 module _ {s p} {C : Container s p} {x} {X : Set x}
          {ℓ₁ ℓ₂} {P₁ : Pred X ℓ₁} {P₂ : Pred X ℓ₂} where
@@ -93,7 +93,7 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
   flatten : ∀ (xss : ⟦ C₁ ⟧ (⟦ C₂ ⟧ X)) →
             ◇ (◇ P) xss ↔
             ◇ P (Inverse.from (Composition.correct C₁ C₂) ⟨$⟩ xss)
-  flatten xss = inverse t f (λ _ → refl) (λ _ → refl)
+  flatten xss = inverse t f (λ _ → P.refl) (λ _ → P.refl)
     where
     open Inverse
 
@@ -119,11 +119,11 @@ module _ {s p} {C : Container s p} {x} {X : Set x}
     from = [ Prod.map id inj₁ , Prod.map id inj₂ ]
 
     from∘to : from ∘ to ≗ id
-    from∘to (pos , inj₁ p) = refl
-    from∘to (pos , inj₂ q) = refl
+    from∘to (pos , inj₁ p) = P.refl
+    from∘to (pos , inj₂ q) = P.refl
 
     to∘from : to ∘ from ≗ id
-    to∘from = [ (λ _ → refl) , (λ _ → refl) ]
+    to∘from = [ (λ _ → P.refl) , (λ _ → P.refl) ]
 
 -- Products "commute" with ◇.
 
@@ -132,7 +132,7 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
 
   ×◇↔◇◇× : ∀ {xs : ⟦ C₁ ⟧ X} {ys : ⟦ C₂ ⟧ Y} →
            ◇ (λ x → ◇ (λ y → P x × Q y) ys) xs ↔ (◇ P xs × ◇ Q ys)
-  ×◇↔◇◇× {xs} {ys} = inverse to from (λ _ → refl) (λ _ → refl)
+  ×◇↔◇◇× {xs} {ys} = inverse to from (λ _ → P.refl) (λ _ → P.refl)
     where
     to : ◇ (λ x → ◇ (λ y → P x × Q y) ys) xs → ◇ P xs × ◇ Q ys
     to (p₁ , p₂ , p , q) = ((p₁ , p) , (p₂ , q))

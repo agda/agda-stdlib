@@ -46,13 +46,15 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 Other major changes
 -------------------
 
-* Added new module `Relation.Binary.Properties.BoundedLattice`
+* Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
 
 * In `Data.List.Membership.Propositional.Properties`:
     - Made the `Set` argument implicit in `∈-++⁺ˡ`, `∈-++⁺ʳ`, `∈-++⁻`, `∈-insert`, `∈-∃++`.
     - Made the `A → B` argument explicit in `∈-map⁺`, `∈-map⁻`, `map-∈↔`.
 
 * Added new module `Data.Vec.Any.Properties`
+
+* Added new module `Relation.Binary.Properties.BoundedLattice`
 
 Deprecated features
 -------------------
