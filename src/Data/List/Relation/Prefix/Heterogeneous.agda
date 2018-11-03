@@ -16,15 +16,20 @@ data Prefix {a b r} {A : Set a} {B : Set b} (R : REL A B r)
   []  : ∀ {bs} → Prefix R [] bs
   _∷_ : ∀ {a b as bs} → R a b → Prefix R as bs → Prefix R (a ∷ as) (b ∷ bs)
 
+module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} {a b as bs} where
 
-module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+  head : Prefix R (a ∷ as) (b ∷ bs) → R a b
+  head (r ∷ rs) = r
 
-  uncons : ∀ {a b as bs} → Prefix R (a ∷ as) (b ∷ bs) → R a b × Prefix R as bs
-  uncons (x ∷ xs) = x , xs
+  tail : Prefix R (a ∷ as) (b ∷ bs) → Prefix R as bs
+  tail (r ∷ rs) = rs
+
+  uncons : Prefix R (a ∷ as) (b ∷ bs) → R a b × Prefix R as bs
+  uncons (r ∷ rs) = r , rs
 
 module _ {a b r s} {A : Set a} {B : Set b} {R : REL A B r} {S : REL A B s} where
 
   map : R ⇒ S → Prefix R ⇒ Prefix S
-  map f []       = []
-  map f (x ∷ xs) = f x ∷ map f xs
+  map R⇒S []       = []
+  map R⇒S (r ∷ rs) = R⇒S r ∷ map R⇒S rs
 

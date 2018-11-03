@@ -8,10 +8,9 @@ module Data.List.Relation.Prefix.Heterogeneous.Properties where
 
 open import Data.Empty
 open import Data.List.Base as List hiding (map; uncons)
--- using (List; []; _∷_; _++_; filter; take)
 open import Data.List.Relation.Pointwise using (Pointwise; []; _∷_)
 open import Data.List.Relation.Prefix.Heterogeneous
-open import Data.Nat.Base using (ℕ; zero; suc)
+open import Data.Nat.Base using (ℕ; zero; suc; _≤_; z≤n; s≤s)
 open import Data.Nat.Properties using (suc-injective)
 open import Data.Product using (proj₁; proj₂; uncurry)
 open import Function
@@ -51,6 +50,15 @@ module _ {a b r s e} {A : Set a} {B : Set b}
   antisym : Antisym R S E → Antisym (Prefix R) (Prefix S) (Pointwise E)
   antisym rs⇒e []       []       = []
   antisym rs⇒e (r ∷ rs) (s ∷ ss) = rs⇒e r s ∷ antisym rs⇒e rs ss
+
+------------------------------------------------------------------------
+-- length
+
+module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+
+  length-mono-Prefix-≤ : ∀ {as bs} → Prefix R as bs → length as ≤ length bs
+  length-mono-Prefix-≤ []       = z≤n
+  length-mono-Prefix-≤ (r ∷ rs) = s≤s (length-mono-Prefix-≤ rs)
 
 ------------------------------------------------------------------------
 -- _++_
@@ -94,8 +102,7 @@ module _ {a b r p q} {A : Set a} {B : Set b} {R : REL A B r}
          (P⇒Q : ∀ {a b} → R a b → P a → Q b) (Q⇒P : ∀ {a b} → R a b → Q b → P a)
          where
 
-  filter⁺ : ∀ {as bs} →
-            Prefix R as bs → Prefix R (filter P? as) (filter Q? bs)
+  filter⁺ : ∀ {as bs} → Prefix R as bs → Prefix R (filter P? as) (filter Q? bs)
   filter⁺ [] = []
   filter⁺ {a ∷ as} {b ∷ bs} (r ∷ rs) with P? a | Q? b
   ... | yes pa | yes qb = r ∷ filter⁺ rs
@@ -112,6 +119,14 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   take⁺ zero    rs       = []
   take⁺ (suc n) []       = []
   take⁺ (suc n) (r ∷ rs) = r ∷ take⁺ n rs
+
+  take⁻ : ∀ {as bs} n →
+    Prefix R (take n as) (take n bs) → Prefix R (drop n as) (drop n bs) →
+    Prefix R as bs
+  take⁻                   zero    hds       tls = tls
+  take⁻ {[]}              (suc n) hds       tls = []
+  take⁻ {a ∷ as} {[]}     (suc n) ()        tls
+  take⁻ {a ∷ as} {b ∷ bs} (suc n) (r ∷ hds) tls = r ∷ take⁻ n hds tls
 
 ------------------------------------------------------------------------
 -- drop
