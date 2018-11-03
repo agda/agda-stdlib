@@ -46,9 +46,11 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 Other major changes
 -------------------
 
-* Added new module `Relation.Binary.Properties.BoundedLattice`
+* Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
 
 * Added new module `Data.Vec.Any.Properties`
+
+* Added new module `Relation.Binary.Properties.BoundedLattice`
 
 Deprecated features
 -------------------
