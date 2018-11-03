@@ -16,20 +16,26 @@ import Relation.Nullary.Decidable as Dec
 ------------------------------------------------------------------------
 -- Definition
 
-data Pointwise {a r} {A : Set a} (R : Rel A r) : Rel (Maybe A) r where
+data Pointwise {a b ℓ} {A : Set a} {B : Set b}
+               (R : REL A B ℓ) : REL (Maybe A) (Maybe B) ℓ where
   just    : ∀ {x y} → R x y → Pointwise R (just x) (just y)
   nothing : Pointwise R nothing nothing
 
 ------------------------------------------------------------------------
 -- Properties
 
-module _ {a r} {A : Set a} {R : Rel A r} where
+module _ {a b ℓ} {A : Set a} {B : Set b} {R : REL A B ℓ} where
 
   drop-just : ∀ {x y} → Pointwise R (just x) (just y) → R x y
   drop-just (just p) = p
 
   just-equivalence : ∀ {x y} → R x y ⇔ Pointwise R (just x) (just y)
   just-equivalence = equivalence just drop-just
+
+------------------------------------------------------------------------
+-- Relational properties
+
+module _ {a r} {A : Set a} {R : Rel A r} where
 
   refl : Reflexive R → Reflexive (Pointwise R)
   refl R-refl {just _}  = just R-refl
