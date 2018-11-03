@@ -43,14 +43,16 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   Eq-isDecEquivalence ↦ isDecEquivalence
   ```
 
-Other major changes
--------------------
-
-* Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
+#### Other
 
 * In `Data.List.Membership.Propositional.Properties`:
     - Made the `Set` argument implicit in `∈-++⁺ˡ`, `∈-++⁺ʳ`, `∈-++⁻`, `∈-insert`, `∈-∃++`.
     - Made the `A → B` argument explicit in `∈-map⁺`, `∈-map⁻`, `map-∈↔`.
+
+Other major changes
+-------------------
+
+* Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
 
 * Added new module `Data.Vec.Any.Properties`
 
