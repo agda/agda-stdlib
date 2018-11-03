@@ -7,9 +7,11 @@
 module Data.List.Relation.Prefix.Heterogeneous.Properties where
 
 open import Data.Empty
+open import Data.List.All as All using (All; []; _∷_)
+import Data.List.All.Properties as All
 open import Data.List.Base as List hiding (map; uncons)
 open import Data.List.Relation.Pointwise using (Pointwise; []; _∷_)
-open import Data.List.Relation.Prefix.Heterogeneous
+open import Data.List.Relation.Prefix.Heterogeneous as Prefix
 open import Data.Nat.Base using (ℕ; zero; suc; _≤_; z≤n; s≤s)
 open import Data.Nat.Properties using (suc-injective)
 open import Data.Product using (proj₁; proj₂; uncurry)
@@ -20,7 +22,7 @@ import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_)
 
 ------------------------------------------------------------------------
 -- First as a decidable partial order (once made homogeneous)
@@ -144,6 +146,27 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   drop⁻ {[]}            (suc n) hds       tls = []
   drop⁻ {_ ∷ _} {[]}    (suc n) ()        tls
   drop⁻ {_ ∷ _} {_ ∷ _} (suc n) (r ∷ hds) tls = r ∷ (drop⁻ n hds tls)
+
+------------------------------------------------------------------------
+-- replicate
+
+  replicate⁺ : ∀ {m n a b} → m ≤ n → R a b → Prefix R (replicate m a) (replicate n b)
+  replicate⁺ z≤n       r = []
+  replicate⁺ (s≤s m≤n) r = r ∷ replicate⁺ m≤n r
+
+  replicate⁻ : ∀ {m n a b} → m ≢ 0 → Prefix R (replicate m a) (replicate n b) → R a b
+  replicate⁻ {zero}  {n}     m≢0 r  = ⊥-elim (m≢0 P.refl)
+  replicate⁻ {suc m} {zero}  m≢0 ()
+  replicate⁻ {suc m} {suc n} m≢0 rs = Prefix.head rs
+
+------------------------------------------------------------------------
+-- inits
+
+module _ {a r} {A : Set a} {R : Rel A r} where
+
+  inits⁺ : ∀ {as} → Pointwise R as as → All (flip (Prefix R) as) (inits as)
+  inits⁺ []       = [] ∷ []
+  inits⁺ (r ∷ rs) = [] ∷ All.map⁺ (All.map (r ∷_) (inits⁺ rs))
 
 ------------------------------------------------------------------------
 -- Decidability
