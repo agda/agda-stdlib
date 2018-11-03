@@ -153,6 +153,15 @@ toℕ-fromℕ≤″ {m} {n} m<n = begin
   where open ≡-Reasoning
 
 ------------------------------------------------------------------------
+-- cast
+
+toℕ-cast : ∀ {m n} .(eq : m ≡ n) (k : Fin m) → toℕ (cast eq k) ≡ toℕ k
+toℕ-cast {n = zero}  () zero
+toℕ-cast {n = suc n} eq zero    = refl
+toℕ-cast {n = zero}  () (suc k)
+toℕ-cast {n = suc n} eq (suc k) = cong suc (toℕ-cast (cong ℕ.pred eq) k)
+
+------------------------------------------------------------------------
 -- Properties of _≤_
 
 -- Relational properties
