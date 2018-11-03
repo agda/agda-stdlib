@@ -4,13 +4,8 @@
 -- Properties related to propositional list membership
 ------------------------------------------------------------------------
 
--- This module does not  treat the general variant of list membership,
--- parametrised on a setoid, only the variant where the equality is
--- fixed to be propositional equality.
-
 module Data.List.Membership.Propositional.Properties where
 
-open import Algebra using (CommutativeSemiring)
 open import Algebra.FunctionProperties using (Op₂; Selective)
 open import Category.Monad using (RawMonad)
 open import Data.Bool.Base using (Bool; false; true; T)
@@ -247,6 +242,12 @@ module _ {a} {A : Set a} {_•_ : Op₂ A} where
   foldr-selective : Selective _≡_ _•_ → ∀ e xs →
                     (foldr _•_ e xs ≡ e) ⊎ (foldr _•_ e xs ∈ xs)
   foldr-selective = Membershipₛ.foldr-selective (P.setoid A)
+
+------------------------------------------------------------------------
+-- allFin
+
+∈-allFin : ∀ {n} (k : Fin n) → k ∈ allFin n
+∈-allFin = ∈-tabulate⁺
 
 ------------------------------------------------------------------------
 -- Other properties

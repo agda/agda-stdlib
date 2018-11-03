@@ -10,6 +10,7 @@
 
 module Relation.Binary.Indexed.Homogeneous where
 
+open import Function using (_⟨_⟩_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary as B using (_⇒_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -25,11 +26,14 @@ open import Relation.Binary.Indexed.Homogeneous.Core public
 -- Equivalences
 
 record IsIndexedEquivalence {i a ℓ} {I : Set i} (A : I → Set a)
-                            (_≈ᵢ_ : Rel A ℓ) : Set (i ⊔ a ⊔ ℓ) where
+                            (_≈ᵢ_ : IRel A ℓ) : Set (i ⊔ a ⊔ ℓ) where
   field
     reflᵢ  : Reflexive  A _≈ᵢ_
     symᵢ   : Symmetric  A _≈ᵢ_
     transᵢ : Transitive A _≈ᵢ_
+
+  reflexiveᵢ : ∀ {i} → _≡_ ⟨ _⇒_ ⟩ _≈ᵢ_ {i}
+  reflexiveᵢ P.refl = reflᵢ
 
   -- Lift properties
 
@@ -56,7 +60,7 @@ record IndexedSetoid {i} (I : Set i) c ℓ : Set (suc (i ⊔ c ⊔ ℓ)) where
   infix 4 _≈ᵢ_ _≈_
   field
     Carrierᵢ       : I → Set c
-    _≈ᵢ_           : Rel Carrierᵢ ℓ
+    _≈ᵢ_           : IRel Carrierᵢ ℓ
     isEquivalenceᵢ : IsIndexedEquivalence Carrierᵢ _≈ᵢ_
 
   open IsIndexedEquivalence isEquivalenceᵢ public
@@ -76,10 +80,37 @@ record IndexedSetoid {i} (I : Set i) c ℓ : Set (suc (i ⊔ c ⊔ ℓ)) where
     }
 
 ------------------------------------------------------------------------
+-- Decidable equivalences
+
+record IsIndexedDecEquivalence {i a ℓ} {I : Set i} (A : I → Set a)
+                               (_≈ᵢ_ : IRel A ℓ) : Set (i ⊔ a ⊔ ℓ) where
+  infix 4 _≟ᵢ_
+  field
+    _≟ᵢ_           : Decidable A _≈ᵢ_
+    isEquivalenceᵢ : IsIndexedEquivalence A _≈ᵢ_
+
+  open IsIndexedEquivalence isEquivalenceᵢ public
+
+record IndexedDecSetoid {i} (I : Set i) c ℓ : Set (suc (i ⊔ c ⊔ ℓ)) where
+  infix 4 _≈ᵢ_
+  field
+    Carrierᵢ          : I → Set c
+    _≈ᵢ_              : IRel Carrierᵢ ℓ
+    isDecEquivalenceᵢ : IsIndexedDecEquivalence Carrierᵢ _≈ᵢ_
+
+  open IsIndexedDecEquivalence isDecEquivalenceᵢ public
+
+  indexedSetoid : IndexedSetoid I c ℓ
+  indexedSetoid = record { isEquivalenceᵢ = isEquivalenceᵢ }
+
+  open IndexedSetoid indexedSetoid public
+    using (Carrier; _≈_; _≉_; setoid)
+
+------------------------------------------------------------------------
 -- Preorders
 
 record IsIndexedPreorder {i a ℓ₁ ℓ₂} {I : Set i} (A : I → Set a)
-                         (_≈ᵢ_ : Rel A ℓ₁) (_∼ᵢ_ : Rel A ℓ₂)
+                         (_≈ᵢ_ : IRel A ℓ₁) (_∼ᵢ_ : IRel A ℓ₂)
                          : Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isEquivalenceᵢ : IsIndexedEquivalence A _≈ᵢ_
@@ -134,8 +165,8 @@ record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ :
 
   field
     Carrierᵢ    : I → Set c
-    _≈ᵢ_        : Rel Carrierᵢ ℓ₁
-    _∼ᵢ_        : Rel Carrierᵢ ℓ₂
+    _≈ᵢ_        : IRel Carrierᵢ ℓ₁
+    _∼ᵢ_        : IRel Carrierᵢ ℓ₂
     isPreorderᵢ : IsIndexedPreorder Carrierᵢ _≈ᵢ_ _∼ᵢ_
 
   open IsIndexedPreorder isPreorderᵢ public
@@ -156,7 +187,7 @@ record IndexedPreorder {i} (I : Set i) c ℓ₁ ℓ₂ :
 -- Partial orders
 
 record IsIndexedPartialOrder {i a ℓ₁ ℓ₂} {I : Set i} (A : I → Set a)
-                             (_≈ᵢ_ : Rel A ℓ₁) (_≤ᵢ_ : Rel A ℓ₂) :
+                             (_≈ᵢ_ : IRel A ℓ₁) (_≤ᵢ_ : IRel A ℓ₂) :
                              Set (i ⊔ a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isPreorderᵢ : IsIndexedPreorder A _≈ᵢ_ _≤ᵢ_
@@ -185,8 +216,8 @@ record IndexedPoset {i} (I : Set i) c ℓ₁ ℓ₂ :
                     Set (suc (i ⊔ c ⊔ ℓ₁ ⊔ ℓ₂)) where
   field
     Carrierᵢ        : I → Set c
-    _≈ᵢ_            : Rel Carrierᵢ ℓ₁
-    _≤ᵢ_            : Rel Carrierᵢ ℓ₂
+    _≈ᵢ_            : IRel Carrierᵢ ℓ₁
+    _≤ᵢ_            : IRel Carrierᵢ ℓ₂
     isPartialOrderᵢ : IsIndexedPartialOrder Carrierᵢ _≈ᵢ_ _≤ᵢ_
 
   open IsIndexedPartialOrder isPartialOrderᵢ public
@@ -201,3 +232,22 @@ record IndexedPoset {i} (I : Set i) c ℓ₁ ℓ₂ :
 
   poset : B.Poset _ _ _
   poset = record { isPartialOrder = isPartialOrder }
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 0.17
+
+REL = IREL
+{-# WARNING_ON_USAGE REL
+"Warning: REL was deprecated in v0.17.
+Please use IREL instead."
+#-}
+Rel = IRel
+{-# WARNING_ON_USAGE Rel
+"Warning: Rel was deprecated in v0.17.
+Please use IRel instead."
+#-}

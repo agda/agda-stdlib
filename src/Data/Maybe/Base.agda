@@ -9,6 +9,15 @@
 module Data.Maybe.Base where
 
 open import Level
+open import Data.Bool.Base using (Bool; true; false; not)
+open import Data.Unit.Base using (⊤)
+open import Data.These using (These; this; that; these)
+open import Data.Product as Prod using (_×_; _,_)
+open import Function
+open import Relation.Nullary
+
+------------------------------------------------------------------------
+-- Definition
 
 data Maybe {a} (A : Set a) : Set a where
   just    : (x : A) → Maybe A
@@ -17,18 +26,8 @@ data Maybe {a} (A : Set a) : Set a where
 {-# FOREIGN GHC type AgdaMaybe a b = Maybe b #-}
 {-# COMPILE GHC Maybe = data MAlonzo.Code.Data.Maybe.Base.AgdaMaybe (Just | Nothing) #-}
 
-open import Function
-open import Agda.Builtin.Equality using (_≡_ ; refl)
-
-just-injective : ∀ {a} {A : Set a} {a b} → (Maybe A ∋ just a) ≡ just b → a ≡ b
-just-injective refl = refl
-
 ------------------------------------------------------------------------
 -- Some operations
-
-open import Data.Bool.Base using (Bool; true; false; not)
-open import Data.Unit.Base using (⊤)
-open import Relation.Nullary
 
 boolToMaybe : Bool → Maybe ⊤
 boolToMaybe true  = just _
@@ -80,28 +79,31 @@ module _ {a} {A : Set a} where
 map : ∀ {a b} {A : Set a} {B : Set b} → (A → B) → Maybe A → Maybe B
 map f = maybe (just ∘ f) nothing
 
+-- Alternative: <∣>
+
+_<∣>_ : ∀ {a} {A : Set a} → Maybe A → Maybe A → Maybe A
+just x  <∣> my = just x
+nothing <∣> my = my
+
 ------------------------------------------------------------------------
--- Any and All
+-- Aligning and zipping
 
-open Data.Bool.Base using (T)
-open import Data.Empty using (⊥)
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
-data Any {a p} {A : Set a} (P : A → Set p) : Maybe A → Set (a ⊔ p) where
-  just : ∀ {x} (px : P x) → Any P (just x)
+  alignWith : (These A B → C) → Maybe A → Maybe B → Maybe C
+  alignWith f (just a) (just b) = just (f (these a b))
+  alignWith f (just a) nothing  = just (f (this a))
+  alignWith f nothing  (just b) = just (f (that b))
+  alignWith f nothing  nothing  = nothing
 
-data All {a p} {A : Set a} (P : A → Set p) : Maybe A → Set (a ⊔ p) where
-  just    : ∀ {x} (px : P x) → All P (just x)
-  nothing : All P nothing
+  zipWith : (A → B → C) → Maybe A → Maybe B → Maybe C
+  zipWith f (just a) (just b) = just (f a b)
+  zipWith _ _ _ = nothing
 
-Is-just : ∀ {a} {A : Set a} → Maybe A → Set a
-Is-just = Any (λ _ → ⊤)
+module _ {a b} {A : Set a} {B : Set b} where
 
-Is-nothing : ∀ {a} {A : Set a} → Maybe A → Set a
-Is-nothing = All (λ _ → ⊥)
+  align : Maybe A → Maybe B → Maybe (These A B)
+  align = alignWith id
 
-to-witness : ∀ {p} {P : Set p} {m : Maybe P} → Is-just m → P
-to-witness (just {x = p} _) = p
-
-to-witness-T : ∀ {p} {P : Set p} (m : Maybe P) → T (is-just m) → P
-to-witness-T (just p) _  = p
-to-witness-T nothing  ()
+  zip : Maybe A → Maybe B → Maybe (A × B)
+  zip = zipWith _,_
