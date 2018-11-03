@@ -8,7 +8,7 @@ module Codata.M where
 
 open import Size
 open import Level
-open import Codata.Thunk
+open import Codata.Thunk using (Thunk; force)
 open import Data.Product hiding (map)
 open import Data.Container.Core
 import Data.Container as C

@@ -11,7 +11,7 @@ open import Algebra
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Maybe as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_)
+open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Nat.GeneralisedArithmetic using (fold)
 open import Data.Product using (_×_; uncurry)
 open import Data.Vec using (Vec; []; _∷_; lookup; replicate)

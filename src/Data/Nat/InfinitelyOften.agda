@@ -6,18 +6,17 @@
 
 module Data.Nat.InfinitelyOften where
 
+open import Category.Monad using (RawMonad)
 open import Level using (0ℓ)
-open import Algebra
-open import Category.Monad
-open import Data.Empty
-open import Function
+open import Data.Empty using (⊥-elim)
 open import Data.Nat
 open import Data.Nat.Properties
 open import Data.Product as Prod hiding (map)
 open import Data.Sum hiding (map)
+open import Function
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary
-open import Relation.Nullary.Negation
+open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (¬¬-Monad; call/cc)
 open import Relation.Unary using (Pred; _∪_; _⊆_)
 open RawMonad (¬¬-Monad {p = 0ℓ})
 
@@ -25,6 +24,11 @@ open RawMonad (¬¬-Monad {p = 0ℓ})
 
 Fin : ∀ {ℓ} → Pred ℕ ℓ → Set ℓ
 Fin P = ∃ λ i → ∀ j → i ≤ j → ¬ P j
+
+-- A non-constructive definition of "true infinitely often".
+
+Inf : ∀ {ℓ} → Pred ℕ ℓ → Set ℓ
+Inf P = ¬ Fin P
 
 -- Fin is preserved by binary sums.
 
@@ -43,11 +47,6 @@ _∪-Fin_ {P = P} {Q} (i , ¬p) (j , ¬q) = (i ⊔ j , helper)
     j ⊔ i  ≡⟨ ⊔-comm j i ⟩
     i ⊔ j  ≤⟨ i⊔j≤k ⟩
     k      ∎) q
-
--- A non-constructive definition of "true infinitely often".
-
-Inf : ∀ {ℓ} → Pred ℕ ℓ → Set ℓ
-Inf P = ¬ Fin P
 
 -- Inf commutes with binary sums (in the double-negation monad).
 

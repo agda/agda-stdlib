@@ -7,7 +7,7 @@
 module Data.Fin.Literals where
 
 open import Agda.Builtin.FromNat
-open import Data.Nat.Base
+open import Data.Nat using (suc; _≤?_)
 open import Data.Fin using (Fin ; #_)
 open import Relation.Nullary.Decidable using (True)
 

@@ -7,7 +7,7 @@
 module Codata.Covec.Properties where
 
 open import Size
-open import Codata.Thunk
+open import Codata.Thunk using (Thunk; force)
 open import Codata.Conat
 open import Codata.Covec
 open import Codata.Covec.Bisimilarity

@@ -20,7 +20,7 @@ open import Function.Equivalence as Equiv
 open import Level using (_⊔_) renaming (zero to ℓ₀)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
-open import Relation.Binary.Closure.Transitive as Plus
+open import Relation.Binary.Construct.Closure.Transitive as Plus
   hiding (equivalent; map)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
