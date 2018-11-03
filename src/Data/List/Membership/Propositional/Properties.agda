@@ -77,7 +77,7 @@ module _ {a b} {A : Set a} {B : Set b} where
 ------------------------------------------------------------------------
 -- map
 
-module _ {a b} {A : Set a} {B : Set b} {f : A → B} where
+module _ {a b} {A : Set a} {B : Set b} (f : A → B) where
 
   ∈-map⁺ : ∀ {x xs} → x ∈ xs → f x ∈ map f xs
   ∈-map⁺ = Membershipₛ.∈-map⁺ (P.setoid A) (P.setoid B) (P.cong f)
@@ -95,7 +95,7 @@ module _ {a b} {A : Set a} {B : Set b} {f : A → B} where
 ------------------------------------------------------------------------
 -- _++_
 
-module _ {a} (A : Set a) {v : A} where
+module _ {a} {A : Set a} {v : A} where
 
   ∈-++⁺ˡ : ∀ {xs ys} → v ∈ xs → v ∈ xs ++ ys
   ∈-++⁺ˡ = Membershipₛ.∈-++⁺ˡ (P.setoid A)
