@@ -46,6 +46,10 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 Other major changes
 -------------------
 
+* Added new module `Relation.Binary.Properties.BoundedLattice`
+
+* Added new module `Data.Vec.Any.Properties`
+
 Deprecated features
 -------------------
 
@@ -64,6 +68,16 @@ Other minor additions
   splitAt-map : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
   ```
 
+* Added new function to `Data.Fin.Base`:
+  ```agda
+  cast : m ≡ n → Fin m → Fin n
+  ```
+
+* Added new proof to `Data.Fin.Properties`:
+  ```agda
+  toℕ-cast    : toℕ (cast eq k) ≡ toℕ k
+  ```
+
 * Added new operations to `Data.List.All`:
   ```agda
   zipWith   : P ∩ Q ⊆ R → All P ∩ All Q ⊆ All R
@@ -77,9 +91,47 @@ Other minor additions
   forM      : All Q xs → (Q ⊆ M ∘′ P) → M (All P xs)
   ```
 
+* Added new operators to `Data.List.Base`:
+  ```agda
+  _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
+  _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
+  _─_     : (xs : List A) → Fin (length xs) → List A
+  ```
+
 * Added new proofs to `Data.List.All.Properties`:
   ```agda
   respects : P Respects _≈_ → (All P) Respects _≋_
+  ```
+
+* Added new proof to `Data.List.Membership.Propositional.Properties`:
+  ```agda
+  ∈-allFin : (k : Fin n) → k ∈ allFin n
+  ```
+
+* Added new function to `Data.List.Membership.(Setoid/Propositional)`:
+  ```agda
+  _∷=_    : x ∈ xs → A → List A
+  _─_     : (xs : List A) → x ∈ xs → List A
+  ```
+
+* Added new proofs to `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  length-mapWith∈ : length (mapWith∈ xs f) ≡ length xs
+
+  ∈-∷=⁺-updated   : v ∈ (x∈xs ∷= v)
+  ∈-∷=⁺-untouched : x ≉ y → y ∈ xs → y ∈ (x∈xs ∷= v)
+  ∈-∷=⁻           : y ≉ v → y ∈ (x∈xs ∷= v) → y ∈ xs
+
+  map-∷=          : map f (x∈xs ∷= v) ≡ ∈-map⁺ f≈ pr ∷= f v
+  ```
+
+* Added new proofs to `Data.List.Properties`:
+  ```agda
+  length-%= : length (xs [ k ]%= f) ≡ length xs
+  length-∷= : length (xs [ k ]∷= v) ≡ length xs
+  map-∷=    : map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
+  length-─  : length (xs ─ k) ≡ pred (length xs)
+  map-─     : map f (xs ─ k) ≡ map f xs ─ cast eq k
   ```
 
 * Added new proofs to `Data.Maybe.All`:
@@ -129,4 +181,67 @@ Other minor additions
 * Added new function to `Data.Maybe.Base`:
   ```agda
   _<∣>_     : Maybe A → Maybe A → Maybe A
+  ```
+
+* Added new functions to `Data.Vec.Any.Properties`:
+  ```agda
+  lookup-index : (p : Any P xs) → P (lookup (index p) xs)
+  fromList⁺    : List.Any P xs → Any P (fromList xs)
+  fromList⁻    : Any P (fromList xs) → List.Any P xs
+  toList⁺      : Any P xs → List.Any P (toList xs)
+  toList⁻      : List.Any P (toList xs) → Any P xs
+  ```
+
+* Added new functions to `Data.Vec.Membership.Propositional.Properties`:
+  ```agda
+  fromAny : Any P xs → ∃ λ x → x ∈ xs × P x
+  toAny   : x ∈ xs → P x → Any P xs
+  ```
+
+* Added new proofs to `Relation.Binary.Lattice`:
+  ```agda
+  Lattice.setoid        : Setoid c ℓ
+  BoundedLattice.setoid : Setoid c ℓ
+  ```
+
+* Added new operations and proofs to `Relation.Binary.Properties.HeytingAlgebra`:
+  ```agda
+  y≤x⇨y            : y ≤ x ⇨ y
+  ⇨-unit           : x ⇨ x ≈ ⊤
+  ⇨-drop           : (x ⇨ y) ∧ y ≈ y
+  ⇨-app            : (x ⇨ y) ∧ x ≈ y ∧ x
+  ⇨-relax          : _⇨_ Preserves₂ (flip _≤_) ⟶ _≤_ ⟶ _≤_
+  ⇨-cong           : _⇨_ Preserves₂ _≈_ ⟶ _≈_ ⟶ _≈_
+  ⇨-applyˡ         : w ≤ x → (x ⇨ y) ∧ w ≤ y
+  ⇨-applyʳ         : w ≤ x → w ∧ (x ⇨ y) ≤ y
+  ⇨-curry          : x ∧ y ⇨ z ≈ x ⇨ y ⇨ z
+  ⇨ʳ-covariant     : (x ⇨_) Preserves _≤_ ⟶ _≤_
+  ⇨ˡ-contravariant : (_⇨ x) Preserves (flip _≤_) ⟶ _≤_
+
+  ¬_           : Op₁ Carrier
+  x≤¬¬x        : x ≤ ¬ ¬ x
+  de-morgan₁   : ¬ (x ∨ y) ≈ ¬ x ∧ ¬ y
+  de-morgan₂-≤ : ¬ (x ∧ y) ≤ ¬ ¬ (¬ x ∨ ¬ y)
+  de-morgan₂-≥ : ¬ ¬ (¬ x ∨ ¬ y) ≤ ¬ (x ∧ y)
+  de-morgan₂   : ¬ (x ∧ y) ≈ ¬ ¬ (¬ x ∨ ¬ y)
+  weak-lem     : ¬ ¬ (¬ x ∨ x) ≈ ⊤
+  ```
+
+* Added new proofs to `Relation.Binary.Properties.JoinLattice`:
+  ```agda
+  x≤y⇒x∨y≈y : x ≤ y → x ∨ y ≈ y
+  ```
+
+* Added new proofs to `Relation.Binary.Properties.Lattice`:
+  ```agda
+  ∧≤∨            : x ∧ y ≤ x ∨ y
+  quadrilateral₁ : x ∨ y ≈ x → x ∧ y ≈ y
+  quadrilateral₂ : x ∧ y ≈ y → x ∨ y ≈ x
+  collapse₁      : x ≈ y → x ∧ y ≈ x ∨ y
+  collapse₂      : x ∨ y ≤ x ∧ y → x ≈ y
+  ```
+
+* Added new proofs to `Relation.Binary.Properties.MeetLattice`:
+  ```agda
+  y≤x⇒x∧y≈y : y ≤ x → x ∧ y ≈ y
   ```
