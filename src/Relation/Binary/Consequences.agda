@@ -123,6 +123,19 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ�
     trans∧tri⟶respˡ≈ ≈-tr <-tr tri
 
 ------------------------------------------------------------------------
+-- Without Loss of Generality
+
+module _ {a r q} {A : Set a} {_R_ : Rel A r} {Q : Rel A q} where
+
+  wlog : Total _R_ → Symmetric Q →
+         (∀ a b → a R b → Q a b) →
+         ∀ a b → Q a b
+  wlog r-total q-sym prf a b with r-total a b
+  ... | inj₁ aRb = prf a b aRb
+  ... | inj₂ bRa = q-sym (prf b a bRa)
+
+
+------------------------------------------------------------------------
 -- Other proofs
 
 module _ {a b p q} {A : Set a} {B : Set b }
