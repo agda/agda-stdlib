@@ -43,6 +43,11 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   Eq-isDecEquivalence ↦ isDecEquivalence
   ```
 
+#### Other
+
+* The proof `sel⇒idem` has been moved from `Algebra.FunctionProperties.Consequences` to
+  `Algebra.FunctionProperties.Consequences.Propositional` as it does not rely on equality.
+
 Other major changes
 -------------------
 

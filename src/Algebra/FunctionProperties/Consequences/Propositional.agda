@@ -6,8 +6,9 @@
 ------------------------------------------------------------------------
 
 module Algebra.FunctionProperties.Consequences.Propositional
-       {a} (A : Set a) where
+       {a} {A : Set a} where
 
+open import Data.Sum using (inj₁; inj₂)
 open import Relation.Binary using (Rel; Setoid; Symmetric; Total)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary using (Pred)
@@ -91,3 +92,11 @@ module _ {p} {P : Pred A p} where
          (∀ a b → a R b → P (f a b)) →
          ∀ a b → P (f a b)
   wlog = FP⇒.wlog {P = P} subst
+
+------------------------------------------------------------------------
+-- Selectivity
+
+sel⇒idem : ∀ {_•_ : Op₂ A} → Selective _•_ → Idempotent _•_
+sel⇒idem sel x with sel x x
+... | inj₁ x•x≈x = x•x≈x
+... | inj₂ x•x≈x = x•x≈x
