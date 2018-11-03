@@ -9,23 +9,20 @@ open import Relation.Binary.Lattice
 module Relation.Binary.Properties.HeytingAlgebra
   {c ℓ₁ ℓ₂} (L : HeytingAlgebra c ℓ₁ ℓ₂) where
 
+open HeytingAlgebra L
+
+open import Algebra.FunctionProperties _≈_
 open import Data.Product using (_,_)
+open import Function using (_$_; flip; _∘_)
 open import Level using (_⊔_)
 open import Relation.Binary
-open import Function using (_$_; flip; _∘_)
-
-open HeytingAlgebra L
-open import Algebra.FunctionProperties _≈_
-open import Relation.Binary.PartialOrderReasoning poset
+import Relation.Binary.PartialOrderReasoning as POR
 open import Relation.Binary.Properties.MeetSemilattice meetSemilattice
 open import Relation.Binary.Properties.JoinSemilattice joinSemilattice
 import Relation.Binary.Properties.BoundedMeetSemilattice boundedMeetSemilattice as BM
 open import Relation.Binary.Properties.Lattice lattice
 open import Relation.Binary.Properties.BoundedLattice boundedLattice
-open import Relation.Binary.SetoidReasoning
-  renaming (_∎ to _▯; _≈⟨_⟩_ to _≈≈⟨_⟩_)
-open IsEquivalence isEquivalence using ()
-  renaming (sym to ≈-sym; refl to ≈-refl; trans to ≈-trans)
+import Relation.Binary.EqReasoning as EqReasoning
 
 ------------------------------------------------------------------------
 -- Useful lemmas
@@ -52,20 +49,21 @@ y≤x⇨y = transpose-⇨ (x∧y≤x _ _)
 ⇨-app = antisym (∧-greatest ⇨-eval (x∧y≤y _ _)) (∧-monotonic y≤x⇨y refl)
 
 ⇨ʳ-covariant : ∀ {x} → (x ⇨_) Preserves _≤_ ⟶ _≤_
-⇨ʳ-covariant {x} {y} {z} y≤z = transpose-⇨ (trans ⇨-eval y≤z)
+⇨ʳ-covariant y≤z = transpose-⇨ (trans ⇨-eval y≤z)
 
 ⇨ˡ-contravariant : ∀ {x} → (_⇨ x) Preserves (flip _≤_) ⟶ _≤_
-⇨ˡ-contravariant {x} {y} {z} z≤y = transpose-⇨ (trans (∧-monotonic refl z≤y) ⇨-eval)
+⇨ˡ-contravariant z≤y = transpose-⇨ (trans (∧-monotonic refl z≤y) ⇨-eval)
 
 ⇨-relax : _⇨_ Preserves₂ (flip _≤_) ⟶ _≤_ ⟶ _≤_
 ⇨-relax {x} {y} {u} {v} y≤x u≤v = begin
   x ⇨ u ≤⟨ ⇨ʳ-covariant u≤v ⟩
   x ⇨ v ≤⟨ ⇨ˡ-contravariant y≤x ⟩
   y ⇨ v ∎
+  where open POR poset
 
 ⇨-cong : _⇨_ Preserves₂ _≈_ ⟶ _≈_ ⟶ _≈_
-⇨-cong x≈y u≈v = antisym (⇨-relax (reflexive $ ≈-sym x≈y) (reflexive u≈v))
-                         (⇨-relax (reflexive x≈y) (reflexive $ ≈-sym u≈v))
+⇨-cong x≈y u≈v = antisym (⇨-relax (reflexive $ Eq.sym x≈y) (reflexive u≈v))
+                         (⇨-relax (reflexive x≈y) (reflexive $ Eq.sym u≈v))
 
 ⇨-applyˡ : ∀ {w x y} → w ≤ x → (x ⇨ y) ∧ w ≤ y
 ⇨-applyˡ = transpose-∧ ∘ ⇨ˡ-contravariant
@@ -75,7 +73,7 @@ y≤x⇨y = transpose-⇨ (x∧y≤x _ _)
 
 ⇨-curry : ∀ {x y z} → x ∧ y ⇨ z ≈ x ⇨ y ⇨ z
 ⇨-curry = antisym (transpose-⇨ $ transpose-⇨ $ trans (reflexive $ ∧-assoc _ _ _) ⇨-eval)
-                  (transpose-⇨ $ trans (reflexive $ ≈-sym $ ∧-assoc _ _ _)
+                  (transpose-⇨ $ trans (reflexive $ Eq.sym $ ∧-assoc _ _ _)
                                        (transpose-∧ $ ⇨-applyˡ refl))
 
 ------------------------------------------------------------------------
@@ -104,14 +102,15 @@ y≤x⇨y = transpose-⇨ (x∧y≤x _ _)
 
 ⇨-distribˡ-∧-≥ : ∀ x y z → (x ⇨ y) ∧ (x ⇨ z) ≤ x ⇨ y ∧ z
 ⇨-distribˡ-∧-≥ x y z = transpose-⇨ (begin
-  (((x ⇨ y) ∧ (x ⇨ z)) ∧ x)      ≈⟨ ∧-cong ≈-refl $ ≈-sym $ ∧-idempotent _ ⟩
-  (((x ⇨ y) ∧ (x ⇨ z)) ∧ x  ∧ x) ≈⟨ ≈-sym $ ∧-assoc _ _ _ ⟩
-  (((x ⇨ y) ∧ (x ⇨ z)) ∧ x) ∧ x  ≈⟨ ∧-cong (∧-assoc _ _ _) ≈-refl ⟩
-  (((x ⇨ y) ∧ (x ⇨ z)  ∧ x) ∧ x) ≈⟨ ∧-cong (∧-cong ≈-refl $ ∧-comm _ _) ≈-refl ⟩
-  (((x ⇨ y) ∧ x  ∧ (x ⇨ z)) ∧ x) ≈⟨ ∧-cong (≈-sym $ ∧-assoc _ _ _) ≈-refl ⟩
+  (((x ⇨ y) ∧ (x ⇨ z)) ∧ x)      ≈⟨ ∧-cong Eq.refl $ Eq.sym $ ∧-idempotent _ ⟩
+  (((x ⇨ y) ∧ (x ⇨ z)) ∧ x  ∧ x) ≈⟨ Eq.sym $ ∧-assoc _ _ _ ⟩
+  (((x ⇨ y) ∧ (x ⇨ z)) ∧ x) ∧ x  ≈⟨ ∧-cong (∧-assoc _ _ _) Eq.refl ⟩
+  (((x ⇨ y) ∧ (x ⇨ z)  ∧ x) ∧ x) ≈⟨ ∧-cong (∧-cong Eq.refl $ ∧-comm _ _) Eq.refl ⟩
+  (((x ⇨ y) ∧ x  ∧ (x ⇨ z)) ∧ x) ≈⟨ ∧-cong (Eq.sym $ ∧-assoc _ _ _) Eq.refl ⟩
   (((x ⇨ y) ∧ x) ∧ (x ⇨ z)) ∧ x  ≈⟨ ∧-assoc _ _ _ ⟩
   (((x ⇨ y) ∧ x) ∧ (x ⇨ z)  ∧ x) ≤⟨ ∧-monotonic ⇨-eval ⇨-eval ⟩
   y ∧ z                          ∎)
+  where open POR poset
 
 ⇨-distribˡ-∧ : _⇨_ DistributesOverˡ _∧_
 ⇨-distribˡ-∧ x y z = antisym (⇨-distribˡ-∧-≤ x y z) (⇨-distribˡ-∧-≥ x y z)
@@ -163,16 +162,17 @@ de-morgan₁ x y = ⇨-distribˡ-∨-∧ _ _ _
 de-morgan₂-≤ : ∀ x y → ¬ (x ∧ y) ≤ ¬ ¬ (¬ x ∨ ¬ y)
 de-morgan₂-≤ x y = transpose-⇨ $ begin
   ¬ (x ∧ y) ∧ ¬ (¬ x ∨ ¬ y)     ≈⟨ ∧-cong ⇨-curry (de-morgan₁ _ _) ⟩
-  (x ⇨ ¬ y) ∧ ¬ ¬ x ∧ ¬ ¬ y     ≈⟨ ∧-cong ≈-refl (∧-comm _ _) ⟩
-  (x ⇨ ¬ y) ∧ ¬ ¬ y ∧ ¬ ¬ x     ≈⟨ ≈-sym $ ∧-assoc _ _ _ ⟩
+  (x ⇨ ¬ y) ∧ ¬ ¬ x ∧ ¬ ¬ y     ≈⟨ ∧-cong Eq.refl (∧-comm _ _) ⟩
+  (x ⇨ ¬ y) ∧ ¬ ¬ y ∧ ¬ ¬ x     ≈⟨ Eq.sym $ ∧-assoc _ _ _ ⟩
   ((x ⇨ ¬ y) ∧ ¬ ¬ y) ∧ ¬ ¬ x   ≤⟨ ⇨-applyʳ $ transpose-⇨ $
     begin
-      ((x ⇨ ¬ y) ∧ ¬ ¬ y) ∧ x   ≈⟨ ∧-cong (∧-comm _ _) ≈-refl ⟩
+      ((x ⇨ ¬ y) ∧ ¬ ¬ y) ∧ x   ≈⟨ ∧-cong (∧-comm _ _) Eq.refl ⟩
       ((¬ ¬ y) ∧ (x ⇨ ¬ y)) ∧ x ≈⟨ ∧-assoc _ _ _ ⟩
       (¬ ¬ y) ∧ (x ⇨ ¬ y) ∧ x   ≤⟨ ∧-monotonic refl ⇨-eval ⟩
       ¬ ¬ y ∧ ¬ y               ≤⟨ ⇨-eval ⟩
       ⊥                         ∎ ⟩
   ⊥                             ∎
+  where open POR poset
 
 de-morgan₂-≥ : ∀ x y → ¬ ¬ (¬ x ∨ ¬ y) ≤ ¬ (x ∧ y)
 de-morgan₂-≥ x y = transpose-⇨ $ ⇨-applyˡ $ transpose-⇨ $ begin
@@ -181,14 +181,16 @@ de-morgan₂-≥ x y = transpose-⇨ $ ⇨-applyˡ $ transpose-⇨ $ begin
                                                (⇨-applyʳ (x∧y≤y _ _)) ⟩
   ⊥ ∨ ⊥                         ≈⟨ ∨-idempotent _ ⟩
   ⊥                             ∎
+  where open POR poset
 
 de-morgan₂ : ∀ x y → ¬ (x ∧ y) ≈ ¬ ¬ (¬ x ∨ ¬ y)
 de-morgan₂ x y = antisym (de-morgan₂-≤ x y) (de-morgan₂-≥ x y)
 
 weak-lem : ∀ {x} → ¬ ¬ (¬ x ∨ x) ≈ ⊤
-weak-lem {x} = begin⟨ setoid ⟩
-  ¬ ¬ (¬ x ∨ x)   ≈≈⟨ ⇨-cong (de-morgan₁ _ _) ≈-refl ⟩
-  ¬ (¬ ¬ x ∧ ¬ x) ≈≈⟨ ⇨-cong ⇨-app ≈-refl ⟩
-  ⊥ ∧ (x ⇨ ⊥) ⇨ ⊥ ≈≈⟨ ⇨-cong (⊥-∧-zeroˡ _) ≈-refl ⟩
-  ⊥ ⇨ ⊥           ≈≈⟨ ⇨-unit ⟩
-  ⊤               ▯
+weak-lem {x} = begin
+  ¬ ¬ (¬ x ∨ x)   ≈⟨ ⇨-cong (de-morgan₁ _ _) Eq.refl ⟩
+  ¬ (¬ ¬ x ∧ ¬ x) ≈⟨ ⇨-cong ⇨-app Eq.refl ⟩
+  ⊥ ∧ (x ⇨ ⊥) ⇨ ⊥ ≈⟨ ⇨-cong (∧-zeroˡ _) Eq.refl ⟩
+  ⊥ ⇨ ⊥           ≈⟨ ⇨-unit ⟩
+  ⊤               ∎
+  where open EqReasoning setoid

@@ -11,29 +11,28 @@ module Relation.Binary.Properties.BoundedLattice
 
 open BoundedLattice L
 
-open import Relation.Binary
 open import Algebra.FunctionProperties _≈_
+open import Data.Product using (_,_)
+open import Relation.Binary using (Setoid)
 open import Relation.Binary.Properties.MeetSemilattice meetSemilattice
 open import Relation.Binary.Properties.JoinSemilattice joinSemilattice
 
-open import Data.Product
-
 open Setoid setoid renaming (trans to ≈-trans)
 
-⊥-∧-zeroʳ : RightZero ⊥ _∧_
-⊥-∧-zeroʳ x = y≤x⇒x∧y≈y (minimum _)
+∧-zeroʳ : RightZero ⊥ _∧_
+∧-zeroʳ x = y≤x⇒x∧y≈y (minimum x)
 
-⊥-∧-zeroˡ : LeftZero ⊥ _∧_
-⊥-∧-zeroˡ x = ≈-trans (∧-comm _ _) (⊥-∧-zeroʳ _)
+∧-zeroˡ : LeftZero ⊥ _∧_
+∧-zeroˡ x = ≈-trans (∧-comm ⊥ x) (∧-zeroʳ x)
 
-⊥-∧-zero : Zero ⊥ _∧_
-⊥-∧-zero = ⊥-∧-zeroˡ , ⊥-∧-zeroʳ
+∧-zero : Zero ⊥ _∧_
+∧-zero = ∧-zeroˡ , ∧-zeroʳ
 
-⊤-∨-zeroʳ : RightZero ⊤ _∨_
-⊤-∨-zeroʳ x = x≤y⇒x∨y≈y (maximum _)
+∨-zeroʳ : RightZero ⊤ _∨_
+∨-zeroʳ x = x≤y⇒x∨y≈y (maximum x)
 
-⊤-∨-zeroˡ : LeftZero ⊤ _∨_
-⊤-∨-zeroˡ x = ≈-trans (∨-comm _ _) (⊤-∨-zeroʳ _)
+∨-zeroˡ : LeftZero ⊤ _∨_
+∨-zeroˡ x = ≈-trans (∨-comm ⊤ x) (∨-zeroʳ x)
 
-⊤-∨-zero : Zero ⊤ _∨_
-⊤-∨-zero = ⊤-∨-zeroˡ , ⊤-∨-zeroʳ
+∨-zero : Zero ⊤ _∨_
+∨-zero = ∨-zeroˡ , ∨-zeroʳ

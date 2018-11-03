@@ -226,6 +226,9 @@ record Lattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
   open IsLattice isLattice public
 
+  setoid : Setoid c ℓ₁
+  setoid = record { isEquivalence = isEquivalence }
+
   joinSemilattice : JoinSemilattice c ℓ₁ ℓ₂
   joinSemilattice = record { isJoinSemilattice = isJoinSemilattice }
 
@@ -233,10 +236,6 @@ record Lattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   meetSemilattice = record { isMeetSemilattice = isMeetSemilattice }
 
   open JoinSemilattice joinSemilattice public using (poset; preorder)
-
-  setoid : Setoid c ℓ₁
-  setoid = record { isEquivalence = isEquivalence }
-
 
 record IsDistributiveLattice {a ℓ₁ ℓ₂} {A : Set a}
                              (_≈_ : Rel A ℓ₁) -- The underlying equality.

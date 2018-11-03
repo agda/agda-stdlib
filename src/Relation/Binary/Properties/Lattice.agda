@@ -12,19 +12,16 @@ module Relation.Binary.Properties.Lattice
 open Lattice L
 
 import Algebra as Alg
-import Algebra.Structures as AlgS
-import Algebra.FunctionProperties as P; open P _≈_
+import Algebra.Structures as Alg
+open import Algebra.FunctionProperties _≈_
 open import Data.Product using (_,_)
 open import Function using (flip)
 open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
 import Relation.Binary.Properties.JoinSemilattice joinSemilattice as J
 import Relation.Binary.Properties.MeetSemilattice meetSemilattice as M
-open Setoid setoid hiding (_≈_; isEquivalence; reflexive) renaming (refl to ≈-refl)
-
-open import Relation.Binary.SetoidReasoning
-open import Relation.Binary.PartialOrderReasoning poset
-  hiding (_≈⟨_⟩_) renaming (_∎ to _▯)
+import Relation.Binary.EqReasoning as EqReasoning
+import Relation.Binary.PartialOrderReasoning as POR
 
 ∨-absorbs-∧ : _∨_ Absorbs _∧_
 ∨-absorbs-∧ x y =
@@ -43,36 +40,41 @@ absorptive = ∨-absorbs-∧ , ∧-absorbs-∨
 
 ∧≤∨ : ∀ {x y} → x ∧ y ≤ x ∨ y
 ∧≤∨ {x} {y} = begin
-  x ∧ y ≤⟨ x∧y≤x _ _ ⟩
-  x     ≤⟨ x≤x∨y _ _ ⟩
-  x ∨ y ▯
+  x ∧ y ≤⟨ x∧y≤x x y ⟩
+  x     ≤⟨ x≤x∨y x y ⟩
+  x ∨ y ∎
+  where open POR poset
 
 -- two quadrilateral arguments
 
 quadrilateral₁ : ∀ {x y} → x ∨ y ≈ x → x ∧ y ≈ y
-quadrilateral₁ {x} {y} x∨y≈x = begin⟨ setoid ⟩
-  x ∧ y       ≈⟨ M.∧-cong (sym x∨y≈x) ≈-refl ⟩
+quadrilateral₁ {x} {y} x∨y≈x = begin
+  x ∧ y       ≈⟨ M.∧-cong (Eq.sym x∨y≈x) Eq.refl ⟩
   (x ∨ y) ∧ y ≈⟨ M.∧-comm _ _ ⟩
-  y ∧ (x ∨ y) ≈⟨ M.∧-cong ≈-refl (J.∨-comm _ _) ⟩
+  y ∧ (x ∨ y) ≈⟨ M.∧-cong Eq.refl (J.∨-comm _ _) ⟩
   y ∧ (y ∨ x) ≈⟨ ∧-absorbs-∨ _ _ ⟩
   y           ∎
+  where open EqReasoning setoid
 
 quadrilateral₂ : ∀ {x y} → x ∧ y ≈ y → x ∨ y ≈ x
-quadrilateral₂ {x} {y} x∧y≈y = begin⟨ setoid ⟩
-  x ∨ y       ≈⟨ J.∨-cong ≈-refl (sym x∧y≈y) ⟩
+quadrilateral₂ {x} {y} x∧y≈y = begin
+  x ∨ y       ≈⟨ J.∨-cong Eq.refl (Eq.sym x∧y≈y) ⟩
   x ∨ (x ∧ y) ≈⟨ ∨-absorbs-∧ _ _ ⟩
   x           ∎
+  where open EqReasoning setoid
 
 -- collapsing sublattice
 
 collapse₁ : ∀ {x y} → x ≈ y → x ∧ y ≈ x ∨ y
-collapse₁ {x} {y} x≈y = begin⟨ setoid ⟩
+collapse₁ {x} {y} x≈y = begin
   x ∧ y ≈⟨ M.y≤x⇒x∧y≈y y≤x ⟩
-  y     ≈⟨ sym x≈y ⟩
-  x     ≈⟨ sym (J.x≤y⇒x∨y≈y y≤x) ⟩
+  y     ≈⟨ Eq.sym x≈y ⟩
+  x     ≈⟨ Eq.sym (J.x≤y⇒x∨y≈y y≤x) ⟩
   y ∨ x ≈⟨ J.∨-comm _ _ ⟩
   x ∨ y ∎
-  where y≤x = reflexive (sym x≈y)
+  where
+  y≤x = reflexive (Eq.sym x≈y)
+  open EqReasoning setoid
 
 -- this can also be proved by quadrilateral argument, but it's much less symmetric.
 collapse₂ : ∀ {x y} → x ∨ y ≤ x ∧ y → x ≈ y
@@ -80,12 +82,14 @@ collapse₂ {x} {y} ∨≤∧ = antisym
   (begin x     ≤⟨ x≤x∨y _ _ ⟩
          x ∨ y ≤⟨ ∨≤∧ ⟩
          x ∧ y ≤⟨ x∧y≤y _ _ ⟩
-         y     ▯)
+         y     ∎)
   (begin y     ≤⟨ y≤x∨y _ _ ⟩
          x ∨ y ≤⟨ ∨≤∧ ⟩
          x ∧ y ≤⟨ x∧y≤x _ _ ⟩
-         x     ▯)
+         x     ∎)
+  where open POR poset
 
+------------------------------------------------------------------------
 -- The dual construction is also a lattice.
 
 ∧-∨-isLattice : IsLattice _≈_ (flip _≤_) _∧_ _∨_
@@ -102,9 +106,10 @@ collapse₂ {x} {y} ∨≤∧ = antisym
   ; isLattice = ∧-∨-isLattice
   }
 
+------------------------------------------------------------------------
 -- Every order-theoretic lattice can be turned into an algebraic one.
 
-isAlgLattice : AlgS.IsLattice _≈_ _∨_ _∧_
+isAlgLattice : Alg.IsLattice _≈_ _∨_ _∧_
 isAlgLattice = record
   { isEquivalence = isEquivalence
   ; ∨-comm        = J.∨-comm

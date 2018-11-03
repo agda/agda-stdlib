@@ -50,7 +50,6 @@ Other major changes
 
 * Added new module `Data.Vec.Any.Properties`
 
-
 Deprecated features
 -------------------
 
@@ -187,8 +186,50 @@ Other minor additions
   toAny   : x ∈ xs → P x → Any P xs
   ```
 
-* Added new types, records and proofs to `Relation.Binary.Lattice`:
+* Added new proofs to `Relation.Binary.Lattice`:
   ```agda
-  Lattice.setoid        : Setoid c ℓ₁
-  BoundedLattice.setoid : Setoid c ℓ₁
+  Lattice.setoid        : Setoid c ℓ
+  BoundedLattice.setoid : Setoid c ℓ
+  ```
+
+* Added new operations and proofs to `Relation.Binary.Properties.HeytingAlgebra`:
+  ```agda
+  y≤x⇨y            : y ≤ x ⇨ y
+  ⇨-unit           : x ⇨ x ≈ ⊤
+  ⇨-drop           : (x ⇨ y) ∧ y ≈ y
+  ⇨-app            : (x ⇨ y) ∧ x ≈ y ∧ x
+  ⇨-relax          : _⇨_ Preserves₂ (flip _≤_) ⟶ _≤_ ⟶ _≤_
+  ⇨-cong           : _⇨_ Preserves₂ _≈_ ⟶ _≈_ ⟶ _≈_
+  ⇨-applyˡ         : w ≤ x → (x ⇨ y) ∧ w ≤ y
+  ⇨-applyʳ         : w ≤ x → w ∧ (x ⇨ y) ≤ y
+  ⇨-curry          : x ∧ y ⇨ z ≈ x ⇨ y ⇨ z
+  ⇨ʳ-covariant     : (x ⇨_) Preserves _≤_ ⟶ _≤_
+  ⇨ˡ-contravariant : (_⇨ x) Preserves (flip _≤_) ⟶ _≤_
+
+  ¬_           : Op₁ Carrier
+  x≤¬¬x        : x ≤ ¬ ¬ x
+  de-morgan₁   : ¬ (x ∨ y) ≈ ¬ x ∧ ¬ y
+  de-morgan₂-≤ : ¬ (x ∧ y) ≤ ¬ ¬ (¬ x ∨ ¬ y)
+  de-morgan₂-≥ : ¬ ¬ (¬ x ∨ ¬ y) ≤ ¬ (x ∧ y)
+  de-morgan₂   : ¬ (x ∧ y) ≈ ¬ ¬ (¬ x ∨ ¬ y)
+  weak-lem     : ¬ ¬ (¬ x ∨ x) ≈ ⊤
+  ```
+
+* Added new proofs to `Relation.Binary.Properties.JoinLattice`:
+  ```agda
+  x≤y⇒x∨y≈y : x ≤ y → x ∨ y ≈ y
+  ```
+
+* Added new proofs to `Relation.Binary.Properties.Lattice`:
+  ```agda
+  ∧≤∨            : x ∧ y ≤ x ∨ y
+  quadrilateral₁ : x ∨ y ≈ x → x ∧ y ≈ y
+  quadrilateral₂ : x ∧ y ≈ y → x ∨ y ≈ x
+  collapse₁      : x ≈ y → x ∧ y ≈ x ∨ y
+  collapse₂      : x ∨ y ≤ x ∧ y → x ≈ y
+  ```
+
+* Added new proofs to `Relation.Binary.Properties.MeetLattice`:
+  ```agda
+  y≤x⇒x∧y≈y : y ≤ x → x ∧ y ≈ y
   ```
