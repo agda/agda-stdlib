@@ -60,6 +60,9 @@ module _ {ℓ} {A : Set ℓ} where
  concat : ∀ {i} → Stream (List⁺ A) i → Stream A i
  concat (xs ∷ xss) = xs ⁺++ λ where .force → concat (xss .force)
 
+ interleave : ∀ {i} → Stream A i → Thunk (Stream A) i → Stream A i
+ interleave (x ∷ xs) ys = x ∷ λ where .force → interleave (ys .force) xs
+
 module _ {ℓ ℓ′} {A : Set ℓ} {B : Set ℓ′} where
 
  map : ∀ {i} → (A → B) → Stream A i → Stream B i

@@ -54,8 +54,9 @@ Other minor additions
 
 * Added new functions to `Codata.Stream`:
   ```agda
-  splitAt : (n : ℕ) → Stream A ∞ → Vec A n × Stream A ∞
-  drop    : ℕ → Stream A ∞ → Stream A ∞
+  splitAt    : (n : ℕ) → Stream A ∞ → Vec A n × Stream A ∞
+  drop       : ℕ → Stream A ∞ → Stream A ∞
+  interleave : Stream A i → Thunk (Stream A) i → Stream A i
   ```
 
 * Added new proof to `Codata.Stream.Properties`:
