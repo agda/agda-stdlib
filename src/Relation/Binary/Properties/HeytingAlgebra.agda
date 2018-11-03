@@ -12,17 +12,20 @@ module Relation.Binary.Properties.HeytingAlgebra
 open import Data.Product using (_,_)
 open import Level using (_⊔_)
 open import Relation.Binary
-open import Function using (_$_)
+open import Function using (_$_; flip; _∘_)
 
 open HeytingAlgebra L
 open import Algebra.FunctionProperties _≈_
 open import Relation.Binary.PartialOrderReasoning poset
 open import Relation.Binary.Properties.MeetSemilattice meetSemilattice
 open import Relation.Binary.Properties.JoinSemilattice joinSemilattice
+import Relation.Binary.Properties.BoundedMeetSemilattice boundedMeetSemilattice as BM
 open import Relation.Binary.Properties.Lattice lattice
-
+open import Relation.Binary.Properties.BoundedLattice boundedLattice
+open import Relation.Binary.SetoidReasoning
+  renaming (_∎ to _▯; _≈⟨_⟩_ to _≈≈⟨_⟩_)
 open IsEquivalence isEquivalence using ()
-  renaming (sym to ≈-sym; refl to ≈-refl)
+  renaming (sym to ≈-sym; refl to ≈-refl; trans to ≈-trans)
 
 ------------------------------------------------------------------------
 -- Useful lemmas
@@ -32,6 +35,48 @@ open IsEquivalence isEquivalence using ()
 
 swap-transpose-⇨ : ∀ {x y w} → x ∧ w ≤ y → w ≤ x ⇨ y
 swap-transpose-⇨ x∧w≤y = transpose-⇨ $ trans (reflexive $ ∧-comm _ _) x∧w≤y
+
+------------------------------------------------------------------------
+-- Properties of exponential
+
+⇨-unit : ∀ {x} → x ⇨ x ≈ ⊤
+⇨-unit = antisym (maximum _) (transpose-⇨ $ reflexive $ BM.identityˡ _)
+
+y≤x⇨y : ∀ {x y} → y ≤ x ⇨ y
+y≤x⇨y = transpose-⇨ (x∧y≤x _ _)
+
+⇨-drop : ∀ {x y} → (x ⇨ y) ∧ y ≈ y
+⇨-drop = antisym (x∧y≤y _ _) (∧-greatest y≤x⇨y refl)
+
+⇨-app : ∀ {x y} → (x ⇨ y) ∧ x ≈ y ∧ x
+⇨-app = antisym (∧-greatest ⇨-eval (x∧y≤y _ _)) (∧-monotonic y≤x⇨y refl)
+
+⇨ʳ-covariant : ∀ {x} → (x ⇨_) Preserves _≤_ ⟶ _≤_
+⇨ʳ-covariant {x} {y} {z} y≤z = transpose-⇨ (trans ⇨-eval y≤z)
+
+⇨ˡ-contravariant : ∀ {x} → (_⇨ x) Preserves (flip _≤_) ⟶ _≤_
+⇨ˡ-contravariant {x} {y} {z} z≤y = transpose-⇨ (trans (∧-monotonic refl z≤y) ⇨-eval)
+
+⇨-relax : _⇨_ Preserves₂ (flip _≤_) ⟶ _≤_ ⟶ _≤_
+⇨-relax {x} {y} {u} {v} y≤x u≤v = begin
+  x ⇨ u ≤⟨ ⇨ʳ-covariant u≤v ⟩
+  x ⇨ v ≤⟨ ⇨ˡ-contravariant y≤x ⟩
+  y ⇨ v ∎
+
+⇨-cong : _⇨_ Preserves₂ _≈_ ⟶ _≈_ ⟶ _≈_
+⇨-cong x≈y u≈v = antisym (⇨-relax (reflexive $ ≈-sym x≈y) (reflexive u≈v))
+                         (⇨-relax (reflexive x≈y) (reflexive $ ≈-sym u≈v))
+
+⇨-applyˡ : ∀ {w x y} → w ≤ x → (x ⇨ y) ∧ w ≤ y
+⇨-applyˡ = transpose-∧ ∘ ⇨ˡ-contravariant
+
+⇨-applyʳ : ∀ {w x y} → w ≤ x → w ∧ (x ⇨ y) ≤ y
+⇨-applyʳ w≤x = trans (reflexive (∧-comm _ _)) (⇨-applyˡ w≤x)
+
+⇨-curry : ∀ {x y z} → x ∧ y ⇨ z ≈ x ⇨ y ⇨ z
+⇨-curry = antisym (transpose-⇨ $ transpose-⇨ $ trans (reflexive $ ∧-assoc _ _ _) ⇨-eval)
+                  (transpose-⇨ $ trans (reflexive $ ≈-sym $ ∧-assoc _ _ _)
+                                       (transpose-∧ $ ⇨-applyˡ refl))
 
 ------------------------------------------------------------------------
 -- Various proofs of distributivity
@@ -97,3 +142,53 @@ distributiveLattice : DistributiveLattice _ _ _
 distributiveLattice = record
   { isDistributiveLattice = isDistributiveLattice
   }
+
+------------------------------------------------------------------------
+-- Heyting algebras can define pseudo-complement
+
+infix 8 ¬_
+
+¬_ : Op₁ Carrier
+¬ x = x ⇨ ⊥
+
+x≤¬¬x : ∀ x → x ≤ ¬ ¬ x
+x≤¬¬x x = transpose-⇨ (trans (reflexive (∧-comm _ _)) ⇨-eval)
+
+------------------------------------------------------------------------
+-- De-Morgan laws
+
+de-morgan₁ : ∀ x y → ¬ (x ∨ y) ≈ ¬ x ∧ ¬ y
+de-morgan₁ x y = ⇨-distribˡ-∨-∧ _ _ _
+
+de-morgan₂-≤ : ∀ x y → ¬ (x ∧ y) ≤ ¬ ¬ (¬ x ∨ ¬ y)
+de-morgan₂-≤ x y = transpose-⇨ $ begin
+  ¬ (x ∧ y) ∧ ¬ (¬ x ∨ ¬ y)     ≈⟨ ∧-cong ⇨-curry (de-morgan₁ _ _) ⟩
+  (x ⇨ ¬ y) ∧ ¬ ¬ x ∧ ¬ ¬ y     ≈⟨ ∧-cong ≈-refl (∧-comm _ _) ⟩
+  (x ⇨ ¬ y) ∧ ¬ ¬ y ∧ ¬ ¬ x     ≈⟨ ≈-sym $ ∧-assoc _ _ _ ⟩
+  ((x ⇨ ¬ y) ∧ ¬ ¬ y) ∧ ¬ ¬ x   ≤⟨ ⇨-applyʳ $ transpose-⇨ $
+    begin
+      ((x ⇨ ¬ y) ∧ ¬ ¬ y) ∧ x   ≈⟨ ∧-cong (∧-comm _ _) ≈-refl ⟩
+      ((¬ ¬ y) ∧ (x ⇨ ¬ y)) ∧ x ≈⟨ ∧-assoc _ _ _ ⟩
+      (¬ ¬ y) ∧ (x ⇨ ¬ y) ∧ x   ≤⟨ ∧-monotonic refl ⇨-eval ⟩
+      ¬ ¬ y ∧ ¬ y               ≤⟨ ⇨-eval ⟩
+      ⊥                         ∎ ⟩
+  ⊥                             ∎
+
+de-morgan₂-≥ : ∀ x y → ¬ ¬ (¬ x ∨ ¬ y) ≤ ¬ (x ∧ y)
+de-morgan₂-≥ x y = transpose-⇨ $ ⇨-applyˡ $ transpose-⇨ $ begin
+  (x ∧ y) ∧ (¬ x ∨ ¬ y)         ≈⟨ ∧-distribˡ-∨ _ _ _ ⟩
+  (x ∧ y) ∧ ¬ x ∨ (x ∧ y) ∧ ¬ y ≤⟨ ∨-monotonic (⇨-applyʳ (x∧y≤x _ _))
+                                               (⇨-applyʳ (x∧y≤y _ _)) ⟩
+  ⊥ ∨ ⊥                         ≈⟨ ∨-idempotent _ ⟩
+  ⊥                             ∎
+
+de-morgan₂ : ∀ x y → ¬ (x ∧ y) ≈ ¬ ¬ (¬ x ∨ ¬ y)
+de-morgan₂ x y = antisym (de-morgan₂-≤ x y) (de-morgan₂-≥ x y)
+
+weak-lem : ∀ {x} → ¬ ¬ (¬ x ∨ x) ≈ ⊤
+weak-lem {x} = begin⟨ setoid ⟩
+  ¬ ¬ (¬ x ∨ x)   ≈≈⟨ ⇨-cong (de-morgan₁ _ _) ≈-refl ⟩
+  ¬ (¬ ¬ x ∧ ¬ x) ≈≈⟨ ⇨-cong ⇨-app ≈-refl ⟩
+  ⊥ ∧ (x ⇨ ⊥) ⇨ ⊥ ≈≈⟨ ⇨-cong (⊥-∧-zeroˡ _) ≈-refl ⟩
+  ⊥ ⇨ ⊥           ≈≈⟨ ⇨-unit ⟩
+  ⊤               ▯

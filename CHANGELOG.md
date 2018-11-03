@@ -46,7 +46,10 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 Other major changes
 -------------------
 
+* Added new module `Relation.Binary.Properties.BoundedLattice`
+
 * Added new module `Data.Vec.Any.Properties`
+
 
 Deprecated features
 -------------------
@@ -182,4 +185,10 @@ Other minor additions
   ```agda
   fromAny : Any P xs → ∃ λ x → x ∈ xs × P x
   toAny   : x ∈ xs → P x → Any P xs
+  ```
+
+* Added new types, records and proofs to `Relation.Binary.Lattice`:
+  ```agda
+  Lattice.setoid        : Setoid c ℓ₁
+  BoundedLattice.setoid : Setoid c ℓ₁
   ```
