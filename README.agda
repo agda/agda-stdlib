@@ -15,7 +15,7 @@ module README where
 -- contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.5.4.
+-- This version of the library has been tested using Agda 2.5.4.1.
 
 -- Note that no guarantees are currently made about forwards or
 -- backwards compatibility, the library is still at an experimental
@@ -54,8 +54,6 @@ module README where
 --     approaches taken. The `Codata` folder contains the new more
 --     standard approach using sized types. The `Codata.Musical`
 --     folder contains modules using the old musical notation.
--- • Coinduction
---     Support for coinduction.
 -- • Data
 --     Data types and properties.
 -- • Function
@@ -151,7 +149,8 @@ import Induction.Nat
 
 -- • Support for coinduction
 
-import Coinduction
+import Codata.Musical.Notation
+import Codata.Thunk
 
 -- • IO
 

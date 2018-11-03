@@ -4,9 +4,9 @@
 -- Reflexive closures
 --
 -- This module is DEPRECATED. Please use the
--- Relation.Binary.Closure.Reflexive module directly.
+-- Relation.Binary.Construct.Closure.Reflexive module directly.
 ------------------------------------------------------------------------
 
 module Data.ReflexiveClosure where
 
-open import Relation.Binary.Closure.Reflexive public
+open import Relation.Binary.Construct.Closure.Reflexive public

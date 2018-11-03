@@ -8,7 +8,7 @@ module Codata.Cofin where
 
 open import Size
 open import Codata.Thunk
-open import Codata.Conat as Conat hiding (fromℕ; fromMusical; toMusical)
+open import Codata.Conat as Conat using (Conat; zero; suc; infinity; _ℕ<_; sℕ≤s; _ℕ≤infinity)
 open import Codata.Conat.Bisimilarity as Bisim using (_⊢_≲_ ; s≲s)
 open import Data.Nat
 open import Data.Fin as Fin hiding (fromℕ; fromℕ≤; toℕ)
@@ -53,7 +53,7 @@ toFin zero    ()
 toFin (suc n) zero    = zero
 toFin (suc n) (suc i) = suc (toFin n i)
 
-open import Coinduction using (♭; ♯_)
+open import Codata.Musical.Notation using (♭; ♯_)
 import Codata.Musical.Cofin as M
 
 fromMusical : ∀ {n} → M.Cofin n → Cofin (Conat.fromMusical n)

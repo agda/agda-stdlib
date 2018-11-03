@@ -14,12 +14,15 @@ open import Data.Product
 open import Relation.Nullary using (yes ; no)
 open import Relation.Unary using (Pred)
 open import Relation.Binary
-import Relation.Binary.Indexed as I
+open import Relation.Binary.Indexed.Heterogeneous
+  using (IndexedSetoid)
+import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
+  as Trivial
 open import Relation.Binary.HeterogeneousEquality.Core as H using (_≅_)
 
--- Some of the definitions can be found in the following modules:
+------------------------------------------------------------------------
+-- Re-export contents of core module
 
-open import Relation.Binary.Core public using (_≡_; refl; _≢_)
 open import Relation.Binary.PropositionalEquality.Core public
 
 ------------------------------------------------------------------------
@@ -48,7 +51,7 @@ setoid A = record
   ; isEquivalence = isEquivalence
   }
 
-decSetoid : ∀ {a} {A : Set a} → Decidable (_≡_ {A = A}) → DecSetoid _ _
+decSetoid : ∀ {a} {A : Set a} → Decidable {A = A} _≡_ → DecSetoid _ _
 decSetoid dec = record
   { _≈_              = _≡_
   ; isDecEquivalence = record
@@ -78,19 +81,19 @@ preorder A = record
 infix 4 _≗_
 
 _→-setoid_ : ∀ {a b} (A : Set a) (B : Set b) → Setoid _ _
-A →-setoid B = ≡-setoid A (Setoid.indexedSetoid (setoid B))
+A →-setoid B = ≡-setoid A (Trivial.indexedSetoid (setoid B))
 
 _≗_ : ∀ {a b} {A : Set a} {B : Set b} (f g : A → B) → Set _
 _≗_ {A = A} {B} = Setoid._≈_ (A →-setoid B)
 
-:→-to-Π : ∀ {a b₁ b₂} {A : Set a} {B : I.Setoid _ b₁ b₂} →
-          ((x : A) → I.Setoid.Carrier B x) → Π (setoid A) B
+:→-to-Π : ∀ {a b₁ b₂} {A : Set a} {B : IndexedSetoid _ b₁ b₂} →
+          ((x : A) → IndexedSetoid.Carrier B x) → Π (setoid A) B
 :→-to-Π {B = B} f = record { _⟨$⟩_ = f; cong = cong′ }
   where
-  open I.Setoid B using (_≈_)
+  open IndexedSetoid B using (_≈_)
 
   cong′ : ∀ {x y} → x ≡ y → f x ≈ f y
-  cong′ refl = I.Setoid.refl B
+  cong′ refl = IndexedSetoid.refl B
 
 →-to-⟶ : ∀ {a b₁ b₂} {A : Set a} {B : Setoid b₁ b₂} →
          (A → Setoid.Carrier B) → setoid A ⟶ B

@@ -17,6 +17,11 @@ This is very much a work-in-progress and is not exhaustive.
 
 * `where` blocks should be indented two spaces in and their contents should be aligned with the `where`.
 
+## Implicit and explicit arguments
+
+* Functions arguments should be implicit if they can "almost always" be inferred. If there are common
+  cases where they cannot be inferred then they should be left explicit.
+
 ## Naming conventions
 
 * Names should be descriptive - i.e. given the name of a proof and the module it lives in
@@ -50,6 +55,7 @@ This is very much a work-in-progress and is not exhaustive.
 
 * If the relevant unicode characters are available, negated forms of relations should be used over
   the `¬` symbol (e.g. `m+n≮n` should be used instead of `¬m+n<n`).
+
 
 ## Other miscellaneous points
 

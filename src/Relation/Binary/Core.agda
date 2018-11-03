@@ -167,12 +167,3 @@ record IsEquivalence {a ℓ} {A : Set a}
   reflexive : _≡_ ⇒ _≈_
   reflexive ≡-refl = refl
 
-------------------------------------------------------------------------
--- Propositional equality
-
-open import Agda.Builtin.Equality public
-
-infix 4 _≢_
-_≢_ : ∀ {a} {A : Set a} → A → A → Set a
-x ≢ y = ¬ x ≡ y
-

@@ -9,12 +9,12 @@ module Data.Integer.Properties where
 open import Algebra
 import Algebra.Morphism as Morphism
 import Algebra.Properties.AbelianGroup
-open import Data.Integer renaming (suc to sucℤ)
-open import Data.Nat
-  using (ℕ; suc; zero; _∸_; s≤s; z≤n; ≤-pred)
+open import Data.Integer.Base renaming (suc to sucℤ)
+open import Data.Nat as ℕ
+  using (ℕ; suc; zero; _∸_; s≤s; z≤n)
   hiding (module ℕ)
   renaming (_+_ to _ℕ+_; _*_ to _ℕ*_;
-    _<_ to _ℕ<_; _≥_ to _ℕ≥_; _≰_ to _ℕ≰_; _≤?_ to _ℕ≤?_)
+    _≤_ to _ℕ≤_; _<_ to _ℕ<_; _≥_ to _ℕ≥_; _≰_ to _ℕ≰_; _≟_ to _ℕ≟_; _≤?_ to _ℕ≤?_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
 open import Data.Product using (proj₁; proj₂; _,_)
@@ -27,6 +27,7 @@ open import Relation.Binary.PropositionalEquality
 import Relation.Binary.PartialOrderReasoning as POR
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
+import Relation.Nullary.Decidable as Dec
 
 open import Algebra.FunctionProperties (_≡_ {A = ℤ})
 open import Algebra.FunctionProperties.Consequences (setoid ℤ)
@@ -43,6 +44,13 @@ open +-*-Solver
 
 -[1+-injective : ∀ {m n} → -[1+ m ] ≡ -[1+ n ] → m ≡ n
 -[1+-injective refl = refl
+
+infix 4 _≟_
+_≟_ : Decidable {A = ℤ} _≡_
++ m      ≟ + n      = Dec.map′ (cong (+_)) +-injective (m ℕ≟ n)
++ m      ≟ -[1+ n ] = no λ()
+-[1+ m ] ≟ + n      = no λ()
+-[1+ m ] ≟ -[1+ n ] = Dec.map′ (cong -[1+_]) -[1+-injective (m ℕ≟ n)
 
 ≡-decSetoid : DecSetoid _ _
 ≡-decSetoid = decSetoid _≟_
@@ -76,6 +84,18 @@ neg-injective {m} {n} -m≡-n = begin
 
 ------------------------------------------------------------------------
 -- Properties of sign and _◃_
+
+◃-inverse : ∀ i → sign i ◃ ∣ i ∣ ≡ i
+◃-inverse -[1+ n ]  = refl
+◃-inverse (+ zero)  = refl
+◃-inverse (+ suc n) = refl
+
+◃-cong : ∀ {i j} → sign i ≡ sign j → ∣ i ∣ ≡ ∣ j ∣ → i ≡ j
+◃-cong {i} {j} sign-≡ abs-≡ = begin
+  i               ≡⟨ sym $ ◃-inverse i ⟩
+  sign i ◃ ∣ i ∣  ≡⟨ cong₂ _◃_ sign-≡ abs-≡ ⟩
+  sign j ◃ ∣ j ∣  ≡⟨ ◃-inverse j ⟩
+  j               ∎
 
 +◃n≡+n : ∀ n → Sign.+ ◃ n ≡ + n
 +◃n≡+n zero    = refl
@@ -651,7 +671,7 @@ pos-distrib-* (suc x) (suc y) = refl
 
 *-cancelʳ-≤-pos : ∀ m n o → m * + suc o ≤ n * + suc o → m ≤ n
 *-cancelʳ-≤-pos (-[1+ m ]) (-[1+ n ]) o (-≤- n≤m) =
-  -≤- (≤-pred (ℕₚ.*-cancelʳ-≤ (suc n) (suc m) o (s≤s n≤m)))
+  -≤- (ℕₚ.≤-pred (ℕₚ.*-cancelʳ-≤ (suc n) (suc m) o (s≤s n≤m)))
 *-cancelʳ-≤-pos -[1+ _ ]   (+ _)      _ _         = -≤+
 *-cancelʳ-≤-pos (+ 0)      -[1+ _ ]   _ ()
 *-cancelʳ-≤-pos (+ suc _)  -[1+ _ ]   _ ()
@@ -665,7 +685,7 @@ pos-distrib-* (suc x) (suc y) = refl
 *-monoʳ-≤-pos _ (-≤+             {n = 0})         = -≤+
 *-monoʳ-≤-pos _ (-≤+             {n = suc _})     = -≤+
 *-monoʳ-≤-pos x (-≤-                         n≤m) =
-  -≤- (≤-pred (ℕₚ.*-mono-≤ (s≤s n≤m) (ℕₚ.≤-refl {x = suc x})))
+  -≤- (ℕₚ.≤-pred (ℕₚ.*-mono-≤ (s≤s n≤m) (ℕₚ.≤-refl {x = suc x})))
 *-monoʳ-≤-pos _ (+≤+ {m = 0}     {n = 0}     m≤n) = +≤+ m≤n
 *-monoʳ-≤-pos _ (+≤+ {m = 0}     {n = suc _} m≤n) = +≤+ z≤n
 *-monoʳ-≤-pos _ (+≤+ {m = suc _} {n = 0}     ())
@@ -679,6 +699,12 @@ pos-distrib-* (suc x) (suc y) = refl
 
 ------------------------------------------------------------------------
 -- Properties _≤_
+
+drop‿+≤+ : ∀ {m n} → + m ≤ + n → m ℕ≤ n
+drop‿+≤+ (+≤+ m≤n) = m≤n
+
+drop‿-≤- : ∀ {m n} → -[1+ m ] ≤ -[1+ n ] → n ℕ≤ m
+drop‿-≤- (-≤- n≤m) = n≤m
 
 ≤-reflexive : _≡_ ⇒ _≤_
 ≤-reflexive { -[1+ n ]} refl = -≤- ℕₚ.≤-refl
@@ -707,6 +733,13 @@ pos-distrib-* (suc x) (suc y) = refl
 ≤-total (+    m  ) (+    n  ) with ℕₚ.≤-total m n
 ... | inj₁ m≤n = inj₁ (+≤+ m≤n)
 ... | inj₂ n≤m = inj₂ (+≤+ n≤m)
+
+infix  4 _≤?_
+_≤?_ : Decidable _≤_
+-[1+ m ] ≤? -[1+ n ] = Dec.map′ -≤- drop‿-≤- (ℕ._≤?_ n m)
+-[1+ m ] ≤? +    n   = yes -≤+
++    m   ≤? -[1+ n ] = no λ ()
++    m   ≤? +    n   = Dec.map′ +≤+ drop‿+≤+ (ℕ._≤?_ m n)
 
 ≤-isPreorder : IsPreorder _≡_ _≤_
 ≤-isPreorder = record
@@ -813,11 +846,11 @@ n≤1+n n = ≤-step ≤-refl
 <-cmp -[1+ suc m ] -[1+ 0 ]     = tri< (-≤- z≤n) (λ()) (λ())
 <-cmp -[1+ suc m ] -[1+ suc n ] with ℕₚ.<-cmp (suc m) (suc n)
 ... | tri< m<n m≢n m≯n =
-  tri> (m≯n ∘ s≤s ∘ drop‿-≤-) (m≢n ∘ -[1+-injective) (-≤- (≤-pred m<n))
+  tri> (m≯n ∘ s≤s ∘ drop‿-≤-) (m≢n ∘ -[1+-injective) (-≤- (ℕₚ.≤-pred m<n))
 ... | tri≈ m≮n m≡n m≯n =
   tri≈ (m≯n ∘ s≤s ∘ drop‿-≤-) (cong -[1+_] m≡n) (m≮n ∘ s≤s ∘ drop‿-≤-)
 ... | tri> m≮n m≢n m>n =
-  tri< (-≤- (≤-pred m>n)) (m≢n ∘ -[1+-injective) (m≮n ∘ s≤s ∘ drop‿-≤-)
+  tri< (-≤- (ℕₚ.≤-pred m>n)) (m≢n ∘ -[1+-injective) (m≮n ∘ s≤s ∘ drop‿-≤-)
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
 <-isStrictTotalOrder = record
