@@ -48,6 +48,8 @@ Other major changes
 
 * Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
 
+* Added new modules `Data.List.Relation.Prefix.Heterogeneous(.Properties)`
+
 * Added new module `Data.Vec.Any.Properties`
 
 * Added new module `Relation.Binary.Properties.BoundedLattice`

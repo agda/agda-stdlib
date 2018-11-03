@@ -9,9 +9,18 @@ module Data.List.Relation.Prefix.Heterogeneous.Properties where
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Pointwise using (Pointwise; []; _∷_)
 open import Data.List.Relation.Prefix.Heterogeneous
+open import Data.Product using (_×_; _,_; uncurry)
+open import Function
+
+open import Relation.Nullary using (yes; no)
+import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Binary
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+
+  uncons : ∀ {a b as bs} → Prefix R (a ∷ as) (b ∷ bs) → R a b × Prefix R as bs
+  uncons (x ∷ xs) = x , xs
 
   refl : Pointwise R ⇒ Prefix R
   refl []       = []
@@ -45,3 +54,11 @@ module _ {a b c d r} {A : Set a} {B : Set b} {C : Set c} {D : Set d}
   map⁻ {[]}     {bs}     f g xs = []
   map⁻ {a ∷ as} {[]}     f g ()
   map⁻ {a ∷ as} {b ∷ bs} f g (x ∷ xs) = x ∷ map⁻ f g xs
+
+module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+
+  prefix? : Decidable R → Decidable (Prefix R)
+  prefix? R? []       bs       = yes []
+  prefix? R? (a ∷ as) []       = no (λ ())
+  prefix? R? (a ∷ as) (b ∷ bs) = Dec.map′ (uncurry _∷_) uncons
+                               $ R? a b ×-dec prefix? R? as bs
