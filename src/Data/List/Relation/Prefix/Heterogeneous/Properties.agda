@@ -49,8 +49,8 @@ module _ {a b r s e} {A : Set a} {B : Set b}
          {R : REL A B r} {S : REL B A s} {E : REL A B e} where
 
   antisym : Antisym R S E → Antisym (Prefix R) (Prefix S) (Pointwise E)
-  antisym rs⇒e []            []            = []
-  antisym rs⇒e (a∼b ∷ as∼bs) (b∼a ∷ bs∼as) = rs⇒e a∼b b∼a ∷ antisym rs⇒e as∼bs bs∼as
+  antisym rs⇒e []       []       = []
+  antisym rs⇒e (r ∷ rs) (s ∷ ss) = rs⇒e r s ∷ antisym rs⇒e rs ss
 
 ------------------------------------------------------------------------
 -- _++_
@@ -59,13 +59,13 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   ++⁺ : ∀ {as bs cs ds} → Pointwise R as bs →
         Prefix R cs ds → Prefix R (as ++ cs) (bs ++ ds)
-  ++⁺ []            cs⊆ds = cs⊆ds
-  ++⁺ (a∼b ∷ as∼bs) cs⊆ds = a∼b ∷ (++⁺ as∼bs cs⊆ds)
+  ++⁺ []       cs⊆ds = cs⊆ds
+  ++⁺ (r ∷ rs) cs⊆ds = r ∷ (++⁺ rs cs⊆ds)
 
   ++⁻ : ∀ {as bs cs ds} → Pointwise R as bs →
         Prefix R (as ++ cs) (bs ++ ds) → Prefix R cs ds
-  ++⁻ []            cs⊆ds         = cs⊆ds
-  ++⁻ (a∼b ∷ as∼bs) (_ ∷ acs⊆bds) = ++⁻ as∼bs acs⊆bds
+  ++⁻ []       cs⊆ds         = cs⊆ds
+  ++⁻ (r ∷ rs) (_ ∷ acs⊆bds) = ++⁻ rs acs⊆bds
 
 ------------------------------------------------------------------------
 -- map
