@@ -226,6 +226,9 @@ record Lattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
   open IsLattice isLattice public
 
+  setoid : Setoid c ℓ₁
+  setoid = record { isEquivalence = isEquivalence }
+
   joinSemilattice : JoinSemilattice c ℓ₁ ℓ₂
   joinSemilattice = record { isJoinSemilattice = isJoinSemilattice }
 
@@ -321,7 +324,7 @@ record BoundedLattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wher
   lattice = record { isLattice = isLattice }
 
   open Lattice lattice public
-    using (joinSemilattice; meetSemilattice; poset; preorder)
+    using (joinSemilattice; meetSemilattice; poset; preorder; setoid)
 
 ------------------------------------------------------------------------
 -- Heyting algebras (a bounded lattice with exponential operator)
@@ -384,6 +387,7 @@ record IsBooleanAlgebra {a ℓ₁ ℓ₂} {A : Set a}
                         (⊤   : A)        -- The maximum.
                         (⊥   : A)        -- The minimum.
                         : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  infixr 5 _⇨_
   _⇨_ : Op₂ A
   x ⇨ y = (¬ x) ∨ y
 

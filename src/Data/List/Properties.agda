@@ -19,7 +19,7 @@ open import Data.List.Any using (Any; here; there)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat
 open import Data.Nat.Properties
-open import Data.Fin using (Fin; zero; suc)
+open import Data.Fin using (Fin; zero; suc; cast)
 open import Data.Product as Prod hiding (map; zip)
 open import Data.These as These using (These; this; that; these)
 open import Function
@@ -398,27 +398,27 @@ id-is-foldr = foldr-universal id _∷_ [] refl (λ _ _ → refl)
   ∎
   where open P.≡-Reasoning
 
-foldr-++ : ∀ {a b} {A : Set a} {B : Set b} (f : A → B → B) x ys zs →
-           foldr f x (ys ++ zs) ≡ foldr f (foldr f x zs) ys
-foldr-++ f x []       zs = refl
-foldr-++ f x (y ∷ ys) zs = P.cong (f y) (foldr-++ f x ys zs)
+module _ {a b} {A : Set a} {B : Set b} where
 
-map-is-foldr : ∀ {a b} {A : Set a} {B : Set b} {f : A → B} →
-            map f ≗ foldr (λ x ys → f x ∷ ys) []
-map-is-foldr {f = f} =
-  begin
-    map f
-  ≈⟨ P.cong (map f) ∘ id-is-foldr ⟩
-    map f ∘ foldr _∷_ []
-  ≈⟨ foldr-fusion (map f) [] (λ _ _ → refl) ⟩
-    foldr (λ x ys → f x ∷ ys) []
-  ∎
-  where open EqR (P._→-setoid_ _ _)
+  foldr-++ : ∀ (f : A → B → B) x ys zs →
+             foldr f x (ys ++ zs) ≡ foldr f (foldr f x zs) ys
+  foldr-++ f x []       zs = refl
+  foldr-++ f x (y ∷ ys) zs = P.cong (f y) (foldr-++ f x ys zs)
 
-foldr-∷ʳ : ∀ {a b} {A : Set a} {B : Set b} (f : A → B → B) x y ys →
-           foldr f x (ys ∷ʳ y) ≡ foldr f (f y x) ys
-foldr-∷ʳ f x y []       = refl
-foldr-∷ʳ f x y (z ∷ ys) = P.cong (f z) (foldr-∷ʳ f x y ys)
+  map-is-foldr : {f : A → B} → map f ≗ foldr (λ x ys → f x ∷ ys) []
+  map-is-foldr {f = f} =
+    begin
+      map f
+    ≈⟨ P.cong (map f) ∘ id-is-foldr ⟩
+      map f ∘ foldr _∷_ []
+    ≈⟨ foldr-fusion (map f) [] (λ _ _ → refl) ⟩
+      foldr (λ x ys → f x ∷ ys) []
+    ∎  where open EqR (P._→-setoid_ _ _)
+
+  foldr-∷ʳ : ∀ (f : A → B → B) x y ys →
+             foldr f x (ys ∷ʳ y) ≡ foldr f (f y x) ys
+  foldr-∷ʳ f x y []       = refl
+  foldr-∷ʳ f x y (z ∷ ys) = P.cong (f z) (foldr-∷ʳ f x y ys)
 
 ------------------------------------------------------------------------
 -- foldl
@@ -520,6 +520,49 @@ module _ {a} {A : Set a} where
   tabulate-lookup : ∀ (xs : List A) → tabulate (lookup xs) ≡ xs
   tabulate-lookup []       = refl
   tabulate-lookup (x ∷ xs) = P.cong (_ ∷_) (tabulate-lookup xs)
+
+------------------------------------------------------------------------
+-- _[_]%=_
+
+module _ {a} {A : Set a} where
+
+  length-%= : ∀ xs k (f : A → A) → length (xs [ k ]%= f) ≡ length xs
+  length-%= []       ()      f
+  length-%= (x ∷ xs) zero    f = refl
+  length-%= (x ∷ xs) (suc k) f = P.cong suc (length-%= xs k f)
+
+------------------------------------------------------------------------
+-- _[_]∷=_
+
+module _ {a} {A : Set a} where
+
+  length-∷= : ∀ xs k (v : A) → length (xs [ k ]∷= v) ≡ length xs
+  length-∷= xs k v = length-%= xs k (const v)
+
+  map-∷= : ∀ {b} {B : Set b} xs k (v : A) (f : A → B) →
+           let eq = P.sym (length-map f xs) in
+           map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
+  map-∷= []       ()      v f
+  map-∷= (x ∷ xs) zero    v f = refl
+  map-∷= (x ∷ xs) (suc k) v f = P.cong (f x ∷_) (map-∷= xs k v f)
+
+------------------------------------------------------------------------
+-- _─_
+
+module _ {a} {A : Set a} where
+
+  length-─ : ∀ (xs : List A) k → length (xs ─ k) ≡ pred (length xs)
+  length-─ []       ()
+  length-─ (x ∷ xs) zero        = refl
+  length-─ (x ∷ []) (suc ())
+  length-─ (x ∷ y ∷ xs) (suc k) = P.cong suc (length-─ (y ∷ xs) k)
+
+  map-─ : ∀ {b} {B : Set b} xs k (f : A → B) →
+          let eq = P.sym (length-map f xs) in
+          map f (xs ─ k) ≡ map f xs ─ cast eq k
+  map-─ []       ()      f
+  map-─ (x ∷ xs) zero    f = refl
+  map-─ (x ∷ xs) (suc k) f = P.cong (f x ∷_) (map-─ xs k f)
 
 ------------------------------------------------------------------------
 -- take
@@ -660,7 +703,7 @@ module _ {a} {A : Set a} where
     reverse ys ++ reverse (x ∷ xs)       ∎
     where open P.≡-Reasoning
 
-  reverse-involutive : Involutive _≡_ (reverse {A = A})
+  reverse-involutive : Involutive {A = List A} _≡_ reverse
   reverse-involutive [] = refl
   reverse-involutive (x ∷ xs) = begin
     reverse (reverse (x ∷ xs))   ≡⟨ P.cong reverse $ unfold-reverse x xs ⟩
