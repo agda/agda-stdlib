@@ -70,10 +70,12 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   ++⁺ []       cs⊆ds = cs⊆ds
   ++⁺ (r ∷ rs) cs⊆ds = r ∷ (++⁺ rs cs⊆ds)
 
-  ++⁻ : ∀ {as bs cs ds} → Pointwise R as bs →
+  ++⁻ : ∀ {as bs cs ds} → length as ≡ length bs →
         Prefix R (as ++ cs) (bs ++ ds) → Prefix R cs ds
-  ++⁻ []       cs⊆ds         = cs⊆ds
-  ++⁻ (r ∷ rs) (_ ∷ acs⊆bds) = ++⁻ rs acs⊆bds
+  ++⁻ {[]}    {[]}    eq rs       = rs
+  ++⁻ {_ ∷ _} {_ ∷ _} eq (_ ∷ rs) = ++⁻ (suc-injective eq) rs
+  ++⁻ {[]} {_ ∷ _} ()
+  ++⁻ {_ ∷ _} {[]} ()
 
 ------------------------------------------------------------------------
 -- map
