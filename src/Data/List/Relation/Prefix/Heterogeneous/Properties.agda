@@ -10,11 +10,12 @@ open import Data.Empty
 open import Data.List.All as All using (All; []; _∷_)
 import Data.List.All.Properties as All
 open import Data.List.Base as List hiding (map; uncons)
+open import Data.List.Membership.Propositional.Properties using ([]∈inits)
 open import Data.List.Relation.Pointwise using (Pointwise; []; _∷_)
 open import Data.List.Relation.Prefix.Heterogeneous as Prefix
 open import Data.Nat.Base using (ℕ; zero; suc; _≤_; z≤n; s≤s)
 open import Data.Nat.Properties using (suc-injective)
-open import Data.Product using (proj₁; proj₂; uncurry)
+open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Function
 
 open import Relation.Nullary using (yes; no; ¬_)
@@ -167,6 +168,39 @@ module _ {a r} {A : Set a} {R : Rel A r} where
   inits⁺ : ∀ {as} → Pointwise R as as → All (flip (Prefix R) as) (inits as)
   inits⁺ []       = [] ∷ []
   inits⁺ (r ∷ rs) = [] ∷ All.map⁺ (All.map (r ∷_) (inits⁺ rs))
+
+  inits⁻ : ∀ {as} → All (flip (Prefix R) as) (inits as) → Pointwise R as as
+  inits⁻ {as = []}     rs       = []
+  inits⁻ {as = a ∷ as} (r ∷ rs) =
+    let (hd , tls) = All.unzip (All.map uncons (All.map⁻ rs)) in
+    All.lookup hd ([]∈inits as) ∷ inits⁻ tls
+
+------------------------------------------------------------------------
+-- zip(With)
+
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
+         {d e f} {D : Set d} {E : Set e} {F : Set f}
+         {r s t} {R : REL A D r} {S : REL B E s} {T : REL C F t} where
+
+  zipWith⁺ : ∀ {as bs ds es} {f : A → B → C} {g : D → E → F} →
+    (∀ {a b c d} → R a c → S b d → T (f a b) (g c d)) →
+    Prefix R as ds → Prefix S bs es →
+    Prefix T (zipWith f as bs) (zipWith g ds es)
+  zipWith⁺ f []       ss       = []
+  zipWith⁺ f (r ∷ rs) []       = []
+  zipWith⁺ f (r ∷ rs) (s ∷ ss) = f r s ∷ zipWith⁺ f rs ss
+
+module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d}
+         {r s} {R : REL A C r} {S : REL B D s} where
+
+  private
+    R×S : REL (A × B) (C × D) _
+    R×S (a , b) (c , d) = R a c × S b d
+
+  zip⁺ : ∀ {as bs cs ds} → Prefix R as cs → Prefix S bs ds →
+         Prefix R×S (zip as bs) (zip cs ds)
+  zip⁺ = zipWith⁺ _,_
+
 
 ------------------------------------------------------------------------
 -- Decidability

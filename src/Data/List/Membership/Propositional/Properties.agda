@@ -250,6 +250,13 @@ module _ {a} {A : Set a} {_•_ : Op₂ A} where
 ∈-allFin = ∈-tabulate⁺
 
 ------------------------------------------------------------------------
+-- inits
+
+[]∈inits : ∀ {a} {A : Set a} (as : List A) → [] ∈ inits as
+[]∈inits []       = here refl
+[]∈inits (a ∷ as) = here refl
+
+------------------------------------------------------------------------
 -- Other properties
 
 -- Only a finite number of distinct elements can be members of a

@@ -102,9 +102,10 @@ Other minor additions
   respects : P Respects _≈_ → (All P) Respects _≋_
   ```
 
-* Added new proof to `Data.List.Membership.Propositional.Properties`:
+* Added new proofs to `Data.List.Membership.Propositional.Properties`:
   ```agda
   ∈-allFin : (k : Fin n) → k ∈ allFin n
+  []∈inits : [] ∈ inits as
   ```
 
 * Added new function to `Data.List.Membership.(Setoid/Propositional)`:
