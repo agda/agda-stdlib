@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Star.Nat</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Natural numbers defined using the reflexive-transitive closure, Star</a>
+<a id="178" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="252" class="Keyword">module</a> <a id="259" href="Data.Star.Nat.html" class="Module">Data.Star.Nat</a> <a id="273" class="Keyword">where</a>
+
+<a id="280" class="Keyword">open</a> <a id="285" class="Keyword">import</a> <a id="292" href="Data.Unit.html" class="Module">Data.Unit</a>
+<a id="302" class="Keyword">open</a> <a id="307" class="Keyword">import</a> <a id="314" href="Function.html" class="Module">Function</a>
+<a id="323" class="Keyword">open</a> <a id="328" class="Keyword">import</a> <a id="335" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="351" class="Keyword">open</a> <a id="356" class="Keyword">import</a> <a id="363" href="Relation.Binary.Closure.ReflexiveTransitive.html" class="Module">Relation.Binary.Closure.ReflexiveTransitive</a>
+<a id="407" class="Keyword">open</a> <a id="412" class="Keyword">import</a> <a id="419" href="Relation.Binary.Simple.html" class="Module">Relation.Binary.Simple</a>
+
+<a id="443" class="Comment">-- Natural numbers.</a>
+
+<a id="ℕ"></a><a id="464" href="Data.Star.Nat.html#464" class="Function">ℕ</a> <a id="466" class="Symbol">:</a> <a id="468" class="PrimitiveType">Set</a>
+<a id="472" href="Data.Star.Nat.html#464" class="Function">ℕ</a> <a id="474" class="Symbol">=</a> <a id="476" href="Relation.Binary.Closure.ReflexiveTransitive.html#439" class="Datatype">Star</a> <a id="481" href="Relation.Binary.Simple.html#483" class="Function">Always</a> <a id="488" href="Agda.Builtin.Unit.html#106" class="InductiveConstructor">tt</a> <a id="491" href="Agda.Builtin.Unit.html#106" class="InductiveConstructor">tt</a>
+
+<a id="495" class="Comment">-- Zero and successor.</a>
+
+<a id="zero"></a><a id="519" href="Data.Star.Nat.html#519" class="Function">zero</a> <a id="524" class="Symbol">:</a> <a id="526" href="Data.Star.Nat.html#464" class="Function">ℕ</a>
+<a id="528" href="Data.Star.Nat.html#519" class="Function">zero</a> <a id="533" class="Symbol">=</a> <a id="535" href="Relation.Binary.Closure.ReflexiveTransitive.html#500" class="InductiveConstructor">ε</a>
+
+<a id="suc"></a><a id="538" href="Data.Star.Nat.html#538" class="Function">suc</a> <a id="542" class="Symbol">:</a> <a id="544" href="Data.Star.Nat.html#464" class="Function">ℕ</a> <a id="546" class="Symbol">→</a> <a id="548" href="Data.Star.Nat.html#464" class="Function">ℕ</a>
+<a id="550" href="Data.Star.Nat.html#538" class="Function">suc</a> <a id="554" class="Symbol">=</a> <a id="556" href="Relation.Binary.Closure.ReflexiveTransitive.html#527" class="InductiveConstructor Operator">_◅_</a> <a id="560" class="Symbol">_</a>
+
+<a id="563" class="Comment">-- The length of a star-list.</a>
+
+<a id="length"></a><a id="594" href="Data.Star.Nat.html#594" class="Function">length</a> <a id="601" class="Symbol">:</a> <a id="603" class="Symbol">∀</a> <a id="605" class="Symbol">{</a><a id="606" href="Data.Star.Nat.html#606" class="Bound">i</a> <a id="608" href="Data.Star.Nat.html#608" class="Bound">t</a><a id="609" class="Symbol">}</a> <a id="611" class="Symbol">{</a><a id="612" href="Data.Star.Nat.html#612" class="Bound">I</a> <a id="614" class="Symbol">:</a> <a id="616" class="PrimitiveType">Set</a> <a id="620" href="Data.Star.Nat.html#606" class="Bound">i</a><a id="621" class="Symbol">}</a> <a id="623" class="Symbol">{</a><a id="624" href="Data.Star.Nat.html#624" class="Bound">T</a> <a id="626" class="Symbol">:</a> <a id="628" href="Relation.Binary.Core.html#825" class="Function">Rel</a> <a id="632" href="Data.Star.Nat.html#612" class="Bound">I</a> <a id="634" href="Data.Star.Nat.html#608" class="Bound">t</a><a id="635" class="Symbol">}</a> <a id="637" class="Symbol">{</a><a id="638" href="Data.Star.Nat.html#638" class="Bound">i</a> <a id="640" href="Data.Star.Nat.html#640" class="Bound">j</a><a id="641" class="Symbol">}</a> <a id="643" class="Symbol">→</a> <a id="645" href="Relation.Binary.Closure.ReflexiveTransitive.html#439" class="Datatype">Star</a> <a id="650" href="Data.Star.Nat.html#624" class="Bound">T</a> <a id="652" href="Data.Star.Nat.html#638" class="Bound">i</a> <a id="654" href="Data.Star.Nat.html#640" class="Bound">j</a> <a id="656" class="Symbol">→</a> <a id="658" href="Data.Star.Nat.html#464" class="Function">ℕ</a>
+<a id="660" href="Data.Star.Nat.html#594" class="Function">length</a> <a id="667" class="Symbol">=</a> <a id="669" href="Relation.Binary.Closure.ReflexiveTransitive.html#1479" class="Function">gmap</a> <a id="674" class="Symbol">(</a><a id="675" href="Function.html#1099" class="Function">const</a> <a id="681" class="Symbol">_)</a> <a id="684" class="Symbol">(</a><a id="685" href="Function.html#1099" class="Function">const</a> <a id="691" class="Symbol">_)</a>
+
+<a id="695" class="Comment">-- Arithmetic.</a>
+
+<a id="711" class="Keyword">infixl</a> <a id="718" class="Number">7</a> <a id="720" href="Data.Star.Nat.html#770" class="Function Operator">_*_</a>
+<a id="724" class="Keyword">infixl</a> <a id="731" class="Number">6</a> <a id="733" href="Data.Star.Nat.html#742" class="Function Operator">_+_</a> <a id="737" href="Data.Star.Nat.html#805" class="Function Operator">_∸_</a>
+
+<a id="_+_"></a><a id="742" href="Data.Star.Nat.html#742" class="Function Operator">_+_</a> <a id="746" class="Symbol">:</a> <a id="748" href="Data.Star.Nat.html#464" class="Function">ℕ</a> <a id="750" class="Symbol">→</a> <a id="752" href="Data.Star.Nat.html#464" class="Function">ℕ</a> <a id="754" class="Symbol">→</a> <a id="756" href="Data.Star.Nat.html#464" class="Function">ℕ</a>
+<a id="758" href="Data.Star.Nat.html#742" class="Function Operator">_+_</a> <a id="762" class="Symbol">=</a> <a id="764" href="Relation.Binary.Closure.ReflexiveTransitive.html#787" class="Function Operator">_◅◅_</a>
+
+<a id="_*_"></a><a id="770" href="Data.Star.Nat.html#770" class="Function Operator">_*_</a> <a id="774" class="Symbol">:</a> <a id="776" href="Data.Star.Nat.html#464" class="Function">ℕ</a> <a id="778" class="Symbol">→</a> <a id="780" href="Data.Star.Nat.html#464" class="Function">ℕ</a> <a id="782" class="Symbol">→</a> <a id="784" href="Data.Star.Nat.html#464" class="Function">ℕ</a>
+<a id="786" href="Data.Star.Nat.html#770" class="Function Operator">_*_</a> <a id="790" href="Data.Star.Nat.html#790" class="Bound">m</a> <a id="792" class="Symbol">=</a> <a id="794" href="Function.html#1099" class="Function">const</a> <a id="800" href="Data.Star.Nat.html#790" class="Bound">m</a> <a id="802" href="Relation.Binary.Closure.ReflexiveTransitive.html#3637" class="Function Operator">⋆</a>
+
+<a id="_∸_"></a><a id="805" href="Data.Star.Nat.html#805" class="Function Operator">_∸_</a> <a id="809" class="Symbol">:</a> <a id="811" href="Data.Star.Nat.html#464" class="Function">ℕ</a> <a id="813" class="Symbol">→</a> <a id="815" href="Data.Star.Nat.html#464" class="Function">ℕ</a> <a id="817" class="Symbol">→</a> <a id="819" href="Data.Star.Nat.html#464" class="Function">ℕ</a>
+<a id="821" href="Data.Star.Nat.html#821" class="Bound">m</a>       <a id="829" href="Data.Star.Nat.html#805" class="Function Operator">∸</a> <a id="831" href="Relation.Binary.Closure.ReflexiveTransitive.html#500" class="InductiveConstructor">ε</a>       <a id="839" class="Symbol">=</a> <a id="841" href="Data.Star.Nat.html#821" class="Bound">m</a>
+<a id="843" href="Relation.Binary.Closure.ReflexiveTransitive.html#500" class="InductiveConstructor">ε</a>       <a id="851" href="Data.Star.Nat.html#805" class="Function Operator">∸</a> <a id="853" class="Symbol">(_</a> <a id="856" href="Relation.Binary.Closure.ReflexiveTransitive.html#527" class="InductiveConstructor Operator">◅</a> <a id="858" href="Data.Star.Nat.html#858" class="Bound">n</a><a id="859" class="Symbol">)</a> <a id="861" class="Symbol">=</a> <a id="863" href="Data.Star.Nat.html#519" class="Function">zero</a>
+<a id="868" class="Symbol">(_</a> <a id="871" href="Relation.Binary.Closure.ReflexiveTransitive.html#527" class="InductiveConstructor Operator">◅</a> <a id="873" href="Data.Star.Nat.html#873" class="Bound">m</a><a id="874" class="Symbol">)</a> <a id="876" href="Data.Star.Nat.html#805" class="Function Operator">∸</a> <a id="878" class="Symbol">(_</a> <a id="881" href="Relation.Binary.Closure.ReflexiveTransitive.html#527" class="InductiveConstructor Operator">◅</a> <a id="883" href="Data.Star.Nat.html#883" class="Bound">n</a><a id="884" class="Symbol">)</a> <a id="886" class="Symbol">=</a> <a id="888" href="Data.Star.Nat.html#873" class="Bound">m</a> <a id="890" href="Data.Star.Nat.html#805" class="Function Operator">∸</a> <a id="892" href="Data.Star.Nat.html#883" class="Bound">n</a>
+
+<a id="895" class="Comment">-- Some constants.</a>
+
+<a id="0#"></a><a id="915" href="Data.Star.Nat.html#915" class="Function">0#</a> <a id="918" class="Symbol">=</a> <a id="920" href="Data.Star.Nat.html#519" class="Function">zero</a>
+<a id="1#"></a><a id="925" href="Data.Star.Nat.html#925" class="Function">1#</a> <a id="928" class="Symbol">=</a> <a id="930" href="Data.Star.Nat.html#538" class="Function">suc</a> <a id="934" href="Data.Star.Nat.html#915" class="Function">0#</a>
+<a id="2#"></a><a id="937" href="Data.Star.Nat.html#937" class="Function">2#</a> <a id="940" class="Symbol">=</a> <a id="942" href="Data.Star.Nat.html#538" class="Function">suc</a> <a id="946" href="Data.Star.Nat.html#925" class="Function">1#</a>
+<a id="3#"></a><a id="949" href="Data.Star.Nat.html#949" class="Function">3#</a> <a id="952" class="Symbol">=</a> <a id="954" href="Data.Star.Nat.html#538" class="Function">suc</a> <a id="958" href="Data.Star.Nat.html#937" class="Function">2#</a>
+<a id="4#"></a><a id="961" href="Data.Star.Nat.html#961" class="Function">4#</a> <a id="964" class="Symbol">=</a> <a id="966" href="Data.Star.Nat.html#538" class="Function">suc</a> <a id="970" href="Data.Star.Nat.html#949" class="Function">3#</a>
+<a id="5#"></a><a id="973" href="Data.Star.Nat.html#973" class="Function">5#</a> <a id="976" class="Symbol">=</a> <a id="978" href="Data.Star.Nat.html#538" class="Function">suc</a> <a id="982" href="Data.Star.Nat.html#961" class="Function">4#</a>
+</pre></body></html>
