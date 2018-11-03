@@ -6,15 +6,16 @@
 
 module Data.List.Base where
 
-open import Data.Nat.Base using (ℕ; zero; suc; _+_; _*_)
-open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_)
+open import Data.Fin using (Fin; zero; suc)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
-open import Data.Bool.Base
+open import Data.Bool.Base as Bool
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
-open import Data.Maybe.Base using (Maybe; nothing; just)
+open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
 open import Data.Product as Prod using (_×_; _,_)
 open import Data.These as These using (These; this; that; these)
-open import Function using (id; _∘_ ; _∘′_)
+open import Function using (id; _∘_ ; _∘′_; const)
+
 open import Relation.Nullary using (yes; no)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Unary.Properties using (∁?)
@@ -57,7 +58,7 @@ module _ {a} {A : Set a} where
   intercalate xs (ys ∷ yss) = ys ++ xs ++ intercalate xs yss
 
 ------------------------------------------------------------------------
--- Aligning and Zipping
+-- Aligning and zipping
 
 module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
@@ -142,7 +143,7 @@ product : List ℕ → ℕ
 product = foldr _*_ 1
 
 length : ∀ {a} {A : Set a} → List A → ℕ
-length = foldr (λ _ → suc) 0
+length = foldr (const suc) 0
 
 ------------------------------------------------------------------------
 -- Operations for constructing lists
@@ -180,24 +181,26 @@ scanl : ∀ {a b} {A : Set a} {B : Set b} →
 scanl f e []       = e ∷ []
 scanl f e (x ∷ xs) = e ∷ scanl f (f e x) xs
 
+module _ {a} {A : Set a} where
+
 -- Tabulation
 
-applyUpTo : ∀ {a} {A : Set a} → (ℕ → A) → ℕ → List A
-applyUpTo f zero    = []
-applyUpTo f (suc n) = f zero ∷ applyUpTo (f ∘ suc) n
+  applyUpTo : (ℕ → A) → ℕ → List A
+  applyUpTo f zero    = []
+  applyUpTo f (suc n) = f zero ∷ applyUpTo (f ∘ suc) n
 
-applyDownFrom : ∀ {a} {A : Set a} → (ℕ → A) → ℕ → List A
-applyDownFrom f zero = []
-applyDownFrom f (suc n) = f n ∷ applyDownFrom f n
+  applyDownFrom : (ℕ → A) → ℕ → List A
+  applyDownFrom f zero = []
+  applyDownFrom f (suc n) = f n ∷ applyDownFrom f n
 
-tabulate : ∀ {a n} {A : Set a} (f : Fin n → A) → List A
-tabulate {_} {zero}  f = []
-tabulate {_} {suc n} f = f fzero ∷ tabulate (f ∘ fsuc)
+  tabulate : ∀ {n} (f : Fin n → A) → List A
+  tabulate {zero}  f = []
+  tabulate {suc n} f = f Fin.zero ∷ tabulate (f ∘ Fin.suc)
 
-lookup : ∀ {a} {A : Set a} (xs : List A) → Fin (length xs) → A
-lookup [] ()
-lookup (x ∷ xs) fzero = x
-lookup (x ∷ xs) (fsuc i) = lookup xs i
+  lookup : ∀ (xs : List A) → Fin (length xs) → A
+  lookup [] ()
+  lookup (x ∷ xs) Fin.zero    = x
+  lookup (x ∷ xs) (Fin.suc i) = lookup xs i
 
 -- Numerical
 
@@ -295,6 +298,26 @@ span P? (x ∷ xs) with P? x
 break : ∀ {a p} {A : Set a} {P : Pred A p} →
         Decidable P → List A → (List A × List A)
 break P? = span (∁? P?)
+
+------------------------------------------------------------------------
+-- Actions on single elements
+
+module _ {a} {A : Set a} where
+
+  infixl 5 _[_]%=_ _[_]∷=_ _─_
+
+  _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
+  []       [ ()    ]%= f
+  (x ∷ xs) [ zero  ]%= f = f x ∷ xs
+  (x ∷ xs) [ suc k ]%= f = x ∷ (xs [ k ]%= f)
+
+  _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
+  xs [ k ]∷= v = xs [ k ]%= const v
+
+  _─_ : (xs : List A) → Fin (length xs) → List A
+  []       ─ ()
+  (x ∷ xs) ─ zero  = xs
+  (x ∷ xs) ─ suc k = x ∷ (xs ─ k)
 
 ------------------------------------------------------------------------
 -- Operations for reversing lists
