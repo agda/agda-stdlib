@@ -10,7 +10,7 @@ open import Data.Unit
 open import Function
 open import Level
 open import Relation.Binary
-open import Relation.Binary.Closure.ReflexiveTransitive
+open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 
 -- A predicate on relation "edges" (think of the relation as a graph).
 
