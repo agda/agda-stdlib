@@ -53,6 +53,8 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   Algebra.Solver.Ring.NaturalCoefficients
   ```
 
+* Added `_:×_` operator to `Algebra.Solver.Ring`.
+
 * Created a module `Algebra.Solver.Ring.NaturalCoefficients.Default` that
   instantiates the solver for any `CommutativeSemiring`.
 

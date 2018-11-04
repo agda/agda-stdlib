@@ -44,7 +44,7 @@ open import Function
 open import Level using (_⊔_)
 
 infix  9 :-_ -H_ -N_
-infixr 9 _:^_ _^N_
+infixr 9 _:×_ _:^_ _^N_
 infix  8 _*x+_ _*x+HN_ _*x+H_
 infixl 8 _:*_ _*N_ _*H_ _*NH_ _*HN_
 infixl 7 _:+_ _:-_ _+H_ _+N_
@@ -76,6 +76,10 @@ _:*_ = op [*]
 
 _:-_ : ∀ {n} → Polynomial n → Polynomial n → Polynomial n
 x :- y = x :+ :- y
+
+_:×_ : ∀ {n} → ℕ → Polynomial n → Polynomial n
+zero :× p = con C.0#
+suc m :× p = p :+ m :× p
 
 -- Semantics.
 
