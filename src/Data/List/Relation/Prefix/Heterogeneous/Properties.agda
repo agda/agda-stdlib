@@ -12,7 +12,7 @@ import Data.List.All.Properties as All
 open import Data.List.Base as List hiding (map; uncons)
 open import Data.List.Membership.Propositional.Properties using ([]∈inits)
 open import Data.List.Relation.Pointwise using (Pointwise; []; _∷_)
-open import Data.List.Relation.Prefix.Heterogeneous as Prefix
+open import Data.List.Relation.Prefix.Heterogeneous as Prefix hiding (PrefixView; _++_)
 open import Data.Nat.Base using (ℕ; zero; suc; _≤_; z≤n; s≤s)
 open import Data.Nat.Properties using (suc-injective)
 open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂; uncurry)
@@ -201,11 +201,18 @@ module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d}
          Prefix R×S (zip as bs) (zip cs ds)
   zip⁺ = zipWith⁺ _,_
 
+------------------------------------------------------------------------
+-- Irrelevant
+
+module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+
+  irrelevant : Irrelevant R → Irrelevant (Prefix R)
+  irrelevant R-irr []       []         = P.refl
+  irrelevant R-irr (r ∷ rs) (r′ ∷ rs′) =
+    P.cong₂ _∷_ (R-irr r r′) (irrelevant R-irr rs rs′)
 
 ------------------------------------------------------------------------
 -- Decidability
-
-module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   prefix? : Decidable R → Decidable (Prefix R)
   prefix? R? []       bs       = yes []
