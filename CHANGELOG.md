@@ -43,6 +43,12 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   Eq-isDecEquivalence ↦ isDecEquivalence
   ```
 
+#### Changes to the algebra hierarchy
+
+* Added `Magma` and `IsMagma` to the algebra hierarchy.
+
+* The name `RawSemigroup` in `Algebra` has been deprecated in favour of `RawMagma`.
+
 Other major changes
 -------------------
 

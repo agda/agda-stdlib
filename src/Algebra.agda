@@ -584,3 +584,18 @@ record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open DistributiveLattice distributiveLattice public
          using (setoid; lattice)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 0.18
+
+rawSemigroup = rawMagma
+{-# WARNING_ON_USAGE rawSemigroup
+"Warning: rawSemigroup was deprecated in v0.18.
+Please use rawMagma instead."
+#-}
