@@ -27,6 +27,14 @@ Thunk^R : ∀ {f g r} {F : Size → Set f} {G : Size → Set g}
 Thunk^R R i tf tg = Thunk (λ i → R i (tf .force) (tg .force)) i
 
 ------------------------------------------------------------------------
+-- Syntax
+
+Thunk-syntax : ∀ {ℓ} → (Size → Set ℓ) → Size → Set ℓ
+Thunk-syntax = Thunk
+
+syntax Thunk-syntax (λ i → e) j = Thunk[ i < j ] e
+
+------------------------------------------------------------------------
 -- Basic functions.
 
 -- Thunk is a functor
