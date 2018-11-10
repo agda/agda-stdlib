@@ -32,7 +32,7 @@ Thunk^R R i tf tg = Thunk (λ i → R i (tf .force) (tg .force)) i
 Thunk-syntax : ∀ {ℓ} → (Size → Set ℓ) → Size → Set ℓ
 Thunk-syntax = Thunk
 
-syntax Thunk-syntax (λ i → e) j = Thunk[ i < j ] e
+syntax Thunk-syntax (λ j → e) i = Thunk[ j < i ] e
 
 ------------------------------------------------------------------------
 -- Basic functions.
