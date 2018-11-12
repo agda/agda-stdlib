@@ -43,10 +43,27 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   Eq-isDecEquivalence ↦ isDecEquivalence
   ```
 
+#### Relaxation of ring solvers requirements
+
+* In the ring solvers below, the assumption that equality is `Decidable`
+  has been replaced by a strictly weaker assumption that it is `WeaklyDecidable`.
+  This allows the solvers to be used when equality is not fully decidable.
+  ```
+  Algebra.Solver.Ring
+  Algebra.Solver.Ring.NaturalCoefficients
+  ```
+
+* Created a module `Algebra.Solver.Ring.NaturalCoefficients.Default` that
+  instantiates the solver for any `CommutativeSemiring`.
+
 #### Other
 
 * The proof `sel⇒idem` has been moved from `Algebra.FunctionProperties.Consequences` to
   `Algebra.FunctionProperties.Consequences.Propositional` as it does not rely on equality.
+
+* Moved `_≟_` from `Data.Bool.Base` to `Data.Bool.Properties`. Backwards
+  compatibility has been (nearly completely) preserved by having `Data.Bool`
+  publicly re-export `_≟_`.
 
 Other major changes
 -------------------
@@ -64,6 +81,23 @@ Deprecated features
 
 Other minor additions
 ---------------------
+
+* Added new operator to `Algebra.Solver.Ring`.
+  ```agda
+  _:×_
+  ```
+
+* Added new functions to `Codata.Stream`:
+  ```agda
+  splitAt    : (n : ℕ) → Stream A ∞ → Vec A n × Stream A ∞
+  drop       : ℕ → Stream A ∞ → Stream A ∞
+  interleave : Stream A i → Thunk (Stream A) i → Stream A i
+  ```
+
+* Added new proof to `Codata.Stream.Properties`:
+  ```agda
+  splitAt-map : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
+  ```
 
 * Added new proof to `Algebra.FunctionProperties.Consequences`:
   ```agda
