@@ -60,6 +60,18 @@ Deprecated features
 Other minor additions
 ---------------------
 
+* Added new functions to `Codata.Stream`:
+  ```agda
+  splitAt    : (n : ℕ) → Stream A ∞ → Vec A n × Stream A ∞
+  drop       : ℕ → Stream A ∞ → Stream A ∞
+  interleave : Stream A i → Thunk (Stream A) i → Stream A i
+  ```
+
+* Added new proof to `Codata.Stream.Properties`:
+  ```agda
+  splitAt-map : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
+  ```
+
 * Added new proof to `Algebra.FunctionProperties.Consequences`:
   ```agda
   wlog : Commutative f → Total _R_ → (∀ a b → a R b → P (f a b)) → ∀ a b → P (f a b)
