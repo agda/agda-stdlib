@@ -63,6 +63,10 @@ module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
   map⁻ {as = _ ∷ _} {_ ∷ _} {[]}    f g h (l ˡ∷ sp) = l ˡ∷ map⁻ f g h sp
   map⁻ {as = _ ∷ _} {_ ∷ _} {_ ∷ _} f g h (l ˡ∷ sp) = l ˡ∷ map⁻ f g h sp
   map⁻ {as = _ ∷ _} {_ ∷ _} {_ ∷ _} f g h (r ʳ∷ sp) = r ʳ∷ map⁻ f g h sp
+  -- impossible cases needed until 2.6.0
+  map⁻ {as = []} {_} {_ ∷ _} f g h ()
+  map⁻ {as = []} {_ ∷ _} {_} f g h ()
+  map⁻ {as = _ ∷ _} {[]} {[]} f g h ()
 
 -- reverse
 
