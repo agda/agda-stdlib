@@ -43,14 +43,33 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   Eq-isDecEquivalence ↦ isDecEquivalence
   ```
 
+#### Relaxation of ring solvers requirements
+
+* In the ring solvers below, the assumption that equality is `Decidable`
+  has been replaced by a strictly weaker assumption that it is `WeaklyDecidable`.
+  This allows the solvers to be used when equality is not fully decidable.
+  ```
+  Algebra.Solver.Ring
+  Algebra.Solver.Ring.NaturalCoefficients
+  ```
+
+* Created a module `Algebra.Solver.Ring.NaturalCoefficients.Default` that
+  instantiates the solver for any `CommutativeSemiring`.
+
 #### Other
 
+* Moved `_≟_` from `Data.Bool.Base` to `Data.Bool.Properties`. Backwards
+  compatibility has been (nearly completely) preserved by having `Data.Bool`
+  publicly re-export `_≟_`.
+  
 * In `Data.List.Membership.Propositional.Properties`:
     - Made the `Set` argument implicit in `∈-++⁺ˡ`, `∈-++⁺ʳ`, `∈-++⁻`, `∈-insert`, `∈-∃++`.
     - Made the `A → B` argument explicit in `∈-map⁺`, `∈-map⁻`, `map-∈↔`.
 
 Other major changes
 -------------------
+
+* Added new module `Algebra.FunctionProperties.Consequences.Propositional`
 
 * Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
 
@@ -63,6 +82,28 @@ Deprecated features
 
 Other minor additions
 ---------------------
+
+* Added new operator to `Algebra.Solver.Ring`.
+  ```agda
+  _:×_
+  ```
+
+* Added new functions to `Codata.Stream`:
+  ```agda
+  splitAt    : (n : ℕ) → Stream A ∞ → Vec A n × Stream A ∞
+  drop       : ℕ → Stream A ∞ → Stream A ∞
+  interleave : Stream A i → Thunk (Stream A) i → Stream A i
+  ```
+
+* Added new proof to `Codata.Stream.Properties`:
+  ```agda
+  splitAt-map : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
+  ```
+
+* Added new proof to `Algebra.FunctionProperties.Consequences`:
+  ```agda
+  wlog : Commutative f → Total _R_ → (∀ a b → a R b → P (f a b)) → ∀ a b → P (f a b)
+  ```
 
 * Added new function to `Data.Fin.Base`:
   ```agda
@@ -192,6 +233,11 @@ Other minor additions
   ```agda
   fromAny : Any P xs → ∃ λ x → x ∈ xs × P x
   toAny   : x ∈ xs → P x → Any P xs
+  ```
+
+* Added new proofs to `Relation.Binary.Consequences`:
+  ```agda
+  wlog : Total _R_ → Symmetric Q → (∀ a b → a R b → Q a b) → ∀ a b → Q a b
   ```
 
 * Added new proofs to `Relation.Binary.Lattice`:
