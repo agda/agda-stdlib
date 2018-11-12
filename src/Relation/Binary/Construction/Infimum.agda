@@ -6,7 +6,7 @@
 
 module Relation.Binary.Construction.Infimum where
 
-open import Data.Maybe
-  renaming (Maybe to _₋; nothing to ⊥⁺; just to [_]; just-injective to [_]-injective)
+open import Data.Maybe.Base
+  renaming (Maybe to _₋; nothing to ⊥⁺; just to [_])
   using ()
   public

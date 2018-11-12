@@ -6,7 +6,7 @@
 
 module Relation.Binary.Construction.Pointed where
 
-open import Data.Maybe
-  renaming (Maybe to Pointed; nothing to ∙; just to [_]; just-injective to []-injective)
+open import Data.Maybe.Base
+  renaming (Maybe to Pointed; nothing to ∙; just to [_])
   using ()
   public
