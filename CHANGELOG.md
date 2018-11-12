@@ -67,6 +67,8 @@ Other major changes
 
 * Added new module `Algebra.FunctionProperties.Consequences.Propositional`
 
+* Added new module `Codata.Cowriter`
+
 * Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
 
 * Added new module `Data.Vec.Any.Properties`
@@ -84,11 +86,20 @@ Other minor additions
   _:×_
   ```
 
+* Added new functions to `Codata.Colist`:
+  ```agda
+  fromCowriter : Cowriter W A i → Colist W i
+  toCowriter   : Colist A i → Cowriter A ⊤ i
+  [_]          : A → Colist A ∞
+  chunksOf     : (n : ℕ) → Colist A ∞ → Cowriter (Vec A n) (BoundedVec A n) ∞
+  ```
+
 * Added new functions to `Codata.Stream`:
   ```agda
   splitAt    : (n : ℕ) → Stream A ∞ → Vec A n × Stream A ∞
   drop       : ℕ → Stream A ∞ → Stream A ∞
   interleave : Stream A i → Thunk (Stream A) i → Stream A i
+  chunksOf   : (n : ℕ) → Stream A ∞ → Stream (Vec A n) ∞
   ```
 
 * Added new proof to `Codata.Stream.Properties`:
