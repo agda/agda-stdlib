@@ -27,7 +27,7 @@ open import Algebra.FunctionProperties (_≡_ {A = ℕ})
   hiding (LeftCancellative; RightCancellative; Cancellative)
 open import Algebra.FunctionProperties
   using (LeftCancellative; RightCancellative; Cancellative)
-open import Algebra.FunctionProperties.Consequences (setoid ℕ)
+open import Algebra.FunctionProperties.Consequences.Propositional
 open import Algebra.Structures (_≡_ {A = ℕ})
 open ≡-Reasoning
 
@@ -598,7 +598,7 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
   suc n * m + o * m   ∎
 
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
-*-distribˡ-+ = comm+distrʳ⇒distrˡ (cong₂ _+_) *-comm *-distribʳ-+
+*-distribˡ-+ = comm+distrʳ⇒distrˡ *-comm *-distribʳ-+
 
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
@@ -863,7 +863,7 @@ i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
   n ⊓ 0 ⊔ o ⊓ 0  ∎
 
 ⊓-distribˡ-⊔ : _⊓_ DistributesOverˡ _⊔_
-⊓-distribˡ-⊔ = comm+distrʳ⇒distrˡ (cong₂ _⊔_) ⊓-comm ⊓-distribʳ-⊔
+⊓-distribˡ-⊔ = comm+distrʳ⇒distrˡ ⊓-comm ⊓-distribʳ-⊔
 
 ⊓-distrib-⊔ : _⊓_ DistributesOver _⊔_
 ⊓-distrib-⊔ = ⊓-distribˡ-⊔ , ⊓-distribʳ-⊔
@@ -1061,7 +1061,7 @@ m⊓n≤m+n m n with ⊓-sel m n
 +-distribˡ-⊔ (suc x) y z = cong suc (+-distribˡ-⊔ x y z)
 
 +-distribʳ-⊔ : _+_ DistributesOverʳ _⊔_
-+-distribʳ-⊔ = comm+distrˡ⇒distrʳ (cong₂ _⊔_) +-comm +-distribˡ-⊔
++-distribʳ-⊔ = comm+distrˡ⇒distrʳ +-comm +-distribˡ-⊔
 
 +-distrib-⊔ : _+_ DistributesOver _⊔_
 +-distrib-⊔ = +-distribˡ-⊔ , +-distribʳ-⊔
@@ -1071,7 +1071,7 @@ m⊓n≤m+n m n with ⊓-sel m n
 +-distribˡ-⊓ (suc x) y z = cong suc (+-distribˡ-⊓ x y z)
 
 +-distribʳ-⊓ : _+_ DistributesOverʳ _⊓_
-+-distribʳ-⊓ = comm+distrˡ⇒distrʳ (cong₂ _⊓_) +-comm +-distribˡ-⊓
++-distribʳ-⊓ = comm+distrˡ⇒distrʳ +-comm +-distribˡ-⊓
 
 +-distrib-⊓ : _+_ DistributesOver _⊓_
 +-distrib-⊓ = +-distribˡ-⊓ , +-distribʳ-⊓
@@ -1205,7 +1205,7 @@ m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin
   i + j * i ∸ (i + k * i) ∎
 
 *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
-*-distribˡ-∸ = comm+distrʳ⇒distrˡ (cong₂ _∸_) *-comm *-distribʳ-∸
+*-distribˡ-∸ = comm+distrʳ⇒distrˡ *-comm *-distribʳ-∸
 
 *-distrib-∸ : _*_ DistributesOver _∸_
 *-distrib-∸ = *-distribˡ-∸ , *-distribʳ-∸
@@ -1329,7 +1329,7 @@ private
 ... | inj₂ n≤m = *-distribˡ-∣-∣-aux a n m n≤m
 
 *-distribʳ-∣-∣ : _*_ DistributesOverʳ ∣_-_∣
-*-distribʳ-∣-∣ = comm+distrˡ⇒distrʳ (cong₂ ∣_-_∣) *-comm *-distribˡ-∣-∣
+*-distribʳ-∣-∣ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-∣-∣
 
 *-distrib-∣-∣ : _*_ DistributesOver ∣_-_∣
 *-distrib-∣-∣ = *-distribˡ-∣-∣ , *-distribʳ-∣-∣

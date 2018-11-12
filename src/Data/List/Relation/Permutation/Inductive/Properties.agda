@@ -151,7 +151,7 @@ module _ {a} {A : Set a} where
         _ ∷ (ws ++ _ ∷ _) <⟨ p ⟩
         _ ∷ _             ∎
     drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ y ∷ xs) refl refl = swap y z (drop-mid′ p _ _ refl refl)
-    drop-mid′ (trans p₁ p₂) ws  xs refl refl with ∈-∃++ _ (∈-resp-↭ p₁ (∈-insert A ws))
+    drop-mid′ (trans p₁ p₂) ws  xs refl refl with ∈-∃++ (∈-resp-↭ p₁ (∈-insert ws))
     ... | (h , t , refl) = trans (drop-mid′ p₁ ws h refl refl) (drop-mid′ p₂ h xs refl refl)
 
   -- Algebraic properties
@@ -264,7 +264,7 @@ module _ {a} {A : Set a} where
   ~bag⇒↭ : _∼[ bag ]_ ⇒ _↭_
   ~bag⇒↭ {[]} eq with empty-unique (Inv.sym eq)
   ... | refl = refl
-  ~bag⇒↭ {x ∷ xs} eq with ∈-∃++ A (to ⟨$⟩ (here ≡.refl))
+  ~bag⇒↭ {x ∷ xs} eq with ∈-∃++ (to ⟨$⟩ (here ≡.refl))
     where open Inv.Inverse (eq {x})
   ... | zs₁ , zs₂ , p rewrite p = begin
     x ∷ xs           <⟨ ~bag⇒↭ (drop-cons (Inv._∘_ (comm zs₁ (x ∷ zs₂)) eq)) ⟩

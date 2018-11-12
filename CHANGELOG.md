@@ -29,10 +29,10 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   ```
 
 * Created `Data.Maybe.Properties`, moved `Data.Maybe.Base`'s `just-injective`
-  there and populated it with basic results.
+  there and added new results.
 
-* Moved `Data.Maybe`'s `Eq` to `Data.Maybe.Relation.Pointwise` and
-  renamed some proofs:
+* Moved `Data.Maybe`'s `Eq` to `Data.Maybe.Relation.Pointwise`, made the
+  relation heterogeneously typed and renamed the following proofs:
   ```agda
   Eq                  ↦ Pointwise
   Eq-refl             ↦ refl
@@ -64,14 +64,23 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 
 #### Other
 
+* The proof `sel⇒idem` has been moved from `Algebra.FunctionProperties.Consequences` to
+  `Algebra.FunctionProperties.Consequences.Propositional` as it does not rely on equality.
+
 * Moved `_≟_` from `Data.Bool.Base` to `Data.Bool.Properties`. Backwards
   compatibility has been (nearly completely) preserved by having `Data.Bool`
   publicly re-export `_≟_`.
+
+* In `Data.List.Membership.Propositional.Properties`:
+    - Made the `Set` argument implicit in `∈-++⁺ˡ`, `∈-++⁺ʳ`, `∈-++⁻`, `∈-insert`, `∈-∃++`.
+    - Made the `A → B` argument explicit in `∈-map⁺`, `∈-map⁻`, `map-∈↔`.
 
 Other major changes
 -------------------
 
 * Added new module `Algebra.FunctionProperties.Consequences.Propositional`
+
+* Added new module `Codata.Cowriter`
 
 * Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
 
@@ -106,11 +115,20 @@ Other minor additions
   record IsMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
   ```
 
+* Added new functions to `Codata.Colist`:
+  ```agda
+  fromCowriter : Cowriter W A i → Colist W i
+  toCowriter   : Colist A i → Cowriter A ⊤ i
+  [_]          : A → Colist A ∞
+  chunksOf     : (n : ℕ) → Colist A ∞ → Cowriter (Vec A n) (BoundedVec A n) ∞
+  ```
+
 * Added new functions to `Codata.Stream`:
   ```agda
   splitAt    : (n : ℕ) → Stream A ∞ → Vec A n × Stream A ∞
   drop       : ℕ → Stream A ∞ → Stream A ∞
   interleave : Stream A i → Thunk (Stream A) i → Stream A i
+  chunksOf   : (n : ℕ) → Stream A ∞ → Stream (Vec A n) ∞
   ```
 
 * Added new proof to `Codata.Stream.Properties`:
