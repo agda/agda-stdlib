@@ -29,10 +29,10 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   ```
 
 * Created `Data.Maybe.Properties`, moved `Data.Maybe.Base`'s `just-injective`
-  there and populated it with basic results.
+  there and added new results.
 
-* Moved `Data.Maybe`'s `Eq` to `Data.Maybe.Relation.Pointwise` and
-  renamed some proofs:
+* Moved `Data.Maybe`'s `Eq` to `Data.Maybe.Relation.Pointwise`, made the
+  relation heterogeneously typed and renamed the following proofs:
   ```agda
   Eq                  ↦ Pointwise
   Eq-refl             ↦ refl
