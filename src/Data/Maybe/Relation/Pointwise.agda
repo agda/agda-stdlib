@@ -41,13 +41,21 @@ module _ {a r} {A : Set a} {R : Rel A r} where
   refl R-refl {just _}  = just R-refl
   refl R-refl {nothing} = nothing
 
-  sym : Symmetric R → Symmetric (Pointwise R)
+module _ {a b r₁ r₂} {A : Set a} {B : Set b}
+         {R : REL A B r₁} {S : REL B A r₂} where
+
+  sym : Sym R S → Sym (Pointwise R) (Pointwise S)
   sym R-sym (just p) = just (R-sym p)
   sym R-sym nothing  = nothing
 
-  trans : Transitive R → Transitive (Pointwise R)
+module _ {a b c r₁ r₂ r₃} {A : Set a} {B : Set b} {C : Set c}
+         {R : REL A B r₁} {S : REL B C r₂} {T : REL A C r₃} where
+
+  trans : Trans R S T → Trans (Pointwise R) (Pointwise S) (Pointwise T)
   trans R-trans (just p) (just q) = just (R-trans p q)
   trans R-trans nothing  nothing  = nothing
+
+module _ {a r} {A : Set a} {R : Rel A r} where
 
   dec : Decidable R → Decidable (Pointwise R)
   dec R-dec (just x) (just y) = Dec.map just-equivalence (R-dec x y)
