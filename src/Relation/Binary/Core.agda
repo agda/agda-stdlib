@@ -11,6 +11,7 @@ module Relation.Binary.Core where
 
 open import Agda.Builtin.Equality using (_≡_) renaming (refl to ≡-refl)
 
+open import Data.Maybe.Base using (Maybe)
 open import Data.Product using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function using (_on_; flip)
@@ -139,6 +140,9 @@ Substitutive {A = A} _∼_ p = (P : A → Set p) → P Respects _∼_
 Decidable : ∀ {a b ℓ} {A : Set a} {B : Set b} → REL A B ℓ → Set _
 Decidable _∼_ = ∀ x y → Dec (x ∼ y)
 
+WeaklyDecidable : ∀ {a b ℓ} {A : Set a} {B : Set b} → REL A B ℓ → Set _
+WeaklyDecidable _∼_ = ∀ x y → Maybe (x ∼ y)
+
 Irrelevant : ∀ {a b ℓ} {A : Set a} {B : Set b} → REL A B ℓ → Set _
 Irrelevant _∼_ = ∀ {x y} (a : x ∼ y) (b : x ∼ y) → a ≡ b
 
@@ -166,13 +170,4 @@ record IsEquivalence {a ℓ} {A : Set a}
 
   reflexive : _≡_ ⇒ _≈_
   reflexive ≡-refl = refl
-
-------------------------------------------------------------------------
--- Propositional equality
-
-open import Agda.Builtin.Equality public
-
-infix 4 _≢_
-_≢_ : ∀ {a} {A : Set a} → A → A → Set a
-x ≢ y = ¬ x ≡ y
 

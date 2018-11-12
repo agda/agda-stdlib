@@ -7,7 +7,7 @@
 
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
 
--- The structures are parameterised by the following "equality" relation
+-- The structures are parameterised by an equivalence relation
 
 module Algebra.Structures {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
 
@@ -19,16 +19,31 @@ open import Level using (_⊔_)
 ------------------------------------------------------------------------
 -- Semigroups
 
-record IsSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+record IsMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
     isEquivalence : IsEquivalence _≈_
-    assoc         : Associative ∙
     ∙-cong        : Congruent₂ ∙
+
+  open IsEquivalence isEquivalence public
 
   setoid : Setoid a ℓ
   setoid = record { isEquivalence = isEquivalence }
 
+record IsSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isEquivalence : IsEquivalence _≈_
+    ∙-cong        : Congruent₂ ∙
+    assoc         : Associative ∙
+
   open IsEquivalence isEquivalence public
+
+  isMagma : IsMagma ∙
+  isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = ∙-cong
+    }
+
+  open IsMagma isMagma public using (setoid)
 
 record IsBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
@@ -47,13 +62,13 @@ record IsMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
     isSemigroup : IsSemigroup ∙
     identity    : Identity ε ∙
 
+  open IsSemigroup isSemigroup public
+
   identityˡ : LeftIdentity ε ∙
   identityˡ = proj₁ identity
 
   identityʳ : RightIdentity ε ∙
   identityʳ = proj₂ identity
-
-  open IsSemigroup isSemigroup public
 
 record IsCommutativeMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
@@ -141,10 +156,11 @@ record IsNearSemiring (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     renaming
     ( assoc       to +-assoc
     ; ∙-cong      to +-cong
-    ; isSemigroup to +-isSemigroup
     ; identity    to +-identity
     ; identityˡ   to +-identityˡ
     ; identityʳ   to +-identityʳ
+    ; isMagma     to +-isMagma
+    ; isSemigroup to +-isSemigroup
     )
 
   open IsSemigroup *-isSemigroup public
@@ -152,6 +168,7 @@ record IsNearSemiring (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     renaming
     ( assoc    to *-assoc
     ; ∙-cong   to *-cong
+    ; isMagma  to *-isMagma
     )
 
 record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
@@ -211,12 +228,13 @@ record IsSemiringWithoutAnnihilatingZero (+ * : Op₂ A)
     renaming
     ( assoc       to +-assoc
     ; ∙-cong      to +-cong
-    ; isSemigroup to +-isSemigroup
     ; identity    to +-identity
     ; identityˡ   to +-identityˡ
     ; identityʳ   to +-identityʳ
-    ; isMonoid    to +-isMonoid
     ; comm        to +-comm
+    ; isMagma     to +-isMagma
+    ; isSemigroup to +-isSemigroup
+    ; isMonoid    to +-isMonoid
     )
 
   open IsMonoid *-isMonoid public
@@ -224,10 +242,11 @@ record IsSemiringWithoutAnnihilatingZero (+ * : Op₂ A)
     renaming
     ( assoc       to *-assoc
     ; ∙-cong      to *-cong
-    ; isSemigroup to *-isSemigroup
     ; identity    to *-identity
     ; identityˡ   to *-identityˡ
     ; identityʳ   to *-identityʳ
+    ; isMagma     to *-isMagma
+    ; isSemigroup to *-isSemigroup
     )
 
 record IsSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
@@ -324,18 +343,19 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     renaming
     ( assoc               to +-assoc
     ; ∙-cong              to +-cong
-    ; isSemigroup         to +-isSemigroup
     ; identity            to +-identity
     ; identityˡ           to +-identityˡ
     ; identityʳ           to +-identityʳ
-    ; isMonoid            to +-isMonoid
     ; inverse             to -‿inverse
     ; inverseˡ            to -‿inverseˡ
     ; inverseʳ            to -‿inverseʳ
     ; ⁻¹-cong             to -‿cong
-    ; isGroup             to +-isGroup
     ; comm                to +-comm
+    ; isMagma             to +-isMagma
+    ; isSemigroup         to +-isSemigroup
+    ; isMonoid            to +-isMonoid
     ; isCommutativeMonoid to +-isCommutativeMonoid
+    ; isGroup             to +-isGroup
     )
 
   open IsMonoid *-isMonoid public
@@ -343,10 +363,11 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     renaming
     ( assoc       to *-assoc
     ; ∙-cong      to *-cong
-    ; isSemigroup to *-isSemigroup
     ; identity    to *-identity
     ; identityˡ   to *-identityˡ
     ; identityʳ   to *-identityʳ
+    ; isMagma     to *-isMagma
+    ; isSemigroup to *-isSemigroup
     )
 
   zeroˡ : LeftZero 0# *
@@ -394,8 +415,8 @@ record IsCommutativeRing
       ; identityˡ   = *-identityˡ
       ; comm        = *-comm
       }
-    ; distribʳ              = proj₂ distrib
-    ; zeroˡ                 = proj₁ zero
+    ; distribʳ              = distribʳ
+    ; zeroˡ                 = zeroˡ
     }
 
   open IsCommutativeSemiring isCommutativeSemiring public
