@@ -68,6 +68,10 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   compatibility has been (nearly completely) preserved by having `Data.Bool`
   publicly re-export `_≟_`.
 
+* In `Data.List.Membership.Propositional.Properties`:
+    - Made the `Set` argument implicit in `∈-++⁺ˡ`, `∈-++⁺ʳ`, `∈-++⁻`, `∈-insert`, `∈-∃++`.
+    - Made the `A → B` argument explicit in `∈-map⁺`, `∈-map⁻`, `map-∈↔`.
+
 Other major changes
 -------------------
 
