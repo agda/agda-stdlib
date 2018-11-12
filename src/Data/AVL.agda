@@ -20,7 +20,7 @@ module Data.AVL
 open import Data.Bool.Base using (Bool)
 import Data.DifferenceList as DiffList
 open import Data.List.Base as List using (List)
-open import Data.Maybe.Base using (Maybe; nothing; just; is-just; Is-just)
+open import Data.Maybe using (Maybe; nothing; just; is-just)
 open import Data.Nat.Base using (suc)
 open import Data.Product hiding (map)
 open import Function as F

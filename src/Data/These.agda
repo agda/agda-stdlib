@@ -7,8 +7,6 @@
 module Data.These where
 
 open import Level
-open import Algebra using (Semigroup)
-open import Data.Maybe using (Maybe; maybe′)
 open import Function
 
 data These {a b} (A : Set a) (B : Set b) : Set (a ⊔ b) where
@@ -78,13 +76,3 @@ module _ {a} {A : Set a} where
 
   mergeThese : (A → A → A) → These A A → A
   mergeThese = fold id id
-
-module _ {a b} {A : Set a} {B : Set b} where
-
--- Injections.
-
-  thisM : A → Maybe B → These A B
-  thisM a = maybe′ (these a) (this a)
-
-  thatM : Maybe A → B → These A B
-  thatM = maybe′ these that

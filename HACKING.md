@@ -51,6 +51,17 @@ How to make changes
    Your proposed changes MUST pass these tests. Note that the tests require the use of a tool called
    `fix-agda-whitespace`. See the instructions at the end of this file for how to install this.
 
+   If you are creating new modules, please make sure you are having a proper header,
+   and a brief description of what the module is for, e.g.
+   ```
+   ------------------------------------------------------------------------
+   -- The Agda standard library
+   --
+   -- {PLACE YOUR BRIEF DESCRIPTION HERE}
+   ------------------------------------------------------------------------
+   ```
+
+
 ### Upload your changes
 
 8. Use the `git add` command to add the files you have changed to your proposed commit.

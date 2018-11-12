@@ -17,6 +17,8 @@ open import Function using (_∘_; flip)
 open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
 
+import Relation.Binary.PartialOrderReasoning as PoR
+
 -- The join operation is monotonic.
 
 ∨-monotonic : _∨_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
@@ -54,6 +56,13 @@ open import Relation.Binary.Properties.Poset poset
   let x≤x∨x , _ , least = supremum x x
   in antisym (least x refl refl) x≤x∨x
 
+x≤y⇒x∨y≈y : ∀ {x y} → x ≤ y → x ∨ y ≈ y
+x≤y⇒x∨y≈y {x} {y} x≤y = antisym
+  (begin x ∨ y ≤⟨ ∨-monotonic x≤y refl ⟩
+         y ∨ y ≈⟨ ∨-idempotent _ ⟩
+         y ∎)
+  (y≤x∨y _ _)
+  where open PoR poset
 
 -- The dual construction is a meet semilattice.
 
