@@ -11,21 +11,26 @@ module Data.AVL.Indexed
        (isStrictTotalOrder : IsStrictTotalOrder _≈_ _<_) where
 
 open import Level using (_⊔_)
-open import Data.Nat.Base hiding (_<_; _⊔_; compare)
+open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product hiding (map)
 open import Data.Maybe hiding (map)
-import Data.DifferenceList as DiffList
+open import Data.DifferenceList using (DiffList; []; _∷_; _++_)
 open import Function as F hiding (const)
+open import Relation.Unary
+open import Relation.Binary using (_Respects_; Tri; tri<; tri≈; tri>)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
 open IsStrictTotalOrder isStrictTotalOrder
+
+------------------------------------------------------------------------
+-- Re-export core definitions publicly
+
 open import Data.AVL.Key Key isStrictTotalOrder public
 open import Data.AVL.Value Eq.isEquivalence public
-
 open import Data.AVL.Height public
 
-open import Relation.Unary
-open import Relation.Binary using (_Respects_; Tri); open Tri
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
+------------------------------------------------------------------------
+-- Definitions of the tree
 
 K&_ : ∀ {v} (V : Value v) → Set (k ⊔ v)
 K& V = Σ Key (Value.family V)
@@ -253,8 +258,6 @@ module _ {v} {V : Value v} where
 
   -- Converts the tree to an ordered list. Linear in the size of the
   -- tree.
-
-  open DiffList
 
   toDiffList : ∀ {l u h} → Tree V l u h → DiffList (K& V)
   toDiffList (leaf _)       = []

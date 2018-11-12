@@ -10,7 +10,7 @@
 -- described by Conor McBride in his talk "Pivotal pragmatism".
 
 open import Relation.Binary using (Rel; IsStrictTotalOrder)
-open import Relation.Binary.PropositionalEquality as P using (_≡_ ; refl)
+open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
 
 module Data.AVL
   {k e r} {Key : Set k} {_≈_ : Rel Key e} {_<_ : Rel Key r}
@@ -19,21 +19,22 @@ module Data.AVL
 
 open import Data.Bool.Base using (Bool)
 import Data.DifferenceList as DiffList
-open import Data.Empty
 open import Data.List.Base as List using (List)
 open import Data.Maybe.Base using (Maybe; nothing; just; is-just; Is-just)
-open import Data.Nat.Base hiding (_<_; _⊔_; compare)
+open import Data.Nat.Base using (suc)
 open import Data.Product hiding (map)
-open import Data.Unit
 open import Function as F
-open import Level using (_⊔_; Lift; lift)
-
+open import Level using (_⊔_)
 open import Relation.Unary
 
 open IsStrictTotalOrder isStrictTotalOrder
 import Data.AVL.Indexed Key isStrictTotalOrder as Indexed
-open Indexed using (Value; MkValue; const) public
 open Indexed using (K&_ ; ⊥⁺ ; ⊤⁺)
+
+------------------------------------------------------------------------
+-- Re-export some core definitions publically
+
+open Indexed using (Value; MkValue; const) public
 
 ------------------------------------------------------------------------
 -- Types and functions with hidden indices

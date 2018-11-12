@@ -224,16 +224,20 @@ Non-backwards compatible changes
 
 #### Overhaul of `Data.AVL`
 
-* The family of Values stored in the tree now needs to respect the
-  Key equivalence
+* AVL trees now work over arbitrary equalities, rather than just
+  propositional equality.
 
-* We have noticed that Data.AVL.Indexed's lookup & delete didn't use
+* Consequently the family of `Value`s stored in the tree now needs
+  to respect the `Key` equivalence
+
+* It was noticed that `Data.AVL.Indexed`'s lookup & delete didn't use
   a range to guarantee that the recursive calls were performed in the
   right subtree. The types have been made more precise.
 
-* (insert/union)With functions now take a function of type `Maybe Val -> Val`
-  rather than a value together with a merging function `Val -> Val -> Val`
-  to handle the case where a value is already present at that key.
+* The functions (insert/union)With now take a function of type
+  `Maybe Val -> Val` rather than a value together with a merging function
+  `Val -> Val -> Val` to handle the case where a value is already present
+  at that key.
 
 * Various functions have been made polymorphic which makes their biases
   & limitations clearer. e.g. we have:

@@ -9,11 +9,11 @@ open import Relation.Binary using (Rel; IsEquivalence)
 
 module Data.AVL.Value {k e} {Key : Set k} {_≈_ : Rel Key e} (S : IsEquivalence _≈_) where
 
-open import Level
+open import Level using (suc; _⊔_)
 import Function as F
 open import Relation.Binary using (_Respects_)
 
-record Value v : Set (k ⊔ e ⊔ Level.suc v) where
+record Value v : Set (k ⊔ e ⊔ suc v) where
   constructor MkValue
   field family   : Key → Set v
         respects : family Respects _≈_

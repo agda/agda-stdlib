@@ -6,7 +6,7 @@
 
 open import Data.Product as Prod
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality using (_≡_; cong; subst)
 import Data.AVL.Value
 
 module Data.AVL.IndexedMap
@@ -44,7 +44,7 @@ private
   open module AVL =
     Data.AVL isStrictTotalOrder
     using () renaming (Tree to Map')
-  Map = Map' (AVL.MkValue (Value ∘ proj₁) (P.subst Value ∘′ P.cong proj₁))
+  Map = Map' (AVL.MkValue (Value ∘ proj₁) (subst Value ∘′ cong proj₁))
 
 -- Repackaged functions.
 
