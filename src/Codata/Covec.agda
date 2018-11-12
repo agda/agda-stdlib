@@ -8,7 +8,7 @@ module Codata.Covec where
 
 open import Size
 
-open import Codata.Thunk
+open import Codata.Thunk using (Thunk; force)
 open import Codata.Conat as Conat hiding (fromMusical; toMusical)
 open import Codata.Conat.Bisimilarity
 open import Codata.Conat.Properties
@@ -89,7 +89,7 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 ------------------------------------------------------------------------
 -- Legacy
 
-open import Coinduction using (♭; ♯_)
+open import Codata.Musical.Notation using (♭; ♯_)
 import Codata.Musical.Covec as M
 
 module _ {a} {A : Set a} where

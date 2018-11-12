@@ -79,9 +79,9 @@ data Finite : Conat ∞ → Set where
   zero : Finite zero
   suc  : ∀ {n} → Finite (n .force) → Finite (suc n)
 
-extract : ∀ {n} → Finite n → ℕ
-extract zero    = zero
-extract (suc n) = suc (extract n)
+toℕ : ∀ {n} → Finite n → ℕ
+toℕ zero    = zero
+toℕ (suc n) = suc (toℕ n)
 
 ¬Finite∞ : ¬ (Finite infinity)
 ¬Finite∞ (suc p) = ¬Finite∞ p
@@ -103,7 +103,7 @@ suc k ℕ≤infinity = sℕ≤s (k ℕ≤infinity)
 ------------------------------------------------------------------------
 -- Legacy
 
-open import Coinduction using (♭; ♯_)
+open import Codata.Musical.Notation using (♭; ♯_)
 import Codata.Musical.Conat as M
 
 fromMusical : ∀ {i} → M.Coℕ → Conat i

@@ -52,7 +52,7 @@ monadZero = record
 monadPlus : ∀ {f} → RawMonadPlus {f} Maybe
 monadPlus {f} = record
   { monadZero = monadZero
-  ; _∣_       = maybe′ (const ∘ just) id
+  ; _∣_       = _<∣>_
   }
 
 ------------------------------------------------------------------------

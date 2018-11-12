@@ -13,7 +13,7 @@ open import Data.Star.Pointer as Pointer hiding (lookup)
 open import Data.Star.List using (List)
 open import Relation.Binary
 open import Relation.Binary.Consequences
-open import Relation.Binary.Closure.ReflexiveTransitive
+open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 open import Function
 open import Data.Unit
 

@@ -8,7 +8,7 @@ module Codata.M where
 
 open import Size
 open import Level
-open import Codata.Thunk
+open import Codata.Thunk using (Thunk; force)
 open import Data.Product hiding (map)
 open import Data.Container.Core
 import Data.Container as C
@@ -40,3 +40,19 @@ module _ {s p ℓ} {C : Container s p} (open Container C)
   unfold : S → ∀ {i} → M C i
   unfold seed = let (x , next) = alg seed in
                 inf (x , λ p → λ where .force → unfold (next p))
+
+
+------------------------------------------------------------------------
+-- Legacy
+
+open import Codata.Musical.Notation using (♭; ♯_)
+import Codata.Musical.M as M
+
+module _ {s p} {C : Container s p} where
+
+  fromMusical : ∀ {i} → M.M C → M C i
+  fromMusical (M.inf t) = inf (C.map rec t) where
+    rec = λ x → λ where .force → fromMusical (♭ x)
+
+  toMusical : M C ∞ → M.M C
+  toMusical (inf (s , f)) = M.inf (s , λ p → ♯ toMusical (f p .force))

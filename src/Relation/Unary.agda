@@ -13,7 +13,7 @@ open import Data.Sum using (_⊎_; [_,_])
 open import Function
 open import Level
 open import Relation.Nullary
-open import Relation.Binary.Core using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 ------------------------------------------------------------------------
 -- Unary relations
@@ -128,11 +128,15 @@ module _ {a} {A : Set a} where
 
   -- Universality
 
-  infix 10 Universal
+  infix 10 Universal IUniversal
   Universal : ∀ {ℓ} → Pred A ℓ → Set _
   Universal P = ∀ x → x ∈ P
 
-  syntax Universal P = ∀[ P ]
+  IUniversal : ∀ {ℓ} → Pred A ℓ → Set _
+  IUniversal P = ∀ {x} → x ∈ P
+
+  syntax Universal  P = Π[ P ]
+  syntax IUniversal P = ∀[ P ]
 
   -- Decidability
 

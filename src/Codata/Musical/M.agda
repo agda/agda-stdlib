@@ -6,7 +6,7 @@
 
 module Codata.Musical.M where
 
-open import Coinduction hiding (unfold)
+open import Codata.Musical.Notation
 open import Level
 open import Data.Product hiding (map)
 open import Data.Container.Core

@@ -6,7 +6,7 @@
 
 module Codata.Musical.Covec where
 
-open import Coinduction
+open import Codata.Musical.Notation
 open import Codata.Musical.Conat as Coℕ using (Coℕ; zero; suc; _+_)
 open import Codata.Musical.Cofin using (Cofin; zero; suc)
 open import Codata.Musical.Colist as Colist using (Colist; []; _∷_)

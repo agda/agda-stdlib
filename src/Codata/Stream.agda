@@ -7,7 +7,7 @@
 module Codata.Stream where
 
 open import Size
-open import Codata.Thunk
+open import Codata.Thunk as Thunk using (Thunk; force)
 
 open import Data.Nat.Base
 open import Data.List.Base using (List; []; _∷_)
@@ -85,7 +85,7 @@ module _ {ℓ} {A : Set ℓ} where
 ------------------------------------------------------------------------
 -- Legacy
 
-open import Coinduction using (♭; ♯_)
+open import Codata.Musical.Notation using (♭; ♯_)
 import Codata.Musical.Stream as M
 
 module _ {a} {A : Set a} where

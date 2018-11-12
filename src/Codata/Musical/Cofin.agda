@@ -6,7 +6,7 @@
 
 module Codata.Musical.Cofin where
 
-open import Coinduction
+open import Codata.Musical.Notation
 open import Codata.Musical.Conat as Conat using (Coℕ; suc; ∞ℕ)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Fin using (Fin; zero; suc)

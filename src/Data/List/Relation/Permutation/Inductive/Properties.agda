@@ -15,11 +15,13 @@ open import Data.List.Any using (Any; here; there)
 open import Data.List.All using (All; []; _∷_)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
-open import Data.List.Relation.BagAndSetEquality using (bag; _∼[_]_)
+open import Data.List.Relation.BagAndSetEquality
+  using (bag; _∼[_]_; empty-unique; drop-cons; commutativeMonoid)
 import Data.List.Properties as Lₚ
 open import Data.Product using (_,_; _×_; ∃; ∃₂)
 open import Function using (_∘_)
-open import Function.Inverse using (inverse)
+open import Function.Equality using (_⟨$⟩_)
+open import Function.Inverse as Inv using (inverse)
 open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as ≡
@@ -40,7 +42,7 @@ module _ {a} {A : Set a} where
     cong₂ trans (↭-sym-involutive ↭₁) (↭-sym-involutive ↭₂)
 
 ------------------------------------------------------------------------
--- Relationships to other predicates and relations
+-- Relationships to other predicates
 
 module _ {a} {A : Set a} where
 
@@ -61,30 +63,6 @@ module _ {a} {A : Set a} where
 
   ∈-resp-↭ : ∀ {x : A} → (x ∈_) Respects _↭_
   ∈-resp-↭ = Any-resp-↭
-
-  ↭⇒~bag : _↭_ ⇒ _∼[ bag ]_
-  ↭⇒~bag xs↭ys {v} = inverse (to xs↭ys) (from xs↭ys) (from∘to xs↭ys) (to∘from xs↭ys)
-    where
-    to : ∀ {xs ys} → xs ↭ ys → v ∈ xs → v ∈ ys
-    to xs↭ys = Any-resp-↭ xs↭ys
-
-    from : ∀ {xs ys} → xs ↭ ys → v ∈ ys → v ∈ xs
-    from xs↭ys = Any-resp-↭ (↭-sym xs↭ys)
-
-    from∘to : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ xs) → from p (to p q) ≡ q
-    from∘to refl          v∈xs                 = refl
-    from∘to (prep _ _)    (here refl)          = refl
-    from∘to (prep _ p)    (there v∈xs)         = cong there (from∘to p v∈xs)
-    from∘to (swap x y p)  (here refl)          = refl
-    from∘to (swap x y p)  (there (here refl))  = refl
-    from∘to (swap x y p)  (there (there v∈xs)) = cong (there ∘ there) (from∘to p v∈xs)
-    from∘to (trans p₁ p₂) v∈xs
-      rewrite from∘to p₂ (Any-resp-↭ p₁ v∈xs)
-            | from∘to p₁ v∈xs                  = refl
-
-    to∘from : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ ys) → to p (from p q) ≡ q
-    to∘from p with from∘to (↭-sym p)
-    ... | res rewrite ↭-sym-involutive p = res
 
 ------------------------------------------------------------------------
 -- map
@@ -253,3 +231,44 @@ module _ {a} {A : Set a} where
     xs ++ [ x ]   ↭⟨ shift x xs [] ⟩
     x ∷ xs ++ []  ≡⟨ Lₚ.++-identityʳ _ ⟩
     x ∷ xs        ∎)
+
+------------------------------------------------------------------------
+-- Relationships to other relations
+
+module _ {a} {A : Set a} where
+
+  ↭⇒~bag : _↭_ ⇒ _∼[ bag ]_
+  ↭⇒~bag xs↭ys {v} = inverse (to xs↭ys) (from xs↭ys) (from∘to xs↭ys) (to∘from xs↭ys)
+    where
+    to : ∀ {xs ys} → xs ↭ ys → v ∈ xs → v ∈ ys
+    to xs↭ys = Any-resp-↭ {A = A} xs↭ys
+
+    from : ∀ {xs ys} → xs ↭ ys → v ∈ ys → v ∈ xs
+    from xs↭ys = Any-resp-↭ (↭-sym xs↭ys)
+
+    from∘to : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ xs) → from p (to p q) ≡ q
+    from∘to refl          v∈xs                 = refl
+    from∘to (prep _ _)    (here refl)          = refl
+    from∘to (prep _ p)    (there v∈xs)         = cong there (from∘to p v∈xs)
+    from∘to (swap x y p)  (here refl)          = refl
+    from∘to (swap x y p)  (there (here refl))  = refl
+    from∘to (swap x y p)  (there (there v∈xs)) = cong (there ∘ there) (from∘to p v∈xs)
+    from∘to (trans p₁ p₂) v∈xs
+      rewrite from∘to p₂ (Any-resp-↭ p₁ v∈xs)
+            | from∘to p₁ v∈xs                  = refl
+
+    to∘from : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ ys) → to p (from p q) ≡ q
+    to∘from p with from∘to (↭-sym p)
+    ... | res rewrite ↭-sym-involutive p = res
+
+  ~bag⇒↭ : _∼[ bag ]_ ⇒ _↭_
+  ~bag⇒↭ {[]} eq with empty-unique (Inv.sym eq)
+  ... | refl = refl
+  ~bag⇒↭ {x ∷ xs} eq with ∈-∃++ A (to ⟨$⟩ (here ≡.refl))
+    where open Inv.Inverse (eq {x})
+  ... | zs₁ , zs₂ , p rewrite p = begin
+    x ∷ xs           <⟨ ~bag⇒↭ (drop-cons (Inv._∘_ (comm zs₁ (x ∷ zs₂)) eq)) ⟩
+    x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
+    x ∷ (zs₁ ++ zs₂) ↭⟨ ↭-sym (shift x zs₁ zs₂) ⟩
+    zs₁ ++ x ∷ zs₂   ∎
+    where open CommutativeMonoid (commutativeMonoid bag A)
