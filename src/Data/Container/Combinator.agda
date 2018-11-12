@@ -14,8 +14,7 @@ open import Data.Unit.Base using (⊤)
 open import Function as F hiding (id; const) renaming (_∘_ to _⟨∘⟩_)
 open import Function.Inverse using (_↔_; inverse)
 open import Level
-open import Relation.Binary.PropositionalEquality as P
-  using (_≗_; _≡_; refl)
+open import Relation.Binary.PropositionalEquality as P using (_≗_; _≡_)
 
 ------------------------------------------------------------------------
 -- Combinators
@@ -85,7 +84,7 @@ const[ X ]⟶ C = Π {I = X} (F.const C)
 module Identity where
 
   correct : ∀ {s p x} {X : Set x} → ⟦ id {s} {p} ⟧ X ↔ F.id X
-  correct {X = X} = inverse to from (λ _ → refl) (λ _ → refl)
+  correct {X = X} = inverse to from (λ _ → P.refl) (λ _ → P.refl)
     where
     to : ⟦ id ⟧ X → F.id X
     to xs = proj₂ xs _
@@ -100,7 +99,7 @@ module Constant (ext : ∀ {ℓ ℓ′} → P.Extensionality ℓ ℓ′) where
     { to         = P.→-to-⟶ to
     ; from       = P.→-to-⟶ from
     ; inverse-of = record
-      { right-inverse-of = λ _ → refl
+      { right-inverse-of = λ _ → P.refl
       ; left-inverse-of  = from∘to
       }
     }
@@ -117,7 +116,7 @@ module Constant (ext : ∀ {ℓ ℓ′} → P.Extensionality ℓ ℓ′) where
 module Composition {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) where
 
   correct : ∀ {x} {X : Set x} → ⟦ C₁ ∘ C₂ ⟧ X ↔ (⟦ C₁ ⟧ ⟨∘⟩ ⟦ C₂ ⟧) X
-  correct {X = X} = inverse to from (λ _ → refl) (λ _ → refl)
+  correct {X = X} = inverse to from (λ _ → P.refl) (λ _ → P.refl)
     where
     to : ⟦ C₁ ∘ C₂ ⟧ X → ⟦ C₁ ⟧ (⟦ C₂ ⟧ X)
     to ((s , f) , g) = (s , < f , curry g >)
@@ -129,7 +128,7 @@ module Product (ext : ∀ {ℓ ℓ′} → P.Extensionality ℓ ℓ′)
        {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) where
 
   correct : ∀ {x} {X : Set x} →  ⟦ C₁ × C₂ ⟧ X ↔ (⟦ C₁ ⟧ X ⟨×⟩ ⟦ C₂ ⟧ X)
-  correct {X = X} = inverse to from from∘to (λ _ → refl)
+  correct {X = X} = inverse to from from∘to (λ _ → P.refl)
     where
     to : ⟦ C₁ × C₂ ⟧ X → ⟦ C₁ ⟧ X ⟨×⟩ ⟦ C₂ ⟧ X
     to ((s₁ , s₂) , f) = ((s₁ , f ⟨∘⟩ inj₁) , (s₂ , f ⟨∘⟩ inj₂))
@@ -139,12 +138,12 @@ module Product (ext : ∀ {ℓ ℓ′} → P.Extensionality ℓ ℓ′)
 
     from∘to : from ⟨∘⟩ to ≗ F.id
     from∘to (s , f) =
-      P.cong (s ,_) (ext [ (λ _ → refl) , (λ _ → refl) ])
+      P.cong (s ,_) (ext [ (λ _ → P.refl) , (λ _ → P.refl) ])
 
 module IndexedProduct {i s p} {I : Set i} (Cᵢ : I → Container s p) where
 
   correct : ∀ {x} {X : Set x} → ⟦ Π Cᵢ ⟧ X ↔ (∀ i → ⟦ Cᵢ i ⟧ X)
-  correct {X = X} = inverse to from (λ _ → refl) (λ _ → refl)
+  correct {X = X} = inverse to from (λ _ → P.refl) (λ _ → P.refl)
     where
     to : ⟦ Π Cᵢ ⟧ X → ∀ i → ⟦ Cᵢ i ⟧ X
     to (s , f) = λ i → (s i , λ p → f (i , p))
@@ -165,16 +164,16 @@ module Sum {s₁ s₂ p} (C₁ : Container s₁ p) (C₂ : Container s₂ p) whe
     from = [ Prod.map inj₁ F.id , Prod.map inj₂ F.id ]
 
     from∘to : from ⟨∘⟩ to ≗ F.id
-    from∘to (inj₁ s₁ , f) = refl
-    from∘to (inj₂ s₂ , f) = refl
+    from∘to (inj₁ s₁ , f) = P.refl
+    from∘to (inj₂ s₂ , f) = P.refl
 
     to∘from : to ⟨∘⟩ from ≗ F.id
-    to∘from = [ (λ _ → refl) , (λ _ → refl) ]
+    to∘from = [ (λ _ → P.refl) , (λ _ → P.refl) ]
 
 module IndexedSum {i s p} {I : Set i} (C : I → Container s p) where
 
   correct : ∀ {x} {X : Set x} → ⟦ Σ C ⟧ X ↔ (∃ λ i → ⟦ C i ⟧ X)
-  correct {X = X} = inverse to from (λ _ → refl) (λ _ → refl)
+  correct {X = X} = inverse to from (λ _ → P.refl) (λ _ → P.refl)
     where
     to : ⟦ Σ C ⟧ X → ∃ λ i → ⟦ C i ⟧ X
     to ((i , s) , f) = (i , (s , f))

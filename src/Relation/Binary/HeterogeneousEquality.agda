@@ -14,7 +14,10 @@ open import Level
 open import Relation.Nullary
 open import Relation.Binary
 open import Relation.Binary.Consequences
-open import Relation.Binary.Indexed as I using (_at_)
+open import Relation.Binary.Indexed.Heterogeneous
+  using (IndexedSetoid)
+open import Relation.Binary.Indexed.Heterogeneous.Construct.At
+  using (_atₛ_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 
 import Relation.Binary.HeterogeneousEquality.Core as Core
@@ -166,7 +169,7 @@ setoid A = record
   ; isEquivalence = isEquivalence
   }
 
-indexedSetoid : ∀ {a b} {A : Set a} → (A → Set b) → I.Setoid A _ _
+indexedSetoid : ∀ {a b} {A : Set a} → (A → Set b) → IndexedSetoid A _ _
 indexedSetoid B = record
   { Carrier       = B
   ; _≈_           = λ x y → x ≅ y
@@ -178,7 +181,7 @@ indexedSetoid B = record
   }
 
 ≡↔≅ : ∀ {a b} {A : Set a} (B : A → Set b) {x : A} →
-      Inverse (P.setoid (B x)) (indexedSetoid B at x)
+      Inverse (P.setoid (B x)) ((indexedSetoid B) atₛ x)
 ≡↔≅ B = record
   { to         = record { _⟨$⟩_ = id; cong = ≡-to-≅ }
   ; from       = record { _⟨$⟩_ = id; cong = ≅-to-≡ }

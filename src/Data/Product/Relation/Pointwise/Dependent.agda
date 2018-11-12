@@ -23,9 +23,13 @@ open import Function.Related as Related
   using (_∼[_]_; lam; app-←; app-↢)
 open import Function.Surjection as Surj
   using (Surjection; _↠_; module Surjection)
-open import Relation.Binary as B using (_⇒_)
-open import Relation.Binary.Indexed as I using (_at_)
-import Relation.Binary.HeterogeneousEquality as H
+open import Relation.Binary as B
+  using (_⇒_; Setoid; IsEquivalence)
+open import Relation.Binary.Indexed.Heterogeneous as I
+  using (IREL; IRel; IndexedSetoid; IsIndexedEquivalence)
+open import Relation.Binary.Indexed.Heterogeneous.Construct.At
+  using (_atₛ_)
+open import Relation.Binary.HeterogeneousEquality as H using (_≅_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 ------------------------------------------------------------------------
@@ -36,7 +40,7 @@ infixr 4 _,_
 record REL {a₁ a₂ b₁ b₂ ℓ₁ ℓ₂}
            {A₁ : Set a₁} (B₁ : A₁ → Set b₁)
            {A₂ : Set a₂} (B₂ : A₂ → Set b₂)
-           (_R₁_ : B.REL A₁ A₂ ℓ₁) (_R₂_ : I.REL B₁ B₂ ℓ₂)
+           (_R₁_ : B.REL A₁ A₂ ℓ₁) (_R₂_ : IREL B₁ B₂ ℓ₂)
            (xy₁ : Σ A₁ B₁) (xy₂ : Σ A₂ B₂)
            : Set (a₁ ⊔ a₂ ⊔ b₁ ⊔ b₂ ⊔ ℓ₁ ⊔ ℓ₂) where
   constructor _,_
@@ -47,14 +51,14 @@ record REL {a₁ a₂ b₁ b₂ ℓ₁ ℓ₂}
 open REL public
 
 Pointwise : ∀ {a b ℓ₁ ℓ₂} {A : Set a} (B : A → Set b)
-            (_R₁_ : B.Rel A ℓ₁) (_R₂_ : I.Rel B ℓ₂) → B.Rel (Σ A B) _
+            (_R₁_ : B.Rel A ℓ₁) (_R₂_ : IRel B ℓ₂) → B.Rel (Σ A B) _
 Pointwise B = REL B B
 
 ------------------------------------------------------------------------
 -- Pointwise preserves many relational properties
 
 module _ {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
-         {R₁ : B.Rel A ℓ₁} {R₂ : I.Rel B ℓ₂} where
+         {R₁ : B.Rel A ℓ₁} {R₂ : IRel B ℓ₂} where
 
   refl : B.Reflexive R₁ → I.Reflexive B R₂ →
          B.Reflexive (Pointwise B R₁ R₂)
@@ -69,23 +73,23 @@ module _ {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
   transitive trans₁ trans₂ (x₁Rx₂ , y₁Ry₂) (x₂Rx₃ , y₂Ry₃) =
     (trans₁ x₁Rx₂ x₂Rx₃ , trans₂ y₁Ry₂ y₂Ry₃)
 
-  isEquivalence : B.IsEquivalence R₁ → I.IsEquivalence B R₂ →
-                  B.IsEquivalence (Pointwise B R₁ R₂)
+  isEquivalence : IsEquivalence R₁ → IsIndexedEquivalence B R₂ →
+                  IsEquivalence (Pointwise B R₁ R₂)
   isEquivalence eq₁ eq₂ = record
-    { refl  = refl (B.IsEquivalence.refl eq₁)
-                   (I.IsEquivalence.refl eq₂)
-    ; sym   = symmetric (B.IsEquivalence.sym eq₁)
-                        (I.IsEquivalence.sym eq₂)
-    ; trans = transitive (B.IsEquivalence.trans eq₁)
-                         (I.IsEquivalence.trans eq₂)
+    { refl  = refl (IsEquivalence.refl eq₁)
+                   (IsIndexedEquivalence.refl eq₂)
+    ; sym   = symmetric (IsEquivalence.sym eq₁)
+                        (IsIndexedEquivalence.sym eq₂)
+    ; trans = transitive (IsEquivalence.trans eq₁)
+                         (IsIndexedEquivalence.trans eq₂)
     }
 
-setoid : ∀ {b₁ b₂ i₁ i₂} →
-         (A : B.Setoid b₁ b₂) → I.Setoid (B.Setoid.Carrier A) i₁ i₂ →
+setoid : ∀ {b₁ b₂ i₁ i₂} → (A : Setoid b₁ b₂) →
+         IndexedSetoid (Setoid.Carrier A) i₁ i₂ →
          B.Setoid _ _
 setoid s₁ s₂ = record
-  { isEquivalence = isEquivalence (B.Setoid.isEquivalence s₁)
-                                  (I.Setoid.isEquivalence s₂)
+  { isEquivalence = isEquivalence (Setoid.isEquivalence s₁)
+                                  (IndexedSetoid.isEquivalence s₂)
   }
 
 ------------------------------------------------------------------------
@@ -94,10 +98,10 @@ setoid s₁ s₂ = record
 
 module _ {a b} {A : Set a} {B : A → Set b} where
 
-  Pointwise-≡⇒≡ : Pointwise B _≡_ (λ x y → x H.≅ y) ⇒ _≡_
+  Pointwise-≡⇒≡ : Pointwise B _≡_ (λ x y → x ≅ y) ⇒ _≡_
   Pointwise-≡⇒≡ (P.refl , H.refl) = P.refl
 
-  ≡⇒Pointwise-≡ : _≡_ ⇒ Pointwise B _≡_ (λ x y → x H.≅ y)
+  ≡⇒Pointwise-≡ : _≡_ ⇒ Pointwise B _≡_ (λ x y → x ≅ y)
   ≡⇒Pointwise-≡ P.refl = (P.refl , H.refl)
 
   Pointwise-≡↔≡ : Inverse (setoid (P.setoid A) (H.indexedSetoid B))
@@ -125,8 +129,8 @@ private
 
 ⟶ : ∀ {a₁ a₂ b₁ b₁′ b₂ b₂′}
       {A₁ : Set a₁} {A₂ : Set a₂}
-      {B₁ : I.Setoid A₁ b₁ b₁′} (B₂ : I.Setoid A₂ b₂ b₂′)
-    (f : A₁ → A₂) → (∀ {x} → (B₁ at x) ⟶ (B₂ at f x)) →
+      {B₁ : IndexedSetoid A₁ b₁ b₁′} (B₂ : IndexedSetoid A₂ b₂ b₂′)
+    (f : A₁ → A₂) → (∀ {x} → (B₁ atₛ x) ⟶ (B₂ atₛ (f x))) →
     setoid (P.setoid A₁) B₁ ⟶ setoid (P.setoid A₂) B₂
 ⟶ {A₁ = A₁} {A₂} {B₁} B₂ f g = record
   { _⟨$⟩_ = fg
@@ -147,62 +151,62 @@ private
 
 module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a₂} where
 
-  equivalence : {B₁ : I.Setoid A₁ b₁ b₁′} {B₂ : I.Setoid A₂ b₂ b₂′}
+  equivalence : {B₁ : IndexedSetoid A₁ b₁ b₁′} {B₂ : IndexedSetoid A₂ b₂ b₂′}
     (A₁⇔A₂ : A₁ ⇔ A₂) →
-    (∀ {x} → _⟶_ (B₁ at x) (B₂ at (Equivalence.to   A₁⇔A₂ ⟨$⟩ x))) →
-    (∀ {y} → _⟶_ (B₂ at y) (B₁ at (Equivalence.from A₁⇔A₂ ⟨$⟩ y))) →
+    (∀ {x} → _⟶_ (B₁ atₛ x) (B₂ atₛ (Equivalence.to   A₁⇔A₂ ⟨$⟩ x))) →
+    (∀ {y} → _⟶_ (B₂ atₛ y) (B₁ atₛ (Equivalence.from A₁⇔A₂ ⟨$⟩ y))) →
     Equivalence (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
   equivalence {B₁} {B₂} A₁⇔A₂ B-to B-from = record
     { to   = ⟶ B₂ (_⟨$⟩_ (to   A₁⇔A₂)) B-to
     ; from = ⟶ B₁ (_⟨$⟩_ (from A₁⇔A₂)) B-from
     } where open Equivalence
 
-  equivalence-↞ : (B₁ : I.Setoid A₁ b₁ b₁′) {B₂ : I.Setoid A₂ b₂ b₂′}
+  equivalence-↞ : (B₁ : IndexedSetoid A₁ b₁ b₁′) {B₂ : IndexedSetoid A₂ b₂ b₂′}
     (A₁↞A₂ : A₁ ↞ A₂) →
-    (∀ {x} → Equivalence (B₁ at (LeftInverse.from A₁↞A₂ ⟨$⟩ x))
-                         (B₂ at x)) →
+    (∀ {x} → Equivalence (B₁ atₛ (LeftInverse.from A₁↞A₂ ⟨$⟩ x))
+                         (B₂ atₛ x)) →
     Equivalence (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
   equivalence-↞ B₁ {B₂} A₁↞A₂ B₁⇔B₂ =
     equivalence (LeftInverse.equivalence A₁↞A₂) B-to B-from
     where
-    B-to : ∀ {x} → _⟶_ (B₁ at x) (B₂ at (LeftInverse.to A₁↞A₂ ⟨$⟩ x))
+    B-to : ∀ {x} → _⟶_ (B₁ atₛ x) (B₂ atₛ (LeftInverse.to A₁↞A₂ ⟨$⟩ x))
     B-to = record
       { _⟨$⟩_ = λ x → Equivalence.to B₁⇔B₂ ⟨$⟩
-                      P.subst (I.Setoid.Carrier B₁)
+                      P.subst (IndexedSetoid.Carrier B₁)
                          (P.sym $ LeftInverse.left-inverse-of A₁↞A₂ _)
                          x
       ; cong  = F.cong (Equivalence.to B₁⇔B₂) ∘
-              subst-cong (λ {x} → I.Setoid._≈_ B₁ {x} {x})
+              subst-cong (λ {x} → IndexedSetoid._≈_ B₁ {x} {x})
                          (P.sym (LeftInverse.left-inverse-of A₁↞A₂ _))
       }
 
-    B-from : ∀ {y} → _⟶_ (B₂ at y) (B₁ at (LeftInverse.from A₁↞A₂ ⟨$⟩ y))
+    B-from : ∀ {y} → _⟶_ (B₂ atₛ y) (B₁ atₛ (LeftInverse.from A₁↞A₂ ⟨$⟩ y))
     B-from = Equivalence.from B₁⇔B₂
 
-  equivalence-↠ : {B₁ : I.Setoid A₁ b₁ b₁′} (B₂ : I.Setoid A₂ b₂ b₂′)
+  equivalence-↠ : {B₁ : IndexedSetoid A₁ b₁ b₁′} (B₂ : IndexedSetoid A₂ b₂ b₂′)
     (A₁↠A₂ : A₁ ↠ A₂) →
-    (∀ {x} → Equivalence (B₁ at x) (B₂ at (Surjection.to A₁↠A₂ ⟨$⟩ x))) →
+    (∀ {x} → Equivalence (B₁ atₛ x) (B₂ atₛ (Surjection.to A₁↠A₂ ⟨$⟩ x))) →
     Equivalence (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
   equivalence-↠ {B₁ = B₁} B₂ A₁↠A₂ B₁⇔B₂ =
     equivalence (Surjection.equivalence A₁↠A₂) B-to B-from
     where
-    B-to : ∀ {x} → _⟶_ (B₁ at x) (B₂ at (Surjection.to A₁↠A₂ ⟨$⟩ x))
+    B-to : ∀ {x} → _⟶_ (B₁ atₛ x) (B₂ atₛ (Surjection.to A₁↠A₂ ⟨$⟩ x))
     B-to = Equivalence.to B₁⇔B₂
 
-    B-from : ∀ {y} → _⟶_ (B₂ at y) (B₁ at (Surjection.from A₁↠A₂ ⟨$⟩ y))
+    B-from : ∀ {y} → _⟶_ (B₂ atₛ y) (B₁ atₛ (Surjection.from A₁↠A₂ ⟨$⟩ y))
     B-from = record
       { _⟨$⟩_ = λ x → Equivalence.from B₁⇔B₂ ⟨$⟩
-                      P.subst (I.Setoid.Carrier B₂)
+                      P.subst (IndexedSetoid.Carrier B₂)
                          (P.sym $ Surjection.right-inverse-of A₁↠A₂ _)
                          x
       ; cong  = F.cong (Equivalence.from B₁⇔B₂) ∘
-              subst-cong (λ {x} → I.Setoid._≈_ B₂ {x} {x})
+              subst-cong (λ {x} → IndexedSetoid._≈_ B₂ {x} {x})
                          (P.sym (Surjection.right-inverse-of A₁↠A₂ _))
       }
 
-  injection : {B₁ : I.Setoid A₁ b₁ b₁′} (B₂ : I.Setoid A₂ b₂ b₂′) →
+  injection : {B₁ : IndexedSetoid A₁ b₁ b₁′} (B₂ : IndexedSetoid A₂ b₂ b₂′) →
     (A₁↣A₂ : A₁ ↣ A₂) →
-    (∀ {x} → Injection (B₁ at x) (B₂ at (Injection.to A₁↣A₂ ⟨$⟩ x))) →
+    (∀ {x} → Injection (B₁ atₛ x) (B₂ atₛ (Injection.to A₁↣A₂ ⟨$⟩ x))) →
     Injection (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
   injection {B₁ = B₁} B₂ A₁↣A₂ B₁↣B₂ = record
     { to        = to
@@ -218,17 +222,17 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
       where
       lemma :
         ∀ {x x′}
-          {y : I.Setoid.Carrier B₁ x} {y′ : I.Setoid.Carrier B₁ x′} →
+          {y : IndexedSetoid.Carrier B₁ x} {y′ : IndexedSetoid.Carrier B₁ x′} →
         x ≡ x′ →
-        (eq : I.Setoid._≈_ B₂ (Injection.to B₁↣B₂ ⟨$⟩ y)
+        (eq : IndexedSetoid._≈_ B₂ (Injection.to B₁↣B₂ ⟨$⟩ y)
                               (Injection.to B₁↣B₂ ⟨$⟩ y′)) →
-        I.Setoid._≈_ B₁ y y′
+        IndexedSetoid._≈_ B₁ y y′
       lemma P.refl = Injection.injective B₁↣B₂
 
-  left-inverse : (B₁ : I.Setoid A₁ b₁ b₁′) {B₂ : I.Setoid A₂ b₂ b₂′} →
+  left-inverse : (B₁ : IndexedSetoid A₁ b₁ b₁′) {B₂ : IndexedSetoid A₂ b₂ b₂′} →
     (A₁↞A₂ : A₁ ↞ A₂) →
-    (∀ {x} → LeftInverse (B₁ at (LeftInverse.from A₁↞A₂ ⟨$⟩ x))
-                         (B₂ at x)) →
+    (∀ {x} → LeftInverse (B₁ atₛ (LeftInverse.from A₁↞A₂ ⟨$⟩ x))
+                         (B₂ atₛ x)) →
     LeftInverse (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
   left-inverse B₁ {B₂} A₁↞A₂ B₁↞B₂ = record
     { to              = Equivalence.to   eq
@@ -241,18 +245,18 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
     left : Equivalence.from eq LeftInverseOf Equivalence.to eq
     left (x , y) =
       LeftInverse.left-inverse-of A₁↞A₂ x ,
-      I.Setoid.trans B₁
+      IndexedSetoid.trans B₁
         (LeftInverse.left-inverse-of B₁↞B₂ _)
         (lemma (P.sym (LeftInverse.left-inverse-of A₁↞A₂ x)))
       where
       lemma :
         ∀ {x x′ y} (eq : x ≡ x′) →
-        I.Setoid._≈_ B₁ (P.subst (I.Setoid.Carrier B₁) eq y) y
-      lemma P.refl = I.Setoid.refl B₁
+        IndexedSetoid._≈_ B₁ (P.subst (IndexedSetoid.Carrier B₁) eq y) y
+      lemma P.refl = IndexedSetoid.refl B₁
 
-  surjection : {B₁ : I.Setoid A₁ b₁ b₁′} (B₂ : I.Setoid A₂ b₂ b₂′) →
+  surjection : {B₁ : IndexedSetoid A₁ b₁ b₁′} (B₂ : IndexedSetoid A₂ b₂ b₂′) →
     (A₁↠A₂ : A₁ ↠ A₂) →
-    (∀ {x} → Surjection (B₁ at x) (B₂ at (Surjection.to A₁↠A₂ ⟨$⟩ x))) →
+    (∀ {x} → Surjection (B₁ atₛ x) (B₂ atₛ (Surjection.to A₁↠A₂ ⟨$⟩ x))) →
     Surjection (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
   surjection B₂ A₁↠A₂ B₁↠B₂ = record
     { to         = Equivalence.to eq
@@ -267,17 +271,17 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
     right : Equivalence.from eq RightInverseOf Equivalence.to eq
     right (x , y) =
       Surjection.right-inverse-of A₁↠A₂ x ,
-      I.Setoid.trans B₂
+      IndexedSetoid.trans B₂
         (Surjection.right-inverse-of B₁↠B₂ _)
         (lemma (P.sym $ Surjection.right-inverse-of A₁↠A₂ x))
       where
       lemma : ∀ {x x′ y} (eq : x ≡ x′) →
-              I.Setoid._≈_ B₂ (P.subst (I.Setoid.Carrier B₂) eq y) y
-      lemma P.refl = I.Setoid.refl B₂
+              IndexedSetoid._≈_ B₂ (P.subst (IndexedSetoid.Carrier B₂) eq y) y
+      lemma P.refl = IndexedSetoid.refl B₂
 
-  inverse : {B₁ : I.Setoid A₁ b₁ b₁′} (B₂ : I.Setoid A₂ b₂ b₂′) →
+  inverse : {B₁ : IndexedSetoid A₁ b₁ b₁′} (B₂ : IndexedSetoid A₂ b₂ b₂′) →
     (A₁↔A₂ : A₁ ↔ A₂) →
-    (∀ {x} → Inverse (B₁ at x) (B₂ at (Inverse.to A₁↔A₂ ⟨$⟩ x))) →
+    (∀ {x} → Inverse (B₁ atₛ x) (B₂ atₛ (Inverse.to A₁↔A₂ ⟨$⟩ x))) →
     Inverse (setoid (P.setoid A₁) B₁) (setoid (P.setoid A₂) B₂)
   inverse {B₁} B₂ A₁↔A₂ B₁↔B₂ = record
     { to         = Surjection.to   surj
@@ -294,7 +298,7 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
     left : Surjection.from surj LeftInverseOf Surjection.to surj
     left (x , y) =
       Inverse.left-inverse-of A₁↔A₂ x ,
-      I.Setoid.trans B₁
+      IndexedSetoid.trans B₁
         (lemma (P.sym (Inverse.left-inverse-of A₁↔A₂ x))
                (P.sym (Inverse.right-inverse-of A₁↔A₂
                        (Inverse.to A₁↔A₂ ⟨$⟩ x))))
@@ -303,10 +307,10 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
       lemma :
         ∀ {x x′ y} → x ≡ x′ →
         (eq : (Inverse.to A₁↔A₂ ⟨$⟩ x) ≡ (Inverse.to A₁↔A₂ ⟨$⟩ x′)) →
-        I.Setoid._≈_ B₁
-          (Inverse.from B₁↔B₂ ⟨$⟩ P.subst (I.Setoid.Carrier B₂) eq y)
+        IndexedSetoid._≈_ B₁
+          (Inverse.from B₁↔B₂ ⟨$⟩ P.subst (IndexedSetoid.Carrier B₂) eq y)
           (Inverse.from B₁↔B₂ ⟨$⟩ y)
-      lemma P.refl P.refl = I.Setoid.refl B₁
+      lemma P.refl P.refl = IndexedSetoid.refl B₁
 
 ------------------------------------------------------------------------
 

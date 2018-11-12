@@ -35,4 +35,5 @@ dualBoundedJoinSemilattice = record
   ; isBoundedJoinSemilattice = dualIsBoundedJoinSemilattice
   }
 
-open J dualBoundedJoinSemilattice public
+open J dualBoundedJoinSemilattice
+  hiding (dualIsBoundedMeetSemilattice; dualBoundedMeetSemilattice) public
