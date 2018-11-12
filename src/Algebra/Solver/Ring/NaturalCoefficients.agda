@@ -7,14 +7,14 @@
 
 open import Algebra
 import Algebra.Operations.Semiring as SemiringOps
-open import Relation.Nullary
+open import Data.Maybe.Base using (Maybe; just; nothing; map)
 
 module Algebra.Solver.Ring.NaturalCoefficients
          {r₁ r₂}
          (R : CommutativeSemiring r₁ r₂)
          (dec : let open CommutativeSemiring R
                     open SemiringOps semiring in
-                ∀ m n → Dec (m × 1# ≈ n × 1#)) where
+                ∀ m n → Maybe (m × 1# ≈ n × 1#)) where
 
 import Algebra.Solver.Ring
 open import Algebra.Solver.Ring.AlmostCommutativeRing
@@ -22,7 +22,6 @@ open import Data.Nat.Base as ℕ
 open import Data.Product using (module Σ)
 open import Function
 import Relation.Binary.EqReasoning
-import Relation.Nullary.Decidable as Dec
 
 open CommutativeSemiring R
 open SemiringOps semiring
@@ -60,8 +59,8 @@ private
 
   -- Equality of certain expressions can be decided.
 
-  dec′ : ∀ m n → Dec (m ×′ 1# ≈ n ×′ 1#)
-  dec′ m n = Dec.map′ to from (dec m n)
+  dec′ : ∀ m n → Maybe (m ×′ 1# ≈ n ×′ 1#)
+  dec′ m n = map to (dec m n)
     where
     to : m × 1# ≈ n × 1# → m ×′ 1# ≈ n ×′ 1#
     to m≈n = begin
@@ -69,13 +68,6 @@ private
       m ×  1#  ≈⟨ m≈n ⟩
       n ×  1#  ≈⟨ ×≈×′ n 1# ⟩
       n ×′ 1#  ∎
-
-    from : m ×′ 1# ≈ n ×′ 1# → m × 1# ≈ n × 1#
-    from m≈n = begin
-      m ×  1#  ≈⟨ ×≈×′ m 1# ⟩
-      m ×′ 1#  ≈⟨ m≈n ⟩
-      n ×′ 1#  ≈⟨ sym $ ×≈×′ n 1# ⟩
-      n ×  1#  ∎
 
 -- The instantiation.
 
