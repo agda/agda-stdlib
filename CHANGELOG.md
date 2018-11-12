@@ -82,6 +82,18 @@ Other minor additions
   record IsMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
   ```
 
+* Added new functions to `Codata.Stream`:
+  ```agda
+  splitAt    : (n : ℕ) → Stream A ∞ → Vec A n × Stream A ∞
+  drop       : ℕ → Stream A ∞ → Stream A ∞
+  interleave : Stream A i → Thunk (Stream A) i → Stream A i
+  ```
+
+* Added new proof to `Codata.Stream.Properties`:
+  ```agda
+  splitAt-map : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
+  ```
+
 * Added new function to `Data.Fin.Base`:
   ```agda
   cast : m ≡ n → Fin m → Fin n
