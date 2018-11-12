@@ -7,6 +7,7 @@
 module Data.Integer.Properties where
 
 open import Algebra
+open import Algebra.FunctionProperties.Consequences.Propositional
 import Algebra.Morphism as Morphism
 import Algebra.Properties.AbelianGroup
 open import Data.Integer.Base renaming (suc to sucℤ)
@@ -29,9 +30,8 @@ open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
 
-open import Algebra.FunctionProperties (_≡_ {A = ℤ})
-open import Algebra.FunctionProperties.Consequences (setoid ℤ)
-open import Algebra.Structures (_≡_ {A = ℤ})
+open import Algebra.FunctionProperties {A = ℤ} _≡_
+open import Algebra.Structures {A = ℤ} _≡_
 open Morphism.Definitions ℤ ℕ _≡_
 open ≡-Reasoning
 open +-*-Solver

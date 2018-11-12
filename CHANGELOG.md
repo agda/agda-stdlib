@@ -64,6 +64,9 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 
 #### Other
 
+* The proof `sel⇒idem` has been moved from `Algebra.FunctionProperties.Consequences` to
+  `Algebra.FunctionProperties.Consequences.Propositional` as it does not rely on equality.
+
 * Moved `_≟_` from `Data.Bool.Base` to `Data.Bool.Properties`. Backwards
   compatibility has been (nearly completely) preserved by having `Data.Bool`
   publicly re-export `_≟_`.
