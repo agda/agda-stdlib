@@ -49,6 +49,25 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 
 * The name `RawSemigroup` in `Algebra` has been deprecated in favour of `RawMagma`.
 
+#### Relaxation of ring solvers requirements
+
+* In the ring solvers below, the assumption that equality is `Decidable`
+  has been replaced by a strictly weaker assumption that it is `WeaklyDecidable`.
+  This allows the solvers to be used when equality is not fully decidable.
+  ```
+  Algebra.Solver.Ring
+  Algebra.Solver.Ring.NaturalCoefficients
+  ```
+
+* Created a module `Algebra.Solver.Ring.NaturalCoefficients.Default` that
+  instantiates the solver for any `CommutativeSemiring`.
+
+#### Other
+
+* Moved `_≟_` from `Data.Bool.Base` to `Data.Bool.Properties`. Backwards
+  compatibility has been (nearly completely) preserved by having `Data.Bool`
+  publicly re-export `_≟_`.
+
 Other major changes
 -------------------
 
@@ -75,6 +94,11 @@ Other minor additions
 * Added new proof to `Algebra.FunctionProperties.Consequences`:
   ```agda
   wlog : Commutative f → Total _R_ → (∀ a b → a R b → P (f a b)) → ∀ a b → P (f a b)
+  ```
+
+* Added new operator to `Algebra.Solver.Ring`.
+  ```agda
+  _:×_
   ```
 
 * Added new records to `Algebra.Structures`:
