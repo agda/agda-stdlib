@@ -43,17 +43,15 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   Eq-isDecEquivalence ↦ isDecEquivalence
   ```
 
-#### Refactoring of ring solvers
+#### Relaxation of ring solvers requirements
 
-* In the ring solvers below, the `Decidable` module parameter was replaced by a
-  strictly weaker parameter `Relation.Binary.Core.WeaklyDecidable`, which makes
-  the ring solvers more versatile.
+* In the ring solvers below, the assumption that equality is `Decidable`
+  has been replaced by a strictly weaker assumption that it is `WeaklyDecidable`.
+  This allows the solvers to be used when equality is not fully decidable.
   ```
   Algebra.Solver.Ring
   Algebra.Solver.Ring.NaturalCoefficients
   ```
-
-* Added `_:×_` operator to `Algebra.Solver.Ring`.
 
 * Created a module `Algebra.Solver.Ring.NaturalCoefficients.Default` that
   instantiates the solver for any `CommutativeSemiring`.
@@ -80,6 +78,11 @@ Deprecated features
 
 Other minor additions
 ---------------------
+
+* Added new operator to `Algebra.Solver.Ring`.
+  ```agda
+  _:×_
+  ```
 
 * Added new functions to `Codata.Stream`:
   ```agda

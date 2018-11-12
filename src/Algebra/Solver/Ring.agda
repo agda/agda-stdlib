@@ -3,11 +3,17 @@
 --
 -- Solver for commutative ring or semiring equalities
 ------------------------------------------------------------------------
-
+--
 -- Uses ideas from the Coq ring tactic. See "Proving Equalities in a
 -- Commutative Ring Done Right in Coq" by Grégoire and Mahboubi. The
 -- code below is not optimised like theirs, though (in particular, our
 -- Horner normal forms are not sparse).
+--
+-- At first the `WeaklyDecidable` type may at first glance look useless
+-- as there is no guarantee that it doesn't always return `nothing`.
+-- However the implementation of it affects the power of the solver. The
+-- more equalities it returns, the more expressions the ring solver can
+-- solve.
 
 open import Algebra
 open import Algebra.Solver.Ring.AlmostCommutativeRing
