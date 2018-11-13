@@ -50,6 +50,9 @@ Other major changes
 
 * Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
 
+* Added new modules `Data.List.Relation.Split` and
+  `Data.List.Relation.Split.(Properties/Setoid)`.
+
 * Added new module `Data.Vec.Any.Properties`
 
 * Added new module `Relation.Binary.Properties.BoundedLattice`
@@ -93,6 +96,8 @@ Other minor additions
   _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
   _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
   _─_     : (xs : List A) → Fin (length xs) → List A
+
+  reverseAcc : List A → List A → List A
   ```
 
 * Added new proofs to `Data.List.All.Properties`:
