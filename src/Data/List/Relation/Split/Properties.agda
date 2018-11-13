@@ -22,8 +22,8 @@ module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
   length : ∀ {as l r} → Split L R as l r →
            List.length as ≡ List.length l + List.length r
   length []        = P.refl
-  length (l ˡ∷ sp) = P.cong suc (length sp)
-  length {as} {l} {r ∷ rs} (_ ʳ∷ sp) = begin
+  length (l ∷ˡ sp) = P.cong suc (length sp)
+  length {as} {l} {r ∷ rs} (_ ∷ʳ sp) = begin
     List.length as                       ≡⟨ P.cong suc (length sp) ⟩
     suc (List.length l + List.length rs) ≡⟨ P.sym $ +-suc _ _ ⟩
     List.length l + List.length (r ∷ rs) ∎ where open P.≡-Reasoning
@@ -36,13 +36,13 @@ module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
   ++⁺ : ∀ {as₁ as₂ l₁ l₂ r₁ r₂} → Split L R as₁ l₁ r₁ → Split L R as₂ l₂ r₂ →
         Split L R (as₁ List.++ as₂) (l₁ List.++ l₂) (r₁ List.++ r₂)
   ++⁺ []         sp₂ = sp₂
-  ++⁺ (l ˡ∷ sp₁) sp₂ = l ˡ∷ (++⁺ sp₁ sp₂)
-  ++⁺ (r ʳ∷ sp₁) sp₂ = r ʳ∷ (++⁺ sp₁ sp₂)
+  ++⁺ (l ∷ˡ sp₁) sp₂ = l ∷ˡ (++⁺ sp₁ sp₂)
+  ++⁺ (r ∷ʳ sp₁) sp₂ = r ∷ʳ (++⁺ sp₁ sp₂)
 
   disjoint : ∀ {as₁ as₂ l₁ r₂} → Split L R as₁ l₁ [] → Split L R as₂ [] r₂ →
              Split L R (as₁ List.++ as₂) l₁ r₂
   disjoint []         sp₂ = sp₂
-  disjoint (l ˡ∷ sp₁) sp₂ = l ˡ∷ disjoint sp₁ sp₂
+  disjoint (l ∷ˡ sp₁) sp₂ = l ∷ˡ disjoint sp₁ sp₂
 
 -- map
 
@@ -51,18 +51,18 @@ module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
          Split (λ a b → L (f a) (g b)) (λ a c → R (f a) (h c)) as l r →
          Split L R (List.map f as) (List.map g l) (List.map h r)
   map⁺ f g h []        = []
-  map⁺ f g h (l ˡ∷ sp) = l ˡ∷ map⁺ f g h sp
-  map⁺ f g h (r ʳ∷ sp) = r ʳ∷ map⁺ f g h sp
+  map⁺ f g h (l ∷ˡ sp) = l ∷ˡ map⁺ f g h sp
+  map⁺ f g h (r ∷ʳ sp) = r ∷ʳ map⁺ f g h sp
 
   map⁻ : ∀ {d e f} {D : Set d} {E : Set e} {F : Set f} {as l r}
          (f : D → A) (g : E → B) (h : F → C) →
          Split L R (List.map f as) (List.map g l) (List.map h r) →
          Split (λ a b → L (f a) (g b)) (λ a c → R (f a) (h c)) as l r
   map⁻ {as = []}    {[]}    {[]}    f g h []        = []
-  map⁻ {as = _ ∷ _} {[]}    {_ ∷ _} f g h (r ʳ∷ sp) = r ʳ∷ map⁻ f g h sp
-  map⁻ {as = _ ∷ _} {_ ∷ _} {[]}    f g h (l ˡ∷ sp) = l ˡ∷ map⁻ f g h sp
-  map⁻ {as = _ ∷ _} {_ ∷ _} {_ ∷ _} f g h (l ˡ∷ sp) = l ˡ∷ map⁻ f g h sp
-  map⁻ {as = _ ∷ _} {_ ∷ _} {_ ∷ _} f g h (r ʳ∷ sp) = r ʳ∷ map⁻ f g h sp
+  map⁻ {as = _ ∷ _} {[]}    {_ ∷ _} f g h (r ∷ʳ sp) = r ∷ʳ map⁻ f g h sp
+  map⁻ {as = _ ∷ _} {_ ∷ _} {[]}    f g h (l ∷ˡ sp) = l ∷ˡ map⁻ f g h sp
+  map⁻ {as = _ ∷ _} {_ ∷ _} {_ ∷ _} f g h (l ∷ˡ sp) = l ∷ˡ map⁻ f g h sp
+  map⁻ {as = _ ∷ _} {_ ∷ _} {_ ∷ _} f g h (r ∷ʳ sp) = r ∷ʳ map⁻ f g h sp
   -- impossible cases needed until 2.6.0
   map⁻ {as = []} {_} {_ ∷ _} f g h ()
   map⁻ {as = []} {_ ∷ _} {_} f g h ()
@@ -73,8 +73,8 @@ module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
   reverseAcc⁺ : ∀ {as₁ as₂ l₁ l₂ r₁ r₂} → Split L R as₁ l₁ r₁ → Split L R as₂ l₂ r₂ →
     Split L R (List.reverseAcc as₁ as₂) (List.reverseAcc l₁ l₂) (List.reverseAcc r₁ r₂)
   reverseAcc⁺ sp₁ []         = sp₁
-  reverseAcc⁺ sp₁ (l ˡ∷ sp₂) = reverseAcc⁺ (l ˡ∷ sp₁) sp₂
-  reverseAcc⁺ sp₁ (r ʳ∷ sp₂) = reverseAcc⁺ (r ʳ∷ sp₁) sp₂
+  reverseAcc⁺ sp₁ (l ∷ˡ sp₂) = reverseAcc⁺ (l ∷ˡ sp₁) sp₂
+  reverseAcc⁺ sp₁ (r ∷ʳ sp₂) = reverseAcc⁺ (r ∷ʳ sp₁) sp₂
 
   reverse⁺ : ∀ {as l r} → Split L R as l r →
             Split L R (List.reverse as) (List.reverse l) (List.reverse r)
