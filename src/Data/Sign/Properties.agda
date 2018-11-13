@@ -7,13 +7,15 @@
 module Data.Sign.Properties where
 
 open import Algebra
-open import Algebra.Structures
 open import Data.Empty
-open import Function
 open import Data.Sign
 open import Data.Product using (_,_)
+open import Function
+open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality
-open import Algebra.FunctionProperties (_≡_ {A = Sign})
+
+open import Algebra.Structures {A = Sign} _≡_
+open import Algebra.FunctionProperties {A = Sign} _≡_
 
 -- The opposite of a sign is not equal to the sign.
 
@@ -68,34 +70,37 @@ opposite-injective { + } { + } refl = refl
 *-cancel-≡ : Cancellative _*_
 *-cancel-≡ = *-cancelˡ-≡ , *-cancelʳ-≡
 
-*-isSemigroup : IsSemigroup _≡_ _*_
-*-isSemigroup = record
+*-isMagma : IsMagma _*_
+*-isMagma = record
   { isEquivalence = isEquivalence
-  ; assoc         = *-assoc
   ; ∙-cong        = cong₂ _*_
   }
 
-*-semigroup : Semigroup _ _
-*-semigroup = record
-  { Carrier     = Sign
-  ; _≈_         = _≡_
-  ; _∙_         = _*_
-  ; isSemigroup = *-isSemigroup
+*-magma : Magma 0ℓ 0ℓ
+*-magma = record
+  { isMagma = *-isMagma
   }
 
-*-isMonoid : IsMonoid _≡_ _*_ +
-*-isMonoid = record
-    { isSemigroup = *-isSemigroup
-    ; identity    = *-identity
-    }
+*-isSemigroup : IsSemigroup _*_
+*-isSemigroup = record
+  { isMagma = *-isMagma
+  ; assoc   = *-assoc
+  }
 
-*-monoid : Monoid _ _
+*-semigroup : Semigroup 0ℓ 0ℓ
+*-semigroup = record
+  { isSemigroup = *-isSemigroup
+  }
+
+*-isMonoid : IsMonoid _*_ +
+*-isMonoid = record
+  { isSemigroup = *-isSemigroup
+  ; identity    = *-identity
+  }
+
+*-monoid : Monoid 0ℓ 0ℓ
 *-monoid = record
-  { Carrier  = Sign
-  ; _≈_      = _≡_
-  ; _∙_      = _*_
-  ; ε        = +
-  ; isMonoid = *-isMonoid
+  { isMonoid = *-isMonoid
   }
 
 -- Other properties of _*_

@@ -49,6 +49,15 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 
 * The name `RawSemigroup` in `Algebra` has been deprecated in favour of `RawMagma`.
 
+* The fields `isEquivalence` and `∙-cong` in `IsSemigroup` have been
+  replaced with `isMagma`.
+
+* The fields `...` in `IsLattice` have been replaced with `∨-isSemilattice`
+  and `∧-isSemilattice`.
+
+* The record `Lattice` now exports proofs of `∨-idem` and `∧-idem` directly. Therefore
+  `∨-idempotence` and `∧-idempotence` in `Algebra.Properties.Lattice` have been deprecated.
+
 #### Relaxation of ring solvers requirements
 
 * In the ring solvers below, the assumption that equality is `Decidable`
@@ -249,6 +258,33 @@ Other minor additions
 * Added new function to `Data.Maybe.Base`:
   ```agda
   _<∣>_     : Maybe A → Maybe A → Maybe A
+  ```
+
+* Added new proofs to `Data.Nat.Properties`:
+  ```agda
+  +-isMagma       : IsMagma _+_
+  *-isMagma       : IsMagma _*_
+  ⊔-isMagma       : IsMagma _⊔_
+  ⊓-isMagma       : IsMagma _⊓_
+  ⊔-isBand        : IsBand _⊔_
+  ⊓-isBand        : IsBand _⊓_
+  ⊔-isSemilattice : IsSemilattice _⊔_
+  ⊓-isSemilattice : IsSemilattice _⊓_
+  
+  +-magma       : Magma 0ℓ 0ℓ
+  *-magma       : Magma 0ℓ 0ℓ
+  ⊔-magma       : Magma 0ℓ 0ℓ
+  ⊓-magma       : Magma 0ℓ 0ℓ
+  ⊔-band        : Band 0ℓ 0ℓ
+  ⊓-band        : Band 0ℓ 0ℓ
+  ⊔-semilattice : Semilattice 0ℓ 0ℓ
+  ⊓-semilattice : Semilattice 0ℓ 0ℓ
+  ```
+
+* Added new proofs to `Data.Sign.Properties`:
+  ```agda
+  *-isMagma : IsMagma _*_
+  *-magma   : Magma 0ℓ 0ℓ
   ```
 
 * Added new functions to `Data.Vec.Any.Properties`:

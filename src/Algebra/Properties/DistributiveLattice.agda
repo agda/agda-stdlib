@@ -22,7 +22,7 @@ open import Relation.Binary.EqReasoning setoid
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; module Equivalence)
-open import Data.Product
+open import Data.Product using (_,_)
 
 ∨-∧-distribˡ : _∨_ DistributesOverˡ _∧_
 ∨-∧-distribˡ x y z = begin
@@ -36,12 +36,12 @@ open import Data.Product
 
 ∧-∨-distribˡ : _∧_ DistributesOverˡ _∨_
 ∧-∨-distribˡ x y z = begin
-  x ∧ (y ∨ z)                ≈⟨ sym (proj₂ absorptive _ _) ⟨ ∧-cong ⟩ refl ⟩
+  x ∧ (y ∨ z)                ≈⟨ sym (∧-absorbs-∨ _ _) ⟨ ∧-cong ⟩ refl ⟩
   (x ∧ (x ∨ y)) ∧ (y ∨ z)    ≈⟨ (refl ⟨ ∧-cong ⟩ ∨-comm _ _) ⟨ ∧-cong ⟩ refl ⟩
   (x ∧ (y ∨ x)) ∧ (y ∨ z)    ≈⟨ ∧-assoc _ _ _ ⟩
-  x ∧ ((y ∨ x) ∧ (y ∨ z))    ≈⟨ refl ⟨ ∧-cong ⟩ sym (proj₁ ∨-∧-distrib _ _ _) ⟩
-  x ∧ (y ∨ x ∧ z)            ≈⟨ sym (proj₁ absorptive _ _) ⟨ ∧-cong ⟩ refl ⟩
-  (x ∨ x ∧ z) ∧ (y ∨ x ∧ z)  ≈⟨ sym $ proj₂ ∨-∧-distrib _ _ _ ⟩
+  x ∧ ((y ∨ x) ∧ (y ∨ z))    ≈⟨ refl ⟨ ∧-cong ⟩ sym (∨-∧-distribˡ _ _ _) ⟩
+  x ∧ (y ∨ x ∧ z)            ≈⟨ sym (∨-absorbs-∧ _ _) ⟨ ∧-cong ⟩ refl ⟩
+  (x ∨ x ∧ z) ∧ (y ∨ x ∧ z)  ≈⟨ sym $ ∨-∧-distribʳ _ _ _ ⟩
   x ∧ y ∨ x ∧ z              ∎
 
 ∧-∨-distribʳ : _∧_ DistributesOverʳ _∨_
@@ -59,7 +59,7 @@ open import Data.Product
 ∧-∨-isDistributiveLattice : IsDistributiveLattice _≈_ _∧_ _∨_
 ∧-∨-isDistributiveLattice = record
   { isLattice    = ∧-∨-isLattice
-  ; ∨-∧-distribʳ = proj₂ ∧-∨-distrib
+  ; ∨-∧-distribʳ = ∧-∨-distribʳ
   }
 
 ∧-∨-distributiveLattice : DistributiveLattice _ _
