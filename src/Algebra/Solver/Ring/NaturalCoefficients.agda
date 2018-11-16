@@ -29,6 +29,8 @@ open Relation.Binary.EqReasoning setoid
 
 private
 
+  AR = fromCommutativeSemiring R
+
   -- The coefficient "ring".
 
   ℕ-ring : RawRing _
@@ -47,7 +49,7 @@ private
   -- Function.Related.TypeIsomorphisms.test would fail to type-check.
 
   homomorphism :
-    ℕ-ring -Raw-AlmostCommutative⟶ fromCommutativeSemiring R
+    ℕ-ring -Raw-AlmostCommutative⟶ AR
   homomorphism = record
     { ⟦_⟧    = λ n → n ×′ 1#
     ; +-homo = ×′-homo-+ 1#
@@ -71,4 +73,4 @@ private
 
 -- The instantiation.
 
-open Algebra.Solver.Ring _ _ homomorphism dec′ public
+open Algebra.Solver.Ring ℕ-ring AR homomorphism dec′ public

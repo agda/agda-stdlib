@@ -49,43 +49,17 @@ open import Data.Maybe.Base using (just; nothing)
 open import Function
 open import Level using (_⊔_)
 
-infix  9 :-_ -H_ -N_
-infixr 9 _:×_ _:^_ _^N_
+infix  9 -H_ -N_
+infixr 9 _^N_
 infix  8 _*x+_ _*x+HN_ _*x+H_
-infixl 8 _:*_ _*N_ _*H_ _*NH_ _*HN_
-infixl 7 _:+_ _:-_ _+H_ _+N_
+infixl 8 _*N_ _*H_ _*NH_ _*HN_
+infixl 7 _+H_ _+N_
 infix  4 _≈H_ _≈N_
 
 ------------------------------------------------------------------------
 -- Polynomials
 
-data Op : Set where
-  [+] : Op
-  [*] : Op
-
--- The polynomials are indexed by the number of variables.
-
-data Polynomial (m : ℕ) : Set r₁ where
-  op   : (o : Op) (p₁ : Polynomial m) (p₂ : Polynomial m) → Polynomial m
-  con  : (c : C.Carrier) → Polynomial m
-  var  : (x : Fin m) → Polynomial m
-  _:^_ : (p : Polynomial m) (n : ℕ) → Polynomial m
-  :-_  : (p : Polynomial m) → Polynomial m
-
--- Short-hand notation.
-
-_:+_ : ∀ {n} → Polynomial n → Polynomial n → Polynomial n
-_:+_ = op [+]
-
-_:*_ : ∀ {n} → Polynomial n → Polynomial n → Polynomial n
-_:*_ = op [*]
-
-_:-_ : ∀ {n} → Polynomial n → Polynomial n → Polynomial n
-x :- y = x :+ :- y
-
-_:×_ : ∀ {n} → ℕ → Polynomial n → Polynomial n
-zero :× p = con C.0#
-suc m :× p = p :+ m :× p
+open import Algebra.Construct.Polynomial Coeff public
 
 -- Semantics.
 

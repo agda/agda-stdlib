@@ -22,7 +22,7 @@ open import Function.Related.TypeIsomorphisms
 ------------------------------------------------------------------------
 -- The solver
 
-module ×-⊎-Solver (k : Symmetric-kind) {ℓ} =
+module ×-⊎-Solver {ℓ} (k : Symmetric-kind) =
   Algebra.Solver.Ring.NaturalCoefficients.Default
     (×-⊎-commutativeSemiring k ℓ)
 
