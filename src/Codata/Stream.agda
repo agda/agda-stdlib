@@ -14,6 +14,7 @@ open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_)
 open import Data.Vec using (Vec; []; _∷_)
 open import Data.Product as P hiding (map)
+open import Function
 
 ------------------------------------------------------------------------
 -- Definition
@@ -36,9 +37,15 @@ module _ {ℓ} {A : Set ℓ} where
  lookup zero    xs = head xs
  lookup (suc k) xs = lookup k (tail xs)
 
+ splitAt : (n : ℕ) → Stream A ∞ → Vec A n × Stream A ∞
+ splitAt zero    xs       = [] , xs
+ splitAt (suc n) (x ∷ xs) = P.map₁ (x ∷_) (splitAt n (xs .force))
+
  take : (n : ℕ) → Stream A ∞ → Vec A n
- take zero    xs = []
- take (suc n) xs = head xs ∷ take n (tail xs)
+ take n xs = proj₁ (splitAt n xs)
+
+ drop : ℕ → Stream A ∞ → Stream A ∞
+ drop n xs = proj₂ (splitAt n xs)
 
  infixr 5 _++_ _⁺++_
  _++_ : ∀ {i} → List A → Stream A i → Stream A i
@@ -53,6 +60,17 @@ module _ {ℓ} {A : Set ℓ} where
 
  concat : ∀ {i} → Stream (List⁺ A) i → Stream A i
  concat (xs ∷ xss) = xs ⁺++ λ where .force → concat (xss .force)
+
+ interleave : ∀ {i} → Stream A i → Thunk (Stream A) i → Stream A i
+ interleave (x ∷ xs) ys = x ∷ λ where .force → interleave (ys .force) xs
+
+ chunksOf : (n : ℕ) → Stream A ∞ → Stream (Vec A n) ∞
+ chunksOf n = chunksOfAcc n id module ChunksOf where
+
+   chunksOfAcc : ∀ {i} k (acc : Vec A k → Vec A n) →
+                 Stream A ∞ → Stream (Vec A n) i
+   chunksOfAcc zero    acc xs       = acc [] ∷ λ where .force → chunksOfAcc n id xs
+   chunksOfAcc (suc k) acc (x ∷ xs) = chunksOfAcc k (acc ∘ (x ∷_)) (xs .force)
 
 module _ {ℓ ℓ′} {A : Set ℓ} {B : Set ℓ′} where
 

@@ -29,9 +29,9 @@ open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
 
-open import Algebra.FunctionProperties (_≡_ {A = ℤ})
-open import Algebra.FunctionProperties.Consequences (setoid ℤ)
-open import Algebra.Structures (_≡_ {A = ℤ})
+open import Algebra.FunctionProperties {A = ℤ} _≡_
+open import Algebra.FunctionProperties.Consequences.Propositional
+open import Algebra.Structures  {A = ℤ} _≡_
 module ℤtoℕ = Morphism.Definitions ℤ ℕ _≡_
 module ℕtoℤ = Morphism.Definitions ℕ ℤ _≡_
 open +-*-Solver
@@ -624,7 +624,7 @@ private
         = refl
 
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
-*-distribˡ-+ = comm+distrʳ⇒distrˡ (cong₂ _+_) *-comm *-distribʳ-+
+*-distribˡ-+ = comm+distrʳ⇒distrˡ *-comm *-distribʳ-+
 
 sm*n≡n+m*n : ∀ m n → sucℤ m * n ≡ n + m * n
 sm*n≡n+m*n m n = begin
