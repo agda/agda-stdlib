@@ -15,6 +15,7 @@ open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
+open import Level using (0ℓ)
 open import Relation.Binary.Core using (Decidable)
 open import Relation.Binary.PropositionalEquality
   hiding ([_]; proof-irrelevance)
@@ -87,16 +88,48 @@ false ≟ true  = no λ()
 ∨-sel false y = inj₂ refl
 ∨-sel true y  = inj₁ refl
 
-∨-isSemigroup : IsSemigroup _∨_
-∨-isSemigroup = record
+∨-isMagma : IsMagma _∨_
+∨-isMagma = record
   { isEquivalence = isEquivalence
-  ; assoc         = ∨-assoc
   ; ∙-cong        = cong₂ _∨_
   }
 
-∨-semigroup : Semigroup _ _
+∨-magma : Magma 0ℓ 0ℓ
+∨-magma = record
+  { isMagma = ∨-isMagma
+  }
+
+∨-isSemigroup : IsSemigroup _∨_
+∨-isSemigroup = record
+  { isMagma = ∨-isMagma
+  ; assoc   = ∨-assoc
+  }
+
+∨-semigroup : Semigroup 0ℓ 0ℓ
 ∨-semigroup = record
   { isSemigroup = ∨-isSemigroup
+  }
+
+∨-isBand : IsBand _∨_
+∨-isBand = record
+  { isSemigroup = ∨-isSemigroup
+  ; idem        = ∨-idem
+  }
+
+∨-band : Band 0ℓ 0ℓ
+∨-band = record
+  { isBand = ∨-isBand
+  }
+
+∨-isSemilattice : IsSemilattice _∨_
+∨-isSemilattice = record
+  { isBand = ∨-isBand
+  ; comm   = ∨-comm
+  }
+
+∨-semilattice : Semilattice 0ℓ 0ℓ
+∨-semilattice = record
+  { isSemilattice = ∨-isSemilattice
   }
 
 ∨-isCommutativeMonoid : IsCommutativeMonoid _∨_ false
@@ -106,7 +139,7 @@ false ≟ true  = no λ()
   ; comm        = ∨-comm
   }
 
-∨-commutativeMonoid : CommutativeMonoid _ _
+∨-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
 ∨-commutativeMonoid = record
   { isCommutativeMonoid = ∨-isCommutativeMonoid
   }
@@ -118,7 +151,7 @@ false ≟ true  = no λ()
    ; idem = ∨-idem
    }
 
-∨-idempotentCommutativeMonoid : IdempotentCommutativeMonoid _ _
+∨-idempotentCommutativeMonoid : IdempotentCommutativeMonoid 0ℓ 0ℓ
 ∨-idempotentCommutativeMonoid = record
   { isIdempotentCommutativeMonoid = ∨-isIdempotentCommutativeMonoid
   }
@@ -213,16 +246,48 @@ false ≟ true  = no λ()
 ∨-∧-absorptive : Absorptive _∨_ _∧_
 ∨-∧-absorptive = ∨-abs-∧ , ∧-abs-∨
 
-∧-isSemigroup : IsSemigroup _∧_
-∧-isSemigroup = record
+∧-isMagma : IsMagma _∧_
+∧-isMagma = record
   { isEquivalence = isEquivalence
-  ; assoc         = ∧-assoc
   ; ∙-cong        = cong₂ _∧_
   }
 
-∧-semigroup : Semigroup _ _
+∧-magma : Magma 0ℓ 0ℓ
+∧-magma = record
+  { isMagma = ∧-isMagma
+  }
+
+∧-isSemigroup : IsSemigroup _∧_
+∧-isSemigroup = record
+  { isMagma = ∧-isMagma
+  ; assoc   = ∧-assoc
+  }
+
+∧-semigroup : Semigroup 0ℓ 0ℓ
 ∧-semigroup = record
   { isSemigroup = ∧-isSemigroup
+  }
+
+∧-isBand : IsBand _∧_
+∧-isBand = record
+  { isSemigroup = ∧-isSemigroup
+  ; idem        = ∧-idem
+  }
+
+∧-band : Band 0ℓ 0ℓ
+∧-band = record
+  { isBand = ∧-isBand
+  }
+
+∧-isSemilattice : IsSemilattice _∧_
+∧-isSemilattice = record
+  { isBand = ∧-isBand
+  ; comm   = ∧-comm
+  }
+
+∧-semilattice : Semilattice 0ℓ 0ℓ
+∧-semilattice = record
+  { isSemilattice = ∧-isSemilattice
   }
 
 ∧-isCommutativeMonoid : IsCommutativeMonoid _∧_ true
@@ -232,7 +297,7 @@ false ≟ true  = no λ()
   ; comm        = ∧-comm
   }
 
-∧-commutativeMonoid : CommutativeMonoid _ _
+∧-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
 ∧-commutativeMonoid = record
   { isCommutativeMonoid = ∧-isCommutativeMonoid
   }
@@ -244,7 +309,7 @@ false ≟ true  = no λ()
   ; idem = ∧-idem
   }
 
-∧-idempotentCommutativeMonoid : IdempotentCommutativeMonoid _ _
+∧-idempotentCommutativeMonoid : IdempotentCommutativeMonoid 0ℓ 0ℓ
 ∧-idempotentCommutativeMonoid = record
   { isIdempotentCommutativeMonoid = ∧-isIdempotentCommutativeMonoid
   }
@@ -258,7 +323,7 @@ false ≟ true  = no λ()
   ; zeroˡ    = ∧-zeroˡ
   }
 
-∨-∧-commutativeSemiring : CommutativeSemiring _ _
+∨-∧-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
 ∨-∧-commutativeSemiring = record
   { _+_                   = _∨_
   ; _*_                   = _∧_
@@ -276,7 +341,7 @@ false ≟ true  = no λ()
   ; zeroˡ    = ∨-zeroˡ
   }
 
-∧-∨-commutativeSemiring : CommutativeSemiring _ _
+∧-∨-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
 ∧-∨-commutativeSemiring = record
   { _+_                   = _∧_
   ; _*_                   = _∨_
@@ -287,17 +352,12 @@ false ≟ true  = no λ()
 
 ∨-∧-isLattice : IsLattice _∨_ _∧_
 ∨-∧-isLattice = record
-  { isEquivalence = isEquivalence
-  ; ∨-comm        = ∨-comm
-  ; ∨-assoc       = ∨-assoc
-  ; ∨-cong        = cong₂ _∨_
-  ; ∧-comm        = ∧-comm
-  ; ∧-assoc       = ∧-assoc
-  ; ∧-cong        = cong₂ _∧_
-  ; absorptive    = ∨-∧-absorptive
+  { ∨-isSemilattice = ∨-isSemilattice
+  ; ∧-isSemilattice = ∧-isSemilattice
+  ; absorptive      = ∨-∧-absorptive
   }
 
-∨-∧-lattice : Lattice _ _
+∨-∧-lattice : Lattice 0ℓ 0ℓ
 ∨-∧-lattice = record
   { isLattice = ∨-∧-isLattice
   }
@@ -308,7 +368,7 @@ false ≟ true  = no λ()
   ; ∨-∧-distribʳ = ∨-distribʳ-∧
   }
 
-∨-∧-distributiveLattice : DistributiveLattice _ _
+∨-∧-distributiveLattice : DistributiveLattice 0ℓ 0ℓ
 ∨-∧-distributiveLattice = record
   { isDistributiveLattice = ∨-∧-isDistributiveLattice
   }
@@ -321,7 +381,7 @@ false ≟ true  = no λ()
   ; ¬-cong        = cong not
   }
 
-∨-∧-booleanAlgebra : BooleanAlgebra _ _
+∨-∧-booleanAlgebra : BooleanAlgebra 0ℓ 0ℓ
 ∨-∧-booleanAlgebra = record
   { isBooleanAlgebra = ∨-∧-isBooleanAlgebra
   }
@@ -333,7 +393,7 @@ xor-is-ok : ∀ x y → x xor y ≡ (x ∨ y) ∧ not (x ∧ y)
 xor-is-ok true  y = refl
 xor-is-ok false y = sym (∧-identityʳ _)
 
-xor-∧-commutativeRing : CommutativeRing _ _
+xor-∧-commutativeRing : CommutativeRing 0ℓ 0ℓ
 xor-∧-commutativeRing = commutativeRing
   where
   import Algebra.Properties.BooleanAlgebra as BA

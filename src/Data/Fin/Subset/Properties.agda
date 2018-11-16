@@ -239,16 +239,48 @@ module _ (n : ℕ) where
 
   open AlgebraicStructures {A = Subset n} _≡_
 
+  ∩-isMagma : IsMagma _∩_
+  ∩-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = cong₂ _∩_
+    }
+
+  ∩-magma : Magma _ _
+  ∩-magma = record
+    { isMagma = ∩-isMagma
+    }
+
   ∩-isSemigroup : IsSemigroup _∩_
   ∩-isSemigroup = record
-    { isEquivalence = isEquivalence
-    ; assoc         = ∩-assoc
-    ; ∙-cong        = cong₂ _∩_
+    { isMagma = ∩-isMagma
+    ; assoc   = ∩-assoc
     }
 
   ∩-semigroup : Semigroup _ _
   ∩-semigroup = record
     { isSemigroup = ∩-isSemigroup
+    }
+
+  ∩-isBand : IsBand _∩_
+  ∩-isBand = record
+    { isSemigroup = ∩-isSemigroup
+    ; idem        = ∩-idem
+    }
+
+  ∩-band : Band _ _
+  ∩-band = record
+    { isBand = ∩-isBand
+    }
+
+  ∩-isSemilattice : IsSemilattice _∩_
+  ∩-isSemilattice = record
+    { isBand = ∩-isBand
+    ; comm   = ∩-comm
+    }
+
+  ∩-semilattice : Semilattice _ _
+  ∩-semilattice = record
+    { isSemilattice = ∩-isSemilattice
     }
 
   ∩-isMonoid : IsMonoid _∩_ ⊤
@@ -378,16 +410,48 @@ module _ (n : ℕ) where
 
   open AlgebraicStructures {A = Subset n} _≡_
 
+  ∪-isMagma : IsMagma _∪_
+  ∪-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = cong₂ _∪_
+    }
+
+  ∪-magma : Magma _ _
+  ∪-magma = record
+    { isMagma = ∪-isMagma
+    }
+
   ∪-isSemigroup : IsSemigroup _∪_
   ∪-isSemigroup = record
-    { isEquivalence = isEquivalence
-    ; assoc         = ∪-assoc
-    ; ∙-cong        = cong₂ _∪_
+    { isMagma = ∪-isMagma
+    ; assoc   = ∪-assoc
     }
 
   ∪-semigroup : Semigroup _ _
   ∪-semigroup = record
     { isSemigroup = ∪-isSemigroup
+    }
+
+  ∪-isBand : IsBand _∪_
+  ∪-isBand = record
+    { isSemigroup = ∪-isSemigroup
+    ; idem        = ∪-idem
+    }
+
+  ∪-band : Band _ _
+  ∪-band = record
+    { isBand = ∪-isBand
+    }
+
+  ∪-isSemilattice : IsSemilattice _∪_
+  ∪-isSemilattice = record
+    { isBand = ∪-isBand
+    ; comm   = ∪-comm
+    }
+
+  ∪-semilattice : Semilattice _ _
+  ∪-semilattice = record
+    { isSemilattice = ∪-isSemilattice
     }
 
   ∪-isMonoid : IsMonoid _∪_ ⊥
@@ -426,14 +490,9 @@ module _ (n : ℕ) where
 
   ∪-∩-isLattice : IsLattice _∪_ _∩_
   ∪-∩-isLattice = record
-    { isEquivalence = isEquivalence
-    ; ∨-comm        = ∪-comm
-    ; ∨-assoc       = ∪-assoc
-    ; ∨-cong        = cong₂ _∪_
-    ; ∧-comm        = ∩-comm
-    ; ∧-assoc       = ∩-assoc
-    ; ∧-cong        = cong₂ _∩_
-    ; absorptive    = ∪-abs-∩ , ∩-abs-∪
+    { ∨-isSemilattice = ∪-isSemilattice
+    ; ∧-isSemilattice = ∩-isSemilattice n
+    ; absorptive      = ∪-abs-∩ , ∩-abs-∪
     }
 
   ∪-∩-lattice : Lattice _ _

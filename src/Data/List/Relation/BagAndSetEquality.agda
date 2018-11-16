@@ -208,10 +208,12 @@ commutativeMonoid {a} k A = record
   ; ε                   = []
   ; isCommutativeMonoid = record
     { isSemigroup = record
-      { isEquivalence = Eq.isEquivalence
+      { isMagma = record
+        { isEquivalence = Eq.isEquivalence
+        ; ∙-cong        = ++-cong
+        }
       ; assoc         = λ xs ys zs →
                           Eq.reflexive (LP.++-assoc xs ys zs)
-      ; ∙-cong        = ++-cong
       }
     ; identityˡ = λ xs {x} → x ∈ xs ∎
     ; comm      = λ xs ys {x} →
