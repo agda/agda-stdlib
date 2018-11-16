@@ -140,12 +140,12 @@ div-neg-is-neg-divℕ n (ℕ.suc d) = -1*n≡-n (n divℕ ℕ.suc d)
 n<s[n/ℕd]*d : ∀ n d {d≢0} → n ℤ.< ℤ.suc ((n divℕ d) {d≢0}) ℤ.* ℤ.+ d
 n<s[n/ℕd]*d n ℕ.zero {()}
 n<s[n/ℕd]*d n sd@(ℕ.suc d) = begin
-  n                   ≡⟨ a≡a%ℕn+[a/ℕn]*n n sd ⟩
-  ℤ.+ r ℤ.+ q ℤ.* +sd <⟨ +-monoˡ-< (q ℤ.* +sd) {ℤ.+ r} (ℤ.+≤+ (n%ℕd<d n sd)) ⟩
-  +sd ℤ.+ q ℤ.* +sd   ≡⟨ sym (sm*n≡n+m*n q +sd) ⟩
-  ℤ.suc q ℤ.* +sd     ∎ where
+  suc n                     ≡⟨ cong suc (a≡a%ℕn+[a/ℕn]*n n sd) ⟩
+  suc (ℤ.+ r ℤ.+ q ℤ.* +sd) ≤⟨ +-monoˡ-< (q ℤ.* +sd) {ℤ.+ r} (ℤ.+≤+ (n%ℕd<d n sd)) ⟩
+  +sd ℤ.+ q ℤ.* +sd         ≡⟨ sym (sm*n≡n+m*n q +sd) ⟩
+  ℤ.suc q ℤ.* +sd           ∎ where
   q = n divℕ sd; +sd = ℤ.+ sd; r = n modℕ sd
-  open <-Reasoning
+  open ≤-Reasoning
 
 a≡a%n+[a/n]*n : ∀ a n {≢0} → a ≡ + (a mod n) {≢0} + (a div n) {≢0} * n
 a≡a%n+[a/n]*n n (+ 0) {()}
