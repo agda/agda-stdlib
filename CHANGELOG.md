@@ -45,20 +45,29 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 
 #### Changes to the algebra hierarchy
 
+* Over time the algebra inheritance hierarchy has become a little
+  wonky due to poorly structured additions. This attempts to straighten
+  the hierarchy out and new policies have been put in place so that
+  the need for additional such changes will be minimised in the future.
+
 * Added `Magma` and `IsMagma` to the algebra hierarchy.
 
-* The name `RawSemigroup` in `Algebra` has been deprecated in favour of `RawMagma`.
+* The name `RawSemigroup` in `Algebra` has been deprecated in favour
+  of `RawMagma`.
 
 * The fields `isEquivalence` and `∙-cong` in `IsSemigroup` have been
   replaced with `isMagma`.
 
-* The fields `...` in `IsLattice` have been replaced with `∨-isSemilattice`
-  and `∧-isSemilattice`.
+* The fields `isEquivalence`, `∨-cong`, `∨-assoc`, `∨-comm`, `∧-cong`,
+  `∧-assoc`  and `∧-comm` in `IsLattice` have been replaced with
+  `∨-isSemilattice` and `∧-isSemilattice`.
 
-* The record `Lattice` now exports proofs of `∨-idem` and `∧-idem` directly. Therefore
-  `∨-idempotence` and `∧-idempotence` in `Algebra.Properties.Lattice` have been deprecated.
+* The record `Lattice` now exports proofs of `∨-idem` and `∧-idem` directly.
+  Therefore `∨-idempotence` and `∧-idempotence` in `Algebra.Properties.Lattice`
+  have been deprecated.
 
-* The record `BooleanAlgebra` now exports `∨-isSemigroup`, `∧-isSemigroup` directly so `Algebra.Properties.BooleanAlgebra` no longer does so.
+* The record `BooleanAlgebra` now exports `∨-isSemigroup`, `∧-isSemigroup`
+  directly  so `Algebra.Properties.BooleanAlgebra` no longer does so.
 
 #### Relaxation of ring solvers requirements
 
