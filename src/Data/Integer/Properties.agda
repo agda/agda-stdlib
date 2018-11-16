@@ -24,7 +24,6 @@ open import Function using (_∘_; _$_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.PartialOrderReasoning as POR
-import Relation.Binary.StrictPartialOrderReasoning as SPOR
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
@@ -1271,9 +1270,6 @@ n≤1+n n = ≤-step ≤-refl
   ; isStrictTotalOrder = <-isStrictTotalOrder
   }
 
--- A module for reasoning about the _<_ relation
-module <-Reasoning = SPOR <-strictPartialOrder
-
 -- Other properties of _<_
 
 n≮n : ∀ {n} → n ≮ n
@@ -1310,9 +1306,9 @@ n≮n { -[1+ suc n ]} (-≤- n<n) =  contradiction n<n ℕₚ.1+n≰n
 
 +-mono-< : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
 +-mono-< {m} {n} {i} {j} m<n i<j = begin
-  m + i <⟨ +-monoˡ-< i {m} {n} m<n ⟩
-  n + i <⟨ +-monoʳ-< n i<j ⟩
-  n + j ∎ where open <-Reasoning
+  sucℤ (m + i) ≤⟨ suc-mono {m + i} (<⇒≤ (+-monoˡ-< i {m} {n} m<n)) ⟩
+  sucℤ (n + i) ≤⟨ +-monoʳ-< n i<j ⟩
+  n + j ∎ where open ≤-Reasoning
 
 +-mono-≤-< : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
 +-mono-≤-< {m} {n} {i} {j} m≤n i<j = ≤-<-trans (+-monoˡ-≤ i m≤n) (+-monoʳ-< n i<j)

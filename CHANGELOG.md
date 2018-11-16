@@ -91,8 +91,6 @@ Other major changes
 
 * Added new module `Relation.Binary.Properties.BoundedLattice`
 
-* Added new module `Relation.Binary.StrictPartialOrderReasoning`
-
 Deprecated features
 -------------------
 
