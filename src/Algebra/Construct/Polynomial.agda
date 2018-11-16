@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Multivariate Polynomials over a ring of coefficients
+------------------------------------------------------------------------
+
 open import Algebra
 
 module Algebra.Construct.Polynomial {r} (K : RawRing r) where
