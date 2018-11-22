@@ -84,8 +84,13 @@ Other major changes
 
 * Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
 
+
 * Added new modules `Data.Integer.Divisibility.Properties`,
   and `Data.Integer.DivMod`.
+
+* Added new modules `Data.List.First` and `Data.List.First.Properties` for a
+  generalization of the notion of "first element in the list to satisfy a
+  predicate".
 
 * Added new module `Data.Vec.Any.Properties`
 
@@ -350,6 +355,12 @@ Other minor additions
 * Added new function to `Data.Maybe.Base`:
   ```agda
   _<∣>_     : Maybe A → Maybe A → Maybe A
+  ```
+
+* Added new functions to `Data.Sum.Base`:
+  ```agda
+  fromDec : Dec P → P ⊎ ¬ P
+  toDec   : P ⊎ ¬ P → Dec P
   ```
 
 * Added new functions to `Data.Vec.Any.Properties`:
