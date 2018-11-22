@@ -11,7 +11,7 @@ open import Data.List.All as All using (All; []; _∷_)
 import Data.List.All.Properties as All
 open import Data.List.Base as List hiding (map; uncons)
 open import Data.List.Membership.Propositional.Properties using ([]∈inits)
-open import Data.List.Relation.Pointwise using (Pointwise; []; _∷_)
+open import Data.List.Relation.Pointwise using (Pointwise; []; _∷_; isEquivalence)
 open import Data.List.Relation.Prefix.Heterogeneous as Prefix hiding (PrefixView; _++_)
 open import Data.Nat.Base using (ℕ; zero; suc; _≤_; z≤n; s≤s)
 open import Data.Nat.Properties using (suc-injective)
@@ -53,6 +53,17 @@ module _ {a b r s e} {A : Set a} {B : Set b}
   antisym : Antisym R S E → Antisym (Prefix R) (Prefix S) (Pointwise E)
   antisym rs⇒e []       []       = []
   antisym rs⇒e (r ∷ rs) (s ∷ ss) = rs⇒e r s ∷ antisym rs⇒e rs ss
+
+module _ {a e} {A : Set a} {_≈_ : Rel A e} (≈-equiv : IsEquivalence _≈_) where
+
+  isPreorder : IsPreorder {A = List A} (Pointwise _≈_) (Prefix _≈_)
+  isPreorder = record
+    { isEquivalence = isEquivalence ≈-equiv
+    ; reflexive = fromPointwise
+    ; trans = trans (IsEquivalence.trans ≈-equiv) }
+
+  preorder : Preorder _ _ _
+  preorder = record { isPreorder = isPreorder }
 
 ------------------------------------------------------------------------
 -- length
