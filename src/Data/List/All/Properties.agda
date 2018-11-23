@@ -101,7 +101,8 @@ module _ {a b p} {A : Set a} {B : Set b} {P : B → Set p} {f : A → B} where
 ------------------------------------------------------------------------
 -- All.map
 
-module _ {a p} {A : Set a} {P Q : Pred A p} {f : P ⋐ Q} where
+module _ {a p q} {A : Set a} {P : Pred A p}{Q : Pred A q} {f : P ⋐ Q} where
+
   map-cong : ∀ {xs}{g : P ⋐ Q} → (ps : All P xs) →
              (∀ {x} → f {x} ≗ g {x}) → All.map f ps ≡ All.map g ps
   map-cong [] _          = P.refl
@@ -112,10 +113,16 @@ module _ {a p} {A : Set a} {P Q : Pred A p} {f : P ⋐ Q} where
   map-id [] feq        = P.refl
   map-id (px ∷ ps) feq = P.cong₂ _∷_ (feq px) (map-id ps feq)
 
-  map-compose : ∀ {Q R : Pred A p}{xs}{f : P ⋐ Q}{g : Q ⋐ R}(ps : All P xs) →
+  map-compose : ∀ {r}{R : Pred A r}{xs}{f : P ⋐ Q}{g : Q ⋐ R}(ps : All P xs) →
                 All.map g (All.map f ps) ≡ All.map (g ∘ f) ps
   map-compose []        = P.refl
   map-compose (px ∷ ps) = P.cong (_ ∷_) (map-compose ps)
+
+  lookup-map : ∀ {xs}{x : A}(ps : All P xs)(i : x ∈ xs) →
+               All.lookup (All.map f ps) i ≡ f (All.lookup ps i)
+  lookup-map [] ()
+  lookup-map (px ∷ pxs) (here P.refl) = P.refl
+  lookup-map (px ∷ pxs) (there i) = lookup-map pxs i
 
 -- A variant of All.map.
 
