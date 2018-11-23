@@ -3,13 +3,13 @@
 
 import Relation.Unary.Closure.Preorder as Closure
 import Relation.Binary.PropositionalEquality as P
-open import Data.List.Relation.Prefix.Heterogeneous.Properties using (preorder)
+open import Data.List.Relation.Prefix.Setoid using (preorder)
 open import Data.List
 
 module Category.Monad.Monotone.Heap.HList
   (T : Set)
   (V : T → List T → Set)
-  ⦃ wkV : ∀ {a} → Closure.Closed (preorder P.isEquivalence) (V a) ⦄ where
+  ⦃ wkV : ∀ {a} → Closure.Closed (preorder (P.setoid T)) (V a) ⦄ where
 
 open import Function
 open import Data.Product
@@ -27,7 +27,7 @@ open import Relation.Binary using (Preorder)
 open import Category.Monad using (RawMonad)
 
 ord : Preorder _ _ _
-ord = (preorder {A = T} P.isEquivalence)
+ord = preorder (P.setoid T)
 
 open Preorder ord renaming (refl to ∼-refl)
 open import Relation.Unary.Closure.Preorder ord
