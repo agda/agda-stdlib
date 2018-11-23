@@ -171,14 +171,6 @@ module _ {_+_ _*_ : Op₂ A}
      0#                                    ∎
 
 ------------------------------------------------------------------------
--- Selectivity implies idempotence
-
-sel⇒idem : ∀ {_•_} → Selective _•_ → Idempotent _•_
-sel⇒idem sel x with sel x x
-... | inj₁ x•x≈x = x•x≈x
-... | inj₂ x•x≈x = x•x≈x
-
-------------------------------------------------------------------------
 -- Without Loss of Generality
 
 module _ {p} {f : Op₂ A} {P : Pred A p}

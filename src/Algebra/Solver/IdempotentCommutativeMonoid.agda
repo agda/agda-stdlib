@@ -8,7 +8,7 @@
 
 open import Algebra
 
-open import Data.Bool.Base as Bool using (Bool; true; false; if_then_else_; _∨_)
+open import Data.Bool as Bool using (Bool; true; false; if_then_else_; _∨_)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Maybe as Maybe
   using (Maybe; decToMaybe; From-just; from-just)

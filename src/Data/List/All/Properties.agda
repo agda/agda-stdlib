@@ -20,14 +20,14 @@ open import Data.List.Relation.Subset.Propositional using (_⊆_)
 open import Data.Maybe as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.All as MAll using (just; nothing)
 open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
-open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
+open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′; map₂)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse using (_↔_; inverse)
 open import Function.Surjection using (_↠_; surjection)
 open import Relation.Binary using (Setoid; _Respects_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
 open import Relation.Nullary
 open import Relation.Unary
   using (Decidable; Pred; Universal) renaming (_⊆_ to _⋐_)
@@ -97,6 +97,32 @@ module _ {a b p} {A : Set a} {B : Set b} {P : B → Set p} {f : A → B} where
   map⁻ : ∀ {xs} → All P (map f xs) → All (P ∘ f) xs
   map⁻ {xs = []}    []       = []
   map⁻ {xs = _ ∷ _} (p ∷ ps) = p ∷ map⁻ ps
+
+------------------------------------------------------------------------
+-- All.map
+
+module _ {a p q} {A : Set a} {P : Pred A p}{Q : Pred A q} {f : P ⋐ Q} where
+
+  map-cong : ∀ {xs}{g : P ⋐ Q} → (ps : All P xs) →
+             (∀ {x} → f {x} ≗ g {x}) → All.map f ps ≡ All.map g ps
+  map-cong [] _          = P.refl
+  map-cong (px ∷ ps) feq = P.cong₂ _∷_ (feq px) (map-cong ps feq)
+
+  map-id : ∀ {xs} {f : P ⋐ P} → (ps : All P xs) →
+           (∀ {x} p → f {x} p ≡ p) → All.map f ps ≡ ps
+  map-id [] feq        = P.refl
+  map-id (px ∷ ps) feq = P.cong₂ _∷_ (feq px) (map-id ps feq)
+
+  map-compose : ∀ {r}{R : Pred A r}{xs}{f : P ⋐ Q}{g : Q ⋐ R}(ps : All P xs) →
+                All.map g (All.map f ps) ≡ All.map (g ∘ f) ps
+  map-compose []        = P.refl
+  map-compose (px ∷ ps) = P.cong (_ ∷_) (map-compose ps)
+
+  lookup-map : ∀ {xs}{x : A}(ps : All P xs)(i : x ∈ xs) →
+               All.lookup (All.map f ps) i ≡ f (All.lookup ps i)
+  lookup-map [] ()
+  lookup-map (px ∷ pxs) (here P.refl) = P.refl
+  lookup-map (px ∷ pxs) (there i) = lookup-map pxs i
 
 -- A variant of All.map.
 
@@ -253,6 +279,17 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 
   singleton⁻ : ∀ {x} → All P [ x ] → P x
   singleton⁻ (px ∷ []) = px
+
+------------------------------------------------------------------------
+-- snoc
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+  ∷ʳ⁺ : ∀ {xs x} → All P xs → P x → All P (xs ∷ʳ x)
+  ∷ʳ⁺ pxs px = ++⁺ pxs (px ∷ [])
+
+  ∷ʳ⁻ : ∀ {xs x} → All P (xs ∷ʳ x) → All P xs × P x
+  ∷ʳ⁻ {xs} pxs = map₂ singleton⁻ $ ++⁻ xs pxs
 
 ------------------------------------------------------------------------
 -- fromMaybe

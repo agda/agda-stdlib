@@ -12,7 +12,6 @@ import Algebra.Structures as AlgebraicStructures
 import Algebra.Properties.Lattice as L
 import Algebra.Properties.DistributiveLattice as DL
 import Algebra.Properties.BooleanAlgebra as BA
-open import Data.Bool.Base using (_≟_)
 open import Data.Bool.Properties
 open import Data.Fin using (Fin; suc; zero)
 open import Data.Fin.Subset
