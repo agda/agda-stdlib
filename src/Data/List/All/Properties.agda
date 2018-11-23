@@ -27,7 +27,7 @@ open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse using (_↔_; inverse)
 open import Function.Surjection using (_↠_; surjection)
 open import Relation.Binary using (Setoid; _Respects_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
+open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_; _≡_↾¹_)
 open import Relation.Nullary
 open import Relation.Unary
   using (Decidable; Pred; Universal) renaming (_⊆_ to _⋐_)
@@ -311,6 +311,41 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 
   replicate⁻ : ∀ {n x} → All P (replicate (suc n) x) → P x
   replicate⁻ (px ∷ _) = px
+
+------------------------------------------------------------------------
+-- _[_]%=_/updateAt
+
+module _ {a p} {A : Set a} {P : Pred A p} where
+
+  updateAt-updates : ∀ {x xs px} (pxs : All P xs) (i : x ∈ xs) {f : P x → P x}
+    → All.lookup pxs i ≡ px
+    → All.lookup (pxs All.[ i ]%= f) i ≡ f px
+  updateAt-updates [] ()
+  updateAt-updates (px ∷ pxs) (here P.refl) P.refl = P.refl
+  updateAt-updates (px ∷ pxs) (there i) = updateAt-updates pxs i
+
+  updateAt-cong : ∀ {x xs} (pxs : All P xs) (i : x ∈ xs) {f g : P x → P x}
+    → f ≡ g ↾¹ (All.lookup pxs i)
+    → (pxs All.[ i ]%= f) ≡ (pxs All.[ i ]%= g)
+  updateAt-cong (px ∷ pxs) (here P.refl)     = P.cong (_∷ pxs)
+  updateAt-cong (px ∷ pxs) (there i)     f≗g = P.cong (px ∷_) (updateAt-cong pxs i f≗g)
+
+  updateAt-id : ∀ {x xs} (pxs : All P xs) (i : x ∈ xs) →
+                (pxs All.[ i ]%= id) ≡ pxs
+  updateAt-id (px ∷ pxs) (here P.refl) = P.refl
+  updateAt-id (px ∷ pxs) (there i)     = P.cong (px ∷_) (updateAt-id pxs i)
+
+  updateAt-compose : ∀ {x xs} (pxs : All P xs) (i : x ∈ xs) {f g : P x → P x} →
+                     (pxs All.[ i ]%= f All.[ i ]%= g) ≡ pxs All.[ i ]%= (g ∘ f)
+  updateAt-compose (px ∷ pxs) (here P.refl) = P.refl
+  updateAt-compose (px ∷ pxs) (there i)     = P.cong (px ∷_) (updateAt-compose pxs i)
+
+  map-updateAt : ∀ {q x} {Q : Pred A q} {xs} →
+    ∀ {f : P ⋐ Q} {g : P x → P x} {h : Q x → Q x} (pxs : All P xs) (i : x ∈ xs)
+    → f ∘ g ≡ h ∘ f ↾¹ All.lookup pxs i
+    → All.map f (pxs All.[ i ]%= g) ≡ (All.map f pxs) All.[ i ]%= h
+  map-updateAt (px ∷ pxs) (here P.refl) = P.cong (_∷ _)
+  map-updateAt (px ∷ pxs) (there i) feq = P.cong (_ ∷_) (map-updateAt pxs i feq)
 
 module _ {a p} {A : Set a} {P : A → Set p} where
 
