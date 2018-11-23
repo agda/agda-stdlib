@@ -54,17 +54,6 @@ module _ {a b r s e} {A : Set a} {B : Set b}
   antisym rs⇒e []       []       = []
   antisym rs⇒e (r ∷ rs) (s ∷ ss) = rs⇒e r s ∷ antisym rs⇒e rs ss
 
-module _ {a e} {A : Set a} {_≈_ : Rel A e} (≈-equiv : IsEquivalence _≈_) where
-
-  isPreorder : IsPreorder {A = List A} (Pointwise _≈_) (Prefix _≈_)
-  isPreorder = record
-    { isEquivalence = isEquivalence ≈-equiv
-    ; reflexive = fromPointwise
-    ; trans = trans (IsEquivalence.trans ≈-equiv) }
-
-  preorder : Preorder _ _ _
-  preorder = record { isPreorder = isPreorder }
-
 ------------------------------------------------------------------------
 -- length
 
