@@ -145,9 +145,11 @@ Other minor additions
   cast : m ≡ n → Fin m → Fin n
   ```
 
-<<<<<<< HEAD
 * Added new proof to `Data.Fin.Properties`:
-=======
+  ```agda
+  toℕ-cast    : toℕ (cast eq k) ≡ toℕ k
+  ```
+
 * Added new proofs to `Data.List.Any.Properties`:
   ```agda
   here-injective  : here  p ≡ here  q → p ≡ q
@@ -393,10 +395,6 @@ Other minor additions
   ```
 
 * Added new function to `Function`:
->>>>>>> Vec-updateAt
-  ```agda
-  toℕ-cast    : toℕ (cast eq k) ≡ toℕ k
-  ```
 
 * Added new operations to `Data.List.All`:
   ```agda
