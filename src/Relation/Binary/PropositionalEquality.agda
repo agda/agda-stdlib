@@ -99,6 +99,22 @@ _≗_ {A = A} {B} = Setoid._≈_ (A →-setoid B)
          (A → Setoid.Carrier B) → setoid A ⟶ B
 →-to-⟶ = :→-to-Π
 
+-- Equality of functions at a single point
+
+infix 4 _≡_↾¹_
+
+_≡_↾¹_ : ∀{a b} {A : Set a} {B : Set b} (f g : A → B) (x : A) → Set b
+f ≡ g ↾¹ x = f x ≡ g x
+
+-- Equality of functions on a subset of the domain
+
+infix 4 _≡_↾_
+
+_≡_↾_ : ∀{a b p} {A : Set a} {B : Set b}
+        (f g : A → B) (P : A → Set p) → Set (a ⊔ b ⊔ p)
+f ≡ g ↾ P = ∀{x} → P x → f x ≡ g x
+
+
 ------------------------------------------------------------------------
 -- Inspect
 

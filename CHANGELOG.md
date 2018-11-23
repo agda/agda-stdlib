@@ -145,7 +145,255 @@ Other minor additions
   cast : m ≡ n → Fin m → Fin n
   ```
 
+<<<<<<< HEAD
 * Added new proof to `Data.Fin.Properties`:
+=======
+* Added new proofs to `Data.List.Any.Properties`:
+  ```agda
+  here-injective  : here  p ≡ here  q → p ≡ q
+  there-injective : there p ≡ there q → p ≡ q
+
+  singleton⁺      : P x → Any P [ x ]
+  singleton⁻      : Any P [ x ] → P x
+  ++-insert       : P x → Any P (xs ++ [ x ] ++ ys)
+  ```
+
+* Added new functions to `Data.List.Base`:
+  ```agda
+  uncons      : List A → Maybe (A × List A)
+  head        : List A → Maybe A
+  tail        : List A → Maybe (List A)
+  alignWith   : (These A B → C) → List A → List B → List C
+  unalignWith : (A → These B C) → List A → List B × List C
+  align       : List A → List B → List (These A B)
+  unalign     : List (These A B) → List A × List B
+  ```
+
+* Added new functions to `Data.List.Categorical`:
+  ```agda
+  functor     : RawFunctor List
+  applicative : RawApplicative List
+  monadT      : RawMonadT (_∘′ List)
+  sequenceA   : RawApplicative F → List (F A) → F (List A)
+  mapA        : RawApplicative F → (A → F B) → List A → F (List B)
+  forA        : RawApplicative F → List A → (A → F B) → F (List B)
+  forM        : RawMonad M → List A → (A → M B) → M (List B)
+  ```
+
+* Added new proofs to `Data.List.Membership.(Setoid/Propositional).Properties`:
+  ```agda
+  ∈-insert : v ≈ v′ → v ∈ xs ++ [ v′ ] ++ ys
+  ∈-∃++    : v ∈ xs → ∃₂ λ ys zs → ∃ λ w → v ≈ w × xs ≋ ys ++ [ w ] ++ zs
+  ```
+
+* Added new functions to `Data.List.NonEmpty`:
+  ```agda
+  uncons      : List⁺ A → A × List A
+  concatMap   : (A → List⁺ B) → List⁺ A → List⁺ B
+  alignWith   : (These A B → C) → List⁺ A → List⁺ B → List⁺ C
+  zipWith     : (A → B → C) → List⁺ A → List⁺ B → List⁺ C
+  unalignWith : (A → These B C) → List⁺ A → These (List⁺ B) (List⁺ C)
+  unzipWith   : (A → B × C) → List⁺ A → List⁺ B × List⁺ C
+  align       : List⁺ A → List⁺ B → List⁺ (These A B)
+  zip         : List⁺ A → List⁺ B → List⁺ (A × B)
+  unalign     : List⁺ (These A B) → These (List⁺ A) (List⁺ B)
+  unzip       : List⁺ (A × B) → List⁺ A × List⁺ B
+  ```
+
+* Added new functions to `Data.List.Properties`:
+  ```agda
+  alignWith-cong        : f ≗ g → alignWith f as ≗ alignWith g as
+  length-alignWith      : length (alignWith f xs ys) ≡ length xs ⊔ length ys
+  alignWith-map         : alignWith f (map g xs) (map h ys) ≡ alignWith (f ∘′ These.map g h) xs ys
+  map-alignWith         : map g (alignWith f xs ys) ≡ alignWith (g ∘′ f) xs ys
+  unalignWith-this      : unalignWith this ≗ (_, [])
+  unalignWith-that      : unalignWith that ≗ ([] ,_)
+  unalignWith-cong      : f ≗ g → unalignWith f ≗ unalignWith g
+  unalignWith-map       : unalignWith f (map g ds) ≡ unalignWith (f ∘′ g) ds
+  map-unalignWith       : Prod.map (map g) (map h) ∘′ unalignWith f ≗ unalignWith (These.map g h ∘′ f)
+  unalignWith-alignWith : f ∘′ g ≗ id → unalignWith f (alignWith g as bs) ≡ (as , bs)
+  ```
+
+* Added new function to `Data.Maybe.Base`:
+  ```agda
+  fromMaybe : A → Maybe A → A
+  alignWith : (These A B → C) → Maybe A → Maybe B → Maybe C
+  zipWith   : (A → B → C) → Maybe A → Maybe B → Maybe C
+  align     : Maybe A → Maybe B → Maybe (These A B)
+  zip       : Maybe A → Maybe B → Maybe (A × B)
+  ```
+
+* Added new operator to `Data.Nat.Base`:
+  ```agda
+  ∣_-_∣ : ℕ → ℕ → ℕ
+  ```
+
+* Added new proofs to `Data.Nat.Divisibility`:
+  ```agda
+  n∣m⇒m%n≡0 : suc n ∣ m → m % (suc n) ≡ 0
+  m%n≡0⇒n∣m : m % (suc n) ≡ 0 → suc n ∣ m
+  m%n≡0⇔n∣m : m % (suc n) ≡ 0 ⇔ suc n ∣ m
+  ```
+
+* Added new operations and proofs to `Data.Nat.DivMod`:
+  ```agda
+  _%_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → ℕ
+
+  a≡a%n+[a/n]*n : a ≡ a % suc n + (a div (suc n)) * suc n
+  a%1≡0         : a % 1 ≡ 0
+  a%n<n         : a % suc n < suc n
+  n%n≡0         : suc n % suc n ≡ 0
+  a%n%n≡a%n     : a % suc n % suc n ≡ a % suc n
+  [a+n]%n≡a%n   : (a + suc n) % suc n ≡ a % suc n
+  [a+kn]%n≡a%n  : (a + k * (suc n)) % suc n ≡ a % suc n
+  kn%n≡0        : k * (suc n) % suc n ≡ 0
+  %-distribˡ-+  : (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
+  ```
+
+* Added new proofs to `Data.Nat.Properties`:
+  ```agda
+  _≥?_  : Decidable _≥_
+  _>?_  : Decidable _>_
+  _≤′?_ : Decidable _≤′_
+  _<′?_ : Decidable _<′_
+  _≤″?_ : Decidable _≤″_
+  _<″?_ : Decidable _<″_
+  _≥″?_ : Decidable _≥″_
+  _>″?_ : Decidable _>″_
+
+  n≤0⇒n≡0      : n ≤ 0 → n ≡ 0
+  m<n⇒n≢0      : m < n → n ≢ 0
+
+  m⊓n≡m⇒m≤n    : m ⊓ n ≡ m → m ≤ n
+  m⊓n≡n⇒n≤m    : m ⊓ n ≡ n → n ≤ m
+  n⊔m≡m⇒n≤m    : n ⊔ m ≡ m → n ≤ m
+  n⊔m≡n⇒m≤n    : n ⊔ m ≡ n → m ≤ n
+
+  *-distribˡ-∸ : _*_ DistributesOverˡ _∸_
+  *-distrib-∸  : _*_ DistributesOver _∸_
+  ^-*-assoc    : (m ^ n) ^ p ≡ m ^ (n * p)
+
+  ≤-poset                : Poset 0ℓ 0ℓ 0ℓ
+  <-resp₂-≡              : _<_ Respects₂ _≡_
+  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+  <-strictPartialOrder   : StrictPartialOrder 0ℓ 0ℓ 0ℓ
+
+  *-+-isSemiring         : IsSemiring _+_ _*_ 0 1
+
+  ⊓-semigroup            : Semigroup 0ℓ 0ℓ
+  ⊔-semigroup            : Semigroup 0ℓ 0ℓ
+  ⊔-0-commutativeMonoid  : CommutativeMonoid 0ℓ 0ℓ
+  ⊓-⊔-lattice            : Lattice 0ℓ 0ℓ
+
+  n≡m⇒∣n-m∣≡0       : n ≡ m → ∣ n - m ∣ ≡ 0
+  m≤n⇒∣n-m∣≡n∸m     : m ≤ n → ∣ n - m ∣ ≡ n ∸ m
+  ∣n-m∣≡0⇒n≡m       : ∣ n - m ∣ ≡ 0 → n ≡ m
+  ∣n-m∣≡n∸m⇒m≤n     : ∣ n - m ∣ ≡ n ∸ m → m ≤ n
+  ∣n-n∣≡0           : ∣ n - n ∣ ≡ 0
+  ∣n-n+m∣≡m         : ∣ n - n + m ∣ ≡ m
+  ∣n+m-n+o∣≡∣m-o|   : ∣ n + m - n + o ∣ ≡ ∣ m - o ∣
+  n∸m≤∣n-m∣         : n ∸ m ≤ ∣ n - m ∣
+  ∣n-m∣≤n⊔m         : ∣ n - m ∣ ≤ n ⊔ m
+  ∣-∣-comm          : Commutative ∣_-_∣
+  ∣n-m∣≡[n∸m]∨[m∸n] : (∣ n - m ∣ ≡ n ∸ m) ⊎ (∣ n - m ∣ ≡ m ∸ n)
+  *-distribˡ-∣-∣    : _*_ DistributesOverˡ ∣_-_∣
+  *-distribʳ-∣-∣    : _*_ DistributesOverʳ ∣_-_∣
+  *-distrib-∣-∣     : _*_ DistributesOver ∣_-_∣
+  ```
+
+* Added new function to `Data.String.Base`:
+  ```agda
+  fromList⁺ : List⁺ Char → String
+  ```
+
+* Added new functions to `Data.Sum`:
+  ```agda
+  map₁ : (A → B) → A ⊎ C → B ⊎ C
+  map₂ : (B → C) → A ⊎ B → A ⊎ C
+  ```
+
+* Added new functions in `Data.Table.Base`:
+  ```agda
+  remove  : Fin (suc n) → Table A (suc n) → Table A n
+  fromVec : Vec A n → Table A n
+  toVec   : Table A n → Vec A n
+  ```
+
+* Added new proofs in `Data.Table.Properties`:
+  ```agda
+  select-lookup  : lookup (select x i t) i ≡ lookup t i
+  select-remove  : remove i (select x i t) ≗ replicate {n} x
+  remove-permute : remove (π ⟨$⟩ˡ i) (permute π t) ≗ permute (Perm.remove (π ⟨$⟩ˡ i) π) (remove i t)
+  ```
+
+* Added new functions to `Data.Vec`:
+  ```agda
+  alignWith : (These A B → C) → Vec A m → Vec B n → Vec C (m ⊔ n)
+  align     : Vec A m → Vec B n → Vec (These A B) (m ⊔ n)
+  unzipWith : (A → B × C) → Vec A n → Vec B n × Vec C n
+  ```
+  A generalization of single point overwrite `_[_]≔_`
+  to single-point modification `_[_]%=_`
+  (alias with different argument order: `updateAt`):
+  ```agda
+  _[_]%=_   : Vec A n → Fin n → (A → A) → Vec A n
+  updateAt  : Fin n → (A → A) → Vec A n → Vec A n
+  ```
+
+* Added new proofs to `Data.Vec.All.Properties`:
+  ```agda
+  toList⁺   : All P (toList xs) → All P xs
+  toList⁻   : All P xs → All P (toList xs)
+
+  fromList⁺ : All P xs → All P (fromList xs)
+  fromList⁻ : All P (fromList xs) → All P xs
+  ```
+
+* Added new functions to `Data.Vec.Any`:
+  ```agda
+  head    : ¬ Any P xs → Any P (x ∷ xs) → P x
+  toSum   : Any P (x ∷ xs) → P x ⊎ Any P xs
+  fromSum : P x ⊎ Any P xs → Any P (x ∷ xs)
+  ```
+
+* Added new functions to `Data.Vec.Categorical`:
+  ```agda
+  sequenceA : RawApplicative F → Vec (F A) n → F (Vec A n)
+  mapA      : RawApplicative F → (A → F B) → Vec A n → F (Vec B n)
+  forA      : RawApplicative F → Vec A n → (A → F B) → F (Vec B n)
+  sequenceM : RawMonad M → Vec (M A) n → M (Vec A n)
+  mapM      : RawMonad M → (A → M B) → Vec A n → M (Vec B n)
+  forM      : RawMonad M → Vec A n → (A → M B) → M (Vec B n)
+  ```
+
+* Added new proofs to `Data.Vec.Membership.Propositional.Properties`:
+  ```agda
+  ∈-lookup    : lookup i xs ∈ xs
+
+  ∈-toList⁻   : v ∈ toList xs   → v ∈ xs
+  ∈-fromList⁻ : v ∈ fromList xs → v ∈ xs
+  ```
+
+* Added new proof to `Data.Vec.Properties`:
+  ```agda
+  lookup-zipWith : lookup i (zipWith f xs ys) ≡ f (lookup i xs) (lookup i ys)
+  ```
+  Added laws for `updateAt`.
+  Now laws for `_[_]≔_` are special instances of these.
+
+* Added new proofs to `Data.Vec.Relation.Pointwise.Inductive`:
+  ```agda
+  tabulate⁺ : (∀ i → f i ~ g i) → Pointwise _~_ (tabulate f) (tabulate g)
+  tabulate⁻ : Pointwise _~_ (tabulate f) (tabulate g) → (∀ i → f i ~ g i)
+  ```
+
+* Added new type to `Foreign.Haskell`:
+  ```agda
+  Pair : (A : Set ℓ) (B : Set ℓ′) : Set (ℓ ⊔ ℓ′)
+  ```
+
+* Added new function to `Function`:
+>>>>>>> Vec-updateAt
   ```agda
   toℕ-cast    : toℕ (cast eq k) ≡ toℕ k
   ```
@@ -267,6 +515,12 @@ Other minor additions
   fromDec : Dec P → P ⊎ ¬ P
   toDec   : P ⊎ ¬ P → Dec P
   ```
+
+* Added new definitions to `Relation.Binary.PropositionalEquality`:
+  - `_≡_↾¹_` equality of functions at a single point
+  - `_≡_↾_` equality of functions at a subset of the domain
+
+* Added new proofs to `Relation.Binary.PropositionalEquality`:
 
 * Added new functions to `Data.Vec.Any.Properties`:
   ```agda
