@@ -27,7 +27,7 @@ open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse using (_↔_; inverse)
 open import Function.Surjection using (_↠_; surjection)
 open import Relation.Binary using (Setoid; _Respects_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
 open import Relation.Nullary
 open import Relation.Unary
   using (Decidable; Pred; Universal) renaming (_⊆_ to _⋐_)
@@ -97,6 +97,25 @@ module _ {a b p} {A : Set a} {B : Set b} {P : B → Set p} {f : A → B} where
   map⁻ : ∀ {xs} → All P (map f xs) → All (P ∘ f) xs
   map⁻ {xs = []}    []       = []
   map⁻ {xs = _ ∷ _} (p ∷ ps) = p ∷ map⁻ ps
+
+------------------------------------------------------------------------
+-- All.map
+
+module _ {a p} {A : Set a} {P Q : Pred A p} {f : P ⋐ Q} where
+  map-cong : ∀ {xs}{g : P ⋐ Q} → (ps : All P xs) →
+             (∀ {x} → f {x} ≗ g {x}) → All.map f ps ≡ All.map g ps
+  map-cong [] _          = P.refl
+  map-cong (px ∷ ps) feq = P.cong₂ _∷_ (feq px) (map-cong ps feq)
+
+  map-id : ∀ {xs} {f : P ⋐ P} → (ps : All P xs) →
+           (∀ {x} p → f {x} p ≡ p) → All.map f ps ≡ ps
+  map-id [] feq        = P.refl
+  map-id (px ∷ ps) feq = P.cong₂ _∷_ (feq px) (map-id ps feq)
+
+  map-compose : ∀ {Q R : Pred A p}{xs}{f : P ⋐ Q}{g : Q ⋐ R}(ps : All P xs) →
+                All.map g (All.map f ps) ≡ All.map (g ∘ f) ps
+  map-compose []        = P.refl
+  map-compose (px ∷ ps) = P.cong (_ ∷_) (map-compose ps)
 
 -- A variant of All.map.
 
