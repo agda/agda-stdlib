@@ -121,9 +121,14 @@ Other minor additions
   record IsMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
   ```
 
-* Added new module `Category.Monad.Monotone`:
+* Added new modules `Category.Monad.Monotone(.*)`:
   ```agda
   record RawMPMonad (M : Pt I ℓ) : Set (suc ℓ)
+  Identity : Pt I i
+  record Identity
+  record ReaderMonad E (M : Pred I ℓ → Pt I ℓ) : Set (suc ℓ) where
+  record ErrorMonad (M : Pt I ℓ) : Set (suc ℓ) where
+  record StateMonad (M : Pt I ℓ) : Set (suc ℓ) where
   ```
 
 * Added new functions to `Codata.Colist`:
