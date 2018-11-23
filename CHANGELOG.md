@@ -129,6 +129,7 @@ Other minor additions
   record ReaderMonad E (M : Pred I ℓ → Pt I ℓ) : Set (suc ℓ) where
   record ErrorMonad (M : Pt I ℓ) : Set (suc ℓ) where
   record StateMonad (M : Pt I ℓ) : Set (suc ℓ) where
+  record HeapMonad  (M : Pt I ℓ) : Set (suc ℓ) where
   ```
 
 * Added new functions to `Codata.Colist`:
@@ -288,6 +289,7 @@ Other minor additions
   fromList⁻    : Any P (fromList xs) → List.Any P xs
   toList⁺      : Any P xs → List.Any P (toList xs)
   toList⁻      : List.Any P (toList xs) → Any P xs
+  prefix⁺      : ∀ {xs ys} → Prefix R xs ys → Any P xs → Any P ys
   ```
 
 * Added new functions to `Data.Vec.Membership.Propositional.Properties`:

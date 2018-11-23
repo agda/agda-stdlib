@@ -579,3 +579,15 @@ module _ {ℓ} {A B : Set ℓ} where
     (Any P xs × Any Q ys)                    ↔⟨ ×↔ ⟩
     Any (λ x → Any (λ y → P x × Q y) ys) xs  ↔⟨ ⊗↔ ⟩
     Any (P ⟨×⟩ Q) (xs ⊗ ys)                  ∎
+
+------------------------------------------------------------------------
+-- Prefix
+
+module _ {a r p} {A : Set a} {R : Rel A r} {P : Pred A p}
+         (resp : P Respects R) where
+
+ open import Data.List.Relation.Prefix.Heterogeneous as Prefix
+
+ prefix⁺ : ∀ {xs ys} → Prefix R xs ys → Any P xs → Any P ys
+ prefix⁺ rs e with toView rs
+ prefix⁺ rs e | ss Prefix.++ ts = ++⁺ˡ (lift-resp resp ss e)
