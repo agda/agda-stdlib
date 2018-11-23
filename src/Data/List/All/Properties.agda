@@ -20,7 +20,7 @@ open import Data.List.Relation.Subset.Propositional using (_⊆_)
 open import Data.Maybe as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.All as MAll using (just; nothing)
 open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
-open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
+open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′; map₂)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
@@ -253,6 +253,17 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 
   singleton⁻ : ∀ {x} → All P [ x ] → P x
   singleton⁻ (px ∷ []) = px
+
+------------------------------------------------------------------------
+-- snoc
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+  ∷ʳ⁺ : ∀ {xs x} → All P xs → P x → All P (xs ∷ʳ x)
+  ∷ʳ⁺ pxs px = ++⁺ pxs (px ∷ [])
+
+  ∷ʳ⁻ : ∀ {xs x} → All P (xs ∷ʳ x) → All P xs × P x
+  ∷ʳ⁻ {xs} pxs = map₂ singleton⁻ $ ++⁻ xs pxs
 
 ------------------------------------------------------------------------
 -- fromMaybe

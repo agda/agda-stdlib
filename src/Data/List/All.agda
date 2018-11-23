@@ -55,19 +55,8 @@ map g []         = []
 map g (px ∷ pxs) = g px ∷ map g pxs
 
 ------------------------------------------------------------------------
--- concat and append
-
-module _ {a p}{A : Set a}{P : Pred A p} where
-
-  _++_ : ∀ {l m} → All P l → All P m → All P (l List.++ m)
-  [] ++ pm = pm
-  (px ∷ pl) ++ pm = px ∷ (pl ++ pm)
-
-  _∷ʳ_ : ∀ {l : List A}{x} → All P l → P x → All P (l List.∷ʳ x)
-  pxs ∷ʳ px = pxs ++ (px ∷ [])
-
-------------------------------------------------------------------------
 -- (weak) updateAt
+
 module _ {a p}{A : Set a}{P : Pred A p} where
   infixl 6 _[_]%=_ _[_]≔_
 
