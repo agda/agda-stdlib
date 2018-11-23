@@ -9,6 +9,7 @@ open import Relation.Binary
 module Relation.Unary.Closure.Preorder {a r e} (P : Preorder a e r) where
 
 open Preorder P
+
 open import Relation.Unary using (Pred)
 
 -- Specialising the results proven generically in `Base`.
@@ -28,3 +29,6 @@ module _ {t} {T : Pred Carrier t} where
 
 □-closed : ∀ {t} {T : Pred Carrier t} → Closed (□ T)
 □-closed = Base.□-closed trans
+
+∼-closed : ∀ {x} → Closed (x ∼_)
+∼-closed = record { next = λ x∼y y∼z → trans x∼y y∼z }
