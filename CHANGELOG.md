@@ -140,6 +140,7 @@ Other minor additions
 * Added new proof to `Codata.Stream.Properties`:
   ```agda
   splitAt-map : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
+  lookup-iterate-identity : lookup n (iterate f a) ≡ fold a f n
   ```
 
 * Added new function to `Data.Fin.Base`:
