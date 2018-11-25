@@ -94,6 +94,11 @@ Deprecated features
 Other minor additions
 ---------------------
 
+* Added new proof to `Data.Nat.Properties`:
+  ```agda
+  ≤′-trans : Transitive _≤′_
+  ```
+
 * Added new records to `Algebra`:
   ```agda
   record RawMagma c ℓ : Set (suc (c ⊔ ℓ))
