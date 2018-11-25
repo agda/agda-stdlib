@@ -104,6 +104,12 @@ Other major changes
 
 * Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
 
+* Added new modules `Data.List.Relation.Prefix.Heterogeneous(.Properties)`
+
+* Added new modules `Data.List.First` and `Data.List.First.Properties` for a
+  generalization of the notion of "first element in the list to satisfy a
+  predicate".
+
 * Added new module `Data.Vec.Any.Properties`
 
 * Added new module `Relation.Binary.Properties.BoundedLattice`
@@ -238,9 +244,10 @@ Other minor additions
   respects : P Respects _≈_ → (All P) Respects _≋_
   ```
 
-* Added new proof to `Data.List.Membership.Propositional.Properties`:
+* Added new proofs to `Data.List.Membership.Propositional.Properties`:
   ```agda
   ∈-allFin : (k : Fin n) → k ∈ allFin n
+  []∈inits : [] ∈ inits as
   ```
 
 * Added new function to `Data.List.Membership.(Setoid/Propositional)`:
@@ -353,6 +360,12 @@ Other minor additions
   *-magma   : Magma 0ℓ 0ℓ
   ```
 
+* Added new functions to `Data.Sum.Base`:
+  ```agda
+  fromDec : Dec P → P ⊎ ¬ P
+  toDec   : P ⊎ ¬ P → Dec P
+  ```
+
 * Added new functions to `Data.Vec.Any.Properties`:
   ```agda
   lookup-index : (p : Any P xs) → P (lookup (index p) xs)
@@ -380,6 +393,11 @@ Other minor additions
 * Added new proofs to `Relation.Binary.Consequences`:
   ```agda
   wlog : Total _R_ → Symmetric Q → (∀ a b → a R b → Q a b) → ∀ a b → Q a b
+  ```
+
+* Added new definition to `Relation.Binary.Core`:
+  ```agda
+  Antisym R S E = ∀ {i j} → R i j → S j i → E i j
   ```
 
 * Added new proofs to `Relation.Binary.Lattice`:

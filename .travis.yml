@@ -34,7 +34,7 @@ install:
   # checking whether .ghc is still valid
   - cabal install --only-dependencies --dry -v agda > $HOME/installplan.txt
   - sed -i -e '1,/^Resolving /d' $HOME/installplan.txt; cat $HOME/installplan.txt
-  - touch $HOME/.cabsnap/intallplan.txt
+  - touch $HOME/.cabsnap/installplan.txt
   - mkdir -p $HOME/.cabsnap/ghc $HOME/.cabsnap/lib $HOME/.cabsnap/share $HOME/.cabsnap/bin
   - if diff -u $HOME/.cabsnap/installplan.txt $HOME/installplan.txt;
     then
