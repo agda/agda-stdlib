@@ -7,15 +7,23 @@
 module Codata.Stream.Properties where
 
 open import Size
-open import Data.Nat.Base
-import Data.Vec as Vec
 open import Codata.Thunk using (Thunk; force)
 open import Codata.Stream
 open import Codata.Stream.Bisimilarity
+
+open import Data.Nat.Base
+open import Data.Nat.GeneralisedArithmetic using (fold; fold-pull)
+
+import Data.Vec as Vec
+import Data.Product as Prod
+
 open import Function
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
-module _ {a b} {A : Set a} {B : Set b} where
+------------------------------------------------------------------------
+-- repeat
+
+module _ {a} {A : Set a} where
 
  lookup-repeat-identity : (n : ℕ) (a : A) → lookup n (repeat a) ≡ a
  lookup-repeat-identity zero    a = Eq.refl
@@ -40,6 +48,7 @@ module _ {a b} {A : Set a} {B : Set b} where
  ap-repeat-commute f a = Eq.refl ∷ λ where .force → ap-repeat-commute f a
 
 
+------------------------------------------------------------------------
 -- Functor laws
 
 module _ {a} {A : Set a} where
@@ -47,9 +56,33 @@ module _ {a} {A : Set a} where
  map-identity : ∀ (as : Stream A ∞) {i} → i ⊢ map id as ≈ as
  map-identity (a ∷ as) = Eq.refl ∷ λ where .force → map-identity (as .force)
 
-
 module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
  map-map-fusion : ∀ (f : A → B) (g : B → C) as {i} → i ⊢ map g (map f as) ≈ map (g ∘ f) as
  map-map-fusion f g (a ∷ as) = Eq.refl ∷ λ where .force → map-map-fusion f g (as .force)
 
+
+------------------------------------------------------------------------
+-- splitAt
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+  splitAt-map : ∀ n (f : A → B) xs →
+    splitAt n (map f xs) ≡ Prod.map (Vec.map f) (map f) (splitAt n xs)
+  splitAt-map zero    f xs       = Eq.refl
+  splitAt-map (suc n) f (x ∷ xs) =
+    Eq.cong (Prod.map₁ (f x Vec.∷_)) (splitAt-map n f (xs .force))
+
+------------------------------------------------------------------------
+-- iterate
+
+module _ {a} {A : Set a} where
+
+  lookup-iterate-identity : ∀ n f (a : A) → lookup n (iterate f a) ≡ fold a f n
+  lookup-iterate-identity zero     f a = Eq.refl
+  lookup-iterate-identity (suc n)  f a = begin
+    lookup (suc n) (iterate f a) ≡⟨⟩
+    lookup n (iterate f (f a))   ≡⟨ lookup-iterate-identity n f (f a) ⟩
+    fold (f a) f n               ≡⟨ fold-pull (const ∘′ f) (f a) Eq.refl (λ _ → Eq.refl) n ⟩
+    f (fold a f n)               ≡⟨⟩
+    fold a f (suc n)             ∎ where open Eq.≡-Reasoning

@@ -17,6 +17,12 @@ open import Relation.Binary.PropositionalEquality as PropEq
 open import Data.Bool.Base public
 
 ------------------------------------------------------------------------
+-- Publicly re-export queries
+
+open import Data.Bool.Properties public
+  using (_≟_)
+
+------------------------------------------------------------------------
 -- Some properties
 
 decSetoid : DecSetoid _ _

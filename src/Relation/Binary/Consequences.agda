@@ -10,6 +10,7 @@ open import Relation.Binary.Core
 open import Relation.Nullary using (yes; no)
 open import Relation.Unary using (∁)
 open import Function using (_∘_; flip)
+open import Data.Maybe.Base using (just; nothing)
 open import Data.Sum using (inj₁; inj₂)
 open import Data.Product using (_,_)
 open import Data.Empty using (⊥-elim)
@@ -137,6 +138,13 @@ module _ {a r q} {A : Set a} {_R_ : Rel A r} {Q : Rel A q} where
 
 ------------------------------------------------------------------------
 -- Other proofs
+
+module _ {a b p} {A : Set a} {B : Set b} {P : REL A B p} where
+
+  dec⟶weaklyDec : Decidable P → WeaklyDecidable P
+  dec⟶weaklyDec dec x y with dec x y
+  ... | yes p = just p
+  ... | no _ = nothing
 
 module _ {a b p q} {A : Set a} {B : Set b }
          {P : REL A B p} {Q : REL A B q}

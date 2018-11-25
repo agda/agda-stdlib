@@ -142,7 +142,7 @@ fromMaybe : ∀ {a} {A : Set a} → Maybe A → List A
 fromMaybe (just x) = [ x ]
 fromMaybe nothing  = []
 
-replicate : ∀ {a} {A : Set a} → (n : ℕ) → A → List A
+replicate : ∀ {a} {A : Set a} → ℕ → A → List A
 replicate zero    x = []
 replicate (suc n) x = x ∷ replicate n x
 

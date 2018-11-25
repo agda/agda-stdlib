@@ -12,7 +12,6 @@ import Algebra.Structures as AlgebraicStructures
 import Algebra.Properties.Lattice as L
 import Algebra.Properties.DistributiveLattice as DL
 import Algebra.Properties.BooleanAlgebra as BA
-open import Data.Bool.Base using (_≟_)
 open import Data.Bool.Properties
 open import Data.Fin using (Fin; suc; zero)
 open import Data.Fin.Subset
@@ -134,8 +133,8 @@ x∈⁅y⁆⇔x≡y {_} {x} {y} = equivalence
 ⊆-trans p⊆q q⊆r x∈p = q⊆r (p⊆q x∈p)
 
 ⊆-antisym : ∀ {n} → Antisymmetric _≡_ (_⊆_ {n})
-⊆-antisym {x = []}           {[]}           p⊆q q⊆p = refl
-⊆-antisym {x = x ∷ xs} {y ∷ ys} p⊆q q⊆p with x | y
+⊆-antisym {i = []}     {[]}     p⊆q q⊆p = refl
+⊆-antisym {i = x ∷ xs} {y ∷ ys} p⊆q q⊆p with x | y
 ... | inside  | inside  = cong₂ _∷_ refl (⊆-antisym (drop-∷-⊆ p⊆q) (drop-∷-⊆ q⊆p))
 ... | inside  | outside = contradiction (p⊆q here) λ()
 ... | outside | inside  = contradiction (q⊆p here) λ()
