@@ -13,7 +13,7 @@ module Data.List.Membership.DecPropositional
 ------------------------------------------------------------------------
 -- Re-export contents of propositional membership
 
-open import Data.List.Membership.Propositional public
+open import Data.List.Membership.Propositional {A = A} public
 open import Data.List.Membership.DecSetoid (decSetoid _≟_) public
   using (_∈?_)
 
