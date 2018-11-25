@@ -29,10 +29,10 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   ```
 
 * Created `Data.Maybe.Properties`, moved `Data.Maybe.Base`'s `just-injective`
-  there and populated it with basic results.
+  there and added new results.
 
-* Moved `Data.Maybe`'s `Eq` to `Data.Maybe.Relation.Pointwise` and
-  renamed some proofs:
+* Moved `Data.Maybe`'s `Eq` to `Data.Maybe.Relation.Pointwise`, made the
+  relation heterogeneously typed and renamed the following proofs:
   ```agda
   Eq                  ↦ Pointwise
   Eq-refl             ↦ refl
@@ -43,14 +43,52 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   Eq-isDecEquivalence ↦ isDecEquivalence
   ```
 
+#### Changes to the algebra hierarchy
+
+* Added `Magma` and `IsMagma` to the algebra hierarchy.
+
+* The name `RawSemigroup` in `Algebra` has been deprecated in favour of `RawMagma`.
+
+#### Relaxation of ring solvers requirements
+
+* In the ring solvers below, the assumption that equality is `Decidable`
+  has been replaced by a strictly weaker assumption that it is `WeaklyDecidable`.
+  This allows the solvers to be used when equality is not fully decidable.
+  ```
+  Algebra.Solver.Ring
+  Algebra.Solver.Ring.NaturalCoefficients
+  ```
+
+* Created a module `Algebra.Solver.Ring.NaturalCoefficients.Default` that
+  instantiates the solver for any `CommutativeSemiring`.
+
+#### Other
+
+* The proof `sel⇒idem` has been moved from `Algebra.FunctionProperties.Consequences` to
+  `Algebra.FunctionProperties.Consequences.Propositional` as it does not rely on equality.
+
+* Moved `_≟_` from `Data.Bool.Base` to `Data.Bool.Properties`. Backwards
+  compatibility has been (nearly completely) preserved by having `Data.Bool`
+  publicly re-export `_≟_`.
+
+* In `Data.List.Membership.Propositional.Properties`:
+    - Made the `Set` argument implicit in `∈-++⁺ˡ`, `∈-++⁺ʳ`, `∈-++⁻`, `∈-insert`, `∈-∃++`.
+    - Made the `A → B` argument explicit in `∈-map⁺`, `∈-map⁻`, `map-∈↔`.
+
 Other major changes
 -------------------
 
 * Added new module `Algebra.FunctionProperties.Consequences.Propositional`
 
+* Added new module `Codata.Cowriter`
+
 * Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
 
 * Added new modules `Data.List.Relation.Prefix.Heterogeneous(.Properties)`
+
+* Added new modules `Data.List.First` and `Data.List.First.Properties` for a
+  generalization of the notion of "first element in the list to satisfy a
+  predicate".
 
 * Added new module `Data.Vec.Any.Properties`
 
@@ -62,9 +100,46 @@ Deprecated features
 Other minor additions
 ---------------------
 
+* Added new records to `Algebra`:
+  ```agda
+  record RawMagma c ℓ : Set (suc (c ⊔ ℓ))
+  record Magma    c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
 * Added new proof to `Algebra.FunctionProperties.Consequences`:
   ```agda
   wlog : Commutative f → Total _R_ → (∀ a b → a R b → P (f a b)) → ∀ a b → P (f a b)
+  ```
+
+* Added new operator to `Algebra.Solver.Ring`.
+  ```agda
+  _:×_
+  ```
+
+* Added new records to `Algebra.Structures`:
+  ```agda
+  record IsMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  ```
+
+* Added new functions to `Codata.Colist`:
+  ```agda
+  fromCowriter : Cowriter W A i → Colist W i
+  toCowriter   : Colist A i → Cowriter A ⊤ i
+  [_]          : A → Colist A ∞
+  chunksOf     : (n : ℕ) → Colist A ∞ → Cowriter (Vec A n) (BoundedVec A n) ∞
+  ```
+
+* Added new functions to `Codata.Stream`:
+  ```agda
+  splitAt    : (n : ℕ) → Stream A ∞ → Vec A n × Stream A ∞
+  drop       : ℕ → Stream A ∞ → Stream A ∞
+  interleave : Stream A i → Thunk (Stream A) i → Stream A i
+  chunksOf   : (n : ℕ) → Stream A ∞ → Stream (Vec A n) ∞
+  ```
+
+* Added new proof to `Codata.Stream.Properties`:
+  ```agda
+  splitAt-map : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
   ```
 
 * Added new function to `Data.Fin.Base`:
@@ -181,6 +256,12 @@ Other minor additions
 * Added new function to `Data.Maybe.Base`:
   ```agda
   _<∣>_     : Maybe A → Maybe A → Maybe A
+  ```
+
+* Added new functions to `Data.Sum.Base`:
+  ```agda
+  fromDec : Dec P → P ⊎ ¬ P
+  toDec   : P ⊎ ¬ P → Dec P
   ```
 
 * Added new functions to `Data.Vec.Any.Properties`:
