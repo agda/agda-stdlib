@@ -439,7 +439,8 @@ record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   -- because the idempotence laws of ∨ and ∧ can be derived from the
   -- absorption laws, which makes the corresponding "idem" fields
   -- redundant.  The derived idempotence laws are stated and proved in
-  -- Algebra.Properties.Lattice.
+  -- Algebra.Properties.Lattice along with the fact that every lattice
+  -- consists of two semilattices.
 
   ∨-absorbs-∧ : ∨ Absorbs ∧
   ∨-absorbs-∧ = proj₁ absorptive

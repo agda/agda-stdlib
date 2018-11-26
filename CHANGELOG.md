@@ -61,6 +61,11 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The record `BooleanAlgebra` now exports `∨-isSemigroup`, `∧-isSemigroup`
   directly  so `Algebra.Properties.BooleanAlgebra` no longer does so.
 
+* The proof that every algebraic lattice induces a partial order has been
+  moved from `Algebra.Properties.Lattice` to
+  `Algebra.Properties.Semilattice`.  The corresponding `poset` instance is
+  re-exported in `Algebra.Properties.Lattice`.
+
 #### Relaxation of ring solvers requirements
 
 * In the ring solvers below, the assumption that equality is `Decidable`
@@ -89,6 +94,8 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 
 Other major changes
 -------------------
+
+* Added new module `Algebra.Properties.Semilattice`
 
 * Added new module `Algebra.FunctionProperties.Consequences.Propositional`
 
@@ -121,6 +128,14 @@ Other minor additions
 * Added new proof to `Algebra.FunctionProperties.Consequences`:
   ```agda
   wlog : Commutative f → Total _R_ → (∀ a b → a R b → P (f a b)) → ∀ a b → P (f a b)
+  ```
+
+* Added new proofs to `Algebra.Properties.Lattice`:
+  ```agda
+  ∧-isSemilattice : IsSemilattice _≈_ _∧_
+  ∧-semilattice : Semilattice l₁ l₂
+  ∨-isSemilattice : IsSemilattice _≈_ _∨_
+  ∨-semilattice : Semilattice l₁ l₂
   ```
 
 * Added new operator to `Algebra.Solver.Ring`.
