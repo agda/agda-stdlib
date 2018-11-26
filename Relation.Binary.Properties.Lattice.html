@@ -110,18 +110,39 @@
 <a id="3083" class="Comment">------------------------------------------------------------------------</a>
 <a id="3156" class="Comment">-- Every order-theoretic lattice can be turned into an algebraic one.</a>
 
-<a id="isAlgLattice"></a><a id="3227" href="Relation.Binary.Properties.Lattice.html#3227" class="Function">isAlgLattice</a> <a id="3240" class="Symbol">:</a> <a id="3242" href="Algebra.Structures.html#12114" class="Record">Alg.IsLattice</a> <a id="3256" href="Relation.Binary.Lattice.html#7872" class="Field Operator">_≈_</a> <a id="3260" href="Relation.Binary.Lattice.html#7986" class="Field Operator">_∨_</a> <a id="3264" href="Relation.Binary.Lattice.html#8041" class="Field Operator">_∧_</a>
+<a id="isAlgLattice"></a><a id="3227" href="Relation.Binary.Properties.Lattice.html#3227" class="Function">isAlgLattice</a> <a id="3240" class="Symbol">:</a> <a id="3242" href="Algebra.Structures.html#11820" class="Record">Alg.IsLattice</a> <a id="3256" href="Relation.Binary.Lattice.html#7872" class="Field Operator">_≈_</a> <a id="3260" href="Relation.Binary.Lattice.html#7986" class="Field Operator">_∨_</a> <a id="3264" href="Relation.Binary.Lattice.html#8041" class="Field Operator">_∧_</a>
 <a id="3268" href="Relation.Binary.Properties.Lattice.html#3227" class="Function">isAlgLattice</a> <a id="3281" class="Symbol">=</a> <a id="3283" class="Keyword">record</a>
-  <a id="3292" class="Symbol">{</a> <a id="3294" class="Field">isEquivalence</a> <a id="3308" class="Symbol">=</a> <a id="3310" href="Relation.Binary.html#949" class="Function">isEquivalence</a>
-  <a id="3326" class="Symbol">;</a> <a id="3328" class="Field">∨-comm</a>        <a id="3342" class="Symbol">=</a> <a id="3344" href="Relation.Binary.Properties.JoinSemilattice.html#1203" class="Function">J.∨-comm</a>
-  <a id="3355" class="Symbol">;</a> <a id="3357" class="Field">∨-assoc</a>       <a id="3371" class="Symbol">=</a> <a id="3373" href="Relation.Binary.Properties.JoinSemilattice.html#1400" class="Function">J.∨-assoc</a>
-  <a id="3385" class="Symbol">;</a> <a id="3387" class="Field">∨-cong</a>        <a id="3401" class="Symbol">=</a> <a id="3403" href="Relation.Binary.Properties.JoinSemilattice.html#897" class="Function">J.∨-cong</a>
-  <a id="3414" class="Symbol">;</a> <a id="3416" class="Field">∧-comm</a>        <a id="3430" class="Symbol">=</a> <a id="3432" href="Relation.Binary.Properties.JoinSemilattice.html#1203" class="Function">M.∧-comm</a>
-  <a id="3443" class="Symbol">;</a> <a id="3445" class="Field">∧-assoc</a>       <a id="3459" class="Symbol">=</a> <a id="3461" href="Relation.Binary.Properties.JoinSemilattice.html#1400" class="Function">M.∧-assoc</a>
-  <a id="3473" class="Symbol">;</a> <a id="3475" class="Field">∧-cong</a>        <a id="3489" class="Symbol">=</a> <a id="3491" href="Relation.Binary.Properties.JoinSemilattice.html#897" class="Function">M.∧-cong</a>
-  <a id="3502" class="Symbol">;</a> <a id="3504" class="Field">absorptive</a>    <a id="3518" class="Symbol">=</a> <a id="3520" href="Relation.Binary.Properties.Lattice.html#1224" class="Function">absorptive</a>
-  <a id="3533" class="Symbol">}</a>
+  <a id="3292" class="Symbol">{</a> <a id="3294" class="Field">∨-isSemilattice</a> <a id="3310" class="Symbol">=</a> <a id="3312" class="Keyword">record</a>
+    <a id="3323" class="Symbol">{</a> <a id="3325" class="Field">isBand</a> <a id="3332" class="Symbol">=</a> <a id="3334" class="Keyword">record</a>
+      <a id="3347" class="Symbol">{</a> <a id="3349" class="Field">isSemigroup</a> <a id="3361" class="Symbol">=</a> <a id="3363" class="Keyword">record</a>
+        <a id="3378" class="Symbol">{</a> <a id="3380" class="Field">isMagma</a> <a id="3388" class="Symbol">=</a> <a id="3390" class="Keyword">record</a>
+          <a id="3407" class="Symbol">{</a> <a id="3409" class="Field">isEquivalence</a> <a id="3423" class="Symbol">=</a> <a id="3425" href="Relation.Binary.html#949" class="Function">isEquivalence</a>
+          <a id="3449" class="Symbol">;</a> <a id="3451" class="Field">∙-cong</a>        <a id="3465" class="Symbol">=</a> <a id="3467" href="Relation.Binary.Properties.JoinSemilattice.html#897" class="Function">J.∨-cong</a>
+          <a id="3486" class="Symbol">}</a>
+        <a id="3496" class="Symbol">;</a> <a id="3498" class="Field">assoc</a> <a id="3504" class="Symbol">=</a> <a id="3506" href="Relation.Binary.Properties.JoinSemilattice.html#1400" class="Function">J.∨-assoc</a>
+        <a id="3524" class="Symbol">}</a>
+      <a id="3532" class="Symbol">;</a> <a id="3534" class="Field">idem</a> <a id="3539" class="Symbol">=</a> <a id="3541" href="Relation.Binary.Properties.JoinSemilattice.html#1895" class="Function">J.∨-idempotent</a>
+      <a id="3562" class="Symbol">}</a>
+    <a id="3568" class="Symbol">;</a> <a id="3570" class="Field">comm</a> <a id="3575" class="Symbol">=</a> <a id="3577" href="Relation.Binary.Properties.JoinSemilattice.html#1203" class="Function">J.∨-comm</a>
+    <a id="3590" class="Symbol">}</a>
+  <a id="3594" class="Symbol">;</a> <a id="3596" class="Field">∧-isSemilattice</a> <a id="3612" class="Symbol">=</a> <a id="3614" class="Keyword">record</a>
+    <a id="3625" class="Symbol">{</a> <a id="3627" class="Field">isBand</a> <a id="3634" class="Symbol">=</a> <a id="3636" class="Keyword">record</a>
+      <a id="3649" class="Symbol">{</a> <a id="3651" class="Field">isSemigroup</a> <a id="3663" class="Symbol">=</a> <a id="3665" class="Keyword">record</a>
+        <a id="3680" class="Symbol">{</a> <a id="3682" class="Field">isMagma</a> <a id="3690" class="Symbol">=</a> <a id="3692" class="Keyword">record</a>
+          <a id="3709" class="Symbol">{</a> <a id="3711" class="Field">isEquivalence</a> <a id="3725" class="Symbol">=</a> <a id="3727" href="Relation.Binary.html#949" class="Function">isEquivalence</a>
+          <a id="3751" class="Symbol">;</a> <a id="3753" class="Field">∙-cong</a>        <a id="3767" class="Symbol">=</a> <a id="3769" href="Relation.Binary.Properties.JoinSemilattice.html#897" class="Function">M.∧-cong</a>
+          <a id="3788" class="Symbol">}</a>
+        <a id="3798" class="Symbol">;</a> <a id="3800" class="Field">assoc</a> <a id="3806" class="Symbol">=</a> <a id="3808" href="Relation.Binary.Properties.JoinSemilattice.html#1400" class="Function">M.∧-assoc</a>
+        <a id="3826" class="Symbol">}</a>
+      <a id="3834" class="Symbol">;</a> <a id="3836" class="Field">idem</a> <a id="3841" class="Symbol">=</a> <a id="3843" href="Relation.Binary.Properties.JoinSemilattice.html#1895" class="Function">M.∧-idempotent</a>
+      <a id="3864" class="Symbol">}</a>
+    <a id="3870" class="Symbol">;</a> <a id="3872" class="Field">comm</a> <a id="3877" class="Symbol">=</a> <a id="3879" href="Relation.Binary.Properties.JoinSemilattice.html#1203" class="Function">M.∧-comm</a>
+    <a id="3892" class="Symbol">}</a>
+  <a id="3896" class="Symbol">;</a> <a id="3898" class="Field">absorptive</a>    <a id="3912" class="Symbol">=</a> <a id="3914" href="Relation.Binary.Properties.Lattice.html#1224" class="Function">absorptive</a>
+  <a id="3927" class="Symbol">}</a>
 
-<a id="algLattice"></a><a id="3536" href="Relation.Binary.Properties.Lattice.html#3536" class="Function">algLattice</a> <a id="3547" class="Symbol">:</a> <a id="3549" href="Algebra.html#14589" class="Record">Alg.Lattice</a> <a id="3561" href="Relation.Binary.Properties.Lattice.html#298" class="Bound">c</a> <a id="3563" href="Relation.Binary.Properties.Lattice.html#300" class="Bound">ℓ₁</a>
-<a id="3566" href="Relation.Binary.Properties.Lattice.html#3536" class="Function">algLattice</a> <a id="3577" class="Symbol">=</a> <a id="3579" class="Keyword">record</a> <a id="3586" class="Symbol">{</a> <a id="3588" class="Field">isLattice</a> <a id="3598" class="Symbol">=</a> <a id="3600" href="Relation.Binary.Properties.Lattice.html#3227" class="Function">isAlgLattice</a> <a id="3613" class="Symbol">}</a>
+<a id="algLattice"></a><a id="3930" href="Relation.Binary.Properties.Lattice.html#3930" class="Function">algLattice</a> <a id="3941" class="Symbol">:</a> <a id="3943" href="Algebra.html#14590" class="Record">Alg.Lattice</a> <a id="3955" href="Relation.Binary.Properties.Lattice.html#298" class="Bound">c</a> <a id="3957" href="Relation.Binary.Properties.Lattice.html#300" class="Bound">ℓ₁</a>
+<a id="3960" href="Relation.Binary.Properties.Lattice.html#3930" class="Function">algLattice</a> <a id="3971" class="Symbol">=</a> <a id="3973" class="Keyword">record</a>
+  <a id="3982" class="Symbol">{</a> <a id="3984" class="Field">isLattice</a> <a id="3994" class="Symbol">=</a> <a id="3996" href="Relation.Binary.Properties.Lattice.html#3227" class="Function">isAlgLattice</a>
+  <a id="4011" class="Symbol">}</a>
 </pre></body></html>
