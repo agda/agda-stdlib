@@ -5,38 +5,40 @@
 <a id="106" class="Comment">-- Strings</a>
 <a id="117" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="191" class="Keyword">module</a> <a id="198" href="Data.String.html" class="Module">Data.String</a> <a id="210" class="Keyword">where</a>
+<a id="191" class="Symbol">{-#</a> <a id="195" class="Keyword">OPTIONS</a> <a id="203" class="Option">--without-K</a> <a id="215" class="Symbol">#-}</a>
 
-<a id="217" class="Keyword">open</a> <a id="222" class="Keyword">import</a> <a id="229" href="Data.Vec.html" class="Module">Data.Vec</a> <a id="238" class="Symbol">as</a> <a id="241" class="Module">Vec</a> <a id="245" class="Keyword">using</a> <a id="251" class="Symbol">(</a><a id="252" href="Data.Vec.html#737" class="Datatype">Vec</a><a id="255" class="Symbol">)</a>
-<a id="257" class="Keyword">open</a> <a id="262" class="Keyword">import</a> <a id="269" href="Data.Char.html" class="Module">Data.Char</a> <a id="279" class="Symbol">as</a> <a id="282" class="Module">Char</a> <a id="287" class="Keyword">using</a> <a id="293" class="Symbol">(</a><a id="294" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a><a id="298" class="Symbol">)</a>
-<a id="300" class="Keyword">open</a> <a id="305" class="Keyword">import</a> <a id="312" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="328" class="Keyword">using</a> <a id="334" class="Symbol">(</a><a id="335" href="Relation.Binary.html#1894" class="Record">Setoid</a><a id="341" class="Symbol">;</a> <a id="343" href="Relation.Binary.html#11374" class="Record">StrictTotalOrder</a><a id="359" class="Symbol">)</a>
-<a id="361" class="Keyword">open</a> <a id="366" class="Keyword">import</a> <a id="373" href="Data.List.Relation.Lex.Strict.html" class="Module">Data.List.Relation.Lex.Strict</a> <a id="403" class="Symbol">as</a> <a id="406" class="Module">StrictLex</a>
-<a id="416" class="Keyword">import</a> <a id="423" href="Relation.Binary.Construct.On.html" class="Module">Relation.Binary.Construct.On</a> <a id="452" class="Symbol">as</a> <a id="455" class="Module">On</a>
-<a id="458" class="Keyword">import</a> <a id="465" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="503" class="Symbol">as</a> <a id="506" class="Module">PropEq</a>
+<a id="220" class="Keyword">module</a> <a id="227" href="Data.String.html" class="Module">Data.String</a> <a id="239" class="Keyword">where</a>
 
-<a id="514" class="Comment">------------------------------------------------------------------------</a>
-<a id="587" class="Comment">-- Re-export contents of base publically</a>
+<a id="246" class="Keyword">open</a> <a id="251" class="Keyword">import</a> <a id="258" href="Data.Vec.html" class="Module">Data.Vec</a> <a id="267" class="Symbol">as</a> <a id="270" class="Module">Vec</a> <a id="274" class="Keyword">using</a> <a id="280" class="Symbol">(</a><a id="281" href="Data.Vec.html#766" class="Datatype">Vec</a><a id="284" class="Symbol">)</a>
+<a id="286" class="Keyword">open</a> <a id="291" class="Keyword">import</a> <a id="298" href="Data.Char.html" class="Module">Data.Char</a> <a id="308" class="Symbol">as</a> <a id="311" class="Module">Char</a> <a id="316" class="Keyword">using</a> <a id="322" class="Symbol">(</a><a id="323" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a><a id="327" class="Symbol">)</a>
+<a id="329" class="Keyword">open</a> <a id="334" class="Keyword">import</a> <a id="341" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="357" class="Keyword">using</a> <a id="363" class="Symbol">(</a><a id="364" href="Relation.Binary.html#1923" class="Record">Setoid</a><a id="370" class="Symbol">;</a> <a id="372" href="Relation.Binary.html#11403" class="Record">StrictTotalOrder</a><a id="388" class="Symbol">)</a>
+<a id="390" class="Keyword">open</a> <a id="395" class="Keyword">import</a> <a id="402" href="Data.List.Relation.Lex.Strict.html" class="Module">Data.List.Relation.Lex.Strict</a> <a id="432" class="Symbol">as</a> <a id="435" class="Module">StrictLex</a>
+<a id="445" class="Keyword">import</a> <a id="452" href="Relation.Binary.Construct.On.html" class="Module">Relation.Binary.Construct.On</a> <a id="481" class="Symbol">as</a> <a id="484" class="Module">On</a>
+<a id="487" class="Keyword">import</a> <a id="494" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="532" class="Symbol">as</a> <a id="535" class="Module">PropEq</a>
 
-<a id="629" class="Keyword">open</a> <a id="634" class="Keyword">import</a> <a id="641" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="658" class="Keyword">public</a>
+<a id="543" class="Comment">------------------------------------------------------------------------</a>
+<a id="616" class="Comment">-- Re-export contents of base publically</a>
 
-<a id="666" class="Comment">------------------------------------------------------------------------</a>
-<a id="739" class="Comment">-- Operations</a>
+<a id="658" class="Keyword">open</a> <a id="663" class="Keyword">import</a> <a id="670" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="687" class="Keyword">public</a>
 
-<a id="toVec"></a><a id="754" href="Data.String.html#754" class="Function">toVec</a> <a id="760" class="Symbol">:</a> <a id="762" class="Symbol">(</a><a id="763" href="Data.String.html#763" class="Bound">s</a> <a id="765" class="Symbol">:</a> <a id="767" href="Agda.Builtin.String.html#165" class="Postulate">String</a><a id="773" class="Symbol">)</a> <a id="775" class="Symbol">→</a> <a id="777" href="Data.Vec.html#737" class="Datatype">Vec</a> <a id="781" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="786" class="Symbol">(</a><a id="787" href="Data.String.Base.html#1146" class="Function">length</a> <a id="794" href="Data.String.html#763" class="Bound">s</a><a id="795" class="Symbol">)</a>
-<a id="797" href="Data.String.html#754" class="Function">toVec</a> <a id="803" href="Data.String.html#803" class="Bound">s</a> <a id="805" class="Symbol">=</a> <a id="807" href="Data.Vec.html#7246" class="Function">Vec.fromList</a> <a id="820" class="Symbol">(</a><a id="821" href="Data.String.Base.html#869" class="Function">toList</a> <a id="828" href="Data.String.html#803" class="Bound">s</a><a id="829" class="Symbol">)</a>
+<a id="695" class="Comment">------------------------------------------------------------------------</a>
+<a id="768" class="Comment">-- Operations</a>
 
-<a id="832" class="Comment">------------------------------------------------------------------------</a>
-<a id="905" class="Comment">-- Equality over strings</a>
+<a id="toVec"></a><a id="783" href="Data.String.html#783" class="Function">toVec</a> <a id="789" class="Symbol">:</a> <a id="791" class="Symbol">(</a><a id="792" href="Data.String.html#792" class="Bound">s</a> <a id="794" class="Symbol">:</a> <a id="796" href="Agda.Builtin.String.html#165" class="Postulate">String</a><a id="802" class="Symbol">)</a> <a id="804" class="Symbol">→</a> <a id="806" href="Data.Vec.html#766" class="Datatype">Vec</a> <a id="810" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="815" class="Symbol">(</a><a id="816" href="Data.String.Base.html#1175" class="Function">length</a> <a id="823" href="Data.String.html#792" class="Bound">s</a><a id="824" class="Symbol">)</a>
+<a id="826" href="Data.String.html#783" class="Function">toVec</a> <a id="832" href="Data.String.html#832" class="Bound">s</a> <a id="834" class="Symbol">=</a> <a id="836" href="Data.Vec.html#7275" class="Function">Vec.fromList</a> <a id="849" class="Symbol">(</a><a id="850" href="Data.String.Base.html#898" class="Function">toList</a> <a id="857" href="Data.String.html#832" class="Bound">s</a><a id="858" class="Symbol">)</a>
 
-<a id="setoid"></a><a id="931" href="Data.String.html#931" class="Function">setoid</a> <a id="938" class="Symbol">:</a> <a id="940" href="Relation.Binary.html#1894" class="Record">Setoid</a> <a id="947" class="Symbol">_</a> <a id="949" class="Symbol">_</a>
-<a id="951" href="Data.String.html#931" class="Function">setoid</a> <a id="958" class="Symbol">=</a> <a id="960" href="Relation.Binary.PropositionalEquality.html#1554" class="Function">PropEq.setoid</a> <a id="974" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
+<a id="861" class="Comment">------------------------------------------------------------------------</a>
+<a id="934" class="Comment">-- Equality over strings</a>
 
-<a id="982" class="Comment">------------------------------------------------------------------------</a>
-<a id="1055" class="Comment">-- A lexicographic ordering on strings.</a>
+<a id="setoid"></a><a id="960" href="Data.String.html#960" class="Function">setoid</a> <a id="967" class="Symbol">:</a> <a id="969" href="Relation.Binary.html#1923" class="Record">Setoid</a> <a id="976" class="Symbol">_</a> <a id="978" class="Symbol">_</a>
+<a id="980" href="Data.String.html#960" class="Function">setoid</a> <a id="987" class="Symbol">=</a> <a id="989" href="Relation.Binary.PropositionalEquality.html#1511" class="Function">PropEq.setoid</a> <a id="1003" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
 
-<a id="strictTotalOrder"></a><a id="1096" href="Data.String.html#1096" class="Function">strictTotalOrder</a> <a id="1113" class="Symbol">:</a> <a id="1115" href="Relation.Binary.html#11374" class="Record">StrictTotalOrder</a> <a id="1132" class="Symbol">_</a> <a id="1134" class="Symbol">_</a> <a id="1136" class="Symbol">_</a>
-<a id="1138" href="Data.String.html#1096" class="Function">strictTotalOrder</a> <a id="1155" class="Symbol">=</a>
-  <a id="1159" href="Relation.Binary.Construct.On.html#7025" class="Function">On.strictTotalOrder</a>
-    <a id="1183" class="Symbol">(</a><a id="1184" href="Data.List.Relation.Lex.Strict.html#4757" class="Function">StrictLex.&lt;-strictTotalOrder</a> <a id="1213" href="Data.Char.html#857" class="Function">Char.strictTotalOrder</a><a id="1234" class="Symbol">)</a>
-    <a id="1240" href="Data.String.Base.html#869" class="Function">toList</a>
+<a id="1011" class="Comment">------------------------------------------------------------------------</a>
+<a id="1084" class="Comment">-- A lexicographic ordering on strings.</a>
+
+<a id="strictTotalOrder"></a><a id="1125" href="Data.String.html#1125" class="Function">strictTotalOrder</a> <a id="1142" class="Symbol">:</a> <a id="1144" href="Relation.Binary.html#11403" class="Record">StrictTotalOrder</a> <a id="1161" class="Symbol">_</a> <a id="1163" class="Symbol">_</a> <a id="1165" class="Symbol">_</a>
+<a id="1167" href="Data.String.html#1125" class="Function">strictTotalOrder</a> <a id="1184" class="Symbol">=</a>
+  <a id="1188" href="Relation.Binary.Construct.On.html#7054" class="Function">On.strictTotalOrder</a>
+    <a id="1212" class="Symbol">(</a><a id="1213" href="Data.List.Relation.Lex.Strict.html#4800" class="Function">StrictLex.&lt;-strictTotalOrder</a> <a id="1242" href="Data.Char.html#886" class="Function">Char.strictTotalOrder</a><a id="1263" class="Symbol">)</a>
+    <a id="1269" href="Data.String.Base.html#898" class="Function">toList</a>
 </pre></body></html>

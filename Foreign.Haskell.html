@@ -5,26 +5,28 @@
 <a id="106" class="Comment">-- Type(s) used (only) when calling out to Haskell via the FFI</a>
 <a id="169" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="243" class="Keyword">module</a> <a id="250" href="Foreign.Haskell.html" class="Module">Foreign.Haskell</a> <a id="266" class="Keyword">where</a>
+<a id="243" class="Symbol">{-#</a> <a id="247" class="Keyword">OPTIONS</a> <a id="255" class="Option">--without-K</a> <a id="267" class="Symbol">#-}</a>
 
-<a id="273" class="Keyword">open</a> <a id="278" class="Keyword">import</a> <a id="285" href="Level.html" class="Module">Level</a>
+<a id="272" class="Keyword">module</a> <a id="279" href="Foreign.Haskell.html" class="Module">Foreign.Haskell</a> <a id="295" class="Keyword">where</a>
 
-<a id="292" class="Comment">-- A unit type.</a>
+<a id="302" class="Keyword">open</a> <a id="307" class="Keyword">import</a> <a id="314" href="Level.html" class="Module">Level</a>
 
-<a id="309" class="Keyword">data</a> <a id="Unit"></a><a id="314" href="Foreign.Haskell.html#314" class="Datatype">Unit</a> <a id="319" class="Symbol">:</a> <a id="321" class="PrimitiveType">Set</a> <a id="325" class="Keyword">where</a>
-  <a id="Unit.unit"></a><a id="333" href="Foreign.Haskell.html#333" class="InductiveConstructor">unit</a> <a id="338" class="Symbol">:</a> <a id="340" href="Foreign.Haskell.html#314" class="Datatype">Unit</a>
+<a id="321" class="Comment">-- A unit type.</a>
 
-<a id="346" class="Symbol">{-#</a> <a id="350" class="Keyword">COMPILE</a> GHC <a id="362" href="Foreign.Haskell.html#314" class="Datatype">Unit</a> = data () (()) <a id="382" class="Symbol">#-}</a>
-<a id="386" class="Symbol">{-#</a> <a id="390" class="Keyword">COMPILE</a> UHC <a id="402" href="Foreign.Haskell.html#314" class="Datatype">Unit</a> = data __UNIT__ (__UNIT__) <a id="434" class="Symbol">#-}</a>
+<a id="338" class="Keyword">data</a> <a id="Unit"></a><a id="343" href="Foreign.Haskell.html#343" class="Datatype">Unit</a> <a id="348" class="Symbol">:</a> <a id="350" class="PrimitiveType">Set</a> <a id="354" class="Keyword">where</a>
+  <a id="Unit.unit"></a><a id="362" href="Foreign.Haskell.html#362" class="InductiveConstructor">unit</a> <a id="367" class="Symbol">:</a> <a id="369" href="Foreign.Haskell.html#343" class="Datatype">Unit</a>
 
-<a id="439" class="Comment">-- A pair type</a>
+<a id="375" class="Symbol">{-#</a> <a id="379" class="Keyword">COMPILE</a> GHC <a id="391" href="Foreign.Haskell.html#343" class="Datatype">Unit</a> = data () (()) <a id="411" class="Symbol">#-}</a>
+<a id="415" class="Symbol">{-#</a> <a id="419" class="Keyword">COMPILE</a> UHC <a id="431" href="Foreign.Haskell.html#343" class="Datatype">Unit</a> = data __UNIT__ (__UNIT__) <a id="463" class="Symbol">#-}</a>
 
-<a id="455" class="Keyword">record</a> <a id="Pair"></a><a id="462" href="Foreign.Haskell.html#462" class="Record">Pair</a> <a id="467" class="Symbol">{</a><a id="468" href="Foreign.Haskell.html#468" class="Bound">ℓ</a> <a id="470" href="Foreign.Haskell.html#470" class="Bound">ℓ′</a> <a id="473" class="Symbol">:</a> <a id="475" href="Agda.Primitive.html#408" class="Postulate">Level</a><a id="480" class="Symbol">}</a> <a id="482" class="Symbol">(</a><a id="483" href="Foreign.Haskell.html#483" class="Bound">A</a> <a id="485" class="Symbol">:</a> <a id="487" class="PrimitiveType">Set</a> <a id="491" href="Foreign.Haskell.html#468" class="Bound">ℓ</a><a id="492" class="Symbol">)</a> <a id="494" class="Symbol">(</a><a id="495" href="Foreign.Haskell.html#495" class="Bound">B</a> <a id="497" class="Symbol">:</a> <a id="499" class="PrimitiveType">Set</a> <a id="503" href="Foreign.Haskell.html#470" class="Bound">ℓ′</a><a id="505" class="Symbol">)</a> <a id="507" class="Symbol">:</a> <a id="509" class="PrimitiveType">Set</a> <a id="513" class="Symbol">(</a><a id="514" href="Foreign.Haskell.html#468" class="Bound">ℓ</a> <a id="516" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="518" href="Foreign.Haskell.html#470" class="Bound">ℓ′</a><a id="520" class="Symbol">)</a> <a id="522" class="Keyword">where</a>
-  <a id="530" class="Keyword">constructor</a> <a id="Pair._,_"></a><a id="542" href="Foreign.Haskell.html#542" class="InductiveConstructor Operator">_,_</a>
-  <a id="548" class="Keyword">field</a>  <a id="Pair.fst"></a><a id="555" href="Foreign.Haskell.html#555" class="Field">fst</a> <a id="559" class="Symbol">:</a> <a id="561" href="Foreign.Haskell.html#483" class="Bound">A</a>
-         <a id="Pair.snd"></a><a id="572" href="Foreign.Haskell.html#572" class="Field">snd</a> <a id="576" class="Symbol">:</a> <a id="578" href="Foreign.Haskell.html#495" class="Bound">B</a>
-<a id="580" class="Keyword">open</a> <a id="585" href="Foreign.Haskell.html#462" class="Module">Pair</a> <a id="590" class="Keyword">public</a>
+<a id="468" class="Comment">-- A pair type</a>
 
-<a id="598" class="Symbol">{-#</a> <a id="602" class="Keyword">FOREIGN</a> GHC type AgdaPair l1 l2 a b = (a , b) <a id="648" class="Symbol">#-}</a>
-<a id="652" class="Symbol">{-#</a> <a id="656" class="Keyword">COMPILE</a> GHC <a id="668" href="Foreign.Haskell.html#462" class="Record">Pair</a> = data MAlonzo.Code.Foreign.Haskell.AgdaPair ((,)) <a id="724" class="Symbol">#-}</a>
+<a id="484" class="Keyword">record</a> <a id="Pair"></a><a id="491" href="Foreign.Haskell.html#491" class="Record">Pair</a> <a id="496" class="Symbol">{</a><a id="497" href="Foreign.Haskell.html#497" class="Bound">ℓ</a> <a id="499" href="Foreign.Haskell.html#499" class="Bound">ℓ′</a> <a id="502" class="Symbol">:</a> <a id="504" href="Agda.Primitive.html#408" class="Postulate">Level</a><a id="509" class="Symbol">}</a> <a id="511" class="Symbol">(</a><a id="512" href="Foreign.Haskell.html#512" class="Bound">A</a> <a id="514" class="Symbol">:</a> <a id="516" class="PrimitiveType">Set</a> <a id="520" href="Foreign.Haskell.html#497" class="Bound">ℓ</a><a id="521" class="Symbol">)</a> <a id="523" class="Symbol">(</a><a id="524" href="Foreign.Haskell.html#524" class="Bound">B</a> <a id="526" class="Symbol">:</a> <a id="528" class="PrimitiveType">Set</a> <a id="532" href="Foreign.Haskell.html#499" class="Bound">ℓ′</a><a id="534" class="Symbol">)</a> <a id="536" class="Symbol">:</a> <a id="538" class="PrimitiveType">Set</a> <a id="542" class="Symbol">(</a><a id="543" href="Foreign.Haskell.html#497" class="Bound">ℓ</a> <a id="545" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="547" href="Foreign.Haskell.html#499" class="Bound">ℓ′</a><a id="549" class="Symbol">)</a> <a id="551" class="Keyword">where</a>
+  <a id="559" class="Keyword">constructor</a> <a id="Pair._,_"></a><a id="571" href="Foreign.Haskell.html#571" class="InductiveConstructor Operator">_,_</a>
+  <a id="577" class="Keyword">field</a>  <a id="Pair.fst"></a><a id="584" href="Foreign.Haskell.html#584" class="Field">fst</a> <a id="588" class="Symbol">:</a> <a id="590" href="Foreign.Haskell.html#512" class="Bound">A</a>
+         <a id="Pair.snd"></a><a id="601" href="Foreign.Haskell.html#601" class="Field">snd</a> <a id="605" class="Symbol">:</a> <a id="607" href="Foreign.Haskell.html#524" class="Bound">B</a>
+<a id="609" class="Keyword">open</a> <a id="614" href="Foreign.Haskell.html#491" class="Module">Pair</a> <a id="619" class="Keyword">public</a>
+
+<a id="627" class="Symbol">{-#</a> <a id="631" class="Keyword">FOREIGN</a> GHC type AgdaPair l1 l2 a b = (a , b) <a id="677" class="Symbol">#-}</a>
+<a id="681" class="Symbol">{-#</a> <a id="685" class="Keyword">COMPILE</a> GHC <a id="697" href="Foreign.Haskell.html#491" class="Record">Pair</a> = data MAlonzo.Code.Foreign.Haskell.AgdaPair ((,)) <a id="753" class="Symbol">#-}</a>
 </pre></body></html>

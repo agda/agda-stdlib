@@ -5,22 +5,24 @@
 <a id="106" class="Comment">-- Properties satisfied by strict partial orders</a>
 <a id="155" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="229" class="Keyword">open</a> <a id="234" class="Keyword">import</a> <a id="241" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="229" class="Symbol">{-#</a> <a id="233" class="Keyword">OPTIONS</a> <a id="241" class="Option">--without-K</a> <a id="253" class="Symbol">#-}</a>
 
-<a id="258" class="Keyword">module</a> <a id="265" href="Relation.Binary.Properties.StrictPartialOrder.html" class="Module">Relation.Binary.Properties.StrictPartialOrder</a>
-       <a id="318" class="Symbol">{</a><a id="319" href="Relation.Binary.Properties.StrictPartialOrder.html#319" class="Bound">s₁</a> <a id="322" href="Relation.Binary.Properties.StrictPartialOrder.html#322" class="Bound">s₂</a> <a id="325" href="Relation.Binary.Properties.StrictPartialOrder.html#325" class="Bound">s₃</a><a id="327" class="Symbol">}</a> <a id="329" class="Symbol">(</a><a id="330" href="Relation.Binary.Properties.StrictPartialOrder.html#330" class="Bound">SPO</a> <a id="334" class="Symbol">:</a> <a id="336" href="Relation.Binary.html#6014" class="Record">StrictPartialOrder</a> <a id="355" href="Relation.Binary.Properties.StrictPartialOrder.html#319" class="Bound">s₁</a> <a id="358" href="Relation.Binary.Properties.StrictPartialOrder.html#322" class="Bound">s₂</a> <a id="361" href="Relation.Binary.Properties.StrictPartialOrder.html#325" class="Bound">s₃</a><a id="363" class="Symbol">)</a> <a id="365" class="Keyword">where</a>
+<a id="258" class="Keyword">open</a> <a id="263" class="Keyword">import</a> <a id="270" href="Relation.Binary.html" class="Module">Relation.Binary</a>
 
-<a id="372" class="Keyword">open</a> <a id="377" href="Relation.Binary.html#6014" class="Module">Relation.Binary.StrictPartialOrder</a> <a id="412" href="Relation.Binary.Properties.StrictPartialOrder.html#330" class="Bound">SPO</a>
-  <a id="418" class="Keyword">renaming</a> <a id="427" class="Symbol">(</a>trans <a id="434" class="Symbol">to</a> &lt;-trans<a id="444" class="Symbol">)</a>
-<a id="446" class="Keyword">open</a> <a id="451" class="Keyword">import</a> <a id="458" href="Relation.Binary.Construct.StrictToNonStrict.html" class="Module">Relation.Binary.Construct.StrictToNonStrict</a> <a id="502" href="Relation.Binary.html#6136" class="Field Operator">_≈_</a> <a id="506" href="Relation.Binary.html#6178" class="Field Operator">_&lt;_</a>
+<a id="287" class="Keyword">module</a> <a id="294" href="Relation.Binary.Properties.StrictPartialOrder.html" class="Module">Relation.Binary.Properties.StrictPartialOrder</a>
+       <a id="347" class="Symbol">{</a><a id="348" href="Relation.Binary.Properties.StrictPartialOrder.html#348" class="Bound">s₁</a> <a id="351" href="Relation.Binary.Properties.StrictPartialOrder.html#351" class="Bound">s₂</a> <a id="354" href="Relation.Binary.Properties.StrictPartialOrder.html#354" class="Bound">s₃</a><a id="356" class="Symbol">}</a> <a id="358" class="Symbol">(</a><a id="359" href="Relation.Binary.Properties.StrictPartialOrder.html#359" class="Bound">SPO</a> <a id="363" class="Symbol">:</a> <a id="365" href="Relation.Binary.html#6043" class="Record">StrictPartialOrder</a> <a id="384" href="Relation.Binary.Properties.StrictPartialOrder.html#348" class="Bound">s₁</a> <a id="387" href="Relation.Binary.Properties.StrictPartialOrder.html#351" class="Bound">s₂</a> <a id="390" href="Relation.Binary.Properties.StrictPartialOrder.html#354" class="Bound">s₃</a><a id="392" class="Symbol">)</a> <a id="394" class="Keyword">where</a>
 
-<a id="511" class="Comment">------------------------------------------------------------------------</a>
-<a id="584" class="Comment">-- Strict partial orders can be converted to posets</a>
+<a id="401" class="Keyword">open</a> <a id="406" href="Relation.Binary.html#6043" class="Module">Relation.Binary.StrictPartialOrder</a> <a id="441" href="Relation.Binary.Properties.StrictPartialOrder.html#359" class="Bound">SPO</a>
+  <a id="447" class="Keyword">renaming</a> <a id="456" class="Symbol">(</a>trans <a id="463" class="Symbol">to</a> &lt;-trans<a id="473" class="Symbol">)</a>
+<a id="475" class="Keyword">open</a> <a id="480" class="Keyword">import</a> <a id="487" href="Relation.Binary.Construct.StrictToNonStrict.html" class="Module">Relation.Binary.Construct.StrictToNonStrict</a> <a id="531" href="Relation.Binary.html#6165" class="Field Operator">_≈_</a> <a id="535" href="Relation.Binary.html#6207" class="Field Operator">_&lt;_</a>
 
-<a id="poset"></a><a id="637" href="Relation.Binary.Properties.StrictPartialOrder.html#637" class="Function">poset</a> <a id="643" class="Symbol">:</a> <a id="645" href="Relation.Binary.html#3510" class="Record">Poset</a> <a id="651" class="Symbol">_</a> <a id="653" class="Symbol">_</a> <a id="655" class="Symbol">_</a>
-<a id="657" href="Relation.Binary.Properties.StrictPartialOrder.html#637" class="Function">poset</a> <a id="663" class="Symbol">=</a> <a id="665" class="Keyword">record</a>
-  <a id="674" class="Symbol">{</a> <a id="676" class="Field">isPartialOrder</a> <a id="691" class="Symbol">=</a> <a id="693" href="Relation.Binary.Construct.StrictToNonStrict.html#4134" class="Function">isPartialOrder</a> <a id="708" href="Relation.Binary.html#6220" class="Field">isStrictPartialOrder</a>
-  <a id="731" class="Symbol">}</a>
+<a id="540" class="Comment">------------------------------------------------------------------------</a>
+<a id="613" class="Comment">-- Strict partial orders can be converted to posets</a>
 
-<a id="734" class="Keyword">open</a> <a id="739" href="Relation.Binary.html#3510" class="Module">Poset</a> <a id="745" href="Relation.Binary.Properties.StrictPartialOrder.html#637" class="Function">poset</a> <a id="751" class="Keyword">public</a>
+<a id="poset"></a><a id="666" href="Relation.Binary.Properties.StrictPartialOrder.html#666" class="Function">poset</a> <a id="672" class="Symbol">:</a> <a id="674" href="Relation.Binary.html#3539" class="Record">Poset</a> <a id="680" class="Symbol">_</a> <a id="682" class="Symbol">_</a> <a id="684" class="Symbol">_</a>
+<a id="686" href="Relation.Binary.Properties.StrictPartialOrder.html#666" class="Function">poset</a> <a id="692" class="Symbol">=</a> <a id="694" class="Keyword">record</a>
+  <a id="703" class="Symbol">{</a> <a id="705" class="Field">isPartialOrder</a> <a id="720" class="Symbol">=</a> <a id="722" href="Relation.Binary.Construct.StrictToNonStrict.html#4163" class="Function">isPartialOrder</a> <a id="737" href="Relation.Binary.html#6249" class="Field">isStrictPartialOrder</a>
+  <a id="760" class="Symbol">}</a>
+
+<a id="763" class="Keyword">open</a> <a id="768" href="Relation.Binary.html#3539" class="Module">Poset</a> <a id="774" href="Relation.Binary.Properties.StrictPartialOrder.html#666" class="Function">poset</a> <a id="780" class="Keyword">public</a>
 </pre></body></html>

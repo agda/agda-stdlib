@@ -7,15 +7,17 @@
 
 <a id="226" class="Comment">-- See README.Nat for examples of how to use similar solvers</a>
 
-<a id="288" class="Keyword">module</a> <a id="295" href="Data.List.Solver.html" class="Module">Data.List.Solver</a> <a id="312" class="Keyword">where</a>
+<a id="288" class="Symbol">{-#</a> <a id="292" class="Keyword">OPTIONS</a> <a id="300" class="Option">--without-K</a> <a id="312" class="Symbol">#-}</a>
 
-<a id="319" class="Keyword">import</a> <a id="326" href="Algebra.Solver.Monoid.html" class="Module">Algebra.Solver.Monoid</a> <a id="348" class="Symbol">as</a> <a id="351" class="Module">Solver</a>
-<a id="358" class="Keyword">open</a> <a id="363" class="Keyword">import</a> <a id="370" href="Data.List.Properties.html" class="Module">Data.List.Properties</a> <a id="391" class="Keyword">using</a> <a id="397" class="Symbol">(</a><a id="398" href="Data.List.Properties.html#6146" class="Function">++-monoid</a><a id="407" class="Symbol">)</a>
+<a id="317" class="Keyword">module</a> <a id="324" href="Data.List.Solver.html" class="Module">Data.List.Solver</a> <a id="341" class="Keyword">where</a>
 
-<a id="410" class="Comment">------------------------------------------------------------------------</a>
-<a id="483" class="Comment">-- A module for automatically solving propositional equivalences</a>
-<a id="548" class="Comment">-- containing _++_</a>
+<a id="348" class="Keyword">import</a> <a id="355" href="Algebra.Solver.Monoid.html" class="Module">Algebra.Solver.Monoid</a> <a id="377" class="Symbol">as</a> <a id="380" class="Module">Solver</a>
+<a id="387" class="Keyword">open</a> <a id="392" class="Keyword">import</a> <a id="399" href="Data.List.Properties.html" class="Module">Data.List.Properties</a> <a id="420" class="Keyword">using</a> <a id="426" class="Symbol">(</a><a id="427" href="Data.List.Properties.html#6175" class="Function">++-monoid</a><a id="436" class="Symbol">)</a>
 
-<a id="568" class="Keyword">module</a> <a id="++-Solver"></a><a id="575" href="Data.List.Solver.html#575" class="Module">++-Solver</a> <a id="585" class="Symbol">{</a><a id="586" href="Data.List.Solver.html#586" class="Bound">a</a><a id="587" class="Symbol">}</a> <a id="589" class="Symbol">{</a><a id="590" href="Data.List.Solver.html#590" class="Bound">A</a> <a id="592" class="Symbol">:</a> <a id="594" class="PrimitiveType">Set</a> <a id="598" href="Data.List.Solver.html#586" class="Bound">a</a><a id="599" class="Symbol">}</a> <a id="601" class="Symbol">=</a>
-  <a id="605" href="Algebra.Solver.Monoid.html" class="Module">Solver</a> <a id="612" class="Symbol">(</a><a id="613" href="Data.List.Properties.html#6146" class="Function">++-monoid</a> <a id="623" href="Data.List.Solver.html#590" class="Bound">A</a><a id="624" class="Symbol">)</a> <a id="626" class="Keyword">renaming</a> <a id="635" class="Symbol">(</a><a id="636" href="Algebra.Solver.Monoid.html#1282" class="InductiveConstructor">id</a> <a id="639" class="Symbol">to</a> <a id="642" href="Algebra.Solver.Monoid.html#1282" class="InductiveConstructor">nil</a><a id="645" class="Symbol">)</a>
+<a id="439" class="Comment">------------------------------------------------------------------------</a>
+<a id="512" class="Comment">-- A module for automatically solving propositional equivalences</a>
+<a id="577" class="Comment">-- containing _++_</a>
+
+<a id="597" class="Keyword">module</a> <a id="++-Solver"></a><a id="604" href="Data.List.Solver.html#604" class="Module">++-Solver</a> <a id="614" class="Symbol">{</a><a id="615" href="Data.List.Solver.html#615" class="Bound">a</a><a id="616" class="Symbol">}</a> <a id="618" class="Symbol">{</a><a id="619" href="Data.List.Solver.html#619" class="Bound">A</a> <a id="621" class="Symbol">:</a> <a id="623" class="PrimitiveType">Set</a> <a id="627" href="Data.List.Solver.html#615" class="Bound">a</a><a id="628" class="Symbol">}</a> <a id="630" class="Symbol">=</a>
+  <a id="634" href="Algebra.Solver.Monoid.html" class="Module">Solver</a> <a id="641" class="Symbol">(</a><a id="642" href="Data.List.Properties.html#6175" class="Function">++-monoid</a> <a id="652" href="Data.List.Solver.html#619" class="Bound">A</a><a id="653" class="Symbol">)</a> <a id="655" class="Keyword">renaming</a> <a id="664" class="Symbol">(</a><a id="665" href="Algebra.Solver.Monoid.html#1311" class="InductiveConstructor">id</a> <a id="668" class="Symbol">to</a> <a id="671" href="Algebra.Solver.Monoid.html#1311" class="InductiveConstructor">nil</a><a id="674" class="Symbol">)</a>
 </pre></body></html>

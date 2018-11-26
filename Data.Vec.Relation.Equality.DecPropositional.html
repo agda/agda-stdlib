@@ -5,20 +5,22 @@
 <a id="106" class="Comment">-- Decidable vector equality over propositional equality</a>
 <a id="163" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="237" class="Keyword">open</a> <a id="242" class="Keyword">import</a> <a id="249" href="Relation.Binary.html" class="Module">Relation.Binary</a>
-<a id="265" class="Keyword">open</a> <a id="270" class="Keyword">import</a> <a id="277" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+<a id="237" class="Symbol">{-#</a> <a id="241" class="Keyword">OPTIONS</a> <a id="249" class="Option">--without-K</a> <a id="261" class="Symbol">#-}</a>
 
-<a id="316" class="Keyword">module</a> <a id="323" href="Data.Vec.Relation.Equality.DecPropositional.html" class="Module">Data.Vec.Relation.Equality.DecPropositional</a>
-  <a id="369" class="Symbol">{</a><a id="370" href="Data.Vec.Relation.Equality.DecPropositional.html#370" class="Bound">a</a><a id="371" class="Symbol">}</a> <a id="373" class="Symbol">{</a><a id="374" href="Data.Vec.Relation.Equality.DecPropositional.html#374" class="Bound">A</a> <a id="376" class="Symbol">:</a> <a id="378" class="PrimitiveType">Set</a> <a id="382" href="Data.Vec.Relation.Equality.DecPropositional.html#370" class="Bound">a</a><a id="383" class="Symbol">}</a> <a id="385" class="Symbol">(</a><a id="386" href="Data.Vec.Relation.Equality.DecPropositional.html#386" class="Bound Operator">_≟_</a> <a id="390" class="Symbol">:</a> <a id="392" href="Relation.Binary.Core.html#4686" class="Function">Decidable</a> <a id="402" class="Symbol">{</a><a id="403" class="Argument">A</a> <a id="405" class="Symbol">=</a> <a id="407" href="Data.Vec.Relation.Equality.DecPropositional.html#374" class="Bound">A</a><a id="408" class="Symbol">}</a> <a id="410" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a><a id="413" class="Symbol">)</a> <a id="415" class="Keyword">where</a>
+<a id="266" class="Keyword">open</a> <a id="271" class="Keyword">import</a> <a id="278" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="294" class="Keyword">open</a> <a id="299" class="Keyword">import</a> <a id="306" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
 
-<a id="422" class="Keyword">import</a> <a id="429" href="Data.Vec.Relation.Equality.Propositional.html" class="Module">Data.Vec.Relation.Equality.Propositional</a> <a id="470" class="Symbol">as</a> <a id="473" class="Module">PEq</a>
-<a id="477" class="Keyword">import</a> <a id="484" href="Data.Vec.Relation.Equality.DecSetoid.html" class="Module">Data.Vec.Relation.Equality.DecSetoid</a> <a id="521" class="Symbol">as</a> <a id="524" class="Module">DSEq</a>
+<a id="345" class="Keyword">module</a> <a id="352" href="Data.Vec.Relation.Equality.DecPropositional.html" class="Module">Data.Vec.Relation.Equality.DecPropositional</a>
+  <a id="398" class="Symbol">{</a><a id="399" href="Data.Vec.Relation.Equality.DecPropositional.html#399" class="Bound">a</a><a id="400" class="Symbol">}</a> <a id="402" class="Symbol">{</a><a id="403" href="Data.Vec.Relation.Equality.DecPropositional.html#403" class="Bound">A</a> <a id="405" class="Symbol">:</a> <a id="407" class="PrimitiveType">Set</a> <a id="411" href="Data.Vec.Relation.Equality.DecPropositional.html#399" class="Bound">a</a><a id="412" class="Symbol">}</a> <a id="414" class="Symbol">(</a><a id="415" href="Data.Vec.Relation.Equality.DecPropositional.html#415" class="Bound Operator">_≟_</a> <a id="419" class="Symbol">:</a> <a id="421" href="Relation.Binary.Core.html#4715" class="Function">Decidable</a> <a id="431" class="Symbol">{</a><a id="432" class="Argument">A</a> <a id="434" class="Symbol">=</a> <a id="436" href="Data.Vec.Relation.Equality.DecPropositional.html#403" class="Bound">A</a><a id="437" class="Symbol">}</a> <a id="439" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a><a id="442" class="Symbol">)</a> <a id="444" class="Keyword">where</a>
 
-<a id="530" class="Comment">------------------------------------------------------------------------</a>
-<a id="603" class="Comment">-- Publically re-export everything from decSetoid and propositional</a>
-<a id="671" class="Comment">-- equality</a>
+<a id="451" class="Keyword">import</a> <a id="458" href="Data.Vec.Relation.Equality.Propositional.html" class="Module">Data.Vec.Relation.Equality.Propositional</a> <a id="499" class="Symbol">as</a> <a id="502" class="Module">PEq</a>
+<a id="506" class="Keyword">import</a> <a id="513" href="Data.Vec.Relation.Equality.DecSetoid.html" class="Module">Data.Vec.Relation.Equality.DecSetoid</a> <a id="550" class="Symbol">as</a> <a id="553" class="Module">DSEq</a>
 
-<a id="684" class="Keyword">open</a> <a id="689" href="Data.Vec.Relation.Equality.Propositional.html" class="Module">PEq</a> <a id="693" class="Keyword">public</a>
-<a id="700" class="Keyword">open</a> <a id="705" href="Data.Vec.Relation.Equality.DecSetoid.html" class="Module">DSEq</a> <a id="710" class="Symbol">(</a><a id="711" href="Relation.Binary.PropositionalEquality.html#1693" class="Function">decSetoid</a> <a id="721" href="Data.Vec.Relation.Equality.DecPropositional.html#386" class="Bound Operator">_≟_</a><a id="724" class="Symbol">)</a> <a id="726" class="Keyword">public</a>
-  <a id="735" class="Keyword">using</a> <a id="741" class="Symbol">(</a>_≋?_<a id="746" class="Symbol">;</a> ≋-isDecEquivalence<a id="766" class="Symbol">;</a> ≋-decSetoid<a id="779" class="Symbol">)</a>
+<a id="559" class="Comment">------------------------------------------------------------------------</a>
+<a id="632" class="Comment">-- Publically re-export everything from decSetoid and propositional</a>
+<a id="700" class="Comment">-- equality</a>
+
+<a id="713" class="Keyword">open</a> <a id="718" href="Data.Vec.Relation.Equality.Propositional.html" class="Module">PEq</a> <a id="722" class="Keyword">public</a>
+<a id="729" class="Keyword">open</a> <a id="734" href="Data.Vec.Relation.Equality.DecSetoid.html" class="Module">DSEq</a> <a id="739" class="Symbol">(</a><a id="740" href="Relation.Binary.PropositionalEquality.html#1650" class="Function">decSetoid</a> <a id="750" href="Data.Vec.Relation.Equality.DecPropositional.html#415" class="Bound Operator">_≟_</a><a id="753" class="Symbol">)</a> <a id="755" class="Keyword">public</a>
+  <a id="764" class="Keyword">using</a> <a id="770" class="Symbol">(</a>_≋?_<a id="775" class="Symbol">;</a> ≋-isDecEquivalence<a id="795" class="Symbol">;</a> ≋-decSetoid<a id="808" class="Symbol">)</a>
 </pre></body></html>

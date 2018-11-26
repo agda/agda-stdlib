@@ -7,20 +7,22 @@
 <a id="166" class="Comment">-- This module is DEPRECATED. Please use Data.Nat.Properties directly.</a>
 <a id="237" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="311" class="Keyword">module</a> <a id="318" href="Data.Nat.Properties.Simple.html" class="Module">Data.Nat.Properties.Simple</a> <a id="345" class="Keyword">where</a>
+<a id="311" class="Symbol">{-#</a> <a id="315" class="Keyword">OPTIONS</a> <a id="323" class="Option">--without-K</a> <a id="335" class="Symbol">#-}</a>
 
-<a id="352" class="Keyword">open</a> <a id="357" class="Keyword">import</a> <a id="364" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="384" class="Keyword">public</a> <a id="391" class="Keyword">using</a>
-  <a id="399" class="Symbol">(</a> <a id="401" href="Data.Nat.Properties.html#9378" class="Function">+-assoc</a>
-  <a id="411" class="Symbol">;</a> <a id="413" href="Data.Nat.Properties.html#9275" class="Function">+-suc</a>
-  <a id="421" class="Symbol">;</a> <a id="423" href="Data.Nat.Properties.html#9711" class="Function">+-comm</a>
-  <a id="432" class="Symbol">;</a> <a id="434" href="Data.Nat.Properties.html#14076" class="Function">+-*-suc</a>
-  <a id="444" class="Symbol">;</a> <a id="446" href="Data.Nat.Properties.html#14944" class="Function">*-comm</a>
-  <a id="455" class="Symbol">;</a> <a id="457" href="Data.Nat.Properties.html#15618" class="Function">*-assoc</a>
-  <a id="467" class="Symbol">)</a> <a id="469" class="Keyword">renaming</a>
-  <a id="480" class="Symbol">(</a> <a id="482" href="Data.Nat.Properties.html#9534" class="Function">+-identityʳ</a>  <a id="495" class="Symbol">to</a> <a id="498" href="Data.Nat.Properties.html#9534" class="Function">+-right-identity</a>
-  <a id="517" class="Symbol">;</a> <a id="519" href="Data.Nat.Properties.html#9479" class="Function">+-identityˡ</a>  <a id="532" class="Symbol">to</a> <a id="535" href="Data.Nat.Properties.html#9479" class="Function">+-left-identity</a>
-  <a id="553" class="Symbol">;</a> <a id="555" href="Data.Nat.Properties.html#14818" class="Function">*-zeroʳ</a>      <a id="568" class="Symbol">to</a> <a id="571" href="Data.Nat.Properties.html#14818" class="Function">*-right-zero</a>
-  <a id="586" class="Symbol">;</a> <a id="588" href="Data.Nat.Properties.html#14775" class="Function">*-zeroˡ</a>      <a id="601" class="Symbol">to</a> <a id="604" href="Data.Nat.Properties.html#14775" class="Function">*-left-zero</a>
-  <a id="618" class="Symbol">;</a> <a id="620" href="Data.Nat.Properties.html#15141" class="Function">*-distribʳ-+</a> <a id="633" class="Symbol">to</a> <a id="636" href="Data.Nat.Properties.html#15141" class="Function">distribʳ-*-+</a>
-  <a id="651" class="Symbol">)</a>
+<a id="340" class="Keyword">module</a> <a id="347" href="Data.Nat.Properties.Simple.html" class="Module">Data.Nat.Properties.Simple</a> <a id="374" class="Keyword">where</a>
+
+<a id="381" class="Keyword">open</a> <a id="386" class="Keyword">import</a> <a id="393" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="413" class="Keyword">public</a> <a id="420" class="Keyword">using</a>
+  <a id="428" class="Symbol">(</a> <a id="430" href="Data.Nat.Properties.html#9407" class="Function">+-assoc</a>
+  <a id="440" class="Symbol">;</a> <a id="442" href="Data.Nat.Properties.html#9304" class="Function">+-suc</a>
+  <a id="450" class="Symbol">;</a> <a id="452" href="Data.Nat.Properties.html#9740" class="Function">+-comm</a>
+  <a id="461" class="Symbol">;</a> <a id="463" href="Data.Nat.Properties.html#14105" class="Function">+-*-suc</a>
+  <a id="473" class="Symbol">;</a> <a id="475" href="Data.Nat.Properties.html#14973" class="Function">*-comm</a>
+  <a id="484" class="Symbol">;</a> <a id="486" href="Data.Nat.Properties.html#15647" class="Function">*-assoc</a>
+  <a id="496" class="Symbol">)</a> <a id="498" class="Keyword">renaming</a>
+  <a id="509" class="Symbol">(</a> <a id="511" href="Data.Nat.Properties.html#9563" class="Function">+-identityʳ</a>  <a id="524" class="Symbol">to</a> <a id="527" href="Data.Nat.Properties.html#9563" class="Function">+-right-identity</a>
+  <a id="546" class="Symbol">;</a> <a id="548" href="Data.Nat.Properties.html#9508" class="Function">+-identityˡ</a>  <a id="561" class="Symbol">to</a> <a id="564" href="Data.Nat.Properties.html#9508" class="Function">+-left-identity</a>
+  <a id="582" class="Symbol">;</a> <a id="584" href="Data.Nat.Properties.html#14847" class="Function">*-zeroʳ</a>      <a id="597" class="Symbol">to</a> <a id="600" href="Data.Nat.Properties.html#14847" class="Function">*-right-zero</a>
+  <a id="615" class="Symbol">;</a> <a id="617" href="Data.Nat.Properties.html#14804" class="Function">*-zeroˡ</a>      <a id="630" class="Symbol">to</a> <a id="633" href="Data.Nat.Properties.html#14804" class="Function">*-left-zero</a>
+  <a id="647" class="Symbol">;</a> <a id="649" href="Data.Nat.Properties.html#15170" class="Function">*-distribʳ-+</a> <a id="662" class="Symbol">to</a> <a id="665" href="Data.Nat.Properties.html#15170" class="Function">distribʳ-*-+</a>
+  <a id="680" class="Symbol">)</a>
 </pre></body></html>

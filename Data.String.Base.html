@@ -5,62 +5,64 @@
 <a id="106" class="Comment">-- Strings</a>
 <a id="117" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="191" class="Keyword">module</a> <a id="198" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="215" class="Keyword">where</a>
+<a id="191" class="Symbol">{-#</a> <a id="195" class="Keyword">OPTIONS</a> <a id="203" class="Option">--without-K</a> <a id="215" class="Symbol">#-}</a>
 
-<a id="222" class="Keyword">open</a> <a id="227" class="Keyword">import</a> <a id="234" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="248" class="Symbol">as</a> <a id="251" class="Module">Nat</a> <a id="255" class="Keyword">using</a> <a id="261" class="Symbol">(</a><a id="262" href="Agda.Builtin.Nat.html#97" class="Datatype">ℕ</a><a id="263" class="Symbol">)</a>
-<a id="265" class="Keyword">open</a> <a id="270" class="Keyword">import</a> <a id="277" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="292" class="Symbol">as</a> <a id="295" class="Module">List</a> <a id="300" class="Keyword">using</a> <a id="306" class="Symbol">(</a><a id="307" href="Agda.Builtin.List.html#80" class="Datatype">List</a><a id="311" class="Symbol">)</a>
-<a id="313" class="Keyword">open</a> <a id="318" class="Keyword">import</a> <a id="325" href="Data.List.NonEmpty.html" class="Module">Data.List.NonEmpty</a> <a id="344" class="Symbol">as</a> <a id="347" class="Module">NE</a> <a id="350" class="Keyword">using</a> <a id="356" class="Symbol">(</a><a id="357" href="Data.List.NonEmpty.html#1135" class="Record">List⁺</a><a id="362" class="Symbol">)</a>
-<a id="364" class="Keyword">open</a> <a id="369" class="Keyword">import</a> <a id="376" href="Agda.Builtin.Char.html" class="Module">Agda.Builtin.Char</a> <a id="394" class="Keyword">using</a> <a id="400" class="Symbol">(</a><a id="401" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a><a id="405" class="Symbol">)</a>
-<a id="407" class="Keyword">open</a> <a id="412" class="Keyword">import</a> <a id="419" href="Function.html" class="Module">Function</a>
-<a id="428" class="Keyword">open</a> <a id="433" class="Keyword">import</a> <a id="440" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="478" class="Keyword">using</a> <a id="484" class="Symbol">(</a><a id="485" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a><a id="488" class="Symbol">)</a>
+<a id="220" class="Keyword">module</a> <a id="227" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="244" class="Keyword">where</a>
 
-<a id="491" class="Comment">------------------------------------------------------------------------</a>
-<a id="564" class="Comment">-- From Agda.Builtin</a>
+<a id="251" class="Keyword">open</a> <a id="256" class="Keyword">import</a> <a id="263" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="277" class="Symbol">as</a> <a id="280" class="Module">Nat</a> <a id="284" class="Keyword">using</a> <a id="290" class="Symbol">(</a><a id="291" href="Agda.Builtin.Nat.html#97" class="Datatype">ℕ</a><a id="292" class="Symbol">)</a>
+<a id="294" class="Keyword">open</a> <a id="299" class="Keyword">import</a> <a id="306" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="321" class="Symbol">as</a> <a id="324" class="Module">List</a> <a id="329" class="Keyword">using</a> <a id="335" class="Symbol">(</a><a id="336" href="Agda.Builtin.List.html#80" class="Datatype">List</a><a id="340" class="Symbol">)</a>
+<a id="342" class="Keyword">open</a> <a id="347" class="Keyword">import</a> <a id="354" href="Data.List.NonEmpty.html" class="Module">Data.List.NonEmpty</a> <a id="373" class="Symbol">as</a> <a id="376" class="Module">NE</a> <a id="379" class="Keyword">using</a> <a id="385" class="Symbol">(</a><a id="386" href="Data.List.NonEmpty.html#1164" class="Record">List⁺</a><a id="391" class="Symbol">)</a>
+<a id="393" class="Keyword">open</a> <a id="398" class="Keyword">import</a> <a id="405" href="Agda.Builtin.Char.html" class="Module">Agda.Builtin.Char</a> <a id="423" class="Keyword">using</a> <a id="429" class="Symbol">(</a><a id="430" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a><a id="434" class="Symbol">)</a>
+<a id="436" class="Keyword">open</a> <a id="441" class="Keyword">import</a> <a id="448" href="Function.html" class="Module">Function</a>
+<a id="457" class="Keyword">open</a> <a id="462" class="Keyword">import</a> <a id="469" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="507" class="Keyword">using</a> <a id="513" class="Symbol">(</a><a id="514" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a><a id="517" class="Symbol">)</a>
 
-<a id="586" class="Keyword">open</a> <a id="591" class="Keyword">import</a> <a id="598" href="Agda.Builtin.String.html" class="Module">Agda.Builtin.String</a> <a id="618" class="Keyword">public</a>
-  <a id="627" class="Keyword">using</a>
-  <a id="635" class="Symbol">(</a> <a id="637" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
-  <a id="646" class="Symbol">;</a> <a id="648" href="Agda.Builtin.String.html#305" class="Primitive">primStringAppend</a>
-  <a id="667" class="Symbol">;</a> <a id="669" href="Agda.Builtin.String.html#221" class="Primitive">primStringToList</a>
-  <a id="688" class="Symbol">;</a> <a id="690" href="Agda.Builtin.String.html#263" class="Primitive">primStringFromList</a>
-  <a id="711" class="Symbol">;</a> <a id="713" href="Agda.Builtin.String.html#353" class="Primitive">primStringEquality</a>
-  <a id="734" class="Symbol">;</a> <a id="736" href="Agda.Builtin.String.html#436" class="Primitive">primShowString</a>
-  <a id="753" class="Symbol">)</a>
+<a id="520" class="Comment">------------------------------------------------------------------------</a>
+<a id="593" class="Comment">-- From Agda.Builtin</a>
 
-<a id="756" class="Comment">------------------------------------------------------------------------</a>
-<a id="829" class="Comment">-- Operations</a>
+<a id="615" class="Keyword">open</a> <a id="620" class="Keyword">import</a> <a id="627" href="Agda.Builtin.String.html" class="Module">Agda.Builtin.String</a> <a id="647" class="Keyword">public</a>
+  <a id="656" class="Keyword">using</a>
+  <a id="664" class="Symbol">(</a> <a id="666" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
+  <a id="675" class="Symbol">;</a> <a id="677" href="Agda.Builtin.String.html#305" class="Primitive">primStringAppend</a>
+  <a id="696" class="Symbol">;</a> <a id="698" href="Agda.Builtin.String.html#221" class="Primitive">primStringToList</a>
+  <a id="717" class="Symbol">;</a> <a id="719" href="Agda.Builtin.String.html#263" class="Primitive">primStringFromList</a>
+  <a id="740" class="Symbol">;</a> <a id="742" href="Agda.Builtin.String.html#353" class="Primitive">primStringEquality</a>
+  <a id="763" class="Symbol">;</a> <a id="765" href="Agda.Builtin.String.html#436" class="Primitive">primShowString</a>
+  <a id="782" class="Symbol">)</a>
 
-<a id="844" class="Comment">-- Conversion functions</a>
+<a id="785" class="Comment">------------------------------------------------------------------------</a>
+<a id="858" class="Comment">-- Operations</a>
 
-<a id="toList"></a><a id="869" href="Data.String.Base.html#869" class="Function">toList</a> <a id="876" class="Symbol">:</a> <a id="878" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="885" class="Symbol">→</a> <a id="887" href="Agda.Builtin.List.html#80" class="Datatype">List</a> <a id="892" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a>
-<a id="897" href="Data.String.Base.html#869" class="Function">toList</a> <a id="904" class="Symbol">=</a> <a id="906" href="Agda.Builtin.String.html#221" class="Primitive">primStringToList</a>
+<a id="873" class="Comment">-- Conversion functions</a>
 
-<a id="fromList"></a><a id="924" href="Data.String.Base.html#924" class="Function">fromList</a> <a id="933" class="Symbol">:</a> <a id="935" href="Agda.Builtin.List.html#80" class="Datatype">List</a> <a id="940" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="945" class="Symbol">→</a> <a id="947" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
-<a id="954" href="Data.String.Base.html#924" class="Function">fromList</a> <a id="963" class="Symbol">=</a> <a id="965" href="Agda.Builtin.String.html#263" class="Primitive">primStringFromList</a>
+<a id="toList"></a><a id="898" href="Data.String.Base.html#898" class="Function">toList</a> <a id="905" class="Symbol">:</a> <a id="907" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="914" class="Symbol">→</a> <a id="916" href="Agda.Builtin.List.html#80" class="Datatype">List</a> <a id="921" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a>
+<a id="926" href="Data.String.Base.html#898" class="Function">toList</a> <a id="933" class="Symbol">=</a> <a id="935" href="Agda.Builtin.String.html#221" class="Primitive">primStringToList</a>
 
-<a id="fromList⁺"></a><a id="985" href="Data.String.Base.html#985" class="Function">fromList⁺</a> <a id="995" class="Symbol">:</a> <a id="997" href="Data.List.NonEmpty.html#1135" class="Record">List⁺</a> <a id="1003" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="1008" class="Symbol">→</a> <a id="1010" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
-<a id="1017" href="Data.String.Base.html#985" class="Function">fromList⁺</a> <a id="1027" class="Symbol">=</a> <a id="1029" href="Data.String.Base.html#924" class="Function">fromList</a> <a id="1038" href="Function.html#769" class="Function Operator">∘</a> <a id="1040" href="Data.List.NonEmpty.html#1665" class="Function">NE.toList</a>
+<a id="fromList"></a><a id="953" href="Data.String.Base.html#953" class="Function">fromList</a> <a id="962" class="Symbol">:</a> <a id="964" href="Agda.Builtin.List.html#80" class="Datatype">List</a> <a id="969" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="974" class="Symbol">→</a> <a id="976" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
+<a id="983" href="Data.String.Base.html#953" class="Function">fromList</a> <a id="992" class="Symbol">=</a> <a id="994" href="Agda.Builtin.String.html#263" class="Primitive">primStringFromList</a>
 
-<a id="1051" class="Comment">-- List-like functions</a>
+<a id="fromList⁺"></a><a id="1014" href="Data.String.Base.html#1014" class="Function">fromList⁺</a> <a id="1024" class="Symbol">:</a> <a id="1026" href="Data.List.NonEmpty.html#1164" class="Record">List⁺</a> <a id="1032" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="1037" class="Symbol">→</a> <a id="1039" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
+<a id="1046" href="Data.String.Base.html#1014" class="Function">fromList⁺</a> <a id="1056" class="Symbol">=</a> <a id="1058" href="Data.String.Base.html#953" class="Function">fromList</a> <a id="1067" href="Function.html#798" class="Function Operator">∘</a> <a id="1069" href="Data.List.NonEmpty.html#1694" class="Function">NE.toList</a>
 
-<a id="1075" class="Keyword">infixr</a> <a id="1082" class="Number">5</a> <a id="1084" href="Data.String.Base.html#1089" class="Function Operator">_++_</a>
-<a id="_++_"></a><a id="1089" href="Data.String.Base.html#1089" class="Function Operator">_++_</a> <a id="1094" class="Symbol">:</a> <a id="1096" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="1103" class="Symbol">→</a> <a id="1105" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="1112" class="Symbol">→</a> <a id="1114" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
-<a id="1121" href="Data.String.Base.html#1089" class="Function Operator">_++_</a> <a id="1126" class="Symbol">=</a> <a id="1128" href="Agda.Builtin.String.html#305" class="Primitive">primStringAppend</a>
+<a id="1080" class="Comment">-- List-like functions</a>
 
-<a id="length"></a><a id="1146" href="Data.String.Base.html#1146" class="Function">length</a> <a id="1153" class="Symbol">:</a> <a id="1155" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="1162" class="Symbol">→</a> <a id="1164" href="Agda.Builtin.Nat.html#97" class="Datatype">ℕ</a>
-<a id="1166" href="Data.String.Base.html#1146" class="Function">length</a> <a id="1173" class="Symbol">=</a> <a id="1175" href="Data.List.Base.html#4020" class="Function">List.length</a> <a id="1187" href="Function.html#769" class="Function Operator">∘</a> <a id="1189" href="Data.String.Base.html#869" class="Function">toList</a>
+<a id="1104" class="Keyword">infixr</a> <a id="1111" class="Number">5</a> <a id="1113" href="Data.String.Base.html#1118" class="Function Operator">_++_</a>
+<a id="_++_"></a><a id="1118" href="Data.String.Base.html#1118" class="Function Operator">_++_</a> <a id="1123" class="Symbol">:</a> <a id="1125" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="1132" class="Symbol">→</a> <a id="1134" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="1141" class="Symbol">→</a> <a id="1143" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
+<a id="1150" href="Data.String.Base.html#1118" class="Function Operator">_++_</a> <a id="1155" class="Symbol">=</a> <a id="1157" href="Agda.Builtin.String.html#305" class="Primitive">primStringAppend</a>
 
-<a id="replicate"></a><a id="1197" href="Data.String.Base.html#1197" class="Function">replicate</a> <a id="1207" class="Symbol">:</a> <a id="1209" href="Agda.Builtin.Nat.html#97" class="Datatype">ℕ</a> <a id="1211" class="Symbol">→</a> <a id="1213" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="1218" class="Symbol">→</a> <a id="1220" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
-<a id="1227" href="Data.String.Base.html#1197" class="Function">replicate</a> <a id="1237" href="Data.String.Base.html#1237" class="Bound">n</a> <a id="1239" class="Symbol">=</a> <a id="1241" href="Data.String.Base.html#924" class="Function">fromList</a> <a id="1250" href="Function.html#769" class="Function Operator">∘</a> <a id="1252" href="Data.List.Base.html#4355" class="Function">List.replicate</a> <a id="1267" href="Data.String.Base.html#1237" class="Bound">n</a>
+<a id="length"></a><a id="1175" href="Data.String.Base.html#1175" class="Function">length</a> <a id="1182" class="Symbol">:</a> <a id="1184" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="1191" class="Symbol">→</a> <a id="1193" href="Agda.Builtin.Nat.html#97" class="Datatype">ℕ</a>
+<a id="1195" href="Data.String.Base.html#1175" class="Function">length</a> <a id="1202" class="Symbol">=</a> <a id="1204" href="Data.List.Base.html#4049" class="Function">List.length</a> <a id="1216" href="Function.html#798" class="Function Operator">∘</a> <a id="1218" href="Data.String.Base.html#898" class="Function">toList</a>
 
-<a id="concat"></a><a id="1270" href="Data.String.Base.html#1270" class="Function">concat</a> <a id="1277" class="Symbol">:</a> <a id="1279" href="Agda.Builtin.List.html#80" class="Datatype">List</a> <a id="1284" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="1291" class="Symbol">→</a> <a id="1293" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
-<a id="1300" href="Data.String.Base.html#1270" class="Function">concat</a> <a id="1307" class="Symbol">=</a> <a id="1309" href="Data.List.Base.html#3154" class="Function">List.foldr</a> <a id="1320" href="Data.String.Base.html#1089" class="Function Operator">_++_</a> <a id="1325" class="String">&quot;&quot;</a>
+<a id="replicate"></a><a id="1226" href="Data.String.Base.html#1226" class="Function">replicate</a> <a id="1236" class="Symbol">:</a> <a id="1238" href="Agda.Builtin.Nat.html#97" class="Datatype">ℕ</a> <a id="1240" class="Symbol">→</a> <a id="1242" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="1247" class="Symbol">→</a> <a id="1249" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
+<a id="1256" href="Data.String.Base.html#1226" class="Function">replicate</a> <a id="1266" href="Data.String.Base.html#1266" class="Bound">n</a> <a id="1268" class="Symbol">=</a> <a id="1270" href="Data.String.Base.html#953" class="Function">fromList</a> <a id="1279" href="Function.html#798" class="Function Operator">∘</a> <a id="1281" href="Data.List.Base.html#4384" class="Function">List.replicate</a> <a id="1296" href="Data.String.Base.html#1266" class="Bound">n</a>
 
-<a id="1329" class="Comment">-- String-specific functions</a>
+<a id="concat"></a><a id="1299" href="Data.String.Base.html#1299" class="Function">concat</a> <a id="1306" class="Symbol">:</a> <a id="1308" href="Agda.Builtin.List.html#80" class="Datatype">List</a> <a id="1313" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="1320" class="Symbol">→</a> <a id="1322" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
+<a id="1329" href="Data.String.Base.html#1299" class="Function">concat</a> <a id="1336" class="Symbol">=</a> <a id="1338" href="Data.List.Base.html#3183" class="Function">List.foldr</a> <a id="1349" href="Data.String.Base.html#1118" class="Function Operator">_++_</a> <a id="1354" class="String">&quot;&quot;</a>
 
-<a id="show"></a><a id="1359" href="Data.String.Base.html#1359" class="Function">show</a> <a id="1364" class="Symbol">:</a> <a id="1366" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="1373" class="Symbol">→</a> <a id="1375" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
-<a id="1382" href="Data.String.Base.html#1359" class="Function">show</a> <a id="1387" class="Symbol">=</a> <a id="1389" href="Agda.Builtin.String.html#436" class="Primitive">primShowString</a>
+<a id="1358" class="Comment">-- String-specific functions</a>
 
-<a id="unlines"></a><a id="1405" href="Data.String.Base.html#1405" class="Function">unlines</a> <a id="1413" class="Symbol">:</a> <a id="1415" href="Agda.Builtin.List.html#80" class="Datatype">List</a> <a id="1420" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="1427" class="Symbol">→</a> <a id="1429" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
-<a id="1436" href="Data.String.Base.html#1405" class="Function">unlines</a> <a id="1444" class="Symbol">=</a> <a id="1446" href="Data.String.Base.html#1270" class="Function">concat</a> <a id="1453" href="Function.html#769" class="Function Operator">∘</a> <a id="1455" href="Data.List.Base.html#1571" class="Function">List.intersperse</a> <a id="1472" class="String">&quot;\n&quot;</a>
+<a id="show"></a><a id="1388" href="Data.String.Base.html#1388" class="Function">show</a> <a id="1393" class="Symbol">:</a> <a id="1395" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="1402" class="Symbol">→</a> <a id="1404" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
+<a id="1411" href="Data.String.Base.html#1388" class="Function">show</a> <a id="1416" class="Symbol">=</a> <a id="1418" href="Agda.Builtin.String.html#436" class="Primitive">primShowString</a>
+
+<a id="unlines"></a><a id="1434" href="Data.String.Base.html#1434" class="Function">unlines</a> <a id="1442" class="Symbol">:</a> <a id="1444" href="Agda.Builtin.List.html#80" class="Datatype">List</a> <a id="1449" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="1456" class="Symbol">→</a> <a id="1458" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
+<a id="1465" href="Data.String.Base.html#1434" class="Function">unlines</a> <a id="1473" class="Symbol">=</a> <a id="1475" href="Data.String.Base.html#1299" class="Function">concat</a> <a id="1482" href="Function.html#798" class="Function Operator">∘</a> <a id="1484" href="Data.List.Base.html#1600" class="Function">List.intersperse</a> <a id="1501" class="String">&quot;\n&quot;</a>
 </pre></body></html>

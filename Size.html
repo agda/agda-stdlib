@@ -5,12 +5,14 @@
 <a id="106" class="Comment">-- Sizes for Agda&#39;s sized types</a>
 <a id="138" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="212" class="Keyword">module</a> <a id="219" href="Size.html" class="Module">Size</a> <a id="224" class="Keyword">where</a>
+<a id="212" class="Symbol">{-#</a> <a id="216" class="Keyword">OPTIONS</a> <a id="224" class="Option">--without-K</a> <a id="236" class="Symbol">#-}</a>
 
-<a id="231" class="Keyword">open</a> <a id="236" class="Keyword">import</a> <a id="243" href="Agda.Builtin.Size.html" class="Module">Agda.Builtin.Size</a> <a id="261" class="Keyword">public</a>
-  <a id="270" class="Keyword">renaming</a> <a id="279" class="Symbol">(</a> <a id="281" href="Agda.Builtin.Size.html#83" class="Function">SizeU</a> <a id="287" class="Symbol">to</a> <a id="290" href="Agda.Builtin.Size.html#83" class="Function">SizeUniv</a> <a id="299" class="Symbol">)</a> <a id="301" class="Comment">--  sort SizeUniv</a>
-  <a id="321" class="Keyword">using</a>    <a id="330" class="Symbol">(</a> <a id="332" href="Agda.Builtin.Size.html#114" class="Postulate">Size</a>                <a id="352" class="Comment">--  Size   : SizeUniv</a>
-           <a id="385" class="Symbol">;</a> <a id="387" href="Agda.Builtin.Size.html#146" class="Postulate Operator">Size&lt;_</a>              <a id="407" class="Comment">--  Size&lt;_ : Size → SizeUniv</a>
-           <a id="447" class="Symbol">;</a> <a id="449" href="Agda.Builtin.Size.html#178" class="Postulate Operator">↑_</a>                  <a id="469" class="Comment">--  ↑_     : Size → Size</a>
-           <a id="505" class="Symbol">;</a> <a id="507" href="Agda.Builtin.Size.html#210" class="Postulate">∞</a> <a id="509" class="Symbol">)</a>                 <a id="527" class="Comment">--  ∞      : Size</a>
+<a id="241" class="Keyword">module</a> <a id="248" href="Size.html" class="Module">Size</a> <a id="253" class="Keyword">where</a>
+
+<a id="260" class="Keyword">open</a> <a id="265" class="Keyword">import</a> <a id="272" href="Agda.Builtin.Size.html" class="Module">Agda.Builtin.Size</a> <a id="290" class="Keyword">public</a>
+  <a id="299" class="Keyword">renaming</a> <a id="308" class="Symbol">(</a> <a id="310" href="Agda.Builtin.Size.html#83" class="Function">SizeU</a> <a id="316" class="Symbol">to</a> <a id="319" href="Agda.Builtin.Size.html#83" class="Function">SizeUniv</a> <a id="328" class="Symbol">)</a> <a id="330" class="Comment">--  sort SizeUniv</a>
+  <a id="350" class="Keyword">using</a>    <a id="359" class="Symbol">(</a> <a id="361" href="Agda.Builtin.Size.html#114" class="Postulate">Size</a>                <a id="381" class="Comment">--  Size   : SizeUniv</a>
+           <a id="414" class="Symbol">;</a> <a id="416" href="Agda.Builtin.Size.html#146" class="Postulate Operator">Size&lt;_</a>              <a id="436" class="Comment">--  Size&lt;_ : Size → SizeUniv</a>
+           <a id="476" class="Symbol">;</a> <a id="478" href="Agda.Builtin.Size.html#178" class="Postulate Operator">↑_</a>                  <a id="498" class="Comment">--  ↑_     : Size → Size</a>
+           <a id="534" class="Symbol">;</a> <a id="536" href="Agda.Builtin.Size.html#210" class="Postulate">∞</a> <a id="538" class="Symbol">)</a>                 <a id="556" class="Comment">--  ∞      : Size</a>
 </pre></body></html>
