@@ -178,11 +178,21 @@ module _ {a} {A : Set a} where
     ys ++ ([ x ] ++ xs)  ≡⟨⟩
     ys ++ (x ∷ xs)       ∎
 
+  ++-isMagma : IsMagma _↭_ _++_
+  ++-isMagma = record
+    { isEquivalence = ↭-isEquivalence
+    ; ∙-cong        = ++⁺
+    }
+
+  ++-magma : Magma _ _
+  ++-magma = record
+    { isMagma = ++-isMagma
+    }
+
   ++-isSemigroup : IsSemigroup _↭_ _++_
   ++-isSemigroup = record
-    { isEquivalence = ↭-isEquivalence
-    ; assoc         = ++-assoc
-    ; ∙-cong        = ++⁺
+    { isMagma = ++-isMagma
+    ; assoc   = ++-assoc
     }
 
   ++-semigroup : Semigroup a _

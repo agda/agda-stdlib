@@ -7,8 +7,8 @@
 open import Algebra
 
 module Algebra.Properties.BooleanAlgebra
-         {b₁ b₂} (B : BooleanAlgebra b₁ b₂)
-         where
+  {b₁ b₂} (B : BooleanAlgebra b₁ b₂)
+  where
 
 open BooleanAlgebra B
 import Algebra.Properties.DistributiveLattice
@@ -18,8 +18,7 @@ private
     hiding (replace-equality)
 open import Algebra.Structures _≈_
 open import Algebra.FunctionProperties _≈_
-open import Algebra.FunctionProperties.Consequences
-  record {isEquivalence = isEquivalence}
+open import Algebra.FunctionProperties.Consequences setoid
 open import Relation.Binary.EqReasoning setoid
 open import Relation.Binary
 open import Function
@@ -68,7 +67,7 @@ open import Data.Product
 ∧-identityʳ : RightIdentity ⊤ _∧_
 ∧-identityʳ x = begin
   x ∧ ⊤          ≈⟨ refl ⟨ ∧-cong ⟩ sym (∨-complementʳ _) ⟩
-  x ∧ (x ∨ ¬ x)  ≈⟨ proj₂ absorptive _ _ ⟩
+  x ∧ (x ∨ ¬ x)  ≈⟨ ∧-absorbs-∨ _ _ ⟩
   x              ∎
 
 ∧-identityˡ : LeftIdentity ⊤ _∧_
@@ -80,7 +79,7 @@ open import Data.Product
 ∨-identityʳ : RightIdentity ⊥ _∨_
 ∨-identityʳ x = begin
   x ∨ ⊥          ≈⟨ refl ⟨ ∨-cong ⟩ sym (∧-complementʳ _) ⟩
-  x ∨ x ∧ ¬ x    ≈⟨ proj₁ absorptive _ _ ⟩
+  x ∨ x ∧ ¬ x    ≈⟨ ∨-absorbs-∧ _ _ ⟩
   x              ∎
 
 ∨-identityˡ : LeftIdentity ⊥ _∨_
@@ -117,20 +116,6 @@ open import Data.Product
 ∨-zero : Zero ⊤ _∨_
 ∨-zero = ∨-zeroˡ , ∨-zeroʳ
 
-∨-isSemigroup : IsSemigroup _∨_
-∨-isSemigroup = record
-  { isEquivalence = isEquivalence
-  ; assoc         = ∨-assoc
-  ; ∙-cong        = ∨-cong
-  }
-
-∧-isSemigroup : IsSemigroup _∧_
-∧-isSemigroup = record
-  { isEquivalence = isEquivalence
-  ; assoc         = ∧-assoc
-  ; ∙-cong        = ∧-cong
-  }
-
 ∨-⊥-isMonoid : IsMonoid _∨_ ⊥
 ∨-⊥-isMonoid = record
   { isSemigroup = ∨-isSemigroup
@@ -146,23 +131,23 @@ open import Data.Product
 ∨-⊥-isCommutativeMonoid : IsCommutativeMonoid _∨_ ⊥
 ∨-⊥-isCommutativeMonoid = record
   { isSemigroup = ∨-isSemigroup
-  ; identityˡ = ∨-identityˡ
-  ; comm      = ∨-comm
+  ; identityˡ   = ∨-identityˡ
+  ; comm        = ∨-comm
   }
 
 ∧-⊤-isCommutativeMonoid : IsCommutativeMonoid _∧_ ⊤
 ∧-⊤-isCommutativeMonoid = record
   { isSemigroup = ∧-isSemigroup
-  ; identityˡ = ∧-identityˡ
-  ; comm      = ∧-comm
+  ; identityˡ   = ∧-identityˡ
+  ; comm        = ∧-comm
   }
 
 ∨-∧-isCommutativeSemiring : IsCommutativeSemiring _∨_ _∧_ ⊥ ⊤
 ∨-∧-isCommutativeSemiring = record
   { +-isCommutativeMonoid = ∨-⊥-isCommutativeMonoid
   ; *-isCommutativeMonoid = ∧-⊤-isCommutativeMonoid
-  ; distribʳ = proj₂ ∧-∨-distrib
-  ; zeroˡ    = ∧-zeroˡ
+  ; distribʳ              = proj₂ ∧-∨-distrib
+  ; zeroˡ                 = ∧-zeroˡ
   }
 
 ∨-∧-commutativeSemiring : CommutativeSemiring _ _
@@ -530,11 +515,16 @@ module XorRing
       ((¬ x ∨ ¬ y) ∨ z) ∧
       (((x ∨ ¬ y) ∨ ¬ z) ∧ ((¬ x ∨ y) ∨ ¬ z))    ∎
 
+  ⊕-isMagma : IsMagma _⊕_
+  ⊕-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = ⊕-cong
+    }
+
   ⊕-isSemigroup : IsSemigroup _⊕_
   ⊕-isSemigroup = record
-    { isEquivalence = isEquivalence
-    ; assoc         = ⊕-assoc
-    ; ∙-cong        = ⊕-cong
+    { isMagma = ⊕-isMagma
+    ; assoc   = ⊕-assoc
     }
 
   ⊕-⊥-isMonoid : IsMonoid _⊕_ ⊥

@@ -45,9 +45,29 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 
 #### Changes to the algebra hierarchy
 
+* Over time the algebra inheritance hierarchy has become a little
+  wonky due to poorly structured additions. This attempts to straighten
+  the hierarchy out and new policies have been put in place so that
+  the need for additional such changes will be minimised in the future.
+
 * Added `Magma` and `IsMagma` to the algebra hierarchy.
 
-* The name `RawSemigroup` in `Algebra` has been deprecated in favour of `RawMagma`.
+* The name `RawSemigroup` in `Algebra` has been deprecated in favour
+  of `RawMagma`.
+
+* The fields `isEquivalence` and `∙-cong` in `IsSemigroup` have been
+  replaced with `isMagma`.
+
+* The fields `isEquivalence`, `∨-cong`, `∨-assoc`, `∨-comm`, `∧-cong`,
+  `∧-assoc`  and `∧-comm` in `IsLattice` have been replaced with
+  `∨-isSemilattice` and `∧-isSemilattice`.
+
+* The record `Lattice` now exports proofs of `∨-idem` and `∧-idem` directly.
+  Therefore `∨-idempotence` and `∧-idempotence` in `Algebra.Properties.Lattice`
+  have been deprecated.
+
+* The record `BooleanAlgebra` now exports `∨-isSemigroup`, `∧-isSemigroup`
+  directly  so `Algebra.Properties.BooleanAlgebra` no longer does so.
 
 #### Relaxation of ring solvers requirements
 
@@ -143,6 +163,23 @@ Other minor additions
   lookup-iterate-identity : lookup n (iterate f a) ≡ fold a f n
   ```
 
+* Added new proofs to `Data.Bool.Properties`:
+  ```agda
+  ∧-isMagma       : IsMagma _∧_
+  ∨-isMagma       : IsMagma _∨_
+  ∨-isBand        : IsBand _∨_
+  ∨-isSemilattice : IsSemilattice _∨_
+  ∧-isBand        : IsBand _∧_
+  ∧-isSemilattice : IsSemilattice _∧_
+
+  ∧-magma         : Magma 0ℓ 0ℓ
+  ∨-magma         : Magma 0ℓ 0ℓ
+  ∨-band          : Band 0ℓ 0ℓ
+  ∧-band          : Band 0ℓ 0ℓ
+  ∨-semilattice   : Semilattice 0ℓ 0ℓ
+  ∧-semilattice   : Semilattice 0ℓ 0ℓ
+  ```
+
 * Added new function to `Data.Fin.Base`:
   ```agda
   cast : m ≡ n → Fin m → Fin n
@@ -151,6 +188,36 @@ Other minor additions
 * Added new proof to `Data.Fin.Properties`:
   ```agda
   toℕ-cast    : toℕ (cast eq k) ≡ toℕ k
+  ```
+
+* Added new proofs to `Data.Fin.Subset.Properties`:
+  ```agda
+  ∩-isMagma       : IsMagma _∩_
+  ∪-isMagma       : IsMagma _∪_
+  ∩-isBand        : IsBand _∩_
+  ∪-isBand        : IsBand _∪_
+  ∩-isSemilattice : IsSemilattice _∩_
+  ∪-isSemilattice : IsSemilattice _∪_
+
+  ∩-magma         : Magma _ _
+  ∪-magma         : Magma _ _
+  ∩-band          : Band _ _
+  ∪-band          : Band _ _
+  ∩-semilattice   : Semilattice _ _
+  ∪-semilattice   : Semilattice _ _
+  ```
+
+* Added new proofs to `Data.Integer.Properties`:
+  ```agda
+  +-isMagma   : IsMagma _+_
+  *-isMagma   : IsMagma _*_
+
+  +-magma     : Magma 0ℓ 0ℓ
+  *-magma     : Magma 0ℓ 0ℓ
+  +-semigroup : Semigroup 0ℓ 0ℓ
+  *-semigroup : Semigroup 0ℓ 0ℓ
+  +-0-monoid  : Monoid 0ℓ 0ℓ
+  *-1-monoid  : Monoid 0ℓ 0ℓ
   ```
 
 * Added new operations to `Data.List.All`:
@@ -203,11 +270,19 @@ Other minor additions
 
 * Added new proofs to `Data.List.Properties`:
   ```agda
-  length-%= : length (xs [ k ]%= f) ≡ length xs
-  length-∷= : length (xs [ k ]∷= v) ≡ length xs
-  map-∷=    : map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
-  length-─  : length (xs ─ k) ≡ pred (length xs)
-  map-─     : map f (xs ─ k) ≡ map f xs ─ cast eq k
+  ++-isMagma : IsMagma _++_
+
+  length-%=  : length (xs [ k ]%= f) ≡ length xs
+  length-∷=  : length (xs [ k ]∷= v) ≡ length xs
+  map-∷=     : map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
+  length-─   : length (xs ─ k) ≡ pred (length xs)
+  map-─      : map f (xs ─ k) ≡ map f xs ─ cast eq k
+  ```
+
+* Added new proofs to `Data.List.Relation.Permutation.Inductive.Properties`:
+  ```agda
+  ++-isMagma : IsMagma _↭_ _++_
+  ++-magma   : Magma _ _
   ```
 
 * Added new proofs to `Data.Maybe.All`:
@@ -259,6 +334,33 @@ Other minor additions
   _<∣>_     : Maybe A → Maybe A → Maybe A
   ```
 
+* Added new proofs to `Data.Nat.Properties`:
+  ```agda
+  +-isMagma       : IsMagma _+_
+  *-isMagma       : IsMagma _*_
+  ⊔-isMagma       : IsMagma _⊔_
+  ⊓-isMagma       : IsMagma _⊓_
+  ⊔-isBand        : IsBand _⊔_
+  ⊓-isBand        : IsBand _⊓_
+  ⊔-isSemilattice : IsSemilattice _⊔_
+  ⊓-isSemilattice : IsSemilattice _⊓_
+
+  +-magma       : Magma 0ℓ 0ℓ
+  *-magma       : Magma 0ℓ 0ℓ
+  ⊔-magma       : Magma 0ℓ 0ℓ
+  ⊓-magma       : Magma 0ℓ 0ℓ
+  ⊔-band        : Band 0ℓ 0ℓ
+  ⊓-band        : Band 0ℓ 0ℓ
+  ⊔-semilattice : Semilattice 0ℓ 0ℓ
+  ⊓-semilattice : Semilattice 0ℓ 0ℓ
+  ```
+
+* Added new proofs to `Data.Sign.Properties`:
+  ```agda
+  *-isMagma : IsMagma _*_
+  *-magma   : Magma 0ℓ 0ℓ
+  ```
+
 * Added new functions to `Data.Sum.Base`:
   ```agda
   fromDec : Dec P → P ⊎ ¬ P
@@ -278,6 +380,15 @@ Other minor additions
   ```agda
   fromAny : Any P xs → ∃ λ x → x ∈ xs × P x
   toAny   : x ∈ xs → P x → Any P xs
+  ```
+
+* Added new proofs to `Function.Related.TypeIsomorphisms`:
+  ```agda
+  ×-isMagma : ∀ k ℓ → IsMagma (Related ⌊ k ⌋) _×_
+  ⊎-isMagma : ∀ k ℓ → IsMagma (Related ⌊ k ⌋) _⊎_
+
+  ⊎-magma : Symmetric-kind → (ℓ : Level) → Semigroup _ _
+  ×-magma : Symmetric-kind → (ℓ : Level) → Magma _ _
   ```
 
 * Added new proofs to `Relation.Binary.Consequences`:

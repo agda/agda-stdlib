@@ -31,19 +31,10 @@ record IsMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
 
 record IsSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
-    isEquivalence : IsEquivalence _≈_
-    ∙-cong        : Congruent₂ ∙
-    assoc         : Associative ∙
+    isMagma : IsMagma ∙
+    assoc   : Associative ∙
 
-  open IsEquivalence isEquivalence public
-
-  isMagma : IsMagma ∙
-  isMagma = record
-    { isEquivalence = isEquivalence
-    ; ∙-cong        = ∙-cong
-    }
-
-  open IsMagma isMagma public using (setoid)
+  open IsMagma isMagma public
 
 record IsBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
@@ -52,7 +43,12 @@ record IsBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
 
   open IsSemigroup isSemigroup public
 
--- Commutative idempotent semigroups are semilattices (see Lattices)
+record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isBand : IsBand ∧
+    comm   : Commutative ∧
+
+  open IsBand isBand public
 
 ------------------------------------------------------------------------
 -- Monoids
@@ -428,25 +424,40 @@ record IsCommutativeRing
 ------------------------------------------------------------------------
 -- Lattices
 
-record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
-  field
-    isBand : IsBand ∧
-    comm   : Commutative ∧
-
-  open IsBand isBand public
-
 record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field
-    isEquivalence : IsEquivalence _≈_
-    ∨-comm        : Commutative ∨
-    ∨-assoc       : Associative ∨
-    ∨-cong        : Congruent₂ ∨
-    ∧-comm        : Commutative ∧
-    ∧-assoc       : Associative ∧
-    ∧-cong        : Congruent₂ ∧
-    absorptive    : Absorptive ∨ ∧
+    ∨-isSemilattice : IsSemilattice ∨
+    ∧-isSemilattice : IsSemilattice ∧
+    absorptive      : Absorptive ∨ ∧
 
-  open IsEquivalence isEquivalence public
+  ∨-absorbs-∧ : ∨ Absorbs ∧
+  ∨-absorbs-∧ = proj₁ absorptive
+
+  ∧-absorbs-∨ : ∧ Absorbs ∨
+  ∧-absorbs-∨ = proj₂ absorptive
+
+  open IsSemilattice ∨-isSemilattice public
+    renaming
+    ( ∙-cong      to ∨-cong
+    ; assoc       to ∨-assoc
+    ; comm        to ∨-comm
+    ; idem        to ∨-idem
+    ; isMagma     to ∨-isMagma
+    ; isSemigroup to ∨-isSemigroup
+    ; isBand      to ∨-isBand
+    )
+
+  open IsSemilattice ∧-isSemilattice public
+    renaming
+    ( ∙-cong      to ∧-cong
+    ; assoc       to ∧-assoc
+    ; comm        to ∧-comm
+    ; idem        to ∧-idem
+    ; isMagma     to ∧-isMagma
+    ; isSemigroup to ∧-isSemigroup
+    ; isBand      to ∧-isBand
+    )
+    hiding (refl; reflexive; sym; trans; isEquivalence; setoid)
 
 record IsDistributiveLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field
