@@ -4,6 +4,8 @@
 -- A universe of proposition functors, along with some properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Nullary.Universe where
 
 open import Relation.Nullary

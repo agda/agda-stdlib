@@ -4,6 +4,8 @@
 -- Properties of the binary representation of natural numbers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Bin.Properties where
 
 open import Data.Bin

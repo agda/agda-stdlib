@@ -4,6 +4,8 @@
 -- Some unit types
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Unit.NonEta where
 
 open import Level

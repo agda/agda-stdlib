@@ -5,6 +5,8 @@
 -- relation (aka the equivalence closure).
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.Construct.Closure.Equivalence where
 
 open import Function using (flip; id; _∘_)

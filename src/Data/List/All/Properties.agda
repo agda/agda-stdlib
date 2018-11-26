@@ -4,6 +4,8 @@
 -- Properties related to All
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.All.Properties where
 
 open import Data.Bool.Base using (Bool; T)

@@ -4,6 +4,8 @@
 -- Sums (disjoint unions)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Sum where
 
 open import Function

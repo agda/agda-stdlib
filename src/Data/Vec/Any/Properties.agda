@@ -4,6 +4,8 @@
 -- Properties of vector's Any
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Vec.Any.Properties where
 
 open import Data.List using ([]; _∷_)

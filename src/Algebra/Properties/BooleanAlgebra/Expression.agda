@@ -4,6 +4,8 @@
 -- Boolean algebra expressions
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Algebra
 
 module Algebra.Properties.BooleanAlgebra.Expression

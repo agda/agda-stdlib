@@ -4,6 +4,8 @@
 -- Divisibility
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Nat.Divisibility where
 
 open import Algebra

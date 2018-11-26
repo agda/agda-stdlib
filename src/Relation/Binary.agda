@@ -4,6 +4,8 @@
 -- Properties of homogeneous binary relations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary where
 
 open import Agda.Builtin.Equality using (_≡_)

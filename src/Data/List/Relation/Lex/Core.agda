@@ -4,6 +4,8 @@
 -- Lexicographic ordering of lists
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Relation.Lex.Core where
 
 open import Data.Empty using (⊥; ⊥-elim)
@@ -21,7 +23,8 @@ open import Data.List.Relation.Pointwise
 -- depending on whether type P is inhabited.
 
 data Lex {a ℓ₁ ℓ₂} {A : Set a} (P : Set)
-         (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) : Rel (List A) (ℓ₁ ⊔ ℓ₂) where
+         (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) :
+         Rel (List A) (a ⊔ ℓ₁ ⊔ ℓ₂) where
   base : P                             → Lex P _≈_ _≺_ []       []
   halt : ∀ {y ys}                      → Lex P _≈_ _≺_ []       (y ∷ ys)
   this : ∀ {x xs y ys} (x≺y : x ≺ y)   → Lex P _≈_ _≺_ (x ∷ xs) (y ∷ ys)

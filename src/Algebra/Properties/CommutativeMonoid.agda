@@ -4,6 +4,8 @@
 -- Some derivable properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Algebra
 
 module Algebra.Properties.CommutativeMonoid {g₁ g₂} (M : CommutativeMonoid g₁ g₂) where
@@ -145,10 +147,11 @@ sumₜ-permute {suc m} {suc n} t π = begin
 
 select-transpose : ∀ {n} t (i j : Fin n) → lookup t i ≈ lookup t j → ∀ k → (lookup (select 0# j t) ∘ PermC.transpose i j) k ≈ lookup (select 0# i t) k
 select-transpose _ i j e k with k FP.≟ i
-... | yes p rewrite P.≡-≟-identity FP._≟_ {j} P.refl = sym e
+... | yes p rewrite proj₂ (P.≡-≟-identity FP._≟_ {j} P.refl) = sym e
 ... | no ¬p with k FP.≟ j
-...   | yes q rewrite proj₂ (P.≢-≟-identity FP._≟_ (¬p ∘ P.trans q ∘ P.sym)) = refl
 ...   | no ¬q rewrite proj₂ (P.≢-≟-identity FP._≟_ ¬q) = refl
+...   | yes q rewrite proj₂ (P.≢-≟-identity FP._≟_
+                               (¬p ∘ P.trans q ∘ P.sym)) = refl
 
 -- Summing over a pulse gives you the single value picked out by the pulse.
 

@@ -5,6 +5,8 @@
 -- etc.)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
 
 -- The structures are parameterised by an equivalence relation

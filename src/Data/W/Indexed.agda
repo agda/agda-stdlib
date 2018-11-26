@@ -4,6 +4,8 @@
 -- Indexed W-types aka Petersson-Synek trees
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.W.Indexed where
 
 open import Level

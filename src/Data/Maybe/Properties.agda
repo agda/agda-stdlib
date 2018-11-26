@@ -4,6 +4,8 @@
 -- Maybe-related properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Maybe.Properties where
 
 open import Algebra

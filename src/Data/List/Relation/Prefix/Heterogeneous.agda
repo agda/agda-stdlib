@@ -4,6 +4,8 @@
 -- An inductive definition of the heterogeneous prefix relation
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Relation.Prefix.Heterogeneous where
 
 open import Level
@@ -14,11 +16,11 @@ open import Relation.Binary using (REL; _⇒_)
 
 module _ {a b r} {A : Set a} {B : Set b} (R : REL A B r) where
 
-  data Prefix : REL (List A) (List B) r where
+  data Prefix : REL (List A) (List B) (a ⊔ b ⊔ r) where
     []  : ∀ {bs} → Prefix [] bs
     _∷_ : ∀ {a b as bs} → R a b → Prefix as bs → Prefix (a ∷ as) (b ∷ bs)
 
-  data PrefixView (as : List A) : List B → Set (b ⊔ r) where
+  data PrefixView (as : List A) : List B → Set (a ⊔ b ⊔ r) where
     _++_ : ∀ {cs} → Pointwise R as cs → ∀ ds → PrefixView as (cs List.++ ds)
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} {a b as bs} where

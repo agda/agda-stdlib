@@ -6,6 +6,8 @@
 
 -- Vectors of a specified maximum length.
 
+{-# OPTIONS --without-K #-}
+
 module Data.BoundedVec where
 
 open import Data.Nat

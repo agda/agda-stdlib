@@ -4,6 +4,8 @@
 -- A bunch of properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Bool.Properties where
 
 open import Algebra
@@ -17,8 +19,7 @@ open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Decidable)
-open import Relation.Binary.PropositionalEquality
-  hiding ([_]; proof-irrelevance)
+open import Relation.Binary.PropositionalEquality hiding ([_])
 open import Relation.Nullary using (yes; no)
 open import Relation.Unary using (Irrelevant)
 

@@ -4,6 +4,8 @@
 -- Properties satisfied by meet semilattices
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary.Lattice
 
 module Relation.Binary.Properties.MeetSemilattice

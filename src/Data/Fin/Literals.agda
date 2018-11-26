@@ -4,6 +4,8 @@
 -- Fin Literals
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Fin.Literals where
 
 open import Agda.Builtin.FromNat

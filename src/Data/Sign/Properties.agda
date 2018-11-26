@@ -4,6 +4,8 @@
 -- Some properties about signs
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Sign.Properties where
 
 open import Algebra

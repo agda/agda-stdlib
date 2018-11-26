@@ -7,6 +7,8 @@
 -- Note that the lemmas below could be generalised to work with other
 -- equalities than _≡_.
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Properties where
 
 open import Algebra

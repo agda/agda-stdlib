@@ -5,6 +5,8 @@
 -- non-indexed structures.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.Indexed.Heterogeneous.Construct.At where
 
 open import Relation.Binary

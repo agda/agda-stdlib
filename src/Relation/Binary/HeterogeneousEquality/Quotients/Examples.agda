@@ -4,6 +4,8 @@
 -- Example of a Quotient: ℤ as (ℕ × ℕ / ~)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K #-}
+
 module Relation.Binary.HeterogeneousEquality.Quotients.Examples where
 
 open import Relation.Binary.HeterogeneousEquality.Quotients

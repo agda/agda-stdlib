@@ -4,6 +4,8 @@
 -- Vectors with fast append
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.DifferenceVec where
 
 open import Data.DifferenceNat

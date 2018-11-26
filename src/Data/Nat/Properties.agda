@@ -7,6 +7,8 @@
 -- See README.Nat for some examples showing how this module can be
 -- used.
 
+{-# OPTIONS --without-K #-}
+
 module Data.Nat.Properties where
 
 open import Algebra

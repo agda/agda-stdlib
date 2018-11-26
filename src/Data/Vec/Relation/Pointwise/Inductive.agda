@@ -4,6 +4,8 @@
 -- Inductive pointwise lifting of relations to vectors
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Vec.Relation.Pointwise.Inductive where
 
 open import Algebra.FunctionProperties

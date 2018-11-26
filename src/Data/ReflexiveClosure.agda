@@ -7,6 +7,8 @@
 -- Relation.Binary.Construct.Closure.Reflexive module directly.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.ReflexiveClosure where
 
 open import Relation.Binary.Construct.Closure.Reflexive public

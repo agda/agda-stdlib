@@ -7,6 +7,8 @@
 
 -- For an example of how this module can be used, see README.Record.
 
+{-# OPTIONS --without-K #-}
+
 open import Data.Bool.Base using (if_then_else_)
 open import Data.Empty
 open import Data.List.Base

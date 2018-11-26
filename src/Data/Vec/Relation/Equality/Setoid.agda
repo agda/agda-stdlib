@@ -4,6 +4,8 @@
 -- Semi-heterogeneous vector equality over setoids
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary
 
 module Data.Vec.Relation.Equality.Setoid {a ℓ} (S : Setoid a ℓ) where
@@ -16,7 +18,6 @@ open import Function
 open import Level using (_⊔_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
-open import Relation.Binary.HeterogeneousEquality as H using (_≅_)
 
 open Setoid S renaming (Carrier to A)
 

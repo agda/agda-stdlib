@@ -4,6 +4,8 @@
 -- Some properties about integers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Integer.Properties where
 
 open import Algebra

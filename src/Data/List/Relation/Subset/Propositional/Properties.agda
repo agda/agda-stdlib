@@ -4,6 +4,8 @@
 -- Properties of the sublist relation over setoid equality.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary hiding (Decidable)
 
 module Data.List.Relation.Subset.Propositional.Properties

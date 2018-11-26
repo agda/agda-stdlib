@@ -4,6 +4,8 @@
 -- Closures of a unary relation with respect to a strict partial order
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary
 
 module Relation.Unary.Closure.StrictPartialOrder

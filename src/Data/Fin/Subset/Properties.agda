@@ -4,6 +4,8 @@
 -- Some properties about subsets
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Fin.Subset.Properties where
 
 open import Algebra

@@ -4,6 +4,8 @@
 -- Properties related to All
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Maybe.All.Properties where
 
 open import Data.Maybe.Base

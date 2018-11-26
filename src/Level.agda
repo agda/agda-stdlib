@@ -4,6 +4,8 @@
 -- Universe levels
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Level where
 
 -- Levels.

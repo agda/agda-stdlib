@@ -5,6 +5,8 @@
 -- equivalent or…)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Function.Related.TypeIsomorphisms where
 
 open import Algebra
@@ -397,10 +399,10 @@ True↔ (no ¬p) _   = inverse (λ()) ¬p (λ()) (⊥-elim ∘ ¬p)
    from = < P.cong proj₁ , P.cong proj₂ >
 
    from∘to : ∀ v → from (to v) ≡ v
-   from∘to _ = P.cong₂ _,_ (P.≡-irrelevance _ _) (P.≡-irrelevance _ _)
+   from∘to (P.refl , P.refl) = P.refl
 
    to∘from : ∀ v → to (from v) ≡ v
-   to∘from _ = P.≡-irrelevance _ _
+   to∘from P.refl = P.refl
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

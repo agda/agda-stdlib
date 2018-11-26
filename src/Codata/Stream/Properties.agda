@@ -4,6 +4,8 @@
 -- Properties of operations on the Stream type
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.Stream.Properties where
 
 open import Size

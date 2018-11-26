@@ -4,6 +4,8 @@
 -- Properties of functions, such as associativity and commutativity
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Level
 open import Relation.Binary
 open import Data.Sum

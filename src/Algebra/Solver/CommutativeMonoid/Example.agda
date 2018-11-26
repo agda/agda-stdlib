@@ -4,6 +4,8 @@
 -- An example of how Algebra.CommutativeMonoidSolver can be used
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Algebra.Solver.CommutativeMonoid.Example where
 
 open import Relation.Binary.PropositionalEquality using (_≡_)

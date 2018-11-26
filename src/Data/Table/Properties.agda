@@ -4,6 +4,8 @@
 -- Table-related properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Table.Properties where
 
 open import Data.Table

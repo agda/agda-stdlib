@@ -4,6 +4,8 @@
 -- Containers core
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Container.Core where
 
 open import Level

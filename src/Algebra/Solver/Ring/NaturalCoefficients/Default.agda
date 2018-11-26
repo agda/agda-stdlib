@@ -9,6 +9,8 @@
 -- characteristic 0.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Algebra
 
 module Algebra.Solver.Ring.NaturalCoefficients.Default

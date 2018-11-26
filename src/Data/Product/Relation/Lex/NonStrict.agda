@@ -7,6 +7,8 @@
 -- The definition of lexicographic product used here is suitable if
 -- the left-hand relation is a (non-strict) partial order.
 
+{-# OPTIONS --without-K #-}
+
 module Data.Product.Relation.Lex.NonStrict where
 
 open import Data.Product using (_×_; _,_; proj₁; proj₂)

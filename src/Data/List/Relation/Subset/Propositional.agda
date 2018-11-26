@@ -4,6 +4,8 @@
 -- The sublist relation over propositional equality.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Relation.Subset.Propositional
   {a} {A : Set a} where
 

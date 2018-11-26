@@ -8,6 +8,141 @@ Important changes since 0.17:
 Non-backwards compatible changes
 --------------------------------
 
+#### Support for `--without-K`
+
+The `--without-K` flag has been enabled in a number of files. An
+attempt has been made to only do this in files that do not depend on
+any file in which this flag is not enabled.
+
+Agda uses different rules for the target universe of data types when
+the `--without-K` flag is used, and because of this a number of type
+families now target a possibly larger universe:
+
+* `Codata.Delay.Bisimilarity.Bisim`.
+* `Codata.Musical.Covec._≈_`.
+* `Codata.Musical.Covec._∈_`.
+* `Codata.Musical.Covec._⊑_`.
+* `Codata.Stream.Bisimilarity.Bisim`.
+* `Data.List.All.All`.
+* `Data.List.First.First`.
+* `Data.List.Relation.Prefix.Heterogeneous.Prefix`.
+* `Data.List.Relation.Prefix.Heterogeneous.PrefixView`.
+* `Data.List.Relation.Equality.Setoid._≋_`.
+* `Data.List.Relation.Lex.NonStrict.Lex-<`.
+* `Data.List.Relation.Lex.NonStrict.Lex-≤`.
+* `Data.List.Relation.Lex.Strict.Lex-<`.
+* `Data.List.Relation.Lex.Strict.Lex-≤`.
+* `Data.List.Relation.Pointwise.Pointwise`.
+* `Data.Maybe.Is-just`.
+* `Data.Maybe.Is-nothing`.
+* `Data.Maybe.Any.Any`.
+* `Data.Maybe.All.All`.
+* `Data.Maybe.Relation.Pointwise.Pointwise`.
+
+Because of this change the texts of some type signatures were changed
+(some inferred parts of other type signatures may also have changed):
+
+* `Data.List.All.forA`.
+* `Data.List.All.forM`.
+* `Data.List.All.mapA`.
+* `Data.List.All.mapM`.
+* `Data.List.All.sequenceA`.
+* `Data.List.All.sequenceM`.
+* `Data.List.Relation.Equality.DecSetoid.≋-decSetoid`.
+* `Data.Maybe.All.forA`.
+* `Data.Maybe.All.forM`.
+* `Data.Maybe.All.mapA`.
+* `Data.Maybe.All.mapM`.
+* `Data.Maybe.All.sequenceA`.
+* `Data.Maybe.All.sequenceM`.
+* `Data.Maybe.Relation.Pointwise.decSetoid`.
+* `Data.Maybe.Relation.Pointwise.setoid`.
+
+Some code that relies on the K rule or uses heterogeneous equality has
+been moved to new files:
+
+* `Data.AVL.Indexed.node-injective-bal` to `Data.AVL.Indexed.WithK`.
+* `Data.AVL.Indexed.node-injectiveʳ` to `Data.AVL.Indexed.WithK`.
+* `Data.AVL.Indexed.node-injectiveˡ` to `Data.AVL.Indexed.WithK`.
+* `Data.Container.Indexed.Eq` to `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.Map.composition` to
+  `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.Map.identity` to
+  `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.PlainMorphism.NT` to
+  `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.PlainMorphism.Natural` to
+  `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.PlainMorphism.complete` to
+  `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.PlainMorphism.natural` to
+  `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.PlainMorphism.∘-correct` to
+  `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed._∈_` to `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.setoid` to `Data.Container.Indexed.WithK`.
+* `Data.Product.Properties.,-injectiveʳ` to
+  `Data.Product.Properties.WithK`.
+* `Data.Product.Relation.Pointwise.Dependent.Pointwise-≡↔≡` to
+  `Data.Product.Relation.Pointwise.Dependent.WithK`.
+* `Data.Product.Relation.Pointwise.Dependent.Pointwise-≡⇒≡` to
+  `Data.Product.Relation.Pointwise.Dependent.WithK`.
+* `Data.Product.Relation.Pointwise.Dependent.inverse` to
+  `Data.Product.Relation.Pointwise.Dependent.WithK`.
+* `Data.Product.Relation.Pointwise.Dependent.↣` to
+  `Data.Product.Relation.Pointwise.Dependent.WithK`. (The name
+  `Data.Product.Relation.Pointwise.Dependent.↣` now refers to a new
+  definition with another type signature.)
+* `Data.Product.Relation.Pointwise.Dependent.≡⇒Pointwise-≡` to
+  `Data.Product.Relation.Pointwise.Dependent.WithK`.
+* `Data.Vec.Properties.++-assoc` to `Data.Vec.Properties.WithK`.
+* `Data.Vec.Properties.[]=-irrelevance` to `Data.Vec.Properties.WithK`.
+* `Data.Vec.Properties.foldl-cong` to `Data.Vec.Properties.WithK`.
+* `Data.Vec.Properties.foldr-cong` to `Data.Vec.Properties.WithK`.
+* `Data.Vec.Relation.Equality.Propositional.≋⇒≅` to
+  `Data.Vec.Relation.Equality.Propositional.WithK`.
+* `Data.W.sup-injective₂` to `Data.W.WithK`.
+* `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.◅-injectiveʳ`
+  to
+  `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.WithK`.
+* `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.◅-injectiveˡ`
+  to
+  `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.WithK`.
+* `Relation.Binary.Construct.Closure.Transitive.∼⁺⟨⟩-injectiveʳ` to
+  `Relation.Binary.Construct.Closure.Transitive.WithK`.
+* `Relation.Binary.Construct.Closure.Transitive.∼⁺⟨⟩-injectiveˡ` to
+  `Relation.Binary.Construct.Closure.Transitive.WithK`.
+* `Relation.Binary.PropositionalEquality.≡-irrelevance` to
+  `Relation.Binary.PropositionalEquality.WithK`.
+
+Other code has been changed to avoid use of the K rule. As part of
+such changes the texts of the following type signatures have been
+changed:
+
+* `Data.AVL.Indexed.node-injective-key`.
+* `Data.List.Relation.Sublist.Propositional.Properties.∷⁻`.
+* `Data.Product.Relation.Pointwise.Dependent.↣`. (The old definition
+  was moved to `Data.Product.Relation.Pointwise.Dependent.WithK`.)
+* `Relation.Binary.PropositionalEquality.≡-≟-identity`.
+
+The following definitions have been removed:
+
+* `Relation.Binary.PropositionalEquality._≅⟨_⟩_`.
+
+Some deprecated names have also been removed:
+
+* `Data.Product.Relation.Pointwise.Dependent.Rel↔≡`.
+* `Data.Vec.Properties.proof-irrelevance-[]=`.
+* `Relation.Binary.PropositionalEquality.proof-irrelevance`.
+
+Finally some new, supporting code has been added:
+
+* The module `Function.HalfAdjointEquivalence`.
+* In `Relation.Binary.PropositionalEquality`: `cong-id`, `cong-∘`,
+  `cong-≡id`, `naturality`, `subst-application`, `subst-subst`,
+  `subst-subst-sym`, `subst-sym-subst`, `subst-∘`, `trans-assoc`,
+  `trans-reflʳ`, `trans-symʳ` and `trans-symˡ`.
+
 #### Overhaul of `Data.Maybe`
 
 Splitting up `Data.Maybe` into the standard hierarchy.

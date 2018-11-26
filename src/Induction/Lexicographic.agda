@@ -4,6 +4,8 @@
 -- Lexicographic induction
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Induction.Lexicographic where
 
 open import Data.Product

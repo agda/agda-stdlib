@@ -7,6 +7,8 @@
 -- This file contains some core definitions which are reexported by
 -- Relation.Binary or Relation.Binary.PropositionalEquality.
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.Core where
 
 open import Agda.Builtin.Equality using (_≡_) renaming (refl to ≡-refl)
@@ -174,4 +176,3 @@ record IsEquivalence {a ℓ} {A : Set a}
 
   reflexive : _≡_ ⇒ _≈_
   reflexive ≡-refl = refl
-

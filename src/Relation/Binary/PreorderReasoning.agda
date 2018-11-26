@@ -23,6 +23,8 @@
 --       ∎
 --     where open Pre preorder₂
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary
 
 module Relation.Binary.PreorderReasoning

@@ -5,6 +5,8 @@
 -- (packed in records together with sets, operations, etc.)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Algebra where
 
 open import Relation.Binary

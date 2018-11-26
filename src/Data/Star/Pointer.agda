@@ -4,6 +4,8 @@
 -- Pointers into star-lists
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K #-}
+
 module Data.Star.Pointer {ℓ} {I : Set ℓ} where
 
 open import Data.Maybe.Base using (Maybe; nothing; just)

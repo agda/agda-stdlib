@@ -4,6 +4,8 @@
 -- Inverses
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Function.Inverse where
 
 open import Level
