@@ -116,56 +116,33 @@ lift n = record
   ; isBooleanAlgebra = record
     { isDistributiveLattice = record
       { isLattice = record
-        { ∨-isSemilattice = record
-          { isBand = record
-            { isSemigroup = record
-              { isMagma = record
-                { isEquivalence = PW.isEquivalence isEquivalence
-                ; ∙-cong        = λ xs≈us ys≈vs → ext λ i →
-                                    solve₁ i 4 (λ x y u v → x or y , u or v)
-                                      _ _ _ _
-                                      (∨-cong (Pointwise.app xs≈us i)
-                                        (Pointwise.app ys≈vs i))
-                }
-              ; assoc = λ _ _ _ → ext λ i →
-                          solve i 3
-                            (λ x y z → (x or y) or z , x or (y or z))
-                            (∨-assoc _ _ _) _ _ _
-              }
-            ; idem = λ _ → ext λ i →
-                          solve i 1
-                            (λ x → x or x , x) (∨-idem _) _
-            }
-          ; comm   = λ _ _ → ext λ i →
-                       solve i 2 (λ x y → x or y , y or x)
-                       (∨-comm _ _) _ _
-          }
-        ; ∧-isSemilattice = record
-          { isBand = record
-            { isSemigroup = record
-              { isMagma = record
-                { isEquivalence = PW.isEquivalence isEquivalence
-                ; ∙-cong        = λ xs≈ys us≈vs → ext λ i →
-                                    solve₁ i 4 (λ x y u v → x and y , u and v)
-                                      _ _ _ _
-                                      (∧-cong (Pointwise.app xs≈ys i)
-                                        (Pointwise.app us≈vs i))
-                }
-              ; assoc   = λ _ _ _ → ext λ i →
+        { isEquivalence = PW.isEquivalence isEquivalence
+        ; ∨-comm        = λ _ _ → ext λ i →
+                            solve i 2 (λ x y → x or y , y or x)
+                                  (∨-comm _ _) _ _
+        ; ∨-assoc       = λ _ _ _ → ext λ i →
+                            solve i 3
+                              (λ x y z → (x or y) or z , x or (y or z))
+                              (∨-assoc _ _ _) _ _ _
+        ; ∨-cong        = λ xs≈us ys≈vs → ext λ i →
+                            solve₁ i 4 (λ x y u v → x or y , u or v)
+                                   _ _ _ _
+                                   (∨-cong (Pointwise.app xs≈us i)
+                                           (Pointwise.app ys≈vs i))
+        ; ∧-comm        = λ _ _ → ext λ i →
+                            solve i 2 (λ x y → x and y , y and x)
+                                  (∧-comm _ _) _ _
+        ; ∧-assoc       = λ _ _ _ → ext λ i →
                             solve i 3
                               (λ x y z → (x and y) and z ,
                                          x and (y and z))
                               (∧-assoc _ _ _) _ _ _
-              }
-            ; idem        =  λ _ → ext λ i →
-                              solve i 1
-                                (λ x → x and x , x) (∧-idem _) _
-            }
-          ; comm   = λ _ _ → ext λ i →
-                       solve i 2 (λ x y → x and y , y and x)
-                       (∧-comm _ _) _ _
-          }
-        ; absorptive      =
+        ; ∧-cong        = λ xs≈ys us≈vs → ext λ i →
+                            solve₁ i 4 (λ x y u v → x and y , u and v)
+                                   _ _ _ _
+                                   (∧-cong (Pointwise.app xs≈ys i)
+                                           (Pointwise.app us≈vs i))
+        ; absorptive    =
           (λ _ _ → ext λ i →
             solve i 2 (λ x y → x or (x and y) , x) (∨-absorbs-∧ _ _) _ _) ,
           (λ _ _ → ext λ i →

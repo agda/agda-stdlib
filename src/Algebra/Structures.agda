@@ -48,7 +48,7 @@ record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
     isBand : IsBand ∧
     comm   : Commutative ∧
 
-  open IsBand isBand public
+  open IsBand isBand public renaming (∙-cong to ∧-cong)
 
 ------------------------------------------------------------------------
 -- Monoids
@@ -426,9 +426,20 @@ record IsCommutativeRing
 
 record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field
-    ∨-isSemilattice : IsSemilattice ∨
-    ∧-isSemilattice : IsSemilattice ∧
-    absorptive      : Absorptive ∨ ∧
+    isEquivalence : IsEquivalence _≈_
+    ∨-comm        : Commutative ∨
+    ∨-assoc       : Associative ∨
+    ∨-cong        : Congruent₂ ∨
+    ∧-comm        : Commutative ∧
+    ∧-assoc       : Associative ∧
+    ∧-cong        : Congruent₂ ∧
+    absorptive    : Absorptive ∨ ∧
+
+  -- Note that this record is not defined in terms of IsSemilattice
+  -- because the idempotence laws of ∨ and ∧ can be derived from the
+  -- absorption laws, which makes the corresponding "idem" fields
+  -- redundant.  The derived idempotence laws are stated and proved in
+  -- Algebra.Properties.Lattice.
 
   ∨-absorbs-∧ : ∨ Absorbs ∧
   ∨-absorbs-∧ = proj₁ absorptive
@@ -436,28 +447,7 @@ record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   ∧-absorbs-∨ : ∧ Absorbs ∨
   ∧-absorbs-∨ = proj₂ absorptive
 
-  open IsSemilattice ∨-isSemilattice public
-    renaming
-    ( ∙-cong      to ∨-cong
-    ; assoc       to ∨-assoc
-    ; comm        to ∨-comm
-    ; idem        to ∨-idem
-    ; isMagma     to ∨-isMagma
-    ; isSemigroup to ∨-isSemigroup
-    ; isBand      to ∨-isBand
-    )
-
-  open IsSemilattice ∧-isSemilattice public
-    renaming
-    ( ∙-cong      to ∧-cong
-    ; assoc       to ∧-assoc
-    ; comm        to ∧-comm
-    ; idem        to ∧-idem
-    ; isMagma     to ∧-isMagma
-    ; isSemigroup to ∧-isSemigroup
-    ; isBand      to ∧-isBand
-    )
-    hiding (refl; reflexive; sym; trans; isEquivalence; setoid)
+  open IsEquivalence isEquivalence public
 
 record IsDistributiveLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field

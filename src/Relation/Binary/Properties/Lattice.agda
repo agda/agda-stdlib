@@ -111,36 +111,15 @@ collapse₂ {x} {y} ∨≤∧ = antisym
 
 isAlgLattice : Alg.IsLattice _≈_ _∨_ _∧_
 isAlgLattice = record
-  { ∨-isSemilattice = record
-    { isBand = record
-      { isSemigroup = record
-        { isMagma = record
-          { isEquivalence = isEquivalence
-          ; ∙-cong        = J.∨-cong
-          }
-        ; assoc = J.∨-assoc
-        }
-      ; idem = J.∨-idempotent
-      }
-    ; comm = J.∨-comm
-    }
-  ; ∧-isSemilattice = record
-    { isBand = record
-      { isSemigroup = record
-        { isMagma = record
-          { isEquivalence = isEquivalence
-          ; ∙-cong        = M.∧-cong
-          }
-        ; assoc = M.∧-assoc
-        }
-      ; idem = M.∧-idempotent
-      }
-    ; comm = M.∧-comm
-    }
+  { isEquivalence = isEquivalence
+  ; ∨-comm        = J.∨-comm
+  ; ∨-assoc       = J.∨-assoc
+  ; ∨-cong        = J.∨-cong
+  ; ∧-comm        = M.∧-comm
+  ; ∧-assoc       = M.∧-assoc
+  ; ∧-cong        = M.∧-cong
   ; absorptive    = absorptive
   }
 
 algLattice : Alg.Lattice c ℓ₁
-algLattice = record
-  { isLattice = isAlgLattice
-  }
+algLattice = record { isLattice = isAlgLattice }
