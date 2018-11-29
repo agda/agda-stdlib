@@ -4,6 +4,8 @@
 -- General notion of splitting a list in two in an order-preserving manner
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Relation.Split where
 
 open import Level
@@ -20,7 +22,7 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
          (L : REL A B l) (R : REL A C r) where
 
-  data Split : List A → REL (List B) (List C) (l ⊔ r) where
+  data Split : List A → REL (List B) (List C) (a ⊔ b ⊔ c ⊔ l ⊔ r) where
     []   : Split [] [] []
     _∷ˡ_ : ∀ {a b as l r} → L a b → Split as l r → Split (a ∷ as) (b ∷ l) r
     _∷ʳ_ : ∀ {a b as l r} → R a b → Split as l r → Split (a ∷ as) l (b ∷ r)

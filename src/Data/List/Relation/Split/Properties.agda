@@ -4,6 +4,8 @@
 -- Properties of list-splitting
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Relation.Split.Properties where
 
 open import Data.Nat
