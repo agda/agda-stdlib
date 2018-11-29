@@ -4,6 +4,8 @@
 -- Transitive closures
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.Construct.Closure.Transitive where
 
 open import Function
@@ -29,14 +31,8 @@ module _ {a ℓ} {A : Set a} {_∼_ : Rel A ℓ} where
  []-injective : ∀ {x y p q} → (x [ _∼_ ]⁺ y ∋ [ p ]) ≡ [ q ] → p ≡ q
  []-injective refl = refl
 
- ∼⁺⟨⟩-injectiveˡ : ∀ {x y z} {p r : x [ _∼_ ]⁺ y} {q s} →
-                   (x [ _∼_ ]⁺ z ∋ x ∼⁺⟨ p ⟩ q) ≡ (x ∼⁺⟨ r ⟩ s) → p ≡ r
- ∼⁺⟨⟩-injectiveˡ refl = refl
-
- ∼⁺⟨⟩-injectiveʳ : ∀ {x y z} {p r : x [ _∼_ ]⁺ y} {q s} →
-                   (x [ _∼_ ]⁺ z ∋ x ∼⁺⟨ p ⟩ q) ≡ (x ∼⁺⟨ r ⟩ s) → q ≡ s
- ∼⁺⟨⟩-injectiveʳ refl = refl
-
+ -- See also ∼⁺⟨⟩-injectiveˡ and ∼⁺⟨⟩-injectiveʳ in
+ -- Relation.Binary.Construct.Closure.Transitive.WithK.
 
 -- "Equational" reasoning notation. Example:
 --

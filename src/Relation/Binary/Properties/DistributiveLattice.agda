@@ -4,6 +4,8 @@
 -- Properties for distributive lattice
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary.Lattice
 
 module Relation.Binary.Properties.DistributiveLattice

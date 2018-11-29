@@ -4,6 +4,8 @@
 -- Primality
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Nat.Primality where
 
 open import Data.Empty using (⊥)

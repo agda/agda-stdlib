@@ -4,6 +4,8 @@
 -- List Zippers, basic types and operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Zipper where
 
 open import Data.Nat.Base

@@ -6,6 +6,8 @@
 
 -- Some operations on/properties of nullary relations, i.e. sets.
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Nullary where
 
 open import Data.Empty hiding (⊥-elim)
@@ -30,4 +32,3 @@ data Dec {p} (P : Set p) : Set p where
 recompute : ∀ {a} {A : Set a} → Dec A → .A → A
 recompute (yes x) _ = x
 recompute (no ¬p) x = ⊥-elim (¬p x)
-

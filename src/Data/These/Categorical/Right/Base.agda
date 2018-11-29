@@ -11,6 +11,8 @@
 -- Product-based similar setting.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Level
 
 module Data.These.Categorical.Right.Base (a : Level) {b} (B : Set b) where

@@ -5,6 +5,8 @@
 -- operations and properties are defined, and how they can be used
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module README.Nat where
 
 -- The natural numbers and various arithmetic operations are defined

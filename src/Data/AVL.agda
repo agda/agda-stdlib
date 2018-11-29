@@ -9,6 +9,8 @@
 -- The search tree invariant is specified using the technique
 -- described by Conor McBride in his talk "Pivotal pragmatism".
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_ ; refl)
 

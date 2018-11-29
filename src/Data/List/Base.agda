@@ -4,6 +4,8 @@
 -- Lists, basic types and operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Base where
 
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_)

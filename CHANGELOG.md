@@ -8,6 +8,141 @@ Important changes since 0.17:
 Non-backwards compatible changes
 --------------------------------
 
+#### Support for `--without-K`
+
+The `--without-K` flag has been enabled in a number of files. An
+attempt has been made to only do this in files that do not depend on
+any file in which this flag is not enabled.
+
+Agda uses different rules for the target universe of data types when
+the `--without-K` flag is used, and because of this a number of type
+families now target a possibly larger universe:
+
+* `Codata.Delay.Bisimilarity.Bisim`.
+* `Codata.Musical.Covec._≈_`.
+* `Codata.Musical.Covec._∈_`.
+* `Codata.Musical.Covec._⊑_`.
+* `Codata.Stream.Bisimilarity.Bisim`.
+* `Data.List.All.All`.
+* `Data.List.First.First`.
+* `Data.List.Relation.Prefix.Heterogeneous.Prefix`.
+* `Data.List.Relation.Prefix.Heterogeneous.PrefixView`.
+* `Data.List.Relation.Equality.Setoid._≋_`.
+* `Data.List.Relation.Lex.NonStrict.Lex-<`.
+* `Data.List.Relation.Lex.NonStrict.Lex-≤`.
+* `Data.List.Relation.Lex.Strict.Lex-<`.
+* `Data.List.Relation.Lex.Strict.Lex-≤`.
+* `Data.List.Relation.Pointwise.Pointwise`.
+* `Data.Maybe.Is-just`.
+* `Data.Maybe.Is-nothing`.
+* `Data.Maybe.Any.Any`.
+* `Data.Maybe.All.All`.
+* `Data.Maybe.Relation.Pointwise.Pointwise`.
+
+Because of this change the texts of some type signatures were changed
+(some inferred parts of other type signatures may also have changed):
+
+* `Data.List.All.forA`.
+* `Data.List.All.forM`.
+* `Data.List.All.mapA`.
+* `Data.List.All.mapM`.
+* `Data.List.All.sequenceA`.
+* `Data.List.All.sequenceM`.
+* `Data.List.Relation.Equality.DecSetoid.≋-decSetoid`.
+* `Data.Maybe.All.forA`.
+* `Data.Maybe.All.forM`.
+* `Data.Maybe.All.mapA`.
+* `Data.Maybe.All.mapM`.
+* `Data.Maybe.All.sequenceA`.
+* `Data.Maybe.All.sequenceM`.
+* `Data.Maybe.Relation.Pointwise.decSetoid`.
+* `Data.Maybe.Relation.Pointwise.setoid`.
+
+Some code that relies on the K rule or uses heterogeneous equality has
+been moved to new files:
+
+* `Data.AVL.Indexed.node-injective-bal` to `Data.AVL.Indexed.WithK`.
+* `Data.AVL.Indexed.node-injectiveʳ` to `Data.AVL.Indexed.WithK`.
+* `Data.AVL.Indexed.node-injectiveˡ` to `Data.AVL.Indexed.WithK`.
+* `Data.Container.Indexed.Eq` to `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.Map.composition` to
+  `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.Map.identity` to
+  `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.PlainMorphism.NT` to
+  `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.PlainMorphism.Natural` to
+  `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.PlainMorphism.complete` to
+  `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.PlainMorphism.natural` to
+  `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.PlainMorphism.∘-correct` to
+  `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed._∈_` to `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.setoid` to `Data.Container.Indexed.WithK`.
+* `Data.Product.Properties.,-injectiveʳ` to
+  `Data.Product.Properties.WithK`.
+* `Data.Product.Relation.Pointwise.Dependent.Pointwise-≡↔≡` to
+  `Data.Product.Relation.Pointwise.Dependent.WithK`.
+* `Data.Product.Relation.Pointwise.Dependent.Pointwise-≡⇒≡` to
+  `Data.Product.Relation.Pointwise.Dependent.WithK`.
+* `Data.Product.Relation.Pointwise.Dependent.inverse` to
+  `Data.Product.Relation.Pointwise.Dependent.WithK`.
+* `Data.Product.Relation.Pointwise.Dependent.↣` to
+  `Data.Product.Relation.Pointwise.Dependent.WithK`. (The name
+  `Data.Product.Relation.Pointwise.Dependent.↣` now refers to a new
+  definition with another type signature.)
+* `Data.Product.Relation.Pointwise.Dependent.≡⇒Pointwise-≡` to
+  `Data.Product.Relation.Pointwise.Dependent.WithK`.
+* `Data.Vec.Properties.++-assoc` to `Data.Vec.Properties.WithK`.
+* `Data.Vec.Properties.[]=-irrelevance` to `Data.Vec.Properties.WithK`.
+* `Data.Vec.Properties.foldl-cong` to `Data.Vec.Properties.WithK`.
+* `Data.Vec.Properties.foldr-cong` to `Data.Vec.Properties.WithK`.
+* `Data.Vec.Relation.Equality.Propositional.≋⇒≅` to
+  `Data.Vec.Relation.Equality.Propositional.WithK`.
+* `Data.W.sup-injective₂` to `Data.W.WithK`.
+* `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.◅-injectiveʳ`
+  to
+  `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.WithK`.
+* `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.◅-injectiveˡ`
+  to
+  `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.WithK`.
+* `Relation.Binary.Construct.Closure.Transitive.∼⁺⟨⟩-injectiveʳ` to
+  `Relation.Binary.Construct.Closure.Transitive.WithK`.
+* `Relation.Binary.Construct.Closure.Transitive.∼⁺⟨⟩-injectiveˡ` to
+  `Relation.Binary.Construct.Closure.Transitive.WithK`.
+* `Relation.Binary.PropositionalEquality.≡-irrelevance` to
+  `Relation.Binary.PropositionalEquality.WithK`.
+
+Other code has been changed to avoid use of the K rule. As part of
+such changes the texts of the following type signatures have been
+changed:
+
+* `Data.AVL.Indexed.node-injective-key`.
+* `Data.List.Relation.Sublist.Propositional.Properties.∷⁻`.
+* `Data.Product.Relation.Pointwise.Dependent.↣`. (The old definition
+  was moved to `Data.Product.Relation.Pointwise.Dependent.WithK`.)
+* `Relation.Binary.PropositionalEquality.≡-≟-identity`.
+
+The following definitions have been removed:
+
+* `Relation.Binary.PropositionalEquality._≅⟨_⟩_`.
+
+Some deprecated names have also been removed:
+
+* `Data.Product.Relation.Pointwise.Dependent.Rel↔≡`.
+* `Data.Vec.Properties.proof-irrelevance-[]=`.
+* `Relation.Binary.PropositionalEquality.proof-irrelevance`.
+
+Finally some new, supporting code has been added:
+
+* The module `Function.HalfAdjointEquivalence`.
+* In `Relation.Binary.PropositionalEquality`: `cong-id`, `cong-∘`,
+  `cong-≡id`, `naturality`, `subst-application`, `subst-subst`,
+  `subst-subst-sym`, `subst-sym-subst`, `subst-∘`, `trans-assoc`,
+  `trans-reflʳ`, `trans-symʳ` and `trans-symˡ`.
+
 #### Overhaul of `Data.Maybe`
 
 Splitting up `Data.Maybe` into the standard hierarchy.
@@ -45,9 +180,29 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 
 #### Changes to the algebra hierarchy
 
+* Over time the algebra inheritance hierarchy has become a little
+  wonky due to poorly structured additions. This attempts to straighten
+  the hierarchy out and new policies have been put in place so that
+  the need for additional such changes will be minimised in the future.
+
 * Added `Magma` and `IsMagma` to the algebra hierarchy.
 
-* The name `RawSemigroup` in `Algebra` has been deprecated in favour of `RawMagma`.
+* The name `RawSemigroup` in `Algebra` has been deprecated in favour
+  of `RawMagma`.
+
+* The fields `isEquivalence` and `∙-cong` in `IsSemigroup` have been
+  replaced with `isMagma`.
+
+* The fields `isEquivalence`, `∨-cong`, `∨-assoc`, `∨-comm`, `∧-cong`,
+  `∧-assoc`  and `∧-comm` in `IsLattice` have been replaced with
+  `∨-isSemilattice` and `∧-isSemilattice`.
+
+* The record `Lattice` now exports proofs of `∨-idem` and `∧-idem` directly.
+  Therefore `∨-idempotence` and `∧-idempotence` in `Algebra.Properties.Lattice`
+  have been deprecated.
+
+* The record `BooleanAlgebra` now exports `∨-isSemigroup`, `∧-isSemigroup`
+  directly  so `Algebra.Properties.BooleanAlgebra` no longer does so.
 
 #### Relaxation of ring solvers requirements
 
@@ -146,6 +301,23 @@ Other minor additions
   lookup-iterate-identity : lookup n (iterate f a) ≡ fold a f n
   ```
 
+* Added new proofs to `Data.Bool.Properties`:
+  ```agda
+  ∧-isMagma       : IsMagma _∧_
+  ∨-isMagma       : IsMagma _∨_
+  ∨-isBand        : IsBand _∨_
+  ∨-isSemilattice : IsSemilattice _∨_
+  ∧-isBand        : IsBand _∧_
+  ∧-isSemilattice : IsSemilattice _∧_
+
+  ∧-magma         : Magma 0ℓ 0ℓ
+  ∨-magma         : Magma 0ℓ 0ℓ
+  ∨-band          : Band 0ℓ 0ℓ
+  ∧-band          : Band 0ℓ 0ℓ
+  ∨-semilattice   : Semilattice 0ℓ 0ℓ
+  ∧-semilattice   : Semilattice 0ℓ 0ℓ
+  ```
+
 * Added new function to `Data.Fin.Base`:
   ```agda
   cast : m ≡ n → Fin m → Fin n
@@ -154,6 +326,36 @@ Other minor additions
 * Added new proof to `Data.Fin.Properties`:
   ```agda
   toℕ-cast    : toℕ (cast eq k) ≡ toℕ k
+  ```
+
+* Added new proofs to `Data.Fin.Subset.Properties`:
+  ```agda
+  ∩-isMagma       : IsMagma _∩_
+  ∪-isMagma       : IsMagma _∪_
+  ∩-isBand        : IsBand _∩_
+  ∪-isBand        : IsBand _∪_
+  ∩-isSemilattice : IsSemilattice _∩_
+  ∪-isSemilattice : IsSemilattice _∪_
+
+  ∩-magma         : Magma _ _
+  ∪-magma         : Magma _ _
+  ∩-band          : Band _ _
+  ∪-band          : Band _ _
+  ∩-semilattice   : Semilattice _ _
+  ∪-semilattice   : Semilattice _ _
+  ```
+
+* Added new proofs to `Data.Integer.Properties`:
+  ```agda
+  +-isMagma   : IsMagma _+_
+  *-isMagma   : IsMagma _*_
+
+  +-magma     : Magma 0ℓ 0ℓ
+  *-magma     : Magma 0ℓ 0ℓ
+  +-semigroup : Semigroup 0ℓ 0ℓ
+  *-semigroup : Semigroup 0ℓ 0ℓ
+  +-0-monoid  : Monoid 0ℓ 0ℓ
+  *-1-monoid  : Monoid 0ℓ 0ℓ
   ```
 
 * Added new operations to `Data.List.All`:
@@ -208,11 +410,19 @@ Other minor additions
 
 * Added new proofs to `Data.List.Properties`:
   ```agda
-  length-%= : length (xs [ k ]%= f) ≡ length xs
-  length-∷= : length (xs [ k ]∷= v) ≡ length xs
-  map-∷=    : map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
-  length-─  : length (xs ─ k) ≡ pred (length xs)
-  map-─     : map f (xs ─ k) ≡ map f xs ─ cast eq k
+  ++-isMagma : IsMagma _++_
+
+  length-%=  : length (xs [ k ]%= f) ≡ length xs
+  length-∷=  : length (xs [ k ]∷= v) ≡ length xs
+  map-∷=     : map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
+  length-─   : length (xs ─ k) ≡ pred (length xs)
+  map-─      : map f (xs ─ k) ≡ map f xs ─ cast eq k
+  ```
+
+* Added new proofs to `Data.List.Relation.Permutation.Inductive.Properties`:
+  ```agda
+  ++-isMagma : IsMagma _↭_ _++_
+  ++-magma   : Magma _ _
   ```
 
 * Added new proofs to `Data.Maybe.All`:
@@ -264,6 +474,33 @@ Other minor additions
   _<∣>_     : Maybe A → Maybe A → Maybe A
   ```
 
+* Added new proofs to `Data.Nat.Properties`:
+  ```agda
+  +-isMagma       : IsMagma _+_
+  *-isMagma       : IsMagma _*_
+  ⊔-isMagma       : IsMagma _⊔_
+  ⊓-isMagma       : IsMagma _⊓_
+  ⊔-isBand        : IsBand _⊔_
+  ⊓-isBand        : IsBand _⊓_
+  ⊔-isSemilattice : IsSemilattice _⊔_
+  ⊓-isSemilattice : IsSemilattice _⊓_
+
+  +-magma       : Magma 0ℓ 0ℓ
+  *-magma       : Magma 0ℓ 0ℓ
+  ⊔-magma       : Magma 0ℓ 0ℓ
+  ⊓-magma       : Magma 0ℓ 0ℓ
+  ⊔-band        : Band 0ℓ 0ℓ
+  ⊓-band        : Band 0ℓ 0ℓ
+  ⊔-semilattice : Semilattice 0ℓ 0ℓ
+  ⊓-semilattice : Semilattice 0ℓ 0ℓ
+  ```
+
+* Added new proofs to `Data.Sign.Properties`:
+  ```agda
+  *-isMagma : IsMagma _*_
+  *-magma   : Magma 0ℓ 0ℓ
+  ```
+
 * Added new functions to `Data.Sum.Base`:
   ```agda
   fromDec : Dec P → P ⊎ ¬ P
@@ -283,6 +520,15 @@ Other minor additions
   ```agda
   fromAny : Any P xs → ∃ λ x → x ∈ xs × P x
   toAny   : x ∈ xs → P x → Any P xs
+  ```
+
+* Added new proofs to `Function.Related.TypeIsomorphisms`:
+  ```agda
+  ×-isMagma : ∀ k ℓ → IsMagma (Related ⌊ k ⌋) _×_
+  ⊎-isMagma : ∀ k ℓ → IsMagma (Related ⌊ k ⌋) _⊎_
+
+  ⊎-magma : Symmetric-kind → (ℓ : Level) → Semigroup _ _
+  ×-magma : Symmetric-kind → (ℓ : Level) → Magma _ _
   ```
 
 * Added new proofs to `Relation.Binary.Consequences`:

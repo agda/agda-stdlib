@@ -8,6 +8,8 @@
 -- file.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Membership.Propositional.Properties.Core where
 
 open import Function using (flip; id; _∘_)

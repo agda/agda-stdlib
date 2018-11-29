@@ -4,6 +4,8 @@
 -- Products
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Product where
 
 open import Function

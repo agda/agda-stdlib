@@ -4,6 +4,8 @@
 -- Floats
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Float where
 
 open import Data.String.Base using (String)

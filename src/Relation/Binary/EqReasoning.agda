@@ -23,6 +23,8 @@
 -- is recommended for equational reasoning when the underlying equality is
 -- Relation.Binary.PropositionalEquality._≡_.
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary
 
 module Relation.Binary.EqReasoning {s₁ s₂} (S : Setoid s₁ s₂) where
@@ -34,4 +36,3 @@ open import Relation.Binary.PreorderReasoning preorder public
   ( _∼⟨_⟩_  to _≈⟨_⟩_
   ; _≈⟨⟩_   to _≡⟨⟩_
   )
-

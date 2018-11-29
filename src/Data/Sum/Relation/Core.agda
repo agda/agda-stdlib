@@ -4,6 +4,8 @@
 -- Sums of binary relations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Sum.Relation.Core where
 
 open import Data.Sum using (_⊎_; inj₁; inj₂)

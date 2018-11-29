@@ -7,10 +7,12 @@
 -- Note that the lemmas below could be generalised to work with other
 -- equalities than _≡_.
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Properties where
 
 open import Algebra
-open import Algebra.Structures
+import Algebra.Structures as Structures
 open import Algebra.FunctionProperties
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
 open import Data.List as List
@@ -153,35 +155,41 @@ module _ {a} {A : Set a} where
   length-++ []       = refl
   length-++ (x ∷ xs) = P.cong suc (length-++ xs)
 
-  ++-isSemigroup : IsSemigroup {A = List A} _≡_ _++_
-  ++-isSemigroup = record
+module _ {a} {A : Set a} where
+
+  open Structures {A = List A} _≡_
+
+  ++-isMagma : IsMagma _++_
+  ++-isMagma = record
     { isEquivalence = P.isEquivalence
-    ; assoc         = ++-assoc
     ; ∙-cong        = P.cong₂ _++_
     }
 
-  ++-isMonoid : IsMonoid {A = List A} _≡_ _++_ []
+  ++-isSemigroup : IsSemigroup _++_
+  ++-isSemigroup = record
+    { isMagma = ++-isMagma
+    ; assoc   = ++-assoc
+    }
+
+  ++-isMonoid : IsMonoid _++_ []
   ++-isMonoid = record
     { isSemigroup = ++-isSemigroup
     ; identity    = ++-identity
     }
 
-++-semigroup : ∀ {a} (A : Set a) → Semigroup _ _
-++-semigroup A = record
-  { Carrier  = List A
-  ; _≈_      = _≡_
-  ; _∙_      = _++_
-  ; isSemigroup = ++-isSemigroup
-  }
+module _ {a} (A : Set a) where
 
-++-monoid : ∀ {a} (A : Set a) → Monoid _ _
-++-monoid A = record
-  { Carrier  = List A
-  ; _≈_      = _≡_
-  ; _∙_      = _++_
-  ; ε        = []
-  ; isMonoid = ++-isMonoid
-  }
+  ++-semigroup : Semigroup a a
+  ++-semigroup = record
+    { Carrier     = List A
+    ; isSemigroup = ++-isSemigroup
+    }
+
+  ++-monoid : Monoid a a
+  ++-monoid = record
+    { Carrier  = List A
+    ; isMonoid = ++-isMonoid
+    }
 
 ------------------------------------------------------------------------
 -- alignWith

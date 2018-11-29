@@ -5,6 +5,8 @@
 -- (packed in records together with sets, operations, etc.)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Algebra where
 
 open import Relation.Binary
@@ -72,6 +74,23 @@ record Band c ℓ : Set (suc (c ⊔ ℓ)) where
   semigroup = record { isSemigroup = isSemigroup }
 
   open Semigroup semigroup public using (magma; rawMagma)
+
+
+record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixr 7 _∧_
+  infix  4 _≈_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ
+    _∧_           : Op₂ Carrier
+    isSemilattice : IsSemilattice _≈_ _∧_
+
+  open IsSemilattice isSemilattice public
+
+  band : Band c ℓ
+  band = record { isBand = isBand }
+
+  open Band band public using (rawMagma; magma; semigroup)
 
 ------------------------------------------------------------------------
 -- Monoids
@@ -536,22 +555,6 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
 ------------------------------------------------------------------------
 -- Lattices and boolean algebras
 
-record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixr 7 _∧_
-  infix  4 _≈_
-  field
-    Carrier       : Set c
-    _≈_           : Rel Carrier ℓ
-    _∧_           : Op₂ Carrier
-    isSemilattice : IsSemilattice _≈_ _∧_
-
-  open IsSemilattice isSemilattice public
-
-  band : Band c ℓ
-  band = record { isBand = isBand }
-
-  open Band band public using (rawMagma; magma; semigroup)
-
 record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∧_
   infixr 6 _∨_
@@ -565,8 +568,27 @@ record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsLattice isLattice public
 
-  setoid : Setoid _ _
-  setoid = record { isEquivalence = isEquivalence }
+  ∨-semilattice : Semilattice c ℓ
+  ∨-semilattice = record { isSemilattice = ∨-isSemilattice }
+
+  open Semilattice ∨-semilattice public
+    using () renaming
+    ( rawMagma  to ∨-rawMagma
+    ; magma     to ∨-magma
+    ; semigroup to ∨-semigroup
+    ; band      to ∨-band
+    )
+
+  ∧-semilattice : Semilattice c ℓ
+  ∧-semilattice = record { isSemilattice = ∧-isSemilattice }
+
+  open Semilattice ∧-semilattice public
+    using () renaming
+    ( rawMagma  to ∧-rawMagma
+    ; magma     to ∧-magma
+    ; semigroup to ∧-semigroup
+    ; band      to ∧-band
+    )
 
 record DistributiveLattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∧_
@@ -584,7 +606,11 @@ record DistributiveLattice c ℓ : Set (suc (c ⊔ ℓ)) where
   lattice : Lattice _ _
   lattice = record { isLattice = isLattice }
 
-  open Lattice lattice public using (setoid)
+  open Lattice lattice public
+    using
+    ( ∧-rawMagma; ∧-magma; ∧-semigroup; ∧-band; ∧-semilattice
+    ; ∨-rawMagma; ∨-magma; ∨-semigroup; ∨-band; ∨-semilattice
+    )
 
 record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 ¬_
@@ -604,12 +630,14 @@ record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
   open IsBooleanAlgebra isBooleanAlgebra public
 
   distributiveLattice : DistributiveLattice _ _
-  distributiveLattice =
-    record { isDistributiveLattice = isDistributiveLattice }
+  distributiveLattice = record { isDistributiveLattice = isDistributiveLattice }
 
   open DistributiveLattice distributiveLattice public
-         using (setoid; lattice)
-
+    using
+    ( ∧-rawMagma; ∧-magma; ∧-semigroup; ∧-band; ∧-semilattice
+    ; ∨-rawMagma; ∨-magma; ∨-semigroup; ∨-band; ∨-semilattice
+    ; lattice
+    )
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

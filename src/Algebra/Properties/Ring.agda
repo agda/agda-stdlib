@@ -4,6 +4,8 @@
 -- Some derivable properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Algebra
 
 module Algebra.Properties.Ring {r₁ r₂} (R : Ring r₁ r₂) where

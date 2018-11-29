@@ -4,6 +4,8 @@
 -- Substitution lemmas
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Fin.Substitution.Lemmas where
 
 import Category.Applicative.Indexed as Applicative

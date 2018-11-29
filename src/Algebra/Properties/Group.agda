@@ -4,6 +4,8 @@
 -- Some derivable properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Algebra
 
 module Algebra.Properties.Group {g₁ g₂} (G : Group g₁ g₂) where

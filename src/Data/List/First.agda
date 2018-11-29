@@ -5,6 +5,8 @@
 -- satisfy a predicate.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.First {a} {A : Set a} where
 
 open import Level using (_⊔_)
@@ -22,7 +24,8 @@ open import Relation.Nullary
 -----------------------------------------------------------------------
 -- Basic type.
 
-data First {p q} (P : Pred A p) (Q : Pred A q) : Pred (List A) (p ⊔ q) where
+data First {p q} (P : Pred A p) (Q : Pred A q) :
+           Pred (List A) (a ⊔ p ⊔ q) where
   [_] : ∀ {x xs} → Q x                → First P Q (x ∷ xs)
   _∷_ : ∀ {x xs} → P x → First P Q xs → First P Q (x ∷ xs)
 

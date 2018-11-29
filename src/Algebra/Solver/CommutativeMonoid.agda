@@ -6,6 +6,8 @@
 -- Adapted from Algebra.Monoid-solver
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Algebra
 
 open import Data.Fin using (Fin; zero; suc)

@@ -4,6 +4,8 @@
 -- M-types (the dual of W-types)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.M where
 
 open import Size

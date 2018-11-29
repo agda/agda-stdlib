@@ -4,6 +4,8 @@
 -- Pointwise lifting of relations to maybes
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Maybe.Relation.Pointwise where
 
 open import Level
@@ -16,8 +18,9 @@ import Relation.Nullary.Decidable as Dec
 ------------------------------------------------------------------------
 -- Definition
 
-data Pointwise {a b ℓ} {A : Set a} {B : Set b}
-               (R : REL A B ℓ) : REL (Maybe A) (Maybe B) ℓ where
+data Pointwise
+       {a b ℓ} {A : Set a} {B : Set b}
+       (R : REL A B ℓ) : REL (Maybe A) (Maybe B) (a ⊔ b ⊔ ℓ) where
   just    : ∀ {x y} → R x y → Pointwise R (just x) (just y)
   nothing : Pointwise R nothing nothing
 
@@ -76,12 +79,12 @@ module _ {a r} {A : Set a} {R : Rel A r} where
     ; _≟_           = dec R._≟_
     } where module R = IsDecEquivalence R-isDecEquivalence
 
-setoid : ∀ {c ℓ} → Setoid c ℓ → Setoid c ℓ
+setoid : ∀ {c ℓ} → Setoid c ℓ → Setoid c (c ⊔ ℓ)
 setoid S = record
   { isEquivalence = isEquivalence S.isEquivalence
   } where module S = Setoid S
 
-decSetoid : ∀ {c ℓ} → DecSetoid c ℓ → DecSetoid c ℓ
+decSetoid : ∀ {c ℓ} → DecSetoid c ℓ → DecSetoid c (c ⊔ ℓ)
 decSetoid S = record
   { isDecEquivalence = isDecEquivalence S.isDecEquivalence
   } where module S = DecSetoid S

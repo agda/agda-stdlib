@@ -5,6 +5,8 @@
 -- properties (or other properties not available in Data.Fin)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Fin.Properties where
 
 open import Algebra.FunctionProperties using (Involutive)

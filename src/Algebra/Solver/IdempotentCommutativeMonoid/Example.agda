@@ -5,6 +5,8 @@
 -- used
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Algebra.Solver.IdempotentCommutativeMonoid.Example where
 
 open import Relation.Binary.PropositionalEquality using (_≡_)

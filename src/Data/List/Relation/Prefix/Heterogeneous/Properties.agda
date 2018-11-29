@@ -4,6 +4,8 @@
 -- Properties of the heterogeneous prefix relation
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Relation.Prefix.Heterogeneous.Properties where
 
 open import Data.Empty

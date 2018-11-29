@@ -10,6 +10,8 @@
 -- The definition of lexicographic product used here is suitable if
 -- the left-hand relation is a (non-strict) partial order.
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.Product.NonStrictLex where
 
 open import Data.Product.Relation.Lex.NonStrict public

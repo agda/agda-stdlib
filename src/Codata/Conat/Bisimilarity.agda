@@ -4,6 +4,8 @@
 -- Bisimilarity for Conats
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.Conat.Bisimilarity where
 
 open import Size

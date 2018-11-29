@@ -4,6 +4,8 @@
 -- Divisibility and coprimality
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Integer.Divisibility where
 
 open import Function

@@ -5,6 +5,8 @@
 -- The key type extended with a new minimum and maximum.
 -----------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_ ; refl)
 

@@ -4,6 +4,8 @@
 -- List Zipper-related properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Zipper.Properties where
 
 open import Data.List.Base as List using (List ; [] ; _∷_)

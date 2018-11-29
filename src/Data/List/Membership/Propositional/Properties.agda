@@ -4,6 +4,8 @@
 -- Properties related to propositional list membership
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Membership.Propositional.Properties where
 
 open import Algebra.FunctionProperties using (Op₂; Selective)
@@ -337,4 +339,3 @@ filter-∈ = ∈-filter⁺
 "Warning: filter-∈ was deprecated in v0.16.
 Please use ∈-filter⁺ instead."
 #-}
-

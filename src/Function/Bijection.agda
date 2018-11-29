@@ -4,6 +4,8 @@
 -- Bijections
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Function.Bijection where
 
 open import Data.Product

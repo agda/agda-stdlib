@@ -4,6 +4,8 @@
 -- Support for reflection
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K #-}
+
 module Reflection where
 
 open import Data.Unit.Base using (⊤)

@@ -8,6 +8,8 @@
 -- set {m | m < n}. The notation "m" in comments below refers to this
 -- natural number view.
 
+{-# OPTIONS --without-K #-}
+
 module Data.Fin.Base where
 
 open import Data.Empty using (⊥-elim)
