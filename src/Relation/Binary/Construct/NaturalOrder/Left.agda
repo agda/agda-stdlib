@@ -11,12 +11,13 @@ open import Algebra.FunctionProperties using (Op₂)
 module Relation.Binary.Construct.NaturalOrder.Left
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) (_∙_ : Op₂ A) where
 
+open import Algebra.FunctionProperties _≈_
+open import Algebra.Structures _≈_
 open import Data.Product using (_,_; _×_)
 open import Data.Sum using (inj₁; inj₂)
 open import Relation.Nullary using (¬_)
-open import Algebra.FunctionProperties _≈_
-open import Algebra.Structures _≈_
 import Relation.Binary.EqReasoning as EqReasoning
+open import Relation.Binary.Lattice using (Infimum)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -24,59 +25,91 @@ import Relation.Binary.EqReasoning as EqReasoning
 infix 4 _≤_
 
 _≤_ : Rel A ℓ
-x ≤ y = (x ∙ y) ≈ x
+x ≤ y = x ≈ (x ∙ y)
 
 ------------------------------------------------------------------------
 -- Relational properties
 
 reflexive : IsMagma _∙_ → Idempotent _∙_ → _≈_ ⇒ _≤_
 reflexive magma idem {x} {y} x≈y = begin
-  x ∙ y ≈⟨ ∙-cong refl (sym x≈y) ⟩
-  x ∙ x ≈⟨ idem x ⟩
-  x     ∎
+  x     ≈⟨ sym (idem x) ⟩
+  x ∙ x ≈⟨ ∙-cong refl x≈y ⟩
+  x ∙ y ∎
   where open IsMagma magma; open EqReasoning setoid
 
-refl : Idempotent _∙_ → Reflexive _≤_
-refl idem {x} = idem x
+refl : Symmetric _≈_ → Idempotent _∙_ → Reflexive _≤_
+refl sym idem {x} = sym (idem x)
 
 antisym : IsEquivalence _≈_ → Commutative _∙_ → Antisymmetric _≈_ _≤_
-antisym isEq comm {x} {y} x≤y y≤x = trans (trans (sym x≤y) (comm x y)) y≤x
-  where open IsEquivalence isEq
+antisym isEq comm {x} {y} x≤y y≤x = begin
+  x     ≈⟨ x≤y ⟩
+  x ∙ y ≈⟨ comm x y ⟩
+  y ∙ x ≈⟨ sym y≤x ⟩
+  y     ∎
+  where open IsEquivalence isEq; open EqReasoning (record { isEquivalence = isEq })
 
-total : Transitive _≈_ → Selective _∙_ → Commutative _∙_ → Total _≤_
-total trans sel comm x y with sel x y
-... | inj₁ x∙y≈x = inj₁ x∙y≈x
-... | inj₂ x∙y≈y = inj₂ (trans (comm y x) x∙y≈y)
+total : Symmetric _≈_ → Transitive _≈_ → Selective _∙_ → Commutative _∙_ → Total _≤_
+total sym trans sel comm x y with sel x y
+... | inj₁ x∙y≈x = inj₁ (sym x∙y≈x)
+... | inj₂ x∙y≈y = inj₂ (sym (trans (comm y x) x∙y≈y))
 
 trans : IsSemigroup _∙_ → Transitive _≤_
 trans semi {x} {y} {z} x≤y y≤z = begin
-  x ∙ z       ≈⟨ ∙-cong (sym x≤y) S.refl ⟩
-  (x ∙ y) ∙ z ≈⟨ assoc x y z ⟩
-  x ∙ (y ∙ z) ≈⟨ ∙-cong S.refl y≤z ⟩
-  x ∙ y       ≈⟨ x≤y ⟩
-  x           ∎
+  x           ≈⟨ x≤y ⟩
+  x ∙ y       ≈⟨ ∙-cong S.refl y≤z ⟩
+  x ∙ (y ∙ z) ≈⟨ sym (assoc x y z) ⟩
+  (x ∙ y) ∙ z ≈⟨ ∙-cong (sym x≤y) S.refl ⟩
+  x ∙ z       ∎
   where open module S = IsSemigroup semi; open EqReasoning S.setoid
 
 respʳ : IsMagma _∙_ → _≤_ Respectsʳ _≈_
 respʳ magma {x} {y} {z} y≈z x≤y = begin
-  x ∙ z ≈⟨ ∙-cong M.refl (M.sym y≈z) ⟩
-  x ∙ y ≈⟨ x≤y ⟩
-  x     ∎
+  x     ≈⟨ x≤y ⟩
+  x ∙ y ≈⟨ ∙-cong M.refl y≈z ⟩
+  x ∙ z ∎
   where open module M = IsMagma magma; open EqReasoning M.setoid
 
 respˡ : IsMagma _∙_ → _≤_ Respectsˡ _≈_
 respˡ magma {x} {y} {z} y≈z y≤x = begin
-  z ∙ x ≈⟨ ∙-cong (M.sym y≈z) M.refl ⟩
-  y ∙ x ≈⟨ y≤x ⟩
-  y     ≈⟨ y≈z ⟩
-  z     ∎
+  z     ≈⟨ sym y≈z ⟩
+  y     ≈⟨ y≤x ⟩
+  y ∙ x ≈⟨ ∙-cong y≈z M.refl ⟩
+  z ∙ x ∎
   where open module M = IsMagma magma; open EqReasoning M.setoid
 
 resp₂ : IsMagma _∙_ →  _≤_ Respects₂ _≈_
 resp₂ magma = respʳ magma , respˡ magma
 
 dec : Decidable _≈_ → Decidable _≤_
-dec _≟_ x y = (x ∙ y) ≟ x
+dec _≟_ x y = x ≟ (x ∙ y)
+
+module _ (semi : IsSemilattice _∙_) where
+
+  private open module S = IsSemilattice semi
+  open EqReasoning setoid
+
+  x∙y≤x : ∀ x y → (x ∙ y) ≤ x
+  x∙y≤x x y = begin
+    x ∙ y       ≈⟨ ∧-cong (sym (idem x)) S.refl ⟩
+    (x ∙ x) ∙ y ≈⟨ assoc x x y ⟩
+    x ∙ (x ∙ y) ≈⟨ comm x (x ∙ y) ⟩
+    (x ∙ y) ∙ x ∎
+
+  x∙y≤y : ∀ x y → (x ∙ y) ≤ y
+  x∙y≤y x y = begin
+    x ∙ y        ≈⟨ ∧-cong S.refl (sym (idem y)) ⟩
+    x ∙ (y ∙ y)  ≈⟨ sym (assoc x y y) ⟩
+    (x ∙ y) ∙ y  ∎
+
+  ∙-presʳ-≤ : ∀ {x y} z → z ≤ x → z ≤ y → z ≤ (x ∙ y)
+  ∙-presʳ-≤ {x} {y} z z≤x z≤y = begin
+    z            ≈⟨ z≤y ⟩
+    z ∙ y        ≈⟨ ∧-cong z≤x S.refl ⟩
+    (z ∙ x) ∙ y  ≈⟨ assoc z x y ⟩
+    z ∙ (x ∙ y)  ∎
+
+  infimum : Infimum _≤_ _∙_
+  infimum x y = x∙y≤x x y , x∙y≤y x y , ∙-presʳ-≤
 
 ------------------------------------------------------------------------
 -- Structures
@@ -107,7 +140,7 @@ isDecPartialOrder semilattice _≟_ = record
 isTotalOrder : IsSemilattice _∙_ → Selective _∙_ → IsTotalOrder _≈_ _≤_
 isTotalOrder latt sel  = record
   { isPartialOrder = isPartialOrder latt
-  ; total          = total S.trans sel comm
+  ; total          = total sym S.trans sel comm
   }
   where open module S = IsSemilattice latt
 
