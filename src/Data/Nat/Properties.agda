@@ -1033,9 +1033,14 @@ i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
 
 ⊓-⊔-isLattice : IsLattice _⊓_ _⊔_
 ⊓-⊔-isLattice = record
-  { ∨-isSemilattice = ⊓-isSemilattice
-  ; ∧-isSemilattice = ⊔-isSemilattice
-  ; absorptive      = ⊓-⊔-absorptive
+  { isEquivalence = isEquivalence
+  ; ∨-comm        = ⊓-comm
+  ; ∨-assoc       = ⊓-assoc
+  ; ∨-cong        = cong₂ _⊓_
+  ; ∧-comm        = ⊔-comm
+  ; ∧-assoc       = ⊔-assoc
+  ; ∧-cong        = cong₂ _⊔_
+  ; absorptive    = ⊓-⊔-absorptive
   }
 
 ⊓-⊔-lattice : Lattice 0ℓ 0ℓ

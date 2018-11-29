@@ -353,9 +353,14 @@ false ≟ true  = no λ()
 
 ∨-∧-isLattice : IsLattice _∨_ _∧_
 ∨-∧-isLattice = record
-  { ∨-isSemilattice = ∨-isSemilattice
-  ; ∧-isSemilattice = ∧-isSemilattice
-  ; absorptive      = ∨-∧-absorptive
+  { isEquivalence = isEquivalence
+  ; ∨-comm        = ∨-comm
+  ; ∨-assoc       = ∨-assoc
+  ; ∨-cong        = cong₂ _∨_
+  ; ∧-comm        = ∧-comm
+  ; ∧-assoc       = ∧-assoc
+  ; ∧-cong        = cong₂ _∧_
+  ; absorptive    = ∨-∧-absorptive
   }
 
 ∨-∧-lattice : Lattice 0ℓ 0ℓ

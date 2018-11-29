@@ -193,16 +193,13 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The fields `isEquivalence` and `∙-cong` in `IsSemigroup` have been
   replaced with `isMagma`.
 
-* The fields `isEquivalence`, `∨-cong`, `∨-assoc`, `∨-comm`, `∧-cong`,
-  `∧-assoc`  and `∧-comm` in `IsLattice` have been replaced with
-  `∨-isSemilattice` and `∧-isSemilattice`.
-
-* The record `Lattice` now exports proofs of `∨-idem` and `∧-idem` directly.
-  Therefore `∨-idempotence` and `∧-idempotence` in `Algebra.Properties.Lattice`
-  have been deprecated.
-
 * The record `BooleanAlgebra` now exports `∨-isSemigroup`, `∧-isSemigroup`
   directly  so `Algebra.Properties.BooleanAlgebra` no longer does so.
+
+* The proof that every algebraic lattice induces a partial order has been
+  moved from `Algebra.Properties.Lattice` to
+  `Algebra.Properties.Semilattice`.  The corresponding `poset` instance is
+  re-exported in `Algebra.Properties.Lattice`.
 
 #### Relaxation of ring solvers requirements
 
@@ -232,6 +229,8 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 
 Other major changes
 -------------------
+
+* Added new module `Algebra.Properties.Semilattice`
 
 * Added new module `Algebra.FunctionProperties.Consequences.Propositional`
 
@@ -269,6 +268,14 @@ Other minor additions
 * Added new proof to `Algebra.FunctionProperties.Consequences`:
   ```agda
   wlog : Commutative f → Total _R_ → (∀ a b → a R b → P (f a b)) → ∀ a b → P (f a b)
+  ```
+
+* Added new proofs to `Algebra.Properties.Lattice`:
+  ```agda
+  ∧-isSemilattice : IsSemilattice _≈_ _∧_
+  ∧-semilattice : Semilattice l₁ l₂
+  ∨-isSemilattice : IsSemilattice _≈_ _∨_
+  ∨-semilattice : Semilattice l₁ l₂
   ```
 
 * Added new operator to `Algebra.Solver.Ring`.
@@ -570,7 +577,7 @@ Other minor additions
   weak-lem     : ¬ ¬ (¬ x ∨ x) ≈ ⊤
   ```
 
-* Added new proofs to `Relation.Binary.Properties.JoinLattice`:
+* Added new proofs to `Relation.Binary.Properties.JoinSemilattice`:
   ```agda
   x≤y⇒x∨y≈y : x ≤ y → x ∨ y ≈ y
   ```
@@ -584,7 +591,7 @@ Other minor additions
   collapse₂      : x ∨ y ≤ x ∧ y → x ≈ y
   ```
 
-* Added new proofs to `Relation.Binary.Properties.MeetLattice`:
+* Added new proofs to `Relation.Binary.Properties.MeetSemilattice`:
   ```agda
   y≤x⇒x∧y≈y : y ≤ x → x ∧ y ≈ y
   ```
