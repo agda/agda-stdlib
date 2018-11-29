@@ -4,6 +4,8 @@
 -- Rational numbers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Rational where
 
 import Algebra

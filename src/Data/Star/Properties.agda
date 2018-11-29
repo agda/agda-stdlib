@@ -8,6 +8,8 @@
 -- module directly.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Star.Properties where
 
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties

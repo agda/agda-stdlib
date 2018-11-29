@@ -10,6 +10,8 @@
 -- done.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Algebra
 open import Level
 

@@ -4,6 +4,8 @@
 -- Properties of Rational numbers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Rational.Properties where
 
 import Algebra

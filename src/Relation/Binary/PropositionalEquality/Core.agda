@@ -7,6 +7,8 @@
 -- Relation.Binary.PropositionalEquality.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.PropositionalEquality.Core where
 
 open import Data.Product using (_,_)

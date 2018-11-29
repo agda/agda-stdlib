@@ -3,8 +3,11 @@
 --
 -- Homogeneously-indexed binary relations
 ------------------------------------------------------------------------
+
 -- This file contains some core definitions which are reexported by
 -- Relation.Binary.Indexed.Homogeneous
+
+{-# OPTIONS --without-K #-}
 
 module Relation.Binary.Indexed.Homogeneous.Core where
 

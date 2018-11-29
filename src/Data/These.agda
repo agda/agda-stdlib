@@ -4,6 +4,8 @@
 -- An either-or-both data type
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.These where
 
 open import Level

@@ -4,6 +4,8 @@
 -- Indexed AVL trees
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_ ; refl)
 
@@ -44,29 +46,16 @@ module _ {v} {V : Key → Set v} where
   leaf-injective : ∀ {l u} {p q : l <⁺ u} → (Tree V l u 0 ∋ leaf p) ≡ leaf q → p ≡ q
   leaf-injective refl = refl
 
-  node-injective-key : ∀ {hˡ hʳ h l u k₁ k₂}
-    {lk₁ : Tree V l [ proj₁ k₁ ] hˡ} {lk₂ : Tree V l [ proj₁ k₂ ] hˡ}
-    {ku₁ : Tree V [ proj₁ k₁ ] u hʳ} {ku₂ : Tree V [ proj₁ k₂ ] u hʳ}
-    {bal₁ bal₂ : hˡ ∼ hʳ ⊔ h} → node k₁ lk₁ ku₁ bal₁ ≡ node k₂ lk₂ ku₂ bal₂ → k₁ ≡ k₂
+  node-injective-key :
+    ∀ {hˡ₁ hˡ₂ hʳ₁ hʳ₂ h l u k₁ k₂}
+      {lk₁ : Tree V l [ proj₁ k₁ ] hˡ₁} {lk₂ : Tree V l [ proj₁ k₂ ] hˡ₂}
+      {ku₁ : Tree V [ proj₁ k₁ ] u hʳ₁} {ku₂ : Tree V [ proj₁ k₂ ] u hʳ₂}
+      {bal₁ : hˡ₁ ∼ hʳ₁ ⊔ h} {bal₂ : hˡ₂ ∼ hʳ₂ ⊔ h} →
+    node k₁ lk₁ ku₁ bal₁ ≡ node k₂ lk₂ ku₂ bal₂ → k₁ ≡ k₂
   node-injective-key refl = refl
 
-  node-injectiveˡ : ∀ {hˡ hʳ h l u k}
-    {lk₁ : Tree V l [ proj₁ k ] hˡ} {lk₂ : Tree V l [ proj₁ k ] hˡ}
-    {ku₁ : Tree V [ proj₁ k ] u hʳ} {ku₂ : Tree V [ proj₁ k ] u hʳ}
-    {bal₁ bal₂ : hˡ ∼ hʳ ⊔ h} → node k lk₁ ku₁ bal₁ ≡ node k lk₂ ku₂ bal₂ → lk₁ ≡ lk₂
-  node-injectiveˡ refl = refl
-
-  node-injectiveʳ : ∀ {hˡ hʳ h l u k}
-    {lk₁ : Tree V l [ proj₁ k ] hˡ} {lk₂ : Tree V l [ proj₁ k ] hˡ}
-    {ku₁ : Tree V [ proj₁ k ] u hʳ} {ku₂ : Tree V [ proj₁ k ] u hʳ}
-    {bal₁ bal₂ : hˡ ∼ hʳ ⊔ h} → node k lk₁ ku₁ bal₁ ≡ node k lk₂ ku₂ bal₂ → ku₁ ≡ ku₂
-  node-injectiveʳ refl = refl
-
-  node-injective-bal : ∀ {hˡ hʳ h l u k}
-    {lk₁ : Tree V l [ proj₁ k ] hˡ} {lk₂ : Tree V l [ proj₁ k ] hˡ}
-    {ku₁ : Tree V [ proj₁ k ] u hʳ} {ku₂ : Tree V [ proj₁ k ] u hʳ}
-    {bal₁ bal₂ : hˡ ∼ hʳ ⊔ h} → node k lk₁ ku₁ bal₁ ≡ node k lk₂ ku₂ bal₂ → bal₁ ≡ bal₂
-  node-injective-bal refl = refl
+  -- See also node-injectiveˡ, node-injectiveʳ, and node-injective-bal
+  -- in Data.AVL.Indexed.WithK.
 
   -- Cast operations. Logarithmic in the size of the tree, if we don't
   -- count the time needed to construct the new proofs in the leaf
@@ -259,4 +248,3 @@ module _ {v w} {V : Key → Set v} {W : Key → Set w} where
   map : (∀ {k} → V k → W k) → ∀ {l u h} → Tree V l u h → Tree W l u h
   map f (leaf l<u)             = leaf l<u
   map f (node (k , v) l r bal) = node (k , f v) (map f l) (map f r) bal
-

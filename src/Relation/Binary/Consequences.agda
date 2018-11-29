@@ -4,12 +4,15 @@
 -- Some properties imply others
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.Consequences where
 
 open import Relation.Binary.Core
 open import Relation.Nullary using (yes; no)
 open import Relation.Unary using (∁)
 open import Function using (_∘_; flip)
+open import Data.Maybe.Base using (just; nothing)
 open import Data.Sum using (inj₁; inj₂)
 open import Data.Product using (_,_)
 open import Data.Empty using (⊥-elim)
@@ -123,7 +126,27 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ�
     trans∧tri⟶respˡ≈ ≈-tr <-tr tri
 
 ------------------------------------------------------------------------
+-- Without Loss of Generality
+
+module _ {a r q} {A : Set a} {_R_ : Rel A r} {Q : Rel A q} where
+
+  wlog : Total _R_ → Symmetric Q →
+         (∀ a b → a R b → Q a b) →
+         ∀ a b → Q a b
+  wlog r-total q-sym prf a b with r-total a b
+  ... | inj₁ aRb = prf a b aRb
+  ... | inj₂ bRa = q-sym (prf b a bRa)
+
+
+------------------------------------------------------------------------
 -- Other proofs
+
+module _ {a b p} {A : Set a} {B : Set b} {P : REL A B p} where
+
+  dec⟶weaklyDec : Decidable P → WeaklyDecidable P
+  dec⟶weaklyDec dec x y with dec x y
+  ... | yes p = just p
+  ... | no _ = nothing
 
 module _ {a b p q} {A : Set a} {B : Set b }
          {P : REL A B p} {Q : REL A B q}

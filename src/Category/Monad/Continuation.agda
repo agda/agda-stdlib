@@ -4,6 +4,8 @@
 -- A delimited continuation monad
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Category.Monad.Continuation where
 
 open import Category.Applicative

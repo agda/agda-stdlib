@@ -4,6 +4,8 @@
 -- The free monad construction on containers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Container.FreeMonad where
 
 open import Level

@@ -4,6 +4,8 @@
 -- Showing booleans
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Bool.Show where
 
 open import Data.Bool.Base using (Bool; false; true)

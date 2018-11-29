@@ -7,6 +7,8 @@
 -- Relation.Binary.Construct.Closure.Equivalence module directly.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.EquivalenceClosure where
 
 open import Relation.Binary.Construct.Closure.Equivalence public

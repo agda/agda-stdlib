@@ -4,6 +4,8 @@
 -- Digits and digit expansions
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Digit where
 
 open import Data.Nat using (ℕ; zero; suc; pred; _+_; _*_; _≤?_; _≤′_)

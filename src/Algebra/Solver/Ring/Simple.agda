@@ -5,8 +5,11 @@
 -- decidable equality
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Algebra.Solver.Ring.AlmostCommutativeRing
 open import Relation.Binary
+open import Relation.Binary.Consequences using (dec⟶weaklyDec)
 
 module Algebra.Solver.Ring.Simple
          {r₁ r₂} (R : AlmostCommutativeRing r₁ r₂)
@@ -15,4 +18,4 @@ module Algebra.Solver.Ring.Simple
 
 open AlmostCommutativeRing R
 import Algebra.Solver.Ring as RS
-open RS rawRing R (-raw-almostCommutative⟶ R) _≟_ public
+open RS rawRing R (-raw-almostCommutative⟶ R) (dec⟶weaklyDec _≟_) public

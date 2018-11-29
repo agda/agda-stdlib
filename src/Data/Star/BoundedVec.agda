@@ -6,6 +6,8 @@
 
 -- Vectors of a specified maximum length.
 
+{-# OPTIONS --with-K #-}
+
 module Data.Star.BoundedVec where
 
 import Data.Maybe.Base as Maybe

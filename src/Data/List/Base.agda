@@ -4,6 +4,8 @@
 -- Lists, basic types and operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Base where
 
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_)
@@ -155,7 +157,7 @@ fromMaybe : ∀ {a} {A : Set a} → Maybe A → List A
 fromMaybe (just x) = [ x ]
 fromMaybe nothing  = []
 
-replicate : ∀ {a} {A : Set a} → (n : ℕ) → A → List A
+replicate : ∀ {a} {A : Set a} → ℕ → A → List A
 replicate zero    x = []
 replicate (suc n) x = x ∷ replicate n x
 

@@ -4,9 +4,12 @@
 -- Some properties about integers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Integer.Properties where
 
 open import Algebra
+open import Algebra.FunctionProperties.Consequences.Propositional
 import Algebra.Morphism as Morphism
 import Algebra.Properties.AbelianGroup
 open import Data.Integer.Base renaming (suc to sucℤ)
@@ -17,11 +20,12 @@ open import Data.Nat as ℕ
     _≤_ to _ℕ≤_; _<_ to _ℕ<_; _≥_ to _ℕ≥_; _≰_ to _ℕ≰_; _≟_ to _ℕ≟_; _≤?_ to _ℕ≤?_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
-open import Data.Product using (proj₁; proj₂; _,_)
+open import Data.Product using (_,_)
 open import Data.Sum using (inj₁; inj₂)
 open import Data.Sign as Sign using () renaming (_*_ to _𝕊*_)
 import Data.Sign.Properties as 𝕊ₚ
 open import Function using (_∘_; _$_)
+open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.PartialOrderReasoning as POR
@@ -29,9 +33,8 @@ open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
 
-open import Algebra.FunctionProperties (_≡_ {A = ℤ})
-open import Algebra.FunctionProperties.Consequences (setoid ℤ)
-open import Algebra.Structures (_≡_ {A = ℤ})
+open import Algebra.FunctionProperties {A = ℤ} _≡_
+open import Algebra.Structures {A = ℤ} _≡_
 open Morphism.Definitions ℤ ℕ _≡_
 open ≡-Reasoning
 open +-*-Solver
@@ -307,17 +310,37 @@ distribʳ-⊖-+-neg a b c = begin
 +-inverse : Inverse (+ 0) -_ _+_
 +-inverse = +-inverseˡ , +-inverseʳ
 
++-isMagma : IsMagma _+_
++-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = cong₂ _+_
+  }
+
++-magma : Magma 0ℓ 0ℓ
++-magma = record
+  { isMagma = +-isMagma
+  }
+
 +-isSemigroup : IsSemigroup _+_
 +-isSemigroup = record
-  { isEquivalence = isEquivalence
-  ; assoc         = +-assoc
-  ; ∙-cong        = cong₂ _+_
+  { isMagma = +-isMagma
+  ; assoc   = +-assoc
+  }
+
++-semigroup : Semigroup 0ℓ 0ℓ
++-semigroup = record
+  { isSemigroup = +-isSemigroup
   }
 
 +-0-isMonoid : IsMonoid _+_ (+ 0)
 +-0-isMonoid = record
   { isSemigroup = +-isSemigroup
   ; identity    = +-identity
+  }
+
++-0-monoid : Monoid 0ℓ 0ℓ
++-0-monoid = record
+  { isMonoid = +-0-isMonoid
   }
 
 +-0-isCommutativeMonoid : IsCommutativeMonoid _+_ (+ 0)
@@ -329,11 +352,7 @@ distribʳ-⊖-+-neg a b c = begin
 
 +-0-commutativeMonoid : CommutativeMonoid _ _
 +-0-commutativeMonoid = record
-  { Carrier             = ℤ
-  ; _≈_                 = _≡_
-  ; _∙_                 = _+_
-  ; ε                   = + 0
-  ; isCommutativeMonoid = +-0-isCommutativeMonoid
+  { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
 
 +-0-isGroup : IsGroup _+_ (+ 0) (-_)
@@ -351,12 +370,7 @@ distribʳ-⊖-+-neg a b c = begin
 
 +-0-abelianGroup : AbelianGroup _ _
 +-0-abelianGroup = record
-  { Carrier = ℤ
-  ; _≈_ = _≡_
-  ; _∙_ = _+_
-  ; ε = + 0
-  ; _⁻¹ = -_
-  ; isAbelianGroup = +-isAbelianGroup
+  { isAbelianGroup = +-isAbelianGroup
   }
 
 -- Other properties of _+_
@@ -551,17 +565,37 @@ private
         | ℕₚ.*-distribʳ-∸ (suc c) b a
         = refl
 
+*-isMagma : IsMagma _*_
+*-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = cong₂ _*_
+  }
+
+*-magma : Magma 0ℓ 0ℓ
+*-magma = record
+  { isMagma = *-isMagma
+  }
+
 *-isSemigroup : IsSemigroup _*_
 *-isSemigroup = record
-  { isEquivalence = isEquivalence
-  ; assoc         = *-assoc
-  ; ∙-cong        = cong₂ _*_
+  { isMagma = *-isMagma
+  ; assoc   = *-assoc
+  }
+
+*-semigroup : Semigroup 0ℓ 0ℓ
+*-semigroup = record
+  { isSemigroup = *-isSemigroup
   }
 
 *-1-isMonoid : IsMonoid _*_ (+ 1)
 *-1-isMonoid = record
   { isSemigroup = *-isSemigroup
   ; identity    = *-identity
+  }
+
+*-1-monoid : Monoid 0ℓ 0ℓ
+*-1-monoid = record
+  { isMonoid = *-1-isMonoid
   }
 
 *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ (+ 1)
@@ -573,11 +607,7 @@ private
 
 *-1-commutativeMonoid : CommutativeMonoid _ _
 *-1-commutativeMonoid = record
-  { Carrier             = ℤ
-  ; _≈_                 = _≡_
-  ; _∙_                 = _*_
-  ; ε                   = + 1
-  ; isCommutativeMonoid = *-1-isCommutativeMonoid
+  { isCommutativeMonoid = *-1-isCommutativeMonoid
   }
 
 +-*-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ (+ 0) (+ 1)
@@ -861,10 +891,7 @@ n≤1+n n = ≤-step ≤-refl
 
 <-strictTotalOrder : StrictTotalOrder _ _ _
 <-strictTotalOrder = record
-  { Carrier            = ℤ
-  ; _≈_                = _≡_
-  ; _<_                = _<_
-  ; isStrictTotalOrder = <-isStrictTotalOrder
+  { isStrictTotalOrder = <-isStrictTotalOrder
   }
 
 n≮n : ∀ {n} → n ≮ n

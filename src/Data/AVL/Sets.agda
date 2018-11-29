@@ -4,6 +4,8 @@
 -- Finite sets, based on AVL trees
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality using (_≡_)
 

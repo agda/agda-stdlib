@@ -4,6 +4,8 @@
 -- Decidable equality over lists parameterised by some setoid
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary
 
 module Data.List.Relation.Equality.DecSetoid
@@ -11,6 +13,7 @@ module Data.List.Relation.Equality.DecSetoid
 
 import Data.List.Relation.Equality.Setoid as SetoidEquality
 import Data.List.Relation.Pointwise as PW
+open import Level
 open import Relation.Binary using (Decidable)
 open DecSetoid DS
 
@@ -30,5 +33,5 @@ _≋?_ = PW.decidable _≟_
 ≋-isDecEquivalence : IsDecEquivalence _≋_
 ≋-isDecEquivalence = PW.isDecEquivalence isDecEquivalence
 
-≋-decSetoid : DecSetoid a ℓ
+≋-decSetoid : DecSetoid a (a ⊔ ℓ)
 ≋-decSetoid = PW.decSetoid DS

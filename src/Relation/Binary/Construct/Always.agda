@@ -4,6 +4,8 @@
 -- The universal binary relation
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.Construct.Always where
 
 open import Relation.Binary

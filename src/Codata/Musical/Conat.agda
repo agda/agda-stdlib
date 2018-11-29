@@ -4,6 +4,8 @@
 -- Coinductive "natural" numbers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.Musical.Conat where
 
 open import Codata.Musical.Notation

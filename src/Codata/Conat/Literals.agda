@@ -4,6 +4,8 @@
 -- Conat Literals
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.Conat.Literals where
 
 open import Agda.Builtin.FromNat

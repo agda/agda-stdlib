@@ -4,6 +4,8 @@
 -- Sums of nullary relations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Nullary.Sum where
 
 open import Data.Sum

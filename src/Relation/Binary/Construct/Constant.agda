@@ -4,6 +4,8 @@
 -- The binary relation defined by a constant
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.Construct.Constant where
 
 open import Relation.Binary

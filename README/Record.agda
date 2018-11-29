@@ -7,6 +7,8 @@
 -- Taken from Randy Pollack's paper "Dependently Typed Records in Type
 -- Theory".
 
+{-# OPTIONS --with-K #-}
+
 module README.Record where
 
 open import Data.Product

@@ -4,6 +4,8 @@
 -- Properties satisfied by strict partial orders
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary
 
 module Relation.Binary.Properties.StrictPartialOrder

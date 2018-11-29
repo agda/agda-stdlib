@@ -5,6 +5,8 @@
 -- known as an Order Preserving Embedding (OPE).
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Relation.Sublist.Propositional {a} {A : Set a} where
 
 open import Data.List.Base using (List; []; _∷_; [_])

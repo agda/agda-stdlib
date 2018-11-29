@@ -4,6 +4,8 @@
 -- Properties of the sublist relation over setoid equality.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary hiding (Decidable)
 
 module Data.List.Relation.Subset.Propositional.Properties
@@ -91,9 +93,9 @@ module _ {a b} {A : Set a} {B : Set b} (f : A → B) {xs ys} where
 
   map-mono : xs ⊆ ys → map f xs ⊆ map f ys
   map-mono xs⊆ys =
-    _⟨$⟩_ (Inverse.to map-∈↔) ∘
+    _⟨$⟩_ (Inverse.to (map-∈↔ f)) ∘
     Prod.map id (Prod.map xs⊆ys id) ∘
-    _⟨$⟩_ (Inverse.from map-∈↔)
+    _⟨$⟩_ (Inverse.from (map-∈↔ f))
 
 ------------------------------------------------------------------------
 -- _++_

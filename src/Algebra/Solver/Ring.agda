@@ -8,18 +8,25 @@
 -- Commutative Ring Done Right in Coq" by Grégoire and Mahboubi. The
 -- code below is not optimised like theirs, though (in particular, our
 -- Horner normal forms are not sparse).
+--
+-- At first the `WeaklyDecidable` type may at first glance look useless
+-- as there is no guarantee that it doesn't always return `nothing`.
+-- However the implementation of it affects the power of the solver. The
+-- more equalities it returns, the more expressions the ring solver can
+-- solve.
+
+{-# OPTIONS --without-K #-}
 
 open import Algebra
 open import Algebra.Solver.Ring.AlmostCommutativeRing
-
-open import Relation.Binary
+open import Relation.Binary.Core using (WeaklyDecidable)
 
 module Algebra.Solver.Ring
   {r₁ r₂ r₃}
   (Coeff : RawRing r₁)               -- Coefficient "ring".
   (R : AlmostCommutativeRing r₂ r₃)  -- Main "ring".
   (morphism : Coeff -Raw-AlmostCommutative⟶ R)
-  (_coeff≟_ : Decidable (Induced-equivalence morphism))
+  (_coeff≟_ : WeaklyDecidable (Induced-equivalence morphism))
   where
 
 open import Algebra.Solver.Ring.Lemmas Coeff R morphism
@@ -40,11 +47,12 @@ import Relation.Binary.Reflection as Reflection
 open import Data.Nat.Base using (ℕ; suc; zero)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Vec using (Vec; []; _∷_; lookup)
+open import Data.Maybe.Base using (just; nothing)
 open import Function
 open import Level using (_⊔_)
 
 infix  9 :-_ -H_ -N_
-infixr 9 _:^_ _^N_
+infixr 9 _:×_ _:^_ _^N_
 infix  8 _*x+_ _*x+HN_ _*x+H_
 infixl 8 _:*_ _*N_ _*H_ _*NH_ _*HN_
 infixl 7 _:+_ _:-_ _+H_ _+N_
@@ -76,6 +84,10 @@ _:*_ = op [*]
 
 _:-_ : ∀ {n} → Polynomial n → Polynomial n → Polynomial n
 x :- y = x :+ :- y
+
+_:×_ : ∀ {n} → ℕ → Polynomial n → Polynomial n
+zero :× p = con C.0#
+suc m :× p = p :+ m :× p
 
 -- Semantics.
 
@@ -161,24 +173,24 @@ mutual
 
 mutual
 
-  -- Equality is decidable.
+  -- Equality is weakly decidable.
 
-  _≟H_ : ∀ {n} → Decidable (_≈H_ {n = n})
-  ∅           ≟H ∅           = yes ∅
-  ∅           ≟H (_ *x+ _)   = no λ()
-  (_ *x+ _)   ≟H ∅           = no λ()
+  _≟H_ : ∀ {n} → WeaklyDecidable (_≈H_ {n = n})
+  ∅           ≟H ∅           = just ∅
+  ∅           ≟H (_ *x+ _)   = nothing
+  (_ *x+ _)   ≟H ∅           = nothing
   (p₁ *x+ c₁) ≟H (p₂ *x+ c₂) with p₁ ≟H p₂ | c₁ ≟N c₂
-  ... | yes p₁≈p₂ | yes c₁≈c₂ = yes (p₁≈p₂ *x+ c₁≈c₂)
-  ... | _         | no  c₁≉c₂ = no  λ { (_ *x+ c₁≈c₂) → c₁≉c₂ c₁≈c₂ }
-  ... | no  p₁≉p₂ | _         = no  λ { (p₁≈p₂ *x+ _) → p₁≉p₂ p₁≈p₂ }
+  ... | just p₁≈p₂ | just c₁≈c₂ = just (p₁≈p₂ *x+ c₁≈c₂)
+  ... | _          | nothing    = nothing
+  ... | nothing    | _          = nothing
 
-  _≟N_ : ∀ {n} → Decidable (_≈N_ {n = n})
+  _≟N_ : ∀ {n} → WeaklyDecidable (_≈N_ {n = n})
   con c₁ ≟N con c₂ with c₁ coeff≟ c₂
-  ... | yes c₁≈c₂ = yes (con c₁≈c₂)
-  ... | no  c₁≉c₂ = no  λ { (con c₁≈c₂) → c₁≉c₂ c₁≈c₂}
+  ... | just c₁≈c₂ = just (con c₁≈c₂)
+  ... | nothing    = nothing
   poly p₁ ≟N poly p₂ with p₁ ≟H p₂
-  ... | yes p₁≈p₂ = yes (poly p₁≈p₂)
-  ... | no  p₁≉p₂ = no  λ { (poly p₁≈p₂) → p₁≉p₂ p₁≈p₂ }
+  ... | just p₁≈p₂ = just (poly p₁≈p₂)
+  ... | nothing    = nothing
 
 mutual
 
@@ -226,8 +238,8 @@ mutual
 _*x+HN_ : ∀ {n} → HNF (suc n) → Normal n → HNF (suc n)
 (p *x+ c′) *x+HN c = (p *x+ c′) *x+ c
 ∅          *x+HN c with c ≟N 0N
-... | yes c≈0 = ∅
-... | no  c≉0 = ∅ *x+ c
+... | just c≈0 = ∅
+... | nothing  = ∅ *x+ c
 
 mutual
 
@@ -254,14 +266,14 @@ mutual
   _*NH_ : ∀ {n} → Normal n → HNF (suc n) → HNF (suc n)
   c *NH ∅          = ∅
   c *NH (p *x+ c′) with c ≟N 0N
-  ... | yes c≈0 = ∅
-  ... | no  c≉0 = (c *NH p) *x+ (c *N c′)
+  ... | just c≈0 = ∅
+  ... | nothing  = (c *NH p) *x+ (c *N c′)
 
   _*HN_ : ∀ {n} → HNF (suc n) → Normal n → HNF (suc n)
   ∅          *HN c = ∅
   (p *x+ c′) *HN c with c ≟N 0N
-  ... | yes c≈0 = ∅
-  ... | no  c≉0 = (p *HN c) *x+ (c′ *N c)
+  ... | just c≈0 = ∅
+  ... | nothing  = (p *HN c) *x+ (c′ *N c)
 
   _*H_ : ∀ {n} → HNF (suc n) → HNF (suc n) → HNF (suc n)
   ∅           *H _           = ∅
@@ -342,17 +354,17 @@ normalise (:- t)         = -N normalise t
             ∀ ρ → ⟦ p *x+HN c ⟧H ρ ≈ ⟦ p *x+ c ⟧H ρ
 *x+HN≈*x+ (p *x+ c′) c ρ       = refl
 *x+HN≈*x+ ∅          c (x ∷ ρ) with c ≟N 0N
-... | yes c≈0 = begin
+... | just c≈0 = begin
   0#                 ≈⟨ 0≈⟦0⟧ c≈0 ρ ⟩
   ⟦ c ⟧N ρ           ≈⟨ sym $ lemma₆ _ _ ⟩
   0# * x + ⟦ c ⟧N ρ  ∎
-... | no c≉0 = refl
+... | nothing = refl
 
 ∅*x+HN-homo : ∀ {n} (c : Normal n) x ρ →
               ⟦ ∅ *x+HN c ⟧H (x ∷ ρ) ≈ ⟦ c ⟧N ρ
 ∅*x+HN-homo c x ρ with c ≟N 0N
-... | yes c≈0 = 0≈⟦0⟧ c≈0 ρ
-... | no  c≉0 = lemma₆ _ _
+... | just c≈0 = 0≈⟦0⟧ c≈0 ρ
+... | nothing = lemma₆ _ _
 
 mutual
 
@@ -396,11 +408,11 @@ mutual
     ⟦ c *NH p ⟧H (x ∷ ρ) ≈ ⟦ c ⟧N ρ * ⟦ p ⟧H (x ∷ ρ)
   *NH-homo c ∅          x ρ = sym (*-zeroʳ _)
   *NH-homo c (p *x+ c′) x ρ with c ≟N 0N
-  ... | yes c≈0 = begin
+  ... | just c≈0 = begin
     0#                                            ≈⟨ sym (*-zeroˡ _) ⟩
     0# * (⟦ p ⟧H (x ∷ ρ) * x + ⟦ c′ ⟧N ρ)         ≈⟨ 0≈⟦0⟧ c≈0 ρ ⟨ *-cong ⟩ refl ⟩
     ⟦ c ⟧N ρ  * (⟦ p ⟧H (x ∷ ρ) * x + ⟦ c′ ⟧N ρ)  ∎
-  ... | no c≉0 = begin
+  ... | nothing = begin
     ⟦ c *NH p ⟧H (x ∷ ρ) * x + ⟦ c *N c′ ⟧N ρ                 ≈⟨ (*NH-homo c p x ρ ⟨ *-cong ⟩ refl) ⟨ +-cong ⟩ *N-homo c c′ ρ ⟩
     (⟦ c ⟧N ρ * ⟦ p ⟧H (x ∷ ρ)) * x + (⟦ c ⟧N ρ * ⟦ c′ ⟧N ρ)  ≈⟨ lemma₃ _ _ _ _ ⟩
     ⟦ c ⟧N ρ * (⟦ p ⟧H (x ∷ ρ) * x + ⟦ c′ ⟧N ρ)               ∎
@@ -410,11 +422,11 @@ mutual
     ⟦ p *HN c ⟧H (x ∷ ρ) ≈ ⟦ p ⟧H (x ∷ ρ) * ⟦ c ⟧N ρ
   *HN-homo ∅          c x ρ = sym (*-zeroˡ _)
   *HN-homo (p *x+ c′) c x ρ with c ≟N 0N
-  ... | yes c≈0 = begin
+  ... | just c≈0 = begin
     0#                                           ≈⟨ sym (*-zeroʳ _) ⟩
     (⟦ p ⟧H (x ∷ ρ) * x + ⟦ c′ ⟧N ρ) * 0#        ≈⟨ refl ⟨ *-cong ⟩ 0≈⟦0⟧ c≈0 ρ ⟩
     (⟦ p ⟧H (x ∷ ρ) * x + ⟦ c′ ⟧N ρ) * ⟦ c ⟧N ρ  ∎
-  ... | no c≉0 = begin
+  ... | nothing = begin
     ⟦ p *HN c ⟧H (x ∷ ρ) * x + ⟦ c′ *N c ⟧N ρ                 ≈⟨ (*HN-homo p c x ρ ⟨ *-cong ⟩ refl) ⟨ +-cong ⟩ *N-homo c′ c ρ ⟩
     (⟦ p ⟧H (x ∷ ρ) * ⟦ c ⟧N ρ) * x + (⟦ c′ ⟧N ρ * ⟦ c ⟧N ρ)  ≈⟨ lemma₂ _ _ _ _ ⟩
     (⟦ p ⟧H (x ∷ ρ) * x + ⟦ c′ ⟧N ρ) * ⟦ c ⟧N ρ               ∎

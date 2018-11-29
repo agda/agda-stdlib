@@ -8,6 +8,8 @@
 -- contains proofs for the lifted version of the relation.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.Indexed.Homogeneous where
 
 open import Function using (_⟨_⟩_)

@@ -4,6 +4,8 @@
 -- Properties related to negation
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Nullary.Negation where
 
 open import Category.Monad

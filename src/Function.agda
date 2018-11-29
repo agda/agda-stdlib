@@ -4,6 +4,8 @@
 -- Simple combinators working solely on and with functions
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Function where
 
 open import Level

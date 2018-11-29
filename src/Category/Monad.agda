@@ -6,6 +6,8 @@
 
 -- Note that currently the monad laws are not included here.
 
+{-# OPTIONS --without-K #-}
+
 module Category.Monad where
 
 open import Function

@@ -4,6 +4,8 @@
 -- Indexed container combinators
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Container.Indexed.Combinator where
 
 open import Level

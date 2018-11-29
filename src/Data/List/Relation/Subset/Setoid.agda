@@ -4,6 +4,8 @@
 -- The extensional sublist relation over setoid equality.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary
 
 module Data.List.Relation.Subset.Setoid

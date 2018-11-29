@@ -7,6 +7,8 @@
 -- This file contains some core definitions which are re-exported by
 -- Relation.Binary.Indexed.Heterogeneous.
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.Indexed.Heterogeneous.Core where
 
 open import Level

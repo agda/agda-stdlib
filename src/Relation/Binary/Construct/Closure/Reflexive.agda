@@ -4,6 +4,8 @@
 -- Reflexive closures
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.Construct.Closure.Reflexive where
 
 open import Data.Unit

@@ -4,6 +4,8 @@
 -- Natural numbers defined using the reflexive-transitive closure, Star
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Star.Nat where
 
 open import Data.Unit
