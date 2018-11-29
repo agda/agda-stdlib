@@ -35,12 +35,14 @@
   <a id="978" class="Symbol">;</a> <a id="980" class="Field">isJoinSemilattice</a> <a id="998" class="Symbol">=</a> <a id="1000" href="Relation.Binary.Properties.MeetSemilattice.html#708" class="Function">dualIsJoinSemilattice</a>
   <a id="1024" class="Symbol">}</a>
 
-<a id="1027" class="Keyword">open</a> <a id="1032" href="Relation.Binary.Properties.JoinSemilattice.html" class="Module">J</a> <a id="1034" href="Relation.Binary.Properties.MeetSemilattice.html#873" class="Function">dualJoinSemilattice</a> <a id="1054" class="Keyword">public</a> <a id="1061" class="Keyword">using</a> <a id="1067" class="Symbol">()</a> <a id="1070" class="Keyword">renaming</a>
-  <a id="1081" class="Symbol">(</a> ∨-monotonic  <a id="1096" class="Symbol">to</a> ∧-monotonic
-  <a id="1113" class="Symbol">;</a> ∨-cong       <a id="1128" class="Symbol">to</a> ∧-cong
-  <a id="1140" class="Symbol">;</a> ∨-comm       <a id="1155" class="Symbol">to</a> ∧-comm
-  <a id="1167" class="Symbol">;</a> ∨-assoc      <a id="1182" class="Symbol">to</a> ∧-assoc
-  <a id="1195" class="Symbol">;</a> ∨-idempotent <a id="1210" class="Symbol">to</a> ∧-idempotent
-  <a id="1228" class="Symbol">;</a> x≤y⇒x∨y≈y    <a id="1243" class="Symbol">to</a> y≤x⇒x∧y≈y
-  <a id="1258" class="Symbol">)</a>
+<a id="1027" class="Keyword">open</a> <a id="1032" href="Relation.Binary.Properties.JoinSemilattice.html" class="Module">J</a> <a id="1034" href="Relation.Binary.Properties.MeetSemilattice.html#873" class="Function">dualJoinSemilattice</a> <a id="1054" class="Keyword">public</a>
+  <a id="1063" class="Keyword">using</a> <a id="1069" class="Symbol">(</a>isAlgSemilattice<a id="1086" class="Symbol">;</a> algSemilattice<a id="1102" class="Symbol">)</a>
+  <a id="1106" class="Keyword">renaming</a>
+    <a id="1119" class="Symbol">(</a> ∨-monotonic  <a id="1134" class="Symbol">to</a> ∧-monotonic
+    <a id="1153" class="Symbol">;</a> ∨-cong       <a id="1168" class="Symbol">to</a> ∧-cong
+    <a id="1182" class="Symbol">;</a> ∨-comm       <a id="1197" class="Symbol">to</a> ∧-comm
+    <a id="1211" class="Symbol">;</a> ∨-assoc      <a id="1226" class="Symbol">to</a> ∧-assoc
+    <a id="1241" class="Symbol">;</a> ∨-idempotent <a id="1256" class="Symbol">to</a> ∧-idempotent
+    <a id="1276" class="Symbol">;</a> x≤y⇒x∨y≈y    <a id="1291" class="Symbol">to</a> y≤x⇒x∧y≈y
+    <a id="1308" class="Symbol">)</a>
 </pre></body></html>
