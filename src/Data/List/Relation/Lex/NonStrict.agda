@@ -7,7 +7,7 @@
 -- The definitions of lexicographic orderings used here is suitable if
 -- the argument order is a (non-strict) partial order.
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Lex.NonStrict where
 

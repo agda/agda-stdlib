@@ -4,7 +4,7 @@
 -- Type(s) used (only) when calling out to Haskell via the FFI
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Foreign.Haskell where
 

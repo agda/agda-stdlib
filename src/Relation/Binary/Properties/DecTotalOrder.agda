@@ -4,7 +4,7 @@
 -- Properties satisfied by decidable total orders
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
 

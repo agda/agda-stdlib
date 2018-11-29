@@ -15,7 +15,7 @@
 -- more equalities it returns, the more expressions the ring solver can
 -- solve.
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra
 open import Algebra.Solver.Ring.AlmostCommutativeRing

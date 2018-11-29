@@ -4,7 +4,7 @@
 -- Surjections
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Surjection where
 

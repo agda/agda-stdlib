@@ -4,7 +4,7 @@
 -- Properties of non-empty lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.NonEmpty.Properties where
 

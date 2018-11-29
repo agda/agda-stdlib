@@ -5,7 +5,7 @@
 -- (packed in records together with sets, operations, etc.)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra where
 

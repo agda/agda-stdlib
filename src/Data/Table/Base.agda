@@ -4,7 +4,7 @@
 -- Tables, basic types and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Table.Base where
 

@@ -4,7 +4,7 @@
 -- Injections
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Injection where
 

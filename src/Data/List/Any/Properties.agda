@@ -7,7 +7,7 @@
 -- The other modules under Data.List.Any also contain properties
 -- related to Any.
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Any.Properties where
 

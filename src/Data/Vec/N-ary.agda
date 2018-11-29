@@ -4,7 +4,7 @@
 -- Code for converting Vec A n → B to and from n-ary functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.N-ary where
 

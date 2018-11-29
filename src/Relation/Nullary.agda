@@ -6,7 +6,7 @@
 
 -- Some operations on/properties of nullary relations, i.e. sets.
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Nullary where
 

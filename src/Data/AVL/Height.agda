@@ -5,7 +5,7 @@
 -- invariants in AVL Trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.AVL.Height where
 

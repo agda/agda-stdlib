@@ -4,7 +4,7 @@
 -- Universe-sensitive functor and monad instances for the Product type.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra
 

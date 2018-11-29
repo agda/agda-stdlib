@@ -4,7 +4,7 @@
 -- List Literals
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Literals where
 

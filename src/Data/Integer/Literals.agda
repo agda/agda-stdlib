@@ -4,7 +4,7 @@
 -- Integer Literals
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Integer.Literals where
 

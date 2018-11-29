@@ -4,7 +4,7 @@
 -- Some properties about signs
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Sign.Properties where
 

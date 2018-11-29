@@ -4,7 +4,7 @@
 -- Indexed containers core
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container.Indexed.Core where
 

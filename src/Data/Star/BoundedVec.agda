@@ -6,7 +6,7 @@
 
 -- Vectors of a specified maximum length.
 
-{-# OPTIONS --with-K #-}
+{-# OPTIONS --with-K --safe #-}
 
 module Data.Star.BoundedVec where
 

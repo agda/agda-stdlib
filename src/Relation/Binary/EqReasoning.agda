@@ -23,7 +23,7 @@
 -- is recommended for equational reasoning when the underlying equality is
 -- Relation.Binary.PropositionalEquality._≡_.
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
 

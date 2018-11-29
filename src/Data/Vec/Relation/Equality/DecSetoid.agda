@@ -4,7 +4,7 @@
 -- Decidable semi-heterogeneous vector equality over setoids
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
 

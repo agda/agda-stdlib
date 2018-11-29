@@ -4,7 +4,7 @@
 -- Properties satisfied by bounded meet semilattices
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Lattice
 

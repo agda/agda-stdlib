@@ -4,7 +4,7 @@
 -- A categorical view of List⁺
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.NonEmpty.Categorical where
 

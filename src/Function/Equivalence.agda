@@ -4,7 +4,7 @@
 -- Equivalence (coinhabitance)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Equivalence where
 

@@ -7,7 +7,7 @@
 -- Data.Integer.Properties directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Integer.Multiplication.Properties where
 

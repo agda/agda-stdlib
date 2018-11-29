@@ -4,7 +4,7 @@
 -- Various forms of induction for natural numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Induction.Nat where
 

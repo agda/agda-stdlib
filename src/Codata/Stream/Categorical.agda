@@ -4,7 +4,7 @@
 -- A categorical view of Stream
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Codata.Stream.Categorical where
 

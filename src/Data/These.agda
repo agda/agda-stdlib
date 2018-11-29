@@ -4,7 +4,7 @@
 -- An either-or-both data type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.These where
 

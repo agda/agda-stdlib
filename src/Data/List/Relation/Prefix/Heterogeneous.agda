@@ -4,7 +4,7 @@
 -- An inductive definition of the heterogeneous prefix relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Prefix.Heterogeneous where
 

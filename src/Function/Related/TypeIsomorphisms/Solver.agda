@@ -6,7 +6,7 @@
 -- See examples at the bottom of the file for how to use this solver
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Related.TypeIsomorphisms.Solver where
 

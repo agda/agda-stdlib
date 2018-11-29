@@ -4,7 +4,7 @@
 -- Vectors where at least one element satisfies a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Any {a} {A : Set a} where
 

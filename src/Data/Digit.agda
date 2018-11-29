@@ -4,7 +4,7 @@
 -- Digits and digit expansions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Digit where
 

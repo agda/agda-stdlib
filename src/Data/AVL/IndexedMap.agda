@@ -4,7 +4,7 @@
 -- Finite maps with indexed keys and values, based on AVL trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Data.Product as Prod
 open import Relation.Binary

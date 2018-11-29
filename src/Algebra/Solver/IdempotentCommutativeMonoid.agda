@@ -6,7 +6,7 @@
 -- Adapted from Algebra.Monoid-solver
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra
 

@@ -4,7 +4,7 @@
 -- Properties of the heterogeneous prefix relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Prefix.Heterogeneous.Properties where
 

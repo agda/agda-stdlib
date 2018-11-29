@@ -4,7 +4,7 @@
 -- Showing natural numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Show where
 

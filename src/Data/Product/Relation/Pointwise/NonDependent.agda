@@ -4,7 +4,7 @@
 -- Pointwise products of binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Product.Relation.Pointwise.NonDependent where
 

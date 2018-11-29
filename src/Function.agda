@@ -4,7 +4,7 @@
 -- Simple combinators working solely on and with functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function where
 

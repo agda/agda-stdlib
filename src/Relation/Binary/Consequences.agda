@@ -4,7 +4,7 @@
 -- Some properties imply others
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Consequences where
 

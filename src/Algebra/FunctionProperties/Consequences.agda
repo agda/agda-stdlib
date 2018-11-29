@@ -5,7 +5,7 @@
 -- commutativity
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary using (Rel; Setoid; Substitutive; Symmetric; Total)
 

@@ -4,7 +4,7 @@
 -- Left inverses
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.LeftInverse where
 

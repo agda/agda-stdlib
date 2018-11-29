@@ -4,7 +4,7 @@
 -- Properties of vector's Any
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Any.Properties where
 

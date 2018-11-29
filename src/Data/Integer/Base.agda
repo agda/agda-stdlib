@@ -4,7 +4,7 @@
 -- Integers, basic types and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Integer.Base where
 

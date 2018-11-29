@@ -4,7 +4,7 @@
 -- Divisibility and coprimality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Integer.Divisibility where
 

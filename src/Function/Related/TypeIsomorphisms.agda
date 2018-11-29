@@ -5,7 +5,7 @@
 -- equivalent or…)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Related.TypeIsomorphisms where
 

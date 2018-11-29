@@ -4,7 +4,7 @@
 -- Some properties about integers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Integer.Properties where
 

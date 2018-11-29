@@ -4,7 +4,7 @@
 -- Pointers into star-lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --with-K #-}
+{-# OPTIONS --with-K --safe #-}
 
 module Data.Star.Pointer {ℓ} {I : Set ℓ} where
 

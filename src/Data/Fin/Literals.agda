@@ -4,7 +4,7 @@
 -- Fin Literals
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Fin.Literals where
 

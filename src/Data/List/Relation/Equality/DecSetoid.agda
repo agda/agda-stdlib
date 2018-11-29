@@ -4,7 +4,7 @@
 -- Decidable equality over lists parameterised by some setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
 

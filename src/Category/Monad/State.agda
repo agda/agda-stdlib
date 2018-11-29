@@ -4,7 +4,7 @@
 -- The state monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Category.Monad.State where
 

@@ -9,7 +9,7 @@
 -- Algebra.FunctionProperties is a parameterised module, and some of
 -- the parameters are irrelevant for these definitions.
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.FunctionProperties.Core where
 

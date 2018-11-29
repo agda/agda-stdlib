@@ -4,7 +4,7 @@
 -- Lexicographic induction
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Induction.Lexicographic where
 

@@ -4,7 +4,7 @@
 -- Sublist-related properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Sublist.Propositional.Properties where
 

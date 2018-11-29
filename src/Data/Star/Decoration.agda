@@ -4,7 +4,7 @@
 -- Decorated star-lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --with-K #-}
+{-# OPTIONS --with-K --safe #-}
 
 module Data.Star.Decoration where
 

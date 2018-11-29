@@ -4,7 +4,7 @@
 -- List Zipper-related properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Zipper.Properties where
 

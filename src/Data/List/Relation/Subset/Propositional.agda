@@ -4,7 +4,7 @@
 -- The sublist relation over propositional equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Subset.Propositional
   {a} {A : Set a} where
