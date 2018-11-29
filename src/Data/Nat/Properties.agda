@@ -302,6 +302,10 @@ m<n⇒n≢0 (s≤s m≤n) ()
 ------------------------------------------------------------------------
 -- Properties of _≤′_
 
+≤′-trans : Transitive _≤′_
+≤′-trans m≤n ≤′-refl = m≤n
+≤′-trans m≤n (≤′-step n≤o) = ≤′-step (≤′-trans m≤n n≤o)
+
 z≤′n : ∀ {n} → zero ≤′ n
 z≤′n {zero}  = ≤′-refl
 z≤′n {suc n} = ≤′-step z≤′n
