@@ -30,23 +30,21 @@ open AGP +-abelianGroup public
 -‿*-distribˡ : ∀ x y → - x * y ≈ - (x * y)
 -‿*-distribˡ x y = begin
   - x * y                        ≈⟨ sym $ +-identityʳ _ ⟩
-  - x * y + 0#                   ≈⟨ refl ⟨ +-cong ⟩ sym (-‿inverseʳ _) ⟩
+  - x * y + 0#                   ≈⟨ +-congʳ $ sym (-‿inverseʳ _) ⟩
   - x * y + (x * y + - (x * y))  ≈⟨ sym $ +-assoc _ _ _  ⟩
-  - x * y + x * y + - (x * y)    ≈⟨ sym (distribʳ _ _ _) ⟨ +-cong ⟩ refl ⟩
-  (- x + x) * y + - (x * y)      ≈⟨ (-‿inverseˡ _ ⟨ *-cong ⟩ refl)
-                                      ⟨ +-cong ⟩
-                                    refl ⟩
-  0# * y + - (x * y)             ≈⟨ zeroˡ _ ⟨ +-cong ⟩ refl ⟩
+  - x * y + x * y + - (x * y)    ≈⟨ +-congˡ $ sym (distribʳ _ _ _) ⟩
+  (- x + x) * y + - (x * y)      ≈⟨ +-congˡ $ *-congˡ $ -‿inverseˡ _ ⟩
+  0# * y + - (x * y)             ≈⟨ +-congˡ $ zeroˡ _ ⟩
   0# + - (x * y)                 ≈⟨ +-identityˡ _ ⟩
   - (x * y)                      ∎
 
 -‿*-distribʳ : ∀ x y → x * - y ≈ - (x * y)
 -‿*-distribʳ x y = begin
   x * - y                        ≈⟨ sym $ +-identityˡ _ ⟩
-  0# + x * - y                   ≈⟨ sym (-‿inverseˡ _) ⟨ +-cong ⟩ refl ⟩
+  0# + x * - y                   ≈⟨ +-congˡ $ sym (-‿inverseˡ _) ⟩
   - (x * y) + x * y + x * - y    ≈⟨ +-assoc _ _ _  ⟩
-  - (x * y) + (x * y + x * - y)  ≈⟨ refl ⟨ +-cong ⟩ sym (distribˡ _ _ _)  ⟩
-  - (x * y) + x * (y + - y)      ≈⟨ refl ⟨ +-cong ⟩ (refl ⟨ *-cong ⟩ -‿inverseʳ _) ⟩
-  - (x * y) + x * 0#             ≈⟨ refl ⟨ +-cong ⟩ zeroʳ _ ⟩
+  - (x * y) + (x * y + x * - y)  ≈⟨ +-congʳ $ sym (distribˡ _ _ _)  ⟩
+  - (x * y) + x * (y + - y)      ≈⟨ +-congʳ $ *-congʳ $ -‿inverseʳ _ ⟩
+  - (x * y) + x * 0#             ≈⟨ +-congʳ $ zeroʳ _ ⟩
   - (x * y) + 0#                 ≈⟨ +-identityʳ _ ⟩
   - (x * y)                      ∎

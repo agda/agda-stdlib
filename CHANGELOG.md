@@ -201,6 +201,9 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   `Algebra.Properties.Semilattice`.  The corresponding `poset` instance is
   re-exported in `Algebra.Properties.Lattice`.
 
+* All algebraic structures now export left and right congruence properties.
+  e.g. `∙-cong refl x≈y` can be replaced with `∙-congˡ y≈z`
+
 #### Relaxation of ring solvers requirements
 
 * In the ring solvers below, the assumption that equality is `Decidable`
@@ -265,6 +268,12 @@ Other minor additions
   ```agda
   record RawMagma c ℓ : Set (suc (c ⊔ ℓ))
   record Magma    c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* Added new types to `Algebra.FunctionProperties`:
+  ```agda
+  LeftCongruent  _∙_ = ∀ {x} → (_∙ x) Preserves _≈_ ⟶ _≈_
+  RightCongruent _∙_ = ∀ {x} → (x ∙_) Preserves _≈_ ⟶ _≈_
   ```
 
 * Added new proof to `Algebra.FunctionProperties.Consequences`:

@@ -114,15 +114,15 @@ isOrderTheoreticLattice = record
 
   sound : ∀ {x y} → x ≤′ y → x ≤ y
   sound {x} {y} y≈y∨x = sym $ begin
-    x ∧ y        ≈⟨ ∧-cong refl y≈y∨x ⟩
-    x ∧ (y ∨ x)  ≈⟨ ∧-cong refl (∨-comm y x) ⟩
+    x ∧ y        ≈⟨ ∧-congʳ y≈y∨x ⟩
+    x ∧ (y ∨ x)  ≈⟨ ∧-congʳ (∨-comm y x) ⟩
     x ∧ (x ∨ y)  ≈⟨ ∧-absorbs-∨ x y ⟩
     x            ∎
 
   complete : ∀ {x y} → x ≤ y → x ≤′ y
   complete {x} {y} x≈x∧y = sym $ begin
-    y ∨ x        ≈⟨ ∨-cong refl x≈x∧y ⟩
-    y ∨ (x ∧ y)  ≈⟨ ∨-cong refl (∧-comm x y) ⟩
+    y ∨ x        ≈⟨ ∨-congʳ x≈x∧y ⟩
+    y ∨ (x ∧ y)  ≈⟨ ∨-congʳ (∧-comm x y) ⟩
     y ∨ (y ∧ x)  ≈⟨ ∨-absorbs-∧ y x ⟩
     y            ∎
 
