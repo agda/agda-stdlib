@@ -22,6 +22,18 @@ module _ {a b r} {A : Set a} {B : Set b} (R : REL A B r) where
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
+  tail : ∀ {a as bs} → Suffix R (a ∷ as) bs → Suffix R as bs
+  tail (here (_ ∷ rs)) = there (here rs)
+  tail (there x) = there (tail x)
+
+module _ {a b r s} {A : Set a} {B : Set b} {R : REL A B r} {S : REL A B s} where
+
+  map : R ⇒ S → Suffix R ⇒ Suffix S
+  map R⇒S (here rs)   = here (Pointwise.map R⇒S rs)
+  map R⇒S (there suf) = there (map R⇒S suf)
+
+module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+
   toView : ∀ {as bs} → Suffix R as bs → SuffixView R as bs
   toView (here rs) = [] ++ rs
   toView (there {c} suf) with toView suf
