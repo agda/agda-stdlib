@@ -6,7 +6,7 @@
 
 module Data.List.Relation.Suffix.Heterogeneous.Properties where
 
-open import Function using (flip)
+open import Function using (_$_; flip)
 open import Relation.Nullary using (Dec; yes; no)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary as U using (Pred)
@@ -39,29 +39,23 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   fromPrefix⁺ : ∀ {as bs} → Prefix R as bs → Suffix R (reverse as) (reverse bs)
   fromPrefix⁺ {as} {bs} p with Prefix.toView p
-  ... | Prefix._++_ {cs} rs ds =
-    subst (Suffix R (reverse as))
-      (sym (Listₚ.reverse-++-commute cs ds))
-      (Suffix.fromView (reverse ds Suffix.++ pw-reverse rs))
+  ... | Prefix._++_ {cs} rs ds = subst (Suffix R (reverse as))
+                                       (sym (Listₚ.reverse-++-commute cs ds))
+                               $ Suffix.fromView (reverse ds Suffix.++ pw-reverse rs)
 
   fromPrefix⁻ : ∀ {as bs} → Prefix R (reverse as) (reverse bs) → Suffix R as bs
-  fromPrefix⁻ pre = P.subst₂ (Suffix R)
-    (Listₚ.reverse-involutive _)
-    (Listₚ.reverse-involutive _)
-    (fromPrefix⁺ pre)
+  fromPrefix⁻ pre = P.subst₂ (Suffix R) (Listₚ.reverse-involutive _) (Listₚ.reverse-involutive _)
+                  $ fromPrefix⁺ pre
 
   toPrefix⁺ : ∀ {as bs} → Suffix R as bs → Prefix R (reverse as) (reverse bs)
   toPrefix⁺ {as} {bs} s with Suffix.toView s
-  ... | Suffix._++_ cs {ds} rs =
-    subst (Prefix R (reverse as))
-      (sym (Listₚ.reverse-++-commute cs ds))
-      (Prefix.fromView (pw-reverse rs Prefix.++ reverse cs))
+  ... | Suffix._++_ cs {ds} rs = subst (Prefix R (reverse as))
+                                       (sym (Listₚ.reverse-++-commute cs ds))
+                               $ Prefix.fromView (pw-reverse rs Prefix.++ reverse cs)
 
   toPrefix⁻ : ∀ {as bs} → Suffix R (reverse as) (reverse bs) → Prefix R as bs
-  toPrefix⁻ suf = P.subst₂ (Prefix R)
-    (Listₚ.reverse-involutive _)
-    (Listₚ.reverse-involutive _)
-    (toPrefix⁺ suf)
+  toPrefix⁻ suf = P.subst₂ (Prefix R) (Listₚ.reverse-involutive _) (Listₚ.reverse-involutive _)
+                $ toPrefix⁺ suf
 
 ------------------------------------------------------------------------
 -- length
@@ -130,8 +124,8 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
     open ℕₚ.≤-Reasoning
     ds<cs : length ds < length cs
     ds<cs = begin suc (length ds)             ≤⟨ N.s≤s (ℕₚ.n≤m+n (length bs) (length ds)) ⟩
-                  suc (length bs + length ds) ≡⟨ sym (Listₚ.length-++ (b ∷ bs)) ⟩
-                  length (b ∷ bs ++ ds)       ≡⟨ sym (Pointwise-length rs) ⟩
+                  suc (length bs + length ds) ≡⟨ sym $ Listₚ.length-++ (b ∷ bs) ⟩
+                  length (b ∷ bs ++ ds)       ≡⟨ sym $ Pointwise-length rs ⟩
                   length cs                    ∎
 
 ------------------------------------------------------------------------
@@ -224,16 +218,16 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
       P.cong₂ _∷_ (R-irr r r₁) (pw-irrelevant R-irr rs rs₁)
 
   irrelevant : Irrelevant R → Irrelevant (Suffix R)
-  irrelevant R-irr (here rs)    (here rs₁)    = P.cong here (pw-irrelevant R-irr rs rs₁)
+  irrelevant R-irr (here rs)    (here rs₁)    = P.cong here $ pw-irrelevant R-irr rs rs₁
   irrelevant R-irr (here rs)    (there rsuf)  = contradiction (length-mono-Suffix-≤ rsuf)
                                                               (ℕₚ.<⇒≱ (ℕₚ.≤-reflexive (sym (Pointwise-length rs))))
   irrelevant R-irr (there rsuf) (here rs)     = contradiction (length-mono-Suffix-≤ rsuf)
                                                               (ℕₚ.<⇒≱ (ℕₚ.≤-reflexive (sym (Pointwise-length rs))))
-  irrelevant R-irr (there rsuf) (there rsuf₁) = P.cong there (irrelevant R-irr rsuf rsuf₁)
+  irrelevant R-irr (there rsuf) (there rsuf₁) = P.cong there $ irrelevant R-irr rsuf rsuf₁
 
 ------------------------------------------------------------------------
 -- Decidability
 
   suffix? : B.Decidable R → B.Decidable (Suffix R)
   suffix? R? as bs = Dec.map′ fromPrefix⁻ toPrefix⁺
-    (Prefixₚ.prefix? R? (reverse as) (reverse bs))
+                   $ Prefixₚ.prefix? R? (reverse as) (reverse bs)
