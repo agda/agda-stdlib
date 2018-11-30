@@ -8,9 +8,10 @@ module Data.List.Relation.Suffix.Heterogeneous.Properties where
 
 open import Function using (flip)
 open import Relation.Nullary using (Dec; yes; no)
+import Relation.Nullary.Decidable as Dec
 open import Relation.Unary as U using (Pred)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Binary using (REL; Rel; Trans; Antisym; _⇒_)
+open import Relation.Binary as B using (REL; Rel; Trans; Antisym; Irrelevant; _⇒_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl; sym; subst)
 open import Data.Nat as N using (suc; _+_; _≤_; _<_)
 open import Data.List as List using (List; []; _∷_; _++_; length; filter; replicate; reverse)
@@ -19,6 +20,7 @@ open import Data.List.Relation.Suffix.Heterogeneous as Suffix using (Suffix; her
 open import Data.List.Relation.Prefix.Heterogeneous as Prefix using (Prefix)
 import Data.Nat.Properties as ℕₚ
 import Data.List.Properties as Listₚ
+import Data.List.Relation.Prefix.Heterogeneous.Properties as Prefixₚ
 
 ------------------------------------------------------------------------
 -- reverse (convert to and from Prefix)
@@ -209,3 +211,29 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
     repl : ∀ {m n} → m N.≤′ n → Suffix R (replicate m a) (replicate n b)
     repl N.≤′-refl       = here (pw-replicate r _)
     repl (N.≤′-step m≤n) = there (repl m≤n)
+
+------------------------------------------------------------------------
+-- Irrelevant
+
+module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+
+  private
+    pw-irrelevant : Irrelevant R → Irrelevant (Pointwise R)
+    pw-irrelevant R-irr [] [] = refl
+    pw-irrelevant R-irr (r ∷ rs) (r₁ ∷ rs₁) =
+      P.cong₂ _∷_ (R-irr r r₁) (pw-irrelevant R-irr rs rs₁)
+
+  irrelevant : Irrelevant R → Irrelevant (Suffix R)
+  irrelevant R-irr (here rs)    (here rs₁)    = P.cong here (pw-irrelevant R-irr rs rs₁)
+  irrelevant R-irr (here rs)    (there rsuf)  = contradiction (length-mono-Suffix-≤ rsuf)
+                                                              (ℕₚ.<⇒≱ (ℕₚ.≤-reflexive (sym (Pointwise-length rs))))
+  irrelevant R-irr (there rsuf) (here rs)     = contradiction (length-mono-Suffix-≤ rsuf)
+                                                              (ℕₚ.<⇒≱ (ℕₚ.≤-reflexive (sym (Pointwise-length rs))))
+  irrelevant R-irr (there rsuf) (there rsuf₁) = P.cong there (irrelevant R-irr rsuf rsuf₁)
+
+------------------------------------------------------------------------
+-- Decidability
+
+  suffix? : B.Decidable R → B.Decidable (Suffix R)
+  suffix? R? as bs = Dec.map′ fromPrefix⁻ toPrefix⁺
+    (Prefixₚ.prefix? R? (reverse as) (reverse bs))
