@@ -14,7 +14,7 @@ open import Relation.Binary using (REL; Rel; Trans; Antisym; _⇒_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl; sym; subst)
 open import Data.Nat as N using (suc; _+_; _≤_; _<_)
 open import Data.List as List using (List; []; _∷_; _++_; length; filter; replicate; reverse)
-open import Data.List.Relation.Pointwise as Pw using (Pointwise; []; _∷_)
+open import Data.List.Relation.Pointwise as Pw using (Pointwise; []; _∷_; Pointwise-length)
 open import Data.List.Relation.Suffix.Heterogeneous as Suffix using (Suffix; here; there; tail)
 open import Data.List.Relation.Prefix.Heterogeneous as Prefix using (Prefix)
 import Data.Nat.Properties as ℕₚ
@@ -39,14 +39,14 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   fromPrefix {as} {bs} p with Prefix.toView p
   ... | Prefix._++_ {cs} rs ds =
     subst (Suffix R (reverse as))
-      (P.sym (Listₚ.reverse-++-commute cs ds))
+      (sym (Listₚ.reverse-++-commute cs ds))
       (Suffix.fromView (reverse ds Suffix.++ pw-reverse rs))
 
   toPrefix : ∀ {as bs} → Suffix R as bs → Prefix R (reverse as) (reverse bs)
   toPrefix {as} {bs} s with Suffix.toView s
   ... | Suffix._++_ cs {ds} rs =
     subst (Prefix R (reverse as))
-      (P.sym (Listₚ.reverse-++-commute cs ds))
+      (sym (Listₚ.reverse-++-commute cs ds))
       (Prefix.fromView (pw-reverse rs Prefix.++ reverse cs))
 
 ------------------------------------------------------------------------
@@ -55,7 +55,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} {as} where
 
   length-mono-Suffix-≤ : ∀ {bs} → Suffix R as bs → length as ≤ length bs
-  length-mono-Suffix-≤ (here rs)   = ℕₚ.≤-reflexive (Pw.Pointwise-length rs)
+  length-mono-Suffix-≤ (here rs)   = ℕₚ.≤-reflexive (Pointwise-length rs)
   length-mono-Suffix-≤ (there suf) = ℕₚ.≤-step (length-mono-Suffix-≤ suf)
 
 ------------------------------------------------------------------------
@@ -70,7 +70,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   toPointwise eq (here rs) = rs
   toPointwise eq (there suf) =
     let as≤bs = length-mono-Suffix-≤ suf
-        as>bs = ℕₚ.≤-reflexive (P.sym eq)
+        as>bs = ℕₚ.≤-reflexive (sym eq)
     in contradiction as≤bs (ℕₚ.<⇒≱ as>bs)
 
 ------------------------------------------------------------------------
@@ -111,13 +111,13 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   ++⁻ {_ ∷ _} {_}      eq suf         = ++⁻ eq (tail suf)
   ++⁻ {[]}    {[]}     eq suf         = toPointwise eq suf
   ++⁻ {[]}    {b ∷ bs} eq (there suf) = ++⁻ eq suf
-  ++⁻ {[]}    {b ∷ bs} {cs} {ds} eq (here rs) = contradiction (P.sym eq) (ℕₚ.<⇒≢ ds<cs)
+  ++⁻ {[]}    {b ∷ bs} {cs} {ds} eq (here rs) = contradiction (sym eq) (ℕₚ.<⇒≢ ds<cs)
     where
     open ℕₚ.≤-Reasoning
     ds<cs : length ds < length cs
     ds<cs = begin suc (length ds)             ≤⟨ N.s≤s (ℕₚ.n≤m+n (length bs) (length ds)) ⟩
-                  suc (length bs + length ds) ≡⟨ P.sym (Listₚ.length-++ (b ∷ bs)) ⟩
-                  length (b ∷ bs ++ ds)       ≡⟨ P.sym (Pw.Pointwise-length rs) ⟩
+                  suc (length bs + length ds) ≡⟨ sym (Listₚ.length-++ (b ∷ bs)) ⟩
+                  length (b ∷ bs ++ ds)       ≡⟨ sym (Pointwise-length rs) ⟩
                   length cs                    ∎
 
 ------------------------------------------------------------------------
@@ -137,9 +137,9 @@ module _ {a b c d r} {A : Set a} {B : Set b} {C : Set c} {D : Set d}
               Pointwise R (List.map f as) (List.map g bs) →
               Pointwise (λ a b → R (f a) (g b)) as bs
     pw-map⁻ {[]} {[]} f g [] = []
-    pw-map⁻ {[]} {b ∷ bs} f g rs with Pw.Pointwise-length rs
+    pw-map⁻ {[]} {b ∷ bs} f g rs with Pointwise-length rs
     ... | ()
-    pw-map⁻ {a ∷ as} {[]} f g rs with Pw.Pointwise-length rs
+    pw-map⁻ {a ∷ as} {[]} f g rs with Pointwise-length rs
     ... | ()
     pw-map⁻ {a ∷ as} {b ∷ bs} f g (r ∷ rs) = r ∷ pw-map⁻ f g rs
 
