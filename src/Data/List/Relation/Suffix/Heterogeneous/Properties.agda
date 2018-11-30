@@ -11,7 +11,7 @@ open import Relation.Nullary using (Dec; yes; no)
 open import Relation.Unary as U using (Pred)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary using (REL; Rel; Trans; Antisym; _⇒_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl; subst)
+open import Relation.Binary.PropositionalEquality as P using (_≡_; refl; sym; subst)
 open import Data.Nat as N using (suc; _+_; _≤_; _<_)
 open import Data.List as List using (List; []; _∷_; _++_; length; filter; replicate; reverse)
 open import Data.List.Relation.Pointwise as Pw using (Pointwise; []; _∷_)
@@ -84,9 +84,17 @@ module _ {a b c r s t} {A : Set a} {B : Set b} {C : Set c}
   trans rs⇒t (here rs)    (there ssuf)    = there (trans rs⇒t (here rs) ssuf)
   trans rs⇒t (there rsuf) ssuf            = trans rs⇒t rsuf (tail ssuf)
 
--- module _ {a b e r s t} {A : Set a} {B : Set b}
---          {R : REL A B r} {S : REL B A s} {E : REL A B e} where
---   antisym : Antisym R S E → Antisym (Suffix R) (Suffix S) (Pointwise E)
+module _ {a b e r s} {A : Set a} {B : Set b}
+         {R : REL A B r} {S : REL B A s} {E : REL A B e} where
+
+  private
+    pw-antisym : Antisym R S E → Antisym (Pointwise R) (Pointwise S) (Pointwise E)
+    pw-antisym antisym []       []       = []
+    pw-antisym antisym (r ∷ rs) (s ∷ ss) = antisym r s ∷ pw-antisym antisym rs ss
+
+  antisym : Antisym R S E → Antisym (Suffix R) (Suffix S) (Pointwise E)
+  antisym rs⇒e rsuf ssuf = pw-antisym rs⇒e (toPointwise eq rsuf) (toPointwise (sym eq) ssuf)
+    where eq = ℕₚ.≤-antisym (length-mono-Suffix-≤ rsuf) (length-mono-Suffix-≤ ssuf)
 
 ------------------------------------------------------------------------
 -- _++_
