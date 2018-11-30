@@ -246,7 +246,7 @@ Other major changes
 * Added new modules `Data.List.Relation.Prefix.Heterogeneous(.Properties)`
 
 * Added new modules `Data.List.Relation.Split` and
-  `Data.List.Relation.Split.(Properties/Setoid)`.
+  `Data.List.Relation.Split.(Setoid/).Properties`.
 
 * Added new module `Data.Vec.Any.Properties`
 
@@ -536,9 +536,10 @@ Other minor additions
   wlog : Total _R_ → Symmetric Q → (∀ a b → a R b → Q a b) → ∀ a b → Q a b
   ```
 
-* Added new definition to `Relation.Binary.Core`:
+* Added new definitions to `Relation.Binary.Core`:
   ```agda
   Antisym R S E = ∀ {i j} → R i j → S j i → E i j
+  Conn P Q = ∀ x y → P x y ⊎ Q y x
   ```
 
 * Added new proofs to `Relation.Binary.Lattice`:

@@ -4,7 +4,7 @@
 -- List-splitting using a setoid
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary using (Setoid)
 

@@ -10,7 +10,7 @@ module Data.List.Relation.Split.Properties where
 
 open import Data.Nat
 open import Data.Nat.Properties using (+-suc)
-open import Data.List.Base as List using (List; []; _∷_)
+open import Data.List.Base as List using (List; []; _∷_; filter)
 open import Data.List.Properties using (reverse-involutive)
 open import Data.List.Relation.Split
 open import Function
@@ -46,29 +46,37 @@ module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
   disjoint []         sp₂ = sp₂
   disjoint (l ∷ˡ sp₁) sp₂ = l ∷ˡ disjoint sp₁ sp₂
 
+module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
+         {L : REL A B l} {R : REL A C r}
+         {d e f} {D : Set d} {E : Set e} {F : Set f}
+         (f : D → A) (g : E → B) (h : F → C)
+         where
+
 -- map
 
-  map⁺ : ∀ {d e f} {D : Set d} {E : Set e} {F : Set f} {as l r}
-         (f : D → A) (g : E → B) (h : F → C) →
+  map⁺ : ∀ {as l r} →
          Split (λ a b → L (f a) (g b)) (λ a c → R (f a) (h c)) as l r →
          Split L R (List.map f as) (List.map g l) (List.map h r)
-  map⁺ f g h []        = []
-  map⁺ f g h (l ∷ˡ sp) = l ∷ˡ map⁺ f g h sp
-  map⁺ f g h (r ∷ʳ sp) = r ∷ʳ map⁺ f g h sp
+  map⁺ []        = []
+  map⁺ (l ∷ˡ sp) = l ∷ˡ map⁺ sp
+  map⁺ (r ∷ʳ sp) = r ∷ʳ map⁺ sp
 
-  map⁻ : ∀ {d e f} {D : Set d} {E : Set e} {F : Set f} {as l r}
-         (f : D → A) (g : E → B) (h : F → C) →
+  map⁻ : ∀ {as l r} →
          Split L R (List.map f as) (List.map g l) (List.map h r) →
          Split (λ a b → L (f a) (g b)) (λ a c → R (f a) (h c)) as l r
-  map⁻ {as = []}    {[]}    {[]}    f g h []        = []
-  map⁻ {as = _ ∷ _} {[]}    {_ ∷ _} f g h (r ∷ʳ sp) = r ∷ʳ map⁻ f g h sp
-  map⁻ {as = _ ∷ _} {_ ∷ _} {[]}    f g h (l ∷ˡ sp) = l ∷ˡ map⁻ f g h sp
-  map⁻ {as = _ ∷ _} {_ ∷ _} {_ ∷ _} f g h (l ∷ˡ sp) = l ∷ˡ map⁻ f g h sp
-  map⁻ {as = _ ∷ _} {_ ∷ _} {_ ∷ _} f g h (r ∷ʳ sp) = r ∷ʳ map⁻ f g h sp
+  map⁻ {[]}    {[]}    {[]}    []        = []
+  map⁻ {_ ∷ _} {[]}    {_ ∷ _} (r ∷ʳ sp) = r ∷ʳ map⁻ sp
+  map⁻ {_ ∷ _} {_ ∷ _} {[]}    (l ∷ˡ sp) = l ∷ˡ map⁻ sp
+  map⁻ {_ ∷ _} {_ ∷ _} {_ ∷ _} (l ∷ˡ sp) = l ∷ˡ map⁻ sp
+  map⁻ {_ ∷ _} {_ ∷ _} {_ ∷ _} (r ∷ʳ sp) = r ∷ʳ map⁻ sp
   -- impossible cases needed until 2.6.0
-  map⁻ {as = []} {_} {_ ∷ _} f g h ()
-  map⁻ {as = []} {_ ∷ _} {_} f g h ()
-  map⁻ {as = _ ∷ _} {[]} {[]} f g h ()
+  map⁻ {[]} {_} {_ ∷ _} ()
+  map⁻ {[]} {_ ∷ _} {_} ()
+  map⁻ {_ ∷ _} {[]} {[]} ()
+
+module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
+         {L : REL A B l} {R : REL A C r}
+         where
 
 -- reverse
 
@@ -88,4 +96,3 @@ module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
   ... | sp′ rewrite reverse-involutive as
                   | reverse-involutive l
                   | reverse-involutive r = sp′
-
