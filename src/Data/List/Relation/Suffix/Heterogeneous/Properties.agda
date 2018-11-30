@@ -35,19 +35,31 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
       foldl rs′ []       = rs′
       foldl rs′ (r ∷ rs) = foldl (r ∷ rs′) rs
 
-  fromPrefix : ∀ {as bs} → Prefix R as bs → Suffix R (reverse as) (reverse bs)
-  fromPrefix {as} {bs} p with Prefix.toView p
+  fromPrefix⁺ : ∀ {as bs} → Prefix R as bs → Suffix R (reverse as) (reverse bs)
+  fromPrefix⁺ {as} {bs} p with Prefix.toView p
   ... | Prefix._++_ {cs} rs ds =
     subst (Suffix R (reverse as))
       (sym (Listₚ.reverse-++-commute cs ds))
       (Suffix.fromView (reverse ds Suffix.++ pw-reverse rs))
 
-  toPrefix : ∀ {as bs} → Suffix R as bs → Prefix R (reverse as) (reverse bs)
-  toPrefix {as} {bs} s with Suffix.toView s
+  fromPrefix⁻ : ∀ {as bs} → Prefix R (reverse as) (reverse bs) → Suffix R as bs
+  fromPrefix⁻ pre = P.subst₂ (Suffix R)
+    (Listₚ.reverse-involutive _)
+    (Listₚ.reverse-involutive _)
+    (fromPrefix⁺ pre)
+
+  toPrefix⁺ : ∀ {as bs} → Suffix R as bs → Prefix R (reverse as) (reverse bs)
+  toPrefix⁺ {as} {bs} s with Suffix.toView s
   ... | Suffix._++_ cs {ds} rs =
     subst (Prefix R (reverse as))
       (sym (Listₚ.reverse-++-commute cs ds))
       (Prefix.fromView (pw-reverse rs Prefix.++ reverse cs))
+
+  toPrefix⁻ : ∀ {as bs} → Suffix R (reverse as) (reverse bs) → Prefix R as bs
+  toPrefix⁻ suf = P.subst₂ (Prefix R)
+    (Listₚ.reverse-involutive _)
+    (Listₚ.reverse-involutive _)
+    (toPrefix⁺ suf)
 
 ------------------------------------------------------------------------
 -- length
