@@ -6,17 +6,48 @@
 
 module Data.List.Relation.Suffix.Heterogeneous.Properties where
 
+open import Function using (flip)
 open import Relation.Nullary using (Dec; yes; no)
 open import Relation.Unary as U using (Pred)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary using (REL; Rel; Trans; Antisym; _⇒_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality as P using (_≡_; refl; subst)
 open import Data.Nat as N using (suc; _+_; _≤_; _<_)
-open import Data.List as List using (List; []; _∷_; _++_; length; filter; replicate)
+open import Data.List as List using (List; []; _∷_; _++_; length; filter; replicate; reverse)
 open import Data.List.Relation.Pointwise as Pw using (Pointwise; []; _∷_)
-open import Data.List.Relation.Suffix.Heterogeneous using (Suffix; here; there; tail)
+open import Data.List.Relation.Suffix.Heterogeneous as Suffix using (Suffix; here; there; tail)
+open import Data.List.Relation.Prefix.Heterogeneous as Prefix using (Prefix)
 import Data.Nat.Properties as ℕₚ
 import Data.List.Properties as Listₚ
+
+------------------------------------------------------------------------
+-- reverse (convert to and from Prefix)
+
+module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+
+  -- TODO: move this lemma (and others) into Pointwise?
+  private
+    pw-reverse : ∀ {as bs} → Pointwise R as bs → Pointwise R (reverse as) (reverse bs)
+    pw-reverse = foldl []
+      where
+      foldl : ∀ {as bs as′ bs′} → Pointwise R as′ bs′ → Pointwise R as bs →
+              Pointwise R (List.foldl (flip _∷_) as′ as) (List.foldl (flip _∷_) bs′ bs)
+      foldl rs′ []       = rs′
+      foldl rs′ (r ∷ rs) = foldl (r ∷ rs′) rs
+
+  fromPrefix : ∀ {as bs} → Prefix R as bs → Suffix R (reverse as) (reverse bs)
+  fromPrefix {as} {bs} p with Prefix.toView p
+  ... | Prefix._++_ {cs} rs ds =
+    subst (Suffix R (reverse as))
+      (P.sym (Listₚ.reverse-++-commute cs ds))
+      (Suffix.fromView (reverse ds Suffix.++ pw-reverse rs))
+
+  toPrefix : ∀ {as bs} → Suffix R as bs → Prefix R (reverse as) (reverse bs)
+  toPrefix {as} {bs} s with Suffix.toView s
+  ... | Suffix._++_ cs {ds} rs =
+    subst (Prefix R (reverse as))
+      (P.sym (Listₚ.reverse-++-commute cs ds))
+      (Prefix.fromView (pw-reverse rs Prefix.++ reverse cs))
 
 ------------------------------------------------------------------------
 -- length
@@ -87,7 +118,6 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 module _ {a b c d r} {A : Set a} {B : Set b} {C : Set c} {D : Set d}
          {R : REL C D r} where
 
-  -- TODO: move this lemma into Pointwise?
   private
     pw-map⁺ : ∀ {as bs} (f : A → C) (g : B → D) →
               Pointwise (λ a b → R (f a) (g b)) as bs →
