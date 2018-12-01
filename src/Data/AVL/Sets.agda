@@ -27,7 +27,7 @@ open import Level
 private
   open module S = AVL isStrictTotalOrder
     public using () renaming (Tree to ⟨Set⟩')
-  ⟨Set⟩ = ⟨Set⟩' (S.const ⊤)
+⟨Set⟩ = ⟨Set⟩' (S.const ⊤)
 
 -- Repackaged functions.
 
