@@ -6,17 +6,19 @@
 
 {-# OPTIONS --without-K #-}
 
-module Data.Vec.Categorical {a n} where
-
 open import Category.Applicative using (RawApplicative)
 open import Category.Applicative.Indexed using (Morphism)
 open import Category.Functor as Fun using (RawFunctor)
 import Function.Identity.Categorical as Id
 open import Category.Monad using (RawMonad)
 open import Data.Fin using (Fin)
+open import Data.Nat using (ℕ)
 open import Data.Vec as Vec hiding (_⊛_)
 open import Data.Vec.Properties
 open import Function
+open import Level
+
+module Data.Vec.Categorical {a : Level} {n : ℕ} where
 
 ------------------------------------------------------------------------
 -- Functor and applicative

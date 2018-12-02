@@ -45,7 +45,7 @@ Please use WellFounded instead."
 ------------------------------------------------------------------------
 -- Well-founded induction for the subset of accessible elements:
 
-module Some {a lt} {A : Set a} {_<_ : Rel A lt} {ℓ} where
+module Some {a lt} {A : Set a} {_<_ : Rel A lt} {ℓ : Level} where
 
   wfRecBuilder : SubsetRecursorBuilder (Acc _<_) (WfRec _<_ {ℓ = ℓ})
   wfRecBuilder P f x (acc rs) = λ y y<x →
@@ -65,7 +65,7 @@ module Some {a lt} {A : Set a} {_<_ : Rel A lt} {ℓ} where
 -- accessible:
 
 module All {a lt} {A : Set a} {_<_ : Rel A lt}
-           (wf : WellFounded _<_) ℓ where
+           (wf : WellFounded _<_) (ℓ : Level) where
 
   wfRecBuilder : RecursorBuilder (WfRec _<_ {ℓ = ℓ})
   wfRecBuilder P f x = Some.wfRecBuilder P f x (wf x)

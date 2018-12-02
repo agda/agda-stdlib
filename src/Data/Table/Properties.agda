@@ -12,7 +12,7 @@ open import Data.Table
 open import Data.Table.Relation.Equality
 
 open import Data.Bool using (true; false; if_then_else_)
-open import Data.Nat using (zero; suc)
+open import Data.Nat using (ℕ; zero; suc)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin using (Fin; suc; zero; _≟_; punchIn)
 import Data.Fin.Properties as FP
@@ -98,7 +98,7 @@ module _ {a} {A : Set a} where
 ------------------------------------------------------------------------
 -- There exists an isomorphism between tables and vectors.
 
-module _ {a n} {A : Set a} where
+module _ {a} {n : ℕ} {A : Set a} where
 
   ↔Vec : Inverse (≡-setoid A n) (P.setoid (Vec A n))
   ↔Vec = record

@@ -27,6 +27,7 @@ open import Data.Vec as Vec using (Vec; []; _∷_)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Function
 open import Induction.Nat using (<′-rec; <′-Rec)
+open import Level using (Level)
 open import Relation.Nullary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
@@ -84,7 +85,7 @@ private
 ------------------------------------------------------------------------
 -- Higher-order functions
 
-module _ {ℓ e} {N : Set ℓ} {E : Set e} {t} where
+module _ {ℓ e} {N : Set ℓ} {E : Set e} {t : Level} where
 
 -- "Fold right".
 

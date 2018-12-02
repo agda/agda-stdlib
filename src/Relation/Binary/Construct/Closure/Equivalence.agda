@@ -52,7 +52,7 @@ module _ {a ℓ} {A : Set a} (_∼_ : Rel A ℓ) where
 ------------------------------------------------------------------------
 -- Operations
 
-module _ {a ℓ₁ ℓ₂} {A : Set a} where
+module _ {a ℓ₁ ℓ₂ : _} {A : Set a} where
 
   -- A generalised variant of map which allows the index type to change.
 

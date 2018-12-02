@@ -11,7 +11,7 @@ module Relation.Binary.Construct.Always where
 open import Relation.Binary
 open import Relation.Binary.Construct.Constant using (Const)
 open import Data.Unit using (⊤; tt)
-open import Level using (Lift; lift)
+open import Level using (Level; Lift; lift)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -22,7 +22,7 @@ Always = Const (Lift _ ⊤)
 ------------------------------------------------------------------------
 -- Properties
 
-module _ {a} (A : Set a) ℓ where
+module _ {a} (A : Set a) (ℓ : Level) where
 
   refl : Reflexive {ℓ = ℓ} {A} Always
   refl = lift tt

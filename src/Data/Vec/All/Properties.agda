@@ -10,6 +10,7 @@ module Data.Vec.All.Properties where
 
 open import Data.List using ([]; _∷_)
 open import Data.List.All as List using ([]; _∷_)
+open import Data.Nat using (ℕ)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Data.Vec as Vec
 open import Data.Vec.All as All using (All; []; _∷_)
@@ -43,7 +44,7 @@ module _ {a b p q} {A : Set a} {B : Set b} {f : A → B}
 ------------------------------------------------------------------------
 -- _++_
 
-module _ {a n p} {A : Set a} {P : Pred A p} where
+module _ {a} {n : ℕ} {p} {A : Set a} {P : Pred A p} where
 
   ++⁺ : ∀ {m} {xs : Vec A m} {ys : Vec A n} →
         All P xs → All P ys → All P (xs ++ ys)
@@ -84,7 +85,7 @@ module _ {a n p} {A : Set a} {P : Pred A p} where
 ------------------------------------------------------------------------
 -- concat
 
-module _ {a m p} {A : Set a} {P : Pred A p} where
+module _ {a} {m : ℕ} {p} {A : Set a} {P : Pred A p} where
 
   concat⁺ : ∀ {n} {xss : Vec (Vec A m) n} →
             All (All P) xss → All P (concat xss)

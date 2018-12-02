@@ -50,7 +50,7 @@ module _ {a b} {A : Set a} {B : A → Set b} where
 ------------------------------------------------------------------------
 -- Properties related to "relatedness"
 
-module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a₂} where
+module _ {a₁ a₂ b₁ b₁′ b₂ b₂′ : _} {A₁ : Set a₁} {A₂ : Set a₂} where
 
   inverse : {B₁ : IndexedSetoid A₁ b₁ b₁′} (B₂ : IndexedSetoid A₂ b₂ b₂′) →
     (A₁↔A₂ : A₁ ↔ A₂) →

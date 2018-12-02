@@ -44,7 +44,7 @@ open CommutativeMonoid M
 open import Algebra.FunctionProperties _≈_
 open import Relation.Binary.EqReasoning setoid
 
-module _ {n} where
+module _ {n : ℕ} where
   open B.Setoid (TE.setoid setoid n) public
     using ()
     renaming (_≈_ to _≋_)

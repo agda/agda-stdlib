@@ -30,6 +30,6 @@ setoid S n = record
 ≡-setoid : ∀ {a} → Set a → ℕ → Setoid _ _
 ≡-setoid A = setoid (P.setoid A)
 
-module _ {a} {A : Set a} {n} where
+module _ {a} {A : Set a} {n : ℕ} where
   open Setoid (≡-setoid A n) public
     using () renaming (_≈_ to _≗_)

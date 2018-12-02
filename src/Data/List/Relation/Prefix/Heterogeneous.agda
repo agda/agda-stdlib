@@ -23,7 +23,7 @@ module _ {a b r} {A : Set a} {B : Set b} (R : REL A B r) where
   data PrefixView (as : List A) : List B → Set (a ⊔ b ⊔ r) where
     _++_ : ∀ {cs} → Pointwise R as cs → ∀ ds → PrefixView as (cs List.++ ds)
 
-module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} {a b as bs} where
+module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} {a : A} {b : B} {as : List A} {bs : List B} where
 
   head : Prefix R (a ∷ as) (b ∷ bs) → R a b
   head (r ∷ rs) = r

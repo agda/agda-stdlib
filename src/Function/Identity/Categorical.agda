@@ -6,13 +6,14 @@
 
 {-# OPTIONS --without-K #-}
 
-module Function.Identity.Categorical {ℓ} where
-
 open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
 open import Category.Comonad
 open import Function
+open import Level
+
+module Function.Identity.Categorical {ℓ : Level} where
 
 Identity : Set ℓ → Set ℓ
 Identity A = A

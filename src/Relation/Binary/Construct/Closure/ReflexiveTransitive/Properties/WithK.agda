@@ -12,6 +12,7 @@ module
   where
 
 open import Function
+open import Level using (Level)
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 open import Relation.Binary.PropositionalEquality
@@ -19,7 +20,7 @@ open import Relation.Binary.PropositionalEquality
 ------------------------------------------------------------------------
 -- Equality
 
-module _ {i t} {I : Set i} {T : Rel I t} {i j k} {x y : T i j} {xs ys}
+module _ {i t} {I : Set i} {T : Rel I t} {i j k} {x y : T i j} {xs ys : Star T j k}
   where
 
   ◅-injectiveˡ : (Star T i k ∋ x ◅ xs) ≡ y ◅ ys → x ≡ y

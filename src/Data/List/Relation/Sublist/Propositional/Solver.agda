@@ -43,7 +43,7 @@ data TList {a} (n : ℕ) (A : Set a) : Set a where
 RList : ∀ {a} n → Set a → Set a
 RList n A = List (Item n A)
 
-module _ {n a} {A : Set a} where
+module _ {n : ℕ} {a} {A : Set a} where
 
 -- Semantics
   ⟦_⟧I : Item n A → Vec (List A) n → List A

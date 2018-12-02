@@ -129,7 +129,7 @@ private
   fg-cong (P.refl , ∼) = (P.refl , F.cong g ∼)
 
 
-module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a₂} where
+module _ {a₁ a₂ b₁ b₁′ b₂ b₂′ : _} {A₁ : Set a₁} {A₂ : Set a₂} where
 
   equivalence : {B₁ : IndexedSetoid A₁ b₁ b₁′} {B₂ : IndexedSetoid A₂ b₂ b₂′}
     (A₁⇔A₂ : A₁ ⇔ A₂) →

@@ -30,7 +30,7 @@ data Any {p} (P : A → Set p) : ∀ {n} → Vec A n → Set (a ⊔ p) where
 ------------------------------------------------------------------------
 -- Operations on Any
 
-module _ {p} {P : A → Set p} {n x} {xs : Vec A n} where
+module _ {p} {P : A → Set p} {n} {x : A} {xs : Vec A n} where
 
 -- If the tail does not satisfy the predicate, then the head will.
 

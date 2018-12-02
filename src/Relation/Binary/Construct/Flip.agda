@@ -14,6 +14,7 @@ module Relation.Binary.Construct.Flip where
 
 open import Function
 open import Data.Product
+open import Level using (Level)
 
 ------------------------------------------------------------------------
 -- Properties
@@ -142,7 +143,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {≈ : Rel A ℓ₁} {∼ : Rel A ℓ₂}
     ; compare       = trichotomous ≈ ∼ O.compare
     } where module O = IsStrictTotalOrder O
 
-module _ {a ℓ} where
+module _ {a ℓ : Level} where
 
   setoid : Setoid a ℓ → Setoid a ℓ
   setoid S = record
@@ -158,7 +159,7 @@ module _ {a ℓ} where
     }
     where module S = DecSetoid S
 
-module _ {a ℓ₁ ℓ₂} where
+module _ {a ℓ₁ ℓ₂ : Level} where
 
   preorder : Preorder a ℓ₁ ℓ₂ → Preorder a ℓ₁ ℓ₂
   preorder O = record

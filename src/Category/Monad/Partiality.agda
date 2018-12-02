@@ -16,7 +16,7 @@ open import Data.Product as Prod hiding (map)
 open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Function
 open import Function.Equivalence using (_⇔_; equivalence)
-open import Level using (_⊔_)
+open import Level using (Level; _⊔_)
 open import Relation.Binary as B hiding (Rel)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
@@ -559,7 +559,7 @@ module _ {ℓ} {A B : Set ℓ} {_∼_ : B → B → Set ℓ} where
 -- The monad can be awkward to use, due to the limitations of guarded
 -- coinduction. The following code provides a (limited) workaround.
 
-module Workaround {a} where
+module Workaround {a : Level} where
 
   infixl 1 _>>=_
 
@@ -628,7 +628,7 @@ module Workaround {a} where
 ------------------------------------------------------------------------
 -- An alternative, but equivalent, formulation of equality/ordering
 
-module AlternativeEquality {a ℓ} where
+module AlternativeEquality {a ℓ : Level} where
 
   private
 

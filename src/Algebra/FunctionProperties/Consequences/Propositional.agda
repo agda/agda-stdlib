@@ -37,7 +37,7 @@ open FP⇒ public
 ------------------------------------------------------------------------
 -- Group-like structures
 
-module _ {_•_ _⁻¹ ε} where
+module _ {_•_ : A → A → A} {_⁻¹ : A → A} {ε : A} where
 
   assoc+id+invʳ⇒invˡ-unique : Associative _•_ → Identity ε _•_ →
                               RightInverse ε _⁻¹ _•_ →
@@ -52,7 +52,7 @@ module _ {_•_ _⁻¹ ε} where
 ------------------------------------------------------------------------
 -- Ring-like structures
 
-module _ {_+_ _*_ -_ 0#} where
+module _ {_+_ _*_ : A → A → A} { -_ : A → A} {0# : A} where
 
   assoc+distribʳ+idʳ+invʳ⇒zeˡ : Associative _+_ → _*_ DistributesOverʳ _+_ →
                                 RightIdentity 0# _+_ → RightInverse 0# -_ _+_ →

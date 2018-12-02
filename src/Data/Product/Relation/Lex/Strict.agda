@@ -24,7 +24,7 @@ open import Relation.Nullary.Sum
 open import Relation.Binary
 open import Relation.Binary.Consequences
 
-module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
+module _ {a₁ a₂ ℓ₁ ℓ₂ : _} {A₁ : Set a₁} {A₂ : Set a₂} where
 
 ------------------------------------------------------------------------
 -- A lexicographic ordering over products
@@ -231,7 +231,7 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
 ------------------------------------------------------------------------
 -- "Packages" can also be combined.
 
-module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} where
+module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level} where
 
   ×-preorder : Preorder ℓ₁ ℓ₂ _ → Preorder ℓ₃ ℓ₄ _ → Preorder _ _ _
   ×-preorder p₁ p₂ = record

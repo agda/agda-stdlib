@@ -29,7 +29,7 @@ data Any {p} (P : A → Set p) : List A → Set (a ⊔ p) where
 ------------------------------------------------------------------------
 -- Operations on Any
 
-module _ {p} {P : A → Set p} {x xs} where
+module _ {p} {P : A → Set p} {x : A} {xs : List A} where
 
   head : ¬ Any P xs → Any P (x ∷ xs) → P x
   head ¬pxs (here px)   = px
@@ -53,7 +53,7 @@ satisfied : ∀ {p} {P : A → Set p} {xs} → Any P xs → ∃ P
 satisfied (here px) = _ , px
 satisfied (there pxs) = satisfied pxs
 
-module _ {p} {P : A → Set p} {x xs} where
+module _ {p} {P : A → Set p} {x : A} {xs : List A} where
 
   toSum : Any P (x ∷ xs) → P x ⊎ Any P xs
   toSum (here px)   = inj₁ px

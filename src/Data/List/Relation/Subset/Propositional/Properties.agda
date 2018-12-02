@@ -89,7 +89,7 @@ module _ {a p} {A : Set a} {P : A → Set p} {xs ys : List A} where
 ------------------------------------------------------------------------
 -- map
 
-module _ {a b} {A : Set a} {B : Set b} (f : A → B) {xs ys} where
+module _ {a b} {A : Set a} {B : Set b} (f : A → B) {xs ys : List A} where
 
   map-mono : xs ⊆ ys → map f xs ⊆ map f ys
   map-mono xs⊆ys =
@@ -122,7 +122,7 @@ module _ {a} {A : Set a} {xss yss : List (List A)} where
 ------------------------------------------------------------------------
 -- _>>=_
 
-module _ {ℓ} {A B : Set ℓ} (f g : A → List B) {xs ys} where
+module _ {ℓ} {A B : Set ℓ} (f g : A → List B) {xs ys : List A} where
 
   >>=-mono : xs ⊆ ys → (∀ {x} → f x ⊆ g x) → (xs >>= f) ⊆ (ys >>= g)
   >>=-mono xs⊆ys f⊆g =
@@ -155,7 +155,7 @@ module _ {ℓ} {A B : Set ℓ} {xs₁ ys₁ : List A} {xs₂ ys₂ : List B} whe
 ------------------------------------------------------------------------
 -- any
 
-module _ {a} {A : Set a} (p : A → Bool) {xs ys} where
+module _ {a} {A : Set a} (p : A → Bool) {xs ys : List A} where
 
   any-mono : xs ⊆ ys → T (any p xs) → T (any p ys)
   any-mono xs⊆ys =

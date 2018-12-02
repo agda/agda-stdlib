@@ -50,7 +50,7 @@ module _ {a} {A : Set a} where
 ----------------------------------------------------------------------
 -- Subset properties
 
-module _ {a ℓ} {A : Set a} where
+module _ {a ℓ : _} {A : Set a} where
 
   ∅-⊆ : (P : Pred A ℓ) → ∅ ⊆ P
   ∅-⊆ P ()

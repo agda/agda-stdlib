@@ -26,14 +26,14 @@ open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; _↔̇_; Inverse; inverse)
-open import Level using (_⊔_)
+open import Level using (Level; _⊔_)
 open import Relation.Binary
 import Relation.Binary.Construct.FromRel as Ind
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
 open import Relation.Nullary.Negation
 
-module ¬¬Monad {p} where
+module ¬¬Monad {p : Level} where
   open RawMonad (¬¬-Monad {p}) public
 open ¬¬Monad  -- we don't want the RawMonad content to be opened publicly
 

@@ -14,6 +14,7 @@ open import Data.Fin.Substitution.Lemmas
 open import Data.Nat
 open import Data.Fin using (Fin)
 open import Data.Vec
+import Level
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl; sym; cong; cong₂)
 open PropEq.≡-Reasoning
@@ -71,7 +72,7 @@ tmLemmas = record
   ; /✶-↑✶     = Lemma./✶-↑✶
   }
   where
-  module Lemma {T₁ T₂} {lift₁ : Lift T₁ Tm} {lift₂ : Lift T₂ Tm} where
+  module Lemma {T₁ T₂} {lift₁ : Lift {Level.zero} T₁ Tm} {lift₂ : Lift {Level.zero} T₂ Tm} where
 
     open Lifted lift₁ using () renaming (_↑✶_ to _↑✶₁_; _/✶_ to _/✶₁_)
     open Lifted lift₂ using () renaming (_↑✶_ to _↑✶₂_; _/✶_ to _/✶₂_)

@@ -72,7 +72,7 @@ module _ {_•_ : Op₂ A} (comm : Commutative _•_) {e : A} where
 ------------------------------------------------------------------------
 -- Group-like structures
 
-module _ {_•_ : Op₂ A} {_⁻¹ : Op₁ A} {e} (comm : Commutative _•_) where
+module _ {_•_ : Op₂ A} {_⁻¹ : Op₁ A} {e : A} (comm : Commutative _•_) where
 
   comm+invˡ⇒invʳ : LeftInverse e _⁻¹ _•_ → RightInverse e _⁻¹ _•_
   comm+invˡ⇒invʳ invˡ x = begin
@@ -86,7 +86,7 @@ module _ {_•_ : Op₂ A} {_⁻¹ : Op₁ A} {e} (comm : Commutative _•_) whe
     x • (x ⁻¹) ≈⟨ invʳ x ⟩
     e          ∎
 
-module _ {_•_ : Op₂ A} {_⁻¹ : Op₁ A} {e} (cong : Congruent₂ _•_) where
+module _ {_•_ : Op₂ A} {_⁻¹ : Op₁ A} {e : A} (cong : Congruent₂ _•_) where
 
   assoc+id+invʳ⇒invˡ-unique : Associative _•_ →
                               Identity e _•_ → RightInverse e _⁻¹ _•_ →

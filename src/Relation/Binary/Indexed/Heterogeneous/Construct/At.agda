@@ -40,7 +40,7 @@ module _ {a i} {I : Set i} {A : I → Set a} where
 ------------------------------------------------------------------------
 -- Packages
 
-module _ {a i} {I : Set i} where
+module _ {a i : _} {I : Set i} where
 
   setoid : ∀ {ℓ} → IndexedSetoid I a ℓ → I → Setoid a ℓ
   setoid S index = record
@@ -62,7 +62,7 @@ module _ {a i} {I : Set i} where
 ------------------------------------------------------------------------
 -- Some useful shorthand infix notation
 
-module _ {a i} {I : Set i} where
+module _ {a i : _} {I : Set i} where
 
   _atₛ_ : ∀ {ℓ} → IndexedSetoid I a ℓ → I → Setoid a ℓ
   _atₛ_ = setoid

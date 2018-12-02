@@ -92,7 +92,7 @@ module Map where
 ------------------------------------------------------------------------
 -- Plain morphisms
 
-module PlainMorphism {i o c r} {I : Set i} {O : Set o} where
+module PlainMorphism {i o c r : _} {I : Set i} {O : Set o} where
 
   open Data.Container.Indexed.PlainMorphism
 

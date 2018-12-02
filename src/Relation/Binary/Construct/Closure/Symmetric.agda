@@ -19,7 +19,7 @@ open Sum public using () renaming (inj₁ to fwd; inj₂ to bwd)
 SymClosure : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Rel A ℓ
 SymClosure _∼_ a b = a ∼ b ⊎ b ∼ a
 
-module _ {a ℓ} {A : Set a} where
+module _ {a ℓ : _} {A : Set a} where
 
   -- Symmetric closures are symmetric.
 

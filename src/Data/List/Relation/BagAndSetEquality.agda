@@ -105,7 +105,7 @@ module ⊆-Reasoning where
 ------------------------------------------------------------------------
 -- _∷_
 
-module _ {a k} {A : Set a} {x y : A} {xs ys} where
+module _ {a} {k : Kind} {A : Set a} {x y : A} {xs ys : List A} where
 
   ∷-cong : x ≡ y → xs ∼[ k ] ys → x ∷ xs ∼[ k ] y ∷ ys
   ∷-cong refl xs≈ys {y} =
@@ -118,7 +118,7 @@ module _ {a k} {A : Set a} {x y : A} {xs ys} where
 ------------------------------------------------------------------------
 -- map
 
-module _ {ℓ k} {A B : Set ℓ} {f g : A → B} {xs ys} where
+module _ {ℓ} {k : Kind} {A B : Set ℓ} {f g : A → B} {xs ys : List A} where
 
   map-cong : f ≗ g → xs ∼[ k ] ys → map f xs ∼[ k ] map g ys
   map-cong f≗g xs≈ys {x} =
@@ -142,7 +142,7 @@ module _ {ℓ k} {A B : Set ℓ} {f g : A → B} {xs ys} where
 ------------------------------------------------------------------------
 -- _++_
 
-module _ {a k} {A : Set a} {xs₁ xs₂ ys₁ ys₂ : List A} where
+module _ {a} {k : Kind} {A : Set a} {xs₁ xs₂ ys₁ ys₂ : List A} where
 
   ++-cong : xs₁ ∼[ k ] xs₂ → ys₁ ∼[ k ] ys₂ →
             xs₁ ++ ys₁ ∼[ k ] xs₂ ++ ys₂
@@ -156,7 +156,7 @@ module _ {a k} {A : Set a} {xs₁ xs₂ ys₁ ys₂ : List A} where
 ------------------------------------------------------------------------
 -- concat
 
-module _ {a k} {A : Set a} {xss yss : List (List A)} where
+module _ {a} {k : Kind} {A : Set a} {xss yss : List (List A)} where
 
   concat-cong : xss ∼[ k ] yss → concat xss ∼[ k ] concat yss
   concat-cong xss≈yss {x} =
@@ -169,7 +169,7 @@ module _ {a k} {A : Set a} {xss yss : List (List A)} where
 ------------------------------------------------------------------------
 -- _>>=_
 
-module _ {ℓ k} {A B : Set ℓ} {xs ys} {f g : A → List B} where
+module _ {ℓ} {k : Kind} {A B : Set ℓ} {xs ys : List A} {f g : A → List B} where
 
   >>=-cong : xs ∼[ k ] ys → (∀ x → f x ∼[ k ] g x) →
              (xs >>= f) ∼[ k ] (ys >>= g)
@@ -183,7 +183,7 @@ module _ {ℓ k} {A B : Set ℓ} {xs ys} {f g : A → List B} where
 ------------------------------------------------------------------------
 -- _⊛_
 
-module _ {ℓ k} {A B : Set ℓ} {fs gs : List (A → B)} {xs ys} where
+module _ {ℓ} {k : Kind} {A B : Set ℓ} {fs gs : List (A → B)} {xs ys : List A} where
 
   ⊛-cong : fs ∼[ k ] gs → xs ∼[ k ] ys → (fs ⊛ xs) ∼[ k ] (gs ⊛ ys)
   ⊛-cong fs≈gs xs≈ys =
@@ -195,7 +195,7 @@ module _ {ℓ k} {A B : Set ℓ} {fs gs : List (A → B)} {xs ys} where
 ------------------------------------------------------------------------
 -- _⊗_
 
-module _ {ℓ k} {A B : Set ℓ} {xs₁ xs₂ : List A} {ys₁ ys₂ : List B} where
+module _ {ℓ} {k : Kind} {A B : Set ℓ} {xs₁ xs₂ : List A} {ys₁ ys₂ : List B} where
 
   ⊗-cong : xs₁ ∼[ k ] xs₂ → ys₁ ∼[ k ] ys₂ →
            (xs₁ ⊗ ys₁) ∼[ k ] (xs₂ ⊗ ys₂)

@@ -174,7 +174,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂} where
 ------------------------------------------------------------------------
 -- "Packages" can also be combined.
 
-module _ {a b c d e f} where
+module _ {a b c d e f : Level} where
 
   ⊎-<-preorder : Preorder a b c →
                  Preorder d e f →

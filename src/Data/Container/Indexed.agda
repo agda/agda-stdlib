@@ -104,7 +104,7 @@ module _ {i₁ i₂ o₁ o₂}
 
 -- Degenerate cases where no reindexing is performed.
 
-module _ {i o c r} {I : Set i} {O : Set o} where
+module _ {i o c r : _} {I : Set i} {O : Set o} where
 
   _⇒_ : B.Rel (Container I O c r) _
   C₁ ⇒ C₂ = C₁ ⇒[ ⟨id⟩ / ⟨id⟩ ] C₂
@@ -125,7 +125,7 @@ module _ {i o c r} {I : Set i} {O : Set o} where
 ⟪ m ⟫ X (c , k) = command m c , λ r₂ →
   P.subst X (coherent m) (k (response m r₂))
 
-module PlainMorphism {i o c r} {I : Set i} {O : Set o} where
+module PlainMorphism {i o c r : _} {I : Set i} {O : Set o} where
 
   -- Identity.
 

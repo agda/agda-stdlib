@@ -83,7 +83,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ------------------------------------------------------------------------
 -- Any is a congruence
 
-module _ {a k p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
+module _ {a} {k : Related.Kind} {p q : _} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 
   Any-cong : ∀ {xs ys : List A} →
              (∀ x → Related k (P x) (Q x)) →
@@ -522,7 +522,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ------------------------------------------------------------------------
 -- _∷_
 
-module _ {a p} {A : Set a} where
+module _ {a p : _} {A : Set a} where
 
   ∷↔ : ∀ (P : Pred A p) {x xs} → (P x ⊎ Any P xs) ↔ Any P (x ∷ xs)
   ∷↔ P {x} {xs} =

@@ -25,11 +25,12 @@ open import Function.Related
 open import Function.Surjection as Surj
   using (Surjection; _↠_; module Surjection)
 import Relation.Nullary.Decidable as Dec
+open import Level using (Level)
 open import Relation.Nullary.Product
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
-module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
+module _ {a₁ a₂ ℓ₁ ℓ₂ : Level} {A₁ : Set a₁} {A₂ : Set a₂} where
 
 ------------------------------------------------------------------------
 -- Pointwise lifting
@@ -183,7 +184,7 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
 ------------------------------------------------------------------------
 -- "Packages" can also be combined.
 
-module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} where
+module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level} where
 
   ×-preorder : Preorder ℓ₁ ℓ₂ _ → Preorder ℓ₃ ℓ₄ _ → Preorder _ _ _
   ×-preorder p₁ p₂ = record

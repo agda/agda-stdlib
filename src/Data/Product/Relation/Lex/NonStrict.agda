@@ -13,6 +13,7 @@ module Data.Product.Relation.Lex.NonStrict where
 
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum using (inj₁; inj₂)
+open import Level using (Level)
 open import Relation.Binary
 open import Relation.Binary.Consequences
 import Relation.Binary.Construct.NonStrictToStrict as Conv
@@ -20,7 +21,7 @@ open import Data.Product.Relation.Pointwise.NonDependent as Pointwise
   using (Pointwise)
 import Data.Product.Relation.Lex.Strict as Strict
 
-module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
+module _ {a₁ a₂ ℓ₁ ℓ₂ : _} {A₁ : Set a₁} {A₂ : Set a₂} where
 
 ------------------------------------------------------------------------
 -- A lexicographic ordering over products
@@ -151,7 +152,7 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
 ------------------------------------------------------------------------
 -- "Packages" can also be combined.
 
-module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} where
+module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level} where
 
   ×-poset : Poset ℓ₁ ℓ₂ _ → Poset ℓ₃ ℓ₄ _ → Poset _ _ _
   ×-poset p₁ p₂ = record

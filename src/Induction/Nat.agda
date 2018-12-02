@@ -17,7 +17,7 @@ open import Data.Product
 open import Data.Unit
 open import Induction
 open import Induction.WellFounded as WF
-open import Level using (Lift)
+open import Level using (Level; Lift)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary
 
@@ -66,7 +66,7 @@ mutual
   <′-wellFounded′ (suc n) .n ≤′-refl       = <′-wellFounded n
   <′-wellFounded′ (suc n)  m (≤′-step m<n) = <′-wellFounded′ n m m<n
 
-module _ {ℓ} where
+module _ {ℓ : Level} where
   open WF.All <′-wellFounded ℓ public
     renaming ( wfRecBuilder to <′-recBuilder
              ; wfRec        to <′-rec
@@ -82,7 +82,7 @@ module _ {ℓ} where
 <-wellFounded : WellFounded _<_
 <-wellFounded = Subrelation.wellFounded ≤⇒≤′ <′-wellFounded
 
-module _ {ℓ} where
+module _ {ℓ : Level} where
   open WF.All <-wellFounded ℓ public
     renaming ( wfRecBuilder to <-recBuilder
              ; wfRec        to <-rec
@@ -98,7 +98,7 @@ module _ {ℓ} where
 ≺-wellFounded : WellFounded _≺_
 ≺-wellFounded = Subrelation.wellFounded ≺⇒<′ <′-wellFounded
 
-module _ {ℓ} where
+module _ {ℓ : Level} where
   open WF.All ≺-wellFounded ℓ public
     renaming ( wfRecBuilder to ≺-recBuilder
              ; wfRec        to ≺-rec

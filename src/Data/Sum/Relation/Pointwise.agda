@@ -25,6 +25,7 @@ open import Function.LeftInverse as LeftInv
 open import Function.Related
 open import Function.Surjection as Surj
   using (Surjection; _↠_; module Surjection)
+open import Level using (Level)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
@@ -169,7 +170,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂} where
 ------------------------------------------------------------------------
 -- "Packages" can also be combined.
 
-module _ {a b c d} where
+module _ {a b c d : Level} where
 
   ⊎-setoid : Setoid a b → Setoid c d → Setoid _ _
   ⊎-setoid s₁ s₂ = record
@@ -188,7 +189,7 @@ module _ {a b c d} where
   _⊎ₛ_ : Setoid a b → Setoid c d → Setoid _ _
   _⊎ₛ_ = ⊎-setoid
 
-module _ {a b c d e f} where
+module _ {a b c d e f : Level} where
 
   ⊎-preorder : Preorder a b c → Preorder d e f → Preorder _ _ _
   ⊎-preorder p₁ p₂ = record
