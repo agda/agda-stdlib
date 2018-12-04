@@ -394,6 +394,13 @@ Other minor additions
   respects : P Respects _≈_ → (All P) Respects _≋_
   ```
 
+* Added new functions to `Data.List.Base`:
+  ```agda
+  intercalate       : List A → List (List A) → List A
+  partitionSumsWith : (A → B ⊎ C) → List A → List B × List C
+  partitionSums     : List (A ⊎ B) → List A × List B
+  ```
+
 * Added new proofs to `Data.List.Membership.Propositional.Properties`:
   ```agda
   ∈-allFin : (k : Fin n) → k ∈ allFin n
@@ -502,6 +509,11 @@ Other minor additions
   ⊓-band        : Band 0ℓ 0ℓ
   ⊔-semilattice : Semilattice 0ℓ 0ℓ
   ⊓-semilattice : Semilattice 0ℓ 0ℓ
+  ```
+
+* Added new function to `Data.These`:
+  ```agda
+  fromSum : A ⊎ B → These A B
   ```
 
 * Added new proofs to `Data.Sign.Properties`:
