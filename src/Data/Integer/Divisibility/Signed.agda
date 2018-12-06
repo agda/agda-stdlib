@@ -4,6 +4,8 @@
 -- Alternative definition of divisibility without using modulus.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Integer.Divisibility.Signed where
 
 open import Function

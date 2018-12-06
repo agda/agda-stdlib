@@ -1121,21 +1121,26 @@ suc-mono (-≤+ {m}) = 0⊖m≤+ m
 suc-mono (-≤- n≤m) = ⊖-monoʳ-≥-≤ zero n≤m
 suc-mono (+≤+ m≤n) = +≤+ (ℕ.s≤s m≤n)
 
-+-monoʳ-≤ : ∀ n → (_+_ n) Preserves _≤_ ⟶ _≤_
-+-monoʳ-≤ (+ 0) {i} {j} i≤j
++-pos-monoʳ-≤ : ∀ n → (_+_ (+ n)) Preserves _≤_ ⟶ _≤_
++-pos-monoʳ-≤ zero {i} {j} i≤j
   rewrite +-identityˡ i
         | +-identityˡ j
         = i≤j
-+-monoʳ-≤ (+ (suc n)) {i} {j} i≤j
++-pos-monoʳ-≤ (suc n) {i} {j} i≤j
   rewrite suc-+ n i
         | suc-+ n j
-        = suc-mono (+-monoʳ-≤ (+ n) i≤j)
-+-monoʳ-≤ -[1+ 0 ] {i} {j} i≤j
-  = pred-mono i≤j
-+-monoʳ-≤ -[1+ suc n ] {i} {j} i≤j
+        = suc-mono (+-pos-monoʳ-≤ n i≤j)
+
++-neg-monoʳ-≤ : ∀ n → (_+_ -[1+ n ]) Preserves _≤_ ⟶ _≤_
++-neg-monoʳ-≤ zero i≤j = pred-mono i≤j
++-neg-monoʳ-≤ (suc n) {i} {j} i≤j
   rewrite pred-+ -[1+ n ] i
         | pred-+ -[1+ n ] j
-        = pred-mono (+-monoʳ-≤ -[1+ n ] i≤j)
+        = pred-mono (+-neg-monoʳ-≤ n i≤j)
+
++-monoʳ-≤ : ∀ n → (_+_ n) Preserves _≤_ ⟶ _≤_
++-monoʳ-≤ (+ n)    = +-pos-monoʳ-≤ n
++-monoʳ-≤ -[1+ n ] = +-neg-monoʳ-≤ n
 
 +-monoˡ-≤ : ∀ n → (_+ n) Preserves _≤_ ⟶ _≤_
 +-monoˡ-≤ n {i} {j} i≤j
