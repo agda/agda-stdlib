@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Unsigned divisibility and coprimality
+-- Unsigned divisibility
 ------------------------------------------------------------------------
 -- For signed divisibility see `Data.Integer.Divisibility.Signed`
 
