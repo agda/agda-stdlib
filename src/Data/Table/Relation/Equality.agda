@@ -4,6 +4,8 @@
 -- Pointwise table equality
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Table.Relation.Equality where
 
 open import Relation.Binary using (Setoid)

@@ -4,6 +4,8 @@
 -- Sublist-related properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Relation.Sublist.Propositional.Properties where
 
 open import Data.Empty
@@ -38,8 +40,7 @@ module _ {a} {A : Set a} where
                      lookup p v ≡ lookup p w → v ≡ w
   lookup-injective {p = skip p} {v} {w} eq =
     lookup-injective (there-injective eq)
-  lookup-injective {p = keep p} {here px} {here qx} eq =
-    cong here (≡-irrelevance _ _)
+  lookup-injective {p = keep p} {here px} {here qx} refl = refl
   lookup-injective {p = keep p} {there v} {there w} eq =
     cong there (lookup-injective (there-injective eq))
   -- impossible cases
@@ -52,16 +53,21 @@ module _ {a} {A : Set a} where
   []∈-irrelevant (skip p) (skip q) = cong skip ([]∈-irrelevant p q)
 
   [x]⊆xs↔x∈xs : ∀ {x : A} {xs} → ([ x ] ⊆ xs) Bij.⤖ (x ∈ xs)
-  [x]⊆xs↔x∈xs {x} = Bij.bijection to∈ from∈ (to∈-injective _ _) to∈∘from∈≗id
+  [x]⊆xs↔x∈xs {x} =
+    Bij.bijection to∈ from∈ (to∈-injective _ _ refl) to∈∘from∈≗id
 
     where
 
-    to∈-injective : ∀ {xs x} (p q : [ x ] ⊆ xs) → to∈ p ≡ to∈ q → p ≡ q
-    to∈-injective (skip p) (skip q) eq =
-      cong skip (to∈-injective p q (there-injective eq))
-    to∈-injective (keep p) (keep q) eq = cong keep ([]∈-irrelevant p q)
-    to∈-injective (skip p) (keep q) ()
-    to∈-injective (keep p) (skip q) ()
+    to∈-injective :
+      ∀ {xs x y} (p : [ x ] ⊆ xs) (q : [ y ] ⊆ xs) (eq : x ≡ y) →
+      to∈ p ≡ lookup q (here eq) →
+      subst ((_⊆ xs) ∘ [_]) eq p ≡ q
+    to∈-injective (skip p) (skip q) refl eq =
+      cong skip (to∈-injective p q refl (there-injective eq))
+    to∈-injective (keep p) (keep q) eq refl =
+      cong keep ([]∈-irrelevant p q)
+    to∈-injective (skip p) (keep q) refl ()
+    to∈-injective (keep p) (skip q) refl ()
 
     to∈∘from∈≗id : ∀ {xs} (p : x ∈ xs) → to∈ (from∈ p) ≡ p
     to∈∘from∈≗id (here refl) = refl
@@ -98,23 +104,30 @@ module _ {a} {A : Set a} where
   open ≤-Reasoning
 
   ⊆-antisym : Antisymmetric {A = List A} _≡_ _⊆_
-  -- Positive cases
-  ⊆-antisym base     base     = refl
-  ⊆-antisym (keep p) (keep q) = cong (_ ∷_) (⊆-antisym p q)
-  -- Dismissing the impossible cases
-  ⊆-antisym {x ∷ xs} {y ∷ ys} (skip p) (skip q) = ⊥-elim $ 1+n≰n $ begin
-    length (y ∷ ys) ≤⟨ ⊆-length q ⟩
-    length xs       ≤⟨ n≤1+n (length xs) ⟩
-    length (x ∷ xs) ≤⟨ ⊆-length p ⟩
-    length ys       ∎
-  ⊆-antisym {x ∷ xs} {y ∷ ys} (skip p) (keep q) = ⊥-elim $ 1+n≰n $ begin
-    length (x ∷ xs) ≤⟨ ⊆-length p ⟩
-    length ys       ≤⟨ ⊆-length q ⟩
-    length xs       ∎
-  ⊆-antisym {x ∷ xs} {y ∷ ys} (keep p) (skip q) =  ⊥-elim $ 1+n≰n $ begin
-    length (y ∷ ys) ≤⟨ ⊆-length q ⟩
-    length xs       ≤⟨ ⊆-length p ⟩
-    length ys       ∎
+  ⊆-antisym = λ p q → ⊆-antisym′ p q refl
+    where
+    ⊆-antisym′ : ∀ {xs ys zs} → xs ⊆ ys → ys ⊆ zs → xs ≡ zs → xs ≡ ys
+    -- Positive cases
+    ⊆-antisym′ base     base     refl = refl
+    ⊆-antisym′ (keep p) (keep q) eq   =
+      cong (_ ∷_) (⊆-antisym′ p q (cong (drop 1) eq))
+    -- Dismissing the impossible cases
+    ⊆-antisym′ {x ∷ xs} {y ∷ ys} (skip p) (skip q) refl =
+      ⊥-elim $ 1+n≰n $ begin
+        length (y ∷ ys) ≤⟨ ⊆-length q ⟩
+        length xs       ≤⟨ n≤1+n (length xs) ⟩
+        length (x ∷ xs) ≤⟨ ⊆-length p ⟩
+        length ys       ∎
+    ⊆-antisym′ {x ∷ xs} {y ∷ ys} (skip p) (keep q) refl =
+      ⊥-elim $ 1+n≰n $ begin
+        length (x ∷ xs) ≤⟨ ⊆-length p ⟩
+        length ys       ≤⟨ ⊆-length q ⟩
+        length xs       ∎
+    ⊆-antisym′ {x ∷ xs} {y ∷ ys} (keep p) (skip q) refl =
+      ⊥-elim $ 1+n≰n $ begin
+        length (y ∷ ys) ≤⟨ ⊆-length q ⟩
+        length xs       ≤⟨ ⊆-length p ⟩
+        length ys       ∎
 
   ⊆-minimum : Minimum (_⊆_ {A = A}) []
   ⊆-minimum = []⊆_
@@ -200,9 +213,9 @@ module _ {a p} {A : Set a} {P : Pred A p} (P? : U.Decidable P) where
 
 module _ {a} {A : Set a} where
 
-  ∷⁻ : ∀ x {us vs : List A} → x ∷ us ⊆ x ∷ vs → us ⊆ vs
-  ∷⁻ x (skip p) = ⊆-trans (skip ⊆-refl) p
-  ∷⁻ x (keep p) = p
+  ∷⁻ : ∀ {x y} {us vs : List A} → x ∷ us ⊆ y ∷ vs → us ⊆ vs
+  ∷⁻ (skip p) = ⊆-trans (skip ⊆-refl) p
+  ∷⁻ (keep p) = p
 
 -- map
 
@@ -241,7 +254,7 @@ module _ {a} {A : Set a} where
 
   ++⁻ : ∀ xs {us vs : List A} → xs ++ us ⊆ xs ++ vs → us ⊆ vs
   ++⁻ []       p = p
-  ++⁻ (x ∷ xs) p = ++⁻ xs (∷⁻ x p)
+  ++⁻ (x ∷ xs) p = ++⁻ xs (∷⁻ p)
 
   skips : ∀ {xs ys} (zs : List A) → xs ⊆ ys → xs ⊆ zs ++ ys
   skips zs = ++⁺ ([]⊆ zs)
@@ -336,7 +349,7 @@ module _ {a} {A : Set a} where
 module _ {a} {A : Set a} where
 
   keep⁻¹ : ∀ (x : A) {xs ys} → (xs ⊆ ys) ⇔ (x ∷ xs ⊆ x ∷ ys)
-  keep⁻¹ x = equivalence keep (∷⁻ x)
+  keep⁻¹ x = equivalence keep ∷⁻
 
   skip⁻¹ : ∀ {x y : A} {xs ys} → x ≢ y → (x ∷ xs ⊆ ys) ⇔ (x ∷ xs ⊆ y ∷ ys)
   skip⁻¹ ¬eq = equivalence skip $ λ where

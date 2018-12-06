@@ -4,6 +4,8 @@
 -- Some properties about subsets
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Fin.Subset.Properties where
 
 open import Algebra
@@ -133,8 +135,8 @@ x∈⁅y⁆⇔x≡y {_} {x} {y} = equivalence
 ⊆-trans p⊆q q⊆r x∈p = q⊆r (p⊆q x∈p)
 
 ⊆-antisym : ∀ {n} → Antisymmetric _≡_ (_⊆_ {n})
-⊆-antisym {x = []}           {[]}           p⊆q q⊆p = refl
-⊆-antisym {x = x ∷ xs} {y ∷ ys} p⊆q q⊆p with x | y
+⊆-antisym {i = []}     {[]}     p⊆q q⊆p = refl
+⊆-antisym {i = x ∷ xs} {y ∷ ys} p⊆q q⊆p with x | y
 ... | inside  | inside  = cong₂ _∷_ refl (⊆-antisym (drop-∷-⊆ p⊆q) (drop-∷-⊆ q⊆p))
 ... | inside  | outside = contradiction (p⊆q here) λ()
 ... | outside | inside  = contradiction (q⊆p here) λ()
@@ -239,16 +241,48 @@ module _ (n : ℕ) where
 
   open AlgebraicStructures {A = Subset n} _≡_
 
+  ∩-isMagma : IsMagma _∩_
+  ∩-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = cong₂ _∩_
+    }
+
+  ∩-magma : Magma _ _
+  ∩-magma = record
+    { isMagma = ∩-isMagma
+    }
+
   ∩-isSemigroup : IsSemigroup _∩_
   ∩-isSemigroup = record
-    { isEquivalence = isEquivalence
-    ; assoc         = ∩-assoc
-    ; ∙-cong        = cong₂ _∩_
+    { isMagma = ∩-isMagma
+    ; assoc   = ∩-assoc
     }
 
   ∩-semigroup : Semigroup _ _
   ∩-semigroup = record
     { isSemigroup = ∩-isSemigroup
+    }
+
+  ∩-isBand : IsBand _∩_
+  ∩-isBand = record
+    { isSemigroup = ∩-isSemigroup
+    ; idem        = ∩-idem
+    }
+
+  ∩-band : Band _ _
+  ∩-band = record
+    { isBand = ∩-isBand
+    }
+
+  ∩-isSemilattice : IsSemilattice _∩_
+  ∩-isSemilattice = record
+    { isBand = ∩-isBand
+    ; comm   = ∩-comm
+    }
+
+  ∩-semilattice : Semilattice _ _
+  ∩-semilattice = record
+    { isSemilattice = ∩-isSemilattice
     }
 
   ∩-isMonoid : IsMonoid _∩_ ⊤
@@ -378,16 +412,48 @@ module _ (n : ℕ) where
 
   open AlgebraicStructures {A = Subset n} _≡_
 
+  ∪-isMagma : IsMagma _∪_
+  ∪-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = cong₂ _∪_
+    }
+
+  ∪-magma : Magma _ _
+  ∪-magma = record
+    { isMagma = ∪-isMagma
+    }
+
   ∪-isSemigroup : IsSemigroup _∪_
   ∪-isSemigroup = record
-    { isEquivalence = isEquivalence
-    ; assoc         = ∪-assoc
-    ; ∙-cong        = cong₂ _∪_
+    { isMagma = ∪-isMagma
+    ; assoc   = ∪-assoc
     }
 
   ∪-semigroup : Semigroup _ _
   ∪-semigroup = record
     { isSemigroup = ∪-isSemigroup
+    }
+
+  ∪-isBand : IsBand _∪_
+  ∪-isBand = record
+    { isSemigroup = ∪-isSemigroup
+    ; idem        = ∪-idem
+    }
+
+  ∪-band : Band _ _
+  ∪-band = record
+    { isBand = ∪-isBand
+    }
+
+  ∪-isSemilattice : IsSemilattice _∪_
+  ∪-isSemilattice = record
+    { isBand = ∪-isBand
+    ; comm   = ∪-comm
+    }
+
+  ∪-semilattice : Semilattice _ _
+  ∪-semilattice = record
+    { isSemilattice = ∪-isSemilattice
     }
 
   ∪-isMonoid : IsMonoid _∪_ ⊥

@@ -5,6 +5,8 @@
 -- DifferenceVec)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.DifferenceNat where
 
 open import Data.Nat.Base as N using (ℕ)

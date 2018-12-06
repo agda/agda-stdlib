@@ -4,6 +4,8 @@
 -- Decorated star-lists
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K #-}
+
 module Data.Star.Decoration where
 
 open import Data.Unit

@@ -4,6 +4,8 @@
 -- The Cowriter type and some operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.Cowriter where
 
 open import Size

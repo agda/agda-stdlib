@@ -4,6 +4,8 @@
 -- Indexed binary relations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.Indexed.Heterogeneous where
 
 open import Function

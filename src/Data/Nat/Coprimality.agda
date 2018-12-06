@@ -4,6 +4,8 @@
 -- Coprimality
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Nat.Coprimality where
 
 open import Data.Empty

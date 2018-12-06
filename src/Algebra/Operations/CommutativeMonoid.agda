@@ -5,6 +5,8 @@
 -- exponentiation)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Algebra
 
 module Algebra.Operations.CommutativeMonoid

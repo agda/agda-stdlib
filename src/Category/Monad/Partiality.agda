@@ -4,6 +4,8 @@
 -- The partiality monad
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Category.Monad.Partiality where
 
 open import Codata.Musical.Notation

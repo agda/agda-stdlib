@@ -4,6 +4,8 @@
 -- Type(s) used (only) when calling out to Haskell via the FFI
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Foreign.Haskell where
 
 open import Level

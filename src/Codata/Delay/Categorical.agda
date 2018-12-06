@@ -4,6 +4,8 @@
 -- A categorical view of Delay
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.Delay.Categorical where
 
 open import Codata.Delay

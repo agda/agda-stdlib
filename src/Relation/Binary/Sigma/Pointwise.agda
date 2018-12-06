@@ -7,6 +7,8 @@
 -- Data.Product.Relation.Pointwise.Dependent directly.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.Sigma.Pointwise where
 
 open import Data.Product.Relation.Pointwise.Dependent public

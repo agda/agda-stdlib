@@ -4,6 +4,8 @@
 -- Rational Literals
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Rational.Literals where
 
 open import Agda.Builtin.FromNat

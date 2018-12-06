@@ -4,6 +4,8 @@
 -- Pointwise sum
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Sum.Relation.Pointwise where
 
 open import Data.Sum as Sum

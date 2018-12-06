@@ -4,6 +4,8 @@
 -- Properties related to setoid list membership
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Membership.Setoid.Properties where
 
 open import Algebra.FunctionProperties using (Op₂; Selective)

@@ -7,6 +7,8 @@
 -- Relation.Binary.Construct.Closure.ReflexiveTransitive module directly
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Star where
 
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive public

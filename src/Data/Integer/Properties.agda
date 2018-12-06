@@ -4,6 +4,8 @@
 -- Some properties about integers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Integer.Properties where
 
 open import Algebra
@@ -15,12 +17,12 @@ open import Data.Nat as ℕ
   hiding (module ℕ)
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
-open import Data.Empty using (⊥-elim)
 open import Data.Product using (proj₁; proj₂; _,_)
 open import Data.Sum as Sum using (inj₁; inj₂)
 open import Data.Sign as Sign using () renaming (_*_ to _𝕊*_)
 import Data.Sign.Properties as 𝕊ₚ
 open import Function using (_∘_; _$_)
+open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.PartialOrderReasoning as POR
@@ -328,17 +330,37 @@ pred-+ m n = begin
 +-inverse : Inverse (+ 0) -_ _+_
 +-inverse = +-inverseˡ , +-inverseʳ
 
++-isMagma : IsMagma _+_
++-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = cong₂ _+_
+  }
+
++-magma : Magma 0ℓ 0ℓ
++-magma = record
+  { isMagma = +-isMagma
+  }
+
 +-isSemigroup : IsSemigroup _+_
 +-isSemigroup = record
-  { isEquivalence = isEquivalence
-  ; assoc         = +-assoc
-  ; ∙-cong        = cong₂ _+_
+  { isMagma = +-isMagma
+  ; assoc   = +-assoc
+  }
+
++-semigroup : Semigroup 0ℓ 0ℓ
++-semigroup = record
+  { isSemigroup = +-isSemigroup
   }
 
 +-0-isMonoid : IsMonoid _+_ (+ 0)
 +-0-isMonoid = record
   { isSemigroup = +-isSemigroup
   ; identity    = +-identity
+  }
+
++-0-monoid : Monoid 0ℓ 0ℓ
++-0-monoid = record
+  { isMonoid = +-0-isMonoid
   }
 
 +-0-isCommutativeMonoid : IsCommutativeMonoid _+_ (+ 0)
@@ -350,11 +372,7 @@ pred-+ m n = begin
 
 +-0-commutativeMonoid : CommutativeMonoid _ _
 +-0-commutativeMonoid = record
-  { Carrier             = ℤ
-  ; _≈_                 = _≡_
-  ; _∙_                 = _+_
-  ; ε                   = + 0
-  ; isCommutativeMonoid = +-0-isCommutativeMonoid
+  { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
 
 +-0-isGroup : IsGroup _+_ (+ 0) (-_)
@@ -372,12 +390,7 @@ pred-+ m n = begin
 
 +-0-abelianGroup : AbelianGroup _ _
 +-0-abelianGroup = record
-  { Carrier = ℤ
-  ; _≈_ = _≡_
-  ; _∙_ = _+_
-  ; ε = + 0
-  ; _⁻¹ = -_
-  ; isAbelianGroup = +-isAbelianGroup
+  { isAbelianGroup = +-isAbelianGroup
   }
 
 -- Other properties of _+_
@@ -630,17 +643,37 @@ private
   + 1 * n + m * n ≡⟨ cong (_+ m * n) (*-identityˡ n) ⟩
   n + m * n       ∎ where open ≡-Reasoning
 
+*-isMagma : IsMagma _*_
+*-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = cong₂ _*_
+  }
+
+*-magma : Magma 0ℓ 0ℓ
+*-magma = record
+  { isMagma = *-isMagma
+  }
+
 *-isSemigroup : IsSemigroup _*_
 *-isSemigroup = record
-  { isEquivalence = isEquivalence
-  ; assoc         = *-assoc
-  ; ∙-cong        = cong₂ _*_
+  { isMagma = *-isMagma
+  ; assoc   = *-assoc
+  }
+
+*-semigroup : Semigroup 0ℓ 0ℓ
+*-semigroup = record
+  { isSemigroup = *-isSemigroup
   }
 
 *-1-isMonoid : IsMonoid _*_ (+ 1)
 *-1-isMonoid = record
   { isSemigroup = *-isSemigroup
   ; identity    = *-identity
+  }
+
+*-1-monoid : Monoid 0ℓ 0ℓ
+*-1-monoid = record
+  { isMonoid = *-1-isMonoid
   }
 
 *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ (+ 1)
@@ -652,11 +685,7 @@ private
 
 *-1-commutativeMonoid : CommutativeMonoid _ _
 *-1-commutativeMonoid = record
-  { Carrier             = ℤ
-  ; _≈_                 = _≡_
-  ; _∙_                 = _*_
-  ; ε                   = + 1
-  ; isCommutativeMonoid = *-1-isCommutativeMonoid
+  { isCommutativeMonoid = *-1-isCommutativeMonoid
   }
 
 +-*-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ (+ 0) (+ 1)
@@ -1097,7 +1126,7 @@ suc-mono (+≤+ m≤n) = +≤+ (ℕ.s≤s m≤n)
   rewrite +-identityˡ i
         | +-identityˡ j
         = i≤j
-+-monoʳ-≤ (+ suc n) {i} {j} i≤j
++-monoʳ-≤ (+ (suc n)) {i} {j} i≤j
   rewrite suc-+ n i
         | suc-+ n j
         = suc-mono (+-monoʳ-≤ (+ n) i≤j)
@@ -1117,7 +1146,7 @@ suc-mono (+≤+ m≤n) = +≤+ (ℕ.s≤s m≤n)
 +-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
 +-mono-≤ {m} {n} {i} {j} m≤n i≤j = begin
   m + i ≤⟨ +-monoˡ-≤ i m≤n ⟩
-  n + i  ≤⟨ +-monoʳ-≤ n i≤j ⟩
+  n + i ≤⟨ +-monoʳ-≤ n i≤j ⟩
   n + j ∎ where open ≤-Reasoning
 
 neg-≤-pos : ∀ {m n} → - (+ m) ≤ + n
@@ -1263,10 +1292,7 @@ n≤1+n n = ≤-step ≤-refl
 
 <-strictTotalOrder : StrictTotalOrder _ _ _
 <-strictTotalOrder = record
-  { Carrier            = ℤ
-  ; _≈_                = _≡_
-  ; _<_                = _<_
-  ; isStrictTotalOrder = <-isStrictTotalOrder
+  { isStrictTotalOrder = <-isStrictTotalOrder
   }
 
 -- Other properties of _<_

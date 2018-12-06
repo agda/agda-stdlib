@@ -4,6 +4,8 @@
 -- Booleans
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Bool where
 
 open import Relation.Nullary

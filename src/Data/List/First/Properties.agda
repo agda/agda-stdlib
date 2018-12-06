@@ -4,6 +4,8 @@
 -- Properties of First
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.First.Properties where
 
 open import Data.Empty

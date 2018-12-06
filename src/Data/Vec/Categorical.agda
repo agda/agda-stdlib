@@ -4,6 +4,8 @@
 -- A categorical view of Vec
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Vec.Categorical {a n} where
 
 open import Category.Applicative using (RawApplicative)

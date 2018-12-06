@@ -4,6 +4,8 @@
 -- The Stream type and some operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.Stream where
 
 open import Size
@@ -93,12 +95,10 @@ module _ {ℓ ℓ₁ ℓ₂} {A : Set ℓ} {B : Set ℓ₁} {C : Set ℓ₂} whe
  zipWith : ∀ {i} → (A → B → C) → Stream A i → Stream B i → Stream C i
  zipWith f (a ∷ as) (b ∷ bs) = f a b ∷ λ where .force → zipWith f (as .force) (bs .force)
 
-module _ {ℓ} {A : Set ℓ} where
+module _ {a} {A : Set a} where
 
- iterate : ∀ {i} → (A → A) → A → Stream A i
- iterate f a = a ∷ λ where .force → map f (iterate f a)
-
-
+  iterate : (A → A) → A → Stream A ∞
+  iterate f = unfold < f , id >
 
 ------------------------------------------------------------------------
 -- Legacy

@@ -4,6 +4,8 @@
 -- Showing natural numbers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Nat.Show where
 
 open import Data.Nat

@@ -5,6 +5,8 @@
 ------------------------------------------------------------------------
 -- For signed divisibility see `Data.Integer.Divisibility.Signed`
 
+{-# OPTIONS --without-K #-}
+
 module Data.Integer.Divisibility where
 
 open import Function

@@ -4,6 +4,8 @@
 -- Least common multiple
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Nat.LCM where
 
 open import Algebra

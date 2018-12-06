@@ -4,6 +4,8 @@
 -- Natural number division
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Nat.DivMod where
 
 open import Agda.Builtin.Nat using (div-helper; mod-helper)

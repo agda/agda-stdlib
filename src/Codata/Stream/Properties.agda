@@ -4,6 +4,8 @@
 -- Properties of operations on the Stream type
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.Stream.Properties where
 
 open import Size
@@ -12,13 +14,18 @@ open import Codata.Stream
 open import Codata.Stream.Bisimilarity
 
 open import Data.Nat.Base
+open import Data.Nat.GeneralisedArithmetic using (fold; fold-pull)
+
 import Data.Vec as Vec
 import Data.Product as Prod
 
 open import Function
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
-module _ {a b} {A : Set a} {B : Set b} where
+------------------------------------------------------------------------
+-- repeat
+
+module _ {a} {A : Set a} where
 
  lookup-repeat-identity : (n : ℕ) (a : A) → lookup n (repeat a) ≡ a
  lookup-repeat-identity zero    a = Eq.refl
@@ -67,3 +74,17 @@ module _ {a b} {A : Set a} {B : Set b} where
   splitAt-map zero    f xs       = Eq.refl
   splitAt-map (suc n) f (x ∷ xs) =
     Eq.cong (Prod.map₁ (f x Vec.∷_)) (splitAt-map n f (xs .force))
+
+------------------------------------------------------------------------
+-- iterate
+
+module _ {a} {A : Set a} where
+
+  lookup-iterate-identity : ∀ n f (a : A) → lookup n (iterate f a) ≡ fold a f n
+  lookup-iterate-identity zero     f a = Eq.refl
+  lookup-iterate-identity (suc n)  f a = begin
+    lookup (suc n) (iterate f a) ≡⟨⟩
+    lookup n (iterate f (f a))   ≡⟨ lookup-iterate-identity n f (f a) ⟩
+    fold (f a) f n               ≡⟨ fold-pull (const ∘′ f) (f a) Eq.refl (λ _ → Eq.refl) n ⟩
+    f (fold a f n)               ≡⟨⟩
+    fold a f (suc n)             ∎ where open Eq.≡-Reasoning

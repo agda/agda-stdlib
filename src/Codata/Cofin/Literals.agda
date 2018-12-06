@@ -4,6 +4,8 @@
 -- Conat Literals
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.Cofin.Literals where
 
 open import Data.Nat

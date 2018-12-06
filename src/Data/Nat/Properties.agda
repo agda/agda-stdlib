@@ -7,6 +7,8 @@
 -- See README.Nat for some examples showing how this module can be
 -- used.
 
+{-# OPTIONS --without-K #-}
+
 module Data.Nat.Properties where
 
 open import Algebra
@@ -290,6 +292,10 @@ m<n⇒n≢0 (s≤s m≤n) ()
 ------------------------------------------------------------------------
 -- Properties of _≤′_
 
+≤′-trans : Transitive _≤′_
+≤′-trans m≤n ≤′-refl = m≤n
+≤′-trans m≤n (≤′-step n≤o) = ≤′-step (≤′-trans m≤n n≤o)
+
 z≤′n : ∀ {n} → zero ≤′ n
 z≤′n {zero}  = ≤′-refl
 z≤′n {suc n} = ≤′-step z≤′n
@@ -410,11 +416,21 @@ m≢0⇒suc[pred[m]]≡m {suc m} m≢0 = refl
   suc (n + m) ≡⟨ sym (+-suc n m) ⟩
   n + suc m   ∎
 
++-isMagma : IsMagma _+_
++-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = cong₂ _+_
+  }
+
++-magma : Magma 0ℓ 0ℓ
++-magma = record
+  { isMagma = +-isMagma
+  }
+
 +-isSemigroup : IsSemigroup _+_
 +-isSemigroup = record
-  { isEquivalence = isEquivalence
-  ; assoc         = +-assoc
-  ; ∙-cong        = cong₂ _+_
+  { isMagma = +-isMagma
+  ; assoc   = +-assoc
   }
 
 +-semigroup : Semigroup 0ℓ 0ℓ
@@ -621,11 +637,21 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
   n * o + m * (n * o) ≡⟨⟩
   suc m * (n * o)     ∎
 
+*-isMagma : IsMagma _*_
+*-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = cong₂ _*_
+  }
+
+*-magma : Magma 0ℓ 0ℓ
+*-magma = record
+  { isMagma = *-isMagma
+  }
+
 *-isSemigroup : IsSemigroup _*_
 *-isSemigroup = record
-  { isEquivalence = isEquivalence
-  ; assoc         = *-assoc
-  ; ∙-cong        = cong₂ _*_
+  { isMagma = *-isMagma
+  ; assoc   = *-assoc
   }
 
 *-semigroup : Semigroup 0ℓ 0ℓ
@@ -893,16 +919,48 @@ i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
 ⊓-⊔-absorptive : Absorptive _⊓_ _⊔_
 ⊓-⊔-absorptive = ⊓-abs-⊔ , ⊔-abs-⊓
 
+⊔-isMagma : IsMagma _⊔_
+⊔-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = cong₂ _⊔_
+  }
+
+⊔-magma : Magma 0ℓ 0ℓ
+⊔-magma = record
+  { isMagma = ⊔-isMagma
+  }
+
 ⊔-isSemigroup : IsSemigroup _⊔_
 ⊔-isSemigroup = record
-  { isEquivalence = isEquivalence
-  ; assoc         = ⊔-assoc
-  ; ∙-cong        = cong₂ _⊔_
+  { isMagma = ⊔-isMagma
+  ; assoc   = ⊔-assoc
   }
 
 ⊔-semigroup : Semigroup 0ℓ 0ℓ
 ⊔-semigroup = record
   { isSemigroup = ⊔-isSemigroup
+  }
+
+⊔-isBand : IsBand _⊔_
+⊔-isBand = record
+  { isSemigroup = ⊔-isSemigroup
+  ; idem        = ⊔-idem
+  }
+
+⊔-band : Band 0ℓ 0ℓ
+⊔-band = record
+  { isBand = ⊔-isBand
+  }
+
+⊔-isSemilattice : IsSemilattice _⊔_
+⊔-isSemilattice = record
+  { isBand = ⊔-isBand
+  ; comm   = ⊔-comm
+  }
+
+⊔-semilattice : Semilattice 0ℓ 0ℓ
+⊔-semilattice = record
+  { isSemilattice = ⊔-isSemilattice
   }
 
 ⊔-0-isCommutativeMonoid : IsCommutativeMonoid _⊔_ 0
@@ -917,16 +975,48 @@ i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
   { isCommutativeMonoid = ⊔-0-isCommutativeMonoid
   }
 
+⊓-isMagma : IsMagma _⊓_
+⊓-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = cong₂ _⊓_
+  }
+
+⊓-magma : Magma 0ℓ 0ℓ
+⊓-magma = record
+  { isMagma = ⊓-isMagma
+  }
+
 ⊓-isSemigroup : IsSemigroup _⊓_
 ⊓-isSemigroup = record
-  { isEquivalence = isEquivalence
-  ; assoc         = ⊓-assoc
-  ; ∙-cong        = cong₂ _⊓_
+  { isMagma = ⊓-isMagma
+  ; assoc   = ⊓-assoc
   }
 
 ⊓-semigroup : Semigroup 0ℓ 0ℓ
 ⊓-semigroup = record
   { isSemigroup = ⊔-isSemigroup
+  }
+
+⊓-isBand : IsBand _⊓_
+⊓-isBand = record
+  { isSemigroup = ⊓-isSemigroup
+  ; idem        = ⊓-idem
+  }
+
+⊓-band : Band 0ℓ 0ℓ
+⊓-band = record
+  { isBand = ⊓-isBand
+  }
+
+⊓-isSemilattice : IsSemilattice _⊓_
+⊓-isSemilattice = record
+  { isBand = ⊓-isBand
+  ; comm   = ⊓-comm
+  }
+
+⊓-semilattice : Semilattice 0ℓ 0ℓ
+⊓-semilattice = record
+  { isSemilattice = ⊓-isSemilattice
   }
 
 ⊔-⊓-isSemiringWithoutOne : IsSemiringWithoutOne _⊔_ _⊓_ 0

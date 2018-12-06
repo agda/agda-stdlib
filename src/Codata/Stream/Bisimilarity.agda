@@ -4,16 +4,19 @@
 -- Bisimilarity for Streams
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.Stream.Bisimilarity where
 
 open import Size
 open import Codata.Thunk
 open import Codata.Stream
+open import Level
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 data Bisim {a b r} {A : Set a} {B : Set b} (R : REL A B r) i :
-           REL (Stream A ∞) (Stream B ∞) r where
+           REL (Stream A ∞) (Stream B ∞) (a ⊔ b ⊔ r) where
   _∷_ : ∀ {x y xs ys} → R x y → Thunk^R (Bisim R) i xs ys →
         Bisim R i (x ∷ xs) (y ∷ ys)
 

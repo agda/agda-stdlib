@@ -4,6 +4,8 @@
 -- Tables, basic types and operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Table.Base where
 
 open import Data.Nat

@@ -4,6 +4,8 @@
 -- A categorical view of Stream
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.Stream.Categorical where
 
 open import Data.Product using (<_,_>)

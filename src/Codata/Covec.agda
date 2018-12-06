@@ -4,6 +4,8 @@
 -- The Covec type and some operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.Covec where
 
 open import Size

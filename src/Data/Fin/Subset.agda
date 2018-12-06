@@ -4,6 +4,8 @@
 -- Subsets of finite sets
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Fin.Subset where
 
 open import Algebra

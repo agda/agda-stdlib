@@ -4,6 +4,8 @@
 -- An irrelevant version of ⊥-elim
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Empty.Irrelevant where
 
 open import Data.Empty hiding (⊥-elim)

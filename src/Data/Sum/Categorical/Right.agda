@@ -4,6 +4,8 @@
 -- A Categorical view of the Sum type (Right-biased)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Level
 
 module Data.Sum.Categorical.Right (a : Level) {b} (B : Set b) where

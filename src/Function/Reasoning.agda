@@ -5,6 +5,8 @@
 -- README.Function.Reasoning for examples
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Function.Reasoning where
 
 open import Function using (_∋_)

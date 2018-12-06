@@ -5,6 +5,8 @@
 -- of substitution for the untyped λ-calculus, along with some lemmas
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Fin.Substitution.Example where
 
 open import Data.Fin.Substitution

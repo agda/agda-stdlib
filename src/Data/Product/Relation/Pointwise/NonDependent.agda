@@ -4,10 +4,11 @@
 -- Pointwise products of binary relations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Product.Relation.Pointwise.NonDependent where
 
 open import Data.Product as Prod
-import Data.Product.Relation.Pointwise.Dependent as Dependent
 open import Data.Sum
 open import Data.Unit.Base using (⊤)
 open import Function

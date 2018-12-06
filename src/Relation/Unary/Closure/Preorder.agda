@@ -4,6 +4,8 @@
 -- Closure of a unary relation with respect to a preorder
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary
 
 module Relation.Unary.Closure.Preorder {a r e} (P : Preorder a e r) where

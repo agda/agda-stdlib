@@ -5,6 +5,8 @@
 -- invariants in AVL Trees
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.AVL.Height where
 
 open import Data.Nat.Base

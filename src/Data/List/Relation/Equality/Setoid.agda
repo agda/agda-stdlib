@@ -4,6 +4,8 @@
 -- Equality over lists parameterised by some setoid
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary using (Setoid)
 
 module Data.List.Relation.Equality.Setoid {a ℓ} (S : Setoid a ℓ) where
@@ -21,7 +23,7 @@ open Setoid S renaming (Carrier to A)
 
 infix 4 _≋_
 
-_≋_ : Rel₂ (List A) ℓ
+_≋_ : Rel₂ (List A) (a ⊔ ℓ)
 _≋_ = Pointwise _≈_
 
 open Pointwise public using ([]; _∷_)

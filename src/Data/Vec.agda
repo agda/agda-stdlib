@@ -4,6 +4,8 @@
 -- Vectors
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Vec where
 
 open import Data.Nat

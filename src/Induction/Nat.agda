@@ -4,6 +4,8 @@
 -- Various forms of induction for natural numbers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Induction.Nat where
 
 open import Function

@@ -4,6 +4,8 @@
 -- Integers, basic types and operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Integer.Base where
 
 open import Data.Nat.Base as ℕ
