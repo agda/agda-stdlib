@@ -75,6 +75,8 @@ Splitting up `Data.Maybe` into the standard hierarchy.
     - Made the `Set` argument implicit in `∈-++⁺ˡ`, `∈-++⁺ʳ`, `∈-++⁻`, `∈-insert`, `∈-∃++`.
     - Made the `A → B` argument explicit in `∈-map⁺`, `∈-map⁻`, `map-∈↔`.
 
+* The type `Coprime` and proof `coprime-divisor` have been m oved from `Data.Integer.Divisibility` to `Data.Integer.Coprimality`.
+
 Other major changes
 -------------------
 
@@ -84,9 +86,8 @@ Other major changes
 
 * Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
 
-
 * Added new modules `Data.Integer.Divisibility.Properties`,
-  and `Data.Integer.DivMod`.
+  `Data.Integer.Divisibility.Signed` and `Data.Integer.DivMod`.
 
 * Added new modules `Data.List.First` and `Data.List.First.Properties` for a
   generalization of the notion of "first element in the list to satisfy a
@@ -98,6 +99,11 @@ Other major changes
 
 Deprecated features
 -------------------
+
+* In `Data.Integer.Properties`:
+  ```agda
+  ≰→> ↦ ≰⇒>
+  ```
 
 Other minor additions
 ---------------------
@@ -161,14 +167,14 @@ Other minor additions
 
 * Added new proofs to `Data.Integer.Properties`:
   ```agda
-  suc-pred   : sucℤ (pred m) ≡ m
-  pred-suc   : pred (sucℤ m) ≡ m
-  neg-suc    : - + suc m ≡ pred (- + m)
-  suc-+      : + suc m + n ≡ sucℤ (+ m + n)
-  +-pred     : m + pred n ≡ pred (m + n)
-  pred-+     : pred m + n ≡ pred (m + n)
-  minus-suc  : m - + suc n ≡ pred (m - + n)
-  sm*n≡n+m*n : sucℤ m * n ≡ n + m * n
+  suc-pred      : sucℤ (pred m) ≡ m
+  pred-suc      : pred (sucℤ m) ≡ m
+  neg-suc       : - + suc m ≡ pred (- + m)
+  suc-+         : + suc m + n ≡ sucℤ (+ m + n)
+  +-pred        : m + pred n ≡ pred (m + n)
+  pred-+        : pred m + n ≡ pred (m + n)
+  minus-suc     : m - + suc n ≡ pred (m - + n)
+  [1+m]*n≡n+m*n : sucℤ m * n ≡ n + m * n
 
   ⊓-comm    : Commutative _⊓_
   ⊓-assoc   : Associative _⊓_
@@ -355,6 +361,11 @@ Other minor additions
 * Added new function to `Data.Maybe.Base`:
   ```agda
   _<∣>_     : Maybe A → Maybe A → Maybe A
+  ```
+
+* Added new proof to `Data.Nat.Properties`:
+  ```agda
+  m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
   ```
 
 * Added new functions to `Data.Sum.Base`:

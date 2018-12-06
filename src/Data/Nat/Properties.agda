@@ -79,8 +79,7 @@ suc m ≟ suc n  with m ≟ n
 
 ≤-antisym : Antisymmetric _≡_ _≤_
 ≤-antisym z≤n       z≤n       = refl
-≤-antisym (s≤s m≤n) (s≤s n≤m) with ≤-antisym m≤n n≤m
-... | refl = refl
+≤-antisym (s≤s m≤n) (s≤s n≤m) = cong suc (≤-antisym m≤n n≤m)
 
 ≤-trans : Transitive _≤_
 ≤-trans z≤n       _         = z≤n
@@ -172,18 +171,6 @@ n≤1+n _ = ≤-step ≤-refl
 n≤0⇒n≡0 : ∀ {n} → n ≤ 0 → n ≡ 0
 n≤0⇒n≡0 z≤n = refl
 
-pred-mono : pred Preserves _≤_ ⟶ _≤_
-pred-mono z≤n      = z≤n
-pred-mono (s≤s le) = le
-
-≤pred⇒≤ : ∀ {m n} → m ≤ pred n → m ≤ n
-≤pred⇒≤ {m} {zero}  le = le
-≤pred⇒≤ {m} {suc n} le = ≤-step le
-
-≤⇒pred≤ : ∀ {m n} → m ≤ n → pred m ≤ n
-≤⇒pred≤ {zero}  le = le
-≤⇒pred≤ {suc m} le = ≤-trans (n≤1+n m) le
-
 ------------------------------------------------------------------------
 -- Properties of _<_
 
@@ -196,7 +183,7 @@ pred-mono (s≤s le) = le
 <-asym (s≤s n<m) (s≤s m<n) = <-asym n<m m<n
 
 <-trans : Transitive _<_
-<-trans (s≤s i≤j) (s≤s j<k) = s≤s (≤-trans i≤j (≤⇒pred≤ j<k))
+<-trans (s≤s i≤j) (s≤s j<k) = s≤s (≤-trans i≤j (≤-trans (n≤1+n _) j<k))
 
 <-transʳ : Trans _≤_ _<_ _<_
 <-transʳ m≤n (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
@@ -375,6 +362,25 @@ _>″?_ : Decidable _>″_
 _>″?_ = flip _<″?_
 
 ------------------------------------------------------------------------
+-- Properties of pred
+
+pred-mono : pred Preserves _≤_ ⟶ _≤_
+pred-mono z≤n      = z≤n
+pred-mono (s≤s le) = le
+
+≤pred⇒≤ : ∀ {m n} → m ≤ pred n → m ≤ n
+≤pred⇒≤ {m} {zero}  le = le
+≤pred⇒≤ {m} {suc n} le = ≤-step le
+
+≤⇒pred≤ : ∀ {m n} → m ≤ n → pred m ≤ n
+≤⇒pred≤ {zero}  le = le
+≤⇒pred≤ {suc m} le = ≤-trans (n≤1+n m) le
+
+m≢0⇒suc[pred[m]]≡m : ∀ {m} → m ≢ 0 → suc (pred m) ≡ m
+m≢0⇒suc[pred[m]]≡m {zero}  m≢0 = ⊥-elim (m≢0 refl)
+m≢0⇒suc[pred[m]]≡m {suc m} m≢0 = refl
+
+------------------------------------------------------------------------
 -- Properties of _+_
 
 -- Algebraic properties of _+_
@@ -465,10 +471,6 @@ i+j≡0⇒i≡0 (suc i) ()
 
 i+j≡0⇒j≡0 : ∀ i {j} → i + j ≡ 0 → j ≡ 0
 i+j≡0⇒j≡0 i {j} i+j≡0 = i+j≡0⇒i≡0 j (trans (+-comm j i) (i+j≡0))
-
-m≢0⇒m≡s[pred[m]] : ∀ {m} → m ≢ 0 → m ≡ suc (pred m)
-m≢0⇒m≡s[pred[m]] {zero}  m≢0 = ⊥-elim (m≢0 refl)
-m≢0⇒m≡s[pred[m]] {suc m} m≢0 = refl
 
 -- Properties of _+_ and orderings
 

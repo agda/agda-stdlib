@@ -1,40 +1,61 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Divisibility and coprimality
+-- Unsigned divisibility and coprimality
 ------------------------------------------------------------------------
+-- For signed divisibility see `Data.Integer.Divisibility.Signed`
 
 module Data.Integer.Divisibility where
 
 open import Function
 open import Data.Integer
 open import Data.Integer.Properties
-import Data.Nat.Divisibility as ℕ
-import Data.Nat.Coprimality as ℕ
+import Data.Nat as ℕ
+import Data.Nat.Properties as ℕᵖ
+import Data.Nat.Divisibility as ℕᵈ
+import Data.Nat.Coprimality as ℕᶜ
 open import Level
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 
--- Divisibility.
+------------------------------------------------------------------------
+-- Divisibility
 
-infix 4 _∣_ _∣′_
+infix 4 _∣_
 
-_∣_ : Rel ℤ zero
-_∣_ = ℕ._∣_ on ∣_∣
+_∣_ : Rel ℤ 0ℓ
+_∣_ = ℕᵈ._∣_ on ∣_∣
 
-record _∣′_ (k z : ℤ) : Set where
-  constructor divides
-  field quotient : ℤ
-        equality : z ≡ quotient * k
-open _∣′_ using (quotient) public
+open ℕᵈ public using (divides)
 
--- Coprimality.
+------------------------------------------------------------------------
+-- Properties of divisibility
 
-Coprime : Rel ℤ zero
-Coprime = ℕ.Coprime on ∣_∣
+*-monoʳ-∣ : ∀ k → (k *_) Preserves _∣_ ⟶ _∣_
+*-monoʳ-∣ k {i} {j} i∣j = begin
+  ∣ k * i ∣       ≡⟨ abs-*-commute k i ⟩
+  ∣ k ∣ ℕ.* ∣ i ∣ ∣⟨ ℕᵈ.*-cong ∣ k ∣ i∣j ⟩
+  ∣ k ∣ ℕ.* ∣ j ∣ ≡⟨ sym (abs-*-commute k j) ⟩
+  ∣ k * j ∣       ∎
+  where open ℕᵈ.∣-Reasoning
 
--- If i divides jk and is coprime to j, then it divides k.
+*-monoˡ-∣ : ∀ k → (_* k) Preserves _∣_ ⟶ _∣_
+*-monoˡ-∣ k {i} {j}
+  rewrite *-comm i k
+        | *-comm j k
+        = *-monoʳ-∣ k
 
-coprime-divisor : ∀ i j k → Coprime i j → i ∣ j * k → i ∣ k
-coprime-divisor i j k c eq =
-  ℕ.coprime-divisor c (subst (∣ i ∣ ℕ.∣_ ) (abs-*-commute j k) eq)
+*-cancelˡ-∣ : ∀ k {i j} → k ≢ + 0 → k * i ∣ k * j → i ∣ j
+*-cancelˡ-∣ k {i} {j} k≢0 k*i∣k*j = ℕᵈ./-cong (ℕ.pred ∣ k ∣) $ begin
+  let ∣k∣-is-suc = ℕᵖ.m≢0⇒suc[pred[m]]≡m (k≢0 ∘ ∣n∣≡0⇒n≡0) in
+  ℕ.suc (ℕ.pred ∣ k ∣) ℕ.* ∣ i ∣ ≡⟨ cong (ℕ._* ∣ i ∣) (∣k∣-is-suc) ⟩
+  ∣ k ∣ ℕ.* ∣ i ∣                ≡⟨ sym (abs-*-commute k i) ⟩
+  ∣ k * i ∣                      ∣⟨ k*i∣k*j ⟩
+  ∣ k * j ∣                      ≡⟨ abs-*-commute k j ⟩
+  ∣ k ∣ ℕ.* ∣ j ∣                ≡⟨ cong (ℕ._* ∣ j ∣) (sym ∣k∣-is-suc) ⟩
+  ℕ.suc (ℕ.pred ∣ k ∣) ℕ.* ∣ j ∣ ∎
+  where open ℕᵈ.∣-Reasoning
+
+*-cancelʳ-∣ : ∀ k {i j} → k ≢ + 0 → i * k ∣ j * k → i ∣ j
+*-cancelʳ-∣ k {i} {j} ≢0 = *-cancelˡ-∣ k ≢0 ∘
+  subst₂ _∣_ (*-comm i k) (*-comm j k)

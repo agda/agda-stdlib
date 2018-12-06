@@ -142,7 +142,7 @@ n<s[n/ℕd]*d n ℕ.zero {()}
 n<s[n/ℕd]*d n sd@(ℕ.suc d) = begin
   suc n                     ≡⟨ cong suc (a≡a%ℕn+[a/ℕn]*n n sd) ⟩
   suc (ℤ.+ r ℤ.+ q ℤ.* +sd) ≤⟨ +-monoˡ-< (q ℤ.* +sd) {ℤ.+ r} (ℤ.+≤+ (n%ℕd<d n sd)) ⟩
-  +sd ℤ.+ q ℤ.* +sd         ≡⟨ sym (sm*n≡n+m*n q +sd) ⟩
+  +sd ℤ.+ q ℤ.* +sd         ≡⟨ sym ([1+m]*n≡n+m*n q +sd) ⟩
   ℤ.suc q ℤ.* +sd           ∎ where
   q = n divℕ sd; +sd = ℤ.+ sd; r = n modℕ sd
   open ≤-Reasoning

@@ -30,7 +30,7 @@ import Relation.Nullary.Decidable as Dec
 
 open import Algebra.FunctionProperties {A = ℤ} _≡_
 open import Algebra.FunctionProperties.Consequences.Propositional
-open import Algebra.Structures  {A = ℤ} _≡_
+open import Algebra.Structures {A = ℤ} _≡_
 module ℤtoℕ = Morphism.Definitions ℤ ℕ _≡_
 module ℕtoℤ = Morphism.Definitions ℕ ℤ _≡_
 open +-*-Solver
@@ -206,7 +206,6 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕₚ.≰⇒>
 +-cancelˡ-⊖ : ∀ a b c → (a ℕ.+ b) ⊖ (a ℕ.+ c) ≡ b ⊖ c
 +-cancelˡ-⊖ zero    b c = refl
 +-cancelˡ-⊖ (suc a) b c = +-cancelˡ-⊖ a b c
-
 
 ------------------------------------------------------------------------
 -- Properties of _+_
@@ -625,8 +624,8 @@ private
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
 *-distribˡ-+ = comm+distrʳ⇒distrˡ *-comm *-distribʳ-+
 
-sm*n≡n+m*n : ∀ m n → sucℤ m * n ≡ n + m * n
-sm*n≡n+m*n m n = begin
+[1+m]*n≡n+m*n : ∀ m n → sucℤ m * n ≡ n + m * n
+[1+m]*n≡n+m*n m n = begin
   sucℤ m * n      ≡⟨ *-distribʳ-+ n (+ 1) m ⟩
   + 1 * n + m * n ≡⟨ cong (_+ m * n) (*-identityˡ n) ⟩
   n + m * n       ∎ where open ≡-Reasoning
@@ -1277,16 +1276,16 @@ n≮n {+ n}           (+≤+ n<n) =  contradiction n<n ℕₚ.1+n≰n
 n≮n { -[1+ 0 ]}     ()
 n≮n { -[1+ suc n ]} (-≤- n<n) =  contradiction n<n ℕₚ.1+n≰n
 
->→≰ : ∀ {x y} → x > y → x ≰ y
->→≰ {y = y} x>y x≤y = ⊥-elim $ n≮n (<-≤-trans {i = y} x>y x≤y)
+>⇒≰ : ∀ {x y} → x > y → x ≰ y
+>⇒≰ {y = y} x>y x≤y = contradiction (<-≤-trans {i = y} x>y x≤y) n≮n
 
-≰→> : ∀ {x y} → x ≰ y → x > y
-≰→> {+ m}           {+ n}           m≰n =  +≤+ (ℕₚ.≰⇒> (m≰n ∘ +≤+))
-≰→> {+ m}           { -[1+ n ]}     _   =  -<+ {n} {m}
-≰→> { -[1+ m ]}     {+ _}           m≰n =  contradiction -≤+ m≰n
-≰→> { -[1+ 0 ]}     { -[1+ 0 ]}     m≰n =  contradiction ≤-refl m≰n
-≰→> { -[1+ suc _ ]} { -[1+ 0 ]}     m≰n =  contradiction (-≤- z≤n) m≰n
-≰→> { -[1+ m ]}     { -[1+ suc n ]} m≰n with m ℕ.≤? n
+≰⇒> : ∀ {x y} → x ≰ y → x > y
+≰⇒> {+ m}           {+ n}           m≰n =  +≤+ (ℕₚ.≰⇒> (m≰n ∘ +≤+))
+≰⇒> {+ m}           { -[1+ n ]}     _   =  -<+ {n} {m}
+≰⇒> { -[1+ m ]}     {+ _}           m≰n =  contradiction -≤+ m≰n
+≰⇒> { -[1+ 0 ]}     { -[1+ 0 ]}     m≰n =  contradiction ≤-refl m≰n
+≰⇒> { -[1+ suc _ ]} { -[1+ 0 ]}     m≰n =  contradiction (-≤- z≤n) m≰n
+≰⇒> { -[1+ m ]}     { -[1+ suc n ]} m≰n with m ℕ.≤? n
 ... | yes m≤n  = -≤- m≤n
 ... | no  m≰n' = contradiction (-≤- (ℕₚ.≰⇒> m≰n')) m≰n
 
@@ -1403,4 +1402,12 @@ Please use neg-involutive instead."
 {-# WARNING_ON_USAGE +-⊖-left-cancel
 "Warning: +-⊖-left-cancel was deprecated in v0.15.
 Please use +-cancelˡ-⊖ instead."
+#-}
+
+-- Version 0.18
+
+≰→> = ≰⇒>
+{-# WARNING_ON_USAGE ≰→>
+"Warning: ≰→> was deprecated in v0.15.
+Please use ≰⇒> instead."
 #-}
