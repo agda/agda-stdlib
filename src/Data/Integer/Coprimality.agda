@@ -23,7 +23,7 @@ Coprime : Rel ℤ 0ℓ
 Coprime = ℕ.Coprime on ∣_∣
 
 ------------------------------------------------------------------------
--- Properties of comprimality
+-- Properties of coprimality
 
 sym : Symmetric Coprime
 sym = ℕ.sym
