@@ -1434,6 +1434,6 @@ Please use +-cancelˡ-⊖ instead."
 
 ≰→> = ≰⇒>
 {-# WARNING_ON_USAGE ≰→>
-"Warning: ≰→> was deprecated in v0.15.
+"Warning: ≰→> was deprecated in v0.18.
 Please use ≰⇒> instead."
 #-}
