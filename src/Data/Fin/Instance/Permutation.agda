@@ -1,11 +1,11 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Use of Instance arguments with regard to Fin.
+-- Automated proof of permutation on concrete functions f , g
 ------------------------------------------------------------------------
 
 
-module Data.Fin.Instance where
+module Data.Fin.Instance.Permutation where
 
 open import Data.Nat
 open import Data.Nat.Properties
@@ -22,7 +22,7 @@ data _InverseOfᵢ_ {k} (f g : Fin (suc k) → Fin (suc k)) : (m : ℕ) → {{m�
     inv-zero : {{eq : f (g zero) ≡ zero }} → (f InverseOfᵢ g) zero
     inv-suc  : ∀{a} → {{sa≤k : suc a ≤ᵢ k}} → let fn = fromℕ≤ (s≤s (≤ᵢ-to-≤ {{sa≤k}}))
                                               in {{eq : f (g fn) ≡ fn }}
-               → let e = ≤-to-≤ᵢ (≤⇒pred≤ ≤ᵢ-to-≤)
+               → let e = ≤-to-≤ᵢ (≤⇒pred≤ (≤ᵢ-to-≤ {{sa≤k}}))
                  in {{ind : _InverseOfᵢ_ f g a {{e}}}} → (f InverseOfᵢ g) (suc a)
 
 
