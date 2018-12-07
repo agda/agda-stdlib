@@ -107,13 +107,13 @@
     <a id="3055" class="Symbol">;</a> <a id="3057" class="Field">∙-cong</a>        <a id="3071" class="Symbol">=</a> <a id="3073" href="Relation.Binary.PropositionalEquality.html#1372" class="Function">cong₂</a> <a id="3079" href="Data.Maybe.Base.html#2262" class="Function Operator">_&lt;∣&gt;_</a>
     <a id="3089" class="Symbol">}</a>
 
-  <a id="3094" href="Data.Maybe.Properties.html#3094" class="Function">&lt;∣&gt;-isSemigroup</a> <a id="3110" class="Symbol">:</a> <a id="3112" href="Algebra.Structures.html#1015" class="Record">IsSemigroup</a> <a id="3124" href="Data.Maybe.Base.html#2262" class="Function Operator">_&lt;∣&gt;_</a>
+  <a id="3094" href="Data.Maybe.Properties.html#3094" class="Function">&lt;∣&gt;-isSemigroup</a> <a id="3110" class="Symbol">:</a> <a id="3112" href="Algebra.Structures.html#1138" class="Record">IsSemigroup</a> <a id="3124" href="Data.Maybe.Base.html#2262" class="Function Operator">_&lt;∣&gt;_</a>
   <a id="3132" href="Data.Maybe.Properties.html#3094" class="Function">&lt;∣&gt;-isSemigroup</a> <a id="3148" class="Symbol">=</a> <a id="3150" class="Keyword">record</a>
     <a id="3161" class="Symbol">{</a> <a id="3163" class="Field">isMagma</a> <a id="3171" class="Symbol">=</a> <a id="3173" href="Data.Maybe.Properties.html#2964" class="Function">&lt;∣&gt;-isMagma</a>
     <a id="3189" class="Symbol">;</a> <a id="3191" class="Field">assoc</a>   <a id="3199" class="Symbol">=</a> <a id="3201" href="Data.Maybe.Properties.html#2489" class="Function">&lt;∣&gt;-assoc</a>
     <a id="3215" class="Symbol">}</a>
 
-  <a id="3220" href="Data.Maybe.Properties.html#3220" class="Function">&lt;∣&gt;-isMonoid</a> <a id="3233" class="Symbol">:</a> <a id="3235" href="Algebra.Structures.html#1568" class="Record">IsMonoid</a> <a id="3244" href="Data.Maybe.Base.html#2262" class="Function Operator">_&lt;∣&gt;_</a> <a id="3250" href="Data.Maybe.Base.html#778" class="InductiveConstructor">nothing</a>
+  <a id="3220" href="Data.Maybe.Properties.html#3220" class="Function">&lt;∣&gt;-isMonoid</a> <a id="3233" class="Symbol">:</a> <a id="3235" href="Algebra.Structures.html#1691" class="Record">IsMonoid</a> <a id="3244" href="Data.Maybe.Base.html#2262" class="Function Operator">_&lt;∣&gt;_</a> <a id="3250" href="Data.Maybe.Base.html#778" class="InductiveConstructor">nothing</a>
   <a id="3260" href="Data.Maybe.Properties.html#3220" class="Function">&lt;∣&gt;-isMonoid</a> <a id="3273" class="Symbol">=</a> <a id="3275" class="Keyword">record</a>
     <a id="3286" class="Symbol">{</a> <a id="3288" class="Field">isSemigroup</a> <a id="3300" class="Symbol">=</a> <a id="3302" href="Data.Maybe.Properties.html#3094" class="Function">&lt;∣&gt;-isSemigroup</a>
     <a id="3322" class="Symbol">;</a> <a id="3324" class="Field">identity</a>    <a id="3336" class="Symbol">=</a> <a id="3338" href="Data.Maybe.Properties.html#2807" class="Function">&lt;∣&gt;-identity</a>
