@@ -1,3 +1,10 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Use of Instance arguments with regard to Fin.
+------------------------------------------------------------------------
+
+
 module Data.Fin.Instance where
 
 open import Data.Nat
@@ -53,7 +60,7 @@ invOfᵢ-to-invOf : ∀{k} → (f g : Fin (suc k) → Fin (suc k))
                → {{inv : (f InverseOfᵢ′ g) k ≤-refl}} → {{inv′ : (g InverseOfᵢ′ f) k ≤-refl}}
                → (→-to-⟶ f) InverseOf (→-to-⟶ g)
 left-inverse-of (invOfᵢ-to-invOf f g) x
-  = subst (λ z → f (g z) ≡ z) (fromℕ≤-toℕ x _) ((f invOf g at′ toℕ x) (toℕ≤pred[n] x) it)  
+  = subst (λ z → f (g z) ≡ z) (fromℕ≤-toℕ x _) ((f invOf g at′ toℕ x) (toℕ≤pred[n] x) it)
 right-inverse-of (invOfᵢ-to-invOf f g) x
   = subst (λ z → g (f z) ≡ z) (fromℕ≤-toℕ x _) ((g invOf f at′ toℕ x) (toℕ≤pred[n] x) it)
 

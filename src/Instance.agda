@@ -1,3 +1,10 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Helper function with regard to Instance arguments.
+------------------------------------------------------------------------
+
+
 module Instance where
 
 
