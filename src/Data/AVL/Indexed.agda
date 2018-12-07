@@ -4,7 +4,7 @@
 -- Indexed AVL trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_ ; refl)

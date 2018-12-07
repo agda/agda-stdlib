@@ -7,7 +7,7 @@
 -- Relation.Binary.Construct.Closure.Reflexive module directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.ReflexiveClosure where
 

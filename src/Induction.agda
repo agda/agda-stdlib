@@ -11,7 +11,7 @@
 -- if they are normalised. Note also that Agda can do the
 -- normalisation for you.
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Induction where
 

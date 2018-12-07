@@ -4,7 +4,7 @@
 -- Decidable setoid membership over lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary using (Decidable; DecSetoid)
 

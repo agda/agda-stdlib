@@ -4,7 +4,7 @@
 -- Usage examples of the categorical view of the Sum type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Sum.Categorical.Examples where
 

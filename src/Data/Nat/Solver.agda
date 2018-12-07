@@ -6,7 +6,7 @@
 
 -- See README.Nat for examples of how to use this solver
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Solver where
 

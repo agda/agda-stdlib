@@ -5,7 +5,7 @@
 -- made that this preorder is unique.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
 open import Relation.Unary using (Pred)

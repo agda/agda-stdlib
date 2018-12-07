@@ -4,7 +4,7 @@
 -- Indexed unary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Unary.Indexed  where
 

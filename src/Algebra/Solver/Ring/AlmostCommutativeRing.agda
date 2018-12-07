@@ -5,7 +5,7 @@
 -- commutative rings), used by the ring solver
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Solver.Ring.AlmostCommutativeRing where
 

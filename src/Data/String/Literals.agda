@@ -4,7 +4,7 @@
 -- String Literals
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.String.Literals where
 

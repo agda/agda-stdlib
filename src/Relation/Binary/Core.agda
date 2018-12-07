@@ -7,7 +7,7 @@
 -- This file contains some core definitions which are reexported by
 -- Relation.Binary or Relation.Binary.PropositionalEquality.
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Core where
 

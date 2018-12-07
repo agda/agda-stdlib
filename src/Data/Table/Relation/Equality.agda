@@ -4,7 +4,7 @@
 -- Pointwise table equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Table.Relation.Equality where
 

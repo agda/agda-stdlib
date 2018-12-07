@@ -6,7 +6,7 @@
 
 -- Note that currently the monad laws are not included here.
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Category.Monad where
 

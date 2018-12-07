@@ -5,7 +5,7 @@
 -- etc.)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
 

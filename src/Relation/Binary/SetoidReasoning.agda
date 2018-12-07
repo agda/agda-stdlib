@@ -21,7 +21,7 @@
 --       ≈⟨ y≈z ⟩
 --     z ∎
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
 open import Relation.Binary.EqReasoning as EqR using (_IsRelatedTo_)

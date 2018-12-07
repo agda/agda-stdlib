@@ -8,7 +8,7 @@
 -- set {m | m < n}. The notation "m" in comments below refers to this
 -- natural number view.
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Fin.Base where
 

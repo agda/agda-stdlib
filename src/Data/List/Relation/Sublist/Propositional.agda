@@ -5,7 +5,7 @@
 -- known as an Order Preserving Embedding (OPE).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Sublist.Propositional {a} {A : Set a} where
 

@@ -5,7 +5,7 @@
 -- rule
 ------------------------------------------------------------------------
 
-{-# OPTIONS --with-K #-}
+{-# OPTIONS --with-K --safe #-}
 
 module Relation.Binary.PropositionalEquality.WithK where
 

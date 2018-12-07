@@ -4,7 +4,7 @@
 -- Order-theoretic lattices
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Lattice where
 

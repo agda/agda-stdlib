@@ -4,7 +4,7 @@
 -- Machine words
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Word where
 

@@ -6,7 +6,7 @@
 -- ease of adding and removing elements.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Table where
 

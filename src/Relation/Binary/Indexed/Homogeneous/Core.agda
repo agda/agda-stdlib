@@ -7,7 +7,7 @@
 -- This file contains some core definitions which are reexported by
 -- Relation.Binary.Indexed.Homogeneous
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Indexed.Homogeneous.Core where
 

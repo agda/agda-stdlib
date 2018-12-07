@@ -5,7 +5,7 @@
 -- README.Function.Reasoning for examples
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Reasoning where
 

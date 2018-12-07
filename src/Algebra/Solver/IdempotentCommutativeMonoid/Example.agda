@@ -5,7 +5,7 @@
 -- used
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Solver.IdempotentCommutativeMonoid.Example where
 

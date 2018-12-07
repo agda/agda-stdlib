@@ -4,7 +4,7 @@
 -- Pointwise lifting of relations to maybes
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Maybe.Relation.Pointwise where
 

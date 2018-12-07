@@ -4,7 +4,7 @@
 -- Convenient syntax for "equational reasoning" using a partial order
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
 

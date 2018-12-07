@@ -4,7 +4,7 @@
 -- Some code related to transitive closures that relies on the K rule
 ------------------------------------------------------------------------
 
-{-# OPTIONS --with-K #-}
+{-# OPTIONS --with-K --safe #-}
 
 module Relation.Binary.Construct.Closure.Transitive.WithK where
 

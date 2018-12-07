@@ -4,7 +4,7 @@
 -- Container combinators
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container.Combinator where
 

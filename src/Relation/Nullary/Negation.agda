@@ -4,7 +4,7 @@
 -- Properties related to negation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Nullary.Negation where
 

@@ -7,7 +7,7 @@
 -- Note that currently the applicative functor laws are not included
 -- here.
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Category.Applicative where
 

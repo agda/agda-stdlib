@@ -4,7 +4,7 @@
 -- Bisimilarity for Conats
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Codata.Conat.Bisimilarity where
 

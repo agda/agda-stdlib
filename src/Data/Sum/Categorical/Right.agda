@@ -4,7 +4,7 @@
 -- A Categorical view of the Sum type (Right-biased)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level
 

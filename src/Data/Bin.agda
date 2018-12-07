@@ -4,7 +4,7 @@
 -- A binary representation of natural numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Bin where
 

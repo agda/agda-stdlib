@@ -4,7 +4,7 @@
 -- Bisimilarity for Colists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Codata.Colist.Bisimilarity where
 

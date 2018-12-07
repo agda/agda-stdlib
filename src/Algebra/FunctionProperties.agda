@@ -4,7 +4,7 @@
 -- Properties of functions, such as associativity and commutativity
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level
 open import Relation.Binary

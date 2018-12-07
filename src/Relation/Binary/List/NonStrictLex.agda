@@ -12,7 +12,7 @@
 -- lexicographic ordering itself can be either strict or non-strict,
 -- depending on the value of a parameter.
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.List.NonStrictLex where
 

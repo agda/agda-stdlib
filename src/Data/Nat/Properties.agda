@@ -7,7 +7,7 @@
 -- See README.Nat for some examples showing how this module can be
 -- used.
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Properties where
 

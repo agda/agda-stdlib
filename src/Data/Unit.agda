@@ -4,7 +4,7 @@
 -- Some unit types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Unit where
 

@@ -4,7 +4,7 @@
 -- Lists, basic types and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Base where
 

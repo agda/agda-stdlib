@@ -4,7 +4,7 @@
 -- Maybes where all the elements satisfy a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Maybe.All where
 

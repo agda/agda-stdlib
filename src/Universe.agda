@@ -4,7 +4,7 @@
 -- Universes
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Universe where
 

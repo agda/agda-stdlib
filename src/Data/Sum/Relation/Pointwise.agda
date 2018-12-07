@@ -4,7 +4,7 @@
 -- Pointwise sum
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Sum.Relation.Pointwise where
 

@@ -4,7 +4,7 @@
 -- The extensional sublist relation over setoid equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
 

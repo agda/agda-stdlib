@@ -5,7 +5,7 @@
 ------------------------------------------------------------------------
 -- For signed divisibility see `Data.Integer.Divisibility.Signed`
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Integer.Divisibility where
 

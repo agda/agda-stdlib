@@ -7,7 +7,7 @@
 -- Data.Product.Relation.Pointwise.NonDependent directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Product.Pointwise where
 

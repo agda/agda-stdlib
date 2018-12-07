@@ -4,7 +4,7 @@
 -- A categorical view of Colist
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Codata.Colist.Categorical where
 

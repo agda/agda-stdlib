@@ -4,7 +4,7 @@
 -- Coprimality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Coprimality where
 

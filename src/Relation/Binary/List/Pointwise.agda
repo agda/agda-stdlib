@@ -7,7 +7,7 @@
 -- directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.List.Pointwise where
 

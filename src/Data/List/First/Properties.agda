@@ -4,7 +4,7 @@
 -- Properties of First
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.First.Properties where
 

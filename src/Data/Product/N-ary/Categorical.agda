@@ -4,7 +4,7 @@
 -- A categorical view of N-ary products
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Product.N-ary.Categorical where
 

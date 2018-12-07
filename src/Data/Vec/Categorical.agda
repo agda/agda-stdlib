@@ -4,7 +4,7 @@
 -- A categorical view of Vec
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Categorical {a n} where
 

@@ -5,7 +5,7 @@
 -- satisfy a predicate.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.First {a} {A : Set a} where
 

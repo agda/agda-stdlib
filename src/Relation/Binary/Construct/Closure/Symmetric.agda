@@ -4,7 +4,7 @@
 -- Symmetric closures of binary relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Construct.Closure.Symmetric where
 

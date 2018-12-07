@@ -4,7 +4,7 @@
 -- The Conat type and some operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Codata.Conat where
 
