@@ -227,6 +227,8 @@ Splitting up `Data.Maybe` into the standard hierarchy.
     - Made the `Set` argument implicit in `∈-++⁺ˡ`, `∈-++⁺ʳ`, `∈-++⁻`, `∈-insert`, `∈-∃++`.
     - Made the `A → B` argument explicit in `∈-map⁺`, `∈-map⁻`, `map-∈↔`.
 
+* The type `Coprime` and proof `coprime-divisor` have been m oved from `Data.Integer.Divisibility` to `Data.Integer.Coprimality`.
+
 Other major changes
 -------------------
 
@@ -237,6 +239,9 @@ Other major changes
 * Added new module `Codata.Cowriter`
 
 * Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
+
+* Added new modules `Data.Integer.Divisibility.Properties`,
+  `Data.Integer.Divisibility.Signed` and `Data.Integer.DivMod`.
 
 * Added new modules `Data.List.Relation.Prefix.Heterogeneous(.Properties)`
 
@@ -252,6 +257,11 @@ Other major changes
 
 Deprecated features
 -------------------
+
+* In `Data.Integer.Properties`:
+  ```agda
+  ≰→> ↦ ≰⇒>
+  ```
 
 Other minor additions
 ---------------------
@@ -358,6 +368,94 @@ Other minor additions
 
 * Added new proofs to `Data.Integer.Properties`:
   ```agda
+  suc-pred      : sucℤ (pred m) ≡ m
+  pred-suc      : pred (sucℤ m) ≡ m
+  neg-suc       : - + suc m ≡ pred (- + m)
+  suc-+         : + suc m + n ≡ sucℤ (+ m + n)
+  +-pred        : m + pred n ≡ pred (m + n)
+  pred-+        : pred m + n ≡ pred (m + n)
+  minus-suc     : m - + suc n ≡ pred (m - + n)
+  [1+m]*n≡n+m*n : sucℤ m * n ≡ n + m * n
+
+  ⊓-comm    : Commutative _⊓_
+  ⊓-assoc   : Associative _⊓_
+  ⊓-idem    : Idempotent _⊓_
+  ⊓-sel     : Selective _⊓_
+  m≤n⇒m⊓n≡m : m ≤ n → m ⊓ n ≡ m
+  m⊓n≡m⇒m≤n : m ⊓ n ≡ m → m ≤ n
+  m≥n⇒m⊓n≡n : m ≥ n → m ⊓ n ≡ n
+  m⊓n≡n⇒m≥n : m ⊓ n ≡ n → m ≥ n
+  m⊓n≤n     : m ⊓ n ≤ n
+  m⊓n≤m     : m ⊓ n ≤ m
+
+  ⊔-comm    : Commutative _⊔_
+  ⊔-assoc   : Associative _⊔_
+  ⊔-idem    : Idempotent _⊔_
+  ⊔-sel     : Selective _⊔_
+  m≤n⇒m⊔n≡n : m ≤ n → m ⊔ n ≡ n
+  m⊔n≡n⇒m≤n : m ⊔ n ≡ n → m ≤ n
+  m≥n⇒m⊔n≡m : m ≥ n → m ⊔ n ≡ m
+  m⊔n≡m⇒m≥n : m ⊔ n ≡ m → m ≥ n
+  m≤m⊔n     : m ≤ m ⊔ n
+  n≤m⊔n     : n ≤ m ⊔ n
+
+  neg-distrib-⊔-⊓ : - (m ⊔ n) ≡ - m ⊓ - n
+  neg-distrib-⊓-⊔ : - (m ⊓ n) ≡ - m ⊔ - n
+
+  pred-mono         : pred Preserves _≤_ ⟶ _≤_
+  suc-mono          : sucℤ Preserves _≤_ ⟶ _≤_
+  ⊖-monoʳ-≥-≤       : (p ⊖_) Preserves ℕ._≥_ ⟶ _≤_
+  ⊖-monoˡ-≤         : (_⊖ p) Preserves ℕ._≤_ ⟶ _≤_
+  +-monoʳ-≤         : (_+_ n) Preserves _≤_ ⟶ _≤_
+  +-monoˡ-≤         : (_+ n) Preserves _≤_ ⟶ _≤_
+  +-monoˡ-<         : (_+ n) Preserves _<_ ⟶ _<_
+  +-monoʳ-<         : (_+_ n) Preserves _<_ ⟶ _<_
+  *-monoˡ-≤-pos     : (+ suc n *_) Preserves _≤_ ⟶ _≤_
+  *-monoʳ-≤-non-neg : (_* + n) Preserves _≤_ ⟶ _≤
+  *-monoˡ-≤-non-neg : (+ n *_) Preserves _≤_ ⟶ _≤_
+  +-mono-≤          : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
+  +-mono-<          : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
+  +-mono-≤-<        : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
+  +-mono-<-≤        : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
+  neg-mono-≤-≥      : -_ Preserves _≤_ ⟶ _≥_
+  neg-mono-<->      : -_ Preserves _<_ ⟶ _>_
+
+  *-cancelˡ-≡     : i ≢ + 0 → i * j ≡ i * k → j ≡ k
+  *-cancelˡ-≤-pos : + suc m * n ≤ + suc m * o → n ≤ o
+
+  neg-≤-pos     : - (+ m) ≤ + n
+  0⊖m≤+         : 0 ⊖ m ≤ + n
+  m≤n⇒m-n≤0     : m ≤ n → m - n ≤ + 0
+  m-n≤0⇒m≤n     : m - n ≤ + 0 → m ≤ n
+  m≤n⇒0≤n-m     : m ≤ n → + 0 ≤ n - m
+  0≤n-m⇒m≤n     : + 0 ≤ n - m → m ≤ n
+  m≤pred[n]⇒m<n : m ≤ pred n → m < n
+  m<n⇒m≤pred[n] : m < n → m ≤ pred n
+  m≤m+n         : m ≤ m + + n
+  n≤m+n         : n ≤ + m + n
+  m-n≤m         : m - + n ≤ m
+
+  ≤-<-trans : Trans _≤_ _<_ _<_
+  <-≤-trans : Trans _<_ _≤_ _<_
+  >→≰       : x > y → x ≰ y
+  >-irrefl  : Irreflexive _≡_ _>_
+
+  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+  <-strictPartialOrder   : StrictPartialOrder _ _ _
+
+  pos-+-commute  : Homomorphic₂ +_ ℕ._+_ _+_
+  neg-distribˡ-* : - (x * y) ≡ (- x) * y
+  neg-distribʳ-* : - (x * y) ≡ x * (- y)
+  *-distribˡ-+   : _*_ DistributesOverˡ _+_
+  ≤-steps        : m ≤ n → m ≤ + p + n
+  ≤-step-neg     : m ≤ n → pred m ≤ n
+  ≤-steps-neg    : m ≤ n → m - + p ≤ n
+  m≡n⇒m-n≡0      : m ≡ n → m - n ≡ + 0
+  m-n≡0⇒m≡n      : m - n ≡ + 0 → m ≡ n
+  0≤n⇒+∣n∣≡n     : + 0 ≤ n → + ∣ n ∣ ≡ n
+  +∣n∣≡n⇒0≤n     : + ∣ n ∣ ≡ n → + 0 ≤ n
+  ◃-≡            : sign m ≡ sign n → ∣ m ∣ ≡ ∣ n ∣ → m ≡ n
+
   +-isMagma   : IsMagma _+_
   *-isMagma   : IsMagma _*_
 
@@ -367,6 +465,7 @@ Other minor additions
   *-semigroup : Semigroup 0ℓ 0ℓ
   +-0-monoid  : Monoid 0ℓ 0ℓ
   *-1-monoid  : Monoid 0ℓ 0ℓ
+  +-*-ring    : Ring 0ℓ 0ℓ
   ```
 
 * Added new operations to `Data.List.All`:
@@ -509,6 +608,8 @@ Other minor additions
   ⊓-band        : Band 0ℓ 0ℓ
   ⊔-semilattice : Semilattice 0ℓ 0ℓ
   ⊓-semilattice : Semilattice 0ℓ 0ℓ
+
+  m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
   ```
 
 * Added new function to `Data.These`:
