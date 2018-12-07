@@ -4,7 +4,7 @@
 -- Some code related to indexed AVL trees that relies on the K rule
 ------------------------------------------------------------------------
 
-{-# OPTIONS --with-K #-}
+{-# OPTIONS --with-K --safe #-}
 
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)

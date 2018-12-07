@@ -4,7 +4,7 @@
 -- Least common multiple
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.LCM where
 

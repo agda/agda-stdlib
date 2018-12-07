@@ -4,7 +4,7 @@
 -- Bisimilarity for the Delay type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Codata.Delay.Bisimilarity where
 

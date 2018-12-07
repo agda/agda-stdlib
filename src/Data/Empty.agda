@@ -4,7 +4,7 @@
 -- Empty type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Empty where
 

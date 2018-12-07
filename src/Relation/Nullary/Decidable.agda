@@ -4,7 +4,7 @@
 -- Operations on and properties of decidable relations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Nullary.Decidable where
 

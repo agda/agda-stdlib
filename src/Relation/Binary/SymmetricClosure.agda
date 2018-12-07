@@ -7,7 +7,7 @@
 -- Relation.Binary.Construct.Closure.Symmetric module directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.SymmetricClosure where
 

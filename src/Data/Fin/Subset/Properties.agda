@@ -4,7 +4,7 @@
 -- Some properties about subsets
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Fin.Subset.Properties where
 
@@ -492,9 +492,14 @@ module _ (n : ℕ) where
 
   ∪-∩-isLattice : IsLattice _∪_ _∩_
   ∪-∩-isLattice = record
-    { ∨-isSemilattice = ∪-isSemilattice
-    ; ∧-isSemilattice = ∩-isSemilattice n
-    ; absorptive      = ∪-abs-∩ , ∩-abs-∪
+    { isEquivalence = isEquivalence
+    ; ∨-comm        = ∪-comm
+    ; ∨-assoc       = ∪-assoc
+    ; ∨-cong        = cong₂ _∪_
+    ; ∧-comm        = ∩-comm
+    ; ∧-assoc       = ∩-assoc
+    ; ∧-cong        = cong₂ _∩_
+    ; absorptive    = ∪-abs-∩ , ∩-abs-∪
     }
 
   ∪-∩-lattice : Lattice _ _

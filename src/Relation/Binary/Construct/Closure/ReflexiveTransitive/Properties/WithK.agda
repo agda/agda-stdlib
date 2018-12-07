@@ -5,7 +5,7 @@
 -- the K rule
 ------------------------------------------------------------------------
 
-{-# OPTIONS --with-K #-}
+{-# OPTIONS --with-K --safe #-}
 
 module
   Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.WithK

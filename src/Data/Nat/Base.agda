@@ -4,7 +4,7 @@
 -- Natural numbers, basic types and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Base where
 

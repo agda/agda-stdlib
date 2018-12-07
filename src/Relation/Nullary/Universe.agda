@@ -4,7 +4,7 @@
 -- A universe of proposition functors, along with some properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Nullary.Universe where
 

@@ -4,7 +4,7 @@
 -- Primality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Primality where
 

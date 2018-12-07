@@ -8,7 +8,7 @@
 -- module directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Star.Properties where
 

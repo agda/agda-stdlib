@@ -4,7 +4,7 @@
 -- Some Vec-related properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Properties where
 

@@ -11,7 +11,7 @@
 -- Product-based similar setting.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Level
 

@@ -6,7 +6,7 @@
 
 -- See README.Integer for examples of how to use this solver
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Integer.Solver where
 

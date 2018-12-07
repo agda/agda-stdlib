@@ -4,7 +4,7 @@
 -- Lexicographic ordering of lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Lex.Core where
 

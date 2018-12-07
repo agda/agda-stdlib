@@ -4,7 +4,7 @@
 -- Table-related properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Table.Properties where
 

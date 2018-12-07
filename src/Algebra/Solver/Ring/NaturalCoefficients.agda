@@ -5,7 +5,7 @@
 -- coefficient "ring"
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra
 import Algebra.Operations.Semiring as SemiringOps

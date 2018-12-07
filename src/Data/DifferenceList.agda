@@ -4,7 +4,7 @@
 -- Lists with fast append
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.DifferenceList where
 

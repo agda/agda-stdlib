@@ -4,7 +4,7 @@
 -- A generalisation of the arithmetic operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.GeneralisedArithmetic where
 

@@ -4,7 +4,7 @@
 -- Rational numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Rational where
 
@@ -12,7 +12,8 @@ import Algebra
 import Data.Bool.Properties as Bool
 open import Function
 open import Data.Integer as ℤ using (ℤ; ∣_∣; +_; -_)
-open import Data.Integer.Divisibility as ℤDiv using (Coprime)
+open import Data.Integer.Divisibility as ℤDiv using ()
+open import Data.Integer.Coprimality using (Coprime; coprime-divisor)
 import Data.Integer.Properties as ℤ
 open import Data.Nat.Divisibility as ℕDiv using (_∣_; ∣-antisym)
 import Data.Nat.Coprimality as C
@@ -22,9 +23,9 @@ import Level
 open import Relation.Nullary.Decidable
 open import Relation.Nullary
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; refl; cong; cong₂)
-open P.≡-Reasoning
+open import Relation.Binary.PropositionalEquality
+  using (_≡_; refl; sym; cong; cong₂; module ≡-Reasoning)
+open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- The definition
@@ -103,7 +104,7 @@ p ≃ q = numerator p ℤ.* denominator q ≡
   helper n₁ d₁ c₁ n₂ d₂ c₂ eq with ∣-antisym 1+d₁∣1+d₂ 1+d₂∣1+d₁
     where
     1+d₁∣1+d₂ : suc d₁ ∣ suc d₂
-    1+d₁∣1+d₂ = ℤDiv.coprime-divisor (+ suc d₁) n₁ (+ suc d₂)
+    1+d₁∣1+d₂ = coprime-divisor (+ suc d₁) n₁ (+ suc d₂)
                   (C.sym $ toWitness c₁) $
                   ℕDiv.divides ∣ n₂ ∣ (begin
                     ∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ cong ∣_∣ eq ⟩
@@ -111,10 +112,10 @@ p ≃ q = numerator p ℤ.* denominator q ≡
                     ∣ n₂ ∣ ℕ.* suc d₁    ∎)
 
     1+d₂∣1+d₁ : suc d₂ ∣ suc d₁
-    1+d₂∣1+d₁ = ℤDiv.coprime-divisor (+ suc d₂) n₂ (+ suc d₁)
+    1+d₂∣1+d₁ = coprime-divisor (+ suc d₂) n₂ (+ suc d₁)
                   (C.sym $ toWitness c₂) $
                   ℕDiv.divides ∣ n₁ ∣ (begin
-                    ∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ cong ∣_∣ (P.sym eq) ⟩
+                    ∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ cong ∣_∣ (sym eq) ⟩
                     ∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ ℤ.abs-*-commute n₁ (+ suc d₂) ⟩
                     ∣ n₁ ∣ ℕ.* suc d₂    ∎)
   helper n₁ d c₁ n₂ .d c₂ eq | refl with ℤ.*-cancelʳ-≡

@@ -4,7 +4,7 @@
 -- Sums (disjoint unions)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Sum.Base where
 

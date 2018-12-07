@@ -5,7 +5,7 @@
 -- (packed in records together with sets, operations, etc.)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra where
 
@@ -74,7 +74,6 @@ record Band c ℓ : Set (suc (c ⊔ ℓ)) where
   semigroup = record { isSemigroup = isSemigroup }
 
   open Semigroup semigroup public using (magma; rawMagma)
-
 
 record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∧_
@@ -568,27 +567,8 @@ record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsLattice isLattice public
 
-  ∨-semilattice : Semilattice c ℓ
-  ∨-semilattice = record { isSemilattice = ∨-isSemilattice }
-
-  open Semilattice ∨-semilattice public
-    using () renaming
-    ( rawMagma  to ∨-rawMagma
-    ; magma     to ∨-magma
-    ; semigroup to ∨-semigroup
-    ; band      to ∨-band
-    )
-
-  ∧-semilattice : Semilattice c ℓ
-  ∧-semilattice = record { isSemilattice = ∧-isSemilattice }
-
-  open Semilattice ∧-semilattice public
-    using () renaming
-    ( rawMagma  to ∧-rawMagma
-    ; magma     to ∧-magma
-    ; semigroup to ∧-semigroup
-    ; band      to ∧-band
-    )
+  setoid : Setoid _ _
+  setoid = record { isEquivalence = isEquivalence }
 
 record DistributiveLattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∧_
@@ -606,11 +586,7 @@ record DistributiveLattice c ℓ : Set (suc (c ⊔ ℓ)) where
   lattice : Lattice _ _
   lattice = record { isLattice = isLattice }
 
-  open Lattice lattice public
-    using
-    ( ∧-rawMagma; ∧-magma; ∧-semigroup; ∧-band; ∧-semilattice
-    ; ∨-rawMagma; ∨-magma; ∨-semigroup; ∨-band; ∨-semilattice
-    )
+  open Lattice lattice public using (setoid)
 
 record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 ¬_
@@ -633,11 +609,8 @@ record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
   distributiveLattice = record { isDistributiveLattice = isDistributiveLattice }
 
   open DistributiveLattice distributiveLattice public
-    using
-    ( ∧-rawMagma; ∧-magma; ∧-semigroup; ∧-band; ∧-semilattice
-    ; ∨-rawMagma; ∨-magma; ∨-semigroup; ∨-band; ∨-semilattice
-    ; lattice
-    )
+    using (setoid; lattice)
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

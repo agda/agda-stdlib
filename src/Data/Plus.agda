@@ -7,7 +7,7 @@
 -- Relation.Binary.Construct.Closure.Transitive module directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Plus where
 

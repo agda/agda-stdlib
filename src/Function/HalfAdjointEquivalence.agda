@@ -4,7 +4,7 @@
 -- Half adjoint equivalences
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.HalfAdjointEquivalence where
 

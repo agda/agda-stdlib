@@ -23,7 +23,7 @@
 --       ∎
 --     where open Pre preorder₂
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
 

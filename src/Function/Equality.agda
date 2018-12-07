@@ -4,7 +4,7 @@
 -- Function setoids and related constructions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Equality where
 

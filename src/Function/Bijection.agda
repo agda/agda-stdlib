@@ -4,7 +4,7 @@
 -- Bijections
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Function.Bijection where
 

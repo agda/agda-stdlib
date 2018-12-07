@@ -4,7 +4,7 @@
 -- Bijections on finite sets (i.e. permutations).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Fin.Permutation where
 

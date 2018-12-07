@@ -4,7 +4,7 @@
 -- A delimited continuation monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Category.Monad.Continuation where
 

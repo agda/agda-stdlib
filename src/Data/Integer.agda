@@ -4,7 +4,7 @@
 -- Integers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Integer where
 

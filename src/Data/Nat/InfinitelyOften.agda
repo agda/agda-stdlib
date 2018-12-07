@@ -4,7 +4,7 @@
 -- Definition of and lemmas related to "true infinitely often"
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.InfinitelyOften where
 

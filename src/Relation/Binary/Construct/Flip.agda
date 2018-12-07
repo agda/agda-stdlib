@@ -6,7 +6,7 @@
 -- both the relation and the underlying equality.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
 

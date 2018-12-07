@@ -4,7 +4,7 @@
 -- Showing booleans
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Bool.Show where
 

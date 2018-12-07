@@ -8,7 +8,7 @@
 -- contains proofs for the lifted version of the relation.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Indexed.Homogeneous where
 

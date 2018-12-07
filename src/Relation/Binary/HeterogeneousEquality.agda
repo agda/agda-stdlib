@@ -4,7 +4,7 @@
 -- Heterogeneous equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --with-K #-}
+{-# OPTIONS --with-K --safe #-}
 
 module Relation.Binary.HeterogeneousEquality where
 

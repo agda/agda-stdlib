@@ -6,7 +6,7 @@
 
 -- Vectors of a specified maximum length.
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.BoundedVec where
 

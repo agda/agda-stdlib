@@ -4,7 +4,7 @@
 -- Closure of a unary relation with respect to a preorder
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
 

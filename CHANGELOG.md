@@ -193,16 +193,13 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The fields `isEquivalence` and `∙-cong` in `IsSemigroup` have been
   replaced with `isMagma`.
 
-* The fields `isEquivalence`, `∨-cong`, `∨-assoc`, `∨-comm`, `∧-cong`,
-  `∧-assoc`  and `∧-comm` in `IsLattice` have been replaced with
-  `∨-isSemilattice` and `∧-isSemilattice`.
-
-* The record `Lattice` now exports proofs of `∨-idem` and `∧-idem` directly.
-  Therefore `∨-idempotence` and `∧-idempotence` in `Algebra.Properties.Lattice`
-  have been deprecated.
-
 * The record `BooleanAlgebra` now exports `∨-isSemigroup`, `∧-isSemigroup`
   directly  so `Algebra.Properties.BooleanAlgebra` no longer does so.
+
+* The proof that every algebraic lattice induces a partial order has been
+  moved from `Algebra.Properties.Lattice` to
+  `Algebra.Properties.Semilattice`.  The corresponding `poset` instance is
+  re-exported in `Algebra.Properties.Lattice`.
 
 #### Relaxation of ring solvers requirements
 
@@ -230,8 +227,12 @@ Splitting up `Data.Maybe` into the standard hierarchy.
     - Made the `Set` argument implicit in `∈-++⁺ˡ`, `∈-++⁺ʳ`, `∈-++⁻`, `∈-insert`, `∈-∃++`.
     - Made the `A → B` argument explicit in `∈-map⁺`, `∈-map⁻`, `map-∈↔`.
 
+* The type `Coprime` and proof `coprime-divisor` have been m oved from `Data.Integer.Divisibility` to `Data.Integer.Coprimality`.
+
 Other major changes
 -------------------
+
+* Added new module `Algebra.Properties.Semilattice`
 
 * Added new module `Algebra.FunctionProperties.Consequences.Propositional`
 
@@ -239,24 +240,41 @@ Other major changes
 
 * Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
 
+* Added new modules `Data.Integer.Divisibility.Properties`,
+  `Data.Integer.Divisibility.Signed` and `Data.Integer.DivMod`.
+
+* Added new modules `Data.List.Relation.Prefix.Heterogeneous(.Properties)`
+
 * Added new modules `Data.List.First` and `Data.List.First.Properties` for a
   generalization of the notion of "first element in the list to satisfy a
   predicate".
 
 * Added new modules `Data.List.Relation.Prefix.Heterogeneous(.Properties)`
 
-* Added new modules `Data.List.Relation.Split` and
-  `Data.List.Relation.Split.(Setoid/).Properties`.
+* Added new modules `Data.List.Relation.Interleaving(.Setoid/Propositional)`
+  and `Data.List.Relation.Interleaving(.Setoid/Propositional).Properties`.
 
 * Added new module `Data.Vec.Any.Properties`
+
+* Added new modules `Relation.Binary.Construct.NaturalOrder.(Left/Right)`
 
 * Added new module `Relation.Binary.Properties.BoundedLattice`
 
 Deprecated features
 -------------------
 
+* In `Data.Integer.Properties`:
+  ```agda
+  ≰→> ↦ ≰⇒>
+  ```
+
 Other minor additions
 ---------------------
+
+* Added new proof to `Data.Nat.Properties`:
+  ```agda
+  ≤′-trans : Transitive _≤′_
+  ```
 
 * Added new records to `Algebra`:
   ```agda
@@ -267,6 +285,14 @@ Other minor additions
 * Added new proof to `Algebra.FunctionProperties.Consequences`:
   ```agda
   wlog : Commutative f → Total _R_ → (∀ a b → a R b → P (f a b)) → ∀ a b → P (f a b)
+  ```
+
+* Added new proofs to `Algebra.Properties.Lattice`:
+  ```agda
+  ∧-isSemilattice : IsSemilattice _≈_ _∧_
+  ∧-semilattice : Semilattice l₁ l₂
+  ∨-isSemilattice : IsSemilattice _≈_ _∨_
+  ∨-semilattice : Semilattice l₁ l₂
   ```
 
 * Added new operator to `Algebra.Solver.Ring`.
@@ -347,6 +373,94 @@ Other minor additions
 
 * Added new proofs to `Data.Integer.Properties`:
   ```agda
+  suc-pred      : sucℤ (pred m) ≡ m
+  pred-suc      : pred (sucℤ m) ≡ m
+  neg-suc       : - + suc m ≡ pred (- + m)
+  suc-+         : + suc m + n ≡ sucℤ (+ m + n)
+  +-pred        : m + pred n ≡ pred (m + n)
+  pred-+        : pred m + n ≡ pred (m + n)
+  minus-suc     : m - + suc n ≡ pred (m - + n)
+  [1+m]*n≡n+m*n : sucℤ m * n ≡ n + m * n
+
+  ⊓-comm    : Commutative _⊓_
+  ⊓-assoc   : Associative _⊓_
+  ⊓-idem    : Idempotent _⊓_
+  ⊓-sel     : Selective _⊓_
+  m≤n⇒m⊓n≡m : m ≤ n → m ⊓ n ≡ m
+  m⊓n≡m⇒m≤n : m ⊓ n ≡ m → m ≤ n
+  m≥n⇒m⊓n≡n : m ≥ n → m ⊓ n ≡ n
+  m⊓n≡n⇒m≥n : m ⊓ n ≡ n → m ≥ n
+  m⊓n≤n     : m ⊓ n ≤ n
+  m⊓n≤m     : m ⊓ n ≤ m
+
+  ⊔-comm    : Commutative _⊔_
+  ⊔-assoc   : Associative _⊔_
+  ⊔-idem    : Idempotent _⊔_
+  ⊔-sel     : Selective _⊔_
+  m≤n⇒m⊔n≡n : m ≤ n → m ⊔ n ≡ n
+  m⊔n≡n⇒m≤n : m ⊔ n ≡ n → m ≤ n
+  m≥n⇒m⊔n≡m : m ≥ n → m ⊔ n ≡ m
+  m⊔n≡m⇒m≥n : m ⊔ n ≡ m → m ≥ n
+  m≤m⊔n     : m ≤ m ⊔ n
+  n≤m⊔n     : n ≤ m ⊔ n
+
+  neg-distrib-⊔-⊓ : - (m ⊔ n) ≡ - m ⊓ - n
+  neg-distrib-⊓-⊔ : - (m ⊓ n) ≡ - m ⊔ - n
+
+  pred-mono         : pred Preserves _≤_ ⟶ _≤_
+  suc-mono          : sucℤ Preserves _≤_ ⟶ _≤_
+  ⊖-monoʳ-≥-≤       : (p ⊖_) Preserves ℕ._≥_ ⟶ _≤_
+  ⊖-monoˡ-≤         : (_⊖ p) Preserves ℕ._≤_ ⟶ _≤_
+  +-monoʳ-≤         : (_+_ n) Preserves _≤_ ⟶ _≤_
+  +-monoˡ-≤         : (_+ n) Preserves _≤_ ⟶ _≤_
+  +-monoˡ-<         : (_+ n) Preserves _<_ ⟶ _<_
+  +-monoʳ-<         : (_+_ n) Preserves _<_ ⟶ _<_
+  *-monoˡ-≤-pos     : (+ suc n *_) Preserves _≤_ ⟶ _≤_
+  *-monoʳ-≤-non-neg : (_* + n) Preserves _≤_ ⟶ _≤
+  *-monoˡ-≤-non-neg : (+ n *_) Preserves _≤_ ⟶ _≤_
+  +-mono-≤          : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
+  +-mono-<          : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
+  +-mono-≤-<        : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
+  +-mono-<-≤        : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
+  neg-mono-≤-≥      : -_ Preserves _≤_ ⟶ _≥_
+  neg-mono-<->      : -_ Preserves _<_ ⟶ _>_
+
+  *-cancelˡ-≡     : i ≢ + 0 → i * j ≡ i * k → j ≡ k
+  *-cancelˡ-≤-pos : + suc m * n ≤ + suc m * o → n ≤ o
+
+  neg-≤-pos     : - (+ m) ≤ + n
+  0⊖m≤+         : 0 ⊖ m ≤ + n
+  m≤n⇒m-n≤0     : m ≤ n → m - n ≤ + 0
+  m-n≤0⇒m≤n     : m - n ≤ + 0 → m ≤ n
+  m≤n⇒0≤n-m     : m ≤ n → + 0 ≤ n - m
+  0≤n-m⇒m≤n     : + 0 ≤ n - m → m ≤ n
+  m≤pred[n]⇒m<n : m ≤ pred n → m < n
+  m<n⇒m≤pred[n] : m < n → m ≤ pred n
+  m≤m+n         : m ≤ m + + n
+  n≤m+n         : n ≤ + m + n
+  m-n≤m         : m - + n ≤ m
+
+  ≤-<-trans : Trans _≤_ _<_ _<_
+  <-≤-trans : Trans _<_ _≤_ _<_
+  >→≰       : x > y → x ≰ y
+  >-irrefl  : Irreflexive _≡_ _>_
+
+  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+  <-strictPartialOrder   : StrictPartialOrder _ _ _
+
+  pos-+-commute  : Homomorphic₂ +_ ℕ._+_ _+_
+  neg-distribˡ-* : - (x * y) ≡ (- x) * y
+  neg-distribʳ-* : - (x * y) ≡ x * (- y)
+  *-distribˡ-+   : _*_ DistributesOverˡ _+_
+  ≤-steps        : m ≤ n → m ≤ + p + n
+  ≤-step-neg     : m ≤ n → pred m ≤ n
+  ≤-steps-neg    : m ≤ n → m - + p ≤ n
+  m≡n⇒m-n≡0      : m ≡ n → m - n ≡ + 0
+  m-n≡0⇒m≡n      : m - n ≡ + 0 → m ≡ n
+  0≤n⇒+∣n∣≡n     : + 0 ≤ n → + ∣ n ∣ ≡ n
+  +∣n∣≡n⇒0≤n     : + ∣ n ∣ ≡ n → + 0 ≤ n
+  ◃-≡            : sign m ≡ sign n → ∣ m ∣ ≡ ∣ n ∣ → m ≡ n
+
   +-isMagma   : IsMagma _+_
   *-isMagma   : IsMagma _*_
 
@@ -356,6 +470,7 @@ Other minor additions
   *-semigroup : Semigroup 0ℓ 0ℓ
   +-0-monoid  : Monoid 0ℓ 0ℓ
   *-1-monoid  : Monoid 0ℓ 0ℓ
+  +-*-ring    : Ring 0ℓ 0ℓ
   ```
 
 * Added new operations to `Data.List.All`:
@@ -383,6 +498,13 @@ Other minor additions
 * Added new proofs to `Data.List.All.Properties`:
   ```agda
   respects : P Respects _≈_ → (All P) Respects _≋_
+  ```
+
+* Added new functions to `Data.List.Base`:
+  ```agda
+  intercalate       : List A → List (List A) → List A
+  partitionSumsWith : (A → B ⊎ C) → List A → List B × List C
+  partitionSums     : List (A ⊎ B) → List A × List B
   ```
 
 * Added new proofs to `Data.List.Membership.Propositional.Properties`:
@@ -493,6 +615,13 @@ Other minor additions
   ⊓-band        : Band 0ℓ 0ℓ
   ⊔-semilattice : Semilattice 0ℓ 0ℓ
   ⊓-semilattice : Semilattice 0ℓ 0ℓ
+
+  m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
+  ```
+
+* Added new function to `Data.These`:
+  ```agda
+  fromSum : A ⊎ B → These A B
   ```
 
 * Added new proofs to `Data.Sign.Properties`:
@@ -571,7 +700,7 @@ Other minor additions
   weak-lem     : ¬ ¬ (¬ x ∨ x) ≈ ⊤
   ```
 
-* Added new proofs to `Relation.Binary.Properties.JoinLattice`:
+* Added new proofs to `Relation.Binary.Properties.JoinSemilattice`:
   ```agda
   x≤y⇒x∨y≈y : x ≤ y → x ∨ y ≈ y
   ```
@@ -585,7 +714,7 @@ Other minor additions
   collapse₂      : x ∨ y ≤ x ∧ y → x ≈ y
   ```
 
-* Added new proofs to `Relation.Binary.Properties.MeetLattice`:
+* Added new proofs to `Relation.Binary.Properties.MeetSemilattice`:
   ```agda
   y≤x⇒x∧y≈y : y ≤ x → x ∧ y ≈ y
   ```

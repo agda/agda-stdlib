@@ -4,7 +4,7 @@
 -- Some derivable properties
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra
 
@@ -117,6 +117,30 @@ open import Data.Product
 
 ∨-zero : Zero ⊤ _∨_
 ∨-zero = ∨-zeroˡ , ∨-zeroʳ
+
+∨-isMagma : IsMagma _∨_
+∨-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = ∨-cong
+  }
+
+∧-isMagma : IsMagma _∧_
+∧-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = ∧-cong
+  }
+
+∨-isSemigroup : IsSemigroup _∨_
+∨-isSemigroup = record
+  { isMagma = ∨-isMagma
+  ; assoc   = ∨-assoc
+  }
+
+∧-isSemigroup : IsSemigroup _∧_
+∧-isSemigroup = record
+  { isMagma = ∧-isMagma
+  ; assoc   = ∧-assoc
+  }
 
 ∨-⊥-isMonoid : IsMonoid _∨_ ⊥
 ∨-⊥-isMonoid = record

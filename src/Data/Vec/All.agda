@@ -4,7 +4,7 @@
 -- Vectors where all elements satisfy a given property
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.All where
 

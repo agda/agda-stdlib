@@ -4,7 +4,7 @@
 -- An inductive definition for the permutation relation
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Relation.Permutation.Inductive {a} {A : Set a} where
 

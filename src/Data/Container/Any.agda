@@ -4,7 +4,7 @@
 -- Properties related to ◇
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container.Any where
 

@@ -5,7 +5,7 @@
 -- of heterogeneous equality
 ------------------------------------------------------------------------
 
-{-# OPTIONS --with-K #-}
+{-# OPTIONS --with-K --safe #-}
 
 module Data.Vec.Properties.WithK where
 

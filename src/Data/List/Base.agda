@@ -4,7 +4,7 @@
 -- Lists, basic types and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Base where
 
@@ -41,16 +41,23 @@ mapMaybe p (x ∷ xs) with p x
 ... | just y  = y ∷ mapMaybe p xs
 ... | nothing =     mapMaybe p xs
 
-infixr 5 _++_
+module _ {a} {A : Set a} where
 
-_++_ : ∀ {a} {A : Set a} → List A → List A → List A
-[]       ++ ys = ys
-(x ∷ xs) ++ ys = x ∷ (xs ++ ys)
+  infixr 5 _++_
 
-intersperse : ∀ {a} {A : Set a} → A → List A → List A
-intersperse x []       = []
-intersperse x (y ∷ []) = y ∷ []
-intersperse x (y ∷ ys) = y ∷ x ∷ intersperse x ys
+  _++_ : List A → List A → List A
+  []       ++ ys = ys
+  (x ∷ xs) ++ ys = x ∷ (xs ++ ys)
+
+  intersperse : A → List A → List A
+  intersperse x []       = []
+  intersperse x (y ∷ []) = y ∷ []
+  intersperse x (y ∷ ys) = y ∷ x ∷ intersperse x ys
+
+  intercalate : List A → List (List A) → List A
+  intercalate xs []         = []
+  intercalate xs (ys ∷ [])  = ys
+  intercalate xs (ys ∷ yss) = ys ++ xs ++ intercalate xs yss
 
 ------------------------------------------------------------------------
 -- Aligning and zipping
@@ -77,6 +84,9 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
   unzipWith f []         = [] , []
   unzipWith f (xy ∷ xys) = Prod.zip _∷_ _∷_ (f xy) (unzipWith f xys)
 
+  partitionSumsWith : (A → B ⊎ C) → List A → List B × List C
+  partitionSumsWith f = unalignWith (These.fromSum ∘′ f)
+
 module _ {a b} {A : Set a} {B : Set b} where
 
   align : List A → List B → List (These A B)
@@ -90,6 +100,9 @@ module _ {a b} {A : Set a} {B : Set b} where
 
   unzip : List (A × B) → List A × List B
   unzip = unzipWith id
+
+  partitionSums : List (A ⊎ B) → List A × List B
+  partitionSums = partitionSumsWith id
 
 ------------------------------------------------------------------------
 -- Operations for reducing lists
