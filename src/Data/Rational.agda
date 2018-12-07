@@ -42,3 +42,11 @@ show p = ℤ.show (↥ p) ++ "/" ++ ℤ.show (↧ p)
 
 -½ : ℚ
 -½ = - ½
+
+------------------------------------------------------------------------
+-- Deprecated
+
+-- Version 0.18
+
+open import Data.Rational.Properties public
+  using (drop-*≤*; ≃⇒≡; ≡⇒≃)

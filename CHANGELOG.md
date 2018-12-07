@@ -227,7 +227,11 @@ Splitting up `Data.Maybe` into the standard hierarchy.
     - Made the `Set` argument implicit in `∈-++⁺ˡ`, `∈-++⁺ʳ`, `∈-++⁻`, `∈-insert`, `∈-∃++`.
     - Made the `A → B` argument explicit in `∈-map⁺`, `∈-map⁻`, `map-∈↔`.
 
-* The type `Coprime` and proof `coprime-divisor` have been m oved from `Data.Integer.Divisibility` to `Data.Integer.Coprimality`.
+* The type `Coprime` and proof `coprime-divisor` have been moved from `Data.Integer.Divisibility`
+  to `Data.Integer.Coprimality`.
+
+* The proofs `drop-*≤*`, `≃⇒≡` and `≡⇒≃` have been moved from `Data.Rational` 
+  to `Data.Rational.Properties`.
 
 Other major changes
 -------------------
@@ -262,6 +266,14 @@ Deprecated features
   ```agda
   ≰→> ↦ ≰⇒>
   ```
+
+* In `Data.Rational`:
+  ```agda
+  drop-*≤*
+  ≃⇒≡
+  ≡⇒≃
+  ```
+  (moved to `Data.Rational.Properties`)
 
 Other minor additions
 ---------------------
