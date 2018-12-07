@@ -5,6 +5,8 @@
 -- along with some additional definitions.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Vec.Membership.Propositional {a} {A : Set a} where
 
 open import Data.Vec using (Vec)

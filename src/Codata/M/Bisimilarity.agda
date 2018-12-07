@@ -4,6 +4,8 @@
 -- Bisimilarity for M-types
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.M.Bisimilarity where
 
 open import Level

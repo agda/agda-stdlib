@@ -4,6 +4,8 @@
 -- Greatest common divisor
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Nat.GCD where
 
 open import Data.Nat

@@ -5,6 +5,8 @@
 -- commutativity
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary using (Rel; Setoid; Substitutive; Symmetric; Total)
 
 module Algebra.FunctionProperties.Consequences

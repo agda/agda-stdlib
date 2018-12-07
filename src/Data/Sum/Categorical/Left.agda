@@ -4,6 +4,8 @@
 -- A Categorical view of the Sum type (Left-biased)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Level
 
 module Data.Sum.Categorical.Left {a} (A : Set a) (b : Level) where

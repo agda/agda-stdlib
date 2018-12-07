@@ -4,6 +4,8 @@
 -- The Colist type and some operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.Colist where
 
 open import Size

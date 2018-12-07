@@ -4,6 +4,8 @@
 -- Empty type
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Empty where
 
 open import Level

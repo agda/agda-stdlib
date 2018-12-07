@@ -5,6 +5,8 @@
 -- such as equivalences, surjections and bijections
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Function.Related where
 
 open import Level

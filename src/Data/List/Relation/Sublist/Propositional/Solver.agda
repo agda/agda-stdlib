@@ -4,6 +4,8 @@
 -- A solver for proving that one list is a sublist of the other.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Relation.Sublist.Propositional.Solver where
 
 open import Data.Fin as Fin

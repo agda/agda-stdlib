@@ -4,6 +4,8 @@
 -- Order morphisms
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.OrderMorphism where
 
 open import Relation.Binary

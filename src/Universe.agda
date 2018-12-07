@@ -4,6 +4,8 @@
 -- Universes
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Universe where
 
 open import Data.Product

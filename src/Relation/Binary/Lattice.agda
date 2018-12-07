@@ -4,6 +4,8 @@
 -- Order-theoretic lattices
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Binary.Lattice where
 
 open import Algebra.FunctionProperties

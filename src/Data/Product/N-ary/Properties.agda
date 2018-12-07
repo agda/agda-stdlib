@@ -4,6 +4,8 @@
 -- Properties of n-ary products
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Product.N-ary.Properties where
 
 open import Data.Nat.Base hiding (_^_)

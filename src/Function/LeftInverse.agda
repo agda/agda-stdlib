@@ -4,6 +4,8 @@
 -- Left inverses
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Function.LeftInverse where
 
 open import Data.Product

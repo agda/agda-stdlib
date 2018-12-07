@@ -4,6 +4,8 @@
 -- Properties for Conats
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.Conat.Properties where
 
 open import Data.Nat

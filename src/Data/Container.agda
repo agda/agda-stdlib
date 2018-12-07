@@ -4,6 +4,8 @@
 -- Containers, based on the work of Abbott and others
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Container where
 
 open import Codata.Musical.M hiding (map)

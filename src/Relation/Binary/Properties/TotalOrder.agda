@@ -4,6 +4,8 @@
 -- Properties satisfied by total orders
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary
 
 module Relation.Binary.Properties.TotalOrder

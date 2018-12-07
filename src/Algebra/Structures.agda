@@ -5,6 +5,8 @@
 -- etc.)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
 
 -- The structures are parameterised by an equivalence relation
@@ -31,19 +33,10 @@ record IsMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
 
 record IsSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
-    isEquivalence : IsEquivalence _≈_
-    ∙-cong        : Congruent₂ ∙
-    assoc         : Associative ∙
+    isMagma : IsMagma ∙
+    assoc   : Associative ∙
 
-  open IsEquivalence isEquivalence public
-
-  isMagma : IsMagma ∙
-  isMagma = record
-    { isEquivalence = isEquivalence
-    ; ∙-cong        = ∙-cong
-    }
-
-  open IsMagma isMagma public using (setoid)
+  open IsMagma isMagma public
 
 record IsBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
@@ -52,7 +45,12 @@ record IsBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
 
   open IsSemigroup isSemigroup public
 
--- Commutative idempotent semigroups are semilattices (see Lattices)
+record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isBand : IsBand ∧
+    comm   : Commutative ∧
+
+  open IsBand isBand public renaming (∙-cong to ∧-cong)
 
 ------------------------------------------------------------------------
 -- Monoids
@@ -428,13 +426,6 @@ record IsCommutativeRing
 ------------------------------------------------------------------------
 -- Lattices
 
-record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
-  field
-    isBand : IsBand ∧
-    comm   : Commutative ∧
-
-  open IsBand isBand public
-
 record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field
     isEquivalence : IsEquivalence _≈_
@@ -445,6 +436,19 @@ record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
     ∧-assoc       : Associative ∧
     ∧-cong        : Congruent₂ ∧
     absorptive    : Absorptive ∨ ∧
+
+  -- Note that this record is not defined in terms of IsSemilattice
+  -- because the idempotence laws of ∨ and ∧ can be derived from the
+  -- absorption laws, which makes the corresponding "idem" fields
+  -- redundant.  The derived idempotence laws are stated and proved in
+  -- Algebra.Properties.Lattice along with the fact that every lattice
+  -- consists of two semilattices.
+
+  ∨-absorbs-∧ : ∨ Absorbs ∧
+  ∨-absorbs-∧ = proj₁ absorptive
+
+  ∧-absorbs-∨ : ∧ Absorbs ∨
+  ∧-absorbs-∨ = proj₂ absorptive
 
   open IsEquivalence isEquivalence public
 

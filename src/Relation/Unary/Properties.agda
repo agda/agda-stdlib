@@ -4,6 +4,8 @@
 -- Properties of constructions over unary relations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Unary.Properties where
 
 open import Data.Product using (_×_; _,_; swap; proj₁)

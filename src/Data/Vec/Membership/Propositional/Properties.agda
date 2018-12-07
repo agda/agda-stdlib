@@ -4,6 +4,8 @@
 -- Properties of membership of vectors based on propositional equality.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Vec.Membership.Propositional.Properties where
 
 open import Data.Fin using (Fin; zero; suc)

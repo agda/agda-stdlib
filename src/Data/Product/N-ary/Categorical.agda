@@ -4,6 +4,8 @@
 -- A categorical view of N-ary products
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.Product.N-ary.Categorical where
 
 open import Agda.Builtin.Nat

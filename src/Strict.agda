@@ -4,6 +4,8 @@
 -- Strictness combinators
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Strict where
 
 open import Level

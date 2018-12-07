@@ -4,6 +4,8 @@
 -- Products of nullary relations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Relation.Nullary.Product where
 
 open import Data.Product

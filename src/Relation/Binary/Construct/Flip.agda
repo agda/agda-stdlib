@@ -6,6 +6,8 @@
 -- both the relation and the underlying equality.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 open import Relation.Binary
 
 module Relation.Binary.Construct.Flip where

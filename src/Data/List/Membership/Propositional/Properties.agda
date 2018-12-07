@@ -4,6 +4,8 @@
 -- Properties related to propositional list membership
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Data.List.Membership.Propositional.Properties where
 
 open import Algebra.FunctionProperties using (Op₂; Selective)
@@ -250,6 +252,13 @@ module _ {a} {A : Set a} {_•_ : Op₂ A} where
 ∈-allFin = ∈-tabulate⁺
 
 ------------------------------------------------------------------------
+-- inits
+
+[]∈inits : ∀ {a} {A : Set a} (as : List A) → [] ∈ inits as
+[]∈inits []       = here refl
+[]∈inits (a ∷ as) = here refl
+
+------------------------------------------------------------------------
 -- Other properties
 
 -- Only a finite number of distinct elements can be members of a
@@ -330,4 +339,3 @@ filter-∈ = ∈-filter⁺
 "Warning: filter-∈ was deprecated in v0.16.
 Please use ∈-filter⁺ instead."
 #-}
-
