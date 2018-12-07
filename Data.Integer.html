@@ -5,41 +5,41 @@
 <a id="106" class="Comment">-- Integers</a>
 <a id="118" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="192" class="Symbol">{-#</a> <a id="196" class="Keyword">OPTIONS</a> <a id="204" class="Option">--without-K</a> <a id="216" class="Symbol">#-}</a>
+<a id="192" class="Symbol">{-#</a> <a id="196" class="Keyword">OPTIONS</a> <a id="204" class="Option">--without-K</a> <a id="216" class="Option">--safe</a> <a id="223" class="Symbol">#-}</a>
 
-<a id="221" class="Keyword">module</a> <a id="228" href="Data.Integer.html" class="Module">Data.Integer</a> <a id="241" class="Keyword">where</a>
+<a id="228" class="Keyword">module</a> <a id="235" href="Data.Integer.html" class="Module">Data.Integer</a> <a id="248" class="Keyword">where</a>
 
-<a id="248" class="Keyword">import</a> <a id="255" href="Data.Nat.Show.html" class="Module">Data.Nat.Show</a> <a id="269" class="Symbol">as</a> <a id="272" class="Module">ℕ</a>
-<a id="274" class="Keyword">open</a> <a id="279" class="Keyword">import</a> <a id="286" href="Data.Sign.html" class="Module">Data.Sign</a> <a id="296" class="Symbol">as</a> <a id="299" class="Module">Sign</a> <a id="304" class="Keyword">using</a> <a id="310" class="Symbol">(</a><a id="311" href="Data.Sign.html#418" class="Datatype">Sign</a><a id="315" class="Symbol">)</a>
-<a id="317" class="Keyword">open</a> <a id="322" class="Keyword">import</a> <a id="329" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="346" class="Keyword">using</a> <a id="352" class="Symbol">(</a><a id="353" href="Agda.Builtin.String.html#165" class="Postulate">String</a><a id="359" class="Symbol">;</a> <a id="361" href="Data.String.Base.html#1118" class="Function Operator">_++_</a><a id="365" class="Symbol">)</a>
+<a id="255" class="Keyword">import</a> <a id="262" href="Data.Nat.Show.html" class="Module">Data.Nat.Show</a> <a id="276" class="Symbol">as</a> <a id="279" class="Module">ℕ</a>
+<a id="281" class="Keyword">open</a> <a id="286" class="Keyword">import</a> <a id="293" href="Data.Sign.html" class="Module">Data.Sign</a> <a id="303" class="Symbol">as</a> <a id="306" class="Module">Sign</a> <a id="311" class="Keyword">using</a> <a id="317" class="Symbol">(</a><a id="318" href="Data.Sign.html#425" class="Datatype">Sign</a><a id="322" class="Symbol">)</a>
+<a id="324" class="Keyword">open</a> <a id="329" class="Keyword">import</a> <a id="336" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="353" class="Keyword">using</a> <a id="359" class="Symbol">(</a><a id="360" href="Agda.Builtin.String.html#165" class="Postulate">String</a><a id="366" class="Symbol">;</a> <a id="368" href="Data.String.Base.html#1125" class="Function Operator">_++_</a><a id="372" class="Symbol">)</a>
 
-<a id="368" class="Comment">------------------------------------------------------------------------</a>
-<a id="441" class="Comment">-- Integers, basic types and operations</a>
+<a id="375" class="Comment">------------------------------------------------------------------------</a>
+<a id="448" class="Comment">-- Integers, basic types and operations</a>
 
-<a id="482" class="Keyword">open</a> <a id="487" class="Keyword">import</a> <a id="494" href="Data.Integer.Base.html" class="Module">Data.Integer.Base</a> <a id="512" class="Keyword">public</a>
+<a id="489" class="Keyword">open</a> <a id="494" class="Keyword">import</a> <a id="501" href="Data.Integer.Base.html" class="Module">Data.Integer.Base</a> <a id="519" class="Keyword">public</a>
 
-<a id="520" class="Comment">------------------------------------------------------------------------</a>
-<a id="593" class="Comment">-- Re-export queries from the properties modules</a>
+<a id="527" class="Comment">------------------------------------------------------------------------</a>
+<a id="600" class="Comment">-- Re-export queries from the properties modules</a>
 
-<a id="643" class="Keyword">open</a> <a id="648" class="Keyword">import</a> <a id="655" href="Data.Integer.Properties.html" class="Module">Data.Integer.Properties</a> <a id="679" class="Keyword">public</a>
-  <a id="688" class="Keyword">using</a> <a id="694" class="Symbol">(</a><a id="695" href="Data.Integer.Properties.html#1623" class="Function Operator">_≟_</a><a id="698" class="Symbol">;</a> <a id="700" href="Data.Integer.Properties.html#33861" class="Function Operator">_≤?_</a><a id="704" class="Symbol">)</a>
+<a id="650" class="Keyword">open</a> <a id="655" class="Keyword">import</a> <a id="662" href="Data.Integer.Properties.html" class="Module">Data.Integer.Properties</a> <a id="686" class="Keyword">public</a>
+  <a id="695" class="Keyword">using</a> <a id="701" class="Symbol">(</a><a id="702" href="Data.Integer.Properties.html#1630" class="Function Operator">_≟_</a><a id="705" class="Symbol">;</a> <a id="707" href="Data.Integer.Properties.html#33868" class="Function Operator">_≤?_</a><a id="711" class="Symbol">)</a>
 
-<a id="707" class="Comment">------------------------------------------------------------------------</a>
-<a id="780" class="Comment">-- Conversions</a>
+<a id="714" class="Comment">------------------------------------------------------------------------</a>
+<a id="787" class="Comment">-- Conversions</a>
 
-<a id="show"></a><a id="796" href="Data.Integer.html#796" class="Function">show</a> <a id="801" class="Symbol">:</a> <a id="803" href="Agda.Builtin.Int.html#178" class="Datatype">ℤ</a> <a id="805" class="Symbol">→</a> <a id="807" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
-<a id="814" href="Data.Integer.html#796" class="Function">show</a> <a id="819" href="Data.Integer.html#819" class="Bound">i</a> <a id="821" class="Symbol">=</a> <a id="823" href="Data.Integer.html#867" class="Function">showSign</a> <a id="832" class="Symbol">(</a><a id="833" href="Data.Integer.Base.html#1190" class="Function">sign</a> <a id="838" href="Data.Integer.html#819" class="Bound">i</a><a id="839" class="Symbol">)</a> <a id="841" href="Data.String.Base.html#1118" class="Function Operator">++</a> <a id="844" href="Data.Nat.Show.html#980" class="Function">ℕ.show</a> <a id="851" href="Data.Integer.Base.html#1068" class="Function Operator">∣</a> <a id="853" href="Data.Integer.html#819" class="Bound">i</a> <a id="855" href="Data.Integer.Base.html#1068" class="Function Operator">∣</a>
-  <a id="859" class="Keyword">where</a>
-  <a id="867" href="Data.Integer.html#867" class="Function">showSign</a> <a id="876" class="Symbol">:</a> <a id="878" href="Data.Sign.html#418" class="Datatype">Sign</a> <a id="883" class="Symbol">→</a> <a id="885" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
-  <a id="894" href="Data.Integer.html#867" class="Function">showSign</a> <a id="903" href="Data.Sign.html#437" class="InductiveConstructor">Sign.-</a> <a id="910" class="Symbol">=</a> <a id="912" class="String">&quot;-&quot;</a>
-  <a id="918" href="Data.Integer.html#867" class="Function">showSign</a> <a id="927" href="Data.Sign.html#448" class="InductiveConstructor">Sign.+</a> <a id="934" class="Symbol">=</a> <a id="936" class="String">&quot;&quot;</a>
+<a id="show"></a><a id="803" href="Data.Integer.html#803" class="Function">show</a> <a id="808" class="Symbol">:</a> <a id="810" href="Agda.Builtin.Int.html#178" class="Datatype">ℤ</a> <a id="812" class="Symbol">→</a> <a id="814" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
+<a id="821" href="Data.Integer.html#803" class="Function">show</a> <a id="826" href="Data.Integer.html#826" class="Bound">i</a> <a id="828" class="Symbol">=</a> <a id="830" href="Data.Integer.html#874" class="Function">showSign</a> <a id="839" class="Symbol">(</a><a id="840" href="Data.Integer.Base.html#1197" class="Function">sign</a> <a id="845" href="Data.Integer.html#826" class="Bound">i</a><a id="846" class="Symbol">)</a> <a id="848" href="Data.String.Base.html#1125" class="Function Operator">++</a> <a id="851" href="Data.Nat.Show.html#987" class="Function">ℕ.show</a> <a id="858" href="Data.Integer.Base.html#1075" class="Function Operator">∣</a> <a id="860" href="Data.Integer.html#826" class="Bound">i</a> <a id="862" href="Data.Integer.Base.html#1075" class="Function Operator">∣</a>
+  <a id="866" class="Keyword">where</a>
+  <a id="874" href="Data.Integer.html#874" class="Function">showSign</a> <a id="883" class="Symbol">:</a> <a id="885" href="Data.Sign.html#425" class="Datatype">Sign</a> <a id="890" class="Symbol">→</a> <a id="892" href="Agda.Builtin.String.html#165" class="Postulate">String</a>
+  <a id="901" href="Data.Integer.html#874" class="Function">showSign</a> <a id="910" href="Data.Sign.html#444" class="InductiveConstructor">Sign.-</a> <a id="917" class="Symbol">=</a> <a id="919" class="String">&quot;-&quot;</a>
+  <a id="925" href="Data.Integer.html#874" class="Function">showSign</a> <a id="934" href="Data.Sign.html#455" class="InductiveConstructor">Sign.+</a> <a id="941" class="Symbol">=</a> <a id="943" class="String">&quot;&quot;</a>
 
-<a id="940" class="Comment">------------------------------------------------------------------------</a>
-<a id="1013" class="Comment">-- Deprecated</a>
+<a id="947" class="Comment">------------------------------------------------------------------------</a>
+<a id="1020" class="Comment">-- Deprecated</a>
 
-<a id="1028" class="Comment">-- Version 0.17</a>
+<a id="1035" class="Comment">-- Version 0.17</a>
 
-<a id="1045" class="Keyword">open</a> <a id="1050" class="Keyword">import</a> <a id="1057" href="Data.Integer.Properties.html" class="Module">Data.Integer.Properties</a> <a id="1081" class="Keyword">public</a>
-  <a id="1090" class="Keyword">using</a> <a id="1096" class="Symbol">(</a><a id="1097" href="Data.Integer.Properties.html#3124" class="Function">◃-cong</a><a id="1103" class="Symbol">;</a> <a id="1105" href="Data.Integer.Properties.html#32811" class="Function">drop‿+≤+</a><a id="1113" class="Symbol">;</a> <a id="1115" href="Data.Integer.Properties.html#32878" class="Function">drop‿-≤-</a><a id="1123" class="Symbol">)</a>
-  <a id="1127" class="Keyword">renaming</a> <a id="1136" class="Symbol">(</a><a id="1137" href="Data.Integer.Properties.html#3005" class="Function">◃-inverse</a> <a id="1147" class="Symbol">to</a> <a id="1150" href="Data.Integer.Properties.html#3005" class="Function">◃-left-inverse</a><a id="1164" class="Symbol">)</a>
+<a id="1052" class="Keyword">open</a> <a id="1057" class="Keyword">import</a> <a id="1064" href="Data.Integer.Properties.html" class="Module">Data.Integer.Properties</a> <a id="1088" class="Keyword">public</a>
+  <a id="1097" class="Keyword">using</a> <a id="1103" class="Symbol">(</a><a id="1104" href="Data.Integer.Properties.html#3131" class="Function">◃-cong</a><a id="1110" class="Symbol">;</a> <a id="1112" href="Data.Integer.Properties.html#32818" class="Function">drop‿+≤+</a><a id="1120" class="Symbol">;</a> <a id="1122" href="Data.Integer.Properties.html#32885" class="Function">drop‿-≤-</a><a id="1130" class="Symbol">)</a>
+  <a id="1134" class="Keyword">renaming</a> <a id="1143" class="Symbol">(</a><a id="1144" href="Data.Integer.Properties.html#3012" class="Function">◃-inverse</a> <a id="1154" class="Symbol">to</a> <a id="1157" href="Data.Integer.Properties.html#3012" class="Function">◃-left-inverse</a><a id="1171" class="Symbol">)</a>
 </pre></body></html>

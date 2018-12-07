@@ -5,29 +5,29 @@
 <a id="106" class="Comment">-- Characters</a>
 <a id="120" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="194" class="Symbol">{-#</a> <a id="198" class="Keyword">OPTIONS</a> <a id="206" class="Option">--without-K</a> <a id="218" class="Symbol">#-}</a>
+<a id="194" class="Symbol">{-#</a> <a id="198" class="Keyword">OPTIONS</a> <a id="206" class="Option">--without-K</a> <a id="218" class="Option">--safe</a> <a id="225" class="Symbol">#-}</a>
 
-<a id="223" class="Keyword">module</a> <a id="230" href="Data.Char.html" class="Module">Data.Char</a> <a id="240" class="Keyword">where</a>
+<a id="230" class="Keyword">module</a> <a id="237" href="Data.Char.html" class="Module">Data.Char</a> <a id="247" class="Keyword">where</a>
 
-<a id="247" class="Keyword">open</a> <a id="252" class="Keyword">import</a> <a id="259" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="279" class="Keyword">using</a> <a id="285" class="Symbol">(</a><a id="286" href="Data.Nat.Properties.html#6013" class="Function">&lt;-strictTotalOrder</a><a id="304" class="Symbol">)</a>
-<a id="306" class="Keyword">open</a> <a id="311" class="Keyword">import</a> <a id="318" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="334" class="Keyword">using</a> <a id="340" class="Symbol">(</a><a id="341" href="Relation.Binary.html#1923" class="Record">Setoid</a><a id="347" class="Symbol">;</a> <a id="349" href="Relation.Binary.html#11403" class="Record">StrictTotalOrder</a><a id="365" class="Symbol">)</a>
-<a id="367" class="Keyword">import</a> <a id="374" href="Relation.Binary.Construct.On.html" class="Module">Relation.Binary.Construct.On</a> <a id="403" class="Symbol">as</a> <a id="406" class="Module">On</a>
-<a id="409" class="Keyword">import</a> <a id="416" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="454" class="Symbol">as</a> <a id="457" class="Module">PropEq</a>
+<a id="254" class="Keyword">open</a> <a id="259" class="Keyword">import</a> <a id="266" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="286" class="Keyword">using</a> <a id="292" class="Symbol">(</a><a id="293" href="Data.Nat.Properties.html#6020" class="Function">&lt;-strictTotalOrder</a><a id="311" class="Symbol">)</a>
+<a id="313" class="Keyword">open</a> <a id="318" class="Keyword">import</a> <a id="325" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="341" class="Keyword">using</a> <a id="347" class="Symbol">(</a><a id="348" href="Relation.Binary.html#1930" class="Record">Setoid</a><a id="354" class="Symbol">;</a> <a id="356" href="Relation.Binary.html#11410" class="Record">StrictTotalOrder</a><a id="372" class="Symbol">)</a>
+<a id="374" class="Keyword">import</a> <a id="381" href="Relation.Binary.Construct.On.html" class="Module">Relation.Binary.Construct.On</a> <a id="410" class="Symbol">as</a> <a id="413" class="Module">On</a>
+<a id="416" class="Keyword">import</a> <a id="423" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="461" class="Symbol">as</a> <a id="464" class="Module">PropEq</a>
 
-<a id="465" class="Comment">------------------------------------------------------------------------</a>
-<a id="538" class="Comment">-- Re-export base definitions publically</a>
+<a id="472" class="Comment">------------------------------------------------------------------------</a>
+<a id="545" class="Comment">-- Re-export base definitions publically</a>
 
-<a id="580" class="Keyword">open</a> <a id="585" class="Keyword">import</a> <a id="592" href="Data.Char.Base.html" class="Module">Data.Char.Base</a> <a id="607" class="Keyword">public</a>
+<a id="587" class="Keyword">open</a> <a id="592" class="Keyword">import</a> <a id="599" href="Data.Char.Base.html" class="Module">Data.Char.Base</a> <a id="614" class="Keyword">public</a>
 
-<a id="615" class="Comment">------------------------------------------------------------------------</a>
-<a id="688" class="Comment">-- Equality over characters</a>
+<a id="622" class="Comment">------------------------------------------------------------------------</a>
+<a id="695" class="Comment">-- Equality over characters</a>
 
-<a id="setoid"></a><a id="717" href="Data.Char.html#717" class="Function">setoid</a> <a id="724" class="Symbol">:</a> <a id="726" href="Relation.Binary.html#1923" class="Record">Setoid</a> <a id="733" class="Symbol">_</a> <a id="735" class="Symbol">_</a>
-<a id="737" href="Data.Char.html#717" class="Function">setoid</a> <a id="744" class="Symbol">=</a> <a id="746" href="Relation.Binary.PropositionalEquality.html#1511" class="Function">PropEq.setoid</a> <a id="760" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a>
+<a id="setoid"></a><a id="724" href="Data.Char.html#724" class="Function">setoid</a> <a id="731" class="Symbol">:</a> <a id="733" href="Relation.Binary.html#1930" class="Record">Setoid</a> <a id="740" class="Symbol">_</a> <a id="742" class="Symbol">_</a>
+<a id="744" href="Data.Char.html#724" class="Function">setoid</a> <a id="751" class="Symbol">=</a> <a id="753" href="Relation.Binary.PropositionalEquality.html#1518" class="Function">PropEq.setoid</a> <a id="767" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a>
 
-<a id="766" class="Comment">------------------------------------------------------------------------</a>
-<a id="839" class="Comment">-- An ordering induced by the toNat function.</a>
+<a id="773" class="Comment">------------------------------------------------------------------------</a>
+<a id="846" class="Comment">-- An ordering induced by the toNat function.</a>
 
-<a id="strictTotalOrder"></a><a id="886" href="Data.Char.html#886" class="Function">strictTotalOrder</a> <a id="903" class="Symbol">:</a> <a id="905" href="Relation.Binary.html#11403" class="Record">StrictTotalOrder</a> <a id="922" class="Symbol">_</a> <a id="924" class="Symbol">_</a> <a id="926" class="Symbol">_</a>
-<a id="928" href="Data.Char.html#886" class="Function">strictTotalOrder</a> <a id="945" class="Symbol">=</a> <a id="947" href="Relation.Binary.Construct.On.html#7054" class="Function">On.strictTotalOrder</a> <a id="967" href="Data.Nat.Properties.html#6013" class="Function">&lt;-strictTotalOrder</a> <a id="986" href="Data.Char.Base.html#1148" class="Function">toNat</a>
+<a id="strictTotalOrder"></a><a id="893" href="Data.Char.html#893" class="Function">strictTotalOrder</a> <a id="910" class="Symbol">:</a> <a id="912" href="Relation.Binary.html#11410" class="Record">StrictTotalOrder</a> <a id="929" class="Symbol">_</a> <a id="931" class="Symbol">_</a> <a id="933" class="Symbol">_</a>
+<a id="935" href="Data.Char.html#893" class="Function">strictTotalOrder</a> <a id="952" class="Symbol">=</a> <a id="954" href="Relation.Binary.Construct.On.html#7061" class="Function">On.strictTotalOrder</a> <a id="974" href="Data.Nat.Properties.html#6020" class="Function">&lt;-strictTotalOrder</a> <a id="993" href="Data.Char.Base.html#1155" class="Function">toNat</a>
 </pre></body></html>
