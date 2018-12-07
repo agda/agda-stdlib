@@ -31,6 +31,12 @@ record IsMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   setoid : Setoid a ℓ
   setoid = record { isEquivalence = isEquivalence }
 
+  ∙-congˡ : LeftCongruent ∙
+  ∙-congˡ y≈z = ∙-cong y≈z refl
+
+  ∙-congʳ : RightCongruent ∙
+  ∙-congʳ y≈z = ∙-cong refl y≈z
+
 record IsSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
     isMagma : IsMagma ∙
@@ -154,6 +160,8 @@ record IsNearSemiring (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     renaming
     ( assoc       to +-assoc
     ; ∙-cong      to +-cong
+    ; ∙-congˡ     to +-congˡ
+    ; ∙-congʳ     to +-congʳ
     ; identity    to +-identity
     ; identityˡ   to +-identityˡ
     ; identityʳ   to +-identityʳ
@@ -166,6 +174,8 @@ record IsNearSemiring (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     renaming
     ( assoc    to *-assoc
     ; ∙-cong   to *-cong
+    ; ∙-congˡ  to *-congˡ
+    ; ∙-congʳ  to *-congʳ
     ; isMagma  to *-isMagma
     )
 
@@ -181,13 +191,6 @@ record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     renaming
     ( isMonoid    to +-isMonoid
     ; comm        to +-comm
-    )
-
-  open IsSemigroup *-isSemigroup public
-    using ()
-    renaming
-    ( assoc       to *-assoc
-    ; ∙-cong      to *-cong
     )
 
   zeroˡ : LeftZero 0# *
@@ -226,6 +229,8 @@ record IsSemiringWithoutAnnihilatingZero (+ * : Op₂ A)
     renaming
     ( assoc       to +-assoc
     ; ∙-cong      to +-cong
+    ; ∙-congˡ     to +-congˡ
+    ; ∙-congʳ     to +-congʳ
     ; identity    to +-identity
     ; identityˡ   to +-identityˡ
     ; identityʳ   to +-identityʳ
@@ -240,6 +245,8 @@ record IsSemiringWithoutAnnihilatingZero (+ * : Op₂ A)
     renaming
     ( assoc       to *-assoc
     ; ∙-cong      to *-cong
+    ; ∙-congˡ     to *-congˡ
+    ; ∙-congʳ     to *-congʳ
     ; identity    to *-identity
     ; identityˡ   to *-identityˡ
     ; identityʳ   to *-identityʳ
@@ -341,6 +348,8 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     renaming
     ( assoc               to +-assoc
     ; ∙-cong              to +-cong
+    ; ∙-congˡ             to +-congˡ
+    ; ∙-congʳ             to +-congʳ
     ; identity            to +-identity
     ; identityˡ           to +-identityˡ
     ; identityʳ           to +-identityʳ
@@ -361,6 +370,8 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     renaming
     ( assoc       to *-assoc
     ; ∙-cong      to *-cong
+    ; ∙-congˡ     to *-congˡ
+    ; ∙-congʳ     to *-congʳ
     ; identity    to *-identity
     ; identityˡ   to *-identityˡ
     ; identityʳ   to *-identityʳ
@@ -405,26 +416,33 @@ record IsCommutativeRing
 
   open IsRing isRing public
 
+  *-isCommutativeMonoid : IsCommutativeMonoid * 1#
+  *-isCommutativeMonoid =  record
+    { isSemigroup = *-isSemigroup
+    ; identityˡ   = *-identityˡ
+    ; comm        = *-comm
+    }
+
   isCommutativeSemiring : IsCommutativeSemiring + * 0# 1#
   isCommutativeSemiring = record
     { +-isCommutativeMonoid = +-isCommutativeMonoid
-    ; *-isCommutativeMonoid = record
-      { isSemigroup = *-isSemigroup
-      ; identityˡ   = *-identityˡ
-      ; comm        = *-comm
-      }
+    ; *-isCommutativeMonoid = *-isCommutativeMonoid
     ; distribʳ              = distribʳ
     ; zeroˡ                 = zeroˡ
     }
 
   open IsCommutativeSemiring isCommutativeSemiring public
-    using
-    ( *-isCommutativeMonoid
-    ; isCommutativeSemiringWithoutOne
-    )
+    using ( isCommutativeSemiringWithoutOne )
 
 ------------------------------------------------------------------------
 -- Lattices
+
+-- Note that this record is not defined in terms of IsSemilattice
+-- because the idempotence laws of ∨ and ∧ can be derived from the
+-- absorption laws, which makes the corresponding "idem" fields
+-- redundant.  The derived idempotence laws are stated and proved in
+-- Algebra.Properties.Lattice along with the fact that every lattice
+-- consists of two semilattices.
 
 record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field
@@ -437,12 +455,7 @@ record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
     ∧-cong        : Congruent₂ ∧
     absorptive    : Absorptive ∨ ∧
 
-  -- Note that this record is not defined in terms of IsSemilattice
-  -- because the idempotence laws of ∨ and ∧ can be derived from the
-  -- absorption laws, which makes the corresponding "idem" fields
-  -- redundant.  The derived idempotence laws are stated and proved in
-  -- Algebra.Properties.Lattice along with the fact that every lattice
-  -- consists of two semilattices.
+  open IsEquivalence isEquivalence public
 
   ∨-absorbs-∧ : ∨ Absorbs ∧
   ∨-absorbs-∧ = proj₁ absorptive
@@ -450,7 +463,17 @@ record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   ∧-absorbs-∨ : ∧ Absorbs ∨
   ∧-absorbs-∨ = proj₂ absorptive
 
-  open IsEquivalence isEquivalence public
+  ∧-congˡ : LeftCongruent ∧
+  ∧-congˡ y≈z = ∧-cong y≈z refl
+
+  ∧-congʳ : RightCongruent ∧
+  ∧-congʳ y≈z = ∧-cong refl y≈z
+
+  ∨-congˡ  : LeftCongruent ∨
+  ∨-congˡ y≈z = ∨-cong y≈z refl
+
+  ∨-congʳ : RightCongruent ∨
+  ∨-congʳ y≈z = ∨-cong refl y≈z
 
 record IsDistributiveLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field
