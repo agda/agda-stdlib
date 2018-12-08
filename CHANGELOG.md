@@ -230,7 +230,7 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The type `Coprime` and proof `coprime-divisor` have been moved from `Data.Integer.Divisibility`
   to `Data.Integer.Coprimality`.
 
-* The proofs `drop-*≤*`, `≃⇒≡` and `≡⇒≃` have been moved from `Data.Rational` 
+* The proofs `drop-*≤*`, `≃⇒≡` and `≡⇒≃` have been moved from `Data.Rational`
   to `Data.Rational.Properties`.
 
 Other major changes
