@@ -122,11 +122,18 @@ Trichotomous : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ�
 Trichotomous _≈_ _<_ = ∀ x y → Tri (x < y) (x ≈ y) (x > y)
   where _>_ = flip _<_
 
+
+Max : ∀ {a ℓ} {A : Set a} {b} {B : Set b} → REL A B ℓ → B → Set _
+Max _≤_ T = ∀ x → x ≤ T
+
 Maximum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
-Maximum _≤_ ⊤ = ∀ x → x ≤ ⊤
+Maximum = Max
+
+Min : ∀ {a ℓ} {A : Set a} {b} {B : Set b} → REL A B ℓ → A → Set _
+Min R = Max (flip R)
 
 Minimum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
-Minimum _≤_ = Maximum (flip _≤_)
+Minimum = Min
 
 _Respects_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → (A → Set ℓ₁) → Rel A ℓ₂ → Set _
 P Respects _∼_ = ∀ {x y} → x ∼ y → P x → P y

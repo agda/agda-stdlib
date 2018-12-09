@@ -248,6 +248,8 @@ Other major changes
 
 * Added new modules `Data.List.Relation.Prefix.Heterogeneous(.Properties)`
 
+* Added new modules `Data.List.Sublist.Heterogeneous(.Properties)`
+
 * Added new modules `Data.List.First` and `Data.List.First.Properties` for a
   generalization of the notion of "first element in the list to satisfy a
   predicate".
@@ -667,9 +669,12 @@ Other minor additions
   wlog : Total _R_ → Symmetric Q → (∀ a b → a R b → Q a b) → ∀ a b → Q a b
   ```
 
-* Added new definition to `Relation.Binary.Core`:
+* Added new definitions to `Relation.Binary.Core`:
   ```agda
   Antisym R S E = ∀ {i j} → R i j → S j i → E i j
+
+  Max : REL A B ℓ → B → Set _
+  Min : REL A B ℓ → A → Set _
   ```
 
 * Added new proofs to `Relation.Binary.Lattice`:
