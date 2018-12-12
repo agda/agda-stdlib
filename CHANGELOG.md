@@ -248,7 +248,7 @@ Other major changes
 
 * Added new modules `Data.List.Relation.Prefix.Heterogeneous(.Properties)`
 
-* Added new modules `Data.List.Sublist.Heterogeneous(.Properties)`
+* Added new modules `Data.List.Sublist.(Homogeneous/Heterogeneous)(.Properties)`
 
 * Added new modules `Data.List.First` and `Data.List.First.Properties` for a
   generalization of the notion of "first element in the list to satisfy a

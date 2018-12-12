@@ -26,18 +26,13 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
-  fromAny : ∀ {a bs} → Any (R a) bs → Sublist R [ a ] bs
-  fromAny (here r)  = r ∷ minimum _
-  fromAny (there p) = _ ∷ʳ fromAny p
-
-  toAny : ∀ {a bs} → Sublist R [ a ] bs → Any (R a) bs
-  toAny (y ∷ʳ rs) = there (toAny rs)
-  toAny (r ∷ rs)  = here r
-
   length-mono-Sublist-≤ : ∀ {as bs} → Sublist R as bs → length as ≤ length bs
   length-mono-Sublist-≤ []        = z≤n
   length-mono-Sublist-≤ (y ∷ʳ rs) = ≤-step (length-mono-Sublist-≤ rs)
   length-mono-Sublist-≤ (r ∷ rs)  = s≤s (length-mono-Sublist-≤ rs)
+
+------------------------------------------------------------------------
+-- Conversion to and from Pointwise (proto-reflexivity)
 
   fromPointwise : Pointwise R ⇒ Sublist R
   fromPointwise []       = []

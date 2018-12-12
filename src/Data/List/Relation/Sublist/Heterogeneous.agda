@@ -11,7 +11,8 @@
 module Data.List.Relation.Sublist.Heterogeneous where
 
 open import Level using (_⊔_)
-open import Data.List.Base using (List; []; _∷_)
+open import Data.List.Base using (List; []; _∷_; [_])
+open import Data.List.Any using (Any; here; there)
 open import Function
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -38,3 +39,14 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   minimum : Min (Sublist R) []
   minimum []       = []
   minimum (x ∷ xs) = x ∷ʳ minimum xs
+
+------------------------------------------------------------------------
+-- Conversion to and from Any
+
+  toAny : ∀ {a bs} → Sublist R [ a ] bs → Any (R a) bs
+  toAny (y ∷ʳ rs) = there (toAny rs)
+  toAny (r ∷ rs)  = here r
+
+  fromAny : ∀ {a bs} → Any (R a) bs → Sublist R [ a ] bs
+  fromAny (here r)  = r ∷ minimum _
+  fromAny (there p) = _ ∷ʳ fromAny p
