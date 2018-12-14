@@ -230,7 +230,11 @@ Splitting up `Data.Maybe` into the standard hierarchy.
     - Made the `Set` argument implicit in `∈-++⁺ˡ`, `∈-++⁺ʳ`, `∈-++⁻`, `∈-insert`, `∈-∃++`.
     - Made the `A → B` argument explicit in `∈-map⁺`, `∈-map⁻`, `map-∈↔`.
 
-* The type `Coprime` and proof `coprime-divisor` have been m oved from `Data.Integer.Divisibility` to `Data.Integer.Coprimality`.
+* The type `Coprime` and proof `coprime-divisor` have been moved from `Data.Integer.Divisibility`
+  to `Data.Integer.Coprimality`.
+
+* The proofs `drop-*≤*`, `≃⇒≡` and `≡⇒≃` have been moved from `Data.Rational`
+  to `Data.Rational.Properties`.
 
 Other major changes
 -------------------
@@ -267,6 +271,14 @@ Deprecated features
   ```agda
   ≰→> ↦ ≰⇒>
   ```
+
+* In `Data.Rational`:
+  ```agda
+  drop-*≤*
+  ≃⇒≡
+  ≡⇒≃
+  ```
+  (moved to `Data.Rational.Properties`)
 
 Other minor additions
 ---------------------
@@ -623,9 +635,16 @@ Other minor additions
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
   ```
 
-* Added new function to `Data.These`:
+* Added new functions to `Data.Rational`:
   ```agda
-  fromSum : A ⊎ B → These A B
+  norm-mkℚ : (n : ℤ) (d : ℕ) → d ≢0 → ℚ
+  -_       : ℚ → ℚ
+  1/_      : (p : ℚ) → .{n≢0 : ∣ ℚ.numerator p ∣ ≢0} → ℚ
+  _*_      : ℚ → ℚ → ℚ
+  _+_      : ℚ → ℚ → ℚ
+  _-_      : ℚ → ℚ → ℚ
+  _/_      : (p₁ p₂ : ℚ) → {n≢0 : ∣ ℚ.numerator p₂ ∣ ≢0} → ℚ
+  show     : ℚ → String
   ```
 
 * Added new proofs to `Data.Sign.Properties`:
@@ -638,6 +657,11 @@ Other minor additions
   ```agda
   fromDec : Dec P → P ⊎ ¬ P
   toDec   : P ⊎ ¬ P → Dec P
+  ```
+
+* Added new function to `Data.These`:
+  ```agda
+  fromSum : A ⊎ B → These A B
   ```
 
 * Added new functions to `Data.Vec.Any.Properties`:
