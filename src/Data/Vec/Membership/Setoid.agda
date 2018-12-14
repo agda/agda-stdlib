@@ -4,7 +4,7 @@
 -- Membership of vectors, along with some additional definitions.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary using (Setoid; _Respects_)
 
