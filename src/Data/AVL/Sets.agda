@@ -4,15 +4,11 @@
 -- Finite sets, based on AVL trees
 ------------------------------------------------------------------------
 
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary using (StrictTotalOrder)
 
 module Data.AVL.Sets
-  {k e ℓ} {Key : Set k} {_≈_ : Rel Key e} {_<_ : Rel Key ℓ}
-  (isStrictTotalOrder : IsStrictTotalOrder _≈_ _<_)
+  {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
   where
-
-import Data.AVL as AVL
 
 open import Data.Bool
 open import Data.List.Base as List using (List)
@@ -22,40 +18,43 @@ open import Data.Unit
 open import Function
 open import Level
 
--- The set type. (Note that Set is a reserved word.)
+import Data.AVL strictTotalOrder as AVL
+open StrictTotalOrder strictTotalOrder renaming (Carrier to A)
 
-private
-  open module S = AVL isStrictTotalOrder
-    public using () renaming (Tree to ⟨Set⟩')
-⟨Set⟩ = ⟨Set⟩' (S.const ⊤)
+------------------------------------------------------------------------
+-- The set type (note that Set is a reserved word)
 
--- Repackaged functions.
+⟨Set⟩ : Set (a ⊔ ℓ₂)
+⟨Set⟩ = AVL.Tree (AVL.const ⊤)
+
+------------------------------------------------------------------------
+-- Repackaged functions
 
 empty : ⟨Set⟩
-empty = S.empty
+empty = AVL.empty
 
-singleton : Key → ⟨Set⟩
-singleton k = S.singleton k _
+singleton : A → ⟨Set⟩
+singleton k = AVL.singleton k _
 
-insert : Key → ⟨Set⟩ → ⟨Set⟩
-insert k = S.insert k _
+insert : A → ⟨Set⟩ → ⟨Set⟩
+insert k = AVL.insert k _
 
-delete : Key → ⟨Set⟩ → ⟨Set⟩
-delete = S.delete
+delete : A → ⟨Set⟩ → ⟨Set⟩
+delete = AVL.delete
 
 infix 4 _∈?_
 
-_∈?_ : Key → ⟨Set⟩ → Bool
-_∈?_ = S._∈?_
+_∈?_ : A → ⟨Set⟩ → Bool
+_∈?_ = AVL._∈?_
 
-headTail : ⟨Set⟩ → Maybe (Key × ⟨Set⟩)
-headTail s = Maybe.map (Prod.map proj₁ id) (S.headTail s)
+headTail : ⟨Set⟩ → Maybe (A × ⟨Set⟩)
+headTail s = Maybe.map (Prod.map₁ proj₁) (AVL.headTail s)
 
-initLast : ⟨Set⟩ → Maybe (⟨Set⟩ × Key)
-initLast s = Maybe.map (Prod.map id proj₁) (S.initLast s)
+initLast : ⟨Set⟩ → Maybe (⟨Set⟩ × A)
+initLast s = Maybe.map (Prod.map₂ proj₁) (AVL.initLast s)
 
-fromList : List Key → ⟨Set⟩
-fromList = S.fromList ∘ List.map (λ k → (k , _))
+fromList : List A → ⟨Set⟩
+fromList = AVL.fromList ∘ List.map (_, _)
 
-toList : ⟨Set⟩ → List Key
-toList = List.map proj₁ ∘ S.toList
+toList : ⟨Set⟩ → List A
+toList = List.map proj₁ ∘ AVL.toList

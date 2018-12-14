@@ -9,12 +9,10 @@
 -- The search tree invariant is specified using the technique
 -- described by Conor McBride in his talk "Pivotal pragmatism".
 
-open import Relation.Binary using (Rel; IsStrictTotalOrder)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
+open import Relation.Binary using (StrictTotalOrder)
 
 module Data.AVL
-  {k e r} {Key : Set k} {_≈_ : Rel Key e} {_<_ : Rel Key r}
-  (isStrictTotalOrder : IsStrictTotalOrder _≈_ _<_)
+  {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
 open import Data.Bool.Base using (Bool)
@@ -27,8 +25,8 @@ open import Function as F
 open import Level using (_⊔_)
 open import Relation.Unary
 
-open IsStrictTotalOrder isStrictTotalOrder
-import Data.AVL.Indexed Key isStrictTotalOrder as Indexed
+open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
+import Data.AVL.Indexed strictTotalOrder as Indexed
 open Indexed using (K&_ ; ⊥⁺ ; ⊤⁺)
 
 ------------------------------------------------------------------------
@@ -39,7 +37,7 @@ open Indexed using (Value; MkValue; const) public
 ------------------------------------------------------------------------
 -- Types and functions with hidden indices
 
-data Tree {v} (V : Value v) : Set (k ⊔ v ⊔ r) where
+data Tree {v} (V : Value v) : Set (a ⊔ v ⊔ ℓ₂) where
   tree : ∀ {h} → Indexed.Tree V ⊥⁺ ⊤⁺ h → Tree V
 
 module _ {v} {V : Value v} where

@@ -4,11 +4,10 @@
 -- Indexed AVL trees
 ------------------------------------------------------------------------
 
-open import Relation.Binary using (Rel; IsStrictTotalOrder)
+open import Relation.Binary using (StrictTotalOrder)
 
 module Data.AVL.Indexed
-       {k e r} (Key : Set k) {_≈_ : Rel Key e} {_<_ : Rel Key r}
-       (isStrictTotalOrder : IsStrictTotalOrder _≈_ _<_) where
+  {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂) where
 
 open import Level using (_⊔_)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
@@ -20,19 +19,19 @@ open import Relation.Unary
 open import Relation.Binary using (_Respects_; Tri; tri<; tri≈; tri>)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
-open IsStrictTotalOrder isStrictTotalOrder
+open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
 
 ------------------------------------------------------------------------
 -- Re-export core definitions publicly
 
-open import Data.AVL.Key Key isStrictTotalOrder public
-open import Data.AVL.Value Eq.isEquivalence public
+open import Data.AVL.Key strictTotalOrder public
+open import Data.AVL.Value Eq.setoid public
 open import Data.AVL.Height public
 
 ------------------------------------------------------------------------
 -- Definitions of the tree
 
-K&_ : ∀ {v} (V : Value v) → Set (k ⊔ v)
+K&_ : ∀ {v} (V : Value v) → Set (a ⊔ v)
 K& V = Σ Key (Value.family V)
 
 -- The trees have three parameters/indices: a lower bound on the
@@ -40,7 +39,7 @@ K& V = Σ Key (Value.family V)
 --
 -- (The bal argument is the balance factor.)
 
-data Tree {v} (V : Value v) (l u : Key⁺) : ℕ → Set (k ⊔ v ⊔ r) where
+data Tree {v} (V : Value v) (l u : Key⁺) : ℕ → Set (a ⊔ v ⊔ ℓ₂) where
   leaf : (l<u : l <⁺ u) → Tree V l u 0
   node : ∀ {hˡ hʳ h}
          (k : K& V)

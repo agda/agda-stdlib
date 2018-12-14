@@ -1,51 +1,53 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Keys for AVL trees
--- The key type extended with a new minimum and maximum.
+-- Keys for AVL trees -- the original key type extended with a new
+-- minimum and maximum.
 -----------------------------------------------------------------------
 
 open import Relation.Binary
 
 module Data.AVL.Key
-       {k e r} (Key : Set k)
-       {_≈_ : Rel Key e} {_<_ : Rel Key r}
-       (isStrictTotalOrder : IsStrictTotalOrder _≈_ _<_)
-       where
-
-open IsStrictTotalOrder isStrictTotalOrder
+  {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
+  where
 
 open import Level
 open import Data.Empty
 open import Data.Unit
 open import Data.Product
-open import Relation.Binary.PropositionalEquality as P using (_≡_ ; refl)
+open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
+
+open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
+
+-----------------------------------------------------------------------
+-- Definition
 
 infix 5 [_]
 
-data Key⁺ : Set k where
+data Key⁺ : Set a where
   ⊥⁺ ⊤⁺ : Key⁺
   [_]   : (k : Key) → Key⁺
 
 [_]-injective : ∀ {k l} → [ k ] ≡ [ l ] → k ≡ l
 [_]-injective refl = refl
 
+-----------------------------------------------------------------------
 -- An extended strict ordering relation.
 
 infix 4 _<⁺_
 
-_<⁺_ : Key⁺ → Key⁺ → Set r
-⊥⁺    <⁺ [ _ ] = Lift r ⊤
-⊥⁺    <⁺ ⊤⁺    = Lift r ⊤
+_<⁺_ : Key⁺ → Key⁺ → Set ℓ₂
+⊥⁺    <⁺ [ _ ] = Lift ℓ₂ ⊤
+⊥⁺    <⁺ ⊤⁺    = Lift ℓ₂ ⊤
 [ x ] <⁺ [ y ] = x < y
-[ _ ] <⁺ ⊤⁺    = Lift r ⊤
-_     <⁺ _     = Lift r ⊥
+[ _ ] <⁺ ⊤⁺    = Lift ℓ₂ ⊤
+_     <⁺ _     = Lift ℓ₂ ⊥
 
 -- A pair of ordering constraints.
 
 infix 4 _<_<_
 
-_<_<_ : Key⁺ → Key → Key⁺ → Set r
+_<_<_ : Key⁺ → Key → Key⁺ → Set ℓ₂
 l < x < u = l <⁺ [ x ] × [ x ] <⁺ u
 
 -- _<⁺_ is transitive.

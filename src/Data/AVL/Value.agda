@@ -5,19 +5,22 @@
 -- Values must respect the underlying equivalence on keys
 -----------------------------------------------------------------------
 
-open import Relation.Binary using (Rel; IsEquivalence)
+open import Relation.Binary using (Setoid; _Respects_)
 
-module Data.AVL.Value {k e} {Key : Set k} {_≈_ : Rel Key e} (S : IsEquivalence _≈_) where
+module Data.AVL.Value {a ℓ} (S : Setoid a ℓ) where
 
 open import Level using (suc; _⊔_)
 import Function as F
-open import Relation.Binary using (_Respects_)
+open Setoid S renaming (Carrier to Key)
 
-record Value v : Set (k ⊔ e ⊔ suc v) where
+record Value v : Set (a ⊔ ℓ ⊔ suc v) where
   constructor MkValue
-  field family   : Key → Set v
-        respects : family Respects _≈_
+  field
+    family   : Key → Set v
+    respects : family Respects _≈_
 
 const : ∀ {v} → Set v → Value v
-Value.family   (const V) = F.const V
-Value.respects (const V) = F.const F.id
+const V = record
+  { family   = F.const V
+  ; respects = F.const F.id
+  }

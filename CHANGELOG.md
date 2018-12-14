@@ -61,8 +61,13 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * AVL trees now work over arbitrary equalities, rather than just
   propositional equality.
 
-* Consequently the family of `Value`s stored in the tree now needs
+* Consequently the family of `Value`s stored in the tree now need
   to respect the `Key` equivalence
+
+* The module parameter for `Data.AVL`, `Data.AVL.Indexed`, `Data.AVL.Key`,
+  `Data.AVL.Sets` is now a `StrictTotalOrder` rather than a
+  `IsStrictTotalOrder`, and the module parameter for `Data.AVL.Value` is
+  now takes a `Setoid` rather than an `IsEquivalence`.
 
 * It was noticed that `Data.AVL.Indexed`'s lookup & delete didn't use
   a range to guarantee that the recursive calls were performed in the
@@ -75,9 +80,9 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 
 * Various functions have been made polymorphic which makes their biases
   & limitations clearer. e.g. we have:
-  unionWith : (V -> Maybe W -> W) -> Tree V -> Tree W -> Tree W
+  `unionWith : (V -> Maybe W -> W) -> Tree V -> Tree W -> Tree W`
   but ideally we would like to have:
-  unionWith : (These V W -> X) -> Tree V -> Tree W -> Tree X
+  `unionWith : (These V W -> X) -> Tree V -> Tree W -> Tree X`
 
 #### Other
 
