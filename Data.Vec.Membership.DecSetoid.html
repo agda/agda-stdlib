@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Vec.Membership.DecSetoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Decidable setoid membership over vectors.</a>
+<a id="151" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="225" class="Symbol">{-#</a> <a id="229" class="Keyword">OPTIONS</a> <a id="237" class="Option">--without-K</a> <a id="249" class="Symbol">#-}</a>
+
+<a id="254" class="Keyword">open</a> <a id="259" class="Keyword">import</a> <a id="266" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="282" class="Keyword">using</a> <a id="288" class="Symbol">(</a><a id="289" href="Relation.Binary.html#2730" class="Record">DecSetoid</a><a id="298" class="Symbol">)</a>
+
+<a id="301" class="Keyword">module</a> <a id="308" href="Data.Vec.Membership.DecSetoid.html" class="Module">Data.Vec.Membership.DecSetoid</a> <a id="338" class="Symbol">{</a><a id="339" href="Data.Vec.Membership.DecSetoid.html#339" class="Bound">c</a> <a id="341" href="Data.Vec.Membership.DecSetoid.html#341" class="Bound">ℓ</a><a id="342" class="Symbol">}</a> <a id="344" class="Symbol">(</a><a id="345" href="Data.Vec.Membership.DecSetoid.html#345" class="Bound">DS</a> <a id="348" class="Symbol">:</a> <a id="350" href="Relation.Binary.html#2730" class="Record">DecSetoid</a> <a id="360" href="Data.Vec.Membership.DecSetoid.html#339" class="Bound">c</a> <a id="362" href="Data.Vec.Membership.DecSetoid.html#341" class="Bound">ℓ</a><a id="363" class="Symbol">)</a> <a id="365" class="Keyword">where</a>
+
+<a id="372" class="Keyword">open</a> <a id="377" class="Keyword">import</a> <a id="384" href="Data.Vec.html" class="Module">Data.Vec</a> <a id="393" class="Keyword">using</a> <a id="399" class="Symbol">(</a><a id="400" href="Data.Vec.html#773" class="Datatype">Vec</a><a id="403" class="Symbol">)</a>
+<a id="405" class="Keyword">open</a> <a id="410" class="Keyword">import</a> <a id="417" href="Data.Vec.Any.html" class="Module">Data.Vec.Any</a> <a id="430" class="Keyword">using</a> <a id="436" class="Symbol">(</a><a id="437" href="Data.Vec.Any.html#2488" class="Function">any</a><a id="440" class="Symbol">)</a>
+<a id="442" class="Keyword">open</a> <a id="447" class="Keyword">import</a> <a id="454" href="Relation.Nullary.html" class="Module">Relation.Nullary</a> <a id="471" class="Keyword">using</a> <a id="477" class="Symbol">(</a><a id="478" href="Relation.Nullary.html#570" class="Datatype">Dec</a><a id="481" class="Symbol">)</a>
+<a id="483" class="Keyword">open</a> <a id="488" href="Relation.Binary.html#2730" class="Module">DecSetoid</a> <a id="498" href="Data.Vec.Membership.DecSetoid.html#345" class="Bound">DS</a> <a id="501" class="Keyword">renaming</a> <a id="510" class="Symbol">(</a>Carrier <a id="519" class="Symbol">to</a> A<a id="523" class="Symbol">)</a>
+
+<a id="526" class="Comment">------------------------------------------------------------------------</a>
+<a id="599" class="Comment">-- Re-export contents of propositional membership</a>
+
+<a id="650" class="Keyword">open</a> <a id="655" class="Keyword">import</a> <a id="662" href="Data.Vec.Membership.Setoid.html" class="Module">Data.Vec.Membership.Setoid</a> <a id="689" href="Relation.Binary.html#2954" class="Function">setoid</a> <a id="696" class="Keyword">public</a>
+
+<a id="704" class="Comment">------------------------------------------------------------------------</a>
+<a id="777" class="Comment">-- Other operations</a>
+
+<a id="798" class="Keyword">infix</a> <a id="804" class="Number">4</a> <a id="806" href="Data.Vec.Membership.DecSetoid.html#812" class="Function Operator">_∈?_</a>
+
+<a id="_∈?_"></a><a id="812" href="Data.Vec.Membership.DecSetoid.html#812" class="Function Operator">_∈?_</a> <a id="817" class="Symbol">:</a> <a id="819" class="Symbol">∀</a> <a id="821" href="Data.Vec.Membership.DecSetoid.html#821" class="Bound">x</a> <a id="823" class="Symbol">{</a><a id="824" href="Data.Vec.Membership.DecSetoid.html#824" class="Bound">n</a><a id="825" class="Symbol">}</a> <a id="827" class="Symbol">(</a><a id="828" href="Data.Vec.Membership.DecSetoid.html#828" class="Bound">xs</a> <a id="831" class="Symbol">:</a> <a id="833" href="Data.Vec.html#773" class="Datatype">Vec</a> <a id="837" href="Relation.Binary.html#2796" class="Field">A</a> <a id="839" href="Data.Vec.Membership.DecSetoid.html#824" class="Bound">n</a><a id="840" class="Symbol">)</a> <a id="842" class="Symbol">→</a> <a id="844" href="Relation.Nullary.html#570" class="Datatype">Dec</a> <a id="848" class="Symbol">(</a><a id="849" href="Data.Vec.Membership.DecSetoid.html#821" class="Bound">x</a> <a id="851" href="Data.Vec.Membership.Setoid.html#800" class="Function Operator">∈</a> <a id="853" href="Data.Vec.Membership.DecSetoid.html#828" class="Bound">xs</a><a id="855" class="Symbol">)</a>
+<a id="857" href="Data.Vec.Membership.DecSetoid.html#857" class="Bound">x</a> <a id="859" href="Data.Vec.Membership.DecSetoid.html#812" class="Function Operator">∈?</a> <a id="862" href="Data.Vec.Membership.DecSetoid.html#862" class="Bound">xs</a> <a id="865" class="Symbol">=</a> <a id="867" href="Data.Vec.Any.html#2488" class="Function">any</a> <a id="871" class="Symbol">(</a><a id="872" href="Data.Vec.Membership.DecSetoid.html#857" class="Bound">x</a> <a id="874" href="Relation.Binary.html#2649" class="Function Operator">≟_</a><a id="876" class="Symbol">)</a> <a id="878" href="Data.Vec.Membership.DecSetoid.html#862" class="Bound">xs</a>
+</pre></body></html>
