@@ -236,6 +236,9 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The proofs `drop-*≤*`, `≃⇒≡` and `≡⇒≃` have been moved from `Data.Rational`
   to `Data.Rational.Properties`.
 
+* The proofs `toList⁺` and `toList⁻` in `Data.Vec.All.Properties` have been swapped
+  as they were the opposite way round to similar properties in the rest of the library.
+
 Other major changes
 -------------------
 
