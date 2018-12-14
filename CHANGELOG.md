@@ -254,7 +254,9 @@ Other major changes
 
 * Added new module `Data.Vec.Any.Properties`
 
-* Added new modules `Relation.Binary.Construct.NaturalOrder.(Left/Right)`
+* Added new modules `Relation.Binary.Construct.NaturalOrder.Left/Right`
+
+* Added new modules `Relation.Binary.Construct.Intersection/Union`
 
 * Added new module `Relation.Binary.Properties.BoundedLattice`
 

@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Union of two binary relations
+-- Intersection of two binary relations
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
