@@ -239,6 +239,8 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 Other major changes
 -------------------
 
+* Added new modules `Algebra.Construct.NaturalChoice.(Min/Max)`
+
 * Added new module `Algebra.Properties.Semilattice`
 
 * Added new module `Algebra.FunctionProperties.Consequences.Propositional`
