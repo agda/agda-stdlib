@@ -4,6 +4,8 @@
 -- Coinductive lists
 ------------------------------------------------------------------------
 
+{-# OPTIONS --guardedness --sized-types #-}
+
 module Codata.Musical.Colist where
 
 open import Category.Monad
@@ -533,3 +535,20 @@ not-finite-and-infinite :
 not-finite-and-infinite []        ()
 not-finite-and-infinite (x ∷ fin) (.x ∷ inf) =
   not-finite-and-infinite fin (♭ inf)
+
+------------------------------------------------------------------------
+-- Legacy
+
+import Codata.Colist as C
+open import Codata.Thunk
+import Size
+
+module _ {a} {A : Set a} where
+
+  fromMusical : ∀ {i} → Colist A → C.Colist A i
+  fromMusical []       = C.[]
+  fromMusical (x ∷ xs) = x C.∷ λ where .force → fromMusical (♭ xs)
+
+  toMusical : C.Colist A Size.∞ → Colist A
+  toMusical C.[]       = []
+  toMusical (x C.∷ xs) = x ∷ ♯ toMusical (xs .force)

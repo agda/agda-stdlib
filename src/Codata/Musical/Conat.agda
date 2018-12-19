@@ -4,6 +4,8 @@
 -- Coinductive "natural" numbers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --guardedness --sized-types #-}
+
 module Codata.Musical.Conat where
 
 open import Codata.Musical.Notation
@@ -84,3 +86,18 @@ setoid = record
   trans : Transitive _≈_
   trans zero      zero      = zero
   trans (suc m≈n) (suc n≈k) = suc (♯ trans (♭ m≈n) (♭ n≈k))
+
+------------------------------------------------------------------------
+-- Legacy
+
+import Codata.Conat as C
+open import Codata.Thunk
+import Size
+
+fromMusical : ∀ {i} → Coℕ → C.Conat i
+fromMusical zero    = C.zero
+fromMusical (suc n) = C.suc λ where .force → fromMusical (♭ n)
+
+toMusical : C.Conat Size.∞ → Coℕ
+toMusical C.zero    = zero
+toMusical (C.suc n) = suc (♯ toMusical (n .force))

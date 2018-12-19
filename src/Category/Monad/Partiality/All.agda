@@ -4,6 +4,8 @@
 -- An All predicate for the partiality monad
 ------------------------------------------------------------------------
 
+{-# OPTIONS --guardedness #-}
+
 module Category.Monad.Partiality.All where
 
 open import Category.Monad

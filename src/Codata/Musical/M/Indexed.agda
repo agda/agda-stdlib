@@ -5,6 +5,8 @@
 -- trees).
 ------------------------------------------------------------------------
 
+{-# OPTIONS --guardedness #-}
+
 module Codata.Musical.M.Indexed where
 
 open import Level

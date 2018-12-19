@@ -45,3 +45,13 @@ toFin : ∀ n → Cofin (Conat.fromℕ n) → Fin n
 toFin zero    ()
 toFin (suc n) zero    = zero
 toFin (suc n) (suc i) = suc (toFin n i)
+
+import Codata.Cofin as C
+
+fromMusical : ∀ {n} → Cofin n → C.Cofin (Conat.fromMusical n)
+fromMusical zero    = C.zero
+fromMusical (suc n) = C.suc (fromMusical n)
+
+toMusical : ∀ {n} → C.Cofin n → Cofin (Conat.toMusical n)
+toMusical C.zero    = zero
+toMusical (C.suc n) = suc (toMusical n)

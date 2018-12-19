@@ -4,6 +4,8 @@
 -- Infinite merge operation for coinductive lists
 ------------------------------------------------------------------------
 
+{-# OPTIONS --guardedness #-}
+
 module Codata.Musical.Colist.Infinite-merge where
 
 open import Codata.Musical.Notation

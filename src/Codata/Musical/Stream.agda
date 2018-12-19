@@ -4,6 +4,8 @@
 -- Streams
 ------------------------------------------------------------------------
 
+{-# OPTIONS --guardedness --sized-types #-}
+
 module Codata.Musical.Stream where
 
 open import Codata.Musical.Notation
@@ -163,3 +165,18 @@ infixr 5 _⋎-cong_
 _⋎-cong_ : ∀ {a} {A : Set a} {xs xs′ ys ys′ : Stream A} →
            xs ≈ xs′ → ys ≈ ys′ → xs ⋎ ys ≈ xs′ ⋎ ys′
 (x ∷ xs≈) ⋎-cong ys≈ = x ∷ ♯ (ys≈ ⋎-cong ♭ xs≈)
+
+------------------------------------------------------------------------
+-- Legacy
+
+import Codata.Stream as S
+open import Codata.Thunk
+import Size
+
+module _ {a} {A : Set a} where
+
+  fromMusical : ∀ {i} → Stream A → S.Stream A i
+  fromMusical (x ∷ xs) = x S.∷ λ where .force → fromMusical (♭ xs)
+
+  toMusical : S.Stream A Size.∞ → Stream A
+  toMusical (x S.∷ xs) = x ∷ ♯ toMusical (xs .force)

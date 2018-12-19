@@ -4,6 +4,8 @@
 -- IO
 ------------------------------------------------------------------------
 
+{-# OPTIONS --guardedness #-}
+
 module IO where
 
 open import Codata.Musical.Notation

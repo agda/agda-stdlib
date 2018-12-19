@@ -6,7 +6,7 @@
 
 module Data.Container where
 
-open import Codata.Musical.M hiding (map)
+open import Codata.M hiding (map)
 open import Data.Product as Prod hiding (map)
 open import Data.W hiding (map)
 open import Function renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
@@ -19,6 +19,7 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≗_; refl)
 open import Relation.Unary using (Pred ; _⊆_)
+open import Size
 
 ------------------------------------------------------------------------
 -- Containers
@@ -35,7 +36,7 @@ open Container public
 μ = W
 
 ν : ∀ {s p} → Container s p → Set (s ⊔ p)
-ν = M
+ν C = M C ∞
 
 -- Equality, parametrised on an underlying relation.
 
@@ -83,11 +84,8 @@ module _ {s p x e} (C : Container s p) (X : Setoid x e) where
 ------------------------------------------------------------------------
 -- Functoriality
 
--- Containers are functors.
-
-map : ∀ {s p x y} {C : Container s p} {X : Set x} {Y : Set y} →
-      (X → Y) → ⟦ C ⟧ X → ⟦ C ⟧ Y
-map f = Prod.map₂ (f ⟨∘⟩_)
+-- Containers are functors. (Note that map is defined in
+-- Data.Container.Core.)
 
 module Map where
 

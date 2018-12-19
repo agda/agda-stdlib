@@ -7,7 +7,7 @@
 module Data.Container.Core where
 
 open import Level
-open import Data.Product
+open import Data.Product as Prod hiding (map)
 open import Function
 open import Relation.Unary using (Pred)
 
@@ -26,6 +26,12 @@ open Container
 ⟦_⟧ : ∀ {s p ℓ} → Container s p → Set ℓ → Set (s ⊔ p ⊔ ℓ)
 ⟦ S ▷ P ⟧ X = Σ[ s ∈ S ] (P s → X)
 
+-- Functoriality
+
+map : ∀ {s p x y} {C : Container s p} {X : Set x} {Y : Set y} →
+      (X → Y) → ⟦ C ⟧ X → ⟦ C ⟧ Y
+map f = Prod.map₂ (f ∘_)
+
 -- Representation of container morphisms.
 
 record _⇒_ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂)
@@ -40,7 +46,7 @@ open _⇒_ public
 
 ⟪_⟫ : ∀ {s₁ s₂ p₁ p₂ x} {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂} →
       C₁ ⇒ C₂ → {X : Set x} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X
-⟪ m ⟫ = map (shape m) (_∘ position m)
+⟪ m ⟫ = Prod.map (shape m) (_∘ position m)
 
 -- All and Any
 

@@ -99,17 +99,3 @@ k ℕ< n = suc k ℕ≤ n
 _ℕ≤infinity : ∀ k → k ℕ≤ infinity
 zero  ℕ≤infinity = zℕ≤n
 suc k ℕ≤infinity = sℕ≤s (k ℕ≤infinity)
-
-------------------------------------------------------------------------
--- Legacy
-
-open import Codata.Musical.Notation using (♭; ♯_)
-import Codata.Musical.Conat as M
-
-fromMusical : ∀ {i} → M.Coℕ → Conat i
-fromMusical M.zero    = zero
-fromMusical (M.suc n) = suc λ where .force → fromMusical (♭ n)
-
-toMusical : Conat ∞ → M.Coℕ
-toMusical zero    = M.zero
-toMusical (suc n) = M.suc (♯ toMusical (n .force))
