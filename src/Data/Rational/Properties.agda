@@ -20,9 +20,8 @@ open import Data.Sum
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; sym; cong; module ≡-Reasoning)
-open import Relation.Nullary using (yes; no; recompute)
-open import Relation.Nullary.Decidable
-  using (True; False; toWitness; fromWitness)
+open import Relation.Nullary using (Dec; yes; no; recompute)
+open import Relation.Nullary.Decidable using (True; fromWitness)
 
 ------------------------------------------------------------------------
 -- Equality
@@ -51,11 +50,14 @@ open import Relation.Nullary.Decidable
       ∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ ℤ.abs-*-commute n₁ (+ suc d₂) ⟩
       ∣ n₁ ∣ ℕ.* suc d₂    ∎)
 
+  fromWitness′ : ∀ {p} {P : Set p} {Q : Dec P} → .P → True Q
+  fromWitness′ {Q = Q} p = fromWitness (recompute Q p)
+
   .c₁′ : True (C.coprime? ∣ n₁ ∣ (suc d₁))
-  c₁′ = fromWitness {P = Coprime ∣ n₁ ∣ (suc d₁)} c₁
+  c₁′ = fromWitness′ {P = Coprime ∣ n₁ ∣ (suc d₁)} c₁
 
   .c₂′ : True (C.coprime? ∣ n₂ ∣ (suc d₂))
-  c₂′ = fromWitness {P = Coprime ∣ n₂ ∣ (suc d₂)} c₂
+  c₂′ = fromWitness′ {P = Coprime ∣ n₂ ∣ (suc d₂)} c₂
 
   helper : (n₁ ÷ suc d₁) {c₁′} ≡ (n₂ ÷ suc d₂) {c₂′}
   helper with ∣-antisym 1+d₁∣1+d₂ 1+d₂∣1+d₁
