@@ -54,14 +54,3 @@ toFin : ∀ n → Cofin (Conat.fromℕ n) → Fin n
 toFin zero    ()
 toFin (suc n) zero    = zero
 toFin (suc n) (suc i) = suc (toFin n i)
-
-open import Codata.Musical.Notation using (♭; ♯_)
-import Codata.Musical.Cofin as M
-
-fromMusical : ∀ {n} → M.Cofin n → Cofin (Conat.fromMusical n)
-fromMusical M.zero    = zero
-fromMusical (M.suc n) = suc (fromMusical n)
-
-toMusical : ∀ {n} → Cofin n → M.Cofin (Conat.toMusical n)
-toMusical zero    = M.zero
-toMusical (suc n) = M.suc (toMusical n)

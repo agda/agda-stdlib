@@ -151,19 +151,3 @@ module _ {a b} {A : Set a} {B : Set b} where
 
   ap : ∀ {i} → Colist (A → B) i → Colist A i → Colist B i
   ap = zipWith _$′_
-
-------------------------------------------------------------------------
--- Legacy
-
-open import Codata.Musical.Notation using (♭; ♯_)
-import Codata.Musical.Colist as M
-
-module _ {a} {A : Set a} where
-
-  fromMusical : ∀ {i} → M.Colist A → Colist A i
-  fromMusical M.[]       = []
-  fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
-
-  toMusical : Colist A ∞ → M.Colist A
-  toMusical []       = M.[]
-  toMusical (x ∷ xs) = x M.∷ ♯ toMusical (xs .force)

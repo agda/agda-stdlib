@@ -11,7 +11,7 @@ module Codata.Covec where
 open import Size
 
 open import Codata.Thunk using (Thunk; force)
-open import Codata.Conat as Conat hiding (fromMusical; toMusical)
+open import Codata.Conat as Conat
 open import Codata.Conat.Bisimilarity
 open import Codata.Conat.Properties
 open import Codata.Cofin as Cofin using (Cofin; zero; suc)
@@ -85,21 +85,3 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
  zipWith f []       []       = []
  zipWith f (a ∷ as) (b ∷ bs) =
    f a b ∷ λ where .force → zipWith f (as .force) (bs .force)
-
-
-
-------------------------------------------------------------------------
--- Legacy
-
-open import Codata.Musical.Notation using (♭; ♯_)
-import Codata.Musical.Covec as M
-
-module _ {a} {A : Set a} where
-
-  fromMusical : ∀ {i n} → M.Covec A n → Covec A i (Conat.fromMusical n)
-  fromMusical M.[]       = []
-  fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
-
-  toMusical : ∀ {n} → Covec A ∞ n → M.Covec A (Conat.toMusical n)
-  toMusical []       = M.[]
-  toMusical (x ∷ xs) = x M.∷ ♯ toMusical (xs .force)
