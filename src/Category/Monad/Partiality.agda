@@ -4,7 +4,7 @@
 -- The partiality monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --guardedness #-}
+{-# OPTIONS --without-K --guardedness --safe #-}
 
 module Category.Monad.Partiality where
 

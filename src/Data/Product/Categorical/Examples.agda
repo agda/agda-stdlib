@@ -4,6 +4,8 @@
 -- Universe-sensitive functor and monad instances for the Product type.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Algebra
 
 module Data.Product.Categorical.Examples

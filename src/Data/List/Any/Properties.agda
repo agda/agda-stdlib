@@ -7,6 +7,8 @@
 -- The other modules under Data.List.Any also contain properties
 -- related to Any.
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.Any.Properties where
 
 open import Category.Monad
@@ -23,7 +25,8 @@ open import Data.List.Membership.Propositional.Properties.Core
 open import Data.List.Relation.Pointwise
   using (Pointwise; []; _∷_)
 open import Data.Nat using (zero; suc; _<_; z≤n; s≤s)
-open import Data.Maybe as Maybe using (Maybe; just; nothing)
+open import Data.Maybe using (Maybe; just; nothing)
+open import Data.Maybe.Any as MAny using (just)
 open import Data.Product as Prod
   using (_×_; _,_; ∃; ∃₂; proj₁; proj₂; uncurry′)
 open import Data.Product.Properties
@@ -303,7 +306,7 @@ module _ {a b} {A : Set a} {B : Set b} {f : A → B} where
 module _ {a b p} {A : Set a} {B : Set b} {P : B → Set p}
          (f : A → Maybe B) where
 
-  mapMaybe⁺ : ∀ xs → Any (Maybe.Any P) (map f xs) →
+  mapMaybe⁺ : ∀ xs → Any (MAny.Any P) (map f xs) →
               Any P (mapMaybe f xs)
   mapMaybe⁺ []       ()
   mapMaybe⁺ (x ∷ xs) ps with f x | ps

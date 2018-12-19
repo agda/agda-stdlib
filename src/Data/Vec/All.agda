@@ -4,6 +4,8 @@
 -- Vectors where all elements satisfy a given property
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Vec.All where
 
 open import Data.Nat using (zero; suc)

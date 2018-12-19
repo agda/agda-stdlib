@@ -4,6 +4,8 @@
 -- Properties of permutation
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.Relation.Permutation.Inductive.Properties where
 
 open import Algebra
@@ -113,7 +115,8 @@ module _ {a} {A : Set a} where
   drop-mid-≡ : ∀ {x} ws xs {ys} {zs} →
                ws ++ [ x ] ++ ys ≡ xs ++ [ x ] ++ zs →
                ws ++ ys ↭ xs ++ zs
-  drop-mid-≡ []       []       refl = refl
+  drop-mid-≡ []       []       eq   with cong tail eq
+  drop-mid-≡ []       []       eq   | refl = refl
   drop-mid-≡ []       (x ∷ xs) refl = shift _ xs _
   drop-mid-≡ (w ∷ ws) []       refl = ↭-sym (shift _ ws _)
   drop-mid-≡ (w ∷ ws) (x ∷ xs) eq with Lₚ.∷-injective eq
@@ -130,14 +133,21 @@ module _ {a} {A : Set a} where
                 xs ++ [ x ] ++ zs ≡ l″ →
                 ws ++ ys ↭ xs ++ zs
     drop-mid′ refl         ws           xs           refl eq   = drop-mid-≡ ws xs (≡.sym eq)
-    drop-mid′ (prep x p)   []           []           refl refl = p
+    drop-mid′ (prep x p)   []           []           refl eq   with cong tail eq
+    drop-mid′ (prep x p)   []           []           refl eq   | refl = p
     drop-mid′ (prep x p)   []           (x ∷ xs)     refl refl = trans p (shift _ _ _)
     drop-mid′ (prep x p)   (w ∷ ws)     []           refl refl = trans (↭-sym (shift _ _ _)) p
     drop-mid′ (prep x p)   (w ∷ ws)     (x ∷ xs)     refl refl = prep _ (drop-mid′ p ws xs refl refl)
     drop-mid′ (swap y z p) []           []           refl refl = prep _ p
-    drop-mid′ (swap y z p) []           (x ∷ [])     refl refl = prep _ p
+    drop-mid′ (swap y z p) []           (x ∷ [])     refl eq   with cong {B = List _}
+                                                                         (λ { (x ∷ _ ∷ xs) → x ∷ xs
+                                                                            ; _            → []
+                                                                            })
+                                                                         eq
+    drop-mid′ (swap y z p) []           (x ∷ [])     refl eq   | refl = prep _ p
     drop-mid′ (swap y z p) []           (x ∷ _ ∷ xs) refl refl = prep _ (trans p (shift _ _ _))
-    drop-mid′ (swap y z p) (w ∷ [])     []           refl refl = prep _ p
+    drop-mid′ (swap y z p) (w ∷ [])     []           refl eq   with cong tail eq
+    drop-mid′ (swap y z p) (w ∷ [])     []           refl eq   | refl = prep _ p
     drop-mid′ (swap y z p) (w ∷ x ∷ ws) []           refl refl = prep _ (trans (↭-sym (shift _ _ _)) p)
     drop-mid′ (swap y y p) (y ∷ [])     (y ∷ [])     refl refl = prep _ p
     drop-mid′ (swap y z p) (y ∷ [])     (z ∷ y ∷ xs) refl refl = begin
@@ -151,7 +161,7 @@ module _ {a} {A : Set a} where
         _ ∷ (ws ++ _ ∷ _) <⟨ p ⟩
         _ ∷ _             ∎
     drop-mid′ (swap y z p) (y ∷ z ∷ ws) (z ∷ y ∷ xs) refl refl = swap y z (drop-mid′ p _ _ refl refl)
-    drop-mid′ (trans p₁ p₂) ws  xs refl refl with ∈-∃++ _ (∈-resp-↭ p₁ (∈-insert A ws))
+    drop-mid′ (trans p₁ p₂) ws  xs refl refl with ∈-∃++ (∈-resp-↭ p₁ (∈-insert ws))
     ... | (h , t , refl) = trans (drop-mid′ p₁ ws h refl refl) (drop-mid′ p₂ h xs refl refl)
 
   -- Algebraic properties
@@ -178,11 +188,21 @@ module _ {a} {A : Set a} where
     ys ++ ([ x ] ++ xs)  ≡⟨⟩
     ys ++ (x ∷ xs)       ∎
 
+  ++-isMagma : IsMagma _↭_ _++_
+  ++-isMagma = record
+    { isEquivalence = ↭-isEquivalence
+    ; ∙-cong        = ++⁺
+    }
+
+  ++-magma : Magma _ _
+  ++-magma = record
+    { isMagma = ++-isMagma
+    }
+
   ++-isSemigroup : IsSemigroup _↭_ _++_
   ++-isSemigroup = record
-    { isEquivalence = ↭-isEquivalence
-    ; assoc         = ++-assoc
-    ; ∙-cong        = ++⁺
+    { isMagma = ++-isMagma
+    ; assoc   = ++-assoc
     }
 
   ++-semigroup : Semigroup a _
@@ -264,7 +284,7 @@ module _ {a} {A : Set a} where
   ~bag⇒↭ : _∼[ bag ]_ ⇒ _↭_
   ~bag⇒↭ {[]} eq with empty-unique (Inv.sym eq)
   ... | refl = refl
-  ~bag⇒↭ {x ∷ xs} eq with ∈-∃++ A (to ⟨$⟩ (here ≡.refl))
+  ~bag⇒↭ {x ∷ xs} eq with ∈-∃++ (to ⟨$⟩ (here ≡.refl))
     where open Inv.Inverse (eq {x})
   ... | zs₁ , zs₂ , p rewrite p = begin
     x ∷ xs           <⟨ ~bag⇒↭ (drop-cons (Inv._∘_ (comm zs₁ (x ∷ zs₂)) eq)) ⟩

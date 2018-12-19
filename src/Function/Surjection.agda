@@ -4,6 +4,8 @@
 -- Surjections
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Function.Surjection where
 
 open import Level

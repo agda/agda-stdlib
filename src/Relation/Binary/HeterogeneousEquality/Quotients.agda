@@ -4,6 +4,8 @@
 -- Quotients for Heterogeneous equality
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K --safe #-}
+
 module Relation.Binary.HeterogeneousEquality.Quotients where
 
 open import Function

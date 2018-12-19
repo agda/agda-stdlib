@@ -4,7 +4,7 @@
 -- Streams
 ------------------------------------------------------------------------
 
-{-# OPTIONS --guardedness --sized-types #-}
+{-# OPTIONS --without-K --guardedness --sized-types #-}
 
 module Codata.Musical.Stream where
 

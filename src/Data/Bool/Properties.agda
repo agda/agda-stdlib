@@ -4,10 +4,12 @@
 -- A bunch of properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Bool.Properties where
 
 open import Algebra
-open import Data.Bool
+open import Data.Bool.Base
 open import Data.Empty
 open import Data.Product
 open import Data.Sum
@@ -15,13 +17,26 @@ open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
-open import Relation.Binary.PropositionalEquality
-  hiding ([_]; proof-irrelevance)
+open import Level using (0ℓ)
+open import Relation.Binary.Core using (Decidable)
+open import Relation.Binary.PropositionalEquality hiding ([_])
+open import Relation.Nullary using (yes; no)
 open import Relation.Unary using (Irrelevant)
 
 open import Algebra.FunctionProperties (_≡_ {A = Bool})
 open import Algebra.Structures (_≡_ {A = Bool})
 open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- Queries
+
+infix 4 _≟_
+
+_≟_ : Decidable {A = Bool} _≡_
+true  ≟ true  = yes refl
+false ≟ false = yes refl
+true  ≟ false = no λ()
+false ≟ true  = no λ()
 
 ------------------------------------------------------------------------
 -- Properties of _∨_
@@ -74,16 +89,48 @@ open ≡-Reasoning
 ∨-sel false y = inj₂ refl
 ∨-sel true y  = inj₁ refl
 
-∨-isSemigroup : IsSemigroup _∨_
-∨-isSemigroup = record
+∨-isMagma : IsMagma _∨_
+∨-isMagma = record
   { isEquivalence = isEquivalence
-  ; assoc         = ∨-assoc
   ; ∙-cong        = cong₂ _∨_
   }
 
-∨-semigroup : Semigroup _ _
+∨-magma : Magma 0ℓ 0ℓ
+∨-magma = record
+  { isMagma = ∨-isMagma
+  }
+
+∨-isSemigroup : IsSemigroup _∨_
+∨-isSemigroup = record
+  { isMagma = ∨-isMagma
+  ; assoc   = ∨-assoc
+  }
+
+∨-semigroup : Semigroup 0ℓ 0ℓ
 ∨-semigroup = record
   { isSemigroup = ∨-isSemigroup
+  }
+
+∨-isBand : IsBand _∨_
+∨-isBand = record
+  { isSemigroup = ∨-isSemigroup
+  ; idem        = ∨-idem
+  }
+
+∨-band : Band 0ℓ 0ℓ
+∨-band = record
+  { isBand = ∨-isBand
+  }
+
+∨-isSemilattice : IsSemilattice _∨_
+∨-isSemilattice = record
+  { isBand = ∨-isBand
+  ; comm   = ∨-comm
+  }
+
+∨-semilattice : Semilattice 0ℓ 0ℓ
+∨-semilattice = record
+  { isSemilattice = ∨-isSemilattice
   }
 
 ∨-isCommutativeMonoid : IsCommutativeMonoid _∨_ false
@@ -93,7 +140,7 @@ open ≡-Reasoning
   ; comm        = ∨-comm
   }
 
-∨-commutativeMonoid : CommutativeMonoid _ _
+∨-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
 ∨-commutativeMonoid = record
   { isCommutativeMonoid = ∨-isCommutativeMonoid
   }
@@ -105,7 +152,7 @@ open ≡-Reasoning
    ; idem = ∨-idem
    }
 
-∨-idempotentCommutativeMonoid : IdempotentCommutativeMonoid _ _
+∨-idempotentCommutativeMonoid : IdempotentCommutativeMonoid 0ℓ 0ℓ
 ∨-idempotentCommutativeMonoid = record
   { isIdempotentCommutativeMonoid = ∨-isIdempotentCommutativeMonoid
   }
@@ -200,16 +247,48 @@ open ≡-Reasoning
 ∨-∧-absorptive : Absorptive _∨_ _∧_
 ∨-∧-absorptive = ∨-abs-∧ , ∧-abs-∨
 
-∧-isSemigroup : IsSemigroup _∧_
-∧-isSemigroup = record
+∧-isMagma : IsMagma _∧_
+∧-isMagma = record
   { isEquivalence = isEquivalence
-  ; assoc         = ∧-assoc
   ; ∙-cong        = cong₂ _∧_
   }
 
-∧-semigroup : Semigroup _ _
+∧-magma : Magma 0ℓ 0ℓ
+∧-magma = record
+  { isMagma = ∧-isMagma
+  }
+
+∧-isSemigroup : IsSemigroup _∧_
+∧-isSemigroup = record
+  { isMagma = ∧-isMagma
+  ; assoc   = ∧-assoc
+  }
+
+∧-semigroup : Semigroup 0ℓ 0ℓ
 ∧-semigroup = record
   { isSemigroup = ∧-isSemigroup
+  }
+
+∧-isBand : IsBand _∧_
+∧-isBand = record
+  { isSemigroup = ∧-isSemigroup
+  ; idem        = ∧-idem
+  }
+
+∧-band : Band 0ℓ 0ℓ
+∧-band = record
+  { isBand = ∧-isBand
+  }
+
+∧-isSemilattice : IsSemilattice _∧_
+∧-isSemilattice = record
+  { isBand = ∧-isBand
+  ; comm   = ∧-comm
+  }
+
+∧-semilattice : Semilattice 0ℓ 0ℓ
+∧-semilattice = record
+  { isSemilattice = ∧-isSemilattice
   }
 
 ∧-isCommutativeMonoid : IsCommutativeMonoid _∧_ true
@@ -219,7 +298,7 @@ open ≡-Reasoning
   ; comm        = ∧-comm
   }
 
-∧-commutativeMonoid : CommutativeMonoid _ _
+∧-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
 ∧-commutativeMonoid = record
   { isCommutativeMonoid = ∧-isCommutativeMonoid
   }
@@ -231,7 +310,7 @@ open ≡-Reasoning
   ; idem = ∧-idem
   }
 
-∧-idempotentCommutativeMonoid : IdempotentCommutativeMonoid _ _
+∧-idempotentCommutativeMonoid : IdempotentCommutativeMonoid 0ℓ 0ℓ
 ∧-idempotentCommutativeMonoid = record
   { isIdempotentCommutativeMonoid = ∧-isIdempotentCommutativeMonoid
   }
@@ -245,7 +324,7 @@ open ≡-Reasoning
   ; zeroˡ    = ∧-zeroˡ
   }
 
-∨-∧-commutativeSemiring : CommutativeSemiring _ _
+∨-∧-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
 ∨-∧-commutativeSemiring = record
   { _+_                   = _∨_
   ; _*_                   = _∧_
@@ -263,7 +342,7 @@ open ≡-Reasoning
   ; zeroˡ    = ∨-zeroˡ
   }
 
-∧-∨-commutativeSemiring : CommutativeSemiring _ _
+∧-∨-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
 ∧-∨-commutativeSemiring = record
   { _+_                   = _∧_
   ; _*_                   = _∨_
@@ -284,7 +363,7 @@ open ≡-Reasoning
   ; absorptive    = ∨-∧-absorptive
   }
 
-∨-∧-lattice : Lattice _ _
+∨-∧-lattice : Lattice 0ℓ 0ℓ
 ∨-∧-lattice = record
   { isLattice = ∨-∧-isLattice
   }
@@ -295,7 +374,7 @@ open ≡-Reasoning
   ; ∨-∧-distribʳ = ∨-distribʳ-∧
   }
 
-∨-∧-distributiveLattice : DistributiveLattice _ _
+∨-∧-distributiveLattice : DistributiveLattice 0ℓ 0ℓ
 ∨-∧-distributiveLattice = record
   { isDistributiveLattice = ∨-∧-isDistributiveLattice
   }
@@ -308,7 +387,7 @@ open ≡-Reasoning
   ; ¬-cong        = cong not
   }
 
-∨-∧-booleanAlgebra : BooleanAlgebra _ _
+∨-∧-booleanAlgebra : BooleanAlgebra 0ℓ 0ℓ
 ∨-∧-booleanAlgebra = record
   { isBooleanAlgebra = ∨-∧-isBooleanAlgebra
   }
@@ -320,7 +399,7 @@ xor-is-ok : ∀ x y → x xor y ≡ (x ∨ y) ∧ not (x ∧ y)
 xor-is-ok true  y = refl
 xor-is-ok false y = sym (∧-identityʳ _)
 
-xor-∧-commutativeRing : CommutativeRing _ _
+xor-∧-commutativeRing : CommutativeRing 0ℓ 0ℓ
 xor-∧-commutativeRing = commutativeRing
   where
   import Algebra.Properties.BooleanAlgebra as BA

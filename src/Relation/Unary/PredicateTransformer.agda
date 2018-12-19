@@ -4,6 +4,8 @@
 -- Predicate transformers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Unary.PredicateTransformer where
 
 open import Level hiding (_⊔_)

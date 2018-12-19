@@ -4,6 +4,8 @@
 -- An inductive definition for the permutation relation
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.Relation.Permutation.Inductive {a} {A : Set a} where
 
 open import Data.List using (List; []; _∷_)

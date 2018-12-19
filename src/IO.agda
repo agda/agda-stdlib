@@ -4,7 +4,7 @@
 -- IO
 ------------------------------------------------------------------------
 
-{-# OPTIONS --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module IO where
 

@@ -4,6 +4,8 @@
 -- Properties satisfied by preorders
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 
 module Relation.Binary.Properties.Preorder

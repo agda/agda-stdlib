@@ -4,6 +4,8 @@
 -- A categorical view of List
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.Categorical where
 
 open import Category.Functor

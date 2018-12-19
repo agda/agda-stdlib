@@ -7,6 +7,8 @@
 -- This module illustrates how Data.Fin.Substitution.Lemmas.AppLemmas
 -- can be used.
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Data.Fin.Substitution.Lemmas
 open import Data.Nat using (ℕ)
 

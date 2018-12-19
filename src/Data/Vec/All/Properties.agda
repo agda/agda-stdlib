@@ -4,6 +4,8 @@
 -- Properties related to All
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Vec.All.Properties where
 
 open import Data.List using ([]; _∷_)

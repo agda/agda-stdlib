@@ -4,6 +4,8 @@
 -- The Conat type and some operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Codata.Conat where
 
 open import Size

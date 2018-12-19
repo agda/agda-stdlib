@@ -4,6 +4,8 @@
 -- Reverse view
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.Reverse where
 
 open import Data.List.Base as L hiding (reverse)

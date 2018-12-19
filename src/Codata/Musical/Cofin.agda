@@ -4,6 +4,8 @@
 -- "Finite" sets indexed on coinductive "natural" numbers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module Codata.Musical.Cofin where
 
 open import Codata.Musical.Notation

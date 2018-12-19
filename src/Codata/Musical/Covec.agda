@@ -4,7 +4,7 @@
 -- Coinductive vectors
 ------------------------------------------------------------------------
 
-{-# OPTIONS --guardedness --sized-types #-}
+{-# OPTIONS --without-K --guardedness --sized-types #-}
 
 module Codata.Musical.Covec where
 
@@ -84,7 +84,7 @@ module _ {a} {A : Set a} where
 
  infix 4 _≈_
 
- data _≈_ : ∀ {n} (xs ys : Covec A n) → Set where
+ data _≈_ : ∀ {n} (xs ys : Covec A n) → Set a where
    []  : [] ≈ []
    _∷_ : ∀ {n} x {xs ys}
          (xs≈ : ∞ (♭ xs ≈ ♭ ys)) → _≈_ {n = suc n} (x ∷ xs) (x ∷ ys)
@@ -93,7 +93,7 @@ module _ {a} {A : Set a} where
 
  infix 4 _∈_
 
- data _∈_ : ∀ {n} → A → Covec A n → Set where
+ data _∈_ : ∀ {n} → A → Covec A n → Set a where
    here  : ∀ {n x  } {xs}                   → _∈_ {n = suc n} x (x ∷ xs)
    there : ∀ {n x y} {xs} (x∈xs : x ∈ ♭ xs) → _∈_ {n = suc n} x (y ∷ xs)
 
@@ -101,7 +101,7 @@ module _ {a} {A : Set a} where
 
  infix 4 _⊑_
 
- data _⊑_ : ∀ {m n} → Covec A m → Covec A n → Set where
+ data _⊑_ : ∀ {m n} → Covec A m → Covec A n → Set a where
    []  : ∀ {n} {ys : Covec A n} → [] ⊑ ys
    _∷_ : ∀ {m n} x {xs ys} (p : ∞ (♭ xs ⊑ ♭ ys)) →
          _⊑_ {m = suc m} {suc n} (x ∷ xs) (x ∷ ys)
@@ -155,9 +155,13 @@ poset A n = record
   trans []        _          = []
   trans (x ∷ xs≈) (.x ∷ ys≈) = x ∷ ♯ trans (♭ xs≈) (♭ ys≈)
 
+  tail : ∀ {n x y xs ys} →
+         _∷_ {n = n} x xs ⊑ _∷_ {n = n} y ys → ♭ xs ⊑ ♭ ys
+  tail (_ ∷ p) = ♭ p
+
   antisym : ∀ {n} → Antisymmetric (_≈_ {n = n}) _⊑_
-  antisym []       []        = []
-  antisym (x ∷ p₁) (.x ∷ p₂) = x ∷ ♯ antisym (♭ p₁) (♭ p₂)
+  antisym []       [] = []
+  antisym (x ∷ p₁) p₂ = x ∷ ♯ antisym (♭ p₁) (tail p₂)
 
 map-cong : ∀ {a b} {A : Set a} {B : Set b} {n} (f : A → B) → _≈_ {n = n} =[ map f ]⇒ _≈_
 map-cong f []        = []

@@ -4,6 +4,8 @@
 -- Closures of a unary relation with respect to a binary one.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 
 module Relation.Unary.Closure.Base {a b} {A : Set a} (R : Rel A b) where

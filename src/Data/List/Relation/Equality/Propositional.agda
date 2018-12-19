@@ -4,6 +4,8 @@
 -- Equality over lists using propositional equality
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 
 module Data.List.Relation.Equality.Propositional {a} {A : Set a} where
