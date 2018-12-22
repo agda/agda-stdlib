@@ -745,3 +745,70 @@ Other minor additions
   ```agda
   y≤x⇒x∧y≈y : y ≤ x → x ∧ y ≈ y
   ```
+
+* Added new proofs to `Data.Vec.Any.Properties`:
+  ```agda
+  lift-resp : P Respects _≈_ → (Any P) Respects (Pointwise _≈_)
+  here-injective : here p ≡ here q → p ≡ q
+  there-injective : there p ≡ there q → p ≡ q
+
+  ¬Any[] : ¬ Any P []
+  ⊥↔Any⊥ : ⊥ ↔ Any (const ⊥) xs
+  ⊥↔Any[] : ⊥ ↔ Any P []
+
+  map-id : ∀ f → (∀ p → f p ≡ p) → ∀ p → Any.map f p ≡ p
+  map-∘ : ∀ f g p → Any.map (f ∘ g) p ≡ Any.map f (Any.map g p)
+
+  swap : Any (λ x → Any (x ∼_) ys) xs → Any (λ y → Any (_∼ y) xs) ys
+  swap-there : ∀ p → swap (Any.map there p) ≡ there (swap p)
+  swap-invol : ∀ p → swap (swap p) ≡ p
+  swap↔ : Any (λ x → Any (x ∼_) ys) xs ↔ Any (λ y → Any (_∼ y) xs) ys
+
+  Any-⊎⁺ : Any P xs ⊎ Any Q xs → Any (λ x → P x ⊎ Q x) xs
+  Any-⊎⁻ : Any (λ x → P x ⊎ Q x) xs → Any P xs ⊎ Any Q xs
+  ⊎↔ : (Any P xs ⊎ Any Q xs) ↔ Any (λ x → P x ⊎ Q x) xs
+
+  Any-×⁺ : Any P xs × Any Q ys → Any (λ x → Any (λ y → P x × Q y) ys) xs
+  Any-×⁻ : Any (λ x → Any (λ y → P x × Q y) ys) xs → Any P xs × Any Q ys
+
+  singleton⁺ : P x → Any P [ x ]
+  singleton⁻ : Any P [ x ] → P x
+  singleton⁺∘singleton⁻ : singleton⁺ (singleton⁻ p) ≡ p
+  singleton⁻∘singleton⁺ : singleton⁻ (singleton⁺ p) ≡ p
+  singleton↔ : P x ↔ Any P [ x ]
+
+  map⁺ : Any (P ∘ f) xs → Any P (map f xs)
+  map⁻ : Any P (map f xs) → Any (P ∘ f) xs
+  map⁺∘map⁻ : ∀ p → map⁺ (map⁻ p) ≡ p
+  map⁻∘map⁺ : ∀ P p → map⁻ (map⁺ p) ≡ p
+  map↔ : Any (P ∘ f) xs ↔ Any P (map f xs)
+
+  ++⁺ˡ : Any P xs → Any P (xs ++ ys)
+  ++⁺ʳ : Any P ys → Any P (xs ++ ys)
+  ++⁻ : Any P (xs ++ ys) → Any P xs ⊎ Any P ys
+  ++⁺∘++⁻ : ∀ p → [ ++⁺ˡ , ++⁺ʳ xs ]′ (++⁻ xs p) ≡ p
+  ++⁻∘++⁺ : ∀ p → ++⁻ xs ([ ++⁺ˡ , ++⁺ʳ xs ]′ p) ≡ p
+  ++-comm : ∀ xs ys → Any P (xs ++ ys) → Any P (ys ++ xs)
+  ++-comm∘++-comm : ∀ p → ++-comm ys xs (++-comm xs ys p) ≡ p
+  ++-insert : ∀ xs → P x → Any P (xs ++ [ x ] ++ ys)
+  ++↔ : (Any P xs ⊎ Any P ys) ↔ Any P (xs ++ ys)
+  ++↔++ : ∀ xs ys → Any P (xs ++ ys) ↔ Any P (ys ++ xs)
+
+  concat⁺ : Any (Any P) xss → Any P (concat xss)
+  concat⁻ : Any P (concat xss) → Any (Any P) xss
+  concat⁻∘++⁺ˡ : ∀ xss p → concat⁻ (xs ∷ xss) (++⁺ˡ p) ≡ here p
+  concat⁻∘++⁺ʳ : ∀ xs xss p → concat⁻ (xs ∷ xss) (++⁺ʳ xs p) ≡ there (concat⁻ xss p)
+  concat⁺∘concat⁻ : ∀ xss p → concat⁺ (concat⁻ xss p) ≡ p
+  concat⁻∘concat⁺ : ∀ p → concat⁻ xss (concat⁺ p) ≡ p
+  concat↔ : Any (Any P) xss ↔ Any P (concat xss)
+
+  tabulate⁺ : ∀ i → P (f i) → Any P (tabulate f)
+  tabulate⁻ : Any P (tabulate f) → ∃ λ i → P (f i)
+
+  mapWith∈⁺ : ∀ f → (∃₂ λ x p → P (f p)) → Any P (mapWith∈ xs f)
+  mapWith∈⁻ : ∀ xs f → Any P (mapWith∈ xs f) → ∃₂ λ x p → P (f p)
+  mapWith∈↔ : (∃₂ λ x p → P (f p)) ↔ Any P (mapWith∈ xs f)
+
+  ∷↔ : ∀ P → (P x ⊎ Any P xs) ↔ Any P (x ∷ xs)
+  >>=↔ : Any (Any P ∘ f) xs ↔ Any P (xs >>= f)
+  ```
