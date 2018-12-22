@@ -635,6 +635,14 @@ Other minor additions
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
   ```
 
+* Added new functions to `Data.Product.Relation.Pointwise.NonDependent`:
+  ```agda
+  <_,_>ₛ : A ⟶ B → A ⟶ C → A ⟶ (B ×ₛ C)
+  proj₁ₛ : (A ×ₛ B) ⟶ A
+  proj₂ₛ : (A ×ₛ B) ⟶ B
+  swapₛ : (A ×ₛ B) ⟶ (B ×ₛ A)
+  ```
+
 * Added new functions to `Data.Rational`:
   ```agda
   norm-mkℚ : (n : ℤ) (d : ℕ) → d ≢0 → ℚ
