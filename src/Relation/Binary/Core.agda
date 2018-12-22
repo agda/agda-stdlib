@@ -131,10 +131,10 @@ Minimum _≤_ = Maximum (flip _≤_)
 _Respects_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → (A → Set ℓ₁) → Rel A ℓ₂ → Set _
 P Respects _∼_ = ∀ {x y} → x ∼ y → P x → P y
 
-_Respectsʳ_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
+_Respectsʳ_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} → REL A B ℓ₁ → Rel B ℓ₂ → Set _
 P Respectsʳ _∼_ = ∀ {x} → (P x) Respects _∼_
 
-_Respectsˡ_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
+_Respectsˡ_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} → REL A B ℓ₁ → Rel A ℓ₂ → Set _
 P Respectsˡ _∼_ = ∀ {y} → (flip P y) Respects _∼_
 
 _Respects₂_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _

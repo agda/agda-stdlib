@@ -745,3 +745,9 @@ Other minor additions
   ```agda
   y≤x⇒x∧y≈y : y ≤ x → x ∧ y ≈ y
   ```
+
+* Give `_Respectsʳ_`/`_Respectsˡ_` more general type, to support heterogenous relations.
+  ```agda
+  _Respectsʳ_ : REL A B ℓ₁ → Rel B ℓ₂ → Set _
+  _Respectsˡ_ : REL A B ℓ₁ → Rel A ℓ₂ → Set _
+  ```
