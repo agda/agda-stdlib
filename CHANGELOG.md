@@ -632,6 +632,23 @@ Other minor additions
   ⊔-semilattice : Semilattice 0ℓ 0ℓ
   ⊓-semilattice : Semilattice 0ℓ 0ℓ
 
+  m≤n⇒m⊓o≤n : ∀ {m n} o → m ≤ n → m ⊓ o ≤ n
+  m≤n⇒o⊓m≤n : ∀ {m n} o → m ≤ n → o ⊓ m ≤ n
+  m<n⇒m⊓o<n : ∀ {m n} o → m < n → m ⊓ o < n
+  m<n⇒o⊓m<n : ∀ {m n} o → m < n → o ⊓ m < n
+  m≤n⊓o⇒m≤n : ∀ {m} n o → m ≤ n ⊓ o → m ≤ n
+  m≤n⊓o⇒m≤o : ∀ {m} n o → m ≤ n ⊓ o → m ≤ o
+  m<n⊓o⇒m<n : ∀ {m} n o → m < n ⊓ o → m < n
+  m<n⊓o⇒m<o : ∀ {m} n o → m < n ⊓ o → m < o
+  m≤n⇒m≤n⊔o : ∀ {m n} o → m ≤ n → m ≤ n ⊔ o
+  m≤n⇒m≤o⊔n : ∀ {m n} o → m ≤ n → m ≤ o ⊔ n
+  m<n⇒m<n⊔o : ∀ {m n} o → m < n → m < n ⊔ o
+  m<n⇒m<o⊔n : ∀ {m n} o → m < n → m < o ⊔ n
+  m⊔n≤o⇒m≤o : ∀ m n {o} → m ⊔ n ≤ o → m ≤ o
+  m⊔n≤o⇒n≤o : ∀ m n {o} → m ⊔ n ≤ o → n ≤ o
+  m⊔n<o⇒m<o : ∀ m n {o} → m ⊔ n < o → m < o
+  m⊔n<o⇒n<o : ∀ m n {o} → m ⊔ n < o → n < o
+
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
   ```
 
