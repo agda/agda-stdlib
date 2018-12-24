@@ -16,7 +16,7 @@ open import Data.Bool.Base as Bool
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
 open import Data.Product as Prod using (_×_; _,_)
 open import Data.These as These using (These; this; that; these)
-open import Function using (id; _∘_ ; _∘′_; const)
+open import Function using (id; _∘_ ; _∘′_; const; flip)
 
 open import Relation.Nullary using (yes; no)
 open import Relation.Unary using (Pred; Decidable)
@@ -324,8 +324,13 @@ module _ {a} {A : Set a} where
 ------------------------------------------------------------------------
 -- Operations for reversing lists
 
-reverse : ∀ {a} {A : Set a} → List A → List A
-reverse = foldl (λ rev x → x ∷ rev) []
+module _ {a} {A : Set a} where
+
+  reverseAcc : List A → List A → List A
+  reverseAcc = foldl (flip _∷_)
+
+  reverse : List A → List A
+  reverse = reverseAcc []
 
 -- Snoc.
 

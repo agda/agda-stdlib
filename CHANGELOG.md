@@ -256,6 +256,11 @@ Other major changes
   generalization of the notion of "first element in the list to satisfy a
   predicate".
 
+* Added new modules `Data.List.Relation.Prefix.Heterogeneous(.Properties)`
+
+* Added new modules `Data.List.Relation.Interleaving(.Setoid/Propositional)`
+  and `Data.List.Relation.Interleaving(.Setoid/Propositional).Properties`.
+
 * Added new module `Data.Vec.Any.Properties`
 
 * Added new modules `Data.Vec.Membership.(Setoid/DecSetoid/DecPropositional)`
@@ -509,6 +514,8 @@ Other minor additions
   _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
   _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
   _─_     : (xs : List A) → Fin (length xs) → List A
+
+  reverseAcc : List A → List A → List A
   ```
 
 * Added new proofs to `Data.List.All.Properties`:
@@ -693,9 +700,10 @@ Other minor additions
   wlog : Total _R_ → Symmetric Q → (∀ a b → a R b → Q a b) → ∀ a b → Q a b
   ```
 
-* Added new definition to `Relation.Binary.Core`:
+* Added new definitions to `Relation.Binary.Core`:
   ```agda
   Antisym R S E = ∀ {i j} → R i j → S j i → E i j
+  Conn P Q = ∀ x y → P x y ⊎ Q y x
   ```
 
 * Added new proofs to `Relation.Binary.Lattice`:
