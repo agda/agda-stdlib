@@ -9,12 +9,13 @@ open import Relation.Binary
 module Algebra.Construct.NaturalChoice.Max
   {a ℓ₁ ℓ₂} (totalOrder : TotalOrder a ℓ₁ ℓ₂) where
 
-import Relation.Binary.Construct.Converse as Converse
+open import Relation.Binary.Construct.Converse using ()
+  renaming (totalOrder to converse)
 
 ------------------------------------------------------------------------
 -- Max is just min with a flipped order
 
-open import Algebra.Construct.NaturalChoice.Min
+open import Algebra.Construct.NaturalChoice.Min (converse totalOrder)
   using
   ( cong; idem; sel; assoc; comm
   ; identityˡ; identityʳ; identity; zeroˡ; zeroʳ; zero
