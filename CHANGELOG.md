@@ -79,7 +79,6 @@ been moved to new files:
   `Data.Container.Indexed.WithK`.
 * `Data.Container.Indexed.PlainMorphism.∘-correct` to
   `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed._∈_` to `Data.Container.Indexed.WithK`.
 * `Data.Container.Indexed.setoid` to `Data.Container.Indexed.WithK`.
 * `Data.Product.Properties.,-injectiveʳ` to
   `Data.Product.Properties.WithK`.
