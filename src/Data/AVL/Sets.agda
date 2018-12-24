@@ -4,6 +4,8 @@
 -- Finite sets, based on AVL trees
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary using (StrictTotalOrder)
 
 module Data.AVL.Sets

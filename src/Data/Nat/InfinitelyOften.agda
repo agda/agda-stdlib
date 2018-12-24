@@ -4,6 +4,8 @@
 -- Definition of and lemmas related to "true infinitely often"
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Nat.InfinitelyOften where
 
 open import Category.Monad using (RawMonad)

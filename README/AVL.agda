@@ -4,6 +4,8 @@
 -- Some examples showing how the AVL tree module can be used
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module README.AVL where
 
 ------------------------------------------------------------------------

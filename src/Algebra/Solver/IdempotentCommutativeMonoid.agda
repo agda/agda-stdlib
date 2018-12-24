@@ -6,6 +6,8 @@
 -- Adapted from Algebra.Monoid-solver
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Algebra
 
 open import Data.Bool as Bool using (Bool; true; false; if_then_else_; _∨_)

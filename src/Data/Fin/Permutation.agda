@@ -4,6 +4,8 @@
 -- Bijections on finite sets (i.e. permutations).
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Fin.Permutation where
 
 open import Data.Empty using (⊥-elim)

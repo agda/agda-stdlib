@@ -7,6 +7,8 @@
 -- Data.Integer.Properties directly.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Integer.Multiplication.Properties where
 
 open import Data.Integer.Properties public

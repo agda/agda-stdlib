@@ -7,6 +7,8 @@
 -- The definitions of lexicographic ordering used here are suitable if
 -- the argument order is a strict partial order.
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.Relation.Lex.Strict where
 
 open import Data.Empty using (⊥)
@@ -30,7 +32,8 @@ open import Data.List.Relation.Lex.Core as Core public
 
 module _ {a ℓ₁ ℓ₂} {A : Set a} where
 
-  Lex-< : (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) → Rel (List A) (ℓ₁ ⊔ ℓ₂)
+  Lex-< : (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) →
+          Rel (List A) (a ⊔ ℓ₁ ⊔ ℓ₂)
   Lex-< = Core.Lex ⊥
 
   -- Properties
@@ -132,7 +135,8 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
 
 module _ {a ℓ₁ ℓ₂} {A : Set a} where
 
-  Lex-≤ : (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) → Rel (List A) (ℓ₁ ⊔ ℓ₂)
+  Lex-≤ : (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) →
+          Rel (List A) (a ⊔ ℓ₁ ⊔ ℓ₂)
   Lex-≤ = Core.Lex ⊤
 
   -- Properties

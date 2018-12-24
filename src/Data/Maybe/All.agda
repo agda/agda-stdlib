@@ -4,6 +4,8 @@
 -- Maybes where all the elements satisfy a given property
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Maybe.All where
 
 open import Category.Applicative
@@ -13,6 +15,7 @@ open import Data.Maybe.Any using (Any; just)
 open import Data.Product as Prod using (_,_)
 open import Function using (id; _∘′_)
 open import Function.Equivalence using (_⇔_; equivalence)
+open import Level
 open import Relation.Binary.PropositionalEquality as P using (_≡_; cong)
 open import Relation.Unary
 open import Relation.Nullary
@@ -21,7 +24,7 @@ import Relation.Nullary.Decidable as Dec
 ------------------------------------------------------------------------
 -- Definition
 
-data All {a p} {A : Set a} (P : Pred A p) : Pred (Maybe A) p where
+data All {a p} {A : Set a} (P : Pred A p) : Pred (Maybe A) (a ⊔ p) where
   just    : ∀ {x} → P x → All P (just x)
   nothing : All P nothing
 
@@ -67,7 +70,8 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 ------------------------------------------------------------------------
 -- Traversable-like functions
 
-module _ {a p} {A : Set a} {P : Pred A p} {F} (App : RawApplicative {p} F) where
+module _ {a} p {A : Set a} {P : Pred A (a ⊔ p)} {F}
+         (App : RawApplicative {a ⊔ p} F) where
 
   open RawApplicative App
 
@@ -81,18 +85,19 @@ module _ {a p} {A : Set a} {P : Pred A p} {F} (App : RawApplicative {p} F) where
   forA : ∀ {q} {Q : Pred A q} {xs} → All Q xs → (Q ⊆ F ∘′ P) → F (All P xs)
   forA qxs f = mapA f qxs
 
-module _ {a p} {A : Set a} {P : Pred A p} {M} (Mon : RawMonad {p} M) where
+module _ {a} p {A : Set a} {P : Pred A (a ⊔ p)} {M}
+         (Mon : RawMonad {a ⊔ p} M) where
 
   private App = RawMonad.rawIApplicative Mon
 
   sequenceM : All (M ∘′ P) ⊆ M ∘′ All P
-  sequenceM = sequenceA App
+  sequenceM = sequenceA p App
 
   mapM : ∀ {q} {Q : Pred A q} → (Q ⊆ M ∘′ P) → All Q ⊆ (M ∘′ All P)
-  mapM = mapA App
+  mapM = mapA p App
 
   forM : ∀ {q} {Q : Pred A q} {xs} → All Q xs → (Q ⊆ M ∘′ P) → M (All P xs)
-  forM = forA App
+  forM = forA p App
 
 ------------------------------------------------------------------------
 -- Seeing All as a predicate transformer

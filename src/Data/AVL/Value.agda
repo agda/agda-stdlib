@@ -19,8 +19,8 @@ record Value v : Set (a ⊔ ℓ ⊔ suc v) where
     family   : Key → Set v
     respects : family Respects _≈_
 
+-- The function `const` is defined using copatterns to prevent eager
+-- unfolding of the function in goal types.
 const : ∀ {v} → Set v → Value v
-const V = record
-  { family   = F.const V
-  ; respects = F.const F.id
-  }
+Value.family   (const V) = F.const V
+Value.respects (const V) = F.const F.id

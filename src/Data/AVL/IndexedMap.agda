@@ -4,6 +4,8 @@
 -- Finite maps with indexed keys and values, based on AVL trees
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Data.Product as Prod
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality using (_≡_; cong; subst)

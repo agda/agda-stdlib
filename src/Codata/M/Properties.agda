@@ -4,6 +4,8 @@
 -- Properties of operations on M-types
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Codata.M.Properties where
 
 open import Level

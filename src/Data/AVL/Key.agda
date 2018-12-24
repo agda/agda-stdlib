@@ -5,6 +5,8 @@
 -- minimum and maximum.
 -----------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 
 module Data.AVL.Key

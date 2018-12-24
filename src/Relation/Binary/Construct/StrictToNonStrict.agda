@@ -8,6 +8,8 @@
 -- relation equivalent to the original one (and similarly for
 -- < → ≤ → <).
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 
 module Relation.Binary.Construct.StrictToNonStrict

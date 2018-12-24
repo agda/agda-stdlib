@@ -4,6 +4,8 @@
 -- Properties of operations on the Colist type
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Codata.Colist.Properties where
 
 open import Size

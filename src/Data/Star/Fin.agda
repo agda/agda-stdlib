@@ -4,6 +4,8 @@
 -- Finite sets defined using the reflexive-transitive closure, Star
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K --safe #-}
+
 module Data.Star.Fin where
 
 open import Data.Star.Nat as ℕ using (ℕ)

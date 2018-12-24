@@ -4,6 +4,8 @@
 -- Properties satisfied by decidable total orders
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 
 module Relation.Binary.Properties.DecTotalOrder

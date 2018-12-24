@@ -4,6 +4,8 @@
 -- Properties satisfied by lattices
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary.Lattice
 
 module Relation.Binary.Properties.Lattice

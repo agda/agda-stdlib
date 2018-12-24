@@ -4,6 +4,8 @@
 -- Lists defined in terms of the reflexive-transitive closure, Star
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Star.List where
 
 open import Data.Star.Nat

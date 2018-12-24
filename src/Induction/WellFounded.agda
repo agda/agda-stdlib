@@ -4,6 +4,8 @@
 -- Well-founded induction
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 
 module Induction.WellFounded where

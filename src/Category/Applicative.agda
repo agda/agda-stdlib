@@ -7,6 +7,8 @@
 -- Note that currently the applicative functor laws are not included
 -- here.
 
+{-# OPTIONS --without-K --safe #-}
+
 module Category.Applicative where
 
 open import Data.Unit

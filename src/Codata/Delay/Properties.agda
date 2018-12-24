@@ -4,6 +4,8 @@
 -- Properties of operations on the Delay type
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Codata.Delay.Properties where
 
 open import Size

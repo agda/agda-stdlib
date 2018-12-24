@@ -4,6 +4,8 @@
 -- Pointwise lifting of relations to lists
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.Relation.Pointwise where
 
 open import Function
@@ -21,7 +23,7 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 infixr 5 _∷_
 
 data Pointwise {a b ℓ} {A : Set a} {B : Set b}
-         (_∼_ : REL A B ℓ) : List A → List B → Set ℓ where
+         (_∼_ : REL A B ℓ) : List A → List B → Set (a ⊔ b ⊔ ℓ) where
   []  : Pointwise _∼_ [] []
   _∷_ : ∀ {x xs y ys} (x∼y : x ∼ y) (xs∼ys : Pointwise _∼_ xs ys) →
         Pointwise _∼_ (x ∷ xs) (y ∷ ys)

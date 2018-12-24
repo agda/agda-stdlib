@@ -4,6 +4,8 @@
 -- Equivalence (coinhabitance)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Function.Equivalence where
 
 open import Function using (flip)

@@ -5,6 +5,8 @@
 -- coefficient "ring"
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Algebra
 import Algebra.Operations.Semiring as SemiringOps
 open import Data.Maybe.Base using (Maybe; just; nothing; map)

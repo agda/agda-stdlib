@@ -3,6 +3,9 @@
 --
 -- The type for booleans and some operations
 ------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Bool.Base where
 
 open import Data.Unit.Base using (⊤)

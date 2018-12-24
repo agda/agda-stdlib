@@ -4,6 +4,8 @@
 -- Lists where all elements satisfy a given property
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.All where
 
 open import Category.Applicative
@@ -13,6 +15,7 @@ open import Data.List.Any as Any using (here; there)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.Product as Prod using (_,_)
 open import Function
+open import Level
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary hiding (_∈_)
@@ -23,7 +26,7 @@ open import Relation.Binary.PropositionalEquality as P
 
 infixr 5 _∷_
 
-data All {a p} {A : Set a} (P : Pred A p) : Pred (List A) p where
+data All {a p} {A : Set a} (P : Pred A p) : Pred (List A) (a ⊔ p) where
   []  : All P []
   _∷_ : ∀ {x xs} (px : P x) (pxs : All P xs) → All P (x ∷ xs)
 
@@ -78,7 +81,8 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 ------------------------------------------------------------------------
 -- Traversable-like functions
 
-module _ {a p} {A : Set a} {P : Pred A p} {F} (App : RawApplicative {p} F) where
+module _ {a} p {A : Set a} {P : Pred A (a ⊔ p)} {F}
+         (App : RawApplicative {a ⊔ p} F) where
 
   open RawApplicative App
 
@@ -92,18 +96,19 @@ module _ {a p} {A : Set a} {P : Pred A p} {F} (App : RawApplicative {p} F) where
   forA : ∀ {q} {Q : Pred A q} {xs} → All Q xs → (Q ⊆ F ∘′ P) → F (All P xs)
   forA qxs f = mapA f qxs
 
-module _ {a p} {A : Set a} {P : Pred A p} {M} (Mon : RawMonad {p} M) where
+module _ {a} p {A : Set a} {P : Pred A (a ⊔ p)} {M}
+         (Mon : RawMonad {a ⊔ p} M) where
 
   private App = RawMonad.rawIApplicative Mon
 
   sequenceM : All (M ∘′ P) ⊆ M ∘′ All P
-  sequenceM = sequenceA App
+  sequenceM = sequenceA p App
 
   mapM : ∀ {q} {Q : Pred A q} → (Q ⊆ M ∘′ P) → All Q ⊆ (M ∘′ All P)
-  mapM = mapA App
+  mapM = mapA p App
 
   forM : ∀ {q} {Q : Pred A q} {xs} → All Q xs → (Q ⊆ M ∘′ P) → M (All P xs)
-  forM = forA App
+  forM = forA p App
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by All

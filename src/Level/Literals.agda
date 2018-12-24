@@ -4,6 +4,8 @@
 -- Conversion from naturals to universe levels
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Level.Literals where
 
 open import Agda.Builtin.Nat renaming (Nat to ℕ)
