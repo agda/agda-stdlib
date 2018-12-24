@@ -217,6 +217,34 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * Created a module `Algebra.Solver.Ring.NaturalCoefficients.Default` that
   instantiates the solver for any `CommutativeSemiring`.
 
+#### Overhaul of `Data.AVL`
+
+* AVL trees now work over arbitrary equalities, rather than just
+  propositional equality.
+
+* Consequently the family of `Value`s stored in the tree now need
+  to respect the `Key` equivalence
+
+* The module parameter for `Data.AVL`, `Data.AVL.Indexed`, `Data.AVL.Key`,
+  `Data.AVL.Sets` is now a `StrictTotalOrder` rather than a
+  `IsStrictTotalOrder`, and the module parameter for `Data.AVL.Value` is
+  now takes a `Setoid` rather than an `IsEquivalence`.
+
+* It was noticed that `Data.AVL.Indexed`'s lookup & delete didn't use
+  a range to guarantee that the recursive calls were performed in the
+  right subtree. The types have been made more precise.
+
+* The functions (insert/union)With now take a function of type
+  `Maybe Val -> Val` rather than a value together with a merging function
+  `Val -> Val -> Val` to handle the case where a value is already present
+  at that key.
+
+* Various functions have been made polymorphic which makes their biases
+  & limitations clearer. e.g. we have:
+  `unionWith : (V -> Maybe W -> W) -> Tree V -> Tree W -> Tree W`
+  but ideally we would like to have:
+  `unionWith : (These V W -> X) -> Tree V -> Tree W -> Tree X`
+
 #### Other
 
 * The proof `sel⇒idem` has been moved from `Algebra.FunctionProperties.Consequences` to
