@@ -23,7 +23,7 @@ import Data.Sign.Properties as SProp
 open import Level
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
-import Relation.Binary.PreorderReasoning as PreorderReasoning
+import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Nullary using (yes; no)
 import Relation.Nullary.Decidable as DEC
 

@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Convenient syntax for "equational reasoning" using a partial order
+-- This module is DEPRECATED. Please use the
+-- Relation.Binary.Reasoning.PartialOrder module directly.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -11,6 +12,4 @@ open import Relation.Binary
 module Relation.Binary.PartialOrderReasoning
          {p₁ p₂ p₃} (P : Poset p₁ p₂ p₃) where
 
-open Poset P
-import Relation.Binary.PreorderReasoning as PreR
-open PreR preorder public renaming (_∼⟨_⟩_ to _≤⟨_⟩_)
+open import Relation.Binary.Reasoning.PartialOrder P public

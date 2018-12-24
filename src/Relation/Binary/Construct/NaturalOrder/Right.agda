@@ -16,7 +16,7 @@ open import Data.Sum using (inj₁; inj₂)
 open import Relation.Nullary using (¬_)
 open import Algebra.FunctionProperties _≈_
 open import Algebra.Structures _≈_
-import Relation.Binary.EqReasoning as EqReasoning
+import Relation.Binary.Reasoning.Equational as EqReasoning
 
 ------------------------------------------------------------------------
 -- Definition

@@ -23,11 +23,10 @@ open import Algebra.Solver.Ring.AlmostCommutativeRing
 open import Data.Nat.Base as ℕ
 open import Data.Product using (module Σ)
 open import Function
-import Relation.Binary.EqReasoning
 
 open CommutativeSemiring R
 open SemiringOps semiring
-open Relation.Binary.EqReasoning setoid
+open import Relation.Binary.Reasoning.Equational setoid
 
 private
 

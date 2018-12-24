@@ -23,7 +23,7 @@ private
 open AlmostCommutativeRing r
 open import Algebra.Morphism
 open _-Raw-AlmostCommutative⟶_ morphism
-open import Relation.Binary.EqReasoning setoid
+open import Relation.Binary.Reasoning.Equational setoid
 open import Function
 
 lemma₀ : ∀ a b c x →

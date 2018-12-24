@@ -21,7 +21,7 @@ open import Function.Equivalence using (_⇔_; equivalence)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
-import Relation.Binary.PartialOrderReasoning as PartialOrderReasoning
+import Relation.Binary.Reasoning.PartialOrder as POR
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)
 
@@ -96,7 +96,7 @@ poset = record
   ; isPartialOrder = ∣-isPartialOrder
   }
 
-module ∣-Reasoning = PartialOrderReasoning poset
+module ∣-Reasoning = POR poset
   hiding   (_≈⟨_⟩_)
   renaming (_≤⟨_⟩_ to _∣⟨_⟩_)
 

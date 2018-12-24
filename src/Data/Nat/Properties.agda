@@ -1467,7 +1467,7 @@ eq? inj = via-injection inj _≟_
 
 -- A module for reasoning about the _≤_ relation
 module ≤-Reasoning where
-  open import Relation.Binary.PartialOrderReasoning
+  open import Relation.Binary.Reasoning.PartialOrder
     (DecTotalOrder.poset ≤-decTotalOrder) public
     hiding (_≈⟨_⟩_)
 

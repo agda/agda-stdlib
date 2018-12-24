@@ -40,7 +40,7 @@ open import Algebra.Operations.Semiring semiring
 
 open import Relation.Binary
 open import Relation.Nullary using (yes; no)
-open import Relation.Binary.EqReasoning setoid
+open import Relation.Binary.Reasoning.Equational setoid
 import Relation.Binary.PropositionalEquality as PropEq
 import Relation.Binary.Reflection as Reflection
 
