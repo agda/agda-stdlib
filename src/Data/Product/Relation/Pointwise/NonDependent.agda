@@ -255,7 +255,7 @@ module _ {a b} {A : Set a} {B : Set b} where
 
 <_,_>ₛ : ∀ {a₁ a₂ b₁ b₂ c₁ c₂}
   {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} {C : Setoid c₁ c₂} →
-  A ⟶ B → A ⟶ C → A ⟶ (B ×ₛ C)
+  (A ⟶ B) → (A ⟶ C) → A ⟶ (B ×ₛ C)
 < f , g >ₛ = record
   { _⟨$⟩_ = < f ⟨$⟩_ , g ⟨$⟩_ >
   ; cong = < F.cong f , F.cong g >
@@ -272,7 +272,7 @@ proj₂ₛ = record { _⟨$⟩_ = proj₂ ; cong = proj₂ }
 _×-⟶_ : ∀ {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
   {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
   {C : Setoid c₁ c₂} {D : Setoid d₁ d₂} →
-  A ⟶ B → C ⟶ D → (A ×ₛ C) ⟶ (B ×ₛ D)
+  (A ⟶ B) → (C ⟶ D) → (A ×ₛ C) ⟶ (B ×ₛ D)
 _×-⟶_ {A = A} {B} {C} {D} f g = record
   { _⟨$⟩_ = fg
   ; cong  = fg-cong
