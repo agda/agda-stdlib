@@ -4,6 +4,8 @@
 -- Natural numbers, basic types and operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Nat.Base where
 
 open import Level using (0ℓ)

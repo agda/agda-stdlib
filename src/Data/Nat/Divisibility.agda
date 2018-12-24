@@ -4,6 +4,8 @@
 -- Divisibility
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Nat.Divisibility where
 
 open import Algebra
@@ -38,12 +40,10 @@ record _∣_ (m n : ℕ) : Set where
   constructor divides
   field quotient : ℕ
         equality : n ≡ quotient * m
+open _∣_ using (quotient) public
 
 _∤_ : Rel ℕ _
 m ∤ n = ¬ (m ∣ n)
-
-quotient : ∀ {m n} → m ∣ n → ℕ
-quotient (divides q _) = q
 
 ------------------------------------------------------------------------
 -- _∣_ is a partial order
@@ -78,6 +78,9 @@ quotient (divides q _) = q
   ; reflexive     = ∣-reflexive
   ; trans         = ∣-trans
   }
+
+∣-preorder : Preorder _ _ _
+∣-preorder = record { isPreorder = ∣-isPreorder }
 
 ∣-isPartialOrder : IsPartialOrder _≡_ _∣_
 ∣-isPartialOrder = record

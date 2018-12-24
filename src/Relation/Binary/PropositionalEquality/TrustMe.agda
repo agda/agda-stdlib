@@ -4,6 +4,8 @@
 -- An equality postulate which evaluates
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K #-}
+
 module Relation.Binary.PropositionalEquality.TrustMe where
 
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)

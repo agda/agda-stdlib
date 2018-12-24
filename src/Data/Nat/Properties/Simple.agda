@@ -6,6 +6,8 @@
 -- This module is DEPRECATED. Please use Data.Nat.Properties directly.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Nat.Properties.Simple where
 
 open import Data.Nat.Properties public using

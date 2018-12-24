@@ -4,6 +4,8 @@
 -- Containers, based on the work of Abbott and others
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Container where
 
 open import Codata.Musical.M hiding (map)
@@ -14,10 +16,8 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse using (_↔_; module Inverse)
 import Function.Related as Related
 open import Level
-open import Relation.Binary
-  using (REL ; IsEquivalence; Setoid; module Setoid; Preorder; module Preorder)
-open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≗_; refl)
+open import Relation.Binary hiding (_⇒_)
+open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
 open import Relation.Unary using (Pred ; _⊆_)
 
 ------------------------------------------------------------------------
@@ -51,8 +51,19 @@ private
 
   Eq⇒≡ : ∀ {s p x} {C : Container s p} {X : Set x} {xs ys : ⟦ C ⟧ X} →
          P.Extensionality p x → Eq C _≡_ xs ys → xs ≡ ys
-  Eq⇒≡ ext (refl , f≈f′) = P.cong -,_ (ext f≈f′)
+  Eq⇒≡ ext (P.refl , f≈f′) = P.cong -,_ (ext f≈f′)
 
+
+module _ {s p x r} {X : Set x} (C : Container s p) (R : Rel X r) where
+
+  refl : Reflexive R → Reflexive (Eq C R)
+  refl R-refl = P.refl , λ p → R-refl
+
+  sym : Symmetric R → Symmetric (Eq C R)
+  sym R-sym (P.refl , f) = P.refl , λ p → R-sym (f p)
+
+  trans : Transitive R → Transitive (Eq C R)
+  trans R-trans (P.refl , f) (P.refl , g) = P.refl , λ p → R-trans (f p) (g p)
 
 module _ {s p x e} (C : Container s p) (X : Setoid x e) where
 
@@ -62,16 +73,10 @@ module _ {s p x e} (C : Container s p) (X : Setoid x e) where
 
   isEquivalence : IsEquivalence _≈_
   isEquivalence = record
-    { refl  = refl , λ p → X.refl
-    ; sym   = sym
-    ; trans = λ {_ _ zs} → trans zs
-    } where
-
-    sym : ∀ {xs ys} → xs ≈ ys → ys ≈ xs
-    sym (refl , f) = (refl , X.sym ⟨∘⟩ f)
-
-    trans : ∀ {xs ys} zs → xs ≈ ys → ys ≈ zs → xs ≈ zs
-    trans _ (refl , f₁) (refl , f₂) = refl , λ p → X.trans (f₁ p) (f₂ p)
+    { refl  = refl C X._≈_ X.refl
+    ; sym   = sym C X._≈_ X.sym
+    ; trans = λ {_ _ zs} → trans C X._≈_ X.trans {_} {_} {zs}
+    }
 
   setoid : Setoid (s ⊔ p ⊔ x) (s ⊔ p ⊔ e)
   setoid = record
@@ -156,7 +161,7 @@ module Morphism where
 
 
     id-correct : ∀ {x} {X : Set x} → ⟪ id ⟫ {X} ≗ ⟨id⟩
-    id-correct x = refl
+    id-correct x = P.refl
 
   -- Composition.
 
@@ -169,7 +174,7 @@ module Morphism where
     (f ∘ g) .position = position g ⟨∘⟩ position f
 
     ∘-correct : ∀ f g {x} {X : Set x} → ⟪ f ∘ g ⟫ {X} ≗ (⟪ f ⟫ ⟨∘⟩ ⟪ g ⟫)
-    ∘-correct f g xs = refl
+    ∘-correct f g xs = P.refl
 
 ------------------------------------------------------------------------
 -- Linear container morphisms

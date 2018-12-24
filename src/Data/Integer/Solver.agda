@@ -6,6 +6,8 @@
 
 -- See README.Integer for examples of how to use this solver
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Integer.Solver where
 
 import Algebra.Solver.Ring.Simple as Solver

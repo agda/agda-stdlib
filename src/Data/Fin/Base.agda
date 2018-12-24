@@ -8,6 +8,8 @@
 -- set {m | m < n}. The notation "m" in comments below refers to this
 -- natural number view.
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Fin.Base where
 
 open import Data.Empty using (⊥-elim)
@@ -40,6 +42,16 @@ toℕ (suc i) = suc (toℕ i)
 
 Fin′ : ∀ {n} → Fin n → Set
 Fin′ i = Fin (toℕ i)
+
+------------------------------------------------------------------------
+-- A cast that actually computes on constructors (as opposed to subst)
+
+cast : ∀ {m n} → .(_ : m ≡ n) → Fin m → Fin n
+cast {zero}  {zero}  eq k       = k
+cast {suc m} {suc n} eq zero    = zero
+cast {suc m} {suc n} eq (suc k) = suc (cast (cong ℕ.pred eq) k)
+cast {zero}  {suc n} ()
+cast {suc m} {zero}  ()
 
 ------------------------------------------------------------------------
 -- Conversions

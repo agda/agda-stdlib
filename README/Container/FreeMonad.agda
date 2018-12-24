@@ -5,6 +5,8 @@
 -- used
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module README.Container.FreeMonad where
 
 open import Category.Monad
@@ -14,7 +16,7 @@ open import Data.Bool.Base using (Bool; true)
 open import Data.Nat
 open import Data.Sum using (inj₁; inj₂)
 open import Data.Product renaming (_×_ to _⟨×⟩_)
-open import Data.Container
+open import Data.Container hiding (refl)
 open import Data.Container.Combinator
 open import Data.Container.FreeMonad
 open import Data.W

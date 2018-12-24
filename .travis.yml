@@ -34,7 +34,7 @@ install:
   # checking whether .ghc is still valid
   - cabal install --only-dependencies --dry -v agda > $HOME/installplan.txt
   - sed -i -e '1,/^Resolving /d' $HOME/installplan.txt; cat $HOME/installplan.txt
-  - touch $HOME/.cabsnap/intallplan.txt
+  - touch $HOME/.cabsnap/installplan.txt
   - mkdir -p $HOME/.cabsnap/ghc $HOME/.cabsnap/lib $HOME/.cabsnap/share $HOME/.cabsnap/bin
   - if diff -u $HOME/.cabsnap/installplan.txt $HOME/installplan.txt;
     then
@@ -88,6 +88,7 @@ after_success:
   - git config --global user.email "travis-ci-bot@travis.fake"
   - git remote add upstream https://$GH_TOKEN@github.com/agda/agda-stdlib.git &>/dev/null
   - git fetch upstream && git reset upstream/gh-pages
+  - git checkout v0.16/ v0.17/
   - git add -f \*.html
   - git commit -m "Automatic HTML update via Travis"
   - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "master" ];

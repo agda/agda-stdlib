@@ -4,6 +4,8 @@
 -- Injections
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Function.Injection where
 
 open import Function as Fun using () renaming (_∘_ to _⟨∘⟩_)

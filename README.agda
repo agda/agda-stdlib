@@ -1,7 +1,7 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, version 0.17
+-- The Agda standard library, development version
 --
 -- Authors: Nils Anders Danielsson, with contributions from Andreas
 -- Abel, Stevan Andjelkovic, Jean-Philippe Bernardy, Peter Berry,
@@ -11,8 +11,8 @@ module README where
 -- Jason Hu, Patrik Jansson, Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov,
 -- Sergei Meshveliani, Eric Mertens, Darin Morrison, Guilhem Moulin,
 -- Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
--- Andrés Sicard-Ramírez, Noam Zeilberger and some anonymous
--- contributors.
+-- Andrés Sicard-Ramírez, Sandro Stucki, Noam Zeilberger and some
+-- anonymous contributors.
 ------------------------------------------------------------------------
 
 -- This version of the library has been tested using Agda 2.5.4.1.

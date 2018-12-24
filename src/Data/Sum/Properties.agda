@@ -4,6 +4,8 @@
 -- Properties of sums (disjoint unions)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Sum.Properties where
 
 open import Data.Sum

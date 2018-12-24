@@ -4,6 +4,8 @@
 -- Solver for monoid equalities
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Algebra
 
 module Algebra.Solver.Monoid {m₁ m₂} (M : Monoid m₁ m₂) where

@@ -4,6 +4,8 @@
 -- Decidable semi-heterogeneous vector equality over setoids
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 
 module Data.Vec.Relation.Equality.DecSetoid

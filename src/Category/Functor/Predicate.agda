@@ -6,6 +6,8 @@
 
 -- Note that currently the functor laws are not included here.
 
+{-# OPTIONS --without-K --safe #-}
+
 module Category.Functor.Predicate where
 
 open import Function

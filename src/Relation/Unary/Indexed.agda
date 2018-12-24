@@ -4,6 +4,8 @@
 -- Indexed unary relations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Unary.Indexed  where
 
 open import Data.Product using (∃; _×_)

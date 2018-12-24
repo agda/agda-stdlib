@@ -4,13 +4,10 @@
 -- Properties related to propositional list membership
 ------------------------------------------------------------------------
 
--- This module does not  treat the general variant of list membership,
--- parametrised on a setoid, only the variant where the equality is
--- fixed to be propositional equality.
+{-# OPTIONS --without-K --safe #-}
 
 module Data.List.Membership.Propositional.Properties where
 
-open import Algebra using (CommutativeSemiring)
 open import Algebra.FunctionProperties using (Op₂; Selective)
 open import Category.Monad using (RawMonad)
 open import Data.Bool.Base using (Bool; false; true; T)
@@ -82,7 +79,7 @@ module _ {a b} {A : Set a} {B : Set b} where
 ------------------------------------------------------------------------
 -- map
 
-module _ {a b} {A : Set a} {B : Set b} {f : A → B} where
+module _ {a b} {A : Set a} {B : Set b} (f : A → B) where
 
   ∈-map⁺ : ∀ {x xs} → x ∈ xs → f x ∈ map f xs
   ∈-map⁺ = Membershipₛ.∈-map⁺ (P.setoid A) (P.setoid B) (P.cong f)
@@ -100,7 +97,7 @@ module _ {a b} {A : Set a} {B : Set b} {f : A → B} where
 ------------------------------------------------------------------------
 -- _++_
 
-module _ {a} (A : Set a) {v : A} where
+module _ {a} {A : Set a} {v : A} where
 
   ∈-++⁺ˡ : ∀ {xs ys} → v ∈ xs → v ∈ xs ++ ys
   ∈-++⁺ˡ = Membershipₛ.∈-++⁺ˡ (P.setoid A)
@@ -249,6 +246,19 @@ module _ {a} {A : Set a} {_•_ : Op₂ A} where
   foldr-selective = Membershipₛ.foldr-selective (P.setoid A)
 
 ------------------------------------------------------------------------
+-- allFin
+
+∈-allFin : ∀ {n} (k : Fin n) → k ∈ allFin n
+∈-allFin = ∈-tabulate⁺
+
+------------------------------------------------------------------------
+-- inits
+
+[]∈inits : ∀ {a} {A : Set a} (as : List A) → [] ∈ inits as
+[]∈inits []       = here refl
+[]∈inits (a ∷ as) = here refl
+
+------------------------------------------------------------------------
 -- Other properties
 
 -- Only a finite number of distinct elements can be members of a
@@ -329,4 +339,3 @@ filter-∈ = ∈-filter⁺
 "Warning: filter-∈ was deprecated in v0.16.
 Please use ∈-filter⁺ instead."
 #-}
-

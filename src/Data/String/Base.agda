@@ -4,6 +4,8 @@
 -- Strings
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.String.Base where
 
 open import Data.Nat.Base as Nat using (ℕ)

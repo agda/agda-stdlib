@@ -4,6 +4,8 @@
 -- Morphisms between algebraic structures
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Algebra.Morphism where
 
 open import Relation.Binary

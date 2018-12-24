@@ -4,6 +4,8 @@
 -- String Literals
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.String.Literals where
 
 open import Agda.Builtin.FromString
