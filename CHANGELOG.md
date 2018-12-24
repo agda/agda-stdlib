@@ -236,6 +236,9 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The proofs `drop-*≤*`, `≃⇒≡` and `≡⇒≃` have been moved from `Data.Rational`
   to `Data.Rational.Properties`.
 
+* The proofs `toList⁺` and `toList⁻` in `Data.Vec.All.Properties` have been swapped
+  as they were the opposite way round to similar properties in the rest of the library.
+
 Other major changes
 -------------------
 
@@ -257,6 +260,11 @@ Other major changes
 * Added new modules `Data.List.First` and `Data.List.First.Properties` for a
   generalization of the notion of "first element in the list to satisfy a
   predicate".
+
+* Added new modules `Data.List.Relation.Prefix.Heterogeneous(.Properties)`
+
+* Added new modules `Data.List.Relation.Interleaving(.Setoid/Propositional)`
+  and `Data.List.Relation.Interleaving(.Setoid/Propositional).Properties`.
 
 * Added new module `Data.Vec.Any.Properties`
 
@@ -511,6 +519,8 @@ Other minor additions
   _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
   _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
   _─_     : (xs : List A) → Fin (length xs) → List A
+
+  reverseAcc : List A → List A → List A
   ```
 
 * Added new proofs to `Data.List.All.Properties`:
@@ -695,9 +705,10 @@ Other minor additions
   wlog : Total _R_ → Symmetric Q → (∀ a b → a R b → Q a b) → ∀ a b → Q a b
   ```
 
-* Added new definition to `Relation.Binary.Core`:
+* Added new definitions to `Relation.Binary.Core`:
   ```agda
   Antisym R S E = ∀ {i j} → R i j → S j i → E i j
+  Conn P Q = ∀ x y → P x y ⊎ Q y x
   ```
 
 * Added new proofs to `Relation.Binary.Lattice`:
@@ -746,4 +757,10 @@ Other minor additions
 * Added new proofs to `Relation.Binary.Properties.MeetSemilattice`:
   ```agda
   y≤x⇒x∧y≈y : y ≤ x → x ∧ y ≈ y
+  ```
+
+* Give `_Respectsʳ_`/`_Respectsˡ_` more general type, to support heterogenous relations.
+  ```agda
+  _Respectsʳ_ : REL A B ℓ₁ → Rel B ℓ₂ → Set _
+  _Respectsˡ_ : REL A B ℓ₁ → Rel A ℓ₂ → Set _
   ```
