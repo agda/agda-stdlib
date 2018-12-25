@@ -19,7 +19,8 @@ open import Data.Nat.Properties
   using (suc-injective; ≤-step; n≤1+n; <-irrefl; module ≤-Reasoning)
 open import Function
 
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (yes; no; ¬_)
+import Relation.Nullary.Decidable as Dec
 open import Relation.Unary as U using (Pred; _⊆_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -78,7 +79,6 @@ module _ {a b r s e} {A : Set a} {B : Set b}
     length xs        ≤⟨ length-mono-Sublist-≤ rs ⟩
     length ys₁       ∎ where open ≤-Reasoning
 
-
 ------------------------------------------------------------------------
 -- Various functions' outputs are sublists
 
@@ -131,6 +131,11 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   ∷ˡ⁻ : ∀ {a as bs} → Sublist R (a ∷ as) bs → Sublist R as bs
   ∷ˡ⁻ (y ∷ʳ rs) = y ∷ʳ ∷ˡ⁻ rs
   ∷ˡ⁻ (r ∷ rs)  = _ ∷ʳ rs
+
+  _∷ʳ⁻_ : ∀ {a as b bs} → ¬ R a b → Sublist R (a ∷ as) (b ∷ bs) →
+          Sublist R (a ∷ as) bs
+  ¬r ∷ʳ⁻ (y ∷ʳ rs) = rs
+  ¬r ∷ʳ⁻ (r ∷ rs)  = ⊥-elim (¬r r)
 
   ∷⁻ : ∀ {a as b bs} → Sublist R (a ∷ as) (b ∷ bs) → Sublist R as bs
   ∷⁻ (y ∷ʳ rs) = ∷ˡ⁻ rs
@@ -231,3 +236,16 @@ module _ {a b r p q} {A : Set a} {B : Set b}
   ... | yes pa | no ¬qb = ⊥-elim $ ¬qb $ rp⇒q p pa
   ... | no ¬pa | yes qb = _ ∷ʳ ⊆-filter-Sublist rp⇒q ps
   ... | no ¬pa | no ¬qb = ⊆-filter-Sublist rp⇒q ps
+
+
+module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} (R? : Decidable R) where
+
+------------------------------------------------------------------------
+-- Decidability result
+
+  sublist? : Decidable (Sublist R)
+  sublist? []       ys       = yes (minimum ys)
+  sublist? (x ∷ xs) []       = no λ ()
+  sublist? (x ∷ xs) (y ∷ ys) with R? x y
+  ... | yes r = Dec.map′ (r ∷_) ∷⁻ (sublist? xs ys)
+  ... | no ¬r = Dec.map′ (y ∷ʳ_) (¬r ∷ʳ⁻_) (sublist? (x ∷ xs) ys)
