@@ -24,7 +24,7 @@ open import Function
 open import Function.Inverse using (_↔_; inverse)
 open import Relation.Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; _≗_; _≡_↾¹_)
+  using (_≡_; _≢_; refl; _≗_)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_; refl)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary using (yes; no)
@@ -122,14 +122,17 @@ module _ {a} {A : Set a} where
   -- Direct inductive proofs are in most cases easier than just using
   -- the defining properties.
 
-  -- updateAt i  is a morphism from the monoid of endofunctions A → A
-  -- to the monoid of endofunctions Vec A n → Vec A n
+  -- In the explanations, we make use of shorthand  f = g ↾ x
+  -- meaning that f and g agree at point x, i.e.  f x ≡ g x.
+
+  -- updateAt i  is a morphism from the monoid of endofunctions  A → A
+  -- to the monoid of endofunctions  Vec A n → Vec A n
 
   -- 1a. relative identity:  f = id ↾ (lookup i xs)
   --                implies  updateAt i f = id ↾ xs
 
   updateAt-id-relative : ∀ {n} (i : Fin n) (xs : Vec A n) {f : A → A}
-    → f ≡ id ↾¹ lookup i xs
+    → f (lookup i xs) ≡ lookup i xs
     → updateAt i f xs ≡ xs
   updateAt-id-relative zero    (x ∷ xs) eq = P.cong (_∷ xs) eq
   updateAt-id-relative (suc i) (x ∷ xs) eq = P.cong (x ∷_) (updateAt-id-relative i xs eq)
@@ -144,7 +147,7 @@ module _ {a} {A : Set a} where
   --                   implies  updateAt i f ∘ updateAt i g ≗ updateAt i h
 
   updateAt-compose-relative : ∀ {n} (i : Fin n) {f g h : A → A} (xs : Vec A n)
-    → f ∘ g ≡ h ↾¹ lookup i xs
+    → f (g (lookup i xs)) ≡ h (lookup i xs)
     → updateAt i f (updateAt i g xs) ≡ updateAt i h xs
   updateAt-compose-relative zero    (x ∷ xs) fg=h = P.cong (_∷ xs) fg=h
   updateAt-compose-relative (suc i) (x ∷ xs) fg=h =
@@ -162,7 +165,7 @@ module _ {a} {A : Set a} where
   --      then  updateAt i f = updateAt i g ↾ xs
 
   updateAt-cong-relative : ∀ {n} (i : Fin n) {f g : A → A} (xs : Vec A n)
-    → f ≡ g ↾¹ lookup i xs
+    → f (lookup i xs) ≡ g (lookup i xs)
     → updateAt i f xs ≡ updateAt i g xs
   updateAt-cong-relative zero    (x ∷ xs) f=g = P.cong (_∷ xs) f=g
   updateAt-cong-relative (suc i) (x ∷ xs) f=g = P.cong (x ∷_) (updateAt-cong-relative i xs f=g)
@@ -279,7 +282,7 @@ lookup-map (suc i) f (x ∷ xs) = lookup-map i f xs
 
 map-updateAt : ∀ {n a b} {A : Set a} {B : Set b} →
   ∀ {f : A → B} {g : A → A} {h : B → B} (xs : Vec A n) (i : Fin n)
-  → f ∘ g ≡ h ∘ f ↾¹ lookup i xs
+  → f (g (lookup i xs)) ≡ h (f (lookup i xs))
   → map f (updateAt i g xs) ≡ updateAt i h (map f xs)
 map-updateAt (x ∷ xs) zero    eq = P.cong (_∷ _) eq
 map-updateAt (x ∷ xs) (suc i) eq = P.cong (_ ∷_) (map-updateAt xs i eq)
