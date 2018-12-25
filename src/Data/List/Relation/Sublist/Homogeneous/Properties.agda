@@ -6,10 +6,11 @@
 
 module Data.List.Relation.Sublist.Homogeneous.Properties where
 
-open import Data.List.Base using (List; []; _∷_; takeWhile; dropWhile; filter)
+open import Data.List.Base
 open import Data.List.Relation.Pointwise as Pw using (Pointwise; []; _∷_)
 open import Data.List.Relation.Sublist.Heterogeneous
 open import Data.List.Relation.Sublist.Heterogeneous.Properties public
+open import Data.Nat.Base using (zero; suc)
 
 open import Function
 open import Relation.Unary as U using (Pred)
@@ -76,5 +77,5 @@ module _ {a r p} {A : Set a} {R : Rel A r} {P : Pred A p} (P? : U.Decidable P) w
     Sublist R (filter P? as) (dropWhile (¬? ∘ P?) as)
   filter-Sublist-dropWhile [] = []
   filter-Sublist-dropWhile {a ∷ as} (p ∷ ps) with P? a
-  ... | yes pa = p ∷ filter-Sublist P? ps
+  ... | yes pa = p ∷ filter-Sublist P? (fromPointwise ps)
   ... | no ¬pa = filter-Sublist-dropWhile ps

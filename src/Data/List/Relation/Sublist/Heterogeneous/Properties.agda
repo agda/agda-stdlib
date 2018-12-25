@@ -15,8 +15,7 @@ open import Data.List.Relation.Pointwise as Pw using (Pointwise; []; _∷_)
 open import Data.List.Relation.Sublist.Heterogeneous
 open import Data.Maybe.All as MAll using (nothing; just)
 open import Data.Nat using (ℕ; _≤_; _≥_); open ℕ; open _≤_
-open import Data.Nat.Properties
-  using (suc-injective; ≤-step; n≤1+n; <-irrefl; module ≤-Reasoning)
+import Data.Nat.Properties as ℕₚ
 open import Function
 
 open import Relation.Nullary using (yes; no; ¬_)
@@ -29,7 +28,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   length-mono-Sublist-≤ : ∀ {as bs} → Sublist R as bs → length as ≤ length bs
   length-mono-Sublist-≤ []        = z≤n
-  length-mono-Sublist-≤ (y ∷ʳ rs) = ≤-step (length-mono-Sublist-≤ rs)
+  length-mono-Sublist-≤ (y ∷ʳ rs) = ℕₚ.≤-step (length-mono-Sublist-≤ rs)
   length-mono-Sublist-≤ (r ∷ rs)  = s≤s (length-mono-Sublist-≤ rs)
 
 ------------------------------------------------------------------------
@@ -42,9 +41,9 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   toPointwise : ∀ {as bs} → length as ≡ length bs →
                 Sublist R as bs → Pointwise R as bs
   toPointwise {bs = []}     eq []         = []
-  toPointwise {bs = b ∷ bs} eq (r ∷ rs)   = r ∷ toPointwise (suc-injective eq) rs
+  toPointwise {bs = b ∷ bs} eq (r ∷ rs)   = r ∷ toPointwise (ℕₚ.suc-injective eq) rs
   toPointwise {bs = b ∷ bs} eq (.b ∷ʳ rs) =
-    ⊥-elim $ <-irrefl eq (s≤s (length-mono-Sublist-≤ rs))
+    ⊥-elim $ ℕₚ.<-irrefl eq (s≤s (length-mono-Sublist-≤ rs))
 
 module _ {a b c r s t} {A : Set a} {B : Set b} {C : Set c}
          {R : REL A B r} {S : REL B C s} {T : REL A C t} where
@@ -63,21 +62,21 @@ module _ {a b r s e} {A : Set a} {B : Set b}
   antisym rs⇒e (r ∷ rs)  (s ∷ ss)  = rs⇒e r s ∷ antisym rs⇒e rs ss
   -- impossible cases
   antisym rs⇒e (_∷ʳ_ {xs} {ys₁} y rs) (_∷ʳ_ {ys₂} {zs} z ss) =
-    ⊥-elim $ <-irrefl P.refl $ begin
+    ⊥-elim $ ℕₚ.<-irrefl P.refl $ begin
     length (y ∷ ys₁) ≤⟨ length-mono-Sublist-≤ ss ⟩
-    length zs        ≤⟨ n≤1+n (length zs) ⟩
+    length zs        ≤⟨ ℕₚ.n≤1+n (length zs) ⟩
     length (z ∷ zs)  ≤⟨ length-mono-Sublist-≤ rs ⟩
-    length ys₁       ∎ where open ≤-Reasoning
+    length ys₁       ∎ where open ℕₚ.≤-Reasoning
   antisym rs⇒e (_∷ʳ_ {xs} {ys₁} y rs) (_∷_ {y} {ys₂} {z} {zs} s ss)  =
-    ⊥-elim $ <-irrefl P.refl $ begin
+    ⊥-elim $ ℕₚ.<-irrefl P.refl $ begin
     length (z ∷ zs) ≤⟨ length-mono-Sublist-≤ rs ⟩
     length ys₁      ≤⟨ length-mono-Sublist-≤ ss ⟩
-    length zs       ∎ where open ≤-Reasoning
+    length zs       ∎ where open ℕₚ.≤-Reasoning
   antisym rs⇒e (_∷_ {x} {xs} {y} {ys₁} r rs)  (_∷ʳ_ {ys₂} {zs} z ss) =
-    ⊥-elim $ <-irrefl P.refl $ begin
+    ⊥-elim $ ℕₚ.<-irrefl P.refl $ begin
     length (y ∷ ys₁) ≤⟨ length-mono-Sublist-≤ ss ⟩
     length xs        ≤⟨ length-mono-Sublist-≤ rs ⟩
-    length ys₁       ∎ where open ≤-Reasoning
+    length ys₁       ∎ where open ℕₚ.≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Various functions' outputs are sublists
