@@ -11,8 +11,10 @@ module Data.List.Relation.Sublist.Heterogeneous.Properties where
 open import Data.Empty
 open import Data.List.Any using (Any; here; there)
 open import Data.List.Base as List hiding (map; _∷ʳ_)
+import Data.List.Properties as Lₚ
 open import Data.List.Relation.Pointwise as Pw using (Pointwise; []; _∷_)
 open import Data.List.Relation.Sublist.Heterogeneous
+
 open import Data.Maybe.All as MAll using (nothing; just)
 open import Data.Nat using (ℕ; _≤_; _≥_); open ℕ; open _≤_
 import Data.Nat.Properties as ℕₚ
@@ -99,16 +101,6 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   drop-Sublist zero    rs        = rs
   drop-Sublist (suc n) []        = []
   drop-Sublist (suc n) (r ∷ rs)  = _ ∷ʳ drop-Sublist n rs
-
-  ≥-drop⁺ : ∀ {m n as bs} → m ≥ n → Sublist R as bs → Sublist R (drop m as) (drop n bs)
-  ≥-drop⁺ {m} z≤n       rs        = drop-Sublist m rs
-  ≥-drop⁺     (s≤s m≥n) []        = []
-  ≥-drop⁺     (s≤s m≥n) (y ∷ʳ rs) = ≥-drop⁺ (ℕₚ.≤-step m≥n) rs
-  ≥-drop⁺     (s≤s m≥n) (r ∷ rs)  = ≥-drop⁺ m≥n rs
-
-  drop⁺ : ∀ {as bs} m → Sublist R as bs → Sublist R (drop m as) (drop m bs)
-  drop⁺ m = ≥-drop⁺ (ℕₚ.≤-refl {m})
-
 
 module _ {a b r p} {A : Set a} {B : Set b}
          {R : REL A B r} {P : Pred A p} (P? : U.Decidable P) where
@@ -217,6 +209,16 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   ≥-drop-Sublist {suc m} z≤n       (p ∷ ps) = _ ∷ʳ ≥-drop-Sublist {m} z≤n ps
   ≥-drop-Sublist {suc m} (s≤s m≥n) (p ∷ ps) = ≥-drop-Sublist m≥n ps
 
+  ≥-drop⁺ : ∀ {m n as bs} → m ≥ n → Sublist R as bs → Sublist R (drop m as) (drop n bs)
+  ≥-drop⁺ {m} z≤n       rs        = drop-Sublist m rs
+  ≥-drop⁺     (s≤s m≥n) []        = []
+  ≥-drop⁺     (s≤s m≥n) (y ∷ʳ rs) = ≥-drop⁺ (ℕₚ.≤-step m≥n) rs
+  ≥-drop⁺     (s≤s m≥n) (r ∷ rs)  = ≥-drop⁺ m≥n rs
+
+  drop⁺ : ∀ {as bs} m → Sublist R as bs → Sublist R (drop m as) (drop m bs)
+  drop⁺ m = ≥-drop⁺ (ℕₚ.≤-refl {m})
+
+
 module _ {a b r p q} {A : Set a} {B : Set b}
          {R : REL A B r} {P : Pred A p} {Q : Pred B q}
          (P? : U.Decidable P) (Q? : U.Decidable Q) where
@@ -254,6 +256,22 @@ module _ {a b r p q} {A : Set a} {B : Set b}
   ... | no ¬pa | yes qb = _ ∷ʳ ⊆-filter-Sublist rp⇒q rs
   ... | no ¬pa | no ¬qb = ⊆-filter-Sublist rp⇒q rs
 
+module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+
+-- reverseAcc
+
+  reverseAcc⁺ : ∀ {as bs cs ds} → Sublist R as bs → Sublist R cs ds →
+                Sublist R (reverseAcc cs as) (reverseAcc ds bs)
+  reverseAcc⁺ []         cds = cds
+  reverseAcc⁺ (y ∷ʳ abs) cds = reverseAcc⁺ abs (y ∷ʳ cds)
+  reverseAcc⁺ (r ∷ abs)  cds = reverseAcc⁺ abs (r ∷ cds)
+
+  reverse⁺ : ∀ {as bs} → Sublist R as bs → Sublist R (reverse as) (reverse bs)
+  reverse⁺ rs = reverseAcc⁺ rs []
+
+  reverse⁻ : ∀ {as bs} → Sublist R (reverse as) (reverse bs) → Sublist R as bs
+  reverse⁻ {as} {bs} p = cast (reverse⁺ p) where
+    cast = P.subst₂ (Sublist R) (Lₚ.reverse-involutive as) (Lₚ.reverse-involutive bs)
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} (R? : Decidable R) where
 
