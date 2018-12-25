@@ -100,6 +100,16 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   drop-Sublist (suc n) []        = []
   drop-Sublist (suc n) (r ∷ rs)  = _ ∷ʳ drop-Sublist n rs
 
+  ≥-drop⁺ : ∀ {m n as bs} → m ≥ n → Sublist R as bs → Sublist R (drop m as) (drop n bs)
+  ≥-drop⁺ {m} z≤n       rs        = drop-Sublist m rs
+  ≥-drop⁺     (s≤s m≥n) []        = []
+  ≥-drop⁺     (s≤s m≥n) (y ∷ʳ rs) = ≥-drop⁺ (ℕₚ.≤-step m≥n) rs
+  ≥-drop⁺     (s≤s m≥n) (r ∷ rs)  = ≥-drop⁺ m≥n rs
+
+  drop⁺ : ∀ {as bs} m → Sublist R as bs → Sublist R (drop m as) (drop m bs)
+  drop⁺ m = ≥-drop⁺ (ℕₚ.≤-refl {m})
+
+
 module _ {a b r p} {A : Set a} {B : Set b}
          {R : REL A B r} {P : Pred A p} (P? : U.Decidable P) where
 
