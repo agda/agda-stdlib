@@ -18,7 +18,10 @@ open import Data.List.Relation.Sublist.Heterogeneous
 open import Data.Maybe.All as MAll using (nothing; just)
 open import Data.Nat using (ℕ; _≤_; _≥_); open ℕ; open _≤_
 import Data.Nat.Properties as ℕₚ
+open import Data.Product using (_×_; uncurry)
+
 open import Function
+open import Function.Equivalence as Equiv using (_⇔_ ; equivalence)
 
 open import Relation.Nullary using (yes; no; ¬_)
 import Relation.Nullary.Decidable as Dec
@@ -258,7 +261,7 @@ module _ {a b r p q} {A : Set a} {B : Set b}
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
--- reverseAcc
+-- reverse
 
   reverseAcc⁺ : ∀ {as bs cs ds} → Sublist R as bs → Sublist R cs ds →
                 Sublist R (reverseAcc cs as) (reverseAcc ds bs)
@@ -273,14 +276,25 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   reverse⁻ {as} {bs} p = cast (reverse⁺ p) where
     cast = P.subst₂ (Sublist R) (Lₚ.reverse-involutive as) (Lₚ.reverse-involutive bs)
 
+module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} {a as b bs} where
+
+------------------------------------------------------------------------
+-- Inversion lemmas
+
+  ∷⁻¹ : R a b → Sublist R as bs ⇔ Sublist R (a ∷ as) (b ∷ bs)
+  ∷⁻¹ r = equivalence (r ∷_) ∷⁻
+
+  ∷ʳ⁻¹ : ¬ R a b → Sublist R (a ∷ as) bs ⇔ Sublist R (a ∷ as) (b ∷ bs)
+  ∷ʳ⁻¹ ¬r = equivalence (_ ∷ʳ_) (¬r ∷ʳ⁻_)
+
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} (R? : Decidable R) where
 
 ------------------------------------------------------------------------
--- Decidability result
+-- Decidability of the order
 
   sublist? : Decidable (Sublist R)
   sublist? []       ys       = yes (minimum ys)
   sublist? (x ∷ xs) []       = no λ ()
   sublist? (x ∷ xs) (y ∷ ys) with R? x y
-  ... | yes r = Dec.map′ (r ∷_) ∷⁻ (sublist? xs ys)
-  ... | no ¬r = Dec.map′ (y ∷ʳ_) (¬r ∷ʳ⁻_) (sublist? (x ∷ xs) ys)
+  ... | yes r = Dec.map (∷⁻¹ r) (sublist? xs ys)
+  ... | no ¬r = Dec.map (∷ʳ⁻¹ ¬r) (sublist? (x ∷ xs) ys)
