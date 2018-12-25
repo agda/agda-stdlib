@@ -79,7 +79,6 @@ been moved to new files:
   `Data.Container.Indexed.WithK`.
 * `Data.Container.Indexed.PlainMorphism.∘-correct` to
   `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed._∈_` to `Data.Container.Indexed.WithK`.
 * `Data.Container.Indexed.setoid` to `Data.Container.Indexed.WithK`.
 * `Data.Product.Properties.,-injectiveʳ` to
   `Data.Product.Properties.WithK`.
@@ -217,6 +216,34 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * Created a module `Algebra.Solver.Ring.NaturalCoefficients.Default` that
   instantiates the solver for any `CommutativeSemiring`.
 
+#### Overhaul of `Data.AVL`
+
+* AVL trees now work over arbitrary equalities, rather than just
+  propositional equality.
+
+* Consequently the family of `Value`s stored in the tree now need
+  to respect the `Key` equivalence
+
+* The module parameter for `Data.AVL`, `Data.AVL.Indexed`, `Data.AVL.Key`,
+  `Data.AVL.Sets` is now a `StrictTotalOrder` rather than a
+  `IsStrictTotalOrder`, and the module parameter for `Data.AVL.Value` is
+  now takes a `Setoid` rather than an `IsEquivalence`.
+
+* It was noticed that `Data.AVL.Indexed`'s lookup & delete didn't use
+  a range to guarantee that the recursive calls were performed in the
+  right subtree. The types have been made more precise.
+
+* The functions (insert/union)With now take a function of type
+  `Maybe Val -> Val` rather than a value together with a merging function
+  `Val -> Val -> Val` to handle the case where a value is already present
+  at that key.
+
+* Various functions have been made polymorphic which makes their biases
+  & limitations clearer. e.g. we have:
+  `unionWith : (V -> Maybe W -> W) -> Tree V -> Tree W -> Tree W`
+  but ideally we would like to have:
+  `unionWith : (These V W -> X) -> Tree V -> Tree W -> Tree X`
+
 #### Other
 
 * The proof `sel⇒idem` has been moved from `Algebra.FunctionProperties.Consequences` to
@@ -230,10 +257,19 @@ Splitting up `Data.Maybe` into the standard hierarchy.
     - Made the `Set` argument implicit in `∈-++⁺ˡ`, `∈-++⁺ʳ`, `∈-++⁻`, `∈-insert`, `∈-∃++`.
     - Made the `A → B` argument explicit in `∈-map⁺`, `∈-map⁻`, `map-∈↔`.
 
-* The type `Coprime` and proof `coprime-divisor` have been m oved from `Data.Integer.Divisibility` to `Data.Integer.Coprimality`.
+* The type `Coprime` and proof `coprime-divisor` have been moved from `Data.Integer.Divisibility`
+  to `Data.Integer.Coprimality`.
+
+* The proofs `drop-*≤*`, `≃⇒≡` and `≡⇒≃` have been moved from `Data.Rational`
+  to `Data.Rational.Properties`.
+
+* The proofs `toList⁺` and `toList⁻` in `Data.Vec.All.Properties` have been swapped
+  as they were the opposite way round to similar properties in the rest of the library.
 
 Other major changes
 -------------------
+
+* Added new modules `Algebra.Construct.NaturalChoice.(Min/Max)`
 
 * Added new module `Algebra.Properties.Semilattice`
 
@@ -254,7 +290,14 @@ Other major changes
   generalization of the notion of "first element in the list to satisfy a
   predicate".
 
+* Added new modules `Data.List.Relation.Prefix.Heterogeneous(.Properties)`
+
+* Added new modules `Data.List.Relation.Interleaving(.Setoid/Propositional)`
+  and `Data.List.Relation.Interleaving(.Setoid/Propositional).Properties`.
+
 * Added new module `Data.Vec.Any.Properties`
+
+* Added new modules `Data.Vec.Membership.(Setoid/DecSetoid/DecPropositional)`
 
 * Added new modules `Relation.Binary.Construct.NaturalOrder.(Left/Right)`
 
@@ -267,6 +310,14 @@ Deprecated features
   ```agda
   ≰→> ↦ ≰⇒>
   ```
+
+* In `Data.Rational`:
+  ```agda
+  drop-*≤*
+  ≃⇒≡
+  ≡⇒≃
+  ```
+  (moved to `Data.Rational.Properties`)
 
 Other minor additions
 ---------------------
@@ -497,6 +548,8 @@ Other minor additions
   _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
   _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
   _─_     : (xs : List A) → Fin (length xs) → List A
+
+  reverseAcc : List A → List A → List A
   ```
 
 * Added new proofs to `Data.List.All.Properties`:
@@ -623,9 +676,16 @@ Other minor additions
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
   ```
 
-* Added new function to `Data.These`:
+* Added new functions to `Data.Rational`:
   ```agda
-  fromSum : A ⊎ B → These A B
+  norm-mkℚ : (n : ℤ) (d : ℕ) → d ≢0 → ℚ
+  -_       : ℚ → ℚ
+  1/_      : (p : ℚ) → .{n≢0 : ∣ ℚ.numerator p ∣ ≢0} → ℚ
+  _*_      : ℚ → ℚ → ℚ
+  _+_      : ℚ → ℚ → ℚ
+  _-_      : ℚ → ℚ → ℚ
+  _/_      : (p₁ p₂ : ℚ) → {n≢0 : ∣ ℚ.numerator p₂ ∣ ≢0} → ℚ
+  show     : ℚ → String
   ```
 
 * Added new proofs to `Data.Sign.Properties`:
@@ -638,6 +698,11 @@ Other minor additions
   ```agda
   fromDec : Dec P → P ⊎ ¬ P
   toDec   : P ⊎ ¬ P → Dec P
+  ```
+
+* Added new function to `Data.These`:
+  ```agda
+  fromSum : A ⊎ B → These A B
   ```
 
 * Added new functions to `Data.Vec.Any.Properties`:
@@ -675,6 +740,8 @@ Other minor additions
 
   Max : REL A B ℓ → B → Set _
   Min : REL A B ℓ → A → Set _
+
+  Conn P Q = ∀ x y → P x y ⊎ Q y x
   ```
 
 * Added new proofs to `Relation.Binary.Lattice`:
@@ -723,4 +790,10 @@ Other minor additions
 * Added new proofs to `Relation.Binary.Properties.MeetSemilattice`:
   ```agda
   y≤x⇒x∧y≈y : y ≤ x → x ∧ y ≈ y
+  ```
+
+* Give `_Respectsʳ_`/`_Respectsˡ_` more general type, to support heterogenous relations.
+  ```agda
+  _Respectsʳ_ : REL A B ℓ₁ → Rel B ℓ₂ → Set _
+  _Respectsˡ_ : REL A B ℓ₁ → Rel A ℓ₂ → Set _
   ```
