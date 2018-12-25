@@ -89,36 +89,41 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   tail-Sublist []       = nothing
   tail-Sublist (p ∷ ps) = just (_ ∷ʳ fromPointwise ps)
 
-  take-Sublist : ∀ n → Pointwise R ⇒ (Sublist R ∘′ take n)
-  take-Sublist zero    ps       = minimum _
-  take-Sublist (suc n) []       = []
-  take-Sublist (suc n) (p ∷ ps) = p ∷ take-Sublist n ps
+  take-Sublist : ∀ n → Sublist R ⇒ (Sublist R ∘′ take n)
+  take-Sublist n       (y ∷ʳ rs) = y ∷ʳ take-Sublist n rs
+  take-Sublist zero    rs        = minimum _
+  take-Sublist (suc n) []        = []
+  take-Sublist (suc n) (r ∷ rs)  = r ∷ take-Sublist n rs
 
-  drop-Sublist : ∀ n → Pointwise R ⇒ (Sublist R ∘′ drop n)
-  drop-Sublist zero    ps       = fromPointwise ps
-  drop-Sublist (suc n) []       = []
-  drop-Sublist (suc n) (p ∷ ps) = _ ∷ʳ drop-Sublist n ps
+  drop-Sublist : ∀ n → Sublist R ⇒ (Sublist R ∘′ drop n)
+  drop-Sublist n       (y ∷ʳ rs) = y ∷ʳ drop-Sublist n rs
+  drop-Sublist zero    rs        = rs
+  drop-Sublist (suc n) []        = []
+  drop-Sublist (suc n) (r ∷ rs)  = _ ∷ʳ drop-Sublist n rs
 
 module _ {a b r p} {A : Set a} {B : Set b}
          {R : REL A B r} {P : Pred A p} (P? : U.Decidable P) where
 
-  takeWhile-Sublist : Pointwise R ⇒ (Sublist R ∘′ takeWhile P?)
-  takeWhile-Sublist [] = []
-  takeWhile-Sublist {a ∷ as} (p ∷ ps) with P? a
-  ... | yes pa = p ∷ takeWhile-Sublist ps
+  takeWhile-Sublist : Sublist R ⇒ (Sublist R ∘′ takeWhile P?)
+  takeWhile-Sublist []        = []
+  takeWhile-Sublist (y ∷ʳ rs) = y ∷ʳ takeWhile-Sublist rs
+  takeWhile-Sublist {a ∷ as} (r ∷ rs) with P? a
+  ... | yes pa = r ∷ takeWhile-Sublist rs
   ... | no ¬pa = minimum _
 
-  dropWhile-Sublist : Pointwise R ⇒ (Sublist R ∘′ dropWhile P?)
-  dropWhile-Sublist [] = []
-  dropWhile-Sublist {a ∷ as} (p ∷ ps) with P? a
-  ... | yes pa = _ ∷ʳ dropWhile-Sublist ps
-  ... | no ¬pa = p ∷ fromPointwise ps
+  dropWhile-Sublist : Sublist R ⇒ (Sublist R ∘′ dropWhile P?)
+  dropWhile-Sublist []        = []
+  dropWhile-Sublist (y ∷ʳ rs) = y ∷ʳ dropWhile-Sublist rs
+  dropWhile-Sublist {a ∷ as} (r ∷ rs) with P? a
+  ... | yes pa = _ ∷ʳ dropWhile-Sublist rs
+  ... | no ¬pa = r ∷ rs
 
-  filter-Sublist : Pointwise R ⇒ (Sublist R ∘′ filter P?)
-  filter-Sublist [] = []
-  filter-Sublist {a ∷ as} (p ∷ ps) with P? a
-  ... | yes pa = p ∷ filter-Sublist ps
-  ... | no ¬pa = _ ∷ʳ filter-Sublist ps
+  filter-Sublist : Sublist R ⇒ (Sublist R ∘′ filter P?)
+  filter-Sublist []        = []
+  filter-Sublist (y ∷ʳ rs) = y ∷ʳ filter-Sublist rs
+  filter-Sublist {a ∷ as} (r ∷ rs) with P? a
+  ... | yes pa = r ∷ filter-Sublist rs
+  ... | no ¬pa = _ ∷ʳ filter-Sublist rs
 
 ------------------------------------------------------------------------
 -- Various functions are increasing wrt _⊆_
@@ -223,19 +228,22 @@ module _ {a b r p q} {A : Set a} {B : Set b}
   ⊇-dropWhile-Sublist rq⇒p [] = []
   ⊇-dropWhile-Sublist {a ∷ as} {b ∷ bs} rq⇒p (p ∷ ps) with P? a | Q? b
   ... | yes pa | yes qb = ⊇-dropWhile-Sublist rq⇒p ps
-  ... | yes pa | no ¬qb = b ∷ʳ dropWhile-Sublist P? ps
+  ... | yes pa | no ¬qb = b ∷ʳ dropWhile-Sublist P? (fromPointwise ps)
   ... | no ¬pa | yes qb = ⊥-elim $ ¬pa $ rq⇒p p qb
   ... | no ¬pa | no ¬qb = p ∷ fromPointwise ps
 
   ⊆-filter-Sublist : ∀ {as bs} →
     (∀ {a b} → R a b → P a → Q b) →
-    Pointwise R as bs → Sublist R (filter P? as) (filter Q? bs)
+    Sublist R as bs → Sublist R (filter P? as) (filter Q? bs)
   ⊆-filter-Sublist rp⇒q [] = []
-  ⊆-filter-Sublist {a ∷ as} {b ∷ bs} rp⇒q (p ∷ ps) with P? a | Q? b
-  ... | yes pa | yes qb = p ∷ ⊆-filter-Sublist rp⇒q ps
-  ... | yes pa | no ¬qb = ⊥-elim $ ¬qb $ rp⇒q p pa
-  ... | no ¬pa | yes qb = _ ∷ʳ ⊆-filter-Sublist rp⇒q ps
-  ... | no ¬pa | no ¬qb = ⊆-filter-Sublist rp⇒q ps
+  ⊆-filter-Sublist rp⇒q (y ∷ʳ rs) with Q? y
+  ... | yes qb = y ∷ʳ ⊆-filter-Sublist rp⇒q rs
+  ... | no ¬qb = ⊆-filter-Sublist rp⇒q rs
+  ⊆-filter-Sublist {a ∷ as} {b ∷ bs} rp⇒q (r ∷ rs) with P? a | Q? b
+  ... | yes pa | yes qb = r ∷ ⊆-filter-Sublist rp⇒q rs
+  ... | yes pa | no ¬qb = ⊥-elim $ ¬qb $ rp⇒q r pa
+  ... | no ¬pa | yes qb = _ ∷ʳ ⊆-filter-Sublist rp⇒q rs
+  ... | no ¬pa | no ¬qb = ⊆-filter-Sublist rp⇒q rs
 
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} (R? : Decidable R) where
