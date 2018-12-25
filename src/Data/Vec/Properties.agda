@@ -140,12 +140,21 @@ module _ {a} {A : Set a} where
     updateAt i id xs ≡ xs
   updateAt-id i xs = updateAt-id-relative i xs refl
 
-  -- 2. composition:  updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
+  -- 2a. relative composition:  f ∘ g = h ↾ (lookup i xs)
+  --                   implies  updateAt i f ∘ updateAt i g ≗ updateAt i h
+
+  updateAt-compose-relative : ∀ {n} (i : Fin n) {f g h : A → A} (xs : Vec A n)
+    → f ∘ g ≡ h ↾¹ lookup i xs
+    → updateAt i f (updateAt i g xs) ≡ updateAt i h xs
+  updateAt-compose-relative zero    (x ∷ xs) fg=h = P.cong (_∷ xs) fg=h
+  updateAt-compose-relative (suc i) (x ∷ xs) fg=h =
+    P.cong (x ∷_) (updateAt-compose-relative i xs fg=h)
+
+  -- 2b. composition:  updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
 
   updateAt-compose : ∀ {n} (i : Fin n) {f g : A → A} →
     updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
-  updateAt-compose zero    (x ∷ xs) = refl
-  updateAt-compose (suc i) (x ∷ xs) = P.cong (x ∷_) (updateAt-compose i xs)
+  updateAt-compose i xs = updateAt-compose-relative i xs refl
 
   -- 3. congruence:  updateAt i  is a congruence wrt. extensional equality.
 
@@ -727,3 +736,6 @@ module _ {a} {A : Set a} where
   toList∘fromList : (xs : List A) → toList (fromList xs) ≡ xs
   toList∘fromList List.[]       = refl
   toList∘fromList (x List.∷ xs) = P.cong (x List.∷_) (toList∘fromList xs)
+
+-- -}
+-- -}
