@@ -125,8 +125,8 @@ solveI _ _ = nothing
 -- Solver for linearised expressions
 solveR : ∀ {n} (d e : RList n) → Maybe (d ⊆R e)
 -- trivial
-solveR []          e           = just (λ ρ → minimum _)
-solveR (it ∷ d)    []          = nothing
+solveR [] e  = just (λ ρ → minimum _)
+solveR d  [] = nothing
 -- actual work
 solveR (a ∷ d) (b ∷ e) with solveI a b
 ... | just it = M.map (keep-it it d e) (solveR d e)
