@@ -4,6 +4,8 @@
 -- Properties of the homogeneous sublist relation
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.Relation.Sublist.Homogeneous.Properties where
 
 open import Data.List.Base
