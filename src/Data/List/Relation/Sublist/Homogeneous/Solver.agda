@@ -116,19 +116,21 @@ private
   skip-it : ∀ {n} it (d e : RList n) → d ⊆R e → d ⊆R (it ∷ e)
   skip-it it d ys hyp ρ = ++ˡ (⟦ it ⟧I ρ) (hyp ρ)
 
+-- Solver for items
+solveI : ∀ {n} (a b : Item n) → Maybe (a ⊆I b)
+solveI (var k) (var l) = M.map var $ decToMaybe (k Fin.≟ l)
+solveI (val a) (val b) = M.map val $ decToMaybe (R? a b)
+solveI _ _ = nothing
+
 -- Solver for linearised expressions
 solveR : ∀ {n} (d e : RList n) → Maybe (d ⊆R e)
 -- trivial
 solveR []          e           = just (λ ρ → minimum _)
 solveR (it ∷ d)    []          = nothing
 -- actual work
-solveR (var k ∷ d) (var l ∷ e) with k Fin.≟ l
-... | yes eq = M.map (keep-it (var eq) d e) (solveR d e)
-... | no ¬eq = M.map (skip-it (var l) (var k ∷ d) e) (solveR (var k ∷ d) e)
-solveR (val a ∷ d) (val b ∷ e) with R? a b
-... | yes rab = M.map (keep-it (val rab) d e) (solveR d e)
-... | no ¬rab = M.map (skip-it (val b) (val a ∷ d) e) (solveR (val a ∷ d) e)
-solveR d (x ∷ e)               = M.map (skip-it x d e) (solveR d e)
+solveR (a ∷ d) (b ∷ e) with solveI a b
+... | just it = M.map (keep-it it d e) (solveR d e)
+... | nothing = M.map (skip-it b (a ∷ d) e) (solveR (a ∷ d) e)
 
 -- Coming back to ASTs thanks to flatten
 
