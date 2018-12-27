@@ -354,7 +354,7 @@ Deprecated features
   ≅-heterogeneous-irrelevanceʳ ↦ ≅-heterogeneous-irrelevantʳ
   ```
 
-* In `Relation.Binary.PropositionalEquality`:
+* In `Relation.Binary.PropositionalEquality.WithK`:
   ```agda
   ≡-irrelevance ↦ ≡-irrelevant
   ```
