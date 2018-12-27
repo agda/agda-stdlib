@@ -739,6 +739,3 @@ module _ {a} {A : Set a} where
   toList∘fromList : (xs : List A) → toList (fromList xs) ≡ xs
   toList∘fromList List.[]       = refl
   toList∘fromList (x List.∷ xs) = P.cong (x List.∷_) (toList∘fromList xs)
-
--- -}
--- -}
