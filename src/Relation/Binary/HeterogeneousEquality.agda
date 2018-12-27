@@ -139,19 +139,19 @@ icong-≡-subst-removable _ refl _ _ = refl
 ------------------------------------------------------------------------
 --Proof irrelevance
 
-≅-irrelevant : ∀ {ℓ} {A B : Set ℓ} → Irrelevant ((A → B → Set ℓ) ∋ λ a → a ≅_)
-≅-irrelevant refl refl = refl
+≅-irrelevance : ∀ {ℓ} {A B : Set ℓ} → Irrelevant ((A → B → Set ℓ) ∋ λ a → a ≅_)
+≅-irrelevance refl refl = refl
 
 module _ {ℓ} {A₁ A₂ A₃ A₄ : Set ℓ} {a₁ : A₁} {a₂ : A₂} {a₃ : A₃} {a₄ : A₄} where
 
- ≅-heterogeneous-irrelevant : (p : a₁ ≅ a₂) (q : a₃ ≅ a₄) → a₂ ≅ a₃ → p ≅ q
- ≅-heterogeneous-irrelevant refl refl refl = refl
+ ≅-heterogeneous-irrelevance : (p : a₁ ≅ a₂) (q : a₃ ≅ a₄) → a₂ ≅ a₃ → p ≅ q
+ ≅-heterogeneous-irrelevance refl refl refl = refl
 
- ≅-heterogeneous-irrelevantˡ : (p : a₁ ≅ a₂) (q : a₃ ≅ a₄) → a₁ ≅ a₃ → p ≅ q
- ≅-heterogeneous-irrelevantˡ refl refl refl = refl
+ ≅-heterogeneous-irrelevanceˡ : (p : a₁ ≅ a₂) (q : a₃ ≅ a₄) → a₁ ≅ a₃ → p ≅ q
+ ≅-heterogeneous-irrelevanceˡ refl refl refl = refl
 
- ≅-heterogeneous-irrelevantʳ : (p : a₁ ≅ a₂) (q : a₃ ≅ a₄) → a₂ ≅ a₄ → p ≅ q
- ≅-heterogeneous-irrelevantʳ refl refl refl = refl
+ ≅-heterogeneous-irrelevanceʳ : (p : a₁ ≅ a₂) (q : a₃ ≅ a₄) → a₂ ≅ a₄ → p ≅ q
+ ≅-heterogeneous-irrelevanceʳ refl refl refl = refl
 
 ------------------------------------------------------------------------
 -- Structures
@@ -316,31 +316,8 @@ inspect f x = [ refl ]
 
 -- Version 0.15
 
-proof-irrelevance = ≅-irrelevant
+proof-irrelevance = ≅-irrelevance
 {-# WARNING_ON_USAGE proof-irrelevance
 "Warning: proof-irrelevance was deprecated in v0.15.
-Please use ≅-irrelevant instead."
-#-}
-
--- Version 0.18
-
-≅-irrelevance = ≅-irrelevant
-{-# WARNING_ON_USAGE ≅-irrelevance
-"Warning: ≅-irrelevance was deprecated in v0.18.
-Please use ≅-irrelevant instead."
-#-}
-≅-heterogeneous-irrelevance = ≅-heterogeneous-irrelevant
-{-# WARNING_ON_USAGE ≅-heterogeneous-irrelevance
-"Warning: ≅-heterogeneous-irrelevance was deprecated in v0.18.
-Please use ≅-heterogeneous-irrelevant instead."
-#-}
-≅-heterogeneous-irrelevanceˡ = ≅-heterogeneous-irrelevantˡ
-{-# WARNING_ON_USAGE ≅-heterogeneous-irrelevanceˡ
-"Warning: ≅-heterogeneous-irrelevanceˡ was deprecated in v0.18.
-Please use ≅-heterogeneous-irrelevantˡ instead."
-#-}
-≅-heterogeneous-irrelevanceʳ = ≅-heterogeneous-irrelevantʳ
-{-# WARNING_ON_USAGE ≅-heterogeneous-irrelevanceʳ
-"Warning: ≅-heterogeneous-irrelevanceʳ was deprecated in v0.18.
-Please use ≅-heterogeneous-irrelevantʳ instead."
+Please use ≅-irrelevance instead."
 #-}

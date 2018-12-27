@@ -15,19 +15,5 @@ open import Relation.Binary.PropositionalEquality
 ------------------------------------------------------------------------
 -- Proof irrelevance
 
-≡-irrelevant : ∀ {a} {A : Set a} → Irrelevant (_≡_ {A = A})
-≡-irrelevant refl refl = refl
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.18
-
-≡-irrelevance = ≡-irrelevant
-{-# WARNING_ON_USAGE ≡-irrelevance
-"Warning: ≡-irrelevance was deprecated in v0.18.
-Please use ≡-irrelevant instead."
-#-}
+≡-irrelevance : ∀ {a} {A : Set a} → Irrelevant (_≡_ {A = A})
+≡-irrelevance refl refl = refl

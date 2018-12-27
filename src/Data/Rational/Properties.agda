@@ -148,19 +148,5 @@ p ≤? q with (↥ p ℤ.* ↧ q) ℤ.≤? (↥ q ℤ.* ↧ p)
   ; isDecTotalOrder = ≤-isDecTotalOrder
   }
 
-≤-irrelevant : Irrelevant _≤_
-≤-irrelevant (*≤* x₁) (*≤* x₂) = cong *≤* (ℤ.≤-irrelevant x₁ x₂)
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.18
-
-≤-irrelevance = ≤-irrelevant
-{-# WARNING_ON_USAGE ≤-irrelevance
-"Warning: ≤-irrelevance was deprecated in v0.18.
-Please use ≤-irrelevant instead."
-#-}
+≤-irrelevance : Irrelevant _≤_
+≤-irrelevance (*≤* x₁) (*≤* x₂) = cong *≤* (ℤ.≤-irrelevance x₁ x₂)

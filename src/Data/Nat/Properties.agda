@@ -156,9 +156,9 @@ _≥?_ = flip _≤?_
 s≤s-injective : ∀ {m n} {p q : m ≤ n} → s≤s p ≡ s≤s q → p ≡ q
 s≤s-injective refl = refl
 
-≤-irrelevant : Irrelevant _≤_
-≤-irrelevant z≤n        z≤n        = refl
-≤-irrelevant (s≤s m≤n₁) (s≤s m≤n₂) = cong s≤s (≤-irrelevant m≤n₁ m≤n₂)
+≤-irrelevance : Irrelevant _≤_
+≤-irrelevance z≤n        z≤n        = refl
+≤-irrelevance (s≤s m≤n₁) (s≤s m≤n₂) = cong s≤s (≤-irrelevance m≤n₁ m≤n₂)
 
 ≤-step : ∀ {m n} → m ≤ n → m ≤ 1 + n
 ≤-step z≤n       = z≤n
@@ -239,8 +239,8 @@ _>?_ = flip _<?_
   }
 
 -- Other properties of _<_
-<-irrelevant : Irrelevant _<_
-<-irrelevant = ≤-irrelevant
+<-irrelevance : Irrelevant _<_
+<-irrelevance = ≤-irrelevance
 
 <⇒≤pred : ∀ {m n} → m < n → m ≤ pred n
 <⇒≤pred (s≤s le) = le
@@ -1618,17 +1618,4 @@ im≡jm+n⇒[i∸j]m≡n i j m n eq = begin
 {-# WARNING_ON_USAGE ≤+≢⇒<
 "Warning: ≤+≢⇒< was deprecated in v0.17.
 Please use ≤∧≢⇒< instead."
-#-}
-
--- Version 0.18
-
-≤-irrelevance = ≤-irrelevant
-{-# WARNING_ON_USAGE ≤-irrelevance
-"Warning: ≤-irrelevance was deprecated in v0.18.
-Please use ≤-irrelevant instead."
-#-}
-<-irrelevance = <-irrelevant
-{-# WARNING_ON_USAGE <-irrelevance
-"Warning: <-irrelevance was deprecated in v0.18.
-Please use <-irrelevant instead."
 #-}
