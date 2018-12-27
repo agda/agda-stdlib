@@ -304,9 +304,28 @@ Other major changes
 Deprecated features
 -------------------
 
+* In `Data.Bool.Properties`:
+  ```agda
+  T-irrelevance ↦ T-irrelevant
+  ```
+
+* In `Data.Fin.Properties`:
+  ```agda
+  ≤-irrelevance ↦ ≤-irrelevant
+  <-irrelevance ↦ <-irrelevant
+  ```
+
 * In `Data.Integer.Properties`:
   ```agda
-  ≰→> ↦ ≰⇒>
+  ≰→>           ↦ ≰⇒>
+  ≤-irrelevance ↦ ≤-irrelevant
+  <-irrelevance ↦ <-irrelevant
+  ```
+
+* In `Data.Nat.Properties`:
+  ```agda
+  ≤-irrelevance ↦ ≤-irrelevant
+  <-irrelevance ↦ <-irrelevant
   ```
 
 * In `Data.Rational`:
@@ -316,6 +335,29 @@ Deprecated features
   ≡⇒≃
   ```
   (moved to `Data.Rational.Properties`)
+
+* In `Data.Rational.Properties`:
+  ```agda
+  ≤-irrelevance ↦ ≤-irrelevant
+  ```
+
+* In `Data.Vec.Properties.WithK`:
+  ```agda
+  []=-irrelevance ↦ []=-irrelevant
+  ```
+
+* In `Relation.Binary.HeterogeneousEquality`:
+  ```agda
+  ≅-irrelevance                ↦ ≅-irrelevant
+  ≅-heterogeneous-irrelevance  ↦ ≅-heterogeneous-irrelevant
+  ≅-heterogeneous-irrelevanceˡ ↦ ≅-heterogeneous-irrelevantˡ
+  ≅-heterogeneous-irrelevanceʳ ↦ ≅-heterogeneous-irrelevantʳ
+  ```
+
+* In `Relation.Binary.PropositionalEquality`:
+  ```agda
+  ≡-irrelevance ↦ ≡-irrelevant
+  ```
 
 Other minor additions
 ---------------------
