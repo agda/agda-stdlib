@@ -297,6 +297,8 @@ Other major changes
 
 * Added new modules `Data.Vec.Membership.(Setoid/DecSetoid/DecPropositional)`
 
+* Added new modules `Relation.Binary.Construct.Intersection/Union`
+
 * Added new modules `Relation.Binary.Construct.NaturalOrder.(Left/Right)`
 
 * Added new module `Relation.Binary.Properties.BoundedLattice`
