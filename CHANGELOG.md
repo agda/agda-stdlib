@@ -667,6 +667,14 @@ Other minor additions
   toDec   : P ⊎ ¬ P → Dec P
   ```
 
+* Added new functions to `Data.Sum.Relation.Pointwise`:
+  ```agda
+  inj₁ₛ : A ⟶ (A ⊎ₛ B)
+  inj₂ₛ : B ⟶ (A ⊎ₛ B)
+  [_,_]ₛ : (A ⟶ C) → (B ⟶ C) → (A ⊎ₛ B) ⟶ C
+  swapₛ : (A ⊎ₛ B) ⟶ (B ⊎ₛ A)
+  ```
+
 * Added new function to `Data.These`:
   ```agda
   fromSum : A ⊎ B → These A B
