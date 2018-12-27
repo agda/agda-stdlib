@@ -43,7 +43,7 @@ module Relation.Binary.Reflection
 
 open import Data.Vec.N-ary
 open import Data.Product
-import Relation.Binary.Reasoning.Equational as Eq
+import Relation.Binary.Reasoning.Setoid as Eq
 
 open Setoid Sem
 open Eq Sem

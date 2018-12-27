@@ -44,7 +44,7 @@ open CommutativeMonoid M
   ; comm      to +-comm
   )
 open import Algebra.FunctionProperties _≈_
-open import Relation.Binary.Reasoning.Equational setoid
+open import Relation.Binary.Reasoning.Setoid setoid
 
 module _ {n} where
   open B.Setoid (TE.setoid setoid n) public

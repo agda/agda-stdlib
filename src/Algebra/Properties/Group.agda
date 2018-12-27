@@ -12,7 +12,7 @@ module Algebra.Properties.Group {g₁ g₂} (G : Group g₁ g₂) where
 
 open Group G
 open import Algebra.FunctionProperties _≈_
-open import Relation.Binary.Reasoning.Equational setoid
+open import Relation.Binary.Reasoning.Setoid setoid
 open import Function
 open import Data.Product
 

@@ -24,7 +24,7 @@ open import Relation.Binary.Properties.JoinSemilattice joinSemilattice
 import Relation.Binary.Properties.BoundedMeetSemilattice boundedMeetSemilattice as BM
 open import Relation.Binary.Properties.Lattice lattice
 open import Relation.Binary.Properties.BoundedLattice boundedLattice
-import Relation.Binary.Reasoning.Equational as EqReasoning
+import Relation.Binary.Reasoning.Setoid as EqReasoning
 
 ------------------------------------------------------------------------
 -- Useful lemmas

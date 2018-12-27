@@ -1,48 +1,38 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Convenient syntax for "equational reasoning" in multiple Setoids
+-- Convenient syntax for equational reasoning
 ------------------------------------------------------------------------
 
 -- Example use:
---
---   open import Data.Maybe
---   import Relation.Binary.Reasoning.Setoid as SetR
---
---   begin⟨ S ⟩
---     x
---       ≈⟨ drop-just (begin⟨ setoid S ⟩
---          just x
---            ≈⟨ justx≈mz ⟩
---          mz
---            ≈⟨ mz≈justy ⟩
---          just y ∎) ⟩
---     y
---       ≈⟨ y≈z ⟩
---     z ∎
+
+-- n*0≡0 : ∀ n → n * 0 ≡ 0
+-- n*0≡0 zero    = refl
+-- n*0≡0 (suc n) =
+--   begin
+--     suc n * 0
+--   ≈⟨ refl ⟩
+--     n * 0 + 0
+--   ≈⟨ ... ⟩
+--     n * 0
+--   ≈⟨ n*0≡0 n ⟩
+--     0
+--   ∎
+
+-- Module ≡-Reasoning in Relation.Binary.PropositionalEquality
+-- is recommended for equational reasoning when the underlying equality is
+-- Relation.Binary.PropositionalEquality._≡_.
 
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
-open import Relation.Binary.Reasoning.Equational as EqR using (_IsRelatedTo_)
-open import Relation.Binary.PropositionalEquality
 
-open Setoid
+module Relation.Binary.Reasoning.Setoid {s₁ s₂} (S : Setoid s₁ s₂) where
 
-module Relation.Binary.Reasoning.Setoid where
-
-infix 1 begin⟨_⟩_
-infixr 2 _≈⟨_⟩_ _≡⟨_⟩_
-infix 3 _∎
-
-begin⟨_⟩_ : ∀ {c l} (S : Setoid c l) → {x y : Carrier S} → _IsRelatedTo_ S x y → _≈_ S x y
-begin⟨_⟩_ S p = EqR.begin_ S p
-
-_∎ : ∀ {c l} {S : Setoid c l} → (x : Carrier S) → _IsRelatedTo_ S x x
-_∎ {S = S} = EqR._∎ S
-
-_≈⟨_⟩_ : ∀ {c l} {S : Setoid c l} → (x : Carrier S) → {y z : Carrier S} → _≈_ S x y → _IsRelatedTo_ S y z → _IsRelatedTo_ S x z
-_≈⟨_⟩_ {S = S} = EqR._≈⟨_⟩_ S
-
-_≡⟨_⟩_ : ∀ {c l} {S : Setoid c l} → (x : Carrier S) → {y z : Carrier S} → x ≡ y → _IsRelatedTo_ S y z → _IsRelatedTo_ S x z
-_≡⟨_⟩_ {S = S} = EqR._≡⟨_⟩_ S
+open Setoid S
+open import Relation.Binary.Reasoning.Preorder preorder public
+  hiding (_≈⟨_⟩_)
+  renaming
+  ( _∼⟨_⟩_  to _≈⟨_⟩_
+  ; _≈⟨⟩_   to _≡⟨⟩_
+  )

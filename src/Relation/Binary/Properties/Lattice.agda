@@ -22,7 +22,7 @@ open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
 import Relation.Binary.Properties.JoinSemilattice joinSemilattice as J
 import Relation.Binary.Properties.MeetSemilattice meetSemilattice as M
-import Relation.Binary.Reasoning.Equational as EqReasoning
+import Relation.Binary.Reasoning.Setoid as EqReasoning
 import Relation.Binary.Reasoning.PartialOrder as POR
 
 ∨-absorbs-∧ : _∨_ Absorbs _∧_

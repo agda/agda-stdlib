@@ -28,7 +28,7 @@ open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 
 open Monoid M
-open import Relation.Binary.Reasoning.Equational setoid
+open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
 -- Monoid expressions

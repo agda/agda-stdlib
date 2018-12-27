@@ -207,8 +207,8 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 
 * The core Reasoning modules have been renamed as follows:
   ```
-  Relation.Binary.EqReasoning                 ↦ Relation.Binary.Reasoning.Equational
-  Relation.Binary.SetoidReasoning             ↦ Relation.Binary.Reasoning.Setoid
+  Relation.Binary.EqReasoning                 ↦ Relation.Binary.Reasoning.Setoid
+  Relation.Binary.SetoidReasoning             ↦ Relation.Binary.Reasoning.MultiSetoid
   Relation.Binary.PreorderReasoning           ↦ Relation.Binary.Reasoning.Preorder
   Relation.Binary.PartialOrderReasoning       ↦ Relation.Binary.Reasoning.PartialOrder
   Relation.Binary.StrictPartialOrderReasoning ↦ Relation.Binary.Reasoning.StrictPartialOrder

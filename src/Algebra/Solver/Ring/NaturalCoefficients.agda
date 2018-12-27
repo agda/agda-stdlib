@@ -26,7 +26,7 @@ open import Function
 
 open CommutativeSemiring R
 open SemiringOps semiring
-open import Relation.Binary.Reasoning.Equational setoid
+open import Relation.Binary.Reasoning.Setoid setoid
 
 private
 

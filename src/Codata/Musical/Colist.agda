@@ -266,7 +266,7 @@ setoid A = record
   trans (x ∷ xs≈) (.x ∷ ys≈) = x ∷ ♯ trans (♭ xs≈) (♭ ys≈)
 
 module ≈-Reasoning where
-  import Relation.Binary.Reasoning.Equational as EqR
+  import Relation.Binary.Reasoning.Setoid as EqR
   private
     open module R {a} {A : Set a} = EqR (setoid A) public
 

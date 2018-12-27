@@ -14,7 +14,7 @@ open import Algebra.FunctionProperties
 import Algebra.Properties.Group as GroupP
 open import Function
 open import Level
-import Relation.Binary.Reasoning.Equational as EqR
+import Relation.Binary.Reasoning.Setoid as EqR
 
 ------------------------------------------------------------------------
 -- Basic definitions

@@ -13,7 +13,7 @@ module Algebra.Properties.AbelianGroup
 
 open AbelianGroup G
 open import Function
-open import Relation.Binary.Reasoning.Equational setoid
+open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
 -- Publicly re-export group properties
