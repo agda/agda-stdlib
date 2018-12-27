@@ -213,7 +213,7 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   Relation.Binary.PartialOrderReasoning       ↦ Relation.Binary.Reasoning.PartialOrder
   Relation.Binary.StrictPartialOrderReasoning ↦ Relation.Binary.Reasoning.StrictPartialOrder
   ```
-  The old modules have been deprecated but still exist for backwards compatability reasons.
+  The old modules have been deprecated but still exist for backwards compatibility reasons.
 
 #### Relaxation of ring solvers requirements
 
