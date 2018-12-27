@@ -70,12 +70,12 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
   unique-index p⇒¬q (px ∷ _) [ qx ]   = ⊥-elim (p⇒¬q px qx)
   unique-index p⇒¬q (_ ∷ f₁) (_ ∷ f₂) = P.cong suc (unique-index p⇒¬q f₁ f₂)
 
-  irrelevance : P ⊆ ∁ Q → Irrelevant P → Irrelevant Q → Irrelevant (First P Q)
-  irrelevance p⇒¬q p-irr q-irr [ qx₁ ]    [ qx₂ ]    = P.cong [_] (q-irr qx₁ qx₂)
-  irrelevance p⇒¬q p-irr q-irr [ qx₁ ]    (px₂ ∷ f₂) = ⊥-elim (p⇒¬q px₂ qx₁)
-  irrelevance p⇒¬q p-irr q-irr (px₁ ∷ f₁) [ qx₂ ]    = ⊥-elim (p⇒¬q px₁ qx₂)
-  irrelevance p⇒¬q p-irr q-irr (px₁ ∷ f₁) (px₂ ∷ f₂) =
-    P.cong₂ _∷_ (p-irr px₁ px₂) (irrelevance p⇒¬q p-irr q-irr f₁ f₂)
+  irrelevant : P ⊆ ∁ Q → Irrelevant P → Irrelevant Q → Irrelevant (First P Q)
+  irrelevant p⇒¬q p-irr q-irr [ qx₁ ]    [ qx₂ ]    = P.cong [_] (q-irr qx₁ qx₂)
+  irrelevant p⇒¬q p-irr q-irr [ qx₁ ]    (px₂ ∷ f₂) = ⊥-elim (p⇒¬q px₂ qx₁)
+  irrelevant p⇒¬q p-irr q-irr (px₁ ∷ f₁) [ qx₂ ]    = ⊥-elim (p⇒¬q px₁ qx₂)
+  irrelevant p⇒¬q p-irr q-irr (px₁ ∷ f₁) (px₂ ∷ f₂) =
+    P.cong₂ _∷_ (p-irr px₁ px₂) (irrelevant p⇒¬q p-irr q-irr f₁ f₂)
 
 ------------------------------------------------------------------------
 -- Decidability
