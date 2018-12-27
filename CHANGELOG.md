@@ -554,6 +554,13 @@ Other minor additions
   ```agda
   respects : P Respects _≈_ → (All P) Respects _≋_
   ```
+  A generalization of single point overwrite `_[_]≔_`
+  to single-point modification `_[_]%=_`
+  (alias with different argument order: `updateAt`):
+  ```agda
+  _[_]%=_   : Vec A n → Fin n → (A → A) → Vec A n
+  updateAt  : Fin n → (A → A) → Vec A n → Vec A n
+  ```
 
 * Added new functions to `Data.List.Base`:
   ```agda
@@ -573,6 +580,8 @@ Other minor additions
   _∷=_    : x ∈ xs → A → List A
   _─_     : (xs : List A) → x ∈ xs → List A
   ```
+  Added laws for `updateAt`.
+  Now laws for `_[_]≔_` are special instances of these.
 
 * Added new proofs to `Data.List.Membership.Setoid.Properties`:
   ```agda
@@ -726,6 +735,10 @@ Other minor additions
   ⊎-magma : Symmetric-kind → (ℓ : Level) → Semigroup _ _
   ×-magma : Symmetric-kind → (ℓ : Level) → Magma _ _
   ```
+
+* Added new definitions to `Relation.Binary.PropositionalEquality`:
+  - `_≡_↾¹_` equality of functions at a single point
+  - `_≡_↾_` equality of functions at a subset of the domain
 
 * Added new proofs to `Relation.Binary.Consequences`:
   ```agda
