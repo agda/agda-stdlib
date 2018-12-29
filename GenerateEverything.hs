@@ -15,7 +15,15 @@ srcDir         = "src"
 
 unsafeModules :: [FilePath]
 unsafeModules = map toAgdaFilePath
-  [ "Data.Char.Unsafe"
+  [ "Codata.Musical.Cofin"
+  , "Codata.Musical.Colist"
+  , "Codata.Musical.Colist.Infinite-merge"
+  , "Codata.Musical.Conat"
+  , "Codata.Musical.Costring"
+  , "Codata.Musical.Covec"
+  , "Codata.Musical.M"
+  , "Codata.Musical.Stream"
+  , "Data.Char.Unsafe"
   , "Data.Float.Unsafe"
   , "Data.Nat.Unsafe"
   , "Data.Nat.DivMod.Unsafe"
