@@ -4,6 +4,8 @@
 -- Coprimality
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Integer.Coprimality where
 
 open import Data.Integer
