@@ -253,10 +253,26 @@ module _ {a b} {A : Set a} {B : Set b} where
 ------------------------------------------------------------------------
 -- Some properties related to "relatedness"
 
+<_,_>ₛ : ∀ {a₁ a₂ b₁ b₂ c₁ c₂}
+  {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} {C : Setoid c₁ c₂} →
+  (A ⟶ B) → (A ⟶ C) → A ⟶ (B ×ₛ C)
+< f , g >ₛ = record
+  { _⟨$⟩_ = < f ⟨$⟩_ , g ⟨$⟩_ >
+  ; cong = < F.cong f , F.cong g >
+  }
+
+proj₁ₛ : ∀ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} →
+         (A ×ₛ B) ⟶ A
+proj₁ₛ = record { _⟨$⟩_ = proj₁ ; cong = proj₁ }
+
+proj₂ₛ : ∀ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} →
+         (A ×ₛ B) ⟶ B
+proj₂ₛ = record { _⟨$⟩_ = proj₂ ; cong = proj₂ }
+
 _×-⟶_ : ∀ {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
   {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
   {C : Setoid c₁ c₂} {D : Setoid d₁ d₂} →
-  A ⟶ B → C ⟶ D → (A ×ₛ C) ⟶ (B ×ₛ D)
+  (A ⟶ B) → (C ⟶ D) → (A ×ₛ C) ⟶ (B ×ₛ D)
 _×-⟶_ {A = A} {B} {C} {D} f g = record
   { _⟨$⟩_ = fg
   ; cong  = fg-cong
@@ -269,6 +285,10 @@ _×-⟶_ {A = A} {B} {C} {D} f g = record
 
   fg-cong : _≈AC_ =[ fg ]⇒ _≈BD_
   fg-cong (_∼₁_ , _∼₂_) = (F.cong f _∼₁_ , F.cong g _∼₂_)
+
+swapₛ : ∀ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} →
+        (A ×ₛ B) ⟶ (B ×ₛ A)
+swapₛ = < proj₂ₛ , proj₁ₛ >ₛ
 
 module _ {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
   {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}

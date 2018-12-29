@@ -309,6 +309,8 @@ Other major changes
 
 * Added new modules `Data.Vec.Membership.(Setoid/DecSetoid/DecPropositional)`
 
+* Added new modules `Relation.Binary.Construct.Intersection/Union`
+
 * Added new modules `Relation.Binary.Construct.NaturalOrder.(Left/Right)`
 
 * Added new module `Relation.Binary.Properties.BoundedLattice`
@@ -566,6 +568,13 @@ Other minor additions
   ```agda
   respects : P Respects _≈_ → (All P) Respects _≋_
   ```
+  A generalization of single point overwrite `_[_]≔_`
+  to single-point modification `_[_]%=_`
+  (alias with different argument order: `updateAt`):
+  ```agda
+  _[_]%=_   : Vec A n → Fin n → (A → A) → Vec A n
+  updateAt  : Fin n → (A → A) → Vec A n → Vec A n
+  ```
 
 * Added new functions to `Data.List.Base`:
   ```agda
@@ -585,6 +594,8 @@ Other minor additions
   _∷=_    : x ∈ xs → A → List A
   _─_     : (xs : List A) → x ∈ xs → List A
   ```
+  Added laws for `updateAt`.
+  Now laws for `_[_]≔_` are special instances of these.
 
 * Added new proofs to `Data.List.Membership.Setoid.Properties`:
   ```agda
@@ -686,6 +697,14 @@ Other minor additions
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
   ```
 
+* Added new functions to `Data.Product.Relation.Pointwise.NonDependent`:
+  ```agda
+  <_,_>ₛ : A ⟶ B → A ⟶ C → A ⟶ (B ×ₛ C)
+  proj₁ₛ : (A ×ₛ B) ⟶ A
+  proj₂ₛ : (A ×ₛ B) ⟶ B
+  swapₛ : (A ×ₛ B) ⟶ (B ×ₛ A)
+  ```
+
 * Added new functions to `Data.Rational`:
   ```agda
   norm-mkℚ : (n : ℤ) (d : ℕ) → d ≢0 → ℚ
@@ -708,6 +727,14 @@ Other minor additions
   ```agda
   fromDec : Dec P → P ⊎ ¬ P
   toDec   : P ⊎ ¬ P → Dec P
+  ```
+
+* Added new functions to `Data.Sum.Relation.Pointwise`:
+  ```agda
+  inj₁ₛ : A ⟶ (A ⊎ₛ B)
+  inj₂ₛ : B ⟶ (A ⊎ₛ B)
+  [_,_]ₛ : (A ⟶ C) → (B ⟶ C) → (A ⊎ₛ B) ⟶ C
+  swapₛ : (A ⊎ₛ B) ⟶ (B ⊎ₛ A)
   ```
 
 * Added new function to `Data.These`:
@@ -738,6 +765,10 @@ Other minor additions
   ⊎-magma : Symmetric-kind → (ℓ : Level) → Semigroup _ _
   ×-magma : Symmetric-kind → (ℓ : Level) → Magma _ _
   ```
+
+* Added new definitions to `Relation.Binary.PropositionalEquality`:
+  - `_≡_↾¹_` equality of functions at a single point
+  - `_≡_↾_` equality of functions at a subset of the domain
 
 * Added new proofs to `Relation.Binary.Consequences`:
   ```agda
