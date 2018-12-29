@@ -71,9 +71,10 @@ module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
   align : These A B → These C D → These (These A C) (These B D)
   align = alignWith id id
 
--- projections
 
 module _ {a} {A : Set a} where
+
+-- Projections.
 
   leftMost : These A A → A
   leftMost = fold id id const

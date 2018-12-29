@@ -60,11 +60,21 @@ remove (suc i)  (x ∷ y ∷ xs) = x ∷ remove i (y ∷ xs)
 
 -- Update.
 
-infixl 6 _[_]≔_
+infixl 6 _[_]%=_ _[_]≔_
+
+-- updateAt i f xs  modifies the i-th element of xs according to f
+
+updateAt : ∀ {a n} {A : Set a} → Fin n → (A → A) → Vec A n → Vec A n
+updateAt zero    f (x ∷ xs) = f x ∷ xs
+updateAt (suc i) f (x ∷ xs) = x   ∷ updateAt i f xs
+
+_[_]%=_ : ∀ {a n} {A : Set a} → Vec A n → Fin n → (A → A) → Vec A n
+xs [ i ]%= f = updateAt i f xs
+
+-- xs [ i ]≔ y  overwrites the i-th element of xs with y
 
 _[_]≔_ : ∀ {a n} {A : Set a} → Vec A n → Fin n → A → Vec A n
-(x ∷ xs) [ zero  ]≔ y = y ∷ xs
-(x ∷ xs) [ suc i ]≔ y = x ∷ xs [ i ]≔ y
+xs [ i ]≔ y = xs [ i ]%= λ _ → y
 
 ------------------------------------------------------------------------
 -- Operations for transforming vectors

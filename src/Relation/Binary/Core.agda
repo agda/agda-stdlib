@@ -99,6 +99,8 @@ TransFlip P Q R = ∀ {i j k} → Q j k → P i j → R i k
 Transitive : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
 Transitive _∼_ = Trans _∼_ _∼_ _∼_
 
+-- Generalised antisymmetry
+
 Antisym : ∀ {a b ℓ₁ ℓ₂ ℓ₃} {A : Set a} {B : Set b} →
           REL A B ℓ₁ → REL B A ℓ₂ → REL A B ℓ₃ → Set _
 Antisym R S E = ∀ {i j} → R i j → S j i → E i j
@@ -109,8 +111,13 @@ Antisymmetric _≈_ _≤_ = Antisym _≤_ _≤_ _≈_
 Asymmetric : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
 Asymmetric _<_ = ∀ {x y} → x < y → ¬ (y < x)
 
+-- Generalised connex.
+
+Conn : ∀ {a b p q} {A : Set a} {B : Set b} → REL A B p → REL B A q → Set _
+Conn P Q = ∀ x y → P x y ⊎ Q y x
+
 Total : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
-Total _∼_ = ∀ x y → (x ∼ y) ⊎ (y ∼ x)
+Total _∼_ = Conn _∼_ _∼_
 
 data Tri {a b c} (A : Set a) (B : Set b) (C : Set c) :
          Set (a ⊔ b ⊔ c) where
@@ -131,10 +138,10 @@ Minimum _≤_ = Maximum (flip _≤_)
 _Respects_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → (A → Set ℓ₁) → Rel A ℓ₂ → Set _
 P Respects _∼_ = ∀ {x y} → x ∼ y → P x → P y
 
-_Respectsʳ_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
+_Respectsʳ_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} → REL A B ℓ₁ → Rel B ℓ₂ → Set _
 P Respectsʳ _∼_ = ∀ {x} → (P x) Respects _∼_
 
-_Respectsˡ_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
+_Respectsˡ_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} → REL A B ℓ₁ → Rel A ℓ₂ → Set _
 P Respectsˡ _∼_ = ∀ {y} → (flip P y) Respects _∼_
 
 _Respects₂_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
