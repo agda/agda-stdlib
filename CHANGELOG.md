@@ -733,7 +733,7 @@ Other minor additions
 * Added new proofs to `Data.Vec.Any.Properties`:
   ```agda
   lookup-index : (p : Any P xs) → P (lookup (index p) xs)
-  
+
   lift-resp       : P Respects _≈_ → (Any P) Respects (Pointwise _≈_)
   here-injective  : here p ≡ here q → p ≡ q
   there-injective : there p ≡ there q → p ≡ q
