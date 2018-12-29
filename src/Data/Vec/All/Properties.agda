@@ -101,13 +101,13 @@ module _ {a m p} {A : Set a} {P : Pred A p} where
 
 module _ {a p} {A : Set a} {P : A → Set p} where
 
-  toList⁺ : ∀ {n} {xs : Vec A n} → List.All P (toList xs) → All P xs
-  toList⁺ {xs = []}     []         = []
-  toList⁺ {xs = x ∷ xs} (px ∷ pxs) = px ∷ toList⁺ pxs
+  toList⁺ : ∀ {n} {xs : Vec A n} → All P xs → List.All P (toList xs)
+  toList⁺ []         = []
+  toList⁺ (px ∷ pxs) = px ∷ toList⁺ pxs
 
-  toList⁻ : ∀ {n} {xs : Vec A n} → All P xs → List.All P (toList xs)
-  toList⁻ []         = []
-  toList⁻ (px ∷ pxs) = px ∷ toList⁻ pxs
+  toList⁻ : ∀ {n} {xs : Vec A n} → List.All P (toList xs) → All P xs
+  toList⁻ {xs = []}     []         = []
+  toList⁻ {xs = x ∷ xs} (px ∷ pxs) = px ∷ toList⁻ pxs
 
 ------------------------------------------------------------------------
 -- fromList

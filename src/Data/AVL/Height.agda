@@ -10,12 +10,12 @@
 module Data.AVL.Height where
 
 open import Data.Nat.Base
-import Data.Fin as Fin
+open import Data.Fin using (Fin; zero; suc)
 
-ℕ₂ = Fin.Fin 2
-pattern 0# = Fin.zero
-pattern 1# = Fin.suc Fin.zero
-pattern ## = Fin.suc (Fin.suc ())
+ℕ₂ = Fin 2
+pattern 0# = zero
+pattern 1# = suc zero
+pattern ## = suc (suc ())
 
 -- Addition.
 
@@ -55,4 +55,3 @@ max∼ ∼- = ∼0
 ∼max ∼+ = ∼0
 ∼max ∼0 = ∼0
 ∼max ∼- = ∼+
-

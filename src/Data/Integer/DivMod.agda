@@ -4,6 +4,8 @@
 -- Integer division
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Integer.DivMod where
 
 open import Data.Nat as ℕ using (ℕ)
