@@ -99,3 +99,16 @@ module _ {a p} {A : Set a} {P : Pred A p} where
   toAny∘fromAny≗id : ∀ {xs} → toAny {Q = P} ∘′ fromAny {x = xs} ≗ id
   toAny∘fromAny≗id (here px) = refl
   toAny∘fromAny≗id (there v) = P.cong there (toAny∘fromAny≗id v)
+
+------------------------------------------------------------------------
+-- Equivalence between the inductive definition and the view
+
+module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
+
+  toView : ∀ {as} → First P Q as → FirstView P Q as
+  toView [ qx ] = [] ++ qx ∷ _
+  toView (px ∷ pqxs) with toView pqxs
+  ... | pxs ++  qy ∷ ys = (px ∷ pxs) ++ qy ∷ ys
+
+  fromView : ∀ {as} → FirstView P Q as → First P Q as
+  fromView (pxs ++ qy ∷ ys) = ++⁺ pxs [ qy ]
