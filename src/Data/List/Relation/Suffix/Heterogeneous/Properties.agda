@@ -14,7 +14,8 @@ open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary as B using (REL; Rel; Trans; Antisym; Irrelevant; _⇒_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl; sym; subst)
 open import Data.Nat as N using (suc; _+_; _≤_; _<_)
-open import Data.List as List using (List; []; _∷_; _++_; length; filter; replicate; reverse)
+open import Data.List as List
+  using (List; []; _∷_; _++_; length; filter; replicate; reverse; reverseAcc)
 open import Data.List.Relation.Pointwise as Pw using (Pointwise; []; _∷_; Pointwise-length)
 open import Data.List.Relation.Suffix.Heterogeneous as Suffix using (Suffix; here; there; tail)
 open import Data.List.Relation.Prefix.Heterogeneous as Prefix using (Prefix)
@@ -27,21 +28,11 @@ import Data.List.Relation.Prefix.Heterogeneous.Properties as Prefixₚ
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
-  -- TODO: move this lemma (and others) into Pointwise?
-  private
-    pw-reverse : ∀ {as bs} → Pointwise R as bs → Pointwise R (reverse as) (reverse bs)
-    pw-reverse = foldl []
-      where
-      foldl : ∀ {as bs as′ bs′} → Pointwise R as′ bs′ → Pointwise R as bs →
-              Pointwise R (List.foldl (flip _∷_) as′ as) (List.foldl (flip _∷_) bs′ bs)
-      foldl rs′ []       = rs′
-      foldl rs′ (r ∷ rs) = foldl (r ∷ rs′) rs
-
   fromPrefix⁺ : ∀ {as bs} → Prefix R as bs → Suffix R (reverse as) (reverse bs)
   fromPrefix⁺ {as} {bs} p with Prefix.toView p
   ... | Prefix._++_ {cs} rs ds = subst (Suffix R (reverse as))
                                        (sym (Listₚ.reverse-++-commute cs ds))
-                               $ Suffix.fromView (reverse ds Suffix.++ pw-reverse rs)
+                               $ Suffix.fromView (reverse ds Suffix.++ Pw.reverse⁺ rs)
 
   fromPrefix⁻ : ∀ {as bs} → Prefix R (reverse as) (reverse bs) → Suffix R as bs
   fromPrefix⁻ pre = P.subst₂ (Suffix R) (Listₚ.reverse-involutive _) (Listₚ.reverse-involutive _)
@@ -51,7 +42,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   toPrefix⁺ {as} {bs} s with Suffix.toView s
   ... | Suffix._++_ cs {ds} rs = subst (Prefix R (reverse as))
                                        (sym (Listₚ.reverse-++-commute cs ds))
-                               $ Prefix.fromView (pw-reverse rs Prefix.++ reverse cs)
+                               $ Prefix.fromView (Pw.reverse⁺ rs Prefix.++ reverse cs)
 
   toPrefix⁻ : ∀ {as bs} → Suffix R (reverse as) (reverse bs) → Prefix R as bs
   toPrefix⁻ suf = P.subst₂ (Prefix R) (Listₚ.reverse-involutive _) (Listₚ.reverse-involutive _)
@@ -95,13 +86,11 @@ module _ {a b c r s t} {A : Set a} {B : Set b} {C : Set c}
 module _ {a b e r s} {A : Set a} {B : Set b}
          {R : REL A B r} {S : REL B A s} {E : REL A B e} where
 
-  private
-    pw-antisym : Antisym R S E → Antisym (Pointwise R) (Pointwise S) (Pointwise E)
-    pw-antisym antisym []       []       = []
-    pw-antisym antisym (r ∷ rs) (s ∷ ss) = antisym r s ∷ pw-antisym antisym rs ss
-
   antisym : Antisym R S E → Antisym (Suffix R) (Suffix S) (Pointwise E)
-  antisym rs⇒e rsuf ssuf = pw-antisym rs⇒e (toPointwise eq rsuf) (toPointwise (sym eq) ssuf)
+  antisym rs⇒e rsuf ssuf = Pw.antisymmetric
+                             rs⇒e
+                             (toPointwise eq rsuf)
+                             (toPointwise (sym eq) ssuf)
     where eq = ℕₚ.≤-antisym (length-mono-Suffix-≤ rsuf) (length-mono-Suffix-≤ ssuf)
 
 ------------------------------------------------------------------------
@@ -134,33 +123,16 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 module _ {a b c d r} {A : Set a} {B : Set b} {C : Set c} {D : Set d}
          {R : REL C D r} where
 
-  private
-    pw-map⁺ : ∀ {as bs} (f : A → C) (g : B → D) →
-              Pointwise (λ a b → R (f a) (g b)) as bs →
-              Pointwise R (List.map f as) (List.map g bs)
-    pw-map⁺ f g []       = []
-    pw-map⁺ f g (r ∷ rs) = r ∷ pw-map⁺ f g rs
-
-    pw-map⁻ : ∀ {as bs} (f : A → C) (g : B → D) →
-              Pointwise R (List.map f as) (List.map g bs) →
-              Pointwise (λ a b → R (f a) (g b)) as bs
-    pw-map⁻ {[]} {[]} f g [] = []
-    pw-map⁻ {[]} {b ∷ bs} f g rs with Pointwise-length rs
-    ... | ()
-    pw-map⁻ {a ∷ as} {[]} f g rs with Pointwise-length rs
-    ... | ()
-    pw-map⁻ {a ∷ as} {b ∷ bs} f g (r ∷ rs) = r ∷ pw-map⁻ f g rs
-
   map⁺ : ∀ {as bs} (f : A → C) (g : B → D) →
          Suffix (λ a b → R (f a) (g b)) as bs →
          Suffix R (List.map f as) (List.map g bs)
-  map⁺ f g (here rs)   = here (pw-map⁺ f g rs)
+  map⁺ f g (here rs)   = here (Pw.map⁺ f g rs)
   map⁺ f g (there suf) = there (map⁺ f g suf)
 
   map⁻ : ∀ {as bs} (f : A → C) (g : B → D) →
          Suffix R (List.map f as) (List.map g bs) →
          Suffix (λ a b → R (f a) (g b)) as bs
-  map⁻ {as} {b ∷ bs} f g (here rs) = here (pw-map⁻ f g rs)
+  map⁻ {as} {b ∷ bs} f g (here rs) = here (Pw.map⁻ f g rs)
   map⁻ {as} {b ∷ bs} f g (there suf) = there (map⁻ f g suf)
   map⁻ {x ∷ as} {[]} f g suf with length-mono-Suffix-≤ suf
   ... | ()
@@ -174,17 +146,8 @@ module _ {a b r p q} {A : Set a} {B : Set b} {R : REL A B r}
          (P⇒Q : ∀ {a b} → R a b → P a → Q b) (Q⇒P : ∀ {a b} → R a b → Q b → P a)
          where
 
-  private
-    pw-filter⁺ : ∀ {as bs} → Pointwise R as bs → Pointwise R (filter P? as) (filter Q? bs)
-    pw-filter⁺ []       = []
-    pw-filter⁺ {a ∷ _} {b ∷ _} (r ∷ rs) with P? a | Q? b
-    ... | yes p | yes q = r ∷ pw-filter⁺ rs
-    ... | yes p | no ¬q = contradiction (P⇒Q r p) ¬q
-    ... | no ¬p | yes q = contradiction (Q⇒P r q) ¬p
-    ... | no ¬p | no ¬q = pw-filter⁺ rs
-
   filter⁺ : ∀ {as bs} → Suffix R as bs → Suffix R (filter P? as) (filter Q? bs)
-  filter⁺ (here rs) = here (pw-filter⁺ rs)
+  filter⁺ (here rs) = here (Pw.filter⁺ P? Q? P⇒Q Q⇒P rs)
   filter⁺ (there {a} suf) with Q? a
   ... | yes q = there (filter⁺ suf)
   ... | no ¬q = filter⁺ suf
@@ -194,16 +157,11 @@ module _ {a b r p q} {A : Set a} {B : Set b} {R : REL A B r}
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
-  private
-    pw-replicate : ∀ {a b} → R a b → ∀ n → Pointwise R (replicate n a) (replicate n b)
-    pw-replicate r 0       = []
-    pw-replicate r (suc n) = r ∷ pw-replicate r n
-
   replicate⁺ : ∀ {m n a b} → m ≤ n → R a b → Suffix R (replicate m a) (replicate n b)
   replicate⁺ {a = a} {b = b} m≤n r = repl (ℕₚ.≤⇒≤′ m≤n)
     where
     repl : ∀ {m n} → m N.≤′ n → Suffix R (replicate m a) (replicate n b)
-    repl N.≤′-refl       = here (pw-replicate r _)
+    repl N.≤′-refl       = here (Pw.replicate⁺ r _)
     repl (N.≤′-step m≤n) = there (repl m≤n)
 
 ------------------------------------------------------------------------
@@ -211,14 +169,8 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
-  private
-    pw-irrelevant : Irrelevant R → Irrelevant (Pointwise R)
-    pw-irrelevant R-irr [] [] = refl
-    pw-irrelevant R-irr (r ∷ rs) (r₁ ∷ rs₁) =
-      P.cong₂ _∷_ (R-irr r r₁) (pw-irrelevant R-irr rs rs₁)
-
   irrelevant : Irrelevant R → Irrelevant (Suffix R)
-  irrelevant R-irr (here rs)    (here rs₁)    = P.cong here $ pw-irrelevant R-irr rs rs₁
+  irrelevant R-irr (here rs)    (here rs₁)    = P.cong here $ Pw.irrelevant R-irr rs rs₁
   irrelevant R-irr (here rs)    (there rsuf)  = contradiction (length-mono-Suffix-≤ rsuf)
                                                               (ℕₚ.<⇒≱ (ℕₚ.≤-reflexive (sym (Pointwise-length rs))))
   irrelevant R-irr (there rsuf) (here rs)     = contradiction (length-mono-Suffix-≤ rsuf)
