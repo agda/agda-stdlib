@@ -266,6 +266,9 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The proofs `toList⁺` and `toList⁻` in `Data.Vec.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
+* The type of `antisymmetric` in `Data.List.Relation.Pointwise` has been modified to work
+  on heterogeneous relations.
+
 Other major changes
 -------------------
 
@@ -821,4 +824,15 @@ Other minor additions
   ```agda
   _Respectsʳ_ : REL A B ℓ₁ → Rel B ℓ₂ → Set _
   _Respectsˡ_ : REL A B ℓ₁ → Rel A ℓ₂ → Set _
+  ```
+
+* Added new proofs to `Data.List.Relation.Pointwise`:
+  ```agda
+  reverseAcc⁺ : Pointwise R a x → Pointwise R b y → Pointwise R (reverseAcc a b) (reverseAcc x y)
+  reverse⁺ : Pointwise R as bs → Pointwise R (reverse as) (reverse bs)
+  map⁺ : ∀ f g → Pointwise (λ a b → R (f a) (g b)) as bs → Pointwise R (map f as) (map g bs)
+  map⁻ : ∀ f g → Pointwise R (map f as) (map g bs) → Pointwise (λ a b → R (f a) (g b)) as bs
+  filter⁺ : Pointwise R as bs → Pointwise R (filter P? as) (filter Q? bs)
+  replicate⁺ : R a b → (n : ℕ) → Pointwise R (replicate n a) (replicate n b)
+  irrelevant : Irrelevant R → Irrelevant (Pointwise R)
   ```
