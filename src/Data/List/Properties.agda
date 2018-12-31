@@ -15,13 +15,13 @@ open import Algebra
 import Algebra.Structures as Structures
 open import Algebra.FunctionProperties
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
+open import Data.Fin using (Fin; zero; suc; cast; toℕ)
 open import Data.List as List
 open import Data.List.All using (All; []; _∷_)
 open import Data.List.Any using (Any; here; there)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat
 open import Data.Nat.Properties
-open import Data.Fin using (Fin; zero; suc; cast)
 open import Data.Product as Prod hiding (map; zip)
 open import Data.These as These using (These; this; that; these)
 open import Function
@@ -516,6 +516,52 @@ module _ {a b} {A : Set a} {B : Set b} where
    where open P.≡-Reasoning
 
 ------------------------------------------------------------------------
+-- applyUpTo
+
+module _ {a} {A : Set a} where
+
+  length-applyUpTo : ∀ (f : ℕ → A) n → length (applyUpTo f n) ≡ n
+  length-applyUpTo f zero    = refl
+  length-applyUpTo f (suc n) = P.cong suc (length-applyUpTo (f ∘ suc) n)
+
+  applyUpTo-lookup : ∀ (f : ℕ → A) n i → lookup (applyUpTo f n) i ≡ f (toℕ i)
+  applyUpTo-lookup f zero  ()
+  applyUpTo-lookup f (suc n) zero    = refl
+  applyUpTo-lookup f (suc n) (suc i) = applyUpTo-lookup (f ∘ suc) n i
+
+------------------------------------------------------------------------
+-- applyUpTo
+
+module _ {a} {A : Set a} (f : ℕ → A) where
+
+  length-applyDownFrom : ∀ n → length (applyDownFrom f n) ≡ n
+  length-applyDownFrom zero    = refl
+  length-applyDownFrom (suc n) = P.cong suc (length-applyDownFrom n)
+
+  applyDownFrom-lookup : ∀ n i → lookup (applyDownFrom f n) i ≡ f (n ∸ (suc (toℕ i)))
+  applyDownFrom-lookup zero  ()
+  applyDownFrom-lookup (suc n) zero    = refl
+  applyDownFrom-lookup (suc n) (suc i) = applyDownFrom-lookup n i
+
+------------------------------------------------------------------------
+-- upTo
+
+length-upTo : ∀ n → length (upTo n) ≡ n
+length-upTo = length-applyUpTo id
+
+upTo-lookup : ∀ n i → lookup (upTo n) i ≡ toℕ i
+upTo-lookup = applyUpTo-lookup id
+
+------------------------------------------------------------------------
+-- downFrom
+
+length-downFrom : ∀ n → length (downFrom n) ≡ n
+length-downFrom = length-applyDownFrom id
+
+downFrom-lookup : ∀ n i → lookup (downFrom n) i ≡ n ∸ (suc (toℕ i))
+downFrom-lookup = applyDownFrom-lookup id
+
+------------------------------------------------------------------------
 -- tabulate
 
 module _ {a} {A : Set a} where
@@ -528,6 +574,13 @@ module _ {a} {A : Set a} where
   tabulate-lookup : ∀ (xs : List A) → tabulate (lookup xs) ≡ xs
   tabulate-lookup []       = refl
   tabulate-lookup (x ∷ xs) = P.cong (_ ∷_) (tabulate-lookup xs)
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+  map-tabulate : ∀ {n} (g : Fin n → A) (f : A → B) →
+                 map f (tabulate g) ≡ tabulate (f ∘ g)
+  map-tabulate {zero}  g f = refl
+  map-tabulate {suc n} g f = P.cong (_ ∷_) (map-tabulate (g ∘ suc) f)
 
 ------------------------------------------------------------------------
 -- _[_]%=_

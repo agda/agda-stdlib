@@ -605,6 +605,18 @@ Other minor additions
   map-∷=     : map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
   length-─   : length (xs ─ k) ≡ pred (length xs)
   map-─      : map f (xs ─ k) ≡ map f xs ─ cast eq k
+
+  length-applyUpTo     : length (applyUpTo     f n) ≡ n
+  length-applyDownFrom : length (applyDownFrom f n) ≡ n
+  length-upTo          : length (upTo            n) ≡ n
+  length-downFrom      : length (downFrom        n) ≡ n
+
+  applyUpTo-lookup     : lookup (applyUpTo     f n) i ≡ f (toℕ i)
+  applyDownFrom-lookup : lookup (applyDownFrom f n) i ≡ f (n ∸ (suc (toℕ i)))
+  upTo-lookup          : lookup (upTo            n) i ≡ toℕ i
+  downFrom-lookup      : lookup (downFrom        n) i ≡ n ∸ (suc (toℕ i))
+
+  map-tabulate : map f (tabulate g) ≡ tabulate (f ∘ g)
   ```
 
 * Added new proofs to `Data.List.Relation.Permutation.Inductive.Properties`:
