@@ -696,7 +696,8 @@ Other minor additions
 
 * Added new proof to `Data.Product.Properties.WithK`:
   ```agda
-  ≡-dec : Decidable _≡_ → (∀ {a} → Decidable {A = B a} _≡_) → Decidable {A = Σ A B} _≡_
+  ,-injective : (a , b) ≡ (c , d) → a ≡ c × b ≡ d
+  ≡-dec       : Decidable _≡_ → (∀ {a} → Decidable {A = B a} _≡_) → Decidable {A = Σ A B} _≡_
   ```
 
 * Added new functions to `Data.Product.Relation.Pointwise.NonDependent`:

@@ -18,6 +18,11 @@ open import Relation.Nullary using (yes; no)
 ------------------------------------------------------------------------
 -- Equality
 
+module _ {a b} {A : Set a} {B : Set b} where
+
+  ,-injective : ∀ {a c : A} {b d : B} → (a , b) ≡ (c , d) → a ≡ c × b ≡ d
+  ,-injective refl = refl , refl
+
 module _ {a b} {A : Set a} {B : A → Set b} where
 
   ,-injectiveʳ : ∀ {a} {b c : B a} → (Σ A B ∋ (a , b)) ≡ (a , c) → b ≡ c
