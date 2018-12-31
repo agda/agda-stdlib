@@ -4,6 +4,8 @@
 -- Properties of These
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.These.Properties where
 
 open import Data.These
