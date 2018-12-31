@@ -15,16 +15,25 @@ open import Data.Maybe.Base
 open import Data.Maybe.All using (All; just; nothing)
 open import Data.Product using (_,_)
 open import Function
-
+open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality
+open import Relation.Nullary using (yes; no)
 
 ------------------------------------------------------------------------
--- just
+-- Equality
 
 module _ {a} {A : Set a} where
 
   just-injective : ∀ {x y} → (Maybe A ∋ just x) ≡ just y → x ≡ y
   just-injective refl = refl
+
+  ≡-dec : Decidable _≡_ → Decidable {A = Maybe A} _≡_
+  ≡-dec _≟_ nothing  nothing  = yes refl
+  ≡-dec _≟_ (just x) nothing  = no λ()
+  ≡-dec _≟_ nothing  (just y) = no λ()
+  ≡-dec _≟_ (just x) (just y) with x ≟ y
+  ... | yes refl = yes refl
+  ... | no  x≢y  = no (x≢y ∘ just-injective)
 
 ------------------------------------------------------------------------
 -- map

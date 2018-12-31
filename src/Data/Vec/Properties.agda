@@ -22,7 +22,7 @@ open import Data.Product as Prod
 open import Data.Vec
 open import Function
 open import Function.Inverse using (_↔_; inverse)
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; _≗_)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_; refl)
@@ -42,6 +42,15 @@ module _ {a} {A : Set a} {n} {x y : A} {xs ys : Vec A n} where
 
  ∷-injective : (x ∷ xs) ≡ (y ∷ ys) → x ≡ y × xs ≡ ys
  ∷-injective refl = refl , refl
+
+module _ {a} {A : Set a} where
+
+  ≡-dec : B.Decidable _≡_ → ∀ {n} → B.Decidable {A = Vec A n} _≡_
+  ≡-dec _≟_ []       []       = yes refl
+  ≡-dec _≟_ (x ∷ xs) (y ∷ ys) with x ≟ y | ≡-dec _≟_ xs ys
+  ... | yes refl | yes refl = yes refl
+  ... | no  x≢y  | _        = no (x≢y   ∘ ∷-injectiveˡ)
+  ... | yes _    | no xs≢ys = no (xs≢ys ∘ ∷-injectiveʳ)
 
 ------------------------------------------------------------------------
 -- _[_]=_

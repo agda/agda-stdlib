@@ -293,6 +293,8 @@ Other major changes
 * Added new modules `Data.List.Relation.Interleaving(.Setoid/Propositional)`
   and `Data.List.Relation.Interleaving(.Setoid/Propositional).Properties`.
 
+* Added new module `Data.These.Properties`
+
 * Added new module `Data.Vec.Any.Properties`
 
 * Added new modules `Data.Vec.Membership.(Setoid/DecSetoid/DecPropositional)`
@@ -598,6 +600,8 @@ Other minor additions
 
 * Added new proofs to `Data.List.Properties`:
   ```agda
+  ≡-dec : Decidable _≡_ → Decidable {A = List A} _≡_
+
   ++-isMagma : IsMagma _++_
 
   length-%=  : length (xs [ k ]%= f) ≡ length xs
@@ -662,6 +666,11 @@ Other minor additions
   _<∣>_     : Maybe A → Maybe A → Maybe A
   ```
 
+* Added new proof to `Data.Maybe.Properties`:
+  ```agda
+  ≡-dec : Decidable _≡_ → Decidable {A = Maybe A} _≡_
+  ```
+
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
   +-isMagma       : IsMagma _+_
@@ -683,6 +692,11 @@ Other minor additions
   ⊓-semilattice : Semilattice 0ℓ 0ℓ
 
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
+  ```
+
+* Added new proof to `Data.Product.Properties.WithK`:
+  ```agda
+  ≡-dec : Decidable _≡_ → (∀ {a} → Decidable {A = B a} _≡_) → Decidable {A = Σ A B} _≡_
   ```
 
 * Added new functions to `Data.Product.Relation.Pointwise.NonDependent`:
@@ -717,6 +731,11 @@ Other minor additions
   toDec   : P ⊎ ¬ P → Dec P
   ```
 
+* Added new proof to `Data.Sum.Properties`:
+  ```agda
+  ≡-dec : Decidable _≡_ → Decidable _≡_ → Decidable {A = A ⊎ B} _≡_
+  ```
+
 * Added new functions to `Data.Sum.Relation.Pointwise`:
   ```agda
   inj₁ₛ : A ⟶ (A ⊎ₛ B)
@@ -743,6 +762,11 @@ Other minor additions
   ```agda
   fromAny : Any P xs → ∃ λ x → x ∈ xs × P x
   toAny   : x ∈ xs → P x → Any P xs
+  ```
+
+* Added new proof to `Data.Vec.Properties`:
+  ```agda
+  ≡-dec : Decidable _≡_ → ∀ {n} → Decidable {A = Vec A n} _≡_
   ```
 
 * Added new proofs to `Function.Related.TypeIsomorphisms`:
