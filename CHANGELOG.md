@@ -799,7 +799,7 @@ Other minor additions
   toList⁻      : List.Any P (toList xs) → Any P xs
   fromList⁺    : List.Any P xs → Any P (fromList xs)
   fromList⁻    : Any P (fromList xs) → List.Any P xs
-  
+
   ∷↔   : ∀ P → (P x ⊎ Any P xs) ↔ Any P (x ∷ xs)
   >>=↔ : Any (Any P ∘ f) xs ↔ Any P (xs >>= f)
   ```
