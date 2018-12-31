@@ -236,6 +236,9 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The proofs `drop-*≤*`, `≃⇒≡` and `≡⇒≃` have been moved from `Data.Rational`
   to `Data.Rational.Properties`.
 
+* Fixed bug in `Data.Nat.Properties` where the type of `m⊓n≤m⊔n` was `∀ m n → m ⊔ n ≤ m ⊔ n`,
+  the type is now correctly `∀ m n → m ⊓ n ≤ m ⊔ n`.
+
 Other major changes
 -------------------
 

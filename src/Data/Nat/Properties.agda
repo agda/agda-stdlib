@@ -1111,9 +1111,9 @@ n⊔m≡m⇒n≤m n⊔m≡m = subst (_ ≤_) n⊔m≡m (m≤m⊔n _ _)
 n⊔m≡n⇒m≤n : ∀ {m n} → n ⊔ m ≡ n → m ≤ n
 n⊔m≡n⇒m≤n n⊔m≡n = subst (_ ≤_) n⊔m≡n (n≤m⊔n _ _)
 
-m⊓n≤m⊔n : ∀ m n → m ⊔ n ≤ m ⊔ n
-m⊓n≤m⊔n zero    n       = ≤-refl
-m⊓n≤m⊔n (suc m) zero    = ≤-refl
+m⊓n≤m⊔n : ∀ m n → m ⊓ n ≤ m ⊔ n
+m⊓n≤m⊔n zero    n       = z≤n
+m⊓n≤m⊔n (suc m) zero    = z≤n
 m⊓n≤m⊔n (suc m) (suc n) = s≤s (m⊓n≤m⊔n m n)
 
 m≤n⇒m⊓o≤n : ∀ {m n} o → m ≤ n → m ⊓ o ≤ n
