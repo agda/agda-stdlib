@@ -1463,18 +1463,21 @@ eq? : ∀ {a} {A : Set a} → A ↣ ℕ → Decidable {A = A} _≡_
 eq? inj = via-injection inj _≟_
 
 ------------------------------------------------------------------------
--- Modules for reasoning about natural number relations
+-- A module for reasoning about the _≤_ and _<_ relations
 
--- A module for reasoning about the _≤_ relation
 module ≤-Reasoning where
-  open import Relation.Binary.Reasoning.PartialOrder
-    (DecTotalOrder.poset ≤-decTotalOrder) public
+  open import Relation.Binary.Reasoning.Base.Triple
+    isEquivalence
+    ≤-trans
+    (resp₂ _≤_)
+    ≤-refl
+    <-trans
+    (resp₂ _<_)
+    <⇒≤
+    <-transˡ
+    <-transʳ
+    public
     hiding (_≈⟨_⟩_)
-
-  infixr 2 _<⟨_⟩_
-
-  _<⟨_⟩_ : ∀ x {y z} → x < y → y IsRelatedTo z → suc x IsRelatedTo z
-  x <⟨ x<y ⟩ y≤z = suc x ≤⟨ x<y ⟩ y≤z
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
