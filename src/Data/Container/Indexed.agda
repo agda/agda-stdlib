@@ -21,7 +21,9 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse using (_↔_; module Inverse)
 open import Relation.Unary using (Pred; _⊆_)
 import Relation.Binary as B
+open import Relation.Binary.Indexed.Heterogeneous using (IREL)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_; refl)
+open import Relation.Binary.HeterogeneousEquality as H using (_≅_)
 
 ------------------------------------------------------------------------
 
@@ -214,4 +216,12 @@ module _ {i o c r ℓ₁ ℓ₂} {I : Set i} {O : Set o} (C : Container I O c r)
   ◇-map : P ⊆ Q → ◇ C P ⊆ ◇ C Q
   ◇-map P⊆Q = Prod.map ⟨id⟩ P⊆Q
 
--- Membership is defined in Data.Container.Indexed.WithK.
+
+------------------------------------------------------------------------
+-- Membership.
+
+infix 4 _∈_
+
+_∈_ : ∀ {i o c r ℓ} {I : Set i} {O : Set o}
+      {C : Container I O c r} {X : Pred I (i ⊔ ℓ)} → IREL X (⟦ C ⟧ X) _
+_∈_ {C = C} {X} x xs = ◇ C {X = X} (_≅_ x) (-, xs)
