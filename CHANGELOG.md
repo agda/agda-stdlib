@@ -263,6 +263,9 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The proofs `drop-*≤*`, `≃⇒≡` and `≡⇒≃` have been moved from `Data.Rational`
   to `Data.Rational.Properties`.
 
+* Fixed bug in `Data.Nat.Properties` where the type of `m⊓n≤m⊔n` was `∀ m n → m ⊔ n ≤ m ⊔ n`,
+  the type is now correctly `∀ m n → m ⊓ n ≤ m ⊔ n`.
+
 * The proofs `toList⁺` and `toList⁻` in `Data.Vec.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
@@ -681,6 +684,23 @@ Other minor additions
   ⊓-band        : Band 0ℓ 0ℓ
   ⊔-semilattice : Semilattice 0ℓ 0ℓ
   ⊓-semilattice : Semilattice 0ℓ 0ℓ
+
+  m≤n⇒m⊓o≤n : ∀ {m n} o → m ≤ n → m ⊓ o ≤ n
+  m≤n⇒o⊓m≤n : ∀ {m n} o → m ≤ n → o ⊓ m ≤ n
+  m<n⇒m⊓o<n : ∀ {m n} o → m < n → m ⊓ o < n
+  m<n⇒o⊓m<n : ∀ {m n} o → m < n → o ⊓ m < n
+  m≤n⊓o⇒m≤n : ∀ {m} n o → m ≤ n ⊓ o → m ≤ n
+  m≤n⊓o⇒m≤o : ∀ {m} n o → m ≤ n ⊓ o → m ≤ o
+  m<n⊓o⇒m<n : ∀ {m} n o → m < n ⊓ o → m < n
+  m<n⊓o⇒m<o : ∀ {m} n o → m < n ⊓ o → m < o
+  m≤n⇒m≤n⊔o : ∀ {m n} o → m ≤ n → m ≤ n ⊔ o
+  m≤n⇒m≤o⊔n : ∀ {m n} o → m ≤ n → m ≤ o ⊔ n
+  m<n⇒m<n⊔o : ∀ {m n} o → m < n → m < n ⊔ o
+  m<n⇒m<o⊔n : ∀ {m n} o → m < n → m < o ⊔ n
+  m⊔n≤o⇒m≤o : ∀ m n {o} → m ⊔ n ≤ o → m ≤ o
+  m⊔n≤o⇒n≤o : ∀ m n {o} → m ⊔ n ≤ o → n ≤ o
+  m⊔n<o⇒m<o : ∀ m n {o} → m ⊔ n < o → m < o
+  m⊔n<o⇒n<o : ∀ m n {o} → m ⊔ n < o → n < o
 
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
   ```
