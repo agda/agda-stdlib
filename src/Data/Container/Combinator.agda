@@ -4,6 +4,8 @@
 -- Container combinators
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Container.Combinator where
 
 open import Data.Container

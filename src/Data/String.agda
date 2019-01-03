@@ -4,6 +4,8 @@
 -- Strings
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.String where
 
 open import Data.Vec as Vec using (Vec)

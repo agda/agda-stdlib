@@ -8,6 +8,8 @@
 -- Erwig's FGL. Note that this representation does not aim to be
 -- efficient.
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Graph.Acyclic where
 
 open import Level using (_⊔_)

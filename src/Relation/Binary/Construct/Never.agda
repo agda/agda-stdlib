@@ -4,6 +4,8 @@
 -- The empty binary relation
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Binary.Construct.Never where
 
 open import Relation.Binary

@@ -4,6 +4,8 @@
 -- Unsafe String operations and proofs
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K #-}
+
 module Data.String.Unsafe where
 
 open import Data.String

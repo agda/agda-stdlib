@@ -4,6 +4,8 @@
 -- The state monad
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Category.Monad.State where
 
 open import Category.Applicative.Indexed

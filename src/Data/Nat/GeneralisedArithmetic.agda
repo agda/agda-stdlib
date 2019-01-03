@@ -4,6 +4,8 @@
 -- A generalisation of the arithmetic operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Nat.GeneralisedArithmetic where
 
 open import Data.Nat

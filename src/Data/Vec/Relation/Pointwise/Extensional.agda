@@ -4,6 +4,8 @@
 -- Extensional pointwise lifting of relations to vectors
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Vec.Relation.Pointwise.Extensional where
 
 open import Data.Fin using (zero; suc)

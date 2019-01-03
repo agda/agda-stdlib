@@ -4,6 +4,8 @@
 -- Coinductive lists
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Codata.Musical.Colist where
 
 open import Category.Monad
@@ -289,12 +291,12 @@ Any-resp f (x ∷ xs≈) (there p) = there (Any-resp f (♭ xs≈) p)
 
 Any-cong : ∀ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q}
            {xs ys} → P ↔̇ Q → xs ≈ ys → Any P xs ↔ Any Q ys
-Any-cong {A = A} {P} {Q} {xs} {ys} P↔Q xs≈ys = record
+Any-cong {A = A} {P} {Q} {xs} {ys} P↔Q = λ xs≈ys → record
   { to         = P.→-to-⟶ (to xs≈ys)
   ; from       = P.→-to-⟶ (from xs≈ys)
   ; inverse-of = record
-    { left-inverse-of  = resp∘resp          P↔Q       xs≈ys (sym xs≈ys)
-    ; right-inverse-of = resp∘resp (Inv.sym P↔Q) (sym xs≈ys)     xs≈ys
+    { left-inverse-of  = from∘to _
+    ; right-inverse-of = to∘from _
     }
   }
   where
@@ -306,15 +308,17 @@ Any-cong {A = A} {P} {Q} {xs} {ys} P↔Q xs≈ys = record
   from : ∀ {xs ys} → xs ≈ ys → Any Q ys → Any P xs
   from xs≈ys = Any-resp (Inverse.from P↔Q ⟨$⟩_) (sym xs≈ys)
 
-  resp∘resp : ∀ {p q} {P : A → Set p} {Q : A → Set q} {xs ys}
-              (P↔̇Q : P ↔̇ Q) (xs≈ys : xs ≈ ys) (ys≈xs : ys ≈ xs)
-              (p : Any P xs) →
-              Any-resp (Inverse.from P↔̇Q ⟨$⟩_) ys≈xs
-                (Any-resp (Inverse.to P↔̇Q ⟨$⟩_) xs≈ys p) ≡ p
-  resp∘resp P↔̇Q (x ∷ xs≈) (.x ∷ ys≈) (here px) =
-    P.cong here (Inverse.left-inverse-of P↔̇Q px)
-  resp∘resp P↔̇Q (x ∷ xs≈) (.x ∷ ys≈) (there p) =
-    P.cong there (resp∘resp P↔̇Q (♭ xs≈) (♭ ys≈) p)
+  to∘from : ∀ {xs ys} (xs≈ys : xs ≈ ys) (q : Any Q ys) →
+            to xs≈ys (from xs≈ys q) ≡ q
+  to∘from (x ∷ xs≈) (there q) = P.cong there (to∘from (♭ xs≈) q)
+  to∘from (x ∷ xs≈) (here qx) =
+    P.cong here (Inverse.right-inverse-of P↔Q qx)
+
+  from∘to : ∀ {xs ys} (xs≈ys : xs ≈ ys) (p : Any P xs) →
+            from xs≈ys (to xs≈ys p) ≡ p
+  from∘to (x ∷ xs≈) (there p) = P.cong there (from∘to (♭ xs≈) p)
+  from∘to (x ∷ xs≈) (here px) =
+    P.cong here (Inverse.left-inverse-of P↔Q px)
 
 ------------------------------------------------------------------------
 -- Indices
@@ -446,9 +450,12 @@ Any-∈ {P = P} = record
   trans []        _          = []
   trans (x ∷ xs≈) (.x ∷ ys≈) = x ∷ ♯ trans (♭ xs≈) (♭ ys≈)
 
+  tail : ∀ {x xs y ys} → x ∷ xs ⊑ y ∷ ys → ♭ xs ⊑ ♭ ys
+  tail (_ ∷ p) = ♭ p
+
   antisym : Antisymmetric _≈_ _⊑_
-  antisym []       []        = []
-  antisym (x ∷ p₁) (.x ∷ p₂) = x ∷ ♯ antisym (♭ p₁) (♭ p₂)
+  antisym []       [] = []
+  antisym (x ∷ p₁) p₂ = x ∷ ♯ antisym (♭ p₁) (tail p₂)
 
 module ⊑-Reasoning where
   import Relation.Binary.PartialOrderReasoning as POR

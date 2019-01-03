@@ -4,6 +4,8 @@
 -- Symmetric closures of binary relations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Binary.Construct.Closure.Symmetric where
 
 open import Data.Sum as Sum using (_⊎_)

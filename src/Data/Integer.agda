@@ -4,6 +4,8 @@
 -- Integers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Integer where
 
 import Data.Nat.Show as ℕ

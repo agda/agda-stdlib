@@ -4,6 +4,8 @@
 -- A categorical view of the identity function
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Function.Identity.Categorical {ℓ} where
 
 open import Category.Functor

@@ -5,6 +5,8 @@
 -- order
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 
 module Relation.Binary.StrictPartialOrderReasoning

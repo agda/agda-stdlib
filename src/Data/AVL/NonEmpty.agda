@@ -9,13 +9,10 @@
 -- The search tree invariant is specified using the technique
 -- described by Conor McBride in his talk "Pivotal pragmatism".
 
-open import Relation.Binary using (Rel; IsStrictTotalOrder)
-open import Relation.Binary.PropositionalEquality as P using (_≡_ ; refl)
+open import Relation.Binary using (StrictTotalOrder)
 
 module Data.AVL.NonEmpty
-  {k r} {Key : Set k} {_<_ : Rel Key r}
-  (isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_)
-  where
+  {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂) where
 
 open import Data.Bool.Base using (Bool)
 open import Data.Empty
@@ -28,8 +25,9 @@ open import Function
 open import Level using (_⊔_; Lift; lift)
 open import Relation.Unary
 
-open IsStrictTotalOrder isStrictTotalOrder
-import Data.AVL.Indexed Key isStrictTotalOrder as Indexed
+open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
+open import Data.AVL.Value Eq.setoid
+import Data.AVL.Indexed strictTotalOrder as Indexed
 open Indexed using (K&_ ; ⊥⁺ ; ⊤⁺; node; toList)
 
 ------------------------------------------------------------------------
@@ -38,43 +36,49 @@ open Indexed using (K&_ ; ⊥⁺ ; ⊤⁺; node; toList)
 -- NB: the height is non-zero thus guaranteeing that the AVL tree contains
 -- at least one value.
 
-data Tree⁺ {v} (V : Key → Set v) : Set (k ⊔ v ⊔ r) where
+data Tree⁺ {v} (V : Value v) : Set (a ⊔ v ⊔ ℓ₂) where
   tree : ∀ {h} → Indexed.Tree V ⊥⁺ ⊤⁺ (suc h) → Tree⁺ V
 
-module _ {v} {V : Key → Set v} where
+module _ {v} {V : Value v} where
 
-  singleton : (k : Key) → V k → Tree⁺ V
+  private
+    Val = Value.family V
+
+  singleton : (k : Key) → Val k → Tree⁺ V
   singleton k v = tree (Indexed.singleton k v _)
 
-  insert : (k : Key) → V k → Tree⁺ V → Tree⁺ V
+  insert : (k : Key) → Val k → Tree⁺ V → Tree⁺ V
   insert k v (tree t) with Indexed.insert k v t _
   ... | Indexed.0# , t′ = tree t′
   ... | Indexed.1# , t′ = tree t′
   ... | Indexed.## , t′
 
-  insertWith : (k : Key) → V k → (V k → V k → V k) →
-               Tree⁺ V → Tree⁺ V
-  insertWith k v f (tree t) with Indexed.insertWith k v f t _
+  insertWith : (k : Key) → (Maybe (Val k) → Val k) → Tree⁺ V → Tree⁺ V
+  insertWith k f (tree t) with Indexed.insertWith k f t _
   ... | Indexed.0# , t′ = tree t′
   ... | Indexed.1# , t′ = tree t′
   ... | Indexed.## , t′
 
   delete : Key → Tree⁺ V → Maybe (Tree⁺ V)
-  delete k (tree {h} t) with Indexed.delete k t
+  delete k (tree {h} t) with Indexed.delete k t _
   ... | Indexed.1# , t′ = just (tree t′)
   delete k (tree {0}     t) | Indexed.0# , t′ = nothing
   delete k (tree {suc h} t) | Indexed.0# , t′ = just (tree t′)
   ... | Indexed.## , t′
 
-  lookup : (k : Key) → Tree⁺ V → Maybe (V k)
-  lookup k (tree t) = Indexed.lookup k t
+  lookup : (k : Key) → Tree⁺ V → Maybe (Val k)
+  lookup k (tree t) = Indexed.lookup k t _
 
-module _ {v w} {V : Key → Set v} {W : Key → Set w} where
+module _ {v w} {V : Value v} {W : Value w} where
 
-  map : ∀[ V ⇒ W ] → Tree⁺ V → Tree⁺ W
+  private
+    Val = Value.family V
+    Wal = Value.family W
+
+  map : ∀[ Val ⇒ Wal ] → Tree⁺ V → Tree⁺ W
   map f (tree t) = tree $ Indexed.map f t
 
-module _ {v} {V : Key → Set v} where
+module _ {v} {V : Value v} where
 
   -- The input does not need to be ordered.
 

@@ -5,6 +5,8 @@
 -- of elements /not/ in a given list
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Level using (0ℓ)
 open import Relation.Binary
 

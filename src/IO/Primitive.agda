@@ -4,6 +4,8 @@
 -- Primitive IO: simple bindings to Haskell types and functions
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module IO.Primitive where
 
 open import Codata.Musical.Costring

@@ -4,25 +4,26 @@
 -- Non empty trie, basic type and operations
 ------------------------------------------------------------------------
 
-open import Relation.Binary using (Rel; IsStrictTotalOrder)
+open import Relation.Binary using (Rel; IsStrictTotalOrder; StrictTotalOrder)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 
 module Data.Trie.NonEmpty
   {k r} {Key : Set k} {_<_ : Rel Key r}
-  (S : IsStrictTotalOrder _≡_ _<_) where
+  (isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_) where
 
 open import Level
 open import Size
 open import Category.Monad
 open import Data.Product as Prod using (∃; uncurry; -,_)
-open import Data.AVL.NonEmpty S as Tree⁺ using (Tree⁺)
 open import Data.List as List using (List; []; _∷_; _++_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; [_]; concatMap)
-open import Data.Maybe as Maybe using (Maybe; nothing; just) hiding (module Maybe)
+open import Data.Maybe as Maybe using (Maybe; nothing; just; maybe′) hiding (module Maybe)
 open import Data.These as These using (These; this; that; these)
-open import Function
+open import Function as F
 import Function.Identity.Categorical as Identity
 open import Relation.Unary using (_⇒_; IUniversal)
+
+open import Data.AVL.NonEmpty.Propositional isStrictTotalOrder as Tree⁺ using (Tree⁺)
 
 -- A Trie⁺ is a tree branching over an alphabet of Keys. It stores values
 -- indexed over the Word (i.e. List Key) that was read to reach them.
@@ -33,7 +34,8 @@ Word : Set k
 Word = List Key
 
 data Trie⁺ {v} (V : Word → Set v) (i : Size) : Set (v ⊔ k ⊔ r)
-Tries⁺ : ∀ {v} (V : Word → Set v) → Size → Set (v ⊔ k ⊔ r)
+Tries⁺ : ∀ {v} (V : Word → Set v) (i : Size) → Set (v ⊔ k ⊔ r)
+
 
 data Trie⁺ V i where
   node : {j : Size< i} → These (V []) (Tries⁺ V j) → Trie⁺ V i
@@ -50,11 +52,13 @@ lookup (k ∷ ks) (node nd) = let open Maybe in do
   t  ← Tree⁺.lookup k ts
   lookup ks t
 
-lookupValue : ∀ {v} {V : Word → Set v} ks → Trie⁺ V ∞ → Maybe (V ks)
-lookupValue ks t = lookup ks t Maybe.>>= These.fromThis
+module _ {v} {V : Word → Set v} where
 
-lookupTries⁺ : ∀ {v} {V : Word → Set v} ks → Trie⁺ V ∞ → Maybe (Tries⁺ (V ∘′ (ks ++_)) ∞)
-lookupTries⁺ ks t = lookup ks t Maybe.>>= These.fromThat
+  lookupValue : ∀ ks → Trie⁺ V ∞ → Maybe (V ks)
+  lookupValue ks t = lookup ks t Maybe.>>= These.fromThis
+
+  lookupTries⁺ : ∀ ks → Trie⁺ V ∞ → Maybe (Tries⁺ (V ∘′ (ks ++_)) ∞)
+  lookupTries⁺ ks t = lookup ks t Maybe.>>= These.fromThat
 
 -- Construction
 
@@ -76,12 +80,12 @@ insertWith {v} {V} (k ∷ ks) f (node nd) = node $
   end = singleton ks (f nothing)
 
   rec : Tries⁺ V ∞ → Tries⁺ V ∞
-  rec = Tree⁺.insertWith k end (const $ insertWith ks f)
+  rec = Tree⁺.insertWith k (maybe′ (insertWith ks f) end)
 
 module _ {v} {V : Word → Set v} where
 
   insert : ∀ ks → V ks → Trie⁺ V ∞ → Trie⁺ V ∞
-  insert ks = insertWith ks ∘′ const
+  insert ks = insertWith ks ∘′ F.const
 
   fromList⁺ : List⁺ (∃ V) → Trie⁺ V ∞
   fromList⁺ = List⁺.foldr (uncurry insert) (uncurry singleton)
@@ -100,7 +104,6 @@ toList⁺ (node nd) = These.mergeThese List⁺._⁺++⁺_
 map : ∀ {v w} {V : Word → Set v} {W : Word → Set w} {i} →
       ∀[ V ⇒ W ] → Trie⁺ V i → Trie⁺ W i
 map f (node nd) = node (These.map f (Tree⁺.map (map f)) nd)
-
 
 -- Deletion
 
@@ -122,7 +125,7 @@ deleteWith (k ∷ ks) f t@(node nd) = let open RawMonad Identity.monad in do
 module _ {v} {V : Word → Set v} where
 
   deleteTrie⁺ : ∀ {i} (ks : Word) → Trie⁺ V i → Maybe (Trie⁺ V i)
-  deleteTrie⁺ ks = deleteWith ks (const nothing)
+  deleteTrie⁺ ks = deleteWith ks (F.const nothing)
 
   deleteValue : ∀ {i} (ks : Word) → Trie⁺ V i → Maybe (Trie⁺ V i)
   deleteValue ks = deleteWith ks $ λ where

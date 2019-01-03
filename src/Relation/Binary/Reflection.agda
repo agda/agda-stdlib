@@ -5,6 +5,8 @@
 -- proof by reflection
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Data.Fin
 open import Data.Nat
 open import Data.Vec as Vec

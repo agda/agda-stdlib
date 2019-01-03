@@ -4,6 +4,8 @@
 -- Sums of binary relations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Sum.Relation.LeftOrder where
 
 open import Data.Sum as Sum

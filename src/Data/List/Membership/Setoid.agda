@@ -4,6 +4,8 @@
 -- List membership and some related definitions
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 
 module Data.List.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where

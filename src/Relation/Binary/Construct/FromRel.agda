@@ -5,6 +5,8 @@
 -- made that this preorder is unique.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 open Setoid using (Carrier)
 

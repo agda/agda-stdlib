@@ -6,6 +6,8 @@
 
 -- The definitions in this file are reexported by Data.Maybe.
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Maybe.Base where
 
 open import Level

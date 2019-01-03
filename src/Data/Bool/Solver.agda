@@ -6,6 +6,8 @@
 
 -- See README.Nat for examples of how to use similar solvers
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Bool.Solver where
 
 import Algebra.Solver.Ring.Simple as Solver

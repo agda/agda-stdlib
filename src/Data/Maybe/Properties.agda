@@ -4,11 +4,13 @@
 -- Maybe-related properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Maybe.Properties where
 
 open import Algebra
-open import Algebra.Structures
-open import Algebra.FunctionProperties
+import Algebra.Structures as Structures
+import Algebra.FunctionProperties as FunctionProperties
 open import Data.Maybe.Base
 open import Data.Maybe.All using (All; just; nothing)
 open import Data.Product using (_,_)
@@ -77,31 +79,40 @@ module _ {a b} {A : Set a} {B : Set b} where
 
 module _ {a} {A : Set a} where
 
-  <∣>-assoc : Associative {A = Maybe A} _≡_ _<∣>_
+  open FunctionProperties {A = Maybe A} _≡_
+
+  <∣>-assoc : Associative _<∣>_
   <∣>-assoc (just x) y z = refl
   <∣>-assoc nothing  y z = refl
 
-  <∣>-identityˡ : LeftIdentity {A = Maybe A} _≡_ nothing _<∣>_
+  <∣>-identityˡ : LeftIdentity nothing _<∣>_
   <∣>-identityˡ (just x) = refl
   <∣>-identityˡ nothing  = refl
 
-  <∣>-identityʳ : RightIdentity {A = Maybe A} _≡_ nothing _<∣>_
+  <∣>-identityʳ : RightIdentity nothing _<∣>_
   <∣>-identityʳ (just x) = refl
   <∣>-identityʳ nothing  = refl
 
-  <∣>-identity : Identity {A = Maybe A} _≡_ nothing _<∣>_
+  <∣>-identity : Identity nothing _<∣>_
   <∣>-identity = <∣>-identityˡ , <∣>-identityʳ
 
 module _ {a} (A : Set a) where
 
-  <∣>-isSemigroup : IsSemigroup {A = Maybe A} _≡_ _<∣>_
-  <∣>-isSemigroup = record
+  open Structures {A = Maybe A} _≡_
+
+  <∣>-isMagma : IsMagma _<∣>_
+  <∣>-isMagma = record
     { isEquivalence = isEquivalence
-    ; assoc         = <∣>-assoc
     ; ∙-cong        = cong₂ _<∣>_
     }
 
-  <∣>-isMonoid : IsMonoid {A = Maybe A} _≡_ _<∣>_ nothing
+  <∣>-isSemigroup : IsSemigroup _<∣>_
+  <∣>-isSemigroup = record
+    { isMagma = <∣>-isMagma
+    ; assoc   = <∣>-assoc
+    }
+
+  <∣>-isMonoid : IsMonoid _<∣>_ nothing
   <∣>-isMonoid = record
     { isSemigroup = <∣>-isSemigroup
     ; identity    = <∣>-identity

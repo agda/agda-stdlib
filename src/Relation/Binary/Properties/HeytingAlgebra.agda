@@ -4,6 +4,8 @@
 -- Properties satisfied by Heyting Algebra
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary.Lattice
 
 module Relation.Binary.Properties.HeytingAlgebra

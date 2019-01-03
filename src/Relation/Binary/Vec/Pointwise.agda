@@ -7,6 +7,8 @@
 -- and Data.Vec.Relation.Pointwise.Extensional directly.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Binary.Vec.Pointwise where
 
 open import Data.Vec.Relation.Pointwise.Inductive public

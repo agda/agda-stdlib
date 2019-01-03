@@ -10,7 +10,7 @@ This is very much a work-in-progress and is not exhaustive.
 * When only using a few items from a module, the items should be enumerated in the import with `using`
   in order to make dependencies clearer.
 
-## Identation
+## Indentation
 
 * The top-level contents of a top-level module should have zero indentation. Every subsequent
   level of indentation should use 2 spaces.
@@ -43,10 +43,9 @@ This is very much a work-in-progress and is not exhaustive.
 
 * Try to avoid the need for bracketing but if necessary use square brackets (e.g. `[m∸n]⊓[n∸m]≡0`)
 
-
 #### Operators and relations
 
-* Operators and relations names should use misfix notation where applicable (e.g. `_+_`, `_<_`)
+* Operators and relations names should use mixfix notation where applicable (e.g. `_+_`, `_<_`)
 
 * Common properties such as those in rings/orders/equivalences etc. have defined abbreviations
   (e.g. commutativity is shortened to `comm`). `Data.Nat.Properties` is a good place to look for examples.
@@ -59,4 +58,4 @@ This is very much a work-in-progress and is not exhaustive.
 
 ## Other miscellaneous points
 
-* `where` blocks are preferred to the `let` construction.
+* `where` blocks are preferred rather than the `let` construction.

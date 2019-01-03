@@ -4,12 +4,15 @@
 -- Maybes where one of the elements satisfies a given property
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Maybe.Any where
 
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Product as Prod using (∃; _,_; -,_)
 open import Function using (id)
 open import Function.Equivalence using (_⇔_; equivalence)
+open import Level
 open import Relation.Binary.PropositionalEquality as P using (_≡_; cong)
 open import Relation.Unary
 open import Relation.Nullary
@@ -18,7 +21,7 @@ import Relation.Nullary.Decidable as Dec
 ------------------------------------------------------------------------
 -- Definition
 
-data Any {a p} {A : Set a} (P : Pred A p) : Pred (Maybe A) p where
+data Any {a p} {A : Set a} (P : Pred A p) : Pred (Maybe A) (a ⊔ p) where
   just : ∀ {x} → P x → Any P (just x)
 
 ------------------------------------------------------------------------

@@ -4,6 +4,8 @@
 -- Decidable equality over lists using propositional equality
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 
