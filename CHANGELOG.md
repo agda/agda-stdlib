@@ -306,6 +306,8 @@ Other major changes
 
 * Added new module `Relation.Binary.Properties.BoundedLattice`
 
+* Added new module `Debug.Trace`
+
 Deprecated features
 -------------------
 
