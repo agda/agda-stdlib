@@ -19,6 +19,8 @@ open import Data.Nat.Base
 open import Data.Product
 open import Data.Sum
 open import Data.Empty
+open import Data.Bool.Base using (Bool; false; true; T)
+open import Data.Bool.Properties using (T?)
 
 open import Level using (0ℓ)
 open import Relation.Binary
@@ -64,6 +66,24 @@ suc m ≟ suc n  with m ≟ n
   ; _≈_              = _≡_
   ; isDecEquivalence = ≡-isDecEquivalence
   }
+
+------------------------------------------------------------------------
+-- Properties of _≡ᵇ_
+
+≡ᵇ⇒≡ : ∀ m n → T (m ≡ᵇ n) → m ≡ n
+≡ᵇ⇒≡ zero    zero    _  = refl
+≡ᵇ⇒≡ (suc m) (suc n) pr = cong suc (≡ᵇ⇒≡ m n pr)
+≡ᵇ⇒≡ zero    (suc n) ()
+≡ᵇ⇒≡ (suc m) zero    ()
+
+≡⇒≡ᵇ : ∀ m n → m ≡ n → T (m ≡ᵇ n)
+≡⇒≡ᵇ zero     zero   eq = _
+≡⇒≡ᵇ (suc m) (suc n) eq = ≡⇒≡ᵇ m n (suc-injective eq)
+≡⇒≡ᵇ zero    (suc n) ()
+≡⇒≡ᵇ (suc m) zero    ()
+
+_≟ᵇ_ : Decidable {A = ℕ} _≡_
+m ≟ᵇ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 
 ------------------------------------------------------------------------
 -- Properties of _≤_

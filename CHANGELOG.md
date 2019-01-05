@@ -402,6 +402,8 @@ Other minor additions
   ∧-band          : Band 0ℓ 0ℓ
   ∨-semilattice   : Semilattice 0ℓ 0ℓ
   ∧-semilattice   : Semilattice 0ℓ 0ℓ
+
+  T?              : Decidable T
   ```
 
 * Added new function to `Data.Fin.Base`:
@@ -703,6 +705,10 @@ Other minor additions
   m⊔n<o⇒n<o : ∀ m n {o} → m ⊔ n < o → n < o
 
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
+
+  ≡ᵇ⇒≡ : T (m ≡ᵇ n) → m ≡ n
+  ≡⇒≡ᵇ : m ≡ n → T (m ≡ᵇ n)
+  _≟ᵇ_ : Decidable _≡_
   ```
 
 * Added new functions to `Data.Product.Relation.Pointwise.NonDependent`:

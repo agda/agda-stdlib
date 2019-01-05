@@ -21,7 +21,7 @@ open import Level using (0ℓ)
 open import Relation.Binary.Core using (Decidable)
 open import Relation.Binary.PropositionalEquality hiding ([_])
 open import Relation.Nullary using (yes; no)
-open import Relation.Unary using (Irrelevant)
+open import Relation.Unary as U using (Irrelevant)
 
 open import Algebra.FunctionProperties (_≡_ {A = Bool})
 open import Algebra.Structures (_≡_ {A = Bool})
@@ -452,6 +452,10 @@ T-∨ {false} {false} = equivalence inj₁ [ id , id ]
 T-irrelevance : Irrelevant T
 T-irrelevance {true}  _  _  = refl
 T-irrelevance {false} () ()
+
+T? : U.Decidable T
+T? true  = yes _
+T? false = no (λ ())
 
 push-function-into-if :
   ∀ {a b} {A : Set a} {B : Set b} (f : A → B) x {y z} →
