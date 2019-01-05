@@ -706,9 +706,16 @@ Other minor additions
 
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
 
-  ≡ᵇ⇒≡ : T (m ≡ᵇ n) → m ≡ n
-  ≡⇒≡ᵇ : m ≡ n → T (m ≡ᵇ n)
-  _≟ᵇ_ : Decidable _≡_
+  ≡ᵇ⇒≡   : T (m ≡ᵇ n) → m ≡ n
+  ≡⇒≡ᵇ   : m ≡ n → T (m ≡ᵇ n)
+  _≟ᵇ_   : Decidable _≡_
+  <ᵇ⇒<″  : T (m <ᵇ n) → m <″ n
+  <″⇒<ᵇ  : m <″ n → T (m <ᵇ n)
+  _<″ᵇ?_ : Decidable _<″_
+  _≤″ᵇ?_ : Decidable _≤″_
+
+  m<ᵇn⇒1+m+[n-1+m]≡n : T (m <ᵇ n) → suc m + (n ∸ suc m) ≡ n
+  m<ᵇ1+m+n           : T (m <ᵇ suc (m + n))
   ```
 
 * Added new functions to `Data.Product.Relation.Pointwise.NonDependent`:

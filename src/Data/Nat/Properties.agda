@@ -72,18 +72,46 @@ suc m ≟ suc n  with m ≟ n
 
 ≡ᵇ⇒≡ : ∀ m n → T (m ≡ᵇ n) → m ≡ n
 ≡ᵇ⇒≡ zero    zero    _  = refl
-≡ᵇ⇒≡ (suc m) (suc n) pr = cong suc (≡ᵇ⇒≡ m n pr)
+≡ᵇ⇒≡ (suc m) (suc n) eq = cong suc (≡ᵇ⇒≡ m n eq)
 ≡ᵇ⇒≡ zero    (suc n) ()
 ≡ᵇ⇒≡ (suc m) zero    ()
 
 ≡⇒≡ᵇ : ∀ m n → m ≡ n → T (m ≡ᵇ n)
-≡⇒≡ᵇ zero     zero   eq = _
+≡⇒≡ᵇ zero    zero    eq = _
 ≡⇒≡ᵇ (suc m) (suc n) eq = ≡⇒≡ᵇ m n (suc-injective eq)
 ≡⇒≡ᵇ zero    (suc n) ()
 ≡⇒≡ᵇ (suc m) zero    ()
 
 _≟ᵇ_ : Decidable {A = ℕ} _≡_
 m ≟ᵇ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
+
+------------------------------------------------------------------------
+-- Properties of _<ᵇ_
+
+m<ᵇn⇒1+m+[n-1+m]≡n : ∀ m n → T (m <ᵇ n) → suc m + (n ∸ suc m) ≡ n
+m<ᵇn⇒1+m+[n-1+m]≡n m       zero    ()
+m<ᵇn⇒1+m+[n-1+m]≡n zero    (suc n) lt = refl
+m<ᵇn⇒1+m+[n-1+m]≡n (suc m) (suc n) lt = cong suc (m<ᵇn⇒1+m+[n-1+m]≡n m n lt)
+
+<ᵇ⇒<″ : ∀ {m n} → T (m <ᵇ n) → m <″ n
+<ᵇ⇒<″ {m} {n} eq = less-than-or-equal {k = n ∸ suc m} (m<ᵇn⇒1+m+[n-1+m]≡n m n eq)
+
+m<ᵇ1+m+n : ∀ m {n} → T (m <ᵇ suc (m + n))
+m<ᵇ1+m+n zero    = _
+m<ᵇ1+m+n (suc m) = m<ᵇ1+m+n m
+
+<″⇒<ᵇ : ∀ {m n} → m <″ n → T (m <ᵇ n)
+<″⇒<ᵇ {m} (less-than-or-equal refl) = m<ᵇ1+m+n m
+
+_<″ᵇ?_ : Decidable _<″_
+m <″ᵇ? n = map′ <ᵇ⇒<″ <″⇒<ᵇ (T? (m <ᵇ n))
+
+------------------------------------------------------------------------
+-- Properties of _≤ᵇ_
+
+_≤″ᵇ?_ : Decidable _≤″_
+zero  ≤″ᵇ? n = yes (less-than-or-equal refl)
+suc m ≤″ᵇ? n = m <″ᵇ? n
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
