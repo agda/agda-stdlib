@@ -707,6 +707,11 @@ Other minor additions
   _<∣>_     : Maybe A → Maybe A → Maybe A
   ```
 
+* Added new proof to `Data.Maybe.Relation.Pointwise`:
+  ```agda
+  reflexive : _≡_ ⇒ R → _≡_ ⇒ Pointwise R
+  ```
+
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
   +-isMagma       : IsMagma _+_
