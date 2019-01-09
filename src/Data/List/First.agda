@@ -24,10 +24,14 @@ open import Relation.Nullary
 -----------------------------------------------------------------------
 -- Basic type.
 
-data First {p q} (P : Pred A p) (Q : Pred A q) :
-           Pred (List A) (a ⊔ p ⊔ q) where
-  [_] : ∀ {x xs} → Q x                → First P Q (x ∷ xs)
-  _∷_ : ∀ {x xs} → P x → First P Q xs → First P Q (x ∷ xs)
+module _ {p q} (P : Pred A p) (Q : Pred A q) where
+
+  data First : Pred (List A) (a ⊔ p ⊔ q) where
+    [_] : ∀ {x xs} → Q x            → First (x ∷ xs)
+    _∷_ : ∀ {x xs} → P x → First xs → First (x ∷ xs)
+
+  data FirstView : Pred (List A) (a ⊔ p ⊔ q) where
+    _++_∷_ : ∀ {xs y} → All P xs → Q y → ∀ ys → FirstView (xs List.++ y ∷ ys)
 
 ------------------------------------------------------------------------
 -- map
