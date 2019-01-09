@@ -25,7 +25,7 @@ open import Function using (_∘_; _$_)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
-import Relation.Binary.PartialOrderReasoning as POR
+import Relation.Binary.Reasoning.PartialOrder as POR
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec

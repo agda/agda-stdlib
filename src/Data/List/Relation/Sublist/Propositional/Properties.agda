@@ -157,9 +157,10 @@ module _ {a} (A : Set a) where
     { isPartialOrder = ⊆-isPartialOrder
     }
 
-import Relation.Binary.PartialOrderReasoning as PosetReasoning
+import Relation.Binary.Reasoning.PartialOrder as POR
+
 module ⊆-Reasoning {a} {A : Set a}  where
-  private module P = PosetReasoning (⊆-poset A)
+  private module P = POR (⊆-poset A)
   open P public
     renaming (_≤⟨_⟩_ to _⊆⟨_⟩_; _≈⟨⟩_ to _≡⟨⟩_)
     hiding (_≈⟨_⟩_)

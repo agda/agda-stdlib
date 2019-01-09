@@ -36,8 +36,8 @@ open import Function.Related as Related
 open import Function.Related.TypeIsomorphisms
 open import Level using (Lift)
 open import Relation.Binary
-import Relation.Binary.EqReasoning as EqR
-import Relation.Binary.PreorderReasoning as PreorderReasoning
+import Relation.Binary.Reasoning.Setoid as EqR
+import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; _≗_; refl)
 open import Relation.Nullary

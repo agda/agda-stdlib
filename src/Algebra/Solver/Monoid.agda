@@ -21,14 +21,14 @@ open import Data.Product
 open import Data.Vec using (Vec; lookup)
 open import Function using (_∘_; _$_)
 open import Relation.Binary using (Decidable)
-import Relation.Binary.EqReasoning
+
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 import Relation.Binary.Reflection
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 
 open Monoid M
-open Relation.Binary.EqReasoning setoid
+open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
 -- Monoid expressions

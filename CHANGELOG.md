@@ -203,6 +203,18 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * All algebraic structures now export left and right congruence properties.
   e.g. `∙-cong refl x≈y` can be replaced with `∙-congˡ y≈z`
 
+#### Upgrade of all forms of Reasoning
+
+* The core Reasoning modules have been renamed as follows:
+  ```
+  Relation.Binary.EqReasoning                 ↦ Relation.Binary.Reasoning.Setoid
+  Relation.Binary.SetoidReasoning             ↦ Relation.Binary.Reasoning.MultiSetoid
+  Relation.Binary.PreorderReasoning           ↦ Relation.Binary.Reasoning.Preorder
+  Relation.Binary.PartialOrderReasoning       ↦ Relation.Binary.Reasoning.PartialOrder
+  Relation.Binary.StrictPartialOrderReasoning ↦ Relation.Binary.Reasoning.StrictPartialOrder
+  ```
+  The old modules have been deprecated but still exist for backwards compatibility reasons.
+
 #### Relaxation of ring solvers requirements
 
 * In the ring solvers below, the assumption that equality is `Decidable`
