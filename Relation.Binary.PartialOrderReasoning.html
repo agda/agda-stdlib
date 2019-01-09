@@ -2,17 +2,16 @@
 <html><head><meta charset="utf-8"><title>Relation.Binary.PartialOrderReasoning</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
 <a id="74" class="Comment">-- The Agda standard library</a>
 <a id="103" class="Comment">--</a>
-<a id="106" class="Comment">-- Convenient syntax for &quot;equational reasoning&quot; using a partial order</a>
-<a id="176" class="Comment">------------------------------------------------------------------------</a>
+<a id="106" class="Comment">-- This module is DEPRECATED. Please use the</a>
+<a id="151" class="Comment">-- Relation.Binary.Reasoning.PartialOrder module directly.</a>
+<a id="210" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="250" class="Symbol">{-#</a> <a id="254" class="Keyword">OPTIONS</a> <a id="262" class="Option">--without-K</a> <a id="274" class="Option">--safe</a> <a id="281" class="Symbol">#-}</a>
+<a id="284" class="Symbol">{-#</a> <a id="288" class="Keyword">OPTIONS</a> <a id="296" class="Option">--without-K</a> <a id="308" class="Option">--safe</a> <a id="315" class="Symbol">#-}</a>
 
-<a id="286" class="Keyword">open</a> <a id="291" class="Keyword">import</a> <a id="298" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="320" class="Keyword">open</a> <a id="325" class="Keyword">import</a> <a id="332" href="Relation.Binary.html" class="Module">Relation.Binary</a>
 
-<a id="315" class="Keyword">module</a> <a id="322" href="Relation.Binary.PartialOrderReasoning.html" class="Module">Relation.Binary.PartialOrderReasoning</a>
-         <a id="369" class="Symbol">{</a><a id="370" href="Relation.Binary.PartialOrderReasoning.html#370" class="Bound">p₁</a> <a id="373" href="Relation.Binary.PartialOrderReasoning.html#373" class="Bound">p₂</a> <a id="376" href="Relation.Binary.PartialOrderReasoning.html#376" class="Bound">p₃</a><a id="378" class="Symbol">}</a> <a id="380" class="Symbol">(</a><a id="381" href="Relation.Binary.PartialOrderReasoning.html#381" class="Bound">P</a> <a id="383" class="Symbol">:</a> <a id="385" href="Relation.Binary.html#3546" class="Record">Poset</a> <a id="391" href="Relation.Binary.PartialOrderReasoning.html#370" class="Bound">p₁</a> <a id="394" href="Relation.Binary.PartialOrderReasoning.html#373" class="Bound">p₂</a> <a id="397" href="Relation.Binary.PartialOrderReasoning.html#376" class="Bound">p₃</a><a id="399" class="Symbol">)</a> <a id="401" class="Keyword">where</a>
+<a id="349" class="Keyword">module</a> <a id="356" href="Relation.Binary.PartialOrderReasoning.html" class="Module">Relation.Binary.PartialOrderReasoning</a>
+         <a id="403" class="Symbol">{</a><a id="404" href="Relation.Binary.PartialOrderReasoning.html#404" class="Bound">p₁</a> <a id="407" href="Relation.Binary.PartialOrderReasoning.html#407" class="Bound">p₂</a> <a id="410" href="Relation.Binary.PartialOrderReasoning.html#410" class="Bound">p₃</a><a id="412" class="Symbol">}</a> <a id="414" class="Symbol">(</a><a id="415" href="Relation.Binary.PartialOrderReasoning.html#415" class="Bound">P</a> <a id="417" class="Symbol">:</a> <a id="419" href="Relation.Binary.html#3546" class="Record">Poset</a> <a id="425" href="Relation.Binary.PartialOrderReasoning.html#404" class="Bound">p₁</a> <a id="428" href="Relation.Binary.PartialOrderReasoning.html#407" class="Bound">p₂</a> <a id="431" href="Relation.Binary.PartialOrderReasoning.html#410" class="Bound">p₃</a><a id="433" class="Symbol">)</a> <a id="435" class="Keyword">where</a>
 
-<a id="408" class="Keyword">open</a> <a id="413" href="Relation.Binary.html#3546" class="Module">Poset</a> <a id="419" href="Relation.Binary.PartialOrderReasoning.html#381" class="Bound">P</a>
-<a id="421" class="Keyword">import</a> <a id="428" href="Relation.Binary.PreorderReasoning.html" class="Module">Relation.Binary.PreorderReasoning</a> <a id="462" class="Symbol">as</a> <a id="465" class="Module">PreR</a>
-<a id="470" class="Keyword">open</a> <a id="475" href="Relation.Binary.PreorderReasoning.html" class="Module">PreR</a> <a id="480" href="Relation.Binary.html#3809" class="Function">preorder</a> <a id="489" class="Keyword">public</a> <a id="496" class="Keyword">renaming</a> <a id="505" class="Symbol">(</a>_∼⟨_⟩_ <a id="513" class="Symbol">to</a> _≤⟨_⟩_<a id="522" class="Symbol">)</a>
+<a id="442" class="Keyword">open</a> <a id="447" class="Keyword">import</a> <a id="454" href="Relation.Binary.Reasoning.PartialOrder.html" class="Module">Relation.Binary.Reasoning.PartialOrder</a> <a id="493" href="Relation.Binary.PartialOrderReasoning.html#415" class="Bound">P</a> <a id="495" class="Keyword">public</a>
 </pre></body></html>

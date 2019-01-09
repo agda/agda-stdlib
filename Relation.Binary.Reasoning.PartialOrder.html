@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.Reasoning.PartialOrder</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Convenient syntax for &quot;equational reasoning&quot; using a partial order</a>
+<a id="176" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="250" class="Symbol">{-#</a> <a id="254" class="Keyword">OPTIONS</a> <a id="262" class="Option">--without-K</a> <a id="274" class="Option">--safe</a> <a id="281" class="Symbol">#-}</a>
+
+<a id="286" class="Keyword">open</a> <a id="291" class="Keyword">import</a> <a id="298" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+
+<a id="315" class="Keyword">module</a> <a id="322" href="Relation.Binary.Reasoning.PartialOrder.html" class="Module">Relation.Binary.Reasoning.PartialOrder</a>
+         <a id="370" class="Symbol">{</a><a id="371" href="Relation.Binary.Reasoning.PartialOrder.html#371" class="Bound">p₁</a> <a id="374" href="Relation.Binary.Reasoning.PartialOrder.html#374" class="Bound">p₂</a> <a id="377" href="Relation.Binary.Reasoning.PartialOrder.html#377" class="Bound">p₃</a><a id="379" class="Symbol">}</a> <a id="381" class="Symbol">(</a><a id="382" href="Relation.Binary.Reasoning.PartialOrder.html#382" class="Bound">P</a> <a id="384" class="Symbol">:</a> <a id="386" href="Relation.Binary.html#3546" class="Record">Poset</a> <a id="392" href="Relation.Binary.Reasoning.PartialOrder.html#371" class="Bound">p₁</a> <a id="395" href="Relation.Binary.Reasoning.PartialOrder.html#374" class="Bound">p₂</a> <a id="398" href="Relation.Binary.Reasoning.PartialOrder.html#377" class="Bound">p₃</a><a id="400" class="Symbol">)</a> <a id="402" class="Keyword">where</a>
+
+<a id="409" class="Keyword">open</a> <a id="414" href="Relation.Binary.html#3546" class="Module">Poset</a> <a id="420" href="Relation.Binary.Reasoning.PartialOrder.html#382" class="Bound">P</a>
+<a id="422" class="Keyword">import</a> <a id="429" href="Relation.Binary.Reasoning.Preorder.html" class="Module">Relation.Binary.Reasoning.Preorder</a> <a id="464" class="Symbol">as</a> <a id="467" class="Module">PreR</a>
+<a id="472" class="Keyword">open</a> <a id="477" href="Relation.Binary.Reasoning.Preorder.html" class="Module">PreR</a> <a id="482" href="Relation.Binary.html#3809" class="Function">preorder</a> <a id="491" class="Keyword">public</a> <a id="498" class="Keyword">renaming</a> <a id="507" class="Symbol">(</a>_∼⟨_⟩_ <a id="515" class="Symbol">to</a> _≤⟨_⟩_<a id="524" class="Symbol">)</a>
+</pre></body></html>

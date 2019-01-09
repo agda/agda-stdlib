@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.Reasoning.Setoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Convenient syntax for equational reasoning</a>
+<a id="152" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="226" class="Comment">-- Example use:</a>
+
+<a id="243" class="Comment">-- n*0≡0 : ∀ n → n * 0 ≡ 0</a>
+<a id="270" class="Comment">-- n*0≡0 zero    = refl</a>
+<a id="294" class="Comment">-- n*0≡0 (suc n) =</a>
+<a id="313" class="Comment">--   begin</a>
+<a id="324" class="Comment">--     suc n * 0</a>
+<a id="341" class="Comment">--   ≈⟨ refl ⟩</a>
+<a id="356" class="Comment">--     n * 0 + 0</a>
+<a id="373" class="Comment">--   ≈⟨ ... ⟩</a>
+<a id="387" class="Comment">--     n * 0</a>
+<a id="400" class="Comment">--   ≈⟨ n*0≡0 n ⟩</a>
+<a id="418" class="Comment">--     0</a>
+<a id="427" class="Comment">--   ∎</a>
+
+<a id="435" class="Comment">-- Module ≡-Reasoning in Relation.Binary.PropositionalEquality</a>
+<a id="498" class="Comment">-- is recommended for equational reasoning when the underlying equality is</a>
+<a id="573" class="Comment">-- Relation.Binary.PropositionalEquality._≡_.</a>
+
+<a id="620" class="Symbol">{-#</a> <a id="624" class="Keyword">OPTIONS</a> <a id="632" class="Option">--without-K</a> <a id="644" class="Option">--safe</a> <a id="651" class="Symbol">#-}</a>
+
+<a id="656" class="Keyword">open</a> <a id="661" class="Keyword">import</a> <a id="668" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+
+<a id="685" class="Keyword">module</a> <a id="692" href="Relation.Binary.Reasoning.Setoid.html" class="Module">Relation.Binary.Reasoning.Setoid</a> <a id="725" class="Symbol">{</a><a id="726" href="Relation.Binary.Reasoning.Setoid.html#726" class="Bound">s₁</a> <a id="729" href="Relation.Binary.Reasoning.Setoid.html#729" class="Bound">s₂</a><a id="731" class="Symbol">}</a> <a id="733" class="Symbol">(</a><a id="734" href="Relation.Binary.Reasoning.Setoid.html#734" class="Bound">S</a> <a id="736" class="Symbol">:</a> <a id="738" href="Relation.Binary.html#1930" class="Record">Setoid</a> <a id="745" href="Relation.Binary.Reasoning.Setoid.html#726" class="Bound">s₁</a> <a id="748" href="Relation.Binary.Reasoning.Setoid.html#729" class="Bound">s₂</a><a id="750" class="Symbol">)</a> <a id="752" class="Keyword">where</a>
+
+<a id="759" class="Keyword">open</a> <a id="764" href="Relation.Binary.html#1930" class="Module">Setoid</a> <a id="771" href="Relation.Binary.Reasoning.Setoid.html#734" class="Bound">S</a>
+<a id="773" class="Keyword">open</a> <a id="778" class="Keyword">import</a> <a id="785" href="Relation.Binary.Reasoning.Preorder.html" class="Module">Relation.Binary.Reasoning.Preorder</a> <a id="820" href="Relation.Binary.html#2299" class="Function">preorder</a> <a id="829" class="Keyword">public</a>
+  <a id="838" class="Keyword">hiding</a> <a id="845" class="Symbol">(</a>_≈⟨_⟩_<a id="852" class="Symbol">)</a>
+  <a id="856" class="Keyword">renaming</a>
+  <a id="867" class="Symbol">(</a> _∼⟨_⟩_  <a id="877" class="Symbol">to</a> _≈⟨_⟩_
+  <a id="889" class="Symbol">;</a> _≈⟨⟩_   <a id="899" class="Symbol">to</a> _≡⟨⟩_
+  <a id="910" class="Symbol">)</a>
+</pre></body></html>
