@@ -5,6 +5,8 @@
 -- Values must respect the underlying equivalence on keys
 -----------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary using (Setoid; _Respects_)
 
 module Data.AVL.Value {a ℓ} (S : Setoid a ℓ) where

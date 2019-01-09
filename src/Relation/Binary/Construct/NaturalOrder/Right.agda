@@ -5,6 +5,8 @@
 -- natural order.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 open import Algebra.FunctionProperties using (Op₂)
 
