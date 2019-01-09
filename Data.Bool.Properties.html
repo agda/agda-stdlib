@@ -450,132 +450,140 @@
 <a id="11170" href="Data.Bool.Properties.html#11075" class="Function">T-∨</a> <a id="11174" class="Symbol">{</a><a id="11175" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor">false</a><a id="11180" class="Symbol">}</a> <a id="11182" class="Symbol">{</a><a id="11183" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor">true</a><a id="11187" class="Symbol">}</a>  <a id="11190" class="Symbol">=</a> <a id="11192" href="Function.Equivalence.html#1064" class="Function">equivalence</a> <a id="11204" href="Data.Sum.Base.html#590" class="InductiveConstructor">inj₂</a> <a id="11209" class="Symbol">(</a><a id="11210" href="Function.html#1145" class="Function">const</a> <a id="11216" class="Symbol">_)</a>
 <a id="11219" href="Data.Bool.Properties.html#11075" class="Function">T-∨</a> <a id="11223" class="Symbol">{</a><a id="11224" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor">false</a><a id="11229" class="Symbol">}</a> <a id="11231" class="Symbol">{</a><a id="11232" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor">false</a><a id="11237" class="Symbol">}</a> <a id="11239" class="Symbol">=</a> <a id="11241" href="Function.Equivalence.html#1064" class="Function">equivalence</a> <a id="11253" href="Data.Sum.Base.html#565" class="InductiveConstructor">inj₁</a> <a id="11258" href="Data.Sum.Base.html#816" class="Function Operator">[</a> <a id="11260" href="Function.html#1104" class="Function">id</a> <a id="11263" href="Data.Sum.Base.html#816" class="Function Operator">,</a> <a id="11265" href="Function.html#1104" class="Function">id</a> <a id="11268" href="Data.Sum.Base.html#816" class="Function Operator">]</a>
 
-<a id="T-irrelevance"></a><a id="11271" href="Data.Bool.Properties.html#11271" class="Function">T-irrelevance</a> <a id="11285" class="Symbol">:</a> <a id="11287" href="Relation.Unary.html#3439" class="Function">Irrelevant</a> <a id="11298" href="Data.Bool.Base.html#795" class="Function">T</a>
-<a id="11300" href="Data.Bool.Properties.html#11271" class="Function">T-irrelevance</a> <a id="11314" class="Symbol">{</a><a id="11315" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor">true</a><a id="11319" class="Symbol">}</a>  <a id="11322" class="Symbol">_</a>  <a id="11325" class="Symbol">_</a>  <a id="11328" class="Symbol">=</a> <a id="11330" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor">refl</a>
-<a id="11335" href="Data.Bool.Properties.html#11271" class="Function">T-irrelevance</a> <a id="11349" class="Symbol">{</a><a id="11350" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor">false</a><a id="11355" class="Symbol">}</a> <a id="11357" class="Symbol">()</a> <a id="11360" class="Symbol">()</a>
+<a id="T-irrelevant"></a><a id="11271" href="Data.Bool.Properties.html#11271" class="Function">T-irrelevant</a> <a id="11284" class="Symbol">:</a> <a id="11286" href="Relation.Unary.html#3439" class="Function">Irrelevant</a> <a id="11297" href="Data.Bool.Base.html#795" class="Function">T</a>
+<a id="11299" href="Data.Bool.Properties.html#11271" class="Function">T-irrelevant</a> <a id="11312" class="Symbol">{</a><a id="11313" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor">true</a><a id="11317" class="Symbol">}</a>  <a id="11320" class="Symbol">_</a>  <a id="11323" class="Symbol">_</a>  <a id="11326" class="Symbol">=</a> <a id="11328" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor">refl</a>
+<a id="11333" href="Data.Bool.Properties.html#11271" class="Function">T-irrelevant</a> <a id="11346" class="Symbol">{</a><a id="11347" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor">false</a><a id="11352" class="Symbol">}</a> <a id="11354" class="Symbol">()</a> <a id="11357" class="Symbol">()</a>
 
-<a id="push-function-into-if"></a><a id="11364" href="Data.Bool.Properties.html#11364" class="Function">push-function-into-if</a> <a id="11386" class="Symbol">:</a>
-  <a id="11390" class="Symbol">∀</a> <a id="11392" class="Symbol">{</a><a id="11393" href="Data.Bool.Properties.html#11393" class="Bound">a</a> <a id="11395" href="Data.Bool.Properties.html#11395" class="Bound">b</a><a id="11396" class="Symbol">}</a> <a id="11398" class="Symbol">{</a><a id="11399" href="Data.Bool.Properties.html#11399" class="Bound">A</a> <a id="11401" class="Symbol">:</a> <a id="11403" class="PrimitiveType">Set</a> <a id="11407" href="Data.Bool.Properties.html#11393" class="Bound">a</a><a id="11408" class="Symbol">}</a> <a id="11410" class="Symbol">{</a><a id="11411" href="Data.Bool.Properties.html#11411" class="Bound">B</a> <a id="11413" class="Symbol">:</a> <a id="11415" class="PrimitiveType">Set</a> <a id="11419" href="Data.Bool.Properties.html#11395" class="Bound">b</a><a id="11420" class="Symbol">}</a> <a id="11422" class="Symbol">(</a><a id="11423" href="Data.Bool.Properties.html#11423" class="Bound">f</a> <a id="11425" class="Symbol">:</a> <a id="11427" href="Data.Bool.Properties.html#11399" class="Bound">A</a> <a id="11429" class="Symbol">→</a> <a id="11431" href="Data.Bool.Properties.html#11411" class="Bound">B</a><a id="11432" class="Symbol">)</a> <a id="11434" href="Data.Bool.Properties.html#11434" class="Bound">x</a> <a id="11436" class="Symbol">{</a><a id="11437" href="Data.Bool.Properties.html#11437" class="Bound">y</a> <a id="11439" href="Data.Bool.Properties.html#11439" class="Bound">z</a><a id="11440" class="Symbol">}</a> <a id="11442" class="Symbol">→</a>
-  <a id="11446" href="Data.Bool.Properties.html#11423" class="Bound">f</a> <a id="11448" class="Symbol">(</a><a id="11449" href="Data.Bool.Base.html#835" class="Function Operator">if</a> <a id="11452" href="Data.Bool.Properties.html#11434" class="Bound">x</a> <a id="11454" href="Data.Bool.Base.html#835" class="Function Operator">then</a> <a id="11459" href="Data.Bool.Properties.html#11437" class="Bound">y</a> <a id="11461" href="Data.Bool.Base.html#835" class="Function Operator">else</a> <a id="11466" href="Data.Bool.Properties.html#11439" class="Bound">z</a><a id="11467" class="Symbol">)</a> <a id="11469" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">≡</a> <a id="11471" class="Symbol">(</a><a id="11472" href="Data.Bool.Base.html#835" class="Function Operator">if</a> <a id="11475" href="Data.Bool.Properties.html#11434" class="Bound">x</a> <a id="11477" href="Data.Bool.Base.html#835" class="Function Operator">then</a> <a id="11482" href="Data.Bool.Properties.html#11423" class="Bound">f</a> <a id="11484" href="Data.Bool.Properties.html#11437" class="Bound">y</a> <a id="11486" href="Data.Bool.Base.html#835" class="Function Operator">else</a> <a id="11491" href="Data.Bool.Properties.html#11423" class="Bound">f</a> <a id="11493" href="Data.Bool.Properties.html#11439" class="Bound">z</a><a id="11494" class="Symbol">)</a>
-<a id="11496" href="Data.Bool.Properties.html#11364" class="Function">push-function-into-if</a> <a id="11518" class="Symbol">_</a> <a id="11520" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor">true</a>  <a id="11526" class="Symbol">=</a> <a id="11528" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor">refl</a>
-<a id="11533" href="Data.Bool.Properties.html#11364" class="Function">push-function-into-if</a> <a id="11555" class="Symbol">_</a> <a id="11557" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor">false</a> <a id="11563" class="Symbol">=</a> <a id="11565" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor">refl</a>
+<a id="push-function-into-if"></a><a id="11361" href="Data.Bool.Properties.html#11361" class="Function">push-function-into-if</a> <a id="11383" class="Symbol">:</a>
+  <a id="11387" class="Symbol">∀</a> <a id="11389" class="Symbol">{</a><a id="11390" href="Data.Bool.Properties.html#11390" class="Bound">a</a> <a id="11392" href="Data.Bool.Properties.html#11392" class="Bound">b</a><a id="11393" class="Symbol">}</a> <a id="11395" class="Symbol">{</a><a id="11396" href="Data.Bool.Properties.html#11396" class="Bound">A</a> <a id="11398" class="Symbol">:</a> <a id="11400" class="PrimitiveType">Set</a> <a id="11404" href="Data.Bool.Properties.html#11390" class="Bound">a</a><a id="11405" class="Symbol">}</a> <a id="11407" class="Symbol">{</a><a id="11408" href="Data.Bool.Properties.html#11408" class="Bound">B</a> <a id="11410" class="Symbol">:</a> <a id="11412" class="PrimitiveType">Set</a> <a id="11416" href="Data.Bool.Properties.html#11392" class="Bound">b</a><a id="11417" class="Symbol">}</a> <a id="11419" class="Symbol">(</a><a id="11420" href="Data.Bool.Properties.html#11420" class="Bound">f</a> <a id="11422" class="Symbol">:</a> <a id="11424" href="Data.Bool.Properties.html#11396" class="Bound">A</a> <a id="11426" class="Symbol">→</a> <a id="11428" href="Data.Bool.Properties.html#11408" class="Bound">B</a><a id="11429" class="Symbol">)</a> <a id="11431" href="Data.Bool.Properties.html#11431" class="Bound">x</a> <a id="11433" class="Symbol">{</a><a id="11434" href="Data.Bool.Properties.html#11434" class="Bound">y</a> <a id="11436" href="Data.Bool.Properties.html#11436" class="Bound">z</a><a id="11437" class="Symbol">}</a> <a id="11439" class="Symbol">→</a>
+  <a id="11443" href="Data.Bool.Properties.html#11420" class="Bound">f</a> <a id="11445" class="Symbol">(</a><a id="11446" href="Data.Bool.Base.html#835" class="Function Operator">if</a> <a id="11449" href="Data.Bool.Properties.html#11431" class="Bound">x</a> <a id="11451" href="Data.Bool.Base.html#835" class="Function Operator">then</a> <a id="11456" href="Data.Bool.Properties.html#11434" class="Bound">y</a> <a id="11458" href="Data.Bool.Base.html#835" class="Function Operator">else</a> <a id="11463" href="Data.Bool.Properties.html#11436" class="Bound">z</a><a id="11464" class="Symbol">)</a> <a id="11466" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">≡</a> <a id="11468" class="Symbol">(</a><a id="11469" href="Data.Bool.Base.html#835" class="Function Operator">if</a> <a id="11472" href="Data.Bool.Properties.html#11431" class="Bound">x</a> <a id="11474" href="Data.Bool.Base.html#835" class="Function Operator">then</a> <a id="11479" href="Data.Bool.Properties.html#11420" class="Bound">f</a> <a id="11481" href="Data.Bool.Properties.html#11434" class="Bound">y</a> <a id="11483" href="Data.Bool.Base.html#835" class="Function Operator">else</a> <a id="11488" href="Data.Bool.Properties.html#11420" class="Bound">f</a> <a id="11490" href="Data.Bool.Properties.html#11436" class="Bound">z</a><a id="11491" class="Symbol">)</a>
+<a id="11493" href="Data.Bool.Properties.html#11361" class="Function">push-function-into-if</a> <a id="11515" class="Symbol">_</a> <a id="11517" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor">true</a>  <a id="11523" class="Symbol">=</a> <a id="11525" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor">refl</a>
+<a id="11530" href="Data.Bool.Properties.html#11361" class="Function">push-function-into-if</a> <a id="11552" class="Symbol">_</a> <a id="11554" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor">false</a> <a id="11560" class="Symbol">=</a> <a id="11562" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor">refl</a>
 
-<a id="11571" class="Comment">------------------------------------------------------------------------</a>
-<a id="11644" class="Comment">-- DEPRECATED NAMES</a>
-<a id="11664" class="Comment">------------------------------------------------------------------------</a>
-<a id="11737" class="Comment">-- Please use the new names as continuing support for the old names is</a>
-<a id="11808" class="Comment">-- not guaranteed.</a>
+<a id="11568" class="Comment">------------------------------------------------------------------------</a>
+<a id="11641" class="Comment">-- DEPRECATED NAMES</a>
+<a id="11661" class="Comment">------------------------------------------------------------------------</a>
+<a id="11734" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="11805" class="Comment">-- not guaranteed.</a>
 
-<a id="11828" class="Comment">-- Version 0.15</a>
+<a id="11825" class="Comment">-- Version 0.15</a>
 
-<a id="∧-∨-distˡ"></a><a id="11845" href="Data.Bool.Properties.html#11845" class="Function">∧-∨-distˡ</a>   <a id="11857" class="Symbol">=</a> <a id="11859" href="Data.Bool.Properties.html#4708" class="Function">∧-distribˡ-∨</a>
-<a id="11872" class="Symbol">{-#</a> <a id="11876" class="Keyword">WARNING_ON_USAGE</a> ∧-∨-distˡ
-<a id="11903" class="String">&quot;Warning: ∧-∨-distˡ was deprecated in v0.15.
+<a id="∧-∨-distˡ"></a><a id="11842" href="Data.Bool.Properties.html#11842" class="Function">∧-∨-distˡ</a>   <a id="11854" class="Symbol">=</a> <a id="11856" href="Data.Bool.Properties.html#4708" class="Function">∧-distribˡ-∨</a>
+<a id="11869" class="Symbol">{-#</a> <a id="11873" class="Keyword">WARNING_ON_USAGE</a> ∧-∨-distˡ
+<a id="11900" class="String">&quot;Warning: ∧-∨-distˡ was deprecated in v0.15.
 Please use ∧-distribˡ-∨ instead.&quot;</a>
-<a id="11982" class="Symbol">#-}</a>
-<a id="∧-∨-distʳ"></a><a id="11986" href="Data.Bool.Properties.html#11986" class="Function">∧-∨-distʳ</a>   <a id="11998" class="Symbol">=</a> <a id="12000" href="Data.Bool.Properties.html#4809" class="Function">∧-distribʳ-∨</a>
-<a id="12013" class="Symbol">{-#</a> <a id="12017" class="Keyword">WARNING_ON_USAGE</a> ∧-∨-distʳ
-<a id="12044" class="String">&quot;Warning: ∧-∨-distʳ was deprecated in v0.15.
+<a id="11979" class="Symbol">#-}</a>
+<a id="∧-∨-distʳ"></a><a id="11983" href="Data.Bool.Properties.html#11983" class="Function">∧-∨-distʳ</a>   <a id="11995" class="Symbol">=</a> <a id="11997" href="Data.Bool.Properties.html#4809" class="Function">∧-distribʳ-∨</a>
+<a id="12010" class="Symbol">{-#</a> <a id="12014" class="Keyword">WARNING_ON_USAGE</a> ∧-∨-distʳ
+<a id="12041" class="String">&quot;Warning: ∧-∨-distʳ was deprecated in v0.15.
 Please use ∧-distribʳ-∨ instead.&quot;</a>
-<a id="12123" class="Symbol">#-}</a>
-<a id="distrib-∧-∨"></a><a id="12127" href="Data.Bool.Properties.html#12127" class="Function">distrib-∧-∨</a> <a id="12139" class="Symbol">=</a> <a id="12141" href="Data.Bool.Properties.html#5036" class="Function">∧-distrib-∨</a>
-<a id="12153" class="Symbol">{-#</a> <a id="12157" class="Keyword">WARNING_ON_USAGE</a> distrib-∧-∨
-<a id="12186" class="String">&quot;Warning: distrib-∧-∨ was deprecated in v0.15.
+<a id="12120" class="Symbol">#-}</a>
+<a id="distrib-∧-∨"></a><a id="12124" href="Data.Bool.Properties.html#12124" class="Function">distrib-∧-∨</a> <a id="12136" class="Symbol">=</a> <a id="12138" href="Data.Bool.Properties.html#5036" class="Function">∧-distrib-∨</a>
+<a id="12150" class="Symbol">{-#</a> <a id="12154" class="Keyword">WARNING_ON_USAGE</a> distrib-∧-∨
+<a id="12183" class="String">&quot;Warning: distrib-∧-∨ was deprecated in v0.15.
 Please use ∧-distrib-∨ instead.&quot;</a>
-<a id="12266" class="Symbol">#-}</a>
-<a id="∨-∧-distˡ"></a><a id="12270" href="Data.Bool.Properties.html#12270" class="Function">∨-∧-distˡ</a>   <a id="12282" class="Symbol">=</a> <a id="12284" href="Data.Bool.Properties.html#5117" class="Function">∨-distribˡ-∧</a>
-<a id="12297" class="Symbol">{-#</a> <a id="12301" class="Keyword">WARNING_ON_USAGE</a> ∨-∧-distˡ
-<a id="12328" class="String">&quot;Warning: ∨-∧-distˡ was deprecated in v0.15.
+<a id="12263" class="Symbol">#-}</a>
+<a id="∨-∧-distˡ"></a><a id="12267" href="Data.Bool.Properties.html#12267" class="Function">∨-∧-distˡ</a>   <a id="12279" class="Symbol">=</a> <a id="12281" href="Data.Bool.Properties.html#5117" class="Function">∨-distribˡ-∧</a>
+<a id="12294" class="Symbol">{-#</a> <a id="12298" class="Keyword">WARNING_ON_USAGE</a> ∨-∧-distˡ
+<a id="12325" class="String">&quot;Warning: ∨-∧-distˡ was deprecated in v0.15.
 Please use ∨-distribˡ-∧ instead.&quot;</a>
-<a id="12407" class="Symbol">#-}</a>
-<a id="∨-∧-distʳ"></a><a id="12411" href="Data.Bool.Properties.html#12411" class="Function">∨-∧-distʳ</a>   <a id="12423" class="Symbol">=</a> <a id="12425" href="Data.Bool.Properties.html#5218" class="Function">∨-distribʳ-∧</a>
-<a id="12438" class="Symbol">{-#</a> <a id="12442" class="Keyword">WARNING_ON_USAGE</a> ∨-∧-distʳ
-<a id="12469" class="String">&quot;Warning: ∨-∧-distʳ was deprecated in v0.15.
+<a id="12404" class="Symbol">#-}</a>
+<a id="∨-∧-distʳ"></a><a id="12408" href="Data.Bool.Properties.html#12408" class="Function">∨-∧-distʳ</a>   <a id="12420" class="Symbol">=</a> <a id="12422" href="Data.Bool.Properties.html#5218" class="Function">∨-distribʳ-∧</a>
+<a id="12435" class="Symbol">{-#</a> <a id="12439" class="Keyword">WARNING_ON_USAGE</a> ∨-∧-distʳ
+<a id="12466" class="String">&quot;Warning: ∨-∧-distʳ was deprecated in v0.15.
 Please use ∨-distribʳ-∧ instead.&quot;</a>
-<a id="12548" class="Symbol">#-}</a>
-<a id="∨-∧-distrib"></a><a id="12552" href="Data.Bool.Properties.html#12552" class="Function">∨-∧-distrib</a> <a id="12564" class="Symbol">=</a> <a id="12566" href="Data.Bool.Properties.html#5459" class="Function">∨-distrib-∧</a>
-<a id="12578" class="Symbol">{-#</a> <a id="12582" class="Keyword">WARNING_ON_USAGE</a> ∨-∧-distrib
-<a id="12611" class="String">&quot;Warning: ∨-∧-distrib was deprecated in v0.15.
+<a id="12545" class="Symbol">#-}</a>
+<a id="∨-∧-distrib"></a><a id="12549" href="Data.Bool.Properties.html#12549" class="Function">∨-∧-distrib</a> <a id="12561" class="Symbol">=</a> <a id="12563" href="Data.Bool.Properties.html#5459" class="Function">∨-distrib-∧</a>
+<a id="12575" class="Symbol">{-#</a> <a id="12579" class="Keyword">WARNING_ON_USAGE</a> ∨-∧-distrib
+<a id="12608" class="String">&quot;Warning: ∨-∧-distrib was deprecated in v0.15.
 Please use ∨-distrib-∧ instead.&quot;</a>
-<a id="12691" class="Symbol">#-}</a>
-<a id="∨-∧-abs"></a><a id="12695" href="Data.Bool.Properties.html#12695" class="Function">∨-∧-abs</a>    <a id="12706" class="Symbol">=</a> <a id="12708" href="Data.Bool.Properties.html#5613" class="Function">∨-abs-∧</a>
-<a id="12716" class="Symbol">{-#</a> <a id="12720" class="Keyword">WARNING_ON_USAGE</a> ∨-∧-abs
-<a id="12745" class="String">&quot;Warning: ∨-∧-abs was deprecated in v0.15.
+<a id="12688" class="Symbol">#-}</a>
+<a id="∨-∧-abs"></a><a id="12692" href="Data.Bool.Properties.html#12692" class="Function">∨-∧-abs</a>    <a id="12703" class="Symbol">=</a> <a id="12705" href="Data.Bool.Properties.html#5613" class="Function">∨-abs-∧</a>
+<a id="12713" class="Symbol">{-#</a> <a id="12717" class="Keyword">WARNING_ON_USAGE</a> ∨-∧-abs
+<a id="12742" class="String">&quot;Warning: ∨-∧-abs was deprecated in v0.15.
 Please use ∨-abs-∧ instead.&quot;</a>
-<a id="12817" class="Symbol">#-}</a>
-<a id="∧-∨-abs"></a><a id="12821" href="Data.Bool.Properties.html#12821" class="Function">∧-∨-abs</a>    <a id="12832" class="Symbol">=</a> <a id="12834" href="Data.Bool.Properties.html#5540" class="Function">∧-abs-∨</a>
-<a id="12842" class="Symbol">{-#</a> <a id="12846" class="Keyword">WARNING_ON_USAGE</a> ∧-∨-abs
-<a id="12871" class="String">&quot;Warning: ∧-∨-abs was deprecated in v0.15.
+<a id="12814" class="Symbol">#-}</a>
+<a id="∧-∨-abs"></a><a id="12818" href="Data.Bool.Properties.html#12818" class="Function">∧-∨-abs</a>    <a id="12829" class="Symbol">=</a> <a id="12831" href="Data.Bool.Properties.html#5540" class="Function">∧-abs-∨</a>
+<a id="12839" class="Symbol">{-#</a> <a id="12843" class="Keyword">WARNING_ON_USAGE</a> ∧-∨-abs
+<a id="12868" class="String">&quot;Warning: ∧-∨-abs was deprecated in v0.15.
 Please use ∧-abs-∨ instead.&quot;</a>
-<a id="12943" class="Symbol">#-}</a>
-<a id="not-∧-inverseˡ"></a><a id="12947" href="Data.Bool.Properties.html#12947" class="Function">not-∧-inverseˡ</a> <a id="12962" class="Symbol">=</a> <a id="12964" href="Data.Bool.Properties.html#4314" class="Function">∧-inverseˡ</a>
-<a id="12975" class="Symbol">{-#</a> <a id="12979" class="Keyword">WARNING_ON_USAGE</a> not-∧-inverseˡ
-<a id="13011" class="String">&quot;Warning: not-∧-inverseˡ was deprecated in v0.15.
+<a id="12940" class="Symbol">#-}</a>
+<a id="not-∧-inverseˡ"></a><a id="12944" href="Data.Bool.Properties.html#12944" class="Function">not-∧-inverseˡ</a> <a id="12959" class="Symbol">=</a> <a id="12961" href="Data.Bool.Properties.html#4314" class="Function">∧-inverseˡ</a>
+<a id="12972" class="Symbol">{-#</a> <a id="12976" class="Keyword">WARNING_ON_USAGE</a> not-∧-inverseˡ
+<a id="13008" class="String">&quot;Warning: not-∧-inverseˡ was deprecated in v0.15.
 Please use ∧-inverseˡ instead.&quot;</a>
-<a id="13093" class="Symbol">#-}</a>
-<a id="not-∧-inverseʳ"></a><a id="13097" href="Data.Bool.Properties.html#13097" class="Function">not-∧-inverseʳ</a> <a id="13112" class="Symbol">=</a> <a id="13114" href="Data.Bool.Properties.html#4401" class="Function">∧-inverseʳ</a>
-<a id="13125" class="Symbol">{-#</a> <a id="13129" class="Keyword">WARNING_ON_USAGE</a> not-∧-inverseʳ
-<a id="13161" class="String">&quot;Warning: not-∧-inverseʳ was deprecated in v0.15.
+<a id="13090" class="Symbol">#-}</a>
+<a id="not-∧-inverseʳ"></a><a id="13094" href="Data.Bool.Properties.html#13094" class="Function">not-∧-inverseʳ</a> <a id="13109" class="Symbol">=</a> <a id="13111" href="Data.Bool.Properties.html#4401" class="Function">∧-inverseʳ</a>
+<a id="13122" class="Symbol">{-#</a> <a id="13126" class="Keyword">WARNING_ON_USAGE</a> not-∧-inverseʳ
+<a id="13158" class="String">&quot;Warning: not-∧-inverseʳ was deprecated in v0.15.
 Please use ∧-inverseʳ instead.&quot;</a>
-<a id="13243" class="Symbol">#-}</a>
-<a id="not-∧-inverse"></a><a id="13247" href="Data.Bool.Properties.html#13247" class="Function">not-∧-inverse</a> <a id="13261" class="Symbol">=</a> <a id="13263" href="Data.Bool.Properties.html#4497" class="Function">∧-inverse</a>
-<a id="13273" class="Symbol">{-#</a> <a id="13277" class="Keyword">WARNING_ON_USAGE</a> not-∧-inverse
-<a id="13308" class="String">&quot;Warning: not-∧-inverse was deprecated in v0.15.
+<a id="13240" class="Symbol">#-}</a>
+<a id="not-∧-inverse"></a><a id="13244" href="Data.Bool.Properties.html#13244" class="Function">not-∧-inverse</a> <a id="13258" class="Symbol">=</a> <a id="13260" href="Data.Bool.Properties.html#4497" class="Function">∧-inverse</a>
+<a id="13270" class="Symbol">{-#</a> <a id="13274" class="Keyword">WARNING_ON_USAGE</a> not-∧-inverse
+<a id="13305" class="String">&quot;Warning: not-∧-inverse was deprecated in v0.15.
 Please use ∧-inverse instead.&quot;</a>
-<a id="13388" class="Symbol">#-}</a>
-<a id="not-∨-inverseˡ"></a><a id="13392" href="Data.Bool.Properties.html#13392" class="Function">not-∨-inverseˡ</a> <a id="13407" class="Symbol">=</a> <a id="13409" href="Data.Bool.Properties.html#1811" class="Function">∨-inverseˡ</a>
-<a id="13420" class="Symbol">{-#</a> <a id="13424" class="Keyword">WARNING_ON_USAGE</a> not-∨-inverseˡ
-<a id="13456" class="String">&quot;Warning: not-∨-inverseˡ was deprecated in v0.15.
+<a id="13385" class="Symbol">#-}</a>
+<a id="not-∨-inverseˡ"></a><a id="13389" href="Data.Bool.Properties.html#13389" class="Function">not-∨-inverseˡ</a> <a id="13404" class="Symbol">=</a> <a id="13406" href="Data.Bool.Properties.html#1811" class="Function">∨-inverseˡ</a>
+<a id="13417" class="Symbol">{-#</a> <a id="13421" class="Keyword">WARNING_ON_USAGE</a> not-∨-inverseˡ
+<a id="13453" class="String">&quot;Warning: not-∨-inverseˡ was deprecated in v0.15.
 Please use ∨-inverseˡ instead.&quot;</a>
-<a id="13538" class="Symbol">#-}</a>
-<a id="not-∨-inverseʳ"></a><a id="13542" href="Data.Bool.Properties.html#13542" class="Function">not-∨-inverseʳ</a> <a id="13557" class="Symbol">=</a> <a id="13559" href="Data.Bool.Properties.html#1898" class="Function">∨-inverseʳ</a>
-<a id="13570" class="Symbol">{-#</a> <a id="13574" class="Keyword">WARNING_ON_USAGE</a> not-∨-inverseʳ
-<a id="13606" class="String">&quot;Warning: not-∨-inverseʳ was deprecated in v0.15.
+<a id="13535" class="Symbol">#-}</a>
+<a id="not-∨-inverseʳ"></a><a id="13539" href="Data.Bool.Properties.html#13539" class="Function">not-∨-inverseʳ</a> <a id="13554" class="Symbol">=</a> <a id="13556" href="Data.Bool.Properties.html#1898" class="Function">∨-inverseʳ</a>
+<a id="13567" class="Symbol">{-#</a> <a id="13571" class="Keyword">WARNING_ON_USAGE</a> not-∨-inverseʳ
+<a id="13603" class="String">&quot;Warning: not-∨-inverseʳ was deprecated in v0.15.
 Please use ∨-inverseʳ instead.&quot;</a>
-<a id="13688" class="Symbol">#-}</a>
-<a id="not-∨-inverse"></a><a id="13692" href="Data.Bool.Properties.html#13692" class="Function">not-∨-inverse</a> <a id="13706" class="Symbol">=</a> <a id="13708" href="Data.Bool.Properties.html#1993" class="Function">∨-inverse</a>
-<a id="13718" class="Symbol">{-#</a> <a id="13722" class="Keyword">WARNING_ON_USAGE</a> not-∨-inverse
-<a id="13753" class="String">&quot;Warning: not-∨-inverse was deprecated in v0.15.
+<a id="13685" class="Symbol">#-}</a>
+<a id="not-∨-inverse"></a><a id="13689" href="Data.Bool.Properties.html#13689" class="Function">not-∨-inverse</a> <a id="13703" class="Symbol">=</a> <a id="13705" href="Data.Bool.Properties.html#1993" class="Function">∨-inverse</a>
+<a id="13715" class="Symbol">{-#</a> <a id="13719" class="Keyword">WARNING_ON_USAGE</a> not-∨-inverse
+<a id="13750" class="String">&quot;Warning: not-∨-inverse was deprecated in v0.15.
 Please use ∨-inverse instead.&quot;</a>
-<a id="13833" class="Symbol">#-}</a>
-<a id="isCommutativeSemiring-∨-∧"></a><a id="13837" href="Data.Bool.Properties.html#13837" class="Function">isCommutativeSemiring-∨-∧</a> <a id="13863" class="Symbol">=</a> <a id="13865" href="Data.Bool.Properties.html#7172" class="Function">∨-∧-isCommutativeSemiring</a>
-<a id="13891" class="Symbol">{-#</a> <a id="13895" class="Keyword">WARNING_ON_USAGE</a> isCommutativeSemiring-∨-∧
-<a id="13938" class="String">&quot;Warning: isCommutativeSemiring-∨-∧ was deprecated in v0.15.
+<a id="13830" class="Symbol">#-}</a>
+<a id="isCommutativeSemiring-∨-∧"></a><a id="13834" href="Data.Bool.Properties.html#13834" class="Function">isCommutativeSemiring-∨-∧</a> <a id="13860" class="Symbol">=</a> <a id="13862" href="Data.Bool.Properties.html#7172" class="Function">∨-∧-isCommutativeSemiring</a>
+<a id="13888" class="Symbol">{-#</a> <a id="13892" class="Keyword">WARNING_ON_USAGE</a> isCommutativeSemiring-∨-∧
+<a id="13935" class="String">&quot;Warning: isCommutativeSemiring-∨-∧ was deprecated in v0.15.
 Please use ∨-∧-isCommutativeSemiring instead.&quot;</a>
-<a id="14046" class="Symbol">#-}</a>
-<a id="commutativeSemiring-∨-∧"></a><a id="14050" href="Data.Bool.Properties.html#14050" class="Function">commutativeSemiring-∨-∧</a>   <a id="14076" class="Symbol">=</a>  <a id="14079" href="Data.Bool.Properties.html#7434" class="Function">∨-∧-commutativeSemiring</a>
-<a id="14103" class="Symbol">{-#</a> <a id="14107" class="Keyword">WARNING_ON_USAGE</a> commutativeSemiring-∨-∧
-<a id="14148" class="String">&quot;Warning: commutativeSemiring-∨-∧ was deprecated in v0.15.
+<a id="14043" class="Symbol">#-}</a>
+<a id="commutativeSemiring-∨-∧"></a><a id="14047" href="Data.Bool.Properties.html#14047" class="Function">commutativeSemiring-∨-∧</a>   <a id="14073" class="Symbol">=</a>  <a id="14076" href="Data.Bool.Properties.html#7434" class="Function">∨-∧-commutativeSemiring</a>
+<a id="14100" class="Symbol">{-#</a> <a id="14104" class="Keyword">WARNING_ON_USAGE</a> commutativeSemiring-∨-∧
+<a id="14145" class="String">&quot;Warning: commutativeSemiring-∨-∧ was deprecated in v0.15.
 Please use ∨-∧-commutativeSemiring instead.&quot;</a>
-<a id="14252" class="Symbol">#-}</a>
-<a id="isCommutativeSemiring-∧-∨"></a><a id="14256" href="Data.Bool.Properties.html#14256" class="Function">isCommutativeSemiring-∧-∨</a> <a id="14282" class="Symbol">=</a> <a id="14284" href="Data.Bool.Properties.html#7709" class="Function">∧-∨-isCommutativeSemiring</a>
-<a id="14310" class="Symbol">{-#</a> <a id="14314" class="Keyword">WARNING_ON_USAGE</a> isCommutativeSemiring-∧-∨
-<a id="14357" class="String">&quot;Warning: isCommutativeSemiring-∧-∨ was deprecated in v0.15.
+<a id="14249" class="Symbol">#-}</a>
+<a id="isCommutativeSemiring-∧-∨"></a><a id="14253" href="Data.Bool.Properties.html#14253" class="Function">isCommutativeSemiring-∧-∨</a> <a id="14279" class="Symbol">=</a> <a id="14281" href="Data.Bool.Properties.html#7709" class="Function">∧-∨-isCommutativeSemiring</a>
+<a id="14307" class="Symbol">{-#</a> <a id="14311" class="Keyword">WARNING_ON_USAGE</a> isCommutativeSemiring-∧-∨
+<a id="14354" class="String">&quot;Warning: isCommutativeSemiring-∧-∨ was deprecated in v0.15.
 Please use ∧-∨-isCommutativeSemiring instead.&quot;</a>
-<a id="14465" class="Symbol">#-}</a>
-<a id="commutativeSemiring-∧-∨"></a><a id="14469" href="Data.Bool.Properties.html#14469" class="Function">commutativeSemiring-∧-∨</a>   <a id="14495" class="Symbol">=</a> <a id="14497" href="Data.Bool.Properties.html#7971" class="Function">∧-∨-commutativeSemiring</a>
-<a id="14521" class="Symbol">{-#</a> <a id="14525" class="Keyword">WARNING_ON_USAGE</a> commutativeSemiring-∧-∨
-<a id="14566" class="String">&quot;Warning: commutativeSemiring-∧-∨ was deprecated in v0.15.
+<a id="14462" class="Symbol">#-}</a>
+<a id="commutativeSemiring-∧-∨"></a><a id="14466" href="Data.Bool.Properties.html#14466" class="Function">commutativeSemiring-∧-∨</a>   <a id="14492" class="Symbol">=</a> <a id="14494" href="Data.Bool.Properties.html#7971" class="Function">∧-∨-commutativeSemiring</a>
+<a id="14518" class="Symbol">{-#</a> <a id="14522" class="Keyword">WARNING_ON_USAGE</a> commutativeSemiring-∧-∨
+<a id="14563" class="String">&quot;Warning: commutativeSemiring-∧-∨ was deprecated in v0.15.
 Please use ∧-∨-commutativeSemiring instead.&quot;</a>
-<a id="14670" class="Symbol">#-}</a>
-<a id="isBooleanAlgebra"></a><a id="14674" href="Data.Bool.Properties.html#14674" class="Function">isBooleanAlgebra</a>          <a id="14700" class="Symbol">=</a> <a id="14702" href="Data.Bool.Properties.html#8939" class="Function">∨-∧-isBooleanAlgebra</a>
-<a id="14723" class="Symbol">{-#</a> <a id="14727" class="Keyword">WARNING_ON_USAGE</a> isBooleanAlgebra
-<a id="14761" class="String">&quot;Warning: isBooleanAlgebra was deprecated in v0.15.
+<a id="14667" class="Symbol">#-}</a>
+<a id="isBooleanAlgebra"></a><a id="14671" href="Data.Bool.Properties.html#14671" class="Function">isBooleanAlgebra</a>          <a id="14697" class="Symbol">=</a> <a id="14699" href="Data.Bool.Properties.html#8939" class="Function">∨-∧-isBooleanAlgebra</a>
+<a id="14720" class="Symbol">{-#</a> <a id="14724" class="Keyword">WARNING_ON_USAGE</a> isBooleanAlgebra
+<a id="14758" class="String">&quot;Warning: isBooleanAlgebra was deprecated in v0.15.
 Please use ∨-∧-isBooleanAlgebra instead.&quot;</a>
-<a id="14855" class="Symbol">#-}</a>
-<a id="booleanAlgebra"></a><a id="14859" href="Data.Bool.Properties.html#14859" class="Function">booleanAlgebra</a>            <a id="14885" class="Symbol">=</a> <a id="14887" href="Data.Bool.Properties.html#9182" class="Function">∨-∧-booleanAlgebra</a>
-<a id="14906" class="Symbol">{-#</a> <a id="14910" class="Keyword">WARNING_ON_USAGE</a> booleanAlgebra
-<a id="14942" class="String">&quot;Warning: booleanAlgebra was deprecated in v0.15.
+<a id="14852" class="Symbol">#-}</a>
+<a id="booleanAlgebra"></a><a id="14856" href="Data.Bool.Properties.html#14856" class="Function">booleanAlgebra</a>            <a id="14882" class="Symbol">=</a> <a id="14884" href="Data.Bool.Properties.html#9182" class="Function">∨-∧-booleanAlgebra</a>
+<a id="14903" class="Symbol">{-#</a> <a id="14907" class="Keyword">WARNING_ON_USAGE</a> booleanAlgebra
+<a id="14939" class="String">&quot;Warning: booleanAlgebra was deprecated in v0.15.
 Please use ∨-∧-booleanAlgebra instead.&quot;</a>
-<a id="15032" class="Symbol">#-}</a>
-<a id="commutativeRing-xor-∧"></a><a id="15036" href="Data.Bool.Properties.html#15036" class="Function">commutativeRing-xor-∧</a>     <a id="15062" class="Symbol">=</a> <a id="15064" href="Data.Bool.Properties.html#9516" class="Function">xor-∧-commutativeRing</a>
-<a id="15086" class="Symbol">{-#</a> <a id="15090" class="Keyword">WARNING_ON_USAGE</a> commutativeRing-xor-∧
-<a id="15129" class="String">&quot;Warning: commutativeRing-xor-∧ was deprecated in v0.15.
+<a id="15029" class="Symbol">#-}</a>
+<a id="commutativeRing-xor-∧"></a><a id="15033" href="Data.Bool.Properties.html#15033" class="Function">commutativeRing-xor-∧</a>     <a id="15059" class="Symbol">=</a> <a id="15061" href="Data.Bool.Properties.html#9516" class="Function">xor-∧-commutativeRing</a>
+<a id="15083" class="Symbol">{-#</a> <a id="15087" class="Keyword">WARNING_ON_USAGE</a> commutativeRing-xor-∧
+<a id="15126" class="String">&quot;Warning: commutativeRing-xor-∧ was deprecated in v0.15.
 Please use xor-∧-commutativeRing instead.&quot;</a>
-<a id="15229" class="Symbol">#-}</a>
-<a id="proof-irrelevance"></a><a id="15233" href="Data.Bool.Properties.html#15233" class="Function">proof-irrelevance</a> <a id="15251" class="Symbol">=</a> <a id="15253" href="Data.Bool.Properties.html#11271" class="Function">T-irrelevance</a>
-<a id="15267" class="Symbol">{-#</a> <a id="15271" class="Keyword">WARNING_ON_USAGE</a> proof-irrelevance
-<a id="15306" class="String">&quot;Warning: proof-irrelevance was deprecated in v0.15.
-Please use T-irrelevance instead.&quot;</a>
-<a id="15394" class="Symbol">#-}</a>
+<a id="15226" class="Symbol">#-}</a>
+<a id="proof-irrelevance"></a><a id="15230" href="Data.Bool.Properties.html#15230" class="Function">proof-irrelevance</a> <a id="15248" class="Symbol">=</a> <a id="15250" href="Data.Bool.Properties.html#11271" class="Function">T-irrelevant</a>
+<a id="15263" class="Symbol">{-#</a> <a id="15267" class="Keyword">WARNING_ON_USAGE</a> proof-irrelevance
+<a id="15302" class="String">&quot;Warning: proof-irrelevance was deprecated in v0.15.
+Please use T-irrelevant instead.&quot;</a>
+<a id="15389" class="Symbol">#-}</a>
+
+<a id="15394" class="Comment">-- Version 0.18</a>
+
+<a id="T-irrelevance"></a><a id="15411" href="Data.Bool.Properties.html#15411" class="Function">T-irrelevance</a> <a id="15425" class="Symbol">=</a> <a id="15427" href="Data.Bool.Properties.html#11271" class="Function">T-irrelevant</a>
+<a id="15440" class="Symbol">{-#</a> <a id="15444" class="Keyword">WARNING_ON_USAGE</a> T-irrelevance
+<a id="15475" class="String">&quot;Warning: T-irrelevance was deprecated in v0.18.
+Please use T-irrelevant instead.&quot;</a>
+<a id="15558" class="Symbol">#-}</a>
 </pre></body></html>
