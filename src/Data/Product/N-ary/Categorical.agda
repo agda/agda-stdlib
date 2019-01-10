@@ -13,7 +13,7 @@ open import Data.Product hiding (map)
 open import Data.Product.N-ary
 open import Function
 
-open import Category.Functor
+open import Category.Construct.Agda
 open import Category.Applicative
 open import Category.Monad
 

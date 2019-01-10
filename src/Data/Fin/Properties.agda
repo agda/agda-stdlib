@@ -11,7 +11,7 @@ module Data.Fin.Properties where
 
 open import Algebra.FunctionProperties using (Involutive)
 open import Category.Applicative using (RawApplicative)
-open import Category.Functor using (RawFunctor)
+open import Category.Construct.Agda using (RawFunctor)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base
 open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)

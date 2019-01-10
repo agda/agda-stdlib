@@ -10,7 +10,7 @@ module Data.Vec.Categorical {a n} where
 
 open import Category.Applicative using (RawApplicative)
 open import Category.Applicative.Indexed using (Morphism)
-open import Category.Functor as Fun using (RawFunctor)
+open import Category.Construct.Agda as Fun using (RawFunctor)
 import Function.Identity.Categorical as Id
 open import Category.Monad using (RawMonad)
 open import Data.Fin using (Fin)

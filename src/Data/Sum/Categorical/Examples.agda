@@ -11,7 +11,7 @@ module Data.Sum.Categorical.Examples where
 open import Level
 open import Data.Sum
 import Data.Sum.Categorical.Left as Sumₗ
-open import Category.Functor
+open import Category.Construct.Agda
 open import Category.Monad
 
 -- Note that these examples are simple unit tests, because the type

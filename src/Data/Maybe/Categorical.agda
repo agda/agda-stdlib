@@ -9,7 +9,7 @@
 module Data.Maybe.Categorical where
 
 open import Data.Maybe.Base
-open import Category.Functor
+open import Category.Construct.Agda
 open import Category.Applicative
 open import Category.Monad
 import Function.Identity.Categorical as Id

@@ -11,7 +11,7 @@ open import Level
 module Data.Sum.Categorical.Left {a} (A : Set a) (b : Level) where
 
 open import Data.Sum
-open import Category.Functor
+open import Category.Construct.Agda
 open import Category.Applicative
 open import Category.Monad
 import Function.Identity.Categorical as Id

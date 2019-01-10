@@ -12,7 +12,7 @@ module Data.Product.Categorical.Examples
   {a e b} {A : Monoid a e} {B : Set b} where
 
 open import Level using (Lift; lift; _⊔_)
-open import Category.Functor using (RawFunctor)
+open import Category.Construct.Agda using (RawFunctor)
 open import Category.Monad using (RawMonad)
 open import Data.Product
 open import Data.Product.Relation.Pointwise.NonDependent
