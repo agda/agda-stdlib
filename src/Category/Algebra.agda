@@ -17,12 +17,13 @@ open import Category.Functor cat cat
 
 module _ {fun : Obj → Obj} (F : RawEndoFunctor fun) where
   open RawEndoFunctor F
-  
+
   record Algebra : Set (suc ℓ) where
     field
       Carrier  : Obj
       evaluate : fun Carrier ⇒ Carrier
   open Algebra public
+  Algebra′ = ∀ {X} → fun X ⇒ X
 
   open import Category.Structures
   module AlgebraCategory (isCat : IsCategory cat) (isFun : IsFunctor cat cat F) where
@@ -35,7 +36,7 @@ module _ {fun : Obj → Obj} (F : RawEndoFunctor fun) where
         translation : Carrier algu ⇒ Carrier algv
         commutes    : evaluate algv ∘ fmap translation ≈ translation ∘ evaluate algu
     open AlgebraMorphism
-    
+
     idAlgebraMorphism : ∀ (alg : Algebra) → AlgebraMorphism alg alg
     idAlgebraMorphism alg = record
       { translation = id
@@ -72,7 +73,7 @@ module _ {fun : Obj → Obj} (F : RawEndoFunctor fun) where
         field
           morphs-eq : translation m ≈ translation n
       open import Relation.Binary
-    
+
       ≈alg-reflexive : Reflexive _≈alg_
       ≈alg-reflexive = record { morphs-eq = ≈refl }
       ≈alg-symmetric : Symmetric _≈alg_
@@ -92,7 +93,7 @@ module _ {fun : Obj → Obj} (F : RawEndoFunctor fun) where
 
     module _ where
       open Category algebraCat renaming (_⇒_ to _⇒alg_)
-      
+
       ∘alg-associative : ∀ {A B C D}{f : A ⇒alg B}{g : B ⇒alg C}{h : C ⇒alg D}
                        → (h ∘alg g) ∘alg f ≈alg h ∘alg (g ∘alg f)
       ∘alg-associative = record { morphs-eq = assoc }

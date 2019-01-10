@@ -4,6 +4,8 @@
 -- Recursion schemes on initial objects of endofunction algebras
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Category.Category
 
 module Category.RecursionSchemes {ℓ}{cat : Category ℓ} where

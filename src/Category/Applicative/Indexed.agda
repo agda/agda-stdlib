@@ -11,7 +11,7 @@
 
 module Category.Applicative.Indexed where
 
-open import Category.Construct.Agda using (RawFunctor)
+open import Category.Construct.Agda.Functor using (RawFunctor)
 open import Data.Product
 open import Function
 open import Level

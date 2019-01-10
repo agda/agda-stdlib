@@ -8,7 +8,7 @@
 
 module Function.Identity.Categorical {ℓ} where
 
-open import Category.Construct.Agda
+open import Category.Construct.Agda.Functor
 open import Category.Applicative
 open import Category.Monad
 open import Category.Comonad

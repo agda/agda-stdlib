@@ -10,7 +10,7 @@ module Codata.Colist.Categorical where
 
 open import Codata.Conat using (infinity)
 open import Codata.Colist
-open import Category.Construct.Agda
+open import Category.Construct.Agda.Functor
 open import Category.Applicative
 
 functor : ∀ {ℓ i} → RawFunctor {ℓ} (λ A → Colist A i)

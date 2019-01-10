@@ -8,7 +8,7 @@
 
 module Data.List.Categorical where
 
-open import Category.Construct.Agda
+open import Category.Construct.Agda.Functor
 open import Category.Applicative
 open import Category.Monad
 open import Data.Bool.Base using (false; true)

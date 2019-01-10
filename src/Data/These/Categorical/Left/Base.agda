@@ -18,7 +18,7 @@ open import Level
 module Data.These.Categorical.Left.Base {a} (A : Set a) (b : Level) where
 
 open import Data.These
-open import Category.Construct.Agda
+open import Category.Construct.Agda.Functor
 open import Category.Applicative
 open import Category.Monad
 open import Function

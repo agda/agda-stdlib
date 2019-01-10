@@ -11,7 +11,7 @@ module Codata.Covec.Categorical where
 open import Codata.Conat
 open import Codata.Covec
 
-open import Category.Construct.Agda
+open import Category.Construct.Agda.Functor
 open import Category.Applicative
 
 functor : ∀ {ℓ i n} → RawFunctor {ℓ} (λ A → Covec A n i)

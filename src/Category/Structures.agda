@@ -5,7 +5,7 @@
 ------------------------------------------------------------------------
 
 open import Level renaming (suc to lsuc)
-open import Relation.Binary using (IsEquivalence; Setoid)
+open import Relation.Binary using (IsEquivalence; Setoid; Rel)
 open import Category.Category
   using (Category)
 

@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A definition of category. 
+-- A definition of category.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

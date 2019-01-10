@@ -12,7 +12,7 @@ open import Agda.Builtin.List
 import Data.List.Categorical as List
 open import Data.List.NonEmpty
 open import Data.Product using (uncurry)
-open import Category.Construct.Agda
+open import Category.Construct.Agda.Functor
 open import Category.Applicative
 open import Category.Monad
 open import Category.Comonad
