@@ -744,6 +744,10 @@ Other minor additions
   ⊔-semilattice : Semilattice 0ℓ 0ℓ
   ⊓-semilattice : Semilattice 0ℓ 0ℓ
 
+  +-cancelˡ-< : LeftCancellative _<_ _+_
+  +-cancelʳ-< : RightCancellative _<_ _+_
+  +-cancel-<  : Cancellative _<_ _+_
+
   m≤n⇒m⊓o≤n : ∀ {m n} o → m ≤ n → m ⊓ o ≤ n
   m≤n⇒o⊓m≤n : ∀ {m n} o → m ≤ n → o ⊓ m ≤ n
   m<n⇒m⊓o<n : ∀ {m n} o → m < n → m ⊓ o < n

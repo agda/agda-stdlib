@@ -19,14 +19,13 @@ open import Data.Maybe as Maybe using (nothing; just)
 open import Data.Maybe.All as MAll using (nothing; just)
 open import Data.Nat.Base
 open import Data.Nat.Properties
-
 open import Function
 import Function.Bijection as Bij
 open import Function.Equivalence as Equiv using (_⇔_ ; equivalence)
 import Function.Injection as Inj
-
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as Eq hiding ([_])
+import Relation.Binary.Reasoning.Preorder as PreR
 open import Relation.Nullary
 import Relation.Nullary.Decidable as D
 open import Relation.Unary as U using (Pred)
@@ -157,14 +156,13 @@ module _ {a} (A : Set a) where
     { isPartialOrder = ⊆-isPartialOrder
     }
 
-import Relation.Binary.Reasoning.PartialOrder as POR
-
 module ⊆-Reasoning {a} {A : Set a}  where
-  private module P = POR (⊆-poset A)
+  private module P = PreR (⊆-preorder A)
   open P public
-    renaming (_≤⟨_⟩_ to _⊆⟨_⟩_; _≈⟨⟩_ to _≡⟨⟩_)
-    hiding (_≈⟨_⟩_)
-
+    renaming
+    (_∼⟨_⟩_ to _⊆⟨_⟩_)
+    hiding
+    (_≈⟨_⟩_)
 
 ------------------------------------------------------------------------
 -- Various functions' outputs are sublists

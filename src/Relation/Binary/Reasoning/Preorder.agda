@@ -20,9 +20,8 @@ open import Relation.Binary.Reasoning.Base.Double
   isEquivalence
   trans
   ∼-resp-≈
-  refl
+  reflexive
   public
-
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

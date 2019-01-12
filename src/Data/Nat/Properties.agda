@@ -501,6 +501,15 @@ i+j≡0⇒j≡0 i {j} i+j≡0 = i+j≡0⇒i≡0 j (trans (+-comm j i) (i+j≡0))
 +-cancel-≤ : Cancellative _≤_ _+_
 +-cancel-≤ = +-cancelˡ-≤ , +-cancelʳ-≤
 
++-cancelˡ-< : LeftCancellative _<_ _+_
++-cancelˡ-< x {y} {z} = +-cancelˡ-≤ x ∘ subst (_≤ x + z) (sym (+-suc x y))
+
++-cancelʳ-< : RightCancellative _<_ _+_
++-cancelʳ-< y z y+x<z+x = +-cancelʳ-≤ (suc y) z y+x<z+x
+
++-cancel-< : Cancellative _<_ _+_
++-cancel-< = +-cancelˡ-< , +-cancelʳ-<
+
 ≤-stepsˡ : ∀ {m n} o → m ≤ n → m ≤ o + n
 ≤-stepsˡ zero    m≤n = m≤n
 ≤-stepsˡ (suc o) m≤n = ≤-step (≤-stepsˡ o m≤n)
@@ -1518,7 +1527,7 @@ module ≤-Reasoning where
     isEquivalence
     ≤-trans
     (resp₂ _≤_)
-    ≤-refl
+    ≤-reflexive
     <-trans
     (resp₂ _<_)
     <⇒≤

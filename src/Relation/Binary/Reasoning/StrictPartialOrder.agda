@@ -22,7 +22,7 @@ open import Relation.Binary.Reasoning.Base.Triple
   isEquivalence
   (NonStrict.trans isEquivalence <-resp-≈ trans)
   (NonStrict.≤-resp-≈ isEquivalence <-resp-≈)
-  (NonStrict.reflexive (IsEquivalence.refl isEquivalence))
+  NonStrict.reflexive
   trans
   <-resp-≈
   NonStrict.<⇒≤
