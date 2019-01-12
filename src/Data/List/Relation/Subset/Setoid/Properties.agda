@@ -19,7 +19,7 @@ import Data.List.Relation.Subset.Setoid as Sublist
 import Data.List.Relation.Equality.Setoid as Equality
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Unary using (Pred; Decidable)
-import Relation.Binary.PreorderReasoning as PreorderReasoning
+import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 
 open Setoid using (Carrier)
 

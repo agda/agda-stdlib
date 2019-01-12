@@ -26,7 +26,7 @@ open import Data.Product as Prod hiding (map; zip)
 open import Data.These as These using (These; this; that; these)
 open import Function
 import Relation.Binary as B
-import Relation.Binary.EqReasoning as EqR
+import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; _≗_; refl ; sym)
 open import Relation.Nullary using (¬_; yes; no)

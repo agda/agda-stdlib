@@ -203,6 +203,18 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * All algebraic structures now export left and right congruence properties.
   e.g. `∙-cong refl x≈y` can be replaced with `∙-congˡ y≈z`
 
+#### Upgrade of all forms of Reasoning
+
+* The core Reasoning modules have been renamed as follows:
+  ```
+  Relation.Binary.EqReasoning                 ↦ Relation.Binary.Reasoning.Setoid
+  Relation.Binary.SetoidReasoning             ↦ Relation.Binary.Reasoning.MultiSetoid
+  Relation.Binary.PreorderReasoning           ↦ Relation.Binary.Reasoning.Preorder
+  Relation.Binary.PartialOrderReasoning       ↦ Relation.Binary.Reasoning.PartialOrder
+  Relation.Binary.StrictPartialOrderReasoning ↦ Relation.Binary.Reasoning.StrictPartialOrder
+  ```
+  The old modules have been deprecated but still exist for backwards compatibility reasons.
+
 #### Relaxation of ring solvers requirements
 
 * In the ring solvers below, the assumption that equality is `Decidable`
@@ -263,6 +275,9 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The proofs `drop-*≤*`, `≃⇒≡` and `≡⇒≃` have been moved from `Data.Rational`
   to `Data.Rational.Properties`.
 
+* Fixed bug in `Data.Nat.Properties` where the type of `m⊓n≤m⊔n` was `∀ m n → m ⊔ n ≤ m ⊔ n`,
+  the type is now correctly `∀ m n → m ⊓ n ≤ m ⊔ n`.
+
 * The proofs `toList⁺` and `toList⁻` in `Data.Vec.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
@@ -308,9 +323,28 @@ Other major changes
 Deprecated features
 -------------------
 
+* In `Data.Bool.Properties`:
+  ```agda
+  T-irrelevance ↦ T-irrelevant
+  ```
+
+* In `Data.Fin.Properties`:
+  ```agda
+  ≤-irrelevance ↦ ≤-irrelevant
+  <-irrelevance ↦ <-irrelevant
+  ```
+
 * In `Data.Integer.Properties`:
   ```agda
-  ≰→> ↦ ≰⇒>
+  ≰→>           ↦ ≰⇒>
+  ≤-irrelevance ↦ ≤-irrelevant
+  <-irrelevance ↦ <-irrelevant
+  ```
+
+* In `Data.Nat.Properties`:
+  ```agda
+  ≤-irrelevance ↦ ≤-irrelevant
+  <-irrelevance ↦ <-irrelevant
   ```
 
 * In `Data.Rational`:
@@ -320,6 +354,29 @@ Deprecated features
   ≡⇒≃
   ```
   (moved to `Data.Rational.Properties`)
+
+* In `Data.Rational.Properties`:
+  ```agda
+  ≤-irrelevance ↦ ≤-irrelevant
+  ```
+
+* In `Data.Vec.Properties.WithK`:
+  ```agda
+  []=-irrelevance ↦ []=-irrelevant
+  ```
+
+* In `Relation.Binary.HeterogeneousEquality`:
+  ```agda
+  ≅-irrelevance                ↦ ≅-irrelevant
+  ≅-heterogeneous-irrelevance  ↦ ≅-heterogeneous-irrelevant
+  ≅-heterogeneous-irrelevanceˡ ↦ ≅-heterogeneous-irrelevantˡ
+  ≅-heterogeneous-irrelevanceʳ ↦ ≅-heterogeneous-irrelevantʳ
+  ```
+
+* In `Relation.Binary.PropositionalEquality.WithK`:
+  ```agda
+  ≡-irrelevance ↦ ≡-irrelevant
+  ```
 
 Other minor additions
 ---------------------
@@ -669,6 +726,10 @@ Other minor additions
 * Added new proof to `Data.Maybe.Properties`:
   ```agda
   ≡-dec : Decidable _≡_ → Decidable {A = Maybe A} _≡_
+
+* Added new proof to `Data.Maybe.Relation.Pointwise`:
+  ```agda
+  reflexive : _≡_ ⇒ R → _≡_ ⇒ Pointwise R
   ```
 
 * Added new proofs to `Data.Nat.Properties`:
@@ -690,6 +751,23 @@ Other minor additions
   ⊓-band        : Band 0ℓ 0ℓ
   ⊔-semilattice : Semilattice 0ℓ 0ℓ
   ⊓-semilattice : Semilattice 0ℓ 0ℓ
+
+  m≤n⇒m⊓o≤n : ∀ {m n} o → m ≤ n → m ⊓ o ≤ n
+  m≤n⇒o⊓m≤n : ∀ {m n} o → m ≤ n → o ⊓ m ≤ n
+  m<n⇒m⊓o<n : ∀ {m n} o → m < n → m ⊓ o < n
+  m<n⇒o⊓m<n : ∀ {m n} o → m < n → o ⊓ m < n
+  m≤n⊓o⇒m≤n : ∀ {m} n o → m ≤ n ⊓ o → m ≤ n
+  m≤n⊓o⇒m≤o : ∀ {m} n o → m ≤ n ⊓ o → m ≤ o
+  m<n⊓o⇒m<n : ∀ {m} n o → m < n ⊓ o → m < n
+  m<n⊓o⇒m<o : ∀ {m} n o → m < n ⊓ o → m < o
+  m≤n⇒m≤n⊔o : ∀ {m n} o → m ≤ n → m ≤ n ⊔ o
+  m≤n⇒m≤o⊔n : ∀ {m n} o → m ≤ n → m ≤ o ⊔ n
+  m<n⇒m<n⊔o : ∀ {m n} o → m < n → m < n ⊔ o
+  m<n⇒m<o⊔n : ∀ {m n} o → m < n → m < o ⊔ n
+  m⊔n≤o⇒m≤o : ∀ m n {o} → m ⊔ n ≤ o → m ≤ o
+  m⊔n≤o⇒n≤o : ∀ m n {o} → m ⊔ n ≤ o → n ≤ o
+  m⊔n<o⇒m<o : ∀ m n {o} → m ⊔ n < o → m < o
+  m⊔n<o⇒n<o : ∀ m n {o} → m ⊔ n < o → n < o
 
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
   ```
@@ -750,13 +828,78 @@ Other minor additions
   fromSum : A ⊎ B → These A B
   ```
 
-* Added new functions to `Data.Vec.Any.Properties`:
+* Added new proofs to `Data.Vec.Any.Properties`:
   ```agda
   lookup-index : (p : Any P xs) → P (lookup (index p) xs)
-  fromList⁺    : List.Any P xs → Any P (fromList xs)
-  fromList⁻    : Any P (fromList xs) → List.Any P xs
+
+  lift-resp       : P Respects _≈_ → (Any P) Respects (Pointwise _≈_)
+  here-injective  : here p ≡ here q → p ≡ q
+  there-injective : there p ≡ there q → p ≡ q
+
+  ¬Any[]  : ¬ Any P []
+  ⊥↔Any⊥  : ⊥ ↔ Any (const ⊥) xs
+  ⊥↔Any[] : ⊥ ↔ Any P []
+
+  map-id : ∀ f → (∀ p → f p ≡ p) → ∀ p → Any.map f p ≡ p
+  map-∘  : ∀ f g p → Any.map (f ∘ g) p ≡ Any.map f (Any.map g p)
+
+  swap       : Any (λ x → Any (x ∼_) ys) xs → Any (λ y → Any (_∼ y) xs) ys
+  swap-there : ∀ p → swap (Any.map there p) ≡ there (swap p)
+  swap-invol : ∀ p → swap (swap p) ≡ p
+  swap↔      : Any (λ x → Any (x ∼_) ys) xs ↔ Any (λ y → Any (_∼ y) xs) ys
+
+  Any-⊎⁺ : Any P xs ⊎ Any Q xs → Any (λ x → P x ⊎ Q x) xs
+  Any-⊎⁻ : Any (λ x → P x ⊎ Q x) xs → Any P xs ⊎ Any Q xs
+  ⊎↔     : (Any P xs ⊎ Any Q xs) ↔ Any (λ x → P x ⊎ Q x) xs
+
+  Any-×⁺ : Any P xs × Any Q ys → Any (λ x → Any (λ y → P x × Q y) ys) xs
+  Any-×⁻ : Any (λ x → Any (λ y → P x × Q y) ys) xs → Any P xs × Any Q ys
+
+  singleton⁺            : P x → Any P [ x ]
+  singleton⁻            : Any P [ x ] → P x
+  singleton⁺∘singleton⁻ : singleton⁺ (singleton⁻ p) ≡ p
+  singleton⁻∘singleton⁺ : singleton⁻ (singleton⁺ p) ≡ p
+  singleton↔            : P x ↔ Any P [ x ]
+
+  map⁺      : Any (P ∘ f) xs → Any P (map f xs)
+  map⁻      : Any P (map f xs) → Any (P ∘ f) xs
+  map⁺∘map⁻ : ∀ p → map⁺ (map⁻ p) ≡ p
+  map⁻∘map⁺ : ∀ P p → map⁻ (map⁺ p) ≡ p
+  map↔      : Any (P ∘ f) xs ↔ Any P (map f xs)
+
+  ++⁺ˡ            : Any P xs → Any P (xs ++ ys)
+  ++⁺ʳ            : Any P ys → Any P (xs ++ ys)
+  ++⁻             : Any P (xs ++ ys) → Any P xs ⊎ Any P ys
+  ++⁺∘++⁻         : ∀ p → [ ++⁺ˡ , ++⁺ʳ xs ]′ (++⁻ xs p) ≡ p
+  ++⁻∘++⁺         : ∀ p → ++⁻ xs ([ ++⁺ˡ , ++⁺ʳ xs ]′ p) ≡ p
+  ++-comm         : ∀ xs ys → Any P (xs ++ ys) → Any P (ys ++ xs)
+  ++-comm∘++-comm : ∀ p → ++-comm ys xs (++-comm xs ys p) ≡ p
+  ++-insert       : ∀ xs → P x → Any P (xs ++ [ x ] ++ ys)
+  ++↔             : (Any P xs ⊎ Any P ys) ↔ Any P (xs ++ ys)
+  ++↔++           : ∀ xs ys → Any P (xs ++ ys) ↔ Any P (ys ++ xs)
+
+  concat⁺         : Any (Any P) xss → Any P (concat xss)
+  concat⁻         : Any P (concat xss) → Any (Any P) xss
+  concat⁻∘++⁺ˡ    : ∀ xss p → concat⁻ (xs ∷ xss) (++⁺ˡ p) ≡ here p
+  concat⁻∘++⁺ʳ    : ∀ xs xss p → concat⁻ (xs ∷ xss) (++⁺ʳ xs p) ≡ there (concat⁻ xss p)
+  concat⁺∘concat⁻ : ∀ xss p → concat⁺ (concat⁻ xss p) ≡ p
+  concat⁻∘concat⁺ : ∀ p → concat⁻ xss (concat⁺ p) ≡ p
+  concat↔         : Any (Any P) xss ↔ Any P (concat xss)
+
+  tabulate⁺ : ∀ i → P (f i) → Any P (tabulate f)
+  tabulate⁻ : Any P (tabulate f) → ∃ λ i → P (f i)
+
+  mapWith∈⁺ : ∀ f → (∃₂ λ x p → P (f p)) → Any P (mapWith∈ xs f)
+  mapWith∈⁻ : ∀ xs f → Any P (mapWith∈ xs f) → ∃₂ λ x p → P (f p)
+  mapWith∈↔ : (∃₂ λ x p → P (f p)) ↔ Any P (mapWith∈ xs f)
+
   toList⁺      : Any P xs → List.Any P (toList xs)
   toList⁻      : List.Any P (toList xs) → Any P xs
+  fromList⁺    : List.Any P xs → Any P (fromList xs)
+  fromList⁻    : Any P (fromList xs) → List.Any P xs
+
+  ∷↔   : ∀ P → (P x ⊎ Any P xs) ↔ Any P (x ∷ xs)
+  >>=↔ : Any (Any P ∘ f) xs ↔ Any P (xs >>= f)
   ```
 
 * Added new functions to `Data.Vec.Membership.Propositional.Properties`:

@@ -50,7 +50,7 @@ module Properties {c ℓ} {S : Setoid c ℓ} (Qu : Quotient S) where
        g (abs x)          ∎
 
      liftf≅g-ext : ∀ {a a′} → a ≈ a′ → liftf≅g a ≅ liftf≅g a′
-     liftf≅g-ext eq = ≅-heterogeneous-irrelevanceˡ _ _
+     liftf≅g-ext eq = ≅-heterogeneous-irrelevantˡ _ _
                     $ cong (lift B f p) (compat-abs eq)
 
    lift-ext : {g : ∀ a → B′ (abs a)} {p′ : compat B′ g} → (∀ x → f x ≅ g x) →

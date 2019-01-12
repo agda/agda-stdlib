@@ -1,27 +1,9 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Convenient syntax for equational reasoning
+-- This module is DEPRECATED. Please use the
+-- Relation.Binary.Reasoning.Setoid module directly.
 ------------------------------------------------------------------------
-
--- Example use:
-
--- n*0≡0 : ∀ n → n * 0 ≡ 0
--- n*0≡0 zero    = refl
--- n*0≡0 (suc n) =
---   begin
---     suc n * 0
---   ≈⟨ refl ⟩
---     n * 0 + 0
---   ≈⟨ ... ⟩
---     n * 0
---   ≈⟨ n*0≡0 n ⟩
---     0
---   ∎
-
--- Module ≡-Reasoning in Relation.Binary.PropositionalEquality
--- is recommended for equational reasoning when the underlying equality is
--- Relation.Binary.PropositionalEquality._≡_.
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -29,10 +11,4 @@ open import Relation.Binary
 
 module Relation.Binary.EqReasoning {s₁ s₂} (S : Setoid s₁ s₂) where
 
-open Setoid S
-open import Relation.Binary.PreorderReasoning preorder public
-  hiding (_≈⟨_⟩_)
-  renaming
-  ( _∼⟨_⟩_  to _≈⟨_⟩_
-  ; _≈⟨⟩_   to _≡⟨⟩_
-  )
+open import Relation.Binary.Reasoning.Setoid S public

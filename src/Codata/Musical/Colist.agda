@@ -266,7 +266,7 @@ setoid A = record
   trans (x ∷ xs≈) (.x ∷ ys≈) = x ∷ ♯ trans (♭ xs≈) (♭ ys≈)
 
 module ≈-Reasoning where
-  import Relation.Binary.EqReasoning as EqR
+  import Relation.Binary.Reasoning.Setoid as EqR
   private
     open module R {a} {A : Set a} = EqR (setoid A) public
 
@@ -458,7 +458,7 @@ Any-∈ {P = P} = record
   antisym (x ∷ p₁) p₂ = x ∷ ♯ antisym (♭ p₁) (tail p₂)
 
 module ⊑-Reasoning where
-  import Relation.Binary.PartialOrderReasoning as POR
+  import Relation.Binary.Reasoning.PartialOrder as POR
   private
     open module R {a} {A : Set a} = POR (⊑-Poset A)
       public renaming (_≤⟨_⟩_ to _⊑⟨_⟩_)
@@ -471,7 +471,7 @@ module ⊑-Reasoning where
   where module ⊑P = Poset (⊑-Poset A)
 
 module ⊆-Reasoning where
-  import Relation.Binary.PreorderReasoning as PreR
+  import Relation.Binary.Reasoning.Preorder as PreR
   private
     open module R {a} {A : Set a} = PreR (⊆-Preorder A)
       public renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)

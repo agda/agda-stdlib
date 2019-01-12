@@ -3,12 +3,14 @@
 --
 -- Solver for equations in commutative monoids
 --
--- Adapted from Algebra.Monoid-solver
+-- Adapted from Algebra.Solver.Monoid
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra
+
+module Algebra.Solver.CommutativeMonoid {m₁ m₂} (M : CommutativeMonoid m₁ m₂) where
 
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Maybe as Maybe
@@ -20,15 +22,13 @@ open import Data.Vec using (Vec; []; _∷_; lookup; replicate)
 
 open import Function using (_∘_)
 
-import Relation.Binary.EqReasoning  as EqReasoning
-import Relation.Binary.Reflection   as Reflection
-import Relation.Nullary.Decidable   as Dec
+import Relation.Binary.Reasoning.Setoid  as EqReasoning
+import Relation.Binary.Reflection            as Reflection
+import Relation.Nullary.Decidable            as Dec
 import Data.Vec.Relation.Pointwise.Inductive as Pointwise
 
 open import Relation.Binary.PropositionalEquality as P using (_≡_; decSetoid)
 open import Relation.Nullary using (Dec)
-
-module Algebra.Solver.CommutativeMonoid {m₁ m₂} (M : CommutativeMonoid m₁ m₂) where
 
 open CommutativeMonoid M
 open EqReasoning setoid

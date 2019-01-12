@@ -12,6 +12,7 @@ open import Level
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Relation.Binary
+open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 
@@ -43,6 +44,9 @@ module _ {a r} {A : Set a} {R : Rel A r} where
   refl : Reflexive R → Reflexive (Pointwise R)
   refl R-refl {just _}  = just R-refl
   refl R-refl {nothing} = nothing
+
+  reflexive : _≡_ ⇒ R → _≡_ ⇒ Pointwise R
+  reflexive reflexive P.refl = refl (reflexive P.refl)
 
 module _ {a b r₁ r₂} {A : Set a} {B : Set b}
          {R : REL A B r₁} {S : REL B A r₂} where
@@ -79,12 +83,14 @@ module _ {a r} {A : Set a} {R : Rel A r} where
     ; _≟_           = dec R._≟_
     } where module R = IsDecEquivalence R-isDecEquivalence
 
-setoid : ∀ {c ℓ} → Setoid c ℓ → Setoid c (c ⊔ ℓ)
-setoid S = record
-  { isEquivalence = isEquivalence S.isEquivalence
-  } where module S = Setoid S
+module _ {c ℓ} where
 
-decSetoid : ∀ {c ℓ} → DecSetoid c ℓ → DecSetoid c (c ⊔ ℓ)
-decSetoid S = record
-  { isDecEquivalence = isDecEquivalence S.isDecEquivalence
-  } where module S = DecSetoid S
+  setoid : Setoid c ℓ → Setoid c (c ⊔ ℓ)
+  setoid S = record
+    { isEquivalence = isEquivalence S.isEquivalence
+    } where module S = Setoid S
+
+  decSetoid : DecSetoid c ℓ → DecSetoid c (c ⊔ ℓ)
+  decSetoid S = record
+    { isDecEquivalence = isDecEquivalence S.isDecEquivalence
+    } where module S = DecSetoid S

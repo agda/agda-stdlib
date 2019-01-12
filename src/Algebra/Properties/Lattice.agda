@@ -16,7 +16,7 @@ open import Algebra.FunctionProperties _≈_
 import Algebra.Properties.Semilattice as SL
 open import Relation.Binary
 import Relation.Binary.Lattice as R
-open import Relation.Binary.EqReasoning  setoid
+open import Relation.Binary.Reasoning.Setoid  setoid
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; module Equivalence)
