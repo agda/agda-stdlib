@@ -61,9 +61,9 @@ module _ {a b r s e} {A : Set a} {B : Set b}
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
-  length-mono-Prefix-≤ : ∀ {as bs} → Prefix R as bs → length as ≤ length bs
-  length-mono-Prefix-≤ []       = z≤n
-  length-mono-Prefix-≤ (r ∷ rs) = s≤s (length-mono-Prefix-≤ rs)
+  length-mono : ∀ {as bs} → Prefix R as bs → length as ≤ length bs
+  length-mono []       = z≤n
+  length-mono (r ∷ rs) = s≤s (length-mono rs)
 
 ------------------------------------------------------------------------
 -- _++_
@@ -122,14 +122,16 @@ module _ {a b r p q} {A : Set a} {B : Set b} {R : REL A B r}
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
-  take⁺ : ∀ {as bs} n → Prefix R as bs → Prefix R (take n as) (take n bs)
+  take⁺ : ∀ {as bs} n → Prefix R as bs →
+          Prefix R (take n as) (take n bs)
   take⁺ zero    rs       = []
   take⁺ (suc n) []       = []
   take⁺ (suc n) (r ∷ rs) = r ∷ take⁺ n rs
 
   take⁻ : ∀ {as bs} n →
-    Prefix R (take n as) (take n bs) → Prefix R (drop n as) (drop n bs) →
-    Prefix R as bs
+          Prefix R (take n as) (take n bs) →
+          Prefix R (drop n as) (drop n bs) →
+          Prefix R as bs
   take⁻                   zero    hds       tls = tls
   take⁻ {[]}              (suc n) hds       tls = []
   take⁻ {a ∷ as} {[]}     (suc n) ()        tls
@@ -153,11 +155,13 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 ------------------------------------------------------------------------
 -- replicate
 
-  replicate⁺ : ∀ {m n a b} → m ≤ n → R a b → Prefix R (replicate m a) (replicate n b)
+  replicate⁺ : ∀ {m n a b} → m ≤ n → R a b →
+               Prefix R (replicate m a) (replicate n b)
   replicate⁺ z≤n       r = []
   replicate⁺ (s≤s m≤n) r = r ∷ replicate⁺ m≤n r
 
-  replicate⁻ : ∀ {m n a b} → m ≢ 0 → Prefix R (replicate m a) (replicate n b) → R a b
+  replicate⁻ : ∀ {m n a b} → m ≢ 0 →
+               Prefix R (replicate m a) (replicate n b) → R a b
   replicate⁻ {zero}  {n}     m≢0 r  = ⊥-elim (m≢0 P.refl)
   replicate⁻ {suc m} {zero}  m≢0 ()
   replicate⁻ {suc m} {suc n} m≢0 rs = Prefix.head rs
@@ -204,7 +208,7 @@ module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d}
   zip⁺ = zipWith⁺ _,_
 
 ------------------------------------------------------------------------
--- Irrelevant
+-- Irrelevance
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 

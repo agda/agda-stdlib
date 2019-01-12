@@ -281,9 +281,6 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The proofs `toList⁺` and `toList⁻` in `Data.Vec.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
-* The type of `antisymmetric` in `Data.List.Relation.Pointwise` has been modified to work
-  on heterogeneous relations.
-
 Other major changes
 -------------------
 
@@ -407,9 +404,9 @@ Other minor additions
 * Added new proofs to `Algebra.Properties.Lattice`:
   ```agda
   ∧-isSemilattice : IsSemilattice _≈_ _∧_
-  ∧-semilattice : Semilattice l₁ l₂
+  ∧-semilattice   : Semilattice l₁ l₂
   ∨-isSemilattice : IsSemilattice _≈_ _∨_
-  ∨-semilattice : Semilattice l₁ l₂
+  ∨-semilattice   : Semilattice l₁ l₂
   ```
 
 * Added new operator to `Algebra.Solver.Ring`.
@@ -440,7 +437,7 @@ Other minor additions
 
 * Added new proof to `Codata.Stream.Properties`:
   ```agda
-  splitAt-map : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
+  splitAt-map             : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
   lookup-iterate-identity : lookup n (iterate f a) ≡ fold a f n
   ```
 
@@ -639,8 +636,8 @@ Other minor additions
 
 * Added new function to `Data.List.Membership.(Setoid/Propositional)`:
   ```agda
-  _∷=_    : x ∈ xs → A → List A
-  _─_     : (xs : List A) → x ∈ xs → List A
+  _∷=_ : x ∈ xs → A → List A
+  _─_  : (xs : List A) → x ∈ xs → List A
   ```
   Added laws for `updateAt`.
   Now laws for `_[_]≔_` are special instances of these.
@@ -913,7 +910,7 @@ Other minor additions
 * Added new definitions to `Relation.Binary.Core`:
   ```agda
   Antisym R S E = ∀ {i j} → R i j → S j i → E i j
-  Conn P Q = ∀ x y → P x y ⊎ Q y x
+  Conn P Q      = ∀ x y → P x y ⊎ Q y x
   ```
 
 * Added new proofs to `Relation.Binary.Lattice`:
@@ -973,10 +970,10 @@ Other minor additions
 * Added new proofs to `Data.List.Relation.Pointwise`:
   ```agda
   reverseAcc⁺ : Pointwise R a x → Pointwise R b y → Pointwise R (reverseAcc a b) (reverseAcc x y)
-  reverse⁺ : Pointwise R as bs → Pointwise R (reverse as) (reverse bs)
-  map⁺ : ∀ f g → Pointwise (λ a b → R (f a) (g b)) as bs → Pointwise R (map f as) (map g bs)
-  map⁻ : ∀ f g → Pointwise R (map f as) (map g bs) → Pointwise (λ a b → R (f a) (g b)) as bs
-  filter⁺ : Pointwise R as bs → Pointwise R (filter P? as) (filter Q? bs)
-  replicate⁺ : R a b → (n : ℕ) → Pointwise R (replicate n a) (replicate n b)
-  irrelevant : Irrelevant R → Irrelevant (Pointwise R)
+  reverse⁺    : Pointwise R as bs → Pointwise R (reverse as) (reverse bs)
+  map⁺        : Pointwise (λ a b → R (f a) (g b)) as bs → Pointwise R (map f as) (map g bs)
+  map⁻        : Pointwise R (map f as) (map g bs) → Pointwise (λ a b → R (f a) (g b)) as bs
+  filter⁺     : Pointwise R as bs → Pointwise R (filter P? as) (filter Q? bs)
+  replicate⁺  : R a b → Pointwise R (replicate n a) (replicate n b)
+  irrelevant  : Irrelevant R → Irrelevant (Pointwise R)
   ```
