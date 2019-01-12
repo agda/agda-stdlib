@@ -4,25 +4,57 @@
 -- Functors
 ------------------------------------------------------------------------
 
--- Note that currently the functor laws are not included here.
-
 {-# OPTIONS --without-K --safe #-}
 
-open import Category.Category using (Category)
-
-module Category.Functor {ℓᶜ}{ℓᵈ} (catC : Category ℓᶜ) (catD : Category ℓᵈ) where
-
 open import Level
-open Category catC renaming (Obj to ObjC; _⇒_ to _⇒C_; _≈_ to _≈C_; _∘_ to _∘C_)
-open Category catD renaming (Obj to ObjD; _⇒_ to _⇒D_; _≈_ to _≈D_; _∘_ to _∘D_)
+open import Category
+open import Category.Structures
 
-record RawFunctor (F : ObjC → ObjD) : Set (suc ℓᶜ ⊔ ℓᵈ) where
-  field
-    fmap : ∀ {A B} → (A ⇒C B) → F A ⇒D F B
+module Category.Functor where
 
-record RawMorphism {F₁ F₂ : ObjC → ObjD}
-                   (fun₁ : RawFunctor F₁)
-                   (fun₂ : RawFunctor F₂) : Set (suc ℓᶜ ⊔ ℓᵈ) where
-  open RawFunctor
+record RawFunctor {oᶜ mᶜ rᶜ}
+                  {oᵈ mᵈ rᵈ}
+                  (catC : RawCategory oᶜ mᶜ rᶜ)
+                  (catD : RawCategory oᵈ mᵈ rᵈ) : Set (oᶜ ⊔ mᶜ ⊔ oᵈ ⊔ mᵈ) where
+  private
+    module C = RawCategory catC
+    module D = RawCategory catD
   field
-    op     : ∀{X} → F₁ X ⇒D F₂ X
+    F : C.Obj → D.Obj
+    fmap : ∀ {A B} → A C.⇒ B → F A D.⇒ F B
+
+RawEndoFunctor : ∀ {o m r} → RawCategory o m r → Set (o ⊔ m)
+RawEndoFunctor cat = RawFunctor cat cat
+
+record Functor {oᶜ mᶜ rᶜ}
+               {oᵈ mᵈ rᵈ}
+               (catC : RawCategory oᶜ mᶜ rᶜ)
+               (catD : RawCategory oᵈ mᵈ rᵈ) : Set (oᶜ ⊔ mᶜ ⊔ rᶜ ⊔ oᵈ ⊔ mᵈ ⊔ rᵈ) where
+  private
+    open Category.Structures.Exo catC catD
+    module C = RawCategory catC
+    module D = RawCategory catD
+  field
+    F : C.Obj → D.Obj
+    fmap : ∀ {A B} → A C.⇒ B → F A D.⇒ F B
+    isFunctor : IsFunctor F fmap
+
+  open IsFunctor isFunctor public
+
+  rawFunctor : RawFunctor catC catD
+  rawFunctor = record { fmap = fmap }
+
+EndoFunctor : ∀ {o m r} → RawCategory o m r → Set (o ⊔ m ⊔ r)
+EndoFunctor cat = Functor cat cat
+
+-- record RawNaturalTransformation {oᶜ mᶜ rᶜ}
+--                                 {oᵈ mᵈ rᵈ}
+--                                 (catC : RawCategory oᶜ mᶜ rᶜ)
+--                                 (catD : RawCategory oᵈ mᵈ rᵈ)
+--                                 (fun₁ fun₂ : RawFunctor catC catD) : Set (oᶜ ⊔ mᵈ) where
+--   private
+--     module F₁ = RawFunctor fun₁
+--     module F₂ = RawFunctor fun₂
+--     module D = RawCategory catD
+--   field
+--     op     : ∀{X} → F₁.F X D.⇒ F₂.F X

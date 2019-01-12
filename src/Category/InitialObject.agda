@@ -6,14 +6,27 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Category.Category
-
-module Category.InitialObject {ℓ} (cat : Category ℓ) where
-
-open Category cat
 open import Level
+open import Category
+open import Category.Structures using (module Endo)
 
-record RawInitial : Set (suc ℓ) where
+module Category.InitialObject {o m r} (cat : RawCategory o m r) where
+
+open Endo cat
+open RawCategory cat
+
+record RawInitial : Set (o ⊔ m) where
   field
-    Universal    : Obj
-    universality : ∀ X → Universal ⇒ X
+    ⊥ : Obj
+    ! : ∀ X → ⊥ ⇒ X
+
+record Initial : Set (o ⊔ m ⊔ r) where
+  field
+    ⊥ : Obj
+    ! : ∀ X → ⊥ ⇒ X
+    isInitial : IsInitial ⊥ !
+
+  open IsInitial isInitial public
+
+  rawInitial : RawInitial
+  rawInitial = record { ! = ! }

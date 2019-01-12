@@ -7,9 +7,11 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Level
-open import Category.Category
-open import Category.Construct.Agda
 open import Function
+open import Category
+open import Category.Functor
+  renaming (RawFunctor to RawFunctor′)
+open import Category.Construct.Agda
 open import Relation.Binary.PropositionalEquality
 
 -- these construction recover the old definitions of RawFunctor and Morphism
@@ -17,10 +19,9 @@ open import Relation.Binary.PropositionalEquality
 
 module Category.Construct.Agda.Functor {ℓ : Level} where
 
-open import Category.Functor (agdaCat ℓ) (agdaCat ℓ)
-  renaming (RawFunctor to RawFunctor′; RawMorphism to RawMorphism′)
-open import Category.Structures (agdaCat ℓ)
-  using (IsNatural)
+private
+  cat = agdaCat ℓ
+  rawCat = Category.rawCategory cat
 
 record RawFunctor (F : Set ℓ → Set ℓ) : Set (suc ℓ) where
   infixl 4 _<$>_ _<$_
@@ -35,7 +36,7 @@ record RawFunctor (F : Set ℓ → Set ℓ) : Set (suc ℓ) where
   _<&>_ : ∀ {A B} → F A → (A → B) → F B
   _<&>_ = flip _<$>_
 
-  categoricalFunctor : RawFunctor′ F
+  categoricalFunctor : RawFunctor′ rawCat rawCat
   categoricalFunctor = record
     { fmap = _<$>_
     }
@@ -49,11 +50,11 @@ record Morphism {F₁ F₂ : Set ℓ → Set ℓ}
     op-<$> : ∀{X Y} (f : X → Y) (x : F₁ X) →
            op (fun₁ ._<$>_ f x) ≡ fun₂ ._<$>_ f (op x)
 
-  categorical : RawMorphism′ (categoricalFunctor fun₁) (categoricalFunctor fun₂)
-  categorical = record
-    { op = op
-    }
-  categorical-isNatural : IsNatural (agdaCat ℓ) categorical
-  categorical-isNatural = record
-    { op-<$> = op-<$>
-    }
+--   categorical : RawMorphism′ (categoricalFunctor fun₁) (categoricalFunctor fun₂)
+--   categorical = record
+--     { op = op
+--     }
+--   categorical-isNatural : IsNatural (agdaCat ℓ) categorical
+--   categorical-isNatural = record
+--     { op-<$> = op-<$>
+--     }

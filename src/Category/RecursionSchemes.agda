@@ -1,69 +1,70 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Recursion schemes on initial objects of endofunction algebras
+-- Recursion schemes on initial objects of endofunctor algebras
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Category.Category
+open import Category as Cat
+open import Category.Functor
+open import Category.Structures
+open import Category.Algebra
+open import Category.Construct.Algebra using (algebraCat)
+open import Category.InitialObject
+import Category.Structures using (module Endo)
 
-module Category.RecursionSchemes {ℓ}{cat : Category ℓ} where
-open Category cat
+open Cat.Category using (rawCategory)
 
-open import Category.Functor cat cat renaming (RawFunctor to RawEndoFunctor)
-open import Category.Structures using (IsCategory; IsFunctor)
+module Category.RecursionSchemes {o m r}
+                                 {cat : Category o m r}
+                                 {F : EndoFunctor (rawCategory cat)}
+                                 (ini : Initial (rawCategory (algebraCat cat F))) where
+private
+  rawF = Functor.rawFunctor F
+  algCat = algebraCat cat F
+  rawAlgCat = Category.rawCategory algCat
 
-module _ {fun : Obj → Obj}
-         {F : RawEndoFunctor fun}
-         {isCat : IsCategory cat}
-         {isFun : IsFunctor cat cat F} where
-  open import Category.Algebra cat
-  open AlgebraCategory F isCat isFun
-    using (AlgebraMorphism; _≈alg_; algebraCat; algebraCatIsCategory; idAlgebraMorphism; _∘alg_)
-  open RawEndoFunctor F
-  open import Category.InitialObject algebraCat
-  open import Category.Structures algebraCat using (IsInitial)
-  open IsCategory algebraCatIsCategory using (module ≈-Reasoning)
-  module _ {ini : RawInitial}
-           (isIni : IsInitial ini) where
-    open Algebra
-    open AlgebraMorphism
-    open IsInitial isIni
-    open _≈alg_
-    private
-      open RawInitial ini renaming (universality to ⦅_⦆F)
-      open Algebra Universal renaming (Carrier to I) public
-      outF : I ⇒ fun I
-      outF = translation ⦅ coalg ⦆F where
-        coalg : Algebra F
-        coalg = record { Carrier = fun I ; evaluate = fmap (evaluate Universal) }
-      by-universality : ∀ {alg : Algebra F}
-                      → {morph1 : AlgebraMorphism Universal alg}
-                      → {morph2 : AlgebraMorphism Universal alg}
-                      → morph1 ≈alg morph2
-      by-universality {alg} {morph1} {morph2} = begin
-        morph1                  ≈⟨ ≈sym (uniqueUniversality morph1) ⟩
-        ⦅ alg ⦆F                 ≈⟨ uniqueUniversality morph2 ⟩
-        morph2                  ∎ where open ≈-Reasoning
-      by-universality′ : ∀ {alg : Algebra F}
-                       → (morph1 : AlgebraMorphism Universal alg)
-                       → (morph2 : AlgebraMorphism Universal alg)
-                       → translation morph1 ≈ translation morph2
-      by-universality′ m n = (by-universality {morph1 = m} {morph2 = n}) .morphs-eq
+open RawFunctor rawF renaming (F to fun)
+open Endo rawAlgCat using (IsInitial)
+open Cat.Category cat hiding (module  ≈-Reasoning)
+open Cat.Category algCat using (module ≈-Reasoning)
+open Category.Construct.Algebra cat F
+open Initial ini renaming (⊥ to inF; ! to ⦅_⦆F)
+open _⇒alg_
+open _≈alg_
 
-    ⦅_⦆ : (alg : Algebra F) → I ⇒ Carrier alg
-    ⦅ alg ⦆ = translation ⦅ alg ⦆F
-    -- cata lifts a morphism to an algebra
-    cata : ∀ {U} → fun U ⇒ U → I ⇒ U
-    cata {U} alg = ⦅ record { Carrier = U; evaluate = alg } ⦆
+private
+  open Algebra inF renaming (Carrier to I)
+  outF : I ⇒ fun I
+  outF = translation ⦅ coalg ⦆F where
+    coalg : Algebra rawF
+    coalg = record { Carrier = fun I ; evaluate = fmap (evaluate inF) }
+  by-universality : ∀ {alg : Algebra rawF}
+                  → {morph1 : inF ⇒alg alg}
+                  → {morph2 : inF ⇒alg alg}
+                  → morph1 ≈alg morph2
+  by-universality {alg} {morph1} {morph2} = begin
+    morph1                  ≈⟨ ≈sym (!-unique morph1) ⟩
+    ⦅ alg ⦆F                 ≈⟨ !-unique morph2 ⟩
+    morph2                  ∎ where open ≈-Reasoning
+  by-universality′ : ∀ {alg : Algebra rawF}
+                   → (morph1 : inF ⇒alg alg)
+                   → (morph2 : inF ⇒alg alg)
+                   → translation morph1 ≈ translation morph2
+  by-universality′ m n = morphs-eq (by-universality {morph1 = m} {morph2 = n})
 
-    cata-refl : ⦅ Universal ⦆ ≈ id
-    cata-refl = by-universality′ ⦅ Universal ⦆F (idAlgebraMorphism Universal)
+⦅_⦆ : (alg : Algebra rawF) → I ⇒ Carrier alg
+⦅ alg ⦆ = translation ⦅ alg ⦆F
+cata : ∀ {U} → fun U ⇒ U → I ⇒ U
+cata {U} alg = ⦅ record { evaluate = alg } ⦆
 
-    cata-fusion : ∀ {ψ : Algebra F}{ϕ : Algebra F}{f : Carrier ϕ ⇒ Carrier ψ}
-                  → evaluate ψ ∘ fmap f ≈ f ∘ evaluate ϕ
-                  → f ∘ ⦅ ϕ ⦆ ≈ ⦅ ψ ⦆
-    cata-fusion {ψ = ψ}{ϕ}{f} eq = by-universality′ (ϕ→ψ ∘alg ⦅ ϕ ⦆F) ⦅ ψ ⦆F where
-      ϕ→ψ : AlgebraMorphism ϕ ψ
-      ϕ→ψ = record { translation = f ; commutes = eq }
+cata-refl : ⦅ inF ⦆ ≈ id
+cata-refl = by-universality′ ⦅ inF ⦆F (id⇒alg inF)
+
+cata-fusion : ∀ {ψ : Algebra rawF}{ϕ : Algebra rawF}{f : Carrier ϕ ⇒ Carrier ψ}
+              → evaluate ψ ∘ fmap f ≈ f ∘ evaluate ϕ
+              → f ∘ ⦅ ϕ ⦆ ≈ ⦅ ψ ⦆
+cata-fusion {ψ = ψ}{ϕ}{f} eq = by-universality′ (ϕ→ψ ∘alg ⦅ ϕ ⦆F) ⦅ ψ ⦆F where
+  ϕ→ψ : ϕ ⇒alg ψ
+  ϕ→ψ = record { translation = f ; commutes = eq }
