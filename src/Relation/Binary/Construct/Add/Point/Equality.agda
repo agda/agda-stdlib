@@ -1,27 +1,35 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Consequences on pointwise equality of freely adding a point to a Set
+-- A pointwise lifting of a relation to incorporate an additional point.
 ------------------------------------------------------------------------
+
+-- This module is designed to be used with
+-- Relation.Nullary.Construct.Add.Point
 
 open import Relation.Binary
 
-module Relation.Binary.Construction.Pointed.Pointwise
-       {a e} {A : Set a} (_≈_ : Rel A e) where
+module Relation.Binary.Construct.Add.Point.Equality
+  {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
 
 open import Function
-open import Function.Equivalence using (equivalence)
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
 import Relation.Binary.PropositionalEquality as P
-open import Relation.Binary.Construction.Pointed
+open import Relation.Nullary
+open import Relation.Nullary.Construct.Add.Point
+import Relation.Nullary.Decidable as Dec
 
-data _≈∙_ : Rel (Pointed A) e where
+------------------------------------------------------------------------
+-- Definition
+
+data _≈∙_ : Rel (Pointed A) ℓ where
   ∙≈∙ :                     ∙     ≈∙ ∙
   [_] : {k l : A} → k ≈ l → [ k ] ≈∙ [ l ]
 
-[_]⁻¹ : ∀ {k l} → [ k ] ≈∙ [ l ] → k ≈ l
-[ [ k≈l ] ]⁻¹ = k≈l
+------------------------------------------------------------------------
+-- Relational properties
+
+[≈]-injective : ∀ {k l} → [ k ] ≈∙ [ l ] → k ≈ l
+[≈]-injective [ k≈l ] = k≈l
 
 ≈∙-refl : Reflexive _≈_ → Reflexive _≈∙_
 ≈∙-refl ≈-refl {∙}     = ∙≈∙
@@ -36,24 +44,27 @@ data _≈∙_ : Rel (Pointed A) e where
 ≈∙-trans ≈-trans [ x≈y ] [ y≈z ] = [ ≈-trans x≈y y≈z ]
 
 ≈∙-dec : Decidable _≈_ → Decidable _≈∙_
-≈∙-dec ≈-dec ∙     ∙     = yes ∙≈∙
-≈∙-dec ≈-dec ∙     [ l ] = no (λ ())
-≈∙-dec ≈-dec [ k ] ∙     = no (λ ())
-≈∙-dec ≈-dec [ k ] [ l ] = Dec.map (equivalence [_] [_]⁻¹) (≈-dec k l)
+≈∙-dec _≟_ ∙     ∙     = yes ∙≈∙
+≈∙-dec _≟_ ∙     [ l ] = no (λ ())
+≈∙-dec _≟_ [ k ] ∙     = no (λ ())
+≈∙-dec _≟_ [ k ] [ l ] = Dec.map′ [_] [≈]-injective (k ≟ l)
 
-≈∙-irrelevance : Irrelevant _≈_ → Irrelevant _≈∙_
-≈∙-irrelevance ≈-irrelevance ∙≈∙   ∙≈∙   = P.refl
-≈∙-irrelevance ≈-irrelevance [ p ] [ q ] = P.cong _ (≈-irrelevance p q)
+≈∙-irrelevant : Irrelevant _≈_ → Irrelevant _≈∙_
+≈∙-irrelevant ≈-irr ∙≈∙   ∙≈∙   = P.refl
+≈∙-irrelevant ≈-irr [ p ] [ q ] = P.cong _ (≈-irr p q)
 
 ≈∙-substitutive : ∀ {ℓ} → Substitutive _≈_ ℓ → Substitutive _≈∙_ ℓ
-≈∙-substitutive ≈-substitutive P ∙≈∙   = id
-≈∙-substitutive ≈-substitutive P [ p ] = ≈-substitutive (P ∘′ [_]) p
+≈∙-substitutive ≈-subst P ∙≈∙   = id
+≈∙-substitutive ≈-subst P [ p ] = ≈-subst (P ∘′ [_]) p
+
+------------------------------------------------------------------------
+-- Structures
 
 ≈∙-isEquivalence : IsEquivalence _≈_ → IsEquivalence _≈∙_
 ≈∙-isEquivalence ≈-isEquivalence = record
-  { refl  = λ {x} → ≈∙-refl refl {x}
-  ; sym   = λ {x} → ≈∙-sym sym {x}
-  ; trans = λ {x} → ≈∙-trans trans {x}
+  { refl  = ≈∙-refl refl
+  ; sym   = ≈∙-sym sym
+  ; trans = ≈∙-trans trans
   } where open IsEquivalence ≈-isEquivalence
 
 ≈∙-isDecEquivalence : IsDecEquivalence _≈_ → IsDecEquivalence _≈∙_

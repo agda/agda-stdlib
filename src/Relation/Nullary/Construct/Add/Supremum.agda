@@ -1,11 +1,11 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Freely adding a Supremum to any Set
+-- Notation for freely adding a supremum to any set
 ------------------------------------------------------------------------
 
-module Relation.Binary.Construction.Supremum where
+module Relation.Nullary.Construct.Add.Supremum where
 
-open import Relation.Binary.Construction.Pointed
+open import Relation.Nullary.Construct.Add.Point
   renaming (Pointed to _⁺; ∙ to ⊤⁺)
   public

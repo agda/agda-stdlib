@@ -1,12 +1,11 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Freely adding a Point to any Set
+-- Notation for adding an additional point to any set
 ------------------------------------------------------------------------
 
-module Relation.Binary.Construction.Pointed where
+module Relation.Nullary.Construct.Add.Point where
 
-open import Data.Maybe.Base
+open import Data.Maybe.Base using ()
   renaming (Maybe to Pointed; nothing to ∙; just to [_])
-  using ()
   public

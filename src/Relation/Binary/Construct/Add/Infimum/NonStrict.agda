@@ -1,77 +1,90 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Consequences on orders of freely adding an infimum to a Set
+-- The lifting of a non-strict order to incorporate a new infimum
 ------------------------------------------------------------------------
+
+-- This module is designed to be used with
+-- Relation.Nullary.Construct.Add.Infimum
+
 open import Relation.Binary
 
-module Relation.Binary.Construction.Infimum.Order
-       {a r} {A : Set a} (_≤_ : Rel A r) where
+module Relation.Binary.Construct.Add.Infimum.NonStrict
+  {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) where
 
 open import Level
 open import Data.Sum as Sum
-open import Function.Equivalence using (equivalence)
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
 import Relation.Binary.PropositionalEquality as P
-open import Relation.Binary.Construction.Infimum
+import Relation.Binary.Construct.Add.Infimum.Equality as Equality
+open import Relation.Nullary
+open import Relation.Nullary.Construct.Add.Infimum
+import Relation.Nullary.Decidable as Dec
+
+------------------------------------------------------------------------
+-- Definition
 
 infix 5 _≤₋_
-data _≤₋_ : Rel (A ₋) r where
-  ⊥⁺≤_  : (l : A ₋)         → ⊥⁺    ≤₋ l
+data _≤₋_ : Rel (A ₋) ℓ where
+  ⊥₋≤_  : (l : A ₋)         → ⊥₋    ≤₋ l
   [_] : {k l : A} → k ≤ l → [ k ] ≤₋ [ l ]
 
-[_]⁻¹ : ∀ {k l} → [ k ] ≤₋ [ l ] → k ≤ l
-[ [ k≤l ] ]⁻¹ = k≤l
+------------------------------------------------------------------------
+-- Relational properties
+
+[≤]-injective : ∀ {k l} → [ k ] ≤₋ [ l ] → k ≤ l
+[≤]-injective [ p ] = p
 
 module _ {e} {_≈_ : Rel A e} where
 
-  open import Relation.Binary.Construction.Infimum.Pointwise _≈_
+  open Equality _≈_
 
   ≤₋-reflexive : (_≈_ ⇒ _≤_) → (_≈₋_ ⇒ _≤₋_)
-  ≤₋-reflexive ≤-reflexive ⊥⁺≈⊥⁺ = ⊥⁺≤ ⊥⁺
+  ≤₋-reflexive ≤-reflexive ⊥₋≈⊥₋ = ⊥₋≤ ⊥₋
   ≤₋-reflexive ≤-reflexive [ p ] = [ ≤-reflexive p ]
 
   ≤₋-antisym : Antisymmetric _≈_ _≤_ → Antisymmetric _≈₋_ _≤₋_
-  ≤₋-antisym ≤≥⇒≈ (⊥⁺≤ .⊥⁺) (⊥⁺≤ .⊥⁺) = ⊥⁺≈⊥⁺
+  ≤₋-antisym ≤≥⇒≈ (⊥₋≤ ⊥₋) (⊥₋≤ ⊥₋) = ⊥₋≈⊥₋
   ≤₋-antisym ≤≥⇒≈ [ p ] [ q ] = [ ≤≥⇒≈ p q ]
 
 ≤₋-trans : Transitive _≤_ → Transitive _≤₋_
-≤₋-trans ≤-trans (⊥⁺≤ l) q     = ⊥⁺≤ _
+≤₋-trans ≤-trans (⊥₋≤ l) q     = ⊥₋≤ _
 ≤₋-trans ≤-trans [ p ]   [ q ] = [ ≤-trans p q ]
 
-≤₋-minimum : Minimum _≤₋_ ⊥⁺
-≤₋-minimum = ⊥⁺≤_
+≤₋-minimum : Minimum _≤₋_ ⊥₋
+≤₋-minimum = ⊥₋≤_
 
 ≤₋-dec : Decidable _≤_ → Decidable _≤₋_
-≤₋-dec ≤-dec ⊥⁺    l     = yes (⊥⁺≤ l)
-≤₋-dec ≤-dec [ k ] ⊥⁺    = no (λ ())
-≤₋-dec ≤-dec [ k ] [ l ] = Dec.map (equivalence [_] [_]⁻¹) (≤-dec k l)
+≤₋-dec _≤?_ ⊥₋    l     = yes (⊥₋≤ l)
+≤₋-dec _≤?_ [ k ] ⊥₋    = no (λ ())
+≤₋-dec _≤?_ [ k ] [ l ] = Dec.map′ [_] [≤]-injective (k ≤? l)
 
 ≤₋-total : Total _≤_ → Total _≤₋_
-≤₋-total ≤-total ⊥⁺    l     = inj₁ (⊥⁺≤ l)
-≤₋-total ≤-total k     ⊥⁺    = inj₂ (⊥⁺≤ k)
+≤₋-total ≤-total ⊥₋    l     = inj₁ (⊥₋≤ l)
+≤₋-total ≤-total k     ⊥₋    = inj₂ (⊥₋≤ k)
 ≤₋-total ≤-total [ k ] [ l ] = Sum.map [_] [_] (≤-total k l)
 
-≤₋-irrelevance : Irrelevant _≤_ → Irrelevant _≤₋_
-≤₋-irrelevance ≤-irrelevance (⊥⁺≤ k) (⊥⁺≤ .k) = P.refl
-≤₋-irrelevance ≤-irrelevance [ p ]   [ q ]    = P.cong _ (≤-irrelevance p q)
+≤₋-irrelevant : Irrelevant _≤_ → Irrelevant _≤₋_
+≤₋-irrelevant ≤-irr (⊥₋≤ k) (⊥₋≤ k) = P.refl
+≤₋-irrelevant ≤-irr [ p ]   [ q ]   = P.cong _ (≤-irr p q)
+
+------------------------------------------------------------------------
+-- Structures
 
 module _ {e} {_≈_ : Rel A e} where
 
-  open import Relation.Binary.Construction.Infimum.Pointwise _≈_
+  open Equality _≈_
 
   ≤₋-isPreorder : IsPreorder _≈_ _≤_ → IsPreorder _≈₋_ _≤₋_
   ≤₋-isPreorder ≤-isPreorder = record
     { isEquivalence = ≈₋-isEquivalence isEquivalence
-    ; reflexive     = λ {x} → ≤₋-reflexive reflexive {x}
-    ; trans         = λ {x} → ≤₋-trans trans {x}
+    ; reflexive     = ≤₋-reflexive reflexive
+    ; trans         = ≤₋-trans trans
     } where open IsPreorder ≤-isPreorder
 
   ≤₋-isPartialOrder : IsPartialOrder _≈_ _≤_ → IsPartialOrder _≈₋_ _≤₋_
   ≤₋-isPartialOrder ≤-isPartialOrder = record
     { isPreorder = ≤₋-isPreorder isPreorder
-    ; antisym    = λ {x} → ≤₋-antisym antisym {x}
+    ; antisym    = ≤₋-antisym antisym
     } where open IsPartialOrder ≤-isPartialOrder
 
   ≤₋-isDecPartialOrder : IsDecPartialOrder _≈_ _≤_ → IsDecPartialOrder _≈₋_ _≤₋_
