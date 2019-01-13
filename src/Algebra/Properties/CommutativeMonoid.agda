@@ -23,7 +23,7 @@ import Data.Fin.Properties as FP
 open import Data.Fin.Permutation as Perm using (Permutation; Permutation′; _⟨$⟩ˡ_; _⟨$⟩ʳ_)
 open import Data.Fin.Permutation.Components as PermC
 open import Data.Table as Table
-open import Data.Table.Relation.Equality as TE using (_≗_)
+open import Data.Table.Relation.Binary.Equality as TE using (_≗_)
 open import Data.Unit using (tt)
 import Data.Table.Properties as TP
 open import Relation.Binary.PropositionalEquality as P using (_≡_)

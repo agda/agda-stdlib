@@ -13,18 +13,18 @@ open import Category.Monad using (RawMonad)
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Fin using (Fin)
 open import Data.List as List
-open import Data.List.Any as Any using (Any; here; there)
-open import Data.List.Any.Properties
+open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
+open import Data.List.Relation.Unary.Any.Properties
 open import Data.List.Membership.Propositional
 import Data.List.Membership.Setoid.Properties as Membershipₛ
-open import Data.List.Relation.Equality.Propositional
+open import Data.List.Relation.Binary.Equality.Propositional
   using (_≋_; ≡⇒≋; ≋⇒≡)
 open import Data.List.Categorical using (monad)
 open import Data.Nat using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤?_)
 open import Data.Nat.Properties
 open import Data.Product hiding (map)
-open import Data.Product.Relation.Pointwise.NonDependent using (_×-cong_)
-import Data.Product.Relation.Pointwise.Dependent as Σ
+open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×-cong_)
+import Data.Product.Relation.Binary.Pointwise.Dependent as Σ
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Function
 open import Function.Equality using (_⟨$⟩_)

@@ -17,9 +17,9 @@ open import Relation.Binary.PropositionalEquality as PropEq
 import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   as Trivial
 open import Data.Sum     as Sum  hiding (map)
-open import Data.Sum.Relation.Pointwise
+open import Data.Sum.Relation.Binary.Pointwise
 open import Data.Product as Prod hiding (map)
-open import Data.Product.Relation.Pointwise.NonDependent
+open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Function
 import Function.Equality as FunS
 open import Data.Empty

@@ -8,6 +8,20 @@ Important changes since 0.17:
 Non-backwards compatible changes
 --------------------------------
 
+#### Extending the relation hierarchy for container datatypes
+
+* Having added many new relations over `List`s in this release
+  (e.g. `First`, `Suffix`, `Prefix`, `Interleaving`) it has become clear
+  that the existing hierarchy for relations in `List`,`Product`,`Sum`, `Table`
+  and `Vec`is not deep enough.
+
+* To address this the contents of `Data.X.Relation` have been moved to
+  `Data.X.Relation.Binary` and new folders `Data.X.Relation.(Unary/Ternary)`
+  have been created and `Data.X.(All/Any)` have been moved to
+  `Data.X.Relation.Unary.(All/Any)`.
+
+* The old modules still exist for backwards compatability but are deprecated.
+
 #### Support for `--without-K`
 
 The `--without-K` flag has been enabled in a number of files. An
@@ -23,40 +37,25 @@ families now target a possibly larger universe:
 * `Codata.Musical.Covec._∈_`.
 * `Codata.Musical.Covec._⊑_`.
 * `Codata.Stream.Bisimilarity.Bisim`.
-* `Data.List.All.All`.
-* `Data.List.First.First`.
-* `Data.List.Relation.Prefix.Heterogeneous.Prefix`.
-* `Data.List.Relation.Prefix.Heterogeneous.PrefixView`.
-* `Data.List.Relation.Equality.Setoid._≋_`.
-* `Data.List.Relation.Lex.NonStrict.Lex-<`.
-* `Data.List.Relation.Lex.NonStrict.Lex-≤`.
-* `Data.List.Relation.Lex.Strict.Lex-<`.
-* `Data.List.Relation.Lex.Strict.Lex-≤`.
-* `Data.List.Relation.Pointwise.Pointwise`.
+* `Data.List.Relation.Binary.Equality.Setoid._≋_`.
+* `Data.List.Relation.Binary.Lex.NonStrict.Lex-<`.
+* `Data.List.Relation.Binary.Lex.NonStrict.Lex-≤`.
+* `Data.List.Relation.Binary.Lex.Strict.Lex-<`.
+* `Data.List.Relation.Binary.Lex.Strict.Lex-≤`.
+* `Data.List.Relation.Binary.Pointwise.Pointwise`.
+* `Data.List.Relation.Unary.All.All`.
 * `Data.Maybe.Is-just`.
 * `Data.Maybe.Is-nothing`.
-* `Data.Maybe.Any.Any`.
-* `Data.Maybe.All.All`.
-* `Data.Maybe.Relation.Pointwise.Pointwise`.
+* `Data.Maybe.Relation.Unary.Any.Any`.
+* `Data.Maybe.Relation.Unary.All.All`.
+* `Data.Maybe.Relation.Binary.Pointwise.Pointwise`.
 
 Because of this change the texts of some type signatures were changed
 (some inferred parts of other type signatures may also have changed):
 
-* `Data.List.All.forA`.
-* `Data.List.All.forM`.
-* `Data.List.All.mapA`.
-* `Data.List.All.mapM`.
-* `Data.List.All.sequenceA`.
-* `Data.List.All.sequenceM`.
-* `Data.List.Relation.Equality.DecSetoid.≋-decSetoid`.
-* `Data.Maybe.All.forA`.
-* `Data.Maybe.All.forM`.
-* `Data.Maybe.All.mapA`.
-* `Data.Maybe.All.mapM`.
-* `Data.Maybe.All.sequenceA`.
-* `Data.Maybe.All.sequenceM`.
-* `Data.Maybe.Relation.Pointwise.decSetoid`.
-* `Data.Maybe.Relation.Pointwise.setoid`.
+* `Data.List.Relation.Binary.Equality.DecSetoid.≋-decSetoid`.
+* `Data.Maybe.Relation.Binary.Pointwise.decSetoid`.
+* `Data.Maybe.Relation.Binary.Pointwise.setoid`.
 
 Some code that relies on the K rule or uses heterogeneous equality has
 been moved to new files:
@@ -65,41 +64,33 @@ been moved to new files:
 * `Data.AVL.Indexed.node-injectiveʳ` to `Data.AVL.Indexed.WithK`.
 * `Data.AVL.Indexed.node-injectiveˡ` to `Data.AVL.Indexed.WithK`.
 * `Data.Container.Indexed.Eq` to `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.Map.composition` to
-  `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.Map.identity` to
-  `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.PlainMorphism.NT` to
-  `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.PlainMorphism.Natural` to
-  `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.PlainMorphism.complete` to
-  `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.PlainMorphism.natural` to
-  `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.PlainMorphism.∘-correct` to
-  `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.Map.composition` to `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.Map.identity` to `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.PlainMorphism.NT` to `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.PlainMorphism.Natural` to `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.PlainMorphism.complete` to `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.PlainMorphism.natural` to `Data.Container.Indexed.WithK`.
+* `Data.Container.Indexed.PlainMorphism.∘-correct` to `Data.Container.Indexed.WithK`.
 * `Data.Container.Indexed.setoid` to `Data.Container.Indexed.WithK`.
-* `Data.Product.Properties.,-injectiveʳ` to
-  `Data.Product.Properties.WithK`.
-* `Data.Product.Relation.Pointwise.Dependent.Pointwise-≡↔≡` to
-  `Data.Product.Relation.Pointwise.Dependent.WithK`.
-* `Data.Product.Relation.Pointwise.Dependent.Pointwise-≡⇒≡` to
-  `Data.Product.Relation.Pointwise.Dependent.WithK`.
-* `Data.Product.Relation.Pointwise.Dependent.inverse` to
-  `Data.Product.Relation.Pointwise.Dependent.WithK`.
-* `Data.Product.Relation.Pointwise.Dependent.↣` to
-  `Data.Product.Relation.Pointwise.Dependent.WithK`. (The name
-  `Data.Product.Relation.Pointwise.Dependent.↣` now refers to a new
+* `Data.Product.Properties.,-injectiveʳ` to `Data.Product.Properties.WithK`.
+* `Data.Product.Relation.Binary.Pointwise.Dependent.Pointwise-≡↔≡` to
+  `Data.Product.Relation.Binary.Pointwise.Dependent.WithK`.
+* `Data.Product.Relation.Binary.Pointwise.Dependent.Pointwise-≡⇒≡` to
+  `Data.Product.Relation.Binary.Pointwise.Dependent.WithK`.
+* `Data.Product.Relation.Binary.Pointwise.Dependent.inverse` to
+  `Data.Product.Relation.Binary.Pointwise.Dependent.WithK`.
+* `Data.Product.Relation.Binary.Pointwise.Dependent.↣` to
+  `Data.Product.Relation.Binary.Pointwise.Dependent.WithK`. (The name
+  `Data.Product.Relation.Binary.Pointwise.Dependent.↣` now refers to a new
   definition with another type signature.)
-* `Data.Product.Relation.Pointwise.Dependent.≡⇒Pointwise-≡` to
-  `Data.Product.Relation.Pointwise.Dependent.WithK`.
+* `Data.Product.Relation.Binary.Pointwise.Dependent.≡⇒Pointwise-≡` to
+  `Data.Product.Relation.Binary.Pointwise.Dependent.WithK`.
 * `Data.Vec.Properties.++-assoc` to `Data.Vec.Properties.WithK`.
 * `Data.Vec.Properties.[]=-irrelevance` to `Data.Vec.Properties.WithK`.
 * `Data.Vec.Properties.foldl-cong` to `Data.Vec.Properties.WithK`.
 * `Data.Vec.Properties.foldr-cong` to `Data.Vec.Properties.WithK`.
-* `Data.Vec.Relation.Equality.Propositional.≋⇒≅` to
-  `Data.Vec.Relation.Equality.Propositional.WithK`.
+* `Data.Vec.Relation.Binary.Equality.Propositional.≋⇒≅` to
+  `Data.Vec.Relation.Binary.Equality.Propositional.WithK`.
 * `Data.W.sup-injective₂` to `Data.W.WithK`.
 * `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.◅-injectiveʳ`
   to
@@ -119,9 +110,9 @@ such changes the texts of the following type signatures have been
 changed:
 
 * `Data.AVL.Indexed.node-injective-key`.
-* `Data.List.Relation.Sublist.Propositional.Properties.∷⁻`.
-* `Data.Product.Relation.Pointwise.Dependent.↣`. (The old definition
-  was moved to `Data.Product.Relation.Pointwise.Dependent.WithK`.)
+* `Data.List.Relation.Binary.Sublist.Propositional.Properties.∷⁻`.
+* `Data.Product.Relation.Binary.Pointwise.Dependent.↣`. (The old definition
+  was moved to `Data.Product.Relation.Binary.Pointwise.Dependent.WithK`.)
 * `Relation.Binary.PropositionalEquality.≡-≟-identity`.
 
 The following definitions have been removed:
@@ -130,7 +121,7 @@ The following definitions have been removed:
 
 Some deprecated names have also been removed:
 
-* `Data.Product.Relation.Pointwise.Dependent.Rel↔≡`.
+* `Data.Product.Relation.Binary.Pointwise.Dependent.Rel↔≡`.
 * `Data.Vec.Properties.proof-irrelevance-[]=`.
 * `Relation.Binary.PropositionalEquality.proof-irrelevance`.
 
@@ -151,13 +142,13 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   which are now outside of `Data.Maybe.Base`).
 
 * Moved `Data.Maybe.Base`'s `All` and `Data.Maybe`'s `allDec` to
-  `Data.Maybe.All` and renamed some proofs:
+  `Data.Maybe.Relation.Unary.All` and renamed some proofs:
   ```agda
   allDec ↦ dec
   ```
 
 * Moved `Data.Maybe.Base`'s `Any` and `Data.Maybe`'s `anyDec` to
-  `Data.Maybe.Any` and renamed some proofs:
+  `Data.Maybe.Relation.Unary.Any` and renamed some proofs:
   ```agda
   anyDec ↦ dec
   ```
@@ -165,7 +156,7 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * Created `Data.Maybe.Properties`, moved `Data.Maybe.Base`'s `just-injective`
   there and added new results.
 
-* Moved `Data.Maybe`'s `Eq` to `Data.Maybe.Relation.Pointwise`, made the
+* Moved `Data.Maybe`'s `Eq` to `Data.Maybe.Relation.Binary.Pointwise`, made the
   relation heterogeneously typed and renamed the following proofs:
   ```agda
   Eq                  ↦ Pointwise
@@ -245,7 +236,7 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   a range to guarantee that the recursive calls were performed in the
   right subtree. The types have been made more precise.
 
-* The functions (insert/union)With now take a function of type
+* The functions `(insert/union)With` now take a function of type
   `Maybe Val -> Val` rather than a value together with a merging function
   `Val -> Val -> Val` to handle the case where a value is already present
   at that key.
@@ -297,18 +288,20 @@ Other major changes
 * Added new modules `Data.Integer.Divisibility.Properties`,
   `Data.Integer.Divisibility.Signed` and `Data.Integer.DivMod`.
 
-* Added new modules `Data.List.Relation.Prefix.Heterogeneous(.Properties)`
+* Added new modules `Data.List.Relation.Binary.Prefix.Heterogeneous(.Properties)`
 
-* Added new modules `Data.List.First` and `Data.List.First.Properties` for a
+* Added new modules `Data.List.Relation.Unary.First(.Properties)` for a
   generalization of the notion of "first element in the list to satisfy a
   predicate".
 
-* Added new modules `Data.List.Relation.Prefix.Heterogeneous(.Properties)`
+* Added new modules `Data.List.Relation.Binary.Prefix.Heterogeneous(.Properties)`
 
-* Added new modules `Data.List.Relation.Interleaving(.Setoid/Propositional)`
-  and `Data.List.Relation.Interleaving(.Setoid/Propositional).Properties`.
+* Added new modules `Data.List.Relation.Ternary.Interleaving(.Setoid/Propositional)`
+  and `Data.List.Relation.Ternary.Interleaving(.Setoid/Propositional).Properties`.
 
-* Added new module `Data.Vec.Any.Properties`
+* Added new module `Data.Maybe.Relation.Unary.All.Properties`
+
+* Added new module `Data.Vec.Relation.Unary.Any.Properties`
 
 * Added new modules `Data.Vec.Membership.(Setoid/DecSetoid/DecPropositional)`
 
@@ -587,7 +580,7 @@ Other minor additions
   +-*-ring    : Ring 0ℓ 0ℓ
   ```
 
-* Added new operations to `Data.List.All`:
+* Added new operations to `Data.List.Relation.Unary.All`:
   ```agda
   zipWith   : P ∩ Q ⊆ R → All P ∩ All Q ⊆ All R
   unzipWith : R ⊆ P ∩ Q → All R ⊆ All P ∩ All Q
@@ -608,17 +601,17 @@ Other minor additions
 
   reverseAcc : List A → List A → List A
   ```
-
-* Added new proofs to `Data.List.All.Properties`:
-  ```agda
-  respects : P Respects _≈_ → (All P) Respects _≋_
-  ```
   A generalization of single point overwrite `_[_]≔_`
   to single-point modification `_[_]%=_`
   (alias with different argument order: `updateAt`):
   ```agda
   _[_]%=_   : Vec A n → Fin n → (A → A) → Vec A n
   updateAt  : Fin n → (A → A) → Vec A n → Vec A n
+  ```
+
+* Added new proofs to `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  respects : P Respects _≈_ → (All P) Respects _≋_
   ```
 
 * Added new functions to `Data.List.Base`:
@@ -664,13 +657,13 @@ Other minor additions
   map-─      : map f (xs ─ k) ≡ map f xs ─ cast eq k
   ```
 
-* Added new proofs to `Data.List.Relation.Permutation.Inductive.Properties`:
+* Added new proofs to `Data.List.Relation.Binary.Permutation.Inductive.Properties`:
   ```agda
   ++-isMagma : IsMagma _↭_ _++_
   ++-magma   : Magma _ _
   ```
 
-* Added new proofs to `Data.Maybe.All`:
+* Added new proofs to `Data.Maybe.Relation.Unary.All`:
   ```agda
   drop-just        : All P (just x) → P x
   just-equivalence : P x ⇔ All P (just x)
@@ -691,7 +684,7 @@ Other minor additions
   satisfiable      : Satisfiable (All P)
   ```
 
-* Created `Data.Maybe.All.Properties`:
+* Created `Data.Maybe.Relation.Unary.All.Properties`:
   ```agda
   map⁺ : All (P ∘ f) mx → All P (map f mx)
   map⁻ : All P (map f mx) → All (P ∘ f) mx
@@ -700,7 +693,7 @@ Other minor additions
   <∣>⁻ : All P (mx <∣> my) → All P mx
   ```
 
-* Added new proofs to `Data.Maybe.Any`:
+* Added new proofs to `Data.Maybe.Relation.Unary.Any`:
   ```agda
   drop-just        : Any P (just x) → P x
   just-equivalence : P x ⇔ Any P (just x)
@@ -719,7 +712,7 @@ Other minor additions
   _<∣>_     : Maybe A → Maybe A → Maybe A
   ```
 
-* Added new proof to `Data.Maybe.Relation.Pointwise`:
+* Added new proof to `Data.Maybe.Relation.Binary.Pointwise`:
   ```agda
   reflexive : _≡_ ⇒ R → _≡_ ⇒ Pointwise R
   ```
@@ -764,7 +757,7 @@ Other minor additions
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
   ```
 
-* Added new functions to `Data.Product.Relation.Pointwise.NonDependent`:
+* Added new functions to `Data.Product.Relation.Binary.Pointwise.NonDependent`:
   ```agda
   <_,_>ₛ : A ⟶ B → A ⟶ C → A ⟶ (B ×ₛ C)
   proj₁ₛ : (A ×ₛ B) ⟶ A
@@ -796,7 +789,7 @@ Other minor additions
   toDec   : P ⊎ ¬ P → Dec P
   ```
 
-* Added new functions to `Data.Sum.Relation.Pointwise`:
+* Added new functions to `Data.Sum.Relation.Binary.Pointwise`:
   ```agda
   inj₁ₛ : A ⟶ (A ⊎ₛ B)
   inj₂ₛ : B ⟶ (A ⊎ₛ B)
@@ -809,7 +802,7 @@ Other minor additions
   fromSum : A ⊎ B → These A B
   ```
 
-* Added new proofs to `Data.Vec.Any.Properties`:
+* Added new proofs to `Data.Vec.Relation.Unary.Any.Properties`:
   ```agda
   lookup-index : (p : Any P xs) → P (lookup (index p) xs)
 
@@ -967,7 +960,7 @@ Other minor additions
   _Respectsˡ_ : REL A B ℓ₁ → Rel A ℓ₂ → Set _
   ```
 
-* Added new proofs to `Data.List.Relation.Pointwise`:
+* Added new proofs to `Data.List.Relation.Binary.Pointwise`:
   ```agda
   reverseAcc⁺ : Pointwise R a x → Pointwise R b y → Pointwise R (reverseAcc a b) (reverseAcc x y)
   reverse⁺    : Pointwise R as bs → Pointwise R (reverse as) (reverse bs)

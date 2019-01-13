@@ -15,7 +15,7 @@ module Data.List.Membership.Propositional.Properties.Core where
 open import Function using (flip; id; _∘_)
 open import Function.Inverse using (_↔_; inverse)
 open import Data.List.Base using (List)
-open import Data.List.Any as Any using (Any; here; there)
+open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
 open import Data.Product as Prod
   using (_,_; proj₁; proj₂; uncurry′; ∃; _×_)

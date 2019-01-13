@@ -16,8 +16,8 @@ import Algebra.Structures as Structures
 open import Algebra.FunctionProperties
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
 open import Data.List as List
-open import Data.List.All using (All; []; _∷_)
-open import Data.List.Any using (Any; here; there)
+open import Data.List.Relation.Unary.All using (All; []; _∷_)
+open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat
 open import Data.Nat.Properties
