@@ -156,9 +156,9 @@ _≥?_ = flip _≤?_
 s≤s-injective : ∀ {m n} {p q : m ≤ n} → s≤s p ≡ s≤s q → p ≡ q
 s≤s-injective refl = refl
 
-≤-irrelevance : Irrelevant _≤_
-≤-irrelevance z≤n        z≤n        = refl
-≤-irrelevance (s≤s m≤n₁) (s≤s m≤n₂) = cong s≤s (≤-irrelevance m≤n₁ m≤n₂)
+≤-irrelevant : Irrelevant _≤_
+≤-irrelevant z≤n        z≤n        = refl
+≤-irrelevant (s≤s m≤n₁) (s≤s m≤n₂) = cong s≤s (≤-irrelevant m≤n₁ m≤n₂)
 
 ≤-step : ∀ {m n} → m ≤ n → m ≤ 1 + n
 ≤-step z≤n       = z≤n
@@ -239,8 +239,8 @@ _>?_ = flip _<?_
   }
 
 -- Other properties of _<_
-<-irrelevance : Irrelevant _<_
-<-irrelevance = ≤-irrelevance
+<-irrelevant : Irrelevant _<_
+<-irrelevant = ≤-irrelevant
 
 <⇒≤pred : ∀ {m n} → m < n → m ≤ pred n
 <⇒≤pred (s≤s le) = le
@@ -1085,11 +1085,6 @@ m≤m⊔n (suc m) (suc n) = s≤s $ m≤m⊔n m n
 n≤m⊔n : ∀ m n → n ≤ m ⊔ n
 n≤m⊔n m n = subst (n ≤_) (⊔-comm n m) (m≤m⊔n n m)
 
-m⊓n≤m⊔n : ∀ m n → m ⊔ n ≤ m ⊔ n
-m⊓n≤m⊔n zero    n       = ≤-refl
-m⊓n≤m⊔n (suc m) zero    = ≤-refl
-m⊓n≤m⊔n (suc m) (suc n) = s≤s (m⊓n≤m⊔n m n)
-
 m≤n⇒m⊓n≡m : ∀ {m n} → m ≤ n → m ⊓ n ≡ m
 m≤n⇒m⊓n≡m z≤n       = refl
 m≤n⇒m⊓n≡m (s≤s m≤n) = cong suc (m≤n⇒m⊓n≡m m≤n)
@@ -1115,6 +1110,59 @@ n⊔m≡m⇒n≤m n⊔m≡m = subst (_ ≤_) n⊔m≡m (m≤m⊔n _ _)
 
 n⊔m≡n⇒m≤n : ∀ {m n} → n ⊔ m ≡ n → m ≤ n
 n⊔m≡n⇒m≤n n⊔m≡n = subst (_ ≤_) n⊔m≡n (n≤m⊔n _ _)
+
+m⊓n≤m⊔n : ∀ m n → m ⊓ n ≤ m ⊔ n
+m⊓n≤m⊔n zero    n       = z≤n
+m⊓n≤m⊔n (suc m) zero    = z≤n
+m⊓n≤m⊔n (suc m) (suc n) = s≤s (m⊓n≤m⊔n m n)
+
+m≤n⇒m⊓o≤n : ∀ {m n} o → m ≤ n → m ⊓ o ≤ n
+m≤n⇒m⊓o≤n o m≤n = ≤-trans (m⊓n≤m _ o) m≤n
+
+m≤n⇒o⊓m≤n : ∀ {m n} o → m ≤ n → o ⊓ m ≤ n
+m≤n⇒o⊓m≤n n m≤n = ≤-trans (m⊓n≤n n _) m≤n
+
+m≤n⊓o⇒m≤n : ∀ {m} n o → m ≤ n ⊓ o → m ≤ n
+m≤n⊓o⇒m≤n n o m≤n⊓o = ≤-trans m≤n⊓o (m⊓n≤m n o)
+
+m≤n⊓o⇒m≤o : ∀ {m} n o → m ≤ n ⊓ o → m ≤ o
+m≤n⊓o⇒m≤o n o m≤n⊓o = ≤-trans m≤n⊓o (m⊓n≤n n o)
+
+m≤n⇒m≤n⊔o : ∀ {m n} o → m ≤ n → m ≤ n ⊔ o
+m≤n⇒m≤n⊔o o m≤n = ≤-trans m≤n (m≤m⊔n _ o)
+
+m≤n⇒m≤o⊔n : ∀ {m n} o → m ≤ n → m ≤ o ⊔ n
+m≤n⇒m≤o⊔n n m≤n = ≤-trans m≤n (n≤m⊔n n _)
+
+m⊔n≤o⇒m≤o : ∀ m n {o} → m ⊔ n ≤ o → m ≤ o
+m⊔n≤o⇒m≤o m n m⊔n≤o = ≤-trans (m≤m⊔n m n) m⊔n≤o
+
+m⊔n≤o⇒n≤o : ∀ m n {o} → m ⊔ n ≤ o → n ≤ o
+m⊔n≤o⇒n≤o m n m⊔n≤o = ≤-trans (n≤m⊔n m n) m⊔n≤o
+
+m<n⇒m⊓o<n : ∀ {m n} o → m < n → m ⊓ o < n
+m<n⇒m⊓o<n o m<n = <-transʳ (m⊓n≤m _ o) m<n
+
+m<n⇒o⊓m<n : ∀ {m n} o → m < n → o ⊓ m < n
+m<n⇒o⊓m<n o m<n = <-transʳ (m⊓n≤n o _) m<n
+
+m<n⊓o⇒m<n : ∀ {m} n o → m < n ⊓ o → m < n
+m<n⊓o⇒m<n = m≤n⊓o⇒m≤n
+
+m<n⊓o⇒m<o : ∀ {m} n o → m < n ⊓ o → m < o
+m<n⊓o⇒m<o = m≤n⊓o⇒m≤o
+
+m<n⇒m<n⊔o : ∀ {m n} o → m < n → m < n ⊔ o
+m<n⇒m<n⊔o = m≤n⇒m≤n⊔o
+
+m<n⇒m<o⊔n : ∀ {m n} o → m < n → m < o ⊔ n
+m<n⇒m<o⊔n = m≤n⇒m≤o⊔n
+
+m⊔n<o⇒m<o : ∀ m n {o} → m ⊔ n < o → m < o
+m⊔n<o⇒m<o m n m⊔n<o = <-transʳ (m≤m⊔n m n) m⊔n<o
+
+m⊔n<o⇒n<o : ∀ m n {o} → m ⊔ n < o → n < o
+m⊔n<o⇒n<o m n m⊔n<o = <-transʳ (n≤m⊔n m n) m⊔n<o
 
 ⊔-mono-≤ : _⊔_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
 ⊔-mono-≤ {x} {y} {u} {v} x≤y u≤v with ⊔-sel x u
@@ -1467,7 +1515,7 @@ eq? inj = via-injection inj _≟_
 
 -- A module for reasoning about the _≤_ relation
 module ≤-Reasoning where
-  open import Relation.Binary.PartialOrderReasoning
+  open import Relation.Binary.Reasoning.PartialOrder
     (DecTotalOrder.poset ≤-decTotalOrder) public
     hiding (_≈⟨_⟩_)
 
@@ -1618,4 +1666,17 @@ im≡jm+n⇒[i∸j]m≡n i j m n eq = begin
 {-# WARNING_ON_USAGE ≤+≢⇒<
 "Warning: ≤+≢⇒< was deprecated in v0.17.
 Please use ≤∧≢⇒< instead."
+#-}
+
+-- Version 0.18
+
+≤-irrelevance = ≤-irrelevant
+{-# WARNING_ON_USAGE ≤-irrelevance
+"Warning: ≤-irrelevance was deprecated in v0.18.
+Please use ≤-irrelevant instead."
+#-}
+<-irrelevance = <-irrelevant
+{-# WARNING_ON_USAGE <-irrelevance
+"Warning: <-irrelevance was deprecated in v0.18.
+Please use <-irrelevant instead."
 #-}

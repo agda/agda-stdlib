@@ -21,7 +21,7 @@ private
 open import Algebra.Structures _≈_
 open import Algebra.FunctionProperties _≈_
 open import Algebra.FunctionProperties.Consequences setoid
-open import Relation.Binary.EqReasoning setoid
+open import Relation.Binary.Reasoning.Setoid setoid
 open import Relation.Binary
 open import Function
 open import Function.Equality using (_⟨$⟩_)

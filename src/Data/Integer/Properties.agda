@@ -25,7 +25,7 @@ open import Function using (_∘_; _$_)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
-import Relation.Binary.PartialOrderReasoning as POR
+import Relation.Binary.Reasoning.PartialOrder as POR
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
@@ -1210,10 +1210,10 @@ m≤n⇒0≤n-m {m} {n} m≤n = begin
 n≤1+n : ∀ n → n ≤ (+ 1) + n
 n≤1+n n = ≤-step ≤-refl
 
-≤-irrelevance : Irrelevant _≤_
-≤-irrelevance -≤+       -≤+         = refl
-≤-irrelevance (-≤- n≤m₁) (-≤- n≤m₂) = cong -≤- (ℕₚ.≤-irrelevance n≤m₁ n≤m₂)
-≤-irrelevance (+≤+ n≤m₁) (+≤+ n≤m₂) = cong +≤+ (ℕₚ.≤-irrelevance n≤m₁ n≤m₂)
+≤-irrelevant : Irrelevant _≤_
+≤-irrelevant -≤+       -≤+         = refl
+≤-irrelevant (-≤- n≤m₁) (-≤- n≤m₂) = cong -≤- (ℕₚ.≤-irrelevant n≤m₁ n≤m₂)
+≤-irrelevant (+≤+ n≤m₁) (+≤+ n≤m₂) = cong +≤+ (ℕₚ.≤-irrelevant n≤m₁ n≤m₂)
 
 ------------------------------------------------------------------------
 -- Properties _<_
@@ -1320,8 +1320,8 @@ n≮n { -[1+ suc n ]} (-≤- n<n) =  contradiction n<n ℕₚ.1+n≰n
 ... | yes m≤n  = -≤- m≤n
 ... | no  m≰n' = contradiction (-≤- (ℕₚ.≰⇒> m≰n')) m≰n
 
-<-irrelevance : Irrelevant _<_
-<-irrelevance = ≤-irrelevance
+<-irrelevant : Irrelevant _<_
+<-irrelevant = ≤-irrelevant
 
 +-monoˡ-< : ∀ n → (_+ n) Preserves _<_ ⟶ _<_
 +-monoˡ-< n {i} {j} i<j
@@ -1441,4 +1441,14 @@ Please use +-cancelˡ-⊖ instead."
 {-# WARNING_ON_USAGE ≰→>
 "Warning: ≰→> was deprecated in v0.18.
 Please use ≰⇒> instead."
+#-}
+≤-irrelevance = ≤-irrelevant
+{-# WARNING_ON_USAGE ≤-irrelevance
+"Warning: ≤-irrelevance was deprecated in v0.18.
+Please use ≤-irrelevant instead."
+#-}
+<-irrelevance = <-irrelevant
+{-# WARNING_ON_USAGE <-irrelevance
+"Warning: <-irrelevance was deprecated in v0.18.
+Please use <-irrelevant instead."
 #-}

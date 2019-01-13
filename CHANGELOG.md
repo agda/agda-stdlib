@@ -203,6 +203,18 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * All algebraic structures now export left and right congruence properties.
   e.g. `∙-cong refl x≈y` can be replaced with `∙-congˡ y≈z`
 
+#### Upgrade of all forms of Reasoning
+
+* The core Reasoning modules have been renamed as follows:
+  ```
+  Relation.Binary.EqReasoning                 ↦ Relation.Binary.Reasoning.Setoid
+  Relation.Binary.SetoidReasoning             ↦ Relation.Binary.Reasoning.MultiSetoid
+  Relation.Binary.PreorderReasoning           ↦ Relation.Binary.Reasoning.Preorder
+  Relation.Binary.PartialOrderReasoning       ↦ Relation.Binary.Reasoning.PartialOrder
+  Relation.Binary.StrictPartialOrderReasoning ↦ Relation.Binary.Reasoning.StrictPartialOrder
+  ```
+  The old modules have been deprecated but still exist for backwards compatibility reasons.
+
 #### Relaxation of ring solvers requirements
 
 * In the ring solvers below, the assumption that equality is `Decidable`
@@ -263,6 +275,9 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The proofs `drop-*≤*`, `≃⇒≡` and `≡⇒≃` have been moved from `Data.Rational`
   to `Data.Rational.Properties`.
 
+* Fixed bug in `Data.Nat.Properties` where the type of `m⊓n≤m⊔n` was `∀ m n → m ⊔ n ≤ m ⊔ n`,
+  the type is now correctly `∀ m n → m ⊓ n ≤ m ⊔ n`.
+
 * The proofs `toList⁺` and `toList⁻` in `Data.Vec.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
@@ -306,9 +321,28 @@ Other major changes
 Deprecated features
 -------------------
 
+* In `Data.Bool.Properties`:
+  ```agda
+  T-irrelevance ↦ T-irrelevant
+  ```
+
+* In `Data.Fin.Properties`:
+  ```agda
+  ≤-irrelevance ↦ ≤-irrelevant
+  <-irrelevance ↦ <-irrelevant
+  ```
+
 * In `Data.Integer.Properties`:
   ```agda
-  ≰→> ↦ ≰⇒>
+  ≰→>           ↦ ≰⇒>
+  ≤-irrelevance ↦ ≤-irrelevant
+  <-irrelevance ↦ <-irrelevant
+  ```
+
+* In `Data.Nat.Properties`:
+  ```agda
+  ≤-irrelevance ↦ ≤-irrelevant
+  <-irrelevance ↦ <-irrelevant
   ```
 
 * In `Data.Rational`:
@@ -318,6 +352,29 @@ Deprecated features
   ≡⇒≃
   ```
   (moved to `Data.Rational.Properties`)
+
+* In `Data.Rational.Properties`:
+  ```agda
+  ≤-irrelevance ↦ ≤-irrelevant
+  ```
+
+* In `Data.Vec.Properties.WithK`:
+  ```agda
+  []=-irrelevance ↦ []=-irrelevant
+  ```
+
+* In `Relation.Binary.HeterogeneousEquality`:
+  ```agda
+  ≅-irrelevance                ↦ ≅-irrelevant
+  ≅-heterogeneous-irrelevance  ↦ ≅-heterogeneous-irrelevant
+  ≅-heterogeneous-irrelevanceˡ ↦ ≅-heterogeneous-irrelevantˡ
+  ≅-heterogeneous-irrelevanceʳ ↦ ≅-heterogeneous-irrelevantʳ
+  ```
+
+* In `Relation.Binary.PropositionalEquality.WithK`:
+  ```agda
+  ≡-irrelevance ↦ ≡-irrelevant
+  ```
 
 Other minor additions
 ---------------------
@@ -347,9 +404,9 @@ Other minor additions
 * Added new proofs to `Algebra.Properties.Lattice`:
   ```agda
   ∧-isSemilattice : IsSemilattice _≈_ _∧_
-  ∧-semilattice : Semilattice l₁ l₂
+  ∧-semilattice   : Semilattice l₁ l₂
   ∨-isSemilattice : IsSemilattice _≈_ _∨_
-  ∨-semilattice : Semilattice l₁ l₂
+  ∨-semilattice   : Semilattice l₁ l₂
   ```
 
 * Added new operator to `Algebra.Solver.Ring`.
@@ -380,7 +437,7 @@ Other minor additions
 
 * Added new proof to `Codata.Stream.Properties`:
   ```agda
-  splitAt-map : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
+  splitAt-map             : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
   lookup-iterate-identity : lookup n (iterate f a) ≡ fold a f n
   ```
 
@@ -579,8 +636,8 @@ Other minor additions
 
 * Added new function to `Data.List.Membership.(Setoid/Propositional)`:
   ```agda
-  _∷=_    : x ∈ xs → A → List A
-  _─_     : (xs : List A) → x ∈ xs → List A
+  _∷=_ : x ∈ xs → A → List A
+  _─_  : (xs : List A) → x ∈ xs → List A
   ```
   Added laws for `updateAt`.
   Now laws for `_[_]≔_` are special instances of these.
@@ -674,6 +731,11 @@ Other minor additions
   _<∣>_     : Maybe A → Maybe A → Maybe A
   ```
 
+* Added new proof to `Data.Maybe.Relation.Pointwise`:
+  ```agda
+  reflexive : _≡_ ⇒ R → _≡_ ⇒ Pointwise R
+  ```
+
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
   +-isMagma       : IsMagma _+_
@@ -693,6 +755,23 @@ Other minor additions
   ⊓-band        : Band 0ℓ 0ℓ
   ⊔-semilattice : Semilattice 0ℓ 0ℓ
   ⊓-semilattice : Semilattice 0ℓ 0ℓ
+
+  m≤n⇒m⊓o≤n : ∀ {m n} o → m ≤ n → m ⊓ o ≤ n
+  m≤n⇒o⊓m≤n : ∀ {m n} o → m ≤ n → o ⊓ m ≤ n
+  m<n⇒m⊓o<n : ∀ {m n} o → m < n → m ⊓ o < n
+  m<n⇒o⊓m<n : ∀ {m n} o → m < n → o ⊓ m < n
+  m≤n⊓o⇒m≤n : ∀ {m} n o → m ≤ n ⊓ o → m ≤ n
+  m≤n⊓o⇒m≤o : ∀ {m} n o → m ≤ n ⊓ o → m ≤ o
+  m<n⊓o⇒m<n : ∀ {m} n o → m < n ⊓ o → m < n
+  m<n⊓o⇒m<o : ∀ {m} n o → m < n ⊓ o → m < o
+  m≤n⇒m≤n⊔o : ∀ {m n} o → m ≤ n → m ≤ n ⊔ o
+  m≤n⇒m≤o⊔n : ∀ {m n} o → m ≤ n → m ≤ o ⊔ n
+  m<n⇒m<n⊔o : ∀ {m n} o → m < n → m < n ⊔ o
+  m<n⇒m<o⊔n : ∀ {m n} o → m < n → m < o ⊔ n
+  m⊔n≤o⇒m≤o : ∀ m n {o} → m ⊔ n ≤ o → m ≤ o
+  m⊔n≤o⇒n≤o : ∀ m n {o} → m ⊔ n ≤ o → n ≤ o
+  m⊔n<o⇒m<o : ∀ m n {o} → m ⊔ n < o → m < o
+  m⊔n<o⇒n<o : ∀ m n {o} → m ⊔ n < o → n < o
 
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
   ```
@@ -843,7 +922,7 @@ Other minor additions
 * Added new definitions to `Relation.Binary.Core`:
   ```agda
   Antisym R S E = ∀ {i j} → R i j → S j i → E i j
-  Conn P Q = ∀ x y → P x y ⊎ Q y x
+  Conn P Q      = ∀ x y → P x y ⊎ Q y x
   ```
 
 * Added new proofs to `Relation.Binary.Lattice`:
@@ -898,4 +977,15 @@ Other minor additions
   ```agda
   _Respectsʳ_ : REL A B ℓ₁ → Rel B ℓ₂ → Set _
   _Respectsˡ_ : REL A B ℓ₁ → Rel A ℓ₂ → Set _
+  ```
+
+* Added new proofs to `Data.List.Relation.Pointwise`:
+  ```agda
+  reverseAcc⁺ : Pointwise R a x → Pointwise R b y → Pointwise R (reverseAcc a b) (reverseAcc x y)
+  reverse⁺    : Pointwise R as bs → Pointwise R (reverse as) (reverse bs)
+  map⁺        : Pointwise (λ a b → R (f a) (g b)) as bs → Pointwise R (map f as) (map g bs)
+  map⁻        : Pointwise R (map f as) (map g bs) → Pointwise (λ a b → R (f a) (g b)) as bs
+  filter⁺     : Pointwise R as bs → Pointwise R (filter P? as) (filter Q? bs)
+  replicate⁺  : R a b → Pointwise R (replicate n a) (replicate n b)
+  irrelevant  : Irrelevant R → Irrelevant (Pointwise R)
   ```
