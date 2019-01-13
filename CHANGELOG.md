@@ -668,10 +668,10 @@ Other minor additions
   length-upTo          : length (upTo            n) ≡ n
   length-downFrom      : length (downFrom        n) ≡ n
 
-  applyUpTo-lookup     : lookup (applyUpTo     f n) i ≡ f (toℕ i)
-  applyDownFrom-lookup : lookup (applyDownFrom f n) i ≡ f (n ∸ (suc (toℕ i)))
-  upTo-lookup          : lookup (upTo            n) i ≡ toℕ i
-  downFrom-lookup      : lookup (downFrom        n) i ≡ n ∸ (suc (toℕ i))
+  lookup-applyUpTo     : lookup (applyUpTo     f n) i ≡ f (toℕ i)
+  lookup-applyDownFrom : lookup (applyDownFrom f n) i ≡ f (n ∸ (suc (toℕ i)))
+  lookup-upTo          : lookup (upTo            n) i ≡ toℕ i
+  lookup-downFrom      : lookup (downFrom        n) i ≡ n ∸ (suc (toℕ i))
 
   map-tabulate : map f (tabulate g) ≡ tabulate (f ∘ g)
   ```

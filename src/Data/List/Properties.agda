@@ -524,10 +524,10 @@ module _ {a} {A : Set a} where
   length-applyUpTo f zero    = refl
   length-applyUpTo f (suc n) = P.cong suc (length-applyUpTo (f ∘ suc) n)
 
-  applyUpTo-lookup : ∀ (f : ℕ → A) n i → lookup (applyUpTo f n) i ≡ f (toℕ i)
-  applyUpTo-lookup f zero  ()
-  applyUpTo-lookup f (suc n) zero    = refl
-  applyUpTo-lookup f (suc n) (suc i) = applyUpTo-lookup (f ∘ suc) n i
+  lookup-applyUpTo : ∀ (f : ℕ → A) n i → lookup (applyUpTo f n) i ≡ f (toℕ i)
+  lookup-applyUpTo f zero  ()
+  lookup-applyUpTo f (suc n) zero    = refl
+  lookup-applyUpTo f (suc n) (suc i) = lookup-applyUpTo (f ∘ suc) n i
 
 ------------------------------------------------------------------------
 -- applyUpTo
@@ -538,10 +538,10 @@ module _ {a} {A : Set a} (f : ℕ → A) where
   length-applyDownFrom zero    = refl
   length-applyDownFrom (suc n) = P.cong suc (length-applyDownFrom n)
 
-  applyDownFrom-lookup : ∀ n i → lookup (applyDownFrom f n) i ≡ f (n ∸ (suc (toℕ i)))
-  applyDownFrom-lookup zero  ()
-  applyDownFrom-lookup (suc n) zero    = refl
-  applyDownFrom-lookup (suc n) (suc i) = applyDownFrom-lookup n i
+  lookup-applyDownFrom : ∀ n i → lookup (applyDownFrom f n) i ≡ f (n ∸ (suc (toℕ i)))
+  lookup-applyDownFrom zero  ()
+  lookup-applyDownFrom (suc n) zero    = refl
+  lookup-applyDownFrom (suc n) (suc i) = lookup-applyDownFrom n i
 
 ------------------------------------------------------------------------
 -- upTo
@@ -549,8 +549,8 @@ module _ {a} {A : Set a} (f : ℕ → A) where
 length-upTo : ∀ n → length (upTo n) ≡ n
 length-upTo = length-applyUpTo id
 
-upTo-lookup : ∀ n i → lookup (upTo n) i ≡ toℕ i
-upTo-lookup = applyUpTo-lookup id
+lookup-upTo : ∀ n i → lookup (upTo n) i ≡ toℕ i
+lookup-upTo = lookup-applyUpTo id
 
 ------------------------------------------------------------------------
 -- downFrom
@@ -558,8 +558,8 @@ upTo-lookup = applyUpTo-lookup id
 length-downFrom : ∀ n → length (downFrom n) ≡ n
 length-downFrom = length-applyDownFrom id
 
-downFrom-lookup : ∀ n i → lookup (downFrom n) i ≡ n ∸ (suc (toℕ i))
-downFrom-lookup = applyDownFrom-lookup id
+lookup-downFrom : ∀ n i → lookup (downFrom n) i ≡ n ∸ (suc (toℕ i))
+lookup-downFrom = lookup-applyDownFrom id
 
 ------------------------------------------------------------------------
 -- tabulate
