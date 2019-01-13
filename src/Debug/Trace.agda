@@ -6,6 +6,8 @@
 
 {-# OPTIONS --without-K --rewriting #-}
 
+-- see README.Debug.Trace for a use-case
+
 module Debug.Trace where
 
 open import Agda.Builtin.String
