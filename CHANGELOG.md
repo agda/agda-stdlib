@@ -10,9 +10,9 @@ Non-backwards compatible changes
 
 #### Extending the relation hierarchy for container datatypes
 
-* Having added many new relations over `List`s in this release
-  (e.g. `First`, `Suffix`, `Prefix`, `Interleaving`) it has become clear
-  that the existing hierarchy for relations in `List`,`Product`,`Sum`, `Table`
+* This release has added many new relations over `List` (e.g. `First`,
+  `Suffix`, `Prefix`, `Interleaving`) and it has become clear that the
+  current hierarchy for relations in `List`,`Product`,`Sum`, `Table`
   and `Vec`is not deep enough.
 
 * To address this the contents of `Data.X.Relation` have been moved to
@@ -269,7 +269,7 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * Fixed bug in `Data.Nat.Properties` where the type of `m⊓n≤m⊔n` was `∀ m n → m ⊔ n ≤ m ⊔ n`,
   the type is now correctly `∀ m n → m ⊓ n ≤ m ⊔ n`.
 
-* The proofs `toList⁺` and `toList⁻` in `Data.Vec.All.Properties` have been swapped
+* The proofs `toList⁺` and `toList⁻` in `Data.Vec.Relation.Unary.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
 Other major changes
@@ -682,15 +682,6 @@ Other minor additions
   universal        : Universal P → Universal (All P)
   irrelevant       : Irrelevant P → Irrelevant (All P)
   satisfiable      : Satisfiable (All P)
-  ```
-
-* Created `Data.Maybe.Relation.Unary.All.Properties`:
-  ```agda
-  map⁺ : All (P ∘ f) mx → All P (map f mx)
-  map⁻ : All P (map f mx) → All (P ∘ f) mx
-  gmap : P ⊆ Q ∘ f → All P ⊆ All Q ∘ map f
-  <∣>⁺ : All P mx → All P my → All P (mx <∣> my)
-  <∣>⁻ : All P (mx <∣> my) → All P mx
   ```
 
 * Added new proofs to `Data.Maybe.Relation.Unary.Any`:
