@@ -4,6 +4,8 @@
 -- Some properties of reflexive transitive closures.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties where
 
 open import Function
@@ -11,18 +13,7 @@ open import Relation.Binary
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl; sym; cong; cong₂)
-import Relation.Binary.PreorderReasoning as PreR
-
-------------------------------------------------------------------------
--- Equality
-
-module _ {i t} {I : Set i} {T : Rel I t} {i j k} {x y : T i j} {xs ys} where
-
- ◅-injectiveˡ : (Star T i k ∋ x ◅ xs) ≡ y ◅ ys → x ≡ y
- ◅-injectiveˡ refl = refl
-
- ◅-injectiveʳ : (Star T i k ∋ x ◅ xs) ≡ y ◅ ys → xs ≡ ys
- ◅-injectiveʳ refl = refl
+import Relation.Binary.Reasoning.Preorder as PreR
 
 ------------------------------------------------------------------------
 -- _◅◅_

@@ -1,8 +1,10 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Integer division
+-- Natural number division
 ------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.DivMod where
 

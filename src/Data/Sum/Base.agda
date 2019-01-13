@@ -4,9 +4,12 @@
 -- Sums (disjoint unions)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Sum.Base where
 
 open import Function using (_∘_; _-[_]-_ ; id)
+open import Relation.Nullary using (Dec; yes; no; ¬_)
 open import Level using (_⊔_)
 
 ------------------------------------------------------------------------
@@ -54,3 +57,15 @@ infixr 1 _-⊎-_
 _-⊎-_ : ∀ {a b c d} {A : Set a} {B : Set b} →
         (A → B → Set c) → (A → B → Set d) → (A → B → Set (c ⊔ d))
 f -⊎- g = f -[ _⊎_ ]- g
+
+module _ {p} {P : Set p} where
+
+-- Conversion back and forth with Dec
+
+  fromDec : Dec P → P ⊎ ¬ P
+  fromDec (yes p) = inj₁ p
+  fromDec (no ¬p) = inj₂ ¬p
+
+  toDec : P ⊎ ¬ P → Dec P
+  toDec (inj₁ p)  = yes p
+  toDec (inj₂ ¬p) = no ¬p

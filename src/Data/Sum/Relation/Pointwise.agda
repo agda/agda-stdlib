@@ -4,6 +4,8 @@
 -- Pointwise sum
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Sum.Relation.Pointwise where
 
 open import Data.Sum as Sum
@@ -236,6 +238,25 @@ _⊎-≟_ : ∀ {a b} {A : Set a} {B : Set b} →
 ------------------------------------------------------------------------
 -- Setoid "relatedness"
 
+inj₁ₛ : ∀ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} →
+        A ⟶ (A ⊎ₛ B)
+inj₁ₛ = record { _⟨$⟩_ = inj₁ ; cong = ₁∼₁ }
+
+inj₂ₛ : ∀ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} →
+        B ⟶ (A ⊎ₛ B)
+inj₂ₛ = record { _⟨$⟩_ = inj₂ ; cong = ₂∼₂ }
+
+[_,_]ₛ : ∀ {a₁ a₂ b₁ b₂ c₁ c₂}
+         {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} {C : Setoid c₁ c₂} →
+         (A ⟶ C) → (B ⟶ C) → (A ⊎ₛ B) ⟶ C
+[ f , g ]ₛ = record
+  { _⟨$⟩_ = [ f ⟨$⟩_ , g ⟨$⟩_ ]
+  ; cong = λ where
+    (₁∼₂ ())
+    (₁∼₁ x∼₁y) → F.cong f x∼₁y
+    (₂∼₂ x∼₂y) → F.cong g x∼₂y
+  }
+
 module _ {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
          {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
          {C : Setoid c₁ c₂} {D : Setoid d₁ d₂}
@@ -256,6 +277,10 @@ module _ {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
     fg-cong (₁∼₂ ())
     fg-cong (₁∼₁ x∼₁y) = ₁∼₁ $ F.cong f x∼₁y
     fg-cong (₂∼₂ x∼₂y) = ₂∼₂ $ F.cong g x∼₂y
+
+swapₛ : ∀ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} →
+        (A ⊎ₛ B) ⟶ (B ⊎ₛ A)
+swapₛ = [ inj₂ₛ , inj₁ₛ ]ₛ
 
 module _ {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
          {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}

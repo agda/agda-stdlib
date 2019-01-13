@@ -5,6 +5,8 @@
 -- equivalent or…)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Function.Related.TypeIsomorphisms where
 
 open import Algebra
@@ -125,11 +127,21 @@ open import Relation.Nullary.Decidable using (True)
 
 -- ⊤, _×_ form a commutative monoid
 
+×-isMagma : ∀ k ℓ → IsMagma {Level.suc ℓ} (Related ⌊ k ⌋) _×_
+×-isMagma k ℓ = record
+  { isEquivalence = SK-isEquivalence k ℓ
+  ; ∙-cong        = _×-cong_
+  }
+
+×-magma : Symmetric-kind → (ℓ : Level) → Magma _ _
+×-magma k ℓ = record
+  { isMagma = ×-isMagma k ℓ
+  }
+
 ×-isSemigroup : ∀ k ℓ → IsSemigroup {Level.suc ℓ} (Related ⌊ k ⌋) _×_
 ×-isSemigroup k ℓ = record
-  { isEquivalence = SK-isEquivalence k ℓ
-  ; assoc         = λ _ _ _ → ↔⇒ Σ-assoc
-  ; ∙-cong        = _×-cong_
+  { isMagma = ×-isMagma k ℓ
+  ; assoc   = λ _ _ _ → ↔⇒ Σ-assoc
   }
 
 ×-semigroup : Symmetric-kind → (ℓ : Level) → Semigroup _ _
@@ -162,11 +174,21 @@ open import Relation.Nullary.Decidable using (True)
 
 -- ⊥, _⊎_ form a commutative monoid
 
+⊎-isMagma : ∀ k ℓ → IsMagma {Level.suc ℓ} (Related ⌊ k ⌋) _⊎_
+⊎-isMagma k ℓ = record
+  { isEquivalence = SK-isEquivalence k ℓ
+  ; ∙-cong        = _⊎-cong_
+  }
+
+⊎-magma : Symmetric-kind → (ℓ : Level) → Magma _ _
+⊎-magma k ℓ = record
+  { isMagma = ⊎-isMagma k ℓ
+  }
+
 ⊎-isSemigroup : ∀ k ℓ → IsSemigroup {Level.suc ℓ} (Related ⌊ k ⌋) _⊎_
 ⊎-isSemigroup k ℓ = record
-  { isEquivalence = SK-isEquivalence k ℓ
-  ; assoc         = λ A B C → ↔⇒ (⊎-assoc ℓ A B C)
-  ; ∙-cong        = _⊎-cong_
+  { isMagma = ⊎-isMagma k ℓ
+  ; assoc   = λ A B C → ↔⇒ (⊎-assoc ℓ A B C)
   }
 
 ⊎-semigroup : Symmetric-kind → (ℓ : Level) → Semigroup _ _
@@ -377,10 +399,10 @@ True↔ (no ¬p) _   = inverse (λ()) ¬p (λ()) (⊥-elim ∘ ¬p)
    from = < P.cong proj₁ , P.cong proj₂ >
 
    from∘to : ∀ v → from (to v) ≡ v
-   from∘to _ = P.cong₂ _,_ (P.≡-irrelevance _ _) (P.≡-irrelevance _ _)
+   from∘to (P.refl , P.refl) = P.refl
 
    to∘from : ∀ v → to (from v) ≡ v
-   to∘from _ = P.≡-irrelevance _ _
+   to∘from P.refl = P.refl
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

@@ -6,9 +6,11 @@
 -- Adapted from Algebra.Monoid-solver
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Algebra
 
-open import Data.Bool.Base as Bool using (Bool; true; false; if_then_else_; _∨_)
+open import Data.Bool as Bool using (Bool; true; false; if_then_else_; _∨_)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Maybe as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
@@ -18,9 +20,9 @@ open import Data.Vec using (Vec; []; _∷_; lookup; replicate)
 
 open import Function using (_∘_)
 
-import Relation.Binary.EqReasoning as EqReasoning
-import Relation.Binary.Reflection  as Reflection
-import Relation.Nullary.Decidable  as Dec
+import Relation.Binary.Reasoning.Setoid  as EqReasoning
+import Relation.Binary.Reflection            as Reflection
+import Relation.Nullary.Decidable            as Dec
 import Data.Vec.Relation.Pointwise.Inductive as Pointwise
 
 open import Relation.Binary.PropositionalEquality as P using (_≡_; decSetoid)

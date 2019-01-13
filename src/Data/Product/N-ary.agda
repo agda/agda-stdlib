@@ -10,6 +10,8 @@
 -- avoided: pairs are represented as pairs (x , y), not as triples
 -- (x , y , unit).
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Product.N-ary where
 
 open import Data.Nat as Nat hiding (_^_)

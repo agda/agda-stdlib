@@ -4,6 +4,8 @@
 -- Sizes for Agda's sized types
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Size where
 
 open import Agda.Builtin.Size public

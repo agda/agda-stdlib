@@ -4,6 +4,8 @@
 -- The free monad construction on indexed containers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Container.Indexed.FreeMonad where
 
 open import Level

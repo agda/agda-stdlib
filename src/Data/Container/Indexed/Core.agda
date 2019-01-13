@@ -4,6 +4,8 @@
 -- Indexed containers core
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Container.Indexed.Core where
 
 open import Level

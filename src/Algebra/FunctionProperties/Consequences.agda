@@ -5,6 +5,8 @@
 -- commutativity
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary using (Rel; Setoid; Substitutive; Symmetric; Total)
 
 module Algebra.FunctionProperties.Consequences
@@ -16,7 +18,7 @@ open import Algebra.FunctionProperties _≈_
 open import Data.Sum using (inj₁; inj₂)
 open import Data.Product using (_,_)
 import Relation.Binary.Consequences as Bin
-open import Relation.Binary.EqReasoning S
+open import Relation.Binary.Reasoning.Setoid S
 open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
@@ -169,14 +171,6 @@ module _ {_+_ _*_ : Op₂ A}
      (x * (0# + 0#)) + ((x * 0#)⁻¹)        ≈⟨ +-cong (*-cong refl (idʳ _)) refl ⟩
      ((x * 0#) + ((x * 0#)⁻¹))             ≈⟨ invʳ _ ⟩
      0#                                    ∎
-
-------------------------------------------------------------------------
--- Selectivity implies idempotence
-
-sel⇒idem : ∀ {_•_} → Selective _•_ → Idempotent _•_
-sel⇒idem sel x with sel x x
-... | inj₁ x•x≈x = x•x≈x
-... | inj₂ x•x≈x = x•x≈x
 
 ------------------------------------------------------------------------
 -- Without Loss of Generality

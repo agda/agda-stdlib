@@ -4,6 +4,8 @@
 -- A binary representation of natural numbers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Bin where
 
 open import Data.Nat as Nat

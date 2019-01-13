@@ -4,11 +4,13 @@
 -- Left inverses
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Function.LeftInverse where
 
 open import Data.Product
 open import Level
-import Relation.Binary.EqReasoning as EqReasoning
+import Relation.Binary.Reasoning.Setoid as EqReasoning
 open import Relation.Binary
 open import Function.Equality as Eq
   using (_⟶_; _⟨$⟩_) renaming (_∘_ to _⟪∘⟫_)

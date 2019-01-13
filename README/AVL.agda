@@ -4,6 +4,8 @@
 -- Some examples showing how the AVL tree module can be used
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module README.AVL where
 
 ------------------------------------------------------------------------
@@ -17,12 +19,13 @@ import Data.AVL
 -- total order, and values, which are indexed by keys. Let us use
 -- natural numbers as keys and vectors of strings as values.
 
-open import Data.Nat.Properties using (<-isStrictTotalOrder)
+open import Data.Nat.Properties using (<-strictTotalOrder)
 open import Data.String using (String)
 open import Data.Vec using (Vec; _∷_; [])
+open import Relation.Binary.PropositionalEquality
 
-open Data.AVL <-isStrictTotalOrder renaming (Tree to Tree')
-Tree = Tree' (Vec String)
+open Data.AVL <-strictTotalOrder renaming (Tree to Tree')
+Tree = Tree' (MkValue (Vec String) (subst (Vec String)))
 
 ------------------------------------------------------------------------
 -- Construction of trees
