@@ -322,6 +322,8 @@ Other major changes
 
 * Added new modules `Relation.Nullary.Construct.Add.(Point/Infimum/Supremum/Extrema)`
 
+* Added new module `Debug.Trace`
+
 Deprecated features
 -------------------
 
