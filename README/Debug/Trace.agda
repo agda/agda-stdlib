@@ -13,7 +13,8 @@ module README.Debug.Trace where
 
 -- Whether caused by the compiler or present in the source code already, they
 -- can be hard to track. A primitive debugging technique is to strategically
--- insert calls to tracing functions which will display their String argument.
+-- insert calls to tracing functions which will display their String argument
+-- upon evaluation.
 
 open import Data.String.Base using (_++_)
 open import Debug.Trace
@@ -46,13 +47,13 @@ div m n    = just (go m m) where
   go zero       m = trace ("Invariant: " ++ show m ++ " should be zero.") zero
   go (suc fuel) m =
     let m' = trace ("Thunk for step " ++ show fuel ++ " forced") (m ∸ n) in
-    trace ("Recursive call for step " ++ show fuel) suc (go fuel m')
+    trace ("Recursive call for step " ++ show fuel) (suc (go fuel m'))
 
 -- To observe the behaviour of this code, we need to compile it and run it.
 -- To run it, we need a main function. We define a very basic one: run div,
 -- and display its result if the run was successful.
 
--- We add two call to traces to see when div is evaluated and when the returned
+-- We add two calls to trace to see when div is evaluated and when the returned
 -- number is forced (by a call to show).
 
 open import IO
