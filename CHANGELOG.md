@@ -312,11 +312,15 @@ Other major changes
 
 * Added new modules `Data.Vec.Membership.(Setoid/DecSetoid/DecPropositional)`
 
+* Added new modules `Relation.Binary.Construct.Add.(Infimum/Supremum/Extrema/Point)(.Equality/Strict/NonStrict)`
+
 * Added new modules `Relation.Binary.Construct.Intersection/Union`
 
 * Added new modules `Relation.Binary.Construct.NaturalOrder.(Left/Right)`
 
 * Added new module `Relation.Binary.Properties.BoundedLattice`
+
+* Added new modules `Relation.Nullary.Construct.Add.(Point/Infimum/Supremum/Extrema)`
 
 * Added new module `Debug.Trace`
 
