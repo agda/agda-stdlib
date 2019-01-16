@@ -995,3 +995,6 @@ Other minor additions
   replicate⁺  : R a b → Pointwise R (replicate n a) (replicate n b)
   irrelevant  : Irrelevant R → Irrelevant (Pointwise R)
   ```
+
+* Added new proofs to `Data.List.Relation.Equality.DecPropositional`:
+  _≡?_        : Decidable (_≡_ {A = List A})
