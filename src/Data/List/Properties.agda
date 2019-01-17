@@ -581,6 +581,17 @@ module _ {a} {A : Set a} where
   tabulate-len {zero} f = refl
   tabulate-len {suc n} f = cong suc (tabulate-len (λ z → f (suc z)))
 
+  tabulate-len≤l : ∀{n} → (f : Fin n → A) →
+                   length (tabulate f) ≤ n
+  tabulate-len≤l {n = zero} f = z≤n
+  tabulate-len≤l {n = suc n} f = s≤s (tabulate-len≤l (λ z → f (suc z)))
+
+  tabulate-len≤r : ∀{n} → (f : Fin n → A) →
+                   n ≤ length (tabulate f)
+  tabulate-len≤r {n = zero} f = z≤n
+  tabulate-len≤r {n = suc n} f = s≤s (tabulate-len≤r (λ z → f (suc z)))
+
+
   lookup-tabulate : ∀{n} → (f : Fin n → A) →
                     ∀ x → let x′ = subst Fin (tabulate-len f) x
                           in f x′ ≡ lookup (tabulate f) x
