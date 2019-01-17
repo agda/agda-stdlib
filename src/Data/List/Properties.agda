@@ -33,6 +33,7 @@ open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable using (⌊_⌋)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
+open import Relation.Binary.PropositionalEquality using (cong ; subst ; trans)
 
 ------------------------------------------------------------------------
 -- _∷_
@@ -574,6 +575,32 @@ module _ {a} {A : Set a} where
   tabulate-lookup : ∀ (xs : List A) → tabulate (lookup xs) ≡ xs
   tabulate-lookup []       = refl
   tabulate-lookup (x ∷ xs) = P.cong (_ ∷_) (tabulate-lookup xs)
+
+  tabulate-len : ∀ {n} → (f : Fin n → A) →
+                 length (tabulate f) ≡ n
+  tabulate-len {zero} f = refl
+  tabulate-len {suc n} f = cong suc (tabulate-len (λ z → f (suc z)))
+
+  lookup-tabulate : ∀{n} → (f : Fin n → A) →
+                    ∀ x → let x′ = subst Fin (tabulate-len f) x
+                          in f x′ ≡ lookup (tabulate f) x
+  lookup-tabulate {zero} f ()
+  lookup-tabulate {suc n} f zero with length (tabulate (f ∘ suc)) | tabulate-len (f ∘ suc)
+  ... | .n | refl = refl
+  lookup-tabulate {suc n} f (suc x) = trans q (lookup-tabulate (f ∘ suc) x) where
+    q : f (subst Fin (tabulate-len f) (suc x)) ≡ f (suc (subst Fin (tabulate-len (λ x → f (suc x))) x))
+    q with length (tabulate (f ∘ suc)) | tabulate-len (f ∘ suc)
+    q | e | refl = refl
+
+  tabulate-lookup′ : (xs : List A) → (rl : length xs ≤ length xs) →
+                     tabulate (lookup′ xs rl) ≡ xs
+  tabulate-lookup′ [] rl = refl
+  tabulate-lookup′ (x ∷ xs) (s≤s rl) = cong (x ∷_) (tabulate-lookup′ xs rl)
+
+  lookup-tabulate′ : ∀{n} → (f : Fin n → A) → (rl : n ≤ length (tabulate f)) →
+        ∀ x → f x ≡ lookup′ (tabulate f) rl x
+  lookup-tabulate′ f rl zero = refl
+  lookup-tabulate′ f (s≤s rl) (suc x) = lookup-tabulate′ (f ∘ suc) rl x
 
 module _ {a b} {A : Set a} {B : Set b} where
 
