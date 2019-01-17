@@ -53,7 +53,7 @@ module _ {a} {A : Set a} where
   []=-injective here          here          = refl
   []=-injective (there xsᵢ≡x) (there xsᵢ≡y) = []=-injective xsᵢ≡x xsᵢ≡y
 
-  -- See also Data.Vec.Properties.WithK.[]=-irrelevance.
+  -- See also Data.Vec.Properties.WithK.[]=-irrelevant.
 
 ------------------------------------------------------------------------
 -- lookup

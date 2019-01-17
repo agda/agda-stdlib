@@ -11,7 +11,7 @@ module Data.List.Relation.Permutation.Inductive {a} {A : Set a} where
 open import Data.List using (List; []; _∷_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
-import Relation.Binary.EqReasoning as EqReasoning
+import Relation.Binary.Reasoning.Setoid as EqReasoning
 
 ------------------------------------------------------------------------
 -- An inductive definition of permutation

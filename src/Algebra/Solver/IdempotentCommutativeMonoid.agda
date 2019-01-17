@@ -20,9 +20,9 @@ open import Data.Vec using (Vec; []; _∷_; lookup; replicate)
 
 open import Function using (_∘_)
 
-import Relation.Binary.EqReasoning as EqReasoning
-import Relation.Binary.Reflection  as Reflection
-import Relation.Nullary.Decidable  as Dec
+import Relation.Binary.Reasoning.Setoid  as EqReasoning
+import Relation.Binary.Reflection            as Reflection
+import Relation.Nullary.Decidable            as Dec
 import Data.Vec.Relation.Pointwise.Inductive as Pointwise
 
 open import Relation.Binary.PropositionalEquality as P using (_≡_; decSetoid)

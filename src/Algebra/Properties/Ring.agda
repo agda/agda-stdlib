@@ -12,7 +12,7 @@ module Algebra.Properties.Ring {r₁ r₂} (R : Ring r₁ r₂) where
 
 import Algebra.Properties.AbelianGroup as AGP
 open import Function
-import Relation.Binary.EqReasoning as EqR
+import Relation.Binary.Reasoning.Setoid as EqR
 
 open Ring R
 open EqR setoid

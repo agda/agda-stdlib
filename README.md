@@ -72,6 +72,7 @@ not compatible:
   Data.Nat.DivMod.Unsafe
   Data.String.Unsafe
   Data.Word.Unsafe
+  Debug.Trace
   IO
   IO.Primitives
   Reflection

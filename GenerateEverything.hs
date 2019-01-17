@@ -29,6 +29,7 @@ unsafeModules = map toAgdaFilePath
   , "Data.Nat.DivMod.Unsafe"
   , "Data.String.Unsafe"
   , "Data.Word.Unsafe"
+  , "Debug.Trace"
   , "IO"
   , "IO.Primitive"
   , "Reflection"
