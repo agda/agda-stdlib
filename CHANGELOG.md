@@ -281,6 +281,8 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The proofs `toList⁺` and `toList⁻` in `Data.Vec.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
+* The functions `_∷=_` and `_─_` have been removed from `Data.List.Membership.Setoid` as they are subsumed by their more general version now part of `Data.List.Any`.
+
 Other major changes
 -------------------
 
@@ -618,6 +620,8 @@ Other minor additions
 * Added new proofs to `Data.List.All.Properties`:
   ```agda
   respects : P Respects _≈_ → (All P) Respects _≋_
+  ─⁺       : All Q xs → All Q (xs Any.─ p)
+  ─⁻       : Q (Any.lookup p) → All Q (xs Any.─ p) → All Q xs
   ```
   A generalization of single point overwrite `_[_]≔_`
   to single-point modification `_[_]%=_`
@@ -625,6 +629,13 @@ Other minor additions
   ```agda
   _[_]%=_   : Vec A n → Fin n → (A → A) → Vec A n
   updateAt  : Fin n → (A → A) → Vec A n → Vec A n
+  ```
+
+* Added new functions to `Data.List.Any`:
+  ```agda
+  lookup : Any P xs → A
+  _∷=_   : Any P xs → A → List A
+  _─_    : ∀ xs → Any P xs → List A
   ```
 
 * Added new functions to `Data.List.Base`:

@@ -39,13 +39,6 @@ mapWith∈ : ∀ {b} {B : Set b}
 mapWith∈ []       f = []
 mapWith∈ (x ∷ xs) f = f (here refl) ∷ mapWith∈ xs (f ∘ there)
 
-_∷=_ : ∀ {xs x} → x ∈ xs → A → List A
-_∷=_ {xs} x∈xs v = xs List.[ index x∈xs ]∷= v
-
-infixl 4 _─_
-_─_ : ∀ xs {x} → x ∈ xs → List A
-xs ─ x∈xs = xs List.─ index x∈xs
-
 ------------------------------------------------------------------------
 -- Finding and losing witnesses
 

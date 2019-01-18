@@ -15,7 +15,7 @@ open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base
 open import Data.List.Membership.Propositional
 open import Data.List.All as All using (All; []; _∷_)
-open import Data.List.Any using (Any; here; there)
+open import Data.List.Any as Any using (Any; here; there)
 import Data.List.Relation.Equality.Setoid as ListEq using (_≋_; []; _∷_)
 open import Data.List.Relation.Pointwise using (Pointwise; []; _∷_)
 open import Data.List.Relation.Subset.Propositional using (_⊆_)
@@ -216,6 +216,19 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   tabulate⁻ {zero}  pf       ()
   tabulate⁻ {suc n} (px ∷ _) fzero    = px
   tabulate⁻ {suc n} (_ ∷ pf) (fsuc i) = tabulate⁻ pf i
+
+------------------------------------------------------------------------
+-- remove
+
+module _ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} where
+
+  ─⁺ : ∀ {xs} (p : Any P xs) → All Q xs → All Q (xs Any.─ p)
+  ─⁺ (here px) (_ ∷ qs) = qs
+  ─⁺ (there p) (q ∷ qs) = q ∷ ─⁺ p qs
+
+  ─⁻ : ∀ {xs} (p : Any P xs) → Q (Any.lookup p) → All Q (xs Any.─ p) → All Q xs
+  ─⁻ (here px) q qs        = q ∷ qs
+  ─⁻ (there p) q (q′ ∷ qs) = q′ ∷ ─⁻ p q qs
 
 ------------------------------------------------------------------------
 -- filter
