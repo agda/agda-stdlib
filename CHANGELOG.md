@@ -68,18 +68,18 @@ Non-backwards compatible changes
 * Other code has been changed to avoid use of the K rule. As part of
   such changes the texts of the following type signatures have been
   changed:
-  -- Data.AVL.Indexed                                           : `node-injective-key`
-  -- Data.List.Relation.Binary.Sublist.Propositional.Properties : `∷⁻`
-  -- Data.Product.Relation.Binary.Pointwise.Dependent           : `↣`
-  -- Relation.Binary.PropositionalEquality                       : `≡-≟-identity`
+  - Data.AVL.Indexed                                           : `node-injective-key`
+  - Data.List.Relation.Binary.Sublist.Propositional.Properties : `∷⁻`
+  - Data.Product.Relation.Binary.Pointwise.Dependent           : `↣`
+  - Relation.Binary.PropositionalEquality                       : `≡-≟-identity`
   (The old definition of `↣` was moved to `Data.Product.Relation.Binary.Pointwise.Dependent.WithK`.)
 
 * The definition `_≅⟨_⟩_` has been removed from `Relation.Binary.PropositionalEquality`.
 
 * The following previously deprecated names have also been removed:
-  -- Data.Product.Relation.Binary.Pointwise.Dependent : `Rel↔≡`
-  -- Data.Vec.Properties                              : `proof-irrelevance-[]=`
-  -- Relation.Binary.PropositionalEquality            : `proof-irrelevance`
+  - Data.Product.Relation.Binary.Pointwise.Dependent : `Rel↔≡`
+  - Data.Vec.Properties                              : `proof-irrelevance-[]=`
+  - Relation.Binary.PropositionalEquality            : `proof-irrelevance`
 
 * Finally some new, supporting code has been added in the modules `Function.HalfAdjointEquivalence`
   and `Relation.Binary.PropositionalEquality`: `cong-id`, `cong-∘`,
