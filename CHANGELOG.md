@@ -247,6 +247,17 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   but ideally we would like to have:
   `unionWith : (These V W -> X) -> Tree V -> Tree W -> Tree X`
 
+#### Change in implementation of binary relations for `Sum`
+
+* The implementation of `Data.Sum.Relation.Binary.(Pointwise/LeftOrder)` have been altered
+  to bring them in line with implementations of similar orders for other datatypes.
+  Namely they are no longer specialised instances of some `Core` module.
+
+* The constructor `₁∼₂` for `LeftOrder` no longer takes an argument of type `⊤`.
+
+* The constructor `₁∼₁` and `₂∼₂` in `Pointwise` have been renamed `inj₁` and `inj₂`
+  respectively. The old names still exist but have been deprecated.
+
 #### Other
 
 * The proof `sel⇒idem` has been moved from `Algebra.FunctionProperties.Consequences` to
