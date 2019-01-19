@@ -24,118 +24,72 @@ Non-backwards compatible changes
 
 #### Support for `--without-K`
 
-The `--without-K` flag has been enabled in a number of files. An
-attempt has been made to only do this in files that do not depend on
-any file in which this flag is not enabled.
+* The `--without-K` flag has been enabled in as many files as possible. An
+  attempt has been made to only do this in files that do not depend on
+  any file in which this flag is not enabled.
 
-Agda uses different rules for the target universe of data types when
-the `--without-K` flag is used, and because of this a number of type
-families now target a possibly larger universe:
+* Agda uses different rules for the target universe of data types when
+  the `--without-K` flag is used, and because of this a number of type
+  families now target a possibly larger universe:
+  - Codata.Delay.Bisimilarity                 : `Bisim`
+  - Codata.Musical.Covec                      : `_≈_`, `_∈_`, `_⊑_`
+  - Codata.Stream.Bisimilarity                : `Bisim`
+  - Data.List.Relation.Binary.Equality.Setoid : `_≋_`
+  - Data.List.Relation.Binary.Lex.NonStrict   : `Lex-<`, `Lex-≤`
+  - Data.List.Relation.Binary.Lex.Strict      : `Lex-<`, `Lex-≤`
+  - Data.List.Relation.Binary.Pointwise       : `Pointwise`
+  - Data.List.Relation.Unary.All              : `All`
+  - Data.Maybe                                : `Is-just`, `Is-nothing`
+  - Data.Maybe.Relation.Unary.Any             : `Any`
+  - Data.Maybe.Relation.Unary.All             : `All`
+  - Data.Maybe.Relation.Binary.Pointwise      : `Pointwise`
 
-* `Codata.Delay.Bisimilarity.Bisim`.
-* `Codata.Musical.Covec._≈_`.
-* `Codata.Musical.Covec._∈_`.
-* `Codata.Musical.Covec._⊑_`.
-* `Codata.Stream.Bisimilarity.Bisim`.
-* `Data.List.Relation.Binary.Equality.Setoid._≋_`.
-* `Data.List.Relation.Binary.Lex.NonStrict.Lex-<`.
-* `Data.List.Relation.Binary.Lex.NonStrict.Lex-≤`.
-* `Data.List.Relation.Binary.Lex.Strict.Lex-<`.
-* `Data.List.Relation.Binary.Lex.Strict.Lex-≤`.
-* `Data.List.Relation.Binary.Pointwise.Pointwise`.
-* `Data.List.Relation.Unary.All.All`.
-* `Data.Maybe.Is-just`.
-* `Data.Maybe.Is-nothing`.
-* `Data.Maybe.Relation.Unary.Any.Any`.
-* `Data.Maybe.Relation.Unary.All.All`.
-* `Data.Maybe.Relation.Binary.Pointwise.Pointwise`.
+* Because of this change the texts of some type signatures were changed
+  (some inferred parts of other type signatures may also have changed):
+  - Data.List.Relation.Binary.Equality.DecSetoid : `≋-decSetoid`
+  - Data.Maybe.Relation.Binary.Pointwise         : `setoid`, `decSetoid`
 
-Because of this change the texts of some type signatures were changed
-(some inferred parts of other type signatures may also have changed):
-
-* `Data.List.Relation.Binary.Equality.DecSetoid.≋-decSetoid`.
-* `Data.Maybe.Relation.Binary.Pointwise.decSetoid`.
-* `Data.Maybe.Relation.Binary.Pointwise.setoid`.
-
-Some code that relies on the K rule or uses heterogeneous equality has
-been moved to new files:
-
-* `Data.AVL.Indexed.node-injective-bal` to `Data.AVL.Indexed.WithK`.
-* `Data.AVL.Indexed.node-injectiveʳ` to `Data.AVL.Indexed.WithK`.
-* `Data.AVL.Indexed.node-injectiveˡ` to `Data.AVL.Indexed.WithK`.
-* `Data.Container.Indexed.Eq` to `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.Map.composition` to `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.Map.identity` to `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.PlainMorphism.NT` to `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.PlainMorphism.Natural` to `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.PlainMorphism.complete` to `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.PlainMorphism.natural` to `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.PlainMorphism.∘-correct` to `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.setoid` to `Data.Container.Indexed.WithK`.
-* `Data.Product.Properties.,-injectiveʳ` to `Data.Product.Properties.WithK`.
-* `Data.Product.Relation.Binary.Pointwise.Dependent.Pointwise-≡↔≡` to
-  `Data.Product.Relation.Binary.Pointwise.Dependent.WithK`.
-* `Data.Product.Relation.Binary.Pointwise.Dependent.Pointwise-≡⇒≡` to
-  `Data.Product.Relation.Binary.Pointwise.Dependent.WithK`.
-* `Data.Product.Relation.Binary.Pointwise.Dependent.inverse` to
-  `Data.Product.Relation.Binary.Pointwise.Dependent.WithK`.
-* `Data.Product.Relation.Binary.Pointwise.Dependent.↣` to
-  `Data.Product.Relation.Binary.Pointwise.Dependent.WithK`. (The name
-  `Data.Product.Relation.Binary.Pointwise.Dependent.↣` now refers to a new
+* Some code that relies on the K rule or uses heterogeneous equality has
+  been moved from the existing file `X` to a new file `X.WithK` file
+  (e.g. from `Data.AVL.Indexed` to `Data.AVL.Indexed.WithK`). These are as follows:
+  - Data.AVL.Indexed                                                 : `node-injective-bal, node-injectiveʳ, node-injectiveˡ`
+  - Data.Container.Indexed                                           : `Eq, Map.composition, Map.identity, PlainMorphism.NT, PlainMorphism.Natural, PlainMorphism.complete, PlainMorphism.natural, PlainMorphism.∘-correct, setoid`
+  - Data.Product.Properties                                          : `,-injectiveʳ`
+  - Data.Product.Relation.Binary.Pointwise.Dependent                 : `Pointwise-≡⇒≡, ≡⇒Pointwise-≡, inverse, ↣`
+  - Data.Vec.Properties                                              : `++-assoc, []=-irrelevance, foldl-cong, foldr-cong`
+  - Data.Vec.Relation.Binary.Equality.Propositional                  : `≋⇒≅`
+  - Data.W                                                           : `sup-injective₂`
+  - Relation.Binary.Construct.Closure.Transitive                     : `∼⁺⟨⟩-injectiveʳ, ∼⁺⟨⟩-injectiveˡ`
+  - Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties : `◅-injectiveʳ, ◅-injectiveˡ`
+  - Relation.Binary.PropositionalEquality                            : `≡-irrelevance`
+  (The name `↣` in Data.Product.Relation.Binary.Pointwise.Dependent` now refers to a new
   definition with another type signature.)
-* `Data.Product.Relation.Binary.Pointwise.Dependent.≡⇒Pointwise-≡` to
-  `Data.Product.Relation.Binary.Pointwise.Dependent.WithK`.
-* `Data.Vec.Properties.++-assoc` to `Data.Vec.Properties.WithK`.
-* `Data.Vec.Properties.[]=-irrelevance` to `Data.Vec.Properties.WithK`.
-* `Data.Vec.Properties.foldl-cong` to `Data.Vec.Properties.WithK`.
-* `Data.Vec.Properties.foldr-cong` to `Data.Vec.Properties.WithK`.
-* `Data.Vec.Relation.Binary.Equality.Propositional.≋⇒≅` to
-  `Data.Vec.Relation.Binary.Equality.Propositional.WithK`.
-* `Data.W.sup-injective₂` to `Data.W.WithK`.
-* `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.◅-injectiveʳ`
-  to
-  `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.WithK`.
-* `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.◅-injectiveˡ`
-  to
-  `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.WithK`.
-* `Relation.Binary.Construct.Closure.Transitive.∼⁺⟨⟩-injectiveʳ` to
-  `Relation.Binary.Construct.Closure.Transitive.WithK`.
-* `Relation.Binary.Construct.Closure.Transitive.∼⁺⟨⟩-injectiveˡ` to
-  `Relation.Binary.Construct.Closure.Transitive.WithK`.
-* `Relation.Binary.PropositionalEquality.≡-irrelevance` to
-  `Relation.Binary.PropositionalEquality.WithK`.
 
-Other code has been changed to avoid use of the K rule. As part of
-such changes the texts of the following type signatures have been
-changed:
+* Other code has been changed to avoid use of the K rule. As part of
+  such changes the texts of the following type signatures have been
+  changed:
+  -- Data.AVL.Indexed                                           : `node-injective-key`
+  -- Data.List.Relation.Binary.Sublist.Propositional.Properties : `∷⁻`
+  -- Data.Product.Relation.Binary.Pointwise.Dependent           : `↣`
+  --Relation.Binary.PropositionalEquality                       : `≡-≟-identity`
+  (The old definition of `↣` was moved to `Data.Product.Relation.Binary.Pointwise.Dependent.WithK`.)
 
-* `Data.AVL.Indexed.node-injective-key`.
-* `Data.List.Relation.Binary.Sublist.Propositional.Properties.∷⁻`.
-* `Data.Product.Relation.Binary.Pointwise.Dependent.↣`. (The old definition
-  was moved to `Data.Product.Relation.Binary.Pointwise.Dependent.WithK`.)
-* `Relation.Binary.PropositionalEquality.≡-≟-identity`.
+* The definition `_≅⟨_⟩_` has been removed from `Relation.Binary.PropositionalEquality`.
 
-The following definitions have been removed:
+* The following previously deprecated names have also been removed:
+  -- Data.Product.Relation.Binary.Pointwise.Dependent : `Rel↔≡`
+  -- Data.Vec.Properties                              : `proof-irrelevance-[]=`
+  -- Relation.Binary.PropositionalEquality            : `proof-irrelevance`
 
-* `Relation.Binary.PropositionalEquality._≅⟨_⟩_`.
-
-Some deprecated names have also been removed:
-
-* `Data.Product.Relation.Binary.Pointwise.Dependent.Rel↔≡`.
-* `Data.Vec.Properties.proof-irrelevance-[]=`.
-* `Relation.Binary.PropositionalEquality.proof-irrelevance`.
-
-Finally some new, supporting code has been added:
-
-* The module `Function.HalfAdjointEquivalence`.
-* In `Relation.Binary.PropositionalEquality`: `cong-id`, `cong-∘`,
+* Finally some new, supporting code has been added in the modules `Function.HalfAdjointEquivalence`
+  and `Relation.Binary.PropositionalEquality`: `cong-id`, `cong-∘`,
   `cong-≡id`, `naturality`, `subst-application`, `subst-subst`,
   `subst-subst-sym`, `subst-sym-subst`, `subst-∘`, `trans-assoc`,
   `trans-reflʳ`, `trans-symʳ` and `trans-symˡ`.
 
 #### Overhaul of `Data.Maybe`
 
-Splitting up `Data.Maybe` into the standard hierarchy.
+* `Data.Maybe` has been split up into the standard hierarchy.
 
 * Moved `Data.Maybe.Base`'s `Is-just`, `Is-nothing`, `to-witness`,
   and `to-witness-T` to `Data.Maybe` (they rely on `All` and `Any`
@@ -272,50 +226,75 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The proofs `toList⁺` and `toList⁻` in `Data.Vec.Relation.Unary.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
-Other major changes
+List of new modules
 -------------------
 
-* Added new modules `Algebra.Construct.NaturalChoice.(Min/Max)`
+* All new modules
+  ```
+  Algebra.Construct.NaturalChoice.Min
+  Algebra.Construct.NaturalChoice.Max
 
-* Added new module `Algebra.Properties.Semilattice`
+  Algebra.Properties.Semilattice
 
-* Added new module `Algebra.FunctionProperties.Consequences.Propositional`
+  Algebra.FunctionProperties.Consequences.Propositional
 
-* Added new module `Codata.Cowriter`
+  Codata.Cowriter
 
-* Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
+  Codata.M.Properties
 
-* Added new modules `Data.Integer.Divisibility.Properties`,
-  `Data.Integer.Divisibility.Signed` and `Data.Integer.DivMod`.
+  Codata.M.Bisimilarity
 
-* Added new modules `Data.List.Relation.Binary.Prefix.Heterogeneous(.Properties)`
+  Data.Integer.Divisibility.Properties
+  Data.Integer.Divisibility.Signed
+  Data.Integer.DivMod
 
-* Added new modules `Data.List.Relation.Unary.First(.Properties)` for a
-  generalization of the notion of "first element in the list to satisfy a
-  predicate".
+  Data.List.Relation.Binary.Prefix.Heterogeneous
+  Data.List.Relation.Binary.Prefix.Heterogeneous.Properties
 
-* Added new modules `Data.List.Relation.Binary.Prefix.Heterogeneous(.Properties)`
+  Data.List.Relation.Unary.First
+  Data.List.Relation.Unary.First.Properties
 
-* Added new modules `Data.List.Relation.Ternary.Interleaving(.Setoid/Propositional)`
-  and `Data.List.Relation.Ternary.Interleaving(.Setoid/Propositional).Properties`.
+  Data.List.Relation.Binary.Prefix.Heterogeneous.Properties
 
-* Added new module `Data.Maybe.Relation.Unary.All.Properties`
+  Data.List.Relation.Ternary.Interleaving.Setoid
+  Data.List.Relation.Ternary.Interleaving.Setoid.Properties
+  Data.List.Relation.Ternary.Interleaving.Propositional
+  Data.List.Relation.Ternary.Interleaving.Propositional.Properties
 
-* Added new module `Data.Vec.Relation.Unary.Any.Properties`
+  Data.Maybe.Relation.Unary.All.Properties
 
-* Added new modules `Data.Vec.Membership.(Setoid/DecSetoid/DecPropositional)`
+  Data.Vec.Relation.Unary.Any.Properties
 
-* Added new modules `Relation.Binary.Construct.Add.(Infimum/Supremum/Extrema/Point)(.Equality/Strict/NonStrict)`
+  Data.Vec.Membership.Setoid
+  Data.Vec.Membership.DecSetoid
+  Data.Vec.Membership.DecPropositional
 
-* Added new modules `Relation.Binary.Construct.Intersection/Union`
+  Debug.Trace
 
-* Added new modules `Relation.Binary.Construct.NaturalOrder.(Left/Right)`
+  Function.HalfAdjointEquivalence
 
-* Added new module `Relation.Binary.Properties.BoundedLattice`
+  Relation.Binary.Construct.Add.Extrema.Equality
+  Relation.Binary.Construct.Add.Extrema.Strict
+  Relation.Binary.Construct.Add.Extrema.NonStrict
+  Relation.Binary.Construct.Add.Infimum.Equality
+  Relation.Binary.Construct.Add.Infimum.Strict
+  Relation.Binary.Construct.Add.Infimum.NonStrict
+  Relation.Binary.Construct.Add.Supremum.Equality
+  Relation.Binary.Construct.Add.Supremum.Strict
+  Relation.Binary.Construct.Add.Supremum.NonStrict
+  Relation.Binary.Construct.Add.Point.Equality
+  Relation.Binary.Construct.Intersection
+  Relation.Binary.Construct.Union
+  Relation.Binary.Construct.NaturalOrder.Left
+  Relation.Binary.Construct.NaturalOrder.Right
 
-* Added new modules `Relation.Nullary.Construct.Add.(Point/Infimum/Supremum/Extrema)`
+  Relation.Binary.Properties.BoundedLattice
 
-* Added new module `Debug.Trace`
+  Relation.Nullary.Construct.Add.Extrema
+  Relation.Nullary.Construct.Add.Infimum
+  Relation.Nullary.Construct.Add.Supremum
+  Relation.Nullary.Construct.Add.Point
+  ```
 
 Deprecated features
 -------------------
