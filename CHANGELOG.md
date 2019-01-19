@@ -71,7 +71,7 @@ Non-backwards compatible changes
   -- Data.AVL.Indexed                                           : `node-injective-key`
   -- Data.List.Relation.Binary.Sublist.Propositional.Properties : `∷⁻`
   -- Data.Product.Relation.Binary.Pointwise.Dependent           : `↣`
-  --Relation.Binary.PropositionalEquality                       : `≡-≟-identity`
+  -- Relation.Binary.PropositionalEquality                       : `≡-≟-identity`
   (The old definition of `↣` was moved to `Data.Product.Relation.Binary.Pointwise.Dependent.WithK`.)
 
 * The definition `_≅⟨_⟩_` has been removed from `Relation.Binary.PropositionalEquality`.
@@ -250,11 +250,11 @@ List of new modules
 
   Data.List.Relation.Binary.Prefix.Heterogeneous
   Data.List.Relation.Binary.Prefix.Heterogeneous.Properties
+  Data.List.Relation.Binary.Suffix.Heterogeneous
+  Data.List.Relation.Binary.Suffix.Heterogeneous.Properties
 
   Data.List.Relation.Unary.First
   Data.List.Relation.Unary.First.Properties
-
-  Data.List.Relation.Binary.Prefix.Heterogeneous.Properties
 
   Data.List.Relation.Ternary.Interleaving.Setoid
   Data.List.Relation.Ternary.Interleaving.Setoid.Properties
