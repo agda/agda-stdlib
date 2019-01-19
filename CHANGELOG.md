@@ -281,7 +281,7 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The proofs `toList⁺` and `toList⁻` in `Data.Vec.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
-* The functions `_∷=_` and `_─_` have been removed from `Data.List.Membership.Setoid` as they are subsumed by their more general version now part of `Data.List.Any`.
+* The functions `_∷=_` and `_─_` have been removed from `Data.List.Membership.Setoid` as they are subsumed by the more general versions now part of `Data.List.Any`.
 
 Other major changes
 -------------------
