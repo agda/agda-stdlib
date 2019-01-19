@@ -10,7 +10,7 @@
 module Data.Vec.Membership.Propositional {a} {A : Set a} where
 
 open import Data.Vec using (Vec)
-open import Data.Vec.Any using (Any)
+open import Data.Vec.Relation.Unary.Any using (Any)
 open import Relation.Binary.PropositionalEquality using (setoid; subst)
 
 import Data.Vec.Membership.Setoid as SetoidMembership
