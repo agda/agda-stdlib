@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Relation.Binary.Equality.DecPropositional</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Decidable equality over lists using propositional equality</a>
+<a id="168" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="242" class="Symbol">{-#</a> <a id="246" class="Keyword">OPTIONS</a> <a id="254" class="Option">--without-K</a> <a id="266" class="Option">--safe</a> <a id="273" class="Symbol">#-}</a>
+
+<a id="278" class="Keyword">open</a> <a id="283" class="Keyword">import</a> <a id="290" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="306" class="Keyword">open</a> <a id="311" class="Keyword">import</a> <a id="318" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+
+<a id="357" class="Keyword">module</a> <a id="364" href="Data.List.Relation.Binary.Equality.DecPropositional.html" class="Module">Data.List.Relation.Binary.Equality.DecPropositional</a>
+  <a id="418" class="Symbol">{</a><a id="419" href="Data.List.Relation.Binary.Equality.DecPropositional.html#419" class="Bound">a</a><a id="420" class="Symbol">}</a> <a id="422" class="Symbol">{</a><a id="423" href="Data.List.Relation.Binary.Equality.DecPropositional.html#423" class="Bound">A</a> <a id="425" class="Symbol">:</a> <a id="427" class="PrimitiveType">Set</a> <a id="431" href="Data.List.Relation.Binary.Equality.DecPropositional.html#419" class="Bound">a</a><a id="432" class="Symbol">}</a> <a id="434" class="Symbol">(</a><a id="435" href="Data.List.Relation.Binary.Equality.DecPropositional.html#435" class="Bound Operator">_≟_</a> <a id="439" class="Symbol">:</a> <a id="441" href="Relation.Binary.Core.html#4903" class="Function">Decidable</a> <a id="451" class="Symbol">{</a><a id="452" class="Argument">A</a> <a id="454" class="Symbol">=</a> <a id="456" href="Data.List.Relation.Binary.Equality.DecPropositional.html#423" class="Bound">A</a><a id="457" class="Symbol">}</a> <a id="459" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a><a id="462" class="Symbol">)</a> <a id="464" class="Keyword">where</a>
+
+<a id="471" class="Keyword">import</a> <a id="478" href="Data.List.Relation.Binary.Equality.Propositional.html" class="Module">Data.List.Relation.Binary.Equality.Propositional</a> <a id="527" class="Symbol">as</a> <a id="530" class="Module">PropositionalEq</a>
+<a id="546" class="Keyword">import</a> <a id="553" href="Data.List.Relation.Binary.Equality.DecSetoid.html" class="Module">Data.List.Relation.Binary.Equality.DecSetoid</a> <a id="598" class="Symbol">as</a> <a id="601" class="Module">DecSetoidEq</a>
+
+<a id="614" class="Comment">------------------------------------------------------------------------</a>
+<a id="687" class="Comment">-- Publically re-export everything from decSetoid and propositional</a>
+<a id="755" class="Comment">-- equality</a>
+
+<a id="768" class="Keyword">open</a> <a id="773" href="Data.List.Relation.Binary.Equality.Propositional.html" class="Module">PropositionalEq</a> <a id="789" class="Keyword">public</a>
+<a id="796" class="Keyword">open</a> <a id="801" href="Data.List.Relation.Binary.Equality.DecSetoid.html" class="Module">DecSetoidEq</a> <a id="813" class="Symbol">(</a><a id="814" href="Relation.Binary.PropositionalEquality.html#1657" class="Function">decSetoid</a> <a id="824" href="Data.List.Relation.Binary.Equality.DecPropositional.html#435" class="Bound Operator">_≟_</a><a id="827" class="Symbol">)</a> <a id="829" class="Keyword">public</a>
+  <a id="838" class="Keyword">using</a> <a id="844" class="Symbol">(</a>_≋?_<a id="849" class="Symbol">;</a> ≋-isDecEquivalence<a id="869" class="Symbol">;</a> ≋-decSetoid<a id="882" class="Symbol">)</a>
+</pre></body></html>

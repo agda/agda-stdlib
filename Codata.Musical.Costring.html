@@ -9,7 +9,7 @@
 
 <a id="229" class="Keyword">module</a> <a id="236" href="Codata.Musical.Costring.html" class="Module">Codata.Musical.Costring</a> <a id="260" class="Keyword">where</a>
 
-<a id="267" class="Keyword">open</a> <a id="272" class="Keyword">import</a> <a id="279" href="Codata.Musical.Colist.html" class="Module">Codata.Musical.Colist</a> <a id="301" class="Symbol">as</a> <a id="304" class="Module">Colist</a> <a id="311" class="Keyword">using</a> <a id="317" class="Symbol">(</a><a id="318" href="Codata.Musical.Colist.html#1606" class="Datatype">Colist</a><a id="324" class="Symbol">)</a>
+<a id="267" class="Keyword">open</a> <a id="272" class="Keyword">import</a> <a id="279" href="Codata.Musical.Colist.html" class="Module">Codata.Musical.Colist</a> <a id="301" class="Symbol">as</a> <a id="304" class="Module">Colist</a> <a id="311" class="Keyword">using</a> <a id="317" class="Symbol">(</a><a id="318" href="Codata.Musical.Colist.html#1621" class="Datatype">Colist</a><a id="324" class="Symbol">)</a>
 <a id="326" class="Keyword">open</a> <a id="331" class="Keyword">import</a> <a id="338" href="Data.Char.html" class="Module">Data.Char</a> <a id="348" class="Keyword">using</a> <a id="354" class="Symbol">(</a><a id="355" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a><a id="359" class="Symbol">)</a>
 <a id="361" class="Keyword">open</a> <a id="366" class="Keyword">import</a> <a id="373" href="Data.String.html" class="Module">Data.String</a> <a id="385" class="Symbol">as</a> <a id="388" class="Module">String</a> <a id="395" class="Keyword">using</a> <a id="401" class="Symbol">(</a><a id="402" href="Agda.Builtin.String.html#165" class="Postulate">String</a><a id="408" class="Symbol">)</a>
 <a id="410" class="Keyword">open</a> <a id="415" class="Keyword">import</a> <a id="422" href="Function.html" class="Module">Function</a> <a id="431" class="Keyword">using</a> <a id="437" class="Symbol">(</a><a id="438" href="Function.html#805" class="Function Operator">_∘_</a><a id="441" class="Symbol">)</a>
@@ -17,10 +17,10 @@
 <a id="444" class="Comment">-- Possibly infinite strings.</a>
 
 <a id="Costring"></a><a id="475" href="Codata.Musical.Costring.html#475" class="Function">Costring</a> <a id="484" class="Symbol">:</a> <a id="486" class="PrimitiveType">Set</a>
-<a id="490" href="Codata.Musical.Costring.html#475" class="Function">Costring</a> <a id="499" class="Symbol">=</a> <a id="501" href="Codata.Musical.Colist.html#1606" class="Datatype">Colist</a> <a id="508" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a>
+<a id="490" href="Codata.Musical.Costring.html#475" class="Function">Costring</a> <a id="499" class="Symbol">=</a> <a id="501" href="Codata.Musical.Colist.html#1621" class="Datatype">Colist</a> <a id="508" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a>
 
 <a id="514" class="Comment">-- Methods</a>
 
 <a id="toCostring"></a><a id="526" href="Codata.Musical.Costring.html#526" class="Function">toCostring</a> <a id="537" class="Symbol">:</a> <a id="539" href="Agda.Builtin.String.html#165" class="Postulate">String</a> <a id="546" class="Symbol">→</a> <a id="548" href="Codata.Musical.Costring.html#475" class="Function">Costring</a>
-<a id="557" href="Codata.Musical.Costring.html#526" class="Function">toCostring</a> <a id="568" class="Symbol">=</a> <a id="570" href="Codata.Musical.Colist.html#3623" class="Function">Colist.fromList</a> <a id="586" href="Function.html#805" class="Function Operator">∘</a> <a id="588" href="Data.String.Base.html#905" class="Function">String.toList</a>
+<a id="557" href="Codata.Musical.Costring.html#526" class="Function">toCostring</a> <a id="568" class="Symbol">=</a> <a id="570" href="Codata.Musical.Colist.html#3638" class="Function">Colist.fromList</a> <a id="586" href="Function.html#805" class="Function Operator">∘</a> <a id="588" href="Data.String.Base.html#905" class="Function">String.toList</a>
 </pre></body></html>
