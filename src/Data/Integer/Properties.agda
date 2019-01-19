@@ -1386,14 +1386,11 @@ neg-mono-<-> {i} {j} i<j = begin
   where open POR ≤-poset
 
 ------------------------------------------------------------------------
--- A module for reasoning about the _≤_ and _<_ relations
+-- A specialised module for reasoning about the _≤_ and _<_ relations
 
 module ≤-Reasoning where
   open import Relation.Binary.Reasoning.Base.Triple
-    isEquivalence
-    ≤-trans
-    (resp₂ _≤_)
-    ≤-reflexive
+    ≤-isPreorder
     (λ {i} → <-trans {i})
     (resp₂ _<_)
     <⇒≤

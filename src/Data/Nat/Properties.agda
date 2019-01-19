@@ -1524,10 +1524,7 @@ eq? inj = via-injection inj _≟_
 
 module ≤-Reasoning where
   open import Relation.Binary.Reasoning.Base.Triple
-    isEquivalence
-    ≤-trans
-    (resp₂ _≤_)
-    ≤-reflexive
+    ≤-isPreorder
     <-trans
     (resp₂ _<_)
     <⇒≤

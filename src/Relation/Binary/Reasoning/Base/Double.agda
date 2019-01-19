@@ -13,8 +13,7 @@
 open import Relation.Binary
 
 module Relation.Binary.Reasoning.Base.Double {a ℓ₁ ℓ₂} {A : Set a}
-  {_≈_ : Rel A ℓ₁} (isEquivalence : IsEquivalence _≈_)
-  {_∼_ : Rel A ℓ₂} (∼-trans : Transitive _∼_) (∼-resp-≈ : _∼_ Respects₂ _≈_) (∼-reflexive : _≈_ ⇒ _∼_)
+  {_≈_ : Rel A ℓ₁} {_∼_ : Rel A ℓ₂} (isPreorder : IsPreorder _≈_ _∼_)
   where
 
 open import Data.Product using (proj₁; proj₂)
@@ -24,12 +23,7 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 open import Relation.Nullary using (Dec; yes; no)
 open import Relation.Nullary.Decidable using (True; toWitness)
 
-open IsEquivalence isEquivalence
-  renaming
-  ( refl  to ≈-refl
-  ; sym   to ≈-sym
-  ; trans to ≈-trans
-  )
+open IsPreorder isPreorder
 
 ------------------------------------------------------------------------
 -- A datatype to hide the current relation type
@@ -69,18 +63,18 @@ infix  1 _∎
 
 begin_ : ∀ {x y} (r : x IsRelatedTo y) → x ∼ y
 begin (nonstrict x∼y) = x∼y
-begin (equals    x≈y) = ∼-reflexive x≈y
+begin (equals    x≈y) = reflexive x≈y
 
 begin-equality_ : ∀ {x y} (r : x IsRelatedTo y) → {s : True (IsEquality? r)} → x ≈ y
 begin-equality_ r {s} = extractEquality (toWitness s)
 
 _∼⟨_⟩_ : ∀ (x : A) {y z} → x ∼ y → y IsRelatedTo z → x IsRelatedTo z
-x ∼⟨ x∼y ⟩ nonstrict y∼z = nonstrict (∼-trans x∼y y∼z)
+x ∼⟨ x∼y ⟩ nonstrict y∼z = nonstrict (trans x∼y y∼z)
 x ∼⟨ x∼y ⟩ equals    y≈z = nonstrict (proj₁ ∼-resp-≈ y≈z x∼y)
 
 _≈⟨_⟩_ : ∀ (x : A) {y z} → x ≈ y → y IsRelatedTo z → x IsRelatedTo z
-x ≈⟨ x≈y ⟩ nonstrict y∼z = nonstrict (proj₂ ∼-resp-≈ (≈-sym x≈y) y∼z)
-x ≈⟨ x≈y ⟩ equals    y≈z = equals    (≈-trans x≈y y≈z)
+x ≈⟨ x≈y ⟩ nonstrict y∼z = nonstrict (proj₂ ∼-resp-≈ (Eq.sym x≈y) y∼z)
+x ≈⟨ x≈y ⟩ equals    y≈z = equals    (Eq.trans x≈y y≈z)
 
 _≡⟨_⟩_ : ∀ (x : A) {y z} → x ≡ y → y IsRelatedTo z → x IsRelatedTo z
 x ≡⟨ x≡y ⟩ nonstrict y∼z = nonstrict (case x≡y of λ where refl → y∼z)
@@ -90,7 +84,7 @@ _≡⟨⟩_ : ∀ (x : A) {y} → x IsRelatedTo y → x IsRelatedTo y
 x ≡⟨⟩ x≲y = x≲y
 
 _∎ : ∀ x → x IsRelatedTo x
-x ∎ = equals ≈-refl
+x ∎ = equals Eq.refl
 
 ------------------------------------------------------------------------
 -- Some examples and tests

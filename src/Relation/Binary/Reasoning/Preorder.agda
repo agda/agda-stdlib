@@ -16,12 +16,7 @@ open Preorder P
 ------------------------------------------------------------------------
 -- Publicly re-export the contents of the base module
 
-open import Relation.Binary.Reasoning.Base.Double
-  isEquivalence
-  trans
-  ∼-resp-≈
-  reflexive
-  public
+open import Relation.Binary.Reasoning.Base.Double isPreorder public
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

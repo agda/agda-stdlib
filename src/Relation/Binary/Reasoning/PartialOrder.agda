@@ -18,8 +18,7 @@ import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as Strict
 -- Re-export contents of base module
 
 open import Relation.Binary.Reasoning.Base.Triple
-  isEquivalence
-  trans ≤-resp-≈ reflexive
+  isPreorder
   (Strict.trans isPartialOrder)
   (Strict.<-resp-≈ isEquivalence ≤-resp-≈)
   Strict.<⇒≤

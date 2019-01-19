@@ -215,6 +215,35 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   ```
   The old modules have been deprecated but still exist for backwards compatibility reasons.
 
+* The way reasoning is implemented has been changed. In particular all of the above
+  modules are specialised instances of the three modules
+  `Relation.Binary.Reasoning.Base.(Single/Double/Triple)`. This means that if you have
+  extended the reasoning modules yourself you may need to update the extensions.
+  However all *uses* of the reasoning modules are fully backwards compatible.
+
+* The new implementation allows the interleaving of both strict and non-strict links
+  in proofs. For example where as before the following:
+  ```agda
+  begin
+    a ≤⟨ x≤y ⟩
+    b <⟨ y<z ⟩
+    c ≤⟨ x≤y ⟩
+    d ∎
+  ```
+  was not a valid proof that `a ≤ d` due to the `<` link in the middle, it is now accepted.
+
+* The new implementation can now be used to prove both equalities and strict relations as
+  well as the primary relation. To do so use the `begin-equality` and `begin-strict` combinators.
+  For instance replacing `begin` with `begin-strict` in the example above:
+  ```agda
+  begin-strict
+    a ≤⟨ x≤y ⟩
+    b <⟨ y<z ⟩
+    c ≤⟨ x≤y ⟩
+    d ∎
+  ```
+  proves that `a < d` rather than `a ≤ d`.
+
 #### Relaxation of ring solvers requirements
 
 * In the ring solvers below, the assumption that equality is `Decidable`
