@@ -312,11 +312,17 @@ Other major changes
 
 * Added new modules `Data.Vec.Membership.(Setoid/DecSetoid/DecPropositional)`
 
+* Added new modules `Relation.Binary.Construct.Add.(Infimum/Supremum/Extrema/Point)(.Equality/Strict/NonStrict)`
+
 * Added new modules `Relation.Binary.Construct.Intersection/Union`
 
 * Added new modules `Relation.Binary.Construct.NaturalOrder.(Left/Right)`
 
 * Added new module `Relation.Binary.Properties.BoundedLattice`
+
+* Added new modules `Relation.Nullary.Construct.Add.(Point/Infimum/Supremum/Extrema)`
+
+* Added new module `Debug.Trace`
 
 Deprecated features
 -------------------
@@ -404,9 +410,9 @@ Other minor additions
 * Added new proofs to `Algebra.Properties.Lattice`:
   ```agda
   ∧-isSemilattice : IsSemilattice _≈_ _∧_
-  ∧-semilattice : Semilattice l₁ l₂
+  ∧-semilattice   : Semilattice l₁ l₂
   ∨-isSemilattice : IsSemilattice _≈_ _∨_
-  ∨-semilattice : Semilattice l₁ l₂
+  ∨-semilattice   : Semilattice l₁ l₂
   ```
 
 * Added new operator to `Algebra.Solver.Ring`.
@@ -437,7 +443,7 @@ Other minor additions
 
 * Added new proof to `Codata.Stream.Properties`:
   ```agda
-  splitAt-map : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
+  splitAt-map             : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
   lookup-iterate-identity : lookup n (iterate f a) ≡ fold a f n
   ```
 
@@ -636,8 +642,8 @@ Other minor additions
 
 * Added new function to `Data.List.Membership.(Setoid/Propositional)`:
   ```agda
-  _∷=_    : x ∈ xs → A → List A
-  _─_     : (xs : List A) → x ∈ xs → List A
+  _∷=_ : x ∈ xs → A → List A
+  _─_  : (xs : List A) → x ∈ xs → List A
   ```
   Added laws for `updateAt`.
   Now laws for `_[_]≔_` are special instances of these.
@@ -662,6 +668,18 @@ Other minor additions
   map-∷=     : map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
   length-─   : length (xs ─ k) ≡ pred (length xs)
   map-─      : map f (xs ─ k) ≡ map f xs ─ cast eq k
+
+  length-applyUpTo     : length (applyUpTo     f n) ≡ n
+  length-applyDownFrom : length (applyDownFrom f n) ≡ n
+  length-upTo          : length (upTo            n) ≡ n
+  length-downFrom      : length (downFrom        n) ≡ n
+
+  lookup-applyUpTo     : lookup (applyUpTo     f n) i ≡ f (toℕ i)
+  lookup-applyDownFrom : lookup (applyDownFrom f n) i ≡ f (n ∸ (suc (toℕ i)))
+  lookup-upTo          : lookup (upTo            n) i ≡ toℕ i
+  lookup-downFrom      : lookup (downFrom        n) i ≡ n ∸ (suc (toℕ i))
+
+  map-tabulate : map f (tabulate g) ≡ tabulate (f ∘ g)
   ```
 
 * Added new proofs to `Data.List.Relation.Permutation.Inductive.Properties`:
@@ -914,7 +932,7 @@ Other minor additions
 * Added new definitions to `Relation.Binary.Core`:
   ```agda
   Antisym R S E = ∀ {i j} → R i j → S j i → E i j
-  Conn P Q = ∀ x y → P x y ⊎ Q y x
+  Conn P Q      = ∀ x y → P x y ⊎ Q y x
   ```
 
 * Added new proofs to `Relation.Binary.Lattice`:
@@ -969,4 +987,15 @@ Other minor additions
   ```agda
   _Respectsʳ_ : REL A B ℓ₁ → Rel B ℓ₂ → Set _
   _Respectsˡ_ : REL A B ℓ₁ → Rel A ℓ₂ → Set _
+  ```
+
+* Added new proofs to `Data.List.Relation.Pointwise`:
+  ```agda
+  reverseAcc⁺ : Pointwise R a x → Pointwise R b y → Pointwise R (reverseAcc a b) (reverseAcc x y)
+  reverse⁺    : Pointwise R as bs → Pointwise R (reverse as) (reverse bs)
+  map⁺        : Pointwise (λ a b → R (f a) (g b)) as bs → Pointwise R (map f as) (map g bs)
+  map⁻        : Pointwise R (map f as) (map g bs) → Pointwise (λ a b → R (f a) (g b)) as bs
+  filter⁺     : Pointwise R as bs → Pointwise R (filter P? as) (filter Q? bs)
+  replicate⁺  : R a b → Pointwise R (replicate n a) (replicate n b)
+  irrelevant  : Irrelevant R → Irrelevant (Pointwise R)
   ```
