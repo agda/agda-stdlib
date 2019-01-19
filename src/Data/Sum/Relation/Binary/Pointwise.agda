@@ -428,12 +428,12 @@ _⊎-cong_ {bijection}           = _⊎-↔_
 
 ₁∼₁ = inj₁
 {-# WARNING_ON_USAGE ₁∼₁
-"Warning: ₁∼₁ was deprecated in v0.14.
+"Warning: ₁∼₁ was deprecated in v0.18.
 Please use inj₁ in `Data.Sum.Properties` instead."
 #-}
 ₂∼₂ = inj₂
 {-# WARNING_ON_USAGE ₂∼₂
-"Warning: ₂∼₂ was deprecated in v0.14.
+"Warning: ₂∼₂ was deprecated in v0.18.
 Please use inj₂ in `Data.Sum.Properties` instead."
 #-}
 _⊎-≟_ : ∀ {a b} {A : Set a} {B : Set b} →
@@ -443,6 +443,6 @@ _⊎-≟_ : ∀ {a b} {A : Set a} {B : Set b} →
   where
   open DecSetoid (⊎-decSetoid (P.decSetoid dec₁) (P.decSetoid dec₂))
 {-# WARNING_ON_USAGE _⊎-≟_
-"Warning: _⊎-≟_ was deprecated in v0.14.
+"Warning: _⊎-≟_ was deprecated in v0.18.
 Please use ≡-dec in `Data.Sum.Properties` instead."
 #-}
