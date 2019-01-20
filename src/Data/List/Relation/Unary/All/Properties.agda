@@ -15,7 +15,7 @@ open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base
 open import Data.List.Membership.Propositional
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
-open import Data.List.Relation.Unary.Any using (Any; here; there)
+open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 import Data.List.Relation.Binary.Equality.Setoid as ListEq using (_≋_; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
