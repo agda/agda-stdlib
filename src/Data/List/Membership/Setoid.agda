@@ -13,7 +13,7 @@ module Data.List.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 open import Function using (_∘_; id; flip)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.List.Base as List using (List; []; _∷_; length; lookup)
-open import Data.List.Relation.Unary.Any as Any
+open import Data.List.Relation.Unary.Any
   using (Any; index; map; here; there)
 open import Data.Product as Prod using (∃; _×_; _,_)
 open import Relation.Unary using (Pred)
