@@ -13,7 +13,7 @@ module Algebra.Solver.Monoid {m₁ m₂} (M : Monoid m₁ m₂) where
 open import Data.Fin as Fin hiding (_≟_)
 import Data.Fin.Properties as Fin
 open import Data.List.Base hiding (lookup)
-import Data.List.Relation.Equality.DecPropositional as ListEq
+import Data.List.Relation.Binary.Equality.DecPropositional as ListEq
 open import Data.Maybe as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
 open import Data.Nat.Base using (ℕ)
