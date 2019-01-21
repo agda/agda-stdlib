@@ -204,12 +204,6 @@ module _ {a} {A : Set a} where
   lookup (x ∷ xs) Fin.zero    = x
   lookup (x ∷ xs) (Fin.suc i) = lookup xs i
 
-  lookup′ : ∀{n} → (xs : List A) → (rl : n ≤ length xs) → Fin n → A
-  lookup′ [] () zero
-  lookup′ (x ∷ xs) rl zero = x
-  lookup′ [] () (suc fn)
-  lookup′ (x ∷ xs) (s≤s rl) (suc fn) = lookup′ xs rl fn
-
 -- Numerical
 
 upTo : ℕ → List ℕ

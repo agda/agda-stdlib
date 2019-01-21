@@ -576,42 +576,16 @@ module _ {a} {A : Set a} where
   tabulate-lookup []       = refl
   tabulate-lookup (x ∷ xs) = P.cong (_ ∷_) (tabulate-lookup xs)
 
-  tabulate-len : ∀ {n} → (f : Fin n → A) →
+  length-tabulate : ∀ {n} → (f : Fin n → A) →
                  length (tabulate f) ≡ n
-  tabulate-len {zero} f = refl
-  tabulate-len {suc n} f = cong suc (tabulate-len (λ z → f (suc z)))
-
-  tabulate-len≤l : ∀{n} → (f : Fin n → A) →
-                   length (tabulate f) ≤ n
-  tabulate-len≤l {n = zero} f = z≤n
-  tabulate-len≤l {n = suc n} f = s≤s (tabulate-len≤l (λ z → f (suc z)))
-
-  tabulate-len≤r : ∀{n} → (f : Fin n → A) →
-                   n ≤ length (tabulate f)
-  tabulate-len≤r {n = zero} f = z≤n
-  tabulate-len≤r {n = suc n} f = s≤s (tabulate-len≤r (λ z → f (suc z)))
-
+  length-tabulate {zero} f = refl
+  length-tabulate {suc n} f = cong suc (length-tabulate (λ z → f (suc z)))
 
   lookup-tabulate : ∀{n} → (f : Fin n → A) →
-                    ∀ x → let x′ = subst Fin (tabulate-len f) x
-                          in f x′ ≡ lookup (tabulate f) x
-  lookup-tabulate {zero} f ()
-  lookup-tabulate {suc n} f zero with length (tabulate (f ∘ suc)) | tabulate-len (f ∘ suc)
-  ... | .n | refl = refl
-  lookup-tabulate {suc n} f (suc x) = trans q (lookup-tabulate (f ∘ suc) x) where
-    q : f (subst Fin (tabulate-len f) (suc x)) ≡ f (suc (subst Fin (tabulate-len (λ x → f (suc x))) x))
-    q with length (tabulate (f ∘ suc)) | tabulate-len (f ∘ suc)
-    q | e | refl = refl
-
-  tabulate-lookup′ : (xs : List A) → (rl : length xs ≤ length xs) →
-                     tabulate (lookup′ xs rl) ≡ xs
-  tabulate-lookup′ [] rl = refl
-  tabulate-lookup′ (x ∷ xs) (s≤s rl) = cong (x ∷_) (tabulate-lookup′ xs rl)
-
-  lookup-tabulate′ : ∀{n} → (f : Fin n → A) → (rl : n ≤ length (tabulate f)) →
-        ∀ x → f x ≡ lookup′ (tabulate f) rl x
-  lookup-tabulate′ f rl zero = refl
-  lookup-tabulate′ f (s≤s rl) (suc x) = lookup-tabulate′ (f ∘ suc) rl x
+                    ∀ i → let i′ = cast (sym (length-tabulate f)) i
+                          in lookup (tabulate f) i′ ≡ f i
+  lookup-tabulate f zero    = refl
+  lookup-tabulate f (suc i) = lookup-tabulate (f ∘ suc) i
 
 module _ {a b} {A : Set a} {B : Set b} where
 
