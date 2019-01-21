@@ -8,11 +8,11 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.List.Relation.Sublist.Heterogeneous where
+module Data.List.Relation.Binary.Sublist.Heterogeneous where
 
 open import Level using (_⊔_)
 open import Data.List.Base using (List; []; _∷_; [_])
-open import Data.List.Any using (Any; here; there)
+open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Function
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)

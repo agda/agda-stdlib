@@ -8,11 +8,11 @@
 
 open import Relation.Binary using (Setoid)
 
-module Data.List.Relation.Sublist.Setoid.Properties {c ℓ} (S : Setoid c ℓ) where
+module Data.List.Relation.Binary.Sublist.Setoid.Properties {c ℓ} (S : Setoid c ℓ) where
 
 open import Data.List.Base using (length)
-open import Data.List.Relation.Sublist.Setoid S
-import Data.List.Relation.Equality.Setoid S as Pw
+open import Data.List.Relation.Binary.Sublist.Setoid S
+import Data.List.Relation.Binary.Equality.Setoid S as Pw
 
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -20,7 +20,7 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 ------------------------------------------------------------------------
 -- Properties common to the heterogeneous version
 
-import Data.List.Relation.Sublist.Heterogeneous.Properties as SubProp
+import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties as SubProp
 open SubProp
   hiding (trans)
   public

@@ -6,16 +6,16 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.List.Relation.Sublist.Heterogeneous.Properties where
+module Data.List.Relation.Binary.Sublist.Heterogeneous.Properties where
 
 open import Data.Empty
-open import Data.List.Any using (Any; here; there)
+open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Base as List hiding (map; _∷ʳ_)
 import Data.List.Properties as Lₚ
-open import Data.List.Relation.Pointwise as Pw using (Pointwise; []; _∷_)
-open import Data.List.Relation.Sublist.Heterogeneous
+open import Data.List.Relation.Binary.Pointwise as Pw using (Pointwise; []; _∷_)
+open import Data.List.Relation.Binary.Sublist.Heterogeneous
 
-open import Data.Maybe.All as MAll using (nothing; just)
+open import Data.Maybe.Relation.Unary.All as MAll using (nothing; just)
 open import Data.Nat using (ℕ; _≤_; _≥_); open ℕ; open _≤_
 import Data.Nat.Properties as ℕₚ
 open import Data.Product using (_×_; uncurry)

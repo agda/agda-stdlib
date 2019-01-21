@@ -10,11 +10,11 @@
 
 open import Relation.Binary using (Setoid; Rel)
 
-module Data.List.Relation.Sublist.Setoid {c ℓ} (S : Setoid c ℓ) where
+module Data.List.Relation.Binary.Sublist.Setoid {c ℓ} (S : Setoid c ℓ) where
 
 open import Level using (_⊔_)
 open import Data.List.Base using (List; []; _∷_)
-import Data.List.Relation.Sublist.Heterogeneous as Sublist
+import Data.List.Relation.Binary.Sublist.Heterogeneous as Sublist
 
 private
   module S = Setoid S
