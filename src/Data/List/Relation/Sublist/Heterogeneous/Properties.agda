@@ -141,10 +141,10 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   ∷ˡ⁻ (y ∷ʳ rs) = y ∷ʳ ∷ˡ⁻ rs
   ∷ˡ⁻ (r ∷ rs)  = _ ∷ʳ rs
 
-  _∷ʳ⁻_ : ∀ {a as b bs} → ¬ R a b → Sublist R (a ∷ as) (b ∷ bs) →
-          Sublist R (a ∷ as) bs
-  ¬r ∷ʳ⁻ (y ∷ʳ rs) = rs
-  ¬r ∷ʳ⁻ (r ∷ rs)  = ⊥-elim (¬r r)
+  ∷ʳ⁻ : ∀ {a as b bs} → ¬ R a b → Sublist R (a ∷ as) (b ∷ bs) →
+        Sublist R (a ∷ as) bs
+  ∷ʳ⁻ ¬r (y ∷ʳ rs) = rs
+  ∷ʳ⁻ ¬r (r ∷ rs)  = ⊥-elim (¬r r)
 
   ∷⁻ : ∀ {a as b bs} → Sublist R (a ∷ as) (b ∷ bs) → Sublist R as bs
   ∷⁻ (y ∷ʳ rs) = ∷ˡ⁻ rs
@@ -183,10 +183,12 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   ++⁺ (y ∷ʳ abs) cds = y ∷ʳ ++⁺ abs cds
   ++⁺ (ab ∷ abs) cds = ab ∷ ++⁺ abs cds
 
-  ++⁻ : ∀ {as bs cs ds} → Pointwise R as bs → Sublist R (as ++ cs) (bs ++ ds) →
+  ++⁻ : ∀ {as bs cs ds} → length as ≡ length bs → Sublist R (as ++ cs) (bs ++ ds) →
         Sublist R cs ds
-  ++⁻ []       rs = rs
-  ++⁻ (p ∷ ps) rs = ++⁻ ps (∷⁻ rs)
+  ++⁻ {[]}     {[]}     eq rs = rs
+  ++⁻ {a ∷ as} {b ∷ bs} eq rs = ++⁻ (ℕₚ.suc-injective eq) (∷⁻ rs)
+  ++⁻ {[]} {_ ∷ _} ()
+  ++⁻ {_ ∷ _} {[]} ()
 
   ++ˡ : ∀ {as bs} (cs : List B) → Sublist R as bs → Sublist R as (cs ++ bs)
   ++ˡ zs = ++⁺ (minimum zs)
@@ -285,7 +287,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} {a as b bs} where
   ∷⁻¹ r = equivalence (r ∷_) ∷⁻
 
   ∷ʳ⁻¹ : ¬ R a b → Sublist R (a ∷ as) bs ⇔ Sublist R (a ∷ as) (b ∷ bs)
-  ∷ʳ⁻¹ ¬r = equivalence (_ ∷ʳ_) (¬r ∷ʳ⁻_)
+  ∷ʳ⁻¹ ¬r = equivalence (_ ∷ʳ_) (∷ʳ⁻ ¬r)
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} (R? : Decidable R) where
 
