@@ -9,7 +9,7 @@
 module Data.Table.Properties where
 
 open import Data.Table
-open import Data.Table.Relation.Equality
+open import Data.Table.Relation.Binary.Equality
 
 open import Data.Bool using (true; false; if_then_else_)
 open import Data.Nat using (zero; suc)
@@ -18,7 +18,7 @@ open import Data.Fin using (Fin; suc; zero; _≟_; punchIn)
 import Data.Fin.Properties as FP
 open import Data.Fin.Permutation as Perm using (Permutation; _⟨$⟩ʳ_; _⟨$⟩ˡ_)
 open import Data.List as L using (List; _∷_; [])
-open import Data.List.Any using (here; there; index)
+open import Data.List.Relation.Unary.Any using (here; there; index)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.Product as Product using (Σ; ∃; _,_; proj₁; proj₂)
 open import Data.Vec as V using (Vec; _∷_; [])

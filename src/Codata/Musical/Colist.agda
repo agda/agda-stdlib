@@ -16,7 +16,7 @@ open import Data.BoundedVec.Inefficient as BVec
   using (BoundedVec; []; _∷_)
 open import Data.Empty using (⊥)
 open import Data.Maybe using (Maybe; nothing; just; Is-just)
-open import Data.Maybe.Any using (just)
+open import Data.Maybe.Relation.Unary.Any using (just)
 open import Data.Nat.Base using (ℕ; zero; suc; _≥′_; ≤′-refl; ≤′-step)
 open import Data.Nat.Properties using (s≤′s)
 open import Data.List.Base using (List; []; _∷_)
