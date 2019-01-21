@@ -27,13 +27,12 @@ open import Data.These as These using (These; this; that; these)
 open import Function
 import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; _≗_; refl ; sym)
+  using (_≡_; _≢_; _≗_; refl ; sym ; cong)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable using (⌊_⌋)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
-open import Relation.Binary.PropositionalEquality using (cong ; subst ; trans)
 
 ------------------------------------------------------------------------
 -- _∷_
@@ -579,7 +578,7 @@ module _ {a} {A : Set a} where
   length-tabulate : ∀ {n} → (f : Fin n → A) →
                  length (tabulate f) ≡ n
   length-tabulate {zero} f = refl
-  length-tabulate {suc n} f = cong suc (length-tabulate (λ z → f (suc z)))
+  length-tabulate {suc n} f = P.cong suc (length-tabulate (λ z → f (suc z)))
 
   lookup-tabulate : ∀{n} → (f : Fin n → A) →
                     ∀ i → let i′ = cast (sym (length-tabulate f)) i
