@@ -4,6 +4,8 @@
 -- Some derivable properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Algebra
 
 module Algebra.Properties.Semilattice {l₁ l₂} (L : Semilattice l₁ l₂) where

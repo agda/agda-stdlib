@@ -21,7 +21,7 @@ open import Function using (_∘_; flip)
 open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
 
-import Relation.Binary.PartialOrderReasoning as PoR
+import Relation.Binary.Reasoning.PartialOrder as PoR
 
 -- The join operation is monotonic.
 

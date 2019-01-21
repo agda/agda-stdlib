@@ -8,156 +8,101 @@ Important changes since 0.17:
 Non-backwards compatible changes
 --------------------------------
 
+#### Extending the relation hierarchy for container datatypes
+
+* This release has added many new relations over `List` (e.g. `First`,
+  `Suffix`, `Prefix`, `Interleaving`) and it has become clear that the
+  current hierarchy for relations in `List`,`Product`,`Sum`, `Table`
+  and `Vec`is not deep enough.
+
+* To address this the contents of `Data.X.Relation` have been moved to
+  `Data.X.Relation.Binary` and new folders `Data.X.Relation.(Unary/Ternary)`
+  have been created and `Data.X.(All/Any)` have been moved to
+  `Data.X.Relation.Unary.(All/Any)`.
+
+* The old modules still exist for backwards compatability but are deprecated.
+
 #### Support for `--without-K`
 
-The `--without-K` flag has been enabled in a number of files. An
-attempt has been made to only do this in files that do not depend on
-any file in which this flag is not enabled.
+* The `--without-K` flag has been enabled in as many files as possible. An
+  attempt has been made to only do this in files that do not depend on
+  any file in which this flag is not enabled.
 
-Agda uses different rules for the target universe of data types when
-the `--without-K` flag is used, and because of this a number of type
-families now target a possibly larger universe:
+* Agda uses different rules for the target universe of data types when
+  the `--without-K` flag is used, and because of this a number of type
+  families now target a possibly larger universe:
+  - Codata.Delay.Bisimilarity                 : `Bisim`
+  - Codata.Musical.Covec                      : `_≈_`, `_∈_`, `_⊑_`
+  - Codata.Stream.Bisimilarity                : `Bisim`
+  - Data.List.Relation.Binary.Equality.Setoid : `_≋_`
+  - Data.List.Relation.Binary.Lex.NonStrict   : `Lex-<`, `Lex-≤`
+  - Data.List.Relation.Binary.Lex.Strict      : `Lex-<`, `Lex-≤`
+  - Data.List.Relation.Binary.Pointwise       : `Pointwise`
+  - Data.List.Relation.Unary.All              : `All`
+  - Data.Maybe                                : `Is-just`, `Is-nothing`
+  - Data.Maybe.Relation.Unary.Any             : `Any`
+  - Data.Maybe.Relation.Unary.All             : `All`
+  - Data.Maybe.Relation.Binary.Pointwise      : `Pointwise`
 
-* `Codata.Delay.Bisimilarity.Bisim`.
-* `Codata.Musical.Covec._≈_`.
-* `Codata.Musical.Covec._∈_`.
-* `Codata.Musical.Covec._⊑_`.
-* `Codata.Stream.Bisimilarity.Bisim`.
-* `Data.List.All.All`.
-* `Data.List.First.First`.
-* `Data.List.Relation.Prefix.Heterogeneous.Prefix`.
-* `Data.List.Relation.Prefix.Heterogeneous.PrefixView`.
-* `Data.List.Relation.Equality.Setoid._≋_`.
-* `Data.List.Relation.Lex.NonStrict.Lex-<`.
-* `Data.List.Relation.Lex.NonStrict.Lex-≤`.
-* `Data.List.Relation.Lex.Strict.Lex-<`.
-* `Data.List.Relation.Lex.Strict.Lex-≤`.
-* `Data.List.Relation.Pointwise.Pointwise`.
-* `Data.Maybe.Is-just`.
-* `Data.Maybe.Is-nothing`.
-* `Data.Maybe.Any.Any`.
-* `Data.Maybe.All.All`.
-* `Data.Maybe.Relation.Pointwise.Pointwise`.
+* Because of this change the texts of some type signatures were changed
+  (some inferred parts of other type signatures may also have changed):
+  - Data.List.Relation.Binary.Equality.DecSetoid : `≋-decSetoid`
+  - Data.Maybe.Relation.Binary.Pointwise         : `setoid`, `decSetoid`
 
-Because of this change the texts of some type signatures were changed
-(some inferred parts of other type signatures may also have changed):
-
-* `Data.List.All.forA`.
-* `Data.List.All.forM`.
-* `Data.List.All.mapA`.
-* `Data.List.All.mapM`.
-* `Data.List.All.sequenceA`.
-* `Data.List.All.sequenceM`.
-* `Data.List.Relation.Equality.DecSetoid.≋-decSetoid`.
-* `Data.Maybe.All.forA`.
-* `Data.Maybe.All.forM`.
-* `Data.Maybe.All.mapA`.
-* `Data.Maybe.All.mapM`.
-* `Data.Maybe.All.sequenceA`.
-* `Data.Maybe.All.sequenceM`.
-* `Data.Maybe.Relation.Pointwise.decSetoid`.
-* `Data.Maybe.Relation.Pointwise.setoid`.
-
-Some code that relies on the K rule or uses heterogeneous equality has
-been moved to new files:
-
-* `Data.AVL.Indexed.node-injective-bal` to `Data.AVL.Indexed.WithK`.
-* `Data.AVL.Indexed.node-injectiveʳ` to `Data.AVL.Indexed.WithK`.
-* `Data.AVL.Indexed.node-injectiveˡ` to `Data.AVL.Indexed.WithK`.
-* `Data.Container.Indexed.Eq` to `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.Map.composition` to
-  `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.Map.identity` to
-  `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.PlainMorphism.NT` to
-  `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.PlainMorphism.Natural` to
-  `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.PlainMorphism.complete` to
-  `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.PlainMorphism.natural` to
-  `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.PlainMorphism.∘-correct` to
-  `Data.Container.Indexed.WithK`.
-* `Data.Container.Indexed.setoid` to `Data.Container.Indexed.WithK`.
-* `Data.Product.Properties.,-injectiveʳ` to
-  `Data.Product.Properties.WithK`.
-* `Data.Product.Relation.Pointwise.Dependent.Pointwise-≡↔≡` to
-  `Data.Product.Relation.Pointwise.Dependent.WithK`.
-* `Data.Product.Relation.Pointwise.Dependent.Pointwise-≡⇒≡` to
-  `Data.Product.Relation.Pointwise.Dependent.WithK`.
-* `Data.Product.Relation.Pointwise.Dependent.inverse` to
-  `Data.Product.Relation.Pointwise.Dependent.WithK`.
-* `Data.Product.Relation.Pointwise.Dependent.↣` to
-  `Data.Product.Relation.Pointwise.Dependent.WithK`. (The name
-  `Data.Product.Relation.Pointwise.Dependent.↣` now refers to a new
+* Some code that relies on the K rule or uses heterogeneous equality has
+  been moved from the existing file `X` to a new file `X.WithK` file
+  (e.g. from `Data.AVL.Indexed` to `Data.AVL.Indexed.WithK`). These are as follows:
+  - Data.AVL.Indexed                                                 : `node-injective-bal, node-injectiveʳ, node-injectiveˡ`
+  - Data.Container.Indexed                                           : `Eq, Map.composition, Map.identity, PlainMorphism.NT, PlainMorphism.Natural, PlainMorphism.complete, PlainMorphism.natural, PlainMorphism.∘-correct, setoid`
+  - Data.Product.Properties                                          : `,-injectiveʳ`
+  - Data.Product.Relation.Binary.Pointwise.Dependent                 : `Pointwise-≡⇒≡, ≡⇒Pointwise-≡, inverse, ↣`
+  - Data.Vec.Properties                                              : `++-assoc, []=-irrelevance, foldl-cong, foldr-cong`
+  - Data.Vec.Relation.Binary.Equality.Propositional                  : `≋⇒≅`
+  - Data.W                                                           : `sup-injective₂`
+  - Relation.Binary.Construct.Closure.Transitive                     : `∼⁺⟨⟩-injectiveʳ, ∼⁺⟨⟩-injectiveˡ`
+  - Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties : `◅-injectiveʳ, ◅-injectiveˡ`
+  - Relation.Binary.PropositionalEquality                            : `≡-irrelevance`
+  (The name `↣` in Data.Product.Relation.Binary.Pointwise.Dependent` now refers to a new
   definition with another type signature.)
-* `Data.Product.Relation.Pointwise.Dependent.≡⇒Pointwise-≡` to
-  `Data.Product.Relation.Pointwise.Dependent.WithK`.
-* `Data.Vec.Properties.++-assoc` to `Data.Vec.Properties.WithK`.
-* `Data.Vec.Properties.[]=-irrelevance` to `Data.Vec.Properties.WithK`.
-* `Data.Vec.Properties.foldl-cong` to `Data.Vec.Properties.WithK`.
-* `Data.Vec.Properties.foldr-cong` to `Data.Vec.Properties.WithK`.
-* `Data.Vec.Relation.Equality.Propositional.≋⇒≅` to
-  `Data.Vec.Relation.Equality.Propositional.WithK`.
-* `Data.W.sup-injective₂` to `Data.W.WithK`.
-* `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.◅-injectiveʳ`
-  to
-  `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.WithK`.
-* `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.◅-injectiveˡ`
-  to
-  `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties.WithK`.
-* `Relation.Binary.Construct.Closure.Transitive.∼⁺⟨⟩-injectiveʳ` to
-  `Relation.Binary.Construct.Closure.Transitive.WithK`.
-* `Relation.Binary.Construct.Closure.Transitive.∼⁺⟨⟩-injectiveˡ` to
-  `Relation.Binary.Construct.Closure.Transitive.WithK`.
-* `Relation.Binary.PropositionalEquality.≡-irrelevance` to
-  `Relation.Binary.PropositionalEquality.WithK`.
 
-Other code has been changed to avoid use of the K rule. As part of
-such changes the texts of the following type signatures have been
-changed:
+* Other code has been changed to avoid use of the K rule. As part of
+  such changes the texts of the following type signatures have been
+  changed:
+  - Data.AVL.Indexed                                           : `node-injective-key`
+  - Data.List.Relation.Binary.Sublist.Propositional.Properties : `∷⁻`
+  - Data.Product.Relation.Binary.Pointwise.Dependent           : `↣`
+  - Relation.Binary.PropositionalEquality                       : `≡-≟-identity`
+  (The old definition of `↣` was moved to `Data.Product.Relation.Binary.Pointwise.Dependent.WithK`.)
 
-* `Data.AVL.Indexed.node-injective-key`.
-* `Data.List.Relation.Sublist.Propositional.Properties.∷⁻`.
-* `Data.Product.Relation.Pointwise.Dependent.↣`. (The old definition
-  was moved to `Data.Product.Relation.Pointwise.Dependent.WithK`.)
-* `Relation.Binary.PropositionalEquality.≡-≟-identity`.
+* The definition `_≅⟨_⟩_` has been removed from `Relation.Binary.PropositionalEquality`.
 
-The following definitions have been removed:
+* The following previously deprecated names have also been removed:
+  - Data.Product.Relation.Binary.Pointwise.Dependent : `Rel↔≡`
+  - Data.Vec.Properties                              : `proof-irrelevance-[]=`
+  - Relation.Binary.PropositionalEquality            : `proof-irrelevance`
 
-* `Relation.Binary.PropositionalEquality._≅⟨_⟩_`.
-
-Some deprecated names have also been removed:
-
-* `Data.Product.Relation.Pointwise.Dependent.Rel↔≡`.
-* `Data.Vec.Properties.proof-irrelevance-[]=`.
-* `Relation.Binary.PropositionalEquality.proof-irrelevance`.
-
-Finally some new, supporting code has been added:
-
-* The module `Function.HalfAdjointEquivalence`.
-* In `Relation.Binary.PropositionalEquality`: `cong-id`, `cong-∘`,
+* Finally some new, supporting code has been added in the modules `Function.HalfAdjointEquivalence`
+  and `Relation.Binary.PropositionalEquality`: `cong-id`, `cong-∘`,
   `cong-≡id`, `naturality`, `subst-application`, `subst-subst`,
   `subst-subst-sym`, `subst-sym-subst`, `subst-∘`, `trans-assoc`,
   `trans-reflʳ`, `trans-symʳ` and `trans-symˡ`.
 
 #### Overhaul of `Data.Maybe`
 
-Splitting up `Data.Maybe` into the standard hierarchy.
+* `Data.Maybe` has been split up into the standard hierarchy.
 
 * Moved `Data.Maybe.Base`'s `Is-just`, `Is-nothing`, `to-witness`,
   and `to-witness-T` to `Data.Maybe` (they rely on `All` and `Any`
   which are now outside of `Data.Maybe.Base`).
 
 * Moved `Data.Maybe.Base`'s `All` and `Data.Maybe`'s `allDec` to
-  `Data.Maybe.All` and renamed some proofs:
+  `Data.Maybe.Relation.Unary.All` and renamed some proofs:
   ```agda
   allDec ↦ dec
   ```
 
 * Moved `Data.Maybe.Base`'s `Any` and `Data.Maybe`'s `anyDec` to
-  `Data.Maybe.Any` and renamed some proofs:
+  `Data.Maybe.Relation.Unary.Any` and renamed some proofs:
   ```agda
   anyDec ↦ dec
   ```
@@ -165,7 +110,7 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * Created `Data.Maybe.Properties`, moved `Data.Maybe.Base`'s `just-injective`
   there and added new results.
 
-* Moved `Data.Maybe`'s `Eq` to `Data.Maybe.Relation.Pointwise`, made the
+* Moved `Data.Maybe`'s `Eq` to `Data.Maybe.Relation.Binary.Pointwise`, made the
   relation heterogeneously typed and renamed the following proofs:
   ```agda
   Eq                  ↦ Pointwise
@@ -203,6 +148,18 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * All algebraic structures now export left and right congruence properties.
   e.g. `∙-cong refl x≈y` can be replaced with `∙-congˡ y≈z`
 
+#### Upgrade of all forms of Reasoning
+
+* The core Reasoning modules have been renamed as follows:
+  ```
+  Relation.Binary.EqReasoning                 ↦ Relation.Binary.Reasoning.Setoid
+  Relation.Binary.SetoidReasoning             ↦ Relation.Binary.Reasoning.MultiSetoid
+  Relation.Binary.PreorderReasoning           ↦ Relation.Binary.Reasoning.Preorder
+  Relation.Binary.PartialOrderReasoning       ↦ Relation.Binary.Reasoning.PartialOrder
+  Relation.Binary.StrictPartialOrderReasoning ↦ Relation.Binary.Reasoning.StrictPartialOrder
+  ```
+  The old modules have been deprecated but still exist for backwards compatibility reasons.
+
 #### Relaxation of ring solvers requirements
 
 * In the ring solvers below, the assumption that equality is `Decidable`
@@ -233,7 +190,7 @@ Splitting up `Data.Maybe` into the standard hierarchy.
   a range to guarantee that the recursive calls were performed in the
   right subtree. The types have been made more precise.
 
-* The functions (insert/union)With now take a function of type
+* The functions `(insert/union)With` now take a function of type
   `Maybe Val -> Val` rather than a value together with a merging function
   `Val -> Val -> Val` to handle the case where a value is already present
   at that key.
@@ -263,52 +220,112 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The proofs `drop-*≤*`, `≃⇒≡` and `≡⇒≃` have been moved from `Data.Rational`
   to `Data.Rational.Properties`.
 
-* The proofs `toList⁺` and `toList⁻` in `Data.Vec.All.Properties` have been swapped
+* Fixed bug in `Data.Nat.Properties` where the type of `m⊓n≤m⊔n` was `∀ m n → m ⊔ n ≤ m ⊔ n`,
+  the type is now correctly `∀ m n → m ⊓ n ≤ m ⊔ n`.
+
+* The proofs `toList⁺` and `toList⁻` in `Data.Vec.Relation.Unary.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
-Other major changes
+List of new modules
 -------------------
 
-* Added new modules `Algebra.Construct.NaturalChoice.(Min/Max)`
+* All new modules
+  ```
+  Algebra.Construct.NaturalChoice.Min
+  Algebra.Construct.NaturalChoice.Max
 
-* Added new module `Algebra.Properties.Semilattice`
+  Algebra.Properties.Semilattice
 
-* Added new module `Algebra.FunctionProperties.Consequences.Propositional`
+  Algebra.FunctionProperties.Consequences.Propositional
 
-* Added new module `Codata.Cowriter`
+  Codata.Cowriter
 
-* Added new modules `Codata.M.Properties` and `Codata.M.Bisimilarity`
+  Codata.M.Properties
 
-* Added new modules `Data.Integer.Divisibility.Properties`,
-  `Data.Integer.Divisibility.Signed` and `Data.Integer.DivMod`.
+  Codata.M.Bisimilarity
 
-* Added new modules `Data.List.Relation.Prefix.Heterogeneous(.Properties)`
+  Data.Integer.Divisibility.Properties
+  Data.Integer.Divisibility.Signed
+  Data.Integer.DivMod
 
-* Added new modules `Data.List.Sublist.(Homogeneous/Heterogeneous)(.Properties)`
+  Data.List.Relation.Binary.Prefix.Heterogeneous
+  Data.List.Relation.Binary.Prefix.Heterogeneous.Properties
+  Data.List.Relation.Binary.Suffix.Heterogeneous
+  Data.List.Relation.Binary.Suffix.Heterogeneous.Properties
 
-* Added new modules `Data.List.First` and `Data.List.First.Properties` for a
-  generalization of the notion of "first element in the list to satisfy a
-  predicate".
+  Data.List.Relation.Binary.Sublist.Heterogeneous
+  Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
+  Data.List.Relation.Binary.Sublist.Setoid
+  Data.List.Relation.Binary.Sublist.Setoid.Properties
 
-* Added new modules `Data.List.Relation.Prefix.Heterogeneous(.Properties)`
+  Data.List.Relation.Unary.First
+  Data.List.Relation.Unary.First.Properties
 
-* Added new modules `Data.List.Relation.Interleaving(.Setoid/Propositional)`
-  and `Data.List.Relation.Interleaving(.Setoid/Propositional).Properties`.
+  Data.List.Relation.Ternary.Interleaving.Setoid
+  Data.List.Relation.Ternary.Interleaving.Setoid.Properties
+  Data.List.Relation.Ternary.Interleaving.Propositional
+  Data.List.Relation.Ternary.Interleaving.Propositional.Properties
 
-* Added new module `Data.Vec.Any.Properties`
+  Data.Maybe.Relation.Unary.All.Properties
 
-* Added new modules `Data.Vec.Membership.(Setoid/DecSetoid/DecPropositional)`
+  Data.Vec.Relation.Unary.Any.Properties
 
-* Added new modules `Relation.Binary.Construct.NaturalOrder.(Left/Right)`
+  Data.Vec.Membership.Setoid
+  Data.Vec.Membership.DecSetoid
+  Data.Vec.Membership.DecPropositional
 
-* Added new module `Relation.Binary.Properties.BoundedLattice`
+  Debug.Trace
+
+  Function.HalfAdjointEquivalence
+
+  Relation.Binary.Construct.Add.Extrema.Equality
+  Relation.Binary.Construct.Add.Extrema.Strict
+  Relation.Binary.Construct.Add.Extrema.NonStrict
+  Relation.Binary.Construct.Add.Infimum.Equality
+  Relation.Binary.Construct.Add.Infimum.Strict
+  Relation.Binary.Construct.Add.Infimum.NonStrict
+  Relation.Binary.Construct.Add.Supremum.Equality
+  Relation.Binary.Construct.Add.Supremum.Strict
+  Relation.Binary.Construct.Add.Supremum.NonStrict
+  Relation.Binary.Construct.Add.Point.Equality
+  Relation.Binary.Construct.Intersection
+  Relation.Binary.Construct.Union
+  Relation.Binary.Construct.NaturalOrder.Left
+  Relation.Binary.Construct.NaturalOrder.Right
+
+  Relation.Binary.Properties.BoundedLattice
+
+  Relation.Nullary.Construct.Add.Extrema
+  Relation.Nullary.Construct.Add.Infimum
+  Relation.Nullary.Construct.Add.Supremum
+  Relation.Nullary.Construct.Add.Point
+  ```
 
 Deprecated features
 -------------------
 
+* In `Data.Bool.Properties`:
+  ```agda
+  T-irrelevance ↦ T-irrelevant
+  ```
+
+* In `Data.Fin.Properties`:
+  ```agda
+  ≤-irrelevance ↦ ≤-irrelevant
+  <-irrelevance ↦ <-irrelevant
+  ```
+
 * In `Data.Integer.Properties`:
   ```agda
-  ≰→> ↦ ≰⇒>
+  ≰→>           ↦ ≰⇒>
+  ≤-irrelevance ↦ ≤-irrelevant
+  <-irrelevance ↦ <-irrelevant
+  ```
+
+* In `Data.Nat.Properties`:
+  ```agda
+  ≤-irrelevance ↦ ≤-irrelevant
+  <-irrelevance ↦ <-irrelevant
   ```
 
 * In `Data.Rational`:
@@ -318,6 +335,29 @@ Deprecated features
   ≡⇒≃
   ```
   (moved to `Data.Rational.Properties`)
+
+* In `Data.Rational.Properties`:
+  ```agda
+  ≤-irrelevance ↦ ≤-irrelevant
+  ```
+
+* In `Data.Vec.Properties.WithK`:
+  ```agda
+  []=-irrelevance ↦ []=-irrelevant
+  ```
+
+* In `Relation.Binary.HeterogeneousEquality`:
+  ```agda
+  ≅-irrelevance                ↦ ≅-irrelevant
+  ≅-heterogeneous-irrelevance  ↦ ≅-heterogeneous-irrelevant
+  ≅-heterogeneous-irrelevanceˡ ↦ ≅-heterogeneous-irrelevantˡ
+  ≅-heterogeneous-irrelevanceʳ ↦ ≅-heterogeneous-irrelevantʳ
+  ```
+
+* In `Relation.Binary.PropositionalEquality.WithK`:
+  ```agda
+  ≡-irrelevance ↦ ≡-irrelevant
+  ```
 
 Other minor additions
 ---------------------
@@ -347,9 +387,9 @@ Other minor additions
 * Added new proofs to `Algebra.Properties.Lattice`:
   ```agda
   ∧-isSemilattice : IsSemilattice _≈_ _∧_
-  ∧-semilattice : Semilattice l₁ l₂
+  ∧-semilattice   : Semilattice l₁ l₂
   ∨-isSemilattice : IsSemilattice _≈_ _∨_
-  ∨-semilattice : Semilattice l₁ l₂
+  ∨-semilattice   : Semilattice l₁ l₂
   ```
 
 * Added new operator to `Algebra.Solver.Ring`.
@@ -380,7 +420,7 @@ Other minor additions
 
 * Added new proof to `Codata.Stream.Properties`:
   ```agda
-  splitAt-map : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
+  splitAt-map             : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
   lookup-iterate-identity : lookup n (iterate f a) ≡ fold a f n
   ```
 
@@ -530,7 +570,7 @@ Other minor additions
   +-*-ring    : Ring 0ℓ 0ℓ
   ```
 
-* Added new operations to `Data.List.All`:
+* Added new operations to `Data.List.Relation.Unary.All`:
   ```agda
   zipWith   : P ∩ Q ⊆ R → All P ∩ All Q ⊆ All R
   unzipWith : R ⊆ P ∩ Q → All R ⊆ All P ∩ All Q
@@ -551,8 +591,15 @@ Other minor additions
 
   reverseAcc : List A → List A → List A
   ```
+  A generalization of single point overwrite `_[_]≔_`
+  to single-point modification `_[_]%=_`
+  (alias with different argument order: `updateAt`):
+  ```agda
+  _[_]%=_   : Vec A n → Fin n → (A → A) → Vec A n
+  updateAt  : Fin n → (A → A) → Vec A n → Vec A n
+  ```
 
-* Added new proofs to `Data.List.All.Properties`:
+* Added new proofs to `Data.List.Relation.Unary.All.Properties`:
   ```agda
   respects : P Respects _≈_ → (All P) Respects _≋_
   ```
@@ -572,9 +619,11 @@ Other minor additions
 
 * Added new function to `Data.List.Membership.(Setoid/Propositional)`:
   ```agda
-  _∷=_    : x ∈ xs → A → List A
-  _─_     : (xs : List A) → x ∈ xs → List A
+  _∷=_ : x ∈ xs → A → List A
+  _─_  : (xs : List A) → x ∈ xs → List A
   ```
+  Added laws for `updateAt`.
+  Now laws for `_[_]≔_` are special instances of these.
 
 * Added new proofs to `Data.List.Membership.Setoid.Properties`:
   ```agda
@@ -596,15 +645,27 @@ Other minor additions
   map-∷=     : map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
   length-─   : length (xs ─ k) ≡ pred (length xs)
   map-─      : map f (xs ─ k) ≡ map f xs ─ cast eq k
+
+  length-applyUpTo     : length (applyUpTo     f n) ≡ n
+  length-applyDownFrom : length (applyDownFrom f n) ≡ n
+  length-upTo          : length (upTo            n) ≡ n
+  length-downFrom      : length (downFrom        n) ≡ n
+
+  lookup-applyUpTo     : lookup (applyUpTo     f n) i ≡ f (toℕ i)
+  lookup-applyDownFrom : lookup (applyDownFrom f n) i ≡ f (n ∸ (suc (toℕ i)))
+  lookup-upTo          : lookup (upTo            n) i ≡ toℕ i
+  lookup-downFrom      : lookup (downFrom        n) i ≡ n ∸ (suc (toℕ i))
+
+  map-tabulate : map f (tabulate g) ≡ tabulate (f ∘ g)
   ```
 
-* Added new proofs to `Data.List.Relation.Permutation.Inductive.Properties`:
+* Added new proofs to `Data.List.Relation.Binary.Permutation.Inductive.Properties`:
   ```agda
   ++-isMagma : IsMagma _↭_ _++_
   ++-magma   : Magma _ _
   ```
 
-* Added new proofs to `Data.Maybe.All`:
+* Added new proofs to `Data.Maybe.Relation.Unary.All`:
   ```agda
   drop-just        : All P (just x) → P x
   just-equivalence : P x ⇔ All P (just x)
@@ -625,16 +686,7 @@ Other minor additions
   satisfiable      : Satisfiable (All P)
   ```
 
-* Created `Data.Maybe.All.Properties`:
-  ```agda
-  map⁺ : All (P ∘ f) mx → All P (map f mx)
-  map⁻ : All P (map f mx) → All (P ∘ f) mx
-  gmap : P ⊆ Q ∘ f → All P ⊆ All Q ∘ map f
-  <∣>⁺ : All P mx → All P my → All P (mx <∣> my)
-  <∣>⁻ : All P (mx <∣> my) → All P mx
-  ```
-
-* Added new proofs to `Data.Maybe.Any`:
+* Added new proofs to `Data.Maybe.Relation.Unary.Any`:
   ```agda
   drop-just        : Any P (just x) → P x
   just-equivalence : P x ⇔ Any P (just x)
@@ -651,6 +703,11 @@ Other minor additions
 * Added new function to `Data.Maybe.Base`:
   ```agda
   _<∣>_     : Maybe A → Maybe A → Maybe A
+  ```
+
+* Added new proof to `Data.Maybe.Relation.Binary.Pointwise`:
+  ```agda
+  reflexive : _≡_ ⇒ R → _≡_ ⇒ Pointwise R
   ```
 
 * Added new proofs to `Data.Nat.Properties`:
@@ -673,7 +730,32 @@ Other minor additions
   ⊔-semilattice : Semilattice 0ℓ 0ℓ
   ⊓-semilattice : Semilattice 0ℓ 0ℓ
 
+  m≤n⇒m⊓o≤n : ∀ {m n} o → m ≤ n → m ⊓ o ≤ n
+  m≤n⇒o⊓m≤n : ∀ {m n} o → m ≤ n → o ⊓ m ≤ n
+  m<n⇒m⊓o<n : ∀ {m n} o → m < n → m ⊓ o < n
+  m<n⇒o⊓m<n : ∀ {m n} o → m < n → o ⊓ m < n
+  m≤n⊓o⇒m≤n : ∀ {m} n o → m ≤ n ⊓ o → m ≤ n
+  m≤n⊓o⇒m≤o : ∀ {m} n o → m ≤ n ⊓ o → m ≤ o
+  m<n⊓o⇒m<n : ∀ {m} n o → m < n ⊓ o → m < n
+  m<n⊓o⇒m<o : ∀ {m} n o → m < n ⊓ o → m < o
+  m≤n⇒m≤n⊔o : ∀ {m n} o → m ≤ n → m ≤ n ⊔ o
+  m≤n⇒m≤o⊔n : ∀ {m n} o → m ≤ n → m ≤ o ⊔ n
+  m<n⇒m<n⊔o : ∀ {m n} o → m < n → m < n ⊔ o
+  m<n⇒m<o⊔n : ∀ {m n} o → m < n → m < o ⊔ n
+  m⊔n≤o⇒m≤o : ∀ m n {o} → m ⊔ n ≤ o → m ≤ o
+  m⊔n≤o⇒n≤o : ∀ m n {o} → m ⊔ n ≤ o → n ≤ o
+  m⊔n<o⇒m<o : ∀ m n {o} → m ⊔ n < o → m < o
+  m⊔n<o⇒n<o : ∀ m n {o} → m ⊔ n < o → n < o
+
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
+  ```
+
+* Added new functions to `Data.Product.Relation.Binary.Pointwise.NonDependent`:
+  ```agda
+  <_,_>ₛ : A ⟶ B → A ⟶ C → A ⟶ (B ×ₛ C)
+  proj₁ₛ : (A ×ₛ B) ⟶ A
+  proj₂ₛ : (A ×ₛ B) ⟶ B
+  swapₛ : (A ×ₛ B) ⟶ (B ×ₛ A)
   ```
 
 * Added new functions to `Data.Rational`:
@@ -700,18 +782,91 @@ Other minor additions
   toDec   : P ⊎ ¬ P → Dec P
   ```
 
+* Added new functions to `Data.Sum.Relation.Binary.Pointwise`:
+  ```agda
+  inj₁ₛ : A ⟶ (A ⊎ₛ B)
+  inj₂ₛ : B ⟶ (A ⊎ₛ B)
+  [_,_]ₛ : (A ⟶ C) → (B ⟶ C) → (A ⊎ₛ B) ⟶ C
+  swapₛ : (A ⊎ₛ B) ⟶ (B ⊎ₛ A)
+  ```
+
 * Added new function to `Data.These`:
   ```agda
   fromSum : A ⊎ B → These A B
   ```
 
-* Added new functions to `Data.Vec.Any.Properties`:
+* Added new proofs to `Data.Vec.Relation.Unary.Any.Properties`:
   ```agda
   lookup-index : (p : Any P xs) → P (lookup (index p) xs)
-  fromList⁺    : List.Any P xs → Any P (fromList xs)
-  fromList⁻    : Any P (fromList xs) → List.Any P xs
+
+  lift-resp       : P Respects _≈_ → (Any P) Respects (Pointwise _≈_)
+  here-injective  : here p ≡ here q → p ≡ q
+  there-injective : there p ≡ there q → p ≡ q
+
+  ¬Any[]  : ¬ Any P []
+  ⊥↔Any⊥  : ⊥ ↔ Any (const ⊥) xs
+  ⊥↔Any[] : ⊥ ↔ Any P []
+
+  map-id : ∀ f → (∀ p → f p ≡ p) → ∀ p → Any.map f p ≡ p
+  map-∘  : ∀ f g p → Any.map (f ∘ g) p ≡ Any.map f (Any.map g p)
+
+  swap       : Any (λ x → Any (x ∼_) ys) xs → Any (λ y → Any (_∼ y) xs) ys
+  swap-there : ∀ p → swap (Any.map there p) ≡ there (swap p)
+  swap-invol : ∀ p → swap (swap p) ≡ p
+  swap↔      : Any (λ x → Any (x ∼_) ys) xs ↔ Any (λ y → Any (_∼ y) xs) ys
+
+  Any-⊎⁺ : Any P xs ⊎ Any Q xs → Any (λ x → P x ⊎ Q x) xs
+  Any-⊎⁻ : Any (λ x → P x ⊎ Q x) xs → Any P xs ⊎ Any Q xs
+  ⊎↔     : (Any P xs ⊎ Any Q xs) ↔ Any (λ x → P x ⊎ Q x) xs
+
+  Any-×⁺ : Any P xs × Any Q ys → Any (λ x → Any (λ y → P x × Q y) ys) xs
+  Any-×⁻ : Any (λ x → Any (λ y → P x × Q y) ys) xs → Any P xs × Any Q ys
+
+  singleton⁺            : P x → Any P [ x ]
+  singleton⁻            : Any P [ x ] → P x
+  singleton⁺∘singleton⁻ : singleton⁺ (singleton⁻ p) ≡ p
+  singleton⁻∘singleton⁺ : singleton⁻ (singleton⁺ p) ≡ p
+  singleton↔            : P x ↔ Any P [ x ]
+
+  map⁺      : Any (P ∘ f) xs → Any P (map f xs)
+  map⁻      : Any P (map f xs) → Any (P ∘ f) xs
+  map⁺∘map⁻ : ∀ p → map⁺ (map⁻ p) ≡ p
+  map⁻∘map⁺ : ∀ P p → map⁻ (map⁺ p) ≡ p
+  map↔      : Any (P ∘ f) xs ↔ Any P (map f xs)
+
+  ++⁺ˡ            : Any P xs → Any P (xs ++ ys)
+  ++⁺ʳ            : Any P ys → Any P (xs ++ ys)
+  ++⁻             : Any P (xs ++ ys) → Any P xs ⊎ Any P ys
+  ++⁺∘++⁻         : ∀ p → [ ++⁺ˡ , ++⁺ʳ xs ]′ (++⁻ xs p) ≡ p
+  ++⁻∘++⁺         : ∀ p → ++⁻ xs ([ ++⁺ˡ , ++⁺ʳ xs ]′ p) ≡ p
+  ++-comm         : ∀ xs ys → Any P (xs ++ ys) → Any P (ys ++ xs)
+  ++-comm∘++-comm : ∀ p → ++-comm ys xs (++-comm xs ys p) ≡ p
+  ++-insert       : ∀ xs → P x → Any P (xs ++ [ x ] ++ ys)
+  ++↔             : (Any P xs ⊎ Any P ys) ↔ Any P (xs ++ ys)
+  ++↔++           : ∀ xs ys → Any P (xs ++ ys) ↔ Any P (ys ++ xs)
+
+  concat⁺         : Any (Any P) xss → Any P (concat xss)
+  concat⁻         : Any P (concat xss) → Any (Any P) xss
+  concat⁻∘++⁺ˡ    : ∀ xss p → concat⁻ (xs ∷ xss) (++⁺ˡ p) ≡ here p
+  concat⁻∘++⁺ʳ    : ∀ xs xss p → concat⁻ (xs ∷ xss) (++⁺ʳ xs p) ≡ there (concat⁻ xss p)
+  concat⁺∘concat⁻ : ∀ xss p → concat⁺ (concat⁻ xss p) ≡ p
+  concat⁻∘concat⁺ : ∀ p → concat⁻ xss (concat⁺ p) ≡ p
+  concat↔         : Any (Any P) xss ↔ Any P (concat xss)
+
+  tabulate⁺ : ∀ i → P (f i) → Any P (tabulate f)
+  tabulate⁻ : Any P (tabulate f) → ∃ λ i → P (f i)
+
+  mapWith∈⁺ : ∀ f → (∃₂ λ x p → P (f p)) → Any P (mapWith∈ xs f)
+  mapWith∈⁻ : ∀ xs f → Any P (mapWith∈ xs f) → ∃₂ λ x p → P (f p)
+  mapWith∈↔ : (∃₂ λ x p → P (f p)) ↔ Any P (mapWith∈ xs f)
+
   toList⁺      : Any P xs → List.Any P (toList xs)
   toList⁻      : List.Any P (toList xs) → Any P xs
+  fromList⁺    : List.Any P xs → Any P (fromList xs)
+  fromList⁻    : Any P (fromList xs) → List.Any P xs
+
+  ∷↔   : ∀ P → (P x ⊎ Any P xs) ↔ Any P (x ∷ xs)
+  >>=↔ : Any (Any P ∘ f) xs ↔ Any P (xs >>= f)
   ```
 
 * Added new functions to `Data.Vec.Membership.Propositional.Properties`:
@@ -728,6 +883,10 @@ Other minor additions
   ⊎-magma : Symmetric-kind → (ℓ : Level) → Semigroup _ _
   ×-magma : Symmetric-kind → (ℓ : Level) → Magma _ _
   ```
+
+* Added new definitions to `Relation.Binary.PropositionalEquality`:
+  - `_≡_↾¹_` equality of functions at a single point
+  - `_≡_↾_` equality of functions at a subset of the domain
 
 * Added new proofs to `Relation.Binary.Consequences`:
   ```agda
@@ -796,4 +955,15 @@ Other minor additions
   ```agda
   _Respectsʳ_ : REL A B ℓ₁ → Rel B ℓ₂ → Set _
   _Respectsˡ_ : REL A B ℓ₁ → Rel A ℓ₂ → Set _
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Pointwise`:
+  ```agda
+  reverseAcc⁺ : Pointwise R a x → Pointwise R b y → Pointwise R (reverseAcc a b) (reverseAcc x y)
+  reverse⁺    : Pointwise R as bs → Pointwise R (reverse as) (reverse bs)
+  map⁺        : Pointwise (λ a b → R (f a) (g b)) as bs → Pointwise R (map f as) (map g bs)
+  map⁻        : Pointwise R (map f as) (map g bs) → Pointwise (λ a b → R (f a) (g b)) as bs
+  filter⁺     : Pointwise R as bs → Pointwise R (filter P? as) (filter Q? bs)
+  replicate⁺  : R a b → Pointwise R (replicate n a) (replicate n b)
+  irrelevant  : Irrelevant R → Irrelevant (Pointwise R)
   ```

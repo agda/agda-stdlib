@@ -4,6 +4,8 @@
 -- The max operator derived from an arbitrary total order
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 
 module Algebra.Construct.NaturalChoice.Max

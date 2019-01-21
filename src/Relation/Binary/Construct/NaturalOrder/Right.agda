@@ -5,6 +5,8 @@
 -- natural order.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 open import Algebra.FunctionProperties using (Op₂)
 
@@ -16,7 +18,7 @@ open import Data.Sum using (inj₁; inj₂)
 open import Relation.Nullary using (¬_)
 open import Algebra.FunctionProperties _≈_
 open import Algebra.Structures _≈_
-import Relation.Binary.EqReasoning as EqReasoning
+import Relation.Binary.Reasoning.Setoid as EqReasoning
 
 ------------------------------------------------------------------------
 -- Definition
