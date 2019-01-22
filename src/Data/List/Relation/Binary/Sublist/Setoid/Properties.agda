@@ -22,7 +22,8 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 import Data.List.Relation.Binary.Sublist.Homogeneous.Properties as SubProp
 open SubProp
-  hiding ( refl
+  hiding ( reflexive
+         ; refl
          ; trans)
   public
 

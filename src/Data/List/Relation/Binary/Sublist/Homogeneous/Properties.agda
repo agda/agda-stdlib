@@ -9,10 +9,9 @@
 module Data.List.Relation.Binary.Sublist.Homogeneous.Properties where
 
 open import Data.List.Base
-open import Data.List.Relation.Pointwise as Pw using (Pointwise; []; _∷_)
+open import Data.List.Relation.Binary.Pointwise as Pw using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Sublist.Heterogeneous
 open import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties public
-import Data.List.Relation.Binary.Pointwise as Pw
 open import Data.Nat.Base using (zero; suc)
 
 open import Function
@@ -20,11 +19,15 @@ open import Relation.Unary as U using (Pred)
 open import Relation.Binary
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (¬?)
+open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 module _ {a r} {A : Set a} {R : Rel A r} where
 
+  reflexive : Reflexive R → _≡_ ⇒ Sublist R
+  reflexive R-refl P.refl = fromPointwise (Pw.refl R-refl)
+
   refl : Reflexive R → Reflexive (Sublist R)
-  refl R-refl = fromPointwise (Pw.refl R-refl)
+  refl R-refl = reflexive R-refl P.refl
 
 module _ {a e r} {A : Set a} {E : Rel A e} {R : Rel A r} where
 

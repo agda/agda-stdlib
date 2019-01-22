@@ -8,7 +8,7 @@
 
 open import Relation.Binary
 
-module Data.List.Relation.Sublist.Homogeneous.Solver
+module Data.List.Relation.Binary.Sublist.Homogeneous.Solver
        {a r} {A : Set a} (R : Rel A r)
 -- Note that we only need this two constraints to define the solver itself.
 -- The data structures do not depent on them.
@@ -25,14 +25,15 @@ open import Data.Product
 open import Data.Vec as Vec using (Vec ; lookup)
 open import Data.List hiding (lookup)
 open import Data.List.Properties
-open import Data.List.Relation.Sublist.Heterogeneous
-open import Data.List.Relation.Sublist.Homogeneous.Properties
+open import Data.List.Relation.Binary.Sublist.Heterogeneous
+open import Data.List.Relation.Binary.Sublist.Homogeneous.Properties
 open import Function
 
-open import Relation.Binary.PropositionalEquality hiding ([_])
+open import Relation.Binary.PropositionalEquality as P
+  using (_≡_; _≗_; sym; cong; cong₂; subst₂)
 open import Relation.Nullary
 
-open ≡-Reasoning
+open P.≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Reified list expressions
@@ -81,7 +82,7 @@ d ⊆R e = ∀ ρ → Sublist R (⟦ d ⟧R ρ) (⟦ e ⟧R ρ)
 -- Flattening in a semantics-respecting manner
 
 ⟦++⟧R : ∀ {n} xs ys (ρ : Vec (List A) n) → ⟦ xs ++ ys ⟧R ρ ≡ ⟦ xs ⟧R ρ ++ ⟦ ys ⟧R ρ
-⟦++⟧R []       ys ρ = refl
+⟦++⟧R []       ys ρ = P.refl
 ⟦++⟧R (x ∷ xs) ys ρ = begin
   ⟦ x ⟧I ρ ++ ⟦ xs ++ ys ⟧R ρ
     ≡⟨ cong (⟦ x ⟧I ρ ++_) (⟦++⟧R xs ys ρ) ⟩
@@ -91,7 +92,7 @@ d ⊆R e = ∀ ρ → Sublist R (⟦ d ⟧R ρ) (⟦ e ⟧R ρ)
     ∎
 
 flatten : ∀ {n} (t : TList n) → Σ[ r ∈ RList n ] ⟦ r ⟧R ≗ ⟦ t ⟧T
-flatten []       = [] , λ _ → refl
+flatten []       = [] , λ _ → P.refl
 flatten (It it)  = it ∷ [] , λ ρ → ++-identityʳ (⟦ It it ⟧T ρ)
 flatten (t <> u) =
   let (rt , eqt) = flatten t
@@ -110,8 +111,8 @@ flatten (t <> u) =
 private
 
   keep-it : ∀ {n a b} → a ⊆I b → (xs ys : RList n) → xs ⊆R ys → (a ∷ xs) ⊆R (b ∷ ys)
-  keep-it (var refl) xs ys hyp ρ = ++⁺ (Sublist-refl R-refl) (hyp ρ)
-  keep-it (val rab)  xs ys hyp ρ = rab ∷ hyp ρ
+  keep-it (var a≡b) xs ys hyp ρ = ++⁺ (reflexive R-refl (cong _ a≡b)) (hyp ρ)
+  keep-it (val rab) xs ys hyp ρ = rab ∷ hyp ρ
 
   skip-it : ∀ {n} it (d e : RList n) → d ⊆R e → d ⊆R (it ∷ e)
   skip-it it d ys hyp ρ = ++ˡ (⟦ it ⟧I ρ) (hyp ρ)
