@@ -20,9 +20,10 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 ------------------------------------------------------------------------
 -- Properties common to the heterogeneous version
 
-import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties as SubProp
+import Data.List.Relation.Binary.Sublist.Homogeneous.Properties as SubProp
 open SubProp
-  hiding (trans)
+  hiding ( refl
+         ; trans)
   public
 
 ------------------------------------------------------------------------
