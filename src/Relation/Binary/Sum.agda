@@ -3,17 +3,17 @@
 --
 -- Sums of binary relations
 --
--- This module is DEPRECATED. Please use the Data.Sum.Relation modules
--- directly.
+-- This module is DEPRECATED. Please use the Data.Sum.Relation.Binary
+-- modules directly.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Sum where
 
-open import Data.Sum.Relation.Core public
+open import Data.Sum.Relation.Binary.Core public
 
-open import Data.Sum.Relation.Pointwise public
+open import Data.Sum.Relation.Binary.Pointwise public
   renaming
   ( Pointwise          to _⊎-Rel_
   ; ⊎-symmetric        to _⊎-symmetric_
@@ -28,7 +28,7 @@ open import Data.Sum.Relation.Pointwise public
   ( ⊎-decidable
   )
 
-open import Data.Sum.Relation.LeftOrder public
+open import Data.Sum.Relation.Binary.LeftOrder public
   using ()
   renaming
   ( ⊎-<-total              to _⊎-<-total_

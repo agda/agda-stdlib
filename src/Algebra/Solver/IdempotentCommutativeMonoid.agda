@@ -23,7 +23,7 @@ open import Function using (_∘_)
 import Relation.Binary.Reasoning.Setoid  as EqReasoning
 import Relation.Binary.Reflection            as Reflection
 import Relation.Nullary.Decidable            as Dec
-import Data.Vec.Relation.Pointwise.Inductive as Pointwise
+import Data.Vec.Relation.Binary.Pointwise.Inductive as Pointwise
 
 open import Relation.Binary.PropositionalEquality as P using (_≡_; decSetoid)
 open import Relation.Nullary using (Dec)

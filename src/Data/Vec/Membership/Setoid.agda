@@ -12,7 +12,8 @@ module Data.Vec.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 
 open import Function
 open import Data.Vec as Vec using (Vec; []; _∷_)
-open import Data.Vec.Any as Any using (Any; here; there; index)
+open import Data.Vec.Relation.Unary.Any as Any
+  using (Any; here; there; index)
 open import Data.Product using (∃; _×_; _,_)
 open import Relation.Nullary using (¬_)
 open import Relation.Unary using (Pred)

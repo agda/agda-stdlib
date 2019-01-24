@@ -12,7 +12,7 @@ open import Data.List.Base as List using (List ; [] ; _∷_)
 open import Data.List.Properties
 open import Data.List.Zipper
 open import Data.Maybe.Base using (Maybe; just; nothing)
-open import Data.Maybe.All using (All; just; nothing)
+open import Data.Maybe.Relation.Unary.All using (All; just; nothing)
 open import Relation.Binary.PropositionalEquality
 open ≡-Reasoning
 open import Function
