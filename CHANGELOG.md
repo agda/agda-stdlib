@@ -261,7 +261,7 @@ List of new modules
   Data.Maybe.Relation.Unary.All.Properties
 
   Data.These.Properties
-  
+
   Data.Vec.Any.Properties
   Data.Vec.Membership.Setoid
   Data.Vec.Membership.DecSetoid
@@ -314,6 +314,11 @@ Deprecated features
   ≰→>           ↦ ≰⇒>
   ≤-irrelevance ↦ ≤-irrelevant
   <-irrelevance ↦ <-irrelevant
+  ```
+
+* In `Data.List.Relation.Binary.Pointwise`:
+  ```
+  decidable-≡   ↦ Data.List.Properties.≡-dec
   ```
 
 * In `Data.Nat.Properties`:
