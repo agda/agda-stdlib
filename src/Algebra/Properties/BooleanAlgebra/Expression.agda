@@ -24,8 +24,8 @@ open import Data.Vec as Vec using (Vec)
 import Data.Vec.Categorical as VecCat
 import Function.Identity.Categorical as IdCat
 open import Data.Vec.Properties using (lookup-map)
-open import Data.Vec.Relation.Pointwise.Extensional as PW
-  using (Pointwise; module Pointwise; ext)
+open import Data.Vec.Relation.Binary.Pointwise.Extensional as PW
+  using (Pointwise; ext)
 open import Function
 open import Relation.Binary.PropositionalEquality as P using (_≗_)
 import Relation.Binary.Reflection as Reflection

@@ -13,8 +13,6 @@ open import Data.Empty using (⊥-elim)
 open import Data.Fin as Fin using (Fin; zero; suc; toℕ; fromℕ)
 open import Data.Fin.Properties using (_+′_)
 open import Data.List.Base as List using (List)
-open import Data.List.Any using (here; there)
-import Data.List.Membership.Propositional as List
 open import Data.Nat
 open import Data.Nat.Properties using (+-assoc; ≤-step)
 open import Data.Product as Prod

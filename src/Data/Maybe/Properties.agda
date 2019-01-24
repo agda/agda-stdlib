@@ -12,7 +12,7 @@ open import Algebra
 import Algebra.Structures as Structures
 import Algebra.FunctionProperties as FunctionProperties
 open import Data.Maybe.Base
-open import Data.Maybe.All using (All; just; nothing)
+open import Data.Maybe.Relation.Unary.All using (All; just; nothing)
 open import Data.Product using (_,_)
 open import Function
 

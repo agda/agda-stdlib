@@ -4,7 +4,7 @@
 -- Lexicographic ordering of lists
 --
 -- This module is DEPRECATED. Please use
--- Data.List.Relation.Lex.NonStrict directly.
+-- Data.List.Relation.Binary.Lex.NonStrict directly.
 ------------------------------------------------------------------------
 
 -- The definition of lexicographic ordering used here is suitable if
@@ -16,6 +16,6 @@
 
 module Relation.Binary.List.NonStrictLex where
 
-open import Data.List.Relation.Lex.NonStrict public
+open import Data.List.Relation.Binary.Lex.NonStrict public
   hiding (base; halt; this; next; ¬≤-this; ¬≤-next)
-open import Data.List.Relation.Lex.Core public
+open import Data.List.Relation.Binary.Lex.Core public
