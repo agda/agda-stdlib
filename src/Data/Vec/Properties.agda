@@ -23,7 +23,6 @@ open import Function.Inverse using (_↔_; inverse)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; _≗_)
-open import Relation.Binary.HeterogeneousEquality as H using (_≅_; refl)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary using (yes; no)
 
