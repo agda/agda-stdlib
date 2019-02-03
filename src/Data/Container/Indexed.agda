@@ -8,7 +8,7 @@
 --
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --guardedness #-}
 
 module Data.Container.Indexed where
 
@@ -23,7 +23,6 @@ open import Relation.Unary using (Pred; _⊆_)
 import Relation.Binary as B
 open import Relation.Binary.Indexed.Heterogeneous using (IREL)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_; refl)
-open import Relation.Binary.HeterogeneousEquality as H using (_≅_)
 
 ------------------------------------------------------------------------
 
@@ -224,4 +223,4 @@ infix 4 _∈_
 
 _∈_ : ∀ {i o c r ℓ} {I : Set i} {O : Set o}
       {C : Container I O c r} {X : Pred I (i ⊔ ℓ)} → IREL X (⟦ C ⟧ X) _
-_∈_ {C = C} {X} x xs = ◇ C {X = X} (_≅_ x) (-, xs)
+_∈_ {C = C} {X} x xs = ◇ C {X = X} ((-, x) ≡_) (-, xs)

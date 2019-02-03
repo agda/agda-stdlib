@@ -4,7 +4,7 @@
 -- Containers, based on the work of Abbott and others
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --sized-types #-}
 
 module Data.Container where
 

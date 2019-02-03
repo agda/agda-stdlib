@@ -4,7 +4,7 @@
 -- An All predicate for the partiality monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness --safe #-}
+{-# OPTIONS --without-K --safe --guardedness #-}
 
 module Category.Monad.Partiality.All where
 

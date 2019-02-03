@@ -4,7 +4,7 @@
 -- The Stream type and some operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --sized-types #-}
 
 module Codata.Stream where
 
