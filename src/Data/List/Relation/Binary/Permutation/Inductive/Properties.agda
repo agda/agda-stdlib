@@ -289,6 +289,6 @@ module _ {a} {A : Set a} where
   ... | zs₁ , zs₂ , p rewrite p = begin
     x ∷ xs           <⟨ ~bag⇒↭ (drop-cons (Inv._∘_ (comm zs₁ (x ∷ zs₂)) eq)) ⟩
     x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
-    x ∷ (zs₁ ++ zs₂) ↭⟨ ↭-sym (shift x zs₁ zs₂) ⟩
+    x ∷ (zs₁ ++ zs₂) ↭˘⟨ shift x zs₁ zs₂ ⟩
     zs₁ ++ x ∷ zs₂   ∎
     where open CommutativeMonoid (commutativeMonoid bag A)
