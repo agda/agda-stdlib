@@ -501,6 +501,15 @@ i+j≡0⇒j≡0 i {j} i+j≡0 = i+j≡0⇒i≡0 j (trans (+-comm j i) (i+j≡0))
 +-cancel-≤ : Cancellative _≤_ _+_
 +-cancel-≤ = +-cancelˡ-≤ , +-cancelʳ-≤
 
++-cancelˡ-< : LeftCancellative _<_ _+_
++-cancelˡ-< x {y} {z} = +-cancelˡ-≤ x ∘ subst (_≤ x + z) (sym (+-suc x y))
+
++-cancelʳ-< : RightCancellative _<_ _+_
++-cancelʳ-< y z y+x<z+x = +-cancelʳ-≤ (suc y) z y+x<z+x
+
++-cancel-< : Cancellative _<_ _+_
++-cancel-< = +-cancelˡ-< , +-cancelʳ-<
+
 ≤-stepsˡ : ∀ {m n} o → m ≤ n → m ≤ o + n
 ≤-stepsˡ zero    m≤n = m≤n
 ≤-stepsˡ (suc o) m≤n = ≤-step (≤-stepsˡ o m≤n)
@@ -1511,18 +1520,18 @@ eq? : ∀ {a} {A : Set a} → A ↣ ℕ → Decidable {A = A} _≡_
 eq? inj = via-injection inj _≟_
 
 ------------------------------------------------------------------------
--- Modules for reasoning about natural number relations
+-- A module for reasoning about the _≤_ and _<_ relations
 
--- A module for reasoning about the _≤_ relation
 module ≤-Reasoning where
-  open import Relation.Binary.Reasoning.PartialOrder
-    (DecTotalOrder.poset ≤-decTotalOrder) public
+  open import Relation.Binary.Reasoning.Base.Triple
+    ≤-isPreorder
+    <-trans
+    (resp₂ _<_)
+    <⇒≤
+    <-transˡ
+    <-transʳ
+    public
     hiding (_≈⟨_⟩_)
-
-  infixr 2 _<⟨_⟩_
-
-  _<⟨_⟩_ : ∀ x {y z} → x < y → y IsRelatedTo z → suc x IsRelatedTo z
-  x <⟨ x<y ⟩ y≤z = suc x ≤⟨ x<y ⟩ y≤z
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
