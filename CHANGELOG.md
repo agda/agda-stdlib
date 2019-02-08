@@ -189,6 +189,9 @@ Non-backwards compatible changes
   ```
   proves that `a < d` rather than `a ≤ d`.
 
+* New symmetric equality combinators  `_≈˘⟨_⟩_` and `_≡˘⟨_⟩_` have been added. Consequently
+  expressions of the form `x ≈⟨ sym y≈x ⟩ y` can be replaced with `x ≈˘⟨ y≈x ⟩ y`.
+
 #### Relaxation of ring solvers requirements
 
 * In the ring solvers below, the assumption that equality is `Decidable`
