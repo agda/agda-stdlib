@@ -12,6 +12,7 @@ open import Function
 open import Function.Inverse using (Inverse)
 open import Data.Product hiding (map)
 open import Data.List.Base as List hiding (map; head; tail)
+open import Data.List.Properties using (≡-dec)
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.Nat using (ℕ; zero; suc)
 open import Level
@@ -312,11 +313,6 @@ module _ {a} {A : Set a} where
       }
     }
 
-  decidable-≡ : Decidable {A = A} _≡_ → Decidable {A = List A} _≡_
-  decidable-≡ dec xs ys = Dec.map′ Pointwise-≡⇒≡ ≡⇒Pointwise-≡ (xs ≟ ys)
-    where
-    open DecSetoid (decSetoid (P.decSetoid dec))
-
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
@@ -344,4 +340,12 @@ Rel↔≡  = Pointwise-≡↔≡
 {-# WARNING_ON_USAGE Rel↔≡
 "Warning: Rel↔≡ was deprecated in v0.15.
 Please use Pointwise-≡↔≡ instead."
+#-}
+
+-- Version 0.18
+
+decidable-≡ = ≡-dec
+{-# WARNING_ON_USAGE decidable-≡
+"Warning: decidable-≡ was deprecated in v0.18.
+Please use ≡-dec from `Data.List.Properties` instead."
 #-}

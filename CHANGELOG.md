@@ -189,6 +189,9 @@ Non-backwards compatible changes
   ```
   proves that `a < d` rather than `a ≤ d`.
 
+* New symmetric equality combinators  `_≈˘⟨_⟩_` and `_≡˘⟨_⟩_` have been added. Consequently
+  expressions of the form `x ≈⟨ sym y≈x ⟩ y` can be replaced with `x ≈˘⟨ y≈x ⟩ y`.
+
 #### Relaxation of ring solvers requirements
 
 * In the ring solvers below, the assumption that equality is `Decidable`
@@ -230,6 +233,17 @@ Non-backwards compatible changes
   but ideally we would like to have:
   `unionWith : (These V W -> X) -> Tree V -> Tree W -> Tree X`
 
+#### Change in implementation of binary relations for `Sum`
+
+* The implementation of `Data.Sum.Relation.Binary.(Pointwise/LeftOrder)` have been altered
+  to bring them in line with implementations of similar orders for other datatypes.
+  Namely they are no longer specialised instances of some `Core` module.
+
+* The constructor `₁∼₂` for `LeftOrder` no longer takes an argument of type `⊤`.
+
+* The constructor `₁∼₁` and `₂∼₂` in `Pointwise` have been renamed `inj₁` and `inj₂`
+  respectively. The old names still exist but have been deprecated.
+
 #### Other
 
 * The proof `sel⇒idem` has been moved from `Algebra.FunctionProperties.Consequences` to
@@ -270,21 +284,18 @@ List of new modules
   Codata.Cowriter
 
   Codata.M.Properties
-
   Codata.M.Bisimilarity
 
   Data.Integer.Divisibility.Properties
   Data.Integer.Divisibility.Signed
   Data.Integer.DivMod
 
+  Data.List.Relation.Unary.First
+  Data.List.Relation.Unary.First.Properties
   Data.List.Relation.Binary.Prefix.Heterogeneous
   Data.List.Relation.Binary.Prefix.Heterogeneous.Properties
   Data.List.Relation.Binary.Suffix.Heterogeneous
   Data.List.Relation.Binary.Suffix.Heterogeneous.Properties
-
-  Data.List.Relation.Unary.First
-  Data.List.Relation.Unary.First.Properties
-
   Data.List.Relation.Ternary.Interleaving.Setoid
   Data.List.Relation.Ternary.Interleaving.Setoid.Properties
   Data.List.Relation.Ternary.Interleaving.Propositional
@@ -292,11 +303,13 @@ List of new modules
 
   Data.Maybe.Relation.Unary.All.Properties
 
-  Data.Vec.Relation.Unary.Any.Properties
+  Data.These.Properties
 
+  Data.Vec.Any.Properties
   Data.Vec.Membership.Setoid
   Data.Vec.Membership.DecSetoid
   Data.Vec.Membership.DecPropositional
+  Data.Vec.Relation.Unary.Any.Properties
 
   Debug.Trace
 
@@ -344,6 +357,11 @@ Deprecated features
   ≰→>           ↦ ≰⇒>
   ≤-irrelevance ↦ ≤-irrelevant
   <-irrelevance ↦ <-irrelevant
+  ```
+
+* In `Data.List.Relation.Binary.Pointwise`:
+  ```
+  decidable-≡   ↦ Data.List.Properties.≡-dec
   ```
 
 * In `Data.Nat.Properties`:
@@ -467,12 +485,17 @@ Other minor additions
 
 * Added new function to `Data.Fin.Base`:
   ```agda
-  cast : m ≡ n → Fin m → Fin n
+  cast   : m ≡ n → Fin m → Fin n
+  lower₁ : (i : Fin (suc n)) → (n ≢ toℕ i) → Fin n
   ```
 
 * Added new proof to `Data.Fin.Properties`:
   ```agda
-  toℕ-cast    : toℕ (cast eq k) ≡ toℕ k
+  toℕ-cast        : toℕ (cast eq k) ≡ toℕ k
+  toℕ-inject₁-≢   : (i : Fin n)              → n ≢ toℕ (inject₁ i)
+  inject₁-lower₁  : (ne : n ≢ toℕ i)         → lower₁ (reduce₁ i ne) ≡ i
+  lower₁-inject₁′ : (i : Fin n) (ne : n ≢ toℕ (inject₁ i)) → lower₁ (inject₁ i) ne ≡ i
+  lower₁-inject₁  : (i : Fin n) → lower₁ (inject₁ i) (toℕ-inject₁-≢ i) ≡ i
   ```
 
 * Added new proofs to `Data.Fin.Subset.Properties`:
@@ -662,6 +685,8 @@ Other minor additions
 
 * Added new proofs to `Data.List.Properties`:
   ```agda
+  ≡-dec : Decidable _≡_ → Decidable {A = List A} _≡_
+
   ++-isMagma : IsMagma _++_
 
   length-%=  : length (xs [ k ]%= f) ≡ length xs
@@ -729,6 +754,10 @@ Other minor additions
   _<∣>_     : Maybe A → Maybe A → Maybe A
   ```
 
+* Added new proof to `Data.Maybe.Properties`:
+  ```agda
+  ≡-dec : Decidable _≡_ → Decidable {A = Maybe A} _≡_
+
 * Added new proof to `Data.Maybe.Relation.Binary.Pointwise`:
   ```agda
   reflexive : _≡_ ⇒ R → _≡_ ⇒ Pointwise R
@@ -778,6 +807,12 @@ Other minor additions
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
   ```
 
+* Added new proof to `Data.Product.Properties.WithK`:
+  ```agda
+  ,-injective : (a , b) ≡ (c , d) → a ≡ c × b ≡ d
+  ≡-dec       : Decidable _≡_ → (∀ {a} → Decidable {A = B a} _≡_) → Decidable {A = Σ A B} _≡_
+  ```
+
 * Added new functions to `Data.Product.Relation.Binary.Pointwise.NonDependent`:
   ```agda
   <_,_>ₛ : A ⟶ B → A ⟶ C → A ⟶ (B ×ₛ C)
@@ -808,6 +843,11 @@ Other minor additions
   ```agda
   fromDec : Dec P → P ⊎ ¬ P
   toDec   : P ⊎ ¬ P → Dec P
+  ```
+
+* Added new proof to `Data.Sum.Properties`:
+  ```agda
+  ≡-dec : Decidable _≡_ → Decidable _≡_ → Decidable {A = A ⊎ B} _≡_
   ```
 
 * Added new functions to `Data.Sum.Relation.Binary.Pointwise`:
@@ -903,6 +943,11 @@ Other minor additions
   toAny   : x ∈ xs → P x → Any P xs
   ```
 
+* Added new proof to `Data.Vec.Properties`:
+  ```agda
+  ≡-dec : Decidable _≡_ → ∀ {n} → Decidable {A = Vec A n} _≡_
+  ```
+
 * Added new proofs to `Function.Related.TypeIsomorphisms`:
   ```agda
   ×-isMagma : ∀ k ℓ → IsMagma (Related ⌊ k ⌋) _×_
@@ -990,4 +1035,12 @@ Other minor additions
   filter⁺     : Pointwise R as bs → Pointwise R (filter P? as) (filter Q? bs)
   replicate⁺  : R a b → Pointwise R (replicate n a) (replicate n b)
   irrelevant  : Irrelevant R → Irrelevant (Pointwise R)
+  ```
+
+* Added new proofs to `Data.List.Properties`:
+  ```agda
+  length-tabulate : ∀ {n} → (f : Fin n → A) → length (tabulate f) ≡ n
+  lookup-tabulate : ∀ {n} → (f : Fin n → A) →
+                    ∀ i → let i′ = cast (sym (length-tabulate f)) i
+                          in lookup (tabulate f) i′ ≡ f i
   ```

@@ -19,7 +19,7 @@ module Relation.Binary.Reasoning.Base.Double {a ℓ₁ ℓ₂} {A : Set a}
 open import Data.Product using (proj₁; proj₂)
 open import Level using (Level; _⊔_; Lift; lift)
 open import Function using (case_of_; id)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; sym)
 open import Relation.Nullary using (Dec; yes; no)
 open import Relation.Nullary.Decidable using (True; toWitness)
 
@@ -58,7 +58,7 @@ extractEquality (isEquality x≈y) = x≈y
 -- Reasoning combinators
 
 infix -1 begin_ begin-equality_
-infixr 0 _∼⟨_⟩_ _≈⟨_⟩_ _≡⟨_⟩_ _≡⟨⟩_
+infixr 0 _∼⟨_⟩_ _≈⟨_⟩_ _≈˘⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
 infix  1 _∎
 
 begin_ : ∀ {x y} (r : x IsRelatedTo y) → x ∼ y
@@ -76,9 +76,15 @@ _≈⟨_⟩_ : ∀ (x : A) {y z} → x ≈ y → y IsRelatedTo z → x IsRelated
 x ≈⟨ x≈y ⟩ nonstrict y∼z = nonstrict (proj₂ ∼-resp-≈ (Eq.sym x≈y) y∼z)
 x ≈⟨ x≈y ⟩ equals    y≈z = equals    (Eq.trans x≈y y≈z)
 
+_≈˘⟨_⟩_ : ∀ x {y z} → y ≈ x → y IsRelatedTo z → x IsRelatedTo z
+x ≈˘⟨ x≈y ⟩ y∼z = x ≈⟨ Eq.sym x≈y ⟩ y∼z
+
 _≡⟨_⟩_ : ∀ (x : A) {y z} → x ≡ y → y IsRelatedTo z → x IsRelatedTo z
 x ≡⟨ x≡y ⟩ nonstrict y∼z = nonstrict (case x≡y of λ where refl → y∼z)
 x ≡⟨ x≡y ⟩ equals    y≈z = equals    (case x≡y of λ where refl → y≈z)
+
+_≡˘⟨_⟩_ : ∀ x {y z} → y ≡ x → y IsRelatedTo z → x IsRelatedTo z
+x ≡˘⟨ x≡y ⟩ y∼z = x ≡⟨ sym x≡y ⟩ y∼z
 
 _≡⟨⟩_ : ∀ (x : A) {y} → x IsRelatedTo y → x IsRelatedTo y
 x ≡⟨⟩ x≲y = x≲y

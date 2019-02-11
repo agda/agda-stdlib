@@ -122,6 +122,14 @@ inject≤ : ∀ {m n} → Fin m → m ℕ.≤ n → Fin n
 inject≤ zero    (s≤s le) = zero
 inject≤ (suc i) (s≤s le) = suc (inject≤ i le)
 
+-- reduce₁ "n" _ = "n".
+
+lower₁ : ∀ {n} → (i : Fin (suc n)) → (n ≢ toℕ i) → Fin n
+lower₁ {zero} zero ne = ⊥-elim (ne refl)
+lower₁ {zero} (suc ()) _
+lower₁ {suc n} zero _ = zero
+lower₁ {suc n} (suc i) ne = suc (lower₁ i λ x → ne (cong suc x))
+
 -- A strengthening injection into the minimal Fin fibre.
 strengthen : ∀ {n} (i : Fin n) → Fin′ (suc i)
 strengthen zero    = zero

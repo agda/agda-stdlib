@@ -69,8 +69,8 @@ module _ {a} (A : Set a) where
 -- Reasoning over subsets
 
 module ⊆-Reasoning {a} (A : Set a) where
-  open Setoidₚ.⊆-Reasoning public
-    hiding (_≋⟨_⟩_) renaming (_≋⟨⟩_ to _≡⟨⟩_)
+  open Setoidₚ.⊆-Reasoning (setoid A) public
+    hiding (_≋⟨_⟩_; _≋˘⟨_⟩_; _≋⟨⟩_)
 
 ------------------------------------------------------------------------
 -- Properties relating _⊆_ to various list functions
