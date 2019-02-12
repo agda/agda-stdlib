@@ -183,3 +183,11 @@ module Lexicographic {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
   "Warning: well-founded was deprecated in v0.15.
   Please use wellFounded instead."
   #-}
+
+module On {a b ℓ} {A : Set a} {B : Set b} {_<_ : Rel A ℓ} (f : B → A)where
+
+  Acc-on : ∀ x → Acc _<_ (f x) → Acc (_<_ on f) x
+  Acc-on x (acc rs) = acc (λ x′ fx′<fx → Acc-on x′ (rs (f x′) fx′<fx))
+
+  WellFounded-on : WellFounded _<_ → WellFounded (_<_ on f)
+  WellFounded-on wf< x = Acc-on x (wf< (f x))
