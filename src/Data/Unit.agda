@@ -41,30 +41,36 @@ preorder = PropEq.preorder ⊤
 setoid : Setoid _ _
 setoid = PropEq.setoid ⊤
 
+isPreorder : IsPreorder _≡_ _≤_
+isPreorder = record
+  { isEquivalence = PropEq.isEquivalence
+  ; reflexive     = _
+  ; trans         = _
+  }
+
+isPartialOrder : IsPartialOrder _≡_ _≤_
+isPartialOrder = record
+  { isPreorder = isPreorder
+  ; antisym    = λ _ _ → refl
+  }
+
+isTotalOrder : IsTotalOrder _≡_ _≤_
+isTotalOrder = record
+  { isPartialOrder = isPartialOrder
+  ; total          = total
+  }
+
+isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
+isDecTotalOrder = record
+  { isTotalOrder = isTotalOrder
+  ; _≟_          = _≟_
+  ; _≤?_         = _≤?_
+  }
+
 decTotalOrder : DecTotalOrder _ _ _
 decTotalOrder = record
-  { Carrier         = ⊤
-  ; _≈_             = _≡_
-  ; _≤_             = _≤_
-  ; isDecTotalOrder = record
-      { isTotalOrder = record
-          { isPartialOrder = record
-              { isPreorder = record
-                  { isEquivalence = PropEq.isEquivalence
-                  ; reflexive     = λ _ → _
-                  ; trans         = λ _ _ → _
-                  }
-              ; antisym  = antisym
-              }
-          ; total = total
-          }
-      ; _≟_  = _≟_
-      ; _≤?_ = _≤?_
-      }
+  { isDecTotalOrder = isDecTotalOrder
   }
-  where
-  antisym : Antisymmetric _≡_ _≤_
-  antisym _ _ = refl
 
 decSetoid : DecSetoid _ _
 decSetoid = DecTotalOrder.Eq.decSetoid decTotalOrder

@@ -292,6 +292,8 @@ List of new modules
 
   Data.Maybe.Relation.Unary.All.Properties
 
+  Data.Product.N-ary.Heterogeneous
+
   Data.Vec.Relation.Unary.Any.Properties
 
   Data.Vec.Membership.Setoid
@@ -913,8 +915,12 @@ Other minor additions
   ```
 
 * Added new definitions to `Relation.Binary.PropositionalEquality`:
-  - `_≡_↾¹_` equality of functions at a single point
-  - `_≡_↾_` equality of functions at a subset of the domain
+  ```agda
+  Congₙ  : ∀ n (f g : Arrows n as b) → Set _
+  congₙ  : ∀ n (f : Arrows n as b) → Congₙ n f f
+  Substₙ : ∀ n (f g : Arrows n as (Set r)) → Set _
+  substₙ : ∀ n (f : Arrows n as (Set r)) → Substₙ n f f
+  ```
 
 * Added new proofs to `Relation.Binary.Consequences`:
   ```agda

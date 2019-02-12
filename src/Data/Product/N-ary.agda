@@ -14,15 +14,15 @@
 
 module Data.Product.N-ary where
 
-open import Data.Nat as Nat hiding (_^_)
-open import Data.Fin hiding (lift)
-open import Data.Product as P using (_×_ ; _,_ ; ∃₂ ; uncurry)
-open import Data.Sum using (_⊎_)
+open import Data.Nat.Base as Nat using (ℕ; zero; suc)
+open import Data.Fin.Base as Fin using (Fin; zero; suc)
+open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂)
+open import Data.Sum.Base as Sum using (_⊎_)
 open import Data.Unit
 open import Data.Empty
 open import Function
 open import Level using (Lift; lift)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Agda.Builtin.Equality using (_≡_)
 
 -- Types and patterns
 ------------------------------------------------------------------------
@@ -59,10 +59,10 @@ module _  {a} {A : Set a} where
   uncons (suc n)  (a , as) = a , as
 
   head : ∀ n → A ^ suc n → A
-  head n as = P.proj₁ (uncons n as)
+  head n as = proj₁ (uncons n as)
 
   tail : ∀ n → A ^ suc n → A ^ n
-  tail n as = P.proj₂ (uncons n as)
+  tail n as = proj₂ (uncons n as)
 
   lookup : ∀ {n} (k : Fin n) → A ^ n → A
   lookup {suc n} zero    = head n
@@ -136,7 +136,7 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
   unzipWith : (A → B × C) → ∀ n → A ^ n → B ^ n × C ^ n
   unzipWith f 0      as       = [] , []
   unzipWith f 1      a        = f a
-  unzipWith f (2+ n) (a , as) = P.zip _,_ _,_ (f a) (unzipWith f (suc n) as)
+  unzipWith f (2+ n) (a , as) = Prod.zip _,_ _,_ (f a) (unzipWith f (suc n) as)
 
 module _ {a b} {A : Set a} {B : Set b} where
 

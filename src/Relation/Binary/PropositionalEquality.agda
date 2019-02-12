@@ -10,9 +10,12 @@ module Relation.Binary.PropositionalEquality where
 
 open import Function
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
-open import Level
+open import Level as L
 open import Data.Empty
+open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product
+open import Data.Product.N-ary.Heterogeneous
+
 open import Relation.Nullary using (yes ; no)
 open import Relation.Unary using (Pred)
 open import Relation.Binary
@@ -44,6 +47,32 @@ cong-app refl x = refl
 cong₂ : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c}
         (f : A → B → C) {x y u v} → x ≡ y → u ≡ v → f x u ≡ f y v
 cong₂ f refl refl = refl
+
+------------------------------------------------------------------------
+-- n-ary versions of `cong` and `subst`
+
+Congₙ : ∀ n {ls : Levels n} {as : Sets n ls} {r} {b : Set r} →
+        (f g : Arrows n as b) → Set (toLevel n ls ⊔ r)
+Congₙ zero    f g = f ≡ g
+Congₙ (suc n) f g = ∀ {x y} → x ≡ y → Congₙ n (f x) (g y)
+
+congₙ : ∀ n {ls : Levels n} {as : Sets n ls} {r} {b : Set r} →
+        (f : Arrows n as b) → Congₙ n f f
+congₙ zero    f      = refl
+congₙ (suc n) f refl = congₙ n (f _)
+
+Substₙ : ∀ n {r} {ls : Levels n} {as : Sets n ls} →
+         (f g : Arrows n as (Set r)) → Set (toLevel n ls ⊔ r)
+Substₙ zero    f g = f → g
+Substₙ (suc n) f g = ∀ {x y} → x ≡ y → Substₙ n (f x) (g y)
+
+substₙ : ∀ n {ls : Levels n} {as : Sets n ls} {r} →
+         (f : Arrows n as (Set r)) → Substₙ n f f
+substₙ zero    f x    = x
+substₙ (suc n) f refl = substₙ n (f _)
+
+------------------------------------------------------------------------
+-- Structure of equality as a binary relation
 
 setoid : ∀ {a} → Set a → Setoid _ _
 setoid A = record
@@ -185,7 +214,7 @@ extensionality-for-lower-levels a₂ b₂ ext f≡g =
 
 ∀-extensionality :
   ∀ {a b} →
-  Extensionality a (suc b) →
+  Extensionality a (L.suc b) →
   {A : Set a} (B₁ B₂ : A → Set b) →
   (∀ x → B₁ x ≡ B₂ x) → (∀ x → B₁ x) ≡ (∀ x → B₂ x)
 ∀-extensionality ext B₁ B₂ B₁≡B₂ with ext B₁≡B₂
