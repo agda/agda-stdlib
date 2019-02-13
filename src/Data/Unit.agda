@@ -11,8 +11,7 @@ module Data.Unit where
 open import Data.Sum
 open import Relation.Nullary
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as PropEq
-  using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core
 
 -- Some types are defined in Data.Unit.Base.
 
@@ -35,15 +34,14 @@ total _ _ = inj₁ _
 ------------------------------------------------------------------------
 -- Properties
 
-preorder : Preorder _ _ _
-preorder = PropEq.preorder ⊤
-
 setoid : Setoid _ _
-setoid = PropEq.setoid ⊤
+setoid = record
+  { isEquivalence = isEquivalence {A = ⊤}
+  }
 
 isPreorder : IsPreorder _≡_ _≤_
 isPreorder = record
-  { isEquivalence = PropEq.isEquivalence
+  { isEquivalence = isEquivalence
   ; reflexive     = _
   ; trans         = _
   }

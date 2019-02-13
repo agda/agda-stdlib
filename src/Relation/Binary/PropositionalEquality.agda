@@ -36,10 +36,6 @@ subst₂ : ∀ {a b p} {A : Set a} {B : Set b} (P : A → B → Set p)
          {x₁ x₂ y₁ y₂} → x₁ ≡ x₂ → y₁ ≡ y₂ → P x₁ y₁ → P x₂ y₂
 subst₂ P refl refl p = p
 
-cong : ∀ {a b} {A : Set a} {B : Set b}
-       (f : A → B) {x y} → x ≡ y → f x ≡ f y
-cong f refl = refl
-
 cong-app : ∀ {a b} {A : Set a} {B : A → Set b} {f g : (x : A) → B x} →
            f ≡ g → (x : A) → f x ≡ g x
 cong-app refl x = refl

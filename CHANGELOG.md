@@ -255,6 +255,9 @@ Non-backwards compatible changes
 * The proofs `toList⁺` and `toList⁻` in `Data.Vec.Relation.Unary.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
+* The function `#_` has been moved from `Data.Fin.Base` to `Data.Fin` to break dependency cycles
+  following the introduction of `Data.Product.N-ary.Heterogeneous`.
+
 List of new modules
 -------------------
 

@@ -36,6 +36,9 @@ module _ {a} {A : Set a} where
   trans : Transitive {A = A} _≡_
   trans refl eq = eq
 
+  cong : ∀ {b} {B : Set b} (f : A → B) → f Preserves _≡_ ⟶ _≡_
+  cong f refl = refl
+
   subst : ∀ {p} → Substitutive {A = A} _≡_ p
   subst P refl p = p
 

@@ -88,7 +88,7 @@ module _ {a} {A : Set a} where
   index-fromList-∈ : ∀ {xs i} → index (fromList-∈ {xs} i) ≡ i
   index-fromList-∈ {[]}     {()}
   index-fromList-∈ {x ∷ xs} {zero}  = refl
-  index-fromList-∈ {x ∷ xs} {suc i} = cong suc index-fromList-∈
+  index-fromList-∈ {x ∷ xs} {suc i} = cong suc (index-fromList-∈ {xs})
 
   fromList-index : ∀ {xs} {x : A} (x∈xs : x ∈ xs) → lookup (fromList xs) (index x∈xs) ≡ x
   fromList-index (here px)    = sym px
