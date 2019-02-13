@@ -12,6 +12,7 @@ open import Level as L using (Level; _⊔_; Lift)
 open import Agda.Builtin.Unit
 open import Data.Product
 open import Data.Nat.Base using (ℕ; zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Function
 
 ------------------------------------------------------------------------
@@ -84,3 +85,31 @@ uncurryₙ : ∀ n {ls : Levels n} {as : Sets n ls} {r} {b : Set r} →
 uncurryₙ 0               f = const f
 uncurryₙ 1               f = f
 uncurryₙ (suc n@(suc _)) f = uncurry (uncurryₙ n ∘′ f)
+
+------------------------------------------------------------------------
+-- Generic Programs: projection
+
+-- To know at which Set level the k-th projection out of an n-ary product
+-- lives, we need to extract said level, by induction on k.
+
+Levelₙ : ∀ {n} → Levels n → Fin n → Level
+Levelₙ (l , _)  zero    = l
+Levelₙ (_ , ls) (suc k) = Levelₙ ls k
+
+-- Once we have the Sets used in the product, we can extract the one we
+-- are interested in, once more by induction on k.
+
+Projₙ : ∀ {n} {ls : Levels n} → Sets n ls → (k : Fin n) → Set (Levelₙ ls k)
+Projₙ (a , _)  zero    = a
+Projₙ (_ , as) (suc k) = Projₙ as k
+
+-- Finally, provided a Product of these sets, we can extract the k-th value.
+-- `projₙ` takes both `n` and `k` explicitly because we expect the user will
+-- be using a concrete `k` (potentially manufactured using `Data.Fin`'s `#_`)
+-- and it will not be possible to infer `n` from it.
+
+projₙ : ∀ n {ls : Levels n} {as : Sets n ls} → Product n as → (k : Fin n) → Projₙ as k
+projₙ 1               v        zero    = v
+projₙ 1               v        (suc ())
+projₙ (suc n@(suc _)) (v , _)  zero    = v
+projₙ (suc n@(suc _)) (_ , vs) (suc k) = projₙ n vs k
