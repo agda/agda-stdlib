@@ -995,3 +995,11 @@ Other minor additions
   replicate⁺  : R a b → Pointwise R (replicate n a) (replicate n b)
   irrelevant  : Irrelevant R → Irrelevant (Pointwise R)
   ```
+
+* Added new proofs to `Data.List.Properties`:
+  ```agda
+  length-tabulate : ∀ {n} → (f : Fin n → A) → length (tabulate f) ≡ n
+  lookup-tabulate : ∀ {n} → (f : Fin n → A) →
+                    ∀ i → let i′ = cast (sym (length-tabulate f)) i
+                          in lookup (tabulate f) i′ ≡ f i
+  ```
