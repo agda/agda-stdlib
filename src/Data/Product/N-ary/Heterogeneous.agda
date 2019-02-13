@@ -50,10 +50,13 @@ Sets (suc n) (l , ls) = Set l × Sets n ls
 
 -- Third, the n-ary product itself: provided n Levels and a corresponding
 -- "vector" of `n` Sets, we can build a big right-nested product type packing
--- a value for each one of these Sets.
+-- a value for each one of these Sets. We have a special case for 1 because
+-- we want our `(un)curryₙ` functions to work for user-written functions and
+-- they rarely are ⊤-terminated.
 
 Product : ∀ n {ls : Levels n} → Sets n ls → Set (toLevel n ls)
-Product zero    _        = ⊤
+Product 0       _        = ⊤
+Product 1       (a , _)  = a
 Product (suc n) (a , as) = a × Product n as
 
 ------------------------------------------------------------------------
@@ -72,10 +75,12 @@ Arrows (suc n) (a , as) b = a → Arrows n as b
 
 curryₙ : ∀ n {ls : Levels n} {as : Sets n ls} {r} {b : Set r} →
          (Product n as → b) → Arrows n as b
-curryₙ zero    f = f _
-curryₙ (suc n) f = curryₙ n ∘′ curry f
+curryₙ 0               f = f _
+curryₙ 1               f = f
+curryₙ (suc n@(suc _)) f = curryₙ n ∘′ curry f
 
 uncurryₙ : ∀ n {ls : Levels n} {as : Sets n ls} {r} {b : Set r} →
            Arrows n as b → (Product n as → b)
-uncurryₙ zero    f = const f
-uncurryₙ (suc n) f = uncurry (uncurryₙ n ∘′ f)
+uncurryₙ 0               f = const f
+uncurryₙ 1               f = f
+uncurryₙ (suc n@(suc _)) f = uncurry (uncurryₙ n ∘′ f)
