@@ -11,7 +11,7 @@ module Data.Product.N-ary.Heterogeneous where
 open import Level as L using (Level; _⊔_; Lift)
 open import Agda.Builtin.Unit
 open import Data.Product
-open import Data.Nat.Base using (ℕ; zero; suc)
+open import Data.Nat.Base using (ℕ; zero; suc; pred)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Function
 
@@ -55,7 +55,7 @@ Sets (suc n) (l , ls) = Set l × Sets n ls
 -- we want our `(un)curryₙ` functions to work for user-written functions and
 -- they rarely are ⊤-terminated.
 
-Product : ∀ n {ls : Levels n} → Sets n ls → Set (toLevel n ls)
+Product : ∀ n {ls} → Sets n ls → Set (toLevel n ls)
 Product 0       _        = ⊤
 Product 1       (a , _)  = a
 Product (suc n) (a , as) = a × Product n as
@@ -67,14 +67,14 @@ Product (suc n) (a , as) = a × Product n as
 -- To be able to talk about (un)currying, we need to be able to form the
 -- type `A₁ → ⋯ → Aₙ → B`. This is what `Arrows` does, by induction on `n`.
 
-Arrows : ∀ n {r} {ls : Levels n} → Sets n ls → Set r → Set (toLevel n ls ⊔ r)
+Arrows : ∀ n {r ls} → Sets n ls → Set r → Set (toLevel n ls ⊔ r)
 Arrows zero    _        b = b
 Arrows (suc n) (a , as) b = a → Arrows n as b
 
 -- Finally, we can define `curryₙ` and `uncurryₙ` converting back and forth
 -- between `A₁ → ⋯ → Aₙ → B` and `(A₁ × ⋯ × Aₙ) → B` by induction on `n`.
 
-curryₙ : ∀ n {ls : Levels n} {as : Sets n ls} {r} {b : Set r} →
+curryₙ : ∀ n {ls} {as : Sets n ls} {r} {b : Set r} →
          (Product n as → b) → Arrows n as b
 curryₙ 0               f = f _
 curryₙ 1               f = f
@@ -87,7 +87,7 @@ uncurryₙ 1               f = f
 uncurryₙ (suc n@(suc _)) f = uncurry (uncurryₙ n ∘′ f)
 
 ------------------------------------------------------------------------
--- Generic Programs: projection
+-- Generic Programs: projection of the k-th component
 
 -- To know at which Set level the k-th projection out of an n-ary product
 -- lives, we need to extract said level, by induction on k.
@@ -99,7 +99,7 @@ Levelₙ (_ , ls) (suc k) = Levelₙ ls k
 -- Once we have the Sets used in the product, we can extract the one we
 -- are interested in, once more by induction on k.
 
-Projₙ : ∀ {n} {ls : Levels n} → Sets n ls → (k : Fin n) → Set (Levelₙ ls k)
+Projₙ : ∀ {n ls} → Sets n ls → ∀ k → Set (Levelₙ ls k)
 Projₙ (a , _)  zero    = a
 Projₙ (_ , as) (suc k) = Projₙ as k
 
@@ -108,8 +108,50 @@ Projₙ (_ , as) (suc k) = Projₙ as k
 -- be using a concrete `k` (potentially manufactured using `Data.Fin`'s `#_`)
 -- and it will not be possible to infer `n` from it.
 
-projₙ : ∀ n {ls : Levels n} {as : Sets n ls} → Product n as → (k : Fin n) → Projₙ as k
+projₙ : ∀ n {ls} {as : Sets n ls} → Product n as → ∀ k → Projₙ as k
 projₙ 1               v        zero    = v
 projₙ 1               v        (suc ())
 projₙ (suc n@(suc _)) (v , _)  zero    = v
 projₙ (suc n@(suc _)) (_ , vs) (suc k) = projₙ n vs k
+
+------------------------------------------------------------------------
+-- Generic Programs: removal of the k-th component
+
+Levelₙ⁻ : ∀ {n} → Levels n → Fin n → Levels (pred n)
+Levelₙ⁻               (_ , ls) zero    = ls
+Levelₙ⁻ {suc (suc _)} (l , ls) (suc k) = l , Levelₙ⁻ ls k
+Levelₙ⁻ {suc zero} _ (suc ())
+
+Removeₙ : ∀ {n ls} → Sets n ls → ∀ k → Sets (pred n) (Levelₙ⁻ ls k)
+Removeₙ               (_ , as) zero    = as
+Removeₙ {suc (suc _)} (a , as) (suc k) = a , Removeₙ as k
+Removeₙ {suc zero} _ (suc ())
+
+removeₙ : ∀ n {ls} {as : Sets n ls} →
+          Product n as → ∀ k → Product (pred n) (Removeₙ as k)
+removeₙ (suc zero)          _        zero    = _
+removeₙ (suc (suc _))       (_ , vs) zero    = vs
+removeₙ (suc (suc zero))    (v , _)  (suc k) = v
+removeₙ (suc (suc (suc _))) (v , vs) (suc k) = v , removeₙ _ vs k
+removeₙ (suc zero) _ (suc ())
+
+------------------------------------------------------------------------
+-- Generic Programs: insertion of a k-th component
+
+Levelₙ⁺ : ∀ {n} → Levels n → Fin (suc n) → Level → Levels (suc n)
+Levelₙ⁺         ls       zero    l⁺ = l⁺ , ls
+Levelₙ⁺ {suc _} (l , ls) (suc k) l⁺ = l , Levelₙ⁺ ls k l⁺
+Levelₙ⁺ {zero} _ (suc ())
+
+Insertₙ : ∀ {n ls l⁺} → Sets n ls → ∀ k (a⁺ : Set l⁺) → Sets (suc n) (Levelₙ⁺ ls k l⁺)
+Insertₙ         as       zero    a⁺ = a⁺ , as
+Insertₙ {suc _} (a , as) (suc k) a⁺ = a , Insertₙ as k a⁺
+Insertₙ {zero} _ (suc ())
+
+insertₙ : ∀ n {ls l⁺} {as : Sets n ls} {a⁺ : Set l⁺} →
+          Product n as → ∀ k (v⁺ : a⁺) → Product (suc n) (Insertₙ as k a⁺)
+insertₙ 0             vs       zero    v⁺ = v⁺
+insertₙ (suc n)       vs       zero    v⁺ = v⁺ , vs
+insertₙ 1             vs       (suc k) v⁺ = vs , insertₙ 0 _ k v⁺
+insertₙ (suc (suc n)) (v , vs) (suc k) v⁺ = v , insertₙ _ vs k v⁺
+insertₙ zero vs (suc ()) v⁺
