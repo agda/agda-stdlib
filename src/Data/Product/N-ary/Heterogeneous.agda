@@ -200,7 +200,7 @@ mapₙ zero    f v = f v
 mapₙ (suc n) f g = mapₙ n f ∘′ g
 
 ------------------------------------------------------------------------
--- Generic Programs: hole at the k-th position
+-- Generic Programs: hole at the n-th position
 
 holeₙ : ∀ n {ls r lʰ} {as : Sets n ls} {b : Set r} {aʰ : Set lʰ} →
         (aʰ → Arrows n as b) → Arrows n as (aʰ → b)
