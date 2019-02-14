@@ -178,15 +178,24 @@ updateₙ′ : ∀ n {ls lᵘ} {as : Sets n ls} k {aᵘ : Set lᵘ} (f : Projₙ
            Product n as → Product n (Updateₙ as k aᵘ)
 updateₙ′ n k = updateₙ n k
 
+------------------------------------------------------------------------
+-- Generic Programs: compose function at the k-th position
+
 composeₙ : ∀ n {ls r lᵘ} {as : Sets n ls} {b : Set r} {aᵘ : Set lᵘ} k →
           (aᵘ → Projₙ as k) → Arrows n as b → Arrows n (Updateₙ as k aᵘ) b
 composeₙ _ zero    f g = g ∘′ f
 composeₙ _ (suc k) f g = composeₙ _ k f ∘′ g
 
+------------------------------------------------------------------------
+-- Generic Programs: mapping under n arguments
+
 mapₙ : ∀ n {ls r s} {as : Sets n ls} {b : Set r} {c : Set s} →
        (b → c) → Arrows n as b → Arrows n as c
 mapₙ zero    f v = f v
 mapₙ (suc n) f g = mapₙ n f ∘′ g
+
+------------------------------------------------------------------------
+-- Generic Programs: hole at the k-th position
 
 holeₙ : ∀ n {ls r} {as : Sets n ls} {b : Set r} k →
         Arrows n as b → Projₙ as k → Arrows (pred n) (Removeₙ as k) b
