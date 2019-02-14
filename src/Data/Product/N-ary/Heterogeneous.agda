@@ -163,17 +163,22 @@ Levelₙᵘ : ∀ {n} → Levels n → Fin n → Level → Levels n
 Levelₙᵘ (_ , ls) zero    lᵘ = lᵘ , ls
 Levelₙᵘ (l , ls) (suc k) lᵘ = l , Levelₙᵘ ls k lᵘ
 
-Updateₙ :  ∀ {n ls lᵘ} (as : Sets n ls) k (aᵘ : Set lᵘ) → Sets n (Levelₙᵘ ls k lᵘ)
+Updateₙ : ∀ {n ls lᵘ} (as : Sets n ls) k (aᵘ : Set lᵘ) → Sets n (Levelₙᵘ ls k lᵘ)
 Updateₙ (_ , as) zero    aᵘ = aᵘ , as
 Updateₙ (a , as) (suc k) aᵘ = a , Updateₙ as k aᵘ
 
-updateₙ : ∀ n {ls l⁺} {as : Sets n ls} k {aᵘ : _ → Set l⁺} (f : ∀ v → aᵘ v)
+updateₙ : ∀ n {ls lᵘ} {as : Sets n ls} k {aᵘ : _ → Set lᵘ} (f : ∀ v → aᵘ v)
           (vs : Product n as) → Product n (Updateₙ as k (aᵘ (projₙ n k vs)))
 updateₙ 1             zero    f v        = f v
 updateₙ (suc (suc _)) zero    f (v , vs) = f v , vs
 updateₙ (suc (suc _)) (suc k) f (v , vs) = v , updateₙ _ k f vs
 updateₙ 1 (suc ()) _ _
 
-updateₙ′ : ∀ n {ls l⁺} {as : Sets n ls} k {aᵘ : Set l⁺} (f : Projₙ as k → aᵘ)
-           (vs : Product n as) → Product n (Updateₙ as k aᵘ)
+updateₙ′ : ∀ n {ls lᵘ} {as : Sets n ls} k {aᵘ : Set lᵘ} (f : Projₙ as k → aᵘ) →
+           Product n as → Product n (Updateₙ as k aᵘ)
 updateₙ′ n k = updateₙ n k
+
+mapₙ : ∀ n {ls r lᵘ} {as : Sets n ls} {b : Set r} {aᵘ : Set lᵘ} k →
+       (aᵘ → Projₙ as k) → Arrows n as b → Arrows n (Updateₙ as k aᵘ) b
+mapₙ _ zero    f g = g ∘′ f
+mapₙ _ (suc k) f g = mapₙ _ k f ∘′ g
