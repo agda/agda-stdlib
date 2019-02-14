@@ -214,8 +214,7 @@ module _ {a b c d e} {A : Set a} {B : Set b} {C : Set c} {D : Set d} {E : Set e}
   update₂ = λ p → updateₙ′ 5 (# 2) (λ n → replicate n (projₙ 5 (# 4) p)) p
 
 -----------------------------------------------------------------------
--- composeₙ : ∀ n (k : Fin n) → (C → Aₖ₊₁) →
---            (A₁ → ⋯ Aₙ → B) → A₁ → ⋯ → Aₖ → C → Aₖ₊₂ → ⋯ → Aₙ → B
+-- composeₙ : ∀ n → (C → D) → (A₁ → ⋯ Aₙ → D → B) → A₁ → ⋯ → Aₙ → C → B
 
 -- Traditional composition focuses solely on the first argument of an
 -- n-ary function. `composeₙ` on the other hand allows us to touch any
@@ -226,7 +225,7 @@ module _ {a b c d e} {A : Set a} {B : Set b} {C : Set c} {D : Set d} {E : Set e}
 -- replicate. Which we can do like so.
 
   compose₁ : (A → B) → ℕ → A → List B
-  compose₁ f = composeₙ 2 (# 1) f replicate
+  compose₁ f = composeₙ 1 f replicate
 
 -- Here we spell out the equivalent explicit variable-manipulation and
 -- prove the two functions equal.

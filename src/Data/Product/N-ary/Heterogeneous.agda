@@ -184,12 +184,13 @@ updateₙ′ : ∀ n {ls lᵘ} {as : Sets n ls} k {aᵘ : Set lᵘ} (f : Projₙ
 updateₙ′ n k = updateₙ n k
 
 ------------------------------------------------------------------------
--- Generic Programs: compose function at the k-th position
+-- Generic Programs: compose function at the n-th position
 
-composeₙ : ∀ n {ls r lᵘ} {as : Sets n ls} {b : Set r} {aᵘ : Set lᵘ} k →
-          (aᵘ → Projₙ as k) → Arrows n as b → Arrows n (Updateₙ as k aᵘ) b
-composeₙ _ zero    f g = g ∘′ f
-composeₙ _ (suc k) f g = composeₙ _ k f ∘′ g
+composeₙ : ∀ n {ls r} {as : Sets n ls} {b : Set r} →
+           ∀ {lᵒ lⁿ} {aᵒ : Set lᵒ} {aⁿ : Set lⁿ} →
+           (aⁿ → aᵒ) → Arrows n as (aᵒ → b) → Arrows n as (aⁿ → b)
+composeₙ zero    f g = g ∘′ f
+composeₙ (suc n) f g = composeₙ n f ∘′ g
 
 ------------------------------------------------------------------------
 -- Generic Programs: mapping under n arguments
