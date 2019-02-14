@@ -108,11 +108,11 @@ Projₙ (_ , as) (suc k) = Projₙ as k
 -- be using a concrete `k` (potentially manufactured using `Data.Fin`'s `#_`)
 -- and it will not be possible to infer `n` from it.
 
-projₙ : ∀ n {ls} {as : Sets n ls} → Product n as → ∀ k → Projₙ as k
-projₙ 1               v        zero    = v
-projₙ 1               v        (suc ())
-projₙ (suc n@(suc _)) (v , _)  zero    = v
-projₙ (suc n@(suc _)) (_ , vs) (suc k) = projₙ n vs k
+projₙ : ∀ n {ls} {as : Sets n ls} k → Product n as → Projₙ as k
+projₙ 1               zero    v        = v
+projₙ (suc n@(suc _)) zero    (v , _)  = v
+projₙ (suc n@(suc _)) (suc k) (_ , vs) = projₙ n k vs
+projₙ 1 (suc ()) v
 
 ------------------------------------------------------------------------
 -- Generic Programs: removal of the k-th component
@@ -127,13 +127,13 @@ Removeₙ               (_ , as) zero    = as
 Removeₙ {suc (suc _)} (a , as) (suc k) = a , Removeₙ as k
 Removeₙ {suc zero} _ (suc ())
 
-removeₙ : ∀ n {ls} {as : Sets n ls} →
-          Product n as → ∀ k → Product (pred n) (Removeₙ as k)
-removeₙ (suc zero)          _        zero    = _
-removeₙ (suc (suc _))       (_ , vs) zero    = vs
-removeₙ (suc (suc zero))    (v , _)  (suc k) = v
-removeₙ (suc (suc (suc _))) (v , vs) (suc k) = v , removeₙ _ vs k
-removeₙ (suc zero) _ (suc ())
+removeₙ : ∀ n {ls} {as : Sets n ls} k →
+          Product n as → Product (pred n) (Removeₙ as k)
+removeₙ (suc zero)          zero    _        = _
+removeₙ (suc (suc _))       zero    (_ , vs) = vs
+removeₙ (suc (suc zero))    (suc k) (v , _)  = v
+removeₙ (suc (suc (suc _))) (suc k) (v , vs) = v , removeₙ _ k vs
+removeₙ (suc zero) (suc ()) _
 
 ------------------------------------------------------------------------
 -- Generic Programs: insertion of a k-th component
@@ -148,10 +148,10 @@ Insertₙ         as       zero    a⁺ = a⁺ , as
 Insertₙ {suc _} (a , as) (suc k) a⁺ = a , Insertₙ as k a⁺
 Insertₙ {zero} _ (suc ())
 
-insertₙ : ∀ n {ls l⁺} {as : Sets n ls} {a⁺ : Set l⁺} →
-          Product n as → ∀ k (v⁺ : a⁺) → Product (suc n) (Insertₙ as k a⁺)
-insertₙ 0             vs       zero    v⁺ = v⁺
-insertₙ (suc n)       vs       zero    v⁺ = v⁺ , vs
-insertₙ 1             vs       (suc k) v⁺ = vs , insertₙ 0 _ k v⁺
-insertₙ (suc (suc n)) (v , vs) (suc k) v⁺ = v , insertₙ _ vs k v⁺
-insertₙ zero vs (suc ()) v⁺
+insertₙ : ∀ n {ls l⁺} {as : Sets n ls} {a⁺ : Set l⁺} k (v⁺ : a⁺) →
+          Product n as → Product (suc n) (Insertₙ as k a⁺)
+insertₙ 0             zero    v⁺ vs       = v⁺
+insertₙ (suc n)       zero    v⁺ vs       = v⁺ , vs
+insertₙ 1             (suc k) v⁺ vs       = vs , insertₙ 0 k v⁺ _
+insertₙ (suc (suc n)) (suc k) v⁺ (v , vs) = v , insertₙ _ k v⁺ vs
+insertₙ zero (suc ()) v⁺ vs

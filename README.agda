@@ -289,6 +289,11 @@ import README.Function.Reasoning
 
 import README.Debug.Trace
 
+-- An exploration of the generic programs acting on n-ary functions and
+-- n-ary heterogeneous products
+
+import README.N-ary
+
 ------------------------------------------------------------------------
 -- Core modules
 ------------------------------------------------------------------------
