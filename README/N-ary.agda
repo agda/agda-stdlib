@@ -11,14 +11,59 @@ module README.N-ary where
 
 open import Data.Nat.Base
 open import Data.Nat.Properties
-open import Data.Fin using (#_)
-open import Data.Product
+open import Data.Fin using (Fin; fromℕ; #_; inject₁)
+open import Data.List
+open import Data.List.Properties
+open import Data.Product using (_×_; _,_)
 open import Data.Product.N-ary.Heterogeneous
 open import Function
 open import Relation.Binary.PropositionalEquality
 
+
 ------------------------------------------------------------------------
--- Cong
+-- Introduction
+------------------------------------------------------------------------
+
+-- Data.Product.N-ary.Heterogeneous provides a generic representation of
+-- n-ary heterogeneous (non dependent) products and the corresponding types
+-- of (non-dependent) n-ary functions. The representation works well with
+-- inference thus allowing us to use generic combinators to manipulate
+-- such functions.
+
+------------------------------------------------------------------------
+-- Generalised equality-manipulating combinators
+------------------------------------------------------------------------
+
+-- By default the standard library provides users with (we are leaving out
+-- the implicit arguments here):
+--
+-- cong   : (f : A₁      → B) → a₁ ≡ b₁           → f a₁   ≡ f b₁
+-- cong₂  : (f : A₁ → A₂ → B) → a₁ ≡ b₁ → a₂ ≡ b₂ → f a₁ a₂ ≡ f b₁ b₂
+--
+-- and
+--
+-- subst  : (P : A₁      → Set p) → a₁ ≡ b₁           → P a₁    → P b₁
+-- subst₂ : (P : A₁ → A₂ → Set p) → a₁ ≡ b₁ → a₂ ≡ b₂ → P a₁ a₂ → P b₁ b₂
+--
+-- This pattern can be generalised to any natural number `n`. Thanks to our
+-- library for n-ary functions, we can write the types and implementations
+-- of `congₙ` and `substₙ`.
+
+------------------------------------------------------------------------
+-- congₙ : ∀ n (f : A₁ → ⋯ → Aₙ → B) →
+--         a₁ ≡ b₁ → ⋯ aₙ ≡ bₙ → f a₁ ⋯ aₙ ≡ f b₁ ⋯ bₙ
+
+-- It may be used directly to prove something:
+
+_ : ∀ (as bs cs : List ℕ) →
+       zip (zip (as ++ []) (map id cs)) (reverse (reverse bs))
+     ≡ zip (zip as cs) bs
+_ = λ as bs cs → congₙ 3 (λ as bs → zip (zip as bs))
+                         (++-identityʳ as)
+                         (map-id cs)
+                         (reverse-involutive bs)
+
+-- Or as part of a longer derivation:
 
 _ : ∀ m n p q → suc (m + (p * n) + (q ^ (m + n)))
               ≡ (m + 0) + (n * p) + (q ^ m * q ^ n) + 1
@@ -44,8 +89,11 @@ _ = λ m → congₙ 1 _+_ (+-comm 0 m)
 _ : ∀ m → (_+ m) ≡ (_+ (m + 0))
 _ = λ m → congₙ 1 (flip _+_) (+-comm 0 m)
 
------------------------------------------------------------------------
--- Subst
+------------------------------------------------------------------------
+-- substₙ : ∀ n (P : A₁ → ⋯ → Aₙ → Set p) →
+--          a₁ ≡ b₁ → ⋯ aₙ ≡ bₙ → P a₁ ⋯ aₙ → P b₁ ⋯ bₙ
+
+-- We can play the same type of game with subst
 
 open import Agda.Builtin.Nat using (mod-helper)
 
@@ -60,30 +108,154 @@ _ = λ k m n j →
     in substₙ 3 P (+-comm 1 k) (+-comm 1 n) (+-comm 1 j) refl
 
 -----------------------------------------------------------------------
--- (Un)curry
+-- Generic programs working on n-ary products & functions
+-----------------------------------------------------------------------
 
 module _ {a b c d e} {A : Set a} {B : Set b} {C : Set c} {D : Set d} {E : Set e} where
 
-  example₁ : (A × (B × C) × D → E) → A → B × C → D → E
-  example₁ = curryₙ 3
+-----------------------------------------------------------------------
+-- curryₙ   : ∀ n → (A₁ × ⋯ × Aₙ → B) → A₁ → ⋯ → Aₙ → B
+-- uncurryₙ : ∀ n → (A₁ → ⋯ → Aₙ → B) → A₁ × ⋯ × Aₙ → B
 
-  example₂ : (A → B → C → D → E) → A → B → (C × D) → E
-  example₂ = curryₙ 3 ∘′ uncurryₙ 4
+-- The first thing we may want to do generically is convert between
+-- curried function types and uncurried ones. We can do this by using:
+
+-- They both work the same way so we will focus on curryₙ only here.
+-- If we pass to `curryₙ` the arity of its argument then we obtain a
+-- fully curried function.
+
+  curry₁ : (A × B × C × D → E) → A → B → C → D → E
+  curry₁ = curryₙ 4
+
+-- Note that here we are not flattening arbitrary nestings: products have
+-- to be right nested. Which means that if you have a deeply-nested product
+-- then it won't be affected by the procedure.
+
+  curry₁' : (A × (B × C) × D → E) → A → (B × C) → D → E
+  curry₁' = curryₙ 3
+
+-- When we are currying a function, we have no obligation to pass its exact
+-- arity as the parameter: we can decide to only curry part of it like so:
+-- Indeed (A₁ × ⋯ × Aₙ → B) can also be seen as (A₁ × ⋯ × (Aₖ × ⋯ × Aₙ) → B)
+
+  curry₂ : (A × B × C × D → E) → A → B → (C × D) → E
+  curry₂ = curryₙ 3
 
 -----------------------------------------------------------------------
--- Projections
+-- projₙ : ∀ n (k : Fin n) → (A₁ × ⋯ × Aₙ) → Aₖ₊₁
+
+-- Another useful class of functions to manipulate n-ary product is a
+-- generic projection function. Note the (k + 1) in the return index:
+-- Fin counts from 0 up.
+
+-- It behaves as one expects (Data.Fin's #_ comes in handy to write down
+-- Fin literals):
 
   proj₃ : (A × B × C × D × E) → C
   proj₃ = projₙ 5 (# 2)
 
+-- Of course we can once more project the "tail" of the n-ary product by
+-- passing `projₙ` a natural number which is smaller than the size of the
+-- n-ary product, seeing (A₁ × ⋯ × Aₙ) as (A₁ × ⋯ × (Aₖ × ⋯ × Aₙ)).
+
   proj₃' : (A × B × C × D × E) → C × D × E
   proj₃' = projₙ 3 (# 2)
 
-  insert₃ : C → (A × B × D × E) → (A × B × C × D × E)
-  insert₃ = insertₙ 4 (# 2)
+-----------------------------------------------------------------------
+-- insertₙ : ∀ n (k : Fin (suc n)) →
+--           B → (A₁ × ⋯ Aₙ) → (A₁ × ⋯ × Aₖ × B × Aₖ₊₁ × ⋯ Aₙ)
 
-  insert-last : C → (A × B × D × E) → (A × B × D × E × C)
-  insert-last = insertₙ 4 (# 4)
+  insert₁ : C → (A × B × D × E) → (A × B × C × D × E)
+  insert₁ = insertₙ 4 (# 2)
 
-  remove₃ :  (A × B × C × D × E) → (A × B × D × E)
-  remove₃ = removeₙ 5 (# 2)
+  insert₁' : C → (A × B × D × E) → (A × B × C × D × E)
+  insert₁' = insertₙ 3 (# 2)
+
+-- Note that `insertₙ` takes a `Fin (suc n)`. Indeed in an n-ary product
+-- there are (suc n) positions at which one may insert a value. We may
+-- insert at the front or the back of the product:
+
+  insert-front : A → (B × C × D × E) → (A × B × C × D × E)
+  insert-front = insertₙ 4 (# 0)
+
+  insert-back : E → (A × B × C × D) → (A × B × C × D × E)
+  insert-back = insertₙ 4 (# 4)
+
+-----------------------------------------------------------------------
+-- removeₙ : ∀ n (k : Fin n) → (A₁ × ⋯ Aₙ) → (A₁ × ⋯ × Aₖ × Aₖ₊₂ × ⋯ Aₙ)
+
+-- Dual to `insertₙ`, we may remove a value.
+
+  remove₁ : (A × B × C × D × E) → (A × B × D × E)
+  remove₁ = removeₙ 5 (# 2)
+
+-- Inserting at `k` and then removing at `inject₁ k` should yield the identity
+
+  remove-insert : C → (A × B × D × E) → (A × B × D × E)
+  remove-insert c = removeₙ 5 (inject₁ k) ∘′ insertₙ 4 k c
+    where k = # 2
+
+-----------------------------------------------------------------------
+-- updateₙ : ∀ n (k : Fin n) → (A₁ × ⋯ Aₙ) → (A₁ × ⋯ × Aₖ × Aₖ₊₂ × ⋯ Aₙ)
+
+-- We can not only project out, insert or remove values: we can update them
+-- in place. The type (and value) of the replacement at position k may depend
+-- upon the current value at position k.
+
+  update₁ : (p : A × B × ℕ × C × D) → (A × B × Fin _ × C × D)
+  update₁ = updateₙ 5 (# 2) fromℕ
+
+-- We can explicitly use the primed version of `updateₙ` to make it known to
+-- Agda that the update function is non dependent. This type of information
+-- is useful for inference: the tighter the constraints, the easier it is to
+-- find a solution (if possible).
+
+  update₂ : (p : A × B × ℕ × C × D) → (A × B × List D × C × D)
+  update₂ = λ p → updateₙ′ 5 (# 2) (λ n → replicate n (projₙ 5 (# 4) p)) p
+
+-----------------------------------------------------------------------
+-- composeₙ : ∀ n (k : Fin n) → (C → Aₖ₊₁) →
+--            (A₁ → ⋯ Aₙ → B) → A₁ → ⋯ → Aₖ → C → Aₖ₊₂ → ⋯ → Aₙ → B
+
+-- Traditional composition focuses solely on the first argument of an
+-- n-ary function. `composeₙ` on the other hand allows us to touch any
+-- one of the arguments.
+
+-- In the following example we have a function `f : A → B` and `replicate`
+-- of type `ℕ → B → List B`. We want ̀f` to act on the second argument of
+-- replicate. Which we can do like so.
+
+  compose₁ : (A → B) → ℕ → A → List B
+  compose₁ f = composeₙ 2 (# 1) f replicate
+
+-- Here we spell out the equivalent explicit variable-manipulation and
+-- prove the two functions equal.
+
+  compose₁' : (A → B) → ℕ → A → List B
+  compose₁' f n a = replicate n (f a)
+
+  compose₁-eq : compose₁ ≡ compose₁'
+  compose₁-eq = refl
+
+-----------------------------------------------------------------------
+-- mapₙ : ∀ n → (B → C) → (A₁ → ⋯ Aₙ → B) → (A₁ → ⋯ → Aₙ → C)
+
+-- (R →_) gives us the reader monad (and, a fortiori, functor). That is to
+-- say that given a function (A → B) and an (R → A) we can get an (R → B)
+-- This generalises to n-ary functions.
+
+-- Reusing our `composeₙ` example: instead of applying `f` to the replicated
+-- element, we can map it on the resulting list. Giving us:
+
+  map₁ : (A → B) → ℕ → A → List B
+  map₁ f = mapₙ 2 (map f) replicate
+
+------------------------------------------------------------------------
+-- constₙ : ∀ n → B → A₁ → ⋯ → Aₙ → B
+
+-- `const` is basically `pure` for the reader monad discussed above. Just
+-- like we can generalise the functorial action corresponding to the reader
+-- functor to n-ary functions, we can do the same for `pure`.
+
+  const₁ : A → B → C → D → E → A
+  const₁ = constₙ 4

@@ -16,6 +16,11 @@ open import Data.Fin.Base using (Fin; zero; suc)
 open import Function
 
 ------------------------------------------------------------------------
+-- Concrete examples can be found in README.N-ary. This file's comments
+-- are more focused on the implementation details and the motivations
+-- behind the design decisions.
+
+------------------------------------------------------------------------
 -- Type Definition
 
 -- We want to define n-ary products and generic n-ary operations on them
@@ -193,15 +198,6 @@ mapₙ : ∀ n {ls r s} {as : Sets n ls} {b : Set r} {c : Set s} →
        (b → c) → Arrows n as b → Arrows n as c
 mapₙ zero    f v = f v
 mapₙ (suc n) f g = mapₙ n f ∘′ g
-
-------------------------------------------------------------------------
--- Generic Programs: hole at the k-th position
-
-holeₙ : ∀ n {ls r} {as : Sets n ls} {b : Set r} k →
-        Arrows n as b → Projₙ as k → Arrows (pred n) (Removeₙ as k) b
-holeₙ _             zero    f x = f x
-holeₙ (suc (suc _)) (suc k) f x = λ y → holeₙ _ k (f y) x
-holeₙ 1 (suc ()) _ _
 
 ------------------------------------------------------------------------
 -- Generic Programs: function constant in its n first arguments
