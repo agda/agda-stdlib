@@ -236,6 +236,19 @@ module _ {a b c d e} {A : Set a} {B : Set b} {C : Set c} {D : Set d} {E : Set e}
 
   compose₁-eq : compose₁ ≡ compose₁'
   compose₁-eq = refl
+------------------------------------------------------------------------
+-- holeₙ : ∀ n (k : Fin n) →
+--         (A₁ → ⋯ Aₙ → B) → Aₖ₊₁ → A₁ → ⋯ → Aₖ → Aₖ₊₂ → ⋯ → Aₙ → B
+
+-- As we have seen earlier, `cong` acts on a function's first variable.
+-- If we want to access the second one, we can use `flip`. But what about
+-- the fourth one? We typically use an explicit λ-abstraction shuffling
+-- variables. Not anymore.
+
+-- Reusing mod-helper just because it takes a lot of arguments:
+
+  hole₁ : ∀ k m n j → mod-helper k (m + 1) n j ≡ mod-helper k (suc m) n j
+  hole₁ = λ k m n j → cong (holeₙ 2 (mod-helper k) n j) (+-comm m 1)
 
 -----------------------------------------------------------------------
 -- mapₙ : ∀ n → (B → C) → (A₁ → ⋯ Aₙ → B) → (A₁ → ⋯ → Aₙ → C)

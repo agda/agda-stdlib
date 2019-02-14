@@ -200,6 +200,14 @@ mapₙ zero    f v = f v
 mapₙ (suc n) f g = mapₙ n f ∘′ g
 
 ------------------------------------------------------------------------
+-- Generic Programs: hole at the k-th position
+
+holeₙ : ∀ n {ls r lʰ} {as : Sets n ls} {b : Set r} {aʰ : Set lʰ} →
+        (aʰ → Arrows n as b) → Arrows n as (aʰ → b)
+holeₙ zero    f = f
+holeₙ (suc n) f = holeₙ n ∘′ flip f
+
+------------------------------------------------------------------------
 -- Generic Programs: function constant in its n first arguments
 
 -- Note that its type will only be inferred if it is used in a context
