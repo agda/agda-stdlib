@@ -178,7 +178,7 @@ updateₙ′ : ∀ n {ls lᵘ} {as : Sets n ls} k {aᵘ : Set lᵘ} (f : Projₙ
            Product n as → Product n (Updateₙ as k aᵘ)
 updateₙ′ n k = updateₙ n k
 
-mapₙ : ∀ n {ls r lᵘ} {as : Sets n ls} {b : Set r} {aᵘ : Set lᵘ} k →
-       (aᵘ → Projₙ as k) → Arrows n as b → Arrows n (Updateₙ as k aᵘ) b
-mapₙ _ zero    f g = g ∘′ f
-mapₙ _ (suc k) f g = mapₙ _ k f ∘′ g
+composeₙ : ∀ n {ls r lᵘ} {as : Sets n ls} {b : Set r} {aᵘ : Set lᵘ} k →
+          (aᵘ → Projₙ as k) → Arrows n as b → Arrows n (Updateₙ as k aᵘ) b
+composeₙ _ zero    f g = g ∘′ f
+composeₙ _ (suc k) f g = composeₙ _ k f ∘′ g
