@@ -120,12 +120,12 @@ projₙ 1 (suc ()) v
 Levelₙ⁻ : ∀ {n} → Levels n → Fin n → Levels (pred n)
 Levelₙ⁻               (_ , ls) zero    = ls
 Levelₙ⁻ {suc (suc _)} (l , ls) (suc k) = l , Levelₙ⁻ ls k
-Levelₙ⁻ {suc zero} _ (suc ())
+Levelₙ⁻ {1} _ (suc ())
 
 Removeₙ : ∀ {n ls} → Sets n ls → ∀ k → Sets (pred n) (Levelₙ⁻ ls k)
 Removeₙ               (_ , as) zero    = as
 Removeₙ {suc (suc _)} (a , as) (suc k) = a , Removeₙ as k
-Removeₙ {suc zero} _ (suc ())
+Removeₙ {1} _ (suc ())
 
 removeₙ : ∀ n {ls} {as : Sets n ls} k →
           Product n as → Product (pred n) (Removeₙ as k)
@@ -141,12 +141,12 @@ removeₙ (suc zero) (suc ()) _
 Levelₙ⁺ : ∀ {n} → Levels n → Fin (suc n) → Level → Levels (suc n)
 Levelₙ⁺         ls       zero    l⁺ = l⁺ , ls
 Levelₙ⁺ {suc _} (l , ls) (suc k) l⁺ = l , Levelₙ⁺ ls k l⁺
-Levelₙ⁺ {zero} _ (suc ())
+Levelₙ⁺ {0} _ (suc ())
 
 Insertₙ : ∀ {n ls l⁺} → Sets n ls → ∀ k (a⁺ : Set l⁺) → Sets (suc n) (Levelₙ⁺ ls k l⁺)
 Insertₙ         as       zero    a⁺ = a⁺ , as
 Insertₙ {suc _} (a , as) (suc k) a⁺ = a , Insertₙ as k a⁺
-Insertₙ {zero} _ (suc ())
+Insertₙ {zero} _ (suc ()) _
 
 insertₙ : ∀ n {ls l⁺} {as : Sets n ls} {a⁺ : Set l⁺} k (v⁺ : a⁺) →
           Product n as → Product (suc n) (Insertₙ as k a⁺)
@@ -154,4 +154,26 @@ insertₙ 0             zero    v⁺ vs       = v⁺
 insertₙ (suc n)       zero    v⁺ vs       = v⁺ , vs
 insertₙ 1             (suc k) v⁺ vs       = vs , insertₙ 0 k v⁺ _
 insertₙ (suc (suc n)) (suc k) v⁺ (v , vs) = v , insertₙ _ k v⁺ vs
-insertₙ zero (suc ()) v⁺ vs
+insertₙ 0 (suc ()) _ _
+
+------------------------------------------------------------------------
+-- Generic Programs: update of a k-th component
+
+Levelₙᵘ : ∀ {n} → Levels n → Fin n → Level → Levels n
+Levelₙᵘ (_ , ls) zero    lᵘ = lᵘ , ls
+Levelₙᵘ (l , ls) (suc k) lᵘ = l , Levelₙᵘ ls k lᵘ
+
+Updateₙ :  ∀ {n ls lᵘ} (as : Sets n ls) k (aᵘ : Set lᵘ) → Sets n (Levelₙᵘ ls k lᵘ)
+Updateₙ (_ , as) zero    aᵘ = aᵘ , as
+Updateₙ (a , as) (suc k) aᵘ = a , Updateₙ as k aᵘ
+
+updateₙ : ∀ n {ls l⁺} {as : Sets n ls} k {aᵘ : _ → Set l⁺} (f : ∀ v → aᵘ v)
+          (vs : Product n as) → Product n (Updateₙ as k (aᵘ (projₙ n k vs)))
+updateₙ 1             zero    f v        = f v
+updateₙ (suc (suc _)) zero    f (v , vs) = f v , vs
+updateₙ (suc (suc _)) (suc k) f (v , vs) = v , updateₙ _ k f vs
+updateₙ 1 (suc ()) _ _
+
+updateₙ′ : ∀ n {ls l⁺} {as : Sets n ls} k {aᵘ : Set l⁺} (f : Projₙ as k → aᵘ)
+           (vs : Product n as) → Product n (Updateₙ as k aᵘ)
+updateₙ′ n k = updateₙ n k
