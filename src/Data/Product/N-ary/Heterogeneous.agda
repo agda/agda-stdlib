@@ -193,3 +193,14 @@ holeₙ : ∀ n {ls r} {as : Sets n ls} {b : Set r} k →
 holeₙ _             zero    f x = f x
 holeₙ (suc (suc _)) (suc k) f x = λ y → holeₙ _ k (f y) x
 holeₙ 1 (suc ()) _ _
+
+------------------------------------------------------------------------
+-- Generic Programs: function constant in its n first arguments
+
+-- Note that its type will only be inferred if it is used in a context
+-- specifying what the type of the function ought to be. Just like the
+-- usual const: there is no way to infer its domain from its argument.
+
+constₙ : ∀ n {ls r} {as : Sets n ls} {b : Set r} → b → Arrows n as b
+constₙ zero    v = v
+constₙ (suc n) v = const (constₙ n v)
