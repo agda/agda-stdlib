@@ -237,8 +237,7 @@ module _ {a b c d e} {A : Set a} {B : Set b} {C : Set c} {D : Set d} {E : Set e}
   compose₁-eq : compose₁ ≡ compose₁'
   compose₁-eq = refl
 ------------------------------------------------------------------------
--- holeₙ : ∀ n (k : Fin n) →
---         (A₁ → ⋯ Aₙ → B) → Aₖ₊₁ → A₁ → ⋯ → Aₖ → Aₖ₊₂ → ⋯ → Aₙ → B
+-- holeₙ : ∀ n → (A → (A₁ → ⋯ Aₙ → B)) → A₁ → ⋯ → Aₙ → (A → B)
 
 -- As we have seen earlier, `cong` acts on a function's first variable.
 -- If we want to access the second one, we can use `flip`. But what about
@@ -272,3 +271,9 @@ module _ {a b c d e} {A : Set a} {B : Set b} {C : Set c} {D : Set d} {E : Set e}
 
   const₁ : A → B → C → D → E → A
   const₁ = constₙ 4
+
+-- Together with `holeₙ`, this means we can make a constant function out
+-- of any of the arguments. The fourth for instance:
+
+  const₂ : A → B → C → D → E → D
+  const₂ = holeₙ 3 (constₙ 4)
