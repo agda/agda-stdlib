@@ -406,17 +406,17 @@ module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
     Inv.sym (Pointwise-≡↔≡ A C)
     where open Inv using () renaming (_∘_ to _⟨∘⟩_)
 
-_⊎-cong_ : ∀ {k a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} →
-           A ∼[ k ] B → C ∼[ k ] D → (A ⊎ C) ∼[ k ] (B ⊎ D)
-_⊎-cong_ {implication}         = Sum.map
-_⊎-cong_ {reverse-implication} = λ f g → lam (Sum.map (app-← f) (app-← g))
-_⊎-cong_ {equivalence}         = _⊎-⇔_
-_⊎-cong_ {injection}           = _⊎-↣_
-_⊎-cong_ {reverse-injection}   = λ f g → lam (app-↢ f ⊎-↣ app-↢ g)
-_⊎-cong_ {left-inverse}        = _⊎-↞_
-_⊎-cong_ {surjection}          = _⊎-↠_
-_⊎-cong_ {bijection}           = _⊎-↔_
+module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
 
+  _⊎-cong_ : ∀ {k} → A ∼[ k ] B → C ∼[ k ] D → (A ⊎ C) ∼[ k ] (B ⊎ D)
+  _⊎-cong_ {implication}         = Sum.map
+  _⊎-cong_ {reverse-implication} = λ f g → lam (Sum.map (app-← f) (app-← g))
+  _⊎-cong_ {equivalence}         = _⊎-⇔_
+  _⊎-cong_ {injection}           = _⊎-↣_
+  _⊎-cong_ {reverse-injection}   = λ f g → lam (app-↢ f ⊎-↣ app-↢ g)
+  _⊎-cong_ {left-inverse}        = _⊎-↞_
+  _⊎-cong_ {surjection}          = _⊎-↠_
+  _⊎-cong_ {bijection}           = _⊎-↔_
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
@@ -426,16 +426,25 @@ _⊎-cong_ {bijection}           = _⊎-↔_
 
 -- Version 0.18
 
-₁∼₁ = inj₁
-{-# WARNING_ON_USAGE ₁∼₁
-"Warning: ₁∼₁ was deprecated in v0.18.
-Please use inj₁ in `Data.Sum.Properties` instead."
-#-}
-₂∼₂ = inj₂
-{-# WARNING_ON_USAGE ₂∼₂
-"Warning: ₂∼₂ was deprecated in v0.18.
-Please use inj₂ in `Data.Sum.Properties` instead."
-#-}
+module _ {a b c d r s}
+         {A : Set a} {B : Set b} {C : Set c} {D : Set d}
+         {R : REL A C r} {S : REL B D s}
+         where
+
+  ₁∼₁ : ∀ {a c} → R a c → Pointwise R S (inj₁ a) (inj₁ c)
+  ₁∼₁ = inj₁
+  {-# WARNING_ON_USAGE ₁∼₁
+  "Warning: ₁∼₁ was deprecated in v0.18.
+  Please use inj₁ in `Data.Sum.Properties` instead."
+  #-}
+
+  ₂∼₂ : ∀ {b d} → S b d → Pointwise R S (inj₂ b) (inj₂ d)
+  ₂∼₂ = inj₂
+  {-# WARNING_ON_USAGE ₂∼₂
+  "Warning: ₂∼₂ was deprecated in v0.18.
+  Please use inj₂ in `Data.Sum.Properties` instead."
+  #-}
+
 _⊎-≟_ : ∀ {a b} {A : Set a} {B : Set b} →
         Decidable {A = A} _≡_ → Decidable {A = B} _≡_ →
         Decidable {A = A ⊎ B} _≡_
