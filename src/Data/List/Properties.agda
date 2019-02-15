@@ -25,6 +25,7 @@ open import Data.Nat.Properties
 open import Data.Product as Prod hiding (map; zip)
 open import Data.These as These using (These; this; that; these)
 open import Function
+import Relation.Binary as B
 import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; _≗_; refl ; sym ; cong)
@@ -47,6 +48,17 @@ module _ {a} {A : Set a} {x y : A} {xs ys : List A} where
 
  ∷-injectiveʳ : x ∷ xs ≡ y List.∷ ys → xs ≡ ys
  ∷-injectiveʳ refl = refl
+
+module _ {a} {A : Set a} where
+
+  ≡-dec : B.Decidable _≡_ → B.Decidable {A = List A} _≡_
+  ≡-dec _≟_ []       []       = yes refl
+  ≡-dec _≟_ (x ∷ xs) []       = no λ()
+  ≡-dec _≟_ []       (y ∷ ys) = no λ()
+  ≡-dec _≟_ (x ∷ xs) (y ∷ ys) with x ≟ y | ≡-dec _≟_ xs ys
+  ... | no  x≢y  | _        = no (x≢y   ∘ ∷-injectiveˡ)
+  ... | yes _    | no xs≢ys = no (xs≢ys ∘ ∷-injectiveʳ)
+  ... | yes refl | yes refl = yes refl
 
 ------------------------------------------------------------------------
 -- map
