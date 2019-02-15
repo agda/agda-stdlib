@@ -28,7 +28,7 @@ open import Relation.Binary.PropositionalEquality
 open Setoid renaming (_≈_ to [_]_≈_)
 
 infix 1 begin⟨_⟩_
-infixr 2 _≈⟨_⟩_ _≡⟨_⟩_ _≡⟨⟩_
+infixr 2 _≈⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
 infix 3 _∎
 
 begin⟨_⟩_ : ∀ {c l} (S : Setoid c l) {x y} → _IsRelatedTo_ S x y → [ S ] x ≈ y
@@ -39,6 +39,9 @@ _≈⟨_⟩_ {S = S} = EqR._≈⟨_⟩_ S
 
 _≡⟨_⟩_ : ∀ {c l} {S : Setoid c l} x {y z} → x ≡ y → _IsRelatedTo_ S y z → _IsRelatedTo_ S x z
 _≡⟨_⟩_ {S = S} = EqR._≡⟨_⟩_ S
+
+_≡˘⟨_⟩_ : ∀ {c l} {S : Setoid c l} x {y z} → y ≡ x → _IsRelatedTo_ S y z → _IsRelatedTo_ S x z
+_≡˘⟨_⟩_ {S = S} = EqR._≡˘⟨_⟩_ S
 
 _≡⟨⟩_ : ∀ {c l} {S : Setoid c l} x {y} → _IsRelatedTo_ S x y → _IsRelatedTo_ S x y
 _≡⟨⟩_ {S = S} = EqR._≡⟨⟩_ S
