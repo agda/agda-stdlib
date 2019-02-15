@@ -12,7 +12,7 @@ open import Data.Product as Prod
 open import Level
 open import Function
 open import Function.Equality as F using (_⟶_; _⟨$⟩_)
-open import Function.Equivalence as Eq
+open import Function.Equivalence as Equiv
   using (Equivalence; _⇔_; module Equivalence)
 open import Function.HalfAdjointEquivalence using (_≃_; ↔→≃)
 open import Function.Injection as Inj
@@ -40,61 +40,67 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 infixr 4 _,_
 
-record REL {a₁ a₂ b₁ b₂ ℓ₁ ℓ₂}
-           {A₁ : Set a₁} (B₁ : A₁ → Set b₁)
-           {A₂ : Set a₂} (B₂ : A₂ → Set b₂)
-           (_R₁_ : B.REL A₁ A₂ ℓ₁) (_R₂_ : IREL B₁ B₂ ℓ₂)
-           (xy₁ : Σ A₁ B₁) (xy₂ : Σ A₂ B₂)
-           : Set (a₁ ⊔ a₂ ⊔ b₁ ⊔ b₂ ⊔ ℓ₁ ⊔ ℓ₂) where
+record POINTWISE {a₁ a₂ b₁ b₂ ℓ₁ ℓ₂}
+                 {A₁ : Set a₁} (B₁ : A₁ → Set b₁)
+                 {A₂ : Set a₂} (B₂ : A₂ → Set b₂)
+                 (_R₁_ : B.REL A₁ A₂ ℓ₁) (_R₂_ : IREL B₁ B₂ ℓ₂)
+                 (xy₁ : Σ A₁ B₁) (xy₂ : Σ A₂ B₂)
+                 : Set (a₁ ⊔ a₂ ⊔ b₁ ⊔ b₂ ⊔ ℓ₁ ⊔ ℓ₂) where
   constructor _,_
   field
     proj₁ : (proj₁ xy₁) R₁ (proj₁ xy₂)
     proj₂ : (proj₂ xy₁) R₂ (proj₂ xy₂)
 
-open REL public
+open POINTWISE public
 
 Pointwise : ∀ {a b ℓ₁ ℓ₂} {A : Set a} (B : A → Set b)
             (_R₁_ : B.Rel A ℓ₁) (_R₂_ : IRel B ℓ₂) → B.Rel (Σ A B) _
-Pointwise B = REL B B
+Pointwise B = POINTWISE B B
 
 ------------------------------------------------------------------------
 -- Pointwise preserves many relational properties
 
 module _ {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
-         {R₁ : B.Rel A ℓ₁} {R₂ : IRel B ℓ₂} where
+         {R : B.Rel A ℓ₁} {S : IRel B ℓ₂} where
 
-  refl : B.Reflexive R₁ → I.Reflexive B R₂ →
-         B.Reflexive (Pointwise B R₁ R₂)
+  private
+    R×S = Pointwise B R S
+
+  refl : B.Reflexive R → I.Reflexive B S → B.Reflexive R×S
   refl refl₁ refl₂ = (refl₁ , refl₂)
 
-  symmetric : B.Symmetric R₁ → I.Symmetric B R₂ →
-              B.Symmetric (Pointwise B R₁ R₂)
+  symmetric : B.Symmetric R → I.Symmetric B S → B.Symmetric R×S
   symmetric sym₁ sym₂ (x₁Rx₂ , y₁Ry₂) = (sym₁ x₁Rx₂ , sym₂ y₁Ry₂)
 
-  transitive : B.Transitive R₁ → I.Transitive B R₂ →
-               B.Transitive (Pointwise B R₁ R₂)
+  transitive : B.Transitive R → I.Transitive B S → B.Transitive R×S
   transitive trans₁ trans₂ (x₁Rx₂ , y₁Ry₂) (x₂Rx₃ , y₂Ry₃) =
     (trans₁ x₁Rx₂ x₂Rx₃ , trans₂ y₁Ry₂ y₂Ry₃)
 
-  isEquivalence : IsEquivalence R₁ → IsIndexedEquivalence B R₂ →
-                  IsEquivalence (Pointwise B R₁ R₂)
+  isEquivalence : IsEquivalence R → IsIndexedEquivalence B S →
+                  IsEquivalence R×S
   isEquivalence eq₁ eq₂ = record
-    { refl  = refl (IsEquivalence.refl eq₁)
-                   (IsIndexedEquivalence.refl eq₂)
-    ; sym   = symmetric (IsEquivalence.sym eq₁)
-                        (IsIndexedEquivalence.sym eq₂)
-    ; trans = transitive (IsEquivalence.trans eq₁)
-                         (IsIndexedEquivalence.trans eq₂)
-    }
+    { refl  = refl       Eq.refl  IEq.refl
+    ; sym   = symmetric  Eq.sym   IEq.sym
+    ; trans = transitive Eq.trans IEq.trans
+    } where
+    module Eq = IsEquivalence eq₁
+    module IEq = IsIndexedEquivalence eq₂
 
-setoid : ∀ {b₁ b₂ i₁ i₂} → (A : Setoid b₁ b₂) →
-         IndexedSetoid (Setoid.Carrier A) i₁ i₂ →
-         B.Setoid _ _
-setoid s₁ s₂ = record
-  { isEquivalence = isEquivalence (Setoid.isEquivalence s₁)
-                                  (IndexedSetoid.isEquivalence s₂)
-  }
+module _ {a b ℓ₁ ℓ₂} where
 
+  setoid : (A : Setoid a ℓ₁) →
+           IndexedSetoid (Setoid.Carrier A) b ℓ₂ →
+           Setoid _ _
+  setoid s₁ s₂ = record
+    { isEquivalence = isEquivalence Eq.isEquivalence IEq.isEquivalence
+    } where
+    module Eq = Setoid s₁
+    module IEq = IndexedSetoid s₂
+
+
+
+
+{-
 ------------------------------------------------------------------------
 -- Properties related to "relatedness"
 ------------------------------------------------------------------------
@@ -260,10 +266,10 @@ module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a�
       lemma P.refl = IndexedSetoid.refl B₂
 
   -- See also Data.Product.Relation.Binary.Pointwise.Dependent.WithK.inverse.
+-}
 
 ------------------------------------------------------------------------
-
--- TODO: The code in this section no longer depends on REL or
+-- TODO: The code in this section no longer depends on POINTWISE or
 -- Pointwise. Perhaps it should be moved somewhere else.
 
 module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
@@ -274,14 +280,14 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
       (∀ {x} → B₁ x → B₂ (Equivalence.to   A₁⇔A₂ ⟨$⟩ x)) →
       (∀ {y} → B₂ y → B₁ (Equivalence.from A₁⇔A₂ ⟨$⟩ y)) →
       Σ A₁ B₁ ⇔ Σ A₂ B₂
-  ⇔ A₁⇔A₂ B-to B-from = Eq.equivalence
+  ⇔ A₁⇔A₂ B-to B-from = Equiv.equivalence
     (Prod.map (Equivalence.to   A₁⇔A₂ ⟨$⟩_) B-to)
     (Prod.map (Equivalence.from A₁⇔A₂ ⟨$⟩_) B-from)
 
   ⇔-↠ : ∀ (A₁↠A₂ : A₁ ↠ A₂) →
         (∀ {x} → _⇔_ (B₁ x) (B₂ (Surjection.to A₁↠A₂ ⟨$⟩ x))) →
         _⇔_ (Σ A₁ B₁) (Σ A₂ B₂)
-  ⇔-↠ A₁↠A₂ B₁⇔B₂ = Eq.equivalence
+  ⇔-↠ A₁↠A₂ B₁⇔B₂ = Equiv.equivalence
     (Prod.map (Surjection.to   A₁↠A₂ ⟨$⟩_) (Equivalence.to B₁⇔B₂ ⟨$⟩_))
     (Prod.map (Surjection.from A₁↠A₂ ⟨$⟩_)
        ((Equivalence.from B₁⇔B₂ ⟨$⟩_) ∘
@@ -578,8 +584,16 @@ cong {Related.bijection}                     = ↔
 
 -- Version 0.15
 
-Rel    = Pointwise
+Rel = Pointwise
 {-# WARNING_ON_USAGE Rel
 "Warning: Rel was deprecated in v0.15.
 Please use Pointwise instead."
+#-}
+
+-- Version 0.15
+
+REL = POINTWISE
+{-# WARNING_ON_USAGE REL
+"Warning: REL was deprecated in v0.18.
+Please use POINTWISE instead."
 #-}
