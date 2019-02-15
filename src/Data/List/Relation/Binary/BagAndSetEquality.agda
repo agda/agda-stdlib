@@ -22,10 +22,10 @@ open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
 open import Data.Product as Prod hiding (map)
-import Data.Product.Relation.Binary.Pointwise.Dependent as Σ
+import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum as Sum hiding (map)
 open import Data.Sum.Properties
-open import Data.Sum.Relation.Binary.Pointwise using (_⊎-cong_)
+open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit
 open import Function
 open import Function.Equality using (_⟨$⟩_)

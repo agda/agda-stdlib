@@ -27,11 +27,11 @@ open import Data.Maybe.Relation.Unary.Any as MAny using (just)
 open import Data.Product as Prod
   using (_×_; _,_; ∃; ∃₂; proj₁; proj₂; uncurry′)
 open import Data.Product.Properties
-open import Data.Product.Relation.Binary.Pointwise.NonDependent
+open import Data.Product.Function.NonDependent.Propositional
   using (_×-cong_)
-import Data.Product.Relation.Binary.Pointwise.Dependent as Σ
+import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Data.Sum.Relation.Binary.Pointwise using (_⊎-cong_)
+open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)

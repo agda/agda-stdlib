@@ -13,14 +13,19 @@ open import Data.Product
 open import Data.Product.Function.NonDependent.Setoid
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Relation.Binary
+open import Function
 open import Function.Equality using (_⟶_; _⟨$⟩_)
-open import Function.Equivalence as Eq using (_⇔_; module Equivalence)
-open import Function.Injection as Inj using (_↣_; module Injection)
+open import Function.Equivalence as Equiv using (_⇔_; module Equivalence)
+open import Function.HalfAdjointEquivalence using (↔→≃; _≃_)
+open import Function.Injection as Inj
+  using (Injective; _↣_; module Injection)
 open import Function.Inverse as Inv using (_↔_; module Inverse)
 open import Function.LeftInverse as LeftInv
   using (_↞_; _LeftInverseOf_; module LeftInverse)
 open import Function.Related
+open import Function.Related.TypeIsomorphisms
 open import Function.Surjection as Surj using (_↠_; module Surjection)
+open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 ------------------------------------------------------------------------
 -- Combinators for various function types
@@ -34,15 +39,15 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
       (∀ {y} → B₂ y → B₁ (Equivalence.from A₁⇔A₂ ⟨$⟩ y)) →
       Σ A₁ B₁ ⇔ Σ A₂ B₂
   ⇔ A₁⇔A₂ B-to B-from = Equiv.equivalence
-    (Prod.map (Equivalence.to   A₁⇔A₂ ⟨$⟩_) B-to)
-    (Prod.map (Equivalence.from A₁⇔A₂ ⟨$⟩_) B-from)
+    (map (Equivalence.to   A₁⇔A₂ ⟨$⟩_) B-to)
+    (map (Equivalence.from A₁⇔A₂ ⟨$⟩_) B-from)
 
   ⇔-↠ : ∀ (A₁↠A₂ : A₁ ↠ A₂) →
         (∀ {x} → _⇔_ (B₁ x) (B₂ (Surjection.to A₁↠A₂ ⟨$⟩ x))) →
         _⇔_ (Σ A₁ B₁) (Σ A₂ B₂)
   ⇔-↠ A₁↠A₂ B₁⇔B₂ = Equiv.equivalence
-    (Prod.map (Surjection.to   A₁↠A₂ ⟨$⟩_) (Equivalence.to B₁⇔B₂ ⟨$⟩_))
-    (Prod.map (Surjection.from A₁↠A₂ ⟨$⟩_)
+    (map (Surjection.to   A₁↠A₂ ⟨$⟩_) (Equivalence.to B₁⇔B₂ ⟨$⟩_))
+    (map (Surjection.from A₁↠A₂ ⟨$⟩_)
        ((Equivalence.from B₁⇔B₂ ⟨$⟩_) ∘
         P.subst B₂ (P.sym $ Surjection.right-inverse-of A₁↠A₂ _)))
 
@@ -99,13 +104,13 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
           g x′ y
         lemma P.refl = P.refl
 
-    to = Prod.map (_≃_.to A₁≃A₂) (Injection.to B₁↣B₂ ⟨$⟩_)
+    to = map (_≃_.to A₁≃A₂) (Injection.to B₁↣B₂ ⟨$⟩_)
 
     to-injective : Injective (P.→-to-⟶ {B = P.setoid _} to)
     to-injective {(x₁ , x₂)} {(y₁ , y₂)} =
       (Inverse.to Σ-≡,≡↔≡ ⟨$⟩_) ∘′
 
-      Prod.map (_≃_.injective A₁≃A₂) (λ {eq₁} eq₂ →
+      map (_≃_.injective A₁≃A₂) (λ {eq₁} eq₂ →
 
         let lemma =
 
@@ -181,10 +186,9 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
     where
     open P.≡-Reasoning
 
-    from = Prod.map (LeftInverse.from A₁↞A₂ ⟨$⟩_)
-                    (LeftInverse.from B₁↞B₂ ⟨$⟩_)
+    from = map (LeftInverse.from A₁↞A₂ ⟨$⟩_) (LeftInverse.from B₁↞B₂ ⟨$⟩_)
 
-    to   = Prod.map
+    to   = map
       (LeftInverse.to A₁↞A₂ ⟨$⟩_)
       (λ {x} y →
          LeftInverse.to B₁↞B₂ ⟨$⟩
@@ -218,9 +222,9 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
     where
     open P.≡-Reasoning
 
-    to   = Prod.map (Surjection.to A₁↠A₂ ⟨$⟩_)
+    to   = map (Surjection.to A₁↠A₂ ⟨$⟩_)
                     (Surjection.to B₁↠B₂ ⟨$⟩_)
-    from = Prod.map
+    from = map
       (Surjection.from A₁↠A₂ ⟨$⟩_)
       (λ {x} y →
          Surjection.from B₁↠B₂ ⟨$⟩
@@ -302,11 +306,11 @@ private
     B₁ (Inverse.from A₁↔A₂ ⟨$⟩ x)
       ∼⟨ eq ⟩
     B₂ (Inverse.to A₁↔A₂ ⟨$⟩ (Inverse.from A₁↔A₂ ⟨$⟩ x))
-      ↔⟨ Related.K-reflexive
+      ↔⟨ K-reflexive
          (P.cong B₂ $ Inverse.right-inverse-of A₁↔A₂ x) ⟩
     B₂ x
       ∎
-    where open Related.EquationalReasoning
+    where open EquationalReasoning
 
 cong : ∀ {k a₁ a₂ b₁ b₂}
          {A₁ : Set a₁} {A₂ : Set a₂}
@@ -314,17 +318,17 @@ cong : ∀ {k a₁ a₂ b₁ b₂}
        (A₁↔A₂ : _↔_ A₁ A₂) →
        (∀ {x} → B₁ x ∼[ k ] B₂ (Inverse.to A₁↔A₂ ⟨$⟩ x)) →
        Σ A₁ B₁ ∼[ k ] Σ A₂ B₂
-cong {Related.implication}                   =
-  λ A₁↔A₂ → Prod.map (_⟨$⟩_ (Inverse.to A₁↔A₂))
-cong {Related.reverse-implication} {B₂ = B₂} =
-  λ A₁↔A₂ B₁←B₂ → lam (Prod.map (_⟨$⟩_ (Inverse.from A₁↔A₂))
+cong {implication}                   =
+  λ A₁↔A₂ → map (_⟨$⟩_ (Inverse.to A₁↔A₂))
+cong {reverse-implication} {B₂ = B₂} =
+  λ A₁↔A₂ B₁←B₂ → lam (map (_⟨$⟩_ (Inverse.from A₁↔A₂))
     (app-← (swap-coercions B₂ A₁↔A₂ B₁←B₂)))
-cong {Related.equivalence}                   = ⇔-↠ ∘ Inverse.surjection
-cong {Related.injection}                     = ↣
-cong {Related.reverse-injection}   {B₂ = B₂} =
+cong {equivalence}                   = ⇔-↠ ∘ Inverse.surjection
+cong {injection}                     = ↣
+cong {reverse-injection}   {B₂ = B₂} =
   λ A₁↔A₂ B₁↢B₂ → lam (↣ (Inv.sym A₁↔A₂)
     (app-↢ (swap-coercions B₂ A₁↔A₂ B₁↢B₂)))
-cong {Related.left-inverse}                  =
+cong {left-inverse}                  =
   λ A₁↔A₂ → ↞ (Inverse.left-inverse A₁↔A₂) ∘ swap-coercions _ A₁↔A₂
-cong {Related.surjection}                    = ↠ ∘ Inverse.surjection
-cong {Related.bijection}                     = ↔
+cong {surjection}                    = ↠ ∘ Inverse.surjection
+cong {bijection}                     = ↔

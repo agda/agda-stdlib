@@ -1,10 +1,39 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Dependent product combinators for setoid equality preserving
+-- functions
+------------------------------------------------------------------------
 
+{-# OPTIONS --with-K --safe #-}
 
+module Data.Product.Function.Dependent.Setoid.WithK where
 
-
+open import Data.Product
+open import Data.Product.Function.Dependent.Setoid using (surjection)
+open import Data.Product.Relation.Binary.Pointwise.Dependent
+open import Relation.Binary
+open import Function
+open import Function.Equality as F using (_⟶_; _⟨$⟩_)
+open import Function.Equivalence as Eq
+  using (Equivalence; _⇔_; module Equivalence)
+open import Function.Injection as Inj
+  using (Injection; Injective; _↣_; module Injection)
+open import Function.Inverse as Inv
+  using (Inverse; _↔_; module Inverse)
+open import Function.LeftInverse as LeftInv
+  using (LeftInverse; _↞_; _LeftInverseOf_; _RightInverseOf_; module LeftInverse)
+open import Function.Surjection as Surj
+  using (Surjection; _↠_; module Surjection)
+open import Relation.Binary as B
+open import Relation.Binary.Indexed.Heterogeneous
+  using (IndexedSetoid)
+open import Relation.Binary.Indexed.Heterogeneous.Construct.At
+  using (_atₛ_)
+open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 ------------------------------------------------------------------------
--- Properties related to "relatedness"
+-- Combinator for Inverse
 
 module _ {a₁ a₂ b₁ b₁′ b₂ b₂′} {A₁ : Set a₁} {A₂ : Set a₂} where
 
