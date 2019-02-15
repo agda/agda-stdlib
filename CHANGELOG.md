@@ -493,7 +493,7 @@ Other minor additions
   ```agda
   toℕ-cast        : toℕ (cast eq k) ≡ toℕ k
   toℕ-inject₁-≢   : (i : Fin n)              → n ≢ toℕ (inject₁ i)
-  inject₁-lower₁  : (ne : n ≢ toℕ i)         → lower₁ (reduce₁ i ne) ≡ i
+  inject₁-lower₁  : (ne : n ≢ toℕ i)         → inject₁ (lower₁ i ne) ≡ i
   lower₁-inject₁′ : (i : Fin n) (ne : n ≢ toℕ (inject₁ i)) → lower₁ (inject₁ i) ne ≡ i
   lower₁-inject₁  : (i : Fin n) → lower₁ (inject₁ i) (toℕ-inject₁-≢ i) ≡ i
   ```

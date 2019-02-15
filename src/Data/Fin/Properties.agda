@@ -357,10 +357,8 @@ inject₁-lower₁ {suc n} (suc i) ne
 
 lower₁-inject₁′ : ∀ {n} (i : Fin n) (ne : n ≢ toℕ (inject₁ i))
                 → lower₁ (inject₁ i) ne ≡ i
-lower₁-inject₁′ {zero} () ne
-lower₁-inject₁′ {suc n} zero ne = refl
-lower₁-inject₁′ {suc n} (suc i) ne
-  rewrite lower₁-inject₁′ i (λ x → ne (cong suc x)) = refl
+lower₁-inject₁′ zero ne = refl
+lower₁-inject₁′ (suc i) ne = cong suc (lower₁-inject₁′ i (ne ∘ cong suc))
 
 lower₁-inject₁ : ∀ {n} (i : Fin n) → lower₁ (inject₁ i) (toℕ-inject₁-≢ i) ≡ i
 lower₁-inject₁ i = lower₁-inject₁′ i (toℕ-inject₁-≢ i)

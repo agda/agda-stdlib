@@ -122,7 +122,7 @@ inject≤ : ∀ {m n} → Fin m → m ℕ.≤ n → Fin n
 inject≤ zero    (s≤s le) = zero
 inject≤ (suc i) (s≤s le) = suc (inject≤ i le)
 
--- reduce₁ "n" _ = "n".
+-- lower₁ "n" _ = "n".
 
 lower₁ : ∀ {n} → (i : Fin (suc n)) → (n ≢ toℕ i) → Fin n
 lower₁ {zero} zero ne = ⊥-elim (ne refl)
