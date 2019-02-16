@@ -62,11 +62,22 @@ data _↭_ : Rel (List A) a where
 module PermutationReasoning where
 
   open EqReasoning ↭-setoid
-    using (_IsRelatedTo_; relTo)
+    using (_IsRelatedTo_; relTo; step-≈; step-≈˘)
 
   open EqReasoning ↭-setoid public
-    using (begin_ ; _∎ ; _≡⟨⟩_; _≡⟨_⟩_)
-    renaming (_≈⟨_⟩_ to _↭⟨_⟩_; _≈˘⟨_⟩_ to _↭˘⟨_⟩_)
+    using (begin_ ; _∎ ; _≡⟨⟩_; step-≡)
+
+  infixr 2 step-↭ step-↭˘
+
+  step-↭ : ∀ x {y z} → y IsRelatedTo z → x ↭ y → x IsRelatedTo z
+  step-↭ = step-≈
+
+  syntax step-↭ x y↭z x↭y = x ↭⟨ x↭y ⟩ y↭z
+
+  step-↭˘ : ∀ x {y z} → y IsRelatedTo z → y ↭ x → x IsRelatedTo z
+  step-↭˘ = step-≈˘
+
+  syntax step-↭˘ x y↭z y↭x = x ↭˘⟨ y↭x ⟩ y↭z
 
   infixr 2 _∷_<⟨_⟩_  _∷_∷_<<⟨_⟩_
 
