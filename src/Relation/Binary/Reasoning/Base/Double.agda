@@ -28,7 +28,7 @@ open IsPreorder isPreorder
 ------------------------------------------------------------------------
 -- A datatype to hide the current relation type
 
-data _IsRelatedTo_ (x y : A) : Set (ℓ₁ ⊔ ℓ₂) where
+data _IsRelatedTo_ (x y : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   nonstrict : (x∼y : x ∼ y) → x IsRelatedTo y
   equals    : (x≈y : x ≈ y) → x IsRelatedTo y
 
@@ -44,7 +44,7 @@ relOf (equals    x≈y) = _≈_
 -- A record that is used to ensure that the final relation proved by the
 -- chain of reasoning can be converted into the required relation.
 
-data IsEquality {x y} : x IsRelatedTo y → Set ℓ₁ where
+data IsEquality {x y} : x IsRelatedTo y → Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   isEquality : ∀ x≈y → IsEquality (equals x≈y)
 
 IsEquality? : ∀ {x y} (x≲y : x IsRelatedTo y) → Dec (IsEquality x≲y)

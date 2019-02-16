@@ -13,6 +13,7 @@ module Relation.Binary.Reasoning.Base.Single
   (refl : Reflexive _∼_) (trans : Transitive _∼_)
   where
 
+open import Level using (_⊔_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 infix  4 _IsRelatedTo_
@@ -23,7 +24,7 @@ infix  1 begin_
 -- This seemingly unnecessary type is used to make it possible to
 -- infer arguments even if the underlying equality evaluates.
 
-data _IsRelatedTo_ (x y : A) : Set ℓ where
+data _IsRelatedTo_ (x y : A) : Set (a ⊔ ℓ) where
   relTo : (x∼y : x ∼ y) → x IsRelatedTo y
 
 begin_ : ∀ {x y} → x IsRelatedTo y → x ∼ y
