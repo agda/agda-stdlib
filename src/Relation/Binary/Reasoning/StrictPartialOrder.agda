@@ -2,7 +2,7 @@
 -- The Agda standard library
 --
 -- Convenient syntax for "equational reasoning" using a strict partial
--- order
+-- order.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -10,14 +10,18 @@
 open import Relation.Binary
 
 module Relation.Binary.Reasoning.StrictPartialOrder
-         {p₁ p₂ p₃} (S : StrictPartialOrder p₁ p₂ p₃) where
+  {p₁ p₂ p₃} (S : StrictPartialOrder p₁ p₂ p₃) where
 
-import Relation.Binary.Reasoning.Preorder as PreR
-import Relation.Binary.Properties.StrictPartialOrder as SPO
-open PreR (SPO.preorder S) public
-open import Data.Sum
+open StrictPartialOrder S
+import Relation.Binary.Construct.StrictToNonStrict _≈_ _<_ as NonStrict
 
-_<⟨_⟩_ : ∀ x {y z} → _ → y IsRelatedTo z → x IsRelatedTo z
-x <⟨ x∼y ⟩ y∼z = x ∼⟨ inj₁ x∼y ⟩ y∼z
+------------------------------------------------------------------------
+-- Publicly re-export the contents of the base module
 
-infixr 2 _<⟨_⟩_
+open import Relation.Binary.Reasoning.Base.Triple
+  (NonStrict.isPreorder₂ isStrictPartialOrder)
+  trans
+  <-resp-≈
+  NonStrict.<⇒≤
+  (NonStrict.<-≤-trans trans <-respʳ-≈)
+  public

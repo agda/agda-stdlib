@@ -162,9 +162,8 @@ import Relation.Binary.Reasoning.PartialOrder as POR
 module ⊆-Reasoning {a} {A : Set a}  where
   private module P = POR (⊆-poset A)
   open P public
-    renaming (_≤⟨_⟩_ to _⊆⟨_⟩_; _≈⟨⟩_ to _≡⟨⟩_)
-    hiding (_≈⟨_⟩_)
-
+    renaming (_≤⟨_⟩_ to _⊆⟨_⟩_)
+    hiding (_≈⟨_⟩_; _≈˘⟨_⟩_; _≈⟨⟩_)
 
 ------------------------------------------------------------------------
 -- Various functions' outputs are sublists

@@ -26,6 +26,7 @@ open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Reasoning.PartialOrder as POR
+import Relation.Binary.Reasoning.Preorder as PreR
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
@@ -1033,6 +1034,11 @@ _≤?_ : Decidable _≤_
   ; trans         = ≤-trans
   }
 
+≤-preorder : Preorder _ _ _
+≤-preorder = record
+  { isPreorder = ≤-isPreorder
+  }
+
 ≤-isPartialOrder : IsPartialOrder _≡_ _≤_
 ≤-isPartialOrder = record
   { isPreorder = ≤-isPreorder
@@ -1067,9 +1073,6 @@ _≤?_ : Decidable _≤_
   ; _≤_             = _≤_
   ; isDecTotalOrder = ≤-isDecTotalOrder
   }
-
--- A module for reasoning about the _≤_ relation
-module ≤-Reasoning = POR ≤-poset hiding (_≈⟨_⟩_)
 
 -- Other properties of _≤_
 
@@ -1152,7 +1155,8 @@ suc-mono (+≤+ m≤n) = +≤+ (ℕ.s≤s m≤n)
 +-mono-≤ {m} {n} {i} {j} m≤n i≤j = begin
   m + i ≤⟨ +-monoˡ-≤ i m≤n ⟩
   n + i ≤⟨ +-monoʳ-≤ n i≤j ⟩
-  n + j ∎ where open ≤-Reasoning
+  n + j ∎
+  where open POR ≤-poset
 
 neg-≤-pos : ∀ {m n} → - (+ m) ≤ + n
 neg-≤-pos {zero}  = +≤+ z≤n
@@ -1168,7 +1172,8 @@ m≤m+n : ∀ {m} n → m ≤ m + + n
 m≤m+n {m} n = begin
   m       ≡⟨ sym (+-identityʳ m) ⟩
   m + + 0 ≤⟨ +-monoʳ-≤ m (+≤+ z≤n) ⟩
-  m + + n ∎ where open ≤-Reasoning
+  m + + n ∎
+  where open POR ≤-poset
 
 m-n≤m : ∀ m n → m - + n ≤ m
 m-n≤m m n = ≤-steps-neg n ≤-refl
@@ -1190,13 +1195,15 @@ m-n≤0⇒m≤n {m} {n} m-n≤0 = begin
   m + (- n + n) ≡⟨ sym (+-assoc m (- n) n) ⟩
   (m - n) + n   ≤⟨ +-monoˡ-≤ n m-n≤0 ⟩
   + 0 + n       ≡⟨ +-identityˡ n ⟩
-  n ∎ where open POR ≤-poset
+  n             ∎
+  where open POR ≤-poset
 
 m≤n⇒0≤n-m : ∀ {m n} → m ≤ n → + 0 ≤ n - m
 m≤n⇒0≤n-m {m} {n} m≤n = begin
   + 0   ≡⟨ sym (+-inverseʳ m) ⟩
   m - m ≤⟨ +-monoˡ-≤ (- m) m≤n ⟩
-  n - m ∎ where open POR ≤-poset
+  n - m ∎
+  where open POR ≤-poset
 
 0≤n-m⇒m≤n : ∀ {m n} → + 0 ≤ n - m → m ≤ n
 0≤n-m⇒m≤n {m} {n} 0≤n-m = begin
@@ -1205,7 +1212,8 @@ m≤n⇒0≤n-m {m} {n} m≤n = begin
   n - m + m     ≡⟨ +-assoc n (- m) m ⟩
   n + (- m + m) ≡⟨ cong (_+_ n) (+-inverseˡ m) ⟩
   n + + 0       ≡⟨ +-identityʳ n ⟩
-  n ∎ where open POR ≤-poset
+  n             ∎
+  where open POR ≤-poset
 
 n≤1+n : ∀ n → n ≤ (+ 1) + n
 n≤1+n n = ≤-step ≤-refl
@@ -1286,7 +1294,9 @@ n≤1+n n = ≤-step ≤-refl
   }
 
 <-strictPartialOrder : StrictPartialOrder _ _ _
-<-strictPartialOrder = record { isStrictPartialOrder = <-isStrictPartialOrder }
+<-strictPartialOrder = record
+  { isStrictPartialOrder = <-isStrictPartialOrder
+  }
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
 <-isStrictTotalOrder = record
@@ -1338,7 +1348,8 @@ n≮n { -[1+ suc n ]} (-≤- n<n) =  contradiction n<n ℕₚ.1+n≰n
 +-mono-< {m} {n} {i} {j} m<n i<j = begin
   sucℤ (m + i) ≤⟨ suc-mono {m + i} (<⇒≤ (+-monoˡ-< i {m} {n} m<n)) ⟩
   sucℤ (n + i) ≤⟨ +-monoʳ-< n i<j ⟩
-  n + j ∎ where open ≤-Reasoning
+  n + j        ∎
+  where open POR ≤-poset
 
 +-mono-≤-< : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
 +-mono-≤-< {m} {n} {i} {j} m≤n i<j = ≤-<-trans (+-monoˡ-≤ i m≤n) (+-monoʳ-< n i<j)
@@ -1356,20 +1367,36 @@ m≤pred[n]⇒m<n {m} {n} m≤predn = begin
   + 1 + pred n         ≡⟨ sym (+-assoc (+ 1) -[1+ 0 ] n) ⟩
   (+ 1 + -[1+ 0 ]) + n ≡⟨ cong (_+ n) (+-inverseʳ (+ 1)) ⟩
   + 0 + n              ≡⟨ +-identityˡ n ⟩
-  n ∎ where open ≤-Reasoning
+  n                    ∎
+  where open POR ≤-poset
 
 m<n⇒m≤pred[n] : ∀ {m n} → m < n → m ≤ pred n
 m<n⇒m≤pred[n] {m} {n} m<n = begin
   m             ≡⟨ sym (pred-suc m) ⟩
   pred (sucℤ m) ≤⟨ pred-mono m<n ⟩
-  pred n ∎ where open ≤-Reasoning
+  pred n        ∎
+  where open POR ≤-poset
 
 neg-mono-<-> : -_ Preserves _<_ ⟶ _>_
 neg-mono-<-> {i} {j} i<j = begin
   + 1 - j       ≡⟨ cong (_- j) (neg-involutive (+ 1)) ⟩
   - - + 1 - j   ≡⟨ sym (neg-distrib-+ (- + 1) j) ⟩
   - (- + 1 + j) ≤⟨ neg-mono-≤-≥ (m<n⇒m≤pred[n] i<j) ⟩
-  - i           ∎ where open ≤-Reasoning
+  - i           ∎
+  where open POR ≤-poset
+
+------------------------------------------------------------------------
+-- A specialised module for reasoning about the _≤_ and _<_ relations
+
+module ≤-Reasoning where
+  open import Relation.Binary.Reasoning.Base.Triple
+    ≤-isPreorder
+    (λ {i} → <-trans {i})
+    (resp₂ _<_)
+    <⇒≤
+    (λ {i} → <-≤-trans {i})
+    ≤-<-trans
+    public hiding (_≈⟨_⟩_)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

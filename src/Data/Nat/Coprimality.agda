@@ -158,10 +158,10 @@ prime⇒coprime (suc (suc m)) p (suc n) _ 1+n<2+m {suc (suc i)}
   ⊥-elim (p _ 2+i′∣2+m)
   where
   i<m : i < m
-  i<m = ≤-pred $ ≤-pred (begin
-    3 + i  ≤⟨ s≤s (∣⇒≤ 2+i∣1+n) ⟩
-    2 + n  ≤⟨ 1+n<2+m ⟩
-    2 + m  ∎)
+  i<m = +-cancelˡ-< 2 (begin-strict
+    2 + i ≤⟨ ∣⇒≤ 2+i∣1+n ⟩
+    1 + n <⟨ 1+n<2+m ⟩
+    2 + m ∎)
     where open ≤-Reasoning
 
   2+i′∣2+m : 2 + toℕ (fromℕ≤ i<m) ∣ 2 + m

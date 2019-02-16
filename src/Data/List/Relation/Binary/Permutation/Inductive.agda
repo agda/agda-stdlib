@@ -66,7 +66,7 @@ module PermutationReasoning where
 
   open EqReasoning ↭-setoid public
     using (begin_ ; _∎ ; _≡⟨⟩_; _≡⟨_⟩_)
-    renaming (_≈⟨_⟩_ to _↭⟨_⟩_)
+    renaming (_≈⟨_⟩_ to _↭⟨_⟩_; _≈˘⟨_⟩_ to _↭˘⟨_⟩_)
 
   infixr 2 _∷_<⟨_⟩_  _∷_∷_<<⟨_⟩_
 
