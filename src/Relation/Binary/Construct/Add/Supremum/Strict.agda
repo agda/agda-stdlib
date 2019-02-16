@@ -25,6 +25,8 @@ import Relation.Binary.Construct.Add.Supremum.NonStrict as NonStrict
 ------------------------------------------------------------------------
 -- Definition
 
+infix 4 _<⁺_
+
 data _<⁺_ : Rel (A ⁺) r where
   [_]    : {k l : A} → k < l → [ k ] <⁺ [ l ]
   [_]<⊤⁺ : (k : A)           → [ k ] <⁺ ⊤⁺
