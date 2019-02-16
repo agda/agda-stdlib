@@ -4,6 +4,8 @@
 -- A categorical view of List⁺
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.NonEmpty.Categorical where
 
 open import Agda.Builtin.List

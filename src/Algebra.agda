@@ -5,6 +5,8 @@
 -- (packed in records together with sets, operations, etc.)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Algebra where
 
 open import Relation.Binary
@@ -72,6 +74,22 @@ record Band c ℓ : Set (suc (c ⊔ ℓ)) where
   semigroup = record { isSemigroup = isSemigroup }
 
   open Semigroup semigroup public using (magma; rawMagma)
+
+record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixr 7 _∧_
+  infix  4 _≈_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ
+    _∧_           : Op₂ Carrier
+    isSemilattice : IsSemilattice _≈_ _∧_
+
+  open IsSemilattice isSemilattice public
+
+  band : Band c ℓ
+  band = record { isBand = isBand }
+
+  open Band band public using (rawMagma; magma; semigroup)
 
 ------------------------------------------------------------------------
 -- Monoids
@@ -536,22 +554,6 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
 ------------------------------------------------------------------------
 -- Lattices and boolean algebras
 
-record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixr 7 _∧_
-  infix  4 _≈_
-  field
-    Carrier       : Set c
-    _≈_           : Rel Carrier ℓ
-    _∧_           : Op₂ Carrier
-    isSemilattice : IsSemilattice _≈_ _∧_
-
-  open IsSemilattice isSemilattice public
-
-  band : Band c ℓ
-  band = record { isBand = isBand }
-
-  open Band band public using (rawMagma; magma; semigroup)
-
 record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∧_
   infixr 6 _∨_
@@ -604,11 +606,10 @@ record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
   open IsBooleanAlgebra isBooleanAlgebra public
 
   distributiveLattice : DistributiveLattice _ _
-  distributiveLattice =
-    record { isDistributiveLattice = isDistributiveLattice }
+  distributiveLattice = record { isDistributiveLattice = isDistributiveLattice }
 
   open DistributiveLattice distributiveLattice public
-         using (setoid; lattice)
+    using (setoid; lattice)
 
 
 ------------------------------------------------------------------------

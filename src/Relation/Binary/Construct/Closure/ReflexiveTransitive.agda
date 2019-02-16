@@ -4,6 +4,8 @@
 -- The reflexive transitive closures of McBride, Norell and Jansson
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Binary.Construct.Closure.ReflexiveTransitive where
 
 open import Relation.Binary

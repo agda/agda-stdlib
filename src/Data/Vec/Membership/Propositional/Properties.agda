@@ -4,15 +4,17 @@
 -- Properties of membership of vectors based on propositional equality.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Vec.Membership.Propositional.Properties where
 
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Product as Prod using (_,_; ∃; _×_; -,_)
 open import Data.Vec hiding (here; there)
-open import Data.Vec.Any using (here; there)
+open import Data.Vec.Relation.Unary.Any using (here; there)
 open import Data.List using ([]; _∷_)
-open import Data.List.Any using (here; there)
-open import Data.Vec.Any using (Any; here; there)
+open import Data.List.Relation.Unary.Any using (here; there)
+open import Data.Vec.Relation.Unary.Any using (Any; here; there)
 open import Data.Vec.Membership.Propositional
 open import Data.List.Membership.Propositional
   using () renaming (_∈_ to _∈ₗ_)

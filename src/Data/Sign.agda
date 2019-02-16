@@ -4,6 +4,8 @@
 -- Signs
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Sign where
 
 open import Relation.Binary using (Decidable)

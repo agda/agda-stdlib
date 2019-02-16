@@ -11,8 +11,8 @@ module README where
 -- Jason Hu, Patrik Jansson, Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov,
 -- Sergei Meshveliani, Eric Mertens, Darin Morrison, Guilhem Moulin,
 -- Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
--- Andrés Sicard-Ramírez, Noam Zeilberger and some anonymous
--- contributors.
+-- Andrés Sicard-Ramírez, Sandro Stucki, Milo Turner, Noam Zeilberger
+-- and some anonymous contributors.
 ------------------------------------------------------------------------
 
 -- This version of the library has been tested using Agda 2.5.4.1.
@@ -283,6 +283,11 @@ import README.Container.FreeMonad
 -- "functional reasoning"
 
 import README.Function.Reasoning
+
+-- An example showing how to use the debug tracing mechanism to inspect
+-- the behaviour of compiled Agda programs.
+
+import README.Debug.Trace
 
 ------------------------------------------------------------------------
 -- Core modules

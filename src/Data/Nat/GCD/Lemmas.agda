@@ -4,6 +4,8 @@
 -- Boring lemmas used in Data.Nat.GCD and Data.Nat.Coprimality
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Nat.GCD.Lemmas where
 
 open import Data.Nat

@@ -10,6 +10,8 @@
 -- done.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Level
 
 module Data.Product.Categorical.Left.Base

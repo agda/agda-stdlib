@@ -4,6 +4,8 @@
 -- Bisimilarity for Colists
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Codata.Colist.Bisimilarity where
 
 open import Level using (_⊔_)

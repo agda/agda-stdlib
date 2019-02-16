@@ -4,6 +4,8 @@
 -- Lists with fast append
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.DifferenceList where
 
 open import Data.List.Base as L using (List)

@@ -4,6 +4,8 @@
 -- Characters
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Char where
 
 open import Data.Nat.Properties using (<-strictTotalOrder)

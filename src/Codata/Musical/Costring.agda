@@ -4,6 +4,8 @@
 -- Costrings
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Codata.Musical.Costring where
 
 open import Codata.Musical.Colist as Colist using (Colist)

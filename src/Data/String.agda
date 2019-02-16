@@ -4,12 +4,14 @@
 -- Strings
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.String where
 
 open import Data.Vec as Vec using (Vec)
 open import Data.Char as Char using (Char)
+open import Data.List.Relation.Binary.Lex.Strict as StrictLex
 open import Relation.Binary using (Setoid; StrictTotalOrder)
-open import Data.List.Relation.Lex.Strict as StrictLex
 import Relation.Binary.Construct.On as On
 import Relation.Binary.PropositionalEquality as PropEq
 

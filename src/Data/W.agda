@@ -4,6 +4,8 @@
 -- W-types
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.W where
 
 open import Level
@@ -24,8 +26,7 @@ module _ {s p} {C : Container s p} (open Container C)
  sup-injective₁ : ∀ {t g} → sup (s , f) ≡ sup (t , g) → s ≡ t
  sup-injective₁ refl = refl
 
- sup-injective₂ : ∀ {g} → sup (s , f) ≡ sup (s , g) → f ≡ g
- sup-injective₂ refl = refl
+ -- See also Data.W.WithK.sup-injective₂.
 
 -- Projections.
 

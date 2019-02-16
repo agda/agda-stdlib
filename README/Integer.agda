@@ -5,6 +5,8 @@
 -- operations and properties are defined, and how they can be used
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module README.Integer where
 
 -- The integers and various arithmetic operations are defined in

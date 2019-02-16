@@ -6,6 +6,8 @@
 
 -- The definitions in this file are reexported by Data.Maybe.
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Maybe.Base where
 
 open import Level
@@ -107,3 +109,13 @@ module _ {a b} {A : Set a} {B : Set b} where
 
   zip : Maybe A → Maybe B → Maybe (A × B)
   zip = zipWith _,_
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+-- Injections.
+
+  thisM : A → Maybe B → These A B
+  thisM a = maybe′ (these a) (this a)
+
+  thatM : Maybe A → B → These A B
+  thatM = maybe′ these that

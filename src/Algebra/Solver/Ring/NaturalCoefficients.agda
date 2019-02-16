@@ -5,6 +5,8 @@
 -- coefficient "ring"
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Algebra
 import Algebra.Operations.Semiring as SemiringOps
 open import Data.Maybe.Base using (Maybe; just; nothing; map)
@@ -21,11 +23,10 @@ open import Algebra.Solver.Ring.AlmostCommutativeRing
 open import Data.Nat.Base as ℕ
 open import Data.Product using (module Σ)
 open import Function
-import Relation.Binary.EqReasoning
 
 open CommutativeSemiring R
 open SemiringOps semiring
-open Relation.Binary.EqReasoning setoid
+open import Relation.Binary.Reasoning.Setoid setoid
 
 private
 

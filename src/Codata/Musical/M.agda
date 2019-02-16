@@ -4,6 +4,8 @@
 -- M-types (the dual of W-types)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Codata.Musical.M where
 
 open import Codata.Musical.Notation

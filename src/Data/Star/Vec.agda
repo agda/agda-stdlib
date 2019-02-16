@@ -4,6 +4,8 @@
 -- Vectors defined in terms of the reflexive-transitive closure, Star
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K --safe #-}
+
 module Data.Star.Vec where
 
 open import Data.Star.Nat
