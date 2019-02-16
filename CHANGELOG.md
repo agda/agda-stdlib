@@ -623,13 +623,6 @@ Other minor additions
   mapM      : (Q ⊆ M ∘′ P) → All Q ⊆ (M ∘′ All P)
   forA      : All Q xs → (Q ⊆ F ∘′ P) → F (All P xs)
   forM      : All Q xs → (Q ⊆ M ∘′ P) → M (All P xs)
-
-  _++_      : ∀ {l m} → All P l → All P m → All P (l List.++ m)
-  _∷ʳ_      : ∀ {l : List A}{x} → All P l → P x → All P (l List.∷ʳ x)
-
-  updateAt  : ∀ {x xs} → x ∈ xs → (P x → P x) → All P xs → All P xs
-  _[_]%=_   : ∀ {x xs} → All P xs → x ∈ xs → (P x → P x) → All P xs
-  _[_]≔_    : ∀ {x xs} → All P xs → x ∈ xs → P x → All P xs
   ```
 
 * Added new operators to `Data.List.Base`:
