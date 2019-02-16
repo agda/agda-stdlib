@@ -24,7 +24,8 @@ import Data.List.Relation.Binary.Sublist.Homogeneous.Properties as SubProp
 open SubProp
   hiding ( reflexive
          ; refl
-         ; trans)
+         ; trans
+         )
   public
 
 ------------------------------------------------------------------------
