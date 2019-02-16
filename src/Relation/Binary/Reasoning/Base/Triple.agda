@@ -36,7 +36,7 @@ open IsPreorder isPreorder
 ------------------------------------------------------------------------
 -- A datatype to hide the current relation type
 
-data _IsRelatedTo_ (x y : A) : Set (ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃) where
+data _IsRelatedTo_ (x y : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃) where
   strict    : (x<y : x < y) → x IsRelatedTo y
   nonstrict : (x≤y : x ≤ y) → x IsRelatedTo y
   equals    : (x≈y : x ≈ y) → x IsRelatedTo y
@@ -45,7 +45,7 @@ data _IsRelatedTo_ (x y : A) : Set (ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃) where
 -- Types that are used to ensure that the final relation proved by the
 -- chain of reasoning can be converted into the required relation.
 
-data IsStrict {x y} : x IsRelatedTo y → Set ℓ₃ where
+data IsStrict {x y} : x IsRelatedTo y → Set (a ⊔ ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃) where
   isStrict : ∀ x<y → IsStrict (strict x<y)
 
 IsStrict? : ∀ {x y} (x≲y : x IsRelatedTo y) → Dec (IsStrict x≲y)
@@ -56,7 +56,7 @@ IsStrict? (equals    _)   = no λ()
 extractStrict : ∀ {x y} {x≲y : x IsRelatedTo y} → IsStrict x≲y → x < y
 extractStrict (isStrict x<y) = x<y
 
-data IsEquality {x y} : x IsRelatedTo y → Set ℓ₁ where
+data IsEquality {x y} : x IsRelatedTo y → Set (a ⊔ ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃) where
   isEquality : ∀ x≈y → IsEquality (equals x≈y)
 
 IsEquality? : ∀ {x y} (x≲y : x IsRelatedTo y) → Dec (IsEquality x≲y)
