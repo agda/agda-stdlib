@@ -346,8 +346,7 @@ Deprecated features
   T-irrelevance ↦ T-irrelevant
   ```
 
-* In `
-.Properties`:
+* In `Data.Fin.Properties`:
   ```agda
   ≤-irrelevance ↦ ≤-irrelevant
   <-irrelevance ↦ <-irrelevant
