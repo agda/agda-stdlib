@@ -17,7 +17,8 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 infix  4 _IsRelatedTo_
 infix  3 _∎
-infixr 2 _∼⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
+infixr 2 step-∼ step-≡ step-≡˘
+infixr 2 _≡⟨⟩_
 infix  1 begin_
 
 -- This seemingly unnecessary type is used to make it possible to
@@ -29,14 +30,20 @@ data _IsRelatedTo_ (x y : A) : Set ℓ where
 begin_ : ∀ {x y} → x IsRelatedTo y → x ∼ y
 begin relTo x∼y = x∼y
 
-_∼⟨_⟩_ : ∀ x {y z} → x ∼ y → y IsRelatedTo z → x IsRelatedTo z
-_ ∼⟨ x∼y ⟩ relTo y∼z = relTo (trans x∼y y∼z)
+step-∼ : ∀ x {y z} → y IsRelatedTo z → x ∼ y → x IsRelatedTo z
+step-∼ _ (relTo y∼z) x∼y = relTo (trans x∼y y∼z)
 
-_≡⟨_⟩_ : ∀ x {y z} → x ≡ y → y IsRelatedTo z → x IsRelatedTo z
-_ ≡⟨ P.refl ⟩ x∼z = x∼z
+syntax step-∼ x y∼z x∼y = x ∼⟨ x∼y ⟩ y∼z
 
-_≡˘⟨_⟩_ : ∀ x {y z} → y ≡ x → y IsRelatedTo z → x IsRelatedTo z
-_ ≡˘⟨ P.refl ⟩ x∼z = x∼z
+step-≡ : ∀ x {y z} → y IsRelatedTo z → x ≡ y → x IsRelatedTo z
+step-≡ _ x∼z P.refl = x∼z
+
+syntax step-≡ x y≡z x≡y = x ≡⟨ x≡y ⟩ y≡z
+
+step-≡˘ : ∀ x {y z} → y IsRelatedTo z → y ≡ x → x IsRelatedTo z
+step-≡˘ _ x∼z P.refl = x∼z
+
+syntax step-≡˘ x y≡z y≡x = x ≡˘⟨ y≡x ⟩ y≡z
 
 _≡⟨⟩_ : ∀ x {y} → x IsRelatedTo y → x IsRelatedTo y
 _ ≡⟨⟩ x∼y = _ ≡⟨ P.refl ⟩ x∼y

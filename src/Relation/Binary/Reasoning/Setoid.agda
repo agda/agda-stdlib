@@ -30,9 +30,16 @@ open Setoid S
 -- Publicly re-export base contents
 
 open import Relation.Binary.Reasoning.Base.Single _≈_ refl trans public
-  renaming (_∼⟨_⟩_ to _≈⟨_⟩_)
+  hiding (step-∼)
 
-infixr 2 _≈˘⟨_⟩_
+infixr 2 step-≈ step-≈˘
 
-_≈˘⟨_⟩_ : ∀ x {y z} → y ≈ x → y IsRelatedTo z → x IsRelatedTo z
-x ≈˘⟨ x≈y ⟩ y∼z = x ≈⟨ sym x≈y ⟩ y∼z
+step-≈ : ∀ x {y z} → y IsRelatedTo z → x ≈ y → x IsRelatedTo z
+step-≈ _ (relTo y≈z) x≈y = relTo (trans x≈y y≈z)
+
+syntax step-≈ x y≈z x≈y = x ≈⟨ x≈y ⟩ y≈z
+
+step-≈˘ : ∀ x {y z} → y IsRelatedTo z → y ≈ x → x IsRelatedTo z
+step-≈˘ _ (relTo y≈z) y≈x = relTo (trans (sym y≈x) y≈z)
+
+syntax step-≈˘ x y≈z y≈x = x ≈˘⟨ y≈x ⟩ y≈z
