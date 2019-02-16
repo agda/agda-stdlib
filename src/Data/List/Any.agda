@@ -9,4 +9,4 @@
 
 module Data.List.Any where
 
-open import Data.List.Relation.Unary.All public
+open import Data.List.Relation.Unary.Any public
