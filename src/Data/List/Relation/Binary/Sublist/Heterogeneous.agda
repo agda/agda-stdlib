@@ -14,6 +14,7 @@ open import Level using (_⊔_)
 open import Data.List.Base using (List; []; _∷_; [_])
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Function
+open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
@@ -50,3 +51,15 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   fromAny : ∀ {a bs} → Any (R a) bs → Sublist R [ a ] bs
   fromAny (here r)  = r ∷ minimum _
   fromAny (there p) = _ ∷ʳ fromAny p
+
+------------------------------------------------------------------------
+-- Generalised lookup based on a proof of Any
+
+module _ {a b p q r} {A : Set a} {B : Set b} {R : REL A B r}
+         {P : Pred A p} {Q : Pred B q} (resp : P ⟶ Q Respects R) where
+
+  lookup : ∀ {xs ys} → Sublist R xs ys → Any P xs → Any Q ys
+  lookup []       ()
+  lookup (y ∷ʳ p)  k         = there (lookup p k)
+  lookup (rxy ∷ p) (here px) = here (resp rxy px)
+  lookup (rxy ∷ p) (there k) = there (lookup p k)

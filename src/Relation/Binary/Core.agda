@@ -142,8 +142,12 @@ Min R = Max (flip R)
 Minimum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
 Minimum = Min
 
+_⟶_Respects_ : ∀ {a b ℓ₁ ℓ₂ ℓ₃} {A : Set a} {B : Set b} →
+               (A → Set ℓ₁) → (B → Set ℓ₂) → REL A B ℓ₃ → Set _
+P ⟶ Q Respects _∼_ = ∀ {x y} → x ∼ y → P x → Q y
+
 _Respects_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → (A → Set ℓ₁) → Rel A ℓ₂ → Set _
-P Respects _∼_ = ∀ {x y} → x ∼ y → P x → P y
+P Respects _∼_ = P ⟶ P Respects _∼_
 
 _Respectsʳ_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} → REL A B ℓ₁ → Rel B ℓ₂ → Set _
 P Respectsʳ _∼_ = ∀ {x} → (P x) Respects _∼_

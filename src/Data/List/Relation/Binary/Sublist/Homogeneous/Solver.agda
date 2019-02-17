@@ -25,7 +25,7 @@ open import Data.Product
 open import Data.Vec as Vec using (Vec ; lookup)
 open import Data.List hiding (lookup)
 open import Data.List.Properties
-open import Data.List.Relation.Binary.Sublist.Heterogeneous
+open import Data.List.Relation.Binary.Sublist.Heterogeneous hiding (lookup)
 open import Data.List.Relation.Binary.Sublist.Homogeneous.Properties
 open import Function
 

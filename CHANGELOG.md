@@ -979,6 +979,8 @@ Other minor additions
   Min : REL A B ℓ → A → Set _
 
   Conn P Q = ∀ x y → P x y ⊎ Q y x
+
+  P ⟶ Q Respects _∼_ = ∀ {x y} → x ∼ y → P x → Q y
   ```
 
 * Added new proofs to `Relation.Binary.Lattice`:

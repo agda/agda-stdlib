@@ -27,8 +27,7 @@ import Relation.Nullary.Decidable as D
 open import Relation.Unary as U using (Pred)
 
 open import Data.List.Relation.Binary.Sublist.Propositional {a} {A}
-open import Data.List.Relation.Binary.Sublist.Setoid.Properties (P.setoid A)
-  hiding (lookup) public
+open import Data.List.Relation.Binary.Sublist.Setoid.Properties (P.setoid A) public
 
 ------------------------------------------------------------------------
 -- The `loookup` function induced by a proof that `xs ⊆ ys` is injective
