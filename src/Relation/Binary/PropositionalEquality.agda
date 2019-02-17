@@ -246,11 +246,6 @@ module _ {a p} {A : Set a} {P : A → Set p} {x y : A} where
     subst P y≡z (subst P x≡y p) ≡ subst P (trans x≡y y≡z) p
   subst-subst refl = refl
 
-  subst-∘ :  ∀ {b} {B : Set b} {P : B → Set p} {f : A → B}
-    (x≡y : x ≡ y) {p : P (f x)} →
-    subst (P ∘ f) x≡y p ≡ subst P (cong f x≡y) p
-  subst-∘ refl = refl
-
   subst-subst-sym : (x≡y : x ≡ y) {p : P y} →
     subst P x≡y (subst P (sym x≡y) p) ≡ p
   subst-subst-sym refl = refl
@@ -258,6 +253,13 @@ module _ {a p} {A : Set a} {P : A → Set p} {x y : A} where
   subst-sym-subst : (x≡y : x ≡ y) {p : P x} →
     subst P (sym x≡y) (subst P x≡y p) ≡ p
   subst-sym-subst refl = refl
+
+subst-∘ :
+  ∀ {a b p} {A : Set a} {B : Set b} {x y : A} {P : B → Set p}
+    {f : A → B}
+  (x≡y : x ≡ y) {p : P (f x)} →
+  subst (P ∘ f) x≡y p ≡ subst P (cong f x≡y) p
+subst-∘ refl = refl
 
 subst-application :
   ∀ {a₁ a₂ b₁ b₂} {A₁ : Set a₁} {A₂ : Set a₂}
