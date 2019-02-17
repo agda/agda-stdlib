@@ -17,6 +17,7 @@ open import Data.List hiding (lookup)
 open import Data.List.Properties
 open import Data.List.Relation.Binary.Sublist.Propositional hiding (lookup)
 open import Data.List.Relation.Binary.Sublist.Propositional.Properties
+  as SubProp hiding (refl)
 open import Function
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality hiding ([_])
@@ -100,16 +101,16 @@ module _ {n : ℕ} {a} {A : Set a} (eq? : Decidable {A = A} _≡_) where
   private
 
     keep-it : ∀ it (xs ys : RList n A) → xs ⊆R ys → (it ∷ xs) ⊆R (it ∷ ys)
-    keep-it it xs ys hyp ρ = ++⁺ ⊆-refl (hyp ρ)
+    keep-it it xs ys hyp ρ = ++⁺ {A = A} SubProp.refl (hyp ρ)
 
     skip-it : ∀ it (d e : RList n A) → d ⊆R e → d ⊆R (it ∷ e)
-    skip-it it d ys hyp ρ = skips (⟦ it ⟧I ρ) (hyp ρ)
+    skip-it it d ys hyp ρ = ++ˡ {A = A} (⟦ it ⟧I ρ) (hyp ρ)
 
 -- Solver for linearised expressions
 
   solveR : (d e : RList n A) → Maybe (d ⊆R e)
   -- trivial
-  solveR []          e           = just (λ ρ → []⊆ ⟦ e ⟧R ρ)
+  solveR []          e           = just (λ ρ → minimum {A = A} (⟦ e ⟧R ρ))
   solveR (it ∷ d)    []          = nothing
   -- actual work
   solveR (var k ∷ d) (var l ∷ e) with k Fin.≟ l

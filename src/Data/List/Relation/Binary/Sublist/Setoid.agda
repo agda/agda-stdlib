@@ -20,6 +20,7 @@ private
   module S = Setoid S
   open S renaming (Carrier to A)
 
+infix 4 _⊆_
 _⊆_ : Rel (List A) (c ⊔ ℓ)
 _⊆_ = Sublist.Sublist _≈_
 
