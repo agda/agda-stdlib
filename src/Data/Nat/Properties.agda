@@ -27,7 +27,7 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 
 open import Relation.Nullary
-open import Relation.Nullary.Decidable using (via-injection; map′)
+open import Relation.Nullary.Decidable using (True; via-injection; map′)
 open import Relation.Nullary.Negation using (contradiction)
 
 open import Algebra.FunctionProperties (_≡_ {A = ℕ})
@@ -51,8 +51,8 @@ zero  ≟ zero   = yes refl
 zero  ≟ suc n  = no λ()
 suc m ≟ zero   = no λ()
 suc m ≟ suc n  with m ≟ n
-... | yes refl = yes refl
-... | no m≢n   = no (m≢n ∘ suc-injective)
+... | yes eq = yes (cong suc eq)
+... | no m≢n = no (m≢n ∘ suc-injective)
 
 ≡-isDecEquivalence : IsDecEquivalence (_≡_ {A = ℕ})
 ≡-isDecEquivalence = record
@@ -66,6 +66,15 @@ suc m ≟ suc n  with m ≟ n
   ; _≈_              = _≡_
   ; isDecEquivalence = ≡-isDecEquivalence
   }
+
+------------------------------------------------------------------------
+-- Properties of _≟_
+
+≟-diag : ∀ m → True (m ≟ m)
+≟-diag zero    = _
+≟-diag (suc m) with m ≟ m | ≟-diag m
+... | yes eq | _ = _
+... | no ¬eq | ()
 
 ------------------------------------------------------------------------
 -- Properties of _≡ᵇ_
@@ -84,6 +93,11 @@ suc m ≟ suc n  with m ≟ n
 
 _≟ᵇ_ : Decidable {A = ℕ} _≡_
 m ≟ᵇ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
+
+≟ᵇ-diag : ∀ m → True (m ≟ᵇ m)
+≟ᵇ-diag m with T? (m ≡ᵇ m)
+... | yes _ = _
+... | no ¬p = ¬p (≡⇒≡ᵇ m m refl)
 
 ------------------------------------------------------------------------
 -- Properties of _<ᵇ_

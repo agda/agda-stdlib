@@ -706,9 +706,13 @@ Other minor additions
 
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
 
-  ≡ᵇ⇒≡   : T (m ≡ᵇ n) → m ≡ n
-  ≡⇒≡ᵇ   : m ≡ n → T (m ≡ᵇ n)
-  _≟ᵇ_   : Decidable _≡_
+  ≟-diag : ∀ m → True (m ≟ m)
+
+  ≡ᵇ⇒≡    : T (m ≡ᵇ n) → m ≡ n
+  ≡⇒≡ᵇ    : m ≡ n → T (m ≡ᵇ n)
+  _≟ᵇ_    : Decidable _≡_
+  ≟ᵇ-diag : ∀ m → True (m ≟ᵇ m)
+
   <ᵇ⇒<″  : T (m <ᵇ n) → m <″ n
   <″⇒<ᵇ  : m <″ n → T (m <ᵇ n)
   _<″ᵇ?_ : Decidable _<″_
