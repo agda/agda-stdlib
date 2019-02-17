@@ -8,7 +8,8 @@
 
 module Data.List.Relation.Binary.Sublist.Homogeneous.Properties where
 
-open import Data.List.Base
+open import Data.List.Base using (List; []; _∷_; takeWhile; dropWhile; filter)
+open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Binary.Pointwise as Pw using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Sublist.Heterogeneous
 open import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties public
@@ -84,3 +85,15 @@ module _ {a r p} {A : Set a} {R : Rel A r} {P : Pred A p} (P? : U.Decidable P) w
   filter-dropWhile {a ∷ as} (p ∷ ps) with P? a
   ... | yes pa = p ∷ filter-Sublist P? (fromPointwise ps)
   ... | no ¬pa = filter-dropWhile ps
+
+module _ {a p r} {A : Set a} {R : Rel A r} {P : Pred A p}
+         (P-resp-R : P Respects R) where
+
+------------------------------------------------------------------------
+-- Generalised lookup based on a proof of Any
+
+  lookup : ∀ {xs ys} → Sublist R xs ys → Any P xs → Any P ys
+  lookup []       ()
+  lookup (y ∷ʳ p)  k         = there (lookup p k)
+  lookup (rxy ∷ p) (here px) = here (P-resp-R rxy px)
+  lookup (rxy ∷ p) (there k) = there (lookup p k)

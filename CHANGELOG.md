@@ -960,8 +960,11 @@ Other minor additions
   ```
 
 * Added new definitions to `Relation.Binary.PropositionalEquality`:
-  - `_≡_↾¹_` equality of functions at a single point
-  - `_≡_↾_` equality of functions at a subset of the domain
+  ```agda
+  trans-injectiveˡ : trans p₁ q ≡ trans p₂ q → p₁ ≡ p₂
+  trans-injectiveʳ : trans p q₁ ≡ trans p q₂ → q₁ ≡ q₂
+  subst-injective  : subst P x≡y p ≡ subst P x≡y q → p ≡ q
+  ```
 
 * Added new proofs to `Relation.Binary.Consequences`:
   ```agda

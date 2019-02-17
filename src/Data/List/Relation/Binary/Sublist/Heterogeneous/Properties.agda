@@ -12,6 +12,8 @@ open import Data.Empty
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Base as List hiding (map; _∷ʳ_)
 import Data.List.Properties as Lₚ
+open import Data.List.Relation.Unary.Any.Properties
+  using (here-injective; there-injective)
 open import Data.List.Relation.Binary.Pointwise as Pw using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Sublist.Heterogeneous
 
@@ -21,13 +23,33 @@ import Data.Nat.Properties as ℕₚ
 open import Data.Product using (_×_; uncurry)
 
 open import Function
-open import Function.Equivalence as Equiv using (_⇔_ ; equivalence)
+open import Function.Bijection   using (_⤖_; bijection)
+open import Function.Equivalence using (_⇔_ ; equivalence)
 
 open import Relation.Nullary using (yes; no; ¬_)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary as U using (Pred; _⊆_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
+
+
+------------------------------------------------------------------------
+-- Injectivity of constructors
+
+module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+
+  ∷-injectiveˡ : ∀ {x y xs ys} {px qx : R x y} {pxs qxs : Sublist R xs ys} →
+                 (Sublist R (x ∷ xs) (y ∷ ys) ∋ px ∷ pxs) ≡ (qx ∷ qxs) → px ≡ qx
+  ∷-injectiveˡ P.refl = P.refl
+
+  ∷-injectiveʳ : ∀ {x y xs ys} {px qx : R x y} {pxs qxs : Sublist R xs ys} →
+                 (Sublist R (x ∷ xs) (y ∷ ys) ∋ px ∷ pxs) ≡ (qx ∷ qxs) → pxs ≡ qxs
+  ∷-injectiveʳ P.refl = P.refl
+
+  ∷ʳ-injective : ∀ {y xs ys} {pxs qxs : Sublist R xs ys} →
+                 (Sublist R xs (y ∷ ys) ∋ y ∷ʳ pxs) ≡ (y ∷ʳ qxs) → pxs ≡ qxs
+  ∷ʳ-injective P.refl = P.refl
+
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
@@ -288,6 +310,41 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} {a as b bs} where
 
   ∷ʳ⁻¹ : ¬ R a b → Sublist R (a ∷ as) bs ⇔ Sublist R (a ∷ as) (b ∷ bs)
   ∷ʳ⁻¹ ¬r = equivalence (_ ∷ʳ_) (∷ʳ⁻ ¬r)
+
+------------------------------------------------------------------------
+-- Irrevlant special case
+
+module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+
+  Sublist-[]-irrelevant : U.Irrelevant (Sublist R [])
+  Sublist-[]-irrelevant []       []        = P.refl
+  Sublist-[]-irrelevant (y ∷ʳ p) (.y ∷ʳ q) = P.cong (y ∷ʳ_) (Sublist-[]-irrelevant p q)
+
+------------------------------------------------------------------------
+-- (to/from)Any is a bijection
+
+  toAny-injective : ∀ {xs x} {p q : Sublist R [ x ] xs} → toAny p ≡ toAny q → p ≡ q
+  toAny-injective {p = y ∷ʳ p} {y ∷ʳ q} =
+    P.cong (y ∷ʳ_) ∘′ toAny-injective ∘′ there-injective
+  toAny-injective {p = _ ∷ p}  {_ ∷ q}  =
+    P.cong₂ (flip _∷_) (Sublist-[]-irrelevant p q) ∘′ here-injective
+  toAny-injective {p = _ ∷ʳ _} {_ ∷ _}  = λ ()
+  toAny-injective {p = _ ∷ _}  {_ ∷ʳ _} = λ ()
+
+  fromAny-injective : ∀ {xs x} {p q : Any (R x) xs} →
+                      fromAny {R = R} p ≡ fromAny q → p ≡ q
+  fromAny-injective {p = here px} {here qx} = P.cong here ∘′ ∷-injectiveˡ
+  fromAny-injective {p = there p} {there q} =
+    P.cong there ∘′ fromAny-injective ∘′ ∷ʳ-injective
+  fromAny-injective {p = here _}  {there _} = λ ()
+  fromAny-injective {p = there _} {here _}  = λ ()
+
+  toAny∘fromAny≗id : ∀ {xs x} (p : Any (R x) xs) → toAny (fromAny {R = R} p) ≡ p
+  toAny∘fromAny≗id (here px) = P.refl
+  toAny∘fromAny≗id (there p) = P.cong there (toAny∘fromAny≗id p)
+
+  Sublist-[x]-bijection : ∀ {x xs} → (Sublist R [ x ] xs) ⤖ (Any (R x) xs)
+  Sublist-[x]-bijection = bijection toAny fromAny toAny-injective toAny∘fromAny≗id
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} (R? : Decidable R) where
 
