@@ -8,25 +8,18 @@
 
 module Data.List.Relation.Binary.Sublist.Propositional.Properties {a} {A : Set a} where
 
-open import Data.Empty
-open import Data.List.Base hiding (lookup; _∷ʳ_)
-open import Data.List.Properties
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.Any.Properties using (here-injective; there-injective)
-open import Data.Maybe as Maybe using (nothing; just)
-open import Data.Maybe.Relation.Unary.All as MAll using (nothing; just)
-open import Data.Nat.Base
-open import Data.Nat.Properties
+open import Data.List.Relation.Binary.Sublist.Propositional {a} {A}
 
 open import Function
 
-open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P hiding ([_])
-open import Relation.Nullary
-import Relation.Nullary.Decidable as D
 open import Relation.Unary as U using (Pred)
 
-open import Data.List.Relation.Binary.Sublist.Propositional {a} {A}
+------------------------------------------------------------------------
+-- Re-exporting setoid properties
+
 open import Data.List.Relation.Binary.Sublist.Setoid.Properties (P.setoid A) public
 
 ------------------------------------------------------------------------
