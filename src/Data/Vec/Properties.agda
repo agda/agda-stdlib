@@ -129,14 +129,11 @@ module _ {a} {A : Set a} where
   -- Direct inductive proofs are in most cases easier than just using
   -- the defining properties.
 
-  -- In the explanations, we make use of shorthand  f = g ↾ x
-  -- meaning that f and g agree at point x, i.e.  f x ≡ g x.
+  -- updateAt i  is a morphism from the monoid of endofunctions A → A
+  -- to the monoid of endofunctions Vec A n → Vec A n
 
-  -- updateAt i  is a morphism from the monoid of endofunctions  A → A
-  -- to the monoid of endofunctions  Vec A n → Vec A n
-
-  -- 1a. relative identity:  f = id ↾ (lookup i xs)
-  --                implies  updateAt i f = id ↾ xs
+  -- 1a. relative identity:  f (lookup i xs) = lookup i xs
+  --                implies  updateAt i f xs = xs
 
   updateAt-id-relative : ∀ {n} (i : Fin n) (xs : Vec A n) {f : A → A}
     → f (lookup i xs) ≡ lookup i xs
@@ -150,7 +147,7 @@ module _ {a} {A : Set a} where
     updateAt i id xs ≡ xs
   updateAt-id i xs = updateAt-id-relative i xs refl
 
-  -- 2a. relative composition:  f ∘ g = h ↾ (lookup i xs)
+  -- 2a. relative composition:  (f ∘ g) (lookup i xs) = h (lookup i xs)
   --                   implies  updateAt i f ∘ updateAt i g ≗ updateAt i h
 
   updateAt-compose-relative : ∀ {n} (i : Fin n) {f g h : A → A} (xs : Vec A n)
@@ -164,123 +161,6 @@ module _ {a} {A : Set a} where
 
   updateAt-compose : ∀ {n} (i : Fin n) {f g : A → A} →
     updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
-  updateAt-compose i xs = updateAt-compose-relative i xs refl
-
-  -- 3. congruence:  updateAt i  is a congruence wrt. extensional equality.
-
-  -- 3a.  If    f = g ↾ (lookup i xs)
-  --      then  updateAt i f = updateAt i g ↾ xs
-
-  updateAt-cong-relative : ∀ {n} (i : Fin n) {f g : A → A} (xs : Vec A n)
-    → f (lookup i xs) ≡ g (lookup i xs)
-    → updateAt i f xs ≡ updateAt i g xs
-  updateAt-cong-relative zero    (x ∷ xs) f=g = P.cong (_∷ xs) f=g
-  updateAt-cong-relative (suc i) (x ∷ xs) f=g = P.cong (x ∷_) (updateAt-cong-relative i xs f=g)
-
-  -- 3b. congruence:  f ≗ g → updateAt i f ≗ updateAt i g
-
-  updateAt-cong : ∀ {n} (i : Fin n) {f g : A → A}
-    → f ≗ g
-    → updateAt i f ≗ updateAt i g
-  updateAt-cong i f≗g xs = updateAt-cong-relative i xs (f≗g (lookup i xs))
-
-  -- The order of updates at different indices i ≢ j does not matter.
-
-  -- This a consequence of updateAt-updates and updateAt-minimal
-  -- but easier to prove inductively.
-
-  updateAt-commutes : ∀ {n} (i j : Fin n) {f g : A → A}
-    → i ≢ j
-    → updateAt i f ∘ updateAt j g ≗ updateAt j g ∘ updateAt i f
-  updateAt-commutes zero    zero    0≢0 (x ∷ xs) = ⊥-elim (0≢0 refl)
-  updateAt-commutes zero    (suc j) i≢j (x ∷ xs) = refl
-  updateAt-commutes (suc i) zero    i≢j (x ∷ xs) = refl
-  updateAt-commutes (suc i) (suc j) i≢j (x ∷ xs) =
-    P.cong (x ∷_) (updateAt-commutes i j (i≢j ∘ P.cong suc) xs)
-
-  -- lookup after updateAt reduces.
-
-  -- For same index this is an easy consequence of updateAt-updates
-  -- using []=↔lookup.
-
-  lookup∘updateAt : ∀ {n} (i : Fin n) {f : A → A} →
-    lookup i ∘ updateAt i f ≗ f ∘ lookup i
-  lookup∘updateAt i xs =
-    []=⇒lookup (updateAt-updates i xs (lookup⇒[]= i _ refl))
-
-  -- For different indices it easily follows from updateAt-minimal.
-
-  lookup∘updateAt′ : ∀ {n} (i j : Fin n) {f : A → A}
-    → i ≢ j
-    → lookup i ∘ updateAt j f ≗ lookup i
-  lookup∘updateAt′ i j xs i≢j =
-    []=⇒lookup (updateAt-minimal i j i≢j xs (lookup⇒[]= i _ refl))
-
-  -- Aliases for notation _[_]%=_
-
-  []%=-id : ∀ {n} (xs : Vec A n) (i : Fin n) → xs [ i ]%= id ≡ xs
-  []%=-id xs i = updateAt-id i xs
-
-  []%=-compose : ∀ {n} (xs : Vec A n) (i : Fin n) {f g : A → A} →
-       xs [ i ]%= f
-          [ i ]%= g
-     ≡ xs [ i ]%= g ∘ f
-  []%=-compose xs i = updateAt-compose i xs
-
-------------------------------------------------------------------------
--- updateAt (_[_]%=_)
-
-module _ {a} {A : Set a} where
-
-  -- Defining properties of updateAt:
-
-  -- (+) updateAt i actually updates the element at index i.
-
-  updateAt-updates : ∀ {n} (i : Fin n) {f : A → A} (xs : Vec A n) {x : A}
-    → xs              [ i ]= x
-    → updateAt i f xs [ i ]= f x
-  updateAt-updates zero    (x ∷ xs) here        = here
-  updateAt-updates (suc i) (x ∷ xs) (there loc) = there (updateAt-updates i xs loc)
-
-  -- (-) updateAt i does not touch the elements at other indices.
-
-  updateAt-minimal : ∀ {n} (i j : Fin n) {f : A → A} {x : A} (xs : Vec A n)
-    → i ≢ j
-    → xs              [ i ]= x
-    → updateAt j f xs [ i ]= x
-  updateAt-minimal zero    zero    (x ∷ xs) 0≢0 here        = ⊥-elim (0≢0 refl)
-  updateAt-minimal zero    (suc j) (x ∷ xs) _   here        = here
-  updateAt-minimal (suc i) zero    (x ∷ xs) _   (there loc) = there loc
-  updateAt-minimal (suc i) (suc j) (x ∷ xs) i≢j (there loc) =
-    there (updateAt-minimal i j xs (i≢j ∘ P.cong suc) loc)
-
-  -- The other properties are consequences of (+) and (-).
-  -- We spell the most natural properties out.
-  -- Direct inductive proofs are in most cases easier than just using
-  -- the defining properties.
-
-  -- updateAt i  is a morphism from the monoid of endofunctions A → A
-  -- to the monoid of endofunctions Vec A n → Vec A n
-
-  -- 1a. relative identity:  f (lookup i xs) = lookup i xs
-  --                implies  updateAt i f xs = xs
-
-  updateAt-id-relative : ∀ {n} (i : Fin n) (xs : Vec A n) {f : A → A}
-    → f (lookup i xs) ≡ lookup i xs 
-    → updateAt i f xs ≡ xs
-  updateAt-id-relative zero    (x ∷ xs) eq = P.cong (_∷ xs) eq
-  updateAt-id-relative (suc i) (x ∷ xs) eq = P.cong (x ∷_) (updateAt-id-relative i xs eq)
-
-  -- 1b. identity:  updateAt i id ≗ id
-
-  updateAt-id : ∀ {n} (i : Fin n) (xs : Vec A n) →
-    updateAt i id xs ≡ xs
-  updateAt-id i xs = updateAt-id-relative i xs refl
-
-  -- 2. composition:  updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
-
-  updateAt-compose : ∀ {n} (i : Fin n) {f g : A → A} →
-    updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
   updateAt-compose zero    (x ∷ xs) = refl
   updateAt-compose (suc i) (x ∷ xs) = P.cong (x ∷_) (updateAt-compose i xs)
 
@@ -290,7 +170,7 @@ module _ {a} {A : Set a} where
   --      then  updateAt i f xs = updateAt i g xs
 
   updateAt-cong-relative : ∀ {n} (i : Fin n) {f g : A → A} (xs : Vec A n)
-    → f (lookup i xs) ≡ g (lookup i xs) 
+    → f (lookup i xs) ≡ g (lookup i xs)
     → updateAt i f xs ≡ updateAt i g xs
   updateAt-cong-relative zero    (x ∷ xs) f=g = P.cong (_∷ xs) f=g
   updateAt-cong-relative (suc i) (x ∷ xs) f=g = P.cong (x ∷_) (updateAt-cong-relative i xs f=g)
