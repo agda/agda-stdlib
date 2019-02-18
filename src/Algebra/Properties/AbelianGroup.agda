@@ -13,8 +13,7 @@ module Algebra.Properties.AbelianGroup
 
 open AbelianGroup G
 open import Function
-open import Relation.Binary.EqReasoning setoid
-
+open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
 -- Publicly re-export group properties
@@ -36,8 +35,8 @@ private
 
   lemma₂ : ∀ x y → x ∙ (y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹) ≈ y ⁻¹
   lemma₂ x y = begin
-    x ∙ (y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹)  ≈⟨ sym $ assoc _ _ _ ⟩
-    x ∙ (y ∙ (x ∙ y) ⁻¹) ∙ y ⁻¹  ≈⟨ ∙-congˡ $ sym $ assoc _ _ _ ⟩
+    x ∙ (y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹)  ≈˘⟨ assoc _ _ _ ⟩
+    x ∙ (y ∙ (x ∙ y) ⁻¹) ∙ y ⁻¹  ≈˘⟨ ∙-congˡ $ assoc _ _ _ ⟩
     x ∙ y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹    ≈⟨ ∙-congˡ $ inverseʳ _ ⟩
     ε ∙ y ⁻¹                     ≈⟨ identityˡ _ ⟩
     y ⁻¹                         ∎
@@ -45,7 +44,7 @@ private
 ⁻¹-∙-comm : ∀ x y → x ⁻¹ ∙ y ⁻¹ ≈ (x ∙ y) ⁻¹
 ⁻¹-∙-comm x y = begin
   x ⁻¹ ∙ y ⁻¹                         ≈⟨ comm _ _ ⟩
-  y ⁻¹ ∙ x ⁻¹                         ≈⟨ ∙-congˡ $ sym $ (lemma₂ x y) ⟩
+  y ⁻¹ ∙ x ⁻¹                         ≈˘⟨ ∙-congˡ $ lemma₂ x y ⟩
   x ∙ (y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹) ∙ x ⁻¹  ≈⟨ lemma₁ _ _ ⟩
   y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹               ≈⟨ lemma₁ _ _ ⟩
   (x ∙ y) ⁻¹                          ∎

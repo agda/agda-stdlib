@@ -237,8 +237,8 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
   }
 
 -- Other properties
-≤-irrelevance : ∀ {n} → Irrelevant (_≤_ {n})
-≤-irrelevance = ℕₚ.≤-irrelevance
+≤-irrelevant : ∀ {n} → Irrelevant (_≤_ {n})
+≤-irrelevant = ℕₚ.≤-irrelevant
 
 ------------------------------------------------------------------------
 -- Properties of _<_
@@ -297,8 +297,8 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
   }
 
 -- Other properties
-<-irrelevance : ∀ {n} → Irrelevant (_<_ {n})
-<-irrelevance = ℕₚ.<-irrelevance
+<-irrelevant : ∀ {n} → Irrelevant (_<_ {n})
+<-irrelevant = ℕₚ.<-irrelevant
 
 <⇒≢ : ∀ {n} {i j : Fin n} → i < j → i ≢ j
 <⇒≢ i<i refl = ℕₚ.n≮n _ i<i
@@ -639,4 +639,17 @@ Please use toℕ-inject≤ instead."
 {-# WARNING_ON_USAGE ≤+≢⇒<
 "Warning: ≤+≢⇒< was deprecated in v0.17.
 Please use ≤∧≢⇒< instead."
+#-}
+
+-- Version 0.18
+
+≤-irrelevance = ≤-irrelevant
+{-# WARNING_ON_USAGE ≤-irrelevance
+"Warning: ≤-irrelevance was deprecated in v0.18.
+Please use ≤-irrelevant instead."
+#-}
+<-irrelevance = <-irrelevant
+{-# WARNING_ON_USAGE <-irrelevance
+"Warning: <-irrelevance was deprecated in v0.18.
+Please use <-irrelevant instead."
 #-}

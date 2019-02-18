@@ -15,19 +15,20 @@ open import Algebra
 import Algebra.Structures as Structures
 open import Algebra.FunctionProperties
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
+open import Data.Fin using (Fin; zero; suc; cast; toℕ)
 open import Data.List as List
-open import Data.List.All using (All; []; _∷_)
-open import Data.List.Any using (Any; here; there)
+open import Data.List.Relation.Unary.All using (All; []; _∷_)
+open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat
 open import Data.Nat.Properties
-open import Data.Fin using (Fin; zero; suc; cast)
 open import Data.Product as Prod hiding (map; zip)
 open import Data.These as These using (These; this; that; these)
 open import Function
-import Relation.Binary.EqReasoning as EqR
+import Relation.Binary as B
+import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; _≗_; refl ; sym)
+  using (_≡_; _≢_; _≗_; refl ; sym ; cong)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable using (⌊_⌋)
@@ -47,6 +48,17 @@ module _ {a} {A : Set a} {x y : A} {xs ys : List A} where
 
  ∷-injectiveʳ : x ∷ xs ≡ y List.∷ ys → xs ≡ ys
  ∷-injectiveʳ refl = refl
+
+module _ {a} {A : Set a} where
+
+  ≡-dec : B.Decidable _≡_ → B.Decidable {A = List A} _≡_
+  ≡-dec _≟_ []       []       = yes refl
+  ≡-dec _≟_ (x ∷ xs) []       = no λ()
+  ≡-dec _≟_ []       (y ∷ ys) = no λ()
+  ≡-dec _≟_ (x ∷ xs) (y ∷ ys) with x ≟ y | ≡-dec _≟_ xs ys
+  ... | no  x≢y  | _        = no (x≢y   ∘ ∷-injectiveˡ)
+  ... | yes _    | no xs≢ys = no (xs≢ys ∘ ∷-injectiveʳ)
+  ... | yes refl | yes refl = yes refl
 
 ------------------------------------------------------------------------
 -- map
@@ -516,6 +528,52 @@ module _ {a b} {A : Set a} {B : Set b} where
    where open P.≡-Reasoning
 
 ------------------------------------------------------------------------
+-- applyUpTo
+
+module _ {a} {A : Set a} where
+
+  length-applyUpTo : ∀ (f : ℕ → A) n → length (applyUpTo f n) ≡ n
+  length-applyUpTo f zero    = refl
+  length-applyUpTo f (suc n) = P.cong suc (length-applyUpTo (f ∘ suc) n)
+
+  lookup-applyUpTo : ∀ (f : ℕ → A) n i → lookup (applyUpTo f n) i ≡ f (toℕ i)
+  lookup-applyUpTo f zero  ()
+  lookup-applyUpTo f (suc n) zero    = refl
+  lookup-applyUpTo f (suc n) (suc i) = lookup-applyUpTo (f ∘ suc) n i
+
+------------------------------------------------------------------------
+-- applyUpTo
+
+module _ {a} {A : Set a} (f : ℕ → A) where
+
+  length-applyDownFrom : ∀ n → length (applyDownFrom f n) ≡ n
+  length-applyDownFrom zero    = refl
+  length-applyDownFrom (suc n) = P.cong suc (length-applyDownFrom n)
+
+  lookup-applyDownFrom : ∀ n i → lookup (applyDownFrom f n) i ≡ f (n ∸ (suc (toℕ i)))
+  lookup-applyDownFrom zero  ()
+  lookup-applyDownFrom (suc n) zero    = refl
+  lookup-applyDownFrom (suc n) (suc i) = lookup-applyDownFrom n i
+
+------------------------------------------------------------------------
+-- upTo
+
+length-upTo : ∀ n → length (upTo n) ≡ n
+length-upTo = length-applyUpTo id
+
+lookup-upTo : ∀ n i → lookup (upTo n) i ≡ toℕ i
+lookup-upTo = lookup-applyUpTo id
+
+------------------------------------------------------------------------
+-- downFrom
+
+length-downFrom : ∀ n → length (downFrom n) ≡ n
+length-downFrom = length-applyDownFrom id
+
+lookup-downFrom : ∀ n i → lookup (downFrom n) i ≡ n ∸ (suc (toℕ i))
+lookup-downFrom = lookup-applyDownFrom id
+
+------------------------------------------------------------------------
 -- tabulate
 
 module _ {a} {A : Set a} where
@@ -528,6 +586,24 @@ module _ {a} {A : Set a} where
   tabulate-lookup : ∀ (xs : List A) → tabulate (lookup xs) ≡ xs
   tabulate-lookup []       = refl
   tabulate-lookup (x ∷ xs) = P.cong (_ ∷_) (tabulate-lookup xs)
+
+  length-tabulate : ∀ {n} → (f : Fin n → A) →
+                 length (tabulate f) ≡ n
+  length-tabulate {zero} f = refl
+  length-tabulate {suc n} f = P.cong suc (length-tabulate (λ z → f (suc z)))
+
+  lookup-tabulate : ∀{n} → (f : Fin n → A) →
+                    ∀ i → let i′ = cast (sym (length-tabulate f)) i
+                          in lookup (tabulate f) i′ ≡ f i
+  lookup-tabulate f zero    = refl
+  lookup-tabulate f (suc i) = lookup-tabulate (f ∘ suc) i
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+  map-tabulate : ∀ {n} (g : Fin n → A) (f : A → B) →
+                 map f (tabulate g) ≡ tabulate (f ∘ g)
+  map-tabulate {zero}  g f = refl
+  map-tabulate {suc n} g f = P.cong (_ ∷_) (map-tabulate (g ∘ suc) f)
 
 ------------------------------------------------------------------------
 -- _[_]%=_

@@ -21,7 +21,7 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Injection
   using (Injection; module Injection)
 open import Data.List hiding (lookup)
-open import Data.List.Any as Any using (here; there)
+open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product
 open import Data.Sum

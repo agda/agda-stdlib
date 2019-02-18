@@ -205,9 +205,9 @@ _≥?_ = flip _≤?_
 s≤s-injective : ∀ {m n} {p q : m ≤ n} → s≤s p ≡ s≤s q → p ≡ q
 s≤s-injective refl = refl
 
-≤-irrelevance : Irrelevant _≤_
-≤-irrelevance z≤n        z≤n        = refl
-≤-irrelevance (s≤s m≤n₁) (s≤s m≤n₂) = cong s≤s (≤-irrelevance m≤n₁ m≤n₂)
+≤-irrelevant : Irrelevant _≤_
+≤-irrelevant z≤n        z≤n        = refl
+≤-irrelevant (s≤s m≤n₁) (s≤s m≤n₂) = cong s≤s (≤-irrelevant m≤n₁ m≤n₂)
 
 ≤-step : ∀ {m n} → m ≤ n → m ≤ 1 + n
 ≤-step z≤n       = z≤n
@@ -288,8 +288,8 @@ _>?_ = flip _<?_
   }
 
 -- Other properties of _<_
-<-irrelevance : Irrelevant _<_
-<-irrelevance = ≤-irrelevance
+<-irrelevant : Irrelevant _<_
+<-irrelevant = ≤-irrelevant
 
 <⇒≤pred : ∀ {m n} → m < n → m ≤ pred n
 <⇒≤pred (s≤s le) = le
@@ -549,6 +549,15 @@ i+j≡0⇒j≡0 i {j} i+j≡0 = i+j≡0⇒i≡0 j (trans (+-comm j i) (i+j≡0))
 
 +-cancel-≤ : Cancellative _≤_ _+_
 +-cancel-≤ = +-cancelˡ-≤ , +-cancelʳ-≤
+
++-cancelˡ-< : LeftCancellative _<_ _+_
++-cancelˡ-< x {y} {z} = +-cancelˡ-≤ x ∘ subst (_≤ x + z) (sym (+-suc x y))
+
++-cancelʳ-< : RightCancellative _<_ _+_
++-cancelʳ-< y z y+x<z+x = +-cancelʳ-≤ (suc y) z y+x<z+x
+
++-cancel-< : Cancellative _<_ _+_
++-cancel-< = +-cancelˡ-< , +-cancelʳ-<
 
 ≤-stepsˡ : ∀ {m n} o → m ≤ n → m ≤ o + n
 ≤-stepsˡ zero    m≤n = m≤n
@@ -1560,18 +1569,18 @@ eq? : ∀ {a} {A : Set a} → A ↣ ℕ → Decidable {A = A} _≡_
 eq? inj = via-injection inj _≟_
 
 ------------------------------------------------------------------------
--- Modules for reasoning about natural number relations
+-- A module for reasoning about the _≤_ and _<_ relations
 
--- A module for reasoning about the _≤_ relation
 module ≤-Reasoning where
-  open import Relation.Binary.PartialOrderReasoning
-    (DecTotalOrder.poset ≤-decTotalOrder) public
+  open import Relation.Binary.Reasoning.Base.Triple
+    ≤-isPreorder
+    <-trans
+    (resp₂ _<_)
+    <⇒≤
+    <-transˡ
+    <-transʳ
+    public
     hiding (_≈⟨_⟩_)
-
-  infixr 2 _<⟨_⟩_
-
-  _<⟨_⟩_ : ∀ x {y z} → x < y → y IsRelatedTo z → suc x IsRelatedTo z
-  x <⟨ x<y ⟩ y≤z = suc x ≤⟨ x<y ⟩ y≤z
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
@@ -1715,4 +1724,17 @@ im≡jm+n⇒[i∸j]m≡n i j m n eq = begin
 {-# WARNING_ON_USAGE ≤+≢⇒<
 "Warning: ≤+≢⇒< was deprecated in v0.17.
 Please use ≤∧≢⇒< instead."
+#-}
+
+-- Version 0.18
+
+≤-irrelevance = ≤-irrelevant
+{-# WARNING_ON_USAGE ≤-irrelevance
+"Warning: ≤-irrelevance was deprecated in v0.18.
+Please use ≤-irrelevant instead."
+#-}
+<-irrelevance = <-irrelevant
+{-# WARNING_ON_USAGE <-irrelevance
+"Warning: <-irrelevance was deprecated in v0.18.
+Please use <-irrelevant instead."
 #-}

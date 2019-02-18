@@ -11,8 +11,8 @@ open import Algebra
 module Algebra.Properties.Group {g₁ g₂} (G : Group g₁ g₂) where
 
 open Group G
-import Algebra.FunctionProperties as P; open P _≈_
-import Relation.Binary.EqReasoning as EqR; open EqR setoid
+open import Algebra.FunctionProperties _≈_
+open import Relation.Binary.Reasoning.Setoid setoid
 open import Function
 open import Data.Product
 

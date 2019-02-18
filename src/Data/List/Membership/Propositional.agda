@@ -9,7 +9,7 @@
 
 module Data.List.Membership.Propositional {a} {A : Set a} where
 
-open import Data.List.Any using (Any)
+open import Data.List.Relation.Unary.Any using (Any)
 open import Relation.Binary.PropositionalEquality using (setoid; subst)
 
 import Data.List.Membership.Setoid as SetoidMembership

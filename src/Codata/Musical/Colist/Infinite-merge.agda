@@ -15,7 +15,7 @@ open import Data.Nat.Properties
 open import Data.Product as Prod
 open import Data.Sum
 open import Data.Sum.Properties
-open import Data.Sum.Relation.Pointwise
+open import Data.Sum.Relation.Binary.Pointwise
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; Inverse; inverse)

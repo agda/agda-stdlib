@@ -450,9 +450,9 @@ T-∨ {true}  {b₂}    = equivalence inj₁ (const _)
 T-∨ {false} {true}  = equivalence inj₂ (const _)
 T-∨ {false} {false} = equivalence inj₁ [ id , id ]
 
-T-irrelevance : Irrelevant T
-T-irrelevance {true}  _  _  = refl
-T-irrelevance {false} () ()
+T-irrelevant : Irrelevant T
+T-irrelevant {true}  _  _  = refl
+T-irrelevant {false} () ()
 
 T? : U.Decidable T
 T? true  = yes _
@@ -581,8 +581,16 @@ commutativeRing-xor-∧     = xor-∧-commutativeRing
 "Warning: commutativeRing-xor-∧ was deprecated in v0.15.
 Please use xor-∧-commutativeRing instead."
 #-}
-proof-irrelevance = T-irrelevance
+proof-irrelevance = T-irrelevant
 {-# WARNING_ON_USAGE proof-irrelevance
 "Warning: proof-irrelevance was deprecated in v0.15.
-Please use T-irrelevance instead."
+Please use T-irrelevant instead."
+#-}
+
+-- Version 0.18
+
+T-irrelevance = T-irrelevant
+{-# WARNING_ON_USAGE T-irrelevance
+"Warning: T-irrelevance was deprecated in v0.18.
+Please use T-irrelevant instead."
 #-}

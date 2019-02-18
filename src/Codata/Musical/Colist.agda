@@ -16,7 +16,7 @@ open import Data.BoundedVec.Inefficient as BVec
   using (BoundedVec; []; _∷_)
 open import Data.Empty using (⊥)
 open import Data.Maybe using (Maybe; nothing; just; Is-just)
-open import Data.Maybe.Any using (just)
+open import Data.Maybe.Relation.Unary.Any using (just)
 open import Data.Nat.Base using (ℕ; zero; suc; _≥′_; ≤′-refl; ≤′-step)
 open import Data.Nat.Properties using (s≤′s)
 open import Data.List.Base using (List; []; _∷_)
@@ -29,6 +29,8 @@ open import Function.Inverse as Inv using (_↔_; _↔̇_; Inverse; inverse)
 open import Level using (_⊔_)
 open import Relation.Binary
 import Relation.Binary.Construct.FromRel as Ind
+import Relation.Binary.Reasoning.Preorder as PreR
+import Relation.Binary.Reasoning.PartialOrder as POR
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
 open import Relation.Nullary.Negation
@@ -266,7 +268,7 @@ setoid A = record
   trans (x ∷ xs≈) (.x ∷ ys≈) = x ∷ ♯ trans (♭ xs≈) (♭ ys≈)
 
 module ≈-Reasoning where
-  import Relation.Binary.EqReasoning as EqR
+  import Relation.Binary.Reasoning.Setoid as EqR
   private
     open module R {a} {A : Set a} = EqR (setoid A) public
 
@@ -458,7 +460,6 @@ Any-∈ {P = P} = record
   antisym (x ∷ p₁) p₂ = x ∷ ♯ antisym (♭ p₁) (tail p₂)
 
 module ⊑-Reasoning where
-  import Relation.Binary.PartialOrderReasoning as POR
   private
     open module R {a} {A : Set a} = POR (⊑-Poset A)
       public renaming (_≤⟨_⟩_ to _⊑⟨_⟩_)
@@ -471,7 +472,6 @@ module ⊑-Reasoning where
   where module ⊑P = Poset (⊑-Poset A)
 
 module ⊆-Reasoning where
-  import Relation.Binary.PreorderReasoning as PreR
   private
     open module R {a} {A : Set a} = PreR (⊆-Preorder A)
       public renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
