@@ -269,6 +269,9 @@ Non-backwards compatible changes
 * The proofs `toList⁺` and `toList⁻` in `Data.Vec.Relation.Unary.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
+* `Data.List.Relation.Binary.Sublist.Propositional.Solver` has been removed and replaced by
+  `Data.List.Relation.Binary.Sublist.DecPropositional.Solver`.
+
 List of new modules
 -------------------
 
