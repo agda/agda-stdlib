@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary using (Rel; Reflexive; Decidable)
 
 module Data.List.Relation.Binary.Sublist.Homogeneous.Solver
        {a r} {A : Set a} (R : Rel A r)
