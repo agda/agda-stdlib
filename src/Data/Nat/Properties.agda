@@ -44,15 +44,34 @@ open ≡-Reasoning
 suc-injective : ∀ {m n} → suc m ≡ suc n → m ≡ n
 suc-injective refl = refl
 
-infix 4 _≟_
+≡ᵇ⇒≡ : ∀ m n → T (m ≡ᵇ n) → m ≡ n
+≡ᵇ⇒≡ zero    zero    _  = refl
+≡ᵇ⇒≡ (suc m) (suc n) eq = cong suc (≡ᵇ⇒≡ m n eq)
+≡ᵇ⇒≡ zero    (suc n) ()
+≡ᵇ⇒≡ (suc m) zero    ()
 
+≡⇒≡ᵇ : ∀ m n → m ≡ n → T (m ≡ᵇ n)
+≡⇒≡ᵇ zero    zero    eq = _
+≡⇒≡ᵇ (suc m) (suc n) eq = ≡⇒≡ᵇ m n (suc-injective eq)
+≡⇒≡ᵇ zero    (suc n) ()
+≡⇒≡ᵇ (suc m) zero    ()
+
+-- NB: we use the builtin function `_≡ᵇ_ : (m n : ℕ) → Bool` here so
+-- that the function quickly decides whether to return `yes` or `no`.
+-- It sill takes a linear amount of time to generate the proof if it
+-- is inspected.
+-- We expect the main benefit to be visible in the backend where proofs
+-- are erased.
+
+infix 4 _≟_
 _≟_ : Decidable {A = ℕ} _≡_
-zero  ≟ zero   = yes refl
-zero  ≟ suc n  = no λ()
-suc m ≟ zero   = no λ()
-suc m ≟ suc n  with m ≟ n
-... | yes eq = yes (cong suc eq)
-... | no m≢n = no (m≢n ∘ suc-injective)
+m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
+
+≡-irrelevant : Irrelevant {A = ℕ} _≡_
+≡-irrelevant = Decidable⇒UIP.≡-irrelevant _≟_
+
+≟-diag : ∀ {m n} (eq : m ≡ n) → (m ≟ n) ≡ yes eq
+≟-diag = ≡-≟-identity _≟_
 
 ≡-isDecEquivalence : IsDecEquivalence (_≡_ {A = ℕ})
 ≡-isDecEquivalence = record
@@ -66,38 +85,6 @@ suc m ≟ suc n  with m ≟ n
   ; _≈_              = _≡_
   ; isDecEquivalence = ≡-isDecEquivalence
   }
-
-------------------------------------------------------------------------
--- Properties of _≟_
-
-≟-diag : ∀ m → True (m ≟ m)
-≟-diag zero    = _
-≟-diag (suc m) with m ≟ m | ≟-diag m
-... | yes eq | _ = _
-... | no ¬eq | ()
-
-------------------------------------------------------------------------
--- Properties of _≡ᵇ_
-
-≡ᵇ⇒≡ : ∀ m n → T (m ≡ᵇ n) → m ≡ n
-≡ᵇ⇒≡ zero    zero    _  = refl
-≡ᵇ⇒≡ (suc m) (suc n) eq = cong suc (≡ᵇ⇒≡ m n eq)
-≡ᵇ⇒≡ zero    (suc n) ()
-≡ᵇ⇒≡ (suc m) zero    ()
-
-≡⇒≡ᵇ : ∀ m n → m ≡ n → T (m ≡ᵇ n)
-≡⇒≡ᵇ zero    zero    eq = _
-≡⇒≡ᵇ (suc m) (suc n) eq = ≡⇒≡ᵇ m n (suc-injective eq)
-≡⇒≡ᵇ zero    (suc n) ()
-≡⇒≡ᵇ (suc m) zero    ()
-
-_≟ᵇ_ : Decidable {A = ℕ} _≡_
-m ≟ᵇ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
-
-≟ᵇ-diag : ∀ m → True (m ≟ᵇ m)
-≟ᵇ-diag m with T? (m ≡ᵇ m)
-... | yes _ = _
-... | no ¬p = ¬p (≡⇒≡ᵇ m m refl)
 
 ------------------------------------------------------------------------
 -- Properties of _<ᵇ_

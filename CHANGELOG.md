@@ -269,6 +269,12 @@ Splitting up `Data.Maybe` into the standard hierarchy.
 * The proofs `toList⁺` and `toList⁻` in `Data.Vec.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
+* Changed the type of `≡-≟-identity` to make use of the fact that equality
+  being decidable implies UIP.
+
+* Changed the implementation of _≟_ for natural numbers to use a (fast)
+  boolean equality test.
+
 Other major changes
 -------------------
 
@@ -403,7 +409,8 @@ Other minor additions
   ∨-semilattice   : Semilattice 0ℓ 0ℓ
   ∧-semilattice   : Semilattice 0ℓ 0ℓ
 
-  T?              : Decidable T
+  T?      : Decidable T
+  T?-diag : T b → True (T? b)
   ```
 
 * Added new function to `Data.Fin.Base`:
@@ -706,12 +713,10 @@ Other minor additions
 
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
 
-  ≟-diag : ∀ m → True (m ≟ m)
-
-  ≡ᵇ⇒≡    : T (m ≡ᵇ n) → m ≡ n
-  ≡⇒≡ᵇ    : m ≡ n → T (m ≡ᵇ n)
-  _≟ᵇ_    : Decidable _≡_
-  ≟ᵇ-diag : ∀ m → True (m ≟ᵇ m)
+  ≡ᵇ⇒≡         : T (m ≡ᵇ n) → m ≡ n
+  ≡⇒≡ᵇ         : m ≡ n → T (m ≡ᵇ n)
+  ≡-irrelevant : Irrelevant {A = ℕ} _≡_
+  ≟-diag       : (eq : m ≡ n) → (m ≟ n) ≡ yes eq
 
   <ᵇ⇒<″  : T (m <ᵇ n) → m <″ n
   <″⇒<ᵇ  : m <″ n → T (m <ᵇ n)
@@ -857,8 +862,10 @@ Other minor additions
   ```
 
 * Added new definitions to `Relation.Binary.PropositionalEquality`:
-  - `_≡_↾¹_` equality of functions at a single point
-  - `_≡_↾_` equality of functions at a subset of the domain
+  ```agda
+  module Constant⇒UIP
+  module Decidable⇒UIP
+  ```
 
 * Added new proofs to `Relation.Binary.Consequences`:
   ```agda
