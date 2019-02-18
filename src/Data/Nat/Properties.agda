@@ -59,9 +59,8 @@ suc-injective refl = refl
 -- NB: we use the builtin function `_≡ᵇ_ : (m n : ℕ) → Bool` here so
 -- that the function quickly decides whether to return `yes` or `no`.
 -- It sill takes a linear amount of time to generate the proof if it
--- is inspected.
--- We expect the main benefit to be visible in the backend where proofs
--- are erased.
+-- is inspected. We expect the main benefit to be visible in compiled
+-- code: the backend erases proofs.
 
 infix 4 _≟_
 _≟_ : Decidable {A = ℕ} _≡_
@@ -85,34 +84,6 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
   ; _≈_              = _≡_
   ; isDecEquivalence = ≡-isDecEquivalence
   }
-
-------------------------------------------------------------------------
--- Properties of _<ᵇ_
-
-m<ᵇn⇒1+m+[n-1+m]≡n : ∀ m n → T (m <ᵇ n) → suc m + (n ∸ suc m) ≡ n
-m<ᵇn⇒1+m+[n-1+m]≡n m       zero    ()
-m<ᵇn⇒1+m+[n-1+m]≡n zero    (suc n) lt = refl
-m<ᵇn⇒1+m+[n-1+m]≡n (suc m) (suc n) lt = cong suc (m<ᵇn⇒1+m+[n-1+m]≡n m n lt)
-
-<ᵇ⇒<″ : ∀ {m n} → T (m <ᵇ n) → m <″ n
-<ᵇ⇒<″ {m} {n} eq = less-than-or-equal {k = n ∸ suc m} (m<ᵇn⇒1+m+[n-1+m]≡n m n eq)
-
-m<ᵇ1+m+n : ∀ m {n} → T (m <ᵇ suc (m + n))
-m<ᵇ1+m+n zero    = _
-m<ᵇ1+m+n (suc m) = m<ᵇ1+m+n m
-
-<″⇒<ᵇ : ∀ {m n} → m <″ n → T (m <ᵇ n)
-<″⇒<ᵇ {m} (less-than-or-equal refl) = m<ᵇ1+m+n m
-
-_<″ᵇ?_ : Decidable _<″_
-m <″ᵇ? n = map′ <ᵇ⇒<″ <″⇒<ᵇ (T? (m <ᵇ n))
-
-------------------------------------------------------------------------
--- Properties of _≤ᵇ_
-
-_≤″ᵇ?_ : Decidable _≤″_
-zero  ≤″ᵇ? n = yes (less-than-or-equal refl)
-suc m ≤″ᵇ? n = m <″ᵇ? n
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
@@ -379,42 +350,6 @@ _≥′?_ = flip _≤′?_
 
 _>′?_ : Decidable _>′_
 _>′?_ = flip _<′?_
-
-------------------------------------------------------------------------
--- Properties of _≤″_
-
-≤″⇒≤ : _≤″_ ⇒ _≤_
-≤″⇒≤ {zero}  (less-than-or-equal refl) = z≤n
-≤″⇒≤ {suc m} (less-than-or-equal refl) =
-  s≤s (≤″⇒≤ (less-than-or-equal refl))
-
-≤⇒≤″ : _≤_ ⇒ _≤″_
-≤⇒≤″ m≤n = less-than-or-equal (proof m≤n)
-  where
-  k : ∀ m n → m ≤ n → ℕ
-  k zero    n       _   = n
-  k (suc m) zero    ()
-  k (suc m) (suc n) m≤n = k m n (≤-pred m≤n)
-
-  proof : ∀ {m n} (m≤n : m ≤ n) → m + k m n m≤n ≡ n
-  proof z≤n       = refl
-  proof (s≤s m≤n) = cong suc (proof m≤n)
-
--- Decidablity for _≤″_
-
-infix 4 _≤″?_ _<″?_ _≥″?_ _>″?_
-
-_≤″?_ : Decidable _≤″_
-x ≤″? y = map′ ≤⇒≤″ ≤″⇒≤ (x ≤? y)
-
-_<″?_ : Decidable _<″_
-x <″? y = suc x ≤″? y
-
-_≥″?_ : Decidable _≥″_
-_≥″?_ = flip _≤″?_
-
-_>″?_ : Decidable _>″_
-_>″?_ = flip _<″?_
 
 ------------------------------------------------------------------------
 -- Properties of pred
@@ -1558,6 +1493,85 @@ private
 ⌊n/2⌋≤′n : ∀ n → ⌊ n /2⌋ ≤′ n
 ⌊n/2⌋≤′n zero    = ≤′-refl
 ⌊n/2⌋≤′n (suc n) = ≤′-step (⌈n/2⌉≤′n n)
+
+------------------------------------------------------------------------
+-- Properties of _<″_, and _≤″_
+
+-- equivalence to _<ᵇ_
+
+m<ᵇn⇒1+m+[n-1+m]≡n : ∀ m n → T (m <ᵇ n) → suc m + (n ∸ suc m) ≡ n
+m<ᵇn⇒1+m+[n-1+m]≡n m       zero    ()
+m<ᵇn⇒1+m+[n-1+m]≡n zero    (suc n) lt = refl
+m<ᵇn⇒1+m+[n-1+m]≡n (suc m) (suc n) lt = cong suc (m<ᵇn⇒1+m+[n-1+m]≡n m n lt)
+
+<ᵇ⇒<″ : ∀ {m n} → T (m <ᵇ n) → m <″ n
+<ᵇ⇒<″ {m} {n} eq = less-than-or-equal {k = n ∸ suc m} (m<ᵇn⇒1+m+[n-1+m]≡n m n eq)
+
+m<ᵇ1+m+n : ∀ m {n} → T (m <ᵇ suc (m + n))
+m<ᵇ1+m+n zero    = _
+m<ᵇ1+m+n (suc m) = m<ᵇ1+m+n m
+
+<″⇒<ᵇ : ∀ {m n} → m <″ n → T (m <ᵇ n)
+<″⇒<ᵇ {m} (less-than-or-equal refl) = m<ᵇ1+m+n m
+
+-- equivalence to _≤_
+
+≤″⇒≤ : _≤″_ ⇒ _≤_
+≤″⇒≤ {zero}  (less-than-or-equal refl) = z≤n
+≤″⇒≤ {suc m} (less-than-or-equal refl) =
+  s≤s (≤″⇒≤ (less-than-or-equal refl))
+
+≤⇒≤″ : _≤_ ⇒ _≤″_
+≤⇒≤″ m≤n = less-than-or-equal (proof m≤n)
+  where
+  k : ∀ m n → m ≤ n → ℕ
+  k zero    n       _   = n
+  k (suc m) zero    ()
+  k (suc m) (suc n) m≤n = k m n (≤-pred m≤n)
+
+  proof : ∀ {m n} (m≤n : m ≤ n) → m + k m n m≤n ≡ n
+  proof z≤n       = refl
+  proof (s≤s m≤n) = cong suc (proof m≤n)
+
+-- decidability
+
+-- NB: we use the builtin function `_<ᵇ_ : (m n : ℕ) → Bool` here so
+-- that the function quickly decides whether to return `yes` or `no`.
+-- It sill takes a linear amount of time to generate the proof if it
+-- is inspected. We expect the main benefit to be visible for compiled
+-- code: the backend erases proofs.
+
+infix 4 _<″?_ _≤″?_ _≥″?_ _>″?_
+
+_<″?_ : Decidable _<″_
+m <″? n = map′ <ᵇ⇒<″ <″⇒<ᵇ (T? (m <ᵇ n))
+
+_≤″?_ : Decidable _≤″_
+zero  ≤″? n = yes (less-than-or-equal refl)
+suc m ≤″? n = m <″? n
+
+_≥″?_ : Decidable _≥″_
+_≥″?_ = flip _≤″?_
+
+_>″?_ : Decidable _>″_
+_>″?_ = flip _<″?_
+
+-- irrelevance
+
+≤″-irrelevant : Irrelevant _≤″_
+≤″-irrelevant {m} (less-than-or-equal {k₁} eq₁)
+                  (less-than-or-equal {k₂} eq₂)
+  with +-cancelˡ-≡ m (trans eq₁ (sym eq₂))
+... | refl = cong less-than-or-equal (≡-irrelevant eq₁ eq₂)
+
+<″-irrelevant : Irrelevant _<″_
+<″-irrelevant = ≤″-irrelevant
+
+>″-irrelevant : Irrelevant _>″_
+>″-irrelevant = ≤″-irrelevant
+
+≥″-irrelevant : Irrelevant _≥″_
+≥″-irrelevant = ≤″-irrelevant
 
 ------------------------------------------------------------------------
 -- Other properties

@@ -272,8 +272,8 @@ Non-backwards compatible changes
 * Changed the type of `≡-≟-identity` to make use of the fact that equality
   being decidable implies UIP.
 
-* Changed the implementation of _≟_ for natural numbers to use a (fast)
-  boolean equality test.
+* Changed the implementation of _≟_ and _≤″?_ for natural numbers to use a (fast)
+  boolean test.
 
 List of new modules
 -------------------
@@ -816,11 +816,14 @@ Other minor additions
 
   <ᵇ⇒<″  : T (m <ᵇ n) → m <″ n
   <″⇒<ᵇ  : m <″ n → T (m <ᵇ n)
-  _<″ᵇ?_ : Decidable _<″_
-  _≤″ᵇ?_ : Decidable _≤″_
 
   m<ᵇn⇒1+m+[n-1+m]≡n : T (m <ᵇ n) → suc m + (n ∸ suc m) ≡ n
   m<ᵇ1+m+n           : T (m <ᵇ suc (m + n))
+
+  ≤″-irrelevant : Irrelevant _≤″_
+  ≥″-irrelevant : Irrelevant _≥″_
+  <″-irrelevant : Irrelevant _<″_
+  >″-irrelevant : Irrelevant _>″_
   ```
 
 * Added new proof to `Data.Product.Properties.WithK`:
