@@ -64,9 +64,8 @@ f ^ suc n = f ∘′ (f ^ n)
 
 ∘-isSemigroup : IsSemigroup _≡_ (Op₂ Endo ∋ _∘′_)
 ∘-isSemigroup = record
-  { isEquivalence = P.isEquivalence
-  ; ∙-cong        = P.cong₂ _∘′_
-  ; assoc         = λ _ _ _ → refl
+  { isMagma = ∘-isMagma
+  ; assoc   = λ _ _ _ → refl
   }
 
 ∘-semigroup : Semigroup _ _

@@ -57,9 +57,8 @@ f ^ suc n = f ∘ (f ^ n)
 
 ∘-isSemigroup : IsSemigroup _≈_ _∘_
 ∘-isSemigroup = record
-  { isEquivalence = isEquivalence
-  ; ∙-cong        = λ g f x → g (f x)
-  ; assoc         = λ h g f x≈y → cong h (cong g (cong f x≈y))
+  { isMagma = ∘-isMagma
+  ; assoc   = λ h g f x≈y → cong h (cong g (cong f x≈y))
   }
 
 ∘-semigroup : Semigroup _ _
