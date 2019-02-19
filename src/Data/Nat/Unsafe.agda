@@ -4,6 +4,8 @@
 -- Unsafe natural number types and operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K #-}
+
 module Data.Nat.Unsafe where
 
 open import Data.Nat.Base

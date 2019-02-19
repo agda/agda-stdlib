@@ -4,6 +4,8 @@
 -- Rational Literals
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Rational.Literals where
 
 open import Agda.Builtin.FromNat
@@ -12,14 +14,13 @@ open import Data.Unit
 open import Data.Nat
 open import Data.Nat.Coprimality
 open import Data.Integer
-open import Data.Rational
-open import Relation.Nullary.Decidable
+open import Data.Rational hiding (-_)
 
 fromℤ : ℤ → ℚ
 fromℤ z = record
   { numerator     = z
   ; denominator-1 = zero
-  ; isCoprime     = fromWitness (λ {i} → sym (1-coprimeTo ∣ z ∣))
+  ; isCoprime     = sym (1-coprimeTo ∣ z ∣)
   }
 
 number : Number ℚ

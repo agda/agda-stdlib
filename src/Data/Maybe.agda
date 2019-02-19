@@ -4,26 +4,28 @@
 -- The Maybe type
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Maybe where
 
 open import Data.Unit using (⊤)
 open import Data.Empty using (⊥)
 open import Data.Bool.Base using (T)
+open import Data.Maybe.Relation.Unary.All
+open import Data.Maybe.Relation.Unary.Any
 
 ------------------------------------------------------------------------
 -- The base type and some operations
 
 open import Data.Maybe.Base public
-open import Data.Maybe.All
-open import Data.Maybe.Any
 
 ------------------------------------------------------------------------
 -- Using Any and All to define Is-just and Is-nothing
 
-Is-just : ∀ {a} {A : Set a} → Maybe A → Set
+Is-just : ∀ {a} {A : Set a} → Maybe A → Set a
 Is-just = Any (λ _ → ⊤)
 
-Is-nothing : ∀ {a} {A : Set a} → Maybe A → Set
+Is-nothing : ∀ {a} {A : Set a} → Maybe A → Set a
 Is-nothing = All (λ _ → ⊥)
 
 to-witness : ∀ {p} {P : Set p} {m : Maybe P} → Is-just m → P

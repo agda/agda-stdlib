@@ -3,6 +3,9 @@
 --
 -- The unit type and the total relation on unit
 ------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Unit.Base where
 
 ------------------------------------------------------------------------

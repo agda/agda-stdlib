@@ -4,6 +4,8 @@
 -- Natural Literals
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Nat.Literals where
 
 open import Agda.Builtin.FromNat

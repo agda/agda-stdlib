@@ -5,6 +5,8 @@
 -- commutativity (specialised to propositional equality)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Algebra.FunctionProperties.Consequences.Propositional
        {a} {A : Set a} where
 

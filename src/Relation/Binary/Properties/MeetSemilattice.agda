@@ -4,6 +4,8 @@
 -- Properties satisfied by meet semilattices
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary.Lattice
 
 module Relation.Binary.Properties.MeetSemilattice
@@ -32,11 +34,13 @@ dualJoinSemilattice = record
   ; isJoinSemilattice = dualIsJoinSemilattice
   }
 
-open J dualJoinSemilattice public using () renaming
-  ( ∨-monotonic  to ∧-monotonic
-  ; ∨-cong       to ∧-cong
-  ; ∨-comm       to ∧-comm
-  ; ∨-assoc      to ∧-assoc
-  ; ∨-idempotent to ∧-idempotent
-  ; x≤y⇒x∨y≈y    to y≤x⇒x∧y≈y
-  )
+open J dualJoinSemilattice public
+  using (isAlgSemilattice; algSemilattice)
+  renaming
+    ( ∨-monotonic  to ∧-monotonic
+    ; ∨-cong       to ∧-cong
+    ; ∨-comm       to ∧-comm
+    ; ∨-assoc      to ∧-assoc
+    ; ∨-idempotent to ∧-idempotent
+    ; x≤y⇒x∨y≈y    to y≤x⇒x∧y≈y
+    )

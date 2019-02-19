@@ -4,6 +4,8 @@
 -- Unsafe Float operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K #-}
+
 module Data.Float.Unsafe where
 
 open import Data.Float

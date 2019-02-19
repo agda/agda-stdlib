@@ -4,6 +4,8 @@
 -- Core lemmas for division and modulus operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Nat.DivMod.Core where
 
 open import Agda.Builtin.Nat using ()

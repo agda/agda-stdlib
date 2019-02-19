@@ -4,6 +4,8 @@
 -- Non-empty lists
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.NonEmpty where
 
 open import Category.Monad
