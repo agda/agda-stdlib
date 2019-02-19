@@ -86,7 +86,7 @@ Other major changes
 
 * Added new module `Data.Vec.Any.Properties`
 
-* Added new module `Function.Endormorphism.Setoid`
+* Added new modules `Function.Endomophism.(Setoid/Propositional)`
 
 * Added new module `Relation.Binary.Properties.BoundedLattice`
 

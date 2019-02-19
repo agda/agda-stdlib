@@ -4,6 +4,8 @@
 -- Endomorphisms on a Setoid
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 
 module Function.Endomorphism.Setoid {c e} (S : Setoid c e) where
