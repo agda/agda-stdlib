@@ -11,6 +11,8 @@
 -- can be used: a definition of substitution for the untyped
 -- λ-calculus.
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Fin.Substitution where
 
 open import Data.Nat hiding (_⊔_)

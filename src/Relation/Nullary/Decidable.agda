@@ -4,6 +4,8 @@
 -- Operations on and properties of decidable relations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Nullary.Decidable where
 
 open import Data.Bool.Base using (Bool; false; true; not; T)

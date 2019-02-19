@@ -6,6 +6,8 @@
 -- ease of adding and removing elements.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Table where
 
 open import Data.Table.Base public

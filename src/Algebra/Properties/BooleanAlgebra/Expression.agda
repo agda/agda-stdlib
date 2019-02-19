@@ -4,6 +4,8 @@
 -- Boolean algebra expressions
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Algebra
 
 module Algebra.Properties.BooleanAlgebra.Expression
@@ -22,8 +24,8 @@ open import Data.Vec as Vec using (Vec)
 import Data.Vec.Categorical as VecCat
 import Function.Identity.Categorical as IdCat
 open import Data.Vec.Properties using (lookup-map)
-open import Data.Vec.Relation.Pointwise.Extensional as PW
-  using (Pointwise; module Pointwise; ext)
+open import Data.Vec.Relation.Binary.Pointwise.Extensional as PW
+  using (Pointwise; ext)
 open import Function
 open import Relation.Binary.PropositionalEquality as P using (_≗_)
 import Relation.Binary.Reflection as Reflection
@@ -142,12 +144,11 @@ lift n = record
                                    _ _ _ _
                                    (∧-cong (Pointwise.app xs≈ys i)
                                            (Pointwise.app us≈vs i))
-        ; absorptive    = (λ _ _ → ext λ i →
-                             solve i 2 (λ x y → x or (x and y) , x)
-                                   (proj₁ absorptive _ _) _ _) ,
-                          (λ _ _ → ext λ i →
-                             solve i 2 (λ x y → x and (x or y) , x)
-                                   (proj₂ absorptive _ _) _ _)
+        ; absorptive    =
+          (λ _ _ → ext λ i →
+            solve i 2 (λ x y → x or (x and y) , x) (∨-absorbs-∧ _ _) _ _) ,
+          (λ _ _ → ext λ i →
+            solve i 2 (λ x y → x and (x or y) , x) (∧-absorbs-∨ _ _) _ _)
         }
       ; ∨-∧-distribʳ = λ _ _ _ → ext λ i →
                          solve i 3

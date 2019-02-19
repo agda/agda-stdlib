@@ -4,6 +4,8 @@
 -- Coprimality
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Nat.Coprimality where
 
 open import Data.Empty
@@ -23,13 +25,15 @@ open import Relation.Binary.PropositionalEquality as P
 open import Relation.Nullary
 open import Relation.Binary
 
+------------------------------------------------------------------------
 -- Coprime m n is inhabited iff m and n are coprime (relatively
 -- prime), i.e. if their only common divisor is 1.
 
 Coprime : Rel ℕ 0ℓ
 Coprime m n = ∀ {i} → i ∣ m × i ∣ n → i ≡ 1
 
--- Coprime numbers have 1 as their gcd.
+------------------------------------------------------------------------
+-- Relationship between GCD and coprimality
 
 coprime-gcd : ∀ {m n} → Coprime m n → GCD m n 1
 coprime-gcd {m} {n} c = GCD.is (1∣ m , 1∣ n) greatest
@@ -38,12 +42,11 @@ coprime-gcd {m} {n} c = GCD.is (1∣ m , 1∣ n) greatest
   greatest cd with c cd
   ... | refl = 1∣ 1
 
--- If two numbers have 1 as their gcd, then they are coprime.
-
 gcd-coprime : ∀ {m n} → GCD m n 1 → Coprime m n
 gcd-coprime g cd with GCD.greatest g cd
 ... | divides q eq = i*j≡1⇒j≡1 q _ (P.sym eq)
 
+------------------------------------------------------------------------
 -- Coprime is decidable.
 
 private
@@ -71,8 +74,8 @@ sym c = c ∘ swap
 
 -- Nothing except for 1 is coprime to 0.
 
-0-coprimeTo-1 : ∀ {m} → Coprime 0 m → m ≡ 1
-0-coprimeTo-1 {m} c = c (m ∣0 , ∣-refl)
+0-coprimeTo-m⇒m≡1 : ∀ {m} → Coprime 0 m → m ≡ 1
+0-coprimeTo-m⇒m≡1 {m} c = c (m ∣0 , ∣-refl)
 
 -- If m and n are coprime, then n + m and n are also coprime.
 
@@ -155,10 +158,10 @@ prime⇒coprime (suc (suc m)) p (suc n) _ 1+n<2+m {suc (suc i)}
   ⊥-elim (p _ 2+i′∣2+m)
   where
   i<m : i < m
-  i<m = ≤-pred $ ≤-pred (begin
-    3 + i  ≤⟨ s≤s (∣⇒≤ 2+i∣1+n) ⟩
-    2 + n  ≤⟨ 1+n<2+m ⟩
-    2 + m  ∎)
+  i<m = +-cancelˡ-< 2 (begin-strict
+    2 + i ≤⟨ ∣⇒≤ 2+i∣1+n ⟩
+    1 + n <⟨ 1+n<2+m ⟩
+    2 + m ∎)
     where open ≤-Reasoning
 
   2+i′∣2+m : 2 + toℕ (fromℕ≤ i<m) ∣ 2 + m

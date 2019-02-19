@@ -6,6 +6,8 @@
 
 -- Note that these proofs use all "almost commutative ring" properties.
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Algebra
 open import Algebra.Solver.Ring.AlmostCommutativeRing
 
@@ -21,7 +23,7 @@ private
 open AlmostCommutativeRing r
 open import Algebra.Morphism
 open _-Raw-AlmostCommutative⟶_ morphism
-open import Relation.Binary.EqReasoning setoid
+open import Relation.Binary.Reasoning.Setoid setoid
 open import Function
 
 lemma₀ : ∀ a b c x →

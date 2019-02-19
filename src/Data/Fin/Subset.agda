@@ -4,6 +4,8 @@
 -- Subsets of finite sets
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Fin.Subset where
 
 open import Algebra
@@ -16,7 +18,7 @@ open import Data.List.Base using (List; foldr; foldl)
 open import Data.Nat using (ℕ)
 open import Data.Product using (∃)
 open import Data.Vec hiding (foldr; foldl)
-import Data.Vec.Relation.Pointwise.Extensional as Pointwise
+import Data.Vec.Relation.Binary.Pointwise.Extensional as Pointwise
 open import Relation.Nullary
 
 ------------------------------------------------------------------------

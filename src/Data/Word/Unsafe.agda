@@ -4,6 +4,8 @@
 -- Unsafe machine word operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K #-}
+
 module Data.Word.Unsafe where
 
 import Data.Nat as ℕ

@@ -4,6 +4,8 @@
 -- Code for converting Vec A n → B to and from n-ary functions
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Vec.N-ary where
 
 open import Data.Nat.Base hiding (_⊔_)

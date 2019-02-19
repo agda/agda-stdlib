@@ -4,6 +4,8 @@
 -- Properties of functions, such as associativity and commutativity
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Level
 open import Relation.Binary
 open import Data.Sum
@@ -102,3 +104,9 @@ Congruent₁ f = f Preserves _≈_ ⟶ _≈_
 
 Congruent₂ : Op₂ A → Set _
 Congruent₂ ∙ = ∙ Preserves₂ _≈_ ⟶ _≈_ ⟶ _≈_
+
+LeftCongruent : Op₂ A → Set _
+LeftCongruent _∙_ = ∀ {x} → (_∙ x) Preserves _≈_ ⟶ _≈_
+
+RightCongruent : Op₂ A → Set _
+RightCongruent _∙_ = ∀ {x} → (x ∙_) Preserves _≈_ ⟶ _≈_

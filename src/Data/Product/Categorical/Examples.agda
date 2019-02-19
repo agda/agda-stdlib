@@ -4,6 +4,8 @@
 -- Universe-sensitive functor and monad instances for the Product type.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Algebra
 
 module Data.Product.Categorical.Examples
@@ -13,7 +15,7 @@ open import Level using (Lift; lift; _⊔_)
 open import Category.Functor using (RawFunctor)
 open import Category.Monad using (RawMonad)
 open import Data.Product
-open import Data.Product.Relation.Pointwise.NonDependent
+open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Function
 import Function.Identity.Categorical as Id
 open import Relation.Binary using (Rel)

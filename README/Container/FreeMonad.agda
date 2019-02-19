@@ -5,6 +5,8 @@
 -- used
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module README.Container.FreeMonad where
 
 open import Category.Monad

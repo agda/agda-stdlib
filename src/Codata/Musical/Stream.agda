@@ -4,6 +4,8 @@
 -- Streams
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Codata.Musical.Stream where
 
 open import Codata.Musical.Notation

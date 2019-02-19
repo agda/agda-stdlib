@@ -7,6 +7,8 @@
 -- and Data.Fin.Subset.Properties directly.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Fin.Dec where
 
 open import Data.Fin.Properties public

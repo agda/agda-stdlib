@@ -4,6 +4,8 @@
 -- Some properties imply others
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Binary.Consequences where
 
 open import Relation.Binary.Core

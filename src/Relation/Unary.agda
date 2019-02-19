@@ -4,6 +4,8 @@
 -- Unary relations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Unary where
 
 open import Data.Empty

@@ -4,6 +4,8 @@
 -- Some unit types
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Unit where
 
 open import Data.Sum

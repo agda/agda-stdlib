@@ -3,7 +3,7 @@
 --
 -- Solver for commutative ring or semiring equalities
 ------------------------------------------------------------------------
---
+
 -- Uses ideas from the Coq ring tactic. See "Proving Equalities in a
 -- Commutative Ring Done Right in Coq" by Grégoire and Mahboubi. The
 -- code below is not optimised like theirs, though (in particular, our
@@ -14,6 +14,8 @@
 -- However the implementation of it affects the power of the solver. The
 -- more equalities it returns, the more expressions the ring solver can
 -- solve.
+
+{-# OPTIONS --without-K --safe #-}
 
 open import Algebra
 open import Algebra.Solver.Ring.AlmostCommutativeRing
@@ -38,7 +40,7 @@ open import Algebra.Operations.Semiring semiring
 
 open import Relation.Binary
 open import Relation.Nullary using (yes; no)
-open import Relation.Binary.EqReasoning setoid
+open import Relation.Binary.Reasoning.Setoid setoid
 import Relation.Binary.PropositionalEquality as PropEq
 import Relation.Binary.Reflection as Reflection
 

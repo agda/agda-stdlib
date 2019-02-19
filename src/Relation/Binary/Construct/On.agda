@@ -4,6 +4,8 @@
 -- Many properties which hold for _∼_ also hold for _∼_ on f
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 
 module Relation.Binary.Construct.On where

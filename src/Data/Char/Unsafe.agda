@@ -4,6 +4,8 @@
 -- Unsafe Char operations and proofs
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K #-}
+
 module Data.Char.Unsafe where
 
 open import Data.Bool.Base using (Bool; true; false)

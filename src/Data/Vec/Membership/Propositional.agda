@@ -1,24 +1,27 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Membership of vectors based on propositional equality,
+-- Data.Vec.Any.Membership instantiated with propositional equality,
 -- along with some additional definitions.
 ------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Membership.Propositional {a} {A : Set a} where
 
 open import Data.Vec using (Vec)
-open import Data.Vec.Any using (Any)
-open import Relation.Binary.PropositionalEquality using (_≡_)
-open import Relation.Nullary using (¬_)
+open import Data.Vec.Relation.Unary.Any using (Any)
+open import Relation.Binary.PropositionalEquality using (setoid; subst)
+
+import Data.Vec.Membership.Setoid as SetoidMembership
 
 ------------------------------------------------------------------------
--- Types
+-- Re-export contents of setoid membership
 
-infix 4 _∈_ _∉_
+open SetoidMembership (setoid A) public hiding (lose)
 
-_∈_ : A → ∀ {n} → Vec A n → Set _
-x ∈ xs = Any (x ≡_) xs
+------------------------------------------------------------------------
+-- Other operations
 
-_∉_ : A → ∀ {n} → Vec A n → Set _
-x ∉ xs = ¬ x ∈ xs
+lose : ∀ {p} {P : A → Set p} {x n} {xs : Vec A n} → x ∈ xs → P x → Any P xs
+lose = SetoidMembership.lose (setoid A) (subst _)

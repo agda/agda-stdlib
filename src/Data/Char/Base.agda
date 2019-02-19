@@ -3,6 +3,9 @@
 --
 -- Basic definitions for Characters
 ------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Char.Base where
 
 open import Agda.Builtin.String using (primShowChar)

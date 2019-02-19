@@ -4,6 +4,8 @@
 -- A categorical view of Colist
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Codata.Colist.Categorical where
 
 open import Codata.Conat using (infinity)

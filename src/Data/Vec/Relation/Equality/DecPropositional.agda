@@ -1,8 +1,11 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Decidable vector equality over propositional equality
+-- This module is DEPRECATED. Please use
+-- Data.Vec.Relation.Binary.Equality.DecPropositional directly.
 ------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
@@ -10,13 +13,4 @@ open import Relation.Binary.PropositionalEquality
 module Data.Vec.Relation.Equality.DecPropositional
   {a} {A : Set a} (_≟_ : Decidable {A = A} _≡_) where
 
-import Data.Vec.Relation.Equality.Propositional as PEq
-import Data.Vec.Relation.Equality.DecSetoid as DSEq
-
-------------------------------------------------------------------------
--- Publically re-export everything from decSetoid and propositional
--- equality
-
-open PEq public
-open DSEq (decSetoid _≟_) public
-  using (_≋?_; ≋-isDecEquivalence; ≋-decSetoid)
+open import Data.Vec.Relation.Binary.Equality.DecPropositional _≟_ public
