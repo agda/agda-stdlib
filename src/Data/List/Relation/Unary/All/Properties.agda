@@ -222,18 +222,18 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 
 module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
 
-  filter⁺₁ : ∀ xs → All P (filter P? xs)
-  filter⁺₁ []       = []
-  filter⁺₁ (x ∷ xs) with P? x
-  ... | yes Px = Px ∷ filter⁺₁ xs
-  ... | no  _  = filter⁺₁ xs
+  all-filter : ∀ xs → All P (filter P? xs)
+  all-filter []       = []
+  all-filter (x ∷ xs) with P? x
+  ... | yes Px = Px ∷ all-filter xs
+  ... | no  _  = all-filter xs
 
-  filter⁺₂ : ∀ {q} {Q : A → Set q} {xs} →
+  filter⁺ : ∀ {q} {Q : A → Set q} {xs} →
              All Q xs → All Q (filter P? xs)
-  filter⁺₂ {xs = _}     [] = []
-  filter⁺₂ {xs = x ∷ _} (Qx ∷ Qxs) with P? x
-  ... | no  _ = filter⁺₂ Qxs
-  ... | yes _ = Qx ∷ filter⁺₂ Qxs
+  filter⁺ {xs = _}     [] = []
+  filter⁺ {xs = x ∷ _} (Qx ∷ Qxs) with P? x
+  ... | no  _ = filter⁺ Qxs
+  ... | yes _ = Qx ∷ filter⁺ Qxs
 
 ------------------------------------------------------------------------
 -- zipWith
@@ -370,3 +370,15 @@ map-All = map⁻
 Please use map⁻ instead."
 #-}
 
+-- Version 1.0
+
+filter⁺₁ = all-filter
+{-# WARNING_ON_USAGE filter⁺₁
+"Warning: filter⁺₁ was deprecated in v1.0.
+Please use all-filter instead."
+#-}
+filter⁺₂ = filter⁺
+{-# WARNING_ON_USAGE filter⁺₂
+"Warning: filter⁺₂ was deprecated in v1.0.
+Please use filter⁺ instead."
+#-}
