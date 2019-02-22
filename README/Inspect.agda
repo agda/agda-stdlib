@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Examples showing how the case expressions can be used
+-- Explaining how to use the inspect idiom and elaborating on the way
+-- it is implemented in the standard library.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
