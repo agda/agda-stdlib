@@ -286,6 +286,9 @@ List of new modules
 
   Algebra.FunctionProperties.Consequences.Propositional
 
+  Axiom.UIP
+  Axiom.UIP.WithK
+
   Codata.Cowriter
 
   Codata.M.Properties
@@ -401,6 +404,16 @@ Deprecated features
   ≅-heterogeneous-irrelevance  ↦ ≅-heterogeneous-irrelevant
   ≅-heterogeneous-irrelevanceˡ ↦ ≅-heterogeneous-irrelevantˡ
   ≅-heterogeneous-irrelevanceʳ ↦ ≅-heterogeneous-irrelevantʳ
+  ```
+
+* From `Relation.Binary.PropositionalEquality` to `Relation.Binary.PropositionalEquality.Core`:
+  ```agda
+  cong
+  module ≡-Reasoning
+  trans-reflʳ
+  trans-assoc
+  trans-symˡ
+  trans-symʳ
   ```
 
 * In `Relation.Binary.PropositionalEquality.WithK`:
@@ -976,12 +989,6 @@ Other minor additions
 
   ⊎-magma : Symmetric-kind → (ℓ : Level) → Semigroup _ _
   ×-magma : Symmetric-kind → (ℓ : Level) → Magma _ _
-  ```
-
-* Added new definitions to `Relation.Binary.PropositionalEquality`:
-  ```agda
-  module Constant⇒UIP
-  module Decidable⇒UIP
   ```
 
 * Added new proofs to `Relation.Binary.Consequences`:
