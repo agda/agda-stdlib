@@ -53,10 +53,10 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
-  length-mono-Sublist-≤ : ∀ {as bs} → Sublist R as bs → length as ≤ length bs
-  length-mono-Sublist-≤ []        = z≤n
-  length-mono-Sublist-≤ (y ∷ʳ rs) = ℕₚ.≤-step (length-mono-Sublist-≤ rs)
-  length-mono-Sublist-≤ (r ∷ rs)  = s≤s (length-mono-Sublist-≤ rs)
+  length-mono-≤ : ∀ {as bs} → Sublist R as bs → length as ≤ length bs
+  length-mono-≤ []        = z≤n
+  length-mono-≤ (y ∷ʳ rs) = ℕₚ.≤-step (length-mono-≤ rs)
+  length-mono-≤ (r ∷ rs)  = s≤s (length-mono-≤ rs)
 
 ------------------------------------------------------------------------
 -- Conversion to and from Pointwise (proto-reflexivity)
@@ -70,7 +70,7 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   toPointwise {bs = []}     eq []         = []
   toPointwise {bs = b ∷ bs} eq (r ∷ rs)   = r ∷ toPointwise (ℕₚ.suc-injective eq) rs
   toPointwise {bs = b ∷ bs} eq (.b ∷ʳ rs) =
-    ⊥-elim $ ℕₚ.<-irrefl eq (s≤s (length-mono-Sublist-≤ rs))
+    ⊥-elim $ ℕₚ.<-irrefl eq (s≤s (length-mono-≤ rs))
 
 module _ {a b c r s t} {A : Set a} {B : Set b} {C : Set c}
          {R : REL A B r} {S : REL B C s} {T : REL A C t} where
@@ -90,32 +90,38 @@ module _ {a b r s e} {A : Set a} {B : Set b}
   -- impossible cases
   antisym rs⇒e (_∷ʳ_ {xs} {ys₁} y rs) (_∷ʳ_ {ys₂} {zs} z ss) =
     ⊥-elim $ ℕₚ.<-irrefl P.refl $ begin
-    length (y ∷ ys₁) ≤⟨ length-mono-Sublist-≤ ss ⟩
+    length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
     length zs        ≤⟨ ℕₚ.n≤1+n (length zs) ⟩
-    length (z ∷ zs)  ≤⟨ length-mono-Sublist-≤ rs ⟩
+    length (z ∷ zs)  ≤⟨ length-mono-≤ rs ⟩
     length ys₁       ∎ where open ℕₚ.≤-Reasoning
   antisym rs⇒e (_∷ʳ_ {xs} {ys₁} y rs) (_∷_ {y} {ys₂} {z} {zs} s ss)  =
     ⊥-elim $ ℕₚ.<-irrefl P.refl $ begin
-    length (z ∷ zs) ≤⟨ length-mono-Sublist-≤ rs ⟩
-    length ys₁      ≤⟨ length-mono-Sublist-≤ ss ⟩
+    length (z ∷ zs) ≤⟨ length-mono-≤ rs ⟩
+    length ys₁      ≤⟨ length-mono-≤ ss ⟩
     length zs       ∎ where open ℕₚ.≤-Reasoning
   antisym rs⇒e (_∷_ {x} {xs} {y} {ys₁} r rs)  (_∷ʳ_ {ys₂} {zs} z ss) =
     ⊥-elim $ ℕₚ.<-irrefl P.refl $ begin
-    length (y ∷ ys₁) ≤⟨ length-mono-Sublist-≤ ss ⟩
-    length xs        ≤⟨ length-mono-Sublist-≤ rs ⟩
+    length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
+    length xs        ≤⟨ length-mono-≤ rs ⟩
     length ys₁       ∎ where open ℕₚ.≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Various functions' outputs are sublists
 
+-- These lemmas are generalisations of results of the form `f xs ⊆ xs`.
+-- (where _⊆_ stands for Sublist R). If R is reflexive then we can indeed
+-- obtain `f xs ⊆ xs` from `xs ⊆ ys → f xs ⊆ ys`. The other direction is
+-- only true if R is both reflexive and transitive.
+
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
-  tail-Sublist : ∀ {as bs} → Pointwise R as bs →
+  tail-Sublist : ∀ {as bs} → Sublist R as bs →
                  MAll.All (λ as → Sublist R as bs) (tail as)
-  tail-Sublist []       = nothing
-  tail-Sublist (p ∷ ps) = just (_ ∷ʳ fromPointwise ps)
+  tail-Sublist []        = nothing
+  tail-Sublist (b ∷ʳ ps) = MAll.map (b ∷ʳ_) (tail-Sublist ps)
+  tail-Sublist (p ∷ ps)  = just (_ ∷ʳ ps)
 
-  take-Sublist : ∀ n → Sublist R ⇒ (Sublist R ∘′ take n)
+  take-Sublist : ∀ {as bs} n → Sublist R as bs → Sublist R (take n as) bs
   take-Sublist n       (y ∷ʳ rs) = y ∷ʳ take-Sublist n rs
   take-Sublist zero    rs        = minimum _
   take-Sublist (suc n) []        = []
@@ -130,21 +136,21 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 module _ {a b r p} {A : Set a} {B : Set b}
          {R : REL A B r} {P : Pred A p} (P? : U.Decidable P) where
 
-  takeWhile-Sublist : Sublist R ⇒ (Sublist R ∘′ takeWhile P?)
+  takeWhile-Sublist : ∀ {as bs} → Sublist R as bs → Sublist R (takeWhile P? as) bs
   takeWhile-Sublist []        = []
   takeWhile-Sublist (y ∷ʳ rs) = y ∷ʳ takeWhile-Sublist rs
   takeWhile-Sublist {a ∷ as} (r ∷ rs) with P? a
   ... | yes pa = r ∷ takeWhile-Sublist rs
   ... | no ¬pa = minimum _
 
-  dropWhile-Sublist : Sublist R ⇒ (Sublist R ∘′ dropWhile P?)
+  dropWhile-Sublist : ∀ {as bs} → Sublist R as bs → Sublist R (dropWhile P? as) bs
   dropWhile-Sublist []        = []
   dropWhile-Sublist (y ∷ʳ rs) = y ∷ʳ dropWhile-Sublist rs
   dropWhile-Sublist {a ∷ as} (r ∷ rs) with P? a
   ... | yes pa = _ ∷ʳ dropWhile-Sublist rs
   ... | no ¬pa = r ∷ rs
 
-  filter-Sublist : Sublist R ⇒ (Sublist R ∘′ filter P?)
+  filter-Sublist : ∀ {as bs} → Sublist R as bs → Sublist R (filter P? as) bs
   filter-Sublist []        = []
   filter-Sublist (y ∷ʳ rs) = y ∷ʳ filter-Sublist rs
   filter-Sublist {a ∷ as} (r ∷ rs) with P? a
@@ -153,6 +159,9 @@ module _ {a b r p} {A : Set a} {B : Set b}
 
 ------------------------------------------------------------------------
 -- Various functions are increasing wrt _⊆_
+
+-- We write f⁺ for the proof that `xs ⊆ ys → f xs ⊆ f ys`
+-- and f⁻ for the one that `f xs ⊆ f ys → xs ⊆ ys`.
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
