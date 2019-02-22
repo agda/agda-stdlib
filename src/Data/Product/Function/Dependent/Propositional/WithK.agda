@@ -5,7 +5,7 @@
 -- preserving functions
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --with-K --safe #-}
 
 module Data.Product.Function.Dependent.Propositional.WithK where
 
