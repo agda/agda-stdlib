@@ -313,6 +313,8 @@ List of new modules
 
   Debug.Trace
 
+  Function.Endomophism.Setoid
+  Function.Endomophism.Propositional
   Function.HalfAdjointEquivalence
 
   Relation.Binary.Construct.Add.Extrema.Equality
