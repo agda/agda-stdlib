@@ -17,15 +17,21 @@ open import Relation.Binary.PropositionalEquality
 ------------------------------------------------------------------------
 -- Using inspect
 
+-- We start with the definition of a (silly) predicate: `Plus m n p` states
+-- that `m + n` is equal to `p` in a rather convoluted way. Crucially, it
+-- distinguishes two cases: whether `p` is 0 or not.
+
 Plus-eq : (m n p : ℕ) → Set
 Plus-eq m n zero      = m ≡ 0 × n ≡ 0
 Plus-eq m n p@(suc _) = m + n ≡ p
 
+-- A sensible lemma to prove of this predicate is that whenever `p` is literally
+-- `m + n` then `Plus m n p` holds. That is to say `∀ m n → Plus m n (m + n)`.
 -- To be able to prove `Plus-eq m n (m + n)`, we need `m + n` to have either
 -- the shape `zero` or `suc _` so that `Plus-eq` may reduce.
 
--- We could follow the way `_+_` computes by following the same splitting
--- strategy:
+-- We could follow the way `_+_` computes by mimicking the same splitting
+-- strategy, thus forcing `m + n` to reduce:
 
 plus-eq-+ : ∀ m n → Plus-eq m n (m + n)
 plus-eq-+ zero   zero    = refl , refl
@@ -48,7 +54,8 @@ plus-eq-+ (suc m) n      = refl
 -- 1. `m ≡ 0 × n ≡ 0`, with no assumption whatsoever
 -- 2. `m + n ≡ suc p`, with no assumption either
 
--- The problem is that `with` generated an auxiliary function like this:
+-- By using the `with` construct, we have generated an auxiliary function that
+-- looks like this:
 -- `plus-eq-with-aux : ∀ m n p → Plus-eq m n p`
 -- when we would have wanted a more precise type of the form:
 -- `plus-eq-aux : ∀ m n p → m + n ≡ p → Plus-eq m n p`.
@@ -73,8 +80,8 @@ plus-eq-with m n with m + n | inspect (m +_) n
 -- Understanding the implementation of inspect
 
 -- So why is it that we have to go through the record type `Reveal_·_is_`
--- and the ̀inspect` function? The fact is we don't have to if we write our
--- own auxiliary lemma:
+-- and the ̀inspect` function? The fact is: we don't have to if we write
+-- our own auxiliary lemma:
 
 plus-eq-aux : ∀ m n → Plus-eq m n (m + n)
 plus-eq-aux m n = aux m n (m + n) refl where
@@ -83,9 +90,9 @@ plus-eq-aux m n = aux m n (m + n) refl where
   aux m n zero    m+n≡0   = i+j≡0⇒i≡0 m m+n≡0 , i+j≡0⇒j≡0 m m+n≡0
   aux m n (suc p) m+n≡1+p = m+n≡1+p
 
--- The problem is that when you write ̀with f x | pr`, `with` decides to call `y`
--- the result `f x` and replace *all* of the occurences of `f x` in the type of
--- `pr` with `y`. That is to say that if we were to write:
+-- The problem is that when we write ̀with f x | pr`, `with` decides to call `y`
+-- the result `f x` and to replace *all* of the occurences of `f x` in the type
+-- of `pr` with `y`. That is to say that if we were to write:
 
 -- plus-eq-naïve : ∀ m n → Plus-eq m n (m + n)
 -- plus-eq-naïve m n with m + n | refl {x = m + n}
@@ -107,7 +114,7 @@ record MyReveal_·_is_ (f : ℕ → ℕ) (x y : ℕ) : Set where
 my-inspect : ∀ f n → MyReveal f · n is (f n)
 my-inspect f n = [ refl ]
 
--- Given that `inspect` has the type `∀ f n → Reveal f · n is (f n)`, when you
+-- Given that `inspect` has the type `∀ f n → Reveal f · n is (f n)`, when we
 -- write `with f n | inspect f n`, the only `f n` that can be abstracted in the
 -- type of `inspect f n` is the third argument to `Reveal_·_is_`.
 
@@ -120,5 +127,6 @@ plus-eq-reveal m n = aux m n (m + n) (my-inspect (m +_) n) where
   aux m n zero    [ m+n≡0   ] = i+j≡0⇒i≡0 m m+n≡0 , i+j≡0⇒j≡0 m m+n≡0
   aux m n (suc p) [ m+n≡1+p ] = m+n≡1+p
 
--- This is the closest you will get the type of the handwritten auxiliary definition
--- `∀ m n p → m + n ≡ p → Plus-eq m n p` defined earlier by using `with`.
+-- At the cost of having to unwrap the constructor `[_]` around the equality
+-- we care about, we can keep relying on `with` and avoid having to roll out
+-- handwritten auxiliary definitions.
