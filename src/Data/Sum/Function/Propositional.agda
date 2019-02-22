@@ -10,9 +10,7 @@ module Data.Sum.Function.Propositional where
 
 open import Data.Sum
 open import Data.Sum.Function.Setoid
-open import Data.Sum.Relation.Binary.Pointwise
-open import Relation.Binary
-open import Function.Equality using (_⟶_)
+open import Data.Sum.Relation.Binary.Pointwise using (Pointwise-≡↔≡)
 open import Function.Equivalence as Eq using (_⇔_; module Equivalence)
 open import Function.Injection as Inj using (_↣_; module Injection)
 open import Function.Inverse as Inv using (_↔_; module Inverse)

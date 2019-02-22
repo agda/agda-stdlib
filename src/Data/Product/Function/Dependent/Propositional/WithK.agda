@@ -1,7 +1,25 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Dependent product combinators for propositional equality
+-- preserving functions
+------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
 
+module Data.Product.Function.Dependent.Propositional.WithK where
+
+open import Data.Product
+open import Data.Product.Function.Dependent.Setoid
+open import Data.Product.Relation.Binary.Pointwise.Dependent
+open import Data.Product.Relation.Binary.Pointwise.Dependent.WithK
+open import Function.Equality using (_⟨$⟩_)
+open import Function.Injection as Inj using (_↣_; module Injection)
+open import Function.Inverse as Inv using (_↔_; module Inverse)
+import Relation.Binary.HeterogeneousEquality as H
 
 ------------------------------------------------------------------------
+-- Combinator for Injection
 
 module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
          {b₁ b₂} {B₁ : A₁ → Set b₁} {B₂ : A₂ → Set b₂}
