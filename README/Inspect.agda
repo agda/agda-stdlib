@@ -9,11 +9,9 @@
 
 module README.Inspect where
 
-open import Data.Empty
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Product
-open import Function
 open import Relation.Binary.PropositionalEquality
 
 ------------------------------------------------------------------------
