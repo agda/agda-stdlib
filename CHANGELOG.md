@@ -269,10 +269,15 @@ Non-backwards compatible changes
 * The proofs `toList⁺` and `toList⁻` in `Data.Vec.Relation.Unary.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
+* Changed the type of `≡-≟-identity` to make use of the fact that equality
+  being decidable implies UIP.
+
+* Changed the implementation of _≟_ and _≤″?_ for natural numbers to use a (fast)
+  boolean test.
+
 List of new modules
 -------------------
 
-* All new modules
   ```
   Algebra.Construct.NaturalChoice.Min
   Algebra.Construct.NaturalChoice.Max
@@ -483,6 +488,9 @@ Other minor additions
   ∧-band          : Band 0ℓ 0ℓ
   ∨-semilattice   : Semilattice 0ℓ 0ℓ
   ∧-semilattice   : Semilattice 0ℓ 0ℓ
+
+  T?      : Decidable T
+  T?-diag : T b → True (T? b)
   ```
 
 * Added new function to `Data.Fin.Base`:
@@ -802,6 +810,22 @@ Other minor additions
   m⊔n<o⇒n<o : ∀ m n {o} → m ⊔ n < o → n < o
 
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
+
+  ≡ᵇ⇒≡         : T (m ≡ᵇ n) → m ≡ n
+  ≡⇒≡ᵇ         : m ≡ n → T (m ≡ᵇ n)
+  ≡-irrelevant : Irrelevant {A = ℕ} _≡_
+  ≟-diag       : (eq : m ≡ n) → (m ≟ n) ≡ yes eq
+
+  <ᵇ⇒<″  : T (m <ᵇ n) → m <″ n
+  <″⇒<ᵇ  : m <″ n → T (m <ᵇ n)
+
+  m<ᵇn⇒1+m+[n-1+m]≡n : T (m <ᵇ n) → suc m + (n ∸ suc m) ≡ n
+  m<ᵇ1+m+n           : T (m <ᵇ suc (m + n))
+
+  ≤″-irrelevant : Irrelevant _≤″_
+  ≥″-irrelevant : Irrelevant _≥″_
+  <″-irrelevant : Irrelevant _<″_
+  >″-irrelevant : Irrelevant _>″_
   ```
 
 * Added new proof to `Data.Product.Properties.WithK`:
@@ -955,8 +979,10 @@ Other minor additions
   ```
 
 * Added new definitions to `Relation.Binary.PropositionalEquality`:
-  - `_≡_↾¹_` equality of functions at a single point
-  - `_≡_↾_` equality of functions at a subset of the domain
+  ```agda
+  module Constant⇒UIP
+  module Decidable⇒UIP
+  ```
 
 * Added new proofs to `Relation.Binary.Consequences`:
   ```agda
