@@ -9,7 +9,13 @@
 module Data.Product.Properties where
 
 open import Data.Product
+open import Function using (_∘_)
+open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality
+open import Relation.Nullary using (yes; no)
+
+------------------------------------------------------------------------
+-- Equality
 
 module _ {a b} {A : Set a} {B : A → Set b} where
 

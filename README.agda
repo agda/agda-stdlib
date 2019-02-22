@@ -284,6 +284,11 @@ import README.Container.FreeMonad
 
 import README.Function.Reasoning
 
+-- An example showing how to use the debug tracing mechanism to inspect
+-- the behaviour of compiled Agda programs.
+
+import README.Debug.Trace
+
 ------------------------------------------------------------------------
 -- Core modules
 ------------------------------------------------------------------------
