@@ -76,18 +76,6 @@ preorder A = record
   ; isPreorder = isPreorder
   }
 
-module _ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) {a b : A} where
-
-  ≡-≟-identity : a ≡ b → ∃ λ eq → a ≟ b ≡ yes eq
-  ≡-≟-identity eq with a ≟ b
-  ... | yes p = p , refl
-  ... | no ¬p = ⊥-elim (¬p eq)
-
-  ≢-≟-identity : a ≢ b → ∃ λ ¬eq → a ≟ b ≡ no ¬eq
-  ≢-≟-identity ¬eq with a ≟ b
-  ... | yes p = ⊥-elim (¬eq p)
-  ... | no ¬p = ¬p , refl
-
 ------------------------------------------------------------------------
 -- Pointwise equality
 
@@ -299,3 +287,47 @@ cong-≡id {f = f} {x} f≡id =
   f≡id (f x)                                                    ∎
   where
   open ≡-Reasoning
+
+module Constant⇒UIP
+       {a} {A : Set a} (f : _≡_ {A = A} ⇒ _≡_)
+       (f-constant : ∀ {a b} (p q : a ≡ b) → f p ≡ f q)
+       where
+
+  ≡-canonical : ∀ {a b} (p : a ≡ b) → trans (sym (f refl)) (f p) ≡ p
+  ≡-canonical refl = trans-symˡ (f refl)
+
+  ≡-irrelevant : Irrelevant {A = A} _≡_
+  ≡-irrelevant p q = begin
+    p                          ≡⟨ sym (≡-canonical p) ⟩
+    trans (sym (f refl)) (f p) ≡⟨ cong (trans _) (f-constant p q) ⟩
+    trans (sym (f refl)) (f q) ≡⟨ ≡-canonical q ⟩
+    q                          ∎ where open ≡-Reasoning
+
+module Decidable⇒UIP
+       {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A}))
+       where
+
+  ≡-normalise : _≡_ {A = A} ⇒ _≡_
+  ≡-normalise {a} {b} a≡b with a ≟ b
+  ... | yes p = p
+  ... | no ¬p = ⊥-elim (¬p a≡b)
+
+  ≡-normalise-constant : ∀ {a b} (p q : a ≡ b) → ≡-normalise p ≡ ≡-normalise q
+  ≡-normalise-constant {a} {b} p q with a ≟ b
+  ... | yes _ = refl
+  ... | no ¬p = ⊥-elim (¬p p)
+
+  ≡-irrelevant : Irrelevant {A = A} _≡_
+  ≡-irrelevant = Constant⇒UIP.≡-irrelevant ≡-normalise ≡-normalise-constant
+
+module _ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) {a : A} where
+
+  ≡-≟-identity : ∀ {b} (eq : a ≡ b) → a ≟ b ≡ yes eq
+  ≡-≟-identity {b} eq with a ≟ b
+  ... | yes p = cong yes (Decidable⇒UIP.≡-irrelevant _≟_ p eq)
+  ... | no ¬p = ⊥-elim (¬p eq)
+
+  ≢-≟-identity : ∀ {b} → a ≢ b → ∃ λ ¬eq → a ≟ b ≡ no ¬eq
+  ≢-≟-identity {b} ¬eq with a ≟ b
+  ... | yes p = ⊥-elim (¬eq p)
+  ... | no ¬p = ¬p , refl

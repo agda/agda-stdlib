@@ -272,10 +272,15 @@ Non-backwards compatible changes
 * `Data.List.Relation.Binary.Sublist.Propositional.Solver` has been removed and replaced by
   `Data.List.Relation.Binary.Sublist.DecPropositional.Solver`.
 
+* Changed the type of `≡-≟-identity` to make use of the fact that equality
+  being decidable implies UIP.
+
+* Changed the implementation of _≟_ and _≤″?_ for natural numbers to use a (fast)
+  boolean test.
+
 List of new modules
 -------------------
 
-* All new modules
   ```
   Algebra.Construct.NaturalChoice.Min
   Algebra.Construct.NaturalChoice.Max
@@ -333,6 +338,8 @@ List of new modules
 
   Debug.Trace
 
+  Function.Endomophism.Setoid
+  Function.Endomophism.Propositional
   Function.HalfAdjointEquivalence
 
   Relation.Binary.Construct.Add.Extrema.Equality
@@ -501,6 +508,9 @@ Other minor additions
   ∧-band          : Band 0ℓ 0ℓ
   ∨-semilattice   : Semilattice 0ℓ 0ℓ
   ∧-semilattice   : Semilattice 0ℓ 0ℓ
+
+  T?      : Decidable T
+  T?-diag : T b → True (T? b)
   ```
 
 * Added new function to `Data.Fin.Base`:
@@ -820,6 +830,22 @@ Other minor additions
   m⊔n<o⇒n<o : ∀ m n {o} → m ⊔ n < o → n < o
 
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
+
+  ≡ᵇ⇒≡         : T (m ≡ᵇ n) → m ≡ n
+  ≡⇒≡ᵇ         : m ≡ n → T (m ≡ᵇ n)
+  ≡-irrelevant : Irrelevant {A = ℕ} _≡_
+  ≟-diag       : (eq : m ≡ n) → (m ≟ n) ≡ yes eq
+
+  <ᵇ⇒<″  : T (m <ᵇ n) → m <″ n
+  <″⇒<ᵇ  : m <″ n → T (m <ᵇ n)
+
+  m<ᵇn⇒1+m+[n-1+m]≡n : T (m <ᵇ n) → suc m + (n ∸ suc m) ≡ n
+  m<ᵇ1+m+n           : T (m <ᵇ suc (m + n))
+
+  ≤″-irrelevant : Irrelevant _≤″_
+  ≥″-irrelevant : Irrelevant _≥″_
+  <″-irrelevant : Irrelevant _<″_
+  >″-irrelevant : Irrelevant _>″_
   ```
 
 * Added new proof to `Data.Product.Properties.WithK`:
@@ -977,6 +1003,8 @@ Other minor additions
   trans-injectiveˡ : trans p₁ q ≡ trans p₂ q → p₁ ≡ p₂
   trans-injectiveʳ : trans p q₁ ≡ trans p q₂ → q₁ ≡ q₂
   subst-injective  : subst P x≡y p ≡ subst P x≡y q → p ≡ q
+  module Constant⇒UIP
+  module Decidable⇒UIP
   ```
 
 * Added new proofs to `Relation.Binary.Consequences`:

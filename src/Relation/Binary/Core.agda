@@ -168,7 +168,7 @@ WeaklyDecidable : ∀ {a b ℓ} {A : Set a} {B : Set b} → REL A B ℓ → Set 
 WeaklyDecidable _∼_ = ∀ x y → Maybe (x ∼ y)
 
 Irrelevant : ∀ {a b ℓ} {A : Set a} {B : Set b} → REL A B ℓ → Set _
-Irrelevant _∼_ = ∀ {x y} (a : x ∼ y) (b : x ∼ y) → a ≡ b
+Irrelevant _∼_ = ∀ {x y} (a b : x ∼ y) → a ≡ b
 
 record NonEmpty {a b ℓ} {A : Set a} {B : Set b}
                 (T : REL A B ℓ) : Set (a ⊔ b ⊔ ℓ) where
