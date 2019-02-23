@@ -18,10 +18,8 @@ matrix:
       addons:
         apt:
           packages:
-            - alex-3.2.4
             - cabal-install-2.0
             - ghc-8.4.4
-            - happy-1.19.9
           sources:
             - hvr-ghc
 
@@ -36,6 +34,7 @@ install:
   - cd agda
   - git checkout 99f0a7a21f3bc2584673deecb7e4c8a2484205f4
   # checking whether .ghc is still valid
+  - cabal install alex happy
   - cabal install --only-dependencies --dry -v > $HOME/installplan.txt
   - sed -i -e '1,/^Resolving /d' $HOME/installplan.txt; cat $HOME/installplan.txt
   - touch $HOME/.cabsnap/installplan.txt
