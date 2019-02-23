@@ -2,7 +2,7 @@ language: c
 branches:
   only:
   - master
-  - travis
+  - experimental
 
 sudo: enabled
 
@@ -14,14 +14,14 @@ cache:
 
 matrix:
   include:
-    - env: TEST=MAIN GHC_VER=8.0.2 BUILD=CABAL CABAL_VER=1.24
+    - env: TEST=MAIN GHC_VER=8.4.4 BUILD=CABAL CABAL_VER=2.0
       addons:
         apt:
           packages:
-            - alex-3.1.7
-            - cabal-install-1.24
-            - ghc-8.0.2
-            - happy-1.19.5
+            - alex-3.2.4
+            - cabal-install-2.0
+            - ghc-8.4.4
+            - happy-1.19.9
           sources:
             - hvr-ghc
 
@@ -31,8 +31,12 @@ before_install:
 install:
   - cabal update
   - sed -i 's/^jobs:/-- jobs:/' $HOME/.cabal/config
+  # installing the dev version of Agda
+  - git clone https://github.com/agda/agda
+  - cd agda
+  - git checkout 99f0a7a21f3bc2584673deecb7e4c8a2484205f4
   # checking whether .ghc is still valid
-  - cabal install --only-dependencies --dry -v agda > $HOME/installplan.txt
+  - cabal install --only-dependencies --dry -v > $HOME/installplan.txt
   - sed -i -e '1,/^Resolving /d' $HOME/installplan.txt; cat $HOME/installplan.txt
   - touch $HOME/.cabsnap/installplan.txt
   - mkdir -p $HOME/.cabsnap/ghc $HOME/.cabsnap/lib $HOME/.cabsnap/share $HOME/.cabsnap/bin
@@ -48,17 +52,16 @@ install:
       mkdir -p $HOME/.ghc $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin;
     fi
   - cabal install cpphs
-  - cabal install agda
+  - cabal install
   # snapshot package-db on cache miss
   - echo "snapshotting package-db to build-cache";
     mkdir $HOME/.cabsnap;
     cp -a $HOME/.ghc $HOME/.cabsnap/ghc;
     cp -a $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin $HOME/installplan.txt $HOME/.cabsnap/;
   # installing fix-agda-whitespace
-  - git clone https://github.com/agda/agda --depth=1
-  - cd agda/src/fix-agda-whitespace
+  - cd src/fix-agda-whitespace
   - cabal install fix-agda-whitespace.cabal
-  - cd -
+  - cd ../..
   - yes | rm -R agda/
   # generating Everything.agda
   - cabal install lib.cabal
@@ -78,8 +81,9 @@ script:
   # building the docs
   - agda -i . -i src/ --html safe.agda
   - agda -i . -i src/ --html index.agda
-  # moving everything at the root
-  - mv html/* .
+  # moving everything to the experimental directory
+  - mkdir -p experimental
+  - mv html/* experimental/
 
 after_success:
   # uploading to gh-pages
@@ -91,7 +95,7 @@ after_success:
   - git checkout v0.16/ v0.17/
   - git add -f \*.html
   - git commit -m "Automatic HTML update via Travis"
-  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "master" ];
+  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "experimental" ];
     then git push -q upstream HEAD:gh-pages &>/dev/null;
     fi
 
