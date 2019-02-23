@@ -18,7 +18,7 @@ srcDir         = "src"
 -- | Checks whether a module is declared (un)safe
 
 isUnsafeModule :: FilePath -> Bool
-isUnsafeModule = flip elem $ map toAgdaFilePath
+isUnsafeModule = flip elem $ map modToFile
   [ "Data.Char.Unsafe"
   , "Data.Float.Unsafe"
   , "Data.Nat.Unsafe"
@@ -30,14 +30,7 @@ isUnsafeModule = flip elem $ map toAgdaFilePath
   , "IO.Primitive"
   , "Reflection"
   , "Relation.Binary.PropositionalEquality.TrustMe"
-  ] where
-
-  toAgdaFilePath :: String -> FilePath
-  toAgdaFilePath name = concat
-    [ "src/"
-    , map (\ c -> if c == '.' then '/' else c) name
-    , ".agda"
-    ]
+  ]
 
 -- | Returns 'True' for all Agda files except for core modules.
 
@@ -184,15 +177,21 @@ format = unlines . concat . map fmt
   where
   fmt lf = "" : header lf ++ ["import " ++ fileToMod (filepath lf)]
 
--- | Translates a file name to the corresponding module name. It is
--- assumed that the file name corresponds to an Agda module under
--- 'srcDir'.
+-- | Translates back and forth between a file name and the corresponding module
+--   name. We assume that the file name corresponds to an Agda module under
+--   'srcDir'.
 
 fileToMod :: FilePath -> String
 fileToMod = map slashToDot . dropExtension . makeRelative srcDir
   where
   slashToDot c | isPathSeparator c = '.'
                | otherwise         = c
+
+modToFile :: String -> FilePath
+modToFile name = concat [ srcDir, "/", map dotToSlash name, ".agda" ]
+  where
+  dotToSlash c | c == '.'  = '/'
+               | otherwise = c
 
 -- | A variant of 'readFile' which uses the 'utf8' encoding.
 
