@@ -78,17 +78,24 @@ data Safety = Unsafe | Safe | SafeGuardedness | SafeSizedTypes
 
 classify :: FilePath -> [String] -> Safety
 classify fp ls
-  | unsafe      = Unsafe
-  | guardedness = SafeGuardedness
-  | sizedtypes  = SafeSizedTypes
-  | otherwise   = Safe
+  | unsafe && safe = error $ fp ++ contradiction
+  | unsafe         = Unsafe
+  | guardedness    = SafeGuardedness
+  | sizedtypes     = SafeSizedTypes
+  | safe           = Safe
+  | otherwise      = error $ fp ++ uncategorized
 
   where
+
     unsafe      = isUnsafeModule fp
     option str  = List.isSubsequenceOf ["{-#", "OPTIONS", str, "#-}"]
     options     = words <$> filter (List.isInfixOf "OPTIONS") ls
     guardedness = not $ null $ filter (option "--guardedness") options
     sizedtypes  = not $ null $ filter (option "--sized-types") options
+    safe        = not $ null $ filter (option "--safe") options
+
+    contradiction = " is declared unsafe but uses the --safe option."
+    unategorized  = " is not declared unsafe but not using the --safe option either."
 
 -- | Analyse a file
 
