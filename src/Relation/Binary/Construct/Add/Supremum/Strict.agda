@@ -14,7 +14,7 @@ open import Relation.Binary
 module Relation.Binary.Construct.Add.Supremum.Strict
   {a r} {A : Set a} (_<_ : Rel A r) where
 
-open import Level
+open import Level using (_⊔_)
 open import Data.Product
 open import Function
 open import Relation.Nullary
@@ -27,7 +27,7 @@ import Relation.Binary.Construct.Add.Supremum.NonStrict as NonStrict
 ------------------------------------------------------------------------
 -- Definition
 
-data _<⁺_ : Rel (A ⁺) r where
+data _<⁺_ : Rel (A ⁺) (a ⊔ r) where
   [_]    : {k l : A} → k < l → [ k ] <⁺ [ l ]
   [_]<⊤⁺ : (k : A)           → [ k ] <⁺ ⊤⁺
 

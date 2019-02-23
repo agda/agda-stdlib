@@ -14,6 +14,7 @@ open import Relation.Binary
 module Relation.Binary.Construct.Add.Point.Equality
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
 
+open import Level using (_⊔_)
 open import Function
 import Relation.Binary.PropositionalEquality as P
 open import Relation.Nullary
@@ -23,7 +24,7 @@ import Relation.Nullary.Decidable as Dec
 ------------------------------------------------------------------------
 -- Definition
 
-data _≈∙_ : Rel (Pointed A) ℓ where
+data _≈∙_ : Rel (Pointed A) (a ⊔ ℓ) where
   ∙≈∙ :                     ∙     ≈∙ ∙
   [_] : {k l : A} → k ≈ l → [ k ] ≈∙ [ l ]
 

@@ -14,7 +14,7 @@ open import Relation.Binary
 module Relation.Binary.Construct.Add.Infimum.NonStrict
   {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) where
 
-open import Level
+open import Level using (_⊔_)
 open import Data.Sum as Sum
 import Relation.Binary.PropositionalEquality as P
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality
@@ -26,7 +26,7 @@ import Relation.Nullary.Decidable as Dec
 -- Definition
 
 infix 5 _≤₋_
-data _≤₋_ : Rel (A ₋) ℓ where
+data _≤₋_ : Rel (A ₋) (a ⊔ ℓ) where
   ⊥₋≤_  : (l : A ₋)         → ⊥₋    ≤₋ l
   [_] : {k l : A} → k ≤ l → [ k ] ≤₋ [ l ]
 

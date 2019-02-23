@@ -14,7 +14,7 @@ open import Relation.Binary
 module Relation.Binary.Construct.Add.Supremum.NonStrict
   {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) where
 
-open import Level
+open import Level using (_⊔_)
 open import Data.Sum as Sum
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
@@ -25,7 +25,7 @@ import Relation.Binary.Construct.Add.Supremum.Equality as Equality
 ------------------------------------------------------------------------
 -- Definition
 
-data _≤⁺_ : Rel (A ⁺) ℓ where
+data _≤⁺_ : Rel (A ⁺) (a ⊔ ℓ) where
   [_]  : {k l : A} → k ≤ l → [ k ] ≤⁺ [ l ]
   _≤⊤⁺ : (k : A ⁺)         → k     ≤⁺ ⊤⁺
 
