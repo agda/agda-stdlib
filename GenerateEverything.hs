@@ -188,9 +188,9 @@ fileToMod = map slashToDot . dropExtension . makeRelative srcDir
                | otherwise         = c
 
 modToFile :: String -> FilePath
-modToFile name = concat [ srcDir, "/", map dotToSlash name, ".agda" ]
+modToFile name = concat [ srcDir, [pathSeparator], map dotToSlash name, ".agda" ]
   where
-  dotToSlash c | c == '.'  = '/'
+  dotToSlash c | c == '.'  = pathSeparator
                | otherwise = c
 
 -- | A variant of 'readFile' which uses the 'utf8' encoding.
