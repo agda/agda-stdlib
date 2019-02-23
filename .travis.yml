@@ -60,7 +60,7 @@ install:
   # installing fix-agda-whitespace
   - cd src/fix-agda-whitespace
   - cabal install fix-agda-whitespace.cabal
-  - cd ../..
+  - cd ../../..
   - yes | rm -R agda/
   # generating Everything.agda
   - cabal install lib.cabal
