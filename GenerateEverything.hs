@@ -1,7 +1,6 @@
 {-# LANGUAGE PatternGuards #-}
 
 import Control.Applicative
-import Control.Monad ( guard )
 
 import qualified Data.List as List
 
