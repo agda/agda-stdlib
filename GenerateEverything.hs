@@ -99,7 +99,6 @@ data LibraryFile = LibraryFile
 analyse :: FilePath -> IO LibraryFile
 analyse fp = do
   ls <- lines <$> readFileUTF8 fp
-  let safe = not $ isUnsafeModule fp
   return $ LibraryFile
     { filepath   = fp
     , header     = extractHeader fp ls
