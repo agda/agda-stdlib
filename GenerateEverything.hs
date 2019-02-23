@@ -1,20 +1,26 @@
 {-# LANGUAGE PatternGuards #-}
 
-import qualified Data.List as List
 import Control.Applicative
+import Control.Monad ( guard )
+
+import qualified Data.List as List
+import qualified Data.Set as Set
+
 import System.Environment
-import System.IO
 import System.Exit
 import System.FilePath
 import System.FilePath.Find
+import System.IO
 
 headerFile     = "Header"
 allOutputFile  = "Everything"
 safeOutputFile = "EverythingSafe"
 srcDir         = "src"
 
-unsafeModules :: [FilePath]
-unsafeModules = map toAgdaFilePath
+-- | Checks whether a module is declared (un)safe
+
+isUnsafeModule :: FilePath -> Bool
+isUnsafeModule = flip Set.member $ Set.fromList $ map toAgdaFilePath
   [ "Data.Char.Unsafe"
   , "Data.Float.Unsafe"
   , "Data.Nat.Unsafe"
@@ -35,6 +41,74 @@ unsafeModules = map toAgdaFilePath
     , ".agda"
     ]
 
+-- | Returns 'True' for all Agda files except for core modules.
+
+isLibraryModule :: FilePath -> Bool
+isLibraryModule f =
+  takeExtension f `elem` [".agda", ".lagda"]
+  && dropExtension (takeFileName f) /= "Core"
+
+
+-- | Extracts the header.
+
+extractHeader :: FilePath -> [String] -> [String]
+extractHeader mod = extract
+  where
+  delimiter = all (== '-')
+
+  extract (d1 : "-- The Agda standard library" : "--" : ss)
+    | delimiter d1
+    , (info, d2 : rest) <- span ("-- " `List.isPrefixOf`) ss
+    , delimiter d2
+    = info
+  extract (d1 : _)
+    | not (delimiter d1)
+    , last d1 == '\r'
+    = error $ mod ++ " contains \\r, probably due to git misconfiguration; maybe set autocrf to input?"
+  extract _ = error $ unwords [ mod ++ " is malformed."
+                              , "It needs to have a module header."
+                              , "Please see other existing files or consult HACKING.md."
+                              ]
+
+-- | A crude classifier looking for lines containing options & trying to guess
+--   whether the safe file is using either @--guardedness@ or @--sized-types@
+
+data Safety = Unsafe | Safe | SafeGuardedness | SafeSizedTypes
+  deriving (Eq)
+
+classify :: FilePath -> [String] -> Safety
+classify fp ls
+  | unsafe      = Unsafe
+  | guardedness = SafeGuardedness
+  | sizedtypes  = SafeSizedTypes
+  | otherwise   = Safe
+
+  where
+    unsafe      = isUnsafeModule fp
+    option str  = List.isSubsequenceOf ["{-#", "OPTIONS", str, "#-}"]
+    options     = words <$> filter (List.isInfixOf "OPTIONS") ls
+    guardedness = not $ null $ filter (option "--guardedness") options
+    sizedtypes  = not $ null $ filter (option "--sized-types") options
+
+-- | Analyse a file
+
+data LibraryFile = LibraryFile
+  { filepath   :: FilePath
+  , header     :: [String]
+  , safety     :: Safety
+  }
+
+analyse :: FilePath -> IO LibraryFile
+analyse fp = do
+  ls <- lines <$> readFileUTF8 fp
+  let safe = not $ isUnsafeModule fp
+  return $ LibraryFile
+    { filepath   = fp
+    , header     = extractHeader fp ls
+    , safety     = classify fp ls
+    }
+
+
 main = do
   args <- getArgs
   case args of
@@ -46,21 +120,36 @@ main = do
                find always
                     (extension ==? ".agda" ||? extension ==? ".lagda")
                     srcDir
-  headers <- mapM extractHeader modules
+  libraryfiles <- mapM analyse modules
 
   let mkModule str = "module " ++ str ++ " where"
-  let content = zip modules headers
 
   writeFileUTF8 (allOutputFile ++ ".agda") $
     unlines [ header
             , mkModule allOutputFile
-            , format content
+            , format libraryfiles
             ]
 
   writeFileUTF8 (safeOutputFile ++ ".agda") $
     unlines [ header
             , mkModule safeOutputFile
-            , format $ filter ((`notElem` unsafeModules) . fst) content
+            , format $ filter ((Unsafe /=) . safety) libraryfiles
+            ]
+
+  let safeGuardednessOutputFile = safeOutputFile ++ "Guardedness"
+  writeFileUTF8 (safeGuardednessOutputFile ++ ".agda") $
+    unlines [ header
+            , "{-# OPTIONS --safe --guardedness #-}\n"
+            , mkModule safeGuardednessOutputFile
+            , format $ filter ((SafeGuardedness ==) . safety) libraryfiles
+            ]
+
+  let safeSizedTypesOutputFile = safeOutputFile ++ "SizedTypes"
+  writeFileUTF8 (safeSizedTypesOutputFile ++ ".agda") $
+    unlines [ header
+            , "{-# OPTIONS --safe --sized-types #-}\n"
+            , mkModule safeSizedTypesOutputFile
+            , format $ filter ((SafeSizedTypes ==) . safety) libraryfiles
             ]
 
 -- | Usage info.
@@ -79,40 +168,16 @@ usage = unlines
   , "with the file " ++ headerFile ++ " inserted verbatim at the beginning."
   ]
 
--- | Returns 'True' for all Agda files except for core modules.
-
-isLibraryModule :: FilePath -> Bool
-isLibraryModule f =
-  takeExtension f `elem` [".agda", ".lagda"]
-  && dropExtension (takeFileName f) /= "Core"
-
--- | Reads a module and extracts the header.
-
-extractHeader :: FilePath -> IO [String]
-extractHeader mod = fmap (extract . lines) $ readFileUTF8 mod
-  where
-  delimiter = all (== '-')
-
-  extract (d1 : "-- The Agda standard library" : "--" : ss)
-    | delimiter d1
-    , (info, d2 : rest) <- span ("-- " `List.isPrefixOf`) ss
-    , delimiter d2
-    = info
-  extract (d1 : _)
-    | not (delimiter d1)
-    , last d1 == '\r'
-    = error $ mod ++ " contains \\r, probably due to git misconfiguration; maybe set autocrf to input?"
-  extract _ = error $ mod ++ " is malformed. It is required to have a module header. Please see other existing files or consult HACKING.md."
 
 -- | Formats the extracted module information.
 
-format :: [(FilePath, [String])]
+format :: [LibraryFile]
           -- ^ Pairs of module names and headers. All lines in the
           -- headers are already prefixed with \"-- \".
        -> String
 format = unlines . concat . map fmt
   where
-  fmt (mod, header) = "" : header ++ ["import " ++ fileToMod mod]
+  fmt lf = "" : header lf ++ ["import " ++ fileToMod (filepath lf)]
 
 -- | Translates a file name to the corresponding module name. It is
 -- assumed that the file name corresponds to an Agda module under
