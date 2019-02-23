@@ -4,7 +4,6 @@ import Control.Applicative
 import Control.Monad ( guard )
 
 import qualified Data.List as List
-import qualified Data.Set as Set
 
 import System.Environment
 import System.Exit
@@ -20,7 +19,7 @@ srcDir         = "src"
 -- | Checks whether a module is declared (un)safe
 
 isUnsafeModule :: FilePath -> Bool
-isUnsafeModule = flip Set.member $ Set.fromList $ map toAgdaFilePath
+isUnsafeModule = flip elem $ map toAgdaFilePath
   [ "Data.Char.Unsafe"
   , "Data.Float.Unsafe"
   , "Data.Nat.Unsafe"
@@ -95,7 +94,7 @@ classify fp ls
     safe        = not $ null $ filter (option "--safe") options
 
     contradiction = " is declared unsafe but uses the --safe option."
-    unategorized  = " is not declared unsafe but not using the --safe option either."
+    uncategorized = " is not declared unsafe but not using the --safe option either."
 
 -- | Analyse a file
 
