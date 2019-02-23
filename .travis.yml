@@ -18,7 +18,7 @@ matrix:
       addons:
         apt:
           packages:
-            - cabal-install-2.0
+            - cabal-install-2.2
             - ghc-8.4.4
           sources:
             - hvr-ghc
