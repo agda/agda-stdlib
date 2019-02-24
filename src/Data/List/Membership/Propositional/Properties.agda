@@ -23,8 +23,8 @@ open import Data.List.Categorical using (monad)
 open import Data.Nat using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤?_)
 open import Data.Nat.Properties
 open import Data.Product hiding (map)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×-cong_)
-import Data.Product.Relation.Binary.Pointwise.Dependent as Σ
+open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
+import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Function
 open import Function.Equality using (_⟨$⟩_)

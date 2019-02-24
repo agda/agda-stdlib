@@ -244,6 +244,25 @@ Non-backwards compatible changes
 * The constructor `₁∼₁` and `₂∼₂` in `Pointwise` have been renamed `inj₁` and `inj₂`
   respectively. The old names still exist but have been deprecated.
 
+#### New `Data.Sum/Product.Function` directories
+
+* Various combinators for types of functions (injections, surjections, inverses etc.)
+  over `Sum` and `Product` currently live in the `Data.(Product/Sum).Relation.Binary.Pointwise`
+  modules. These are poorly placed as: a) the properties do not directly reference `Pointwise`
+  and b) are very hard to locate.
+
+* They have therefore been moved into the new `Data.(Product/Sum).Function` directory
+  as follows:
+  ```
+  Data.Product.Relation.Binary.Pointwise.Dependent    ↦ Data.Product.Function.Dependent.Setoid
+                                                      ↘ Data.Product.Function.Dependent.Propositional
+  Data.Product.Relation.Binary.Pointwise.NonDependent ↦ Data.Product.Function.NonDependent.Setoid
+                                                      ↘ Data.Product.Function.NonDependent.Propositional
+  Data.Sum.Relation.Binary.Pointwise.Dependent        ↦ Data.Sum.Function.Setoid
+                                                      ↘ Data.Sum.Function.Propositional
+  ```
+  All the proofs about `Pointwise` remain untouched.
+
 #### Other
 
 * The proof `sel⇒idem` has been moved from `Algebra.FunctionProperties.Consequences` to
