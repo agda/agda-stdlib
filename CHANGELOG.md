@@ -651,6 +651,11 @@ Other minor additions
   updateAt  : Fin n → (A → A) → Vec A n → Vec A n
   ```
 
+* Added new proofs to `Data.List.Relation.Binary.Equality.DecPropositional`:
+  ```agda
+  _≡?_        : Decidable (_≡_ {A = List A})
+  ```
+
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
   ```agda
   respects : P Respects _≈_ → (All P) Respects _≋_
