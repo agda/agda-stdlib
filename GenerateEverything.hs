@@ -22,23 +22,17 @@ srcDir         = "src"
 
 isUnsafeModule :: FilePath -> Bool
 isUnsafeModule =
-  -- GA 2019-02-24: it is crucial to keep this point free
+  -- GA 2019-02-24: it is crucial to use an anonymous lambda
   -- here so that `unsafeModules` is shared between all calls
   -- to `isUnsafeModule`.
-
-  flip elem unsafeModules
+  \ fp -> unqualifiedModuleName fp == "Unsafe"
+       || fp `elem` unsafeModules
 
   where
 
   unsafeModules :: [FilePath]
   unsafeModules = map modToFile
-    [ "Data.Char.Unsafe"
-    , "Data.Float.Unsafe"
-    , "Data.Nat.Unsafe"
-    , "Data.Nat.DivMod.Unsafe"
-    , "Data.String.Unsafe"
-    , "Data.Word.Unsafe"
-    , "Debug.Trace"
+    [ "Debug.Trace"
     , "IO"
     , "IO.Primitive"
     , "Reflection"
