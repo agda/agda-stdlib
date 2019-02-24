@@ -33,14 +33,11 @@ Key⁺ : Set a
 Key⁺ = Key ±
 
 open AddExtremaToSet public
-  using ([_])
+  using ([_]; [_]-injective)
   renaming
   ( ⊥± to ⊥⁺
   ; ⊤± to ⊤⁺
   )
-
-[_]-injective : ∀ {k l : Key} → [ k ] ≡ [ l ] → k ≡ l
-[_]-injective refl = refl
 
 -----------------------------------------------------------------------
 -- The order is extended in a corresponding manner
