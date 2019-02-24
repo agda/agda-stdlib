@@ -165,12 +165,12 @@ classify fp ls
 
     missingWithK = " is declared as relying on K but not using the --with-K option."
 
--- | Analyse a file
+-- | Analyse a file: extracting header and classifying it.
 
 data LibraryFile = LibraryFile
-  { filepath   :: FilePath
-  , header     :: [String]
-  , safety     :: Safety
+  { filepath   :: FilePath -- ^ FilePath of the source file
+  , header     :: [String] -- ^ All lines in the headers are already prefixed with \"-- \".
+  , safety     :: Safety   -- ^ Safety options used by the module
   }
 
 analyse :: FilePath -> IO LibraryFile
@@ -182,6 +182,13 @@ analyse fp = do
     , safety     = classify fp ls
     }
 
+---------------------------------------------------------------------------
+-- Collecting all non-Core library files, analysing them and generating
+-- 4 files:
+-- Everything.agda                 all the modules
+-- EverythingSafe.agda             all the safe modules (may be incompatible)
+-- EverythingSafeGuardedness.agda  all the safe modules using --guardedness
+-- EverythingSafeSizedTypes.agda   all the safe modules using --sized-types
 
 main = do
   args <- getArgs
@@ -245,10 +252,7 @@ usage = unlines
 
 -- | Formats the extracted module information.
 
-format :: [LibraryFile]
-          -- ^ Pairs of module names and headers. All lines in the
-          -- headers are already prefixed with \"-- \".
-       -> String
+format :: [LibraryFile] -> String
 format = unlines . concat . map fmt
   where
   fmt lf = "" : header lf ++ ["import " ++ fileToMod (filepath lf)]
