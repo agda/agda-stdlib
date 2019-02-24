@@ -11,8 +11,6 @@
 
 module Relation.Binary.Sum where
 
-open import Data.Sum.Relation.Binary.Core public
-
 open import Data.Sum.Relation.Binary.Pointwise public
   renaming
   ( Pointwise          to _⊎-Rel_
