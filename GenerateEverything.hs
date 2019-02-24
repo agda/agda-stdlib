@@ -15,32 +15,92 @@ allOutputFile  = "Everything"
 safeOutputFile = "EverythingSafe"
 srcDir         = "src"
 
+---------------------------------------------------------------------------
+-- Files with a special status
+
 -- | Checks whether a module is declared (un)safe
 
 isUnsafeModule :: FilePath -> Bool
-isUnsafeModule = flip elem $ map modToFile
-  [ "Data.Char.Unsafe"
-  , "Data.Float.Unsafe"
-  , "Data.Nat.Unsafe"
-  , "Data.Nat.DivMod.Unsafe"
-  , "Data.String.Unsafe"
-  , "Data.Word.Unsafe"
-  , "Debug.Trace"
-  , "IO"
-  , "IO.Primitive"
-  , "Reflection"
-  , "Relation.Binary.PropositionalEquality.TrustMe"
-  ]
+isUnsafeModule =
+  -- GA 2019-02-24: it is crucial to keep this point free
+  -- here so that `unsafeModules` is shared between all calls
+  -- to `isUnsafeModule`.
+
+  flip elem unsafeModules
+
+  where
+
+  unsafeModules :: [FilePath]
+  unsafeModules = map modToFile
+    [ "Data.Char.Unsafe"
+    , "Data.Float.Unsafe"
+    , "Data.Nat.Unsafe"
+    , "Data.Nat.DivMod.Unsafe"
+    , "Data.String.Unsafe"
+    , "Data.Word.Unsafe"
+    , "Debug.Trace"
+    , "IO"
+    , "IO.Primitive"
+    , "Reflection"
+    , "Relation.Binary.PropositionalEquality.TrustMe"
+    ]
+
+-- | Checks whether a module is declared as using K
+
+isWithKModule :: FilePath -> Bool
+isWithKModule =
+  -- GA 2019-02-24: it is crucial to use an anonymous lambda
+  -- here so that `withKModules` is shared between all calls
+  -- to `isWithKModule`.
+  \ fp -> unqualifiedModuleName fp == "WithK"
+       || fp `elem` withKModules
+
+  where
+
+  withKModules :: [FilePath]
+  withKModules = map modToFile
+    [ "Relation.Binary.HeterogeneousEquality"
+    , "Relation.Binary.PropositionalEquality.TrustMe"
+    , "Relation.Binary.HeterogeneousEquality.Quotients.Examples"
+    , "Relation.Binary.HeterogeneousEquality.Core"
+    , "Relation.Binary.HeterogeneousEquality.Quotients"
+    , "Data.Nat.DivMod.Unsafe"
+    , "Data.Nat.Unsafe"
+    , "Data.Star.Pointer"
+    , "Data.Star.Decoration"
+    , "Data.Star.Vec"
+    , "Data.Star.BoundedVec"
+    , "Data.Star.Fin"
+    , "Data.Star.Environment"
+    , "Data.Word.Unsafe"
+    , "Data.Char.Unsafe"
+    , "Data.String.Unsafe"
+    , "Data.Float.Unsafe"
+    , "Reflection"
+    ]
+
+unqualifiedModuleName :: FilePath -> String
+unqualifiedModuleName = dropExtension . takeFileName
 
 -- | Returns 'True' for all Agda files except for core modules.
 
 isLibraryModule :: FilePath -> Bool
 isLibraryModule f =
   takeExtension f `elem` [".agda", ".lagda"]
-  && dropExtension (takeFileName f) /= "Core"
+  && unqualifiedModuleName f /= "Core"
 
 
--- | Extracts the header.
+---------------------------------------------------------------------------
+-- Analysing library files
+
+-- | Extracting the header.
+
+-- It needs to have the form:
+-- ------------------------------------------------------------------------
+-- -- The Agda standard library
+-- --
+-- -- Description of the module
+-- ------------------------------------------------------------------------
 
 extractHeader :: FilePath -> [String] -> [String]
 extractHeader mod = extract
@@ -69,24 +129,47 @@ data Safety = Unsafe | Safe | SafeGuardedness | SafeSizedTypes
 
 classify :: FilePath -> [String] -> Safety
 classify fp ls
-  | unsafe && safe = error $ fp ++ contradiction
-  | unsafe         = Unsafe
-  | guardedness    = SafeGuardedness
-  | sizedtypes     = SafeSizedTypes
-  | safe           = Safe
-  | otherwise      = error $ fp ++ uncategorized
+  -- We start with sanity checks
+  | isUnsafe && safe          = error $ fp ++ contradiction "unsafe" "safe"
+  | not (isUnsafe || safe)    = error $ fp ++ uncategorized "unsafe" "safe"
+  | isWithK && withoutK       = error $ fp ++ contradiction "as relying on K" "without-K"
+  | isWithK && not withK      = error $ fp ++ missingWithK
+  | not (isWithK || withoutK) = error $ fp ++ uncategorized "as relying on K" "without-K"
+  -- And then perform the actual classification
+  | isUnsafe                  = Unsafe
+  | guardedness               = SafeGuardedness
+  | sizedtypes                = SafeSizedTypes
+  | safe                      = Safe
+  -- We know that @not (isUnsafe || safe)@, all cases are covered
+  | otherwise                 = error "IMPOSSIBLE"
 
   where
 
-    unsafe      = isUnsafeModule fp
-    option str  = List.isSubsequenceOf ["{-#", "OPTIONS", str, "#-}"]
-    options     = words <$> filter (List.isInfixOf "OPTIONS") ls
-    guardedness = not $ null $ filter (option "--guardedness") options
-    sizedtypes  = not $ null $ filter (option "--sized-types") options
-    safe        = not $ null $ filter (option "--safe") options
+    -- based on declarations
+    isWithK  = isWithKModule fp
+    isUnsafe = isUnsafeModule fp
 
-    contradiction = " is declared unsafe but uses the --safe option."
-    uncategorized = " is not declared unsafe but not using the --safe option either."
+    -- based on detected OPTIONS
+    guardedness = option "--guardedness"
+    sizedtypes  = option "--sized-types"
+    safe        = option "--safe"
+    withK       = option "--with-K"
+    withoutK    = option "--without-K"
+
+    -- GA 2019-02-24: note that we do not reprocess the whole module for every
+    -- option check: the shared @options@ definition ensures we only inspect a
+    -- handful of lines (at most one, ideally)
+    option str = let detect = List.isSubsequenceOf ["{-#", "OPTIONS", str, "#-}"]
+                  in not $ null $ filter detect options
+    options    = words <$> filter (List.isInfixOf "OPTIONS") ls
+
+    -- formatting error messages
+    contradiction d o = unwords
+      [ " is declared", d, "but uses the", "--" ++ o, "option." ]
+    uncategorized d o = unwords
+      [ " is not declared", d, "but not using the", "--" ++ o, "option either." ]
+
+    missingWithK = " is declared as relying on K but not using the --with-K option."
 
 -- | Analyse a file
 
