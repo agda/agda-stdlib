@@ -81,6 +81,6 @@ _⊎_ : ∀ {s₁ s₂ p} → Container s₁ p → Container s₂ p → Containe
 
 -- Indexed sum.
 
-Σ : ∀ {i s p} {I : Set i} → (I → Container s p) → Container (i ⊔ s) p
-Σ C .Shape    = ∃ λ i → Shape (C i)
-Σ C .Position = λ s → Position (C (proj₁ s)) (proj₂ s)
+Σ : ∀ {i s p} (I : Set i) → (I → Container s p) → Container (i ⊔ s) p
+Σ I C .Shape    = ∃ λ i → Shape (C i)
+Σ I C .Position = λ s → Position (C (proj₁ s)) (proj₂ s)
