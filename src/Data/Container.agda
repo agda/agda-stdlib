@@ -150,79 +150,7 @@ module Morphism where
     m .position = proj₂ (nt (_ , ⟨id⟩))
 
 
-  -- Combinators which commute with ⟪_⟫.
-
-  -- Identity.
-
-  module _ {s p} (C : Container s p) where
-
-    id : C ⇒ C
-    id = ⟨id⟩ ▷ ⟨id⟩
-
-
-    id-correct : ∀ {x} {X : Set x} → ⟪ id ⟫ {X} ≗ ⟨id⟩
-    id-correct x = P.refl
-
-  -- Composition.
-
-  module _ {s₁ s₂ s₃ p₁ p₂ p₃}
-    {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂} {C₃ : Container s₃ p₃} where
-
-    infixr 9 _∘_
-    _∘_ : C₂ ⇒ C₃ → C₁ ⇒ C₂ → C₁ ⇒ C₃
-    (f ∘ g) .shape    = shape    f ⟨∘⟩ shape    g
-    (f ∘ g) .position = position g ⟨∘⟩ position f
-
-    ∘-correct : ∀ f g {x} {X : Set x} → ⟪ f ∘ g ⟫ {X} ≗ (⟪ f ⟫ ⟨∘⟩ ⟪ g ⟫)
-    ∘-correct f g xs = P.refl
-
-------------------------------------------------------------------------
--- Linear container morphisms
-
-record _⊸_ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂)
-  : Set (s₁ ⊔ s₂ ⊔ p₁ ⊔ p₂) where
-  field
-    shape⊸    : Shape C₁ → Shape C₂
-    position⊸ : ∀ {s} → Position C₂ (shape⊸ s) ↔ Position C₁ s
-
-  morphism : C₁ ⇒ C₂
-  morphism = record
-    { shape    = shape⊸
-    ; position = _⟨$⟩_ (Inverse.to position⊸)
-    }
-
-  ⟪_⟫⊸ : ∀ {ℓ} {X : Set ℓ} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X
-  ⟪_⟫⊸ = ⟪ morphism ⟫
-
-open _⊸_ public using (shape⊸; position⊸; ⟪_⟫⊸)
-
-------------------------------------------------------------------------
--- All and any
-
-module _ {s p x} {C : Container s p} {X : Set x} where
-
--- All.
-
-  □-map : ∀ {ℓ ℓ′} {P : Pred X ℓ} {Q : Pred X ℓ′} → P ⊆ Q → □ {C = C} P ⊆ □ Q
-  □-map P⊆Q = _⟨∘⟩_ P⊆Q
-
--- Any.
-
-  ◇-map : ∀ {ℓ ℓ′} {P : Pred X ℓ} {Q : Pred X ℓ′} → P ⊆ Q → ◇ {C = C} P ⊆ ◇ Q
-  ◇-map P⊆Q = Prod.map ⟨id⟩ P⊆Q
-
--- Membership.
-
-  infix 4 _∈_
-
-  _∈_ : X → ⟦ C ⟧ X → Set (p ⊔ x)
-  x ∈ xs = ◇ (_≡_ x) xs
-
--- Bag and set equality and related preorders. Two containers xs and
--- ys are equal when viewed as sets if, whenever x ∈ xs, we also have
--- x ∈ ys, and vice versa. They are equal when viewed as bags if,
--- additionally, the sets x ∈ xs and x ∈ ys have the same size.
-
+----------
 open Related public
   using (Kind; Symmetric-kind)
   renaming ( implication         to subset
@@ -233,16 +161,16 @@ open Related public
            ; bijection           to bag
            )
 
-[_]-Order : ∀ {s p ℓ} → Kind → Container s p → Set ℓ →
-            Preorder (s ⊔ p ⊔ ℓ) (s ⊔ p ⊔ ℓ) (p ⊔ ℓ)
-[ k ]-Order C X = Related.InducedPreorder₂ k (_∈_ {C = C} {X = X})
+--[_]-Order : ∀ {s p ℓ} → Kind → Container s p → Set ℓ →
+  --          Preorder (s ⊔ p ⊔ ℓ) (s ⊔ p ⊔ ℓ) (p ⊔ ℓ)
+--[ k ]-Order C X = Related.InducedPreorder₂ k (_∈_ {C = C} {X = X})
 
-[_]-Equality : ∀ {s p ℓ} → Symmetric-kind → Container s p → Set ℓ →
-               Setoid (s ⊔ p ⊔ ℓ) (p ⊔ ℓ)
-[ k ]-Equality C X = Related.InducedEquivalence₂ k (_∈_ {C = C} {X = X})
+--[_]-Equality : ∀ {s p ℓ} → Symmetric-kind → Container s p → Set ℓ →
+--               Setoid (s ⊔ p ⊔ ℓ) (p ⊔ ℓ)
+--[ k ]-Equality C X = Related.InducedEquivalence₂ k (_∈_ {C = C} {X = X})
 
-infix 4 _∼[_]_
+--infix 4 _∼[_]_
 
-_∼[_]_ : ∀ {s p x} {C : Container s p} {X : Set x} →
-         ⟦ C ⟧ X → Kind → ⟦ C ⟧ X → Set (p ⊔ x)
-_∼[_]_ {C = C} {X} xs k ys = Preorder._∼_ ([ k ]-Order C X) xs ys
+--_∼[_]_ : ∀ {s p x} {C : Container s p} {X : Set x} →
+  --       ⟦ C ⟧ X → Kind → ⟦ C ⟧ X → Set (p ⊔ x)
+--_∼[_]_ {C = C} {X} xs k ys = Preorder._∼_ ([ k ]-Order C X) xs ys
