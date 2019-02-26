@@ -28,24 +28,6 @@ module _ {s p x r} {X : Set x} (C : Container s p) (R : Rel X r) where
   trans : Transitive R → Transitive (Pointwise C R)
   trans R-trans (P.refl , f) (P.refl , g) = P.refl , λ p → R-trans (f p) (g p)
 
-module _ {s p x e} (C : Container s p) (X : Setoid x e) where
-
-  private
-    module X = Setoid X
-    _≈_ = Pointwise C X._≈_
-
-  isEquivalence : IsEquivalence _≈_
-  isEquivalence = record
-    { refl  = refl C X._≈_ X.refl
-    ; sym   = sym C X._≈_ X.sym
-    ; trans = λ {_ _ zs} → trans C X._≈_ X.trans {_} {_} {zs}
-    }
-
-  setoid : Setoid (s ⊔ p ⊔ x) (s ⊔ p ⊔ e)
-  setoid = record
-    { isEquivalence = isEquivalence
-    }
-
 private
 
   -- Note that, if propositional equality were extensional, then

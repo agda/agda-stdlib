@@ -11,6 +11,8 @@ module Data.Container where
 open import Level using (_⊔_; suc)
 open import Codata.Musical.M hiding (map)
 open import Data.Container.Membership
+open import Data.Container.Relation.Binary.Pointwise using (Pointwise)
+import Data.Container.Relation.Binary.Pointwise.Properties as Pw
 open import Data.Product as Prod hiding (map)
 open import Data.W hiding (map)
 
@@ -46,61 +48,6 @@ open import Data.Container.Core public
 map : ∀ {s p x y} {C : Container s p} {X : Set x} {Y : Set y} →
       (X → Y) → ⟦ C ⟧ X → ⟦ C ⟧ Y
 map f = Prod.map₂ (f ⟨∘⟩_)
-
-module Map where
-
-  identity :
-    ∀ {s p x e} {C : Container s p} (X : Setoid x e) →
-    let module X = Setoid X in (xs : ⟦ C ⟧ X.Carrier) → Eq C X._≈_ (map ⟨id⟩ xs) xs
-  identity {C = C} X xs = Setoid.refl (setoid C X)
-
-  composition :
-    ∀ {s p x y z e} {C : Container s p} {X : Set x} {Y : Set y} (Z : Setoid z e) →
-    let module Z = Setoid Z in
-    (f : Y → Z.Carrier) (g : X → Y) (xs : ⟦ C ⟧ X) →
-    Eq C Z._≈_ (map f (map g xs)) (map (f ⟨∘⟩ g) xs)
-  composition {C = C} Z f g xs = Setoid.refl (setoid C Z)
-
-------------------------------------------------------------------------
--- Container morphisms
-
-module Morphism where
-
-  -- Naturality.
-
-  Natural : ∀ {s₁ s₂ p₁ p₂} x e {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂} →
-            (∀ {X : Set x} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X) →
-            Set (s₁ ⊔ s₂ ⊔ p₁ ⊔ p₂ ⊔ suc (x ⊔ e))
-  Natural x e {C₁ = C₁} {C₂} m =
-    ∀ {X : Set x} (Y : Setoid x e) → let module Y = Setoid Y in
-    (f : X → Y.Carrier) (xs : ⟦ C₁ ⟧ X) →
-    Eq C₂ Y._≈_ (m $ map f xs) (map f $ m xs)
-
-  -- Natural transformations.
-
-  NT : ∀ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) x e →
-       Set (s₁ ⊔ s₂ ⊔ p₁ ⊔ p₂ ⊔ suc (x ⊔ e))
-  NT C₁ C₂ x e = ∃ λ (m : ∀ {X : Set x} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X) → Natural x e m
-
-  -- Container morphisms are natural.
-
-  natural : ∀ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂}
-            (m : C₁ ⇒ C₂) x e → Natural x e ⟪ m ⟫
-  natural m x e Y f xs = Setoid.refl (setoid _ Y)
-
-  -- In fact, all natural functions of the right type are container
-  -- morphisms.
-
-  complete : ∀ {s₁ s₂ p₁ p₂ e} {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂}
-    (nt : NT C₁ C₂ p₁ e) →
-      ∃ λ m → (X : Setoid p₁ e) → let module X = Setoid X in
-      ∀ xs → Eq C₂ X._≈_ (proj₁ nt xs) (⟪ m ⟫ xs)
-  complete {p₁ = p₁} {C₁ = C₁} {C₂} (nt , nat) =
-    (m , λ X xs → nat X (proj₂ xs) (proj₁ xs , ⟨id⟩)) where
-
-    m : C₁ ⇒ C₂
-    m .shape    = λ s → proj₁ (nt (s , ⟨id⟩))
-    m .position = proj₂ (nt (_ , ⟨id⟩))
 
 ----------
 open Related public

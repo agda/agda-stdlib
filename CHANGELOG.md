@@ -331,9 +331,11 @@ List of new modules
   Data.Container.Membership
   Data.Container.Morphism
   Data.Container.Morphism.Properties
+  Data.Container.Properties
   Data.Container.Relation.Unary.All
   Data.Container.Relation.Unary.Any
   Data.Container.Relation.Unary.Any.Properties
+  Data.Container.Relation.Binary.Equality.Setoid
   Data.Container.Relation.Binary.Pointwise
   Data.Container.Relation.Binary.Pointwise.Properties
 
