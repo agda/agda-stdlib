@@ -496,6 +496,7 @@ Other minor additions
   inject₁-lower₁  : (ne : n ≢ toℕ i)         → inject₁ (lower₁ i ne) ≡ i
   lower₁-inject₁′ : (i : Fin n) (ne : n ≢ toℕ (inject₁ i)) → lower₁ (inject₁ i) ne ≡ i
   lower₁-inject₁  : (i : Fin n) → lower₁ (inject₁ i) (toℕ-inject₁-≢ i) ≡ i
+  lower₁-ext      : (i : Fin n) ne₁ ne₂      → lower₁ i ne₁ ≡ lower₁ i ne₂
   ```
 
 * Added new proofs to `Data.Fin.Subset.Properties`:
