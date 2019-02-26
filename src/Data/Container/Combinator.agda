@@ -8,14 +8,12 @@
 
 module Data.Container.Combinator where
 
-open import Data.Empty using (⊥; ⊥-elim)
+open import Level using (Level; _⊔_; Lift)
+open import Data.Empty using (⊥)
 open import Data.Product as P using (_,_; proj₁; proj₂; ∃)
 open import Data.Sum.Base as S using ([_,_]′)
 open import Data.Unit.Base using (⊤)
-open import Function as F hiding (id; const) renaming (_∘_ to _⟨∘⟩_)
-open import Function.Inverse using (_↔_; inverse)
-open import Level
--- open import Relation.Binary.PropositionalEquality using (refl; _≗_; _≡_)
+import Function as F
 
 open import Data.Container.Core
 open import Data.Container.Relation.Unary.Any

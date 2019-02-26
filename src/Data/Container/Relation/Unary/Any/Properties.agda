@@ -10,7 +10,7 @@ module Data.Container.Relation.Unary.Any.Properties where
 
 open import Level
 open import Algebra
-open import Data.Product as Prod hiding (swap)
+open import Data.Product as Prod using (∃; _×_; ∃₂; _,_; proj₂)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
@@ -32,18 +32,23 @@ private
 
 
 open import Data.Container.Core
-open import Data.Container as C
-open import Data.Container.Combinator using () renaming (_∘_ to _⟨∘⟩_)
-open import Data.Container.Relation.Unary.Any as Any
+open import Data.Container
+import Data.Container.Combinator as C
+open import Data.Container.Combinator.Properties
+open import Data.Container.Relation.Unary.Any as Any using (◇; any)
 open import Data.Container.Membership
 
 module _ {s p} (C : Container s p) {x} {X : Set x} {ℓ} {P : Pred X ℓ} where
 
+-- ◇ can be unwrapped to reveal the Σ type
+
+  ↔Σ : ∀ {xs : ⟦ C ⟧ X} → ◇ C P xs ↔ ∃ λ p → P (proj₂ xs p)
+  ↔Σ {xs} = inverse ◇.proof any (λ _ → P.refl) (λ _ → P.refl)
+
 -- ◇ can be expressed using _∈_.
 
   ↔∈ : ∀ {xs : ⟦ C ⟧ X} → ◇ C P xs ↔ (∃ λ x → x ∈ xs × P x)
-  ↔∈ {xs} = inverse to from (λ _ → P.refl) (to∘from)
-    where
+  ↔∈ {xs} = inverse to from (λ _ → P.refl) (to∘from) where
 
     to : ◇ C P xs → ∃ λ x → x ∈ xs × P x
     to (any (p , Px)) = (proj₂ xs p , (any (p , P.refl)) , Px)
@@ -53,6 +58,7 @@ module _ {s p} (C : Container s p) {x} {X : Set x} {ℓ} {P : Pred X ℓ} where
 
     to∘from : to ∘ from ≗ id
     to∘from (.(proj₂ xs p) , any (p , refl) , Px) = P.refl
+
 {-
 module _ {s p} {C : Container s p} {x} {X : Set x}
          {ℓ₁ ℓ₂} {P₁ : Pred X ℓ₁} {P₂ : Pred X ℓ₂} where
@@ -92,23 +98,24 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
     ◇ _ (λ y → ◇ _ (flip P y) xs) ys               ∎
 
 -- Nested occurrences of ◇ can sometimes be flattened.
-{-
+
 module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂}
          {x} {X : Set x} {ℓ} (P : Pred X ℓ) where
 
   flatten : ∀ (xss : ⟦ C₁ ⟧ (⟦ C₂ ⟧ X)) →
-            ◇ (◇ P) xss ↔
-            ◇ P (Inverse.from (Composition.correct C₁ C₂) ⟨$⟩ xss)
-  flatten xss = inverse t f (λ _ → P.refl) (λ _ → P.refl)
-    where
+            ◇ C₁ (◇ C₂ P) xss ↔
+            ◇ (C₁ C.∘ C₂) P (Inverse.from (Composition.correct C₁ C₂) ⟨$⟩ xss)
+  flatten xss = inverse t f (λ _ → P.refl) (λ _ → P.refl) where
+
+    ◇₁ = ◇ C₁; ◇₂ = ◇ C₂; ◇₁₂ = ◇ (C₁ C.∘ C₂)
     open Inverse
 
-    t : ◇ (◇ P) xss → ◇ P (from (Composition.correct C₁ C₂) ⟨$⟩ xss)
-    t (p₁ , p₂ , p) = ((p₁ , p₂) , p)
+    t : ◇₁ (◇₂ P) xss → ◇₁₂ P (from (Composition.correct C₁ C₂) ⟨$⟩ xss)
+    t (any (p₁ , (any (p₂ , p)))) = any (any (p₁ , p₂) , p)
 
-    f : ◇ P (from (Composition.correct C₁ C₂) ⟨$⟩ xss) → ◇ (◇ P) xss
-    f ((p₁ , p₂) , p) = (p₁ , p₂ , p)
--}
+    f : ◇₁₂ P (from (Composition.correct C₁ C₂) ⟨$⟩ xss) → ◇₁ (◇₂ P) xss
+    f (any (any (p₁ , p₂) , p)) = any (p₁ , any (p₂ , p))
+
 -- Sums commute with ◇ (for a fixed instance of a given container).
 
 module _ {s p} {C : Container s p} {x} {X : Set x}
@@ -153,8 +160,12 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
 module _ {s p} (C : Container s p) {x y} {X : Set x} {Y : Set y}
          {ℓ} (P : Pred Y ℓ) where
 
-  map↔∘ : ∀ {xs : ⟦ C ⟧ X} (f : X → Y) → ◇ C P (C.map f xs) ↔ ◇ C (P ∘ f) xs
-  map↔∘ f = {!!}
+  map↔∘ : ∀ {xs : ⟦ C ⟧ X} (f : X → Y) → ◇ C P (map f xs) ↔ ◇ C (P ∘′ f) xs
+  map↔∘ {xs} f =
+   ◇ C P (map f xs)          ↔⟨ ↔Σ C ⟩
+   ∃ (P ∘′ proj₂ (map f xs)) ↔⟨⟩
+   ∃ (P ∘′ f ∘′ proj₂ xs)    ↔⟨ SK-sym (↔Σ C) ⟩
+   ◇ C (P ∘′ f) xs           ∎
 
 -- Membership in a mapped container can be expressed without reference
 -- to map.
@@ -163,9 +174,9 @@ module _ {s p} (C : Container s p) {x y} {X : Set x} {Y : Set y}
          {ℓ} (P : Pred Y ℓ) where
 
   ∈map↔∈×≡ : ∀ {f : X → Y} {xs : ⟦ C ⟧ X} {y} →
-             y ∈ C.map f xs ↔ (∃ λ x → x ∈ xs × y ≡ f x)
+             y ∈ map f xs ↔ (∃ λ x → x ∈ xs × y ≡ f x)
   ∈map↔∈×≡ {f = f} {xs} {y} =
-    y ∈ C.map f xs              ↔⟨ map↔∘ C (y ≡_) f ⟩
+    y ∈ map f xs              ↔⟨ map↔∘ C (y ≡_) f ⟩
     ◇ C (λ x → y ≡ f x) xs      ↔⟨ ↔∈ C ⟩
     (∃ λ x → x ∈ xs × y ≡ f x)  ∎
 
@@ -295,19 +306,17 @@ module _ {s p} {C : Container s p} {x} {X : Set x} where
 -- If join can be expressed using a linear morphism (in a certain
 -- way), then it can be absorbed by the predicate.
 
-{-
 module _ {s₁ s₂ s₃ p₁ p₂ p₃}
          {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂} {C₃ : Container s₃ p₃}
          {x} {X : Set x} {ℓ} (P : Pred X ℓ) where
 
-  join↔◇ : (join′ : (C₁ ⟨∘⟩ C₂) ⊸ C₃) (xss : ⟦ C₁ ⟧ (⟦ C₂ ⟧ X)) →
+  join↔◇ : (join′ : (C₁ C.∘ C₂) ⊸ C₃) (xss : ⟦ C₁ ⟧ (⟦ C₂ ⟧ X)) →
            let join : ∀ {X} → ⟦ C₁ ⟧ (⟦ C₂ ⟧ X) → ⟦ C₃ ⟧ X
                join = λ {_} → ⟪ join′ ⟫⊸ ∘
                       _⟨$⟩_ (Inverse.from (Composition.correct C₁ C₂)) in
-           ◇ P (join xss) ↔ ◇ (◇ P) xss
+           ◇ C₃ P (join xss) ↔ ◇ C₁ (◇ C₂ P) xss
   join↔◇ join xss =
-    ◇ P (⟪ join ⟫⊸ xss′)  ↔⟨ remove-linear P join ⟩
-    ◇ P            xss′   ↔⟨ SK-sym $ flatten P xss ⟩
-    ◇ (◇ P) xss           ∎
+    ◇ C₃ P (⟪ join ⟫⊸ xss′) ↔⟨ remove-linear P join ⟩
+    ◇ (C₁ C.∘ C₂) P xss′    ↔⟨ SK-sym $ flatten P xss ⟩
+    ◇ C₁ (◇ C₂ P) xss       ∎
     where xss′ = Inverse.from (Composition.correct C₁ C₂) ⟨$⟩ xss
--}
