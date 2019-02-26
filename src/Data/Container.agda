@@ -13,11 +13,32 @@ open import Codata.Musical.M
 open import Data.W
 
 ------------------------------------------------------------------------
--- Containers
-
--- A container is a set of shapes, and for every shape a set of positions.
+-- Re-exporting content to maintain backwards compatibility
 
 open import Data.Container.Core public
+open import Data.Container.Relation.Unary.Any
+  using (◇) renaming (map to ◇-map) public
+open import Data.Container.Relation.Unary.All
+  using (□) renaming (map to □-map) public
+open import Data.Container.Membership
+  using (_∈_) public
+open import Data.Container.Relation.Binary.Pointwise
+  using () renaming (Pointwise to Eq) public
+open import Data.Container.Relation.Binary.Pointwise.Properties
+  using (refl; sym; trans) public
+open import Data.Container.Relation.Binary.Equality.Setoid
+  using (isEquivalence; setoid) public
+open import Data.Container.Properties
+  using () renaming (map-identity to identity; map-compose to composition) public
+open import Data.Container.Related public
+
+module Morphism where
+
+  open import Data.Container.Morphism.Properties
+    using (Natural; NT; natural; complete; id-correct; ∘-correct) public
+
+  open import Data.Container.Morphism
+    using (id; _∘_) public
 
 -- The least and greatest fixpoints of a container.
 
