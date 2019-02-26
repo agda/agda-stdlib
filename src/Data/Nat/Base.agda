@@ -130,15 +130,6 @@ _>′_ : Rel ℕ 0ℓ
 m >′ n = n <′ m
 
 ------------------------------------------------------------------------
--- Similar to _≤′_
-
-infix 4 _≤‴_
-
-data _≤‴_ : ℕ → ℕ → Set where
-  ≤‴-refl : ∀{m} → m ≤‴ m
-  ≤‴-step : ∀{m n} → suc m ≤‴ n → m ≤‴ n
-
-------------------------------------------------------------------------
 -- Another alternative definition of _≤_.
 
 record _≤″_ (m n : ℕ) : Set where
@@ -157,6 +148,24 @@ m ≥″ n = n ≤″ m
 
 _>″_ : Rel ℕ 0ℓ
 m >″ n = n <″ m
+
+------------------------------------------------------------------------
+-- Useful for induction when you have an upper bound.
+
+data _≤‴_ : ℕ → ℕ → Set where
+  ≤‴-refl : ∀{m} → m ≤‴ m
+  ≤‴-step : ∀{m n} → suc m ≤‴ n → m ≤‴ n
+
+infix 4 _≤‴_ _<‴_ _≥‴_ _>‴_
+
+_<‴_ : Rel ℕ 0ℓ
+m <‴ n = suc m ≤‴ n
+
+_≥‴_ : Rel ℕ 0ℓ
+m ≥‴ n = n ≤‴ m
+
+_>‴_ : Rel ℕ 0ℓ
+m >‴ n = n <‴ m
 
 ------------------------------------------------------------------------
 -- A comparison view. Taken from "View from the left"
