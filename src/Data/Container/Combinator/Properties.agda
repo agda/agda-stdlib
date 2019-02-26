@@ -39,22 +39,13 @@ module Identity where
 module Constant (ext : ∀ {ℓ ℓ′} → P.Extensionality ℓ ℓ′) where
 
   correct : ∀ {x p y} (X : Set x) {Y : Set y} → ⟦ const {x} {p ⊔ y} X ⟧ Y ↔ F.const X Y
-  correct {x} {y} X {Y} = record
-    { to         = P.→-to-⟶ to
-    ; from       = P.→-to-⟶ from
-    ; inverse-of = record
-      { right-inverse-of = λ _ → P.refl
-      ; left-inverse-of  = from∘to
-      }
-    }
-    where
-    to : ⟦ const X ⟧ Y → X
-    to = proj₁
+  correct {x} {y} X {Y} = inverse proj₁ from from∘to λ _ → P.refl
 
+    where
     from : X → ⟦ const X ⟧ Y
     from = < F.id , F.const (⊥-elim ∘′ lower) >
 
-    from∘to : (x : ⟦ const X ⟧ Y) → from (to x) ≡ x
+    from∘to : (x : ⟦ const X ⟧ Y) → from (proj₁ x) ≡ x
     from∘to xs = P.cong (proj₁ xs ,_) (ext (λ x → ⊥-elim (lower x)))
 
 module Composition {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) where
