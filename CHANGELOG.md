@@ -288,6 +288,8 @@ Non-backwards compatible changes
 * The proofs `toList⁺` and `toList⁻` in `Data.Vec.Relation.Unary.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
+* The functions `_∷=_` and `_─_` have been removed from `Data.List.Membership.Setoid` as they are subsumed by the more general versions now part of `Data.List.Any`.
+
 * Changed the type of `≡-≟-identity` to make use of the fact that equality
   being decidable implies UIP.
 
@@ -654,14 +656,11 @@ Other minor additions
   forM      : All Q xs → (Q ⊆ M ∘′ P) → M (All P xs)
   ```
 
-* Added new operators to `Data.List.Base`:
+* Added new proofs to `Data.List.Relation.Unary.All.Properties`:
   ```agda
-  _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
-  _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
-  _─_     : (xs : List A) → Fin (length xs) → List A
-
-  reverseAcc : List A → List A → List A
+  respects : P Respects _≈_ → (All P) Respects _≋_
   ```
+
   A generalization of single point overwrite `_[_]≔_`
   to single-point modification `_[_]%=_`
   (alias with different argument order: `updateAt`):
@@ -678,6 +677,15 @@ Other minor additions
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
   ```agda
   respects : P Respects _≈_ → (All P) Respects _≋_
+  ─⁺       : All Q xs → All Q (xs Any.─ p)
+  ─⁻       : Q (Any.lookup p) → All Q (xs Any.─ p) → All Q xs
+  ```
+
+* Added new functions to `Data.List.Relation.Unary.Any`:
+  ```agda
+  lookup : Any P xs → A
+  _∷=_   : Any P xs → A → List A
+  _─_    : ∀ xs → Any P xs → List A
   ```
 
 * Added new functions to `Data.List.Base`:
@@ -685,6 +693,12 @@ Other minor additions
   intercalate       : List A → List (List A) → List A
   partitionSumsWith : (A → B ⊎ C) → List A → List B × List C
   partitionSums     : List (A ⊎ B) → List A × List B
+
+  _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
+  _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
+  _─_     : (xs : List A) → Fin (length xs) → List A
+
+  reverseAcc : List A → List A → List A
   ```
 
 * Added new proofs to `Data.List.Membership.Propositional.Properties`:
