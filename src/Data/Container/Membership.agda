@@ -4,6 +4,8 @@
 -- Membership for containers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Container.Membership where
 
 open import Level using (_⊔_)
