@@ -12,6 +12,8 @@ open import Relation.Binary.PropositionalEquality
 module Data.List.Relation.Binary.Equality.DecPropositional
   {a} {A : Set a} (_≟_ : Decidable {A = A} _≡_) where
 
+open import Data.List using (List)
+open import Data.List.Properties using (≡-dec)
 import Data.List.Relation.Binary.Equality.Propositional as PropositionalEq
 import Data.List.Relation.Binary.Equality.DecSetoid as DecSetoidEq
 
@@ -22,3 +24,9 @@ import Data.List.Relation.Binary.Equality.DecSetoid as DecSetoidEq
 open PropositionalEq public
 open DecSetoidEq (decSetoid _≟_) public
   using (_≋?_; ≋-isDecEquivalence; ≋-decSetoid)
+
+------------------------------------------------------------------------
+-- Additional proofs
+
+_≡?_ : Decidable (_≡_ {A = List A})
+_≡?_ = ≡-dec _≟_
