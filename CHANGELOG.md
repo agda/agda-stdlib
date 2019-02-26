@@ -276,6 +276,10 @@ Non-backwards compatible changes
 
 * Made the index set explicit in `Data.Container.Combinator`'s `Π` and `Σ`.
 
+* Moved `Eq` to `Data.Container.Relation.Binary.Pointwise`
+  (and renamed it to `Pointwise`) and its properties to
+  `Data.Container.Relation.Binary.Pointwise.Properties`.
+
 #### Other
 
 * The proof `sel⇒idem` has been moved from `Algebra.FunctionProperties.Consequences` to
@@ -330,6 +334,8 @@ List of new modules
   Data.Container.Relation.Unary.All
   Data.Container.Relation.Unary.Any
   Data.Container.Relation.Unary.Any.Properties
+  Data.Container.Relation.Binary.Pointwise
+  Data.Container.Relation.Binary.Pointwise.Properties
 
   Data.Integer.Divisibility.Properties
   Data.Integer.Divisibility.Signed
