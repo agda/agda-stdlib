@@ -25,6 +25,9 @@ open import Agda.Builtin.Nat public
 ------------------------------------------------------------------------
 -- Standard ordering relations
 
+open import Agda.Builtin.Nat public
+  using () renaming (_==_ to _≡ᵇ_; _<_ to _<ᵇ_)
+
 infix 4 _≤_ _<_ _≥_ _>_ _≰_ _≮_ _≱_ _≯_
 
 data _≤_ : Rel ℕ 0ℓ where
@@ -56,7 +59,7 @@ a ≯ b = ¬ a > b
 -- Arithmetic
 
 open import Agda.Builtin.Nat public
-  using (_+_; _*_ ) renaming (_-_ to _∸_)
+  using (_+_; _*_) renaming (_-_ to _∸_)
 
 pred : ℕ → ℕ
 pred zero    = zero

@@ -4,6 +4,8 @@
 -- A pointwise lifting of a relation to incorporate new extrema.
 -------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Extrema
 

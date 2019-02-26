@@ -43,10 +43,22 @@ map : ∀ {p q} {P : A → Set p} {Q : A → Set q} → P ⊆ Q → Any P ⊆ An
 map g (here px)   = here (g px)
 map g (there pxs) = there (map g pxs)
 
--- `index x∈xs` is the list position (zero-based) which `x∈xs` points to.
-index : ∀ {p} {P : A → Set p} {xs} → Any P xs → Fin (List.length xs)
-index (here  px)  = zero
-index (there pxs) = suc (index pxs)
+module _ {p} {P : A → Set p} where
+
+  -- `index x∈xs` is the list position (zero-based) which `x∈xs` points to.
+  index : ∀ {xs} → Any P xs → Fin (List.length xs)
+  index (here  px)  = zero
+  index (there pxs) = suc (index pxs)
+
+  lookup : ∀ {xs} → Any P xs → A
+  lookup {xs} p = List.lookup xs (index p)
+
+  _∷=_ : ∀ {xs} → Any P xs → A → List A
+  _∷=_ {xs} x∈xs v = xs List.[ index x∈xs ]∷= v
+
+  infixl 4 _─_
+  _─_ : ∀ xs → Any P xs → List A
+  xs ─ x∈xs = xs List.─ index x∈xs
 
 -- If any element satisfies P, then P is satisfied.
 satisfied : ∀ {p} {P : A → Set p} {xs} → Any P xs → ∃ P
