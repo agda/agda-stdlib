@@ -13,7 +13,7 @@ open import Size
 open import Codata.Thunk using (Thunk; force)
 open import Codata.M
 open import Codata.M.Bisimilarity
-open import Data.Container as C hiding (map)
+open import Data.Container.Core as C hiding (map)
 import Data.Container.Morphism as Mp
 open import Data.Product as Prod using (_,_)
 open import Data.Product.Properties
