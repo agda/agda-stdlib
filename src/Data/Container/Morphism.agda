@@ -4,6 +4,8 @@
 -- Container Morphisms
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Container.Morphism where
 
 open import Data.Container.Core

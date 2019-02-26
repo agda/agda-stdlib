@@ -59,20 +59,19 @@ module _ {s p} (C : Container s p) {x} {X : Set x} {ℓ} {P : Pred X ℓ} where
     to∘from : to ∘ from ≗ id
     to∘from (.(proj₂ xs p) , any (p , refl) , Px) = P.refl
 
-{-
 module _ {s p} {C : Container s p} {x} {X : Set x}
          {ℓ₁ ℓ₂} {P₁ : Pred X ℓ₁} {P₂ : Pred X ℓ₂} where
 -- ◇ is a congruence for bag and set equality and related preorders.
 
   cong : ∀ {k} {xs₁ xs₂ : ⟦ C ⟧ X} →
          (∀ x → Related k (P₁ x) (P₂ x)) → xs₁ ∼[ k ] xs₂ →
-         Related k (◇ P₁ xs₁) (◇ P₂ xs₂)
+         Related k (◇ C P₁ xs₁) (◇ C P₂ xs₂)
   cong {k} {xs₁} {xs₂} P₁↔P₂ xs₁≈xs₂ =
-    ◇ P₁ xs₁                  ↔⟨ ↔∈ C ⟩
-    (∃ λ x → x ∈ xs₁ × P₁ x)  ∼⟨ Σ.cong Inv.id (xs₁≈xs₂ ×-cong P₁↔P₂ _) ⟩
-    (∃ λ x → x ∈ xs₂ × P₂ x)  ↔⟨ SK-sym (↔∈ C) ⟩
-    ◇ P₂ xs₂                  ∎
--}
+    ◇ C P₁ xs₁               ↔⟨ ↔∈ C ⟩
+    (∃ λ x → x ∈ xs₁ × P₁ x) ∼⟨ Σ.cong Inv.id (xs₁≈xs₂ ×-cong P₁↔P₂ _) ⟩
+    (∃ λ x → x ∈ xs₂ × P₂ x) ↔⟨ SK-sym (↔∈ C) ⟩
+    ◇ C P₂ xs₂               ∎
+
 -- Nested occurrences of ◇ can sometimes be swapped.
 
 module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂}
@@ -83,8 +82,8 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
              ◈ = λ {_} {_} → flip (◇ _) in
          ◈ xs (◈ ys ∘ P) ↔ ◈ ys (◈ xs ∘ flip P)
   swap {xs} {ys} =
-    ◇ _ (λ x → ◇ _ (P x) ys) xs                    ↔⟨ ↔∈ C₁ ⟩
-    (∃ λ x → x ∈ xs × ◇ _ (P x) ys)              ↔⟨ Σ.cong Inv.id $ Σ.cong Inv.id $ ↔∈ C₂ ⟩
+    ◇ _ (λ x → ◇ _ (P x) ys) xs                ↔⟨ ↔∈ C₁ ⟩
+    (∃ λ x → x ∈ xs × ◇ _ (P x) ys)            ↔⟨ Σ.cong Inv.id $ Σ.cong Inv.id $ ↔∈ C₂ ⟩
     (∃ λ x → x ∈ xs × ∃ λ y → y ∈ ys × P x y)  ↔⟨ Σ.cong Inv.id (λ {x} → ∃∃↔∃∃ (λ _ y → y ∈ ys × P x y)) ⟩
     (∃₂ λ x y → x ∈ xs × y ∈ ys × P x y)       ↔⟨ ∃∃↔∃∃ (λ x y → x ∈ xs × y ∈ ys × P x y) ⟩
     (∃₂ λ y x → x ∈ xs × y ∈ ys × P x y)       ↔⟨ Σ.cong Inv.id (λ {y} → Σ.cong Inv.id (λ {x} →
@@ -94,8 +93,8 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
       (y ∈ ys × x ∈ xs × P x y)                     ∎)) ⟩
     (∃₂ λ y x → y ∈ ys × x ∈ xs × P x y)       ↔⟨ Σ.cong Inv.id (λ {y} → ∃∃↔∃∃ {B = y ∈ ys} (λ x _ → x ∈ xs × P x y)) ⟩
     (∃ λ y → y ∈ ys × ∃ λ x → x ∈ xs × P x y)  ↔⟨ Σ.cong Inv.id (Σ.cong Inv.id (SK-sym (↔∈ C₁))) ⟩
-    (∃ λ y → y ∈ ys × ◇ _ (flip P y) xs)         ↔⟨ SK-sym (↔∈ C₂) ⟩
-    ◇ _ (λ y → ◇ _ (flip P y) xs) ys               ∎
+    (∃ λ y → y ∈ ys × ◇ _ (flip P y) xs)       ↔⟨ SK-sym (↔∈ C₂) ⟩
+    ◇ _ (λ y → ◇ _ (flip P y) xs) ys           ∎
 
 -- Nested occurrences of ◇ can sometimes be flattened.
 
@@ -176,35 +175,27 @@ module _ {s p} (C : Container s p) {x y} {X : Set x} {Y : Set y}
   ∈map↔∈×≡ : ∀ {f : X → Y} {xs : ⟦ C ⟧ X} {y} →
              y ∈ map f xs ↔ (∃ λ x → x ∈ xs × y ≡ f x)
   ∈map↔∈×≡ {f = f} {xs} {y} =
-    y ∈ map f xs              ↔⟨ map↔∘ C (y ≡_) f ⟩
-    ◇ C (λ x → y ≡ f x) xs      ↔⟨ ↔∈ C ⟩
-    (∃ λ x → x ∈ xs × y ≡ f x)  ∎
+    y ∈ map f xs               ↔⟨ map↔∘ C (y ≡_) f ⟩
+    ◇ C (λ x → y ≡ f x) xs     ↔⟨ ↔∈ C ⟩
+    ∃ (λ x → x ∈ xs × y ≡ f x) ∎
 
 -- map is a congruence for bag and set equality and related preorders.
 
 module _ {s p} (C : Container s p) {x y} {X : Set x} {Y : Set y}
          {ℓ} (P : Pred Y ℓ) where
 
-{-
   map-cong : ∀ {k} {f₁ f₂ : X → Y} {xs₁ xs₂ : ⟦ C ⟧ X} →
              f₁ ≗ f₂ → xs₁ ∼[ k ] xs₂ →
-             C.map f₁ xs₁ ∼[ k ] C.map f₂ xs₂
+             map f₁ xs₁ ∼[ k ] map f₂ xs₂
   map-cong {f₁ = f₁} {f₂} {xs₁} {xs₂} f₁≗f₂ xs₁≈xs₂ {x} =
-    x ∈ C.map f₁ xs₁        ↔⟨ map↔∘ C (_≡_ x) f₁ ⟩
-    ◇ (λ y → x ≡ f₁ y) xs₁  ∼⟨ cong {xs₁ = xs₁} {xs₂ = xs₂} (Related.↔⇒ ∘ helper) xs₁≈xs₂ ⟩
-    ◇ (λ y → x ≡ f₂ y) xs₂  ↔⟨ SK-sym (map↔∘ C (_≡_ x) f₂) ⟩
-    x ∈ C.map f₂ xs₂        ∎
+    x ∈ map f₁ xs₁           ↔⟨ map↔∘ C (_≡_ x) f₁ ⟩
+    ◇ C (λ y → x ≡ f₁ y) xs₁ ∼⟨ cong (Related.↔⇒ ∘ helper) xs₁≈xs₂ ⟩
+    ◇ C (λ y → x ≡ f₂ y) xs₂ ↔⟨ SK-sym (map↔∘ C (_≡_ x) f₂) ⟩
+    x ∈ map f₂ xs₂           ∎
     where
     helper : ∀ y → (x ≡ f₁ y) ↔ (x ≡ f₂ y)
-    helper y = record
-      { to         = P.→-to-⟶ (λ x≡f₁y → P.trans x≡f₁y (        f₁≗f₂ y))
-      ; from       = P.→-to-⟶ (λ x≡f₂y → P.trans x≡f₂y (P.sym $ f₁≗f₂ y))
-      ; inverse-of = record
-        { left-inverse-of  = λ { P.refl → P.trans-symʳ (f₁≗f₂ y) }
-        ; right-inverse-of = λ { P.refl → P.trans-symˡ (f₁≗f₂ y) }
-        }
-      }
--}
+    helper y rewrite f₁≗f₂ y = Inv.id
+
 -- Uses of linear morphisms can be removed.
 
 module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂}
@@ -225,10 +216,9 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
     t = Any.map₁ (_⊸_.morphism m)
 
     f : ◇₁ P xs → ◇₂ P (⟪ m ⟫⊸ xs)
-    f (any p) = any $
-      Prod.map (from position⊸m)
-               (P.subst (P ∘′ proj₂ xs) (P.sym $′ right-inverse-of position⊸m _))
-               p
+    f (any (x , p)) =
+      any $ from position⊸m x
+          , P.subst (P ∘′ proj₂ xs) (P.sym (right-inverse-of position⊸m _)) p
 
     f∘t : f ∘ t ≗ id
     f∘t (any (p₂ , p)) = P.cong any $ Inverse.to Σ-≡,≡↔≡ ⟨$⟩
@@ -292,17 +282,15 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
         p                                                       ∎′)
       )
 
--- Linear endomorphisms are identity functions if bag equality is
--- used.
+-- Linear endomorphisms are identity functions if bag equality is used.
 
-{-
 module _ {s p} {C : Container s p} {x} {X : Set x} where
 
   linear-identity : ∀ {xs : ⟦ C ⟧ X} (m : C ⊸ C) → ⟪ m ⟫⊸ xs ∼[ bag ] xs
   linear-identity {xs} m {x} =
     x ∈ ⟪ m ⟫⊸ xs  ↔⟨ remove-linear (_≡_ x) m ⟩
     x ∈        xs  ∎
--}
+
 -- If join can be expressed using a linear morphism (in a certain
 -- way), then it can be absorbed by the predicate.
 
