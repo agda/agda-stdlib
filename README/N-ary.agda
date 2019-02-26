@@ -84,7 +84,9 @@ _ : ∀ m → (m +_) ≡ ((m + 0) +_)
 _ = λ m → congₙ 1 _+_ (+-comm 0 m)
 
 -- We don't have to work on the function's first argument either: we can just as
--- easily use `congₙ` to act on the second one by `flip`ping it.
+-- easily use `congₙ` to act on the second one by `flip`ping it. See `holeₙ` for
+-- a generalisation of this idea allowing to target *any* of the function's
+-- arguments and not just the first or second one.
 
 _ : ∀ m → (_+ m) ≡ (_+ (m + 0))
 _ = λ m → congₙ 1 (flip _+_) (+-comm 0 m)
@@ -196,7 +198,8 @@ module _ {a b c d e} {A : Set a} {B : Set b} {C : Set c} {D : Set d} {E : Set e}
     where k = # 2
 
 -----------------------------------------------------------------------
--- updateₙ : ∀ n (k : Fin n) → (A₁ × ⋯ Aₙ) → (A₁ × ⋯ × Aₖ × Aₖ₊₂ × ⋯ Aₙ)
+-- updateₙ : ∀ n (k : Fin n) (f : (a : Aₖ₊₁) → B a) →
+--           (p : A₁ × ⋯ Aₙ) → (A₁ × ⋯ × Aₖ × B (projₙ n k p) × Aₖ₊₂ × ⋯ Aₙ)
 
 -- We can not only project out, insert or remove values: we can update them
 -- in place. The type (and value) of the replacement at position k may depend
@@ -235,6 +238,7 @@ module _ {a b c d e} {A : Set a} {B : Set b} {C : Set c} {D : Set d} {E : Set e}
 
   compose₁-eq : compose₁ ≡ compose₁'
   compose₁-eq = refl
+
 ------------------------------------------------------------------------
 -- holeₙ : ∀ n → (A → (A₁ → ⋯ Aₙ → B)) → A₁ → ⋯ → Aₙ → (A → B)
 
