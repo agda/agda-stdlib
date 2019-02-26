@@ -14,7 +14,6 @@ open import Data.Product using (∃; proj₁; proj₂; _,_)
 open import Relation.Binary using (Setoid)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
 
-open import Data.Container
 open import Data.Container.Core
 open import Data.Container.Morphism
 open import Data.Container.Relation.Binary.Equality.Setoid

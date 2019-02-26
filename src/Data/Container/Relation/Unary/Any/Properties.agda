@@ -32,9 +32,9 @@ private
 
 
 open import Data.Container.Core
-open import Data.Container
 import Data.Container.Combinator as C
 open import Data.Container.Combinator.Properties
+open import Data.Container.Related
 open import Data.Container.Relation.Unary.Any as Any using (◇; any)
 open import Data.Container.Membership
 

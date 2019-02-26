@@ -9,7 +9,7 @@
 module Data.Container.Core where
 
 open import Level
-open import Data.Product
+open import Data.Product as Prod using (Σ-syntax)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse using (_↔_; module Inverse)
@@ -30,6 +30,12 @@ open Container public
 ⟦_⟧ : ∀ {s p ℓ} → Container s p → Set ℓ → Set (s ⊔ p ⊔ ℓ)
 ⟦ S ▷ P ⟧ X = Σ[ s ∈ S ] (P s → X)
 
+-- The extension is a functor
+
+map : ∀ {s p x y} {C : Container s p} {X : Set x} {Y : Set y} →
+      (X → Y) → ⟦ C ⟧ X → ⟦ C ⟧ Y
+map f = Prod.map₂ (f ∘_)
+
 -- Container morphisms
 
 record _⇒_ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂)
@@ -40,7 +46,7 @@ record _⇒_ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Containe
     position : ∀ {s} → Position C₂ (shape s) → Position C₁ s
 
   ⟪_⟫ : ∀ {x} {X : Set x} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X
-  ⟪_⟫ = map shape (_∘′ position)
+  ⟪_⟫ = Prod.map shape (_∘′ position)
 
 open _⇒_ public
 

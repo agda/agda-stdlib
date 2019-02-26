@@ -10,7 +10,6 @@ import Function as F
 open import Relation.Binary
 
 open import Data.Container.Core
-open import Data.Container
 open import Data.Container.Relation.Binary.Equality.Setoid
 
 module _ {s p} {C : Container s p} where

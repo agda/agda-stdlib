@@ -12,8 +12,7 @@ open import Size
 open import Level
 open import Codata.Thunk using (Thunk; force)
 open import Data.Product hiding (map)
-open import Data.Container.Core
-import Data.Container as C
+open import Data.Container.Core as C hiding (map)
 
 data M {s p} (C : Container s p) (i : Size) : Set (s ⊔ p) where
   inf : ⟦ C ⟧ (Thunk (M C) i) → M C i

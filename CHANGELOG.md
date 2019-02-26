@@ -332,6 +332,7 @@ List of new modules
   Data.Container.Morphism
   Data.Container.Morphism.Properties
   Data.Container.Properties
+  Data.Container.Related
   Data.Container.Relation.Unary.All
   Data.Container.Relation.Unary.Any
   Data.Container.Relation.Unary.Any.Properties

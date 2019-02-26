@@ -13,7 +13,7 @@ open import Relation.Unary using (Pred; _⊆_)
 open import Data.Product as Prod using (_,_; proj₂; ∃)
 open import Function
 
-open import Data.Container.Core
+open import Data.Container.Core hiding (map)
 import Data.Container.Morphism as M
 
 record ◇ {s p} (C : Container s p) {x ℓ} {X : Set x}

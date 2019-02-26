@@ -11,7 +11,7 @@ module Data.W where
 open import Level
 open import Function
 open import Data.Product hiding (map)
-open import Data.Container.Core
+open import Data.Container.Core hiding (map)
 open import Data.Container.Relation.Unary.All using (□; all)
 open import Relation.Nullary
 open import Agda.Builtin.Equality

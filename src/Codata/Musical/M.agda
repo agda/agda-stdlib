@@ -11,7 +11,7 @@ module Codata.Musical.M where
 open import Codata.Musical.Notation
 open import Level
 open import Data.Product hiding (map)
-open import Data.Container.Core
+open import Data.Container.Core hiding (map)
 
 -- The family of M-types.
 
