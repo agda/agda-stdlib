@@ -296,6 +296,20 @@ Non-backwards compatible changes
 * Changed the implementation of _≟_ and _≤″?_ for natural numbers to use a (fast)
   boolean test.
 
+* Renamed a few `-identity` lemmas in `Codata.Stream.Properties` as they were
+  proving two streams bisimilar rather than propositionally equal.
+  ```agda
+  repeat-ap-identity ↦ ap-repeatˡ
+  ap-repeat-identity ↦ ap-repeatʳ
+  ```
+
+* Renamed a few lemmas in `Codata.Stream.Properties` to match the more stdlib
+  conventions:
+  ```agda
+  ap-repeat-commute  ↦ ap-repeat
+  map-repeat-commute ↦ map-repeat
+  ```
+
 List of new modules
 -------------------
 
@@ -503,6 +517,7 @@ Other minor additions
   ```agda
   splitAt-map             : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
   lookup-iterate-identity : lookup n (iterate f a) ≡ fold a f n
+  splitAt-repeat-identity : splitAt n (repeat a) ≡ (Vec.replicate a , repeat a)
   replicate-repeat        : i ⊢ List.replicate n a ++ repeat a ≈ repeat a
   cycle-replicate         : i ⊢ cycle (List⁺.replicate n n≢0 a) ≈ repeat a
   map-++                  : i ⊢ map f (as ++ xs) ≈ List.map f as ++ map f xs
