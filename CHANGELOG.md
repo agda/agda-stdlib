@@ -488,10 +488,26 @@ Other minor additions
   chunksOf   : (n : ℕ) → Stream A ∞ → Stream (Vec A n) ∞
   ```
 
-* Added new proof to `Codata.Stream.Properties`:
+* Added new proofs to `Codata.Stream.Bisimilarity`:
+  ```
+  isEquivalence : ∀ {i} → IsEquivalence R → IsEquivalence (Bisim R i)
+  setoid        : Setoid a r → ∀ i → Setoid a (a ⊔ r)
+  module ≈-Reasoning
+
+  ++⁺  : Pointwise R as bs → Bisim R i xs ys → Bisim R i (as ++ xs) (bs ++ ys)
+  ⁺++⁺ : Pointwise R (List⁺.toList as) (List⁺.toList bs) →
+         Thunk^R (Bisim R) i xs ys → Bisim R i (as ⁺++ xs) (bs ⁺++ ys)
+  ```
+
+* Added new proofs to `Codata.Stream.Properties`:
   ```agda
   splitAt-map             : splitAt n (map f xs) ≡ map (map f) (map f) (splitAt n xs)
   lookup-iterate-identity : lookup n (iterate f a) ≡ fold a f n
+  replicate-repeat        : i ⊢ List.replicate n a ++ repeat a ≈ repeat a
+  cycle-replicate         : i ⊢ cycle (List⁺.replicate n n≢0 a) ≈ repeat a
+  map-++                  : i ⊢ map f (as ++ xs) ≈ List.map f as ++ map f xs
+  map-⁺++                 : i ⊢ map f (as ⁺++ xs) ≈ List⁺.map f as ⁺++ Thunk.map (map f) xs
+  map-cycle               : i ⊢ map f (cycle as) ≈ cycle (List⁺.map f as)
   ```
 
 * Added new proofs to `Data.Bool.Properties`:
@@ -726,6 +742,11 @@ Other minor additions
   map-∷=          : map f (x∈xs ∷= v) ≡ ∈-map⁺ f≈ pr ∷= f v
   ```
 
+* Added new function to `Data.List.NonEmpty`:
+  ```agda
+  replicate : ∀ n → n ≢ 0 → A → List⁺ A
+  ```
+
 * Added new proofs to `Data.List.Properties`:
   ```agda
   ≡-dec : Decidable _≡_ → Decidable {A = List A} _≡_
@@ -749,6 +770,11 @@ Other minor additions
   lookup-downFrom      : lookup (downFrom        n) i ≡ n ∸ (suc (toℕ i))
 
   map-tabulate : map f (tabulate g) ≡ tabulate (f ∘ g)
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Equality.Propositional`:
+  ```agda
+  refl : Reflexive _≋_
   ```
 
 * Added new proofs to `Data.List.Relation.Binary.Permutation.Inductive.Properties`:
