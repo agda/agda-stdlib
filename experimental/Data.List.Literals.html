@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Literals</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- List Literals</a>
+<a id="123" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="197" class="Symbol">{-#</a> <a id="201" class="Keyword">OPTIONS</a> <a id="209" class="Pragma">--without-K</a> <a id="221" class="Pragma">--safe</a> <a id="228" class="Symbol">#-}</a>
+
+<a id="233" class="Keyword">module</a> <a id="240" href="Data.List.Literals.html" class="Module">Data.List.Literals</a> <a id="259" class="Keyword">where</a>
+
+<a id="266" class="Keyword">open</a> <a id="271" class="Keyword">import</a> <a id="278" href="Agda.Builtin.FromString.html" class="Module">Agda.Builtin.FromString</a>
+<a id="302" class="Keyword">open</a> <a id="307" class="Keyword">import</a> <a id="314" href="Data.Unit.html" class="Module">Data.Unit</a>
+<a id="324" class="Keyword">open</a> <a id="329" class="Keyword">import</a> <a id="336" href="Agda.Builtin.Char.html" class="Module">Agda.Builtin.Char</a>
+<a id="354" class="Keyword">open</a> <a id="359" class="Keyword">import</a> <a id="366" href="Agda.Builtin.List.html" class="Module">Agda.Builtin.List</a>
+<a id="384" class="Keyword">open</a> <a id="389" class="Keyword">import</a> <a id="396" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="413" class="Keyword">using</a> <a id="419" class="Symbol">(</a><a id="420" href="Data.String.Base.html#905" class="Function">toList</a><a id="426" class="Symbol">)</a>
+
+<a id="isString"></a><a id="429" href="Data.List.Literals.html#429" class="Function">isString</a> <a id="438" class="Symbol">:</a> <a id="440" href="Agda.Builtin.FromString.html#176" class="Record">IsString</a> <a id="449" class="Symbol">(</a><a id="450" href="Agda.Builtin.List.html#121" class="Datatype">List</a> <a id="455" href="Agda.Builtin.Char.html#200" class="Postulate">Char</a><a id="459" class="Symbol">)</a>
+<a id="461" href="Data.List.Literals.html#429" class="Function">isString</a> <a id="470" class="Symbol">=</a> <a id="472" class="Keyword">record</a>
+  <a id="481" class="Symbol">{</a> <a id="483" href="Agda.Builtin.FromString.html#234" class="Field">Constraint</a> <a id="494" class="Symbol">=</a> <a id="496" class="Symbol">λ</a> <a id="498" href="Data.List.Literals.html#498" class="Bound">_</a> <a id="500" class="Symbol">→</a> <a id="502" href="Agda.Builtin.Unit.html#137" class="Record">⊤</a>
+  <a id="506" class="Symbol">;</a> <a id="508" href="Agda.Builtin.FromString.html#266" class="Field">fromString</a> <a id="519" class="Symbol">=</a> <a id="521" class="Symbol">λ</a> <a id="523" href="Data.List.Literals.html#523" class="Bound">s</a> <a id="525" class="Symbol">→</a> <a id="527" href="Data.String.Base.html#905" class="Function">toList</a> <a id="534" href="Data.List.Literals.html#523" class="Bound">s</a>
+  <a id="538" class="Symbol">}</a>
+</pre></body></html>

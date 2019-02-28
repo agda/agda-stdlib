@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Nat.Unsafe</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Unsafe natural number types and operations</a>
+<a id="152" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="226" class="Symbol">{-#</a> <a id="230" class="Keyword">OPTIONS</a> <a id="238" class="Pragma">--with-K</a> <a id="247" class="Symbol">#-}</a>
+
+<a id="252" class="Keyword">module</a> <a id="259" href="Data.Nat.Unsafe.html" class="Module">Data.Nat.Unsafe</a> <a id="275" class="Keyword">where</a>
+
+<a id="282" class="Keyword">open</a> <a id="287" class="Keyword">import</a> <a id="294" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>
+<a id="308" class="Keyword">import</a> <a id="315" href="Relation.Binary.PropositionalEquality.TrustMe.html" class="Module">Relation.Binary.PropositionalEquality.TrustMe</a> <a id="361" class="Symbol">as</a> <a id="364" class="Module">TrustMe</a>
+
+<a id="erase"></a><a id="373" href="Data.Nat.Unsafe.html#373" class="Function">erase</a> <a id="379" class="Symbol">:</a> <a id="381" class="Symbol">∀</a> <a id="383" class="Symbol">{</a><a id="384" href="Data.Nat.Unsafe.html#384" class="Bound">m</a> <a id="386" href="Data.Nat.Unsafe.html#386" class="Bound">n</a><a id="387" class="Symbol">}</a> <a id="389" class="Symbol">→</a> <a id="391" href="Data.Nat.Unsafe.html#384" class="Bound">m</a> <a id="393" href="Data.Nat.Base.html#2806" class="Record Operator">≤″</a> <a id="396" href="Data.Nat.Unsafe.html#386" class="Bound">n</a> <a id="398" class="Symbol">→</a> <a id="400" href="Data.Nat.Unsafe.html#384" class="Bound">m</a> <a id="402" href="Data.Nat.Base.html#2806" class="Record Operator">≤″</a> <a id="405" href="Data.Nat.Unsafe.html#386" class="Bound">n</a>
+<a id="407" href="Data.Nat.Unsafe.html#373" class="Function">erase</a> <a id="413" class="Symbol">(</a><a id="414" href="Data.Nat.Base.html#2847" class="InductiveConstructor">less-than-or-equal</a> <a id="433" href="Data.Nat.Unsafe.html#433" class="Bound">eq</a><a id="435" class="Symbol">)</a> <a id="437" class="Symbol">=</a> <a id="439" href="Data.Nat.Base.html#2847" class="InductiveConstructor">less-than-or-equal</a> <a id="458" class="Symbol">(</a><a id="459" href="Relation.Binary.PropositionalEquality.TrustMe.html#844" class="Function">TrustMe.erase</a> <a id="473" href="Data.Nat.Unsafe.html#433" class="Bound">eq</a><a id="475" class="Symbol">)</a>
+</pre></body></html>

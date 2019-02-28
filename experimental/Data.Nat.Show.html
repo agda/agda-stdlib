@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Nat.Show</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Showing natural numbers</a>
+<a id="133" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="207" class="Symbol">{-#</a> <a id="211" class="Keyword">OPTIONS</a> <a id="219" class="Pragma">--without-K</a> <a id="231" class="Pragma">--safe</a> <a id="238" class="Symbol">#-}</a>
+
+<a id="243" class="Keyword">module</a> <a id="250" href="Data.Nat.Show.html" class="Module">Data.Nat.Show</a> <a id="264" class="Keyword">where</a>
+
+<a id="271" class="Keyword">open</a> <a id="276" class="Keyword">import</a> <a id="283" href="Data.Nat.html" class="Module">Data.Nat</a>
+<a id="292" class="Keyword">open</a> <a id="297" class="Keyword">import</a> <a id="304" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a> <a id="331" class="Keyword">using</a> <a id="337" class="Symbol">(</a><a id="338" href="Relation.Nullary.Decidable.html#933" class="Function">True</a><a id="342" class="Symbol">)</a>
+<a id="344" class="Keyword">open</a> <a id="349" class="Keyword">import</a> <a id="356" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="373" class="Symbol">as</a> <a id="376" class="Module">String</a> <a id="383" class="Keyword">using</a> <a id="389" class="Symbol">(</a><a id="390" href="Agda.Builtin.String.html#206" class="Postulate">String</a><a id="396" class="Symbol">)</a>
+<a id="398" class="Keyword">open</a> <a id="403" class="Keyword">import</a> <a id="410" href="Data.Digit.html" class="Module">Data.Digit</a>
+<a id="421" class="Keyword">open</a> <a id="426" class="Keyword">import</a> <a id="433" href="Data.Product.html" class="Module">Data.Product</a> <a id="446" class="Keyword">using</a> <a id="452" class="Symbol">(</a><a id="453" href="Agda.Builtin.Sigma.html#225" class="Field">proj₁</a><a id="458" class="Symbol">)</a>
+<a id="460" class="Keyword">open</a> <a id="465" class="Keyword">import</a> <a id="472" href="Function.html" class="Module">Function</a>
+<a id="481" class="Keyword">open</a> <a id="486" class="Keyword">import</a> <a id="493" href="Data.List.Base.html" class="Module">Data.List.Base</a>
+
+<a id="509" class="Comment">-- showInBase b n is a string containing the representation of n in</a>
+<a id="577" class="Comment">-- base b.</a>
+
+<a id="showInBase"></a><a id="589" href="Data.Nat.Show.html#589" class="Function">showInBase</a> <a id="600" class="Symbol">:</a> <a id="602" class="Symbol">(</a><a id="603" href="Data.Nat.Show.html#603" class="Bound">base</a> <a id="608" class="Symbol">:</a> <a id="610" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a><a id="611" class="Symbol">)</a>
+             <a id="626" class="Symbol">{</a><a id="627" href="Data.Nat.Show.html#627" class="Bound">base≥2</a> <a id="634" class="Symbol">:</a> <a id="636" href="Relation.Nullary.Decidable.html#933" class="Function">True</a> <a id="641" class="Symbol">(</a><a id="642" class="Number">2</a> <a id="644" href="Data.Nat.Properties.html#3479" class="Function Operator">≤?</a> <a id="647" href="Data.Nat.Show.html#603" class="Bound">base</a><a id="651" class="Symbol">)}</a>
+             <a id="667" class="Symbol">{</a><a id="668" href="Data.Nat.Show.html#668" class="Bound">base≤16</a> <a id="676" class="Symbol">:</a> <a id="678" href="Relation.Nullary.Decidable.html#933" class="Function">True</a> <a id="683" class="Symbol">(</a><a id="684" href="Data.Nat.Show.html#603" class="Bound">base</a> <a id="689" href="Data.Nat.Properties.html#3479" class="Function Operator">≤?</a> <a id="692" class="Number">16</a><a id="694" class="Symbol">)}</a> <a id="697" class="Symbol">→</a>
+             <a id="712" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a> <a id="714" class="Symbol">→</a> <a id="716" href="Agda.Builtin.String.html#206" class="Postulate">String</a>
+<a id="723" href="Data.Nat.Show.html#589" class="Function">showInBase</a> <a id="734" href="Data.Nat.Show.html#734" class="Bound">base</a> <a id="739" class="Symbol">{</a><a id="740" href="Data.Nat.Show.html#740" class="Bound">base≥2</a><a id="746" class="Symbol">}</a> <a id="748" class="Symbol">{</a><a id="749" href="Data.Nat.Show.html#749" class="Bound">base≤16</a><a id="756" class="Symbol">}</a> <a id="758" href="Data.Nat.Show.html#758" class="Bound">n</a> <a id="760" class="Symbol">=</a>
+  <a id="764" href="Data.String.Base.html#960" class="Function">String.fromList</a> <a id="780" href="Function.html#1927" class="Function Operator">$</a>
+  <a id="784" href="Data.List.Base.html#1186" class="Function">map</a> <a id="788" class="Symbol">(</a><a id="789" href="Data.Digit.html#1539" class="Function">showDigit</a> <a id="799" class="Symbol">{</a><a id="800" class="Argument">base≤16</a> <a id="808" class="Symbol">=</a> <a id="810" href="Data.Nat.Show.html#749" class="Bound">base≤16</a><a id="817" class="Symbol">})</a> <a id="820" href="Function.html#1927" class="Function Operator">$</a>
+  <a id="824" href="Data.List.Base.html#9615" class="Function">reverse</a> <a id="832" href="Function.html#1927" class="Function Operator">$</a>
+  <a id="836" href="Agda.Builtin.Sigma.html#225" class="Field">proj₁</a> <a id="842" href="Function.html#1927" class="Function Operator">$</a> <a id="844" href="Data.Digit.html#2311" class="Function">toDigits</a> <a id="853" href="Data.Nat.Show.html#734" class="Bound">base</a> <a id="858" class="Symbol">{</a><a id="859" class="Argument">base≥2</a> <a id="866" class="Symbol">=</a> <a id="868" href="Data.Nat.Show.html#740" class="Bound">base≥2</a><a id="874" class="Symbol">}</a> <a id="876" href="Data.Nat.Show.html#758" class="Bound">n</a>
+
+<a id="879" class="Comment">-- show n is a string containing the decimal expansion of n (starting</a>
+<a id="949" class="Comment">-- with the most significant digit).</a>
+
+<a id="show"></a><a id="987" href="Data.Nat.Show.html#987" class="Function">show</a> <a id="992" class="Symbol">:</a> <a id="994" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a> <a id="996" class="Symbol">→</a> <a id="998" href="Agda.Builtin.String.html#206" class="Postulate">String</a>
+<a id="1005" href="Data.Nat.Show.html#987" class="Function">show</a> <a id="1010" class="Symbol">=</a> <a id="1012" href="Data.Nat.Show.html#589" class="Function">showInBase</a> <a id="1023" class="Number">10</a>
+</pre></body></html>

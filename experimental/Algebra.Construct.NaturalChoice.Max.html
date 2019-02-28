@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.Construct.NaturalChoice.Max</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The max operator derived from an arbitrary total order</a>
+<a id="164" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="238" class="Symbol">{-#</a> <a id="242" class="Keyword">OPTIONS</a> <a id="250" class="Pragma">--without-K</a> <a id="262" class="Pragma">--safe</a> <a id="269" class="Symbol">#-}</a>
+
+<a id="274" class="Keyword">open</a> <a id="279" class="Keyword">import</a> <a id="286" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+
+<a id="303" class="Keyword">module</a> <a id="310" href="Algebra.Construct.NaturalChoice.Max.html" class="Module">Algebra.Construct.NaturalChoice.Max</a>
+  <a id="348" class="Symbol">{</a><a id="349" href="Algebra.Construct.NaturalChoice.Max.html#349" class="Bound">a</a> <a id="351" href="Algebra.Construct.NaturalChoice.Max.html#351" class="Bound">ℓ₁</a> <a id="354" href="Algebra.Construct.NaturalChoice.Max.html#354" class="Bound">ℓ₂</a><a id="356" class="Symbol">}</a> <a id="358" class="Symbol">(</a><a id="359" href="Algebra.Construct.NaturalChoice.Max.html#359" class="Bound">totalOrder</a> <a id="370" class="Symbol">:</a> <a id="372" href="Relation.Binary.html#8205" class="Record">TotalOrder</a> <a id="383" href="Algebra.Construct.NaturalChoice.Max.html#349" class="Bound">a</a> <a id="385" href="Algebra.Construct.NaturalChoice.Max.html#351" class="Bound">ℓ₁</a> <a id="388" href="Algebra.Construct.NaturalChoice.Max.html#354" class="Bound">ℓ₂</a><a id="390" class="Symbol">)</a> <a id="392" class="Keyword">where</a>
+
+<a id="399" class="Keyword">open</a> <a id="404" class="Keyword">import</a> <a id="411" href="Relation.Binary.Construct.Converse.html" class="Module">Relation.Binary.Construct.Converse</a> <a id="446" class="Keyword">using</a> <a id="452" class="Symbol">()</a>
+  <a id="457" class="Keyword">renaming</a> <a id="466" class="Symbol">(</a><a id="467" href="Relation.Binary.Construct.Converse.html#5045" class="Function">totalOrder</a> <a id="478" class="Symbol">to</a> <a id="481" href="Relation.Binary.Construct.Converse.html#5045" class="Function">converse</a><a id="489" class="Symbol">)</a>
+
+<a id="492" class="Comment">------------------------------------------------------------------------</a>
+<a id="565" class="Comment">-- Max is just min with a flipped order</a>
+
+<a id="606" class="Keyword">open</a> <a id="611" class="Keyword">import</a> <a id="618" href="Algebra.Construct.NaturalChoice.Min.html" class="Module">Algebra.Construct.NaturalChoice.Min</a> <a id="654" class="Symbol">(</a><a id="655" href="Relation.Binary.Construct.Converse.html#5045" class="Function">converse</a> <a id="664" href="Algebra.Construct.NaturalChoice.Max.html#359" class="Bound">totalOrder</a><a id="674" class="Symbol">)</a>
+  <a id="678" class="Keyword">using</a>
+  <a id="686" class="Symbol">(</a> cong<a id="692" class="Symbol">;</a> idem<a id="698" class="Symbol">;</a> sel<a id="703" class="Symbol">;</a> assoc<a id="710" class="Symbol">;</a> comm
+  <a id="719" class="Symbol">;</a> identityˡ<a id="730" class="Symbol">;</a> identityʳ<a id="741" class="Symbol">;</a> identity<a id="751" class="Symbol">;</a> zeroˡ<a id="758" class="Symbol">;</a> zeroʳ<a id="765" class="Symbol">;</a> zero
+  <a id="774" class="Symbol">;</a> isMagma<a id="783" class="Symbol">;</a> isSemigroup<a id="796" class="Symbol">;</a> isBand<a id="804" class="Symbol">;</a> isSemilattice<a id="819" class="Symbol">;</a> isMonoid
+  <a id="832" class="Symbol">;</a> magma<a id="839" class="Symbol">;</a> semigroup<a id="850" class="Symbol">;</a> band<a id="856" class="Symbol">;</a> semilattice<a id="869" class="Symbol">;</a> monoid
+  <a id="880" class="Symbol">)</a>
+  <a id="884" class="Keyword">renaming</a>
+  <a id="895" class="Symbol">(</a> min            <a id="912" class="Symbol">to</a> max
+  <a id="921" class="Symbol">;</a> min[x,y]≈y⇒y≤x <a id="938" class="Symbol">to</a> max[x,y]≈y⇒x≤y
+  <a id="958" class="Symbol">;</a> min[x,y]≈x⇒x≤y <a id="975" class="Symbol">to</a> max[x,y]≈x⇒y≤x
+  <a id="995" class="Symbol">)</a>
+</pre></body></html>

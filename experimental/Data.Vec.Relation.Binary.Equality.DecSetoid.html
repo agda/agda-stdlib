@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Vec.Relation.Binary.Equality.DecSetoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Decidable semi-heterogeneous vector equality over setoids</a>
+<a id="167" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="241" class="Symbol">{-#</a> <a id="245" class="Keyword">OPTIONS</a> <a id="253" class="Pragma">--without-K</a> <a id="265" class="Pragma">--safe</a> <a id="272" class="Symbol">#-}</a>
+
+<a id="277" class="Keyword">open</a> <a id="282" class="Keyword">import</a> <a id="289" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+
+<a id="306" class="Keyword">module</a> <a id="313" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html" class="Module">Data.Vec.Relation.Binary.Equality.DecSetoid</a>
+  <a id="359" class="Symbol">{</a><a id="360" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#360" class="Bound">a</a> <a id="362" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#362" class="Bound">ℓ</a><a id="363" class="Symbol">}</a> <a id="365" class="Symbol">(</a><a id="366" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#366" class="Bound">DS</a> <a id="369" class="Symbol">:</a> <a id="371" href="Relation.Binary.html#2730" class="Record">DecSetoid</a> <a id="381" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#360" class="Bound">a</a> <a id="383" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#362" class="Bound">ℓ</a><a id="384" class="Symbol">)</a> <a id="386" class="Keyword">where</a>
+
+<a id="393" class="Keyword">open</a> <a id="398" class="Keyword">import</a> <a id="405" href="Data.Nat.html" class="Module">Data.Nat</a> <a id="414" class="Keyword">using</a> <a id="420" class="Symbol">(</a><a id="421" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a><a id="422" class="Symbol">)</a>
+<a id="424" class="Keyword">import</a> <a id="431" href="Data.Vec.Relation.Binary.Equality.Setoid.html" class="Module">Data.Vec.Relation.Binary.Equality.Setoid</a> <a id="472" class="Symbol">as</a> <a id="475" class="Module">Equality</a>
+<a id="484" class="Keyword">import</a> <a id="491" href="Data.Vec.Relation.Binary.Pointwise.Inductive.html" class="Module">Data.Vec.Relation.Binary.Pointwise.Inductive</a> <a id="536" class="Symbol">as</a> <a id="539" class="Module">PW</a>
+<a id="542" class="Keyword">open</a> <a id="547" class="Keyword">import</a> <a id="554" href="Level.html" class="Module">Level</a> <a id="560" class="Keyword">using</a> <a id="566" class="Symbol">(</a><a id="567" href="Agda.Primitive.html#657" class="Primitive Operator">_⊔_</a><a id="570" class="Symbol">)</a>
+<a id="572" class="Keyword">open</a> <a id="577" class="Keyword">import</a> <a id="584" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="600" class="Keyword">using</a> <a id="606" class="Symbol">(</a><a id="607" href="Relation.Binary.Core.html#4903" class="Function">Decidable</a><a id="616" class="Symbol">)</a>
+
+<a id="619" class="Keyword">open</a> <a id="624" href="Relation.Binary.html#2730" class="Module">DecSetoid</a> <a id="634" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#366" class="Bound">DS</a>
+
+<a id="638" class="Comment">------------------------------------------------------------------------</a>
+<a id="711" class="Comment">-- Make all definitions from equality available</a>
+
+<a id="760" class="Keyword">open</a> <a id="765" href="Data.Vec.Relation.Binary.Equality.Setoid.html" class="Module">Equality</a> <a id="774" href="Relation.Binary.html#2954" class="Function">setoid</a> <a id="781" class="Keyword">public</a>
+
+<a id="789" class="Comment">------------------------------------------------------------------------</a>
+<a id="862" class="Comment">-- Additional properties</a>
+
+<a id="888" class="Keyword">infix</a> <a id="894" class="Number">4</a> <a id="896" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#902" class="Function Operator">_≋?_</a>
+
+<a id="_≋?_"></a><a id="902" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#902" class="Function Operator">_≋?_</a> <a id="907" class="Symbol">:</a> <a id="909" class="Symbol">∀</a> <a id="911" class="Symbol">{</a><a id="912" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#912" class="Bound">m</a> <a id="914" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#914" class="Bound">n</a><a id="915" class="Symbol">}</a> <a id="917" class="Symbol">→</a> <a id="919" href="Relation.Binary.Core.html#4903" class="Function">Decidable</a> <a id="929" class="Symbol">(</a><a id="930" href="Data.Vec.Relation.Binary.Equality.Setoid.html#831" class="Function Operator">_≋_</a> <a id="934" class="Symbol">{</a><a id="935" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#912" class="Bound">m</a><a id="936" class="Symbol">}</a> <a id="938" class="Symbol">{</a><a id="939" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#914" class="Bound">n</a><a id="940" class="Symbol">})</a>
+<a id="943" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#902" class="Function Operator">_≋?_</a> <a id="948" class="Symbol">=</a> <a id="950" href="Data.Vec.Relation.Binary.Pointwise.Inductive.html#3224" class="Function">PW.decidable</a> <a id="963" href="Relation.Binary.html#2649" class="Function Operator">_≟_</a>
+
+<a id="≋-isDecEquivalence"></a><a id="968" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#968" class="Function">≋-isDecEquivalence</a> <a id="987" class="Symbol">:</a> <a id="989" class="Symbol">∀</a> <a id="991" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#991" class="Bound">n</a> <a id="993" class="Symbol">→</a> <a id="995" href="Relation.Binary.html#2490" class="Record">IsDecEquivalence</a> <a id="1012" class="Symbol">(</a><a id="1013" href="Data.Vec.Relation.Binary.Equality.Setoid.html#831" class="Function Operator">_≋_</a> <a id="1017" class="Symbol">{</a><a id="1018" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#991" class="Bound">n</a><a id="1019" class="Symbol">})</a>
+<a id="1022" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#968" class="Function">≋-isDecEquivalence</a> <a id="1041" class="Symbol">=</a> <a id="1043" href="Data.Vec.Relation.Binary.Pointwise.Inductive.html#4000" class="Function">PW.isDecEquivalence</a> <a id="1063" href="Relation.Binary.html#2862" class="Field">isDecEquivalence</a>
+
+<a id="≋-decSetoid"></a><a id="1081" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#1081" class="Function">≋-decSetoid</a> <a id="1093" class="Symbol">:</a> <a id="1095" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a> <a id="1097" class="Symbol">→</a> <a id="1099" href="Relation.Binary.html#2730" class="Record">DecSetoid</a> <a id="1109" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#360" class="Bound">a</a> <a id="1111" class="Symbol">(</a><a id="1112" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#360" class="Bound">a</a> <a id="1114" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="1116" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#362" class="Bound">ℓ</a><a id="1117" class="Symbol">)</a>
+<a id="1119" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#1081" class="Function">≋-decSetoid</a> <a id="1131" class="Symbol">=</a> <a id="1133" href="Data.Vec.Relation.Binary.Pointwise.Inductive.html#4484" class="Function">PW.decSetoid</a> <a id="1146" href="Data.Vec.Relation.Binary.Equality.DecSetoid.html#366" class="Bound">DS</a>
+</pre></body></html>
