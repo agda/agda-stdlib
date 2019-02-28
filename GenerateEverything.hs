@@ -232,6 +232,7 @@ main = do
 
   writeFileUTF8 (safeOutputFile ++ ".agda") $
     unlines [ header
+            , "{-# OPTIONS --guardedness --sized-types #-}\n"
             , mkModule safeOutputFile
             , format $ filter ((Unsafe /=) . safety) libraryfiles
             ]
