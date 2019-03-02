@@ -40,3 +40,15 @@ postulate[_↦_] : ∀ {a b} {A : Set a}{B : A → Set b} →
                   (t : A) → B t → (x : A) → B x
 postulate[ a ↦ b ] a' with trustMe {x = a} {a'}
 postulate[ a ↦ b ] .a | refl = b
+
+
+------------------------------------------------------------------------
+-- DEPRECATION
+------------------------------------------------------------------------
+
+-- Version 0.18
+
+{-# WARNING_ON_USAGE erase
+"Warning: erase was deprecated in v0.18.
+Please use the safe function ≡-erase defined in Relation.Binary.PropositionalEquality.WithK instead."
+#-}
