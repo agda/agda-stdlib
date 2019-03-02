@@ -16,9 +16,10 @@ import Relation.Binary.Construct.On as On
 import Relation.Binary.PropositionalEquality as PropEq
 
 ------------------------------------------------------------------------
--- Re-export contents of base publically
+-- Re-export contents of base, and decidability of equality
 
 open import Data.String.Base public
+open import Data.String.Properties using (_≟_) public
 
 ------------------------------------------------------------------------
 -- Operations
