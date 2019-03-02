@@ -8,7 +8,9 @@
 
 module Data.String.Unsafe where
 
-open import Data.String
+import Agda.Builtin.String as String
+open import Data.String.Base
+
 open import Data.Bool.Base using (Bool; true; false)
 open import Relation.Binary using (Decidable; DecSetoid)
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_)
@@ -22,7 +24,7 @@ open import Relation.Nullary.Decidable using (⌊_⌋)
 infix 4 _≟_
 
 _≟_ : Decidable {A = String} _≡_
-s₁ ≟ s₂ with primStringEquality s₁ s₂
+s₁ ≟ s₂ with String.primStringEquality s₁ s₂
 ... | true  = yes trustMe
 ... | false = no whatever
   where postulate whatever : _
