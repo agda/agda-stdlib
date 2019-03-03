@@ -325,6 +325,8 @@ List of new modules
   Codata.M.Properties
   Codata.M.Bisimilarity
 
+  Data.Char.Properties
+
   Data.Integer.Divisibility.Properties
   Data.Integer.Divisibility.Signed
   Data.Integer.DivMod
@@ -341,6 +343,8 @@ List of new modules
   Data.List.Relation.Ternary.Interleaving.Propositional.Properties
 
   Data.Maybe.Relation.Unary.All.Properties
+
+  Data.String.Properties
 
   Data.These.Properties
 
@@ -444,6 +448,12 @@ Deprecated features
 
 Other minor additions
 ---------------------
+
+* Re-exported new functions from `Data.Char.Base`:
+  ```agda
+  toUpper : Char → Char
+  toLower : Char → Char
+  ```
 
 * Added new proof to `Data.Nat.Properties`:
   ```agda
