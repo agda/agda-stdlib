@@ -218,3 +218,15 @@ holeₙ (suc n) f = holeₙ n ∘′ flip f
 constₙ : ∀ n {ls r} {as : Sets n ls} {b : Set r} → b → Arrows n as b
 constₙ zero    v = v
 constₙ (suc n) v = const (constₙ n v)
+
+------------------------------------------------------------------------
+-- Generic type constructor: n-ary existential quantifier
+
+∃ₙ : ∀ n {ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
+∃ₙ n {as = as} f = Σ (Product n as) (uncurryₙ n f)
+
+------------------------------------------------------------------------
+-- Generic type constructor: n-ary universal quantifier
+
+∀ₙ : ∀ n {ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
+∀ₙ n {as = as} f = ∀ (vs : Product n as) → uncurryₙ n f vs

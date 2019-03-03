@@ -17,6 +17,7 @@ open import Data.List.Properties
 open import Data.Product using (_×_; _,_)
 open import Data.Product.N-ary.Heterogeneous
 open import Function
+open import Relation.Nullary
 open import Relation.Binary.PropositionalEquality
 
 
@@ -280,3 +281,28 @@ module _ {a b c d e} {A : Set a} {B : Set b} {C : Set c} {D : Set d} {E : Set e}
 
   const₂ : A → B → C → D → E → D
   const₂ = holeₙ 3 (constₙ 4)
+
+------------------------------------------------------------------------
+-- Generalised quantifiers
+------------------------------------------------------------------------
+
+-- As we have seen multiple times already, one of the advantages of working
+-- with non-dependent products is that they can be easily inferred. This is
+-- a prime opportunity to define generic quantifiers.
+
+------------------------------------------------------------------------
+-- ∃ₙ : ∀ n → (A₁ → ⋯ → Aₙ → Set r) → Set _
+-- ∃ₙ n P = ∃ λ (a₁ , ⋯ , aₙ) → P a₁ ⋯ aₙ
+
+-- Returning to our favourite function taking a lot of arguments: we can
+-- find a set of input for which it evaluates to 666
+
+  exist₁ : ∃ₙ 4 λ k m n j → mod-helper k m n j ≡ 666
+  exist₁ = (19 , 793 , 3059 , 10) , refl
+
+------------------------------------------------------------------------
+-- ∀ₙ : ∀ n → (A₁ → ⋯ → Aₙ → Set r) → Set _
+-- ∀ₙ n P = ∀ (a₁ , ⋯ , aₙ) → P a₁ ⋯ aₙ
+
+  all₁ : ∀ₙ 2 λ a₁ (a₂ : ℕ) → Dec (a₁ ≡ a₂)
+  all₁ (a₁ , a₂) = a₁ ≟ a₂
