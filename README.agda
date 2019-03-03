@@ -289,6 +289,10 @@ import README.Function.Reasoning
 
 import README.Debug.Trace
 
+-- Using List's Interleaving to define a fully certified filter function.
+
+import README.Interleaving
+
 ------------------------------------------------------------------------
 -- Core modules
 ------------------------------------------------------------------------
