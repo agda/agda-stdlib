@@ -289,6 +289,11 @@ import README.Function.Reasoning
 
 import README.Debug.Trace
 
+-- Explaining the inspect idiom: use case, equivalent handwritten
+-- auxiliary definitions, and implementation details.
+
+import README.Inspect
+
 ------------------------------------------------------------------------
 -- Core modules
 ------------------------------------------------------------------------
