@@ -275,52 +275,53 @@
 
 <a id="9184" class="Keyword">import</a> <a id="9191" href="README.Case.html" class="Module">README.Case</a>
 
-<a id="9204" class="Comment">-- An example showing how the free monad construction on containers can be</a>
-<a id="9279" class="Comment">-- used</a>
+<a id="9204" class="Comment">-- Examples how (indexed) containers and constructions over them (free</a>
+<a id="9275" class="Comment">-- monad, least fixed point, etc.) can be used</a>
 
-<a id="9288" class="Keyword">import</a> <a id="9295" href="README.Container.FreeMonad.html" class="Module">README.Container.FreeMonad</a>
+<a id="9323" class="Keyword">import</a> <a id="9330" href="README.Container.FreeMonad.html" class="Module">README.Container.FreeMonad</a>
+<a id="9357" class="Keyword">import</a> <a id="9364" href="README.Container.Indexed.html" class="Module">README.Container.Indexed</a>
 
-<a id="9323" class="Comment">-- Some examples showing how combinators can be used to emulate</a>
-<a id="9387" class="Comment">-- &quot;functional reasoning&quot;</a>
+<a id="9390" class="Comment">-- Some examples showing how combinators can be used to emulate</a>
+<a id="9454" class="Comment">-- &quot;functional reasoning&quot;</a>
 
-<a id="9414" class="Keyword">import</a> <a id="9421" href="README.Function.Reasoning.html" class="Module">README.Function.Reasoning</a>
+<a id="9481" class="Keyword">import</a> <a id="9488" href="README.Function.Reasoning.html" class="Module">README.Function.Reasoning</a>
 
-<a id="9448" class="Comment">-- An example showing how to use the debug tracing mechanism to inspect</a>
-<a id="9520" class="Comment">-- the behaviour of compiled Agda programs.</a>
+<a id="9515" class="Comment">-- An example showing how to use the debug tracing mechanism to inspect</a>
+<a id="9587" class="Comment">-- the behaviour of compiled Agda programs.</a>
 
-<a id="9565" class="Keyword">import</a> <a id="9572" href="README.Debug.Trace.html" class="Module">README.Debug.Trace</a>
+<a id="9632" class="Keyword">import</a> <a id="9639" href="README.Debug.Trace.html" class="Module">README.Debug.Trace</a>
 
-<a id="9592" class="Comment">-- Explaining the inspect idiom: use case, equivalent handwritten</a>
-<a id="9658" class="Comment">-- auxiliary definitions, and implementation details.</a>
+<a id="9659" class="Comment">-- Explaining the inspect idiom: use case, equivalent handwritten</a>
+<a id="9725" class="Comment">-- auxiliary definitions, and implementation details.</a>
 
-<a id="9713" class="Keyword">import</a> <a id="9720" href="README.Inspect.html" class="Module">README.Inspect</a>
+<a id="9780" class="Keyword">import</a> <a id="9787" href="README.Inspect.html" class="Module">README.Inspect</a>
 
-<a id="9736" class="Comment">------------------------------------------------------------------------</a>
-<a id="9809" class="Comment">-- Core modules</a>
-<a id="9825" class="Comment">------------------------------------------------------------------------</a>
+<a id="9803" class="Comment">------------------------------------------------------------------------</a>
+<a id="9876" class="Comment">-- Core modules</a>
+<a id="9892" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="9899" class="Comment">-- Some modules have names ending in &quot;.Core&quot;. These modules are</a>
-<a id="9963" class="Comment">-- internal, and have (mostly) been created to avoid mutual recursion</a>
-<a id="10033" class="Comment">-- between modules. They should not be imported directly; their</a>
-<a id="10097" class="Comment">-- contents are reexported by other modules.</a>
+<a id="9966" class="Comment">-- Some modules have names ending in &quot;.Core&quot;. These modules are</a>
+<a id="10030" class="Comment">-- internal, and have (mostly) been created to avoid mutual recursion</a>
+<a id="10100" class="Comment">-- between modules. They should not be imported directly; their</a>
+<a id="10164" class="Comment">-- contents are reexported by other modules.</a>
 
-<a id="10143" class="Comment">------------------------------------------------------------------------</a>
-<a id="10216" class="Comment">-- All library modules</a>
-<a id="10239" class="Comment">------------------------------------------------------------------------</a>
+<a id="10210" class="Comment">------------------------------------------------------------------------</a>
+<a id="10283" class="Comment">-- All library modules</a>
+<a id="10306" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="10313" class="Comment">-- For short descriptions of every library module, see Everything;</a>
-<a id="10380" class="Comment">-- to exclude unsafe modules, see EverythingSafe:</a>
+<a id="10380" class="Comment">-- For short descriptions of every library module, see Everything;</a>
+<a id="10447" class="Comment">-- to exclude unsafe modules, see EverythingSafe:</a>
 
-<a id="10431" class="Keyword">import</a> <a id="10438" href="Everything.html" class="Module">Everything</a>
-<a id="10449" class="Keyword">import</a> <a id="10456" href="EverythingSafe.html" class="Module">EverythingSafe</a>
+<a id="10498" class="Keyword">import</a> <a id="10505" href="Everything.html" class="Module">Everything</a>
+<a id="10516" class="Keyword">import</a> <a id="10523" href="EverythingSafe.html" class="Module">EverythingSafe</a>
 
-<a id="10472" class="Comment">-- Note that the Everything* modules are generated automatically. If</a>
-<a id="10541" class="Comment">-- you have downloaded the library from its Git repository and want</a>
-<a id="10609" class="Comment">-- to type check README then you can (try to) construct Everything by</a>
-<a id="10679" class="Comment">-- running &quot;cabal install &amp;&amp; GenerateEverything&quot;.</a>
+<a id="10539" class="Comment">-- Note that the Everything* modules are generated automatically. If</a>
+<a id="10608" class="Comment">-- you have downloaded the library from its Git repository and want</a>
+<a id="10676" class="Comment">-- to type check README then you can (try to) construct Everything by</a>
+<a id="10746" class="Comment">-- running &quot;cabal install &amp;&amp; GenerateEverything&quot;.</a>
 
-<a id="10730" class="Comment">-- Note that all library sources are located under src or ffi. The</a>
-<a id="10797" class="Comment">-- modules README, README.* and Everything are not really part of the</a>
-<a id="10867" class="Comment">-- library, so these modules are located in the top-level directory</a>
-<a id="10935" class="Comment">-- instead.</a>
+<a id="10797" class="Comment">-- Note that all library sources are located under src or ffi. The</a>
+<a id="10864" class="Comment">-- modules README, README.* and Everything are not really part of the</a>
+<a id="10934" class="Comment">-- library, so these modules are located in the top-level directory</a>
+<a id="11002" class="Comment">-- instead.</a>
 </pre></body></html>
