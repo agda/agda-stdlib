@@ -290,32 +290,37 @@
 
 <a id="9565" class="Keyword">import</a> <a id="9572" href="README.Debug.Trace.html" class="Module">README.Debug.Trace</a>
 
-<a id="9592" class="Comment">------------------------------------------------------------------------</a>
-<a id="9665" class="Comment">-- Core modules</a>
-<a id="9681" class="Comment">------------------------------------------------------------------------</a>
+<a id="9592" class="Comment">-- Explaining the inspect idiom: use case, equivalent handwritten</a>
+<a id="9658" class="Comment">-- auxiliary definitions, and implementation details.</a>
 
-<a id="9755" class="Comment">-- Some modules have names ending in &quot;.Core&quot;. These modules are</a>
-<a id="9819" class="Comment">-- internal, and have (mostly) been created to avoid mutual recursion</a>
-<a id="9889" class="Comment">-- between modules. They should not be imported directly; their</a>
-<a id="9953" class="Comment">-- contents are reexported by other modules.</a>
+<a id="9713" class="Keyword">import</a> <a id="9720" href="README.Inspect.html" class="Module">README.Inspect</a>
 
-<a id="9999" class="Comment">------------------------------------------------------------------------</a>
-<a id="10072" class="Comment">-- All library modules</a>
-<a id="10095" class="Comment">------------------------------------------------------------------------</a>
+<a id="9736" class="Comment">------------------------------------------------------------------------</a>
+<a id="9809" class="Comment">-- Core modules</a>
+<a id="9825" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="10169" class="Comment">-- For short descriptions of every library module, see Everything;</a>
-<a id="10236" class="Comment">-- to exclude unsafe modules, see EverythingSafe:</a>
+<a id="9899" class="Comment">-- Some modules have names ending in &quot;.Core&quot;. These modules are</a>
+<a id="9963" class="Comment">-- internal, and have (mostly) been created to avoid mutual recursion</a>
+<a id="10033" class="Comment">-- between modules. They should not be imported directly; their</a>
+<a id="10097" class="Comment">-- contents are reexported by other modules.</a>
 
-<a id="10287" class="Keyword">import</a> <a id="10294" href="Everything.html" class="Module">Everything</a>
-<a id="10305" class="Keyword">import</a> <a id="10312" href="EverythingSafe.html" class="Module">EverythingSafe</a>
+<a id="10143" class="Comment">------------------------------------------------------------------------</a>
+<a id="10216" class="Comment">-- All library modules</a>
+<a id="10239" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="10328" class="Comment">-- Note that the Everything* modules are generated automatically. If</a>
-<a id="10397" class="Comment">-- you have downloaded the library from its Git repository and want</a>
-<a id="10465" class="Comment">-- to type check README then you can (try to) construct Everything by</a>
-<a id="10535" class="Comment">-- running &quot;cabal install &amp;&amp; GenerateEverything&quot;.</a>
+<a id="10313" class="Comment">-- For short descriptions of every library module, see Everything;</a>
+<a id="10380" class="Comment">-- to exclude unsafe modules, see EverythingSafe:</a>
 
-<a id="10586" class="Comment">-- Note that all library sources are located under src or ffi. The</a>
-<a id="10653" class="Comment">-- modules README, README.* and Everything are not really part of the</a>
-<a id="10723" class="Comment">-- library, so these modules are located in the top-level directory</a>
-<a id="10791" class="Comment">-- instead.</a>
+<a id="10431" class="Keyword">import</a> <a id="10438" href="Everything.html" class="Module">Everything</a>
+<a id="10449" class="Keyword">import</a> <a id="10456" href="EverythingSafe.html" class="Module">EverythingSafe</a>
+
+<a id="10472" class="Comment">-- Note that the Everything* modules are generated automatically. If</a>
+<a id="10541" class="Comment">-- you have downloaded the library from its Git repository and want</a>
+<a id="10609" class="Comment">-- to type check README then you can (try to) construct Everything by</a>
+<a id="10679" class="Comment">-- running &quot;cabal install &amp;&amp; GenerateEverything&quot;.</a>
+
+<a id="10730" class="Comment">-- Note that all library sources are located under src or ffi. The</a>
+<a id="10797" class="Comment">-- modules README, README.* and Everything are not really part of the</a>
+<a id="10867" class="Comment">-- library, so these modules are located in the top-level directory</a>
+<a id="10935" class="Comment">-- instead.</a>
 </pre></body></html>
