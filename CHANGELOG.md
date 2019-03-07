@@ -388,8 +388,14 @@ Deprecated features
   ```
 
 * In `Data.List.Relation.Binary.Pointwise`:
-  ```
+  ```agda
   decidable-≡   ↦ Data.List.Properties.≡-dec
+  ```
+
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  filter⁺₁ ↦ all-filter
+  filter⁺₂ ↦ filter⁺
   ```
 
 * In `Data.Nat.Properties`:
