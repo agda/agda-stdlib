@@ -1118,3 +1118,19 @@ Other minor additions
                     ∀ i → let i′ = cast (sym (length-tabulate f)) i
                           in lookup (tabulate f) i′ ≡ f i
   ```
+
+* Added a third definition of less-than to `Data.Nat.Base` :
+  ```agda
+  _≤‴_ : ℕ → ℕ → Set
+  _<‴_ : Rel ℕ 0ℓ
+  _≥‴_ : Rel ℕ 0ℓ
+  _>‴_ : Rel ℕ 0ℓ
+  ```
+
+* Added new proofs to `Data.Nat.Properties` :
+  ```agda
+  ≤‴⇒≤″ : ∀{m n} → m ≤‴ n → m ≤″ n
+  m≤‴m+k : ∀{m n k} → m + k ≡ n → m ≤‴ n
+  ≤″⇒≤‴ : ∀{m n} → m ≤″ n → m ≤‴ n
+
+  ```
