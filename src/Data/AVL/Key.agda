@@ -55,7 +55,7 @@ open AddExtremaToOrder _<_ public
 
 infix 4 _<_<_
 
-_<_<_ : Key⁺ → Key → Key⁺ → Set ℓ₂
+_<_<_ : Key⁺ → Key → Key⁺ → Set (a ⊔ ℓ₂)
 l < x < u = l <⁺ [ x ] × [ x ] <⁺ u
 
 -- Properties
