@@ -4,6 +4,8 @@
 -- Notation for freely adding extrema to any set
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Nullary.Construct.Add.Extrema where
 
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
