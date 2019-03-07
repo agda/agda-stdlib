@@ -45,7 +45,7 @@ open AddExtremaToSet public
 open AddExtremaToOrder _<_ public
   using () renaming
   (_<±_    to _<⁺_
-  ; [_]    to [_]<
+  ; [_]    to [_]ᴿ
   ; ⊥±<⊤±  to ⊥⁺<⊤⁺
   ; [_]<⊤± to [_]<⊤⁺
   ; ⊥±<[_] to ⊥⁺<[_]
