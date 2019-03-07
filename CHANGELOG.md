@@ -53,7 +53,7 @@ Non-backwards compatible changes
   been moved from the existing file `X` to a new file `X.WithK` file
   (e.g. from `Data.AVL.Indexed` to `Data.AVL.Indexed.WithK`). These are as follows:
   - Data.AVL.Indexed                                                 : `node-injective-bal, node-injectiveʳ, node-injectiveˡ`
-  - Data.Container.Indexed                                           : `Eq, Map.composition, Map.identity, PlainMorphism.NT, PlainMorphism.Natural, PlainMorphism.complete, PlainMorphism.natural, PlainMorphism.∘-correct, setoid`
+  - Data.Container.Indexed                                           : `Eq, Map.composition, Map.identity, PlainMorphism.NT, PlainMorphism.Natural, PlainMorphism.complete, PlainMorphism.natural, PlainMorphism.∘-correct, setoid, _∈_`
   - Data.Product.Properties                                          : `,-injectiveʳ`
   - Data.Product.Relation.Binary.Pointwise.Dependent                 : `Pointwise-≡⇒≡, ≡⇒Pointwise-≡, inverse, ↣`
   - Data.Vec.Properties                                              : `++-assoc, []=-irrelevance, foldl-cong, foldr-cong`
@@ -388,8 +388,14 @@ Deprecated features
   ```
 
 * In `Data.List.Relation.Binary.Pointwise`:
-  ```
+  ```agda
   decidable-≡   ↦ Data.List.Properties.≡-dec
+  ```
+
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  filter⁺₁ ↦ all-filter
+  filter⁺₂ ↦ filter⁺
   ```
 
 * In `Data.Nat.Properties`:
@@ -516,12 +522,19 @@ Other minor additions
 
 * Added new function to `Data.Fin.Base`:
   ```agda
-  cast : m ≡ n → Fin m → Fin n
+  cast   : m ≡ n → Fin m → Fin n
+  lower₁ : (i : Fin (suc n)) → (n ≢ toℕ i) → Fin n
   ```
 
 * Added new proof to `Data.Fin.Properties`:
   ```agda
-  toℕ-cast    : toℕ (cast eq k) ≡ toℕ k
+  toℕ-cast          : toℕ (cast eq k) ≡ toℕ k
+  toℕ-inject₁-≢     : n ≢ toℕ (inject₁ i)
+
+  inject₁-lower₁    : inject₁ (lower₁ i n≢i) ≡ i
+  lower₁-inject₁′   : lower₁ (inject₁ i) n≢i ≡ i
+  lower₁-inject₁    : lower₁ (inject₁ i) (toℕ-inject₁-≢ i) ≡ i
+  lower₁-irrelevant : lower₁ i n≢i₁ ≡ lower₁ i n≢i₂
   ```
 
 * Added new proofs to `Data.Fin.Subset.Properties`:
@@ -1104,4 +1117,20 @@ Other minor additions
   lookup-tabulate : ∀ {n} → (f : Fin n → A) →
                     ∀ i → let i′ = cast (sym (length-tabulate f)) i
                           in lookup (tabulate f) i′ ≡ f i
+  ```
+
+* Added a third definition of less-than to `Data.Nat.Base` :
+  ```agda
+  _≤‴_ : ℕ → ℕ → Set
+  _<‴_ : Rel ℕ 0ℓ
+  _≥‴_ : Rel ℕ 0ℓ
+  _>‴_ : Rel ℕ 0ℓ
+  ```
+
+* Added new proofs to `Data.Nat.Properties` :
+  ```agda
+  ≤‴⇒≤″ : ∀{m n} → m ≤‴ n → m ≤″ n
+  m≤‴m+k : ∀{m n k} → m + k ≡ n → m ≤‴ n
+  ≤″⇒≤‴ : ∀{m n} → m ≤″ n → m ≤‴ n
+
   ```

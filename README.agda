@@ -274,10 +274,11 @@ import README.Record
 
 import README.Case
 
--- An example showing how the free monad construction on containers can be
--- used
+-- Examples how (indexed) containers and constructions over them (free
+-- monad, least fixed point, etc.) can be used
 
 import README.Container.FreeMonad
+import README.Container.Indexed
 
 -- Some examples showing how combinators can be used to emulate
 -- "functional reasoning"
@@ -288,6 +289,11 @@ import README.Function.Reasoning
 -- the behaviour of compiled Agda programs.
 
 import README.Debug.Trace
+
+-- Explaining the inspect idiom: use case, equivalent handwritten
+-- auxiliary definitions, and implementation details.
+
+import README.Inspect
 
 -- Using List's Interleaving to define a fully certified filter function.
 
