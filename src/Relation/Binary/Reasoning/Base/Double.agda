@@ -19,7 +19,7 @@ module Relation.Binary.Reasoning.Base.Double {a ℓ₁ ℓ₂} {A : Set a}
 open import Data.Product using (proj₁; proj₂)
 open import Level using (Level; _⊔_; Lift; lift)
 open import Function using (case_of_; id)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; sym)
 open import Relation.Nullary using (Dec; yes; no)
 open import Relation.Nullary.Decidable using (True; toWitness)
 
@@ -28,7 +28,7 @@ open IsPreorder isPreorder
 ------------------------------------------------------------------------
 -- A datatype to hide the current relation type
 
-data _IsRelatedTo_ (x y : A) : Set (ℓ₁ ⊔ ℓ₂) where
+data _IsRelatedTo_ (x y : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   nonstrict : (x∼y : x ∼ y) → x IsRelatedTo y
   equals    : (x≈y : x ≈ y) → x IsRelatedTo y
 
@@ -44,7 +44,7 @@ relOf (equals    x≈y) = _≈_
 -- A record that is used to ensure that the final relation proved by the
 -- chain of reasoning can be converted into the required relation.
 
-data IsEquality {x y} : x IsRelatedTo y → Set ℓ₁ where
+data IsEquality {x y} : x IsRelatedTo y → Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   isEquality : ∀ x≈y → IsEquality (equals x≈y)
 
 IsEquality? : ∀ {x y} (x≲y : x IsRelatedTo y) → Dec (IsEquality x≲y)
@@ -58,7 +58,7 @@ extractEquality (isEquality x≈y) = x≈y
 -- Reasoning combinators
 
 infix -1 begin_ begin-equality_
-infixr 0 _∼⟨_⟩_ _≈⟨_⟩_ _≡⟨_⟩_ _≡⟨⟩_
+infixr 0 _∼⟨_⟩_ _≈⟨_⟩_ _≈˘⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
 infix  1 _∎
 
 begin_ : ∀ {x y} (r : x IsRelatedTo y) → x ∼ y
@@ -76,9 +76,15 @@ _≈⟨_⟩_ : ∀ (x : A) {y z} → x ≈ y → y IsRelatedTo z → x IsRelated
 x ≈⟨ x≈y ⟩ nonstrict y∼z = nonstrict (proj₂ ∼-resp-≈ (Eq.sym x≈y) y∼z)
 x ≈⟨ x≈y ⟩ equals    y≈z = equals    (Eq.trans x≈y y≈z)
 
+_≈˘⟨_⟩_ : ∀ x {y z} → y ≈ x → y IsRelatedTo z → x IsRelatedTo z
+x ≈˘⟨ x≈y ⟩ y∼z = x ≈⟨ Eq.sym x≈y ⟩ y∼z
+
 _≡⟨_⟩_ : ∀ (x : A) {y z} → x ≡ y → y IsRelatedTo z → x IsRelatedTo z
 x ≡⟨ x≡y ⟩ nonstrict y∼z = nonstrict (case x≡y of λ where refl → y∼z)
 x ≡⟨ x≡y ⟩ equals    y≈z = equals    (case x≡y of λ where refl → y≈z)
+
+_≡˘⟨_⟩_ : ∀ x {y z} → y ≡ x → y IsRelatedTo z → x IsRelatedTo z
+x ≡˘⟨ x≡y ⟩ y∼z = x ≡⟨ sym x≡y ⟩ y∼z
 
 _≡⟨⟩_ : ∀ (x : A) {y} → x IsRelatedTo y → x IsRelatedTo y
 x ≡⟨⟩ x≲y = x≲y

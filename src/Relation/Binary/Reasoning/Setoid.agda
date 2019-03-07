@@ -31,3 +31,8 @@ open Setoid S
 
 open import Relation.Binary.Reasoning.Base.Single _≈_ refl trans public
   renaming (_∼⟨_⟩_ to _≈⟨_⟩_)
+
+infixr 2 _≈˘⟨_⟩_
+
+_≈˘⟨_⟩_ : ∀ x {y z} → y ≈ x → y IsRelatedTo z → x IsRelatedTo z
+x ≈˘⟨ x≈y ⟩ y∼z = x ≈⟨ sym x≈y ⟩ y∼z

@@ -13,4 +13,6 @@
 dist
 Everything.agda
 EverythingSafe.agda
+EverythingSafeGuardedness.agda
+EverythingSafeSizedTypes.agda
 html

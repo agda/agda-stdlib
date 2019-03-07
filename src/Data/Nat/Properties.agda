@@ -19,13 +19,15 @@ open import Data.Nat.Base
 open import Data.Product
 open import Data.Sum
 open import Data.Empty
+open import Data.Bool.Base using (Bool; false; true; T)
+open import Data.Bool.Properties using (T?)
 
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 
 open import Relation.Nullary
-open import Relation.Nullary.Decidable using (via-injection; map′)
+open import Relation.Nullary.Decidable using (True; via-injection; map′)
 open import Relation.Nullary.Negation using (contradiction)
 
 open import Algebra.FunctionProperties (_≡_ {A = ℕ})
@@ -42,15 +44,33 @@ open ≡-Reasoning
 suc-injective : ∀ {m n} → suc m ≡ suc n → m ≡ n
 suc-injective refl = refl
 
-infix 4 _≟_
+≡ᵇ⇒≡ : ∀ m n → T (m ≡ᵇ n) → m ≡ n
+≡ᵇ⇒≡ zero    zero    _  = refl
+≡ᵇ⇒≡ (suc m) (suc n) eq = cong suc (≡ᵇ⇒≡ m n eq)
+≡ᵇ⇒≡ zero    (suc n) ()
+≡ᵇ⇒≡ (suc m) zero    ()
 
+≡⇒≡ᵇ : ∀ m n → m ≡ n → T (m ≡ᵇ n)
+≡⇒≡ᵇ zero    zero    eq = _
+≡⇒≡ᵇ (suc m) (suc n) eq = ≡⇒≡ᵇ m n (suc-injective eq)
+≡⇒≡ᵇ zero    (suc n) ()
+≡⇒≡ᵇ (suc m) zero    ()
+
+-- NB: we use the builtin function `_≡ᵇ_ : (m n : ℕ) → Bool` here so
+-- that the function quickly decides whether to return `yes` or `no`.
+-- It sill takes a linear amount of time to generate the proof if it
+-- is inspected. We expect the main benefit to be visible in compiled
+-- code: the backend erases proofs.
+
+infix 4 _≟_
 _≟_ : Decidable {A = ℕ} _≡_
-zero  ≟ zero   = yes refl
-zero  ≟ suc n  = no λ()
-suc m ≟ zero   = no λ()
-suc m ≟ suc n  with m ≟ n
-... | yes refl = yes refl
-... | no m≢n   = no (m≢n ∘ suc-injective)
+m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
+
+≡-irrelevant : Irrelevant {A = ℕ} _≡_
+≡-irrelevant = Decidable⇒UIP.≡-irrelevant _≟_
+
+≟-diag : ∀ {m n} (eq : m ≡ n) → (m ≟ n) ≡ yes eq
+≟-diag = ≡-≟-identity _≟_
 
 ≡-isDecEquivalence : IsDecEquivalence (_≡_ {A = ℕ})
 ≡-isDecEquivalence = record
@@ -330,42 +350,6 @@ _≥′?_ = flip _≤′?_
 
 _>′?_ : Decidable _>′_
 _>′?_ = flip _<′?_
-
-------------------------------------------------------------------------
--- Properties of _≤″_
-
-≤″⇒≤ : _≤″_ ⇒ _≤_
-≤″⇒≤ {zero}  (less-than-or-equal refl) = z≤n
-≤″⇒≤ {suc m} (less-than-or-equal refl) =
-  s≤s (≤″⇒≤ (less-than-or-equal refl))
-
-≤⇒≤″ : _≤_ ⇒ _≤″_
-≤⇒≤″ m≤n = less-than-or-equal (proof m≤n)
-  where
-  k : ∀ m n → m ≤ n → ℕ
-  k zero    n       _   = n
-  k (suc m) zero    ()
-  k (suc m) (suc n) m≤n = k m n (≤-pred m≤n)
-
-  proof : ∀ {m n} (m≤n : m ≤ n) → m + k m n m≤n ≡ n
-  proof z≤n       = refl
-  proof (s≤s m≤n) = cong suc (proof m≤n)
-
--- Decidablity for _≤″_
-
-infix 4 _≤″?_ _<″?_ _≥″?_ _>″?_
-
-_≤″?_ : Decidable _≤″_
-x ≤″? y = map′ ≤⇒≤″ ≤″⇒≤ (x ≤? y)
-
-_<″?_ : Decidable _<″_
-x <″? y = suc x ≤″? y
-
-_≥″?_ : Decidable _≥″_
-_≥″?_ = flip _≤″?_
-
-_>″?_ : Decidable _>″_
-_>″?_ = flip _<″?_
 
 ------------------------------------------------------------------------
 -- Properties of pred
@@ -830,6 +814,23 @@ i^j≡0⇒i≡0 i (suc j) eq = [ id , i^j≡0⇒i≡0 i j ]′ (i*j≡0⇒i≡0�
 i^j≡1⇒j≡0∨i≡1 : ∀ i j → i ^ j ≡ 1 → j ≡ 0 ⊎ i ≡ 1
 i^j≡1⇒j≡0∨i≡1 i zero    _  = inj₁ refl
 i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
+
+------------------------------------------------------------------------
+-- Properties of _≤‴_
+
+≤‴⇒≤″ : ∀{m n} → m ≤‴ n → m ≤″ n
+≤‴⇒≤″ {m = m} ≤‴-refl = less-than-or-equal {k = 0} (+-identityʳ m)
+≤‴⇒≤″ {m = m} (≤‴-step x) = less-than-or-equal (trans (+-suc m _) (_≤″_.proof ind)) where
+  ind = ≤‴⇒≤″ x
+
+m≤‴m+k : ∀{m n k} → m + k ≡ n → m ≤‴ n
+m≤‴m+k {m} {k = zero} refl = subst (λ z → m ≤‴ z) (sym (+-identityʳ m)) (≤‴-refl {m})
+m≤‴m+k {m} {k = suc k} proof
+  = ≤‴-step (m≤‴m+k {k = k} (trans (sym (+-suc m _)) proof))
+
+≤″⇒≤‴ : ∀{m n} → m ≤″ n → m ≤‴ n
+≤″⇒≤‴ (less-than-or-equal {k} proof) = m≤‴m+k proof
+
 
 ------------------------------------------------------------------------
 -- Properties of _⊔_ and _⊓_
@@ -1509,6 +1510,85 @@ private
 ⌊n/2⌋≤′n : ∀ n → ⌊ n /2⌋ ≤′ n
 ⌊n/2⌋≤′n zero    = ≤′-refl
 ⌊n/2⌋≤′n (suc n) = ≤′-step (⌈n/2⌉≤′n n)
+
+------------------------------------------------------------------------
+-- Properties of _<″_, and _≤″_
+
+-- equivalence to _<ᵇ_
+
+m<ᵇn⇒1+m+[n-1+m]≡n : ∀ m n → T (m <ᵇ n) → suc m + (n ∸ suc m) ≡ n
+m<ᵇn⇒1+m+[n-1+m]≡n m       zero    ()
+m<ᵇn⇒1+m+[n-1+m]≡n zero    (suc n) lt = refl
+m<ᵇn⇒1+m+[n-1+m]≡n (suc m) (suc n) lt = cong suc (m<ᵇn⇒1+m+[n-1+m]≡n m n lt)
+
+<ᵇ⇒<″ : ∀ {m n} → T (m <ᵇ n) → m <″ n
+<ᵇ⇒<″ {m} {n} eq = less-than-or-equal {k = n ∸ suc m} (m<ᵇn⇒1+m+[n-1+m]≡n m n eq)
+
+m<ᵇ1+m+n : ∀ m {n} → T (m <ᵇ suc (m + n))
+m<ᵇ1+m+n zero    = _
+m<ᵇ1+m+n (suc m) = m<ᵇ1+m+n m
+
+<″⇒<ᵇ : ∀ {m n} → m <″ n → T (m <ᵇ n)
+<″⇒<ᵇ {m} (less-than-or-equal refl) = m<ᵇ1+m+n m
+
+-- equivalence to _≤_
+
+≤″⇒≤ : _≤″_ ⇒ _≤_
+≤″⇒≤ {zero}  (less-than-or-equal refl) = z≤n
+≤″⇒≤ {suc m} (less-than-or-equal refl) =
+  s≤s (≤″⇒≤ (less-than-or-equal refl))
+
+≤⇒≤″ : _≤_ ⇒ _≤″_
+≤⇒≤″ m≤n = less-than-or-equal (proof m≤n)
+  where
+  k : ∀ m n → m ≤ n → ℕ
+  k zero    n       _   = n
+  k (suc m) zero    ()
+  k (suc m) (suc n) m≤n = k m n (≤-pred m≤n)
+
+  proof : ∀ {m n} (m≤n : m ≤ n) → m + k m n m≤n ≡ n
+  proof z≤n       = refl
+  proof (s≤s m≤n) = cong suc (proof m≤n)
+
+-- decidability
+
+-- NB: we use the builtin function `_<ᵇ_ : (m n : ℕ) → Bool` here so
+-- that the function quickly decides whether to return `yes` or `no`.
+-- It sill takes a linear amount of time to generate the proof if it
+-- is inspected. We expect the main benefit to be visible for compiled
+-- code: the backend erases proofs.
+
+infix 4 _<″?_ _≤″?_ _≥″?_ _>″?_
+
+_<″?_ : Decidable _<″_
+m <″? n = map′ <ᵇ⇒<″ <″⇒<ᵇ (T? (m <ᵇ n))
+
+_≤″?_ : Decidable _≤″_
+zero  ≤″? n = yes (less-than-or-equal refl)
+suc m ≤″? n = m <″? n
+
+_≥″?_ : Decidable _≥″_
+_≥″?_ = flip _≤″?_
+
+_>″?_ : Decidable _>″_
+_>″?_ = flip _<″?_
+
+-- irrelevance
+
+≤″-irrelevant : Irrelevant _≤″_
+≤″-irrelevant {m} (less-than-or-equal {k₁} eq₁)
+                  (less-than-or-equal {k₂} eq₂)
+  with +-cancelˡ-≡ m (trans eq₁ (sym eq₂))
+... | refl = cong less-than-or-equal (≡-irrelevant eq₁ eq₂)
+
+<″-irrelevant : Irrelevant _<″_
+<″-irrelevant = ≤″-irrelevant
+
+>″-irrelevant : Irrelevant _>″_
+>″-irrelevant = ≤″-irrelevant
+
+≥″-irrelevant : Irrelevant _≥″_
+≥″-irrelevant = ≤″-irrelevant
 
 ------------------------------------------------------------------------
 -- Other properties
