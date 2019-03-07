@@ -18,55 +18,50 @@ open import Data.Empty
 open import Data.Unit
 open import Data.Product
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
+open import Relation.Nullary.Construct.Add.Extrema
+  as AddExtremaToSet using (_±)
+open import Relation.Binary.Construct.Add.Extrema.Strict
+  as AddExtremaToOrder using ()
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
 
 -----------------------------------------------------------------------
--- Definition
+-- Keys are augmented with new extrema (i.e. an artificial minimum and
+-- maximum)
 
-infix 5 [_]
+Key⁺ : Set a
+Key⁺ = Key ±
 
-data Key⁺ : Set a where
-  ⊥⁺ ⊤⁺ : Key⁺
-  [_]   : (k : Key) → Key⁺
-
-[_]-injective : ∀ {k l} → [ k ] ≡ [ l ] → k ≡ l
-[_]-injective refl = refl
+open AddExtremaToSet public
+  using ([_]; [_]-injective)
+  renaming
+  ( ⊥± to ⊥⁺
+  ; ⊤± to ⊤⁺
+  )
 
 -----------------------------------------------------------------------
--- An extended strict ordering relation.
+-- The order is extended in a corresponding manner
 
-infix 4 _<⁺_
-
-_<⁺_ : Key⁺ → Key⁺ → Set ℓ₂
-⊥⁺    <⁺ [ _ ] = Lift ℓ₂ ⊤
-⊥⁺    <⁺ ⊤⁺    = Lift ℓ₂ ⊤
-[ x ] <⁺ [ y ] = x < y
-[ _ ] <⁺ ⊤⁺    = Lift ℓ₂ ⊤
-_     <⁺ _     = Lift ℓ₂ ⊥
+open AddExtremaToOrder _<_ public
+  using () renaming
+  (_<±_    to _<⁺_
+  ; [_]    to [_]ᴿ
+  ; ⊥±<⊤±  to ⊥⁺<⊤⁺
+  ; [_]<⊤± to [_]<⊤⁺
+  ; ⊥±<[_] to ⊥⁺<[_]
+  )
 
 -- A pair of ordering constraints.
 
 infix 4 _<_<_
 
-_<_<_ : Key⁺ → Key → Key⁺ → Set ℓ₂
+_<_<_ : Key⁺ → Key → Key⁺ → Set (a ⊔ ℓ₂)
 l < x < u = l <⁺ [ x ] × [ x ] <⁺ u
 
--- _<⁺_ is transitive.
+-- Properties
+
+⊥⁺<[_]<⊤⁺ : ∀ k → ⊥⁺ < k < ⊤⁺
+⊥⁺<[ k ]<⊤⁺ = ⊥⁺<[ k ] , [ k ]<⊤⁺
 
 trans⁺ : ∀ l {m u} → l <⁺ m → m <⁺ u → l <⁺ u
-
-trans⁺ [ l ] {m = [ m ]} {u = [ u ]} l<m m<u = trans l<m m<u
-
-trans⁺ ⊥⁺    {u = [ _ ]} _ _ = _
-trans⁺ ⊥⁺    {u = ⊤⁺}    _ _ = _
-trans⁺ [ _ ] {u = ⊤⁺}    _ _ = _
-
-trans⁺ _     {m = ⊥⁺}    {u = ⊥⁺}    _ (lift ())
-trans⁺ _     {m = [ _ ]} {u = ⊥⁺}    _ (lift ())
-trans⁺ _     {m = ⊤⁺}    {u = ⊥⁺}    _ (lift ())
-trans⁺ [ _ ] {m = ⊥⁺}    {u = [ _ ]} (lift ()) _
-trans⁺ [ _ ] {m = ⊤⁺}    {u = [ _ ]} _ (lift ())
-trans⁺ ⊤⁺    {m = ⊥⁺}                (lift ()) _
-trans⁺ ⊤⁺    {m = [ _ ]}             (lift ()) _
-trans⁺ ⊤⁺    {m = ⊤⁺}                (lift ()) _
+trans⁺ l = AddExtremaToOrder.<±-trans _<_ trans

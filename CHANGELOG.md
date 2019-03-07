@@ -233,6 +233,8 @@ Non-backwards compatible changes
   but ideally we would like to have:
   `unionWith : (These V W -> X) -> Tree V -> Tree W -> Tree X`
 
+* Keys are now implemented via `Relation.(Binary/Nullary).Construct.AddExtrema`.
+
 #### Change in implementation of binary relations for `Sum`
 
 * The implementation of `Data.Sum.Relation.Binary.(Pointwise/LeftOrder)` have been altered
