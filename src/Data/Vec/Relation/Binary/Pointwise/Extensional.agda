@@ -31,7 +31,7 @@ record Pointwise {a b ℓ} {A : Set a} {B : Set b} (_∼_ : REL A B ℓ)
                  {n} (xs : Vec A n) (ys : Vec B n) : Set (a ⊔ b ⊔ ℓ)
                  where
   constructor ext
-  field app : ∀ i → lookup i xs ∼ lookup i ys
+  field app : ∀ i → lookup xs i ∼ lookup ys i
 
 ------------------------------------------------------------------------
 -- Operations
@@ -111,18 +111,18 @@ isEquivalence : ∀ {a ℓ} {A : Set a} {_~_ : Rel A ℓ} →
                 ∀ {n} → IsEquivalence _~_ →
                 IsEquivalence (Pointwise _~_ {n = n})
 isEquivalence equiv = record
-  { refl  = refl  (IsEquivalence.refl  equiv)
-  ; sym   = sym   (IsEquivalence.sym   equiv)
-  ; trans = trans (IsEquivalence.trans equiv)
-  }
+  { refl  = refl  Eq.refl
+  ; sym   = sym   Eq.sym
+  ; trans = trans Eq.trans
+  } where module Eq = IsEquivalence equiv
 
 isDecEquivalence : ∀ {a ℓ} {A : Set a} {_~_ : Rel A ℓ} →
                    ∀ {n} → IsDecEquivalence _~_ →
                    IsDecEquivalence (Pointwise _~_ {n = n})
 isDecEquivalence decEquiv = record
-  { isEquivalence = isEquivalence (IsDecEquivalence.isEquivalence decEquiv)
-  ; _≟_           = decidable (IsDecEquivalence._≟_ decEquiv)
-  }
+  { isEquivalence = isEquivalence DecEq.isEquivalence
+  ; _≟_           = decidable DecEq._≟_
+  } where module DecEq = IsDecEquivalence decEquiv
 
 ------------------------------------------------------------------------
 -- Pointwise _≡_ is equivalent to _≡_.

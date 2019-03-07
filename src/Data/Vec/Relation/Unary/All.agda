@@ -41,13 +41,13 @@ tail : ∀ {a p} {A : Set a} {P : A → Set p} {k x} {xs : Vec A k} →
 tail (px ∷ pxs) = pxs
 
 lookup : ∀ {a p} {A : Set a} {P : A → Set p} {k} {xs : Vec A k} →
-         (i : Fin k) → All P xs → P (Vec.lookup i xs)
+         (i : Fin k) → All P xs → P (Vec.lookup xs i)
 lookup ()      []
 lookup zero    (px ∷ pxs) = px
 lookup (suc i) (px ∷ pxs) = lookup i pxs
 
 tabulate : ∀ {a p} {A : Set a} {P : A → Set p} {k xs} →
-           (∀ i → P (Vec.lookup i xs)) → All P {k} xs
+           (∀ i → P (Vec.lookup xs i)) → All P {k} xs
 tabulate {xs = []}    pxs = []
 tabulate {xs = _ ∷ _} pxs = pxs zero ∷ tabulate (pxs ∘ suc)
 

@@ -132,7 +132,7 @@ inspect f x = [ refl ]
 module ≡-Reasoning {a} {A : Set a} where
 
   infix  3 _∎
-  infixr 2 _≡⟨⟩_ _≡⟨_⟩_
+  infixr 2 _≡⟨⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_
   infix  1 begin_
 
   begin_ : ∀{x y : A} → x ≡ y → x ≡ y
@@ -143,6 +143,9 @@ module ≡-Reasoning {a} {A : Set a} where
 
   _≡⟨_⟩_ : ∀ (x {y z} : A) → x ≡ y → y ≡ z → x ≡ z
   _ ≡⟨ x≡y ⟩ y≡z = trans x≡y y≡z
+
+  _≡˘⟨_⟩_ : ∀ (x {y z} : A) → y ≡ x → y ≡ z → x ≡ z
+  _ ≡˘⟨ y≡x ⟩ y≡z = trans (sym y≡x) y≡z
 
   _∎ : ∀ (x : A) → x ≡ x
   _∎ _ = refl

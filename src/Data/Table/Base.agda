@@ -89,7 +89,7 @@ module _ {a} {A : Set a} where
   fromList = tabulate ∘ List.lookup
 
   fromVec : ∀ {n} → Vec A n → Table A n
-  fromVec = tabulate ∘ flip Vec.lookup
+  fromVec = tabulate ∘ Vec.lookup
 
   toVec : ∀ {n} → Table A n → Vec A n
   toVec = Vec.tabulate ∘ lookup

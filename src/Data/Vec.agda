@@ -44,9 +44,9 @@ head (x ∷ xs) = x
 tail : ∀ {a n} {A : Set a} → Vec A (1 + n) → Vec A n
 tail (x ∷ xs) = xs
 
-lookup : ∀ {a n} {A : Set a} → Fin n → Vec A n → A
-lookup zero    (x ∷ xs) = x
-lookup (suc i) (x ∷ xs) = lookup i xs
+lookup : ∀ {a n} {A : Set a} → Vec A n → Fin n → A
+lookup (x ∷ xs) zero    = x
+lookup (x ∷ xs) (suc i) = lookup xs i
 
 insert : ∀ {a n} {A : Set a} → Fin (suc n) → A → Vec A n → Vec A (suc n)
 insert zero     x xs       = x ∷ xs
@@ -245,7 +245,7 @@ group (suc n) k .(ys ++ concat zss) | (ys , ._ , refl) | (zss , refl) =
 split : ∀ {a n} {A : Set a} → Vec A n → Vec A ⌈ n /2⌉ × Vec A ⌊ n /2⌋
 split []           = ([]     , [])
 split (x ∷ [])     = (x ∷ [] , [])
-split (x ∷ y ∷ xs) = Prod.map (_∷_ x) (_∷_ y) (split xs)
+split (x ∷ y ∷ xs) = Prod.map (x ∷_) (y ∷_) (split xs)
 
 ------------------------------------------------------------------------
 -- Operations for converting between lists
