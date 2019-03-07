@@ -340,6 +340,35 @@ toℕ-inject₁ : ∀ {n} (i : Fin n) → toℕ (inject₁ i) ≡ toℕ i
 toℕ-inject₁ zero    = refl
 toℕ-inject₁ (suc i) = cong suc (toℕ-inject₁ i)
 
+toℕ-inject₁-≢ : ∀ {n}(i : Fin n) → n ≢ toℕ (inject₁ i)
+toℕ-inject₁-≢ zero = λ ()
+toℕ-inject₁-≢ (suc i) = λ p → toℕ-inject₁-≢ i (ℕₚ.suc-injective p)
+
+------------------------------------------------------------------------
+-- inject₁ and lower₁
+
+inject₁-lower₁ : ∀ {n} (i : Fin (suc n)) (ne : n ≢ toℕ i)
+               → inject₁ (lower₁ i ne) ≡ i
+inject₁-lower₁ {zero} zero ne = ⊥-elim (ne refl)
+inject₁-lower₁ {zero} (suc ()) _
+inject₁-lower₁ {suc n} zero _ = refl
+inject₁-lower₁ {suc n} (suc i) ne
+  rewrite inject₁-lower₁ i  (λ x → ne (cong suc x)) = refl
+
+lower₁-inject₁′ : ∀ {n} (i : Fin n) (ne : n ≢ toℕ (inject₁ i))
+                → lower₁ (inject₁ i) ne ≡ i
+lower₁-inject₁′ zero ne = refl
+lower₁-inject₁′ (suc i) ne = cong suc (lower₁-inject₁′ i (ne ∘ cong suc))
+
+lower₁-inject₁ : ∀ {n} (i : Fin n) → lower₁ (inject₁ i) (toℕ-inject₁-≢ i) ≡ i
+lower₁-inject₁ i = lower₁-inject₁′ i (toℕ-inject₁-≢ i)
+
+lower₁-ext : ∀ {n} (i : Fin (suc n)) ne₁ ne₂ → lower₁ {n} i ne₁ ≡ lower₁ {n} i ne₂
+lower₁-ext {zero} zero ne₁ _ = ⊥-elim (ne₁ refl)
+lower₁-ext {zero} (suc ()) _ _
+lower₁-ext {suc n} zero ne₁ ne₂ = refl
+lower₁-ext {suc n} (suc i) ne₁ ne₂ = cong suc (lower₁-ext i _ _)
+
 ------------------------------------------------------------------------
 -- inject≤
 

@@ -516,12 +516,18 @@ Other minor additions
 
 * Added new function to `Data.Fin.Base`:
   ```agda
-  cast : m ≡ n → Fin m → Fin n
+  cast   : m ≡ n → Fin m → Fin n
+  lower₁ : (i : Fin (suc n)) → (n ≢ toℕ i) → Fin n
   ```
 
 * Added new proof to `Data.Fin.Properties`:
   ```agda
-  toℕ-cast    : toℕ (cast eq k) ≡ toℕ k
+  toℕ-cast        : toℕ (cast eq k) ≡ toℕ k
+  toℕ-inject₁-≢   : (i : Fin n)              → n ≢ toℕ (inject₁ i)
+  inject₁-lower₁  : (ne : n ≢ toℕ i)         → inject₁ (lower₁ i ne) ≡ i
+  lower₁-inject₁′ : (i : Fin n) (ne : n ≢ toℕ (inject₁ i)) → lower₁ (inject₁ i) ne ≡ i
+  lower₁-inject₁  : (i : Fin n) → lower₁ (inject₁ i) (toℕ-inject₁-≢ i) ≡ i
+  lower₁-ext      : (i : Fin n) ne₁ ne₂      → lower₁ i ne₁ ≡ lower₁ i ne₂
   ```
 
 * Added new proofs to `Data.Fin.Subset.Properties`:
