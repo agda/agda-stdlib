@@ -4,6 +4,8 @@
 -- The lifting of a non-strict order to incorporate new extrema
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 -- This module is designed to be used with
 -- Relation.Nullary.Construct.Add.Extrema
 

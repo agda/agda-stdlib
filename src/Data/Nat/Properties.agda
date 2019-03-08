@@ -816,6 +816,23 @@ i^j≡1⇒j≡0∨i≡1 i zero    _  = inj₁ refl
 i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
 
 ------------------------------------------------------------------------
+-- Properties of _≤‴_
+
+≤‴⇒≤″ : ∀{m n} → m ≤‴ n → m ≤″ n
+≤‴⇒≤″ {m = m} ≤‴-refl = less-than-or-equal {k = 0} (+-identityʳ m)
+≤‴⇒≤″ {m = m} (≤‴-step x) = less-than-or-equal (trans (+-suc m _) (_≤″_.proof ind)) where
+  ind = ≤‴⇒≤″ x
+
+m≤‴m+k : ∀{m n k} → m + k ≡ n → m ≤‴ n
+m≤‴m+k {m} {k = zero} refl = subst (λ z → m ≤‴ z) (sym (+-identityʳ m)) (≤‴-refl {m})
+m≤‴m+k {m} {k = suc k} proof
+  = ≤‴-step (m≤‴m+k {k = k} (trans (sym (+-suc m _)) proof))
+
+≤″⇒≤‴ : ∀{m n} → m ≤″ n → m ≤‴ n
+≤″⇒≤‴ (less-than-or-equal {k} proof) = m≤‴m+k proof
+
+
+------------------------------------------------------------------------
 -- Properties of _⊔_ and _⊓_
 
 ⊔-assoc : Associative _⊔_
