@@ -4,6 +4,8 @@
 -- An inductive definition of the heterogeneous suffix relation
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.Relation.Binary.Suffix.Heterogeneous where
 
 open import Level
