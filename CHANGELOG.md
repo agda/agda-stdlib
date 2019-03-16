@@ -343,6 +343,12 @@ Non-backwards compatible changes
 * `Data.List.Relation.Binary.Sublist.Propositional.Solver` has been removed and replaced by
   `Data.List.Relation.Binary.Sublist.DecPropositional.Solver`.
 
+* Made `Data.Nat.Unsafe` and `Data.Nat.DivMod.Unsafe` safe by using
+  the safe equality erasure primitive instead of the unsafe one
+  defined in `Relation.Binary.PropositionalEquality.TrustMe`. As the
+  erasure primitive requires the K axiom the two files are now named
+  `Data.Nat.WithK` and `Data.Nat.DivMod.WithK`.
+
 * The functions `_∷=_` and `_─_` have been removed from `Data.List.Membership.Setoid` as they are subsumed by the more general versions now part of `Data.List.Any`.
 
 * Changed the type of `≡-≟-identity` to make use of the fact that equality
@@ -356,8 +362,6 @@ Non-backwards compatible changes
   now `lookup xs i v`. The argument order for the corresponding proofs has also changed.
   This makes the operations more consistent with those in `Data.List`.
 
-List of new modules
-=======
 * The type family `Data.Container.ν` is now defined using `Codata.M.M` rather than `Codata.Musical.M.M`.
 
 * Functions called `fromMusical` and `toMusical` were moved from modules under `Codata` to modules under `Codata.Musical`:
@@ -368,8 +372,7 @@ List of new modules
   * From `Codata.M` to `Codata.Musical.M`.
   * From `Codata.Stream` to `Codata.Musical.Stream`.
 
-Other major changes
->>>>>>> Changes done to accommodate the new Agda option --guardedness.
+List of new modules
 -------------------
 
   ```
