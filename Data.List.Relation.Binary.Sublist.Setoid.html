@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Relation.Binary.Sublist.Setoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- An inductive definition of the sublist relation with respect to a setoid</a>
+<a id="182" class="Comment">-- This is a generalisation of what is commonly known as Order Preserving</a>
+<a id="256" class="Comment">-- Embeddings (OPE).</a>
+<a id="277" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="351" class="Symbol">{-#</a> <a id="355" class="Keyword">OPTIONS</a> <a id="363" class="Option">--without-K</a> <a id="375" class="Option">--safe</a> <a id="382" class="Symbol">#-}</a>
+
+<a id="387" class="Keyword">open</a> <a id="392" class="Keyword">import</a> <a id="399" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="415" class="Keyword">using</a> <a id="421" class="Symbol">(</a><a id="422" href="Relation.Binary.html#1930" class="Record">Setoid</a><a id="428" class="Symbol">;</a> <a id="430" href="Relation.Binary.Core.html#976" class="Function">Rel</a><a id="433" class="Symbol">)</a>
+
+<a id="436" class="Keyword">module</a> <a id="443" href="Data.List.Relation.Binary.Sublist.Setoid.html" class="Module">Data.List.Relation.Binary.Sublist.Setoid</a> <a id="484" class="Symbol">{</a><a id="485" href="Data.List.Relation.Binary.Sublist.Setoid.html#485" class="Bound">c</a> <a id="487" href="Data.List.Relation.Binary.Sublist.Setoid.html#487" class="Bound">ℓ</a><a id="488" class="Symbol">}</a> <a id="490" class="Symbol">(</a><a id="491" href="Data.List.Relation.Binary.Sublist.Setoid.html#491" class="Bound">S</a> <a id="493" class="Symbol">:</a> <a id="495" href="Relation.Binary.html#1930" class="Record">Setoid</a> <a id="502" href="Data.List.Relation.Binary.Sublist.Setoid.html#485" class="Bound">c</a> <a id="504" href="Data.List.Relation.Binary.Sublist.Setoid.html#487" class="Bound">ℓ</a><a id="505" class="Symbol">)</a> <a id="507" class="Keyword">where</a>
+
+<a id="514" class="Keyword">open</a> <a id="519" class="Keyword">import</a> <a id="526" href="Level.html" class="Module">Level</a> <a id="532" class="Keyword">using</a> <a id="538" class="Symbol">(</a><a id="539" href="Agda.Primitive.html#657" class="Primitive Operator">_⊔_</a><a id="542" class="Symbol">)</a>
+<a id="544" class="Keyword">open</a> <a id="549" class="Keyword">import</a> <a id="556" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="571" class="Keyword">using</a> <a id="577" class="Symbol">(</a><a id="578" href="Agda.Builtin.List.html#80" class="Datatype">List</a><a id="582" class="Symbol">;</a> <a id="584" href="Data.List.Base.html#9863" class="InductiveConstructor">[]</a><a id="586" class="Symbol">;</a> <a id="588" href="Agda.Builtin.List.html#132" class="InductiveConstructor Operator">_∷_</a><a id="591" class="Symbol">)</a>
+<a id="593" class="Keyword">import</a> <a id="600" href="Data.List.Relation.Binary.Sublist.Heterogeneous.html" class="Module">Data.List.Relation.Binary.Sublist.Heterogeneous</a> <a id="648" class="Symbol">as</a> <a id="651" class="Module">Sublist</a>
+
+<a id="660" class="Keyword">private</a>
+  <a id="670" class="Keyword">module</a> <a id="S"></a><a id="677" href="Data.List.Relation.Binary.Sublist.Setoid.html#677" class="Module">S</a> <a id="679" class="Symbol">=</a> <a id="681" href="Relation.Binary.html#1930" class="Module">Setoid</a> <a id="688" href="Data.List.Relation.Binary.Sublist.Setoid.html#491" class="Bound">S</a>
+  <a id="692" class="Keyword">open</a> <a id="697" href="Data.List.Relation.Binary.Sublist.Setoid.html#677" class="Module">S</a> <a id="699" class="Keyword">renaming</a> <a id="708" class="Symbol">(</a><a id="709" href="Relation.Binary.html#1993" class="Field">Carrier</a> <a id="717" class="Symbol">to</a> <a id="720" href="Relation.Binary.html#1993" class="Field">A</a><a id="721" class="Symbol">)</a>
+
+<a id="724" class="Keyword">infix</a> <a id="730" class="Number">4</a> <a id="732" href="Data.List.Relation.Binary.Sublist.Setoid.html#736" class="Function Operator">_⊆_</a>
+<a id="_⊆_"></a><a id="736" href="Data.List.Relation.Binary.Sublist.Setoid.html#736" class="Function Operator">_⊆_</a> <a id="740" class="Symbol">:</a> <a id="742" href="Relation.Binary.Core.html#976" class="Function">Rel</a> <a id="746" class="Symbol">(</a><a id="747" href="Agda.Builtin.List.html#80" class="Datatype">List</a> <a id="752" href="Relation.Binary.html#1993" class="Field">A</a><a id="753" class="Symbol">)</a> <a id="755" class="Symbol">(</a><a id="756" href="Data.List.Relation.Binary.Sublist.Setoid.html#485" class="Bound">c</a> <a id="758" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="760" href="Data.List.Relation.Binary.Sublist.Setoid.html#487" class="Bound">ℓ</a><a id="761" class="Symbol">)</a>
+<a id="763" href="Data.List.Relation.Binary.Sublist.Setoid.html#736" class="Function Operator">_⊆_</a> <a id="767" class="Symbol">=</a> <a id="769" href="Data.List.Relation.Binary.Sublist.Heterogeneous.html#920" class="Datatype">Sublist.Sublist</a> <a id="785" href="Relation.Binary.html#2019" class="Field Operator">_≈_</a>
+
+<a id="790" class="Keyword">open</a> <a id="795" href="Data.List.Relation.Binary.Sublist.Heterogeneous.html" class="Module">Sublist</a> <a id="803" class="Keyword">hiding</a> <a id="810" class="Symbol">(</a><a id="811" href="Data.List.Relation.Binary.Sublist.Heterogeneous.html#920" class="Datatype">Sublist</a><a id="818" class="Symbol">)</a> <a id="820" class="Keyword">public</a>
+</pre></body></html>
