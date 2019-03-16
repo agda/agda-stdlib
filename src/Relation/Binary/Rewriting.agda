@@ -2,14 +2,15 @@
 -- The Agda standard library
 --
 -- Concepts from rewriting theory
+-- Definitions are based on "Term Rewriting Systems" by J.W. Klop
 ------------------------------------------------------------------------
 
 {-# OPTIONS --with-K --safe #-}
 
 module Relation.Binary.Rewriting where
 
-open import Agda.Builtin.Equality using (_≡_)
-open import Data.Product using (_×_; ∃ ; _,_)
+open import Agda.Builtin.Equality using (_≡_ ; refl)
+open import Data.Product using (_×_ ; ∃ ; _,_)
 open import Data.Empty
 open import Level
 open import Relation.Binary.Core
@@ -18,6 +19,7 @@ open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 open import Relation.Binary.Construct.Closure.Symmetric
 open import Relation.Nullary
 
+-- The following definitions are taken from Klop [5]
 IsNormalForm : ∀ {A : Set} → {ℓ : Level} → {r : Rel A ℓ} → (a : A) → Set _
 IsNormalForm {A} {ℓ} {_⟶_} a = ¬ ∃ λ b → (a ⟶ b)
 
@@ -29,6 +31,15 @@ NormalForm {A} {ℓ} r = ∀ {a b}
   where
     _—↠_ = Star r
     _↔_  = Star (SymClosure r)
+
+UniqueNormalForm : ∀ {A : Set} → {ℓ : Level} → (r : Rel A ℓ) → Set _
+UniqueNormalForm {A} {ℓ} r = ∀ {a b}
+  → IsNormalForm {A} {ℓ} {r} a
+  → IsNormalForm {A} {ℓ} {r} b
+  → a ↔ b
+  → a ≡ b
+  where
+    _↔_ = Star (SymClosure r)
 
 Det : ∀ {a b ℓ₁ ℓ₂} → {A : Set a} → {B : Set b} → Rel B ℓ₁ → REL A B ℓ₂ → Set _
 Det _≈_ _—→_ = ∀ {x y z} → x —→ y → x —→ z → y ≈ z
@@ -76,3 +87,13 @@ conf⟶nf c aIsNF (fwd x ◅ r) = x ◅ conf⟶nf c aIsNF r
 conf⟶nf c aIsNF (bwd y ◅ rest) with c (y ◅ ε , (conf⟶nf c aIsNF rest))
 conf⟶nf c aIsNF (bwd y ◅ rest) | dest , _    , x ◅ _ = ⊥-elim (aIsNF (_ , x))
 conf⟶nf c aIsNF (bwd y ◅ rest) | dest , left , ε     = left
+
+conf⟶unf : ∀ {A : Set} → {ℓ : Level} → {r : Rel A ℓ}
+  → Confluent r
+  → UniqueNormalForm r
+conf⟶unf c aIsNF bIsNF ε = refl
+conf⟶unf c aIsNF bIsNF (fwd x ◅ _) = ⊥-elim (aIsNF (_ , x))
+conf⟶unf c aIsNF bIsNF (bwd y ◅ r) with c (y ◅ ε , (conf⟶nf c bIsNF r))
+conf⟶unf c aIsNF bIsNF (bwd y ◅ r) | dest , ε , ε = refl
+conf⟶unf c aIsNF bIsNF (bwd y ◅ r) | dest , ε , x ◅ _ = ⊥-elim (bIsNF (_ , x))
+conf⟶unf c aIsNF bIsNF (bwd y ◅ r) | dest , x ◅ _ , _ = ⊥-elim (aIsNF (_ , x))
