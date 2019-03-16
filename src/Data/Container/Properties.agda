@@ -4,6 +4,8 @@
 -- Properties of operations on containers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Container.Properties where
 
 import Function as F
