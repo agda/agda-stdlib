@@ -265,6 +265,19 @@ Non-backwards compatible changes
   ```
   All the proofs about `Pointwise` remain untouched.
 
+#### Overhaul of `MonadZero` and `MonadPlus`
+
+* Introduce `RawIApplicativeZero` for an indexed applicative with a zero
+  and `RawAlternative` for an indexed applicative with a zero and a sum.
+
+* `RawIMonadZero` is now packing a `RawIApplicativeZero` rather than a `∅` directly
+
+* Similarly `RawIMonadPlus` is defined in terms of `RawIAlternative` rather than
+  directly packing a _∣_.
+
+* Instances will be broken but usages should still work thanks to re-exports striving
+  to maintain backwards compatibility.
+
 #### Overhaul of `Data.Container`
 
 * `Data.Container` has been split up into the standard hierarchy.
@@ -470,11 +483,6 @@ Deprecated features
 Other minor additions
 ---------------------
 
-* Added new proof to `Data.Nat.Properties`:
-  ```agda
-  ≤′-trans : Transitive _≤′_
-  ```
-
 * Added new records to `Algebra`:
   ```agda
   record RawMagma c ℓ : Set (suc (c ⊔ ℓ))
@@ -510,12 +518,27 @@ Other minor additions
   record IsMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
   ```
 
+* Added new proofs to `Category.Monad.State`:
+  ```agda
+  StateTIApplicative     : RawMonad M → RawIApplicative (IStateT S M)
+  StateTIApplicativeZero : RawMonadZero M → RawIApplicativeZero (IStateT S M)
+  StateTIAlternative     : RawMonadPlus M → RawIAlternative (IStateT S M)
+  ```
+
 * Added new functions to `Codata.Colist`:
   ```agda
   fromCowriter : Cowriter W A i → Colist W i
   toCowriter   : Colist A i → Cowriter A ⊤ i
   [_]          : A → Colist A ∞
   chunksOf     : (n : ℕ) → Colist A ∞ → Cowriter (Vec A n) (BoundedVec A n) ∞
+  ```
+
+* Added new proofs to `Codata.Delay.Categorical`:
+  ```agda
+  Sequential.applicativeZero : RawApplicativeZero (λ A → Delay A i)
+
+  Zippy.applicativeZero : RawApplicativeZero (λ A → Delay A i)
+  Zippy.alternative     : RawAlternative (λ A → Delay A i)
   ```
 
 * Added new functions to `Codata.Stream`:
@@ -688,6 +711,12 @@ Other minor additions
   +-*-ring    : Ring 0ℓ 0ℓ
   ```
 
+* Added new proofs to `Data.List.Categorical`:
+  ```agda
+  applicativeZero : RawApplicativeZero List
+  alternative     : RawAlternative List
+  ```
+
 * Added new operations to `Data.List.Relation.Unary.All`:
   ```agda
   zipWith   : P ∩ Q ⊆ R → All P ∩ All Q ⊆ All R
@@ -802,6 +831,12 @@ Other minor additions
   ++-magma   : Magma _ _
   ```
 
+* Added new proofs to `Data.Maybe.Categorical`:
+  ```agda
+  applicativeZero : RawApplicativeZero Maybe
+  alternative     : RawAlternative Maybe
+  ```
+
 * Added new proofs to `Data.Maybe.Relation.Unary.All`:
   ```agda
   drop-just        : All P (just x) → P x
@@ -909,6 +944,8 @@ Other minor additions
   ≥″-irrelevant : Irrelevant _≥″_
   <″-irrelevant : Irrelevant _<″_
   >″-irrelevant : Irrelevant _>″_
+
+  ≤′-trans : Transitive _≤′_
   ```
 
 * Added new proof to `Data.Product.Properties.WithK`:
