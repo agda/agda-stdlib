@@ -10,8 +10,9 @@
 module Relation.Binary.Rewriting where
 
 open import Agda.Builtin.Equality using (_≡_ ; refl)
-open import Data.Product using (_×_ ; ∃ ; _,_)
+open import Data.Product using (_×_ ; ∃ ; _,_ ; proj₂)
 open import Data.Empty
+open import Data.Sum as Sum using (_⊎_)
 open import Level
 open import Relation.Binary.Core
 open import Relation.Binary.Construct.Closure.Transitive
@@ -23,6 +24,11 @@ open import Relation.Nullary
 IsNormalForm : ∀ {A : Set} → {ℓ : Level} → {r : Rel A ℓ} → (a : A) → Set _
 IsNormalForm {A} {ℓ} {_⟶_} a = ¬ ∃ λ b → (a ⟶ b)
 
+HasNormalForm : ∀ {A : Set} → {ℓ : Level} → {r : Rel A ℓ} → (b : A) → Set _
+HasNormalForm {A} {ℓ} {_⟶_} b = ∃ λ a → ( IsNormalForm {A} {ℓ} {_⟶_} a × (b —↠ a))
+  where
+    _—↠_ = Star _⟶_
+
 NormalForm : ∀ {A : Set} → {ℓ : Level} → (r : Rel A ℓ) → Set _
 NormalForm {A} {ℓ} r = ∀ {a b}
   → IsNormalForm {A} {ℓ} {r} a
@@ -31,6 +37,9 @@ NormalForm {A} {ℓ} r = ∀ {a b}
   where
     _—↠_ = Star r
     _↔_  = Star (SymClosure r)
+
+WeaklyNormalizing : ∀ {A : Set} → {ℓ : Level} → (r : Rel A ℓ) → Set _
+WeaklyNormalizing {A} {ℓ} r = ∀ a → HasNormalForm {A} {ℓ} {r} a
 
 UniqueNormalForm : ∀ {A : Set} → {ℓ : Level} → (r : Rel A ℓ) → Set _
 UniqueNormalForm {A} {ℓ} r = ∀ {a b}
@@ -46,12 +55,6 @@ Det _≈_ _—→_ = ∀ {x y z} → x —→ y → x —→ z → y ≈ z
 
 Deterministic : ∀ {a b ℓ} → {A : Set a} → {B : Set b} → REL A B ℓ → Set _
 Deterministic = Det _≡_
-
-EqConfluent : ∀ {A : Set} → {ℓ : Level} → (r :  Rel A ℓ) → Set _
-EqConfluent _—→_ = ∀ {A B C} → (A ↔ B × A ↔ C) → ∃ λ D → (B —↠ D) × (C —↠ D)
-  where
-    _—↠_ = Star _—→_
-    _↔_ = Star (SymClosure _—→_)
 
 Confluent : ∀ {A : Set} → {ℓ : Level} → (r :  Rel A ℓ) → Set _
 Confluent _—→_ = ∀ {A B C} → (A —↠ B × A —↠ C) → ∃ λ D → (B —↠ D) × (C —↠ D)
@@ -97,3 +100,36 @@ conf⟶unf c aIsNF bIsNF (bwd y ◅ r) with c (y ◅ ε , (conf⟶nf c bIsNF r))
 conf⟶unf c aIsNF bIsNF (bwd y ◅ r) | dest , ε , ε = refl
 conf⟶unf c aIsNF bIsNF (bwd y ◅ r) | dest , ε , x ◅ _ = ⊥-elim (bIsNF (_ , x))
 conf⟶unf c aIsNF bIsNF (bwd y ◅ r) | dest , x ◅ _ , _ = ⊥-elim (aIsNF (_ , x))
+
+un&wn⟶cr : ∀ {A : Set} → {ℓ : Level} → {r : Rel A ℓ}
+  → UniqueNormalForm r
+  → WeaklyNormalizing r
+  → Confluent r
+un&wn⟶cr {A} {ℓ} {r} un wn = helper
+  where
+    helper : ∀ {a b c : A}
+      → (Star r a b × Star r a c) → ∃ λ d → (Star r b d) × (Star r c d)
+    helper {a} {b} {c} _ with (wn b , wn c)
+    helper (aToB , aToC) | (_ , (e , x)) , (_ , (f , y)) with bNF≡cNF
+      where
+        forwards : ∀ {A : Set} → {ℓ : Level} → {r : Rel A ℓ} → {a b : A}
+          → Star r a b
+          → Star (SymClosure r) a b
+        forwards ε = ε
+        forwards (x ◅ y) = fwd x ◅ forwards y
+
+        back : ∀ {A : Set} → {ℓ : Level} → {r : Rel A ℓ} → {a b : A}
+          → Star r a b
+          → Star (SymClosure r) b a
+        back ε = ε
+        back (x ◅ y) = back y ◅◅ bwd x ◅ ε
+
+        lemma : ∀ {A : Set} → {ℓ : Level} → {r : Rel A ℓ} → {a b c : A}
+          → Star r a b
+          → Star r a c
+          → Star (SymClosure r) b c
+        lemma t b = back t ◅◅ forwards b
+
+        bNF≡cNF = un e f (lemma (aToB ◅◅ x) (aToC ◅◅ y))
+
+    helper _ | (bNF , (_ , x)) , (_ , (_ , y)) | refl = bNF , x , y
