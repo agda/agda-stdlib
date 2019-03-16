@@ -301,7 +301,9 @@ Non-backwards compatible changes
 
 * Made `Data.Nat.Unsafe` and `Data.Nat.DivMod.Unsafe` safe by using
   the safe equality erasure primitive instead of the unsafe one
-  defined in `Relation.Binary.PropositionalEquality.TrustMe`.
+  defined in `Relation.Binary.PropositionalEquality.TrustMe`. As the
+  erasure primitive requires the K axiom the two files are now named
+  `Data.Nat.WithK` and `Data.Nat.DivMod.WithK`.
 
 Other major changes
 =======
