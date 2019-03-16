@@ -461,6 +461,9 @@ m≢1+m+n : ∀ m {n} → m ≢ suc (m + n)
 m≢1+m+n zero    ()
 m≢1+m+n (suc m) eq = m≢1+m+n m (cong pred eq)
 
+m≢1+n+m : ∀ m {n} → m ≢ suc (n + m)
+m≢1+n+m m m≡1+n+m = m≢1+m+n m (trans m≡1+n+m (cong suc (+-comm _ m)))
+
 i+1+j≢i : ∀ i {j} → i + suc j ≢ i
 i+1+j≢i zero    ()
 i+1+j≢i (suc i) = (i+1+j≢i i) ∘ suc-injective
