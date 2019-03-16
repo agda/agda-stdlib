@@ -73,3 +73,15 @@ This is very much a work-in-progress and is not exhaustive.
 ## Other miscellaneous points
 
 * `where` blocks are preferred rather than the `let` construction.
+
+* If a type is split over two lines then the arrow should go at the end of the first line rather than
+  the beginning of the second line, i.e.
+  ```
+  foo : VeryLongType →
+                B
+  ```
+  rather than
+  ```
+  foo : VeryLongType
+                → B
+  ```
