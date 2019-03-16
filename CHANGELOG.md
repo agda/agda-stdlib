@@ -320,6 +320,9 @@ Non-backwards compatible changes
 * The proofs `toList⁺` and `toList⁻` in `Data.Vec.Relation.Unary.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
+* `Data.List.Relation.Binary.Sublist.Propositional.Solver` has been removed and replaced by
+  `Data.List.Relation.Binary.Sublist.DecPropositional.Solver`.
+
 * The functions `_∷=_` and `_─_` have been removed from `Data.List.Membership.Setoid` as they are subsumed by the more general versions now part of `Data.List.Any`.
 
 * Changed the type of `≡-≟-identity` to make use of the fact that equality
@@ -363,10 +366,27 @@ List of new modules
 
   Data.List.Relation.Unary.First
   Data.List.Relation.Unary.First.Properties
+
   Data.List.Relation.Binary.Prefix.Heterogeneous
   Data.List.Relation.Binary.Prefix.Heterogeneous.Properties
   Data.List.Relation.Binary.Suffix.Heterogeneous
   Data.List.Relation.Binary.Suffix.Heterogeneous.Properties
+
+  Data.List.Relation.Binary.Sublist.Heterogeneous
+  Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
+  Data.List.Relation.Binary.Sublist.Homogeneous.Properties
+  Data.List.Relation.Binary.Sublist.Homogeneous.Solver
+  Data.List.Relation.Binary.Sublist.Setoid
+  Data.List.Relation.Binary.Sublist.Setoid.Properties
+  Data.List.Relation.Binary.Sublist.DecSetoid
+  Data.List.Relation.Binary.Sublist.DecSetoid.Properties
+  Data.List.Relation.Binary.Sublist.DecSetoid.Solver
+  Data.List.Relation.Binary.Sublist.Propositional
+  Data.List.Relation.Binary.Sublist.Propositional.Properties
+  Data.List.Relation.Binary.Sublist.DecPropositional
+  Data.List.Relation.Binary.Sublist.DecPropositional.Properties
+  Data.List.Relation.Binary.Sublist.DecPropositional.Solver
+
   Data.List.Relation.Ternary.Interleaving.Setoid
   Data.List.Relation.Ternary.Interleaving.Setoid.Properties
   Data.List.Relation.Ternary.Interleaving.Propositional
@@ -1100,6 +1120,9 @@ Other minor additions
 
 * Added new definitions to `Relation.Binary.PropositionalEquality`:
   ```agda
+  trans-injectiveˡ : trans p₁ q ≡ trans p₂ q → p₁ ≡ p₂
+  trans-injectiveʳ : trans p q₁ ≡ trans p q₂ → q₁ ≡ q₂
+  subst-injective  : subst P x≡y p ≡ subst P x≡y q → p ≡ q
   module Constant⇒UIP
   module Decidable⇒UIP
   ```
@@ -1112,7 +1135,13 @@ Other minor additions
 * Added new definitions to `Relation.Binary.Core`:
   ```agda
   Antisym R S E = ∀ {i j} → R i j → S j i → E i j
-  Conn P Q      = ∀ x y → P x y ⊎ Q y x
+
+  Max : REL A B ℓ → B → Set _
+  Min : REL A B ℓ → A → Set _
+
+  Conn P Q = ∀ x y → P x y ⊎ Q y x
+
+  P ⟶ Q Respects _∼_ = ∀ {x y} → x ∼ y → P x → Q y
   ```
 
 * Added new proofs to `Relation.Binary.Lattice`:
