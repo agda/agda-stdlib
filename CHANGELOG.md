@@ -265,6 +265,23 @@ Non-backwards compatible changes
   ```
   All the proofs about `Pointwise` remain untouched.
 
+#### Overhaul of `Data.Container`
+
+* `Data.Container` has been split up into the standard hierarchy.
+
+* Moved `Data.Container`'s `All` and `Any` into their own
+  `Data.Container.Relation.Unary.X` module. Made them record types
+  to improve type inference.
+
+* Moved morphisms to `Data.Container.Morphism` and their properties
+  to `Data.Container.Morphism.Properties`.
+
+* Made the index set explicit in `Data.Container.Combinator`'s `Π` and `Σ`.
+
+* Moved `Eq` to `Data.Container.Relation.Binary.Pointwise`
+  (and renamed it to `Pointwise`) and its properties to
+  `Data.Container.Relation.Binary.Pointwise.Properties`.
+
 #### Other
 
 * The proof `sel⇒idem` has been moved from `Algebra.FunctionProperties.Consequences` to
@@ -313,6 +330,19 @@ List of new modules
 
   Codata.M.Properties
   Codata.M.Bisimilarity
+
+  Data.Container.Combinator.Properties
+  Data.Container.Membership
+  Data.Container.Morphism
+  Data.Container.Morphism.Properties
+  Data.Container.Properties
+  Data.Container.Related
+  Data.Container.Relation.Unary.All
+  Data.Container.Relation.Unary.Any
+  Data.Container.Relation.Unary.Any.Properties
+  Data.Container.Relation.Binary.Equality.Setoid
+  Data.Container.Relation.Binary.Pointwise
+  Data.Container.Relation.Binary.Pointwise.Properties
 
   Data.Integer.Divisibility.Properties
   Data.Integer.Divisibility.Signed
