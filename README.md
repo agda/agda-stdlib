@@ -68,8 +68,6 @@ not compatible:
 ```
   Data.Char.Unsafe
   Data.Float.Unsafe
-  Data.Nat.Unsafe
-  Data.Nat.DivMod.Unsafe
   Data.String.Unsafe
   Data.Word.Unsafe
   Debug.Trace
