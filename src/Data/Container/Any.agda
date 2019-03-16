@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties related to ◇
+-- This module is DEPRECATED. Please use
+-- Data.Container.Relation.Unary.Any directly.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
