@@ -10,8 +10,8 @@ open import Relation.Binary using (Rel; Reflexive; Decidable)
 
 module Data.List.Relation.Binary.Sublist.Homogeneous.Solver
        {a r} {A : Set a} (R : Rel A r)
--- Note that we only need this two constraints to define the solver itself.
--- The data structures do not depent on them.
+-- Note that we only need the two following constraints to define the solver
+-- itself. The data structures do not depent on them.
 -- However, having the whole module parametrised by them means that we can
 -- instantiate them upon import.
        (R-refl : Reflexive R) (R? : Decidable R)
