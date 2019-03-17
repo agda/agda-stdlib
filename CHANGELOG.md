@@ -498,16 +498,6 @@ Deprecated features
   ≅-heterogeneous-irrelevanceʳ ↦ ≅-heterogeneous-irrelevantʳ
   ```
 
-* From `Relation.Binary.PropositionalEquality` to `Relation.Binary.PropositionalEquality.Core`:
-  ```agda
-  cong
-  module ≡-Reasoning
-  trans-reflʳ
-  trans-assoc
-  trans-symˡ
-  trans-symʳ
-  ```
-
 * In `Relation.Binary.PropositionalEquality.WithK`:
   ```agda
   ≡-irrelevance ↦ ≡-irrelevant
