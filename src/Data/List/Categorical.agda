@@ -31,6 +31,18 @@ applicative = record
   ; _⊛_  = λ fs as → concatMap (λ f → map f as) fs
   }
 
+applicativeZero : ∀ {ℓ} → RawApplicativeZero {ℓ} List
+applicativeZero = record
+  { applicative = applicative
+  ; ∅           = []
+  }
+
+alternative : ∀ {ℓ} → RawAlternative {ℓ} List
+alternative = record
+  { applicativeZero = applicativeZero
+  ; _∣_             = _++_
+  }
+
 ------------------------------------------------------------------------
 -- List monad
 
@@ -42,14 +54,14 @@ monad = record
 
 monadZero : ∀ {ℓ} → RawMonadZero {ℓ} List
 monadZero = record
-  { monad = monad
-  ; ∅     = []
+  { monad           = monad
+  ; applicativeZero = applicativeZero
   }
 
 monadPlus : ∀ {ℓ} → RawMonadPlus {ℓ} List
 monadPlus = record
-  { monadZero = monadZero
-  ; _∣_       = _++_
+  { monad = monad
+  ; alternative = alternative
   }
 
 ------------------------------------------------------------------------

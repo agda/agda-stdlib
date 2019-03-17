@@ -15,7 +15,7 @@ open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base
 open import Data.List.Membership.Propositional
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
-open import Data.List.Relation.Unary.Any using (Any; here; there)
+open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 import Data.List.Relation.Binary.Equality.Setoid as ListEq using (_≋_; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
@@ -218,22 +218,35 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   tabulate⁻ {suc n} (_ ∷ pf) (fsuc i) = tabulate⁻ pf i
 
 ------------------------------------------------------------------------
+-- remove
+
+module _ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} where
+
+  ─⁺ : ∀ {xs} (p : Any P xs) → All Q xs → All Q (xs Any.─ p)
+  ─⁺ (here px) (_ ∷ qs) = qs
+  ─⁺ (there p) (q ∷ qs) = q ∷ ─⁺ p qs
+
+  ─⁻ : ∀ {xs} (p : Any P xs) → Q (Any.lookup p) → All Q (xs Any.─ p) → All Q xs
+  ─⁻ (here px) q qs        = q ∷ qs
+  ─⁻ (there p) q (q′ ∷ qs) = q′ ∷ ─⁻ p q qs
+
+------------------------------------------------------------------------
 -- filter
 
 module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
 
-  filter⁺₁ : ∀ xs → All P (filter P? xs)
-  filter⁺₁ []       = []
-  filter⁺₁ (x ∷ xs) with P? x
-  ... | yes Px = Px ∷ filter⁺₁ xs
-  ... | no  _  = filter⁺₁ xs
+  all-filter : ∀ xs → All P (filter P? xs)
+  all-filter []       = []
+  all-filter (x ∷ xs) with P? x
+  ... | yes Px = Px ∷ all-filter xs
+  ... | no  _  = all-filter xs
 
-  filter⁺₂ : ∀ {q} {Q : A → Set q} {xs} →
+  filter⁺ : ∀ {q} {Q : A → Set q} {xs} →
              All Q xs → All Q (filter P? xs)
-  filter⁺₂ {xs = _}     [] = []
-  filter⁺₂ {xs = x ∷ _} (Qx ∷ Qxs) with P? x
-  ... | no  _ = filter⁺₂ Qxs
-  ... | yes _ = Qx ∷ filter⁺₂ Qxs
+  filter⁺ {xs = _}     [] = []
+  filter⁺ {xs = x ∷ _} (Qx ∷ Qxs) with P? x
+  ... | no  _ = filter⁺ Qxs
+  ... | yes _ = Qx ∷ filter⁺ Qxs
 
 ------------------------------------------------------------------------
 -- zipWith
@@ -370,3 +383,15 @@ map-All = map⁻
 Please use map⁻ instead."
 #-}
 
+-- Version 1.0
+
+filter⁺₁ = all-filter
+{-# WARNING_ON_USAGE filter⁺₁
+"Warning: filter⁺₁ was deprecated in v1.0.
+Please use all-filter instead."
+#-}
+filter⁺₂ = filter⁺
+{-# WARNING_ON_USAGE filter⁺₂
+"Warning: filter⁺₂ was deprecated in v1.0.
+Please use filter⁺ instead."
+#-}
