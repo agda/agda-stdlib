@@ -17,8 +17,10 @@ import Data.List.Properties as Listₚ
 open import Function
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (map′; ⌊_⌋)
-open import Relation.Binary using (Decidable; DecSetoid)
+open import Relation.Binary using (Decidable; Setoid; DecSetoid; StrictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core
+open import Data.List.Relation.Binary.Lex.Strict as StrictLex
+import Relation.Binary.Construct.On as On
 import Relation.Binary.PropositionalEquality as PropEq
 
 ------------------------------------------------------------------------
@@ -35,9 +37,6 @@ infix 4 _≟_
 _≟_ : Decidable {A = String} _≡_
 x ≟ y = map′ (toList-injective x y) (cong toList)
       $ Listₚ.≡-dec Charₚ._≟_ (toList x) (toList y)
-
-decSetoid : DecSetoid _ _
-decSetoid = PropEq.decSetoid _≟_
 
 ------------------------------------------------------------------------
 -- Boolean equality test.
@@ -61,3 +60,21 @@ private
 
   unit-test : P (_==_ "")
   unit-test = p _
+
+
+------------------------------------------------------------------------
+-- Structures
+
+setoid : Setoid _ _
+setoid = PropEq.setoid String
+
+decSetoid : DecSetoid _ _
+decSetoid = PropEq.decSetoid _≟_
+
+-- A lexicographic ordering on strings.
+
+strictTotalOrder : StrictTotalOrder _ _ _
+strictTotalOrder =
+  On.strictTotalOrder
+    (StrictLex.<-strictTotalOrder Charₚ.strictTotalOrder)
+    toList

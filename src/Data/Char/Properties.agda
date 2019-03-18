@@ -16,8 +16,9 @@ import Data.Nat.Properties as ℕₚ
 open import Function
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (map′;  ⌊_⌋)
-open import Relation.Binary using (Decidable; DecSetoid)
+open import Relation.Binary using (Decidable; Setoid; DecSetoid; StrictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core
+import Relation.Binary.Construct.On as On
 import Relation.Binary.PropositionalEquality as PropEq
 
 ------------------------------------------------------------------------
@@ -34,9 +35,6 @@ infix 4 _≟_
 _≟_ : Decidable {A = Char} _≡_
 x ≟ y = map′ (toNat-injective x y) (cong toNat)
       $ toNat x ℕₚ.≟ toNat y
-
-decSetoid : DecSetoid _ _
-decSetoid = PropEq.decSetoid _≟_
 
 ------------------------------------------------------------------------
 -- Boolean equality test.
@@ -60,3 +58,15 @@ private
 
   unit-test : P ('x' ==_)
   unit-test = p _
+
+------------------------------------------------------------------------
+-- Structures
+
+setoid : Setoid _ _
+setoid = PropEq.setoid Char
+
+decSetoid : DecSetoid _ _
+decSetoid = PropEq.decSetoid _≟_
+
+strictTotalOrder : StrictTotalOrder _ _ _
+strictTotalOrder = On.strictTotalOrder ℕₚ.<-strictTotalOrder toNat

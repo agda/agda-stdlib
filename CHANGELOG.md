@@ -263,6 +263,12 @@ Non-backwards compatible changes
   ```
   All the proofs about `Pointwise` remain untouched.
 
+#### Cleanup of `Data.Char` and `Data.String`
+
+* Introducing `Data.X.Properties for both`.
+* Moving `_≟_`, `_==_`, `setoid`, `decSetoid`, and `strictTotalOrder` to it.
+* Using the new `Agda.Builtin.X.Properties` to implement `_≟_` in a safe manner.
+
 #### Other
 
 * The proof `sel⇒idem` has been moved from `Algebra.FunctionProperties.Consequences` to
