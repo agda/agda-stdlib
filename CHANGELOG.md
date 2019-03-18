@@ -265,7 +265,7 @@ Non-backwards compatible changes
 
 #### Cleanup of `Data.Char` and `Data.String`
 
-* Introducing `Data.X.Properties for both`.
+* Introducing `Data.X.Properties` for both.
 * Moving `_≟_`, `_==_`, `setoid`, `decSetoid`, and `strictTotalOrder` to it.
 * Using the new `Agda.Builtin.X.Properties` to implement `_≟_` in a safe manner.
 
