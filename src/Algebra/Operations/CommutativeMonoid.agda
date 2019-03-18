@@ -5,6 +5,8 @@
 -- exponentiation)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Algebra
 
 module Algebra.Operations.CommutativeMonoid
@@ -31,7 +33,7 @@ open CommutativeMonoid CM
   ; comm      to +-comm
   ; ε         to 0#
   )
-open import Relation.Binary.EqReasoning setoid
+open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
 -- Operations

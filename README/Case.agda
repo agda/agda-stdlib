@@ -4,6 +4,8 @@
 -- Examples showing how the case expressions can be used
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module README.Case where
 
 open import Data.Fin   hiding (pred)

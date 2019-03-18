@@ -4,6 +4,8 @@
 -- Propositional (intensional) equality
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Binary.PropositionalEquality where
 
 open import Function
@@ -18,7 +20,6 @@ open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
 import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   as Trivial
-open import Relation.Binary.HeterogeneousEquality.Core as H using (_≅_)
 
 ------------------------------------------------------------------------
 -- Re-export contents of core module
@@ -99,22 +100,6 @@ _≗_ {A = A} {B} = Setoid._≈_ (A →-setoid B)
          (A → Setoid.Carrier B) → setoid A ⟶ B
 →-to-⟶ = :→-to-Π
 
--- Equality of functions at a single point
-
-infix 4 _≡_↾¹_
-
-_≡_↾¹_ : ∀{a b} {A : Set a} {B : Set b} (f g : A → B) (x : A) → Set b
-f ≡ g ↾¹ x = f x ≡ g x
-
--- Equality of functions on a subset of the domain
-
-infix 4 _≡_↾_
-
-_≡_↾_ : ∀{a b p} {A : Set a} {B : Set b}
-        (f g : A → B) (P : A → Set p) → Set (a ⊔ b ⊔ p)
-f ≡ g ↾ P = ∀{x} → P x → f x ≡ g x
-
-
 ------------------------------------------------------------------------
 -- Inspect
 
@@ -147,7 +132,7 @@ inspect f x = [ refl ]
 module ≡-Reasoning {a} {A : Set a} where
 
   infix  3 _∎
-  infixr 2 _≡⟨⟩_ _≡⟨_⟩_ _≅⟨_⟩_
+  infixr 2 _≡⟨⟩_ _≡⟨_⟩_
   infix  1 begin_
 
   begin_ : ∀{x y : A} → x ≡ y → x ≡ y
@@ -158,9 +143,6 @@ module ≡-Reasoning {a} {A : Set a} where
 
   _≡⟨_⟩_ : ∀ (x {y z} : A) → x ≡ y → y ≡ z → x ≡ z
   _ ≡⟨ x≡y ⟩ y≡z = trans x≡y y≡z
-
-  _≅⟨_⟩_ : ∀ (x {y z} : A) → x ≅ y → y ≡ z → x ≡ z
-  _ ≅⟨ x≅y ⟩ y≡z = trans (H.≅-to-≡ x≅y) y≡z
 
   _∎ : ∀ (x : A) → x ≡ x
   _∎ _ = refl
@@ -198,36 +180,154 @@ extensionality-for-lower-levels a₂ b₂ ext f≡g =
 ∀-extensionality ext B .B  B₁≡B₂ | refl = refl
 
 ------------------------------------------------------------------------
--- Proof irrelevance
+-- Propositionality
 
 isPropositional : ∀ {a} → Set a → Set a
 isPropositional A = (a b : A) → a ≡ b
 
-≡-irrelevance : ∀ {a} {A : Set a} → Irrelevant (_≡_ {A = A})
-≡-irrelevance refl refl = refl
 
-module _ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) {a b : A} where
+module _ {a} {A : Set a} {x y : A} where
 
-  ≡-≟-identity : (eq : a ≡ b) → a ≟ b ≡ yes eq
-  ≡-≟-identity eq with a ≟ b
-  ... | yes p = cong yes (≡-irrelevance p eq)
+------------------------------------------------------------------------
+-- Various equality rearrangement lemmas
+
+  trans-reflʳ : (p : x ≡ y) → trans p refl ≡ p
+  trans-reflʳ refl = refl
+
+  trans-assoc : ∀ {z u : A} (p : x ≡ y) {q : y ≡ z} {r : z ≡ u} →
+                trans (trans p q) r ≡ trans p (trans q r)
+  trans-assoc refl = refl
+
+  trans-symˡ : (p : x ≡ y) → trans (sym p) p ≡ refl
+  trans-symˡ refl = refl
+
+  trans-symʳ : (p : x ≡ y) → trans p (sym p) ≡ refl
+  trans-symʳ refl = refl
+
+  trans-injectiveˡ : ∀ {z} {p₁ p₂ : x ≡ y} (q : y ≡ z) →
+                     trans p₁ q ≡ trans p₂ q → p₁ ≡ p₂
+  trans-injectiveˡ refl = subst₂ _≡_ (trans-reflʳ _) (trans-reflʳ _)
+
+  trans-injectiveʳ : ∀ {z} (p : x ≡ y) {q₁ q₂ : y ≡ z} →
+                     trans p q₁ ≡ trans p q₂ → q₁ ≡ q₂
+  trans-injectiveʳ refl eq = eq
+
+cong-id :
+  ∀ {a} {A : Set a} {x y : A} (p : x ≡ y) →
+  cong id p ≡ p
+cong-id refl = refl
+
+cong-∘ :
+  ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} {x y : A}
+    {f : B → C} {g : A → B}
+  (p : x ≡ y) →
+  cong (f ∘ g) p ≡ cong f (cong g p)
+cong-∘ refl = refl
+
+module _ {a p} {A : Set a} {P : A → Set p} {x y : A} where
+
+  subst-injective : ∀ (x≡y : x ≡ y) {p q : P x} →
+    subst P x≡y p ≡ subst P x≡y q → p ≡ q
+  subst-injective refl p≡q = p≡q
+
+  subst-subst : ∀ {z} (x≡y : x ≡ y) {y≡z : y ≡ z} {p : P x} →
+    subst P y≡z (subst P x≡y p) ≡ subst P (trans x≡y y≡z) p
+  subst-subst refl = refl
+
+  subst-subst-sym : (x≡y : x ≡ y) {p : P y} →
+    subst P x≡y (subst P (sym x≡y) p) ≡ p
+  subst-subst-sym refl = refl
+
+  subst-sym-subst : (x≡y : x ≡ y) {p : P x} →
+    subst P (sym x≡y) (subst P x≡y p) ≡ p
+  subst-sym-subst refl = refl
+
+subst-∘ :
+  ∀ {a b p} {A : Set a} {B : Set b} {x y : A} {P : B → Set p}
+    {f : A → B}
+  (x≡y : x ≡ y) {p : P (f x)} →
+  subst (P ∘ f) x≡y p ≡ subst P (cong f x≡y) p
+subst-∘ refl = refl
+
+subst-application :
+  ∀ {a₁ a₂ b₁ b₂} {A₁ : Set a₁} {A₂ : Set a₂}
+    (B₁ : A₁ → Set b₁) {B₂ : A₂ → Set b₂}
+    {f : A₂ → A₁} {x₁ x₂ : A₂} {y : B₁ (f x₁)}
+  (g : ∀ x → B₁ (f x) → B₂ x) (eq : x₁ ≡ x₂) →
+  subst B₂ eq (g x₁ y) ≡ g x₂ (subst B₁ (cong f eq) y)
+subst-application _ _ refl = refl
+
+-- A lemma that is very similar to Lemma 2.4.3 from the HoTT book.
+
+naturality :
+  ∀ {a b} {A : Set a} {B : Set b} {x y} {x≡y : x ≡ y} {f g : A → B}
+  (f≡g : ∀ x → f x ≡ g x) →
+  trans (cong f x≡y) (f≡g y) ≡ trans (f≡g x) (cong g x≡y)
+naturality {x = x} {x≡y = refl} f≡g =
+  f≡g x               ≡⟨ sym (trans-reflʳ _) ⟩
+  trans (f≡g x) refl  ∎
+  where
+  open ≡-Reasoning
+
+-- A lemma that is very similar to Corollary 2.4.4 from the HoTT book.
+
+cong-≡id :
+  ∀ {a} {A : Set a} {f : A → A} {x : A}
+  (f≡id : ∀ x → f x ≡ x) →
+  cong f (f≡id x) ≡ f≡id (f x)
+cong-≡id {f = f} {x} f≡id =
+  cong f (f≡id x)                                               ≡⟨ sym (trans-reflʳ _) ⟩
+  trans (cong f (f≡id x)) refl                                  ≡⟨ cong (trans _) (sym (trans-symʳ (f≡id x))) ⟩
+  trans (cong f (f≡id x)) (trans (f≡id x) (sym (f≡id x)))       ≡⟨ sym (trans-assoc (cong f (f≡id x))) ⟩
+  trans (trans (cong f (f≡id x)) (f≡id x)) (sym (f≡id x))       ≡⟨ cong (λ p → trans p (sym _)) (naturality f≡id) ⟩
+  trans (trans (f≡id (f x)) (cong id (f≡id x))) (sym (f≡id x))  ≡⟨ cong (λ p → trans (trans (f≡id (f x)) p) (sym (f≡id x))) (cong-id _) ⟩
+  trans (trans (f≡id (f x)) (f≡id x)) (sym (f≡id x))            ≡⟨ trans-assoc (f≡id (f x)) ⟩
+  trans (f≡id (f x)) (trans (f≡id x) (sym (f≡id x)))            ≡⟨ cong (trans _) (trans-symʳ (f≡id x)) ⟩
+  trans (f≡id (f x)) refl                                       ≡⟨ trans-reflʳ _ ⟩
+  f≡id (f x)                                                    ∎
+  where
+  open ≡-Reasoning
+
+module Constant⇒UIP
+       {a} {A : Set a} (f : _≡_ {A = A} ⇒ _≡_)
+       (f-constant : ∀ {a b} (p q : a ≡ b) → f p ≡ f q)
+       where
+
+  ≡-canonical : ∀ {a b} (p : a ≡ b) → trans (sym (f refl)) (f p) ≡ p
+  ≡-canonical refl = trans-symˡ (f refl)
+
+  ≡-irrelevant : Irrelevant {A = A} _≡_
+  ≡-irrelevant p q = begin
+    p                          ≡⟨ sym (≡-canonical p) ⟩
+    trans (sym (f refl)) (f p) ≡⟨ cong (trans _) (f-constant p q) ⟩
+    trans (sym (f refl)) (f q) ≡⟨ ≡-canonical q ⟩
+    q                          ∎ where open ≡-Reasoning
+
+module Decidable⇒UIP
+       {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A}))
+       where
+
+  ≡-normalise : _≡_ {A = A} ⇒ _≡_
+  ≡-normalise {a} {b} a≡b with a ≟ b
+  ... | yes p = p
+  ... | no ¬p = ⊥-elim (¬p a≡b)
+
+  ≡-normalise-constant : ∀ {a b} (p q : a ≡ b) → ≡-normalise p ≡ ≡-normalise q
+  ≡-normalise-constant {a} {b} p q with a ≟ b
+  ... | yes _ = refl
+  ... | no ¬p = ⊥-elim (¬p p)
+
+  ≡-irrelevant : Irrelevant {A = A} _≡_
+  ≡-irrelevant = Constant⇒UIP.≡-irrelevant ≡-normalise ≡-normalise-constant
+
+module _ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) {a : A} where
+
+  ≡-≟-identity : ∀ {b} (eq : a ≡ b) → a ≟ b ≡ yes eq
+  ≡-≟-identity {b} eq with a ≟ b
+  ... | yes p = cong yes (Decidable⇒UIP.≡-irrelevant _≟_ p eq)
   ... | no ¬p = ⊥-elim (¬p eq)
 
-  ≢-≟-identity : a ≢ b → ∃ λ ¬eq → a ≟ b ≡ no ¬eq
-  ≢-≟-identity ¬eq with a ≟ b
+  ≢-≟-identity : ∀ {b} → a ≢ b → ∃ λ ¬eq → a ≟ b ≡ no ¬eq
+  ≢-≟-identity {b} ¬eq with a ≟ b
   ... | yes p = ⊥-elim (¬eq p)
   ... | no ¬p = ¬p , refl
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.15
-
-proof-irrelevance = ≡-irrelevance
-{-# WARNING_ON_USAGE proof-irrelevance
-"Warning: proof-irrelevance was deprecated in v0.15.
-Please use ≡-irrelevance instead."
-#-}

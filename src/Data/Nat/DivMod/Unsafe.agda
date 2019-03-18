@@ -4,6 +4,8 @@
 -- More efficient (and unsafe) mod and divMod operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K #-}
+
 module Data.Nat.DivMod.Unsafe where
 
 open import Data.Nat using (ℕ; _+_; _*_; _≟_; zero; suc)

@@ -4,6 +4,8 @@
 -- A categorical view of Covec
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Codata.Covec.Categorical where
 
 open import Codata.Conat

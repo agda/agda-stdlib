@@ -4,6 +4,8 @@
 -- Conversion of _≤_ to _<_
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 
 module Relation.Binary.Construct.NonStrictToStrict

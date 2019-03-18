@@ -4,6 +4,8 @@
 -- Divisibility
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Nat.Divisibility where
 
 open import Algebra
@@ -19,7 +21,7 @@ open import Function.Equivalence using (_⇔_; equivalence)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
-import Relation.Binary.PartialOrderReasoning as PartialOrderReasoning
+import Relation.Binary.Reasoning.PartialOrder as POR
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)
 
@@ -38,12 +40,10 @@ record _∣_ (m n : ℕ) : Set where
   constructor divides
   field quotient : ℕ
         equality : n ≡ quotient * m
+open _∣_ using (quotient) public
 
 _∤_ : Rel ℕ _
 m ∤ n = ¬ (m ∣ n)
-
-quotient : ∀ {m n} → m ∣ n → ℕ
-quotient (divides q _) = q
 
 ------------------------------------------------------------------------
 -- _∣_ is a partial order
@@ -79,6 +79,9 @@ quotient (divides q _) = q
   ; trans         = ∣-trans
   }
 
+∣-preorder : Preorder _ _ _
+∣-preorder = record { isPreorder = ∣-isPreorder }
+
 ∣-isPartialOrder : IsPartialOrder _≡_ _∣_
 ∣-isPartialOrder = record
   { isPreorder = ∣-isPreorder
@@ -93,7 +96,7 @@ poset = record
   ; isPartialOrder = ∣-isPartialOrder
   }
 
-module ∣-Reasoning = PartialOrderReasoning poset
+module ∣-Reasoning = POR poset
   hiding   (_≈⟨_⟩_)
   renaming (_≤⟨_⟩_ to _∣⟨_⟩_)
 

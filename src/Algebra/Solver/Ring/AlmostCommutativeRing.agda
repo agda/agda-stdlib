@@ -5,6 +5,8 @@
 -- commutative rings), used by the ring solver
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Algebra.Solver.Ring.AlmostCommutativeRing where
 
 open import Relation.Binary

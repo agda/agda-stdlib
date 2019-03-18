@@ -5,6 +5,8 @@
 -- used
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module README.Container.FreeMonad where
 
 open import Category.Monad
@@ -14,11 +16,11 @@ open import Data.Bool.Base using (Bool; true)
 open import Data.Nat
 open import Data.Sum using (inj₁; inj₂)
 open import Data.Product renaming (_×_ to _⟨×⟩_)
-open import Data.Container hiding (refl)
+open import Data.Container
 open import Data.Container.Combinator
 open import Data.Container.FreeMonad
 open import Data.W
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality as P
 
 ------------------------------------------------------------------------
 
@@ -56,7 +58,7 @@ runState (sup (inj₂ (inj₁ _) , k)) = λ s → runState (k s) s
 runState (sup (inj₂ (inj₂ s) , k)) = λ _ → runState (k _) s
 
 test : runState prog 0 ≡ (true , 1)
-test = refl
+test = P.refl
 
 -- It should be noted that @State S ⋆ X@ is not the state monad. If we
 -- could quotient @State S ⋆ X@ by the seven axioms of state (see

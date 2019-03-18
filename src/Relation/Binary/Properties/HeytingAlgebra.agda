@@ -4,6 +4,8 @@
 -- Properties satisfied by Heyting Algebra
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary.Lattice
 
 module Relation.Binary.Properties.HeytingAlgebra
@@ -16,13 +18,13 @@ open import Data.Product using (_,_)
 open import Function using (_$_; flip; _∘_)
 open import Level using (_⊔_)
 open import Relation.Binary
-import Relation.Binary.PartialOrderReasoning as POR
+import Relation.Binary.Reasoning.PartialOrder as POR
 open import Relation.Binary.Properties.MeetSemilattice meetSemilattice
 open import Relation.Binary.Properties.JoinSemilattice joinSemilattice
 import Relation.Binary.Properties.BoundedMeetSemilattice boundedMeetSemilattice as BM
 open import Relation.Binary.Properties.Lattice lattice
 open import Relation.Binary.Properties.BoundedLattice boundedLattice
-import Relation.Binary.EqReasoning as EqReasoning
+import Relation.Binary.Reasoning.Setoid as EqReasoning
 
 ------------------------------------------------------------------------
 -- Useful lemmas

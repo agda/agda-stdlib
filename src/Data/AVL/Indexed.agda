@@ -4,33 +4,44 @@
 -- Indexed AVL trees
 ------------------------------------------------------------------------
 
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_ ; refl)
+{-# OPTIONS --without-K --safe #-}
+
+open import Relation.Binary using (StrictTotalOrder)
 
 module Data.AVL.Indexed
-       {k r} (Key : Set k) {_<_ : Rel Key r}
-       (isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_) where
+  {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂) where
 
-open import Level using (_⊔_) -- ; Lift; lift)
-open import Data.Nat.Base hiding (_<_; _⊔_; compare)
+open import Level using (_⊔_)
+open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product hiding (map)
 open import Data.Maybe hiding (map)
-import Data.DifferenceList as DiffList
-open import Function
+open import Data.DifferenceList using (DiffList; []; _∷_; _++_)
+open import Function as F hiding (const)
+open import Relation.Unary
+open import Relation.Binary using (_Respects_; Tri; tri<; tri≈; tri>)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
-open IsStrictTotalOrder isStrictTotalOrder
-open import Data.AVL.Key Key isStrictTotalOrder public
+open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
+
+------------------------------------------------------------------------
+-- Re-export core definitions publicly
+
+open import Data.AVL.Key strictTotalOrder public
+open import Data.AVL.Value Eq.setoid public
 open import Data.AVL.Height public
 
-K&_ : ∀ {v} (Value : Key → Set v) → Set (k ⊔ v)
-K& Value = Σ Key Value
+------------------------------------------------------------------------
+-- Definitions of the tree
+
+K&_ : ∀ {v} (V : Value v) → Set (a ⊔ v)
+K& V = Σ Key (Value.family V)
 
 -- The trees have three parameters/indices: a lower bound on the
 -- keys, an upper bound, and a height.
 --
 -- (The bal argument is the balance factor.)
 
-data Tree {v} (V : Key → Set v) (l u : Key⁺) : ℕ → Set (k ⊔ v ⊔ r) where
+data Tree {v} (V : Value v) (l u : Key⁺) : ℕ → Set (a ⊔ v ⊔ ℓ₂) where
   leaf : (l<u : l <⁺ u) → Tree V l u 0
   node : ∀ {hˡ hʳ h}
          (k : K& V)
@@ -39,34 +50,25 @@ data Tree {v} (V : Key → Set v) (l u : Key⁺) : ℕ → Set (k ⊔ v ⊔ r) w
          (bal : hˡ ∼ hʳ ⊔ h) →
          Tree V l u (suc h)
 
-module _ {v} {V : Key → Set v} where
+module _ {v} {V : Value v} where
+
+  private
+    Val = Value.family V
+    V≈  = Value.respects V
 
   leaf-injective : ∀ {l u} {p q : l <⁺ u} → (Tree V l u 0 ∋ leaf p) ≡ leaf q → p ≡ q
   leaf-injective refl = refl
 
-  node-injective-key : ∀ {hˡ hʳ h l u k₁ k₂}
-    {lk₁ : Tree V l [ proj₁ k₁ ] hˡ} {lk₂ : Tree V l [ proj₁ k₂ ] hˡ}
-    {ku₁ : Tree V [ proj₁ k₁ ] u hʳ} {ku₂ : Tree V [ proj₁ k₂ ] u hʳ}
-    {bal₁ bal₂ : hˡ ∼ hʳ ⊔ h} → node k₁ lk₁ ku₁ bal₁ ≡ node k₂ lk₂ ku₂ bal₂ → k₁ ≡ k₂
+  node-injective-key :
+    ∀ {hˡ₁ hˡ₂ hʳ₁ hʳ₂ h l u k₁ k₂}
+      {lk₁ : Tree V l [ proj₁ k₁ ] hˡ₁} {lk₂ : Tree V l [ proj₁ k₂ ] hˡ₂}
+      {ku₁ : Tree V [ proj₁ k₁ ] u hʳ₁} {ku₂ : Tree V [ proj₁ k₂ ] u hʳ₂}
+      {bal₁ : hˡ₁ ∼ hʳ₁ ⊔ h} {bal₂ : hˡ₂ ∼ hʳ₂ ⊔ h} →
+    node k₁ lk₁ ku₁ bal₁ ≡ node k₂ lk₂ ku₂ bal₂ → k₁ ≡ k₂
   node-injective-key refl = refl
 
-  node-injectiveˡ : ∀ {hˡ hʳ h l u k}
-    {lk₁ : Tree V l [ proj₁ k ] hˡ} {lk₂ : Tree V l [ proj₁ k ] hˡ}
-    {ku₁ : Tree V [ proj₁ k ] u hʳ} {ku₂ : Tree V [ proj₁ k ] u hʳ}
-    {bal₁ bal₂ : hˡ ∼ hʳ ⊔ h} → node k lk₁ ku₁ bal₁ ≡ node k lk₂ ku₂ bal₂ → lk₁ ≡ lk₂
-  node-injectiveˡ refl = refl
-
-  node-injectiveʳ : ∀ {hˡ hʳ h l u k}
-    {lk₁ : Tree V l [ proj₁ k ] hˡ} {lk₂ : Tree V l [ proj₁ k ] hˡ}
-    {ku₁ : Tree V [ proj₁ k ] u hʳ} {ku₂ : Tree V [ proj₁ k ] u hʳ}
-    {bal₁ bal₂ : hˡ ∼ hʳ ⊔ h} → node k lk₁ ku₁ bal₁ ≡ node k lk₂ ku₂ bal₂ → ku₁ ≡ ku₂
-  node-injectiveʳ refl = refl
-
-  node-injective-bal : ∀ {hˡ hʳ h l u k}
-    {lk₁ : Tree V l [ proj₁ k ] hˡ} {lk₂ : Tree V l [ proj₁ k ] hˡ}
-    {ku₁ : Tree V [ proj₁ k ] u hʳ} {ku₂ : Tree V [ proj₁ k ] u hʳ}
-    {bal₁ bal₂ : hˡ ∼ hʳ ⊔ h} → node k lk₁ ku₁ bal₁ ≡ node k lk₂ ku₂ bal₂ → bal₁ ≡ bal₂
-  node-injective-bal refl = refl
+  -- See also node-injectiveˡ, node-injectiveʳ, and node-injective-bal
+  -- in Data.AVL.Indexed.WithK.
 
   -- Cast operations. Logarithmic in the size of the tree, if we don't
   -- count the time needed to construct the new proofs in the leaf
@@ -195,7 +197,7 @@ module _ {v} {V : Key → Set v} where
 
   -- A singleton tree.
 
-  singleton : ∀ {l u} (k : Key) → V k → l < k < u → Tree V l u 1
+  singleton : ∀ {l u} (k : Key) → Val k → l < k < u → Tree V l u 1
   singleton k v (l<k , k<u) = node (k , v) (leaf l<k) (leaf k<u) ∼0
 
   -- Inserts a key into the tree, using a function to combine any
@@ -203,60 +205,60 @@ module _ {v} {V : Key → Set v} where
   -- tree (assuming constant-time comparisons and a constant-time
   -- combining function).
 
-  insertWith : ∀ {l u h} → (k : Key) → V k →
-               (V k → V k → V k) →  -- New → old → result.
+  insertWith : ∀ {l u h} (k : Key) → (Maybe (Val k) → Val k) →  -- Maybe old → result.
                Tree V l u h → l < k < u →
                ∃ λ i → Tree V l u (i ⊕ h)
-  insertWith k v f (leaf l<u) l<k<u = (1# , singleton k v l<k<u)
-  insertWith k v f (node (k′ , v′) lp pu bal) (l<k , k<u) with compare k k′
-  ... | tri< k<k′ _ _ = joinˡ⁺ (k′ , v′) (insertWith k v f lp (l<k , k<k′)) pu bal
-  ... | tri> _ _ k′<k = joinʳ⁺ (k′ , v′) lp (insertWith k v f pu (k′<k , k<u)) bal
-  ... | tri≈ _ k≡k′ _ rewrite P.sym k≡k′ = (0# , node (k , f v v′) lp pu bal)
+  insertWith k f (leaf l<u) l<k<u = (1# , singleton k (f nothing) l<k<u)
+  insertWith k f (node (k′ , v′) lp pu bal) (l<k , k<u) with compare k k′
+  ... | tri< k<k′ _ _ = joinˡ⁺ (k′ , v′) (insertWith k f lp (l<k , [ k<k′ ]ᴿ)) pu bal
+  ... | tri> _ _ k′<k = joinʳ⁺ (k′ , v′) lp (insertWith k f pu ([ k′<k ]ᴿ , k<u)) bal
+  ... | tri≈ _ k≈k′ _ = (0# , node (k′ , V≈ k≈k′ (f (just (V≈ (Eq.sym k≈k′) v′)))) lp pu bal)
 
   -- Inserts a key into the tree. If the key already exists, then it
   -- is replaced. Logarithmic in the size of the tree (assuming
   -- constant-time comparisons).
 
-  insert : ∀ {l u h} → (k : Key) → V k → Tree V l u h → l < k < u →
+  insert : ∀ {l u h} → (k : Key) → Val k → Tree V l u h → l < k < u →
            ∃ λ i → Tree V l u (i ⊕ h)
-  insert k v = insertWith k v const
+  insert k v = insertWith k (F.const v)
 
   -- Deletes the key/value pair containing the given key, if any.
   -- Logarithmic in the size of the tree (assuming constant-time
   -- comparisons).
 
-  delete : ∀ {l u h} → Key → Tree V l u h →
+  delete : ∀ {l u h} (k : Key) → Tree V l u h → l < k < u →
            ∃ λ i → Tree V l u pred[ i ⊕ h ]
-  delete k (leaf l<u)         = (0# , leaf l<u)
-  delete k (node p lp pu bal) with compare k (proj₁ p)
-  ... | tri< _ _ _ = joinˡ⁻ _ p (delete k lp) pu bal
-  ... | tri> _ _ _ = joinʳ⁻ _ p lp (delete k pu) bal
-  ... | tri≈ _ _ _ = join lp pu bal
+  delete k (leaf l<u) l<k<u = (0# , leaf l<u)
+  delete k (node p@(k′ , v) lp pu bal) (l<k , k<u) with compare k′ k
+  ... | tri< k′<k _ _ = joinʳ⁻ _ p lp (delete k pu ([ k′<k ]ᴿ , k<u)) bal
+  ... | tri> _ _ k′>k = joinˡ⁻ _ p (delete k lp (l<k , [ k′>k ]ᴿ)) pu bal
+  ... | tri≈ _ k′≡k _ = join lp pu bal
 
   -- Looks up a key. Logarithmic in the size of the tree (assuming
   -- constant-time comparisons).
 
-  lookup : ∀ {l u h} → (k : Key) → Tree V l u h → Maybe (V k)
-  lookup k (leaf _)                  = nothing
-  lookup k (node (k′ , v) lk′ k′u _) with compare k k′
-  ... | tri< _ _  _ = lookup k lk′
-  ... | tri> _ _  _ = lookup k k′u
-  ... | tri≈ _ eq _ rewrite eq = just v
+  lookup : ∀ {l u h} (k : Key) → Tree V l u h → l < k < u → Maybe (Val k)
+  lookup k (leaf _) l<k<u = nothing
+  lookup k (node (k′ , v) lk′ k′u _) (l<k , k<u) with compare k′ k
+  ... | tri< k′<k _ _ = lookup k k′u ([ k′<k ]ᴿ , k<u)
+  ... | tri> _ _ k′>k = lookup k lk′ (l<k , [ k′>k ]ᴿ)
+  ... | tri≈ _ k′≡k _ = just (V≈ k′≡k v)
 
   -- Converts the tree to an ordered list. Linear in the size of the
   -- tree.
-
-  open DiffList
 
   toDiffList : ∀ {l u h} → Tree V l u h → DiffList (K& V)
   toDiffList (leaf _)       = []
   toDiffList (node k l r _) = toDiffList l ++ k ∷ toDiffList r
 
-module _ {v w} {V : Key → Set v} {W : Key → Set w} where
+module _ {v w} {V : Value v} {W : Value w} where
+
+  private
+    Val = Value.family V
+    Wal = Value.family W
 
   -- Maps a function over all values in the tree.
 
-  map : (∀ {k} → V k → W k) → ∀ {l u h} → Tree V l u h → Tree W l u h
+  map : ∀[ Val ⇒ Wal ] → ∀ {l u h} → Tree V l u h → Tree W l u h
   map f (leaf l<u)             = leaf l<u
   map f (node (k , v) l r bal) = node (k , f v) (map f l) (map f r) bal
-

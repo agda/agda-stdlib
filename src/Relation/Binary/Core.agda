@@ -7,6 +7,8 @@
 -- This file contains some core definitions which are reexported by
 -- Relation.Binary or Relation.Binary.PropositionalEquality.
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Binary.Core where
 
 open import Agda.Builtin.Equality using (_≡_) renaming (refl to ≡-refl)
@@ -97,14 +99,25 @@ TransFlip P Q R = ∀ {i j k} → Q j k → P i j → R i k
 Transitive : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
 Transitive _∼_ = Trans _∼_ _∼_ _∼_
 
+-- Generalised antisymmetry
+
+Antisym : ∀ {a b ℓ₁ ℓ₂ ℓ₃} {A : Set a} {B : Set b} →
+          REL A B ℓ₁ → REL B A ℓ₂ → REL A B ℓ₃ → Set _
+Antisym R S E = ∀ {i j} → R i j → S j i → E i j
+
 Antisymmetric : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
-Antisymmetric _≈_ _≤_ = ∀ {x y} → x ≤ y → y ≤ x → x ≈ y
+Antisymmetric _≈_ _≤_ = Antisym _≤_ _≤_ _≈_
 
 Asymmetric : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
 Asymmetric _<_ = ∀ {x y} → x < y → ¬ (y < x)
 
+-- Generalised connex.
+
+Conn : ∀ {a b p q} {A : Set a} {B : Set b} → REL A B p → REL B A q → Set _
+Conn P Q = ∀ x y → P x y ⊎ Q y x
+
 Total : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
-Total _∼_ = ∀ x y → (x ∼ y) ⊎ (y ∼ x)
+Total _∼_ = Conn _∼_ _∼_
 
 data Tri {a b c} (A : Set a) (B : Set b) (C : Set c) :
          Set (a ⊔ b ⊔ c) where
@@ -116,19 +129,30 @@ Trichotomous : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ�
 Trichotomous _≈_ _<_ = ∀ x y → Tri (x < y) (x ≈ y) (x > y)
   where _>_ = flip _<_
 
+
+Max : ∀ {a ℓ} {A : Set a} {b} {B : Set b} → REL A B ℓ → B → Set _
+Max _≤_ T = ∀ x → x ≤ T
+
 Maximum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
-Maximum _≤_ ⊤ = ∀ x → x ≤ ⊤
+Maximum = Max
+
+Min : ∀ {a ℓ} {A : Set a} {b} {B : Set b} → REL A B ℓ → A → Set _
+Min R = Max (flip R)
 
 Minimum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
-Minimum _≤_ = Maximum (flip _≤_)
+Minimum = Min
+
+_⟶_Respects_ : ∀ {a b ℓ₁ ℓ₂ ℓ₃} {A : Set a} {B : Set b} →
+               (A → Set ℓ₁) → (B → Set ℓ₂) → REL A B ℓ₃ → Set _
+P ⟶ Q Respects _∼_ = ∀ {x y} → x ∼ y → P x → Q y
 
 _Respects_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → (A → Set ℓ₁) → Rel A ℓ₂ → Set _
-P Respects _∼_ = ∀ {x y} → x ∼ y → P x → P y
+P Respects _∼_ = P ⟶ P Respects _∼_
 
-_Respectsʳ_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
+_Respectsʳ_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} → REL A B ℓ₁ → Rel B ℓ₂ → Set _
 P Respectsʳ _∼_ = ∀ {x} → (P x) Respects _∼_
 
-_Respectsˡ_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
+_Respectsˡ_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} → REL A B ℓ₁ → Rel A ℓ₂ → Set _
 P Respectsˡ _∼_ = ∀ {y} → (flip P y) Respects _∼_
 
 _Respects₂_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
@@ -144,7 +168,7 @@ WeaklyDecidable : ∀ {a b ℓ} {A : Set a} {B : Set b} → REL A B ℓ → Set 
 WeaklyDecidable _∼_ = ∀ x y → Maybe (x ∼ y)
 
 Irrelevant : ∀ {a b ℓ} {A : Set a} {B : Set b} → REL A B ℓ → Set _
-Irrelevant _∼_ = ∀ {x y} (a : x ∼ y) (b : x ∼ y) → a ≡ b
+Irrelevant _∼_ = ∀ {x y} (a b : x ∼ y) → a ≡ b
 
 record NonEmpty {a b ℓ} {A : Set a} {B : Set b}
                 (T : REL A B ℓ) : Set (a ⊔ b ⊔ ℓ) where
@@ -170,4 +194,3 @@ record IsEquivalence {a ℓ} {A : Set a}
 
   reflexive : _≡_ ⇒ _≈_
   reflexive ≡-refl = refl
-

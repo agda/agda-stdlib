@@ -5,6 +5,8 @@
 -- proof by reflection
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Data.Fin
 open import Data.Nat
 open import Data.Vec as Vec
@@ -41,7 +43,7 @@ module Relation.Binary.Reflection
 
 open import Data.Vec.N-ary
 open import Data.Product
-import Relation.Binary.EqReasoning as Eq
+import Relation.Binary.Reasoning.Setoid as Eq
 
 open Setoid Sem
 open Eq Sem

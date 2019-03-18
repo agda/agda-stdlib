@@ -8,6 +8,8 @@
 -- set {m | m < n}. The notation "m" in comments below refers to this
 -- natural number view.
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Fin.Base where
 
 open import Data.Empty using (⊥-elim)
@@ -30,7 +32,7 @@ data Fin : ℕ → Set where
   zero : {n : ℕ} → Fin (suc n)
   suc  : {n : ℕ} (i : Fin n) → Fin (suc n)
 
--- A conversion: toℕ "n" = n.
+-- A conversion: toℕ "i" = i.
 
 toℕ : ∀ {n} → Fin n → ℕ
 toℕ zero    = 0
@@ -82,20 +84,20 @@ infix 10 #_
 #_ : ∀ m {n} {m<n : True (suc m ℕ.≤? n)} → Fin n
 #_ _ {m<n = m<n} = fromℕ≤ (toWitness m<n)
 
--- raise m "n" = "m + n".
+-- raise m "i" = "m + i".
 
 raise : ∀ {m} n → Fin m → Fin (n ℕ.+ m)
 raise zero    i = i
 raise (suc n) i = suc (raise n i)
 
--- reduce≥ "m + n" _ = "n".
+-- reduce≥ "m + i" _ = "i".
 
 reduce≥ : ∀ {m n} (i : Fin (m ℕ.+ n)) (i≥m : toℕ i ℕ.≥ m) → Fin n
 reduce≥ {zero}  i       i≥m       = i
 reduce≥ {suc m} zero    ()
 reduce≥ {suc m} (suc i) (s≤s i≥m) = reduce≥ i i≥m
 
--- inject⋆ m "n" = "n".
+-- inject⋆ m "i" = "i".
 
 inject : ∀ {n} {i : Fin n} → Fin′ i → Fin n
 inject {i = zero}  ()
@@ -119,6 +121,14 @@ inject₁ (suc i) = suc (inject₁ i)
 inject≤ : ∀ {m n} → Fin m → m ℕ.≤ n → Fin n
 inject≤ zero    (s≤s le) = zero
 inject≤ (suc i) (s≤s le) = suc (inject≤ i le)
+
+-- lower₁ "i" _ = "i".
+
+lower₁ : ∀ {n} → (i : Fin (suc n)) → (n ≢ toℕ i) → Fin n
+lower₁ {zero} zero ne = ⊥-elim (ne refl)
+lower₁ {zero} (suc ()) _
+lower₁ {suc n} zero _ = zero
+lower₁ {suc n} (suc i) ne = suc (lower₁ i λ x → ne (cong suc x))
 
 -- A strengthening injection into the minimal Fin fibre.
 strengthen : ∀ {n} (i : Fin n) → Fin′ (suc i)
@@ -153,7 +163,7 @@ lift zero    f i       = f i
 lift (suc k) f zero    = zero
 lift (suc k) f (suc i) = suc (lift k f i)
 
--- "m" + "n" = "m + n".
+-- "i" + "j" = "i + j".
 
 infixl 6 _+_
 
@@ -161,7 +171,7 @@ _+_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (toℕ i ℕ.+ n)
 zero  + j = j
 suc i + j = suc (i + j)
 
--- "m" - "n" = "m ∸ n".
+-- "i" - "j" = "i ∸ j".
 
 infixl 6 _-_
 
@@ -170,7 +180,7 @@ i     - zero   = i
 zero  - suc ()
 suc i - suc j  = i - j
 
--- m ℕ- "n" = "m ∸ n".
+-- m ℕ- "i" = "m ∸ i".
 
 infixl 6 _ℕ-_
 
@@ -179,7 +189,7 @@ n     ℕ- zero   = fromℕ n
 zero  ℕ- suc ()
 suc n ℕ- suc i  = n ℕ- i
 
--- m ℕ-ℕ "n" = m ∸ n.
+-- m ℕ-ℕ "i" = m ∸ i.
 
 infixl 6 _ℕ-ℕ_
 
@@ -188,7 +198,7 @@ n     ℕ-ℕ zero   = n
 zero  ℕ-ℕ suc ()
 suc n ℕ-ℕ suc i  = n ℕ-ℕ i
 
--- pred "n" = "pred n".
+-- pred "i" = "pred i".
 
 pred : ∀ {n} → Fin n → Fin n
 pred zero    = zero

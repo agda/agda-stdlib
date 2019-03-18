@@ -4,15 +4,17 @@
 -- Properties related to setoid list membership
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.Membership.Setoid.Properties where
 
 open import Algebra.FunctionProperties using (Op₂; Selective)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.List
-open import Data.List.Any as Any using (Any; here; there)
-import Data.List.Any.Properties as Any
+open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
+import Data.List.Relation.Unary.Any.Properties as Any
 import Data.List.Membership.Setoid as Membership
-import Data.List.Relation.Equality.Setoid as Equality
+import Data.List.Relation.Binary.Equality.Setoid as Equality
 open import Data.Nat using (suc; z≤n; s≤s; _≤_; _<_)
 open import Data.Nat.Properties using (≤-trans; n≤1+n)
 open import Data.Product as Prod using (∃; _×_; _,_ ; ∃₂)

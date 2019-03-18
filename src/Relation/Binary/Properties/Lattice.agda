@@ -4,6 +4,8 @@
 -- Properties satisfied by lattices
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary.Lattice
 
 module Relation.Binary.Properties.Lattice
@@ -20,8 +22,8 @@ open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
 import Relation.Binary.Properties.JoinSemilattice joinSemilattice as J
 import Relation.Binary.Properties.MeetSemilattice meetSemilattice as M
-import Relation.Binary.EqReasoning as EqReasoning
-import Relation.Binary.PartialOrderReasoning as POR
+import Relation.Binary.Reasoning.Setoid as EqReasoning
+import Relation.Binary.Reasoning.PartialOrder as POR
 
 ∨-absorbs-∧ : _∨_ Absorbs _∧_
 ∨-absorbs-∧ x y =

@@ -11,8 +11,8 @@ module README where
 -- Jason Hu, Patrik Jansson, Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov,
 -- Sergei Meshveliani, Eric Mertens, Darin Morrison, Guilhem Moulin,
 -- Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
--- Andrés Sicard-Ramírez, Noam Zeilberger and some anonymous
--- contributors.
+-- Andrés Sicard-Ramírez, Sandro Stucki, Milo Turner, Noam Zeilberger
+-- and some anonymous contributors.
 ------------------------------------------------------------------------
 
 -- This version of the library has been tested using Agda 2.5.4.1.
@@ -274,15 +274,30 @@ import README.Record
 
 import README.Case
 
--- An example showing how the free monad construction on containers can be
--- used
+-- Examples how (indexed) containers and constructions over them (free
+-- monad, least fixed point, etc.) can be used
 
 import README.Container.FreeMonad
+import README.Container.Indexed
 
 -- Some examples showing how combinators can be used to emulate
 -- "functional reasoning"
 
 import README.Function.Reasoning
+
+-- An example showing how to use the debug tracing mechanism to inspect
+-- the behaviour of compiled Agda programs.
+
+import README.Debug.Trace
+
+-- Explaining the inspect idiom: use case, equivalent handwritten
+-- auxiliary definitions, and implementation details.
+
+import README.Inspect
+
+-- Using List's Interleaving to define a fully certified filter function.
+
+import README.Interleaving
 
 ------------------------------------------------------------------------
 -- Core modules

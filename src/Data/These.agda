@@ -4,15 +4,23 @@
 -- An either-or-both data type
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.These where
 
 open import Level
+open import Data.Sum.Base using (_⊎_; [_,_]′)
 open import Function
 
 data These {a b} (A : Set a) (B : Set b) : Set (a ⊔ b) where
   this  : A     → These A B
   that  :     B → These A B
   these : A → B → These A B
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+  fromSum : A ⊎ B → These A B
+  fromSum = [ this , that ]′
 
 -- map
 
@@ -63,9 +71,10 @@ module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
   align : These A B → These C D → These (These A C) (These B D)
   align = alignWith id id
 
--- projections
 
 module _ {a} {A : Set a} where
+
+-- Projections.
 
   leftMost : These A A → A
   leftMost = fold id id const

@@ -4,6 +4,8 @@
 -- Implications of nullary relations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Nullary.Implication where
 
 open import Relation.Nullary

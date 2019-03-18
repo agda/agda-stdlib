@@ -1,2 +1,3 @@
-module safe where
+{-# OPTIONS --safe #-}
 
+module safe where

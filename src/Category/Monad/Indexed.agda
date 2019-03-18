@@ -6,6 +6,8 @@
 
 -- Note that currently the monad laws are not included here.
 
+{-# OPTIONS --without-K --safe #-}
+
 module Category.Monad.Indexed where
 
 open import Category.Applicative.Indexed
@@ -52,16 +54,23 @@ RawIMonadT T = ∀ {M} → RawIMonad M → RawIMonad (T M)
 record RawIMonadZero {i f} {I : Set i} (M : IFun I f) :
                      Set (i ⊔ suc f) where
   field
-    monad : RawIMonad M
-    ∅     : ∀ {i j A} → M i j A
+    monad           : RawIMonad M
+    applicativeZero : RawIApplicativeZero M
 
   open RawIMonad monad public
+  open RawIApplicativeZero applicativeZero using (∅) public
 
 record RawIMonadPlus {i f} {I : Set i} (M : IFun I f) :
                      Set (i ⊔ suc f) where
-  infixr 3 _∣_
   field
-    monadZero : RawIMonadZero M
-    _∣_       : ∀ {i j A} → M i j A → M i j A → M i j A
+    monad       : RawIMonad M
+    alternative : RawIAlternative M
 
-  open RawIMonadZero monadZero public
+  open RawIMonad monad public
+  open RawIAlternative alternative using (∅; _∣_) public
+
+  monadZero : RawIMonadZero M
+  monadZero = record
+    { monad           = monad
+    ; applicativeZero = RawIAlternative.applicativeZero alternative
+    }

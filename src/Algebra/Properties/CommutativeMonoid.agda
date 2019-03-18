@@ -4,6 +4,8 @@
 -- Some derivable properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Algebra
 
 module Algebra.Properties.CommutativeMonoid {g₁ g₂} (M : CommutativeMonoid g₁ g₂) where
@@ -21,7 +23,7 @@ import Data.Fin.Properties as FP
 open import Data.Fin.Permutation as Perm using (Permutation; Permutation′; _⟨$⟩ˡ_; _⟨$⟩ʳ_)
 open import Data.Fin.Permutation.Components as PermC
 open import Data.Table as Table
-open import Data.Table.Relation.Equality as TE using (_≗_)
+open import Data.Table.Relation.Binary.Equality as TE using (_≗_)
 open import Data.Unit using (tt)
 import Data.Table.Properties as TP
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -34,13 +36,15 @@ open CommutativeMonoid M
   ( ε         to 0#
   ; _∙_       to _+_
   ; ∙-cong    to +-cong
+  ; ∙-congˡ   to +-congˡ
+  ; ∙-congʳ   to +-congʳ
   ; identityˡ to +-identityˡ
   ; identityʳ to +-identityʳ
   ; assoc     to +-assoc
   ; comm      to +-comm
   )
 open import Algebra.FunctionProperties _≈_
-open import Relation.Binary.EqReasoning setoid
+open import Relation.Binary.Reasoning.Setoid setoid
 
 module _ {n} where
   open B.Setoid (TE.setoid setoid n) public
@@ -54,7 +58,7 @@ sumₜ-remove {_}     {zero}   t = refl
 sumₜ-remove {zero}  {suc ()} t
 sumₜ-remove {suc n} {suc i}  t′ =
   begin
-    t₀ + ∑t           ≈⟨ +-cong refl (sumₜ-remove t) ⟩
+    t₀ + ∑t           ≈⟨ +-congʳ (sumₜ-remove t) ⟩
     t₀ + (tᵢ + ∑t′)   ≈⟨ solve 3 (λ x y z → x ⊕ (y ⊕ z) ⊜ y ⊕ (x ⊕ z)) refl t₀ tᵢ ∑t′ ⟩
     tᵢ + (t₀ + ∑t′)   ∎
   where
@@ -83,7 +87,7 @@ sumₜ-idem-replicate : ∀ n {x} → _+_ IdempotentOn x → sumₜ (replicate {
 sumₜ-idem-replicate zero        idem = +-identityʳ _
 sumₜ-idem-replicate (suc n) {x} idem = begin
   x + (x + sumₜ (replicate {n = n} x))  ≈⟨ sym (+-assoc _ _ _) ⟩
-  (x + x) + sumₜ (replicate {n = n} x)  ≈⟨ +-cong idem refl ⟩
+  (x + x) + sumₜ (replicate {n = n} x)  ≈⟨ +-congˡ idem ⟩
   x + sumₜ (replicate {n = n} x)        ≈⟨ sumₜ-idem-replicate n idem ⟩
   x                                 ∎
 
@@ -101,7 +105,7 @@ sumₜ-zero n = begin
 ∑-distrib-+ zero    f g = sym (+-identityˡ _)
 ∑-distrib-+ (suc n) f g = begin
   f₀ + g₀ + ∑fg          ≈⟨ +-assoc _ _ _ ⟩
-  f₀ + (g₀ + ∑fg)        ≈⟨ +-cong refl (+-cong refl (∑-distrib-+ n _ _)) ⟩
+  f₀ + (g₀ + ∑fg)        ≈⟨ +-congʳ (+-congʳ (∑-distrib-+ n _ _)) ⟩
   f₀ + (g₀ + (∑f + ∑g))  ≈⟨ solve 4 (λ a b c d → a ⊕ (c ⊕ (b ⊕ d)) ⊜ (a ⊕ b) ⊕ (c ⊕ d)) refl f₀ ∑f g₀ ∑g ⟩
   (f₀ + ∑f) + (g₀ + ∑g)  ∎
   where
@@ -116,7 +120,7 @@ sumₜ-zero n = begin
 ∑-comm : ∀ n m (f : Fin n → Fin m → Carrier) → ∑[ i < n ] ∑[ j < m ] f i j ≈ ∑[ j < m ] ∑[ i < n ] f i j
 ∑-comm zero    m f = sym (sumₜ-zero m)
 ∑-comm (suc n) m f = begin
-  ∑[ j < m ] f zero j + ∑[ i < n ] ∑[ j < m ] f (suc i) j  ≈⟨ +-cong refl (∑-comm n m _) ⟩
+  ∑[ j < m ] f zero j + ∑[ i < n ] ∑[ j < m ] f (suc i) j  ≈⟨ +-congʳ (∑-comm n m _) ⟩
   ∑[ j < m ] f zero j + ∑[ j < m ] ∑[ i < n ] f (suc i) j  ≈⟨ sym (∑-distrib-+ m _ _) ⟩
   ∑[ j < m ] (f zero j + ∑[ i < n ] f (suc i) j)           ∎
 
@@ -129,7 +133,7 @@ sumₜ-permute {suc m} {zero}  t π = contradiction π (Perm.refute λ())
 sumₜ-permute {suc m} {suc n} t π = begin
   sumₜ t                                                                            ≡⟨⟩
   lookup t 0i           + sumₜ (remove 0i t)                                        ≡⟨ P.cong₂ _+_ (P.cong (lookup t) (P.sym (Perm.inverseʳ π))) P.refl ⟩
-  lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (remove 0i t)                                        ≈⟨ +-cong refl (sumₜ-permute (remove 0i t) (Perm.remove (π ⟨$⟩ˡ 0i) π)) ⟩
+  lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (remove 0i t)                                        ≈⟨ +-congʳ (sumₜ-permute (remove 0i t) (Perm.remove (π ⟨$⟩ˡ 0i) π)) ⟩
   lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (permute (Perm.remove (π ⟨$⟩ˡ 0i) π) (remove 0i t))  ≡⟨ P.cong₂ _+_ P.refl (sumₜ-cong-≡ (P.sym ∘ TP.remove-permute π 0i t)) ⟩
   lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (remove (π ⟨$⟩ˡ 0i) πt)                              ≈⟨ sym (sumₜ-remove (permute π t)) ⟩
   sumₜ πt                                                                           ∎
@@ -147,8 +151,9 @@ select-transpose : ∀ {n} t (i j : Fin n) → lookup t i ≈ lookup t j → ∀
 select-transpose _ i j e k with k FP.≟ i
 ... | yes p rewrite P.≡-≟-identity FP._≟_ {j} P.refl = sym e
 ... | no ¬p with k FP.≟ j
-...   | yes q rewrite proj₂ (P.≢-≟-identity FP._≟_ (¬p ∘ P.trans q ∘ P.sym)) = refl
 ...   | no ¬q rewrite proj₂ (P.≢-≟-identity FP._≟_ ¬q) = refl
+...   | yes q rewrite proj₂ (P.≢-≟-identity FP._≟_
+                               (¬p ∘ P.trans q ∘ P.sym)) = refl
 
 -- Summing over a pulse gives you the single value picked out by the pulse.
 
@@ -157,7 +162,7 @@ sumₜ-select {zero}  {()}
 sumₜ-select {suc n} {i} t = begin
   sumₜ (select 0# i t)                                        ≈⟨ sumₜ-remove {i = i} (select 0# i t) ⟩
   lookup (select 0# i t) i + sumₜ (remove i (select 0# i t))  ≡⟨ P.cong₂ _+_ (TP.select-lookup t) (sumₜ-cong-≡ (TP.select-remove i t)) ⟩
-  lookup t i + sumₜ (replicate {n = n} 0#)                    ≈⟨ +-cong refl (sumₜ-zero n) ⟩
+  lookup t i + sumₜ (replicate {n = n} 0#)                    ≈⟨ +-congʳ (sumₜ-zero n) ⟩
   lookup t i + 0#                                             ≈⟨ +-identityʳ _ ⟩
   lookup t i                                                  ∎
 

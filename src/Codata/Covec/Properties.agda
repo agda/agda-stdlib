@@ -4,6 +4,8 @@
 -- Properties of operations on the Covec type
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Codata.Covec.Properties where
 
 open import Size

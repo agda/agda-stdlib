@@ -4,6 +4,8 @@
 -- Bisimilarity for Covecs
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Codata.Covec.Bisimilarity where
 
 open import Level using (_⊔_)

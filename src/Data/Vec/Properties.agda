@@ -4,6 +4,8 @@
 -- Some Vec-related properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Vec.Properties where
 
 open import Algebra.FunctionProperties
@@ -11,8 +13,6 @@ open import Data.Empty using (⊥-elim)
 open import Data.Fin as Fin using (Fin; zero; suc; toℕ; fromℕ)
 open import Data.Fin.Properties using (_+′_)
 open import Data.List.Base as List using (List)
-open import Data.List.Any using (here; there)
-import Data.List.Membership.Propositional as List
 open import Data.Nat
 open import Data.Nat.Properties using (+-assoc; ≤-step)
 open import Data.Product as Prod
@@ -20,9 +20,9 @@ open import Data.Product as Prod
 open import Data.Vec
 open import Function
 open import Function.Inverse using (_↔_; inverse)
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; _≗_; _≡_↾¹_)
+  using (_≡_; _≢_; refl; _≗_)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_; refl)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary using (yes; no)
@@ -41,6 +41,15 @@ module _ {a} {A : Set a} {n} {x y : A} {xs ys : Vec A n} where
  ∷-injective : (x ∷ xs) ≡ (y ∷ ys) → x ≡ y × xs ≡ ys
  ∷-injective refl = refl , refl
 
+module _ {a} {A : Set a} where
+
+  ≡-dec : B.Decidable _≡_ → ∀ {n} → B.Decidable {A = Vec A n} _≡_
+  ≡-dec _≟_ []       []       = yes refl
+  ≡-dec _≟_ (x ∷ xs) (y ∷ ys) with x ≟ y | ≡-dec _≟_ xs ys
+  ... | yes refl | yes refl = yes refl
+  ... | no  x≢y  | _        = no (x≢y   ∘ ∷-injectiveˡ)
+  ... | yes _    | no xs≢ys = no (xs≢ys ∘ ∷-injectiveʳ)
+
 ------------------------------------------------------------------------
 -- _[_]=_
 
@@ -51,11 +60,7 @@ module _ {a} {A : Set a} where
   []=-injective here          here          = refl
   []=-injective (there xsᵢ≡x) (there xsᵢ≡y) = []=-injective xsᵢ≡x xsᵢ≡y
 
-  []=-irrelevance : ∀ {n} {xs : Vec A n} {i x} →
-                    (p q : xs [ i ]= x) → p ≡ q
-  []=-irrelevance here            here             = refl
-  []=-irrelevance (there xs[i]=x) (there xs[i]=x') =
-    P.cong there ([]=-irrelevance xs[i]=x xs[i]=x')
+  -- See also Data.Vec.Properties.WithK.[]=-irrelevant.
 
 ------------------------------------------------------------------------
 -- lookup
@@ -74,8 +79,23 @@ module _ {a} {A : Set a} where
 
   []=↔lookup : ∀ {n i} {x} {xs : Vec A n} →
                xs [ i ]= x ↔ lookup i xs ≡ x
-  []=↔lookup = inverse []=⇒lookup (lookup⇒[]= _ _)
-     (λ _ → []=-irrelevance _ _) (λ _ → P.≡-irrelevance _ _)
+  []=↔lookup {i = i} =
+    inverse []=⇒lookup (lookup⇒[]= _ _)
+            lookup⇒[]=∘[]=⇒lookup ([]=⇒lookup∘lookup⇒[]= i _)
+    where
+    lookup⇒[]=∘[]=⇒lookup :
+      ∀ {n x xs} {i : Fin n} (p : xs [ i ]= x) →
+      lookup⇒[]= i xs ([]=⇒lookup p) ≡ p
+    lookup⇒[]=∘[]=⇒lookup here      = refl
+    lookup⇒[]=∘[]=⇒lookup (there p) =
+      P.cong there (lookup⇒[]=∘[]=⇒lookup p)
+
+    []=⇒lookup∘lookup⇒[]= :
+      ∀ {n} (i : Fin n) {x} xs (p : lookup i xs ≡ x) →
+      []=⇒lookup (lookup⇒[]= i xs p) ≡ p
+    []=⇒lookup∘lookup⇒[]= zero    (x ∷ xs) refl = refl
+    []=⇒lookup∘lookup⇒[]= (suc i) (x ∷ xs) p    =
+      []=⇒lookup∘lookup⇒[]= i xs p
 
 ------------------------------------------------------------------------
 -- updateAt (_[_]%=_)
@@ -109,14 +129,17 @@ module _ {a} {A : Set a} where
   -- Direct inductive proofs are in most cases easier than just using
   -- the defining properties.
 
-  -- updateAt i  is a morphism from the monoid of endofunctions A → A
-  -- to the monoid of endofunctions Vec A n → Vec A n
+  -- In the explanations, we make use of shorthand  f = g ↾ x
+  -- meaning that f and g agree at point x, i.e.  f x ≡ g x.
+
+  -- updateAt i  is a morphism from the monoid of endofunctions  A → A
+  -- to the monoid of endofunctions  Vec A n → Vec A n
 
   -- 1a. relative identity:  f = id ↾ (lookup i xs)
   --                implies  updateAt i f = id ↾ xs
 
   updateAt-id-relative : ∀ {n} (i : Fin n) (xs : Vec A n) {f : A → A}
-    → f ≡ id ↾¹ lookup i xs
+    → f (lookup i xs) ≡ lookup i xs
     → updateAt i f xs ≡ xs
   updateAt-id-relative zero    (x ∷ xs) eq = P.cong (_∷ xs) eq
   updateAt-id-relative (suc i) (x ∷ xs) eq = P.cong (x ∷_) (updateAt-id-relative i xs eq)
@@ -127,12 +150,21 @@ module _ {a} {A : Set a} where
     updateAt i id xs ≡ xs
   updateAt-id i xs = updateAt-id-relative i xs refl
 
-  -- 2. composition:  updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
+  -- 2a. relative composition:  f ∘ g = h ↾ (lookup i xs)
+  --                   implies  updateAt i f ∘ updateAt i g ≗ updateAt i h
+
+  updateAt-compose-relative : ∀ {n} (i : Fin n) {f g h : A → A} (xs : Vec A n)
+    → f (g (lookup i xs)) ≡ h (lookup i xs)
+    → updateAt i f (updateAt i g xs) ≡ updateAt i h xs
+  updateAt-compose-relative zero    (x ∷ xs) fg=h = P.cong (_∷ xs) fg=h
+  updateAt-compose-relative (suc i) (x ∷ xs) fg=h =
+    P.cong (x ∷_) (updateAt-compose-relative i xs fg=h)
+
+  -- 2b. composition:  updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
 
   updateAt-compose : ∀ {n} (i : Fin n) {f g : A → A} →
     updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
-  updateAt-compose zero    (x ∷ xs) = refl
-  updateAt-compose (suc i) (x ∷ xs) = P.cong (x ∷_) (updateAt-compose i xs)
+  updateAt-compose i xs = updateAt-compose-relative i xs refl
 
   -- 3. congruence:  updateAt i  is a congruence wrt. extensional equality.
 
@@ -140,7 +172,7 @@ module _ {a} {A : Set a} where
   --      then  updateAt i f = updateAt i g ↾ xs
 
   updateAt-cong-relative : ∀ {n} (i : Fin n) {f g : A → A} (xs : Vec A n)
-    → f ≡ g ↾¹ lookup i xs
+    → f (lookup i xs) ≡ g (lookup i xs)
     → updateAt i f xs ≡ updateAt i g xs
   updateAt-cong-relative zero    (x ∷ xs) f=g = P.cong (_∷ xs) f=g
   updateAt-cong-relative (suc i) (x ∷ xs) f=g = P.cong (x ∷_) (updateAt-cong-relative i xs f=g)
@@ -257,7 +289,7 @@ lookup-map (suc i) f (x ∷ xs) = lookup-map i f xs
 
 map-updateAt : ∀ {n a b} {A : Set a} {B : Set b} →
   ∀ {f : A → B} {g : A → A} {h : B → B} (xs : Vec A n) (i : Fin n)
-  → f ∘ g ≡ h ∘ f ↾¹ lookup i xs
+  → f (g (lookup i xs)) ≡ h (f (lookup i xs))
   → map f (updateAt i g xs) ≡ updateAt i h (map f xs)
 map-updateAt (x ∷ xs) zero    eq = P.cong (_∷ _) eq
 map-updateAt (x ∷ xs) (suc i) eq = P.cong (_ ∷_) (map-updateAt xs i eq)
@@ -271,6 +303,8 @@ map-[]≔ f xs i = map-updateAt xs i refl
 -- _++_
 
 module _ {a} {A : Set a} {m} {ys ys' : Vec A m} where
+
+  -- See also Data.Vec.Properties.WithK.++-assoc.
 
   ++-injectiveˡ : ∀ {n} (xs xs' : Vec A n) →
                   xs ++ ys ≡ xs' ++ ys' → xs ≡ xs'
@@ -290,12 +324,6 @@ module _ {a} {A : Set a} {m} {ys ys' : Vec A m} where
     (++-injectiveˡ xs xs' eq , ++-injectiveʳ xs xs' eq)
 
 module _ {a} {A : Set a} where
-
-  ++-assoc : ∀ {m n k} (xs : Vec A m) (ys : Vec A n) (zs : Vec A k) →
-             (xs ++ ys) ++ zs ≅ xs ++ (ys ++ zs)
-  ++-assoc         []       ys zs = refl
-  ++-assoc {suc m} (x ∷ xs) ys zs =
-    H.icong (Vec A) (+-assoc m _ _) (x ∷_) (++-assoc xs ys zs)
 
   lookup-++-< : ∀ {m n} (xs : Vec A m) (ys : Vec A n) →
                 ∀ i (i<m : toℕ i < m) →
@@ -533,14 +561,7 @@ module _ {a b} {A : Set a} {B : Set b} where
 ------------------------------------------------------------------------
 -- foldr
 
-foldr-cong : ∀ {a b} {A : Set a}
-             {B : ℕ → Set b} {f : ∀ {n} → A → B n → B (suc n)} {d}
-             {C : ℕ → Set b} {g : ∀ {n} → A → C n → C (suc n)} {e} →
-             (∀ {n x} {y : B n} {z : C n} → y ≅ z → f x y ≅ g x z) →
-             d ≅ e → ∀ {n} (xs : Vec A n) →
-             foldr B f d xs ≅ foldr C g e xs
-foldr-cong _   d≅e []       = d≅e
-foldr-cong f≅g d≅e (x ∷ xs) = f≅g (foldr-cong f≅g d≅e xs)
+-- See also Data.Vec.Properties.WithK.foldr-cong.
 
 -- The (uniqueness part of the) universality property for foldr.
 
@@ -571,18 +592,6 @@ foldr-fusion {B = B} {f} e {C} h fuse =
 
 idIsFold : ∀ {a n} {A : Set a} → id ≗ foldr (Vec A) {n} _∷_ []
 idIsFold = foldr-universal _ _ id refl (λ _ _ → refl)
-
-------------------------------------------------------------------------
--- foldl
-
-foldl-cong : ∀ {a b} {A : Set a}
-             {B : ℕ → Set b} {f : ∀ {n} → B n → A → B (suc n)} {d}
-             {C : ℕ → Set b} {g : ∀ {n} → C n → A → C (suc n)} {e} →
-             (∀ {n x} {y : B n} {z : C n} → y ≅ z → f y x ≅ g z x) →
-             d ≅ e → ∀ {n} (xs : Vec A n) →
-             foldl B f d xs ≅ foldl C g e xs
-foldl-cong _   d≅e []       = d≅e
-foldl-cong f≅g d≅e (x ∷ xs) = foldl-cong f≅g (f≅g d≅e) xs
 
 ------------------------------------------------------------------------
 -- sum
@@ -737,17 +746,3 @@ module _ {a} {A : Set a} where
   toList∘fromList : (xs : List A) → toList (fromList xs) ≡ xs
   toList∘fromList List.[]       = refl
   toList∘fromList (x List.∷ xs) = P.cong (x List.∷_) (toList∘fromList xs)
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.15
-
-proof-irrelevance-[]= = []=-irrelevance
-{-# WARNING_ON_USAGE proof-irrelevance-[]=
-"Warning: proof-irrelevance-[]= was deprecated in v0.15.
-Please use []=-irrelevance instead."
-#-}

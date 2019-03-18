@@ -4,6 +4,8 @@
 -- Infinite merge operation for coinductive lists
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Codata.Musical.Colist.Infinite-merge where
 
 open import Codata.Musical.Notation
@@ -13,7 +15,7 @@ open import Data.Nat.Properties
 open import Data.Product as Prod
 open import Data.Sum
 open import Data.Sum.Properties
-open import Data.Sum.Relation.Pointwise
+open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; Inverse; inverse)

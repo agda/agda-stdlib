@@ -4,6 +4,8 @@
 -- A categorical view of Maybe
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Maybe.Categorical where
 
 open import Data.Maybe.Base
@@ -27,6 +29,18 @@ applicative = record
   ; _⊛_  = maybe map (const nothing)
   }
 
+applicativeZero : ∀ {f} → RawApplicativeZero {f} Maybe
+applicativeZero = record
+  { applicative = applicative
+  ; ∅           = nothing
+  }
+
+alternative : ∀ {f} → RawAlternative {f} Maybe
+alternative = record
+  { applicativeZero = applicativeZero
+  ; _∣_             = _<∣>_
+  }
+
 ------------------------------------------------------------------------
 -- Maybe monad transformer
 
@@ -45,14 +59,14 @@ monad = monadT Id.monad
 
 monadZero : ∀ {f} → RawMonadZero {f} Maybe
 monadZero = record
-  { monad = monad
-  ; ∅     = nothing
+  { monad           = monad
+  ; applicativeZero = applicativeZero
   }
 
 monadPlus : ∀ {f} → RawMonadPlus {f} Maybe
 monadPlus {f} = record
-  { monadZero = monadZero
-  ; _∣_       = _<∣>_
+  { monad       = monad
+  ; alternative = alternative
   }
 
 ------------------------------------------------------------------------

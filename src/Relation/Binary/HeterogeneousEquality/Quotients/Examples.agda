@@ -4,6 +4,8 @@
 -- Example of a Quotient: ℤ as (ℕ × ℕ / ~)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K --safe #-}
+
 module Relation.Binary.HeterogeneousEquality.Quotients.Examples where
 
 open import Relation.Binary.HeterogeneousEquality.Quotients
@@ -100,7 +102,7 @@ module Integers (quot : Quotients L.zero L.zero) where
                      $ λ {a} {b} {c} p p′ → compat-abs (+²-cong {a} {b} {c} p p′)
 
     +ℤ-identityʳ : ∀ i → i +ℤ zeroℤ ≅ i
-    +ℤ-identityʳ = lift _ eq (≅-heterogeneous-irrelevanceʳ _ _ ∘ compat-abs) where
+    +ℤ-identityʳ = lift _ eq (≅-heterogeneous-irrelevantʳ _ _ ∘ compat-abs) where
 
       eq : ∀ a → abs a +ℤ zeroℤ ≅ abs a
       eq a = begin
@@ -113,7 +115,7 @@ module Integers (quot : Quotients L.zero L.zero) where
     +²-identityˡ i = refl
 
     +ℤ-identityˡ : (i : ℤ)  → zeroℤ +ℤ i ≅ i
-    +ℤ-identityˡ = lift _ eq (≅-heterogeneous-irrelevanceʳ _ _ ∘ compat-abs) where
+    +ℤ-identityˡ = lift _ eq (≅-heterogeneous-irrelevantʳ _ _ ∘ compat-abs) where
 
       eq : ∀ a → zeroℤ +ℤ abs a ≅ abs a
       eq a = begin
@@ -141,6 +143,6 @@ module Integers (quot : Quotients L.zero L.zero) where
         abs i +ℤ (abs j +ℤ abs k) ∎
 
       compat₃ : ∀ {a a′ b b′ c c′} → a ∼ a′ → b ∼ b′ → c ∼ c′ → eq a b c ≅ eq a′ b′ c′
-      compat₃ p q r = ≅-heterogeneous-irrelevanceˡ _ _
+      compat₃ p q r = ≅-heterogeneous-irrelevantˡ _ _
                     $ cong₂ _+ℤ_ (cong₂ _+ℤ_ (compat-abs p) (compat-abs q))
                     $ compat-abs r

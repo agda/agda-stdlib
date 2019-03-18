@@ -4,6 +4,8 @@
 -- Function setoids and related constructions
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Function.Equality where
 
 import Function as Fun

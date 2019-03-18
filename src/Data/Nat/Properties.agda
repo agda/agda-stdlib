@@ -7,6 +7,8 @@
 -- See README.Nat for some examples showing how this module can be
 -- used.
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Nat.Properties where
 
 open import Algebra
@@ -16,11 +18,16 @@ open import Function.Injection using (_↣_)
 open import Data.Nat.Base
 open import Data.Product
 open import Data.Sum
+open import Data.Empty
+open import Data.Bool.Base using (Bool; false; true; T)
+open import Data.Bool.Properties using (T?)
+
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
+
 open import Relation.Nullary
-open import Relation.Nullary.Decidable using (via-injection; map′)
+open import Relation.Nullary.Decidable using (True; via-injection; map′)
 open import Relation.Nullary.Negation using (contradiction)
 
 open import Algebra.FunctionProperties (_≡_ {A = ℕ})
@@ -37,15 +44,33 @@ open ≡-Reasoning
 suc-injective : ∀ {m n} → suc m ≡ suc n → m ≡ n
 suc-injective refl = refl
 
-infix 4 _≟_
+≡ᵇ⇒≡ : ∀ m n → T (m ≡ᵇ n) → m ≡ n
+≡ᵇ⇒≡ zero    zero    _  = refl
+≡ᵇ⇒≡ (suc m) (suc n) eq = cong suc (≡ᵇ⇒≡ m n eq)
+≡ᵇ⇒≡ zero    (suc n) ()
+≡ᵇ⇒≡ (suc m) zero    ()
 
+≡⇒≡ᵇ : ∀ m n → m ≡ n → T (m ≡ᵇ n)
+≡⇒≡ᵇ zero    zero    eq = _
+≡⇒≡ᵇ (suc m) (suc n) eq = ≡⇒≡ᵇ m n (suc-injective eq)
+≡⇒≡ᵇ zero    (suc n) ()
+≡⇒≡ᵇ (suc m) zero    ()
+
+-- NB: we use the builtin function `_≡ᵇ_ : (m n : ℕ) → Bool` here so
+-- that the function quickly decides whether to return `yes` or `no`.
+-- It sill takes a linear amount of time to generate the proof if it
+-- is inspected. We expect the main benefit to be visible in compiled
+-- code: the backend erases proofs.
+
+infix 4 _≟_
 _≟_ : Decidable {A = ℕ} _≡_
-zero  ≟ zero   = yes refl
-zero  ≟ suc n  = no λ()
-suc m ≟ zero   = no λ()
-suc m ≟ suc n  with m ≟ n
-... | yes refl = yes refl
-... | no m≢n   = no (m≢n ∘ suc-injective)
+m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
+
+≡-irrelevant : Irrelevant {A = ℕ} _≡_
+≡-irrelevant = Decidable⇒UIP.≡-irrelevant _≟_
+
+≟-diag : ∀ {m n} (eq : m ≡ n) → (m ≟ n) ≡ yes eq
+≟-diag = ≡-≟-identity _≟_
 
 ≡-isDecEquivalence : IsDecEquivalence (_≡_ {A = ℕ})
 ≡-isDecEquivalence = record
@@ -76,8 +101,7 @@ suc m ≟ suc n  with m ≟ n
 
 ≤-antisym : Antisymmetric _≡_ _≤_
 ≤-antisym z≤n       z≤n       = refl
-≤-antisym (s≤s m≤n) (s≤s n≤m) with ≤-antisym m≤n n≤m
-... | refl = refl
+≤-antisym (s≤s m≤n) (s≤s n≤m) = cong suc (≤-antisym m≤n n≤m)
 
 ≤-trans : Transitive _≤_
 ≤-trans z≤n       _         = z≤n
@@ -152,9 +176,9 @@ _≥?_ = flip _≤?_
 s≤s-injective : ∀ {m n} {p q : m ≤ n} → s≤s p ≡ s≤s q → p ≡ q
 s≤s-injective refl = refl
 
-≤-irrelevance : Irrelevant _≤_
-≤-irrelevance z≤n        z≤n        = refl
-≤-irrelevance (s≤s m≤n₁) (s≤s m≤n₂) = cong s≤s (≤-irrelevance m≤n₁ m≤n₂)
+≤-irrelevant : Irrelevant _≤_
+≤-irrelevant z≤n        z≤n        = refl
+≤-irrelevant (s≤s m≤n₁) (s≤s m≤n₂) = cong s≤s (≤-irrelevant m≤n₁ m≤n₂)
 
 ≤-step : ∀ {m n} → m ≤ n → m ≤ 1 + n
 ≤-step z≤n       = z≤n
@@ -169,18 +193,6 @@ n≤1+n _ = ≤-step ≤-refl
 n≤0⇒n≡0 : ∀ {n} → n ≤ 0 → n ≡ 0
 n≤0⇒n≡0 z≤n = refl
 
-pred-mono : pred Preserves _≤_ ⟶ _≤_
-pred-mono z≤n      = z≤n
-pred-mono (s≤s le) = le
-
-≤pred⇒≤ : ∀ {m n} → m ≤ pred n → m ≤ n
-≤pred⇒≤ {m} {zero}  le = le
-≤pred⇒≤ {m} {suc n} le = ≤-step le
-
-≤⇒pred≤ : ∀ {m n} → m ≤ n → pred m ≤ n
-≤⇒pred≤ {zero}  le = le
-≤⇒pred≤ {suc m} le = ≤-trans (n≤1+n m) le
-
 ------------------------------------------------------------------------
 -- Properties of _<_
 
@@ -193,7 +205,7 @@ pred-mono (s≤s le) = le
 <-asym (s≤s n<m) (s≤s m<n) = <-asym n<m m<n
 
 <-trans : Transitive _<_
-<-trans (s≤s i≤j) (s≤s j<k) = s≤s (≤-trans i≤j (≤⇒pred≤ j<k))
+<-trans (s≤s i≤j) (s≤s j<k) = s≤s (≤-trans i≤j (≤-trans (n≤1+n _) j<k))
 
 <-transʳ : Trans _≤_ _<_ _<_
 <-transʳ m≤n (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
@@ -247,8 +259,8 @@ _>?_ = flip _<?_
   }
 
 -- Other properties of _<_
-<-irrelevance : Irrelevant _<_
-<-irrelevance = ≤-irrelevance
+<-irrelevant : Irrelevant _<_
+<-irrelevant = ≤-irrelevant
 
 <⇒≤pred : ∀ {m n} → m < n → m ≤ pred n
 <⇒≤pred (s≤s le) = le
@@ -300,6 +312,10 @@ m<n⇒n≢0 (s≤s m≤n) ()
 ------------------------------------------------------------------------
 -- Properties of _≤′_
 
+≤′-trans : Transitive _≤′_
+≤′-trans m≤n ≤′-refl = m≤n
+≤′-trans m≤n (≤′-step n≤o) = ≤′-step (≤′-trans m≤n n≤o)
+
 z≤′n : ∀ {n} → zero ≤′ n
 z≤′n {zero}  = ≤′-refl
 z≤′n {suc n} = ≤′-step z≤′n
@@ -336,40 +352,23 @@ _>′?_ : Decidable _>′_
 _>′?_ = flip _<′?_
 
 ------------------------------------------------------------------------
--- Properties of _≤″_
+-- Properties of pred
 
-≤″⇒≤ : _≤″_ ⇒ _≤_
-≤″⇒≤ {zero}  (less-than-or-equal refl) = z≤n
-≤″⇒≤ {suc m} (less-than-or-equal refl) =
-  s≤s (≤″⇒≤ (less-than-or-equal refl))
+pred-mono : pred Preserves _≤_ ⟶ _≤_
+pred-mono z≤n      = z≤n
+pred-mono (s≤s le) = le
 
-≤⇒≤″ : _≤_ ⇒ _≤″_
-≤⇒≤″ m≤n = less-than-or-equal (proof m≤n)
-  where
-  k : ∀ m n → m ≤ n → ℕ
-  k zero    n       _   = n
-  k (suc m) zero    ()
-  k (suc m) (suc n) m≤n = k m n (≤-pred m≤n)
+≤pred⇒≤ : ∀ {m n} → m ≤ pred n → m ≤ n
+≤pred⇒≤ {m} {zero}  le = le
+≤pred⇒≤ {m} {suc n} le = ≤-step le
 
-  proof : ∀ {m n} (m≤n : m ≤ n) → m + k m n m≤n ≡ n
-  proof z≤n       = refl
-  proof (s≤s m≤n) = cong suc (proof m≤n)
+≤⇒pred≤ : ∀ {m n} → m ≤ n → pred m ≤ n
+≤⇒pred≤ {zero}  le = le
+≤⇒pred≤ {suc m} le = ≤-trans (n≤1+n m) le
 
--- Decidablity for _≤″_
-
-infix 4 _≤″?_ _<″?_ _≥″?_ _>″?_
-
-_≤″?_ : Decidable _≤″_
-x ≤″? y = map′ ≤⇒≤″ ≤″⇒≤ (x ≤? y)
-
-_<″?_ : Decidable _<″_
-x <″? y = suc x ≤″? y
-
-_≥″?_ : Decidable _≥″_
-_≥″?_ = flip _≤″?_
-
-_>″?_ : Decidable _>″_
-_>″?_ = flip _<″?_
+m≢0⇒suc[pred[m]]≡m : ∀ {m} → m ≢ 0 → suc (pred m) ≡ m
+m≢0⇒suc[pred[m]]≡m {zero}  m≢0 = ⊥-elim (m≢0 refl)
+m≢0⇒suc[pred[m]]≡m {suc m} m≢0 = refl
 
 ------------------------------------------------------------------------
 -- Properties of _+_
@@ -401,11 +400,21 @@ _>″?_ = flip _<″?_
   suc (n + m) ≡⟨ sym (+-suc n m) ⟩
   n + suc m   ∎
 
++-isMagma : IsMagma _+_
++-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = cong₂ _+_
+  }
+
++-magma : Magma 0ℓ 0ℓ
++-magma = record
+  { isMagma = +-isMagma
+  }
+
 +-isSemigroup : IsSemigroup _+_
 +-isSemigroup = record
-  { isEquivalence = isEquivalence
-  ; assoc         = +-assoc
-  ; ∙-cong        = cong₂ _+_
+  { isMagma = +-isMagma
+  ; assoc   = +-assoc
   }
 
 +-semigroup : Semigroup 0ℓ 0ℓ
@@ -475,6 +484,15 @@ i+j≡0⇒j≡0 i {j} i+j≡0 = i+j≡0⇒i≡0 j (trans (+-comm j i) (i+j≡0))
 
 +-cancel-≤ : Cancellative _≤_ _+_
 +-cancel-≤ = +-cancelˡ-≤ , +-cancelʳ-≤
+
++-cancelˡ-< : LeftCancellative _<_ _+_
++-cancelˡ-< x {y} {z} = +-cancelˡ-≤ x ∘ subst (_≤ x + z) (sym (+-suc x y))
+
++-cancelʳ-< : RightCancellative _<_ _+_
++-cancelʳ-< y z y+x<z+x = +-cancelʳ-≤ (suc y) z y+x<z+x
+
++-cancel-< : Cancellative _<_ _+_
++-cancel-< = +-cancelˡ-< , +-cancelʳ-<
 
 ≤-stepsˡ : ∀ {m n} o → m ≤ n → m ≤ o + n
 ≤-stepsˡ zero    m≤n = m≤n
@@ -612,11 +630,21 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
   n * o + m * (n * o) ≡⟨⟩
   suc m * (n * o)     ∎
 
+*-isMagma : IsMagma _*_
+*-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = cong₂ _*_
+  }
+
+*-magma : Magma 0ℓ 0ℓ
+*-magma = record
+  { isMagma = *-isMagma
+  }
+
 *-isSemigroup : IsSemigroup _*_
 *-isSemigroup = record
-  { isEquivalence = isEquivalence
-  ; assoc         = *-assoc
-  ; ∙-cong        = cong₂ _*_
+  { isMagma = *-isMagma
+  ; assoc   = *-assoc
   }
 
 *-semigroup : Semigroup 0ℓ 0ℓ
@@ -788,6 +816,23 @@ i^j≡1⇒j≡0∨i≡1 i zero    _  = inj₁ refl
 i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
 
 ------------------------------------------------------------------------
+-- Properties of _≤‴_
+
+≤‴⇒≤″ : ∀{m n} → m ≤‴ n → m ≤″ n
+≤‴⇒≤″ {m = m} ≤‴-refl = less-than-or-equal {k = 0} (+-identityʳ m)
+≤‴⇒≤″ {m = m} (≤‴-step x) = less-than-or-equal (trans (+-suc m _) (_≤″_.proof ind)) where
+  ind = ≤‴⇒≤″ x
+
+m≤‴m+k : ∀{m n k} → m + k ≡ n → m ≤‴ n
+m≤‴m+k {m} {k = zero} refl = subst (λ z → m ≤‴ z) (sym (+-identityʳ m)) (≤‴-refl {m})
+m≤‴m+k {m} {k = suc k} proof
+  = ≤‴-step (m≤‴m+k {k = k} (trans (sym (+-suc m _)) proof))
+
+≤″⇒≤‴ : ∀{m n} → m ≤″ n → m ≤‴ n
+≤″⇒≤‴ (less-than-or-equal {k} proof) = m≤‴m+k proof
+
+
+------------------------------------------------------------------------
 -- Properties of _⊔_ and _⊓_
 
 ⊔-assoc : Associative _⊔_
@@ -884,16 +929,48 @@ i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
 ⊓-⊔-absorptive : Absorptive _⊓_ _⊔_
 ⊓-⊔-absorptive = ⊓-abs-⊔ , ⊔-abs-⊓
 
+⊔-isMagma : IsMagma _⊔_
+⊔-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = cong₂ _⊔_
+  }
+
+⊔-magma : Magma 0ℓ 0ℓ
+⊔-magma = record
+  { isMagma = ⊔-isMagma
+  }
+
 ⊔-isSemigroup : IsSemigroup _⊔_
 ⊔-isSemigroup = record
-  { isEquivalence = isEquivalence
-  ; assoc         = ⊔-assoc
-  ; ∙-cong        = cong₂ _⊔_
+  { isMagma = ⊔-isMagma
+  ; assoc   = ⊔-assoc
   }
 
 ⊔-semigroup : Semigroup 0ℓ 0ℓ
 ⊔-semigroup = record
   { isSemigroup = ⊔-isSemigroup
+  }
+
+⊔-isBand : IsBand _⊔_
+⊔-isBand = record
+  { isSemigroup = ⊔-isSemigroup
+  ; idem        = ⊔-idem
+  }
+
+⊔-band : Band 0ℓ 0ℓ
+⊔-band = record
+  { isBand = ⊔-isBand
+  }
+
+⊔-isSemilattice : IsSemilattice _⊔_
+⊔-isSemilattice = record
+  { isBand = ⊔-isBand
+  ; comm   = ⊔-comm
+  }
+
+⊔-semilattice : Semilattice 0ℓ 0ℓ
+⊔-semilattice = record
+  { isSemilattice = ⊔-isSemilattice
   }
 
 ⊔-0-isCommutativeMonoid : IsCommutativeMonoid _⊔_ 0
@@ -908,16 +985,48 @@ i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
   { isCommutativeMonoid = ⊔-0-isCommutativeMonoid
   }
 
+⊓-isMagma : IsMagma _⊓_
+⊓-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = cong₂ _⊓_
+  }
+
+⊓-magma : Magma 0ℓ 0ℓ
+⊓-magma = record
+  { isMagma = ⊓-isMagma
+  }
+
 ⊓-isSemigroup : IsSemigroup _⊓_
 ⊓-isSemigroup = record
-  { isEquivalence = isEquivalence
-  ; assoc         = ⊓-assoc
-  ; ∙-cong        = cong₂ _⊓_
+  { isMagma = ⊓-isMagma
+  ; assoc   = ⊓-assoc
   }
 
 ⊓-semigroup : Semigroup 0ℓ 0ℓ
 ⊓-semigroup = record
   { isSemigroup = ⊔-isSemigroup
+  }
+
+⊓-isBand : IsBand _⊓_
+⊓-isBand = record
+  { isSemigroup = ⊓-isSemigroup
+  ; idem        = ⊓-idem
+  }
+
+⊓-band : Band 0ℓ 0ℓ
+⊓-band = record
+  { isBand = ⊓-isBand
+  }
+
+⊓-isSemilattice : IsSemilattice _⊓_
+⊓-isSemilattice = record
+  { isBand = ⊓-isBand
+  ; comm   = ⊓-comm
+  }
+
+⊓-semilattice : Semilattice 0ℓ 0ℓ
+⊓-semilattice = record
+  { isSemilattice = ⊓-isSemilattice
   }
 
 ⊔-⊓-isSemiringWithoutOne : IsSemiringWithoutOne _⊔_ _⊓_ 0
@@ -986,11 +1095,6 @@ m≤m⊔n (suc m) (suc n) = s≤s $ m≤m⊔n m n
 n≤m⊔n : ∀ m n → n ≤ m ⊔ n
 n≤m⊔n m n = subst (n ≤_) (⊔-comm n m) (m≤m⊔n n m)
 
-m⊓n≤m⊔n : ∀ m n → m ⊔ n ≤ m ⊔ n
-m⊓n≤m⊔n zero    n       = ≤-refl
-m⊓n≤m⊔n (suc m) zero    = ≤-refl
-m⊓n≤m⊔n (suc m) (suc n) = s≤s (m⊓n≤m⊔n m n)
-
 m≤n⇒m⊓n≡m : ∀ {m n} → m ≤ n → m ⊓ n ≡ m
 m≤n⇒m⊓n≡m z≤n       = refl
 m≤n⇒m⊓n≡m (s≤s m≤n) = cong suc (m≤n⇒m⊓n≡m m≤n)
@@ -1016,6 +1120,59 @@ n⊔m≡m⇒n≤m n⊔m≡m = subst (_ ≤_) n⊔m≡m (m≤m⊔n _ _)
 
 n⊔m≡n⇒m≤n : ∀ {m n} → n ⊔ m ≡ n → m ≤ n
 n⊔m≡n⇒m≤n n⊔m≡n = subst (_ ≤_) n⊔m≡n (n≤m⊔n _ _)
+
+m⊓n≤m⊔n : ∀ m n → m ⊓ n ≤ m ⊔ n
+m⊓n≤m⊔n zero    n       = z≤n
+m⊓n≤m⊔n (suc m) zero    = z≤n
+m⊓n≤m⊔n (suc m) (suc n) = s≤s (m⊓n≤m⊔n m n)
+
+m≤n⇒m⊓o≤n : ∀ {m n} o → m ≤ n → m ⊓ o ≤ n
+m≤n⇒m⊓o≤n o m≤n = ≤-trans (m⊓n≤m _ o) m≤n
+
+m≤n⇒o⊓m≤n : ∀ {m n} o → m ≤ n → o ⊓ m ≤ n
+m≤n⇒o⊓m≤n n m≤n = ≤-trans (m⊓n≤n n _) m≤n
+
+m≤n⊓o⇒m≤n : ∀ {m} n o → m ≤ n ⊓ o → m ≤ n
+m≤n⊓o⇒m≤n n o m≤n⊓o = ≤-trans m≤n⊓o (m⊓n≤m n o)
+
+m≤n⊓o⇒m≤o : ∀ {m} n o → m ≤ n ⊓ o → m ≤ o
+m≤n⊓o⇒m≤o n o m≤n⊓o = ≤-trans m≤n⊓o (m⊓n≤n n o)
+
+m≤n⇒m≤n⊔o : ∀ {m n} o → m ≤ n → m ≤ n ⊔ o
+m≤n⇒m≤n⊔o o m≤n = ≤-trans m≤n (m≤m⊔n _ o)
+
+m≤n⇒m≤o⊔n : ∀ {m n} o → m ≤ n → m ≤ o ⊔ n
+m≤n⇒m≤o⊔n n m≤n = ≤-trans m≤n (n≤m⊔n n _)
+
+m⊔n≤o⇒m≤o : ∀ m n {o} → m ⊔ n ≤ o → m ≤ o
+m⊔n≤o⇒m≤o m n m⊔n≤o = ≤-trans (m≤m⊔n m n) m⊔n≤o
+
+m⊔n≤o⇒n≤o : ∀ m n {o} → m ⊔ n ≤ o → n ≤ o
+m⊔n≤o⇒n≤o m n m⊔n≤o = ≤-trans (n≤m⊔n m n) m⊔n≤o
+
+m<n⇒m⊓o<n : ∀ {m n} o → m < n → m ⊓ o < n
+m<n⇒m⊓o<n o m<n = <-transʳ (m⊓n≤m _ o) m<n
+
+m<n⇒o⊓m<n : ∀ {m n} o → m < n → o ⊓ m < n
+m<n⇒o⊓m<n o m<n = <-transʳ (m⊓n≤n o _) m<n
+
+m<n⊓o⇒m<n : ∀ {m} n o → m < n ⊓ o → m < n
+m<n⊓o⇒m<n = m≤n⊓o⇒m≤n
+
+m<n⊓o⇒m<o : ∀ {m} n o → m < n ⊓ o → m < o
+m<n⊓o⇒m<o = m≤n⊓o⇒m≤o
+
+m<n⇒m<n⊔o : ∀ {m n} o → m < n → m < n ⊔ o
+m<n⇒m<n⊔o = m≤n⇒m≤n⊔o
+
+m<n⇒m<o⊔n : ∀ {m n} o → m < n → m < o ⊔ n
+m<n⇒m<o⊔n = m≤n⇒m≤o⊔n
+
+m⊔n<o⇒m<o : ∀ m n {o} → m ⊔ n < o → m < o
+m⊔n<o⇒m<o m n m⊔n<o = <-transʳ (m≤m⊔n m n) m⊔n<o
+
+m⊔n<o⇒n<o : ∀ m n {o} → m ⊔ n < o → n < o
+m⊔n<o⇒n<o m n m⊔n<o = <-transʳ (n≤m⊔n m n) m⊔n<o
 
 ⊔-mono-≤ : _⊔_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
 ⊔-mono-≤ {x} {y} {u} {v} x≤y u≤v with ⊔-sel x u
@@ -1355,6 +1512,85 @@ private
 ⌊n/2⌋≤′n (suc n) = ≤′-step (⌈n/2⌉≤′n n)
 
 ------------------------------------------------------------------------
+-- Properties of _<″_, and _≤″_
+
+-- equivalence to _<ᵇ_
+
+m<ᵇn⇒1+m+[n-1+m]≡n : ∀ m n → T (m <ᵇ n) → suc m + (n ∸ suc m) ≡ n
+m<ᵇn⇒1+m+[n-1+m]≡n m       zero    ()
+m<ᵇn⇒1+m+[n-1+m]≡n zero    (suc n) lt = refl
+m<ᵇn⇒1+m+[n-1+m]≡n (suc m) (suc n) lt = cong suc (m<ᵇn⇒1+m+[n-1+m]≡n m n lt)
+
+<ᵇ⇒<″ : ∀ {m n} → T (m <ᵇ n) → m <″ n
+<ᵇ⇒<″ {m} {n} eq = less-than-or-equal {k = n ∸ suc m} (m<ᵇn⇒1+m+[n-1+m]≡n m n eq)
+
+m<ᵇ1+m+n : ∀ m {n} → T (m <ᵇ suc (m + n))
+m<ᵇ1+m+n zero    = _
+m<ᵇ1+m+n (suc m) = m<ᵇ1+m+n m
+
+<″⇒<ᵇ : ∀ {m n} → m <″ n → T (m <ᵇ n)
+<″⇒<ᵇ {m} (less-than-or-equal refl) = m<ᵇ1+m+n m
+
+-- equivalence to _≤_
+
+≤″⇒≤ : _≤″_ ⇒ _≤_
+≤″⇒≤ {zero}  (less-than-or-equal refl) = z≤n
+≤″⇒≤ {suc m} (less-than-or-equal refl) =
+  s≤s (≤″⇒≤ (less-than-or-equal refl))
+
+≤⇒≤″ : _≤_ ⇒ _≤″_
+≤⇒≤″ m≤n = less-than-or-equal (proof m≤n)
+  where
+  k : ∀ m n → m ≤ n → ℕ
+  k zero    n       _   = n
+  k (suc m) zero    ()
+  k (suc m) (suc n) m≤n = k m n (≤-pred m≤n)
+
+  proof : ∀ {m n} (m≤n : m ≤ n) → m + k m n m≤n ≡ n
+  proof z≤n       = refl
+  proof (s≤s m≤n) = cong suc (proof m≤n)
+
+-- decidability
+
+-- NB: we use the builtin function `_<ᵇ_ : (m n : ℕ) → Bool` here so
+-- that the function quickly decides whether to return `yes` or `no`.
+-- It sill takes a linear amount of time to generate the proof if it
+-- is inspected. We expect the main benefit to be visible for compiled
+-- code: the backend erases proofs.
+
+infix 4 _<″?_ _≤″?_ _≥″?_ _>″?_
+
+_<″?_ : Decidable _<″_
+m <″? n = map′ <ᵇ⇒<″ <″⇒<ᵇ (T? (m <ᵇ n))
+
+_≤″?_ : Decidable _≤″_
+zero  ≤″? n = yes (less-than-or-equal refl)
+suc m ≤″? n = m <″? n
+
+_≥″?_ : Decidable _≥″_
+_≥″?_ = flip _≤″?_
+
+_>″?_ : Decidable _>″_
+_>″?_ = flip _<″?_
+
+-- irrelevance
+
+≤″-irrelevant : Irrelevant _≤″_
+≤″-irrelevant {m} (less-than-or-equal {k₁} eq₁)
+                  (less-than-or-equal {k₂} eq₂)
+  with +-cancelˡ-≡ m (trans eq₁ (sym eq₂))
+... | refl = cong less-than-or-equal (≡-irrelevant eq₁ eq₂)
+
+<″-irrelevant : Irrelevant _<″_
+<″-irrelevant = ≤″-irrelevant
+
+>″-irrelevant : Irrelevant _>″_
+>″-irrelevant = ≤″-irrelevant
+
+≥″-irrelevant : Irrelevant _≥″_
+≥″-irrelevant = ≤″-irrelevant
+
+------------------------------------------------------------------------
 -- Other properties
 
 -- If there is an injection from a type to ℕ, then the type has
@@ -1364,18 +1600,18 @@ eq? : ∀ {a} {A : Set a} → A ↣ ℕ → Decidable {A = A} _≡_
 eq? inj = via-injection inj _≟_
 
 ------------------------------------------------------------------------
--- Modules for reasoning about natural number relations
+-- A module for reasoning about the _≤_ and _<_ relations
 
--- A module for reasoning about the _≤_ relation
 module ≤-Reasoning where
-  open import Relation.Binary.PartialOrderReasoning
-    (DecTotalOrder.poset ≤-decTotalOrder) public
+  open import Relation.Binary.Reasoning.Base.Triple
+    ≤-isPreorder
+    <-trans
+    (resp₂ _<_)
+    <⇒≤
+    <-transˡ
+    <-transʳ
+    public
     hiding (_≈⟨_⟩_)
-
-  infixr 2 _<⟨_⟩_
-
-  _<⟨_⟩_ : ∀ x {y z} → x < y → y IsRelatedTo z → suc x IsRelatedTo z
-  x <⟨ x<y ⟩ y≤z = suc x ≤⟨ x<y ⟩ y≤z
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
@@ -1519,4 +1755,17 @@ im≡jm+n⇒[i∸j]m≡n i j m n eq = begin
 {-# WARNING_ON_USAGE ≤+≢⇒<
 "Warning: ≤+≢⇒< was deprecated in v0.17.
 Please use ≤∧≢⇒< instead."
+#-}
+
+-- Version 0.18
+
+≤-irrelevance = ≤-irrelevant
+{-# WARNING_ON_USAGE ≤-irrelevance
+"Warning: ≤-irrelevance was deprecated in v0.18.
+Please use ≤-irrelevant instead."
+#-}
+<-irrelevance = <-irrelevant
+{-# WARNING_ON_USAGE <-irrelevance
+"Warning: <-irrelevance was deprecated in v0.18.
+Please use <-irrelevant instead."
 #-}
