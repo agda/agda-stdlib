@@ -13,7 +13,7 @@ open import Relation.Binary
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl; sym; cong; cong₂)
-import Relation.Binary.PreorderReasoning as PreR
+import Relation.Binary.Reasoning.Preorder as PreR
 
 ------------------------------------------------------------------------
 -- _◅◅_

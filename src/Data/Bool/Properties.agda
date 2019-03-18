@@ -21,7 +21,8 @@ open import Level using (0ℓ)
 open import Relation.Binary.Core using (Decidable)
 open import Relation.Binary.PropositionalEquality hiding ([_])
 open import Relation.Nullary using (yes; no)
-open import Relation.Unary using (Irrelevant)
+open import Relation.Nullary.Decidable using (True)
+open import Relation.Unary as U using (Irrelevant)
 
 open import Algebra.FunctionProperties (_≡_ {A = Bool})
 open import Algebra.Structures (_≡_ {A = Bool})
@@ -449,9 +450,17 @@ T-∨ {true}  {b₂}    = equivalence inj₁ (const _)
 T-∨ {false} {true}  = equivalence inj₂ (const _)
 T-∨ {false} {false} = equivalence inj₁ [ id , id ]
 
-T-irrelevance : Irrelevant T
-T-irrelevance {true}  _  _  = refl
-T-irrelevance {false} () ()
+T-irrelevant : Irrelevant T
+T-irrelevant {true}  _  _  = refl
+T-irrelevant {false} () ()
+
+T? : U.Decidable T
+T? true  = yes _
+T? false = no (λ ())
+
+T?-diag : ∀ b → T b → True (T? b)
+T?-diag true  _ = _
+T?-diag false ()
 
 push-function-into-if :
   ∀ {a b} {A : Set a} {B : Set b} (f : A → B) x {y z} →
@@ -572,8 +581,16 @@ commutativeRing-xor-∧     = xor-∧-commutativeRing
 "Warning: commutativeRing-xor-∧ was deprecated in v0.15.
 Please use xor-∧-commutativeRing instead."
 #-}
-proof-irrelevance = T-irrelevance
+proof-irrelevance = T-irrelevant
 {-# WARNING_ON_USAGE proof-irrelevance
 "Warning: proof-irrelevance was deprecated in v0.15.
-Please use T-irrelevance instead."
+Please use T-irrelevant instead."
+#-}
+
+-- Version 0.18
+
+T-irrelevance = T-irrelevant
+{-# WARNING_ON_USAGE T-irrelevance
+"Warning: T-irrelevance was deprecated in v0.18.
+Please use T-irrelevant instead."
 #-}

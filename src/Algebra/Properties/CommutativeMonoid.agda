@@ -23,7 +23,7 @@ import Data.Fin.Properties as FP
 open import Data.Fin.Permutation as Perm using (Permutation; Permutation′; _⟨$⟩ˡ_; _⟨$⟩ʳ_)
 open import Data.Fin.Permutation.Components as PermC
 open import Data.Table as Table
-open import Data.Table.Relation.Equality as TE using (_≗_)
+open import Data.Table.Relation.Binary.Equality as TE using (_≗_)
 open import Data.Unit using (tt)
 import Data.Table.Properties as TP
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -44,7 +44,7 @@ open CommutativeMonoid M
   ; comm      to +-comm
   )
 open import Algebra.FunctionProperties _≈_
-open import Relation.Binary.EqReasoning setoid
+open import Relation.Binary.Reasoning.Setoid setoid
 
 module _ {n} where
   open B.Setoid (TE.setoid setoid n) public
@@ -149,7 +149,7 @@ sumₜ-permute {suc m} {suc n} t π = begin
 
 select-transpose : ∀ {n} t (i j : Fin n) → lookup t i ≈ lookup t j → ∀ k → (lookup (select 0# j t) ∘ PermC.transpose i j) k ≈ lookup (select 0# i t) k
 select-transpose _ i j e k with k FP.≟ i
-... | yes p rewrite proj₂ (P.≡-≟-identity FP._≟_ {j} P.refl) = sym e
+... | yes p rewrite P.≡-≟-identity FP._≟_ {j} P.refl = sym e
 ... | no ¬p with k FP.≟ j
 ...   | no ¬q rewrite proj₂ (P.≢-≟-identity FP._≟_ ¬q) = refl
 ...   | yes q rewrite proj₂ (P.≢-≟-identity FP._≟_

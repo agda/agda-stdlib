@@ -169,3 +169,14 @@ module PlainMorphism {i o c r} {I : Set i} {O : Set o} where
       X.≈
       P.subst X.Carrier eq₂ (P.subst X.Carrier eq₁ x)
     lemma refl refl = X.refl
+
+------------------------------------------------------------------------
+-- All and any
+
+-- Membership.
+
+infix 4 _∈_
+
+_∈_ : ∀ {i o c r ℓ} {I : Set i} {O : Set o}
+      {C : Container I O c r} {X : Pred I (i ⊔ ℓ)} → IREL X (⟦ C ⟧ X) _
+_∈_ {C = C} {X} x xs = ◇ C {X = X} ((x ≅_) ⟨∘⟩ proj₂) (-, xs)

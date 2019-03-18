@@ -11,8 +11,8 @@ module Data.Maybe where
 open import Data.Empty using (⊥)
 open import Data.Unit using (⊤)
 open import Data.Bool.Base using (T)
-open import Data.Maybe.All
-open import Data.Maybe.Any
+open import Data.Maybe.Relation.Unary.All
+open import Data.Maybe.Relation.Unary.Any
 
 ------------------------------------------------------------------------
 -- The base type and some operations

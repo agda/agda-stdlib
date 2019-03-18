@@ -9,9 +9,11 @@
 module Data.Container.Core where
 
 open import Level
-open import Data.Product
+open import Data.Product as Prod using (Σ-syntax)
 open import Function
-open import Relation.Unary using (Pred)
+open import Function.Equality using (_⟨$⟩_)
+open import Function.Inverse using (_↔_; module Inverse)
+open import Relation.Unary using (Pred; _⊆_)
 
 -- Definition of Containers
 
@@ -21,14 +23,20 @@ record Container (s p : Level) : Set (suc (s ⊔ p)) where
   field
     Shape    : Set s
     Position : Shape → Set p
-open Container
+open Container public
 
 -- The semantics ("extension") of a container.
 
 ⟦_⟧ : ∀ {s p ℓ} → Container s p → Set ℓ → Set (s ⊔ p ⊔ ℓ)
 ⟦ S ▷ P ⟧ X = Σ[ s ∈ S ] (P s → X)
 
--- Representation of container morphisms.
+-- The extension is a functor
+
+map : ∀ {s p x y} {C : Container s p} {X : Set x} {Y : Set y} →
+      (X → Y) → ⟦ C ⟧ X → ⟦ C ⟧ Y
+map f = Prod.map₂ (f ∘_)
+
+-- Container morphisms
 
 record _⇒_ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂)
            : Set (s₁ ⊔ s₂ ⊔ p₁ ⊔ p₂) where
@@ -36,20 +44,27 @@ record _⇒_ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Containe
   field
     shape    : Shape C₁ → Shape C₂
     position : ∀ {s} → Position C₂ (shape s) → Position C₁ s
+
+  ⟪_⟫ : ∀ {x} {X : Set x} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X
+  ⟪_⟫ = Prod.map shape (_∘′ position)
+
 open _⇒_ public
 
--- Interpretation of _⇒_.
+-- Linear container morphisms
 
-⟪_⟫ : ∀ {s₁ s₂ p₁ p₂ x} {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂} →
-      C₁ ⇒ C₂ → {X : Set x} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X
-⟪ m ⟫ = map (shape m) (_∘ position m)
+record _⊸_ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂)
+  : Set (s₁ ⊔ s₂ ⊔ p₁ ⊔ p₂) where
+  field
+    shape⊸    : Shape C₁ → Shape C₂
+    position⊸ : ∀ {s} → Position C₂ (shape⊸ s) ↔ Position C₁ s
 
--- All and Any
+  morphism : C₁ ⇒ C₂
+  morphism = record
+    { shape    = shape⊸
+    ; position = _⟨$⟩_ (Inverse.to position⊸)
+    }
 
-module _ {s p} {C : Container s p} {x} {X : Set x} where
+  ⟪_⟫⊸ : ∀ {x} {X : Set x} → ⟦ C₁ ⟧ X → ⟦ C₂ ⟧ X
+  ⟪_⟫⊸ = ⟪ morphism ⟫
 
-  □ : ∀ {ℓ} → Pred X ℓ → Pred (⟦ C ⟧ X) (p ⊔ ℓ)
-  □ P (s , f) = ∀ p → P (f p)
-
-  ◇ : ∀ {ℓ} → Pred X ℓ → Pred (⟦ C ⟧ X) (p ⊔ ℓ)
-  ◇ P (s , f) = ∃ λ p → P (f p)
+open _⊸_ public using (shape⊸; position⊸; ⟪_⟫⊸)

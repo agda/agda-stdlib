@@ -8,7 +8,7 @@
 
 module Data.List.Base where
 
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Bool.Base as Bool

@@ -25,6 +25,9 @@ open import Agda.Builtin.Nat public
 ------------------------------------------------------------------------
 -- Standard ordering relations
 
+open import Agda.Builtin.Nat public
+  using () renaming (_==_ to _≡ᵇ_; _<_ to _<ᵇ_)
+
 infix 4 _≤_ _<_ _≥_ _>_ _≰_ _≮_ _≱_ _≯_
 
 data _≤_ : Rel ℕ 0ℓ where
@@ -56,7 +59,7 @@ a ≯ b = ¬ a > b
 -- Arithmetic
 
 open import Agda.Builtin.Nat public
-  using (_+_; _*_ ) renaming (_-_ to _∸_)
+  using (_+_; _*_) renaming (_-_ to _∸_)
 
 pred : ℕ → ℕ
 pred zero    = zero
@@ -148,6 +151,24 @@ m ≥″ n = n ≤″ m
 
 _>″_ : Rel ℕ 0ℓ
 m >″ n = n <″ m
+
+------------------------------------------------------------------------
+-- Useful for induction when you have an upper bound.
+
+data _≤‴_ : ℕ → ℕ → Set where
+  ≤‴-refl : ∀{m} → m ≤‴ m
+  ≤‴-step : ∀{m n} → suc m ≤‴ n → m ≤‴ n
+
+infix 4 _≤‴_ _<‴_ _≥‴_ _>‴_
+
+_<‴_ : Rel ℕ 0ℓ
+m <‴ n = suc m ≤‴ n
+
+_≥‴_ : Rel ℕ 0ℓ
+m ≥‴ n = n ≤‴ m
+
+_>‴_ : Rel ℕ 0ℓ
+m >‴ n = n <‴ m
 
 ------------------------------------------------------------------------
 -- A comparison view. Taken from "View from the left"

@@ -20,7 +20,7 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 open Semiring S renaming (zero to *-zero)
-open import Relation.Binary.EqReasoning setoid
+open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
 -- Operations

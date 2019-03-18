@@ -11,7 +11,7 @@ module Codata.Musical.M where
 open import Codata.Musical.Notation
 open import Level
 open import Data.Product hiding (map)
-open import Data.Container.Core
+open import Data.Container.Core hiding (map)
 
 -- The family of M-types.
 
@@ -20,12 +20,12 @@ data M {s p} (C : Container s p) : Set (s ⊔ p) where
 
 -- Projections.
 
-module _ {s p} (C : Container s p) (open Container C) where
+module _ {s p} (C : Container s p) where
 
-  head : M C → Shape
+  head : M C → Shape C
   head (inf (x , _)) = x
 
-  tail : (x : M C) → Position (head x) → M C
+  tail : (x : M C) → Position C (head x) → M C
   tail (inf (x , f)) b = ♭ (f b)
 
 -- map

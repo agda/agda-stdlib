@@ -237,8 +237,8 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
   }
 
 -- Other properties
-≤-irrelevance : ∀ {n} → Irrelevant (_≤_ {n})
-≤-irrelevance = ℕₚ.≤-irrelevance
+≤-irrelevant : ∀ {n} → Irrelevant (_≤_ {n})
+≤-irrelevant = ℕₚ.≤-irrelevant
 
 ------------------------------------------------------------------------
 -- Properties of _<_
@@ -297,8 +297,8 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
   }
 
 -- Other properties
-<-irrelevance : ∀ {n} → Irrelevant (_<_ {n})
-<-irrelevance = ℕₚ.<-irrelevance
+<-irrelevant : ∀ {n} → Irrelevant (_<_ {n})
+<-irrelevant = ℕₚ.<-irrelevant
 
 <⇒≢ : ∀ {n} {i j : Fin n} → i < j → i ≢ j
 <⇒≢ i<i refl = ℕₚ.n≮n _ i<i
@@ -314,7 +314,7 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
 -- inject
 
 toℕ-inject : ∀ {n} {i : Fin n} (j : Fin′ i) →
-               toℕ (inject j) ≡ toℕ j
+             toℕ (inject j) ≡ toℕ j
 toℕ-inject {i = zero}  ()
 toℕ-inject {i = suc i} zero    = refl
 toℕ-inject {i = suc i} (suc j) = cong suc (toℕ-inject j)
@@ -339,6 +339,39 @@ inject₁-injective {i = suc i} {suc j} i≡j =
 toℕ-inject₁ : ∀ {n} (i : Fin n) → toℕ (inject₁ i) ≡ toℕ i
 toℕ-inject₁ zero    = refl
 toℕ-inject₁ (suc i) = cong suc (toℕ-inject₁ i)
+
+toℕ-inject₁-≢ : ∀ {n}(i : Fin n) → n ≢ toℕ (inject₁ i)
+toℕ-inject₁-≢ zero = λ ()
+toℕ-inject₁-≢ (suc i) = λ p → toℕ-inject₁-≢ i (ℕₚ.suc-injective p)
+
+------------------------------------------------------------------------
+-- inject₁ and lower₁
+
+inject₁-lower₁ : ∀ {n} (i : Fin (suc n)) (n≢i : n ≢ toℕ i) →
+                 inject₁ (lower₁ i n≢i) ≡ i
+inject₁-lower₁ {zero}  zero     0≢0     = contradiction refl 0≢0
+inject₁-lower₁ {zero}  (suc ()) _
+inject₁-lower₁ {suc n} zero     _       = refl
+inject₁-lower₁ {suc n} (suc i)  n+1≢i+1 =
+  cong suc (inject₁-lower₁ i  (n+1≢i+1 ∘ cong suc))
+
+lower₁-inject₁′ : ∀ {n} (i : Fin n) (n≢i : n ≢ toℕ (inject₁ i)) →
+                  lower₁ (inject₁ i) n≢i ≡ i
+lower₁-inject₁′ zero    _       = refl
+lower₁-inject₁′ (suc i) n+1≢i+1 =
+  cong suc (lower₁-inject₁′ i (n+1≢i+1 ∘ cong suc))
+
+lower₁-inject₁ : ∀ {n} (i : Fin n) →
+                 lower₁ (inject₁ i) (toℕ-inject₁-≢ i) ≡ i
+lower₁-inject₁ i = lower₁-inject₁′ i (toℕ-inject₁-≢ i)
+
+lower₁-irrelevant : ∀ {n} (i : Fin (suc n)) n≢i₁ n≢i₂ →
+             lower₁ {n} i n≢i₁ ≡ lower₁ {n} i n≢i₂
+lower₁-irrelevant {zero}  zero     0≢0 _ = contradiction refl 0≢0
+lower₁-irrelevant {zero}  (suc ()) _   _
+lower₁-irrelevant {suc n} zero     _   _ = refl
+lower₁-irrelevant {suc n} (suc i)  _   _ =
+  cong suc (lower₁-irrelevant i _ _)
 
 ------------------------------------------------------------------------
 -- inject≤
@@ -639,4 +672,17 @@ Please use toℕ-inject≤ instead."
 {-# WARNING_ON_USAGE ≤+≢⇒<
 "Warning: ≤+≢⇒< was deprecated in v0.17.
 Please use ≤∧≢⇒< instead."
+#-}
+
+-- Version 0.18
+
+≤-irrelevance = ≤-irrelevant
+{-# WARNING_ON_USAGE ≤-irrelevance
+"Warning: ≤-irrelevance was deprecated in v0.18.
+Please use ≤-irrelevant instead."
+#-}
+<-irrelevance = <-irrelevant
+{-# WARNING_ON_USAGE <-irrelevance
+"Warning: <-irrelevance was deprecated in v0.18.
+Please use <-irrelevant instead."
 #-}

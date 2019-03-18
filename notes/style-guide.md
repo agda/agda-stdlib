@@ -22,6 +22,9 @@ This is very much a work-in-progress and is not exhaustive.
 * Functions arguments should be implicit if they can "almost always" be inferred. If there are common
   cases where they cannot be inferred then they should be left explicit.
 
+* If there are lots of implicit arguments that are common to a set of proofs they should be
+  extracted by using an anonymous module (or possibly the new `variable` keyword in Agda 2.6.0).
+
 ## Naming conventions
 
 * Names should be descriptive - i.e. given the name of a proof and the module it lives in
@@ -55,7 +58,30 @@ This is very much a work-in-progress and is not exhaustive.
 * If the relevant unicode characters are available, negated forms of relations should be used over
   the `¬` symbol (e.g. `m+n≮n` should be used instead of `¬m+n<n`).
 
+#### Functions and relations over specific datatypes
+
+* When defining a new relation over a datatype (e.g. `Data.List.Relation.Binary.Pointwise`)
+  it is often common to define how to introduce and eliminate that relation over various simple functions
+  (e.g. `map`) over that datatype:
+  ```agda
+  map⁺ : Pointwise (λ a b → R (f a) (g b)) as bs → Pointwise R (map f as) (map g bs)
+  map⁻ : Pointwise R (map f as) (map g bs) → Pointwise (λ a b → R (f a) (g b)) as bs
+  ```
+  Such elimination and introduction proofs are called the name of the function superscripted with either
+  a `+` or `-` accordingly.
 
 ## Other miscellaneous points
 
 * `where` blocks are preferred rather than the `let` construction.
+
+* If a type is split over two lines then the arrow should go at the end of the first line rather than
+  the beginning of the second line, i.e.
+  ```
+  foo : VeryLongType →
+                B
+  ```
+  rather than
+  ```
+  foo : VeryLongType
+                → B
+  ```

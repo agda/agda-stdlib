@@ -14,10 +14,10 @@ import Algebra.FunctionProperties as FP
 open import Algebra.Structures
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Product as Prod hiding (swap)
-open import Data.Product.Relation.Pointwise.NonDependent
+open import Data.Product.Function.NonDependent.Propositional
 open import Data.Sum as Sum
 open import Data.Sum.Properties using (swap-involutive)
-open import Data.Sum.Relation.Pointwise using (_⊎-cong_)
+open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit using (⊤)
 open import Level using (Level; Lift; lower; 0ℓ; suc)
 open import Function

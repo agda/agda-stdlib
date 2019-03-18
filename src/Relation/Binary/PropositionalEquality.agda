@@ -76,18 +76,6 @@ preorder A = record
   ; isPreorder = isPreorder
   }
 
-module _ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) {a b : A} where
-
-  ≡-≟-identity : a ≡ b → ∃ λ eq → a ≟ b ≡ yes eq
-  ≡-≟-identity eq with a ≟ b
-  ... | yes p = p , refl
-  ... | no ¬p = ⊥-elim (¬p eq)
-
-  ≢-≟-identity : a ≢ b → ∃ λ ¬eq → a ≟ b ≡ no ¬eq
-  ≢-≟-identity ¬eq with a ≟ b
-  ... | yes p = ⊥-elim (¬eq p)
-  ... | no ¬p = ¬p , refl
-
 ------------------------------------------------------------------------
 -- Pointwise equality
 
@@ -197,29 +185,32 @@ extensionality-for-lower-levels a₂ b₂ ext f≡g =
 isPropositional : ∀ {a} → Set a → Set a
 isPropositional A = (a b : A) → a ≡ b
 
+
+module _ {a} {A : Set a} {x y : A} where
+
 ------------------------------------------------------------------------
 -- Various equality rearrangement lemmas
 
-trans-reflʳ :
-  ∀ {a} {A : Set a} {x y : A} (p : x ≡ y) →
-  trans p refl ≡ p
-trans-reflʳ refl = refl
+  trans-reflʳ : (p : x ≡ y) → trans p refl ≡ p
+  trans-reflʳ refl = refl
 
-trans-assoc :
-  ∀ {a} {A : Set a} {x y z u : A}
-  (p : x ≡ y) {q : y ≡ z} {r : z ≡ u} →
-  trans (trans p q) r ≡ trans p (trans q r)
-trans-assoc refl = refl
+  trans-assoc : ∀ {z u : A} (p : x ≡ y) {q : y ≡ z} {r : z ≡ u} →
+                trans (trans p q) r ≡ trans p (trans q r)
+  trans-assoc refl = refl
 
-trans-symˡ :
-  ∀ {a} {A : Set a} {x y : A} (p : x ≡ y) →
-  trans (sym p) p ≡ refl
-trans-symˡ refl = refl
+  trans-symˡ : (p : x ≡ y) → trans (sym p) p ≡ refl
+  trans-symˡ refl = refl
 
-trans-symʳ :
-  ∀ {a} {A : Set a} {x y : A} (p : x ≡ y) →
-  trans p (sym p) ≡ refl
-trans-symʳ refl = refl
+  trans-symʳ : (p : x ≡ y) → trans p (sym p) ≡ refl
+  trans-symʳ refl = refl
+
+  trans-injectiveˡ : ∀ {z} {p₁ p₂ : x ≡ y} (q : y ≡ z) →
+                     trans p₁ q ≡ trans p₂ q → p₁ ≡ p₂
+  trans-injectiveˡ refl = subst₂ _≡_ (trans-reflʳ _) (trans-reflʳ _)
+
+  trans-injectiveʳ : ∀ {z} (p : x ≡ y) {q₁ q₂ : y ≡ z} →
+                     trans p q₁ ≡ trans p q₂ → q₁ ≡ q₂
+  trans-injectiveʳ refl eq = eq
 
 cong-id :
   ∀ {a} {A : Set a} {x y : A} (p : x ≡ y) →
@@ -233,11 +224,23 @@ cong-∘ :
   cong (f ∘ g) p ≡ cong f (cong g p)
 cong-∘ refl = refl
 
-subst-subst :
-  ∀ {a p} {A : Set a} {P : A → Set p} {x y z : A}
-  (x≡y : x ≡ y) {y≡z : y ≡ z} {p : P x} →
-  subst P y≡z (subst P x≡y p) ≡ subst P (trans x≡y y≡z) p
-subst-subst refl = refl
+module _ {a p} {A : Set a} {P : A → Set p} {x y : A} where
+
+  subst-injective : ∀ (x≡y : x ≡ y) {p q : P x} →
+    subst P x≡y p ≡ subst P x≡y q → p ≡ q
+  subst-injective refl p≡q = p≡q
+
+  subst-subst : ∀ {z} (x≡y : x ≡ y) {y≡z : y ≡ z} {p : P x} →
+    subst P y≡z (subst P x≡y p) ≡ subst P (trans x≡y y≡z) p
+  subst-subst refl = refl
+
+  subst-subst-sym : (x≡y : x ≡ y) {p : P y} →
+    subst P x≡y (subst P (sym x≡y) p) ≡ p
+  subst-subst-sym refl = refl
+
+  subst-sym-subst : (x≡y : x ≡ y) {p : P x} →
+    subst P (sym x≡y) (subst P x≡y p) ≡ p
+  subst-sym-subst refl = refl
 
 subst-∘ :
   ∀ {a b p} {A : Set a} {B : Set b} {x y : A} {P : B → Set p}
@@ -245,18 +248,6 @@ subst-∘ :
   (x≡y : x ≡ y) {p : P (f x)} →
   subst (P ∘ f) x≡y p ≡ subst P (cong f x≡y) p
 subst-∘ refl = refl
-
-subst-subst-sym :
-  ∀ {a p} {A : Set a} {P : A → Set p} {x y : A}
-  (x≡y : x ≡ y) {p : P y} →
-  subst P x≡y (subst P (sym x≡y) p) ≡ p
-subst-subst-sym refl = refl
-
-subst-sym-subst :
-  ∀ {a p} {A : Set a} {P : A → Set p} {x y : A}
-  (x≡y : x ≡ y) {p : P x} →
-  subst P (sym x≡y) (subst P x≡y p) ≡ p
-subst-sym-subst refl = refl
 
 subst-application :
   ∀ {a₁ a₂ b₁ b₂} {A₁ : Set a₁} {A₂ : Set a₂}
@@ -296,3 +287,47 @@ cong-≡id {f = f} {x} f≡id =
   f≡id (f x)                                                    ∎
   where
   open ≡-Reasoning
+
+module Constant⇒UIP
+       {a} {A : Set a} (f : _≡_ {A = A} ⇒ _≡_)
+       (f-constant : ∀ {a b} (p q : a ≡ b) → f p ≡ f q)
+       where
+
+  ≡-canonical : ∀ {a b} (p : a ≡ b) → trans (sym (f refl)) (f p) ≡ p
+  ≡-canonical refl = trans-symˡ (f refl)
+
+  ≡-irrelevant : Irrelevant {A = A} _≡_
+  ≡-irrelevant p q = begin
+    p                          ≡⟨ sym (≡-canonical p) ⟩
+    trans (sym (f refl)) (f p) ≡⟨ cong (trans _) (f-constant p q) ⟩
+    trans (sym (f refl)) (f q) ≡⟨ ≡-canonical q ⟩
+    q                          ∎ where open ≡-Reasoning
+
+module Decidable⇒UIP
+       {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A}))
+       where
+
+  ≡-normalise : _≡_ {A = A} ⇒ _≡_
+  ≡-normalise {a} {b} a≡b with a ≟ b
+  ... | yes p = p
+  ... | no ¬p = ⊥-elim (¬p a≡b)
+
+  ≡-normalise-constant : ∀ {a b} (p q : a ≡ b) → ≡-normalise p ≡ ≡-normalise q
+  ≡-normalise-constant {a} {b} p q with a ≟ b
+  ... | yes _ = refl
+  ... | no ¬p = ⊥-elim (¬p p)
+
+  ≡-irrelevant : Irrelevant {A = A} _≡_
+  ≡-irrelevant = Constant⇒UIP.≡-irrelevant ≡-normalise ≡-normalise-constant
+
+module _ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) {a : A} where
+
+  ≡-≟-identity : ∀ {b} (eq : a ≡ b) → a ≟ b ≡ yes eq
+  ≡-≟-identity {b} eq with a ≟ b
+  ... | yes p = cong yes (Decidable⇒UIP.≡-irrelevant _≟_ p eq)
+  ... | no ¬p = ⊥-elim (¬p eq)
+
+  ≢-≟-identity : ∀ {b} → a ≢ b → ∃ λ ¬eq → a ≟ b ≡ no ¬eq
+  ≢-≟-identity {b} ¬eq with a ≟ b
+  ... | yes p = ⊥-elim (¬eq p)
+  ... | no ¬p = ¬p , refl
