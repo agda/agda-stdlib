@@ -52,9 +52,3 @@ private
 
   unit-test : P ('x' ==_)
   unit-test = p _
-
-------------------------------------------------------------------------
--- Decidable equality
-
-decSetoid : DecSetoid _ _
-decSetoid = PropEq.decSetoid _≟_

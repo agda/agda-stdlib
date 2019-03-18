@@ -39,6 +39,9 @@ module _ {a} {A : Set a} where
   subst : ∀ {p} → Substitutive {A = A} _≡_ p
   subst P refl p = p
 
+  cong : ∀ {b} {B : Set b} (f : A → B) {x y} → x ≡ y → f x ≡ f y
+  cong f refl = refl
+
   respˡ : ∀ {ℓ} (∼ : Rel A ℓ) → ∼ Respectsˡ _≡_
   respˡ _∼_ refl x∼y = x∼y
 

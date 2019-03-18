@@ -54,12 +54,6 @@ private
   unit-test = p _
 
 ------------------------------------------------------------------------
--- Equality
-
-decSetoid : DecSetoid _ _
-decSetoid = PropEq.decSetoid _≟_
-
-------------------------------------------------------------------------
 -- Other properties
 
 toList∘fromList : ∀ s → toList (fromList s) ≡ s
