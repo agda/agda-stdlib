@@ -9,6 +9,8 @@
 -- The search tree invariant is specified using the technique
 -- described by Conor McBride in his talk "Pivotal pragmatism".
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary using (StrictTotalOrder)
 
 module Data.AVL.NonEmpty
@@ -28,7 +30,7 @@ open import Relation.Unary
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
 open import Data.AVL.Value Eq.setoid
 import Data.AVL.Indexed strictTotalOrder as Indexed
-open Indexed using (K&_ ; ⊥⁺ ; ⊤⁺; node; toList)
+open Indexed using (K&_ ; ⊥⁺ ; ⊤⁺; ⊥⁺<⊤⁺; ⊥⁺<[_]<⊤⁺; ⊥⁺<[_]; [_]<⊤⁺; node; toList)
 
 ------------------------------------------------------------------------
 -- Types and functions with hidden indices
@@ -45,29 +47,29 @@ module _ {v} {V : Value v} where
     Val = Value.family V
 
   singleton : (k : Key) → Val k → Tree⁺ V
-  singleton k v = tree (Indexed.singleton k v _)
+  singleton k v = tree (Indexed.singleton k v ⊥⁺<[ k ]<⊤⁺)
 
   insert : (k : Key) → Val k → Tree⁺ V → Tree⁺ V
-  insert k v (tree t) with Indexed.insert k v t _
+  insert k v (tree t) with Indexed.insert k v t ⊥⁺<[ k ]<⊤⁺
   ... | Indexed.0# , t′ = tree t′
   ... | Indexed.1# , t′ = tree t′
   ... | Indexed.## , t′
 
   insertWith : (k : Key) → (Maybe (Val k) → Val k) → Tree⁺ V → Tree⁺ V
-  insertWith k f (tree t) with Indexed.insertWith k f t _
+  insertWith k f (tree t) with Indexed.insertWith k f t ⊥⁺<[ k ]<⊤⁺
   ... | Indexed.0# , t′ = tree t′
   ... | Indexed.1# , t′ = tree t′
   ... | Indexed.## , t′
 
   delete : Key → Tree⁺ V → Maybe (Tree⁺ V)
-  delete k (tree {h} t) with Indexed.delete k t _
+  delete k (tree {h} t) with Indexed.delete k t ⊥⁺<[ k ]<⊤⁺
   ... | Indexed.1# , t′ = just (tree t′)
   delete k (tree {0}     t) | Indexed.0# , t′ = nothing
   delete k (tree {suc h} t) | Indexed.0# , t′ = just (tree t′)
   ... | Indexed.## , t′
 
   lookup : (k : Key) → Tree⁺ V → Maybe (Val k)
-  lookup k (tree t) = Indexed.lookup k t _
+  lookup k (tree t) = Indexed.lookup k t ⊥⁺<[ k ]<⊤⁺
 
 module _ {v w} {V : Value v} {W : Value w} where
 

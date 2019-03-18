@@ -299,6 +299,10 @@ import README.Inspect
 
 import README.Interleaving
 
+-- Example use case for a trie: a wee generic lexer
+
+import README.Trie
+
 ------------------------------------------------------------------------
 -- Core modules
 ------------------------------------------------------------------------
