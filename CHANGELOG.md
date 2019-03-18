@@ -299,6 +299,12 @@ Non-backwards compatible changes
   * From `Codata.M` to `Codata.Musical.M.Unsafe`.
   * From `Codata.Stream` to `Codata.Musical.Stream.Unsafe`.
 
+* Made `Data.Nat.Unsafe` and `Data.Nat.DivMod.Unsafe` safe by using
+  the safe equality erasure primitive instead of the unsafe one
+  defined in `Relation.Binary.PropositionalEquality.TrustMe`. As the
+  erasure primitive requires the K axiom the two files are now named
+  `Data.Nat.WithK` and `Data.Nat.DivMod.WithK`.
+
 * Moved `decSetoid` from `Data.(Char/String).Unsafe` to `Data.(Char/String).Properties`.
 
 Other major changes
