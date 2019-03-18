@@ -305,8 +305,6 @@ Non-backwards compatible changes
   erasure primitive requires the K axiom the two files are now named
   `Data.Nat.WithK` and `Data.Nat.DivMod.WithK`.
 
-* Moved `decSetoid` from `Data.(Char/String).Unsafe` to `Data.(Char/String).Properties`.
-
 Other major changes
 =======
 * The functions `_∷=_` and `_─_` have been removed from `Data.List.Membership.Setoid` as they are subsumed by the more general versions now part of `Data.List.Any`.
