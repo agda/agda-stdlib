@@ -4,6 +4,8 @@
 -- An either-or-both data type, basic type and operations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.These.Base where
 
 open import Level

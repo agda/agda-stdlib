@@ -4,6 +4,8 @@
 -- Non-empty AVL trees, where equality for keys is propositional equality
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary using (Rel; IsStrictTotalOrder; StrictTotalOrder)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; subst)
 
