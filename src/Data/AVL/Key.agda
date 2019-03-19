@@ -45,7 +45,7 @@ open AddExtremaToSet public
 open AddExtremaToOrder _<_ public
   using () renaming
   (_<±_    to _<⁺_
-  ; [_]    to [_]<
+  ; [_]    to [_]ᴿ
   ; ⊥±<⊤±  to ⊥⁺<⊤⁺
   ; [_]<⊤± to [_]<⊤⁺
   ; ⊥±<[_] to ⊥⁺<[_]
@@ -55,7 +55,7 @@ open AddExtremaToOrder _<_ public
 
 infix 4 _<_<_
 
-_<_<_ : Key⁺ → Key → Key⁺ → Set ℓ₂
+_<_<_ : Key⁺ → Key → Key⁺ → Set (a ⊔ ℓ₂)
 l < x < u = l <⁺ [ x ] × [ x ] <⁺ u
 
 -- Properties

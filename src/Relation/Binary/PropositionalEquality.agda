@@ -188,29 +188,32 @@ extensionality-for-lower-levels a₂ b₂ ext f≡g =
 isPropositional : ∀ {a} → Set a → Set a
 isPropositional A = (a b : A) → a ≡ b
 
+
+module _ {a} {A : Set a} {x y : A} where
+
 ------------------------------------------------------------------------
 -- Various equality rearrangement lemmas
 
-trans-reflʳ :
-  ∀ {a} {A : Set a} {x y : A} (p : x ≡ y) →
-  trans p refl ≡ p
-trans-reflʳ refl = refl
+  trans-reflʳ : (p : x ≡ y) → trans p refl ≡ p
+  trans-reflʳ refl = refl
 
-trans-assoc :
-  ∀ {a} {A : Set a} {x y z u : A}
-  (p : x ≡ y) {q : y ≡ z} {r : z ≡ u} →
-  trans (trans p q) r ≡ trans p (trans q r)
-trans-assoc refl = refl
+  trans-assoc : ∀ {z u : A} (p : x ≡ y) {q : y ≡ z} {r : z ≡ u} →
+                trans (trans p q) r ≡ trans p (trans q r)
+  trans-assoc refl = refl
 
-trans-symˡ :
-  ∀ {a} {A : Set a} {x y : A} (p : x ≡ y) →
-  trans (sym p) p ≡ refl
-trans-symˡ refl = refl
+  trans-symˡ : (p : x ≡ y) → trans (sym p) p ≡ refl
+  trans-symˡ refl = refl
 
-trans-symʳ :
-  ∀ {a} {A : Set a} {x y : A} (p : x ≡ y) →
-  trans p (sym p) ≡ refl
-trans-symʳ refl = refl
+  trans-symʳ : (p : x ≡ y) → trans p (sym p) ≡ refl
+  trans-symʳ refl = refl
+
+  trans-injectiveˡ : ∀ {z} {p₁ p₂ : x ≡ y} (q : y ≡ z) →
+                     trans p₁ q ≡ trans p₂ q → p₁ ≡ p₂
+  trans-injectiveˡ refl = subst₂ _≡_ (trans-reflʳ _) (trans-reflʳ _)
+
+  trans-injectiveʳ : ∀ {z} (p : x ≡ y) {q₁ q₂ : y ≡ z} →
+                     trans p q₁ ≡ trans p q₂ → q₁ ≡ q₂
+  trans-injectiveʳ refl eq = eq
 
 cong-id :
   ∀ {a} {A : Set a} {x y : A} (p : x ≡ y) →
@@ -224,11 +227,23 @@ cong-∘ :
   cong (f ∘ g) p ≡ cong f (cong g p)
 cong-∘ refl = refl
 
-subst-subst :
-  ∀ {a p} {A : Set a} {P : A → Set p} {x y z : A}
-  (x≡y : x ≡ y) {y≡z : y ≡ z} {p : P x} →
-  subst P y≡z (subst P x≡y p) ≡ subst P (trans x≡y y≡z) p
-subst-subst refl = refl
+module _ {a p} {A : Set a} {P : A → Set p} {x y : A} where
+
+  subst-injective : ∀ (x≡y : x ≡ y) {p q : P x} →
+    subst P x≡y p ≡ subst P x≡y q → p ≡ q
+  subst-injective refl p≡q = p≡q
+
+  subst-subst : ∀ {z} (x≡y : x ≡ y) {y≡z : y ≡ z} {p : P x} →
+    subst P y≡z (subst P x≡y p) ≡ subst P (trans x≡y y≡z) p
+  subst-subst refl = refl
+
+  subst-subst-sym : (x≡y : x ≡ y) {p : P y} →
+    subst P x≡y (subst P (sym x≡y) p) ≡ p
+  subst-subst-sym refl = refl
+
+  subst-sym-subst : (x≡y : x ≡ y) {p : P x} →
+    subst P (sym x≡y) (subst P x≡y p) ≡ p
+  subst-sym-subst refl = refl
 
 subst-∘ :
   ∀ {a b p} {A : Set a} {B : Set b} {x y : A} {P : B → Set p}
@@ -236,18 +251,6 @@ subst-∘ :
   (x≡y : x ≡ y) {p : P (f x)} →
   subst (P ∘ f) x≡y p ≡ subst P (cong f x≡y) p
 subst-∘ refl = refl
-
-subst-subst-sym :
-  ∀ {a p} {A : Set a} {P : A → Set p} {x y : A}
-  (x≡y : x ≡ y) {p : P y} →
-  subst P x≡y (subst P (sym x≡y) p) ≡ p
-subst-subst-sym refl = refl
-
-subst-sym-subst :
-  ∀ {a p} {A : Set a} {P : A → Set p} {x y : A}
-  (x≡y : x ≡ y) {p : P x} →
-  subst P (sym x≡y) (subst P x≡y p) ≡ p
-subst-sym-subst refl = refl
 
 subst-application :
   ∀ {a₁ a₂ b₁ b₂} {A₁ : Set a₁} {A₂ : Set a₂}

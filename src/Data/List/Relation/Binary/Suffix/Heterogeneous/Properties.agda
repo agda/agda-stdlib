@@ -4,6 +4,8 @@
 -- Properties of the heterogeneous suffix relation
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.Relation.Binary.Suffix.Heterogeneous.Properties where
 
 open import Data.List as List

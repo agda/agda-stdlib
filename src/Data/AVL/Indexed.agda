@@ -210,8 +210,8 @@ module _ {v} {V : Value v} where
                ∃ λ i → Tree V l u (i ⊕ h)
   insertWith k f (leaf l<u) l<k<u = (1# , singleton k (f nothing) l<k<u)
   insertWith k f (node (k′ , v′) lp pu bal) (l<k , k<u) with compare k k′
-  ... | tri< k<k′ _ _ = joinˡ⁺ (k′ , v′) (insertWith k f lp (l<k , [ k<k′ ]<)) pu bal
-  ... | tri> _ _ k′<k = joinʳ⁺ (k′ , v′) lp (insertWith k f pu ([ k′<k ]< , k<u)) bal
+  ... | tri< k<k′ _ _ = joinˡ⁺ (k′ , v′) (insertWith k f lp (l<k , [ k<k′ ]ᴿ)) pu bal
+  ... | tri> _ _ k′<k = joinʳ⁺ (k′ , v′) lp (insertWith k f pu ([ k′<k ]ᴿ , k<u)) bal
   ... | tri≈ _ k≈k′ _ = (0# , node (k′ , V≈ k≈k′ (f (just (V≈ (Eq.sym k≈k′) v′)))) lp pu bal)
 
   -- Inserts a key into the tree. If the key already exists, then it
@@ -230,8 +230,8 @@ module _ {v} {V : Value v} where
            ∃ λ i → Tree V l u pred[ i ⊕ h ]
   delete k (leaf l<u) l<k<u = (0# , leaf l<u)
   delete k (node p@(k′ , v) lp pu bal) (l<k , k<u) with compare k′ k
-  ... | tri< k′<k _ _ = joinʳ⁻ _ p lp (delete k pu ([ k′<k ]< , k<u)) bal
-  ... | tri> _ _ k′>k = joinˡ⁻ _ p (delete k lp (l<k , [ k′>k ]<)) pu bal
+  ... | tri< k′<k _ _ = joinʳ⁻ _ p lp (delete k pu ([ k′<k ]ᴿ , k<u)) bal
+  ... | tri> _ _ k′>k = joinˡ⁻ _ p (delete k lp (l<k , [ k′>k ]ᴿ)) pu bal
   ... | tri≈ _ k′≡k _ = join lp pu bal
 
   -- Looks up a key. Logarithmic in the size of the tree (assuming
@@ -240,8 +240,8 @@ module _ {v} {V : Value v} where
   lookup : ∀ {l u h} (k : Key) → Tree V l u h → l < k < u → Maybe (Val k)
   lookup k (leaf _) l<k<u = nothing
   lookup k (node (k′ , v) lk′ k′u _) (l<k , k<u) with compare k′ k
-  ... | tri< k′<k _ _ = lookup k k′u ([ k′<k ]< , k<u)
-  ... | tri> _ _ k′>k = lookup k lk′ (l<k , [ k′>k ]<)
+  ... | tri< k′<k _ _ = lookup k k′u ([ k′<k ]ᴿ , k<u)
+  ... | tri> _ _ k′>k = lookup k lk′ (l<k , [ k′>k ]ᴿ)
   ... | tri≈ _ k′≡k _ = just (V≈ k′≡k v)
 
   -- Converts the tree to an ordered list. Linear in the size of the

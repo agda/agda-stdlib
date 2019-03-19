@@ -322,25 +322,25 @@ proof-irrelevance = ≅-irrelevant
 Please use ≅-irrelevant instead."
 #-}
 
--- Version 0.18
+-- Version 1.0
 
 ≅-irrelevance = ≅-irrelevant
 {-# WARNING_ON_USAGE ≅-irrelevance
-"Warning: ≅-irrelevance was deprecated in v0.18.
+"Warning: ≅-irrelevance was deprecated in v1.0.
 Please use ≅-irrelevant instead."
 #-}
 ≅-heterogeneous-irrelevance = ≅-heterogeneous-irrelevant
 {-# WARNING_ON_USAGE ≅-heterogeneous-irrelevance
-"Warning: ≅-heterogeneous-irrelevance was deprecated in v0.18.
+"Warning: ≅-heterogeneous-irrelevance was deprecated in v1.0.
 Please use ≅-heterogeneous-irrelevant instead."
 #-}
 ≅-heterogeneous-irrelevanceˡ = ≅-heterogeneous-irrelevantˡ
 {-# WARNING_ON_USAGE ≅-heterogeneous-irrelevanceˡ
-"Warning: ≅-heterogeneous-irrelevanceˡ was deprecated in v0.18.
+"Warning: ≅-heterogeneous-irrelevanceˡ was deprecated in v1.0.
 Please use ≅-heterogeneous-irrelevantˡ instead."
 #-}
 ≅-heterogeneous-irrelevanceʳ = ≅-heterogeneous-irrelevantʳ
 {-# WARNING_ON_USAGE ≅-heterogeneous-irrelevanceʳ
-"Warning: ≅-heterogeneous-irrelevanceʳ was deprecated in v0.18.
+"Warning: ≅-heterogeneous-irrelevanceʳ was deprecated in v1.0.
 Please use ≅-heterogeneous-irrelevantʳ instead."
 #-}

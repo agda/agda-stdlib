@@ -53,7 +53,7 @@ Non-backwards compatible changes
   been moved from the existing file `X` to a new file `X.WithK` file
   (e.g. from `Data.AVL.Indexed` to `Data.AVL.Indexed.WithK`). These are as follows:
   - Data.AVL.Indexed                                                 : `node-injective-bal, node-injectiveʳ, node-injectiveˡ`
-  - Data.Container.Indexed                                           : `Eq, Map.composition, Map.identity, PlainMorphism.NT, PlainMorphism.Natural, PlainMorphism.complete, PlainMorphism.natural, PlainMorphism.∘-correct, setoid`
+  - Data.Container.Indexed                                           : `Eq, Map.composition, Map.identity, PlainMorphism.NT, PlainMorphism.Natural, PlainMorphism.complete, PlainMorphism.natural, PlainMorphism.∘-correct, setoid, _∈_`
   - Data.Product.Properties                                          : `,-injectiveʳ`
   - Data.Product.Relation.Binary.Pointwise.Dependent                 : `Pointwise-≡⇒≡, ≡⇒Pointwise-≡, inverse, ↣`
   - Data.Vec.Properties                                              : `++-assoc, []=-irrelevance, foldl-cong, foldr-cong`
@@ -265,6 +265,36 @@ Non-backwards compatible changes
   ```
   All the proofs about `Pointwise` remain untouched.
 
+#### Overhaul of `MonadZero` and `MonadPlus`
+
+* Introduce `RawIApplicativeZero` for an indexed applicative with a zero
+  and `RawAlternative` for an indexed applicative with a zero and a sum.
+
+* `RawIMonadZero` is now packing a `RawIApplicativeZero` rather than a `∅` directly
+
+* Similarly `RawIMonadPlus` is defined in terms of `RawIAlternative` rather than
+  directly packing a _∣_.
+
+* Instances will be broken but usages should still work thanks to re-exports striving
+  to maintain backwards compatibility.
+
+#### Overhaul of `Data.Container`
+
+* `Data.Container` has been split up into the standard hierarchy.
+
+* Moved `Data.Container`'s `All` and `Any` into their own
+  `Data.Container.Relation.Unary.X` module. Made them record types
+  to improve type inference.
+
+* Moved morphisms to `Data.Container.Morphism` and their properties
+  to `Data.Container.Morphism.Properties`.
+
+* Made the index set explicit in `Data.Container.Combinator`'s `Π` and `Σ`.
+
+* Moved `Eq` to `Data.Container.Relation.Binary.Pointwise`
+  (and renamed it to `Pointwise`) and its properties to
+  `Data.Container.Relation.Binary.Pointwise.Properties`.
+
 #### Other
 
 * The proof `sel⇒idem` has been moved from `Algebra.FunctionProperties.Consequences` to
@@ -290,6 +320,11 @@ Non-backwards compatible changes
 * The proofs `toList⁺` and `toList⁻` in `Data.Vec.Relation.Unary.All.Properties` have been swapped
   as they were the opposite way round to similar properties in the rest of the library.
 
+* `Data.List.Relation.Binary.Sublist.Propositional.Solver` has been removed and replaced by
+  `Data.List.Relation.Binary.Sublist.DecPropositional.Solver`.
+
+* The functions `_∷=_` and `_─_` have been removed from `Data.List.Membership.Setoid` as they are subsumed by the more general versions now part of `Data.List.Any`.
+
 * Changed the type of `≡-≟-identity` to make use of the fact that equality
   being decidable implies UIP.
 
@@ -312,16 +347,46 @@ List of new modules
   Codata.M.Properties
   Codata.M.Bisimilarity
 
+  Data.Container.Combinator.Properties
+  Data.Container.Membership
+  Data.Container.Morphism
+  Data.Container.Morphism.Properties
+  Data.Container.Properties
+  Data.Container.Related
+  Data.Container.Relation.Unary.All
+  Data.Container.Relation.Unary.Any
+  Data.Container.Relation.Unary.Any.Properties
+  Data.Container.Relation.Binary.Equality.Setoid
+  Data.Container.Relation.Binary.Pointwise
+  Data.Container.Relation.Binary.Pointwise.Properties
+
   Data.Integer.Divisibility.Properties
   Data.Integer.Divisibility.Signed
   Data.Integer.DivMod
 
   Data.List.Relation.Unary.First
   Data.List.Relation.Unary.First.Properties
+
   Data.List.Relation.Binary.Prefix.Heterogeneous
   Data.List.Relation.Binary.Prefix.Heterogeneous.Properties
   Data.List.Relation.Binary.Suffix.Heterogeneous
   Data.List.Relation.Binary.Suffix.Heterogeneous.Properties
+
+  Data.List.Relation.Binary.Sublist.Heterogeneous
+  Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
+  Data.List.Relation.Binary.Sublist.Homogeneous.Properties
+  Data.List.Relation.Binary.Sublist.Homogeneous.Solver
+  Data.List.Relation.Binary.Sublist.Setoid
+  Data.List.Relation.Binary.Sublist.Setoid.Properties
+  Data.List.Relation.Binary.Sublist.DecSetoid
+  Data.List.Relation.Binary.Sublist.DecSetoid.Properties
+  Data.List.Relation.Binary.Sublist.DecSetoid.Solver
+  Data.List.Relation.Binary.Sublist.Propositional
+  Data.List.Relation.Binary.Sublist.Propositional.Properties
+  Data.List.Relation.Binary.Sublist.DecPropositional
+  Data.List.Relation.Binary.Sublist.DecPropositional.Properties
+  Data.List.Relation.Binary.Sublist.DecPropositional.Solver
+
   Data.List.Relation.Ternary.Interleaving.Setoid
   Data.List.Relation.Ternary.Interleaving.Setoid.Properties
   Data.List.Relation.Ternary.Interleaving.Propositional
@@ -388,8 +453,14 @@ Deprecated features
   ```
 
 * In `Data.List.Relation.Binary.Pointwise`:
-  ```
+  ```agda
   decidable-≡   ↦ Data.List.Properties.≡-dec
+  ```
+
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  filter⁺₁ ↦ all-filter
+  filter⁺₂ ↦ filter⁺
   ```
 
 * In `Data.Nat.Properties`:
@@ -432,11 +503,6 @@ Deprecated features
 Other minor additions
 ---------------------
 
-* Added new proof to `Data.Nat.Properties`:
-  ```agda
-  ≤′-trans : Transitive _≤′_
-  ```
-
 * Added new records to `Algebra`:
   ```agda
   record RawMagma c ℓ : Set (suc (c ⊔ ℓ))
@@ -472,12 +538,27 @@ Other minor additions
   record IsMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
   ```
 
+* Added new proofs to `Category.Monad.State`:
+  ```agda
+  StateTIApplicative     : RawMonad M → RawIApplicative (IStateT S M)
+  StateTIApplicativeZero : RawMonadZero M → RawIApplicativeZero (IStateT S M)
+  StateTIAlternative     : RawMonadPlus M → RawIAlternative (IStateT S M)
+  ```
+
 * Added new functions to `Codata.Colist`:
   ```agda
   fromCowriter : Cowriter W A i → Colist W i
   toCowriter   : Colist A i → Cowriter A ⊤ i
   [_]          : A → Colist A ∞
   chunksOf     : (n : ℕ) → Colist A ∞ → Cowriter (Vec A n) (BoundedVec A n) ∞
+  ```
+
+* Added new proofs to `Codata.Delay.Categorical`:
+  ```agda
+  Sequential.applicativeZero : RawApplicativeZero (λ A → Delay A i)
+
+  Zippy.applicativeZero : RawApplicativeZero (λ A → Delay A i)
+  Zippy.alternative     : RawAlternative (λ A → Delay A i)
   ```
 
 * Added new functions to `Codata.Stream`:
@@ -516,12 +597,19 @@ Other minor additions
 
 * Added new function to `Data.Fin.Base`:
   ```agda
-  cast : m ≡ n → Fin m → Fin n
+  cast   : m ≡ n → Fin m → Fin n
+  lower₁ : (i : Fin (suc n)) → (n ≢ toℕ i) → Fin n
   ```
 
 * Added new proof to `Data.Fin.Properties`:
   ```agda
-  toℕ-cast    : toℕ (cast eq k) ≡ toℕ k
+  toℕ-cast          : toℕ (cast eq k) ≡ toℕ k
+  toℕ-inject₁-≢     : n ≢ toℕ (inject₁ i)
+
+  inject₁-lower₁    : inject₁ (lower₁ i n≢i) ≡ i
+  lower₁-inject₁′   : lower₁ (inject₁ i) n≢i ≡ i
+  lower₁-inject₁    : lower₁ (inject₁ i) (toℕ-inject₁-≢ i) ≡ i
+  lower₁-irrelevant : lower₁ i n≢i₁ ≡ lower₁ i n≢i₂
   ```
 
 * Added new proofs to `Data.Fin.Subset.Properties`:
@@ -643,6 +731,12 @@ Other minor additions
   +-*-ring    : Ring 0ℓ 0ℓ
   ```
 
+* Added new proofs to `Data.List.Categorical`:
+  ```agda
+  applicativeZero : RawApplicativeZero List
+  alternative     : RawAlternative List
+  ```
+
 * Added new operations to `Data.List.Relation.Unary.All`:
   ```agda
   zipWith   : P ∩ Q ⊆ R → All P ∩ All Q ⊆ All R
@@ -656,14 +750,11 @@ Other minor additions
   forM      : All Q xs → (Q ⊆ M ∘′ P) → M (All P xs)
   ```
 
-* Added new operators to `Data.List.Base`:
+* Added new proofs to `Data.List.Relation.Unary.All.Properties`:
   ```agda
-  _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
-  _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
-  _─_     : (xs : List A) → Fin (length xs) → List A
-
-  reverseAcc : List A → List A → List A
+  respects : P Respects _≈_ → (All P) Respects _≋_
   ```
+
   A generalization of single point overwrite `_[_]≔_`
   to single-point modification `_[_]%=_`
   (alias with different argument order: `updateAt`):
@@ -680,6 +771,15 @@ Other minor additions
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
   ```agda
   respects : P Respects _≈_ → (All P) Respects _≋_
+  ─⁺       : All Q xs → All Q (xs Any.─ p)
+  ─⁻       : Q (Any.lookup p) → All Q (xs Any.─ p) → All Q xs
+  ```
+
+* Added new functions to `Data.List.Relation.Unary.Any`:
+  ```agda
+  lookup : Any P xs → A
+  _∷=_   : Any P xs → A → List A
+  _─_    : ∀ xs → Any P xs → List A
   ```
 
 * Added new functions to `Data.List.Base`:
@@ -687,6 +787,12 @@ Other minor additions
   intercalate       : List A → List (List A) → List A
   partitionSumsWith : (A → B ⊎ C) → List A → List B × List C
   partitionSums     : List (A ⊎ B) → List A × List B
+
+  _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
+  _[_]∷=_ : (xs : List A) → Fin (length xs) → A → List A
+  _─_     : (xs : List A) → Fin (length xs) → List A
+
+  reverseAcc : List A → List A → List A
   ```
 
 * Added new proofs to `Data.List.Membership.Propositional.Properties`:
@@ -743,6 +849,12 @@ Other minor additions
   ```agda
   ++-isMagma : IsMagma _↭_ _++_
   ++-magma   : Magma _ _
+  ```
+
+* Added new proofs to `Data.Maybe.Categorical`:
+  ```agda
+  applicativeZero : RawApplicativeZero Maybe
+  alternative     : RawAlternative Maybe
   ```
 
 * Added new proofs to `Data.Maybe.Relation.Unary.All`:
@@ -852,6 +964,8 @@ Other minor additions
   ≥″-irrelevant : Irrelevant _≥″_
   <″-irrelevant : Irrelevant _<″_
   >″-irrelevant : Irrelevant _>″_
+
+  ≤′-trans : Transitive _≤′_
   ```
 
 * Added new proof to `Data.Product.Properties.WithK`:
@@ -1006,6 +1120,9 @@ Other minor additions
 
 * Added new definitions to `Relation.Binary.PropositionalEquality`:
   ```agda
+  trans-injectiveˡ : trans p₁ q ≡ trans p₂ q → p₁ ≡ p₂
+  trans-injectiveʳ : trans p q₁ ≡ trans p q₂ → q₁ ≡ q₂
+  subst-injective  : subst P x≡y p ≡ subst P x≡y q → p ≡ q
   module Constant⇒UIP
   module Decidable⇒UIP
   ```
@@ -1018,7 +1135,13 @@ Other minor additions
 * Added new definitions to `Relation.Binary.Core`:
   ```agda
   Antisym R S E = ∀ {i j} → R i j → S j i → E i j
-  Conn P Q      = ∀ x y → P x y ⊎ Q y x
+
+  Max : REL A B ℓ → B → Set _
+  Min : REL A B ℓ → A → Set _
+
+  Conn P Q = ∀ x y → P x y ⊎ Q y x
+
+  P ⟶ Q Respects _∼_ = ∀ {x y} → x ∼ y → P x → Q y
   ```
 
 * Added new proofs to `Relation.Binary.Lattice`:
@@ -1092,4 +1215,20 @@ Other minor additions
   lookup-tabulate : ∀ {n} → (f : Fin n → A) →
                     ∀ i → let i′ = cast (sym (length-tabulate f)) i
                           in lookup (tabulate f) i′ ≡ f i
+  ```
+
+* Added a third definition of less-than to `Data.Nat.Base` :
+  ```agda
+  _≤‴_ : ℕ → ℕ → Set
+  _<‴_ : Rel ℕ 0ℓ
+  _≥‴_ : Rel ℕ 0ℓ
+  _>‴_ : Rel ℕ 0ℓ
+  ```
+
+* Added new proofs to `Data.Nat.Properties` :
+  ```agda
+  ≤‴⇒≤″ : ∀{m n} → m ≤‴ n → m ≤″ n
+  m≤‴m+k : ∀{m n k} → m + k ≡ n → m ≤‴ n
+  ≤″⇒≤‴ : ∀{m n} → m ≤″ n → m ≤‴ n
+
   ```
