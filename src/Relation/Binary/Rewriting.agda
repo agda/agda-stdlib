@@ -45,9 +45,7 @@ WeaklyNormalizing : ∀ {a ℓ} → {A : Set a} → Rel A ℓ → Set _
 WeaklyNormalizing _⟶_ = ∀ a → HasNormalForm _⟶_ a
 
 StronglyNormalizing : ∀ {a ℓ} → {A : Set a} → Rel A ℓ → Set _
-StronglyNormalizing _⟶_ = WellFounded (flip _⟶₊_)
-  where
-    _⟶₊_ = Plus _⟶_
+StronglyNormalizing _⟶_ = WellFounded (flip _⟶_)
 
 UniqueNormalForm : ∀ {a ℓ} → {A : Set a} → Rel A ℓ → Set _
 UniqueNormalForm _⟶_ = ∀ {a b}
@@ -124,10 +122,8 @@ un&wn⟶cr A _⟶_ un wn = helper
     helper _ | (bNF , x) , (_ , y) | refl = bNF , proj₂ x , proj₂ y
 
 -- Newman's lemma
-sn⟶wcr⟶cr : ∀ {a ℓ} → {A : Set a} → (_⟶_ : Rel A ℓ)
-  → StronglyNormalizing _⟶_
-  → WeaklyConfluent _⟶_
-  → Confluent _⟶_
+sn⟶wcr⟶cr : ∀ {a ℓ} → {A : Set a} → (_⟶_ : Rel A ℓ) → StronglyNormalizing (Plus _⟶_) →
+  WeaklyConfluent _⟶_ → Confluent _⟶_
 sn⟶wcr⟶cr _⟶_ sn wcr {a} = helper (sn a)
   where
     _—↠_ = Star _⟶_
@@ -140,12 +136,16 @@ sn⟶wcr⟶cr _⟶_ sn wcr {a} = helper (sn a)
     helper : ∀ {a b c} → (acc : Acc (flip _⟶₊_) a) → (a —↠ b × a —↠ c) → ∃ λ d → (b —↠ d) × (c —↠ d)
     helper _ (ε , snd)     = _ , snd , ε
     helper _ (x ◅ fst , ε)     = _ , ε   , x ◅ fst
-    helper _ (toB ◅ _ , toC ◅ _) with wcr (toB , toC)
-
-    helper {a} {b} {c} (acc g) (_◅_ {j = j} toB fst , _◅_ {j = k} toC snd) | innerPoint , jToInner , kToInner = result
+    helper {a} {b} {c} (acc g) (_◅_ {j = j} toJ fst , _◅_ {j = k} toK snd) = result
       where
-        lhs = helper (g j [ toB ]) (fst , jToInner)
-        rhs = helper (g k [ toC ]) (snd , kToInner)
+        wcrProof = wcr (toJ , toK)
+        innerPoint = proj₁ wcrProof
+        jToInner = proj₁ (proj₂ wcrProof)
+        kToInner = proj₂ (proj₂ wcrProof)
+
+
+        lhs = helper (g j [ toJ ]) (fst , jToInner)
+        rhs = helper (g k [ toK ]) (snd , kToInner)
 
         fromAB = proj₁ (proj₂ lhs)
         fromInnerB = proj₂ (proj₂ lhs)
@@ -154,7 +154,7 @@ sn⟶wcr⟶cr _⟶_ sn wcr {a} = helper (sn a)
         fromInnerC = proj₂ (proj₂ rhs)
 
         aToInner : a ⟶₊ innerPoint
-        aToInner = starToPlus toB jToInner
+        aToInner = starToPlus toJ jToInner
 
         finalRecursion = helper (g innerPoint aToInner) (fromInnerB , fromInnerC)
 
