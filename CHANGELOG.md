@@ -452,6 +452,13 @@ Deprecated features
   <-irrelevance ↦ <-irrelevant
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Inductive.Properties`:
+  ```agda
+  ↭⇒~bag ↦ ↭⇒∼bag
+  ~bag⇒↭ ↦ ∼bag⇒↭
+  ```
+  (now typed with "\sim" rather than "~")
+
 * In `Data.List.Relation.Binary.Pointwise`:
   ```agda
   decidable-≡   ↦ Data.List.Properties.≡-dec
