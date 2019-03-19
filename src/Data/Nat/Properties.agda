@@ -1757,15 +1757,15 @@ im≡jm+n⇒[i∸j]m≡n i j m n eq = begin
 Please use ≤∧≢⇒< instead."
 #-}
 
--- Version 0.18
+-- Version 1.0
 
 ≤-irrelevance = ≤-irrelevant
 {-# WARNING_ON_USAGE ≤-irrelevance
-"Warning: ≤-irrelevance was deprecated in v0.18.
+"Warning: ≤-irrelevance was deprecated in v1.0.
 Please use ≤-irrelevant instead."
 #-}
 <-irrelevance = <-irrelevant
 {-# WARNING_ON_USAGE <-irrelevance
-"Warning: <-irrelevance was deprecated in v0.18.
+"Warning: <-irrelevance was deprecated in v1.0.
 Please use <-irrelevant instead."
 #-}

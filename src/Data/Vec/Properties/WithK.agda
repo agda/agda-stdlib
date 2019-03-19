@@ -67,10 +67,10 @@ foldl-cong f≅g d≅e (x ∷ xs) = foldl-cong f≅g (f≅g d≅e) xs
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 0.18
+-- Version 1.0
 
 []=-irrelevance = []=-irrelevant
 {-# WARNING_ON_USAGE []=-irrelevance
-"Warning: []=-irrelevance was deprecated in v0.18.
+"Warning: []=-irrelevance was deprecated in v1.0.
 Please use []=-irrelevant instead."
 #-}

@@ -236,7 +236,7 @@ Pointwise-≡↔≡ _ _ = record
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 0.18
+-- Version 1.0
 
 module _ {a b c d r s}
          {A : Set a} {B : Set b} {C : Set c} {D : Set d}
@@ -246,14 +246,14 @@ module _ {a b c d r s}
   ₁∼₁ : ∀ {a c} → R a c → Pointwise R S (inj₁ a) (inj₁ c)
   ₁∼₁ = inj₁
   {-# WARNING_ON_USAGE ₁∼₁
-  "Warning: ₁∼₁ was deprecated in v0.18.
+  "Warning: ₁∼₁ was deprecated in v1.0.
   Please use inj₁ in `Data.Sum.Properties` instead."
   #-}
 
   ₂∼₂ : ∀ {b d} → S b d → Pointwise R S (inj₂ b) (inj₂ d)
   ₂∼₂ = inj₂
   {-# WARNING_ON_USAGE ₂∼₂
-  "Warning: ₂∼₂ was deprecated in v0.18.
+  "Warning: ₂∼₂ was deprecated in v1.0.
   Please use inj₂ in `Data.Sum.Properties` instead."
   #-}
 
@@ -264,6 +264,6 @@ _⊎-≟_ : ∀ {a b} {A : Set a} {B : Set b} →
   where
   open DecSetoid (⊎-decSetoid (P.decSetoid dec₁) (P.decSetoid dec₂))
 {-# WARNING_ON_USAGE _⊎-≟_
-"Warning: _⊎-≟_ was deprecated in v0.18.
+"Warning: _⊎-≟_ was deprecated in v1.0.
 Please use ≡-dec in `Data.Sum.Properties` instead."
 #-}

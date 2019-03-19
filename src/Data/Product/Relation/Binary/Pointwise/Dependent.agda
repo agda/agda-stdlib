@@ -97,6 +97,6 @@ Please use Pointwise instead."
 
 REL = POINTWISE
 {-# WARNING_ON_USAGE REL
-"Warning: REL was deprecated in v0.18.
+"Warning: REL was deprecated in v1.0.
 Please use POINTWISE instead."
 #-}

@@ -587,10 +587,10 @@ proof-irrelevance = T-irrelevant
 Please use T-irrelevant instead."
 #-}
 
--- Version 0.18
+-- Version 1.0
 
 T-irrelevance = T-irrelevant
 {-# WARNING_ON_USAGE T-irrelevance
-"Warning: T-irrelevance was deprecated in v0.18.
+"Warning: T-irrelevance was deprecated in v1.0.
 Please use T-irrelevant instead."
 #-}
