@@ -8,7 +8,6 @@ Important changes since 0.17:
 Non-backwards compatible changes
 --------------------------------
 
-<<<<<<< HEAD
 #### Extending the relation hierarchy for container datatypes
 
 * This release has added many new relations over `List` (e.g. `First`,
@@ -269,6 +268,7 @@ Non-backwards compatible changes
   ```
   All the proofs about `Pointwise` remain untouched.
 
+<<<<<<< HEAD
 #### Overhaul of `MonadZero` and `MonadPlus`
 
 * Introduce `RawIApplicativeZero` for an indexed applicative with a zero
@@ -314,6 +314,14 @@ Non-backwards compatible changes
   `Relation.Binary.HeterogeneousEquality` and into `Axiom.Extensionality.Heterogeneous`.
 
 * The old names still exist for backwards compatability but have been deprecated.
+
+#### Cleanup of `Data.Char` and `Data.String`
+
+* Moved `setoid` and `strictTotalOrder` from `Data.X` into the new module `Data.X.Properties`.
+
+* Used the new builtins from `Agda.Builtin.X.Properties` to implement decidable
+  equality (`_≟_`) in a safe manner. This has allowed `_≟_`, `decSetoid` and `_==_`
+  to be moved from `Data.X.Unsafe` to `Data.X.Properties`.
 
 #### Other
 
@@ -407,6 +415,8 @@ List of new modules
   Data.Container.Relation.Binary.Equality.Setoid
   Data.Container.Relation.Binary.Pointwise
   Data.Container.Relation.Binary.Pointwise.Properties
+  
+  Data.Char.Properties
 
   Data.Integer.Divisibility.Properties
   Data.Integer.Divisibility.Signed
@@ -441,6 +451,8 @@ List of new modules
   Data.List.Relation.Ternary.Interleaving.Propositional.Properties
 
   Data.Maybe.Relation.Unary.All.Properties
+
+  Data.String.Properties
 
   Data.These.Properties
 
@@ -675,6 +687,12 @@ Other minor additions
 
   T?      : Decidable T
   T?-diag : T b → True (T? b)
+  ```
+
+* Re-exported new functions from `Data.Char.Base`:
+  ```agda
+  toUpper : Char → Char
+  toLower : Char → Char
   ```
 
 * Added new function to `Data.Fin.Base`:
