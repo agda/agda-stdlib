@@ -56,7 +56,7 @@ RList n = List (Item n)
 
 -- Semantics
 ⟦_⟧I : ∀ {n} → Item n → Vec (List A) n → List A
-⟦ var k ⟧I ρ = lookup k ρ
+⟦ var k ⟧I ρ = lookup ρ k
 ⟦ val a ⟧I ρ = [ a ]
 
 ⟦_⟧T : ∀ {n} → TList n → Vec (List A) n → List A

@@ -27,7 +27,7 @@ open import Relation.Binary.PropositionalEquality using (refl)
 
 module _ {a} {A : Set a} where
 
-  ∈-lookup : ∀ {n} i (xs : Vec A n) → lookup i xs ∈ xs
+  ∈-lookup : ∀ {n} i (xs : Vec A n) → lookup xs i ∈ xs
   ∈-lookup zero    (x ∷ xs) = here refl
   ∈-lookup (suc i) (x ∷ xs) = there (∈-lookup i xs)
 

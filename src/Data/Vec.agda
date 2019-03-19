@@ -38,43 +38,45 @@ data _[_]=_ {a} {A : Set a} :
 ------------------------------------------------------------------------
 -- Basic operations
 
-head : ∀ {a n} {A : Set a} → Vec A (1 + n) → A
-head (x ∷ xs) = x
+module _ {a} {A : Set a} where
 
-tail : ∀ {a n} {A : Set a} → Vec A (1 + n) → Vec A n
-tail (x ∷ xs) = xs
+  head : ∀ {n} → Vec A (1 + n) → A
+  head (x ∷ xs) = x
 
-lookup : ∀ {a n} {A : Set a} → Vec A n → Fin n → A
-lookup (x ∷ xs) zero    = x
-lookup (x ∷ xs) (suc i) = lookup xs i
+  tail : ∀ {n} → Vec A (1 + n) → Vec A n
+  tail (x ∷ xs) = xs
 
-insert : ∀ {a n} {A : Set a} → Fin (suc n) → A → Vec A n → Vec A (suc n)
-insert zero     x xs       = x ∷ xs
-insert (suc ()) x []
-insert (suc i)  x (y ∷ xs) = y ∷ insert i x xs
+  lookup : ∀ {n} → Vec A n → Fin n → A
+  lookup (x ∷ xs) zero    = x
+  lookup (x ∷ xs) (suc i) = lookup xs i
 
-remove : ∀ {a n} {A : Set a} → Fin (suc n) → Vec A (suc n) → Vec A n
-remove zero     (_ ∷ xs)     = xs
-remove (suc ()) (x ∷ [])
-remove (suc i)  (x ∷ y ∷ xs) = x ∷ remove i (y ∷ xs)
+  insert : ∀ {n} → Vec A n → Fin (suc n) → A → Vec A (suc n)
+  insert xs       zero     v = v ∷ xs
+  insert []       (suc ()) v
+  insert (x ∷ xs) (suc i)  v = x ∷ insert xs i v
 
--- Update.
+  remove : ∀ {n} → Vec A (suc n) → Fin (suc n) → Vec A n
+  remove (_ ∷ xs)     zero     = xs
+  remove (x ∷ [])     (suc ())
+  remove (x ∷ y ∷ xs) (suc i)  = x ∷ remove (y ∷ xs) i
 
-infixl 6 _[_]%=_ _[_]≔_
+  updateAt : ∀ {n} → Fin n → (A → A) → Vec A n → Vec A n
+  updateAt zero    f (x ∷ xs) = f x ∷ xs
+  updateAt (suc i) f (x ∷ xs) = x   ∷ updateAt i f xs
 
--- updateAt i f xs  modifies the i-th element of xs according to f
+  -- xs [ i ]%= f  modifies the i-th element of xs according to f
 
-updateAt : ∀ {a n} {A : Set a} → Fin n → (A → A) → Vec A n → Vec A n
-updateAt zero    f (x ∷ xs) = f x ∷ xs
-updateAt (suc i) f (x ∷ xs) = x   ∷ updateAt i f xs
+  infixl 6 _[_]%=_
 
-_[_]%=_ : ∀ {a n} {A : Set a} → Vec A n → Fin n → (A → A) → Vec A n
-xs [ i ]%= f = updateAt i f xs
+  _[_]%=_ : ∀ {n} → Vec A n → Fin n → (A → A) → Vec A n
+  xs [ i ]%= f = updateAt i f xs
 
--- xs [ i ]≔ y  overwrites the i-th element of xs with y
+  -- xs [ i ]≔ y  overwrites the i-th element of xs with y
 
-_[_]≔_ : ∀ {a n} {A : Set a} → Vec A n → Fin n → A → Vec A n
-xs [ i ]≔ y = xs [ i ]%= λ _ → y
+  infixl 6 _[_]≔_
+
+  _[_]≔_ : ∀ {n} → Vec A n → Fin n → A → Vec A n
+  xs [ i ]≔ y = xs [ i ]%= const y
 
 ------------------------------------------------------------------------
 -- Operations for transforming vectors

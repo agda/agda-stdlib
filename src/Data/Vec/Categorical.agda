@@ -69,7 +69,7 @@ module _ {m M} (Mon : RawMonad {m} M) where
 
 lookup-functor-morphism : (i : Fin n) → Fun.Morphism functor Id.functor
 lookup-functor-morphism i = record
-  { op     = lookup i
+  { op     = flip lookup i
   ; op-<$> = lookup-map i
   }
 
@@ -77,7 +77,7 @@ lookup-functor-morphism i = record
 
 lookup-morphism : (i : Fin n) → Morphism applicative Id.applicative
 lookup-morphism i = record
-  { op      = lookup i
+  { op      = flip lookup i
   ; op-pure = lookup-replicate i
   ; op-⊛    = lookup-⊛ i
   }
