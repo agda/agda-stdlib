@@ -21,13 +21,13 @@ open import Function
 -- give it an infix definition and be able to assign it a level.
 
 import Agda.Builtin.String as String
-open String
-  using ( String )
-  renaming ( primStringToList   to toList
-           ; primStringFromList to fromList
-           ; primShowString     to show
-           )
-  public
+
+open String public using ( String )
+  renaming
+  ( primStringToList   to toList
+  ; primStringFromList to fromList
+  ; primShowString     to show
+  )
 
 ------------------------------------------------------------------------
 -- Operations

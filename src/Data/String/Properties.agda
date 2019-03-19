@@ -26,20 +26,34 @@ import Relation.Binary.PropositionalEquality as PropEq
 ------------------------------------------------------------------------
 -- Primitive properties
 
-open import Agda.Builtin.String.Properties
+open import Agda.Builtin.String.Properties public
   renaming ( primStringToListInjective to toList-injective)
-  public
 
 ------------------------------------------------------------------------
--- Decidable equality
+-- Equality
 
 infix 4 _≟_
 _≟_ : Decidable {A = String} _≡_
 x ≟ y = map′ (toList-injective x y) (cong toList)
       $ Listₚ.≡-dec Charₚ._≟_ (toList x) (toList y)
 
+setoid : Setoid _ _
+setoid = PropEq.setoid String
+
+decSetoid : DecSetoid _ _
+decSetoid = PropEq.decSetoid _≟_
+
 ------------------------------------------------------------------------
--- Boolean equality test.
+-- Lexicographic ordering on strings.
+
+strictTotalOrder : StrictTotalOrder _ _ _
+strictTotalOrder =
+  On.strictTotalOrder
+    (StrictLex.<-strictTotalOrder Charₚ.strictTotalOrder)
+    toList
+
+------------------------------------------------------------------------
+-- Alternative Boolean equality test.
 --
 -- Why is the definition _==_ = primStringEquality not used? One
 -- reason is that the present definition can sometimes improve type
@@ -60,21 +74,3 @@ private
 
   unit-test : P (_==_ "")
   unit-test = p _
-
-
-------------------------------------------------------------------------
--- Structures
-
-setoid : Setoid _ _
-setoid = PropEq.setoid String
-
-decSetoid : DecSetoid _ _
-decSetoid = PropEq.decSetoid _≟_
-
--- A lexicographic ordering on strings.
-
-strictTotalOrder : StrictTotalOrder _ _ _
-strictTotalOrder =
-  On.strictTotalOrder
-    (StrictLex.<-strictTotalOrder Charₚ.strictTotalOrder)
-    toList

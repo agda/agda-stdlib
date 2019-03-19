@@ -265,9 +265,11 @@ Non-backwards compatible changes
 
 #### Cleanup of `Data.Char` and `Data.String`
 
-* Introducing `Data.X.Properties` for both.
-* Moving `_≟_`, `_==_`, `setoid`, `decSetoid`, and `strictTotalOrder` to it.
-* Using the new `Agda.Builtin.X.Properties` to implement `_≟_` in a safe manner.
+* Moved `setoid` and `strictTotalOrder` from `Data.X` into the new module `Data.X.Properties`.
+
+* Used the new builtins from `Agda.Builtin.X.Properties` to implement decidable
+  equality (`_≟_`) in a safe manner. This has allowed `_≟_`, `decSetoid` and `_==_`
+  to be moved from `Data.X.Unsafe` to `Data.X.Properties`.
 
 #### Other
 
