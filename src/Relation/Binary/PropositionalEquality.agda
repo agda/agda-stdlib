@@ -15,6 +15,7 @@ open import Data.Empty
 open import Data.Product
 open import Relation.Nullary using (yes ; no)
 open import Relation.Unary using (Pred)
+open import Axiom.UIP
 open import Relation.Binary
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
@@ -32,10 +33,6 @@ open import Relation.Binary.PropositionalEquality.Core public
 subst₂ : ∀ {a b p} {A : Set a} {B : Set b} (P : A → B → Set p)
          {x₁ x₂ y₁ y₂} → x₁ ≡ x₂ → y₁ ≡ y₂ → P x₁ y₁ → P x₂ y₂
 subst₂ P refl refl p = p
-
-cong : ∀ {a b} {A : Set a} {B : Set b}
-       (f : A → B) {x y} → x ≡ y → f x ≡ f y
-cong f refl = refl
 
 cong-app : ∀ {a b} {A : Set a} {B : A → Set b} {f g : (x : A) → B x} →
            f ≡ g → (x : A) → f x ≡ g x
@@ -122,32 +119,6 @@ inspect f x = [ refl ]
 -- f x y | c z | [ eq ] = ...
 
 ------------------------------------------------------------------------
--- Convenient syntax for equational reasoning
-
--- This is special instance of Relation.Binary.EqReasoning.
--- Rather than instantiating the latter with (setoid A),
--- we reimplement equation chains from scratch
--- since then goals are printed much more readably.
-
-module ≡-Reasoning {a} {A : Set a} where
-
-  infix  3 _∎
-  infixr 2 _≡⟨⟩_ _≡⟨_⟩_
-  infix  1 begin_
-
-  begin_ : ∀{x y : A} → x ≡ y → x ≡ y
-  begin_ x≡y = x≡y
-
-  _≡⟨⟩_ : ∀ (x {y} : A) → x ≡ y → x ≡ y
-  _ ≡⟨⟩ x≡y = x≡y
-
-  _≡⟨_⟩_ : ∀ (x {y z} : A) → x ≡ y → y ≡ z → x ≡ z
-  _ ≡⟨ x≡y ⟩ y≡z = trans x≡y y≡z
-
-  _∎ : ∀ (x : A) → x ≡ x
-  _∎ _ = refl
-
-------------------------------------------------------------------------
 -- Functional extensionality
 
 -- If _≡_ were extensional, then the following statement could be
@@ -190,19 +161,6 @@ module _ {a} {A : Set a} {x y : A} where
 
 ------------------------------------------------------------------------
 -- Various equality rearrangement lemmas
-
-  trans-reflʳ : (p : x ≡ y) → trans p refl ≡ p
-  trans-reflʳ refl = refl
-
-  trans-assoc : ∀ {z u : A} (p : x ≡ y) {q : y ≡ z} {r : z ≡ u} →
-                trans (trans p q) r ≡ trans p (trans q r)
-  trans-assoc refl = refl
-
-  trans-symˡ : (p : x ≡ y) → trans (sym p) p ≡ refl
-  trans-symˡ refl = refl
-
-  trans-symʳ : (p : x ≡ y) → trans p (sym p) ≡ refl
-  trans-symʳ refl = refl
 
   trans-injectiveˡ : ∀ {z} {p₁ p₂ : x ≡ y} (q : y ≡ z) →
                      trans p₁ q ≡ trans p₂ q → p₁ ≡ p₂
@@ -287,38 +245,6 @@ cong-≡id {f = f} {x} f≡id =
   f≡id (f x)                                                    ∎
   where
   open ≡-Reasoning
-
-module Constant⇒UIP
-       {a} {A : Set a} (f : _≡_ {A = A} ⇒ _≡_)
-       (f-constant : ∀ {a b} (p q : a ≡ b) → f p ≡ f q)
-       where
-
-  ≡-canonical : ∀ {a b} (p : a ≡ b) → trans (sym (f refl)) (f p) ≡ p
-  ≡-canonical refl = trans-symˡ (f refl)
-
-  ≡-irrelevant : Irrelevant {A = A} _≡_
-  ≡-irrelevant p q = begin
-    p                          ≡⟨ sym (≡-canonical p) ⟩
-    trans (sym (f refl)) (f p) ≡⟨ cong (trans _) (f-constant p q) ⟩
-    trans (sym (f refl)) (f q) ≡⟨ ≡-canonical q ⟩
-    q                          ∎ where open ≡-Reasoning
-
-module Decidable⇒UIP
-       {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A}))
-       where
-
-  ≡-normalise : _≡_ {A = A} ⇒ _≡_
-  ≡-normalise {a} {b} a≡b with a ≟ b
-  ... | yes p = p
-  ... | no ¬p = ⊥-elim (¬p a≡b)
-
-  ≡-normalise-constant : ∀ {a b} (p q : a ≡ b) → ≡-normalise p ≡ ≡-normalise q
-  ≡-normalise-constant {a} {b} p q with a ≟ b
-  ... | yes _ = refl
-  ... | no ¬p = ⊥-elim (¬p p)
-
-  ≡-irrelevant : Irrelevant {A = A} _≡_
-  ≡-irrelevant = Constant⇒UIP.≡-irrelevant ≡-normalise ≡-normalise-constant
 
 module _ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) {a : A} where
 

@@ -342,6 +342,9 @@ List of new modules
 
   Algebra.FunctionProperties.Consequences.Propositional
 
+  Axiom.UIP
+  Axiom.UIP.WithK
+
   Codata.Cowriter
 
   Codata.M.Properties
@@ -1157,8 +1160,6 @@ Other minor additions
   trans-injectiveˡ : trans p₁ q ≡ trans p₂ q → p₁ ≡ p₂
   trans-injectiveʳ : trans p q₁ ≡ trans p q₂ → q₁ ≡ q₂
   subst-injective  : subst P x≡y p ≡ subst P x≡y q → p ≡ q
-  module Constant⇒UIP
-  module Decidable⇒UIP
   ```
 
 * Added new proofs to `Relation.Binary.Consequences`:

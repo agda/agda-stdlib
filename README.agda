@@ -46,6 +46,10 @@ module README where
 --     properties needed to specify these structures (associativity,
 --     commutativity, etc.), and operations on and proofs about the
 --     structures.
+-- • Axiom
+--     The consequences of assuming various additional axioms
+--     e.g. uniqueness of identity of proofs, function extensionality,
+--     excluded middle.
 -- • Category
 --     Category theory-inspired idioms used to structure functional
 --     programs (functors and monads, for instance).
@@ -120,7 +124,7 @@ import Category.Monad        -- Monads.
 import Relation.Binary.PropositionalEquality
 
 -- Convenient syntax for "equational reasoning" using a preorder:
-import Relation.Binary.PreorderReasoning
+import Relation.Binary.Reasoning.Preorder
 
 -- Solver for commutative ring or semiring equalities:
 import Algebra.Solver.Ring
