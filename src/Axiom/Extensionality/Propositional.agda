@@ -29,10 +29,10 @@ Extensionality a b =
 -- If extensionality holds for a given universe level, then it also
 -- holds for lower ones.
 
-lower : ∀ {a₁ b₁} a₂ b₂ →
-        Extensionality (a₁ ⊔ a₂) (b₁ ⊔ b₂) →
-        Extensionality a₁ b₁
-lower a₂ b₂ ext f≡g = cong (λ h → Level.lower ∘ h ∘ lift) $
+lower-extensionality : ∀ {a₁ b₁} a₂ b₂ →
+                       Extensionality (a₁ ⊔ a₂) (b₁ ⊔ b₂) →
+                       Extensionality a₁ b₁
+lower-extensionality a₂ b₂ ext f≡g = cong (λ h → Level.lower ∘ h ∘ lift) $
     ext (cong (lift {ℓ = b₂}) ∘ f≡g ∘ Level.lower {ℓ = a₂})
 
 -- Functional extensionality implies a form of extensionality for

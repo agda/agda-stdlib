@@ -241,10 +241,10 @@ Extensionality = Ext.Extensionality
 "Warning: Extensionality was deprecated in v1.0.
 Please use Extensionality from `Axiom.Extensionality.Propositional` instead."
 #-}
-extensionality-for-lower-levels = Ext.lower
+extensionality-for-lower-levels = Ext.lower-extensionality
 {-# WARNING_ON_USAGE extensionality-for-lower-levels
 "Warning: extensionality-for-lower-levels was deprecated in v1.0.
-Please use lower from `Axiom.Extensionality.Propositional` instead."
+Please use lower-extensionality from `Axiom.Extensionality.Propositional` instead."
 #-}
 ∀-extensionality = Ext.∀-extensionality
 {-# WARNING_ON_USAGE ∀-extensionality

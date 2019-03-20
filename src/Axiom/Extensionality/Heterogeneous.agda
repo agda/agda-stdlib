@@ -37,4 +37,4 @@ Extensionality a b =
 ... | refl = ≡-to-≅ $ ext′ (≅-to-≡ ∘ f₁≅f₂)
   where
   ext′ : P.Extensionality ℓ₁ ℓ₂
-  ext′ = P.lower ℓ₁ (suc ℓ₂) ext
+  ext′ = P.lower-extensionality ℓ₁ (suc ℓ₂) ext
