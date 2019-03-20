@@ -506,6 +506,23 @@ Deprecated features
   ≡-irrelevance ↦ ≡-irrelevant
   ```
 
+* The following modules that were deprecated in v0.14 and v0.15 have been removed.
+  ```agda
+  Data.Nat.Properties.Simple
+  Data.Integer.Multiplication.Properties
+  Data.Integer.Addition.Properties
+
+  Relation.Binary.Sigma.Pointwise
+  Relation.Binary.Sum
+  Relation.Binary.List.NonStrictLex
+  Relation.Binary.List.Pointwise
+  Relation.Binary.List.StrictLex
+  Relation.Binary.Product.NonStrictLex
+  Relation.Binary.Product.Pointwise
+  Relation.Binary.Product.StrictLex
+  Relation.Binary.Vec.Pointwise
+  ```
+
 Other minor additions
 ---------------------
 
