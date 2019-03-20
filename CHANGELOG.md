@@ -495,6 +495,12 @@ Deprecated features
   ≅-heterogeneous-irrelevanceʳ ↦ ≅-heterogeneous-irrelevantʳ
   ```
 
+* In `Induction.WellFounded`:
+  ```agda
+  module Inverse-image      ↦ InverseImage
+  module Transitive-closure ↦ TransitiveClosure
+  ```
+
 * In `Relation.Binary.PropositionalEquality.WithK`:
   ```agda
   ≡-irrelevance ↦ ≡-irrelevant
